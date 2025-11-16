@@ -219,7 +219,7 @@ do
 	local function GetLink(linkType, displayText, ...)
 		local text = ''
 		for i, value in next, { ... } do
-			text = text .. (i == 1 and format('|H%s', linkType) or ':') .. value
+			text = text .. (i == 1 and format('|H%s:', linkType) or ':') .. value
 		end
 
 		return text .. (displayText and format('|h%s|h', displayText) or '|h')
@@ -1052,32 +1052,31 @@ function CH:StyleChat(frame)
 end
 
 function CH:AddMessageEdits(frame, msg, isHistory, historyTime)
-	if CH:MessageIsProtected(msg) then
+	local isProtected = CH:MessageIsProtected(msg)
+	if not isProtected and (strmatch(msg, '^%s*$') or strmatch(msg, '^|Helvtime|h') or strmatch(msg, '^|Hcpl:')) then
 		return msg
 	end
 
-	if not strmatch(msg, '^%s*$') and not strmatch(msg, '^|Helvtime|h') and not strmatch(msg, '^|Hcpl:') then
-		local historyTimestamp -- we need to extend the arguments on AddMessage so we can properly handle times without overriding
-		if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
+	local historyTimestamp -- we need to extend the arguments on AddMessage so we can properly handle times without overriding
+	if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
 
-		if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
-			local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or E:GetDateTime(CH.db.timeStampLocalTime, true))
-			timeStamp = gsub(timeStamp, ' ', '')
-			timeStamp = gsub(timeStamp, 'AM', ' AM')
-			timeStamp = gsub(timeStamp, 'PM', ' PM')
+	if CH.db.timeStampFormat and CH.db.timeStampFormat ~= 'NONE' then
+		local timeStamp = BetterDate(CH.db.timeStampFormat, historyTimestamp or E:GetDateTime(CH.db.timeStampLocalTime, true))
+		timeStamp = gsub(timeStamp, ' ', '')
+		timeStamp = gsub(timeStamp, 'AM', ' AM')
+		timeStamp = gsub(timeStamp, 'PM', ' PM')
 
-			if CH.db.useCustomTimeColor then
-				local color = CH.db.customTimeColor
-				local hexColor = E:RGBToHex(color.r, color.g, color.b)
-				msg = format('|Helvtime|h%s[%s]|r|h %s', hexColor, timeStamp, msg)
-			else
-				msg = format('|Helvtime|h[%s]|h %s', timeStamp, msg)
-			end
+		if CH.db.useCustomTimeColor then
+			local color = CH.db.customTimeColor
+			local hexColor = E:RGBToHex(color.r, color.g, color.b)
+			msg = format('|Helvtime|h%s[%s]|r|h %s', hexColor, timeStamp, msg)
+		else
+			msg = format('|Helvtime|h[%s]|h %s', timeStamp, msg)
 		end
+	end
 
-		if CH.db.copyChatLines then
-			msg = format('|Hcpl:%s|h%s|h %s', frame:GetID(), E:TextureString(E.Media.Textures.ArrowRight, ':14'), msg)
-		end
+	if CH.db.copyChatLines then
+		msg = format('|Hcpl:%s|h%s|h %s', frame:GetID(), E:TextureString(E.Media.Textures.ArrowRight, ':14'), msg)
 	end
 
 	return msg
@@ -1983,7 +1982,11 @@ function CH:FCFManager_GetChatTarget(chatGroup, playerTarget, channelTarget)
 	if chatGroup == 'CHANNEL' then
 		chatTarget = tostring(channelTarget)
 	elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
-		if strsub(playerTarget, 1, 2) ~= '|K' then
+		if issecretvalue then
+			if not issecretvalue(playerTarget) then
+				chatTarget = playerTarget
+			end
+		elseif strsub(playerTarget, 1, 2) ~= '|K' then
 			chatTarget = strupper(playerTarget)
 		else
 			chatTarget = playerTarget
@@ -2010,11 +2013,11 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		return
 	end
 
-	local showLink = 1
+	local linkSender = true
 	local isProtected = CH:MessageIsProtected(arg1)
 	local bossMonster = strsub(chatType, 1, 9) == 'RAID_BOSS' or strsub(chatType, 1, 7) == 'MONSTER'
 	if bossMonster then
-		showLink = nil
+		linkSender = nil
 
 		-- fix blizzard formatting errors from localization strings
 		if not isProtected then
@@ -2092,7 +2095,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		if type(chatIcon) == 'function' then
 			local icon, prettify, var1, var2, var3 = chatIcon()
 			if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not isProtected then
-				if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
+				if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (linkSender and arg2 ~= '') then
 					var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
 				end
 
@@ -2124,37 +2127,23 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		end
 	end
 
+	local senderLink = linkSender and playerLink or arg2
 	if usingDifferentLanguage then
-		local languageHeader = '['..arg3..'] '
-		if showLink and arg2 ~= '' then
-			body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..playerLink)
+		body = format(_G['CHAT_'..chatType..'_GET']..('['..arg3..'] ')..message, pflag..senderLink) -- arg3 is language header
+	elseif chatType == 'EMOTE' then
+		body = format(_G['CHAT_'..chatType..'_GET']..message, senderLink)
+	elseif chatType == 'TEXT_EMOTE' and realm then
+		if info.colorNameByClass then
+			body = gsub(message, arg2..'%-'..realm, pflag..(linkSender and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or arg2), 1)
 		else
-			body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..arg2)
+			body = gsub(message, arg2..'%-'..realm, pflag..(linkSender and gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h') or arg2), 1)
 		end
+	elseif chatType == 'TEXT_EMOTE' then
+		body = gsub(message, arg2, senderLink, 1)
+	elseif chatType == 'GUILD_ITEM_LOOTED' then
+		body = gsub(message, '$s', senderLink, 1)
 	else
-		if not showLink or (issecretvalue and issecretvalue(arg2) or arg2 == '') then
-			if chatType == 'TEXT_EMOTE' then
-				body = message
-			else
-				body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..arg2, arg2)
-			end
-		else
-			if chatType == 'EMOTE' then
-				body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..playerLink)
-			elseif chatType == 'TEXT_EMOTE' and realm then
-				if info.colorNameByClass then
-					body = gsub(message, arg2..'%-'..realm, pflag..gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h'), 1)
-				else
-					body = gsub(message, arg2..'%-'..realm, pflag..gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'), 1)
-				end
-			elseif chatType == 'TEXT_EMOTE' then
-				body = gsub(message, arg2, pflag..playerLink, 1)
-			elseif chatType == 'GUILD_ITEM_LOOTED' then
-				body = gsub(message, '$s', pflag..playerLink, 1)
-			else
-				body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..playerLink)
-			end
-		end
+		body = format(_G['CHAT_'..chatType..'_GET']..message, senderLink)
 	end
 
 	-- Add Channel
@@ -2184,6 +2173,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 	else
 		notChatHistory = true
 	end
+
+	local isProtected = issecretvalue and issecretvalue(arg2)
 
 	if _G.TextToSpeechFrame_MessageEventHandler and notChatHistory then
 		_G.TextToSpeechFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
@@ -2464,8 +2455,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- beep boops
 			local historyType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and historyTypes[event]
+			local alertAllow = isProtected or arg2 ~= PLAYER_NAME
 			local alertType = (historyType ~= 'CHANNEL' and CH.db.channelAlerts[historyType]) or (historyType == 'CHANNEL' and CH.db.channelAlerts.CHANNEL[arg9])
-			if alertType and alertType ~= 'None' and arg2 ~= PLAYER_NAME and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
+			if alertType and alertType ~= 'None' and alertAllow and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
 				PlaySoundFile(LSM:Fetch('sound', alertType), 'Master')
 			end
@@ -2478,8 +2470,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
-			_G.ChatEdit_SetLastTellTarget(arg2, chatType)
-			if CH.db.flashClientIcon then FlashClientIcon() end
+			if not isProtected then
+				_G.ChatEdit_SetLastTellTarget(arg2, chatType)
+			end
+
+			if CH.db.flashClientIcon then
+				FlashClientIcon()
+			end
 		end
 
 		if notChatHistory then
@@ -2655,25 +2652,25 @@ end
 local function PrepareMessage(author, message)
 	if issecretvalue and (issecretvalue(author) or issecretvalue(message)) then return end
 
-	if author and author ~= '' and message and message ~= '' then
+	if author and author ~= '' and author ~= PLAYER_NAME and message and message ~= '' then
 		return strupper(author) .. message
 	end
 end
 
 function CH:ChatThrottleHandler(arg1, arg2, when)
 	local msg = PrepareMessage(arg1, arg2)
-	if msg then
-		for message, object in pairs(throttle) do
-			if difftime(when, object.time) >= CH.db.throttleInterval then
-				throttle[message] = nil
-			end
-		end
+	if not msg then return end
 
-		if not throttle[msg] then
-			throttle[msg] = {time = time(), count = 1}
-		else
-			throttle[msg].count = throttle[msg].count + 1
+	for message, object in pairs(throttle) do
+		if difftime(when, object.time) >= CH.db.throttleInterval then
+			throttle[message] = nil
 		end
+	end
+
+	if not throttle[msg] then
+		throttle[msg] = {time = time(), count = 1}
+	else
+		throttle[msg].count = throttle[msg].count + 1
 	end
 end
 
