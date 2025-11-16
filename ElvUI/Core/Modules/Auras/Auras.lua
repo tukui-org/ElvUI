@@ -308,13 +308,9 @@ function A:UpdateAura(button, index)
 
 	button.count:SetText(not count and '' or (not E.Midnight and count <= 1 and '') or count)
 
-	local dtype = debuffType or 'none'
-	if button.debuffType ~= dtype then
-		local color = (button.filter == 'HARMFUL' and A.db.colorDebuffs and DebuffColors[dtype]) or E.db.general.bordercolor
-		button:SetBackdropBorderColor(color.r, color.g, color.b)
-		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		button.debuffType = dtype
-	end
+	local color = (button.filter == 'HARMFUL' and A.db.colorDebuffs and DebuffColors[debuffType or 'none']) or E.db.general.bordercolor
+	button:SetBackdropBorderColor(color.r, color.g, color.b)
+	button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	if not E.Midnight then
 		if duration > 0 and expiration then

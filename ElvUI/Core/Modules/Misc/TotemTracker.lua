@@ -132,7 +132,9 @@ function TM:Initialize()
 		button.cooldown:SetReverse(true)
 		button.cooldown:SetInside()
 
-		E:RegisterCooldown(button.cooldown)
+		if not E.Midnight then
+			E:RegisterCooldown(button.cooldown)
+		end
 
 		TM.bar[i] = button
 	end
