@@ -19,7 +19,6 @@ local BNGetNumFriends = BNGetNumFriends
 local CreateFrame = CreateFrame
 local FlashClientIcon = FlashClientIcon
 local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
-local GetBNPlayerLink = GetBNPlayerLink
 local GetChannelName = GetChannelName
 local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
@@ -28,7 +27,6 @@ local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
-local GetPlayerLink = GetPlayerLink
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GMChatFrame_IsGM = GMChatFrame_IsGM
 local GMError = GMError
@@ -172,11 +170,81 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
 
+do
+	local accessInfo = {}
+	local accessIndex = 1
+
+	local accessType = {}
+	local accessTarget = {}
+	local accessSender = {}
+
+	local function GetToken(chatType, chatTarget, chanSender) -- ChatHistory_GetToken
+		local target = chatTarget and strlower(chatTarget) or ''
+		local sender = (not issecretvalue or not issecretvalue(chanSender)) and chanSender and strlower(chanSender) or ''
+
+		return format('%s;;%s;;%s', strlower(chatType), target, sender)
+	end
+
+	function CH:GetAccessID(chatType, chatTarget, chanSender) -- ChatHistory_GetAccessID
+		local token = GetToken(chatType, chatTarget, chanSender)
+		if not accessInfo[token] then
+			accessInfo[token] = accessIndex
+			accessType[accessIndex] = chatType
+			accessTarget[accessIndex] = chatTarget
+			accessSender[accessIndex] = chanSender
+			accessIndex = accessIndex + 1
+		end
+
+		return accessInfo[token]
+	end
+
+	function CH:GetAccessType(accessID) -- ChatHistory_GetChatType
+		return accessType[accessID], accessTarget[accessID], accessSender[accessID]
+	end
+
+	function CH:GetAllAccessIDsByChanSender(chanSender) -- ChatHistory_GetAllAccessIDsByChanSender
+		local senders = {}
+
+		for accessID, sender in next, accessSender do
+			if strlower(sender) == strlower(chanSender) then
+				senders[#senders + 1] = accessID
+			end
+		end
+
+		return senders
+	end
+end
+
+do
+	local function GetLink(linkType, displayText, ...)
+		local text = ''
+		for i, value in next, { ... } do
+			text = text .. (i == 1 and format('|H%s', linkType) or ':') .. value
+		end
+
+		return text .. (displayText and format('|h%s|h', displayText) or '|h')
+	end
+
+	function CH:GetPlayerLink(characterName, displayText, lineID, chatType, chatTarget)
+		if lineID or chatType or chatTarget then
+			return GetLink(_G.LinkTypes.Player, displayText, characterName, lineID or 0, chatType or 0, (not issecretvalue or not issecretvalue(chatTarget)) and chatTarget or '')
+		else
+			return GetLink(_G.LinkTypes.Player, displayText, characterName)
+		end
+	end
+
+	function CH:GetBNPlayerLink(name, displayText, bnetIDAccount, lineID, chatType, chatTarget)
+		return GetLink(_G.LinkTypes.BNPlayer, displayText, name, bnetIDAccount, lineID or 0, chatType, chatTarget)
+	end
+end
+
 local canChangeMessage = function(arg1, id)
 	if id and arg1 == '' then return id end
 end
 
 function CH:MessageIsProtected(message)
+	if issecretvalue and issecretvalue(message) then return true end
+
 	return message and (message ~= gsub(message, '(:?|?)|K(.-)|k', canChangeMessage))
 end
 
@@ -984,6 +1052,10 @@ function CH:StyleChat(frame)
 end
 
 function CH:AddMessageEdits(frame, msg, isHistory, historyTime)
+	if CH:MessageIsProtected(msg) then
+		return msg
+	end
+
 	if not strmatch(msg, '^%s*$') and not strmatch(msg, '^|Helvtime|h') and not strmatch(msg, '^|Hcpl:') then
 		local historyTimestamp -- we need to extend the arguments on AddMessage so we can properly handle times without overriding
 		if isHistory == 'ElvUI_ChatHistory' then historyTimestamp = historyTime end
@@ -1714,6 +1786,7 @@ function CH:HandleShortChannels(msg, hide)
 	msg = gsub(msg, '<'.._G.AFK..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
 	msg = gsub(msg, '<'.._G.DND..'>', '[|cffFF3333'..L["DND"]..'|r] ')
 	msg = gsub(msg, '^%['.._G.RAID_WARNING..'%]', '['..L["RW"]..']')
+
 	return msg
 end
 
@@ -1781,6 +1854,10 @@ end
 --Modified copy from FrameXML ChatFrame.lua to add CUSTOM_CLASS_COLORS (args were changed)
 function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	if not arg2 then return end -- guild deaths is called here with no arg2
+
+	if issecretvalue and issecretvalue(arg2) then
+		return arg2
+	end
 
 	local chatType = strsub(event, 10)
 	local subType = strsub(chatType, 1, 7)
@@ -1863,7 +1940,7 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		end
 	end
 
-	if E.Retail and unitGUID then
+	if E.Retail and unitGUID and (not issecretvalue or not issecretvalue(unitGUID)) then
 		if CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
 			flag = flag .. TIMERUNNING_SMALL
 		end
@@ -1934,23 +2011,27 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	local showLink = 1
+	local isProtected = CH:MessageIsProtected(arg1)
 	local bossMonster = strsub(chatType, 1, 9) == 'RAID_BOSS' or strsub(chatType, 1, 7) == 'MONSTER'
 	if bossMonster then
 		showLink = nil
 
 		-- fix blizzard formatting errors from localization strings
-		arg1 = gsub(arg1, '(%d%s?%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
-		arg1 = gsub(arg1, '(%d%s?%%)$', '%1%%') -- escape percentages on the end
-		arg1 = gsub(arg1, '^%%o', '%%s') -- replace %o to %s [broken in cata classic?]: "%o gular zila amanare rukadare." from "Cabal Zealot"
-	else
+		if not isProtected then
+			arg1 = gsub(arg1, '(%d%s?%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
+			arg1 = gsub(arg1, '(%d%s?%%)$', '%1%%') -- escape percentages on the end
+			arg1 = gsub(arg1, '^%%o', '%%s') -- replace %o to %s [broken in cata classic?]: "%o gular zila amanare rukadare." from "Cabal Zealot"
+		end
+	elseif not isProtected then
 		arg1 = gsub(arg1, '%%', '%%%%') -- escape any % characters, as it may otherwise cause an 'invalid option in format' error
 	end
 
-	--Remove groups of many spaces
-	arg1 = RemoveExtraSpaces(arg1)
+	if not isProtected then
+		arg1 = RemoveExtraSpaces(arg1) -- Remove groups of many spaces
 
-	-- Search for icon links and replace them with texture links.
-	arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
+		-- Search for icon links and replace them with texture links.
+		arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
+	end
 
 	-- ElvUI: Get class colored name for BattleNet friend
 	if chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
@@ -1994,9 +2075,9 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 			playerLink = playerLinkDisplayText
 		end
 	elseif chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
-		playerLink = GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
+		playerLink = CH:GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
 	else
-		playerLink = GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
+		playerLink = CH:GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
 	end
 
 	local message = arg1
@@ -2006,11 +2087,11 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	-- Player Flags
 	local pflag = CH:GetPFlag(arg6, arg7, arg12)
-	if not bossMonster then
+	if not bossMonster and (not issecretvalue or not issecretvalue(arg12)) then
 		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
 		if type(chatIcon) == 'function' then
 			local icon, prettify, var1, var2, var3 = chatIcon()
-			if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not CH:MessageIsProtected(message) then
+			if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not isProtected then
 				if chatType == 'TEXT_EMOTE' and not usingDifferentLanguage and (showLink and arg2 ~= '') then
 					var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
 				end
@@ -2051,7 +2132,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 			body = format(_G['CHAT_'..chatType..'_GET']..languageHeader..message, pflag..arg2)
 		end
 	else
-		if not showLink or arg2 == '' then
+		if not showLink or (issecretvalue and issecretvalue(arg2) or arg2 == '') then
 			if chatType == 'TEXT_EMOTE' then
 				body = message
 			else
@@ -2081,7 +2162,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		body = '|Hchannel:channel:'..arg8..'|h['.._G.ChatFrame_ResolvePrefixedChannelName(arg4)..']|h '..body
 	end
 
-	if (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
+	if not isProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
 		body = CH:HandleShortChannels(body, CH.db.hideChannels)
 	end
 
@@ -2239,9 +2320,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif strsub(chatType,1,11) == 'ACHIEVEMENT' then
 			-- Append [Share] hyperlink
-			frame:AddMessage(format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName))), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+			frame:AddMessage(format(arg1, CH:GetPlayerLink(arg2, format('[%s]', coloredName))), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif strsub(chatType,1,18) == 'GUILD_ACHIEVEMENT' then
-			frame:AddMessage(format(arg1, GetPlayerLink(arg2, format('[%s]', coloredName))), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+			frame:AddMessage(format(arg1, CH:GetPlayerLink(arg2, format('[%s]', coloredName))), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'PING' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'IGNORED' then
@@ -2277,8 +2358,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE' then
-			local accessID = _G.ChatHistory_GetAccessID(chatGroup, arg8)
-			local typeID = _G.ChatHistory_GetAccessID(infoType, arg8, arg12)
+			local accessID = CH:GetAccessID(chatGroup, arg8)
+			local typeID = CH:GetAccessID(infoType, arg8, arg12)
 
 			if E.Retail and arg1 == 'YOU_CHANGED' and GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
 				_G.ChatFrame_UpdateDefaultChatTarget(frame)
@@ -2327,7 +2408,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 							if success then
 								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(gameInfo.characterName, accountInfo.battleTag, texture, 32, 32, 10)
 								local linkDisplayText = format('[%s] (%s)', arg2, charName)
-								local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+								local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 								frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 
 								if notChatHistory then
@@ -2341,17 +2422,17 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 						local clientTexture = GetClientTexture(gameInfo.clientProgram, 14)
 						local charName = _G.BNet_GetValidatedCharacterName(gameInfo.characterName, accountInfo.battleTag, gameInfo.clientProgram) or ''
 						local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
-						local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+						local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 						message = format(globalstring, playerLink)
 					end
 				else
 					local linkDisplayText = format('[%s]', arg2)
-					local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+					local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
 				end
 			else
 				local linkDisplayText = format('[%s]', arg2)
-				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+				local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 				message = format(globalstring, playerLink)
 			end
 
@@ -2360,7 +2441,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
 				local linkDisplayText = format('[%s]', arg2)
-				local playerLink = GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+				local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 				frame:AddMessage(format(_G.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST_INFORM' then
@@ -2389,8 +2470,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				PlaySoundFile(LSM:Fetch('sound', alertType), 'Master')
 			end
 
-			local accessID = _G.ChatHistory_GetAccessID(chatGroup, chatTarget)
-			local typeID = _G.ChatHistory_GetAccessID(infoType, chatTarget, arg12 or arg13)
+			local accessID = CH:GetAccessID(chatGroup, chatTarget)
+			local typeID = CH:GetAccessID(infoType, chatTarget, arg12 or arg13)
 			local body = isChatLineCensored and arg1 or CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 
 			frame:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, event, eventArgs, msgFormatter, isHistory, historyTime)
@@ -2572,6 +2653,8 @@ function CH:SetupChat()
 end
 
 local function PrepareMessage(author, message)
+	if issecretvalue and (issecretvalue(author) or issecretvalue(message)) then return end
+
 	if author and author ~= '' and message and message ~= '' then
 		return strupper(author) .. message
 	end
@@ -2595,7 +2678,7 @@ function CH:ChatThrottleHandler(arg1, arg2, when)
 end
 
 function CH:ChatThrottleBlockFlag(author, message, when)
-	local msg = (author ~= PLAYER_NAME) and (CH.db.throttleInterval ~= 0) and PrepareMessage(author, message)
+	local msg = CH.db.throttleInterval ~= 0 and PrepareMessage(author, message)
 	local object = msg and throttle[msg]
 
 	return object and object.time and object.count and object.count > 1 and (difftime(when, object.time) <= CH.db.throttleInterval), object
@@ -3679,6 +3762,8 @@ function CH:SetChatHeadOrientation(position)
 end
 
 function CH:GetPlayerInfoByGUID(guid)
+	if issecretvalue and issecretvalue(guid) then return end
+
 	local data = CH.GuidCache[guid]
 	if not data then
 		local ok, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = pcall(GetPlayerInfoByGUID, guid)
