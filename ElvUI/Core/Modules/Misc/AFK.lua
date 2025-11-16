@@ -7,6 +7,7 @@ local floor = floor
 local tostring, pcall = tostring, pcall
 local unpack, strupper = unpack, strupper
 local format, strsub, gsub = format, strsub, gsub
+local issecretvalue = issecretvalue
 
 local CloseAllWindows = CloseAllWindows
 local CreateFrame = CreateFrame
@@ -25,15 +26,7 @@ local UIParent = UIParent
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 
-local Chat_GetChatCategory = ChatFrameUtil and ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
-local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
-
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-
-local CinematicFrame = _G.CinematicFrame
-local MovieFrame = _G.MovieFrame
-local DNDstr = _G.DND
-local AFKstr = _G.AFK
 
 local CAMERA_SPEED = 0.035
 local DEFAULT_ANIMATION = 'dance'
@@ -167,7 +160,7 @@ function AFK:OnEvent(event, arg1)
 		end
 
 		return
-	elseif (not E.db.general.afk) or (event == 'PLAYER_FLAGS_CHANGED' and arg1 ~= 'player') or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then
+	elseif (not E.db.general.afk) or (event == 'PLAYER_FLAGS_CHANGED' and arg1 ~= 'player') or (InCombatLockdown() or _G.CinematicFrame:IsShown() or _G.MovieFrame:IsShown()) then
 		return
 	elseif UnitCastingInfo('player') then
 		AFK:ScheduleTimer('OnEvent', 30)
@@ -193,19 +186,25 @@ function AFK:Chat_OnMouseWheel(delta)
 	end
 end
 
+function AFK:HandleShortChannels(msg)
+	msg = gsub(msg, '|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
+	msg = gsub(msg, '^(.-|h) '..L["whispers"], '%1')
+	msg = gsub(msg, '<'.._G.AFK..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
+	msg = gsub(msg, '<'.._G.DND..'>', '[|cffFF3333'..L["DND"]..'|r] ')
+	msg = gsub(msg, '^%['.._G.RAID_WARNING..'%]', '['..L["RW"]..']')
+	msg = gsub(msg, '%[BN_CONVERSATION:', '%[')
+
+	return msg
+end
+
 function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	local infoType = strsub(event, 10)
 	local info = _G.ChatTypeInfo[infoType]
 
-	local coloredName
-	if event == 'CHAT_MSG_BN_WHISPER' then
-		coloredName = CH:GetBNFriendColor(arg2, arg13)
-	else
-		coloredName = CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
-	end
+	local GetChatCategory = _G.ChatFrameUtil and _G.ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
 
 	local chatTarget
-	local chatGroup = Chat_GetChatCategory(infoType)
+	local chatGroup = GetChatCategory(infoType)
 	if chatGroup == 'BN_CONVERSATION' then
 		chatTarget = tostring(arg8)
 	elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
@@ -226,19 +225,16 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 		arg1 = RemoveExtraSpaces(arg1) -- Remove groups of many spaces
 	end
 
-	local isMobile = arg14 and ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
+	local isMobile = arg14 and _G.ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
 	local message = format('%s%s', isMobile or '', arg1)
 
+	local coloredName = (infoType == 'BN_WHISPER' and CH:GetBNFriendColor(arg2, arg13)) or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
 	local senderLink = format('%s[%s]|h', playerLink, coloredName)
 	local success, msg = pcall(format, _G['CHAT_'..infoType..'_GET']..'%s', senderLink, message)
 	if not success then return end
 
 	if not isProtected and CH.db.shortChannels then
-		msg = gsub(msg, '|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
-		msg = gsub(msg, '^(.-|h) '..L["whispers"], '%1')
-		msg = gsub(msg, '<'..AFKstr..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
-		msg = gsub(msg, '<'..DNDstr..'>', '[|cffFF3333'..L["DND"]..'|r] ')
-		msg = gsub(msg, '%[BN_CONVERSATION:', '%['..'')
+		msg = AFK:HandleShortChannels(msg)
 	end
 
 	local accessID = CH:GetAccessID(chatGroup, chatTarget)

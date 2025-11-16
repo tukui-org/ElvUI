@@ -9,9 +9,10 @@ local AuraInfo = ElvUF.AuraInfo
 local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
+local issecretvalue = issecretvalue
 local unpack, ipairs = unpack, ipairs
-local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
 local tonumber, strlower = tonumber, strlower
+local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect

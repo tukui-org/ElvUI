@@ -7,6 +7,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local setmetatable = setmetatable
+local issecrettable = issecrettable
 local hooksecurefunc = hooksecurefunc
 local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time

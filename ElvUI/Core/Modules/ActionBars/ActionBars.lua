@@ -1129,7 +1129,7 @@ do
 		MicroButtonAndBagsBar = true,
 		OverrideActionBar = true,
 		MainMenuBar = true,
-		MainActionBar = E.Midnight,
+		MainActionBar = E.Midnight or nil,
 		[E.Retail and 'StanceBar' or 'StanceBarFrame'] = true,
 		[E.Retail and 'PetActionBar' or 'PetActionBarFrame'] = true,
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
