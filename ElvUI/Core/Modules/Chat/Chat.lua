@@ -817,6 +817,32 @@ do -- this fixes a taint when you push tab on editbox which blocks secure comman
 	end
 end
 
+function CH:ChatEdit_UpdateHeader(editbox)
+	local chatType = editbox:GetAttribute('chatType')
+	if not chatType then return end
+
+	local ChatTypeInfo = _G.ChatTypeInfo
+	local info = ChatTypeInfo[chatType]
+	local chanTarget = editbox:GetAttribute('channelTarget')
+	local chanIndex = chanTarget and GetChannelName(chanTarget)
+
+	--Increase inset on right side to make room for character count text
+	local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
+	editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
+	editbox:SetTemplate(nil, true)
+
+	if chanIndex and (chatType == 'CHANNEL') then
+		if chanIndex == 0 then
+			editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		else
+			info = ChatTypeInfo[chatType..chanIndex]
+			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+		end
+	else
+		editbox:SetBackdropBorderColor(info.r, info.g, info.b)
+	end
+end
+
 function CH:EditBoxOnKeyDown(key)
 	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
 	if (not self.historyLines) or #self.historyLines == 0 then
@@ -978,11 +1004,10 @@ function CH:StyleChat(frame)
 		tab.conversationIcon:Point('RIGHT', tab.Text, 'LEFT', -1, 0)
 	end
 
-	if E.Retail then -- wtf is this lol
-		local a, b, c = select(6, editbox:GetRegions())
-		a:Kill()
-		b:Kill()
-		c:Kill()
+	if E.Retail then
+		editbox.focusLeft:SetAlpha(0)
+		editbox.focusRight:SetAlpha(0)
+		editbox.focusMid:SetAlpha(0)
 	end
 
 	-- stuff to hide
@@ -1027,7 +1052,25 @@ function CH:StyleChat(frame)
 			editbox:AddHistoryLine(text)
 	end]]
 
-	CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
+	if editbox.AddHistoryLine then
+		CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
+	end
+
+	if editbox.OnEnterPressed then
+		CH:SecureHook(editbox, 'OnEnterPressed', 'ChatEdit_OnEnterPressed')
+	end
+
+	if editbox.UpdateHeader then
+		CH:SecureHook(editbox, 'UpdateHeader', 'ChatEdit_UpdateHeader')
+	end
+
+	if editbox.OnShow then
+		CH:SecureHook(editbox, 'OnShow', 'ChatEdit_PleaseUntaint')
+	end
+
+	if editbox.OnHide then
+		CH:SecureHook(editbox, 'OnHide', 'ChatEdit_PleaseRetaint')
+	end
 
 	--copy chat button
 	local copyButton = CreateFrame('Frame', format('ElvUI_CopyChatButton%d', id), frame)
@@ -3972,10 +4015,20 @@ function CH:Initialize()
 	CH:SecureHook('UIDropDownMenu_AddButton')
 	CH:SecureHook('GetPlayerInfoByGUID')
 
-	if not E.Midnight then
+	if _G.ChatEdit_OnEnterPressed then
 		CH:SecureHook('ChatEdit_OnEnterPressed')
+	end
+
+	if _G.ChatEdit_OnShow then
 		CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_PleaseUntaint')
+	end
+
+	if _G.ChatEdit_OnHide then
 		CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_PleaseRetaint')
+	end
+
+	if _G.ChatEdit_UpdateHeader then
+		CH:SecureHook('ChatEdit_UpdateHeader', 'ChatEdit_UpdateHeader')
 	end
 
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
@@ -4019,33 +4072,6 @@ function CH:Initialize()
 	end
 
 	if CH.db.chatHistory then CH:DisplayChatHistory() end
-
-	-- Editbox Backdrop Color
-	hooksecurefunc('ChatEdit_UpdateHeader', function(editbox)
-		local chatType = editbox:GetAttribute('chatType')
-		if not chatType then return end
-
-		local ChatTypeInfo = _G.ChatTypeInfo
-		local info = ChatTypeInfo[chatType]
-		local chanTarget = editbox:GetAttribute('channelTarget')
-		local chanIndex = chanTarget and GetChannelName(chanTarget)
-
-		--Increase inset on right side to make room for character count text
-		local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
-		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
-		editbox:SetTemplate(nil, true)
-
-		if chanIndex and (chatType == 'CHANNEL') then
-			if chanIndex == 0 then
-				editbox:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			else
-				info = ChatTypeInfo[chatType..chanIndex]
-				editbox:SetBackdropBorderColor(info.r, info.g, info.b)
-			end
-		else
-			editbox:SetBackdropBorderColor(info.r, info.g, info.b)
-		end
-	end)
 
 	--Chat Heads Frame
 	CH.ChatHeadFrame = CreateFrame('Frame', 'ElvUIChatHeadFrame', E.UIParent)
