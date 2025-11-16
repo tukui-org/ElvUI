@@ -210,11 +210,7 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	if chatGroup == 'BN_CONVERSATION' then
 		chatTarget = tostring(arg8)
 	elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
-		if not(strsub(arg2, 1, 2) == '|K') then
-			chatTarget = arg2:upper()
-		else
-			chatTarget = arg2
-		end
+		chatTarget = (not issecretvalue or not issecretvalue(arg2)) and strsub(arg2, 1, 2) ~= '|K' and strupper(arg2) or arg2
 	end
 
 	local playerLink

@@ -2026,15 +2026,7 @@ function CH:FCFManager_GetChatTarget(chatGroup, playerTarget, channelTarget)
 	if chatGroup == 'CHANNEL' then
 		chatTarget = tostring(channelTarget)
 	elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
-		if issecretvalue then
-			if not issecretvalue(playerTarget) then
-				chatTarget = playerTarget
-			end
-		elseif strsub(playerTarget, 1, 2) ~= '|K' then
-			chatTarget = strupper(playerTarget)
-		else
-			chatTarget = playerTarget
-		end
+		chatTarget = (not issecretvalue or not issecretvalue(playerTarget)) and strsub(playerTarget, 1, 2) ~= '|K' and strupper(playerTarget) or playerTarget
 	end
 
 	return chatTarget
