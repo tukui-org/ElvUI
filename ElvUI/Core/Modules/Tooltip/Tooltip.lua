@@ -11,7 +11,7 @@ local AuraFiltered = ElvUF.AuraFiltered
 local _G = _G
 local unpack, ipairs = unpack, ipairs
 local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
-local floor, tonumber, strlower = floor, tonumber, strlower
+local tonumber, strlower = tonumber, strlower
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect
@@ -36,7 +36,6 @@ local IsInRaid = IsInRaid
 local IsModifierKeyDown = IsModifierKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local NotifyInspect = NotifyInspect
-local SetTooltipMoney = SetTooltipMoney
 local UIParent = UIParent
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitBattlePetType = UnitBattlePetType
