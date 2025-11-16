@@ -643,11 +643,7 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 			r, g, b = unpack(E.media.bordercolor)
 		end
 
-		if tt.NineSlice then
-			tt.NineSlice:SetBorderColor(r, g, b)
-		else
-			tt:SetBackdropBorderColor(r, g, b)
-		end
+		tt:SetBackdropBorderColor(r, g, b)
 	end
 
 	tt.ItemLevelShown = nil
@@ -707,11 +703,8 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 			local quality = GetItemQualityByID(link)
 			if quality and quality > 1 then
 				local r, g, b = E:GetItemQualityColor(quality)
-				if self.NineSlice then
-					self.NineSlice:SetBorderColor(r, g, b)
-				else
-					self:SetBackdropBorderColor(r, g, b)
-				end
+
+				self:SetBackdropBorderColor(r, g, b)
 
 				self.qualityChanged = true
 			end
@@ -802,13 +795,17 @@ function TT:GameTooltip_ShowStatusBar(tt)
 end
 
 function TT:SetStyle(tt, _, isEmbedded)
-	if not tt or (tt == E.ScanTooltip or isEmbedded or tt.IsEmbedded or not tt.NineSlice) or tt:IsForbidden() then return end
+	if not tt or (tt == E.ScanTooltip or isEmbedded or tt.IsEmbedded) or tt:IsForbidden() then return end
 
 	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
 	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
+	if tt.NineSlice then tt.NineSlice:SetAlpha(0) end
 
-	tt.NineSlice.customBackdropAlpha = TT.db.colorAlpha
-	tt.NineSlice:SetTemplate('Transparent')
+	-- Blizzard_SharedXML/Backdrop.lua: secrets cause entire system crashes out over using NineSlice
+	if not issecretvalue or not issecretvalue(tt:GetWidth()) then
+		tt.customBackdropAlpha = TT.db.colorAlpha
+		tt:SetTemplate('Transparent')
+	end
 end
 
 function TT:MODIFIER_STATE_CHANGED()
@@ -1077,7 +1074,7 @@ function TT:Initialize()
 		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
 
-		if not E.Midnight then -- TODO: tooltip processor crashes out cause of secrets
+		if not E.Midnight then -- TODO: secrets cause tooltip processor crashes out
 			AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
 			AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		end
