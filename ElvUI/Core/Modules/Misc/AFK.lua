@@ -213,39 +213,37 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	end
 
 	local playerLink
+	local linkTarget = chatTarget and (':'..chatTarget) or ''
 	if infoType ~= 'BN_WHISPER' and infoType ~= 'BN_CONVERSATION' then
-		playerLink = format('|Hplayer:%s:%s:%s%s|h', arg2, arg11, chatGroup, chatTarget and (':'..chatTarget) or '')
+		playerLink = format('|Hplayer:%s:%s:%s%s|h', arg2, arg11, chatGroup, linkTarget)
 	else
-		playerLink = format('|HBNplayer:%s:%s:%s:%s%s|h', arg2, arg13, arg11, chatGroup, chatTarget and (':'..chatTarget) or '')
+		playerLink = format('|HBNplayer:%s:%s:%s:%s%s|h', arg2, arg13, arg11, chatGroup, linkTarget)
 	end
 
 	local isProtected = CH:MessageIsProtected(arg1)
 	if not isProtected then
-		--Escape any % characters, as it may otherwise cause an 'invalid option in format' error
-		arg1 = gsub(arg1, '%%', '%%%%')
-
-		--Remove groups of many spaces
-		arg1 = RemoveExtraSpaces(arg1)
+		arg1 = gsub(arg1, '%%', '%%%%') -- Escape any % characters, as it may otherwise cause an 'invalid option in format' error
+		arg1 = RemoveExtraSpaces(arg1) -- Remove groups of many spaces
 	end
 
 	local isMobile = arg14 and ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
 	local message = format('%s%s', isMobile or '', arg1)
 
 	local senderLink = format('%s[%s]|h', playerLink, coloredName)
-	local success, body = pcall(format, _G['CHAT_'..infoType..'_GET']..'%s', senderLink, message)
+	local success, msg = pcall(format, _G['CHAT_'..infoType..'_GET']..'%s', senderLink, message)
 	if not success then return end
 
 	if not isProtected and CH.db.shortChannels then
-		body = body:gsub('|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
-		body = body:gsub('^(.-|h) '..L["whispers"], '%1')
-		body = body:gsub('<'..AFKstr..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
-		body = body:gsub('<'..DNDstr..'>', '[|cffFF3333'..L["DND"]..'|r] ')
-		body = body:gsub('%[BN_CONVERSATION:', '%['..'')
+		msg = gsub(msg, '|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
+		msg = gsub(msg, '^(.-|h) '..L["whispers"], '%1')
+		msg = gsub(msg, '<'..AFKstr..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
+		msg = gsub(msg, '<'..DNDstr..'>', '[|cffFF3333'..L["DND"]..'|r] ')
+		msg = gsub(msg, '%[BN_CONVERSATION:', '%['..'')
 	end
 
 	local accessID = CH:GetAccessID(chatGroup, chatTarget)
 	local typeID = CH:GetAccessID(infoType, chatTarget, arg12 or arg13)
-	self:AddMessage(body, info.r, info.g, info.b, info.id, false, accessID, typeID)
+	self:AddMessage(msg, info.r, info.g, info.b, info.id, false, accessID, typeID)
 end
 
 function AFK:Toggle()
