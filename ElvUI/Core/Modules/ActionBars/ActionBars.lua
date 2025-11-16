@@ -389,7 +389,10 @@ function AB:CreateBar(id)
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
 
 		button.AuraCooldown.targetAura = true
-		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
+
+		if not E.Midnight then
+			E:RegisterCooldown(button.AuraCooldown, 'actionbar')
+		end
 
 		if E.Retail and not E.Midnight then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
@@ -737,7 +740,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		E:RegisterCooldown(button.cooldown, 'actionbar')
+		if not E.Midnight then
+			E:RegisterCooldown(button.cooldown, 'actionbar')
+		end
+
 		AB.handledbuttons[button] = true
 	end
 
@@ -1123,6 +1129,7 @@ do
 		MicroButtonAndBagsBar = true,
 		OverrideActionBar = true,
 		MainMenuBar = true,
+		MainActionBar = E.Midnight,
 		[E.Retail and 'StanceBar' or 'StanceBarFrame'] = true,
 		[E.Retail and 'PetActionBar' or 'PetActionBarFrame'] = true,
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
@@ -1644,7 +1651,8 @@ function AB:UpdateAuraCooldown(button, duration)
 	if not cd then return end
 
 	local oldstate = cd.hideText
-	cd.hideText = (not E.db.cooldown.targetAura) or (button.chargeCooldown and not button.chargeCooldown.hideText) or (button.cooldown and button.cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) or (duration and duration > 1.5) or nil
+	cd.hideText = (not E.db.cooldown.targetAura) or (button.chargeCooldown and not button.chargeCooldown.hideText) or (button.cooldown and button.cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) or (not E.Midnight and duration and duration > 1.5) or nil
+
 	if cd.timer and (oldstate ~= cd.hideText) then
 		E:ToggleBlizzardCooldownText(cd, cd.timer)
 		E:Cooldown_TimerUpdate(cd.timer)
@@ -1718,7 +1726,9 @@ function AB:LAB_FlyoutCreated(btn)
 end
 
 function AB:LAB_ChargeCreated(_, cd)
-	E:RegisterCooldown(cd, 'actionbar')
+	if not E.Midnight then
+		E:RegisterCooldown(cd, 'actionbar')
+	end
 end
 
 function AB:LAB_MouseUp()
