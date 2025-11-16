@@ -1073,12 +1073,11 @@ function TT:Initialize()
 	end
 
 	if AddTooltipPostCall and not E.Mists then -- exists but doesn't work atm on Cata
-		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
-
 		if not E.Midnight then -- TODO: secrets cause tooltip processor crashes out
-			AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem) -- crash out on looting item
-			AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit) -- crash out on mouseover unit
-			AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell) -- crash out on existing
+			AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
+			AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+			AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
+			AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
 		end
 
 		TT:SecureHook(GameTooltip, 'Hide', 'GameTooltip_Hide') -- dont use OnHide use Hide directly
