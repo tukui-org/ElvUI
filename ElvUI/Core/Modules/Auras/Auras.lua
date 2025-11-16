@@ -304,8 +304,9 @@ function A:UpdateAura(button, index)
 	local db = A.db[button.auraType]
 	button.text:SetShown(db.showDuration)
 	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
-	button.count:SetText(not count or count <= 1 and '' or count)
 	button.texture:SetTexture(icon)
+
+	button.count:SetText(not count and '' or (not E.Midnight and count <= 1 and '') or count)
 
 	local dtype = debuffType or 'none'
 	if button.debuffType ~= dtype then
@@ -315,10 +316,12 @@ function A:UpdateAura(button, index)
 		button.debuffType = dtype
 	end
 
-	if duration > 0 and expiration then
-		A:SetAuraTime(button, expiration, duration, modRate)
-	else
-		A:ClearAuraTime(button)
+	if not E.Midnight then
+		if duration > 0 and expiration then
+			A:SetAuraTime(button, expiration, duration, modRate)
+		else
+			A:ClearAuraTime(button)
+		end
 	end
 end
 
@@ -336,9 +339,11 @@ function A:UpdateTempEnchant(button, index, expiration)
 		button:SetBackdropBorderColor(r, g, b)
 		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)
 
-		local remaining = (expiration * 0.001) or 0
-		A:SetAuraTime(button, remaining + GetTime(), (remaining <= 3600 and remaining > 1800) and 3600 or (remaining <= 1800 and remaining > 600) and 1800 or 600)
-	else
+		if not E.Midnight then
+			local remaining = (expiration * 0.001) or 0
+			A:SetAuraTime(button, remaining + GetTime(), (remaining <= 3600 and remaining > 1800) and 3600 or (remaining <= 1800 and remaining > 600) and 1800 or 600)
+		end
+	elseif not E.Midnight then
 		A:ClearAuraTime(button)
 	end
 end
