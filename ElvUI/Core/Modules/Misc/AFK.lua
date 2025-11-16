@@ -4,8 +4,8 @@ local CH = E:GetModule('Chat')
 
 local _G = _G
 local floor = floor
-local unpack = unpack
 local tostring, pcall = tostring, pcall
+local unpack, strupper = unpack, strupper
 local format, strsub, gsub = format, strsub, gsub
 
 local CloseAllWindows = CloseAllWindows
@@ -26,7 +26,6 @@ local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 
 local Chat_GetChatCategory = ChatFrameUtil and ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
-local ChatHistory_GetAccessID = ChatHistory_GetAccessID
 local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
 
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
@@ -195,8 +194,8 @@ function AFK:Chat_OnMouseWheel(delta)
 end
 
 function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
-	local chatType = strsub(event, 10)
-	local info = _G.ChatTypeInfo[chatType]
+	local infoType = strsub(event, 10)
+	local info = _G.ChatTypeInfo[infoType]
 
 	local coloredName
 	if event == 'CHAT_MSG_BN_WHISPER' then
@@ -206,7 +205,7 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	end
 
 	local chatTarget
-	local chatGroup = Chat_GetChatCategory(chatType)
+	local chatGroup = Chat_GetChatCategory(infoType)
 	if chatGroup == 'BN_CONVERSATION' then
 		chatTarget = tostring(arg8)
 	elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
@@ -214,30 +213,29 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	end
 
 	local playerLink
-	if chatType ~= 'BN_WHISPER' and chatType ~= 'BN_CONVERSATION' then
-		playerLink = '|Hplayer:'..arg2..':'..arg11..':'..chatGroup..(chatTarget and ':'..chatTarget or '')..'|h'
+	if infoType ~= 'BN_WHISPER' and infoType ~= 'BN_CONVERSATION' then
+		playerLink = format('|Hplayer:%s:%s:%s%s|h', arg2, arg11, chatGroup, chatTarget and (':'..chatTarget) or '')
 	else
-		playerLink = '|HBNplayer:'..arg2..':'..arg13..':'..arg11..':'..chatGroup..(chatTarget and ':'..chatTarget or '')..'|h'
+		playerLink = format('|HBNplayer:%s:%s:%s:%s%s|h', arg2, arg13, arg11, chatGroup, chatTarget and (':'..chatTarget) or '')
 	end
 
-	--Escape any % characters, as it may otherwise cause an 'invalid option in format' error
-	arg1 = gsub(arg1, '%%', '%%%%')
+	local isProtected = CH:MessageIsProtected(arg1)
+	if not isProtected then
+		--Escape any % characters, as it may otherwise cause an 'invalid option in format' error
+		arg1 = gsub(arg1, '%%', '%%%%')
 
-	--Remove groups of many spaces
-	arg1 = RemoveExtraSpaces(arg1)
-
-	-- isMobile
-	if arg14 then
-		arg1 = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..arg1
+		--Remove groups of many spaces
+		arg1 = RemoveExtraSpaces(arg1)
 	end
 
-	local success, body = pcall(format, _G['CHAT_'..chatType..'_GET']..arg1, playerLink..'['..coloredName..']'..'|h')
-	if not success then
-		E:Print('An error happened in the AFK Chat module. Please screenshot this message and report it. Info:', chatType, arg1, _G['CHAT_'..chatType..'_GET'])
-		return
-	end
+	local isMobile = arg14 and ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
+	local message = format('%s%s', isMobile or '', arg1)
 
-	if CH.db.shortChannels then
+	local senderLink = format('%s[%s]|h', playerLink, coloredName)
+	local success, body = pcall(format, _G['CHAT_'..infoType..'_GET']..'%s', senderLink, message)
+	if not success then return end
+
+	if not isProtected and CH.db.shortChannels then
 		body = body:gsub('|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
 		body = body:gsub('^(.-|h) '..L["whispers"], '%1')
 		body = body:gsub('<'..AFKstr..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
@@ -245,8 +243,8 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 		body = body:gsub('%[BN_CONVERSATION:', '%['..'')
 	end
 
-	local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
-	local typeID = ChatHistory_GetAccessID(chatType, chatTarget, arg12 == '' and arg13 or arg12)
+	local accessID = CH:GetAccessID(chatGroup, chatTarget)
+	local typeID = CH:GetAccessID(infoType, chatTarget, arg12 or arg13)
 	self:AddMessage(body, info.r, info.g, info.b, info.id, false, accessID, typeID)
 end
 
