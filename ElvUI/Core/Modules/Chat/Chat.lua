@@ -171,12 +171,11 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 }
 
 do
-	local accessInfo = {}
 	local accessIndex = 1
-
-	local accessType = {}
-	local accessTarget = {}
-	local accessSender = {}
+	local accessInfo = {}	-- keyed by token
+	local accessType = {}	-- indexed
+	local accessTarget = {}	-- indexed
+	local accessSender = {}	-- indexed
 
 	local function GetToken(chatType, chatTarget, chanSender) -- ChatHistory_GetToken
 		local target = chatTarget and strlower(chatTarget) or ''
@@ -189,9 +188,11 @@ do
 		local token = GetToken(chatType, chatTarget, chanSender)
 		if not accessInfo[token] then
 			accessInfo[token] = accessIndex
+
 			accessType[accessIndex] = chatType
 			accessTarget[accessIndex] = chatTarget
 			accessSender[accessIndex] = chanSender
+
 			accessIndex = accessIndex + 1
 		end
 
