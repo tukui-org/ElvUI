@@ -121,22 +121,19 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 
 	TT:SetCompareItems(tt, true)
 
-	local statusBar = tt.StatusBar
-	if statusBar then
+	if GameTooltipStatusBar then
 		local spacing = E.Spacing * 3
 		local position = TT.db.healthBar.statusPosition
-		statusBar:SetAlpha(position == 'DISABLED' and 0 or 1)
+		GameTooltipStatusBar:SetAlpha(position == 'DISABLED' and 0 or 1)
 
-		if position == 'BOTTOM' and statusBar.anchoredToTop then
-			statusBar:ClearAllPoints()
-			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
-			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
-			statusBar.anchoredToTop = nil
-		elseif position == 'TOP' and not statusBar.anchoredToTop then
-			statusBar:ClearAllPoints()
-			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
-			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
-			statusBar.anchoredToTop = true
+		if position == 'BOTTOM' then
+			GameTooltipStatusBar:ClearAllPoints()
+			GameTooltipStatusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
+			GameTooltipStatusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
+		elseif position == 'TOP' then
+			GameTooltipStatusBar:ClearAllPoints()
+			GameTooltipStatusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
+			GameTooltipStatusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
 		end
 	end
 
@@ -602,11 +599,10 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 		end
 	end
 
-	local statusBar = self.StatusBar
 	if color then
-		statusBar:SetStatusBarColor(color.r, color.g, color.b)
+		GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
 	else
-		statusBar:SetStatusBarColor(0.6, 0.6, 0.6)
+		GameTooltipStatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
 	end
 end
 
@@ -1028,9 +1024,8 @@ end
 function TT:GameTooltip_Hide()
 	if GameTooltip:IsForbidden() then return end
 
-	local statusBar = GameTooltip.StatusBar
-	if statusBar and statusBar:IsShown() then
-		statusBar:Hide()
+	if GameTooltipStatusBar:IsShown() then
+		GameTooltipStatusBar:Hide()
 	end
 end
 
@@ -1052,22 +1047,7 @@ function TT:Initialize()
 	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 
-	local statusBar = GameTooltipStatusBar
-	statusBar:Height(TT.db.healthBar.height)
-	statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
-
-	GameTooltip.StatusBar = statusBar
-
-	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
-	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
-	statusText:Point('CENTER', statusBar)
-	statusBar.text = statusText
-
-	if not GameTooltip.hasMoney then -- Force creation of the money lines, so we can set font for it
-		SetTooltipMoney(GameTooltip, 1, nil, '', '')
-		SetTooltipMoney(GameTooltip, 1, nil, '', '')
-		GameTooltip_ClearMoney(GameTooltip)
-	end
+	GameTooltipStatusBar:Height(TT.db.healthBar.height)
 
 	TT:SetTooltipFonts()
 
@@ -1088,7 +1068,6 @@ function TT:Initialize()
 	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
-	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 
 	if GameTooltip.SetUnitBuffByAuraInstanceID then -- not yet on Era or Mists
 		TT:SecureHook(GameTooltip, 'SetUnitBuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
@@ -1096,10 +1075,13 @@ function TT:Initialize()
 	end
 
 	if AddTooltipPostCall and not E.Mists then -- exists but doesn't work atm on Cata
-		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
-		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+
+		if not E.Midnight then
+			AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+			AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
+		end
 
 		TT:SecureHook(GameTooltip, 'Hide', 'GameTooltip_Hide') -- dont use OnHide use Hide directly
 	else
