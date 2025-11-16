@@ -1050,11 +1050,14 @@ function TT:Initialize()
 
 	TT:SetTooltipFonts()
 
-	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
-	GameTooltipAnchor:Point('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
-	GameTooltipAnchor:Size(130, 20)
-	GameTooltipAnchor:OffsetFrameLevel(400)
-	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
+	local TooltipAnchor = CreateFrame('Frame', 'ElvUI_TooltipAnchor', E.UIParent)
+	if TooltipAnchor then
+		TooltipAnchor:Point('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
+		TooltipAnchor:Size(130, 20)
+		TooltipAnchor:OffsetFrameLevel(400)
+
+		E:CreateMover(TooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
+	end
 
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
