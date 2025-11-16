@@ -802,7 +802,8 @@ function TT:SetStyle(tt, _, isEmbedded)
 	if tt.NineSlice then tt.NineSlice:SetAlpha(0) end
 
 	-- Blizzard_SharedXML/Backdrop.lua: secrets cause backdrop system to crash out
-	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use alwaysCompareItems 0
+	-- Blizzard_MoneyFrame/Mainline/MoneyFrame.lua: secrets cause `MoneyFrame_Update` to crash out via `GameTooltip:SetLootItem(id)`
+	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use `alwaysCompareItems 0`
 	if not issecretvalue or not issecretvalue(tt:GetWidth()) then
 		tt.customBackdropAlpha = TT.db.colorAlpha
 		tt:SetTemplate('Transparent')
