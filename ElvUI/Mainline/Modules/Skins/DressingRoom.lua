@@ -38,12 +38,18 @@ local function DetailsPanelRefresh(panel)
 end
 
 local function DressUpConfigureSize(frame, isMinimized)
-	frame.OutfitDetailsPanel:ClearAllPoints()
-	frame.OutfitDetailsPanel:Point('TOPLEFT', frame, 'TOPRIGHT', 4, 0)
+	local CustomSetDetailsPanel = frame.CustomSetDetailsPanel
+	if CustomSetDetailsPanel then
+		CustomSetDetailsPanel:ClearAllPoints()
+		CustomSetDetailsPanel:Point('TOPLEFT', frame, 'TOPRIGHT', 4, 0)
+	end
 
-	frame.OutfitDropdown:ClearAllPoints()
-	frame.OutfitDropdown:Point('TOP', -(isMinimized and 42 or 28), -32)
-	frame.OutfitDropdown:Width(isMinimized and 140 or 190)
+	local OutfitDropdown = frame.OutfitDropdown
+	if OutfitDropdown then
+		OutfitDropdown:ClearAllPoints()
+		OutfitDropdown:Point('TOP', -(isMinimized and 42 or 28), -32)
+		OutfitDropdown:Width(isMinimized and 140 or 190)
+	end
 end
 
 local function HandleSetButtons(button)
@@ -72,8 +78,9 @@ function S:DressUpFrame()
 	S:HandleButton(_G.DressUpFrameCancelButton)
 	S:HandleButton(DressUpFrame.LinkButton)
 	S:HandleModelSceneControlButtons(DressUpFrame.ModelScene.ControlFrame)
-	S:HandleButton(DressUpFrame.ToggleOutfitDetailsButton)
-	SetToggleIcon(DressUpFrame.ToggleOutfitDetailsButton, 1392954)
+
+	S:HandleButton(DressUpFrame.ToggleCustomSetDetailsButton)
+	SetToggleIcon(DressUpFrame.ToggleCustomSetDetailsButton, 1392954)
 
 	local SetSelection = DressUpFrame.SetSelectionPanel
 	if SetSelection then
@@ -92,29 +99,24 @@ function S:DressUpFrame()
 	_G.DressUpFrameCancelButton:Point('BOTTOMRIGHT', -4, 4)
 	_G.DressUpFrameResetButton:Point('RIGHT', _G.DressUpFrameCancelButton, 'LEFT', -3, 0)
 
-	local OutfitDropDown = DressUpFrame.OutfitDropdown
-	S:HandleDropDownBox(OutfitDropDown)
-	S:HandleButton(OutfitDropDown.SaveButton)
+	local CustomSetDropdown = DressUpFrame.CustomSetDropdown
+	if CustomSetDropdown then
+		S:HandleDropDownBox(CustomSetDropdown)
+		S:HandleButton(CustomSetDropdown.SaveButton)
+	end
 
 	-- Dont use StripTextures on the DetailsPanel, plx
-	DressUpFrame.OutfitDetailsPanel:DisableDrawLayer('BACKGROUND')
-	DressUpFrame.OutfitDetailsPanel:DisableDrawLayer('OVERLAY') -- to keep Artwork on the frame
-	DressUpFrame.OutfitDetailsPanel:CreateBackdrop('Transparent')
-	DressUpFrame.OutfitDetailsPanel.ClassBackground:SetAllPoints()
+	local CustomSetDetailsPanel = DressUpFrame.CustomSetDetailsPanel
+	if CustomSetDetailsPanel then
+		CustomSetDetailsPanel:DisableDrawLayer('BACKGROUND')
+		CustomSetDetailsPanel:DisableDrawLayer('OVERLAY') -- to keep Artwork on the frame
+		CustomSetDetailsPanel:CreateBackdrop('Transparent')
+		CustomSetDetailsPanel.ClassBackground:SetAllPoints()
 
-	hooksecurefunc(DressUpFrame.OutfitDetailsPanel, 'Refresh', DetailsPanelRefresh)
+		hooksecurefunc(CustomSetDetailsPanel, 'Refresh', DetailsPanelRefresh)
+	end
+
 	hooksecurefunc(DressUpFrame, 'ConfigureSize', DressUpConfigureSize)
-
-	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
-	WardrobeOutfitEditFrame:StripTextures(true)
-	WardrobeOutfitEditFrame:SetTemplate('Transparent')
-	WardrobeOutfitEditFrame.EditBox:StripTextures()
-	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
-	WardrobeOutfitEditFrame.EditBox.backdrop:Point('TOPLEFT', WardrobeOutfitEditFrame.EditBox, 'TOPLEFT', -5, -5)
-	WardrobeOutfitEditFrame.EditBox.backdrop:Point('BOTTOMRIGHT', WardrobeOutfitEditFrame.EditBox, 'BOTTOMRIGHT', 0, 5)
-	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
-	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
-	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
 S:AddCallback('DressUpFrame')
