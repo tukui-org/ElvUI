@@ -59,7 +59,6 @@ local C_VoiceChat_GetMemberName = C_VoiceChat.GetMemberName
 local C_VoiceChat_SetPortraitTexture = C_VoiceChat.SetPortraitTexture
 local PanelTemplates_TabResize = PanelTemplates_TabResize
 
-
 local BNET_CLIENT_WOW = BNET_CLIENT_WOW
 local LFG_LIST_AND_MORE = LFG_LIST_AND_MORE
 local UNKNOWN = UNKNOWN
@@ -2474,7 +2473,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			-- The message formatter is captured so that the original message can be reformatted when a censored message
 			-- is approved to be shown. We only need to pack the event args if the line was censored, as the message transformation
 			-- step is the only code that needs these arguments. See ItemRef.lua "censoredmessage".
-			local isChatLineCensored, eventArgs, msgFormatter = IsChatLineCensored
+			local isChatLineCensored, eventArgs, msgFormatter = IsChatLineCensored and IsChatLineCensored(arg11) -- arg11: lineID
 			if isChatLineCensored then
 				eventArgs = _G.SafePack(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 
@@ -2525,7 +2524,6 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 	end
 end
 
-local ConfigEventHandler = E.Midnight and ChatFrameMixin.ConfigEventHandler or ConfigEventHandler
 function CH:ChatFrame_ConfigEventHandler(...)
 	local ConfigEventHandler = _G.ChatFrameMixin and _G.ChatFrameMixin.ConfigEventHandler or _G.ChatFrame_ConfigEventHandler
 	return ConfigEventHandler(...)
@@ -4071,7 +4069,7 @@ function CH:Initialize()
 	CH.volumeBarHeight = 3
 
 	local CHAT_HEAD_HEIGHT = 40
-	for i = 1, CH.maxHeads do 
+	for i = 1, CH.maxHeads do
 		local chatHead = CreateFrame('Frame', 'ElvUIChatHeadFrame'..i, CH.ChatHeadFrame)
 		chatHead:Width(CH.ChatHeadFrame:GetWidth())
 		chatHead:Height(CHAT_HEAD_HEIGHT)
