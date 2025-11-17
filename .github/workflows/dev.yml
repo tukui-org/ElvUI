@@ -3,8 +3,10 @@ name: Development pipeline
 on:
   push:
     branches:
-      - "*"
-      - "!feature/"
+      - main
+      - ptr
+      - beta
+      - alpha
     tags-ignore:
       - '**'
 
