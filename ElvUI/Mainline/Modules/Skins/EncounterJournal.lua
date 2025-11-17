@@ -615,8 +615,7 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
 
-	-- Tutorials page
-	-- TODO: Strip Parchment (unnamed region)
+	-- Tutorials page | TODO: Strip Parchment (unnamed region)
 	S:HandleButton(_G.EncounterJournal.TutorialsFrame.Contents.StartButton)
 end
 

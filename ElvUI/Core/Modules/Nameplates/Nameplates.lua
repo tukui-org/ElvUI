@@ -653,10 +653,13 @@ function NP:ConfigureAll(init)
 	if not E.private.nameplates.enable then return end
 
 	NP:StyleFilterConfigure() -- keep this at the top
-	NP:SetNamePlateClickThrough()
 
-	if E.Retail then
-		NP:SetNamePlateSizes()
+	if not E.Midnight then
+		NP:SetNamePlateClickThrough()
+
+		if E.Retail then
+			NP:SetNamePlateSizes()
+		end
 	end
 
 	NP:PLAYER_REGEN_ENABLED()
@@ -988,7 +991,11 @@ function NP:Initialize()
 
 	if E.Retail then
 		NP.SetupClassNameplateBars(_G.NamePlateDriverFrame)
-		hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', NP.SetNamePlateSizes)
+
+		if not E.Midnight then
+			hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', NP.SetNamePlateSizes)
+		end
+
 		hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', NP.SetupClassNameplateBars)
 	end
 

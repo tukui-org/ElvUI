@@ -401,10 +401,13 @@ function M:Initialize()
 	M:LoadRaidMarker()
 	M:LoadLootRoll()
 	M:LoadChatBubbles()
-	M:LoadLoot()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
 	M:ToggleInterrupt()
+
+	if not E.Midnight then
+		M:LoadLoot() -- tooltip crash out
+	end
 
 	if not E.ClassicAnniv then -- it uses Blizzard_GroupFinder_VanillaStyle
 		M:LoadQueueStatus()

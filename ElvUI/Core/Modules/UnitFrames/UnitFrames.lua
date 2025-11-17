@@ -1583,13 +1583,13 @@ do
 	local SetFrameHidden = {}
 	local DisabledElements = {}
 	local AllowedFuncs = {
-		[_G.DefaultCompactUnitFrameSetup] = true,
-		[_G.DefaultCompactNamePlateEnemyFrameSetup] = true,
-		[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true
+		[_G.DefaultCompactUnitFrameSetup] = true
 	}
 
-	if E.Retail then
+	if E.Retail and not E.Midnight then
 		AllowedFuncs[_G.DefaultCompactNamePlatePlayerFrameSetup] = true
+		AllowedFuncs[_G.DefaultCompactNamePlateEnemyFrameSetup] = true
+		AllowedFuncs[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true
 	end
 
 	local function FrameShown(frame, shown)
@@ -2191,7 +2191,6 @@ function UF:Initialize()
 	UF:RegisterEvent('SOUNDKIT_FINISHED')
 
 	UF:RegisterEvent('SPELLS_CHANGED', 'UpdateRangeSpells')
-	UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
 
 	if E.Retail or E.Mists then
