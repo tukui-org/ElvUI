@@ -41,7 +41,7 @@ local function Event(_, event, initLogin, isReload)
 		end
 	end
 
-	if not E.private.nameplates.enable then return end
+	if E.Midnight or not E.private.nameplates.enable then return end
 
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' or instanceType == 'arena' then

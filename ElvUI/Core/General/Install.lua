@@ -190,7 +190,7 @@ function E:SetupCVars(noDisplayMsg)
 		ActionButtonPickUp:RefreshValue()
 	end
 
-	if E.private.nameplates.enable then
+	if not E.Midnight and E.private.nameplates.enable then
 		NP:CVarReset()
 	end
 
