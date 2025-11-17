@@ -1532,6 +1532,8 @@ function E:UpdateMoverPositions()
 end
 
 function E:UpdateUnitFrames()
+	if E.Midnight then return end
+
 	if E.private.unitframe.enable then
 		UnitFrames:Update_AllFrames()
 	end
