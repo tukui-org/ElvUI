@@ -310,6 +310,22 @@ local function BackdropDesaturated(background, value)
 	end
 end
 
+local function UpdateCurrencyTransferLogLine(frame)
+	if frame.IsSkinned then return end
+
+	local CurrencyIcon = frame.CurrencyIcon
+	if CurrencyIcon then
+		S:HandleIcon(CurrencyIcon)
+		CurrencyIcon:Size(16)
+	end
+
+	frame.IsSkinned = true
+end
+
+local function UpdateCurrencyTransferLogLines(frame)
+	frame:ForEachFrame(UpdateCurrencyTransferLogLine)
+end
+
 function S:Blizzard_UIPanels_Game()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -469,6 +485,9 @@ function S:Blizzard_UIPanels_Game()
 	_G.TokenFrame.CurrencyTransferLogToggleButton.PushedTexture:SetVertexColor(unpack(E.media.rgbvaluecolor))
 
 	S:HandlePortraitFrame(_G.CurrencyTransferLog)
+	S:HandleTrimScrollBar(_G.CurrencyTransferLog.ScrollBar)
+	hooksecurefunc(_G.CurrencyTransferLog.ScrollBox, 'Update', UpdateCurrencyTransferLogLines)
+
 	S:HandleCheckBox(_G.TokenFramePopup.InactiveCheckbox)
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckbox)
 	S:HandleButton(_G.TokenFramePopup.CurrencyTransferToggleButton)
