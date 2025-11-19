@@ -314,7 +314,10 @@ local function UpdateCurrencyTransferLogLine(frame)
 	if frame.IsSkinned then return end
 
 	local CurrencyIcon = frame.CurrencyIcon
-	if CurrencyIcon then S:HandleIcon(CurrencyIcon) end
+	if CurrencyIcon then
+		S:HandleIcon(CurrencyIcon)
+		CurrencyIcon:Size(16)
+	end
 
 	frame.IsSkinned = true
 end
