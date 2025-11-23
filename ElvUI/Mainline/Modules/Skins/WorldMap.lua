@@ -198,7 +198,7 @@ function S:WorldMapFrame()
 	MapNavBar.homeButton.text:FontTemplate()
 	S:HandleButton(MapNavBar.overflowButton)
 	for _, tex in next, { MapNavBar.overflowButton:GetNormalTexture(), MapNavBar.overflowButton:GetPushedTexture() } do
-		S:SetupArrow(tex, 'right')
+		S:SetupArrow(tex, 'left')
 		tex:SetTexCoord(0, 1, 0, 1)
 		tex:Size(14)
 		tex:ClearAllPoints()
