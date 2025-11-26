@@ -1123,6 +1123,8 @@ do
 		MicroButtonAndBagsBar = true,
 		OverrideActionBar = true,
 		MainMenuBar = true,
+		BagsBar = E.TBC or nil,
+		MainActionBar = (E.TBC or E.Midnight) or nil,
 		[E.Retail and 'StanceBar' or 'StanceBarFrame'] = true,
 		[E.Retail and 'PetActionBar' or 'PetActionBarFrame'] = true,
 		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
@@ -1185,7 +1187,7 @@ do
 
 	function AB:DisableBlizzard()
 		for name in next, untaint do
-			if not E.Retail then
+			if _G.UIPARENT_MANAGED_FRAME_POSITIONS then
 				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
 			end
 
@@ -1220,12 +1222,14 @@ do
 		-- modified to fix a taint when closing the options while in combat
 		_G.SettingsPanel:SetScript('OnHide', AB.SettingsPanel_OnHide)
 
-		if E.Retail then
+		if E.Retail or E.TBC then
 			_G.StatusTrackingBarManager:Kill()
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
 
-			-- take encounter bar out of edit mode
-			_G.EncounterBar:KillEditMode()
+			if E.Retail then
+				-- take encounter bar out of edit mode
+				_G.EncounterBar:KillEditMode()
+			end
 
 			-- lets only keep ExtraActionButtons in here
 			hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)

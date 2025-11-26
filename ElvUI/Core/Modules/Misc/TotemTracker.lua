@@ -14,14 +14,14 @@ local classic = { [1]=2, [2]=1, [3]=4, [4]=3 } -- we need to swap 1/2 and 3/4 on
 function TM:UpdateButton(button, totem)
 	if not (button and totem) then return end
 
-	local haveTotem, _, startTime, duration, icon = GetTotemInfo(E.Classic and totem or totem.slot)
+	local haveTotem, _, startTime, duration, icon = GetTotemInfo((E.Classic or E.TBC) and totem or totem.slot)
 	button:SetShown(haveTotem and duration > 0)
 
 	if haveTotem then
 		button.icon:SetTexture(icon)
 		button.cooldown:SetCooldown(startTime, duration)
 
-		if not E.Classic then
+		if E.Retail or E.Mists then
 			if totem:GetParent() ~= button.holder then
 				totem:SetParent(button.holder)
 			end

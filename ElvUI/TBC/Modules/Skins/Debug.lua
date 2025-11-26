@@ -5,6 +5,8 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+
 local FrameTexs = {
 	'TopLeft',
 	'TopRight',
@@ -21,14 +23,18 @@ local FrameTexs = {
 local function SkinOnShow()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame:SetParent(E.UIParent)
-	ScriptErrorsFrame:CreateBackdrop('Transparent')
-	S:HandleScrollBar(_G.ScriptErrorsFrameScrollBar)
+	ScriptErrorsFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(_G.ScriptErrorsFrameClose)
-	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
-	ScriptErrorsFrame.ScrollFrame:CreateBackdrop()
-	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
 
-	for i=1, #FrameTexs do
+	ScriptErrorsFrame.ScrollFrame:SetTemplate()
+	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
+	ScriptErrorsFrame.ScrollFrame:OffsetFrameLevel(2)
+
+	S:HandleTrimScrollBar(_G.ScriptErrorsFrame.ScrollFrame.ScrollBar)
+	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('TOPLEFT', ScriptErrorsFrame.ScrollFrame, 'TOPRIGHT', 4, 2)
+	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('BOTTOMLEFT', ScriptErrorsFrame.ScrollFrame, 'BOTTOMRIGHT', 4, 2)
+
+	for i = 1, #FrameTexs do
 		_G['ScriptErrorsFrame'..FrameTexs[i]]:SetTexture()
 	end
 
@@ -51,9 +57,15 @@ end
 
 local function SkinTableAttributeDisplay(frame)
 	frame:StripTextures()
-	frame:CreateBackdrop('Transparent')
-	frame.ScrollFrameArt:StripTextures()
-	frame.ScrollFrameArt:CreateBackdrop('Transparent')
+	frame:SetTemplate('Transparent')
+	frame.ScrollFrameArt.NineSlice:SetTemplate('Transparent')
+	frame.ScrollFrameArt.NineSlice:Point('TOPLEFT', -4, 0)
+	frame.ScrollFrameArt.NineSlice:Point('BOTTOMRIGHT', -8, 0)
+
+	S:HandleTrimScrollBar(frame.LinesScrollFrame.ScrollBar)
+	frame.LinesScrollFrame.ScrollBar.Track:Point('TOPLEFT', 12, -20)
+	frame.LinesScrollFrame.ScrollBar.Track.Thumb:Width(8)
+
 	S:HandleCloseButton(frame.CloseButton)
 	frame.OpenParentButton:ClearAllPoints()
 	frame.OpenParentButton:Point('TOPLEFT', frame, 'TOPLEFT', 2, -2)
@@ -78,7 +90,8 @@ local function SkinTableAttributeDisplay(frame)
 	S:HandleNextPrevButton(frame.NavigateBackwardButton)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
-	S:HandleScrollBar(frame.LinesScrollFrame.ScrollBar)
+
+	frame.IsSkinned = true
 end
 
 function S:ScriptErrorsFrame()
@@ -97,10 +110,9 @@ function S:Blizzard_DebugTools()
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
-	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(s)
-		if s and s.ScrollFrameArt and not s.skinned then
-			SkinTableAttributeDisplay(s)
-			s.skinned = true
+	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(frame)
+		if frame.ScrollFrameArt and not frame.IsSkinned then
+			SkinTableAttributeDisplay(frame)
 		end
 	end)
 end
@@ -109,7 +121,7 @@ end
 S:AddCallback('ScriptErrorsFrame')
 
 -- FrameStack, TableInspect Skins
-if _G.IsAddOnLoaded('Blizzard_DebugTools') then
+if IsAddOnLoaded('Blizzard_DebugTools') then
 	S:AddCallback('Blizzard_DebugTools')
 else
 	S:AddCallbackForAddon('Blizzard_DebugTools')

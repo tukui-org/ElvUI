@@ -1,4 +1,4 @@
-## Title: |cff1784d1ElvUI|r |cfd9b9b9bMists|r
+## Title: |cff1784d1ElvUI|r |cfd9b9b9bTBC|r
 ## Notes: User Interface Replacement
 ## Author: Elv, Simpy
 ## Version: @project-version@
@@ -6,7 +6,7 @@
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque, BigWigs
 ## RequiredDeps: ElvUI_Libraries
-## Interface: 20504
+## Interface: 20505
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 

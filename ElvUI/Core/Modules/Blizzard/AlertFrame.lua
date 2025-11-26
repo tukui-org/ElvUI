@@ -133,7 +133,7 @@ function BL:AlertMovers()
 
 	if E.Retail then
 		_G.GroupLootContainer.ignoreInLayout = true
-	else
+	elseif _G.UIPARENT_MANAGED_FRAME_POSITIONS then
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
 	end
 

@@ -348,7 +348,7 @@ function M:CreateSlotStrings(frame, which)
 	if which == 'Inspect' then
 		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, 'ARTWORK')
 		frame.ItemLevelText:Point('BOTTOMLEFT', 6, 6)
-	elseif E.Mists then
+	elseif E.Mists or E.TBC then
 		frame.ItemLevelText = _G.PaperDollItemsFrame:CreateFontString(nil, 'ARTWORK')
 		frame.ItemLevelText:Point('BOTTOMLEFT', 6, 6)
 	else

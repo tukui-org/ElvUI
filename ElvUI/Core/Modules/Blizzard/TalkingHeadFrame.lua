@@ -24,7 +24,7 @@ end
 
 function BL:HandleTalkingHead()
 	-- Prevent WoW from moving the frame around
-	if not E.Retail then
+	if _G.UIPARENT_MANAGED_FRAME_POSITIONS then
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
 	end
 

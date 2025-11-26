@@ -1125,7 +1125,7 @@ function TT:Initialize()
 		end
 	end
 
-	if not E.Classic then
+	if E.Retail or E.Mists then
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 	end
 

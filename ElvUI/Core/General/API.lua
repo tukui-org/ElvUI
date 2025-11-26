@@ -1023,11 +1023,12 @@ else
 end
 
 function E:PositionGameMenuButton()
-	if E.Retail then
+	if E.Retail or E.TBC then
 		if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end
 
+		local offset = E.TBC and 20 or 35
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
 			local text = button:GetText()
 
@@ -1037,11 +1038,11 @@ function E:PositionGameMenuButton()
 			if lastIndex == gameMenuLastButtons.ElvUI and GameMenuFrame.ElvUI then
 				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
 			elseif not lastIndex then
-				button:NudgePoint(nil, -35)
+				button:NudgePoint(nil, -offset)
 			end
 		end
 
-		GameMenuFrame:Height(GameMenuFrame:GetHeight() + 35)
+		GameMenuFrame:Height(GameMenuFrame:GetHeight() + offset)
 	else
 		local button = GameMenuFrame.ElvUI
 		if button then
@@ -1080,10 +1081,15 @@ end
 function E:SetupGameMenu()
 	if GameMenuFrame.ElvUI then return end
 
-	if E.Retail then
+	if E.Retail or E.TBC then
 		local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'MainMenuFrameButtonTemplate')
 		button:SetScript('OnClick', E.ClickGameMenu)
-		button:Size(200, 35)
+
+		if E.TBC then
+			button:Size(144, 21)
+		else
+			button:Size(200, 35)
+		end
 
 		GameMenuFrame.ElvUI = button
 		GameMenuFrame.MenuButtons = {}

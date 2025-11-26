@@ -1790,7 +1790,7 @@ do
 					end
 				end
 
-				if E.Retail then
+				if E.Retail or E.TBC then
 					if disable.castbar then
 						HideFrame(_G.PlayerCastingBarFrame)
 						HideFrame(_G.PetCastingBarFrame)
@@ -2191,8 +2191,11 @@ function UF:Initialize()
 	UF:RegisterEvent('SOUNDKIT_FINISHED')
 
 	UF:RegisterEvent('SPELLS_CHANGED', 'UpdateRangeSpells')
-	UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
+
+	if not E.TBC then
+		UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
+	end
 
 	if E.Retail or E.Mists then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')

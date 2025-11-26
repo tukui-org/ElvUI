@@ -607,7 +607,7 @@ function A:Initialize()
 			_G.DebuffFrame:Kill()
 		end
 
-		if not E.Retail then
+		if E.Mists or E.Classic then
 			_G.TemporaryEnchantFrame:Kill()
 		end
 

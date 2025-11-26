@@ -190,7 +190,7 @@ function BL:Initialize()
 
 	BL:SkinBlizzTimers()
 
-	if not E.Classic then
+	if E.Retail or E.Mists then
 		BL:PositionVehicleFrame()
 
 		if not E.OtherAddons.SimplePowerBar then
@@ -211,7 +211,7 @@ function BL:Initialize()
 		BL:SecureHook('QuestInfo_Display', 'QuestXPPercent')
 	end
 
-	if E.Classic then
+	if E.Classic or E.TBC then
 		if E.db.general.objectiveTracker then
 			BL:QuestWatch_CreateMover(_G.QuestWatchFrame, 'QuestWatchFrameMover')
 			hooksecurefunc('QuestWatch_Update', BL.QuestWatch_AddQuestClick)

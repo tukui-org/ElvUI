@@ -218,7 +218,7 @@ function AB:ExtraButtons_SetupBoss()
 
 	if E.Retail then
 		ExtraActionBarFrame.ignoreInLayout = true
-	else
+	elseif _G.UIPARENT_MANAGED_FRAME_POSITIONS then
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
 	end
 end
