@@ -191,20 +191,34 @@ function S:WorldMapFrame()
 	WorldMapFrame.backdrop:Point('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 6, -8)
 
 	local MapNavBar = WorldMapFrame.NavBar
-	MapNavBar:StripTextures()
-	MapNavBar.overlay:StripTextures()
-	MapNavBar:Point('TOPLEFT', 1, -40)
-	S:HandleButton(MapNavBar.homeButton)
-	MapNavBar.homeButton.text:FontTemplate()
-	S:HandleButton(MapNavBar.overflowButton)
-	for _, tex in next, { MapNavBar.overflowButton:GetNormalTexture(), MapNavBar.overflowButton:GetPushedTexture() } do
-		S:SetupArrow(tex, 'left')
-		tex:SetTexCoord(0, 1, 0, 1)
-		tex:Size(14)
-		tex:ClearAllPoints()
-		tex:Point('CENTER')
+	if MapNavBar then
+		MapNavBar:StripTextures()
+		MapNavBar.overlay:StripTextures()
+		MapNavBar:Point('TOPLEFT', 1, -40)
+
+		S.HandleNavBarButtons(MapNavBar)
+
+		local HomeButton = MapNavBar.homeButton
+		if HomeButton then
+			S:HandleButton(HomeButton)
+
+			HomeButton.text:FontTemplate()
+		end
+
+		local OverflowButton = MapNavBar.overflowButton
+		if OverflowButton then
+			S:HandleButton(OverflowButton)
+
+			for _, tex in next, { OverflowButton:GetNormalTexture(), OverflowButton:GetPushedTexture() } do
+				S:SetupArrow(tex, 'left')
+
+				tex:SetTexCoord(0, 1, 0, 1)
+				tex:ClearAllPoints()
+				tex:Point('CENTER')
+				tex:Size(14)
+			end
+		end
 	end
-	S.HandleNavBarButtons(WorldMapFrame.NavBar)
 
 	-- Quest Frames
 	local QuestMapFrame = _G.QuestMapFrame
