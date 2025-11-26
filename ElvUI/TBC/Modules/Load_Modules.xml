@@ -1,0 +1,7 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Include file='Blizzard\Load_Blizzard.xml'/>
+	<Include file='DataTexts\Load_DataTexts.xml'/>
+	<Include file='DataBars\Load_DataBars.xml'/>
+	<Include file='Misc\Load_Misc.xml'/>
+	<Include file='Skins\Load_Skins.xml'/>
+</Ui>
