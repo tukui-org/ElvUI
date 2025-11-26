@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
+local next = next
 
 function S:BattleNetFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
@@ -10,7 +10,7 @@ function S:BattleNetFrames()
 	local skins = {
 		_G.BNToastFrame,
 		_G.TimeAlertFrame,
-		_G.TicketStatusFrameButton,
+		_G.TicketStatusFrameButton.NineSlice
 	}
 
 	for i = 1, #skins do
@@ -38,8 +38,7 @@ function S:BattleNetFrames()
 	local BattleTagInviteFrame = _G.BattleTagInviteFrame
 	S:HandleFrame(BattleTagInviteFrame, true)
 
-	for i = 1, BattleTagInviteFrame:GetNumChildren() do
-		local child = select(i, BattleTagInviteFrame:GetChildren())
+	for _, child in next, { BattleTagInviteFrame:GetChildren() } do
 		if child:IsObjectType('Button') then
 			S:HandleButton(child)
 		end

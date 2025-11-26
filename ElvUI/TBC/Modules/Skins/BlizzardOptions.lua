@@ -2,76 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
-local ipairs = ipairs
-local pairs = pairs
+local ipairs, pairs, next = ipairs, pairs, next
 
 local hooksecurefunc = hooksecurefunc
-local UnitIsUnit = UnitIsUnit
-local InCombatLockdown = InCombatLockdown
-
-local function HandlePushToTalkButton(button)
-	button:Size(button:GetSize())
-
-	button.TopLeft:Hide()
-	button.TopRight:Hide()
-	button.BottomLeft:Hide()
-	button.BottomRight:Hide()
-	button.TopMiddle:Hide()
-	button.MiddleLeft:Hide()
-	button.MiddleRight:Hide()
-	button.BottomMiddle:Hide()
-	button.MiddleMiddle:Hide()
-	button:SetHighlightTexture('')
-
-	button:SetTemplate(nil, true)
-	button:HookScript('OnEnter', S.SetModifiedBackdrop)
-	button:HookScript('OnLeave', S.SetOriginalBackdrop)
-end
-
-function S.AudioOptionsVoicePanel_InitializeCommunicationModeUI(btn)
-	HandlePushToTalkButton(btn.PushToTalkKeybindButton)
-end
 
 function S:BlizzardOptions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
-
-	-- here we reskin all 'normal' buttons
-	S:HandleButton(_G.ReadyCheckFrameYesButton)
-	S:HandleButton(_G.ReadyCheckFrameNoButton)
-
-	local ReadyCheckFrame = _G.ReadyCheckFrame
-	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameYesButton:ClearAllPoints()
-	_G.ReadyCheckFrameNoButton:ClearAllPoints()
-	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
-	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
-	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameText:ClearAllPoints()
-	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
-
-	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript('OnShow', function(frame)
-		-- bug fix, don't show it if player is initiator
-		if frame.initiator and UnitIsUnit('player', frame.initiator) then
-			frame:Hide()
-		end
-	end)
-
-	_G.InterfaceOptionsFrame:SetClampedToScreen(true)
-	_G.InterfaceOptionsFrame:SetMovable(true)
-	_G.InterfaceOptionsFrame:EnableMouse(true)
-	_G.InterfaceOptionsFrame:RegisterForDrag('LeftButton', 'RightButton')
-	_G.InterfaceOptionsFrame:SetScript('OnDragStart', function(frame)
-		if InCombatLockdown() then return end
-		frame:StartMoving()
-		frame.isMoving = true
-	end)
-	_G.InterfaceOptionsFrame:SetScript('OnDragStop', function(frame)
-		frame:StopMovingOrSizing()
-		frame.isMoving = false
-	end)
 
 	--Chat Config
 	local ChatConfigFrame = _G.ChatConfigFrame
@@ -110,6 +46,7 @@ function S:BlizzardOptions()
 		_G.CombatConfigMessageSourcesDoneBy,
 		_G.CombatConfigColorsUnitColors,
 		_G.CombatConfigMessageSourcesDoneTo,
+		_G.ChatConfigTextToSpeechChannelSettingsLeft
 	}
 
 	local ChatButtons = {
@@ -171,11 +108,14 @@ function S:BlizzardOptions()
 	_G.CombatConfigTab1:ClearAllPoints()
 	_G.CombatConfigTab1:Point('BOTTOMLEFT', _G.ChatConfigBackgroundFrame, 'TOPLEFT', 6, -2)
 
+	_G.ChatConfigChatSettingsClassColorLegend.NineSlice:SetTemplate('Transparent')
+	_G.ChatConfigChannelSettingsClassColorLegend.NineSlice:SetTemplate('Transparent')
+
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
-	_G.ChatConfigMoveFilterUpButton:Size(19, 19)
-	_G.ChatConfigMoveFilterDownButton:Size(19, 19)
+	_G.ChatConfigMoveFilterUpButton:Size(19)
+	_G.ChatConfigMoveFilterDownButton:Size(19)
 	_G.ChatConfigMoveFilterUpButton:Point('TOPLEFT', '$parent', 'BOTTOMLEFT', 0, -3)
 	_G.ChatConfigMoveFilterDownButton:Point('LEFT', _G.ChatConfigMoveFilterUpButton, 'RIGHT', 3, 0)
 
@@ -196,30 +136,30 @@ function S:BlizzardOptions()
 			return
 		end
 		for index in ipairs(frame.checkBoxTable) do
-			local checkBoxNameString = frame:GetName()..'CheckBox'
+			local checkBoxNameString = frame:GetName()..'Checkbox'
 			local checkBoxName = checkBoxNameString..index
 			local checkBox = _G[checkBoxName]
 			local check = _G[checkBoxName..'Check']
-			if checkBox and not checkBox.isSkinned then
+			if checkBox and not checkBox.IsSkinned then
 				checkBox:StripTextures()
 				S:HandleCheckBox(check)
 				if _G[checkBoxName..'ColorClasses'] then
 					S:HandleCheckBox(_G[checkBoxName..'ColorClasses'])
 				end
-				checkBox.isSkinned = true
+				checkBox.IsSkinned = true
 			end
 		end
 	end)
 
 	hooksecurefunc('ChatConfig_UpdateTieredCheckboxes', function(frame, index)
 		local group = frame.checkBoxTable[index]
-		local checkBox = _G[frame:GetName()..'CheckBox'..index]
+		local checkBox = _G[frame:GetName()..'Checkbox'..index]
 		if checkBox then
 			S:HandleCheckBox(checkBox)
 		end
 		if group.subTypes then
 			for k in ipairs(group.subTypes) do
-				S:HandleCheckBox(_G[frame:GetName()..'CheckBox'..index..'_'..k])
+				S:HandleCheckBox(_G[frame:GetName()..'Checkbox'..index..'_'..k])
 			end
 		end
 	end)
@@ -230,6 +170,22 @@ function S:BlizzardOptions()
 		end
 		for index in ipairs(frame.swatchTable) do
 			_G[frame:GetName()..'Swatch'..index]:StripTextures()
+		end
+	end)
+
+	hooksecurefunc('ChatConfig_CreateBoxes', function(frame)
+		local boxName = frame:GetName()..'Box'
+
+		if frame.boxTable then
+			for index in next, frame.boxTable do
+				local box = _G[boxName..index]
+				if box then
+					box.NineSlice:SetTemplate('Transparent')
+					if box.Button then
+						S:HandleButton(box.Button)
+					end
+				end
+			end
 		end
 	end)
 
@@ -283,8 +239,7 @@ function S:BlizzardOptions()
 
 	for _, Panel in pairs(InterfaceOptions) do
 		if Panel then
-			for i = 1, Panel:GetNumChildren() do
-				local Child = select(i, Panel:GetChildren())
+			for _, Child in next, { Panel:GetChildren() } do
 				if Child:IsObjectType('CheckButton') then
 					S:HandleCheckBox(Child)
 				elseif Child:IsObjectType('Button') then
@@ -293,41 +248,19 @@ function S:BlizzardOptions()
 					S:HandleSliderFrame(Child)
 				elseif Child:IsObjectType('Tab') then
 					S:HandleTab(Child)
-				elseif Child:IsObjectType('Frame') and Child.Left and Child.Middle and Child.Right then
+				elseif Child:IsObjectType('Frame') and (Child.Left and Child.Middle and Child.Right) then
 					S:HandleDropDownBox(Child)
 				end
 			end
 		end
 	end
 
-	_G.InterfaceOptionsFrameTab1:Point('BOTTOMLEFT', _G.InterfaceOptionsFrameCategories, 'TOPLEFT', 6, 1)
-	_G.InterfaceOptionsFrameTab1:StripTextures()
-	_G.InterfaceOptionsFrameTab2:Point('TOPLEFT', _G.InterfaceOptionsFrameTab1, 'TOPRIGHT', 1, 0)
-	_G.InterfaceOptionsFrameTab2:StripTextures()
-	_G.InterfaceOptionsSocialPanel.EnableTwitter.Logo:SetAtlas('WoWShare-TwitterLogo')
-
-	do -- plus minus buttons in addons category
-		local function skinButtons()
-			for i = 1, #_G.INTERFACEOPTIONS_ADDONCATEGORIES do
-				local button = _G['InterfaceOptionsFrameAddOnsButton'..i..'Toggle']
-				if button and not button.IsSkinned then
-					S:HandleCollapseTexture(button, true)
-					button.IsSkinned = true
-				end
-			end
-		end
-
-		hooksecurefunc('InterfaceOptions_AddCategory', skinButtons)
-		skinButtons()
-	end
-
-	--Create New Raid Profle
+	-- Create New Raid Profle
 	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog
 	if newProfileDialog then
 		newProfileDialog:StripTextures()
 		newProfileDialog:CreateBackdrop('Transparent')
 
-		S:HandleDropDownBox(_G.CompactUnitFrameProfilesNewProfileDialogBaseProfileSelector)
 		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCreateButton)
 		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCancelButton)
 
@@ -337,7 +270,7 @@ function S:BlizzardOptions()
 		end
 	end
 
-	--Delete Raid Profile
+	-- Delete Raid Profile
 	local deleteProfileDialog = _G.CompactUnitFrameProfilesDeleteProfileDialog
 	if deleteProfileDialog then
 		deleteProfileDialog:StripTextures()
@@ -347,22 +280,35 @@ function S:BlizzardOptions()
 		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
 	end
 
-	-- Toggle Test Audio Button - Wow 8.0
-	S:HandleButton(_G.AudioOptionsVoicePanel.TestInputDevice.ToggleTest)
+	-- TextToSpeech
+	_G.TextToSpeechButton:StripTextures()
 
-	local VUMeter = _G.AudioOptionsVoicePanelTestInputDevice.VUMeter
-	VUMeter.NineSlice:Hide()
-	VUMeter.Status:CreateBackdrop()
-	VUMeter.Status:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(VUMeter.Status)
+	S:HandleButton(_G.TextToSpeechDefaultButton)
+	S:HandleCheckBox(_G.TextToSpeechCharacterSpecificButton)
 
-	-- PushToTalk KeybindButton - Wow 8.0
-	hooksecurefunc('AudioOptionsVoicePanel_InitializeCommunicationModeUI', S.AudioOptionsVoicePanel_InitializeCommunicationModeUI)
+	for _, checkbox in pairs({ -- check boxes
+		'PlayActivitySoundWhenNotFocusedCheckButton',
+		'PlaySoundSeparatingChatLinesCheckButton',
+		'AddCharacterNameToSpeechCheckButton',
+		'NarrateMyMessagesCheckButton',
+		'UseAlternateVoiceForSystemMessagesCheckButton',
+	}) do
+		S:HandleCheckBox(_G.TextToSpeechFramePanelContainer[checkbox])
+	end
 
-	-- New Voice Sliders
-	S:HandleSliderFrame(_G.UnitPopupVoiceSpeakerVolume.Slider)
-	S:HandleSliderFrame(_G.UnitPopupVoiceMicrophoneVolume.Slider)
-	S:HandleSliderFrame(_G.UnitPopupVoiceUserVolume.Slider)
+	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', function(frame)
+		if not frame.checkBoxTable then return end
+
+		local nameString = frame:GetName()..'CheckBox'
+		for index in ipairs(frame.checkBoxTable) do
+			local checkBox = _G[nameString..index]
+			if checkBox and not checkBox.IsSkinned then
+				S:HandleCheckBox(checkBox)
+
+				checkBox.IsSkinned = true
+			end
+		end
+	end)
 end
 
 S:AddCallback('BlizzardOptions')

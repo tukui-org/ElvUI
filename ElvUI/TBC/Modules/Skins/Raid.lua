@@ -2,8 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-local pairs, ipairs = pairs, ipairs
+local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
 local StripAllTextures = {
@@ -14,11 +13,16 @@ local StripAllTextures = {
 	'RaidGroup5',
 	'RaidGroup6',
 	'RaidGroup7',
-	'RaidGroup8',
+	'RaidGroup8'
 }
 
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
+
+	-- Raid Frame Tab
+	S:HandleButton(_G.RaidFrameReadyCheckButton)
+
+	_G.RaidFrameConvertToRaidButton:Point('BOTTOMRIGHT', -6, 4)
 
 	for _, object in ipairs(StripAllTextures) do
 		local obj = _G[object]
@@ -26,9 +30,6 @@ function S:Blizzard_RaidUI()
 			obj:StripTextures()
 		end
 	end
-
-	S:HandleButton(_G.RaidFrameReadyCheckButton)
-	S:HandleButton(_G.RaidFrameRaidInfoButton)
 
 	for i = 1, _G.MAX_RAID_GROUPS * 5 do
 		S:HandleButton(_G['RaidGroupButton'..i], true)
@@ -42,90 +43,93 @@ function S:Blizzard_RaidUI()
 		end
 	end
 
-	do
+	_G.RaidClassButton1:ClearAllPoints()
+	_G.RaidClassButton1:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -50, -50)
+
+	do -- Classes on the right side of the Raid Control
 		local prevButton
-		for key, data in pairs(_G.RAID_CLASS_BUTTONS) do
-			local index = data.button
-			if index then
-				local button = _G['RaidClassButton'..index]
-				local icon = _G['RaidClassButton'..index..'IconTexture']
-				local count = _G['RaidClassButton'..index..'Count']
-				button:StripTextures()
-				button:SetTemplate('Default')
-				button:Size(22)
+		for index = 1, 13 do
+			local button = _G['RaidClassButton'..index]
+			local icon = _G['RaidClassButton'..index..'IconTexture']
+			local count = _G['RaidClassButton'..index..'Count']
 
-				button:ClearAllPoints()
-				if index == 1 then
-					button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -34, -37)
-				elseif index == 11 then
-					button:Point('TOP', prevButton, 'BOTTOM', 0, -20)
-				else
-					button:Point('TOP', prevButton, 'BOTTOM', 0, -6)
-				end
-				prevButton = button
+			button:StripTextures()
+			button:SetTemplate()
+			button:Size(22)
 
-				count:FontTemplate(nil, 12, 'OUTLINE')
-
-				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
-
-				if key == 'PETS' then
-					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-				elseif key == 'MAINTANK' then
-					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-				elseif key == 'MAINASSIST' then
-					icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
-				else
-					local coords = _G.CLASS_ICON_TCOORDS[_G.CLASS_SORT_ORDER[index]]
-					if coords then
-						icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-						icon:SetTexCoord(coords[1] + 0.015, coords[2] - 0.02, coords[3] + 0.018, coords[4] - 0.02)
-					end
-				end
+			button:ClearAllPoints()
+			if index == 1 then
+				button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -3, -48)
+			elseif index == 11 then
+				button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
+			else
+				button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
 			end
+			prevButton = button
+
+			icon:SetInside()
+
+			if index == 11 then
+				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
+				icon:SetTexCoords()
+			elseif index == 12 then
+				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
+				icon:SetTexCoords()
+			elseif index == 13 then
+				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
+				icon:SetTexCoords()
+			end
+
+			count:FontTemplate(nil, 12, 'OUTLINE')
+			count:SetTextHeight(12) -- fixes blur
 		end
 	end
 
 	hooksecurefunc('RaidPullout_GetFrame', function()
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
-			local rp = _G['RaidPullout'..i]
-			if rp and not rp.backdrop then
-				S:HandleFrame(rp, true, nil, 9, -17, -7, 10)
+			local backdrop = _G['RaidPullout'..i..'MenuBackdrop']
+			if backdrop and backdrop.NineSlice then
+				backdrop.NineSlice:SetTemplate('Transparent')
 			end
 		end
 	end)
 
+	local bars = { 'HealthBar', 'ManaBar', 'Target', 'TargetTarget' }
 	hooksecurefunc('RaidPullout_Update', function(pullOutFrame)
-		local pfName = pullOutFrame:GetName()
-		local pfBName, pfBObj, pfTot
-
+		local frameName = pullOutFrame:GetName()
 		for i = 1, pullOutFrame.numPulloutButtons do
-			pfBName = pfName..'Button'..i
-			pfBObj = _G[pfBName]
-			pfTot = _G[pfBName..'TargetTargetFrame']
+			local name = frameName..'Button'..i
+			local object = _G[name]
+			if object then
+				if not object.backdrop then
+					for _, v in ipairs(bars) do
+						local bar = _G[name..v]
+						if bar then
+							bar:StripTextures()
+							bar:SetStatusBarTexture(E.media.normTex)
+						end
+					end
 
-			if not pfBObj.backdrop then
-				local sBar
+					local manabar = object.manabar
+					if manabar then
+						manabar:Point('TOP', object.healthbar, 'BOTTOM', 0, 0)
+					end
 
-				for _, v in ipairs({'HealthBar', 'ManaBar', 'Target', 'TargetTarget'}) do
-					sBar = _G[pfBName..v]
-					sBar:StripTextures()
-					sBar:SetStatusBarTexture(E.media.normTex)
+					local target = _G[name..'Target']
+					if target and manabar then
+						target:Point('TOP', manabar, 'BOTTOM', 0, -1)
+					end
+
+					object:CreateBackdrop('Transparent')
+
+					object.backdrop:NudgePoint(nil, -10)
+					object.backdrop:NudgePoint(nil, 1, nil, 2)
 				end
 
-				_G[pfBName..'ManaBar']:Point('TOP', '$parentHealthBar', 'BOTTOM', 0, 0)
-				_G[pfBName..'Target']:Point('TOP', '$parentManaBar', 'BOTTOM', 0, -1)
-
-				pfBObj:CreateBackdrop('Default')
-				pfBObj.backdrop:Point('TOPLEFT', E.PixelMode and 0 or -1, -(E.PixelMode and 10 or 9))
-				pfBObj.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 0 or 1, E.PixelMode and 1 or 0)
-			end
-
-			if not pfTot.backdrop then
-				pfTot:StripTextures()
-				pfTot:CreateBackdrop('Default')
-				pfTot.backdrop:Point('TOPLEFT', E.PixelMode and 10 or 9, -(E.PixelMode and 15 or 14))
-				pfTot.backdrop:Point('BOTTOMRIGHT', -(E.PixelMode and 10 or 9), E.PixelMode and 8 or 7)
+				local targettarget = _G[name..'TargetTargetFrame']
+				if targettarget and targettarget.NineSlice then
+					targettarget.NineSlice:SetTemplate('Transparent')
+				end
 			end
 		end
 	end)

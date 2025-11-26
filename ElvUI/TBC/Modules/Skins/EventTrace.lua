@@ -3,8 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local pairs = pairs
-local select = select
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function ReskinEventTraceButton(button)
@@ -13,64 +11,39 @@ local function ReskinEventTraceButton(button)
 	button.MouseoverOverlay:SetAlpha(0)
 end
 
-local function reskinScrollChild(self)
-	for i = 1, self.ScrollTarget:GetNumChildren() do
-		local child = select(i, self.ScrollTarget:GetChildren())
-		local hideButton = child and child.HideButton
-		if hideButton and not hideButton.IsSkinned then
-			S:HandleCloseButton(hideButton)
+local function ReskinScrollChild(child)
+	local button = child.HideButton
+	if button and not button.IsSkinned then
+		S:HandleCloseButton(button)
 
-			hideButton:ClearAllPoints()
-			hideButton:SetPoint('LEFT', 3, 0)
+		button:ClearAllPoints()
+		button:Point('LEFT', 3, 0)
 
-			local checkButton = child.CheckButton
-			if checkButton then
-				S:HandleCheckBox(checkButton)
-				checkButton:SetSize(22, 22)
-			end
-
-			hideButton.IsSkinned = true
+		local checkButton = child.CheckButton
+		if checkButton then
+			S:HandleCheckBox(checkButton)
+			checkButton:SetSize(22, 22)
 		end
+
+		button.IsSkinned = true
 	end
+
+end
+
+local function ReskinScrollFrame(frame)
+	frame:ForEachFrame(ReskinScrollChild)
 end
 
 local function ReskinEventTraceScrollBox(frame)
 	frame:DisableDrawLayer('BACKGROUND')
 	frame:CreateBackdrop('Transparent')
-	hooksecurefunc(frame, 'Update', reskinScrollChild)
-end
 
-local function ReskinScrollBarArrow(frame, direction)
-	S:HandleNextPrevButton(frame, direction)
-	frame.Overlay:SetAlpha(0)
-	frame.Texture:Hide()
-end
-
-local function ReskinEventTraceScrollBar(frame)
-	frame.Background:Hide()
-	frame:StripTextures()
-
-	local track = frame.Track
-	track:SetTemplate('Transparent')
-	track:ClearAllPoints()
-	track:SetPoint('TOPLEFT', 4, -21)
-	track:SetPoint('BOTTOMRIGHT', -3, 21)
-
-	local thumb = track.Thumb
-	thumb.Middle:Hide()
-	thumb.Begin:Hide()
-	thumb.End:Hide()
-
-	thumb:SetTemplate(nil, true, true)
-	thumb:SetBackdropColor(unpack(E.media.rgbvaluecolor))
-
-	ReskinScrollBarArrow(frame.Back, 'up')
-	ReskinScrollBarArrow(frame.Forward, 'down')
+	hooksecurefunc(frame, 'Update', ReskinScrollFrame)
 end
 
 local function ReskinEventTraceFrame(frame)
 	ReskinEventTraceScrollBox(frame.ScrollBox)
-	ReskinEventTraceScrollBar(frame.ScrollBar)
+	S:HandleTrimScrollBar(frame.ScrollBar)
 end
 
 function S:Blizzard_EventTrace()
@@ -92,7 +65,7 @@ function S:Blizzard_EventTrace()
 	S:HandleButton(EventTrace.SubtitleBar.ViewFilter)
 
 	-- Options Dropdown
-	local OptionsDropDown = EventTrace.SubtitleBar.OptionsDropDown
+	local OptionsDropDown = EventTrace.SubtitleBar.OptionsDropdown
 	OptionsDropDown:SetWidth(135)
 	S:HandleButton(OptionsDropDown)
 
@@ -117,7 +90,8 @@ function S:Blizzard_EventTrace()
 	S:HandleButton(FilterBar.CheckAllButton)
 
 	-- Resize Button
-	EventTrace.ResizeButton:SetAlpha(0)
+	EventTrace.ResizeButton:ClearAllPoints()
+	EventTrace.ResizeButton:Point('BOTTOMRIGHT', 1, -1)
 
 	ReskinEventTraceFrame(EventTrace.Log.Events)
 	ReskinEventTraceFrame(EventTrace.Log.Search)

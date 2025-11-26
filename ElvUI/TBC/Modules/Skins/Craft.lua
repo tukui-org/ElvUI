@@ -2,19 +2,17 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, select = unpack, select
-local strfind = strfind
+local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 
-local GetItemInfo = GetItemInfo
 local GetCraftNumReagents = GetCraftNumReagents
-local GetItemQualityColor = GetItemQualityColor
 local GetCraftItemLink = GetCraftItemLink
 local GetCraftReagentInfo = GetCraftReagentInfo
 local GetCraftReagentItemLink = GetCraftReagentItemLink
-local hooksecurefunc = hooksecurefunc
 
--- This is the Hunter Beast Training skin
-function S:SkinCraftFrame()
+local GetItemQualityByID = C_Item.GetItemQualityByID
+
+function S:SkinCraft()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.craft) then return end
 
 	local CraftFrame = _G.CraftFrame
@@ -43,16 +41,6 @@ function S:SkinCraftFrame()
 
 	S:HandleButton(_G.CraftCreateButton)
 
-	local CraftFrameAvailableFilterCheckButton = _G.CraftFrameAvailableFilterCheckButton
-	S:HandleCheckBox(CraftFrameAvailableFilterCheckButton)
-	CraftFrameAvailableFilterCheckButton:ClearAllPoints()
-	CraftFrameAvailableFilterCheckButton:Point('LEFT', _G.CraftRankFrameBorder, 'LEFT', 0, -20)
-
-	local CraftFrameFilterDropDown = _G.CraftFrameFilterDropDown
-	S:HandleDropDownBox(CraftFrameFilterDropDown, 160)
-	CraftFrameFilterDropDown:ClearAllPoints()
-	CraftFrameFilterDropDown:Point('RIGHT', _G.CraftRankFrameBorder, 'RIGHT', 55, -25)
-
 	local CraftIcon = _G.CraftIcon
 
 	_G.CraftRequirements:SetTextColor(1, 0.80, 0.10)
@@ -62,28 +50,24 @@ function S:SkinCraftFrame()
 	_G.CraftExpandButtonFrame:StripTextures()
 
 	local CraftCollapseAllButton = _G.CraftCollapseAllButton
-	CraftCollapseAllButton:Point('LEFT', _G.CraftExpandTabLeft, 'RIGHT', -8, 5)
-	CraftCollapseAllButton:GetNormalTexture():Point('LEFT', 3, 2)
-	CraftCollapseAllButton:GetNormalTexture():Size(15)
-
-	CraftCollapseAllButton:SetHighlightTexture('')
-	CraftCollapseAllButton.SetHighlightTexture = E.noop
-
-	CraftCollapseAllButton:SetDisabledTexture(E.Media.Textures.MinusButton)
-	CraftCollapseAllButton.SetDisabledTexture = E.noop
-	CraftCollapseAllButton:GetDisabledTexture():Point('LEFT', 3, 2)
-	CraftCollapseAllButton:GetDisabledTexture():Size(15)
-	CraftCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
+	S:HandleCollapseTexture(CraftCollapseAllButton, nil, true)
+	CraftCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 
 	for i = 1, _G.CRAFTS_DISPLAYED do
 		local button = _G['Craft'..i]
+		S:HandleCollapseTexture(button, nil, true)
+
+		local normal = button:GetNormalTexture()
+		if normal then
+			normal:Size(14)
+			normal:Point('LEFT', 4, 1)
+		end
+
 		local highlight = _G['Craft'..i..'Highlight']
-
-		button:GetNormalTexture():Size(14)
-		button:GetNormalTexture():Point('LEFT', 4, 1)
-
-		highlight:SetTexture('')
-		highlight.SetTexture = E.noop
+		if highlight then
+			highlight:SetTexture(E.ClearTexture)
+			highlight.SetTexture = E.noop
+		end
 	end
 
 	for i = 1, _G.MAX_CRAFT_REAGENTS do
@@ -104,32 +88,10 @@ function S:SkinCraftFrame()
 	_G.CraftReagent6:Point('LEFT', _G.CraftReagent5, 'RIGHT', 3, 0)
 	_G.CraftReagent8:Point('LEFT', _G.CraftReagent7, 'RIGHT', 3, 0)
 
-	hooksecurefunc('CraftFrame_Update', function()
-		for i = 1, _G.CRAFTS_DISPLAYED do
-			local button = _G['Craft'..i]
-			local texture = button:GetNormalTexture():GetTexture()
-			if texture then
-				if strfind(texture, 'MinusButton') then
-					button:SetNormalTexture(E.Media.Textures.MinusButton)
-				elseif strfind(texture, 'PlusButton') then
-					button:SetNormalTexture(E.Media.Textures.PlusButton)
-				end
-			end
-		end
-
-		if CraftCollapseAllButton.collapsed then
-			CraftCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		else
-			CraftCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		end
-	end)
-
 	CraftIcon:CreateBackdrop()
 
 	hooksecurefunc('CraftFrame_SetSelection', function(id)
-		if ( not id ) then
-			return
-		end
+		if not id then return end
 
 		local CraftReagentLabel = _G.CraftReagentLabel
 		CraftReagentLabel:Point('TOPLEFT', _G.CraftDescription, 'BOTTOMLEFT', 0, -10)
@@ -143,10 +105,11 @@ function S:SkinCraftFrame()
 
 		local skillLink = GetCraftItemLink(id)
 		if skillLink then
-			local quality = select(3, GetItemInfo(skillLink))
+			local quality = GetItemQualityByID(skillLink)
 			if quality and quality > 1 then
-				CraftIcon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
-				_G.CraftName:SetTextColor(GetItemQualityColor(quality))
+				local r, g, b = E:GetItemQualityColor(quality)
+				CraftIcon.backdrop:SetBackdropBorderColor(r, g, b)
+				_G.CraftName:SetTextColor(r, g, b)
 			else
 				CraftIcon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				_G.CraftName:SetTextColor(1, 1, 1)
@@ -154,28 +117,30 @@ function S:SkinCraftFrame()
 		end
 
 		local numReagents = GetCraftNumReagents(id)
-		for i = 1, numReagents, 1 do
+		for i = 1, numReagents do
 			local _, _, reagentCount, playerReagentCount = GetCraftReagentInfo(id, i)
 			local reagentLink = GetCraftReagentItemLink(id, i)
 			local icon = _G['CraftReagent'..i..'IconTexture']
 			local name = _G['CraftReagent'..i..'Name']
 
 			if reagentLink then
-				local quality = select(3, GetItemInfo(reagentLink))
+				local quality = GetItemQualityByID(reagentLink)
 				if quality and quality > 1 then
-					icon.backdrop:SetBackdropBorderColor(GetItemQualityColor(quality))
-					if playerReagentCount < reagentCount then
-						name:SetTextColor(0.5, 0.5, 0.5)
+					local r, g, b = E:GetItemQualityColor(quality)
+					if playerReagentCount > reagentCount then
+						name:SetTextColor(r, g, b)
 					else
-						name:SetTextColor(GetItemQualityColor(quality))
+						name:SetTextColor(0.5, 0.5, 0.5)
 					end
+
+					icon.backdrop:SetBackdropBorderColor(r, g, b)
 				else
 					icon.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			end
 		end
 
-		if (numReagents < 5) then
+		if numReagents < 5 then
 			_G.CraftDetailScrollFrameScrollBar:Hide()
 			_G.CraftDetailScrollFrameTop:Hide()
 			_G.CraftDetailScrollFrameBottom:Hide()
@@ -187,4 +152,4 @@ function S:SkinCraftFrame()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_CraftUI', 'SkinCraftFrame')
+S:AddCallbackForAddon('Blizzard_CraftUI', 'SkinCraft')

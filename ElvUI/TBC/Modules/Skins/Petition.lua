@@ -9,17 +9,10 @@ function S:PetitionFrame()
 	local PetitionFrame = _G.PetitionFrame
 	S:HandleFrame(PetitionFrame, true, nil, 12, -17, -28, 65)
 
-	local buttons = {
-		_G.PetitionFrameSignButton,
-		_G.PetitionFrameRequestButton,
-		_G.PetitionFrameRenameButton,
-		_G.PetitionFrameCancelButton
-	}
-
-	for _, button in pairs(buttons) do
-		S:HandleButton(button)
-	end
-
+	S:HandleButton(_G.PetitionFrameSignButton)
+	S:HandleButton(_G.PetitionFrameRequestButton)
+	S:HandleButton(_G.PetitionFrameRenameButton)
+	S:HandleButton(_G.PetitionFrameCancelButton)
 	S:HandleCloseButton(_G.PetitionFrameCloseButton)
 
 	_G.PetitionFrameCharterTitle:SetTextColor(1, 1, 0)

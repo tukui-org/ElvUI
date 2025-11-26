@@ -3,10 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local HasPetUI = HasPetUI
-local UnitExists = UnitExists
-local GetPetHappiness = GetPetHappiness
 local hooksecurefunc = hooksecurefunc
+local GetPetHappiness = GetPetHappiness
+local UnitExists = UnitExists
+local HasPetUI = HasPetUI
 
 function S:PetStableFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
@@ -29,9 +29,9 @@ function S:PetStableFrame()
 
 	local PetStablePetInfo = _G.PetStablePetInfo
 	PetStablePetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
-	PetStablePetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
-	PetStablePetInfo:CreateBackdrop('Default')
-	PetStablePetInfo:Size(22)
+	PetStablePetInfo:OffsetFrameLevel(2, _G.PetModelFrame)
+	PetStablePetInfo:CreateBackdrop()
+	PetStablePetInfo:Size(24)
 
 	hooksecurefunc('PetStable_Update', function()
 		local hasPetUI, isHunterPet = HasPetUI()

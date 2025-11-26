@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local strfind, unpack = strfind, unpack
 local hooksecurefunc = hooksecurefunc
 
 function S:Blizzard_TrainerUI()
@@ -13,8 +12,8 @@ function S:Blizzard_TrainerUI()
 
 	_G.ClassTrainerExpandButtonFrame:StripTextures()
 
-	S:HandleDropDownBox(_G.ClassTrainerFrameFilterDropDown)
-	_G.ClassTrainerFrameFilterDropDown:Point('TOPRIGHT', -40, -64)
+	S:HandleDropDownBox(_G.ClassTrainerFrame.FilterDropdown)
+	_G.ClassTrainerFrame.FilterDropdown:Point('TOPRIGHT', -40, -64)
 
 	_G.ClassTrainerListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ClassTrainerListScrollFrameScrollBar)
@@ -38,61 +37,32 @@ function S:Blizzard_TrainerUI()
 		local skillIcon = _G.ClassTrainerSkillIcon:GetNormalTexture()
 		if skillIcon then
 			skillIcon:SetInside()
-			skillIcon:SetTexCoord(unpack(E.TexCoords))
+			skillIcon:SetTexCoords()
 
-			_G.ClassTrainerSkillIcon:SetTemplate('Default')
+			_G.ClassTrainerSkillIcon:SetTemplate()
 		end
 	end)
 
 	for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do
 		local button = _G['ClassTrainerSkill'..i]
+		S:HandleCollapseTexture(button, nil, true)
+
+		local normal = button:GetNormalTexture()
+		if normal then
+			normal:Size(16)
+			normal:Point('LEFT', 5, 0)
+		end
+
 		local highlight = _G['ClassTrainerSkill'..i..'Highlight']
-
-		button:SetNormalTexture(E.Media.Textures.PlusButton)
-		button.SetNormalTexture = E.noop
-
-		button:GetNormalTexture():Size(16)
-		button:GetNormalTexture():Point('LEFT', 5, 0)
-
-		highlight:SetTexture('')
-		highlight.SetTexture = E.noop
-
-		hooksecurefunc(button, 'SetNormalTexture', function(frame, texture)
-			local tex = frame:GetNormalTexture()
-
-			if strfind(texture, 'MinusButton') then
-				tex:SetTexture(E.Media.Textures.MinusButton)
-			elseif strfind(texture, 'PlusButton') then
-				tex:SetTexture(E.Media.Textures.PlusButton)
-			else
-				tex:SetTexture()
-			end
-		end)
+		if highlight then
+			highlight:SetTexture(E.ClearTexture)
+			highlight.SetTexture = E.noop
+		end
 	end
 
-	_G.ClassTrainerCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-	_G.ClassTrainerCollapseAllButton.SetNormalTexture = E.noop
-	_G.ClassTrainerCollapseAllButton:GetNormalTexture():SetPoint('LEFT', 3, 2)
-	_G.ClassTrainerCollapseAllButton:GetNormalTexture():Size(15)
-
-	_G.ClassTrainerCollapseAllButton:SetHighlightTexture('')
-	_G.ClassTrainerCollapseAllButton.SetHighlightTexture = E.noop
-
-	_G.ClassTrainerCollapseAllButton:SetDisabledTexture(E.Media.Textures.PlusButton)
-	_G.ClassTrainerCollapseAllButton.SetDisabledTexture = E.noop
-	_G.ClassTrainerCollapseAllButton:GetDisabledTexture():SetPoint('LEFT', 3, 2)
-	_G.ClassTrainerCollapseAllButton:GetDisabledTexture():Size(15)
-	_G.ClassTrainerCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
-
-	hooksecurefunc(_G.ClassTrainerCollapseAllButton, 'SetNormalTexture', function(button, texture)
-		local tex = button:GetNormalTexture()
-
-		if strfind(texture, 'MinusButton') then
-			tex:SetTexture(E.Media.Textures.MinusButton)
-		else
-			tex:SetTexture(E.Media.Textures.PlusButton)
-		end
-	end)
+	local ClassTrainerCollapseAllButton = _G.ClassTrainerCollapseAllButton
+	S:HandleCollapseTexture(ClassTrainerCollapseAllButton, nil, true)
+	ClassTrainerCollapseAllButton:SetHighlightTexture(E.ClearTexture)
 end
 
 S:AddCallbackForAddon('Blizzard_TrainerUI')

@@ -18,11 +18,10 @@ function S:TabardFrame()
 	S:HandleRotateButton(_G.TabardCharacterModelRotateLeftButton)
 	S:HandleRotateButton(_G.TabardCharacterModelRotateRightButton)
 
-	_G.TabardModel:CreateBackdrop()
 	_G.TabardFrameCostFrame:StripTextures()
 	_G.TabardFrameCustomizationFrame:StripTextures()
 
-	--Add Tabard Emblem back
+	-- Add Tabard Emblem back
 	local emblemFrames = {
 		_G.TabardFrameEmblemTopRight,
 		_G.TabardFrameEmblemBottomRight,
@@ -35,18 +34,32 @@ function S:TabardFrame()
 		frame:Show()
 	end
 
-	for i = 1, 5 do
-		local custom = 'TabardFrameCustomization'..i
-		_G[custom]:StripTextures()
-		S:HandleNextPrevButton(_G[custom..'LeftButton'])
-		S:HandleNextPrevButton(_G[custom..'RightButton'])
+	do
+		local i = 1
+		local button, previous = _G['TabardFrameCustomization'..i]
+		while button do
+			button:StripTextures()
 
-		if i > 1 then
-			_G[custom]:ClearAllPoints()
-			_G[custom]:Point('TOP', _G['TabardFrameCustomization'..i - 1], 'BOTTOM', 0, -6)
-		else
-			local point, anchor, point2, x, y = _G[custom]:GetPoint()
-			_G[custom]:Point(point, anchor, point2, x, y+4)
+			local left = _G['TabardFrameCustomization'..i..'LeftButton']
+			if left then
+				S:HandleNextPrevButton(left)
+			end
+
+			local right = _G['TabardFrameCustomization'..i..'RightButton']
+			if right then
+				S:HandleNextPrevButton(right)
+			end
+
+			if previous then
+				button:ClearAllPoints()
+				button:Point('TOP', previous, 'BOTTOM', 0, -6)
+			else
+				button:NudgePoint(0, 4)
+			end
+
+			i = i + 1
+			previous = button
+			button = _G['TabardFrameCustomization'..i]
 		end
 	end
 

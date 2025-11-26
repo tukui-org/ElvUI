@@ -3,9 +3,8 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
-local unpack, select = unpack, select
+local next = next
 
-local GetItemInfo = GetItemInfo
 local GetLootSlotInfo = GetLootSlotInfo
 local hooksecurefunc = hooksecurefunc
 local IsFishingLoot = IsFishingLoot
@@ -13,20 +12,21 @@ local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 
+local GetItemQualityByID = C_Item.GetItemQualityByID
+
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local LOOT, ITEMS = LOOT, ITEMS
 
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
-	for i=1, numItems do
+	for i = 1, numItems do
 		local frame = _G.LootHistoryFrame.itemFrames[i]
-		if frame and not frame.isSkinned then
+		if frame and not frame.IsSkinned then
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
 			frame.Icon:SetTexture(Icon)
-			frame.Icon:SetTexCoord(unpack(E.TexCoords))
+			frame.Icon:SetTexCoords()
 
 			-- create a backdrop around the icon
 			frame:CreateBackdrop()
@@ -34,19 +34,13 @@ local function UpdateLoots()
 			frame.Icon:SetParent(frame.backdrop)
 
 			local _, itemLink = C_LootHistory_GetItem(frame.itemIdx)
-			if itemLink then
-				local _, _, itemRarity = GetItemInfo(itemLink)
-
-				if (itemRarity) then
-					local color = ITEM_QUALITY_COLORS[itemRarity]
-
-					if (color) then
-						frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-					end
-				end
+			local itemRarity = itemLink and GetItemQualityByID(itemLink)
+			if itemRarity then
+				local r, g, b = E:GetItemQualityColor(itemRarity)
+				frame.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 
-			frame.isSkinned = true
+			frame.IsSkinned = true
 		end
 	end
 end
@@ -76,38 +70,47 @@ function S:LootFrame()
 
 	hooksecurefunc('LootHistoryFrame_FullUpdate', UpdateLoots)
 
-	-- Master Loot
+	-- Master Looter Frame
 	local MasterLooterFrame = _G.MasterLooterFrame
-	MasterLooterFrame:StripTextures()
-	MasterLooterFrame:SetTemplate()
+	MasterLooterFrame.NineSlice:SetTemplate('Transparent')
+	MasterLooterFrame.Item.NameBorderMid:StripTextures()
+	MasterLooterFrame.Item.NameBorderLeft:StripTextures()
+	MasterLooterFrame.Item.NameBorderRight:StripTextures()
 
 	hooksecurefunc('MasterLooterFrame_Show', function()
-		local b = MasterLooterFrame.Item
-		if b then
-			local i = b.Icon
-			local icon = i:GetTexture()
-			local c = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
+		local item = MasterLooterFrame.Item
+		if item then
+			local icon = item.Icon
+			local texture = icon:GetTexture()
 
-			b:StripTextures()
-			i:SetTexture(icon)
-			i:SetTexCoord(unpack(E.TexCoords))
-			b:CreateBackdrop()
-			b.backdrop:SetOutside(i)
-			b.backdrop:SetBackdropBorderColor(c.r, c.g, c.b)
+			if item.IconBorder then
+				item.IconBorder:SetAlpha(0)
+			end
+
+			item:StripTextures()
+			icon:SetTexture(texture)
+			icon:SetTexCoords()
+
+			if not item.backdrop then
+				item:CreateBackdrop()
+				item.backdrop:SetOutside(icon)
+			end
+
+			local r, g, b = E:GetItemQualityColor(_G.LootFrame.selectedQuality)
+			item.backdrop:SetBackdropBorderColor(r, g, b)
 		end
+	end)
 
-		for i = 1, MasterLooterFrame:GetNumChildren() do
-			local child = select(i, MasterLooterFrame:GetChildren())
-			if child and not child.isSkinned and not child:GetName() then
-				if child:IsObjectType('Button') then
-					if child:GetPushedTexture() then
-						S:HandleCloseButton(child)
-					else
-						child:SetTemplate()
-						child:StyleButton()
-					end
-					child.isSkinned = true
+	hooksecurefunc('MasterLooterFrame_UpdatePlayers', function()
+		for _, child in next, { MasterLooterFrame:GetChildren() } do
+			if not child.IsSkinned and not child:GetName() and child:IsObjectType('Button') then
+				if child:GetPushedTexture() then
+					S:HandleCloseButton(child)
+				else
+					child:SetTemplate()
+					child:StyleButton()
 				end
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -117,12 +120,9 @@ function S:LootFrame()
 	LootFrame:Height(LootFrame:GetHeight() - 30)
 	_G.LootFramePortraitOverlay:SetParent(E.HiddenFrame)
 
-	for i = 1, LootFrame:GetNumRegions() do
-		local region = select(i, LootFrame:GetRegions())
-		if(region:IsObjectType('FontString')) then
-			if(region:GetText() == ITEMS) then
-				LootFrame.Title = region
-			end
+	for _, region in next, { LootFrame:GetRegions() } do
+		if region:IsObjectType('FontString') and region:GetText() == ITEMS then
+			LootFrame.Title = region
 		end
 	end
 
@@ -133,20 +133,11 @@ function S:LootFrame()
 	for i = 1, _G.LOOTFRAME_NUMBUTTONS do
 		local button = _G['LootButton'..i]
 		_G['LootButton'..i..'NameFrame']:Hide()
+
 		S:HandleItemButton(button, true)
+		S:HandleIconBorder(button.IconBorder, button.backdrop)
 
-		button.IconBorder:SetTexture()
-		hooksecurefunc(button.IconBorder, 'SetVertexColor', function(s, r, g, b)
-			s:GetParent().backdrop:SetBackdropBorderColor(r, g, b)
-			s:SetTexture()
-		end)
-		hooksecurefunc(button.IconBorder, 'Hide', function(s)
-			s:GetParent().backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end)
-
-		local point, attachTo, point2, x, y = button:GetPoint()
-		button:ClearAllPoints()
-		button:Point(point, attachTo, point2, x, y+30)
+		button:NudgePoint(nil, 30, nil, nil, true)
 	end
 
 	hooksecurefunc('LootFrame_UpdateButton', function(index)
@@ -157,16 +148,16 @@ function S:LootFrame()
 			numLootItems = #LootFrame.AutoLootTable
 		end
 		if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
-			numLootToShow = numLootToShow - 1 -- make space for the page buttons
+			numLootToShow = numLootToShow - 1 -- Make space for the page buttons
 		end
 
 		local button = _G['LootButton'..index]
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index
-		if(button and button:IsShown()) then
+		if button and button:IsShown() then
 			local texture, _, isQuestItem, questId, isActive
-			if (LootFrame.AutoLootTable) then
+			if LootFrame.AutoLootTable then
 				local entry = LootFrame.AutoLootTable[slot]
-				if( entry.hide ) then
+				if entry.hide then
 					button:Hide()
 					return
 				else
@@ -194,7 +185,7 @@ function S:LootFrame()
 	LootFrame:HookScript('OnShow', function(frame)
 		if IsFishingLoot() then
 			frame.Title:SetText(L["Fishy Loot"])
-		elseif(not UnitIsFriend('player', 'target') and UnitIsDead'target') then
+		elseif not UnitIsFriend('player', 'target') and UnitIsDead('target') then
 			frame.Title:SetText(UnitName('target'))
 		else
 			frame.Title:SetText(LOOT)
