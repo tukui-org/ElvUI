@@ -196,6 +196,14 @@ function S:WorldMapFrame()
 	MapNavBar:Point('TOPLEFT', 1, -40)
 	S:HandleButton(MapNavBar.homeButton)
 	MapNavBar.homeButton.text:FontTemplate()
+	S:HandleButton(MapNavBar.overflowButton)
+	for _, tex in next, { MapNavBar.overflowButton:GetNormalTexture(), MapNavBar.overflowButton:GetPushedTexture() } do
+		S:SetupArrow(tex, 'left')
+		tex:SetTexCoord(0, 1, 0, 1)
+		tex:Size(14)
+		tex:ClearAllPoints()
+		tex:Point('CENTER')
+	end
 	S.HandleNavBarButtons(WorldMapFrame.NavBar)
 
 	-- Quest Frames
