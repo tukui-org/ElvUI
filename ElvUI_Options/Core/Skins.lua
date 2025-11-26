@@ -69,6 +69,10 @@ if E.Mists or E.Retail then
 	toggles.guild = L["Guild"]
 end
 
+if E.Retail or E.TBC then
+	toggles.editor = L["Editor Manager"]
+end
+
 if not E.Retail then
 	toggles.questTimers = L["Quest Timers"]
 end
@@ -91,7 +95,6 @@ if E.Retail then
 	toggles.covenantRenown = L["Covenant Renown"]
 	toggles.covenantSanctum = L["Covenant Sanctum"]
 	toggles.deathRecap = L["DEATH_RECAP_TITLE"]
-	toggles.editor = L["Editor Manager"]
 	toggles.expansionLanding = L["Expansion Landing Page"]
 	toggles.garrison = L["GARRISON_LOCATION_TOOLTIP"]
 	toggles.genericTrait = L["Generic Trait"]

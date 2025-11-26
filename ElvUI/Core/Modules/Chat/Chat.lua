@@ -4025,9 +4025,12 @@ function CH:Initialize()
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 	CH:RegisterEvent('CVAR_UPDATE')
 
+	if E.Retail or E.TBC then
+		CH:SecureHook(_G.EditModeManagerFrame, 'UpdateLayoutInfo', 'ResnapDock')
+	end
+
 	if E.Retail then
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
-		CH:SecureHook(_G.EditModeManagerFrame, 'UpdateLayoutInfo', 'ResnapDock')
 
 		if E.private.general.voiceOverlay then
 			CH:RegisterEvent('VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED', 'VoiceOverlay')
