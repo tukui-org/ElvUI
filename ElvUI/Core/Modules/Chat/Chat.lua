@@ -2035,11 +2035,11 @@ end
 
 -- Clone from ChatFrame.xml modified by Simpy
 local function FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
-	if not frame:IsShown() and ((frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral) or (frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab)) then
-		if (not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS or chatType == 'WHISPER' or chatType == 'BN_WHISPER')	--BN_WHISPER FIXME
-		and not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
-			_G.FCF_StartAlertFlash(frame)
-		end
+	if frame:IsShown() then return end
+
+	local allowAlerts = ((frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) or (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral)) and ((chatType == 'WHISPER' or chatType == 'BN_WHISPER') or (_G.CHAT_OPTIONS and not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS))
+	if allowAlerts and not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
+		_G.FCF_StartAlertFlash(frame)
 	end
 end
 
