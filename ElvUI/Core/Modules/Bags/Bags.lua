@@ -298,12 +298,12 @@ B.IsEquipmentSlot = {
 	INVTYPE_RANGEDRIGHT = true,
 }
 
-if E.Mists then
+if E.Mists or E.Wrath then
 	B.IsEquipmentSlot.INVTYPE_RELIC = true
 end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
-local bankOffset, maxBankSlots = (E.Classic or E.Mists) and 4 or 5, E.Classic and 10 or 11
+local bankOffset, maxBankSlots = (E.Classic or E.Mists or E.Wrath) and 4 or 5, E.Classic and 10 or 11
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
@@ -328,7 +328,7 @@ else
 	presistentEvents.PLAYERBANKSLOTS_CHANGED = true
 end
 
-if E.Classic then
+if E.Classic or E.Wrath then
 	tinsert(bagIDs, KEYRING_CONTAINER)
 end
 
@@ -1500,6 +1500,8 @@ end
 function B:UpdateTokens()
 	local bagFrame = B.BagFrame
 	local currencies = bagFrame.currencyButton
+	if not currencies then return end
+
 	for _, button in ipairs(currencies) do
 		button:Hide()
 	end
@@ -1516,7 +1518,7 @@ function B:UpdateTokens()
 		button.currencyID = info.currencyTypesID
 		button:Show()
 
-		if button.currencyID and E.Mists then
+		if button.currencyID and (E.Mists or E.Wrath) then
 			local tokens = _G.TokenFrameContainer.buttons
 			if tokens then
 				for _, token in next, tokens do
@@ -2540,7 +2542,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.sortButton:SetScript('OnClick', B.Container_ClickSortBag)
 
 		--Keyring Button
-		if E.Classic then
+		if E.Classic or E.Wrath then
 			f.keyButton = CreateFrame('Button', name..'KeyButton', f)
 			f.keyButton:Size(20)
 			f.keyButton:SetTemplate()
@@ -2568,7 +2570,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0)
 
-		if E.Retail or E.Mists then
+		if E.Retail or E.Mists or E.Wrath then
 			--Currency
 			f.currencyButton = CreateFrame('Frame', nil, f)
 			f.currencyButton:Point('BOTTOM', 0, -6)

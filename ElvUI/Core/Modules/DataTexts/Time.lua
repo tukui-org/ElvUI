@@ -292,7 +292,7 @@ local function OnClick(_, btn)
 
 	if btn == 'RightButton' then
 		ToggleFrame(_G.TimeManagerFrame)
-	elseif E.Retail or E.Mists then
+	elseif E.Retail or E.Mists or E.Wrath then
 		_G.GameTimeFrame:Click()
 	end
 end
@@ -455,7 +455,7 @@ local function OnEnter()
 	local dailyReset = C_DateAndTime_GetSecondsUntilDailyReset()
 	local weeklyReset = C_DateAndTime_GetSecondsUntilWeeklyReset()
 
-	if not E.Classic then
+	if not (E.Classic or E.Wrath) then
 		local addedLine = false
 		local worldbossLockoutList = {}
 

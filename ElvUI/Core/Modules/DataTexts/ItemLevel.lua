@@ -24,7 +24,7 @@ local r, g, b, avg, avgEquipped, avgPvp = 1, 1, 1, 0, 0, 0
 local displayString, db = ''
 
 local function OnEvent(self)
-	if E.Retail or E.Mists then
+	if E.Retail or E.Mists or E.Wrath then
 		avg, avgEquipped, avgPvp = GetAverageItemLevel()
 
 		if E.Retail then

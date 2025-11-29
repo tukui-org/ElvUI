@@ -27,7 +27,7 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayNumberString, totalAP)
 	else
-		self.text:SetFormattedText(displayNumberString, db.Label ~= '' and db.Label or ATTACK_POWER..': ', totalAP)
+		self.text:SetFormattedText(displayNumberString, db.Label ~= '' and db.Label or _G.ATTACK_POWER_TOOLTIP..': ', totalAP)
 	end
 end
 

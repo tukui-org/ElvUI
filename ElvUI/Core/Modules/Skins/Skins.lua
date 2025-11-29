@@ -988,7 +988,7 @@ do
 end
 
 function S:HandleButton(button, strip, isDecline, noStyle, createBackdrop, template, noGlossTex, overrideTex, frameLevel, regionsKill, regionsZero, isFilterButton, filterDirection)
-	if button.IsSkinned then return end
+	if not button or button.IsSkinned then return end
 
 	if button.SetNormalTexture and not overrideTex then button:SetNormalTexture(E.ClearTexture) end
 	if button.SetHighlightTexture then button:SetHighlightTexture(E.ClearTexture) end

@@ -69,7 +69,7 @@ E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
-E.allowRoles = E.Retail or E.Mists or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
+E.allowRoles = E.Retail or E.Mists or E.Wrath or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
@@ -1648,6 +1648,8 @@ function E:UpdateMisc(skipCallback)
 
 	if E.Retail then
 		TotemTracker:PositionAndSize()
+	elseif E.Wrath then
+		ActionBars:PositionAndSizeTotemBar()
 	end
 
 	if not skipCallback then
@@ -2059,7 +2061,7 @@ function E:Initialize()
 			E:Tutorials()
 		end
 
-		if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+		if E.Retail or E.Mists or E.Wrath or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 			E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 		end
 

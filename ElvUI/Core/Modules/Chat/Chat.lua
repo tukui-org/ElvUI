@@ -267,7 +267,7 @@ do --this can save some main file locals
 			-- Simpy Anniversary (6103: Dreamscythe)
 			z['Player-6103-02A886D5']	= itsSimpy -- Warlock: Simpy
 			z['Player-6103-0301DECC']	= itsSimpy -- Priest: Hunie
-		elseif E.Mists then
+		elseif E.Mists or E.Wrath then
 			-- Simpy (4385: Pagle)
 			z['Player-4385-05E5F6DF']	= itsSimpy -- Shaman:	Kybi
 			z['Player-4385-05E5F60B']	= itsSimpy -- Druid:	Puttietat
@@ -455,7 +455,7 @@ do --this can save some main file locals
 			-- Luckyone Classic Era (5233: Firemaw)
 			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
 			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
-		elseif E.Mists then
+		elseif E.Mists or E.Wrath then
 			-- Luckyone (Horde: Garalon, Alliance: Shek'zeer)
 			z['Player-4454-060E2FD9']	= ElvGreen -- [Horde] Mage
 			z['Player-4454-060E336E']	= ElvGreen -- [Horde] Hunter

@@ -28,7 +28,7 @@ local displayString, db = ''
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	if E.Mists then
+	if E.Mists or E.Wrath then
 		if E.myclass == 'HUNTER' then
 			DT.tooltip:AddLine(format('%s: %.2f', ATTACK_SPEED, UnitRangedDamage('player')), 1, 1, 1)
 		else
@@ -40,13 +40,13 @@ local function OnEnter()
 		DT.tooltip:AddLine(format('%s: %s%.2f%%|r', STAT_HASTE, (haste < 0 and (not E.Retail or not GetPVPGearStatRules())) and '|cffFF3333' or '|cffFFFFFF', haste), 1, 1, 1)
 	end
 
-	local rating = (E.Mists and E.myclass == 'HUNTER' and CR_HASTE_RANGED) or CR_HASTE_MELEE
+	local rating = ((E.Mists or E.Wrath) and E.myclass == 'HUNTER' and CR_HASTE_RANGED) or CR_HASTE_MELEE
 	DT.tooltip:AddLine(format('%s'..STAT_HASTE_BASE_TOOLTIP, _G['STAT_HASTE_'..E.myclass..'_TOOLTIP'] or STAT_HASTE_TOOLTIP, BreakUpLargeNumbers(GetCombatRating(rating)), GetCombatRatingBonus(rating)), nil, nil, nil, true)
 	DT.tooltip:Show()
 end
 
 local function OnEvent(self)
-	local haste = E.Mists and ((E.myclass == 'HUNTER' and GetRangedHaste()) or GetMeleeHaste()) or GetHaste()
+	local haste = (E.Mists or E.Wrath) and ((E.myclass == 'HUNTER' and GetRangedHaste()) or GetMeleeHaste()) or GetHaste()
 
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, haste)
@@ -63,4 +63,4 @@ local function ApplySettings(self, hex)
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
-DT:RegisterDatatext('Haste', STAT_CATEGORY_ENHANCEMENTS, E.Mists and { 'UNIT_STATS', 'UNIT_ATTACK_SPEED' } or { 'UNIT_STATS', 'UNIT_SPELL_HASTE', 'UNIT_AURA' }, OnEvent, nil, nil, not E.Classic and OnEnter, nil, STAT_HASTE, nil, ApplySettings)
+DT:RegisterDatatext('Haste', STAT_CATEGORY_ENHANCEMENTS, (E.Mists or E.Wrath) and { 'UNIT_STATS', 'UNIT_ATTACK_SPEED' } or { 'UNIT_STATS', 'UNIT_SPELL_HASTE', 'UNIT_AURA' }, OnEvent, nil, nil, not E.Classic and OnEnter, nil, STAT_HASTE, nil, ApplySettings)

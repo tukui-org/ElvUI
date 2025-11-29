@@ -303,8 +303,8 @@ local function Visibility(self, event, unit)
 		ClassPowerID = (oUF.isRetail and CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and CurrentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
 	end
 
-	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
-		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
+	if (oUF.isRetail or oUF.isMists or oUF.isWrath) and UnitHasVehicleUI('player') then
+		shouldEnable = (oUF.isMists or oUF.isWrath) and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif ClassPowerID then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 		if not RequirePower or RequirePower == UnitPowerType('player') then
@@ -385,7 +385,7 @@ function ClassPowerEnable(self)
 
 	self.ClassPower.__isEnabled = true
 
-	if (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI('player') then
+	if (oUF.isRetail or oUF.isMists or oUF.isWrath) and UnitHasVehicleUI('player') then
 		Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
 	else
 		Path(self, 'ClassPowerEnable', 'player', ClassPowerType[ClassPowerID])

@@ -477,7 +477,7 @@ end
 function UF:Runes_GetColor(rune, colors, classPower)
 	local value = rune:GetValue()
 
-	if E.Mists then
+	if E.Mists or E.Wrath then
 		local _, maxDuration = rune:GetMinMaxValues()
 		local duration = value == maxDuration and 1 or ((value * maxDuration) / 255) + .35
 

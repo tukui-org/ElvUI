@@ -11,7 +11,7 @@ local CR_HASTE_SPELL = CR_HASTE_SPELL
 local displayString = ''
 
 local function OnEvent(self)
-	self.text:SetFormattedText(displayString, E.Mists and UnitSpellHaste('player') or GetCombatRatingBonus(CR_HASTE_SPELL) or 0)
+	self.text:SetFormattedText(displayString, (E.Mists or E.Wrath) and UnitSpellHaste('player') or GetCombatRatingBonus(CR_HASTE_SPELL) or 0)
 end
 
 local function ApplySettings(_, hex)
