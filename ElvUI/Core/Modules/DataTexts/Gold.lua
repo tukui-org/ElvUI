@@ -246,7 +246,7 @@ local function OnEnter()
 		DT.tooltip:AddDoubleLine(L["Warband:"], E:FormatMoney(warbandGold or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
 	end
 
-	if E.Retail or E.Mists then
+	if E.Retail or E.Mists or E.Wrath then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 

@@ -135,7 +135,7 @@ function BL:ObjectiveTracker_Expand(frame)
 end
 
 function BL:ObjectiveTracker_AutoHideOnShow()
-	local tracker = (E.Mists and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+	local tracker = ((E.Mists or E.Wrath) and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 	if tracker and BL:ObjectiveTracker_IsCollapsed(tracker) then
 		BL:ObjectiveTracker_Expand(tracker)
 	end
@@ -146,7 +146,7 @@ do
 	function BL:ObjectiveTracker_AutoHide()
 		if E.OtherAddons.BigWigs or E.OtherAddons.DBM then return end
 
-		local tracker = (E.Mists and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+		local tracker = ((E.Mists or E.Wrath) and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 		if not tracker then return end
 
 		if not AutoHider then
@@ -192,7 +192,9 @@ function BL:Initialize()
 
 	if not E.Classic then
 		BL:PositionVehicleFrame()
+	end
 
+	if not (E.Classic or E.Wrath) then
 		if not E.OtherAddons.SimplePowerBar then
 			BL:PositionAltPowerBar()
 			BL:SkinAltPowerBar()

@@ -137,7 +137,7 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 ------------------------------------------------------------------------
 
 Tags.Env.UnitEffectiveLevel = function(unit)
-	if E.Retail or E.Mists then
+	if E.Retail then
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return UnitLevel(unit)
@@ -279,7 +279,7 @@ Tags.Env.GetClassPower = function(unit)
 
 		local power = ElvUF.colors.ClassBars[unitClass]
 		local warlockColor = (barType == POWERTYPE_BURNING_EMBERS and power.BURNING_EMBERS[Min]) or (barType == POWERTYPE_DEMONIC_FURY and power.DEMONIC_FURY) or power.SOUL_SHARDS
-		local color = (mistWarlock and warlockColor) or (monk and power[Min]) or (dk and (E.Mists and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
+		local color = (mistWarlock and warlockColor) or (monk and power[Min]) or (dk and ((E.Mists or E.Wrath) and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
 		r, g, b = color.r, color.g, color.b
 	else
 		Min = UnitPower(unit, POWERTYPE_COMBOPOINTS)
@@ -1481,7 +1481,7 @@ E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	end
 end, not E.Classic)
 
-if E.Classic then
+if E.Classic or E.Wrath then
 	local GetPetHappiness = GetPetHappiness
 	local GetPetFoodTypes = GetPetFoodTypes
 

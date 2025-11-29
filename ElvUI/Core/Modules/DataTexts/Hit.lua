@@ -32,7 +32,7 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, hitPercent + hitPercentFromTalents)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_HIT_CHANCE..': ', hitPercent + hitPercentFromTalents)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or (L["Hit"] or STAT_HIT_CHANCE)..': ', hitPercent + hitPercentFromTalents)
 	end
 end
 
@@ -59,4 +59,4 @@ local function ApplySettings(self, hex)
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 end
 
-DT:RegisterDatatext('Hit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_EQUIPMENT_CHANGED' }, OnEvent, nil, nil, OnEnter, nil, STAT_HIT_CHANCE, nil, ApplySettings)
+DT:RegisterDatatext('Hit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_EQUIPMENT_CHANGED' }, OnEvent, nil, nil, OnEnter, nil, L["Hit"] or STAT_HIT_CHANCE, nil, ApplySettings)

@@ -67,6 +67,8 @@ if E.Mists then -- also handled in Elements/Power
 	classPowers[14] = PowerType.BurningEmbers or 14
 	classPowers[15] = PowerType.DemonicFury or 15
 	classPowers[28] = PowerType.ShadowOrbs or 28
+elseif E.Wrath then -- also handled in Elements/Power
+	classPowers[4] = PowerType.RunicPower
 elseif E.Retail then
 	classPowers[4] = PowerType.RunicPower
 	classPowers[5] = PowerType.PAIN

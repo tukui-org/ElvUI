@@ -122,7 +122,7 @@ local function Update(self, event, unit)
 		(element.Focus and not oUF.isClassic and UnitExists('focus')) or
 		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
 		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
-		(element.Vehicle and (oUF.isRetail or oUF.isMists) and UnitHasVehicleUI(unit)) or
+		(element.Vehicle and (oUF.isRetail or oUF.isMists or oUF.isWrath) and UnitHasVehicleUI(unit)) or
 		(element.DynamicFlight and oUF.isRetail and not isGliding) or
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
 	then
@@ -336,7 +336,7 @@ if not oUF.isClassic then
 	}
 end
 
-if oUF.isRetail or oUF.isMists then
+if oUF.isRetail or oUF.isMists or oUF.isWrath then
 	options.Vehicle = {
 		enable = function(self)
 			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
