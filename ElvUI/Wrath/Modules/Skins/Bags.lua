@@ -6,13 +6,13 @@ local _G = _G
 local select, unpack = select, unpack
 local hooksecurefunc = hooksecurefunc
 
-local ContainerIDToInventoryID = ContainerIDToInventoryID or (C_Container and C_Container.ContainerIDToInventoryID)
-local GetContainerNumFreeSlots = GetContainerNumFreeSlots or (C_Container and C_Container.GetContainerNumFreeSlots)
-local GetContainerItemLink = GetContainerItemLink or (C_Container and C_Container.GetContainerItemLink)
-local GetInventoryItemLink = GetInventoryItemLink or (C_Container and C_Container.GetInventoryItemLink)
-local GetItemQualityColor = GetItemQualityColor
+local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
+local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
+local GetContainerItemLink = C_Container.GetContainerItemLink
+local GetInventoryItemLink = C_Container.GetInventoryItemLink or GetInventoryItemLink
+local GetItemInfo = C_Item.GetItemInfo
+local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetInventoryItemID = GetInventoryItemID
-local GetItemInfo = GetItemInfo
 
 local BANK_CONTAINER = Enum.BagIndex.Bank
 local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
@@ -22,7 +22,7 @@ local bagIconCache = {
 	[0] = E.Media.Textures.Backpack
 }
 
-local function setBagIcon(frame, texture)
+local function SetBagIcon(frame, texture)
 	if not frame.BagIcon then
 		local portraitButton = _G[frame:GetName()..'PortraitButton']
 
@@ -33,7 +33,7 @@ local function setBagIcon(frame, texture)
 		portraitButton.hover:SetAllPoints()
 
 		frame.BagIcon = portraitButton:CreateTexture()
-		frame.BagIcon:SetTexCoord(unpack(E.TexCoords))
+		frame.BagIcon:SetTexCoords()
 		frame.BagIcon:SetAllPoints()
 	end
 
@@ -42,6 +42,8 @@ end
 
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
+
+	S:HandleEditBox(_G.BagItemSearchBox)
 
 	-- ContainerFrame
 	for i = 1, _G.NUM_CONTAINER_FRAMES do
@@ -62,7 +64,7 @@ function S:ContainerFrame()
 			local icon = _G['ContainerFrame'..i..'Item'..j..'IconTexture']
 			if icon then
 				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetTexCoords()
 			end
 
 			local questIcon = _G['ContainerFrame'..i..'Item'..j..'IconQuestTexture']
@@ -90,9 +92,9 @@ function S:ContainerFrame()
 				bagIconCache[itemID] = select(10, GetItemInfo(itemID))
 			end
 
-			setBagIcon(frame, bagIconCache[itemID])
+			SetBagIcon(frame, bagIconCache[itemID])
 		else
-			setBagIcon(frame, bagIconCache[id])
+			SetBagIcon(frame, bagIconCache[id])
 		end
 	end)
 
@@ -125,7 +127,7 @@ function S:ContainerFrame()
 						questIcon:Show()
 					end
 				elseif quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					item:SetBackdropBorderColor(r, g, b)
 					item.ignoreBorderColors = true
 				else
@@ -139,15 +141,20 @@ function S:ContainerFrame()
 		end
 	end)
 
+	if _G.BackpackTokenFrame then
+		_G.BackpackTokenFrame:StripTextures()
+	end
+
 	-- BankFrame
 	local BankFrame = _G.BankFrame
 	BankFrame:StripTextures(true)
-	S:HandleFrame(BankFrame, true, nil, 12, 0, 10, 80)
-
-	S:HandleCloseButton(_G.BankCloseButton, BankFrame.backdrop)
+	S:HandleFrame(BankFrame, true, nil, 6)
+	S:HandleCloseButton(_G.BankFrameCloseButton, BankFrame.backdrop)
+	S:HandleEditBox(_G.BankItemSearchBox)
 
 	_G.BankSlotsFrame:StripTextures()
 
+	_G.BankFrameMoneyFrame:StripTextures()
 	_G.BankFrameMoneyFrame:Point('RIGHT', 0, 0)
 
 	for i = 1, _G.NUM_BANKGENERIC_SLOTS do
@@ -162,7 +169,7 @@ function S:ContainerFrame()
 		button.IconOverlay:StripTextures()
 
 		icon:SetInside()
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 
 		button.IconQuestTexture:SetTexture(E.Media.Textures.BagQuestIcon)
 		button.IconQuestTexture.SetTexture = E.noop
@@ -183,16 +190,16 @@ function S:ContainerFrame()
 			button:StyleButton()
 
 			button.icon:SetInside()
-			button.icon:SetTexCoord(unpack(E.TexCoords))
+			button.icon:SetTexCoords()
 
 			button.HighlightFrame.HighlightTexture:SetInside()
 			button.HighlightFrame.HighlightTexture:SetTexture(unpack(E.media.rgbvaluecolor), 0.3)
 
 			local link = GetInventoryItemLink('player', ContainerIDToInventoryID(id))
 			if link then
-				local _, _, quality = GetItemInfo(link)
+				local quality = GetItemQualityByID(link)
 				if quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					button:SetBackdropBorderColor(r, g, b)
 					button.ignoreBorderColors = true
 				else
@@ -221,7 +228,7 @@ function S:ContainerFrame()
 						questIcon:Show()
 					end
 				elseif quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					button:SetBackdropBorderColor(r, g, b)
 					button.ignoreBorderColors = true
 				else

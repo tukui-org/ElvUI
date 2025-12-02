@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, next = gsub, next
+local gsub = gsub
 local hooksecurefunc = hooksecurefunc
 
 local GossipTextColors = {
@@ -51,30 +51,32 @@ local function ItemTextPage_SetTextColor(pageText, headerType, r, g, b)
 	end
 end
 
-local function GreetingPanel_Update(frame)
-	for _, button in next, { frame.ScrollTarget:GetChildren() } do
-		if not button.IsSkinned then
-			if button.GreetingText then
-				button.GreetingText:SetTextColor(1, 1, 1)
-				hooksecurefunc(button.GreetingText, 'SetTextColor', Gossip_SetTextColor)
-			end
-
-			local fontString = button.GetFontString and button:GetFontString()
-			if fontString then
-				fontString:SetTextColor(1, 1, 1)
-				hooksecurefunc(fontString, 'SetTextColor', Gossip_SetTextColor)
-
-				Gossip_SetText(button, button:GetText())
-				hooksecurefunc(button, 'SetText', Gossip_SetText)
-				hooksecurefunc(button, 'SetFormattedText', Gossip_SetFormattedText)
-			end
-
-			button.IsSkinned = true
+local function GreetingPanel_UpdateChild(button)
+	if not button.IsSkinned then
+		if button.GreetingText then
+			button.GreetingText:SetTextColor(1, 1, 1)
+			hooksecurefunc(button.GreetingText, 'SetTextColor', Gossip_SetTextColor)
 		end
+
+		local fontString = button.GetFontString and button:GetFontString()
+		if fontString then
+			fontString:SetTextColor(1, 1, 1)
+			hooksecurefunc(fontString, 'SetTextColor', Gossip_SetTextColor)
+
+			Gossip_SetText(button, button:GetText())
+			hooksecurefunc(button, 'SetText', Gossip_SetText)
+			hooksecurefunc(button, 'SetFormattedText', Gossip_SetFormattedText)
+		end
+
+		button.IsSkinned = true
 	end
 end
 
-local function createParchment(frame)
+local function GreetingPanel_Update(frame)
+	frame:ForEachFrame(GreetingPanel_UpdateChild)
+end
+
+local function CreateParchment(frame)
 	local tex = frame:CreateTexture(nil, 'ARTWORK')
 	tex:SetTexture([[Interface\QuestFrame\QuestBG]])
 	tex:SetTexCoord(0, 0.586, 0.02, 0.655)
@@ -87,31 +89,29 @@ function S:GossipFrame()
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame, true)
 	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
-	S:HandleCloseButton(_G.ItemTextCloseButton)
+	S:HandleCloseButton(_G.GossipFrame.CloseButton)
 
 	local GreetingPanel = _G.GossipFrame.GreetingPanel
 	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
 	S:HandleButton(GreetingPanel.GoodbyeButton, true)
+	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
 
 	GreetingPanel:StripTextures()
 	GreetingPanel:CreateBackdrop('Transparent')
 	GreetingPanel.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, 0, 0)
-	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 80)
+	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 4)
 
 	local ItemTextFrame = _G.ItemTextFrame
 	ItemTextFrame:StripTextures()
-	ItemTextFrame:CreateBackdrop('Transparent')
-	ItemTextFrame.backdrop:ClearAllPoints()
-	ItemTextFrame.backdrop:Point('TOPLEFT', ItemTextFrame, 5, -10)
-	ItemTextFrame.backdrop:Point('BOTTOMRIGHT', ItemTextFrame, -25, 45)
+	ItemTextFrame:SetTemplate('Transparent')
 
 	local ItemTextScrollFrame = _G.ItemTextScrollFrame
 	ItemTextScrollFrame:DisableDrawLayer('ARTWORK')
 	ItemTextScrollFrame:DisableDrawLayer('BACKGROUND')
 
 	GossipFrame.backdrop:ClearAllPoints()
-	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -10, 70)
-	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 40, 40)
+	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -8, 69)
+	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 32, -30)
 
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
@@ -120,6 +120,11 @@ function S:GossipFrame()
 		_G.QuestFont:SetTextColor(1, 1, 1)
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 
+		_G.ItemTextMaterialBotLeft:SetAlpha(0)
+		_G.ItemTextMaterialBotRight:SetAlpha(0)
+		_G.ItemTextMaterialTopLeft:SetAlpha(0)
+		_G.ItemTextMaterialTopRight:SetAlpha(0)
+
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
 		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
 
@@ -127,11 +132,16 @@ function S:GossipFrame()
 			GossipFrame.Background:Hide()
 		end
 	else
-		local spellTex = createParchment(GreetingPanel)
+		_G.ItemTextMaterialBotLeft:SetDrawLayer('ARTWORK', 1)
+		_G.ItemTextMaterialBotRight:SetDrawLayer('ARTWORK', 1)
+		_G.ItemTextMaterialTopLeft:SetDrawLayer('ARTWORK', 1)
+		_G.ItemTextMaterialTopRight:SetDrawLayer('ARTWORK', 1)
+
+		local spellTex = CreateParchment(GreetingPanel)
 		spellTex:SetInside(GreetingPanel.backdrop)
 		GreetingPanel.spellTex = spellTex
 
-		local itemTex = createParchment(ItemTextFrame)
+		local itemTex = CreateParchment(ItemTextFrame)
 		itemTex:SetInside(ItemTextScrollFrame, -5)
 		ItemTextFrame.itemTex = itemTex
 	end

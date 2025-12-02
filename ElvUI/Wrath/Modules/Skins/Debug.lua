@@ -5,6 +5,8 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+
 local FrameTexs = {
 	'TopLeft',
 	'TopRight',
@@ -26,7 +28,7 @@ local function SkinOnShow()
 
 	ScriptErrorsFrame.ScrollFrame:SetTemplate()
 	ScriptErrorsFrame.ScrollFrame.Text:FontTemplate(nil, 13)
-	ScriptErrorsFrame.ScrollFrame:SetFrameLevel(ScriptErrorsFrame.ScrollFrame:GetFrameLevel() + 2)
+	ScriptErrorsFrame.ScrollFrame:OffsetFrameLevel(2)
 
 	S:HandleTrimScrollBar(_G.ScriptErrorsFrame.ScrollFrame.ScrollBar)
 	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('TOPLEFT', ScriptErrorsFrame.ScrollFrame, 'TOPRIGHT', 4, 2)
@@ -89,7 +91,7 @@ local function SkinTableAttributeDisplay(frame)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
 
-	frame.isSkinned = true
+	frame.IsSkinned = true
 end
 
 function S:ScriptErrorsFrame()
@@ -109,7 +111,7 @@ function S:Blizzard_DebugTools()
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
 	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(frame)
-		if frame.ScrollFrameArt and not frame.isSkinned then
+		if frame.ScrollFrameArt and not frame.IsSkinned then
 			SkinTableAttributeDisplay(frame)
 		end
 	end)
@@ -119,7 +121,7 @@ end
 S:AddCallback('ScriptErrorsFrame')
 
 -- FrameStack, TableInspect Skins
-if _G.IsAddOnLoaded('Blizzard_DebugTools') then
+if IsAddOnLoaded('Blizzard_DebugTools') then
 	S:AddCallback('Blizzard_DebugTools')
 else
 	S:AddCallbackForAddon('Blizzard_DebugTools')

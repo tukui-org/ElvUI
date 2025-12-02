@@ -2,90 +2,147 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
-local unpack = unpack
-local ipairs, pairs = ipairs, pairs
+local pairs, format = pairs, format
+local unpack, next = unpack, next
 
-local HasPetUI = HasPetUI
 local hooksecurefunc = hooksecurefunc
-local GetPetHappiness = GetPetHappiness
-local GetSkillLineInfo = GetSkillLineInfo
-local GetItemQualityColor = GetItemQualityColor
+local UnitResistance = UnitResistance
 local GetInventoryItemQuality = GetInventoryItemQuality
+local GetItemQualityByID = C_Item.GetItemQualityByID
+local HasPetUI = HasPetUI
 
-local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
-local NUM_COMPANIONS_PER_PAGE = NUM_COMPANIONS_PER_PAGE
-local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
+local GetContainerItemID = C_Container.GetContainerItemID
+local EquipmentManager_UnpackLocation = EquipmentManager_UnpackLocation
+local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
+local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
+local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
+local STAT_FORMAT = STAT_FORMAT
+local HONOR_CURRENCY = HONOR_CURRENCY
 
-local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
+local spellSchoolIcon = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
 
-local ResistanceCoords = {
-	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-	{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-	{ 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-	{ 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+local FLYOUT_LOCATIONS = {
+	[0xFFFFFFFF] = 'PLACEINBAGS',
+	[0xFFFFFFFE] = 'IGNORESLOT',
+	[0xFFFFFFFD] = 'UNIGNORESLOT'
 }
 
-local function HandleTabs()
-	_G.PetPaperDollFrameTab1:ClearAllPoints()
-	_G.PetPaperDollFrameTab1:Point('TOPLEFT', _G.PetPaperDollFrameCompanionFrame, 88, -40)
+local function EquipmentManagerPane_UpdateChild(child)
+	if child.icon and not child.IsSkinned then
+		child.BgTop:SetTexture(E.ClearTexture)
+		child.BgMiddle:SetTexture(E.ClearTexture)
+		child.BgBottom:SetTexture(E.ClearTexture)
+		S:HandleIcon(child.icon)
+		child.HighlightBar:SetColorTexture(1, 1, 1, .25)
+		child.HighlightBar:SetDrawLayer('BACKGROUND')
+		child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
+		child.SelectedBar:SetDrawLayer('BACKGROUND')
 
-	local lastTab
-	for index, tab in next, { _G.CharacterFrameTab1, HasPetUI() and _G.CharacterFrameTab2 or nil, _G.CharacterFrameTab3, _G.CharacterFrameTab4, _G.CharacterFrameTab5 } do
-		tab:ClearAllPoints()
+		child.IsSkinned = true
+	end
+end
 
-		if index == 1 then
-			tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
+local function EquipmentManagerPane_Update(frame)
+	frame:ForEachFrame(EquipmentManagerPane_UpdateChild)
+end
+
+local function TitleManagerPane_UpdateChild(child)
+	if not child.IsSkinned then
+		child:DisableDrawLayer('BACKGROUND')
+		child.IsSkinned = true
+	end
+end
+
+local function TitleManagerPane_Update(frame)
+	frame:ForEachFrame(TitleManagerPane_UpdateChild)
+end
+
+local function HandleItemButtonQuality(button, rarity)
+	local r, g, b = E:GetItemQualityColor(rarity and rarity > 1 and rarity)
+	button:SetBackdropBorderColor(r, g, b)
+end
+
+local function PaperDollItemButtonQuality(button)
+	if not button.SetBackdropBorderColor then return end
+
+	local id = button.id or button:GetID()
+	local rarity = id and GetInventoryItemQuality('player', id)
+
+	HandleItemButtonQuality(button, rarity)
+end
+
+local function EquipmentItemButtonQuality(button)
+	if not button.SetBackdropBorderColor then return end
+
+	local location, rarity = button.location
+	if location then
+		local _, _, bags, slot, bag = EquipmentManager_UnpackLocation(location)
+		if bags then
+			local itemID = GetContainerItemID(bag, slot)
+			rarity = itemID and GetItemQualityByID(itemID)
 		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			rarity = GetInventoryItemQuality('player', slot)
 		end
+	end
 
-		lastTab = tab
+	HandleItemButtonQuality(button, rarity)
+end
+
+local function PaperDollFrameSetResistance(frame, unit, index)
+	local _, resistance = UnitResistance(unit, index)
+	local icon = format('|T%s%d:12:12:0:0:64:64:4:55:4:55|t', spellSchoolIcon, index + 1)
+	local name = frame:GetName()
+
+	_G[name..'Label']:SetFormattedText('%s '..STAT_FORMAT, icon, _G['SPELL_SCHOOL'..index..'_CAP'])
+
+	frame.tooltip = format('%s %s'..PAPERDOLLFRAME_TOOLTIP_FORMAT..' %s%s', icon, HIGHLIGHT_FONT_COLOR_CODE, _G['RESISTANCE'..index..'_NAME'], resistance or 0, FONT_COLOR_CODE_CLOSE)
+end
+
+local function TabTextureCoords(tex, x1)
+	if x1 ~= 0.16001 then
+		tex:SetTexCoord(0.16001, 0.86, 0.16, 0.86)
 	end
 end
 
-local function Update_GearManagerDialogPopup()
-	_G.GearManagerDialogPopup:ClearAllPoints()
-	_G.GearManagerDialogPopup:Point('TOPLEFT', _G.GearManagerDialog, 'TOPRIGHT', 4, 0)
-end
+local function FixSidebarTabCoords()
+	local hasDejaCharacterStats = E.OtherAddons.DejaCharacterStats
 
-local function Update_Happiness(frame)
-	local happiness = GetPetHappiness()
-	local _, isHunterPet = HasPetUI()
-	if not (happiness and isHunterPet) then return end
+	local index = 1
+	local tab = _G['PaperDollSidebarTab'..index]
+	while tab do
+		if not tab.backdrop then
+			tab:CreateBackdrop()
+			tab.Icon:SetAllPoints()
 
-	local texture = frame:GetRegions()
-	if happiness == 1 then
-		texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
-	elseif happiness == 2 then
-		texture:SetTexCoord(0.22, 0.345, 0.06, 0.30)
-	elseif happiness == 3 then
-		texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
+			tab.Highlight:SetColorTexture(1, 1, 1, 0.3)
+			tab.Highlight:SetAllPoints()
+
+			if hasDejaCharacterStats then
+				tab.Hider:SetTexture()
+			else
+				tab.Hider:SetColorTexture(0, 0, 0, 0.8)
+			end
+
+			tab.Hider:SetAllPoints(tab.backdrop)
+			tab.TabBg:Kill()
+
+			if index == 1 then
+				for _, region in next, { tab:GetRegions() } do
+					region:SetTexCoord(0.16, 0.86, 0.16, 0.86)
+
+					hooksecurefunc(region, 'SetTexCoord', TabTextureCoords)
+				end
+			end
+		end
+
+		index = index + 1
+		tab = _G['PaperDollSidebarTab'..index]
 	end
 end
 
-local function HandleResistanceFrame(frameName)
-	for i = 1, 5 do
-		local frame = _G[frameName..i]
-		local icon, text = frame:GetRegions()
-		frame:Size(24)
-		frame:SetTemplate()
-
-		if i ~= 1 then
-			frame:ClearAllPoints()
-			frame:Point('TOP', _G[frameName..i - 1], 'BOTTOM', 0, -1)
-		end
-
-		if icon then
-			icon:SetInside()
-			icon:SetTexCoord(unpack(ResistanceCoords[i]))
-			icon:SetDrawLayer('ARTWORK')
-		end
-
-		if text then
-			text:SetDrawLayer('OVERLAY')
-		end
+local function BackdropDesaturated(background, value)
+	if value and background.ignoreDesaturated then
+		background:SetDesaturated(false)
 	end
 end
 
@@ -93,9 +150,12 @@ local function UpdateCurrencySkins()
 	local TokenFramePopup = _G.TokenFramePopup
 	if TokenFramePopup then
 		TokenFramePopup:ClearAllPoints()
-		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', -33, -12)
+		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 1, 0)
 		TokenFramePopup:StripTextures()
 		TokenFramePopup:SetTemplate('Transparent')
+
+		S:HandleCheckBox(_G.TokenFramePopupInactiveCheckbox)
+		S:HandleCheckBox(_G.TokenFramePopupBackpackCheckbox)
 	end
 
 	local TokenFrameContainer = _G.TokenFrameContainer
@@ -115,7 +175,7 @@ local function UpdateCurrencySkins()
 			if button.itemID == HONOR_CURRENCY and E.myfaction then
 				button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
 			else
-				button.icon:SetTexCoord(unpack(E.TexCoords))
+				button.icon:SetTexCoords()
 			end
 
 			button.icon:Size(17)
@@ -143,7 +203,6 @@ local function UpdateCurrencySkins()
 			if button.isHeader then
 				button.backdrop:Hide()
 
-				-- TODO: Wrath Fix some quirks for the header point keeps changing after you click the expandIcon button.
 				for _, region in next, { button:GetRegions() } do
 					if region:IsObjectType('FontString') and region:GetText() then
 						region:ClearAllPoints()
@@ -167,55 +226,72 @@ local function UpdateCurrencySkins()
 	end
 end
 
+local function HandleTabs()
+	local lastTab
+	for index, tab in next, { _G.CharacterFrameTab1, HasPetUI() and _G.CharacterFrameTab2 or nil, _G.CharacterFrameTab3, _G.CharacterFrameTab4, _G.CharacterFrameTab5 } do
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -10, 0)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+		end
+
+		lastTab = tab
+	end
+end
+
+local function EquipmentDisplayButton(button)
+	if not button.isHooked then
+		button:SetNormalTexture(E.ClearTexture)
+		button:SetPushedTexture(E.ClearTexture)
+		button:SetTemplate()
+		button:StyleButton()
+
+		button.icon:SetInside()
+		button.icon:SetTexCoords()
+
+		button.isHooked = true
+	end
+
+	if FLYOUT_LOCATIONS[button.location] then -- special slots
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
+local function EquipmentUpdateItems()
+	local frame = _G.EquipmentFlyoutFrame.buttonFrame
+	if not frame.template then
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
+	end
+
+	local width, height = frame:GetSize()
+	frame:Size(width+3, height)
+
+	for _, button in next, _G.EquipmentFlyoutFrame.buttons do
+		EquipmentDisplayButton(button)
+	end
+end
+
+local function EquipmentUpdateNavigation()
+	local navi = _G.EquipmentFlyoutFrame.NavigationFrame
+	if not navi then return end
+
+	navi:ClearAllPoints()
+	navi:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
+	navi:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
+
+	navi:StripTextures()
+	navi:SetTemplate('Transparent')
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
-	-- Character Frame
+	-- General
 	local CharacterFrame = _G.CharacterFrame
-	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
-
-	S:HandleDropDownBox(_G.PlayerStatFrameRightDropDown, 145)
-	S:HandleDropDownBox(_G.PlayerStatFrameLeftDropDown, 147)
-	S:HandleDropDownBox(_G.PlayerTitleDropDown, 200)
-	_G.PlayerStatFrameRightDropDown:Point('TOP', -2, 24)
-	_G.PlayerStatFrameLeftDropDown:Point('LEFT', -25, 24)
-	_G.PlayerTitleDropDown:Point('TOP', -7, -51)
-
-	for i = 1, #CHARACTERFRAME_SUBFRAMES do
-		S:HandleTab(_G['CharacterFrameTab'..i])
-	end
-
-	-- Reposition Tabs
-	hooksecurefunc('PetPaperDollFrame_UpdateTabs', HandleTabs)
-	HandleTabs()
-
-	-- HandleTab looks weird
-	for i = 1, 3 do
-		local tab = _G['PetPaperDollFrameTab'..i]
-		tab:StripTextures()
-		tab:Height(24)
-		S:HandleButton(tab)
-	end
-
-	_G.PaperDollFrame:StripTextures()
-
-	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
-	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
-	S:HandleRotateButton(_G.CharacterModelFrameRotateRightButton)
-	_G.CharacterModelFrameRotateRightButton:Point('TOPLEFT', _G.CharacterModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
-
-	_G.CharacterModelFrameRotateLeftButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.CharacterModelFrameRotateLeftButton:GetNormalTexture():SetTexCoord(0, 1, 1, 1, 0, 0, 1, 0)
-	_G.CharacterModelFrameRotateLeftButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.CharacterModelFrameRotateLeftButton:GetPushedTexture():SetTexCoord(1, 1, 1, 0, 0, 1, 0, 0)
-	_G.CharacterModelFrameRotateRightButton:SetNormalTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.CharacterModelFrameRotateRightButton:GetNormalTexture():SetTexCoord(0, 0, 1, 0, 0, 1, 1, 1)
-	_G.CharacterModelFrameRotateRightButton:SetPushedTexture([[Interface\Buttons\UI-RefreshButton]])
-	_G.CharacterModelFrameRotateRightButton:GetPushedTexture():SetTexCoord(0, 1, 0, 0, 1, 1, 1, 0)
-
-	_G.CharacterAttributesFrame:StripTextures()
-
-	HandleResistanceFrame('MagicResFrame')
+	S:HandlePortraitFrame(CharacterFrame)
 
 	local slots = {
 		_G.CharacterHeadSlot,
@@ -237,7 +313,7 @@ function S:CharacterFrame()
 		_G.CharacterSecondaryHandSlot,
 		_G.CharacterRangedSlot,
 		_G.CharacterTabardSlot,
-		_G.CharacterAmmoSlot,
+		_G.CharacterAmmoSlot
 	}
 
 	for _, slot in pairs(slots) do
@@ -249,8 +325,6 @@ function S:CharacterFrame()
 			slot:SetTemplate(nil, true, true)
 			slot:StyleButton()
 
-			slot.characterSlot = true -- for color function
-
 			S:HandleIcon(icon)
 			icon:SetInside()
 
@@ -260,141 +334,129 @@ function S:CharacterFrame()
 		end
 	end
 
-	hooksecurefunc('PaperDollItemSlotButton_Update', function(frame)
-		if frame.characterSlot then
-			local rarity = GetInventoryItemQuality('player', frame:GetID())
-			if rarity and rarity > 1 then
-				local r, g, b = GetItemQualityColor(rarity)
-				frame:SetBackdropBorderColor(r, g, b)
-			else
-				frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end
-	end)
+	-- Give character frame model backdrop it's color back
+	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
+		local bg = _G['CharacterModelFrameBackground'..corner]
+		if bg then
+			bg:SetDesaturated(false)
+			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
 
-	-- PetPaperDollFrame
-	_G.PetPaperDollFrame:StripTextures()
-	_G.PetPaperDollCloseButton:Kill()
-
-	S:HandleRotateButton(_G.PetModelFrameRotateLeftButton)
-	_G.PetModelFrameRotateLeftButton:ClearAllPoints()
-	_G.PetModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
-	S:HandleRotateButton(_G.PetModelFrameRotateRightButton)
-	_G.PetModelFrameRotateRightButton:ClearAllPoints()
-	_G.PetModelFrameRotateRightButton:Point('TOPLEFT', _G.PetModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
-
-	_G.PetAttributesFrame:StripTextures()
-
-	_G.PetResistanceFrame:CreateBackdrop()
-	_G.PetResistanceFrame.backdrop:SetOutside(_G.PetMagicResFrame1, nil, nil, _G.PetMagicResFrame5)
-
-	HandleResistanceFrame('PetMagicResFrame')
-
-	_G.PetPaperDollFrameExpBar:StripTextures()
-	_G.PetPaperDollFrameExpBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(_G.PetPaperDollFrameExpBar)
-	_G.PetPaperDollFrameExpBar:CreateBackdrop()
-
-	local PetPaperDollPetInfo = _G.PetPaperDollPetInfo
-	PetPaperDollPetInfo:Point('TOPLEFT', _G.PetModelFrameRotateLeftButton, 'BOTTOMLEFT', 9, -3)
-	PetPaperDollPetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
-	PetPaperDollPetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
-	PetPaperDollPetInfo:CreateBackdrop()
-	PetPaperDollPetInfo:Size(24)
-
-	PetPaperDollPetInfo:RegisterEvent('UNIT_HAPPINESS')
-	PetPaperDollPetInfo:SetScript('OnEvent', Update_Happiness)
-	PetPaperDollPetInfo:SetScript('OnShow', Update_Happiness)
-
-	-- PetPaperDollCompanionFrame (Pets and Mounts in WotLK)
-	_G.PetPaperDollFrameCompanionFrame:StripTextures()
-
-	S:HandleButton(_G.CompanionSummonButton)
-
-	S:HandleNextPrevButton(_G.CompanionPrevPageButton)
-	S:HandleNextPrevButton(_G.CompanionNextPageButton)
-
-	_G.CompanionNextPageButton:ClearAllPoints()
-	_G.CompanionNextPageButton:Point('TOPLEFT', _G.CompanionPrevPageButton, 'TOPRIGHT', 100, 0)
-
-	S:HandleRotateButton(_G.CompanionModelFrameRotateLeftButton)
-	_G.CompanionModelFrameRotateLeftButton:ClearAllPoints()
-	_G.CompanionModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
-	S:HandleRotateButton(_G.CompanionModelFrameRotateRightButton)
-	_G.CompanionModelFrameRotateRightButton:ClearAllPoints()
-	_G.CompanionModelFrameRotateRightButton:Point('TOPLEFT', _G.CompanionModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
-
-	hooksecurefunc('PetPaperDollFrame_UpdateCompanions', function()
-		for i = 1, NUM_COMPANIONS_PER_PAGE do
-			local button = _G['CompanionButton'..i]
-
-			if button.creatureID then
-				local iconNormal = button:GetNormalTexture()
-				iconNormal:SetTexCoord(unpack(E.TexCoords))
-				iconNormal:SetInside()
-			end
-		end
-	end)
-
-	for i = 1, NUM_COMPANIONS_PER_PAGE do
-		local button = _G['CompanionButton'..i]
-		local iconDisabled = button:GetDisabledTexture()
-
-		button:StyleButton(nil, true)
-		button:SetTemplate(nil, true)
-
-		iconDisabled:SetAlpha(0)
-
-		if i == 7 then
-			button:Point('TOP', _G.CompanionButton1, 'BOTTOM', 0, -5)
-		elseif i ~= 1 then
-			button:Point('LEFT', _G['CompanionButton'..i-1], 'RIGHT', 5, 0)
+			hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
 		end
 	end
 
-	-- GearManager / EquipmentManager
-	local GearManager = _G.GearManagerDialog
-	GearManager:StripTextures()
-	GearManager:SetTemplate('Transparent')
-	GearManager:Point('TOPLEFT', _G.PaperDollFrame, 'TOPRIGHT', -30, -12)
+	_G.CharacterLevelText:FontTemplate()
 
-	local GearManagerToggleButton = _G.GearManagerToggleButton
-	GearManagerToggleButton:Point('TOPRIGHT', _G.PaperDollItemsFrame, 'TOPRIGHT', -37, -40)
-
-	S:HandleCloseButton(_G.GearManagerDialogClose, GearManager)
-
-	local buttons = {
-		_G.GearManagerDialogDeleteSet,
-		_G.GearManagerDialogEquipSet,
-		_G.GearManagerDialogSaveSet,
+	-- Strip Textures
+	local charframe = {
+		'CharacterModelScene',
+		'CharacterStatsPane',
+		'CharacterFrameInset',
+		'CharacterFrameInsetRight',
+		'PaperDollSidebarTabs',
+		'PetModelFrame',
+		'PetModelFrameShadowOverlay'
 	}
 
-	for _, button in pairs(buttons) do
-		S:HandleButton(button)
+	-- Icon in upper right corner of character frame
+	_G.CharacterFramePortrait:Kill()
+
+	for _, scrollbar in pairs({ _G.PaperDollFrame.EquipmentManagerPane.ScrollBar, _G.PaperDollFrame.TitleManagerPane.ScrollBar, _G.CharacterStatsPane.ScrollBar }) do
+		S:HandleTrimScrollBar(scrollbar)
 	end
 
-	_G.GearManagerDialogDeleteSet:Point('BOTTOMLEFT', GearManager, 'BOTTOMLEFT', 11, 8)
-	_G.GearManagerDialogEquipSet:Point('BOTTOMLEFT', GearManager, 'BOTTOMLEFT', 93, 8)
-	_G.GearManagerDialogSaveSet:Point('BOTTOMRIGHT', GearManager, 'BOTTOMRIGHT', -8, 8)
-
-	for _, button in ipairs(GearManager.buttons) do
-		button:StripTextures()
-		button:CreateBackdrop()
-		button:StyleButton(nil, true)
-
-		button.icon:SetInside()
-		button.icon:SetTexCoord(unpack(E.TexCoords))
-		button.backdrop:SetAllPoints()
+	for _, object in pairs(charframe) do
+		_G[object]:StripTextures()
 	end
 
-	S:HandleEditBox(_G.GearManagerDialogPopupEditBox)
-	S:HandleIconSelectionFrame(_G.GearManagerDialogPopup, _G.NUM_GEARSET_ICONS_SHOWN, 'GearManagerDialogPopupButton', nil, true)
-	hooksecurefunc('GearManagerDialogPopup_Update', Update_GearManagerDialogPopup) -- they set points for frame on _Update, so send (dontOffset: true) to HandleIconSelectionFrame
+	-- Re-add the overlay texture which was removed right above via StripTextures
+	_G.CharacterModelFrameBackgroundOverlay:SetTexture(E.media.blankTex)
+	_G.CharacterModelFrameBackgroundOverlay:SetVertexColor(0, 0, 0, 0.6)
+
+	_G.CharacterModelScene:CreateBackdrop()
+	_G.CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	_G.CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+
+	_G.PetModelFrame:CreateBackdrop()
+	_G.PetModelFrame.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	_G.PetModelFrame.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+
+	S:HandleModelSceneControlButtons(_G.CharacterModelScene.ControlFrame)
+
+	-- Titles
+	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', TitleManagerPane_Update)
+
+	-- Equipement Manager
+	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
+	S:HandleButton(_G.PaperDollFrameEquipSet)
+	S:HandleButton(_G.PaperDollFrameSaveSet)
+
+	-- Item Quality Borders and Armor Slots
+	local CharacterMainHandSlot = _G.CharacterMainHandSlot
+	CharacterMainHandSlot:ClearAllPoints()
+	CharacterMainHandSlot:Point('BOTTOMLEFT', _G.PaperDollItemsFrame, 'BOTTOMLEFT', 106, 10)
+
+	-- Icon selection frame
+	_G.GearManagerPopupFrame:HookScript('OnShow', function(frame)
+		if frame.IsSkinned then return end -- set by HandleIconSelectionFrame
+
+		S:HandleIconSelectionFrame(frame)
+	end)
+
+	-- Stats
+	for i = 1, 7 do
+		local frame = _G['CharacterStatsPaneCategory'..i]
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
+
+		frame.Toolbar = _G['CharacterStatsPaneCategory'..i..'Toolbar']
+		S:HandleButton(frame.Toolbar, nil, nil, true)
+
+		local name = _G['CharacterStatsPaneCategory'..i..'NameText']
+		if name then
+			name:ClearAllPoints()
+			name:Point('CENTER', frame.Toolbar)
+		end
+
+		_G['CharacterStatsPaneCategory'..i..'Stat1']:Point('TOPLEFT', frame, 16, -18)
+		_G['CharacterStatsPaneCategory'..i..'ToolbarSortDownArrow']:Kill()
+		--_G['CharacterStatsPaneCategory'..i..'ToolbarSortUpArrow']:Kill()
+	end
+
+	do -- Expand Button
+		local expandButton = _G.CharacterFrameExpandButton
+		S:HandleNextPrevButton(expandButton, nil, nil, nil, nil, nil, 26) -- Default UI button size is 32
+
+		expandButton:ClearAllPoints()
+		expandButton:Point('BOTTOMRIGHT', _G.CharacterFrameInset, 'BOTTOMRIGHT', -3, 2)
+
+		local expandNormal = expandButton:GetNormalTexture()
+		local expandPushed = expandButton:GetPushedTexture()
+
+		local function ExpandToggle()
+			expandButton:SetNormalTexture(E.Media.Textures.ArrowUp)
+			expandButton:SetPushedTexture(E.Media.Textures.ArrowUp)
+			expandButton:SetDisabledTexture(E.Media.Textures.ArrowUp)
+
+			local expanded = CharacterFrame.Expanded
+			expandNormal:SetRotation(expanded and 1.57 or -1.57)
+			expandPushed:SetRotation(expanded and 1.57 or -1.57)
+		end
+
+		ExpandToggle()
+		hooksecurefunc(CharacterFrame, 'Collapse', ExpandToggle)
+		hooksecurefunc(CharacterFrame, 'Expand', ExpandToggle)
+	end
+
+	-- Pet Frame
+	S:HandleStatusBar(_G.PetPaperDollFrameExpBar)
+	S:HandleRotateButton(_G.PetModelFrameRotateLeftButton)
+	S:HandleRotateButton(_G.PetModelFrameRotateRightButton)
 
 	-- Reputation Frame
 	_G.ReputationFrame:StripTextures()
 
-	for i = 1, NUM_FACTIONS_DISPLAYED do
+	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
 		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
 		local factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
@@ -419,81 +481,19 @@ function S:CharacterFrame()
 
 	_G.ReputationDetailFrame:StripTextures()
 	_G.ReputationDetailFrame:SetTemplate('Transparent')
-	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', -31, -12)
+	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', 1, 0)
+
+	S:HandleCheckBox(_G.ReputationDetailAtWarCheckbox)
+	S:HandleCheckBox(_G.ReputationDetailInactiveCheckbox)
+	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckbox)
 
 	S:HandleCloseButton(_G.ReputationDetailCloseButton)
 	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
 
-	S:HandleCheckBox(_G.ReputationDetailAtWarCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailInactiveCheckBox)
-	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckBox)
-
-	-- Skill Frame
-	_G.SkillFrame:StripTextures()
-	_G.SkillFrameCancelButton:Kill()
-
-	_G.SkillFrameExpandButtonFrame:DisableDrawLayer('BACKGROUND')
-	_G.SkillFrameCollapseAllButton:GetNormalTexture():Size(15)
-	_G.SkillFrameCollapseAllButton:Point('LEFT', _G.SkillFrameExpandTabLeft, 'RIGHT', -40, -3)
-
-	hooksecurefunc('SkillFrame_UpdateSkills', function()
-		if _G.SkillFrameCollapseAllButton.isExpanded then
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		else
-			_G.SkillFrameCollapseAllButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		end
-	end)
-
-	for i = 1, _G.SKILLS_TO_DISPLAY do
-		local bar = _G['SkillRankFrame'..i]
-		local label = _G['SkillTypeLabel'..i]
-		local border = _G['SkillRankFrame'..i..'Border']
-		local background = _G['SkillRankFrame'..i..'Background']
-
-		bar:CreateBackdrop()
-		bar:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(bar)
-
-		border:StripTextures()
-		background:SetTexture(nil)
-
-		label:GetNormalTexture():Size(14)
-		label:SetHighlightTexture(E.ClearTexture)
-	end
-
-	hooksecurefunc('SkillFrame_SetStatusBar', function(statusBarID, skillIndex)
-		local _, isHeader, isExpanded = GetSkillLineInfo(skillIndex)
-		if not isHeader then return end
-
-		local skillLine = _G['SkillTypeLabel'..statusBarID]
-		if isExpanded then
-			skillLine:SetNormalTexture(E.Media.Textures.MinusButton)
-		else
-			skillLine:SetNormalTexture(E.Media.Textures.PlusButton)
-		end
-	end)
-
-	_G.SkillListScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.SkillListScrollFrameScrollBar)
-
-	_G.SkillDetailScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.SkillDetailScrollFrameScrollBar)
-
-	_G.SkillDetailStatusBar:StripTextures()
-	_G.SkillDetailStatusBar:SetParent(_G.SkillDetailScrollFrame)
-	_G.SkillDetailStatusBar:CreateBackdrop()
-	_G.SkillDetailStatusBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(_G.SkillDetailStatusBar)
-
-	S:HandleCloseButton(_G.SkillDetailStatusBarUnlearnButton)
-	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', -6, 1)
-
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
-	_G.TokenFrameCancelButton:Kill()
-	_G.TokenFrameMoneyFrame:Kill()
 
-	-- try to find the close button
+	-- Try to find the close button
 	for _, child in next, { _G.TokenFrame:GetChildren() } do
 		if child.Hide and child:IsShown() and not child:GetName() then
 			child:Hide()
@@ -501,13 +501,35 @@ function S:CharacterFrame()
 		end
 	end
 
-	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckBox)
-	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckBox)
-
+	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
 	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
 
-	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
+	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
+	hooksecurefunc('PaperDollFrame_UpdateSidebarTabs', FixSidebarTabCoords)
+	hooksecurefunc('PaperDollFrame_SetResistance', PaperDollFrameSetResistance)
+	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemButtonQuality)
+
+	-- Equipment Flyout
+	_G.EquipmentFlyoutFrameHighlight:StripTextures()
+	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
+	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
+
+	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
+	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
+
+	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
+	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
+	hooksecurefunc('EquipmentFlyout_DisplayButton', EquipmentItemButtonQuality)
+
+	-- Tabs
+	for i = 1, #_G.CHARACTERFRAME_SUBFRAMES do
+		S:HandleTab(_G['CharacterFrameTab'..i])
+	end
+
+	-- Reposition Tabs
+	hooksecurefunc('PetPaperDollFrame_UpdateIsAvailable', HandleTabs)
+	HandleTabs()
 end
 
 S:AddCallback('CharacterFrame')

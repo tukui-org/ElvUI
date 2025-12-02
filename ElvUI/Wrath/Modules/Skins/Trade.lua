@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
 local CreateFrame = CreateFrame
 
 function S:TradeFrame()
@@ -16,10 +15,6 @@ function S:TradeFrame()
 
 	S:HandleButton(_G.TradeFrameTradeButton, true)
 	S:HandleButton(_G.TradeFrameCancelButton, true)
-
-	S:HandleEditBox(_G.TradePlayerInputMoneyFrameGold)
-	S:HandleEditBox(_G.TradePlayerInputMoneyFrameSilver)
-	S:HandleEditBox(_G.TradePlayerInputMoneyFrameCopper)
 
 	_G.TradeRecipientItemsInset:Kill()
 	_G.TradePlayerItemsInset:Kill()
@@ -43,33 +38,33 @@ function S:TradeFrame()
 			local playerIcon = _G['TradePlayerItem'..i..'ItemButtonIconTexture']
 			if playerIcon then
 				playerIcon:SetInside(player)
-				playerIcon:SetTexCoord(unpack(E.TexCoords))
+				playerIcon:SetTexCoords()
 			end
 
 			local recipientIcon = _G['TradeRecipientItem'..i..'ItemButtonIconTexture']
 			if recipientIcon then
 				recipientIcon:SetInside(recipient)
-				recipientIcon:SetTexCoord(unpack(E.TexCoords))
+				recipientIcon:SetTexCoords()
 			end
 
-			player:SetFrameLevel(player:GetFrameLevel() - 1)
+			player:OffsetFrameLevel(-1)
 			player:SetTemplate(nil, true)
 			player:StyleButton()
 
 			player.bg = CreateFrame('Frame', nil, player)
 			player.bg:Point('TOPLEFT', player, 'TOPRIGHT', 4, 0)
 			player.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
-			player.bg:SetFrameLevel(player:GetFrameLevel() - 3)
+			player.bg:OffsetFrameLevel(-3, player)
 			player.bg:SetTemplate('Transparent')
 
-			recipient:SetFrameLevel(recipient:GetFrameLevel() - 1)
+			recipient:OffsetFrameLevel(-1)
 			recipient:SetTemplate(nil, true)
 			recipient:StyleButton()
 
 			recipient.bg = CreateFrame('Frame', nil, recipient)
 			recipient.bg:Point('TOPLEFT', recipient, 'TOPRIGHT', 4, 0)
 			recipient.bg:Point('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
-			recipient.bg:SetFrameLevel(recipient:GetFrameLevel() - 3)
+			recipient.bg:OffsetFrameLevel(-3, recipient)
 			recipient.bg:SetTemplate('Transparent')
 
 			S:HandleIconBorder(player.IconBorder)

@@ -2,12 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, strmatch, unpack = gsub, strmatch, unpack
 local next, pairs = next, pairs
+local gsub, strmatch, unpack = gsub, strmatch, unpack
+local hooksecurefunc = hooksecurefunc
 
 local GetMoney = GetMoney
-local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetNumQuestLogEntries = GetNumQuestLogEntries
 local GetQuestItemLink = GetQuestItemLink
@@ -17,11 +16,11 @@ local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestMoneyToGet = GetQuestMoneyToGet
 local IsQuestComplete = IsQuestComplete
+local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local MAX_NUM_ITEMS = MAX_NUM_ITEMS
 local MAX_NUM_QUESTS = MAX_NUM_QUESTS
 local MAX_REQUIRED_ITEMS = MAX_REQUIRED_ITEMS
-local hooksecurefunc = hooksecurefunc
 
 local function UpdateGreetingFrame()
 	local i = 1
@@ -63,13 +62,13 @@ local function UpdateGreetingFrame()
 	end
 end
 
-local function handleItemButton(item)
+local function HandleItemButton(item)
 	if not item then return end
 
 	if item then
 		item:SetTemplate()
 		item:Size(143, 40)
-		item:SetFrameLevel(item:GetFrameLevel() + 2)
+		item:OffsetFrameLevel(2)
 	end
 
 	if item.Icon then
@@ -114,14 +113,14 @@ local function handleItemButton(item)
 	end
 end
 
-local function questQualityColors(frame, text, link)
+local function HandleQualityColors(frame, text, link)
 	if not frame.template then
-		handleItemButton(frame)
+		HandleItemButton(frame)
 	end
 
-	local _, _, quality = GetItemInfo(link or 0)
+	local quality = GetItemQualityByID(link or 0)
 	if quality and quality > 1 then
-		local r, g, b = GetItemQualityColor(quality)
+		local r, g, b = E:GetItemQualityColor(quality)
 
 		text:SetTextColor(r, g, b)
 		frame:SetBackdropBorderColor(r, g, b)
@@ -190,15 +189,42 @@ function S:BlizzardQuestFrames()
 
 	for frame, numItems in pairs({ QuestLogItem = MAX_NUM_ITEMS, QuestProgressItem = MAX_REQUIRED_ITEMS }) do
 		for i = 1, numItems do
-			handleItemButton(_G[frame..i])
+			HandleItemButton(_G[frame..i])
 		end
 	end
+
+	_G.QuestModelScene:StripTextures()
+	_G.QuestModelScene:SetTemplate('Transparent')
+
+	_G.QuestNPCModelTextFrame:StripTextures()
+	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
+	_G.QuestNPCModelTextFrame:ClearAllPoints()
+	_G.QuestNPCModelTextFrame:Point('BOTTOM', _G.QuestModelScene, 0, -66)
+
+	_G.QuestNPCModelNameText:ClearAllPoints()
+	_G.QuestNPCModelNameText:Point('TOP', G.QuestModelScene, 0, -10)
+	_G.QuestNPCModelNameText:FontTemplate(nil, 13, 'OUTLINE')
+
+	_G.QuestNPCModelText:SetJustifyH('CENTER')
+	_G.QuestNPCModelTextScrollFrame:ClearAllPoints()
+	_G.QuestNPCModelTextScrollFrame:Point('TOPLEFT', _G.QuestNPCModelTextFrame, 2, -2)
+	_G.QuestNPCModelTextScrollFrame:Point('BOTTOMRIGHT', _G.QuestNPCModelTextFrame, -10, 6)
+	_G.QuestNPCModelTextScrollChildFrame:SetInside(_G.QuestNPCModelTextScrollFrame)
+
+	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
+
+	hooksecurefunc('QuestFrame_ShowQuestPortrait', function(frame, _, _, _, _, _, x, y)
+		local mapFrame = _G.QuestMapFrame:GetParent()
+
+		_G.QuestModelScene:ClearAllPoints()
+		_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + (frame == mapFrame and 11 or 6), y or 0)
+	end)
 
 	hooksecurefunc('QuestInfo_GetRewardButton', function(rewardsFrame, index)
 		local button = rewardsFrame.RewardButtons[index]
 		if not button and button.template then return end
 
-		handleItemButton(button)
+		HandleItemButton(button)
 	end)
 
 	hooksecurefunc('QuestInfoItem_OnClick', function(frame)
@@ -213,7 +239,7 @@ function S:BlizzardQuestFrames()
 					local name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
 					local link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
-					questQualityColors(item, name, link)
+					HandleQualityColors(item, name, link)
 				end
 			end
 		end
@@ -225,7 +251,7 @@ function S:BlizzardQuestFrames()
 			local name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
 			local link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
-			questQualityColors(item, name, link)
+			HandleQualityColors(item, name, link)
 		end
 	end)
 
@@ -259,7 +285,7 @@ function S:BlizzardQuestFrames()
 			local name = _G['QuestProgressItem'..i..'Name']
 			local link = item.type and GetQuestItemLink(item.type, item:GetID())
 
-			questQualityColors(item, name, link)
+			HandleQualityColors(item, name, link)
 		end
 	end)
 
@@ -359,7 +385,7 @@ function S:BlizzardQuestFrames()
 			local name = _G['QuestLogItem'..i..'Name']
 			local link = item.type and (GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
-			questQualityColors(item, name, link)
+			HandleQualityColors(item, name, link)
 		end
 	end)
 
@@ -400,7 +426,7 @@ function S:BlizzardQuestFrames()
 		end
 		for spellIcon, _ in _G.QuestInfoFrame.rewardsFrame.spellRewardPool:EnumerateActive() do
 			if not spellIcon.template then
-				handleItemButton(spellIcon)
+				HandleItemButton(spellIcon)
 			end
 		end
 
@@ -418,7 +444,7 @@ function S:BlizzardQuestFrames()
 			local name = _G['QuestInfoRewardsFrameQuestInfoItem'..i..'Name']
 			local link = item.type and (_G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink)(item.type, item:GetID())
 
-			questQualityColors(item, name, link)
+			HandleQualityColors(item, name, link)
 		end
 	end)
 
@@ -435,31 +461,28 @@ function S:BlizzardQuestFrames()
 	_G.QuestFramePushQuestButton:Point('RIGHT', _G.QuestLogFrameTrackButton, 'LEFT', -1, 0)
 
 	local QuestLogDetailFrame = _G.QuestLogDetailFrame
-	S:HandleFrame(QuestLogDetailFrame, true, nil, 8, -8, 8)
+	S:HandleFrame(QuestLogDetailFrame, true)
 
-	S:HandleFrame(_G.QuestFrame, true, nil, 11, -12, -32, 66)
+	S:HandleFrame(_G.QuestFrame)
 	S:HandleFrame(_G.QuestLogCount)
-	S:HandleFrame(_G.QuestLogFrame, true, nil, 10, -10, 1, 8)
-	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -1, 2)
-	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -1, 2)
-	S:HandleFrame(_G.QuestDetailScrollFrame, true, nil, -6, 2)
-	S:HandleFrame(_G.QuestRewardScrollFrame, true, nil, -6, 2)
-	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, -6, 2)
-	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, -6, 2)
+	S:HandleFrame(_G.QuestLogFrame)
+	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -2, 2)
+	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -2, 2)
+	S:HandleFrame(_G.QuestDetailScrollFrame, true, nil, 2, -2)
+	S:HandleFrame(_G.QuestRewardScrollFrame, true, nil, 2, -2)
+	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, 2, -2)
+	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, 2, -2)
 
-	S:HandlePointXY(_G.QuestLogFrameAbandonButton, 0, -2)
-	S:HandlePointXY(_G.QuestLogFrameTrackButton, 0, -2)
-	S:HandlePointXY(_G.QuestFramePushQuestButton, 1)
-	S:HandlePointXY(_G.QuestFrameAcceptButton, 15, 70)
-	S:HandlePointXY(_G.QuestFrameDeclineButton, -36, 70)
-	S:HandlePointXY(_G.QuestFrameCompleteQuestButton, 15, 70)
-	S:HandlePointXY(_G.QuestFrameCompleteButton, 15, 70)
-	S:HandlePointXY(_G.QuestFrameCancelButton, -36, 70)
-	S:HandlePointXY(_G.QuestFrameGoodbyeButton, -36, 70)
-	S:HandlePointXY(_G.QuestFrameGreetingGoodbyeButton, -36, 70)
-	S:HandlePointXY(_G.QuestFrameNpcNameText, -1, 0)
-
-	_G.QuestLogFrameCancelButton:Point('BOTTOMRIGHT', _G.QuestLogFrame, 'BOTTOMRIGHT', -7, 12)
+	_G.QuestLogFrameCancelButton:PointXY(-4, 4)
+	_G.QuestFramePushQuestButton:PointXY(1)
+	_G.QuestFrameAcceptButton:PointXY(7, 4)
+	_G.QuestFrameDeclineButton:PointXY(-7, 4)
+	_G.QuestFrameCompleteQuestButton:PointXY(7, 4)
+	_G.QuestFrameCompleteButton:PointXY(7, 4)
+	_G.QuestFrameCancelButton:PointXY(-10, 4)
+	_G.QuestFrameGoodbyeButton:PointXY(-10, 4)
+	_G.QuestFrameGreetingGoodbyeButton:PointXY(-10, 4)
+	_G.QuestFrameNpcNameText:PointXY(-1, 0)
 
 	_G.QuestGreetingFrameHorizontalBreak:Kill()
 

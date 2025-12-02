@@ -4,89 +4,81 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local function GetOpacity()
-	return 1 - (_G.BattlefieldMapOptions and _G.BattlefieldMapOptions.opacity or 1)
-end
-
-local function InitializeOptionsDropDown()
-	_G.BattlefieldMapTab:InitializeOptionsDropDown()
-end
-
-local function setBackdropAlpha()
-	if _G.BattlefieldMapFrame.backdrop then
-		_G.BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, GetOpacity())
+local function SetBackdropAlpha()
+	local frame = _G.BattlefieldMapFrame
+	if frame and frame.backdrop then
+		local options = _G.BattlefieldMapOptions
+		local opacity = 1 - (options and options.opacity or 1)
+		frame.backdrop:SetBackdropColor(0, 0, 0, opacity)
 	end
 end
 
--- Alpha stuff
-local oldAlpha = 0
-local function setOldAlpha()
-	if oldAlpha then
-		_G.BattlefieldMapFrame:SetGlobalAlpha(oldAlpha)
-		oldAlpha = nil
+local function GetCloseButton(frame)
+	if not frame then
+		frame = _G.BattlefieldMapFrame
+	end
+
+	local border = frame and frame.BorderFrame
+	return border and border.CloseButton
+end
+
+local function OnLeave()
+	local close = GetCloseButton()
+	if close then
+		close:SetAlpha(0.1)
 	end
 end
 
-local function setRealAlpha()
-	oldAlpha = GetOpacity()
-	_G.BattlefieldMapFrame:SetGlobalAlpha(1)
-end
-
-local function refreshAlpha()
-	oldAlpha = GetOpacity()
+local function OnEnter()
+	local close = GetCloseButton()
+	if close then
+		close:SetAlpha(1)
+	end
 end
 
 function S:Blizzard_BattlefieldMap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgmap) then return end
 
-	local BattlefieldMapFrame = _G.BattlefieldMapFrame
-	local BattlefieldMapTab = _G.BattlefieldMapTab
+	local frame = _G.BattlefieldMapFrame
+	frame:StripTextures()
+	frame:CreateBackdrop()
+	frame:SetFrameStrata('LOW')
+	frame:HookScript('OnShow', SetBackdropAlpha)
+	hooksecurefunc(frame, 'SetGlobalAlpha', SetBackdropAlpha)
 
-	S:HandleFrame(BattlefieldMapFrame, true)
-
-	refreshAlpha() -- Will need this soon
-	BattlefieldMapFrame:SetClampedToScreen(true)
-	BattlefieldMapFrame:SetFrameStrata('LOW')
-	BattlefieldMapFrame.backdrop:SetOutside(BattlefieldMapFrame.ScrollContainer)
-	BattlefieldMapFrame.backdrop:SetBackdropColor(0, 0, 0, oldAlpha)
-
-	BattlefieldMapFrame:EnableMouse(true)
-	BattlefieldMapFrame:SetMovable(true)
-
-	BattlefieldMapFrame.BorderFrame:StripTextures()
-	BattlefieldMapFrame.BorderFrame.CloseButton:SetFrameLevel(BattlefieldMapFrame.BorderFrame.CloseButton:GetFrameLevel()+1)
-	S:HandleCloseButton(BattlefieldMapFrame.BorderFrame.CloseButton)
-	BattlefieldMapTab:Kill()
-
-	BattlefieldMapFrame.ScrollContainer:HookScript('OnMouseUp', function(_, btn)
-		if btn == 'LeftButton' then
-			BattlefieldMapTab:StopMovingOrSizing()
-			if not _G.BattlefieldMapOptions.position then _G.BattlefieldMapOptions.position = {} end
-			_G.BattlefieldMapOptions.position.x, _G.BattlefieldMapOptions.position.y = BattlefieldMapTab:GetCenter()
-		elseif btn == 'RightButton' then
-			_G.UIDropDownMenu_Initialize(BattlefieldMapTab.OptionsDropDown, InitializeOptionsDropDown, 'MENU')
-			_G.ToggleDropDownMenu(1, nil, BattlefieldMapTab.OptionsDropDown, BattlefieldMapFrame:GetName(), 0, -4)
+	local scroll = frame.ScrollContainer
+	if scroll then
+		if frame.backdrop then
+			frame.backdrop:SetOutside(scroll)
 		end
 
-		if _G.OpacityFrame:IsShown() then
-			_G.OpacityFrame:Hide()
+		scroll:HookScript('OnLeave', OnLeave)
+		scroll:HookScript('OnEnter', OnEnter)
+	end
+
+	local tab = _G.BattlefieldMapTab
+	if tab then
+		tab:SetHeight(24)
+		tab:StripTextures()
+		tab:CreateBackdrop()
+
+		if tab.Text then
+			tab.Text:SetInside(tab)
 		end
-	end)
+	end
 
-	BattlefieldMapFrame.ScrollContainer:HookScript('OnMouseDown', function(_, btn)
-		if btn == 'LeftButton' and (_G.BattlefieldMapOptions and not _G.BattlefieldMapOptions.locked) then
-			BattlefieldMapTab:StartMoving()
-		end
-	end)
+	local close = GetCloseButton(frame)
+	if close then
+		S:HandleCloseButton(close)
 
-	hooksecurefunc(BattlefieldMapFrame, 'SetGlobalAlpha', setBackdropAlpha)
-	hooksecurefunc(BattlefieldMapFrame, 'RefreshAlpha', refreshAlpha)
-
-	BattlefieldMapFrame:HookScript('OnShow', setBackdropAlpha)
-	BattlefieldMapFrame.ScrollContainer:HookScript('OnLeave', setOldAlpha)
-	BattlefieldMapFrame.ScrollContainer:HookScript('OnEnter', setRealAlpha)
-	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnLeave', setOldAlpha)
-	BattlefieldMapFrame.BorderFrame.CloseButton:HookScript('OnEnter', setRealAlpha)
+		close:SetAlpha(0.25)
+		close:SetIgnoreParentAlpha(1)
+		close:OffsetFrameLevel(1)
+		close:ClearAllPoints()
+		close:Point('TOPRIGHT', 3, 5)
+		close:HookScript('OnLeave', OnLeave)
+		close:HookScript('OnEnter', OnEnter)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_BattlefieldMap')

@@ -2,16 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
-
-local CreateFrame = CreateFrame
-local GetItemInfo = GetItemInfo
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local hooksecurefunc = hooksecurefunc
 
-local function forceAlpha(self, alpha, forced)
+local CreateFrame = CreateFrame
+local GetItemQualityByID = C_Item.GetItemQualityByID
+
+local function ForceAlpha(frame, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
-		self:SetAlpha(1, true)
+		frame:SetAlpha(1, true)
 	end
 end
 
@@ -19,7 +17,7 @@ local function SkinAchievementAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -41,18 +39,21 @@ local function SkinAchievementAlert(frame)
 	frame.Unlocked:SetTextColor(1, 1, 1)
 	frame.Name:FontTemplate(nil, 12)
 
-	-- Icon
-	frame.Icon.Texture:SetTexCoord(unpack(E.TexCoords))
-	frame.Icon.Overlay:Kill()
+	local icon = frame.Icon
+	if icon then
+		icon.Overlay:Kill()
 
-	frame.Icon.Texture:ClearAllPoints()
-	frame.Icon.Texture:Point('LEFT', frame, 7, 0)
+		local texture = frame.Icon.Texture
+		if texture then
+			texture:SetTexCoords()
+			texture:ClearAllPoints()
+			texture:Point('LEFT', frame, 7, 0)
 
-	if not frame.Icon.Texture.b then
-		frame.Icon.Texture.b = CreateFrame('Frame', nil, frame)
-		frame.Icon.Texture.b:SetTemplate()
-		frame.Icon.Texture.b:SetOutside(frame.Icon.Texture)
-		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
+			if not icon.backdrop then
+				icon:CreateBackdrop()
+				icon.backdrop:SetOutside(texture)
+			end
+		end
 	end
 end
 
@@ -60,7 +61,7 @@ local function SkinCriteriaAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -87,14 +88,14 @@ local function SkinCriteriaAlert(frame)
 		frame.Icon.Texture:SetParent(frame.Icon.Texture.b)
 	end
 
-	frame.Icon.Texture:SetTexCoord(unpack(E.TexCoords))
+	frame.Icon.Texture:SetTexCoords()
 end
 
 local function SkinDungeonCompletionAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -122,7 +123,7 @@ local function SkinDungeonCompletionAlert(frame)
 	if frame.dungeonArt4 then frame.dungeonArt4:Kill() end
 
 	-- Icon
-	frame.dungeonTexture:SetTexCoord(unpack(E.TexCoords))
+	frame.dungeonTexture:SetTexCoords()
 	frame.dungeonTexture:SetDrawLayer('OVERLAY')
 	frame.dungeonTexture:ClearAllPoints()
 	frame.dungeonTexture:Point('LEFT', frame, 7, 0)
@@ -137,7 +138,7 @@ end
 
 local function SkinHonorAwardedAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', forceAlpha); frame.hooked = true end
+	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', ForceAlpha); frame.hooked = true end
 
 	frame.Background:Kill()
 	frame.IconBorder:Kill()
@@ -158,7 +159,7 @@ local function SkinHonorAwardedAlert(frame)
 end
 
 local function SkinLegendaryItemAlert(frame, itemLink)
-	if not frame.isSkinned then
+	if not frame.IsSkinned then
 		frame.Background:Kill()
 		frame.Background2:Kill()
 		frame.Background3:Kill()
@@ -171,7 +172,7 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.shine:Kill()
 
 		-- Icon
-		frame.Icon:SetTexCoord(unpack(E.TexCoords))
+		frame.Icon:SetTexCoords()
 		frame.Icon:SetDrawLayer('ARTWORK')
 		frame.Icon.b = CreateFrame('Frame', nil, frame)
 		frame.Icon.b:SetTemplate()
@@ -183,21 +184,17 @@ local function SkinLegendaryItemAlert(frame, itemLink)
 		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 20, -20)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -20, 20)
 
-		frame.isSkinned = true
+		frame.IsSkinned = true
 	end
 
-	local _, _, itemRarity = GetItemInfo(itemLink)
-	local color = itemRarity and ITEM_QUALITY_COLORS[itemRarity]
-	if color then
-		frame.Icon.b:SetBackdropBorderColor(color.r, color.g, color.b)
-	else
-		frame.Icon.b:SetBackdropBorderColor(0, 0, 0)
-	end
+	local itemRarity = GetItemQualityByID(itemLink)
+	local r, g, b = E:GetItemQualityColor(itemRarity)
+	frame.Icon.b:SetBackdropBorderColor(r, g, b)
 end
 
 local function SkinLootWonAlert(frame)
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -234,7 +231,7 @@ local function SkinLootUpgradeAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -265,7 +262,7 @@ local function SkinMoneyWonAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -292,7 +289,7 @@ local function SkinNewRecipeLearnedAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -326,7 +323,7 @@ local function SkinNewPetAlert(frame)
 	frame:SetAlpha(1)
 
 	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', forceAlpha)
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
 		frame.hooked = true
 	end
 
@@ -334,7 +331,7 @@ local function SkinNewPetAlert(frame)
 	frame.IconBorder:Kill()
 
 	frame.Icon:SetMask('')
-	frame.Icon:SetTexCoord(unpack(E.TexCoords))
+	frame.Icon:SetTexCoords()
 	frame.Icon:SetDrawLayer('BORDER', 5)
 
 	-- Icon border

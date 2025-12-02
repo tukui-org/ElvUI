@@ -9,7 +9,10 @@ function S:TabardFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tabard) then return end
 
 	local TabardFrame = _G.TabardFrame
-	S:HandleFrame(TabardFrame, true, nil, 10, -12, -32, 74)
+	S:HandleFrame(TabardFrame)
+
+	_G.TabardFrameMoneyInset:StripTextures()
+	_G.TabardFrameMoneyBg:StripTextures()
 
 	S:HandleCloseButton(_G.TabardFrameCloseButton)
 
@@ -34,20 +37,32 @@ function S:TabardFrame()
 		frame:Show()
 	end
 
-	for i = 1, 5 do
-		local custom = 'TabardFrameCustomization'..i
-		local button = _G[custom]
+	do
+		local i = 1
+		local button, previous = _G['TabardFrameCustomization'..i]
+		while button do
+			button:StripTextures()
 
-		button:StripTextures()
-		S:HandleNextPrevButton(_G[custom..'LeftButton'])
-		S:HandleNextPrevButton(_G[custom..'RightButton'])
+			local left = _G['TabardFrameCustomization'..i..'LeftButton']
+			if left then
+				S:HandleNextPrevButton(left)
+			end
 
-		if i > 1 then
-			button:ClearAllPoints()
-			button:Point('TOP', _G['TabardFrameCustomization'..i - 1], 'BOTTOM', 0, -6)
-		else
-			local point, anchor, point2, x, y = button:GetPoint()
-			button:Point(point, anchor, point2, x, y+4)
+			local right = _G['TabardFrameCustomization'..i..'RightButton']
+			if right then
+				S:HandleNextPrevButton(right)
+			end
+
+			if previous then
+				button:ClearAllPoints()
+				button:Point('TOP', previous, 'BOTTOM', 0, -6)
+			else
+				button:NudgePoint(0, 4)
+			end
+
+			i = i + 1
+			previous = button
+			button = _G['TabardFrameCustomization'..i]
 		end
 	end
 

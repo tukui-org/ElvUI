@@ -10,18 +10,19 @@ local bitband = bit.band
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
+local IsInGuild = IsInGuild
 
 local FLAG_PROGRESS_BAR = EVALUATION_TREE_FLAG_PROGRESS_BAR
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
-local function blueBackdrop(frame)
+local function BlueBackdrop(frame)
 	frame:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
 end
 
-local function skinAch(Achievement, BiggerIcon)
-	if Achievement.isSkinned then return end
+local function SkinAch(Achievement, BiggerIcon)
+	if Achievement.IsSkinned then return end
 
-	Achievement:SetFrameLevel(Achievement:GetFrameLevel() + 2)
+	Achievement:OffsetFrameLevel(2)
 	Achievement:StripTextures(true)
 	Achievement:CreateBackdrop(nil, true)
 	Achievement.backdrop:SetInside()
@@ -32,7 +33,7 @@ local function skinAch(Achievement, BiggerIcon)
 	Achievement.icon:Point('TOPLEFT', 8, -8)
 	Achievement.icon.bling:Kill()
 	Achievement.icon.frame:Kill()
-	Achievement.icon.texture:SetTexCoord(unpack(E.TexCoords))
+	Achievement.icon.texture:SetTexCoords()
 	Achievement.icon.texture:SetInside()
 
 	if Achievement.highlight then
@@ -66,7 +67,7 @@ local function skinAch(Achievement, BiggerIcon)
 		Achievement.tracked:Point('TOPLEFT', Achievement.icon, 'BOTTOMLEFT', 0, -2)
 	end
 
-	Achievement.isSkinned = true
+	Achievement.IsSkinned = true
 end
 
 local function SkinStatusBar(bar)
@@ -88,7 +89,7 @@ local function SkinStatusBar(bar)
 	if text then text:Point('RIGHT', -4, 0) end
 end
 
-local function playerSaturate(frame) -- frame is Achievement.player
+local function PlayerSaturate(frame) -- frame is Achievement.player
 	local Achievement = frame:GetParent()
 
 	local r, g, b = unpack(E.media.backdropcolor)
@@ -97,29 +98,29 @@ local function playerSaturate(frame) -- frame is Achievement.player
 
 	if Achievement.player.accountWide then
 		r, g, b = blueAchievement.r, blueAchievement.g, blueAchievement.b
-		Achievement.player.backdrop.callbackBackdropColor = blueBackdrop
-		Achievement.friend.backdrop.callbackBackdropColor = blueBackdrop
+		Achievement.player.backdrop.callbackBackdropColor = BlueBackdrop
+		Achievement.friend.backdrop.callbackBackdropColor = BlueBackdrop
 	end
 
 	Achievement.player.backdrop:SetBackdropColor(r, g, b)
 	Achievement.friend.backdrop:SetBackdropColor(r, g, b)
 end
 
-local function skinAchievementButton(button)
-	if button.isSkinned then return end
+local function SkinAchievementButton(button)
+	if button.IsSkinned then return end
 
-	skinAch(button.player)
-	skinAch(button.friend)
+	SkinAch(button.player)
+	SkinAch(button.friend)
 
-	hooksecurefunc(button.player, 'Saturate', playerSaturate)
+	hooksecurefunc(button.player, 'Saturate', PlayerSaturate)
 
-	button.isSkinned = true
+	button.IsSkinned = true
 end
 
-local function setAchievementColor(frame)
+local function SetAchievementColor(frame)
 	if frame and frame.backdrop then
 		if frame.accountWide then
-			frame.backdrop.callbackBackdropColor = blueBackdrop
+			frame.backdrop.callbackBackdropColor = BlueBackdrop
 			frame.backdrop:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
 		else
 			frame.backdrop.callbackBackdropColor = nil
@@ -128,37 +129,37 @@ local function setAchievementColor(frame)
 	end
 end
 
-local function hookHybridScrollButtons()
+local function HookHybridScrollButtons()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
 	hooksecurefunc('HybridScrollFrame_CreateButtons', function(frame, template)
 		if template == 'AchievementCategoryTemplate' then
 			for _, category in pairs(frame.buttons) do
-				if not category.isSkinned then
+				if not category.IsSkinned then
 					category:StripTextures(true)
 					category:StyleButton()
 
-					category.isSkinned = true
+					category.IsSkinned = true
 				end
 			end
 		elseif template == 'StatTemplate' then
 			for _, stats in pairs(frame.buttons) do
-				if not stats.isSkinned then
+				if not stats.IsSkinned then
 					stats:StyleButton()
 
-					stats.isSkinned = true
+					stats.IsSkinned = true
 				end
 			end
 		elseif template == 'AchievementTemplate' then
 			for _, achievement in pairs(frame.buttons) do
-				if not achievement.isSkinned then
-					skinAch(achievement, true)
+				if not achievement.IsSkinned then
+					SkinAch(achievement, true)
 				end
 			end
 		elseif template == 'ComparisonTemplate' then
 			for _, comparison in pairs(frame.buttons) do
-				if not comparison.isSkinned then
-					skinAchievementButton(comparison)
+				if not comparison.IsSkinned then
+					SkinAchievementButton(comparison)
 				end
 			end
 		end
@@ -168,30 +169,30 @@ local function hookHybridScrollButtons()
 	-- however, it can also be too late to hook HybridScrollFrame_CreateButtons, so we need to skin them here, weird...
 	for i = 1, 20 do
 		local category = _G['AchievementFrameCategoriesContainerButton'..i]
-		if category and not category.isSkinned then
+		if category and not category.IsSkinned then
 			category:StripTextures(true)
 			category:StyleButton()
 
-			category.isSkinned = true
+			category.IsSkinned = true
 		end
 
 		local stats = _G['AchievementFrameStatsContainerButton'..i]
-		if stats and not stats.isSkinned then
+		if stats and not stats.IsSkinned then
 			stats:StyleButton()
 
-			stats.isSkinned = true
+			stats.IsSkinned = true
 		end
 
 		if i <= 10 then
 			local achievement = _G['AchievementFrameAchievementsContainerButton'..i]
-			if achievement and not achievement.isSkinned then
-				skinAch(achievement, true)
+			if achievement and not achievement.IsSkinned then
+				SkinAch(achievement, true)
 
 			end
 
 			local comparison = _G['AchievementFrameComparisonContainerButton'..i]
-			if comparison and not comparison.isSkinned then
-				skinAchievementButton(comparison)
+			if comparison and not comparison.IsSkinned then
+				SkinAchievementButton(comparison)
 			end
 		end
 	end
@@ -273,9 +274,9 @@ function S:Blizzard_AchievementUI()
 
 	S:HandleCloseButton(_G.AchievementFrameCloseButton, AchievementFrame.backdrop)
 
-	S:HandleDropDownBox(_G.AchievementFrameFilterDropDown)
-	_G.AchievementFrameFilterDropDown:ClearAllPoints()
-	_G.AchievementFrameFilterDropDown:Point('TOPLEFT', _G.AchievementFrameAchievements, 'TOPLEFT', -18, 24)
+	S:HandleDropDownBox(_G.AchievementFrameFilterDropdown)
+	_G.AchievementFrameFilterDropdown:ClearAllPoints()
+	_G.AchievementFrameFilterDropdown:Point('TOPLEFT', _G.AchievementFrameAchievements, 'TOPLEFT', -18, 24)
 
 	-- ScrollBars
 	local scrollBars = {
@@ -293,15 +294,16 @@ function S:Blizzard_AchievementUI()
 	end
 
 	-- Tabs
-	for i = 1, 2 do
+	for i = 1, 3 do
 		S:HandleTab(_G['AchievementFrameTab'..i])
-		_G['AchievementFrameTab'..i]:SetFrameLevel(_G['AchievementFrameTab'..i]:GetFrameLevel() + 2)
+		_G['AchievementFrameTab'..i]:OffsetFrameLevel(2)
 	end
 
 	-- Reposition Tabs
 	_G.AchievementFrameTab1:ClearAllPoints()
 	_G.AchievementFrameTab1:Point('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -10, 0)
 	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -19, 0)
+	_G.AchievementFrameTab3:Point('TOPLEFT', IsInGuild() and _G.AchievementFrameTab2 or _G.AchievementFrameTab1, 'TOPRIGHT', -19, 0)
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 
@@ -318,13 +320,13 @@ function S:Blizzard_AchievementUI()
 		_G[highlight:GetName()..'Middle']:SetAllPoints(frame)
 	end
 
-	hooksecurefunc('AchievementButton_DisplayAchievement', setAchievementColor)
+	hooksecurefunc('AchievementButton_DisplayAchievement', SetAchievementColor)
 
 	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
 		for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
 			local frame = _G['AchievementFrameSummaryAchievement'..i]
-			if not frame.isSkinned then
-				skinAch(frame)
+			if not frame.IsSkinned then
+				SkinAch(frame)
 			end
 
 			--The backdrop borders tend to overlap so add a little more space between summary achievements
@@ -335,7 +337,7 @@ function S:Blizzard_AchievementUI()
 				frame:Point('TOPRIGHT', prevFrame, 'BOTTOMRIGHT', 0, 1)
 			end
 
-			setAchievementColor(frame)
+			SetAchievementColor(frame)
 		end
 	end)
 
@@ -367,7 +369,7 @@ function S:Blizzard_AchievementUI()
 
 			frame:SetStatusBarColor(0.02, 0.70, 0.12)
 			frame:CreateBackdrop('Transparent')
-			frame:SetFrameLevel(frame:GetFrameLevel() + 3)
+			frame:OffsetFrameLevel(3)
 			frame:Height(frame:GetHeight() - 2)
 
 			frame.text:ClearAllPoints()
@@ -420,6 +422,6 @@ function S:Blizzard_AchievementUI()
 	end)
 end
 
-E:Delay(0.1, hookHybridScrollButtons)
+E:Delay(0.1, HookHybridScrollButtons)
 
 S:AddCallbackForAddon('Blizzard_AchievementUI')
