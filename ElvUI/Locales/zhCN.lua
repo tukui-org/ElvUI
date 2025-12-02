@@ -2,6 +2,11 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
+L["Armor Penetration"] = "破甲"
+L["Crit"] = "爆击"
+L["Difficulty"] = "副本难度"
+L["Hit"] = "命中"
+L["Spell Crit"] = "法术爆击"
 L["Date"] = "日期"
 L["Plugins:"] = "插件:"
 L["Version:"] = "版本:"
@@ -57,11 +62,6 @@ L["Are you sure you want to reset all the settings on this profile?"] = "确定�
 L["Are you sure you want to reset every mover back to it's default position?"] = "确定需要重置所有框架至默认位置?"
 L["Arena Frames"] = "竞技场框架"
 L["Arena"] = "竞技场"
-L["Armor Penetration"] = "破甲"
-L["Crit"] = "爆击"
-L["Difficulty"] = "副本难度"
-L["Hit"] = "命中"
-L["Spell Crit"] = "法术爆击"
 L["Aura Bars"] = "光环条"
 L["Auras Set"] = "光环设置"
 L["Auras"] = "光环"
