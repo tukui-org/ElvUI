@@ -1,6 +1,6 @@
--- Spanish localization file for esES and esMX.
+-- Spanish localization file for esES.
 local E = unpack(ElvUI)
-local L = E.Libs.ACL:NewLocale('ElvUI', 'esMX')
+local L = E.Libs.ACL:NewLocale('ElvUI', 'esES')
 
 L["Date"] = true
 L["Plugins:"] = true

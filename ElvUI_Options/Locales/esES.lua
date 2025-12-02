@@ -1,5 +1,5 @@
--- Spanish localization file for esES and esMX.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'esMX')
+-- Spanish localization file for esES.
+local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'esES')
 
 L["ALT"] = true
 L["CTRL"] = true
