@@ -238,7 +238,7 @@ P.general = {
 	},
 	totems = { -- totem tracker
 		growthDirection = 'VERTICAL',
-		sortDirection = (E.Mists and 'DESCENDING') or 'ASCENDING',
+		sortDirection = (E.Wrath or E.Mists) and 'DESCENDING' or 'ASCENDING',
 		size = 40,
 		height = 40,
 		spacing = 4,
@@ -2920,6 +2920,26 @@ P.actionbar = {
 		alpha = 1,
 		inheritGlobalFade = false,
 	},
+	totemBar = {
+		enable = true,
+		alpha = 1,
+		spacing = 4,
+		keepSizeRatio = true,
+		buttonSize = 32,
+		buttonHeight = 32,
+		flyoutDirection = 'UP',
+		flyoutSize = 28,
+		flyoutHeight = 28,
+		flyoutSpacing = 2,
+		font = 'PT Sans Narrow',
+		fontOutline = 'OUTLINE',
+		fontSize = 12,
+		mouseover = false,
+		visibility = '[vehicleui] hide;show',
+		frameStrata = 'LOW',
+		frameLevel = 5,
+		author = "Barney",
+	},
 	microbar = {
 		enabled = false,
 		mouseover = false,
@@ -2963,6 +2983,9 @@ P.actionbar = {
 if E.Retail or E.Mists then
 	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui][petbattle] hide; show'
+elseif E.Wrath then
+	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
 else
 	P.actionbar.barPet.visibility = '[pet,nooverridebar] show; hide'
 	P.actionbar.stanceBar.visibility = 'show'
@@ -3035,6 +3058,8 @@ for i = 1, 15 do
 
 		if E.Retail or E.Mists then
 			P.actionbar[barN].visibility = '[vehicleui][petbattle][overridebar] hide; show'
+		elseif E.Wrath then
+			P.actionbar[barN].visibility = '[vehicleui][overridebar] hide; show'
 		else
 			P.actionbar[barN].visibility = '[overridebar] hide; show'
 		end
@@ -3074,8 +3099,8 @@ end
 P.actionbar.bar1.enabled = true
 P.actionbar.bar1.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 
-P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..(E.Mists and ' [bonusbar:2] 8;' or '')
-P.actionbar.bar1.paging.WARLOCK = E.Mists and '[form:1] 7;' or nil
+P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..((E.Wrath or E.Mists) and ' [bonusbar:2] 8;' or '')
+P.actionbar.bar1.paging.WARLOCK = (E.Wrath or E.Mists) and '[form:1] 7;' or nil
 P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
 P.actionbar.bar1.paging.PRIEST = (E.Retail and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'

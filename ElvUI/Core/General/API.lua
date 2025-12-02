@@ -839,7 +839,7 @@ function E:RegisterObjectForVehicleLock(object, originalParent)
 	end
 
 	--Check if we are already in a vehicles
-	if (E.Retail or E.Mists) and UnitHasVehicleUI('player') then
+	if (E.Retail or E.Mists or E.Wrath) and UnitHasVehicleUI('player') then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -1325,6 +1325,9 @@ function E:LoadAPI()
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
+		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
+		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
+	elseif E.Wrath then
 		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
 		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	else

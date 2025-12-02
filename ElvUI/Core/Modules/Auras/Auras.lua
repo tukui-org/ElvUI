@@ -611,7 +611,7 @@ function A:Initialize()
 			_G.TemporaryEnchantFrame:Kill()
 		end
 
-		if E.Mists then
+		if E.Wrath or E.Mists then
 			_G.ConsolidatedBuffs:Kill()
 		end
 	end
