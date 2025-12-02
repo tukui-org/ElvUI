@@ -10,7 +10,6 @@ local GetHitModifier = GetHitModifier
 local GetCombatRatingBonus = GetCombatRatingBonus
 local GetArmorPenetration = GetArmorPenetration
 
-local STAT_HIT_CHANCE = STAT_HIT_CHANCE
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_HIT_MELEE_TOOLTIP = CR_HIT_MELEE_TOOLTIP
 local CR_HIT_RANGED_TOOLTIP = CR_HIT_RANGED_TOOLTIP

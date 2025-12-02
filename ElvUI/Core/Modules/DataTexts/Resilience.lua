@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, Profil
 local DT = E:GetModule('DataTexts')
 
 local min = min
-local strjoin = strjoin
 local format = format
+local strjoin = strjoin
 
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus

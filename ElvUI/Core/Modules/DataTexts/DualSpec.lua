@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
-if not (E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then return end
+if not (E.Wrath or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then return end
+
 local DT = E:GetModule('DataTexts')
 
 local _G = _G

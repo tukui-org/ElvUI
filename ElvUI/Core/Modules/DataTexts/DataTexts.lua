@@ -42,7 +42,7 @@ local SetItemRef = SetItemRef
 
 local MISCELLANEOUS = MISCELLANEOUS
 local LFG_TYPE_DUNGEON = LFG_TYPE_DUNGEON
-local expansion = _G['EXPANSION_NAME'..GetExpansionLevel()]
+local expansion = _G['EXPANSION_NAME'..E.expansionLevel]
 local QuickList = {}
 local Collapsed = {}
 

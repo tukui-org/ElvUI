@@ -4,6 +4,7 @@ local DT = E:GetModule('DataTexts')
 local _G = _G
 local min = min
 local strjoin = strjoin
+
 local GetSpellCritChance = GetSpellCritChance
 
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
