@@ -68,7 +68,7 @@ local function OnEvent(self)
 	if db.NoLabel then
 		self.text:SetFormattedText(displayString, critChance)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or CRIT_ABBR..': ', critChance)
+		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Crit"]..': ', critChance)
 	end
 end
 
@@ -82,4 +82,4 @@ local function ApplySettings(self, hex)
 	OnEvent(self)
 end
 
-DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, MELEE_CRIT_CHANCE, nil, ApplySettings)
+DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, L["Crit"], nil, ApplySettings)

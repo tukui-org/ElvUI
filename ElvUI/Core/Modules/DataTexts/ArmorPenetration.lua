@@ -21,7 +21,7 @@ local function OnEvent(self)
 	APBonusRating = GetCombatRatingBonus(CR_ARMOR_PENETRATION)
 	APPercent = GetArmorPenetration()
 
-	self.text:SetFormattedText(displayString, 'Armor Penetration', APRating + APBonusRating)
+	self.text:SetFormattedText(displayString, L["Armor Penetration"], APRating + APBonusRating)
 end
 
 local function OnEnter()
@@ -37,4 +37,4 @@ local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%s|r')
 end
 
-DT:RegisterDatatext('Armor Penetration', STAT_CATEGORY_ENHANCEMENTS, { 'COMBAT_RATING_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, nil, nil, ApplySettings)
+DT:RegisterDatatext('Armor Penetration', STAT_CATEGORY_ENHANCEMENTS, { 'COMBAT_RATING_UPDATE' }, OnEvent, nil, nil, OnEnter, nil, L["Armor Penetration"], nil, ApplySettings)

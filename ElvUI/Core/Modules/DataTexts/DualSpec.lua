@@ -27,8 +27,8 @@ local function BuildTalentString(talentGroup)
 	local str = ''
 
 	for i = 1, MAX_TALENT_TABS do
-		local _, _, pointsEra, _, pointsInCata = GetTalentTabInfo(i, false, false, talentGroup)
-		local points = (E.Mists and pointsInCata) or pointsEra
+		local _, _, arg3, _, arg5 = GetTalentTabInfo(i, false, false, talentGroup)
+		local points = ((E.Wrath or E.Mists) and arg5) or arg3
 		str = (str == '' and points) or strjoin('/', str, points)
 	end
 

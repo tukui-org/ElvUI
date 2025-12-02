@@ -910,7 +910,7 @@ end
 function DT:CurrencyListInfo(index)
 	local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
 
-	if E.Mists then
+	if E.Mists or E.Wrath then
 		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.iconFileID, info.maxQuantity, info.weeklyMax, info.earnedThisWeek, info.isTradeable, info.itemID = GetCurrencyListInfo(index)
 	end
 
@@ -926,7 +926,7 @@ end
 function DT:BackpackCurrencyInfo(index)
 	local info = E.Retail and GetBackpackCurrencyInfo(index) or {}
 
-	if E.Mists then
+	if E.Mists or E.Wrath then
 		info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
 	end
 
@@ -1002,7 +1002,7 @@ function DT:Initialize()
 	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
 	_G.DataTextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
-	if E.Retail or E.Mists then
+	if E.Retail or E.Mists or E.Wrath then
 		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
 
 		if E.Retail then
