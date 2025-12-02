@@ -7,7 +7,7 @@ local S = E:GetModule('Skins')
 -- GLOBALS: ElvDB
 
 local ACH = E.Libs.ACH
-local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale)
+local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
 local C = {
 	version = E:ParseVersionString('ElvUI_Options'),
 	Blank = function() return '' end,
