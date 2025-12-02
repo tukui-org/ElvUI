@@ -52,8 +52,11 @@ local toggles = {
 	worldmap = L["WORLD_MAP"]
 }
 
-if E.Mists or E.Retail then
+if E.Mists or E.Retail or E.Wrath then
 	toggles.achievement = L["ACHIEVEMENTS"]
+end
+
+if E.Mists or E.Retail then
 	toggles.alertframes = L["Alert Frames"]
 	toggles.archaeology = L["Archaeology Frame"]
 	toggles.barber = L["BARBERSHOP"]

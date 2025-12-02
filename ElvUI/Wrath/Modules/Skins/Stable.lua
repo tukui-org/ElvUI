@@ -37,38 +37,42 @@ function S:PetStableFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
 
 	local PetStableFrame = _G.PetStableFrame
-	S:HandlePortraitFrame(PetStableFrame)
+	S:HandleFrame(PetStableFrame, true, nil, 10, -11, -32, 71)
 
-	_G.PetStableLeftInset:Hide()
-	_G.PetStableBottomInset:Hide()
-	_G.PetStableFrameModelBg:Hide()
-	_G.PetStableDietTexture:SetTexture(132165)
-	_G.PetStableDietTexture:SetTexCoords()
-	_G.PetStableFrameInset:SetTemplate('Transparent')
+	S:HandleButton(_G.PetStablePurchaseButton)
+	S:HandleCloseButton(_G.PetStableFrameCloseButton)
+	S:HandleRotateButton(_G.PetStableModelRotateRightButton)
+	S:HandleRotateButton(_G.PetStableModelRotateLeftButton)
 
-	S:HandleModelSceneControlButtons(_G.PetStableModelScene.ControlFrame)
-	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
-	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
+	S:HandleItemButton(_G.PetStableCurrentPet, true)
+	_G.PetStableCurrentPetIconTexture:SetDrawLayer('ARTWORK')
 
-	local p = E.PixelMode and 1 or 2
-	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
-	if PetStableSelectedPetIcon then
-		PetStableSelectedPetIcon:SetTexCoords()
-
-		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent())
-		b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)
-		b:Point('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
-		PetStableSelectedPetIcon:Size(37)
-		PetStableSelectedPetIcon:SetParent(b)
-		b:SetTemplate()
-	end
-
-	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
-		PetButtons('PetStableActivePet' .. i, p)
-	end
 	for i = 1, _G.NUM_PET_STABLE_SLOTS do
-		PetButtons('PetStableStabledPet' .. i, p)
+		S:HandleItemButton(_G['PetStableStabledPet'..i], true)
+		_G['PetStableStabledPet'..i..'IconTexture']:SetDrawLayer('ARTWORK')
 	end
+
+	local PetStablePetInfo = _G.PetStablePetInfo
+	PetStablePetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
+	PetStablePetInfo:OffsetFrameLevel(2, _G.PetModelFrame)
+	PetStablePetInfo:CreateBackdrop()
+	PetStablePetInfo:Size(24)
+
+	hooksecurefunc('PetStable_Update', function()
+		local hasPetUI, isHunterPet = HasPetUI()
+		if hasPetUI and not isHunterPet and UnitExists('pet') then return end
+
+		local happiness = GetPetHappiness()
+		local texture = PetStablePetInfo:GetRegions()
+
+		if happiness == 1 then
+			texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
+		elseif happiness == 2 then
+			texture:SetTexCoord(0.22, 0.345, 0.06, 0.30)
+		elseif happiness == 3 then
+			texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
+		end
+	end)
 end
 
 S:AddCallback('PetStableFrame')

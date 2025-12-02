@@ -294,7 +294,7 @@ function S:Blizzard_AchievementUI()
 	end
 
 	-- Tabs
-	for i = 1, 3 do
+	for i = 1, 2 do
 		S:HandleTab(_G['AchievementFrameTab'..i])
 		_G['AchievementFrameTab'..i]:OffsetFrameLevel(2)
 	end
@@ -303,7 +303,6 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameTab1:ClearAllPoints()
 	_G.AchievementFrameTab1:Point('TOPLEFT', _G.AchievementFrame, 'BOTTOMLEFT', -10, 0)
 	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -19, 0)
-	_G.AchievementFrameTab3:Point('TOPLEFT', IsInGuild() and _G.AchievementFrameTab2 or _G.AchievementFrameTab1, 'TOPRIGHT', -19, 0)
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 
