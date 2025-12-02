@@ -11,7 +11,7 @@ UF.CustomTextForceFallback = {
 
 -- these need to be hidden; remove the fallback
 UF.CustomTextAvoidFallback = {
-	EnergyManaRegen	= E.Wrath or E.Classic,
+	EnergyManaRegen	= E.Classic,
 	EclipseBar		= E.Mists,
 	AdditionalPower	= E.Mists,
 	Stagger			= E.Mists
