@@ -1938,7 +1938,7 @@ function AB:Initialize()
 		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
 	end
 
-	if not E.Classic then
+	if not E.Classic and not E.Wrath then
 		hooksecurefunc(_G.SpellFlyout, 'Toggle', SkinFlyout)
 	end
 end
