@@ -117,7 +117,7 @@ do
 end
 
 do -- this is different from E.locale because we need to convert for ace locale files
-	local convert = { enGB = 'enUS', esES = 'esMX', itIT = 'enUS' }
+	local convert = { enGB = 'enUS', esES = 'esMX' }
 	local gameLocale = convert[E.locale] or E.locale or 'enUS'
 
 	function E:GetLocale()
