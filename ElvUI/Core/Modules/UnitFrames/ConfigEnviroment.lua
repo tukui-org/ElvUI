@@ -61,7 +61,9 @@ local classPowers = {
 	[3] = PowerType.Energy
 }
 
-if E.Mists then -- also handled in Elements/Power
+if E.Wrath then -- also handled in Elements/Power
+	classPowers[4] = PowerType.RunicPower
+elseif E.Mists then
 	classPowers[4] = PowerType.RunicPower
 	classPowers[26] = PowerType.Balance
 	classPowers[14] = PowerType.BurningEmbers or 14

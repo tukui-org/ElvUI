@@ -1378,7 +1378,7 @@ end
 
 function NP:StyleFilterVehicleFunction(_, unit)
 	unit = unit or self.unit
-	self.inVehicle = (E.Retail or E.Mists) and UnitInVehicle(unit) or nil
+	self.inVehicle = (E.Retail or E.Wrath or E.Mists) and UnitInVehicle(unit) or nil
 end
 
 function NP:StyleFilterTargetFunction(_, unit)

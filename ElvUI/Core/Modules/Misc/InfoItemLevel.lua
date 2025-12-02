@@ -32,7 +32,7 @@ local InspectItems = {
 	'BackSlot',
 	'MainHandSlot', -- 16
 	'SecondaryHandSlot', -- 17
-	E.Mists and 'RangedSlot' or nil -- 18
+	(E.Wrath or E.Mists) and 'RangedSlot' or nil -- 18
 }
 
 local numInspectItems = #InspectItems
@@ -393,10 +393,10 @@ function M:UpdateSlotPoints(which, config)
 			slot.enchantText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 			slot.enchantText:ClearAllPoints()
 
-			local itemLeft, itemRight = i == 16, (E.Retail and i == 17) or (E.Mists and i == 18)
+			local itemLeft, itemRight = i == 16, (E.Retail and i == 17) or ((E.Wrath or E.Mists) and i == 18)
 			if itemLeft or itemRight then
 				slot.enchantText:Point(itemLeft and 'BOTTOMRIGHT' or 'BOTTOMLEFT', slot, itemLeft and -40 or 40, 3)
-			elseif E.Mists and i == 17 then -- cata secondary (not ranged)
+			elseif (E.Wrath or E.Mists) and i == 17 then -- cata secondary (not ranged)
 				slot.enchantText:Point('TOP', slot, 'BOTTOM', 0, 3)
 			else
 				slot.enchantText:Point(justify, slot, x + (justify == 'BOTTOMLEFT' and 5 or -5), z)

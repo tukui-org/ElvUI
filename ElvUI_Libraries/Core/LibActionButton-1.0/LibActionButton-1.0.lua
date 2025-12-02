@@ -1545,7 +1545,7 @@ function InitializeEventHandler()
 	end
 
 	if not WoWClassic and not WoWBCC then
-		if not WoWMists then
+		if WoWRetail then
 			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
 			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
