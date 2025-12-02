@@ -1183,7 +1183,7 @@ G.unitframe.AuraChannelTicks = {}
 
 -- Spells Effected By Haste, value is Base Tick Size
 G.unitframe.HastedChannelTicks = {
-	-- [spellID] = 1, -- SpellName
+	-- [spellID] = true, -- SpellName
 }
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
