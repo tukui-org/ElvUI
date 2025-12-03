@@ -392,7 +392,7 @@ function AB:CreateBar(id)
 		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
 
 		if E.Retail then
-			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonProfessionOverlayTemplate')
+			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonTextureOverlayTemplate')
 		end
 
 		local targetReticle = button.TargetReticleAnimFrame
