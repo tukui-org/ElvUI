@@ -4,9 +4,7 @@ local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
-local unpack = unpack
 
-local GetItemInfo = GetItemInfo
 local GetLootSlotInfo = GetLootSlotInfo
 local hooksecurefunc = hooksecurefunc
 local IsFishingLoot = IsFishingLoot
@@ -14,20 +12,21 @@ local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 
+local GetItemQualityByID = C_Item.GetItemQualityByID
+
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem
-local ITEM_QUALITY_COLORS = ITEM_QUALITY_COLORS
 local LOOT, ITEMS = LOOT, ITEMS
 
 local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
 	for i=1, numItems do
 		local frame = _G.LootHistoryFrame.itemFrames[i]
-		if frame and not frame.isSkinned then
+		if frame and not frame.IsSkinned then
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
 			frame.Icon:SetTexture(Icon)
-			frame.Icon:SetTexCoord(unpack(E.TexCoords))
+			frame.Icon:SetTexCoords()
 
 			-- Create a backdrop around the icon
 			frame:CreateBackdrop()
@@ -35,19 +34,13 @@ local function UpdateLoots()
 			frame.Icon:SetParent(frame.backdrop)
 
 			local _, itemLink = C_LootHistory_GetItem(frame.itemIdx)
-			if itemLink then
-				local _, _, itemRarity = GetItemInfo(itemLink)
-
-				if itemRarity then
-					local color = ITEM_QUALITY_COLORS[itemRarity]
-
-					if color then
-						frame.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-					end
-				end
+			local itemRarity = itemLink and GetItemQualityByID(itemLink)
+			if itemRarity then
+				local r, g, b = E:GetItemQualityColor(itemRarity)
+				frame.backdrop:SetBackdropBorderColor(r, g, b)
 			end
 
-			frame.isSkinned = true
+			frame.IsSkinned = true
 		end
 	end
 end
@@ -89,7 +82,6 @@ function S:LootFrame()
 		if item then
 			local icon = item.Icon
 			local texture = icon:GetTexture()
-			local color = ITEM_QUALITY_COLORS[_G.LootFrame.selectedQuality]
 
 			if item.IconBorder then
 				item.IconBorder:SetAlpha(0)
@@ -97,27 +89,28 @@ function S:LootFrame()
 
 			item:StripTextures()
 			icon:SetTexture(texture)
-			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetTexCoords()
 
 			if not item.backdrop then
 				item:CreateBackdrop()
 				item.backdrop:SetOutside(icon)
 			end
 
-			item.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+			local r, g, b = E:GetItemQualityColor(_G.LootFrame.selectedQuality)
+			item.backdrop:SetBackdropBorderColor(r, g, b)
 		end
 	end)
 
 	hooksecurefunc('MasterLooterFrame_UpdatePlayers', function()
 		for _, child in next, { MasterLooterFrame:GetChildren() } do
-			if not child.isSkinned and not child:GetName() and child:IsObjectType('Button') then
+			if not child.IsSkinned and not child:GetName() and child:IsObjectType('Button') then
 				if child:GetPushedTexture() then
 					S:HandleCloseButton(child)
 				else
 					child:SetTemplate()
 					child:StyleButton()
 				end
-				child.isSkinned = true
+				child.IsSkinned = true
 			end
 		end
 	end)
@@ -144,9 +137,7 @@ function S:LootFrame()
 		S:HandleItemButton(button, true)
 		S:HandleIconBorder(button.IconBorder, button.backdrop)
 
-		local point, attachTo, point2, x, y = button:GetPoint()
-		button:ClearAllPoints()
-		button:Point(point, attachTo, point2, x, y+30)
+		button:NudgePoint(nil, 30, nil, nil, true)
 	end
 
 	hooksecurefunc('LootFrame_UpdateButton', function(index)

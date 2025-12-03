@@ -8,7 +8,7 @@ function S:PetitionFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petition) then return end
 
 	local PetitionFrame = _G.PetitionFrame
-	S:HandleFrame(PetitionFrame, true, nil, 12, -17, -28, 65)
+	S:HandleFrame(PetitionFrame)
 
 	-- Buttons
 	local buttons = {
@@ -22,6 +22,7 @@ function S:PetitionFrame()
 		S:HandleButton(button)
 	end
 
+	S:HandleScrollBar(_G.PetitionFrame.ScrollBar)
 	S:HandleCloseButton(_G.PetitionFrameCloseButton)
 
 	-- Text Colors

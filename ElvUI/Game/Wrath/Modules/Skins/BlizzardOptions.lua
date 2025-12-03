@@ -283,8 +283,6 @@ function S:BlizzardOptions()
 	-- TextToSpeech
 	_G.TextToSpeechButton:StripTextures()
 
-	--S:HandleButton(_G.TextToSpeechFramePlaySampleButton)
-	--S:HandleButton(_G.TextToSpeechFramePlaySampleAlternateButton)
 	S:HandleButton(_G.TextToSpeechDefaultButton)
 	S:HandleCheckBox(_G.TextToSpeechCharacterSpecificButton)
 

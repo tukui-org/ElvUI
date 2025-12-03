@@ -22,10 +22,6 @@ function S:WorldMapFrame()
 	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
 	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
 
-	S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
-	--S:HandleCheckBox(_G.WorldMapShowDigsites)
-	S:HandleCheckBox(_G.WorldMapTrackQuest)
-
 	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
 	_G.WorldMapContinentDropdown:Height(26)
 
@@ -38,19 +34,17 @@ function S:WorldMapFrame()
 	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropdown, 'RIGHT', 10, 1)
 	_G.WorldMapZoomOutButton:Height(23)
 	_G.WorldMapZoomOutButton:Width(100)
-	_G.WorldMapZoomOutButton:SetFrameLevel(_G.WorldMapFrame.BlackoutFrame:GetFrameLevel() + 2)
+	_G.WorldMapZoomOutButton:OffsetFrameLevel(2, _G.WorldMapFrame.BlackoutFrame)
 
 	S:HandleButton(_G.WorldMapZoomOutButton)
 	S:HandleSliderFrame(_G.OpacityFrameSlider)
-	S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
-	S:HandleScrollBar(_G.QuestScrollFrame.ScrollBar)
 
-	if E:IsAddOnEnabled('Questie') and _G.Questie_Toggle then
+	if E.OtherAddons.Questie and _G.Questie_Toggle then
 		S:HandleButton(_G.Questie_Toggle)
 	end
 
 	S:HandleCloseButton(_G.WorldMapFrameCloseButton, WorldMapFrame.backdrop)
-	_G.WorldMapFrameCloseButton:SetFrameLevel(_G.WorldMapFrameCloseButton:GetFrameLevel() + 2)
+	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
 end
 
 S:AddCallback('WorldMapFrame')

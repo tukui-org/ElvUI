@@ -30,7 +30,7 @@ function S:DressUpFrame()
 	S:HandleButton(_G.DressUpFrameResetButton)
 	_G.DressUpFrameResetButton:Point('RIGHT', _G.DressUpFrameCancelButton, 'LEFT', -3, 0)
 
-	S:HandleFrame(_G.DressUpModelFrame, true, nil, -2, 1, 0, 19)
+	S:HandleFrame(_G.DressUpModelFrame, true, nil, -2, -19, 0, -1)
 end
 
 S:AddCallback('DressUpFrame')

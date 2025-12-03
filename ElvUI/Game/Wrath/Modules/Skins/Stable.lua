@@ -2,10 +2,36 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local HasPetUI = HasPetUI
-local UnitExists = UnitExists
-local GetPetHappiness = GetPetHappiness
-local hooksecurefunc = hooksecurefunc
+local unpack = unpack
+local CreateFrame = CreateFrame
+
+local function PetButtons(btn, p)
+	local button = _G[btn]
+	local icon = _G[btn..'IconTexture']
+	local highlight = button:GetHighlightTexture()
+	button:StripTextures()
+
+	if button.Checked then
+		button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
+		button.Checked:SetAllPoints(icon)
+		button.Checked:SetAlpha(0.3)
+	end
+
+	if highlight then
+		highlight:SetColorTexture(1, 1, 1, 0.3)
+		highlight:SetAllPoints(icon)
+	end
+
+	if icon then
+		icon:SetTexCoords()
+		icon:ClearAllPoints()
+		icon:Point('TOPLEFT', p, -p)
+		icon:Point('BOTTOMRIGHT', -p, p)
+
+		button:OffsetFrameLevel(2)
+		button:SetTemplate(nil, true)
+	end
+end
 
 function S:PetStableFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
@@ -28,9 +54,9 @@ function S:PetStableFrame()
 
 	local PetStablePetInfo = _G.PetStablePetInfo
 	PetStablePetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
-	PetStablePetInfo:SetFrameLevel(_G.PetModelFrame:GetFrameLevel() + 2)
+	PetStablePetInfo:OffsetFrameLevel(2, _G.PetModelFrame)
 	PetStablePetInfo:CreateBackdrop()
-	PetStablePetInfo:Size(22)
+	PetStablePetInfo:Size(24)
 
 	hooksecurefunc('PetStable_Update', function()
 		local hasPetUI, isHunterPet = HasPetUI()

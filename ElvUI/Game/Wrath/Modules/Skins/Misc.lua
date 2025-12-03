@@ -2,17 +2,11 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
+local next = next
 
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-
-local function ClearSetTexture(texture, tex)
-	if tex ~= nil then
-		texture:SetTexture()
-	end
-end
 
 local function FixReadyCheckFrame(frame)
 	if frame.initiator and UnitIsUnit('player', frame.initiator) then
@@ -51,7 +45,7 @@ function S:BlizzardMiscFrames()
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
-	if not E:IsAddOnEnabled('ConsolePort_Menu') then
+	if not E.OtherAddons.ConsolePort then
 		-- Reskin all esc/menu buttons
 		for _, button in next, { _G.GameMenuFrame:GetChildren() } do
 			if button.IsObjectType and button:IsObjectType('Button') then
@@ -66,22 +60,22 @@ function S:BlizzardMiscFrames()
 		_G.GameMenuFrameHeader:Point('TOP', _G.GameMenuFrame, 0, 7)
 	end
 
-	if E:IsAddOnEnabled('OptionHouse') then
+	if E.OtherAddons.OptionHouse then
 		S:HandleButton(_G.GameMenuButtonOptionHouse)
 	end
 
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
 	-- we can just hook onto this function so that we can get the correct `self`
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
-	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(s)
-		if s and s.closeDialog and not s.closeDialog.template then
-			s.closeDialog:StripTextures()
-			s.closeDialog:SetTemplate('Transparent')
-			s:SetScale(E.uiscale)
+	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(frame)
+		if frame and frame.closeDialog and not frame.closeDialog.template then
+			frame.closeDialog:StripTextures()
+			frame.closeDialog:SetTemplate('Transparent')
+			frame:SetScale(E.uiscale)
 
-			local dialogName = s.closeDialog.GetName and s.closeDialog:GetName()
-			local closeButton = s.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
-			local resumeButton = s.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
+			local dialogName = frame.closeDialog.GetName and frame.closeDialog:GetName()
+			local closeButton = frame.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
+			local resumeButton = frame.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
 			if closeButton then S:HandleButton(closeButton) end
 			if resumeButton then S:HandleButton(resumeButton) end
 		end
@@ -90,26 +84,26 @@ function S:BlizzardMiscFrames()
 	-- Same as above except 'MovieFrame_OnEvent' and 'MovieFrame_OnShow'
 	-- Cant be hooked directly so we can just use this
 	-- This is called through 'MovieFrame_OnEvent' on the event 'PLAY_MOVIE'
-	hooksecurefunc('MovieFrame_PlayMovie', function(s)
-		if s and s.CloseDialog and not s.CloseDialog.template then
-			s:SetScale(E.uiscale)
-			s.CloseDialog:StripTextures()
-			s.CloseDialog:SetTemplate('Transparent')
-			S:HandleButton(s.CloseDialog.ConfirmButton)
-			S:HandleButton(s.CloseDialog.ResumeButton)
+	hooksecurefunc('MovieFrame_PlayMovie', function(frame)
+		if frame and frame.CloseDialog and not frame.CloseDialog.template then
+			frame:SetScale(E.uiscale)
+			frame.CloseDialog:StripTextures()
+			frame.CloseDialog:SetTemplate('Transparent')
+			S:HandleButton(frame.CloseDialog.ConfirmButton)
+			S:HandleButton(frame.CloseDialog.ResumeButton)
 		end
 	end)
 
 	do
-		local menuBackdrop = function(s)
-			s:SetTemplate('Transparent')
+		local menuBackdrop = function(frame)
+			frame:SetTemplate('Transparent')
 		end
 
-		local chatMenuBackdrop = function(s)
-			s:SetTemplate('Transparent')
+		local chatMenuBackdrop = function(frame)
+			frame:SetTemplate('Transparent')
 
-			s:ClearAllPoints()
-			s:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
+			frame:ClearAllPoints()
+			frame:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
 		end
 
 		for index, menu in next, { _G.ChatMenu, _G.EmoteMenu, _G.LanguageMenu, _G.VoiceMacroMenu } do
@@ -143,87 +137,6 @@ function S:BlizzardMiscFrames()
 		S:HandleStaticPopup(_G['StaticPopup'..i])
 	end
 
-	--[[-- Reskin popup buttons
-	for i = 1, 4 do
-		local StaticPopup = _G['StaticPopup'..i]
-		StaticPopup:HookScript('OnShow', function() -- UpdateRecapButton is created OnShow
-			if StaticPopup.UpdateRecapButton and (not StaticPopup.UpdateRecapButtonHooked) then
-				StaticPopup.UpdateRecapButtonHooked = true -- We should only hook this once
-				hooksecurefunc(_G['StaticPopup'..i], 'UpdateRecapButton', S.UpdateRecapButton)
-			end
-		end)
-
-		StaticPopup:StripTextures()
-		StaticPopup:SetTemplate('Transparent')
-
-		for j = 1, 4 do
-			local button = StaticPopup['button'..j]
-			if button then
-				S:HandleButton(button)
-
-				button.Flash:Hide()
-
-				button:CreateShadow(5)
-				button.shadow:SetAlpha(0)
-				button.shadow:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-
-				local anim1, anim2 = button.PulseAnim:GetAnimations()
-				anim1:SetTarget(button.shadow)
-				anim2:SetTarget(button.shadow)
-			end
-		end
-
-		_G['StaticPopup'..i..'EditBox']:SetFrameLevel(_G['StaticPopup'..i..'EditBox']:GetFrameLevel()+1)
-		S:HandleEditBox(_G['StaticPopup'..i..'EditBox'])
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameGold'])
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameSilver'])
-		S:HandleEditBox(_G['StaticPopup'..i..'MoneyInputFrameCopper'])
-		if _G['StaticPopup'..i..'EditBox'] then
-			_G['StaticPopup'..i..'EditBox'].backdrop:Point('TOPLEFT', -2, -4)
-			_G['StaticPopup'..i..'EditBox'].backdrop:Point('BOTTOMRIGHT', 2, 4)
-		end
-		if _G['StaticPopup'..i..'ItemFrameNameFrame'] then
-			_G['StaticPopup'..i..'ItemFrameNameFrame']:Kill()
-		end
-		if _G['StaticPopup'..i..'ItemFrame'] then
-			_G['StaticPopup'..i..'ItemFrame']:SetTemplate()
-			_G['StaticPopup'..i..'ItemFrame']:StyleButton()
-			_G['StaticPopup'..i..'ItemFrame'].IconBorder:SetAlpha(0)
-			_G['StaticPopup'..i..'ItemFrameIconTexture']:SetTexCoord(unpack(E.TexCoords))
-			_G['StaticPopup'..i..'ItemFrameIconTexture']:SetInside()
-
-			local normTex = _G['StaticPopup'..i..'ItemFrame']:GetNormalTexture()
-			if normTex then
-				normTex:SetTexture()
-				hooksecurefunc(normTex, 'SetTexture', ClearSetTexture)
-			end
-
-			S:HandleIconBorder(_G['StaticPopup'..i..'ItemFrame'].IconBorder)
-		end
-	end]]
-
-	--[[ skin return to graveyard button
-	do
-		_G.GhostFrameMiddle:SetAlpha(0)
-		_G.GhostFrameRight:SetAlpha(0)
-		_G.GhostFrameLeft:SetAlpha(0)
-		_G.GhostFrame:StripTextures()
-		_G.GhostFrame:ClearAllPoints()
-		_G.GhostFrame:Point('TOP', E.UIParent, 'TOP', 0, -200)
-		_G.GhostFrameContentsFrame:SetTemplate('Transparent')
-		_G.GhostFrameContentsFrameText:Point('TOPLEFT', 53, 0)
-		_G.GhostFrameContentsFrameIcon:SetTexCoord(unpack(E.TexCoords))
-		_G.GhostFrameContentsFrameIcon:Point('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
-
-		local x = E.PixelMode and 1 or 2
-		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent())
-		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -x, x)
-		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, x, -x)
-		_G.GhostFrameContentsFrameIcon:Size(37, 38)
-		_G.GhostFrameContentsFrameIcon:SetParent(button)
-		button:SetTemplate()
-	end]]
-
 	_G.OpacityFrame:StripTextures()
 	_G.OpacityFrame:SetTemplate('Transparent')
 
@@ -247,7 +160,7 @@ function S:BlizzardMiscFrames()
 	StackSplitFrame.bg1:SetTemplate('Transparent')
 	StackSplitFrame.bg1:Point('TOPLEFT', 10, -15)
 	StackSplitFrame.bg1:Point('BOTTOMRIGHT', -10, 55)
-	StackSplitFrame.bg1:SetFrameLevel(StackSplitFrame.bg1:GetFrameLevel() - 1)
+	StackSplitFrame.bg1:OffsetFrameLevel(-1)
 
 	S:HandleButton(_G.StackSplitOkayButton)
 	S:HandleButton(_G.StackSplitCancelButton)

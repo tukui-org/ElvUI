@@ -3,15 +3,14 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 
-local GetItemInfo = GetItemInfo
-local GetItemQualityColor = GetItemQualityColor
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
-local hooksecurefunc = hooksecurefunc
+local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local function merchantItemPoint()
+local function MerchantItemPoint()
 	_G.MerchantItem1:PointXY(6, -40)
 
 	for i = 2, _G.BUYBACK_ITEMS_PER_PAGE do
@@ -51,7 +50,7 @@ function S:MerchantFrame()
 		button:Size(40)
 		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -2)
 
-		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetTexCoords()
 		icon:SetInside()
 
 		nameFrame:Point('LEFT', slot, 'RIGHT', -6, -17)
@@ -106,7 +105,7 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButton:Size(40)
 	_G.MerchantBuyBackItemItemButton:Point('TOPLEFT', 4, -2)
 
-	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoord(unpack(E.TexCoords))
+	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoords()
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetInside()
 
 	_G.MerchantBuyBackItemNameFrame:Point('LEFT', _G.MerchantBuyBackItemSlotTexture, 'RIGHT', -6, -17)
@@ -138,9 +137,9 @@ function S:MerchantFrame()
 				local name = _G['MerchantItem'..i..'Name']
 
 				if button.link then
-					local _, _, quality = GetItemInfo(button.link)
+					local quality = GetItemQualityByID(button.link)
 					if quality and quality > 1 then
-						local r, g, b = GetItemQualityColor(quality)
+						local r, g, b = E:GetItemQualityColor(quality)
 						button:SetBackdropBorderColor(r, g, b)
 						name:SetTextColor(r, g, b)
 					else
@@ -155,9 +154,9 @@ function S:MerchantFrame()
 
 			local itemName = GetBuybackItemInfo(GetNumBuybackItems())
 			if itemName then
-				local _, _, quality = GetItemInfo(itemName)
+				local quality = GetItemQualityByID(itemName)
 				if quality and quality > 1 then
-					local r, g, b = GetItemQualityColor(quality)
+					local r, g, b = E:GetItemQualityColor(quality)
 					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
 					_G.MerchantBuyBackItemName:SetTextColor(r, g, b)
 				else
@@ -171,7 +170,7 @@ function S:MerchantFrame()
 
 		_G.MerchantRepairText:Point('BOTTOMLEFT', 14, 69)
 
-		merchantItemPoint()
+		MerchantItemPoint()
 	end)
 
 	hooksecurefunc('MerchantFrame_UpdateBuybackInfo', function()
@@ -183,10 +182,10 @@ function S:MerchantFrame()
 				if itemName then
 					local button = _G['MerchantItem'..i..'ItemButton']
 					local name = _G['MerchantItem'..i..'Name']
-					local _, _, quality = GetItemInfo(itemName)
+					local quality = GetItemQualityByID(itemName)
 
 					if quality and quality > 1 then
-						local r, g, b = GetItemQualityColor(quality)
+						local r, g, b = E:GetItemQualityColor(quality)
 						button:SetBackdropBorderColor(r, g, b)
 						name:SetTextColor(r, g, b)
 					else
@@ -197,7 +196,7 @@ function S:MerchantFrame()
 			end
 		end
 
-		merchantItemPoint()
+		MerchantItemPoint()
 	end)
 end
 
