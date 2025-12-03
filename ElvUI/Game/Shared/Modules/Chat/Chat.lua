@@ -2385,10 +2385,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			if E.Retail and arg1 == 'YOU_CHANGED' and GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
 				_G.ChatFrame_UpdateDefaultChatTarget(frame)
-				_G.ChatEdit_UpdateNewcomerEditBoxHint(frame.editBox)
+				frame.editBox:UpdateNewcomerEditBoxHint()
 			else
 				if E.Retail and arg1 == 'YOU_LEFT' then
-					_G.ChatEdit_UpdateNewcomerEditBoxHint(frame.editBox, arg8)
+					frame.editBox:UpdateNewcomerEditBoxHint(arg8)
 				end
 
 				local globalstring
