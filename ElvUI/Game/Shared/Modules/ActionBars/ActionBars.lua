@@ -486,6 +486,11 @@ function AB:PLAYER_REGEN_ENABLED()
 			AB:MultiCastRecallSpellButton_Update()
 			AB.NeedsRecallButtonUpdate = nil
 		end
+
+		if AB.NeedsMultiCastButtonUpdate then
+			AB:MultiCastSummonSpellButton_Update(AB.NeedsMultiCastButtonUpdate)
+			AB.NeedsMultiCastButtonUpdate = nil
+		end
 	end
 
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')

@@ -58,12 +58,16 @@ function AB:MultiCastActionButton_Update(button)
 end
 
 function AB:MultiCastSummonSpellButton_Update(summonButton)
-	local buttonSpacing = AB.db.totemBar.spacing
-
-	-- reposition the first slot to the summon button
-	local slot1 = _G.MultiCastSlotButton1
-	slot1:ClearAllPoints()
-	slot1:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
+	if InCombatLockdown() then
+		AB.NeedsMultiCastButtonUpdate = summonButton
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+	else
+		-- reposition the first slot to the summon button
+		local buttonSpacing = AB.db.totemBar.spacing
+		local slot1 = _G.MultiCastSlotButton1
+		slot1:ClearAllPoints()
+		slot1:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
+	end
 end
 
 function AB:StyleTotemSlotButton(button, slot)
