@@ -1,7 +1,7 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
 	<Script file='init.lua'/>
 	<Include file ='Developer\!load.xml'/>
-	<Include file ='..\Locales\!load.xml'/>
+	<Include file ='..\..\Locales\!load.xml'/>
 	<Include file ='Media\!load.xml'/>
 	<Include file ='Defaults\!load.xml'/>
 	<Include file ='General\!load.xml'/>
