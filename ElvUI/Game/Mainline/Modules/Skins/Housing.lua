@@ -9,6 +9,7 @@ function S:Blizzard_HousingHouseFinder()
 	local FinderFrame = _G.HouseFinderFrame
 	if FinderFrame then
 		S:HandleFrame(FinderFrame, true)
+		FinderFrame.WoodBorderFrame:Hide()
 	end
 
 	local NeighborhoodListFrame = FinderFrame.NeighborhoodListFrame
@@ -86,6 +87,41 @@ function S:Blizzard_HousingDashboard()
 		local HouseUpgradeFrame = InfoContent.ContentFrame.HouseUpgradeFrame
 		HouseUpgradeFrame.Background:Hide()
 		S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+	end
+
+	local CatalogContent = DashBoardFrame.CatalogContent
+	if CatalogContent then
+		if CatalogContent.Divider then
+			CatalogContent.Divider:Hide()
+		end
+
+		if CatalogContent.Background then
+			CatalogContent.Background:Hide()
+		end
+
+		if CatalogContent.SearchBox then
+			S:HandleEditBox(CatalogContent.SearchBox)
+			CatalogContent.SearchBox:Size(150, 17)
+		end
+
+		if CatalogContent.Filters then
+			S:HandleDropDownBox(CatalogContent.Filters.FilterDropdown)
+		end
+
+		local Categories = CatalogContent.Categories
+		if Categories then
+			Categories.Background:Hide()
+		end
+
+		local OptionsContainer = CatalogContent.OptionsContainer
+		if OptionsContainer then
+			S:HandleTrimScrollBar(OptionsContainer.ScrollBar)
+		end
+
+		local PreviewFrame = CatalogContent.PreviewFrame
+		if PreviewFrame then
+			PreviewFrame.PreviewBackground:Hide()
+		end
 	end
 end
 
