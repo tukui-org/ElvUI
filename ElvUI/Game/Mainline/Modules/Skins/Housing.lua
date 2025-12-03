@@ -77,3 +77,26 @@ function S:Blizzard_HouseList()
 end
 
 S:AddCallbackForAddon('Blizzard_HouseList')
+
+
+function S:Blizzard_HousingCreateNeighborhood()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local CreateGuildFrame = _G.HousingCreateGuildNeighborhoodFrame
+	if CreateGuildFrame then
+		CreateGuildFrame:StripTextures()
+		CreateGuildFrame:CreateBackdrop('Transparent')
+
+		S:HandleEditBox(CreateGuildFrame.NeighborhoodNameEditBox)
+		S:HandleButton(CreateGuildFrame.ConfirmButton)
+		S:HandleButton(CreateGuildFrame.CancelButton)
+
+		local ConfirmationFrame = CreateGuildFrame.ConfirmationFrame
+		ConfirmationFrame:StripTextures()
+		ConfirmationFrame:SetTemplate()
+		S:HandleButton(ConfirmationFrame.ConfirmButton)
+		S:HandleButton(ConfirmationFrame.CancelButton)
+	end
+end
+
+S:AddCallbackForAddon('Blizzard_HousingCreateNeighborhood')
