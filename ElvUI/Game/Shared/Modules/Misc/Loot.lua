@@ -333,7 +333,7 @@ function M:LOOT_OPENED(_, autoloot)
 
 	local r, g, b = E:GetItemQualityColor(max_quality)
 	lootFrame:SetBackdropBorderColor(r, g, b, 0.8)
-	lootFrame:Width(max(max_width + 60, lootFrame.title:GetStringWidth() + 5))
+	lootFrame:Width(max_width + 60)
 end
 
 function M:OPEN_MASTER_LOOT_LIST()
@@ -361,10 +361,13 @@ function M:LoadLoot()
 	lootFrame:SetTemplate('Transparent')
 	lootFrame:SetFrameStrata(_G.LootFrame:GetFrameStrata())
 	lootFrame:SetToplevel(true)
+
 	lootFrame.title = lootFrame:CreateFontString(nil, 'OVERLAY')
 	lootFrame.title:FontTemplate(nil, nil, 'OUTLINE')
 	lootFrame.title:Point('BOTTOMLEFT', lootFrame, 'TOPLEFT', 0, 1)
+
 	lootFrame.slots = {}
+
 	lootFrame:SetScript('OnHide', FrameHide) -- mimic LootFrame_OnHide, mostly
 	E.frames[lootFrame] = nil
 
@@ -377,6 +380,7 @@ function M:LoadLoot()
 	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,blizzardImprovements')
 
 	_G.LootFrame:UnregisterAllEvents()
+
 	tinsert(_G.UISpecialFrames, 'ElvLootFrame')
 
 	-- fix blizzard setpoint connection bs
