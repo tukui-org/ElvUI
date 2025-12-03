@@ -149,8 +149,10 @@ local function SkinJournalScrollButton(bu)
 				bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
 				bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 
-				bu.dragButton.levelBG:SetTexture()
-				bu.dragButton.level:FontTemplate(nil, 12)
+				if bu.dragButton.levelBG then
+					bu.dragButton.levelBG:SetTexture()
+					bu.dragButton.level:FontTemplate(nil, 12)
+				end
 			elseif isMount then
 				bu.mountList = true
 				bu.factionIcon:SetAtlas(savedFactionAtlas)
@@ -297,18 +299,9 @@ end
 
 local function SkinPetFrame()
 	_G.PetJournalSummonButton:StripTextures()
-	_G.PetJournalFindBattle:StripTextures()
 	S:HandleButton(_G.PetJournalSummonButton)
-	S:HandleButton(_G.PetJournalFindBattle)
 	_G.PetJournalRightInset:StripTextures()
 	_G.PetJournalLeftInset:StripTextures()
-	S:HandleItemButton(_G.PetJournal.SummonRandomPetSpellFrame.Button, true)
-	E:RegisterCooldown(_G.PetJournal.SummonRandomPetSpellFrame.Button.Cooldown)
-	-- _G.PetJournal.SummonRandomPetSpellFrame.Button.Cooldown:SetAllPoints(_G.PetJournal.SummonRandomPetSpellFrame.ButtonIconTexture)
-
-	if E.global.general.disableTutorialButtons then
-		_G.PetJournalTutorialButton:Kill()
-	end
 
 	local PetJournal = _G.PetJournal
 	PetJournal.PetCount:StripTextures()
@@ -327,106 +320,18 @@ local function SkinPetFrame()
 	S:HandleTrimScrollBar(_G.PetJournal.ScrollBar)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
 
-	_G.PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
-
-	S:HandleItemButton(_G.PetJournal.HealPetSpellFrame.Button, true)
-	E:RegisterCooldown(_G.PetJournal.HealPetSpellFrame.Button.Cooldown)
-	-- _G.PetJournal.HealPetSpellFrame.Cooldown:SetAllPoints(_G.PetJournal.HealPetSpellFrame.IconTexture)
-	-- _G.PetJournal.HealPetSpellFrame.IconTexture:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
-
-	_G.PetJournalLoadoutBorder:StripTextures()
-	_G.PetJournalSpellSelect:StripTextures()
-
-	for i = 1, 3 do
-		local petButton = _G['PetJournalLoadoutPet'..i]
-		local petButtonHighlight = _G['PetJournalLoadoutPet'..i..'Highlight']
-		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
-		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
-		petButton:StripTextures()
-		petButton:SetTemplate()
-		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
-
-		petButtonHighlight:SetTexture(E.media.blankTex)
-		petButtonHighlight:SetVertexColor(1, 1, 1, .25)
-		petButtonHighlight:SetAllPoints(petButton.icon)
-
-		local helpFrame = _G['PetJournalLoadoutPet'..i..'HelpFrame']
-		helpFrame:StripTextures()
-
-		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
-		petButton.dragButton:OffsetFrameLevel(1, _G['PetJournalLoadoutPet'..i].dragButton)
-
-		petButton.hover = true
-		petButton.pushed = true
-		petButton.checked = true
-		S:HandleItemButton(petButton)
-		S:HandleIconBorder(petButton.qualityBorder, petButton.backdrop)
-
-		petButton.levelBG:SetTexture()
-		petButton.level:FontTemplate(nil, 12)
-
-		petButton.setButton:StripTextures()
-		petButtonHealthFrame.healthBar:StripTextures()
-		petButtonHealthFrame.healthBar:CreateBackdrop()
-		petButtonHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(petButtonHealthFrame.healthBar)
-		petButtonXPBar:StripTextures()
-		petButtonXPBar:CreateBackdrop()
-		petButtonXPBar:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(petButtonXPBar)
-		petButtonXPBar:OffsetFrameLevel(2)
-
-		for index = 1, 3 do
-			local f = _G['PetJournalLoadoutPet'..i..'Spell'..index]
-			S:HandleItemButton(f)
-			f.FlyoutArrow:SetTexture([[Interface\Buttons\ActionBarFlyoutButton]])
-			_G['PetJournalLoadoutPet'..i..'Spell'..index..'Icon']:SetInside(f)
-		end
-	end
-
-	for i = 1, 2 do
-		local btn = _G['PetJournalSpellSelectSpell'..i]
-		S:HandleItemButton(btn)
-
-		local icon = _G['PetJournalSpellSelectSpell'..i..'Icon']
-		icon:SetInside(btn)
-		icon:SetDrawLayer('BORDER')
-	end
-
 	local Card = _G.PetJournalPetCard
-
 	Card:StripTextures()
 	Card:SetTemplate('Transparent')
-	_G.PetJournalPetCardInset:StripTextures()
 
+	Card.ShadowOverlay:Hide()
 	Card.PetInfo:OffsetFrameLevel(2, Card)
-	Card.PetInfo.level:FontTemplate(nil, 12)
-	Card.PetInfo.levelBG:SetTexture()
+
 	S:HandleIcon(Card.PetInfo.icon, true)
-	S:HandleIconBorder(Card.PetInfo.qualityBorder, Card.PetInfo.icon.backdrop)
-	Card.PetInfo.qualityBorder:SetAlpha(0)
 
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.PetJournalPrimaryAbilityTooltip)
 	end
-
-	for i = 1, 6 do
-		local frame = _G['PetJournalPetCardSpell'..i]
-		frame:OffsetFrameLevel(2)
-		frame:DisableDrawLayer('BACKGROUND')
-		frame:SetTemplate()
-		frame.icon:SetTexCoords()
-	end
-
-	Card.HealthFrame.healthBar:StripTextures()
-	Card.HealthFrame.healthBar:CreateBackdrop()
-	Card.HealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(Card.HealthFrame.healthBar)
-
-	Card.xpBar:StripTextures()
-	Card.xpBar:CreateBackdrop()
-	Card.xpBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(Card.xpBar)
 end
 
 local function SkinToyFrame()
