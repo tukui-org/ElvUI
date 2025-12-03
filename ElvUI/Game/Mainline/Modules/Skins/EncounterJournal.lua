@@ -294,13 +294,14 @@ function S:Blizzard_EncounterJournal()
 	S:HandleDropDownBox(InstanceSelect.ExpansionDropdown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	-- Bottom tabs
+	-- Bottom tabs [TODO: Add consistent 1px spacing in between all tabs, like on our other frames]
 	for _, tab in next, {
 		_G.EncounterJournalSuggestTab,
 		_G.EncounterJournalDungeonTab,
 		_G.EncounterJournalRaidTab,
 		_G.EncounterJournalLootJournalTab,
-		_G.EncounterJournalMonthlyActivitiesTab
+		_G.EncounterJournalMonthlyActivitiesTab,
+		_G.EncounterJournal.TutorialsTab
 	} do
 		S:HandleTab(tab)
 	end
@@ -611,6 +612,10 @@ function S:Blizzard_EncounterJournal()
 
 		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
+
+	-- Tutorials [TODO]
+	-- local StartButton = _G.EncounterJournal.TutorialsFrame.Contents.StartButton
+	-- S:HandleFrame(StartButton)
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal')
