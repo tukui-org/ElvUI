@@ -1978,7 +1978,7 @@ Bitte beachten:
 -Du musst das Spiel komplett neu starten, nachdem du die Datei hinzugefügt hast.
 -Der Dateityp muss im Format tga sein.
 
-Zum Beispiel: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+Zum Beispiel: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 Für die meisten Anwender ist es allerdigns einfacher, eine tga-Datei in ihren WoW-Ordner abzulegen. Anschließend kann man den Namen der Datei hier eingeben.]=]
 

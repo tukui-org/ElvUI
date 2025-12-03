@@ -1,10 +1,10 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='..\..\..\..\Core\Modules\DataTexts\Currencies.lua'/>
-	<Script file='..\..\..\..\Core\Modules\DataTexts\Difficulty.lua'/>
-	<Script file='..\..\..\..\Core\Modules\DataTexts\EquipmentSets.lua'/>
-	<Script file='..\..\..\..\Core\Modules\DataTexts\Mastery.lua'/>
-	<Script file='..\..\..\..\Core\Modules\DataTexts\PrimaryStat.lua'/>
-	<Script file='..\..\..\..\Core\Modules\DataTexts\Speed.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\Currencies.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\Difficulty.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\EquipmentSets.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\Mastery.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\PrimaryStat.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\Speed.lua'/>
 	<Script file='CallToArms.lua'/>
 	<Script file='Crests.lua'/>
 	<Script file='DungeonScore.lua'/>

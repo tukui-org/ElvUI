@@ -36,14 +36,14 @@ local MediaKey = {
 }
 
 local MediaPath = {
-	font	= [[Interface\AddOns\ElvUI\Core\Media\Fonts\]],
-	sound	= [[Interface\AddOns\ElvUI\Core\Media\Sounds\]],
-	arrow	= [[Interface\AddOns\ElvUI\Core\Media\Arrows\]],
-	mail	= [[Interface\AddOns\ElvUI\Core\Media\MailIcons\]],
-	resting = [[Interface\AddOns\ElvUI\Core\Media\RestIcons\]],
-	emoji	= [[Interface\AddOns\ElvUI\Core\Media\ChatEmojis\]],
-	logo	= [[Interface\AddOns\ElvUI\Core\Media\ChatLogos\]],
-	texture	= [[Interface\AddOns\ElvUI\Core\Media\Textures\]]
+	font	= [[Interface\AddOns\ElvUI\Game\Shared\Media\Fonts\]],
+	sound	= [[Interface\AddOns\ElvUI\Game\Shared\Media\Sounds\]],
+	arrow	= [[Interface\AddOns\ElvUI\Game\Shared\Media\Arrows\]],
+	mail	= [[Interface\AddOns\ElvUI\Game\Shared\Media\MailIcons\]],
+	resting = [[Interface\AddOns\ElvUI\Game\Shared\Media\RestIcons\]],
+	emoji	= [[Interface\AddOns\ElvUI\Game\Shared\Media\ChatEmojis\]],
+	logo	= [[Interface\AddOns\ElvUI\Game\Shared\Media\ChatLogos\]],
+	texture	= [[Interface\AddOns\ElvUI\Game\Shared\Media\Textures\]]
 }
 
 do

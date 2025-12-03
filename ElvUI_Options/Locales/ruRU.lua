@@ -1993,7 +1993,7 @@ L["TEXTURE_EXAMPLE"] = [=[Укажите имя файла в папке World o
 -Вы должны полностью перезапустить игру после добавления нового файла в папку
 -Тип файла должен быть tga
 
-Пример: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+Пример: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 Для большинства пользователей будет легче просто положить tga файл в папку игры, а затем написать имя файла здесь.]=]
 

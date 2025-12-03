@@ -2088,7 +2088,7 @@ L["TEXTURE_EXAMPLE"] = [=[指定一個在魔獸世界資料夾之中的文件名
 - 在此資料夾新增檔案後, 請務必重新啟動遊戲.
 - 檔案必須為 tga 格式.
 
-範例: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+範例: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 對多數玩家來說, 較簡易的方式是將 tga 檔放入魔獸世界資料夾中, 然後在此處輸入檔案名稱.]=]
 

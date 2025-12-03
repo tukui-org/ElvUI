@@ -2077,7 +2077,7 @@ L["TEXTURE_EXAMPLE"] = [[若要设置聊天框背景, 请你指定位于魔兽�
 - 在添加文件后你必须完全重新启动游戏
 - 文件必须为tga格式
 
-举例: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+举例: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 对多数玩家来说, 较简易的方式是将tga文件放入魔兽世界文件夹中, 然后在此处输入文件名.]]
 

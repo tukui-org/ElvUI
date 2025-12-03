@@ -5,7 +5,7 @@
 ## Interface: 110207
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
-## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\LogoAddon
+## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 ## Category-enUS: UI Overhaul
 ## Category-deDE: UI-Überholung
 ## Category-esES: Renovación de la UI

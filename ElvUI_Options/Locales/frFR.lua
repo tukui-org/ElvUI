@@ -1978,7 +1978,7 @@ La taille de l'image recommandée est de 256x128 pixels
 Vous devez redémarrer le jeu après avoir ajouté un fichier dans le dossier.
 Le format du fichier doit être en .tga
 
-Exemple: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+Exemple: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 Ou pour la majorité des utilsateurs, il serait plus simple de mettre le fichier tga dans le dossier de World of Warcraft puis de taper son nom ici.]=]
 

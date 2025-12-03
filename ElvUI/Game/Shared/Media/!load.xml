@@ -4,12 +4,12 @@
 	<!-- Dynamic Expressway Big -->
 	<FontFamily name='ElvUIFontBig' virtual='true'>
 		<Member alphabet='roman'>
-			<Font font='Interface\AddOns\ElvUI\Core\Media\Fonts\Expressway.ttf' height='15'>
+			<Font font='Interface\AddOns\ElvUI\Game\Shared\Media\Fonts\Expressway.ttf' height='15'>
 				<Shadow><Offset><AbsDimension x='1' y='-1'/></Offset><Color r='0' g='0' b='0'/></Shadow>
 			</Font>
 		</Member>
 		<Member alphabet='russian'>
-			<Font font='Interface\AddOns\ElvUI\Core\Media\Fonts\Expressway.ttf' height='15'>
+			<Font font='Interface\AddOns\ElvUI\Game\Shared\Media\Fonts\Expressway.ttf' height='15'>
 				<Shadow><Offset><AbsDimension x='1' y='-1'/></Offset><Color r='0' g='0' b='0'/></Shadow>
 			</Font>
 		</Member>
@@ -33,12 +33,12 @@
 	<!-- Dynamic Expressway Font -->
 	<FontFamily name='ElvUIFontNormal' virtual='true'>
 		<Member alphabet='roman'>
-			<Font font='Interface\AddOns\ElvUI\Core\Media\Fonts\Expressway.ttf' height='13'>
+			<Font font='Interface\AddOns\ElvUI\Game\Shared\Media\Fonts\Expressway.ttf' height='13'>
 				<Shadow><Offset><AbsDimension x='1' y='-1'/></Offset><Color r='0' g='0' b='0'/></Shadow>
 			</Font>
 		</Member>
 		<Member alphabet='russian'>
-			<Font font='Interface\AddOns\ElvUI\Core\Media\Fonts\Expressway.ttf' height='13'>
+			<Font font='Interface\AddOns\ElvUI\Game\Shared\Media\Fonts\Expressway.ttf' height='13'>
 				<Shadow><Offset><AbsDimension x='1' y='-1'/></Offset><Color r='0' g='0' b='0'/></Shadow>
 			</Font>
 		</Member>
@@ -62,12 +62,12 @@
 	<!-- Dynamic Expressway Small -->
 	<FontFamily name='ElvUIFontSmall' virtual='true'>
 		<Member alphabet='roman'>
-			<Font font='Interface\AddOns\ElvUI\Core\Media\Fonts\Expressway.ttf' height='11'>
+			<Font font='Interface\AddOns\ElvUI\Game\Shared\Media\Fonts\Expressway.ttf' height='11'>
 				<Shadow><Offset><AbsDimension x='1' y='-1'/></Offset><Color r='0' g='0' b='0'/></Shadow>
 			</Font>
 		</Member>
 		<Member alphabet='russian'>
-			<Font font='Interface\AddOns\ElvUI\Core\Media\Fonts\Expressway.ttf' height='11'>
+			<Font font='Interface\AddOns\ElvUI\Game\Shared\Media\Fonts\Expressway.ttf' height='11'>
 				<Shadow><Offset><AbsDimension x='1' y='-1'/></Offset><Color r='0' g='0' b='0'/></Shadow>
 			</Font>
 		</Member>
