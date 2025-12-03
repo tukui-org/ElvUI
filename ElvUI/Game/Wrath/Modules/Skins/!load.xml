@@ -2,15 +2,16 @@
 	<Script file='Achievement.lua'/>
 	<Script file='AddonManager.lua'/>
 	<Script file='Alerts.lua'/>
-	<Script file='Archaeology.lua'/>
+	<Script file='Arena.lua'/>
 	<Script file='ArenaRegistrar.lua'/>
 	<Script file='AuctionHouse.lua'/>
 	<Script file='Bags.lua'/>
 	<Script file='Barber.lua'/>
+	<Script file='Battlefield.lua'/>
 	<Script file='Battlenet.lua'/>
 	<Script file='BGMap.lua'/>
 	<Script file='BGScore.lua'/>
-	<Script file='BlackMarket.lua'/>
+	<Script file='Binding.lua'/>
 	<Script file='BlizzardOptions.lua'/>
 	<Script file='Calendar.lua'/>
 	<Script file='Channels.lua'/>
@@ -20,7 +21,6 @@
 	<Script file='Communities.lua'/>
 	<Script file='Debug.lua'/>
 	<Script file='DressingRoom.lua'/>
-	<Script file='EncounterJournal.lua'/>
 	<Script file='EventTrace.lua'/>
 	<Script file='Friends.lua'/>
 	<Script file='Gossip.lua'/>
@@ -29,7 +29,6 @@
 	<Script file='GuildRegistrar.lua'/>
 	<Script file='Help.lua'/>
 	<Script file='Inspect.lua'/>
-	<Script file='ItemUpgrade.lua'/>
 	<Script file='LFG.lua'/>
 	<Script file='Loot.lua'/>
 	<Script file='Macro.lua'/>
@@ -43,7 +42,6 @@
 	<Script file='PVP.lua'/>
 	<Script file='Quest.lua'/>
 	<Script file='Raid.lua'/>
-	<Script file='Reforge.lua'/>
 	<Script file='SettingsPanel.lua'/>
 	<Script file='Socket.lua'/>
 	<Script file='SpellBook.lua'/>

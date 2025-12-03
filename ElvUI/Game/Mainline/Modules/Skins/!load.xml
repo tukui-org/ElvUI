@@ -53,6 +53,7 @@
 	<Script file='GuildControl.lua'/>
 	<Script file='GuildRegistrar.lua'/>
 	<Script file='Help.lua'/>
+	<Script file='Housing.lua'/>
 	<Script file='Inspect.lua'/>
 	<Script file='IslandPartyPose.lua'/>
 	<Script file='IslandQueue.lua'/>

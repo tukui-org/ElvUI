@@ -81,6 +81,7 @@ if not E.Retail then
 end
 
 if E.Retail then
+	toggles.housing = L["Housing"]
 	toggles.adventureMap = L["ADVENTURE_MAP_TITLE"]
 	toggles.alliedRaces = L["Allied Races"]
 	toggles.animaDiversion = L["Anima Diversion"]
