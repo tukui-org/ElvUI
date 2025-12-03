@@ -27,12 +27,38 @@ S:AddCallbackForAddon('Blizzard_HousingHouseFinder')
 function S:Blizzard_HousingCornerstone()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
-	local CornerFrame = _G.HousingCornerstoneVisitorFrame
-	if CornerFrame then
-		CornerFrame:StripTextures()
-		CornerFrame:CreateBackdrop('Transparent')
-		S:HandleCloseButton(CornerFrame.CloseButton)
+	local CornerVisitorFrame = _G.HousingCornerstoneVisitorFrame
+	if CornerVisitorFrame then
+		CornerVisitorFrame:StripTextures()
+		CornerVisitorFrame:CreateBackdrop('Transparent')
+		S:HandleCloseButton(CornerVisitorFrame.CloseButton)
+	end
+
+	local CornerInfoFrame = _G.HousingCornerstoneHouseInfoFrame
+	if CornerInfoFrame then
+		CornerInfoFrame:StripTextures()
+		CornerInfoFrame:CreateBackdrop('Transparent')
+		S:HandleCloseButton(CornerInfoFrame.CloseButton)
 	end
 end
 
 S:AddCallbackForAddon('Blizzard_HousingCornerstone')
+
+
+function S:Blizzard_HousingBulletinBoard()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local BulletinBoardFrame = _G.HousingBulletinBoardFrame
+	if BulletinBoardFrame then
+		BulletinBoardFrame:StripTextures()
+		-- BulletinBoardFrame.FoliageDecoration:Kill() -- grrr
+		S:HandleCloseButton(BulletinBoardFrame.CloseButton)
+
+		local ResidentsTab = BulletinBoardFrame.ResidentsTab
+		if ResidentsTab then
+			S:HandleTrimScrollBar(ResidentsTab.ScrollBar)
+		end
+	end
+end
+
+S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
