@@ -23,6 +23,74 @@ end
 
 S:AddCallbackForAddon('Blizzard_HousingHouseFinder')
 
+local function PositionHousingDashbardTab(tab, _, _, _, x, y)
+	if x ~= 1 or y ~= -10 then
+		tab:ClearAllPoints()
+		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 1, -10)
+	end
+end
+
+local function PositionTabIcons(icon, point)
+	if point ~= 'CENTER' then
+		icon:ClearAllPoints()
+		icon:SetPoint('CENTER')
+	end
+end
+
+function S:Blizzard_HousingDashboard()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local DashBoardFrame = _G.HousingDashboardFrame
+	if DashBoardFrame then
+		S:HandleFrame(DashBoardFrame, true)
+	end
+
+	-- Fix the actual icon texture
+	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
+		tab:CreateBackdrop()
+		tab:Size(30, 40)
+
+		if i == 1 then
+			tab:ClearAllPoints()
+			tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 1, -10)
+
+			hooksecurefunc(tab, 'SetPoint', PositionHousingDashbardTab)
+		end
+
+		if tab.Icon then
+			tab.Icon:ClearAllPoints()
+			tab.Icon:SetPoint('CENTER')
+
+			hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
+		end
+
+		if tab.SelectedTexture then
+			tab.SelectedTexture:SetDrawLayer('ARTWORK')
+			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+			tab.SelectedTexture:SetAllPoints()
+		end
+
+		for _, region in next, { tab:GetRegions() } do
+			if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
+				region:SetColorTexture(1, 1, 1, 0.3)
+				region:SetAllPoints()
+			end
+		end
+	end
+
+	local InfoContent = DashBoardFrame.HouseInfoContent
+	if InfoContent then
+		S:HandleButton(InfoContent.HouseFinderButton)
+		S:HandleDropDownBox(InfoContent.HouseDropdown)
+
+		local HouseUpgradeFrame = InfoContent.ContentFrame.HouseUpgradeFrame
+		HouseUpgradeFrame.Background:Hide()
+		S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+	end
+end
+
+S:AddCallbackForAddon('Blizzard_HousingDashboard')
+
 
 function S:Blizzard_HousingCornerstone()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
@@ -39,6 +107,14 @@ function S:Blizzard_HousingCornerstone()
 		CornerInfoFrame:StripTextures()
 		CornerInfoFrame:CreateBackdrop('Transparent')
 		S:HandleCloseButton(CornerInfoFrame.CloseButton)
+	end
+
+	local PurchaseFrame = _G.HousingCornerstonePurchaseFrame
+	if PurchaseFrame then
+		PurchaseFrame:StripTextures()
+		PurchaseFrame:CreateBackdrop('Transparent')
+		S:HandleCloseButton(PurchaseFrame.CloseButton)
+		S:HandleButton(PurchaseFrame.BuyButton)
 	end
 end
 
