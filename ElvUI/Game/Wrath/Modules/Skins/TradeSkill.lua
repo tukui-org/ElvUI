@@ -5,12 +5,13 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local GetItemInfo = GetItemInfo
 local GetTradeSkillNumReagents = GetTradeSkillNumReagents
 local GetTradeSkillInfo = GetTradeSkillInfo
+local GetItemQualityColor = GetItemQualityColor
 local GetTradeSkillItemLink = GetTradeSkillItemLink
 local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
-local GetItemQualityByID = C_Item.GetItemQualityByID
 
 function S:Blizzard_TradeSkillUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
@@ -27,18 +28,18 @@ function S:Blizzard_TradeSkillUI()
 	_G.TradeSkillFrameBottomRightTexture:Kill()
 
 	local TradeSkillRankFrame = _G.TradeSkillRankFrame
-	TradeSkillRankFrame:Size(314, 16)
-	TradeSkillRankFrame:Point('TOPLEFT', 25, -44)
+	TradeSkillRankFrame:Size(322, 14)
+	TradeSkillRankFrame:Point('TOPLEFT', 23, -37)
 	TradeSkillRankFrame:CreateBackdrop()
 	TradeSkillRankFrame:SetStatusBarTexture(E.media.normTex)
 	TradeSkillRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
 	E:RegisterStatusBar(TradeSkillRankFrame)
 
-	local TradeSkillFrameSearchBox = _G.TradeSkillFrameSearchBox
-	S:HandleEditBox(TradeSkillFrameSearchBox)
-	TradeSkillFrameSearchBox:ClearAllPoints()
-	TradeSkillFrameSearchBox:Point('TOPLEFT', _G.TradeSkillRankFrame, 'TOPLEFT', 60, -28)
-	TradeSkillFrameSearchBox:Size(122, 18)
+	local TradeSkillFrameEditBox = _G.TradeSkillFrameEditBox
+	S:HandleEditBox(TradeSkillFrameEditBox)
+	TradeSkillFrameEditBox:ClearAllPoints()
+	TradeSkillFrameEditBox:Point('TOPLEFT', TradeSkillFrame, 'TOPLEFT', 23, -16)
+	TradeSkillFrameEditBox:Size(122, 18)
 
 	_G.TradeSkillExpandButtonFrame:StripTextures()
 
@@ -55,10 +56,20 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillCollapseAllButton:GetDisabledTexture():Size(15)
 	TradeSkillCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
-	S:HandleDropDownBox(_G.TradeSkillFrame.FilterDropdown)
+	S:HandleDropDownBox(_G.TradeSkillInvSlotDropdown, 120)
+	_G.TradeSkillInvSlotDropdown:ClearAllPoints()
+	_G.TradeSkillInvSlotDropdown:Point('TOPRIGHT', TradeSkillFrame, 'TOPRIGHT', -38, -50)
+
+	S:HandleDropDownBox(_G.TradeSkillSubClassDropdown, 120)
+	_G.TradeSkillSubClassDropdown:ClearAllPoints()
+	_G.TradeSkillSubClassDropdown:Point('RIGHT', _G.TradeSkillInvSlotDropdown, 'RIGHT', -120, 0)
 
 	_G.TradeSkillFrameTitleText:ClearAllPoints()
 	_G.TradeSkillFrameTitleText:Point('TOP', TradeSkillFrame, 'TOP', 0, -18)
+
+	local TradeSkillFrameAvailableFilterCheckButton = _G.TradeSkillFrameAvailableFilterCheckButton
+	S:HandleCheckBox(TradeSkillFrameAvailableFilterCheckButton)
+	TradeSkillFrameAvailableFilterCheckButton:Point('TOPLEFT', 18, -50)
 
 	for i = 1, _G.TRADE_SKILLS_DISPLAYED do
 		local button = _G['TradeSkillSkill'..i]
@@ -75,16 +86,6 @@ function S:Blizzard_TradeSkillUI()
 		if highlight then
 			highlight:SetTexture(E.ClearTexture)
 			highlight.SetTexture = E.noop
-		end
-
-		local subSkillRankBar = _G['TradeSkillSkill'..i..'SubSkillRankBar']
-		if subSkillRankBar then
-			subSkillRankBar:StripTextures()
-			subSkillRankBar:CreateBackdrop()
-			subSkillRankBar:SetStatusBarTexture(E.media.normTex)
-			subSkillRankBar:SetStatusBarColor(0.13, 0.35, 0.80)
-
-			E:RegisterStatusBar(subSkillRankBar)
 		end
 	end
 
@@ -132,10 +133,12 @@ function S:Blizzard_TradeSkillUI()
 		end
 
 		local skillLink = GetTradeSkillItemLink(id)
+		local r, g, b
+
 		if skillLink then
-			local quality = GetItemQualityByID(skillLink)
+			local _, _, quality = GetItemInfo(skillLink)
 			if quality and quality > 1 then
-				local r, g, b = E:GetItemQualityColor(quality)
+				r, g, b = GetItemQualityColor(quality)
 
 				_G.TradeSkillSkillIcon.backdrop:SetBackdropBorderColor(r, g, b)
 				_G.TradeSkillSkillName:SetTextColor(r, g, b)
@@ -151,11 +154,11 @@ function S:Blizzard_TradeSkillUI()
 
 			if reagentLink then
 				local icon = _G['TradeSkillReagent'..i..'IconTexture']
-				local quality = GetItemQualityByID(reagentLink)
+				local _, _, quality = GetItemInfo(reagentLink)
 
 				if quality and quality > 1 then
 					local name = _G['TradeSkillReagent'..i..'Name']
-					local r, g, b = E:GetItemQualityColor(quality)
+					r, g, b = GetItemQualityColor(quality)
 
 					icon.backdrop:SetBackdropBorderColor(r, g, b)
 

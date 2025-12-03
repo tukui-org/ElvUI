@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
+local next, unpack = next, unpack
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local hooksecurefunc = hooksecurefunc
@@ -25,7 +25,7 @@ local function HandleEventIcon(icon)
 	icon:ClearAllPoints()
 	icon:Point('TOPLEFT', _G.CalendarViewEventFrame.HeaderFrame, 'TOPLEFT', 15, -20)
 	icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, true)
-	icon:SetTexCoords()
+	icon:SetTexCoord(unpack(E.TexCoords))
 	icon.SetTexCoord = E.noop
 end
 
@@ -82,7 +82,7 @@ function S:Blizzard_Calendar()
 		bu:SetTemplate(nil, nil, nil, true)
 		bu:SetBackdropColor(0,0,0,0)
 		bu:SetHighlightTexture(E.media.glossTex)
-		bu:OffsetFrameLevel(1)
+		bu:SetFrameLevel(bu:GetFrameLevel() + 1)
 
 		local hl = bu:GetHighlightTexture()
 		hl:SetVertexColor(1, 1, 1, 0.3)

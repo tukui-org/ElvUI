@@ -9,9 +9,8 @@ function S:Blizzard_BarbershopUI()
 
 	S:HandleFrame(_G.BarberShopFrame)
 
-	local moneyFrame = _G.BarberShopFrameMoneyFrame
-	if moneyFrame then
-		S:HandleMoneyFrame(moneyFrame)
+	if _G.BarberShopFrameMoneyFrame then
+		_G.BarberShopFrameMoneyFrame:StripTextures()
 	end
 
 	local nextPrev = {

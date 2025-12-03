@@ -22,9 +22,7 @@ function S:SkinArenaRegistrar()
 	local ArenaRegistrarGreetingFrame = _G.ArenaRegistrarGreetingFrame
 	ArenaRegistrarGreetingFrame:StripTextures()
 
-	local ArenaRegistrarGreetingRegion = ArenaRegistrarGreetingFrame:GetRegions()
-	ArenaRegistrarGreetingRegion:SetTextColor(1, 0.80, 0.10)
-
+	select(1, ArenaRegistrarGreetingFrame:GetRegions()):SetTextColor(1, 0.80, 0.10)
 	_G.RegistrationText:SetTextColor(1, 0.80, 0.10)
 
 	local ArenaRegistrarFrameGoodbyeButton = _G.ArenaRegistrarFrameGoodbyeButton
@@ -32,13 +30,11 @@ function S:SkinArenaRegistrar()
 
 	for i = 1, MAX_TEAM_BORDERS do
 		local button = _G['ArenaRegistrarButton'..i]
+		local obj = select(3, button:GetRegions())
 
 		S:HandleButtonHighlight(button)
 
-		local obj = select(3, button:GetRegions())
-		if obj then
-			obj:SetTextColor(1, 1, 1)
-		end
+		obj:SetTextColor(1, 1, 1)
 	end
 
 	_G.ArenaRegistrarPurchaseText:SetTextColor(1, 1, 1)

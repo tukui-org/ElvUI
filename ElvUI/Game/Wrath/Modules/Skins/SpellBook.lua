@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
+local next, unpack = next, unpack
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
@@ -13,35 +13,15 @@ local function SpellHighlightSetTexture(texture, tex)
 	end
 end
 
-local function UpdateButton()
-	if _G.SpellBookFrame.bookType == _G.BOOKTYPE_PROFESSION then
-		return
+local function TabHighlightSetTexture(texture, tex)
+	if tex ~= nil then
+		texture:SetHighlightTexture(E.ClearTexture)
 	end
+end
 
-	for i = 1, _G.SPELLS_PER_PAGE do
-		local button = _G['SpellButton'..i]
-		local highlight = _G['SpellButton'..i..'Highlight']
-
-		if button.backdrop then
-			button.backdrop:SetShown(button.SpellName:IsShown())
-		end
-
-		if highlight then
-			if highlight:IsShown() then
-				E:Flash(highlight, 1, true)
-			else
-				E:StopFlash(highlight, 1)
-			end
-		end
-
-		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
-
-		local r = button.SpellName:GetTextColor()
-		if r < 0.8 then
-			button.SpellName:SetTextColor(0.8, 0.8, 0.8)
-		elseif r ~= 1 then
-			button.SpellName:SetTextColor(1, 1, 1)
-		end
+local function TabCheckedSetTexture(texture, tex)
+	if tex ~= nil then
+		texture:SetCheckedTexture(E.ClearTexture)
 	end
 end
 
@@ -49,12 +29,8 @@ function S:SpellBookFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
 
 	S:HandleFrame(_G.SpellBookFrame, true, nil, 11, -12, -32, 76)
-
-	local showAllRanks = _G.ShowAllSpellRanksCheckbox
-	if showAllRanks then
-		S:HandleCheckBox(showAllRanks)
-		showAllRanks:Point('TOPLEFT', 20, -20)
-	end
+	S:HandleCheckBox(_G.ShowAllSpellRanksCheckbox)
+	_G.ShowAllSpellRanksCheckbox:Point('TOPLEFT', _G.SpellButton1, 'TOPLEFT', -11, 32)
 
 	_G.SpellBookTitleText:Point('TOP', -10, -17)
 	_G.SpellBookTitleText:SetTextColor(1, 1, 1)
@@ -107,22 +83,24 @@ function S:SpellBookFrame()
 			end
 		end
 
-		E:RegisterCooldown(cooldown)
-		S:HandleIcon(icon)
-
 		button:CreateBackdrop(nil, true)
-		icon:SetInside(button.backdrop)
+		button.backdrop:SetFrameLevel(button.backdrop:GetFrameLevel())
+
+		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
 
 		button.bg = CreateFrame('Frame', nil, button)
 		button.bg:SetTemplate('Transparent')
 		button.bg:Point('TOPLEFT', -6, 6)
 		button.bg:Point('BOTTOMRIGHT', 112, -6)
 		button.bg:Height(46)
-		button.bg:OffsetFrameLevel(-1, button)
+		button.bg:SetFrameLevel(button.backdrop:GetFrameLevel() - 1)
+
+		icon:SetTexCoord(unpack(E.TexCoords))
 
 		highlight:SetAllPoints()
 		hooksecurefunc(highlight, 'SetTexture', SpellHighlightSetTexture)
-		hooksecurefunc(button, 'UpdateButton', UpdateButton)
+
+		E:RegisterCooldown(cooldown)
 	end
 
 	_G.SpellButton1:PointXY(28, -55)
@@ -136,28 +114,36 @@ function S:SpellBookFrame()
 		_G['SpellButton'..i]:PointXY(0, -20)
 	end
 
+	--[[hooksecurefunc('SpellButton_UpdateButton', function(button)
+		local spellName = _G[button:GetName()..'SpellName']
+		local r = spellName:GetTextColor()
+
+		if r < 0.8 then
+			spellName:SetTextColor(0.6, 0.6, 0.6)
+		end
+	end)]]
+
 	for i = 1, _G.MAX_SKILLLINE_TABS do
 		local tab = _G['SpellBookSkillLineTab'..i]
-		if tab then
-			tab:StripTextures()
-			tab:SetTemplate(nil, true)
-			tab:StyleButton(nil, true)
-
-			local normalTexture = tab:GetNormalTexture()
-			if normalTexture then
-				normalTexture:SetInside()
-				normalTexture:SetTexCoords()
-			end
-
-			if i == 1 then
-				tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
-			end
-		end
-
 		local flash = _G['SpellBookSkillLineTab'..i..'Flash']
-		if flash then
-			flash:Kill()
+
+		tab:StripTextures()
+		tab:SetTemplate()
+		tab:StyleButton(nil, true)
+		tab:SetTemplate(nil, true)
+		tab.pushed = true
+
+		tab:GetNormalTexture():SetInside()
+		tab:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+
+		if i == 1 then
+			tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
 		end
+
+		hooksecurefunc(tab:GetHighlightTexture(), 'SetTexture', TabHighlightSetTexture)
+		hooksecurefunc(tab:GetCheckedTexture(), 'SetTexture', TabCheckedSetTexture)
+
+		flash:Kill()
 	end
 end
 

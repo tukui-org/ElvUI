@@ -73,7 +73,7 @@ function S:Blizzard_BattlefieldMap()
 
 		close:SetAlpha(0.25)
 		close:SetIgnoreParentAlpha(1)
-		close:OffsetFrameLevel(1)
+		close:SetFrameLevel(close:GetFrameLevel() + 1)
 		close:ClearAllPoints()
 		close:Point('TOPRIGHT', 3, 5)
 		close:HookScript('OnLeave', OnLeave)

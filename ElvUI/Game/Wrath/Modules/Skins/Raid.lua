@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs = ipairs
+local ipairs, unpack = ipairs, unpack
 local hooksecurefunc = hooksecurefunc
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 
@@ -72,13 +72,13 @@ function S:Blizzard_RaidUI()
 
 			if index == 11 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-				icon:SetTexCoords()
+				icon:SetTexCoord(unpack(E.TexCoords))
 			elseif index == 12 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-				icon:SetTexCoords()
+				icon:SetTexCoord(unpack(E.TexCoords))
 			elseif index == 13 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
-				icon:SetTexCoords()
+				icon:SetTexCoord(unpack(E.TexCoords))
 			else
 				icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
 				icon:SetTexCoord(E:GetClassCoords(CLASS_SORT_ORDER[index], 0.02))
@@ -91,49 +91,45 @@ function S:Blizzard_RaidUI()
 
 	hooksecurefunc('RaidPullout_GetFrame', function()
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
-			local backdrop = _G['RaidPullout'..i..'MenuBackdrop']
-			if backdrop and backdrop.NineSlice then
-				backdrop.NineSlice:SetTemplate('Transparent')
+			local rp = _G['RaidPullout'..i]
+			if rp and not rp.backdrop then
+				S:HandleFrame(rp, true, nil, 9, -17, -7, 10)
 			end
 		end
 	end)
 
 	local bars = { 'HealthBar', 'ManaBar', 'Target', 'TargetTarget' }
 	hooksecurefunc('RaidPullout_Update', function(pullOutFrame)
-		local frameName = pullOutFrame:GetName()
+		local pfName = pullOutFrame:GetName()
+		local pfBName, pfBObj, pfTot
+
 		for i = 1, pullOutFrame.numPulloutButtons do
-			local name = frameName..'Button'..i
-			local object = _G[name]
-			if object then
-				if not object.backdrop then
-					for _, v in ipairs(bars) do
-						local bar = _G[name..v]
-						if bar then
-							bar:StripTextures()
-							bar:SetStatusBarTexture(E.media.normTex)
-						end
-					end
+			pfBName = pfName..'Button'..i
+			pfBObj = _G[pfBName]
+			pfTot = _G[pfBName..'TargetTargetFrame']
 
-					local manabar = object.manabar
-					if manabar then
-						manabar:Point('TOP', object.healthbar, 'BOTTOM', 0, 0)
-					end
+			if not pfBObj.backdrop then
+				local sBar
 
-					local target = _G[name..'Target']
-					if target and manabar then
-						target:Point('TOP', manabar, 'BOTTOM', 0, -1)
-					end
-
-					object:CreateBackdrop('Transparent')
-
-					object.backdrop:NudgePoint(nil, -10)
-					object.backdrop:NudgePoint(nil, 1, nil, 2)
+				for _, v in ipairs(bars) do
+					sBar = _G[pfBName..v]
+					sBar:StripTextures()
+					sBar:SetStatusBarTexture(E.media.normTex)
 				end
 
-				local targettarget = _G[name..'TargetTargetFrame']
-				if targettarget and targettarget.NineSlice then
-					targettarget.NineSlice:SetTemplate('Transparent')
-				end
+				_G[pfBName..'ManaBar']:Point('TOP', '$parentHealthBar', 'BOTTOM', 0, 0)
+				_G[pfBName..'Target']:Point('TOP', '$parentManaBar', 'BOTTOM', 0, -1)
+
+				pfBObj:CreateBackdrop()
+				pfBObj.backdrop:Point('TOPLEFT', E.PixelMode and 0 or -1, -(E.PixelMode and 10 or 9))
+				pfBObj.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 0 or 1, E.PixelMode and 1 or 0)
+			end
+
+			if not pfTot.backdrop then
+				pfTot:StripTextures()
+				pfTot:CreateBackdrop()
+				pfTot.backdrop:Point('TOPLEFT', E.PixelMode and 10 or 9, -(E.PixelMode and 15 or 14))
+				pfTot.backdrop:Point('BOTTOMRIGHT', -(E.PixelMode and 10 or 9), E.PixelMode and 8 or 7)
 			end
 		end
 	end)

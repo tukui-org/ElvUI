@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local pairs, next = pairs, next
 local hooksecurefunc = hooksecurefunc
 
 local function ReskinEventTraceButton(button)
@@ -11,33 +11,31 @@ local function ReskinEventTraceButton(button)
 	button.MouseoverOverlay:SetAlpha(0)
 end
 
-local function ReskinScrollChild(child)
-	local button = child.HideButton
-	if button and not button.IsSkinned then
-		S:HandleCloseButton(button)
+local function reskinScrollChild(self)
+	for _, child in next, { self.ScrollTarget:GetChildren() } do
+		local button = child.HideButton
+		if button and not button.IsSkinned then
+			S:HandleCloseButton(button)
 
-		button:ClearAllPoints()
-		button:Point('LEFT', 3, 0)
+			button:ClearAllPoints()
+			button:Point('LEFT', 3, 0)
 
-		local checkButton = child.CheckButton
-		if checkButton then
-			S:HandleCheckBox(checkButton)
-			checkButton:SetSize(22, 22)
+			local checkButton = child.CheckButton
+			if checkButton then
+				S:HandleCheckBox(checkButton)
+				checkButton:SetSize(22, 22)
+			end
+
+			button.IsSkinned = true
 		end
-
-		button.IsSkinned = true
 	end
-end
-
-local function ReskinScrollFrame(frame)
-	frame:ForEachFrame(ReskinScrollChild)
 end
 
 local function ReskinEventTraceScrollBox(frame)
 	frame:DisableDrawLayer('BACKGROUND')
 	frame:CreateBackdrop('Transparent')
 
-	hooksecurefunc(frame, 'Update', ReskinScrollFrame)
+	hooksecurefunc(frame, 'Update', reskinScrollChild)
 end
 
 local function ReskinEventTraceFrame(frame)
@@ -89,8 +87,7 @@ function S:Blizzard_EventTrace()
 	S:HandleButton(FilterBar.CheckAllButton)
 
 	-- Resize Button
-	EventTrace.ResizeButton:ClearAllPoints()
-	EventTrace.ResizeButton:Point('BOTTOMRIGHT', 1, -1)
+	EventTrace.ResizeButton:SetAlpha(0)
 
 	ReskinEventTraceFrame(EventTrace.Log.Events)
 	ReskinEventTraceFrame(EventTrace.Log.Search)

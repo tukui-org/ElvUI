@@ -15,7 +15,7 @@ function S:SkinWorldStateScore()
 	local WorldStateScoreFrame = _G.WorldStateScoreFrame
 	WorldStateScoreFrame:EnableMouse(true)
 
-	S:HandleFrame(WorldStateScoreFrame, true, nil, 0, -12, -102, 25)
+	S:HandleFrame(WorldStateScoreFrame, true, nil, 0, -12, -78, 71)
 
 	S:HandleCloseButton(_G.WorldStateScoreFrameCloseButton, WorldStateScoreFrame.backdrop)
 
