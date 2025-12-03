@@ -1450,7 +1450,7 @@ Colors.classResourceGroup.args.DRUID = ACH:Group(L["Eclipse Power"], nil, 40, ni
 Colors.classResourceGroup.args.DRUID.inline = true
 
 do
-	local name = { [1] = L["BALANCE_ENERGY_LUNAR"], [2] = L["BALANCE_ENERGY_SOLAR"] }
+	local name = { L["BALANCE_ENERGY_LUNAR"], L["BALANCE_ENERGY_SOLAR"] }
 	for i = 1, 2 do
 		Colors.classResourceGroup.args.DRUID.args[''..i] = ACH:Color(name[i], nil, i, nil, nil, function(info) local x = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[x], P.unitframe.colors.classResources.DRUID[x] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 		Colors.classResourceGroup.args.DRUID.args[''..i] = ACH:Color(name[i], nil, i, nil, nil, function(info) local x = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DRUID[x], P.unitframe.colors.classResources.DRUID[x] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DRUID[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)

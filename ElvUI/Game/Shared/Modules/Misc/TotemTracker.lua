@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
 local MAX_TOTEMS = MAX_TOTEMS
 
-local classic = { [1]=2, [2]=1, [3]=4, [4]=3 } -- we need to swap 1/2 and 3/4 on era
+local classic = { 2, 1, 4, 3 } -- we need to swap 1/2 and 3/4 on era
 
 function TM:UpdateButton(button, totem)
 	if not (button and totem) then return end
