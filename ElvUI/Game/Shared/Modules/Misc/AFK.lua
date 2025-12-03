@@ -4,9 +4,10 @@ local CH = E:GetModule('Chat')
 
 local _G = _G
 local floor = floor
-local unpack = unpack
 local tostring, pcall = tostring, pcall
+local unpack, strupper = unpack, strupper
 local format, strsub, gsub = format, strsub, gsub
+local issecretvalue = issecretvalue
 
 local CloseAllWindows = CloseAllWindows
 local CreateFrame = CreateFrame
@@ -25,16 +26,7 @@ local UIParent = UIParent
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 
-local Chat_GetChatCategory = Chat_GetChatCategory
-local ChatHistory_GetAccessID = ChatHistory_GetAccessID
-local ChatFrame_GetMobileEmbeddedTexture = ChatFrame_GetMobileEmbeddedTexture
-
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
-
-local CinematicFrame = _G.CinematicFrame
-local MovieFrame = _G.MovieFrame
-local DNDstr = _G.DND
-local AFKstr = _G.AFK
 
 local CAMERA_SPEED = 0.035
 local DEFAULT_ANIMATION = 'dance'
@@ -168,7 +160,7 @@ function AFK:OnEvent(event, arg1)
 		end
 
 		return
-	elseif (not E.db.general.afk) or (event == 'PLAYER_FLAGS_CHANGED' and arg1 ~= 'player') or (InCombatLockdown() or CinematicFrame:IsShown() or MovieFrame:IsShown()) then
+	elseif (not E.db.general.afk) or (event == 'PLAYER_FLAGS_CHANGED' and arg1 ~= 'player') or (InCombatLockdown() or _G.CinematicFrame:IsShown() or _G.MovieFrame:IsShown()) then
 		return
 	elseif UnitCastingInfo('player') then
 		AFK:ScheduleTimer('OnEvent', 30)
@@ -194,64 +186,60 @@ function AFK:Chat_OnMouseWheel(delta)
 	end
 end
 
-function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
-	local chatType = strsub(event, 10)
-	local info = _G.ChatTypeInfo[chatType]
+function AFK:HandleShortChannels(msg)
+	msg = gsub(msg, '|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
+	msg = gsub(msg, '^(.-|h) '..L["whispers"], '%1')
+	msg = gsub(msg, '<'.._G.AFK..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
+	msg = gsub(msg, '<'.._G.DND..'>', '[|cffFF3333'..L["DND"]..'|r] ')
+	msg = gsub(msg, '^%['.._G.RAID_WARNING..'%]', '['..L["RW"]..']')
+	msg = gsub(msg, '%[BN_CONVERSATION:', '%[')
 
-	local coloredName
-	if event == 'CHAT_MSG_BN_WHISPER' then
-		coloredName = CH:GetBNFriendColor(arg2, arg13)
-	else
-		coloredName = CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
-	end
+	return msg
+end
+
+function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+	local infoType = strsub(event, 10)
+	local info = _G.ChatTypeInfo[infoType]
+
+	local GetChatCategory = _G.ChatFrameUtil and _G.ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
 
 	local chatTarget
-	local chatGroup = Chat_GetChatCategory(chatType)
+	local chatGroup = GetChatCategory(infoType)
 	if chatGroup == 'BN_CONVERSATION' then
 		chatTarget = tostring(arg8)
 	elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
-		if not(strsub(arg2, 1, 2) == '|K') then
-			chatTarget = arg2:upper()
-		else
-			chatTarget = arg2
-		end
+		chatTarget = (not issecretvalue or not issecretvalue(arg2)) and strsub(arg2, 1, 2) ~= '|K' and strupper(arg2) or arg2
 	end
 
 	local playerLink
-	if chatType ~= 'BN_WHISPER' and chatType ~= 'BN_CONVERSATION' then
-		playerLink = '|Hplayer:'..arg2..':'..arg11..':'..chatGroup..(chatTarget and ':'..chatTarget or '')..'|h'
+	local linkTarget = chatTarget and (':'..chatTarget) or ''
+	if infoType ~= 'BN_WHISPER' and infoType ~= 'BN_CONVERSATION' then
+		playerLink = format('|Hplayer:%s:%s:%s%s|h', arg2, arg11, chatGroup, linkTarget)
 	else
-		playerLink = '|HBNplayer:'..arg2..':'..arg13..':'..arg11..':'..chatGroup..(chatTarget and ':'..chatTarget or '')..'|h'
+		playerLink = format('|HBNplayer:%s:%s:%s:%s%s|h', arg2, arg13, arg11, chatGroup, linkTarget)
 	end
 
-	--Escape any % characters, as it may otherwise cause an 'invalid option in format' error
-	arg1 = gsub(arg1, '%%', '%%%%')
-
-	--Remove groups of many spaces
-	arg1 = RemoveExtraSpaces(arg1)
-
-	-- isMobile
-	if arg14 then
-		arg1 = ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)..arg1
+	local isProtected = CH:MessageIsProtected(arg1)
+	if not isProtected then
+		arg1 = gsub(arg1, '%%', '%%%%') -- Escape any % characters, as it may otherwise cause an 'invalid option in format' error
+		arg1 = RemoveExtraSpaces(arg1) -- Remove groups of many spaces
 	end
 
-	local success, body = pcall(format, _G['CHAT_'..chatType..'_GET']..arg1, playerLink..'['..coloredName..']'..'|h')
-	if not success then
-		E:Print('An error happened in the AFK Chat module. Please screenshot this message and report it. Info:', chatType, arg1, _G['CHAT_'..chatType..'_GET'])
-		return
+	local isMobile = arg14 and _G.ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
+	local message = format('%s%s', isMobile or '', arg1)
+
+	local coloredName = (infoType == 'BN_WHISPER' and CH:GetBNFriendColor(arg2, arg13)) or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+	local senderLink = format('%s[%s]|h', playerLink, coloredName)
+	local success, msg = pcall(format, _G['CHAT_'..infoType..'_GET']..'%s', senderLink, message)
+	if not success then return end
+
+	if not isProtected and CH.db.shortChannels then
+		msg = AFK:HandleShortChannels(msg)
 	end
 
-	if CH.db.shortChannels then
-		body = body:gsub('|Hchannel:(.-)|h%[(.-)%]|h', CH.ShortChannel)
-		body = body:gsub('^(.-|h) '..L["whispers"], '%1')
-		body = body:gsub('<'..AFKstr..'>', '[|cffFF9900'..L["AFK"]..'|r] ')
-		body = body:gsub('<'..DNDstr..'>', '[|cffFF3333'..L["DND"]..'|r] ')
-		body = body:gsub('%[BN_CONVERSATION:', '%['..'')
-	end
-
-	local accessID = ChatHistory_GetAccessID(chatGroup, chatTarget)
-	local typeID = ChatHistory_GetAccessID(chatType, chatTarget, arg12 == '' and arg13 or arg12)
-	self:AddMessage(body, info.r, info.g, info.b, info.id, false, accessID, typeID)
+	local accessID = CH:GetAccessID(chatGroup, chatTarget)
+	local typeID = CH:GetAccessID(infoType, chatTarget, arg12 or arg13)
+	self:AddMessage(msg, info.r, info.g, info.b, info.id, false, accessID, typeID)
 end
 
 function AFK:Toggle()

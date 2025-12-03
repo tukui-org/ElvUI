@@ -1,7 +1,7 @@
 --[[-----------------------------------------------------------------------------
 MultiLineEditBox Widget (Modified to add Syntax highlighting from FAIAP)
 -------------------------------------------------------------------------------]]
-local Type, Version = "MultiLineEditBox-ElvUI", 37
+local Type, Version = "MultiLineEditBox-ElvUI", 38
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
@@ -17,10 +17,12 @@ local ACCEPT = ACCEPT
 --[[-----------------------------------------------------------------------------
 Support functions
 -------------------------------------------------------------------------------]]
-
 if not AceGUIMultiLineEditBoxInsertLinkElvUI then
-	-- upgradeable hook
-	hooksecurefunc("ChatEdit_InsertLink", function(...) return _G.AceGUIMultiLineEditBoxInsertLinkElvUI(...) end)
+	if ChatFrameUtil and ChatFrameUtil.InsertLink then
+		hooksecurefunc(ChatFrameUtil, "InsertLink", function(...) return _G.AceGUIMultiLineEditBoxInsertLinkElvUI(...) end)
+	elseif ChatEdit_InsertLink then
+		hooksecurefunc("ChatEdit_InsertLink", function(...) return _G.AceGUIMultiLineEditBoxInsertLinkElvUI(...) end)
+	end
 end
 
 function _G.AceGUIMultiLineEditBoxInsertLinkElvUI(text)

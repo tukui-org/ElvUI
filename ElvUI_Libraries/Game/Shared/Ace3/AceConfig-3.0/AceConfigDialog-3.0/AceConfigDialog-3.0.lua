@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 93 -- based off 87
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 94 -- based off 89
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -551,7 +551,7 @@ local function OptionOnMouseOver(widget, event)
 		tooltip:Show()
 	elseif descText or usageText or userText or softText or bigText then
 		tooltip:SetOwner(widget.frame, "ANCHOR_TOPRIGHT")
-		tooltip:SetText(name, 1, .82, 0, true)
+		tooltip:SetText(name, 1, .82, 0, 1, true)
 
 		if userText then
 			tooltip:AddLine(user.text, 0.5, 0.5, 0.8, true)
@@ -560,7 +560,7 @@ local function OptionOnMouseOver(widget, event)
 			tooltip:AddLine(desc, 1, 1, 1, true)
 		end
 		if usageText then
-			tooltip:AddLine("Usage: "..usage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
+			tooltip:AddLine(usage, NORMAL_FONT_COLOR.r, NORMAL_FONT_COLOR.g, NORMAL_FONT_COLOR.b, true)
 		end
 		if bigText or softText then
 			tooltip:AddLine(" ")
@@ -1638,7 +1638,7 @@ local function TreeOnButtonEnter(widget, event, uniquevalue, button)
 			tooltip:SetPoint("LEFT",button,"RIGHT")
 		end
 
-		tooltip:SetText(name, 1, .82, 0, true)
+		tooltip:SetText(name, 1, .82, 0, 1, true)
 
 		tooltip:AddLine(desc, 1, 1, 1, true)
 
