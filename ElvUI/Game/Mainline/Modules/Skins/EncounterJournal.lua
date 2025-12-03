@@ -295,7 +295,7 @@ function S:Blizzard_EncounterJournal()
 	S:HandleDropDownBox(InstanceSelect.ExpansionDropdown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	-- Bottom tabs
+	-- Bottom tabs [TODO: Add consistent 1px spacing in between all tabs, like on our other frames]
 	for _, tab in next, {
 		_G.EncounterJournalSuggestTab,
 		_G.EncounterJournalDungeonTab,
