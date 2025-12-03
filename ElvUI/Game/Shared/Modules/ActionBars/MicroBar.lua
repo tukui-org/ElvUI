@@ -196,7 +196,7 @@ function AB:HandleMicroTextures(button, name)
 			if stock and stock.disabled then
 				disabled:SetTexture(stock.disabled)
 			else
-				disabled:SetTexture(texture)
+				disabled:SetTexture(texture or nil)
 			end
 
 			disabled:SetDesaturated(true)

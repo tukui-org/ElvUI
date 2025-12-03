@@ -17,7 +17,7 @@ local SaveBindings = SaveBindings
 
 local GetCVarBool = C_CVar.GetCVarBool
 
-local MICRO_SLOTS = (E.Retail and 11) or 12
+local MICRO_SLOTS = 12
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
 local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 
