@@ -2104,7 +2104,7 @@ L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*CastByNPC:|r ^由 NPC 施放的
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*CastByPlayers:|r ^由玩家控制的單位（因此不包括 NPC）施放的光環.|r"
 
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*顯示全部:|r ^將「最長持續時間」設為 0, 優先順序列表為空, 或 (1) Personal | (2) NonPersonal"
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*阻擋黑名單光環, 顯示其他所有光環:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist | (2) Personal | (3) NonPersonal"] = "*阻擋黑名單光環, 顯示其他所有光環:|r ^(1) Blacklist | (2) Personal | (3) NonPersonal"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*阻擋永久光環, 顯示其他所有光環:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"
 L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = "*阻擋永久光環, 阻擋黑名單光環, 顯示其他所有光環:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*阻擋一切, 除了你自己的光環:|r ^(1) Personal"

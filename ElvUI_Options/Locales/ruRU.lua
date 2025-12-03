@@ -2009,7 +2009,7 @@ L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*Принадлежит НИП:|
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*Принадлежат игрокам:|r ^Ауры, наложенные любым юнитом под контролем игрока (т.е. не НИПы).|r"
 
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*Показывать все:|r ^Установите 'Максимальная длительность' на 0 и оставьте список приоритета пустым или (1) 'Личные' | (2) 'Чужие'"
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*Блокировать ауры в черном списке, показывать все остальное:|r ^(1) 'Черный список'| (2) 'Личные' | (3) 'Чужие'"
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist | (2) Personal | (3) NonPersonal"] = "*Блокировать ауры в черном списке, показывать все остальное:|r ^(1) 'Черный список'| (2) 'Личные' | (3) 'Чужие'"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*Блокировать ауры без длительности, показывать все остальное:|r ^(1) '[Блокировать] Без длительности' | (2) 'Личные' | (3) 'Чужие'"
 L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = "*Блокировать ауры без длительности, блокировать ауры в черном списке, показывать все остальное:|r ^(1) '[Блокировать] Без длительности' | (2) 'Черный список' | (3) 'Личные' | (4) 'Чужие'"
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*Блокировать все, кроме своих аур:|r ^(1) 'Личные'"

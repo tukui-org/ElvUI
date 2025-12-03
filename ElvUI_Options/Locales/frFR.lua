@@ -1994,7 +1994,7 @@ L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*Lancé par un PNJ :|r ^Auras la
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*Lancé par des joueurs :|r ^Auras lancées par une unité contrôlée par un joueur (donc pas de PNJ).|r"
 
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*Tout afficher :|r ^Réglez 'Durée maximale' sur 0 et laissez la liste de priorités vide ou (1) Personnel | (2) Non personnel"
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*Bloquer les auras sur liste noire, tout le reste :|r ^(1) Liste noire | (2) Personnel | (3) Non personnel"
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist | (2) Personal | (3) NonPersonal"] = "*Bloquer les auras sur liste noire, tout le reste :|r ^(1) Liste noire | (2) Personnel | (3) Non personnel"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*Bloquer les auras sans durée, tout le reste :|r ^(1) Bloquer sans durée | (2) Personnel | (3) Non personnel"
 L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = "*Bloquer les auras sans durée, bloquer les auras sur liste noire, tout le reste :|r ^(1) Bloquer sans durée | (2) Liste noire | (3) Personnel | (4) Non personnel"
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*Tout bloquer, sauf vos propres auras :|r ^(1) Personnel"
