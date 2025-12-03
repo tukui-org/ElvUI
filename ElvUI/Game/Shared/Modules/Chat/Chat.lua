@@ -2174,7 +2174,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	elseif chatType == 'TEXT_EMOTE' then
 		body = ((not issecretvalue or not issecretvalue(arg2)) and arg2 ~= senderLink) and gsub(message, arg2, senderLink, 1) or message
 	else
-		body = format(_G['CHAT_'..chatType..'_GET'] .. '%s', senderLink, message)
+		body = format(_G['CHAT_'..chatType..'_GET'] .. '%s', pflag..senderLink, message)
 	end
 
 	-- Add Channel
