@@ -17,17 +17,12 @@ local function Reset()
 	timeStamp, combatTime, healTotal = 0, 0, 0
 end
 
-local function GetHPS(self)
-	local hps
-	if healTotal == 0 or combatTime == 0 then
-		hps = 0
-	else
-		hps = healTotal / combatTime
-	end
-	self.text:SetFormattedText(displayString, L["HPS"], E:ShortValue(hps))
+local function GetHPS(panel)
+	local HPS = (healTotal == 0 or combatTime == 0) and 0 or (healTotal / combatTime)
+	panel.text:SetFormattedText(displayString, L["HPS"], E:ShortValue(HPS))
 end
 
-local function OnEvent(self, event)
+local function OnEvent(panel, event)
 	if event == 'UNIT_PET' then
 		petGUID = UnitGUID('pet')
 	elseif event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_LEAVE_COMBAT' then
@@ -48,12 +43,12 @@ local function OnEvent(self, event)
 		end
 	end
 
-	GetHPS(self)
+	GetHPS(panel)
 end
 
-local function OnClick(self)
+local function OnClick(panel)
 	Reset()
-	GetHPS(self)
+	GetHPS(panel)
 end
 
 local function ApplySettings(_, hex)

@@ -15,7 +15,7 @@ local displayString, db = ''
 local beforeFalling, wasFlying
 
 local delayed
-local function DelayUpdate(self)
+local function DelayUpdate(panel)
 	local _, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed('player')
 	local speed, isGliding, forwardSpeed
 
@@ -45,23 +45,23 @@ local function DelayUpdate(self)
 
 	local percent = speed / BASE_MOVEMENT_SPEED * 100
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, percent)
+		panel.text:SetFormattedText(displayString, percent)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Mov. Speed"], percent)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Mov. Speed"], percent)
 	end
 
 	delayed = nil
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	if not delayed then
-		delayed = E:Delay(0.05, DelayUpdate, self)
+		delayed = E:Delay(0.05, DelayUpdate, panel)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s: ', hex, '%.'..db.decimalLength..'f%%|r')

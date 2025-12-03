@@ -19,12 +19,12 @@ local RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER = RESILIENC
 local displayString = ''
 local resilience, bonus, maxBonus = 0, 0, 0
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	resilience = GetCombatRating(RESILIENCE_CRIT_TAKEN)
 	bonus = GetCombatRatingBonus(RESILIENCE_CRIT_TAKEN)
 	maxBonus = GetMaxCombatRatingBonus(RESILIENCE_CRIT_TAKEN)
 
-	self.text:SetFormattedText(displayString, resilience)
+	panel.text:SetFormattedText(displayString, resilience)
 end
 
 local function OnEnter()

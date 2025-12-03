@@ -12,7 +12,7 @@ local CR_HIT_SPELL = CR_HIT_SPELL
 
 local displayString, db = ''
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local spellHit = E.Classic and GetSpellHitModifier() or GetCombatRatingBonus(CR_HIT_SPELL) or 0
 
 	if IsSpellKnown(28878) then
@@ -20,15 +20,15 @@ local function OnEvent(self)
 	end
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, spellHit)
+		panel.text:SetFormattedText(displayString, spellHit)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Spell Hit"]..': ', spellHit)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Spell Hit"]..': ', spellHit)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')

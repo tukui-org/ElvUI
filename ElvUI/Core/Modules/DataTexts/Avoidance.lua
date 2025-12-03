@@ -36,7 +36,7 @@ local function IsWearingShield()
 	end
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	targetLevel, playerLevel = UnitLevel('target'), E.mylevel
 
 	local levelDiff
@@ -78,9 +78,9 @@ local function OnEvent(self)
 	unhittable = avoidance - unhittableMax
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, avoidance)
+		panel.text:SetFormattedText(displayString, avoidance)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["AVD: "], avoidance)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["AVD: "], avoidance)
 	end
 
 	-- print(unhittableMax) - should report 102.4 for a level differance of +3 for shield classes, 101.2 for druids, 101.8 for monks and dks
@@ -111,9 +111,9 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')

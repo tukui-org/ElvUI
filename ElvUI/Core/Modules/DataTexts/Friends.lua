@@ -45,11 +45,11 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	hasEditBox = 1,
 	editBoxWidth = 350,
 	maxLetters = 127,
-	OnAccept = function(self) BNSetCustomMessage(self.editBox:GetText()) end,
-	OnShow = function(self) self.editBox:SetText(select(4, BNGetInfo()) ) self.editBox:SetFocus() end,
+	OnAccept = function(popup) BNSetCustomMessage(popup.editBox:GetText()) end,
+	OnShow = function(popup) popup.editBox:SetText(select(4, BNGetInfo()) ) popup.editBox:SetFocus() end,
 	OnHide = _G.ChatEdit_FocusActiveWindow,
-	EditBoxOnEnterPressed = function(self) BNSetCustomMessage(self:GetText()) self:GetParent():Hide() end,
-	EditBoxOnEscapePressed = function(self) self:GetParent():Hide() end,
+	EditBoxOnEnterPressed = function(popup) BNSetCustomMessage(popup:GetText()) popup:GetParent():Hide() end,
+	EditBoxOnEscapePressed = function(popup) popup:GetParent():Hide() end,
 	timeout = 0,
 	exclusive = 1,
 	whileDead = 1,
@@ -320,7 +320,7 @@ local function BuildBNTable(total)
 	end
 end
 
-local function Click(self, btn)
+local function Click(panel, btn)
 	if btn == 'RightButton' then
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
@@ -392,7 +392,7 @@ local function Click(self, btn)
 			end
 		end
 
-		E:SetEasyMenuAnchor(E.EasyMenu, self)
+		E:SetEasyMenuAnchor(E.EasyMenu, panel)
 		E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif not E:AlertCombat() then
 		ToggleFriendsFrame(1)
@@ -520,7 +520,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event, message)
+local function OnEvent(panel, event, message)
 	local onlineFriends = C_FriendList_GetNumOnlineFriends()
 	local _, numBNetOnline = BNGetNumFriends()
 	isBNOnline = BNConnected()
@@ -534,20 +534,20 @@ local function OnEvent(self, event, message)
 	-- force update when showing tooltip
 	dataValid = false
 
-	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and MouseIsOver(self) then
-		OnEnter(self)
+	if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and MouseIsOver(panel) then
+		OnEnter(panel)
 	end
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, onlineFriends + numBNetOnline)
+		panel.text:SetFormattedText(displayString, onlineFriends + numBNetOnline)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or _G.FRIENDS..': ', onlineFriends + numBNetOnline)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or _G.FRIENDS..': ', onlineFriends + numBNetOnline)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')

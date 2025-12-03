@@ -3,17 +3,17 @@ local DT = E:GetModule('DataTexts')
 
 local inCombat, outOfCombat, db = '', ''
 
-local function OnEvent(self, event)
+local function OnEvent(panel, event)
 	if event == 'PLAYER_REGEN_ENABLED' or event == 'ELVUI_FORCE_UPDATE' then
-		self.text:SetFormattedText(outOfCombat)
+		panel.text:SetFormattedText(outOfCombat)
 	elseif event == 'PLAYER_REGEN_DISABLED' then
-		self.text:SetFormattedText(inCombat)
+		panel.text:SetFormattedText(inCombat)
 	end
 end
 
-local function ApplySettings(self)
+local function ApplySettings(panel)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	-- Setup string

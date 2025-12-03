@@ -257,9 +257,9 @@ local function OnLeave()
 	enteredFrame = false
 end
 
-local function OnEvent(self, event)
+local function OnEvent(panel, event)
 	if event == 'MODIFIER_STATE_CHANGED' then
-		OnEnter(self)
+		OnEnter(panel)
 	else
 		local addOnCount = GetNumAddOns()
 		if addOnCount == #infoTable then return end
@@ -276,7 +276,7 @@ local function OnEvent(self, event)
 end
 
 local wait, delay = 0, 0
-local function OnUpdate(self, elapsed)
+local function OnUpdate(panel, elapsed)
 	if wait < 1 then
 		wait = wait + elapsed
 	else
@@ -286,27 +286,27 @@ local function OnUpdate(self, elapsed)
 		local latency = (db.latency == 'HOME' and homePing) or worldPing
 		local fps = E.FPS.rate or 0
 
-		self.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', StatusColor(fps), fps, StatusColor(nil, latency), latency)
+		panel.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', StatusColor(fps), fps, StatusColor(nil, latency), latency)
 
 		if not enteredFrame then
 			return
 		elseif InCombatLockdown() then
 			if delay > 3 then
-				OnEnter(self)
+				OnEnter(panel)
 				delay = 0
 			else
-				OnEnter(self, delay)
+				OnEnter(panel, delay)
 				delay = delay + 1
 			end
 		else
-			OnEnter(self)
+			OnEnter(panel)
 		end
 	end
 end
 
-local function ApplySettings(self)
+local function ApplySettings(panel)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 end
 

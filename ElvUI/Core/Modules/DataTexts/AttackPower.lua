@@ -20,14 +20,14 @@ local PET_BONUS_TOOLTIP_RANGED_ATTACK_POWER = PET_BONUS_TOOLTIP_RANGED_ATTACK_PO
 local isHunter = E.myclass == 'HUNTER'
 local displayNumberString, totalAP, db = ''
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local base, posBuff, negBuff = (isHunter and UnitRangedAttackPower or UnitAttackPower)('player')
 	totalAP = base + posBuff + negBuff
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayNumberString, totalAP)
+		panel.text:SetFormattedText(displayNumberString, totalAP)
 	else
-		self.text:SetFormattedText(displayNumberString, db.Label ~= '' and db.Label or ATTACK_POWER..': ', totalAP)
+		panel.text:SetFormattedText(displayNumberString, db.Label ~= '' and db.Label or ATTACK_POWER..': ', totalAP)
 	end
 end
 
@@ -53,9 +53,9 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayNumberString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')

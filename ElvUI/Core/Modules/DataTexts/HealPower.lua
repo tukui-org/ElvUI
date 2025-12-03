@@ -7,17 +7,17 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString, db = ''
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, GetSpellBonusHealing())
+		panel.text:SetFormattedText(displayString, GetSpellBonusHealing())
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["HP"]..': ', GetSpellBonusHealing())
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["HP"]..': ', GetSpellBonusHealing())
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')

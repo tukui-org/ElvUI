@@ -9,13 +9,13 @@ local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 
 local displayString, db = ''
 
-local function OnEvent(self)
-	self.text:SetFormattedText(displayString, DODGE, GetDodgeChance())
+local function OnEvent(panel)
+	panel.text:SetFormattedText(displayString, DODGE, GetDodgeChance())
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', '%s: ', hex, '%.'..db.decimalLength..'f%%|r')

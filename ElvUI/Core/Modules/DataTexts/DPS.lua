@@ -22,17 +22,12 @@ local function Reset()
 	timeStamp, combatTime, DMGTotal, lastDMGAmount = 0, 0, 0, 0
 end
 
-local function GetDPS(self)
-	local DPS
-	if DMGTotal == 0 or combatTime == 0 then
-		DPS = 0
-	else
-		DPS = DMGTotal / combatTime
-	end
-	self.text:SetFormattedText(displayString, L["DPS"], E:ShortValue(DPS))
+local function GetDPS(panel)
+	local DPS = (DMGTotal == 0 or combatTime == 0) and 0 or (DMGTotal / combatTime)
+	panel.text:SetFormattedText(displayString, L["DPS"], E:ShortValue(DPS))
 end
 
-local function OnEvent(self, event)
+local function OnEvent(panel, event)
 	if event == 'UNIT_PET' then
 		petGUID = UnitGUID('pet')
 	elseif event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_LEAVE_COMBAT' then
@@ -62,12 +57,12 @@ local function OnEvent(self, event)
 		end
 	end
 
-	GetDPS(self)
+	GetDPS(panel)
 end
 
-local function OnClick(self)
+local function OnClick(panel)
 	Reset()
-	GetDPS(self)
+	GetDPS(panel)
 end
 
 local function ApplySettings(_, hex)

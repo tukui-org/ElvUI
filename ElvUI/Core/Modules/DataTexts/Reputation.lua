@@ -36,10 +36,10 @@ local function GetValues(currentStanding, currentReactionThreshold, nextReaction
 	end
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local data = E:GetWatchedFactionInfo()
 	if not (data and data.name) then
-		return 	self.text:SetText(NOT_APPLICABLE)
+		return 	panel.text:SetText(NOT_APPLICABLE)
 	end
 
 	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
@@ -100,7 +100,7 @@ local function OnEvent(self)
 		end
 	end
 
-	self.text:SetText(displayString)
+	panel.text:SetText(displayString)
 end
 
 local function OnEnter()

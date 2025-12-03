@@ -174,15 +174,15 @@ local eventHandlers = {
 		end
 	end,
 	-- Guild Roster updated, so rebuild the guild table
-	GUILD_ROSTER_UPDATE = function(self)
+	GUILD_ROSTER_UPDATE = function(frame)
 		if resendRequest then
 			resendRequest = false
 			return C_GuildInfo_GuildRoster()
 		else
 			BuildGuildTable()
 			UpdateGuildMessage()
-			if MouseIsOver(self) then
-				self:GetScript('OnEnter')(self, nil, true)
+			if MouseIsOver(frame) then
+				frame:GetScript('OnEnter')(frame, nil, true)
 			end
 		end
 	end,
@@ -198,7 +198,7 @@ local menuList = {
 	{ text = _G.CHAT_MSG_WHISPER_INFORM, hasArrow = true, notCheckable=true,}
 }
 
-local function Click(self, btn)
+local function Click(panel, btn)
 	if btn == 'RightButton' and IsInGuild() then
 		local menuCountWhispers = 0
 		local menuCountInvites = 0
@@ -224,7 +224,7 @@ local function Click(self, btn)
 			end
 		end
 
-		E:SetEasyMenuAnchor(E.EasyMenu, self)
+		E:SetEasyMenuAnchor(E.EasyMenu, panel)
 		E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif not E:AlertCombat() then
 		ToggleGuildFrame()
@@ -302,28 +302,28 @@ local function OnEnter(_, _, noUpdate)
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event, ...)
+local function OnEvent(panel, event, ...)
 	if IsInGuild() then
 		local func = eventHandlers[event]
-		if func then func(self, ...) end
+		if func then func(panel, ...) end
 
-		if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and MouseIsOver(self) then
-			OnEnter(self)
+		if not IsAltKeyDown() and event == 'MODIFIER_STATE_CHANGED' and MouseIsOver(panel) then
+			OnEnter(panel)
 		end
 
 		if db.NoLabel then
-			self.text:SetFormattedText(displayString, #guildTable)
+			panel.text:SetFormattedText(displayString, #guildTable)
 		else
-			self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or GUILD..': ', #guildTable)
+			panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or GUILD..': ', #guildTable)
 		end
 	else
-		self.text:SetText(noGuildString)
+		panel.text:SetText(noGuildString)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')

@@ -45,19 +45,19 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local haste = (E.Wrath or E.Mists) and ((E.myclass == 'HUNTER' and GetRangedHaste()) or GetMeleeHaste()) or GetHaste()
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, haste)
+		panel.text:SetFormattedText(displayString, haste)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_HASTE..': ', haste)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_HASTE..': ', haste)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')

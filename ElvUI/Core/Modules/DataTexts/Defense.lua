@@ -9,9 +9,9 @@ local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE
 
 local displayString = ''
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local baseDefense, armorDefense = UnitDefense('player')
-	self.text:SetFormattedText(displayString, DEFENSE, (baseDefense or 0) + (armorDefense or 0))
+	panel.text:SetFormattedText(displayString, DEFENSE, (baseDefense or 0) + (armorDefense or 0))
 end
 
 local function ApplySettings(_, hex)

@@ -16,12 +16,12 @@ local GetArmorPenetration = GetArmorPenetration
 local displayString = ''
 local APRating, APBonusRating, APPercent = 0, 0, 0
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	APRating = GetCombatRating(CR_ARMOR_PENETRATION)
 	APBonusRating = GetCombatRatingBonus(CR_ARMOR_PENETRATION)
 	APPercent = GetArmorPenetration()
 
-	self.text:SetFormattedText(displayString, L["Armor Penetration"], APRating + APBonusRating)
+	panel.text:SetFormattedText(displayString, L["Armor Penetration"], APRating + APBonusRating)
 end
 
 local function OnEnter()

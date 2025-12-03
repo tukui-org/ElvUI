@@ -31,7 +31,7 @@ local slots = {
 	[18] = _G.INVTYPE_RANGED,
 }
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	totalDurability = 100
 	totalRepairCost = 0
 
@@ -62,15 +62,15 @@ local function OnEvent(self)
 	local hex = E:RGBToHex(r, g, b)
 
 	if db.NoLabel then
-		self.text:SetFormattedText('%s%d%%|r', hex, totalDurability)
+		panel.text:SetFormattedText('%s%d%%|r', hex, totalDurability)
 	else
-		self.text:SetFormattedText('%s%s%d%%|r', db.Label ~= '' and db.Label or (DURABILITY..': '), hex, totalDurability)
+		panel.text:SetFormattedText('%s%s%d%%|r', db.Label ~= '' and db.Label or (DURABILITY..': '), hex, totalDurability)
 	end
 
 	if totalDurability <= db.percThreshold then
-		E:Flash(self, 0.5, true)
+		E:Flash(panel, 0.5, true)
 	else
-		E:StopFlash(self, 1)
+		E:StopFlash(panel, 1)
 	end
 end
 
@@ -95,9 +95,9 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(self)
+local function ApplySettings(panel)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 end
 

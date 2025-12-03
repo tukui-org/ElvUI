@@ -9,8 +9,8 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 
 local displayString = ''
 
-local function OnEvent(self)
-	self.text:SetFormattedText(displayString, STAT_ENERGY_REGEN, GetPowerRegen())
+local function OnEvent(panel)
+	panel.text:SetFormattedText(displayString, STAT_ENERGY_REGEN, GetPowerRegen())
 end
 
 local function ApplySettings(_, hex)

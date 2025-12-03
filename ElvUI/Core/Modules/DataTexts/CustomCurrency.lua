@@ -6,7 +6,12 @@ local pairs, strjoin = pairs, strjoin
 
 local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
 
-local defaults = { showIcon = true, nameStyle = 'full', showMax = true, currencyTooltip = true }
+local defaults = {
+	showIcon = true,
+	nameStyle = 'full',
+	showMax = true,
+	currencyTooltip = true
+}
 
 local function OnEvent(panel)
 	local info = DT:CurrencyInfo(panel.name)

@@ -7,7 +7,6 @@ local wipe = wipe
 local next = next
 local ipairs = ipairs
 
-local UIParent = UIParent
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
 local CreateFrame = CreateFrame
@@ -16,11 +15,12 @@ local GetCurrentRegion = GetCurrentRegion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
+local hooksecurefunc = hooksecurefunc
 
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local hooksecurefunc = hooksecurefunc
+local UIParent = UIParent
 
 --------------------------------------------------------------------
 -- Guild Finder Helper

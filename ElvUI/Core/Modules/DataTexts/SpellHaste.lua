@@ -10,8 +10,8 @@ local CR_HASTE_SPELL = CR_HASTE_SPELL
 
 local displayString = ''
 
-local function OnEvent(self)
-	self.text:SetFormattedText(displayString, (E.Wrath or E.Mists) and UnitSpellHaste('player') or GetCombatRatingBonus(CR_HASTE_SPELL) or 0)
+local function OnEvent(panel)
+	panel.text:SetFormattedText(displayString, (E.Wrath or E.Mists) and UnitSpellHaste('player') or GetCombatRatingBonus(CR_HASTE_SPELL) or 0)
 end
 
 local function ApplySettings(_, hex)

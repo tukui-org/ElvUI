@@ -89,24 +89,24 @@ function DT:ToggleBattleStats()
 	DT:LoadDataTexts()
 end
 
-local function OnUpdate(self, elapsed)
-	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
+local function OnUpdate(panel, elapsed)
+	panel.timeSinceUpdate = (panel.timeSinceUpdate or 0) + elapsed
 
-	if self.needsUpdate and self.timeSinceUpdate > 0.3 then -- this will allow the main event to update the dt
-		local locale, value = GetBattleStats(self.name)
+	if panel.needsUpdate and panel.timeSinceUpdate > 0.3 then -- this will allow the main event to update the dt
+		local locale, value = GetBattleStats(panel.name)
 		if value then
-			self.text:SetFormattedText(displayString, locale, E:ShortValue(tonumber(value) or 0))
+			panel.text:SetFormattedText(displayString, locale, E:ShortValue(tonumber(value) or 0))
 		else
-			self.text:SetFormattedText('%s', locale)
+			panel.text:SetFormattedText('%s', locale)
 		end
 
-		self.needsUpdate = false
+		panel.needsUpdate = false
 	end
 end
 
-local function OnEvent(self)
-	self.timeSinceUpdate = 0
-	self.needsUpdate = true
+local function OnEvent(panel)
+	panel.timeSinceUpdate = 0
+	panel.needsUpdate = true
 end
 
 local function ValueColorUpdate(_, hex)

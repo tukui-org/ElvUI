@@ -10,7 +10,7 @@ local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS or 7
 local displayString, db = ''
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local minSpellPower
 
 	if db.school == 0 then
@@ -23,7 +23,7 @@ local function OnEvent(self)
 		minSpellPower = GetSpellBonusDamage(db.school)
 	end
 
-	self.text:SetFormattedText(displayString, L["SP"], minSpellPower or 0)
+	panel.text:SetFormattedText(displayString, L["SP"], minSpellPower or 0)
 end
 
 local icon = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
@@ -39,9 +39,9 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', '%s: ', hex, '%d|r')
