@@ -185,6 +185,7 @@ V.skins = {
 		editor = true,
 		campsites = true,
 		remixArtifact = true,
+		housing = true,
 	}
 }
 

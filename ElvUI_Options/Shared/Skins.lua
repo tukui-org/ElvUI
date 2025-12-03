@@ -74,6 +74,7 @@ end
 
 if E.Retail or E.TBC then
 	toggles.editor = L["Editor Manager"]
+	toggles.housing = L["Housing"] -- Temp
 end
 
 if not E.Retail then
