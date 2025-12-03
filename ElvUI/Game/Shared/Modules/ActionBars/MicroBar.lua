@@ -442,7 +442,7 @@ function AB:SetupMicroBar()
 		local button = _G[name]
 		AB:HandleMicroButton(button, name)
 
-		if E.Retail or name == 'MainMenuMicroButton' then
+		if E.Retail or (name == 'MainMenuMicroButton' or name == 'GuildMicroButton') then
 			hooksecurefunc(button, (E.Retail and 'SetHighlightAtlas') or (E.Classic and 'SetPushedTexture') or 'SetHighlightTexture', function()
 				AB:UpdateMicroButtonTexture(name)
 			end)
