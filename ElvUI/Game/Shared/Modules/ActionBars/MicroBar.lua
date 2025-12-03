@@ -475,7 +475,6 @@ function AB:SetupMicroBar()
 		_G.ResetMicroMenuPosition()
 	elseif _G.UpdateMicroButtonsParent then
 		_G.UpdateMicroButtonsParent(microBar)
-
 		AB:SecureHook('UpdateMicroButtonsParent')
 	end
 
