@@ -62,3 +62,18 @@ function S:Blizzard_HousingBulletinBoard()
 end
 
 S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
+
+
+function S:Blizzard_HouseList()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local ListFrame = _G.HouseListFrame
+	if ListFrame then
+		ListFrame:StripTextures()
+		ListFrame:CreateBackdrop('Transparent')
+		S:HandleCloseButton(ListFrame.CloseButton)
+		S:HandleTrimScrollBar(ListFrame.ScrollBar)
+	end
+end
+
+S:AddCallbackForAddon('Blizzard_HouseList')
