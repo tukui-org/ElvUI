@@ -28,13 +28,13 @@ local function GetArmorReduction(armor, attackerLevel)
 	return temp * 100
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	_, effectiveArmor = UnitArmor('player')
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, effectiveArmor)
+		panel.text:SetFormattedText(displayString, effectiveArmor)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ARMOR..': ', effectiveArmor)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ARMOR..': ', effectiveArmor)
 	end
 end
 
@@ -60,9 +60,9 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')

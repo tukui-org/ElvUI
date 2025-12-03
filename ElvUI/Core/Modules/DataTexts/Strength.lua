@@ -10,19 +10,19 @@ local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 
 local displayString, db = ''
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local stat = UnitStat('player', LE_UNIT_STAT_STRENGTH)
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, stat)
+		panel.text:SetFormattedText(displayString, stat)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_STRENGTH_SHORT..': ', stat)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ITEM_MOD_STRENGTH_SHORT..': ', stat)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%d|r')

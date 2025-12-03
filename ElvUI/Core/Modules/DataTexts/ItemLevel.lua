@@ -23,8 +23,8 @@ local slotID = { 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17 }
 local r, g, b, avg, avgEquipped, avgPvp = 1, 1, 1, 0, 0, 0
 local displayString, db = ''
 
-local function OnEvent(self)
-	if E.Retail or E.Mists then
+local function OnEvent(panel)
+	if E.Retail or E.Mists or E.Wrath then
 		avg, avgEquipped, avgPvp = GetAverageItemLevel()
 
 		if E.Retail then
@@ -37,9 +37,9 @@ local function OnEvent(self)
 		local label = db.NoLabel and '' or format('%s: ', db.Label == '' and ITEM_LEVEL_ABBR or db.Label)
 		displayString = strjoin('', label, (db.onlyEquipped or avg == avgEquipped) and sameString or bothString)
 
-		self.text:SetFormattedText(displayString, hex, avgEquipped or 0, hex, avg or 0)
+		panel.text:SetFormattedText(displayString, hex, avgEquipped or 0, hex, avg or 0)
 	else
-		self.text:SetText(NOT_APPLICABLE)
+		panel.text:SetText(NOT_APPLICABLE)
 	end
 end
 
@@ -66,9 +66,9 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(self)
+local function ApplySettings(panel)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 end
 

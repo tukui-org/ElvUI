@@ -10,24 +10,24 @@ local displayString = ''
 local inRestrictedArea = false
 local mapInfo = E.MapInfo
 
-local function Update(self, elapsed)
+local function Update(panel, elapsed)
 	if inRestrictedArea or not mapInfo.coordsWatching then return end
 
-	self.timeSinceUpdate = (self.timeSinceUpdate or 0) + elapsed
+	panel.timeSinceUpdate = (panel.timeSinceUpdate or 0) + elapsed
 
-	if self.timeSinceUpdate > 0.1 then
-		self.text:SetFormattedText(displayString, mapInfo.xText or 0, mapInfo.yText or 0)
-		self.timeSinceUpdate = 0
+	if panel.timeSinceUpdate > 0.1 then
+		panel.text:SetFormattedText(displayString, mapInfo.xText or 0, mapInfo.yText or 0)
+		panel.timeSinceUpdate = 0
 	end
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	if mapInfo.x and mapInfo.y then
 		inRestrictedArea = false
-		self.text:SetFormattedText(displayString, mapInfo.xText or 0, mapInfo.yText or 0)
+		panel.text:SetFormattedText(displayString, mapInfo.xText or 0, mapInfo.yText or 0)
 	else
 		inRestrictedArea = true
-		self.text:SetText(NOT_APPLICABLE)
+		panel.text:SetText(NOT_APPLICABLE)
 	end
 end
 

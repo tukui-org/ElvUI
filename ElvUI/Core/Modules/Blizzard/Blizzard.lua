@@ -7,7 +7,6 @@ local wipe = wipe
 local next = next
 local ipairs = ipairs
 
-local UIParent = UIParent
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
 local CreateFrame = CreateFrame
@@ -16,11 +15,12 @@ local GetCurrentRegion = GetCurrentRegion
 local GetQuestLogRewardXP = GetQuestLogRewardXP
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
+local hooksecurefunc = hooksecurefunc
 
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local hooksecurefunc = hooksecurefunc
+local UIParent = UIParent
 
 --------------------------------------------------------------------
 -- Guild Finder Helper
@@ -135,7 +135,7 @@ function BL:ObjectiveTracker_Expand(frame)
 end
 
 function BL:ObjectiveTracker_AutoHideOnShow()
-	local tracker = (E.Mists and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+	local tracker = ((E.Wrath or E.Mists) and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 	if tracker and BL:ObjectiveTracker_IsCollapsed(tracker) then
 		BL:ObjectiveTracker_Expand(tracker)
 	end
@@ -146,7 +146,7 @@ do
 	function BL:ObjectiveTracker_AutoHide()
 		if E.OtherAddons.BigWigs or E.OtherAddons.DBM then return end
 
-		local tracker = (E.Mists and _G.WatchFrame) or _G.ObjectiveTrackerFrame
+		local tracker = ((E.Wrath or E.Mists) and _G.WatchFrame) or _G.ObjectiveTrackerFrame
 		if not tracker then return end
 
 		if not AutoHider then
@@ -190,13 +190,13 @@ function BL:Initialize()
 
 	BL:SkinBlizzTimers()
 
-	if E.Retail or E.Mists then
+	if not E.Classic and not E.TBC then
 		BL:PositionVehicleFrame()
+	end
 
-		if not E.OtherAddons.SimplePowerBar then
-			BL:PositionAltPowerBar()
-			BL:SkinAltPowerBar()
-		end
+	if (E.Retail or E.Mists) and not E.OtherAddons.SimplePowerBar then
+		BL:PositionAltPowerBar()
+		BL:SkinAltPowerBar()
 	end
 
 	if E.Retail then

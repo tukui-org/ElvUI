@@ -13,15 +13,15 @@ local NOT_APPLICABLE = NOT_APPLICABLE
 
 local displayString = ''
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local spec = E.Retail and GetSpecialization()
 	local statID = spec and DT.SPECIALIZATION_CACHE[spec] and DT.SPECIALIZATION_CACHE[spec].statID
 
 	local name = statID and _G['SPELL_STAT'..statID..'_NAME']
 	if name then
-		self.text:SetFormattedText(displayString, name..': ', UnitStat('player', statID))
+		panel.text:SetFormattedText(displayString, name..': ', UnitStat('player', statID))
 	else
-		self.text:SetText(NOT_APPLICABLE)
+		panel.text:SetText(NOT_APPLICABLE)
 	end
 end
 

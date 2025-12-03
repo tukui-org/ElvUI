@@ -41,7 +41,7 @@ local function AddHeader(id, addLine)
 end
 
 local goldText
-local function OnEvent(self)
+local function OnEvent(panel)
 	goldText = E:FormatMoney(GetMoney(), db.goldFormat or 'BLIZZARD', not db.goldCoins)
 
 	local displayed = db.displayedCurrency
@@ -54,9 +54,9 @@ local function OnEvent(self)
 			end
 		end
 
-		self.text:SetText(displayString or goldText)
+		panel.text:SetText(displayString or goldText)
 	elseif displayed == 'GOLD' then
-		self.text:SetText(goldText)
+		panel.text:SetText(goldText)
 	else
 		local id = tonumber(displayed)
 		if not id then return end
@@ -66,11 +66,11 @@ local function OnEvent(self)
 
 		local style = db.displayStyle
 		if style == 'ICON' then
-			self.text:SetFormattedText('%s %s', icon, E:ShortValue(info.quantity))
+			panel.text:SetFormattedText('%s %s', icon, E:ShortValue(info.quantity))
 		elseif style == 'ICON_TEXT' then
-			self.text:SetFormattedText('%s %s %s', icon, name, E:ShortValue(info.quantity))
+			panel.text:SetFormattedText('%s %s %s', icon, name, E:ShortValue(info.quantity))
 		else --ICON_TEXT_ABBR
-			self.text:SetFormattedText('%s %s %s', icon, E:AbbreviateString(name), E:ShortValue(info.quantity))
+			panel.text:SetFormattedText('%s %s %s', icon, E:AbbreviateString(name), E:ShortValue(info.quantity))
 		end
 	end
 end
@@ -108,9 +108,9 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(self)
+local function ApplySettings(panel)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 end
 

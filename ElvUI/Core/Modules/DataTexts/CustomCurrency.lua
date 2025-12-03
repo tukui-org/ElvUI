@@ -6,11 +6,16 @@ local pairs, strjoin = pairs, strjoin
 
 local HONOR_CURRENCY = Constants.CurrencyConsts.CLASSIC_HONOR_CURRENCY_ID
 
-local defaults = { showIcon = true, nameStyle = 'full', showMax = true, currencyTooltip = true }
+local defaults = {
+	showIcon = true,
+	nameStyle = 'full',
+	showMax = true,
+	currencyTooltip = true
+}
 
-local function OnEvent(self)
-	local info = DT:CurrencyInfo(self.name)
-	local currency = E.global.datatexts.customCurrencies[self.name]
+local function OnEvent(panel)
+	local info = DT:CurrencyInfo(panel.name)
+	local currency = E.global.datatexts.customCurrencies[panel.name]
 	if info and currency then
 		local displayString
 
@@ -22,23 +27,23 @@ local function OnEvent(self)
 			displayString = strjoin(' ', displayString or '%d', '/', info.maxQuantity)
 		end
 
-		self.text:SetFormattedText(displayString or '%d', info.quantity)
-		self.icon:SetShown(currency.showIcon)
-		self.icon:SetTexture(info.iconFileID)
+		panel.text:SetFormattedText(displayString or '%d', info.quantity)
+		panel.icon:SetShown(currency.showIcon)
+		panel.icon:SetTexture(info.iconFileID)
 
-		if E.Mists and self.name == HONOR_CURRENCY then
-			self.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
+		if (E.Wrath or E.Mists) and panel.name == HONOR_CURRENCY then
+			panel.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
 		end
 	end
 end
 
-local function OnEnter(self)
+local function OnEnter(panel)
 	DT.tooltip:ClearLines()
 
 	if E.Retail then
-		DT.tooltip:SetCurrencyByID(self.name)
+		DT.tooltip:SetCurrencyByID(panel.name)
 	else
-		DT.tooltip:SetCurrencyTokenByID(self.name)
+		DT.tooltip:SetCurrencyTokenByID(panel.name)
 	end
 
 	DT.tooltip:Show()

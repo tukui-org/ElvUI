@@ -292,7 +292,7 @@ local function OnClick(_, btn)
 
 	if btn == 'RightButton' then
 		ToggleFrame(_G.TimeManagerFrame)
-	elseif E.Retail or E.Mists then
+	elseif E.Retail or E.Mists or E.Wrath then
 		_G.GameTimeFrame:Click()
 	end
 end
@@ -455,7 +455,7 @@ local function OnEnter()
 	local dailyReset = C_DateAndTime_GetSecondsUntilDailyReset()
 	local weeklyReset = C_DateAndTime_GetSecondsUntilWeeklyReset()
 
-	if not E.Classic then
+	if not E.Classic and not E.Wrath then
 		local addedLine = false
 		local worldbossLockoutList = {}
 
@@ -508,7 +508,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self, event)
+local function OnEvent(panel, event)
 	if event == 'ELVUI_FORCE_UPDATE' or event == 'BOSS_KILL' then
 		RequestRaidInfo()
 
@@ -538,33 +538,33 @@ local function OnEvent(self, event)
 		end
 
 		if enteredFrame then
-			OnEnter(self)
+			OnEnter(panel)
 		end
 	end
 end
 
-local function OnUpdate(self, t)
-	self.timeElapsed = (self.timeElapsed or updateTime) - t
-	if self.timeElapsed > 0 then return end
-	self.timeElapsed = updateTime
+local function OnUpdate(panel, t)
+	panel.timeElapsed = (panel.timeElapsed or updateTime) - t
+	if panel.timeElapsed > 0 then return end
+	panel.timeElapsed = updateTime
 
 	if db.flashInvite and _G.GameTimeFrame.flashInvite then
-		E:Flash(self, 0.5, true)
+		E:Flash(panel, 0.5, true)
 	else
-		E:StopFlash(self, 1)
+		E:StopFlash(panel, 1)
 	end
 
 	if enteredFrame then
-		OnEnter(self)
+		OnEnter(panel)
 	end
 
 	local Hr, Min, Sec, AmPm = GetTimeValues()
-	self.text:SetFormattedText(displayFormats[AmPm == -1 and 'eu_color' or 'na_color'], Hr, Min, Sec, APM[AmPm])
+	panel.text:SetFormattedText(displayFormats[AmPm == -1 and 'eu_color' or 'na_color'], Hr, Min, Sec, APM[AmPm])
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	updateTime = db.seconds and 1 or 5
@@ -575,7 +575,7 @@ local function ApplySettings(self, hex)
 	displayFormats.eu_color = strjoin('', '%02d', hex, ':|r%02d', hex, sec)
 	displayFormats.na_color = strjoin('', '%d', hex, ':|r%02d', hex, sec, hex, ' %s|r')
 
-	OnUpdate(self, 20000)
+	OnUpdate(panel, 20000)
 end
 
 DT:RegisterDatatext('Time', nil, { 'LOADING_SCREEN_ENABLED', 'UPDATE_INSTANCE_INFO', 'BOSS_KILL' }, OnEvent, OnUpdate, OnClick, OnEnter, OnLeave, L["Time"], nil, ApplySettings)

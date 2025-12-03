@@ -13,8 +13,6 @@ local GetCritChance = GetCritChance
 local GetRangedCritChance = GetRangedCritChance
 
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
-local CRIT_ABBR = CRIT_ABBR
-
 local MELEE_CRIT_CHANCE = MELEE_CRIT_CHANCE
 local MAX_SPELL_SCHOOLS = MAX_SPELL_SCHOOLS or 7
 local CR_CRIT_MELEE = CR_CRIT_MELEE
@@ -40,7 +38,7 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local spellCrit, critChance
 
 	local holySchool = 2 -- start at 2 to skip physical damage
@@ -66,20 +64,20 @@ local function OnEvent(self)
 	end
 
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, critChance)
+		panel.text:SetFormattedText(displayString, critChance)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or CRIT_ABBR..': ', critChance)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Crit"]..': ', critChance)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s', hex, '%.'..db.decimalLength..'f%%|r')
 
-	OnEvent(self)
+	OnEvent(panel)
 end
 
-DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, MELEE_CRIT_CHANCE, nil, ApplySettings)
+DT:RegisterDatatext('Crit', STAT_CATEGORY_ENHANCEMENTS, { 'UNIT_STATS', 'UNIT_AURA', 'PLAYER_DAMAGE_DONE_MODS'}, OnEvent, nil, nil, OnEnter, nil, L["Crit"], nil, ApplySettings)

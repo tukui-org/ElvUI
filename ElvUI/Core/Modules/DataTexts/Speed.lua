@@ -25,18 +25,18 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local speed = GetSpeed()
 	if db.NoLabel then
-		self.text:SetFormattedText(displayString, speed)
+		panel.text:SetFormattedText(displayString, speed)
 	else
-		self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_SPEED, speed)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or STAT_SPEED, speed)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s:', hex, '%.'..db.decimalLength..'f%%|r')

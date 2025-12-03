@@ -20,7 +20,7 @@ local expertisePercent, offhandExpertisePercent = 0, 0
 local expertiseRating, expertiseBonusRating = 0, 0
 local expertise, offhandExpertise = 0, 0
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	expertise, offhandExpertise = GetExpertise()
 	expertisePercent, offhandExpertisePercent = GetExpertisePercent()
 	expertiseRating, expertiseBonusRating = GetCombatRating(CR_EXPERTISE), GetCombatRatingBonus(CR_EXPERTISE)
@@ -33,7 +33,7 @@ local function OnEvent(self)
 		ttStr = '%s'
 	end
 
-	self.text:SetFormattedText(displayString, STAT_EXPERTISE..': ', expertisePercentDisplay)
+	panel.text:SetFormattedText(displayString, STAT_EXPERTISE..': ', expertisePercentDisplay)
 end
 
 local function OnEnter()

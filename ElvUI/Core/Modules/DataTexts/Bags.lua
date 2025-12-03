@@ -27,7 +27,7 @@ local BAG_TYPES = {
 	[0x0004] = 'Soul Bag',
 }
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local freeNormal, totalNormal, freeReagent, totalReagent = 0, 0, 0, 0
 	for i = 0, NUM_BAG_SLOTS do
 		local freeSlots, bagType = GetContainerNumFreeSlots(i)
@@ -45,13 +45,13 @@ local function OnEvent(self)
 
 	local textFormat, reagents = db.textFormat, db.includeReagents
 	if textFormat == 'FREE' then
-		self.text:SetFormattedText(displayString, freeNormal, reagents and freeReagent or '')
+		panel.text:SetFormattedText(displayString, freeNormal, reagents and freeReagent or '')
 	elseif textFormat == 'USED' then
-		self.text:SetFormattedText(displayString, totalNormal - freeNormal, reagents and (totalReagent - freeReagent) or '')
+		panel.text:SetFormattedText(displayString, totalNormal - freeNormal, reagents and (totalReagent - freeReagent) or '')
 	elseif textFormat == 'USED_TOTAL' then
-		self.text:SetFormattedText(displayString, totalNormal - freeNormal, totalNormal, reagents and (totalReagent - freeReagent) or '', reagents and totalReagent or '')
+		panel.text:SetFormattedText(displayString, totalNormal - freeNormal, totalNormal, reagents and (totalReagent - freeReagent) or '', reagents and totalReagent or '')
 	else -- FREE_TOTAL
-		self.text:SetFormattedText(displayString, freeNormal, totalNormal, reagents and freeReagent or '', reagents and totalReagent or '')
+		panel.text:SetFormattedText(displayString, freeNormal, totalNormal, reagents and freeReagent or '', reagents and totalReagent or '')
 	end
 end
 
@@ -87,7 +87,7 @@ local function OnEnter()
 		end
 	end
 
-	if E.Retail or E.Mists then
+	if E.Retail or E.Mists or E.Wrath then
 		for i = 1, MAX_WATCHED_TOKENS do
 			local info, name = DT:BackpackCurrencyInfo(i)
 			if not name then break end
@@ -107,9 +107,9 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	local name = (db.NoLabel and '') or (db.Label ~= '' and db.Label) or strjoin('', L["Bags"], ': ')

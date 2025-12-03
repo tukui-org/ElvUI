@@ -57,15 +57,18 @@ local menuList = {
 	{text = _G.GUILD, microOffset = 'GuildMicroButton', func = function() _G.ToggleGuildFrame() end },
 }
 
-if E.Mists and E.mylevel >= _G.SHOW_PVP_LEVEL then
+if (E.Wrath or E.Mists) and E.mylevel >= _G.SHOW_PVP_LEVEL then
 	tinsert(menuList, {text = _G.PLAYER_V_PLAYER, microOffset = 'PVPMicroButton', func = function() _G.TogglePVPFrame() end, })
 end
 
-if E.Retail or E.Mists then
+if E.Retail or E.Wrath or E.Mists then
 	tinsert(menuList, {text = _G.COLLECTIONS, microOffset = 'CollectionsMicroButton', func = function() _G.ToggleCollectionsJournal() end, icon = E.Media.Textures.GoldCoins }) -- Interface\ICONS\INV_Misc_Coin_01
 	tinsert(menuList, {text = _G.ACHIEVEMENT_BUTTON, microOffset = 'AchievementMicroButton', func = function() _G.ToggleAchievementFrame() end })
 	tinsert(menuList, {text = _G.LFG_TITLE, microOffset = E.Retail and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
 	tinsert(menuList, {text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end, icon = 235486, cropIcon = E.Retail and 5 or 1 }) -- Interface\Calendar\MeetingIcon
+end
+
+if E.Retail or E.Mists then
 	tinsert(menuList, {text = _G.ENCOUNTER_JOURNAL, microOffset = 'EJMicroButton', func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 

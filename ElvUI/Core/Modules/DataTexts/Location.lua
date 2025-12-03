@@ -25,9 +25,9 @@ local function GetStatus()
 	return IsInInstance() and colors.instance or colors[GetZonePVPInfo()] or colors.none
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	if not mapInfo.mapID then
-		self.text:SetText(NOT_APPLICABLE)
+		panel.text:SetText(NOT_APPLICABLE)
 		return
 	end
 
@@ -42,9 +42,9 @@ local function OnEvent(self)
 		local first = continent ~= '' and zone ~= '' and ': ' or ''
 		local second = (zone ~= '' or continent ~= '') and subzone ~= '' and ': ' or ''
 
-		self.text:SetFormattedText('%s%s%s%s%s%s|r', E:RGBToHex(color.r, color.g, color.b), continent, first, zone, second, subzone)
+		panel.text:SetFormattedText('%s%s%s%s%s%s|r', E:RGBToHex(color.r, color.g, color.b), continent, first, zone, second, subzone)
 	else
-		self.text:SetText(NOT_APPLICABLE)
+		panel.text:SetText(NOT_APPLICABLE)
 	end
 end
 

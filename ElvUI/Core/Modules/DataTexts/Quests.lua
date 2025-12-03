@@ -83,14 +83,14 @@ local function OnClick()
 	_G.ToggleQuestLog()
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	numEntries, numQuests = GetNumQuestLogEntries()
 	xpToLevel = UnitXPMax('player')
 
-	self.text:SetFormattedText(displayString, L["Quests:"], numQuests, MAX_QUESTLOG_QUESTS)
+	panel.text:SetFormattedText(displayString, L["Quests:"], numQuests, MAX_QUESTLOG_QUESTS)
 
-	if MouseIsOver(self) then
-		OnEnter(self)
+	if MouseIsOver(panel) then
+		OnEnter(panel)
 	end
 end
 

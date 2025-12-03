@@ -8,8 +8,8 @@ local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 
 local displayString = ''
 
-local function OnEvent(self)
-	self.text:SetFormattedText(displayString, ITEM_MOD_SPIRIT_SHORT, UnitStat('player', 5))
+local function OnEvent(panel)
+	panel.text:SetFormattedText(displayString, ITEM_MOD_SPIRIT_SHORT, UnitStat('player', 5))
 end
 
 local function ApplySettings(_, hex)

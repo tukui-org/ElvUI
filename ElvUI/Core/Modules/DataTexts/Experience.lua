@@ -11,7 +11,7 @@ local displayString = ''
 local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	if E:XPIsLevelMax() then
 		displayString = L["Max Level"]
 	else
@@ -54,7 +54,7 @@ local function OnEvent(self)
 		end
 	end
 
-	self.text:SetText(displayString)
+	panel.text:SetText(displayString)
 end
 
 local function OnEnter()

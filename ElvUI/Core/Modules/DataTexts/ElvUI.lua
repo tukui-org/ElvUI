@@ -9,8 +9,8 @@ local displayString, db = ''
 local configText = 'ElvUI'
 local reloadText = RELOADUI
 
-local function OnEvent(self)
-	self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or configText)
+local function OnEvent(panel)
+	panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or configText)
 end
 
 local function OnEnter()
@@ -48,9 +48,9 @@ local function OnClick(_, button)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', hex, '%s|r')

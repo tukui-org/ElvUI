@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, Profil
 local DT = E:GetModule('DataTexts')
 
 local min = min
-local strjoin = strjoin
 local format = format
+local strjoin = strjoin
 
 local GetCombatRating = GetCombatRating
 local GetCombatRatingBonus = GetCombatRatingBonus
@@ -19,18 +19,18 @@ local RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER = RESILIENC
 local displayString = ''
 local resilience, bonus, maxBonus = 0, 0, 0
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	resilience = GetCombatRating(RESILIENCE_CRIT_TAKEN)
 	bonus = GetCombatRatingBonus(RESILIENCE_CRIT_TAKEN)
 	maxBonus = GetMaxCombatRatingBonus(RESILIENCE_CRIT_TAKEN)
 
-	self.text:SetFormattedText(displayString, resilience)
+	panel.text:SetFormattedText(displayString, resilience)
 end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	if E.Mists then
+	if E.Mists or E.Wrath then
 		DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus))
 	else
 		DT.tooltip:AddLine(format(RESILIENCE_TOOLTIP, bonus, min(bonus * RESILIENCE_CRIT_CHANCE_TO_DAMAGE_REDUCTION_MULTIPLIER, maxBonus), bonus * RESILIENCE_CRIT_CHANCE_TO_CONSTANT_DAMAGE_REDUCTION_MULTIPLIER))

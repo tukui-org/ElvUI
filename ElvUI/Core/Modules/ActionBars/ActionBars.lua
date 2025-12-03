@@ -97,7 +97,7 @@ AB.barDefaults = {
 
 do
 	-- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Retail or E.Mists) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	local fullConditions = (E.Retail or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
 end
 
@@ -299,7 +299,7 @@ function AB:PositionAndSizeBar(barName)
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
-	local vehicleIndex = (E.Retail or E.Mists) and GetVehicleBarIndex()
+	local vehicleIndex = (E.Retail or E.Mists or E.Wrath) and GetVehicleBarIndex()
 
 	-- paging needs to be updated even if the bar is disabled
 	local defaults = AB.barDefaults[barName]
@@ -476,6 +476,18 @@ function AB:PLAYER_REGEN_ENABLED()
 		AB.NeedsExtraButtonsRescale = nil
 	end
 
+	if E.Wrath then
+		if AB.NeedsPositionAndSizeTotemBar then
+			AB:PositionAndSizeTotemBar()
+			AB.NeedsPositionAndSizeTotemBar = nil
+		end
+
+		if AB.NeedsRecallButtonUpdate then
+			AB:MultiCastRecallSpellButton_Update()
+			AB.NeedsRecallButtonUpdate = nil
+		end
+	end
+
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
@@ -544,6 +556,8 @@ function AB:ReassignBindings(event)
 
 		if E.Retail then
 			AB:UpdateExtraBindings()
+		elseif E.Wrath and E.myclass == 'SHAMAN' then
+			AB:UpdateTotemBindings()
 		end
 	end
 
@@ -661,6 +675,8 @@ function AB:UpdateButtonSettings(specific)
 			if LAB.FlyoutButtons then
 				AB:LAB_FlyoutSpells()
 			end
+		elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+			AB:PositionAndSizeTotemBar()
 		end
 	end
 end
@@ -1131,9 +1147,13 @@ do
 	}
 
 	local untaintButtons = {
-		MultiCastActionButton = (E.Mists and E.myclass ~= 'SHAMAN') or nil,
-		OverrideActionBarButton = E.Mists or nil
+		MultiCastActionButton = ((E.Wrath or E.Mists) and E.myclass ~= 'SHAMAN') or nil,
+		OverrideActionBarButton = E.Wrath or E.Mists or nil
 	}
+
+	if E.Wrath and _G.UIPARENT_MANAGED_FRAME_POSITIONS then
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
+	end
 
 	local settingsHider = CreateFrame('Frame')
 	settingsHider:SetScript('OnEvent', function(frame, event)
@@ -1266,7 +1286,7 @@ do
 			end
 		end
 
-		if E.Retail or E.Mists then
+		if E.Retail or E.Mists or E.Wrath then
 			if _G.PlayerTalentFrame then
 				_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 			else
@@ -1327,7 +1347,7 @@ end
 
 do
 	local fixBars = {}
-	if E.Mists then
+	if E.Wrath or E.Mists then
 		fixBars.MULTIACTIONBAR5BUTTON = 'ELVUIBAR13BUTTON'
 		fixBars.MULTIACTIONBAR6BUTTON = 'ELVUIBAR14BUTTON'
 		fixBars.MULTIACTIONBAR7BUTTON = 'ELVUIBAR15BUTTON'
@@ -1776,6 +1796,11 @@ end
 
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
+
+	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
+		AB:PositionAndSizeTotemBar()
+	end
 end
 
 do
@@ -1871,7 +1896,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
 	end
 
-	if E.Retail or E.Mists then
+	if E.Retail or E.Mists or E.Wrath then
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
@@ -1916,6 +1941,10 @@ function AB:Initialize()
 		AB:SetupExtraButtons()
 	end
 
+	if (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+		AB:CreateTotemBar()
+	end
+
 	if (E.Retail or E.Mists) and IsInBattle() then
 		AB:RemoveBindings()
 	else
@@ -1938,7 +1967,7 @@ function AB:Initialize()
 		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
 	end
 
-	if not E.Classic then
+	if not E.Classic and not E.Wrath then
 		hooksecurefunc(_G.SpellFlyout, 'Toggle', SkinFlyout)
 	end
 end

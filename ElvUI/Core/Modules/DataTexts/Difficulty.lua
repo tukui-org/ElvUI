@@ -104,23 +104,23 @@ local function GetLabelTexture(ID)
 	return DungeonTexture
 end
 
-local function OnClick(self)
-	E:SetEasyMenuAnchor(E.EasyMenu, self)
+local function OnClick(panel)
+	E:SetEasyMenuAnchor(E.EasyMenu, panel)
 	E:ComplicatedMenu(RightClickMenu, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local name, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
 	local keyStoneLevel = E.Retail and C_MythicPlus_IsMythicPlusActive() and C_ChallengeMode_GetActiveChallengeMapID() and C_ChallengeMode_IsChallengeModeActive() and C_ChallengeMode_GetActiveKeystoneInfo()
 
 	if keyStoneLevel then
-		self.text:SetFormattedText('%s %s +%s', GetLabelTexture(difficultyID), name, keyStoneLevel)
+		panel.text:SetFormattedText('%s %s +%s', GetLabelTexture(difficultyID), name, keyStoneLevel)
 	elseif instanceType ~= 'none' and difficultyID and not Garrison[instanceID] then
-		self.text:SetFormattedText('%s %s %s', GetLabelTexture(difficultyID), name, GetDiffIDLabel(difficultyID))
+		panel.text:SetFormattedText('%s %s %s', GetLabelTexture(difficultyID), name, GetDiffIDLabel(difficultyID))
 	else
 		DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), E.Retail and GetLegacyRaidDifficultyID()
 		local displayString = E.Retail and '%s %s %s %s %s %s' or '%s %s %s %s'
-		self.text:SetFormattedText(displayString, DungeonTexture, GetDiffIDLabel(DungeonDifficultyID), RaidTexture, GetDiffIDLabel(RaidDifficultyID), E.Retail and LegacyTexture, E.Retail and GetDiffIDLabel(LegacyRaidDifficultyID))
+		panel.text:SetFormattedText(displayString, DungeonTexture, GetDiffIDLabel(DungeonDifficultyID), RaidTexture, GetDiffIDLabel(RaidDifficultyID), E.Retail and LegacyTexture, E.Retail and GetDiffIDLabel(LegacyRaidDifficultyID))
 	end
 end
 
@@ -144,4 +144,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Difficulty', nil, { 'PLAYER_DIFFICULTY_CHANGED', 'LOADING_SCREEN_DISABLED' }, OnEvent, nil, OnClick, OnEnter, nil, 'Difficulty')
+DT:RegisterDatatext('Difficulty', nil, { 'PLAYER_DIFFICULTY_CHANGED', 'LOADING_SCREEN_DISABLED' }, OnEvent, nil, OnClick, OnEnter, nil, L["Difficulty"])

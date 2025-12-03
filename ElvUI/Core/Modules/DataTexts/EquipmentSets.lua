@@ -27,12 +27,12 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnClick(self)
-	E:SetEasyMenuAnchor(E.EasyMenu, self)
+local function OnClick(panel)
+	E:SetEasyMenuAnchor(E.EasyMenu, panel)
 	E:ComplicatedMenu(sets, E.EasyMenu, nil, nil, nil, 'MENU')
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local activeIndex
 	local all = C_EquipmentSet_GetEquipmentSetIDs()
 	for i, setID in ipairs(all) do
@@ -64,19 +64,19 @@ local function OnEvent(self)
 
 	local set = sets[activeIndex]
 	if not activeIndex then
-		self.text:SetText(L["No Set Equipped"])
+		panel.text:SetText(L["No Set Equipped"])
 	elseif set then
 		if db.NoLabel then
-			self.text:SetFormattedText(displayString, '', set.name, not db.NoIcon and set.iconFileID or '')
+			panel.text:SetFormattedText(displayString, '', set.name, not db.NoIcon and set.iconFileID or '')
 		else
-			self.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Set:"], set.name, not db.NoIcon and set.iconFileID or '')
+			panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Set:"], set.name, not db.NoIcon and set.iconFileID or '')
 		end
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', '%s ', hex, '%s|r', not db.NoIcon and ' |T%s:16:16:0:0:64:64:4:60:4:60|t' or '')

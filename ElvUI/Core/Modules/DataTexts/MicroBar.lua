@@ -7,15 +7,15 @@ local strjoin = strjoin
 local ToggleFrame = ToggleFrame
 local displayString = ''
 
-local function OnEvent(self)
-	self.text:SetFormattedText(displayString, L["Micro Bar"])
+local function OnEvent(panel)
+	panel.text:SetFormattedText(displayString, L["Micro Bar"])
 end
 
-local function OnClick(self, button)
+local function OnClick(panel, button)
 	if button == 'LeftButton' then
 		ToggleFrame(_G.GameMenuFrame)
 	else
-		E:SetEasyMenuAnchor(E.EasyMenu, self)
+		E:SetEasyMenuAnchor(E.EasyMenu, panel)
 		E:ComplicatedMenu(M.RightClickMenuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	end
 end

@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
-if not (E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then return end
 local DT = E:GetModule('DataTexts')
+
+if not (E.Wrath or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then return end
 
 local _G = _G
 local format, strjoin = format, strjoin
@@ -27,15 +28,15 @@ local function BuildTalentString(talentGroup)
 	local str = ''
 
 	for i = 1, MAX_TALENT_TABS do
-		local _, _, pointsEra, _, pointsInCata = GetTalentTabInfo(i, false, false, talentGroup)
-		local points = (E.Mists and pointsInCata) or pointsEra
+		local _, _, arg3, _, arg5 = GetTalentTabInfo(i, false, false, talentGroup)
+		local points = ((E.Wrath or E.Mists) and arg5) or arg3
 		str = (str == '' and points) or strjoin('/', str, points)
 	end
 
 	return str
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	primaryStr, secondaryStr = BuildTalentString(1), BuildTalentString(2)
 
 	activeGroup = GetActiveTalentGroup()
@@ -45,7 +46,7 @@ local function OnEvent(self)
 		hasDualSpec = GetNumTalentGroups() == 2
 	end
 
-	self.text:SetFormattedText(displayString, db.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
+	panel.text:SetFormattedText(displayString, db.NoLabel and str or activeGroup == 1 and PRIMARY or SECONDARY, str)
 end
 
 local function OnEnter()
@@ -84,9 +85,9 @@ local function OnClick(_, button)
 	end
 end
 
-local function ApplySettings(self, hex)
+local function ApplySettings(panel, hex)
 	if not db then
-		db = E.global.datatexts.settings[self.name]
+		db = E.global.datatexts.settings[panel.name]
 	end
 
 	displayString = strjoin('', db.NoLabel and '' or '%s: ', hex, '%s|r')

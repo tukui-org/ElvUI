@@ -13,10 +13,10 @@ local function OnClick()
 	end
 end
 
-local function OnEvent(self)
+local function OnEvent(panel)
 	local dateTable = date('*t')
 
-	self.text:SetText(FormatShortDate(dateTable.day, dateTable.month, dateTable.year):gsub('([/.])', displayString))
+	panel.text:SetText(FormatShortDate(dateTable.day, dateTable.month, dateTable.year):gsub('([/.])', displayString))
 end
 
 local function ApplySettings(_, hex)
