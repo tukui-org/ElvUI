@@ -1,28 +1,28 @@
 package-as: ElvUI
 
 externals:
-  ElvUI_Libraries/Classic/LibQuestXP: https://github.com/MrFox42/libquestxp
-  ElvUI_Libraries/Core/Ace3/AceAddon-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceAddon-3.0
-  ElvUI_Libraries/Core/Ace3/AceGUI-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceGUI-3.0
-  ElvUI_Libraries/Core/Ace3/AceComm-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceComm-3.0
-  ElvUI_Libraries/Core/Ace3/AceConsole-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceConsole-3.0
-  ElvUI_Libraries/Core/Ace3/AceDB-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceDB-3.0
-  ElvUI_Libraries/Core/Ace3/AceDBOptions-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceDBOptions-3.0
-  ElvUI_Libraries/Core/Ace3/AceEvent-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceEvent-3.0
-  ElvUI_Libraries/Core/Ace3/AceHook-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceHook-3.0
-  ElvUI_Libraries/Core/Ace3/AceSerializer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceSerializer-3.0
-  ElvUI_Libraries/Core/Ace3/AceTimer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceTimer-3.0
-  ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets: https://repos.curseforge.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets
-  ElvUI_Libraries/Core/LibDispel: https://github.com/tukui-org/LibDispel
-  ElvUI_Libraries/Core/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk/CallbackHandler-1.0
-  ElvUI_Libraries/Core/LibStub: https://repos.curseforge.com/wow/libstub/trunk
-  ElvUI_Libraries/Core/LibSharedMedia-3.0: https://repos.curseforge.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
-  ElvUI_Libraries/Core/LibCustomGlow-1.0: https://github.com/Stanzilla/LibCustomGlow
-  ElvUI_Libraries/Core/LibDataBroker: https://github.com/tekkub/libdatabroker-1-1
-  ElvUI_Libraries/Core/LibTranslit-1.0: https://github.com/Vardex/LibTranslit
-  ElvUI_Libraries/Core/LibDualSpec-1.0: https://repos.curseforge.com/wow/libdualspec-1-0
-  ElvUI_Libraries/Core/UTF8: https://repos.curseforge.com/wow/utf8/trunk
-  ElvUI_Libraries/Core/TaintLess:
+  ElvUI_Libraries/Game/Classic/LibQuestXP: https://github.com/MrFox42/libquestxp
+  ElvUI_Libraries/Game/Shared/Ace3/AceAddon-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceAddon-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceGUI-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceGUI-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceComm-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceComm-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceConsole-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceConsole-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceDB-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceDB-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceDBOptions-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceDBOptions-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceEvent-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceEvent-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceHook-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceHook-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceSerializer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceSerializer-3.0
+  ElvUI_Libraries/Game/Shared/Ace3/AceTimer-3.0: https://repos.curseforge.com/wow/ace3/trunk/AceTimer-3.0
+  ElvUI_Libraries/Game/Shared/AceGUI-3.0-SharedMediaWidgets: https://repos.curseforge.com/wow/ace-gui-3-0-shared-media-widgets/trunk/AceGUI-3.0-SharedMediaWidgets
+  ElvUI_Libraries/Game/Shared/LibDispel: https://github.com/tukui-org/LibDispel
+  ElvUI_Libraries/Game/Shared/CallbackHandler-1.0: https://repos.curseforge.com/wow/callbackhandler/trunk/CallbackHandler-1.0
+  ElvUI_Libraries/Game/Shared/LibStub: https://repos.curseforge.com/wow/libstub/trunk
+  ElvUI_Libraries/Game/Shared/LibSharedMedia-3.0: https://repos.curseforge.com/wow/libsharedmedia-3-0/trunk/LibSharedMedia-3.0
+  ElvUI_Libraries/Game/Shared/LibCustomGlow-1.0: https://github.com/Stanzilla/LibCustomGlow
+  ElvUI_Libraries/Game/Shared/LibDataBroker: https://github.com/tekkub/libdatabroker-1-1
+  ElvUI_Libraries/Game/Shared/LibTranslit-1.0: https://github.com/Vardex/LibTranslit
+  ElvUI_Libraries/Game/Shared/LibDualSpec-1.0: https://repos.curseforge.com/wow/libdualspec-1-0
+  ElvUI_Libraries/Game/Shared/UTF8: https://repos.curseforge.com/wow/utf8/trunk
+  ElvUI_Libraries/Game/Shared/TaintLess:
     url: https://www.townlong-yak.com/addons.git/taintless
     commit: default
 
@@ -33,29 +33,35 @@ manual-changelog:
 ignore:
   - "*.md"
   - "*.textile"
-  - ElvUI_Libraries/Core/LibStub/tests
+  - ElvUI_Libraries/Game/Shared/LibStub/tests
   - Makefile
 
 plain-copy:
-  - ElvUI/Classic
-  - ElvUI/Core
   - ElvUI/Locales
-  - ElvUI/Mainline
-  - ElvUI/Mists
-  - ElvUI_Libraries/Classic/LibClassicSpecs
-  - ElvUI_Libraries/Core/Ace3
-  - ElvUI_Libraries/Core/Ace3-ElvUI
-  - ElvUI_Libraries/Core/LibAceConfigHelper
-  - ElvUI_Libraries/Core/LibActionButton-1.0
-  - ElvUI_Libraries/Core/LibAnim
-  - ElvUI_Libraries/Core/LibDeflate
-  - ElvUI_Libraries/Core/LibElvUIPlugin-1.0
-  - ElvUI_Libraries/Core/LibSimpleSticky
-  - ElvUI_Libraries/Core/oUF
-  - ElvUI_Libraries/Core/oUF_Plugins
-  - ElvUI_Libraries/Mainline
-  - ElvUI_Libraries/Mists
-  - ElvUI_Options/Core
+  - ElvUI/Game/Classic
+  - ElvUI/Game/Mainline
+  - ElvUI/Game/Mists
+  - ElvUI/Game/Shared
+  - ElvUI/Game/TBC
+  - ElvUI/Game/Wrath
+  - ElvUI_Libraries/Game/Classic
+  - ElvUI_Libraries/Game/Mainline
+  - ElvUI_Libraries/Game/Mists
+  - ElvUI_Libraries/Game/Shared
+  - ElvUI_Libraries/Game/TBC
+  - ElvUI_Libraries/Game/Wrath
+  - ElvUI_Libraries/Game/Classic/LibClassicSpecs
+  - ElvUI_Libraries/Game/Shared/Ace3
+  - ElvUI_Libraries/Game/Shared/Ace3-ElvUI
+  - ElvUI_Libraries/Game/Shared/LibAceConfigHelper
+  - ElvUI_Libraries/Game/Shared/LibActionButton-1.0
+  - ElvUI_Libraries/Game/Shared/LibAnim
+  - ElvUI_Libraries/Game/Shared/LibDeflate
+  - ElvUI_Libraries/Game/Shared/LibElvUIPlugin-1.0
+  - ElvUI_Libraries/Game/Shared/LibSimpleSticky
+  - ElvUI_Libraries/Game/Shared/oUF
+  - ElvUI_Libraries/Game/Shared/oUF_Plugins
+  - ElvUI_Options/Shared
   - ElvUI_Options/Locales
 
 move-folders:

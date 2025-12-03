@@ -2,6 +2,11 @@
 local E = unpack(ElvUI)
 local L = E.Libs.ACL:NewLocale('ElvUI', 'itIT')
 
+L["Armor Penetration"] = true
+L["Crit"] = true
+L["Difficulty"] = true
+L["Hit"] = true
+L["Spell Crit"] = true
 L["Date"] = true
 L["Plugins:"] = true
 L["Version:"] = true

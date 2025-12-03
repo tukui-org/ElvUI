@@ -1,0 +1,80 @@
+<Bindings>
+	<Binding category='BINDING_HEADER_ELVUI' name='Raid Marker' runOnUp='true'>
+		RaidMark_HotkeyPressed(keystate)
+	</Binding>
+	<Binding category='BINDING_HEADER_ELVUI' name='Toggle Chat (Left)'>
+		HideLeftChat()
+	</Binding>
+	<Binding category='BINDING_HEADER_ELVUI' name='Toggle Chat (Right)'>
+		HideRightChat()
+	</Binding>
+	<Binding category='BINDING_HEADER_ELVUI' name='Toggle Chat (Both)'>
+		HideBothChat()
+	</Binding>
+
+	<!-- List Extra Bar Bindings -->
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON1' header='BAR2'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON2'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON3'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON4'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON5'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON6'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON7'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON8'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON9'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON10'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON11'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR2BUTTON12'/>
+
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON1' header='BAR7'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON2'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON3'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON4'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON5'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON6'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON7'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON8'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON9'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON10'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON11'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR7BUTTON12'/>
+
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON1' header='BAR8'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON2'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON3'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON4'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON5'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON6'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON7'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON8'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON9'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON10'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON11'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR8BUTTON12'/>
+
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON1' header='BAR9'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON2'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON3'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON4'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON5'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON6'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON7'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON8'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON9'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON10'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON11'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR9BUTTON12'/>
+
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON1' header='BAR10'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON2'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON3'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON4'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON5'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON6'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON7'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON8'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON9'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON10'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON11'/>
+	<Binding category='BINDING_HEADER_ELVUI' name='ELVUIBAR10BUTTON12'/>
+</Bindings>

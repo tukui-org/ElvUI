@@ -2,10 +2,10 @@
 ## Notes: Powers the configuration window.|n|cffff3333Does not store any profile data.|r
 ## Author: Elv, Simpy
 ## Version: @project-version@
-## Interface: 110205
+## Interface: 110207
 ## RequiredDeps: ElvUI
 ## LoadOnDemand: 1
-## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\LogoAddon
+## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 ## Category-enUS: UI Overhaul
 ## Category-deDE: UI-Überholung
 ## Category-esES: Renovación de la UI
@@ -19,4 +19,4 @@
 ## Category-zhTW: UI重構
 ## Group: ElvUI_Options
 
-Core\Load.xml
+Shared\!load.xml

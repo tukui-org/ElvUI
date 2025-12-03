@@ -2,9 +2,9 @@
 ## Notes: Libraries that power ElvUI
 ## Author: Elv, Simpy
 ## Version: @project-version@
-## Interface: 110205
+## Interface: 110207
 ## X-oUF: ElvUF
-## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\LogoAddon
+## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 ## Category-enUS: UI Overhaul
 ## Category-deDE: UI-Überholung
 ## Category-esES: Renovación de la UI
@@ -18,4 +18,4 @@
 ## Category-zhTW: UI重構
 ## Group: ElvUI_Libraries
 
-Mainline\Libs.xml
+Game\Mainline\!load.xml

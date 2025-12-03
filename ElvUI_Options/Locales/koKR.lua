@@ -2012,7 +2012,7 @@ L["VISIBILITY_DESC"] = "체크시 그룹의 표시 설정이 설정됩니다. �
 L["TEXTURE_EXAMPLE"] = [=[패널 배경에 그림을 입히고 싶으면 위치와 파일명를 이곳에 입력해야 합니다.
 
 |cff2eb7e4< 예시 >|r
-|cffceff00Interface\AddOns\ElvUI\Core\Media\Textures\Copy|cff2eb7e4TestImage|r
+|cffceff00Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy|cff2eb7e4TestImage|r
 - 위의 주소로 된 texture 폴더 안 TestImage.tga 그림을 불러옴
 - 위의 주소는 \ 대신 / 를 사용한 것. 직접 적을 땐 반드시 \ 로 주소구분
 

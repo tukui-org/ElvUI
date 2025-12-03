@@ -6,11 +6,11 @@
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque, BigWigs
 ## RequiredDeps: ElvUI_Libraries
-## Interface: 110205
+## Interface: 110207
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 ## AddonCompartmentFunc: ElvUI_AddonCompartmentFunc
-## IconTexture: Interface\AddOns\ElvUI\Core\Media\Textures\LogoAddon
+## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 ## Category-enUS: UI Overhaul
 ## Category-deDE: UI-Überholung
 ## Category-esES: Renovación de la UI
@@ -24,6 +24,4 @@
 ## Category-zhTW: UI重構
 ## Group: ElvUI
 
-Core\Load.xml
-
-Mainline\Load.xml
+Game\Mainline\!load.xml

@@ -1981,7 +1981,7 @@ Atenção:
 -Deve reiniciar o jogo completamente depois de adicionar um ficheiro à pasta.
 -O ficheiro tem de ser em formato tga.
 
-Example: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+Example: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 Para a maioria dos usuários seria mais fácil simplesmente copiar o ficheiro tga na pasta do WoW e depois escrever o nome dele aqui.]=]
 
