@@ -12,4 +12,4 @@
 
 Core\Load.xml
 
-TBC\Load.xml
+Game\TBC\Load.xml

@@ -12,4 +12,4 @@
 
 Core\Load.xml
 
-Mists\Load.xml
+Game\Mists\Load.xml

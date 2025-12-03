@@ -6,7 +6,7 @@
 ## SavedVariablesPerCharacter: ElvCharacterDB
 ## OptionalDeps: SharedMedia, Tukui, Masque, BigWigs
 ## RequiredDeps: ElvUI_Libraries
-## Interface: 110205
+## Interface: 110207
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 ## AddonCompartmentFunc: ElvUI_AddonCompartmentFunc
@@ -26,4 +26,4 @@
 
 Core\Load.xml
 
-Mainline\Load.xml
+Game\Mainline\Load.xml
