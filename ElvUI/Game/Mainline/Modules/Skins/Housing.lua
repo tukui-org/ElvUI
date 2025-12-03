@@ -2,27 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-
-function S:Blizzard_HousingHouseFinder()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
-	local FinderFrame = _G.HouseFinderFrame
-	if FinderFrame then
-		S:HandleFrame(FinderFrame, true)
-		FinderFrame.WoodBorderFrame:Hide()
-	end
-
-	local NeighborhoodListFrame = FinderFrame.NeighborhoodListFrame
-	if NeighborhoodListFrame then
-		NeighborhoodListFrame:StripTextures()
-
-		NeighborhoodListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
-		S:HandleEditBox(NeighborhoodListFrame.BNetFriendSearchBox)
-		S:HandleButton(NeighborhoodListFrame.RefreshButton)
-	end
-end
-
-S:AddCallbackForAddon('Blizzard_HousingHouseFinder')
+local next = next
+local hooksecurefunc = hooksecurefunc
 
 local function PositionHousingDashbardTab(tab, _, _, _, x, y)
 	if x ~= 1 or y ~= -10 then
@@ -38,13 +19,34 @@ local function PositionTabIcons(icon, point)
 	end
 end
 
+function S:Blizzard_HousingHouseFinder()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local FinderFrame = _G.HouseFinderFrame
+	S:HandleFrame(FinderFrame, true)
+
+	local woodBorder = FinderFrame.WoodBorderFrame
+	if woodBorder then
+		woodBorder:Hide()
+	end
+
+	local ListFrame = FinderFrame.NeighborhoodListFrame
+	if ListFrame then
+		ListFrame:StripTextures()
+
+		ListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
+
+		S:HandleEditBox(ListFrame.BNetFriendSearchBox)
+		S:HandleButton(ListFrame.RefreshButton)
+	end
+end
+
 function S:Blizzard_HousingDashboard()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
 	local DashBoardFrame = _G.HousingDashboardFrame
-	if DashBoardFrame then
-		S:HandleFrame(DashBoardFrame, true)
-	end
+
+	S:HandleFrame(DashBoardFrame, true)
 
 	-- Fix the actual icon texture
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
@@ -85,8 +87,11 @@ function S:Blizzard_HousingDashboard()
 		S:HandleDropDownBox(InfoContent.HouseDropdown)
 
 		local HouseUpgradeFrame = InfoContent.ContentFrame.HouseUpgradeFrame
-		HouseUpgradeFrame.Background:Hide()
-		S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+		if HouseUpgradeFrame then
+			HouseUpgradeFrame.Background:Hide()
+
+			S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+		end
 	end
 
 	local CatalogContent = DashBoardFrame.CatalogContent
@@ -125,8 +130,6 @@ function S:Blizzard_HousingDashboard()
 	end
 end
 
-S:AddCallbackForAddon('Blizzard_HousingDashboard')
-
 
 function S:Blizzard_HousingCornerstone()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
@@ -135,6 +138,7 @@ function S:Blizzard_HousingCornerstone()
 	if CornerVisitorFrame then
 		CornerVisitorFrame:StripTextures()
 		CornerVisitorFrame:CreateBackdrop('Transparent')
+
 		S:HandleCloseButton(CornerVisitorFrame.CloseButton)
 	end
 
@@ -142,6 +146,7 @@ function S:Blizzard_HousingCornerstone()
 	if CornerInfoFrame then
 		CornerInfoFrame:StripTextures()
 		CornerInfoFrame:CreateBackdrop('Transparent')
+
 		S:HandleCloseButton(CornerInfoFrame.CloseButton)
 	end
 
@@ -149,13 +154,11 @@ function S:Blizzard_HousingCornerstone()
 	if PurchaseFrame then
 		PurchaseFrame:StripTextures()
 		PurchaseFrame:CreateBackdrop('Transparent')
+
 		S:HandleCloseButton(PurchaseFrame.CloseButton)
 		S:HandleButton(PurchaseFrame.BuyButton)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_HousingCornerstone')
-
 
 function S:Blizzard_HousingBulletinBoard()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
@@ -164,6 +167,7 @@ function S:Blizzard_HousingBulletinBoard()
 	if BulletinBoardFrame then
 		BulletinBoardFrame:StripTextures()
 		-- BulletinBoardFrame.FoliageDecoration:Kill() -- grrr
+
 		S:HandleCloseButton(BulletinBoardFrame.CloseButton)
 
 		local ResidentsTab = BulletinBoardFrame.ResidentsTab
@@ -173,9 +177,6 @@ function S:Blizzard_HousingBulletinBoard()
 	end
 end
 
-S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
-
-
 function S:Blizzard_HouseList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -183,13 +184,11 @@ function S:Blizzard_HouseList()
 	if ListFrame then
 		ListFrame:StripTextures()
 		ListFrame:CreateBackdrop('Transparent')
+
 		S:HandleCloseButton(ListFrame.CloseButton)
 		S:HandleTrimScrollBar(ListFrame.ScrollBar)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_HouseList')
-
 
 function S:Blizzard_HousingCreateNeighborhood()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
@@ -204,11 +203,19 @@ function S:Blizzard_HousingCreateNeighborhood()
 		S:HandleButton(CreateGuildFrame.CancelButton)
 
 		local ConfirmationFrame = CreateGuildFrame.ConfirmationFrame
-		ConfirmationFrame:StripTextures()
-		ConfirmationFrame:SetTemplate()
-		S:HandleButton(ConfirmationFrame.ConfirmButton)
-		S:HandleButton(ConfirmationFrame.CancelButton)
+		if ConfirmationFrame then
+			ConfirmationFrame:StripTextures()
+			ConfirmationFrame:SetTemplate()
+
+			S:HandleButton(ConfirmationFrame.ConfirmButton)
+			S:HandleButton(ConfirmationFrame.CancelButton)
+		end
 	end
 end
 
+S:AddCallbackForAddon('Blizzard_HouseList')
+S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
+S:AddCallbackForAddon('Blizzard_HousingCornerstone')
 S:AddCallbackForAddon('Blizzard_HousingCreateNeighborhood')
+S:AddCallbackForAddon('Blizzard_HousingDashboard')
+S:AddCallbackForAddon('Blizzard_HousingHouseFinder')

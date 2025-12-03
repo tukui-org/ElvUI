@@ -74,7 +74,6 @@ end
 
 if E.Retail or E.TBC then
 	toggles.editor = L["Editor Manager"]
-	toggles.housing = L["Housing"] -- Temp
 end
 
 if not E.Retail then
@@ -82,6 +81,7 @@ if not E.Retail then
 end
 
 if E.Retail then
+	toggles.housing = L["Housing"]
 	toggles.adventureMap = L["ADVENTURE_MAP_TITLE"]
 	toggles.alliedRaces = L["Allied Races"]
 	toggles.animaDiversion = L["Anima Diversion"]
