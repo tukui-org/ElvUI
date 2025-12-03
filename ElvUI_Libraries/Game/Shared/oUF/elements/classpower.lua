@@ -304,7 +304,7 @@ local function Visibility(self, event, unit)
 	end
 
 	if (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI('player') then
-		shouldEnable = oUF.isMists and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
+		shouldEnable = (oUF.isWrath or oUF.isMists) and UnitPowerType('vehicle') == POWERTYPE_COMBO_POINTS or oUF.isRetail and PlayerVehicleHasComboPoints()
 		unit = 'vehicle'
 	elseif ClassPowerID then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 		if not RequirePower or RequirePower == UnitPowerType('player') then
