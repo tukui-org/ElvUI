@@ -10,7 +10,6 @@ local bitband = bit.band
 local hooksecurefunc = hooksecurefunc
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local GetAchievementNumCriteria = GetAchievementNumCriteria
-local IsInGuild = IsInGuild
 
 local FLAG_PROGRESS_BAR = EVALUATION_TREE_FLAG_PROGRESS_BAR
 
