@@ -1,3 +1,12 @@
+### Version 14.04 [ December 3rd 2025 ]
+*   Support for Titan Reforged (wrath exclusive for china, big thanks to pit and barneyng for helping me with this).
+*   attempt to perform boolean test on local 'isLogReady' (a secret value)
+*   attempt to compare local 'changeLog' (a secret value)
+*   attempt to perform string conversion on a secret value
+*   attempt to perform arithmetic on local 'numChanges' (a secret value)
+*   attempt to perform numeric conversion on a secret value
+*   attempt to call a secret value
+
 ### Version 14.03 [ November 6th 2025 ]
 *   Item socket skin was erroring.
 *   Phasing is handled a little better; it seems a little broken on Blizzard side.
