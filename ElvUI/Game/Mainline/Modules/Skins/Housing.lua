@@ -5,6 +5,25 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+function S:Blizzard_HousingHouseFinder()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local FinderFrame = _G.HouseFinderFrame
+	if FinderFrame then
+		S:HandleFrame(FinderFrame, true)
+		FinderFrame.WoodBorderFrame:Hide()
+	end
+
+	local NeighborhoodListFrame = FinderFrame.NeighborhoodListFrame
+	if NeighborhoodListFrame then
+		NeighborhoodListFrame:StripTextures()
+
+		NeighborhoodListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
+		S:HandleEditBox(NeighborhoodListFrame.BNetFriendSearchBox)
+		S:HandleButton(NeighborhoodListFrame.RefreshButton)
+	end
+end
+
 local function PositionHousingDashbardTab(tab, _, _, _, x, y)
 	if x ~= 1 or y ~= -10 then
 		tab:ClearAllPoints()
@@ -19,34 +38,13 @@ local function PositionTabIcons(icon, point)
 	end
 end
 
-function S:Blizzard_HousingHouseFinder()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
-	local FinderFrame = _G.HouseFinderFrame
-	S:HandleFrame(FinderFrame, true)
-
-	local woodBorder = FinderFrame.WoodBorderFrame
-	if woodBorder then
-		woodBorder:Hide()
-	end
-
-	local ListFrame = FinderFrame.NeighborhoodListFrame
-	if ListFrame then
-		ListFrame:StripTextures()
-
-		ListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
-
-		S:HandleEditBox(ListFrame.BNetFriendSearchBox)
-		S:HandleButton(ListFrame.RefreshButton)
-	end
-end
-
 function S:Blizzard_HousingDashboard()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
 	local DashBoardFrame = _G.HousingDashboardFrame
-
-	S:HandleFrame(DashBoardFrame, true)
+	if DashBoardFrame then
+		S:HandleFrame(DashBoardFrame, true)
+	end
 
 	-- Fix the actual icon texture
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
@@ -87,11 +85,8 @@ function S:Blizzard_HousingDashboard()
 		S:HandleDropDownBox(InfoContent.HouseDropdown)
 
 		local HouseUpgradeFrame = InfoContent.ContentFrame.HouseUpgradeFrame
-		if HouseUpgradeFrame then
-			HouseUpgradeFrame.Background:Hide()
-
-			S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
-		end
+		HouseUpgradeFrame.Background:Hide()
+		S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
 	end
 
 	local CatalogContent = DashBoardFrame.CatalogContent
@@ -130,7 +125,6 @@ function S:Blizzard_HousingDashboard()
 	end
 end
 
-
 function S:Blizzard_HousingCornerstone()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -138,7 +132,6 @@ function S:Blizzard_HousingCornerstone()
 	if CornerVisitorFrame then
 		CornerVisitorFrame:StripTextures()
 		CornerVisitorFrame:CreateBackdrop('Transparent')
-
 		S:HandleCloseButton(CornerVisitorFrame.CloseButton)
 	end
 
@@ -146,7 +139,6 @@ function S:Blizzard_HousingCornerstone()
 	if CornerInfoFrame then
 		CornerInfoFrame:StripTextures()
 		CornerInfoFrame:CreateBackdrop('Transparent')
-
 		S:HandleCloseButton(CornerInfoFrame.CloseButton)
 	end
 
@@ -154,7 +146,6 @@ function S:Blizzard_HousingCornerstone()
 	if PurchaseFrame then
 		PurchaseFrame:StripTextures()
 		PurchaseFrame:CreateBackdrop('Transparent')
-
 		S:HandleCloseButton(PurchaseFrame.CloseButton)
 		S:HandleButton(PurchaseFrame.BuyButton)
 	end
@@ -167,13 +158,21 @@ function S:Blizzard_HousingBulletinBoard()
 	if BulletinBoardFrame then
 		BulletinBoardFrame:StripTextures()
 		-- BulletinBoardFrame.FoliageDecoration:Kill() -- grrr
-
 		S:HandleCloseButton(BulletinBoardFrame.CloseButton)
 
 		local ResidentsTab = BulletinBoardFrame.ResidentsTab
 		if ResidentsTab then
 			S:HandleTrimScrollBar(ResidentsTab.ScrollBar)
 		end
+	end
+
+	local ChangeNameDialog = _G.NeighborhoodChangeNameDialog
+	if ChangeNameDialog then
+		ChangeNameDialog:StripTextures()
+		ChangeNameDialog:CreateBackdrop('Transparent')
+		S:HandleEditBox(ChangeNameDialog.NameEditBox)
+		S:HandleButton(ChangeNameDialog.ConfirmButton) -- Fix Backdrop
+		S:HandleButton(ChangeNameDialog.CancelButton)  -- Fix Backdrop
 	end
 end
 
@@ -184,7 +183,6 @@ function S:Blizzard_HouseList()
 	if ListFrame then
 		ListFrame:StripTextures()
 		ListFrame:CreateBackdrop('Transparent')
-
 		S:HandleCloseButton(ListFrame.CloseButton)
 		S:HandleTrimScrollBar(ListFrame.ScrollBar)
 	end
@@ -203,12 +201,96 @@ function S:Blizzard_HousingCreateNeighborhood()
 		S:HandleButton(CreateGuildFrame.CancelButton)
 
 		local ConfirmationFrame = CreateGuildFrame.ConfirmationFrame
-		if ConfirmationFrame then
-			ConfirmationFrame:StripTextures()
-			ConfirmationFrame:SetTemplate()
+		ConfirmationFrame:StripTextures()
+		ConfirmationFrame:SetTemplate()
+		S:HandleButton(ConfirmationFrame.ConfirmButton)
+		S:HandleButton(ConfirmationFrame.CancelButton)
+	end
+end
 
-			S:HandleButton(ConfirmationFrame.ConfirmButton)
-			S:HandleButton(ConfirmationFrame.CancelButton)
+function S:Blizzard_HousingHouseSettings()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local SettingsFrame = _G.HousingHouseSettingsFrame
+	if SettingsFrame then
+		local PlotAccess = SettingsFrame.PlotAccess
+		local HouseAccess = SettingsFrame.HouseAccess
+
+		SettingsFrame:StripTextures()
+		SettingsFrame:CreateBackdrop('Transparent')
+		S:HandleCloseButton(SettingsFrame.CloseButton)
+		S:HandleDropDownBox(SettingsFrame.HouseOwnerDropdown)
+		S:HandleButton(SettingsFrame.AbandonHouseButton)
+		S:HandleDropDownBox(PlotAccess.AccessTypeDropdown)
+		S:HandleDropDownBox(HouseAccess.AccessTypeDropdown)
+
+		--[[ FIX THE CHECKBOXES
+		for _, checkBox in next, { PlotAccess.Options:GetChildren() } do
+			if checkBox:IsObjectType('CheckButton') then
+				S:HandleCheckBox(checkBox)
+			end
+		end
+
+		for _, checkBox in next, { HouseAccess.Options:GetChildren() } do
+			if checkBox:IsObjectType('CheckButton') then
+				S:HandleCheckBox(checkBox)
+			end
+		end]]
+
+		S:HandleButton(SettingsFrame.IgnoreListButton)
+		S:HandleButton(SettingsFrame.SaveButton)
+	end
+end
+
+function S:Blizzard_HouseEditor()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local EditorFrame = _G.HouseEditorFrame
+
+	local StoragePanel = EditorFrame.StoragePanel
+	if StoragePanel then
+		StoragePanel:StripTextures()
+		StoragePanel:CreateBackdrop('Transparent')
+		S:HandleEditBox(StoragePanel.SearchBox)
+		StoragePanel.SearchBox:Size(350, 21)
+		S:HandleButton(StoragePanel.Filters.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+		S:HandleCloseButton(StoragePanel.Filters.FilterDropdown.ResetButton)
+		StoragePanel.Filters.FilterDropdown.ResetButton:ClearAllPoints()
+		StoragePanel.Filters.FilterDropdown.ResetButton:Point('CENTER', StoragePanel.Filters.FilterDropdown, 'TOPRIGHT', 0, 0)
+
+		for _, tab in next, { StoragePanel.TabSystem:GetChildren() } do
+			S:HandleTab(tab)
+		end
+
+		local Categories = StoragePanel.Categories
+		if Categories then
+			Categories.Background:Hide()
+		end
+
+		local OptionsContainer = StoragePanel.OptionsContainer
+		if OptionsContainer then
+			S:HandleTrimScrollBar(OptionsContainer.ScrollBar)
+		end
+
+		--[[ FIX ME
+		if StoragePanel.CollapseButton then
+			StoragePanel.CollapseButton:CreateBackdrop()
+		end]]
+	end
+end
+
+function S:Blizzard_HousingModelPreview()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local PreviewFrame = _G.HousingModelPreviewFrame
+	if PreviewFrame then
+		PreviewFrame:StripTextures()
+		PreviewFrame:CreateBackdrop('Transparent')
+		S:HandleCloseButton(PreviewFrame.CloseButton)
+
+		local ModelPreview = PreviewFrame.ModelPreview
+		if ModelPreview then
+			ModelPreview:StripTextures()
 		end
 	end
 end
@@ -219,3 +301,6 @@ S:AddCallbackForAddon('Blizzard_HousingCornerstone')
 S:AddCallbackForAddon('Blizzard_HousingCreateNeighborhood')
 S:AddCallbackForAddon('Blizzard_HousingDashboard')
 S:AddCallbackForAddon('Blizzard_HousingHouseFinder')
+S:AddCallbackForAddon('Blizzard_HousingHouseSettings')
+S:AddCallbackForAddon('Blizzard_HouseEditor')
+S:AddCallbackForAddon('Blizzard_HousingModelPreview')
