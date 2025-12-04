@@ -21,7 +21,7 @@ externals:
   ElvUI_Libraries/Game/Shared/LibTranslit-1.0: https://github.com/Vardex/LibTranslit
   ElvUI_Libraries/Game/Shared/LibDualSpec-1.0: https://repos.curseforge.com/wow/libdualspec-1-0
   ElvUI_Libraries/Game/Shared/UTF8: https://repos.curseforge.com/wow/utf8/trunk
-  ElvUI_Libraries/Core/LibDispel:
+  ElvUI_Libraries/Game/Shared/LibDispel:
     url: https://github.com/tukui-org/LibDispel
     branch: alpha
   ElvUI_Libraries/Game/Shared/TaintLess:
