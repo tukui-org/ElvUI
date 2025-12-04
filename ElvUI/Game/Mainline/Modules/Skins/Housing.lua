@@ -176,6 +176,24 @@ function S:Blizzard_HousingBulletinBoard()
 	end
 end
 
+local function HouseList_UpdateChild(child)
+	if child.IsSkinned then return end
+
+	child:StripTextures()
+	child.Background:Hide()
+	child:SetTemplate('Default')
+
+	if child.VisitHouseButton then
+		S:HandleButton(child.VisitHouseButton)
+	end
+
+	child.IsSkinned = true
+end
+
+local function HouseList_Update(frame)
+	frame:ForEachFrame(HouseList_UpdateChild)
+end
+
 function S:Blizzard_HouseList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -185,6 +203,8 @@ function S:Blizzard_HouseList()
 		ListFrame:CreateBackdrop('Transparent')
 		S:HandleCloseButton(ListFrame.CloseButton)
 		S:HandleTrimScrollBar(ListFrame.ScrollBar)
+
+		hooksecurefunc(ListFrame.ScrollBox, 'Update', HouseList_Update)
 	end
 end
 
