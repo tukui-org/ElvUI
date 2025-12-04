@@ -165,6 +165,15 @@ function S:Blizzard_HousingBulletinBoard()
 			S:HandleTrimScrollBar(ResidentsTab.ScrollBar)
 		end
 	end
+
+	local ChangeNameDialog = _G.NeighborhoodChangeNameDialog
+	if ChangeNameDialog then
+		ChangeNameDialog:StripTextures()
+		ChangeNameDialog:CreateBackdrop('Transparent')
+		S:HandleEditBox(ChangeNameDialog.NameEditBox)
+		S:HandleButton(ChangeNameDialog.ConfirmButton) -- Fix Backdrop
+		S:HandleButton(ChangeNameDialog.CancelButton)  -- Fix Backdrop
+	end
 end
 
 function S:Blizzard_HouseList()
@@ -270,6 +279,22 @@ function S:Blizzard_HouseEditor()
 	end
 end
 
+function S:Blizzard_HousingModelPreview()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local PreviewFrame = _G.HousingModelPreviewFrame
+	if PreviewFrame then
+		PreviewFrame:StripTextures()
+		PreviewFrame:CreateBackdrop('Transparent')
+		S:HandleCloseButton(PreviewFrame.CloseButton)
+
+		local ModelPreview = PreviewFrame.ModelPreview
+		if ModelPreview then
+			ModelPreview:StripTextures()
+		end
+	end
+end
+
 S:AddCallbackForAddon('Blizzard_HouseList')
 S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
 S:AddCallbackForAddon('Blizzard_HousingCornerstone')
@@ -278,3 +303,4 @@ S:AddCallbackForAddon('Blizzard_HousingDashboard')
 S:AddCallbackForAddon('Blizzard_HousingHouseFinder')
 S:AddCallbackForAddon('Blizzard_HousingHouseSettings')
 S:AddCallbackForAddon('Blizzard_HouseEditor')
+S:AddCallbackForAddon('Blizzard_HousingModelPreview')
