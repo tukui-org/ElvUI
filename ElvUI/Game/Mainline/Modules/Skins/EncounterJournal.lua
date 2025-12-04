@@ -294,38 +294,38 @@ function S:Blizzard_EncounterJournal()
 	S:HandleDropDownBox(InstanceSelect.ExpansionDropdown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	-- Bottom tabs [TODO: Add consistent 1px spacing in between all tabs, like on our other frames]
-	for _, tab in next, {
+	-- Bottom tabs
+	local bottomTabs = {
+		_G.EncounterJournalMonthlyActivitiesTab,
 		_G.EncounterJournalSuggestTab,
 		_G.EncounterJournalDungeonTab,
 		_G.EncounterJournalRaidTab,
 		_G.EncounterJournalLootJournalTab,
-		_G.EncounterJournalMonthlyActivitiesTab,
 		_G.EncounterJournal.TutorialsTab
-	} do
+	}
+
+	for _, tab in next, bottomTabs do
 		S:HandleTab(tab)
 	end
 
-	_G.EncounterJournalMonthlyActivitiesTab:ClearAllPoints()
-	_G.EncounterJournalMonthlyActivitiesTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
-
-	hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', function()
-		_G.EncounterJournalSuggestTab:Point('LEFT', _G.EncounterJournalMonthlyActivitiesTab, 'RIGHT', -5, 0)
-	end)
-
-	hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', function()
-		if E.TimerunningID then
-			_G.EncounterJournalDungeonTab:Point('LEFT', _G.EncounterJournalMonthlyActivitiesTab, 'RIGHT')
-		else
-			_G.EncounterJournalDungeonTab:Point('LEFT', _G.EncounterJournalSuggestTab, 'RIGHT', -5, 0)
+	local function RepositionTabs()
+		local previousTab
+		for _, tab in next, bottomTabs do
+			if tab:IsShown() then
+				tab:ClearAllPoints()
+				if previousTab then
+					tab:Point('TOPLEFT', previousTab, 'TOPRIGHT', -5, 0)
+				else
+					tab:Point('TOPLEFT', EJ, 'BOTTOMLEFT', -3, 0)
+				end
+				previousTab = tab
+			end
 		end
-	end)
+	end
 
-	_G.EncounterJournalRaidTab:ClearAllPoints()
-	_G.EncounterJournalRaidTab:Point('LEFT', _G.EncounterJournalDungeonTab, 'RIGHT', -5, 0)
-
-	_G.EncounterJournalLootJournalTab:ClearAllPoints()
-	_G.EncounterJournalLootJournalTab:Point('LEFT', _G.EncounterJournalRaidTab, 'RIGHT', -5, 0)
+	hooksecurefunc('EncounterJournal_OnShow', RepositionTabs)
+	hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', RepositionTabs)
+	hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', RepositionTabs)
 
 	-- Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
