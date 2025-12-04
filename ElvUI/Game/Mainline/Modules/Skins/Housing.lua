@@ -181,7 +181,7 @@ local function HouseList_UpdateChild(child)
 
 	child:StripTextures()
 	child.Background:Hide()
-	child:SetTemplate('Default')
+	child:SetTemplate()
 
 	if child.VisitHouseButton then
 		S:HandleButton(child.VisitHouseButton)
