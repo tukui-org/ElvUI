@@ -29,6 +29,8 @@ local UIParentLoadAddOn = UIParentLoadAddOn
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 
+local HousingFramesUtil_ToggleHousingDashboard = HousingFramesUtil and HousingFramesUtil.ToggleHousingDashboard
+
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
 local GetZonePVPInfo = C_PvP.GetZonePVPInfo or GetZonePVPInfo
@@ -80,6 +82,7 @@ if E.Retail then
 	tinsert(menuList, {text = _G.PROFESSIONS_BUTTON, microOffset = 'ProfessionMicroButton', func = function() _G.ToggleProfessionsBook() end })
 	tinsert(menuList, {text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, microOffset = 'QuestLogMicroButton', func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
 	tinsert(menuList, {text = _G.QUESTLOG_BUTTON, microOffset = 'QuestLogMicroButton', func = function() _G.ToggleQuestLog() end })
+	tinsert(menuList, {text = _G.HOUSING_MICRO_BUTTON, microOffset = 'HousingMicroButton', func = function() _G.HousingFramesUtil_ToggleHousingDashboard() end })
 else
 	tinsert(menuList, {text = _G.QUEST_LOG, microOffset = 'QuestLogMicroButton', func = function() ToggleFrame(_G.QuestLogFrame) end })
 end
