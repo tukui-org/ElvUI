@@ -838,7 +838,6 @@ L["Horizontal Spacing"] = "수평 간격"
 L["Horizontal"] = "수평"
 L["Hostile"] = "적대적인"
 L["Hours"] = "시간 단위 색상"
-L["Housing Dashboard"] = true
 L["Hover Highlight"] = "강조효과"
 L["Hover"] = "마우스오버 반응"
 L["How far away the portrait is from the camera."] = "3d 모델의 크기를 결정합니다."

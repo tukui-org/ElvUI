@@ -817,7 +817,6 @@ L["Horizontal Spacing"] = true
 L["Horizontal"] = true
 L["Hostile"] = true
 L["Hours"] = true
-L["Housing Dashboard"] = true
 L["Hover Highlight"] = true
 L["Hover"] = true
 L["How far away the portrait is from the camera."] = true

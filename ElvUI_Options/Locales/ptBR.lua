@@ -816,7 +816,6 @@ L["Horizontal Spacing"] = "Espaçamento Horizontal"
 L["Horizontal"] = "Horizontal"
 L["Hostile"] = "Hostil"
 L["Hours"] = "Horas"
-L["Housing Dashboard"] = true
 L["Hover Highlight"] = "Destaque ao pairar"
 L["Hover"] = "Pairar"
 L["How far away the portrait is from the camera."] = "Quão longe o retrato está da camera."

@@ -817,7 +817,6 @@ L["Horizontal Spacing"] = "Yatay Bosluk"
 L["Horizontal"] = "Yatay"
 L["Hostile"] = "Hasim"
 L["Hours"] = "Saatler"
-L["Housing Dashboard"] = true
 L["Hover Highlight"] = "Vurgulayin"
 L["Hover"] = "Vurgu"
 L["How far away the portrait is from the camera."] = "Portre kameradan ne kadar uzakta."

@@ -858,7 +858,6 @@ L["Horizontal Spacing"] = "水平間隔"
 L["Horizontal"] = "水平"
 L["Hostile"] = "敵對"
 L["Hours"] = "時"
-L["Housing Dashboard"] = true
 L["Hover Highlight"] = "指向高亮"
 L["Hover"] = "滑鼠指向"
 L["How far away the portrait is from the camera."] = "人像和鏡頭間有多遠"
