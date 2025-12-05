@@ -307,33 +307,34 @@ function S:Blizzard_HouseEditor()
 
 
 		local CustomizationFrame = EditorFrame.ExteriorCustomizationModeFrame
-		
-		local FixtureOptionList = CustomizationFrame.FixtureOptionList
-		if FixtureOptionList then
-			FixtureOptionList:StripTextures()
-			FixtureOptionList:SetTemplate('Transparent')
-			S:HandleCloseButton(FixtureOptionList.CloseButton)
-			FixtureOptionList.CloseButton:ClearAllPoints()
-			FixtureOptionList.CloseButton:Point('TOPRIGHT', FixtureOptionList, 'TOPRIGHT')
-			S:HandleTrimScrollBar(FixtureOptionList.ScrollBar)
-		end
+		if CustomizationFrame then
+			local FixtureOptionList = CustomizationFrame.FixtureOptionList
+			if FixtureOptionList then
+				FixtureOptionList:StripTextures()
+				FixtureOptionList:SetTemplate('Transparent')
 
-		local CoreOptionsPanel = CustomizationFrame.CoreOptionsPanel
-		local HouseTypeOption = CoreOptionsPanel.HouseTypeOption
-		local HouseSizeOption = CoreOptionsPanel.HouseSizeOption
-		local BaseStyleOption = CoreOptionsPanel.BaseStyleOption
-		local RoofStyleOption = CoreOptionsPanel.RoofStyleOption
-		local RoofVariantOption = CoreOptionsPanel.RoofVariantOption
+				S:HandleCloseButton(FixtureOptionList.CloseButton)
+				FixtureOptionList.CloseButton:ClearAllPoints()
+				FixtureOptionList.CloseButton:Point('TOPRIGHT', FixtureOptionList, 'TOPRIGHT')
 
-		for _, dropdown in pairs ({
-			CoreOptionsPanel.Dropdown,
-			HouseTypeOption.Dropdown,
-			HouseSizeOption.Dropdown,
-			BaseStyleOption.Dropdown,
-			RoofStyleOption.Dropdown,
-			RoofVariantOption.Dropdown
-		}) do
-			S:HandleDropDownBox(dropdown)
+				S:HandleTrimScrollBar(FixtureOptionList.ScrollBar)
+			end
+
+			local CoreOptions = CustomizationFrame.CoreOptionsPanel
+			if CoreOptions then
+				for _, panel in next, {
+					CoreOptions,
+					CoreOptions.HouseTypeOption,
+					CoreOptions.HouseSizeOption,
+					CoreOptions.BaseStyleOption,
+					CoreOptions.RoofStyleOption,
+					CoreOptions.RoofVariantOption
+				} do
+					if panel.Dropdown then
+						S:HandleDropDownBox(panel.Dropdown)
+					end
+				end
+			end
 		end
 	end
 end
