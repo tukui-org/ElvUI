@@ -31,6 +31,13 @@ function S:StyleTooltips()
 		_G.SettingsTooltip,
 	} do
 		TT:SetStyle(tt)
+
+		local CompareHeader = tt.CompareHeader
+		if CompareHeader and not CompareHeader.IsSkinned then
+			CompareHeader:StripTextures()
+			CompareHeader:SetTemplate()
+			CompareHeader.IsSkinned = true
+		end
 	end
 end
 
