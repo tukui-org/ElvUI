@@ -431,7 +431,7 @@ function M:Initialize()
 		end
 	end
 
-	if _G.MIRRORTIMER_NUMTIMERS then
+	if _G.MIRRORTIMER_NUMTIMERS then -- EditMode has Duration Bars
 		for i = 1, _G.MIRRORTIMER_NUMTIMERS do
 			E:CreateMover(_G['MirrorTimer'..i], 'MirrorTimer'..i..'Mover', L["MirrorTimer"]..i, nil, nil, nil, 'ALL,SOLO')
 		end
