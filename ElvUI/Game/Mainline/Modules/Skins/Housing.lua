@@ -167,6 +167,14 @@ function S:Blizzard_HousingCornerstone()
 		S:HandleCloseButton(PurchaseFrame.CloseButton)
 		S:HandleButton(PurchaseFrame.BuyButton)
 	end
+
+	local MoveHouseConfirmation = _G.MoveHouseConfirmationDialog
+	if MoveHouseConfirmation then
+		MoveHouseConfirmation:StripTextures()
+		MoveHouseConfirmation:CreateBackdrop('Transparent')
+		S:HandleButton(MoveHouseConfirmation.ConfirmButton)
+		S:HandleButton(MoveHouseConfirmation.CancelButton)
+	end
 end
 
 function S:Blizzard_HousingBulletinBoard()
@@ -296,6 +304,37 @@ function S:Blizzard_HouseEditor()
 		if StoragePanel.CollapseButton then
 			StoragePanel.CollapseButton:CreateBackdrop()
 		end]]
+
+
+		local CustomizationFrame = EditorFrame.ExteriorCustomizationModeFrame
+		
+		local FixtureOptionList = CustomizationFrame.FixtureOptionList
+		if FixtureOptionList then
+			FixtureOptionList:StripTextures()
+			FixtureOptionList:SetTemplate('Transparent')
+			S:HandleCloseButton(FixtureOptionList.CloseButton)
+			FixtureOptionList.CloseButton:ClearAllPoints()
+			FixtureOptionList.CloseButton:Point('TOPRIGHT', FixtureOptionList, 'TOPRIGHT')
+			S:HandleTrimScrollBar(FixtureOptionList.ScrollBar)
+		end
+
+		local CoreOptionsPanel = CustomizationFrame.CoreOptionsPanel
+		local HouseTypeOption = CoreOptionsPanel.HouseTypeOption
+		local HouseSizeOption = CoreOptionsPanel.HouseSizeOption
+		local BaseStyleOption = CoreOptionsPanel.BaseStyleOption
+		local RoofStyleOption = CoreOptionsPanel.RoofStyleOption
+		local RoofVariantOption = CoreOptionsPanel.RoofVariantOption
+
+		for _, dropdown in pairs ({
+			CoreOptionsPanel.Dropdown,
+			HouseTypeOption.Dropdown,
+			HouseSizeOption.Dropdown,
+			BaseStyleOption.Dropdown,
+			RoofStyleOption.Dropdown,
+			RoofVariantOption.Dropdown
+		}) do
+			S:HandleDropDownBox(dropdown)
+		end
 	end
 end
 

@@ -617,6 +617,9 @@ function S:Blizzard_EncounterJournal()
 	if TutorialsFrame then
 		if E.private.skins.parchmentRemoverEnable then
 			TutorialsFrame.Contents:DisableDrawLayer('BACKGROUND')
+			if not TutorialsFrame.Contents.backdrop then
+				TutorialsFrame.Contents:CreateBackdrop()
+			end
 			TutorialsFrame.Contents.Header:SetTextColor(1, 1, 1)
 			TutorialsFrame.Contents.Description:SetTextColor(1, 1, 1)
 		end
