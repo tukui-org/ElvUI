@@ -2,12 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, select = unpack, select
+local unpack, select, tinsert = unpack, select, tinsert
 local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
+local journalBottomTabs = {}
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white
 	['loottab-set-itemborder-green'] = 2,
@@ -263,6 +264,22 @@ local function LoreScrollingFontChild(child)
 	end
 end
 
+local function RepositionTabs()
+	local previousTab
+	for _, tab in next, journalBottomTabs do
+		if tab:IsShown() then
+			tab:ClearAllPoints()
+			if previousTab then
+				tab:Point('TOPLEFT', previousTab, 'TOPRIGHT', -5, 0)
+			else
+				tab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
+			end
+
+			previousTab = tab
+		end
+	end
+end
+
 function S:Blizzard_EncounterJournal()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
 
@@ -295,32 +312,15 @@ function S:Blizzard_EncounterJournal()
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	-- Bottom tabs
-	local bottomTabs = {
-		_G.EncounterJournalMonthlyActivitiesTab,
-		_G.EncounterJournalSuggestTab,
-		_G.EncounterJournalDungeonTab,
-		_G.EncounterJournalRaidTab,
-		_G.EncounterJournalLootJournalTab,
-		_G.EncounterJournal.TutorialsTab
-	}
+	tinsert(journalBottomTabs, _G.EncounterJournalMonthlyActivitiesTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalSuggestTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalDungeonTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalRaidTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalLootJournalTab)
+	tinsert(journalBottomTabs, _G.EncounterJournal.TutorialsTab)
 
-	for _, tab in next, bottomTabs do
+	for _, tab in next, journalBottomTabs do
 		S:HandleTab(tab)
-	end
-
-	local function RepositionTabs()
-		local previousTab
-		for _, tab in next, bottomTabs do
-			if tab:IsShown() then
-				tab:ClearAllPoints()
-				if previousTab then
-					tab:Point('TOPLEFT', previousTab, 'TOPRIGHT', -5, 0)
-				else
-					tab:Point('TOPLEFT', EJ, 'BOTTOMLEFT', -3, 0)
-				end
-				previousTab = tab
-			end
-		end
 	end
 
 	hooksecurefunc('EncounterJournal_OnShow', RepositionTabs)
