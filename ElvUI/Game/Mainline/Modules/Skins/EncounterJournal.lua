@@ -2,12 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, select = unpack, select
+local unpack, select, tinsert = unpack, select, tinsert
 local ipairs, next, rad = ipairs, next, rad
 local hooksecurefunc = hooksecurefunc
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
+local journalBottomTabs = {}
 local lootQuality = {
 	['loottab-set-itemborder-white'] = nil, -- dont show white
 	['loottab-set-itemborder-green'] = 2,
@@ -263,6 +264,22 @@ local function LoreScrollingFontChild(child)
 	end
 end
 
+local function RepositionTabs()
+	local previousTab
+	for _, tab in next, journalBottomTabs do
+		if tab:IsShown() then
+			tab:ClearAllPoints()
+			if previousTab then
+				tab:Point('TOPLEFT', previousTab, 'TOPRIGHT', -5, 0)
+			else
+				tab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
+			end
+
+			previousTab = tab
+		end
+	end
+end
+
 function S:Blizzard_EncounterJournal()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
 
@@ -294,38 +311,21 @@ function S:Blizzard_EncounterJournal()
 	S:HandleDropDownBox(InstanceSelect.ExpansionDropdown)
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
-	-- Bottom tabs [TODO: Add consistent 1px spacing in between all tabs, like on our other frames]
-	for _, tab in next, {
-		_G.EncounterJournalSuggestTab,
-		_G.EncounterJournalDungeonTab,
-		_G.EncounterJournalRaidTab,
-		_G.EncounterJournalLootJournalTab,
-		_G.EncounterJournalMonthlyActivitiesTab,
-		_G.EncounterJournal.TutorialsTab
-	} do
+	-- Bottom tabs
+	tinsert(journalBottomTabs, _G.EncounterJournalMonthlyActivitiesTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalSuggestTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalDungeonTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalRaidTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalLootJournalTab)
+	tinsert(journalBottomTabs, _G.EncounterJournal.TutorialsTab)
+
+	for _, tab in next, journalBottomTabs do
 		S:HandleTab(tab)
 	end
 
-	_G.EncounterJournalMonthlyActivitiesTab:ClearAllPoints()
-	_G.EncounterJournalMonthlyActivitiesTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -3, 0)
-
-	hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', function()
-		_G.EncounterJournalSuggestTab:Point('LEFT', _G.EncounterJournalMonthlyActivitiesTab, 'RIGHT', -5, 0)
-	end)
-
-	hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', function()
-		if E.TimerunningID then
-			_G.EncounterJournalDungeonTab:Point('LEFT', _G.EncounterJournalMonthlyActivitiesTab, 'RIGHT')
-		else
-			_G.EncounterJournalDungeonTab:Point('LEFT', _G.EncounterJournalSuggestTab, 'RIGHT', -5, 0)
-		end
-	end)
-
-	_G.EncounterJournalRaidTab:ClearAllPoints()
-	_G.EncounterJournalRaidTab:Point('LEFT', _G.EncounterJournalDungeonTab, 'RIGHT', -5, 0)
-
-	_G.EncounterJournalLootJournalTab:ClearAllPoints()
-	_G.EncounterJournalLootJournalTab:Point('LEFT', _G.EncounterJournalRaidTab, 'RIGHT', -5, 0)
+	hooksecurefunc('EncounterJournal_OnShow', RepositionTabs)
+	hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', RepositionTabs)
+	hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', RepositionTabs)
 
 	-- Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info

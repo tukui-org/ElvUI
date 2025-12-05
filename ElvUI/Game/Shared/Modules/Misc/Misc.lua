@@ -335,6 +335,8 @@ function M:ADDON_LOADED(_, addon)
 		KillFeedback(_G.PTR_IssueReporter)
 	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' then
 		M:LoadQueueStatus()
+	elseif addon == 'Blizzard_HousingControls' then
+		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, 'ALL,SOLO')
 	end
 end
 
@@ -423,10 +425,14 @@ function M:Initialize()
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
 
-	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.ClassicAnniv and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
+	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.Retail and 'Blizzard_HousingControls' or nil, E.ClassicAnniv and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
 		if IsAddOnLoaded(addon) then
 			M:ADDON_LOADED(nil, addon)
 		end
+	end
+
+	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
+		E:CreateMover(_G['MirrorTimer'..i], 'MirrorTimer'..i..'Mover', L["MirrorTimer"]..i, nil, nil, nil, 'ALL,SOLO')
 	end
 
 	do	-- questRewardMostValueIcon

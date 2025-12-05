@@ -74,8 +74,6 @@ function S:Blizzard_ArchaeologyUI()
 	_G.ArcheologyDigsiteProgressBar:StripTextures()
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
-
-	--E:CreateMover(_G.ArcheologyDigsiteProgressBar, 'DigSiteProgressBarMover', L["Archeology Progress Bar"])
 end
 
 S:AddCallbackForAddon('Blizzard_ArchaeologyUI')
