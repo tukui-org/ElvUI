@@ -33,10 +33,9 @@ function S:StyleTooltips()
 		TT:SetStyle(tt)
 
 		local CompareHeader = tt.CompareHeader
-		if CompareHeader and not CompareHeader.IsSkinned then
+		if CompareHeader and not CompareHeader.template then
 			CompareHeader:StripTextures()
 			CompareHeader:SetTemplate()
-			CompareHeader.IsSkinned = true
 		end
 	end
 end
