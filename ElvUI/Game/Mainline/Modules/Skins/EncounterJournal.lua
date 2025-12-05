@@ -613,7 +613,6 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
 
-	-- Tutorials page | TODO: Fix the Backdrop the button
 	local TutorialsFrame = _G.EncounterJournal.TutorialsFrame
 	if TutorialsFrame then
 		if E.private.skins.parchmentRemoverEnable then
