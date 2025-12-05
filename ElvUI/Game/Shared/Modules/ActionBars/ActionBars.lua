@@ -554,6 +554,23 @@ function AB:UpdateVehicleLeave()
 	end
 end
 
+do
+	AB.editingHouse = false
+
+	function AB:HouseEditorStateUpdated(state)
+		AB.editingHouse = state
+		if state then
+			for _, bar in pairs(AB.handledBars) do
+				if bar then
+					ClearOverrideBindings(bar)
+				end
+			end
+		elseif not state then
+			AB:ReassignBindings()
+		end
+	end
+end
+
 function AB:ReassignBindings(event)
 	if event == 'UPDATE_BINDINGS' then
 		AB:UpdatePetBindings()
@@ -568,7 +585,7 @@ function AB:ReassignBindings(event)
 
 	AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
 
-	if InCombatLockdown() then return end
+	if InCombatLockdown() or AB.editingHouse then return end
 
 	for _, bar in pairs(AB.handledBars) do
 		if bar then
@@ -1971,6 +1988,9 @@ function AB:Initialize()
 		AB:AssistedGlowUpdate()
 		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
 		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
+
+		-- Register for housing state changes
+		_G.EventRegistry:RegisterCallback("HouseEditor.StateUpdated", AB.HouseEditorStateUpdated)
 	end
 
 	if not E.Classic and not E.Wrath then
