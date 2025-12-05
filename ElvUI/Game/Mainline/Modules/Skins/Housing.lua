@@ -315,6 +315,15 @@ function S:Blizzard_HousingModelPreview()
 	end
 end
 
+function S:Blizzard_HousingControls()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local HousingControlsFrame = _G.HousingControlsFrame
+	if HousingControlsFrame then
+		E:CreateMover(HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, 'ALL,SOLO')
+	end
+end
+
 S:AddCallbackForAddon('Blizzard_HouseList')
 S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
 S:AddCallbackForAddon('Blizzard_HousingCornerstone')
@@ -324,3 +333,4 @@ S:AddCallbackForAddon('Blizzard_HousingHouseFinder')
 S:AddCallbackForAddon('Blizzard_HousingHouseSettings')
 S:AddCallbackForAddon('Blizzard_HouseEditor')
 S:AddCallbackForAddon('Blizzard_HousingModelPreview')
+S:AddCallbackForAddon('Blizzard_HousingControls')
