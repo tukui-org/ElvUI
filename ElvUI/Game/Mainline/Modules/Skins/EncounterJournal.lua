@@ -615,12 +615,15 @@ function S:Blizzard_EncounterJournal()
 
 	-- Tutorials page | TODO: Fix the Backdrop the button
 	local TutorialsFrame = _G.EncounterJournal.TutorialsFrame
-	if E.private.skins.parchmentRemoverEnable then
-		TutorialsFrame.Contents:DisableDrawLayer('BACKGROUND')
-		TutorialsFrame.Contents.Header:SetTextColor(1, 1, 1)
-		TutorialsFrame.Contents.Description:SetTextColor(1, 1, 1)
+	if TutorialsFrame then
+		if E.private.skins.parchmentRemoverEnable then
+			TutorialsFrame.Contents:DisableDrawLayer('BACKGROUND')
+			TutorialsFrame.Contents.Header:SetTextColor(1, 1, 1)
+			TutorialsFrame.Contents.Description:SetTextColor(1, 1, 1)
+		end
+
+		S:HandleButton(TutorialsFrame.Contents.StartButton, nil, nil, nil, true)
 	end
-	S:HandleButton(TutorialsFrame.Contents.StartButton, nil, nil, nil, true)
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal')
