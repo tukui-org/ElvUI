@@ -604,7 +604,7 @@ function AB:HandleBinds(event, arg1)
 	end
 
 	if event == 'HouseEditorStateUpdated' then
-		AB:UpdateBinds(event, arg1 and AB.OverrideBinds or nil)
+		AB:UpdateBinds(event, not arg1 and AB.OverrideBinds or nil)
 	else
 		AB:UpdateBinds(event, AB.OverrideBinds)
 	end
