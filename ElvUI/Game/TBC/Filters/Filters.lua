@@ -982,27 +982,5 @@ G.unitframe.AuraBarColors = {
 	[90355]	= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Ancient Hysteria
 }
 
+-- Auras which should change the color of the UnitFrame
 G.unitframe.AuraHighlightColors = {}
-
-G.unitframe.specialFilters = {
-	-- Whitelists
-	Boss = true,
-	MyPet = true,
-	OtherPet = true,
-	Personal = true,
-	nonPersonal = true,
-	CastByUnit = true,
-	notCastByUnit = true,
-	Dispellable = true,
-	notDispellable = true,
-	CastByNPC = true,
-	CastByPlayers = true,
-	BlizzardNameplate = true,
-
-	-- Blacklists
-	blockNonPersonal = true,
-	blockCastByPlayers = true,
-	blockNoDuration = true,
-	blockDispellable = true,
-	blockNotDispellable = true,
-}
