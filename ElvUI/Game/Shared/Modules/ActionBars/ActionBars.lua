@@ -604,7 +604,7 @@ function AB:HandleBinds(event, arg1)
 	end
 
 	if event == 'HouseEditorStateUpdated' then
-		AB:UpdateBinds(event, arg1 and AB.OverrideBinds or nil)
+		AB:UpdateBinds(event, not arg1 and AB.OverrideBinds or nil)
 	else
 		AB:UpdateBinds(event, AB.OverrideBinds)
 	end
@@ -1367,7 +1367,7 @@ end
 
 do
 	local fixBars = {}
-	if E.Wrath or E.Mists then
+	if not E.Retail then -- retail has these bars as a fallback
 		fixBars.MULTIACTIONBAR5BUTTON = 'ELVUIBAR13BUTTON'
 		fixBars.MULTIACTIONBAR6BUTTON = 'ELVUIBAR14BUTTON'
 		fixBars.MULTIACTIONBAR7BUTTON = 'ELVUIBAR15BUTTON'
