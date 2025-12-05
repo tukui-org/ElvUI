@@ -569,7 +569,7 @@ end
 
 function AB:UpdateBinds(event, func)
 	if InCombatLockdown() then
-		AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'SetBinds')
+		AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'HandleBinds')
 
 		return
 	end
@@ -595,10 +595,10 @@ function AB:UpdateAllBinds(event)
 		AB:UpdateTotemBindings()
 	end
 
-	AB:SetBinds(event) -- full clear/set
+	AB:HandleBinds(event)
 end
 
-function AB:SetBinds(event, arg1)
+function AB:HandleBinds(event, arg1)
 	if event == 'PLAYER_REGEN_DISABLED' then
 		AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
 	end
@@ -611,7 +611,7 @@ function AB:SetBinds(event, arg1)
 end
 
 function AB:HouseEditorStateUpdated(state)
-	AB:SetBinds('HouseEditorStateUpdated', state)
+	AB:HandleBinds('HouseEditorStateUpdated', state)
 end
 
 do
@@ -1922,8 +1922,8 @@ function AB:Initialize()
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
 
-		AB:RegisterEvent('PET_BATTLE_CLOSE', 'SetBinds')
-		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'UpdateBinds')
+		AB:RegisterEvent('PET_BATTLE_CLOSE', 'HandleBinds') -- set override binds
+		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'UpdateBinds') -- no function passed, clears bindings
 	end
 
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
@@ -1968,9 +1968,9 @@ function AB:Initialize()
 
 	-- handle the first set of bindings unless in a pet battle
 	if (E.Retail or E.Mists) and IsInBattle() then
-		AB:UpdateBinds()
+		AB:UpdateBinds() -- no function passed, clears bindings
 	else
-		AB:SetBinds()
+		AB:HandleBinds() -- set override binds
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
