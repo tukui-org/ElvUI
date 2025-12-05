@@ -598,15 +598,20 @@ function AB:UpdateAllBinds(event)
 	AB:HandleBinds(event)
 end
 
-function AB:HandleBinds(event, arg1)
-	if event == 'PLAYER_REGEN_DISABLED' then
-		AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
-	end
+do
+	local inHouseEditor -- so we can ignore during house editing
+	function AB:HandleBinds(event, arg1)
+		if event == 'PLAYER_REGEN_DISABLED' then
+			AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
+		end
 
-	if event == 'HouseEditorStateUpdated' then
-		AB:UpdateBinds(event, arg1 and AB.OverrideBinds or nil)
-	else
-		AB:UpdateBinds(event, AB.OverrideBinds)
+		if event == 'HouseEditorStateUpdated' then
+			inHouseEditor = arg1
+
+			AB:UpdateBinds(event, arg1 and AB.OverrideBinds or nil)
+		elseif not inHouseEditor then
+			AB:UpdateBinds(event, AB.OverrideBinds)
+		end
 	end
 end
 
