@@ -615,16 +615,20 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
 
-	-- Tutorials page | TODO: Fix the Backdrop the button
 	local TutorialsFrame = _G.EncounterJournal.TutorialsFrame
-	if TutorialsFrame then
+	local Contents = TutorialsFrame and TutorialsFrame.Contents
+	if Contents then
 		if E.private.skins.parchmentRemoverEnable then
-			TutorialsFrame.Contents:DisableDrawLayer('BACKGROUND')
-			TutorialsFrame.Contents.Header:SetTextColor(1, 1, 1)
-			TutorialsFrame.Contents.Description:SetTextColor(1, 1, 1)
+			if not Contents.backdrop then
+				Contents:CreateBackdrop()
+			end
+
+			Contents:DisableDrawLayer('BACKGROUND')
+			Contents.Header:SetTextColor(1, 1, 1)
+			Contents.Description:SetTextColor(1, 1, 1)
 		end
 
-		S:HandleButton(TutorialsFrame.Contents.StartButton, nil, nil, nil, true)
+		S:HandleButton(Contents.StartButton, nil, nil, nil, true)
 	end
 end
 
