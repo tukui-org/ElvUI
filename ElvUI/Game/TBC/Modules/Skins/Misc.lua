@@ -62,10 +62,7 @@ function S:BlizzardMiscFrames()
 		local GameMenuFrame = _G.GameMenuFrame
 		GameMenuFrame:StripTextures()
 		GameMenuFrame:CreateBackdrop('Transparent')
-
 		GameMenuFrame.Header:StripTextures()
-		GameMenuFrame.Header:ClearAllPoints()
-		GameMenuFrame.Header:Point('TOP', GameMenuFrame, 0, 7)
 
 		local function ClearedHooks(button, script)
 			if script == 'OnEnter' then
