@@ -620,7 +620,7 @@ function S:Blizzard_EncounterJournal()
 		TutorialsFrame.Contents.Header:SetTextColor(1, 1, 1)
 		TutorialsFrame.Contents.Description:SetTextColor(1, 1, 1)
 	end
-	S:HandleButton(_G.EncounterJournal.TutorialsFrame.Contents.StartButton)
+	S:HandleButton(TutorialsFrame.Contents.StartButton, nil, nil, nil, true)
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal')
