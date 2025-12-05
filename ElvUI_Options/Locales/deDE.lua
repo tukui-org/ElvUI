@@ -1978,7 +1978,7 @@ Bitte beachten:
 -Du musst das Spiel komplett neu starten, nachdem du die Datei hinzugefügt hast.
 -Der Dateityp muss im Format tga sein.
 
-Zum Beispiel: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+Zum Beispiel: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 Für die meisten Anwender ist es allerdigns einfacher, eine tga-Datei in ihren WoW-Ordner abzulegen. Anschließend kann man den Namen der Datei hier eingeben.]=]
 
@@ -1994,7 +1994,7 @@ L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = true
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = true
 
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = true
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = true
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist | (2) Personal | (3) NonPersonal"] = true
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = true
 L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = true
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*Blockiere alles, außer deiner eigenen Aura:|r ^(1) Persönlich"

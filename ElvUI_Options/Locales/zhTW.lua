@@ -285,6 +285,7 @@ L["Camera Spin"] = "鏡頭旋轉"
 L["Camera"] = "鏡頭"
 L["Can Attack"] = "可攻擊"
 L["Can Not Attack"] = "不可攻擊"
+L["Campsite"] = "戰隊營地"
 L["Cart / Flag / Orb / Assassin Bounty"] = "推車/旗/球/刺客賞金"
 L["Cast Bar"] = "施法條"
 L["Cast Time Format"] = "施法時間格式"
@@ -844,6 +845,7 @@ L["Highlight Color Style"] = "高亮顏色樣式"
 L["History Size"] = "歷史記錄數量"
 L["History"] = "歷史記錄"
 L["Holder"] = "持有者"
+L["Housing"] = "房屋"
 L["HOLY_POWER"] = "聖能"
 L["BURNING_EMBERS"] = "燃火餘燼"
 L["SHADOW_ORBS"] = "暗影寶珠"
@@ -1443,6 +1445,7 @@ L["Reaction"] = "聲望"
 L["Reactions"] = "陣營聲望"
 L["Ready Check Icon"] = "準備確認圖示"
 L["Reagent"] = "材料"
+L["Recent Ally Icon"] = "最近玩友圖示"
 L["Reforge"] = "重鑄"
 L["Remaining / Max"] = "剩餘時間 / 最大時間"
 L["Remaining"] = "剩餘數值"
@@ -2088,7 +2091,7 @@ L["TEXTURE_EXAMPLE"] = [=[指定一個在魔獸世界資料夾之中的文件名
 - 在此資料夾新增檔案後, 請務必重新啟動遊戲.
 - 檔案必須為 tga 格式.
 
-範例: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+範例: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 對多數玩家來說, 較簡易的方式是將 tga 檔放入魔獸世界資料夾中, 然後在此處輸入檔案名稱.]=]
 
@@ -2104,7 +2107,7 @@ L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*CastByNPC:|r ^由 NPC 施放的
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*CastByPlayers:|r ^由玩家控制的單位（因此不包括 NPC）施放的光環.|r"
 
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*顯示全部:|r ^將「最長持續時間」設為 0, 優先順序列表為空, 或 (1) Personal | (2) NonPersonal"
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*阻擋黑名單光環, 顯示其他所有光環:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist | (2) Personal | (3) NonPersonal"] = "*阻擋黑名單光環, 顯示其他所有光環:|r ^(1) Blacklist | (2) Personal | (3) NonPersonal"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*阻擋永久光環, 顯示其他所有光環:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"
 L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = "*阻擋永久光環, 阻擋黑名單光環, 顯示其他所有光環:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*阻擋一切, 除了你自己的光環:|r ^(1) Personal"

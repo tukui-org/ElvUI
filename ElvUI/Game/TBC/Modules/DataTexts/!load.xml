@@ -1,0 +1,11 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='..\..\..\Shared\Modules\DataTexts\Ammo.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\Avoidance.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\DualSpec.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\HealPower.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\Hit.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\SpellCrit.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\SpellHaste.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\SpellHit.lua'/>
+	<Script file='..\..\..\Shared\Modules\DataTexts\SpellPower.lua'/>
+</Ui>

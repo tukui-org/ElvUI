@@ -6,4 +6,4 @@
 ## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
 
-Mists\Libs.xml
+Game\Mists\!load.xml

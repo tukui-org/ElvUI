@@ -286,6 +286,7 @@ L["Camera Spin"] = "镜头旋转"
 L["Camera"] = "镜头"
 L["Can Attack"] = "可攻击"
 L["Can Not Attack"] = "不可攻击"
+L["Campsite"] = "战团营地"
 L["Cart / Flag / Orb / Assassin Bounty"] = "推车 / 旗 / 球 / 刺客赏金"
 L["Cast Bar"] = "施法条"
 L["Cast Time Format"] = "施法时间格式"
@@ -843,10 +844,11 @@ L["Highlight Color Style"] = "高亮颜色样式"
 L["History Size"] = "历史尺寸"
 L["History"] = "历史"
 L["Holder"] = "持有者"
+L["Housing"] = "住宅"
 L["HOLY_POWER"] = "神圣能量"
-L["BURNING_EMBERS"] = "Burning Embers"
-L["SHADOW_ORBS"] = "Shadow Orbs"
-L["DEMONIC_FURY"] = "Demonic Fury"
+L["BURNING_EMBERS"] = "爆燃灰烬"
+L["SHADOW_ORBS"] = "暗影宝珠"
+L["DEMONIC_FURY"] = "恶魔之怒"
 L["Home Latency"] = "本地延迟"
 L["Honor"] = "荣誉"
 L["Horde / Alliance / Honor Info"] = "部落 / 联盟 / 荣誉信息"
@@ -1441,6 +1443,7 @@ L["Reaction"] = "声望"
 L["Reactions"] = "声望"
 L["Ready Check Icon"] = "就位确认图标"
 L["Reagent"] = "施法材料"
+L["Recent Ally Icon"] = "近期往来图标"
 L["Reforge"] = "重铸"
 L["Remaining / Max"] = "剩余值 / 最大值"
 L["Remaining"] = "剩余值"
@@ -2077,7 +2080,7 @@ L["TEXTURE_EXAMPLE"] = [[若要设置聊天框背景, 请你指定位于魔兽�
 - 在添加文件后你必须完全重新启动游戏
 - 文件必须为tga格式
 
-举例: Interface\AddOns\ElvUI\Core\Media\Textures\Copy
+举例: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\Copy
 
 对多数玩家来说, 较简易的方式是将tga文件放入魔兽世界文件夹中, 然后在此处输入文件名.]]
 
@@ -2093,7 +2096,7 @@ L["*CastByNPC:|r ^Auras cast by any NPC.|r"] = "*CastByNPC: |r ^由 NPC 施放�
 L["*CastByPlayers:|r ^Auras cast by any player-controlled unit (so no NPCs).|r"] = "*CastByPlayers: |r ^由玩家控制的单位 (因此不包括 NPC) 施放的光环.|r"
 
 L["*Show Everything:|r ^Set 'Max Duration' to 0 & Leave Priority List Empty or (1) Personal | (2) NonPersonal"] = "*显示全部: |r ^将“最长持续时间”设为0, 优先级列表为空, 或 (1) Personal | (2) NonPersonal"
-L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist| (2) Personal | (3) NonPersonal"] = "*屏蔽黑名单光环, 显示其他所有光环: |r ^(1) Blacklist| (2) Personal | (3) NonPersonal"
+L["*Block Blacklisted Auras, Show Everything Else:|r ^(1) Blacklist | (2) Personal | (3) NonPersonal"] = "*屏蔽黑名单光环, 显示其他所有光环: |r ^(1) Blacklist | (2) Personal | (3) NonPersonal"
 L["*Block Auras Without Duration, Show Everything Else:|r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"] = "*屏蔽永久的光环, 显示其他所有光环: |r ^(1) blockNoDuration | (2) Personal | (3) NonPersonal"
 L["*Block Auras Without Duration, Block Blacklisted Auras, Show Everything Else:|r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"] = "*屏蔽永久的光环, 屏蔽黑名单光环, 显示其他所有光环: |r ^(1) blockNoDuration | (2) Blacklist | (3) Personal | (4) NonPersonal"
 L["*Block Everything, Except Your Own Auras:|r ^(1) Personal"] = "*屏蔽一切除了你自己的光环: |r ^(1) Personal"

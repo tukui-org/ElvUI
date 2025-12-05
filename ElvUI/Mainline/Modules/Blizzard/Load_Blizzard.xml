@@ -1,5 +1,0 @@
-<Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Script file='..\..\..\Core\Modules\Blizzard\AltPower.lua'/>
-	<Script file='ColorPicker.lua'/>
-	<Script file='ObjectiveFrame.lua'/>
-</Ui>

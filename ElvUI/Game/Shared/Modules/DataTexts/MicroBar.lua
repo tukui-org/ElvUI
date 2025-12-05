@@ -1,0 +1,27 @@
+local E, L, V, P, G = unpack(ElvUI)
+local DT = E:GetModule('DataTexts')
+local M = E:GetModule('Minimap')
+
+local _G = _G
+local strjoin = strjoin
+local ToggleFrame = ToggleFrame
+local displayString = ''
+
+local function OnEvent(panel)
+	panel.text:SetFormattedText(displayString, L["Micro Bar"])
+end
+
+local function OnClick(panel, button)
+	if button == 'LeftButton' then
+		ToggleFrame(_G.GameMenuFrame)
+	else
+		E:SetEasyMenuAnchor(E.EasyMenu, panel)
+		E:ComplicatedMenu(M.RightClickMenuList, E.EasyMenu, nil, nil, nil, 'MENU')
+	end
+end
+
+local function ApplySettings(_, hex)
+	displayString = strjoin('', hex, '%s|r')
+end
+
+DT:RegisterDatatext("Micro Bar", nil, nil, OnEvent, nil, OnClick, nil, nil, L["Micro Bar"], nil, ApplySettings)
