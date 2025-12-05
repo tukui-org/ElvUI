@@ -5,6 +5,38 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local function PositionHousingDashbardTab(tab, _, _, _, x, y)
+	if x ~= 1 or y ~= -10 then
+		tab:ClearAllPoints()
+		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 1, -10)
+	end
+end
+
+local function PositionTabIcons(icon, point)
+	if point ~= 'CENTER' then
+		icon:ClearAllPoints()
+		icon:SetPoint('CENTER')
+	end
+end
+
+local function HouseList_UpdateChild(child)
+	if child.IsSkinned then return end
+
+	child:StripTextures()
+	child.Background:Hide()
+	child:SetTemplate()
+
+	if child.VisitHouseButton then
+		S:HandleButton(child.VisitHouseButton)
+	end
+
+	child.IsSkinned = true
+end
+
+local function HouseList_Update(frame)
+	frame:ForEachFrame(HouseList_UpdateChild)
+end
+
 function S:Blizzard_HousingHouseFinder()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -21,20 +53,6 @@ function S:Blizzard_HousingHouseFinder()
 		NeighborhoodListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
 		S:HandleEditBox(NeighborhoodListFrame.BNetFriendSearchBox)
 		S:HandleButton(NeighborhoodListFrame.RefreshButton)
-	end
-end
-
-local function PositionHousingDashbardTab(tab, _, _, _, x, y)
-	if x ~= 1 or y ~= -10 then
-		tab:ClearAllPoints()
-		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 1, -10)
-	end
-end
-
-local function PositionTabIcons(icon, point)
-	if point ~= 'CENTER' then
-		icon:ClearAllPoints()
-		icon:SetPoint('CENTER')
 	end
 end
 
@@ -185,6 +203,8 @@ function S:Blizzard_HouseList()
 		ListFrame:CreateBackdrop('Transparent')
 		S:HandleCloseButton(ListFrame.CloseButton)
 		S:HandleTrimScrollBar(ListFrame.ScrollBar)
+
+		hooksecurefunc(ListFrame.ScrollBox, 'Update', HouseList_Update)
 	end
 end
 
