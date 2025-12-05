@@ -298,7 +298,6 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
-	S:HandleTrimScrollBar(_G.EncounterJournalJourneysFrame.ScrollBar)
 	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
 	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.FilterList.ScrollBar)
 
@@ -317,7 +316,7 @@ function S:Blizzard_EncounterJournal()
 	tinsert(journalBottomTabs, _G.EncounterJournalSuggestTab)
 	tinsert(journalBottomTabs, _G.EncounterJournalDungeonTab)
 	tinsert(journalBottomTabs, _G.EncounterJournalRaidTab)
-	tinsert(journalBottomTabs, _G.EncounterJournalJourneysTab)
+	tinsert(journalBottomTabs, _G.EncounterJournalLootJournalTab)
 	tinsert(journalBottomTabs, _G.EncounterJournal.TutorialsTab)
 
 	for _, tab in next, journalBottomTabs do
@@ -614,7 +613,13 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
 
-	-- Tutorials page | TODO: Strip Parchment (unnamed region)
+	-- Tutorials page | TODO: Fix the Backdrop the button
+	local TutorialsFrame = _G.EncounterJournal.TutorialsFrame
+	if E.private.skins.parchmentRemoverEnable then
+		TutorialsFrame.Contents:DisableDrawLayer('BACKGROUND')
+		TutorialsFrame.Contents.Header:SetTextColor(1, 1, 1)
+		TutorialsFrame.Contents.Description:SetTextColor(1, 1, 1)
+	end
 	S:HandleButton(_G.EncounterJournal.TutorialsFrame.Contents.StartButton)
 end
 
