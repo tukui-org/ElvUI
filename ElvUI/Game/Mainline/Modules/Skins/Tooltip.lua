@@ -31,6 +31,12 @@ function S:StyleTooltips()
 		_G.SettingsTooltip,
 	} do
 		TT:SetStyle(tt)
+
+		local CompareHeader = tt.CompareHeader
+		if CompareHeader and not CompareHeader.template then
+			CompareHeader:StripTextures()
+			CompareHeader:SetTemplate()
+		end
 	end
 end
 

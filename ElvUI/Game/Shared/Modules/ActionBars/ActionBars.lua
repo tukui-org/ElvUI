@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ipairs, pairs, strmatch, next, unpack, tonumber = ipairs, pairs, strmatch, next, unpack, tonumber
-local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
+local format, unpack, tonumber = format, unpack, tonumber
+local next, type, pairs, ipairs, gsub = next, type, pairs, ipairs, gsub
+local strmatch, strsplit, strfind, strsub, strupper = strmatch, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -554,49 +555,63 @@ function AB:UpdateVehicleLeave()
 	end
 end
 
-function AB:ReassignBindings(event)
-	if event == 'UPDATE_BINDINGS' then
-		AB:UpdatePetBindings()
-		AB:UpdateStanceBindings()
-
-		if E.Retail then
-			AB:UpdateExtraBindings()
-		elseif E.Wrath and E.myclass == 'SHAMAN' then
-			AB:UpdateTotemBindings()
-		end
-	end
-
-	AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
-
-	if InCombatLockdown() then return end
-
-	for _, bar in pairs(AB.handledBars) do
-		if bar then
-			ClearOverrideBindings(bar)
-
-			for _, button in ipairs(bar.buttons) do
-				if button.keyBoundTarget then
-					for _, key in next, { GetBindingKey(button.keyBoundTarget) } do
-						if key ~= '' then
-							SetOverrideBindingClick(bar, false, key, button:GetName())
-						end
-					end
+function AB:OverrideBinds(bar)
+	for _, button in ipairs(bar.buttons) do
+		if button.keyBoundTarget then
+			for _, key in next, { GetBindingKey(button.keyBoundTarget) } do
+				if key ~= '' then
+					SetOverrideBindingClick(bar, false, key, button:GetName())
 				end
 			end
 		end
 	end
 end
 
-function AB:RemoveBindings()
-	if InCombatLockdown() then return end
+function AB:UpdateBinds(event, func)
+	if InCombatLockdown() then
+		AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'SetBinds')
+
+		return
+	end
 
 	for _, bar in pairs(AB.handledBars) do
 		if bar then
 			ClearOverrideBindings(bar)
+
+			if func and type(func) == 'function' then
+				func(AB, bar)
+			end
 		end
 	end
+end
 
-	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'ReassignBindings')
+function AB:UpdateAllBinds(event)
+	AB:UpdatePetBindings()
+	AB:UpdateStanceBindings()
+
+	if E.Retail then
+		AB:UpdateExtraBindings()
+	elseif E.Wrath and E.myclass == 'SHAMAN' then
+		AB:UpdateTotemBindings()
+	end
+
+	AB:SetBinds(event) -- full clear/set
+end
+
+function AB:SetBinds(event, arg1)
+	if event == 'PLAYER_REGEN_DISABLED' then
+		AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
+	end
+
+	if event == 'HouseEditorStateUpdated' then
+		AB:UpdateBinds(event, arg1 and AB.OverrideBinds or nil)
+	else
+		AB:UpdateBinds(event, AB.OverrideBinds)
+	end
+end
+
+function AB:HouseEditorStateUpdated(state)
+	AB:SetBinds('HouseEditorStateUpdated', state)
 end
 
 do
@@ -1907,8 +1922,8 @@ function AB:Initialize()
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
 
-		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
-		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
+		AB:RegisterEvent('PET_BATTLE_CLOSE', 'SetBinds')
+		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'UpdateBinds')
 	end
 
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
@@ -1934,7 +1949,7 @@ function AB:Initialize()
 
 	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
-	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
+	AB:RegisterEvent('UPDATE_BINDINGS', 'UpdateAllBinds')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
 
 	AB:SetTargetAuraDuration(E.db.cooldown.targetAuraDuration)
@@ -1951,10 +1966,11 @@ function AB:Initialize()
 		AB:CreateTotemBar()
 	end
 
+	-- handle the first set of bindings unless in a pet battle
 	if (E.Retail or E.Mists) and IsInBattle() then
-		AB:RemoveBindings()
+		AB:UpdateBinds()
 	else
-		AB:ReassignBindings()
+		AB:SetBinds()
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
@@ -1971,6 +1987,9 @@ function AB:Initialize()
 		AB:AssistedGlowUpdate()
 		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
 		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
+
+		-- Register for housing state changes to adjust bindings accordingly
+		_G.EventRegistry:RegisterCallback('HouseEditor.StateUpdated', AB.HouseEditorStateUpdated)
 	end
 
 	if not E.Classic and not E.Wrath then
