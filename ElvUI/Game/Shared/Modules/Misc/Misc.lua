@@ -431,9 +431,18 @@ function M:Initialize()
 		end
 	end
 
-	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
+	-- Fix me
+	hooksecurefunc(_G.MirrorTimerContainer, "SetupTimer", function(self, timer)
+		local bar = self:GetAvailableTimer(timer)
+		if bar then
+			E:CreateMover(bar, L["MirrorTimer"], nil, nil, nil, 'ALL,SOLO')
+		end
+	end)
+
+	--[[
+	for i = 1, MIRRORTIMER_NUMTIMERS do
 		E:CreateMover(_G['MirrorTimer'..i], 'MirrorTimer'..i..'Mover', L["MirrorTimer"]..i, nil, nil, nil, 'ALL,SOLO')
-	end
+	end]]
 
 	do	-- questRewardMostValueIcon
 		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.QuestInfoRewardsFrame)
