@@ -431,6 +431,10 @@ function M:Initialize()
 		end
 	end
 
+	for i = 1, _G.MIRRORTIMER_NUMTIMERS do
+		E:CreateMover(_G['MirrorTimer'..i], 'MirrorTimer'..i..'Mover', L["MirrorTimer"]..i, nil, nil, nil, 'ALL,SOLO')
+	end
+
 	do	-- questRewardMostValueIcon
 		local MostValue = CreateFrame('Frame', 'ElvUI_QuestRewardGoldIconFrame', _G.QuestInfoRewardsFrame)
 		MostValue:Size(19)
