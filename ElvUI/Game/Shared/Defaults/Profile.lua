@@ -2988,6 +2988,7 @@ elseif E.Wrath then
 	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
 elseif E.TBC then
 	P.actionbar.barPet.visibility = '[pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = 'show'
 else
 	P.actionbar.barPet.visibility = '[pet,nooverridebar] show; hide'
 	P.actionbar.stanceBar.visibility = 'show'
