@@ -305,7 +305,6 @@ function S:Blizzard_HouseEditor()
 			StoragePanel.CollapseButton:CreateBackdrop()
 		end]]
 
-
 		local CustomizationFrame = EditorFrame.ExteriorCustomizationModeFrame
 		if CustomizationFrame then
 			local FixtureOptionList = CustomizationFrame.FixtureOptionList
@@ -322,7 +321,7 @@ function S:Blizzard_HouseEditor()
 
 			local CoreOptions = CustomizationFrame.CoreOptionsPanel
 			if CoreOptions then
-				for _, panel in next, {
+				for _, CorePanel in next, {
 					CoreOptions,
 					CoreOptions.HouseTypeOption,
 					CoreOptions.HouseSizeOption,
@@ -330,10 +329,41 @@ function S:Blizzard_HouseEditor()
 					CoreOptions.RoofStyleOption,
 					CoreOptions.RoofVariantOption
 				} do
-					if panel.Dropdown then
-						S:HandleDropDownBox(panel.Dropdown)
+					if CorePanel.Dropdown then
+						S:HandleDropDownBox(CorePanel.Dropdown)
 					end
 				end
+			end
+		end
+
+		local CustomizeModeFrame = EditorFrame.CustomizeModeFrame
+		local RoomComponentCustomizationsPane = CustomizeModeFrame.RoomComponentCustomizationsPane
+		if RoomComponentCustomizationsPane then
+			RoomComponentCustomizationsPane:StripTextures()
+			RoomComponentCustomizationsPane:CreateBackdrop('Transparent')
+			RoomComponentCustomizationsPane.CloseButton:ClearAllPoints()
+			RoomComponentCustomizationsPane.CloseButton:Point('TOPRIGHT')
+			S:HandleCloseButton(RoomComponentCustomizationsPane.CloseButton)
+
+			for _, RoomComponentPanel in next, {
+				RoomComponentCustomizationsPane.ThemeDropdown,
+				RoomComponentCustomizationsPane.WallpaperDropdown,
+				RoomComponentCustomizationsPane.DoorTypeDropdown,
+				RoomComponentCustomizationsPane.CeilingTypeDropdown
+			} do
+				if RoomComponentPanel.Dropdown then
+					S:HandleDropDownBox(RoomComponentPanel.Dropdown)
+				end
+			end
+
+			if RoomComponentCustomizationsPane.ApplyThemeToRoomButton then
+				RoomComponentCustomizationsPane.ApplyThemeToRoomButton:Size(26)
+				S:HandleButton(RoomComponentCustomizationsPane.ApplyThemeToRoomButton)
+			end
+
+			if RoomComponentCustomizationsPane.ApplyWallpaperToAllWallsButton then
+				RoomComponentCustomizationsPane.ApplyWallpaperToAllWallsButton:Size(26)
+				S:HandleButton(RoomComponentCustomizationsPane.ApplyWallpaperToAllWallsButton)
 			end
 		end
 	end
