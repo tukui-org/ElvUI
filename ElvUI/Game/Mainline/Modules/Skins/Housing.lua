@@ -138,6 +138,7 @@ function S:Blizzard_HousingDashboard()
 
 		local Categories = CatalogContent.Categories
 		if Categories then
+			Categories.TopBorder:Hide()
 			Categories.Background:Hide()
 		end
 
@@ -149,6 +150,8 @@ function S:Blizzard_HousingDashboard()
 		local PreviewFrame = CatalogContent.PreviewFrame
 		if PreviewFrame then
 			PreviewFrame.PreviewBackground:Hide()
+			PreviewFrame.PreviewCornerLeft:Hide()
+			PreviewFrame.PreviewCornerRight:Hide()
 		end
 	end
 end
