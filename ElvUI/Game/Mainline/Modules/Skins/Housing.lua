@@ -102,9 +102,19 @@ function S:Blizzard_HousingDashboard()
 		S:HandleButton(InfoContent.HouseFinderButton)
 		S:HandleDropDownBox(InfoContent.HouseDropdown)
 
-		local HouseUpgradeFrame = InfoContent.ContentFrame.HouseUpgradeFrame
-		HouseUpgradeFrame.Background:Hide()
-		S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+		local ContentFrame = InfoContent.ContentFrame
+		if ContentFrame then
+			for _, tab in next, { ContentFrame.TabSystem:GetChildren() } do
+				S:HandleTab(tab)
+			end
+
+			local HouseUpgradeFrame = ContentFrame.HouseUpgradeFrame
+			if HouseUpgradeFrame then
+				HouseUpgradeFrame:StripTextures()
+				HouseUpgradeFrame.Background:Hide()
+				S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+			end
+		end
 	end
 
 	local CatalogContent = DashBoardFrame.CatalogContent
@@ -252,15 +262,15 @@ function S:Blizzard_HousingHouseSettings()
 		S:HandleDropDownBox(PlotAccess.AccessTypeDropdown)
 		S:HandleDropDownBox(HouseAccess.AccessTypeDropdown)
 
-		--[[ FIX THE CHECKBOXES
+		--[[ Fix the CheckBoxes
 		for _, checkBox in next, { PlotAccess.Options:GetChildren() } do
-			if checkBox:IsObjectType('CheckButton') then
+			if checkBox.IsObjectType and checkBox:IsObjectType('CheckButton') then
 				S:HandleCheckBox(checkBox)
 			end
 		end
 
 		for _, checkBox in next, { HouseAccess.Options:GetChildren() } do
-			if checkBox:IsObjectType('CheckButton') then
+			if checkBox.IsObjectType and checkBox:IsObjectType('CheckButton') then
 				S:HandleCheckBox(checkBox)
 			end
 		end]]
@@ -292,6 +302,7 @@ function S:Blizzard_HouseEditor()
 
 		local Categories = StoragePanel.Categories
 		if Categories then
+			Categories.TopBorder:Hide()
 			Categories.Background:Hide()
 		end
 
