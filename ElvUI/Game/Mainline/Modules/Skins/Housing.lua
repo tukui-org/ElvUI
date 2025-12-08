@@ -102,9 +102,19 @@ function S:Blizzard_HousingDashboard()
 		S:HandleButton(InfoContent.HouseFinderButton)
 		S:HandleDropDownBox(InfoContent.HouseDropdown)
 
-		local HouseUpgradeFrame = InfoContent.ContentFrame.HouseUpgradeFrame
-		HouseUpgradeFrame.Background:Hide()
-		S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+		local ContentFrame = InfoContent.ContentFrame
+		if ContentFrame then
+			for _, tab in next, { ContentFrame.TabSystem:GetChildren() } do
+				S:HandleTab(tab)
+			end
+
+			local HouseUpgradeFrame = ContentFrame.HouseUpgradeFrame
+			if HouseUpgradeFrame then
+				HouseUpgradeFrame:StripTextures()
+				HouseUpgradeFrame.Background:Hide()
+				S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+			end
+		end
 	end
 
 	local CatalogContent = DashBoardFrame.CatalogContent
@@ -128,6 +138,7 @@ function S:Blizzard_HousingDashboard()
 
 		local Categories = CatalogContent.Categories
 		if Categories then
+			Categories.TopBorder:Hide()
 			Categories.Background:Hide()
 		end
 
@@ -139,6 +150,8 @@ function S:Blizzard_HousingDashboard()
 		local PreviewFrame = CatalogContent.PreviewFrame
 		if PreviewFrame then
 			PreviewFrame.PreviewBackground:Hide()
+			PreviewFrame.PreviewCornerLeft:Hide()
+			PreviewFrame.PreviewCornerRight:Hide()
 		end
 	end
 end
@@ -252,15 +265,15 @@ function S:Blizzard_HousingHouseSettings()
 		S:HandleDropDownBox(PlotAccess.AccessTypeDropdown)
 		S:HandleDropDownBox(HouseAccess.AccessTypeDropdown)
 
-		--[[ FIX THE CHECKBOXES
+		--[[ Fix the CheckBoxes
 		for _, checkBox in next, { PlotAccess.Options:GetChildren() } do
-			if checkBox:IsObjectType('CheckButton') then
+			if checkBox.IsObjectType and checkBox:IsObjectType('CheckButton') then
 				S:HandleCheckBox(checkBox)
 			end
 		end
 
 		for _, checkBox in next, { HouseAccess.Options:GetChildren() } do
-			if checkBox:IsObjectType('CheckButton') then
+			if checkBox.IsObjectType and checkBox:IsObjectType('CheckButton') then
 				S:HandleCheckBox(checkBox)
 			end
 		end]]
@@ -292,6 +305,7 @@ function S:Blizzard_HouseEditor()
 
 		local Categories = StoragePanel.Categories
 		if Categories then
+			Categories.TopBorder:Hide()
 			Categories.Background:Hide()
 		end
 
@@ -304,7 +318,6 @@ function S:Blizzard_HouseEditor()
 		if StoragePanel.CollapseButton then
 			StoragePanel.CollapseButton:CreateBackdrop()
 		end]]
-
 
 		local CustomizationFrame = EditorFrame.ExteriorCustomizationModeFrame
 		if CustomizationFrame then
@@ -322,7 +335,7 @@ function S:Blizzard_HouseEditor()
 
 			local CoreOptions = CustomizationFrame.CoreOptionsPanel
 			if CoreOptions then
-				for _, panel in next, {
+				for _, CorePanel in next, {
 					CoreOptions,
 					CoreOptions.HouseTypeOption,
 					CoreOptions.HouseSizeOption,
@@ -330,10 +343,41 @@ function S:Blizzard_HouseEditor()
 					CoreOptions.RoofStyleOption,
 					CoreOptions.RoofVariantOption
 				} do
-					if panel.Dropdown then
-						S:HandleDropDownBox(panel.Dropdown)
+					if CorePanel.Dropdown then
+						S:HandleDropDownBox(CorePanel.Dropdown)
 					end
 				end
+			end
+		end
+
+		local CustomizeModeFrame = EditorFrame.CustomizeModeFrame
+		local CustomizationsPane = CustomizeModeFrame and CustomizeModeFrame.RoomComponentCustomizationsPane
+		if CustomizationsPane then
+			CustomizationsPane:StripTextures()
+			CustomizationsPane:CreateBackdrop('Transparent')
+			CustomizationsPane.CloseButton:ClearAllPoints()
+			CustomizationsPane.CloseButton:Point('TOPRIGHT')
+			S:HandleCloseButton(CustomizationsPane.CloseButton)
+
+			for _, RoomComponentPanel in next, {
+				CustomizationsPane.ThemeDropdown,
+				CustomizationsPane.WallpaperDropdown,
+				CustomizationsPane.DoorTypeDropdown,
+				CustomizationsPane.CeilingTypeDropdown
+			} do
+				if RoomComponentPanel.Dropdown then
+					S:HandleDropDownBox(RoomComponentPanel.Dropdown)
+				end
+			end
+
+			if CustomizationsPane.ApplyThemeToRoomButton then
+				CustomizationsPane.ApplyThemeToRoomButton:Size(26)
+				S:HandleButton(CustomizationsPane.ApplyThemeToRoomButton)
+			end
+
+			if CustomizationsPane.ApplyWallpaperToAllWallsButton then
+				CustomizationsPane.ApplyWallpaperToAllWallsButton:Size(26)
+				S:HandleButton(CustomizationsPane.ApplyWallpaperToAllWallsButton)
 			end
 		end
 	end
