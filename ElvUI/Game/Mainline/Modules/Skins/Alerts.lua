@@ -689,6 +689,51 @@ local function SkinRafRewardDeliveredAlert(frame)
 	end
 end
 
+local HousingItemEarnedAlertRemoveRegions = {
+	"Background",
+	"Border",
+	"Divider",
+	"Glow",
+	"LeafBL",
+	"LeafBR",
+	"LeafL",
+	"LeafTL",
+	"LeafTR",
+	"LightRays",
+	"LightRays2",
+	"Sparkles",
+}
+
+local function SkinHousingItemEarnedAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 10, -6)
+		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -14, 6)
+	end
+
+	for _, regionName in next, HousingItemEarnedAlertRemoveRegions do
+		local region = frame[regionName]
+		if region then
+			region:Kill()
+		end
+	end
+
+	local Icon = frame.Icon
+	if Icon and not Icon.backdrop then
+		S:HandleIcon(Icon, true)
+		Icon.backdrop:SetBackdropBorderColor(_G.HOUSING_REWARD_TOAST_LABEL_FONT_COLOR:GetRGBA())
+		Icon:Size(50)
+		Icon:NudgePoint(-8, 3)
+	end
+end
+
 local function SkinDigsiteCompleteAlert(frame)
 	frame:SetAlpha(1)
 
@@ -808,6 +853,7 @@ function S:AlertSystem()
 	hooksecurefunc(_G.MoneyWonAlertSystem, 'setUpFunction', SkinMoneyWonAlert)
 	hooksecurefunc(_G.EntitlementDeliveredAlertSystem, 'setUpFunction', SkinEntitlementDeliveredAlert) -- 8.2.5 New
 	hooksecurefunc(_G.RafRewardDeliveredAlertSystem, 'setUpFunction', SkinRafRewardDeliveredAlert) -- 8.2.5 New
+	hooksecurefunc(_G.HousingItemEarnedAlertFrameSystem, 'setUpFunction', SkinHousingItemEarnedAlert) -- 11.2.7 New
 	-- Professions
 	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
