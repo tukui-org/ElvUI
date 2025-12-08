@@ -726,11 +726,11 @@ local function SkinHousingItemEarnedAlert(frame)
 	end
 
 	local Icon = frame.Icon
-	if Icon then
+	if Icon and not Icon.backdrop then
 		S:HandleIcon(Icon, true)
 		Icon.backdrop:SetBackdropBorderColor(_G.HOUSING_REWARD_TOAST_LABEL_FONT_COLOR:GetRGBA())
 		Icon:Size(50)
-		Icon:NudgePoint(-8, 2)
+		Icon:NudgePoint(-8, 3)
 	end
 end
 
