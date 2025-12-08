@@ -180,6 +180,7 @@ function BL:AlertMovers()
 		/run EntitlementDeliveredAlertSystem:AddAlert('', [[Interface\Icons\Ability_pvp_gladiatormedallion]], TRINKET0SLOT, 214)
 		/run RafRewardDeliveredAlertSystem:AddAlert('', [[Interface\Icons\Ability_pvp_gladiatormedallion]], TRINKET0SLOT, 214)
 		/run DigsiteCompleteAlertSystem:AddAlert('Human')
+		/run HousingItemEarnedAlertFrameSystem:AddAlert({ itemType = Enum.HousingItemToastType.Decor, icon = 7423477, itemName = 'Covered Square Suramar Table' })
 
 		--Bonus Rolls
 		/run BonusRollFrame_CloseBonusRoll()
