@@ -991,10 +991,10 @@ Library.
 ### License
 
 ```
-Copyright (c) 2006-2022 Trond A Ekseth <troeks@gmail.com>
-Copyright (c) 2016-2022 Val Voronov <i.lightspark@gmail.com>
-Copyright (c) 2016-2022 Adrian L Lange <contact@p3lim.net>
-Copyright (c) 2016-2022 Rainrider <rainrider.wow@gmail.com>
+Copyright (c) 2006-2025 Trond A Ekseth <troeks@gmail.com>
+Copyright (c) 2016-2025 Val Voronov <i.lightspark@gmail.com>
+Copyright (c) 2016-2025 Adrian L Lange <contact@p3lim.net>
+Copyright (c) 2016-2025 Rainrider <rainrider.wow@gmail.com>
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -1070,16 +1070,6 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-```
-
-## LibClassicSpecs
-
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Classic/LibClassicSpecs](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Classic/LibClassicSpecs)
-
-### License
-
-```
-All rights reserved to the owner.
 ```
 
 ## LibQuestXP
