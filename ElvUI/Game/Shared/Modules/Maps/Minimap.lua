@@ -32,7 +32,7 @@ local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
 local GetZonePVPInfo = C_PvP.GetZonePVPInfo or GetZonePVPInfo
-local IsHousingServiceEnabled = C_Housing.IsHousingServiceEnabled
+local IsHousingServiceEnabled = C_Housing and C_Housing.IsHousingServiceEnabled
 
 local PlayerSpellsUtil = _G.PlayerSpellsUtil
 local WorldMapFrame = _G.WorldMapFrame
