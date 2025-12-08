@@ -79,7 +79,7 @@ if E.Retail then
 	end
 
 	if IsHousingServiceEnabled and IsHousingServiceEnabled() then
-		tinsert(menuList, {text = _G.HOUSING_MICRO_BUTTON, microOffset = 'HousingMicroButton', func = function() _G.HousingFramesUtil.ToggleHousingDashboard() end })
+		tinsert(menuList, {text = _G.HOUSING_MICRO_BUTTON, microOffset = 'HousingMicroButton', func = function() _G.HousingFramesUtil.ToggleHousingDashboard() end, icon = 7252953, cropIcon = 5 }) -- TEMP ICON
 	end
 
 	tinsert(menuList, {text = _G.PROFESSIONS_BUTTON, microOffset = 'ProfessionMicroButton', func = function() _G.ToggleProfessionsBook() end })

@@ -19,6 +19,7 @@ AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 	'TalentMicroButton',
 	'AchievementMicroButton',
 	'QuestLogMicroButton',
+	'HousingMicroButton',
 	'GuildMicroButton',
 	'LFDMicroButton',
 	'EJMicroButton',
