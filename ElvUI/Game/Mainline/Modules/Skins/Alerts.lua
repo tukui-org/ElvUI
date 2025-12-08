@@ -10,6 +10,8 @@ local CreateFrame = CreateFrame
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 
+local HOUSING_REWARD_COLOR = _G.HOUSING_REWARD_TOAST_LABEL_FONT_COLOR
+
 local function ForceAlpha(frame, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		frame:SetAlpha(1, true)
@@ -690,18 +692,18 @@ local function SkinRafRewardDeliveredAlert(frame)
 end
 
 local HousingItemEarnedAlertRemoveRegions = {
-	"Background",
-	"Border",
-	"Divider",
-	"Glow",
-	"LeafBL",
-	"LeafBR",
-	"LeafL",
-	"LeafTL",
-	"LeafTR",
-	"LightRays",
-	"LightRays2",
-	"Sparkles",
+	'Background',
+	'Border',
+	'Divider',
+	'Glow',
+	'LeafBL',
+	'LeafBR',
+	'LeafL',
+	'LeafTL',
+	'LeafTR',
+	'LightRays',
+	'LightRays2',
+	'Sparkles',
 }
 
 local function SkinHousingItemEarnedAlert(frame)
@@ -728,7 +730,8 @@ local function SkinHousingItemEarnedAlert(frame)
 	local Icon = frame.Icon
 	if Icon and not Icon.backdrop then
 		S:HandleIcon(Icon, true)
-		Icon.backdrop:SetBackdropBorderColor(_G.HOUSING_REWARD_TOAST_LABEL_FONT_COLOR:GetRGBA())
+
+		Icon.backdrop:SetBackdropBorderColor(HOUSING_REWARD_COLOR.r, HOUSING_REWARD_COLOR.g, HOUSING_REWARD_COLOR.b, HOUSING_REWARD_COLOR.a)
 		Icon:Size(50)
 		Icon:NudgePoint(-8, 3)
 	end
