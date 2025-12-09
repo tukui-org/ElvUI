@@ -38,9 +38,8 @@ function S:Blizzard_ItemSocketingUI()
 	S:HandleTrimScrollBar(_G.ItemSocketingScrollFrame.ScrollBar)
 
 	local SocketingContainer = ItemSocketingFrame.SocketingContainer
-	for i = 1, _G.MAX_NUM_SOCKETS do
-		local button = SocketingContainer['Socket'..i]
-		if button then
+	if SocketingContainer and SocketingContainer.SocketFrames then
+		for _, button in next, SocketingContainer.SocketFrames do
 			button:StripTextures()
 			button:StyleButton()
 			button:SetTemplate(nil, true)
@@ -53,14 +52,14 @@ function S:Blizzard_ItemSocketingUI()
 				button.Background:Kill()
 			end
 		end
-	end
 
-	local ApplySocketsButton = SocketingContainer.ApplySocketsButton
-	if ApplySocketsButton then
-		ApplySocketsButton:ClearAllPoints()
-		ApplySocketsButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
+		local ApplySocketsButton = SocketingContainer.ApplySocketsButton
+		if ApplySocketsButton then
+			ApplySocketsButton:ClearAllPoints()
+			ApplySocketsButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
 
-		S:HandleButton(ApplySocketsButton)
+			S:HandleButton(ApplySocketsButton)
+		end
 	end
 
 	hooksecurefunc('ItemSocketingFrame_Update', UpdateItemSocketing)
