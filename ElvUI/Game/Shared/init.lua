@@ -82,12 +82,12 @@ E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
 do -- Expansions
-	E.TBC = E.wowtoc >= 20000 and E.wowtoc <= 30000
+	E.TBC = E.wowtoc >= 20000 and E.wowtoc < 30000
 	E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and E.wowtoc <= 20000
+	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and E.wowtoc < 20000
 
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
