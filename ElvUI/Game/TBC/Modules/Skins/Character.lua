@@ -130,6 +130,10 @@ function S:CharacterFrame()
 		end
 	end
 
+	-- stat dropdowns
+	S:HandleDropDownBox(_G.PlayerStatFrameLeftDropdown, 110)
+	S:HandleDropDownBox(_G.PlayerStatFrameRightDropdown, 110)
+
 	-- Reposition Tabs
 	hooksecurefunc('PetTab_Update', HandleTabs)
 	HandleTabs()
