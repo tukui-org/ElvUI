@@ -6,13 +6,10 @@ local _G = _G
 function S:SkinBattlefield()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.battlefield) then return end
 
-	local BattlefieldFrame = _G.BattlefieldFrame
-	S:HandleFrame(BattlefieldFrame, true, nil, 11, -12, -32, 76)
+	S:HandleFrame(_G.BattlefieldFrame, true, nil, 11, -12, -32, 76)
 
-	_G.BattlefieldListScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.BattlefieldListScrollFrameScrollBar)
-
-	_G.BattlefieldFrameZoneDescription:SetTextColor(1, 1, 1)
+	_G.BattlefieldFrameTypeScrollFrame:StripTextures()
+	S:HandleScrollBar(_G.BattlefieldFrameTypeScrollFrameScrollBar)
 
 	S:HandleButton(_G.BattlefieldFrameCancelButton)
 	S:HandleButton(_G.BattlefieldFrameJoinButton)

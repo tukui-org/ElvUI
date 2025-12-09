@@ -32,6 +32,7 @@ local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local StoreEnabled = C_StorePublic.IsEnabled
 local GetZonePVPInfo = C_PvP.GetZonePVPInfo or GetZonePVPInfo
+local IsHousingServiceEnabled = C_Housing and C_Housing.IsHousingServiceEnabled
 
 local PlayerSpellsUtil = _G.PlayerSpellsUtil
 local WorldMapFrame = _G.WorldMapFrame
@@ -77,10 +78,13 @@ if E.Retail then
 		tinsert(menuList, {text = _G.BLIZZARD_STORE, microOffset = 'StoreMicroButton', func = function() _G.StoreMicroButton:Click() end })
 	end
 
+	if IsHousingServiceEnabled and IsHousingServiceEnabled() then
+		tinsert(menuList, {text = _G.HOUSING_MICRO_BUTTON, microOffset = 'HousingMicroButton', func = function() _G.HousingFramesUtil.ToggleHousingDashboard() end, icon = 7252953, cropIcon = 5 }) -- TEMP ICON
+	end
+
 	tinsert(menuList, {text = _G.PROFESSIONS_BUTTON, microOffset = 'ProfessionMicroButton', func = function() _G.ToggleProfessionsBook() end })
 	tinsert(menuList, {text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, microOffset = 'QuestLogMicroButton', func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
 	tinsert(menuList, {text = _G.QUESTLOG_BUTTON, microOffset = 'QuestLogMicroButton', func = function() _G.ToggleQuestLog() end })
-	tinsert(menuList, {text = _G.HOUSING_MICRO_BUTTON, microOffset = 'HousingMicroButton', func = function() _G.HousingFramesUtil.ToggleHousingDashboard() end })
 else
 	tinsert(menuList, {text = _G.QUEST_LOG, microOffset = 'QuestLogMicroButton', func = function() ToggleFrame(_G.QuestLogFrame) end })
 end

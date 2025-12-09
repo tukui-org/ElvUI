@@ -16,9 +16,9 @@ local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strma
 
 local _, _, _, wowtoc = GetBuildInfo()
 
+local WoWBCC = wowtoc >= 20000 and wowtoc < 30000
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-local WoWBCC = wowtoc >= 20000 and wowtoc <= 30000
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
