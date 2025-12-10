@@ -379,7 +379,39 @@ function S:Blizzard_HouseEditor()
 				CustomizationsPane.ApplyWallpaperToAllWallsButton:Size(26)
 				S:HandleButton(CustomizationsPane.ApplyWallpaperToAllWallsButton)
 			end
+
+			local DecorCustomizationsPane = CustomizeModeFrame.DecorCustomizationsPane
+			if DecorCustomizationsPane then
+				DecorCustomizationsPane:StripTextures()
+				DecorCustomizationsPane:CreateBackdrop('Transparent')
+				S:HandleCloseButton(DecorCustomizationsPane.CloseButton)
+				DecorCustomizationsPane.CloseButton:ClearAllPoints()
+				DecorCustomizationsPane.CloseButton:Point('TOPRIGHT')
+				S:HandleButton(DecorCustomizationsPane.ButtonFrame.CancelButton)
+				S:HandleButton(DecorCustomizationsPane.ButtonFrame.ApplyButton)
+			end
 		end
+	end
+
+	local ExpertDecorModeFrame = EditorFrame.ExpertDecorModeFrame
+	if ExpertDecorModeFrame then
+		local PlacedDecorList = ExpertDecorModeFrame.PlacedDecorList
+		if PlacedDecorList then
+			PlacedDecorList:StripTextures()
+			PlacedDecorList:CreateBackdrop('Transparent')
+			S:HandleCloseButton(PlacedDecorList.CloseButton)
+			PlacedDecorList.CloseButton:ClearAllPoints()
+			PlacedDecorList.CloseButton:Point('TOPRIGHT')
+			S:HandleTrimScrollBar(PlacedDecorList.ScrollBar)
+		end
+	end
+
+	local DyeSelectionPopout = _G.DyeSelectionPopout
+	if DyeSelectionPopout then
+		DyeSelectionPopout:StripTextures()
+		DyeSelectionPopout:CreateBackdrop('Transparent')
+		S:HandleTrimScrollBar(DyeSelectionPopout.DyeSlotScrollBar)
+		S:HandleCheckBox(DyeSelectionPopout.ShowOnlyOwned)
 	end
 end
 
