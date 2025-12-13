@@ -27,6 +27,10 @@ local function LootHistoryElements(button)
 		button.BorderFrame:SetAlpha(0)
 	end
 
+	if button.IconOverlay then
+		button.IconOverlay:SetAlpha(0)
+	end
+
 	local item = button.Item
 	local icon = item and item.icon
 	if item then
