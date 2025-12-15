@@ -249,6 +249,14 @@ function S:Blizzard_HousingCreateNeighborhood()
 	end
 end
 
+local function SkinHouseSettingOptions(panel)
+	if not panel.accessOptions then return end
+
+	for _, option in next, panel.accessOptions do
+		S:HandleCheckBox(option.Checkbox)
+	end
+end
+
 function S:Blizzard_HousingHouseSettings()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -258,28 +266,28 @@ function S:Blizzard_HousingHouseSettings()
 		local HouseAccess = SettingsFrame.HouseAccess
 
 		SettingsFrame:StripTextures()
-		SettingsFrame:CreateBackdrop('Transparent')
+		SettingsFrame:SetTemplate('Transparent')
 		S:HandleCloseButton(SettingsFrame.CloseButton)
-		S:HandleDropDownBox(SettingsFrame.HouseOwnerDropdown)
+		S:HandleDropDownBox(SettingsFrame.HouseOwnerDropdown, 240)
 		S:HandleButton(SettingsFrame.AbandonHouseButton)
 		S:HandleDropDownBox(PlotAccess.AccessTypeDropdown)
 		S:HandleDropDownBox(HouseAccess.AccessTypeDropdown)
 
-		--[[ Fix the CheckBoxes
-		for _, checkBox in next, { PlotAccess.Options:GetChildren() } do
-			if checkBox.IsObjectType and checkBox:IsObjectType('CheckButton') then
-				S:HandleCheckBox(checkBox)
-			end
-		end
-
-		for _, checkBox in next, { HouseAccess.Options:GetChildren() } do
-			if checkBox.IsObjectType and checkBox:IsObjectType('CheckButton') then
-				S:HandleCheckBox(checkBox)
-			end
-		end]]
+		hooksecurefunc(PlotAccess, 'SetupOptions', SkinHouseSettingOptions)
+		hooksecurefunc(HouseAccess, 'SetupOptions', SkinHouseSettingOptions)
+		SkinHouseSettingOptions(PlotAccess)
+		SkinHouseSettingOptions(HouseAccess)
 
 		S:HandleButton(SettingsFrame.IgnoreListButton)
 		S:HandleButton(SettingsFrame.SaveButton)
+	end
+
+	local AbandonHouseConfirmationDialog = _G.AbandonHouseConfirmationDialog
+	if AbandonHouseConfirmationDialog then
+		AbandonHouseConfirmationDialog:StripTextures()
+		AbandonHouseConfirmationDialog:SetTemplate('Transparent')
+		S:HandleButton(AbandonHouseConfirmationDialog.ConfirmButton)
+		S:HandleButton(AbandonHouseConfirmationDialog.CancelButton)
 	end
 end
 
