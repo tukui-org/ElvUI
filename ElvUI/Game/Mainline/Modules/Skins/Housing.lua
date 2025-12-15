@@ -5,7 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local function PositionHousingDashbardTab(tab, _, _, _, x, y)
+local function PositionHousingDashboardTab(tab, _, _, _, x, y)
 	if x ~= 1 or y ~= -10 then
 		tab:ClearAllPoints()
 		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 1, -10)
@@ -73,7 +73,7 @@ function S:Blizzard_HousingDashboard()
 			tab:ClearAllPoints()
 			tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 1, -10)
 
-			hooksecurefunc(tab, 'SetPoint', PositionHousingDashbardTab)
+			hooksecurefunc(tab, 'SetPoint', PositionHousingDashboardTab)
 		end
 
 		if tab.Icon then
