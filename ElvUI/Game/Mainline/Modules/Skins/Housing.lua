@@ -415,16 +415,16 @@ function S:Blizzard_HouseEditor()
 	end
 
 	local ExpertDecorModeFrame = EditorFrame.ExpertDecorModeFrame
-	if ExpertDecorModeFrame then
-		local PlacedDecorList = ExpertDecorModeFrame.PlacedDecorList
-		if PlacedDecorList then
-			PlacedDecorList:StripTextures()
-			PlacedDecorList:CreateBackdrop('Transparent')
-			S:HandleCloseButton(PlacedDecorList.CloseButton)
-			PlacedDecorList.CloseButton:ClearAllPoints()
-			PlacedDecorList.CloseButton:Point('TOPRIGHT')
-			S:HandleTrimScrollBar(PlacedDecorList.ScrollBar)
-		end
+	local PlacedDecorList = ExpertDecorModeFrame and ExpertDecorModeFrame.PlacedDecorList
+	if PlacedDecorList then
+		PlacedDecorList:StripTextures()
+		PlacedDecorList:CreateBackdrop('Transparent')
+
+		S:HandleTrimScrollBar(PlacedDecorList.ScrollBar)
+
+		S:HandleCloseButton(PlacedDecorList.CloseButton)
+		PlacedDecorList.CloseButton:ClearAllPoints()
+		PlacedDecorList.CloseButton:Point('TOPRIGHT')
 	end
 
 	local DyeSelectionPopout = _G.DyeSelectionPopout
