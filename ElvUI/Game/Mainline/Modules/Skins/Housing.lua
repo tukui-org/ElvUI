@@ -413,6 +413,27 @@ function S:Blizzard_HouseEditor()
 			S:HandleButton(CustomizationsPane.ApplyWallpaperToAllWallsButton)
 		end
 	end
+
+	local ExpertDecorModeFrame = EditorFrame.ExpertDecorModeFrame
+	if ExpertDecorModeFrame then
+		local PlacedDecorList = ExpertDecorModeFrame.PlacedDecorList
+		if PlacedDecorList then
+			PlacedDecorList:StripTextures()
+			PlacedDecorList:CreateBackdrop('Transparent')
+			S:HandleCloseButton(PlacedDecorList.CloseButton)
+			PlacedDecorList.CloseButton:ClearAllPoints()
+			PlacedDecorList.CloseButton:Point('TOPRIGHT')
+			S:HandleTrimScrollBar(PlacedDecorList.ScrollBar)
+		end
+	end
+
+	local DyeSelectionPopout = _G.DyeSelectionPopout
+	if DyeSelectionPopout then
+		DyeSelectionPopout:StripTextures()
+		DyeSelectionPopout:CreateBackdrop('Transparent')
+		S:HandleTrimScrollBar(DyeSelectionPopout.DyeSlotScrollBar)
+		S:HandleCheckBox(DyeSelectionPopout.ShowOnlyOwned)
+	end
 end
 
 function S:Blizzard_HousingModelPreview()
