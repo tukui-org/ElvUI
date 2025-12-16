@@ -81,7 +81,7 @@ function AB:StyleTotemSlotButton(button, slot)
 end
 
 function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
-	if button.isSkinned then return end
+	if button.IsSkinned then return end
 
 	local name = button:GetName()
 	local highlight = _G[name..'Highlight']
@@ -118,7 +118,7 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 
 	AB.handledbuttons[button] = true
 	bar.buttons[button] = true
-	button.isSkinned = true
+	button.IsSkinned = true
 end
 
 function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
@@ -134,7 +134,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	local buttonSpacing = AB.db.totemBar.flyoutSpacing
 
 	for i, button in ipairs(frame.buttons) do
-		if not button.isSkinned then
+		if not button.IsSkinned then
 			AB:SkinMultiCastButton(button, nil, useMasque)
 
 			-- these only need mouseover script, dont need the bind key script
