@@ -253,7 +253,10 @@ local function SkinHouseSettingOptions(panel)
 	if not panel.accessOptions then return end
 
 	for _, option in next, panel.accessOptions do
-		S:HandleCheckBox(option.Checkbox)
+		local checkbox = option.Checkbox
+		if checkbox and not checkbox.IsSkinned then
+			S:HandleCheckBox(option.Checkbox)
+		end
 	end
 end
 
@@ -301,11 +304,13 @@ function S:Blizzard_HouseEditor()
 		S:HandleButton(StorageButton, true, nil, nil, nil, 'Transparent')
 		StorageButton:NudgePoint(2)
 
-		-- Use same icon as default WoW UI
-		StorageButton.Icon:SetAtlas('house-chest-icon')
-		StorageButton.Icon:Size(32)
-		StorageButton.Icon:ClearAllPoints()
-		StorageButton.Icon:Point('CENTER')
+		local StorageIcon = StorageButton.Icon
+		if StorageIcon then
+			StorageIcon:SetAtlas('house-chest-icon') -- Use same icon as default WoW UI
+			StorageIcon:Size(32)
+			StorageIcon:ClearAllPoints()
+			StorageIcon:Point('CENTER')
+		end
 	end
 
 	local StoragePanel = EditorFrame.StoragePanel
