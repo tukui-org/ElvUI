@@ -48,6 +48,7 @@ local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 local BINDING_SET = Enum.BindingSet
 
+local IsHouseEditorActive = C_HouseEditor and C_HouseEditor.IsHouseEditorActive
 local GetNextCastSpell = C_AssistedCombat and C_AssistedCombat.GetNextCastSpell
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
@@ -598,20 +599,16 @@ function AB:UpdateAllBinds(event)
 	AB:HandleBinds(event)
 end
 
-function AB:HandleBinds(event, arg1)
+function AB:HandleBinds(event)
 	if event == 'PLAYER_REGEN_DISABLED' then
 		AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
 	end
 
-	if event == 'HouseEditorStateUpdated' then
-		AB:UpdateBinds(event, not arg1 and AB.OverrideBinds or nil)
+	if event == 'HOUSE_EDITOR_MODE_CHANGED' then
+		AB:UpdateBinds(event, not IsHouseEditorActive() and AB.OverrideBinds or nil)
 	else
 		AB:UpdateBinds(event, AB.OverrideBinds)
 	end
-end
-
-function AB:HouseEditorStateUpdated(state)
-	AB:HandleBinds('HouseEditorStateUpdated', state)
 end
 
 do
@@ -1978,6 +1975,8 @@ function AB:Initialize()
 	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars and '1' or '0') -- Keep an eye on this, in case it taints
 
 	if E.Retail then
+		AB:RegisterEvent('HOUSE_EDITOR_MODE_CHANGED', 'HandleBinds')
+
 		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
 		hooksecurefunc(_G.SpellFlyout, 'Hide', AB.UpdateFlyoutButtons)
 
@@ -1987,9 +1986,6 @@ function AB:Initialize()
 		AB:AssistedGlowUpdate()
 		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
 		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
-
-		-- Register for housing state changes to adjust bindings accordingly
-		_G.EventRegistry:RegisterCallback('HouseEditor.StateUpdated', AB.HouseEditorStateUpdated)
 	end
 
 	if not E.Classic and not E.Wrath then
