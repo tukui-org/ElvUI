@@ -4,9 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
-local hooksecurefunc = hooksecurefunc
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 
 local function FixReadyCheckFrame(frame)
 	if frame.initiator and UnitIsUnit('player', frame.initiator) then

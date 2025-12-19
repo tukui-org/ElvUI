@@ -13,9 +13,15 @@ local IsHouseEditorActive = C_HouseEditor and C_HouseEditor.IsHouseEditorActive
 local BAR_HEIGHT = 22
 local TOGGLE_WIDTH = 18
 
-local function Panel_OnShow(self)
+function LO:Panel_OnShow()
 	self:SetFrameLevel(200)
 	self:SetFrameStrata('BACKGROUND')
+end
+
+function LO:ChatPanel_OnEvent(event)
+	if event == 'HOUSE_EDITOR_MODE_CHANGED' then
+		self:SetParent(IsHouseEditorActive() and _G.HousingControlsFrame or E.UIParent)
+	end
 end
 
 function LO:Initialize()
@@ -25,14 +31,14 @@ function LO:Initialize()
 	LO:SetDataPanelStyle()
 
 	LO.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
-	LO.BottomPanel:SetScript('OnShow', Panel_OnShow)
+	LO.BottomPanel:SetScript('OnShow', LO.Panel_OnShow)
 	E.FrameLocks.ElvUI_BottomPanel = true
-	Panel_OnShow(LO.BottomPanel)
+	LO.Panel_OnShow(LO.BottomPanel)
 	LO:UpdateBottomPanel()
 
 	LO.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
-	LO.TopPanel:SetScript('OnShow', Panel_OnShow)
-	Panel_OnShow(LO.TopPanel)
+	LO.TopPanel:SetScript('OnShow', LO.Panel_OnShow)
+	LO.Panel_OnShow(LO.TopPanel)
 	E.FrameLocks.ElvUI_TopPanel = true
 	LO:UpdateTopPanel()
 end
@@ -300,16 +306,10 @@ function LO:ResaveChatPosition()
 	end
 end
 
-function LO:OnEvent(event)
-	if event == 'HOUSE_EDITOR_MODE_CHANGED' then
-		self:SetParent(IsHouseEditorActive() and _G.HousingControlsFrame or E.UIParent)
-	end
-end
-
 function LO:CreateChatPanels()
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
-	lchat:SetScript('OnEvent', LO.OnEvent)
+	lchat:SetScript('OnEvent', LO.ChatPanel_OnEvent)
 	lchat:SetFrameStrata('BACKGROUND')
 	lchat:SetFrameLevel(300)
 	lchat:Size(100)
@@ -363,7 +363,7 @@ function LO:CreateChatPanels()
 
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
-	rchat:SetScript('OnEvent', LO.OnEvent)
+	rchat:SetScript('OnEvent', LO.ChatPanel_OnEvent)
 	rchat:SetFrameStrata('BACKGROUND')
 	rchat:SetFrameLevel(300)
 	rchat:Size(100)
