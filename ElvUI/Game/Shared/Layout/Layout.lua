@@ -6,6 +6,7 @@ local CH = E:GetModule('Chat')
 local _G = _G
 local CreateFrame = CreateFrame
 local FCF_SavePositionAndDimensions = FCF_SavePositionAndDimensions
+local IsHouseEditorActive = C_HouseEditor and C_HouseEditor.IsHouseEditorActive
 
 -- GLOBALS: HideLeftChat, HideRightChat, HideBothChat
 
@@ -299,9 +300,16 @@ function LO:ResaveChatPosition()
 	end
 end
 
+function LO:OnEvent(event)
+	if event == 'HOUSE_EDITOR_MODE_CHANGED' then
+		self:SetParent(IsHouseEditorActive() and _G.HousingControlsFrame or E.UIParent)
+	end
+end
+
 function LO:CreateChatPanels()
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
+	lchat:SetScript('OnEvent', LO.OnEvent)
 	lchat:SetFrameStrata('BACKGROUND')
 	lchat:SetFrameLevel(300)
 	lchat:Size(100)
@@ -310,6 +318,10 @@ function LO:CreateChatPanels()
 	lchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
 	lchat.FadeObject = {finishedFunc = FinishFade, finishedArg1 = lchat, finishedFuncKeep = true}
 	E:CreateMover(lchat, 'LeftChatMover', L["Left Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', true)
+
+	if E.Retail then
+		lchat:RegisterEvent('HOUSE_EDITOR_MODE_CHANGED')
+	end
 
 	--Background Texture
 	local lchattex = lchat:CreateTexture(nil, 'OVERLAY')
@@ -351,6 +363,7 @@ function LO:CreateChatPanels()
 
 	--Right Chat
 	local rchat = CreateFrame('Frame', 'RightChatPanel', E.UIParent)
+	rchat:SetScript('OnEvent', LO.OnEvent)
 	rchat:SetFrameStrata('BACKGROUND')
 	rchat:SetFrameLevel(300)
 	rchat:Size(100)
@@ -359,6 +372,10 @@ function LO:CreateChatPanels()
 	rchat.backdrop.callbackBackdropColor = CH.Panel_ColorUpdate
 	rchat.FadeObject = {finishedFunc = FinishFade, finishedArg1 = rchat, finishedFuncKeep = true}
 	E:CreateMover(rchat, 'RightChatMover', L["Right Chat"], nil, nil, LO.ResaveChatPosition, nil, nil, 'chat,general', true)
+
+	if E.Retail then
+		rchat:RegisterEvent('HOUSE_EDITOR_MODE_CHANGED')
+	end
 
 	--Background Texture
 	local rchattex = rchat:CreateTexture(nil, 'OVERLAY')
