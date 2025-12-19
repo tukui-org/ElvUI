@@ -12,6 +12,12 @@ local fullFillWidth = 234 -- picked by Blizzard in LootHistory.lua
 local fullDropWidth = fullFillWidth + 30 -- some padding to let it match (via the skinning)
 
 local function LootHistoryElements(button)
+	if button.IconOverlay then
+		local atlas = button.IconOverlay:GetAtlas()
+		local isHousingOverlay = atlas and strfind(atlas, 'housing-item-wood-frame', 1, true)
+		button.IconOverlay:SetAlpha(isHousingOverlay and 0 or 1)
+	end
+
 	if button.IsSkinned then return end
 
 	if button.BackgroundArtFrame then
