@@ -29,24 +29,24 @@ AB.MICRO_BUTTONS = _G.MICRO_BUTTONS or {
 }
 
 do
+	local meep = 12.125
 	AB.MICRO_OFFSETS = {
-		CharacterMicroButton	= 0.001953125,
-		SpellbookMicroButton	= 0.0830078125,
-		ProfessionMicroButton	= 0.0830078125,
-		TalentMicroButton		= 0.1650390625,
-		PlayerSpellsMicroButton	= 0.1650390625,
-		AchievementMicroButton	= 0.2470703125,
-		QuestLogMicroButton		= 0.330078125,
-		HousingMicroButton		= 0.412109375,
-		GuildMicroButton		= 0.4931640625, -- Retail
-		SocialMicroButton		= 0.4931640625, -- Classic, use Guild button
-		LFDMicroButton			= 0.5751953125, -- Retail
-		LFGMicroButton			= 0.5751953125, -- Classic
-		EJMicroButton			= 0.658203125,
-		CollectionsMicroButton	= 0.740234375,
-		MainMenuMicroButton		= (E.Classic and 0.904296875 or 0.8212890625), -- flip these
-		HelpMicroButton			= (E.Classic and 0.8212890625 or 0.904296875), -- on classic
-		StoreMicroButton		= 0.904296875
+		CharacterMicroButton	= 0.07 / meep,
+		SpellbookMicroButton	= 1.05 / meep,
+		ProfessionMicroButton	= 1.05 / meep,
+		TalentMicroButton		= 2.04 / meep,
+		PlayerSpellsMicroButton = 2.04 / meep,
+		AchievementMicroButton	= 3.03 / meep,
+		QuestLogMicroButton		= 4.02 / meep,
+		GuildMicroButton		= 5.01 / meep, -- Retail
+		SocialsMicroButton		= 5.01 / meep, -- Classic, use Guild button
+		LFDMicroButton			= 6.00 / meep, -- Retail
+		LFGMicroButton			= 6.00 / meep, -- Classic
+		EJMicroButton			= 7.00 / meep,
+		CollectionsMicroButton	= 8.00 / meep,
+		MainMenuMicroButton		= (E.Classic and 10 or 9) / meep, -- flip these
+		HelpMicroButton			= (E.Classic and 9 or 10) / meep, -- on classic
+		StoreMicroButton		= 10.0 / meep
 	}
 end
 
@@ -108,8 +108,8 @@ function AB:GetMicroCoords(name, icons, character)
 	elseif E.Retail or icons then
 		local offset = AB.MICRO_OFFSETS[name]
 		if offset then
-			l, r = offset, offset + 0.07421875
-			t, b = icons and 0.40625 or 0.0390625, icons and 0.7109375 or 0.3515625
+			l, r = offset, offset + 0.065
+			t, b = icons and 0.41 or 0.038, icons and 0.72 or 0.35
 		end
 	end
 
