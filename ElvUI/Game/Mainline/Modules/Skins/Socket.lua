@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, unpack = ipairs, unpack
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
 local C_ItemSocketInfo_GetSocketItemInfo = C_ItemSocketInfo.GetSocketItemInfo
@@ -11,7 +11,7 @@ local function UpdateItemSocketing()
 	local SocketingContainer = _G.ItemSocketingFrame.SocketingContainer
 	if not SocketingContainer or not SocketingContainer.SocketFrames then return end
 
-	for i, socket in ipairs(SocketingContainer.SocketFrames) do
+	for i, socket in next, SocketingContainer.SocketFrames do
 		local gemColor = C_ItemSocketInfo_GetSocketItemInfo(i)
 		local color = E.GemTypeInfo[gemColor]
 		if color then
