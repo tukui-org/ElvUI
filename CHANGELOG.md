@@ -1,3 +1,18 @@
+### Version 14.05 [ January 5th 2026 ]
+*   Chat: Editbox font not obeying the proper font size.
+*   Chat: Boss emotes failing to display their message and % doubled up in messages.
+*   Chat: Allow panels to be shown while in Housing Editor.
+*   Housing: Keybinds not working correctly when in editing mode.
+*   Housing: Dashboard button added to the Minimap Menu.
+*   Housing: Improved the skinning more, still a work in progress.
+*   Housing: Mover added for Housing Controls.
+*   Housing: Decor toasts skinned. (Thanks fang2hou)
+*   Skin: Encounter Journal tabs placed a bit better.
+*   Bags: Adjust method for allowing more currencies to prevent possible issue.
+*   Titan: Battlefield and Talent skins fixed.
+*   Classic: Mirror timers can have movers without needing the skin enabled.
+*   Classic: Keybinds for bar13, bar14, and bar15 not working on Era or TBC.
+
 ### Version 14.04 [ December 3rd 2025 ]
 *   Support for Titan Reforged (wrath exclusive for china, big thanks to pit and barneyng for helping me with this).
 *   attempt to perform boolean test on local 'isLogReady' (a secret value)
