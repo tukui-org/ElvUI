@@ -385,6 +385,7 @@ function S:Blizzard_HouseEditor()
 
 	local CustomizeModeFrame = EditorFrame.CustomizeModeFrame
 	local CustomizationsPane = CustomizeModeFrame and CustomizeModeFrame.RoomComponentCustomizationsPane
+	local DecorCustomizationsPane = CustomizeModeFrame and CustomizeModeFrame.DecorCustomizationsPane
 	if CustomizationsPane then
 		CustomizationsPane:StripTextures()
 		CustomizationsPane:SetTemplate('Transparent')
@@ -412,6 +413,18 @@ function S:Blizzard_HouseEditor()
 			CustomizationsPane.ApplyWallpaperToAllWallsButton:Size(26)
 			S:HandleButton(CustomizationsPane.ApplyWallpaperToAllWallsButton)
 		end
+	end
+
+	if DecorCustomizationsPane then
+		DecorCustomizationsPane:StripTextures()
+		DecorCustomizationsPane:SetTemplate('Transparent')
+
+		DecorCustomizationsPane.CloseButton:ClearAllPoints()
+		DecorCustomizationsPane.CloseButton:Point('TOPRIGHT')
+
+		S:HandleCloseButton(DecorCustomizationsPane.CloseButton)
+		S:HandleButton(DecorCustomizationsPane.ButtonFrame.CancelButton)
+		S:HandleButton(DecorCustomizationsPane.ButtonFrame.ApplyButton)
 	end
 
 	local ExpertDecorModeFrame = EditorFrame.ExpertDecorModeFrame
