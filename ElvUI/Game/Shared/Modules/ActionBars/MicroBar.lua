@@ -46,7 +46,8 @@ do
 		CollectionsMicroButton	= 8.00 / meep,
 		MainMenuMicroButton		= (E.Classic and 10 or 9) / meep, -- flip these
 		HelpMicroButton			= (E.Classic and 9 or 10) / meep, -- on classic
-		StoreMicroButton		= 10.0 / meep
+		StoreMicroButton		= 10.0 / meep,
+		HousingMicroButton		= 11.0 / meep
 	}
 end
 
