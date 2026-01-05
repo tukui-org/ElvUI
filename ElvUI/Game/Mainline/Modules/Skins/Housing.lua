@@ -418,8 +418,10 @@ function S:Blizzard_HouseEditor()
 	if DecorCustomizationsPane then
 		DecorCustomizationsPane:StripTextures()
 		DecorCustomizationsPane:SetTemplate('Transparent')
+
 		DecorCustomizationsPane.CloseButton:ClearAllPoints()
 		DecorCustomizationsPane.CloseButton:Point('TOPRIGHT')
+
 		S:HandleCloseButton(DecorCustomizationsPane.CloseButton)
 		S:HandleButton(DecorCustomizationsPane.ButtonFrame.CancelButton)
 		S:HandleButton(DecorCustomizationsPane.ButtonFrame.ApplyButton)
