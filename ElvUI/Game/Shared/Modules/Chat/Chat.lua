@@ -1915,7 +1915,7 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	local name = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
 
 	-- handle the class color
-	local ShouldColorChatByClass = _G.ChatFrameUtil and _G.ChatFrameUtil.ShouldColorChatByClass or _G.Chat_ShouldColorChatByClass
+	local ShouldColorChatByClass = (_G.ChatFrameUtil and _G.ChatFrameUtil.ShouldColorChatByClass) or _G.Chat_ShouldColorChatByClass
 	local info = name and arg12 and _G.ChatTypeInfo[chatType]
 	if info and ShouldColorChatByClass(info) then
 		local data = CH:GetPlayerInfoByGUID(arg12)
@@ -2286,7 +2286,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 		end
 
-		local GetChatCategory = _G.ChatFrameUtil and _G.ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
+		local GetChatCategory = (_G.ChatFrameUtil and _G.ChatFrameUtil.GetChatCategory) or _G.Chat_GetChatCategory
 
 		local chatGroup = GetChatCategory(chatType)
 		local chatTarget = CH:FCFManager_GetChatTarget(chatGroup, arg2, arg8)
