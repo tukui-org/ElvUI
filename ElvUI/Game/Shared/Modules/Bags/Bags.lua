@@ -1505,7 +1505,7 @@ function B:UpdateTokens()
 	end
 
 	local currencyFormat = B.db.currencyFormat
-	local numCurrencies = currencyFormat ~= 'NONE' and MAX_WATCHED_TOKENS or 0
+	local numCurrencies = (currencyFormat ~= 'NONE' and MAX_WATCHED_TOKENS) or 0
 
 	local numTokens = 0
 	for i = 1, numCurrencies do
@@ -3648,10 +3648,6 @@ function B:PlayerInteraction_ShowFrame(_, interactionType)
 	end
 end
 
-function B:GetMaxTokensWatched()
-	return MAX_WATCHED_TOKENS
-end
-
 function B:Initialize()
 	BIND_START, BIND_END = B:GetBindLines()
 
@@ -3745,7 +3741,10 @@ function B:Initialize()
 	elseif E.Retail then
 		B:SecureHook(_G.TokenFrame, 'SetTokenWatched', 'UpdateTokensIfVisible')
 
-		_G.BackpackTokenFrame.GetMaxTokensWatched = B.GetMaxTokensWatched -- silly little override
+		local BackpackTokenFrame = _G.BackpackTokenFrame
+		if BackpackTokenFrame then -- GetMaxTokensWatched: counter to adjust max currencies we can track
+			BackpackTokenFrame:SetWidth(MAX_WATCHED_TOKENS * (BackpackTokenFrame.tokenWidth or 50))
+		end
 	else
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end
