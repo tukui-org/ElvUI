@@ -44,6 +44,10 @@ function S:Blizzard_ItemSocketingUI()
 			button:StyleButton()
 			button:SetTemplate(nil, true)
 
+			if button.Shine then
+				button.Shine:Kill()
+			end
+
 			if button.BracketFrame then
 				button.BracketFrame:Kill()
 			end

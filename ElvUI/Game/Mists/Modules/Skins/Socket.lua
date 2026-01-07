@@ -5,14 +5,14 @@ local _G = _G
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
-local C_ItemSocketInfo_GetSocketItemInfo = C_ItemSocketInfo.GetSocketItemInfo
+local GetSocketTypes = GetSocketTypes
 
 local function UpdateItemSocketing()
 	local SocketingContainer = _G.ItemSocketingFrame.SocketingContainer
 	if not SocketingContainer or not SocketingContainer.SocketFrames then return end
 
 	for i, socket in next, SocketingContainer.SocketFrames do
-		local gemColor = C_ItemSocketInfo_GetSocketItemInfo(i)
+		local gemColor = GetSocketTypes(i)
 		local color = E.GemTypeInfo[gemColor]
 		if color then
 			socket:SetBackdropBorderColor(color.r, color.g, color.b)
@@ -43,6 +43,10 @@ function S:Blizzard_ItemSocketingUI()
 			button:StripTextures()
 			button:StyleButton()
 			button:SetTemplate(nil, true)
+
+			if button.Shine then
+				button.Shine:Kill()
+			end
 
 			if button.BracketFrame then
 				button.BracketFrame:Kill()
