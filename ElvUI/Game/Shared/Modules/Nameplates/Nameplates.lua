@@ -168,7 +168,7 @@ function NP:SetCVars()
 		end
 	end
 
-	if E.Wrath or E.Mists then
+	if E.TBC or E.Wrath or E.Mists then
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
@@ -930,7 +930,7 @@ local optionsTable = {
 	'ShowAll'
 }
 
-if E.Wrath or E.Mists then
+if E.TBC or E.Wrath or E.Mists then
 	tinsert(optionsTable, 'NameplateMaxDistanceSlider')
 end
 
