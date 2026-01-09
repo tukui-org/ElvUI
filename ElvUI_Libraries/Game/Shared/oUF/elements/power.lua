@@ -7,10 +7,6 @@ Handles the updating of a status bar that displays the unit's power.
 
 Power - A `StatusBar` used to represent the unit's power.
 
-## Sub-Widgets
-
-.bg - A `Texture` used as a background. It will inherit the color of the main StatusBar.
-
 ## Notes
 
 A default texture will be applied if the widget is a StatusBar and doesn't have a texture or a color set.
@@ -22,9 +18,9 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
                                     back to the primary power (boolean)
 .useAtlas                         - Use this to let the widget use an atlas for its texture if an atlas is present in
                                     `self.colors.power` for the appropriate power type (boolean)
-.smoothGradient                   - 9 color values to be used with the .colorSmooth option (table)
 .considerSelectionInCombatHostile - Indicates whether selection should be considered hostile while the unit is in
                                     combat with the player (boolean)
+.smoothing                        - Which status bar smoothing method to use, defaults to `Enum.StatusBarInterpolation.Immediate` (number)
 
 The following options are listed by priority. The first check that returns true decides the color of the bar.
 
@@ -134,7 +130,6 @@ local function UpdateColor(self, event, unit)
 	if(self.unit ~= unit) then return end
 	local element = self.Power
 
-	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 
 	local r, g, b, color, atlas
@@ -148,9 +143,7 @@ local function UpdateColor(self, event, unit)
 		if(element.displayType ~= ALTERNATE_POWER_INDEX) then
 			color = self.colors.power[pToken]
 			if(not color) then
-				if(element.GetAlternativeColor) then
-					r, g, b = element:GetAlternativeColor(unit, pType, pToken, altR, altG, altB)
-				elseif(altR) then
+				if(altR) then
 					r, g, b = altR, altG, altB
 					if(r > 1 or g > 1 or b > 1) then
 						-- BUG: As of 7.0.3, altR, altG, altB may be in 0-1 or 0-255 range.
@@ -164,52 +157,52 @@ local function UpdateColor(self, event, unit)
 			color = self.colors.power[ALTERNATE_POWER_INDEX]
 		end
 
-		if(element.useAtlas and color and color.atlas) then
-			atlas = color.atlas
+		if(element.colorPowerAtlas and color) then
+			atlas = color:GetAtlas()
 		end
-	elseif(element.colorClass and isPlayer)
-		or (element.colorClassNPC and not isPlayer)
-		or (element.colorClassPet and UnitPlayerControlled(unit) and not isPlayer) then
+
+		if(element.colorPowerSmooth and color and color:GetCurve()) then
+			color = UnitPowerPercent(unit, true, color:GetCurve())
+		end
+	elseif(element.colorClass and (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
+		or (element.colorClassNPC and not (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
+		or (element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
 		local _, class = UnitClass(unit)
 		color = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
 		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		color = self.colors.reaction[UnitReaction(unit, 'player')]
-	elseif(element.colorSmooth) then
-		local adjust = 0 - (element.min or 0)
-		r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
-	end
-
-	if(color) then
-		r, g, b = color[1], color[2], color[3]
 	end
 
 	if(atlas) then
 		element:SetStatusBarTexture(atlas)
-		element:SetStatusBarColor(1, 1, 1)
-	elseif(b) then
-		element:SetStatusBarColor(r, g, b)
+		element:GetStatusBarTexture():SetVertexColor(1, 1, 1)
+	else
+		if(element.__texture) then
+			element:SetStatusBarTexture(element.__texture)
+		end
 
-		local bg = element.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
+		-- it's done this way so that only non-standard powers have r, g, b values
+		if(b) then
+			element:GetStatusBarTexture():SetVertexColor(r, g, b)
+		elseif(color) then
+			element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 		end
 	end
 
-	--[[ Callback: Power:PostUpdateColor(unit, r, g, b)
+	--[[ Callback: Power:PostUpdateColor(unit, color, altR, altG, altB)
 	Called after the element color has been updated.
 
-	* self - the Power element
-	* unit - the unit for which the update has been triggered (string)
-	* r    - the red component of the used color (number)[0-1]
-	* g    - the green component of the used color (number)[0-1]
-	* b    - the blue component of the used color (number)[0-1]
-	* atlas - the atlas used instead of color (string)
+	* self  - the Power element
+	* unit  - the unit for which the update has been triggered (string)
+	* color - the used ColorMixin-based object (table?)
+	* altR  - the red component of the used alternative color (number?)[0-1]
+	* altG  - the green component of the used alternative color (number?)[0-1]
+	* altB  - the blue component of the used alternative color (number?)[0-1]
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(unit, r, g, b, atlas)
+		element:PostUpdateColor(unit, color, r, g, b)
 	end
 end
 
@@ -249,9 +242,9 @@ local function Update(self, event, unit)
 	element:SetMinMaxValues(min, max)
 
 	if(UnitIsConnected(unit)) then
-		element:SetValue(cur)
+		element:SetValue(cur, element.smoothing)
 	else
-		element:SetValue(max)
+		element:SetValue(max, element.smoothing)
 	end
 
 	element.cur = cur
@@ -378,6 +371,10 @@ local function Enable(self)
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
 		element.SetColorThreat = SetColorThreat
+
+		if(not element.smoothing) then
+			element.smoothing = Enum.StatusBarInterpolation.Immediate
+		end
 
 		if(element.colorDisconnected) then
 			self:RegisterEvent('UNIT_CONNECTION', ColorPath)
