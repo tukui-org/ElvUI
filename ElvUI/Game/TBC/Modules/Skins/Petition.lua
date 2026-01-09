@@ -2,19 +2,30 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local ipairs = ipairs
 
 function S:PetitionFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petition) then return end
 
 	local PetitionFrame = _G.PetitionFrame
-	S:HandleFrame(PetitionFrame, true, nil, 12, -17, -28, 65)
+	S:HandleFrame(PetitionFrame)
 
-	S:HandleButton(_G.PetitionFrameSignButton)
-	S:HandleButton(_G.PetitionFrameRequestButton)
-	S:HandleButton(_G.PetitionFrameRenameButton)
-	S:HandleButton(_G.PetitionFrameCancelButton)
+	-- Buttons
+	local buttons = {
+		_G.PetitionFrameSignButton,
+		_G.PetitionFrameRequestButton,
+		_G.PetitionFrameRenameButton,
+		_G.PetitionFrameCancelButton
+	}
+
+	for _, button in ipairs(buttons) do
+		S:HandleButton(button)
+	end
+
+	S:HandleScrollBar(_G.PetitionFrame.ScrollBar)
 	S:HandleCloseButton(_G.PetitionFrameCloseButton)
 
+	-- Text Colors
 	_G.PetitionFrameCharterTitle:SetTextColor(1, 1, 0)
 	_G.PetitionFrameCharterName:SetTextColor(1, 1, 1)
 	_G.PetitionFrameMasterTitle:SetTextColor(1, 1, 0)
