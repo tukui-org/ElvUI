@@ -2994,7 +2994,7 @@ end
 -- legacy cooldown functions, avoiding table creation on game versions that still have the old API
 -- LAB does not call these, but external things might
 Action.GetCharges = function(self)
-	if  GetActionCharges then
+	if GetActionCharges then
 		return GetActionCharges(self._state_action)
 	else
 		local charge = self:GetChargeInfo()
