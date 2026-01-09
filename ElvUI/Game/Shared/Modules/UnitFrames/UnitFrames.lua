@@ -743,7 +743,7 @@ function UF:Configure_FontString(obj)
 end
 
 function UF:Update_AllFrames()
-	if not E.private.unitframe.enable then return end
+	if E.Midnight or not E.private.unitframe.enable then return end
 
 	UF:UpdateColors()
 	UF:Update_FontStrings()
@@ -1583,13 +1583,13 @@ do
 	local SetFrameHidden = {}
 	local DisabledElements = {}
 	local AllowedFuncs = {
-		[_G.DefaultCompactUnitFrameSetup] = true,
-		[_G.DefaultCompactNamePlateEnemyFrameSetup] = true,
-		[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true
+		[_G.DefaultCompactUnitFrameSetup] = true
 	}
 
-	if E.Retail then
+	if E.Retail and not E.Midnight then
 		AllowedFuncs[_G.DefaultCompactNamePlatePlayerFrameSetup] = true
+		AllowedFuncs[_G.DefaultCompactNamePlateEnemyFrameSetup] = true
+		AllowedFuncs[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true
 	end
 
 	local function FrameShown(frame, shown)
@@ -1667,8 +1667,7 @@ do
 	end
 
 	function ElvUF:DisableNamePlate(frame)
-		if (not frame or frame:IsForbidden())
-		or (not E.private.nameplates.enable) then return end
+		if (not frame or frame:IsForbidden()) or (E.Midnight or not E.private.nameplates.enable) then return end
 
 		local plate = frame.UnitFrame
 		if plate then
@@ -1766,7 +1765,7 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if E.private.unitframe.enable and not handledUnits[unit] then
+		if not E.Midnight and E.private.unitframe.enable and not handledUnits[unit] then
 			handledUnits[unit] = true
 
 			local disable = E.private.unitframe.disabledBlizzardFrames
@@ -2178,7 +2177,7 @@ function UF:Initialize()
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2
 
-	if not E.private.unitframe.enable then return end
+	if E.Midnight or not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
 	ElvUF:Factory(UF.Setup)

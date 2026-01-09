@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
+local issecretvalue = issecretvalue
 local ipairs, select, next, sort, unpack, wipe, ceil = ipairs, select, next, sort, unpack, wipe, ceil
 local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, strsplit, strmatch
 
@@ -161,7 +162,10 @@ local resendRequest = false
 local eventHandlers = {
 	PLAYER_GUILD_UPDATE = C_GuildInfo_GuildRoster,
 	CHAT_MSG_SYSTEM = function(_, arg1)
-		if FRIEND_ONLINE ~= nil and arg1 and strfind(arg1, FRIEND_ONLINE) then
+		if not FRIEND_ONLINE or not arg1 then return end
+
+		local isSecret = issecretvalue and issecretvalue(arg1)
+		if not isSecret and strfind(arg1, FRIEND_ONLINE) then
 			resendRequest = true
 		end
 	end,

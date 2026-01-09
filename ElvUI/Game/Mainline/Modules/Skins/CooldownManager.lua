@@ -298,6 +298,7 @@ function S:Blizzard_CooldownViewer()
 		S:HandleEditBox(CooldownViewer.SearchBox)
 		S:HandleTrimScrollBar(CooldownViewer.CooldownScroll.ScrollBar)
 		S:HandleButton(CooldownViewer.UndoButton)
+		S:HandleDropDownBox(CooldownViewer.LayoutDropdown)
 
 		for i, tab in next, { CooldownViewer.SpellsTab, CooldownViewer.AurasTab } do
 			tab:CreateBackdrop()

@@ -298,6 +298,7 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
+	S:HandleTrimScrollBar(_G.EncounterJournalJourneysFrame.ScrollBar)
 	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
 	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.FilterList.ScrollBar)
 
@@ -312,6 +313,7 @@ function S:Blizzard_EncounterJournal()
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	-- Bottom tabs
+	tinsert(journalBottomTabs, _G.EncounterJournalJourneysTab)
 	tinsert(journalBottomTabs, _G.EncounterJournalMonthlyActivitiesTab)
 	tinsert(journalBottomTabs, _G.EncounterJournalSuggestTab)
 	tinsert(journalBottomTabs, _G.EncounterJournalDungeonTab)

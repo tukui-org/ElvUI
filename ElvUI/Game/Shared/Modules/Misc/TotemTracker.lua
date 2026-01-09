@@ -14,10 +14,10 @@ local classic = { 2, 1, 4, 3 } -- we need to swap 1/2 and 3/4 on era
 function TM:UpdateButton(button, totem)
 	if not (button and totem) then return end
 
-	local haveTotem, _, startTime, duration, icon = GetTotemInfo((E.Classic or E.TBC) and totem or totem.slot)
-	button:SetShown(haveTotem and duration > 0)
+	local _, _, startTime, duration, icon = GetTotemInfo((E.Classic or E.TBC) and totem or totem.slot)
+	button:SetShown(startTime and (E.Midnight or duration > 0))
 
-	if haveTotem then
+	if startTime then
 		button.icon:SetTexture(icon)
 		button.cooldown:SetCooldown(startTime, duration)
 
@@ -132,7 +132,9 @@ function TM:Initialize()
 		button.cooldown:SetReverse(true)
 		button.cooldown:SetInside()
 
-		E:RegisterCooldown(button.cooldown)
+		if not E.Midnight then
+			E:RegisterCooldown(button.cooldown)
+		end
 
 		TM.bar[i] = button
 	end

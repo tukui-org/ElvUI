@@ -391,7 +391,10 @@ function AB:CreateBar(id)
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
 
 		button.AuraCooldown.targetAura = true
-		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
+
+		if not E.Midnight then
+			E:RegisterCooldown(button.AuraCooldown, 'actionbar')
+		end
 
 		if E.Retail then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonTextureOverlayTemplate')
@@ -770,7 +773,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		E:RegisterCooldown(button.cooldown, 'actionbar')
+		if not E.Midnight then
+			E:RegisterCooldown(button.cooldown, 'actionbar')
+		end
+
 		AB.handledbuttons[button] = true
 	end
 
@@ -932,7 +938,7 @@ do
 
 		if (E.Retail and (canGlide or CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
 		or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-		or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (not E.Midnight and (UnitHealth('player') ~= UnitHealthMax('player'))) then
 			self.mouseLock = true
 			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 			AB:FadeBlings(1)
@@ -1760,7 +1766,9 @@ function AB:LAB_FlyoutCreated(btn)
 end
 
 function AB:LAB_ChargeCreated(_, cd)
-	E:RegisterCooldown(cd, 'actionbar')
+	if not E.Midnight then
+		E:RegisterCooldown(cd, 'actionbar')
+	end
 end
 
 function AB:LAB_MouseUp()

@@ -22,6 +22,7 @@ local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
+local WoWMidnight = wowtoc >= 120000
 
 -- GLOBALS: C_Item, C_Spell
 
@@ -655,7 +656,7 @@ end
 -- prevent pickup calling spells ~Simpy
 function Generic:OnButtonEvent(event, key, down, spellID)
 	if event == "UNIT_SPELLCAST_RETICLE_TARGET" then
-		if (self.abilityID == spellID) and not self.TargetReticleAnimFrame:IsShown() then
+		if not WoWMidnight and (self.abilityID == spellID) and not self.TargetReticleAnimFrame:IsShown() then
 			self.TargetReticleAnimFrame.HighlightAnim:Play()
 			self.TargetReticleAnimFrame:Show()
 		end
@@ -1610,7 +1611,7 @@ function OnEvent(_, event, arg1, arg2, ...)
 		if TARGETAURA_ENABLED then
 			UpdateTargetAuras(event)
 		end
-	elseif event == "UNIT_INVENTORY_CHANGED" or event == "LEARNED_SPELL_IN_TAB" then
+	elseif event == "UNIT_INVENTORY_CHANGED" then
 		local tooltipOwner = GameTooltip_GetOwnerForbidden()
 		if tooltipOwner and ButtonRegistry[tooltipOwner] then
 			tooltipOwner:SetTooltip()
@@ -1990,7 +1991,7 @@ function lib:SetTargetAuraDuration(value)
 end
 
 function lib:SetTargetAuraCooldowns(enabled)
-	TARGETAURA_ENABLED = enabled
+	TARGETAURA_ENABLED = not WoWMidnight and enabled
 
 	UpdateTargetAuras('SetTargetAuraCooldowns', not enabled)
 end
@@ -2330,7 +2331,7 @@ function UpdateCount(self)
 	end
 	if self:IsConsumableOrStackable() then
 		local count = self:GetCount()
-		if count > (self.maxDisplayCount or 9999) then
+		if not WoWMidnight and (count > (self.maxDisplayCount or 9999)) then
 			self.Count:SetText("*")
 		else
 			self.Count:SetText(count)
@@ -2419,7 +2420,7 @@ end
 
 function UpdateCooldown(self)
 	local locStart, locDuration
-	local start, duration, enable, modRate, auraData
+	local start, duration, modRate, auraData
 	local charges, maxCharges, chargeStart, chargeDuration, chargeModRate
 
 	local passiveCooldownSpellID = self:GetPassiveCooldownSpellID()
@@ -2442,18 +2443,17 @@ function UpdateCooldown(self)
 		chargeStart = currentTime * 0.001
 		chargeDuration = duration * 0.001
 		chargeModRate = modRate
-		enable = 1
 	else
 		locStart, locDuration = self:GetLossOfControlCooldown()
-		start, duration, enable, modRate = self:GetCooldown()
+		start, duration, _, modRate = self:GetCooldown()
 		charges, maxCharges, chargeStart, chargeDuration, chargeModRate = self:GetCharges()
 	end
 
 	self.cooldown:SetDrawBling(self.config.useDrawBling and (self:GetEffectiveAlpha() > 0.5))
 
-	local hasLocCooldown = locStart and locDuration and locStart > 0 and locDuration > 0
-	local hasCooldown = (enable and enable ~= 0) and (start and duration and start > 0 and duration > 0)
-	if hasLocCooldown and (not hasCooldown or ((locStart + locDuration) > (start + duration))) then
+	local hasLocCooldown = locStart and locDuration
+	local hasCooldown = start and duration
+	if hasLocCooldown and not hasCooldown then
 		if self.cooldown.currentCooldownType ~= COOLDOWN_TYPE_LOSS_OF_CONTROL then
 			self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge-LoC")
 			self.cooldown:SetSwipeColor(0.2, 0, 0)
@@ -2482,12 +2482,14 @@ function UpdateCooldown(self)
 			self.cooldown:Clear()
 		end
 
-		if charges and maxCharges and maxCharges > 1 and charges < maxCharges then
-			StartChargeCooldown(self, chargeStart, chargeDuration, chargeModRate)
+		if self.chargeCooldown then
+			if charges and maxCharges then
+				StartChargeCooldown(self, chargeStart, chargeDuration, chargeModRate)
 
-			self.chargeCooldown:SetDrawSwipe(self.config.useDrawSwipeOnCharges)
-		elseif self.chargeCooldown then
-			EndChargeCooldown(self.chargeCooldown)
+				self.chargeCooldown:SetDrawSwipe(self.config.useDrawSwipeOnCharges)
+			else
+				EndChargeCooldown(self.chargeCooldown)
+			end
 		end
 	end
 
@@ -2880,7 +2882,7 @@ Action.IsEquipped              = function(self) return IsEquippedAction(self._st
 Action.IsCurrentlyActive       = function(self) return IsCurrentAction(self._state_action) end
 Action.IsAutoRepeat            = function(self) return IsAutoRepeatAction(self._state_action) end
 Action.IsUsable                = function(self) return IsUsableAction(self._state_action) end
-Action.IsConsumableOrStackable = function(self) return IsConsumableAction(self._state_action) or IsStackableAction(self._state_action) or (not IsItemAction(self._state_action) and GetActionCount(self._state_action) > 0) end
+Action.IsConsumableOrStackable = function(self) return IsConsumableAction(self._state_action) or IsStackableAction(self._state_action) or (not IsItemAction(self._state_action) and (WoWMidnight or GetActionCount(self._state_action) > 0)) end
 Action.IsUnitInRange           = function(self, unit) return IsActionInRange(self._state_action, unit) end
 Action.SetTooltip              = function(self) return GameTooltip:SetAction(self._state_action) end
 Action.GetSpellId              = function(self)
