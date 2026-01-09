@@ -324,6 +324,7 @@ function S:CharacterFrame()
 
 	for i = 1, MAX_ARENA_TEAMS do
 		local pvpTeam = _G['PVPTeam'..i]
+		if not pvpTeam then break end
 
 		pvpTeam:StripTextures()
 		pvpTeam:CreateBackdrop()
@@ -333,7 +334,10 @@ function S:CharacterFrame()
 		pvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
 		pvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
 
-		_G['PVPTeam'..i..'Highlight']:Kill()
+		local highlight = _G['PVPTeam'..i..'Highlight']
+		if highlight then
+			highlight:Kill()
+		end
 	end
 
 	local PVPTeamDetails = _G.PVPTeamDetails
@@ -348,13 +352,18 @@ function S:CharacterFrame()
 
 	for i = 1, 5 do
 		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
+		if not header then break end
+
 		header:StripTextures()
 		header:StyleButton()
 	end
 
 	for i = 1, 10 do
 		local button = _G['PVPTeamDetailsButton'..i]
+		if not button then break end
+
 		button:Width(335)
+
 		S:HandleButtonHighlight(button)
 	end
 
