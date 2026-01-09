@@ -15,7 +15,7 @@ local function SetupMajorFaction(frame)
 	if frame.CloseButton.Border then frame.CloseButton.Border:Hide() end
 end
 
-function S:Blizzard_MajorFactions()
+function S:Blizzard_MajorFactionRenown()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.majorFactions) then return end
 
 	local RenownFrame = _G.MajorFactionRenownFrame
@@ -31,4 +31,4 @@ function S:Blizzard_MajorFactions()
 	end
 end
 
-S:AddCallbackForAddon('Blizzard_MajorFactions')
+S:AddCallbackForAddon('Blizzard_MajorFactionRenown')
