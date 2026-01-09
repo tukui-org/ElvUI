@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 68 -- the real minor version is 137 (no Spell Cast VFX yet)
+local MINOR_VERSION = 68 -- the real minor version is 137
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -45,7 +45,6 @@ local IsAssistedCombatAction = C_ActionBar.IsAssistedCombatAction
 local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
 local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
 local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
-local ClearActionButtonCooldowns = ClearActionButtonCooldowns
 
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetActionDisplayCount = C_ActionBar.GetActionDisplayCount
@@ -54,58 +53,20 @@ local C_EquipmentSet_PickupEquipmentSet = C_EquipmentSet.PickupEquipmentSet
 local C_LevelLink_IsActionLocked = C_LevelLink and C_LevelLink.IsActionLocked
 local C_ToyBox_GetToyInfo = C_ToyBox.GetToyInfo
 
-local GetTime = GetTime
-local HasAction = HasAction
-local ClearCursor = ClearCursor
-local CopyTable = CopyTable
-local CreateFrame = CreateFrame
-local UnitIsFriend = UnitIsFriend
-local FlyoutHasSpell = FlyoutHasSpell
-local GetActionCharges = GetActionCharges
-local GetActionCooldown = GetActionCooldown
-local GetActionCount = GetActionCount
-local GetActionInfo = GetActionInfo
-local GetActionText = GetActionText
-local GetActionTexture = GetActionTexture
-local GetBindingKey = GetBindingKey
-local GetBindingText = GetBindingText
-local GetCallPetSpellInfo = GetCallPetSpellInfo
-local GetCursorInfo = GetCursorInfo
-local GetFlyoutInfo = GetFlyoutInfo
-local GetFlyoutSlotInfo = GetFlyoutSlotInfo
-local GetItemCooldown = GetItemCooldown
-local GetMacroInfo = GetMacroInfo
-local GetMacroSpell = GetMacroSpell
-local InCombatLockdown = InCombatLockdown
-local IsActionInRange = IsActionInRange
-local IsAttackAction = IsAttackAction
-local IsAutoRepeatAction = IsAutoRepeatAction
-local IsConsumableAction = IsConsumableAction
-local IsCurrentAction = IsCurrentAction
-local IsEquippedAction = IsEquippedAction
-local IsItemAction = IsItemAction
-local IsLoggedIn = IsLoggedIn
-local IsMouseButtonDown = IsMouseButtonDown
-local IsStackableAction = IsStackableAction
-local IsUsableAction = IsUsableAction
-local PickupAction = PickupAction
-local PickupCompanion = PickupCompanion
-local PickupMacro = PickupMacro
-local PickupPetAction = PickupPetAction
-local SetBinding = SetBinding
-local SetBindingClick = SetBindingClick
-local SetClampedTextureRotation = SetClampedTextureRotation
-local GetActionLossOfControlCooldown = GetActionLossOfControlCooldown
-local ClearChargeCooldown = ClearChargeCooldown
+local SpellVFX_ClearReticle, SpellVFX_ClearInterruptDisplay, SpellVFX_PlaySpellCastAnim, SpellVFX_PlayTargettingReticleAnim, SpellVFX_StopTargettingReticleAnim, SpellVFX_StopSpellCastAnim, SpellVFX_PlaySpellInterruptedAnim
+local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
 
-local UIParent = UIParent
-local GameTooltip = GameTooltip
-local SpellFlyout = SpellFlyout
-local FlyoutButtonMixin = FlyoutButtonMixin
-local ActionButtonSpellAlertManager = ActionButtonSpellAlertManager
 local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- Enable custom flyouts
 
--- GLOBALS: ActionButton_ApplyCooldown, CooldownFrame_Set
+-- GLOBALS: ClearActionButtonCooldowns, ClearChargeCooldown, ClearCursor, CooldownFrame_Set, CopyTable, CreateFrame
+-- GLOBALS: FlyoutButtonMixin, FlyoutHasSpell, GameTooltip, GetActionCharges, GetActionCooldown, GetActionInfo
+-- GLOBALS: GetActionLossOfControlCooldown, GetActionTexture, GetActionText, GetBindingKey, GetBindingText, GetCallPetSpellInfo
+-- GLOBALS: GetCursorInfo, GetFlyoutInfo, GetFlyoutSlotInfo, GetItemCooldown, GetMacroInfo, GetMacroSpell
+-- GLOBALS: GetTime, HasAction, InCombatLockdown, IsActionInRange, IsAttackAction, IsAutoRepeatAction
+-- GLOBALS: IsConsumableAction, IsCurrentAction, IsEquippedAction, IsItemAction, IsLoggedIn, IsMouseButtonDown
+-- GLOBALS: IsStackableAction, IsUsableAction, PickupAction, PickupCompanion, PickupMacro, PickupPetAction
+-- GLOBALS: SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, UIParent, UnitIsFriend
+-- GLOBALS: ActionButton_ApplyCooldown, ActionButtonSpellAlertManager
 
 -- unwrapped functions that return tables now
 local GetSpellCharges = function(spell)
@@ -121,6 +82,7 @@ local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell)
 		return c.startTime, c.duration, c.isEnabled, c.modRate
 	end
 end or GetSpellCooldown
+
 lib.eventFrame = lib.eventFrame or CreateFrame("Frame")
 lib.eventFrame:UnregisterAllEvents()
 
@@ -184,7 +146,7 @@ local type_meta_map = {
 }
 
 local GetFlyoutHandler
-local InitializeEventHandler, OnEvent, ForAllButtons
+local InitializeEventHandler, OnEvent, ForAllButtonsWithSpell, ForAllButtons
 local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons
 
 local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateCooldownNumberHidden, UpdateTooltip, UpdateNewAction, UpdateSpellHighlight, ClearNewActionHighlight
@@ -261,6 +223,7 @@ local DefaultConfig = {
 	useDrawBling = true,
 	useDrawSwipeOnCharges = true,
 	handleOverlay = true,
+	spellCastVFX = false, -- enable cast vfx
 	text = {
 		hotkey = {
 			font = {
@@ -308,6 +271,13 @@ local DefaultConfig = {
 			justifyH = "CENTER",
 		},
 	},
+}
+
+local ActionButtonCastType =
+{
+	Cast = 1,
+	Channel = 2,
+	Empowered = 3,
 }
 
 --- Create a new action button.
@@ -364,6 +334,12 @@ function lib:CreateButton(id, name, header, config)
 
 	SetupSecureSnippets(button)
 	WrapOnClick(button)
+
+	-- update animation scripts
+	if button.SpellCastAnimFrame then
+		button.SpellCastAnimFrame:SetScript("OnHide", SpellVFX_CastingAnim_OnHide)
+		button.SpellCastAnimFrame.EndBurst.FinishCastAnim:SetScript("OnFinished", SpellVFX_CastingAnim_Finish_OnFinished)
+	end
 
 	-- if there is no button yet, initialize events later
 	local InitializeEvents = not next(ButtonRegistry)
@@ -1506,6 +1482,15 @@ function ForAllButtons(method, onlyWithAction, event)
 	end
 end
 
+function ForAllButtonsWithSpell(spellID, method, ...)
+	assert(type(method) == "function")
+	for button in next, ActiveButtons do
+		if button:GetSpellId() == spellID then
+			method(button, ...)
+		end
+	end
+end
+
 function InitializeEventHandler()
 	lib.eventFrame:SetScript("OnEvent", OnEvent)
 	lib.eventFrame:RegisterEvent("CVAR_UPDATE")
@@ -1572,6 +1557,21 @@ function InitializeEventHandler()
 
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
+
+	if WoWRetail then
+		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_FAILED", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_START", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_STOP", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_START", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_CHANNEL_STOP", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_RETICLE_TARGET", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_RETICLE_CLEAR", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_EMPOWER_START", "player")
+		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_EMPOWER_STOP", "player")
+	end
 
 	if UseCustomFlyout then
 		lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
@@ -1800,6 +1800,50 @@ function OnEvent(_, event, arg1, arg2, ...)
 		end
 	elseif event == "SPELL_UPDATE_ICON" then
 		ForAllButtons(Update, true, event)
+
+	elseif event == "UNIT_SPELLCAST_INTERRUPTED" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellInterruptedAnim)
+	elseif event == "UNIT_SPELLCAST_START" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Cast)
+	elseif event == "UNIT_SPELLCAST_STOP" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, true, ActionButtonCastType.Cast)
+		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+	elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Cast)
+		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+	elseif event == "UNIT_SPELLCAST_SENT" then
+		local _, _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+	elseif event == "UNIT_SPELLCAST_FAILED" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+	elseif event == "UNIT_SPELLCAST_EMPOWER_START" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Empowered)
+	elseif event == "UNIT_SPELLCAST_EMPOWER_STOP" then
+		local _, spellID, castComplete = ...
+		local interrupted = not castComplete
+		if interrupted then
+			ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellInterruptedAnim)
+		else
+			ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, interrupted, ActionButtonCastType.Empowered)
+		end
+	elseif event == "UNIT_SPELLCAST_CHANNEL_START" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Channel)
+	elseif event == "UNIT_SPELLCAST_CHANNEL_STOP" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Channel)
+	elseif event == "UNIT_SPELLCAST_RETICLE_TARGET" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_PlayTargettingReticleAnim)
+	elseif event == "UNIT_SPELLCAST_RETICLE_CLEAR" then
+		local _, spellID = ...
+		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
 	end
 end
 
@@ -2624,6 +2668,86 @@ function UpdateOverlayGlow(self)
 	end
 end
 
+function SpellVFX_CastingAnim_OnHide(self)
+	local parent = self:GetParent()
+	SpellVFX_ClearReticle(parent)
+	parent.cooldown:SetSwipeColor(0, 0, 0, 1)
+	UpdateCooldown(parent)
+end
+
+function SpellVFX_CastingAnim_Finish_OnFinished(self)
+	self:GetParent():GetParent():Hide()
+	local parentButton = self:GetParent():GetParent():GetParent()
+	SpellVFX_StopSpellCastAnim(parentButton, false, parentButton.actionButtonCastType)
+end
+
+function SpellVFX_ClearReticle(self)
+	if self.TargetReticleAnimFrame:IsShown() then
+		self.TargetReticleAnimFrame:Hide()
+	end
+end
+
+function SpellVFX_ClearInterruptDisplay(self)
+	if self.InterruptDisplay:IsShown() then
+		self.InterruptDisplay:Hide()
+	end
+end
+
+function SpellVFX_PlaySpellCastAnim(self, actionButtonCastType)
+	if not self.config.spellCastVFX then return end
+
+	-- __Swipe_Hook is to stop Masque from re-setting it
+	self.cooldown.__Swipe_Hook = true
+	self.cooldown:SetSwipeColor(0, 0, 0, 0)
+	self.cooldown.__Swipe_Hook = nil
+
+	SpellVFX_ClearInterruptDisplay(self)
+	SpellVFX_ClearReticle(self)
+	self.SpellCastAnimFrame:Setup(actionButtonCastType)
+	self.actionButtonCastType = actionButtonCastType
+end
+
+function SpellVFX_PlayTargettingReticleAnim(self)
+	if not self.config.spellCastVFX then return end
+
+	if self.InterruptDisplay:IsShown() then
+		self.InterruptDisplay:Hide()
+	end
+	if not self._state_type == "action" or not IsAssistedCombatAction(self._state_action) then
+		self.TargetReticleAnimFrame:Setup()
+	end
+end
+
+function SpellVFX_StopTargettingReticleAnim(self)
+	if self.TargetReticleAnimFrame:IsShown() then
+		self.TargetReticleAnimFrame:Hide()
+	end
+end
+
+function SpellVFX_StopSpellCastAnim(self, forceStop, actionButtonCastType)
+	SpellVFX_StopTargettingReticleAnim(self)
+
+	if (self.actionButtonCastType == actionButtonCastType) then
+		if(forceStop) then
+			self.SpellCastAnimFrame:Hide()
+		elseif(self.SpellCastAnimFrame.Fill.CastingAnim:IsPlaying()) then
+			self.SpellCastAnimFrame:FinishAnimAndPlayBurst()
+		end
+		self.actionButtonCastType = nil
+	end
+end
+
+function SpellVFX_PlaySpellInterruptedAnim(self)
+	if not self.config.spellCastVFX then return end
+
+	SpellVFX_StopSpellCastAnim(self, true, self.actionButtonCastType)
+	--Hide if it's already showing to clear the anim.
+	if self.InterruptDisplay:IsShown() then
+		self.InterruptDisplay:Hide()
+	end
+	self.InterruptDisplay:Show()
+end
+
 function ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, value)
 	lib.ACTION_HIGHLIGHT_MARKS[action] = value
 
@@ -3057,8 +3181,8 @@ Spell.HasAction                = function(self) return true end
 Spell.GetActionText            = function(self) return "" end
 Spell.GetTexture               = function(self) return C_Spell.GetSpellTexture(self._state_action) end
 Spell.GetCount                 = function(self) return C_Spell.GetSpellCastCount(self._state_action) end
-Spell.GetChargeInfo            = function(self) return C_Spell.GetSpellCharges(self._state_action) end
-Spell.GetCooldownInfo          = function(self) return C_Spell.GetSpellCooldown(self._state_action) end
+Spell.GetChargeInfo            = function(self) return GetSpellCharges(self._state_action) end
+Spell.GetCooldownInfo          = function(self) return GetSpellCooldown(self._state_action) end
 Spell.GetLossOfControlCooldown = function(self) return GetSpellLossOfControlCooldown(self._state_action) end
 Spell.IsAttack                = function(self) return C_Spell.IsAutoAttackSpell(self._state_action) or nil end
 Spell.IsEquipped               = function(self) return nil end
