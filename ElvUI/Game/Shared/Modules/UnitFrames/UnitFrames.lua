@@ -2192,7 +2192,9 @@ function UF:Initialize()
 	UF:RegisterEvent('SPELLS_CHANGED', 'UpdateRangeSpells')
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
 
-	if not (E.TBC or E.Midnight) then
+	if E.TBC or E.Midnight then
+		UF:RegisterEvent('LEARNED_SPELL_IN_SKILL_LINE', 'UpdateRangeSpells')
+	else
 		UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
 	end
 
