@@ -743,7 +743,7 @@ function UF:Configure_FontString(obj)
 end
 
 function UF:Update_AllFrames()
-	if E.Midnight or not E.private.unitframe.enable then return end
+	if not E.private.unitframe.enable then return end
 
 	UF:UpdateColors()
 	UF:Update_FontStrings()
@@ -1765,7 +1765,7 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if not E.Midnight and E.private.unitframe.enable and not handledUnits[unit] then
+		if E.private.unitframe.enable and not handledUnits[unit] then
 			handledUnits[unit] = true
 
 			local disable = E.private.unitframe.disabledBlizzardFrames
@@ -2177,7 +2177,7 @@ function UF:Initialize()
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2
 
-	if E.Midnight or not E.private.unitframe.enable then return end
+	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
 	ElvUF:Factory(UF.Setup)
