@@ -7,14 +7,6 @@ Handles the visibility and updating of the player's class resources (like Chi Or
 
 ClassPower - An `table` consisting of as many StatusBars as the theoretical maximum return of [UnitPowerMax](https://warcraft.wiki.gg/wiki/API_UnitPowerMax).
 
-## Sub-Widgets
-
-.bg - A `Texture` used as a background. It will inherit the color of the main StatusBar.
-
-## Sub-Widget Options
-
-.multiplier - Used to tint the background based on the widget's R, G and B values. Defaults to 1 (number)[0-1]
-
 ## Notes
 
 A default texture will be applied if the sub-widgets are StatusBars and don't have a texture set.
@@ -130,31 +122,21 @@ local CurrentSpec, ClassPowerID
 
 local function UpdateColor(element, powerType)
 	local color = element.__owner.colors.power[powerType]
-	local r, g, b = color.r, color.g, color.b
-
-	for i = 1, #element do
-		local bar = element[i]
-		if not bar then break end
-
-		bar:SetStatusBarColor(r, g, b)
-
-		local bg = bar.bg
-		if bg then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
+	if(color) then
+		for i = 1, #element do
+			local bar = element[i]
+			bar:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 		end
 	end
 
-	--[[ Callback: ClassPower:PostUpdateColor(r, g, b)
+	--[[ Callback: ClassPower:PostUpdateColor(color)
 	Called after the element color has been updated.
 
-	* self - the ClassPower element
-	* r    - the red component of the used color (number)[0-1]
-	* g    - the green component of the used color (number)[0-1]
-	* b    - the blue component of the used color (number)[0-1]
+	* self  - the ClassPower element
+	* color - the used ColorMixin-based object (table?)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(r, g, b)
+		element:PostUpdateColor(color)
 	end
 end
 
