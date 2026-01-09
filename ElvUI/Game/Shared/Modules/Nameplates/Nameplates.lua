@@ -650,7 +650,7 @@ function NP:ConfigurePlates(init)
 end
 
 function NP:ConfigureAll(init)
-	if E.Midnight or not E.private.nameplates.enable then return end
+	if not E.private.nameplates.enable then return end
 
 	NP:StyleFilterConfigure() -- keep this at the top
 
@@ -972,7 +972,7 @@ function NP:SetupClassNameplateBars()
 end
 
 function NP:Initialize()
-	if E.Midnight or not E.private.nameplates.enable then return end
+	if not E.private.nameplates.enable then return end
 	NP.Initialized = true
 
 	NP.thinBorders = NP.db.thinBorders

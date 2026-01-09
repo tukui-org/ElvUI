@@ -1667,7 +1667,8 @@ do
 	end
 
 	function ElvUF:DisableNamePlate(frame)
-		if (not frame or frame:IsForbidden()) or (E.Midnight or not E.private.nameplates.enable) then return end
+		if (not frame or frame:IsForbidden())
+		or (not E.private.nameplates.enable) then return end
 
 		local plate = frame.UnitFrame
 		if plate then
