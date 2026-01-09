@@ -7,10 +7,6 @@ Handles the visibility and updating of Death Knight's runes.
 
 Runes - An `table` holding `StatusBar`s.
 
-## Sub-Widgets
-
-.bg - A `Texture` used as a background. It will inherit the color of the main StatusBar.
-
 ## Notes
 
 A default texture will be applied if the sub-widgets are StatusBars and don't have a texture set.
@@ -21,10 +17,6 @@ A default texture will be applied if the sub-widgets are StatusBars and don't ha
              value of [GetSpecialization](https://warcraft.wiki.gg/wiki/API_GetSpecialization) (boolean)
 .sortOrder - Sorting order. Sorts by the remaining cooldown time, 'asc' - from the least cooldown time remaining (fully
              charged) to the most (fully depleted), 'desc' - the opposite (string?)['asc', 'desc']
-
-## Sub-Widgets Options
-
-.multiplier - Used to tint the background based on the main widgets R, G and B values. Defaults to 1 (number)[0-1]
 
 ## Examples
 
@@ -117,46 +109,29 @@ end
 local function UpdateColor(self, event, runeID, alt)
 	local element = self.Runes
 
-	local rune, specType
-	if oUF.isWrath or oUF.isMists then -- runeID, alt
-		if runeID and event == 'RUNE_TYPE_UPDATE' then
-			rune = UpdateRuneType(element[runemap[runeID]], runeID, alt)
-		end
+	local spec = C_SpecializationInfo.GetSpecialization() or 0
+
+	local color
+	if(spec > 0 and spec < 4 and element.colorSpec) then
+		color = self.colors.runes[spec]
 	else
-		local spec = element.colorSpec and GetSpecialization() or 0
-		if spec > 0 and spec < 4 then
-			specType = spec
+		color = self.colors.power.RUNES
+	end
+
+	if(color) then
+		for index = 1, #element do
+			element[index]:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 		end
 	end
 
-	local color, r, g, b
-	if rune then
-		color, r, g, b = ColorRune(self, rune, specType or rune.runeType)
-	else
-		for i = 1, #element do
-			local bar = element[i]
-			if oUF.isWrath or oUF.isMists then
-				if not bar.runeType then
-					bar.runeType = GetRuneType(runemap[i])
-				end
-			else
-				bar.runeType = specType
-			end
-
-			color, r, g, b = ColorRune(self, bar, specType or bar.runeType)
-		end
-	end
-
-	--[[ Callback: Runes:PostUpdateColor(r, g, b)
+	--[[ Callback: Runes:PostUpdateColor(color)
 	Called after the element color has been updated.
 
 	* self - the Runes element
-	* r    - the red component of the used color (number)[0-1]
-	* g    - the green component of the used color (number)[0-1]
-	* b    - the blue component of the used color (number)[0-1]
+	* color - the used ColorMixin-based object (table?)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(r, g, b, color, rune)
+		element:PostUpdateColor(color)
 	end
 end
 
