@@ -145,6 +145,7 @@ function S:BlizzardQuestFrames()
 		_G.QuestGreetingScrollFrame,
 		_G.QuestInfoItemHighlight,
 		_G.QuestLogDetailScrollFrame,
+		_G.QuestLogCount,
 		_G.QuestLogFrame,
 		_G.QuestLogListScrollFrame,
 		_G.QuestLogQuestCount,
@@ -191,6 +192,8 @@ function S:BlizzardQuestFrames()
 			HandleItemButton(_G[frame..i])
 		end
 	end
+
+	_G.QuestLogCount:SetTemplate('Transparent')
 
 	hooksecurefunc('QuestInfo_GetRewardButton', function(rewardsFrame, index)
 		local button = rewardsFrame.RewardButtons[index]
