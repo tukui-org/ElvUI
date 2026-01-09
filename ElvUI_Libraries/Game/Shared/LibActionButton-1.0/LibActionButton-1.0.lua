@@ -1541,7 +1541,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
-	if not WoWBCC then
+	if not (WoWBCC or WoWMidnight) then
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 	end
 
@@ -2349,8 +2349,12 @@ end
 function EndChargeCooldown(self)
 	self:Hide()
 	self:SetParent(UIParent)
-	self.parent.chargeCooldown = nil
-	self.parent = nil
+
+	if self.parent then
+		self.parent.chargeCooldown = nil
+		self.parent = nil
+	end
+
 	tinsert(lib.ChargeCooldowns, self)
 end
 
