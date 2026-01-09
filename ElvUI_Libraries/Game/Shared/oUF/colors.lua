@@ -13,6 +13,8 @@ local colorMixin = {
 		local info = C_Texture.GetAtlasInfo(atlas)
 		if(not info) then
 			return nierror(string.format('"%s" is an invalid atlas.', atlas))
+		end
+
 		self.atlas = atlas
 	end,
 	GetAtlas = function(self)
