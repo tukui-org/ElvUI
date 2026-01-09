@@ -13,6 +13,7 @@ local GetInventoryItemQuality = GetInventoryItemQuality
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
+local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 
 local ResistanceCoords = {
