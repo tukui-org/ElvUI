@@ -46,7 +46,7 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 			element:UpdateColorArenaPreparation(specID)
 		else
 			-- this section just replicates the color options available to the Health and Power elements
-			local r, g, b, color, _
+			local color
 			-- if(element.colorPower and elementName == 'Power') then
 				-- FIXME: no idea if we can get power type here without the unit
 			if(element.colorClass) then
@@ -54,24 +54,14 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 				color = self.colors.class[class]
 			elseif(element.colorReaction) then
 				color = self.colors.reaction[2]
-			elseif(element.colorSmooth) then
-				_, _, _, _, _, _, r, g, b = unpack(element.smoothGradient or self.colors.smooth)
+			elseif(element.colorSmooth and self.colors.health:GetCurve()) then
+				color = self.colors.health:GetCurve():Evaluate(1)
 			elseif(element.colorHealth and elementName == 'Health') then
 				color = self.colors.health
 			end
 
 			if(color) then
-				r, g, b = color.r, color.g, color.b
-			end
-
-			if(r or g or b) then
-				element:SetStatusBarColor(r, g, b)
-
-				local bg = element.bg
-				if(bg) then
-					local mu = bg.multiplier or 1
-					bg:SetVertexColor(r * mu, g * mu, b * mu)
-				end
+				element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 			end
 		end
 
