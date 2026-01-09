@@ -9,5 +9,6 @@
 ## Interface: 20505
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
+## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 
 Game\TBC\!load.xml

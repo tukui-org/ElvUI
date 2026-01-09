@@ -1106,7 +1106,9 @@ function E:SetupGameMenu()
 		GameMenuFrame.ElvUI = button
 		GameMenuFrame.MenuButtons = {}
 
-		E:ScaleGameMenu()
+		if E.Retail then
+			E:ScaleGameMenu()
+		end
 
 		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 	else

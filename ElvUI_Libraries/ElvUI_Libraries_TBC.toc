@@ -3,6 +3,7 @@
 ## Author: Elv, Simpy
 ## Version: @project-version@
 ## Interface: 20505
+## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 ## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
 
