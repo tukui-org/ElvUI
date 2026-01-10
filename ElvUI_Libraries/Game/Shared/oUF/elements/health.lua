@@ -94,11 +94,9 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
-local gsub, unpack = gsub, unpack
+local gsub = gsub
 
-local Clamp = Clamp
 local GetPetHappiness = GetPetHappiness
-local GetUnitTotalModifiedMaxHealthPercent = GetUnitTotalModifiedMaxHealthPercent
 local UnitClass = UnitClass
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -110,29 +108,44 @@ local UnitIsUnit = UnitIsUnit
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local UnitThreatSituation = UnitThreatSituation
+local GetUnitTotalModifiedMaxHealthPercent = GetUnitTotalModifiedMaxHealthPercent
+local UnitHealthPercent = UnitHealthPercent
+
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 	local element = self.Health
+
+	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
 
 	local color
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		color = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
 		color = self.colors.tapped
+	elseif(element.colorHappiness and oUF.isClassic and oUF.myclass == "HUNTER" and UnitIsUnit(unit, "pet") and GetPetHappiness()) then
+		color = self.colors.happiness[GetPetHappiness()]
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		color =  self.colors.threat[UnitThreatSituation('player', unit)]
-	elseif(element.colorClass and (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
-		or (element.colorClassNPC and not (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
-		or (element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+	elseif(element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer)
+		or ((element.colorClassPet or element.colorPetByUnitClass) and UnitPlayerControlled(unit) and not isPlayer) then
+		if element.colorPetByUnitClass then unit = unit == 'pet' and 'player' or gsub(unit, 'pet', '') end
 		local _, class = UnitClass(unit)
 		color = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
 		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		color = self.colors.reaction[UnitReaction(unit, 'player')]
-	elseif(element.colorSmooth and self.colors.health:GetCurve()) then
-		color = UnitHealthPercent(unit, true, self.colors.health:GetCurve())
+	elseif(element.colorSmooth) then
+		if oUF.isMidnight then
+			local curve = self.colors.health:GetCurve()
+			if curve then
+				color = UnitHealthPercent(unit, true, curve)
+			end
+		else
+			color = element.smoothGradient or self.colors.smooth
+		end
 	elseif(element.colorHealth) then
 		color = self.colors.health
 	end
@@ -329,7 +342,7 @@ local function Enable(self)
 		element.SetColorThreat = SetColorThreat
 
 		if(not element.smoothing) then
-			element.smoothing = Enum.StatusBarInterpolation.Immediate
+			element.smoothing = StatusBarInterpolation.Immediate
 		end
 
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
