@@ -577,17 +577,19 @@ local function SkinWardrobeFrame()
 	S:HandleTab(_G.WardrobeCollectionFrameTab1)
 	S:HandleTab(_G.WardrobeCollectionFrameTab2)
 
-	WardrobeCollectionFrame.progressBar.border:Hide()
-	WardrobeCollectionFrame.progressBar:DisableDrawLayer('BACKGROUND')
-	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
-	WardrobeCollectionFrame.progressBar:CreateBackdrop()
-	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
-
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
-
 	S:HandleButton(WardrobeCollectionFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
-
 	S:HandleDropDownBox(WardrobeCollectionFrame.ClassDropdown)
+
+	local ProgressBar = WardrobeCollectionFrame.progressBar
+	if ProgressBar then
+		ProgressBar.border:Hide()
+		ProgressBar:DisableDrawLayer('BACKGROUND')
+		ProgressBar:SetStatusBarTexture(E.media.normTex)
+		ProgressBar:CreateBackdrop()
+
+		E:RegisterStatusBar(ProgressBar)
+	end
 
 	local PagingControls = WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame
 	if PagingControls then
