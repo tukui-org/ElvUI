@@ -567,8 +567,38 @@ local function HandleTabs()
 	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 end
 
+local function SkinWardrobeFrame()
+	local WardrobeCollectionFrame = _G.WardrobeCollectionFrame
+
+	if E.private.skins.parchmentRemoverEnable then
+		WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
+	end
+
+	S:HandleTab(WardrobeCollectionFrameTab1)
+	S:HandleTab(WardrobeCollectionFrameTab2)
+
+	WardrobeCollectionFrame.progressBar.border:Hide()
+	WardrobeCollectionFrame.progressBar:DisableDrawLayer('BACKGROUND')
+	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
+	WardrobeCollectionFrame.progressBar:CreateBackdrop()
+	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
+
+	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
+
+	S:HandleButton(WardrobeCollectionFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+
+	S:HandleDropDownBox(WardrobeCollectionFrame.ClassDropdown)
+
+	local PagingControls = WardrobeCollectionFrame.ItemsCollectionFrame.PagingFrame
+	if PagingControls then
+		S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
+		S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
+	end
+end
+
 local function SkinCollectionsFrames()
 	S:HandlePortraitFrame(_G.CollectionsJournal, true)
+	SkinWardrobeFrame()
 
 	HandleTabs()
 
