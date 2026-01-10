@@ -64,6 +64,8 @@ function S:Blizzard_HousingDashboard()
 		S:HandleFrame(DashBoardFrame, true)
 	end
 
+	S:HandleButton(DashBoardFrame.HouseInfoContent.DashboardNoHousesFrame.NoHouseButton)
+
 	-- Fix the actual icon texture
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
 		tab:CreateBackdrop()
