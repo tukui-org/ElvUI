@@ -141,31 +141,33 @@ function S:Blizzard_PVPUI()
 	S:HandleButton(_G.HonorFrameQueueButton)
 
 	local BonusFrame = HonorFrame.BonusFrame
-	BonusFrame:StripTextures()
-	BonusFrame.ShadowOverlay:Hide()
-	BonusFrame.WorldBattlesTexture:Hide()
+	if BonusFrame then
+		BonusFrame:StripTextures()
+		BonusFrame.ShadowOverlay:Hide()
+		BonusFrame.WorldBattlesTexture:Hide()
 
-	for _, bonusButton in pairs({'RandomBGButton', 'Arena1Button', 'RandomEpicBGButton', 'BrawlButton', 'BrawlButton2'}) do
-		local bu = BonusFrame[bonusButton]
-		local reward = bu.Reward
-		S:HandleButton(bu)
-		bu.SelectedTexture:SetInside()
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+		for _, bonusButton in pairs({'RandomBGButton', 'Arena1Button', 'RandomEpicBGButton', 'BrawlButton', 'BrawlButton2'}) do
+			local bu = BonusFrame[bonusButton]
+			local reward = bu.Reward
+			S:HandleButton(bu)
+			bu.SelectedTexture:SetInside()
+			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		reward.Border:Hide()
-		reward.CircleMask:Hide()
-		S:HandleIcon(reward.Icon, true)
+			reward.Border:Hide()
+			reward.CircleMask:Hide()
+			S:HandleIcon(reward.Icon, true)
 
-		reward.EnlistmentBonus:StripTextures()
-		reward.EnlistmentBonus:SetTemplate()
-		reward.EnlistmentBonus:Size(20)
-		reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
+			reward.EnlistmentBonus:StripTextures()
+			reward.EnlistmentBonus:SetTemplate()
+			reward.EnlistmentBonus:Size(20)
+			reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
 
-		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
-		EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
-		EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
-		EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
-		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+			local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
+			EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
+			EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
+			EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
+			EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		end
 	end
 
 	-- Honor Frame Specific Buttons
@@ -295,32 +297,34 @@ function S:Blizzard_PVPUI()
 	S:HandleDropDownBox(TrainingGroundsFrame.TypeDropdown, 230)
 	S:HandleButton(TrainingGroundsFrame.QueueButton)
 
-	local BonusFrame = TrainingGroundsFrame.BonusTrainingGroundList
-	BonusFrame:StripTextures()
-	BonusFrame.ShadowOverlay:Hide()
-	BonusFrame.WorldBattlesTexture:Hide()
+	local BonusTrainingGroundList = TrainingGroundsFrame.BonusTrainingGroundList
+	if BonusTrainingGroundList then
+		BonusTrainingGroundList:StripTextures()
+		BonusTrainingGroundList.ShadowOverlay:Hide()
+		BonusTrainingGroundList.WorldBattlesTexture:Hide()
 
-	for _, bonusButton in pairs({'RandomTrainingGroundButton'}) do -- Pretty sure they're adding more buttons for the live servers
-		local bu = BonusFrame[bonusButton]
-		local reward = bu.Reward
-		S:HandleButton(bu)
-		bu.SelectedTexture:SetInside()
-		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+		for _, bonusButton in pairs({'RandomTrainingGroundButton'}) do -- Pretty sure they're adding more buttons for the live servers
+			local bu = BonusTrainingGroundList[bonusButton]
+			local reward = bu.Reward
+			S:HandleButton(bu)
+			bu.SelectedTexture:SetInside()
+			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-		reward.Border:Hide()
-		reward.CircleMask:Hide()
-		S:HandleIcon(reward.Icon, true)
+			reward.Border:Hide()
+			reward.CircleMask:Hide()
+			S:HandleIcon(reward.Icon, true)
 
-		reward.EnlistmentBonus:StripTextures()
-		reward.EnlistmentBonus:SetTemplate()
-		reward.EnlistmentBonus:Size(20)
-		reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
+			reward.EnlistmentBonus:StripTextures()
+			reward.EnlistmentBonus:SetTemplate()
+			reward.EnlistmentBonus:Size(20)
+			reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
 
-		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
-		EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
-		EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
-		EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
-		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+			local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
+			EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
+			EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
+			EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
+			EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+		end
 	end
 
 	HandleRoleButton(TrainingGroundsFrame.RoleList.TankIcon)
