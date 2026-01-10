@@ -287,6 +287,45 @@ function S:Blizzard_PVPUI()
 			end
 		end
 	end)
+
+	-- Training Grounds Frame
+	local TrainingGroundsFrame = _G.TrainingGroundsFrame
+	TrainingGroundsFrame:StripTextures()
+
+	S:HandleDropDownBox(TrainingGroundsFrame.TypeDropdown, 230)
+	S:HandleButton(TrainingGroundsFrame.QueueButton)
+
+	local BonusFrame = TrainingGroundsFrame.BonusTrainingGroundList
+	BonusFrame:StripTextures()
+	BonusFrame.ShadowOverlay:Hide()
+	BonusFrame.WorldBattlesTexture:Hide()
+
+	for _, bonusButton in pairs({'RandomTrainingGroundButton'}) do -- Pretty sure they're adding more buttons for the live servers
+		local bu = BonusFrame[bonusButton]
+		local reward = bu.Reward
+		S:HandleButton(bu)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+
+		reward.Border:Hide()
+		reward.CircleMask:Hide()
+		S:HandleIcon(reward.Icon, true)
+
+		reward.EnlistmentBonus:StripTextures()
+		reward.EnlistmentBonus:SetTemplate()
+		reward.EnlistmentBonus:Size(20)
+		reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
+
+		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
+		EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
+		EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
+		EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
+		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	end
+
+	HandleRoleButton(TrainingGroundsFrame.RoleList.TankIcon)
+	HandleRoleButton(TrainingGroundsFrame.RoleList.HealerIcon)
+	HandleRoleButton(TrainingGroundsFrame.RoleList.DPSIcon)
 end
 
 function S:PVPReadyDialog()
