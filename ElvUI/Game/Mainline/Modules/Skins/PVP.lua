@@ -49,6 +49,34 @@ local function HonorSpecificScrollUpdate(frame)
 	frame:ForEachFrame(HonorSpecificScrollUpdateChild)
 end
 
+local function HandleCategoryButtons(name, icons)
+	local index = 1
+	local button = _G.PVPQueueFrame[name..index]
+	while button do
+		button.Ring:Hide()
+		button.Background:Kill()
+
+		S:HandleButton(button)
+
+		local icon = button.Icon
+		if icon then
+			local texture = icons[index]
+			if texture then
+				icon:SetTexture(texture)
+			end
+
+			icon:Size(45)
+			icon:ClearAllPoints()
+			icon:Point('LEFT', 10, 0)
+
+			S:HandleIcon(icon, true)
+		end
+
+		index = index + 1
+		button = _G.PVPQueueFrame[name..index]
+	end
+end
+
 function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
@@ -88,36 +116,14 @@ function S:Blizzard_PVPUI()
 		S:HandleButton(PlunderstormPanel.PlunderstoreButton)
 	end
 
-
 	local categoryButtonIcons = {
-		[1] = 236396, -- interface\icons\achievement_bg_winwsg.blp
-		[2] = 236368, -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
-		[3] = 464820, -- interface\icons\achievement_general_stayclassy.blp
-		[4] = 236179, -- no idead about the file path yet
+		236396, -- interface\icons\achievement_bg_winwsg.blp
+		236368, -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
+		464820, -- interface\icons\achievement_general_stayclassy.blp
+		236179, -- no idead about the file path yet
 	}
 
-	do
-		local index = 1
-		local button = _G.PVPQueueFrame['CategoryButton'..index]
-		while button do
-			button.Ring:Hide()
-			button.Background:Kill()
-			S:HandleButton(button)
-
-			local texture = categoryButtonIcons[index]
-			if texture then
-				button.Icon:SetTexture(texture)
-			end
-
-			button.Icon:Size(45)
-			button.Icon:ClearAllPoints()
-			button.Icon:Point('LEFT', 10, 0)
-			S:HandleIcon(button.Icon, true)
-
-			index = index + 1
-			button = _G.PVPQueueFrame['CategoryButton'..index]
-		end
-	end
+	HandleCategoryButtons('CategoryButton', categoryButtonIcons)
 
 	local SeasonReward = HonorInset.RatedPanel.SeasonRewardFrame
 	SeasonReward:CreateBackdrop()
