@@ -640,28 +640,6 @@ local function SkinWardrobeFrame()
 			end
 		end
 
-		local pending = Frame.PendingTransmogFrame
-		if pending then
-			local Glowframe = pending.Glowframe
-			Glowframe:SetAtlas(nil)
-			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
-
-			if Glowframe.backdrop then
-				Glowframe.backdrop:Point('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-				Glowframe.backdrop:Point('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
-				Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
-				Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
-			end
-
-			for i = 1, 12 do
-				if i < 5 then
-					Frame.PendingTransmogFrame['Smoke'..i]:Hide()
-				end
-
-				Frame.PendingTransmogFrame['Wisp'..i]:Hide()
-			end
-		end
-
 		local paging = Frame.PagingFrame
 		if paging then
 			S:HandleNextPrevButton(paging.PrevPageButton, nil, nil, true)
