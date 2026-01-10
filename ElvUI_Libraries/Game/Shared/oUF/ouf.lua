@@ -990,8 +990,8 @@ do
 
 				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, oUF.isRetail and 'PingableUnitFrameTemplate' or '')
 				nameplate.unitFrame:EnableMouse(false)
-				nameplate.unitFrame.isNamePlate = true
 				nameplate.unitFrame:SetAllPoints()
+				nameplate.unitFrame.isNamePlate = true
 
 				Private.UpdateUnits(nameplate.unitFrame, unit)
 
