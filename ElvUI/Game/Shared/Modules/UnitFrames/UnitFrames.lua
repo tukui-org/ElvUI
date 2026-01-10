@@ -1631,7 +1631,7 @@ do
 		frame:UnregisterAllEvents()
 		pcall(frame.Hide, frame)
 
-		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
+		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or (frame.HealthBarsContainer and frame.HealthBarsContainer.healthBar) or nil)
 		tinsert(DisabledElements, frame.manabar or frame.ManaBar or nil)
 		tinsert(DisabledElements, frame.castBar or frame.spellbar or nil)
 		tinsert(DisabledElements, frame.petFrame or frame.PetFrame or nil)
@@ -1640,7 +1640,7 @@ do
 		tinsert(DisabledElements, frame.CcRemoverFrame or nil)
 		tinsert(DisabledElements, frame.classPowerBar or nil)
 		tinsert(DisabledElements, frame.DebuffFrame or nil)
-		tinsert(DisabledElements, frame.BuffFrame or nil)
+		tinsert(DisabledElements, frame.BuffFrame or frame.AurasFrame or nil)
 		tinsert(DisabledElements, frame.totFrame or nil)
 
 		for index, element in ipairs(DisabledElements) do
@@ -1666,6 +1666,7 @@ do
 		end
 	end
 
+	-- Retail: Midnight uses DisableBlizzardNamePlate
 	function ElvUF:DisableNamePlate(frame)
 		if (not frame or frame:IsForbidden())
 		or (not E.private.nameplates.enable) then return end
