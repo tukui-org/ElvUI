@@ -35,6 +35,7 @@ local next, tinsert, tremove = next, tinsert, tremove
 
 local CreateFrame = CreateFrame
 local UnitInRange = UnitInRange
+local UnitInParty = UnitInParty
 local UnitIsConnected = UnitIsConnected
 
 local function Update(self, event)
@@ -50,11 +51,19 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local inRange
-	local isEligible = UnitIsConnected(unit) and UnitInParty(unit)
+	local inRange, checkedRange
+	local connected = UnitIsConnected(unit)
+	local isEligible = connected and UnitInParty(unit)
 	if(isEligible) then
-		inRange = UnitInRange(unit)
-		self:SetAlphaFromBoolean(inRange, element.insideAlpha, element.outsideAlpha)
+		inRange, checkedRange = UnitInRange(unit)
+
+		if oUF.isMidnight then
+			self:SetAlphaFromBoolean(inRange, element.insideAlpha, element.outsideAlpha)
+		elseif(checkedRange and not inRange) then
+			self:SetAlpha(element.outsideAlpha)
+		else
+			self:SetAlpha(element.insideAlpha)
+		end
 	else
 		self:SetAlpha(element.insideAlpha)
 	end
@@ -68,7 +77,7 @@ local function Update(self, event)
 	* isEligible - indicates if the unit is eligible for the range check (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(self, inRange, isEligible)
+		return element:PostUpdate(self, inRange, isEligible, connected)
 	end
 end
 
