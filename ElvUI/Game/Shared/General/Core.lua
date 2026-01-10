@@ -160,7 +160,7 @@ E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
 
-E.UFParent = _G.ElvUFParent -- created in oUF
+E.UFParent = _G.ElvUF_UFParentFrameHider -- created in oUF
 E.UFParent:SetParent(E.UIParent)
 E.UFParent:SetFrameStrata('LOW')
 
