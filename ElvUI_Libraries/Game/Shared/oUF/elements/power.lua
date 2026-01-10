@@ -88,10 +88,9 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
-local unpack = unpack
-
 local UnitClass = UnitClass
 local UnitInParty = UnitInParty
+local UnitPowerPercent = UnitPowerPercent
 local UnitInPartyIsAI = UnitInPartyIsAI
 local UnitInRaid = UnitInRaid
 local UnitIsConnected = UnitIsConnected
@@ -107,6 +106,7 @@ local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 
 -- sourced from Blizzard_UnitFrame/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 --[[ Override: Power:GetDisplayPower(unit)
 Used to get info on the unit's alternative power, if any.
@@ -120,7 +120,6 @@ type and zero for the minimum value.
 * unit - the unit for which the update has been triggered (string)
 --]]
 local function GetDisplayPower(_, unit)
-	local unit = element.__owner.unit
 	local barInfo = GetUnitPowerBarInfo(unit)
 	if(barInfo and barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit))) then
 		return ALTERNATE_POWER_INDEX, barInfo.minPower
@@ -131,6 +130,7 @@ local function UpdateColor(self, event, unit)
 	if(self.unit ~= unit) then return end
 	local element = self.Power
 
+	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
 	local pType, pToken, altR, altG, altB = UnitPowerType(unit)
 
 	local r, g, b, color, atlas
@@ -144,7 +144,9 @@ local function UpdateColor(self, event, unit)
 		if(element.displayType ~= ALTERNATE_POWER_INDEX) then
 			color = self.colors.power[pToken]
 			if(not color) then
-				if(altR) then
+				if(element.GetAlternativeColor) then
+					r, g, b = element:GetAlternativeColor(unit, pType, pToken, altR, altG, altB)
+				elseif(altR) then
 					r, g, b = altR, altG, altB
 					if(r > 1 or g > 1 or b > 1) then
 						-- BUG: As of 7.0.3, altR, altG, altB may be in 0-1 or 0-255 range.
@@ -158,16 +160,25 @@ local function UpdateColor(self, event, unit)
 			color = self.colors.power[ALTERNATE_POWER_INDEX]
 		end
 
-		if(element.colorPowerAtlas and color) then
+		if(element.useAtlas and color and color.atlas) then
+			atlas = color.atlas
+		elseif(element.colorPowerAtlas and color) then
 			atlas = color:GetAtlas()
 		end
 
-		if(element.colorPowerSmooth and color and color:GetCurve()) then
-			color = UnitPowerPercent(unit, true, color:GetCurve())
+		if(element.colorPowerSmooth) then
+			if oUF.isMidnight then
+				local curve = color and color:GetCurve()
+				if curve then
+					color = UnitPowerPercent(unit, true, curve)
+				end
+			else
+				color = element.smoothGradient or self.colors.smooth
+			end
 		end
-	elseif(element.colorClass and (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
-		or (element.colorClassNPC and not (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
-		or (element.colorClassPet and UnitPlayerControlled(unit) and not UnitIsPlayer(unit)) then
+	elseif(element.colorClass and isPlayer)
+		or (element.colorClassNPC and not isPlayer)
+		or (element.colorClassPet and UnitPlayerControlled(unit) and not isPlayer) then
 		local _, class = UnitClass(unit)
 		color = self.colors.class[class]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
@@ -374,7 +385,7 @@ local function Enable(self)
 		element.SetColorThreat = SetColorThreat
 
 		if(not element.smoothing) then
-			element.smoothing = Enum.StatusBarInterpolation.Immediate
+			element.smoothing = StatusBarInterpolation.Immediate
 		end
 
 		if(element.colorDisconnected) then
