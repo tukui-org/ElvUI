@@ -9,21 +9,21 @@ HealthPrediction - A `table` containing references to sub-widgets and options.
 
 ## Sub-Widgets
 
-healingAll                - A `StatusBar` used to represent incoming heals from all sources (retail only).
-healingPlayer             - A `StatusBar` used to represent incoming heals from the player (retail only).
-healingOther              - A `StatusBar` used to represent incoming heals from others (retail only).
-myBar                     - A `StatusBar` used to represent incoming heals from the player (classic, maps to healingPlayer).
-otherBar                  - A `StatusBar` used to represent incoming heals from others (classic, maps to healingOther).
-damageAbsorb              - A `StatusBar` used to represent damage absorbs (retail only).
-absorbBar                 - A `StatusBar` used to represent damage absorbs (classic, maps to damageAbsorb).
-healAbsorb                - A `StatusBar` used to represent heal absorbs (retail only).
-healAbsorbBar             - A `StatusBar` used to represent heal absorbs (classic, maps to healAbsorb).
-overHealIndicator         - A `Texture` used to indicate that the incoming healing is greater than the configured limits (retail only).
-overDamageAbsorbIndicator - A `Texture` used to signify that the amount of damage absorb is greater than the configured limits (retail only).
-overHealAbsorbIndicator   - A `Texture` used to signify that the amount of heal absorb is greater than the configured limits (retail only).
+healingOther              - A `StatusBar` used to represent incoming heals from others.
+healingPlayer             - A `StatusBar` used to represent incoming heals from the player.
+damageAbsorb              - A `StatusBar` used to represent damage absorbs.
+healAbsorb                - A `StatusBar` used to represent heal absorbs.
+
+### Retail only
+healingAll                - A `StatusBar` used to represent incoming heals from all sources.
+overHealIndicator         - A `Texture` used to indicate that the incoming healing is greater than the configured limits.
+overDamageAbsorbIndicator - A `Texture` used to signify that the amount of damage absorb is greater than the configured limits.
+overHealAbsorbIndicator   - A `Texture` used to signify that the amount of heal absorb is greater than the configured limits.
+
+### Classic only
 overAbsorb                - A `Texture` used to signify that the amount of damage absorb is greater than either the unit's missing
-                            health or the unit's maximum health, if .showRawAbsorb is enabled (classic).
-overHealAbsorb            - A `Texture` used to signify that the amount of heal absorb is greater than the unit's current health (classic).
+                            health or the unit's maximum health, if .showRawAbsorb is enabled.
+overHealAbsorb            - A `Texture` used to signify that the amount of heal absorb is greater than the unit's current health.
 
 ## Notes
 
@@ -45,57 +45,6 @@ A default texture will be applied to the Texture widgets if they don't have a te
 ## Attributes
 
 .values - A [unit heal prediction calculator](https://warcraft.wiki.gg/wiki/API_CreateUnitHealPredictionCalculator) used to calculate the values used in this element (retail only).
-
-## Examples
-
-    -- Position and size
-    local myBar = CreateFrame('StatusBar', nil, self.Health)
-    myBar:SetPoint('TOP')
-    myBar:SetPoint('BOTTOM')
-    myBar:SetPoint('LEFT', self.Health:GetStatusBarTexture(), 'RIGHT')
-    myBar:SetWidth(200)
-
-    local otherBar = CreateFrame('StatusBar', nil, self.Health)
-    otherBar:SetPoint('TOP')
-    otherBar:SetPoint('BOTTOM')
-    otherBar:SetPoint('LEFT', myBar:GetStatusBarTexture(), 'RIGHT')
-    otherBar:SetWidth(200)
-
-    local absorbBar = CreateFrame('StatusBar', nil, self.Health)
-    absorbBar:SetPoint('TOP')
-    absorbBar:SetPoint('BOTTOM')
-    absorbBar:SetPoint('LEFT', otherBar:GetStatusBarTexture(), 'RIGHT')
-    absorbBar:SetWidth(200)
-
-    local healAbsorbBar = CreateFrame('StatusBar', nil, self.Health)
-    healAbsorbBar:SetPoint('TOP')
-    healAbsorbBar:SetPoint('BOTTOM')
-    healAbsorbBar:SetPoint('RIGHT', self.Health:GetStatusBarTexture())
-    healAbsorbBar:SetWidth(200)
-    healAbsorbBar:SetReverseFill(true)
-
-    local overAbsorb = self.Health:CreateTexture(nil, "OVERLAY")
-    overAbsorb:SetPoint('TOP')
-    overAbsorb:SetPoint('BOTTOM')
-    overAbsorb:SetPoint('LEFT', self.Health, 'RIGHT')
-    overAbsorb:SetWidth(10)
-
-	local overHealAbsorb = self.Health:CreateTexture(nil, "OVERLAY")
-    overHealAbsorb:SetPoint('TOP')
-    overHealAbsorb:SetPoint('BOTTOM')
-    overHealAbsorb:SetPoint('RIGHT', self.Health, 'LEFT')
-    overHealAbsorb:SetWidth(10)
-
-    -- Register with oUF
-    self.HealthPrediction = {
-        myBar = myBar,
-        otherBar = otherBar,
-        absorbBar = absorbBar,
-        healAbsorbBar = healAbsorbBar,
-        overAbsorb = overAbsorb,
-        overHealAbsorb = overHealAbsorb,
-        maxOverflow = 1.05,
-    }
 --]]
 
 local _, ns = ...
@@ -128,28 +77,12 @@ local function UpdateSize(self, event, unit)
 		element.healingOther[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healingOther, element.size)
 	end
 
-	if(element.myBar) then
-		element.myBar[element.isHoriz and 'SetWidth' or 'SetHeight'](element.myBar, element.size)
-	end
-
-	if(element.otherBar) then
-		element.otherBar[element.isHoriz and 'SetWidth' or 'SetHeight'](element.otherBar, element.size)
-	end
-
 	if(element.damageAbsorb) then
 		element.damageAbsorb[element.isHoriz and 'SetWidth' or 'SetHeight'](element.damageAbsorb, element.size)
 	end
 
-	if(element.absorbBar) then
-		element.absorbBar[element.isHoriz and 'SetWidth' or 'SetHeight'](element.absorbBar, element.size)
-	end
-
 	if(element.healAbsorb) then
 		element.healAbsorb[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healAbsorb, element.size)
-	end
-
-	if(element.healAbsorbBar) then
-		element.healAbsorbBar[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healAbsorbBar, element.size)
 	end
 end
 
@@ -173,7 +106,6 @@ local function Update(self, event, unit)
 
 	-- Retail API
 	if(oUF.isRetail and element.values) then
-
 		UnitGetDetailedHealPrediction(unit, 'player', element.values)
 
 		local allHeal, playerHeal, otherHeal, healClamped = element.values:GetIncomingHeals()
@@ -189,16 +121,6 @@ local function Update(self, event, unit)
 			element.healingOther:SetMinMaxValues(0, maxHealth)
 			element.healingOther:SetValue(otherHeal)
 		end
-
-		-- Backward compatibility
-		if(element.myBar) then
-			element.myBar:SetMinMaxValues(0, maxHealth)
-			element.myBar:SetValue(playerHeal)
-		end
-		if(element.otherBar) then
-			element.otherBar:SetMinMaxValues(0, maxHealth)
-			element.otherBar:SetValue(otherHeal)
-		end
 		if(element.overHealIndicator) then
 			element.overHealIndicator:SetAlphaFromBoolean(healClamped, 1, 0)
 		end
@@ -208,12 +130,6 @@ local function Update(self, event, unit)
 			element.damageAbsorb:SetMinMaxValues(0, maxHealth)
 			element.damageAbsorb:SetValue(damageAbsorbAmount)
 		end
-
-		-- Backward compatibility
-		if(element.absorbBar) then
-			element.absorbBar:SetMinMaxValues(0, maxHealth)
-			element.absorbBar:SetValue(damageAbsorbAmount)
-		end
 		if(element.overDamageAbsorbIndicator) then
 			element.overDamageAbsorbIndicator:SetAlphaFromBoolean(damageAbsorbClamped, 1, 0)
 		end
@@ -222,12 +138,6 @@ local function Update(self, event, unit)
 		if(element.healAbsorb) then
 			element.healAbsorb:SetMinMaxValues(0, maxHealth)
 			element.healAbsorb:SetValue(healAbsorbAmount)
-		end
-
-		-- Backward compatibility
-		if(element.healAbsorbBar) then
-			element.healAbsorbBar:SetMinMaxValues(0, maxHealth)
-			element.healAbsorbBar:SetValue(healAbsorbAmount)
 		end
 		if(element.overHealAbsorbIndicator) then
 			element.overHealAbsorbIndicator:SetAlphaFromBoolean(healAbsorbClamped, 1, 0)
@@ -301,28 +211,28 @@ local function Update(self, event, unit)
 			hasOverAbsorb = true
 		end
 
-		if(element.myBar) then
-			element.myBar:SetMinMaxValues(0, maxHealth)
-			element.myBar:SetValue(myIncomingHeal)
-			element.myBar:Show()
+		if(element.healingPlayer) then
+			element.healingPlayer:SetMinMaxValues(0, maxHealth)
+			element.healingPlayer:SetValue(myIncomingHeal)
+			element.healingPlayer:Show()
 		end
 
-		if(element.otherBar) then
-			element.otherBar:SetMinMaxValues(0, maxHealth)
-			element.otherBar:SetValue(otherIncomingHeal)
-			element.otherBar:Show()
+		if(element.healingOther) then
+			element.healingOther:SetMinMaxValues(0, maxHealth)
+			element.healingOther:SetValue(otherIncomingHeal)
+			element.healingOther:Show()
 		end
 
-		if(element.absorbBar) then
-			element.absorbBar:SetMinMaxValues(0, maxHealth)
-			element.absorbBar:SetValue(absorb)
-			element.absorbBar:Show()
+		if(element.damageAbsorb) then
+			element.damageAbsorb:SetMinMaxValues(0, maxHealth)
+			element.damageAbsorb:SetValue(absorb)
+			element.damageAbsorb:Show()
 		end
 
-		if(element.healAbsorbBar) then
-			element.healAbsorbBar:SetMinMaxValues(0, maxHealth)
-			element.healAbsorbBar:SetValue(healAbsorb)
-			element.healAbsorbBar:Show()
+		if(element.healAbsorb) then
+			element.healAbsorb:SetMinMaxValues(0, maxHealth)
+			element.healAbsorb:SetValue(healAbsorb)
+			element.healAbsorb:Show()
 		end
 
 		if(element.overAbsorb) then
@@ -505,6 +415,28 @@ local function Enable(self)
 			end
 		end
 
+		if(element.overHealIndicator) then
+			if(element.overHealIndicator:IsObjectType('Texture') and not element.overHealIndicator:GetTexture()) then
+				element.overHealIndicator:SetTexture([[Interface\RaidFrame\Shield-Overshield]])
+				element.overHealIndicator:SetBlendMode('ADD')
+			end
+		end
+
+		if(element.overDamageAbsorbIndicator) then
+			if(element.overDamageAbsorbIndicator:IsObjectType('Texture') and not element.overDamageAbsorbIndicator:GetTexture()) then
+				element.overDamageAbsorbIndicator:SetTexture([[Interface\RaidFrame\Shield-Overshield]])
+				element.overDamageAbsorbIndicator:SetBlendMode('ADD')
+			end
+		end
+
+		if(element.overHealAbsorbIndicator) then
+			if(element.overHealAbsorbIndicator:IsObjectType('Texture') and not element.overHealAbsorbIndicator:GetTexture()) then
+				element.overHealAbsorbIndicator:SetTexture([[Interface\RaidFrame\Absorb-Overabsorb]])
+				element.overHealAbsorbIndicator:SetBlendMode('ADD')
+			end
+		end
+
+		-- Setup classic widget names
 		if(element.healingPlayer) then
 			if(element.healingPlayer:IsObjectType('StatusBar') and not element.healingPlayer:GetStatusBarTexture()) then
 				element.healingPlayer:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
@@ -529,52 +461,6 @@ local function Enable(self)
 			end
 		end
 
-		if(element.overHealIndicator) then
-			if(element.overHealIndicator:IsObjectType('Texture') and not element.overHealIndicator:GetTexture()) then
-				element.overHealIndicator:SetTexture([[Interface\RaidFrame\Shield-Overshield]])
-				element.overHealIndicator:SetBlendMode('ADD')
-			end
-		end
-
-		if(element.overDamageAbsorbIndicator) then
-			if(element.overDamageAbsorbIndicator:IsObjectType('Texture') and not element.overDamageAbsorbIndicator:GetTexture()) then
-				element.overDamageAbsorbIndicator:SetTexture([[Interface\RaidFrame\Shield-Overshield]])
-				element.overDamageAbsorbIndicator:SetBlendMode('ADD')
-			end
-		end
-
-		if(element.overHealAbsorbIndicator) then
-			if(element.overHealAbsorbIndicator:IsObjectType('Texture') and not element.overHealAbsorbIndicator:GetTexture()) then
-				element.overHealAbsorbIndicator:SetTexture([[Interface\RaidFrame\Absorb-Overabsorb]])
-				element.overHealAbsorbIndicator:SetBlendMode('ADD')
-			end
-		end
-
-		-- Setup classic widget names
-		if(element.myBar) then
-			if(element.myBar:IsObjectType('StatusBar') and not element.myBar:GetStatusBarTexture()) then
-				element.myBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
-			end
-		end
-
-		if(element.otherBar) then
-			if(element.otherBar:IsObjectType('StatusBar') and not element.otherBar:GetStatusBarTexture()) then
-				element.otherBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
-			end
-		end
-
-		if(element.absorbBar) then
-			if(element.absorbBar:IsObjectType('StatusBar') and not element.absorbBar:GetStatusBarTexture()) then
-				element.absorbBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
-			end
-		end
-
-		if(element.healAbsorbBar) then
-			if(element.healAbsorbBar:IsObjectType('StatusBar') and not element.healAbsorbBar:GetStatusBarTexture()) then
-				element.healAbsorbBar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
-			end
-		end
-
 		if(element.overAbsorb) then
 			if(element.overAbsorb:IsObjectType('Texture') and not element.overAbsorb:GetTexture()) then
 				element.overAbsorb:SetTexture([[Interface\RaidFrame\Shield-Overshield]])
@@ -596,9 +482,20 @@ end
 local function Disable(self)
 	local element = self.HealthPrediction
 	if(element) then
-		-- Hide retail widgets
 		if(element.healingAll) then
 			element.healingAll:Hide()
+		end
+
+		if(element.overHealIndicator) then
+			element.overHealIndicator:Hide()
+		end
+
+		if(element.overDamageAbsorbIndicator) then
+			element.overDamageAbsorbIndicator:Hide()
+		end
+
+		if(element.overHealAbsorbIndicator) then
+			element.overHealAbsorbIndicator:Hide()
 		end
 
 		if(element.healingPlayer) then
@@ -615,35 +512,6 @@ local function Disable(self)
 
 		if(element.healAbsorb) then
 			element.healAbsorb:Hide()
-		end
-
-		if(element.overHealIndicator) then
-			element.overHealIndicator:Hide()
-		end
-
-		if(element.overDamageAbsorbIndicator) then
-			element.overDamageAbsorbIndicator:Hide()
-		end
-
-		if(element.overHealAbsorbIndicator) then
-			element.overHealAbsorbIndicator:Hide()
-		end
-
-		-- Hide classic widgets
-		if(element.myBar) then
-			element.myBar:Hide()
-		end
-
-		if(element.otherBar) then
-			element.otherBar:Hide()
-		end
-
-		if(element.absorbBar) then
-			element.absorbBar:Hide()
-		end
-
-		if(element.healAbsorbBar) then
-			element.healAbsorbBar:Hide()
 		end
 
 		if(element.overAbsorb) then
