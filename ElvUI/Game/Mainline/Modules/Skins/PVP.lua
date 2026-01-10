@@ -326,6 +326,8 @@ function S:Blizzard_PVPUI()
 	HandleRoleButton(TrainingGroundsFrame.RoleList.TankIcon)
 	HandleRoleButton(TrainingGroundsFrame.RoleList.HealerIcon)
 	HandleRoleButton(TrainingGroundsFrame.RoleList.DPSIcon)
+
+	S:HandleTrimScrollBar(TrainingGroundsFrame.SpecificTrainingGroundList.ScrollBar)
 end
 
 function S:PVPReadyDialog()
