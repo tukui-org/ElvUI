@@ -1129,7 +1129,7 @@ do
 		attributes.showParty = true
 		attributes.showSolo = true
 
-		local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil, attributes)
+		local header = ElvUF:SpawnHeader(overrideName, headerTemplate, attributes)
 		header.UpdateHeader = format('Update_%sHeader', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
 		header.UpdateFrames = format('Update_%sFrames', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
 		header.groupName = group

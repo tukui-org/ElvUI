@@ -19,11 +19,11 @@ local activeElements = {}
 
 -- ElvUI
 local _G = _G
+local strsplit = strsplit
 local assert, setmetatable = assert, setmetatable
 local next, type, select = next, type, select
-local strupper, strsplit = strupper, strsplit
+local strupper, format = strupper, format
 local tinsert, tremove = tinsert, tremove
-local hooksecurefunc = hooksecurefunc
 
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local RegisterAttributeDriver = RegisterAttributeDriver
@@ -32,18 +32,23 @@ local RegisterUnitWatch = RegisterUnitWatch
 local CreateFrame = CreateFrame
 local IsLoggedIn = IsLoggedIn
 local UnitGUID = UnitGUID
+local Mixin = Mixin
 
 local SecureButton_GetUnit = SecureButton_GetUnit
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
-local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+local SetNamePlateHitTestInsets = C_NamePlateManager and C_NamePlateManager.SetNamePlateHitTestInsets
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local SetNamePlateSize = C_NamePlate.SetNamePlateSize
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 local SetCVar = C_CVar.SetCVar
+
+local NAMEPLATE_TYPE = Enum.NamePlateType
 -- end
 
-local UFParent = CreateFrame('Frame', (global or parent) .. 'Parent', UIParent, 'SecureHandlerStateTemplate')
-UFParent:SetFrameStrata('LOW')
-RegisterStateDriver(UFParent, 'visibility', '[petbattle] hide; show')
+local UFParentHider = CreateFrame('Frame', (global or parent) .. '_UFParentFrameHider', UIParent, 'SecureHandlerStateTemplate')
+UFParentHider:SetFrameStrata('LOW')
+RegisterStateDriver(UFParentHider, 'visibility', '[petbattle] hide; show')
 
 local function updateActiveUnit(self, event)
 	-- Calculate units to work with
@@ -446,7 +451,7 @@ function oUF:RegisterStyle(name, func)
 	argcheck(name, 2, 'string')
 	argcheck(func, 3, 'function', 'table')
 
-	if(styles[name]) then return nierror(string.format('Style [%s] already registered.', name)) end
+	if(styles[name]) then return nierror(format('Style [%s] already registered.', name)) end
 	if(not style) then style = name end
 
 	styles[name] = func
@@ -460,7 +465,7 @@ Used to set the active style.
 --]]
 function oUF:SetActiveStyle(name)
 	argcheck(name, 2, 'string')
-	if(not styles[name]) then return error('Style [%s] does not exist.', name) end
+	if(not styles[name]) then return nierror('Style [%s] does not exist.', name) end
 
 	style = name
 end
@@ -522,6 +527,70 @@ local function createName(unit, attributes)
 
 	local raid, party, groupFilter, unitsuffix
 	for att, val in next, attributes do
+		if(att == 'oUF-initialConfigFunction') then
+			unitsuffix = val:match('unitsuffix[%p%s]+(%a+)')
+		elseif(att == 'showRaid') then
+			raid = val ~= false and val ~= nil
+		elseif(att == 'showParty') then
+			party = val ~= false and val ~= nil
+		elseif(att == 'groupFilter') then
+			groupFilter = val
+		end
+	end
+
+	local append
+	if(raid) then
+		if(groupFilter) then
+			if(type(groupFilter) == 'number' and groupFilter > 0) then
+				append = 'Raid' .. groupFilter
+			elseif(groupFilter:match('MAINTANK')) then
+				append = 'MainTank'
+			elseif(groupFilter:match('MAINASSIST')) then
+				append = 'MainAssist'
+			else
+				local _, count = groupFilter:gsub(',', '')
+				if(count == 0) then
+					append = 'Raid' .. groupFilter
+				else
+					append = 'Raid'
+				end
+			end
+		else
+			append = 'Raid'
+		end
+	elseif(party) then
+		append = 'Party'
+	elseif(unit) then
+		append = unit:gsub('^%l', strupper)
+	end
+
+	if(append) then
+		name = name .. append .. (unitsuffix or '')
+	end
+
+	-- Change oUF_LilyRaidRaid into oUF_LilyRaid
+	name = name:gsub('(%u%l+)([%u%l]*)%1', '%1')
+	-- Change oUF_LilyTargettarget into oUF_LilyTargetTarget
+	name = name:gsub('t(arget)', 'T%1')
+	name = name:gsub('p(et)', 'P%1')
+	name = name:gsub('f(ocus)', 'F%1')
+
+	local base = name
+	local i = 2
+	while(_G[name]) do
+		name = base .. i
+		i = i + 1
+	end
+
+	return name
+end
+
+local function generateName(unit, ...)
+	local name = 'oUF_' .. style:gsub('^oUF_?', ''):gsub('[^%a%d_]+', '')
+
+	local raid, party, groupFilter, unitsuffix
+	for i = 1, select('#', ...), 2 do
+		local att, val = select(i, ...)
 		if(att == 'oUF-initialConfigFunction') then
 			unitsuffix = val:match('unitsuffix[%p%s]+(%a+)')
 		elseif(att == 'showRaid') then
@@ -653,12 +722,12 @@ do
 	function headerMixin:SetVisibility(visibility)
 		argcheck(visibility, 2, 'string', 'nil')
 
-		local type, list = string.split(' ', visibility, 2)
+		local type, list = strsplit(' ', visibility, 2)
 		if(list and type == 'custom') then
 			RegisterAttributeDriver(self, 'state-visibility', list)
 			self.visibility = list
 		else
-			local condition = getCondition(string.split(',', visibility))
+			local condition = getCondition(strsplit(',', visibility))
 			RegisterAttributeDriver(self, 'state-visibility', condition)
 			self.visibility = condition
 		end
@@ -689,7 +758,7 @@ do
 
 		local isPetHeader = template:match('PetHeader')
 		local name = overrideName or createName(nil, attributes)
-		local header = Mixin(CreateFrame('Frame', name, PetBattleFrameHider, template), headerMixin)
+		local header = Mixin(CreateFrame('Frame', name, UFParentHider, template), headerMixin)
 
 		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
 
@@ -768,7 +837,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 	unit = unit:lower()
 
 	local name = overrideName or createName(unit)
-	local object = CreateFrame('Button', name, UFParent, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, UFParentHider, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -784,17 +853,19 @@ do
 	local hitInset = 10000 -- some large number that will ensure we have full coverage
 	local function updateDriver(driver)
 		if(IsLoggedIn()) then
-			C_NamePlate.SetNamePlateSize(driver.plateWidth or 200, driver.plateHeight or 30)
+			SetNamePlateSize(driver.plateWidth or 200, driver.plateHeight or 30)
 
-			local enemyInset = driver.friendlyNonInteractible and hitInset or -hitInset
-			C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Enemy, enemyInset, enemyInset, enemyInset, enemyInset)
+			if SetNamePlateHitTestInsets then
+				local enemyInset = driver.friendlyNonInteractible and hitInset or -hitInset
+				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Enemy, enemyInset, enemyInset, enemyInset, enemyInset)
 
-			local friendlyInset = driver.friendlyNonInteractible and hitInset or -hitInset
-			C_NamePlateManager.SetNamePlateHitTestInsets(Enum.NamePlateType.Friendly, friendlyInset, friendlyInset, friendlyInset, friendlyInset)
+				local friendlyInset = driver.friendlyNonInteractible and hitInset or -hitInset
+				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Friendly, friendlyInset, friendlyInset, friendlyInset, friendlyInset)
+			end
 
 			if(driver.cvars) then
 				for name, value in next, driver.cvars do
-					C_CVar.SetCVar(name, value)
+					SetCVar(name, value)
 				end
 			end
 		end
@@ -824,6 +895,11 @@ do
 	function nameplateDriverMixin:SetRemovedCallback(callback)
 		argcheck(callback, 2, 'function', 'nil')
 		self.removedCallback = callback
+	end
+
+	function nameplateDriverMixin:SetFactionCallback(callback)
+		argcheck(callback, 2, 'function', 'nil')
+		self.factionCallback = callback
 	end
 
 	--[[ nameplates:SetSize(width[, height])
@@ -886,7 +962,7 @@ do
 		if(event == 'PLAYER_LOGIN') then
 			updateDriver(self)
 		elseif(event == 'PLAYER_TARGET_CHANGED') then
-			local nameplate = C_NamePlate.GetNamePlateForUnit('target')
+			local nameplate = GetNamePlateForUnit('target')
 			if(not nameplate or not nameplate.unitFrame) then return end
 
 			if(self.targetCallback) then
@@ -896,8 +972,15 @@ do
 			-- UAE is called after the callback to reduce the number of
 			-- ForceUpdate calls layouts have to do after changing things
 			nameplate.unitFrame:UpdateAllElements(event)
+		elseif(event == 'UNIT_FACTION' and unit) then
+			local nameplate = GetNamePlateForUnit(unit)
+			if(not nameplate or not nameplate.unitFrame) then return end
+
+			if(self.factionCallback) then
+				self.factionCallback(nameplate.unitFrame, event, unit)
+			end
 		elseif(event == 'NAME_PLATE_UNIT_ADDED') then
-			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
+			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
 
 			oUF:DisableBlizzardNamePlate(nameplate)
@@ -905,7 +988,7 @@ do
 			if(not nameplate.unitFrame) then
 				nameplate.style = self.style
 
-				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, 'PingableUnitFrameTemplate')
+				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, oUF.isRetail and 'PingableUnitFrameTemplate' or '')
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame.isNamePlate = true
 				nameplate.unitFrame:SetAllPoints()
@@ -940,7 +1023,7 @@ do
 			-- ForceUpdate calls layouts have to do after changing things
 			nameplate.unitFrame:UpdateAllElements(event)
 		elseif(event == 'NAME_PLATE_UNIT_REMOVED') then
-			local nameplate = C_NamePlate.GetNamePlateForUnit(unit)
+			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate or not nameplate.unitFrame) then return end
 
 			nameplate.unitFrame:SetAttribute('unit', nil)
@@ -974,6 +1057,7 @@ do
 		nameplateDriver:RegisterEvent('NAME_PLATE_UNIT_ADDED')
 		nameplateDriver:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
 		nameplateDriver:RegisterEvent('PLAYER_TARGET_CHANGED')
+		nameplateDriver:RegisterEvent('UNIT_FACTION')
 
 		if(IsLoggedIn()) then
 			updateDriver(nameplateDriver)
@@ -1000,7 +1084,7 @@ function oUF:AddElement(name, update, enable, disable)
 	argcheck(enable, 4, 'function')
 	argcheck(disable, 5, 'function')
 
-	if(elements[name]) then return nierror(string.format('Element [%s] is already registered.', name)) end
+	if(elements[name]) then return nierror(format('Element [%s] is already registered.', name)) end
 
 	elements[name] = {
 		update = update,
@@ -1028,9 +1112,9 @@ oUF.headers = headers
 
 if(global) then
 	if(parent ~= 'oUF' and global == 'oUF') then
-		nierror(string.format('%s is doing it wrong and setting its global to "oUF".', parent))
+		nierror(format('%s is doing it wrong and setting its global to "oUF".', parent))
 	elseif(_G[global]) then
-		nierror(string.format('%s is setting its global to an existing name "%s".', parent, global))
+		nierror(format('%s is setting its global to an existing name "%s".', parent, global))
 	else
 		_G[global] = oUF
 	end
