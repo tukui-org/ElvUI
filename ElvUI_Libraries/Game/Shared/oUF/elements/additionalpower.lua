@@ -42,15 +42,15 @@ The following options are listed by priority. The first check that returns true 
 local _, ns = ...
 local oUF = ns.oUF
 
--- ElvUI block
-local unpack = unpack
 local CopyTable = CopyTable
 local UnitIsUnit = UnitIsUnit
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitPowerType = UnitPowerType
--- end block
+local UnitPowerPercent = UnitPowerPercent
+
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 -- sourced from Blizzard_UnitFrame/AlternatePowerBar.lua
 local POWER_NAME = _G.ADDITIONAL_POWER_BAR_NAME or 'MANA'
@@ -64,13 +64,13 @@ local function UpdateColor(self, event, unit, powerType)
 
 	local color
 	if(element.colorPower) then
-		color = self.colors.power[ADDITIONAL_POWER_BAR_INDEX]
+		color = self.colors.power[POWER_INDEX]
 
 		if(element.colorPowerSmooth and color and color:GetCurve()) then
 			color = UnitPowerPercent(unit, true, color:GetCurve())
 		end
 	elseif(element.colorClass) then
-		color = self.colors.class[playerClass]
+		color = self.colors.class[oUF.myclass]
 	end
 
 	if(color) then
@@ -225,7 +225,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		if(not element.smoothing) then
-			element.smoothing = Enum.StatusBarInterpolation.Immediate
+			element.smoothing = StatusBarInterpolation.Immediate
 		end
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
