@@ -574,8 +574,8 @@ local function SkinWardrobeFrame()
 		WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 	end
 
-	S:HandleTab(WardrobeCollectionFrameTab1)
-	S:HandleTab(WardrobeCollectionFrameTab2)
+	S:HandleTab(_G.WardrobeCollectionFrameTab1)
+	S:HandleTab(_G.WardrobeCollectionFrameTab2)
 
 	WardrobeCollectionFrame.progressBar.border:Hide()
 	WardrobeCollectionFrame.progressBar:DisableDrawLayer('BACKGROUND')
