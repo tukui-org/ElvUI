@@ -659,6 +659,7 @@ Used to update all tags on a frame.
 
 local function Update(self)
 	if not self.__tags then return end
+	if oUF.isMidnight then return end
 
 	for fs in next, self.__tags do
 		fs:UpdateTag()
