@@ -56,10 +56,28 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
+local _G = _G
+local GameTooltip = GameTooltip
+local UnitThreatSituation = UnitThreatSituation
+local UnitPlayerControlled = UnitPlayerControlled
+local GetUnitPowerBarInfoByID = GetUnitPowerBarInfoByID
+local GetUnitPowerBarStringsByID = GetUnitPowerBarStringsByID
+local UnitPowerPercent = UnitPowerPercent
+local UnitInPartyIsAI = UnitInPartyIsAI
+local UnitPowerBarID = UnitPowerBarID
+local UnitIsPlayer = UnitIsPlayer
+local UnitReaction = UnitReaction
+local UnitPowerMax = UnitPowerMax
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
+local UnitIsUnit = UnitIsUnit
+local UnitClass = UnitClass
+local UnitPower = UnitPower
+
 -- sourced from Blizzard_UnitFrame/UnitPowerBarAlt.lua
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local ALTERNATE_POWER_NAME = 'ALTERNATE'
-local GameTooltip = GameTooltip
 
 local function updateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
@@ -74,7 +92,7 @@ local function onEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
 	GameTooltip:ClearAllPoints()
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	_G.GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	self:UpdateTooltip()
 end
 
@@ -237,7 +255,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		if(not element.smoothing) then
-			element.smoothing = Enum.StatusBarInterpolation.Immediate
+			element.smoothing = StatusBarInterpolation.Immediate
 		end
 
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', VisibilityPath)
@@ -267,9 +285,9 @@ local function Enable(self, unit)
 		end
 
 		if(unit == 'player') then
-			PlayerPowerBarAlt:UnregisterEvent('UNIT_POWER_BAR_SHOW')
-			PlayerPowerBarAlt:UnregisterEvent('UNIT_POWER_BAR_HIDE')
-			PlayerPowerBarAlt:UnregisterEvent('PLAYER_ENTERING_WORLD')
+			_G.PlayerPowerBarAlt:UnregisterEvent('UNIT_POWER_BAR_SHOW')
+			_G.PlayerPowerBarAlt:UnregisterEvent('UNIT_POWER_BAR_HIDE')
+			_G.PlayerPowerBarAlt:UnregisterEvent('PLAYER_ENTERING_WORLD')
 		end
 
 		return true
@@ -285,9 +303,9 @@ local function Disable(self, unit)
 		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', VisibilityPath)
 
 		if(unit == 'player') then
-			PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_SHOW')
-			PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_HIDE')
-			PlayerPowerBarAlt:RegisterEvent('PLAYER_ENTERING_WORLD')
+			_G.PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_SHOW')
+			_G.PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_HIDE')
+			_G.PlayerPowerBarAlt:RegisterEvent('PLAYER_ENTERING_WORLD')
 		end
 	end
 end
