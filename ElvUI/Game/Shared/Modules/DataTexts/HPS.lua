@@ -55,4 +55,4 @@ local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%s')
 end
 
-DT:RegisterDatatext('HPS', nil, {'UNIT_PET', 'COMBAT_LOG_EVENT_UNFILTERED', 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED'}, OnEvent, nil, OnClick, nil, nil, L["HPS"], nil, ApplySettings)
+DT:RegisterDatatext('HPS', nil, {'UNIT_PET', not E.Midnight and 'COMBAT_LOG_EVENT_UNFILTERED' or nil, 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED'}, OnEvent, nil, OnClick, nil, nil, L["HPS"], nil, ApplySettings)

@@ -1059,8 +1059,11 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
-	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	NP:RegisterEvent('PLAYER_LOGOUT')
+
+	if not E.Midnight then
+		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+	end
 
 	NP:BossMods_RegisterCallbacks()
 	NP:StyleFilterInitialize()
