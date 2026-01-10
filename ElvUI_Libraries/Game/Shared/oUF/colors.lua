@@ -5,6 +5,9 @@ local Private = oUF.Private
 local frame_metatable = Private.frame_metatable
 local nierror = Private.nierror
 
+local format, type = format, type
+local select, next = select, next
+
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
@@ -12,7 +15,7 @@ local colorMixin = {
 	SetAtlas = function(self, atlas)
 		local info = C_Texture.GetAtlasInfo(atlas)
 		if(not info) then
-			return nierror(string.format('"%s" is an invalid atlas.', atlas))
+			return nierror(format('"%s" is an invalid atlas.', atlas))
 		end
 
 		self.atlas = atlas
@@ -160,13 +163,9 @@ do	-- We do this because people edit the vars directly, and changing the default
 end
 
 -- copy of DEBUFF_DISPLAY_INFO from AuraUtil
-colors.dispel[oUF.Enum.DispelType.None] = _G.DEBUFF_TYPE_NONE_COLOR
-colors.dispel[oUF.Enum.DispelType.Magic] = _G.DEBUFF_TYPE_MAGIC_COLOR
-colors.dispel[oUF.Enum.DispelType.Curse] = _G.DEBUFF_TYPE_CURSE_COLOR
-colors.dispel[oUF.Enum.DispelType.Disease] = _G.DEBUFF_TYPE_DISEASE_COLOR
-colors.dispel[oUF.Enum.DispelType.Poison] = _G.DEBUFF_TYPE_POISON_COLOR
-colors.dispel[oUF.Enum.DispelType.Bleed] = _G.DEBUFF_TYPE_BLEED_COLOR
-colors.dispel[oUF.Enum.DispelType.Enrage] = oUF:CreateColor(243, 95, 245)
+for debuffType, color in next, DebuffColors do
+	colors.dispel[debuffType] = oUF:CreateColor(color.r, color.g, color.b)
+end
 
 for eclass, color in next, _G.FACTION_BAR_COLORS do
 	colors.reaction[eclass] = oUF:CreateColor(color.r, color.g, color.b)
