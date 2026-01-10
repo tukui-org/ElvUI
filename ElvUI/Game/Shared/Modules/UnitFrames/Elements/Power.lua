@@ -275,8 +275,8 @@ function UF:PowerBackdropColor()
 	end
 end
 
-function UF:GetDisplayPower()
-	local barInfo = GetUnitPowerBarInfo(self.__owner.unit)
+function UF:GetDisplayPower(unit)
+	local barInfo = GetUnitPowerBarInfo(unit)
 	if barInfo then
 		return POWERTYPE_ALTERNATE, barInfo.minPower
 	end
