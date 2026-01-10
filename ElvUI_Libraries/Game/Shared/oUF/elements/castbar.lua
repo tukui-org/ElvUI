@@ -168,13 +168,11 @@ local function resetAttributes(self)
 	self.casting = nil
 	self.channeling = nil
 	self.empowering = nil
+	self.isTradeSkill = nil
 	self.notInterruptible = nil
 	self.spellID = nil
-	-- ElvUI block
 	self.spellName = nil
 	self.tradeSkillCastID = nil
-	self.isTradeSkill = nil
-	-- end block
 
 	for _, pip in next, self.Pips do
 		pip:Hide()
