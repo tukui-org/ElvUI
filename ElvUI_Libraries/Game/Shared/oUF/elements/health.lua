@@ -39,8 +39,8 @@ The following options are listed by priority. The first check that returns true 
 .colorReaction     - Use `self.colors.reaction[reaction]` to color the bar based on the player's reaction towards the
                      unit. `reaction` is defined by the return value of
                      [UnitReaction](https://warcraft.wiki.gg/wiki/API_UnitReaction) (boolean)
-.colorSmooth       - Use `self.colors.health.curve` to color the bar with a smooth gradient based on the unit's current
-                     health percentage (boolean)
+.colorSmooth       - Use color curve from `self.colors.health` to color the bar with a smooth gradient based on the
+                     unit's current health percentage (boolean)
 .colorHealth       - Use `self.colors.health` to color the bar. This flag is used to reset the bar color back to default
                      if none of the above conditions are met (boolean)
 
@@ -371,7 +371,7 @@ local function Enable(self)
 				element.TempLoss:SetValue(0, element.smoothing)
 
 				if(not element.TempLoss:GetStatusBarTexture()) then
-					element.TempLoss:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+					element.TempLoss:SetStatusBarTexture('UI-HUD-UnitFrame-Target-PortraitOn-Bar-TempHPLoss')
 				end
 			end
 
