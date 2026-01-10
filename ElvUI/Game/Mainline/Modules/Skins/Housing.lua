@@ -64,8 +64,6 @@ function S:Blizzard_HousingDashboard()
 		S:HandleFrame(DashBoardFrame, true)
 	end
 
-	S:HandleButton(DashBoardFrame.HouseInfoContent.DashboardNoHousesFrame.NoHouseButton)
-
 	-- Fix the actual icon texture
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
 		tab:CreateBackdrop()
@@ -101,6 +99,7 @@ function S:Blizzard_HousingDashboard()
 
 	local InfoContent = DashBoardFrame.HouseInfoContent
 	if InfoContent then
+		S:HandleButton(InfoContent.DashboardNoHousesFrame.NoHouseButton)
 		S:HandleButton(InfoContent.HouseFinderButton)
 		S:HandleDropDownBox(InfoContent.HouseDropdown)
 
