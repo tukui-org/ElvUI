@@ -88,9 +88,36 @@ function S:Blizzard_PVPUI()
 		S:HandleButton(PlunderstormPanel.PlunderstoreButton)
 	end
 
-	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface\icons\achievement_bg_winwsg.blp
-	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
-	PVPQueueFrame.CategoryButton3.Icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
+
+	local categoryButtonIcons = {
+		[1] = 236396, -- interface\icons\achievement_bg_winwsg.blp
+		[2] = 236368, -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
+		[3] = 464820, -- interface\icons\achievement_general_stayclassy.blp
+		[4] = 236179, -- no idead about the file path yet
+	}
+
+	do
+		local index = 1
+		local button = _G.PVPQueueFrame['CategoryButton'..index]
+		while button do
+			button.Ring:Hide()
+			button.Background:Kill()
+			S:HandleButton(button)
+
+			local texture = categoryButtonIcons[index]
+			if texture then
+				button.Icon:SetTexture(texture)
+			end
+
+			button.Icon:Size(45)
+			button.Icon:ClearAllPoints()
+			button.Icon:Point('LEFT', 10, 0)
+			S:HandleIcon(button.Icon, true)
+
+			index = index + 1
+			button = _G.PVPQueueFrame['CategoryButton'..index]
+		end
+	end
 
 	local SeasonReward = HonorInset.RatedPanel.SeasonRewardFrame
 	SeasonReward:CreateBackdrop()
