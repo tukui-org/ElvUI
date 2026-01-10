@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local ipairs, pairs, next = ipairs, pairs, next
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local GetItemInfo = C_Item.GetItemInfo
@@ -146,7 +146,7 @@ function S:Blizzard_PVPUI()
 		BonusFrame.ShadowOverlay:Hide()
 		BonusFrame.WorldBattlesTexture:Hide()
 
-		for _, bonusButton in pairs({'RandomBGButton', 'Arena1Button', 'RandomEpicBGButton', 'BrawlButton', 'BrawlButton2'}) do
+		for _, bonusButton in next, {'RandomBGButton', 'Arena1Button', 'RandomEpicBGButton', 'BrawlButton', 'BrawlButton2'} do
 			local bu = BonusFrame[bonusButton]
 			local reward = bu.Reward
 			S:HandleButton(bu)
@@ -192,7 +192,7 @@ function S:Blizzard_PVPUI()
 	HandleRoleButton(ConquestFrame.RoleList.HealerIcon)
 	HandleRoleButton(ConquestFrame.RoleList.DPSIcon)
 
-	for _, bu in pairs({ConquestFrame.RatedSoloShuffle, ConquestFrame.RatedBGBlitz, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG}) do
+	for _, bu in next, {ConquestFrame.RatedSoloShuffle, ConquestFrame.RatedBGBlitz, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG} do
 		local reward = bu.Reward
 		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
@@ -210,7 +210,7 @@ function S:Blizzard_PVPUI()
 		local rewardTexture, rewardQuaility, _ = nil, 1
 
 		if currencyRewards then
-			for _, reward in ipairs(currencyRewards) do
+			for _, reward in next, currencyRewards do
 				local info = C_CurrencyInfo_GetCurrencyInfo(reward.id)
 				if info and info.quality == ITEMQUALITY_ARTIFACT then
 					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, info.name, info.iconFileID, info.quality)
@@ -240,7 +240,7 @@ function S:Blizzard_PVPUI()
 	end
 
 	-- PvP StatusBars
-	for _, Frame in pairs({ HonorFrame, ConquestFrame }) do
+	for _, Frame in next, { HonorFrame, ConquestFrame } do
 		Frame.ConquestBar.Border:Hide()
 		Frame.ConquestBar.Background:Hide()
 		Frame.ConquestBar.Reward.Ring:Hide()
@@ -303,7 +303,7 @@ function S:Blizzard_PVPUI()
 		BonusTrainingGroundList.ShadowOverlay:Hide()
 		BonusTrainingGroundList.WorldBattlesTexture:Hide()
 
-		for _, bonusButton in pairs({'RandomTrainingGroundButton'}) do -- Pretty sure they're adding more buttons for the live servers
+		for _, bonusButton in next, {'RandomTrainingGroundButton'} do -- Pretty sure they're adding more buttons for the live servers
 			local bu = BonusTrainingGroundList[bonusButton]
 			local reward = bu.Reward
 			S:HandleButton(bu)
