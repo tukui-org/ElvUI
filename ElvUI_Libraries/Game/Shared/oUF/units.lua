@@ -4,6 +4,16 @@ local Private = oUF.Private
 
 local unitExists = Private.unitExists
 
+local tonumber, next = tonumber, next
+local tremove, tinsert = tremove, tinsert
+
+local CreateFrame = CreateFrame
+local UnitExists = UnitExists
+local InCombatLockdown = InCombatLockdown
+local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
+local GetArenaOpponentSpec = GetArenaOpponentSpec
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+
 local function updateArenaPreparationElements(self, event, elementName, specID)
 	local element = self[elementName]
 	if(element and self:IsElementEnabled(elementName)) then
@@ -54,8 +64,15 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 				color = self.colors.class[class]
 			elseif(element.colorReaction) then
 				color = self.colors.reaction[2]
-			elseif(element.colorSmooth and self.colors.health:GetCurve()) then
-				color = self.colors.health:GetCurve():Evaluate(1)
+			elseif(element.colorSmooth) then
+				if oUF.isMidnight then
+					local curve = self.colors.health:GetCurve()
+					if curve then
+						color = curve:Evaluate(1)
+					end
+				else
+					color = element.smoothGradient or self.colors.smooth
+				end
 			elseif(element.colorHealth and elementName == 'Health') then
 				color = self.colors.health
 			end
@@ -226,14 +243,14 @@ function oUF:HandleEventlessUnit(object)
 	for _, objects in next, eventlessObjects do
 		for i, obj in next, objects do
 			if(obj == object) then
-				table.remove(objects, i)
+				tremove(objects, i)
 				break
 			end
 		end
 	end
 
 	if(not eventlessObjects[timer]) then eventlessObjects[timer] = {} end
-	table.insert(eventlessObjects[timer], object)
+	tinsert(eventlessObjects[timer], object)
 
 	createOnUpdate(timer)
 end
