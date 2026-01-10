@@ -92,35 +92,49 @@ local function UpdateRuneType(rune, runeID, alt)
 	return rune
 end
 
-local function ColorRune(self, bar, runeType)
-	local color = runeType and self.colors.runes[runeType] or self.colors.power.RUNES
-	local r, g, b = color.r, color.g, color.b
-	bar:SetStatusBarColor(r, g, b)
-
-	local bg = bar.bg
-	if bg then
-		local mu = bg.multiplier or 1
-		bg:SetVertexColor(r * mu, g * mu, b * mu)
-	end
-
-	return color, r, g, b
-end
-
 local function UpdateColor(self, event, runeID, alt)
 	local element = self.Runes
 
-	local spec = C_SpecializationInfo.GetSpecialization() or 0
-
-	local color
-	if(spec > 0 and spec < 4 and element.colorSpec) then
-		color = self.colors.runes[spec]
+	local rune, specType
+	if oUF.isWrath or oUF.isMists then -- runeID, alt
+		if runeID and event == 'RUNE_TYPE_UPDATE' then
+			rune = UpdateRuneType(element[runemap[runeID]], runeID, alt)
+		end
 	else
-		color = self.colors.power.RUNES
+		local spec = element.colorSpec and GetSpecialization() or 0
+		if spec > 0 and spec < 4 then
+			specType = spec
+		end
 	end
 
-	if(color) then
-		for index = 1, #element do
-			element[index]:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+	local color
+	local specColor = element.colorSpec and (specType > 0 and specType < 4)
+	if rune then
+		local runeType = specType or rune.runeType
+		color = runeType and self.colors.runes[runeType] or self.colors.power.RUNES
+
+		if color then
+			for index = 1, #element do
+				element[index]:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+			end
+		end
+	else
+		for i = 1, #element do
+			local bar = element[i]
+
+			if oUF.isWrath or oUF.isMists then
+				if not bar.runeType then
+					bar.runeType = GetRuneType(runemap[i])
+				end
+			else
+				bar.runeType = specType
+			end
+
+			color = specColor and self.colors.runes[specType or bar.runeType] or self.colors.power.RUNES
+
+			if color then
+				bar:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+			end
 		end
 	end
 
@@ -131,7 +145,7 @@ local function UpdateColor(self, event, runeID, alt)
 	* color - the used ColorMixin-based object (table?)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(color)
+		element:PostUpdateColor(color, rune)
 	end
 end
 
