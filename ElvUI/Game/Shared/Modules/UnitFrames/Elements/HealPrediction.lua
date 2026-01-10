@@ -3,6 +3,7 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
+local issecretvalue = issecretvalue
 
 function UF.HealthClipFrame_HealComm(frame)
 	if frame.HealthPrediction then
@@ -207,6 +208,11 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	local db = frame and frame.db and frame.db.healPrediction
 	if not db or not db.absorbStyle then return end
 
+	local isHealthSecret = issecretvalue and issecretvalue(health)
+	local isMaxHealthSecret = issecretvalue and issecretvalue(maxHealth)
+	local isAbsorbSecret = issecretvalue and issecretvalue(absorb)
+	local hasSecretValues = isHealthSecret or isMaxHealthSecret or isAbsorbSecret
+
 	local pred = frame.HealthPrediction
 	local healAbsorbBar = pred.healAbsorbBar
 	local absorbBar = pred.absorbBar
@@ -241,6 +247,8 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	else
 		absorbBar:SetStatusBarColor(colors.absorbs.r, colors.absorbs.g, colors.absorbs.b, colors.absorbs.a)
 	end
+
+	if hasSecretValues then return end
 
 	-- if we are in normal mode and overflowing happens we should let a bit show, like blizzard does
 	if db.absorbStyle == 'NORMAL' then
