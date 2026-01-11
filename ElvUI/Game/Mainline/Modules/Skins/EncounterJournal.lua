@@ -135,7 +135,7 @@ end
 local function ItemSetElements(set)
 	local parchment = E.private.skins.parchmentRemoverEnable
 	if parchment and not set.backdrop then
-		set:CreateBackdrop('Transparent')
+		set:CreateBackdrop()
 	end
 
 	if parchment and set.Background then
