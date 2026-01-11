@@ -319,7 +319,7 @@ function S:Blizzard_EncounterJournal()
 	tinsert(journalBottomTabs, _G.EncounterJournalDungeonTab)
 	tinsert(journalBottomTabs, _G.EncounterJournalRaidTab)
 	tinsert(journalBottomTabs, _G.EncounterJournalLootJournalTab)
-	tinsert(journalBottomTabs, _G.EncounterJournal.TutorialsTab)
+	tinsert(journalBottomTabs, EJ.TutorialsTab)
 
 	for _, tab in next, journalBottomTabs do
 		S:HandleTab(tab)
@@ -387,9 +387,7 @@ function S:Blizzard_EncounterJournal()
 	-- Tabs
 	if E.Retail then
 		for _, name in next, { 'overviewTab', 'modelTab', 'bossTab', 'lootTab' } do
-			local info = _G.EncounterJournal.encounter.info
-
-			local tab = info[name]
+			local tab = EncounterInfo[name]
 			tab:CreateBackdrop('Transparent')
 			tab.backdrop:SetInside(nil, 2, 2)
 
@@ -406,11 +404,11 @@ function S:Blizzard_EncounterJournal()
 			if name == 'overviewTab' then
 				tab:Point('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, 0)
 			elseif name == 'lootTab' then
-				tab:Point('TOPLEFT', info.overviewTab, 'BOTTOMLEFT', 0, -1)
+				tab:Point('TOPLEFT', EncounterInfo.overviewTab, 'BOTTOMLEFT', 0, -1)
 			elseif name == 'bossTab' then
-				tab:Point('TOPLEFT', info.lootTab, 'BOTTOMLEFT', 0, -1)
+				tab:Point('TOPLEFT', EncounterInfo.lootTab, 'BOTTOMLEFT', 0, -1)
 			elseif name == 'modelTab' then
-				tab:Point('TOPLEFT', info.bossTab, 'BOTTOMLEFT', 0, -1)
+				tab:Point('TOPLEFT', EncounterInfo.bossTab, 'BOTTOMLEFT', 0, -1)
 
 			end
 		end
@@ -559,7 +557,7 @@ function S:Blizzard_EncounterJournal()
 		HandleButton(button, true)
 	end
 
-	hooksecurefunc(_G.EncounterJournal.instanceSelect.ScrollBox, 'Update', InstanceSelectScrollUpdate)
+	hooksecurefunc(EJ.instanceSelect.ScrollBox, 'Update', InstanceSelectScrollUpdate)
 
 	if E.private.skins.parchmentRemoverEnable then
 		LJ:StripTextures()
@@ -568,9 +566,8 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalJourneysFrame.BorderFrame:StripTextures()
 		_G.EncounterJournalInstanceSelect.evergreenBg:StripTextures()
 
-		hooksecurefunc(_G.EncounterJournal.encounter.info.BossesScrollBox, 'Update', BossesScrollUpdate)
-
-		hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', LootContainerUpdate)
+		hooksecurefunc(EncounterInfo.BossesScrollBox, 'Update', BossesScrollUpdate)
+		hooksecurefunc(EncounterInfo.LootContainer.ScrollBox, 'Update', LootContainerUpdate)
 
 		hooksecurefunc('EncounterJournal_SetUpOverview', SkinOverviewInfo)
 		hooksecurefunc('EncounterJournal_SetBullets', SkinOverviewInfoBullets)
@@ -618,7 +615,7 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
 
-	local TutorialsFrame = _G.EncounterJournal.TutorialsFrame
+	local TutorialsFrame = EJ.TutorialsFrame
 	local Contents = TutorialsFrame and TutorialsFrame.Contents
 	if Contents then
 		if E.private.skins.parchmentRemoverEnable then
