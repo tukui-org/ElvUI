@@ -1479,7 +1479,7 @@ E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
 		return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
 	end
-end, not E.Classic)
+end, not E.Classic or not E.TBC)
 
 if E.Classic or E.TBC or E.Wrath then
 	local GetPetHappiness = GetPetHappiness
@@ -1701,9 +1701,9 @@ E.TagInfo = {
 		['perhp'] = { category = 'Health', description = "Displays percentage HP without decimals or the % sign. You can display the percent sign by adjusting the tag to [perhp<%]." },
 	--Hunter
 		['diet'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the diet of your pet (Fish, Meat, ...)" },
-		['happiness:discord'] = { hidden = not E.Classic, category = 'Hunter', description = "Displays the pet happiness like a Discord emoji" },
-		['happiness:full'] = { hidden = not E.Classic, category = 'Hunter', description = "Displays the pet happiness as a word (e.g. 'Happy')" },
-		['happiness:icon'] = { hidden = not E.Classic, category = 'Hunter', description = "Displays the pet happiness like the default Blizzard icon" },
+		['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = 'Hunter', description = "Displays the pet happiness like a Discord emoji" },
+		['happiness:full'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = 'Hunter', description = "Displays the pet happiness as a word (e.g. 'Happy')" },
+		['happiness:icon'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = 'Hunter', description = "Displays the pet happiness like the default Blizzard icon" },
 		['loyalty'] = { hidden = E.Retail, category = 'Hunter', description = "Displays the pet loyalty level" },
 	-- Level
 		['level'] = { category = 'Level', description = "Displays the level of the unit" },

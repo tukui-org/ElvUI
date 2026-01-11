@@ -178,7 +178,7 @@ function DB:ToggleAll()
 	if E.Retail then
 		DB:HonorBar_Toggle()
 		DB:AzeriteBar_Toggle()
-	elseif E.Classic and E.myclass == 'HUNTER' then
+	elseif (E.Classic or E.TBC) and E.myclass == 'HUNTER' then
 		DB:PetExperienceBar_Toggle()
 	end
 end
@@ -191,7 +191,7 @@ function DB:CreateAll()
 	if E.Retail then
 		DB:HonorBar()
 		DB:AzeriteBar()
-	elseif E.Classic and E.myclass == 'HUNTER' then
+	elseif (E.Classic or E.TBC) and E.myclass == 'HUNTER' then
 		DB:PetExperienceBar()
 	end
 end
