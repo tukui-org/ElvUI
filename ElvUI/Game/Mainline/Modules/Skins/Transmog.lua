@@ -3,14 +3,19 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local hooksecurefunc = hooksecurefunc
 
 local function SkinSituationsDropdowns()
-	local Situations = _G.TransmogFrame.WardrobeCollection.TabContent.SituationsFrame.Situations
-	for _, child in next, { Situations:GetChildren() } do
-		if child.Dropdown and not child.Dropdown.IsSkinned then
-			S:HandleDropDownBox(child.Dropdown, 300)
-			child.Dropdown.IsSkinned = true
+	local SituationsFrame = _G.TransmogFrame.WardrobeCollection.TabContent.SituationsFrame
+	if not SituationsFrame then return end
+
+	local Situations = SituationsFrame.Situations
+	if Situations then
+		for _, child in next, { Situations:GetChildren() } do
+			if child.Dropdown and not child.Dropdown.IsSkinned then
+				S:HandleDropDownBox(child.Dropdown, 300)
+
+				child.Dropdown.IsSkinned = true
+			end
 		end
 	end
 end
