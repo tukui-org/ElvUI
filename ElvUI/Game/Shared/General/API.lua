@@ -108,7 +108,7 @@ E.ThreatPets = {
 
 E.SpecByClass = {
 	DEATHKNIGHT	= { 250, 251, 252 },
-	DEMONHUNTER	= { 577, 581 },
+	DEMONHUNTER	= { 577, 581, 1480 },
 	DRUID		= { 102, 103, 104, 105 },
 	EVOKER		= { 1467, 1468, 1473},
 	HUNTER		= { 253, 254, 255 },
@@ -146,6 +146,7 @@ E.SpecName = { -- english locale
 	-- Demon Hunter
 	[577]	= 'Havoc',
 	[581]	= 'Vengeance',
+	[1480]	= 'Devourer',
 	-- Druids
 	[102]	= 'Balance',
 	[103]	= 'Feral',
