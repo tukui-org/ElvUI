@@ -122,8 +122,8 @@ function S:Blizzard_Transmog()
 			S:HandleButton(SituationsFrame.ApplyButton, nil, nil, nil, true, nil, nil, nil, true)
 			S:HandleButton(SituationsFrame.UndoButton)
 
-			-- ToDo: surely there is an event to avoid delay
-			E:Delay(0.1, SkinSituationsDropdowns)
+			hooksecurefunc(SituationsFrame, 'Init', SkinSituationsDropdowns)
+			hooksecurefunc(SituationsFrame, 'Refresh', SkinSituationsDropdowns)
 		end
 	end
 end
