@@ -24,15 +24,11 @@ local function HandleRoleButton(button)
 	if button.shortageBorder then button.shortageBorder:Size(40) end
 end
 
-local function HonorSpecificScrollUpdateChild(bu)
+local function SpecificScrollUpdateChild(bu)
 	if not bu.IsSkinned then
-		bu.Bg:Hide()
-		bu.Border:Hide()
 
 		bu:StripTextures()
-		bu:CreateBackdrop()
-		bu.backdrop:Point('TOPLEFT', 2, 0)
-		bu.backdrop:Point('BOTTOMRIGHT', -1, 2)
+		bu:SetTemplate()
 		bu:StyleButton(nil, true)
 
 		bu.SelectedTexture:SetInside(bu.backdrop)
@@ -45,8 +41,8 @@ local function HonorSpecificScrollUpdateChild(bu)
 	end
 end
 
-local function HonorSpecificScrollUpdate(frame)
-	frame:ForEachFrame(HonorSpecificScrollUpdateChild)
+local function SpecificScrollUpdate(frame)
+	frame:ForEachFrame(SpecificScrollUpdateChild)
 end
 
 local function HandleCategoryButtons(name, icons)
@@ -102,6 +98,8 @@ function S:Blizzard_PVPUI()
 
 	local PVPQueueFrame = _G.PVPQueueFrame
 	local HonorInset = PVPQueueFrame.HonorInset
+	HonorInset:SetTemplate('Transparent')
+	HonorInset.Background:Hide()
 	HonorInset.NineSlice:Hide()
 
 	-- Plunderstorm
@@ -120,7 +118,7 @@ function S:Blizzard_PVPUI()
 		236396, -- interface\icons\achievement_bg_winwsg.blp
 		236368, -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
 		464820, -- interface\icons\achievement_general_stayclassy.blp
-		236179, -- no idead about the file path yet
+		236179, -- no idea about the file path yet
 	}
 
 	HandleCategoryButtons('CategoryButton', categoryButtonIcons)
@@ -171,7 +169,7 @@ function S:Blizzard_PVPUI()
 	end
 
 	-- Honor Frame Specific Buttons
-	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', HonorSpecificScrollUpdate)
+	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', SpecificScrollUpdate)
 
 	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(button)
 		if button.bg then button.bg:SetDesaturated(true) end
@@ -332,6 +330,9 @@ function S:Blizzard_PVPUI()
 	HandleRoleButton(TrainingGroundsFrame.RoleList.DPSIcon)
 
 	S:HandleTrimScrollBar(TrainingGroundsFrame.SpecificTrainingGroundList.ScrollBar)
+
+	-- Training Grounds Specific Buttons
+	hooksecurefunc(TrainingGroundsFrame.SpecificTrainingGroundList.ScrollBox, 'Update', SpecificScrollUpdate)
 end
 
 function S:PVPReadyDialog()
