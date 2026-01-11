@@ -20,6 +20,17 @@ local function SkinSituationsDropdowns()
 	end
 end
 
+local function PageControlsPositionUpdate(frame)
+	if frame.PrevPageButton then
+		frame.PrevPageButton:ClearAllPoints()
+		frame.PrevPageButton:Point('TOPLEFT', frame, 'TOPLEFT', 64, -6)
+	end
+	if frame.NextPageButton then
+		frame.NextPageButton:ClearAllPoints()
+		frame.NextPageButton:Point('LEFT', frame.PrevPageButton, 'RIGHT', 14, -1)
+	end
+end
+
 function S:Blizzard_Transmog()
 	if not E.private.skins.blizzard.transmogrify then return end
 
@@ -83,9 +94,9 @@ function S:Blizzard_Transmog()
 				S:HandleButton(ItemsFrame.DisplayTypeEquippedButton) -- Leave it or change it (unskinned it fits really good tbh)
 			]]
 
-			-- ToDo: Adjust the text position
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.NextPageButton)
+			hooksecurefunc(ItemsFrame.PagedContent.PagingControls, 'ShouldClearOnUpdateAfterClean', PageControlsPositionUpdate)
 		end
 
 		local SetsFrame = WardrobeCollection.TabContent.SetsFrame
@@ -93,18 +104,18 @@ function S:Blizzard_Transmog()
 			S:HandleButton(SetsFrame.SearchBox)
 			S:HandleButton(SetsFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
-			-- ToDo: Adjust the text position
 			S:HandleNextPrevButton(SetsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(SetsFrame.PagedContent.PagingControls.NextPageButton)
+			hooksecurefunc(SetsFrame.PagedContent.PagingControls, 'ShouldClearOnUpdateAfterClean', PageControlsPositionUpdate)
 		end
 
 		local CustomSetsFrame = WardrobeCollection.TabContent.CustomSetsFrame
 		if CustomSetsFrame then
 			S:HandleButton(CustomSetsFrame.NewCustomSetButton, nil, nil, nil, true, nil, nil, nil, true)
 
-			-- ToDo: Adjust the text position
 			S:HandleNextPrevButton(CustomSetsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(CustomSetsFrame.PagedContent.PagingControls.NextPageButton)
+			hooksecurefunc(CustomSetsFrame.PagedContent.PagingControls, 'ShouldClearOnUpdateAfterClean', PageControlsPositionUpdate)
 		end
 
 		local SituationsFrame = WardrobeCollection.TabContent.SituationsFrame
