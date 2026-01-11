@@ -565,6 +565,9 @@ function S:Blizzard_EncounterJournal()
 		LJ:StripTextures()
 		LJ:SetTemplate('Transparent')
 
+		_G.EncounterJournalJourneysFrame.BorderFrame:StripTextures()
+		_G.EncounterJournalInstanceSelect.evergreenBg:StripTextures()
+
 		hooksecurefunc(_G.EncounterJournal.encounter.info.BossesScrollBox, 'Update', BossesScrollUpdate)
 
 		hooksecurefunc(_G.EncounterJournal.encounter.info.LootContainer.ScrollBox, 'Update', LootContainerUpdate)
