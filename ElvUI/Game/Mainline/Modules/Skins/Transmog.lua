@@ -2,6 +2,18 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
+local hooksecurefunc = hooksecurefunc
+
+local function SkinSituationsDropdowns()
+	local Situations = _G.TransmogFrame.WardrobeCollection.TabContent.SituationsFrame.Situations
+	for _, child in next, { Situations:GetChildren() } do
+		if child.Dropdown and not child.Dropdown.IsSkinned then
+			S:HandleDropDownBox(child.Dropdown, 300)
+			child.Dropdown.IsSkinned = true
+		end
+	end
+end
 
 function S:Blizzard_Transmog()
 	if not E.private.skins.blizzard.transmogrify then return end
@@ -105,7 +117,8 @@ function S:Blizzard_Transmog()
 			S:HandleButton(SituationsFrame.ApplyButton, nil, nil, nil, true, nil, nil, nil, true)
 			S:HandleButton(SituationsFrame.UndoButton)
 
-			-- ToDo: Skin the Dropdowns
+			-- ToDo: surely there is an event to avoid delay
+			E:Delay(0.1, SkinSituationsDropdowns)
 		end
 	end
 end
