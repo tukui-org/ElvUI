@@ -51,6 +51,8 @@ function S:Blizzard_Transmog()
 		S:HandleTrimScrollBar(OutfitCollection.OutfitList.ScrollBar)
 		S:HandleButton(OutfitCollection.SaveOutfitButton, nil, nil, nil, true, nil, nil, nil, true)
 		-- S:HandleButton(OutfitCollection.PurchaseOutfitButton) -- Fits good in our style tbh
+		OutfitCollection.MoneyFrame:StripTextures()
+		OutfitCollection.MoneyFrame:SetTemplate()
 	end
 
 	local CharacterPreview = TransmogFrame.CharacterPreview
