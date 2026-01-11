@@ -115,10 +115,10 @@ function S:Blizzard_PVPUI()
 	end
 
 	local categoryButtonIcons = {
-		236396, -- interface\icons\achievement_bg_winwsg.blp
-		236368, -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
-		464820, -- interface\icons\achievement_general_stayclassy.blp
-		236179, -- no idea about the file path yet
+		236396, -- interface\icons\achievement_bg_winwsg
+		236368, -- interface\icons\achievement_bg_killxenemies_generalsroom
+		464820, -- interface\icons\achievement_general_stayclassy
+		236179, -- interface\icons\ability_hunter_focusedaim
 	}
 
 	HandleCategoryButtons('CategoryButton', categoryButtonIcons)
