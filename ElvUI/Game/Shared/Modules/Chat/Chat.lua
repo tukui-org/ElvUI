@@ -2021,7 +2021,11 @@ local function ChatFrame_CheckAddChannel(chatFrame, eventType, channelID)
 		return false
 	end
 
-	return _G.ChatFrame_AddChannel(chatFrame, GetChannelShortcutForChannelID(channelID)) ~= nil
+	if chatFrame.AddChannel then
+		return chatFrame:AddChannel(GetChannelShortcutForChannelID(channelID)) ~= nil
+	else
+		return _G.ChatFrame_AddChannel(chatFrame, GetChannelShortcutForChannelID(channelID)) ~= nil
+	end
 end
 
 -- Clone of FCFManager_GetChatTarget as it doesn't exist on Classic ERA
@@ -3866,9 +3870,15 @@ function CH:FCF_Close(fallback)
 	end
 
 	--Reset what this window receives.
-	_G.ChatFrame_RemoveAllChannels(self)
-	_G.ChatFrame_RemoveAllMessageGroups(self)
-	_G.ChatFrame_ReceiveAllPrivateMessages(self)
+	if self.RemoveAllMessageGroups then
+		self:RemoveAllMessageGroups()
+		self:RemoveAllChannels()
+		self:ReceiveAllPrivateMessages()
+	else
+		_G.ChatFrame_RemoveAllMessageGroups(self)
+		_G.ChatFrame_RemoveAllChannels(self)
+		_G.ChatFrame_ReceiveAllPrivateMessages(self)
+	end
 
 	CH:PostChatClose(self) -- also call this since it won't call from blizzard in this case
 end

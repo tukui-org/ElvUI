@@ -89,19 +89,6 @@ function S:Blizzard_InspectUI()
 
 	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	_G.InspectModelFrameRotateRightButton:Point('TOPLEFT', _G.InspectModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
-
-	-- PvP Tab
-	local InspectHonorFrame = _G.InspectHonorFrame
-	InspectHonorFrame:StripTextures()
-
-	_G.InspectHonorFrameProgressButton:CreateBackdrop('Transparent')
-
-	local InspectHonorFrameProgressBar = _G.InspectHonorFrameProgressBar
-	InspectHonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
-	InspectHonorFrameProgressBar:PointXY(19, -74)
-	InspectHonorFrameProgressBar:Width(300)
-
-	E:RegisterStatusBar(InspectHonorFrameProgressBar)
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')
