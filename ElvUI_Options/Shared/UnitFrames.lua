@@ -790,7 +790,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 	if petTypes[groupName] then
 		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 
-		if E.Classic and (groupName == 'pet' and E.myclass == 'HUNTER') then
+		if (E.Classic or E.TBC) and (groupName == 'pet' and E.myclass == 'HUNTER') then
 			config.args.colorHappiness = ACH:Toggle(L["Color by Happiness"], nil, 3)
 		end
 	end
@@ -1345,7 +1345,7 @@ Colors.reactionGroup.args.BAD = ACH:Color(L["Bad"], nil, 1)
 Colors.reactionGroup.args.NEUTRAL = ACH:Color(L["Neutral"], nil, 2)
 Colors.reactionGroup.args.GOOD = ACH:Color(L["Good"], nil, 3)
 
-Colors.happiness = ACH:Group(L["Pet Happiness"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.happiness[n], P.unitframe.colors.happiness[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.happiness[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Classic)
+Colors.happiness = ACH:Group(L["Pet Happiness"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.happiness[n], P.unitframe.colors.happiness[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.happiness[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Classic or not E.TBC)
 Colors.happiness.args['1'] = ACH:Color(L["Unhappy"], nil, 1)
 Colors.happiness.args['2'] = ACH:Color(L["Content"], nil, 2)
 Colors.happiness.args['3'] = ACH:Color(L["Happy"], nil, 3)
