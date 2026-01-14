@@ -956,6 +956,9 @@ G.unitframe.ChannelTicks = {
 	[27022]	= 6, -- Volley (Rank 4)
 }
 
+-- Spells that chain, second step
+G.unitframe.ChainChannelTicks = {}
+
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {
 	-- Priest
