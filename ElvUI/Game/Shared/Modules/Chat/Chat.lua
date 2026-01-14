@@ -342,9 +342,10 @@ do --this can save some main file locals
 			z['Player-5813-0301DEC1']	= itsSimpy -- Warlock: Yubi
 			-- Simpy Era (5149: Mankrik)
 			z['Player-5149-04172B76']	= itsSimpy -- Warlock: Simpy
-			-- Simpy Anniversary (6103: Dreamscythe)
-			z['Player-6103-02A886D5']	= itsSimpy -- Warlock: Simpy
-			z['Player-6103-0301DECC']	= itsSimpy -- Priest: Hunie
+		elseif E.TBC then
+			-- Simpy TBC Anniversary (6064: Dreamscythe)
+			z['Player-6064-02A886D5']	= itsSimpy -- Warlock: Simpy
+			z['Player-6064-0301DECC']	= itsSimpy -- Priest: Hunie
 		elseif E.Mists then
 			-- Simpy (4385: Pagle)
 			z['Player-4385-05E5F6DF']	= itsSimpy -- Shaman:	Kybi
