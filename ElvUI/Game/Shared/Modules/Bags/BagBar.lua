@@ -357,6 +357,7 @@ function B:LoadBagBar()
 		KeyRing:SetParent(B.BagBar)
 		KeyRing:SetScript('OnEnter', B.KeyRing_OnEnter)
 		KeyRing:SetScript('OnLeave', B.KeyRing_OnLeave)
+		KeyRing:SetScript('OnShow', nil)
 
 		KeyRing:StripTextures()
 		KeyRing:SetTemplate(nil, true)
