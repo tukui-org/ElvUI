@@ -314,12 +314,15 @@ local presistentEvents = {
 	BAG_CLOSED = true
 }
 
-if E.Retail then
+if E.Retail or E.TBC then
 	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
-	tinsert(bagIDs, REAGENT_CONTAINER)
 
 	presistentEvents.BAG_CONTAINER_UPDATE = true
+end
+
+if E.Retail then
+	tinsert(bagIDs, REAGENT_CONTAINER)
 else
 	tinsert(bankIDs, -1)
 	tinsert(bankEvents, 'PLAYERBANKBAGSLOTS_CHANGED')
