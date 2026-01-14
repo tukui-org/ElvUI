@@ -162,7 +162,6 @@ function AB:PositionAndSizeBarPet()
 		local lastButton = _G['PetActionButton'..i-1]
 		local lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
 		local autoCast = button.AutoCastOverlay or button.AutoCastable
-		local corners = button.AutoCastOverlay.Corners
 
 		button.db = db
 
@@ -184,6 +183,7 @@ function AB:PositionAndSizeBarPet()
 		if E.Retail then
 			autoCast:SetOutside(button, 3, 3)
 		elseif E.TBC then
+			local corners = button.AutoCastOverlay.Corners
 			local cornerWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
 			local cornerHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
 			autoCast:SetOutside(button, 1, 1)
