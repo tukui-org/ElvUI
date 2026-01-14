@@ -408,7 +408,8 @@ function M:Initialize()
 	M:ZoneTextToggle()
 	M:ToggleInterrupt()
 
-	if not E.ClassicAnniv then -- it uses Blizzard_GroupFinder_VanillaStyle
+	local vanillaStyle = E.ClassicAnniv or E.TBC
+	if not vanillaStyle then -- it uses Blizzard_GroupFinder_VanillaStyle
 		M:LoadQueueStatus()
 	end
 
@@ -425,7 +426,7 @@ function M:Initialize()
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
 
-	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.Retail and 'Blizzard_HousingControls' or nil, E.ClassicAnniv and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
+	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.Retail and 'Blizzard_HousingControls' or nil, vanillaStyle and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
 		if IsAddOnLoaded(addon) then
 			M:ADDON_LOADED(nil, addon)
 		end

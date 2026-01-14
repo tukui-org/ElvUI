@@ -86,6 +86,7 @@ function M:CreateQueueStatusText()
 	M.QueueStatusDisplay = display
 
 	_G.QueueStatusButton:HookScript('OnHide', M.ClearQueueStatus)
+
 	hooksecurefunc('QueueStatusEntry_SetMinimalDisplay', M.SetMinimalQueueStatus)
 	hooksecurefunc('QueueStatusEntry_SetFullDisplay', M.SetFullQueueStatus)
 end
