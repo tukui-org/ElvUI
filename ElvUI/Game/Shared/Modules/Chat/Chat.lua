@@ -532,7 +532,7 @@ do --this can save some main file locals
 		elseif E.TBC then
 			-- Luckyone Anniversary (6412: Spineshatter EU)
 			z['Player-6412-028A3A6D']	= ElvGreen -- [Horde] Hunter
-			z['Player-6412-02A2F754']	= ElvGreen -- [Horde] Priest
+			z['Player-6412-0336641F']	= ElvGreen -- [Horde] Priest
 			z['Player-6412-02A39E0E']	= ElvGreen -- [Horde] Warlock
 			z['Player-6412-02BBE8AB']	= ElvGreen -- [Horde] Hunter 2
 		elseif E.Mists then
