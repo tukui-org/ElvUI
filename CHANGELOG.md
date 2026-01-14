@@ -1,3 +1,10 @@
+### Version 14.06 [ January 14th 2026 ]
+*   Friends Datatext erroring when attempting to send a whisper.
+*   Remove the decor icon overlay for loot history. (Thanks fang2hou)
+*   Mist: Gem socket border color not showing quality.
+*   TBC / Wrath: Pet happiness tags and Databar options again.
+*   TBC: Fixed several skins and pet bar auto cast glow.
+
 ### Version 14.05 [ January 5th 2026 ]
 *   Chat: Editbox font not obeying the proper font size.
 *   Chat: Boss emotes failing to display their message and % doubled up in messages.

@@ -956,6 +956,12 @@ G.unitframe.ChannelTicks = {
 	[27022]	= 6, -- Volley (Rank 4)
 }
 
+-- Spells that chain, second step
+G.unitframe.ChainChannelTicks = {}
+
+-- Window to chain time (in seconds); usually the channel duration
+G.unitframe.ChainChannelTime = {}
+
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {
 	-- Priest

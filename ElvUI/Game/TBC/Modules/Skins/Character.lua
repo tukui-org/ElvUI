@@ -110,6 +110,8 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
+	S:HandleDropDownBox(_G.PlayerTitleDropdown, 160)
+
 	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
 
 	_G.PaperDollFrame:StripTextures()
@@ -146,7 +148,7 @@ function S:CharacterFrame()
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
 	S:HandleRotateButton(_G.CharacterModelFrameRotateRightButton)
 
-	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
+	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 0, 2)
 	_G.CharacterModelFrameRotateRightButton:Point('TOPLEFT', _G.CharacterModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
 	_G.CharacterAttributesFrame:StripTextures()

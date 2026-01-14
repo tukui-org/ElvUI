@@ -182,6 +182,8 @@ function AB:PositionAndSizeBarPet()
 
 		if E.Retail then
 			autoCast:SetOutside(button, 3, 3)
+		elseif E.TBC then
+			autoCast:SetOutside(button, 1, 1)
 		else
 			local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
 			local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
