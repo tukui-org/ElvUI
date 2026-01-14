@@ -1233,7 +1233,7 @@ do
 				frame:SetParent(E.HiddenFrame)
 				frame:UnregisterAllEvents()
 
-				if not E.Retail then
+				if not (E.Retail or E.TBC) then
 					AB:SetNoopsi(frame)
 				elseif name == 'PetActionBar' then -- EditMode messes with it, be specific otherwise bags taint
 					frame.UpdateVisibility = E.noop
