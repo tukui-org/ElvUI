@@ -354,10 +354,10 @@ function B:LoadBagBar()
 
 	local KeyRing = _G.KeyRingButton
 	if KeyRing then
-		KeyRing:SetParent(B.BagBar)
 		KeyRing:SetScript('OnEnter', B.KeyRing_OnEnter)
 		KeyRing:SetScript('OnLeave', B.KeyRing_OnLeave)
 		KeyRing:SetScript('OnShow', nil)
+		KeyRing:SetParent(B.BagBar)
 
 		KeyRing:StripTextures()
 		KeyRing:SetTemplate(nil, true)
