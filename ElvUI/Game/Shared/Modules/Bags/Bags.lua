@@ -303,7 +303,7 @@ if E.Wrath or E.Mists then
 end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
-local bankOffset, maxBankSlots = (E.Classic or E.Wrath or E.Mists) and 4 or 5, E.Classic and 10 or 11
+local bankOffset, maxBankSlots = (E.Classic or E.TBC or E.Wrath or E.Mists) and 4 or 5, E.Classic and 10 or 11
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
