@@ -110,6 +110,8 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
+	S:HandleDropDownBox(_G.PlayerTitleDropdown, 160)
+
 	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
 
 	_G.PaperDollFrame:StripTextures()
