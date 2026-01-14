@@ -1479,7 +1479,7 @@ E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
 		return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
 	end
-end, not E.Classic or not E.TBC)
+end, not (E.Classic or E.TBC or E.Wrath))
 
 if E.Classic or E.TBC or E.Wrath then
 	local GetPetHappiness = GetPetHappiness
