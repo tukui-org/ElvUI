@@ -116,7 +116,7 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
-if oUF.isClassic then
+if oUF.isClassic or oUF.isTBC then
 	specialCast[2643] = 500 -- Multishot R1
 	specialCast[14288] = 500 -- Multishot R2
 	specialCast[14289] = 500 -- Multishot R3
