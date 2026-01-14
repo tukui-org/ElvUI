@@ -183,11 +183,14 @@ function AB:PositionAndSizeBarPet()
 		if E.Retail then
 			autoCast:SetOutside(button, 3, 3)
 		elseif E.TBC then
-			local corners = button.AutoCastOverlay.Corners
-			local cornerWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
-			local cornerHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
 			autoCast:SetOutside(button, 1, 1)
-			corners:SetOutside(button, cornerWidth, cornerHeight)
+
+			local corners = autoCast.Corners
+			if corners then
+				local cornerWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
+				local cornerHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
+				corners:SetOutside(button, cornerWidth, cornerHeight)
+			end
 		else
 			local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
 			local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
