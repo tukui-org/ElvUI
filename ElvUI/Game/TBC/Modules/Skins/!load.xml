@@ -18,6 +18,7 @@
 	<Script file='Friends.lua'/>
 	<Script file='GMChat.lua'/>
 	<Script file='Gossip.lua'/>
+	<Script file='GuildBank.lua'/>
 	<Script file='GuildControl.lua'/>
 	<Script file='GuildRegistrar.lua'/>
 	<Script file='Help.lua'/>
@@ -36,6 +37,7 @@
 	<Script file='QuestTimers.lua'/>
 	<Script file='Raid.lua'/>
 	<Script file='SettingsPanel.lua'/>
+	<Script file='Socket.lua'/>
 	<Script file='SpellBook.lua'/>
 	<Script file='Stable.lua'/>
 	<Script file='Tabard.lua'/>
