@@ -1657,7 +1657,6 @@ L["Slots"] = "槽"
 L["Smaller World Map Scale"] = "小型世界地图缩放"
 L["Smaller World Map"] = "小型世界地图"
 L["Smart Aura Position"] = "智能光环位置"
-L["Smart Raid Filter"] = "智能团队过滤"
 L["Smart"] = "智能"
 L["Smooth Bars"] = "平滑化"
 L["Smooth"] = "平滑"
@@ -2012,7 +2011,6 @@ L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333这�
 L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = "|cffFF3333这是为了提供信息.  这不会更改 UI 中的标签.|r"
 L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = "|cffFF3333警告: |r 在此处更改选项将应用于所有光环指示器光环. 若只想修改单个光环, 可以单击「设置光环」并更改特定光环设置. 如果选择了「配置专用」, 它将应用于该过滤器集."
 L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF3333警告: |r 点击下拉菜单的箭头来查看法术列表."
-L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF3333警告: |r 启用和队伍数目由智能团队过滤控制. 在 (团队框体-一般) 内禁用智能团队过滤来改变该设置."
 
 -- done by using labelN
 L["FACTION_STANDING_LABEL1"] = "仇恨"

@@ -1572,7 +1572,6 @@ L["Slots"] = "Emplacements"
 L["Smaller World Map Scale"] = "Échelle de la carte du monde plus petite"
 L["Smaller World Map"] = "Carte du monde plus petite"
 L["Smart Aura Position"] = "Position intelligente des auras"
-L["Smart Raid Filter"] = "Filtre de raid intelligent"
 L["Smart"] = "Intelligent"
 L["Smooth Bars"] = "Barres lissées"
 L["Smooth"] = "Lisser"
@@ -1910,7 +1909,6 @@ L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333Cela
 L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = "|cffFF3333Ceci est à titre informatif. Cela ne changera pas les balises dans l'interface utilisateur.|r"
 L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = "|cffFF3333Avertissement :|r Changer les options dans cette section affectera toutes les auras de l'indicateur d'aura. Pour ne changer qu'une seule aura, veuillez cliquer sur \"Configurer les auras\" et changer les paramètres spécifiques de cette aura. Si \"Spécifique au profil\" est sélectionné, cela s'appliquera à cet ensemble de filtres."
 L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF3333Attention :|r Cliquez sur la flèche dans la boîte déroulante pour voir la liste des sorts."
-L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF3333Avertissement :|r L'activation et le nombre de groupes sont gérés par le filtre de raid intelligent. Désactivez le filtre de raid intelligent dans (Cadres d'unité - Général) pour changer ces paramètres."
 
 -- done by using labelN
 L["FACTION_STANDING_LABEL1"] = "Haï"

@@ -1576,7 +1576,6 @@ L["Slots"] = true
 L["Smaller World Map Scale"] = "Daha Kucuk Dunya Haritasi Olcegi"
 L["Smaller World Map"] = "Daha Kucuk Dunya Haritasi"
 L["Smart Aura Position"] = "Akilli Aura Pozisyonu"
-L["Smart Raid Filter"] = "Akilli Baskin Filtresi"
 L["Smart"] = "Akilli"
 L["Smooth Bars"] = "Puruzsuz Cubuklar"
 L["Smooth"] = "Puruzsuz"
@@ -1913,7 +1912,6 @@ L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333Bu, 
 L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = "|cffFF3333Bu bilgi amaclidir. Bu, kullanici arayuzundeki etiketleri degistirmez.|r"
 L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = "|cffFF3333Uyari:|r Bu bolumdeki degistirme secenekleri tum Aura Gostergesi auralari icin gecerli olacaktir. Yalnizca bir Aura'yi degistirmek icin lutfen \"Auralari Yapilandir\"a tiklayin ve belirli Aura ayarlarini degistirin. \"Profile ozel\" seciliyse bu filtre seti icin gecerli olacaktir."
 L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF3333Uyari:|r Buyulerin listesini gormek icin acilir kutudaki oka tiklayin."
-L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF3333Uyari:|r Etkinlestir ve Grup Sayisi Akilli Baskin Filtresi tarafindan yonetilir. Bu ayarlari degistirmek icin (Birim cerceveler - Genel) icinde Akilli Baskin Filtresini devre disi birakin."
 
 -- done by using labelN
 L["FACTION_STANDING_LABEL1"] = "Nefret"

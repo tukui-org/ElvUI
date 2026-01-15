@@ -1575,7 +1575,6 @@ L["Slots"] = "Vagas"
 L["Smaller World Map Scale"] = "Escala de Mapa Mundial Menor"
 L["Smaller World Map"] = "Mapa Mundial Menor"
 L["Smart Aura Position"] = "Posição de Auras Inteligente"
-L["Smart Raid Filter"] = "Filtro de Raid inteligente"
 L["Smart"] = "Inteligente"
 L["Smooth Bars"] = "Barras suaves"
 L["Smooth"] = "Suave"
@@ -1913,7 +1912,6 @@ L["|cffFF3333This does not work in Instances or Garrisons!|r"] = "|cffFF3333Isto
 L["|cffFF3333This is for information. This will not change the tags in the UI.|r"] = "|cffFF3333Isto é para informação. Isto não irá mudar as tags na IU.|r"
 L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."] = "|cffFF3333Aviso:|r Mudar as opções nesta seção irá aplicar para todos os Indicadores de Aura. Para mudar para apenas uma Aura, por favor clique \"Configurar Auras\" e mude as configurações daquela Aura específica. Se \"Específico para Perfil\" estiver selecionado ele irá aplicar para aquele filtro."
 L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."] = "|cffFF3333Aviso:|r Clique na seta na caixa de suspensão para ver a lista de feitiços."
-L["|cffFF3333Warning:|r Enable and Number of Groups are managed by Smart Raid Filter. Disable Smart Raid Filter in (UnitFrames - General) to change these settings."] = "|cffFF3333Aviso:|r O botão Habilitar e Número dos Grupos são gerenciados pelo Filtro de Raide Inteligente. Disabilite o Filtro de Raide Inteligente em (Quadro de Unidades - Geral) para mudar essas configurações."
 
 -- done by using labelN
 L["FACTION_STANDING_LABEL1"] = "Odiado"
