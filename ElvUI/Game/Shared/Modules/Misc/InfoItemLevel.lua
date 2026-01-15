@@ -126,12 +126,12 @@ end
 
 function M:ToggleItemLevelInfo(setupCharacterPage, config)
 	if E.Classic then return end
-	local db = E.db.general.itemLevel
 
 	if setupCharacterPage then
 		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
 	end
 
+	local db = E.db.general.itemLevel
 	if db.displayCharacterInfo then
 		M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
@@ -182,11 +182,10 @@ function M:ToggleItemLevelInfo(setupCharacterPage, config)
 end
 
 function M:UpdatePageStrings(i, iLevelDB, slot, slotInfo, which) -- `which` is used by plugins
-	local db = E.db.general.itemLevel
-
 	iLevelDB[i] = slotInfo.iLvl
 
-	if db.showEnchants then
+	local db = E.db.general.itemLevel
+	if db.showEnchants then -- currently limited to retail only by InspectGearSlot in ItemLevel.lua
 		slot.enchantText:SetText(slotInfo.enchantTextShort)
 
 		if slotInfo.enchantColors and next(slotInfo.enchantColors) then
@@ -350,7 +349,6 @@ end
 
 function M:CreateSlotStrings(frame, which)
 	if not (frame and which) then return end
-	local db = E.db.general.itemLevel
 
 	if which == 'Inspect' then
 		frame.ItemLevelText = _G.InspectPaperDollItemsFrame:CreateFontString(nil, 'ARTWORK')
@@ -366,6 +364,7 @@ function M:CreateSlotStrings(frame, which)
 		frame.ItemLevelText:Point('CENTER', _G.CharacterStatsPane.ItemLevelFrame.Value, 'CENTER', 0, -1)
 	end
 
+	local db = E.db.general.itemLevel
 	local totalLevelFont = LSM:Fetch('font', db.totalLevelFont)
 	local totalLevelFontSize = db.totalLevelFontSize or 12
 	local totalLevelFontOutline = db.totalLevelFontOutline or 'OUTLINE'
@@ -449,6 +448,7 @@ end
 
 function M:UpdateInspectPageFonts(which)
 	local db = E.db.general.itemLevel
+
 	local totalLevelFont = LSM:Fetch('font', db.totalLevelFont)
 	local totalLevelFontSize = db.totalLevelFontSize or 12
 	local totalLevelFontOutline = db.totalLevelFontOutline or 'OUTLINE'
