@@ -1034,7 +1034,8 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Class Bar"], nil, nil, 'tab', function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return groupName ~= 'player' and E.Classic end)
+	local altPower = groupName ~= 'player'
+	local config = ACH:Group(altPower and L["Alternative Power"] or L["Class Bar"], nil, nil, 'tab', function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return altPower and not (E.Retail or E.Mists) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
@@ -1072,7 +1073,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
 		end
 
-		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 30, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, groupName ~= 'player')
+		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 30, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, altPower)
 		config.args.detachGroup.args.detachFromFrame = ACH:Toggle(L["Enable"], nil, 1)
 		config.args.detachGroup.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 2, { min = 3, max = 1000, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
@@ -1080,10 +1081,6 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.detachGroup.args.spacing = ACH:Range(L["Spacing"], nil, 5, spacingNormal, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 6, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'classbar')
-	end
-
-	if groupName ~= 'player' then
-		config.name = L["Alternative Power"]
 	end
 
 	return config
