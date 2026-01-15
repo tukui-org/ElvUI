@@ -331,7 +331,8 @@ function lib:CreateButton(id, name, header, config)
 
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
-	if WoWRetail then
+
+	if WoWRetail or WoWBCC then
 		button:RegisterForClicks("AnyDown", "AnyUp")
 	else
 		button:RegisterForClicks("AnyUp")
@@ -652,7 +653,7 @@ function WrapOnClick(button, unwrapheader)
 	]])
 end
 
--- prevent pickup calling spells ~Simpy
+-- reticle handling ~Simpy
 function Generic:OnButtonEvent(event, key, down, spellID)
 	if event == "UNIT_SPELLCAST_RETICLE_TARGET" then
 		if (self.abilityID == spellID) and not self.TargetReticleAnimFrame:IsShown() then
@@ -664,6 +665,7 @@ function Generic:OnButtonEvent(event, key, down, spellID)
 			self.TargetReticleAnimFrame:Hide()
 		end
 	elseif event == "GLOBAL_MOUSE_UP" then
+		self:SetButtonState('NORMAL')
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
@@ -1311,11 +1313,6 @@ function Generic:OnEnter()
 	else
 		UpdateFlyout(self)
 	end
-
-	if not WoWRetail then
-		Generic.OnButtonEvent(self, 'OnEnter')
-		self:RegisterEvent('MODIFIER_STATE_CHANGED')
-	end
 end
 
 function Generic:OnLeave()
@@ -1327,11 +1324,6 @@ function Generic:OnLeave()
 
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:Hide()
-	end
-
-	if not WoWRetail then
-		Generic.OnButtonEvent(self, 'OnLeave')
-		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
 
@@ -1494,7 +1486,7 @@ function Generic:UpdateConfig(config)
 	self:SetAttribute('flyoutDirection', self.config.flyoutDirection)
 	self:SetAttribute('useOnKeyDown', self.config.clickOnDown)
 
-	if not WoWRetail then
+	if not (WoWRetail or WoWBCC) then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 	end
 end
@@ -1540,7 +1532,9 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
-	if not WoWBCC then
+	if WoWBCC then
+		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
+	else
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 	end
 
