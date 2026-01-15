@@ -82,7 +82,7 @@ E.InfoColor2 = '|cff9b9b9b' -- silver
 E.twoPixelsPlease = false -- changing this option is not supported! :P
 
 do -- Expansions
-	E.TBC = E.wowtoc >= 20000 and E.wowtoc < 30000
+	E.TBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
 	E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
