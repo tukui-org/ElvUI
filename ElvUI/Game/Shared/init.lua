@@ -87,7 +87,7 @@ do -- Expansions
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
-	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC and E.wowtoc < 20000
+	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
