@@ -1449,7 +1449,7 @@ do
 			UF:Configure_PartyIndicator(frame)
 			UF:Configure_RestingIndicator(frame)
 
-			if E.Classic and E.myclass ~= 'WARRIOR' then
+			if (E.Classic or E.TBC) and E.myclass ~= 'WARRIOR' then
 				UF:Configure_EnergyManaRegen(frame)
 			end
 
