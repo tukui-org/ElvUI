@@ -1415,6 +1415,9 @@ do
 
 			if not E.Classic then
 				UF:Configure_SummonIcon(frame)
+			end
+
+			if E.Retail or E.Mists then
 				UF:Configure_AltPowerBar(frame)
 			end
 		end
