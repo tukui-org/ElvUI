@@ -791,7 +791,7 @@ do
 				if self.ParseText then
 					self:ParseText(0)
 				else
-					ChatEdit_ParseText(self, 0)
+					_G.ChatEdit_ParseText(self, 0)
 				end
 			end
 		end
