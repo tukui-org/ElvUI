@@ -37,8 +37,6 @@ A default texture will be applied if the sub-widgets are StatusBars and don't ha
 local _, ns = ...
 local oUF = ns.oUF
 
-if oUF.myclass ~= 'DEATHKNIGHT' then return end
-
 local sort = sort
 local ipairs = ipairs
 
@@ -244,7 +242,36 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate')
 end
 
+local function Disable(self)
+	local element = self.Runes
+	if(element) then
+		for _, rune in ipairs(element) do
+			rune:Hide()
+		end
+
+		-- ElvUI block
+		if element.IsObjectType and element:IsObjectType("Frame") then
+			element:Hide()
+		end
+		-- end block
+
+		if oUF.isRetail then
+			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+		else
+			self:UnregisterEvent('RUNE_TYPE_UPDATE', ColorPath)
+		end
+
+		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
+	end
+end
+
 local function Enable(self, unit)
+	if oUF.myclass ~= 'DEATHKNIGHT' then
+		Disable(self)
+
+		return false
+	end
+
 	local element = self.Runes
 	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
@@ -271,29 +298,6 @@ local function Enable(self, unit)
 		self:RegisterEvent('RUNE_POWER_UPDATE', Path, true)
 
 		return true
-	end
-end
-
-local function Disable(self)
-	local element = self.Runes
-	if(element) then
-		for _, rune in ipairs(element) do
-			rune:Hide()
-		end
-
-		-- ElvUI block
-		if element.IsObjectType and element:IsObjectType("Frame") then
-			element:Hide()
-		end
-		-- end block
-
-		if oUF.isRetail then
-			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
-		else
-			self:UnregisterEvent('RUNE_TYPE_UPDATE', ColorPath)
-		end
-
-		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
 	end
 end
 
