@@ -97,7 +97,7 @@ local FAILED = _G.FAILED or 'Failed'
 local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame.lua
 
-local wipe = wipe
+local _G = _G
 local next = next
 local select = select
 local GetTime = GetTime
@@ -107,9 +107,15 @@ local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitCastingInfo = UnitCastingInfo
 local UnitChannelInfo = UnitChannelInfo
+local UnitChannelDuration = UnitChannelDuration
+local UnitCastingDuration = UnitCastingDuration
+local UnitEmpoweredChannelDuration = UnitEmpoweredChannelDuration
 local GetUnitEmpowerStageDuration = GetUnitEmpowerStageDuration
 local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
+
+local StatusBarTimerDirection = Enum.StatusBarTimerDirection
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialAuras = {} -- ms modifier
@@ -359,9 +365,9 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		-- Calculate max for CustomTimeText compatibility
 		element.max = element.endTime - element.startTime
 
-		local direction = element.channeling and Enum.StatusBarTimerDirection.RemainingTime or Enum.StatusBarTimerDirection.ElapsedTime
+		local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
 		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
-		element:SetTimerDuration(duration, element.smoothing or Enum.StatusBarInterpolation.Immediate, direction)
+		element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
 	else
 		if element.empowering then
 			endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
@@ -515,9 +521,9 @@ local function CastUpdate(self, event, unit, castID, spellID)
 		element.startTime = startTime
 		element.endTime = endTime
 
-		local direction = element.channeling and Enum.StatusBarTimerDirection.RemainingTime or Enum.StatusBarTimerDirection.ElapsedTime
+		local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
 		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
-		element:SetTimerDuration(duration, element.smoothing or Enum.StatusBarInterpolation.Immediate, direction)
+		element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
 	else
 		if(element.empowering) then
 			endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
@@ -716,18 +722,17 @@ local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
 		-- Use new timer API when available (Retail), fall back to manual tracking for Classic
 		local useTimerAPI = oUF.isRetail and self.GetTimerDuration and self.startTime
-		local duration
+		local duration, durationObject
 
 		if(useTimerAPI) then
-			local durationObject = self:GetTimerDuration() -- can be nil
+			durationObject = self:GetTimerDuration() -- can be nil
+
 			if durationObject then
 				duration = durationObject:GetRemainingDuration()
 			else
 				useTimerAPI = false
 			end
-		end
-
-		if(not useTimerAPI) then
+		else
 			local isCasting = self.casting or self.empowering
 			if(isCasting) then
 				self.duration = self.duration + elapsed
@@ -763,14 +768,28 @@ local function onUpdate(self, elapsed)
 
 		if(self.Time) then
 			if(self.delay ~= 0) then
+				--[[ Override: Castbar:CustomDelayText(duration)
+				Used to completely override the updating of the .Time sub-widget when there is a delay to adjust for.
+
+				* self     - the Castbar widget
+				* duration - a [Duration](https://warcraft.wiki.gg/wiki/ScriptObject_DurationObject) object for the Castbar
+				--]]
+
 				if(self.CustomDelayText) then
-					self:CustomDelayText(duration)
+					self:CustomDelayText(durationObject or duration)
 				else
 					self.Time:SetFormattedText('%.1f|cffff0000%s%.2f|r', duration, (self.casting or self.empowering) and '+' or '-', self.delay)
 				end
 			else
+				--[[ Override: Castbar:CustomTimeText(duration)
+				Used to completely override the updating of the .Time sub-widget.
+
+				* self     - the Castbar widget
+				* duration - a [Duration](https://warcraft.wiki.gg/wiki/ScriptObject_DurationObject) object for the Castbar
+				--]]
+
 				if(self.CustomTimeText) then
-					self:CustomTimeText(duration)
+					self:CustomTimeText(durationObject or duration)
 				else
 					self.Time:SetFormattedText('%.1f', duration)
 				end
@@ -845,15 +864,15 @@ local function Enable(self, unit)
 	element.Pips = element.Pips or {}
 
 	if(not element.smoothing) then
-		element.smoothing = Enum.StatusBarInterpolation.Immediate
+		element.smoothing = StatusBarInterpolation.Immediate
 	end
 
 	element:SetScript('OnUpdate', element.OnUpdate or onUpdate)
 
 	if(self.unit == 'player' and not (self.hasChildren or self.isChild or self.isNamePlate)) then
-		PlayerCastingBarFrame:SetUnit(nil)
-		PetCastingBarFrame:SetUnit(nil)
-		PetCastingBarFrame:UnregisterEvent('UNIT_PET')
+		_G.PlayerCastingBarFrame:SetUnit(nil)
+		_G.PetCastingBarFrame:SetUnit(nil)
+		_G.PetCastingBarFrame:UnregisterEvent('UNIT_PET')
 	end
 
 	if(element:IsObjectType('StatusBar') and not element:GetStatusBarTexture()) then
@@ -910,8 +929,13 @@ local function Disable(self)
 		element:SetScript('OnUpdate', nil)
 
 		if(self.unit == 'player' and not (self.hasChildren or self.isChild or self.isNamePlate)) then
-			PlayerCastingBarFrame:OnLoad()
-			PetCastingBarFrame:PetCastingBar_OnLoad()
+			_G.PlayerCastingBarFrame:OnLoad()
+
+			if _G.PetCastingBarFrame.OnLoad then
+				_G.PetCastingBarFrame:OnLoad()
+			else
+				_G.PetCastingBarFrame:PetCastingBar_OnLoad()
+			end
 		end
 	end
 end
