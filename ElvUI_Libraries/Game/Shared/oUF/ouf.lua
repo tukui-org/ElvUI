@@ -999,6 +999,7 @@ do
 					nameplate.unitFrame.WidgetContainer = nameplate.UnitFrame.WidgetContainer
 				end
 				if(nameplate.UnitFrame.SoftTargetFrame) then
+					-- we keep this to render soft target interaction icons above the "target"
 					nameplate.UnitFrame.SoftTargetFrame:SetParent(nameplate.unitFrame)
 					nameplate.UnitFrame.SoftTargetFrame:SetIgnoreParentAlpha(true)
 					nameplate.unitFrame.SoftTargetFrame = nameplate.UnitFrame.SoftTargetFrame
