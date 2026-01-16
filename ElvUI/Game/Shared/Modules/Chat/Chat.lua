@@ -80,6 +80,9 @@ local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local IsRecentAllyByGUID = C_RecentAllies and C_RecentAllies.IsRecentAllyByGUID
 local GetClientTexture = BNet_GetClientEmbeddedAtlas or BNet_GetClientEmbeddedTexture
 
+local ChatEditSetLastTellTarget = (ChatFrameUtil and ChatFrameUtil.SetLastTellTarget) or ChatEdit_SetLastTellTarget
+local ChatEditSetLastActiveWindow = (ChatFrameUtil and ChatFrameUtil.SetLastActiveWindow) or ChatEdit_SetLastActiveWindow
+local ChatEditGetActiveWindow = (ChatFrameUtil and ChatFrameUtil.GetActiveWindow) or ChatEdit_GetActiveWindow
 local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
 local ResolvePrefixedChannelName = (ChatFrameUtil and ChatFrameUtil.ResolvePrefixedChannelName) or ChatFrame_ResolvePrefixedChannelName
 local ShouldColorChatByClass = (ChatFrameUtil and ChatFrameUtil.ShouldColorChatByClass) or Chat_ShouldColorChatByClass
@@ -784,7 +787,12 @@ do
 				end
 			elseif text == '/gr ' then
 				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
-				_G.ChatEdit_ParseText(self, 0)
+
+				if self.ParseText then
+					self:ParseText(0)
+				else
+					ChatEdit_ParseText(self, 0)
+				end
 			end
 		end
 
@@ -822,7 +830,7 @@ do -- this fixes a taint when you push tab on editbox which blocks secure comman
 
 	function CH:ChatEdit_PleaseUntaint(event)
 		if event == 'PLAYER_REGEN_DISABLED' then
-			if _G.ChatEdit_GetActiveWindow() then
+			if ChatEditGetActiveWindow() then
 				CH:ChatEdit_UntaintTabList()
 			end
 		elseif InCombatLockdown() then
@@ -2524,7 +2532,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
 			if not isProtected then
-				_G.ChatEdit_SetLastTellTarget(arg2, chatType)
+				ChatEditSetLastTellTarget(arg2, chatType)
 			end
 
 			if CH.db.flashClientIcon then
@@ -3946,7 +3954,9 @@ function CH:FCF_Tab_OnClick(button)
 
 		if GetCVar('chatStyle') ~= 'classic' then
 			local chatFrame = (chat.isDocked and _G.GeneralDockManager.primary) or chat
-			_G.ChatEdit_SetLastActiveWindow(chatFrame.editBox)
+			if chatFrame then
+				ChatEditSetLastActiveWindow(chatFrame.editBox)
+			end
 		end
 
 		chat:ResetAllFadeTimes()
