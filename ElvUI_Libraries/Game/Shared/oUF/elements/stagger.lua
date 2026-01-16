@@ -28,14 +28,14 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 local _, ns = ...
 local oUF = ns.oUF
 
-if oUF.myclass ~= 'MONK' then return end
-
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
 local UnitHealthMax = UnitHealthMax
 local UnitStagger = UnitStagger
 local UnitIsUnit = UnitIsUnit
 local wipe = wipe
+
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
@@ -200,14 +200,31 @@ local function ForceUpdate(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+local function Disable(self)
+	local element = self.Stagger
+	if(element) then
+		element:Hide()
+
+		self:UnregisterEvent('UNIT_AURA', Path)
+		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
+		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+	end
+end
+
 local function Enable(self, unit)
+	if oUF.myclass ~= 'MONK' then
+		Disable(self)
+
+		return false
+	end
+
 	local element = self.Stagger
 	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
 		if(not element.smoothing) then
-			element.smoothing = Enum.StatusBarInterpolation.Immediate
+			element.smoothing = StatusBarInterpolation.Immediate
 		end
 
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
@@ -221,17 +238,6 @@ local function Enable(self, unit)
 		element:Hide()
 
 		return true
-	end
-end
-
-local function Disable(self)
-	local element = self.Stagger
-	if(element) then
-		element:Hide()
-
-		self:UnregisterEvent('UNIT_AURA', Path)
-		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
-		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 	end
 end
 
