@@ -116,6 +116,7 @@ P.general = {
 		enchantAbbrev = true,
 		showItemLevel = true,
 		showEnchants = true,
+		showOnItem = not E.Retail,
 		showGems = true,
 		itemLevelRarity = true,
 		itemLevelFont = 'PT Sans Narrow',
@@ -124,6 +125,9 @@ P.general = {
 		totalLevelFont = 'PT Sans Narrow',
 		totalLevelFontSize = E.Retail and 20 or 18,
 		totalLevelFontOutline = 'OUTLINE',
+		textPosition = 'BOTTOM',
+		textOffsetX = 0,
+		textOffsetY = 2
 	},
 	rotationAssist = {
 		nextcast = { r = 0.20, g = 0.60, b = 0.95, a = 0.9 },

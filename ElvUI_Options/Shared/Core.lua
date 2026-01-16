@@ -376,7 +376,7 @@ SetupProfile(E.Options.args.profiles.args.private, L["Private"], 2, L["Are you s
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
 
-if E.Retail or E.Mists or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+if E.Retail or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 	E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 end
 

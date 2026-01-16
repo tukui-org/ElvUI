@@ -790,7 +790,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 	if petTypes[groupName] then
 		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 
-		if E.Classic and (groupName == 'pet' and E.myclass == 'HUNTER') then
+		if (E.Classic or E.TBC) and (groupName == 'pet' and E.myclass == 'HUNTER') then
 			config.args.colorHappiness = ACH:Toggle(L["Color by Happiness"], nil, 3)
 		end
 	end
@@ -895,7 +895,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		config.args.generalGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 20)
 	end
 
-	if E.Classic and groupName == 'player' then
+	if (E.Classic or E.TBC or E.Wrath) and groupName == 'player' then
 		config.args.generalGroup.args.EnergyManaRegen = ACH:Toggle(L["Energy/Mana Regen Tick"], L["Enables the five-second-rule ticks for Mana classes and Energy ticks for Rogues and Druids."], 21, nil, nil, nil, nil, nil, nil, E.Retail)
 	end
 
@@ -1034,7 +1034,8 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Class Bar"], nil, nil, 'tab', function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return groupName ~= 'player' and E.Classic end)
+	local altPower = groupName ~= 'player'
+	local config = ACH:Group(altPower and L["Alternative Power"] or L["Class Bar"], nil, nil, 'tab', function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return altPower and not (E.Retail or E.Mists) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
@@ -1072,7 +1073,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
 		end
 
-		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 30, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, groupName ~= 'player')
+		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 30, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, altPower)
 		config.args.detachGroup.args.detachFromFrame = ACH:Toggle(L["Enable"], nil, 1)
 		config.args.detachGroup.args.detachedWidth = ACH:Range(L["Detached Width"], nil, 2, { min = 3, max = 1000, step = 1 }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
@@ -1080,10 +1081,6 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.detachGroup.args.spacing = ACH:Range(L["Spacing"], nil, 5, spacingNormal, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.parent = ACH:Select(L["Parent"], L["Choose UIPARENT to prevent it from hiding with the unitframe."], 6, { FRAME = 'FRAME', UIPARENT = 'UIPARENT' }, nil, nil, nil, nil, function() return not E.db.unitframe.units.player.classbar.detachFromFrame end)
 		config.args.detachGroup.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'classbar')
-	end
-
-	if groupName ~= 'player' then
-		config.name = L["Alternative Power"]
 	end
 
 	return config
@@ -1165,7 +1162,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 	end
 
 	if groupName == 'target' or groupName == 'boss' or groupName == 'tank' or groupName == 'arena' or groupName == 'assist' then
-		config.args.middleClickFocus = ACH:Toggle(L["Middle Click - Set Focus"], L["Middle clicking the unit frame will cause your focus to match the unit.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."], 16)
+		config.args.middleClickFocus = ACH:Toggle(L["Middle Click - Set Focus"], L["Middle clicking the unit frame will cause your focus to match the unit.\n\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."], 16)
 	end
 
 	return config
@@ -1216,7 +1213,7 @@ UnitFrame.resetFilters = ACH:Execute(L["Reset Aura Filters"], nil, 3, function()
 UnitFrame.borderOptions = ACH:Execute(L["Border Options"], nil, 4, function() ACD:SelectGroup('ElvUI', 'general', 'media') end)
 
 UnitFrame.generalOptionsGroup = ACH:Group(L["General"], nil, 5, 'tree')
-UnitFrame.generalOptionsGroup.args.targetOnMouseDown = ACH:Toggle(L["Target On Mouse-Down"], L["Target units on mouse down rather than mouse up.\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."], 2)
+UnitFrame.generalOptionsGroup.args.targetOnMouseDown = ACH:Toggle(L["Target On Mouse-Down"], L["Target units on mouse down rather than mouse up.\n\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."], 2)
 UnitFrame.generalOptionsGroup.args.targetSound = ACH:Toggle(L["Targeting Sound"], L["Enable a sound if you select a unit."], 3)
 UnitFrame.generalOptionsGroup.args.maxAllowedGroups = ACH:Toggle(L["Max Allowed Groups"], L["Groups will be maxed as Mythic to 4, Other Raids to 6, and PVP / World to 8."], 4, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:ZONE_CHANGED_NEW_AREA() end, nil, not E.Retail)
 
@@ -1345,7 +1342,7 @@ Colors.reactionGroup.args.BAD = ACH:Color(L["Bad"], nil, 1)
 Colors.reactionGroup.args.NEUTRAL = ACH:Color(L["Neutral"], nil, 2)
 Colors.reactionGroup.args.GOOD = ACH:Color(L["Good"], nil, 3)
 
-Colors.happiness = ACH:Group(L["Pet Happiness"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.happiness[n], P.unitframe.colors.happiness[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.happiness[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Classic)
+Colors.happiness = ACH:Group(L["Pet Happiness"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.happiness[n], P.unitframe.colors.happiness[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.happiness[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Classic or E.TBC))
 Colors.happiness.args['1'] = ACH:Color(L["Unhappy"], nil, 1)
 Colors.happiness.args['2'] = ACH:Color(L["Content"], nil, 2)
 Colors.happiness.args['3'] = ACH:Color(L["Happy"], nil, 3)
