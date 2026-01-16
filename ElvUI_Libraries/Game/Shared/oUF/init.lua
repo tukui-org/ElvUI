@@ -3,6 +3,8 @@ local oUF = { Private = {} }
 ns.oUF = oUF
 
 local _, _, _, wowtoc = GetBuildInfo()
+oUF.wowtoc = wowtoc
+oUF.baseClass, oUF.baseClassID = UnitClassBase('player')
 oUF.myLocalizedClass, oUF.myclass, oUF.myClassID = UnitClass('player')
 
 oUF.isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
