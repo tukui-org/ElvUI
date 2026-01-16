@@ -1,3 +1,27 @@
+### Version 14.07 [ January 16th 2026 ]
+*   Item level option to Show on Item (default: enabled for non-retail).
+*   TBC / Wrath:
+    *   Alternative Power was showing on Unitframes when it doesn't exist.
+    *   Attempt to fix Dispels not showing up correctly.
+    *   Energy regen ticks missing.
+*   TBC:
+    *   Pet happiness color on frames.
+    *   Pet auto cast corners adjusted a bit.
+    *   Hunter Aimed Shot and Multishot ranks added.
+    *   Auras not working with default Minimap.
+    *   Bag Bar crashing with Bag module disabled.
+    *   Bag container bags positioning incorrectly (not Bag Bar).
+    *   Bank last bag not appearing.
+    *   Tooltips not showing class color.
+    *   Nameplate threat not working in groups.
+    *   Various group role things missing.
+    *   LFG eye not staying on the mover.
+    *   Logout button not working after changing Editmode profile.
+    *   Dualspec things should be active again.
+    *   Actionbar key down not working with mod key macros (set Pick Up Action Key to None).
+    *   Raid Utility key down not functioning properly.
+    *   Merchant skin currencies fixed up.
+
 ### Version 14.06 [ January 14th 2026 ]
 *   Friends Datatext erroring when attempting to send a whisper.
 *   Remove the decor icon overlay for loot history. (Thanks fang2hou)

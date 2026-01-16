@@ -1077,7 +1077,7 @@ function TT:Initialize()
 		TT:SecureHook(GameTooltip, 'SetUnitDebuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
 	end
 
-	if AddTooltipPostCall and not (E.Wrath or E.Mists) then -- exists but doesn't work atm on Cata
+	if AddTooltipPostCall and not (E.TBC or E.Wrath or E.Mists) then -- exists but doesn't work atm on Cata
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
 

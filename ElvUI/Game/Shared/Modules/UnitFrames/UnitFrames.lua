@@ -1415,6 +1415,9 @@ do
 
 			if not E.Classic then
 				UF:Configure_SummonIcon(frame)
+			end
+
+			if E.Retail or E.Mists then
 				UF:Configure_AltPowerBar(frame)
 			end
 		end
@@ -1446,7 +1449,7 @@ do
 			UF:Configure_PartyIndicator(frame)
 			UF:Configure_RestingIndicator(frame)
 
-			if E.Classic and E.myclass ~= 'WARRIOR' then
+			if (E.Classic or E.TBC or E.Wrath) and E.myclass ~= 'WARRIOR' then
 				UF:Configure_EnergyManaRegen(frame)
 			end
 

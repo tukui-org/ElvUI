@@ -131,7 +131,8 @@ function M:ToggleItemLevelInfo(setupCharacterPage, config)
 		M:CreateSlotStrings(_G.CharacterFrame, 'Character')
 	end
 
-	if E.db.general.itemLevel.displayCharacterInfo then
+	local db = E.db.general.itemLevel
+	if db.displayCharacterInfo then
 		M:RegisterEvent('AZERITE_ESSENCE_UPDATE', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_EQUIPMENT_CHANGED', 'UpdateCharacterInfo')
 		M:RegisterEvent('PLAYER_AVG_ITEM_LEVEL_UPDATE', 'UpdateCharacterInfo')
@@ -166,7 +167,7 @@ function M:ToggleItemLevelInfo(setupCharacterPage, config)
 		M:ClearPageInfo(_G.CharacterFrame, 'Character')
 	end
 
-	if E.db.general.itemLevel.displayInspectInfo then
+	if db.displayInspectInfo then
 		M:RegisterEvent('INSPECT_READY', 'UpdateInspectInfo')
 		M:RegisterEvent('UNIT_MODEL_CHANGED', 'UpdateInspectInfo')
 
@@ -183,23 +184,26 @@ end
 function M:UpdatePageStrings(i, iLevelDB, slot, slotInfo, which) -- `which` is used by plugins
 	iLevelDB[i] = slotInfo.iLvl
 
-	if E.db.general.itemLevel.showEnchants then
+	local db = E.db.general.itemLevel
+	if db.showEnchants then -- currently limited to retail only by InspectGearSlot in ItemLevel.lua
 		slot.enchantText:SetText(slotInfo.enchantTextShort)
+
 		if slotInfo.enchantColors and next(slotInfo.enchantColors) then
 			slot.enchantText:SetTextColor(unpack(slotInfo.enchantColors))
 		end
 	end
 
-	if E.db.general.itemLevel.showItemLevel then
+	if db.showItemLevel then
 		slot.iLvlText:SetText(slotInfo.iLvl)
-		if E.db.general.itemLevel.itemLevelRarity and slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
+
+		if db.itemLevelRarity and slotInfo.itemLevelColors and next(slotInfo.itemLevelColors) then
 			slot.iLvlText:SetTextColor(unpack(slotInfo.itemLevelColors))
 		end
 	end
 
 	M:UpdateSocketDisplay(slot, true)
 
-	local gemStep, essenceStep, showGems = 1, 1, E.db.general.itemLevel.showGems
+	local gemStep, essenceStep, showGems = 1, 1, db.showGems
 	for x = 1, 10 do
 		local texture = slot['textureSlot'..x]
 		local backdrop = slot['textureSlotBackdrop'..x]
@@ -257,6 +261,7 @@ end
 
 function M:UpdateAverageString(frame, which, iLevelDB)
 	local charPage, avgItemLevel, avgTotal = which == 'Character'
+	local db = E.db.general.itemLevel
 
 	if charPage then
 		avgTotal, avgItemLevel = E:GetPlayerItemLevel() -- rounded average, rounded equipped
@@ -279,7 +284,7 @@ function M:UpdateAverageString(frame, which, iLevelDB)
 	end
 
 	-- we have to wait to do this on inspect so handle it in here
-	if not E.db.general.itemLevel.itemLevelRarity then
+	if not db.itemLevelRarity then
 		for i = 1, numInspectItems do
 			local ilvl = i ~= 4 and iLevelDB[i]
 			local inspectItem = ilvl and _G[which..InspectItems[i]]
@@ -359,19 +364,23 @@ function M:CreateSlotStrings(frame, which)
 		frame.ItemLevelText:Point('CENTER', _G.CharacterStatsPane.ItemLevelFrame.Value, 'CENTER', 0, -1)
 	end
 
-	local totalLevelFont = LSM:Fetch('font', E.db.general.itemLevel.totalLevelFont)
-	local totalLevelFontSize = E.db.general.itemLevel.totalLevelFontSize or 12
-	local totalLevelFontOutline = E.db.general.itemLevel.totalLevelFontOutline or 'OUTLINE'
+	local db = E.db.general.itemLevel
+	local totalLevelFont = LSM:Fetch('font', db.totalLevelFont)
+	local totalLevelFontSize = db.totalLevelFontSize or 12
+	local totalLevelFontOutline = db.totalLevelFontOutline or 'OUTLINE'
 	frame.ItemLevelText:FontTemplate(totalLevelFont, totalLevelFontSize, totalLevelFontOutline)
 
 	M:UpdateSlotPoints(which)
 end
 
 function M:UpdateSlotPoints(which, config)
-	local itemLevelFont = LSM:Fetch('font', E.db.general.itemLevel.itemLevelFont)
-	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
-	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
-	local showItemLevel = E.db.general.itemLevel.showItemLevel
+	local db = E.db.general.itemLevel
+	local itemLevelFont = LSM:Fetch('font', db.itemLevelFont)
+	local itemLevelFontSize = db.itemLevelFontSize or 12
+	local itemLevelFontOutline = db.itemLevelFontOutline or 'OUTLINE'
+	local showItemLevel = db.showItemLevel
+	local showOnItem = db.showOnItem
+	local shouldOffset = not showOnItem and showItemLevel
 
 	if config and which == 'Inspect' and UnitExists('target') then
 		M:UpdateInspectInfo('FAKE_INSPECT_UPDATE', 'target') -- fake update when inspect is already shown
@@ -387,7 +396,12 @@ function M:UpdateSlotPoints(which, config)
 
 			slot.iLvlText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 			slot.iLvlText:ClearAllPoints()
-			slot.iLvlText:Point('BOTTOM', slot, x, y)
+
+			if showOnItem then
+				slot.iLvlText:Point(db.textPosition, slot, db.textOffsetX, db.textOffsetY)
+			else
+				slot.iLvlText:Point('BOTTOM', slot, x, y)
+			end
 
 			if not slot.enchantText then
 				slot.enchantText = slot:CreateFontString(nil, 'OVERLAY')
@@ -406,8 +420,10 @@ function M:UpdateSlotPoints(which, config)
 			end
 
 			local weapon = i == 16 or i == 17 or i == 18
+			local shownOffset = shouldOffset and 8 or 0
+			local shownSpaced = shouldOffset and 0 or 1
 			for u = 1, 10 do
-				local offset = (showItemLevel and 8 or 0) + ((u - (showItemLevel and 0 or 1)) * 16)
+				local offset = shownOffset + ((u - shownSpaced) * 16)
 				local newX = (weapon and 0) or ((justify == 'BOTTOMLEFT' or itemRight) and x+offset) or x-offset
 				local newY = (weapon and offset+40) or y
 
@@ -431,17 +447,19 @@ function M:SetupInspectPageInfo()
 end
 
 function M:UpdateInspectPageFonts(which)
-	local totalLevelFont = LSM:Fetch('font', E.db.general.itemLevel.totalLevelFont)
-	local totalLevelFontSize = E.db.general.itemLevel.totalLevelFontSize or 12
-	local totalLevelFontOutline = E.db.general.itemLevel.totalLevelFontOutline or 'OUTLINE'
+	local db = E.db.general.itemLevel
+
+	local totalLevelFont = LSM:Fetch('font', db.totalLevelFont)
+	local totalLevelFontSize = db.totalLevelFontSize or 12
+	local totalLevelFontOutline = db.totalLevelFontOutline or 'OUTLINE'
 	local frame = (which == 'Character' and _G.CharacterFrame) or _G.InspectFrame
 	if frame and frame.ItemLevelText then
 		frame.ItemLevelText:FontTemplate(totalLevelFont, totalLevelFontSize, totalLevelFontOutline)
 	end
 
-	local itemLevelFont = LSM:Fetch('font', E.db.general.itemLevel.itemLevelFont)
-	local itemLevelFontSize = E.db.general.itemLevel.itemLevelFontSize or 12
-	local itemLevelFontOutline = E.db.general.itemLevel.itemLevelFontOutline or 'OUTLINE'
+	local itemLevelFont = LSM:Fetch('font', db.itemLevelFont)
+	local itemLevelFontSize = db.itemLevelFontSize or 12
+	local itemLevelFontOutline = db.itemLevelFontOutline or 'OUTLINE'
 	for i, s in pairs(InspectItems) do
 		local slot = i ~= 4 and _G[which..s]
 		if slot then

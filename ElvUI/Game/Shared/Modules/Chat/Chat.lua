@@ -342,9 +342,10 @@ do --this can save some main file locals
 			z['Player-5813-0301DEC1']	= itsSimpy -- Warlock: Yubi
 			-- Simpy Era (5149: Mankrik)
 			z['Player-5149-04172B76']	= itsSimpy -- Warlock: Simpy
-			-- Simpy Anniversary (6103: Dreamscythe)
-			z['Player-6103-02A886D5']	= itsSimpy -- Warlock: Simpy
-			z['Player-6103-0301DECC']	= itsSimpy -- Priest: Hunie
+		elseif E.TBC then
+			-- Simpy TBC Anniversary (6064: Dreamscythe)
+			z['Player-6064-02A886D5']	= itsSimpy -- Warlock: Simpy
+			z['Player-6064-0301DECC']	= itsSimpy -- Priest: Hunie
 		elseif E.Mists then
 			-- Simpy (4385: Pagle)
 			z['Player-4385-05E5F6DF']	= itsSimpy -- Shaman:	Kybi
@@ -510,11 +511,6 @@ do --this can save some main file locals
 		end
 	elseif portal == 'EU' then
 		if E.Classic then
-			-- Luckyone Anniversary (6112: Spineshatter EU)
-			z['Player-6112-028A3A6D']	= ElvGreen -- [Horde] Hunter
-			z['Player-6112-02A2F754']	= ElvGreen -- [Horde] Priest
-			z['Player-6112-02A39E0E']	= ElvGreen -- [Horde] Warlock
-			z['Player-6112-02BBE8AB']	= ElvGreen -- [Horde] Hunter 2
 			-- Luckyone Seasonal (5827: Living Flame EU)
 			z['Player-5827-0273D732']	= ElvGreen -- [Alliance] Hunter
 			z['Player-5827-0273D63E']	= ElvGreen -- [Alliance] Paladin
@@ -533,6 +529,12 @@ do --this can save some main file locals
 			-- Luckyone Classic Era (5233: Firemaw)
 			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
 			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
+		elseif E.TBC then
+			-- Luckyone Anniversary (6412: Spineshatter EU)
+			z['Player-6412-028A3A6D']	= ElvGreen -- [Horde] Hunter
+			z['Player-6412-0336641F']	= ElvGreen -- [Horde] Priest
+			z['Player-6412-02A39E0E']	= ElvGreen -- [Horde] Warlock
+			z['Player-6412-02BBE8AB']	= ElvGreen -- [Horde] Hunter 2
 		elseif E.Mists then
 			-- Luckyone (Horde: Garalon, Alliance: Shek'zeer)
 			z['Player-4454-060E2FD9']	= ElvGreen -- [Horde] Mage
