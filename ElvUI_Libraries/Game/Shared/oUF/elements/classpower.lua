@@ -116,9 +116,6 @@ local UseFakePower = {
 	[POWERTYPE_ICICLES] = oUF.isRetail
 }
 
--- store these here so we can use them earlier
-local ClassPowerEnable, ClassPowerDisable
-
 -- holds class-specific information for enablement toggles
 local requirePower, requireSpell, classPowerID, currentSpec
 
@@ -316,7 +313,7 @@ local function Visibility(self, event, unit)
 	end
 
 	if(shouldEnable and not isEnabled) then
-		ClassPowerEnable(self)
+		self:ClassPowerEnable()
 
 		--[[ Callback: ClassPower:PostVisibility(isVisible)
 		Called after the element's visibility has been changed.
@@ -328,7 +325,7 @@ local function Visibility(self, event, unit)
 			element:PostVisibility(true)
 		end
 	elseif(not shouldEnable and (isEnabled or isEnabled == nil)) then
-		ClassPowerDisable(self)
+		self:ClassPowerDisable()
 
 		if(element.PostVisibility) then
 			element:PostVisibility(false)
@@ -353,7 +350,7 @@ local function ForceUpdate(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-function ClassPowerEnable(self)
+local function ClassPowerEnable(self)
 	self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 	self:RegisterEvent('UNIT_MAXPOWER', Path)
 
@@ -376,7 +373,7 @@ function ClassPowerEnable(self)
 	end
 end
 
-function ClassPowerDisable(self)
+local function ClassPowerDisable(self)
 	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	self:UnregisterEvent('UNIT_MAXPOWER', Path)
 
@@ -407,11 +404,11 @@ local function Enable(self, unit)
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
-		self:RegisterEvent('SPELLS_CHANGED', VisibilityPath, true)
-
 		element.ClassPowerEnable = ClassPowerEnable
 		element.ClassPowerDisable = ClassPowerDisable
+
+		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
+		self:RegisterEvent('SPELLS_CHANGED', VisibilityPath, true)
 
 		for i = 1, #element do
 			local bar = element[i]
