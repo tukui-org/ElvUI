@@ -400,7 +400,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameCompleteButton:PointXY(8, 4)
 	_G.QuestFrameCancelButton:PointXY(-10, 4)
 	_G.QuestFrameGoodbyeButton:PointXY(-32, 4)
-	_G.QuestFrameGreetingGoodbyeButton:PointXY(-36, 70)
+	_G.QuestFrameGreetingGoodbyeButton:PointXY(-32, 4)
 	_G.QuestFrameNpcNameText:PointXY(-1, 0)
 
 	_G.QuestGreetingFrameHorizontalBreak:Kill()
