@@ -17,9 +17,9 @@ local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
 local ReloadUI, PlaySound, StopMusic = ReloadUI, PlaySound, StopMusic
 local GetBindingFromClick = GetBindingFromClick
 
-local AutoCompleteEditBox_OnEnterPressed = AutoCompleteEditBox_OnEnterPressed
-local AutoCompleteEditBox_OnTextChanged = AutoCompleteEditBox_OnTextChanged
-local ChatEdit_FocusActiveWindow = ChatEdit_FocusActiveWindow
+local AutoCompleteOnTextChanged = AutoCompleteEditBox_OnTextChanged
+local AutoCompleteOnEnterPressed = AutoCompleteEditBox_OnEnterPressed
+local ChatEditFocusActiveWindow = (ChatFrameUtil and ChatFrameUtil.FocusActiveWindow) or ChatEdit_FocusActiveWindow
 
 local DisableAddOn = C_AddOns.DisableAddOn
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
@@ -45,7 +45,7 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 		self.editBox.width = self.editBox:GetWidth()
 		self.editBox:Width(220)
 		self.editBox:SetText(DOWNLOAD_URL)
-		ChatEdit_FocusActiveWindow()
+		ChatEditFocusActiveWindow()
 	end,
 	OnHide = function(self)
 		self.editBox:Width(self.editBox.width or 50)
@@ -54,11 +54,11 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 	hideOnEscape = 1,
 	button1 = OKAY,
 	EditBoxOnEnterPressed = function(self)
-		ChatEdit_FocusActiveWindow()
+		ChatEditFocusActiveWindow()
 		self:GetParent():Hide()
 	end,
 	EditBoxOnEscapePressed = function(self)
-		ChatEdit_FocusActiveWindow()
+		ChatEditFocusActiveWindow()
 		self:GetParent():Hide()
 	end,
 	EditBoxOnTextChanged = function(self)
@@ -68,7 +68,7 @@ E.PopupDialogs.ELVUI_UPDATE_AVAILABLE = {
 
 		self:HighlightText()
 
-		ChatEdit_FocusActiveWindow()
+		ChatEditFocusActiveWindow()
 	end,
 	OnEditFocusGained = function(self)
 		self:HighlightText()
@@ -666,7 +666,7 @@ function E:StaticPopup_OnClick(index)
 end
 
 function E:StaticPopup_EditBoxOnEnterPressed()
-	if not self.autoCompleteParams or not AutoCompleteEditBox_OnEnterPressed(self) then
+	if not self.autoCompleteParams or not AutoCompleteOnEnterPressed(self) then
 		local parent = self:GetParent()
 		local owner = parent and parent:GetParent()
 		local which, dialog
@@ -697,7 +697,7 @@ function E:StaticPopup_EditBoxOnEscapePressed()
 end
 
 function E:StaticPopup_EditBoxOnTextChanged(userInput)
-	if not self.autoCompleteParams or not AutoCompleteEditBox_OnTextChanged(self, userInput) then
+	if not self.autoCompleteParams or not AutoCompleteOnTextChanged(self, userInput) then
 		local parent = self:GetParent()
 		local popup = parent and E.PopupDialogs[parent.which]
 		local OnTextChanged = popup and popup.EditBoxOnTextChanged
