@@ -35,6 +35,7 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 .empowering       - Indicates whether the current spell is an empowering cast (boolean)
 .notInterruptible - Indicates whether the current spell is interruptible (boolean)
 .spellID          - The spell identifier of the currently cast/channeled/empowering spell (number)
+.spellName        - The name of the spell currently being cast/channeled/empowered (string)
 
 ## Examples
 
@@ -262,7 +263,7 @@ local function UpdatePips(element, stages)
 end
 
 local function CastMatch(element, castID, spellID)
-	return element.castID == castID and element.spellID == spellID
+	return (castID and element.castID == castID) and (spellID and element.spellID == spellID)
 end
 
 --[[ Override: Castbar:ShouldShow(unit)
@@ -337,9 +338,9 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.holdTime = 0
 	element.castID = castID
 	element.spellID = spellID
+	element.spellName = name
 
 	-- ElvUI block
-	element.spellName = name
 	element.isTradeSkill = isTradeSkill
 	element.tradeSkillCastID = (isTradeSkill and castID) or nil
 	-- end block
