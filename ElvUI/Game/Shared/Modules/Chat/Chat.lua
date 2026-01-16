@@ -80,6 +80,11 @@ local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local IsRecentAllyByGUID = C_RecentAllies and C_RecentAllies.IsRecentAllyByGUID
 local GetClientTexture = BNet_GetClientEmbeddedAtlas or BNet_GetClientEmbeddedTexture
 
+local ChatEditSetLastTellTarget = (ChatFrameUtil and ChatFrameUtil.SetLastTellTarget) or ChatEdit_SetLastTellTarget
+local ChatEditSetLastActiveWindow = (ChatFrameUtil and ChatFrameUtil.SetLastActiveWindow) or ChatEdit_SetLastActiveWindow
+local ChatEditGetActiveWindow = (ChatFrameUtil and ChatFrameUtil.GetActiveWindow) or ChatEdit_GetActiveWindow
+local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
+local ResolvePrefixedChannelName = (ChatFrameUtil and ChatFrameUtil.ResolvePrefixedChannelName) or ChatFrame_ResolvePrefixedChannelName
 local ShouldColorChatByClass = (ChatFrameUtil and ChatFrameUtil.ShouldColorChatByClass) or Chat_ShouldColorChatByClass
 local GetMentorChannelStatus = (ChatFrameUtil and ChatFrameUtil.GetMentorChannelStatus) or ChatFrame_GetMentorChannelStatus
 local GetChatCategory = (ChatFrameUtil and ChatFrameUtil.GetChatCategory) or Chat_GetChatCategory
@@ -772,13 +777,22 @@ do
 				end
 
 				if Name then
-					_G.ChatFrame_SendTell(Name, self.chatFrame)
+					if _G.ChatFrameUtil and _G.ChatFrameUtil.SendTell then
+						_G.ChatFrameUtil.SendTell(Name, self.chatFrame)
+					else
+						_G.ChatFrame_SendTell(Name, self.chatFrame)
+					end
 				else
 					_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
 				end
 			elseif text == '/gr ' then
 				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
-				_G.ChatEdit_ParseText(self, 0)
+
+				if self.ParseText then
+					self:ParseText(0)
+				else
+					_G.ChatEdit_ParseText(self, 0)
+				end
 			end
 		end
 
@@ -816,7 +830,7 @@ do -- this fixes a taint when you push tab on editbox which blocks secure comman
 
 	function CH:ChatEdit_PleaseUntaint(event)
 		if event == 'PLAYER_REGEN_DISABLED' then
-			if _G.ChatEdit_GetActiveWindow() then
+			if ChatEditGetActiveWindow() then
 				CH:ChatEdit_UntaintTabList()
 			end
 		elseif InCombatLockdown() then
@@ -2079,7 +2093,12 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		arg1 = RemoveExtraSpaces(arg1) -- Remove groups of many spaces
 
 		-- Search for icon links and replace them with texture links.
-		arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
+		-- If arg17 is true, don't convert to raid icons
+		if _G.ChatFrameUtil and _G.ChatFrameUtil.CanChatGroupPerformExpressionExpansion then
+			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrameUtil.CanChatGroupPerformExpressionExpansion(chatGroup))
+		else
+			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup))
+		end
 	end
 
 	-- ElvUI: Get class colored name for BattleNet friend
@@ -2129,7 +2148,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		playerLink = CH:GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
 	end
 
-	local isMobile = arg14 and _G.ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
+	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
 	local message = format('%s%s', isMobile or '', arg1)
 
 	-- Player Flags
@@ -2187,7 +2206,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	-- Add Channel
 	if channelLength > 0 then
-		body = '|Hchannel:channel:'..arg8..'|h['.._G.ChatFrame_ResolvePrefixedChannelName(arg4)..']|h '..body
+		body = '|Hchannel:channel:'..arg8..'|h['..ResolvePrefixedChannelName(arg4)..']|h '..body
 	end
 
 	if not isProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
@@ -2390,7 +2409,12 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local typeID = CH:GetAccessID(infoType, arg8, arg12)
 
 			if E.Retail and arg1 == 'YOU_CHANGED' and GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
-				_G.ChatFrame_UpdateDefaultChatTarget(frame)
+				if frame.UpdateDefaultChatTarget then
+					frame.UpdateDefaultChatTarget()
+				else
+					_G.ChatFrame_UpdateDefaultChatTarget(frame)
+				end
+
 				frame.editBox:UpdateNewcomerEditBoxHint()
 			else
 				if E.Retail and arg1 == 'YOU_LEFT' then
@@ -2411,7 +2435,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					end
 				end
 
-				frame:AddMessage(format(globalstring, arg8, _G.ChatFrame_ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, nil, nil, nil, isHistory, historyTime)
+				frame:AddMessage(format(globalstring, arg8, ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_ALERT' then
 			local globalstring = _G['BN_INLINE_TOAST_'..arg1]
@@ -2508,7 +2532,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
 			if not isProtected then
-				_G.ChatEdit_SetLastTellTarget(arg2, chatType)
+				ChatEditSetLastTellTarget(arg2, chatType)
 			end
 
 			if CH.db.flashClientIcon then
@@ -3930,7 +3954,9 @@ function CH:FCF_Tab_OnClick(button)
 
 		if GetCVar('chatStyle') ~= 'classic' then
 			local chatFrame = (chat.isDocked and _G.GeneralDockManager.primary) or chat
-			_G.ChatEdit_SetLastActiveWindow(chatFrame.editBox)
+			if chatFrame then
+				ChatEditSetLastActiveWindow(chatFrame.editBox)
+			end
 		end
 
 		chat:ResetAllFadeTimes()
@@ -4074,7 +4100,9 @@ function CH:Initialize()
 	end
 
 	for _, event in pairs(FindURL_Events) do
-		if not E.TBC then -- PTR: CreateSecureFiltersArray don't exist yet
+		if _G.ChatFrameUtil and _G.ChatFrameUtil.AddMessageEventFilter then
+			_G.ChatFrameUtil.AddMessageEventFilter(event, CH[event] or CH.FindURL)
+		else
 			_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
 		end
 
