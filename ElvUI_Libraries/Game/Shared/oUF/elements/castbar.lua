@@ -720,11 +720,10 @@ end
 
 local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
-		-- Use new timer API when available (Retail), fall back to manual tracking for Classic
 		local useTimerAPI = oUF.isRetail and self.GetTimerDuration and self.startTime
 		local duration, durationObject
 
-		if(useTimerAPI) then
+		if useTimerAPI then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
 			if durationObject then
@@ -735,8 +734,11 @@ local function onUpdate(self, elapsed)
 		else
 			local isCasting = self.casting or self.empowering
 			if(isCasting) then
-				self.duration = self.duration + elapsed
-				if(self.duration >= self.max) then
+				duration = self.duration + elapsed
+
+				self.duration = duration
+
+				if(duration >= self.max) then
 					local spellID = self.spellID
 
 					resetAttributes(self)
@@ -749,8 +751,11 @@ local function onUpdate(self, elapsed)
 					return
 				end
 			else
-				self.duration = self.duration - elapsed
-				if(self.duration <= 0) then
+				duration = self.duration - elapsed
+
+				self.duration = duration
+
+				if(duration <= 0) then
 					local spellID = self.spellID
 
 					resetAttributes(self)
@@ -763,7 +768,6 @@ local function onUpdate(self, elapsed)
 					return
 				end
 			end
-			duration = self.duration
 		end
 
 		if(self.Time) then
@@ -796,13 +800,11 @@ local function onUpdate(self, elapsed)
 			end
 		end
 
-		-- ElvUI block
-		if(not useTimerAPI and self.empowering) then
-			OnUpdateStage(self)
-		end
-		-- end block
+		if not useTimerAPI then
+			if(self.empowering) then
+				OnUpdateStage(self)
+			end
 
-		if(not useTimerAPI) then
 			if self.SetValue_ then
 				self:SetValue_(duration)
 			else
