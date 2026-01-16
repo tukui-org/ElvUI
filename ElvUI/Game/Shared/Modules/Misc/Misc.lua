@@ -64,17 +64,24 @@ local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local UNKNOWN = UNKNOWN
 
-local function KillFeedback(frame)
-	local debug = true
-	if not debug then
-		frame:Kill()
-		frame.TriggerEvent = E.noop
-		wipe(frame.Data.RegisteredEvents)
-	end
-end
-
 local BOOST_THANKSFORPLAYING_SMALLER = SOUNDKIT.UI_70_BOOST_THANKSFORPLAYING_SMALLER
 local INTERRUPT_MSG = L["Interrupted %s's |cff71d5ff|Hspell:%d:0|h[%s]|h|r!"]
+
+local function KillFeedback(frame)
+	local debug = true
+	if debug then return end
+
+	frame:Kill()
+
+	if frame.TriggerEvent then
+		frame.TriggerEvent = E.noop
+	end
+
+	local data = frame.Data
+	if data and data.RegisteredEvents then
+		wipe(data.RegisteredEvents)
+	end
+end
 
 function M:ErrorFrameToggle(event)
 	if not E.db.general.hideErrorFrame then return end
