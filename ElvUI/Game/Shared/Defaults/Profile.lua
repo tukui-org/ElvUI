@@ -3115,6 +3115,9 @@ P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 
 if E.Mists then
 	P.actionbar.bar1.paging.MONK = '[bonusbar:1] 7; [bonusbar:2] 8;'
 end
+if E.TBC then
+	P.actionbar.bar1.paging.HUNTER = '[possessbar] 16;'
+end
 
 P.actionbar.bar3.enabled = true
 P.actionbar.bar3.buttons = 6
