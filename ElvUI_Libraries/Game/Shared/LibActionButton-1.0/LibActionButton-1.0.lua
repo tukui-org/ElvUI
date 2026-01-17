@@ -665,7 +665,6 @@ function Generic:OnButtonEvent(event, key, down, spellID)
 			self.TargetReticleAnimFrame:Hide()
 		end
 	elseif event == "GLOBAL_MOUSE_UP" then
-		self:SetButtonState('NORMAL')
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
