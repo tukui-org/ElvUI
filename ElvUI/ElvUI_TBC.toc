@@ -10,5 +10,17 @@
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 ## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
+## Category-enUS: UI Overhaul
+## Category-deDE: UI-Überholung
+## Category-esES: Renovación de la UI
+## Category-esMX: Renovación de la UI
+## Category-itIT: Revisione dell'UI
+## Category-frFR: Révision de l'UI
+## Category-ptBR: Renovação da UI
+## Category-ruRU: Переработка интерфейса
+## Category-koKR: UI 개편
+## Category-zhCN: UI重构
+## Category-zhTW: UI重構
+## Group: ElvUI
 
 Game\TBC\!load.xml
