@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 69 -- the real minor version is 133
+local MINOR_VERSION = 69 -- the real minor version is 140
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -3281,20 +3281,23 @@ end
 --- Update old Buttons
 if oldversion and next(lib.buttonRegistry) then
 	InitializeEventHandler()
+
 	for button in next, lib.buttonRegistry do
 		-- this refreshes the metatable on the button
 		Generic.UpdateAction(button, true)
 		SetupSecureSnippets(button)
+
 		if oldversion < 12 then
 			WrapOnClick(button)
 		end
+
 		if oldversion < 23 then
 			if button.overlay then
 				button.overlay:Hide()
 
-				if ActionButtonSpellAlertManager then
+				if WoWRetail and ActionButtonSpellAlertManager then
 					ActionButtonSpellAlertManager:HideAlert(button)
-				else
+				elseif ActionButton_HideOverlayGlow then
 					ActionButton_HideOverlayGlow(button)
 				end
 
