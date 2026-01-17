@@ -352,22 +352,24 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	-- end block
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	local useTimerAPI = oUF.isRetail and element.SetTimerDuration and not (mergeTradeskill and unit == 'player' and isTradeSkill)
-	if(useTimerAPI and unit == 'player') then
-		-- we can only read these variables for players
-		element.startTime = startTime / 1000
-		if(element.empowering) then
-			element.endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
-		else
-			element.endTime = endTime / 1000
+	local useTimerAPI = oUF.isRetail and element.SetTimerDuration
+	if useTimerAPI then
+		if unit == 'player' then -- we can only read these variables for players
+			element.startTime = startTime / 1000
+
+			if(element.empowering) then
+				element.endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
+			else
+				element.endTime = endTime / 1000
+			end
+
+			-- Calculate max for CustomTimeText compatibility
+			element.max = element.endTime - element.startTime
+
+			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
+			local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
+			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
 		end
-
-		-- Calculate max for CustomTimeText compatibility
-		element.max = element.endTime - element.startTime
-
-		local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
-		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
-		element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
 	else
 		if element.empowering then
 			endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
@@ -506,24 +508,26 @@ local function CastUpdate(self, event, unit, castID, spellID)
 	if(not name) then return end
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	local useTimerAPI = oUF.isRetail and element.SetTimerDuration and element.startTime
-	if(useTimerAPI and unit == 'player') then
-		-- Update endTime if empowering
-		if(element.empowering) then
-			endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
-		else
-			endTime = endTime / 1000
+	local useTimerAPI = oUF.isRetail and element.SetTimerDuration
+	if useTimerAPI then
+		if unit == 'player' then
+			-- Update endTime if empowering
+			if(element.empowering) then
+				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
+			else
+				endTime = endTime / 1000
+			end
+			startTime = startTime / 1000
+
+			-- Update max for CustomTimeText compatibility
+			element.max = endTime - startTime
+			element.startTime = startTime
+			element.endTime = endTime
+
+			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
+			local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
+			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
 		end
-		startTime = startTime / 1000
-
-		-- Update max for CustomTimeText compatibility
-		element.max = endTime - startTime
-		element.startTime = startTime
-		element.endTime = endTime
-
-		local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
-		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
-		element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
 	else
 		if(element.empowering) then
 			endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
@@ -720,9 +724,9 @@ end
 
 local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
-		local useTimerAPI = oUF.isRetail and self.GetTimerDuration and self.startTime
 		local duration, durationObject
 
+		local useTimerAPI = oUF.isRetail and self.GetTimerDuration
 		if useTimerAPI then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
