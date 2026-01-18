@@ -680,12 +680,6 @@ local function EscapeSequence(a)
 	return format('|%s', a)
 end
 
-local function CreateDeadTagFunc(bracket)
-	return function()
-		return format('|cFFffffff%s|r', bracket)
-	end
-end
-
 local function CreateTagFunc(tag, prefix, suffix)
 	return function(unit, realUnit, customArgs)
 		local str = tag(unit, realUnit, customArgs)
@@ -727,7 +721,9 @@ local function GetTagFunc(tagstr)
 				end
 			end
 
-			tinsert(funcs, tagFunc or CreateDeadTagFunc(bracket))
+			if tagFunc then
+				tinsert(funcs, tagFunc)
+			end
 		end
 
 		func = function(self)

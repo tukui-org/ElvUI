@@ -5,6 +5,7 @@
 	<Include file ='Media\!load.xml'/>
 	<Include file ='Defaults\!load.xml'/>
 	<Include file ='General\!load.xml'/>
+	<Include file ='Tags\!load.xml'/>
 	<Include file ='Layout\!load.xml'/>
 	<Include file ='Modules\!load.xml'/>
 	<Include file ='Filters\!load.xml'/>
