@@ -112,9 +112,15 @@ local function UpdateColor(self, event, unit, powerType)
 	elseif(element.colorPower) then
 		color = self.colors.power[ALTERNATE_POWER_INDEX]
 
-		local curve = element.colorPowerSmooth and color and color:GetCurve()
-		if curve then
-			color = UnitPowerPercent(unit, true, curve)
+		if(element.colorPowerSmooth) then
+			if oUF.isMidnight then
+				local curve = color:GetCurve()
+				if curve then
+					color = UnitPowerPercent(unit, true, curve)
+				end
+			else
+				color = element.smoothGradient or self.colors.smooth
+			end
 		end
 	elseif(element.colorClass and (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
 		or (element.colorClassNPC and not (UnitIsPlayer(unit) or UnitInPartyIsAI(unit))) then
