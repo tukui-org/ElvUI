@@ -928,7 +928,6 @@ Used to register a tag on a unit frame.
 local taggedFontStrings = {}
 local function Tag(self, fs, ts, arg1, ...)
 	if(not fs or not ts) then return end
-	if oUF.isMidnight then return end
 
 	if(not self.__tags) then
 		self.__tags = {}
