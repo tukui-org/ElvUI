@@ -712,8 +712,8 @@ do
 	function headerMixin:SetVisibility(visibility)
 		argcheck(visibility, 2, 'string', 'nil')
 
-		local type, list = strsplit(' ', visibility, 2)
-		if(list and type == 'custom') then
+		local _type, list = strsplit(' ', visibility, 2)
+		if(list and _type == 'custom') then
 			RegisterAttributeDriver(self, 'state-visibility', list)
 			self.visibility = list
 		else
