@@ -9,7 +9,7 @@ local translitMark = '!'
 local _G = _G
 local next, gsub, format = next, gsub, format
 local abs, ipairs, pairs, floor, ceil = abs, ipairs, pairs, floor, ceil
-local strsub, strfind, strmatch, strlower, strsplit = strsub, strfind, strmatch, strlower, strsplit
+local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8sub, utf8len = string.utf8sub, string.utf8len
 
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
@@ -22,13 +22,11 @@ local GetPVPRankInfo = GetPVPRankInfo
 local GetPVPTimer = GetPVPTimer
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
-local GetRuneCooldown = GetRuneCooldown
 local GetTime = GetTime
 local GetTitleName = GetTitleName
 local GetUnitSpeed = GetUnitSpeed
 local HasPetUI = HasPetUI
 local IsInGroup = IsInGroup
-local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
@@ -57,43 +55,12 @@ local UnitPowerType = UnitPowerType
 local UnitPVPName = UnitPVPName
 local UnitPVPRank = UnitPVPRank
 local UnitReaction = UnitReaction
-local UnitStagger = UnitStagger
 local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 
-local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
-local GetCVarBool = C_CVar.GetCVarBool
-
-local LEVEL = strlower(LEVEL)
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
-local POWERTYPE_COMBOPOINTS = Enum.PowerType.ComboPoints
-
-local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW or 3
-local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
 local PVP = PVP
-
-local STAGGER_YELLOW_TRANSITION = STAGGER_YELLOW_TRANSITION or 0.3
-local STAGGER_RED_TRANSITION = STAGGER_RED_TRANSITION or 0.6
-local STAGGER_GREEN_INDEX = STAGGER_GREEN_INDEX or 1
-local STAGGER_YELLOW_INDEX = STAGGER_YELLOW_INDEX or 2
-local STAGGER_RED_INDEX = STAGGER_RED_INDEX or 3
-
-local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
-local SPEC_MAGE_FROST = SPEC_MAGE_FROST or 3
-local SPEC_SHAMAN_ENHANCEMENT = SPEC_SHAMAN_ENHANCEMENT or 2
-local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY or 2
-local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION or 3
-
-local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
-local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
-local POWERTYPE_BURNING_EMBERS = Enum.PowerType.BurningEmbers or 14
-local POWERTYPE_DEMONIC_FURY = Enum.PowerType.DemonicFury or 15
-local POWERTYPE_SOUL_SHARDS = Enum.PowerType.SoulShards or 7
-
--- these are not real class powers
-local POWERTYPE_ICICLES = -1
-local POWERTYPE_MAELSTROM = -2
 
 local SPELL_FROST_ICICLES = 205473
 local SPELL_ARCANE_CHARGE = 36032
@@ -103,121 +70,6 @@ local SPELL_MAELSTROM = 344179
 -- GLOBALS: UnitPower, UnitHealth, UnitName, UnitClass, UnitIsDead, UnitIsGhost, UnitIsDeadOrGhost, UnitIsConnected -- override during testing groups
 -- GLOBALS: GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
 
-local ClassPowers = {
-	MONK		= Enum.PowerType.Chi or 12,
-	PALADIN		= Enum.PowerType.HolyPower or 9,
-	DEATHKNIGHT	= Enum.PowerType.Runes or 5,
-	WARLOCK		= POWERTYPE_SOUL_SHARDS
-}
-
-local ClassPowerMax = {
-	[POWERTYPE_MAELSTROM] = 10,
-	[POWERTYPE_ICICLES] = 5,
-}
-
-local function CurrentApplications(spellID, filter) -- same as in oUF
-	local info = GetPlayerAuraBySpellID(spellID)
-	local checkFilter = info and (not filter or (filter == 'HELPFUL' and info.isHelpful) or (filter == 'HARMFUL' and info.isHarmful))
-	return checkFilter and info.applications or 0
-end
-
-local function ClassPowerSpecial(unit, spellID, powerType, color, filter)
-	local current, r, g, b = CurrentApplications(spellID, filter)
-	local maximum = ClassPowerMax[powerType] or UnitPowerMax(unit, powerType)
-
-	if color then r, g, b = color.r, color.g, color.b end
-	return current or 0, maximum or 0, r or 1, g or 1, b or 1
-end
-
-Tags.Env.GetClassPower = function(unit)
-	local isme = UnitIsUnit(unit, 'player')
-
-	local spec, unitClass, barType, Min, Max
-	if isme then
-		spec = E.myspec
-		unitClass = E.myclass
-	elseif E.Retail then
-		local info = E:GetUnitSpecInfo(unit)
-		if info then
-			spec = info.index
-			unitClass = info.classFile
-		end
-	end
-
-	-- handle the fake powers (these use UNIT_AURA)
-	if E.Mists and unitClass == 'MAGE' and spec == SPEC_MAGE_ARCANE then
-		return ClassPowerSpecial(unit, SPELL_ARCANE_CHARGE, POWERTYPE_ARCANE_CHARGES, ElvUF.colors.ClassBars.MAGE.ARCANE_CHARGES, 'HARMFUL')
-	elseif E.Retail and unitClass == 'MAGE' and spec == SPEC_MAGE_FROST then
-		return ClassPowerSpecial(unit, SPELL_FROST_ICICLES, POWERTYPE_ICICLES, ElvUF.colors.ClassBars.MAGE.FROST_ICICLES, 'HELPFUL')
-	elseif E.Retail and unitClass == 'SHAMAN' and spec == SPEC_SHAMAN_ENHANCEMENT then
-		return ClassPowerSpecial(unit, SPELL_MAELSTROM, POWERTYPE_MAELSTROM, ElvUF.colors.ClassBars.SHAMAN.MAELSTROM, 'HELPFUL')
-	end
-
-	local monk = unitClass == 'MONK' -- checking brewmaster
-	if monk and spec == SPEC_MONK_BREWMASTER then
-		Min = UnitStagger(unit) or 0
-		Max = UnitHealthMax(unit)
-
-		local staggerRatio = Min / Max
-		local staggerIndex = (staggerRatio >= STAGGER_RED_TRANSITION and STAGGER_RED_INDEX) or (staggerRatio >= STAGGER_YELLOW_TRANSITION and STAGGER_YELLOW_INDEX) or STAGGER_GREEN_INDEX
-		local color = ElvUF.colors.power.STAGGER[staggerIndex]
-		local r, g, b = color.r, color.g, color.b
-
-		return Min or 0, Max or 0, r or 1, g or 1, b or 1
-	end
-
-	-- try special powers or combo points
-	local mistWarlock = E.Mists and unitClass == 'WARLOCK'
-	if mistWarlock then -- little gremlins
-		barType = (spec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (spec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or POWERTYPE_SOUL_SHARDS
-	elseif E.Mists and unitClass == 'PRIEST' then -- only shadow orbs
-		barType = spec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS
-	elseif unitClass == 'MAGE' then
-		barType = spec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES
-	else
-		barType = ClassPowers[unitClass]
-	end
-
-	local r, g, b
-	if barType then
-		local dk = unitClass == 'DEATHKNIGHT'
-		Min = (dk and 0) or UnitPower(unit, barType)
-		Max = (dk and 6) or UnitPowerMax(unit, barType)
-
-		if dk and isme then
-			for i = 1, Max do
-				local _, _, runeReady = GetRuneCooldown(i)
-				if runeReady then
-					Min = Min + 1
-				end
-			end
-		end
-
-		local power = ElvUF.colors.ClassBars[unitClass]
-		local warlockColor = (barType == POWERTYPE_BURNING_EMBERS and power.BURNING_EMBERS[Min]) or (barType == POWERTYPE_DEMONIC_FURY and power.DEMONIC_FURY) or power.SOUL_SHARDS
-		local color = (mistWarlock and warlockColor) or (monk and power[Min]) or (dk and ((E.Mists or E.Wrath) and ElvUF.colors.class.DEATHKNIGHT or power[spec ~= 5 and spec or 1])) or power
-		r, g, b = color.r, color.g, color.b
-	else
-		Min = UnitPower(unit, POWERTYPE_COMBOPOINTS)
-		Max = UnitPowerMax(unit, POWERTYPE_COMBOPOINTS)
-
-		local combo = ElvUF.colors.ComboPoints
-		local c1, c2, c3 = combo[1], combo[2], combo[3]
-		r, g, b = E:ColorGradient(Min, Max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
-	end
-
-	-- try additional mana
-	local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
-	if altIndex and altIndex[UnitPowerType(unit)] then
-		Min = UnitPower(unit, POWERTYPE_MANA)
-		Max = UnitPowerMax(unit, POWERTYPE_MANA)
-
-		local mana = ElvUF.colors.power.MANA
-		r, g, b = mana.r, mana.g, mana.b
-	end
-
-	return Min or 0, Max or 0, r or 1, g or 1, b or 1
-end
 
 ------------------------------------------------------------------------
 --	Looping
@@ -1222,104 +1074,33 @@ do
 	end)
 end
 
-do
-	Tags.Env.GetTitleNPC = function(unit, custom)
-		if UnitIsPlayer(unit) then return end
+E:AddTag('npctitle', 'UNIT_NAME_UPDATE', function(unit)
+	return GetTitleNPC(unit)
+end)
 
-		-- similar to TT.GetLevelLine
-		local info = E.ScanTooltip:GetUnitInfo(unit)
-		local line = info and info.lines[GetCVarBool('colorblindmode') and 3 or 2]
-		local text = line and line.leftText
+E:AddTag('npctitle:brackets', 'UNIT_NAME_UPDATE', function(unit)
+	return GetTitleNPC(unit, '<%s>')
+end)
 
-		local lower = text and strlower(text)
-		if lower and not strfind(lower, LEVEL) then
-			return custom and format(custom, text) or text
-		end
-	end
+E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
+	return GetQuestData(unit, nil, Hex)
+end, E.Classic)
 
-	E:AddTag('npctitle', 'UNIT_NAME_UPDATE', function(unit)
-		return GetTitleNPC(unit)
-	end)
+E:AddTag('quest:full', 'QUEST_LOG_UPDATE', function(unit)
+	return GetQuestData(unit, 'full', Hex)
+end, E.Classic)
 
-	E:AddTag('npctitle:brackets', 'UNIT_NAME_UPDATE', function(unit)
-		return GetTitleNPC(unit, '<%s>')
-	end)
-end
+E:AddTag('quest:info', 'QUEST_LOG_UPDATE', function(unit)
+	return GetQuestData(unit, 'info', Hex)
+end, E.Classic)
 
-do
-	Tags.Env.GetQuestData = function(unit, which, Hex)
-		if IsInInstance() or UnitIsPlayer(unit) then return end
+E:AddTag('quest:title', 'QUEST_LOG_UPDATE', function(unit)
+	return GetQuestData(unit, 'title', Hex)
+end, E.Classic)
 
-		local notMyQuest, lastTitle
-		local info = E.ScanTooltip:GetUnitInfo(unit)
-		if not (info and info.lines[2]) then return end
-
-		for _, line in next, info.lines, 2 do
-			local text = line and line.leftText
-			if not text or text == '' then return end
-
-			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
-				notMyQuest = text ~= E.myname
-			elseif text and not notMyQuest then
-				if line.type == 17 or (not E.Retail and not lastTitle) then
-					lastTitle = NP.QuestIcons.activeQuests[text]
-				end -- this line comes from one line up in the tooltip
-
-				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
-				if objectives then
-					local quest = objectives[text] or (not E.Retail and objectives[strsub(text, 4)])
-					if quest then
-						if not which then
-							return text
-						elseif which == 'count' then
-							return quest.isPercent and format('%s%%', quest.value) or quest.value
-						elseif which == 'title' then
-							local colors = lastTitle.color
-							if colors then
-								return format('%s%s|r', Hex(colors.r, colors.g, colors.b), lastTitle.title)
-							end
-
-							return lastTitle.title
-						elseif (which == 'info' or which == 'full') then
-							local title = lastTitle.title
-
-							local colors = lastTitle.color
-							if colors then
-								title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
-							end
-
-							if which == 'full' then
-								return format('%s: %s', title, text)
-							else
-								return format(quest.isPercent and '%s: %s%%' or '%s: %s', title, quest.value)
-							end
-						end
-					end
-				end
-			end
-		end
-	end
-
-	E:AddTag('quest:text', 'QUEST_LOG_UPDATE', function(unit)
-		return GetQuestData(unit, nil, Hex)
-	end, E.Classic)
-
-	E:AddTag('quest:full', 'QUEST_LOG_UPDATE', function(unit)
-		return GetQuestData(unit, 'full', Hex)
-	end, E.Classic)
-
-	E:AddTag('quest:info', 'QUEST_LOG_UPDATE', function(unit)
-		return GetQuestData(unit, 'info', Hex)
-	end, E.Classic)
-
-	E:AddTag('quest:title', 'QUEST_LOG_UPDATE', function(unit)
-		return GetQuestData(unit, 'title', Hex)
-	end, E.Classic)
-
-	E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
-		return GetQuestData(unit, 'count', Hex)
-	end, E.Classic)
-end
+E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
+	return GetQuestData(unit, 'count', Hex)
+end, E.Classic)
 
 if not E.Retail then
 	E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
