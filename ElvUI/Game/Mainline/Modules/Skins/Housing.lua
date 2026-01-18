@@ -64,35 +64,39 @@ function S:Blizzard_HousingDashboard()
 		S:HandleFrame(DashBoardFrame, true)
 	end
 
-	-- Fix the actual icon texture
+	local function PositionDashboardTab(tab, _, _, _, x, y)
+		if x ~= 3 or y ~= -10 then
+			tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 3, -10)
+		end
+	end
+
+	-- Since the icons are inside an atlas texture set, i extracted the actual icons (Merathilis)
+	local InfoTabIcon = 'Interface\\AddOns\\ElvUI\\Game\\Shared\\Media\\Textures\\Housing\\InfoTab.tga'
+	local CatalogTabIcon = 'Interface\\AddOns\\ElvUI\\Game\\Shared\\Media\\Textures\\Housing\\CatalogTab.tga'
+
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
-		tab:CreateBackdrop()
-		tab:Size(30, 40)
+		if tab then
+			tab:StripTextures(true)
+			tab:CreateBackdrop()
+			tab:Size(30, 40)
 
-		if i == 1 then
-			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 1, -10)
+			tab.texture = tab:CreateTexture(nil, 'ARTWORK')
+			tab.texture:SetInside(tab.backdrop)
 
-			hooksecurefunc(tab, 'SetPoint', PositionHousingDashboardTab)
-		end
+			tab.hl = tab:CreateTexture(nil, 'HIGHLIGHT')
+			tab.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
+			tab.hl:SetInside(tab.backdrop)
+			tab.hl:SetBlendMode('ADD')
 
-		if tab.Icon then
-			tab.Icon:ClearAllPoints()
-			tab.Icon:SetPoint('CENTER')
+			if i == 1 then
+				tab:ClearAllPoints()
+				tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 3, -10)
 
-			hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
-		end
+				tab.texture:SetTexture(InfoTabIcon)
 
-		if tab.SelectedTexture then
-			tab.SelectedTexture:SetDrawLayer('ARTWORK')
-			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
-			tab.SelectedTexture:SetAllPoints()
-		end
-
-		for _, region in next, { tab:GetRegions() } do
-			if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
-				region:SetColorTexture(1, 1, 1, 0.3)
-				region:SetAllPoints()
+				hooksecurefunc(tab, 'SetPoint', PositionDashboardTab)
+			else
+				tab.texture:SetTexture(CatalogTabIcon)
 			end
 		end
 	end
