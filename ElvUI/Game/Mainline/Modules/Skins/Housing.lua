@@ -70,10 +70,6 @@ function S:Blizzard_HousingDashboard()
 		end
 	end
 
-	-- Since the icons are inside an atlas texture set, i extracted the actual icons (Merathilis)
-	local InfoTabIcon = 'Interface\\AddOns\\ElvUI\\Game\\Shared\\Media\\Textures\\Housing\\InfoTab.tga'
-	local CatalogTabIcon = 'Interface\\AddOns\\ElvUI\\Game\\Shared\\Media\\Textures\\Housing\\CatalogTab.tga'
-
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
 		if tab then
 			tab:StripTextures(true)
@@ -84,7 +80,7 @@ function S:Blizzard_HousingDashboard()
 			tab.texture:SetInside(tab.backdrop)
 
 			tab.hl = tab:CreateTexture(nil, 'HIGHLIGHT')
-			tab.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
+			tab.hl:SetColorTexture(0.8, 0.8, 0, 0.4)
 			tab.hl:SetInside(tab.backdrop)
 			tab.hl:SetBlendMode('ADD')
 
@@ -92,11 +88,13 @@ function S:Blizzard_HousingDashboard()
 				tab:ClearAllPoints()
 				tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 3, -10)
 
-				tab.texture:SetTexture(InfoTabIcon)
+				tab.texture:SetAtlas('housing-sidetabs-dashboard-active', true)
+				tab.texture:SetTexCoord(0, 1, 0, 1) -- Needs correct coords
 
 				hooksecurefunc(tab, 'SetPoint', PositionDashboardTab)
 			else
-				tab.texture:SetTexture(CatalogTabIcon)
+				tab.texture:SetAtlas('housing-sidetabs-catalog-active', true)
+				tab.texture:SetTexCoord(0, 1, 0, 1) -- Needs correct coords
 			end
 		end
 	end

@@ -158,7 +158,7 @@ local function SettingsListScrollUpdateChild(child)
 				child.Button.backdrop:Point('BOTTOMRIGHT', -2, 3)
 
 				child.Button.hl = child.Button:CreateTexture(nil, 'HIGHLIGHT')
-				child.Button.hl:SetColorTexture(0.8, 0.8, 0, 0.4)
+				child.Button.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
 				child.Button.hl:SetInside(child.Button.backdrop)
 				child.Button.hl:SetBlendMode('ADD')
 
