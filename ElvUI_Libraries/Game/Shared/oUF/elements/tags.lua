@@ -80,6 +80,7 @@ local format, tinsert, floor = format, tinsert, floor
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
+local issecretvalue = issecretvalue
 
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION or 3
@@ -130,7 +131,9 @@ local _PATTERN = '%[..-%]+'
 local _ENV = {
 	Hex = function(r, g, b)
 		if(type(r) == 'table') then
-			if(r.r) then
+			if oUF.isMidnight then
+				return '|c' .. C_ColorUtil.GenerateTextColorCode(r)
+			elseif(r.r) then
 				r, g, b = r.r, r.g, r.b
 			else
 				r, g, b = unpack(r)
@@ -257,17 +260,8 @@ tagFunctions.dead = function(u)
 	end
 end
 
-tagFunctions['deficit:name'] = function(u)
-	local missinghp = _TAGS.missinghp(u)
-	if(missinghp) then
-		return '-' .. missinghp
-	else
-		return _TAGS.name(u)
-	end
-end
-
 tagFunctions.difficulty = function(u)
-	if UnitCanAttack('player', u) then
+	if(UnitCanAttack('player', u)) then
 		local l = (UnitEffectiveLevel or UnitLevel)(u)
 		return Hex(GetCreatureDifficultyColor((l > 0) and l or 999))
 	end
@@ -326,16 +320,24 @@ tagFunctions.maxmana = function(unit)
 end
 
 tagFunctions.missinghp = function(u)
-	local current = UnitHealthMax(u) - UnitHealth(u)
-	if(current > 0) then
-		return current
+	if oUF.isMidnight then
+		return C_StringUtil.TruncateWhenZero(UnitHealthMissing(u))
+	else
+		local current = UnitHealthMax(u) - UnitHealth(u)
+		if(current > 0) then
+			return current
+		end
 	end
 end
 
 tagFunctions.missingpp = function(u)
-	local current = UnitPowerMax(u) - UnitPower(u)
-	if(current > 0) then
-		return current
+	if oUF.isMidnight then
+		return C_StringUtil.TruncateWhenZero(UnitPowerMissing(u))
+	else
+		local current = UnitPowerMax(u) - UnitPower(u)
+		if(current > 0) then
+			return current
+		end
 	end
 end
 
@@ -350,20 +352,28 @@ tagFunctions.offline = function(u)
 end
 
 tagFunctions.perhp = function(u)
-	local m = UnitHealthMax(u)
-	if(m == 0) then
-		return 0
+	if oUF.isMidnight then
+		return format('%d', UnitHealthPercent(u, true, CurveConstants.ScaleTo100))
 	else
-		return floor(UnitHealth(u) / m * 100 + .5)
+		local m = UnitHealthMax(u)
+		if(m == 0) then
+			return 0
+		else
+			return floor(UnitHealth(u) / m * 100 + .5)
+		end
 	end
 end
 
 tagFunctions.perpp = function(u)
-	local m = UnitPowerMax(u)
-	if(m == 0) then
-		return 0
+	if oUF.isMidnight then
+		return format('%d', UnitPowerPercent(u, nil, true, CurveConstants.ScaleTo100))
 	else
-		return floor(UnitPower(u) / m * 100 + .5)
+		local m = UnitPowerMax(u)
+		if(m == 0) then
+			return 0
+		else
+			return floor(UnitPower(u) / m * 100 + .5)
+		end
 	end
 end
 
@@ -519,7 +529,10 @@ tagFunctions.threat = function(u)
 end
 
 tagFunctions.threatcolor = function(u)
-	return Hex(GetThreatStatusColor(UnitThreatSituation(u) or 0))
+	local value = UnitThreatSituation(u) or 0
+	local color = _COLORS.threat[value]
+
+	return Hex(color)
 end
 
 _ENV._TAGS = tagFuncs
@@ -552,7 +565,6 @@ local tagEvents = {
 	['curmana']             = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER',
 	['curpp']               = 'UNIT_POWER_FREQUENT UNIT_MAXPOWER',
 	['dead']                = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED',
-	['deficit:name']        = 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE',
 	['difficulty']          = 'UNIT_FACTION',
 	['faction']             = 'NEUTRAL_FACTION_SELECT_RESULT',
 	['group']               = 'GROUP_ROSTER_UPDATE',
@@ -677,7 +689,11 @@ end
 local function CreateTagFunc(tag, prefix, suffix)
 	return function(unit, realUnit, customArgs)
 		local str = tag(unit, realUnit, customArgs)
-		return str and format('%s%s%s', prefix or '', str, suffix or '') or nil
+		if issecretvalue and issecretvalue(str) then
+			return C_StringUtil.WrapString(str, prefix, suffix)
+		else
+			return str and format('%s%s%s', prefix or '', str, suffix or '') or nil
+		end
 	end
 end
 

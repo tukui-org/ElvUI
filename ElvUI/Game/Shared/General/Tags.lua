@@ -1573,6 +1573,15 @@ else
 	end)
 end
 
+E:AddTag('deficit:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+	local missinghp = _TAGS.missinghp(unit)
+	if missinghp then
+		return '-' .. missinghp
+	else
+		return _TAGS.name(unit)
+	end
+end)
+
 --Expose local functions for plugins onto this table
 E.TagFunctions = {
 	UnitEffectiveLevel = Tags.Env.UnitEffectiveLevel,
