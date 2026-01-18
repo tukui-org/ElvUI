@@ -5,6 +5,7 @@ local ElvUF = E.oUF
 local _G = _G
 local random = random
 local strmatch = strmatch
+local issecretvalue = issecretvalue
 
 local CreateFrame = CreateFrame
 local UnitInPartyIsAI = UnitInPartyIsAI
@@ -281,7 +282,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	if not color then -- dont need to process this when its hostile
 		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
 			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
-				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
+				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 			elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
 				local breakPoint = self.max > 0 and (self.cur / self.max) or 1
 				local threshold = healthBreak.threshold
@@ -316,10 +317,10 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 			mult = (healthBreak.multiplier > 0 and healthBreak.multiplier) or BACKDROP_MULT
 		elseif colors.healthbackdropbyvalue then
 			if colors.customhealthbackdrop then
-				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
 				mult = 1 -- custom backdrop
 			elseif not newb and not colors.colorhealthbyvalue then
-				newr, newg, newb = ElvUF:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
+				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 			end
 		elseif colors.customhealthbackdrop then
 			bgc = colors.health_backdrop
@@ -353,6 +354,7 @@ function UF:PostUpdateHealth(_, cur)
 		self:SetMinMaxValues(0, self.max)
 		self:SetValue(self.cur)
 	elseif parent.ResurrectIndicator then
-		parent.ResurrectIndicator:SetAlpha(cur == 0 and 1 or 0)
+		local isSecret = issecretvalue and issecretvalue(cur)
+		parent.ResurrectIndicator:SetAlpha((not isSecret and cur == 0) and 1 or 0)
 	end
 end

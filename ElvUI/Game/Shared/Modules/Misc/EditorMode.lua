@@ -10,13 +10,13 @@ local hooksecurefunc = hooksecurefunc
 local GetLayouts = C_EditMode.GetLayouts
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 
-local CheckTargetFrame = function() return not E.Midnight and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.target end
-local CheckCastFrame = function() return not E.Midnight and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.castbar end
-local CheckArenaFrame = function() return not E.Midnight and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.arena end
-local CheckPartyFrame = function() return not E.Midnight and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.party end
-local CheckFocusFrame = function() return not E.Midnight and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.focus end
-local CheckRaidFrame = function() return not E.Midnight and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.raid end
-local CheckBossFrame = function() return not E.Midnight and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.boss end
+local CheckTargetFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.target end
+local CheckCastFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.castbar end
+local CheckArenaFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.arena end
+local CheckPartyFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.party end
+local CheckFocusFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.focus end
+local CheckRaidFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.raid end
+local CheckBossFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.boss end
 local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 

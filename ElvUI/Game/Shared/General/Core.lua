@@ -160,7 +160,7 @@ E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
 
-E.UFParent = _G.ElvUFParent -- created in oUF
+E.UFParent = _G.ElvUF_UFParentFrameHider -- created in oUF
 E.UFParent:SetParent(E.UIParent)
 E.UFParent:SetFrameStrata('LOW')
 
@@ -327,7 +327,7 @@ function E:UpdateMedia(mediaType)
 	E.media.rgbvaluecolor = E:SetColorTable(E.media.rgbvaluecolor, value)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 
-	if not E.Midnight and E.private.nameplates.enable then
+	if E.private.nameplates.enable then
 		-- Colors for Target Indicator
 		E:UpdateClassColor(E.db.nameplates.colors.glowColor)
 		E:UpdateClassColor(E.db.nameplates.colors.lowHealthColor)
@@ -1533,8 +1533,6 @@ function E:UpdateMoverPositions()
 end
 
 function E:UpdateUnitFrames()
-	if E.Midnight then return end
-
 	if E.private.unitframe.enable then
 		UnitFrames:Update_AllFrames()
 	end

@@ -650,7 +650,7 @@ function NP:ConfigurePlates(init)
 end
 
 function NP:ConfigureAll(init)
-	if E.Midnight or not E.private.nameplates.enable then return end
+	if not E.private.nameplates.enable then return end
 
 	NP:StyleFilterConfigure() -- keep this at the top
 
@@ -972,7 +972,7 @@ function NP:SetupClassNameplateBars()
 end
 
 function NP:Initialize()
-	if E.Midnight or not E.private.nameplates.enable then return end
+	if not E.private.nameplates.enable then return end
 	NP.Initialized = true
 
 	NP.thinBorders = NP.db.thinBorders
@@ -1059,8 +1059,11 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
-	NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	NP:RegisterEvent('PLAYER_LOGOUT')
+
+	if not E.Midnight then
+		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+	end
 
 	NP:BossMods_RegisterCallbacks()
 	NP:StyleFilterInitialize()

@@ -743,7 +743,7 @@ function UF:Configure_FontString(obj)
 end
 
 function UF:Update_AllFrames()
-	if E.Midnight or not E.private.unitframe.enable then return end
+	if not E.private.unitframe.enable then return end
 
 	UF:UpdateColors()
 	UF:Update_FontStrings()
@@ -1129,7 +1129,7 @@ do
 		attributes.showParty = true
 		attributes.showSolo = true
 
-		local header = ElvUF:SpawnHeader(overrideName, headerTemplate, nil, attributes)
+		local header = ElvUF:SpawnHeader(overrideName, headerTemplate, attributes)
 		header.UpdateHeader = format('Update_%sHeader', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
 		header.UpdateFrames = format('Update_%sFrames', parent.isRaidFrame and 'Raid' or E:StringTitle(group))
 		header.groupName = group
@@ -1634,7 +1634,7 @@ do
 		frame:UnregisterAllEvents()
 		pcall(frame.Hide, frame)
 
-		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
+		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or (frame.HealthBarsContainer and frame.HealthBarsContainer.healthBar) or nil)
 		tinsert(DisabledElements, frame.manabar or frame.ManaBar or nil)
 		tinsert(DisabledElements, frame.castBar or frame.spellbar or nil)
 		tinsert(DisabledElements, frame.petFrame or frame.PetFrame or nil)
@@ -1643,7 +1643,7 @@ do
 		tinsert(DisabledElements, frame.CcRemoverFrame or nil)
 		tinsert(DisabledElements, frame.classPowerBar or nil)
 		tinsert(DisabledElements, frame.DebuffFrame or nil)
-		tinsert(DisabledElements, frame.BuffFrame or nil)
+		tinsert(DisabledElements, frame.BuffFrame or frame.AurasFrame or nil)
 		tinsert(DisabledElements, frame.totFrame or nil)
 
 		for index, element in ipairs(DisabledElements) do
@@ -1669,8 +1669,10 @@ do
 		end
 	end
 
+	-- Retail: Midnight uses DisableBlizzardNamePlate
 	function ElvUF:DisableNamePlate(frame)
-		if (not frame or frame:IsForbidden()) or (E.Midnight or not E.private.nameplates.enable) then return end
+		if (not frame or frame:IsForbidden())
+		or (not E.private.nameplates.enable) then return end
 
 		local plate = frame.UnitFrame
 		if plate then
@@ -1768,7 +1770,7 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if not E.Midnight and E.private.unitframe.enable and not handledUnits[unit] then
+		if E.private.unitframe.enable and not handledUnits[unit] then
 			handledUnits[unit] = true
 
 			local disable = E.private.unitframe.disabledBlizzardFrames
@@ -2180,7 +2182,7 @@ function UF:Initialize()
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2
 
-	if E.Midnight or not E.private.unitframe.enable then return end
+	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
 	ElvUF:Factory(UF.Setup)

@@ -3040,7 +3040,7 @@ end
 local GetActionCount = GetActionCount
 
 -- the remaining uses of GetActionCount can't deal with secrets, so disable on Midnight
-if Midnight then
+if WoWMidnight then
 	GetActionCount = function() return 0 end
 end
 

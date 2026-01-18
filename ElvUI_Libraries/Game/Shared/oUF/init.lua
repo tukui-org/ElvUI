@@ -2,6 +2,9 @@ local _, ns = ...
 local oUF = { Private = {} }
 ns.oUF = oUF
 
+local _, _, _, wowtoc = GetBuildInfo()
+oUF.wowtoc = wowtoc
+oUF.baseClass, oUF.baseClassID = UnitClassBase('player')
 oUF.myLocalizedClass, oUF.myclass, oUF.myClassID = UnitClass('player')
 
 oUF.isTBC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC -- not used
@@ -10,6 +13,7 @@ oUF.isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 oUF.isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+oUF.isMidnight = wowtoc >= 120000
 
 local season = C_Seasons and C_Seasons.GetActiveSeason()
 oUF.isClassicHC = season == 3 -- Hardcore

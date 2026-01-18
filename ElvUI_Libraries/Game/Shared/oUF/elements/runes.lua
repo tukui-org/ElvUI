@@ -7,10 +7,6 @@ Handles the visibility and updating of Death Knight's runes.
 
 Runes - An `table` holding `StatusBar`s.
 
-## Sub-Widgets
-
-.bg - A `Texture` used as a background. It will inherit the color of the main StatusBar.
-
 ## Notes
 
 A default texture will be applied if the sub-widgets are StatusBars and don't have a texture set.
@@ -21,10 +17,6 @@ A default texture will be applied if the sub-widgets are StatusBars and don't ha
              value of [GetSpecialization](https://warcraft.wiki.gg/wiki/API_GetSpecialization) (boolean)
 .sortOrder - Sorting order. Sorts by the remaining cooldown time, 'asc' - from the least cooldown time remaining (fully
              charged) to the most (fully depleted), 'desc' - the opposite (string?)['asc', 'desc']
-
-## Sub-Widgets Options
-
-.multiplier - Used to tint the background based on the main widgets R, G and B values. Defaults to 1 (number)[0-1]
 
 ## Examples
 
@@ -44,8 +36,6 @@ A default texture will be applied if the sub-widgets are StatusBars and don't ha
 
 local _, ns = ...
 local oUF = ns.oUF
-
-if oUF.myclass ~= 'DEATHKNIGHT' then return end
 
 local sort = sort
 local ipairs = ipairs
@@ -100,20 +90,6 @@ local function UpdateRuneType(rune, runeID, alt)
 	return rune
 end
 
-local function ColorRune(self, bar, runeType)
-	local color = runeType and self.colors.runes[runeType] or self.colors.power.RUNES
-	local r, g, b = color.r, color.g, color.b
-	bar:SetStatusBarColor(r, g, b)
-
-	local bg = bar.bg
-	if bg then
-		local mu = bg.multiplier or 1
-		bg:SetVertexColor(r * mu, g * mu, b * mu)
-	end
-
-	return color, r, g, b
-end
-
 local function UpdateColor(self, event, runeID, alt)
 	local element = self.Runes
 
@@ -129,12 +105,21 @@ local function UpdateColor(self, event, runeID, alt)
 		end
 	end
 
-	local color, r, g, b
+	local color
+	local specColor = element.colorSpec and (specType > 0 and specType < 4)
 	if rune then
-		color, r, g, b = ColorRune(self, rune, specType or rune.runeType)
+		local runeType = specType or rune.runeType
+		color = runeType and self.colors.runes[runeType] or self.colors.power.RUNES
+
+		if color then
+			for index = 1, #element do
+				element[index]:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+			end
+		end
 	else
 		for i = 1, #element do
 			local bar = element[i]
+
 			if oUF.isWrath or oUF.isMists then
 				if not bar.runeType then
 					bar.runeType = GetRuneType(runemap[i])
@@ -143,20 +128,22 @@ local function UpdateColor(self, event, runeID, alt)
 				bar.runeType = specType
 			end
 
-			color, r, g, b = ColorRune(self, bar, specType or bar.runeType)
+			color = specColor and self.colors.runes[specType or bar.runeType] or self.colors.power.RUNES
+
+			if color then
+				bar:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+			end
 		end
 	end
 
-	--[[ Callback: Runes:PostUpdateColor(r, g, b)
+	--[[ Callback: Runes:PostUpdateColor(color)
 	Called after the element color has been updated.
 
 	* self - the Runes element
-	* r    - the red component of the used color (number)[0-1]
-	* g    - the green component of the used color (number)[0-1]
-	* b    - the blue component of the used color (number)[0-1]
+	* color - the used ColorMixin-based object (table?)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(r, g, b, color, rune)
+		element:PostUpdateColor(color, rune)
 	end
 end
 
@@ -255,7 +242,36 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate')
 end
 
+local function Disable(self)
+	local element = self.Runes
+	if(element) then
+		for _, rune in ipairs(element) do
+			rune:Hide()
+		end
+
+		-- ElvUI block
+		if element.IsObjectType and element:IsObjectType("Frame") then
+			element:Hide()
+		end
+		-- end block
+
+		if oUF.isRetail then
+			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
+		else
+			self:UnregisterEvent('RUNE_TYPE_UPDATE', ColorPath)
+		end
+
+		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
+	end
+end
+
 local function Enable(self, unit)
+	if oUF.myclass ~= 'DEATHKNIGHT' then
+		Disable(self)
+
+		return false
+	end
+
 	local element = self.Runes
 	if(element and UnitIsUnit(unit, 'player')) then
 		element.__owner = self
@@ -282,29 +298,6 @@ local function Enable(self, unit)
 		self:RegisterEvent('RUNE_POWER_UPDATE', Path, true)
 
 		return true
-	end
-end
-
-local function Disable(self)
-	local element = self.Runes
-	if(element) then
-		for _, rune in ipairs(element) do
-			rune:Hide()
-		end
-
-		-- ElvUI block
-		if element.IsObjectType and element:IsObjectType("Frame") then
-			element:Hide()
-		end
-		-- end block
-
-		if oUF.isRetail then
-			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
-		else
-			self:UnregisterEvent('RUNE_TYPE_UPDATE', ColorPath)
-		end
-
-		self:UnregisterEvent('RUNE_POWER_UPDATE', Path)
 	end
 end
 

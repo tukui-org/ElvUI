@@ -549,8 +549,7 @@ local function UpdateCustomTextGroup(unit)
 end
 
 local function CreateCustomTextGroup(unit, objectName)
-	if E.Midnight or not E.private.unitframe.enable then return end
-
+	if not E.private.unitframe.enable then return end
 	local group = individual[unit] and 'individualUnits' or 'groupUnits'
 	if not E.Options.args.unitframe.args[group].args[unit] then
 		return
@@ -1314,11 +1313,11 @@ Colors.castBars.args.castColor = ACH:Color(function() return (E.Retail or E.Mist
 Colors.castBars.args.castNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 10, nil, nil, nil, nil, nil, E.Classic)
 Colors.castBars.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 11, nil, nil, nil, nil, nil, E.Classic)
 
-Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b, t.a = r, g, b, a UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.castBars.args.empowerStage.inline = true
 
 for i in next, P.unitframe.colors.empoweredCast do
-	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
+	Colors.castBars.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i], nil, nil, true)
 end
 
 Colors.auras = ACH:Group(L["Auras"])

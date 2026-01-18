@@ -412,9 +412,9 @@ function M:Initialize()
 	M:LoadChatBubbles()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
-	M:ToggleInterrupt()
 
 	if not E.Midnight then
+		M:ToggleInterrupt()
 		M:LoadLoot() -- tooltip crash out
 	end
 

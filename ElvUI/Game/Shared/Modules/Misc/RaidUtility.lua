@@ -756,7 +756,7 @@ function RU:OnEvent_RoleIcons(event, initLogin, isReload)
 end
 
 function RU:Initialize()
-	if not (E.private.general.raidUtility and not E.Midnight and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.raid) then return end
+	if not (E.private.general.raidUtility and E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.raid) then return end
 
 	RU.Initialized = true
 	RU.updateMedia = true -- update fonts and textures on entering world once, used to set the custom media from a plugin

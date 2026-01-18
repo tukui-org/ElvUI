@@ -2,6 +2,34 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
+
+local function SkinSituationsDropdowns()
+	local SituationsFrame = _G.TransmogFrame.WardrobeCollection.TabContent.SituationsFrame
+	if not SituationsFrame then return end
+
+	local Situations = SituationsFrame.Situations
+	if Situations then
+		for _, child in next, { Situations:GetChildren() } do
+			if child.Dropdown and not child.Dropdown.IsSkinned then
+				S:HandleDropDownBox(child.Dropdown, 300)
+
+				child.Dropdown.IsSkinned = true
+			end
+		end
+	end
+end
+
+local function PageControlsPositionUpdate(frame)
+	if frame.PrevPageButton then
+		frame.PrevPageButton:ClearAllPoints()
+		frame.PrevPageButton:Point('TOPLEFT', frame, 'TOPLEFT', 64, -6)
+	end
+	if frame.NextPageButton then
+		frame.NextPageButton:ClearAllPoints()
+		frame.NextPageButton:Point('LEFT', frame.PrevPageButton, 'RIGHT', 14, -1)
+	end
+end
 
 function S:Blizzard_Transmog()
 	if not E.private.skins.blizzard.transmogrify then return end
@@ -23,6 +51,8 @@ function S:Blizzard_Transmog()
 		S:HandleTrimScrollBar(OutfitCollection.OutfitList.ScrollBar)
 		S:HandleButton(OutfitCollection.SaveOutfitButton, nil, nil, nil, true, nil, nil, nil, true)
 		-- S:HandleButton(OutfitCollection.PurchaseOutfitButton) -- Fits good in our style tbh
+		OutfitCollection.MoneyFrame:StripTextures()
+		OutfitCollection.MoneyFrame:SetTemplate()
 	end
 
 	local CharacterPreview = TransmogFrame.CharacterPreview
@@ -66,9 +96,9 @@ function S:Blizzard_Transmog()
 				S:HandleButton(ItemsFrame.DisplayTypeEquippedButton) -- Leave it or change it (unskinned it fits really good tbh)
 			]]
 
-			-- ToDo: Adjust the text position
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.NextPageButton)
+			hooksecurefunc(ItemsFrame.PagedContent.PagingControls, 'ShouldClearOnUpdateAfterClean', PageControlsPositionUpdate)
 		end
 
 		local SetsFrame = WardrobeCollection.TabContent.SetsFrame
@@ -76,18 +106,18 @@ function S:Blizzard_Transmog()
 			S:HandleButton(SetsFrame.SearchBox)
 			S:HandleButton(SetsFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
-			-- ToDo: Adjust the text position
 			S:HandleNextPrevButton(SetsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(SetsFrame.PagedContent.PagingControls.NextPageButton)
+			hooksecurefunc(SetsFrame.PagedContent.PagingControls, 'ShouldClearOnUpdateAfterClean', PageControlsPositionUpdate)
 		end
 
 		local CustomSetsFrame = WardrobeCollection.TabContent.CustomSetsFrame
 		if CustomSetsFrame then
 			S:HandleButton(CustomSetsFrame.NewCustomSetButton, nil, nil, nil, true, nil, nil, nil, true)
 
-			-- ToDo: Adjust the text position
 			S:HandleNextPrevButton(CustomSetsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(CustomSetsFrame.PagedContent.PagingControls.NextPageButton)
+			hooksecurefunc(CustomSetsFrame.PagedContent.PagingControls, 'ShouldClearOnUpdateAfterClean', PageControlsPositionUpdate)
 		end
 
 		local SituationsFrame = WardrobeCollection.TabContent.SituationsFrame
@@ -105,7 +135,8 @@ function S:Blizzard_Transmog()
 			S:HandleButton(SituationsFrame.ApplyButton, nil, nil, nil, true, nil, nil, nil, true)
 			S:HandleButton(SituationsFrame.UndoButton)
 
-			-- ToDo: Skin the Dropdowns
+			hooksecurefunc(SituationsFrame, 'Init', SkinSituationsDropdowns)
+			hooksecurefunc(SituationsFrame, 'Refresh', SkinSituationsDropdowns)
 		end
 	end
 end

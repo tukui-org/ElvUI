@@ -567,8 +567,109 @@ local function HandleTabs()
 	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 end
 
+local function SkinWardrobeFrame()
+	local WardrobeCollectionFrame = _G.WardrobeCollectionFrame
+	S:HandleTab(_G.WardrobeCollectionFrameTab1)
+	S:HandleTab(_G.WardrobeCollectionFrameTab2)
+
+	local ProgressBar = WardrobeCollectionFrame.progressBar
+	if ProgressBar then
+		ProgressBar.border:Hide()
+		ProgressBar:DisableDrawLayer('BACKGROUND')
+		ProgressBar:SetStatusBarTexture(E.media.normTex)
+		ProgressBar:CreateBackdrop()
+
+		E:RegisterStatusBar(ProgressBar)
+	end
+
+	if E.global.general.disableTutorialButtons then
+		WardrobeCollectionFrame.InfoButton:Kill()
+	end
+
+	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
+	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
+	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ClassDropdown, 145)
+
+	S:HandleButton(WardrobeCollectionFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.searchBox, 'RIGHT', 2, 0)
+	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
+	WardrobeCollectionFrame.FilterButton.ResetButton:ClearAllPoints()
+	WardrobeCollectionFrame.FilterButton.ResetButton:Point('CENTER', WardrobeCollectionFrame.FilterButton, 'TOPRIGHT', 0, 0)
+	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ItemsCollectionFrame.WeaponDropdown)
+	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
+
+	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
+		if Frame.Models then
+			for _, Model in pairs(Frame.Models) do
+				Model.Border:SetAlpha(0)
+				Model.TransmogStateTexture:SetAlpha(0)
+
+				local border = CreateFrame('Frame', nil, Model)
+				border:SetTemplate()
+				border:ClearAllPoints()
+				border:Point('TOPLEFT', Model, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
+				border:Point('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
+				border:SetBackdropColor(0, 0, 0, 0)
+				border.callbackBackdropColor = ClearBackdrop
+
+				if Model.NewGlow then Model.NewGlow:SetParent(border) end
+				if Model.NewString then Model.NewString:SetParent(border) end
+
+				for _, region in next, { Model:GetRegions() } do
+					if region:IsObjectType('Texture') then -- check for hover glow
+						local texture, regionName = region:GetTexture(), region:GetDebugName() -- find transmogrify.blp (sets:1569530 or items:1116940)
+						if texture == 1569530 or (texture == 1116940 and not strfind(regionName, 'SlotInvalidTexture') and not strfind(regionName, 'DisabledOverlay')) then
+							region:SetColorTexture(1, 1, 1, .25)
+							region:SetBlendMode('ADD')
+							region:SetAllPoints(Model)
+						end
+					end
+				end
+
+				hooksecurefunc(Model.Border, 'SetAtlas', function(_, texture)
+					if texture == 'transmog-wardrobe-border-uncollected' then
+						border:SetBackdropBorderColor(0.9, 0.9, 0.3)
+					elseif texture == 'transmog-wardrobe-border-unusable' then
+						border:SetBackdropBorderColor(0.9, 0.3, 0.3)
+					elseif Model.TransmogStateTexture:IsShown() then
+						border:SetBackdropBorderColor(1, 0.7, 1)
+					else
+						border:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					end
+				end)
+			end
+		end
+
+		local paging = Frame.PagingFrame
+		if paging then
+			S:HandleNextPrevButton(paging.PrevPageButton, nil, nil, true)
+			S:HandleNextPrevButton(paging.NextPageButton, nil, nil, true)
+		end
+	end
+
+	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
+	SetsCollectionFrame:SetTemplate('Transparent')
+	SetsCollectionFrame.RightInset:StripTextures()
+	SetsCollectionFrame.LeftInset:StripTextures()
+	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
+
+	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', SetsFrame_ScrollBoxUpdate)
+
+	local DetailsFrame = SetsCollectionFrame.DetailsFrame
+	DetailsFrame.ModelFadeTexture:Hide()
+	DetailsFrame.IconRowBackground:Hide()
+	DetailsFrame.Name:FontTemplate(nil, 16)
+	DetailsFrame.LongName:FontTemplate(nil, 16)
+	S:HandleDropDownBox(DetailsFrame.VariantSetsDropdown)
+	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
+
+	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
+	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')
+end
+
 local function SkinCollectionsFrames()
 	S:HandlePortraitFrame(_G.CollectionsJournal, true)
+	SkinWardrobeFrame()
 
 	HandleTabs()
 

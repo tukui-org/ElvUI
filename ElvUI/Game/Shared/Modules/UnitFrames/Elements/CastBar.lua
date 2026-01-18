@@ -19,11 +19,10 @@ local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverr
 local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
 do
-	local pipMapColor = {4, 1, 2, 3, 5}
 	function UF:CastBar_UpdatePip(castbar, pip, stage)
-		if castbar.pipColor then
-			local color = castbar.pipColor[pipMapColor[stage]]
-			pip.texture:SetVertexColor(color.r, color.g, color.b, pip.pipAlpha)
+		local color = castbar.pipColor and castbar.pipColor[stage]
+		if color then
+			pip.texture:SetVertexColor(color.r, color.g, color.b, color.a)
 		end
 	end
 
@@ -33,39 +32,25 @@ do
 		local pip = self.Pips[pipMapAlpha[onlyThree or stage]]
 		if not pip then return end
 
-		pip.texture:SetAlpha(1)
+		-- pip.texture:SetAlpha(1)
+
 		E:UIFrameFadeOut(pip.texture, pip.pipTimer, pip.pipStart, pip.pipFaded)
 	end
 end
 
-function UF:PostUpdatePip(pip, stage) -- self is element
-	pip.texture:SetAlpha(pip.pipAlpha or 1)
+function UF:PostUpdatePip(pip, stage, stages) -- self is element
+	-- pip.texture:SetAlpha(pip.pipAlpha or 1)
+	-- currently UpdatePipStep is broken: pip.pipAlpha or 1
 
-	local pips = self.Pips
-	local numStages = self.numStages
 	local reverse = self:GetReverseFill()
-
-	if stage == numStages then
-		local firstPip = pips[1]
-		local anchor = pips[numStages]
-		if reverse then
-			firstPip.texture:Point('RIGHT', self, 'LEFT', 0, 0)
-			firstPip.texture:Point('LEFT', anchor, 3, 0)
-		else
-			firstPip.texture:Point('LEFT', self, 'RIGHT', 0, 0)
-			firstPip.texture:Point('RIGHT', anchor, -3, 0)
-		end
-	end
-
-	if stage ~= 1 then
-		local anchor = pips[stage - 1]
-		if reverse then
-			pip.texture:Point('RIGHT', -3, 0)
-			pip.texture:Point('LEFT', anchor, 3, 0)
-		else
-			pip.texture:Point('LEFT', 3, 0)
-			pip.texture:Point('RIGHT', anchor, -3, 0)
-		end
+	local nextPip = self.Pips[stage + 1]
+	local anchor = nextPip or self
+	if reverse then
+		pip.texture:Point('RIGHT', -3, 0)
+		pip.texture:Point('LEFT', anchor, 3, 0)
+	else
+		pip.texture:Point('LEFT', 3, 0)
+		pip.texture:Point('RIGHT', anchor, -3, 0)
 	end
 end
 
@@ -355,7 +340,9 @@ function UF:Configure_Castbar(frame)
 	end
 end
 
-function UF:CustomCastDelayText(duration)
+function UF:CustomCastDelayText(duration, durationObject)
+	if not duration then return end
+
 	local db = self:GetParent().db
 	if not (db and db.castbar) then return end
 	db = db.castbar.format
@@ -383,7 +370,9 @@ function UF:CustomCastDelayText(duration)
 	end
 end
 
-function UF:CustomTimeText(duration)
+function UF:CustomTimeText(duration, durationObject)
+	if not duration then return end
+
 	local db = self:GetParent().db
 	if not (db and db.castbar) then return end
 	db = db.castbar.format

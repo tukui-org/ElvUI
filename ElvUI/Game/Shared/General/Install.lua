@@ -197,7 +197,7 @@ function E:SetupCVars(noDisplayMsg)
 		ActionButtonPickUp:RefreshValue()
 	end
 
-	if not E.Midnight and E.private.nameplates.enable then
+	if E.private.nameplates.enable then
 		NP:CVarReset()
 	end
 
@@ -1246,14 +1246,14 @@ function E:SetupAuras(style, noDisplayMsg)
 		E.db.unitframe.units.player.buffs.attachTo = 'FRAME'
 		E.db.unitframe.units.player.debuffs.attachTo = 'BUFFS'
 		E.db.unitframe.units.player.aurabar.enable = false
-		if not E.Midnight and E.private.unitframe.enable then
+		if E.private.unitframe.enable then
 			UF:CreateAndUpdateUF('player')
 		end
 
 		--TARGET
 		E.db.unitframe.units.target.debuffs.enable = true
 		E.db.unitframe.units.target.aurabar.enable = false
-		if not E.Midnight and E.private.unitframe.enable then
+		if E.private.unitframe.enable then
 			UF:CreateAndUpdateUF('target')
 		end
 	end
