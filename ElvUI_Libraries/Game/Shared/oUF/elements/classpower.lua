@@ -313,7 +313,7 @@ local function Visibility(self, event, unit)
 	end
 
 	if(shouldEnable and not isEnabled) then
-		self:ClassPowerEnable()
+		element:ClassPowerEnable()
 
 		--[[ Callback: ClassPower:PostVisibility(isVisible)
 		Called after the element's visibility has been changed.
@@ -325,7 +325,7 @@ local function Visibility(self, event, unit)
 			element:PostVisibility(true)
 		end
 	elseif(not shouldEnable and (isEnabled or isEnabled == nil)) then
-		self:ClassPowerDisable()
+		element:ClassPowerDisable()
 
 		if(element.PostVisibility) then
 			element:PostVisibility(false)
