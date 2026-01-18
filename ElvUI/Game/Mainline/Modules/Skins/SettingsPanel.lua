@@ -106,23 +106,20 @@ local function HandleControlTab(tab)
 end
 
 local function CategoryListScrollUpdateChild(child)
-	if not child.IsSkinned then
-		if child.Background then
-			child.Background:SetAlpha(0)
-			child.Background:CreateBackdrop('Transparent')
-			child.Background.backdrop:Point('TOPLEFT', 5, -5)
-			child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
-		end
+	if child.IsSkinned then return end
 
-		local Toggle = child.Toggle
-		if Toggle and not Toggle.IsSkinned then
-			S:HandleCollapseTexture(Toggle, true)
-			Toggle:Size(18)
-			Toggle:NudgePoint(4, 2)
-			Toggle.IsSkinned = true
-		end
+	child.IsSkinned = true
 
-		child.IsSkinned = true
+	if child.Background then
+		child.Background:SetAlpha(0)
+		child.Background:CreateBackdrop('Transparent')
+		child.Background.backdrop:Point('TOPLEFT', 5, -5)
+		child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
+	end
+
+	local toggle = child.Toggle
+	if toggle then
+		toggle:GetPushedTexture():SetAlpha(0)
 	end
 end
 
