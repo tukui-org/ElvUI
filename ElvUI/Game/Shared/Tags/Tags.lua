@@ -1218,13 +1218,6 @@ do
 	end)
 end
 
-local envFuncs = E.TagFunctions -- add the new functions we created
-if envFuncs then
-	envFuncs.GetClassPower = Tags.Env.GetClassPower
-	envFuncs.GetTitleNPC = Tags.Env.GetTitleNPC
-	envFuncs.GetQuestData = Tags.Env.GetQuestData
-end
-
 local info = E.TagInfo -- lets add the ones from this file into the table
 if info then
 	info['class'] = { category = 'Class', description = "Displays the class of the unit, if that unit is a player" }
