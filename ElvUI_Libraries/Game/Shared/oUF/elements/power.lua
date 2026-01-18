@@ -351,7 +351,7 @@ local function SetColorTapping(element, state, isForced)
 		element.colorTapping = state
 		if(state) then
 			element.__owner:RegisterEvent('UNIT_FACTION', ColorPath)
-		else
+		elseif(not element.colorReaction) then
 			element.__owner:UnregisterEvent('UNIT_FACTION', ColorPath)
 		end
 	end
