@@ -21,17 +21,17 @@ local CR_ARMOR_PENETRATION = CR_ARMOR_PENETRATION
 local ratingIndex = E.myclass == 'HUNTER' and CR_HIT_RANGED or CR_HIT_MELEE
 
 local displayString, db = ''
-local hitValue, hitPercent, hitPercentFromTalents = 0, 0, 0
+local hitValue, hitPercent, hitFullPercent = 0, 0, 0
 
 local function OnEvent(panel)
 	hitValue = GetCombatRating(ratingIndex)
 	hitPercent = GetCombatRatingBonus(ratingIndex)
-	hitPercentFromTalents = ratingIndex == CR_HIT_MELEE and GetHitModifier() or 0
+	hitFullPercent = hitPercent + (ratingIndex == CR_HIT_MELEE and GetHitModifier() or 0)
 
 	if db.NoLabel then
-		panel.text:SetFormattedText(displayString, hitPercent + hitPercentFromTalents)
+		panel.text:SetFormattedText(displayString, hitFullPercent)
 	else
-		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Hit"]..': ', hitPercent + hitPercentFromTalents)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or L["Hit"]..': ', hitFullPercent)
 	end
 end
 
@@ -42,7 +42,7 @@ local function OnEnter()
 
 	local ratingTooltip = ratingIndex == CR_HIT_MELEE and CR_HIT_MELEE_TOOLTIP or CR_HIT_RANGED_TOOLTIP
 	if E.Classic or E.TBC then
-		DT.tooltip:AddLine(format(ratingTooltip, E.mylevel, hitPercent + hitPercentFromTalents))
+		DT.tooltip:AddLine(format(ratingTooltip, E.mylevel, hitFullPercent))
 	else
 		DT.tooltip:AddLine(format(ratingTooltip, E.mylevel, hitPercent, GetCombatRating(CR_ARMOR_PENETRATION), GetArmorPenetration()))
 	end
