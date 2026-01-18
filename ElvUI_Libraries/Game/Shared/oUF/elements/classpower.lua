@@ -313,7 +313,7 @@ local function Visibility(self, event, unit)
 	end
 
 	if(shouldEnable and not isEnabled) then
-		element:ClassPowerEnable()
+		element:ClassPowerEnable(self)
 
 		--[[ Callback: ClassPower:PostVisibility(isVisible)
 		Called after the element's visibility has been changed.
@@ -325,7 +325,7 @@ local function Visibility(self, event, unit)
 			element:PostVisibility(true)
 		end
 	elseif(not shouldEnable and (isEnabled or isEnabled == nil)) then
-		element:ClassPowerDisable()
+		element:ClassPowerDisable(self)
 
 		if(element.PostVisibility) then
 			element:PostVisibility(false)
@@ -350,8 +350,7 @@ local function ForceUpdate(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local function ClassPowerEnable(element)
-	local owner = element.__owner
+local function ClassPowerEnable(element, owner)
 	owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 	owner:RegisterEvent('UNIT_MAXPOWER', Path)
 
@@ -374,8 +373,7 @@ local function ClassPowerEnable(element)
 	end
 end
 
-local function ClassPowerDisable(element)
-	local owner = element.__owner
+local function ClassPowerDisable(element, owner)
 	owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	owner:UnregisterEvent('UNIT_MAXPOWER', Path)
 
@@ -431,7 +429,7 @@ end
 local function Disable(self)
 	local element = self.ClassPower
 	if(element) then
-		ClassPowerDisable(element)
+		ClassPowerDisable(element, self)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('SPELLS_CHANGED', VisibilityPath)
