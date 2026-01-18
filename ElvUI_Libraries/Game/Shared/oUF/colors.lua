@@ -8,6 +8,9 @@ local nierror = Private.nierror
 local format, type = format, type
 local select, next = select, next
 
+local _G = _G
+local Mixin = Mixin
+
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
