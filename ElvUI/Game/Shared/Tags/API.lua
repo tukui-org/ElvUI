@@ -128,15 +128,12 @@ Tags.Env.NameHealthColor = function(tags,hex,unit,default)
 	return default
 end
 
---Expose local functions for plugins onto this table
+-- expose local functions for plugins onto this table, more added from Shared/Tags.lua
 E.TagFunctions = {
 	UnitEffectiveLevel = Tags.Env.UnitEffectiveLevel,
 	UnitName = Tags.Env.UnitName,
 	Abbrev = Tags.Env.Abbrev,
-	NameHealthColor = Tags.Env.NameHealthColor,
-	GetClassPower = Tags.Env.GetClassPower,
-	GetTitleNPC = Tags.Env.GetTitleNPC,
-	GetQuestData = Tags.Env.GetQuestData
+	NameHealthColor = Tags.Env.NameHealthColor
 }
 
 ------------------------------------------------------------------------
