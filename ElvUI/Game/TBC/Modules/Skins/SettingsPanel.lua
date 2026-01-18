@@ -106,20 +106,20 @@ local function HandleControlTab(tab)
 end
 
 local function CategoryListScrollUpdateChild(child)
-	if not child.IsSkinned then
-		if child.Background then
-			child.Background:SetAlpha(0)
-			child.Background:CreateBackdrop('Transparent')
-			child.Background.backdrop:Point('TOPLEFT', 5, -5)
-			child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
-		end
+	if child.IsSkinned then return end
 
-		local toggle = child.Toggle
-		if toggle then
-			toggle:GetPushedTexture():SetAlpha(0)
-		end
+	child.IsSkinned = true
 
-		child.IsSkinned = true
+	if child.Background then
+		child.Background:SetAlpha(0)
+		child.Background:CreateBackdrop('Transparent')
+		child.Background.backdrop:Point('TOPLEFT', 5, -5)
+		child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
+	end
+
+	local toggle = child.Toggle
+	if toggle then
+		toggle:GetPushedTexture():SetAlpha(0)
 	end
 end
 
@@ -128,89 +128,109 @@ local function CategoryListScrollUpdate(frame)
 end
 
 local function SettingsListScrollUpdateChild(child)
-	if not child.IsSkinned then
-		if child.NineSlice then
-			child.NineSlice:SetAlpha(0)
-			child:CreateBackdrop('Transparent')
-			child.backdrop:Point('TOPLEFT', 15, -30)
-			child.backdrop:Point('BOTTOMRIGHT', -30, -5)
-		end
-		if child.Checkbox then
-			HandleCheckbox(child.Checkbox)
-		end
-		if child.Dropdown then
-			HandleOptionDropDown(child.Dropdown)
-		end
-		if child.Control then
-			HandleDropdown(child.Control)
-		end
-		if child.ColorBlindFilterDropDown then
-			HandleOptionDropDown(child.ColorBlindFilterDropDown)
-		end
-		if child.Button then
-			if child.Button:GetWidth() < 250 then
-				S:HandleButton(child.Button)
-			else
-				child.Button:StripTextures()
-				child.Button.Right:SetAlpha(0)
-				child.Button:CreateBackdrop('Transparent')
-				child.Button.backdrop:Point('TOPLEFT', 2, -1)
-				child.Button.backdrop:Point('BOTTOMRIGHT', -2, 3)
+	if child.IsSkinned then return end
 
-				child.Button.hl = child.Button:CreateTexture(nil, 'HIGHLIGHT')
-				child.Button.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
-				child.Button.hl:SetInside(child.Button.backdrop)
-				child.Button.hl:SetBlendMode('ADD')
+	child.IsSkinned = true
 
-				child.collapseTex = child.Button.backdrop:CreateTexture(nil, 'OVERLAY')
-				child.collapseTex:Point('RIGHT', -10, 0)
+	if child.NineSlice then
+		child.NineSlice:SetAlpha(0)
+		child:CreateBackdrop('Transparent')
+		child.backdrop:Point('TOPLEFT', 15, -30)
+		child.backdrop:Point('BOTTOMRIGHT', -30, -5)
+	end
 
-				UpdateHeaderExpand(child, false)
-				hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)
+	if child.Checkbox then
+		HandleCheckbox(child.Checkbox)
+	end
+
+	if child.Dropdown then
+		HandleOptionDropDown(child.Dropdown)
+	end
+
+	if child.Control then
+		HandleDropdown(child.Control)
+	end
+
+	if child.ColorBlindFilterDropDown then
+		HandleOptionDropDown(child.ColorBlindFilterDropDown)
+	end
+
+	local button = child.Button
+	if button then
+		if button:GetWidth() < 250 then
+			S:HandleButton(button)
+		else
+			button:StripTextures()
+			button.Right:SetAlpha(0)
+			button:CreateBackdrop('Transparent')
+			button.backdrop:Point('TOPLEFT', 2, -1)
+			button.backdrop:Point('BOTTOMRIGHT', -2, 3)
+
+			button.hl = button:CreateTexture(nil, 'HIGHLIGHT')
+			button.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
+			button.hl:SetInside(button.backdrop)
+			button.hl:SetBlendMode('ADD')
+
+			child.collapseTex = button.backdrop:CreateTexture(nil, 'OVERLAY')
+			child.collapseTex:Point('RIGHT', -10, 0)
+
+			UpdateHeaderExpand(child, false)
+			hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)
+		end
+	end
+
+	if child.ToggleTest then
+		S:HandleButton(child.ToggleTest)
+
+		child.VUMeter:StripTextures()
+		child.VUMeter.NineSlice:Hide()
+		child.VUMeter:CreateBackdrop()
+		child.VUMeter.backdrop:SetInside(nil, 4, 4)
+		child.VUMeter.Status:SetStatusBarTexture(E.media.normTex)
+		child.VUMeter.Status:SetInside(child.VUMeter.backdrop)
+
+		E:RegisterStatusBar(child.VUMeter.Status)
+	end
+
+	if child.PushToTalkKeybindButton then
+		S:HandleButton(child.PushToTalkKeybindButton)
+	end
+
+	if child.SliderWithSteppers then
+		S:HandleStepSlider(child.SliderWithSteppers)
+	end
+
+	if child.Button1 then
+		S:HandleButton(child.Button1)
+	end
+
+	if child.Button2 then
+		S:HandleButton(child.Button2)
+	end
+
+	if child.Controls then
+		for i = 1, #child.Controls do
+			local control = child.Controls[i]
+			if control.SliderWithSteppers then
+				S:HandleStepSlider(control.SliderWithSteppers)
 			end
 		end
-		if child.ToggleTest then
-			S:HandleButton(child.ToggleTest)
-			child.VUMeter:StripTextures()
-			child.VUMeter.NineSlice:Hide()
-			child.VUMeter:CreateBackdrop()
-			child.VUMeter.backdrop:SetInside(nil, 4, 4)
-			child.VUMeter.Status:SetStatusBarTexture(E.media.normTex)
-			child.VUMeter.Status:SetInside(child.VUMeter.backdrop)
-			E:RegisterStatusBar(child.VUMeter.Status)
-		end
-		if child.PushToTalkKeybindButton then
-			S:HandleButton(child.PushToTalkKeybindButton)
-		end
-		if child.SliderWithSteppers then
-			S:HandleStepSlider(child.SliderWithSteppers)
-		end
-		if child.Button1 and child.Button2 then
-			S:HandleButton(child.Button1)
-			S:HandleButton(child.Button2)
-		end
-		if child.Controls then
-			for i = 1, #child.Controls do
-				local control = child.Controls[i]
-				if control.SliderWithSteppers then
-					S:HandleStepSlider(control.SliderWithSteppers)
-				end
-			end
-		end
-		if child.BaseTab then
-			HandleControlTab(child.BaseTab)
-		end
-		if child.RaidTab then
-			HandleControlTab(child.RaidTab)
-		end
-		if child.BaseQualityControls then
-			HandleControlGroup(child.BaseQualityControls)
-		end
-		if child.RaidQualityControls then
-			HandleControlGroup(child.RaidQualityControls)
-		end
+	end
 
-		child.IsSkinned = true
+	if child.BaseTab then
+		HandleControlTab(child.BaseTab)
+	end
+
+	if child.RaidTab then
+		HandleControlTab(child.RaidTab)
+	end
+
+	if child.BaseQualityControls then
+		HandleControlGroup(child.BaseQualityControls)
+	end
+
+	if child.RaidQualityControls then
+		HandleControlGroup(child.RaidQualityControls)
 	end
 end
 

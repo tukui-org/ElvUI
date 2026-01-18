@@ -2208,7 +2208,9 @@ end
 
 function B:WarbandToggle_OnClick()
 	local parent = self:GetParent()
-	B:SelectBankTab(parent, 13)
+	local firstTab = B.WarbandIndexs[1]
+
+	B:SelectBankTab(parent, firstTab)
 end
 
 function B:Container_WithdrawGold()

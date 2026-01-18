@@ -1,12 +1,14 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 local B = E:GetModule('Bags')
+local BL = E:GetModule('Blizzard')
 
 local LSM = E.Libs.LSM
 
 local _G = _G
 local unpack, next, wipe = unpack, next, wipe
 local tinsert, tremove, format = tinsert, tremove, format
+local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
@@ -530,10 +532,59 @@ function M:UpdateLootRollFrames()
 	end
 end
 
+function M:PositionGroupLootContainer() -- used by PostAlertMove
+	local _, anchor, position, point, xOffset, yOffset = BL:GetAlertAnchors()
+
+	_G.GroupLootContainer:ClearAllPoints()
+	_G.GroupLootContainer:Point(position, anchor, point, xOffset, yOffset)
+
+	if _G.GroupLootContainer:IsShown() then
+		M.UpdateGroupLootContainer(_G.GroupLootContainer)
+	end
+end
+
+function M:UpdateGroupLootContainer()
+	local _, _, position, point, xOffset, yOffset = BL:GetAlertAnchors()
+	local lastIdx
+
+	for i = 1, self.maxIndex do
+		local frame = self.rollFrames[i]
+		if frame then
+			frame:ClearAllPoints()
+
+			local prevFrame = self.rollFrames[i-1]
+			if prevFrame and prevFrame ~= frame then
+				frame:Point(position, prevFrame, point, xOffset, yOffset)
+			else
+				frame:Point(position, self, position, xOffset, yOffset)
+			end
+
+			lastIdx = i
+		end
+	end
+
+	if lastIdx then
+		self:Height(self.reservedSize * lastIdx)
+		self:Show()
+	else
+		self:Hide()
+	end
+end
+
 function M:LoadLootRoll()
 	if not E.private.general.lootRoll then return end
 
 	M:UpdateLootRollFrames()
+
+	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
+
+	if E.Retail or E.TBC then
+		_G.GroupLootContainer.ignoreInLayout = true
+	elseif _G.UIPARENT_MANAGED_FRAME_POSITIONS then
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
+	end
+
+	hooksecurefunc('GroupLootContainer_Update', M.UpdateGroupLootContainer)
 
 	if not E.Retail then
 		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
