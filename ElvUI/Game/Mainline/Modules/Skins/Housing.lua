@@ -5,17 +5,10 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local function PositionHousingDashboardTab(tab, _, _, _, x, y)
-	if x ~= 1 or y ~= -10 then
+local function PositionDashboardTab(tab, _, _, _, x, y)
+	if x ~= 3 or y ~= -10 then
 		tab:ClearAllPoints()
-		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 1, -10)
-	end
-end
-
-local function PositionTabIcons(icon, point)
-	if point ~= 'CENTER' then
-		icon:ClearAllPoints()
-		icon:SetPoint('CENTER')
+		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 3, -10)
 	end
 end
 
@@ -64,25 +57,23 @@ function S:Blizzard_HousingDashboard()
 		S:HandleFrame(DashBoardFrame, true)
 	end
 
-	local function PositionDashboardTab(tab, _, _, _, x, y)
-		if x ~= 3 or y ~= -10 then
-			tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 3, -10)
-		end
-	end
-
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
 		if tab then
 			tab:StripTextures(true)
 			tab:CreateBackdrop()
 			tab:Size(30, 40)
 
-			tab.texture = tab:CreateTexture(nil, 'ARTWORK')
-			tab.texture:SetInside(tab.backdrop)
+			if not tab.texture then
+				tab.texture = tab:CreateTexture(nil, 'ARTWORK')
+				tab.texture:SetInside(tab.backdrop)
+			end
 
-			tab.hl = tab:CreateTexture(nil, 'HIGHLIGHT')
-			tab.hl:SetColorTexture(0.8, 0.8, 0, 0.4)
-			tab.hl:SetInside(tab.backdrop)
-			tab.hl:SetBlendMode('ADD')
+			if not tab.hl then
+				tab.hl = tab:CreateTexture(nil, 'HIGHLIGHT')
+				tab.hl:SetColorTexture(0.8, 0.8, 0, 0.4)
+				tab.hl:SetInside(tab.backdrop)
+				tab.hl:SetBlendMode('ADD')
+			end
 
 			if i == 1 then
 				tab:ClearAllPoints()
