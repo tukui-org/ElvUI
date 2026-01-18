@@ -1,11 +1,17 @@
 local _, ns = ...
 local oUF = ns.oUF
 
+local wipe, next, type = wipe, next, type
+local hooksecurefunc = hooksecurefunc
+
+local InCombatLockdown = InCombatLockdown
+local _G = _G
+
 -- sourced from Blizzard_UnitFrame/TargetFrame.lua
 local MAX_BOSS_FRAMES = 8 -- blizzard can spawn more than the default 5 apparently
 
 -- sourced from Blizzard_FrameXMLBase/Shared/Constants.lua
-local MEMBERS_PER_RAID_GROUP = _G.MEMBERS_PER_RAID_GROUP or 5
+local MEMBERS_PER_RAID_GROUP = MEMBERS_PER_RAID_GROUP or 5
 
 local hookedFrames = {}
 local hookedNameplates = {}
@@ -21,9 +27,25 @@ hiddenParent:Hide()
 -- 	self:Hide()
 -- end
 
+local looseFrames = {}
+
+local watcher = CreateFrame('Frame')
+watcher:RegisterEvent('PLAYER_REGEN_ENABLED')
+watcher:SetScript('OnEvent', function()
+	for frame in next, looseFrames do
+		frame:SetParent(hiddenParent)
+	end
+
+	wipe(looseFrames)
+end)
+
 local function resetParent(self, parent)
 	if(parent ~= hiddenParent) then
-		self:SetParent(hiddenParent)
+		if(InCombatLockdown() and self:IsProtected()) then
+			looseFrames[self] = true
+		else
+			self:SetParent(hiddenParent)
+		end
 	end
 end
 
@@ -110,13 +132,13 @@ function oUF:DisableBlizzard(unit)
 	if(not unit) then return end
 
 	if(unit == 'player') then
-		handleFrame(PlayerFrame)
+		handleFrame(_G.PlayerFrame)
 	elseif(unit == 'pet') then
-		handleFrame(PetFrame)
+		handleFrame(_G.PetFrame)
 	elseif(unit == 'target') then
-		handleFrame(TargetFrame)
+		handleFrame(_G.TargetFrame)
 	elseif(unit == 'focus') then
-		handleFrame(FocusFrame)
+		handleFrame(_G.FocusFrame)
 	elseif(unit:match('boss%d?$')) then
 		if(not isBossHooked) then
 			isBossHooked = true
@@ -126,7 +148,7 @@ function oUF:DisableBlizzard(unit)
 			-- to revert all changes
 			-- for now I'll just reparent it, but more might be needed in the
 			-- future, watch it
-			handleFrame(BossTargetFrameContainer)
+			handleFrame(_G.BossTargetFrameContainer)
 
 			-- do not reparent frames controlled by containers, the vert/horiz
 			-- layout code will go insane because it won't be able to calculate
@@ -140,9 +162,9 @@ function oUF:DisableBlizzard(unit)
 		if(not isPartyHooked) then
 			isPartyHooked = true
 
-			handleFrame(PartyFrame)
+			handleFrame(_G.PartyFrame)
 
-			for frame in PartyFrame.PartyMemberFramePool:EnumerateActive() do
+			for frame in _G.PartyFrame.PartyMemberFramePool:EnumerateActive() do
 				handleFrame(frame, true)
 			end
 
@@ -154,9 +176,9 @@ function oUF:DisableBlizzard(unit)
 		if(not isArenaHooked) then
 			isArenaHooked = true
 
-			handleFrame(CompactArenaFrame)
+			handleFrame(_G.CompactArenaFrame)
 
-			for _, frame in next, CompactArenaFrame.memberUnitFrames do
+			for _, frame in next, _G.CompactArenaFrame.memberUnitFrames do
 				handleFrame(frame, true)
 			end
 		end
