@@ -95,11 +95,9 @@ local oUF = ns.oUF
 local FALLBACK_ICON = 136243 -- Interface\ICONS\Trade_Engineering
 local FAILED = _G.FAILED or 'Failed'
 local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
-local CASTBAR_STAGE_DURATION_INVALID = -1 -- defined in FrameXML/CastingBarFrame.lua
 
 local _G = _G
 local next = next
-local select = select
 local GetTime = GetTime
 local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
@@ -110,7 +108,7 @@ local UnitChannelInfo = UnitChannelInfo
 local UnitChannelDuration = UnitChannelDuration
 local UnitCastingDuration = UnitCastingDuration
 local UnitEmpoweredChannelDuration = UnitEmpoweredChannelDuration
-local GetUnitEmpowerStageDuration = GetUnitEmpowerStageDuration
+local UnitEmpoweredStagePercentages = UnitEmpoweredStagePercentages
 local GetUnitEmpowerHoldAtMaxTime = GetUnitEmpowerHoldAtMaxTime
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 
@@ -269,7 +267,7 @@ local function UpdatePips(element, stages)
 end
 
 local function CastMatch(element, castID, spellID)
-	return (castID and element.castID == castID) and (spellID and element.spellID == spellID)
+	return element.castID == castID and (not spellID or element.spellID == spellID)
 end
 
 --[[ Override: Castbar:ShouldShow(unit)
@@ -288,8 +286,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	local real, numStages, castDuration = event
-	local name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, _
+	local real, castDuration = event
+	local name, text, texture, startTime, endTime, isTradeSkill, isEmpowered, castID, barID, notInterruptible, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
 		event = 'UNIT_SPELLCAST_START'
@@ -309,16 +307,26 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			endTime = startTime + castTime
 		end
 	elseif event == 'UNIT_SPELLCAST_START' then
-		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+		if oUF.isMidnight then
+			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
+			castID = barID -- because of secrets
+		else
+			name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+		end
 	elseif event == 'UNIT_SPELLCAST_EMPOWER_START' or event == 'UNIT_SPELLCAST_CHANNEL_START' then
-		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
+		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, isEmpowered, _, castID = UnitChannelInfo(unit)
 	else -- try both API when its forced
-		name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+		if oUF.isMidnight then
+			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
+			castID = barID -- because of secrets
+		else
+			name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
+		end
+
 		event = 'UNIT_SPELLCAST_START'
 
 		if not name then
-			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, _, numStages = UnitChannelInfo(unit)
-			event = (numStages and numStages > 0) and 'UNIT_SPELLCAST_EMPOWER_START' or 'UNIT_SPELLCAST_CHANNEL_START'
+			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, isEmpowered, _, castID = UnitChannelInfo(unit)
 		end
 	end
 
@@ -333,7 +341,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 	element.casting = event == 'UNIT_SPELLCAST_START'
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
-	element.empowering = event == 'UNIT_SPELLCAST_EMPOWER_START'
+	element.empowering = isEmpowered
 
 	if unit ~= 'player' or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START') then
 		UpdateCurrentTarget(element) -- we want to ignore the start events on player unit because sent adds the target info
@@ -347,12 +355,15 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.spellName = name
 
 	-- ElvUI block
+	local stages = isEmpowered and UnitEmpoweredStagePercentages(unit) or nil
+
 	element.isTradeSkill = isTradeSkill
 	element.tradeSkillCastID = (isTradeSkill and castID) or nil
+	element.stages = stages
 	-- end block
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	local useTimerAPI = oUF.isRetail and element.SetTimerDuration
+	local useTimerAPI = oUF.isMidnight and element.SetTimerDuration
 	if useTimerAPI then
 		if unit == 'player' then -- we can only read these variables for players
 			element.startTime = startTime / 1000
@@ -432,7 +443,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			safeZone:SetPoint(element:GetReverseFill() and (isHoriz and 'LEFT' or 'BOTTOM') or (isHoriz and 'RIGHT' or 'TOP'))
 		end
 
-		local ratio = (select(4, GetNetStats()) * 0.001) / element.max
+		local _, _, _, worldPing = GetNetStats()
+		local ratio = (worldPing * 0.001) / element.max
 		if(ratio > 1) then
 			ratio = 1
 		end
@@ -441,34 +453,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	end
 
 	if(element.empowering) then
-		-- Get stages information for pip positioning
-		local stages = {}
-		local totalDuration = 0
-		for stage = 0, numStages - 1 do
-			local duration = GetUnitEmpowerStageDuration(unit, stage)
-			if(duration > CASTBAR_STAGE_DURATION_INVALID) then
-				totalDuration = totalDuration + duration
-			end
-		end
-		local holdAtMax = GetUnitEmpowerHoldAtMaxTime(unit)
-		if(holdAtMax > CASTBAR_STAGE_DURATION_INVALID) then
-			totalDuration = totalDuration + holdAtMax
-		end
-
-		if(totalDuration > 0) then
-			local accumulated = 0
-			for stage = 0, numStages - 1 do
-				local duration = GetUnitEmpowerStageDuration(unit, stage)
-				if(duration > CASTBAR_STAGE_DURATION_INVALID) then
-					accumulated = accumulated + duration
-					stages[stage + 1] = accumulated / totalDuration
-				end
-			end
-		end
-
 		--[[ Override: Castbar:UpdatePips(stages)
 		Handles updates for stage separators (pips) in an empowered cast.
-
 		* self   - the Castbar widget
 		* stages - stages with percentage of each stage (table)
 		--]]
@@ -488,10 +474,17 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element:Show()
 end
 
-local function CastUpdate(self, event, unit, castID, spellID)
+local function CastUpdate(self, event, unit, ...)
 	local element = self.Castbar
 	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
+	end
+
+	local castID, spellID, _
+	if oUF.isMidnight then
+		_, _, castID = ...
+	else
+		castID, spellID = ...
 	end
 
 	if not element:IsShown() or not CastMatch(element, castID, spellID) then
@@ -508,7 +501,7 @@ local function CastUpdate(self, event, unit, castID, spellID)
 	if(not name) then return end
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	local useTimerAPI = oUF.isRetail and element.SetTimerDuration
+	local useTimerAPI = oUF.isMidnight and element.SetTimerDuration
 	if useTimerAPI then
 		if unit == 'player' then
 			-- Update endTime if empowering
@@ -556,6 +549,7 @@ local function CastUpdate(self, event, unit, castID, spellID)
 		element.delay = element.delay + delta
 
 		element:SetMinMaxValues(0, element.max)
+
 		if element.SetValue_ then
 			element:SetValue_(element.duration)
 		else
@@ -574,10 +568,23 @@ local function CastUpdate(self, event, unit, castID, spellID)
 	end
 end
 
-local function CastStop(self, event, unit, castID, spellID)
+local function CastStop(self, event, unit, ...)
 	local element = self.Castbar
 	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
+	end
+
+	local castID, spellID, interruptedBy, empowerComplete, _
+	if oUF.isMidnight then
+		if(event == 'UNIT_SPELLCAST_STOP') then
+			_, _, castID = ...
+		elseif(event == 'UNIT_SPELLCAST_EMPOWER_STOP') then
+			_, _, empowerComplete, interruptedBy, castID = ...
+		elseif(event == 'UNIT_SPELLCAST_CHANNEL_STOP') then
+			_, _, interruptedBy, castID = ...
+		end
+	else
+		castID, spellID = ...
 	end
 
 	if not element:IsShown() or not CastMatch(element, castID, spellID) then
@@ -590,35 +597,61 @@ local function CastStop(self, event, unit, castID, spellID)
 	end
 	-- end block
 
-	resetAttributes(element)
+	if(interruptedBy) then
+		if(element.Text) then
+			element.Text:SetText(INTERRUPTED)
+		end
 
-	--[[ Callback: Castbar:PostCastStop(unit, spellID)
-	Called after the element has been updated when a spell cast or channel has stopped.
+		element.holdTime = element.timeToHold or 0
 
-	* self    - the Castbar widget
-	* unit    - the unit for which the update has been triggered (string)
-	* spellID - the ID of the spell (number)
-	--]]
-	if(element.PostCastStop) then
-		return element:PostCastStop(unit, spellID)
+		-- force filled castbar
+		element:SetMinMaxValues(0, 1)
+		element:SetValue(1)
+
+		--[[ Callback: Castbar:PostCastInterrupted(unit, interruptedBy)
+		Called after the element has been updated when a spell cast or channel has stopped.
+
+		* self          - the Castbar widget
+		* unit          - the unit for which the update has been triggered (string)
+		* interruptedBy - GUID of whomever interrupted the cast (string)
+		--]]
+		if(element.PostCastInterrupted) then
+			element:PostCastInterrupted(unit, spellID, interruptedBy)
+		end
+	else
+		--[[ Callback: Castbar:PostCastStop(unit[, empowerComplete])
+		Called after the element has been updated when a spell cast or channel has stopped.
+
+		* self            - the Castbar widget
+		* unit            - the unit for which the update has been triggered (string)
+		* empowerComplete - if the empowered cast was complete (boolean?)
+		--]]
+		if(element.PostCastStop) then
+			element:PostCastStop(unit, spellID, empowerComplete)
+		end
 	end
+
+	resetAttributes(element)
 end
 
-local function CastFail(self, event, unit, _, _, ...)
+local function CastFail(self, event, unit, ...)
 	local element = self.Castbar
 	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	local castID, interruptedBy
-	if(event == 'UNIT_SPELLCAST_INTERRUPTED') then
-		interruptedBy, castID = ...
-	elseif(event == 'UNIT_SPELLCAST_FAILED') then
-		castID = ...
+	local castID, spellID, interruptedBy, _
+	if oUF.isMidnight then
+		if(event == 'UNIT_SPELLCAST_INTERRUPTED') then
+			_, _, interruptedBy, castID = ...
+		elseif(event == 'UNIT_SPELLCAST_FAILED') then
+			_, _, castID = ...
+		end
+	else
+		castID, spellID = ...
 	end
 
-	-- ElvUI: Use CastMatch to check both castID and spellID
-	if(not element:IsShown() or not CastMatch(element, castID, element.spellID)) then
+	if not element:IsShown() or not CastMatch(element, castID, spellID) then
 		return
 	end
 
@@ -642,7 +675,7 @@ local function CastFail(self, event, unit, _, _, ...)
 
 	if(interruptedBy) then
 		if(element.PostCastInterrupted) then
-			element:PostCastInterrupted(unit, interruptedBy)
+			element:PostCastInterrupted(unit, spellID, interruptedBy)
 		end
 	else
 		--[[ Callback: Castbar:PostCastFail(unit)
@@ -726,12 +759,14 @@ local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
 		local duration, durationObject
 
-		local useTimerAPI = oUF.isRetail and self.GetTimerDuration
+		local useTimerAPI = oUF.isMidnight and self.GetTimerDuration
 		if useTimerAPI then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
 			if durationObject then
 				duration = durationObject:GetRemainingDuration()
+
+				self.duration = duration
 			else
 				useTimerAPI = false
 			end
@@ -784,9 +819,9 @@ local function onUpdate(self, elapsed)
 				--]]
 
 				if(self.CustomDelayText) then
-					self:CustomDelayText(durationObject or duration)
+					self:CustomDelayText(duration, durationObject)
 				else
-					self.Time:SetFormattedText('%.1f|cffff0000%s%.2f|r', duration, (self.casting or self.empowering) and '+' or '-', self.delay)
+					self.Time:SetFormattedText('%.1f|cffff0000%s%.2f|r', duration or 0, (self.casting or self.empowering) and '+' or '-', self.delay)
 				end
 			else
 				--[[ Override: Castbar:CustomTimeText(duration)
@@ -797,9 +832,9 @@ local function onUpdate(self, elapsed)
 				--]]
 
 				if(self.CustomTimeText) then
-					self:CustomTimeText(durationObject or duration)
+					self:CustomTimeText(duration, durationObject)
 				else
-					self.Time:SetFormattedText('%.1f', duration)
+					self.Time:SetFormattedText('%.1f', duration or 0)
 				end
 			end
 		end
