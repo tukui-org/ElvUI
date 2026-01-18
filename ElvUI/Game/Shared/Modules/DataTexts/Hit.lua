@@ -41,8 +41,8 @@ local function OnEnter()
 	DT.tooltip:AddLine(format('|cffFFFFFF%s:|r %s', _G['COMBAT_RATING_NAME'..ratingIndex], hitValue))
 
 	local ratingTooltip = ratingIndex == CR_HIT_MELEE and CR_HIT_MELEE_TOOLTIP or CR_HIT_RANGED_TOOLTIP
-	if E.Classic then
-		DT.tooltip:AddLine(format(ratingTooltip, E.mylevel, hitPercent))
+	if E.Classic or E.TBC then
+		DT.tooltip:AddLine(format(ratingTooltip, E.mylevel, hitPercent + hitPercentFromTalents))
 	else
 		DT.tooltip:AddLine(format(ratingTooltip, E.mylevel, hitPercent, GetCombatRating(CR_ARMOR_PENETRATION), GetArmorPenetration()))
 	end
