@@ -640,7 +640,7 @@ local function CastFail(self, event, unit, ...)
 		return
 	end
 
-	local castID, spellID, interruptedBy, _
+	local castID, interruptedBy, _
 	if oUF.isMidnight then
 		if(event == 'UNIT_SPELLCAST_INTERRUPTED') then
 			_, _, interruptedBy, castID = ...
@@ -648,10 +648,10 @@ local function CastFail(self, event, unit, ...)
 			_, _, castID = ...
 		end
 	else
-		castID, spellID = ...
+		castID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID, spellID) then
+	if not element:IsShown() or not CastMatch(element, castID, element.spellID) then
 		return
 	end
 
