@@ -145,9 +145,6 @@ local _ENV = {
 	end,
 	ColorMixin = ColorMixin, -- not available in restricted env for some reason
 }
-_ENV.ColorGradient = function(...)
-	return _ENV._FRAME:ColorGradient(...)
-end
 
 local _PROXY = setmetatable(_ENV, {__index = _G})
 
