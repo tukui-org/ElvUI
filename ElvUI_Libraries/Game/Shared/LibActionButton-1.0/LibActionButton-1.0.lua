@@ -1549,7 +1549,8 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
 
-	if WoWRetail then
+	local tempAllowVFX = false
+	if WoWRetail and tempAllowVFX then
 		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
