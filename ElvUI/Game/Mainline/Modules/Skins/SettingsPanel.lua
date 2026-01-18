@@ -118,8 +118,13 @@ local function CategoryListScrollUpdateChild(child)
 	end
 
 	local toggle = child.Toggle
-	if toggle then
-		toggle:GetPushedTexture():SetAlpha(0)
+	if toggle and not toggle.IsSkinned then
+		S:HandleCollapseTexture(toggle, true)
+
+		toggle:Size(18)
+		toggle:NudgePoint(4, 2)
+
+		toggle.IsSkinned = true
 	end
 end
 
