@@ -10,7 +10,7 @@ local hooksecurefunc = hooksecurefunc
 local POSITION, POINT, X_OFFSET, Y_OFFSET, BASE_YOFFSET = 'TOP', 'BOTTOM', 0, -5, 0 -- should match in PostAlertMove
 
 function E:PostAlertMove()
-	local perks, anchor = E:GetAlertAnchors()
+	local perks, anchor = BL:GetAlertAnchors()
 
 	local growUp = perks
 	if not growUp then
