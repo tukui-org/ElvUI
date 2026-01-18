@@ -350,51 +350,52 @@ local function ForceUpdate(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local function ClassPowerEnable(self)
-	self:RegisterEvent('UNIT_POWER_FREQUENT', Path)
-	self:RegisterEvent('UNIT_MAXPOWER', Path)
+local function ClassPowerEnable(element)
+	local owner = element.__owner
+	owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+	owner:RegisterEvent('UNIT_MAXPOWER', Path)
 
 	if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
-		self:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		owner:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 	else
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
+		owner:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 	end
 
 	if UseFakePower[classPowerID] then
-		self:RegisterEvent('UNIT_AURA', Path)
+		owner:RegisterEvent('UNIT_AURA', Path)
 	end
 
-	self.ClassPower.__isEnabled = true
+	element.__isEnabled = true
 
 	if (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI('player') then
-		Path(self, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
+		Path(owner, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
 	else
-		Path(self, 'ClassPowerEnable', 'player', ClassPowerType[classPowerID])
+		Path(owner, 'ClassPowerEnable', 'player', ClassPowerType[classPowerID])
 	end
 end
 
-local function ClassPowerDisable(self)
-	self:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
-	self:UnregisterEvent('UNIT_MAXPOWER', Path)
+local function ClassPowerDisable(element)
+	local owner = element.__owner
+	owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+	owner:UnregisterEvent('UNIT_MAXPOWER', Path)
 
 	if oUF.isRetail then
-		self:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
+		owner:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 	else
-		self:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
+		owner:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 	end
 
 	if UseFakePower[classPowerID] then
-		self:UnregisterEvent('UNIT_AURA')
+		owner:UnregisterEvent('UNIT_AURA')
 	end
 
-	local element = self.ClassPower
 	for i = 1, #element do
 		element[i]:Hide()
 	end
 
 	element.__isEnabled = false
 
-	Path(self, 'ClassPowerDisable', 'player', ClassPowerType[classPowerID])
+	Path(owner, 'ClassPowerDisable', 'player', ClassPowerType[classPowerID])
 end
 
 local function Enable(self, unit)
