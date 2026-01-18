@@ -429,8 +429,9 @@ local function Enable(self, unit)
 end
 
 local function Disable(self)
-	if(self.ClassPower) then
-		ClassPowerDisable(self)
+	local element = self.ClassPower
+	if(element) then
+		ClassPowerDisable(element)
 
 		self:UnregisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
 		self:UnregisterEvent('SPELLS_CHANGED', VisibilityPath)
