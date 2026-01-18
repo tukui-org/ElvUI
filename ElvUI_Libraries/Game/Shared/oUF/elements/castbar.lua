@@ -250,7 +250,7 @@ local function UpdatePips(element, stages)
 
 		-- ElvUI block
 		if element.PostUpdatePip then
-			element:PostUpdatePip(pip, stage)
+			element:PostUpdatePip(pip, stage, stages)
 		end
 		-- end block
 	end
@@ -315,9 +315,14 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 	elseif event == 'UNIT_SPELLCAST_EMPOWER_START' or event == 'UNIT_SPELLCAST_CHANNEL_START' then
 		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, isEmpowered, _, castID = UnitChannelInfo(unit)
+
+		-- if castID == castTime then
+		----- BUG: Dream Breath maybe others have double start events (?)
+		-- end
 	else -- try both API when its forced
 		if oUF.isMidnight then
 			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
+
 			castID = barID -- because of secrets
 		else
 			name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
@@ -675,7 +680,7 @@ local function CastFail(self, event, unit, ...)
 
 	if(interruptedBy) then
 		if(element.PostCastInterrupted) then
-			element:PostCastInterrupted(unit, spellID, interruptedBy)
+			element:PostCastInterrupted(unit, element.spellID, interruptedBy)
 		end
 	else
 		--[[ Callback: Castbar:PostCastFail(unit)
@@ -738,12 +743,12 @@ local function OnUpdateStage(element)
 	if element.UpdatePipStep then
 		local maxStage = 0
 		local stageValue = element.duration * 1000
-		for i = 1, element.numStages do
-			local step = element.stagePoints[i]
+		for stage in next, element.stages do
+			local step = element.stagePoints[stage]
 			if not step or stageValue < step then
 				break
 			else
-				maxStage = i
+				maxStage = stage
 			end
 		end
 
@@ -767,8 +772,6 @@ local function onUpdate(self, elapsed)
 				duration = durationObject:GetRemainingDuration()
 
 				self.duration = duration
-			else
-				useTimerAPI = false
 			end
 		else
 			local isCasting = self.casting or self.empowering
@@ -839,11 +842,14 @@ local function onUpdate(self, elapsed)
 			end
 		end
 
-		if not useTimerAPI then
-			if(self.empowering) then
-				OnUpdateStage(self)
-			end
+		-- ISSUE: we have no way to get this information any more, Blizzard is aware
+		--[[
+		if(self.empowering) then
+			OnUpdateStage(self)
+		end
+		]]
 
+		if not useTimerAPI then
 			if self.SetValue_ then
 				self:SetValue_(duration)
 			else

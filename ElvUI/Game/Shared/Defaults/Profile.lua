@@ -941,11 +941,11 @@ P.nameplates = {
 			[13] = {r = 0.10, g = 0.58, b = 0.28}, -- BATTLEGROUND_FRIENDLY_PVP
 		},
 		empoweredCast = {
-			{r = 1.00, g = 0.26, b = 0.20, a = 0.3}, -- red
-			{r = 1.00, g = 0.80, b = 0.26, a = 0.3}, -- orange
-			{r = 1.00, g = 1.00, b = 0.26, a = 0.3}, -- yellow
-			{r = 0.66, g = 1.00, b = 0.40, a = 0.3}, -- green
-			{r = 0.36, g = 0.90, b = 0.80, a = 0.3}, -- turquoise
+			{r = 1.00, g = 0.26, b = 0.20, a = 0.5}, -- red
+			{r = 1.00, g = 0.80, b = 0.26, a = 0.5}, -- orange
+			{r = 1.00, g = 1.00, b = 0.26, a = 0.5}, -- yellow
+			{r = 0.66, g = 1.00, b = 0.40, a = 0.5}, -- green
+			{r = 0.36, g = 0.90, b = 0.80, a = 0.5}, -- turquoise
 		},
 		classResources = {
 			chargedComboPoint = { r = 0.16, g = 0.64, b = 1.0 },
