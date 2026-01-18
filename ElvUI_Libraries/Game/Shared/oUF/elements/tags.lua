@@ -97,6 +97,11 @@ local CreateFrame = CreateFrame
 local C_Timer_NewTimer = C_Timer.NewTimer
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 
+local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
+local GenerateTextColorCode = C_ColorUtil and C_ColorUtil.GenerateTextColorCode
+local TruncateWhenZero = C_StringUtil and C_StringUtil.TruncateWhenZero
+local WrapString = C_StringUtil and C_StringUtil.WrapString
+
 local IsResting = IsResting
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
@@ -104,7 +109,6 @@ local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRuneCooldown = GetRuneCooldown
 local GetSpecializationInfoByID = GetSpecializationInfoByID
-local GetThreatStatusColor = GetThreatStatusColor
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitCanAttack = UnitCanAttack
 local UnitClassification = UnitClassification
@@ -117,6 +121,10 @@ local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsWildBattlePet = UnitIsWildBattlePet
+local UnitHealthMissing = UnitHealthMissing
+local UnitPowerMissing = UnitPowerMissing
+local UnitPowerPercent = UnitPowerPercent
+local UnitHealthPercent = UnitHealthPercent
 local UnitLevel = UnitLevel
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
@@ -132,7 +140,7 @@ local _ENV = {
 	Hex = function(r, g, b)
 		if(type(r) == 'table') then
 			if oUF.isMidnight then
-				return '|c' .. C_ColorUtil.GenerateTextColorCode(r)
+				return '|c' .. GenerateTextColorCode(r)
 			elseif(r.r) then
 				r, g, b = r.r, r.g, r.b
 			else
@@ -321,7 +329,7 @@ end
 
 tagFunctions.missinghp = function(u)
 	if oUF.isMidnight then
-		return C_StringUtil.TruncateWhenZero(UnitHealthMissing(u))
+		return TruncateWhenZero(UnitHealthMissing(u))
 	else
 		local current = UnitHealthMax(u) - UnitHealth(u)
 		if(current > 0) then
@@ -332,7 +340,7 @@ end
 
 tagFunctions.missingpp = function(u)
 	if oUF.isMidnight then
-		return C_StringUtil.TruncateWhenZero(UnitPowerMissing(u))
+		return TruncateWhenZero(UnitPowerMissing(u))
 	else
 		local current = UnitPowerMax(u) - UnitPower(u)
 		if(current > 0) then
@@ -353,7 +361,7 @@ end
 
 tagFunctions.perhp = function(u)
 	if oUF.isMidnight then
-		return format('%d', UnitHealthPercent(u, true, CurveConstants.ScaleTo100))
+		return format('%d', UnitHealthPercent(u, true, ScaleTo100))
 	else
 		local m = UnitHealthMax(u)
 		if(m == 0) then
@@ -366,7 +374,7 @@ end
 
 tagFunctions.perpp = function(u)
 	if oUF.isMidnight then
-		return format('%d', UnitPowerPercent(u, nil, true, CurveConstants.ScaleTo100))
+		return format('%d', UnitPowerPercent(u, nil, true, ScaleTo100))
 	else
 		local m = UnitPowerMax(u)
 		if(m == 0) then
@@ -684,7 +692,7 @@ local function CreateTagFunc(tag, prefix, suffix)
 	return function(unit, realUnit, customArgs)
 		local str = tag(unit, realUnit, customArgs)
 		if issecretvalue and issecretvalue(str) then
-			return C_StringUtil.WrapString(str, prefix, suffix)
+			return WrapString(str, prefix, suffix)
 		else
 			return str and format('%s%s%s', prefix or '', str, suffix or '') or nil
 		end
@@ -706,7 +714,7 @@ local function GetTagFunc(tagstr)
 	local func = tagStringFuncs[tagstr]
 	if not func then
 		local frmt, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
-		local funcs = {}
+		local data = {}
 
 		for bracket in tagstr:gmatch(_PATTERN) do
 			local tagFunc = bracketFuncs[bracket] or tagFuncs[bracket:sub(2, -2)]
@@ -721,9 +729,7 @@ local function GetTagFunc(tagstr)
 				end
 			end
 
-			if tagFunc then
-				tinsert(funcs, tagFunc)
-			end
+			tinsert(data, tagFunc or '')
 		end
 
 		func = function(self)
@@ -735,8 +741,8 @@ local function GetTagFunc(tagstr)
 			_ENV._FRAME = parent
 			_ENV._COLORS = parent.colors
 
-			for i, fnc in next, funcs do
-				tagBuffer[i] = fnc(unit, realUnit, customArgs) or ''
+			for i, fnc in next, data do
+				tagBuffer[i] = type(fnc) == 'function' and fnc(unit, realUnit, customArgs) or ''
 			end
 
 			-- we do 1 to num because buffer is shared by all tags and can hold several unneeded vars.

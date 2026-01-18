@@ -17,17 +17,49 @@ local POWERTYPE_MANA = Enum.PowerType.Mana
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
 -- GLOBALS: UnitPower -- override during testing groups
 
-E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
-	local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
-	if cur > 0 then
-		local _, r, g, b = GetUnitPowerBarTextureInfo(unit, 3)
-		if not r then
-			r, g, b = 1, 1, 1
-		end
+if not E.Midnight then
+	E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
+		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
+		if cur > 0 then
+			local _, r, g, b = GetUnitPowerBarTextureInfo(unit, 3)
+			if not r then
+				r, g, b = 1, 1, 1
+			end
 
-		return Hex(r,g,b)
+			return Hex(r,g,b)
+		end
+	end)
+
+	for textFormat in pairs(E.GetFormattedTextStyles) do
+		local tagFormat = strlower(gsub(textFormat, '_', '-'))
+
+		E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+			local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
+			local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
+			if min and min ~= 0 then
+				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
+			end
+		end)
+
+		E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
+			local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
+			if cur > 0 then
+				local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
+				return E:GetFormattedText(textFormat, cur, max)
+			end
+		end)
+
+		if tagFormat ~= 'percent' then
+			E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
+				local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
+				local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
+				if min and min ~= 0 and tagFormat ~= 'deficit' then
+					return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
+				end
+			end)
+		end
 	end
-end)
+end
 
 do
 	local specIcon = [[|T%s:16:16:0:0:64:64:4:60:4:60|t]]
@@ -40,36 +72,6 @@ do
 			return info.icon and format(specIcon, info.icon)
 		end
 	end)
-end
-
-for textFormat in pairs(E.GetFormattedTextStyles) do
-	local tagFormat = strlower(gsub(textFormat, '_', '-'))
-
-	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
-		local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
-		local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
-		if min and min ~= 0 then
-			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
-		end
-	end)
-
-	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
-		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
-		if cur > 0 then
-			local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
-			return E:GetFormattedText(textFormat, cur, max)
-		end
-	end)
-
-	if tagFormat ~= 'percent' then
-		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
-			local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
-			local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
-			if min and min ~= 0 and tagFormat ~= 'deficit' then
-				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
-			end
-		end)
-	end
 end
 
 E:AddTag('pvp:honorlevel', 'UNIT_NAME_UPDATE', function(unit)
