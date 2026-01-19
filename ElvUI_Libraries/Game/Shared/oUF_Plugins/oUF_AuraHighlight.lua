@@ -12,7 +12,7 @@ local BlockList = LibDispel:GetBlockList()
 local BleedList = LibDispel:GetBleedList()
 
 local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, spellID)
-	local spell = list and (list[spellID] or list[name])
+	local spell = list and (oUF:NotSecretValue(spellID) and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
 	local dispelType = auraType or (BleedList[spellID] and 'Bleed') or nil
 
 	if spell then
