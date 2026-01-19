@@ -176,7 +176,6 @@ function E:SetupCVars(noDisplayMsg)
 	E:SetCVar('showNPETutorials', 0)
 	E:SetCVar('UberTooltips', 1)
 	E:SetCVar('threatWarning', 3)
-	E:SetCVar('alwaysShowActionBars', 1)
 	E:SetCVar('lockActionBars', 1)
 	E:SetCVar('ActionButtonUseKeyDown', 1)
 	E:SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
@@ -184,6 +183,7 @@ function E:SetupCVars(noDisplayMsg)
 	if E.Retail then
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
 	else
+		E:SetCVar('alwaysShowActionBars', 1)
 		E:SetCVar('chatClassColorOverride', 0)
 	end
 
