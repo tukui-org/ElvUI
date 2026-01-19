@@ -632,7 +632,7 @@ function UF:AuraDuration(db, duration)
 end
 
 function UF:AuraStacks(auras, db, button, name, icon, count, spellID, source, castByPlayer)
-	if db.stackAuras and E:NotSecretValue(spellID) and not UF.ExcludeStacks[spellID] then
+	if db.stackAuras and not UF.ExcludeStacks[spellID] then
 		local matching = source and castByPlayer and format('%s:%s', UF.SourceStacks[spellID] or source, name) or name
 		local amount = (count and count > 0 and count) or 1
 		local stack = auras.stacks[matching]
@@ -693,23 +693,23 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = self.db
-	if not db then
-		return true -- no database huh
+	if not db or E:IsSecretValue(duration) then -- database or secret: just allow it
+		button.priority = 0
+
+		return true
 	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	end
 
 	local noDuration, allowDuration = UF:AuraDuration(db, duration)
-	local myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(self, db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 	if not allowDuration or not self.filterList then
-		button.filterPass = allowDuration
 		button.priority = 0
 
 		return allowDuration -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
 	else
+		local myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(self, db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 		local pass, priority = UF:CheckFilter(source, name, spellID, canDispel, isFriend, button.isPlayer, unitIsCaster, myPet, otherPet, isBossAura, noDuration, castByPlayer, nameplateShowAll or (nameplateShowPersonal and (button.isPlayer or myPet)), E.MountIDs[spellID], self.filterList)
 
-		button.filterPass = pass
 		button.priority = priority or 0 -- This is the only difference from auarbars code
 
 		return pass
