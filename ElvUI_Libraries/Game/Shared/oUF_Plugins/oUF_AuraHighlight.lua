@@ -33,7 +33,7 @@ local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, s
 end
 
 local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, spellID)
-	local spell = list and (list[spellID] or list[name])
+	local spell = list and (oUF:NotSecretValue(spellID) and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
 	if spell and spell.enable and (not spell.ownOnly or source == 'player') then
 		return auraType, icon, true, spell.style, spell.color
 	end
