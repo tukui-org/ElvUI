@@ -107,6 +107,8 @@ function BL:GroupLootContainer_Update()
 	if lastIdx then
 		self:Height(self.reservedSize * lastIdx)
 		self:Show()
+		GroupLootContainer:ClearAllPoints()
+		GroupLootContainer:Point(POSITION, _G.AlertFrameHolder, ANCHOR_POINT, 0, Y_OFFSET)
 	else
 		self:Hide()
 	end
