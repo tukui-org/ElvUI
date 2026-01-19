@@ -203,7 +203,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
-	local setting = element.watched[spellID]
+	local setting = oUF:NotSecretValue(spellID) and element.watched[spellID]
 	if setting and setting.onlyShowMissing then
 		missing[spellID] = nil
 	end
