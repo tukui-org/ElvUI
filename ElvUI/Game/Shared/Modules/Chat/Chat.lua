@@ -1348,6 +1348,11 @@ function CH:UpdateEditboxAnchors(cvar, value)
 	local leftChat = classic and _G.LeftChatPanel
 	local panel = 22
 
+	local showLeftPanel = E.db.datatexts.panels.LeftChatDataPanel.enable
+	local aboveInside = CH.db.editBoxPosition == 'ABOVE_CHAT_INSIDE'
+	local belowInside = CH.db.editBoxPosition == 'BELOW_CHAT_INSIDE'
+	local below = CH.db.editBoxPosition == 'BELOW_CHAT'
+
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[frameName]
 		local editbox = chat and chat.editBox
@@ -1356,15 +1361,14 @@ function CH:UpdateEditboxAnchors(cvar, value)
 			editbox:ClearAllPoints()
 
 			local anchorTo = leftChat or chat
-			local below, belowInside = CH.db.editBoxPosition == 'BELOW_CHAT', CH.db.editBoxPosition == 'BELOW_CHAT_INSIDE'
 			if below or belowInside then
-				local showLeftPanel = E.db.datatexts.panels.LeftChatDataPanel.enable
-				editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', classic and (showLeftPanel and 1 or 0) or -2, (classic and (belowInside and 1 or 0) or -5))
-				editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', classic and (showLeftPanel and -1 or 0) or -2, (classic and (belowInside and 1 or 0) or -5) + (belowInside and panel or -panel))
+				local offset = classic and (belowInside and 1 or 0) or -5
+				editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', classic and (showLeftPanel and 1 or 0) or -2, offset + (belowInside and panel or 0))
+				editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', classic and (showLeftPanel and -1 or 0) or -2, offset + (belowInside and 0 or -panel))
 			else
-				local aboveInside = CH.db.editBoxPosition == 'ABOVE_CHAT_INSIDE'
-				editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', classic and (aboveInside and 1 or 0) or -2, (classic and (aboveInside and -1 or 0) or 2))
-				editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', classic and (aboveInside and -1 or 0) or 2, (classic and (aboveInside and -1 or 0) or 2) + (aboveInside and -panel or panel))
+				local offset = classic and (aboveInside and -1 or 0) or 2
+				editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', classic and (aboveInside and 1 or 0) or -2, offset + (aboveInside and -panel or 0))
+				editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', classic and (aboveInside and -1 or 0) or 2, offset + (aboveInside and 0 or panel))
 			end
 		end
 	end
