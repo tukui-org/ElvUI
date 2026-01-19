@@ -976,10 +976,6 @@ function E:LayoutAnniversary()
 	--Private
 	E.private.bags.bagBar = true
 	E.private.general.chatBubbleName = true
-
-	--Style Filters
-	E.db.nameplates.filters.ElvUI_Below20 = { triggers = { enable = true } }
-	E.db.nameplates.filters.ElvUI_Below20_Players = { triggers = { enable = true } }
 end
 
 function E:LayoutNormal()

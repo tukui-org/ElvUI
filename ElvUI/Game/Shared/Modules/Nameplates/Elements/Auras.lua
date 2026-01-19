@@ -24,7 +24,6 @@ function NP:Construct_Auras(nameplate)
 	Auras.growthY = 'UP'
 	Auras.type = 'auras'
 	Auras.forceShow = nameplate == NP.TestFrame
-	Auras.tickers = {} -- StyleFilters
 	Auras.stacks = {}
 	Auras.rows = {}
 
@@ -43,7 +42,6 @@ function NP:Construct_Auras(nameplate)
 	Buffs.growthY = 'UP'
 	Buffs.type = 'buffs'
 	Buffs.forceShow = nameplate == NP.TestFrame
-	Buffs.tickers = {} -- StyleFilters
 	Buffs.stacks = {}
 	Buffs.rows = {}
 
@@ -62,7 +60,6 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.growthY = 'UP'
 	Debuffs.type = 'debuffs'
 	Debuffs.forceShow = nameplate == NP.TestFrame
-	Debuffs.tickers = {} -- StyleFilters
 	Debuffs.stacks = {}
 	Debuffs.rows = {}
 

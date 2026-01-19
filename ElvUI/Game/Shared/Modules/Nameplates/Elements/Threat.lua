@@ -30,12 +30,10 @@ end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
 	local nameplate, colors, db = self.__owner, NP.db.colors.threat, NP.db.threat
-	local styleFilter = NP:StyleFilterChanges(nameplate)
-	local styleScale = styleFilter.general and styleFilter.general.scale
 
 	nameplate.threatStatus = status -- export for plugins
 
-	if not status and not styleScale then
+	if not status then
 		nameplate.threatScale = 1
 		NP:ScalePlate(nameplate, 1)
 	elseif status and db.enable and db.useThreatColor and not UnitIsTapDenied(unit) then
@@ -56,18 +54,12 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 			Scale = (self.offTank and db.goodScale) or (self.isTank and db.badScale) or db.goodScale
 		end
 
-		if styleFilter.health and styleFilter.health.color then
-			self.r, self.g, self.b = Color.r, Color.g, Color.b
-		else
-			nameplate.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
-		end
+		nameplate.Health:SetStatusBarColor(Color.r, Color.g, Color.b)
 
 		if Scale then
 			nameplate.threatScale = Scale
 
-			if not styleScale then
-				NP:ScalePlate(nameplate, Scale)
-			end
+			NP:ScalePlate(nameplate, Scale)
 		end
 	end
 end

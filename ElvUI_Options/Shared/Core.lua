@@ -396,7 +396,7 @@ end
 
 do -- Import and Export
 	local function ValidateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
-	local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
+	local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"] }
 
 	local function DecodeString(text, plugin)
 		local profileType, profileKey, profileData = D:Decode(text)

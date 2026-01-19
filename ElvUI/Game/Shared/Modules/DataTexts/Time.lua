@@ -64,7 +64,7 @@ local WORLD_BOSSES_MIST = {
 	[32518] = 'Nalak'
 }
 
-local ALLOW_ID = { -- also has IDs maintained in Nameplate StyleFilters
+local ALLOW_ID = {
 	[2] = true,		-- heroic
 	[23] = true,	-- mythic
 	[148] = true,	-- ZG/AQ40

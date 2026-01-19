@@ -649,8 +649,6 @@ NamePlates.friendlyNPCGroup = GetUnitSettings('FRIENDLY_NPC', L["FRIENDLY_NPC"])
 NamePlates.enemyNPCGroup = GetUnitSettings('ENEMY_NPC', L["ENEMY_NPC"])
 
 NamePlates.targetGroup = ACH:Group(L["Target"], nil, 90, nil, function(info) return E.db.nameplates.units.TARGET[info[#info]] end, function(info, value) E.db.nameplates.units.TARGET[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end)
-NamePlates.targetGroup.args.nonTargetAlphaShortcut = ACH:Execute(L["Non-Target Alpha"], nil, 1, function() C:StyleFilterSetConfig('ElvUI_NonTarget'); ACD:SelectGroup('ElvUI', 'nameplates', 'stylefilters', 'actions') end)
-NamePlates.targetGroup.args.targetScaleShortcut = ACH:Execute(L["Scale"], nil, 2, function() C:StyleFilterSetConfig('ElvUI_Target'); ACD:SelectGroup('ElvUI', 'nameplates', 'stylefilters', 'actions') end)
 NamePlates.targetGroup.args.spacer1 = ACH:Spacer(3, 'full')
 NamePlates.targetGroup.args.glowStyle = ACH:Select(L["Target/Low Health Indicator"], nil, 4, { none = L["None"], style1 = L["Border Glow"], style2 = L["Background Glow"], style3 = L["Top Arrow"], style4 = L["Side Arrows"], style5 = L["Border Glow"]..' + '..L["Top Arrow"], style6 = L["Background Glow"]..' + '..L["Top Arrow"], style7 = L["Border Glow"]..' + '..L["Side Arrows"], style8 = L["Background Glow"]..' + '..L["Side Arrows"] }, nil, 225)
 NamePlates.targetGroup.args.arrowScale = ACH:Range(L["Arrow Scale"], nil, 5, { min = .2, max = 2, step = .01, isPercent = true })

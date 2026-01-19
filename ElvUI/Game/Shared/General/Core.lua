@@ -803,8 +803,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		profile = 'E.db',
 		private = 'E.private',
 		global = 'E.global',
-		filters = 'E.global',
-		styleFilters = 'E.global'
+		filters = 'E.global'
 	}
 
 	local function BuildLineStructure(str) -- str is profileText
@@ -1086,11 +1085,6 @@ do -- BFA Convert, deprecated..
 			E.db.nameplates.lowHealthThreshold = 0.8
 		end
 
-		if E.db.nameplates.units.TARGET.nonTargetTransparency ~= nil then
-			E.global.nameplates.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
-			E.db.nameplates.units.TARGET.nonTargetTransparency = nil
-		end
-
 		--Removed additional table in nameplate filters cause it was basically useless
 		for _, unit in ipairs({'PLAYER','FRIENDLY_PLAYER','ENEMY_PLAYER','FRIENDLY_NPC','ENEMY_NPC'}) do
 			if E.db.nameplates.units[unit].buffs and E.db.nameplates.units[unit].buffs.filters ~= nil then
@@ -1105,12 +1099,6 @@ do -- BFA Convert, deprecated..
 				E.db.nameplates.units[unit].debuffs.priority = E.db.nameplates.units[unit].debuffs.filters.priority or P.nameplates.units[unit].debuffs.priority
 				E.db.nameplates.units[unit].debuffs.filters = nil
 			end
-		end
-
-		--Moved target scale to a style filter
-		if E.db.nameplates.units.TARGET.scale ~= nil then
-			E.global.nameplates.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
-			E.db.nameplates.units.TARGET.scale = nil
 		end
 
 		--Convert cropIcon to tristate
@@ -1580,7 +1568,6 @@ end
 
 function E:UpdateNamePlates(skipCallback)
 	NamePlates:ConfigureAll()
-	NamePlates:StyleFilterInitialize()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')

@@ -151,8 +151,6 @@ function NP:Construct_Castbar(nameplate)
 	castbar:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
-	NP:Construct_FlashTexture(nameplate, castbar)
-
 	NP.StatusBars[castbar] = 'castbar'
 	castbar.ModuleStatusBars = NP.StatusBars -- not oUF
 

@@ -67,18 +67,15 @@ function NP:Power_UpdateColor(_, unit)
 		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 
-	local styleFilter = NP:StyleFilterChanges(self)
-	if not (styleFilter.power and styleFilter.power.color) then
-		if atlas then
-			element:SetStatusBarTexture(atlas)
-			element:SetStatusBarColor(1, 1, 1)
-		elseif b then
-			element:SetStatusBarColor(r, g, b)
-		end
+	if atlas then
+		element:SetStatusBarTexture(atlas)
+		element:SetStatusBarColor(1, 1, 1)
+	elseif b then
+		element:SetStatusBarColor(r, g, b)
+	end
 
-		if element.bg and b then
-			element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
-		end
+	if element.bg and b then
+		element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
 	end
 
 	if element.PostUpdateColor then
@@ -116,7 +113,6 @@ function NP:Construct_Power(nameplate)
 	Power.PostUpdate = NP.Power_PostUpdate
 	Power.UpdateColor = NP.Power_UpdateColor
 
-	NP:Construct_FlashTexture(nameplate, Power)
 	UF:Construct_ClipFrame(nameplate, Power)
 
 	return Power

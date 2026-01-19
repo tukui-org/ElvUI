@@ -655,7 +655,7 @@ function UF:Construct_Fader()
 	return { UpdateRange = UF.UpdateRange }
 end
 
-do -- IDs maintained in Difficulty Datatext and Nameplate StyleFilters
+do -- IDs maintained in Difficulty Datatext
 	local diffs = {
 		keys = {
 			none = {0},

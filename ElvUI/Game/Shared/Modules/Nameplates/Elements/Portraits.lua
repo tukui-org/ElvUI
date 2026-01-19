@@ -19,9 +19,8 @@ end
 function NP:Portrait_PostUpdate(unit, hasStateChanged, texCoords)
 	local nameplate = self.__owner
 	local db = NP:PlateDB(nameplate)
-	local styleFilter = NP:StyleFilterChanges(nameplate)
 
-	if db.portrait and (styleFilter.general and styleFilter.general.portrait or db.portrait.enable) then
+	if db.portrait and db.portrait.enable then
 		local specIcon = db.portrait.specicon and nameplate.specIcon
 		if specIcon then
 			self:SetTexture(specIcon)
@@ -67,9 +66,8 @@ end
 
 function NP:Update_Portrait(nameplate)
 	local db = NP:PlateDB(nameplate)
-	local styleFilter = NP:StyleFilterChanges(nameplate)
 
-	if db.portrait and ((styleFilter.general and styleFilter.general.portrait) or db.portrait.enable) then
+	if db.portrait and db.portrait.enable then
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
 			nameplate.Portrait:ForceUpdate()
@@ -78,7 +76,7 @@ function NP:Update_Portrait(nameplate)
 		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
 
 		-- These values are forced in name only mode inside of DisablePlate
-		if not (db.nameOnly or (styleFilter.general and styleFilter.general.nameOnly)) then
+		if not db.nameOnly then
 			nameplate.Portrait:ClearAllPoints()
 			nameplate.Portrait:Point(E.InversePoints[db.portrait.position], nameplate, db.portrait.position, db.portrait.xOffset, db.portrait.yOffset)
 		end

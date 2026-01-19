@@ -240,19 +240,6 @@ function NP:Style(unit)
 	return self
 end
 
-function NP:Construct_FlashTexture(nameplate, element)
-	local barTexture = element:GetStatusBarTexture()
-
-	local flashTexture = element:CreateTexture(nil, 'OVERLAY')
-	flashTexture:SetTexture(LSM:Fetch('background', 'ElvUI Blank'))
-	flashTexture:Point('BOTTOMLEFT', barTexture, 'BOTTOMLEFT')
-	flashTexture:Point('TOPRIGHT', barTexture, 'TOPRIGHT')
-	flashTexture:Hide()
-
-	element.barTexture = barTexture
-	element.flashTexture = flashTexture
-end
-
 function NP:Construct_RaisedELement(nameplate)
 	local RaisedElement = CreateFrame('Frame', '$parent_RaisedElement', nameplate)
 	RaisedElement:SetFrameStrata(nameplate:GetFrameStrata())
@@ -322,9 +309,7 @@ end
 function NP:PostUpdateAllElements(event)
 	if self == NP.TestFrame or self.widgetsOnly then return end -- skip test and widget plates
 
-	if event == 'ForceUpdate' then
-		NP:StyleFilterUpdate(self, event)
-	elseif event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
+	if event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
 		NP:SetupTarget(self)
 	end
 end
@@ -361,8 +346,6 @@ function NP:StylePlate(nameplate)
 	nameplate.BossMods = NP:Construct_BossMods(nameplate)
 
 	NP:Construct_Auras(nameplate)
-	NP:StyleFilterEvents(nameplate) -- prepare the watcher
-
 	NP:Construct_ClassPowerTwo(nameplate)
 
 	NP.Plates[nameplate] = nameplate.frameName
@@ -453,9 +436,8 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised)
 	NP:Update_PrivateAuras(nameplate, true)
 
 	if nameOnly then
-		local styleFilter = nameOnly == 1
-		NP:Update_Tags(nameplate, styleFilter)
-		NP:Update_Highlight(nameplate, styleFilter)
+		NP:Update_Tags(nameplate)
+		NP:Update_Highlight(nameplate)
 
 		-- The position values here are forced on purpose.
 		nameplate.Name:ClearAllPoints()
@@ -546,16 +528,12 @@ function NP:SetNamePlateEnemyClickThrough()
 end
 
 function NP:Update_StatusBars()
-	for bar, which in pairs(NP.StatusBars) do
-		local styleFilter = NP:StyleFilterChanges(bar:GetParent())
-		local filter = styleFilter[which]
-		if not (filter and filter.texture) then
-			local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
-			if bar.SetStatusBarTexture then
-				bar:SetStatusBarTexture(texture)
-			else
-				bar:SetTexture(texture)
-			end
+	local texture = LSM:Fetch('statusbar', NP.db.statusbar) or E.media.normTex
+	for bar in pairs(NP.StatusBars) do
+		if bar.SetStatusBarTexture then
+			bar:SetStatusBarTexture(texture)
+		else
+			bar:SetTexture(texture)
 		end
 	end
 end
@@ -651,8 +629,6 @@ end
 
 function NP:ConfigureAll(init)
 	if not E.private.nameplates.enable then return end
-
-	NP:StyleFilterConfigure() -- keep this at the top
 
 	if not E.Midnight then
 		NP:SetNamePlateClickThrough()
@@ -759,9 +735,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 	if event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
 		if nameplate then
 			nameplate.isDead = UnitIsDead(nameplate.unit)
-
-			local styleFilter = NP:StyleFilterChanges(nameplate)
-			NP:SetupTarget(nameplate, (styleFilter.general and styleFilter.general.nameOnly) or nameplate.isDead)
 		else -- pass it, even as nil here
 			NP:SetupTarget(nameplate)
 		end
@@ -795,8 +768,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 		NP:UpdatePlateType(nameplate)
 		NP:UpdatePlateSize(nameplate)
 		NP:UpdatePlateBase(nameplate)
-
-		NP:StyleFilterUpdate(nameplate, event) -- keep this after UpdatePlateBase
 	elseif event == 'NAME_PLATE_UNIT_ADDED' then
 		if not unit then unit = nameplate.unit end
 
@@ -868,7 +839,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 			NP:UpdatePlateBase(nameplate)
 			NP:BossMods_UpdateIcon(nameplate)
-			NP:StyleFilterEventWatch(nameplate, event, unit) -- fire up the watcher and call an update on ADDED
 		end
 
 		if (NP.db.fadeIn and not NP.SkipFading) and nameplate.frameType ~= 'PLAYER' then
@@ -894,7 +864,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 		if not nameplate.widgetsOnly then
 			NP:BossMods_UpdateIcon(nameplate, true)
-			NP:StyleFilterEventWatch(nameplate, event, unit) -- shut down the watcher
 		end
 
 		if nameplate.softTargetFrame then
@@ -1059,14 +1028,12 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
-	NP:RegisterEvent('PLAYER_LOGOUT')
 
 	if not E.Midnight then
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 
 	NP:BossMods_RegisterCallbacks()
-	NP:StyleFilterInitialize()
 	NP:HideInterfaceOptions()
 	NP:SetCVars()
 end

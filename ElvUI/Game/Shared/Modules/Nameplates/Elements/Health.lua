@@ -43,15 +43,6 @@ function NP:Health_UpdateColor(_, unit)
 		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
 	end
 
-	local styleFilter = NP:StyleFilterChanges(self)
-	if not (styleFilter.health and styleFilter.health.color) and b then
-		element:SetStatusBarColor(r, g, b)
-
-		if element.bg then
-			element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
-		end
-	end
-
 	if element.PostUpdateColor then
 		element:PostUpdateColor(unit, r, g, b)
 	end
@@ -68,7 +59,6 @@ function NP:Construct_Health(nameplate)
 
 	NP.StatusBars[Health] = 'health'
 
-	NP:Construct_FlashTexture(nameplate, Health)
 	UF:Construct_ClipFrame(nameplate, Health)
 
 	return Health
