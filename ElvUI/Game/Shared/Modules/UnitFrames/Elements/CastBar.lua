@@ -478,7 +478,13 @@ function UF:PostCastStart(unit)
 
 	self.unit = unit
 
-	if (not issecretvalue or not issecretvalue(self.spellID)) and self.spellID then
+	if issecretvalue and issecretvalue(self.spellID) then
+		self.Text:SetText(self.spellName)
+
+		if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
+			UF:HideTicks(self)
+		end
+	else
 		local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
 		local spellName = spellRename or self.spellName
 		local length = db.castbar.nameLength
