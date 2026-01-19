@@ -731,16 +731,157 @@ function NP:UpdatePlateBase(nameplate)
 	end
 end
 
-function NP:NamePlateCallBack(nameplate, event, unit)
-	if event == 'PLAYER_TARGET_CHANGED' then -- we need to check if nameplate exists in here
-		if nameplate then
-			nameplate.isDead = UnitIsDead(nameplate.unit)
-		else -- pass it, even as nil here
-			NP:SetupTarget(nameplate)
+function NP:PLAYER_TARGET_CHANGED(_, unit)
+	if self then
+		self.isDead = UnitIsDead(unit)
+	else -- pass it, even as nil here
+		NP:SetupTarget(self)
+	end
+end
+
+function NP:UNIT_FACTION(_, unit)
+	if self.widgetsOnly then return end
+
+	self.reaction = UnitReaction('player', unit) -- Player Reaction
+	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
+	self.isFriend = UnitIsFriend('player', unit)
+	self.isEnemy = UnitIsEnemy('player', unit)
+	self.faction = UnitFactionGroup(unit)
+	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
+	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction == 4 and 'neutral' or self.repReaction <= 3 and 'bad' or 'good']) or nil
+
+	NP:UpdatePlateType(self)
+	NP:UpdatePlateSize(self)
+	NP:UpdatePlateBase(self)
+end
+
+function NP:NAME_PLATE_UNIT_ADDED(_, unit)
+	if not unit then unit = self.unit end
+
+	self.blizzPlate = self:GetParent().UnitFrame
+	self.widgetsOnly = E.Retail and self.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
+	self.widgetSet = E.Retail and UnitWidgetSet(unit)
+	self.classification = UnitClassification(unit)
+	self.creatureType = UnitCreatureType(unit)
+	self.isMe = UnitIsUnit(unit, 'player')
+	self.isPet = UnitIsUnit(unit, 'pet')
+	self.isFriend = UnitIsFriend('player', unit)
+	self.isEnemy = UnitIsEnemy('player', unit)
+	self.isPlayer = UnitIsPlayer(unit)
+	self.isDead = UnitIsDead(unit)
+	self.isGameObject = UnitIsGameObject(unit)
+	self.isPVPSanctuary = UnitIsPVPSanctuary(unit)
+	self.isBattlePet = not E.Classic and UnitIsBattlePet(unit)
+	self.reaction = UnitReaction('player', unit) -- Player Reaction
+	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
+	self.faction = UnitFactionGroup(unit)
+	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
+	self.unitName, self.unitRealm = UnitName(unit)
+	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
+	self.className, self.classFile, self.classID = UnitClass(unit)
+	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction == 4 and 'neutral' or self.repReaction <= 3 and 'bad' or 'good']) or nil
+
+	local specID, specIcon
+	local spec = E.Retail and E:GetUnitSpecInfo(unit)
+	if spec then
+		specID, specIcon = spec.id, spec.icon
+	end
+
+	self.specID = specID
+	self.specIcon = specIcon
+
+	if self.unitGUID then
+		NP:UpdatePlateGUID(self, self.unitGUID)
+	end
+
+	NP:UpdateNumPlates()
+	NP:UpdatePlateType(self)
+	NP:UpdatePlateSize(self)
+
+	self.softTargetFrame = self.blizzPlate and self.blizzPlate.SoftTargetFrame
+	if self.softTargetFrame then
+		self.softTargetFrame:SetParent(self)
+		self.softTargetFrame:SetIgnoreParentAlpha(true)
+	end
+
+	self.widgetContainer = self.blizzPlate and self.blizzPlate.WidgetContainer
+	if self.widgetContainer then
+		self.widgetContainer:SetParent(self)
+		self.widgetContainer:SetIgnoreParentAlpha(true)
+		self.widgetContainer:ClearAllPoints()
+
+		local db = NP.db.widgets
+		local point = db.below and 'BOTTOM' or 'TOP'
+		self.widgetContainer:SetPoint(E.InversePoints[point], self, point, db.xOffset, db.yOffset)
+	end
+
+	if self.widgetsOnly or self.isGameObject or (self.isDead and not self.isPlayer) then
+		NP:DisablePlate(self, nil, true)
+
+		self.previousType = nil -- dont get the plate stuck for next unit
+	else
+		if not self.RaisedElement:IsShown() then
+			self.RaisedElement:Show()
 		end
 
-		return -- don't proceed
-	elseif not nameplate or not nameplate.UpdateAllElements then
+		NP:UpdatePlateBase(self)
+		NP:BossMods_UpdateIcon(self)
+	end
+
+	if (NP.db.fadeIn and not NP.SkipFading) and self.frameType ~= 'PLAYER' then
+		NP:PlateFade(self, 1, 0, 1)
+	end
+end
+
+function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
+	if self ~= NP.TestFrame then
+		if self.frameType == 'PLAYER' then
+			NP.PlayerselfAnchor:Hide()
+		end
+
+		if self.isTarget then
+			NP:ScalePlate(self, 1, true)
+			NP:SetupTarget(self, true)
+		end
+	end
+
+	if self.unitGUID then
+		NP:UpdatePlateGUID(self)
+	end
+
+	NP:UpdateNumPlates()
+
+	if not self.widgetsOnly then
+		NP:BossMods_UpdateIcon(self, true)
+	end
+
+	if self.softTargetFrame then
+		self.softTargetFrame:SetParent(self.blizzPlate)
+		self.softTargetFrame:SetIgnoreParentAlpha(false)
+	end
+
+	if self.widgetContainer then -- Place Widget Back on Blizzard Plate
+		self.widgetContainer:SetParent(self.blizzPlate)
+		self.widgetContainer:SetIgnoreParentAlpha(false)
+		self.widgetContainer:ClearAllPoints()
+		self.widgetContainer:SetPoint('TOP', self.blizzPlate.castBar, 'BOTTOM')
+	end
+
+	-- these can appear on SoftTarget selfs and they aren't
+	-- from NAME_PLATE_UNIT_ADDED which means, they will still be shown
+	-- in some cases when the plate previously had the element
+	if self.QuestIcons then
+		self.QuestIcons:Hide()
+	end
+
+	-- vars that we need to keep in a nonstale state
+	self.Health.cur = nil -- cutaway
+	self.Power.cur = nil -- cutaway
+	self.npcID = nil -- just cause
+end
+
+function NP:NamePlateCallBack(nameplate, event, unit)
+	if not nameplate or not nameplate.UpdateAllElements then
 		return -- prevent error when loading in with our plates and Plater
 	end
 
@@ -754,141 +895,6 @@ function NP:NamePlateCallBack(nameplate, event, unit)
 
 			nameplate.previousType = nil -- dont get the plate stuck for next unit
 		end
-	elseif event == 'UNIT_FACTION' then
-		if nameplate.widgetsOnly then return end
-
-		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
-		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
-		nameplate.isFriend = UnitIsFriend('player', unit)
-		nameplate.isEnemy = UnitIsEnemy('player', unit)
-		nameplate.faction = UnitFactionGroup(unit)
-		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
-		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
-
-		NP:UpdatePlateType(nameplate)
-		NP:UpdatePlateSize(nameplate)
-		NP:UpdatePlateBase(nameplate)
-	elseif event == 'NAME_PLATE_UNIT_ADDED' then
-		if not unit then unit = nameplate.unit end
-
-		nameplate.blizzPlate = nameplate:GetParent().UnitFrame
-		nameplate.widgetsOnly = E.Retail and nameplate.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
-		nameplate.widgetSet = E.Retail and UnitWidgetSet(unit)
-		nameplate.classification = UnitClassification(unit)
-		nameplate.creatureType = UnitCreatureType(unit)
-		nameplate.isMe = UnitIsUnit(unit, 'player')
-		nameplate.isPet = UnitIsUnit(unit, 'pet')
-		nameplate.isFriend = UnitIsFriend('player', unit)
-		nameplate.isEnemy = UnitIsEnemy('player', unit)
-		nameplate.isPlayer = UnitIsPlayer(unit)
-		nameplate.isDead = UnitIsDead(unit)
-		nameplate.isGameObject = UnitIsGameObject(unit)
-		nameplate.isPVPSanctuary = UnitIsPVPSanctuary(unit)
-		nameplate.isBattlePet = not E.Classic and UnitIsBattlePet(unit)
-		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
-		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
-		nameplate.faction = UnitFactionGroup(unit)
-		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
-		nameplate.unitName, nameplate.unitRealm = UnitName(unit)
-		nameplate.npcID, nameplate.unitGUID = NP:UnitNPCID(unit)
-		nameplate.className, nameplate.classFile, nameplate.classID = UnitClass(unit)
-		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
-
-		local specID, specIcon
-		local spec = E.Retail and E:GetUnitSpecInfo(unit)
-		if spec then
-			specID, specIcon = spec.id, spec.icon
-		end
-
-		nameplate.specID = specID
-		nameplate.specIcon = specIcon
-
-		if nameplate.unitGUID then
-			NP:UpdatePlateGUID(nameplate, nameplate.unitGUID)
-		end
-
-		NP:UpdateNumPlates()
-		NP:UpdatePlateType(nameplate)
-		NP:UpdatePlateSize(nameplate)
-
-		nameplate.softTargetFrame = nameplate.blizzPlate and nameplate.blizzPlate.SoftTargetFrame
-		if nameplate.softTargetFrame then
-			nameplate.softTargetFrame:SetParent(nameplate)
-			nameplate.softTargetFrame:SetIgnoreParentAlpha(true)
-		end
-
-		nameplate.widgetContainer = nameplate.blizzPlate and nameplate.blizzPlate.WidgetContainer
-		if nameplate.widgetContainer then
-			nameplate.widgetContainer:SetParent(nameplate)
-			nameplate.widgetContainer:SetIgnoreParentAlpha(true)
-			nameplate.widgetContainer:ClearAllPoints()
-
-			local db = NP.db.widgets
-			local point = db.below and 'BOTTOM' or 'TOP'
-			nameplate.widgetContainer:SetPoint(E.InversePoints[point], nameplate, point, db.xOffset, db.yOffset)
-		end
-
-		if nameplate.widgetsOnly or nameplate.isGameObject or (nameplate.isDead and not nameplate.isPlayer) then
-			NP:DisablePlate(nameplate, nil, true)
-
-			nameplate.previousType = nil -- dont get the plate stuck for next unit
-		else
-			if not nameplate.RaisedElement:IsShown() then
-				nameplate.RaisedElement:Show()
-			end
-
-			NP:UpdatePlateBase(nameplate)
-			NP:BossMods_UpdateIcon(nameplate)
-		end
-
-		if (NP.db.fadeIn and not NP.SkipFading) and nameplate.frameType ~= 'PLAYER' then
-			NP:PlateFade(nameplate, 1, 0, 1)
-		end
-	elseif event == 'NAME_PLATE_UNIT_REMOVED' then
-		if nameplate ~= NP.TestFrame then
-			if nameplate.frameType == 'PLAYER' then
-				NP.PlayerNamePlateAnchor:Hide()
-			end
-
-			if nameplate.isTarget then
-				NP:ScalePlate(nameplate, 1, true)
-				NP:SetupTarget(nameplate, true)
-			end
-		end
-
-		if nameplate.unitGUID then
-			NP:UpdatePlateGUID(nameplate)
-		end
-
-		NP:UpdateNumPlates()
-
-		if not nameplate.widgetsOnly then
-			NP:BossMods_UpdateIcon(nameplate, true)
-		end
-
-		if nameplate.softTargetFrame then
-			nameplate.softTargetFrame:SetParent(nameplate.blizzPlate)
-			nameplate.softTargetFrame:SetIgnoreParentAlpha(false)
-		end
-
-		if nameplate.widgetContainer then -- Place Widget Back on Blizzard Plate
-			nameplate.widgetContainer:SetParent(nameplate.blizzPlate)
-			nameplate.widgetContainer:SetIgnoreParentAlpha(false)
-			nameplate.widgetContainer:ClearAllPoints()
-			nameplate.widgetContainer:SetPoint('TOP', nameplate.blizzPlate.castBar, 'BOTTOM')
-		end
-
-		-- these can appear on SoftTarget nameplates and they aren't
-		-- from NAME_PLATE_UNIT_ADDED which means, they will still be shown
-		-- in some cases when the plate previously had the element
-		if nameplate.QuestIcons then
-			nameplate.QuestIcons:Hide()
-		end
-
-		-- vars that we need to keep in a nonstale state
-		nameplate.Health.cur = nil -- cutaway
-		nameplate.Power.cur = nil -- cutaway
-		nameplate.npcID = nil -- just cause
 	end
 end
 
@@ -1019,9 +1025,16 @@ function NP:Initialize()
 	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
-	ElvUF:SpawnNamePlates('ElvNP_', function(nameplate, event, unit)
-		NP:NamePlateCallBack(nameplate, event, unit)
-	end)
+	local nameplates = ElvUF:SpawnNamePlates('ElvNP_')
+	if nameplates then
+		nameplates:SetTargetCallback(NP.PLAYER_TARGET_CHANGED)
+		nameplates:SetAddedCallback(NP.NAME_PLATE_UNIT_ADDED)
+		nameplates:SetRemovedCallback(NP.NAME_PLATE_UNIT_REMOVED)
+		nameplates:SetFactionCallback(NP.UNIT_FACTION)
+
+		nameplates:RegisterEvent('UNIT_HEALTH')
+		nameplates:RegisterEvent('UNIT_MAXHEALTH')
+	end
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
