@@ -52,7 +52,7 @@ end
 local stackAuras = {}
 local function CustomFilter(element, _, button, _, _, _, count)
 	local spellID = button.spellID
-	local setting = element.watched[spellID]
+	local setting = oUF:NotSecretValue(spellID) and element.watched[spellID]
 	if not setting then
 		return false
 	end
