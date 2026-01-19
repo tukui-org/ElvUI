@@ -13,7 +13,7 @@ local GetAuraSlots = C_UnitAuras.GetAuraSlots
 local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
-local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
+local issecretvalue = issecretvalue
 
 local auraInfo = {}
 local auraFiltered = {
@@ -39,12 +39,18 @@ eventFrame:SetScript('OnEvent', function(_, event)
 	end
 end)
 
+local function NotSecret(variable)
+	if not issecretvalue or not issecretvalue(variable) then
+		return true
+	end
+end
+
 local function CheckIsMine(sourceUnit)
 	return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
 end
 
 local function AllowAura(frame, aura)
-	if aura.isNameplateOnly then
+	if NotSecret(aura.isNameplateOnly) and aura.isNameplateOnly then
 		return frame.isNamePlate
 	end
 
@@ -66,7 +72,7 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 		aura = unitAuraInfo[auraInstanceID]
 	end
 
-	if aura and aura.sourceUnit and (not ShouldUnitIdentityBeSecret or not ShouldUnitIdentityBeSecret(aura.sourceUnit)) then
+	if aura and NotSecret(aura.sourceUnit) and aura.sourceUnit then
 		aura.unitGUID = UnitGUID(aura.sourceUnit) -- fetch the new unit token with UnitTokenFromGUID
 		aura.unitName, aura.unitRealm = UnitName(aura.sourceUnit)
 		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = UnitClass(aura.sourceUnit)
@@ -191,15 +197,15 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	end
 
 	if filter == 'HELPFUL' then
-		return not aura.isHelpful
+		return NotSecret(aura.isHelpful) and not aura.isHelpful
 	elseif filter == 'HARMFUL' then
-		return not aura.isHarmful
+		return NotSecret(aura.isHarmful) and not aura.isHarmful
 	elseif filter == 'RAID' then
-		return not aura.isRaid
+		return NotSecret(aura.isRaid) and not aura.isRaid
 	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
-		return not aura.isNameplateOnly
+		return NotSecret(aura.isNameplateOnly) and not aura.isNameplateOnly
 	elseif filter == 'PLAYER' then
-		return not CheckIsMine(aura.sourceUnit)
+		return NotSecret(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)
 	end
 end
 
