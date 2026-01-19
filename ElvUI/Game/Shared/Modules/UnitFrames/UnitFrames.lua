@@ -7,6 +7,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
+local issecretvalue = issecretvalue
 local hooksecurefunc = hooksecurefunc
 local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
@@ -1527,12 +1528,22 @@ end
 
 do
 	local function EventlessUpdate(frame, elapsed)
-		if not frame.unit or not UnitExists(frame.unit) or not frame.__eventless then
-			return
+		local unit = frame.__eventless and frame.unit
+		local guid = unit and UnitExists(unit) and UnitGUID(unit)
+		if not guid then return end
+
+		if issecretvalue and issecretvalue(guid) then
+			local frequency = frame.elapsed or 0
+			if frequency > frame.onUpdateSecrets then
+				frame:UpdateAllElements('OnUpdate')
+
+				frame.elapsed = 0
+			else
+				frame.elapsed = frequency + elapsed
+			end
 		else
 			local frequency = frame.elapsed or 0
 			if frequency > frame.onUpdateElements then
-				local guid = UnitGUID(frame.unit)
 				if frame.lastGUID ~= guid then
 					frame:UpdateAllElements('OnUpdate')
 					frame.lastGUID = guid
@@ -1571,6 +1582,7 @@ do
 	end
 
 	function ElvUF:HandleEventlessUnit(frame)
+		if not frame.onUpdateSecrets then frame.onUpdateSecrets = 0.5 end -- same as oUF
 		if not frame.onUpdateElements then frame.onUpdateElements = 0.2 end
 		if not frame.onUpdatePrediction then frame.onUpdatePrediction = 0.4 end
 		if not frame.onUpdateAuras then frame.onUpdateAuras = 0.6 end
