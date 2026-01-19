@@ -255,3 +255,12 @@ function oUF:SetTooltipByAuraInstanceID(tt, unit, auraInstanceID, filter)
 		end
 	end
 end
+
+function oUF:UnpackAuraData(data)
+	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = data.name, data.icon, data.applications, data.dispelName, data.duration, data.expirationTime, data.sourceUnit, data.isStealable, data.nameplateShowPersonal, data.spellId, data.canApplyAura, data.isBossAura, data.isFromPlayerOrPlayerPet, data.nameplateShowAll, data.timeMod
+	if NotSecret(data.points) then
+		return name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod, unpack(data.points)
+	else
+		return name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod
+	end
+end

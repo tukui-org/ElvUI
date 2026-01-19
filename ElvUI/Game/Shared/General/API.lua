@@ -519,20 +519,11 @@ do -- Spell renaming provided by BigWigs
 end
 
 do
-	function E:UnpackAuraData(data)
-		local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = data.name, data.icon, data.applications, data.dispelName, data.duration, data.expirationTime, data.sourceUnit, data.isStealable, data.nameplateShowPersonal, data.spellId, data.canApplyAura, data.isBossAura, data.isFromPlayerOrPlayerPet, data.nameplateShowAll, data.timeMod
-		if issecrettable and issecrettable(data.points) then
-			return name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod
-		else
-			return name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod, unpack(data.points)
-		end
-	end
-
 	function E:GetAuraData(unitToken, index, filter)
 		local data = GetAuraDataByIndex(unitToken, index, filter)
 		if not data then return end
 
-		return E:UnpackAuraData(data)
+		return ElvUF:UnpackAuraData(data)
 	end
 
 	local function FindAura(key, value, unit, index, filter, ...)

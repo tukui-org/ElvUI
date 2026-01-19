@@ -17,7 +17,6 @@ local CreateFrame = CreateFrame
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local GameTooltip = GameTooltip
-local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
@@ -161,7 +160,7 @@ local function UpdateBar(element, bar)
 end
 
 local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
+	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:UnpackAuraData(aura)
 	if not name then return end
 
 	local position = visible + offset + 1

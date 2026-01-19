@@ -73,8 +73,6 @@ local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 
-local UnpackAuraData = AuraUtil.UnpackAuraData
-
 local function NotSecret(variable)
 	if not issecretvalue or not issecretvalue(variable) then
 		return true
@@ -165,7 +163,7 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateAura(frame, which, unit, aura, index, offset, filter, visible)
-	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = UnpackAuraData(aura)
+	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = oUF:UnpackAuraData(aura)
 
 	local element = frame[which]
 	local forceShow = element.forceShow

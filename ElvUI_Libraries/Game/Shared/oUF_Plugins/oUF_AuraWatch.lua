@@ -10,7 +10,6 @@ local HIDDEN = 0
 
 local min, next, wipe, pairs, tinsert = min, next, wipe, pairs, tinsert
 local GetSpellTexture = C_Spell.GetSpellTexture
-local UnpackAuraData = AuraUtil.UnpackAuraData
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 
@@ -185,7 +184,7 @@ local function PostOnlyMissing(element, unit, offset)
 end
 
 local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:UnpackAuraData(aura)
 	if not name then return end
 
 	local button, position = FetIcon(element, visible, offset)
