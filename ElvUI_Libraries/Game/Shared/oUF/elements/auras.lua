@@ -72,6 +72,7 @@ local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetAuraDuration = C_UnitAuras.GetAuraDuration
+local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
 
 local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
@@ -257,11 +258,28 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		end
 
 		if button.Stealable then
-			button.Stealable:SetShown(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit))
+			local showStealable = element.showStealableBuffs and not isDebuff
+			if showStealable and button.Stealable.SetAlphaFromBoolean then
+				button.Stealable:SetAlphaFromBoolean(isStealable, 1, 0)
+			elseif showStealable then
+				button.Stealable:SetAlpha((isStealable and not UnitIsUnit('player', unit)) and 1 or 0)
+			else
+				button.Stealable:SetAlpha(0)
+			end
 		end
 
 		if button.Icon then button.Icon:SetTexture(icon) end
-		if button.Count then button.Count:SetText(not applications or applications <= 1 and '' or applications) end
+
+		if button.Count then
+			local minCount = element.minCount or 2
+			local maxCount = element.maxCount or 999
+			if oUF:IsSecretValue(applications) then
+				button.Count:SetText(GetAuraApplicationDisplayCount(unit, auraInstanceID, minCount, maxCount))
+			else
+				local hideCount = not applications or (applications < minCount or applications > maxCount)
+				button.Count:SetText(hideCount and '' or applications)
+			end
+		end
 
 		local width = element.width or element.size or 16
 		local height = element.height or element.size or 16
