@@ -584,7 +584,7 @@ function M:LoadLootRoll()
 		_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
 	end
 
-	hooksecurefunc('GroupLootContainer_Update', M.UpdateGroupLootContainer)
+	hooksecurefunc('GroupLootContainer_Update', BL.UpdateGroupLootContainer)
 
 	if not E.Retail then
 		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
