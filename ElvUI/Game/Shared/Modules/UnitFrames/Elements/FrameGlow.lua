@@ -16,7 +16,7 @@ local UnitInPartyIsAI = UnitInPartyIsAI
 
 function UF:FrameGlow_MouseOnUnit(frame)
 	if frame and frame:IsVisible() and E:UnitExists('mouseover') then
-		local unit = frame.unit or (frame.isForced and 'player')
+		local unit = (E:UnitExists(frame.unit) and frame.unit) or (frame.isForced and 'player')
 		return unit and UnitIsUnit('mouseover', unit)
 	end
 
