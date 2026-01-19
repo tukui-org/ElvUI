@@ -390,10 +390,6 @@ function AB:CreateBar(id)
 	for i = 1, 12 do
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
 
-		if not E.Midnight then
-			E:RegisterCooldown(button.AuraCooldown, 'actionbar')
-		end
-
 		if E.Retail then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonTextureOverlayTemplate')
 		end
@@ -771,9 +767,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		if not E.Midnight then
-			E:RegisterCooldown(button.cooldown, 'actionbar')
-		end
+		E:RegisterCooldown(button.cooldown, 'actionbar')
 
 		AB.handledbuttons[button] = true
 	end
@@ -1701,9 +1695,7 @@ function AB:LAB_FlyoutCreated(btn)
 end
 
 function AB:LAB_ChargeCreated(_, cd)
-	if not E.Midnight then
-		E:RegisterCooldown(cd, 'actionbar')
-	end
+	E:RegisterCooldown(cd, 'actionbar')
 end
 
 function AB:LAB_MouseUp()

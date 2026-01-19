@@ -35,11 +35,8 @@ local Masque = LibStub("Masque", true)
 
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
-local UnpackAuraData = AuraUtil.UnpackAuraData
 local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
-local GetAuraDataBySpellName = C_UnitAuras.GetAuraDataBySpellName
 local GetCooldownAuraBySpellID = C_UnitAuras.GetCooldownAuraBySpellID
-local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 local GetItemActionOnEquipSpellID = C_ActionBar.GetItemActionOnEquipSpellID
 local IsAssistedCombatAction = C_ActionBar.IsAssistedCombatAction
 local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
@@ -58,7 +55,7 @@ local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
 
 local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- Enable custom flyouts
 
--- GLOBALS: ClearActionButtonCooldowns, ClearChargeCooldown, ClearCursor, CooldownFrame_Set, CopyTable, CreateFrame
+-- GLOBALS: CooldownFrame_Clear, ClearActionButtonCooldowns, ClearCursor, CooldownFrame_Set, CopyTable, CreateFrame
 -- GLOBALS: FlyoutButtonMixin, FlyoutHasSpell, GameTooltip, GetActionCharges, GetActionCooldown, GetActionInfo
 -- GLOBALS: GetActionLossOfControlCooldown, GetActionTexture, GetActionText, GetBindingKey, GetBindingText, GetCallPetSpellInfo
 -- GLOBALS: GetCursorInfo, GetFlyoutInfo, GetFlyoutSlotInfo, GetItemCooldown, GetMacroInfo, GetMacroSpell
@@ -153,7 +150,7 @@ local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, Upda
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
-local EndChargeCooldown
+local ClearChargeCooldown
 local UpdateRange -- Sezz
 
 local RangeFont
@@ -215,7 +212,6 @@ local DefaultConfig = {
 	cooldownCount = nil, -- nil: use cvar, true/false: enable/disable
 	lossOfControlCooldown = true,
 	flyoutDirection = "UP",
-	disableCountDownNumbers = false,
 	useDrawBling = true,
 	useDrawSwipeOnCharges = true,
 	handleOverlay = true,
@@ -303,12 +299,6 @@ function lib:CreateButton(id, name, header, config)
 
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
-
-	local AuraCooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
-	AuraCooldown:SetDrawBling(false)
-	AuraCooldown:SetDrawSwipe(false)
-	AuraCooldown:SetDrawEdge(false)
-	button.AuraCooldown = AuraCooldown
 
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
@@ -2005,7 +1995,7 @@ function Update(self, which)
 			if ClearActionButtonCooldowns then
 				ClearActionButtonCooldowns(self.cooldown, self.chargeCooldown, self.lossOfControlCooldown)
 			else
-				EndChargeCooldown(self.chargeCooldown)
+				ClearChargeCooldown(self.chargeCooldown)
 			end
 		end
 
@@ -2247,69 +2237,47 @@ function UpdateCount(self)
 	end
 end
 
-function EndChargeCooldown(self)
-	self:Hide()
-	self:SetParent(UIParent)
-
-	if self.parent then
-		self.parent.chargeCooldown = nil
-		self.parent = nil
+function ClearChargeCooldown(self)
+	if self.chargeCooldown then
+		CooldownFrame_Clear(self.chargeCooldown)
 	end
+end
 
-	tinsert(lib.ChargeCooldowns, self)
+local function CreateChargeCooldownFrame(parent)
+	lib.NumChargeCooldowns = lib.NumChargeCooldowns + 1
+
+	local cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
+	cooldown:SetHideCountdownNumbers(true)
+	cooldown:SetDrawSwipe(false)
+	cooldown:SetPoint("TOPLEFT", parent.icon, "TOPLEFT", 2, -2)
+	cooldown:SetPoint("BOTTOMRIGHT", parent.icon, "BOTTOMRIGHT", -2, 2)
+	cooldown:SetFrameLevel(parent:GetFrameLevel())
+
+	return cooldown
 end
 
 local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeModRate)
-	if not parent.chargeCooldown then
-		local cooldown = tremove(lib.ChargeCooldowns)
-		if not cooldown then
-			lib.NumChargeCooldowns = lib.NumChargeCooldowns + 1
-			cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
-			cooldown:SetScript("OnCooldownDone", EndChargeCooldown)
-			cooldown:SetHideCountdownNumbers(true)
-			cooldown:SetDrawBling(false)
-			cooldown:SetDrawSwipe(false)
-
-			lib.callbacks:Fire("OnChargeCreated", parent, cooldown)
-		end
-		cooldown:SetParent(parent)
-		cooldown:SetAllPoints(parent)
-		cooldown:SetFrameStrata(parent:GetFrameStrata())
-		cooldown:SetFrameLevel(parent:GetFrameLevel() + 1)
-		cooldown:Show()
-
-		parent.chargeCooldown = cooldown
-		cooldown.parent = parent
+	if chargeStart == 0 then
+		ClearChargeCooldown(parent)
+		return
 	end
 
-	-- set cooldown
-	parent.chargeCooldown:SetCooldown(chargeStart, chargeDuration, chargeModRate)
+	parent.chargeCooldown = parent.chargeCooldown or CreateChargeCooldownFrame(parent)
+
+	CooldownFrame_Set(parent.chargeCooldown, chargeStart, chargeDuration, true, true, chargeModRate)
 
 	-- update charge cooldown skin when masque is used
 	if Masque and Masque.UpdateCharge then
 		Masque:UpdateCharge(parent)
 	end
+end
 
-	if not chargeStart or chargeStart == 0 then
-		EndChargeCooldown(parent.chargeCooldown)
+local function OnCooldownDone(self, requireCooldownUpdate)
+	self:SetScript("OnCooldownDone", nil)
+
+	if requireCooldownUpdate then
+		UpdateCooldown(self:GetParent())
 	end
-end
-
-local function OnCooldownDone(self)
-	local button = self:GetParent()
-
-	self:SetScript("OnCooldownDone", nil)
-
-	lib.callbacks:Fire("OnCooldownDone", button, self)
-end
-
-local function LocCooldownDone(self)
-	local button = self:GetParent()
-
-	self:SetScript("OnCooldownDone", nil)
-	UpdateCooldown(button)
-
-	lib.callbacks:Fire("OnCooldownDone", button, self)
 end
 
 function UpdateCooldownNumberHidden(self)
