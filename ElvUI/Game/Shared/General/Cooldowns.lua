@@ -1,5 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 
+local next = next
+
+-- well, here we go again?
+-- super WIP nothing is done lmao
+
 E.RegisteredCooldowns = {}
 
 function E:CooldownUpdate(cooldown)

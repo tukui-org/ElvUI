@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
-local ElvUF = E.oUF
 
 local _G = _G
 local strmatch = strmatch

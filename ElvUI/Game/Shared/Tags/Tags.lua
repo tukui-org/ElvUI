@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
-local Tags = ElvUF.Tags
 
 local Translit = E.Libs.Translit
 local translitMark = '!'

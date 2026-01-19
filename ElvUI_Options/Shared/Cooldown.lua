@@ -1,6 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
-local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded

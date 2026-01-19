@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local D = E:GetModule('Distributor')
-local NP = E:GetModule('NamePlates')
 local LibDeflate = E.Libs.Deflate
 
 local _G = _G

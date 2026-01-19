@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local hooksecurefunc = hooksecurefunc
 
 local function SkinSituationsDropdowns()
 	local SituationsFrame = _G.TransmogFrame.WardrobeCollection.TabContent.SituationsFrame
