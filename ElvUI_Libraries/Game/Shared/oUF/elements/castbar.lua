@@ -103,6 +103,7 @@ local issecretvalue = issecretvalue
 local GetTime = GetTime
 local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
+local UnitIsUnit = UnitIsUnit
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitCastingInfo = UnitCastingInfo
@@ -268,8 +269,8 @@ local function UpdatePips(element, stages)
 	end
 end
 
-local function CastMatch(element, castID, spellID)
-	return element.castID == castID and (not spellID or element.spellID == spellID)
+local function CastMatch(element, castID)
+	return element.castID == castID
 end
 
 --[[ Override: Castbar:ShouldShow(unit)
@@ -350,7 +351,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
 	element.empowering = isEmpowered
 
-	if unit ~= 'player' or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START') then
+	local isPlayer = UnitIsUnit(unit, 'player')
+	if not isPlayer or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START') then
 		UpdateCurrentTarget(element) -- we want to ignore the start events on player unit because sent adds the target info
 	end
 
@@ -372,7 +374,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
 	local useTimerAPI = oUF.isMidnight and element.SetTimerDuration
 	if useTimerAPI then
-		if unit == 'player' then -- we can only read these variables for players
+		if not issecretvalue or not issecretvalue(startTime) then
 			element.startTime = startTime / 1000
 
 			if(element.empowering) then
@@ -383,11 +385,15 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 			-- Calculate max for CustomTimeText compatibility
 			element.max = element.endTime - element.startTime
-
-			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
-			local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
-			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
+		else
+			element.startTime = nil
+			element.endTime = nil
+			element.max = nil
 		end
+
+		local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
+		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
+		element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
 	else
 		if element.empowering then
 			endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
@@ -406,7 +412,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 
 		-- ElvUI block
-		if mergeTradeskill and unit == 'player' and isTradeSkill then
+		if mergeTradeskill and isPlayer and isTradeSkill then
 			element.duration = element.duration + (element.max * tradeskillCurrent)
 			element.max = element.max * tradeskillTotal
 			element.holdTime = 1
@@ -451,13 +457,17 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			safeZone:SetPoint(element:GetReverseFill() and (isHoriz and 'LEFT' or 'BOTTOM') or (isHoriz and 'RIGHT' or 'TOP'))
 		end
 
-		local _, _, _, worldPing = GetNetStats()
-		local ratio = (worldPing * 0.001) / element.max
-		if(ratio > 1) then
-			ratio = 1
-		end
+		if element.max then
+			local _, _, _, worldPing = GetNetStats()
+			local ratio = (worldPing * 0.001) / element.max
+			if ratio > 1 then
+				ratio = 1
+			end
 
-		safeZone[isHoriz and 'SetWidth' or 'SetHeight'](safeZone, element[isHoriz and 'GetWidth' or 'GetHeight'](element) * ratio)
+			local getSize = element[isHoriz and 'GetWidth' or 'GetHeight']
+			local setSize = safeZone[isHoriz and 'SetWidth' or 'SetHeight']
+			setSize(safeZone, getSize(element) * ratio)
+		end
 	end
 
 	if(element.empowering) then
@@ -488,14 +498,14 @@ local function CastUpdate(self, event, unit, ...)
 		return
 	end
 
-	local castID, spellID, _
+	local castID, _
 	if oUF.isMidnight then
 		_, _, castID = ...
 	else
-		castID, spellID = ...
+		castID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID, spellID) then
+	if not element:IsShown() or not CastMatch(element, castID) then
 		return
 	end
 
@@ -511,24 +521,28 @@ local function CastUpdate(self, event, unit, ...)
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
 	local useTimerAPI = oUF.isMidnight and element.SetTimerDuration
 	if useTimerAPI then
-		if unit == 'player' then
-			-- Update endTime if empowering
+		if not issecretvalue or not issecretvalue(startTime) then
 			if(element.empowering) then
 				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
 			else
 				endTime = endTime / 1000
 			end
+
 			startTime = startTime / 1000
 
 			-- Update max for CustomTimeText compatibility
 			element.max = endTime - startTime
 			element.startTime = startTime
 			element.endTime = endTime
-
-			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
-			local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
-			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
+		else
+			element.startTime = nil
+			element.endTime = nil
+			element.max = nil
 		end
+
+		local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
+		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
+		element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
 	else
 		if(element.empowering) then
 			endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
@@ -595,15 +609,14 @@ local function CastStop(self, event, unit, ...)
 		castID, spellID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID, spellID) then
+	if not element:IsShown() or not CastMatch(element, castID) then
 		return
 	end
 
-	-- ElvUI block
-	if mergeTradeskill and unit == 'player' and (tradeskillCurrent == tradeskillTotal) then
+	local isPlayer = UnitIsUnit(unit, 'player')
+	if mergeTradeskill and isPlayer and (tradeskillCurrent == tradeskillTotal) then
 		mergeTradeskill = false
 	end
-	-- end block
 
 	if(interruptedBy) then
 		if(element.Text) then
@@ -659,7 +672,7 @@ local function CastFail(self, event, unit, ...)
 		castID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID, element.spellID) then
+	if not element:IsShown() or not CastMatch(element, castID) then
 		return
 	end
 
@@ -671,11 +684,10 @@ local function CastFail(self, event, unit, ...)
 
 	element.holdTime = element.timeToHold or 0
 
-	-- ElvUI block
-	if mergeTradeskill and unit == 'player' then
+	local isPlayer = UnitIsUnit(unit, 'player')
+	if mergeTradeskill and isPlayer then
 		mergeTradeskill = false
 	end
-	-- end block
 
 	-- force filled castbar
 	element:SetMinMaxValues(0, 1)
