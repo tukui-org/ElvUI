@@ -125,7 +125,7 @@ function UF:UpdateRange(unit)
 		element.RangeAlpha = element.MaxAlpha
 	elseif self.forceNotInRange then
 		element.RangeAlpha = element.MinAlpha
-	elseif unit then
+	elseif E:UnitExists(unit) then
 		if UnitIsDeadOrGhost(unit) then
 			element.RangeAlpha = UF:UnitInSpellsRange(unit, 3) == true and element.MaxAlpha or element.MinAlpha
 		elseif UnitCanAttack('player', unit) then
