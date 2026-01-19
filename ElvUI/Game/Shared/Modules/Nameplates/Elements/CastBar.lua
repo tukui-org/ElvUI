@@ -93,36 +93,42 @@ function NP:Castbar_PostCastStart(unit)
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
-		local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
-		local spellName = spellRename or self.spellName
-		local length = db.castbar.nameLength
-		local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
-		local textChanged = spellRename or (name ~= spellName)
+		if issecretvalue and issecretvalue(self.spellID) then
+			self.Text:SetText(self.spellName)
+		else
+			local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
+			local spellName = spellRename or self.spellName
+			local length = db.castbar.nameLength
+			local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
+			local textChanged = spellRename or (name ~= spellName)
 
-		if db.castbar.displayTarget then
-			local target, frameType = self.curTarget, plate.frameType
-			if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
-				target = UnitName(unit..'target') -- player or NPCs; if used on other players:
-			end -- the cast target doesn't match their target, can be misleading if they mouseover cast
+			if db.castbar.displayTarget then
+				local target, frameType = self.curTarget, plate.frameType
+				if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
+					target = UnitName(unit..'target') -- player or NPCs; if used on other players:
+				end -- the cast target doesn't match their target, can be misleading if they mouseover cast
 
-			if target and target ~= '' and target ~= plate.unitName then
-				local color = (db.castbar.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
-				if db.castbar.targetStyle == 'SEPARATE' then
-					self.TargetText:SetFormattedText('|c%s%s|r', color, target)
-					targetChanged = true
+				if target and target ~= '' and target ~= plate.unitName then
+					local color = (db.castbar.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
+					if db.castbar.targetStyle == 'SEPARATE' then
+						self.TargetText:SetFormattedText('|c%s%s|r', color, target)
+						targetChanged = true
 
-					if textChanged then
-						self.Text:SetText(name)
+						if textChanged then
+							self.Text:SetText(name)
+						end
+					else
+						self.Text:SetFormattedText('%s: |c%s%s|r', name, color, target)
 					end
-				else
-					self.Text:SetFormattedText('%s: |c%s%s|r', name, color, target)
+				elseif textChanged then
+					self.Text:SetText(name)
 				end
 			elseif textChanged then
 				self.Text:SetText(name)
 			end
-		elseif textChanged then
-			self.Text:SetText(name)
 		end
+	else
+		self.Text:SetText('')
 	end
 
 	if not targetChanged then
