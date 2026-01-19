@@ -433,7 +433,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 	end
 	if(element.Spark) then element.Spark:Show() end
-	if(element.Text) then element.Text:SetText(text ~= '' and text or name) end
+	if(element.Text) then element.Text:SetText(text) end
 	if(element.Time) then element.Time:SetText('') end
 
 	local safeZone = element.SafeZone
