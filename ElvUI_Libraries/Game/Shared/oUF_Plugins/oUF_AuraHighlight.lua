@@ -4,7 +4,6 @@ local AuraFiltered = oUF.AuraFiltered
 
 local next = next
 local UnitCanAssist = UnitCanAssist
-local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
@@ -43,7 +42,7 @@ local function Looper(unit, filter, check, list, func)
 	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
+		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:UnpackAuraData(aura)
 		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
 
 		if Icon then
