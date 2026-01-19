@@ -9,14 +9,13 @@ local tinsert = tinsert
 local strsub = strsub
 local CreateFrame = CreateFrame
 local UnitClass = UnitClass
-local UnitExists = UnitExists
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsUnit = UnitIsUnit
 local UnitReaction = UnitReaction
 local UnitInPartyIsAI = UnitInPartyIsAI
 
 function UF:FrameGlow_MouseOnUnit(frame)
-	if frame and frame:IsVisible() and UnitExists('mouseover') then
+	if frame and frame:IsVisible() and E:UnitExists('mouseover') then
 		local unit = frame.unit or (frame.isForced and 'player')
 		return unit and UnitIsUnit('mouseover', unit)
 	end
