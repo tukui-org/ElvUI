@@ -232,5 +232,4 @@ function NP:UpdateAuraSettings(button)
 	UF:CleanCache(button)
 
 	button.needsButtonTrim = true
-	button.needsUpdateCooldownPosition = true
 end

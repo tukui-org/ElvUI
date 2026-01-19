@@ -190,7 +190,7 @@ function A:CreateIcon(button)
 		tinsert(E.RegisteredCooldowns.auras, button)
 	end
 
-	A:Update_CooldownOptions(button)
+	E:CooldownUpdate(button)
 	A:UpdateIcon(button)
 end
 
@@ -344,10 +344,6 @@ function A:UpdateTempEnchant(button, index, expiration)
 	end
 end
 
-function A:Update_CooldownOptions(button)
-	E:Cooldown_Options(button, A.db.cooldown, button)
-end
-
 function A:SetTooltip(button)
 	if button:GetAttribute('index') then
 		GameTooltip:SetUnitAura(button.header:GetAttribute('unit'), button:GetID(), button.filter)
@@ -488,7 +484,7 @@ function A:UpdateChild(child, index, db) -- self here is the header
 	child.auraType = self.auraType
 	child.db = db
 
-	A:Update_CooldownOptions(child)
+	E:CooldownUpdate(child)
 	A:UpdateIcon(child, true)
 
 	-- blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons

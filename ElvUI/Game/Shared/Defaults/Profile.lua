@@ -2812,41 +2812,12 @@ end
 
 --Cooldown
 P.cooldown = {
-	threshold = 3,
-	roundTime = true,
-	targetAura = true,
-	hideBlizzard = false,
-	useIndicatorColor = false,
-	showModRate = false,
-
-	expiringColor = { r = 1, g = 0.2, b = 0.2 },
-	secondsColor = { r = 1, g = 1, b = 0.2 },
-	minutesColor = { r = 1, g = 1, b = 1 },
-	hoursColor = { r = 0.4, g = 1, b = 1 },
-	daysColor = { r = 0.4, g = 0.4, b = 1 },
-
-	expireIndicator = { r = 0.8, g = 0.8, b = 0.8 },
-	secondsIndicator = { r = 0.8, g = 0.8, b = 0.8 },
-	minutesIndicator = { r = 0.8, g = 0.8, b = 0.8 },
-	hoursIndicator = { r = 0.8, g = 0.8, b = 0.8 },
-	daysIndicator = { r = 0.8, g = 0.8, b = 0.8 },
-	hhmmColorIndicator = { r = 1, g = 1, b = 1 },
-	mmssColorIndicator = { r = 1, g = 1, b = 1 },
-
-	checkSeconds = false,
-	targetAuraDuration = 3600,
-	modRateColor = { r = 0.6, g = 1, b = 0.4 },
-	hhmmColor = { r = 0.43, g = 0.43, b = 0.43 },
-	mmssColor = { r = 0.56, g = 0.56, b = 0.56 },
-	hhmmThreshold = -1,
-	mmssThreshold = -1,
-
-	fonts = {
-		enable = false,
-		font = 'PT Sans Narrow',
-		fontOutline = 'OUTLINE',
-		fontSize = 18,
-	},
+	enable = false,
+	override = true,
+	color = { r = 1, g = 1, b = 1 },
+	font = 'PT Sans Narrow',
+	fontOutline = 'OUTLINE',
+	fontSize = 18
 }
 
 --Actionbar
@@ -3134,27 +3105,16 @@ P.actionbar.bar5.buttonsPerRow = 6
 
 do -- cooldown stuff
 	P.actionbar.cooldown = CopyTable(P.cooldown)
-	P.actionbar.cooldown.expiringColor = { r = 1, g = 0.2, b = 0.2 }
-	P.actionbar.cooldown.secondsColor = { r = 1, g = 1, b = 1 }
-	P.actionbar.cooldown.hoursColor = { r = 1, g = 1, b = 1 }
-	P.actionbar.cooldown.daysColor = { r = 1, g = 1, b = 1 }
-
-	P.actionbar.cooldown.targetAuraColor = { r = 1, g = 0.6, b = 0.1 }
-	P.actionbar.cooldown.expiringAuraColor = { r = 1, g = 0.4, b = 0.1 }
-
-	P.actionbar.cooldown.targetAuraIndicator = { r = 0.6, g = 0.6, b = 0.6 }
-	P.actionbar.cooldown.expiringAuraIndicator = { r = 0.6, g = 0.6, b = 0.6 }
-
-	P.auras.cooldown = CopyTable(P.actionbar.cooldown)
-	P.bags.cooldown = CopyTable(P.actionbar.cooldown)
-	P.nameplates.cooldown = CopyTable(P.actionbar.cooldown)
-	P.unitframe.cooldown = CopyTable(P.actionbar.cooldown)
+	P.auras.cooldown = CopyTable(P.cooldown)
+	P.bags.cooldown = CopyTable(P.cooldown)
+	P.nameplates.cooldown = CopyTable(P.cooldown)
+	P.unitframe.cooldown = CopyTable(P.cooldown)
 
 	P.cdmanager = {} -- Blizzard's Cooldown Manager
-	P.cdmanager.cooldown = CopyTable(P.actionbar.cooldown)
+	P.cdmanager.cooldown = CopyTable(P.cooldown)
 
 	P.WeakAuras = {} -- native cooldown support with our module
-	P.WeakAuras.cooldown = CopyTable(P.actionbar.cooldown)
+	P.WeakAuras.cooldown = CopyTable(P.cooldown)
 
 	-- color override
 	P.WeakAuras.cooldown.override = false
@@ -3164,15 +3124,6 @@ do -- cooldown stuff
 	P.actionbar.cooldown.override = true
 	P.nameplates.cooldown.override = true
 	P.unitframe.cooldown.override = true
-
-	-- auras doesn't have a reverse option
-	P.actionbar.cooldown.reverse = false
-	P.nameplates.cooldown.reverse = false
-	P.unitframe.cooldown.reverse = false
-	P.bags.cooldown.reverse = false
-
-	-- auras don't have override font settings
-	P.auras.cooldown.fonts = nil
 
 	-- we gonna need this on by default :3
 	P.cooldown.enable = true

@@ -155,9 +155,7 @@ function S:CooldownManager_UpdateSwipeColor(frame)
 end
 
 function S:CooldownManager_SetTimerShown()
-	if self.Cooldown then
-		E:ToggleBlizzardCooldownText(self.Cooldown, self.Cooldown.timer)
-	end
+
 end
 
 function S:CooldownManager_RefreshOverlayGlow()

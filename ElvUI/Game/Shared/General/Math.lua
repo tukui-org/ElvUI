@@ -325,30 +325,6 @@ function E:StringTitle(str)
 	return gsub(str, '(.)', strupper, 1)
 end
 
-E.TimeColors = {} -- 0:days 1:hours 2:minutes 3:seconds 4:expire 5:mmss 6:hhmm 7:modRate 8:targetAura 9:expiringAura 10-14:targetAura
-E.TimeIndicatorColors = {} -- same color indexes
-E.TimeThreshold = 3
-
-for i = 0, 14 do
-	E.TimeColors[i] = {r = 1, g = 1, b = 1}
-	E.TimeIndicatorColors[i] = '|cFFffffff'
-end
-
-E.TimeFormats = { -- short / indicator color
-	-- special options (3, 4): rounding
-	[0] = {'%dd', '%d%sd|r', '%.0fd', '%.0f%sd|r'},
-	[1] = {'%dh', '%d%sh|r', '%.0fh', '%.0f%sh|r'},
-	[2] = {'%dm', '%d%sm|r', '%.0fm', '%.0f%sm|r'},
-	-- special options (3, 4): show seconds
-	[3] = {'%d', '%d', '%ds', '%d%ss|r'},
-	[4] = {'%.1f', '%.1f', '%.1fs', '%.1f%ss|r'},
-
-	[5] = {'%d:%02d', '%d%s:|r%02d'}, -- mmss
-}
-
-E.TimeFormats[6] = E:CopyTable({}, E.TimeFormats[5]) -- hhmm
-E.TimeFormats[7] = E:CopyTable({}, E.TimeFormats[3]) -- modRate
-
 do
 	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
 	function E:GetTimeInfo(sec, threshold, hhmm, mmss, modRate)

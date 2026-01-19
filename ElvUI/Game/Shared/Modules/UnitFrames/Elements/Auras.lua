@@ -293,7 +293,6 @@ function UF:UpdateAuraSettings(button)
 	UF:CleanCache(button)
 
 	button.needsButtonTrim = true
-	button.needsUpdateCooldownPosition = true
 end
 
 function UF:EnableDisable_Auras(frame)
@@ -306,19 +305,6 @@ function UF:EnableDisable_Auras(frame)
 			frame:DisableElement('Auras')
 		end
 	end
-end
-
-function UF:UpdateAuraCooldownPosition(button)
-	button.Cooldown.timer.text:ClearAllPoints()
-	local point = (button.db and button.db.durationPosition) or 'CENTER'
-	if point == 'CENTER' then
-		button.Cooldown.timer.text:Point(point, 1, 0)
-	else
-		local bottom, right = strfind(point, 'BOTTOM'), strfind(point, 'RIGHT')
-		button.Cooldown.timer.text:Point(point, right and -1 or 1, bottom and 1 or -1)
-	end
-
-	button.needsUpdateCooldownPosition = nil
 end
 
 function UF:Configure_AllAuras(frame)
@@ -529,10 +515,6 @@ function UF:PostUpdateAura(_, button)
 	if button.needsButtonTrim then
 		AB:TrimIcon(button)
 		button.needsButtonTrim = nil
-	end
-
-	if button.needsUpdateCooldownPosition and (button.Cooldown and button.Cooldown.timer and button.Cooldown.timer.text) then
-		UF:UpdateAuraCooldownPosition(button)
 	end
 end
 

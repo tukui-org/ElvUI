@@ -156,10 +156,6 @@ local ShowOverlayGlow, HideOverlayGlow
 local EndChargeCooldown
 local UpdateRange -- Sezz
 
-local UpdateTargetAuras -- Simpy
-local TARGETAURA_ENABLED = true
-local TARGETAURA_DURATION = 0
-
 local RangeFont
 do -- properly support range symbol when it's shown ~Simpy
 	local locale = GetLocale()
@@ -1499,8 +1495,6 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_CLOSE")
 	lib.eventFrame:RegisterEvent("TRADE_CLOSED")
 
-	lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
-	lib.eventFrame:RegisterUnitEvent("UNIT_FACTION", "target")
 	lib.eventFrame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
 	lib.eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
 
@@ -1597,10 +1591,6 @@ function OnEvent(_, event, arg1, arg2, ...)
 				button.icon:SetTexture(texture)
 			end
 		end
-
-		if TARGETAURA_ENABLED then
-			UpdateTargetAuras(event)
-		end
 	elseif event == "UNIT_INVENTORY_CHANGED" then
 		local tooltipOwner = GameTooltip_GetOwnerForbidden()
 		if tooltipOwner and ButtonRegistry[tooltipOwner] then
@@ -1613,10 +1603,6 @@ function OnEvent(_, event, arg1, arg2, ...)
 				Update(button, event)
 			end
 		end
-
-		if TARGETAURA_ENABLED then
-			UpdateTargetAuras(event)
-		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update, nil, event)
 	elseif event == "ACTIONBAR_SHOWGRID" then
@@ -1626,22 +1612,10 @@ function OnEvent(_, event, arg1, arg2, ...)
 	elseif event == "UPDATE_BINDINGS" or event == "GAME_PAD_ACTIVE_CHANGED" then
 		ForAllButtons(UpdateHotkeys, nil, event)
 	elseif event == "PLAYER_TARGET_CHANGED" then
-		if TARGETAURA_ENABLED then
-			UpdateTargetAuras(event)
-		end
-
 		if not WoWRetail then
 			for button in next, ActiveButtons do
 				UpdateRangeTimer(button)
 			end
-		end
-	elseif event == "UNIT_FACTION" then
-		if TARGETAURA_ENABLED then
-			UpdateTargetAuras(event)
-		end
-	elseif event == "UNIT_AURA" then
-		if TARGETAURA_ENABLED then
-			UpdateTargetAuras(event, arg1, arg2)
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
@@ -1907,127 +1881,6 @@ function UpdateRange(button, force, inRange, checksRange) -- Sezz: moved from On
 
 		lib.callbacks:Fire("OnUpdateRange", button)
 	end
-end
-
------------------------------------------------------------
---- Active Aura Cooldowns for Target ~ By Simpy
-
-do
-	local current = {}
-	local auraInstances = {}
-
-	local function CheckIsMine(sourceUnit)
-		return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
-	end
-
-	local function CheckAuraFilter(aura, filter)
-		if not filter then
-			return true -- already filtered by GetAuraDataBySpellName
-		elseif filter == 'HELPFUL' then
-			return aura.isHelpful
-		elseif filter == 'HARMFUL' then
-			return aura.isHarmful
-		end
-	end
-
-	local function GetTargetAuraCooldown(aura)
-		if not aura then return end
-
-		local _, _, _, _, duration, expiration = UnpackAuraData(aura)
-		local start = (duration and duration > 0 and duration <= TARGETAURA_DURATION) and (expiration - duration)
-		return start, duration, expiration
-	end
-
-	local function CheckTargetAuraCooldown(aura, filter, buttons, previous)
-		local allow = CheckAuraFilter(aura, filter)
-		if not allow then return end
-
-		local isMine = CheckIsMine(aura.sourceUnit)
-		if not isMine then return end
-
-		local start, duration = GetTargetAuraCooldown(aura)
-		if not start then return end
-
-		for _, button in next, buttons do
-			button.AuraCooldown:SetCooldown(start, duration, 1)
-
-			current[button] = true
-
-			if previous then
-				previous[button] = nil
-			end
-		end
-	end
-
-	local function ProcessTargetAuras(which, filter, auras)
-		if not auras then return end
-
-		for _, value in next, auras do
-			if which == 'add' then
-				auraInstances[value.auraInstanceID] = value
-
-				local buttons = AuraButtons.auras[value.name]
-				if buttons then
-					CheckTargetAuraCooldown(value, filter, buttons)
-				end
-			else
-				local aura
-				if which == 'update' then -- update it
-					aura = GetAuraDataByAuraInstanceID('target', value)
-					auraInstances[value] = aura
-				else
-					aura = auraInstances[value] -- use cache to remove
-					auraInstances[value] = nil -- clear the old one
-				end
-
-				local buttons = aura and AuraButtons.auras[aura.name]
-				if buttons then
-					CheckTargetAuraCooldown(aura, filter, buttons)
-				end
-			end
-		end
-	end
-
-	function UpdateTargetAuras(event, arg1, updateInfo)
-		local isFriend = UnitIsFriend('player', 'target')
-		if event == 'UNIT_AURA' and updateInfo and not updateInfo.isFullUpdate then
-			local filter = isFriend and 'HELPFUL' or 'HARMFUL'
-			ProcessTargetAuras('add', filter, updateInfo.addedAuras)
-			ProcessTargetAuras('update', filter, updateInfo.updatedAuraInstanceIDs)
-			ProcessTargetAuras('remove', filter, updateInfo.removedAuraInstanceIDs)
-		elseif event ~= 'SetTargetAuraCooldowns' or not arg1 then
-			local previous = CopyTable(current, true) -- shallow copy
-
-			wipe(current) -- clear the current ones
-			wipe(auraInstances) -- keep this clean
-
-			local filter = isFriend and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
-			for spellName, buttons in next, AuraButtons.auras do
-				local aura = GetAuraDataBySpellName('target', spellName, filter)
-				if aura then -- collect what we can
-					auraInstances[aura.auraInstanceID] = aura
-
-					CheckTargetAuraCooldown(aura, nil, buttons, previous)
-				end
-			end
-
-			for button in next, previous do
-				button.AuraCooldown:Clear()
-			end
-		end
-	end
-end
-
-function lib:SetTargetAuraDuration(value)
-	TARGETAURA_DURATION = value
-
-	UpdateTargetAuras('SetTargetAuraDuration')
-end
-
-function lib:SetTargetAuraCooldowns(enabled)
-	TARGETAURA_ENABLED = not WoWMidnight and enabled
-
-	UpdateTargetAuras('SetTargetAuraCooldowns', not enabled)
 end
 
 -----------------------------------------------------------

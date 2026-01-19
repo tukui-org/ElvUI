@@ -1065,22 +1065,6 @@ do -- BFA Convert, deprecated..
 			end
 		end
 
-		--Remove stale font settings from Cooldown system for top auras
-		if E.db.auras.cooldown.fonts then
-			E.db.auras.cooldown.fonts = nil
-		end
-
-		--Convert Nameplate Aura Duration to new Cooldown system
-		if E.db.nameplates.durationFont then
-			E.db.nameplates.cooldown.fonts.font = E.db.nameplates.durationFont
-			E.db.nameplates.cooldown.fonts.fontSize = E.db.nameplates.durationFontSize
-			E.db.nameplates.cooldown.fonts.fontOutline = E.db.nameplates.durationFontOutline
-
-			E.db.nameplates.durationFont = nil
-			E.db.nameplates.durationFontSize = nil
-			E.db.nameplates.durationFontOutline = nil
-		end
-
 		if E.db.nameplates.lowHealthThreshold > 0.8 then
 			E.db.nameplates.lowHealthThreshold = 0.8
 		end
@@ -1646,8 +1630,6 @@ function E:UpdateMisc(skipCallback)
 end
 
 function E:UpdateEnd()
-	E:UpdateCooldownSettings('all')
-
 	if E.RefreshGUI then
 		E:RefreshGUI()
 	end
@@ -2041,7 +2023,6 @@ function E:Initialize()
 		E:UpdateMedia()
 		E:UpdateDispelColors()
 		E:UpdateCustomClassColors()
-		E:UpdateCooldownSettings('all')
 
 		E.initialized = true
 
