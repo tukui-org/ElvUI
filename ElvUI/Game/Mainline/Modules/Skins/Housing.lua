@@ -57,9 +57,6 @@ function S:Blizzard_HousingDashboard()
 		S:HandleFrame(DashBoardFrame, true)
 	end
 
-	local dashboardIcon = 'Interface\\AddOns\\ElvUI\\Game\\Shared\\Media\\Textures\\Dashboard'
-	local catalogIcon = 'Interface\\AddOns\\ElvUI\\Game\\Shared\\Media\\Textures\\Catalog'
-
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
 		if tab then
 			tab:StripTextures(true)
@@ -82,11 +79,11 @@ function S:Blizzard_HousingDashboard()
 				tab:ClearAllPoints()
 				tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 3, -10)
 
-				tab.texture:SetTexture(dashboardIcon)
+				tab.texture:SetTexture(E.Media.Textures.Dashboard)
 
 				hooksecurefunc(tab, 'SetPoint', PositionDashboardTab)
 			else
-				tab.texture:SetTexture(catalogIcon)
+				tab.texture:SetTexture(E.Media.Textures.Catalog)
 			end
 		end
 	end
