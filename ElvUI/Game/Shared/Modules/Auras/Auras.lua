@@ -307,7 +307,7 @@ function A:UpdateAura(button, index)
 
 	button.count:SetText(not count and '' or (not E.Midnight and count <= 1 and '') or count)
 
-	local color = (button.filter == 'HARMFUL' and A.db.colorDebuffs and DebuffColors[debuffType or 'none']) or E.db.general.bordercolor
+	local color = (E:NotSecretValue(debuffType) and (button.filter == 'HARMFUL' and A.db.colorDebuffs) and DebuffColors[debuffType or 'none']) or E.db.general.bordercolor
 	button:SetBackdropBorderColor(color.r, color.g, color.b)
 	button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
