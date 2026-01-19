@@ -115,7 +115,6 @@ local function CreateConfigEnv()
 		Env = ElvUF.Tags.Env,
 		_VARS = ElvUF.Tags.Vars,
 		_COLORS = ElvUF.colors,
-		ColorGradient = ElvUF.ColorGradient,
 		UnitPower = function(arg1, displayType)
 			local unit, real = EnvUnit(arg1)
 			if real then
