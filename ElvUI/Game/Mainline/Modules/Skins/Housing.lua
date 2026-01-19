@@ -79,13 +79,11 @@ function S:Blizzard_HousingDashboard()
 				tab:ClearAllPoints()
 				tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 3, -10)
 
-				tab.texture:SetAtlas('housing-sidetabs-dashboard-active', true)
-				tab.texture:SetTexCoord(0, 1, 0, 1) -- Needs correct coords
+				tab.texture:SetTexture(E.Media.Textures.Dashboard)
 
 				hooksecurefunc(tab, 'SetPoint', PositionDashboardTab)
 			else
-				tab.texture:SetAtlas('housing-sidetabs-catalog-active', true)
-				tab.texture:SetTexCoord(0, 1, 0, 1) -- Needs correct coords
+				tab.texture:SetTexture(E.Media.Textures.Catalog)
 			end
 		end
 	end
