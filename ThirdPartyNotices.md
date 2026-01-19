@@ -5,7 +5,7 @@ This repository incorporates material as listed below or described in the code.
 
 ## Ace3
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/Ace3](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/Ace3)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/Ace3](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/Ace3)
 
 ### License
 
@@ -43,7 +43,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## Ace3-ElvUI
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/Ace3-ElvUI](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/Ace3-ElvUI)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/Ace3-ElvUI](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/Ace3-ElvUI)
 
 ### License
 
@@ -81,7 +81,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## AceGUI-3.0-SharedMediaWidgets
 
-**Path**: ElvUI_Libraries/Core/AceGUI-3.0-SharedMediaWidgets
+**Path**: ElvUI_Libraries/Game/Shared/AceGUI-3.0-SharedMediaWidgets
 
 ### License
 
@@ -91,7 +91,7 @@ All rights reserved to the owner.
 
 ## CallbackHandler-1.0
 
-**Path**: ElvUI_Libraries/Core/CallbackHandler-1.0
+**Path**: ElvUI_Libraries/Game/Shared/CallbackHandler-1.0
 
 ### License
 
@@ -123,7 +123,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## LibAceConfigHelper
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibAceConfigHelper](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibAceConfigHelper)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibAceConfigHelper](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibAceConfigHelper)
 
 ### License
 
@@ -133,7 +133,7 @@ All rights reserved to the owner.
 
 ## LibActionButton-1.0
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibActionButton-1.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibActionButton-1.0)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibActionButton-1.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibActionButton-1.0)
 
 ### License
 
@@ -169,7 +169,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## LibAnim
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibAnim](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibAnim)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibAnim](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibAnim)
 
 ### License
 
@@ -179,7 +179,7 @@ All rights reserved to the owner.
 
 ## LibCustomGlow-1.0
 
-**Path**: ElvUI_Libraries/Core/LibCustomGlow-1.0
+**Path**: ElvUI_Libraries/Game/Shared/LibCustomGlow-1.0
 
 ### License
 
@@ -209,7 +209,7 @@ SOFTWARE.
 
 ## LibDataBroker
 
-**Path**: ElvUI_Libraries/Core/LibDataBroker
+**Path**: ElvUI_Libraries/Game/Shared/LibDataBroker
 
 ### License
 
@@ -219,7 +219,7 @@ All rights reserved to the owner.
 
 ## LibDeflate
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibDeflate](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibDeflate)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibDeflate](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibDeflate)
 
 ### License
 
@@ -247,7 +247,7 @@ freely, subject to the following restrictions:
 
 ## LibDispel
 
-**Path**: ElvUI_Libraries/Core/LibDispel
+**Path**: ElvUI_Libraries/Game/Shared/LibDispel
 
 ### License
 
@@ -277,7 +277,7 @@ SOFTWARE.
 
 ## LibDualSpec-1.0
 
-**Path**: ElvUI_Libraries/Core/LibDualSpec-1.0
+**Path**: ElvUI_Libraries/Game/Shared/LibDualSpec-1.0
 
 ### License
 
@@ -315,7 +315,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 ## LibElvUIPlugin-1.0
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibElvUIPlugin-1.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibElvUIPlugin-1.0)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibElvUIPlugin-1.0](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibElvUIPlugin-1.0)
 
 ### License
 
@@ -325,7 +325,7 @@ All rights reserved to the owner.
 
 ## LibSharedMedia-3.0
 
-**Path**: ElvUI_Libraries/Core/LibSharedMedia-3.0
+**Path**: ElvUI_Libraries/Game/Shared/LibSharedMedia-3.0
 
 ### License
 
@@ -792,7 +792,7 @@ DAMAGES.
 
 ## LibSimpleSticky
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibSimpleSticky](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/LibSimpleSticky)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibSimpleSticky](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/LibSimpleSticky)
 
 ### License
 
@@ -802,7 +802,7 @@ All rights reserved to the owner.
 
 ## LibStub
 
-**Path**: ElvUI_Libraries/Core/LibStub
+**Path**: ElvUI_Libraries/Game/Shared/LibStub
 
 ### License
 
@@ -812,7 +812,7 @@ This work is dedicated to the public domain.
 
 ## LibTranslit-1.0
 
-**Path**: ElvUI_Libraries/Core/LibTranslit-1.0
+**Path**: ElvUI_Libraries/Game/Shared/LibTranslit-1.0
 
 ### License
 
@@ -986,15 +986,15 @@ Library.
 
 ## oUF
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/oUF](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/oUF)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/oUF](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/oUF)
 
 ### License
 
 ```
-Copyright (c) 2006-2022 Trond A Ekseth <troeks@gmail.com>
-Copyright (c) 2016-2022 Val Voronov <i.lightspark@gmail.com>
-Copyright (c) 2016-2022 Adrian L Lange <contact@p3lim.net>
-Copyright (c) 2016-2022 Rainrider <rainrider.wow@gmail.com>
+Copyright (c) 2006-2025 Trond A Ekseth <troeks@gmail.com>
+Copyright (c) 2016-2025 Val Voronov <i.lightspark@gmail.com>
+Copyright (c) 2016-2025 Adrian L Lange <contact@p3lim.net>
+Copyright (c) 2016-2025 Rainrider <rainrider.wow@gmail.com>
 
 Permission is hereby granted, free of charge, to any person
 obtaining a copy of this software and associated documentation
@@ -1020,7 +1020,7 @@ OTHER DEALINGS IN THE SOFTWARE.
 
 ## oUF_Plugins
 
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/oUF_Plugins](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Core/oUF_Plugins)
+**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/oUF_Plugins](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Game/Shared/oUF_Plugins)
 
 ### License
 
@@ -1030,7 +1030,7 @@ All rights reserved to the owner.
 
 ## TaintLess
 
-**Path**: ElvUI_Libraries/Core/TaintLess
+**Path**: ElvUI_Libraries/Game/Shared/TaintLess
 
 ### License
 
@@ -1040,7 +1040,7 @@ All rights reserved to the owner.
 
 ## UTF8
 
-**Path**: ElvUI_Libraries/Core/UTF8
+**Path**: ElvUI_Libraries/Game/Shared/UTF8
 
 ### License
 
@@ -1072,19 +1072,9 @@ OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ```
 
-## LibClassicSpecs
-
-**Path**: [https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Classic/LibClassicSpecs](https://github.com/tukui-org/ElvUI/tree/main/ElvUI_Libraries/Classic/LibClassicSpecs)
-
-### License
-
-```
-All rights reserved to the owner.
-```
-
 ## LibQuestXP
 
-**Path**: ElvUI_Libraries/Classic/LibQuestXP
+**Path**: ElvUI_Libraries/Game/Classic/LibQuestXP
 
 ### License
 

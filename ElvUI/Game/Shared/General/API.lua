@@ -196,7 +196,7 @@ E.SpecName = { -- english locale
 -- the secure header is different on retail because of evokers
 -- if both are registered on non-retail, it will fire on down and up
 function E:RegisterClicks(frame)
-	if E.Retail then
+	if E.Retail or E.TBC then
 		frame:RegisterForClicks('AnyDown', 'AnyUp')
 	else
 		frame:RegisterForClicks('AnyUp')
@@ -1106,7 +1106,9 @@ function E:SetupGameMenu()
 		GameMenuFrame.ElvUI = button
 		GameMenuFrame.MenuButtons = {}
 
-		E:ScaleGameMenu()
+		if E.Retail then
+			E:ScaleGameMenu()
+		end
 
 		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 	else

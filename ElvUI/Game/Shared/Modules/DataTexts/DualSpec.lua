@@ -10,7 +10,6 @@ local IsShiftKeyDown = IsShiftKeyDown
 local ShowUIPanel = ShowUIPanel
 
 local LEVEL_UP_DUALSPEC = LEVEL_UP_DUALSPEC
-local MAX_TALENT_TABS = MAX_TALENT_TABS
 local PRIMARY = PRIMARY
 local SECONDARY = SECONDARY
 
@@ -27,7 +26,7 @@ local primaryStr, secondaryStr, activeGroup, hasDualSpec = '', ''
 local function BuildTalentString(group)
 	local str = ''
 
-	for i = 1, MAX_TALENT_TABS do
+	for i = 1, _G.MAX_TALENT_TABS do
 		local _, _, arg3, _, arg5 = GetTalentTabInfo(i, false, false, group)
 		local points = (E.Wrath and arg5) or arg3
 		if points then

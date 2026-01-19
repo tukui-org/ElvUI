@@ -303,7 +303,7 @@ if E.Wrath or E.Mists then
 end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
-local bankOffset, maxBankSlots = (E.Classic or E.Wrath or E.Mists) and 4 or 5, E.Classic and 10 or 11
+local bankOffset, maxBankSlots = (E.Classic or E.TBC or E.Wrath or E.Mists) and 4 or 5, E.Classic and 10 or 11
 local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
 local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
@@ -314,12 +314,15 @@ local presistentEvents = {
 	BAG_CLOSED = true
 }
 
-if E.Retail then
+if E.Retail or E.TBC then
 	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
 	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
-	tinsert(bagIDs, REAGENT_CONTAINER)
 
 	presistentEvents.BAG_CONTAINER_UPDATE = true
+end
+
+if E.Retail then
+	tinsert(bagIDs, REAGENT_CONTAINER)
 else
 	tinsert(bankIDs, -1)
 	tinsert(bankEvents, 'PLAYERBANKBAGSLOTS_CHANGED')
@@ -1505,7 +1508,7 @@ function B:UpdateTokens()
 	end
 
 	local currencyFormat = B.db.currencyFormat
-	local numCurrencies = currencyFormat ~= 'NONE' and MAX_WATCHED_TOKENS or 0
+	local numCurrencies = (currencyFormat ~= 'NONE' and MAX_WATCHED_TOKENS) or 0
 
 	local numTokens = 0
 	for i = 1, numCurrencies do
@@ -2028,7 +2031,7 @@ end
 function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - bankOffset)) or (bagID - (E.Retail and 0 or 1))
 	local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or B:ConstructContainerName(isBank, bagNum)
-	local inherit = (E.Retail and '' or isBank and 'BankItemButtonBagTemplate') or (bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
+	local inherit = (E.Retail and '' or isBank and 'BankItemButtonBagTemplate') or (E.TBC or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 	local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 	f.ContainerHolderByBagID[bagID] = holder
@@ -2205,7 +2208,9 @@ end
 
 function B:WarbandToggle_OnClick()
 	local parent = self:GetParent()
-	B:SelectBankTab(parent, 13)
+	local firstTab = B.WarbandIndexs[1]
+
+	B:SelectBankTab(parent, firstTab)
 end
 
 function B:Container_WithdrawGold()
@@ -3648,10 +3653,6 @@ function B:PlayerInteraction_ShowFrame(_, interactionType)
 	end
 end
 
-function B:GetMaxTokensWatched()
-	return MAX_WATCHED_TOKENS
-end
-
 function B:Initialize()
 	BIND_START, BIND_END = B:GetBindLines()
 
@@ -3745,7 +3746,10 @@ function B:Initialize()
 	elseif E.Retail then
 		B:SecureHook(_G.TokenFrame, 'SetTokenWatched', 'UpdateTokensIfVisible')
 
-		_G.BackpackTokenFrame.GetMaxTokensWatched = B.GetMaxTokensWatched -- silly little override
+		local BackpackTokenFrame = _G.BackpackTokenFrame
+		if BackpackTokenFrame then -- GetMaxTokensWatched: counter to adjust max currencies we can track
+			BackpackTokenFrame:SetWidth(MAX_WATCHED_TOKENS * (BackpackTokenFrame.tokenWidth or 50))
+		end
 	else
 		B:SecureHook('BackpackTokenFrame_Update', 'UpdateTokens')
 	end

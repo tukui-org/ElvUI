@@ -5,17 +5,10 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local function PositionHousingDashbardTab(tab, _, _, _, x, y)
-	if x ~= 1 or y ~= -10 then
+local function PositionDashboardTab(tab, _, _, _, x, y)
+	if x ~= 3 or y ~= -10 then
 		tab:ClearAllPoints()
-		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 1, -10)
-	end
-end
-
-local function PositionTabIcons(icon, point)
-	if point ~= 'CENTER' then
-		icon:ClearAllPoints()
-		icon:SetPoint('CENTER')
+		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 3, -10)
 	end
 end
 
@@ -64,35 +57,36 @@ function S:Blizzard_HousingDashboard()
 		S:HandleFrame(DashBoardFrame, true)
 	end
 
-	-- Fix the actual icon texture
+	local dashboardIcon = 'Interface\\AddOns\\ElvUI\\Game\\Shared\\Media\\Textures\\Dashboard'
+	local catalogIcon = 'Interface\\AddOns\\ElvUI\\Game\\Shared\\Media\\Textures\\Catalog'
+
 	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
-		tab:CreateBackdrop()
-		tab:Size(30, 40)
+		if tab then
+			tab:StripTextures(true)
+			tab:CreateBackdrop()
+			tab:Size(30, 40)
 
-		if i == 1 then
-			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 1, -10)
+			if not tab.texture then
+				tab.texture = tab:CreateTexture(nil, 'ARTWORK')
+				tab.texture:SetInside(tab.backdrop)
+			end
 
-			hooksecurefunc(tab, 'SetPoint', PositionHousingDashbardTab)
-		end
+			if not tab.hl then
+				tab.hl = tab:CreateTexture(nil, 'HIGHLIGHT')
+				tab.hl:SetColorTexture(0.8, 0.8, 0, 0.4)
+				tab.hl:SetInside(tab.backdrop)
+				tab.hl:SetBlendMode('ADD')
+			end
 
-		if tab.Icon then
-			tab.Icon:ClearAllPoints()
-			tab.Icon:SetPoint('CENTER')
+			if i == 1 then
+				tab:ClearAllPoints()
+				tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 3, -10)
 
-			hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
-		end
+				tab.texture:SetTexture(dashboardIcon)
 
-		if tab.SelectedTexture then
-			tab.SelectedTexture:SetDrawLayer('ARTWORK')
-			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
-			tab.SelectedTexture:SetAllPoints()
-		end
-
-		for _, region in next, { tab:GetRegions() } do
-			if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
-				region:SetColorTexture(1, 1, 1, 0.3)
-				region:SetAllPoints()
+				hooksecurefunc(tab, 'SetPoint', PositionDashboardTab)
+			else
+				tab.texture:SetTexture(catalogIcon)
 			end
 		end
 	end
@@ -102,9 +96,19 @@ function S:Blizzard_HousingDashboard()
 		S:HandleButton(InfoContent.HouseFinderButton)
 		S:HandleDropDownBox(InfoContent.HouseDropdown)
 
-		local HouseUpgradeFrame = InfoContent.ContentFrame.HouseUpgradeFrame
-		HouseUpgradeFrame.Background:Hide()
-		S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+		local ContentFrame = InfoContent.ContentFrame
+		if ContentFrame then
+			for _, tab in next, { ContentFrame.TabSystem:GetChildren() } do
+				S:HandleTab(tab)
+			end
+
+			local HouseUpgradeFrame = ContentFrame.HouseUpgradeFrame
+			if HouseUpgradeFrame then
+				HouseUpgradeFrame:StripTextures()
+				HouseUpgradeFrame.Background:Hide()
+				S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+			end
+		end
 	end
 
 	local CatalogContent = DashBoardFrame.CatalogContent
@@ -128,6 +132,7 @@ function S:Blizzard_HousingDashboard()
 
 		local Categories = CatalogContent.Categories
 		if Categories then
+			Categories.TopBorder:Hide()
 			Categories.Background:Hide()
 		end
 
@@ -139,6 +144,8 @@ function S:Blizzard_HousingDashboard()
 		local PreviewFrame = CatalogContent.PreviewFrame
 		if PreviewFrame then
 			PreviewFrame.PreviewBackground:Hide()
+			PreviewFrame.PreviewCornerLeft:Hide()
+			PreviewFrame.PreviewCornerRight:Hide()
 		end
 	end
 end
@@ -166,6 +173,14 @@ function S:Blizzard_HousingCornerstone()
 		PurchaseFrame:CreateBackdrop('Transparent')
 		S:HandleCloseButton(PurchaseFrame.CloseButton)
 		S:HandleButton(PurchaseFrame.BuyButton)
+	end
+
+	local MoveHouseConfirmation = _G.MoveHouseConfirmationDialog
+	if MoveHouseConfirmation then
+		MoveHouseConfirmation:StripTextures()
+		MoveHouseConfirmation:CreateBackdrop('Transparent')
+		S:HandleButton(MoveHouseConfirmation.ConfirmButton)
+		S:HandleButton(MoveHouseConfirmation.CancelButton)
 	end
 end
 
@@ -228,6 +243,17 @@ function S:Blizzard_HousingCreateNeighborhood()
 	end
 end
 
+local function SkinHouseSettingOptions(panel)
+	if not panel.accessOptions then return end
+
+	for _, option in next, panel.accessOptions do
+		local checkbox = option.Checkbox
+		if checkbox and not checkbox.IsSkinned then
+			S:HandleCheckBox(option.Checkbox)
+		end
+	end
+end
+
 function S:Blizzard_HousingHouseSettings()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -237,28 +263,28 @@ function S:Blizzard_HousingHouseSettings()
 		local HouseAccess = SettingsFrame.HouseAccess
 
 		SettingsFrame:StripTextures()
-		SettingsFrame:CreateBackdrop('Transparent')
+		SettingsFrame:SetTemplate('Transparent')
 		S:HandleCloseButton(SettingsFrame.CloseButton)
-		S:HandleDropDownBox(SettingsFrame.HouseOwnerDropdown)
+		S:HandleDropDownBox(SettingsFrame.HouseOwnerDropdown, 240)
 		S:HandleButton(SettingsFrame.AbandonHouseButton)
 		S:HandleDropDownBox(PlotAccess.AccessTypeDropdown)
 		S:HandleDropDownBox(HouseAccess.AccessTypeDropdown)
 
-		--[[ FIX THE CHECKBOXES
-		for _, checkBox in next, { PlotAccess.Options:GetChildren() } do
-			if checkBox:IsObjectType('CheckButton') then
-				S:HandleCheckBox(checkBox)
-			end
-		end
-
-		for _, checkBox in next, { HouseAccess.Options:GetChildren() } do
-			if checkBox:IsObjectType('CheckButton') then
-				S:HandleCheckBox(checkBox)
-			end
-		end]]
+		hooksecurefunc(PlotAccess, 'SetupOptions', SkinHouseSettingOptions)
+		hooksecurefunc(HouseAccess, 'SetupOptions', SkinHouseSettingOptions)
+		SkinHouseSettingOptions(PlotAccess)
+		SkinHouseSettingOptions(HouseAccess)
 
 		S:HandleButton(SettingsFrame.IgnoreListButton)
 		S:HandleButton(SettingsFrame.SaveButton)
+	end
+
+	local AbandonHouseConfirmationDialog = _G.AbandonHouseConfirmationDialog
+	if AbandonHouseConfirmationDialog then
+		AbandonHouseConfirmationDialog:StripTextures()
+		AbandonHouseConfirmationDialog:SetTemplate('Transparent')
+		S:HandleButton(AbandonHouseConfirmationDialog.ConfirmButton)
+		S:HandleButton(AbandonHouseConfirmationDialog.CancelButton)
 	end
 end
 
@@ -267,10 +293,24 @@ function S:Blizzard_HouseEditor()
 
 	local EditorFrame = _G.HouseEditorFrame
 
+	local StorageButton = EditorFrame.StorageButton
+	if StorageButton then
+		S:HandleButton(StorageButton, true, nil, nil, nil, 'Transparent')
+		StorageButton:NudgePoint(2)
+
+		local StorageIcon = StorageButton.Icon
+		if StorageIcon then
+			StorageIcon:SetAtlas('house-chest-icon') -- Use same icon as default WoW UI
+			StorageIcon:Size(32)
+			StorageIcon:ClearAllPoints()
+			StorageIcon:Point('CENTER')
+		end
+	end
+
 	local StoragePanel = EditorFrame.StoragePanel
 	if StoragePanel then
 		StoragePanel:StripTextures()
-		StoragePanel:CreateBackdrop('Transparent')
+		StoragePanel:SetTemplate('Transparent')
 		S:HandleEditBox(StoragePanel.SearchBox)
 		StoragePanel.SearchBox:Size(350, 21)
 		S:HandleButton(StoragePanel.Filters.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
@@ -284,6 +324,7 @@ function S:Blizzard_HouseEditor()
 
 		local Categories = StoragePanel.Categories
 		if Categories then
+			Categories.TopBorder:Hide()
 			Categories.Background:Hide()
 		end
 
@@ -292,10 +333,113 @@ function S:Blizzard_HouseEditor()
 			S:HandleTrimScrollBar(OptionsContainer.ScrollBar)
 		end
 
-		--[[ FIX ME
-		if StoragePanel.CollapseButton then
-			StoragePanel.CollapseButton:CreateBackdrop()
-		end]]
+		local CollapseButton = StoragePanel.CollapseButton
+		if CollapseButton then
+			S:HandleButton(CollapseButton, true, nil, nil, nil, 'Transparent')
+			CollapseButton:NudgePoint(4)
+
+			S:SetupArrow(CollapseButton.Icon, 'left')
+			CollapseButton.Icon:SetTexCoord(0, 1, 0, 1)
+			CollapseButton.Icon:Size(18)
+			CollapseButton.Icon:ClearAllPoints()
+			CollapseButton.Icon:Point('CENTER')
+		end
+	end
+
+	local CustomizationFrame = EditorFrame.ExteriorCustomizationModeFrame
+	if CustomizationFrame then
+		local FixtureOptionList = CustomizationFrame.FixtureOptionList
+		if FixtureOptionList then
+			FixtureOptionList:StripTextures()
+			FixtureOptionList:SetTemplate('Transparent')
+
+			S:HandleCloseButton(FixtureOptionList.CloseButton)
+			FixtureOptionList.CloseButton:ClearAllPoints()
+			FixtureOptionList.CloseButton:Point('TOPRIGHT', FixtureOptionList, 'TOPRIGHT')
+
+			S:HandleTrimScrollBar(FixtureOptionList.ScrollBar)
+		end
+
+		local CoreOptions = CustomizationFrame.CoreOptionsPanel
+		if CoreOptions then
+			for _, CorePanel in next, {
+				CoreOptions,
+				CoreOptions.HouseTypeOption,
+				CoreOptions.HouseSizeOption,
+				CoreOptions.BaseStyleOption,
+				CoreOptions.RoofStyleOption,
+				CoreOptions.RoofVariantOption
+			} do
+				if CorePanel.Dropdown then
+					S:HandleDropDownBox(CorePanel.Dropdown)
+				end
+			end
+		end
+	end
+
+	local CustomizeModeFrame = EditorFrame.CustomizeModeFrame
+	local CustomizationsPane = CustomizeModeFrame and CustomizeModeFrame.RoomComponentCustomizationsPane
+	local DecorCustomizationsPane = CustomizeModeFrame and CustomizeModeFrame.DecorCustomizationsPane
+	if CustomizationsPane then
+		CustomizationsPane:StripTextures()
+		CustomizationsPane:SetTemplate('Transparent')
+		CustomizationsPane.CloseButton:ClearAllPoints()
+		CustomizationsPane.CloseButton:Point('TOPRIGHT')
+		S:HandleCloseButton(CustomizationsPane.CloseButton)
+
+		for _, RoomComponentPanel in next, {
+			CustomizationsPane.ThemeDropdown,
+			CustomizationsPane.WallpaperDropdown,
+			CustomizationsPane.DoorTypeDropdown,
+			CustomizationsPane.CeilingTypeDropdown
+		} do
+			if RoomComponentPanel.Dropdown then
+				S:HandleDropDownBox(RoomComponentPanel.Dropdown)
+			end
+		end
+
+		if CustomizationsPane.ApplyThemeToRoomButton then
+			CustomizationsPane.ApplyThemeToRoomButton:Size(26)
+			S:HandleButton(CustomizationsPane.ApplyThemeToRoomButton)
+		end
+
+		if CustomizationsPane.ApplyWallpaperToAllWallsButton then
+			CustomizationsPane.ApplyWallpaperToAllWallsButton:Size(26)
+			S:HandleButton(CustomizationsPane.ApplyWallpaperToAllWallsButton)
+		end
+	end
+
+	if DecorCustomizationsPane then
+		DecorCustomizationsPane:StripTextures()
+		DecorCustomizationsPane:SetTemplate('Transparent')
+
+		DecorCustomizationsPane.CloseButton:ClearAllPoints()
+		DecorCustomizationsPane.CloseButton:Point('TOPRIGHT')
+
+		S:HandleCloseButton(DecorCustomizationsPane.CloseButton)
+		S:HandleButton(DecorCustomizationsPane.ButtonFrame.CancelButton)
+		S:HandleButton(DecorCustomizationsPane.ButtonFrame.ApplyButton)
+	end
+
+	local ExpertDecorModeFrame = EditorFrame.ExpertDecorModeFrame
+	local PlacedDecorList = ExpertDecorModeFrame and ExpertDecorModeFrame.PlacedDecorList
+	if PlacedDecorList then
+		PlacedDecorList:StripTextures()
+		PlacedDecorList:CreateBackdrop('Transparent')
+
+		S:HandleTrimScrollBar(PlacedDecorList.ScrollBar)
+
+		S:HandleCloseButton(PlacedDecorList.CloseButton)
+		PlacedDecorList.CloseButton:ClearAllPoints()
+		PlacedDecorList.CloseButton:Point('TOPRIGHT')
+	end
+
+	local DyeSelectionPopout = _G.DyeSelectionPopout
+	if DyeSelectionPopout then
+		DyeSelectionPopout:StripTextures()
+		DyeSelectionPopout:CreateBackdrop('Transparent')
+		S:HandleTrimScrollBar(DyeSelectionPopout.DyeSlotScrollBar)
+		S:HandleCheckBox(DyeSelectionPopout.ShowOnlyOwned)
 	end
 end
 

@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local format = format
-
 local GetNumSockets = GetNumSockets
 local GetSocketTypes = GetSocketTypes
 local hooksecurefunc = hooksecurefunc

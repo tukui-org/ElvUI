@@ -264,7 +264,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			local diffColor = GetCreatureDifficultyColor(level)
 			local race, englishRace = UnitRace(unit)
 			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
-			if localizedFaction and (englishRace == 'Pandaren' or englishRace == 'Dracthyr') then race = localizedFaction..' '..race end
+			if localizedFaction and (englishRace == 'Pandaren' or englishRace == 'Dracthyr' or englishRace == 'EarthenDwarf') then race = localizedFaction..' '..race end
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			local unitGender = TT.db.gender and genderTable[gender]
 
@@ -1107,7 +1107,7 @@ function TT:Initialize()
 		TT:SecureHook(GameTooltip, 'SetUnitDebuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
 	end
 
-	if AddTooltipPostCall and not (E.Wrath or E.Mists) then -- exists but doesn't work atm on Cata
+	if AddTooltipPostCall and not (E.TBC or E.Wrath or E.Mists) then -- exists but doesn't work atm on Cata
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)

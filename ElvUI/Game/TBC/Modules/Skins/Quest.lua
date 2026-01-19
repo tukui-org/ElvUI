@@ -145,6 +145,7 @@ function S:BlizzardQuestFrames()
 		_G.QuestGreetingScrollFrame,
 		_G.QuestInfoItemHighlight,
 		_G.QuestLogDetailScrollFrame,
+		_G.QuestLogCount,
 		_G.QuestLogFrame,
 		_G.QuestLogListScrollFrame,
 		_G.QuestLogQuestCount,
@@ -191,6 +192,8 @@ function S:BlizzardQuestFrames()
 			HandleItemButton(_G[frame..i])
 		end
 	end
+
+	_G.QuestLogCount:SetTemplate('Transparent')
 
 	hooksecurefunc('QuestInfo_GetRewardButton', function(rewardsFrame, index)
 		local button = rewardsFrame.RewardButtons[index]
@@ -379,7 +382,7 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestLogTimerText:SetTextColor(1, 1, 1)
 
-	S:HandleFrame(_G.QuestFrame, true, nil, 8, -10, -28, 66)
+	S:HandleFrame(_G.QuestFrame)
 	S:HandleFrame(_G.QuestLogFrame, true, nil, 8, -10, -28, 42)
 	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -2, 2)
 	S:HandleFrame(_G.QuestLogDetailScrollFrame, true, nil, -2, 2)
@@ -391,13 +394,13 @@ function S:BlizzardQuestFrames()
 	_G.QuestLogFrameAbandonButton:PointXY(15, 49)
 	_G.QuestFramePushQuestButton:PointXY(-2)
 	_G.QuestFrameExitButton:PointXY(-36, 49)
-	_G.QuestFrameAcceptButton:PointXY(15, 70)
-	_G.QuestFrameDeclineButton:PointXY(-36, 70)
-	_G.QuestFrameCompleteQuestButton:PointXY(15, 70)
-	_G.QuestFrameCompleteButton:PointXY(15, 70)
-	_G.QuestFrameCancelButton:PointXY(-36, 70)
-	_G.QuestFrameGoodbyeButton:PointXY(-36, 70)
-	_G.QuestFrameGreetingGoodbyeButton:PointXY(-36, 70)
+	_G.QuestFrameAcceptButton:PointXY(7, 4)
+	_G.QuestFrameDeclineButton:PointXY(-7, 4)
+	_G.QuestFrameCompleteQuestButton:PointXY(7, 4)
+	_G.QuestFrameCompleteButton:PointXY(8, 4)
+	_G.QuestFrameCancelButton:PointXY(-10, 4)
+	_G.QuestFrameGoodbyeButton:PointXY(-32, 4)
+	_G.QuestFrameGreetingGoodbyeButton:PointXY(-32, 4)
 	_G.QuestFrameNpcNameText:PointXY(-1, 0)
 
 	_G.QuestGreetingFrameHorizontalBreak:Kill()

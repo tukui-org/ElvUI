@@ -26,6 +26,8 @@ local UIParent = UIParent
 local UnitCastingInfo = UnitCastingInfo
 local UnitIsAFK = UnitIsAFK
 
+local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
+local GetChatCategory = (ChatFrameUtil and ChatFrameUtil.GetChatCategory) or Chat_GetChatCategory
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 
 local CAMERA_SPEED = 0.035
@@ -201,8 +203,6 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	local infoType = strsub(event, 10)
 	local info = _G.ChatTypeInfo[infoType]
 
-	local GetChatCategory = _G.ChatFrameUtil and _G.ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
-
 	local chatTarget
 	local chatGroup = GetChatCategory(infoType)
 	if chatGroup == 'BN_CONVERSATION' then
@@ -225,7 +225,7 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 		arg1 = RemoveExtraSpaces(arg1) -- Remove groups of many spaces
 	end
 
-	local isMobile = arg14 and _G.ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
+	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
 	local message = format('%s%s', isMobile or '', arg1)
 
 	local coloredName = (infoType == 'BN_WHISPER' and CH:GetBNFriendColor(arg2, arg13)) or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)

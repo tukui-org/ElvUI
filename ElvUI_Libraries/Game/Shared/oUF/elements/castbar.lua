@@ -116,18 +116,20 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
-if oUF.isClassic then
+if oUF.isClassic or oUF.isTBC then
 	specialCast[2643] = 500 -- Multishot R1
 	specialCast[14288] = 500 -- Multishot R2
 	specialCast[14289] = 500 -- Multishot R3
 	specialCast[14290] = 500 -- Multishot R4
 	specialCast[25294] = 500 -- Multishot R5
+	specialCast[27021] = 500 -- Multishot R6
 	specialCast[19434] = 3000 -- Aimed Shot R1
 	specialCast[20900] = 3000 -- Aimed Shot R2
 	specialCast[20901] = 3000 -- Aimed Shot R3
 	specialCast[20902] = 3000 -- Aimed Shot R4
 	specialCast[20903] = 3000 -- Aimed Shot R5
 	specialCast[20904] = 3000 -- Aimed Shot R6
+	specialCast[27065] = 3000 -- Aimed Shot R7
 
 	specialAuras[3045] = 0.4 -- Rapid Fire: 40%
 	specialAuras[6150] = 0.3 -- Quick Shots [Improved Hawk]: 30%

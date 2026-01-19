@@ -280,7 +280,8 @@ blizz.itemLevelInfo.args.enchantAbbrev = ACH:Toggle(L["Abbreviate Enchants"], ni
 blizz.itemLevelInfo.args.itemLevelRarity = ACH:Toggle(L["Rarity Color"], nil, 4)
 blizz.itemLevelInfo.args.showEnchants = ACH:Toggle(L["Show Enchants"], nil, 10)
 blizz.itemLevelInfo.args.showItemLevel = ACH:Toggle(L["Show ItemLevel"], nil, 11)
-blizz.itemLevelInfo.args.showGems = ACH:Toggle(L["Show Gems"], nil, 12)
+blizz.itemLevelInfo.args.showOnItem = ACH:Toggle(L["Show On Item"], nil, 12)
+blizz.itemLevelInfo.args.showGems = ACH:Toggle(L["Show Gems"], nil, 13)
 
 blizz.itemLevelInfo.args.fontGroup = ACH:Group(L["Item Score"], nil, 70, nil, nil, function(info, value) E.db.general.itemLevel[info[#info]] = value M:UpdateInspectPageFonts('Character') M:UpdateInspectPageFonts('Inspect') end, function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end)
 blizz.itemLevelInfo.args.fontGroup.args.itemLevelFont = ACH:SharedMediaFont(L["Font"], nil, 4)
@@ -293,6 +294,12 @@ blizz.itemLevelInfo.args.totalFontGroup.args.totalLevelFont = ACH:SharedMediaFon
 blizz.itemLevelInfo.args.totalFontGroup.args.totalLevelFontSize = ACH:Range(L["Font Size"], nil, 5, C.Values.FontSize)
 blizz.itemLevelInfo.args.totalFontGroup.args.totalLevelFontOutline = ACH:FontFlags(L["Font Outline"], nil, 6)
 blizz.itemLevelInfo.args.totalFontGroup.inline = true
+
+blizz.itemLevelInfo.args.positionGroup = ACH:Group(L["Text Position"], nil, 90, nil, nil, function(info, value) E.db.general.itemLevel[info[#info]] = value M:ToggleItemLevelInfo(nil, true) end, nil, function() return (not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo) or not E.db.general.itemLevel.showOnItem end)
+blizz.itemLevelInfo.args.positionGroup.inline = true
+blizz.itemLevelInfo.args.positionGroup.args.textPosition = ACH:Select(L["Position"], nil, 7, C.Values.AllPoints)
+blizz.itemLevelInfo.args.positionGroup.args.textOffsetX = ACH:Range(L["X-Offset"], nil, 8, { min = -20, max = 20, step = 1 })
+blizz.itemLevelInfo.args.positionGroup.args.textOffsetY = ACH:Range(L["Y-Offset"], nil, 9, { min = -20, max = 20, step = 1 })
 
 blizz.addonCompartment = ACH:Group(L["Addon Compartment"], nil, 60, nil, function(info) return E.db.general.addonCompartment[info[#info]] end, function(info, value) E.db.general.addonCompartment[info[#info]] = value; BL:HandleAddonCompartment() end, nil, not E.Retail)
 blizz.addonCompartment.args.size = ACH:Range(L["Size"], nil, 1, { min = 10, max = 40, step = 1 })

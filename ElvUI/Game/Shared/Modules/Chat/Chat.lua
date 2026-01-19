@@ -76,9 +76,18 @@ local GetChannelRulesetForChannelID = C_ChatInfo.GetChannelRulesetForChannelID
 local GetChannelShortcutForChannelID = C_ChatInfo.GetChannelShortcutForChannelID
 local IsChannelRegionalForChannelID = C_ChatInfo.IsChannelRegionalForChannelID
 
-local IsRecentAllyByGUID = C_RecentAllies and C_RecentAllies.IsRecentAllyByGUID
 local GetTitleIconTexture = C_Texture.GetTitleIconTexture
-local GetClientTexture = _G.BNet_GetClientEmbeddedAtlas or _G.BNet_GetClientEmbeddedTexture
+local IsRecentAllyByGUID = C_RecentAllies and C_RecentAllies.IsRecentAllyByGUID
+local GetClientTexture = BNet_GetClientEmbeddedAtlas or BNet_GetClientEmbeddedTexture
+
+local ChatEditSetLastTellTarget = (ChatFrameUtil and ChatFrameUtil.SetLastTellTarget) or ChatEdit_SetLastTellTarget
+local ChatEditSetLastActiveWindow = (ChatFrameUtil and ChatFrameUtil.SetLastActiveWindow) or ChatEdit_SetLastActiveWindow
+local ChatEditGetActiveWindow = (ChatFrameUtil and ChatFrameUtil.GetActiveWindow) or ChatEdit_GetActiveWindow
+local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
+local ResolvePrefixedChannelName = (ChatFrameUtil and ChatFrameUtil.ResolvePrefixedChannelName) or ChatFrame_ResolvePrefixedChannelName
+local ShouldColorChatByClass = (ChatFrameUtil and ChatFrameUtil.ShouldColorChatByClass) or Chat_ShouldColorChatByClass
+local GetMentorChannelStatus = (ChatFrameUtil and ChatFrameUtil.GetMentorChannelStatus) or ChatFrame_GetMentorChannelStatus
+local GetChatCategory = (ChatFrameUtil and ChatFrameUtil.GetChatCategory) or Chat_GetChatCategory
 
 local TitleIconVersion_Small = Enum.TitleIconVersion and Enum.TitleIconVersion.Small
 local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset and Enum.ChatChannelRuleset.Mentor
@@ -338,9 +347,10 @@ do --this can save some main file locals
 			z['Player-5813-0301DEC1']	= itsSimpy -- Warlock: Yubi
 			-- Simpy Era (5149: Mankrik)
 			z['Player-5149-04172B76']	= itsSimpy -- Warlock: Simpy
-			-- Simpy Anniversary (6103: Dreamscythe)
-			z['Player-6103-02A886D5']	= itsSimpy -- Warlock: Simpy
-			z['Player-6103-0301DECC']	= itsSimpy -- Priest: Hunie
+		elseif E.TBC then
+			-- Simpy TBC Anniversary (6064: Dreamscythe)
+			z['Player-6064-02A886D5']	= itsSimpy -- Warlock: Simpy
+			z['Player-6064-0301DECC']	= itsSimpy -- Priest: Hunie
 		elseif E.Mists then
 			-- Simpy (4385: Pagle)
 			z['Player-4385-05E5F6DF']	= itsSimpy -- Shaman:	Kybi
@@ -506,11 +516,6 @@ do --this can save some main file locals
 		end
 	elseif portal == 'EU' then
 		if E.Classic then
-			-- Luckyone Anniversary (6112: Spineshatter EU)
-			z['Player-6112-028A3A6D']	= ElvGreen -- [Horde] Hunter
-			z['Player-6112-02A2F754']	= ElvGreen -- [Horde] Priest
-			z['Player-6112-02A39E0E']	= ElvGreen -- [Horde] Warlock
-			z['Player-6112-02BBE8AB']	= ElvGreen -- [Horde] Hunter 2
 			-- Luckyone Seasonal (5827: Living Flame EU)
 			z['Player-5827-0273D732']	= ElvGreen -- [Alliance] Hunter
 			z['Player-5827-0273D63E']	= ElvGreen -- [Alliance] Paladin
@@ -529,6 +534,12 @@ do --this can save some main file locals
 			-- Luckyone Classic Era (5233: Firemaw)
 			z['Player-5233-01D22A72']	= ElvGreen -- [Horde] Hunter: Unluckyone
 			z['Player-5233-01D27011']	= ElvGreen -- [Horde] Druid: Luckydruid
+		elseif E.TBC then
+			-- Luckyone Anniversary (6412: Spineshatter EU)
+			z['Player-6412-028A3A6D']	= ElvGreen -- [Horde] Hunter
+			z['Player-6412-0336641F']	= ElvGreen -- [Horde] Priest
+			z['Player-6412-02A39E0E']	= ElvGreen -- [Horde] Warlock
+			z['Player-6412-02BBE8AB']	= ElvGreen -- [Horde] Hunter 2
 		elseif E.Mists then
 			-- Luckyone (Horde: Garalon, Alliance: Shek'zeer)
 			z['Player-4454-060E2FD9']	= ElvGreen -- [Horde] Mage
@@ -766,13 +777,22 @@ do
 				end
 
 				if Name then
-					_G.ChatFrame_SendTell(Name, self.chatFrame)
+					if _G.ChatFrameUtil and _G.ChatFrameUtil.SendTell then
+						_G.ChatFrameUtil.SendTell(Name, self.chatFrame)
+					else
+						_G.ChatFrame_SendTell(Name, self.chatFrame)
+					end
 				else
 					_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
 				end
 			elseif text == '/gr ' then
 				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
-				_G.ChatEdit_ParseText(self, 0)
+
+				if self.ParseText then
+					self:ParseText(0)
+				else
+					_G.ChatEdit_ParseText(self, 0)
+				end
 			end
 		end
 
@@ -810,7 +830,7 @@ do -- this fixes a taint when you push tab on editbox which blocks secure comman
 
 	function CH:ChatEdit_PleaseUntaint(event)
 		if event == 'PLAYER_REGEN_DISABLED' then
-			if _G.ChatEdit_GetActiveWindow() then
+			if ChatEditGetActiveWindow() then
 				CH:ChatEdit_UntaintTabList()
 			end
 		elseif InCombatLockdown() then
@@ -1915,7 +1935,6 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	local name = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
 
 	-- handle the class color
-	local ShouldColorChatByClass = _G.ChatFrameUtil and _G.ChatFrameUtil.ShouldColorChatByClass or _G.Chat_ShouldColorChatByClass
 	local info = name and arg12 and _G.ChatTypeInfo[chatType]
 	if info and ShouldColorChatByClass(info) then
 		local data = CH:GetPlayerInfoByGUID(arg12)
@@ -1968,7 +1987,6 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 	local flag = ''
 
 	if specialFlag ~= '' then
-		local GetMentorChannelStatus = (_G.ChatFrameUtil and _G.ChatFrameUtil.GetMentorChannelStatus) or _G.ChatFrame_GetMentorChannelStatus
 		if specialFlag == 'GM' or specialFlag == 'DEV' then
 			-- Add Blizzard Icon if this was sent by a GM/DEV
 			flag = [[|TInterface\ChatFrame\UI-ChatIcon-Blizz:12:20:0:0:32:16:4:28:0:16|t ]]
@@ -2019,7 +2037,11 @@ local function ChatFrame_CheckAddChannel(chatFrame, eventType, channelID)
 		return false
 	end
 
-	return _G.ChatFrame_AddChannel(chatFrame, GetChannelShortcutForChannelID(channelID)) ~= nil
+	if chatFrame.AddChannel then
+		return chatFrame:AddChannel(GetChannelShortcutForChannelID(channelID)) ~= nil
+	else
+		return _G.ChatFrame_AddChannel(chatFrame, GetChannelShortcutForChannelID(channelID)) ~= nil
+	end
 end
 
 -- Clone of FCFManager_GetChatTarget as it doesn't exist on Classic ERA
@@ -2071,7 +2093,12 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		arg1 = RemoveExtraSpaces(arg1) -- Remove groups of many spaces
 
 		-- Search for icon links and replace them with texture links.
-		arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup)) -- If arg17 is true, don't convert to raid icons
+		-- If arg17 is true, don't convert to raid icons
+		if _G.ChatFrameUtil and _G.ChatFrameUtil.CanChatGroupPerformExpressionExpansion then
+			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrameUtil.CanChatGroupPerformExpressionExpansion(chatGroup))
+		else
+			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup))
+		end
 	end
 
 	-- ElvUI: Get class colored name for BattleNet friend
@@ -2121,7 +2148,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		playerLink = CH:GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
 	end
 
-	local isMobile = arg14 and _G.ChatFrame_GetMobileEmbeddedTexture(info.r, info.g, info.b)
+	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
 	local message = format('%s%s', isMobile or '', arg1)
 
 	-- Player Flags
@@ -2173,15 +2200,13 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		body = classLink and gsub(message, arg2..'%-'..realm, pflag..classLink, 1) or message
 	elseif chatType == 'TEXT_EMOTE' then
 		body = ((not issecretvalue or not issecretvalue(arg2)) and arg2 ~= senderLink) and gsub(message, arg2, senderLink, 1) or message
-	elseif strsub(chatType, -5) == 'EMOTE' then
-		body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..senderLink)
 	else
-		body = format(_G['CHAT_'..chatType..'_GET'] .. '%s', pflag..senderLink, message)
+		body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..senderLink)
 	end
 
 	-- Add Channel
 	if channelLength > 0 then
-		body = '|Hchannel:channel:'..arg8..'|h['.._G.ChatFrame_ResolvePrefixedChannelName(arg4)..']|h '..body
+		body = '|Hchannel:channel:'..arg8..'|h['..ResolvePrefixedChannelName(arg4)..']|h '..body
 	end
 
 	if not isProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
@@ -2288,8 +2313,6 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			end
 		end
 
-		local GetChatCategory = _G.ChatFrameUtil and _G.ChatFrameUtil.GetChatCategory or _G.Chat_GetChatCategory
-
 		local chatGroup = GetChatCategory(chatType)
 		local chatTarget = CH:FCFManager_GetChatTarget(chatGroup, arg2, arg8)
 
@@ -2386,7 +2409,12 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local typeID = CH:GetAccessID(infoType, arg8, arg12)
 
 			if E.Retail and arg1 == 'YOU_CHANGED' and GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
-				_G.ChatFrame_UpdateDefaultChatTarget(frame)
+				if frame.UpdateDefaultChatTarget then
+					frame.UpdateDefaultChatTarget()
+				else
+					_G.ChatFrame_UpdateDefaultChatTarget(frame)
+				end
+
 				frame.editBox:UpdateNewcomerEditBoxHint()
 			else
 				if E.Retail and arg1 == 'YOU_LEFT' then
@@ -2407,7 +2435,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					end
 				end
 
-				frame:AddMessage(format(globalstring, arg8, _G.ChatFrame_ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, nil, nil, nil, isHistory, historyTime)
+				frame:AddMessage(format(globalstring, arg8, ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_ALERT' then
 			local globalstring = _G['BN_INLINE_TOAST_'..arg1]
@@ -2504,7 +2532,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
 			if not isProtected then
-				_G.ChatEdit_SetLastTellTarget(arg2, chatType)
+				ChatEditSetLastTellTarget(arg2, chatType)
 			end
 
 			if CH.db.flashClientIcon then
@@ -3868,9 +3896,15 @@ function CH:FCF_Close(fallback)
 	end
 
 	--Reset what this window receives.
-	_G.ChatFrame_RemoveAllChannels(self)
-	_G.ChatFrame_RemoveAllMessageGroups(self)
-	_G.ChatFrame_ReceiveAllPrivateMessages(self)
+	if self.RemoveAllMessageGroups then
+		self:RemoveAllMessageGroups()
+		self:RemoveAllChannels()
+		self:ReceiveAllPrivateMessages()
+	else
+		_G.ChatFrame_RemoveAllMessageGroups(self)
+		_G.ChatFrame_RemoveAllChannels(self)
+		_G.ChatFrame_ReceiveAllPrivateMessages(self)
+	end
 
 	CH:PostChatClose(self) -- also call this since it won't call from blizzard in this case
 end
@@ -3920,7 +3954,9 @@ function CH:FCF_Tab_OnClick(button)
 
 		if GetCVar('chatStyle') ~= 'classic' then
 			local chatFrame = (chat.isDocked and _G.GeneralDockManager.primary) or chat
-			_G.ChatEdit_SetLastActiveWindow(chatFrame.editBox)
+			if chatFrame then
+				ChatEditSetLastActiveWindow(chatFrame.editBox)
+			end
 		end
 
 		chat:ResetAllFadeTimes()
@@ -4064,7 +4100,9 @@ function CH:Initialize()
 	end
 
 	for _, event in pairs(FindURL_Events) do
-		if not E.TBC then -- PTR: CreateSecureFiltersArray don't exist yet
+		if _G.ChatFrameUtil and _G.ChatFrameUtil.AddMessageEventFilter then
+			_G.ChatFrameUtil.AddMessageEventFilter(event, CH[event] or CH.FindURL)
+		else
 			_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
 		end
 

@@ -21,8 +21,6 @@ local MICRO_SLOTS = 12
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
 local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 
--- GLOBALS: LOCK_ACTIONBAR
-
 local SharedBarOptions = {
 	enabled = ACH:Toggle(L["Enable"], nil, 0),
 	restorePosition = ACH:Execute(L["Restore Bar"], L["Restore the actionbars default settings"], 1),
@@ -135,7 +133,7 @@ general.args.customGlowShortcut = ACH:Execute(L["Custom Glow"], nil, 4, function
 general.args.generalGroup = ACH:Group(L["General"], nil, 20, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() end)
 general.args.generalGroup.inline = true
 general.args.generalGroup.args.keyDown = ACH:Toggle(L["Key Down"], L["OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN"], 1, nil, nil, nil, function() return GetCVarBool('ActionButtonUseKeyDown') end, function(_, value) E:SetCVar('ActionButtonUseKeyDown', value and 1 or 0) AB:UpdateButtonSettings() end)
-general.args.generalGroup.args.lockActionBars = ACH:Toggle(L["LOCK_ACTIONBAR_TEXT"], L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."], 2, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E:SetCVar('lockActionBars', value and 1 or 0) LOCK_ACTIONBAR = (value and '1' or '0') AB:UpdateButtonSettings() end)
+general.args.generalGroup.args.lockActionBars = ACH:Toggle(L["LOCK_ACTIONBAR_TEXT"], L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."], 2, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E:SetCVar('lockActionBars', value and 1 or 0) _G.LOCK_ACTIONBAR = (value and '1' or '0') AB:UpdateButtonSettings() end)
 general.args.generalGroup.args.hideCooldownBling = ACH:Toggle(L["Hide Cooldown Bling"], L["Hides the bling animation on buttons at the end of the global cooldown."], 3, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:UpdateButtonSettings() AB:UpdatePetCooldownSettings() end)
 general.args.generalGroup.args.addNewSpells = ACH:Toggle(L["Auto Add New Spells"], L["Allow newly learned spells to be automatically placed on an empty actionbar slot."], 4, nil, nil, nil, function() return GetCVarBool('AutoPushSpellToActionBar') end, function(_, value) E:SetCVar('AutoPushSpellToActionBar', value and 1 or 0) end, nil, not E.Retail)
 general.args.generalGroup.args.useDrawSwipeOnCharges = ACH:Toggle(L["Charge Draw Swipe"], L["Shows a swipe animation when a spell is recharging but still has charges left."], 9)

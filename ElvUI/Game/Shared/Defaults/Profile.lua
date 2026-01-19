@@ -116,6 +116,7 @@ P.general = {
 		enchantAbbrev = true,
 		showItemLevel = true,
 		showEnchants = true,
+		showOnItem = not E.Retail,
 		showGems = true,
 		itemLevelRarity = true,
 		itemLevelFont = 'PT Sans Narrow',
@@ -124,6 +125,9 @@ P.general = {
 		totalLevelFont = 'PT Sans Narrow',
 		totalLevelFontSize = E.Retail and 20 or 18,
 		totalLevelFontOutline = 'OUTLINE',
+		textPosition = 'BOTTOM',
+		textOffsetX = 0,
+		textOffsetY = 2
 	},
 	rotationAssist = {
 		nextcast = { r = 0.20, g = 0.60, b = 0.95, a = 0.9 },
@@ -2986,6 +2990,9 @@ if E.Retail or E.Mists then
 elseif E.Wrath then
 	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
+elseif E.TBC then
+	P.actionbar.barPet.visibility = '[pet,nooverridebar,nopossessbar] show; hide'
+	P.actionbar.stanceBar.visibility = 'show'
 else
 	P.actionbar.barPet.visibility = '[pet,nooverridebar] show; hide'
 	P.actionbar.stanceBar.visibility = 'show'
@@ -3103,10 +3110,13 @@ P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..((E.Wrath or E.Mists) and ' [
 P.actionbar.bar1.paging.WARLOCK = (E.Wrath or E.Mists) and '[form:1] 7;' or nil
 P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.PRIEST = (E.Retail and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.PRIEST = (E.Retail and '[form:1, spec:3] 7;') or (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
 P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
+
 if E.Mists then
 	P.actionbar.bar1.paging.MONK = '[bonusbar:1] 7; [bonusbar:2] 8;'
+elseif E.TBC then
+	P.actionbar.bar1.paging.HUNTER = '[possessbar] 16;'
 end
 
 P.actionbar.bar3.enabled = true

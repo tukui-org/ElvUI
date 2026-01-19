@@ -49,7 +49,7 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 		slotInfo.itemLevelColors[3] = b1
 	end
 
-	-- handle encahants
+	-- handle encahants, current this check limits it to retail only
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
 		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')

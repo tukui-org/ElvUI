@@ -9,7 +9,10 @@ function S:TabardFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tabard) then return end
 
 	local TabardFrame = _G.TabardFrame
-	S:HandleFrame(TabardFrame, true, nil, 10, -12, -32, 74)
+	S:HandleFrame(TabardFrame)
+
+	_G.TabardFrameMoneyInset:StripTextures()
+	_G.TabardFrameMoneyBg:StripTextures()
 
 	S:HandleCloseButton(_G.TabardFrameCloseButton)
 

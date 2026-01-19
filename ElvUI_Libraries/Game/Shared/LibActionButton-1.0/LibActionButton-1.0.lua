@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 67 -- the real minor version is 133 (no Spell Cast VFX yet)
+local MINOR_VERSION = 69 -- the real minor version is 140 (no Spell Cast VFX yet)
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -16,9 +16,9 @@ local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strma
 
 local _, _, _, wowtoc = GetBuildInfo()
 
+local WoWBCC = wowtoc >= 20000 and wowtoc < 30000
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-local WoWBCC = wowtoc >= 20000 and wowtoc <= 30000
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
@@ -331,7 +331,8 @@ function lib:CreateButton(id, name, header, config)
 
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
-	if WoWRetail then
+
+	if WoWRetail or WoWBCC then
 		button:RegisterForClicks("AnyDown", "AnyUp")
 	else
 		button:RegisterForClicks("AnyUp")
@@ -652,7 +653,7 @@ function WrapOnClick(button, unwrapheader)
 	]])
 end
 
--- prevent pickup calling spells ~Simpy
+-- reticle handling ~Simpy
 function Generic:OnButtonEvent(event, key, down, spellID)
 	if event == "UNIT_SPELLCAST_RETICLE_TARGET" then
 		if (self.abilityID == spellID) and not self.TargetReticleAnimFrame:IsShown() then
@@ -1311,11 +1312,6 @@ function Generic:OnEnter()
 	else
 		UpdateFlyout(self)
 	end
-
-	if not WoWRetail then
-		Generic.OnButtonEvent(self, 'OnEnter')
-		self:RegisterEvent('MODIFIER_STATE_CHANGED')
-	end
 end
 
 function Generic:OnLeave()
@@ -1327,11 +1323,6 @@ function Generic:OnLeave()
 
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:Hide()
-	end
-
-	if not WoWRetail then
-		Generic.OnButtonEvent(self, 'OnLeave')
-		self:UnregisterEvent('MODIFIER_STATE_CHANGED')
 	end
 end
 
@@ -1494,7 +1485,7 @@ function Generic:UpdateConfig(config)
 	self:SetAttribute('flyoutDirection', self.config.flyoutDirection)
 	self:SetAttribute('useOnKeyDown', self.config.clickOnDown)
 
-	if not WoWRetail then
+	if not (WoWRetail or WoWBCC) then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 	end
 end
@@ -1540,7 +1531,9 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
-	if not WoWBCC then
+	if WoWBCC then
+		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
+	else
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
 	end
 
@@ -3049,20 +3042,23 @@ end
 --- Update old Buttons
 if oldversion and next(lib.buttonRegistry) then
 	InitializeEventHandler()
+
 	for button in next, lib.buttonRegistry do
 		-- this refreshes the metatable on the button
 		Generic.UpdateAction(button, true)
 		SetupSecureSnippets(button)
+
 		if oldversion < 12 then
 			WrapOnClick(button)
 		end
+
 		if oldversion < 23 then
 			if button.overlay then
 				button.overlay:Hide()
 
-				if ActionButtonSpellAlertManager then
+				if WoWRetail and ActionButtonSpellAlertManager then
 					ActionButtonSpellAlertManager:HideAlert(button)
-				else
+				elseif ActionButton_HideOverlayGlow then
 					ActionButton_HideOverlayGlow(button)
 				end
 

@@ -620,13 +620,17 @@ function A:Initialize()
 
 	A.Initialized = true
 
-	local xoffset = -(6 + E.Border)
+	local mapCluster = _G.MinimapCluster -- this is safer cause of anchoring protection
+	local mapAnchor = _G.ElvUI_MinimapHolder or mapCluster or _G.Minimap
+	local mapOffsetY = (mapAnchor == mapCluster and 3 or 0) + E.Spacing
+	local mapOffsetX = 6 + E.Border
+
 	if E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 		A:UpdateHeader(A.BuffFrame)
 
 		A.BuffFrame:ClearAllPoints()
-		A.BuffFrame:SetPoint('TOPRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'TOPLEFT', xoffset, -E.Spacing)
+		A.BuffFrame:SetPoint('TOPRIGHT', mapAnchor, 'TOPLEFT', -mapOffsetX, -mapOffsetY)
 
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 	end
@@ -636,7 +640,7 @@ function A:Initialize()
 		A:UpdateHeader(A.DebuffFrame)
 
 		A.DebuffFrame:ClearAllPoints()
-		A.DebuffFrame:SetPoint('BOTTOMRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMLEFT', xoffset, E.Spacing)
+		A.DebuffFrame:SetPoint('BOTTOMRIGHT', mapAnchor, 'BOTTOMLEFT', -mapOffsetX, -mapOffsetY)
 
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
 	end

@@ -13,6 +13,7 @@ local GetInventoryItemQuality = GetInventoryItemQuality
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
+local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 
 local ResistanceCoords = {
@@ -109,6 +110,8 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
+	S:HandleDropDownBox(_G.PlayerTitleDropdown, 160)
+
 	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
 
 	_G.PaperDollFrame:StripTextures()
@@ -130,6 +133,10 @@ function S:CharacterFrame()
 		end
 	end
 
+	-- stat dropdowns
+	S:HandleDropDownBox(_G.PlayerStatFrameLeftDropdown, 110)
+	S:HandleDropDownBox(_G.PlayerStatFrameRightDropdown, 110)
+
 	-- Reposition Tabs
 	hooksecurefunc('PetTab_Update', HandleTabs)
 	HandleTabs()
@@ -141,7 +148,7 @@ function S:CharacterFrame()
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
 	S:HandleRotateButton(_G.CharacterModelFrameRotateRightButton)
 
-	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
+	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 0, 2)
 	_G.CharacterModelFrameRotateRightButton:Point('TOPLEFT', _G.CharacterModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
 	_G.CharacterAttributesFrame:StripTextures()
@@ -312,6 +319,59 @@ function S:CharacterFrame()
 	_G.HonorFrameProgressBar:CreateBackdrop()
 	_G.HonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.HonorFrameProgressBar)
+
+	-- Honor/Arena/PvP Tab
+	local PVPFrame = _G.PVPFrame
+	PVPFrame:StripTextures(true)
+
+	for i = 1, MAX_ARENA_TEAMS do
+		local pvpTeam = _G['PVPTeam'..i]
+		if not pvpTeam then break end
+
+		pvpTeam:StripTextures()
+		pvpTeam:CreateBackdrop()
+		pvpTeam.backdrop:Point('TOPLEFT', 9, -4)
+		pvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
+
+		pvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
+		pvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
+
+		local highlight = _G['PVPTeam'..i..'Highlight']
+		if highlight then
+			highlight:Kill()
+		end
+	end
+
+	local PVPTeamDetails = _G.PVPTeamDetails
+	PVPTeamDetails:StripTextures()
+	PVPTeamDetails:SetTemplate('Transparent')
+	PVPTeamDetails:Point('TOPLEFT', PVPFrame, 'TOPRIGHT', -30, -12)
+
+	local PVPFrameToggleButton = _G.PVPFrameToggleButton
+	S:HandleNextPrevButton(PVPFrameToggleButton)
+	PVPFrameToggleButton:Point('BOTTOMRIGHT', PVPFrame, 'BOTTOMRIGHT', -48, 81)
+	PVPFrameToggleButton:Size(14)
+
+	for i = 1, 5 do
+		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
+		if not header then break end
+
+		header:StripTextures()
+		header:StyleButton()
+	end
+
+	for i = 1, 10 do
+		local button = _G['PVPTeamDetailsButton'..i]
+		if not button then break end
+
+		button:Width(335)
+
+		S:HandleButtonHighlight(button)
+	end
+
+	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
+	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
+	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 end
 
 S:AddCallback('CharacterFrame')

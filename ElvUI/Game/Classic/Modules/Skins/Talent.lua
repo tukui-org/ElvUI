@@ -3,8 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local MAX_TALENT_TABS = MAX_TALENT_TABS
-
 function S:Blizzard_TalentUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
 
@@ -21,7 +19,7 @@ function S:Blizzard_TalentUI()
 	_G.PlayerTalentFrameTab2:Point('TOPLEFT', _G.PlayerTalentFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.PlayerTalentFrameTab3:Point('TOPLEFT', _G.PlayerTalentFrameTab2, 'TOPRIGHT', -19, 0)
 
-	for i = 1, MAX_TALENT_TABS do
+	for i = 1, _G.MAX_TALENT_TABS do
 		local tab = _G['PlayerSpecTab'..i]
 		tab:GetRegions():Hide()
 

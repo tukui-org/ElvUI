@@ -2,8 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local ipairs, pairs, strmatch, next, unpack, tonumber = ipairs, pairs, strmatch, next, unpack, tonumber
-local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
+local format, unpack, tonumber = format, unpack, tonumber
+local next, type, pairs, ipairs, gsub = next, type, pairs, ipairs, gsub
+local strmatch, strsplit, strfind, strsub, strupper = strmatch, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -47,6 +48,7 @@ local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 local BINDING_SET = Enum.BindingSet
 
+local IsHouseEditorActive = C_HouseEditor and C_HouseEditor.IsHouseEditorActive
 local GetNextCastSpell = C_AssistedCombat and C_AssistedCombat.GetNextCastSpell
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
@@ -554,49 +556,59 @@ function AB:UpdateVehicleLeave()
 	end
 end
 
-function AB:ReassignBindings(event)
-	if event == 'UPDATE_BINDINGS' then
-		AB:UpdatePetBindings()
-		AB:UpdateStanceBindings()
-
-		if E.Retail then
-			AB:UpdateExtraBindings()
-		elseif E.Wrath and E.myclass == 'SHAMAN' then
-			AB:UpdateTotemBindings()
-		end
-	end
-
-	AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
-
-	if InCombatLockdown() then return end
-
-	for _, bar in pairs(AB.handledBars) do
-		if bar then
-			ClearOverrideBindings(bar)
-
-			for _, button in ipairs(bar.buttons) do
-				if button.keyBoundTarget then
-					for _, key in next, { GetBindingKey(button.keyBoundTarget) } do
-						if key ~= '' then
-							SetOverrideBindingClick(bar, false, key, button:GetName())
-						end
-					end
+function AB:OverrideBinds(bar)
+	for _, button in ipairs(bar.buttons) do
+		if button.keyBoundTarget then
+			for _, key in next, { GetBindingKey(button.keyBoundTarget) } do
+				if key ~= '' then
+					SetOverrideBindingClick(bar, false, key, button:GetName())
 				end
 			end
 		end
 	end
 end
 
-function AB:RemoveBindings()
-	if InCombatLockdown() then return end
+function AB:UpdateBinds(event, func)
+	if InCombatLockdown() then
+		AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'HandleBinds')
+
+		return
+	end
 
 	for _, bar in pairs(AB.handledBars) do
 		if bar then
 			ClearOverrideBindings(bar)
+
+			if func and type(func) == 'function' then
+				func(AB, bar)
+			end
 		end
 	end
+end
 
-	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'ReassignBindings')
+function AB:UpdateAllBinds(event)
+	AB:UpdatePetBindings()
+	AB:UpdateStanceBindings()
+
+	if E.Retail then
+		AB:UpdateExtraBindings()
+	elseif E.Wrath and E.myclass == 'SHAMAN' then
+		AB:UpdateTotemBindings()
+	end
+
+	AB:HandleBinds(event)
+end
+
+function AB:HandleBinds(event)
+	if event == 'PLAYER_REGEN_DISABLED' then
+		AB:UnregisterEvent('PLAYER_REGEN_DISABLED')
+	end
+
+	if event == 'HOUSE_EDITOR_MODE_CHANGED' then
+		AB:UpdateBinds(event, not IsHouseEditorActive() and AB.OverrideBinds or nil)
+	else
+		AB:UpdateBinds(event, AB.OverrideBinds)
+	end
 end
 
 do
@@ -1146,9 +1158,9 @@ do
 		MainMenuBar = true,
 		BagsBar = E.TBC or nil,
 		MainActionBar = (E.TBC or E.Retail or E.Midnight) or nil,
-		[E.Retail and 'StanceBar' or 'StanceBarFrame'] = true,
-		[E.Retail and 'PetActionBar' or 'PetActionBarFrame'] = true,
-		[E.Retail and 'PossessActionBar' or 'PossessBarFrame'] = true
+		[(E.TBC or E.Retail) and 'StanceBar' or 'StanceBarFrame'] = true,
+		[(E.TBC or E.Retail) and 'PetActionBar' or 'PetActionBarFrame'] = true,
+		[(E.TBC or E.Retail) and 'PossessActionBar' or 'PossessBarFrame'] = true
 	}
 
 	local untaintButtons = {
@@ -1221,7 +1233,7 @@ do
 				frame:SetParent(E.HiddenFrame)
 				frame:UnregisterAllEvents()
 
-				if not E.Retail then
+				if not (E.Retail or E.TBC) then
 					AB:SetNoopsi(frame)
 				elseif name == 'PetActionBar' then -- EditMode messes with it, be specific otherwise bags taint
 					frame.UpdateVisibility = E.noop
@@ -1352,7 +1364,7 @@ end
 
 do
 	local fixBars = {}
-	if E.Wrath or E.Mists then
+	if not E.Retail then -- retail has these bars as a fallback
 		fixBars.MULTIACTIONBAR5BUTTON = 'ELVUIBAR13BUTTON'
 		fixBars.MULTIACTIONBAR6BUTTON = 'ELVUIBAR14BUTTON'
 		fixBars.MULTIACTIONBAR7BUTTON = 'ELVUIBAR15BUTTON'
@@ -1436,6 +1448,9 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	config.useDrawBling = not AB.db.hideCooldownBling
 	config.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
 	config.handleOverlay = AB.db.handleOverlay
+
+	-- NOTE: Pick Up Action Key will break macros of the same key (secure action code)
+	--- it happens because `useOnKeyDown` is temporarily set to `false` while using the pickup key inside of LibActionButton
 	SetModifiedClick('PICKUPACTION', AB.db.movementModifier)
 
 	if not buttonName then
@@ -1907,8 +1922,8 @@ function AB:Initialize()
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
 
-		AB:RegisterEvent('PET_BATTLE_CLOSE', 'ReassignBindings')
-		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'RemoveBindings')
+		AB:RegisterEvent('PET_BATTLE_CLOSE', 'HandleBinds') -- set override binds
+		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'UpdateBinds') -- no function passed, clears bindings
 	end
 
 	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
@@ -1934,7 +1949,7 @@ function AB:Initialize()
 
 	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
-	AB:RegisterEvent('UPDATE_BINDINGS', 'ReassignBindings')
+	AB:RegisterEvent('UPDATE_BINDINGS', 'UpdateAllBinds')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
 
 	AB:SetTargetAuraDuration(E.db.cooldown.targetAuraDuration)
@@ -1951,10 +1966,11 @@ function AB:Initialize()
 		AB:CreateTotemBar()
 	end
 
+	-- handle the first set of bindings unless in a pet battle
 	if (E.Retail or E.Mists) and IsInBattle() then
-		AB:RemoveBindings()
+		AB:UpdateBinds() -- no function passed, clears bindings
 	else
-		AB:ReassignBindings()
+		AB:HandleBinds() -- set override binds
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
@@ -1962,6 +1978,8 @@ function AB:Initialize()
 	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars and '1' or '0') -- Keep an eye on this, in case it taints
 
 	if E.Retail then
+		AB:RegisterEvent('HOUSE_EDITOR_MODE_CHANGED', 'HandleBinds')
+
 		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
 		hooksecurefunc(_G.SpellFlyout, 'Hide', AB.UpdateFlyoutButtons)
 
