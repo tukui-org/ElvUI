@@ -424,7 +424,6 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 	end
 
-	if(element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
 	if(element.Shield) then
 		if(element.Shield.SetAlphaFromBoolean) then
 			element.Shield:SetAlphaFromBoolean(notInterruptible, 1, 0)
@@ -432,6 +431,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			element.Shield:SetShown(notInterruptible)
 		end
 	end
+
+	if(element.Icon) then element.Icon:SetTexture(texture or FALLBACK_ICON) end
 	if(element.Spark) then element.Spark:Show() end
 	if(element.Text) then element.Text:SetText(text) end
 	if(element.Time) then element.Time:SetText('') end
