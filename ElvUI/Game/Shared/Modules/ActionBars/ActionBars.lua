@@ -5,6 +5,7 @@ local _G = _G
 local format, unpack, tonumber = format, unpack, tonumber
 local next, type, pairs, ipairs, gsub = next, type, pairs, ipairs, gsub
 local strmatch, strsplit, strfind, strsub, strupper = strmatch, strsplit, strfind, strsub, strupper
+local issecretvalue = issecretvalue
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -1733,7 +1734,7 @@ end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type == 'action' then
-		AB:SetButtonDesaturation(button, duration)
+		AB:SetButtonDesaturation(button, not issecretvalue and not issecretvalue(duration) and duration or nil)
 	end
 
 	if button.cooldown then

@@ -2345,6 +2345,8 @@ function UpdateCooldown(self)
 	-- 12.0 helper function
 	if ActionButton_ApplyCooldown then
 		ActionButton_ApplyCooldown(self.cooldown, cooldownInfo, self.chargeCooldown, chargeInfo, self.lossOfControlCooldown, lossOfControlInfo)
+
+		lib.callbacks:Fire("OnCooldownUpdate", self, _, _, _, cooldownInfo, chargeInfo, lossOfControlInfo)
 	else
 		local locStart, locDuration = lossOfControlInfo.startTime, lossOfControlInfo.duration
 		local start, duration, enable, modRate = cooldownInfo.startTime, cooldownInfo.duration, cooldownInfo.isEnabled, cooldownInfo.modRate
@@ -2380,6 +2382,8 @@ function UpdateCooldown(self)
 			end
 			CooldownFrame_Set(self.cooldown, start, duration, enable, false, modRate)
 		end
+
+		lib.callbacks:Fire("OnCooldownUpdate", self, start, duration, modRate)
 	end
 end
 
