@@ -13,6 +13,7 @@ local GetAuraSlots = C_UnitAuras.GetAuraSlots
 local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
+local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 
 local auraInfo = {}
 local auraFiltered = {
@@ -65,10 +66,14 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 		aura = unitAuraInfo[auraInstanceID]
 	end
 
-	if aura and aura.sourceUnit then -- this is lame but useful
+	if aura and aura.sourceUnit and (not ShouldUnitIdentityBeSecret or not ShouldUnitIdentityBeSecret(aura.sourceUnit)) then
 		aura.unitGUID = UnitGUID(aura.sourceUnit) -- fetch the new unit token with UnitTokenFromGUID
 		aura.unitName, aura.unitRealm = UnitName(aura.sourceUnit)
 		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = UnitClass(aura.sourceUnit)
+	elseif aura then
+		aura.unitGUID = nil
+		aura.unitName, aura.unitRealm = nil, nil
+		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = nil, nil, nil
 	end
 
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
