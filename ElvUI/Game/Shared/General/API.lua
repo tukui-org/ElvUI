@@ -52,6 +52,7 @@ local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
+local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 
@@ -1296,7 +1297,9 @@ function E:GROUP_LEFT()
 	wipe(E.GroupRoles)
 end
 
-function E:UnitExists(unit) -- oUF way
+function E:UnitExists(unit)
+	if ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit) then return end
+
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
