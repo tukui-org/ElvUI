@@ -865,6 +865,30 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	self.npcID = nil -- just cause
 end
 
+function NP:UNIT_FACTION(event, unit)
+	self.reaction = UnitReaction('player', unit) -- Player Reaction
+	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
+	self.isFriend = UnitIsFriend('player', unit)
+	self.isEnemy = UnitIsEnemy('player', unit)
+	self.faction = UnitFactionGroup(unit)
+	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
+	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction == 4 and 'neutral' or self.repReaction <= 3 and 'bad' or 'good']) or nil
+
+	NP:UpdatePlateType(self)
+	NP:UpdatePlateSize(self)
+	NP:UpdatePlateBase(self)
+end
+
+function NP:CheckDeath(event, unit)
+	self.isDead = UnitIsDead(unit)
+
+	if self.isDead and not self.isPlayer then
+		NP:DisablePlate(self, nil, true)
+
+		self.previousType = nil -- dont get the plate stuck for next unit
+	end
+end
+
 function NP:NamePlateCallBack(event, unit)
 	local nameplate = C_NamePlate_GetNamePlateForUnit(unit)
 	if not nameplate or nameplate.widgetsOnly or not nameplate.UpdateAllElements then
@@ -872,25 +896,9 @@ function NP:NamePlateCallBack(event, unit)
 	end
 
 	if event == 'UNIT_FACTION' then
-		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
-		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
-		nameplate.isFriend = UnitIsFriend('player', unit)
-		nameplate.isEnemy = UnitIsEnemy('player', unit)
-		nameplate.faction = UnitFactionGroup(unit)
-		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
-		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
-
-		NP:UpdatePlateType(nameplate)
-		NP:UpdatePlateSize(nameplate)
-		NP:UpdatePlateBase(nameplate)
+		NP.UNIT_FACTION(nameplate, event, unit)
 	elseif event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH' then
-		nameplate.isDead = UnitIsDead(unit)
-
-		if nameplate.isDead and not nameplate.isPlayer then
-			NP:DisablePlate(nameplate, nil, true)
-
-			nameplate.previousType = nil -- dont get the plate stuck for next unit
-		end
+		NP.CheckDeath(nameplate, event, unit)
 	end
 end
 
