@@ -38,6 +38,8 @@ function NP:Castbar_CheckInterrupt(unit)
 end
 
 function NP:Castbar_CustomDelayText(duration)
+	if E:IsSecretValue(duration) or not duration then return end
+
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
 			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', abs(duration - self.max), self.delay)
@@ -62,6 +64,8 @@ function NP:Castbar_CustomDelayText(duration)
 end
 
 function NP:Castbar_CustomTimeText(duration)
+	if E:IsSecretValue(duration) or not duration then return end
+
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
 			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
