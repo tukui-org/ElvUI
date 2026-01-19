@@ -34,6 +34,7 @@ local UnitWidgetSet = UnitWidgetSet
 
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 
+local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
 local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
@@ -739,22 +740,6 @@ function NP:PLAYER_TARGET_CHANGED(_, unit)
 	end
 end
 
-function NP:UNIT_FACTION(_, unit)
-	if self.widgetsOnly then return end
-
-	self.reaction = UnitReaction('player', unit) -- Player Reaction
-	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
-	self.isFriend = UnitIsFriend('player', unit)
-	self.isEnemy = UnitIsEnemy('player', unit)
-	self.faction = UnitFactionGroup(unit)
-	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
-	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction == 4 and 'neutral' or self.repReaction <= 3 and 'bad' or 'good']) or nil
-
-	NP:UpdatePlateType(self)
-	NP:UpdatePlateSize(self)
-	NP:UpdatePlateBase(self)
-end
-
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	if not unit then unit = self.unit end
 
@@ -880,14 +865,25 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	self.npcID = nil -- just cause
 end
 
-function NP:NamePlateCallBack(nameplate, event, unit)
-	if not nameplate or not nameplate.UpdateAllElements then
+function NP:NamePlateCallBack(event, unit)
+	local nameplate = C_NamePlate_GetNamePlateForUnit(unit)
+	if not nameplate or nameplate.widgetsOnly or not nameplate.UpdateAllElements then
 		return -- prevent error when loading in with our plates and Plater
 	end
 
-	if event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH' then
-		if nameplate.widgetsOnly then return end
+	if event == 'UNIT_FACTION' then
+		nameplate.reaction = UnitReaction('player', unit) -- Player Reaction
+		nameplate.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
+		nameplate.isFriend = UnitIsFriend('player', unit)
+		nameplate.isEnemy = UnitIsEnemy('player', unit)
+		nameplate.faction = UnitFactionGroup(unit)
+		nameplate.battleFaction = E:GetUnitBattlefieldFaction(unit)
+		nameplate.classColor = (nameplate.isPlayer and E:ClassColor(nameplate.classFile)) or (nameplate.repReaction and NP.db.colors.reactions[nameplate.repReaction == 4 and 'neutral' or nameplate.repReaction <= 3 and 'bad' or 'good']) or nil
 
+		NP:UpdatePlateType(nameplate)
+		NP:UpdatePlateSize(nameplate)
+		NP:UpdatePlateBase(nameplate)
+	elseif event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH' then
 		nameplate.isDead = UnitIsDead(unit)
 
 		if nameplate.isDead and not nameplate.isPlayer then
@@ -1030,15 +1026,14 @@ function NP:Initialize()
 		nameplates:SetTargetCallback(NP.PLAYER_TARGET_CHANGED)
 		nameplates:SetAddedCallback(NP.NAME_PLATE_UNIT_ADDED)
 		nameplates:SetRemovedCallback(NP.NAME_PLATE_UNIT_REMOVED)
-		nameplates:SetFactionCallback(NP.UNIT_FACTION)
-
-		nameplates:RegisterEvent('UNIT_HEALTH')
-		nameplates:RegisterEvent('UNIT_MAXHEALTH')
 	end
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
+	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')
+	NP:RegisterEvent('UNIT_HEALTH', 'NamePlateCallBack')
+	NP:RegisterEvent('UNIT_MAXHEALTH', 'NamePlateCallBack')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 

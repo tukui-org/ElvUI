@@ -887,11 +887,6 @@ do
 		self.removedCallback = callback
 	end
 
-	function nameplateDriverMixin:SetFactionCallback(callback)
-		argcheck(callback, 2, 'function', 'nil')
-		self.factionCallback = callback
-	end
-
 	--[[ nameplates:SetSize(width[, height])
 	Sets the width and size for all nameplates.
 	If only width is provided it will also be used for the height.
@@ -962,13 +957,6 @@ do
 			-- UAE is called after the callback to reduce the number of
 			-- ForceUpdate calls layouts have to do after changing things
 			nameplate.unitFrame:UpdateAllElements(event)
-		elseif(event == 'UNIT_FACTION' and unit) then
-			local nameplate = GetNamePlateForUnit(unit)
-			if(not nameplate or not nameplate.unitFrame) then return end
-
-			if(self.factionCallback) then
-				self.factionCallback(nameplate.unitFrame, event, unit)
-			end
 		elseif(event == 'NAME_PLATE_UNIT_ADDED') then
 			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
@@ -1048,7 +1036,6 @@ do
 		nameplateDriver:RegisterEvent('NAME_PLATE_UNIT_ADDED')
 		nameplateDriver:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
 		nameplateDriver:RegisterEvent('PLAYER_TARGET_CHANGED')
-		nameplateDriver:RegisterEvent('UNIT_FACTION')
 
 		if(IsLoggedIn()) then
 			updateDriver(nameplateDriver)
