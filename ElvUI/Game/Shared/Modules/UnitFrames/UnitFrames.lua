@@ -7,7 +7,6 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local issecretvalue = issecretvalue
 local hooksecurefunc = hooksecurefunc
 local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
@@ -1532,7 +1531,7 @@ do
 		local guid = unit and UnitExists(unit) and UnitGUID(unit)
 		if not guid then return end
 
-		if issecretvalue and issecretvalue(guid) then
+		if E:IsSecretValue(guid) then
 			local frequency = frame.elapsed or 0
 			if frequency > frame.onUpdateSecrets then
 				frame:UpdateAllElements('OnUpdate')

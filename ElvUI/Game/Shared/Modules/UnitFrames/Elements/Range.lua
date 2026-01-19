@@ -15,7 +15,6 @@ local CheckInteractDistance = CheckInteractDistance
 local InCombatLockdown = InCombatLockdown
 local UnitPhaseReason = UnitPhaseReason
 local IsInInstance = IsInInstance
-local issecretvalue = issecretvalue
 
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local IsSpellInRange = C_Spell.IsSpellInRange
@@ -104,10 +103,8 @@ function UF:FriendlyInRange(unit)
 	end
 
 	local range, checked = UnitInRange(unit)
-	if not issecretvalue or not issecretvalue(checked) then
-		if checked and not range then
-			return false -- blizz checked and unit is out of range
-		end
+	if E:NotSecretValue(checked) and (checked and not range) then
+		return false -- blizz checked and unit is out of range
 	end
 
 	return UF:UnitInSpellsRange(unit, 2)

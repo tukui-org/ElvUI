@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local issecretvalue = issecretvalue
 local issecurevariable = issecurevariable
 local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
 local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
@@ -189,7 +188,7 @@ do
 
 	local function GetToken(chatType, chatTarget, chanSender) -- ChatHistory_GetToken
 		local target = chatTarget and strlower(chatTarget) or ''
-		local sender = (not issecretvalue or not issecretvalue(chanSender)) and chanSender and strlower(chanSender) or ''
+		local sender = E:NotSecretValue(chanSender) and chanSender and strlower(chanSender) or ''
 
 		return format('%s;;%s;;%s', strlower(chatType), target, sender)
 	end
@@ -238,7 +237,7 @@ do
 
 	function CH:GetPlayerLink(characterName, displayText, lineID, chatType, chatTarget)
 		if lineID or chatType or chatTarget then
-			return GetLink(_G.LinkTypes.Player, displayText, characterName, lineID or 0, chatType or 0, (not issecretvalue or not issecretvalue(chatTarget)) and chatTarget or '')
+			return GetLink(_G.LinkTypes.Player, displayText, characterName, lineID or 0, chatType or 0, E:NotSecretValue(chatTarget) and chatTarget or '')
 		else
 			return GetLink(_G.LinkTypes.Player, displayText, characterName)
 		end
@@ -254,7 +253,7 @@ local canChangeMessage = function(arg1, id)
 end
 
 function CH:MessageIsProtected(message)
-	if issecretvalue and issecretvalue(message) then return true end
+	if E:IsSecretValue(message) then return true end
 
 	return message and (message ~= gsub(message, '(:?|?)|K(.-)|k', canChangeMessage))
 end
@@ -1919,7 +1918,7 @@ end
 function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 	if not arg2 then return end -- guild deaths is called here with no arg2
 
-	if issecretvalue and issecretvalue(arg2) then
+	if E:IsSecretValue(arg2) then
 		return arg2
 	end
 
@@ -2003,7 +2002,7 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		end
 	end
 
-	if E.Retail and unitGUID and (not issecretvalue or not issecretvalue(unitGUID)) then
+	if E.Retail and E:NotSecretValue(unitGUID) and unitGUID then
 		if CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
 			flag = flag .. TIMERUNNING_SMALL
 		end
@@ -2050,7 +2049,7 @@ function CH:FCFManager_GetChatTarget(chatGroup, playerTarget, channelTarget)
 	if chatGroup == 'CHANNEL' then
 		chatTarget = tostring(channelTarget)
 	elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
-		chatTarget = (not issecretvalue or not issecretvalue(playerTarget)) and strsub(playerTarget, 1, 2) ~= '|K' and strupper(playerTarget) or playerTarget
+		chatTarget = E:NotSecretValue(playerTarget) and strsub(playerTarget, 1, 2) ~= '|K' and strupper(playerTarget) or playerTarget
 	end
 
 	return chatTarget
@@ -2153,7 +2152,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	-- Player Flags
 	local pflag = CH:GetPFlag(arg6, arg7, arg12)
-	if not bossMonster and (not issecretvalue or (not issecretvalue(arg12) and not issecretvalue(playerName))) then
+	if not bossMonster and (E:NotSecretValue(arg12) and E:NotSecretValue(playerName)) then
 		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
 		if type(chatIcon) == 'function' then
 			local icon, prettify, var1, var2, var3 = chatIcon()
@@ -2199,7 +2198,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		local classLink = playerLink and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
 		body = classLink and gsub(message, arg2..'%-'..realm, pflag..classLink, 1) or message
 	elseif chatType == 'TEXT_EMOTE' then
-		body = ((not issecretvalue or not issecretvalue(arg2)) and arg2 ~= senderLink) and gsub(message, arg2, senderLink, 1) or message
+		body = (E:NotSecretValue(arg2) and arg2 ~= senderLink) and gsub(message, arg2, senderLink, 1) or message
 	else
 		body = format(_G['CHAT_'..chatType..'_GET']..message, pflag..senderLink)
 	end
@@ -2232,7 +2231,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		notChatHistory = true
 	end
 
-	local isProtected = issecretvalue and issecretvalue(arg2)
+	local isProtected = E:IsSecretValue(arg2)
 
 	if _G.TextToSpeechFrame_MessageEventHandler and notChatHistory then
 		_G.TextToSpeechFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
@@ -2711,7 +2710,7 @@ function CH:SetupChat()
 end
 
 local function PrepareMessage(author, message)
-	if issecretvalue and (issecretvalue(author) or issecretvalue(message)) then return end
+	if E:IsSecretValue(message) then return end
 
 	if author and author ~= '' and author ~= PLAYER_NAME and message and message ~= '' then
 		return strupper(author) .. message
@@ -3820,7 +3819,7 @@ function CH:SetChatHeadOrientation(position)
 end
 
 function CH:GetPlayerInfoByGUID(guid)
-	if issecretvalue and issecretvalue(guid) then return end
+	if E:IsSecretValue(guid) then return end
 
 	local data = CH.GuidCache[guid]
 	if not data then

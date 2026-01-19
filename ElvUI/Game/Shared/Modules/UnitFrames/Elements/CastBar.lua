@@ -5,7 +5,6 @@ local ElvUF = E.oUF
 
 local abs, next = abs, next
 local utf8sub = string.utf8sub
-local issecretvalue = issecretvalue
 
 local CreateFrame = CreateFrame
 local GetTime = GetTime
@@ -342,7 +341,7 @@ function UF:Configure_Castbar(frame)
 end
 
 function UF:CustomCastDelayText(duration, durationObject)
-	if not duration or (issecretvalue and issecretvalue(duration)) then return end
+	if E:IsSecretValue(duration) or not duration then return end
 
 	local db = self:GetParent().db
 	if not (db and db.castbar) then return end
@@ -372,7 +371,7 @@ function UF:CustomCastDelayText(duration, durationObject)
 end
 
 function UF:CustomTimeText(duration, durationObject)
-	if not duration or (issecretvalue and issecretvalue(duration)) then return end
+	if E:IsSecretValue(duration) or not duration then return end
 
 	local db = self:GetParent().db
 	if not (db and db.castbar) then return end
@@ -437,7 +436,7 @@ function UF:GetInterruptColor(db, unit)
 	local customColor = db and db.castbar and db.castbar.customColor
 	local custom, r, g, b = customColor and customColor.enable and customColor, colors.castColor.r, colors.castColor.g, colors.castColor.b
 
-	local notInterruptible = (not issecretvalue or not issecretvalue(self.notInterruptible)) and self.notInterruptible
+	local notInterruptible = E:NotSecretValue(self.notInterruptible) and self.notInterruptible
 	if notInterruptible and (UnitIsPlayer(unit) or (unit ~= 'player' and UnitCanAttack('player', unit))) then
 		if custom and custom.colorNoInterrupt then
 			return custom.colorNoInterrupt.r, custom.colorNoInterrupt.g, custom.colorNoInterrupt.b
@@ -478,7 +477,7 @@ function UF:PostCastStart(unit)
 
 	self.unit = unit
 
-	if issecretvalue and issecretvalue(self.spellID) then
+	if E:IsSecretValue(self.spellID) then
 		self.Text:SetText(self.spellName)
 
 		if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then

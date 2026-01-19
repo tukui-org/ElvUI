@@ -13,7 +13,6 @@ local GetAuraSlots = C_UnitAuras.GetAuraSlots
 local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
-local issecretvalue = issecretvalue
 
 local auraInfo = {}
 local auraFiltered = {
@@ -39,18 +38,12 @@ eventFrame:SetScript('OnEvent', function(_, event)
 	end
 end)
 
-local function NotSecret(variable)
-	if not issecretvalue or not issecretvalue(variable) then
-		return true
-	end
-end
-
 local function CheckIsMine(sourceUnit)
 	return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
 end
 
 local function AllowAura(frame, aura)
-	if NotSecret(aura.isNameplateOnly) and aura.isNameplateOnly then
+	if oUF:NotSecretValue(aura.isNameplateOnly) and aura.isNameplateOnly then
 		return frame.isNamePlate
 	end
 
@@ -72,7 +65,7 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 		aura = unitAuraInfo[auraInstanceID]
 	end
 
-	if aura and NotSecret(aura.sourceUnit) and aura.sourceUnit then
+	if aura and oUF:NotSecretValue(aura.sourceUnit) and aura.sourceUnit then
 		aura.unitGUID = UnitGUID(aura.sourceUnit) -- fetch the new unit token with UnitTokenFromGUID
 		aura.unitName, aura.unitRealm = UnitName(aura.sourceUnit)
 		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = UnitClass(aura.sourceUnit)
@@ -197,15 +190,15 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	end
 
 	if filter == 'HELPFUL' then
-		return NotSecret(aura.isHelpful) and not aura.isHelpful
+		return oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful
 	elseif filter == 'HARMFUL' then
-		return NotSecret(aura.isHarmful) and not aura.isHarmful
+		return oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful
 	elseif filter == 'RAID' then
-		return NotSecret(aura.isRaid) and not aura.isRaid
+		return oUF:NotSecretValue(aura.isRaid) and not aura.isRaid
 	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
-		return NotSecret(aura.isNameplateOnly) and not aura.isNameplateOnly
+		return oUF:NotSecretValue(aura.isNameplateOnly) and not aura.isNameplateOnly
 	elseif filter == 'PLAYER' then
-		return NotSecret(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)
+		return oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)
 	end
 end
 
@@ -253,14 +246,5 @@ function oUF:SetTooltipByAuraInstanceID(tt, unit, auraInstanceID, filter)
 		if index then
 			tt:SetUnitDebuff(unit, index, filter)
 		end
-	end
-end
-
-function oUF:UnpackAuraData(data)
-	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = data.name, data.icon, data.applications, data.dispelName, data.duration, data.expirationTime, data.sourceUnit, data.isStealable, data.nameplateShowPersonal, data.spellId, data.canApplyAura, data.isBossAura, data.isFromPlayerOrPlayerPet, data.nameplateShowAll, data.timeMod
-	if NotSecret(data.points) then
-		return name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod, unpack(data.points)
-	else
-		return name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod
 	end
 end

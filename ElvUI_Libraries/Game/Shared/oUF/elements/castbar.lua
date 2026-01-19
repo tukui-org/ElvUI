@@ -98,7 +98,6 @@ local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 
 local _G = _G
 local next = next
-local issecretvalue = issecretvalue
 
 local GetTime = GetTime
 local CreateFrame = CreateFrame
@@ -190,7 +189,7 @@ local function resetAttributes(self)
 end
 
 local function UpdateCurrentTarget(element, target)
-	element.curTarget = (not issecretvalue or not issecretvalue(target)) and ((target and target ~= "") and target) or nil
+	element.curTarget = (oUF:NotSecretValue(target) and (target and target ~= "") and target) or nil
 end
 
 local function CreatePip(element)
@@ -374,7 +373,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
 	local useTimerAPI = oUF.isMidnight and element.SetTimerDuration
 	if useTimerAPI then
-		if not issecretvalue or not issecretvalue(startTime) then
+		if oUF:NotSecretValue(startTime) then
 			element.startTime = startTime / 1000
 
 			if(element.empowering) then
@@ -521,7 +520,7 @@ local function CastUpdate(self, event, unit, ...)
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
 	local useTimerAPI = oUF.isMidnight and element.SetTimerDuration
 	if useTimerAPI then
-		if not issecretvalue or not issecretvalue(startTime) then
+		if oUF:NotSecretValue(startTime) then
 			if(element.empowering) then
 				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
 			else

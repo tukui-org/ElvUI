@@ -8,7 +8,6 @@ local abs = abs
 local next = next
 local strmatch = strmatch
 local utf8sub = string.utf8sub
-local issecretvalue = issecretvalue
 
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
@@ -22,7 +21,7 @@ function NP:Castbar_CheckInterrupt(unit)
 		unit = 'player'
 	end
 
-	local notInterruptible = (not issecretvalue or not issecretvalue(self.notInterruptible)) and self.notInterruptible
+	local notInterruptible = E:NotSecretValue(self.notInterruptible) and self.notInterruptible
 	if notInterruptible and UnitCanAttack('player', unit) then
 		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
 
@@ -93,7 +92,7 @@ function NP:Castbar_PostCastStart(unit)
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
-		if issecretvalue and issecretvalue(self.spellID) then
+		if E:IsSecretValue(self.spellID) then
 			self.Text:SetText(self.spellName)
 		else
 			local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)

@@ -2,6 +2,10 @@ local _, ns = ...
 local oUF = { Private = {} }
 ns.oUF = oUF
 
+local unpack = unpack
+local issecretvalue = issecretvalue
+local issecrettable = issecrettable
+
 local _, _, _, wowtoc = GetBuildInfo()
 oUF.wowtoc = wowtoc
 oUF.baseClass, oUF.baseClassID = UnitClassBase('player')
@@ -20,3 +24,38 @@ oUF.isClassicHC = season == 3 -- Hardcore
 oUF.isClassicSOD = season == 2 -- Season of Discovery
 oUF.isClassicAnniv = season == 11 -- Anniversary
 oUF.isClassicAnnivHC = season == 12 -- Anniversary Hardcore
+
+do -- secret stuff, keep it synced to ElvUI
+	function oUF:IsSecretValue(value)
+		if issecretvalue and issecretvalue(value) then
+			return true
+		end
+	end
+
+	function oUF:NotSecretValue(value)
+		if not issecretvalue or not issecretvalue(value) then
+			return true
+		end
+	end
+
+	function oUF:IsSecretTable(object)
+		if issecrettable and issecrettable(object) then
+			return true
+		end
+	end
+
+	function oUF:NotSecretTable(object)
+		if not issecrettable or not issecrettable(object) then
+			return true
+		end
+	end
+end
+
+function oUF:UnpackAuraData(data) -- we use this directly from oUF in ElvUI
+	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = data.name, data.icon, data.applications, data.dispelName, data.duration, data.expirationTime, data.sourceUnit, data.isStealable, data.nameplateShowPersonal, data.spellId, data.canApplyAura, data.isBossAura, data.isFromPlayerOrPlayerPet, data.nameplateShowAll, data.timeMod
+	if oUF:NotSecretTable(data.points) then
+		return name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod, unpack(data.points)
+	else
+		return name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod
+	end
+end

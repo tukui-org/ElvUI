@@ -4,7 +4,6 @@ local UF = E:GetModule('UnitFrames')
 local _G = _G
 local random = random
 local strmatch = strmatch
-local issecretvalue = issecretvalue
 
 local CreateFrame = CreateFrame
 local UnitInPartyIsAI = UnitInPartyIsAI
@@ -353,7 +352,6 @@ function UF:PostUpdateHealth(_, cur)
 		self:SetMinMaxValues(0, self.max)
 		self:SetValue(self.cur)
 	elseif parent.ResurrectIndicator then
-		local isSecret = issecretvalue and issecretvalue(cur)
-		parent.ResurrectIndicator:SetAlpha((not isSecret and cur == 0) and 1 or 0)
+		parent.ResurrectIndicator:SetAlpha((E:NotSecretValue(cur) and cur == 0) and 1 or 0)
 	end
 end

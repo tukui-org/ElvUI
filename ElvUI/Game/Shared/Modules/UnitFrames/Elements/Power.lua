@@ -5,7 +5,6 @@ local ElvUF = E.oUF
 local random = random
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
-local issecretvalue = issecretvalue
 
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
@@ -344,8 +343,7 @@ do
 		if visibility then
 			local _, powerType = UnitPowerType(unit)
 			local fullType = powerTypesFull[powerType]
-			local isSecret = issecretvalue and (issecretvalue(cur) or issecretvalue(max))
-			local isFull = isSecret or (fullType and cur == max) or (not fullType and cur == min)
+			local isFull = (E:IsSecretValue(cur) or E:IsSecretValue(max)) or (fullType and cur == max) or (not fullType and cur == min)
 			local onlyHealer = not db.onlyHealer or (((parent.db.roleIcon and parent.db.roleIcon.enable and parent.role) or UF:GetRoleIcon(parent)) == 'HEALER')
 			local notInCombat = not db.notInCombat or InCombatLockdown()
 

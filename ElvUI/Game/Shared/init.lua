@@ -7,6 +7,8 @@
 local _G = _G
 local strsplit, gsub, tinsert, next, type, wipe = strsplit, gsub, tinsert, next, type, wipe
 local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
+local issecretvalue = issecretvalue
+local issecrettable = issecrettable
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -108,6 +110,32 @@ E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
 E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
 E.QualityColors[-1] = {r = 0, g = 0, b = 0}
+
+do -- secret stuff, keep it synced in auraskip
+	function E:IsSecretValue(value)
+		if issecretvalue and issecretvalue(value) then
+			return true
+		end
+	end
+
+	function E:NotSecretValue(value)
+		if not issecretvalue or not issecretvalue(value) then
+			return true
+		end
+	end
+
+	function E:IsSecretTable(object)
+		if issecrettable and issecrettable(object) then
+			return true
+		end
+	end
+
+	function E:NotSecretTable(object)
+		if not issecrettable or not issecrettable(object) then
+			return true
+		end
+	end
+end
 
 do
 	function E:AddonCompartmentFunc()

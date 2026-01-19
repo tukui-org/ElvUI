@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local issecretvalue = issecretvalue
 local ipairs, pairs, select = ipairs, pairs, select
 local sort, next, wipe, tremove, tinsert = sort, next, wipe, tremove, tinsert
 local format, gsub, strfind, strjoin, strmatch = format, gsub, strfind, strjoin, strmatch
@@ -529,8 +528,7 @@ local function OnEvent(panel, event, arg1)
 	-- special handler to detect friend coming online or going offline when this is the case,
 	-- we invalidate our buffered table and update the datatext information
 	if event == 'CHAT_MSG_SYSTEM' then
-		local isSecret = issecretvalue and issecretvalue(arg1)
-		if isSecret or (not strfind(arg1, friendOnline) and not strfind(arg1, friendOffline)) then return end
+		if E:IsSecretValue(arg1) or (not strfind(arg1, friendOnline) and not strfind(arg1, friendOffline)) then return end
 	end
 
 	-- force update when showing tooltip

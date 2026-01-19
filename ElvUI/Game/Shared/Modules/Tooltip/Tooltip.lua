@@ -9,7 +9,6 @@ local AuraInfo = ElvUF.AuraInfo
 local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
-local issecretvalue = issecretvalue
 local unpack, ipairs = unpack, ipairs
 local tonumber, strlower = tonumber, strlower
 local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
@@ -806,7 +805,7 @@ function TT:SetStyle(tt, _, isEmbedded)
 	-- Blizzard_SharedXML/Backdrop.lua: secrets cause backdrop system to crash out
 	-- Blizzard_MoneyFrame/Mainline/MoneyFrame.lua: secrets cause `MoneyFrame_Update` to crash out via `GameTooltip:SetLootItem(id)`
 	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use `alwaysCompareItems 0`
-	if not issecretvalue or not issecretvalue(tt:GetWidth()) then
+	if E:NotSecretValue(tt:GetWidth()) then
 		tt.customBackdropAlpha = TT.db.colorAlpha
 		tt:SetTemplate('Transparent')
 	end

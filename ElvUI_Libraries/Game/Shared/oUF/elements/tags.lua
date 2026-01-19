@@ -80,7 +80,6 @@ local format, tinsert, floor = format, tinsert, floor
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
-local issecretvalue = issecretvalue
 
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
 local SPEC_PALADIN_RETRIBUTION = SPEC_PALADIN_RETRIBUTION or 3
@@ -691,7 +690,7 @@ end
 local function CreateTagFunc(tag, prefix, suffix)
 	return function(unit, realUnit, customArgs)
 		local str = tag(unit, realUnit, customArgs)
-		if issecretvalue and issecretvalue(str) then
+		if oUF:IsSecretValue(str) then
 			return WrapString(str, prefix, suffix)
 		else
 			return str and format('%s%s%s', prefix or '', str, suffix or '') or nil

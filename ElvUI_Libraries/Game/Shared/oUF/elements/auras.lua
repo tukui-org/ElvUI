@@ -67,17 +67,10 @@ local CREATED = 2
 
 local floor, wipe, next = floor, wipe, next
 local pcall, tinsert = pcall, tinsert
-local issecretvalue = issecretvalue
 
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-
-local function NotSecret(variable)
-	if not issecretvalue or not issecretvalue(variable) then
-		return true
-	end
-end
 
 local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
@@ -199,14 +192,14 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 
 	element.active[position] = button
 
-	local isDebuff = aura and NotSecret(aura.isHarmful) and aura.isHarmful or nil
-	local auraInstanceID = aura and NotSecret(aura.auraInstanceID) and aura.auraInstanceID or nil
+	local isDebuff = aura and oUF:NotSecretValue(aura.isHarmful) and aura.isHarmful or nil
+	local auraInstanceID = aura and oUF:NotSecretValue(aura.auraInstanceID) and aura.auraInstanceID or nil
 
 	button.aura = aura or nil
 	button.filter = filter or nil
 	button.auraInstanceID = auraInstanceID or nil
 	button.isDebuff = (forceShow and which ~= 'Buffs') or isDebuff or nil
-	button.isPlayer = NotSecret(sourceUnit) and (sourceUnit == 'player' or sourceUnit == 'vehicle') or nil
+	button.isPlayer = oUF:NotSecretValue(sourceUnit) and (sourceUnit == 'player' or sourceUnit == 'vehicle') or nil
 	button.debuffType = dispelName
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)
