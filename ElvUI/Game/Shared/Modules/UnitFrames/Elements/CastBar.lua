@@ -342,7 +342,7 @@ function UF:Configure_Castbar(frame)
 end
 
 function UF:CustomCastDelayText(duration, durationObject)
-	if not duration then return end
+	if not duration or (issecretvalue and issecretvalue(duration)) then return end
 
 	local db = self:GetParent().db
 	if not (db and db.castbar) then return end
@@ -372,7 +372,7 @@ function UF:CustomCastDelayText(duration, durationObject)
 end
 
 function UF:CustomTimeText(duration, durationObject)
-	if not duration then return end
+	if not duration or (issecretvalue and issecretvalue(duration)) then return end
 
 	local db = self:GetParent().db
 	if not (db and db.castbar) then return end
