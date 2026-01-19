@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
+local issecretvalue = issecretvalue
 local hooksecurefunc = hooksecurefunc
 local strsplit, tonumber = strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
@@ -668,7 +669,7 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 end
 
 function NP:GetNPCID(guid)
-	if not guid then return end
+	if not guid or (issecretvalue and issecretvalue(guid)) then return end
 
 	local _, _, _, _, _, npcid = strsplit('-', guid)
 	return tonumber(npcid), guid
