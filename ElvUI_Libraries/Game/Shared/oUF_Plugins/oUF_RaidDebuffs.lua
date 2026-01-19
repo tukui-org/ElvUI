@@ -193,7 +193,7 @@ local function Update(self, event, unit, updateInfo)
 			end
 
 			-- handle from the list
-			local data = debuff_data[aura.spellId] or (not element.onlyMatchSpellID and debuff_data[aura.name])
+			local data = (oUF:NotSecretValue(aura.spellId) and oUF:NotSecretValue(aura.name)) and (debuff_data[aura.spellId] or (not element.onlyMatchSpellID and debuff_data[aura.name]))
 			local priority = data and data.priority
 			if CheckPriority(priority, _priority, aura, _aura) then
 				_priority, _aura = priority, aura -- swap it to the new one
