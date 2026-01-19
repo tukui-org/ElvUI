@@ -11,13 +11,6 @@ local print = Private.print -- luacheck: no unused
 local unitExists = Private.unitExists
 local nierror = Private.nierror
 
-local styles, style = {}
-local callback, objects, headers = {}, {}, {}
-
-local elements = {}
-local activeElements = {}
-
--- ElvUI
 local _G = _G
 local strsplit = strsplit
 local assert, setmetatable = assert, setmetatable
@@ -44,7 +37,12 @@ local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 local SetCVar = C_CVar.SetCVar
 
 local NAMEPLATE_TYPE = Enum.NamePlateType
--- end
+
+local styles, style = {}
+local callback, objects, headers = {}, {}, {}
+
+local elements = {}
+local activeElements = {}
 
 local UFParentHider = CreateFrame('Frame', (global or parent) .. '_UFParentFrameHider', UIParent, 'SecureHandlerStateTemplate')
 UFParentHider:SetFrameStrata('LOW')

@@ -55,14 +55,14 @@ local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
 
 local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- Enable custom flyouts
 
--- GLOBALS: CooldownFrame_Clear, ClearActionButtonCooldowns, ClearCursor, CooldownFrame_Set, CopyTable, CreateFrame
+-- GLOBALS: CooldownFrame_Clear, ClearActionButtonCooldowns, ClearCursor, CooldownFrame_Set, CreateFrame
 -- GLOBALS: FlyoutButtonMixin, FlyoutHasSpell, GameTooltip, GetActionCharges, GetActionCooldown, GetActionInfo
 -- GLOBALS: GetActionLossOfControlCooldown, GetActionTexture, GetActionText, GetBindingKey, GetBindingText, GetCallPetSpellInfo
 -- GLOBALS: GetCursorInfo, GetFlyoutInfo, GetFlyoutSlotInfo, GetItemCooldown, GetMacroInfo, GetMacroSpell
 -- GLOBALS: GetTime, HasAction, InCombatLockdown, IsActionInRange, IsAttackAction, IsAutoRepeatAction
 -- GLOBALS: IsConsumableAction, IsCurrentAction, IsEquippedAction, IsItemAction, IsLoggedIn, IsMouseButtonDown
 -- GLOBALS: IsStackableAction, IsUsableAction, PickupAction, PickupCompanion, PickupMacro, PickupPetAction
--- GLOBALS: SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, UIParent, UnitIsFriend
+-- GLOBALS: SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, UIParent
 -- GLOBALS: ActionButton_ApplyCooldown, ActionButtonSpellAlertManager
 
 -- unwrapped functions that return tables now
