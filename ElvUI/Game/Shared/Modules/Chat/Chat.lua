@@ -1353,6 +1353,19 @@ function CH:UpdateEditboxAnchors(cvar, value)
 	local belowInside = CH.db.editBoxPosition == 'BELOW_CHAT_INSIDE'
 	local below = CH.db.editBoxPosition == 'BELOW_CHAT'
 
+	local offsetBelow = classic and (belowInside and 1 or 0) or -5
+	local offsetAbove = classic and (aboveInside and -1 or 0) or 2
+
+	local belowTopY = classic and (showLeftPanel and 1 or 0) or -2
+	local belowBottomY = classic and (showLeftPanel and -1 or 0) or -2
+	local belowTopX = offsetBelow + (belowInside and panel or 0)
+	local belowBottomX = offsetBelow + (belowInside and 0 or -panel)
+
+	local aboveTopY = classic and (aboveInside and -1 or 0) or 2
+	local aboveBottomY = classic and (aboveInside and 1 or 0) or -2
+	local aboveTopX = offsetAbove + (aboveInside and 0 or panel)
+	local aboveBottomX = offsetAbove + (aboveInside and -panel or 0)
+
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[frameName]
 		local editbox = chat and chat.editBox
@@ -1362,13 +1375,11 @@ function CH:UpdateEditboxAnchors(cvar, value)
 
 			local anchorTo = leftChat or chat
 			if below or belowInside then
-				local offset = classic and (belowInside and 1 or 0) or -5
-				editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', classic and (showLeftPanel and 1 or 0) or -2, offset + (belowInside and panel or 0))
-				editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', classic and (showLeftPanel and -1 or 0) or -2, offset + (belowInside and 0 or -panel))
+				editbox:Point('TOPLEFT', anchorTo, 'BOTTOMLEFT', belowTopY, belowTopX)
+				editbox:Point('BOTTOMRIGHT', anchorTo, 'BOTTOMRIGHT', belowBottomY, belowBottomX)
 			else
-				local offset = classic and (aboveInside and -1 or 0) or 2
-				editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', classic and (aboveInside and 1 or 0) or -2, offset + (aboveInside and -panel or 0))
-				editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', classic and (aboveInside and -1 or 0) or 2, offset + (aboveInside and 0 or panel))
+				editbox:Point('TOPRIGHT', anchorTo, 'TOPRIGHT', aboveTopY, aboveTopX)
+				editbox:Point('BOTTOMLEFT', anchorTo, 'TOPLEFT', aboveBottomY, aboveBottomX)
 			end
 		end
 	end
