@@ -98,6 +98,8 @@ local INTERRUPTED = _G.INTERRUPTED or 'Interrupted'
 
 local _G = _G
 local next = next
+local issecretvalue = issecretvalue
+
 local GetTime = GetTime
 local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
@@ -187,7 +189,7 @@ local function resetAttributes(self)
 end
 
 local function UpdateCurrentTarget(element, target)
-	element.curTarget = (target and target ~= "") and target or nil
+	element.curTarget = (not issecretvalue or not issecretvalue(target)) and ((target and target ~= "") and target) or nil
 end
 
 local function CreatePip(element)
