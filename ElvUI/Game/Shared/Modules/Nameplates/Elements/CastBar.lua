@@ -8,6 +8,7 @@ local abs = abs
 local next = next
 local strmatch = strmatch
 local utf8sub = string.utf8sub
+local issecretvalue = issecretvalue
 
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
@@ -21,7 +22,8 @@ function NP:Castbar_CheckInterrupt(unit)
 		unit = 'player'
 	end
 
-	if self.notInterruptible and UnitCanAttack('player', unit) then
+	local notInterruptible = (not issecretvalue or not issecretvalue(self.notInterruptible)) and self.notInterruptible
+	if notInterruptible and UnitCanAttack('player', unit) then
 		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
 
 		if self.Icon and NP.db.colors.castbarDesaturate then
