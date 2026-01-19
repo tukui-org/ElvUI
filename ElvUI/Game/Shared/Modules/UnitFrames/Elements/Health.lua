@@ -278,7 +278,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	end
 
 	local newr, newg, newb, healthbreakBackdrop
-	if not color then -- dont need to process this when its hostile
+	if not color and not E.Midnight then -- dont need to process this when its hostile
 		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
 			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
 				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
@@ -314,7 +314,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		elseif healthbreakBackdrop then
 			bgc = color
 			mult = (healthBreak.multiplier > 0 and healthBreak.multiplier) or BACKDROP_MULT
-		elseif colors.healthbackdropbyvalue then
+		elseif colors.healthbackdropbyvalue and not E.Midnight then
 			if colors.customhealthbackdrop then
 				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
 				mult = 1 -- custom backdrop
