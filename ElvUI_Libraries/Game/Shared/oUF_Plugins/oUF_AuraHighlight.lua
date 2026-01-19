@@ -20,7 +20,7 @@ local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, s
 		if spell.enable then
 			return dispelType, icon, true, spell.style, spell.color
 		end
-	elseif dispelType then
+	elseif oUF:NotSecretValue(dispelType) and dispelType then
 		local allow = not check
 		if not allow then
 			allow = DispelFilter[dispelType]
