@@ -650,7 +650,7 @@ function UF:AuraDuration(db, duration)
 end
 
 function UF:AuraStacks(auras, db, button, name, icon, count, spellID, source, castByPlayer)
-	if db.stackAuras and not UF.ExcludeStacks[spellID] then
+	if db.stackAuras and E:NotSecretValue(spellID) and not UF.ExcludeStacks[spellID] then
 		local matching = source and castByPlayer and format('%s:%s', UF.SourceStacks[spellID] or source, name) or name
 		local amount = (count and count > 0 and count) or 1
 		local stack = auras.stacks[matching]
