@@ -71,6 +71,7 @@ local pcall, tinsert = pcall, tinsert
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
+local GetAuraDuration = C_UnitAuras.GetAuraDuration
 
 local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
@@ -227,7 +228,15 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		-- object to this point, but I think that will just make things needlessly
 		-- complicated.
 		if(button.Cooldown and not element.disableCooldown) then
-			if(duration and duration > 0) then
+			if button.Cooldown.SetCooldownFromDurationObject then
+				local auraDuration = GetAuraDuration(unit, aura.auraInstanceID)
+				if auraDuration then
+					button.Cooldown:SetCooldownFromDurationObject(auraDuration)
+					button.Cooldown:Show()
+				else
+					button.Cooldown:Hide()
+				end
+			elseif(duration and duration > 0) then
 				button.Cooldown:SetCooldown(expirationTime - duration, duration, timeMod)
 				button.Cooldown:Show()
 			else
