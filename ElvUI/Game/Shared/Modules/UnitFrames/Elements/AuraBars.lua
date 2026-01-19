@@ -45,8 +45,6 @@ function UF:AuraBars_UpdateBar(bar)
 	local bars = bar:GetParent()
 	bar.db = bars.db
 
-	UF:CleanCache(bar)
-
 	if bars.db then
 		E:SetSmoothing(bar, bars.db.smoothbars)
 	end

@@ -229,7 +229,5 @@ function NP:UpdateAuraSettings(button)
 		end
 	end
 
-	UF:CleanCache(button)
-
 	button.needsButtonTrim = true
 end
