@@ -26,7 +26,7 @@ local colorMixin = {
 	GetAtlas = function(self)
 		return self.atlas
 	end,
-	SetCurve = function(self, ...)
+	SetCurve = C_CurveUtil and function(self, ...)
 		if(...) then
 			if(self.curve) then
 				self.curve:ClearPoints()
@@ -46,10 +46,10 @@ local colorMixin = {
 		else
 			self.curve = nil
 		end
-	end,
-	GetCurve = function(self)
+	end or nil,
+	GetCurve = C_CurveUtil and function(self)
 		return self.curve
-	end,
+	end or nil,
 }
 
 --[[ Colors: oUF:CreateColor(r, g, b[, a])
@@ -77,11 +77,13 @@ function oUF:CreateColor(r, g, b, a)
 	color:SetRGBA(r, g, b, a)
 
 	-- provide a default curve for smooth colors
-	color:SetCurve({
-		[  0] = CreateColor(1, 0, 0),
-		[0.5] = CreateColor(1, 1, 0),
-		[  1] = CreateColor(0, 1, 0),
-	})
+	if color.SetCurve then
+		color:SetCurve({
+			[  0] = CreateColor(1, 0, 0),
+			[0.5] = CreateColor(1, 1, 0),
+			[  1] = CreateColor(0, 1, 0),
+		})
+	end
 
 	return color
 end

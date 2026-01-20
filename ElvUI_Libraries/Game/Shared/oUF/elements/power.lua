@@ -405,7 +405,7 @@ local function Enable(self)
 		element.SetColorThreat = SetColorThreat
 
 		if(not element.smoothing) then
-			element.smoothing = StatusBarInterpolation.Immediate
+			element.smoothing = StatusBarInterpolation and StatusBarInterpolation.Immediate or nil
 		end
 
 		if(element.colorDisconnected) then

@@ -929,7 +929,7 @@ local function Enable(self, unit)
 	element.Pips = element.Pips or {}
 
 	if(not element.smoothing) then
-		element.smoothing = StatusBarInterpolation.Immediate
+		element.smoothing = StatusBarInterpolation and StatusBarInterpolation.Immediate or nil
 	end
 
 	element:SetScript('OnUpdate', element.OnUpdate or onUpdate)

@@ -840,7 +840,7 @@ end
 do
 	local hitInset = 10000 -- some large number that will ensure we have full coverage
 	local function updateDriver(driver)
-		if(IsLoggedIn()) then
+		if(SetNamePlateSize and IsLoggedIn()) then
 			SetNamePlateSize(driver.plateWidth or 200, driver.plateHeight or 30)
 
 			if SetNamePlateHitTestInsets then
