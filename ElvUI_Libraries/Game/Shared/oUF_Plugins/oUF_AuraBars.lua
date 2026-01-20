@@ -21,25 +21,6 @@ local GameTooltip = GameTooltip
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
-local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
-local function FormatTime(sec)
-	if sec < MINUTE then
-		return '%.1fs', sec
-	elseif sec < HOUR then
-		local mins = mod(sec, HOUR) / MINUTE
-		local secs = mod(sec, MINUTE)
-		return '%dm %ds', mins, secs
-	elseif sec < DAY then
-		local hrs = mod(sec, DAY) / HOUR
-		local mins = mod(sec, HOUR) / MINUTE
-		return '%dh %dm', hrs, mins
-	else
-		local days = mod(sec, YEAR) / DAY
-		local hrs = mod(sec, DAY) / HOUR
-		return '%dd %dh', days, hrs
-	end
-end
-
 local function OnEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
@@ -67,7 +48,7 @@ local function UpdateValue(bar, start)
 		bar:SetValue(remain / bar.duration)
 	end
 
-	bar.timeText:SetFormattedText(FormatTime(remain))
+	bar.timeText:SetFormattedText(oUF:GetTime(remain))
 end
 
 local function OnUpdate(bar, elapsed)

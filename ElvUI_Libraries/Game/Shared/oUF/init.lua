@@ -2,6 +2,7 @@ local _, ns = ...
 local oUF = { Private = {} }
 ns.oUF = oUF
 
+local mod = mod
 local unpack = unpack
 local issecretvalue = issecretvalue
 local issecrettable = issecrettable
@@ -24,6 +25,26 @@ oUF.isClassicHC = season == 3 -- Hardcore
 oUF.isClassicSOD = season == 2 -- Season of Discovery
 oUF.isClassicAnniv = season == 11 -- Anniversary
 oUF.isClassicAnnivHC = season == 12 -- Anniversary Hardcore
+
+do
+	local YEAR, DAY, HOUR, MINUTE, SECOND = 31557600, 86400, 3600, 60, 1
+	function oUF:GetTime(value, noSecondText)
+		if value < SECOND then
+			return '%.1f', value
+		elseif value < MINUTE then
+			return noSecondText and '%d' or'%ds', value
+		elseif value < HOUR then
+			local mins = mod(value, HOUR) / MINUTE
+			return '%dm', mins
+		elseif value < DAY then
+			local hrs = mod(value, DAY) / HOUR
+			return '%dh', hrs
+		else
+			local days = mod(value, YEAR) / DAY
+			return '%dd', days
+		end
+	end
+end
 
 do -- secret stuff, keep it synced to ElvUI
 	function oUF:IsSecretValue(value)

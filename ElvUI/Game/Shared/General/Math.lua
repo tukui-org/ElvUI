@@ -325,34 +325,6 @@ function E:StringTitle(str)
 	return gsub(str, '(.)', strupper, 1)
 end
 
-do
-	local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
-	function E:GetTimeInfo(sec, threshold, hhmm, mmss, modRate)
-		if sec < MINUTE then
-			if modRate then
-				return sec, 7, 0.5 / modRate
-			elseif sec > threshold then
-				return sec, 3, 0.5
-			else
-				return sec, 4, 0.1
-			end
-		elseif mmss and sec < mmss then
-			return sec / MINUTE, 5, 1, mod(sec, MINUTE)
-		elseif hhmm and sec < (hhmm * MINUTE) then
-			return sec / HOUR, 6, 30, mod(sec, HOUR) / MINUTE
-		elseif sec < HOUR then
-			local mins = mod(sec, HOUR) / MINUTE
-			return mins, 2, mins > 2 and 30 or 1
-		elseif sec < DAY then
-			local hrs = mod(sec, DAY) / HOUR
-			return hrs, 1, hrs > 1 and 60 or 30
-		else
-			local days = mod(sec, YEAR) / DAY
-			return days, 0, days > 1 and 120 or 60
-		end
-	end
-end
-
 function E:GetDistance(unit1, unit2)
 	local x1, y1, _, map1 = UnitPosition(unit1)
 	if not x1 then return end

@@ -36,16 +36,6 @@ local DispelPriority = {
 	Poison  = 1,
 }
 
-local function FormatTime(sec)
-	if sec > 60 then
-		return '%dm', sec / 60
-	elseif sec < 1 then
-		return '%.1f', sec
-	else
-		return '%d', sec
-	end
-end
-
 local function AddSpell(spell, priority, stackThreshold)
 	if addon.MatchBySpellName and type(spell) == 'number' then
 		spell = oUF:GetSpellInfo(spell)
@@ -85,7 +75,7 @@ local function OnUpdate(self, elapsed)
 		end
 
 		if timeLeft > 0 then
-			self.time:SetFormattedText(FormatTime(timeLeft))
+			self.time:SetFormattedText(oUF:GetTime(timeLeft, true))
 		else
 			self:SetScript('OnUpdate', nil)
 			self.time:Hide()

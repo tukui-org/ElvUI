@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
+local ElvUF = E.oUF
 
 local _G = _G
 local strmatch = strmatch
@@ -312,8 +313,13 @@ function A:UpdateAura(button, index)
 
 	local db = A.db[button.auraType]
 	button.text:SetShown(db.showDuration)
-	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 	button.texture:SetTexture(icon)
+
+	if E:IsSecretValue(duration) then
+		-- todo
+	else
+		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
+	end
 
 	local minCount, maxCount = 2, 999 -- maybe do options for this
 	if E:IsSecretValue(count) then
@@ -327,12 +333,10 @@ function A:UpdateAura(button, index)
 	button:SetBackdropBorderColor(color.r, color.g, color.b)
 	button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
-	if not E.Midnight then
-		if duration > 0 and expiration then
-			A:SetAuraTime(button, expiration, duration, modRate)
-		else
-			A:ClearAuraTime(button)
-		end
+	if duration and expiration then
+		A:SetAuraTime(button, expiration, duration, modRate)
+	else
+		A:ClearAuraTime(button)
 	end
 end
 
@@ -350,11 +354,9 @@ function A:UpdateTempEnchant(button, index, expiration)
 		button:SetBackdropBorderColor(r, g, b)
 		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)
 
-		if not E.Midnight then
-			local remaining = (expiration * 0.001) or 0
-			A:SetAuraTime(button, remaining + GetTime(), (remaining <= 3600 and remaining > 1800) and 3600 or (remaining <= 1800 and remaining > 600) and 1800 or 600)
-		end
-	elseif not E.Midnight then
+		local remaining = (expiration * 0.001) or 0
+		A:SetAuraTime(button, remaining + GetTime(), (remaining <= 3600 and remaining > 1800) and 3600 or (remaining <= 1800 and remaining > 600) and 1800 or 600)
+	else
 		A:ClearAuraTime(button)
 	end
 end
@@ -406,7 +408,7 @@ end
 function A:Button_OnUpdate(elapsed)
 	local xpr = self.endTime
 	if xpr then
-		E.Cooldown_OnUpdate(self, elapsed)
+		self.text:SetFormattedText(ElvUF:GetTime(self.timeLeft))
 	end
 
 	if self.elapsed and self.elapsed > 0.1 then
