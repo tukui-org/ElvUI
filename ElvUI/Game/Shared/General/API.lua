@@ -1293,6 +1293,39 @@ function E:UnitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
+function E:GetClassificationColor(unit)
+	local classification = UnitClassification(unit)
+	local unitLevel = UnitEffectiveLevel(unit)
+	local maxLevel = E.expansionLevel
+
+	if classification == 'worldboss' then
+		-- boss level
+	elseif classification == 'rareelite' then
+		-- rare elite
+	elseif classification == 'rare' then
+		-- rare
+	elseif classification == 'elite' then
+		if unitLevel >= (maxLevel + 2) then
+			-- boss level
+		elseif unitLevel >= (maxLevel + 1) then
+			-- miniboss level
+		end
+	elseif unitLevel == maxLevel then
+		local baseClass = UnitClassBase(unit)
+		if baseClass == 'PALADIN' then
+			-- caster
+		else
+			-- melee
+		end
+	elseif classification == 'normal' then
+		-- normal color
+	elseif classification == 'trivial' then
+		-- trivial
+	elseif classification == 'minus' then
+		-- minus color
+	end
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('GROUP_LEFT')
 	E:RegisterEvent('GROUP_ROSTER_UPDATE')
