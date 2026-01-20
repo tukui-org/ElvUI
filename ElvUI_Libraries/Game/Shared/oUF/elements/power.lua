@@ -434,6 +434,10 @@ local function Enable(self)
 			element:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
 		end
 
+		if(element.colorPowerAtlas) then
+			element.__texture = element.__texture or element:GetStatusBarTexture():GetTexture()
+		end
+
 		if(oUF.isRetail and not element.GetDisplayPower) then
 			element.GetDisplayPower = GetDisplayPower
 		end
