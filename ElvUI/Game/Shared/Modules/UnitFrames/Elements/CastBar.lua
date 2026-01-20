@@ -592,7 +592,8 @@ function UF:PostCastStart(unit)
 		self.SafeZone:Show()
 	end
 
-	UF:SetStatusBarColor(self, UF.GetInterruptColor(self, db, unit))
+	local r, g, b = UF.GetInterruptColor(self, db, unit)
+	UF:SetStatusBarColor(self, r, g, b, self.custom_backdrop)
 end
 
 function UF:PostCastStop(unit)
@@ -609,7 +610,7 @@ function UF:PostCastFail()
 	local customColor = db and db.castbar and db.castbar.customColor
 	local color = (customColor and customColor.enable and customColor.colorInterrupted) or UF.db.colors.castInterruptedColor
 
-	UF:SetStatusBarColor(self, color.r, color.g, color.b)
+	UF:SetStatusBarColor(self, color.r, color.g, color.b, self.custom_backdrop)
 
 	if self.SafeZone then
 		self.SafeZone:Hide()
@@ -622,5 +623,6 @@ function UF:PostCastInterruptible(unit)
 	local db = self:GetParent().db
 	if not db or not db.castbar then return end
 
-	UF:SetStatusBarColor(self, UF.GetInterruptColor(self, db, unit))
+	local r, g, b = UF.GetInterruptColor(self, db, unit)
+	UF:SetStatusBarColor(self, r, g, b, self.custom_backdrop)
 end
