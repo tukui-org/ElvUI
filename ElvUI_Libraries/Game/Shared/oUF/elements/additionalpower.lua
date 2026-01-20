@@ -233,7 +233,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		if(not element.smoothing) then
-			element.smoothing = StatusBarInterpolation.Immediate
+			element.smoothing = StatusBarInterpolation and StatusBarInterpolation.Immediate or nil
 		end
 
 		self:RegisterEvent('UNIT_DISPLAYPOWER', VisibilityPath)
