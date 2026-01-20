@@ -1964,14 +1964,24 @@ function UF:MergeUnitSettings(from, to)
 end
 
 function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
-	bar:GetStatusBarTexture():SetVertexColor(r, g, b, bar.isTransparent and UF.multiplier or 1)
+	local mainR, mainG, mainB, mainA = r, g, b, bar.isTransparent and UF.multiplier or 1
+	local bgR, bgG, bgB, bgA = r, g, b, bar.isTransparent and 1 or UF.multiplier
+	if custom_backdrop then
+		bgR, bgG, bgB, bgA = custom_backdrop.r, custom_backdrop.g, custom_backdrop.b, custom_backdrop.a
+	end
 
 	if bar.bg then
-		if custom_backdrop then
-			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		if bar.invertColors then
+			bar.bg:SetVertexColor(mainR, mainG, mainB, bgA)
 		else
-			bar.bg:SetVertexColor(r, g, b)
+			bar.bg:SetVertexColor(bgR, bgG, bgB, bgA)
 		end
+	end
+
+	if bar.invertColors then
+		bar:GetStatusBarTexture():SetVertexColor(bgR, bgG, bgB, mainA)
+	else
+		bar:GetStatusBarTexture():SetVertexColor(mainR, mainG, mainB, mainA)
 	end
 end
 
