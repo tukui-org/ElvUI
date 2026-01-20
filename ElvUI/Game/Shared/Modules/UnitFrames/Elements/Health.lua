@@ -15,6 +15,8 @@ local UnitIsTapDenied = UnitIsTapDenied
 local UnitReaction = UnitReaction
 local UnitClass = UnitClass
 
+local customBackdrop = Mixin({}, ColorMixin)
+
 function UF.HealthClipFrame_OnUpdate(clipFrame)
 	UF.HealthClipFrame_HealComm(clipFrame.__frame)
 
@@ -298,9 +300,13 @@ function UF:PostUpdateHealthColor(unit, color)
 			bgc = color
 		elseif colors.healthbackdropbyvalue and not E.Midnight then
 			if colors.customhealthbackdrop then
-				newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+				customBackdrop:SetRGB(bgr, bgg, bgb)
+				bgc = true -- will use the color above
 			elseif not newb and not colors.colorhealthbyvalue then
-				newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
+				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
+				customBackdrop:SetRGB(bgr, bgg, bgb)
+				bgc = true -- will use the color above
 			end
 		elseif colors.customhealthbackdrop then
 			bgc = colors.health_backdrop
@@ -318,9 +324,9 @@ function UF:PostUpdateHealthColor(unit, color)
 	end
 
 	if newb then
-		UF:SetStatusBarColor(self, newr, newg, newb, bgc)
+		UF:SetStatusBarColor(self, newr, newg, newb, (bgc == true and customBackdrop) or bgc)
 	elseif color then
-		UF:SetStatusBarColor(self, color.r, color.g, color.b, bgc)
+		UF:SetStatusBarColor(self, color.r, color.g, color.b, (bgc == true and customBackdrop) or bgc)
 	end
 end
 
