@@ -396,7 +396,7 @@ function A:UpdateTime(button, duration, expiration, modRate)
 	if E.Midnight then
 		button.statusBar:SetShown(db.barShow)
 
-		local auraDuration = GetAuraDuration(button.unit, button.auraInstanceID)
+		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
 		if auraDuration then
 			button.cooldown:SetCooldownFromDurationObject(auraDuration)
 			button.cooldown:Show()
