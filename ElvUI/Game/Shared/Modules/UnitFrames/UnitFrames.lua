@@ -1964,13 +1964,13 @@ function UF:MergeUnitSettings(from, to)
 end
 
 function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
-	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
+	bar:GetStatusBarTexture():SetVertexColor(r, g, b, bar.isTransparent and UF.multiplier or 1)
 
 	if bar.bg then
 		if custom_backdrop then
 			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
 		else
-			bar.bg:SetVertexColor(r * UF.multiplier, g * UF.multiplier, b * UF.multiplier)
+			bar.bg:SetVertexColor(r, g, b, UF.multiplier)
 		end
 	end
 end
@@ -2027,7 +2027,7 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	UF:HandleStatusBarTemplate(statusBar, statusBar:GetParent(), isTransparent)
 
 	if isTransparent then
-		statusBar:SetStatusBarTexture(0, 0, 0, 0)
+		statusBar:SetStatusBarTexture(E.media.blankTex)
 
 		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)

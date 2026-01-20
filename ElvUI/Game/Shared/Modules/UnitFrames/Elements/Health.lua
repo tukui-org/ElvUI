@@ -290,12 +290,6 @@ function UF:PostUpdateHealthColor(unit, color)
 		end
 	end
 
-	if newb then
-		self:GetStatusBarTexture():SetVertexColor(newr, newg, newb)
-	elseif color then
-		self:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
-	end
-
 	local bg, bgc = self.bg
 	if bg then
 		if colors.useDeadBackdrop and isDeadOrGhost then
@@ -321,14 +315,12 @@ function UF:PostUpdateHealthColor(unit, color)
 				bgc = parent.colors.reaction[reaction]
 			end
 		end
+	end
 
-		if bgc then
-			bg:SetVertexColor(bgc.r * UF.multiplier, bgc.g * UF.multiplier, bgc.b * UF.multiplier)
-		elseif newb then
-			bg:SetVertexColor(newr * UF.multiplier, newg * UF.multiplier, newb * UF.multiplier)
-		elseif color then
-			bg:SetVertexColor(color.r * UF.multiplier, color.g * UF.multiplier, color.b * UF.multiplier)
-		end
+	if newb then
+		UF:SetStatusBarColor(self, newr, newg, newb, bgc)
+	elseif color then
+		UF:SetStatusBarColor(self, color.r, color.g, color.b, bgc)
 	end
 end
 
