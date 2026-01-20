@@ -144,7 +144,8 @@ local function UpdateColor(self, event, unit)
 				color = UnitHealthPercent(unit, true, curve)
 			end
 		else
-			color = element.smoothGradient or self.colors.smooth
+			local r, g, b = oUF:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
+			color = Mixin({}, ColorMixin):SetRGB(r, g, b)
 		end
 	elseif(element.colorHealth) then
 		color = self.colors.health

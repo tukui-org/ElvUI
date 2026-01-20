@@ -47,6 +47,9 @@ E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.locale = GetLocale()
 E.oUF = oUF
 
+-- moved this to oUF relink it so it works on E
+E.ColorGradient = oUF.ColorGradient
+
 Engine[1] = E
 Engine[2] = {}
 Engine[3] = E.privateVars.profile

@@ -7,16 +7,20 @@ local nierror = Private.nierror
 
 local format, type = format, type
 local select, next = select, next
+local modf = math.modf
 
 local _G = _G
 local Mixin = Mixin
+local ColorMixin = ColorMixin
+local CreateColor = CreateColor
+local GetAtlasInfo = C_Texture.GetAtlasInfo
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 
 local colorMixin = {
 	SetAtlas = function(self, atlas)
-		local info = C_Texture.GetAtlasInfo(atlas)
+		local info = GetAtlasInfo(atlas)
 		if(not info) then
 			return nierror(format('"%s" is an invalid atlas.', atlas))
 		end
@@ -26,12 +30,12 @@ local colorMixin = {
 	GetAtlas = function(self)
 		return self.atlas
 	end,
-	SetCurve = C_CurveUtil and function(self, ...)
+	SetCurve = _G.C_CurveUtil and function(self, ...)
 		if(...) then
 			if(self.curve) then
 				self.curve:ClearPoints()
 			else
-				self.curve = C_CurveUtil.CreateColorCurve()
+				self.curve = _G.C_CurveUtil.CreateColorCurve()
 			end
 
 			if(type(...) == 'table') then
@@ -47,7 +51,7 @@ local colorMixin = {
 			self.curve = nil
 		end
 	end or nil,
-	GetCurve = C_CurveUtil and function(self)
+	GetCurve = _G.C_CurveUtil and function(self)
 		return self.curve
 	end or nil,
 }
@@ -86,6 +90,22 @@ function oUF:CreateColor(r, g, b, a)
 	end
 
 	return color
+end
+
+-- https://warcraft.wiki.gg/wiki/ColorGradient
+function oUF:ColorGradient(perc, ...)
+	local value = select('#', ...)
+	if perc >= 1 then
+		return select(value - 2, ...)
+	elseif perc <= 0 then
+		return ...
+	end
+
+	local num = value / 3
+	local segment, relperc = modf(perc*(num-1))
+	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
+
+	return r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc
 end
 
 local colors = {

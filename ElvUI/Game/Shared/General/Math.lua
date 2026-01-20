@@ -71,22 +71,6 @@ function E:IsEvenNumber(num)
 	return num % 2 == 0
 end
 
--- https://warcraft.wiki.gg/wiki/ColorGradient
-function E:ColorGradient(perc, ...)
-	local value = select('#', ...)
-	if perc >= 1 then
-		return select(value - 2, ...)
-	elseif perc <= 0 then
-		return ...
-	end
-
-	local num = value / 3
-	local segment, relperc = modf(perc*(num-1))
-	local r1, g1, b1, r2, g2, b2 = select((segment*3)+1, ...)
-
-	return r1+(r2-r1)*relperc, g1+(g2-g1)*relperc, b1+(b2-b1)*relperc
-end
-
 -- Text Gradient by Simpy
 function E:TextGradient(text, ...)
 	local msg, total = '', utf8len(text)
