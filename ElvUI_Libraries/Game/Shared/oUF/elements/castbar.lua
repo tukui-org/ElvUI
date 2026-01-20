@@ -390,9 +390,11 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			element.max = nil
 		end
 
-		local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
 		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
-		element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
+		if duration then
+			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
+			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
+		end
 	else
 		if element.empowering then
 			endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
@@ -539,9 +541,11 @@ local function CastUpdate(self, event, unit, ...)
 			element.max = nil
 		end
 
-		local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
 		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
-		element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
+		if duration then
+			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
+			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
+		end
 	else
 		if(element.empowering) then
 			endTime = endTime + GetUnitEmpowerHoldAtMaxTime(unit)
