@@ -153,20 +153,14 @@ end
 function NP:SetCVars()
 	local db = NP.db
 
-	if db.clampToScreen then
+	if db.clampToScreen and not E.Retail then
 		E:SetCVar('nameplateOtherTopInset', 0.08)
 		E:SetCVar('nameplateOtherBottomInset', 0.1)
-
-		if not E.Retail then -- dont exist in retail
-			E:SetCVar('clampTargetNameplateToScreen', 1)
-		end
+		E:SetCVar('clampTargetNameplateToScreen', 1)
 	elseif GetCVar('nameplateOtherTopInset') == '0.08' and GetCVar('nameplateOtherBottomInset') == '0.1' then
 		E:SetCVar('nameplateOtherTopInset', -1)
 		E:SetCVar('nameplateOtherBottomInset', -1)
-
-		if not E.Retail then
-			E:SetCVar('clampTargetNameplateToScreen', 0)
-		end
+		E:SetCVar('clampTargetNameplateToScreen', 0)
 	end
 
 	if E.TBC or E.Wrath or E.Mists then
