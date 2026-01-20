@@ -22,7 +22,6 @@ local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
-local BleedList = E.Libs.Dispel:GetBleedList()
 local BadDispels = E.Libs.Dispel:GetBadList()
 
 UF.SideAnchor = { TOP = true, BOTTOM = true, LEFT = true, RIGHT = true }
@@ -470,13 +469,8 @@ function UF:PostUpdateAura(_, button)
 		elseif bad and db.auraByDispels and BadDispels[spellID] and debuffType and DispelTypes[debuffType] then
 			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType and (debuffType or spellID) then
-			local bleed = not debuffType and DispelTypes.Bleed and BleedList[spellID] and DebuffColors.Bleed
-			if bleed then
-				r, g, b = bleed.r, bleed.g, bleed.b
-			else
-				local color = DebuffColors[debuffType or 'none']
-				r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
-			end
+			local color = DebuffColors[debuffType or 'none']
+			r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
 		end
 	elseif steal and db.auraByDispels and button.isStealable and not button.isFriend then
 		r, g, b = steal.r, steal.g, steal.b
@@ -623,8 +617,6 @@ end
 function UF:AuraDispellable(debuffType, spellID)
 	if debuffType then
 		return DispelTypes[debuffType]
-	else
-		return DispelTypes.Bleed and BleedList[spellID]
 	end
 end
 

@@ -9,12 +9,11 @@ local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 local DispelFilter = LibDispel:GetMyDispelTypes()
 local BlockList = LibDispel:GetBlockList()
-local BleedList = LibDispel:GetBleedList()
 
 local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, spellID)
 	local allowSpell = oUF:NotSecretValue(spellID)
 	local spell = list and (allowSpell and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
-	local dispelType = auraType or (allowSpell and BleedList[spellID] and 'Bleed') or nil
+	local dispelType = auraType or nil
 
 	if spell then
 		if spell.enable then
