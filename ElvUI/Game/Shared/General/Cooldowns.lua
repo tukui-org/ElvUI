@@ -7,11 +7,6 @@ local next = next
 
 E.RegisteredCooldowns = {}
 
-function E:CooldownUpdate(cooldown)
-	if not cooldown then return end
-
-end
-
 function E:CooldownSettings(db)
 	for cooldown in next, E.RegisteredCooldowns do
 
@@ -20,6 +15,11 @@ end
 
 function E:RegisterCooldown(cooldown, db)
 	if cooldown.isRegisteredCooldown then return end
+
+	-- extract the blizzard cooldown region
+	if not cooldown.Text then
+		cooldown.Text = cooldown:GetRegions()
+	end
 
 	cooldown.isRegisteredCooldown = true
 end
