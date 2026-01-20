@@ -1666,7 +1666,7 @@ function AB:SetButtonDesaturation(button, duration)
 		return
 	end
 
-	if AB.db.desaturateOnCooldown and (duration and duration > 1.5) then
+	if AB.db.desaturateOnCooldown and (duration and tonumber(duration) > 1.5) then
 		button.icon:SetDesaturated(true)
 		button.saturationLocked = true
 	else
