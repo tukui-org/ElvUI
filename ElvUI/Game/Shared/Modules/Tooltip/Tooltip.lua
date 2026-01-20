@@ -42,7 +42,6 @@ local UnitBattlePetType = UnitBattlePetType
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
-local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
@@ -220,7 +219,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
-		local level, realLevel = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit), UnitLevel(unit)
+		local level, realLevel = E:UnitEffectiveLevel(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
 
@@ -319,7 +318,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 					diffColor = GetCreatureDifficultyColor(level)
 				end
 			else
-				level = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit)
+				level = E:UnitEffectiveLevel(unit)
 				diffColor = GetCreatureDifficultyColor(level)
 			end
 

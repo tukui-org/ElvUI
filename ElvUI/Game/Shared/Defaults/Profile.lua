@@ -632,6 +632,7 @@ local NP_Health = {
 	height = 10,
 	healPrediction = true,
 	useClassColor = true,
+	useClassificationColor = true,
 	smoothbars = false,
 	text = {
 		enable = true,
@@ -893,6 +894,15 @@ P.nameplates = {
 		castbarDesaturate = true,
 		chargingRunes = true,
 		runeBySpec = true,
+		classification = {
+			worldboss = { r = 0.81, g = 0.69, b = 0 },
+			rareelite = { r = 0, g = 0.74, b = 0.61 },
+			rare = { r = 0.27, g = 0.72, b = 0 },
+			eliteBoss = { r = 0.85, g = 0, b = 0.30 },
+			eliteMini = { r = 0.47, g = 0.25, b = 0.76 },
+			caster = { r = 0, g = 0.50, b = 0.78 },
+			melee = { r = 0.82, g = 0.19, b = 0 },
+		},
 		reactions = {
 			[1] = {r = 0.80, g = 0.30, b = 0.21}, -- Hated
 			[2] = {r = 0.80, g = 0.30, b = 0.21}, -- Hostile

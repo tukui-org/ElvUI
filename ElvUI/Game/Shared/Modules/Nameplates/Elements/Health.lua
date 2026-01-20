@@ -15,24 +15,29 @@ local CreateFrame = CreateFrame
 function NP:Health_UpdateColor(_, unit)
 	if not unit or self.unit ~= unit then return end
 	local element = self.Health
-	local Selection = E.Retail and element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
+
+	local useSelection = E.Retail and element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
+	local useClassification = element.colorClassification and E:GetClassificationColor(unit)
+	local useReaction = element.colorReaction and UnitReaction(unit, 'player')
 
 	local color
 	if element.colorDisconnected and not UnitIsConnected(unit) then
 		color = self.colors.disconnected
 	elseif element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) then
 		color = NP.Colors.tapped
+	elseif useClassification then
+		color = NP.Colors.classification[useClassification]
 	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and UnitPlayerControlled(unit) and not self.isPlayer) then
 		local _, class = UnitClass(unit)
 		color = self.colors.class[class]
-	elseif Selection then
-		if Selection == 3 then
-			Selection = UnitPlayerControlled(unit) and 5 or 3
+	elseif useSelection then
+		if useSelection == 3 then
+			useSelection = UnitPlayerControlled(unit) and 5 or 3
 		end
 
-		color = NP.Colors.selection[Selection]
-	elseif element.colorReaction and UnitReaction(unit, 'player') then
-		color = NP.Colors.reactions[UnitReaction(unit, 'player')]
+		color = NP.Colors.selection[useSelection]
+	elseif useReaction then
+		color = NP.Colors.reactions[useReaction]
 	elseif element.colorSmooth then
 		if E.Midnight then
 			local curve = self.colors.health:GetCurve()
@@ -77,6 +82,7 @@ function NP:Health_SetColors(nameplate, threatColors)
 	if threatColors then -- managed by ThreatIndicator_PostUpdate
 		nameplate.Health:SetColorTapping(nil)
 		nameplate.Health:SetColorSelection(nil)
+		nameplate.Health.colorClassification = nil
 		nameplate.Health.colorReaction = nil
 		nameplate.Health.colorClass = nil
 	else
@@ -84,6 +90,7 @@ function NP:Health_SetColors(nameplate, threatColors)
 		nameplate.Health:SetColorTapping(true)
 		nameplate.Health:SetColorSelection(E.Retail)
 		nameplate.Health.colorReaction = not E.Retail
+		nameplate.Health.colorClassification = db.health and db.health.useClassificationColor
 		nameplate.Health.colorClass = db.health and db.health.useClassColor
 	end
 end

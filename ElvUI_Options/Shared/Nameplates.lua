@@ -179,12 +179,13 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 3)
 	group.args.powerGroup.args.useAtlas = ACH:Toggle(L["Use Atlas Textures"], nil, 4)
 	group.args.powerGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 5)
-	group.args.powerGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
-	group.args.powerGroup.args.width = ACH:Range(L["Width"], nil, 7, { min = minWidth, max = MaxWidth(unit), step = 1 })
-	group.args.powerGroup.args.height = ACH:Range(L["Height"], nil, 8, { min = minHeight, max = MaxHeight(unit), step = 1 })
-	group.args.powerGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
-	group.args.powerGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 10, { min = -100, max = 100, step = 1 })
-	group.args.powerGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 11, C.Values.AllPoints)
+	group.args.powerGroup.args.useClassificationColor = ACH:Toggle(L["Use Classification Color"], nil, 6)
+	group.args.powerGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 7)
+	group.args.powerGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = minWidth, max = MaxWidth(unit), step = 1 })
+	group.args.powerGroup.args.height = ACH:Range(L["Height"], nil, 9, { min = minHeight, max = MaxHeight(unit), step = 1 })
+	group.args.powerGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 10, { min = -100, max = 100, step = 1 })
+	group.args.powerGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 11, { min = -100, max = 100, step = 1 })
+	group.args.powerGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 12, C.Values.AllPoints)
 
 	group.args.powerGroup.args.textGroup = ACH:Group(L["Text"], nil, 200, nil, function(info) return E.db.nameplates.units[unit].power.text[info[#info]] end, function(info, value) E.db.nameplates.units[unit].power.text[info[#info]] = value NP:ConfigureAll() end)
 	group.args.powerGroup.args.textGroup.inline = true
@@ -576,13 +577,19 @@ NamePlates.colorsGroup.args.selectionGroup.args['8'] = ACH:Color(L["Friend"], ni
 NamePlates.colorsGroup.args.selectionGroup.args['9'] = ACH:Color(L["Dead"], nil, 9)
 NamePlates.colorsGroup.args.selectionGroup.args['13'] = ACH:Color(L["Battleground Friendly"], nil, 13)
 
-NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 5, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+NamePlates.colorsGroup.args.classification = ACH:Group(L["Classification Colors"], nil, 5, nil, function(info) local t, d = E.db.nameplates.colors.classification[info[#info]], P.nameplates.colors.classification[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classification[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+NamePlates.colorsGroup.args.classification.inline = true
+for key in next, NP.db.colors.classification do
+	NamePlates.colorsGroup.args.classification.args[key] = ACH:Color(key)
+end
+
+NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 6, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.reactions.inline = true
 for i = 1, 8 do
 	NamePlates.colorsGroup.args.reactions.args[''..i] = ACH:Color(C.Values.Roman[i], nil, i)
 end
 
-NamePlates.colorsGroup.args.healPrediction = ACH:Group(L["Heal Prediction"], nil, 6, nil, function(info) local t, d = E.db.nameplates.colors.healPrediction[info[#info]], P.nameplates.colors.healPrediction[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.healPrediction[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
+NamePlates.colorsGroup.args.healPrediction = ACH:Group(L["Heal Prediction"], nil, 7, nil, function(info) local t, d = E.db.nameplates.colors.healPrediction[info[#info]], P.nameplates.colors.healPrediction[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.healPrediction[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.healPrediction.inline = true
 
 NamePlates.colorsGroup.args.healPrediction.args.personal = ACH:Color(L["Personal"], nil, 1, true)
@@ -590,7 +597,7 @@ NamePlates.colorsGroup.args.healPrediction.args.others = ACH:Color(L["Others"], 
 NamePlates.colorsGroup.args.healPrediction.args.absorbs = ACH:Color(L["Absorbs"], nil, 3, true, nil, nil, nil, nil, not E.Retail)
 NamePlates.colorsGroup.args.healPrediction.args.healAbsorbs = ACH:Color(L["Heal Absorbs"], nil, 4, true, nil, nil, nil, nil, E.Classic)
 
-NamePlates.colorsGroup.args.power = ACH:Group(L["Power Color"], nil, 7, nil, function(info) local t, d = E.db.nameplates.colors.power[info[#info]], P.nameplates.colors.power[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.power[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
+NamePlates.colorsGroup.args.power = ACH:Group(L["Power Color"], nil, 8, nil, function(info) local t, d = E.db.nameplates.colors.power[info[#info]], P.nameplates.colors.power[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.power[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.power.inline = true
 NamePlates.colorsGroup.args.power.args.MANA = ACH:Color(L["MANA"], nil, 1)
 NamePlates.colorsGroup.args.power.args.RAGE = ACH:Color(L["RAGE"], nil, 2)
@@ -604,7 +611,7 @@ NamePlates.colorsGroup.args.power.args.INSANITY = ACH:Color(L["INSANITY"], nil, 
 NamePlates.colorsGroup.args.power.args.MAELSTROM = ACH:Color(L["MAELSTROM"], nil, 10, nil, nil, nil, nil, nil, not E.Retail)
 NamePlates.colorsGroup.args.power.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 11)
 
-NamePlates.colorsGroup.args.classResources = ACH:Group(L["Class Resources"], nil, 8, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
+NamePlates.colorsGroup.args.classResources = ACH:Group(L["Class Resources"], nil, 9, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.classResources.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, E.Classic)
 NamePlates.colorsGroup.args.classResources.args.ARCANE_CHARGES = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.MAGE[info[#info]], P.nameplates.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.classResources.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.WARLOCK[info[#info]], P.nameplates.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, E.Classic)

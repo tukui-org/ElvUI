@@ -970,6 +970,14 @@ function NP:UpdateColors()
 
 	NP.Colors.power[POWERTYPE_ALTERNATE] = E:SetColorTable(NP.Colors.power[POWERTYPE_ALTERNATE], NP.db.colors.power.ALT_POWER)
 
+	for key in next, NP.db.colors.classification do
+		if not NP.Colors.classification[key] then
+			NP.Colors.classification[key] = {}
+		end
+
+		NP.Colors.classification[key] = E:SetColorTable(NP.Colors.classification[key], NP.db.colors.classification[key])
+	end
+
 	for i = 1, 8 do
 		NP.Colors.reactions[i] = E:SetColorTable(NP.Colors.reactions[i], NP.db.colors.reactions[i])
 	end
@@ -995,6 +1003,7 @@ function NP:Initialize()
 	NP.StatusBars = {}
 	NP.SoundHandlers = {}
 	NP.Colors = {
+		classification = {},
 		selection = {},
 		reactions = {},
 		power = {}

@@ -36,16 +36,18 @@ local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParent = UIParent
 local UIParentLoadAddOn = UIParentLoadAddOn
+local UnitClassBase = UnitClassBase
+local UnitClassification = UnitClassification
 local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
-local UnitThreatSituation = UnitThreatSituation
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsVisible = UnitIsVisible
 local UnitSex = UnitSex
+local UnitThreatSituation = UnitThreatSituation
 
 local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
@@ -1293,30 +1295,30 @@ function E:UnitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
+function E:UnitEffectiveLevel(unit)
+	if E.Retail or E.Mists or E.Wrath or E.TBC then
+		return _G.UnitEffectiveLevel(unit)
+	else
+		return _G.UnitLevel(unit)
+	end
+end
+
 function E:GetClassificationColor(unit)
+	if UnitIsPlayer(unit) then return end
+
 	local classification = UnitClassification(unit)
-	local unitLevel = UnitEffectiveLevel(unit)
+	local unitLevel = E:UnitEffectiveLevel(unit)
 	local maxLevel = E.expansionLevel
 
-	if classification == 'worldboss' then
-		-- boss level
-	elseif classification == 'rareelite' then
-		-- rare elite
-	elseif classification == 'rare' then
-		-- rare
-	elseif classification == 'elite' then
-		if unitLevel >= (maxLevel + 2) then
-			-- boss level
-		elseif unitLevel >= (maxLevel + 1) then
-			-- miniboss level
-		end
+	if classification == 'worldboss' or classification == 'rareelite' or classification == 'rare' then
+		return classification
+	elseif (classification == 'elite') and (unitLevel >= (maxLevel + 2)) then
+		return 'eliteBoss'
+	elseif (classification == 'elite') and (unitLevel >= (maxLevel + 1)) then
+		return 'eliteMini'
 	else
 		local baseClass = UnitClassBase(unit)
-		if baseClass == 'PALADIN' then
-			-- caster
-		else
-			-- melee
-		end
+		return (baseClass == 'PALADIN' and 'caster') or 'melee'
 	end
 end
 

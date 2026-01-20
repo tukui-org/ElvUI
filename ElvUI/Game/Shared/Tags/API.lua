@@ -12,7 +12,6 @@ local _G = _G
 local GetRuneCooldown = GetRuneCooldown
 local UnitHealthMax = UnitHealthMax
 local UnitIsUnit = UnitIsUnit
-local UnitLevel = UnitLevel
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local UnitPowerMax = UnitPowerMax
@@ -143,10 +142,10 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 ------------------------------------------------------------------------
 
 Tags.Env.UnitEffectiveLevel = function(unit)
-	if E.Retail or E.Mists or E.Wrath then
+	if E.Retail or E.Mists or E.Wrath or E.TBC then
 		return _G.UnitEffectiveLevel(unit)
 	else
-		return UnitLevel(unit)
+		return _G.UnitLevel(unit)
 	end
 end
 
