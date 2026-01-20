@@ -120,7 +120,7 @@ local function UpdateBar(element, bar)
 	if element.buffColor then r, g, b = unpack(element.buffColor) end
 	if bar.filter == 'HARMFUL' then
 		if not debuffType or debuffType == '' then
-			debuffType = 'none'
+			debuffType = 'None'
 		end
 
 		local color = DebuffColors[debuffType]

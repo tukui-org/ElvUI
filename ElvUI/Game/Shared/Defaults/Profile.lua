@@ -94,11 +94,12 @@ P.general = {
 		PALADIN = { b = 0.72, g = 0.54, r = 0.95 }
 	},
 	debuffColors = { -- handle colors of LibDispel
-		none = { r = 0.8, g = 0, b = 0 },
+		None = { r = 0.8, g = 0, b = 0 },
 		Magic = { r = 0.2, g = 0.6, b = 1 },
 		Curse = { r = 0.6, g = 0, b = 1 },
 		Disease = { r = 0.6, g = 0.4, b = 0 },
 		Poison = { r = 0, g = 0.6, b = 0 },
+		Enrage = { r = 1, g = 0.5, b = 0 },
 
 		-- These dont exist in Blizzards color table
 		Bleed = { r = 1, g = 0.2, b = 0.6 },

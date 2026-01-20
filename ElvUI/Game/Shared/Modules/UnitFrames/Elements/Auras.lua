@@ -469,7 +469,7 @@ function UF:PostUpdateAura(_, button)
 		elseif bad and db.auraByDispels and BadDispels[spellID] and debuffType and DispelTypes[debuffType] then
 			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType and (debuffType or spellID) then
-			local color = DebuffColors[debuffType or 'none']
+			local color = DebuffColors[debuffType or 'None']
 			r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
 		end
 	elseif steal and db.auraByDispels and button.isStealable and not button.isFriend then

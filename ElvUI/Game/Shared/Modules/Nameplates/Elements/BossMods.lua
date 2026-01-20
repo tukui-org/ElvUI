@@ -153,7 +153,7 @@ function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate, skip)
 	if desaturate then
 		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	else
-		local color = DebuffColors.none
+		local color = DebuffColors.None
 		button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
 	end
 

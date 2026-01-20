@@ -133,7 +133,7 @@ local function UpdateDebuff(element, aura, forced, stackThreshold)
 			end
 		end
 
-		local c = DebuffColors[debuffType] or DebuffColors.none
+		local c = DebuffColors[debuffType] or DebuffColors.None
 		element:SetBackdropBorderColor(c.r, c.g, c.b)
 
 		element:Show()
