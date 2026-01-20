@@ -63,7 +63,7 @@ local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- E
 -- GLOBALS: IsConsumableAction, IsCurrentAction, IsEquippedAction, IsItemAction, IsLoggedIn, IsMouseButtonDown
 -- GLOBALS: IsStackableAction, IsUsableAction, PickupAction, PickupCompanion, PickupMacro, PickupPetAction
 -- GLOBALS: SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, UIParent
--- GLOBALS: ActionButton_ApplyCooldown, ActionButtonSpellAlertManager
+-- GLOBALS: ActionButton_ApplyCooldown
 
 -- unwrapped functions that return tables now
 local GetSpellCharges = function(spell)
@@ -2457,17 +2457,13 @@ function UpdateHotkeys(self)
 end
 
 function ShowOverlayGlow(self)
-	if ActionButtonSpellAlertManager then
-		ActionButtonSpellAlertManager:ShowAlert(self)
-	elseif LCG then
+	if LCG then
 		LCG.ShowOverlayGlow(self)
 	end
 end
 
 function HideOverlayGlow(self)
-	if ActionButtonSpellAlertManager then
-		ActionButtonSpellAlertManager:HideAlert(self)
-	elseif LCG then
+	if LCG then
 		LCG.HideOverlayGlow(self)
 	end
 end
@@ -3120,12 +3116,6 @@ if oldversion and next(lib.buttonRegistry) then
 		if oldversion < 23 then
 			if button.overlay then
 				button.overlay:Hide()
-
-				if WoWRetail and ActionButtonSpellAlertManager then
-					ActionButtonSpellAlertManager:HideAlert(button)
-				elseif ActionButton_HideOverlayGlow then
-					ActionButton_HideOverlayGlow(button)
-				end
 
 				button.overlay = nil
 				UpdateOverlayGlow(button)
