@@ -121,7 +121,8 @@ function A:UpdateButton(button)
 	if button.statusBar and button.statusBar:IsShown() then
 		local r, g, b
 		if db.barColorGradient then
-			r, g, b = E:ColorGradient(button.timeLeft, button.duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
+			local maxValue = button.duration or 0
+			r, g, b = E:ColorGradient(maxValue == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
 		else
 			r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
 		end

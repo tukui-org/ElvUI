@@ -267,11 +267,12 @@ function UF:PostUpdateHealthColor(unit, color)
 		end
 	end
 
+	local minValue, maxValue = self.cur, self.max
 	local newr, newg, newb, healthbreakBackdrop
 	if not color and not E.Midnight then -- dont need to process this when its hostile
 		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
 			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
-				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
+				newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
 			elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
 				local breakPoint = self.max > 0 and (self.cur / self.max) or 1
 				local threshold = healthBreak.threshold
@@ -303,9 +304,9 @@ function UF:PostUpdateHealthColor(unit, color)
 			bgc = color
 		elseif colors.healthbackdropbyvalue and not E.Midnight then
 			if colors.customhealthbackdrop then
-				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+				newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
 			elseif not newb and not colors.colorhealthbyvalue then
-				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
+				newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
 			end
 		elseif colors.customhealthbackdrop then
 			bgc = colors.health_backdrop

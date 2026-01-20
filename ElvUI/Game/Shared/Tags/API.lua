@@ -345,7 +345,8 @@ do
 
 			local combo = ElvUF.colors.ComboPoints
 			local c1, c2, c3 = combo[1], combo[2], combo[3]
-			r, g, b = E:ColorGradient(Min, Max, c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
+
+			r, g, b = E:ColorGradient(Max == 0 and 0 or (Min / Max), c1.r, c1.g, c1.b, c2.r, c2.g, c2.b, c3.r, c3.g, c3.b)
 		end
 
 		-- try additional mana

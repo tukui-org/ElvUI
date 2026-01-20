@@ -599,7 +599,8 @@ if not E.Midnight then
 		if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
 			return Hex(0.84, 0.75, 0.65)
 		else
-			local r, g, b = E:ColorGradient(UnitHealth(unit), UnitHealthMax(unit), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
+			local minHealth, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
+			local r, g, b = E:ColorGradient(maxHealth == 0 and 0 or (minHealth / maxHealth), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 			return Hex(r, g, b)
 		end
 	end)
