@@ -148,10 +148,12 @@ function UF:Configure_ClassBar(frame)
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
 			local button = bars[i]
-			button.backdrop:Hide()
+			if button.backdrop then
+				button.backdrop:Hide()
+			end
 
 			if i <= MAX_CLASS_BAR then
-				if not button.backdrop.forcedBorderColors then
+				if button.backdrop and not button.backdrop.forcedBorderColors then
 					button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end
 
@@ -190,7 +192,9 @@ function UF:Configure_ClassBar(frame)
 					end
 				end
 
-				button.backdrop:SetShown(frame.USE_MINI_CLASSBAR)
+				if button.backdrop then
+					button.backdrop:SetShown(frame.USE_MINI_CLASSBAR)
+				end
 
 				button:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 
@@ -200,7 +204,9 @@ function UF:Configure_ClassBar(frame)
 			end
 		end
 
-		bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
+		if bars.backdrop then
+			bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
+		end
 	elseif frame.ClassBar == 'EclipseBar' then
 		local lunarTex = bars.LunarBar:GetStatusBarTexture()
 
