@@ -7,6 +7,8 @@ local strmatch = strmatch
 local tonumber = tonumber
 local tinsert, next = tinsert, next
 
+local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
@@ -297,15 +299,29 @@ function A:ClearAuraTime(button, expired)
 end
 
 function A:UpdateAura(button, index)
-	local name, icon, count, debuffType, duration, expiration, _, _, _, _, _, _, _, _, modRate = E:GetAuraData(button.header:GetAttribute('unit'), index, button.filter)
-	if not name then return end
+	local unitToken = button.header:GetAttribute('unit')
+	local data = GetAuraDataByIndex(unitToken, index, button.filter)
+	if not data then return end
+
+	local duration = data.duration
+	local icon = data.icon
+	local expiration = data.expirationTime
+	local debuffType = data.dispelName
+	local count = data.applications
+	local modRate = data.timeMod
 
 	local db = A.db[button.auraType]
 	button.text:SetShown(db.showDuration)
 	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 	button.texture:SetTexture(icon)
 
-	button.count:SetText(not count and '' or (not E.Midnight and count <= 1 and '') or count)
+	local minCount, maxCount = 2, 999 -- maybe do options for this
+	if E:IsSecretValue(count) then
+		button.count:SetText(GetAuraApplicationDisplayCount(unitToken, data.auraInstanceID, minCount, maxCount))
+	else
+		local hideCount = not count or (count < minCount or count > maxCount)
+		button.count:SetText(hideCount and '' or count)
+	end
 
 	local color = (E:NotSecretValue(debuffType) and (button.filter == 'HARMFUL' and A.db.colorDebuffs) and DebuffColors[debuffType or 'none']) or E.db.general.bordercolor
 	button:SetBackdropBorderColor(color.r, color.g, color.b)
