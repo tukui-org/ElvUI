@@ -95,6 +95,7 @@ local Private = oUF.Private
 local unitSelectionType = Private.unitSelectionType
 
 local gsub = gsub
+local unpack = unpack
 
 local GetPetHappiness = GetPetHappiness
 local UnitClass = UnitClass
