@@ -110,9 +110,7 @@ local function UpdateColor(self, event, runeID, alt)
 		color = self.colors.runes[rune.runeType] or self.colors.power.RUNES
 
 		if color then
-			for index = 1, #element do
-				element[index]:GetStatusBarTexture():SetVertexColor(color:GetRGB())
-			end
+			rune:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 		end
 	else
 		local specColor = spec and element.colorSpec and (spec > 0 and spec < 4)

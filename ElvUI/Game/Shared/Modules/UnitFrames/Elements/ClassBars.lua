@@ -77,7 +77,7 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	if isRunes and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, rune, custom_backdrop)
 	elseif isRunes and rune then
-		local color = UF:ClassPower_BarColor(isRunes, rune)
+		local color = UF:ClassPower_BarColor(rune, nil, colors, powers, isRunes)
 		UF:SetStatusBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
 		for index, bar in ipairs(self) do
@@ -491,7 +491,7 @@ function UF:Runes_UpdateCharged(runes, rune, custom_backdrop)
 
 	if rune then
 		local r, g, b = UF:Runes_GetColor(rune, colors)
-		UF:SetStatusBarColor(rune, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
+		UF:SetStatusBarColor(rune, r, g, b, custom_backdrop)
 	elseif runes then
 		for _, bar in ipairs(runes) do
 			local r, g, b = UF:Runes_GetColor(bar, colors)
