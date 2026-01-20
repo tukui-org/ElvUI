@@ -5,7 +5,6 @@ local AuraFiltered = oUF.AuraFiltered
 local VISIBLE = 1
 local HIDDEN = 0
 
-local mod = mod
 local next = next
 local wipe = wipe
 local pcall = pcall
@@ -163,7 +162,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.isDebuff = isDebuff
 	bar.debuffType = debuffType
 	bar.isStealable = isStealable
-	bar.isPlayer = source == 'player' or source == 'vehicle'
+	bar.isPlayer = oUF:NotSecretValue(source) and (source == 'player' or source == 'vehicle') or nil
 	bar.position = position
 	bar.duration = duration
 	bar.expiration = expiration
