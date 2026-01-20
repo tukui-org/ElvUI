@@ -173,7 +173,9 @@ function UF:Configure_Castbar(frame)
 	local SPACING1 = UF.BORDER + UF.SPACING
 	local SPACING2 = SPACING1 * 2
 
-	E:SetSmoothing(castbar, db.smoothbars)
+	if not E.Midnight then
+		E:SetSmoothing(castbar, db.smoothbars)
+	end
 
 	castbar.timeToHold = db.timeToHold
 	castbar:SetReverseFill(db.reverse)
