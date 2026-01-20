@@ -30,8 +30,7 @@ function NP:Health_UpdateColor(_, unit)
 		if Selection == 3 then Selection = UnitPlayerControlled(unit) and 5 or 3 end
 		t = NP.db.colors.selection[Selection]
 	elseif element.colorReaction and UnitReaction(unit, 'player') then
-		local reaction = UnitReaction(unit, 'player')
-		t = NP.db.colors.reactions[reaction == 4 and 'neutral' or reaction <= 3 and 'bad' or 'good']
+		t = NP.db.colors.reactions[UnitReaction(unit, 'player')]
 	elseif element.colorSmooth and not E.Midnight then
 		--r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
 	elseif element.colorHealth then

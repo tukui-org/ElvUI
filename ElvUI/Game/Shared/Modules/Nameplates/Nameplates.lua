@@ -760,7 +760,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.unitName, self.unitRealm = UnitName(unit)
 	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
 	self.className, self.classFile, self.classID = UnitClass(unit)
-	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction == 4 and 'neutral' or self.repReaction <= 3 and 'bad' or 'good']) or nil
+	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction]) or nil
 
 	local specID, specIcon
 	local spec = E.Retail and E:GetUnitSpecInfo(unit)
@@ -868,7 +868,7 @@ function NP:UNIT_FACTION(event, unit)
 	self.isEnemy = UnitIsEnemy('player', unit)
 	self.faction = UnitFactionGroup(unit)
 	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
-	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction == 4 and 'neutral' or self.repReaction <= 3 and 'bad' or 'good']) or nil
+	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction]) or nil
 
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)

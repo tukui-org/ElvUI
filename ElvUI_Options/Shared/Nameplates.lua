@@ -536,6 +536,7 @@ NamePlates.colorsGroup.args.general.args.spacer1 = ACH:Spacer(5, 'full')
 NamePlates.colorsGroup.args.general.args.glowColor = ACH:Color(L["Target Indicator Color"], nil, 6, true)
 NamePlates.colorsGroup.args.general.args.lowHealthColor = ACH:Color(L["Low Health Color"], L["Color when at Low Health Threshold"], 7, true)
 NamePlates.colorsGroup.args.general.args.lowHealthHalf = ACH:Color(L["Low Health Half"], L["Color when at half of the Low Health Threshold"], 8, true)
+NamePlates.colorsGroup.args.general.args.tapped = ACH:Color(L["Tagged NPC"], nil, 9, true)
 
 NamePlates.colorsGroup.args.threat = ACH:Group(L["Threat"], nil, 2, nil, function(info) local t, d = E.db.nameplates.colors.threat[info[#info]], P.nameplates.colors.threat[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.threat[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, function() return not E.db.nameplates.threat.useThreatColor end)
 NamePlates.colorsGroup.args.threat.inline = true
@@ -580,7 +581,6 @@ NamePlates.colorsGroup.args.reactions.inline = true
 for i = 1, 8 do
 	NamePlates.colorsGroup.args.reactions.args[''..i] = ACH:Color(C.Values.Roman[i], nil, i)
 end
-NamePlates.colorsGroup.args.reactions.args.tapped = ACH:Color(L["Tagged NPC"], nil, -1, nil, nil, function(info) local t, d = E.db.nameplates.colors[info[#info]], P.nameplates.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 
 NamePlates.colorsGroup.args.healPrediction = ACH:Group(L["Heal Prediction"], nil, 6, nil, function(info) local t, d = E.db.nameplates.colors.healPrediction[info[#info]], P.nameplates.colors.healPrediction[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.healPrediction[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.healPrediction.inline = true
