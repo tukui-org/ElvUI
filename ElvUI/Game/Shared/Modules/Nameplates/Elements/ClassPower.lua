@@ -9,7 +9,7 @@ local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
-function NP:ClassPower_SetBarColor(bar, r, g, b)
+function NP:SetStatusBarColor(bar, r, g, b)
 	bar:SetStatusBarColor(r, g, b)
 
 	if bar.bg then
@@ -24,14 +24,14 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 		NP:Runes_UpdateCharged(self, rune)
 	elseif isRunes and rune and not self.classColor then
 		local color = UF:ClassPower_BarColor(isRunes, rune)
-		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
+		NP:SetStatusBarColor(rune, color.r, color.g, color.b)
 	else
 		for index, bar in ipairs(self) do
 			local color = self.classColor or UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
 			if not color or not color.r then
-				NP:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b)
+				NP:SetStatusBarColor(bar, fallback.r, fallback.g, fallback.b)
 			else
-				NP:ClassPower_SetBarColor(bar, color.r, color.g, color.b)
+				NP:SetStatusBarColor(bar, color.r, color.g, color.b)
 			end
 		end
 	end
@@ -172,10 +172,10 @@ function NP:Runes_UpdateCharged(runes, rune)
 	local classColor = (runes and runes.classColor) or (rune and rune.__owner and rune.__owner.classColor)
 
 	if rune then
-		NP:ClassPower_SetBarColor(rune, UF:Runes_GetColor(rune, colors, classColor))
+		NP:SetStatusBarColor(rune, UF:Runes_GetColor(rune, colors, classColor))
 	elseif runes then
 		for _, bar in ipairs(runes) do
-			NP:ClassPower_SetBarColor(bar, UF:Runes_GetColor(bar, colors, classColor))
+			NP:SetStatusBarColor(bar, UF:Runes_GetColor(bar, colors, classColor))
 		end
 	end
 end

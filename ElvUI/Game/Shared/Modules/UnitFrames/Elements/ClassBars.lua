@@ -59,18 +59,6 @@ function UF:PostVisibility_ClassBars(frame)
 	UF:Configure_InfoPanel(frame)
 end
 
-function UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
-	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
-
-	if bar.bg then
-		if custom_backdrop then
-			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		else
-			bar.bg:SetVertexColor(r * UF.multiplier, g * UF.multiplier, b * UF.multiplier)
-		end
-	end
-end
-
 function UF:ClassPower_GetColor(colors, powerType)
 	local all, power = colors.classResources, colors.power
 	local mine = all and all[E.myclass]
@@ -90,14 +78,14 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 		UF:Runes_UpdateCharged(self, rune, custom_backdrop)
 	elseif isRunes and rune then
 		local color = UF:ClassPower_BarColor(isRunes, rune)
-		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
+		UF:SetStatusBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
 		for index, bar in ipairs(self) do
 			local color = UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
 			if not color or not color.r then
-				UF:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
+				UF:SetStatusBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
 			else
-				UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
+				UF:SetStatusBarColor(bar, color.r, color.g, color.b, custom_backdrop)
 			end
 		end
 	end
@@ -497,11 +485,11 @@ function UF:Runes_UpdateCharged(runes, rune, custom_backdrop)
 
 	if rune then
 		local r, g, b = UF:Runes_GetColor(rune, colors)
-		UF:ClassPower_SetBarColor(rune, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
+		UF:SetStatusBarColor(rune, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
 	elseif runes then
 		for _, bar in ipairs(runes) do
 			local r, g, b = UF:Runes_GetColor(bar, colors)
-			UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
+			UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
 		end
 	end
 end

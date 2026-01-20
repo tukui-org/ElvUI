@@ -221,27 +221,7 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 
 	bar.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
 
-	if bar.bg then
-		if (UF.db.colors.transparentAurabars and not bar.isTransparent) or (bar.isTransparent and (not UF.db.colors.transparentAurabars or bar.invertColors ~= UF.db.colors.invertAurabars)) then
-			UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, bar, bar.bg, nil, UF.db.colors.invertAurabars)
-		else
-			local sbTexture = bar:GetStatusBarTexture()
-			if not bar.bg:GetTexture() then
-				UF:Update_StatusBar(bar.bg, UF.db.colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
-			end
-
-			UF:SetStatusBarBackdropPoints(bar, sbTexture, bar.bg)
-		end
-	end
-
 	if colors then
-		bar:GetStatusBarTexture():SetVertexColor(colors.r, colors.g, colors.b)
-
-		if not bar.hookedColor then
-			UF.UpdateBackdropTextureColor(bar, colors.r, colors.g, colors.b)
-		end
-	else
-		local r, g, b = bar:GetStatusBarColor()
-		UF.UpdateBackdropTextureColor(bar, r, g, b)
+		UF:SetStatusBarColor(bar, colors.r, colors.g, colors.b, bar.custom_backdrop)
 	end
 end

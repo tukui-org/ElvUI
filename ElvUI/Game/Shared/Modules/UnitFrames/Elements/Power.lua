@@ -103,7 +103,6 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.colorTapping = false
 
 	power:CreateBackdrop(nil, nil, nil, nil, true)
-	power.backdrop.callbackBackdropColor = UF.PowerBackdropColor
 
 	UF:Construct_ClipFrame(frame, power)
 
@@ -264,17 +263,6 @@ function UF:Configure_Power(frame, healthUpdate)
 	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg, nil, UF.db.colors.invertPower, db.power.reverseFill)
-end
-
-function UF:PowerBackdropColor()
-	local parent = self:GetParent()
-	if parent.isTransparent then
-		local r, g, b = parent:GetStatusBarColor()
-		UF.UpdateBackdropTextureColor(parent, r or 0, g or 0, b or 0, E.media.backdropfadecolor[4])
-	else
-		self:SetBackdropColor(unpack(E.media.backdropfadecolor))
-		self:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
-	end
 end
 
 function UF:GetDisplayPower(unit)

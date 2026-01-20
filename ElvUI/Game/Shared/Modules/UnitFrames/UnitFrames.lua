@@ -575,35 +575,28 @@ function UF:UpdateColors()
 end
 
 function UF:Update_StatusBars(statusbars)
-	local statusBarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 	for statusbar in pairs(statusbars or UF.statusbars) do
-		if statusbar then
-			local useBlank = statusbar.isTransparent
-			if statusbar.parent then
-				useBlank = statusbar.parent.isTransparent
-			end
-			if statusbar:IsObjectType('StatusBar') then
-				if not useBlank then
-					statusbar:SetStatusBarTexture(statusBarTexture)
-				end
-			elseif statusbar:IsObjectType('Texture') then
-				statusbar:SetTexture(statusBarTexture)
-			end
-
-			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
-		end
+		UF:Update_StatusBar(statusbar)
 	end
 end
 
 function UF:Update_StatusBar(statusbar, texture)
 	if not statusbar then return end
-	if not texture then texture = LSM:Fetch('statusbar', UF.db.statusbar) end
+
+	if not texture then
+		texture = LSM:Fetch('statusbar', UF.db.statusbar)
+	end
+
+	local useBlank = statusbar.parent and statusbar.parent.isTransparent or statusbar.isTransparent
+	local newTexture = (not useBlank and texture) or E.media.blankTex
 
 	if statusbar:IsObjectType('StatusBar') then
-		statusbar:SetStatusBarTexture(texture)
+		statusbar:SetStatusBarTexture(newTexture)
 	elseif statusbar:IsObjectType('Texture') then
-		statusbar:SetTexture(texture)
+		statusbar:SetTexture(newTexture)
 	end
+
+	UF:Update_StatusBar(statusbar.bg, newTexture)
 end
 
 function UF:Update_FontString(object)
@@ -1968,6 +1961,18 @@ function UF:MergeUnitSettings(from, to)
 	E:CopyTable(UF.db.units[to], E:FilterTableFromBlacklist(UF.db.units[from], Blacklist[to]))
 
 	UF:Update_AllFrames()
+end
+
+function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
+	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
+
+	if bar.bg then
+		if custom_backdrop then
+			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		else
+			bar.bg:SetVertexColor(r * UF.multiplier, g * UF.multiplier, b * UF.multiplier)
+		end
+	end
 end
 
 function UF:UpdateBackdropTextureColor(r, g, b, a)
