@@ -143,7 +143,7 @@ local function UpdateColor(self, event, runeID, alt)
 	* color - the used ColorMixin-based object (table?)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(color, rune)
+		element:PostUpdateColor(unit, color, rune)
 	end
 end
 

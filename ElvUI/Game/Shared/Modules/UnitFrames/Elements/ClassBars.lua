@@ -515,7 +515,7 @@ function UF:Runes_UpdateChargedColor()
 	end
 end
 
-function UF:Runes_PostUpdateColor(r, g, b, color, rune)
+function UF:Runes_PostUpdateColor(unit, color, rune)
 	UF.ClassPower_UpdateColor(self, 'RUNES', rune)
 end
 
@@ -584,12 +584,23 @@ function UF:Construct_AdditionalPowerBar(frame)
 	return additionalPower
 end
 
-function UF:PostColorAdditionalPower()
+function UF:PostColorAdditionalPower(unit, color)
 	local frame = self.origParent or self:GetParent()
 	if frame.USE_CLASSBAR then
 		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 		if custom_backdrop then
 			self.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		end
+	end
+
+	local bar = frame and frame.PowerPrediction and frame.PowerPrediction.altBar
+	if bar then
+		local pred = UF.db.colors and UF.db.colors.powerPrediction
+		if pred and pred.enable then
+			bar:GetStatusBarTexture():SetVertexColor(pred.additional.r, pred.additional.g, pred.additional.b, pred.additional.a)
+		else
+			local r, g, b = color:GetRGB()
+			bar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
 		end
 	end
 end
