@@ -46,6 +46,8 @@ local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local GetCVarDefault = C_CVar.GetCVarDefault
 local GetCVar = C_CVar.GetCVar
 
+local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
+
 do	-- credit: oUF/private.lua
 	local selectionTypes = {[0]=0,[1]=1,[2]=2,[3]=3,[4]=4,[5]=5,[6]=6,[7]=7,[8]=8,[9]=9,[13]=13}
 	-- 10 and 11 are unavailable to players, 12 is inconsistent due to bugs and its reliance on cvars
@@ -760,7 +762,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.unitName, self.unitRealm = UnitName(unit)
 	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
 	self.className, self.classFile, self.classID = UnitClass(unit)
-	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction]) or nil
+	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.Colors.reactions[self.repReaction]) or nil
 
 	local specID, specIcon
 	local spec = E.Retail and E:GetUnitSpecInfo(unit)
@@ -868,7 +870,7 @@ function NP:UNIT_FACTION(event, unit)
 	self.isEnemy = UnitIsEnemy('player', unit)
 	self.faction = UnitFactionGroup(unit)
 	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
-	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.db.colors.reactions[self.repReaction]) or nil
+	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.Colors.reactions[self.repReaction]) or nil
 
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)
@@ -949,6 +951,37 @@ function NP:SetupClassNameplateBars()
 	NP:HideClassNameplateBar(self.classNamePlateAlternatePowerBar) -- BrewmasterBar / EbonMightBar
 end
 
+function NP:UpdateColors()
+	NP.Colors.tapped = E:SetColorTable(NP.Colors.tapped, NP.db.colors.tapped)
+
+	NP.Colors.power.MANA = E:SetColorTable(NP.Colors.power.MANA, NP.db.colors.power.MANA)
+	NP.Colors.power.RAGE = E:SetColorTable(NP.Colors.power.RAGE, NP.db.colors.power.RAGE)
+	NP.Colors.power.FOCUS = E:SetColorTable(NP.Colors.power.FOCUS, NP.db.colors.power.FOCUS)
+	NP.Colors.power.ENERGY = E:SetColorTable(NP.Colors.power.ENERGY, NP.db.colors.power.ENERGY)
+	NP.Colors.power.RUNIC_POWER = E:SetColorTable(NP.Colors.power.RUNIC_POWER, NP.db.colors.power.RUNIC_POWER)
+	NP.Colors.power.PAIN = E:SetColorTable(NP.Colors.power.PAIN, NP.db.colors.power.PAIN)
+	NP.Colors.power.FURY = E:SetColorTable(NP.Colors.power.FURY, NP.db.colors.power.FURY)
+	NP.Colors.power.LUNAR_POWER = E:SetColorTable(NP.Colors.power.LUNAR_POWER, NP.db.colors.power.LUNAR_POWER)
+	NP.Colors.power.INSANITY = E:SetColorTable(NP.Colors.power.INSANITY, NP.db.colors.power.INSANITY)
+	NP.Colors.power.MAELSTROM = E:SetColorTable(NP.Colors.power.MAELSTROM, NP.db.colors.power.MAELSTROM)
+
+	NP.Colors.power.SHADOW_ORBS = E:SetColorTable(NP.Colors.power.SHADOW_ORBS, NP.db.colors.classResources.PRIEST)
+	NP.Colors.power.HOLY_POWER = E:SetColorTable(NP.Colors.power.HOLY_POWER, NP.db.colors.classResources.PALADIN)
+
+	NP.Colors.power[POWERTYPE_ALTERNATE] = E:SetColorTable(NP.Colors.power[POWERTYPE_ALTERNATE], NP.db.colors.power.ALT_POWER)
+
+	for i = 1, 8 do
+		NP.Colors.reactions[i] = E:SetColorTable(NP.Colors.reactions[i], NP.db.colors.reactions[i])
+	end
+
+	for i = 0, 9 do
+		if i ~= 4 then -- selection doesnt have 4 and skips to 13
+			NP.Colors.selection[i] = E:SetColorTable(NP.Colors.selection[i], NP.db.colors.selection[i])
+		end
+	end
+	NP.Colors.selection[13] = E:SetColorTable(NP.Colors.selection[13], NP.db.colors.selection[13])
+end
+
 function NP:Initialize()
 	if not E.private.nameplates.enable then return end
 	NP.Initialized = true
@@ -957,15 +990,24 @@ function NP:Initialize()
 	NP.SPACING = (NP.thinBorders or E.twoPixelsPlease) and 0 or 1
 	NP.BORDER = (NP.thinBorders and not E.twoPixelsPlease) and 1 or 2
 
-	ElvUF:RegisterStyle('ElvNP', NP.Style)
-	ElvUF:SetActiveStyle('ElvNP')
-
 	NP.Plates = {}
 	NP.PlateGUID = {}
 	NP.StatusBars = {}
 	NP.SoundHandlers = {}
+	NP.Colors = {
+		selection = {},
+		reactions = {},
+		power = {}
+	}
+
 	NP.multiplier = 0.35
 	NP.numPlates = 0
+
+	NP:UpdateColors()
+
+	ElvUF:RegisterStyle('ElvNP', NP.Style)
+	ElvUF:SetActiveStyle('ElvNP')
+
 
 	if E.Retail then
 		NP.SetupClassNameplateBars(_G.NamePlateDriverFrame)

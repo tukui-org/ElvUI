@@ -4,7 +4,6 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local ipairs = ipairs
-local unpack = unpack
 
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
@@ -18,32 +17,39 @@ function NP:Health_UpdateColor(_, unit)
 	local element = self.Health
 	local Selection = E.Retail and element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
-	local r, g, b, t
+	local color
 	if element.colorDisconnected and not UnitIsConnected(unit) then
-		t = self.colors.disconnected
+		color = self.colors.disconnected
 	elseif element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) then
-		t = NP.db.colors.tapped
+		color = NP.Colors.tapped
 	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and UnitPlayerControlled(unit) and not self.isPlayer) then
 		local _, class = UnitClass(unit)
-		t = self.colors.class[class]
+		color = self.colors.class[class]
 	elseif Selection then
-		if Selection == 3 then Selection = UnitPlayerControlled(unit) and 5 or 3 end
-		t = NP.db.colors.selection[Selection]
+		if Selection == 3 then
+			Selection = UnitPlayerControlled(unit) and 5 or 3
+		end
+
+		color = NP.Colors.selection[Selection]
 	elseif element.colorReaction and UnitReaction(unit, 'player') then
-		t = NP.db.colors.reactions[UnitReaction(unit, 'player')]
-	elseif element.colorSmooth and not E.Midnight then
-		--r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
-	elseif element.colorHealth then
-		t = NP.db.colors.health
+		color = NP.Colors.reactions[UnitReaction(unit, 'player')]
+	elseif element.colorSmooth then
+		if E.Midnight then
+			local curve = self.colors.health:GetCurve()
+			if curve then
+				color = curve:Evaluate(1)
+			end
+		else
+			color = element.smoothGradient or self.colors.smooth
+		end
 	end
 
-	if t then
-		r, g, b = t.r, t.g, t.b
-		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
+	if color then
+		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 	end
 
 	if element.PostUpdateColor then
-		element:PostUpdateColor(unit, r, g, b)
+		element:PostUpdateColor(unit, color)
 	end
 end
 

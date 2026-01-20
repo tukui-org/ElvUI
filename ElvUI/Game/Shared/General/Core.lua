@@ -9,6 +9,8 @@ local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strl
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 
+local Mixin = Mixin
+local ColorMixin = ColorMixin
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
@@ -264,6 +266,10 @@ function E:SetColorTable(t, data)
 		t[1], t[2], t[3], t[4] = r, g, b, a
 	else
 		t = E:GetColorTable(data)
+	end
+
+	if not t.GetRGB then
+		Mixin(t, ColorMixin)
 	end
 
 	return t

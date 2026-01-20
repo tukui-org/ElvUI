@@ -22,15 +22,16 @@ function NP:Power_UpdateColor(_, unit)
 
 	local Selection = element.colorSelection and NP:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 
-	local r, g, b, t, atlas
+	local r, g, b, color, atlas
 	if element.colorDisconnected and not UnitIsConnected(unit) then
-		t = self.colors.disconnected
+		color = self.colors.disconnected
 	elseif element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit) then
-		t = self.colors.tapped
+		color = self.colors.tapped
 	elseif element.colorPower then
 		if element.displayType ~= POWERTYPE_ALTERNATE then
-			t = NP.db.colors.power[ptoken or ptype]
-			if not t then
+			color = NP.Colors.power[ptoken or ptype]
+
+			if not color then
 				if element.GetAlternativeColor then
 					r, g, b = element:GetAlternativeColor(unit, ptype, ptoken, altR, altG, altB)
 				elseif altR then
@@ -41,27 +42,29 @@ function NP:Power_UpdateColor(_, unit)
 				end
 			end
 		else
-			t = NP.db.colors.power.ALT_POWER
+			color = NP.Colors.power.ALT_POWER
 		end
 
-		if element.useAtlas and t and t.atlas then
-			atlas = t.atlas
+		if element.useAtlas and color and color.atlas then
+			atlas = color.atlas
 		end
 	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and UnitPlayerControlled(unit) and not self.isPlayer) then
 		local _, class = UnitClass(unit)
-		t = self.colors.class[class]
+		color = self.colors.class[class]
 	elseif Selection then
-		t = NP.db.colors.selection[Selection]
+		color = NP.Colors.selection[Selection]
 	elseif element.colorReaction and UnitReaction(unit, 'player') then
-		t = NP.db.colors.reactions[UnitReaction(unit, 'player')]
-	elseif element.colorSmooth and not E.Midnight then
-		--local adjust = 0 - (element.min or 0)
-		--r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
-	end
-
-	if t then
-		r, g, b = t[1] or t.r, t[2] or t.g, t[3] or t.b
-		element.r, element.g, element.b = r, g, b -- save these for the style filter to switch back
+		color = NP.Colors.reactions[UnitReaction(unit, 'player')]
+	elseif element.colorSmooth then
+		if E.Midnight then
+			local curve = self.colors.power.MANA:GetCurve()
+			if curve then
+				color = curve:Evaluate(1)
+			end
+		else
+			local adjust = 0 - (element.min or 0)
+			r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
+		end
 	end
 
 	if atlas then
@@ -76,7 +79,7 @@ function NP:Power_UpdateColor(_, unit)
 	end
 
 	if element.PostUpdateColor then
-		element:PostUpdateColor(unit, r, g, b)
+		element:PostUpdateColor(unit, color)
 	end
 end
 
