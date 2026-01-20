@@ -113,7 +113,7 @@ local function UpdateColor(self, event, runeID, alt)
 
 		if color then
 			for index = 1, #element do
-				element[index]:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+				element[index]:SetStatusBarColor(color:GetRGB())
 			end
 		end
 	else
@@ -131,7 +131,7 @@ local function UpdateColor(self, event, runeID, alt)
 			color = specColor and self.colors.runes[specType or bar.runeType] or self.colors.power.RUNES
 
 			if color then
-				bar:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+				bar:SetStatusBarColor(color:GetRGB())
 			end
 		end
 	end

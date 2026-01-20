@@ -133,7 +133,7 @@ local function UpdateColor(self, event, unit, powerType)
 	end
 
 	if(color) then
-		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+		element:SetStatusBarColor(color:GetRGB())
 	end
 
 	--[[ Callback: AlternativePower:PostUpdateColor(unit, color)
