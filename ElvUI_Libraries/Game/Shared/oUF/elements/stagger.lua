@@ -67,7 +67,7 @@ local function UpdateColor(self, event, unit)
 	end
 
 	if(color) then
-		element:SetStatusBarColor(color:GetRGB())
+		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 	end
 
 	--[[ Callback: Stagger:PostUpdateColor(color)

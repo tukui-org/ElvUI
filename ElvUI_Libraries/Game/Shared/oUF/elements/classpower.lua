@@ -124,7 +124,7 @@ local function UpdateColor(element, powerType)
 	if(color) then
 		for i = 1, #element do
 			local bar = element[i]
-			bar:SetStatusBarColor(color:GetRGB())
+			bar:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 		end
 	end
 

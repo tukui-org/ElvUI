@@ -190,7 +190,7 @@ local function UpdateColor(self, event, unit)
 
 	if(atlas) then
 		element:SetStatusBarTexture(atlas)
-		element:SetStatusBarColor(1, 1, 1)
+		element:GetStatusBarTexture():SetVertexColor(1, 1, 1)
 	else
 		if(element.__texture) then
 			element:SetStatusBarTexture(element.__texture)
@@ -198,9 +198,9 @@ local function UpdateColor(self, event, unit)
 
 		-- it's done this way so that only non-standard powers have r, g, b values
 		if(b) then
-			element:SetStatusBarColor(r, g, b)
+			element:GetStatusBarTexture():SetVertexColor(r, g, b)
 		elseif(color) then
-			element:SetStatusBarColor(color:GetRGB())
+			element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 		end
 	end
 

@@ -78,7 +78,7 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 			end
 
 			if(color) then
-				element:SetStatusBarColor(color:GetRGB())
+				element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 			end
 		end
 
