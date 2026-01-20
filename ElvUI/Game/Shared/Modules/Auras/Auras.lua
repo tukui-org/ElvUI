@@ -257,21 +257,17 @@ function A:UpdateIcon(button, update)
 end
 
 function A:SetAuraTime(button, expiration, duration, modRate)
-	local oldEnd = button.endTime
 	button.expiration = expiration
 	button.endTime = expiration
 	button.duration = duration
 	button.modRate = modRate
 
-	if oldEnd ~= button.endTime then
-		if button.statusBar:IsShown() then
-			button.statusBar:SetMinMaxValues(0, duration)
-		end
-
-		button.nextUpdate = 0
+	if button.statusBar:IsShown() then
+		button.statusBar:SetMinMaxValues(0, duration)
 	end
 
 	A:UpdateTime(button, expiration, modRate)
+
 	button.elapsed = 0 -- reset the timer for UpdateTime
 end
 
@@ -396,7 +392,11 @@ function A:Button_OnHide()
 end
 
 function A:UpdateTime(button, expiration, modRate)
-	button.timeLeft = (expiration - GetTime()) / (modRate or 1)
+	if E:IsSecretValue(expiration) then
+		button.timeLeft = 0
+	else
+		button.timeLeft = (expiration - GetTime()) / (modRate or 1)
+	end
 
 	if button.timeLeft < 0.1 then
 		A:ClearAuraTime(button, true)
