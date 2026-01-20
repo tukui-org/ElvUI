@@ -258,6 +258,27 @@ local function LootContainerUpdate(frame)
 	frame:ForEachFrame(LootContainerUpdateChild)
 end
 
+local function JourneysListUpdateChild(child)
+	-- This check is to avoid separators and headers from being skinned
+	if (child.RenownCardFactionName or child.JourneyCardName) and not child.IsSkinned then
+
+		-- ToDo: Doesn't look great
+		-- child:StripTextures()
+		-- child:SetTemplate()
+
+		local watchedFactionToggle = child.WatchedFactionToggleFrame
+		if watchedFactionToggle and watchedFactionToggle.WatchFactionCheckbox then
+			S:HandleCheckBox(watchedFactionToggle.WatchFactionCheckbox)
+		end
+
+		child.IsSkinned = true
+	end
+end
+
+local function JourneysListUpdate(frame)
+	frame:ForEachFrame(JourneysListUpdateChild)
+end
+
 local function LoreScrollingFontChild(child)
 	if child.FontString then
 		child.FontString:SetTextColor(1, 1, 1)
@@ -328,6 +349,12 @@ function S:Blizzard_EncounterJournal()
 	hooksecurefunc('EncounterJournal_OnShow', RepositionTabs)
 	hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', RepositionTabs)
 	hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', RepositionTabs)
+
+	-- JourneysList
+	local JourneysList = _G.EncounterJournalJourneysFrame.JourneysList
+	if JourneysList then
+		hooksecurefunc(JourneysList, 'Update', JourneysListUpdate)
+	end
 
 	-- Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
