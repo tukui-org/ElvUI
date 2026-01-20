@@ -219,6 +219,18 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 		bar.nameText:SetText(text)
 	end
 
+	if bar.bg then
+		if (UF.db.colors.transparentAurabars and not bar.isTransparent) or (bar.isTransparent and (not UF.db.colors.transparentAurabars or bar.invertColors ~= UF.db.colors.invertAurabars)) then
+			UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, bar, bar.bg, nil, UF.db.colors.invertAurabars)
+		else
+			if not bar.bg:GetTexture() then
+				UF:Update_StatusBar(bar.bg, UF.db.colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
+			end
+
+			UF:SetStatusBarBackdropPoints(bar, bar:GetStatusBarTexture(), bar.bg)
+		end
+	end
+
 	bar.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
 
 	if colors then
