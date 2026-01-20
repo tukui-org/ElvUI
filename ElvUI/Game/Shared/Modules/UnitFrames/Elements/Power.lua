@@ -120,7 +120,9 @@ function UF:Configure_Power(frame, healthUpdate)
 			frame:EnableElement('Power')
 		end
 
-		E:SetSmoothing(power, db.power.smoothbars)
+		if not E.Midnight then
+			E:SetSmoothing(power, db.power.smoothbars)
+		end
 
 		--Text
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo or 'Health', true)
