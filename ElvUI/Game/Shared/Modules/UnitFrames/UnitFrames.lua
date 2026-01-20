@@ -564,14 +564,14 @@ function UF:UpdateColors()
 	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0} end
 	-- end
 
-	ElvUF.colors.reaction[1] = ElvUF.colors.reaction.bad
-	ElvUF.colors.reaction[2] = ElvUF.colors.reaction.bad
-	ElvUF.colors.reaction[3] = ElvUF.colors.reaction.bad
-	ElvUF.colors.reaction[4] = ElvUF.colors.reaction.neutral
-	ElvUF.colors.reaction[5] = ElvUF.colors.reaction.good
-	ElvUF.colors.reaction[6] = ElvUF.colors.reaction.good
-	ElvUF.colors.reaction[7] = ElvUF.colors.reaction.good
-	ElvUF.colors.reaction[8] = ElvUF.colors.reaction.good
+	ElvUF.colors.reaction[1] = ElvUF.colors.reaction[1]
+	ElvUF.colors.reaction[2] = ElvUF.colors.reaction[2]
+	ElvUF.colors.reaction[3] = ElvUF.colors.reaction[3]
+	ElvUF.colors.reaction[4] = ElvUF.colors.reaction[4]
+	ElvUF.colors.reaction[5] = ElvUF.colors.reaction[5]
+	ElvUF.colors.reaction[6] = ElvUF.colors.reaction[6]
+	ElvUF.colors.reaction[7] = ElvUF.colors.reaction[7]
+	ElvUF.colors.reaction[8] = ElvUF.colors.reaction[8]
 	ElvUF.colors.smooth[7] = ElvUF.colors.smoothHealth[1]
 	ElvUF.colors.smooth[8] = ElvUF.colors.smoothHealth[2]
 	ElvUF.colors.smooth[9] = ElvUF.colors.smoothHealth[3]

@@ -115,8 +115,8 @@ local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
-	local element = self.Health
 
+	local element = self.Health
 	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
 
 	local color
