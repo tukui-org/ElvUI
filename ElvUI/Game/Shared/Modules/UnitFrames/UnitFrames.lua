@@ -1970,7 +1970,7 @@ function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
 		if custom_backdrop then
 			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
 		else
-			bar.bg:SetVertexColor(r, g, b, UF.multiplier)
+			bar.bg:SetVertexColor(r, g, b)
 		end
 	end
 end
