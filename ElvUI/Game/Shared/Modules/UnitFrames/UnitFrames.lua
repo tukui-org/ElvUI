@@ -1975,35 +1975,6 @@ function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
 	end
 end
 
-function UF:UpdateBackdropTextureColor(r, g, b, a)
-	local m = 0.35
-	local n = self.isTransparent and (m * 2) or m
-
-	if self.invertColors then
-		local nn = n;n=m;m=nn
-	end
-
-	if self.isTransparent then
-		if self.backdrop then
-			self.backdrop:SetBackdropColor(r * n, g * n, b * n, a or E.media.backdropfadecolor[4])
-		else
-			local parent = self:GetParent()
-			if parent and parent.template then
-				parent:SetBackdropColor(r * n, g * n, b * n, a or E.media.backdropfadecolor[4])
-			end
-		end
-	end
-
-	local bg = self.bg
-	if bg and bg:IsObjectType('Texture') then
-		if self.custom_backdrop then
-			bg:SetVertexColor(self.custom_backdrop.r, self.custom_backdrop.g, self.custom_backdrop.b, self.custom_backdrop.a or 1)
-		else
-			bg:SetVertexColor(r * m, g * m, b * m, 1)
-		end
-	end
-end
-
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 	backdropTex:ClearAllPoints()
 	if statusBarOrientation == 'VERTICAL' then
@@ -2041,11 +2012,6 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	statusBar.isTransparent = isTransparent
 	statusBar.invertColors = invertColors
 	statusBar.backdropTex = backdropTex
-
-	if not statusBar.hookedColor then
-		hooksecurefunc(statusBar, 'SetStatusBarColor', UF.UpdateBackdropTextureColor)
-		statusBar.hookedColor = true
-	end
 
 	local orientation = statusBar:GetOrientation()
 	local barTexture = statusBar:GetStatusBarTexture() -- This fixes Center Pixel offset problem (normally this has > 2 points)
