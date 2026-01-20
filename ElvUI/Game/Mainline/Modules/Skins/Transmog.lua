@@ -49,6 +49,10 @@ function S:Blizzard_Transmog()
 			end
 		end
 
+		if OutfitCollection.GradientTop then
+			OutfitCollection.GradientTop:Hide()
+		end
+
 		S:HandleTrimScrollBar(OutfitCollection.OutfitList.ScrollBar)
 		S:HandleButton(OutfitCollection.SaveOutfitButton, nil, nil, nil, true, nil, nil, nil, true)
 		-- S:HandleButton(OutfitCollection.PurchaseOutfitButton) -- Fits good in our style tbh
