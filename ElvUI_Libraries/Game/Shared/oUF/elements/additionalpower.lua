@@ -73,7 +73,8 @@ local function UpdateColor(self, event, unit, powerType)
 					color = UnitPowerPercent(unit, true, curve)
 				end
 			else
-				color = element.smoothGradient or self.colors.smooth
+				local r, g, b = oUF:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
+				color = self.colors.smoothGradient:SetRGB(r, g, b)
 			end
 		end
 	elseif(element.colorClass) then

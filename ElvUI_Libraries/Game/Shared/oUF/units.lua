@@ -71,7 +71,8 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 						color = curve:Evaluate(1)
 					end
 				else
-					color = element.smoothGradient or self.colors.smooth
+					local _, _, _, _, _, _, r, g, b = unpack(element.smoothGradient or self.colors.smooth)
+					color = self.colors.smoothGradient:SetRGB(r, g, b)
 				end
 			elseif(element.colorHealth and elementName == 'Health') then
 				color = self.colors.health
