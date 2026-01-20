@@ -275,12 +275,16 @@ function A:SetAuraTime(button, expiration, duration, modRate)
 	button.elapsed = 0 -- reset the timer for UpdateTime
 end
 
-function A:ClearAuraTime(button, expired)
+function A:ClearVariables(button)
 	button.expiration = nil
 	button.endTime = nil
 	button.duration = nil
 	button.modRate = nil
 	button.timeLeft = nil
+end
+
+function A:ClearAuraTime(button, expired)
+	A:ClearVariables(button)
 
 	button.text:SetText('')
 
@@ -329,7 +333,12 @@ function A:UpdateAura(button, index)
 	button:SetBackdropBorderColor(color.r, color.g, color.b)
 	button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
-	if duration and expiration then
+	if E.Midnight then
+		A:UpdateTime(button, duration, expiration, modRate)
+		A:ClearVariables(button) -- we dont use these on Midnight so clear them
+
+		button.elapsed = 0 -- reset the timer for UpdateTime
+	elseif duration and expiration then
 		A:SetAuraTime(button, expiration, duration, modRate)
 	else
 		A:ClearAuraTime(button)
