@@ -241,7 +241,7 @@ end
 
 local HOSTILE_REACTION = 2
 
-function UF:PostUpdateHealthColor(unit, color)
+function UF:PostUpdateHealthColor(unit) -- arg2 is color but it is secret sometimes
 	local parent = self:GetParent()
 	local colors = E.db.unitframe.colors
 	local env = (parent.isForced and UF.ConfigEnv) or _G
@@ -250,10 +250,8 @@ function UF:PostUpdateHealthColor(unit, color)
 	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
 
-	local r, g, b = color:GetRGB()
-	if not b then
-		r, g, b = colors.health.r, colors.health.g, colors.health.b
-	end
+	local color
+	local r, g, b = colors.health.r, colors.health.g, colors.health.b
 
 	-- Recheck offline status when forced
 	if parent.isForced and self.colorDisconnected and not env.UnitIsConnected(unit) then
