@@ -32,18 +32,6 @@ function UF:PowerBar_PostVisibility(power, frame)
 	end
 end
 
-function UF:PowerBar_SetStatusBarColor(r, g, b)
-	local frame = self.origParent or self:GetParent()
-	if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
-		if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
-			local color = UF.db.colors.powerPrediction.color
-			frame.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b, color.a)
-		else
-			frame.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
-		end
-	end
-end
-
 function UF:PowerBar_CreateHolder(frame, power)
 	local holder = CreateFrame('Frame', nil, power)
 	holder:Point('BOTTOM', frame, 'BOTTOM', 0, -20)
@@ -84,8 +72,6 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.GetDisplayPower = UF.GetDisplayPower
 
 	power.RaisedElementParent = UF:CreateRaisedElement(power)
-
-	hooksecurefunc(power, 'SetStatusBarColor', UF.PowerBar_SetStatusBarColor)
 
 	if bg then
 		power.bg = power:CreateTexture(nil, 'BORDER')
@@ -287,15 +273,25 @@ do
 	end
 
 	local function GetRandomPowerColor()
-		local color = ElvUF.colors.power[classPowers[random(0, #classPowers)]]
-		return color.r, color.g, color.b
+		return ElvUF.colors.power[classPowers[random(0, #classPowers)]]
 	end
 
-	function UF:PostUpdatePowerColor()
+	function UF:PostUpdatePowerColor(unit, color)
 		local parent = self.origParent or self:GetParent()
 		if parent.isForced and not self.colorClass then
-			local r, g, b = GetRandomPowerColor()
-			self:GetStatusBarTexture():SetVertexColor(r, g, b)
+			color = GetRandomPowerColor()
+		end
+
+		UF.PostUpdateColor(self, unit, color)
+
+		if parent and parent.PowerPrediction and parent.PowerPrediction.mainBar then
+			if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
+				local predColor = UF.db.colors.powerPrediction.color
+				parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(predColor.r, predColor.g, predColor.b, predColor.a)
+			else
+				local r, g, b = color:GetRGB()
+				parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
+			end
 		end
 	end
 end

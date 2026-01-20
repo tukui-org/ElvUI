@@ -1976,11 +1976,10 @@ function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
 	end
 end
 
-function UF:PostUpdateColor(unit, color)
+function UF:PostUpdateColor(_, color)
 	if not color then return end
 
-	local r, g, b = color:GetRGB()
-	UF:SetStatusBarColor(self, r, g, b)
+	UF:SetStatusBarColor(self, color:GetRGB())
 end
 
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
