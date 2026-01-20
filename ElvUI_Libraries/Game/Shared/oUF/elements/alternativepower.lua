@@ -57,6 +57,8 @@ local Private = oUF.Private
 local unitSelectionType = Private.unitSelectionType
 
 local _G = _G
+local unpack = unpack
+
 local GameTooltip = GameTooltip
 local UnitThreatSituation = UnitThreatSituation
 local UnitPlayerControlled = UnitPlayerControlled
@@ -120,8 +122,11 @@ local function UpdateColor(self, event, unit, powerType)
 				end
 			else
 				local adjust = 0 - (element.min or 0)
-				local r, g, b = oUF:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
-				color = self.colors.smoothGradient:SetRGB(r, g, b)
+				local curValue, maxValue = (element.cur or 1) + adjust, (element.max or 1) + adjust
+				local r, g, b = oUF:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
+				self.colors.smooth:SetRGB(r, g, b)
+
+				color = self.colors.smooth
 			end
 		end
 	elseif(element.colorClass and (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))

@@ -244,7 +244,7 @@ end
 
 local HOSTILE_REACTION = 2
 
-function UF:PostUpdateHealthColor(unit) -- arg2 is color but it is secret sometimes
+function UF:PostUpdateHealthColor(unit, color)
 	local parent = self:GetParent()
 	local colors = E.db.unitframe.colors
 	local env = (parent.isForced and UF.ConfigEnv) or _G
@@ -253,7 +253,6 @@ function UF:PostUpdateHealthColor(unit) -- arg2 is color but it is secret someti
 	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
 
-	local color
 	local r, g, b = colors.health.r, colors.health.g, colors.health.b
 
 	-- Recheck offline status when forced
@@ -290,10 +289,10 @@ function UF:PostUpdateHealthColor(unit) -- arg2 is color but it is secret someti
 		end
 	end
 
-	if color then
-		self:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
-	elseif newb then
+	if newb then
 		self:GetStatusBarTexture():SetVertexColor(newr, newg, newb)
+	elseif color then
+		self:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
 	end
 
 	local bg, bgc = self.bg
@@ -326,6 +325,8 @@ function UF:PostUpdateHealthColor(unit) -- arg2 is color but it is secret someti
 			bg:SetVertexColor(bgc.r * UF.multiplier, bgc.g * UF.multiplier, bgc.b * UF.multiplier)
 		elseif newb then
 			bg:SetVertexColor(newr * UF.multiplier, newg * UF.multiplier, newb * UF.multiplier)
+		elseif color then
+			bg:SetVertexColor(color.r * UF.multiplier, color.g * UF.multiplier, color.b * UF.multiplier)
 		end
 	end
 end

@@ -42,6 +42,8 @@ The following options are listed by priority. The first check that returns true 
 local _, ns = ...
 local oUF = ns.oUF
 
+local unpack = unpack
+
 local CopyTable = CopyTable
 local UnitIsUnit = UnitIsUnit
 local UnitPower = UnitPower
@@ -73,8 +75,11 @@ local function UpdateColor(self, event, unit, powerType)
 					color = UnitPowerPercent(unit, true, curve)
 				end
 			else
-				local r, g, b = oUF:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
-				color = self.colors.smoothGradient:SetRGB(r, g, b)
+				local curValue, maxValue = element.cur or 1, element.max or 1
+				local r, g, b = oUF:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
+				self.colors.smooth:SetRGB(r, g, b)
+
+				color = self.colors.smooth
 			end
 		end
 	elseif(element.colorClass) then

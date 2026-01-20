@@ -109,8 +109,7 @@ function oUF:ColorGradient(perc, ...)
 end
 
 local colors = {
-	smooth = { 1, 0, 0, 1, 1, 0, 0, 1, 0 }, -- ElvUI: used for classic variants
-	smoothGradient = oUF:CreateColor(1, 1, 1), -- ElvUI: reusable table to convert into ColorMixin with less junk
+	smooth = Mixin({ 1, 0, 0, 1, 1, 0, 0, 1, 0 }, ColorMixin), -- ElvUI: used for classic variants
 	happiness = {
 		[1] = oUF:CreateColor(.69, .31, .31),
 		[2] = oUF:CreateColor(.65, .63, .35),

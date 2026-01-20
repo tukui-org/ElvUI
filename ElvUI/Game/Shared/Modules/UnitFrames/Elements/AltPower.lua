@@ -11,6 +11,8 @@ function UF:Construct_AltPowerBar(frame)
 	barTexture:SetVertexColor(.7, .7, .6)
 	barTexture:SetHorizTile(false)
 
+	altpower.PostUpdateColor = UF.PostUpdateColor
+
 	UF.statusbars[altpower] = 'altpower'
 
 	altpower:CreateBackdrop(nil, nil, nil, nil, true)

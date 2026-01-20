@@ -72,7 +72,9 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 					end
 				else
 					local _, _, _, _, _, _, r, g, b = unpack(element.smoothGradient or self.colors.smooth)
-					color = self.colors.smoothGradient:SetRGB(r, g, b)
+					self.colors.smooth:SetRGB(r, g, b)
+
+					color = self.colors.smooth
 				end
 			elseif(element.colorHealth and elementName == 'Health') then
 				color = self.colors.health

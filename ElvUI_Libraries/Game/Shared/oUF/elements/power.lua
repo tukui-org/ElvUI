@@ -86,6 +86,8 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
+local unpack = unpack
+
 local UnitClass = UnitClass
 local UnitInParty = UnitInParty
 local UnitPowerPercent = UnitPowerPercent
@@ -173,8 +175,11 @@ local function UpdateColor(self, event, unit)
 				end
 			else
 				local adjust = 0 - (element.min or 0)
-				r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
-				color = self.colors.smoothGradient:SetRGB(r, g, b)
+				local curValue, maxValue = (element.cur or 1) + adjust, (element.max or 1) + adjust
+				r, g, b = self:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
+				self.colors.smooth:SetRGB(r, g, b)
+
+				color = self.colors.smooth
 			end
 		end
 	elseif(element.colorClass and isPlayer)

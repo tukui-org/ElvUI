@@ -40,7 +40,11 @@ function NP:Health_UpdateColor(_, unit)
 				color = curve:Evaluate(1)
 			end
 		else
-			color = element.smoothGradient or self.colors.smooth
+			local curValue, maxValue = element.cur or 1, element.max or 1
+			local r, g, b = E:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
+			self.colors.smooth:SetRGB(r, g, b)
+
+			color = self.colors.smooth
 		end
 	end
 

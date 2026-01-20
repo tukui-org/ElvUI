@@ -557,8 +557,9 @@ function UF:UpdateColors()
 	if not ElvUF.colors.smoothHealth then ElvUF.colors.smoothHealth = {} end
 	ElvUF.colors.smoothHealth = E:SetColorTable(ElvUF.colors.smoothHealth, db.health)
 
-	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0} end
-	-- end
+	if not ElvUF.colors.smooth then
+		ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0}
+	end
 
 	ElvUF.colors.smooth[7] = ElvUF.colors.smoothHealth[1]
 	ElvUF.colors.smooth[8] = ElvUF.colors.smoothHealth[2]
@@ -1975,6 +1976,13 @@ function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
 	end
 end
 
+function UF:PostUpdateColor(unit, color)
+	if not color then return end
+
+	local r, g, b = color:GetRGB()
+	UF:SetStatusBarColor(self, r, g, b)
+end
+
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 	backdropTex:ClearAllPoints()
 	if statusBarOrientation == 'VERTICAL' then
@@ -2021,11 +2029,13 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 	if isTransparent then
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
+
 		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
 		local texture = LSM:Fetch('statusbar', UF.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
+
 		UF:Update_StatusBar(statusBar.bg, texture)
 
 		if adjustBackdropPoints then
