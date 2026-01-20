@@ -578,6 +578,7 @@ end
 function UF:Update_StatusBars(statusbars)
 	for statusbar in pairs(statusbars or UF.statusbars) do
 		UF:Update_StatusBar(statusbar)
+		UF:Update_StatusBar(statusbar.bg)
 	end
 end
 
@@ -596,8 +597,6 @@ function UF:Update_StatusBar(statusbar, texture)
 	elseif statusbar:IsObjectType('Texture') then
 		statusbar:SetTexture(newTexture)
 	end
-
-	UF:Update_StatusBar(statusbar.bg, newTexture)
 end
 
 function UF:Update_FontString(object)
@@ -1984,6 +1983,7 @@ end
 
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
 	backdropTex:ClearAllPoints()
+
 	if statusBarOrientation == 'VERTICAL' then
 		if reverseFill then
 			backdropTex:Point('BOTTOMRIGHT', statusBar, 'BOTTOMRIGHT')
