@@ -66,7 +66,7 @@ function UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
 		if custom_backdrop then
 			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
 		else
-			bar.bg:SetVertexColor(r * .35, g * .35, b * .35)
+			bar.bg:SetVertexColor(r * UF.multiplier, g * UF.multiplier, b * UF.multiplier)
 		end
 	end
 end
@@ -463,7 +463,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 				local cPoint = self[cIndex]
 				if cPoint then
 					cPoint:SetStatusBarColor(color.r, color.g, color.b)
-					cPoint.bg:SetVertexColor(color.r * .35, color.g * .35, color.b * .35)
+					cPoint.bg:SetVertexColor(color.r * UF.multiplier, color.g * UF.multiplier, color.b * UF.multiplier)
 				end
 			end
 		end
@@ -552,7 +552,6 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		rune.bg = rune:CreateTexture(nil, 'BORDER')
 		rune.bg:SetTexture(E.media.blankTex)
 		rune.bg:SetInside(rune.backdrop)
-		rune.bg.multiplier = 0.35
 
 		runes[i] = rune
 	end
@@ -588,7 +587,6 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.bg = additionalPower:CreateTexture(nil, 'BORDER')
 	additionalPower.bg:SetTexture(E.media.blankTex)
 	additionalPower.bg:SetInside(nil, 0, 0)
-	additionalPower.bg.multiplier = 0.35
 
 	additionalPower:SetScript('OnShow', UF.ToggleResourceBar)
 	additionalPower:SetScript('OnHide', UF.ToggleResourceBar)

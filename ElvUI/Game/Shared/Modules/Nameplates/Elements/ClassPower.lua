@@ -225,7 +225,6 @@ function NP:Construct_Runes(nameplate)
 		rune.bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
 		rune.bg:SetTexture(texture)
 		rune.bg:SetAllPoints()
-		rune.bg.multiplier = 0.35
 
 		Runes[i] = rune
 	end

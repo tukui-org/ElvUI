@@ -88,9 +88,9 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	hooksecurefunc(power, 'SetStatusBarColor', UF.PowerBar_SetStatusBarColor)
 
 	if bg then
-		power.BG = power:CreateTexture(nil, 'BORDER')
-		power.BG:SetAllPoints()
-		power.BG:SetTexture(E.media.blankTex)
+		power.bg = power:CreateTexture(nil, 'BORDER')
+		power.bg:SetAllPoints()
+		power.bg:SetTexture(E.media.blankTex)
 	end
 
 	if text then
@@ -261,7 +261,7 @@ function UF:Configure_Power(frame, healthUpdate)
 
 	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.BG, nil, UF.db.colors.invertPower, db.power.reverseFill)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg, nil, UF.db.colors.invertPower, db.power.reverseFill)
 end
 
 function UF:PowerBackdropColor()

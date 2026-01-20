@@ -11,9 +11,10 @@ function UF:Construct_AltPowerBar(frame)
 	UF.statusbars[altpower] = 'altpower'
 
 	altpower:CreateBackdrop(nil, nil, nil, nil, true)
-	altpower.BG = altpower:CreateTexture(nil, 'BORDER')
-	altpower.BG:SetAllPoints()
-	altpower.BG:SetTexture(E.media.blankTex)
+
+	altpower.bg = altpower:CreateTexture(nil, 'BORDER')
+	altpower.bg:SetAllPoints()
+	altpower.bg:SetTexture(E.media.blankTex)
 
 	altpower.RaisedElementParent = UF:CreateRaisedElement(altpower)
 
@@ -38,7 +39,7 @@ function UF:Configure_AltPowerBar(frame)
 		end
 
 		frame:Tag(frame.AlternativePower.value, db.altPowerTextFormat)
-		UF:ToggleTransparentStatusBar(false, frame.AlternativePower, frame.AlternativePower.BG)
+		UF:ToggleTransparentStatusBar(false, frame.AlternativePower, frame.AlternativePower.bg)
 
 		local color = db.altPowerColor
 		frame.AlternativePower:SetStatusBarColor(color.r, color.g, color.b)

@@ -602,7 +602,7 @@ function UF:Update_StatusBars(statusbars)
 				statusbar:SetTexture(statusBarTexture)
 			end
 
-			UF:Update_StatusBar(statusbar.bg or statusbar.BG, (not useBlank and statusBarTexture) or E.media.blankTex)
+			UF:Update_StatusBar(statusbar.bg, (not useBlank and statusBarTexture) or E.media.blankTex)
 		end
 	end
 end
@@ -2001,8 +2001,8 @@ function UF:UpdateBackdropTextureColor(r, g, b, a)
 		end
 	end
 
-	local bg = self.bg or self.BG
-	if bg and bg:IsObjectType('Texture') and not bg.multiplier then
+	local bg = self.bg
+	if bg and bg:IsObjectType('Texture') then
 		if self.custom_backdrop then
 			bg:SetVertexColor(self.custom_backdrop.r, self.custom_backdrop.g, self.custom_backdrop.b, self.custom_backdrop.a or 1)
 		else
@@ -2062,13 +2062,12 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 
 	if isTransparent then
 		statusBar:SetStatusBarTexture(0, 0, 0, 0)
-		UF:Update_StatusBar(statusBar.bg or statusBar.BG, E.media.blankTex)
-
+		UF:Update_StatusBar(statusBar.bg, E.media.blankTex)
 		UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
 	else
 		local texture = LSM:Fetch('statusbar', UF.db.statusbar)
 		statusBar:SetStatusBarTexture(texture)
-		UF:Update_StatusBar(statusBar.bg or statusBar.BG, texture)
+		UF:Update_StatusBar(statusBar.bg, texture)
 
 		if adjustBackdropPoints then
 			UF:SetStatusBarBackdropPoints(statusBar, barTexture, backdropTex, orientation, reverseFill)
@@ -2189,6 +2188,7 @@ end
 function UF:Initialize()
 	UF.thinBorders = UF.db.thinBorders
 	UF.maxAllowedGroups = 8
+	UF.multiplier = 0.35
 
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2

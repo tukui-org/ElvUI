@@ -15,8 +15,6 @@ local UnitIsTapDenied = UnitIsTapDenied
 local UnitReaction = UnitReaction
 local UnitClass = UnitClass
 
-local BACKDROP_MULT = 0.35
-
 function UF.HealthClipFrame_OnUpdate(clipFrame)
 	UF.HealthClipFrame_HealComm(clipFrame.__frame)
 
@@ -37,7 +35,6 @@ function UF:Construct_HealthBar(frame, bg, text, textPos)
 		health.bg = health:CreateTexture(nil, 'BORDER')
 		health.bg:SetAllPoints()
 		health.bg:SetTexture(E.media.blankTex)
-		health.bg.multiplier = BACKDROP_MULT
 	end
 
 	if text then
@@ -67,12 +64,6 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 		health.value:ClearAllPoints()
 		health.value:Point(db.health.position or 'RIGHT', attachPoint, db.health.position or 'RIGHT', db.health.xOffset or -2, db.health.yOffset or 0)
 		frame:Tag(health.value, db.health.text_format or '')
-	end
-
-	-- Backdrop Multiplier
-	if health.bg then
-		local colors = E.db.unitframe.colors
-		health.bg.multiplier = (colors.healthMultiplier > 0 and colors.healthMultiplier) or BACKDROP_MULT
 	end
 
 	-- Colors
@@ -250,7 +241,7 @@ end
 
 local HOSTILE_REACTION = 2
 
-function UF:PostUpdateHealthColor(unit, r, g, b)
+function UF:PostUpdateHealthColor(unit, color)
 	local parent = self:GetParent()
 	local colors = E.db.unitframe.colors
 	local env = (parent.isForced and UF.ConfigEnv) or _G
@@ -259,7 +250,7 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
 
-	local color -- main bar
+	local r, g, b = color:GetRGB()
 	if not b then
 		r, g, b = colors.health.r, colors.health.g, colors.health.b
 	end
@@ -306,23 +297,18 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 
 	local bg, bgc = self.bg
 	if bg then
-		local mult = bg.multiplier or BACKDROP_MULT
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			bgc = colors.health_backdrop_dead
-			mult = 1 -- custom backdrop (dead)
 		elseif healthbreakBackdrop then
 			bgc = color
-			mult = (healthBreak.multiplier > 0 and healthBreak.multiplier) or BACKDROP_MULT
 		elseif colors.healthbackdropbyvalue and not E.Midnight then
 			if colors.customhealthbackdrop then
 				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
-				mult = 1 -- custom backdrop
 			elseif not newb and not colors.colorhealthbyvalue then
 				newr, newg, newb = E:ColorGradient(self.cur, self.max, 1, 0, 0, 1, 1, 0, r, g, b)
 			end
 		elseif colors.customhealthbackdrop then
 			bgc = colors.health_backdrop
-			mult = 1 -- custom backdrop
 		elseif colors.classbackdrop then
 			if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
 				local _, unitClass = UnitClass(unit)
@@ -336,9 +322,9 @@ function UF:PostUpdateHealthColor(unit, r, g, b)
 		end
 
 		if bgc then
-			bg:SetVertexColor(bgc.r * mult, bgc.g * mult, bgc.b * mult)
+			bg:SetVertexColor(bgc.r * UF.multiplier, bgc.g * UF.multiplier, bgc.b * UF.multiplier)
 		elseif newb then
-			bg:SetVertexColor(newr * mult, newg * mult, newb * mult)
+			bg:SetVertexColor(newr * UF.multiplier, newg * UF.multiplier, newb * UF.multiplier)
 		end
 	end
 end

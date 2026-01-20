@@ -1950,7 +1950,6 @@ P.unitframe = {
 			enabled = false,
 			high = 0.7,
 			low = 0.3,
-			multiplier = 0,
 			onlyFriendly = false,
 			colorBackdrop = false,
 			good = {r = 0.2, g = 0.8, b = 0.2},
