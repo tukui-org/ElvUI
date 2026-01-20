@@ -451,7 +451,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 				local cPoint = self[cIndex]
 				if cPoint then
 					cPoint:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
-					cPoint.bg:SetVertexColor(color.r * UF.multiplier, color.g * UF.multiplier, color.b * UF.multiplier)
+					cPoint.bg:SetVertexColor(color.r, color.g, color.b, UF.multiplier)
 				end
 			end
 		end

@@ -77,7 +77,7 @@ function NP:Power_UpdateColor(_, unit)
 	end
 
 	if element.bg and b then
-		element.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
+		element.bg:SetVertexColor(r, g, b, NP.multiplier)
 	end
 
 	if element.PostUpdateColor then

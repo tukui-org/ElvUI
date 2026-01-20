@@ -13,7 +13,7 @@ function NP:SetStatusBarColor(bar, r, g, b)
 	bar:SetStatusBarColor(r, g, b)
 
 	if bar.bg then
-		bar.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
+		bar.bg:SetVertexColor(r, g, b, NP.multiplier)
 	end
 end
 
@@ -55,7 +55,7 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedPoints)
 			local color = NP.db.colors.classResources.chargedComboPoint
 			for _, chargedIndex in next, chargedPoints do
 				self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
-				self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+				self[chargedIndex].bg:SetVertexColor(color.r, color.g, color.b, NP.multiplier)
 			end
 		end
 	end
@@ -222,7 +222,7 @@ function NP:Construct_Runes(nameplate)
 		NP.StatusBars[rune] = 'runes'
 
 		rune.bg = rune:CreateTexture(barName..'bg', 'BORDER')
-		rune.bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+		rune.bg:SetVertexColor(color.r, color.g, color.b, NP.multiplier)
 		rune.bg:SetTexture(texture)
 		rune.bg:SetAllPoints()
 
