@@ -317,10 +317,6 @@ function A:UpdateAura(button, index)
 	button.auraInstanceID = data.auraInstanceID
 	button.unit = unitToken
 
-	if not E.Midnight then
-		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
-	end
-
 	local minCount, maxCount = 2, 999 -- maybe do options for this
 	if E:IsSecretValue(count) then
 		button.count:SetText(GetAuraApplicationDisplayCount(unitToken, data.auraInstanceID, minCount, maxCount))
@@ -396,28 +392,29 @@ function A:Button_OnHide()
 end
 
 function A:UpdateTime(button, duration, expiration, modRate)
+	local db = A.db[button.auraType]
 	if E.Midnight then
+		button.statusBar:SetShown(db.barShow)
+
 		local auraDuration = GetAuraDuration(button.unit, button.auraInstanceID)
 		if auraDuration then
 			button.cooldown:SetCooldownFromDurationObject(auraDuration)
 			button.cooldown:Show()
 
-			local db = A.db[button.auraType]
 			local remaining = db.barShow and auraDuration:GetRemainingDuration()
+			button.statusBar:SetAlphaFromBoolean(remaining, 1, 0)
+
 			if remaining then
 				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
 				button.statusBar:SetMinMaxValues(0, duration)
 				button.statusBar:SetValue(remaining)
-				button.statusBar:Show()
-			else
-				button.statusBar:Hide()
 			end
 		else
 			button.cooldown:Hide()
-			button.statusBar:Hide()
 		end
 	else
 		button.timeLeft = (expiration - GetTime()) / (modRate or 1)
+		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 
 		if button.timeLeft < 0.1 then
 			A:ClearAuraTime(button, true)
