@@ -466,9 +466,9 @@ function UF:PostUpdateAura(_, button)
 			if enemy and db.auraByType then
 				r, g, b = enemy.r, enemy.g, enemy.b
 			end
-		elseif bad and db.auraByDispels and BadDispels[spellID] and debuffType and DispelTypes[debuffType] then
+		elseif bad and db.auraByDispels and (spellID and BadDispels[spellID]) and (debuffType and DispelTypes[debuffType]) then
 			r, g, b = bad.r, bad.g, bad.b
-		elseif db.auraByType and (debuffType or spellID) then
+		elseif db.auraByType and debuffType then
 			local color = DebuffColors[debuffType or 'None']
 			r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
 		end
