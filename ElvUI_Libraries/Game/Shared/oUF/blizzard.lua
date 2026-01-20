@@ -8,7 +8,7 @@ local InCombatLockdown = InCombatLockdown
 local _G = _G
 
 -- sourced from Blizzard_UnitFrame/TargetFrame.lua
-local MAX_BOSS_FRAMES = 8 -- blizzard can spawn more than the default 5 apparently
+local MAX_BOSS_FRAMES = 5 -- blizzard can spawn more than the default 5 apparently
 
 -- sourced from Blizzard_FrameXMLBase/Shared/Constants.lua
 local MEMBERS_PER_RAID_GROUP = MEMBERS_PER_RAID_GROUP or 5

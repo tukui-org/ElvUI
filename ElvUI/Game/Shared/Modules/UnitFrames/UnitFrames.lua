@@ -1731,7 +1731,7 @@ end
 do
 	local MAX_PARTY = _G.MEMBERS_PER_RAID_GROUP or _G.MAX_PARTY_MEMBERS or 5
 	local MAX_ARENA_ENEMIES = _G.MAX_ARENA_ENEMIES or 5
-	local MAX_BOSS_FRAMES = 8
+	local MAX_BOSS_FRAMES = 5
 
 	local handledUnits = {}
 	local lockedFrames = {}
