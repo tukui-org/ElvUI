@@ -1310,19 +1310,13 @@ function E:GetClassificationColor(unit)
 		elseif unitLevel >= (maxLevel + 1) then
 			-- miniboss level
 		end
-	elseif unitLevel == maxLevel then
+	else
 		local baseClass = UnitClassBase(unit)
 		if baseClass == 'PALADIN' then
 			-- caster
 		else
 			-- melee
 		end
-	elseif classification == 'normal' then
-		-- normal color
-	elseif classification == 'trivial' then
-		-- trivial
-	elseif classification == 'minus' then
-		-- minus color
 	end
 end
 
