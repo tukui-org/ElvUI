@@ -282,6 +282,8 @@ do
 			color = GetRandomPowerColor()
 		end
 
+		if not color then return end
+
 		UF.PostUpdateColor(self, unit, color)
 
 		if parent and parent.PowerPrediction and parent.PowerPrediction.mainBar then
