@@ -1988,7 +1988,8 @@ end
 function UF:PostUpdateColor(_, color)
 	if not color then return end
 
-	UF:SetStatusBarColor(self, color:GetRGB())
+	local r, g, b = color:GetRGB()
+	UF:SetStatusBarColor(self, r, g, b)
 end
 
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
