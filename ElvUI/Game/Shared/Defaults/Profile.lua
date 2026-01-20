@@ -894,9 +894,14 @@ P.nameplates = {
 		chargingRunes = true,
 		runeBySpec = true,
 		reactions = {
-			good = {r = .29, g = .68, b = .30},
-			neutral = {r = .85, g = .77, b = .36},
-			bad = {r = 0.78, g = 0.25, b = 0.25},
+			[1] = {r = 0.80, g = 0.30, b = 0.21}, -- Hated
+			[2] = {r = 0.80, g = 0.30, b = 0.21}, -- Hostile
+			[3] = {r = 0.74, g = 0.27, b = 0.00}, -- Unfriendly
+			[4] = {r = 0.90, g = 0.70, b = 0.00}, -- Neutral
+			[5] = {r = 0.00, g = 0.60, b = 0.10}, -- Friendly
+			[6] = {r = 0.00, g = 0.60, b = 0.10}, -- Honored
+			[7] = {r = 0.00, g = 0.60, b = 0.10}, -- Revered
+			[8] = {r = 0.00, g = 0.74, b = 0.95}, -- Exhalted
 		},
 		healPrediction = {
 			personal = {r = 0, g = 1, b = 0.5, a = 0.25},
@@ -2028,9 +2033,14 @@ P.unitframe = {
 			{r = .33, g = .59, b = .33},
 		},
 		reaction = {
-			BAD = { r = 0.78, g = 0.25, b = 0.25 },
-			NEUTRAL = { r = 0.85, g = 0.77, b = 0.36 },
-			GOOD = { r = 0.29, g = 0.69, b = 0.30 },
+			[1] = {r = 0.80, g = 0.30, b = 0.21}, -- Hated
+			[2] = {r = 0.80, g = 0.30, b = 0.21}, -- Hostile
+			[3] = {r = 0.74, g = 0.27, b = 0.00}, -- Unfriendly
+			[4] = {r = 0.90, g = 0.70, b = 0.00}, -- Neutral
+			[5] = {r = 0.00, g = 0.60, b = 0.10}, -- Friendly
+			[6] = {r = 0.00, g = 0.60, b = 0.10}, -- Honored
+			[7] = {r = 0.00, g = 0.60, b = 0.10}, -- Revered
+			[8] = {r = 0.00, g = 0.74, b = 0.95}, -- Exhalted
 		},
 		threat = {
 			[ 0] = {r = 0.5, g = 0.5, b = 0.5}, -- low

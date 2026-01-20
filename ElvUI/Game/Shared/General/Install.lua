@@ -569,7 +569,6 @@ function E:LayoutAnniversary()
 	E.db.general.totems.growthDirection = 'HORIZONTAL'
 	E.db.general.totems.size = 36
 	E.db.general.vehicleSeatIndicatorSize = 76
-	E.db.nameplates.colors.reactions.bad = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
 	E.db.nameplates.colors.selection[0] = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
 	E.db.nameplates.colors.selection[2] = { r = 0.85098046064377, g = 0.76862752437592, b = 0.36078432202339 }
 	E.db.nameplates.colors.threat.badColor = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
@@ -1039,8 +1038,6 @@ function E:LayoutNormal()
 	E.db.general.autoTrackReputation = true
 	--Nameplates
 	E.db.nameplates.colors.castNoInterruptColor = {r = 0.78, g=0.25, b=0.25}
-	E.db.nameplates.colors.reactions.good = {r = 0.30, g=0.67, b=0.29}
-	E.db.nameplates.colors.reactions.neutral = {r = 0.85, g=0.76, b=0.36}
 	E.db.nameplates.colors.selection[0] = {r = 0.78, g=0.25, b=0.25}
 	E.db.nameplates.colors.selection[2] = {r = 0.85, g=0.76, b=0.36}
 	E.db.nameplates.colors.selection[3] = {r = 0.29, g=0.67, b=0.30}

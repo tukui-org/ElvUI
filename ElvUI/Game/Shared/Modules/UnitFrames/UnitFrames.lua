@@ -489,6 +489,10 @@ function UF:UpdateColors()
 		ElvUF.colors.happiness[i] = E:SetColorTable(ElvUF.colors.happiness[i], db.happiness[i])
 	end
 
+	for i = 1, 8 do
+		ElvUF.colors.reaction[i] = E:SetColorTable(ElvUF.colors.reaction[i], db.reaction[i])
+	end
+
 	for i = 0, 9 do
 		if i ~= 4 then -- selection doesnt have 4 and skips to 13
 			ElvUF.colors.selection[i] = E:SetColorTable(ElvUF.colors.selection[i], db.selection[i])
@@ -550,28 +554,12 @@ function UF:UpdateColors()
 	ElvUF.colors.ClassBars.DRUID[1] = E:SetColorTable(ElvUF.colors.ClassBars.DRUID[1], db.classResources.DRUID[1])
 	ElvUF.colors.ClassBars.DRUID[2] = E:SetColorTable(ElvUF.colors.ClassBars.DRUID[2], db.classResources.DRUID[2])
 
-	-- these are just holders.. to maintain and update tables
-	if not ElvUF.colors.reaction.good then ElvUF.colors.reaction.good = {} end
-	if not ElvUF.colors.reaction.bad then ElvUF.colors.reaction.bad = {} end
-	if not ElvUF.colors.reaction.neutral then ElvUF.colors.reaction.neutral = {} end
-	ElvUF.colors.reaction.good = E:SetColorTable(ElvUF.colors.reaction.good, db.reaction.GOOD)
-	ElvUF.colors.reaction.bad = E:SetColorTable(ElvUF.colors.reaction.bad, db.reaction.BAD)
-	ElvUF.colors.reaction.neutral = E:SetColorTable(ElvUF.colors.reaction.neutral, db.reaction.NEUTRAL)
-
 	if not ElvUF.colors.smoothHealth then ElvUF.colors.smoothHealth = {} end
 	ElvUF.colors.smoothHealth = E:SetColorTable(ElvUF.colors.smoothHealth, db.health)
 
 	if not ElvUF.colors.smooth then ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0} end
 	-- end
 
-	ElvUF.colors.reaction[1] = ElvUF.colors.reaction[1]
-	ElvUF.colors.reaction[2] = ElvUF.colors.reaction[2]
-	ElvUF.colors.reaction[3] = ElvUF.colors.reaction[3]
-	ElvUF.colors.reaction[4] = ElvUF.colors.reaction[4]
-	ElvUF.colors.reaction[5] = ElvUF.colors.reaction[5]
-	ElvUF.colors.reaction[6] = ElvUF.colors.reaction[6]
-	ElvUF.colors.reaction[7] = ElvUF.colors.reaction[7]
-	ElvUF.colors.reaction[8] = ElvUF.colors.reaction[8]
 	ElvUF.colors.smooth[7] = ElvUF.colors.smoothHealth[1]
 	ElvUF.colors.smooth[8] = ElvUF.colors.smoothHealth[2]
 	ElvUF.colors.smooth[9] = ElvUF.colors.smoothHealth[3]

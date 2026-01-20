@@ -575,12 +575,12 @@ NamePlates.colorsGroup.args.selectionGroup.args['8'] = ACH:Color(L["Friend"], ni
 NamePlates.colorsGroup.args.selectionGroup.args['9'] = ACH:Color(L["Dead"], nil, 9)
 NamePlates.colorsGroup.args.selectionGroup.args['13'] = ACH:Color(L["Battleground Friendly"], nil, 13)
 
-NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 5, nil, function(info) local t, d = E.db.nameplates.colors.reactions[info[#info]], P.nameplates.colors.reactions[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.reactions[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 5, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.reactions.inline = true
-NamePlates.colorsGroup.args.reactions.args.bad = ACH:Color(L["Enemy"], nil, 1)
-NamePlates.colorsGroup.args.reactions.args.neutral = ACH:Color(L["Neutral"], nil, 2)
-NamePlates.colorsGroup.args.reactions.args.good = ACH:Color(L["Friendly"], nil, 3)
-NamePlates.colorsGroup.args.reactions.args.tapped = ACH:Color(L["Tagged NPC"], nil, 4, nil, nil, function(info) local t, d = E.db.nameplates.colors[info[#info]], P.nameplates.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+for i = 1, 8 do
+	NamePlates.colorsGroup.args.reactions.args[''..i] = ACH:Color(C.Values.Roman[i], nil, i)
+end
+NamePlates.colorsGroup.args.reactions.args.tapped = ACH:Color(L["Tagged NPC"], nil, -1, nil, nil, function(info) local t, d = E.db.nameplates.colors[info[#info]], P.nameplates.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 
 NamePlates.colorsGroup.args.healPrediction = ACH:Group(L["Heal Prediction"], nil, 6, nil, function(info) local t, d = E.db.nameplates.colors.healPrediction[info[#info]], P.nameplates.colors.healPrediction[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.healPrediction[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.healPrediction.inline = true
