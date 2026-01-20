@@ -29,7 +29,9 @@ oUF.isClassicAnnivHC = season == 12 -- Anniversary Hardcore
 do
 	local YEAR, DAY, HOUR, MINUTE, SECOND = 31557600, 86400, 3600, 60, 1
 	function oUF:GetTime(value, noSecondText)
-		if value < SECOND then
+		if not value then
+			return '', ''
+		elseif value < SECOND then
 			return '%.1f', value
 		elseif value < MINUTE then
 			return noSecondText and '%d' or'%ds', value
