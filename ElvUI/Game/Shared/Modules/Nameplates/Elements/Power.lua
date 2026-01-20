@@ -132,7 +132,9 @@ function NP:Update_Power(nameplate)
 		nameplate.Power:Point(E.InversePoints[db.power.anchorPoint], nameplate, db.power.anchorPoint, db.power.xOffset, db.power.yOffset)
 		nameplate.Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
-		E:SetSmoothing(nameplate.Power, db.power.smoothbars)
+		if not E.Midnight then
+			E:SetSmoothing(nameplate.Power, db.power.smoothbars)
+		end
 	elseif nameplate:IsElementEnabled('Power') then
 		nameplate:DisableElement('Power')
 	end
