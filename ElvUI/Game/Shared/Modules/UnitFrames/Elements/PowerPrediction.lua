@@ -53,9 +53,9 @@ function UF:Construct_PowerPrediction(frame)
 				local pred = UF.db.colors and UF.db.colors.powerPrediction
 				if pred and pred.enable then
 					local color = pred.additional
-					bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+					bar:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b, color.a)
 				else
-					bar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+					bar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
 				end
 			end
 		end)

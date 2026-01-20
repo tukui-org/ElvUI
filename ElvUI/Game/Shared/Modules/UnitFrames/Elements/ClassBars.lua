@@ -60,7 +60,7 @@ function UF:PostVisibility_ClassBars(frame)
 end
 
 function UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
-	bar:SetStatusBarColor(r, g, b)
+	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
 
 	if bar.bg then
 		if custom_backdrop then
@@ -218,14 +218,14 @@ function UF:Configure_ClassBar(frame)
 
 		local lr, lg, lb = unpack(ElvUF.colors.ClassBars.DRUID[1])
 		bars.LunarBar:SetMinMaxValues(-1, 1)
-		bars.LunarBar:SetStatusBarColor(lr, lg, lb)
+		bars.LunarBar:GetStatusBarTexture():SetVertexColor(lr, lg, lb)
 		bars.LunarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.LunarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		E:SetSmoothing(bars.LunarBar, db.classbar and db.classbar.smoothbars)
 
 		local sr, sg, sb = unpack(ElvUF.colors.ClassBars.DRUID[2])
 		bars.SolarBar:SetMinMaxValues(-1, 1)
-		bars.SolarBar:SetStatusBarColor(sr, sg, sb)
+		bars.SolarBar:GetStatusBarTexture():SetVertexColor(sr, sg, sb)
 		bars.SolarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.SolarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		bars.SolarBar:ClearAllPoints()
@@ -462,7 +462,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 			for _, cIndex in next, chargedPoints do
 				local cPoint = self[cIndex]
 				if cPoint then
-					cPoint:SetStatusBarColor(color.r, color.g, color.b)
+					cPoint:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
 					cPoint.bg:SetVertexColor(color.r * UF.multiplier, color.g * UF.multiplier, color.b * UF.multiplier)
 				end
 			end

@@ -291,9 +291,9 @@ function UF:PostUpdateHealthColor(unit) -- arg2 is color but it is secret someti
 	end
 
 	if color then
-		self:SetStatusBarColor(color.r, color.g, color.b)
+		self:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
 	elseif newb then
-		self:SetStatusBarColor(newr, newg, newb)
+		self:GetStatusBarTexture():SetVertexColor(newr, newg, newb)
 	end
 
 	local bg, bgc = self.bg

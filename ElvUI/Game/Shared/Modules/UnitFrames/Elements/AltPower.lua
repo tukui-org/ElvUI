@@ -6,8 +6,11 @@ local CreateFrame = CreateFrame
 function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame('StatusBar', '$parent_AlternativePower', frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)
-	altpower:SetStatusBarColor(.7, .7, .6)
-	altpower:GetStatusBarTexture():SetHorizTile(false)
+
+	local barTexture = altpower:GetStatusBarTexture()
+	barTexture:SetVertexColor(.7, .7, .6)
+	barTexture:SetHorizTile(false)
+
 	UF.statusbars[altpower] = 'altpower'
 
 	altpower:CreateBackdrop(nil, nil, nil, nil, true)
@@ -42,7 +45,7 @@ function UF:Configure_AltPowerBar(frame)
 		UF:ToggleTransparentStatusBar(false, frame.AlternativePower, frame.AlternativePower.bg)
 
 		local color = db.altPowerColor
-		frame.AlternativePower:SetStatusBarColor(color.r, color.g, color.b)
+		frame.AlternativePower:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
 
 		E:SetSmoothing(frame.AlternativePower, db.smoothbars)
 	elseif frame:IsElementEnabled('AlternativePower') then

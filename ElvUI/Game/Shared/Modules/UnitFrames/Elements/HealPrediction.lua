@@ -126,10 +126,10 @@ function UF:Configure_HealComm(frame)
 			damageAbsorb:SetReverseFill(reverseFill)
 		end
 
-		healingPlayer:SetStatusBarColor(colors.personal.r, colors.personal.g, colors.personal.b, colors.personal.a)
-		healingOther:SetStatusBarColor(colors.others.r, colors.others.g, colors.others.b, colors.others.a)
-		damageAbsorb:SetStatusBarColor(colors.absorbs.r, colors.absorbs.g, colors.absorbs.b, colors.absorbs.a)
-		healAbsorb:SetStatusBarColor(colors.healAbsorbs.r, colors.healAbsorbs.g, colors.healAbsorbs.b, colors.healAbsorbs.a)
+		healingPlayer:GetStatusBarTexture():SetVertexColor(colors.personal.r, colors.personal.g, colors.personal.b, colors.personal.a)
+		healingOther:GetStatusBarTexture():SetVertexColor(colors.others.r, colors.others.g, colors.others.b, colors.others.a)
+		damageAbsorb:GetStatusBarTexture():SetVertexColor(colors.absorbs.r, colors.absorbs.g, colors.absorbs.b, colors.absorbs.a)
+		healAbsorb:GetStatusBarTexture():SetVertexColor(colors.healAbsorbs.r, colors.healAbsorbs.g, colors.healAbsorbs.b, colors.healAbsorbs.a)
 
 		healingPlayer:SetOrientation(orientation)
 		healingOther:SetOrientation(orientation)
@@ -233,18 +233,18 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	if hasOverHealAbsorb then -- forward fill it when its greater than health so that you can still see this is being stolen
 		healAbsorb:SetReverseFill(pred.reverseFill)
 		healAbsorb:Point(pred.anchor1, pred.healthBarTexture, pred.anchor2)
-		healAbsorb:SetStatusBarColor(colors.overhealabsorbs.r, colors.overhealabsorbs.g, colors.overhealabsorbs.b, colors.overhealabsorbs.a)
+		healAbsorb:GetStatusBarTexture():SetVertexColor(colors.overhealabsorbs.r, colors.overhealabsorbs.g, colors.overhealabsorbs.b, colors.overhealabsorbs.a)
 	else -- otherwise just let it backfill so that we know how much is being stolen
 		healAbsorb:SetReverseFill(not pred.reverseFill)
 		healAbsorb:Point(pred.anchor2, pred.healthBarTexture, pred.anchor2)
-		healAbsorb:SetStatusBarColor(colors.healAbsorbs.r, colors.healAbsorbs.g, colors.healAbsorbs.b, colors.healAbsorbs.a)
+		healAbsorb:GetStatusBarTexture():SetVertexColor(colors.healAbsorbs.r, colors.healAbsorbs.g, colors.healAbsorbs.b, colors.healAbsorbs.a)
 	end
 
 	-- color absorb bar if in over state
 	if hasOverAbsorb then
-		damageAbsorb:SetStatusBarColor(colors.overabsorbs.r, colors.overabsorbs.g, colors.overabsorbs.b, colors.overabsorbs.a)
+		damageAbsorb:GetStatusBarTexture():SetVertexColor(colors.overabsorbs.r, colors.overabsorbs.g, colors.overabsorbs.b, colors.overabsorbs.a)
 	else
-		damageAbsorb:SetStatusBarColor(colors.absorbs.r, colors.absorbs.g, colors.absorbs.b, colors.absorbs.a)
+		damageAbsorb:GetStatusBarTexture():SetVertexColor(colors.absorbs.r, colors.absorbs.g, colors.absorbs.b, colors.absorbs.a)
 	end
 
 	if hasSecretValues then return end

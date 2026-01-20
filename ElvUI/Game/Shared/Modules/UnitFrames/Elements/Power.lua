@@ -37,9 +37,9 @@ function UF:PowerBar_SetStatusBarColor(r, g, b)
 	if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
 		if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
 			local color = UF.db.colors.powerPrediction.color
-			frame.PowerPrediction.mainBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
+			frame.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b, color.a)
 		else
-			frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
+			frame.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
 		end
 	end
 end
@@ -307,7 +307,7 @@ do
 		local parent = self.origParent or self:GetParent()
 		if parent.isForced and not self.colorClass then
 			local r, g, b = GetRandomPowerColor()
-			self:SetStatusBarColor(r, g, b)
+			self:GetStatusBarTexture():SetVertexColor(r, g, b)
 		end
 	end
 end

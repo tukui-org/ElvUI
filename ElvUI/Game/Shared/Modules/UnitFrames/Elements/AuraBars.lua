@@ -235,7 +235,7 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 	end
 
 	if colors then
-		bar:SetStatusBarColor(colors.r, colors.g, colors.b)
+		bar:GetStatusBarTexture():SetVertexColor(colors.r, colors.g, colors.b)
 
 		if not bar.hookedColor then
 			UF.UpdateBackdropTextureColor(bar, colors.r, colors.g, colors.b)
