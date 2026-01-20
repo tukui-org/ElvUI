@@ -926,6 +926,9 @@ end
 function NP:SetNamePlateSizes()
 	if InCombatLockdown() then return end
 
+	-- ToDO: Midnight
+	-- C_NamePlate.SetNamePlateSize
+	-- C_NamePlateManager.SetNamePlateHitTestInsets
 	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * E.uiscale, NP.db.plateSize.personalHeight * E.uiscale)
 	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * E.uiscale, NP.db.plateSize.enemyHeight * E.uiscale)
 	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * E.uiscale, NP.db.plateSize.friendlyHeight * E.uiscale)
