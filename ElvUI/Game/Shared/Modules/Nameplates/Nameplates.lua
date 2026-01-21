@@ -355,7 +355,7 @@ end
 function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
-	NP:Update_Portrait(nameplate)
+	-- NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
 	NP:Update_BossMods(nameplate)
 
@@ -397,7 +397,7 @@ end
 NP.DisableInNotNameOnly = {
 	'QuestIcons',
 	'Highlight',
-	'Portrait',
+	-- 'Portrait',
 	'PVPRole'
 }
 
@@ -445,11 +445,11 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised)
 		nameplate.RaidTargetIndicator:ClearAllPoints()
 		nameplate.RaidTargetIndicator:Point('BOTTOM', nameplate, 'TOP', 0, 0)
 
-		nameplate.Portrait:ClearAllPoints()
-		nameplate.Portrait:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
+		-- nameplate.Portrait:ClearAllPoints()
+		-- nameplate.Portrait:Point('RIGHT', nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.PVPRole:ClearAllPoints()
-		nameplate.PVPRole:Point('RIGHT', (nameplate.Portrait:IsShown() and nameplate.Portrait) or nameplate.Name, 'LEFT', -6, 0)
+		nameplate.PVPRole:Point('RIGHT', (nameplate.Portrait and nameplate.Portrait:IsShown() and nameplate.Portrait) or nameplate.Name, 'LEFT', -6, 0)
 
 		nameplate.QuestIcons:ClearAllPoints()
 		nameplate.QuestIcons:Point('LEFT', nameplate.Name, 'RIGHT', 6, 0)
