@@ -10,13 +10,7 @@ local next, tonumber, format = next, tonumber, format
 
 local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
-local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local GetCVarBool = C_CVar.GetCVarBool
-
-local function GetAddOnStatus(index, locale, name)
-	local status = IsAddOnLoaded(name) and format('|cff33ff33%s|r', L["Enabled"]) or format('|cffff3333%s|r', L["Disabled"])
-	return ACH:Description(format('%s: %s', locale, status), index, 'medium')
-end
 
 local carryFilterFrom, carryFilterTo
 
