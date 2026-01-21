@@ -195,7 +195,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	button.isDebuff = isDebuff
 	button.debuffType = debuffType
 	button.castByPlayer = castByPlayer
-	button.isPlayer = oUF:NotSecretValue(source) and source == 'player' or nil
+	button.isPlayer = (oUF:NotSecretValue(source) and source == 'player') or (aura and aura.auraIsPlayer) or nil
 
 	button:SetID(index)
 

@@ -201,7 +201,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 	button.filter = filter or nil
 	button.auraInstanceID = auraInstanceID or nil
 	button.isDebuff = (forceShow and which ~= 'Buffs') or isDebuff or nil
-	button.isPlayer = oUF:NotSecretValue(sourceUnit) and (sourceUnit == 'player' or sourceUnit == 'vehicle') or (aura and aura.isPlayerAura) or nil
+	button.isPlayer = oUF:NotSecretValue(sourceUnit) and (sourceUnit == 'player' or sourceUnit == 'vehicle') or (aura and aura.auraIsPlayer) or nil
 	button.debuffType = dispelName
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)

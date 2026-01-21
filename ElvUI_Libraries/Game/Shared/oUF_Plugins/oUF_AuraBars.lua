@@ -169,7 +169,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.isDebuff = isDebuff
 	bar.debuffType = debuffType
 	bar.isStealable = isStealable
-	bar.isPlayer = oUF:NotSecretValue(source) and (source == 'player' or source == 'vehicle') or nil
+	bar.isPlayer = oUF:NotSecretValue(source) and (source == 'player' or source == 'vehicle') or (aura and aura.auraIsPlayer) or nil
 	bar.position = position
 	bar.duration = duration
 	bar.expiration = expiration

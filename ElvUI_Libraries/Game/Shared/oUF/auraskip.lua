@@ -82,9 +82,11 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 
 	for filter, filtered in next, auraFiltered do
 		if aura then
-			aura.isPlayerAura = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filter .. '|PLAYER')
-			aura.isHarmfulAura = filter == 'HARMFUL' or nil -- 'isHarmful' is a secret, use a different name
-			aura.isHelpfulAura = filter == 'HELPFUL' or nil
+			aura.auraIsRaid = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'RAID')
+			aura.auraIsPlayer = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'PLAYER')
+			aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
+			aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
+			aura.auraIsNameplateOnly = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'INCLUDE_NAME_PLATE_ONLY')
 		end
 
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
@@ -197,15 +199,15 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	end
 
 	if filter == 'HELPFUL' then
-		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.isHelpfulAura)
+		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
 	elseif filter == 'HARMFUL' then
-		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.isHarmfulAura)
+		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
 	elseif filter == 'RAID' then
-		return oUF:NotSecretValue(aura.isRaid) and not aura.isRaid
+		return (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
 	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
-		return oUF:NotSecretValue(aura.isNameplateOnly) and not aura.isNameplateOnly
+		return (oUF:NotSecretValue(aura.isNameplateOnly) and not aura.isNameplateOnly) or (not aura.auraIsNameplateOnly)
 	elseif filter == 'PLAYER' then
-		return oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)
+		return (oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)) or (not aura.auraIsNameplateOnly)
 	end
 end
 
