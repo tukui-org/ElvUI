@@ -4,7 +4,7 @@ local Private = oUF.Private
 
 local unitExists = Private.unitExists
 
-local tonumber, next = tonumber, next
+local tonumber, next, unpack = tonumber, next, unpack
 local tremove, tinsert = tremove, tinsert
 
 local CreateFrame = CreateFrame

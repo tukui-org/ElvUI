@@ -135,7 +135,7 @@ local function UpdateColor(element, powerType)
 	* color - the used ColorMixin-based object (table?)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(unit, color)
+		element:PostUpdateColor(element.__owner.unit, color)
 	end
 end
 

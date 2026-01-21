@@ -8,7 +8,6 @@ local LSM = E.Libs.LSM
 local _G = _G
 local unpack, next, wipe = unpack, next, wipe
 local tinsert, tremove, format = tinsert, tremove, format
-local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip

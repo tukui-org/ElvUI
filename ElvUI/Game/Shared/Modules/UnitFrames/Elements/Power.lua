@@ -3,9 +3,6 @@ local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
 local random = random
-local unpack = unpack
-local hooksecurefunc = hooksecurefunc
-
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local InCombatLockdown = InCombatLockdown

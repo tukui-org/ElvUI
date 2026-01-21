@@ -5,7 +5,7 @@ local ElvUF = E.oUF
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local strsplit, tonumber = strsplit, tonumber
+local next, strsplit, tonumber = next, strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
