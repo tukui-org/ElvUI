@@ -26,7 +26,7 @@ local function ClickSize(unit)
 end
 
 local function MaxHeight(unit) local _, height = ClickSize(unit) return max(NP.db.clickSize[height] or 0, 20) end
-local function MaxWidth(unit) local _, width = ClickSize(unit) return max(NP.db.clickSize[width] or 0, 200) end
+local function MaxWidth(unit) local width = ClickSize(unit) return max(NP.db.clickSize[width] or 0, 200) end
 
 local auraKeys = {
 	buffs = { name = L["Buffs"], order = 1 },
