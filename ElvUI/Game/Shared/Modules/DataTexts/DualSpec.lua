@@ -13,10 +13,10 @@ local LEVEL_UP_DUALSPEC = LEVEL_UP_DUALSPEC
 local PRIMARY = PRIMARY
 local SECONDARY = SECONDARY
 
-local GetActiveTalentGroup = GetActiveTalentGroup
-local GetNumTalentGroups = GetNumTalentGroups
-local SetActiveTalentGroup = SetActiveTalentGroup
 local GetTalentTabInfo = GetTalentTabInfo
+local GetNumTalentGroups = GetNumTalentGroups
+local GetActiveTalentGroup = GetActiveTalentGroup
+local SetActiveTalentGroup = SetActiveTalentGroup
 
 local LoadAddOn = C_AddOns.LoadAddOn
 
@@ -80,7 +80,7 @@ local function OnClick(_, button)
 			else
 				HideUIPanel(_G.PlayerTalentFrame)
 			end
-		elseif hasDualSpec then
+		elseif hasDualSpec and SetActiveTalentGroup then
 			SetActiveTalentGroup(activeGroup == 1 and 2 or 1)
 		end
 	end
