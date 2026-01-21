@@ -574,12 +574,13 @@ function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
 	if NP.TestFrame:IsEnabled() then
-		NP:NamePlateCallBack(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED')
+		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.unit)
 	end
 
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
+	local staticFunc = NP[staticEvent]
 	if init then -- since this is a fake plate, we actually need to trigger this always
-		NP:NamePlateCallBack(NP.PlayerFrame, staticEvent, 'player')
+		staticFunc(NP.PlayerFrame, staticEvent, 'player')
 
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
@@ -587,10 +588,10 @@ function NP:ConfigurePlates(init)
 			NP:UpdatePlateSize(nameplate)
 
 			if nameplate == NP.PlayerFrame then
-				NP:NamePlateCallBack(NP.PlayerFrame, staticEvent, 'player')
+				staticFunc(NP.PlayerFrame, staticEvent, 'player')
 			else
 				nameplate.previousType = nil -- keep over the callback, we still need a full update
-				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+				NP.NAME_PLATE_UNIT_ADDED(nameplate, 'NAME_PLATE_UNIT_ADDED', nameplate.unit)
 			end
 
 			nameplate:UpdateAllElements('ForceUpdate')
@@ -706,9 +707,10 @@ end
 function NP:PLAYER_TARGET_CHANGED(_, unit)
 	if self then
 		self.isDead = UnitIsDead(unit)
-	else -- pass it, even as nil here
-		NP:SetupTarget(self)
 	end
+
+	-- pass it, even as nil here
+	NP:SetupTarget(self)
 end
 
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
