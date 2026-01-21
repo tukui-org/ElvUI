@@ -354,7 +354,7 @@ function UF:Configure_Auras(frame, which)
 	local auraType = which:lower()
 	local settings = db[auraType]
 	auras.db = settings
-	auras.auraSort = UF.SortAuraFuncs[E.Midnight and 'PLAYER' or settings.sortMethod]
+	auras.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or settings.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo) -- keep below SetSmartPosition
 	auras.tooltipAnchor = settings.tooltipAnchorType

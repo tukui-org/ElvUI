@@ -173,7 +173,7 @@ function UF:Configure_Castbar(frame)
 	local SPACING1 = UF.BORDER + UF.SPACING
 	local SPACING2 = SPACING1 * 2
 
-	if not E.Midnight then
+	if not E.Retail then
 		E:SetSmoothing(castbar, db.smoothbars)
 	end
 

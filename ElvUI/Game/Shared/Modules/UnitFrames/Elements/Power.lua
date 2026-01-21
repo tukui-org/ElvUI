@@ -102,7 +102,7 @@ function UF:Configure_Power(frame, healthUpdate)
 			frame:EnableElement('Power')
 		end
 
-		if not E.Midnight then
+		if not E.Retail then
 			E:SetSmoothing(power, db.power.smoothbars)
 		end
 

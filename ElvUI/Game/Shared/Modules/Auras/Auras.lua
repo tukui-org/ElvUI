@@ -334,7 +334,7 @@ function A:UpdateAura(button, index)
 	button:SetBackdropBorderColor(color.r, color.g, color.b)
 	button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
-	if E.Midnight then
+	if E.Retail then
 		A:UpdateTime(button, duration, expiration, modRate)
 		A:ClearVariables(button) -- we dont use these on Midnight so clear them
 
@@ -403,7 +403,7 @@ end
 
 function A:UpdateTime(button, duration, expiration, modRate)
 	local db = A.db[button.auraType]
-	if E.Midnight then
+	if E.Retail then
 		button.statusBar:SetShown(db.barShow)
 
 		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)

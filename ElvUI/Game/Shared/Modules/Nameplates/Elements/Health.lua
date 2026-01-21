@@ -39,7 +39,7 @@ function NP:Health_UpdateColor(_, unit)
 	elseif useReaction then
 		color = NP.Colors.reactions[useReaction]
 	elseif element.colorSmooth then
-		if E.Midnight then
+		if E.Retail then
 			local curve = self.colors.health:GetCurve()
 			if curve then
 				color = curve:Evaluate(1)
@@ -111,7 +111,7 @@ function NP:Update_Health(nameplate, skipUpdate)
 		nameplate.Health:Point('LEFT')
 		nameplate.Health:Point('RIGHT')
 
-		if not E.Midnight then
+		if not E.Retail then
 			E:SetSmoothing(nameplate.Health, db.health.smoothbars)
 		end
 	elseif nameplate:IsElementEnabled('Health') then

@@ -86,7 +86,7 @@ local classSpecificSpells = { -- stagger IDs also in oUF stagger element
 	[SPELL_MAELSTROM] = (E.Retail and E.myclass == 'SHAMAN') or nil
 }
 
-if not E.Midnight then
+if not E.Retail then
 	for textFormat in pairs(E.GetFormattedTextStyles) do
 		local tagFormat = strlower(gsub(textFormat, '_', '-'))
 		E:AddTag(format('health:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
@@ -295,7 +295,7 @@ end
 --	Regular
 ------------------------------------------------------------------------
 
-if not E.Midnight then
+if not E.Retail then
 	E:AddTag('classcolor:target', 'UNIT_TARGET', function(unit)
 		if UnitExists(unit..'target') then
 			return _TAGS.classcolor(unit..'target')
