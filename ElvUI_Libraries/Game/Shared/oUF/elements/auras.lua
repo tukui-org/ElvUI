@@ -230,7 +230,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		-- complicated.
 		if(button.Cooldown and not element.disableCooldown) then
 			if button.Cooldown.SetCooldownFromDurationObject then
-				local auraDuration = GetAuraDuration(unit, aura.auraInstanceID)
+				local auraDuration = aura and GetAuraDuration(unit, aura.auraInstanceID)
 				if auraDuration then
 					button.Cooldown:SetCooldownFromDurationObject(auraDuration)
 					button.Cooldown:Show()
