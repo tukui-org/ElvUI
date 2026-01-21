@@ -90,6 +90,7 @@ function S:Blizzard_HousingDashboard()
 
 	local InfoContent = DashBoardFrame.HouseInfoContent
 	if InfoContent then
+		S:HandleButton(InfoContent.DashboardNoHousesFrame.NoHouseButton)
 		S:HandleButton(InfoContent.HouseFinderButton)
 		S:HandleDropDownBox(InfoContent.HouseDropdown)
 

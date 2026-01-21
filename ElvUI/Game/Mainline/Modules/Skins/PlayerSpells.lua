@@ -96,10 +96,10 @@ function S:Blizzard_PlayerSpells()
 	S:HandleButton(TalentsFrame.InspectCopyButton)
 
 	TalentsFrame.ClassCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
-	TalentsFrame.ClassCurrencyDisplay.CurrencyAmount:FontTemplate(nil, 26)
+	TalentsFrame.ClassCurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
 
 	TalentsFrame.SpecCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
-	TalentsFrame.SpecCurrencyDisplay.CurrencyAmount:FontTemplate(nil, 26)
+	TalentsFrame.SpecCurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
 
 	S:HandleEditBox(TalentsFrame.SearchBox)
 	TalentsFrame.SearchBox.backdrop:Point('TOPLEFT', -4, -5)

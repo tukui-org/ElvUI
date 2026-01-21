@@ -117,7 +117,6 @@ function NP:BossMods_ClearIcons()
 			local plate = NP.PlateGUID[unitGUID]
 			if plate then
 				NP:BossMods_ClearIcon(plate, texture)
-				NP:StyleFilterUpdate(plate, 'FAKE_BossModAuras')
 			end
 		end
 	end
@@ -154,15 +153,11 @@ function NP:BossMods_AddIcon(unitGUID, texture, duration, desaturate, skip)
 	if desaturate then
 		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	else
-		local color = DebuffColors.none
+		local color = DebuffColors.None
 		button:SetBackdropBorderColor(color.r * 0.6, color.g * 0.6, color.b * 0.6)
 	end
 
 	NP:BossMods_PositionIcons(plate.BossMods)
-
-	if not skip then -- this will happen already during PostUpdateAllElements
-		NP:StyleFilterUpdate(plate, 'FAKE_BossModAuras')
-	end
 end
 
 function NP:BossMods_RemoveIcon(unitGUID, texture)
@@ -172,7 +167,6 @@ function NP:BossMods_RemoveIcon(unitGUID, texture)
 	if plate then
 		NP:BossMods_ClearIcon(plate, texture)
 		NP:BossMods_PositionIcons(plate.BossMods)
-		NP:StyleFilterUpdate(plate, 'FAKE_BossModAuras')
 	end
 end
 

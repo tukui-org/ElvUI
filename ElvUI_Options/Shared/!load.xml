@@ -15,7 +15,6 @@
 	<Script file='Tooltip.lua'/>
 	<Script file='UnitFrames.lua'/>
 	<Script file='Nameplates.lua'/>
-	<Script file='StyleFilters.lua'/>
 	<Script file='Maps.lua'/>
 	<Script file='Search.lua'/>
 	<Script file='Tags.lua'/>

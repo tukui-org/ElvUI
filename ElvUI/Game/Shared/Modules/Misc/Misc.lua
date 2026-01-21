@@ -410,10 +410,13 @@ function M:Initialize()
 	M:LoadRaidMarker()
 	M:LoadLootRoll()
 	M:LoadChatBubbles()
-	M:LoadLoot()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
-	M:ToggleInterrupt()
+
+	if not E.Midnight then
+		M:ToggleInterrupt()
+		M:LoadLoot() -- tooltip crash out
+	end
 
 	local vanillaStyle = E.ClassicAnniv or E.TBC
 	if not vanillaStyle then -- it uses Blizzard_GroupFinder_VanillaStyle

@@ -2,6 +2,25 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
+
+local function DeathRecapScrollUpdateChild(child)
+	local spellInfo = child.SpellInfo
+	if spellInfo and not spellInfo.skinned then
+		spellInfo:CreateBackdrop()
+		spellInfo.backdrop:SetOutside(spellInfo.Icon)
+		spellInfo.Icon:SetTexCoords()
+		spellInfo.Icon:SetParent(spellInfo.backdrop)
+		if spellInfo.IconBorder then
+			spellInfo.IconBorder:Kill()
+		end
+		spellInfo.skinned = true
+	end
+end
+
+local function DeathRecapScrollUpdate(frame)
+	frame:ForEachFrame(DeathRecapScrollUpdateChild)
+end
 
 function S:Blizzard_DeathRecap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.deathRecap) then return end
@@ -12,14 +31,10 @@ function S:Blizzard_DeathRecap()
 	DeathRecapFrame.CloseButton:SetFrameLevel(5)
 	S:HandleCloseButton(DeathRecapFrame.CloseXButton)
 	S:HandleButton(DeathRecapFrame.CloseButton)
+	S:HandleTrimScrollBar(DeathRecapFrame.ScrollBar)
 
-	for i=1, 5 do
-		local recap = DeathRecapFrame['Recap'..i].SpellInfo
-		recap:CreateBackdrop()
-		recap.backdrop:SetOutside(recap.Icon)
-		recap.Icon:SetTexCoords()
-		recap.Icon:SetParent(recap.backdrop)
-		recap.IconBorder:Kill()
+	if DeathRecapFrame.ScrollBox then
+		hooksecurefunc(DeathRecapFrame.ScrollBox, 'Update', DeathRecapScrollUpdate)
 	end
 end
 

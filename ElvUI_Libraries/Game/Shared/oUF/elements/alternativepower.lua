@@ -15,27 +15,27 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 ## Options
 
-.smoothGradient                   - 9 color values to be used with the .colorSmooth option (table)
 .considerSelectionInCombatHostile - Indicates whether selection should be considered hostile while the unit is in
                                     combat with the player (boolean)
+.smoothing                        - Which status bar smoothing method to use, defaults to `Enum.StatusBarInterpolation.Immediate` (number)
 
 The following options are listed by priority. The first check that returns true decides the color of the bar.
 
-.colorThreat       - Use `self.colors.threat[threat]` to color the bar based on the unit's threat status. `threat` is
-                     defined by the first return of [UnitThreatSituation](https://warcraft.wiki.gg/wiki/API_UnitThreatSituation) (boolean)
-.colorPower        - Use `self.colors.power[token]` to color the bar based on the unit's alternative power type
-                     (boolean)
-.colorClass        - Use `self.colors.class[class]` to color the bar based on unit class. `class` is defined by the
-                     second return of [UnitClass](https://warcraft.wiki.gg/wiki/API_UnitClass) (boolean)
-.colorClassNPC     - Use `self.colors.class[class]` to color the bar if the unit is a NPC (boolean)
-.colorSelection    - Use `self.colors.selection[selection]` to color the bar based on the unit's selection color.
-                     `selection` is defined by the return value of Private.unitSelectionType, a wrapper function
-                     for [UnitSelectionType](https://warcraft.wiki.gg/wiki/API_UnitSelectionType) (boolean)
-.colorReaction     - Use `self.colors.reaction[reaction]` to color the bar based on the player's reaction towards the
-                     unit. `reaction` is defined by the return value of
-                     [UnitReaction](https://warcraft.wiki.gg/wiki/API_UnitReaction) (boolean)
-.colorSmooth       - Use `self.colors.smooth` to color the bar with a smooth gradient based on the unit's current
-                     alternative power percentage (boolean)
+.colorThreat      - Use `self.colors.threat[threat]` to color the bar based on the unit's threat status. `threat` is
+                    defined by the first return of [UnitThreatSituation](https://warcraft.wiki.gg/wiki/API_UnitThreatSituation) (boolean)
+.colorPower       - Use `self.colors.power[token]` to color the bar based on the unit's alternative power type
+                    (boolean)
+.colorPowerSmooth - Use color curve from `self.colors.power[token]` to color the bar with a smooth gradient based on the
+                    player's current power percentage. Requires `.colorPower` to be enabled (boolean)
+.colorClass       - Use `self.colors.class[class]` to color the bar based on unit class. `class` is defined by the
+                    second return of [UnitClass](https://warcraft.wiki.gg/wiki/API_UnitClass) (boolean)
+.colorClassNPC    - Use `self.colors.class[class]` to color the bar if the unit is a NPC (boolean)
+.colorSelection   - Use `self.colors.selection[selection]` to color the bar based on the unit's outline/highlight
+                    color. `selection` is defined by the return value of Private.unitSelectionType, a wrapper function
+                    for [UnitSelectionType](https://warcraft.wiki.gg/wiki/API_UnitSelectionType) (boolean)
+.colorReaction    - Use `self.colors.reaction[reaction]` to color the bar based on the player's reaction towards the
+                    unit. `reaction` is defined by the return value of
+                    [UnitReaction](https://warcraft.wiki.gg/wiki/API_UnitReaction) (boolean)
 
 ## Examples
 
@@ -56,10 +56,30 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
+local _G = _G
+local unpack = unpack
+
+local GameTooltip = GameTooltip
+local UnitThreatSituation = UnitThreatSituation
+local UnitPlayerControlled = UnitPlayerControlled
+local GetUnitPowerBarInfoByID = GetUnitPowerBarInfoByID
+local GetUnitPowerBarStringsByID = GetUnitPowerBarStringsByID
+local UnitPowerPercent = UnitPowerPercent
+local UnitInPartyIsAI = UnitInPartyIsAI
+local UnitPowerBarID = UnitPowerBarID
+local UnitIsPlayer = UnitIsPlayer
+local UnitReaction = UnitReaction
+local UnitPowerMax = UnitPowerMax
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
+local UnitIsUnit = UnitIsUnit
+local UnitClass = UnitClass
+local UnitPower = UnitPower
+
 -- sourced from Blizzard_UnitFrame/UnitPowerBarAlt.lua
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local ALTERNATE_POWER_NAME = 'ALTERNATE'
-local GameTooltip = GameTooltip
 
 local function updateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
@@ -74,7 +94,7 @@ local function onEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
 
 	GameTooltip:ClearAllPoints()
-	GameTooltip_SetDefaultAnchor(GameTooltip, self)
+	_G.GameTooltip_SetDefaultAnchor(GameTooltip, self)
 	self:UpdateTooltip()
 end
 
@@ -88,52 +108,50 @@ local function UpdateColor(self, event, unit, powerType)
 	if(self.unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
 	local element = self.AlternativePower
 
-	local r, g, b, color
-	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
-	local reaction = element.colorReaction and UnitReaction(unit, 'player')
-	local selection = element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)
-	local colorThreat = element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)
-	if colorThreat then
-		color =  self.colors.threat[colorThreat]
-	elseif element.colorPower then
+	local color
+	if(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
+		color =  self.colors.threat[UnitThreatSituation('player', unit)]
+	elseif(element.colorPower) then
 		color = self.colors.power[ALTERNATE_POWER_INDEX]
-	elseif (element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer) then
+
+		if(element.colorPowerSmooth) then
+			if oUF.isMidnight then
+				local curve = color:GetCurve()
+				if curve then
+					color = UnitPowerPercent(unit, true, curve)
+				end
+			else
+				local adjust = 0 - (element.min or 0)
+				local curValue, maxValue = (element.cur or 1) + adjust, (element.max or 1) + adjust
+				local r, g, b = oUF:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
+				self.colors.smooth:SetRGB(r, g, b)
+
+				color = self.colors.smooth
+			end
+		end
+	elseif(element.colorClass and (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
+		or (element.colorClassNPC and not (UnitIsPlayer(unit) or UnitInPartyIsAI(unit))) then
 		local _, class = UnitClass(unit)
 		color = self.colors.class[class]
-	elseif selection then
-		color = self.colors.selection[selection]
-	elseif reaction then
-		color = self.colors.reaction[reaction]
-	elseif element.colorSmooth then
-		local adjust = 0 - (element.min or 0)
-		r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
+	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
+		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
+	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
+		color = self.colors.reaction[UnitReaction(unit, 'player')]
 	end
 
 	if(color) then
-		r, g, b = color[1], color[2], color[3]
+		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 	end
 
-	if(b) then
-		element:SetStatusBarColor(r, g, b)
-
-		local bg = element.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
-		end
-	end
-
-	--[[ Callback: AlternativePower:PostUpdateColor(unit, r, g, b)
+	--[[ Callback: AlternativePower:PostUpdateColor(unit, color)
 	Called after the element color has been updated.
 
-	* self - the AlternativePower element
-	* unit - the unit for which the update has been triggered (string)
-	* r    - the red component of the used color (number)[0-1]
-	* g    - the green component of the used color (number)[0-1]
-	* b    - the blue component of the used color (number)[0-1]
+	* self  - the AlternativePower element
+	* unit  - the unit for which the update has been triggered (string)
+	* color - the used ColorMixin-based object (table?)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(unit, r, g, b)
+		element:PostUpdateColor(unit, color)
 	end
 end
 
@@ -161,7 +179,7 @@ local function Update(self, event, unit, powerType)
 		end
 
 		element:SetMinMaxValues(min, max)
-		element:SetValue(cur)
+		element:SetValue(cur, element.smoothing)
 	end
 
 	element.cur = cur
@@ -250,6 +268,10 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
+		if(not element.smoothing) then
+			element.smoothing = StatusBarInterpolation and StatusBarInterpolation.Immediate or nil
+		end
+
 		self:RegisterEvent('UNIT_POWER_BAR_SHOW', VisibilityPath)
 		self:RegisterEvent('UNIT_POWER_BAR_HIDE', VisibilityPath)
 
@@ -277,9 +299,9 @@ local function Enable(self, unit)
 		end
 
 		if(unit == 'player') then
-			PlayerPowerBarAlt:UnregisterEvent('UNIT_POWER_BAR_SHOW')
-			PlayerPowerBarAlt:UnregisterEvent('UNIT_POWER_BAR_HIDE')
-			PlayerPowerBarAlt:UnregisterEvent('PLAYER_ENTERING_WORLD')
+			_G.PlayerPowerBarAlt:UnregisterEvent('UNIT_POWER_BAR_SHOW')
+			_G.PlayerPowerBarAlt:UnregisterEvent('UNIT_POWER_BAR_HIDE')
+			_G.PlayerPowerBarAlt:UnregisterEvent('PLAYER_ENTERING_WORLD')
 		end
 
 		return true
@@ -295,9 +317,9 @@ local function Disable(self, unit)
 		self:UnregisterEvent('UNIT_POWER_BAR_HIDE', VisibilityPath)
 
 		if(unit == 'player') then
-			PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_SHOW')
-			PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_HIDE')
-			PlayerPowerBarAlt:RegisterEvent('PLAYER_ENTERING_WORLD')
+			_G.PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_SHOW')
+			_G.PlayerPowerBarAlt:RegisterEvent('UNIT_POWER_BAR_HIDE')
+			_G.PlayerPowerBarAlt:RegisterEvent('PLAYER_ENTERING_WORLD')
 		end
 	end
 end

@@ -381,7 +381,8 @@ function S:Blizzard_Professions()
 		HandleSchematicForm(InspectRecipe.SchematicForm, true)
 	end
 
-	hooksecurefunc('ToggleProfessionsItemFlyout', HandleProfessionsItemFlyout)
+	-- ToDo: No longer a function
+	-- hooksecurefunc('ToggleProfessionsItemFlyout', HandleProfessionsItemFlyout)
 
 	if E.global.general.disableTutorialButtons then
 		CraftingPage.TutorialButton:Kill()

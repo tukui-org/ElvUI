@@ -35,6 +35,7 @@ local next, tinsert, tremove = next, tinsert, tremove
 
 local CreateFrame = CreateFrame
 local UnitInRange = UnitInRange
+local UnitInParty = UnitInParty
 local UnitIsConnected = UnitIsConnected
 
 local function Update(self, event)
@@ -52,9 +53,13 @@ local function Update(self, event)
 
 	local inRange, checkedRange
 	local connected = UnitIsConnected(unit)
-	if(connected) then
+	local isEligible = connected and UnitInParty(unit)
+	if(isEligible) then
 		inRange, checkedRange = UnitInRange(unit)
-		if(checkedRange and not inRange) then
+
+		if oUF.isMidnight then
+			self:SetAlphaFromBoolean(inRange, element.insideAlpha, element.outsideAlpha)
+		elseif(checkedRange and not inRange) then
 			self:SetAlpha(element.outsideAlpha)
 		else
 			self:SetAlpha(element.insideAlpha)
@@ -63,17 +68,16 @@ local function Update(self, event)
 		self:SetAlpha(element.insideAlpha)
 	end
 
-	--[[ Callback: Range:PostUpdate(object, inRange, checkedRange, isConnected)
+	--[[ Callback: Range:PostUpdate(object, inRange, isEligible)
 	Called after the element has been updated.
 
-	* self         - the Range element
-	* object       - the parent object
-	* inRange      - indicates if the unit was within 40 yards of the player (boolean)
-	* checkedRange - indicates if the range check was actually performed (boolean)
-	* isConnected  - indicates if the unit is online (boolean)
+	* self       - the Range element
+	* object     - the parent object
+	* inRange    - indicates if the unit is within 40 yards of the player (boolean)
+	* isEligible - indicates if the unit is eligible for the range check (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(self, inRange, checkedRange, connected)
+		return element:PostUpdate(self, inRange, isEligible, connected)
 	end
 end
 

@@ -544,15 +544,43 @@ local function SkinHeirloomFrame()
 	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', HeirloomsJournalLayoutCurrentPage)
 end
 
-local function SkinTransmogFrames()
-	local WardrobeCollectionFrame = _G.WardrobeCollectionFrame
-	S:HandleTab(WardrobeCollectionFrame.ItemsTab)
-	S:HandleTab(WardrobeCollectionFrame.SetsTab)
+local function HandleTabs()
+	local tab = _G.CollectionsJournalTab1
+	local index, lastTab = 1, tab
+	while tab do
+		S:HandleTab(tab)
 
-	WardrobeCollectionFrame.progressBar:StripTextures()
-	WardrobeCollectionFrame.progressBar:CreateBackdrop()
-	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
+		tab:ClearAllPoints()
+
+		if index == 1 then
+			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
+		else
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+			lastTab = tab
+		end
+
+		index = index + 1
+		tab = _G['CollectionsJournalTab'..index]
+	end
+
+	-- Blizzard clears points on the wardrobe tab
+	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
+end
+
+local function SkinWardrobeFrame()
+	local WardrobeCollectionFrame = _G.WardrobeCollectionFrame
+	S:HandleTab(_G.WardrobeCollectionFrameTab1)
+	S:HandleTab(_G.WardrobeCollectionFrameTab2)
+
+	local ProgressBar = WardrobeCollectionFrame.progressBar
+	if ProgressBar then
+		ProgressBar.border:Hide()
+		ProgressBar:DisableDrawLayer('BACKGROUND')
+		ProgressBar:SetStatusBarTexture(E.media.normTex)
+		ProgressBar:CreateBackdrop()
+
+		E:RegisterStatusBar(ProgressBar)
+	end
 
 	if E.global.general.disableTutorialButtons then
 		WardrobeCollectionFrame.InfoButton:Kill()
@@ -612,28 +640,6 @@ local function SkinTransmogFrames()
 			end
 		end
 
-		local pending = Frame.PendingTransmogFrame
-		if pending then
-			local Glowframe = pending.Glowframe
-			Glowframe:SetAtlas(nil)
-			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
-
-			if Glowframe.backdrop then
-				Glowframe.backdrop:Point('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-				Glowframe.backdrop:Point('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
-				Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
-				Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
-			end
-
-			for i = 1, 12 do
-				if i < 5 then
-					Frame.PendingTransmogFrame['Smoke'..i]:Hide()
-				end
-
-				Frame.PendingTransmogFrame['Wisp'..i]:Hide()
-			end
-		end
-
 		local paging = Frame.PagingFrame
 		if paging then
 			S:HandleNextPrevButton(paging.PrevPageButton, nil, nil, true)
@@ -657,108 +663,13 @@ local function SkinTransmogFrames()
 	S:HandleDropDownBox(DetailsFrame.VariantSetsDropdown)
 	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
 
-	local WardrobeFrame = _G.WardrobeFrame
-	S:HandlePortraitFrame(WardrobeFrame)
-
-	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
-	WardrobeTransmogFrame:StripTextures()
-	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
-	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 200)
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
-
-	for i = 1, #WardrobeTransmogFrame.SlotButtons do
-		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
-		slotButton:OffsetFrameLevel(2)
-		slotButton:StripTextures()
-		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
-		slotButton.Border:Kill()
-		slotButton.Icon:SetTexCoords()
-		slotButton.Icon:SetInside(slotButton.backdrop)
-
-		local undo = slotButton.UndoButton
-		if undo then undo:SetHighlightTexture(E.ClearTexture) end
-
-		local pending = slotButton.PendingFrame
-		if pending then
-			if slotButton.transmogType == 1 then
-				pending.Glow:Size(48)
-				pending.Ants:Size(30)
-			else
-				pending.Glow:Size(74)
-				pending.Ants:Size(48)
-			end
-		end
-	end
-
-	local SpecButton = WardrobeTransmogFrame.SpecDropdown
-	if SpecButton then
-		S:HandleButton(SpecButton)
-
-		SpecButton:SetPoint('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -3, 0)
-
-		if SpecButton.Arrow then
-			SpecButton.Arrow:SetAlpha(0)
-		end
-
-		if not SpecButton.customArrow then
-			local tex = SpecButton:CreateTexture(nil, 'ARTWORK')
-			tex:SetAllPoints()
-			tex:SetTexture(E.Media.Textures.ArrowUp)
-			tex:SetRotation(S.ArrowRotation.down)
-
-			SpecButton.customArrow = tex
-		end
-	end
-
-	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
-	S:HandleButton(WardrobeTransmogFrame.ModelScene.ClearAllPendingButton)
-	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
-	S:HandleModelSceneControlButtons(WardrobeTransmogFrame.ModelScene.ControlFrame)
-
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
 	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')
-
-	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
-	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate('Transparent')
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
-
-	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
-	WardrobeOutfitEditFrame:StripTextures()
-	WardrobeOutfitEditFrame:SetTemplate('Transparent')
-	WardrobeOutfitEditFrame.EditBox:StripTextures()
-	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
-	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
-	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
-	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
-end
-
-local function HandleTabs()
-	local tab = _G.CollectionsJournalTab1
-	local index, lastTab = 1, tab
-	while tab do
-		S:HandleTab(tab)
-
-		tab:ClearAllPoints()
-
-		if index == 1 then
-			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
-		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
-			lastTab = tab
-		end
-
-		index = index + 1
-		tab = _G['CollectionsJournalTab'..index]
-	end
-
-	-- Blizzard clears points on the wardrobe tab
-	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 end
 
 local function SkinCollectionsFrames()
 	S:HandlePortraitFrame(_G.CollectionsJournal, true)
+	SkinWardrobeFrame()
 
 	HandleTabs()
 
@@ -817,7 +728,6 @@ end
 function S:Blizzard_Collections()
 	if not E.private.skins.blizzard.enable then return end
 	if E.private.skins.blizzard.collections then SkinCollectionsFrames() end
-	if E.private.skins.blizzard.transmogrify then SkinTransmogFrames() end
 	if E.private.skins.blizzard.campsites then SkinCampsitesFrame() end
 end
 

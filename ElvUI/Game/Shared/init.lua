@@ -7,6 +7,8 @@
 local _G = _G
 local strsplit, gsub, tinsert, next, type, wipe = strsplit, gsub, tinsert, next, type, wipe
 local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
+local issecretvalue = issecretvalue
+local issecrettable = issecrettable
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -44,6 +46,9 @@ E.callbacks = E.callbacks or CallbackHandler:New(E)
 E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.locale = GetLocale()
 E.oUF = oUF
+
+-- moved this to oUF relink it so it works on E
+E.ColorGradient = oUF.ColorGradient
 
 Engine[1] = E
 Engine[2] = {}
@@ -88,6 +93,7 @@ do -- Expansions
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+	E.Midnight = E.wowtoc >= 120000
 
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
@@ -107,6 +113,32 @@ E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
 E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
 E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
 E.QualityColors[-1] = {r = 0, g = 0, b = 0}
+
+do -- secret stuff, keep it synced in auraskip
+	function E:IsSecretValue(value)
+		if issecretvalue and issecretvalue(value) then
+			return true
+		end
+	end
+
+	function E:NotSecretValue(value)
+		if not issecretvalue or not issecretvalue(value) then
+			return true
+		end
+	end
+
+	function E:IsSecretTable(object)
+		if issecrettable and issecrettable(object) then
+			return true
+		end
+	end
+
+	function E:NotSecretTable(object)
+		if not issecrettable or not issecrettable(object) then
+			return true
+		end
+	end
+end
 
 do
 	function E:AddonCompartmentFunc()

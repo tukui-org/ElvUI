@@ -16,6 +16,8 @@ function UF:ModelAlphaFix(value)
 end
 
 function UF:Construct_Portrait(frame, which)
+	if not false then return end -- dont allow portraits for now
+
 	local portrait
 
 	if which == 'texture' then

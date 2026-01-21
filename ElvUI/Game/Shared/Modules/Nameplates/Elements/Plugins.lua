@@ -179,7 +179,7 @@ function NP:Construct_Highlight(nameplate)
 	return Highlight
 end
 
-function NP:Update_Highlight(nameplate, nameOnlySF)
+function NP:Update_Highlight(nameplate)
 	local db = NP:PlateDB(nameplate)
 
 	if NP.db.highlight and db.enable then
@@ -187,9 +187,9 @@ function NP:Update_Highlight(nameplate, nameOnlySF)
 			nameplate:EnableElement('Highlight')
 		end
 
-		if db.health.enable and not (db.nameOnly or nameOnlySF) then
+		if db.health.enable and not db.nameOnly then
 			nameplate.Highlight.texture:SetColorTexture(1, 1, 1, 0.25)
-			nameplate.Highlight.texture:SetAllPoints(nameplate.Health.flashTexture)
+			nameplate.Highlight.texture:SetAllPoints(nameplate.Health)
 			nameplate.Highlight.texture:SetAlpha(0.75)
 		else
 			nameplate.Highlight.texture:SetTexture(E.Media.Textures.Spark)

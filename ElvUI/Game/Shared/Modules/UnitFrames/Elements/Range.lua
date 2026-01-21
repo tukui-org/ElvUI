@@ -103,7 +103,7 @@ function UF:FriendlyInRange(unit)
 	end
 
 	local range, checked = UnitInRange(unit)
-	if checked and not range then
+	if E:NotSecretValue(checked) and (checked and not range) then
 		return false -- blizz checked and unit is out of range
 	end
 
@@ -122,7 +122,7 @@ function UF:UpdateRange(unit)
 		element.RangeAlpha = element.MaxAlpha
 	elseif self.forceNotInRange then
 		element.RangeAlpha = element.MinAlpha
-	elseif unit then
+	elseif E:UnitExists(unit) then
 		if UnitIsDeadOrGhost(unit) then
 			element.RangeAlpha = UF:UnitInSpellsRange(unit, 3) == true and element.MaxAlpha or element.MinAlpha
 		elseif UnitCanAttack('player', unit) then

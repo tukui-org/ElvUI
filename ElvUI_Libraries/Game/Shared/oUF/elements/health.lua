@@ -10,7 +10,6 @@ Health - A `StatusBar` used to represent the unit's health.
 ## Sub-Widgets
 
 .TempLoss - A `StatusBar` used to represent temporary max health reduction.
-.bg       - A `Texture` used as a background. It will inherit the color of the main StatusBar.
 
 ## Notes
 
@@ -18,9 +17,10 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 
 ## Options
 
-.smoothGradient                   - 9 color values to be used with the .colorSmooth option (table)
 .considerSelectionInCombatHostile - Indicates whether selection should be considered hostile while the unit is in
                                     combat with the player (boolean)
+.smoothing                        - Which status bar smoothing method to use, defaults to
+                                    `Enum.StatusBarInterpolation.Immediate` (number)
 
 The following options are listed by priority. The first check that returns true decides the color of the bar.
 
@@ -33,20 +33,16 @@ The following options are listed by priority. The first check that returns true 
 .colorClassNPC     - Use `self.colors.class[class]` to color the bar if the unit is a NPC (boolean)
 .colorClassPet     - Use `self.colors.class[class]` to color the bar if the unit is player controlled, but not a player
                      (boolean)
-.colorSelection    - Use `self.colors.selection[selection]` to color the bar based on the unit's selection color.
-                     `selection` is defined by the return value of Private.unitSelectionType, a wrapper function
+.colorSelection    - Use `self.colors.selection[selection]` to color the bar based on the unit's outline/highlight
+                     color. `selection` is defined by the return value of Private.unitSelectionType, a wrapper function
                      for [UnitSelectionType](https://warcraft.wiki.gg/wiki/API_UnitSelectionType) (boolean)
 .colorReaction     - Use `self.colors.reaction[reaction]` to color the bar based on the player's reaction towards the
                      unit. `reaction` is defined by the return value of
                      [UnitReaction](https://warcraft.wiki.gg/wiki/API_UnitReaction) (boolean)
-.colorSmooth       - Use `smoothGradient` if present or `self.colors.smooth` to color the bar with a smooth gradient
-                     based on the player's current health percentage (boolean)
+.colorSmooth       - Use color curve from `self.colors.health` to color the bar with a smooth gradient based on the
+                     unit's current health percentage (boolean)
 .colorHealth       - Use `self.colors.health` to color the bar. This flag is used to reset the bar color back to default
                      if none of the above conditions are met (boolean)
-
-## Sub-Widgets Options
-
-.multiplier - Used to tint the background based on the main widgets R, G and B values. Defaults to 1 (number)[0-1]
 
 ## Examples
 
@@ -57,11 +53,6 @@ The following options are listed by priority. The first check that returns true 
     Health:SetPoint('LEFT')
     Health:SetPoint('RIGHT')
 
-    -- Add a background
-    local Background = Health:CreateTexture(nil, 'BACKGROUND')
-    Background:SetAllPoints()
-    Background:SetTexture(1, 1, 1, .5)
-
     -- Options
     Health.colorTapping = true
     Health.colorDisconnected = true
@@ -69,11 +60,7 @@ The following options are listed by priority. The first check that returns true 
     Health.colorReaction = true
     Health.colorHealth = true
 
-    -- Make the background darker.
-    Background.multiplier = .5
-
     -- Register it with oUF
-    Health.bg = Background
     self.Health = Health
 
     -- Alternatively, if .TempLoss is being used
@@ -89,11 +76,6 @@ The following options are listed by priority. The first check that returns true 
     Health:SetPoint('TOPRIGHT', TempLoss:GetStatusBarTexture(), 'TOPLEFT')
     Health:SetPoint('BOTTOMRIGHT', TempLoss:GetStatusBarTexture(), 'BOTTOMLEFT')
 
-    -- Add a background
-    local Background = TempLoss:CreateTexture(nil, 'BACKGROUND')
-    Background:SetAllPoints()
-    Background:SetTexture(1, 1, 1, .5)
-
     -- Options
     Health.colorTapping = true
     Health.colorDisconnected = true
@@ -101,12 +83,8 @@ The following options are listed by priority. The first check that returns true 
     Health.colorReaction = true
     Health.colorHealth = true
 
-    -- Make the background darker.
-    Background.multiplier = .5
-
     -- Register it with oUF
     Health.TempLoss = TempLoss
-    Health.bg = Background
     self.Health = Health
 --]]
 
@@ -116,11 +94,10 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
-local gsub, unpack = gsub, unpack
+local gsub = gsub
+local unpack = unpack
 
-local Clamp = Clamp
 local GetPetHappiness = GetPetHappiness
-local GetUnitTotalModifiedMaxHealthPercent = GetUnitTotalModifiedMaxHealthPercent
 local UnitClass = UnitClass
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -132,14 +109,18 @@ local UnitIsUnit = UnitIsUnit
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitReaction = UnitReaction
 local UnitThreatSituation = UnitThreatSituation
+local GetUnitTotalModifiedMaxHealthPercent = GetUnitTotalModifiedMaxHealthPercent
+local UnitHealthPercent = UnitHealthPercent
+
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
-	local element = self.Health
 
+	local element = self.Health
 	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
 
-	local r, g, b, color
+	local color
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		color = self.colors.disconnected
 	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
@@ -158,36 +139,35 @@ local function UpdateColor(self, event, unit)
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		color = self.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
-		r, g, b = self:ColorGradient(element.cur or 1, element.max or 1, unpack(element.smoothGradient or self.colors.smooth))
+		if oUF.isMidnight then
+			local curve = self.colors.health:GetCurve()
+			if curve then
+				color = UnitHealthPercent(unit, true, curve)
+			end
+		else
+				local curValue, maxValue = element.cur or 1, element.max or 1
+			local r, g, b = oUF:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
+			self.colors.smooth:SetRGB(r, g, b)
+
+			color = self.colors.smooth
+		end
 	elseif(element.colorHealth) then
 		color = self.colors.health
 	end
 
 	if(color) then
-		r, g, b = color.r, color.g, color.b
+		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 	end
 
-	if(b) then
-		element:SetStatusBarColor(r, g, b)
-
-		local bg = element.bg
-		if(bg) then
-			local mu = bg.multiplier or 1
-			bg:SetVertexColor(r * mu, g * mu, b * mu)
-		end
-	end
-
-	--[[ Callback: Health:PostUpdateColor(unit, r, g, b)
+	--[[ Callback: Health:PostUpdateColor(unit, color)
 	Called after the element color has been updated.
 
-	* self - the Health element
-	* unit - the unit for which the update has been triggered (string)
-	* r    - the red component of the used color (number)[0-1]
-	* g    - the green component of the used color (number)[0-1]
-	* b    - the blue component of the used color (number)[0-1]
+	* self  - the Health element
+	* unit  - the unit for which the update has been triggered (string)
+	* color - the used ColorMixin-based object (table?)
 	--]]
 	if(element.PostUpdateColor) then
-		element:PostUpdateColor(unit, r, g, b)
+		element:PostUpdateColor(unit, color)
 	end
 end
 
@@ -220,9 +200,9 @@ local function Update(self, event, unit)
 	element:SetMinMaxValues(0, max)
 
 	if(UnitIsConnected(unit)) then
-		element:SetValue(cur)
+		element:SetValue(cur, element.smoothing)
 	else
-		element:SetValue(max)
+		element:SetValue(max, element.smoothing)
 	end
 
 	element.cur = cur
@@ -230,9 +210,8 @@ local function Update(self, event, unit)
 
 	local lossPerc = 0
 	if(element.TempLoss) then
-		lossPerc = Clamp(GetUnitTotalModifiedMaxHealthPercent(unit), 0, 1)
-
-		element.TempLoss:SetValue(lossPerc)
+		lossPerc = GetUnitTotalModifiedMaxHealthPercent(unit)
+		element.TempLoss:SetValue(lossPerc, element.smoothing)
 	end
 
 	--[[ Callback: Health:PostUpdate(unit, cur, max, lossPerc)
@@ -320,7 +299,25 @@ local function SetColorTapping(element, state, isForced)
 		element.colorTapping = state
 		if(state) then
 			element.__owner:RegisterEvent('UNIT_FACTION', ColorPath)
-		else
+		elseif(not element.colorReaction) then
+			element.__owner:UnregisterEvent('UNIT_FACTION', ColorPath)
+		end
+	end
+end
+
+--[[ Health:SetColorReaction(state, isForced)
+Used to toggle coloring by the unit's reaction.
+
+* self     - the Health element
+* state    - the desired state (boolean)
+* isForced - forces the event update even if the state wasn't changed (boolean)
+--]]
+local function SetColorReaction(element, state, isForced)
+	if(element.colorReaction ~= state or isForced) then
+		element.colorReaction = state
+		if(state) then
+			element.__owner:RegisterEvent('UNIT_FACTION', ColorPath)
+		elseif(not element.colorTapping) then
 			element.__owner:UnregisterEvent('UNIT_FACTION', ColorPath)
 		end
 	end
@@ -365,7 +362,12 @@ local function Enable(self)
 		element.SetColorDisconnected = SetColorDisconnected
 		element.SetColorSelection = SetColorSelection
 		element.SetColorTapping = SetColorTapping
+		element.SetColorReaction = SetColorReaction
 		element.SetColorThreat = SetColorThreat
+
+		if(not element.smoothing) then
+			element.smoothing = StatusBarInterpolation and StatusBarInterpolation.Immediate or nil
+		end
 
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('UNIT_HEALTH', Path)
@@ -386,7 +388,7 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_FLAGS', ColorPath)
 		end
 
-		if(element.colorTapping) then
+		if(element.colorTapping or element.colorReaction) then
 			self:RegisterEvent('UNIT_FACTION', ColorPath)
 		end
 
@@ -403,10 +405,10 @@ local function Enable(self)
 		if(element.TempLoss) then
 			if(element.TempLoss:IsObjectType('StatusBar')) then
 				element.TempLoss:SetMinMaxValues(0, 1)
-				element.TempLoss:SetValue(0)
+				element.TempLoss:SetValue(0, element.smoothing)
 
 				if(not element.TempLoss:GetStatusBarTexture()) then
-					element.TempLoss:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+					element.TempLoss:SetStatusBarTexture('UI-HUD-UnitFrame-Target-PortraitOn-Bar-TempHPLoss')
 				end
 			end
 

@@ -2,10 +2,12 @@ local _, ns = ...
 local oUF = ns.oUF
 local AuraFiltered = oUF.AuraFiltered
 
+local LibDispel = LibStub('LibDispel-1.0')
+local DebuffColors = LibDispel:GetDebuffTypeColor()
+
 local VISIBLE = 1
 local HIDDEN = 0
 
-local mod = mod
 local next = next
 local wipe = wipe
 local pcall = pcall
@@ -17,29 +19,10 @@ local CreateFrame = CreateFrame
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local GameTooltip = GameTooltip
-local UnpackAuraData = AuraUtil.UnpackAuraData
 
-local LibDispel = LibStub('LibDispel-1.0')
-local DebuffColors = LibDispel:GetDebuffTypeColor()
-
-local YEAR, DAY, HOUR, MINUTE = 31557600, 86400, 3600, 60
-local function FormatTime(sec)
-	if sec < MINUTE then
-		return '%.1fs', sec
-	elseif sec < HOUR then
-		local mins = mod(sec, HOUR) / MINUTE
-		local secs = mod(sec, MINUTE)
-		return '%dm %ds', mins, secs
-	elseif sec < DAY then
-		local hrs = mod(sec, DAY) / HOUR
-		local mins = mod(sec, HOUR) / MINUTE
-		return '%dh %dm', hrs, mins
-	else
-		local days = mod(sec, YEAR) / DAY
-		local hrs = mod(sec, DAY) / HOUR
-		return '%dd %dh', days, hrs
-	end
-end
+local WrapString = C_StringUtil and C_StringUtil.WrapString
+local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
+local GetAuraDuration = C_UnitAuras.GetAuraDuration
 
 local function OnEnter(self)
 	if GameTooltip:IsForbidden() or not self:IsVisible() then return end
@@ -60,15 +43,29 @@ local function OnLeave()
 end
 
 local function UpdateValue(bar, start)
-	local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
+	if oUF.isMidnight then
+		local auraDuration = (bar.unit and bar.aura) and GetAuraDuration(bar.unit, bar.aura.auraInstanceID)
+		if auraDuration then
+			bar.cooldown:SetCooldownFromDurationObject(auraDuration)
 
-	if start and bar.SetValue_ then
-		bar:SetValue_(remain / bar.duration)
+			local remain = auraDuration:GetRemainingDuration()
+			if remain then
+				bar:SetMinMaxValues(0, bar.aura.duration)
+				bar:SetValue(remain)
+			end
+		end
 	else
-		bar:SetValue(remain / bar.duration)
-	end
+		local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
+		local value = remain / bar.duration
 
-	bar.timeText:SetFormattedText(FormatTime(remain))
+		if start and bar.SetValue_ then
+			bar:SetValue_(value)
+		else
+			bar:SetValue(value)
+		end
+
+		bar.timeText:SetFormattedText(oUF:GetTime(remain))
+	end
 end
 
 local function OnUpdate(bar, elapsed)
@@ -99,6 +96,10 @@ local function CreateAuraBar(element, index)
 	icon:SetPoint('RIGHT', bar, 'LEFT', -element.barSpacing, 0)
 	icon:SetSize(element.height, element.height)
 
+	local cooldown = CreateFrame('Cooldown', '$parentCooldown', bar, 'CooldownFrameTemplate')
+	cooldown:SetDrawSwipe(false)
+	cooldown:SetDrawBling(false)
+
 	local nameText = bar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	nameText:SetPoint('LEFT', bar, 'LEFT', 2, 0)
 
@@ -107,6 +108,7 @@ local function CreateAuraBar(element, index)
 
 	bar.icon = icon
 	bar.spark = spark
+	bar.cooldown = cooldown
 	bar.nameText = nameText
 	bar.timeText = timeText
 	bar.__owner = element
@@ -123,7 +125,14 @@ local function CustomFilter(element, unit, bar, aura, name)
 end
 
 local function UpdateBar(element, bar)
-	if bar.count > 1 then
+	if oUF:IsSecretValue(bar.count) then
+		if bar.aura then
+			local minCount, maxCount = 2, 999
+			bar.nameText:SetFormattedText('%s%s', WrapString(GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount), '[', '] '), bar.spell)
+		else
+			bar.nameText:SetText(bar.spell)
+		end
+	elseif bar.count > 1 then
 		bar.nameText:SetFormattedText('[%d] %s', bar.count, bar.spell)
 	else
 		bar.nameText:SetText(bar.spell)
@@ -137,10 +146,13 @@ local function UpdateBar(element, bar)
 
 	local r, g, b = .2, .6, 1
 	local debuffType = bar.debuffType
-	if element.buffColor then r, g, b = unpack(element.buffColor) end
+	if element.buffColor then
+		r, g, b = unpack(element.buffColor)
+	end
+
 	if bar.filter == 'HARMFUL' then
-		if not debuffType or debuffType == '' then
-			debuffType = 'none'
+		if oUF:IsSecretValue(debuffType) or not debuffType or debuffType == '' then
+			debuffType = 'None'
 		end
 
 		local color = DebuffColors[debuffType]
@@ -161,7 +173,7 @@ local function UpdateBar(element, bar)
 end
 
 local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, visible)
-	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
+	local name, texture, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:UnpackAuraData(aura)
 	if not name then return end
 
 	local position = visible + offset + 1
@@ -183,7 +195,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.isDebuff = isDebuff
 	bar.debuffType = debuffType
 	bar.isStealable = isStealable
-	bar.isPlayer = source == 'player' or source == 'vehicle'
+	bar.isPlayer = oUF:NotSecretValue(source) and (source == 'player' or source == 'vehicle') or (aura and aura.auraIsPlayer) or nil
 	bar.position = position
 	bar.duration = duration
 	bar.expiration = expiration
@@ -191,7 +203,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.spellID = spellID
 	bar.spell = name
 	bar.auraInstanceID = aura.auraInstanceID
-	bar.noTime = (duration == 0 and expiration == 0)
+	bar.noTime = oUF:NotSecretValue(duration) and (duration == 0 and expiration == 0)
 
 	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, aura, name, texture,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,

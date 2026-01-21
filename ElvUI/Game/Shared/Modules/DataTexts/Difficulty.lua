@@ -45,7 +45,7 @@ for i = 1, 200 do
 	end
 end
 
-local DiffIDLabel = { -- also has IDs maintained in Nameplate StyleFilters
+local DiffIDLabel = {
 	['N'] = { 1, 14, 38, 173, 198, 201 },
 	['H'] = { 2, 15, 39, 174 },
 	['M'] = { 16, 23, 40 },

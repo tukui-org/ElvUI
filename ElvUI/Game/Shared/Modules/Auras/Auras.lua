@@ -4,9 +4,13 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
+local next = next
 local strmatch = strmatch
 local tonumber = tonumber
-local tinsert, next = tinsert, next
+
+local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+local GetAuraDuration = C_UnitAuras.GetAuraDuration
 
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
@@ -117,7 +121,8 @@ function A:UpdateButton(button)
 	if button.statusBar and button.statusBar:IsShown() then
 		local r, g, b
 		if db.barColorGradient then
-			r, g, b = ElvUF:ColorGradient(button.timeLeft, button.duration or 0, .8, 0, 0, .8, .8, 0, 0, .8, 0)
+			local maxValue = button.duration or 0
+			r, g, b = E:ColorGradient(maxValue == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
 		else
 			r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
 		end
@@ -152,6 +157,12 @@ function A:CreateIcon(button)
 		button.instant = true -- let update on attribute change
 	end
 
+	button.cooldown = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
+	button.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
+	button.cooldown:SetDrawSwipe(false)
+	button.cooldown:SetDrawBling(false)
+	button.cooldown:SetAllPoints()
+
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
 
@@ -179,18 +190,8 @@ function A:CreateIcon(button)
 	button:SetScript('OnHide', A.Button_OnHide)
 	button:SetScript('OnShow', A.Button_OnShow)
 
-	-- support cooldown override
-	if not button.isRegisteredCooldown then
-		button.CooldownOverride = 'auras'
-		button.isRegisteredCooldown = true
-		button.forceEnabled = true
-		button.showSeconds = true
+	E:RegisterCooldown(button.cooldown, 'auras')
 
-		if not E.RegisteredCooldowns.auras then E.RegisteredCooldowns.auras = {} end
-		tinsert(E.RegisteredCooldowns.auras, button)
-	end
-
-	A:Update_CooldownOptions(button)
 	A:UpdateIcon(button)
 end
 
@@ -236,6 +237,12 @@ function A:UpdateIcon(button, update)
 		button.text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
 	end
 
+	if button.cooldown and button.cooldown.Text then
+		button.cooldown.Text:ClearAllPoints()
+		button.cooldown.Text:Point('TOP', button, 'BOTTOM', db.timeXOffset, db.timeYOffset)
+		button.cooldown.Text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
+	end
+
 	if button.statusBar then
 		E:SetSmoothing(button.statusBar, db.smoothbars)
 
@@ -255,30 +262,30 @@ function A:UpdateIcon(button, update)
 end
 
 function A:SetAuraTime(button, expiration, duration, modRate)
-	local oldEnd = button.endTime
 	button.expiration = expiration
 	button.endTime = expiration
 	button.duration = duration
 	button.modRate = modRate
 
-	if oldEnd ~= button.endTime then
-		if button.statusBar:IsShown() then
-			button.statusBar:SetMinMaxValues(0, duration)
-		end
-
-		button.nextUpdate = 0
+	if button.statusBar:IsShown() then
+		button.statusBar:SetMinMaxValues(0, duration)
 	end
 
-	A:UpdateTime(button, expiration, modRate)
+	A:UpdateTime(button, duration, expiration, modRate)
+
 	button.elapsed = 0 -- reset the timer for UpdateTime
 end
 
-function A:ClearAuraTime(button, expired)
+function A:ClearVariables(button)
 	button.expiration = nil
 	button.endTime = nil
 	button.duration = nil
 	button.modRate = nil
 	button.timeLeft = nil
+end
+
+function A:ClearAuraTime(button, expired)
+	A:ClearVariables(button)
 
 	button.text:SetText('')
 
@@ -298,24 +305,41 @@ function A:ClearAuraTime(button, expired)
 end
 
 function A:UpdateAura(button, index)
-	local name, icon, count, debuffType, duration, expiration, _, _, _, _, _, _, _, _, modRate = E:GetAuraData(button.header:GetAttribute('unit'), index, button.filter)
-	if not name then return end
+	local unitToken = button.header:GetAttribute('unit')
+	local data = GetAuraDataByIndex(unitToken, index, button.filter)
+	if not data then return end
+
+	local duration = data.duration
+	local icon = data.icon
+	local expiration = data.expirationTime
+	local debuffType = data.dispelName
+	local count = data.applications
+	local modRate = data.timeMod
 
 	local db = A.db[button.auraType]
 	button.text:SetShown(db.showDuration)
-	button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
-	button.count:SetText(not count or count <= 1 and '' or count)
 	button.texture:SetTexture(icon)
+	button.auraInstanceID = data.auraInstanceID
+	button.unit = unitToken
 
-	local dtype = debuffType or 'none'
-	if button.debuffType ~= dtype then
-		local color = (button.filter == 'HARMFUL' and A.db.colorDebuffs and DebuffColors[dtype]) or E.db.general.bordercolor
-		button:SetBackdropBorderColor(color.r, color.g, color.b)
-		button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-		button.debuffType = dtype
+	local minCount, maxCount = 2, 999 -- maybe do options for this
+	if E:IsSecretValue(count) then
+		button.count:SetText(GetAuraApplicationDisplayCount(unitToken, data.auraInstanceID, minCount, maxCount))
+	else
+		local hideCount = not count or (count < minCount or count > maxCount)
+		button.count:SetText(hideCount and '' or count)
 	end
 
-	if duration > 0 and expiration then
+	local color = (E:NotSecretValue(debuffType) and (button.filter == 'HARMFUL' and A.db.colorDebuffs) and DebuffColors[debuffType or 'None']) or E.db.general.bordercolor
+	button:SetBackdropBorderColor(color.r, color.g, color.b)
+	button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+
+	if E.Midnight then
+		A:UpdateTime(button, duration, expiration, modRate)
+		A:ClearVariables(button) -- we dont use these on Midnight so clear them
+
+		button.elapsed = 0 -- reset the timer for UpdateTime
+	elseif duration and expiration then
 		A:SetAuraTime(button, expiration, duration, modRate)
 	else
 		A:ClearAuraTime(button)
@@ -341,10 +365,6 @@ function A:UpdateTempEnchant(button, index, expiration)
 	else
 		A:ClearAuraTime(button)
 	end
-end
-
-function A:Update_CooldownOptions(button)
-	E:Cooldown_Options(button, A.db.cooldown, button)
 end
 
 function A:SetTooltip(button)
@@ -381,20 +401,43 @@ function A:Button_OnHide()
 	end
 end
 
-function A:UpdateTime(button, expiration, modRate)
-	button.timeLeft = (expiration - GetTime()) / (modRate or 1)
+function A:UpdateTime(button, duration, expiration, modRate)
+	local db = A.db[button.auraType]
+	if E.Midnight then
+		button.statusBar:SetShown(db.barShow)
 
-	if button.timeLeft < 0.1 then
-		A:ClearAuraTime(button, true)
+		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
+		if auraDuration then
+			button.cooldown:SetCooldownFromDurationObject(auraDuration)
+			button.cooldown:Show()
+
+			local remaining = db.barShow and auraDuration:GetRemainingDuration()
+			button.statusBar:SetAlphaFromBoolean(remaining, 1, 0)
+
+			if remaining then
+				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
+				button.statusBar:SetMinMaxValues(0, duration)
+				button.statusBar:SetValue(remaining)
+			end
+		else
+			button.cooldown:Hide()
+		end
 	else
-		A:UpdateButton(button)
+		button.timeLeft = (expiration - GetTime()) / (modRate or 1)
+		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
+
+		if button.timeLeft < 0.1 then
+			A:ClearAuraTime(button, true)
+		else
+			A:UpdateButton(button)
+		end
 	end
 end
 
 function A:Button_OnUpdate(elapsed)
 	local xpr = self.endTime
 	if xpr then
-		E.Cooldown_OnUpdate(self, elapsed)
+		self.text:SetFormattedText(ElvUF:GetTime(self.timeLeft))
 	end
 
 	if self.elapsed and self.elapsed > 0.1 then
@@ -403,7 +446,7 @@ function A:Button_OnUpdate(elapsed)
 		end
 
 		if xpr then
-			A:UpdateTime(self, xpr, self.modRate)
+			A:UpdateTime(self, self.duration, xpr, self.modRate)
 		end
 
 		self.elapsed = 0
@@ -487,7 +530,6 @@ function A:UpdateChild(child, index, db) -- self here is the header
 	child.auraType = self.auraType
 	child.db = db
 
-	A:Update_CooldownOptions(child)
 	A:UpdateIcon(child, true)
 
 	-- blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons

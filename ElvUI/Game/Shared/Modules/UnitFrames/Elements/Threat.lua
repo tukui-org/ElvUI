@@ -25,6 +25,7 @@ function UF:Construct_Threat(frame)
 	threat.TextureIcon:Hide()
 
 	threat.PostUpdate = UF.UpdateThreat
+
 	return threat
 end
 
@@ -153,13 +154,14 @@ function UF:ThreatHandler(threat, parent, threatStyle, status, r, g, b)
 	end
 end
 
-function UF:UpdateThreat(unit, status, r, g, b)
+function UF:UpdateThreat(unit, status, color)
 	local parent = self:GetParent()
 
 	local db = parent.db
 	if not db then return end
 
 	if (unit and parent.unit == unit) and status and status > (db.threatPrimary and 1 or 0) then
+		local r, g, b = color:GetRGB()
 		UF:ThreatHandler(self, parent, db.threatStyle, status, r, g, b)
 	else
 		UF:ThreatHandler(self, parent, db.threatStyle, nil, unpack(E.media.unitframeBorderColor))

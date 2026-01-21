@@ -21,7 +21,8 @@ function NP:Castbar_CheckInterrupt(unit)
 		unit = 'player'
 	end
 
-	if self.notInterruptible and UnitCanAttack('player', unit) then
+	local notInterruptible = E:NotSecretValue(self.notInterruptible) and self.notInterruptible
+	if notInterruptible and UnitCanAttack('player', unit) then
 		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
 
 		if self.Icon and NP.db.colors.castbarDesaturate then
@@ -37,6 +38,8 @@ function NP:Castbar_CheckInterrupt(unit)
 end
 
 function NP:Castbar_CustomDelayText(duration)
+	if E:IsSecretValue(duration) or not duration then return end
+
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
 			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', abs(duration - self.max), self.delay)
@@ -61,6 +64,8 @@ function NP:Castbar_CustomDelayText(duration)
 end
 
 function NP:Castbar_CustomTimeText(duration)
+	if E:IsSecretValue(duration) or not duration then return end
+
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
 			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
@@ -91,36 +96,42 @@ function NP:Castbar_PostCastStart(unit)
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
-		local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
-		local spellName = spellRename or self.spellName
-		local length = db.castbar.nameLength
-		local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
-		local textChanged = spellRename or (name ~= spellName)
+		if E:IsSecretValue(self.spellID) then
+			self.Text:SetText(self.spellName)
+		else
+			local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
+			local spellName = spellRename or self.spellName
+			local length = db.castbar.nameLength
+			local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
+			local textChanged = spellRename or (name ~= spellName)
 
-		if db.castbar.displayTarget then
-			local target, frameType = self.curTarget, plate.frameType
-			if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
-				target = UnitName(unit..'target') -- player or NPCs; if used on other players:
-			end -- the cast target doesn't match their target, can be misleading if they mouseover cast
+			if db.castbar.displayTarget then
+				local target, frameType = self.curTarget, plate.frameType
+				if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
+					target = UnitName(unit..'target') -- player or NPCs; if used on other players:
+				end -- the cast target doesn't match their target, can be misleading if they mouseover cast
 
-			if target and target ~= '' and target ~= plate.unitName then
-				local color = (db.castbar.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
-				if db.castbar.targetStyle == 'SEPARATE' then
-					self.TargetText:SetFormattedText('|c%s%s|r', color, target)
-					targetChanged = true
+				if target and target ~= '' and target ~= plate.unitName then
+					local color = (db.castbar.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
+					if db.castbar.targetStyle == 'SEPARATE' then
+						self.TargetText:SetFormattedText('|c%s%s|r', color, target)
+						targetChanged = true
 
-					if textChanged then
-						self.Text:SetText(name)
+						if textChanged then
+							self.Text:SetText(name)
+						end
+					else
+						self.Text:SetFormattedText('%s: |c%s%s|r', name, color, target)
 					end
-				else
-					self.Text:SetFormattedText('%s: |c%s%s|r', name, color, target)
+				elseif textChanged then
+					self.Text:SetText(name)
 				end
 			elseif textChanged then
 				self.Text:SetText(name)
 			end
-		elseif textChanged then
-			self.Text:SetText(name)
 		end
+	else
+		self.Text:SetText('')
 	end
 
 	if not targetChanged then
@@ -150,8 +161,6 @@ function NP:Construct_Castbar(nameplate)
 	castbar:SetFrameLevel(5)
 	castbar:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
-
-	NP:Construct_FlashTexture(nameplate, castbar)
 
 	NP.StatusBars[castbar] = 'castbar'
 	castbar.ModuleStatusBars = NP.StatusBars -- not oUF

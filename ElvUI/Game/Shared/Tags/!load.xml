@@ -1,0 +1,4 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='API.lua'/>
+	<Script file='Tags.lua'/>
+</Ui>

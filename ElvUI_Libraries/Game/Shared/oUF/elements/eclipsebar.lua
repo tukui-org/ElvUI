@@ -1,8 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
 
-if oUF.myclass ~= 'DRUID' then return end
-
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -108,7 +106,25 @@ local function ForceUpdate(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit, 'ECLIPSE')
 end
 
+local function Disable(self)
+	local element = self.EclipseBar
+	if(element) then
+		ElementDisable(self)
+
+		self:UnregisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath)
+		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
+
+		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
+	end
+end
+
 local function Enable(self, unit)
+	if oUF.myclass ~= 'DRUID' then
+		Disable(self)
+
+		return false
+	end
+
 	local element = self.EclipseBar
 	if(element and unit == 'player') then
 		element.__owner = self
@@ -127,18 +143,6 @@ local function Enable(self, unit)
 		end
 
 		return true
-	end
-end
-
-local function Disable(self)
-	local element = self.EclipseBar
-	if(element) then
-		ElementDisable(self)
-
-		self:UnregisterEvent('ECLIPSE_DIRECTION_CHANGE', EclipseDirectionPath)
-		self:UnregisterEvent('UPDATE_SHAPESHIFT_FORM', VisibilityPath)
-
-		self:UnregisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath)
 	end
 end
 

@@ -73,16 +73,14 @@ local function UpdateSize(self, element, curV, maxV)
 end
 
 local PRE, POST = 0, 1
-local function Shared_UpdateCheckReturn(self, element, updateType, ...)
-	if not element:IsVisible() then
+local function Shared_UpdateCheckReturn(self, element, updateType, curV, maxV, unit)
+	if E:IsSecretValue(maxV) or not element:IsVisible() then
 		return true
 	end
 
 	if updateType == PRE then
-		local maxV = ...
 		return (not element.enabled or not self.cur) or element.ready or not maxV or maxV == 0
 	elseif updateType == POST then
-		local curV, maxV, unit = ...
 		return (not element.enabled or not element.cur) or (not element.ready or not curV or not maxV or maxV == 0) or element.unit ~= unit
 	end
 end
@@ -90,7 +88,7 @@ end
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
 	local maxV = (element.GetHealthMax or UnitHealthMax)(unit)
-	if Shared_UpdateCheckReturn(self, element, PRE, maxV) or UnitIsTapDenied(unit) then
+	if Shared_UpdateCheckReturn(self, element, PRE, nil, maxV, unit) or UnitIsTapDenied(unit) then
 		return
 	end
 
@@ -109,6 +107,9 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 		return
 	end
 
+	local r, g, b = self:GetStatusBarTexture():GetVertexColor()
+	self.__owner.Cutaway.Health:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
+
 	if (element.cur - curHealth) > (maxHealth * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
@@ -122,14 +123,10 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	end
 end
 
-local function Health_PostUpdateColor(self, r, g, b)
-	self.__owner.Cutaway.Health:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
-end
-
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
 	local maxV = (element.GetPowerMax or UnitPowerMax)(unit)
-	if Shared_UpdateCheckReturn(self, element, PRE, maxV) then
+	if Shared_UpdateCheckReturn(self, element, PRE, nil, maxV, unit) then
 		return
 	end
 
@@ -148,6 +145,9 @@ local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 		return
 	end
 
+	local r, g, b = self:GetStatusBarTexture():GetVertexColor()
+	self.__owner.Cutaway.Power:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
+
 	if (element.cur - curPower) > (maxPower * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
@@ -159,10 +159,6 @@ local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 
 		ClosureFunc(element)
 	end
-end
-
-local function Power_PostUpdateColor(self, r, g, b)
-	self.__owner.Cutaway.Power:SetVertexColor(r * 1.5, g * 1.5, b * 1.5)
 end
 
 local defaults = {
@@ -249,8 +245,6 @@ local function Enable(self)
 					self.Health.PostUpdate = Health_PostUpdate
 				end
 
-				hooksecurefunc(self.Health, "SetStatusBarColor", Health_PostUpdateColor)
-
 				element.Health.hasCutawayHook = true
 			end
 		end
@@ -272,8 +266,6 @@ local function Enable(self)
 				else
 					self.Power.PostUpdate = Power_PostUpdate
 				end
-
-				hooksecurefunc(self.Power, "SetStatusBarColor", Power_PostUpdateColor)
 
 				element.Power.hasCutawayHook = true
 			end

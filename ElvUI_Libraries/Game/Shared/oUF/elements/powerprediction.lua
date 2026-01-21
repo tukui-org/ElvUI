@@ -89,7 +89,7 @@ local function Update(self, event, unit)
 	local hasAltManaBar = altManaInfo and altManaInfo[mainType]
 	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
 
-	if(event == 'UNIT_SPELLCAST_START' and startTime ~= endTime) then
+	if(event == 'UNIT_SPELLCAST_START' and oUF:NotSecretValue(startTime) and (startTime ~= endTime)) then
 		local costTable = GetSpellPowerCost(spellID)
 		if not costTable then
 			element.mainCost = mainCost
@@ -112,7 +112,7 @@ local function Update(self, event, unit)
 				end
 			end
 		end
-	elseif(spellID) then
+	elseif(oUF:NotSecretValue(spellID) and spellID) then
 		-- if we try to cast a spell while casting another one we need to avoid
 		-- resetting the element
 		mainCost = element.mainCost or 0

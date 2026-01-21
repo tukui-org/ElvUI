@@ -3,9 +3,6 @@ local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
 local random = random
-local unpack = unpack
-local hooksecurefunc = hooksecurefunc
-
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 local InCombatLockdown = InCombatLockdown
@@ -28,18 +25,6 @@ function UF:PowerBar_PostVisibility(power, frame)
 
 		if frame.HealthPrediction then
 			UF:SetSize_HealComm(frame)
-		end
-	end
-end
-
-function UF:PowerBar_SetStatusBarColor(r, g, b)
-	local frame = self.origParent or self:GetParent()
-	if frame and frame.PowerPrediction and frame.PowerPrediction.mainBar then
-		if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
-			local color = UF.db.colors.powerPrediction.color
-			frame.PowerPrediction.mainBar:SetStatusBarColor(color.r, color.g, color.b, color.a)
-		else
-			frame.PowerPrediction.mainBar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
 		end
 	end
 end
@@ -85,12 +70,10 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 
 	power.RaisedElementParent = UF:CreateRaisedElement(power)
 
-	hooksecurefunc(power, 'SetStatusBarColor', UF.PowerBar_SetStatusBarColor)
-
 	if bg then
-		power.BG = power:CreateTexture(nil, 'BORDER')
-		power.BG:SetAllPoints()
-		power.BG:SetTexture(E.media.blankTex)
+		power.bg = power:CreateTexture(nil, 'BORDER')
+		power.bg:SetAllPoints()
+		power.bg:SetTexture(E.media.blankTex)
 	end
 
 	if text then
@@ -103,7 +86,6 @@ function UF:Construct_PowerBar(frame, bg, text, textPos)
 	power.colorTapping = false
 
 	power:CreateBackdrop(nil, nil, nil, nil, true)
-	power.backdrop.callbackBackdropColor = UF.PowerBackdropColor
 
 	UF:Construct_ClipFrame(frame, power)
 
@@ -120,7 +102,9 @@ function UF:Configure_Power(frame, healthUpdate)
 			frame:EnableElement('Power')
 		end
 
-		E:SetSmoothing(power, db.power.smoothbars)
+		if not E.Midnight then
+			E:SetSmoothing(power, db.power.smoothbars)
+		end
 
 		--Text
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.power.attachTextTo or 'Health', true)
@@ -261,22 +245,11 @@ function UF:Configure_Power(frame, healthUpdate)
 
 	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.BG, nil, UF.db.colors.invertPower, db.power.reverseFill)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg, nil, UF.db.colors.invertPower, db.power.reverseFill)
 end
 
-function UF:PowerBackdropColor()
-	local parent = self:GetParent()
-	if parent.isTransparent then
-		local r, g, b = parent:GetStatusBarColor()
-		UF.UpdateBackdropTextureColor(parent, r or 0, g or 0, b or 0, E.media.backdropfadecolor[4])
-	else
-		self:SetBackdropColor(unpack(E.media.backdropfadecolor))
-		self:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
-	end
-end
-
-function UF:GetDisplayPower()
-	local barInfo = GetUnitPowerBarInfo(self.__owner.unit)
+function UF:GetDisplayPower(unit)
+	local barInfo = GetUnitPowerBarInfo(unit)
 	if barInfo then
 		return POWERTYPE_ALTERNATE, barInfo.minPower
 	end
@@ -297,15 +270,27 @@ do
 	end
 
 	local function GetRandomPowerColor()
-		local color = ElvUF.colors.power[classPowers[random(0, #classPowers)]]
-		return color.r, color.g, color.b
+		return ElvUF.colors.power[classPowers[random(0, #classPowers)]]
 	end
 
-	function UF:PostUpdatePowerColor()
+	function UF:PostUpdatePowerColor(unit, color)
 		local parent = self.origParent or self:GetParent()
 		if parent.isForced and not self.colorClass then
-			local r, g, b = GetRandomPowerColor()
-			self:SetStatusBarColor(r, g, b)
+			color = GetRandomPowerColor()
+		end
+
+		if not color then return end
+
+		UF.PostUpdateColor(self, unit, color)
+
+		if parent and parent.PowerPrediction and parent.PowerPrediction.mainBar then
+			if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
+				local predColor = UF.db.colors.powerPrediction.color
+				parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(predColor.r, predColor.g, predColor.b, predColor.a)
+			else
+				local r, g, b = color:GetRGB()
+				parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
+			end
 		end
 	end
 end
@@ -343,11 +328,11 @@ do
 		if visibility then
 			local _, powerType = UnitPowerType(unit)
 			local fullType = powerTypesFull[powerType]
-			local autoHide = not db.autoHide or ((fullType and cur ~= max) or (not fullType and cur ~= min))
+			local isFull = (E:IsSecretValue(cur) or E:IsSecretValue(max)) or (fullType and cur == max) or (not fullType and cur == min)
 			local onlyHealer = not db.onlyHealer or (((parent.db.roleIcon and parent.db.roleIcon.enable and parent.role) or UF:GetRoleIcon(parent)) == 'HEALER')
 			local notInCombat = not db.notInCombat or InCombatLockdown()
 
-			local shouldShow = autoHide and onlyHealer and notInCombat
+			local shouldShow = (not db.autoHide or not isFull) and onlyHealer and notInCombat
 			if shouldShow and not barShown then
 				self:Show()
 

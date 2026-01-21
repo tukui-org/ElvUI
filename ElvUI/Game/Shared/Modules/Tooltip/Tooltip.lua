@@ -10,8 +10,8 @@ local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
 local unpack, ipairs = unpack, ipairs
+local tonumber, strlower = tonumber, strlower
 local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
-local floor, tonumber, strlower = floor, tonumber, strlower
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect
@@ -36,14 +36,12 @@ local IsInRaid = IsInRaid
 local IsModifierKeyDown = IsModifierKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local NotifyInspect = NotifyInspect
-local SetTooltipMoney = SetTooltipMoney
 local UIParent = UIParent
 local UnitBattlePetLevel = UnitBattlePetLevel
 local UnitBattlePetType = UnitBattlePetType
 local UnitClass = UnitClass
 local UnitClassification = UnitClassification
 local UnitCreatureType = UnitCreatureType
-local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
@@ -105,38 +103,36 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:SetCompareItems(tt, value)
-	if E.Retail and tt == GameTooltip then
-		tt.supportsItemComparison = value
-	end
+	if E.Midnight or not E.Retail or tt ~= GameTooltip then return end
+
+	tt.supportsItemComparison = value
 end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
-		TT:SetCompareItems(tt, false)
+		TT:SetCompareItems(tt, nil)
+
 		tt:Hide() -- during kb mode this will trigger AB.ShowBinds
 		return
 	end
 
 	TT:SetCompareItems(tt, true)
 
-	local statusBar = tt.StatusBar
-	if statusBar then
+	if GameTooltipStatusBar then
 		local spacing = E.Spacing * 3
 		local position = TT.db.healthBar.statusPosition
-		statusBar:SetAlpha(position == 'DISABLED' and 0 or 1)
+		GameTooltipStatusBar:SetAlpha(position == 'DISABLED' and 0 or 1)
 
-		if position == 'BOTTOM' and statusBar.anchoredToTop then
-			statusBar:ClearAllPoints()
-			statusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
-			statusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
-			statusBar.anchoredToTop = nil
-		elseif position == 'TOP' and not statusBar.anchoredToTop then
-			statusBar:ClearAllPoints()
-			statusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
-			statusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
-			statusBar.anchoredToTop = true
+		if position == 'BOTTOM' then
+			GameTooltipStatusBar:ClearAllPoints()
+			GameTooltipStatusBar:Point('TOPLEFT', tt, 'BOTTOMLEFT', E.Border, -spacing)
+			GameTooltipStatusBar:Point('TOPRIGHT', tt, 'BOTTOMRIGHT', -E.Border, -spacing)
+		elseif position == 'TOP' then
+			GameTooltipStatusBar:ClearAllPoints()
+			GameTooltipStatusBar:Point('BOTTOMLEFT', tt, 'TOPLEFT', E.Border, spacing)
+			GameTooltipStatusBar:Point('BOTTOMRIGHT', tt, 'TOPRIGHT', -E.Border, spacing)
 		end
 	end
 
@@ -223,7 +219,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
-		local level, realLevel = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit), UnitLevel(unit)
+		local level, realLevel = E:UnitEffectiveLevel(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
 
@@ -322,7 +318,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 					diffColor = GetCreatureDifficultyColor(level)
 				end
 			else
-				level = (E.Retail and UnitEffectiveLevel or UnitLevel)(unit)
+				level = E:UnitEffectiveLevel(unit)
 				diffColor = GetCreatureDifficultyColor(level)
 			end
 
@@ -602,23 +598,15 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 		end
 	end
 
-	local statusBar = self.StatusBar
 	if color then
-		statusBar:SetStatusBarColor(color.r, color.g, color.b)
+		GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
 	else
-		statusBar:SetStatusBarColor(0.6, 0.6, 0.6)
-	end
-
-	if statusBar.text then
-		local textWidth = statusBar.text:GetStringWidth()
-		if textWidth then
-			self:SetMinimumWidth(textWidth)
-		end
+		GameTooltipStatusBar:SetStatusBarColor(0.6, 0.6, 0.6)
 	end
 end
 
-function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
-	if tt:IsForbidden() or not value or not tt.text or not TT.db.healthBar.text then return end
+function TT:GameTooltipStatusBar_OnValueChanged(tt, current)
+	if tt:IsForbidden() or not current or not tt.text or not TT.db.healthBar.text then return end
 
 	-- try to get ahold of the unit token
 	local _, unit = tt:GetParent():GetUnit()
@@ -630,22 +618,17 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, value)
 	end
 
 	-- check if dead
-	if value == 0 or (unit and UnitIsDeadOrGhost(unit)) then
+	if unit and UnitIsDeadOrGhost(unit) then
 		tt.text:SetText(_G.DEAD)
 	else
-		local MAX, _
+		local maximum, _
 		if unit then -- try to get the real health values if possible
-			value, MAX = UnitHealth(unit), UnitHealthMax(unit)
+			current, maximum = UnitHealth(unit), UnitHealthMax(unit)
 		else
-			_, MAX = tt:GetMinMaxValues()
+			_, maximum = tt:GetMinMaxValues()
 		end
 
-		-- return what we got
-		if value > 0 and MAX == 1 then
-			tt.text:SetFormattedText('%d%%', floor(value * 100))
-		else
-			tt.text:SetText(E:ShortValue(value)..' / '..E:ShortValue(MAX))
-		end
+		tt.text:SetFormattedText('%d / %d', current or 1, maximum or 1)
 	end
 end
 
@@ -660,11 +643,7 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 			r, g, b = unpack(E.media.bordercolor)
 		end
 
-		if tt.NineSlice then
-			tt.NineSlice:SetBorderColor(r, g, b)
-		else
-			tt:SetBackdropBorderColor(r, g, b)
-		end
+		tt:SetBackdropBorderColor(r, g, b)
 	end
 
 	tt.ItemLevelShown = nil
@@ -724,11 +703,8 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 			local quality = GetItemQualityByID(link)
 			if quality and quality > 1 then
 				local r, g, b = E:GetItemQualityColor(quality)
-				if self.NineSlice then
-					self.NineSlice:SetBorderColor(r, g, b)
-				else
-					self:SetBackdropBorderColor(r, g, b)
-				end
+
+				self:SetBackdropBorderColor(r, g, b)
 
 				self.qualityChanged = true
 			end
@@ -819,13 +795,19 @@ function TT:GameTooltip_ShowStatusBar(tt)
 end
 
 function TT:SetStyle(tt, _, isEmbedded)
-	if not tt or (tt == E.ScanTooltip or isEmbedded or tt.IsEmbedded or not tt.NineSlice) or tt:IsForbidden() then return end
+	if not tt or (tt == E.ScanTooltip or isEmbedded or tt.IsEmbedded) or tt:IsForbidden() then return end
 
 	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
 	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
+	if tt.NineSlice then tt.NineSlice:SetAlpha(0) end
 
-	tt.NineSlice.customBackdropAlpha = TT.db.colorAlpha
-	tt.NineSlice:SetTemplate('Transparent')
+	-- Blizzard_SharedXML/Backdrop.lua: secrets cause backdrop system to crash out
+	-- Blizzard_MoneyFrame/Mainline/MoneyFrame.lua: secrets cause `MoneyFrame_Update` to crash out via `GameTooltip:SetLootItem(id)`
+	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use `alwaysCompareItems 0`
+	if E:NotSecretValue(tt:GetWidth()) then
+		tt.customBackdropAlpha = TT.db.colorAlpha
+		tt:SetTemplate('Transparent')
+	end
 end
 
 function TT:MODIFIER_STATE_CHANGED()
@@ -893,7 +875,9 @@ function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
 	local aura = unitAuraInfo and unitAuraInfo[auraInstanceID]
 	if not aura then return end
 
-	TT:ShowAuraInfo(tt, aura.sourceUnit, aura.spellId, aura)
+	if E:NotSecretValue(aura.spellId) then
+		TT:ShowAuraInfo(tt, aura.sourceUnit, aura.spellId, aura)
+	end
 end
 
 function TT:SetUnitAura(tt, unit, index, filter)
@@ -902,7 +886,9 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
 	if not name then return end
 
-	TT:ShowAuraInfo(tt, source, spellID)
+	if E:NotSecretValue(spellID) then
+		TT:ShowAuraInfo(tt, source, spellID)
+	end
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(data)
@@ -1040,9 +1026,8 @@ end
 function TT:GameTooltip_Hide()
 	if GameTooltip:IsForbidden() then return end
 
-	local statusBar = GameTooltip.StatusBar
-	if statusBar and statusBar:IsShown() then
-		statusBar:Hide()
+	if GameTooltipStatusBar:IsShown() then
+		GameTooltipStatusBar:Hide()
 	end
 end
 
@@ -1064,30 +1049,18 @@ function TT:Initialize()
 	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 
-	local statusBar = GameTooltipStatusBar
-	statusBar:Height(TT.db.healthBar.height)
-	statusBar:SetScript('OnValueChanged', nil) -- Do we need to unset this?
-
-	GameTooltip.StatusBar = statusBar
-
-	local statusText = statusBar:CreateFontString(nil, 'OVERLAY')
-	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
-	statusText:Point('CENTER', statusBar)
-	statusBar.text = statusText
-
-	if not GameTooltip.hasMoney then -- Force creation of the money lines, so we can set font for it
-		SetTooltipMoney(GameTooltip, 1, nil, '', '')
-		SetTooltipMoney(GameTooltip, 1, nil, '', '')
-		GameTooltip_ClearMoney(GameTooltip)
-	end
+	GameTooltipStatusBar:Height(TT.db.healthBar.height)
 
 	TT:SetTooltipFonts()
 
-	local GameTooltipAnchor = CreateFrame('Frame', 'GameTooltipAnchor', E.UIParent)
-	GameTooltipAnchor:Point('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
-	GameTooltipAnchor:Size(130, 20)
-	GameTooltipAnchor:OffsetFrameLevel(400)
-	E:CreateMover(GameTooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
+	local TooltipAnchor = CreateFrame('Frame', 'ElvUI_TooltipAnchor', E.UIParent)
+	if TooltipAnchor then
+		TooltipAnchor:Point('BOTTOMRIGHT', _G.RightChatToggleButton, 'BOTTOMRIGHT')
+		TooltipAnchor:Size(130, 20)
+		TooltipAnchor:OffsetFrameLevel(400)
+
+		E:CreateMover(TooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
+	end
 
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
 
@@ -1100,7 +1073,6 @@ function TT:Initialize()
 	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
-	TT:SecureHookScript(GameTooltip.StatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 
 	if GameTooltip.SetUnitBuffByAuraInstanceID then -- not yet on Era or Mists
 		TT:SecureHook(GameTooltip, 'SetUnitBuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
@@ -1110,8 +1082,11 @@ function TT:Initialize()
 	if AddTooltipPostCall and not (E.TBC or E.Wrath or E.Mists) then -- exists but doesn't work atm on Cata
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
-		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
-		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
+
+		if not E.Midnight then -- TODO: secrets cause tooltip processor crashes out
+			AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem) -- prevents items displaying (compare code)
+			AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit) -- unitname is secrets so it breaks something
+		end
 
 		TT:SecureHook(GameTooltip, 'Hide', 'GameTooltip_Hide') -- dont use OnHide use Hide directly
 	else

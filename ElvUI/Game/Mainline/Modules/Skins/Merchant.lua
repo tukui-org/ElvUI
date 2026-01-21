@@ -125,6 +125,12 @@ function S:MerchantFrame()
 		questIcon:SetTexCoord(0, 1, 0, 1)
 		questIcon:SetInside()
 
+		-- Decor items
+		local iconOverlay = button.IconOverlay
+		if iconOverlay then
+			iconOverlay:SetInside(button, 1, 1)
+		end
+
 		hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
 
 		S:HandleIconBorder(button.IconBorder)

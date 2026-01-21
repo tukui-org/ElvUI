@@ -176,7 +176,6 @@ function E:SetupCVars(noDisplayMsg)
 	E:SetCVar('showNPETutorials', 0)
 	E:SetCVar('UberTooltips', 1)
 	E:SetCVar('threatWarning', 3)
-	E:SetCVar('alwaysShowActionBars', 1)
 	E:SetCVar('lockActionBars', 1)
 	E:SetCVar('ActionButtonUseKeyDown', 1)
 	E:SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
@@ -184,6 +183,7 @@ function E:SetupCVars(noDisplayMsg)
 	if E.Retail then
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
 	else
+		E:SetCVar('alwaysShowActionBars', 1)
 		E:SetCVar('chatClassColorOverride', 0)
 	end
 
@@ -325,15 +325,6 @@ function E:LayoutAnniversary()
 	E.db.actionbar.barPet.hotkeytext = false
 	E.db.actionbar.barPet.inheritGlobalFade = true
 	E.db.actionbar.barPet.keepSizeRatio = false
-	E.db.actionbar.cooldown.daysColor.r = 0.4
-	E.db.actionbar.cooldown.daysColor.g = 0.4
-	E.db.actionbar.cooldown.fonts.enable = true
-	E.db.actionbar.cooldown.fonts.font = 'Expressway'
-	E.db.actionbar.cooldown.fonts.fontSize = 16
-	E.db.actionbar.cooldown.hhmmColor = { r = 0.43137254901961, g = 0.43137254901961, b = 0.43137254901961 }
-	E.db.actionbar.cooldown.hoursColor.r = 0.4
-	E.db.actionbar.cooldown.mmssColor = { r = 0.56078431372549, g = 0.56078431372549, b = 0.56078431372549 }
-	E.db.actionbar.cooldown.secondsColor.b = 0
 	E.db.actionbar.desaturateOnCooldown = true
 	E.db.actionbar.extraActionButton.clean = true
 	E.db.actionbar.font = 'Expressway'
@@ -365,15 +356,6 @@ function E:LayoutAnniversary()
 	E.db.auras.buffs.timeYOffset = -5
 	E.db.auras.buffs.wrapAfter = 10
 	E.db.auras.colorDebuffs = false
-	E.db.auras.cooldown.expireIndicator.g = 0
-	E.db.auras.cooldown.expireIndicator.b = 0
-	E.db.auras.cooldown.hhmmColor = { r = 0.43137254901961, g = 0.43137254901961, b = 0.43137254901961 }
-	E.db.auras.cooldown.hoursIndicator.r = 0.4
-	E.db.auras.cooldown.minutesIndicator = { r = 0.80000007152557, g = 0.80000007152557, b = 0.80000007152557 }
-	E.db.auras.cooldown.mmssColor = { r = 0.56078431372549, g = 0.56078431372549, b = 0.56078431372549 }
-	E.db.auras.cooldown.override = true
-	E.db.auras.cooldown.secondsIndicator.b = 0
-	E.db.auras.cooldown.useIndicatorColor = true
 	E.db.auras.debuffs.barColorGradient = true
 	E.db.auras.debuffs.barShow = true
 	E.db.auras.debuffs.barSize = 3
@@ -398,16 +380,6 @@ function E:LayoutAnniversary()
 	E.db.bags.bankSize = 36
 	E.db.bags.bankWidth = 516
 	E.db.bags.clearSearchOnClose = true
-	E.db.bags.cooldown.daysColor.r = 0.4
-	E.db.bags.cooldown.daysColor.g = 0.4
-	E.db.bags.cooldown.fonts.enable = true
-	E.db.bags.cooldown.fonts.font = 'Expressway'
-	E.db.bags.cooldown.fonts.fontSize = 20
-	E.db.bags.cooldown.hhmmColor = { r = 0.43137254901961, g = 0.43137254901961, b = 0.43137254901961 }
-	E.db.bags.cooldown.hoursColor.r = 0.4
-	E.db.bags.cooldown.mmssColor = { r = 0.56078431372549, g = 0.56078431372549, b = 0.56078431372549 }
-	E.db.bags.cooldown.override = true
-	E.db.bags.cooldown.secondsColor.b = 0
 	E.db.bags.countFont = 'Expressway'
 	E.db.bags.countFontOutline = 'OUTLINE'
 	E.db.bags.countFontSize = 11
@@ -450,7 +422,6 @@ function E:LayoutAnniversary()
 	E.db.chat.timeStampFormat = "%I:%M %p "
 	E.db.chat.timeStampLocalTime = true
 	E.db.chat.useBTagName = true
-	E.db.cooldown.hideBlizzard = true
 	E.db.databars.azerite.enable = false
 	E.db.databars.azerite.font = 'Expressway'
 	E.db.databars.azerite.height = 12
@@ -569,13 +540,10 @@ function E:LayoutAnniversary()
 	E.db.general.totems.growthDirection = 'HORIZONTAL'
 	E.db.general.totems.size = 36
 	E.db.general.vehicleSeatIndicatorSize = 76
-	E.db.nameplates.colors.reactions.bad = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
 	E.db.nameplates.colors.selection[0] = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
 	E.db.nameplates.colors.selection[2] = { r = 0.85098046064377, g = 0.76862752437592, b = 0.36078432202339 }
 	E.db.nameplates.colors.threat.badColor = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
 	E.db.nameplates.colors.threat.goodColor = { r = 0.29019609093666, g = 0.678431391716, b = 0.30196079611778 }
-	E.db.nameplates.cooldown.fonts.enable = true
-	E.db.nameplates.cooldown.fonts.fontSize = 12
 	E.db.nameplates.enviromentConditions.enemyEnabled = true
 	E.db.nameplates.enviromentConditions.friendlyEnabled = true
 	E.db.nameplates.enviromentConditions.stackingEnabled = true
@@ -714,8 +682,6 @@ function E:LayoutAnniversary()
 	E.db.tooltip.yOffset = 10
 	E.db.tooltip.anchorToBags = 'TOPLEFT'
 	E.db.unitframe.colors.frameGlow.mouseoverGlow.texture = 'ElvUI Norm'
-	E.db.unitframe.cooldown.fonts.enable = true
-	E.db.unitframe.cooldown.fonts.fontSize = 12
 	E.db.unitframe.font = 'Expressway'
 	E.db.unitframe.fontOutline = 'SHADOW'
 	E.db.unitframe.targetSound = true
@@ -976,10 +942,6 @@ function E:LayoutAnniversary()
 	--Private
 	E.private.bags.bagBar = true
 	E.private.general.chatBubbleName = true
-
-	--Style Filters
-	E.db.nameplates.filters.ElvUI_Below20 = { triggers = { enable = true } }
-	E.db.nameplates.filters.ElvUI_Below20_Players = { triggers = { enable = true } }
 end
 
 function E:LayoutNormal()
@@ -1043,8 +1005,6 @@ function E:LayoutNormal()
 	E.db.general.autoTrackReputation = true
 	--Nameplates
 	E.db.nameplates.colors.castNoInterruptColor = {r = 0.78, g=0.25, b=0.25}
-	E.db.nameplates.colors.reactions.good = {r = 0.30, g=0.67, b=0.29}
-	E.db.nameplates.colors.reactions.neutral = {r = 0.85, g=0.76, b=0.36}
 	E.db.nameplates.colors.selection[0] = {r = 0.78, g=0.25, b=0.25}
 	E.db.nameplates.colors.selection[2] = {r = 0.85, g=0.76, b=0.36}
 	E.db.nameplates.colors.selection[3] = {r = 0.29, g=0.67, b=0.30}

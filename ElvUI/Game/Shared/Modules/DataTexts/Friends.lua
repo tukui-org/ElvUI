@@ -520,17 +520,17 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-local function OnEvent(panel, event, message)
+local function OnEvent(panel, event, arg1)
 	local onlineFriends = C_FriendList_GetNumOnlineFriends()
 	local _, numBNetOnline = BNGetNumFriends()
 	isBNOnline = BNConnected()
 
-	-- special handler to detect friend coming online or going offline
-	-- when this is the case, we invalidate our buffered table and update the
-	-- datatext information
+	-- special handler to detect friend coming online or going offline when this is the case,
+	-- we invalidate our buffered table and update the datatext information
 	if event == 'CHAT_MSG_SYSTEM' then
-		if not (strfind(message, friendOnline) or strfind(message, friendOffline)) then return end
+		if E:IsSecretValue(arg1) or (not strfind(arg1, friendOnline) and not strfind(arg1, friendOffline)) then return end
 	end
+
 	-- force update when showing tooltip
 	dataValid = false
 

@@ -390,9 +390,6 @@ function AB:CreateBar(id)
 	for i = 1, 12 do
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
 
-		button.AuraCooldown.targetAura = true
-		E:RegisterCooldown(button.AuraCooldown, 'actionbar')
-
 		if E.Retail then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonTextureOverlayTemplate')
 		end
@@ -771,6 +768,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if not AB.handledbuttons[button] then
 		E:RegisterCooldown(button.cooldown, 'actionbar')
+
 		AB.handledbuttons[button] = true
 	end
 
@@ -932,7 +930,7 @@ do
 
 		if (E.Retail and (canGlide or CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
 		or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-		or UnitExists('vehicle') or UnitAffectingCombat('player') or (UnitHealth('player') ~= UnitHealthMax('player')) then
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (not E.Midnight and (UnitHealth('player') ~= UnitHealthMax('player'))) then
 			self.mouseLock = true
 			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 			AB:FadeBlings(1)
@@ -1315,34 +1313,6 @@ do
 	end
 end
 
-function AB:ToggleCountDownNumbers(bar, button, cd)
-	if cd then -- ref: E:CreateCooldownTimer
-		local b = cd.GetParent and cd:GetParent()
-		if cd.timer and (b and b.config) then
-			-- update the new cooldown timer button config with the new setting
-			b.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(cd, cd.timer, true)
-		end
-	elseif button then -- ref: AB:UpdateButtonConfig
-		if button.cooldown and button.cooldown.timer and (bar and bar.buttonConfig) then
-			-- button.config will get updated from `button:UpdateConfig` in `AB:UpdateButtonConfig`
-			bar.buttonConfig.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(button.cooldown, button.cooldown.timer, true)
-		end
-	elseif bar then -- ref: E:UpdateCooldownOverride
-		if bar.buttons then
-			for _, btn in ipairs(bar.buttons) do
-				if btn and btn.config and (btn.cooldown and btn.cooldown.timer) then
-					-- update the buttons config
-					btn.config.disableCountDownNumbers = not not E:ToggleBlizzardCooldownText(btn.cooldown, btn.cooldown.timer, true)
-				end
-			end
-			if bar.buttonConfig then
-				-- we can actually clear this variable because it wont get used when this code runs
-				bar.buttonConfig.disableCountDownNumbers = nil
-			end
-		end
-	end
-end
-
 function AB:GetTextJustify(anchor)
 	return (anchor == 'TOPLEFT' or anchor == 'BOTTOMLEFT') and 'LEFT' or (anchor == 'TOP' or anchor == 'BOTTOM') and 'CENTER' or 'RIGHT'
 end
@@ -1458,8 +1428,6 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	end
 
 	for i, button in ipairs(bar.buttons) do
-		AB:ToggleCountDownNumbers(bar, button)
-
 		local keyTarget = AB:GetKeyTarget(buttonName, i)
 		config.keyBoundTarget = keyTarget -- for LAB
 		button.keyBoundTarget = keyTarget -- for bind mode
@@ -1683,47 +1651,11 @@ function AB:StyleFlyout(button, arrow)
 	end
 end
 
-function AB:UpdateAuraCooldown(button, duration)
-	local cd = button and button.AuraCooldown
-	if not cd then return end
-
-	local oldstate = cd.hideText
-	cd.hideText = (not E.db.cooldown.targetAura) or (button.chargeCooldown and not button.chargeCooldown.hideText) or (button.cooldown and button.cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL) or (not E.Midnight and duration and duration > 1.5) or nil
-
-	if cd.timer and (oldstate ~= cd.hideText) then
-		E:ToggleBlizzardCooldownText(cd, cd.timer)
-		E:Cooldown_TimerUpdate(cd.timer)
-	end
-end
-
-function AB:UpdateChargeCooldown(button, duration)
-	local cd = button and button.chargeCooldown
-	if not cd then return end
-
-	local oldstate = cd.hideText
-	cd.hideText = (not AB.db.chargeCooldown) or (duration and duration > 1.5) or nil
-	if cd.timer and (oldstate ~= cd.hideText) then
-		E:ToggleBlizzardCooldownText(cd, cd.timer)
-		E:Cooldown_TimerUpdate(cd.timer)
-	end
-end
-
-function AB:SetTargetAuraDuration(value)
-	LAB:SetTargetAuraDuration(value)
-end
-
-function AB:SetTargetAuraCooldowns(enabled)
-	local enable, reverse = E.db.cooldown.enable, E.db.actionbar.cooldown.reverse
-	LAB:SetTargetAuraCooldowns(enabled and (enable and not reverse) or (not enable and reverse))
-end
-
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
 		if button._state_type == 'action' then
 			local _, duration = button:GetCooldown()
 			AB:SetButtonDesaturation(button, duration)
-			AB:UpdateChargeCooldown(button, duration)
-			AB:UpdateAuraCooldown(button, duration)
 		end
 	end
 end
@@ -1797,17 +1729,11 @@ end
 
 function AB:LAB_CooldownDone(button)
 	AB:SetButtonDesaturation(button, 0)
-
-	if button._state_type == 'action' then
-		AB:UpdateAuraCooldown(button)
-	end
 end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type == 'action' then
-		AB:SetButtonDesaturation(button, duration)
-		AB:UpdateChargeCooldown(button, duration)
-		AB:UpdateAuraCooldown(button, duration)
+		AB:SetButtonDesaturation(button, E:NotSecretValue(duration) and duration or nil)
 	end
 
 	if button.cooldown then
@@ -1951,8 +1877,6 @@ function AB:Initialize()
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'UpdateAllBinds')
 	AB:RegisterEvent('SPELL_UPDATE_COOLDOWN', 'UpdateSpellBookTooltip')
-
-	AB:SetTargetAuraDuration(E.db.cooldown.targetAuraDuration)
 
 	if _G.MacroFrame then
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')

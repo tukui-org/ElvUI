@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 
 function UF:SetSize_PowerPrediction(frame)
 	local pred = frame and frame.PowerPrediction
@@ -46,19 +45,6 @@ function UF:Construct_PowerPrediction(frame)
 		prediction.altBar = CreateFrame('StatusBar', nil, frame.AdditionalPower.ClipFrame)
 		prediction.altBar:SetStatusBarTexture(E.media.blankTex)
 		prediction.altBar:Hide()
-
-		hooksecurefunc(frame.AdditionalPower, 'SetStatusBarColor', function(_, r, g, b)
-			local bar = frame and frame.PowerPrediction and frame.PowerPrediction.altBar
-			if bar then
-				local pred = UF.db.colors and UF.db.colors.powerPrediction
-				if pred and pred.enable then
-					local color = pred.additional
-					bar:SetStatusBarColor(color.r, color.g, color.b, color.a)
-				else
-					bar:SetStatusBarColor(r * 1.25, g * 1.25, b * 1.25)
-				end
-			end
-		end)
 	end
 
 	return prediction

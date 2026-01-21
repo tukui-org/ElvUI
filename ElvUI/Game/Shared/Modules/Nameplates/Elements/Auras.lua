@@ -24,7 +24,6 @@ function NP:Construct_Auras(nameplate)
 	Auras.growthY = 'UP'
 	Auras.type = 'auras'
 	Auras.forceShow = nameplate == NP.TestFrame
-	Auras.tickers = {} -- StyleFilters
 	Auras.stacks = {}
 	Auras.rows = {}
 
@@ -43,7 +42,6 @@ function NP:Construct_Auras(nameplate)
 	Buffs.growthY = 'UP'
 	Buffs.type = 'buffs'
 	Buffs.forceShow = nameplate == NP.TestFrame
-	Buffs.tickers = {} -- StyleFilters
 	Buffs.stacks = {}
 	Buffs.rows = {}
 
@@ -62,7 +60,6 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.growthY = 'UP'
 	Debuffs.type = 'debuffs'
 	Debuffs.forceShow = nameplate == NP.TestFrame
-	Debuffs.tickers = {} -- StyleFilters
 	Debuffs.stacks = {}
 	Debuffs.rows = {}
 
@@ -137,7 +134,7 @@ function NP:Configure_Auras(nameplate, which)
 	auras.xOffset = db.xOffset
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
-	auras.auraSort = UF.SortAuraFuncs[db.sortMethod]
+	auras.auraSort = UF.SortAuraFuncs[E.Midnight and 'PLAYER' or db.sortMethod]
 	auras.initialAnchor = E.InversePoints[db.anchorPoint]
 	auras.filterList = UF:ConvertFilters(auras, db.priority)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
@@ -232,8 +229,5 @@ function NP:UpdateAuraSettings(button)
 		end
 	end
 
-	UF:CleanCache(button)
-
 	button.needsButtonTrim = true
-	button.needsUpdateCooldownPosition = true
 end

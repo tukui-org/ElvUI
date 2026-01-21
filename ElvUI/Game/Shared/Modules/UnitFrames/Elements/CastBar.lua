@@ -19,11 +19,10 @@ local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverr
 local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
 do
-	local pipMapColor = {4, 1, 2, 3, 5}
 	function UF:CastBar_UpdatePip(castbar, pip, stage)
-		if castbar.pipColor then
-			local color = castbar.pipColor[pipMapColor[stage]]
-			pip.texture:SetVertexColor(color.r, color.g, color.b, pip.pipAlpha)
+		local color = castbar.pipColor and castbar.pipColor[stage]
+		if color then
+			pip.texture:SetVertexColor(color.r, color.g, color.b, color.a)
 		end
 	end
 
@@ -33,39 +32,25 @@ do
 		local pip = self.Pips[pipMapAlpha[onlyThree or stage]]
 		if not pip then return end
 
-		pip.texture:SetAlpha(1)
+		-- pip.texture:SetAlpha(1)
+
 		E:UIFrameFadeOut(pip.texture, pip.pipTimer, pip.pipStart, pip.pipFaded)
 	end
 end
 
-function UF:PostUpdatePip(pip, stage) -- self is element
-	pip.texture:SetAlpha(pip.pipAlpha or 1)
+function UF:PostUpdatePip(pip, stage, stages) -- self is element
+	-- pip.texture:SetAlpha(pip.pipAlpha or 1)
+	-- currently UpdatePipStep is broken: pip.pipAlpha or 1
 
-	local pips = self.Pips
-	local numStages = self.numStages
 	local reverse = self:GetReverseFill()
-
-	if stage == numStages then
-		local firstPip = pips[1]
-		local anchor = pips[numStages]
-		if reverse then
-			firstPip.texture:Point('RIGHT', self, 'LEFT', 0, 0)
-			firstPip.texture:Point('LEFT', anchor, 3, 0)
-		else
-			firstPip.texture:Point('LEFT', self, 'RIGHT', 0, 0)
-			firstPip.texture:Point('RIGHT', anchor, -3, 0)
-		end
-	end
-
-	if stage ~= 1 then
-		local anchor = pips[stage - 1]
-		if reverse then
-			pip.texture:Point('RIGHT', -3, 0)
-			pip.texture:Point('LEFT', anchor, 3, 0)
-		else
-			pip.texture:Point('LEFT', 3, 0)
-			pip.texture:Point('RIGHT', anchor, -3, 0)
-		end
+	local nextPip = self.Pips[stage + 1]
+	local anchor = nextPip or self
+	if reverse then
+		pip.texture:Point('RIGHT', -3, 0)
+		pip.texture:Point('LEFT', anchor, 3, 0)
+	else
+		pip.texture:Point('LEFT', 3, 0)
+		pip.texture:Point('RIGHT', anchor, -3, 0)
 	end
 end
 
@@ -188,7 +173,9 @@ function UF:Configure_Castbar(frame)
 	local SPACING1 = UF.BORDER + UF.SPACING
 	local SPACING2 = SPACING1 * 2
 
-	E:SetSmoothing(castbar, db.smoothbars)
+	if not E.Midnight then
+		E:SetSmoothing(castbar, db.smoothbars)
+	end
 
 	castbar.timeToHold = db.timeToHold
 	castbar:SetReverseFill(db.reverse)
@@ -355,7 +342,9 @@ function UF:Configure_Castbar(frame)
 	end
 end
 
-function UF:CustomCastDelayText(duration)
+function UF:CustomCastDelayText(duration, durationObject)
+	if E:IsSecretValue(duration) or not duration then return end
+
 	local db = self:GetParent().db
 	if not (db and db.castbar) then return end
 	db = db.castbar.format
@@ -383,7 +372,9 @@ function UF:CustomCastDelayText(duration)
 	end
 end
 
-function UF:CustomTimeText(duration)
+function UF:CustomTimeText(duration, durationObject)
+	if E:IsSecretValue(duration) or not duration then return end
+
 	local db = self:GetParent().db
 	if not (db and db.castbar) then return end
 	db = db.castbar.format
@@ -447,7 +438,8 @@ function UF:GetInterruptColor(db, unit)
 	local customColor = db and db.castbar and db.castbar.customColor
 	local custom, r, g, b = customColor and customColor.enable and customColor, colors.castColor.r, colors.castColor.g, colors.castColor.b
 
-	if self.notInterruptible and (UnitIsPlayer(unit) or (unit ~= 'player' and UnitCanAttack('player', unit))) then
+	local notInterruptible = E:NotSecretValue(self.notInterruptible) and self.notInterruptible
+	if notInterruptible and (UnitIsPlayer(unit) or (unit ~= 'player' and UnitCanAttack('player', unit))) then
 		if custom and custom.colorNoInterrupt then
 			return custom.colorNoInterrupt.r, custom.colorNoInterrupt.g, custom.colorNoInterrupt.b
 		else
@@ -487,104 +479,114 @@ function UF:PostCastStart(unit)
 
 	self.unit = unit
 
-	local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
-	local spellName = spellRename or self.spellName
-	local length = db.castbar.nameLength
-	local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
-	local changed = spellRename or (name ~= spellName)
+	if E:IsSecretValue(self.spellID) then
+		self.Text:SetText(self.spellName)
 
-	if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
-		if parent.unitframeType == 'player' then
-			if self.curTarget then
-				local color = db.castbar.displayTargetClass and UF:GetCasterColor(self.curTarget)
-				self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', self.curTarget)
-			elseif changed then
-				self.Text:SetText(name)
-			end
-		elseif parent.unitframeType == 'pet' or parent.unitframeType == 'boss' then
-			local target = self.curTarget or UnitName(unit..'target')
-			if target and target ~= '' and target ~= UnitName(unit) then
-				local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
-				self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', target)
-			elseif changed then
-				self.Text:SetText(name)
-			end
+		if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
+			UF:HideTicks(self)
 		end
-	elseif changed then
-		self.Text:SetText(name)
-	end
+	else
+		local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
+		local spellName = spellRename or self.spellName
+		local length = db.castbar.nameLength
+		local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
+		local changed = spellRename or (name ~= spellName)
 
-	if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
-		local spellID, global = self.spellID, E.global.unitframe
-		local baseTicks = global.ChannelTicks[spellID]
-
-		-- Separate group, so they can be effected by haste or size if needed
-		local talentTicks = baseTicks and global.TalentChannelTicks[spellID]
-		if talentTicks then
-			for auraID, tickCount in next, talentTicks do
-				if IsSpellInSpellBook(auraID, nil, true) or IsSpellKnown(auraID) then
-					baseTicks = tickCount
-					break -- found one so stop
+		if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
+			if parent.unitframeType == 'player' then
+				if self.curTarget then
+					local color = db.castbar.displayTargetClass and UF:GetCasterColor(self.curTarget)
+					self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', self.curTarget)
+				elseif changed then
+					self.Text:SetText(name)
+				end
+			elseif parent.unitframeType == 'pet' or parent.unitframeType == 'boss' then
+				local target = self.curTarget or UnitName(unit..'target')
+				if target and target ~= '' and target ~= UnitName(unit) then
+					local color = db.castbar.displayTargetClass and UF:GetCasterColor(target)
+					self.Text:SetFormattedText('%s: |c%s%s|r', name, color or 'FFdddddd', target)
+				elseif changed then
+					self.Text:SetText(name)
 				end
 			end
+		elseif changed then
+			self.Text:SetText(name)
 		end
 
-		-- Base ticks upgraded by another aura
-		local auraTicks = baseTicks and global.AuraChannelTicks[spellID]
-		if auraTicks then
-			for auraID, tickCount in next, auraTicks.spells do
-				if E:GetAuraByID(unit, auraID, auraTicks.filter) then
-					baseTicks = tickCount
-					break -- found one so stop
+		if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
+			local spellID = E:NotSecretValue(self.spellID) and self.spellID or nil
+
+			local global = E.global.unitframe
+			local baseTicks = global.ChannelTicks[spellID]
+
+			-- Separate group, so they can be effected by haste or size if needed
+			local talentTicks = baseTicks and global.TalentChannelTicks[spellID]
+			if talentTicks then
+				for auraID, tickCount in next, talentTicks do
+					if IsSpellInSpellBook(auraID, nil, true) or IsSpellKnown(auraID) then
+						baseTicks = tickCount
+						break -- found one so stop
+					end
 				end
 			end
-		end
 
-		-- Wait for chain to happen
-		local chainTicks = baseTicks and global.ChainChannelTicks[spellID]
-		if chainTicks then -- requires a window: ChainChannelTime
-			local now = GetTime() -- this will clear old ones too
-			local seconds = global.ChainChannelTime[spellID]
-			local match = seconds and self.chainTime and self.chainTick == spellID
-
-			if match and (now - seconds) < self.chainTime then
-				baseTicks = baseTicks + chainTicks
+			-- Base ticks upgraded by another aura
+			local auraTicks = baseTicks and global.AuraChannelTicks[spellID]
+			if auraTicks then
+				for auraID, tickCount in next, auraTicks.spells do
+					if E:GetAuraByID(unit, auraID, auraTicks.filter) then
+						baseTicks = tickCount
+						break -- found one so stop
+					end
+				end
 			end
 
-			self.chainTime = now
-			self.chainTick = spellID
-		else
-			self.chainTick = nil -- not a chain spell
-			self.chainTime = nil -- clear the time too
-		end
+			-- Wait for chain to happen
+			local chainTicks = baseTicks and global.ChainChannelTicks[spellID]
+			if chainTicks then -- requires a window: ChainChannelTime
+				local now = GetTime() -- this will clear old ones too
+				local seconds = global.ChainChannelTime[spellID]
+				local match = seconds and self.chainTime and self.chainTick == spellID
 
-		local hasteTicks = baseTicks and global.HastedChannelTicks[spellID]
-		if hasteTicks then -- requires tickSize
-			local haste = UnitSpellHaste('player') * 0.01
-			local rate = 1 / baseTicks
-			local first = rate * 0.5
+				if match and (now - seconds) < self.chainTime then
+					baseTicks = baseTicks + chainTicks
+				end
 
-			local bonus = 0
-			if haste >= first then
-				bonus = bonus + 1
+				self.chainTime = now
+				self.chainTick = spellID
+			else
+				self.chainTick = nil -- not a chain spell
+				self.chainTime = nil -- clear the time too
 			end
 
-			local x = E:Round(first + rate, 2)
-			while haste >= x do
-				x = E:Round(first + (rate * bonus), 2)
+			local hasteTicks = baseTicks and global.HastedChannelTicks[spellID]
+			if hasteTicks then -- requires tickSize
+				local haste = UnitSpellHaste('player') * 0.01
+				local rate = 1 / baseTicks
+				local first = rate * 0.5
 
-				if haste >= x then
+				local bonus = 0
+				if haste >= first then
 					bonus = bonus + 1
 				end
-			end
 
-			UF:SetCastTicks(self, baseTicks + bonus)
-			self.hadTicks = true
-		elseif baseTicks then
-			UF:SetCastTicks(self, baseTicks)
-			self.hadTicks = true
-		else
-			UF:HideTicks(self)
+				local x = E:Round(first + rate, 2)
+				while haste >= x do
+					x = E:Round(first + (rate * bonus), 2)
+
+					if haste >= x then
+						bonus = bonus + 1
+					end
+				end
+
+				UF:SetCastTicks(self, baseTicks + bonus)
+				self.hadTicks = true
+			elseif baseTicks then
+				UF:SetCastTicks(self, baseTicks)
+				self.hadTicks = true
+			else
+				UF:HideTicks(self)
+			end
 		end
 	end
 
@@ -592,7 +594,8 @@ function UF:PostCastStart(unit)
 		self.SafeZone:Show()
 	end
 
-	self:SetStatusBarColor(UF.GetInterruptColor(self, db, unit))
+	local r, g, b = UF.GetInterruptColor(self, db, unit)
+	UF:SetStatusBarColor(self, r, g, b, self.custom_backdrop)
 end
 
 function UF:PostCastStop(unit)
@@ -608,7 +611,8 @@ function UF:PostCastFail()
 	local db = self:GetParent().db
 	local customColor = db and db.castbar and db.castbar.customColor
 	local color = (customColor and customColor.enable and customColor.colorInterrupted) or UF.db.colors.castInterruptedColor
-	self:SetStatusBarColor(color.r, color.g, color.b)
+
+	UF:SetStatusBarColor(self, color.r, color.g, color.b, self.custom_backdrop)
 
 	if self.SafeZone then
 		self.SafeZone:Hide()
@@ -621,5 +625,6 @@ function UF:PostCastInterruptible(unit)
 	local db = self:GetParent().db
 	if not db or not db.castbar then return end
 
-	self:SetStatusBarColor(UF.GetInterruptColor(self, db, unit))
+	local r, g, b = UF.GetInterruptColor(self, db, unit)
+	UF:SetStatusBarColor(self, r, g, b, self.custom_backdrop)
 end

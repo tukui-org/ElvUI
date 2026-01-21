@@ -44,7 +44,7 @@ C.Values = {
 		LEFT_DOWN = format(L["%s and then %s"], L["Left"], L["Down"]),
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
-	MAX_BOSS_FRAMES = 8,
+	MAX_BOSS_FRAMES = 5,
 	NUM_CLASSES = NUM_CLASSES,
 	FontFlags = ACH.FontValues,
 	FontSize = { min = 8, max = 64, step = 1 },
@@ -396,7 +396,7 @@ end
 
 do -- Import and Export
 	local function ValidateString(_, value) return value and not strmatch(value, '^[%s%p]-$') end
-	local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"], styleFilters = L["NamePlate Style Filters"] }
+	local profileTypeItems = { profile = L["Profile"], private = L["Private (Character Settings)"], global = L["Global (Account Settings)"], filters = L["Aura Filters"] }
 
 	local function DecodeString(text, plugin)
 		local profileType, profileKey, profileData = D:Decode(text)

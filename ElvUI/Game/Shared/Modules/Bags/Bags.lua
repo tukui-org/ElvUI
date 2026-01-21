@@ -900,11 +900,6 @@ function B:Holder_OnLeave()
 	end
 end
 
-function B:Cooldown_OnHide()
-	self.start = nil
-	self.duration = nil
-end
-
 function B:UpdateCooldown(slot)
 	local start, duration, enabled = GetContainerItemCooldown(slot.BagID, slot.SlotID)
 	if duration and duration > 0 and enabled == 0 then
@@ -2729,7 +2724,6 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	slot.Cooldown = _G[slotName..'Cooldown']
 	if slot.Cooldown then
-		slot.Cooldown:HookScript('OnHide', B.Cooldown_OnHide)
 		E:RegisterCooldown(slot.Cooldown, 'bags')
 	end
 

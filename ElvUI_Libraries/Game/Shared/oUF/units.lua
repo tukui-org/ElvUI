@@ -4,6 +4,16 @@ local Private = oUF.Private
 
 local unitExists = Private.unitExists
 
+local tonumber, next, unpack = tonumber, next, unpack
+local tremove, tinsert = tremove, tinsert
+
+local CreateFrame = CreateFrame
+local UnitExists = UnitExists
+local InCombatLockdown = InCombatLockdown
+local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
+local GetArenaOpponentSpec = GetArenaOpponentSpec
+local GetSpecializationInfoByID = GetSpecializationInfoByID
+
 local function updateArenaPreparationElements(self, event, elementName, specID)
 	local element = self[elementName]
 	if(element and self:IsElementEnabled(elementName)) then
@@ -46,7 +56,7 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 			element:UpdateColorArenaPreparation(specID)
 		else
 			-- this section just replicates the color options available to the Health and Power elements
-			local r, g, b, color, _
+			local color
 			-- if(element.colorPower and elementName == 'Power') then
 				-- FIXME: no idea if we can get power type here without the unit
 			if(element.colorClass) then
@@ -55,23 +65,23 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 			elseif(element.colorReaction) then
 				color = self.colors.reaction[2]
 			elseif(element.colorSmooth) then
-				_, _, _, _, _, _, r, g, b = unpack(element.smoothGradient or self.colors.smooth)
+				if oUF.isMidnight then
+					local curve = self.colors.health:GetCurve()
+					if curve then
+						color = curve:Evaluate(1)
+					end
+				else
+					local _, _, _, _, _, _, r, g, b = unpack(element.smoothGradient or self.colors.smooth)
+					self.colors.smooth:SetRGB(r, g, b)
+
+					color = self.colors.smooth
+				end
 			elseif(element.colorHealth and elementName == 'Health') then
 				color = self.colors.health
 			end
 
 			if(color) then
-				r, g, b = color.r, color.g, color.b
-			end
-
-			if(r or g or b) then
-				element:SetStatusBarColor(r, g, b)
-
-				local bg = element.bg
-				if(bg) then
-					local mu = bg.multiplier or 1
-					bg:SetVertexColor(r * mu, g * mu, b * mu)
-				end
+				element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
 			end
 		end
 
@@ -236,14 +246,14 @@ function oUF:HandleEventlessUnit(object)
 	for _, objects in next, eventlessObjects do
 		for i, obj in next, objects do
 			if(obj == object) then
-				table.remove(objects, i)
+				tremove(objects, i)
 				break
 			end
 		end
 	end
 
 	if(not eventlessObjects[timer]) then eventlessObjects[timer] = {} end
-	table.insert(eventlessObjects[timer], object)
+	tinsert(eventlessObjects[timer], object)
 
 	createOnUpdate(timer)
 end
