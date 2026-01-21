@@ -791,7 +791,7 @@ end
 function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	if self ~= NP.TestFrame then
 		if self.frameType == 'PLAYER' then
-			NP.PlayerselfAnchor:Hide()
+			NP.PlayerNamePlateAnchor:Hide()
 		end
 
 		if self.isTarget then
