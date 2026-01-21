@@ -15,7 +15,7 @@ function TM:UpdateButton(button, totem)
 	if not (button and totem) then return end
 
 	local _, _, startTime, duration, icon = GetTotemInfo((E.Classic or E.TBC) and totem or totem.slot)
-	button:SetShown(startTime and (E.Midnight or duration > 0))
+	button:SetShown(startTime and E:NotSecretValue(duration) and (duration > 0))
 
 	if startTime then
 		button.icon:SetTexture(icon)

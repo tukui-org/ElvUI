@@ -59,7 +59,7 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	health:SetColorTapping(true)
 	health:SetColorDisconnected(true)
 
-	if not E.Midnight then
+	if not E.Retail then
 		E:SetSmoothing(health, db.health and db.health.smoothbars)
 	end
 
@@ -271,7 +271,7 @@ function UF:PostUpdateHealthColor(unit, color)
 
 	local minValue, maxValue = self.cur, self.max
 	local newr, newg, newb, healthbreakBackdrop
-	if not color and not E.Midnight then -- dont need to process this when its hostile
+	if not color and not E.Retail then -- dont need to process this when its hostile
 		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
 			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
 				newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
@@ -298,7 +298,7 @@ function UF:PostUpdateHealthColor(unit, color)
 			bgc = colors.health_backdrop_dead
 		elseif healthbreakBackdrop then
 			bgc = color
-		elseif colors.healthbackdropbyvalue and not E.Midnight then
+		elseif colors.healthbackdropbyvalue and not E.Retail then
 			if colors.customhealthbackdrop then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
 				customBackdrop:SetRGB(bgr, bgg, bgb)

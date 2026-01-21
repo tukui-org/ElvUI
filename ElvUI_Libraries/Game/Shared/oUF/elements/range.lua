@@ -57,7 +57,7 @@ local function Update(self, event)
 	if(isEligible) then
 		inRange, checkedRange = UnitInRange(unit)
 
-		if oUF.isMidnight then
+		if oUF.isRetail then
 			self:SetAlphaFromBoolean(inRange, element.insideAlpha, element.outsideAlpha)
 		elseif(checkedRange and not inRange) then
 			self:SetAlpha(element.outsideAlpha)

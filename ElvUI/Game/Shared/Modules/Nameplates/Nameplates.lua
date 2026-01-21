@@ -506,7 +506,7 @@ function NP:SetupTarget(nameplate, removed)
 end
 
 function NP:SetNamePlateClickThrough()
-	if E.Midnight then
+	if E.Retail then
 		NP.PlateDriver:SetEnemyInteractible(not NP.db.clickThrough.enemy)
 		NP.PlateDriver:SetFriendlyInteractible(not NP.db.clickThrough.friendly)
 	elseif not InCombatLockdown() then
@@ -707,7 +707,7 @@ function NP:UpdatePlateSize(nameplate)
 		nameplate.width, nameplate.height = NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight
 	end
 
-	--if E.Midnight then
+	--if E.Retail then
 	--	nameplate:Size(nameplate.width * E.uiscale, nameplate.height * E.uiscale)
 	--else
 		nameplate:Size(nameplate.width, nameplate.height)
@@ -922,7 +922,7 @@ function NP:HideInterfaceOptions()
 end
 
 function NP:SetNamePlateSizes()
-	if E.Midnight then
+	if E.Retail then
 		NP.PlateDriver:SetSize(300, 30)
 	else
 		C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * E.uiscale, NP.db.plateSize.personalHeight * E.uiscale)
@@ -1088,7 +1088,7 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 
-	if not E.Midnight then
+	if not E.Retail then
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 

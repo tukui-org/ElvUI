@@ -53,7 +53,7 @@ function UF:AuraBars_UpdateBar(bar)
 	local bars = bar:GetParent()
 	bar.db = bars.db
 
-	if bars.db and not E.Midnight then
+	if bars.db and not E.Retail then
 		E:SetSmoothing(bar, bars.db.smoothbars)
 	end
 
@@ -110,7 +110,7 @@ function UF:Configure_AuraBars(frame)
 		bars.enemyAuraType = db.enemyAuraType
 		bars.disableMouse = db.clickThrough
 		bars.filterList = UF:ConvertFilters(bars, db.priority)
-		bars.auraSort = UF.SortAuraFuncs[E.Midnight and 'PLAYER' or db.sortMethod]
+		bars.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
 		bars.tooltipAnchor = db.tooltipAnchorType
 		bars.tooltipAnchorX = db.tooltipAnchorX
 		bars.tooltipAnchorY = db.tooltipAnchorY

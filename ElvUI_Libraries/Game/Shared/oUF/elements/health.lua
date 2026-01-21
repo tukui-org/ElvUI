@@ -139,7 +139,7 @@ local function UpdateColor(self, event, unit)
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
 		color = self.colors.reaction[UnitReaction(unit, 'player')]
 	elseif(element.colorSmooth) then
-		if oUF.isMidnight then
+		if oUF.isRetail then
 			local curve = self.colors.health:GetCurve()
 			if curve then
 				color = UnitHealthPercent(unit, true, curve)

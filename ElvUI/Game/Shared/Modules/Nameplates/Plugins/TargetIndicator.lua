@@ -64,7 +64,7 @@ local function Update(self)
 
 	if element.style ~= 'none' then
 		local isTarget = UnitIsUnit(self.unit, 'target')
-		local lowHealth = not E.Midnight and (element.lowHealthThreshold > 0)
+		local lowHealth = not E.Retail and (element.lowHealthThreshold > 0)
 		if isTarget and (element.preferGlowColor or not lowHealth) then
 			ShowIndicators(element, isTarget, NP.db.colors.glowColor)
 		elseif lowHealth then

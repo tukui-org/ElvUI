@@ -1581,12 +1581,6 @@ do
 		[_G.DefaultCompactUnitFrameSetup] = true
 	}
 
-	if E.Retail and not E.Midnight then
-		AllowedFuncs[_G.DefaultCompactNamePlatePlayerFrameSetup] = true
-		AllowedFuncs[_G.DefaultCompactNamePlateEnemyFrameSetup] = true
-		AllowedFuncs[_G.DefaultCompactNamePlateFriendlyFrameSetup] = true
-	end
-
 	local function FrameShown(frame, shown)
 		if shown then
 			frame:Hide()
@@ -2187,7 +2181,7 @@ function UF:Initialize()
 	UF:RegisterEvent('SPELLS_CHANGED', 'UpdateRangeSpells')
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
 
-	if E.TBC or E.Midnight then
+	if E.TBC or E.Retail then
 		UF:RegisterEvent('LEARNED_SPELL_IN_SKILL_LINE', 'UpdateRangeSpells')
 	else
 		UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')

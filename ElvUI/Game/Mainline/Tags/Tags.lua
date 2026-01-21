@@ -17,7 +17,7 @@ local POWERTYPE_MANA = Enum.PowerType.Mana
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
 -- GLOBALS: UnitPower -- override during testing groups
 
-if not E.Midnight then
+if not E.Retail then
 	E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
 		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
 		if cur > 0 then

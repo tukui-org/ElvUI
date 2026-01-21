@@ -337,7 +337,7 @@ do --this can save some main file locals
 
 	local portal = GetCVar('portal')
 	if portal == 'test' then
-		if E.Midnight then
+		if E.Retail then
 			z['Player-970-00D0DE2E'] = itsSimpy
 		end
 	elseif portal == 'US' then

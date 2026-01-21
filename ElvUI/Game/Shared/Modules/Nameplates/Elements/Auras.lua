@@ -134,7 +134,7 @@ function NP:Configure_Auras(nameplate, which)
 	auras.xOffset = db.xOffset
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
-	auras.auraSort = UF.SortAuraFuncs[E.Midnight and 'PLAYER' or db.sortMethod]
+	auras.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
 	auras.initialAnchor = E.InversePoints[db.anchorPoint]
 	auras.filterList = UF:ConvertFilters(auras, db.priority)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)

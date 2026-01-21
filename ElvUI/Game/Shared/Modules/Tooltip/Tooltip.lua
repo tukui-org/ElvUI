@@ -103,7 +103,7 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:SetCompareItems(tt, value)
-	if E.Midnight or not E.Retail or tt ~= GameTooltip then return end
+	if E.Retail or (tt ~= GameTooltip) then return end -- Midnight: compare crashing tooltip
 
 	tt.supportsItemComparison = value
 end
@@ -1083,7 +1083,7 @@ function TT:Initialize()
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
 
-		if not E.Midnight then -- TODO: secrets cause tooltip processor crashes out
+		if not E.Retail then -- Midnight: secrets cause tooltip processor crashes out
 			AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem) -- prevents items displaying (compare code)
 			AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit) -- unitname is secrets so it breaks something
 		end
