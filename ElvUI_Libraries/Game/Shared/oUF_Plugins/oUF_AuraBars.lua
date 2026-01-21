@@ -125,7 +125,7 @@ local function UpdateBar(element, bar)
 	end
 
 	if bar.filter == 'HARMFUL' then
-		if oUF:NotSecretValue(debuffType) and (not debuffType or debuffType == '') then
+		if oUF:IsSecretValue(debuffType) or not debuffType or debuffType == '' then
 			debuffType = 'None'
 		end
 
