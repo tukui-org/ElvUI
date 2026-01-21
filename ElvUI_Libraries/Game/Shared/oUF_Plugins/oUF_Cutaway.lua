@@ -73,16 +73,14 @@ local function UpdateSize(self, element, curV, maxV)
 end
 
 local PRE, POST = 0, 1
-local function Shared_UpdateCheckReturn(self, element, updateType, ...)
-	if not element:IsVisible() then
+local function Shared_UpdateCheckReturn(self, element, updateType, curV, maxV, unit)
+	if E:IsSecretValue(maxV) or not element:IsVisible() then
 		return true
 	end
 
 	if updateType == PRE then
-		local maxV = ...
 		return (not element.enabled or not self.cur) or element.ready or not maxV or maxV == 0
 	elseif updateType == POST then
-		local curV, maxV, unit = ...
 		return (not element.enabled or not element.cur) or (not element.ready or not curV or not maxV or maxV == 0) or element.unit ~= unit
 	end
 end
@@ -90,7 +88,7 @@ end
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
 	local maxV = (element.GetHealthMax or UnitHealthMax)(unit)
-	if Shared_UpdateCheckReturn(self, element, PRE, maxV) or UnitIsTapDenied(unit) then
+	if Shared_UpdateCheckReturn(self, element, PRE, nil, maxV, unit) or UnitIsTapDenied(unit) then
 		return
 	end
 
@@ -128,7 +126,7 @@ end
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
 	local maxV = (element.GetPowerMax or UnitPowerMax)(unit)
-	if Shared_UpdateCheckReturn(self, element, PRE, maxV) then
+	if Shared_UpdateCheckReturn(self, element, PRE, nil, maxV, unit) then
 		return
 	end
 
