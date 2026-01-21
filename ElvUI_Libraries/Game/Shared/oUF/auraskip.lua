@@ -81,9 +81,11 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
 
 	for filter, filtered in next, auraFiltered do
-		aura.isPlayerAura = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filter .. '|PLAYER')
-		aura.isHarmfulAura = filter == 'HARMFUL' or nil -- 'isHarmful' is a secret, use a different name
-		aura.isHelpfulAura = filter == 'HELPFUL' or nil
+		if aura then
+			aura.isPlayerAura = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filter .. '|PLAYER')
+			aura.isHarmfulAura = filter == 'HARMFUL' or nil -- 'isHarmful' is a secret, use a different name
+			aura.isHelpfulAura = filter == 'HELPFUL' or nil
+		end
 
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
 	end
@@ -195,9 +197,9 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	end
 
 	if filter == 'HELPFUL' then
-		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or aura.isHelpfulAura
+		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.isHelpfulAura)
 	elseif filter == 'HARMFUL' then
-		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or aura.isHarmfulAura
+		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.isHarmfulAura)
 	elseif filter == 'RAID' then
 		return oUF:NotSecretValue(aura.isRaid) and not aura.isRaid
 	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
