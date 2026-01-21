@@ -691,7 +691,7 @@ local function CreateTagFunc(tag, prefix, suffix)
 	return function(unit, realUnit, customArgs)
 		local str = tag(unit, realUnit, customArgs)
 		if oUF:IsSecretValue(str) then
-			return WrapString(str, prefix, suffix)
+			return str and WrapString(str, prefix or '', suffix or '') or nil
 		else
 			return str and format('%s%s%s', prefix or '', str, suffix or '') or nil
 		end
