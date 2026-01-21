@@ -44,7 +44,7 @@ local function OnEvent(panel)
 end
 
 local function OnEnter()
-	if E.Classic then return end
+	if not (E.Retail or E.Mists or E.Wrath) then return end
 
 	DT.tooltip:ClearLines()
 
