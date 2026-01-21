@@ -101,7 +101,7 @@ function UF:Configure_AuraBars(frame)
 		bars.enemyAuraType = db.enemyAuraType
 		bars.disableMouse = db.clickThrough
 		bars.filterList = UF:ConvertFilters(bars, db.priority)
-		bars.auraSort = UF.SortAuraFuncs[db.sortMethod]
+		bars.auraSort = UF.SortAuraFuncs[E.Midnight and 'PLAYER' or db.sortMethod]
 		bars.tooltipAnchor = db.tooltipAnchorType
 		bars.tooltipAnchorX = db.tooltipAnchorX
 		bars.tooltipAnchorY = db.tooltipAnchorY
