@@ -1,12 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local LSM = E.Libs.LSM
-local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
-local IsSpellOverlayed = C_SpellActivationOverlay.IsSpellOverlayed
 
 local function PositionCooldownViewerTab(tab, _, _, _, x, y)
 	if x ~= 1 or y ~= -10 then
@@ -159,28 +157,15 @@ function S:CooldownManager_SetTimerShown()
 end
 
 function S:CooldownManager_RefreshOverlayGlow()
-	_G.ActionButtonSpellAlertManager:HideAlert(self) -- hide blizzards
 
-	local spellID = self:GetSpellID()
-	if spellID and IsSpellOverlayed(spellID) then
-		LCG.ShowOverlayGlow(self)
-	else
-		LCG.HideOverlayGlow(self)
-	end
 end
 
 function S:CooldownManager_ShowGlowEvent(spellID)
-	if not self:NeedSpellActivationUpdate(spellID) then return end
 
-	_G.ActionButtonSpellAlertManager:HideAlert(self) -- hide blizzards
-	LCG.ShowOverlayGlow(self)
 end
 
 function S:CooldownManager_HideGlowEvent(spellID)
-	if not self:NeedSpellActivationUpdate(spellID) then return end
 
-	_G.ActionButtonSpellAlertManager:HideAlert(self)
-	LCG.HideOverlayGlow(self)
 end
 
 do
