@@ -336,11 +336,7 @@ do --this can save some main file locals
 	specialChatIcons = z
 
 	local portal = GetCVar('portal')
-	if portal == 'test' then
-		if E.Retail then
-			z['Player-970-00D0DE2E'] = itsSimpy
-		end
-	elseif portal == 'US' then
+	if portal == 'US' then
 		if E.Classic then
 			-- Simpy Seasonal (5813: Wild Growth)
 			z['Player-5813-0301DEC1']	= itsSimpy -- Warlock: Yubi
