@@ -9,6 +9,16 @@ local hooksecurefunc = hooksecurefunc
 
 local POSITION, POINT, X_OFFSET, Y_OFFSET, BASE_YOFFSET = 'TOP', 'BOTTOM', 0, -5, 0 -- should match in PostAlertMove
 
+local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
+	if alertFrameSubSystem.alertFramePool then --queued alert system
+		alertFrameSubSystem.AdjustAnchors = BL.AdjustQueuedAnchors
+	elseif not alertFrameSubSystem.anchorFrame then --simple alert system
+		alertFrameSubSystem.AdjustAnchors = BL.AdjustAnchors
+	elseif alertFrameSubSystem.anchorFrame then --anchor frame system
+		alertFrameSubSystem.AdjustAnchors = BL.AdjustAnchorsNonAlert
+	end
+end
+
 function E:PostAlertMove()
 	local perks, anchor = BL:GetAlertAnchors()
 
@@ -84,14 +94,16 @@ function BL:AdjustAnchorsNonAlert(relativeAnchor)
 	return relativeAnchor
 end
 
-local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
-	if alertFrameSubSystem.alertFramePool then --queued alert system
-		alertFrameSubSystem.AdjustAnchors = BL.AdjustQueuedAnchors
-	elseif not alertFrameSubSystem.anchorFrame then --simple alert system
-		alertFrameSubSystem.AdjustAnchors = BL.AdjustAnchors
-	elseif alertFrameSubSystem.anchorFrame then --anchor frame system
-		alertFrameSubSystem.AdjustAnchors = BL.AdjustAnchorsNonAlert
+function BL:HandleGroupLootContainer()
+	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
+
+	if E.Retail or E.TBC then
+		_G.GroupLootContainer.ignoreInLayout = true
+	elseif _G.UIPARENT_MANAGED_FRAME_POSITIONS then
+		_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
 	end
+
+	hooksecurefunc('GroupLootContainer_Update', M.PositionGroupLootContainer)
 end
 
 function BL:AlertMovers()
@@ -100,6 +112,8 @@ function BL:AlertMovers()
 	AlertFrameHolder:Point('TOP', E.UIParent, 'TOP', 0, -20)
 
 	E:CreateMover(AlertFrameHolder, 'AlertFrameMover', L["Loot / Alert Frames"], nil, nil, E.PostAlertMove, nil, nil, 'general,blizzardImprovements')
+
+	BL:HandleGroupLootContainer()
 
 	--Replace AdjustAnchors functions to allow alerts to grow down if needed.
 	--We will need to keep an eye on this in case it taints. It shouldn't, but you never know.
