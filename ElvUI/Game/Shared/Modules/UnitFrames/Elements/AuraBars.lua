@@ -29,6 +29,12 @@ function UF:Construct_AuraBars(bar)
 	UF.statusbars[bar] = 'aurabars'
 	UF:Update_StatusBar(bar)
 
+	E:RegisterCooldown(bar.cooldown, 'unitframe')
+
+	bar.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
+	bar.cooldown.Text:SetPoint('RIGHT', bar, 'RIGHT', -2, 0)
+
+	UF:Configure_FontString(bar.cooldown.Text)
 	UF:Configure_FontString(bar.timeText)
 	UF:Configure_FontString(bar.nameText)
 
@@ -57,6 +63,7 @@ function UF:AuraBars_UpdateBar(bar)
 	bar.spark:Point('BOTTOM')
 	bar.spark:Point('TOP')
 
+	UF:Update_FontString(bar.cooldown.Text)
 	UF:Update_FontString(bar.timeText)
 	UF:Update_FontString(bar.nameText)
 end

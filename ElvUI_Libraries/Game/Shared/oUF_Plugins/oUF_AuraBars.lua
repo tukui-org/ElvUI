@@ -46,8 +46,7 @@ local function UpdateValue(bar, start)
 	if oUF.isMidnight then
 		local auraDuration = (bar.unit and bar.aura) and GetAuraDuration(bar.unit, bar.aura.auraInstanceID)
 		if auraDuration then
-			--bar.cooldown:SetCooldownFromDurationObject(auraDuration)
-			--bar.cooldown:Show()
+			bar.cooldown:SetCooldownFromDurationObject(auraDuration)
 
 			local remain = auraDuration:GetRemainingDuration()
 			if remain then
@@ -97,6 +96,10 @@ local function CreateAuraBar(element, index)
 	icon:SetPoint('RIGHT', bar, 'LEFT', -element.barSpacing, 0)
 	icon:SetSize(element.height, element.height)
 
+	local cooldown = CreateFrame('Cooldown', '$parentCooldown', bar, 'CooldownFrameTemplate')
+	cooldown:SetDrawSwipe(false)
+	cooldown:SetDrawBling(false)
+
 	local nameText = bar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	nameText:SetPoint('LEFT', bar, 'LEFT', 2, 0)
 
@@ -105,6 +108,7 @@ local function CreateAuraBar(element, index)
 
 	bar.icon = icon
 	bar.spark = spark
+	bar.cooldown = cooldown
 	bar.nameText = nameText
 	bar.timeText = timeText
 	bar.__owner = element
