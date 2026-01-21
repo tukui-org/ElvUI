@@ -9,7 +9,6 @@ local next, strsplit, tonumber = next, strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
-local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
 local IsResting = IsResting
 local UIParent = UIParent
@@ -35,11 +34,8 @@ local UnitWidgetSet = UnitWidgetSet
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
-local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
 local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
-local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 
@@ -507,24 +503,7 @@ function NP:SetNamePlateClickThrough()
 	if E.Retail then
 		NP.PlateDriver:SetEnemyInteractible(not NP.db.clickThrough.enemy)
 		NP.PlateDriver:SetFriendlyInteractible(not NP.db.clickThrough.friendly)
-	elseif not InCombatLockdown() then
-		E:SetNamePlateSelfClickThrough()
-		E:SetNamePlateFriendlyClickThrough()
-		E:SetNamePlateEnemyClickThrough()
 	end
-end
-
-function NP:SetNamePlateSelfClickThrough()
-	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
-	NP.StaticSecure:EnableMouse(not NP.db.clickThrough.personal)
-end
-
-function NP:SetNamePlateFriendlyClickThrough()
-	C_NamePlate_SetNamePlateFriendlyClickThrough(NP.db.clickThrough.friendly)
-end
-
-function NP:SetNamePlateEnemyClickThrough()
-	C_NamePlate_SetNamePlateEnemyClickThrough(NP.db.clickThrough.enemy)
 end
 
 function NP:Update_StatusBars()
