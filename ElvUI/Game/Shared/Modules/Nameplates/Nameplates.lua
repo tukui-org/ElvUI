@@ -506,11 +506,14 @@ function NP:SetupTarget(nameplate, removed)
 end
 
 function NP:SetNamePlateClickThrough()
-	if InCombatLockdown() then return end
-
-	self:SetNamePlateSelfClickThrough()
-	self:SetNamePlateFriendlyClickThrough()
-	self:SetNamePlateEnemyClickThrough()
+	if E.Midnight then
+		NP.PlateDriver:SetEnemyInteractible(not NP.db.clickThrough.enemy)
+		NP.PlateDriver:SetFriendlyInteractible(not NP.db.clickThrough.friendly)
+	elseif not InCombatLockdown() then
+		E:SetNamePlateSelfClickThrough()
+		E:SetNamePlateFriendlyClickThrough()
+		E:SetNamePlateEnemyClickThrough()
+	end
 end
 
 function NP:SetNamePlateSelfClickThrough()
@@ -604,13 +607,7 @@ function NP:ConfigurePlates(init)
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
 		for nameplate in pairs(NP.Plates) do
-			if nameplate.frameType == 'PLAYER' then
-				nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
-			elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-				nameplate:Size(NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight)
-			else
-				nameplate:Size(NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight)
-			end
+			NP:UpdatePlateSize(nameplate)
 
 			if nameplate == NP.PlayerFrame then
 				NP:NamePlateCallBack(NP.PlayerFrame, staticEvent, 'player')
@@ -629,17 +626,12 @@ end
 function NP:ConfigureAll(init)
 	if not E.private.nameplates.enable then return end
 
-	if not E.Midnight then
-		NP:SetNamePlateClickThrough()
-
-		if E.Retail then
-			NP:SetNamePlateSizes()
-		end
-	end
-
 	NP:PLAYER_REGEN_ENABLED()
 	NP:UpdateTargetPlate(NP.TargetClassPower)
 	NP:Update_StatusBars()
+
+	NP:SetNamePlateClickThrough()
+	NP:SetNamePlateSizes()
 
 	NP:ConfigurePlates(init) -- keep before toggle static
 	NP:ToggleStaticPlate()
@@ -715,7 +707,11 @@ function NP:UpdatePlateSize(nameplate)
 		nameplate.width, nameplate.height = NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight
 	end
 
-	nameplate:Size(nameplate.width, nameplate.height)
+	--if E.Midnight then
+	--	nameplate:Size(nameplate.width * E.uiscale, nameplate.height * E.uiscale)
+	--else
+		nameplate:Size(nameplate.width, nameplate.height)
+	--end
 end
 
 function NP:UpdatePlateBase(nameplate)
@@ -926,14 +922,13 @@ function NP:HideInterfaceOptions()
 end
 
 function NP:SetNamePlateSizes()
-	if InCombatLockdown() then return end
-
-	-- ToDO: Midnight
-	-- C_NamePlate.SetNamePlateSize
-	-- C_NamePlateManager.SetNamePlateHitTestInsets
-	C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * E.uiscale, NP.db.plateSize.personalHeight * E.uiscale)
-	C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * E.uiscale, NP.db.plateSize.enemyHeight * E.uiscale)
-	C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * E.uiscale, NP.db.plateSize.friendlyHeight * E.uiscale)
+	if E.Midnight then
+		NP.PlateDriver:SetSize(300, 30)
+	else
+		C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * E.uiscale, NP.db.plateSize.personalHeight * E.uiscale)
+		C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * E.uiscale, NP.db.plateSize.enemyHeight * E.uiscale)
+		C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * E.uiscale, NP.db.plateSize.friendlyHeight * E.uiscale)
+	end
 end
 
 function NP:HideClassNameplateBar(bar)
@@ -1021,10 +1016,6 @@ function NP:Initialize()
 	if E.Retail then
 		NP.SetupClassNameplateBars(_G.NamePlateDriverFrame)
 
-		if not E.Midnight then
-			hooksecurefunc(_G.NamePlateDriverFrame, 'UpdateNamePlateOptions', NP.SetNamePlateSizes)
-		end
-
 		hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', NP.SetupClassNameplateBars)
 	end
 
@@ -1079,11 +1070,13 @@ function NP:Initialize()
 	NP.PlayerNamePlateAnchor:EnableMouse(false)
 	NP.PlayerNamePlateAnchor:Hide()
 
-	local nameplates = ElvUF:SpawnNamePlates('ElvNP_')
-	if nameplates then
-		nameplates:SetTargetCallback(NP.PLAYER_TARGET_CHANGED)
-		nameplates:SetAddedCallback(NP.NAME_PLATE_UNIT_ADDED)
-		nameplates:SetRemovedCallback(NP.NAME_PLATE_UNIT_REMOVED)
+	local driver = ElvUF:SpawnNamePlates('ElvNP_')
+	if driver then
+		driver:SetTargetCallback(NP.PLAYER_TARGET_CHANGED)
+		driver:SetAddedCallback(NP.NAME_PLATE_UNIT_ADDED)
+		driver:SetRemovedCallback(NP.NAME_PLATE_UNIT_REMOVED)
+
+		NP.PlateDriver = driver
 	end
 
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
