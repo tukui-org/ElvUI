@@ -268,7 +268,7 @@ function NP:Update_ClassPowerTwo(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
-	nameplate:SetScale(E.uiscale)
+	nameplate:SetScale(E.Retail and 1 or E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
@@ -287,7 +287,7 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame) and 1 or E.uiscale
+	local mult = (E.Retail or (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame)) and 1 or E.uiscale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
@@ -310,7 +310,7 @@ function NP:PostUpdateAllElements(event)
 end
 
 function NP:StylePlate(nameplate)
-	nameplate:SetScale(E.uiscale)
+	nameplate:SetScale(E.Retail and 1 or E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
@@ -994,7 +994,6 @@ function NP:Initialize()
 	end
 
 	local playerFrame = ElvUF:Spawn('player', 'ElvNP_Player', '')
-	playerFrame:SetScale(1)
 	playerFrame:ClearAllPoints()
 	playerFrame:Point('TOP', UIParent, 'CENTER', 0, -150)
 	playerFrame:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
@@ -1019,7 +1018,6 @@ function NP:Initialize()
 	NP.StaticSecure = staticSecure
 
 	local testFrame = ElvUF:Spawn('player', 'ElvNP_TestFrame')
-	testFrame:SetScale(1)
 	testFrame:ClearAllPoints()
 	testFrame:Point('BOTTOM', UIParent, 'BOTTOM', 0, 250)
 	testFrame:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
