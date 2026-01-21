@@ -108,8 +108,8 @@ function NP:Update_Health(nameplate, skipUpdate)
 		end
 
 		nameplate.Health:Point('CENTER')
-		nameplate.Health:Point('LEFT')
-		nameplate.Health:Point('RIGHT')
+
+		nameplate.Health:Size(db.health.width, db.health.height)
 
 		if not E.Retail then
 			E:SetSmoothing(nameplate.Health, db.health.smoothbars)
@@ -117,10 +117,6 @@ function NP:Update_Health(nameplate, skipUpdate)
 	elseif nameplate:IsElementEnabled('Health') then
 		nameplate:DisableElement('Health')
 	end
-
-	nameplate.Health.width = db.health.width
-	nameplate.Health.height = db.health.height
-	nameplate.Health:Height(db.health.height)
 end
 
 local bars = { 'healingPlayer', 'healingOther', 'damageAbsorb', 'healAbsorb' }
@@ -134,6 +130,7 @@ function NP:Construct_HealthPrediction(nameplate)
 		bar:Point('TOP')
 		bar:Point('BOTTOM')
 		bar:Width(150)
+
 		HealthPrediction[name] = bar
 		NP.StatusBars[bar] = 'healPrediction'
 	end

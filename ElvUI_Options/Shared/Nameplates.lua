@@ -18,8 +18,15 @@ local ORDER = 100
 local filters = {}
 
 local minHeight, minWidth = 2, 40
-local function MaxHeight(unit) local heightType = unit == 'PLAYER' and 'personalHeight' or strfind(unit, 'FRIENDLY') and 'friendlyHeight' or strfind(unit, 'ENEMY') and 'enemyHeight' return max(NP.db.plateSize[heightType] or 0, 20) end
-local function MaxWidth(unit) local widthType = unit == 'PLAYER' and 'personalWidth' or strfind(unit, 'FRIENDLY') and 'friendlyWidth' or strfind(unit, 'ENEMY') and 'enemyWidth' return max(NP.db.plateSize[widthType] or 0, 250) end
+local function ClickSize(unit)
+	local width = (E.Retail and 'width') or (unit == 'PLAYER' and 'personalWidth' or strfind(unit, 'FRIENDLY') and 'friendlyWidth' or strfind(unit, 'ENEMY') and 'enemyWidth')
+	local height = (E.Retail and 'height') or (unit == 'PLAYER' and 'personalHeight' or strfind(unit, 'FRIENDLY') and 'friendlyHeight' or strfind(unit, 'ENEMY') and 'enemyHeight')
+
+	return width, height
+end
+
+local function MaxHeight(unit) local _, height = ClickSize(unit) return max(NP.db.clickSize[height] or 0, 20) end
+local function MaxWidth(unit) local _, width = ClickSize(unit) return max(NP.db.clickSize[width] or 0, 200) end
 
 local auraKeys = {
 	buffs = { name = L["Buffs"], order = 1 },
@@ -148,7 +155,7 @@ local function GetUnitSettings(unit, name)
 	group.args.healthGroup = ACH:Group(L["Health"], nil, 10, nil, function(info) return E.db.nameplates.units[unit].health[info[#info]] end, function(info, value) E.db.nameplates.units[unit].health[info[#info]] = value NP:ConfigureAll() end)
 	group.args.healthGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, nil, function() return unit == 'PLAYER' end)
 	group.args.healthGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = minHeight, max = MaxHeight(unit), step = 1 })
-	group.args.healthGroup.args.width = ACH:Execute(L["Width"], nil, 4, function() ACD:SelectGroup('ElvUI', 'nameplates', 'generalGroup', 'clickableRange') end)
+	group.args.healthGroup.args.width = ACH:Range(L["Width"], nil, 4, { min = minHeight, max = MaxWidth(unit), step = 1 })
 	group.args.healthGroup.args.healPrediction = ACH:Toggle(L["Heal Prediction"], nil, 5)
 	group.args.healthGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
 
@@ -451,21 +458,24 @@ NamePlates.generalGroup.args.clickThrough.args.personal = ACH:Toggle(L["Personal
 NamePlates.generalGroup.args.clickThrough.args.friendly = ACH:Toggle(L["Friendly"], nil, 2, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateFriendlyClickThrough() end)
 NamePlates.generalGroup.args.clickThrough.args.enemy = ACH:Toggle(L["Enemy"], nil, 3, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateEnemyClickThrough() end)
 
-NamePlates.generalGroup.args.clickableRange = ACH:Group(L["Clickable Size"], nil, 70, nil, function(info) return E.db.nameplates.plateSize[info[#info]] end, function(info, value) E.db.nameplates.plateSize[info[#info]] = value NP:ConfigureAll() end)
-NamePlates.generalGroup.args.clickableRange.args.personal = ACH:Group(L["Personal"], nil, 1)
+NamePlates.generalGroup.args.clickableRange = ACH:Group(L["Clickable Size"], nil, 70, nil, function(info) return E.db.nameplates.clickSize[info[#info]] end, function(info, value) E.db.nameplates.clickSize[info[#info]] = value NP:ConfigureAll() end)
+NamePlates.generalGroup.args.clickableRange.args.width = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 }, nil, nil, nil, nil, not E.Retail)
+NamePlates.generalGroup.args.clickableRange.args.height = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 }, nil, nil, nil, nil, not E.Retail)
+
+NamePlates.generalGroup.args.clickableRange.args.personal = ACH:Group(L["Personal"], nil, 1, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.clickableRange.args.personal.inline = true
-NamePlates.generalGroup.args.clickableRange.args.personal.args.personalWidth = ACH:Range(L["Clickable Width / Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 250, step = 1 })
-NamePlates.generalGroup.args.clickableRange.args.personal.args.personalHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 75, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.personal.args.personalWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.personal.args.personalHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 })
 
-NamePlates.generalGroup.args.clickableRange.args.friendly = ACH:Group(L["Friendly"], nil, 2)
+NamePlates.generalGroup.args.clickableRange.args.friendly = ACH:Group(L["Friendly"], nil, 2, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.clickableRange.args.friendly.inline = true
-NamePlates.generalGroup.args.clickableRange.args.friendly.args.friendlyWidth = ACH:Range(L["Clickable Width / Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 250, step = 1 })
-NamePlates.generalGroup.args.clickableRange.args.friendly.args.friendlyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 75, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.friendly.args.friendlyWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.friendly.args.friendlyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 })
 
-NamePlates.generalGroup.args.clickableRange.args.enemy = ACH:Group(L["Enemy"], nil, 3)
+NamePlates.generalGroup.args.clickableRange.args.enemy = ACH:Group(L["Enemy"], nil, 3, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.clickableRange.args.enemy.inline = true
-NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyWidth = ACH:Range(L["Clickable Width / Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 250, step = 1 })
-NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 75, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 })
 
 NamePlates.generalGroup.args.cutaway = ACH:Group(L["Cutaway Bars"], nil, 75)
 NamePlates.generalGroup.args.cutaway.args.health = ACH:Group(L["Health"], nil, 1, nil, function(info) return E.db.nameplates.cutaway.health[info[#info]] end, function(info, value) E.db.nameplates.cutaway.health[info[#info]] = value NP:ConfigureAll() end)
