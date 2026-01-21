@@ -168,7 +168,7 @@ local function UpdateColor(self, event, unit)
 		end
 
 		if(element.colorPowerSmooth) then
-			if oUF.isMidnight then
+			if oUF.isRetail then
 				local curve = color and color:GetCurve()
 				if curve then
 					color = UnitPowerPercent(unit, true, curve)

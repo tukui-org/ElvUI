@@ -69,7 +69,7 @@ local function UpdateColor(self, event, unit, powerType)
 		color = self.colors.power[POWER_INDEX]
 
 		if(element.colorPowerSmooth) then
-			if oUF.isMidnight then
+			if oUF.isRetail then
 				local curve = color:GetCurve()
 				if curve then
 					color = UnitPowerPercent(unit, true, curve)

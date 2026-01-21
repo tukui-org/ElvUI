@@ -138,7 +138,7 @@ local _PATTERN = '%[..-%]+'
 local _ENV = {
 	Hex = function(r, g, b)
 		if(type(r) == 'table') then
-			if oUF.isMidnight then
+			if oUF.isRetail then
 				return '|c' .. GenerateTextColorCode(r)
 			elseif(r.r) then
 				r, g, b = r.r, r.g, r.b
@@ -327,7 +327,7 @@ tagFunctions.maxmana = function(unit)
 end
 
 tagFunctions.missinghp = function(u)
-	if oUF.isMidnight then
+	if oUF.isRetail then
 		return TruncateWhenZero(UnitHealthMissing(u))
 	else
 		local current = UnitHealthMax(u) - UnitHealth(u)
@@ -338,7 +338,7 @@ tagFunctions.missinghp = function(u)
 end
 
 tagFunctions.missingpp = function(u)
-	if oUF.isMidnight then
+	if oUF.isRetail then
 		return TruncateWhenZero(UnitPowerMissing(u))
 	else
 		local current = UnitPowerMax(u) - UnitPower(u)
@@ -359,7 +359,7 @@ tagFunctions.offline = function(u)
 end
 
 tagFunctions.perhp = function(u)
-	if oUF.isMidnight then
+	if oUF.isRetail then
 		return format('%d', UnitHealthPercent(u, true, ScaleTo100))
 	else
 		local m = UnitHealthMax(u)
@@ -372,7 +372,7 @@ tagFunctions.perhp = function(u)
 end
 
 tagFunctions.perpp = function(u)
-	if oUF.isMidnight then
+	if oUF.isRetail then
 		return format('%d', UnitPowerPercent(u, nil, true, ScaleTo100))
 	else
 		local m = UnitPowerMax(u)

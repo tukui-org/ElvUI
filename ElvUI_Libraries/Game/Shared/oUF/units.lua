@@ -65,7 +65,7 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 			elseif(element.colorReaction) then
 				color = self.colors.reaction[2]
 			elseif(element.colorSmooth) then
-				if oUF.isMidnight then
+				if oUF.isRetail then
 					local curve = self.colors.health:GetCurve()
 					if curve then
 						color = curve:Evaluate(1)

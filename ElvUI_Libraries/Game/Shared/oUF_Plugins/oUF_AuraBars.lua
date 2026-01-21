@@ -43,7 +43,7 @@ local function OnLeave()
 end
 
 local function UpdateValue(bar, start)
-	if oUF.isMidnight then
+	if oUF.isRetail then
 		local auraDuration = (bar.unit and bar.aura) and GetAuraDuration(bar.unit, bar.aura.auraInstanceID)
 		if auraDuration then
 			bar.cooldown:SetCooldownFromDurationObject(auraDuration)

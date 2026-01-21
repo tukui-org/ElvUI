@@ -105,7 +105,7 @@ local function Update(self, event, unit)
 	local health = UnitHealth(unit)
 
 	-- Retail API
-	if(oUF.isMidnight and element.values) then
+	if(oUF.isRetail and element.values) then
 		UnitGetDetailedHealPrediction(unit, 'player', element.values)
 
 		local allHeal, playerHeal, otherHeal, healClamped = element.values:GetIncomingHeals()

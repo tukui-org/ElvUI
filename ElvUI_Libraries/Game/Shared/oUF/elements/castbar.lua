@@ -308,7 +308,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			endTime = startTime + castTime
 		end
 	elseif event == 'UNIT_SPELLCAST_START' then
-		if oUF.isMidnight then
+		if oUF.isRetail then
 			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
 			castID = barID -- because of secrets
 		else
@@ -321,7 +321,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		----- BUG: Dream Breath maybe others have double start events (?)
 		-- end
 	else -- try both API when its forced
-		if oUF.isMidnight then
+		if oUF.isRetail then
 			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
 
 			castID = barID -- because of secrets
@@ -370,7 +370,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	-- end block
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	local useTimerAPI = oUF.isMidnight and element.SetTimerDuration
+	local useTimerAPI = oUF.isRetail and element.SetTimerDuration
 	if useTimerAPI then
 		if oUF:NotSecretValue(startTime) then
 			element.startTime = startTime / 1000
@@ -499,7 +499,7 @@ local function CastUpdate(self, event, unit, ...)
 	end
 
 	local castID, _
-	if oUF.isMidnight then
+	if oUF.isRetail then
 		_, _, castID = ...
 	else
 		castID = ...
@@ -519,7 +519,7 @@ local function CastUpdate(self, event, unit, ...)
 	if(not name) then return end
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	local useTimerAPI = oUF.isMidnight and element.SetTimerDuration
+	local useTimerAPI = oUF.isRetail and element.SetTimerDuration
 	if useTimerAPI then
 		if oUF:NotSecretValue(startTime) then
 			if(element.empowering) then
@@ -599,7 +599,7 @@ local function CastStop(self, event, unit, ...)
 	end
 
 	local castID, spellID, interruptedBy, empowerComplete, _
-	if oUF.isMidnight then
+	if oUF.isRetail then
 		if(event == 'UNIT_SPELLCAST_STOP') then
 			_, _, castID = ...
 		elseif(event == 'UNIT_SPELLCAST_EMPOWER_STOP') then
@@ -664,7 +664,7 @@ local function CastFail(self, event, unit, ...)
 	end
 
 	local castID, interruptedBy, _
-	if oUF.isMidnight then
+	if oUF.isRetail then
 		if(event == 'UNIT_SPELLCAST_INTERRUPTED') then
 			_, _, interruptedBy, castID = ...
 		elseif(event == 'UNIT_SPELLCAST_FAILED') then
@@ -781,7 +781,7 @@ local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
 		local duration, durationObject
 
-		local useTimerAPI = oUF.isMidnight and self.GetTimerDuration
+		local useTimerAPI = oUF.isRetail and self.GetTimerDuration
 		if useTimerAPI then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
