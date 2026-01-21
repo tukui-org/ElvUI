@@ -24,8 +24,6 @@ local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
 local WoWMidnight = wowtoc >= 120000
 
--- GLOBALS: C_Item, C_Spell
-
 local DisableOverlayGlow = WoWClassic or WoWBCC or WoWWrath
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
@@ -48,13 +46,13 @@ local GetActionDisplayCount = C_ActionBar.GetActionDisplayCount
 local C_Container_GetItemCooldown = C_Container.GetItemCooldown
 local C_EquipmentSet_PickupEquipmentSet = C_EquipmentSet.PickupEquipmentSet
 local C_LevelLink_IsActionLocked = C_LevelLink and C_LevelLink.IsActionLocked
-local C_ToyBox_GetToyInfo = C_ToyBox.GetToyInfo
 
 local SpellVFX_ClearReticle, SpellVFX_ClearInterruptDisplay, SpellVFX_PlaySpellCastAnim, SpellVFX_PlayTargettingReticleAnim, SpellVFX_StopTargettingReticleAnim, SpellVFX_StopSpellCastAnim, SpellVFX_PlaySpellInterruptedAnim
 local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
 
 local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- Enable custom flyouts
 
+-- GLOBALS: C_Item, C_Spell, C_ToyBox, UIParent
 -- GLOBALS: CooldownFrame_Clear, ClearActionButtonCooldowns, ClearCursor, CooldownFrame_Set, CreateFrame
 -- GLOBALS: FlyoutButtonMixin, FlyoutHasSpell, GameTooltip, GetActionCharges, GetActionCooldown, GetActionInfo
 -- GLOBALS: GetActionLossOfControlCooldown, GetActionTexture, GetActionText, GetBindingKey, GetBindingText, GetCallPetSpellInfo
@@ -62,8 +60,7 @@ local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- E
 -- GLOBALS: GetTime, HasAction, InCombatLockdown, IsActionInRange, IsAttackAction, IsAutoRepeatAction
 -- GLOBALS: IsConsumableAction, IsCurrentAction, IsEquippedAction, IsItemAction, IsLoggedIn, IsMouseButtonDown
 -- GLOBALS: IsStackableAction, IsUsableAction, PickupAction, PickupCompanion, PickupMacro, PickupPetAction
--- GLOBALS: SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, UIParent
--- GLOBALS: ActionButton_ApplyCooldown
+-- GLOBALS: SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, ActionButton_ApplyCooldown
 
 -- unwrapped functions that return tables now
 local GetSpellCharges = function(spell)
@@ -72,13 +69,6 @@ local GetSpellCharges = function(spell)
 		return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration
 	end
 end
-
-local GetSpellCooldown = C_Spell.GetSpellCooldown and function(spell)
-	local c = C_Spell.GetSpellCooldown(spell)
-	if c then
-		return c.startTime, c.duration, c.isEnabled, c.modRate
-	end
-end or GetSpellCooldown
 
 lib.eventFrame = lib.eventFrame or CreateFrame("Frame")
 lib.eventFrame:UnregisterAllEvents()
@@ -2995,7 +2985,7 @@ Spell.GetActionText            = function(self) return "" end
 Spell.GetTexture               = function(self) return C_Spell.GetSpellTexture(self._state_action) end
 Spell.GetCount                 = function(self) return C_Spell.GetSpellCastCount(self._state_action) end
 Spell.GetChargeInfo            = function(self) return GetSpellCharges(self._state_action) end
-Spell.GetCooldownInfo          = function(self) return GetSpellCooldown(self._state_action) end
+Spell.GetCooldownInfo          = function(self) return C_Spell.GetSpellCooldown(self._state_action) end
 Spell.GetLossOfControlCooldown = function(self) return GetSpellLossOfControlCooldown(self._state_action) end
 Spell.IsAttack                = function(self) return C_Spell.IsAutoAttackSpell(self._state_action) or nil end
 Spell.IsEquipped               = function(self) return nil end
@@ -3060,7 +3050,7 @@ Macro.GetPassiveCooldownSpellID = function(self) return nil end
 --- Toy Button
 Toy.HasAction               = function(self) return true end
 Toy.GetActionText           = function(self) return "" end
-Toy.GetTexture              = function(self) return select(3, C_ToyBox_GetToyInfo(self._state_action)) end
+Toy.GetTexture              = function(self) return select(3, C_ToyBox.GetToyInfo(self._state_action)) end
 Toy.GetCharges              = function(self) return nil end
 Toy.GetCount                = function(self) return 0 end
 Toy.GetCooldown             = function(self) return GetItemCooldown(self._state_action) end
