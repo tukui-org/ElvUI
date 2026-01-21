@@ -39,12 +39,16 @@ local function OnLeave()
 end
 
 local function UpdateValue(bar, start)
-	local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
+	local value, remain = 1, 0
+	if oUF:NotSecretValue(bar.expiration) then
+		remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
+		value = remain / bar.duration
+	end
 
 	if start and bar.SetValue_ then
-		bar:SetValue_(remain / bar.duration)
+		bar:SetValue_(value)
 	else
-		bar:SetValue(remain / bar.duration)
+		bar:SetValue(value)
 	end
 
 	bar.timeText:SetFormattedText(oUF:GetTime(remain))
@@ -102,7 +106,7 @@ local function CustomFilter(element, unit, bar, aura, name)
 end
 
 local function UpdateBar(element, bar)
-	if bar.count > 1 then
+	if oUF:NotSecretValue(bar.count) and (bar.count > 1) then
 		bar.nameText:SetFormattedText('[%d] %s', bar.count, bar.spell)
 	else
 		bar.nameText:SetText(bar.spell)
@@ -116,9 +120,12 @@ local function UpdateBar(element, bar)
 
 	local r, g, b = .2, .6, 1
 	local debuffType = bar.debuffType
-	if element.buffColor then r, g, b = unpack(element.buffColor) end
+	if element.buffColor then
+		r, g, b = unpack(element.buffColor)
+	end
+
 	if bar.filter == 'HARMFUL' then
-		if not debuffType or debuffType == '' then
+		if oUF:NotSecretValue(debuffType) and (not debuffType or debuffType == '') then
 			debuffType = 'None'
 		end
 
@@ -170,7 +177,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.spellID = spellID
 	bar.spell = name
 	bar.auraInstanceID = aura.auraInstanceID
-	bar.noTime = (duration == 0 and expiration == 0)
+	bar.noTime = oUF:NotSecretValue(duration) and (duration == 0 and expiration == 0)
 
 	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, aura, name, texture,
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
@@ -180,7 +187,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 
 	if bar.noTime then
 		bar:SetScript('OnUpdate', nil)
-	else
+	elseif oUF:NotSecretValue(spellID) then
 		UpdateValue(bar, true)
 
 		bar:SetScript('OnUpdate', OnUpdate)

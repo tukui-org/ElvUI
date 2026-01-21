@@ -191,7 +191,7 @@ end
 local GOTAK_ID = 86659
 local GOTAK = E:GetSpellInfo(GOTAK_ID)
 function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
-	local spellID, spellName = bar.spellID, bar.spell
+	local spellID, spellName = E:NotSecretValue(bar.spellID) and bar.spellID or nil, E:NotSecretValue(bar.spell) and bar.spell or nil
 	local colors = E.global.unitframe.AuraBarColors[spellID] and E.global.unitframe.AuraBarColors[spellID].enable and E.global.unitframe.AuraBarColors[spellID].color
 
 	if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
@@ -212,8 +212,8 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 		end
 	end
 
-	local text = (self.db and self.db.abbrevName and E.TagFunctions.Abbrev(spellName)) or spellName
-	if bar.count > 1 then
+	local text = (self.db and self.db.abbrevName and spellName and E.TagFunctions.Abbrev(spellName)) or spellName
+	if E:NotSecretValue(bar.count) and (bar.count > 1) then
 		bar.nameText:SetFormattedText('[%d] %s', bar.count, text)
 	else
 		bar.nameText:SetText(text)
