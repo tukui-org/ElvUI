@@ -514,7 +514,9 @@ function UF:PostCastStart(unit)
 		end
 
 		if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
-			local spellID, global = self.spellID, E.global.unitframe
+			local spellID = E:NotSecretValue(self.spellID) and self.spellID or nil
+
+			local global = E.global.unitframe
 			local baseTicks = global.ChannelTicks[spellID]
 
 			-- Separate group, so they can be effected by haste or size if needed
