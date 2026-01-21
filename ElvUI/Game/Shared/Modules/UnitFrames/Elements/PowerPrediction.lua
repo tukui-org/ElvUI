@@ -3,7 +3,6 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 
 function UF:SetSize_PowerPrediction(frame)
 	local pred = frame and frame.PowerPrediction
