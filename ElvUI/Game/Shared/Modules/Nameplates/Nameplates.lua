@@ -342,7 +342,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	nameplate.PrivateAuras = NP:Construct_PrivateAuras(nameplate)
-	nameplate.BossMods = NP:Construct_BossMods(nameplate)
 
 	NP:Construct_Auras(nameplate)
 	NP:Construct_ClassPowerTwo(nameplate)
@@ -357,7 +356,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_PVPRole(nameplate)
 	-- NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
-	NP:Update_BossMods(nameplate)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
@@ -804,7 +802,6 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		end
 
 		NP:UpdatePlateBase(self)
-		NP:BossMods_UpdateIcon(self)
 	end
 
 	if (NP.db.fadeIn and not NP.SkipFading) and self.frameType ~= 'PLAYER' then
@@ -829,10 +826,6 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	end
 
 	NP:UpdateNumPlates()
-
-	if not self.widgetsOnly then
-		NP:BossMods_UpdateIcon(self, true)
-	end
 
 	if self.softTargetFrame then
 		self.softTargetFrame:SetParent(self.blizzPlate)
@@ -1092,7 +1085,6 @@ function NP:Initialize()
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 
-	NP:BossMods_RegisterCallbacks()
 	NP:HideInterfaceOptions()
 	NP:SetCVars()
 end

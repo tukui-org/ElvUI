@@ -452,24 +452,6 @@ NamePlates.generalGroup.args.enviromentConditions.args.friendly = ACH:MultiSelec
 NamePlates.generalGroup.args.enviromentConditions.args.stackingEnabled = ACH:Toggle(L["Stacking Enabled"], L["This option controls whether nameplates will follow the settings below.\n\n|cffff3333Note:|r This is an override to the Motion Type setting."], 30, nil, nil, 250)
 NamePlates.generalGroup.args.enviromentConditions.args.stacking = ACH:MultiSelect(L["Stacking Plates"], nil, 31, envConditions, nil, nil, function(_, key) return E.db.nameplates.enviromentConditions.stackingNameplates[key] end, function(_, key, value) E.db.nameplates.enviromentConditions.stackingNameplates[key] = value NP:EnviromentConditionals() end, nil, function() return not E.db.nameplates.enviromentConditions.stackingEnabled end)
 
-NamePlates.generalGroup.args.bossMods = ACH:Group(L["Boss Mod Auras"], nil, 55, nil, function(info) return E.db.nameplates.bossMods[info[#info]] end, function(info, value) E.db.nameplates.bossMods[info[#info]] = value NP:ConfigureAll() end)
-NamePlates.generalGroup.args.bossMods.args.enable = ACH:Toggle(L["Enable"], nil, 0)
-NamePlates.generalGroup.args.bossMods.args.supported = ACH:Group(L["Supported"], nil, 1)
-NamePlates.generalGroup.args.bossMods.args.supported.inline = true
-NamePlates.generalGroup.args.bossMods.args.supported.args.dbm = GetAddOnStatus(1, 'Deadly Boss Mods', 'DBM-Core')
-NamePlates.generalGroup.args.bossMods.args.supported.args.bw = GetAddOnStatus(2, 'BigWigs', 'BigWigs')
-NamePlates.generalGroup.args.bossMods.args.settings = ACH:Group(' ', nil, 2, nil, nil, nil, function() return not E.db.nameplates.bossMods.enable or not (IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core')) end)
-NamePlates.generalGroup.args.bossMods.args.settings.inline = true
-NamePlates.generalGroup.args.bossMods.args.settings.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 1)
-NamePlates.generalGroup.args.bossMods.args.settings.args.size = ACH:Range(function() return E.db.nameplates.bossMods.keepSizeRatio and L["Icon Size"] or L["Icon Width"] end, nil, 2, { min = 6, max = 64, step = 1 })
-NamePlates.generalGroup.args.bossMods.args.settings.args.height = ACH:Range(L["Icon Height"], nil, 3, { min = 6, max = 64, step = 1 }, nil, nil, nil, nil, function() return E.db.nameplates.bossMods.keepSizeRatio end)
-NamePlates.generalGroup.args.bossMods.args.settings.args.spacing = ACH:Range(L["Spacing"], nil, 4, { min = 6, max = 64, step = 1 }, nil, nil, nil, nil, function() return E.db.nameplates.bossMods.keepSizeRatio end)
-NamePlates.generalGroup.args.bossMods.args.settings.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
-NamePlates.generalGroup.args.bossMods.args.settings.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
-NamePlates.generalGroup.args.bossMods.args.settings.args.anchorPoint = ACH:Select(L["Anchor Point"], L["What point to anchor to the frame you set to attach to."], 7, C.Values.Anchors)
-NamePlates.generalGroup.args.bossMods.args.settings.args.growthX = ACH:Select(L["Growth X-Direction"], nil, 8, { LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, function() local point = E.db.nameplates.bossMods.anchorPoint return point == 'LEFT' or point == 'RIGHT' or not (IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core')) end)
-NamePlates.generalGroup.args.bossMods.args.settings.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 9, { UP = L["Up"], DOWN = L["Down"] }, nil, nil, nil, nil, function() local point = E.db.nameplates.bossMods.anchorPoint return point == 'TOP' or point == 'BOTTOM' or not (IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core')) end)
-
 NamePlates.generalGroup.args.clickThrough = ACH:Group(L["Click Through"], nil, 65, nil, function(info) return E.db.nameplates.clickThrough[info[#info]] end)
 NamePlates.generalGroup.args.clickThrough.args.personal = ACH:Toggle(L["Personal"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateSelfClickThrough() end)
 NamePlates.generalGroup.args.clickThrough.args.friendly = ACH:Toggle(L["Friendly"], nil, 2, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateFriendlyClickThrough() end)

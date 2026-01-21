@@ -841,17 +841,6 @@ P.nameplates = {
 		friendly = false,
 		enemy = false,
 	},
-	bossMods = {
-		enable = true,
-		anchorPoint = 'BOTTOM',
-		growthX = 'RIGHT',
-		growthY = 'DOWN',
-		size = 34,
-		height = 24,
-		spacing = 1,
-		yOffset = -5,
-		xOffset = 0
-	},
 	plateSize = {
 		personalWidth = 150,
 		personalHeight = 30,
