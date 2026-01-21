@@ -13,6 +13,7 @@ local GetAuraSlots = C_UnitAuras.GetAuraSlots
 local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
+local IsAuraFilteredOutByInstanceID = C_UnitAuras.IsAuraFilteredOutByInstanceID
 
 local auraInfo = {}
 local auraFiltered = {
@@ -80,6 +81,10 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
 
 	for filter, filtered in next, auraFiltered do
+		aura.isPlayerAura = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, filter .. '|PLAYER')
+		aura.isHarmfulAura = filter == 'HARMFUL' or nil -- 'isHarmful' is a secret, use a different name
+		aura.isHelpfulAura = filter == 'HELPFUL' or nil
+
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
 	end
 
@@ -190,9 +195,9 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	end
 
 	if filter == 'HELPFUL' then
-		return oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful
+		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or aura.isHelpfulAura
 	elseif filter == 'HARMFUL' then
-		return oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful
+		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or aura.isHarmfulAura
 	elseif filter == 'RAID' then
 		return oUF:NotSecretValue(aura.isRaid) and not aura.isRaid
 	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
