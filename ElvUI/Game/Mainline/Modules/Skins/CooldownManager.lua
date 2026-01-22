@@ -152,29 +152,9 @@ function S:CooldownManager_UpdateSwipeColor(frame)
 	S.CooldownManager_RefreshSpellCooldownInfo(frame)
 end
 
-function S:CooldownManager_SetTimerShown()
-
-end
-
-function S:CooldownManager_RefreshOverlayGlow()
-
-end
-
-function S:CooldownManager_ShowGlowEvent(spellID)
-
-end
-
-function S:CooldownManager_HideGlowEvent(spellID)
-
-end
-
 do
 	local hookFunctions = {
-		RefreshSpellCooldownInfo = S.CooldownManager_RefreshSpellCooldownInfo,
-		OnSpellActivationOverlayGlowShowEvent = S.CooldownManager_ShowGlowEvent,
-		OnSpellActivationOverlayGlowHideEvent = S.CooldownManager_HideGlowEvent,
-		RefreshOverlayGlow = S.CooldownManager_RefreshOverlayGlow,
-		SetTimerShown = S.CooldownManager_SetTimerShown
+		RefreshSpellCooldownInfo = S.CooldownManager_RefreshSpellCooldownInfo
 	}
 
 	function S:CooldownManager_SkinItemFrame(frame)
