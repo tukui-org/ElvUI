@@ -2768,7 +2768,7 @@ function B:ToggleBag(bagID)
 	local closed = not shown
 
 	if B.BagBar then
-		local justBackpack = B.BagBar.db.justBackpack
+		local justBackpack = E.db.bags.bagBar.justBackpack
 		if closed then -- reset shown
 			local allShown = B:AllBagsShown()
 			B:SetBagsShown(justBackpack)
@@ -2871,7 +2871,7 @@ end
 function B:PositionButtons(f)
 	if not f then return end
 
-	local bagsShown = not B.BagBar or B.BagBar.db.justBackpack
+	local bagsShown = not B.BagBar or E.db.bags.bagBar.justBackpack
 	local bagsAnchor = bagsShown and f.bagsButton or f.sortButton
 
 	f.bagsButton:SetShown(bagsShown)
