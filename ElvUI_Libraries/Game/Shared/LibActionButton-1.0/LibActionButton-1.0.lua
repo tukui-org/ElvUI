@@ -62,14 +62,6 @@ local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- E
 -- GLOBALS: IsStackableAction, IsUsableAction, PickupAction, PickupCompanion, PickupMacro, PickupPetAction
 -- GLOBALS: SetBinding, SetBindingClick, SetClampedTextureRotation, SpellFlyout, ActionButton_ApplyCooldown
 
--- unwrapped functions that return tables now
-local GetSpellCharges = function(spell)
-	local c = C_Spell.GetSpellCharges(spell)
-	if c then
-		return c.currentCharges, c.maxCharges, c.cooldownStartTime, c.cooldownDuration
-	end
-end
-
 lib.eventFrame = lib.eventFrame or CreateFrame("Frame")
 lib.eventFrame:UnregisterAllEvents()
 
@@ -2984,7 +2976,7 @@ Spell.HasAction                = function(self) return true end
 Spell.GetActionText            = function(self) return "" end
 Spell.GetTexture               = function(self) return C_Spell.GetSpellTexture(self._state_action) end
 Spell.GetCount                 = function(self) return C_Spell.GetSpellCastCount(self._state_action) end
-Spell.GetChargeInfo            = function(self) return GetSpellCharges(self._state_action) end
+Spell.GetChargeInfo            = function(self) return C_Spell.GetSpellCharges(self._state_action) end
 Spell.GetCooldownInfo          = function(self) return C_Spell.GetSpellCooldown(self._state_action) end
 Spell.GetLossOfControlCooldown = function(self) return GetSpellLossOfControlCooldown(self._state_action) end
 Spell.IsAttack                = function(self) return C_Spell.IsAutoAttackSpell(self._state_action) or nil end
