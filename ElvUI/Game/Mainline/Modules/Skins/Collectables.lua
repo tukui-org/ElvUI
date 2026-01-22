@@ -201,7 +201,6 @@ local function HeirloomsJournalUpdateButton(_, button)
 		button.special:SetJustifyH('RIGHT')
 		button.special:ClearAllPoints()
 
-		button.cooldown:SetAllPoints(button.iconTexture)
 		E:RegisterCooldown(button.cooldown)
 
 		button.IsSkinned = true
@@ -358,7 +357,6 @@ local function SkinPetFrame()
 	_G.PetJournalLeftInset:StripTextures()
 	S:HandleItemButton(PetJournal.SummonRandomPetSpellFrame.Button, true)
 	E:RegisterCooldown(PetJournal.SummonRandomPetSpellFrame.Button.Cooldown)
-	PetJournal.SummonRandomPetSpellFrame.Button.Cooldown:SetAllPoints(PetJournal.SummonRandomPetSpellFrame.Button.Icon)
 
 	if E.global.general.disableTutorialButtons then
 		_G.PetJournalTutorialButton:Kill()
@@ -384,7 +382,6 @@ local function SkinPetFrame()
 
 	S:HandleItemButton(PetJournal.HealPetSpellFrame.Button, true)
 	E:RegisterCooldown(PetJournal.HealPetSpellFrame.Button.Cooldown)
-	PetJournal.HealPetSpellFrame.Button.Cooldown:SetAllPoints(PetJournal.HealPetSpellFrame.Button.Icon)
 	PetJournal.HealPetSpellFrame.Button.Icon:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	_G.PetJournalLoadoutBorder:StripTextures()
 	_G.PetJournalSpellSelect:StripTextures()
@@ -510,10 +507,10 @@ local function SkinToyFrame()
 		button.hover:SetAllPoints(button.iconTexture)
 		button.checked:SetAllPoints(button.iconTexture)
 		button.pushed:SetAllPoints(button.iconTexture)
-		button.cooldown:SetAllPoints(button.iconTexture)
 
 		hooksecurefunc(button.name, 'SetTextColor', ToyTextColor)
 		hooksecurefunc(button.new, 'SetTextColor', ToyTextColor)
+
 		E:RegisterCooldown(button.cooldown)
 	end
 

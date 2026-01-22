@@ -153,45 +153,15 @@ function S:CooldownManager_SkinBar(frame, bar)
 	end
 end
 
-function S:CooldownManager_RefreshSpellCooldownInfo()
-	if not self.Cooldown then return end
-
-	local db = E.db.general.cooldownManager
-	local color = db and ((self.cooldownUseAuraDisplayTime and db.swipeColorAura) or db.swipeColorSpell)
-	if color then
-		self.Cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
+function S:CooldownManager_SkinItemFrame(frame)
+	if frame.Cooldown and not frame.Cooldown.isRegisteredCooldown then
+		E:RegisterCooldown(frame.Cooldown, 'cdmanager')
 	end
-end
 
-function S:CooldownManager_UpdateSwipeColor(frame)
-	S.CooldownManager_RefreshSpellCooldownInfo(frame)
-end
-
-do
-	local hookFunctions = {
-		RefreshSpellCooldownInfo = S.CooldownManager_RefreshSpellCooldownInfo
-	}
-
-	function S:CooldownManager_SkinItemFrame(frame)
-		if frame.Cooldown then
-			frame.Cooldown:SetSwipeTexture(E.media.blankTex)
-
-			if not frame.Cooldown.isRegisteredCooldown then
-				E:RegisterCooldown(frame.Cooldown, 'cdmanager')
-
-				for key, func in next, hookFunctions do
-					if frame[key] then
-						hooksecurefunc(frame, key, func)
-					end
-				end
-			end
-		end
-
-		if frame.Bar then
-			S:CooldownManager_SkinBar(frame, frame.Bar)
-		elseif frame.Icon then
-			S:CooldownManager_SkinIcon(frame, frame.Icon)
-		end
+	if frame.Bar then
+		S:CooldownManager_SkinBar(frame, frame.Bar)
+	elseif frame.Icon then
+		S:CooldownManager_SkinIcon(frame, frame.Icon)
 	end
 end
 
@@ -212,10 +182,8 @@ function S:CooldownManager_UpdateViewer(element)
 		if frame.Bar then
 			S:CooldownManager_UpdateTextBar(frame.Bar)
 			S:CooldownManager_UpdateTextContainer(frame)
-			S:CooldownManager_UpdateSwipeColor(frame)
 		elseif frame.Icon then
 			S:CooldownManager_UpdateTextContainer(frame)
-			S:CooldownManager_UpdateSwipeColor(frame)
 		end
 	end
 end

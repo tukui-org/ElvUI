@@ -235,10 +235,6 @@ end
 function UF:Construct_AuraIcon(button)
 	button:SetTemplate(nil, nil, nil, nil, true)
 
-	button.Cooldown:SetReverse(true)
-	button.Cooldown:SetDrawEdge(false)
-	button.Cooldown:SetInside(button, UF.BORDER, UF.BORDER)
-
 	button.Icon:SetInside(button, UF.BORDER, UF.BORDER)
 	button.Icon:SetDrawLayer('ARTWORK')
 

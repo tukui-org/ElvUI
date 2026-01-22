@@ -10,8 +10,6 @@ local GetBindingKey = GetBindingKey
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
-local ActionButton_UpdateCooldown = ActionButton_UpdateCooldown
-
 local extraBtns, extraHooked, ExtraActionBarHolder, ZoneAbilityHolder = {}, {}
 
 function AB:ExtraButtons_AddFrame(frame)
@@ -22,11 +20,6 @@ function AB:ExtraButtons_BossStyle(button)
 	if not button or button.IsSkinned then return end
 
 	AB:StyleButton(button, true) -- registers cooldown too
-
-	-- the cooldown is already fired sometimes?
-	if ActionButton_UpdateCooldown then
-		ActionButton_UpdateCooldown(button)
-	end
 
 	button.icon:SetDrawLayer('ARTWORK', -1)
 	button:SetTemplate()
@@ -67,8 +60,7 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 				if spellButton.Cooldown then
-					E:RegisterCooldown(spellButton.Cooldown, 'actionbar')
-					spellButton.Cooldown:SetInside(spellButton)
+					E:RegisterCooldown(spellButton.Cooldown, 'bossbutton')
 				end
 
 				spellButton.IsSkinned = true

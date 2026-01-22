@@ -97,8 +97,6 @@ local function CreateAuraBar(element, index)
 	icon:SetSize(element.height, element.height)
 
 	local cooldown = CreateFrame('Cooldown', '$parentCooldown', bar, 'CooldownFrameTemplate')
-	cooldown:SetDrawSwipe(false)
-	cooldown:SetDrawBling(false)
 
 	local nameText = bar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
 	nameText:SetPoint('LEFT', bar, 'LEFT', 2, 0)

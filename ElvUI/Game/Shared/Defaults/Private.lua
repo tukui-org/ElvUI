@@ -209,7 +209,6 @@ V.unitframe = {
 
 V.actionbar = {
 	enable = true,
-	hideCooldownBling = false,
 	masque = {
 		actionbars = false,
 		petBar = false,

@@ -212,14 +212,6 @@ function AB:PositionAndSizeBarPet()
 	end
 end
 
-function AB:UpdatePetCooldownSettings()
-	for _, button in ipairs(bar.buttons) do
-		if button.cooldown then
-			button.cooldown:SetDrawBling(not AB.db.hideCooldownBling)
-		end
-	end
-end
-
 function AB:UpdatePetBindings()
 	for i, button in ipairs(bar.buttons) do
 		if button.HotKey then

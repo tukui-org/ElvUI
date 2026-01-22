@@ -160,10 +160,6 @@ function A:CreateIcon(button)
 	end
 
 	button.cooldown = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
-	button.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
-	button.cooldown:SetDrawSwipe(false)
-	button.cooldown:SetDrawBling(false)
-	button.cooldown:SetAllPoints()
 
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()

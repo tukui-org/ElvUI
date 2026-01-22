@@ -31,7 +31,8 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 			local start, duration, active = GetShapeshiftFormCooldown(i)
 			if (active and active ~= 0) and start > 0 and duration > 0 then
 				cooldown:SetCooldown(start, duration)
-				cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
+
+				AB:FadeBlingTexture(cooldown, cooldown:GetEffectiveAlpha())
 			else
 				cooldown:Clear()
 			end
