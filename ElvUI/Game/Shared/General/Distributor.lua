@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local D = E:GetModule('Distributor')
-local NP = E:GetModule('NamePlates')
 local LibDeflate = E.Libs.Deflate
 
 local _G = _G
@@ -16,7 +15,7 @@ local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 -- GLOBALS: ElvDB, ElvPrivateDB
 
-local EXPORT_PREFIX = '!E1!' -- also in Options StyleFilters
+local EXPORT_PREFIX = '!E1!'
 local REQUEST_PREFIX = 'ELVUI_REQUEST'
 local REPLY_PREFIX = 'ELVUI_REPLY'
 local TRANSFER_PREFIX = 'ELVUI_TRANSFER'
@@ -433,12 +432,6 @@ function D:GetProfileData(dataType, dataKey)
 		profileData.unitframe.aurawatch = E:CopyTable({}, ElvDB.global.unitframe.aurawatch)
 		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 		profileKey = 'filters'
-	elseif dataType == 'styleFilters' then
-		profileKey = 'styleFilters'
-		profileData.nameplates = {}
-		profileData.nameplates.filters = E:CopyTable({}, ElvDB.global.nameplates.filters)
-		NP:StyleFilterClearDefaults(profileData.nameplates.filters)
-		profileData = E:RemoveTableDuplicates(profileData, G, D.GeneratedKeys.global)
 	end
 
 	return profileKey, profileData
@@ -565,9 +558,6 @@ function D:SetImportedProfile(dataType, dataKey, dataProfile, force)
 	elseif dataType == 'filters' then
 		E:CopyTable(ElvDB.global.unitframe, dataProfile.unitframe)
 		E:UpdateUnitFrames()
-	elseif dataType == 'styleFilters' then
-		E:CopyTable(ElvDB.global.nameplates, dataProfile.nameplates or dataProfile.nameplate)
-		E:UpdateNamePlates()
 	end
 end
 

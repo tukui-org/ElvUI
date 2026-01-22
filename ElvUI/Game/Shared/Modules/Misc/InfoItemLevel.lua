@@ -125,7 +125,7 @@ function M:CheckStatsItemLevel()
 end
 
 function M:ToggleItemLevelInfo(setupCharacterPage, config)
-	if E.Classic then return end
+	if E.Classic or E.TBC then return end
 
 	if setupCharacterPage then
 		M:CreateSlotStrings(_G.CharacterFrame, 'Character')

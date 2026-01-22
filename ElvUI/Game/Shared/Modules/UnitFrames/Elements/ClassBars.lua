@@ -59,18 +59,6 @@ function UF:PostVisibility_ClassBars(frame)
 	UF:Configure_InfoPanel(frame)
 end
 
-function UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
-	bar:SetStatusBarColor(r, g, b)
-
-	if bar.bg then
-		if custom_backdrop then
-			bar.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		else
-			bar.bg:SetVertexColor(r * .35, g * .35, b * .35)
-		end
-	end
-end
-
 function UF:ClassPower_GetColor(colors, powerType)
 	local all, power = colors.classResources, colors.power
 	local mine = all and all[E.myclass]
@@ -89,15 +77,15 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	if isRunes and UF.db.colors.chargingRunes then
 		UF:Runes_UpdateCharged(self, rune, custom_backdrop)
 	elseif isRunes and rune then
-		local color = UF:ClassPower_BarColor(isRunes, rune)
-		UF:ClassPower_SetBarColor(rune, color.r, color.g, color.b, custom_backdrop)
+		local color = UF:ClassPower_BarColor(rune, nil, colors, powers, isRunes)
+		UF:SetStatusBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	else
 		for index, bar in ipairs(self) do
 			local color = UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
 			if not color or not color.r then
-				UF:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
+				UF:SetStatusBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
 			else
-				UF:ClassPower_SetBarColor(bar, color.r, color.g, color.b, custom_backdrop)
+				UF:SetStatusBarColor(bar, color.r, color.g, color.b, custom_backdrop)
 			end
 		end
 	end
@@ -160,10 +148,12 @@ function UF:Configure_ClassBar(frame)
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
 			local button = bars[i]
-			button.backdrop:Hide()
+			if button.backdrop then
+				button.backdrop:Hide()
+			end
 
 			if i <= MAX_CLASS_BAR then
-				if not button.backdrop.forcedBorderColors then
+				if button.backdrop and not button.backdrop.forcedBorderColors then
 					button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 				end
 
@@ -202,7 +192,9 @@ function UF:Configure_ClassBar(frame)
 					end
 				end
 
-				button.backdrop:SetShown(frame.USE_MINI_CLASSBAR)
+				if button.backdrop then
+					button.backdrop:SetShown(frame.USE_MINI_CLASSBAR)
+				end
 
 				button:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 
@@ -212,20 +204,22 @@ function UF:Configure_ClassBar(frame)
 			end
 		end
 
-		bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
+		if bars.backdrop then
+			bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
+		end
 	elseif frame.ClassBar == 'EclipseBar' then
 		local lunarTex = bars.LunarBar:GetStatusBarTexture()
 
 		local lr, lg, lb = unpack(ElvUF.colors.ClassBars.DRUID[1])
 		bars.LunarBar:SetMinMaxValues(-1, 1)
-		bars.LunarBar:SetStatusBarColor(lr, lg, lb)
+		bars.LunarBar:GetStatusBarTexture():SetVertexColor(lr, lg, lb)
 		bars.LunarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.LunarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		E:SetSmoothing(bars.LunarBar, db.classbar and db.classbar.smoothbars)
 
 		local sr, sg, sb = unpack(ElvUF.colors.ClassBars.DRUID[2])
 		bars.SolarBar:SetMinMaxValues(-1, 1)
-		bars.SolarBar:SetStatusBarColor(sr, sg, sb)
+		bars.SolarBar:GetStatusBarTexture():SetVertexColor(sr, sg, sb)
 		bars.SolarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.SolarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		bars.SolarBar:ClearAllPoints()
@@ -366,7 +360,7 @@ function UF:ToggleResourceBar()
 
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_HealthBar(frame)
-	UF:Configure_Portrait(frame)
+	-- UF:Configure_Portrait(frame)
 
 	-- keep this after the configure_healtbar, we need the one updated before we match the healpred size to -1
 	if frame.HealthPrediction then
@@ -462,8 +456,8 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 			for _, cIndex in next, chargedPoints do
 				local cPoint = self[cIndex]
 				if cPoint then
-					cPoint:SetStatusBarColor(color.r, color.g, color.b)
-					cPoint.bg:SetVertexColor(color.r * .35, color.g * .35, color.b * .35)
+					cPoint:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
+					cPoint.bg:SetVertexColor(color.r, color.g, color.b, UF.multiplier)
 				end
 			end
 		end
@@ -497,11 +491,11 @@ function UF:Runes_UpdateCharged(runes, rune, custom_backdrop)
 
 	if rune then
 		local r, g, b = UF:Runes_GetColor(rune, colors)
-		UF:ClassPower_SetBarColor(rune, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
+		UF:SetStatusBarColor(rune, r, g, b, custom_backdrop)
 	elseif runes then
 		for _, bar in ipairs(runes) do
 			local r, g, b = UF:Runes_GetColor(bar, colors)
-			UF:ClassPower_SetBarColor(bar, r, g, b, custom_backdrop)
+			UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
 		end
 	end
 end
@@ -527,7 +521,7 @@ function UF:Runes_UpdateChargedColor()
 	end
 end
 
-function UF:Runes_PostUpdateColor(r, g, b, color, rune)
+function UF:Runes_PostUpdateColor(unit, color, rune)
 	UF.ClassPower_UpdateColor(self, 'RUNES', rune)
 end
 
@@ -552,7 +546,6 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		rune.bg = rune:CreateTexture(nil, 'BORDER')
 		rune.bg:SetTexture(E.media.blankTex)
 		rune.bg:SetInside(rune.backdrop)
-		rune.bg.multiplier = 0.35
 
 		runes[i] = rune
 	end
@@ -588,7 +581,6 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.bg = additionalPower:CreateTexture(nil, 'BORDER')
 	additionalPower.bg:SetTexture(E.media.blankTex)
 	additionalPower.bg:SetInside(nil, 0, 0)
-	additionalPower.bg.multiplier = 0.35
 
 	additionalPower:SetScript('OnShow', UF.ToggleResourceBar)
 	additionalPower:SetScript('OnHide', UF.ToggleResourceBar)
@@ -598,12 +590,23 @@ function UF:Construct_AdditionalPowerBar(frame)
 	return additionalPower
 end
 
-function UF:PostColorAdditionalPower()
+function UF:PostColorAdditionalPower(unit, color)
 	local frame = self.origParent or self:GetParent()
 	if frame.USE_CLASSBAR then
 		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
 		if custom_backdrop then
 			self.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
+		end
+	end
+
+	local bar = frame and frame.PowerPrediction and frame.PowerPrediction.altBar
+	if bar then
+		local pred = UF.db.colors and UF.db.colors.powerPrediction
+		if pred and pred.enable then
+			bar:GetStatusBarTexture():SetVertexColor(pred.additional.r, pred.additional.g, pred.additional.b, pred.additional.a)
+		else
+			local r, g, b = color:GetRGB()
+			bar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
 		end
 	end
 end
@@ -612,7 +615,7 @@ function UF:PostUpdateAdditionalPower(CUR, MAX, event)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	self:SetShown((frame.USE_CLASSBAR and event ~= 'ElementDisable') and (CUR ~= MAX or not db.classAdditional.autoHide) and (not E.Mists or E.myclass ~= 'MONK' or E.myspec == SPEC_MONK_MISTWEAVER))
+	self:SetShown((frame.USE_CLASSBAR and event ~= 'ElementDisable') and ((E:NotSecretValue(CUR) and CUR ~= MAX) or not db.classAdditional.autoHide) and (not E.Mists or E.myclass ~= 'MONK' or E.myspec == SPEC_MONK_MISTWEAVER))
 end
 
 function UF:PostVisibilityAdditionalPower()

@@ -4,23 +4,22 @@ local AuraFiltered = oUF.AuraFiltered
 
 local next = next
 local UnitCanAssist = UnitCanAssist
-local UnpackAuraData = AuraUtil.UnpackAuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 local DispelFilter = LibDispel:GetMyDispelTypes()
 local BlockList = LibDispel:GetBlockList()
-local BleedList = LibDispel:GetBleedList()
 
 local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, spellID)
-	local spell = list and (list[spellID] or list[name])
-	local dispelType = auraType or (BleedList[spellID] and 'Bleed') or nil
+	local allowSpell = oUF:NotSecretValue(spellID)
+	local spell = list and (allowSpell and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
+	local dispelType = auraType or nil
 
 	if spell then
 		if spell.enable then
 			return dispelType, icon, true, spell.style, spell.color
 		end
-	elseif dispelType then
+	elseif oUF:NotSecretValue(dispelType) and dispelType then
 		local allow = not check
 		if not allow then
 			allow = DispelFilter[dispelType]
@@ -33,7 +32,7 @@ local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, s
 end
 
 local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, spellID)
-	local spell = list and (list[spellID] or list[name])
+	local spell = list and (oUF:NotSecretValue(spellID) and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
 	if spell and spell.enable and (not spell.ownOnly or source == 'player') then
 		return auraType, icon, true, spell.style, spell.color
 	end
@@ -43,7 +42,7 @@ local function Looper(unit, filter, check, list, func)
 	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = UnpackAuraData(aura)
+		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:UnpackAuraData(aura)
 		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
 
 		if Icon then

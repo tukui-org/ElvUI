@@ -123,47 +123,51 @@ local Path = function(self, ...)
 	return (self.EnergyManaRegen.Override or Update) (self, ...)
 end
 
-local Enable = function(self, unit)
-	local element = self.Power and self.EnergyManaRegen
-
-	if unit == 'player' and element and oUF.myclass ~= 'WARRIOR' then
-		element.__owner = self
-
-		if element:IsObjectType('StatusBar') and not element:GetStatusBarTexture() then
-			element:SetStatusBarTexture([[Interface\Buttons\WHITE8X8]])
-			element:GetStatusBarTexture():SetAlpha(0)
-			element:SetMinMaxValues(0, 2)
-		end
-
-		local spark = element.Spark
-		if spark and spark:IsObjectType('Texture') and not spark:GetTexture() then
-			spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
-			spark:SetSize(20, 20)
-			spark:SetBlendMode('ADD')
-			spark:SetPoint('CENTER', element:GetStatusBarTexture(), 'RIGHT')
-		end
-
-		self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', OnUnitSpellcastSucceeded)
-		self:RegisterEvent('UNIT_POWER_UPDATE', OnUnitPowerUpdate)
-
-		element:SetScript('OnUpdate', function(_, elapsed) Path(self, elapsed) end)
-
-		return true
-	end
-end
-
 local Disable = function(self)
 	local element = self.Power and self.EnergyManaRegen
+	if not element then return end
 
-	if element then
-		self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', OnUnitSpellcastSucceeded)
-		self:UnregisterEvent('UNIT_POWER_UPDATE', OnUnitPowerUpdate)
+	self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', OnUnitSpellcastSucceeded)
+	self:UnregisterEvent('UNIT_POWER_UPDATE', OnUnitPowerUpdate)
 
-		element.Spark:Hide()
-		element:SetScript('OnUpdate', nil)
+	element.Spark:Hide()
+	element:SetScript('OnUpdate', nil)
+
+	return false
+end
+
+local Enable = function(self, unit)
+	local element = self.Power and self.EnergyManaRegen
+	if not element then return end
+
+	if unit ~= 'player' or oUF.myclass == 'WARRIOR' then
+		Disable(self)
 
 		return false
 	end
+
+	element.__owner = self
+
+	if element:IsObjectType('StatusBar') and not element:GetStatusBarTexture() then
+		element:SetStatusBarTexture([[Interface\Buttons\WHITE8X8]])
+		element:GetStatusBarTexture():SetAlpha(0)
+		element:SetMinMaxValues(0, 2)
+	end
+
+	local spark = element.Spark
+	if spark and spark:IsObjectType('Texture') and not spark:GetTexture() then
+		spark:SetTexture([[Interface\CastingBar\UI-CastingBar-Spark]])
+		spark:SetSize(20, 20)
+		spark:SetBlendMode('ADD')
+		spark:SetPoint('CENTER', element:GetStatusBarTexture(), 'RIGHT')
+	end
+
+	self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', OnUnitSpellcastSucceeded)
+	self:RegisterEvent('UNIT_POWER_UPDATE', OnUnitPowerUpdate)
+
+	element:SetScript('OnUpdate', function(_, elapsed) Path(self, elapsed) end)
+
+	return true
 end
 
 oUF:AddElement('EnergyManaRegen', Path, Enable, Disable)

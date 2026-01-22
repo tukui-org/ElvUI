@@ -9,6 +9,8 @@ local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strl
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 
+local Mixin = Mixin
+local ColorMixin = ColorMixin
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetCurrentBindingSet = GetCurrentBindingSet
@@ -160,7 +162,7 @@ E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
 E.snapBars[#E.snapBars + 1] = E.UIParent
 
-E.UFParent = _G.ElvUFParent -- created in oUF
+E.UFParent = _G.ElvUF_UFParentFrameHider -- created in oUF
 E.UFParent:SetParent(E.UIParent)
 E.UFParent:SetFrameStrata('LOW')
 
@@ -266,6 +268,10 @@ function E:SetColorTable(t, data)
 		t = E:GetColorTable(data)
 	end
 
+	if not t.GetRGB then
+		Mixin(t, ColorMixin)
+	end
+
 	return t
 end
 
@@ -326,6 +332,16 @@ function E:UpdateMedia(mediaType)
 	local value = E:UpdateClassColor(E.db.general.valuecolor)
 	E.media.rgbvaluecolor = E:SetColorTable(E.media.rgbvaluecolor, value)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
+
+	if E.db.cooldown.enable then
+		E:UpdateClassColor(E.db.cdmanager.cooldown.color)
+		E:UpdateClassColor(E.db.auras.cooldown.color)
+		E:UpdateClassColor(E.db.bags.cooldown.color)
+		E:UpdateClassColor(E.db.actionbar.cooldown.color)
+		E:UpdateClassColor(E.db.nameplates.cooldown.color)
+		E:UpdateClassColor(E.db.unitframe.cooldown.color)
+		E:UpdateClassColor(E.db.cooldown.color)
+	end
 
 	if E.private.nameplates.enable then
 		-- Colors for Target Indicator
@@ -803,8 +819,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 		profile = 'E.db',
 		private = 'E.private',
 		global = 'E.global',
-		filters = 'E.global',
-		styleFilters = 'E.global'
+		filters = 'E.global'
 	}
 
 	local function BuildLineStructure(str) -- str is profileText
@@ -1066,29 +1081,8 @@ do -- BFA Convert, deprecated..
 			end
 		end
 
-		--Remove stale font settings from Cooldown system for top auras
-		if E.db.auras.cooldown.fonts then
-			E.db.auras.cooldown.fonts = nil
-		end
-
-		--Convert Nameplate Aura Duration to new Cooldown system
-		if E.db.nameplates.durationFont then
-			E.db.nameplates.cooldown.fonts.font = E.db.nameplates.durationFont
-			E.db.nameplates.cooldown.fonts.fontSize = E.db.nameplates.durationFontSize
-			E.db.nameplates.cooldown.fonts.fontOutline = E.db.nameplates.durationFontOutline
-
-			E.db.nameplates.durationFont = nil
-			E.db.nameplates.durationFontSize = nil
-			E.db.nameplates.durationFontOutline = nil
-		end
-
 		if E.db.nameplates.lowHealthThreshold > 0.8 then
 			E.db.nameplates.lowHealthThreshold = 0.8
-		end
-
-		if E.db.nameplates.units.TARGET.nonTargetTransparency ~= nil then
-			E.global.nameplates.filters.ElvUI_NonTarget.actions.alpha = E.db.nameplates.units.TARGET.nonTargetTransparency * 100
-			E.db.nameplates.units.TARGET.nonTargetTransparency = nil
 		end
 
 		--Removed additional table in nameplate filters cause it was basically useless
@@ -1105,12 +1099,6 @@ do -- BFA Convert, deprecated..
 				E.db.nameplates.units[unit].debuffs.priority = E.db.nameplates.units[unit].debuffs.filters.priority or P.nameplates.units[unit].debuffs.priority
 				E.db.nameplates.units[unit].debuffs.filters = nil
 			end
-		end
-
-		--Moved target scale to a style filter
-		if E.db.nameplates.units.TARGET.scale ~= nil then
-			E.global.nameplates.filters.ElvUI_Target.actions.scale = E.db.nameplates.units.TARGET.scale
-			E.db.nameplates.units.TARGET.scale = nil
 		end
 
 		--Convert cropIcon to tristate
@@ -1152,17 +1140,6 @@ do -- BFA Convert, deprecated..
 					healPrediction.showOverAbsorbs = nil
 				end
 			end
-		end
-
-		--Health Backdrop Multiplier
-		if E.db.unitframe.colors.healthmultiplier ~= nil then
-			if E.db.unitframe.colors.healthmultiplier > 0.75 then
-				E.db.unitframe.colors.healthMultiplier = 0.75
-			else
-				E.db.unitframe.colors.healthMultiplier = E.db.unitframe.colors.healthmultiplier
-			end
-
-			E.db.unitframe.colors.healthmultiplier = nil
 		end
 
 		--Tooltip FactionColors Setting
@@ -1580,7 +1557,6 @@ end
 
 function E:UpdateNamePlates(skipCallback)
 	NamePlates:ConfigureAll()
-	NamePlates:StyleFilterInitialize()
 
 	if not skipCallback then
 		E.callbacks:Fire('StaggeredUpdate')
@@ -1659,8 +1635,6 @@ function E:UpdateMisc(skipCallback)
 end
 
 function E:UpdateEnd()
-	E:UpdateCooldownSettings('all')
-
 	if E.RefreshGUI then
 		E:RefreshGUI()
 	end
@@ -2054,7 +2028,6 @@ function E:Initialize()
 		E:UpdateMedia()
 		E:UpdateDispelColors()
 		E:UpdateCustomClassColors()
-		E:UpdateCooldownSettings('all')
 
 		E.initialized = true
 

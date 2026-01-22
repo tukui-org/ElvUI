@@ -71,8 +71,8 @@ local pcall, tinsert = pcall, tinsert
 local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
-
-local UnpackAuraData = AuraUtil.UnpackAuraData
+local GetAuraDuration = C_UnitAuras.GetAuraDuration
+local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
 
 local function UpdateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
@@ -158,7 +158,7 @@ local function customFilter(element, unit, button, name)
 end
 
 local function updateAura(frame, which, unit, aura, index, offset, filter, visible)
-	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = UnpackAuraData(aura)
+	local name, icon, applications, dispelName, duration, expirationTime, sourceUnit, isStealable, nameplateShowPersonal, spellId, canApplyAura, isBossAura, isFromPlayerOrPlayerPet, nameplateShowAll, timeMod = oUF:UnpackAuraData(aura)
 
 	local element = frame[which]
 	local forceShow = element.forceShow
@@ -167,7 +167,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		name, _, icon = oUF:GetSpellInfo(spellId)
 
 		if forceShow then
-			applications, dispelName, duration, expirationTime, sourceUnit = 5, (which == 'Debuffs' and '') or 'Magic', 0, 60, 'player'
+			applications, dispelName, duration, expirationTime, sourceUnit = 5, (which == 'Debuffs' and 'None') or 'Magic', 0, 60, 'player'
 		end
 	end
 
@@ -194,14 +194,14 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 
 	element.active[position] = button
 
-	local isDebuff = aura and aura.isHarmful or nil
-	local auraInstanceID = aura and aura.auraInstanceID or nil
+	local isDebuff = aura and oUF:NotSecretValue(aura.isHarmful) and aura.isHarmful or nil
+	local auraInstanceID = aura and oUF:NotSecretValue(aura.auraInstanceID) and aura.auraInstanceID or nil
 
 	button.aura = aura or nil
 	button.filter = filter or nil
 	button.auraInstanceID = auraInstanceID or nil
 	button.isDebuff = (forceShow and which ~= 'Buffs') or isDebuff or nil
-	button.isPlayer = (sourceUnit == 'player' or sourceUnit == 'vehicle') or nil
+	button.isPlayer = oUF:NotSecretValue(sourceUnit) and (sourceUnit == 'player' or sourceUnit == 'vehicle') or (aura and aura.auraIsPlayer) or nil
 	button.debuffType = dispelName
 
 	--[[ Override: Auras:CustomFilter(unit, button, ...)
@@ -229,7 +229,15 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		-- object to this point, but I think that will just make things needlessly
 		-- complicated.
 		if(button.Cooldown and not element.disableCooldown) then
-			if(duration and duration > 0) then
+			if button.Cooldown.SetCooldownFromDurationObject then
+				local auraDuration = aura and GetAuraDuration(unit, aura.auraInstanceID)
+				if auraDuration then
+					button.Cooldown:SetCooldownFromDurationObject(auraDuration)
+					button.Cooldown:Show()
+				else
+					button.Cooldown:Hide()
+				end
+			elseif(duration and duration > 0) then
 				button.Cooldown:SetCooldown(expirationTime - duration, duration, timeMod)
 				button.Cooldown:Show()
 			else
@@ -240,7 +248,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		if button.Overlay then
 			if (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) or element.showType then
 				local colors = element.__owner.colors.debuff
-				local color = colors[dispelName] or colors.none
+				local color = colors[dispelName] or colors.None
 
 				button.Overlay:SetVertexColor(color.r, color.g, color.b)
 				button.Overlay:Show()
@@ -250,11 +258,28 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		end
 
 		if button.Stealable then
-			button.Stealable:SetShown(not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit('player', unit))
+			local showStealable = element.showStealableBuffs and not isDebuff
+			if showStealable and button.Stealable.SetAlphaFromBoolean then
+				button.Stealable:SetAlphaFromBoolean(isStealable, 1, 0)
+			elseif showStealable then
+				button.Stealable:SetAlpha((isStealable and not UnitIsUnit('player', unit)) and 1 or 0)
+			else
+				button.Stealable:SetAlpha(0)
+			end
 		end
 
 		if button.Icon then button.Icon:SetTexture(icon) end
-		if button.Count then button.Count:SetText(not applications or applications <= 1 and '' or applications) end
+
+		if button.Count then
+			local minCount = element.minCount or 2
+			local maxCount = element.maxCount or 999
+			if oUF:IsSecretValue(applications) then
+				button.Count:SetText(GetAuraApplicationDisplayCount(unit, auraInstanceID, minCount, maxCount))
+			else
+				local hideCount = not applications or (applications < minCount or applications > maxCount)
+				button.Count:SetText(hideCount and '' or applications)
+			end
+		end
 
 		local width = element.width or element.size or 16
 		local height = element.height or element.size or 16

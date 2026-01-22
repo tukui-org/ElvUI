@@ -35,7 +35,7 @@ end
 local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
 local onRangeObjects, onRangeFrame = {}
-local PowerTypesFull = {MANA = true, FOCUS = true, ENERGY = true}
+local PowerTypesFull = { MANA = true, FOCUS = true, ENERGY = true }
 
 local function ClearTimers(element)
 	if not E then E = _G.ElvUI[1] end
@@ -114,14 +114,19 @@ local function Update(self, event, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
+	local currentHealth = UnitHealth(unit)
+	local maxHealth = UnitHealthMax(unit)
+	local currentPower = UnitPower(unit)
+	local maxPower = UnitPowerMax(unit)
+
 	if	(element.InstanceDifficulty and element.InstancedCached) or
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
 		(element.PlayerTarget and UnitExists('target')) or
 		(element.UnitTarget and UnitExists(unit..'target')) or
 		(element.Focus and not oUF.isClassic and UnitExists('focus')) or
-		(element.Health and UnitHealth(unit) < UnitHealthMax(unit)) or
-		(element.Power and (PowerTypesFull[powerType] and UnitPower(unit) < UnitPowerMax(unit))) or
+		(element.Health and oUF:NotSecretValue(currentHealth) and (currentHealth < maxHealth)) or
+		(element.Power and (PowerTypesFull[powerType] and oUF:NotSecretValue(currentPower) and (currentPower < maxPower))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI(unit)) or
 		(element.DynamicFlight and oUF.isRetail and not isGliding) or
 		(element.Hover and GetMouseFocus() == (self.__faderobject or self))

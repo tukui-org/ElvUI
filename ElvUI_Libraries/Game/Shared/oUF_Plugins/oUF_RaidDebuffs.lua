@@ -36,16 +36,6 @@ local DispelPriority = {
 	Poison  = 1,
 }
 
-local function FormatTime(sec)
-	if sec > 60 then
-		return '%dm', sec / 60
-	elseif sec < 1 then
-		return '%.1f', sec
-	else
-		return '%d', sec
-	end
-end
-
 local function AddSpell(spell, priority, stackThreshold)
 	if addon.MatchBySpellName and type(spell) == 'number' then
 		spell = oUF:GetSpellInfo(spell)
@@ -85,7 +75,7 @@ local function OnUpdate(self, elapsed)
 		end
 
 		if timeLeft > 0 then
-			self.time:SetFormattedText(FormatTime(timeLeft))
+			self.time:SetFormattedText(oUF:GetTime(timeLeft, true))
 		else
 			self:SetScript('OnUpdate', nil)
 			self.time:Hide()
@@ -143,7 +133,7 @@ local function UpdateDebuff(element, aura, forced, stackThreshold)
 			end
 		end
 
-		local c = DebuffColors[debuffType] or DebuffColors.none
+		local c = DebuffColors[debuffType] or DebuffColors.None
 		element:SetBackdropBorderColor(c.r, c.g, c.b)
 
 		element:Show()
@@ -180,7 +170,7 @@ local function Update(self, event, unit, updateInfo)
 		local unitAuraFiltered = AuraFiltered.HARMFUL[unit]
 		local auraInstanceID, aura = next(unitAuraFiltered)
 		while aura do
-			local debuffType = aura.dispelName -- we coudln't dispel if the unit its charmed, or its not friendly
+			local debuffType = oUF:NotSecretValue(aura.dispelName) and aura.dispelName -- we coudln't dispel if the unit its charmed, or its not friendly
 			if debuffType and (not isCharmed and not canAttack) and DispelFilter[debuffType] and addon.ShowDispellableDebuff and (element.showDispellableDebuff ~= false) then
 				if addon.FilterDispellableDebuff then
 					DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority -- Make Dispel buffs on top of Boss Debuffs
@@ -193,7 +183,7 @@ local function Update(self, event, unit, updateInfo)
 			end
 
 			-- handle from the list
-			local data = debuff_data[aura.spellId] or (not element.onlyMatchSpellID and debuff_data[aura.name])
+			local data = (oUF:NotSecretValue(aura.spellId) and oUF:NotSecretValue(aura.name)) and (debuff_data[aura.spellId] or (not element.onlyMatchSpellID and debuff_data[aura.name]))
 			local priority = data and data.priority
 			if CheckPriority(priority, _priority, aura, _aura) then
 				_priority, _aura = priority, aura -- swap it to the new one

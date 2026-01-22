@@ -2,5 +2,4 @@
 	<Script file='Profile.lua'/>
 	<Script file='Global.lua'/>
 	<Script file='Private.lua'/>
-	<Script file='StyleFilters.lua'/>
 </Ui>

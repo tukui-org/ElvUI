@@ -383,9 +383,16 @@ function S:Blizzard_GarrisonUI()
 	local GarrisonLandingPage = _G.GarrisonLandingPage
 	local Report = GarrisonLandingPage.Report
 	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
-	S:HandleTab(_G.GarrisonLandingPageTab1)
-	S:HandleTab(_G.GarrisonLandingPageTab2)
-	S:HandleTab(_G.GarrisonLandingPageTab3)
+
+	local pageTabs = {
+		_G.GarrisonLandingPageTab1,
+		_G.GarrisonLandingPageTab2,
+		_G.GarrisonLandingPageTab3,
+	}
+	for _, tab in pairs(pageTabs) do
+		S:HandleTab(tab)
+		tab:SetHeight(tab:GetHeight() * .75)
+	end
 
 	-- Reposition Tabs
 	hooksecurefunc('PanelTemplates_UpdateTabs', function()

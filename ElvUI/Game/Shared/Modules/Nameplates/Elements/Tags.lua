@@ -26,13 +26,12 @@ function NP:Update_TagText(nameplate, element, db, hide)
 	end
 end
 
-function NP:Update_Tags(nameplate, nameOnlySF)
+function NP:Update_Tags(nameplate)
 	local db = NP:PlateDB(nameplate)
-	local hide = db.nameOnly or nameOnlySF
 
 	NP:Update_TagText(nameplate, nameplate.Name, db.name)
 	NP:Update_TagText(nameplate, nameplate.Title, db.title)
-	NP:Update_TagText(nameplate, nameplate.Level, db.level, hide)
-	NP:Update_TagText(nameplate, nameplate.Health.Text, db.health and db.health.text, hide)
-	NP:Update_TagText(nameplate, nameplate.Power.Text, db.power and db.power.text, hide)
+	NP:Update_TagText(nameplate, nameplate.Level, db.level, db.nameOnly)
+	NP:Update_TagText(nameplate, nameplate.Health.Text, db.health and db.health.text, db.nameOnly)
+	NP:Update_TagText(nameplate, nameplate.Power.Text, db.power and db.power.text, db.nameOnly)
 end

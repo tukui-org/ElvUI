@@ -10,7 +10,6 @@ local HIDDEN = 0
 
 local min, next, wipe, pairs, tinsert = min, next, wipe, pairs, tinsert
 local GetSpellTexture = C_Spell.GetSpellTexture
-local UnpackAuraData = AuraUtil.UnpackAuraData
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
 
@@ -53,7 +52,7 @@ end
 local stackAuras = {}
 local function CustomFilter(element, _, button, _, _, _, count)
 	local spellID = button.spellID
-	local setting = element.watched[spellID]
+	local setting = oUF:NotSecretValue(spellID) and element.watched[spellID]
 	if not setting then
 		return false
 	end
@@ -129,7 +128,7 @@ local function HandleElements(element, unit, button, setting, icon, count, durat
 	if button.overlay then
 		if element.showType or (isDebuff and element.showDebuffType) or (not isDebuff and element.showBuffType) then
 			local colors = element.__owner.colors.debuff
-			local color = colors[debuffType] or colors.none
+			local color = colors[debuffType] or colors.None
 
 			button.overlay:SetVertexColor(color.r, color.g, color.b)
 			button.overlay:Show()
@@ -185,7 +184,7 @@ local function PostOnlyMissing(element, unit, offset)
 end
 
 local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
-	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = UnpackAuraData(aura)
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:UnpackAuraData(aura)
 	if not name then return end
 
 	local button, position = FetIcon(element, visible, offset)
@@ -196,7 +195,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	button.isDebuff = isDebuff
 	button.debuffType = debuffType
 	button.castByPlayer = castByPlayer
-	button.isPlayer = source == 'player'
+	button.isPlayer = (oUF:NotSecretValue(source) and source == 'player') or (aura and aura.auraIsPlayer) or nil
 
 	button:SetID(index)
 
@@ -204,7 +203,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
-	local setting = element.watched[spellID]
+	local setting = oUF:NotSecretValue(spellID) and element.watched[spellID]
 	if setting and setting.onlyShowMissing then
 		missing[spellID] = nil
 	end

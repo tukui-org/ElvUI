@@ -8,7 +8,6 @@ local LSM = E.Libs.LSM
 local _G = _G
 local unpack, next, wipe = unpack, next, wipe
 local tinsert, tremove, format = tinsert, tremove, format
-local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
@@ -462,8 +461,8 @@ end
 
 function M:UpdateLootRollFrames()
 	if not E.private.general.lootRoll then return end
-	local db = E.db.general.lootRoll
 
+	local db = E.db.general.lootRoll
 	local font = LSM:Fetch('font', db.nameFont)
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 	local maxBars = E.Retail and db.maxBars or _G.NUM_GROUP_LOOT_FRAMES or 4
@@ -532,11 +531,13 @@ function M:UpdateLootRollFrames()
 	end
 end
 
-function M:PositionGroupLootContainer() -- used by PostAlertMove
+function M:PositionGroupLootContainer() -- used by PostAlertMove and AlertFrame post hooks GroupLootContainer_Update
 	local _, anchor, position, point, xOffset, yOffset = BL:GetAlertAnchors()
 
 	_G.GroupLootContainer:ClearAllPoints()
 	_G.GroupLootContainer:Point(position, anchor, point, xOffset, yOffset)
+
+	if not E.private.general.lootRoll then return end
 
 	if _G.GroupLootContainer:IsShown() then
 		M.UpdateGroupLootContainer(_G.GroupLootContainer)
@@ -575,16 +576,6 @@ function M:LoadLootRoll()
 	if not E.private.general.lootRoll then return end
 
 	M:UpdateLootRollFrames()
-
-	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
-
-	if E.Retail or E.TBC then
-		_G.GroupLootContainer.ignoreInLayout = true
-	elseif _G.UIPARENT_MANAGED_FRAME_POSITIONS then
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
-	end
-
-	hooksecurefunc('GroupLootContainer_Update', M.UpdateGroupLootContainer)
 
 	if not E.Retail then
 		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')

@@ -1963,7 +1963,6 @@ L["Vertical Spacing"] = "垂直间隔"
 L["Vertical"] = "垂直"
 L["Visibility State"] = "可见状态"
 L["Visibility"] = "可见性"
-L["WeakAuras"] = true --No need to translate
 L["Weekly Rewards"] = "每周奖励"
 L["What point to anchor to the frame you set to attach to."] = "框体的定位对齐方向"
 L["What to attach the anchor frame to."] = "将框体的定位依附在什么地方"

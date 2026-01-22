@@ -1864,7 +1864,6 @@ L["Vertical"] = "Verticale"
 L["Visibility State"] = "État de visibilité"
 L["Visibility"] = "Visibilité"
 L["VOID_STORAGE"] = "Chambre du Vide"
-L["WeakAuras"] = true
 L["Weekly Rewards"] = "Récompenses hebdomadaires"
 L["What point to anchor to the frame you set to attach to."] = "Quel point d'ancrage sur le cadre vous choisissez à attacher."
 L["What to attach the anchor frame to."] = "À quoi attacher le cadre d'ancre."

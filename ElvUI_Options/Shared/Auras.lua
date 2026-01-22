@@ -27,21 +27,14 @@ local SharedOptions = {
 	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 25, { min = -5, max = 50, step = 1 }),
 	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }),
 
-	tooltip = ACH:Group(L["Tooltip"], nil, -4),
-	statusBar = ACH:Group(L["Statusbar"], nil, -3),
-	timeGroup = ACH:Group(L["Time Text"], nil, -2),
+	tooltip = ACH:Group(L["Tooltip"], nil, -3),
+	statusBar = ACH:Group(L["Statusbar"], nil, -2),
 	countGroup = ACH:Group(L["Count Text"], nil, -1),
 }
 
 SharedOptions.tooltip.args.tooltipAnchorType = ACH:Select(L["Anchor Type"], nil, 1, C.Values.TooltipAnchors)
 SharedOptions.tooltip.args.tooltipAnchorX = ACH:Range(L["Anchor Offset X"], nil, 2, { min = -300, max = 300, step = 1 })
 SharedOptions.tooltip.args.tooltipAnchorY = ACH:Range(L["Anchor Offset Y"], nil, 3, { min = -300, max = 300, step = 1 })
-
-SharedOptions.timeGroup.args.timeFont = ACH:SharedMediaFont(L["Font"], nil, 1)
-SharedOptions.timeGroup.args.timeFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 2)
-SharedOptions.timeGroup.args.timeFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
-SharedOptions.timeGroup.args.timeXOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -60, max = 60, step = 1 })
-SharedOptions.timeGroup.args.timeYOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -60, max = 60, step = 1 })
 
 SharedOptions.countGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 SharedOptions.countGroup.args.countFontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 2)
@@ -78,10 +71,10 @@ do
 	Auras.args.debuffColors.args.spacer1 = ACH:Spacer(10, 'full')
 	Auras.args.debuffColors.inline = true
 
-	local order = { none = 0, Magic = 1, Curse = 2, Disease = 3, Poison = 4, EnemyNPC = 11, BadDispel = 12, Bleed = 13, Stealable = 14 }
+	local order = { None = 0, Magic = 1, Curse = 2, Disease = 3, Poison = 4, EnemyNPC = 11, BadDispel = 12, Bleed = 13, Stealable = 14 }
 	for key in next, DebuffColors do
 		if key ~= '' then -- this is a reference to none
-			Auras.args.debuffColors.args[key] = ACH:Color(key == 'none' and 'None' or key, nil, order[key] or -1, nil, 120)
+			Auras.args.debuffColors.args[key] = ACH:Color(key, nil, order[key] or -1, nil, 120)
 		end
 	end
 end

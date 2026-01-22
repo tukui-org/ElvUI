@@ -102,6 +102,7 @@
 	<Script file='TorghastLevelPicker.lua'/>
 	<Script file='Trade.lua'/>
 	<Script file='Trainer.lua'/>
+	<Script file='Transmog.lua'/>
 	<Script file='TutorialFrame.lua'/>
 	<Script file='WarfrontPartyPose.lua'/>
 	<Script file='WeeklyRewards.lua'/>

@@ -13,6 +13,7 @@ local GetAuraSlots = C_UnitAuras.GetAuraSlots
 local GetAuraDataBySlot = C_UnitAuras.GetAuraDataBySlot
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
+local IsAuraFilteredOutByInstanceID = C_UnitAuras.IsAuraFilteredOutByInstanceID
 
 local auraInfo = {}
 local auraFiltered = {
@@ -43,7 +44,7 @@ local function CheckIsMine(sourceUnit)
 end
 
 local function AllowAura(frame, aura)
-	if aura.isNameplateOnly then
+	if oUF:NotSecretValue(aura.isNameplateOnly) and aura.isNameplateOnly then
 		return frame.isNamePlate
 	end
 
@@ -65,10 +66,14 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 		aura = unitAuraInfo[auraInstanceID]
 	end
 
-	if aura and aura.sourceUnit then -- this is lame but useful
+	if aura and oUF:NotSecretValue(aura.sourceUnit) and aura.sourceUnit then
 		aura.unitGUID = UnitGUID(aura.sourceUnit) -- fetch the new unit token with UnitTokenFromGUID
 		aura.unitName, aura.unitRealm = UnitName(aura.sourceUnit)
 		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = UnitClass(aura.sourceUnit)
+	elseif aura then
+		aura.unitGUID = nil
+		aura.unitName, aura.unitRealm = nil, nil
+		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = nil, nil, nil
 	end
 
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
@@ -76,6 +81,14 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
 
 	for filter, filtered in next, auraFiltered do
+		if aura then
+			aura.auraIsRaid = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'RAID')
+			aura.auraIsPlayer = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'PLAYER')
+			aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
+			aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
+			aura.auraIsNameplateOnly = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'INCLUDE_NAME_PLATE_ONLY')
+		end
+
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
 	end
 
@@ -186,15 +199,15 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	end
 
 	if filter == 'HELPFUL' then
-		return not aura.isHelpful
+		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
 	elseif filter == 'HARMFUL' then
-		return not aura.isHarmful
+		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
 	elseif filter == 'RAID' then
-		return not aura.isRaid
+		return (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
 	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
-		return not aura.isNameplateOnly
+		return (oUF:NotSecretValue(aura.isNameplateOnly) and not aura.isNameplateOnly) or (not aura.auraIsNameplateOnly)
 	elseif filter == 'PLAYER' then
-		return not CheckIsMine(aura.sourceUnit)
+		return (oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)) or (not aura.auraIsNameplateOnly)
 	end
 end
 

@@ -19,6 +19,10 @@ local function SkinFrame(frame)
 			S:HandleTrimScrollBar(frame.ScrollBar)
 		end
 	end
+
+	if frame.backdrop then
+		frame.backdrop:OffsetFrameLevel(0, frame)
+	end
 end
 
 function S:SkinMenu(manager, ownerRegion, menuDescription, anchor)

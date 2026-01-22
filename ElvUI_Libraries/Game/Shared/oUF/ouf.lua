@@ -7,23 +7,16 @@ local oUF = ns.oUF
 local Private = oUF.Private
 
 local argcheck = Private.argcheck
-local error = Private.error
 local print = Private.print -- luacheck: no unused
 local unitExists = Private.unitExists
+local nierror = Private.nierror
 
-local styles, style = {}
-local callback, objects, headers = {}, {}, {}
-
-local elements = {}
-local activeElements = {}
-
--- ElvUI
 local _G = _G
+local strsplit = strsplit
 local assert, setmetatable = assert, setmetatable
 local next, type, select = next, type, select
-local strupper, strsplit = strupper, strsplit
+local strupper, format = strupper, format
 local tinsert, tremove = tinsert, tremove
-local hooksecurefunc = hooksecurefunc
 
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local RegisterAttributeDriver = RegisterAttributeDriver
@@ -32,18 +25,28 @@ local RegisterUnitWatch = RegisterUnitWatch
 local CreateFrame = CreateFrame
 local IsLoggedIn = IsLoggedIn
 local UnitGUID = UnitGUID
+local Mixin = Mixin
 
 local SecureButton_GetUnit = SecureButton_GetUnit
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
-local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+local SetNamePlateHitTestInsets = C_NamePlateManager and C_NamePlateManager.SetNamePlateHitTestInsets
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
+local SetNamePlateSize = C_NamePlate.SetNamePlateSize
+local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 local SetCVar = C_CVar.SetCVar
--- end
 
-local UFParent = CreateFrame('Frame', (global or parent) .. 'Parent', UIParent, 'SecureHandlerStateTemplate')
-UFParent:SetFrameStrata('LOW')
-RegisterStateDriver(UFParent, 'visibility', '[petbattle] hide; show')
+local NAMEPLATE_TYPE = Enum.NamePlateType
+
+local styles, style = {}
+local callback, objects, headers = {}, {}, {}
+
+local elements = {}
+local activeElements = {}
+
+local UFParentHider = CreateFrame('Frame', (global or parent) .. '_UFParentFrameHider', UIParent, 'SecureHandlerStateTemplate')
+UFParentHider:SetFrameStrata('LOW')
+RegisterStateDriver(UFParentHider, 'visibility', '[petbattle] hide; show')
 
 local function updateActiveUnit(self, event)
 	-- Calculate units to work with
@@ -279,18 +282,8 @@ local function updateRaid(self, event)
 	end
 end
 
--- boss6-10 exsist in some encounters, but unit event registration seems to be
--- completely broken for them, so instead we use OnUpdate to update them.
-local eventlessUnits = {
-	boss6 = true,
-	boss7 = true,
-	boss8 = true,
-	boss9 = true,
-	boss10 = true
-}
-
 local function isEventlessUnit(unit)
-	return unit:match('%w+target') or eventlessUnits[unit]
+	return unit:match('%w+target')
 end
 
 local function initObject(unit, style, styleFunc, header, ...)
@@ -446,7 +439,7 @@ function oUF:RegisterStyle(name, func)
 	argcheck(name, 2, 'string')
 	argcheck(func, 3, 'function', 'table')
 
-	if(styles[name]) then return error('Style [%s] already registered.', name) end
+	if(styles[name]) then return nierror(format('Style [%s] already registered.', name)) end
 	if(not style) then style = name end
 
 	styles[name] = func
@@ -460,7 +453,7 @@ Used to set the active style.
 --]]
 function oUF:SetActiveStyle(name)
 	argcheck(name, 2, 'string')
-	if(not styles[name]) then return error('Style [%s] does not exist.', name) end
+	if(not styles[name]) then return nierror('Style [%s] does not exist.', name) end
 
 	style = name
 end
@@ -522,6 +515,70 @@ local function createName(unit, attributes)
 
 	local raid, party, groupFilter, unitsuffix
 	for att, val in next, attributes do
+		if(att == 'oUF-initialConfigFunction') then
+			unitsuffix = val:match('unitsuffix[%p%s]+(%a+)')
+		elseif(att == 'showRaid') then
+			raid = val ~= false and val ~= nil
+		elseif(att == 'showParty') then
+			party = val ~= false and val ~= nil
+		elseif(att == 'groupFilter') then
+			groupFilter = val
+		end
+	end
+
+	local append
+	if(raid) then
+		if(groupFilter) then
+			if(type(groupFilter) == 'number' and groupFilter > 0) then
+				append = 'Raid' .. groupFilter
+			elseif(groupFilter:match('MAINTANK')) then
+				append = 'MainTank'
+			elseif(groupFilter:match('MAINASSIST')) then
+				append = 'MainAssist'
+			else
+				local _, count = groupFilter:gsub(',', '')
+				if(count == 0) then
+					append = 'Raid' .. groupFilter
+				else
+					append = 'Raid'
+				end
+			end
+		else
+			append = 'Raid'
+		end
+	elseif(party) then
+		append = 'Party'
+	elseif(unit) then
+		append = unit:gsub('^%l', strupper)
+	end
+
+	if(append) then
+		name = name .. append .. (unitsuffix or '')
+	end
+
+	-- Change oUF_LilyRaidRaid into oUF_LilyRaid
+	name = name:gsub('(%u%l+)([%u%l]*)%1', '%1')
+	-- Change oUF_LilyTargettarget into oUF_LilyTargetTarget
+	name = name:gsub('t(arget)', 'T%1')
+	name = name:gsub('p(et)', 'P%1')
+	name = name:gsub('f(ocus)', 'F%1')
+
+	local base = name
+	local i = 2
+	while(_G[name]) do
+		name = base .. i
+		i = i + 1
+	end
+
+	return name
+end
+
+local function generateName(unit, ...)
+	local name = 'oUF_' .. style:gsub('^oUF_?', ''):gsub('[^%a%d_]+', '')
+
+	local raid, party, groupFilter, unitsuffix
+	for i = 1, select('#', ...), 2 do
+		local att, val = select(i, ...)
 		if(att == 'oUF-initialConfigFunction') then
 			unitsuffix = val:match('unitsuffix[%p%s]+(%a+)')
 		elseif(att == 'showRaid') then
@@ -646,6 +703,24 @@ do
 		end
 	]]
 
+	local headerMixin = {}
+	--[[ header:SetVisibility(visibility)
+	Sets the macro conditional(s) controlling when to display the header (string).
+	--]]
+	function headerMixin:SetVisibility(visibility)
+		argcheck(visibility, 2, 'string', 'nil')
+
+		local _type, list = strsplit(' ', visibility, 2)
+		if(list and _type == 'custom') then
+			RegisterAttributeDriver(self, 'state-visibility', list)
+			self.visibility = list
+		else
+			local condition = getCondition(strsplit(',', visibility))
+			RegisterAttributeDriver(self, 'state-visibility', condition)
+			self.visibility = condition
+		end
+	end
+
 	--[[ oUF:SpawnHeader(overrideName, template, visibility, ...)
 	Used to create a group header and apply the currently active style to it.
 
@@ -654,7 +729,6 @@ do
 	                 of the active style and other arguments passed to `:SpawnHeader` (string?)
 	* template     - name of a template to be used for creating the header. Defaults to `'SecureGroupHeaderTemplate'`
 	                 (string?)
-	* visibility   - macro conditional(s) which define when to display the header (string).
 	* ...          - further argument pairs. Consult [Group Headers](https://warcraft.wiki.gg/wiki/SecureGroupHeaderTemplate)
 	                 for possible values. If preferred, the attributes can be an associative table.
 
@@ -665,14 +739,14 @@ do
 	                              configuration (string?)
 	* oUF-onlyProcessChildren   - can be used to force headers to only process children (boolean?)
 	--]]
-	function oUF:SpawnHeader(overrideName, template, visibility, attributes)
-		if(not style) then return error('Unable to create frame. No styles have been registered.') end
+	function oUF:SpawnHeader(overrideName, template, attributes)
+		if(not style) then return nierror('Unable to create frame. No styles have been registered.') end
 
 		template = (template or 'SecureGroupHeaderTemplate')
 
 		local isPetHeader = template:match('PetHeader')
 		local name = overrideName or createName(nil, attributes)
-		local header = CreateFrame('Frame', name, UFParent, template)
+		local header = Mixin(CreateFrame('Frame', name, UFParentHider, template), headerMixin)
 
 		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
 
@@ -682,7 +756,6 @@ do
 
 		header.style = style
 		header.styleFunction = styleProxy
-		header.visibility = visibility
 
 		-- Expose the header through oUF.headers.
 		tinsert(headers, header)
@@ -728,18 +801,6 @@ do
 			self:DisableBlizzard('party')
 		end
 
-		if(visibility) then
-			local which, list = strsplit(' ', visibility, 2)
-			if(list and which == 'custom') then
-				RegisterAttributeDriver(header, 'state-visibility', list)
-				header.visibility = list
-			else
-				local condition = getCondition(strsplit(',', visibility))
-				RegisterAttributeDriver(header, 'state-visibility', condition)
-				header.visibility = condition
-			end
-		end
-
 		return header
 	end
 end
@@ -759,12 +820,12 @@ PingableUnitFrameTemplate is inherited for Ping support.
 --]]
 function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideTemplate
 	argcheck(unit, 2, 'string')
-	if(not style) then return error('Unable to create frame. No styles have been registered.') end
+	if(not style) then return nierror('Unable to create frame. No styles have been registered.') end
 
 	unit = unit:lower()
 
 	local name = overrideName or createName(unit)
-	local object = CreateFrame('Button', name, UFParent, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, UFParentHider, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -776,87 +837,136 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 	return object
 end
 
---[[ oUF:SpawnNamePlates(prefix, callback, variables)
-Used to create nameplates and apply the currently active style to them.
+do
+	local hitInset = 10000 -- some large number that will ensure we have full coverage
+	local function updateDriver(driver)
+		if(SetNamePlateSize and IsLoggedIn()) then
+			SetNamePlateSize(driver.plateWidth or 200, driver.plateHeight or 30)
 
-* self      - the global oUF object
-* prefix    - prefix for the global name of the nameplate. Defaults to an auto-generated prefix (string?)
-* callback  - function to be called after a nameplate unit or the player's target has changed. The arguments passed to
-              the callback are the updated nameplate, if any, the event that triggered the update, and the new unit
-              (function?)
-* variables - list of console variable-value pairs to be set when the player logs in (table?)
+			if SetNamePlateHitTestInsets then
+				local enemyInset = driver.friendlyNonInteractible and hitInset or -hitInset
+				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Enemy, enemyInset, enemyInset, enemyInset, enemyInset)
 
-PingableUnitFrameTemplate is inherited for Ping support.
---]]
-function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
-	argcheck(nameplateCallback, 3, 'function', 'nil')
-	argcheck(nameplateCVars, 4, 'table', 'nil')
-	if(not style) then return error('Unable to create frame. No styles have been registered.') end
-	if(_G.oUF_NamePlateDriver) then return error('oUF nameplate driver has already been initialized.') end
-
-	local style = style
-	local prefix = namePrefix or createName()
-
-	-- Because there's no way to prevent nameplate settings updates without tainting UI,
-	-- and because forbidden nameplates exist, we have to allow default nameplate
-	-- driver to create, update, and remove Blizz nameplates.
-	-- Disable only not forbidden nameplates.
-	hooksecurefunc(_G.NamePlateDriverFrame, 'AcquireUnitFrame', oUF.DisableNamePlate)
-
-	local eventHandler = CreateFrame('Frame', 'oUF_NamePlateDriver')
-	eventHandler:RegisterEvent('NAME_PLATE_UNIT_ADDED')
-	eventHandler:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
-	eventHandler:RegisterEvent('PLAYER_TARGET_CHANGED')
-	eventHandler:RegisterEvent('UNIT_MAXHEALTH')
-	eventHandler:RegisterEvent('UNIT_FACTION')
-	eventHandler:RegisterEvent('UNIT_HEALTH')
-
-	if(IsLoggedIn()) then
-		if(nameplateCVars) then
-			for cvar, value in next, nameplateCVars do
-				SetCVar(cvar, value)
+				local friendlyInset = driver.friendlyNonInteractible and hitInset or -hitInset
+				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Friendly, friendlyInset, friendlyInset, friendlyInset, friendlyInset)
 			end
-		end
-	else
-		eventHandler:RegisterEvent('PLAYER_LOGIN')
-	end
 
-	eventHandler:SetScript('OnEvent', function(_, event, unit)
-		if(event == 'PLAYER_LOGIN') then
-			if(nameplateCVars) then
-				for cvar, value in next, nameplateCVars do
-					SetCVar(cvar, value)
+			if(driver.cvars) then
+				for name, value in next, driver.cvars do
+					SetCVar(name, value)
 				end
 			end
+		end
+	end
+
+	local nameplateDriverMixin = {}
+	--[[ nameplates:SetTargetCallback(callback)
+	Sets a callback function to be triggered whenever a nameplate has been targeted.
+	The payload for the callback is `(nameplate, event, unit)`.
+	--]]
+	function nameplateDriverMixin:SetTargetCallback(callback)
+		argcheck(callback, 2, 'function', 'nil')
+		self.targetCallback = callback
+	end
+	--[[ nameplates:SetAddedCallback(callback)
+	Sets a callback function to be triggered whenever a nameplate has been added.
+	The payload for the callback is `(nameplate, event, unit)`.
+	--]]
+	function nameplateDriverMixin:SetAddedCallback(callback)
+		argcheck(callback, 2, 'function', 'nil')
+		self.addedCallback = callback
+	end
+	--[[ nameplates:SetRemovedCallback(callback)
+	Sets a callback function to be triggered whenever a nameplate has been removed.
+	The payload for the callback is `(nameplate, event, unit)`.
+	--]]
+	function nameplateDriverMixin:SetRemovedCallback(callback)
+		argcheck(callback, 2, 'function', 'nil')
+		self.removedCallback = callback
+	end
+
+	--[[ nameplates:SetSize(width[, height])
+	Sets the width and size for all nameplates.
+	If only width is provided it will also be used for the height.
+	The default width is `200`, and the default height is `30`.
+	--]]
+	function nameplateDriverMixin:SetSize(width, height)
+		argcheck(width, 2, 'number')
+		argcheck(height, 3, 'number', 'nil')
+
+		self.plateWidth = width
+		self.plateHeight = height or width
+
+		updateDriver(self)
+	end
+
+	--[[ nameplates:SetEnemyInteractible(state)
+	Sets the interactible state for enemy nameplates.
+	They are interactible by default.
+	--]]
+	function nameplateDriverMixin:SetEnemyInteractible(state)
+		self.enemyNonInteractible = not state
+
+		updateDriver(self)
+	end
+
+	--[[ nameplates:SetFriendlyInteractible(state)
+	Sets the interactible state for friendly nameplates.
+	They are interactible by default.
+	--]]
+	function nameplateDriverMixin:SetFriendlyInteractible(state)
+		self.friendlyNonInteractible = not state
+
+		updateDriver(self)
+	end
+
+	--[[ nameplates:SetCVars(variables)
+	Sets console variables from key/value table.
+	--]]
+	--[[ nameplates:SetCVars(name, value[, ...])
+	Sets console variables from key/value parameters.
+	--]]
+	function nameplateDriverMixin:SetCVars(...)
+		if(type(...) == 'table') then
+			self.cvars = ...
+		else
+			self.cvars = {}
+			for index = 1, select('#', ...), 2 do
+				local name, value = select(index, ...)
+				if(not name) then break end
+				self.cvars[name] = value
+			end
+		end
+
+		updateDriver(self)
+	end
+
+	local function driverEventHandler(self, event, unit)
+		if(event == 'PLAYER_LOGIN') then
+			updateDriver(self)
 		elseif(event == 'PLAYER_TARGET_CHANGED') then
 			local nameplate = GetNamePlateForUnit('target')
-			local unitFrame = nameplate and nameplate.unitFrame
+			if(not nameplate or not nameplate.unitFrame) then return end
 
-			if(nameplateCallback) then
-				nameplateCallback(unitFrame, event, 'target')
+			if(self.targetCallback) then
+				self.targetCallback(nameplate.unitFrame, event, 'target')
 			end
 
 			-- UAE is called after the callback to reduce the number of
-			-- ForceUpdate calls layout devs have to do themselves
-			if unitFrame and unitFrame.UpdateAllElements then
-				nameplate.unitFrame:UpdateAllElements(event)
-			end
-		elseif((event == 'UNIT_FACTION' or event == 'UNIT_HEALTH' or event == 'UNIT_MAXHEALTH') and unit) then
+			-- ForceUpdate calls layouts have to do after changing things
+			nameplate.unitFrame:UpdateAllElements(event)
+		elseif(event == 'NAME_PLATE_UNIT_ADDED') then
 			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
 
-			if(nameplateCallback) then
-				nameplateCallback(nameplate.unitFrame, event, unit)
-			end
-		elseif(event == 'NAME_PLATE_UNIT_ADDED' and unit) then
-			local nameplate = GetNamePlateForUnit(unit)
-			if(not nameplate) then return end
+			oUF:DisableBlizzardNamePlate(nameplate)
 
 			if(not nameplate.unitFrame) then
-				nameplate.style = style
+				nameplate.style = self.style
 
-				nameplate.unitFrame = CreateFrame('Button', prefix..nameplate:GetName(), nameplate, oUF.isRetail and 'PingableUnitFrameTemplate' or '')
+				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, oUF.isRetail and 'PingableUnitFrameTemplate' or '')
 				nameplate.unitFrame:EnableMouse(false)
+				nameplate.unitFrame:SetAllPoints()
 				nameplate.unitFrame.isNamePlate = true
 
 				Private.UpdateUnits(nameplate.unitFrame, unit)
@@ -868,26 +978,71 @@ function oUF:SpawnNamePlates(namePrefix, nameplateCallback, nameplateCVars)
 
 			nameplate.unitFrame:SetAttribute('unit', unit)
 
-			if(nameplateCallback) then
-				nameplateCallback(nameplate.unitFrame, event, unit)
+			if(nameplate.UnitFrame) then
+				if(nameplate.UnitFrame.WidgetContainer) then
+					nameplate.UnitFrame.WidgetContainer:SetParent(nameplate.unitFrame)
+					nameplate.UnitFrame.WidgetContainer:SetIgnoreParentAlpha(true)
+					nameplate.unitFrame.WidgetContainer = nameplate.UnitFrame.WidgetContainer
+				end
+				if(nameplate.UnitFrame.SoftTargetFrame) then
+					-- we keep this to render soft target interaction icons above the "target"
+					nameplate.UnitFrame.SoftTargetFrame:SetParent(nameplate.unitFrame)
+					nameplate.UnitFrame.SoftTargetFrame:SetIgnoreParentAlpha(true)
+					nameplate.unitFrame.SoftTargetFrame = nameplate.UnitFrame.SoftTargetFrame
+				end
+			end
+
+			if(self.addedCallback) then
+				self.addedCallback(nameplate.unitFrame, event, unit)
 			end
 
 			-- UAE is called after the callback to reduce the number of
-			-- ForceUpdate calls layout devs have to do themselves
-			if nameplate.unitFrame.UpdateAllElements then
-				nameplate.unitFrame:UpdateAllElements(event)
-			end
-		elseif(event == 'NAME_PLATE_UNIT_REMOVED' and unit) then
+			-- ForceUpdate calls layouts have to do after changing things
+			nameplate.unitFrame:UpdateAllElements(event)
+		elseif(event == 'NAME_PLATE_UNIT_REMOVED') then
 			local nameplate = GetNamePlateForUnit(unit)
-			if(not nameplate) then return end
+			if(not nameplate or not nameplate.unitFrame) then return end
 
 			nameplate.unitFrame:SetAttribute('unit', nil)
 
-			if(nameplateCallback) then
-				nameplateCallback(nameplate.unitFrame, event, unit)
+			if(self.removedCallback) then
+				self.removedCallback(nameplate.unitFrame, event, unit)
 			end
 		end
-	end)
+	end
+
+	--[[ oUF:SpawnNamePlates(prefix)
+	Used to create nameplates and apply the currently active style to them.
+
+	* self      - the global oUF object
+	* prefix    - prefix for the global name of the nameplate. Defaults to an auto-generated prefix (string?)
+
+	PingableUnitFrameTemplate is inherited for Ping support.
+	--]]
+	function oUF:SpawnNamePlates(namePrefix)
+		if(not style) then return nierror('Unable to create frame. No styles have been registered.') end
+
+		local driverName = (global or parent) .. '_NamePlateDriver'
+		if(_G[driverName]) then return nierror('oUF nameplate driver has already been initialized.') end
+
+		local nameplateDriver = Mixin(CreateFrame('Frame', driverName), nameplateDriverMixin)
+		nameplateDriver:SetScript('OnEvent', driverEventHandler)
+
+		nameplateDriver.style = style
+		nameplateDriver.prefix = namePrefix or generateName()
+
+		nameplateDriver:RegisterEvent('NAME_PLATE_UNIT_ADDED')
+		nameplateDriver:RegisterEvent('NAME_PLATE_UNIT_REMOVED')
+		nameplateDriver:RegisterEvent('PLAYER_TARGET_CHANGED')
+
+		if(IsLoggedIn()) then
+			updateDriver(nameplateDriver)
+		else
+			nameplateDriver:RegisterEvent('PLAYER_LOGIN')
+		end
+
+		return nameplateDriver
+	end
 end
 
 --[[ oUF:AddElement(name, update, enable, disable)
@@ -905,9 +1060,7 @@ function oUF:AddElement(name, update, enable, disable)
 	argcheck(enable, 4, 'function')
 	argcheck(disable, 5, 'function')
 
-	if(elements[name]) then
-		return error('Element [%s] is already registered.', name)
-	end
+	if(elements[name]) then return nierror(format('Element [%s] is already registered.', name)) end
 
 	elements[name] = {
 		update = update,
@@ -935,9 +1088,9 @@ oUF.headers = headers
 
 if(global) then
 	if(parent ~= 'oUF' and global == 'oUF') then
-		error('%s is doing it wrong and setting its global to "oUF".', parent)
+		nierror(format('%s is doing it wrong and setting its global to "oUF".', parent))
 	elseif(_G[global]) then
-		error('%s is setting its global to an existing name "%s".', parent, global)
+		nierror(format('%s is setting its global to an existing name "%s".', parent, global))
 	else
 		_G[global] = oUF
 	end

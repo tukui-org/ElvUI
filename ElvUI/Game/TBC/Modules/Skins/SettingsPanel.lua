@@ -45,6 +45,7 @@ end
 
 local function UpdateKeybindButtons(self)
 	if not self.bindingsPool then return end
+
 	for panel in self.bindingsPool:EnumerateActive() do
 		if not panel.IsSkinned then
 			S:HandleButton(panel.Button1)
@@ -56,7 +57,9 @@ local function UpdateKeybindButtons(self)
 end
 
 local function UpdateHeaderExpand(self, expanded)
-	self.collapseTex:SetAtlas(expanded and 'Soulbinds_Collection_CategoryHeader_Collapse' or 'Soulbinds_Collection_CategoryHeader_Expand', true)
+	if self.collapseTex then
+		self.collapseTex:SetAtlas(expanded and 'Soulbinds_Collection_CategoryHeader_Collapse' or 'Soulbinds_Collection_CategoryHeader_Expand', true)
+	end
 
 	UpdateKeybindButtons(self)
 end
@@ -157,25 +160,38 @@ local function SettingsListScrollUpdateChild(child)
 
 	local button = child.Button
 	if button then
-		if button:GetWidth() < 250 then
+		if button.New then
 			S:HandleButton(button)
 		else
 			button:StripTextures()
-			button.Right:SetAlpha(0)
-			button:CreateBackdrop('Transparent')
-			button.backdrop:Point('TOPLEFT', 2, -1)
-			button.backdrop:Point('BOTTOMRIGHT', -2, 3)
 
-			button.hl = button:CreateTexture(nil, 'HIGHLIGHT')
-			button.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
-			button.hl:SetInside(button.backdrop)
-			button.hl:SetBlendMode('ADD')
+			if button.Right then
+				button.Right:SetAlpha(0)
+			end
 
-			child.collapseTex = button.backdrop:CreateTexture(nil, 'OVERLAY')
-			child.collapseTex:Point('RIGHT', -10, 0)
+			if not button.backdrop then
+				button:CreateBackdrop('Transparent')
+				button.backdrop:Point('TOPLEFT', 2, -1)
+				button.backdrop:Point('BOTTOMRIGHT', -2, 3)
+			end
+
+			if not button.hl then
+				button.hl = button:CreateTexture(nil, 'HIGHLIGHT')
+				button.hl:SetColorTexture(0.8, 0.8, 0, 0.6)
+				button.hl:SetInside(button.backdrop)
+				button.hl:SetBlendMode('ADD')
+			end
+
+			if not child.collapseTex then
+				child.collapseTex = button.backdrop:CreateTexture(nil, 'OVERLAY')
+				child.collapseTex:Point('RIGHT', -10, 0)
+			end
 
 			UpdateHeaderExpand(child, false)
-			hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)
+
+			if child.EvaluateVisibility then
+				hooksecurefunc(child, 'EvaluateVisibility', UpdateHeaderExpand)
+			end
 		end
 	end
 

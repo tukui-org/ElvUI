@@ -9,11 +9,11 @@ local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
-function NP:ClassPower_SetBarColor(bar, r, g, b)
+function NP:SetStatusBarColor(bar, r, g, b)
 	bar:SetStatusBarColor(r, g, b)
 
 	if bar.bg then
-		bar.bg:SetVertexColor(r * NP.multiplier, g * NP.multiplier, b * NP.multiplier)
+		bar.bg:SetVertexColor(r, g, b, NP.multiplier)
 	end
 end
 
@@ -24,14 +24,14 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 		NP:Runes_UpdateCharged(self, rune)
 	elseif isRunes and rune and not self.classColor then
 		local color = UF:ClassPower_BarColor(isRunes, rune)
-		NP:ClassPower_SetBarColor(rune, color.r, color.g, color.b)
+		NP:SetStatusBarColor(rune, color.r, color.g, color.b)
 	else
 		for index, bar in ipairs(self) do
 			local color = self.classColor or UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
 			if not color or not color.r then
-				NP:ClassPower_SetBarColor(bar, fallback.r, fallback.g, fallback.b)
+				NP:SetStatusBarColor(bar, fallback.r, fallback.g, fallback.b)
 			else
-				NP:ClassPower_SetBarColor(bar, color.r, color.g, color.b)
+				NP:SetStatusBarColor(bar, color.r, color.g, color.b)
 			end
 		end
 	end
@@ -55,7 +55,7 @@ function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedPoints)
 			local color = NP.db.colors.classResources.chargedComboPoint
 			for _, chargedIndex in next, chargedPoints do
 				self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
-				self[chargedIndex].bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+				self[chargedIndex].bg:SetVertexColor(color.r, color.g, color.b, NP.multiplier)
 			end
 		end
 	end
@@ -172,10 +172,10 @@ function NP:Runes_UpdateCharged(runes, rune)
 	local classColor = (runes and runes.classColor) or (rune and rune.__owner and rune.__owner.classColor)
 
 	if rune then
-		NP:ClassPower_SetBarColor(rune, UF:Runes_GetColor(rune, colors, classColor))
+		NP:SetStatusBarColor(rune, UF:Runes_GetColor(rune, colors, classColor))
 	elseif runes then
 		for _, bar in ipairs(runes) do
-			NP:ClassPower_SetBarColor(bar, UF:Runes_GetColor(bar, colors, classColor))
+			NP:SetStatusBarColor(bar, UF:Runes_GetColor(bar, colors, classColor))
 		end
 	end
 end
@@ -222,10 +222,9 @@ function NP:Construct_Runes(nameplate)
 		NP.StatusBars[rune] = 'runes'
 
 		rune.bg = rune:CreateTexture(barName..'bg', 'BORDER')
-		rune.bg:SetVertexColor(color.r * NP.multiplier, color.g * NP.multiplier, color.b * NP.multiplier)
+		rune.bg:SetVertexColor(color.r, color.g, color.b, NP.multiplier)
 		rune.bg:SetTexture(texture)
 		rune.bg:SetAllPoints()
-		rune.bg.multiplier = 0.35
 
 		Runes[i] = rune
 	end
