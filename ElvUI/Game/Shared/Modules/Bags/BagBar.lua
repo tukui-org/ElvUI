@@ -122,7 +122,10 @@ function B:SkinBag(bag)
 end
 
 function B:BagBar_UpdateVisibility()
-	local visibility = gsub(B.BagBar.db.visibility, '[\n\r]', '')
+	local db = B.BagBar.db
+	if not db then return end
+
+	local visibility = gsub(db.visibility, '[\n\r]', '')
 	RegisterStateDriver(B.BagBar, 'visibility', visibility)
 end
 
