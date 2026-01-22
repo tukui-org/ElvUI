@@ -1409,7 +1409,6 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	config.colors.mana = E:SetColorTable(config.colors.mana, AB.db.noPowerColor)
 	config.colors.usable = E:SetColorTable(config.colors.usable, AB.db.usableColor)
 	config.colors.notUsable = E:SetColorTable(config.colors.notUsable, AB.db.notUsableColor)
-	config.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
 	config.handleOverlay = AB.db.handleOverlay
 
 	-- NOTE: Pick Up Action Key will break macros of the same key (secure action code)
@@ -1732,7 +1731,10 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	if button.cooldown then
 		AB:FadeBlingTexture(button.cooldown, button.cooldown:GetEffectiveAlpha())
 
-		E:OnCooldownUpdate(button.cooldown)
+		-- Loss of Control Swipe
+		if not E.Retail then
+			E:LABCooldownUpdate(button.cooldown)
+		end
 	end
 end
 

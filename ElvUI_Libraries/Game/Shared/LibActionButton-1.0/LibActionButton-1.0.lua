@@ -32,7 +32,6 @@ local LCG = LibStub("LibCustomGlow-1.0", true)
 local Masque = LibStub("Masque", true)
 
 local GetCVar = C_CVar.GetCVar
-local GetCVarBool = C_CVar.GetCVarBool
 local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
 local GetCooldownAuraBySpellID = C_UnitAuras.GetCooldownAuraBySpellID
 local GetItemActionOnEquipSpellID = C_ActionBar.GetItemActionOnEquipSpellID
@@ -195,7 +194,6 @@ local DefaultConfig = {
 	lossOfControlCooldown = true,
 	flyoutDirection = "UP",
 	useDrawBling = true,
-	useDrawSwipeOnCharges = true,
 	handleOverlay = true,
 	spellCastVFX = false, -- enable cast vfx
 	text = {

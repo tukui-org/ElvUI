@@ -3,21 +3,17 @@ local LSM = E.Libs.LSM
 
 local next = next
 
+local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL or 1
+
 E.RegisteredCooldowns = {}
 
 function E:CooldownUpdate(cooldown, db)
-	if not cooldown.Text then return end
+	if not (db and cooldown.Text) then return end
 
-	local colors = db.colors
 	cooldown.Text:ClearAllPoints()
-	cooldown.Text:SetTextColor(colors.text.r, colors.text.g, colors.text.b)
+	cooldown.Text:SetTextColor(db.colors.text.r, db.colors.text.g, db.colors.text.b)
 	cooldown.Text:Point('CENTER', nil, db.position, db.offsetX, db.offsetY)
 	cooldown.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
-
-	cooldown:SetInside() -- place the cd inside of its parent
-
-	cooldown:SetEdgeColor(colors.edge.r, colors.edge.g, colors.edge.b, colors.edge.a)
-	cooldown:SetSwipeColor(colors.swipe.r, colors.swipe.g, colors.swipe.b, colors.swipe.a)
 
 	cooldown:SetHideCountdownNumbers(db.hideNumbers) -- hide text
 	cooldown:SetCountdownAbbrevThreshold(db.threshold)
@@ -25,12 +21,17 @@ function E:CooldownUpdate(cooldown, db)
 	--cooldown:SetRotation(rad(db.rotation))
 	cooldown:SetReverse(db.reverse)
 
-	cooldown:SetDrawEdge(not db.hideEdge)
 	cooldown:SetDrawBling(not db.hideBling)
-	cooldown:SetDrawSwipe(not db.hideSwipe)
 
 	-- cooldown:SetBlingTexture(texture)
-	-- cooldown:SetEdgeTexture(texture) -- texture which follows the moving edge of the cooldown
+
+	cooldown:SetEdgeColor(db.colors.edge.r, db.colors.edge.g, db.colors.edge.b, db.colors.edge.a)
+	cooldown:SetSwipeColor(db.colors.swipe.r, db.colors.swipe.g, db.colors.swipe.b, db.colors.swipe.a)
+
+	if cooldown.charge then
+		cooldown.charge:SetEdgeColor(db.colors.edgeCharge.r, db.colors.edgeCharge.g, db.colors.edgeCharge.b, db.colors.edgeCharge.a)
+		cooldown.charge:SetSwipeColor(db.colors.swipeCharge.r, db.colors.swipeCharge.g, db.colors.swipeCharge.b, db.colors.swipeCharge.a)
+	end
 end
 
 function E:CooldownSettings(which)
@@ -44,13 +45,29 @@ function E:CooldownSettings(which)
 	end
 end
 
-function E:OnCooldownUpdate(cooldown) -- chain from LibActionButton
+function E:CooldownInitialize(cooldown, db)
+	if cooldown.Text or not db then return end
+
+	cooldown:SetInside() -- place the cd inside of its parent
+
+	cooldown.Text = cooldown:GetRegions()
+
+	cooldown:SetDrawEdge(true)
+	cooldown:SetDrawSwipe(true)
+
+	cooldown:SetEdgeTexture(E.Media.Textures.Edge, db.colors.edge.r, db.colors.edge.g, db.colors.edge.b, db.colors.edge.a)
+	cooldown:SetSwipeTexture(E.media.blankTex, db.colors.swipe.r, db.colors.swipe.g, db.colors.swipe.b, db.colors.swipe.a)
+end
+
+function E:LABCooldownUpdate(cooldown)
 	local db = cooldown.db
 	local colors = db and db.colors
 	if not colors then return end
 
-	local color = colors[(cooldown.currentCooldownType == _G.COOLDOWN_TYPE_LOSS_OF_CONTROL and 'swipeLOC') or 'swipe']
-	cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
+	local color = colors[(cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and 'swipeLOC') or 'swipe']
+	if color then
+		cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
+	end
 end
 
 function E:RegisterCooldown(cooldown, which)
@@ -77,11 +94,16 @@ function E:RegisterCooldown(cooldown, which)
 	cooldown.isRegisteredCooldown = true
 
 	-- extract the blizzard cooldown region
-	if not cooldown.Text then
-		cooldown.Text = cooldown:GetRegions()
+	E:CooldownInitialize(cooldown, db)
 
-		cooldown:SetSwipeTexture(E.media.blankTex, db.colors.swipe.r, db.colors.swipe.g, db.colors.swipe.b, db.colors.swipe.a)
-		cooldown:SetEdgeTexture(E.Media.Textures.Edge, db.colors.edge.r, db.colors.edge.g, db.colors.edge.b, db.colors.edge.a)
+	-- reference the charge cooldown from LAB
+	if which == 'actionbar' then
+		local parent = cooldown:GetParent()
+		if parent and parent.chargeCooldown then
+			cooldown.charge = parent.chargeCooldown
+
+			E:CooldownInitialize(cooldown.charge, db.charge)
+		end
 	end
 
 	-- init set for the settings

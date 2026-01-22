@@ -10,8 +10,6 @@ local function Group(order, db, label)
 
 	local general = ACH:Group(L["General"], nil, 10)
 	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 1)
-	general.args.hideEdge = ACH:Toggle(L["Hide Edge"], L["The bright line is drawn on the moving edge of the animation."], 2)
-	general.args.hideSwipe = ACH:Toggle(L["Hide Swipe"], nil, 3)
 	general.args.hideBling = ACH:Toggle(L["Hide Bling"], L["Completion flash when the cooldown finishes."], 4)
 	general.args.reverse = ACH:Toggle(L["Reverse"], L["Reverse the cooldown animation."], 5)
 	general.args.threshold = ACH:Range(L["Threshold"], L["Abbreviation threshold (in seconds)."], 10, { min = 0, softMax = 3600, max = 86400, step = 1 })
@@ -25,7 +23,9 @@ local function Group(order, db, label)
 	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
 	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true)
 	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true)
-	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 4, true, nil, nil, nil, nil, not E.Retail)
+	colors.args.swipeCharge = ACH:Color(L["Swipe Charge"], nil, 4, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.args.edgeCharge = ACH:Color(L["Edge Charge"], nil, 5, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true, nil, nil, nil, nil, db ~= 'actionbar')
 	colors.inline = true
 
 	mainArgs.colorGroup = colors

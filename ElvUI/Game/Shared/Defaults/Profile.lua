@@ -2832,19 +2832,19 @@ do
 		enable = true,
 
 		reverse = false,
-		hideEdge = false,
 		hideBling = false,
-		hideSwipe = false,
 		hideNumbers = false,
 
 		rotation = 0,
 		threshold = 0, -- seconds
-		minDuration = 0, -- ms
+		minDuration = 1500, -- ms
 
 		colors = {
-			text = { r = 1, g = 1, b = 1, a = 1 },
-			edge = { r = 1, g = 1, b = 0, a = 1 },
+			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
+			edge = { r = 1, g = 1, b = 0, a = 0 },
+			edgeCharge = { r = 0.6, g = 1, b = 0, a = 1 },
 			swipe = { r = 0, g = 0, b = 0, a = 0.8 },
+			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.2 },
 			swipeLOC = { r = 0.3, g = 0, b = 0, a = 0.8 },
 		},
 
@@ -2866,8 +2866,12 @@ do
 			object.position = 'RIGHT'
 			object.offsetX = -10
 		elseif key == 'auras' then
+			object.reverse = true
+			object.colors.swipe.a = 0.4
 			object.position = 'BOTTOM'
 			object.offsetY = -3
+		elseif key == 'actionbar' then
+			object.threshold = 300
 		end
 
 		P.cooldown[key] = object
@@ -2879,7 +2883,6 @@ local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
 
 P.actionbar = {
-	chargeCooldown = false,
 	hotkeyTextPosition = 'TOPRIGHT',
 	macroTextPosition = 'TOPRIGHT',
 	countTextPosition = 'BOTTOMRIGHT',
@@ -2907,7 +2910,6 @@ P.actionbar = {
 	rightClickSelfCast = false,
 	transparent = false,
 	usableColor = { r = 1, g = 1, b = 1 },
-	useDrawSwipeOnCharges = false,
 	useRangeColorText = false,
 	barPet = {
 		enabled = true,
