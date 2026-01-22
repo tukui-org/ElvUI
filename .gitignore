@@ -1,45 +1,57 @@
-# Windows image file caches
-Thumbs.db
-ehthumbs.db
+Hey, it sucks that you turned off the ability to report issues in GitHub.
 
-# Folder config file
-Desktop.ini
+Wish you'd turn them back on again. 
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+I found a very trivial error in Elv on TBC.
 
-# Mac crap
-.DS_Store
+When I have a macro window open and combat starts, this lua error shows up in BugSack.
 
-# Misc
-*.zip
+Anyway I won't open any more issues and apologies for doing this janky, but really it sucks that you turned off the ability to create issues in the repository.
 
-# Luacheck's Cache
-.luacheckcache
+Feels like you don't want people to report issues they find, and that's not something a healthy add-on does... sorry about the changes in Retail... hope Elv continues to be supported for Classic.
 
-# Vscode local config
-.vscode
-.vs
 
-# Jetbrains local config
-.idea
 
-# Libraries
-ElvUI_Libraries/Game/Classic/LibQuestXP
-ElvUI_Libraries/Game/Shared/*
-!ElvUI_Libraries/Game/Shared/Ace3/AceConfig-3.0
-!ElvUI_Libraries/Game/Shared/Ace3/AceLocale-3.0
-!ElvUI_Libraries/Game/Shared/Ace3/LICENSE.txt
-!ElvUI_Libraries/Game/Shared/Ace3-ElvUI
-!ElvUI_Libraries/Game/Shared/LibAceConfigHelper
-!ElvUI_Libraries/Game/Shared/LibActionButton-1.0
-!ElvUI_Libraries/Game/Shared/LibAnim
-!ElvUI_Libraries/Game/Shared/LibDeflate
-!ElvUI_Libraries/Game/Shared/LibElvUIPlugin-1.0
-!ElvUI_Libraries/Game/Shared/LibRangeCheck-3.0
-!ElvUI_Libraries/Game/Shared/LibSimpleSticky
-!ElvUI_Libraries/Game/Shared/oUF
-!ElvUI_Libraries/Game/Shared/oUF_Plugins
+1x [ADDON_ACTION_BLOCKED] AddOn 'ElvUI' tried to call the protected function 'UNKNOWN()'.
+[!BugGrabber/BugGrabber.lua]:583: in function '?'
+[!BugGrabber/BugGrabber.lua]:507: in function <!BugGrabber/BugGrabber.lua:507>[]
+[C]: ?
+[C]: in function 'EditMacro'
+[Blizzard_MacroUI/Blizzard_MacroUI.lua]:344: in function 'SaveMacro'
+[Blizzard_MacroUI/Blizzard_MacroUI.lua]:104: in function <Blizzard_MacroUI/Blizzard_MacroUI.lua:101>
+[C]: in function 'Hide'
+[Blizzard_UIParentPanelManager/Shared/UIParentPanelManager.lua]:445: in function 'SetUIPanel'
+[Blizzard_UIParentPanelManager/Shared/UIParentPanelManager.lua]:549: in function 'HideUIPanelImplementation'
+[Blizzard_UIParentPanelManager/Shared/UIParentPanelManager.lua]:489: in function 'HideUIPanel'
+[Blizzard_UIParentPanelManager/Shared/UIParentPanelManager.lua]:137: in function <...UIParentPanelManager/Shared/UIParentPanelManager.lua:128>
+[C]: in function 'SetAttribute'
+[Blizzard_UIParentPanelManager/Shared/UIParentPanelManager.lua]:870: in function 'HideUIPanel'
+[Blizzard_UIParentPanelManager/Shared/UIParentPanelManager.lua]:1066: in function 'CloseWindows'
+[Blizzard_UIParentPanelManager/Shared/UIParentPanelManager.lua]:1101: in function <...UIParentPanelManager/Shared/UIParentPanelManager.lua:1099>
+[C]: in function 'securecall'
+[Blizzard_UIParent/TBC/UIParent.lua]:1256: in function 'ToggleGameMenu'
+[TOGGLEGAMEMENU]:1: in function <[string "TOGGLEGAMEMENU"]:1>
 
-# Pipelines
-.release
+Locals:
+self = <table> {
+}
+event = "ADDON_ACTION_BLOCKED"
+addonName = "ElvUI"
+addonFunc = "UNKNOWN()"
+name = "ElvUI"
+badAddons = <table> {
+ ElvUI = true
+}
+L = <table> {
+ ADDON_CALL_PROTECTED_MATCH = "^%[(.*)%] (AddOn '.*' tried to call the protected function '.*'.)$"
+ NO_DISPLAY_2 = "|cffffff00The standard display is called BugSack, and can probably be found on the same site where you found !BugGrabber.|r"
+ ERROR_DETECTED = "%s |cffffff00captured, click the link for more information.|r"
+ USAGE = "|cffffff00Usage: /buggrabber <1-%d>.|r"
+ BUGGRABBER_STOPPED = "|cffffff00There are too many errors in your UI. As a result, your game experience may be degraded. Disable or update the failing addons if you don't want to see this message again.|r"
+ STOP_NAG = "|cffffff00!BugGrabber will not nag about missing a display addon again until next patch.|r"
+ ADDON_DISABLED = "|cffffff00!BugGrabber and %s cannot coexist; %s has been forcefully disabled. If you want to, you may log out, disable !BugGrabber, and enable %s.|r"
+ NO_DISPLAY_STOP = "|cffffff00If you don't want to be reminded about this again, run /stopnag.|r"
+ NO_DISPLAY_1 = "|cffffff00You seem to be running !BugGrabber with no display addon to go along with it. Although a slash command is provided for accessing error reports, a display can help you manage these errors in a more convenient way.|r"
+ ERROR_UNABLE = "|cffffff00!BugGrabber is unable to retrieve errors from other players by itself. Please install BugSack or a similar display addon that might give you this functionality.|r"
+ ADDON_CALL_PROTECTED = "[%s] AddOn '%s' tried to call the protected function '%s'."
+}
