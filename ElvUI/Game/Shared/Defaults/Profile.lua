@@ -2834,7 +2834,7 @@ P.cooldown = {
 
 	font = 'Expressway',
 	fontOutline = 'OUTLINE',
-	fontSize = 14
+	fontSize = 16
 }
 
 --Actionbar
@@ -3134,14 +3134,14 @@ do -- cooldown stuff
 	P.aurabars.cooldown = CopyTable(P.cooldown)
 
 	P.aurabars.cooldown.position = 'RIGHT'
-	P.aurabars.cooldown.offsetY = -10
+	P.aurabars.cooldown.offsetX = -10
 
 	P.auras.cooldown.position = 'BOTTOM'
 	P.auras.cooldown.offsetY = -3
 
 	-- we gonna need this on by default :3
 	P.cooldown.enable = true
-	P.cooldown.fontSize = 16
+	P.cooldown.fontSize = 18
 end
 
 -- This allows movers positions to be reset to whatever profile is being used
