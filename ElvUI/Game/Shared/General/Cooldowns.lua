@@ -20,6 +20,8 @@ function E:CooldownUpdate(cooldown, db)
 end
 
 function E:CooldownSettings(which)
+	if not E.db.cooldown.enable then return end
+
 	local cooldowns = E.RegisteredCooldowns[which]
 	if not cooldowns then return end
 
@@ -29,7 +31,7 @@ function E:CooldownSettings(which)
 end
 
 function E:RegisterCooldown(cooldown, which)
-	if cooldown.isRegisteredCooldown then return end -- already registered
+	if cooldown.isRegisteredCooldown or not E.db.cooldown.enable then return end
 
 	-- verify the settings exist here
 	local options = (which and E.db[which]) or (not which and E.db)

@@ -333,6 +333,16 @@ function E:UpdateMedia(mediaType)
 	E.media.rgbvaluecolor = E:SetColorTable(E.media.rgbvaluecolor, value)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 
+	if E.db.cooldown.enable then
+		E:UpdateClassColor(E.db.cdmanager.cooldown.color)
+		E:UpdateClassColor(E.db.auras.cooldown.color)
+		E:UpdateClassColor(E.db.bags.cooldown.color)
+		E:UpdateClassColor(E.db.actionbar.cooldown.color)
+		E:UpdateClassColor(E.db.nameplates.cooldown.color)
+		E:UpdateClassColor(E.db.unitframe.cooldown.color)
+		E:UpdateClassColor(E.db.cooldown.color)
+	end
+
 	if E.private.nameplates.enable then
 		-- Colors for Target Indicator
 		E:UpdateClassColor(E.db.nameplates.colors.glowColor)

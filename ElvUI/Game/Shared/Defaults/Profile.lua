@@ -2823,8 +2823,9 @@ for i, role in next, {'TANK', 'HEALER', 'DAMAGER'} do
 	P.unitframe.units.raidpet['ROLE'..i] = role
 end
 
---Cooldown
+--Cooldown:
 P.cooldown = {
+	-- enable = true; only on the global table
 	color = { r = 1, g = 1, b = 1 },
 
 	position = 'CENTER',
