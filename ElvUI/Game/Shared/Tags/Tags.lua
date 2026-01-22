@@ -479,37 +479,6 @@ if not E.Retail then
 		return E:GetFormattedText('CURRENT', max, max, nil, true)
 	end)
 
-	E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-		local selection = NP:UnitSelectionType(unit)
-		local cs = ElvUF.colors.selection[selection]
-		return cs and Hex(cs) or '|cFFcccccc'
-	end)
-
-	E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-		if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
-			local _, classToken = UnitClass(unit)
-			local cs = ElvUF.colors.class[classToken]
-			return cs and Hex(cs) or '|cFFcccccc'
-		else
-			local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
-			return cr and Hex(cr) or '|cFFcccccc'
-		end
-	end)
-
-	E:AddTag('namecolor', 'UNIT_TARGET', function(unit)
-		return _TAGS.classcolor(unit)
-	end)
-
-	E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
-		local unitReaction = UnitReaction(unit, 'player')
-		if unitReaction then
-			local color = ElvUF.colors.reaction[unitReaction]
-			return color and Hex(color) or '|cFFc2c2c2'
-		else
-			return '|cFFc2c2c2'
-		end
-	end)
-
 	E:AddTag('threat:lead', 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE', function(unit)
 		local percent = UnitThreatPercentageOfLead('player', unit)
 		if percent and percent > 0 and (IsInGroup() or UnitExists('pet')) then
@@ -531,13 +500,6 @@ if not E.Retail then
 		end
 	end)
 
-	E:AddTag('threatcolor', 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE', function(unit)
-		local _, status = UnitDetailedThreatSituation('player', unit)
-		if status and (IsInGroup() or UnitExists('pet')) then
-			return Hex(E:GetThreatStatusColor(status, true))
-		end
-	end)
-
 	E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
 		local _, _, r, g, b = GetClassPower(unit)
 		return Hex(r, g, b)
@@ -550,11 +512,6 @@ if not E.Retail then
 		else
 			return floor(UnitPower(unit, POWERTYPE_MANA) / m * 100 + .5)
 		end
-	end)
-
-	E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
-		local color = ElvUF.colors.power.MANA
-		return color and Hex(color) or '|cFFc2c2c2'
 	end)
 
 	E:AddTag('incomingheals:personal', 'UNIT_HEAL_PREDICTION', function(unit)
@@ -752,6 +709,49 @@ if not E.Retail then
 		end
 	end)
 end
+
+E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
+	local unitReaction = UnitReaction(unit, 'player')
+	if unitReaction then
+		local color = ElvUF.colors.reaction[unitReaction]
+		return color and Hex(color) or '|cFFc2c2c2'
+	else
+		return '|cFFc2c2c2'
+	end
+end)
+
+E:AddTag('threatcolor', 'UNIT_THREAT_LIST_UPDATE UNIT_THREAT_SITUATION_UPDATE GROUP_ROSTER_UPDATE', function(unit)
+	local _, status = UnitDetailedThreatSituation('player', unit)
+	if status and (IsInGroup() or UnitExists('pet')) then
+		return Hex(E:GetThreatStatusColor(status, true))
+	end
+end)
+
+E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
+	local color = ElvUF.colors.power.MANA
+	return color and Hex(color) or '|cFFc2c2c2'
+end)
+
+E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	local selection = NP:UnitSelectionType(unit)
+	local cs = ElvUF.colors.selection[selection]
+	return cs and Hex(cs) or '|cFFcccccc'
+end)
+
+E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
+		local _, classToken = UnitClass(unit)
+		local cs = ElvUF.colors.class[classToken]
+		return cs and Hex(cs) or '|cFFcccccc'
+	else
+		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
+		return cr and Hex(cr) or '|cFFcccccc'
+	end
+end)
+
+E:AddTag('namecolor', 'UNIT_TARGET', function(unit)
+	return _TAGS.classcolor(unit)
+end)
 
 E:AddTag('target', 'UNIT_TARGET', function(unit)
 	local targetName = UnitName(unit..'target')
