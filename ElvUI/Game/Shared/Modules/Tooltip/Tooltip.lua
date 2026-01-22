@@ -962,8 +962,9 @@ function TT:SetCurrencyToken(tt, index)
 	tt:Show()
 end
 
-function TT:SetCurrencyTokenByID(tt, id)
+function TT:SetCurrencyByID(tt, id)
 	if tt:IsForbidden() then return end
+
 	if id and TT:IsModKeyDown() then
 		tt:AddLine(' ')
 		tt:AddLine(format(IDLine, _G.ID, id))
@@ -1131,6 +1132,7 @@ function TT:Initialize()
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
 		TT:SecureHook(GameTooltipStatusBar, 'UpdateUnitHealth', 'GameTooltipStatusBar_UpdateUnitHealth')
 
+		TT:SecureHook(GameTooltip, 'SetCurrencyByID')
 		TT:SecureHook(GameTooltip, 'SetToyByItemID')
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')
