@@ -704,7 +704,7 @@ local NP_Portrait = {
 
 local NP_Name = {
 	enable = true,
-	format = E.Retail and '[classcolor][name]' or '[classcolor][name]',
+	format = '[classcolor][name]',
 	position = 'TOPLEFT',
 	parent = 'Nameplate',
 	xOffset = 0,
@@ -1216,6 +1216,7 @@ P.nameplates.units.FRIENDLY_NPC.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_NPC.debuffs.yOffset = 35
 P.nameplates.units.FRIENDLY_NPC.debuffs.priority = 'Blacklist,Dispellable,blockNoDuration,CCDebuffs'
 P.nameplates.units.FRIENDLY_NPC.level.format = '[difficultycolor][level][shortclassification]'
+P.nameplates.units.FRIENDLY_NPC.name.format = '[reactioncolor][name]'
 P.nameplates.units.FRIENDLY_NPC.title.format = '[npctitle]'
 
 P.nameplates.units.ENEMY_NPC.buffs.priority = 'Blacklist,Whitelist,Dispellable,blockNoDuration,RaidBuffsElvUI'
@@ -1226,7 +1227,7 @@ P.nameplates.units.ENEMY_NPC.debuffs.yOffset = 35
 P.nameplates.units.ENEMY_NPC.debuffs.priority = 'Blacklist,blockNoDuration,Personal'
 P.nameplates.units.ENEMY_NPC.level.format = '[difficultycolor][level][shortclassification]'
 P.nameplates.units.ENEMY_NPC.title.format = '[npctitle]'
-P.nameplates.units.ENEMY_NPC.name.format = '[classcolor][name]'
+P.nameplates.units.ENEMY_NPC.name.format = '[reactioncolor][name]'
 
 local TopAuras = {
 	barColor = { r = 0, g = .8, b = 0 },
@@ -2704,7 +2705,7 @@ P.unitframe.units.party.health.position = 'LEFT'
 P.unitframe.units.party.health.xOffset = 2
 P.unitframe.units.party.health.text_format = E.Retail and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current-percent:shortvalue]'
 P.unitframe.units.party.infoPanel.height = 15
-P.unitframe.units.party.name.text_format = E.Retail and '[name] [difficultycolor][smartlevel]' or '[classcolor][name:medium] [difficultycolor][smartlevel]'
+P.unitframe.units.party.name.text_format = E.Retail and '[classcolor][name] [difficultycolor][smartlevel]' or '[classcolor][name:medium] [difficultycolor][smartlevel]'
 P.unitframe.units.party.petsGroup.name.text_format = '[classcolor][name:short]'
 P.unitframe.units.party.power.height = 7
 P.unitframe.units.party.power.position = 'RIGHT'
