@@ -171,7 +171,9 @@ local function GetUnitSettings(unit, name)
 	group.args.healthGroup.args.textGroup.args.format = ACH:Input(L["Text Format"], nil, 6, nil, TEXT_FORMAT_WIDTH)
 	group.args.healthGroup.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].health.text.format = P.nameplates.units[unit].health.text.format NP:ConfigureAll() end)
 
-	group.args.healthGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 10)
+	group.args.healthGroup.args.useClassificationColor = ACH:Toggle(L["Use Classification Color"], nil, 10)
+
+	group.args.healthGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 20)
 	group.args.healthGroup.args.textGroup.args.fontGroup.inline = true
 	group.args.healthGroup.args.textGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 	group.args.healthGroup.args.textGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
@@ -183,7 +185,6 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 3)
 	group.args.powerGroup.args.useAtlas = ACH:Toggle(L["Use Atlas Textures"], nil, 4)
 	group.args.powerGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 5)
-	group.args.powerGroup.args.useClassificationColor = ACH:Toggle(L["Use Classification Color"], nil, 6)
 	group.args.powerGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 7)
 	group.args.powerGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = minWidth, max = MaxWidth(unit), step = 1 })
 	group.args.powerGroup.args.height = ACH:Range(L["Height"], nil, 9, { min = minHeight, max = MaxHeight(unit), step = 1 })
