@@ -12,6 +12,8 @@ local UnitReaction = UnitReaction
 local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
+
 function NP:Health_UpdateColor(_, unit)
 	if not unit or self.unit ~= unit then return end
 	local element = self.Health
@@ -111,7 +113,9 @@ function NP:Update_Health(nameplate, skipUpdate)
 
 		nameplate.Health:Size(db.health.width, db.health.height)
 
-		if not E.Retail then
+		if E.Retail then
+			nameplate.Health.smoothing = (db.health.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+		else
 			E:SetSmoothing(nameplate.Health, db.health.smoothbars)
 		end
 	elseif nameplate:IsElementEnabled('Health') then

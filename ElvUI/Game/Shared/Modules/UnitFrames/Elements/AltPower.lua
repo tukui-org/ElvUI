@@ -3,6 +3,8 @@ local UF = E:GetModule('UnitFrames')
 
 local CreateFrame = CreateFrame
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
+
 function UF:Construct_AltPowerBar(frame)
 	local altpower = CreateFrame('StatusBar', '$parent_AlternativePower', frame)
 	altpower:SetStatusBarTexture(E.media.blankTex)
@@ -49,7 +51,11 @@ function UF:Configure_AltPowerBar(frame)
 		local color = db.altPowerColor
 		frame.AlternativePower:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
 
-		E:SetSmoothing(frame.AlternativePower, db.smoothbars)
+		if E.Retail then
+			frame.AlternativePower.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+		else
+			E:SetSmoothing(frame.AlternativePower, db.smoothbars)
+		end
 	elseif frame:IsElementEnabled('AlternativePower') then
 		frame:DisableElement('AlternativePower')
 		frame.AlternativePower:Hide()

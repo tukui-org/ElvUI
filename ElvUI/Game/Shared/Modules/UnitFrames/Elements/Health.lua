@@ -15,6 +15,8 @@ local UnitIsTapDenied = UnitIsTapDenied
 local UnitReaction = UnitReaction
 local UnitClass = UnitClass
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
+
 local customBackdrop = Mixin({}, ColorMixin)
 
 function UF.HealthClipFrame_OnUpdate(clipFrame)
@@ -59,7 +61,9 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	health:SetColorTapping(true)
 	health:SetColorDisconnected(true)
 
-	if not E.Retail then
+	if E.Retail then
+		health.smoothing = (db.health and db.health.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+	else
 		E:SetSmoothing(health, db.health and db.health.smoothbars)
 	end
 

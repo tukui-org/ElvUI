@@ -15,7 +15,9 @@ local UnitClass = UnitClass
 local UnitName = UnitName
 local UNKNOWN = UNKNOWN
 
-local tankStatus = {[0] = 3, 2, 1, 0}
+local StatusBarInterpolation = Enum.StatusBarInterpolation
+
+local tankStatus = { [0] = 3, 2, 1, 0 }
 
 function DB:ThreatBar_GetLargestThreatOnList(percent)
 	local largestValue, largestUnit = 0, nil
@@ -75,10 +77,10 @@ function DB:ThreatBar_Update()
 			if largestUnit and leadPercent > 0 then
 				local r, g, b = DB:ThreatBar_GetColor(largestUnit)
 				bar.text:SetFormattedText(L["ABOVE_THREAT_FORMAT"], name, percent, leadPercent, r, g, b, UnitName(largestUnit) or UNKNOWN)
-				bar:SetValue(isTank and leadPercent or percent)
+				bar:SetValue(isTank and leadPercent or percent, bar.smoothing)
 			else
 				bar.text:SetFormattedText('%s: %.0f%%', name, percent)
-				bar:SetValue(percent)
+				bar:SetValue(percent, bar.smoothing)
 			end
 
 			local r, g, b = E:GetThreatStatusColor(isTank and bar.db.tankStatus and tankStatus[status] or status)
@@ -99,7 +101,11 @@ function DB:ThreatBar_Toggle()
 	local bar = DB.StatusBars.Threat
 	bar.db = DB.db.threat
 
-	E:SetSmoothing(bar, bar.db.smoothbars)
+	if E.Retail then
+		bar.smoothing = (bar.db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+	else
+		E:SetSmoothing(bar, bar.db.smoothbars)
+	end
 
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover.name)

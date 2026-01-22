@@ -17,6 +17,7 @@ local UnitSpellHaste = UnitSpellHaste
 
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 do
 	function UF:CastBar_UpdatePip(castbar, pip, stage)
@@ -173,7 +174,9 @@ function UF:Configure_Castbar(frame)
 	local SPACING1 = UF.BORDER + UF.SPACING
 	local SPACING2 = SPACING1 * 2
 
-	if not E.Retail then
+	if E.Retail then
+		castbar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+	else
 		E:SetSmoothing(castbar, db.smoothbars)
 	end
 

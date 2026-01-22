@@ -12,6 +12,8 @@ local UnitPowerMax = UnitPowerMax
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
+
 local function UpdateTooltip(self)
 	if _G.GameTooltip:IsForbidden() then return end
 
@@ -124,7 +126,11 @@ function BL:UpdateAltPowerBarSettings()
 	bar.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
 	BL.AltPowerBarHolder:Size(bar.backdrop:GetSize())
 
-	E:SetSmoothing(bar, db.smoothbars)
+	if E.Retail then
+		bar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+	else
+		E:SetSmoothing(bar, db.smoothbars)
+	end
 
 	BL:SetAltPowerBarText(bar.text, bar.powerName or '', bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0)
 end
@@ -151,7 +157,7 @@ function BL:UpdateAltPowerBar()
 
 		self:Show()
 		self:SetMinMaxValues(barInfo.minPower, maxPower)
-		self:SetValue(power)
+		self:SetValue(power, bar.smoothing)
 
 		if E.db.general.altPowerBar.statusBarColorGradient then
 			local value = (maxPower > 0 and power / maxPower) or 0
