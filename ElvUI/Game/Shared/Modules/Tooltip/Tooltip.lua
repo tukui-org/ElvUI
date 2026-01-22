@@ -10,7 +10,7 @@ local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
 local unpack, ipairs = unpack, ipairs
-local tonumber, strlower = tonumber, strlower
+local tonumber, strlower, floor = tonumber, strlower, floor
 local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
@@ -66,8 +66,10 @@ local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
+local UnitHealthPercent = UnitHealthPercent
 
 local TooltipDataType = Enum.TooltipDataType
+local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 
@@ -605,11 +607,23 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 	end
 end
 
-function TT:GameTooltipStatusBar_OnValueChanged(tt, current)
-	if tt:IsForbidden() or not current or not tt.text or not TT.db.healthBar.text then return end
+function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
+	if not bar.Text or not TT.db.healthBar.text then return end
+
+	local tt = bar:GetParent()
+	local unit = tt and tt:GetUnit()
+	if unit and (UnitIsUnit(unit, 'player') or UnitInParty(unit) or UnitInRaid(unit)) then
+		bar.Text:SetFormattedText('%d', UnitHealthPercent(unit, true, ScaleTo100))
+	else
+		bar.Text:SetText('')
+	end
+end
+
+function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
+	if not current or not bar.Text or not TT.db.healthBar.text then return end
 
 	-- try to get ahold of the unit token
-	local _, unit = tt:GetParent():GetUnit()
+	local _, unit = bar:GetParent():GetUnit()
 	if not unit then
 		local frame = E:GetMouseFocus()
 		if frame and frame.GetAttribute then
@@ -618,17 +632,22 @@ function TT:GameTooltipStatusBar_OnValueChanged(tt, current)
 	end
 
 	-- check if dead
-	if unit and UnitIsDeadOrGhost(unit) then
-		tt.text:SetText(_G.DEAD)
+	if current == 0 or (unit and UnitIsDeadOrGhost(unit)) then
+		bar.text:SetText(_G.DEAD)
 	else
 		local maximum, _
 		if unit then -- try to get the real health values if possible
 			current, maximum = UnitHealth(unit), UnitHealthMax(unit)
 		else
-			_, maximum = tt:GetMinMaxValues()
+			_, maximum = bar:GetMinMaxValues()
 		end
 
-		tt.text:SetFormattedText('%d / %d', current or 1, maximum or 1)
+		-- return what we got
+		if current > 0 and maximum == 1 then
+			bar.Text:SetFormattedText('%d%%', floor(current * 100))
+		else
+			bar.Text:SetFormattedText('%s / %s', E:ShortValue(current), E:ShortValue(maximum))
+		end
 	end
 end
 
@@ -943,8 +962,9 @@ function TT:SetCurrencyToken(tt, index)
 	tt:Show()
 end
 
-function TT:SetCurrencyTokenByID(tt, id)
+function TT:SetCurrencyByID(tt, id)
 	if tt:IsForbidden() then return end
+
 	if id and TT:IsModKeyDown() then
 		tt:AddLine(' ')
 		tt:AddLine(format(IDLine, _G.ID, id))
@@ -1049,6 +1069,10 @@ function TT:Initialize()
 	if not E.private.tooltip.enable then return end
 	TT.Initialized = true
 
+	local statusText = GameTooltipStatusBar:CreateFontString(nil, 'OVERLAY')
+	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+	statusText:Point('CENTER', GameTooltipStatusBar)
+	GameTooltipStatusBar.Text = statusText
 	GameTooltipStatusBar:Height(TT.db.healthBar.height)
 
 	TT:SetTooltipFonts()
@@ -1079,7 +1103,7 @@ function TT:Initialize()
 		TT:SecureHook(GameTooltip, 'SetUnitDebuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
 	end
 
-	if AddTooltipPostCall and not (E.TBC or E.Wrath or E.Mists) then -- exists but doesn't work atm on Cata
+	if AddTooltipPostCall and not (E.TBC or E.Wrath or E.Mists) then -- exists but doesnt work atm on Cata
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
@@ -1091,27 +1115,31 @@ function TT:Initialize()
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetItem', TT.GameTooltip_OnTooltipSetItem)
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', TT.GameTooltip_OnTooltipSetUnit)
 		TT:SecureHookScript(E.SpellBookTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
-
-		if not E.Classic then -- what's the replacement in DF
-			TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
-		end
 	end
 
 	if E.Retail or E.Mists then
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 	end
 
+	if E.Retail or E.TBC then
+		_G.GameTooltipDefaultContainer:KillEditMode()
+	end
+
 	if E.Retail then
 		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
+
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
+		TT:SecureHook(GameTooltipStatusBar, 'UpdateUnitHealth', 'GameTooltipStatusBar_UpdateUnitHealth')
+
+		TT:SecureHook(GameTooltip, 'SetCurrencyByID')
 		TT:SecureHook(GameTooltip, 'SetToyByItemID')
 		TT:SecureHook(GameTooltip, 'SetCurrencyToken')
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
 		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
-
-		_G.GameTooltipDefaultContainer:KillEditMode()
+	else
+		TT:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	end
 end
 

@@ -54,7 +54,7 @@ if not E.Retail then
 	tinsert(bankBags, BANK_CONTAINER)
 end
 
-local bankOffset, maxBankSlots = (E.Classic or E.Wrath or E.Mists) and 4 or 5, E.Classic and 10 or 11
+local bankOffset, maxBankSlots = (E.Classic or E.TBC or E.Wrath or E.Mists) and 4 or 5, E.Classic and 10 or 11
 for i = bankOffset + 1, maxBankSlots do
 	tinsert(bankBags, i)
 end
