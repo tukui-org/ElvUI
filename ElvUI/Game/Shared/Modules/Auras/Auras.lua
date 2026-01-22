@@ -237,12 +237,6 @@ function A:UpdateIcon(button, update)
 		button.text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
 	end
 
-	if button.cooldown and button.cooldown.Text then
-		button.cooldown.Text:ClearAllPoints()
-		button.cooldown.Text:Point('TOP', button, 'BOTTOM', db.timeXOffset, db.timeYOffset)
-		button.cooldown.Text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
-	end
-
 	if button.statusBar then
 		E:SetSmoothing(button.statusBar, db.smoothbars)
 

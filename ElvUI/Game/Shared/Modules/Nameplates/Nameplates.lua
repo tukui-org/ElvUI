@@ -9,7 +9,6 @@ local next, strsplit, tonumber = next, strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
 local CreateFrame = CreateFrame
-local InCombatLockdown = InCombatLockdown
 local IsInInstance = IsInInstance
 local IsResting = IsResting
 local UIParent = UIParent
@@ -35,11 +34,8 @@ local UnitWidgetSet = UnitWidgetSet
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local C_NamePlate_SetNamePlateEnemyClickThrough = C_NamePlate.SetNamePlateEnemyClickThrough
 local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
-local C_NamePlate_SetNamePlateFriendlyClickThrough = C_NamePlate.SetNamePlateFriendlyClickThrough
 local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
-local C_NamePlate_SetNamePlateSelfClickThrough = C_NamePlate.SetNamePlateSelfClickThrough
 local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 
@@ -272,10 +268,10 @@ function NP:Update_ClassPowerTwo(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
-	nameplate:SetScale(E.uiscale)
+	nameplate:SetScale(E.Retail and 1 or E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
-	nameplate:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	nameplate:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
 
 	nameplate.RaisedElement = NP:Construct_RaisedELement(nameplate)
 	nameplate.ClassPower = NP:Construct_ClassPower(nameplate)
@@ -291,7 +287,7 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame) and 1 or E.uiscale
+	local mult = (E.Retail or (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame)) and 1 or E.uiscale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
@@ -314,7 +310,7 @@ function NP:PostUpdateAllElements(event)
 end
 
 function NP:StylePlate(nameplate)
-	nameplate:SetScale(E.uiscale)
+	nameplate:SetScale(E.Retail and 1 or E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
@@ -342,7 +338,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
 	nameplate.PrivateAuras = NP:Construct_PrivateAuras(nameplate)
-	nameplate.BossMods = NP:Construct_BossMods(nameplate)
 
 	NP:Construct_Auras(nameplate)
 	NP:Construct_ClassPowerTwo(nameplate)
@@ -357,7 +352,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_PVPRole(nameplate)
 	-- NP:Update_Portrait(nameplate)
 	NP:Update_QuestIcons(nameplate)
-	NP:Update_BossMods(nameplate)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
@@ -509,24 +503,7 @@ function NP:SetNamePlateClickThrough()
 	if E.Retail then
 		NP.PlateDriver:SetEnemyInteractible(not NP.db.clickThrough.enemy)
 		NP.PlateDriver:SetFriendlyInteractible(not NP.db.clickThrough.friendly)
-	elseif not InCombatLockdown() then
-		E:SetNamePlateSelfClickThrough()
-		E:SetNamePlateFriendlyClickThrough()
-		E:SetNamePlateEnemyClickThrough()
 	end
-end
-
-function NP:SetNamePlateSelfClickThrough()
-	C_NamePlate_SetNamePlateSelfClickThrough(NP.db.clickThrough.personal)
-	NP.StaticSecure:EnableMouse(not NP.db.clickThrough.personal)
-end
-
-function NP:SetNamePlateFriendlyClickThrough()
-	C_NamePlate_SetNamePlateFriendlyClickThrough(NP.db.clickThrough.friendly)
-end
-
-function NP:SetNamePlateEnemyClickThrough()
-	C_NamePlate_SetNamePlateEnemyClickThrough(NP.db.clickThrough.enemy)
 end
 
 function NP:Update_StatusBars()
@@ -597,12 +574,13 @@ function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
 	if NP.TestFrame:IsEnabled() then
-		NP:NamePlateCallBack(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED')
+		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.unit)
 	end
 
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
+	local staticFunc = NP[staticEvent]
 	if init then -- since this is a fake plate, we actually need to trigger this always
-		NP:NamePlateCallBack(NP.PlayerFrame, staticEvent, 'player')
+		staticFunc(NP.PlayerFrame, staticEvent, 'player')
 
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
@@ -610,10 +588,10 @@ function NP:ConfigurePlates(init)
 			NP:UpdatePlateSize(nameplate)
 
 			if nameplate == NP.PlayerFrame then
-				NP:NamePlateCallBack(NP.PlayerFrame, staticEvent, 'player')
+				staticFunc(NP.PlayerFrame, staticEvent, 'player')
 			else
 				nameplate.previousType = nil -- keep over the callback, we still need a full update
-				NP:NamePlateCallBack(nameplate, 'NAME_PLATE_UNIT_ADDED')
+				NP.NAME_PLATE_UNIT_ADDED(nameplate, 'NAME_PLATE_UNIT_ADDED', nameplate.unit)
 			end
 
 			nameplate:UpdateAllElements('ForceUpdate')
@@ -700,18 +678,14 @@ end
 
 function NP:UpdatePlateSize(nameplate)
 	if nameplate.frameType == 'PLAYER' then
-		nameplate.width, nameplate.height = NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight
+		nameplate.width, nameplate.height = NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight
 	elseif nameplate.frameType == 'FRIENDLY_PLAYER' or nameplate.frameType == 'FRIENDLY_NPC' then
-		nameplate.width, nameplate.height = NP.db.plateSize.friendlyWidth, NP.db.plateSize.friendlyHeight
+		nameplate.width, nameplate.height = NP.db.clickSize.friendlyWidth, NP.db.clickSize.friendlyHeight
 	else
-		nameplate.width, nameplate.height = NP.db.plateSize.enemyWidth, NP.db.plateSize.enemyHeight
+		nameplate.width, nameplate.height = NP.db.clickSize.enemyWidth, NP.db.clickSize.enemyHeight
 	end
 
-	--if E.Retail then
-	--	nameplate:Size(nameplate.width * E.uiscale, nameplate.height * E.uiscale)
-	--else
-		nameplate:Size(nameplate.width, nameplate.height)
-	--end
+	nameplate:Size(nameplate.width, nameplate.height)
 end
 
 function NP:UpdatePlateBase(nameplate)
@@ -729,9 +703,10 @@ end
 function NP:PLAYER_TARGET_CHANGED(_, unit)
 	if self then
 		self.isDead = UnitIsDead(unit)
-	else -- pass it, even as nil here
-		NP:SetupTarget(self)
 	end
+
+	-- pass it, even as nil here
+	NP:SetupTarget(self)
 end
 
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
@@ -804,7 +779,6 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		end
 
 		NP:UpdatePlateBase(self)
-		NP:BossMods_UpdateIcon(self)
 	end
 
 	if (NP.db.fadeIn and not NP.SkipFading) and self.frameType ~= 'PLAYER' then
@@ -815,7 +789,7 @@ end
 function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	if self ~= NP.TestFrame then
 		if self.frameType == 'PLAYER' then
-			NP.PlayerselfAnchor:Hide()
+			NP.PlayerNamePlateAnchor:Hide()
 		end
 
 		if self.isTarget then
@@ -829,10 +803,6 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	end
 
 	NP:UpdateNumPlates()
-
-	if not self.widgetsOnly then
-		NP:BossMods_UpdateIcon(self, true)
-	end
 
 	if self.softTargetFrame then
 		self.softTargetFrame:SetParent(self.blizzPlate)
@@ -923,11 +893,11 @@ end
 
 function NP:SetNamePlateSizes()
 	if E.Retail then
-		NP.PlateDriver:SetSize(300, 30)
+		NP.PlateDriver:SetSize(NP.db.clickSize.width, NP.db.clickSize.height)
 	else
-		C_NamePlate_SetNamePlateSelfSize(NP.db.plateSize.personalWidth * E.uiscale, NP.db.plateSize.personalHeight * E.uiscale)
-		C_NamePlate_SetNamePlateEnemySize(NP.db.plateSize.enemyWidth * E.uiscale, NP.db.plateSize.enemyHeight * E.uiscale)
-		C_NamePlate_SetNamePlateFriendlySize(NP.db.plateSize.friendlyWidth * E.uiscale, NP.db.plateSize.friendlyHeight * E.uiscale)
+		C_NamePlate_SetNamePlateSelfSize(NP.db.clickSize.personalWidth * E.uiscale, NP.db.clickSize.personalHeight * E.uiscale)
+		C_NamePlate_SetNamePlateEnemySize(NP.db.clickSize.enemyWidth * E.uiscale, NP.db.clickSize.enemyHeight * E.uiscale)
+		C_NamePlate_SetNamePlateFriendlySize(NP.db.clickSize.friendlyWidth * E.uiscale, NP.db.clickSize.friendlyHeight * E.uiscale)
 	end
 end
 
@@ -1020,10 +990,9 @@ function NP:Initialize()
 	end
 
 	local playerFrame = ElvUF:Spawn('player', 'ElvNP_Player', '')
-	playerFrame:SetScale(1)
 	playerFrame:ClearAllPoints()
 	playerFrame:Point('TOP', UIParent, 'CENTER', 0, -150)
-	playerFrame:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	playerFrame:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
 	playerFrame.frameType = 'PLAYER'
 
 	local playerHolder = E:CreateMover(playerFrame, 'ElvNP_PlayerMover', L["Player NamePlate"], nil, nil, nil, 'ALL,SOLO', nil, 'nameplate,playerGroup')
@@ -1045,10 +1014,9 @@ function NP:Initialize()
 	NP.StaticSecure = staticSecure
 
 	local testFrame = ElvUF:Spawn('player', 'ElvNP_TestFrame')
-	testFrame:SetScale(1)
 	testFrame:ClearAllPoints()
 	testFrame:Point('BOTTOM', UIParent, 'BOTTOM', 0, 250)
-	testFrame:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	testFrame:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
 	testFrame:SetMovable(true)
 	testFrame:RegisterForDrag('LeftButton', 'RightButton')
 	testFrame:SetScript('OnDragStart', function() NP.TestFrame:StartMoving() end)
@@ -1059,7 +1027,7 @@ function NP:Initialize()
 	NP:DisablePlate(testFrame)
 
 	local targetClassPower = ElvUF:Spawn('player', 'ElvNP_TargetClassPower')
-	targetClassPower:Size(NP.db.plateSize.personalWidth, NP.db.plateSize.personalHeight)
+	targetClassPower:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
 	targetClassPower.frameType = 'TARGET'
 	targetClassPower:SetAttribute('toggleForVehicle', true)
 	targetClassPower:ClearAllPoints()
@@ -1092,7 +1060,6 @@ function NP:Initialize()
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 
-	NP:BossMods_RegisterCallbacks()
 	NP:HideInterfaceOptions()
 	NP:SetCVars()
 end

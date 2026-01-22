@@ -74,7 +74,7 @@ end
 
 local PRE, POST = 0, 1
 local function Shared_UpdateCheckReturn(self, element, updateType, curV, maxV, unit)
-	if E:IsSecretValue(maxV) or not element:IsVisible() then
+	if E:IsSecretValue(curV) or E:IsSecretValue(maxV) or not element:IsVisible() then
 		return true
 	end
 

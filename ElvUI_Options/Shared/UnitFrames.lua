@@ -14,6 +14,8 @@ local IsControlKeyDown = IsControlKeyDown
 local GetSpellTexture = C_Spell.GetSpellTexture
 local CopyTable = CopyTable
 
+local TEXT_FORMAT_WIDTH = 330
+
 local petTypes = {
 	pet = true,
 	raidpet = true
@@ -569,7 +571,8 @@ local function CreateCustomTextGroup(unit, objectName)
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 7, { min = -400, max = 400, step = 1 })
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 8, { min = -400, max = 400, step = 1 })
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 9, attachToValues)
-	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, 'full')
+	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, TEXT_FORMAT_WIDTH)
+	config.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units[unit].customTexts[objectName].text_format = P.unitframe.units[unit].customTexts[objectName].text_format UpdateCustomTextGroup(unit) end)
 
 	if unit == 'player' then
 		config.args.attachTextTo.values.AdditionalPower = UF.player.AdditionalPower and L["Additional Power"] or nil
@@ -781,7 +784,8 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 	config.args.textGroup.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
 	config.args.textGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -400, max = 400, step = 1 })
 	config.args.textGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -400, max = 400, step = 1 })
-	config.args.textGroup.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 4, nil, 'full')
+	config.args.textGroup.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, TEXT_FORMAT_WIDTH)
+	config.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units[groupName].health.text_format = P.unitframe.units[groupName].health.text_format updateFunc(UF, groupName, numUnits) end)
 
 	if isGroupFrame then
 		config.args.orientation = ACH:Select(L["Statusbar Fill Orientation"], L["Direction the health bar moves when gaining/losing health."], 9, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
@@ -813,7 +817,8 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits, subGroup)
 	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, offsetShort)
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, offsetShort)
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 4, attachToValues)
-	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 5, nil, 'full')
+	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, TEXT_FORMAT_WIDTH)
+	config.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units[groupName].name.text_format = P.unitframe.units[groupName].name.text_format updateFunc(UF, groupName, numUnits) end)
 
 	if subGroup then
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].name[info[#info]] end
@@ -886,7 +891,8 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	config.args.textGroup.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
 	config.args.textGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 2, { min = -400, max = 400, step = 1 })
 	config.args.textGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 3, { min = -400, max = 400, step = 1 })
-	config.args.textGroup.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 4, nil, 'full')
+	config.args.textGroup.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, TEXT_FORMAT_WIDTH)
+	config.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units[groupName].power.text_format = P.unitframe.units[groupName].power.text_format updateFunc(UF, groupName, numUnits) end)
 
 	config.args.strataAndLevel = GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, 'power')
 	config.args.strataAndLevel.inline = nil
@@ -1688,7 +1694,8 @@ Player.PartyIndicator.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, offsetShor
 
 Player.pvpText = ACH:Group(L["PvP Text"], nil, nil, nil, function(info) return E.db.unitframe.units.player.pvp[info[#info]] end, function(info, value) E.db.unitframe.units.player.pvp[info[#info]] = value UF:CreateAndUpdateUF('player') end)
 Player.pvpText.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
-Player.pvpText.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, 'full')
+Player.pvpText.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, TEXT_FORMAT_WIDTH)
+Player.pvpText.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units.player.pvp.text_format = P.unitframe.units.player.pvp.text_format UF:CreateAndUpdateUF('player') end)
 
 IndividualUnits.pet = ACH:Group(L["Pet"], nil, 2, nil, function(info) return E.db.unitframe.units.pet[info[#info]] end, function(info, value) E.db.unitframe.units.pet[info[#info]] = value UF:CreateAndUpdateUF('pet') end)
 IndividualUnits.pet.args = GetUnitSettings('pet', UF.CreateAndUpdateUF)

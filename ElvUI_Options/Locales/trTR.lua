@@ -1867,7 +1867,6 @@ L["Vertical Spacing"] = "Dikey Aralik"
 L["Vertical"] = "Dikey"
 L["Visibility State"] = "Gorunurluk Durumu"
 L["Visibility"] = "Gorunurluk"
-L["WeakAuras"] = true
 L["Weekly Rewards"] = true
 L["What point to anchor to the frame you set to attach to."] = "Eklemeyi ayarladiginiz cerceveye hangi noktayi tutturacaksiniz?"
 L["What to attach the anchor frame to."] = true

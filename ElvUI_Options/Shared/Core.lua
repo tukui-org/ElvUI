@@ -718,7 +718,7 @@ do -- Module Copy
 		config.args.threat.name = L["Threat"]
 		config.args.cutaway.name = L["Cutaway Bars"]
 		config.args.clickThrough.name = L["Click Through"]
-		config.args.plateSize.name = L["Clickable Size"]
+		config.args.clickSize.name = L["Clickable Size"]
 		config.args.colors.name = L["Colors"]
 		config.args.visibility.name = L["Visibility"]
 

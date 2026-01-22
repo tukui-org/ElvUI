@@ -58,12 +58,17 @@ end
 
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
-	local color = db.countFontColor
+	if not db then return end
+
 	text:SetIgnoreParentScale(true)
-	text:SetTextColor(color.r, color.g, color.b)
-	text:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	text:ClearAllPoints()
 	text:Point(db.countPosition, db.countxOffset, db.countyOffset)
+	text:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+
+	local color = db.countFontColor
+	if color then
+		text:SetTextColor(color.r, color.g, color.b)
+	end
 end
 
 function S:CooldownManager_UpdateTextContainer(container)
@@ -80,20 +85,28 @@ end
 
 function S:CooldownManager_UpdateTextBar(bar)
 	local db = E.db.general.cooldownManager
+	if not db then return end
+
 	if bar.Name then
-		local color = db.nameFontColor
-		bar.Name:SetTextColor(color.r, color.g, color.b)
-		bar.Name:FontTemplate(LSM:Fetch('font', db.nameFont), db.nameFontSize, db.nameFontOutline)
 		bar.Name:ClearAllPoints()
 		bar.Name:Point(db.namePosition, db.namexOffset, db.nameyOffset)
+		bar.Name:FontTemplate(LSM:Fetch('font', db.nameFont), db.nameFontSize, db.nameFontOutline)
+
+		local color = db.nameFontColor
+		if color then
+			bar.Name:SetTextColor(color.r, color.g, color.b)
+		end
 	end
 
 	if bar.Duration then
-		local color = db.durationFontColor
-		bar.Duration:SetTextColor(color.r, color.g, color.b)
-		bar.Duration:FontTemplate(LSM:Fetch('font', db.durationFont), db.durationFontSize, db.durationFontOutline)
 		bar.Duration:ClearAllPoints()
 		bar.Duration:Point(db.durationPosition, db.durationxOffset, db.durationyOffset)
+		bar.Duration:FontTemplate(LSM:Fetch('font', db.durationFont), db.durationFontSize, db.durationFontOutline)
+
+		local color = db.durationFontColor
+		if color then
+			bar.Duration:SetTextColor(color.r, color.g, color.b)
+		end
 	end
 end
 
@@ -144,37 +157,19 @@ function S:CooldownManager_RefreshSpellCooldownInfo()
 	if not self.Cooldown then return end
 
 	local db = E.db.general.cooldownManager
-	local color = (self.cooldownUseAuraDisplayTime and db.swipeColorAura) or db.swipeColorSpell
-	self.Cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
+	local color = db and ((self.cooldownUseAuraDisplayTime and db.swipeColorAura) or db.swipeColorSpell)
+	if color then
+		self.Cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
+	end
 end
 
 function S:CooldownManager_UpdateSwipeColor(frame)
 	S.CooldownManager_RefreshSpellCooldownInfo(frame)
 end
 
-function S:CooldownManager_SetTimerShown()
-
-end
-
-function S:CooldownManager_RefreshOverlayGlow()
-
-end
-
-function S:CooldownManager_ShowGlowEvent(spellID)
-
-end
-
-function S:CooldownManager_HideGlowEvent(spellID)
-
-end
-
 do
 	local hookFunctions = {
-		RefreshSpellCooldownInfo = S.CooldownManager_RefreshSpellCooldownInfo,
-		OnSpellActivationOverlayGlowShowEvent = S.CooldownManager_ShowGlowEvent,
-		OnSpellActivationOverlayGlowHideEvent = S.CooldownManager_HideGlowEvent,
-		RefreshOverlayGlow = S.CooldownManager_RefreshOverlayGlow,
-		SetTimerShown = S.CooldownManager_SetTimerShown
+		RefreshSpellCooldownInfo = S.CooldownManager_RefreshSpellCooldownInfo
 	}
 
 	function S:CooldownManager_SkinItemFrame(frame)
@@ -320,6 +315,7 @@ function S:Blizzard_CooldownViewer()
 		end
 
 		S:CooldownManager_RefreshLayout()
+
 		hooksecurefunc(CooldownViewer, 'RefreshLayout', S.CooldownManager_RefreshLayout)
 	end
 end

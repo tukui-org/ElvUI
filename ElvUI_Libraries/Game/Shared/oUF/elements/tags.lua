@@ -137,7 +137,9 @@ local _PATTERN = '%[..-%]+'
 
 local _ENV = {
 	Hex = function(r, g, b)
-		if(type(r) == 'table') then
+		if not r or type(r) == 'string' then -- wtf?
+			return '|cffFFFFFF'
+		elseif type(r) == 'table' then
 			if oUF.isRetail then
 				return '|c' .. GenerateTextColorCode(r)
 			elseif(r.r) then
@@ -145,10 +147,6 @@ local _ENV = {
 			else
 				r, g, b = unpack(r)
 			end
-		end
-
-		if not r or type(r) == 'string' then -- wtf?
-			return '|cffFFFFFF'
 		end
 
 		return format('|cff%02x%02x%02x', r * 255, g * 255, b * 255)
