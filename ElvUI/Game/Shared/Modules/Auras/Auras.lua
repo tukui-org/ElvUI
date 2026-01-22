@@ -118,6 +118,17 @@ function A:MasqueData(texture, highlight)
 	return data
 end
 
+function A:UpdateStatusBar(button)
+	if E.Retail then
+		local remaining = button.auraDuration and button.auraDuration:GetRemainingDuration()
+		if remaining then
+			button.statusBar:SetValue(remaining, button.statusBar.smoothing)
+		end
+	elseif button.timeLeft then
+		button.statusBar:SetValue(button.timeLeft, button.statusBar.smoothing)
+	end
+end
+
 function A:UpdateButton(button)
 	local db = A.db[button.auraType]
 	if button.statusBar and button.statusBar:IsShown() then
@@ -130,7 +141,6 @@ function A:UpdateButton(button)
 		end
 
 		button.statusBar:SetStatusBarColor(r, g, b)
-		button.statusBar:SetValue(button.timeLeft, button.statusBar.smoothing)
 	end
 
 	local threshold = db.fadeThreshold
@@ -164,7 +174,7 @@ function A:CreateIcon(button)
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
 
-	button.count = button:CreateFontString(nil, 'OVERLAY')
+	button.count = button.cooldown:CreateFontString(nil, 'OVERLAY')
 	button.count:FontTemplate()
 
 	button.text = button:CreateFontString(nil, 'OVERLAY')
@@ -400,21 +410,17 @@ end
 function A:UpdateTime(button, duration, expiration, modRate)
 	local db = A.db[button.auraType]
 	if E.Retail then
-		button.statusBar:SetShown(db.barShow)
 
 		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
+		button.auraDuration = auraDuration or nil
+		button.statusBar:SetShown(db.barShow)
+
 		if auraDuration then
 			button.cooldown:SetCooldownFromDurationObject(auraDuration)
 			button.cooldown:Show()
 
-			local remaining = db.barShow and auraDuration:GetRemainingDuration()
-			button.statusBar:SetAlphaFromBoolean(remaining, 1, 0)
-
-			if remaining then
-				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
-				button.statusBar:SetMinMaxValues(0, duration)
-				button.statusBar:SetValue(remaining, button.statusBar.smoothing)
-			end
+			button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
+			button.statusBar:SetMinMaxValues(0, duration)
 		else
 			button.cooldown:Hide()
 		end
@@ -434,6 +440,10 @@ function A:Button_OnUpdate(elapsed)
 	local xpr = self.endTime
 	if xpr then
 		self.text:SetFormattedText(ElvUF:GetTime(self.timeLeft))
+	end
+
+	if self.statusBar:IsShown() then
+		A:UpdateStatusBar(self)
 	end
 
 	if self.elapsed and self.elapsed > 0.1 then
