@@ -1091,10 +1091,6 @@ function TT:Initialize()
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetItem', TT.GameTooltip_OnTooltipSetItem)
 		TT:SecureHookScript(GameTooltip, 'OnTooltipSetUnit', TT.GameTooltip_OnTooltipSetUnit)
 		TT:SecureHookScript(E.SpellBookTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
-
-		if not E.Classic then -- what's the replacement in DF
-			TT:SecureHook(GameTooltip, 'SetCurrencyTokenByID')
-		end
 	end
 
 	if E.Retail or E.Mists then
