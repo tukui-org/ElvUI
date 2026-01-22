@@ -407,15 +407,15 @@ end
 function M:Initialize()
 	M.Initialized = true
 
-	M:LoadRaidMarker()
+	M:LoadLoot()
 	M:LoadLootRoll()
+	M:LoadRaidMarker()
 	M:LoadChatBubbles()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
 
 	if not E.Retail then
 		M:ToggleInterrupt()
-		M:LoadLoot() -- Midnight: tooltip crash out
 	end
 
 	local vanillaStyle = E.ClassicAnniv or E.TBC
