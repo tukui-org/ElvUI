@@ -51,6 +51,9 @@ function E:RegisterCooldown(cooldown, which)
 		cooldown.Text = cooldown:GetRegions()
 	end
 
+	-- init set for the settings
+	E:CooldownUpdate(cooldown, options.cooldown)
+
 	-- store some variables for later use
 	cooldown.db = options.cooldown
 	cooldown.isRegisteredCooldown = true
