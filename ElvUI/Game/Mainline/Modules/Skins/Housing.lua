@@ -54,6 +54,7 @@ function S:Blizzard_HousingHouseFinder()
 		NeighborhoodListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
 		S:HandleEditBox(NeighborhoodListFrame.BNetFriendSearchBox)
 		S:HandleButton(NeighborhoodListFrame.RefreshButton)
+		S:HandleTrimScrollBar(NeighborhoodListFrame.ScrollFrame.ScrollBar)
 	end
 end
 
