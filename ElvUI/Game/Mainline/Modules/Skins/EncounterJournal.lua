@@ -656,6 +656,10 @@ function S:Blizzard_EncounterJournal()
 		end
 
 		S:HandleButton(Contents.StartButton, nil, nil, nil, true)
+
+		if Contents.StartButton.backdrop then
+			Contents.StartButton.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
+		end
 	end
 end
 
