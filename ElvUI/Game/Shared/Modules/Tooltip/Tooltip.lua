@@ -638,7 +638,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
 
 	-- check if dead
 	if current == 0 or (unit and UnitIsDeadOrGhost(unit)) then
-		bar.text:SetText(_G.DEAD)
+		bar.Text:SetText(_G.DEAD)
 	else
 		local maximum, _
 		if unit then -- try to get the real health values if possible
