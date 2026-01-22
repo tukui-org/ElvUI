@@ -103,7 +103,7 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:SetCompareItems(tt, value)
-	if E.Retail or (tt ~= GameTooltip) then return end -- Midnight: compare crashing tooltip
+	if tt ~= GameTooltip then return end
 
 	tt.supportsItemComparison = value
 end
@@ -1082,11 +1082,8 @@ function TT:Initialize()
 	if AddTooltipPostCall and not (E.TBC or E.Wrath or E.Mists) then -- exists but doesn't work atm on Cata
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
 		AddTooltipPostCall(TooltipDataType.Macro, TT.GameTooltip_OnTooltipSetSpell)
-
-		if not E.Retail then -- Midnight: secrets cause tooltip processor crashes out
-			AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem) -- prevents items displaying (compare code)
-			AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit) -- unitname is secrets so it breaks something
-		end
+		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
+		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
 
 		TT:SecureHook(GameTooltip, 'Hide', 'GameTooltip_Hide') -- dont use OnHide use Hide directly
 	else
