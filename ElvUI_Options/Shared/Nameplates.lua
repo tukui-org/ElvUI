@@ -573,8 +573,22 @@ NamePlates.colorsGroup.args.selectionGroup.args['13'] = ACH:Color(L["Battlegroun
 
 NamePlates.colorsGroup.args.classification = ACH:Group(L["Classification Colors"], nil, 5, nil, function(info) local t, d = E.db.nameplates.colors.classification[info[#info]], P.nameplates.colors.classification[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classification[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.classification.inline = true
-for key in next, NP.db.colors.classification do
-	NamePlates.colorsGroup.args.classification.args[key] = ACH:Color(key)
+
+do
+	local data = {
+		worldboss = { order = 1, name = L["Worldboss"] },
+		eliteBoss = { order = 2, name = L["Elite Boss"] },
+		eliteMini = { order = 3, name = L["Elite Mini"] },
+		rareelite = { order = 4, name = L["Rare Elite"] },
+		rare = { order = 5, name = L["Rare"] },
+		caster = { order = 6, name = L["Caster"] },
+		melee = { order = 7, name = L["Melee"] }
+	}
+
+	for key in next, NP.db.colors.classification do
+		local info = data[key]
+		NamePlates.colorsGroup.args.classification.args[key] = ACH:Color(info.name, nil, info.order)
+	end
 end
 
 NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 6, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
