@@ -32,10 +32,11 @@ function E:RegisterCooldown(cooldown, which)
 	if cooldown.isRegisteredCooldown then return end -- already registered
 
 	-- verify the settings exist here
-	local options = E.db[which]
-	if not (options and options.cooldown) then return end
+	local options = (which and E.db[which]) or (not which and E.db)
+	if not options then return end
 
 	-- storage for types
+	if not which then which = 'global' end
 	if not E.RegisteredCooldowns[which] then
 		E.RegisteredCooldowns[which] = {}
 	end

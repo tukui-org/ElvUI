@@ -2833,7 +2833,7 @@ P.cooldown = {
 
 	font = 'Expressway',
 	fontOutline = 'OUTLINE',
-	fontSize = 16
+	fontSize = 18
 }
 
 --Actionbar
