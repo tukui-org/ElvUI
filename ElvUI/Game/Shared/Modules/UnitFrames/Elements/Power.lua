@@ -8,6 +8,7 @@ local UnitPowerType = UnitPowerType
 local InCombatLockdown = InCombatLockdown
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 function UF:PowerBar_PostVisibility(power, frame)
@@ -102,7 +103,9 @@ function UF:Configure_Power(frame, healthUpdate)
 			frame:EnableElement('Power')
 		end
 
-		if not E.Retail then
+		if E.Retail then
+			power.smoothing = (db.power.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+		else
 			E:SetSmoothing(power, db.power.smoothbars)
 		end
 

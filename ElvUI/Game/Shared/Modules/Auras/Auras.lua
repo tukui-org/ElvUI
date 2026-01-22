@@ -24,6 +24,8 @@ local CreateFrame = CreateFrame
 local UIParent = UIParent
 local GetTime = GetTime
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
+
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group('ElvUI', 'Buffs')
 local MasqueGroupDebuffs = Masque and Masque:Group('ElvUI', 'Debuffs')
@@ -128,7 +130,7 @@ function A:UpdateButton(button)
 		end
 
 		button.statusBar:SetStatusBarColor(r, g, b)
-		button.statusBar:SetValue(button.timeLeft)
+		button.statusBar:SetValue(button.timeLeft, button.statusBar.smoothing)
 	end
 
 	local threshold = db.fadeThreshold
@@ -238,7 +240,11 @@ function A:UpdateIcon(button, update)
 	end
 
 	if button.statusBar then
-		E:SetSmoothing(button.statusBar, db.smoothbars)
+		if E.Retail then
+			button.statusBar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+		else
+			E:SetSmoothing(button.statusBar, db.smoothbars)
+		end
 
 		local pos, iconSize = db.barPosition, db.size - (E.Border * 2)
 		local onTop, onBottom, onLeft = pos == 'TOP', pos == 'BOTTOM', pos == 'LEFT'
@@ -287,7 +293,7 @@ function A:ClearAuraTime(button, expired)
 
 	if not expired and button.statusBar:IsShown() then
 		button.statusBar:SetMinMaxValues(0, 1)
-		button.statusBar:SetValue(1)
+		button.statusBar:SetValue(1, button.statusBar.smoothing)
 
 		local db = A.db[button.auraType]
 		if db.barColorGradient then -- value 1 is just green
@@ -411,7 +417,7 @@ function A:UpdateTime(button, duration, expiration, modRate)
 			if remaining then
 				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
 				button.statusBar:SetMinMaxValues(0, duration)
-				button.statusBar:SetValue(remaining)
+				button.statusBar:SetValue(remaining, button.statusBar.smoothing)
 			end
 		else
 			button.cooldown:Hide()
