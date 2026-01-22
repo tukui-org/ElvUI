@@ -51,7 +51,7 @@ local function UpdateValue(bar, start)
 			local remain = auraDuration:GetRemainingDuration()
 			if remain then
 				bar:SetMinMaxValues(0, bar.aura.duration)
-				bar:SetValue(remain)
+				bar:SetValue(remain, bar.smoothing)
 			end
 		end
 	else
@@ -237,7 +237,7 @@ local function SetPosition(element, from, to)
 		bar:SetPoint(anchor, element, anchor, barSpacing, (i == 1 and 0) or (growth * ((i - 1) * (height + spacing))))
 
 		if bar.noTime then
-			bar:SetValue(1)
+			bar:SetValue(1, bar.smoothing)
 			bar.timeText:SetText('')
 		end
 	end

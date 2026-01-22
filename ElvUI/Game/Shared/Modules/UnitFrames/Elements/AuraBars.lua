@@ -9,6 +9,7 @@ local CreateFrame = CreateFrame
 local WrapString = C_StringUtil and C_StringUtil.WrapString
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
 function UF:Construct_AuraBars(bar)
@@ -51,8 +52,12 @@ function UF:AuraBars_UpdateBar(bar)
 	local bars = bar:GetParent()
 	bar.db = bars.db
 
-	if bars.db and not E.Retail then
-		E:SetSmoothing(bar, bars.db.smoothbars)
+	if bars.db then
+		if E.Retail then
+			bar.smoothing = (bar.db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+		else
+			E:SetSmoothing(bar, bars.db.smoothbars)
+		end
 	end
 
 	bar:SetReverseFill(not not bars.reverseFill)

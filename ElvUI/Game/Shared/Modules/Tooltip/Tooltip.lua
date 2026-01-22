@@ -482,7 +482,9 @@ function TT:AddTargetInfo(tt, unit)
 		local isInRaid = IsInRaid()
 		for i = 1, GetNumGroupMembers() do
 			local groupUnit = (isInRaid and 'raid' or 'party')..i
-			if UnitIsUnit(groupUnit..'target', unit) and not UnitIsUnit(groupUnit, 'player') then
+			local unitIsTarget = UnitIsUnit(groupUnit..'target', unit)
+			local unitIsMe = UnitIsUnit(groupUnit, 'player')
+			if E:NotSecretValue(unitIsTarget) and unitIsTarget and not unitIsMe then
 				local _, class = UnitClass(groupUnit)
 				local classColor = E:ClassColor(class) or PRIEST_COLOR
 				tinsert(targetList, format('|c%s%s|r', classColor.colorStr, UnitName(groupUnit)))
@@ -540,13 +542,14 @@ end
 function TT:GameTooltip_OnTooltipSetUnit(data)
 	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
 
-	local _, unit = self:GetUnit()
 	if self:GetOwner() ~= UIParent and not TT:IsModKeyDown(TT.db.visibility.unitFrames) then
 		self:Hide()
 		return
 	end
 
-	if not unit then
+	local color
+	local _, unit = self:GetUnit()
+	if E:NotSecretValue(unit) and not unit then
 		local GMF = E:GetMouseFocus()
 		local focusUnit = GMF and GMF.GetAttribute and GMF:GetAttribute('unit')
 		if focusUnit then unit = focusUnit end
@@ -555,48 +558,50 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 		end
 	end
 
-	TT:RemoveTrashLines(self) --keep an eye on this may be buggy
+	if E:NotSecretValue(unit) then
+		local isShiftKeyDown = IsShiftKeyDown()
+		local isControlKeyDown = IsControlKeyDown()
+		local isInCombat = InCombatLockdown()
 
-	local isShiftKeyDown = IsShiftKeyDown()
-	local isControlKeyDown = IsControlKeyDown()
-	local isInCombat = InCombatLockdown()
+		TT:RemoveTrashLines(self) -- text here can be a secret
 
-	local isPlayerUnit = UnitIsPlayer(unit)
-	local color = TT:SetUnitText(self, unit, isPlayerUnit)
+		local isPlayerUnit = UnitIsPlayer(unit)
+		color = TT:SetUnitText(self, unit, isPlayerUnit)
 
-	if TT.db.targetInfo and not isShiftKeyDown and not isControlKeyDown then
-		TT:AddTargetInfo(self, unit)
-	end
-
-	if TT.db.role and E.allowRoles then
-		TT:AddRoleInfo(self, unit)
-	end
-
-	if (E.Retail or E.Mists) and not isInCombat then
-		if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
-			TT:AddMountInfo(self, unit)
+		if TT.db.targetInfo and not isShiftKeyDown and not isControlKeyDown then
+			TT:AddTargetInfo(self, unit)
 		end
-	end
 
-	if E.Retail and not isInCombat then
-		if TT.db.mythicDataEnable then
-			TT:AddMythicInfo(self, unit)
+		if TT.db.role and E.allowRoles then
+			TT:AddRoleInfo(self, unit)
 		end
-	end
 
-	if (E.Retail or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not self.ItemLevelShown then
-		if color then
-			TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
-		else
-			TT:AddInspectInfo(self, unit, 0, 0.9, 0.9, 0.9)
+		if (E.Retail or E.Mists) and not isInCombat then
+			if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
+				TT:AddMountInfo(self, unit)
+			end
 		end
-	end
 
-	if not isPlayerUnit and TT:IsModKeyDown() and not ((E.Retail or E.Mists) and C_PetBattles_IsInBattle()) then
-		local guid = (data and data.guid) or UnitGUID(unit) or ''
-		local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
-		if id then -- NPC ID's
-			self:AddLine(format(IDLine, _G.ID, id))
+		if E.Retail and not isInCombat then
+			if TT.db.mythicDataEnable then
+				TT:AddMythicInfo(self, unit)
+			end
+		end
+
+		if (E.Retail or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not self.ItemLevelShown then
+			if color then
+				TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
+			else
+				TT:AddInspectInfo(self, unit, 0, 0.9, 0.9, 0.9)
+			end
+		end
+
+		if not isPlayerUnit and TT:IsModKeyDown() and not ((E.Retail or E.Mists) and C_PetBattles_IsInBattle()) then
+			local guid = (data and data.guid) or UnitGUID(unit) or ''
+			local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
+			if id then -- NPC ID's
+				self:AddLine(format(IDLine, _G.ID, id))
+			end
 		end
 	end
 
@@ -612,7 +617,7 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 
 	local tt = bar:GetParent()
 	local unit = tt and tt:GetUnit()
-	if unit and (UnitIsUnit(unit, 'player') or UnitInParty(unit) or UnitInRaid(unit)) then
+	if E:NotSecretValue(unit) and unit and (UnitIsUnit(unit, 'player') or UnitInParty(unit) or UnitInRaid(unit)) then
 		bar.Text:SetFormattedText('%d', UnitHealthPercent(unit, true, ScaleTo100))
 	else
 		bar.Text:SetText('')

@@ -11,6 +11,7 @@ local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 function NP:Power_UpdateColor(_, unit)
@@ -132,7 +133,9 @@ function NP:Update_Power(nameplate)
 		nameplate.Power:Point(E.InversePoints[db.power.anchorPoint], nameplate, db.power.anchorPoint, db.power.xOffset, db.power.yOffset)
 		nameplate.Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
-		if not E.Retail then
+		if E.Retail then
+			nameplate.Power.smoothing = (db.power.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+		else
 			E:SetSmoothing(nameplate.Power, db.power.smoothbars)
 		end
 	elseif nameplate:IsElementEnabled('Power') then

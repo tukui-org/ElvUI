@@ -250,10 +250,10 @@ function S:PetBattleFrame()
 
 			local quality = TT.db.itemQuality and rarity and rarity > 1 and E:GetQualityColor(rarity)
 			if quality then
-				tt.NineSlice:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+				tt:SetBackdropBorderColor(quality.r, quality.g, quality.b)
 				tt.qualityChanged = true
 			elseif tt.qualityChanged then
-				tt.NineSlice:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				tt.qualityChanged = nil
 			end
 		end)

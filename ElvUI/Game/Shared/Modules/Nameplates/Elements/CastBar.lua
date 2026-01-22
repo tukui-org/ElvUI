@@ -13,6 +13,7 @@ local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local UnitName = UnitName
 
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local INTERRUPTED = INTERRUPTED
 
@@ -257,7 +258,11 @@ function NP:Update_Castbar(nameplate)
 		castbar:Point(E.InversePoints[db.anchorPoint], nameplate, db.anchorPoint, db.xOffset, db.yOffset)
 		castbar:Size(db.width, db.height)
 
-		E:SetSmoothing(castbar, db.smoothbars)
+		if E.Retail then
+			castbar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+		else
+			E:SetSmoothing(castbar, db.smoothbars)
+		end
 
 		for stage, pip in next, castbar.Pips do
 			UF:CastBar_UpdatePip(castbar, pip, stage)
