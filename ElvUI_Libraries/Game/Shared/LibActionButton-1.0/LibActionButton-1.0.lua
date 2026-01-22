@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 69 -- the real minor version is 140
+local MINOR_VERSION = 69 -- the real minor version is 142
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2318,8 +2318,16 @@ function UpdateCooldown(self)
 		lossOfControlInfo.modRate = cooldownInfo.modRate
 	end
 
-	if not self.config.lossOfControlCooldown then
+	if not self.config.lossOfControlCooldown or not lossOfControlInfo or not lossOfControlInfo.startTime or not lossOfControlInfo.duration then
 		lossOfControlInfo = defaultLossOfControlInfo
+	end
+
+	if not cooldownInfo or not cooldownInfo.startTime or not cooldownInfo.duration then
+		cooldownInfo = defaultCooldownInfo
+	end
+
+	if not chargeInfo or not chargeInfo.maxCharges or not chargeInfo.currentCharges or not chargeInfo.cooldownStartTime or not chargeInfo.cooldownDuration then
+		chargeInfo = defaultChargeInfo
 	end
 
 	self.cooldown:SetDrawBling(self.cooldown:GetEffectiveAlpha() > 0.5)
