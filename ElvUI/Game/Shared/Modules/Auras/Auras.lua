@@ -237,10 +237,9 @@ function A:UpdateIcon(button, update)
 		button.text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
 	end
 
-	if button.cooldown and button.cooldown.Text then
-		button.cooldown.Text:ClearAllPoints()
-		button.cooldown.Text:Point('TOP', button, 'BOTTOM', db.timeXOffset, db.timeYOffset)
-		button.cooldown.Text:FontTemplate(LSM:Fetch('font', db.timeFont), db.timeFontSize, db.timeFontOutline)
+	local cooldown = button.cooldown
+	if cooldown and cooldown.Text then
+		E:CooldownUpdate(cooldown, cooldown.db)
 	end
 
 	if button.statusBar then

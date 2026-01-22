@@ -2825,12 +2825,15 @@ end
 
 --Cooldown
 P.cooldown = {
-	enable = false,
-	override = true,
 	color = { r = 1, g = 1, b = 1 },
-	font = 'PT Sans Narrow',
+
+	position = 'CENTER',
+	offsetX = 0,
+	offsetY = 0,
+
+	font = 'Expressway',
 	fontOutline = 'OUTLINE',
-	fontSize = 18
+	fontSize = 16
 }
 
 --Actionbar
@@ -3126,13 +3129,8 @@ do -- cooldown stuff
 	P.cdmanager = {} -- Blizzard's Cooldown Manager
 	P.cdmanager.cooldown = CopyTable(P.cooldown)
 
-	-- color override
-	P.cdmanager.cooldown.override = false
-	P.auras.cooldown.override = false
-	P.bags.cooldown.override = false
-	P.actionbar.cooldown.override = true
-	P.nameplates.cooldown.override = true
-	P.unitframe.cooldown.override = true
+	P.auras.cooldown.position = 'BOTTOM'
+	P.auras.cooldown.offsetY = -3
 
 	-- we gonna need this on by default :3
 	P.cooldown.enable = true
