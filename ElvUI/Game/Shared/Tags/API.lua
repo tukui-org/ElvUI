@@ -166,11 +166,11 @@ Tags.Env.Abbrev = function(name)
 	return name
 end
 
-Tags.Env.NameHealthColor = function(tags,hex,unit,default)
-	if hex == 'class' or hex == 'reaction' then
+Tags.Env.NameHealthColor = function(tags, str, unit, default)
+	if str == 'class' or str == 'reaction' then
 		return tags.classcolor(unit) or default
-	elseif hex and strmatch(hex, '^%x%x%x%x%x%x$') then
-		return '|cFF'..hex
+	elseif str and strmatch(str, '^%x%x%x%x%x%x$') then
+		return '|cFF'..str
 	end
 
 	return default
@@ -219,7 +219,7 @@ Tags.Env.GetQuestData = function(unit, which, Hex)
 					elseif which == 'title' then
 						local colors = lastTitle.color
 						if colors then
-							return format('%s%s|r', Hex(colors.r, colors.g, colors.b), lastTitle.title)
+							return format('%s%s|r', Hex(colors), lastTitle.title)
 						end
 
 						return lastTitle.title
@@ -228,7 +228,7 @@ Tags.Env.GetQuestData = function(unit, which, Hex)
 
 						local colors = lastTitle.color
 						if colors then
-							title = format('%s%s|r', Hex(colors.r, colors.g, colors.b), title)
+							title = format('%s%s|r', Hex(colors), title)
 						end
 
 						if which == 'full' then

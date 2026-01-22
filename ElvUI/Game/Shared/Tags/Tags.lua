@@ -482,17 +482,17 @@ if not E.Retail then
 	E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 		local selection = NP:UnitSelectionType(unit)
 		local cs = ElvUF.colors.selection[selection]
-		return (cs and Hex(cs.r, cs.g, cs.b)) or '|cFFcccccc'
+		return cs and Hex(cs) or '|cFFcccccc'
 	end)
 
 	E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 		if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
 			local _, classToken = UnitClass(unit)
 			local cs = ElvUF.colors.class[classToken]
-			return (cs and Hex(cs.r, cs.g, cs.b)) or '|cFFcccccc'
+			return cs and Hex(cs) or '|cFFcccccc'
 		else
 			local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
-			return (cr and Hex(cr.r, cr.g, cr.b)) or '|cFFcccccc'
+			return cr and Hex(cr) or '|cFFcccccc'
 		end
 	end)
 
@@ -504,7 +504,7 @@ if not E.Retail then
 		local unitReaction = UnitReaction(unit, 'player')
 		if unitReaction then
 			local color = ElvUF.colors.reaction[unitReaction]
-			return Hex(color.r, color.g, color.b)
+			return color and Hex(color) or '|cFFc2c2c2'
 		else
 			return '|cFFc2c2c2'
 		end
@@ -554,7 +554,7 @@ if not E.Retail then
 
 	E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 		local color = ElvUF.colors.power.MANA
-		return Hex(color.r, color.g, color.b)
+		return color and Hex(color) or '|cFFc2c2c2'
 	end)
 
 	E:AddTag('incomingheals:personal', 'UNIT_HEAL_PREDICTION', function(unit)
@@ -774,7 +774,7 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 		color = GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
 	end
 
-	return Hex(color.r, color.g, color.b)
+	return Hex(color)
 end)
 
 E:AddTag('smartlevel', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
