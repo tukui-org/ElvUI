@@ -64,6 +64,7 @@ local PVP = PVP
 local SPELL_FROST_ICICLES = 205473
 local SPELL_ARCANE_CHARGE = 36032
 local SPELL_MAELSTROM = 344179
+local HEX_FALLBACK = '|cFFcccccc'
 
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
 -- GLOBALS: UnitPower, UnitHealth, UnitName, UnitClass, UnitIsDead, UnitIsGhost, UnitIsDeadOrGhost, UnitIsConnected -- override during testing groups
@@ -714,9 +715,9 @@ E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	if unitReaction then
 		local color = ElvUF.colors.reaction[unitReaction]
-		return color and Hex(color) or '|cFFc2c2c2'
+		return color and Hex(color) or HEX_FALLBACK
 	else
-		return '|cFFc2c2c2'
+		return HEX_FALLBACK
 	end
 end)
 
@@ -729,23 +730,23 @@ end)
 
 E:AddTag('manacolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function()
 	local color = ElvUF.colors.power.MANA
-	return color and Hex(color) or '|cFFc2c2c2'
+	return color and Hex(color) or HEX_FALLBACK
 end)
 
 E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	local selection = NP:UnitSelectionType(unit)
 	local cs = ElvUF.colors.selection[selection]
-	return cs and Hex(cs) or '|cFFcccccc'
+	return cs and Hex(cs) or HEX_FALLBACK
 end)
 
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
 		local _, classToken = UnitClass(unit)
 		local cs = ElvUF.colors.class[classToken]
-		return cs and Hex(cs) or '|cFFcccccc'
+		return cs and Hex(cs) or HEX_FALLBACK
 	else
 		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
-		return cr and Hex(cr) or '|cFFcccccc'
+		return cr and Hex(cr) or HEX_FALLBACK
 	end
 end)
 
@@ -974,7 +975,7 @@ end
 
 do
 	local factionColors = {
-		['']	 = '|cFFc2c2c2',
+		['']	 = HEX_FALLBACK,
 		Alliance = '|cFF0099ff',
 		Horde	 = '|cFFff3333',
 		Neutral	 = '|cFF33ff33'
