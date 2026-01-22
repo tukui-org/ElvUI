@@ -2833,7 +2833,7 @@ P.cooldown = {
 
 	font = 'Expressway',
 	fontOutline = 'OUTLINE',
-	fontSize = 18
+	fontSize = 14
 }
 
 --Actionbar
@@ -3134,6 +3134,7 @@ do -- cooldown stuff
 
 	-- we gonna need this on by default :3
 	P.cooldown.enable = true
+	P.cooldown.fontSize = 16
 end
 
 -- This allows movers positions to be reset to whatever profile is being used
