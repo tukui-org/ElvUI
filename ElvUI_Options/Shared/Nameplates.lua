@@ -169,7 +169,7 @@ local function GetUnitSettings(unit, name)
 	group.args.healthGroup.args.textGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
 	group.args.healthGroup.args.textGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 	group.args.healthGroup.args.textGroup.args.format = ACH:Input(L["Text Format"], nil, 6, nil, TEXT_FORMAT_WIDTH)
-	group.args.healthGroup.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].health.text.format = P.nameplates.units[unit].health.text.format end)
+	group.args.healthGroup.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].health.text.format = P.nameplates.units[unit].health.text.format NP:ConfigureAll() end)
 
 	group.args.healthGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 10)
 	group.args.healthGroup.args.textGroup.args.fontGroup.inline = true
@@ -199,7 +199,7 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup.args.textGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
 	group.args.powerGroup.args.textGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 	group.args.powerGroup.args.textGroup.args.format = ACH:Input(L["Text Format"], nil, 6, nil, TEXT_FORMAT_WIDTH)
-	group.args.powerGroup.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].power.text.format = P.nameplates.units[unit].power.text.format end)
+	group.args.powerGroup.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].power.text.format = P.nameplates.units[unit].power.text.format NP:ConfigureAll() end)
 
 	group.args.powerGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 10)
 	group.args.powerGroup.args.textGroup.args.fontGroup.inline = true
@@ -295,7 +295,7 @@ local function GetUnitSettings(unit, name)
 	group.args.levelGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
 	group.args.levelGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 	group.args.levelGroup.args.format = ACH:Input(L["Text Format"], nil, 6, nil, TEXT_FORMAT_WIDTH)
-	group.args.levelGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].level.format = P.nameplates.units[unit].level.format end)
+	group.args.levelGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].level.format = P.nameplates.units[unit].level.format NP:ConfigureAll() end)
 
 	group.args.levelGroup.args.fontGroup = ACH:Group('', nil, 10)
 	group.args.levelGroup.args.fontGroup.inline = true
@@ -310,7 +310,7 @@ local function GetUnitSettings(unit, name)
 	group.args.nameGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
 	group.args.nameGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 	group.args.nameGroup.args.format = ACH:Input(L["Text Format"], nil, 6, nil, TEXT_FORMAT_WIDTH)
-	group.args.nameGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].name.format = P.nameplates.units[unit].name.format end)
+	group.args.nameGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].name.format = P.nameplates.units[unit].name.format NP:ConfigureAll() end)
 
 	group.args.nameGroup.args.fontGroup = ACH:Group('', nil, 10)
 	group.args.nameGroup.args.fontGroup.inline = true
@@ -325,7 +325,7 @@ local function GetUnitSettings(unit, name)
 	group.args.titleGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
 	group.args.titleGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 	group.args.titleGroup.args.format = ACH:Input(L["Text Format"], nil, 6, nil, TEXT_FORMAT_WIDTH)
-	group.args.titleGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].title.format = P.nameplates.units[unit].title.format end)
+	group.args.titleGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].title.format = P.nameplates.units[unit].title.format NP:ConfigureAll() end)
 
 	group.args.titleGroup.args.fontGroup = ACH:Group('', nil, 1
 		)
