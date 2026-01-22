@@ -1864,7 +1864,6 @@ L["Vertical Spacing"] = "Vertikaler Abstand"
 L["Vertical"] = "Vertikal"
 L["Visibility State"] = "Sichtbarkeitszustand"
 L["Visibility"] = "Sichtbarkeit"
-L["WeakAuras"] = true --No need to translate
 L["Weekly Rewards"] = "Wöchentliche Belohnung"
 L["What point to anchor to the frame you set to attach to."] = "Welchen Punkt für das verankern der Fenster möchtest du wählen."
 L["What to attach the anchor frame to."] = "Woran soll der Ankerrahmen befestigt werden?"

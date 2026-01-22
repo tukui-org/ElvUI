@@ -2,8 +2,6 @@ local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local ACH = E.Libs.ACH
 
-local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-
 local function profile(db)
 	return (db == 'global' and E.db.cooldown) or E.db[db].cooldown
 end
@@ -13,7 +11,7 @@ local function private(db)
 end
 
 local function Group(order, db, label)
-	local main = ACH:Group(label, nil, order, nil, function(info) local t = (profile(db))[info[#info]] local d = (private(db))[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b; end, function(info, r, g, b) local t = (profile(db))[info[#info]] t.r, t.g, t.b = r, g, b; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'WeakAuras' and not IsAddOnLoaded(db)) or (db == 'cdmanager' and not E.Retail) end)
+	local main = ACH:Group(label, nil, order, nil, function(info) local t = (profile(db))[info[#info]] local d = (private(db))[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b; end, function(info, r, g, b) local t = (profile(db))[info[#info]] t.r, t.g, t.b = r, g, b; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not E.Retail) end)
 	E.Options.args.cooldown.args[db] = main
 
 	local mainArgs = main.args
@@ -48,7 +46,3 @@ Group( 8, 'bags',		L["Bags"])
 Group( 9, 'nameplates',	L["Nameplates"])
 Group(10, 'unitframe',	L["UnitFrames"])
 Group(11, 'cdmanager',	L["Cooldown Manager"])
-
-if E.OtherAddons.WeakAuras then
-	Group(20, 'WeakAuras',	L["WeakAuras"])
-end

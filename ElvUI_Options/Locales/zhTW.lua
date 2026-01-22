@@ -1965,7 +1965,6 @@ L["Vertical Spacing"] = "垂直間隔"
 L["Vertical"] = "垂直"
 L["Visibility State"] = "顯示狀態"
 L["Visibility"] = "可見性"
-L["WeakAuras"] = true
 L["Weekly Rewards"] = "每週獎勵"
 L["Widget"] = "小工具"
 L["What point to anchor to the frame you set to attach to."] = "增益光環框架於其依附框架的依附位置."

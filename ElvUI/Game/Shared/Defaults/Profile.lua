@@ -3126,11 +3126,7 @@ do -- cooldown stuff
 	P.cdmanager = {} -- Blizzard's Cooldown Manager
 	P.cdmanager.cooldown = CopyTable(P.cooldown)
 
-	P.WeakAuras = {} -- native cooldown support with our module
-	P.WeakAuras.cooldown = CopyTable(P.cooldown)
-
 	-- color override
-	P.WeakAuras.cooldown.override = false
 	P.cdmanager.cooldown.override = false
 	P.auras.cooldown.override = false
 	P.bags.cooldown.override = false

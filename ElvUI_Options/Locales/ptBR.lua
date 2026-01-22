@@ -1867,7 +1867,6 @@ L["Vertical"] = "Vertical"
 L["Visibility State"] = "Estado de Visibilidade"
 L["Visibility"] = "Visibilidade"
 L["VOID_STORAGE"] = "Cofre Etéreo"
-L["WeakAuras"] = true
 L["Weekly Rewards"] = "Recompensas Semanais"
 L["What point to anchor to the frame you set to attach to."] = "Qual é o ponto a fixar ao quadro que você definiu para ser anexado."
 L["What to attach the anchor frame to."] = "No que fixar a âncora do quadro."

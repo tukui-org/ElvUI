@@ -310,7 +310,6 @@ do
 		Questie = true,
 		SimplePowerBar = true,
 		Tukui = true,
-		WeakAuras = true,
 		DBM = 'DBM-Core',
 		ConsolePort = 'ConsolePort_Menu',
 		KalielsTracker = '!KalielsTracker',

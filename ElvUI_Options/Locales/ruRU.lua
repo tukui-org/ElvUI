@@ -1878,7 +1878,6 @@ L["Vertical Spacing"] = "Отступ по вертикали"
 L["Vertical"] = "Вертикально"
 L["Visibility State"] = "Статус отображения"
 L["Visibility"] = "Видимость"
-L["WeakAuras"] = true --Translation not required
 L["Weekly Rewards"] = "Еженедельные награды"
 L["What point to anchor to the frame you set to attach to."] = "К какой точке выбранного фиксатора прикрепить ауры."
 L["What to attach the anchor frame to."] = "К чему прикрепить фиксатор"
