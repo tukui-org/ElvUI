@@ -170,6 +170,7 @@ function E:SetupChat(noDisplayMsg)
 end
 
 function E:SetupCVars(noDisplayMsg)
+	E:SetCVar('countdownForCooldowns', 1)
 	E:SetCVar('statusTextDisplay', 'BOTH')
 	E:SetCVar('screenshotQuality', 10)
 	E:SetCVar('showTutorials', 0)
@@ -182,7 +183,6 @@ function E:SetupCVars(noDisplayMsg)
 
 	if E.Retail then
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
-		E:SetCVar('countdownForCooldowns', 1)
 	else
 		E:SetCVar('alwaysShowActionBars', 1)
 		E:SetCVar('chatClassColorOverride', 0)
