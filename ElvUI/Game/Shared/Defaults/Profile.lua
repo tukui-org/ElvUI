@@ -3130,6 +3130,12 @@ do -- cooldown stuff
 	P.cdmanager = {} -- Blizzard's Cooldown Manager
 	P.cdmanager.cooldown = CopyTable(P.cooldown)
 
+	P.aurabars = {}
+	P.aurabars.cooldown = CopyTable(P.cooldown)
+
+	P.aurabars.cooldown.position = 'RIGHT'
+	P.aurabars.cooldown.offsetY = -10
+
 	P.auras.cooldown.position = 'BOTTOM'
 	P.auras.cooldown.offsetY = -3
 

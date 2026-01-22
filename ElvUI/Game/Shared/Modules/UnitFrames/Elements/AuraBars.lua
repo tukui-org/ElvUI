@@ -29,7 +29,7 @@ function UF:Construct_AuraBars(bar)
 	UF.statusbars[bar] = 'aurabars'
 	UF:Update_StatusBar(bar)
 
-	E:RegisterCooldown(bar.cooldown, 'unitframe')
+	E:RegisterCooldown(bar.cooldown, 'aurabars')
 
 	bar.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
 
