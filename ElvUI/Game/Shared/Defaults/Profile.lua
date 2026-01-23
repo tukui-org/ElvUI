@@ -2843,9 +2843,9 @@ do
 			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
 			edge = { r = 1, g = 1, b = 0, a = 0 },
 			edgeCharge = { r = 0.6, g = 1, b = 0, a = 1 },
-			swipe = { r = 0, g = 0, b = 0, a = 0.8 },
+			swipe = { r = 0, g = 0, b = 0, a = 0.6 },
 			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.2 },
-			swipeLOC = { r = 0.3, g = 0, b = 0, a = 0.8 },
+			swipeLOC = { r = 0.3, g = 0, b = 0, a = 0.6 },
 		},
 
 		position = 'CENTER',
