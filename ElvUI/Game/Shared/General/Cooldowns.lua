@@ -49,8 +49,8 @@ function E:CooldownSettings(which)
 	end
 end
 
-do
-	local blings = {}
+do	-- mainly used to prevent the bling from triggering when
+	local blings = {} -- the actionbars are faded out
 	function E:CooldownBling(cooldown, alpha)
 		local data = E.RegisteredCooldowns[cooldown]
 		if not data then return end
