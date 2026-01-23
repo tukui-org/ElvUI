@@ -183,7 +183,7 @@ function UF:GetAuraPosition(element, onlyHeight)
 	local side = anchor == 'LEFT' or anchor == 'RIGHT'
 	local point = (center or side) and (y..x) or anchor
 
-	local cols = floor(element:GetWidth() / width + 0.5)
+	local cols = element.maxCols or floor(element:GetWidth() / width + 0.5)
 
 	return anchor, inversed, growthX, growthY, width, height + spacing, spacing, cols, point, side and y
 end
