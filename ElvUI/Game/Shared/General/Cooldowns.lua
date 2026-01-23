@@ -48,7 +48,7 @@ end
 function E:CooldownInitialize(cooldown, db)
 	if cooldown.Text or not db then return end
 
-	cooldown:SetInside() -- place the cd inside of its parent
+	cooldown:SetAllPoints() -- place the cd inside of its parent
 
 	cooldown.Text = cooldown:GetRegions()
 
