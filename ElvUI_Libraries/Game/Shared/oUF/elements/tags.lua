@@ -273,15 +273,12 @@ tagFunctions.difficulty = function(u)
 end
 
 tagFunctions.group = function(unit)
-	local name, server = UnitName(unit)
-	if(server and server ~= '') then
-		name = format('%s-%s', name, server)
-	end
-
-	for i=1, GetNumGroupMembers() do
-		local raidName, _, group = GetRaidRosterInfo(i)
-		if( raidName == name ) then
-			return group
+	if(IsInRaid()) then
+		for index = 1, GetNumGroupMembers() do
+			if(UnitIsUnit(unit, 'raid' .. index)) then
+				local _, _, group = GetRaidRosterInfo(index)
+				return group
+			end
 		end
 	end
 end

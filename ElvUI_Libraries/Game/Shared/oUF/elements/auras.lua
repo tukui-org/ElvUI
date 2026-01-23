@@ -329,7 +329,7 @@ local function SetPosition(element, from, to)
 	local anchor = element.initialAnchor or 'BOTTOMLEFT'
 	local growthx = (element['growth-x'] == 'LEFT' and -1) or 1
 	local growthy = (element['growth-y'] == 'DOWN' and -1) or 1
-	local cols = floor(element:GetWidth() / sizex + 0.5)
+	local cols = element.maxCols or floor(element:GetWidth() / sizex + 0.5)
 
 	for i = from, to do
 		local button = element.active[i]
