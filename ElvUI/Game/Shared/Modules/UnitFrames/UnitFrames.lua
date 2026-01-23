@@ -1620,7 +1620,8 @@ do
 		frame:UnregisterAllEvents()
 		pcall(frame.Hide, frame)
 
-		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or (frame.HealthBarsContainer and frame.HealthBarsContainer.healthBar) or nil)
+		tinsert(DisabledElements, (frame.HealthBarsContainer and frame.HealthBarsContainer.healthBar) or nil)
+		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
 		tinsert(DisabledElements, frame.manabar or frame.ManaBar or nil)
 		tinsert(DisabledElements, frame.castBar or frame.spellbar or nil)
 		tinsert(DisabledElements, frame.petFrame or frame.PetFrame or nil)
