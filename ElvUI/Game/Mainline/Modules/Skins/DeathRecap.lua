@@ -6,15 +6,18 @@ local hooksecurefunc = hooksecurefunc
 
 local function DeathRecapScrollUpdateChild(child)
 	local spellInfo = child.SpellInfo
-	if spellInfo and not spellInfo.skinned then
+	if spellInfo and not spellInfo.IsSkinned then
 		spellInfo:CreateBackdrop()
 		spellInfo.backdrop:SetOutside(spellInfo.Icon)
+
 		spellInfo.Icon:SetTexCoords()
 		spellInfo.Icon:SetParent(spellInfo.backdrop)
+
 		if spellInfo.IconBorder then
 			spellInfo.IconBorder:Kill()
 		end
-		spellInfo.skinned = true
+
+		spellInfo.IsSkinned = true
 	end
 end
 
