@@ -4,29 +4,43 @@ local _G = _G
 local gsub, format = gsub, format
 local strlower = strlower
 
-local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
-local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
-
 local UnitIsPlayer = UnitIsPlayer
-local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitHonorLevel = UnitHonorLevel
+local UnitPower = UnitPower
+local UnitHealth = UnitHealth
+local UnitHealthMax = UnitHealthMax
+local UnitPowerMax = UnitPowerMax
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
 -- GLOBALS: UnitPower -- override during testing groups
 
-E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
-	local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
-	if cur > 0 then
-		local _, r, g, b = GetUnitPowerBarTextureInfo(unit, 3)
-		if not r then
-			r, g, b = 1, 1, 1
-		end
+E:AddTag('health:current:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+	local currentHealth = UnitHealth(unit)
 
-		return Hex(r,g,b)
-	end
+	return E:AbbreviateNumbers(currentHealth, E.Abbreviate.short)
+end)
+
+E:AddTag('power:current:shortvalue', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
+	local powerType = UnitPowerType(unit)
+	local currentPower = UnitPower(unit, powerType)
+
+	return E:AbbreviateNumbers(currentPower, E.Abbreviate.short)
+end)
+
+E:AddTag('health:max:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+	local maxHealth = UnitHealthMax(unit)
+
+	return E:AbbreviateNumbers(maxHealth, E.Abbreviate.short)
+end)
+
+E:AddTag('power:max:shortvalue', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
+	local powerType = UnitPowerType(unit)
+	local maxPower = UnitPowerMax(unit, powerType)
+
+	return E:AbbreviateNumbers(maxPower, E.Abbreviate.short)
 end)
 
 E:AddTag('pvp:honorlevel', 'UNIT_NAME_UPDATE', function(unit)
@@ -43,14 +57,6 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
 		if min and min ~= 0 then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
-		end
-	end)
-
-	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
-		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
-		if cur > 0 then
-			local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
-			return E:GetFormattedText(textFormat, cur, max)
 		end
 	end)
 

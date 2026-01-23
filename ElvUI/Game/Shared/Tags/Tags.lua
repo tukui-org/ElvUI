@@ -55,9 +55,11 @@ local UnitPVPName = UnitPVPName
 local UnitPVPRank = UnitPVPRank
 local UnitReaction = UnitReaction
 local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
+local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 
+local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
 local POWERTYPE_MANA = Enum.PowerType.Mana
 local PVP = PVP
 
@@ -96,6 +98,26 @@ if not E.Retail then
 				return status
 			else
 				return E:GetFormattedText(textFormat, UnitHealth(unit), UnitHealthMax(unit))
+			end
+		end)
+
+		E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
+			local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
+			if cur > 0 then
+				local _, r, g, b = GetUnitPowerBarTextureInfo(unit, 3)
+				if not r then
+					r, g, b = 1, 1, 1
+				end
+
+				return Hex(r,g,b)
+			end
+		end)
+
+		E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
+			local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
+			if cur > 0 then
+				local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
+				return E:GetFormattedText(textFormat, cur, max)
 			end
 		end)
 
