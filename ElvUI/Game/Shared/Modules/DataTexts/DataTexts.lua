@@ -418,11 +418,13 @@ do
 	local defaults = { enable = false, battleground = false }
 	function DT:GetPanelSettings(name)
 		-- battleground dt
-		if not P.datatexts.battlePanel[name] then
-			P.datatexts.battlePanel[name] = {}
-		end
+		if not E.Retail then
+			if not P.datatexts.battlePanel[name] then
+				P.datatexts.battlePanel[name] = {}
+			end
 
-		DT.db.battlePanel[name] = E:CopyTable(DT.db.battlePanel[name], P.datatexts.battlePanel[name], true)
+			DT.db.battlePanel[name] = E:CopyTable(DT.db.battlePanel[name], P.datatexts.battlePanel[name], true)
+		end
 
 		-- enable / battleground - enable / profile dt
 		if not DT.db.panels[name] then DT.db.panels[name] = {} end
@@ -435,7 +437,7 @@ do
 		-- global number of datatext slots for the profile
 		for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
 			if not panelDB[i] then panelDB[i] = '' end
-			if not DT.db.battlePanel[name][i] then DT.db.battlePanel[name][i] = '' end
+			if not E.Retail and not DT.db.battlePanel[name][i] then DT.db.battlePanel[name][i] = '' end
 		end
 
 		-- pass the table back
@@ -555,7 +557,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		font, fontSize, fontOutline = LSM:Fetch('font', db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
 	end
 
-	local battlePanel = info.isInBattle and (not DT.ForceHideBGStats and E.db.datatexts.panels[panelName].battleground)
+	local battlePanel = not E.Retail and info.isInBattle and (not DT.ForceHideBGStats and E.db.datatexts.panels[panelName].battleground)
 	if battlePanel then
 		DT.ShowingBattleStats = info.instanceType
 	elseif DT.ShowingBattleStats then
@@ -645,7 +647,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')
 		end
 
-		local panelDB = battlePanel and DT.db.battlePanel or DT.db.panels
+		local panelDB = (not E.Retail and battlePanel) and DT.db.battlePanel or DT.db.panels
 		local data = DT.RegisteredDataTexts[panelDB[panelName][i]]
 		DT.AssignedDatatexts[dt] = data
 		if data then DT:AssignPanelToDataText(dt, data, ...) end
@@ -682,7 +684,7 @@ function DT:LoadDataTexts(...)
 		end
 	end
 
-	if DT.ShowingBattleStats then
+	if DT.ShowingBattleStats and not E.Retail then
 		DT:UPDATE_BATTLEFIELD_SCORE()
 	end
 end
@@ -976,7 +978,7 @@ function DT:Initialize()
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)
 	E.EasyMenu.MenuSetItem = function(dt, value)
-		local panelDB = (dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
+		local panelDB = (not E.Retail and dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
 		if panelDB then
 			panelDB[dt.parentName][dt.pointIndex] = value
 			DT:UpdatePanelInfo(dt.parentName, dt.parent)
@@ -987,7 +989,7 @@ function DT:Initialize()
 		DT:CloseMenus()
 	end
 	E.EasyMenu.MenuGetItem = function(dt, value)
-		local panelDB = (dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
+		local panelDB = (not E.Retail and dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
 		return dt and (panelDB[dt.parentName] and panelDB[dt.parentName][dt.pointIndex] == value)
 	end
 

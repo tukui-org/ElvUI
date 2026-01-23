@@ -584,9 +584,6 @@ do -- Module Copy
 
 		MC:AddConfigOptions(P.actionbar, config, 'actionbar')
 
-		config.args.cooldown.name = L["Cooldown Text"]
-		config.args.cooldown.order = 2
-
 		for i = 1, 10 do
 			local bar = config.args['bar'..i]
 			bar.name = L["Bar "]..i
@@ -617,9 +614,6 @@ do -- Module Copy
 
 		MC:AddConfigOptions(P.auras, config, 'auras')
 
-		config.args.cooldown.name = L["Cooldown Text"]
-		config.args.cooldown.order = 2
-
 		config.args.buffs.name = L["Buffs"]
 		config.args.debuffs.name = L["Debuffs"]
 
@@ -631,9 +625,6 @@ do -- Module Copy
 		local config = MC:CreateModuleConfigGroup(L["Bags"], 'bags')
 
 		MC:AddConfigOptions(P.bags, config, 'bags')
-
-		config.args.cooldown.name = L["Cooldown Text"]
-		config.args.cooldown.order = 2
 
 		config.args.ignoredItems = nil
 		config.args.colors.name = L["Colors"]
@@ -658,8 +649,6 @@ do -- Module Copy
 		local config = MC:CreateModuleConfigGroup(L["Cooldown Text"], 'cooldown')
 
 		MC:AddConfigOptions(P.cooldown, config, 'cooldown')
-
-		config.args.fonts = ACH:Toggle(L["Fonts"], nil, 2)
 
 		return config
 	end
@@ -712,9 +701,6 @@ do -- Module Copy
 		MC:AddConfigOptions(P.nameplates, config, 'nameplates')
 
 		-- Locales
-		config.args.cooldown.name = L["Cooldown Text"]
-		config.args.cooldown.order = 2
-
 		config.args.threat.name = L["Threat"]
 		config.args.cutaway.name = L["Cutaway Bars"]
 		config.args.clickThrough.name = L["Click Through"]
@@ -759,7 +745,6 @@ do -- Module Copy
 
 		MC:AddConfigOptions(P.unitframe, config, 'unitframe')
 
-		config.args.cooldown = ACH:Toggle(L["Cooldown Text"], nil, 2, nil, nil, nil, function(info) return E.global.profileCopy.unitframe[info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info]] = value; end)
 		config.args.colors = ACH:Group(L["Colors"], nil, -9, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 		config.args.colors.inline = true
 

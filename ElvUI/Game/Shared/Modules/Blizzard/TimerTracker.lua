@@ -36,9 +36,9 @@ end
 
 function BL:START_TIMER()
 	for _, b in pairs(_G.TimerTracker.timerList) do
-		if b.bar and not b.bar.skinned then
+		if b.bar and not b.bar.IsSkinned then
 			SkinIt(b.bar)
-			b.bar.skinned = true
+			b.bar.IsSkinned = true
 		end
 	end
 end

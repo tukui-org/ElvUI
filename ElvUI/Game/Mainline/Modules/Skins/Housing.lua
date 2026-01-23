@@ -30,6 +30,14 @@ local function HouseList_Update(frame)
 	frame:ForEachFrame(HouseList_UpdateChild)
 end
 
+local function HandleContentFrameTabs(frame)
+	if not frame.TabSystem then return end
+
+	for _, tab in next, { frame.TabSystem:GetChildren() } do
+		S:HandleTab(tab)
+	end
+end
+
 function S:Blizzard_HousingHouseFinder()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -46,6 +54,7 @@ function S:Blizzard_HousingHouseFinder()
 		NeighborhoodListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
 		S:HandleEditBox(NeighborhoodListFrame.BNetFriendSearchBox)
 		S:HandleButton(NeighborhoodListFrame.RefreshButton)
+		S:HandleTrimScrollBar(NeighborhoodListFrame.ScrollFrame.ScrollBar)
 	end
 end
 
@@ -96,15 +105,61 @@ function S:Blizzard_HousingDashboard()
 
 		local ContentFrame = InfoContent.ContentFrame
 		if ContentFrame then
-			for _, tab in next, { ContentFrame.TabSystem:GetChildren() } do
-				S:HandleTab(tab)
-			end
-
 			local HouseUpgradeFrame = ContentFrame.HouseUpgradeFrame
 			if HouseUpgradeFrame then
 				HouseUpgradeFrame:StripTextures()
 				HouseUpgradeFrame.Background:Hide()
 				S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
+			end
+
+			hooksecurefunc(ContentFrame, 'UpdateTabs', HandleContentFrameTabs)
+		end
+
+		local InitiativesFrame = ContentFrame.InitiativesFrame
+		if InitiativesFrame then
+			InitiativesFrame.InitiativesArt:Hide() -- Main Top Art BG
+
+			local Tasks = InitiativesFrame.InitiativeSetFrame.InitiativeTasks
+			if Tasks then
+				Tasks.BG:StripTextures()
+				Tasks:SetTemplate('Transparent')
+				S:HandleTrimScrollBar(Tasks.ScrollBar)
+
+				local toStrip = {
+					Tasks.BG,
+					Tasks.BorderRight,
+					Tasks.BorderTop,
+					Tasks.TitleCornerBR,
+					Tasks.TitleCornerTR,
+					Tasks.TaskListTitleContainer.TitleCornerBR,
+					Tasks.TaskListTitleContainer.TitleFoliage
+				}
+				for _, frame in next, toStrip do
+					if frame then
+						frame:StripTextures()
+					end
+				end
+			end
+
+			local Activity = InitiativesFrame.InitiativeSetFrame.InitiativeActivity
+			if Activity then
+				Activity:SetTemplate('Transparent')
+				S:HandleTrimScrollBar(Activity.ScrollBar)
+
+				local toStrip = {
+					Activity.BG,
+					Activity.BGTexture,
+					Activity.BorderTop,
+					Activity.TitleCornerBL,
+					Activity.TitleCornerTR,
+					Activity.ActivityLogTitleContainer.TitleCornerBL,
+					Activity.ActivityLogTitleContainer.TitleFoliage
+				}
+				for _, frame in next, toStrip do
+					if frame then
+						frame:StripTextures()
+					end
+				end
 			end
 		end
 	end

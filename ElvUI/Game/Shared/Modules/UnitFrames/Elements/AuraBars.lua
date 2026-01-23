@@ -32,8 +32,6 @@ function UF:Construct_AuraBars(bar)
 
 	E:RegisterCooldown(bar.cooldown, 'aurabars')
 
-	bar.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
-
 	UF:Configure_FontString(bar.timeText)
 	UF:Configure_FontString(bar.nameText)
 

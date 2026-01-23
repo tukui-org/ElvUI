@@ -14,7 +14,7 @@ local function SkinTab(tab)
 end
 
 local function BlackMarketScrollUpdateChild(button)
-	if not button.skinned then
+	if not button.IsSkinned then
 		S:HandleItemButton(button.Item)
 		S:HandleIconBorder(button.Item.IconBorder)
 
@@ -23,7 +23,7 @@ local function BlackMarketScrollUpdateChild(button)
 
 		button.Selection:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 
-		button.skinned = true
+		button.IsSkinned = true
 	end
 end
 

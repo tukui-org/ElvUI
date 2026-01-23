@@ -1243,17 +1243,11 @@ local TopAuras = {
 	countFontSize = 10,
 	countXOffset = 0,
 	countYOffset = 0,
-	timeFont = 'Homespun',
-	timeFontOutline = 'MONOCHROMEOUTLINE',
-	timeFontSize = 10,
-	timeXOffset = 0,
-	timeYOffset = 0,
 	fadeThreshold = 6,
 	growthDirection = 'LEFT_DOWN',
 	horizontalSpacing = 6,
 	maxWraps = 3,
 	seperateOwn = 1,
-	showDuration = true,
 	size = 32,
 	height = 32,
 	keepSizeRatio = true,
@@ -2823,28 +2817,68 @@ for i, role in next, {'TANK', 'HEALER', 'DAMAGER'} do
 	P.unitframe.units.raidpet['ROLE'..i] = role
 end
 
---Cooldown:
-P.cooldown = {
-	-- enable = true; only on the global table
-	color = { r = 1, g = 1, b = 1 },
+do
+	P.cooldown = {
+		enable = true
+	}
 
-	position = 'CENTER',
-	offsetX = 0,
-	offsetY = 0,
+	local defaults = {
+		enable = true,
 
-	font = 'Expressway',
-	fontOutline = 'OUTLINE',
-	fontSize = 16
-}
+		reverse = false,
+		hideBling = false,
+		hideNumbers = false,
+		altBling = false,
+
+		rotation = 0,
+		threshold = 0, -- seconds
+		minDuration = 1500, -- ms
+
+		colors = {
+			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
+			edge = { r = 0, g = 0, b = 0, a = 1 },
+			edgeCharge = { r = 0.6, g = 1, b = 0, a = 1 },
+			swipe = { r = 0, g = 0, b = 0, a = 0.6 },
+			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.2 },
+			swipeLOC = { r = 0.3, g = 0, b = 0, a = 0.6 },
+		},
+
+		position = 'CENTER',
+		offsetX = 0,
+		offsetY = 0,
+
+		font = 'Expressway',
+		fontOutline = 'OUTLINE',
+		fontSize = 16,
+	}
+
+	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
+	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton' } do
+		local object = CopyTable(defaults)
+
+		if key == 'global' then
+			object.fontSize = 18
+		elseif key == 'aurabars' then
+			object.position = 'RIGHT'
+			object.offsetX = -10
+		elseif key == 'auras' then
+			object.reverse = true
+			object.position = 'BOTTOM'
+			object.offsetY = -3
+		elseif key == 'actionbar' then
+			object.threshold = 300
+			object.altBling = useAltBling
+		end
+
+		P.cooldown[key] = object
+	end
+end
 
 --Actionbar
 local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
 
 P.actionbar = {
-	chargeCooldown = false,
-	colorSwipeLOC = { r = 0.25, g = 0, b = 0, a = 0.8 },
-	colorSwipeNormal = { r = 0, g = 0, b = 0, a = 0.8 },
 	hotkeyTextPosition = 'TOPRIGHT',
 	macroTextPosition = 'TOPRIGHT',
 	countTextPosition = 'BOTTOMRIGHT',
@@ -2862,7 +2896,6 @@ P.actionbar = {
 	fontSize = 10,
 	globalFadeAlpha = 0,
 	handleOverlay = true,
-	hideCooldownBling = false,
 	lockActionBars = true,
 	movementModifier = 'SHIFT',
 	noPowerColor = { r = 0.5, g = 0.5, b = 1 },
@@ -2873,7 +2906,6 @@ P.actionbar = {
 	rightClickSelfCast = false,
 	transparent = false,
 	usableColor = { r = 1, g = 1, b = 1 },
-	useDrawSwipeOnCharges = false,
 	useRangeColorText = false,
 	barPet = {
 		enabled = true,
@@ -3094,17 +3126,20 @@ end
 P.actionbar.bar1.enabled = true
 P.actionbar.bar1.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 
-P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;'..((E.Wrath or E.Mists) and ' [bonusbar:2] 8;' or '')
-P.actionbar.bar1.paging.WARLOCK = (E.Wrath or E.Mists) and '[form:1] 7;' or nil
-P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
+P.actionbar.bar1.paging.ROGUE = '[bonusbar:1] 7;' .. ((E.Wrath or E.Mists) and ' [bonusbar:2] 8;' or '') .. (E.TBC and ' [possessbar] 16;' or '')
+P.actionbar.bar1.paging.WARLOCK = ((E.Wrath or E.Mists) and '[form:1] 7;') or (E.TBC and '[possessbar] 16;') or ''
+P.actionbar.bar1.paging.DRUID = '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;' .. (E.TBC and ' [possessbar] 16;' or '')
+P.actionbar.bar1.paging.PRIEST = (E.Retail and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' .. (E.TBC and ' [possessbar] 16;' or '')
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.PRIEST = (E.Retail and '[form:1, spec:3] 7;') or (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.WARRIOR = '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;'
 
 if E.Mists then
 	P.actionbar.bar1.paging.MONK = '[bonusbar:1] 7; [bonusbar:2] 8;'
 elseif E.TBC then
+	P.actionbar.bar1.paging.PALADIN = '[possessbar] 16;'
+	P.actionbar.bar1.paging.MAGE = '[possessbar] 16;'
 	P.actionbar.bar1.paging.HUNTER = '[possessbar] 16;'
+	P.actionbar.bar1.paging.SHAMAN = '[possessbar] 16;'
 end
 
 P.actionbar.bar3.enabled = true
@@ -3119,30 +3154,6 @@ P.actionbar.bar4.backdrop = true
 P.actionbar.bar5.enabled = true
 P.actionbar.bar5.buttons = 6
 P.actionbar.bar5.buttonsPerRow = 6
-
-do -- cooldown stuff
-	P.actionbar.cooldown = CopyTable(P.cooldown)
-	P.auras.cooldown = CopyTable(P.cooldown)
-	P.bags.cooldown = CopyTable(P.cooldown)
-	P.nameplates.cooldown = CopyTable(P.cooldown)
-	P.unitframe.cooldown = CopyTable(P.cooldown)
-
-	P.cdmanager = {} -- Blizzard's Cooldown Manager
-	P.cdmanager.cooldown = CopyTable(P.cooldown)
-
-	P.aurabars = {}
-	P.aurabars.cooldown = CopyTable(P.cooldown)
-
-	P.aurabars.cooldown.position = 'RIGHT'
-	P.aurabars.cooldown.offsetX = -10
-
-	P.auras.cooldown.position = 'BOTTOM'
-	P.auras.cooldown.offsetY = -3
-
-	-- we gonna need this on by default :3
-	P.cooldown.enable = true
-	P.cooldown.fontSize = 18
-end
 
 -- This allows movers positions to be reset to whatever profile is being used
 E.LayoutMoverPositions = {

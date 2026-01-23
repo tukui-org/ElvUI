@@ -33,7 +33,6 @@ OnEnter and OnLeave script handlers will be set to display a Tooltip if the `Tot
         Icon:SetAllPoints()
 
         local Cooldown = CreateFrame('Cooldown', nil, Totem, 'CooldownFrameTemplate')
-        Cooldown:SetAllPoints()
 
         Totem.Icon = Icon
         Totem.Cooldown = Cooldown

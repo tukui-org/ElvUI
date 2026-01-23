@@ -19,6 +19,7 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS or 10
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'Stance Bar')
 local WispSplode = [[Interface\Icons\Spell_Nature_WispSplode]]
+
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
 bar.MasqueGroup = MasqueGroup
 bar.buttons = {}
@@ -31,7 +32,8 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 			local start, duration, active = GetShapeshiftFormCooldown(i)
 			if (active and active ~= 0) and start > 0 and duration > 0 then
 				cooldown:SetCooldown(start, duration)
-				cooldown:SetDrawBling(cooldown:GetEffectiveAlpha() > 0.5) --Cooldown Bling Fix
+
+				E:CooldownBling(cooldown, cooldown:GetEffectiveAlpha())
 			else
 				cooldown:Clear()
 			end

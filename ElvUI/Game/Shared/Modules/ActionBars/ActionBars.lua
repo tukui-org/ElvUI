@@ -44,7 +44,6 @@ local VehicleExit = VehicleExit
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
-local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 local BINDING_SET = Enum.BindingSet
 
@@ -820,35 +819,23 @@ function AB:UpdateProfessionQuality(button)
 	button.ProfessionQualityOverlayFrame:SetShown(enable and not not atlas)
 end
 
-function AB:ColorSwipeTexture(cooldown)
-	if not cooldown then return end
-
-	local color = (cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and AB.db.colorSwipeLOC) or AB.db.colorSwipeNormal
-	cooldown:SetSwipeColor(color.r, color.g, color.b, color.a)
-end
-
-function AB:FadeBlingTexture(cooldown, alpha)
-	if not cooldown then return end
-	cooldown:SetBlingTexture(alpha > 0.5 and (E.Retail and 131010 or [[interface\cooldown\star4.blp]]) or E.Media.Textures.Invisible)
-end
-
 function AB:FadeBlings(alpha)
-	if AB.db.hideCooldownBling then return end
+	if E.db.cooldown.actionbar.hideBling then return end
 
 	for _, bar in next, { AB.fadeParent:GetChildren() } do
 		if bar.buttons then
 			for _, button in ipairs(bar.buttons) do
-				AB:FadeBlingTexture(button.cooldown, alpha)
+				E:CooldownBling(button.cooldown, alpha)
 			end
 		end
 	end
 end
 
 function AB:FadeBarBlings(bar, alpha)
-	if AB.db.hideCooldownBling then return end
+	if E.db.cooldown.actionbar.hideBling then return end
 
 	for _, button in ipairs(bar.buttons) do
-		AB:FadeBlingTexture(button.cooldown, alpha)
+		E:CooldownBling(button.cooldown, alpha)
 	end
 end
 
@@ -1415,8 +1402,6 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	config.colors.mana = E:SetColorTable(config.colors.mana, AB.db.noPowerColor)
 	config.colors.usable = E:SetColorTable(config.colors.usable, AB.db.usableColor)
 	config.colors.notUsable = E:SetColorTable(config.colors.notUsable, AB.db.notUsableColor)
-	config.useDrawBling = not AB.db.hideCooldownBling
-	config.useDrawSwipeOnCharges = AB.db.useDrawSwipeOnCharges
 	config.handleOverlay = AB.db.handleOverlay
 
 	-- NOTE: Pick Up Action Key will break macros of the same key (secure action code)
@@ -1737,7 +1722,12 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	end
 
 	if button.cooldown then
-		AB:ColorSwipeTexture(button.cooldown)
+		E:CooldownBling(button.cooldown, button.cooldown:GetEffectiveAlpha())
+
+		-- Loss of Control Swipe
+		if not E.Retail then
+			E:LABCooldownUpdate(button.cooldown)
+		end
 	end
 end
 
@@ -1869,7 +1859,6 @@ function AB:Initialize()
 	AB:CreateBarShapeShift()
 	AB:CreateVehicleLeave()
 	AB:UpdateButtonSettings()
-	AB:UpdatePetCooldownSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 

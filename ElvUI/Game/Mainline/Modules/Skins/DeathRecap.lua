@@ -6,16 +6,21 @@ local hooksecurefunc = hooksecurefunc
 
 local function DeathRecapScrollUpdateChild(child)
 	local spellInfo = child.SpellInfo
-	if spellInfo and not spellInfo.skinned then
-		spellInfo:CreateBackdrop()
-		spellInfo.backdrop:SetOutside(spellInfo.Icon)
+	if not spellInfo or spellInfo.IsSkinned then return end
+
+	spellInfo:CreateBackdrop()
+	spellInfo.backdrop:SetOutside(spellInfo.Icon)
+
+	if spellInfo.Icon then
 		spellInfo.Icon:SetTexCoords()
 		spellInfo.Icon:SetParent(spellInfo.backdrop)
-		if spellInfo.IconBorder then
-			spellInfo.IconBorder:Kill()
-		end
-		spellInfo.skinned = true
 	end
+
+	if spellInfo.IconBorder then
+		spellInfo.IconBorder:Kill()
+	end
+
+	spellInfo.IsSkinned = true
 end
 
 local function DeathRecapScrollUpdate(frame)
@@ -29,9 +34,13 @@ function S:Blizzard_DeathRecap()
 	DeathRecapFrame:StripTextures()
 	DeathRecapFrame:SetTemplate('Transparent')
 	DeathRecapFrame.CloseButton:SetFrameLevel(5)
+
 	S:HandleCloseButton(DeathRecapFrame.CloseXButton)
 	S:HandleButton(DeathRecapFrame.CloseButton)
-	S:HandleTrimScrollBar(DeathRecapFrame.ScrollBar)
+
+	if DeathRecapFrame.ScrollBar then
+		S:HandleTrimScrollBar(DeathRecapFrame.ScrollBar)
+	end
 
 	if DeathRecapFrame.ScrollBox then
 		hooksecurefunc(DeathRecapFrame.ScrollBox, 'Update', DeathRecapScrollUpdate)

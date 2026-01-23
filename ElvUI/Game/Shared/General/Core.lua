@@ -77,6 +77,7 @@ E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
 E.ClearTexture = 0 -- used to clear: Set (Normal, Disabled, Checked, Pushed, Highlight) Texture
+E.Abbreviate = {}
 E.UserList = {}
 
 -- oUF Defines
@@ -334,13 +335,17 @@ function E:UpdateMedia(mediaType)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 
 	if E.db.cooldown.enable then
-		E:UpdateClassColor(E.db.cdmanager.cooldown.color)
-		E:UpdateClassColor(E.db.auras.cooldown.color)
-		E:UpdateClassColor(E.db.bags.cooldown.color)
-		E:UpdateClassColor(E.db.actionbar.cooldown.color)
-		E:UpdateClassColor(E.db.nameplates.cooldown.color)
-		E:UpdateClassColor(E.db.unitframe.cooldown.color)
-		E:UpdateClassColor(E.db.cooldown.color)
+		for key in next, P.cooldown do
+			local db = type(key) == 'table' and E.db.cooldown[key]
+			if db then
+				E:UpdateClassColor(db.colors.text)
+				E:UpdateClassColor(db.colors.edge)
+				E:UpdateClassColor(db.colors.edgeCharge)
+				E:UpdateClassColor(db.colors.swipe)
+				E:UpdateClassColor(db.colors.swipeCharge)
+				E:UpdateClassColor(db.colors.swipeLOC)
+			end
+		end
 	end
 
 	if E.private.nameplates.enable then
@@ -1544,7 +1549,6 @@ function E:UpdateActionBars(skipCallback)
 	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroButtons()
-	ActionBars:UpdatePetCooldownSettings()
 
 	if E.Retail or E.Mists then
 		ActionBars:UpdateExtraButtons()
@@ -2056,7 +2060,9 @@ function E:Initialize()
 			E:StaticPopup_Show('UPDATE_REQUEST')
 		end
 
-		if GetCVarBool('scriptProfile') then
+		if GetCVarBool('taintLog') then
+			E:StaticPopup_Show('TAINT_LOG')
+		elseif GetCVarBool('scriptProfile') then
 			E:StaticPopup_Show('SCRIPT_PROFILE')
 		end
 

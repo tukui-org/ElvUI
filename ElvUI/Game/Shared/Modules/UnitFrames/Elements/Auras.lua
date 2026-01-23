@@ -183,7 +183,7 @@ function UF:GetAuraPosition(element, onlyHeight)
 	local side = anchor == 'LEFT' or anchor == 'RIGHT'
 	local point = (center or side) and (y..x) or anchor
 
-	local cols = floor(element:GetWidth() / width + 0.5)
+	local cols = element.maxCols or floor(element:GetWidth() / width + 0.5)
 
 	return anchor, inversed, growthX, growthY, width, height + spacing, spacing, cols, point, side and y
 end
@@ -234,10 +234,6 @@ end
 
 function UF:Construct_AuraIcon(button)
 	button:SetTemplate(nil, nil, nil, nil, true)
-
-	button.Cooldown:SetReverse(true)
-	button.Cooldown:SetDrawEdge(false)
-	button.Cooldown:SetInside(button, UF.BORDER, UF.BORDER)
 
 	button.Icon:SetInside(button, UF.BORDER, UF.BORDER)
 	button.Icon:SetDrawLayer('ARTWORK')

@@ -201,7 +201,6 @@ local function HeirloomsJournalUpdateButton(_, button)
 		button.special:SetJustifyH('RIGHT')
 		button.special:ClearAllPoints()
 
-		button.cooldown:SetAllPoints(button.iconTexture)
 		E:RegisterCooldown(button.cooldown)
 
 		button.IsSkinned = true
@@ -363,10 +362,10 @@ local function SkinToyFrame()
 		button.hover:SetAllPoints(button.iconTexture)
 		button.checked:SetAllPoints(button.iconTexture)
 		button.pushed:SetAllPoints(button.iconTexture)
-		button.cooldown:SetAllPoints(button.iconTexture)
 
 		hooksecurefunc(button.name, 'SetTextColor', ToyTextColor)
 		hooksecurefunc(button.new, 'SetTextColor', ToyTextColor)
+
 		E:RegisterCooldown(button.cooldown)
 	end
 

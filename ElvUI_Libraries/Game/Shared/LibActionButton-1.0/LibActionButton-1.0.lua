@@ -32,7 +32,6 @@ local LCG = LibStub("LibCustomGlow-1.0", true)
 local Masque = LibStub("Masque", true)
 
 local GetCVar = C_CVar.GetCVar
-local GetCVarBool = C_CVar.GetCVarBool
 local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
 local GetCooldownAuraBySpellID = C_UnitAuras.GetCooldownAuraBySpellID
 local GetItemActionOnEquipSpellID = C_ActionBar.GetItemActionOnEquipSpellID
@@ -128,7 +127,7 @@ local GetFlyoutHandler
 local InitializeEventHandler, OnEvent, ForAllButtonsWithSpell, ForAllButtons
 local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons
 
-local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateCooldownNumberHidden, UpdateTooltip, UpdateNewAction, UpdateSpellHighlight, ClearNewActionHighlight
+local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateTooltip, UpdateNewAction, UpdateSpellHighlight, ClearNewActionHighlight
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
@@ -195,7 +194,6 @@ local DefaultConfig = {
 	lossOfControlCooldown = true,
 	flyoutDirection = "UP",
 	useDrawBling = true,
-	useDrawSwipeOnCharges = true,
 	handleOverlay = true,
 	spellCastVFX = false, -- enable cast vfx
 	text = {
@@ -1417,7 +1415,6 @@ function Generic:UpdateConfig(config)
 		end
 	end
 
-	UpdateCooldownNumberHidden(self)
 	UpdateTextElements(self)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
@@ -1547,9 +1544,7 @@ function OnEvent(_, event, arg1, arg2, ...)
 			DiscoverFlyoutSpells()
 		end
 	elseif event == "CVAR_UPDATE" then
-		if arg1 == "countdownForCooldowns" then
-			ForAllButtons(UpdateCooldownNumberHidden)
-		elseif arg1 == "assistedCombatHighlight" then
+		if arg1 == "assistedCombatHighlight" then
 			wipe(lib.activeAssist)
 		end
 	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
@@ -2036,8 +2031,6 @@ function Update(self, which)
 					self.HighlightTexture:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
 					self.CheckedTexture:SetSize(52, 51)
 					self.CheckedTexture:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
-					self.cooldown:ClearAllPoints()
-					self.cooldown:SetAllPoints()
 				else
 					self:SetNormalAtlas("UI-HUD-ActionBar-IconFrame-AddRow")
 					self.icon:AddMaskTexture(self.IconMask)
@@ -2045,9 +2038,6 @@ function Update(self, which)
 					self.HighlightTexture:SetPoint("TOPLEFT")
 					self.CheckedTexture:SetSize(46, 45)
 					self.CheckedTexture:SetPoint("TOPLEFT")
-					self.cooldown:ClearAllPoints()
-					self.cooldown:SetPoint("TOPLEFT", self, "TOPLEFT", 3, -2)
-					self.cooldown:SetPoint("BOTTOMRIGHT", self, "BOTTOMRIGHT", -3, 3)
 				end
 			end
 		else
@@ -2229,10 +2219,6 @@ local function CreateChargeCooldownFrame(parent)
 	lib.NumChargeCooldowns = lib.NumChargeCooldowns + 1
 
 	local cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
-	cooldown:SetHideCountdownNumbers(true)
-	cooldown:SetDrawSwipe(false)
-	cooldown:SetPoint("TOPLEFT", parent.icon, "TOPLEFT", 2, -2)
-	cooldown:SetPoint("BOTTOMRIGHT", parent.icon, "BOTTOMRIGHT", -2, 2)
 	cooldown:SetFrameLevel(parent:GetFrameLevel())
 
 	return cooldown
@@ -2260,17 +2246,6 @@ local function OnCooldownDone(self, requireCooldownUpdate)
 	if requireCooldownUpdate then
 		UpdateCooldown(self:GetParent())
 	end
-end
-
-function UpdateCooldownNumberHidden(self)
-	local shouldBeHidden
-	if self.config.cooldownCount == nil then
-		shouldBeHidden = GetCVarBool("countdownForCooldowns") ~= true
-	else
-		shouldBeHidden = not self.config.cooldownCount
-	end
-
-	self.cooldown:SetHideCountdownNumbers(shouldBeHidden)
 end
 
 local defaultCooldownInfo = { startTime = 0; duration = 0; isEnabled = false; modRate = 0 }
@@ -2330,8 +2305,6 @@ function UpdateCooldown(self)
 		chargeInfo = defaultChargeInfo
 	end
 
-	self.cooldown:SetDrawBling(self.cooldown:GetEffectiveAlpha() > 0.5)
-
 	-- 12.0 helper function
 	if ActionButton_ApplyCooldown then
 		ActionButton_ApplyCooldown(self.cooldown, cooldownInfo, self.chargeCooldown, chargeInfo, self.lossOfControlCooldown, lossOfControlInfo)
@@ -2346,10 +2319,7 @@ function UpdateCooldown(self)
 		local hasCooldown = enable and start and duration and start > 0 and duration > 0
 		if hasLocCooldown and ((not hasCooldown) or ((locStart + locDuration) > (start + duration))) then
 			if self.cooldown.currentCooldownType ~= _G.COOLDOWN_TYPE_LOSS_OF_CONTROL then
-				self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge-LoC")
-				self.cooldown:SetSwipeColor(0.17, 0, 0)
 				self.cooldown.currentCooldownType = _G.COOLDOWN_TYPE_LOSS_OF_CONTROL
-				UpdateCooldownNumberHidden(self)
 			end
 
 			CooldownFrame_Set(self.cooldown, locStart, locDuration, true, true, modRate)
@@ -2357,10 +2327,7 @@ function UpdateCooldown(self)
 			ClearChargeCooldown(self)
 		else
 			if self.cooldown.currentCooldownType ~= _G.COOLDOWN_TYPE_NORMAL then
-				self.cooldown:SetEdgeTexture("Interface\\Cooldown\\edge")
-				self.cooldown:SetSwipeColor(0, 0, 0)
 				self.cooldown.currentCooldownType = _G.COOLDOWN_TYPE_NORMAL
-				UpdateCooldownNumberHidden(self)
 			end
 
 			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone, hasLocCooldown)
