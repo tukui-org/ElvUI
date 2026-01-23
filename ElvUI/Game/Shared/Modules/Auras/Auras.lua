@@ -408,9 +408,13 @@ function A:UpdateTime(button, duration, expiration, modRate)
 
 		if button.timeLeft < 0.1 then
 			A:ClearAuraTime(button, true)
+
+			button.cooldown:Clear()
 		else
 			if duration > 0 then
 				button.cooldown:SetCooldown((expiration - duration), duration, modRate)
+			else
+				button.cooldown:Clear()
 			end
 
 			A:UpdateButton(button)
