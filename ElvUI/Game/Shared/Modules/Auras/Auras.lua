@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
-local ElvUF = E.oUF
 
 local _G = _G
 local next = next
@@ -240,32 +239,24 @@ end
 
 function A:SetAuraTime(button, expiration, duration, modRate)
 	button.duration = duration
+	button.expiration = expiration
+	button.modRate = modRate
 
-	if button.statusBar:IsShown() then
-		button.statusBar:SetMinMaxValues(0, duration)
-	end
-
-	A:UpdateTime(button, duration, expiration, modRate)
+	A:UpdateButton(button, duration, expiration, modRate)
 
 	button.elapsed = 0
 end
 
-function A:ClearAuraTime(button, expired)
+function A:ClearAuraTime(button)
 	button.duration = nil
+	button.expiration = nil
+	button.modRate = nil
 	button.timeLeft = nil
 
 	E:StopFlash(button, 1)
 
-	if not expired and button.statusBar:IsShown() then
-		button.statusBar:SetMinMaxValues(0, 1)
-		button.statusBar:SetValue(1, button.statusBar.smoothing)
-
-		local db = A.db[button.auraType]
-		if db.barColorGradient then -- value 1 is just green
-			button.statusBar:SetStatusBarColor(0, .8, 0)
-		else
-			button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
-		end
+	if button.statusBar:IsShown() then
+		button.statusBar:Hide()
 	end
 end
 
@@ -298,7 +289,7 @@ function A:UpdateAura(button, index)
 	button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	if E.Retail then
-		A:UpdateTime(button, duration, expiration, modRate)
+		A:UpdateButton(button, duration, expiration, modRate)
 
 		button.elapsed = 0
 	elseif duration and expiration then
@@ -362,7 +353,7 @@ function A:Button_OnHide()
 	end
 end
 
-function A:UpdateTime(button, duration, expiration, modRate)
+function A:UpdateButton(button, duration)
 	local db = A.db[button.auraType]
 	if E.Retail then
 		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
@@ -379,59 +370,67 @@ function A:UpdateTime(button, duration, expiration, modRate)
 			button.cooldown:Hide()
 		end
 	else
-		button.timeLeft = (expiration - GetTime()) / (modRate or 1)
-		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
+		A:UpdateTime(button, button.expiration, button.modRate)
 
-		if button.timeLeft < 0.1 then
-			button.cooldown:Clear()
-
-			A:ClearAuraTime(button, true)
+		local r, g, b
+		if db.barColorGradient then
+			r, g, b = E:ColorGradient(button.duration == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
 		else
-			if duration > 0 then
-				button.cooldown:SetCooldown((expiration - duration), duration, modRate)
-			else
-				button.cooldown:Clear()
-			end
+			r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
+		end
 
-			if button.statusBar and button.statusBar:IsShown() then
-				local r, g, b
-				if db.barColorGradient then
-					local maxValue = button.duration or 0
-					r, g, b = E:ColorGradient(maxValue == 0 and 0 or (button.timeLeft / maxValue), .8, 0, 0, .8, .8, 0, 0, .8, 0)
-				else
-					r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
-				end
+		local hasCooldown = duration > 0
+		button.statusBar:SetStatusBarColor(r, g, b)
+		button.statusBar:SetShown(db.barShow and (hasCooldown or (db.barNoDuration and duration == 0)))
 
-				button.statusBar:SetStatusBarColor(r, g, b)
+		if hasCooldown then
+			button.cooldown:SetCooldown((button.expiration - duration), duration, button.modRate)
+
+			if button.statusBar:IsShown() then
+				button.statusBar:SetMinMaxValues(0, duration)
 			end
+		else
+			button.statusBar:SetMinMaxValues(0, 1)
+			button.statusBar:SetValue(1, button.statusBar.smoothing)
+			button.cooldown:Clear()
 		end
 	end
 end
 
-function A:HandleFlash(button)
-	local db = A.db[button.auraType]
+function A:UpdateTime(button, expiration, modRate)
+	button.timeLeft = (expiration - GetTime()) / (modRate or 1)
+
+	if button.timeLeft < 0.1 then
+		button.cooldown:Clear()
+
+		A:ClearAuraTime(button)
+	end
+
+	A:UpdateFlash(button)
+end
+
+function A:UpdateFlash(button)
+	local db = button.timeLeft and A.db[button.auraType]
 	local threshold = db and db.fadeThreshold
-	if not threshold or threshold == -1 then
-		return
-	elseif button.timeLeft > threshold then
-		E:StopFlash(button, 1)
-	else
+	if threshold and (button.timeLeft <= threshold) then
 		E:Flash(button, 1, true)
+	else
+		E:StopFlash(button, 1)
 	end
 end
 
 function A:Button_OnUpdate(elapsed)
-	if self.statusBar:IsShown() then
-		A:UpdateStatusBar(self)
-	end
-
 	if self.elapsed and self.elapsed > 0.1 then
 		if GameTooltip:IsOwned(self) then
 			A:SetTooltip(self)
 		end
 
+		if self.statusBar:IsShown() then
+			A:UpdateStatusBar(self)
+		end
+
 		if self.timeLeft then
-			A:HandleFlash(self)
+			A:UpdateTime(self, self.expiration, self.modRate)
 		end
 
 		self.elapsed = 0
