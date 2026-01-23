@@ -129,30 +129,6 @@ function A:UpdateStatusBar(button)
 	end
 end
 
-function A:UpdateButton(button)
-	local db = A.db[button.auraType]
-	if button.statusBar and button.statusBar:IsShown() then
-		local r, g, b
-		if db.barColorGradient then
-			local maxValue = button.duration or 0
-			r, g, b = E:ColorGradient(maxValue == 0 and 0 or (button.timeLeft / maxValue), .8, 0, 0, .8, .8, 0, 0, .8, 0)
-		else
-			r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
-		end
-
-		button.statusBar:SetStatusBarColor(r, g, b)
-	end
-
-	local threshold = db.fadeThreshold
-	if threshold == -1 then
-		return
-	elseif button.timeLeft > threshold then
-		E:StopFlash(button, 1)
-	else
-		E:Flash(button, 1, true)
-	end
-end
-
 function A:CreateIcon(button)
 	local header = button:GetParent()
 
@@ -407,9 +383,9 @@ function A:UpdateTime(button, duration, expiration, modRate)
 		button.statusBar:SetShown((db.barShow and duration > 0) or (db.barShow and db.barNoDuration and duration == 0))
 
 		if button.timeLeft < 0.1 then
-			A:ClearAuraTime(button, true)
-
 			button.cooldown:Clear()
+
+			A:ClearAuraTime(button, true)
 		else
 			if duration > 0 then
 				button.cooldown:SetCooldown((expiration - duration), duration, modRate)
@@ -417,8 +393,30 @@ function A:UpdateTime(button, duration, expiration, modRate)
 				button.cooldown:Clear()
 			end
 
-			A:UpdateButton(button)
+			if button.statusBar and button.statusBar:IsShown() then
+				local r, g, b
+				if db.barColorGradient then
+					local maxValue = button.duration or 0
+					r, g, b = E:ColorGradient(maxValue == 0 and 0 or (button.timeLeft / maxValue), .8, 0, 0, .8, .8, 0, 0, .8, 0)
+				else
+					r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
+				end
+
+				button.statusBar:SetStatusBarColor(r, g, b)
+			end
 		end
+	end
+end
+
+function A:HandleFlash(button)
+	local db = A.db[button.auraType]
+	local threshold = db and db.fadeThreshold
+	if not threshold or threshold == -1 then
+		return
+	elseif button.timeLeft > threshold then
+		E:StopFlash(button, 1)
+	else
+		E:Flash(button, 1, true)
 	end
 end
 
@@ -430,6 +428,10 @@ function A:Button_OnUpdate(elapsed)
 	if self.elapsed and self.elapsed > 0.1 then
 		if GameTooltip:IsOwned(self) then
 			A:SetTooltip(self)
+		end
+
+		if self.timeLeft then
+			A:HandleFlash(self)
 		end
 
 		self.elapsed = 0
