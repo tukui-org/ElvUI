@@ -129,10 +129,8 @@ function TM:Initialize()
 		button.icon:SetInside()
 
 		button.cooldown = CreateFrame('Cooldown', button:GetName()..'Cooldown', button, 'CooldownFrameTemplate')
-		button.cooldown:SetReverse(true)
-		button.cooldown:SetInside()
 
-		E:RegisterCooldown(button.cooldown)
+		E:RegisterCooldown(button.cooldown, 'totemtracker')
 
 		TM.bar[i] = button
 	end

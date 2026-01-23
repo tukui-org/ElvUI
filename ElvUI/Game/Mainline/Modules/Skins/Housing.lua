@@ -30,6 +30,14 @@ local function HouseList_Update(frame)
 	frame:ForEachFrame(HouseList_UpdateChild)
 end
 
+local function HandleContentFrameTabs(frame)
+	if not frame.TabSystem then return end
+
+	for _, tab in next, { frame.TabSystem:GetChildren() } do
+		S:HandleTab(tab)
+	end
+end
+
 function S:Blizzard_HousingHouseFinder()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -46,6 +54,7 @@ function S:Blizzard_HousingHouseFinder()
 		NeighborhoodListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
 		S:HandleEditBox(NeighborhoodListFrame.BNetFriendSearchBox)
 		S:HandleButton(NeighborhoodListFrame.RefreshButton)
+		S:HandleTrimScrollBar(NeighborhoodListFrame.ScrollFrame.ScrollBar)
 	end
 end
 
@@ -96,16 +105,14 @@ function S:Blizzard_HousingDashboard()
 
 		local ContentFrame = InfoContent.ContentFrame
 		if ContentFrame then
-			for _, tab in next, { ContentFrame.TabSystem:GetChildren() } do
-				S:HandleTab(tab)
-			end
-
 			local HouseUpgradeFrame = ContentFrame.HouseUpgradeFrame
 			if HouseUpgradeFrame then
 				HouseUpgradeFrame:StripTextures()
 				HouseUpgradeFrame.Background:Hide()
 				S:HandleCheckBox(HouseUpgradeFrame.WatchFavorButton)
 			end
+
+			hooksecurefunc(ContentFrame, 'UpdateTabs', HandleContentFrameTabs)
 		end
 	end
 

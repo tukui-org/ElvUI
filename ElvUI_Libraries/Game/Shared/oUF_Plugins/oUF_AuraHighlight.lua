@@ -77,7 +77,7 @@ local function Update(self, event, unit, updateInfo)
 			self.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
 		end
 	elseif auraType then
-		color = DebuffColors[auraType or 'none']
+		color = DebuffColors[auraType or 'None']
 
 		if self.AuraHighlightBackdrop and self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Show()

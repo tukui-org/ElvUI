@@ -6,6 +6,7 @@ local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack,
 local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
+local AbbreviateNumbers = AbbreviateNumbers
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetPlayerFacing = GetPlayerFacing
 local UnitPosition = UnitPosition
@@ -30,6 +31,52 @@ E.GetFormattedTextStyles = {
 	PERCENT = '%.1f%%',
 	DEFICIT = '-%s',
 }
+
+do -- Thanks ls-
+	local locale = E.locale
+	local long = { breakpoints = {} }
+	E.Abbreviate.long = long
+
+	local kr, cn, tw = locale == 'koKR', locale == 'zhCN', locale == 'zhTW'
+
+	if kr or cn or tw then
+		long.breakpoints[1] = { breakpoint = 1e8, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e7, fractionDivisor = 10 }
+		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'FIRST_NUMBER_CAP_NO_SPACE',  significandDivisor = 1e3, fractionDivisor = 10 }
+	else
+		long.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'THIRD_NUMBER_CAP_NO_SPACE', significandDivisor = 1e8, fractionDivisor = 10 }
+		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e5, fractionDivisor = 10 }
+		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = 'FIRST_NUMBER_CAP_NO_SPACE', significandDivisor = 100, fractionDivisor = 10 }
+	end
+
+	-- start a new one
+	local short = { breakpoints = {} }
+	E.Abbreviate.short = short
+
+	if cn or tw then
+		short.breakpoints[1] = { breakpoint = 1e8, abbreviation = cn and '亿' or '万', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
+		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = tw and '億' or '萬',  significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
+	else
+		short.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'B', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
+		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'M', significandDivisor = 1e4, fractionDivisor = 100, abbreviationIsGlobal = false }
+		short.breakpoints[3] = { breakpoint = 1e3, abbreviation = 'k', significandDivisor = 100, fractionDivisor = 10, abbreviationIsGlobal = false }
+	end
+
+	if CreateAbbreviateConfig then
+		long.config = CreateAbbreviateConfig(long.breakpoints)
+		long.breakpoints = nil -- create the configuration for long numbers
+
+		short.config = CreateAbbreviateConfig(short.breakpoints)
+		short.breakpoints = nil -- create the configuration for short numbers
+	end
+end
+
+function E:AbbreviateNumbers(value, data)
+	local str = AbbreviateNumbers(value, data)
+	local num = tonumber(str)
+
+	-- behaves like ALN, but actually works
+	return num and BreakUpLargeNumbers(num) or str
+end
 
 function E:BuildPrefixValues()
 	if next(E.ShortPrefixValues) then wipe(E.ShortPrefixValues) end

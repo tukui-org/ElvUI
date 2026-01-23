@@ -347,6 +347,19 @@ E.PopupDialogs.MODULE_COPY_CONFIRM = {
 	hideOnEscape = false,
 }
 
+E.PopupDialogs.TAINT_LOG = {
+	text = L["You have the Taint Log enabled. This causes significant increase in loading times. Do you want to disable it or continue?"],
+	button1 = L["Disable"],
+	button2 = L["Continue"],
+	OnAccept = function()
+		E:SetCVar('taintLog', 0)
+		ReloadUI()
+	end,
+	showAlert = 1,
+	whileDead = 1,
+	hideOnEscape = false,
+}
+
 E.PopupDialogs.SCRIPT_PROFILE = {
 	text = L["You are using CPU Profiling. This causes decreased performance. Do you want to disable it or continue?"],
 	button1 = L["Disable"],

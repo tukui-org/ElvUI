@@ -170,6 +170,7 @@ function E:SetupChat(noDisplayMsg)
 end
 
 function E:SetupCVars(noDisplayMsg)
+	E:SetCVar('countdownForCooldowns', 1)
 	E:SetCVar('statusTextDisplay', 'BOTH')
 	E:SetCVar('screenshotQuality', 10)
 	E:SetCVar('showTutorials', 0)

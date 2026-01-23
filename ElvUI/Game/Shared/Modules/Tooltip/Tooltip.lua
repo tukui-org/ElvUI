@@ -198,14 +198,16 @@ function TT:GetLevelLine(tt, offset, raw)
 
 	for i, line in next, info.lines, offset do
 		local text = line and line.leftText
-		if not text or text == '' then return end
+		if E:NotSecretValue(text) then -- are only some lines secret?
+			if not text or text == '' then return end
 
-		local lower = strlower(text)
-		if lower and (strfind(lower, LEVEL1) or strfind(lower, LEVEL2)) then
-			if raw then
-				return line, info.lines[i+1]
-			else
-				return _G['GameTooltipTextLeft'..i], _G['GameTooltipTextLeft'..i+1]
+			local lower = strlower(text)
+			if lower and (strfind(lower, LEVEL1) or strfind(lower, LEVEL2)) then
+				if raw then
+					return line, info.lines[i+1]
+				else
+					return _G['GameTooltipTextLeft'..i], _G['GameTooltipTextLeft'..i+1]
+				end
 			end
 		end
 	end
@@ -368,7 +370,7 @@ function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 end
 
 function TT:INSPECT_READY(event, unitGUID)
-	if UnitExists('mouseover') and UnitGUID('mouseover') == unitGUID then
+	if E:UnitExists('mouseover') and UnitGUID('mouseover') == unitGUID then
 		local itemLevel, retryUnit, retryTable, iLevelDB = E:GetUnitItemLevel('mouseover')
 		if itemLevel == 'tooSoon' then
 			E:Delay(0.05, function()
@@ -438,25 +440,29 @@ function TT:AddMountInfo(tt, unit)
 	local unitAuraFiltered = AuraFiltered.HELPFUL[unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		local mountID = E.MountIDs[aura.spellId]
-		if mountID then
-			tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
+		if E:IsSecretValue(aura.spellId) then
+			break
+		else
+			local mountID = E.MountIDs[aura.spellId]
+			if mountID then
+				tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
 
-			local sourceText = E.MountText[mountID]
-			local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
-			if mountText then
-				local sourceModified = gsub(mountText, '|n', '\10')
-				for x in gmatch(sourceModified, '[^\10]+\10?') do
-					local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
-					if left and right then
-						tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
-					else
-						tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+				local sourceText = E.MountText[mountID]
+				local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
+				if mountText then
+					local sourceModified = gsub(mountText, '|n', '\10')
+					for x in gmatch(sourceModified, '[^\10]+\10?') do
+						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
+						if left and right then
+							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+						else
+							tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+						end
 					end
 				end
-			end
 
-			break
+				break
+			end
 		end
 
 		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
@@ -638,7 +644,7 @@ function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
 
 	-- check if dead
 	if current == 0 or (unit and UnitIsDeadOrGhost(unit)) then
-		bar.text:SetText(_G.DEAD)
+		bar.Text:SetText(_G.DEAD)
 	else
 		local maximum, _
 		if unit then -- try to get the real health values if possible
@@ -837,11 +843,13 @@ end
 function TT:MODIFIER_STATE_CHANGED()
 	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
-		if owner == UIParent and UnitExists('mouseover') then
-			if E.Retail then
-				GameTooltip:RefreshData()
-			else
-				GameTooltip:SetUnit('mouseover')
+		if owner == UIParent then
+			if E:UnitExists('mouseover') then
+				if E.Retail then
+					GameTooltip:RefreshData()
+				else
+					GameTooltip:SetUnit('mouseover')
+				end
 			end
 		else
 			local parent = owner and owner:GetParent()
@@ -853,9 +861,7 @@ function TT:MODIFIER_STATE_CHANGED()
 				end
 			end
 		end
-	end
-
-	if E.SpellBookTooltip:IsShown() then
+	elseif E.SpellBookTooltip:IsShown() then
 		AB:UpdateSpellBookTooltip()
 	end
 end
@@ -1126,10 +1132,6 @@ function TT:Initialize()
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 	end
 
-	if E.Retail or E.TBC then
-		_G.GameTooltipDefaultContainer:KillEditMode()
-	end
-
 	if E.Retail then
 		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 
@@ -1143,6 +1145,8 @@ function TT:Initialize()
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
 		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
+
+		_G.GameTooltipDefaultContainer:KillEditMode()
 	else
 		TT:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	end

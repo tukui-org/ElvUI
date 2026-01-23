@@ -362,7 +362,7 @@ function S:Blizzard_AchievementUI()
 
 	hooksecurefunc('AchievementButton_GetProgressBar', function(index)
 		local frame = _G['AchievementFrameProgressBar'..index]
-		if frame and not frame.skinned then
+		if frame and not frame.IsSkinned then
 			frame:StripTextures()
 			frame:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(frame)
@@ -383,7 +383,7 @@ function S:Blizzard_AchievementUI()
 				frame.ClearAllPoints = E.noop
 			end
 
-			frame.skinned = true
+			frame.IsSkinned = true
 		end
 	end)
 

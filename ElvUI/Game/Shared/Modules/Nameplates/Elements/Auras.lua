@@ -93,9 +93,6 @@ function NP:Construct_AuraIcon(button)
 
 	button:SetTemplate(nil, nil, nil, nil, nil, true, true)
 
-	button.Cooldown:SetReverse(true)
-	button.Cooldown:SetInside(button)
-
 	button.Icon:SetDrawLayer('ARTWORK')
 	button.Icon:SetInside()
 

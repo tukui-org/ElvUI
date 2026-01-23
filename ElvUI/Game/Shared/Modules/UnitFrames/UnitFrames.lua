@@ -354,7 +354,7 @@ function UF:UnitFrame_OnEnter()
 	else
 		_G.GameTooltip_SetDefaultAnchor(GameTooltip, self)
 
-		self.UpdateTooltip = (self.unit and GameTooltip:SetUnit(self.unit) and UF.UnitFrame_OnEnter) or nil
+		self.UpdateTooltip = (E:NotSecretValue(self.unit) and self.unit and GameTooltip:SetUnit(self.unit) and UF.UnitFrame_OnEnter) or nil
 	end
 
 	UF:SetAlpha_MouseTags(self.__mousetags, 1)
@@ -1616,11 +1616,17 @@ do
 		end
 	end
 
-	function UF:DisableBlizzard_DisableFrame(frame)
+	function UF:DisableBlizzard_DisableFrame(frame, isNamePlate)
 		frame:UnregisterAllEvents()
-		pcall(frame.Hide, frame)
 
-		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or (frame.HealthBarsContainer and frame.HealthBarsContainer.healthBar) or nil)
+		if isNamePlate then
+			pcall(frame.SetAlpha, frame, 0)
+		else
+			pcall(frame.Hide, frame)
+		end
+
+		tinsert(DisabledElements, (frame.HealthBarsContainer and frame.HealthBarsContainer.healthBar) or nil)
+		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
 		tinsert(DisabledElements, frame.manabar or frame.ManaBar or nil)
 		tinsert(DisabledElements, frame.castBar or frame.spellbar or nil)
 		tinsert(DisabledElements, frame.petFrame or frame.PetFrame or nil)
@@ -1655,14 +1661,34 @@ do
 		end
 	end
 
-	-- Retail: Midnight uses DisableBlizzardNamePlate
-	function ElvUF:DisableNamePlate(frame)
-		if (not frame or frame:IsForbidden())
-		or (not E.private.nameplates.enable) then return end
+	do
+		local locked -- TODO: remove this hack once we can adjust hitrects ourselves, coming in a later build
+		local function LockedAlpha(blizzPlate)
+			if locked or blizzPlate:IsForbidden() then return end
 
-		local plate = frame.UnitFrame
-		if plate then
-			UF:DisableBlizzard_HideFrame(plate, '^NamePlate%d+%.UnitFrame$')
+			locked = true
+			blizzPlate:SetAlpha(0)
+			locked = false
+		end
+
+		local hooked = {}
+		function ElvUF:DisableBlizzardNamePlate(frame)
+			if (not frame or frame:IsForbidden()) or (not E.private.nameplates.enable) then return end
+
+			local plate = frame.UnitFrame
+			if not plate then return end
+
+			if E.Retail then
+				if not hooked[plate] then
+					hooksecurefunc(plate, 'SetAlpha', LockedAlpha)
+
+					hooked[plate] = true
+				end
+
+				UF:DisableBlizzard_DisableFrame(plate, true)
+			else
+				UF:DisableBlizzard_HideFrame(plate, '^NamePlate%d+%.UnitFrame$')
+			end
 		end
 	end
 

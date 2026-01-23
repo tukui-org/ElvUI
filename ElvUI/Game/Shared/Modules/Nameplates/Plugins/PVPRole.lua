@@ -100,15 +100,20 @@ local function Update(self)
 	local _, instanceType = GetInstanceInfo()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		local name, realm = UnitName(self.unit)
-		realm = (realm and realm ~= '') and E:ShortenRealm(realm)
-		if realm then name = name..'-'..realm end
+		if E:NotSecretValue(name) then
+			realm = (realm and realm ~= '') and E:ShortenRealm(realm)
 
-		if Healers[name] and element.ShowHealers then
-			element:SetTexture(element.HealerTexture)
-			isShown = true
-		elseif Tanks[name] and element.ShowTanks then
-			element:SetTexture(element.TankTexture)
-			isShown = true
+			if realm then
+				name = name..'-'..realm
+			end
+
+			if Healers[name] and element.ShowHealers then
+				element:SetTexture(element.HealerTexture)
+				isShown = true
+			elseif Tanks[name] and element.ShowTanks then
+				element:SetTexture(element.TankTexture)
+				isShown = true
+			end
 		end
 	end
 

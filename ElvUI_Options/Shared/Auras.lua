@@ -9,7 +9,6 @@ local CopyTable = CopyTable
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
 local SharedOptions = {
-	showDuration = ACH:Toggle(L["Duration Enable"], nil, 1),
 	smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 2),
 	keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3),
 	spacer1 = ACH:Spacer(5, 'full'),
@@ -25,7 +24,7 @@ local SharedOptions = {
 	maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 23, { min = 1, max = 32, step = 1 }),
 	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 24, { min = -5, max = 50, step = 1 }),
 	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 25, { min = -5, max = 50, step = 1 }),
-	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }),
+	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }, nil, nil, nil, nil, E.Retail),
 
 	tooltip = ACH:Group(L["Tooltip"], nil, -3),
 	statusBar = ACH:Group(L["Statusbar"], nil, -2),
@@ -73,7 +72,7 @@ do
 
 	local order = { None = 0, Magic = 1, Curse = 2, Disease = 3, Poison = 4, EnemyNPC = 11, BadDispel = 12, Bleed = 13, Stealable = 14 }
 	for key in next, DebuffColors do
-		if key ~= '' then -- this is a reference to none
+		if key ~= '' and key ~= 'none' then -- this is a reference to none
 			Auras.args.debuffColors.args[key] = ACH:Color(key, nil, order[key] or -1, nil, 120)
 		end
 	end

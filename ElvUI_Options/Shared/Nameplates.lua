@@ -6,7 +6,7 @@ local ACH = E.Libs.ACH
 
 local max, wipe, strfind = max, wipe, strfind
 local pairs, type, strsplit = pairs, type, strsplit
-local next, tonumber, format = next, tonumber, format
+local next, tonumber = next, tonumber
 
 local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -171,7 +171,9 @@ local function GetUnitSettings(unit, name)
 	group.args.healthGroup.args.textGroup.args.format = ACH:Input(L["Text Format"], nil, 6, nil, TEXT_FORMAT_WIDTH)
 	group.args.healthGroup.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].health.text.format = P.nameplates.units[unit].health.text.format NP:ConfigureAll() end)
 
-	group.args.healthGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 10)
+	group.args.healthGroup.args.useClassificationColor = ACH:Toggle(L["Use Classification Color"], nil, 10)
+
+	group.args.healthGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 20)
 	group.args.healthGroup.args.textGroup.args.fontGroup.inline = true
 	group.args.healthGroup.args.textGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 	group.args.healthGroup.args.textGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 4, max = 60, step = 1 })
@@ -183,7 +185,6 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 3)
 	group.args.powerGroup.args.useAtlas = ACH:Toggle(L["Use Atlas Textures"], nil, 4)
 	group.args.powerGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 5)
-	group.args.powerGroup.args.useClassificationColor = ACH:Toggle(L["Use Classification Color"], nil, 6)
 	group.args.powerGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 7)
 	group.args.powerGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = minWidth, max = MaxWidth(unit), step = 1 })
 	group.args.powerGroup.args.height = ACH:Range(L["Height"], nil, 9, { min = minHeight, max = MaxHeight(unit), step = 1 })
@@ -573,8 +574,22 @@ NamePlates.colorsGroup.args.selectionGroup.args['13'] = ACH:Color(L["Battlegroun
 
 NamePlates.colorsGroup.args.classification = ACH:Group(L["Classification Colors"], nil, 5, nil, function(info) local t, d = E.db.nameplates.colors.classification[info[#info]], P.nameplates.colors.classification[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classification[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.classification.inline = true
-for key in next, NP.db.colors.classification do
-	NamePlates.colorsGroup.args.classification.args[key] = ACH:Color(key)
+
+do
+	local data = {
+		worldboss = { order = 1, name = L["Worldboss"] },
+		eliteBoss = { order = 2, name = L["Elite Boss"] },
+		eliteMini = { order = 3, name = L["Elite Mini"] },
+		rareelite = { order = 4, name = L["Rare Elite"] },
+		rare = { order = 5, name = L["Rare"] },
+		caster = { order = 6, name = L["Caster"] },
+		melee = { order = 7, name = L["Melee"] }
+	}
+
+	for key in next, NP.db.colors.classification do
+		local info = data[key]
+		NamePlates.colorsGroup.args.classification.args[key] = ACH:Color(info.name, nil, info.order)
+	end
 end
 
 NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 6, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
