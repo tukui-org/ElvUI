@@ -1616,9 +1616,14 @@ do
 		end
 	end
 
-	function UF:DisableBlizzard_DisableFrame(frame)
+	function UF:DisableBlizzard_DisableFrame(frame, isNamePlate)
 		frame:UnregisterAllEvents()
-		pcall(frame.Hide, frame)
+
+		if isNamePlate then
+			pcall(frame.SetAlpha, frame, 0)
+		else
+			pcall(frame.Hide, frame)
+		end
 
 		tinsert(DisabledElements, (frame.HealthBarsContainer and frame.HealthBarsContainer.healthBar) or nil)
 		tinsert(DisabledElements, frame.healthBar or frame.healthbar or frame.HealthBar or nil)
@@ -1679,6 +1684,8 @@ do
 
 					hooked[plate] = true
 				end
+
+				UF:DisableBlizzard_DisableFrame(plate, true)
 			else
 				UF:DisableBlizzard_HideFrame(plate, '^NamePlate%d+%.UnitFrame$')
 			end
