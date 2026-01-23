@@ -2060,7 +2060,9 @@ function E:Initialize()
 			E:StaticPopup_Show('UPDATE_REQUEST')
 		end
 
-		if GetCVarBool('scriptProfile') then
+		if GetCVarBool('taintLog') then
+			E:StaticPopup_Show('TAINT_LOG')
+		elseif GetCVarBool('scriptProfile') then
 			E:StaticPopup_Show('SCRIPT_PROFILE')
 		end
 
