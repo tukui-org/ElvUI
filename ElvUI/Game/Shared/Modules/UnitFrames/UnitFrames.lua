@@ -1656,14 +1656,32 @@ do
 		end
 	end
 
-	-- Retail: Midnight uses DisableBlizzardNamePlate
-	function ElvUF:DisableNamePlate(frame)
-		if (not frame or frame:IsForbidden())
-		or (not E.private.nameplates.enable) then return end
+	do
+		local locked -- TODO: remove this hack once we can adjust hitrects ourselves, coming in a later build
+		local function LockedAlpha(blizzPlate)
+			if locked or blizzPlate:IsForbidden() then return end
 
-		local plate = frame.UnitFrame
-		if plate then
-			UF:DisableBlizzard_HideFrame(plate, '^NamePlate%d+%.UnitFrame$')
+			locked = true
+			blizzPlate:SetAlpha(0)
+			locked = false
+		end
+
+		local hookedNameplates = {}
+		function ElvUF:DisableBlizzardNamePlate(frame)
+			if (not frame or frame:IsForbidden()) or (not E.private.nameplates.enable) then return end
+
+			local plate = frame.UnitFrame
+			if not plate then return end
+
+			if E.Retail then
+				if not hookedNameplates[plate] then
+					hooksecurefunc(plate, 'SetAlpha', LockedAlpha)
+
+					hookedNameplates[plate] = true
+				end
+			else
+				UF:DisableBlizzard_HideFrame(plate, '^NamePlate%d+%.UnitFrame$')
+			end
 		end
 	end
 
