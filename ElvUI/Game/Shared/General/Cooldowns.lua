@@ -31,9 +31,10 @@ function E:CooldownUpdate(cooldown)
 	cooldown:SetEdgeColor(c.edge.r, c.edge.g, c.edge.b, aurabars or c.edge.a)
 	cooldown:SetSwipeColor(c.swipe.r, c.swipe.g, c.swipe.b, aurabars or c.swipe.a)
 
-	if data.charge then
-		data.charge:SetEdgeColor(c.edgeCharge.r, c.edgeCharge.g, c.edgeCharge.b, c.edgeCharge.a)
-		data.charge:SetSwipeColor(c.swipeCharge.r, c.swipeCharge.g, c.swipeCharge.b, c.swipeCharge.a)
+	local charge = data.charge
+	if charge then
+		charge:SetEdgeColor(c.edgeCharge.r, c.edgeCharge.g, c.edgeCharge.b, c.edgeCharge.a)
+		charge:SetSwipeColor(c.swipeCharge.r, c.swipeCharge.g, c.swipeCharge.b, c.swipeCharge.a)
 	end
 end
 
@@ -63,7 +64,7 @@ do
 	end
 end
 
-function E:CooldownInitialize(cooldown, charge)
+function E:CooldownInitialize(cooldown)
 	local data = not cooldown.Text and E.RegisteredCooldowns[cooldown]
 	if not data then return end
 
@@ -77,6 +78,7 @@ function E:CooldownInitialize(cooldown, charge)
 	cooldown:SetEdgeTexture(E.Media.Textures.Edge, c.edge.r, c.edge.g, c.edge.b, c.edge.a)
 	cooldown:SetSwipeTexture(E.media.blankTex, c.swipe.r, c.swipe.g, c.swipe.b, c.swipe.a)
 
+	local charge = data.charge
 	if charge then
 		charge:SetAllPoints()
 		charge:SetDrawEdge(true)
@@ -123,7 +125,7 @@ function E:RegisterCooldown(cooldown, which)
 	data.charge = parent and parent.chargeCooldown or nil
 
 	-- extract the blizzard cooldown region
-	E:CooldownInitialize(cooldown, data.charge)
+	E:CooldownInitialize(cooldown)
 
 	-- init set for the settings
 	E:CooldownUpdate(cooldown)
