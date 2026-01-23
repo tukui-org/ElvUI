@@ -160,7 +160,7 @@ do
 		if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
 		local faction, rep = GetCurrentCombatTextEventInfo()
-		if (faction and faction ~= 'Guild') and (rep and rep > 0) then
+		if E:NotSecretValue(faction) and (faction and faction ~= 'Guild') and (rep and rep > 0) then
 			local data = E:GetWatchedFactionInfo()
 			if not (data and data.name) or faction ~= data.name then
 				ExpandAllFactionHeaders()
