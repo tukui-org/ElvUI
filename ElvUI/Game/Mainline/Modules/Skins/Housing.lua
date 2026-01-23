@@ -114,6 +114,20 @@ function S:Blizzard_HousingDashboard()
 
 			hooksecurefunc(ContentFrame, 'UpdateTabs', HandleContentFrameTabs)
 		end
+
+		local InitiativesFrame = ContentFrame.InitiativesFrame
+		if InitiativesFrame then
+			print("kek")
+			local Tasks = InitiativesFrame.InitiativeSetFrame.InitiativeTasks
+			if Tasks then
+				S:HandleTrimScrollBar(Tasks.ScrollBar)
+			end
+
+			local Activity = InitiativesFrame.InitiativeSetFrame.InitiativeActivity
+			if Activity then
+				S:HandleTrimScrollBar(Activity.ScrollBar)
+			end
+		end
 	end
 
 	local CatalogContent = DashBoardFrame.CatalogContent
