@@ -861,9 +861,7 @@ function TT:MODIFIER_STATE_CHANGED()
 				end
 			end
 		end
-	end
-
-	if E.SpellBookTooltip:IsShown() then
+	elseif E.SpellBookTooltip:IsShown() then
 		AB:UpdateSpellBookTooltip()
 	end
 end
