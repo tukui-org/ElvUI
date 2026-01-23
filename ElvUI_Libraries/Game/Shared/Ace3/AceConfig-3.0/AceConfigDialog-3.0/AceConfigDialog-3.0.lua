@@ -542,7 +542,7 @@ local function OptionOnMouseOver(widget, event)
 
 	if opt.dragdrop then
 		tooltip:SetOwner(widget.frame, "ANCHOR_TOPRIGHT")
-		tooltip:SetText(user.title or name, 1, .82, 0, true)
+		tooltip:SetText(user.title or name, 1, .82, 0, 1, true)
 
 		if user.desc then
 			tooltip:AddLine(user.desc, 1, 1, 1, true)
