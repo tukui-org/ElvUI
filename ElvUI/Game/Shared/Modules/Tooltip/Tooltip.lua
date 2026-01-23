@@ -105,7 +105,7 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:SetCompareItems(tt, value)
-	if tt ~= GameTooltip then return end
+	if E.Retail or tt ~= GameTooltip then return end
 
 	tt.supportsItemComparison = value
 end
