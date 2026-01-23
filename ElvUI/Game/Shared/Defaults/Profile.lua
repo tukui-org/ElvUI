@@ -2867,7 +2867,6 @@ do
 			object.offsetX = -10
 		elseif key == 'auras' then
 			object.reverse = true
-			object.colors.swipe.a = 0.4
 			object.position = 'BOTTOM'
 			object.offsetY = -3
 		elseif key == 'actionbar' then
