@@ -843,7 +843,7 @@ end
 function TT:MODIFIER_STATE_CHANGED()
 	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
-		if owner == UIParent and UnitExists('mouseover') then
+		if owner == UIParent and E:UnitExists('mouseover') then
 			if E.Retail then
 				GameTooltip:RefreshData()
 			else
