@@ -154,7 +154,7 @@ function S:CooldownManager_SkinBar(frame, bar)
 end
 
 function S:CooldownManager_SkinItemFrame(frame)
-	if frame.Cooldown and not frame.Cooldown.isRegisteredCooldown then
+	if frame.Cooldown then
 		E:RegisterCooldown(frame.Cooldown, 'cdmanager')
 	end
 
