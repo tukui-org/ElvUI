@@ -380,18 +380,21 @@ function A:UpdateButton(button, duration)
 		end
 
 		local hasCooldown = duration > 0
+		local barShown = db.barShow and (hasCooldown or (db.barNoDuration and duration == 0))
+		button.statusBar:SetShown(barShown)
 		button.statusBar:SetStatusBarColor(r, g, b)
-		button.statusBar:SetShown(db.barShow and (hasCooldown or (db.barNoDuration and duration == 0)))
+
+		if barShown then
+			button.statusBar:SetMinMaxValues(0, hasCooldown and duration or 1)
+
+			if not hasCooldown then
+				button.statusBar:SetValue(1, button.statusBar.smoothing)
+			end
+		end
 
 		if hasCooldown then
 			button.cooldown:SetCooldown((button.expiration - duration), duration, button.modRate)
-
-			if button.statusBar:IsShown() then
-				button.statusBar:SetMinMaxValues(0, duration)
-			end
 		else
-			button.statusBar:SetMinMaxValues(0, 1)
-			button.statusBar:SetValue(1, button.statusBar.smoothing)
 			button.cooldown:Clear()
 		end
 	end
