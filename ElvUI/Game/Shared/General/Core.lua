@@ -339,7 +339,10 @@ function E:UpdateMedia(mediaType)
 			if db then
 				E:UpdateClassColor(db.colors.text)
 				E:UpdateClassColor(db.colors.edge)
+				E:UpdateClassColor(db.colors.edgeCharge)
 				E:UpdateClassColor(db.colors.swipe)
+				E:UpdateClassColor(db.colors.swipeCharge)
+				E:UpdateClassColor(db.colors.swipeLOC)
 			end
 		end
 	end
