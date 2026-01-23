@@ -4,13 +4,14 @@ local _G = _G
 local gsub, format = gsub, format
 local strlower = strlower
 
-local UnitIsPlayer = UnitIsPlayer
-local UnitPowerType = UnitPowerType
-local UnitHonorLevel = UnitHonorLevel
-local UnitPower = UnitPower
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UnitHonorLevel = UnitHonorLevel
+local UnitIsPlayer = UnitIsPlayer
+local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
+local UnitPowerType = UnitPowerType
+local AbbreviateNumbers = AbbreviateNumbers
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 
@@ -20,27 +21,27 @@ local POWERTYPE_MANA = Enum.PowerType.Mana
 E:AddTag('health:current:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 	local currentHealth = UnitHealth(unit)
 
-	return E:AbbreviateNumbers(currentHealth, E.Abbreviate.short)
+	return AbbreviateNumbers(currentHealth, E.Abbreviate.short)
 end)
 
 E:AddTag('power:current:shortvalue', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
 	local powerType = UnitPowerType(unit)
 	local currentPower = UnitPower(unit, powerType)
 
-	return E:AbbreviateNumbers(currentPower, E.Abbreviate.short)
+	return AbbreviateNumbers(currentPower, E.Abbreviate.short)
 end)
 
 E:AddTag('health:max:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 	local maxHealth = UnitHealthMax(unit)
 
-	return E:AbbreviateNumbers(maxHealth, E.Abbreviate.short)
+	return AbbreviateNumbers(maxHealth, E.Abbreviate.short)
 end)
 
 E:AddTag('power:max:shortvalue', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
 	local powerType = UnitPowerType(unit)
 	local maxPower = UnitPowerMax(unit, powerType)
 
-	return E:AbbreviateNumbers(maxPower, E.Abbreviate.short)
+	return AbbreviateNumbers(maxPower, E.Abbreviate.short)
 end)
 
 E:AddTag('pvp:honorlevel', 'UNIT_NAME_UPDATE', function(unit)
