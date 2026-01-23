@@ -19,6 +19,7 @@ local NUM_STANCE_SLOTS = NUM_STANCE_SLOTS or 10
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'Stance Bar')
 local WispSplode = [[Interface\Icons\Spell_Nature_WispSplode]]
+
 local bar = CreateFrame('Frame', 'ElvUI_StanceBar', E.UIParent, 'SecureHandlerStateTemplate')
 bar.MasqueGroup = MasqueGroup
 bar.buttons = {}

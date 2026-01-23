@@ -6,7 +6,7 @@ local ACH = E.Libs.ACH
 
 local max, wipe, strfind = max, wipe, strfind
 local pairs, type, strsplit = pairs, type, strsplit
-local next, tonumber, format = next, tonumber, format
+local next, tonumber = next, tonumber
 
 local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
