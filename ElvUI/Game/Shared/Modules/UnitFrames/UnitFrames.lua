@@ -1666,7 +1666,7 @@ do
 			locked = false
 		end
 
-		local hookedNameplates = {}
+		local hooked = {}
 		function ElvUF:DisableBlizzardNamePlate(frame)
 			if (not frame or frame:IsForbidden()) or (not E.private.nameplates.enable) then return end
 
@@ -1674,10 +1674,10 @@ do
 			if not plate then return end
 
 			if E.Retail then
-				if not hookedNameplates[plate] then
+				if not hooked[plate] then
 					hooksecurefunc(plate, 'SetAlpha', LockedAlpha)
 
-					hookedNameplates[plate] = true
+					hooked[plate] = true
 				end
 			else
 				UF:DisableBlizzard_HideFrame(plate, '^NamePlate%d+%.UnitFrame$')
