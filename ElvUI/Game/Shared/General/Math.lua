@@ -31,6 +31,58 @@ E.GetFormattedTextStyles = {
 	DEFICIT = '-%s',
 }
 
+local abbrevData = {
+    breakpointData = {
+        {
+            breakpoint = 1e9,
+            abbreviation = "THIRD_NUMBER_CAP_NO_SPACE", -- 1e9
+            significandDivisor = 1e8,
+            fractionDivisor = 10,
+        },
+        {
+            breakpoint = 1e6,
+            abbreviation = "SECOND_NUMBER_CAP_NO_SPACE", -- 1e6
+            significandDivisor = 1e5,
+            fractionDivisor = 10,
+        },
+        {
+            breakpoint = 1e5,
+            abbreviation = "FIRST_NUMBER_CAP_NO_SPACE", -- 1e3
+            significandDivisor = 100,
+            fractionDivisor = 10,
+        },
+    }
+}
+
+local locale = GetLocale()
+if locale == "koKR" or locale == "zhCN" or locale == "zhTW" then
+    abbrevData.breakpointData = {
+        {
+            breakpoint = 1e8,
+            abbreviation = "SECOND_NUMBER_CAP_NO_SPACE", -- 1e8
+            significandDivisor = 1e7,
+            fractionDivisor = 10,
+        },
+        {
+            breakpoint = 1e6,
+            abbreviation = "FIRST_NUMBER_CAP_NO_SPACE", -- 1e4
+            significandDivisor = 1e3,
+            fractionDivisor = 10,
+        },
+    }
+end
+
+abbrevData.config = CreateAbbreviateConfig(abbrevData.breakpointData)
+abbrevData.breakpointData = nil
+
+-- behaves like ALN, but actually works
+function E:AbbreviateNumbers(value)
+    local str = AbbreviateNumbers(value, abbrevData)
+    local num = tonumber(str)
+
+    return num and BreakUpLargeNumbers(num) or str
+end
+
 function E:BuildPrefixValues()
 	if next(E.ShortPrefixValues) then wipe(E.ShortPrefixValues) end
 
