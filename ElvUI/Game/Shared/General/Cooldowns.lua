@@ -31,9 +31,9 @@ function E:CooldownUpdate(cooldown)
 	cooldown:SetEdgeColor(c.edge.r, c.edge.g, c.edge.b, aurabars or c.edge.a)
 	cooldown:SetSwipeColor(c.swipe.r, c.swipe.g, c.swipe.b, aurabars or c.swipe.a)
 
-	if cooldown.charge then
-		cooldown.charge:SetEdgeColor(c.edgeCharge.r, c.edgeCharge.g, c.edgeCharge.b, c.edgeCharge.a)
-		cooldown.charge:SetSwipeColor(c.swipeCharge.r, c.swipeCharge.g, c.swipeCharge.b, c.swipeCharge.a)
+	if data.charge then
+		data.charge:SetEdgeColor(c.edgeCharge.r, c.edgeCharge.g, c.edgeCharge.b, c.edgeCharge.a)
+		data.charge:SetSwipeColor(c.swipeCharge.r, c.swipeCharge.g, c.swipeCharge.b, c.swipeCharge.a)
 	end
 end
 
@@ -63,19 +63,28 @@ do
 	end
 end
 
-function E:CooldownInitialize(cooldown)
+function E:CooldownInitialize(cooldown, charge)
 	local data = not cooldown.Text and E.RegisteredCooldowns[cooldown]
 	if not data then return end
 
+	local c = data.colors
 	cooldown.Text = cooldown:GetRegions() -- extract the timer text
 
 	cooldown:SetAllPoints()
 	cooldown:SetDrawEdge(true)
 	cooldown:SetDrawSwipe(true)
 
-	local c = data.colors
-	cooldown:SetEdgeTexture(data.charge and E.Media.Textures.Edge2 or E.Media.Textures.Edge, c.edge.r, c.edge.g, c.edge.b, c.edge.a)
+	cooldown:SetEdgeTexture(E.Media.Textures.Edge, c.edge.r, c.edge.g, c.edge.b, c.edge.a)
 	cooldown:SetSwipeTexture(E.media.blankTex, c.swipe.r, c.swipe.g, c.swipe.b, c.swipe.a)
+
+	if charge then
+		charge:SetAllPoints()
+		charge:SetDrawEdge(true)
+		charge:SetDrawSwipe(true)
+
+		charge:SetEdgeTexture(E.Media.Textures.Edge2, c.edgeCharge.r, c.edgeCharge.g, c.edgeCharge.b, c.edgeCharge.a)
+		charge:SetSwipeTexture(E.media.blankTex, c.swipeCharge.r, c.swipeCharge.g, c.swipeCharge.b, c.swipeCharge.a)
+	end
 end
 
 function E:LABCooldownUpdate(cooldown) -- non retail
@@ -111,13 +120,10 @@ function E:RegisterCooldown(cooldown, which)
 
 	-- reference the charge cooldown from LAB
 	local parent = which == 'actionbar' and cooldown:GetParent()
-	if parent and parent.chargeCooldown then
-		cooldown.charge = parent.chargeCooldown -- reference the charge on cooldown object
-		data.charge = cooldown.charge -- also reference it from the data
-	end
+	data.charge = parent and parent.chargeCooldown or nil
 
 	-- extract the blizzard cooldown region
-	E:CooldownInitialize(cooldown)
+	E:CooldownInitialize(cooldown, data.charge)
 
 	-- init set for the settings
 	E:CooldownUpdate(cooldown)
