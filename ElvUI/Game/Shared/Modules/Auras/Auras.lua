@@ -171,18 +171,17 @@ function A:CreateIcon(button)
 
 	button.cooldown = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 
-	-- show the cooldown so that count appears
-	if not E.Retail then
-		button.cooldown:Show()
-	end
+	button.RaisedElement = CreateFrame('Frame', '$parent_RaisedElement', button)
+	button.RaisedElement:OffsetFrameLevel(5)
+	button.RaisedElement:SetAllPoints()
 
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
 
-	button.count = button.cooldown:CreateFontString(nil, 'OVERLAY')
+	button.count = button.RaisedElement:CreateFontString(nil, 'OVERLAY')
 	button.count:FontTemplate()
 
-	button.text = button:CreateFontString(nil, 'OVERLAY')
+	button.text = button.RaisedElement:CreateFontString(nil, 'OVERLAY')
 	button.text:FontTemplate()
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
