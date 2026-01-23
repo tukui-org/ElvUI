@@ -819,19 +819,13 @@ function AB:UpdateProfessionQuality(button)
 	button.ProfessionQualityOverlayFrame:SetShown(enable and not not atlas)
 end
 
-function AB:FadeBlingTexture(cooldown, alpha)
-	if not cooldown then return end
-
-	cooldown:SetBlingTexture(alpha > 0.5 and (E.Retail and 131010 or [[interface\cooldown\star4.blp]]) or E.Media.Textures.Invisible)
-end
-
 function AB:FadeBlings(alpha)
 	if E.db.cooldown.actionbar.hideBling then return end
 
 	for _, bar in next, { AB.fadeParent:GetChildren() } do
 		if bar.buttons then
 			for _, button in ipairs(bar.buttons) do
-				AB:FadeBlingTexture(button.cooldown, alpha)
+				E:CooldownBling(button.cooldown, alpha)
 			end
 		end
 	end
@@ -841,7 +835,7 @@ function AB:FadeBarBlings(bar, alpha)
 	if E.db.cooldown.actionbar.hideBling then return end
 
 	for _, button in ipairs(bar.buttons) do
-		AB:FadeBlingTexture(button.cooldown, alpha)
+		E:CooldownBling(button.cooldown, alpha)
 	end
 end
 
@@ -1728,7 +1722,7 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	end
 
 	if button.cooldown then
-		AB:FadeBlingTexture(button.cooldown, button.cooldown:GetEffectiveAlpha())
+		E:CooldownBling(button.cooldown, button.cooldown:GetEffectiveAlpha())
 
 		-- Loss of Control Swipe
 		if not E.Retail then

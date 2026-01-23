@@ -20,10 +20,9 @@ function E:CooldownUpdate(cooldown, db)
 	cooldown:SetMinimumCountdownDuration(db.minDuration) -- minimum duration above which text will be shown
 	--cooldown:SetRotation(rad(db.rotation))
 	cooldown:SetReverse(db.reverse)
-
 	cooldown:SetDrawBling(not db.hideBling)
 
-	-- cooldown:SetBlingTexture(texture)
+	E:CooldownBling(cooldown)
 
 	cooldown:SetEdgeColor(db.colors.edge.r, db.colors.edge.g, db.colors.edge.b, db.colors.edge.a)
 	cooldown:SetSwipeColor(db.colors.swipe.r, db.colors.swipe.g, db.colors.swipe.b, db.colors.swipe.a)
@@ -45,7 +44,22 @@ function E:CooldownSettings(which)
 	end
 end
 
-function E:CooldownInitialize(cooldown, db)
+do
+	local blings = {}
+	function E:CooldownBling(cooldown, alpha)
+		local db = cooldown.db
+		if not db then return end
+
+		local texture = (alpha and alpha > 0.5) and (db.altBling and 131011 or 131010) or E.Media.Textures.Invisible
+		if blings[cooldown] ~= texture then		-- dont change the texture unless we need to
+			cooldown:SetBlingTexture(texture)	-- starburst or star4 or invisible
+
+			blings[cooldown] = texture
+		end
+	end
+end
+
+function E:CooldownInitialize(cooldown, db, charge)
 	if cooldown.Text or not db then return end
 
 	cooldown:SetAllPoints() -- place the cd inside of its parent
@@ -55,7 +69,7 @@ function E:CooldownInitialize(cooldown, db)
 	cooldown:SetDrawEdge(true)
 	cooldown:SetDrawSwipe(true)
 
-	cooldown:SetEdgeTexture(E.Media.Textures.Edge, db.colors.edge.r, db.colors.edge.g, db.colors.edge.b, db.colors.edge.a)
+	cooldown:SetEdgeTexture(charge and E.Media.Textures.Edge2 or E.Media.Textures.Edge, db.colors.edge.r, db.colors.edge.g, db.colors.edge.b, db.colors.edge.a)
 	cooldown:SetSwipeTexture(E.media.blankTex, db.colors.swipe.r, db.colors.swipe.g, db.colors.swipe.b, db.colors.swipe.a)
 end
 
@@ -102,7 +116,7 @@ function E:RegisterCooldown(cooldown, which)
 		if parent and parent.chargeCooldown then
 			cooldown.charge = parent.chargeCooldown
 
-			E:CooldownInitialize(cooldown.charge, db)
+			E:CooldownInitialize(cooldown.charge, db, true)
 		end
 	end
 

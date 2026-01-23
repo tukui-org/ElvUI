@@ -2828,6 +2828,7 @@ do
 		reverse = false,
 		hideBling = false,
 		hideNumbers = false,
+		altBling = false,
 
 		rotation = 0,
 		threshold = 0, -- seconds
@@ -2835,7 +2836,7 @@ do
 
 		colors = {
 			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
-			edge = { r = 1, g = 1, b = 0, a = 0 },
+			edge = { r = 0, g = 0, b = 0, a = 1 },
 			edgeCharge = { r = 0.6, g = 1, b = 0, a = 1 },
 			swipe = { r = 0, g = 0, b = 0, a = 0.6 },
 			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.2 },
@@ -2851,6 +2852,7 @@ do
 		fontSize = 16,
 	}
 
+	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
 	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton' } do
 		local object = CopyTable(defaults)
 
@@ -2865,6 +2867,7 @@ do
 			object.offsetY = -3
 		elseif key == 'actionbar' then
 			object.threshold = 300
+			object.altBling = useAltBling
 		end
 
 		P.cooldown[key] = object

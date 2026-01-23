@@ -189,7 +189,7 @@ function AB:FadeTotemBlings(totemBar, alpha)
 	if E.db.cooldown.actionbar.hideBling then return end
 
 	for button in next, totemBar.buttons do
-		AB:FadeBlingTexture(button.cooldown, alpha)
+		E:CooldownBling(button.cooldown, alpha)
 	end
 end
 
@@ -274,7 +274,7 @@ function AB:PositionAndSizeTotemBar()
 		AB:TrimIcon(actionButton, useMasque)
 
 		if actionButton.cooldown then
-			AB:FadeBlingTexture(actionButton.cooldown, fadeAlpha)
+			E:CooldownBling(actionButton.cooldown, fadeAlpha)
 		end
 
 		if i == 1 then
@@ -289,11 +289,11 @@ function AB:PositionAndSizeTotemBar()
 	AB:MultiCastRecallSpellButton_Update()
 
 	if summonButton.cooldown then
-		AB:FadeBlingTexture(summonButton.cooldown, fadeAlpha)
+		E:CooldownBling(summonButton.cooldown, fadeAlpha)
 	end
 
 	if recallButton.cooldown then
-		AB:FadeBlingTexture(recallButton.cooldown, fadeAlpha)
+		E:CooldownBling(recallButton.cooldown, fadeAlpha)
 	end
 
 	AB:TrimIcon(summonButton, useMasque)

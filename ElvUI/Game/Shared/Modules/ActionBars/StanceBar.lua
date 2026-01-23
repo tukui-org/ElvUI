@@ -33,7 +33,7 @@ function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 			if (active and active ~= 0) and start > 0 and duration > 0 then
 				cooldown:SetCooldown(start, duration)
 
-				AB:FadeBlingTexture(cooldown, cooldown:GetEffectiveAlpha())
+				E:CooldownBling(cooldown, cooldown:GetEffectiveAlpha())
 			else
 				cooldown:Clear()
 			end
