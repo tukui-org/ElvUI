@@ -198,14 +198,16 @@ function TT:GetLevelLine(tt, offset, raw)
 
 	for i, line in next, info.lines, offset do
 		local text = line and line.leftText
-		if not text or text == '' then return end
+		if E:NotSecretValue(text) then -- are only some lines secret?
+			if not text or text == '' then return end
 
-		local lower = strlower(text)
-		if lower and (strfind(lower, LEVEL1) or strfind(lower, LEVEL2)) then
-			if raw then
-				return line, info.lines[i+1]
-			else
-				return _G['GameTooltipTextLeft'..i], _G['GameTooltipTextLeft'..i+1]
+			local lower = strlower(text)
+			if lower and (strfind(lower, LEVEL1) or strfind(lower, LEVEL2)) then
+				if raw then
+					return line, info.lines[i+1]
+				else
+					return _G['GameTooltipTextLeft'..i], _G['GameTooltipTextLeft'..i+1]
+				end
 			end
 		end
 	end
