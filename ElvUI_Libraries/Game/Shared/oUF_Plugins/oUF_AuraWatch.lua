@@ -4,6 +4,7 @@
 local _, ns = ...
 local oUF = ns.oUF
 local AuraFiltered = oUF.AuraFiltered
+local AuraData = oUF.AuraData
 
 local VISIBLE = 1
 local HIDDEN = 0
@@ -188,6 +189,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	if not name then return end
 
 	local button, position = FetIcon(element, visible, offset)
+	local auraData = AuraData[aura and aura.auraInstanceID or nil]
 
 	button.aura = aura
 	button.filter = filter
@@ -195,7 +197,8 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	button.isDebuff = isDebuff
 	button.debuffType = debuffType
 	button.castByPlayer = castByPlayer
-	button.isPlayer = (oUF:NotSecretValue(source) and source == 'player') or (aura and aura.auraIsPlayer) or nil
+	button.auraInstanceID = aura and aura.auraInstanceID or nil
+	button.isPlayer = (oUF:NotSecretValue(source) and source == 'player') or (auraData and auraData.auraIsPlayer) or nil
 
 	button:SetID(index)
 

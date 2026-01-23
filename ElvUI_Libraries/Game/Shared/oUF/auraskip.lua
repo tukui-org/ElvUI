@@ -16,6 +16,7 @@ local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 local IsAuraFilteredOutByInstanceID = C_UnitAuras.IsAuraFilteredOutByInstanceID
 
 local auraInfo = {}
+local auraData = {}
 local auraFiltered = {
 	HELPFUL = {},
 	HARMFUL = {},
@@ -25,6 +26,7 @@ local auraFiltered = {
 }
 
 oUF.AuraInfo = auraInfo -- export it, not filtered
+oUF.AuraData = auraData -- additional information
 oUF.AuraFiltered = auraFiltered -- by filter
 
 local hasValidPlayer
@@ -54,7 +56,7 @@ end
 local function UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
 	local unitAuraFiltered = filtered[unit]
 
-	unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and (which ~= 'remove' and allow and aura) or nil
+	unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter, auraInstanceID) and (which ~= 'remove' and allow and aura) or nil
 end
 
 local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID, aura)
@@ -66,27 +68,46 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 		aura = unitAuraInfo[auraInstanceID]
 	end
 
+	local data = auraData[auraInstanceID]
 	if aura and oUF:NotSecretValue(aura.sourceUnit) and aura.sourceUnit then
-		aura.unitGUID = UnitGUID(aura.sourceUnit) -- fetch the new unit token with UnitTokenFromGUID
-		aura.unitName, aura.unitRealm = UnitName(aura.sourceUnit)
-		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = UnitClass(aura.sourceUnit)
-	elseif aura then
-		aura.unitGUID = nil
-		aura.unitName, aura.unitRealm = nil, nil
-		aura.unitClassName, aura.unitClassFilename, aura.unitClassID = nil, nil, nil
+		if not data then
+			data = {}
+
+			auraData[auraInstanceID] = data
+		end
+
+		data.unitGUID = UnitGUID(aura.sourceUnit) -- fetch the new unit token with UnitTokenFromGUID
+		data.unitName, data.unitRealm = UnitName(aura.sourceUnit)
+		data.unitClassName, data.unitClassFilename, data.unitClassID = UnitClass(aura.sourceUnit)
+	elseif data then
+		data.unitGUID = nil
+		data.unitName, data.unitRealm = nil, nil
+		data.unitClassName, data.unitClassFilename, data.unitClassID = nil, nil, nil
+
+		data.auraIsRaid = nil
+		data.auraIsPlayer = nil
+		data.auraIsHarmful = nil
+		data.auraIsHelpful = nil
+		data.auraIsNameplateOnly = nil
+
+		if not next(data) then
+			auraData[auraInstanceID] = nil
+			data = nil
+		end
 	end
 
+	auraData[auraInstanceID] = (which ~= 'remove' and aura) or nil
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
 	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
 
 	for filter, filtered in next, auraFiltered do
-		if aura then
-			aura.auraIsRaid = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'RAID')
-			aura.auraIsPlayer = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'PLAYER')
-			aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
-			aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
-			aura.auraIsNameplateOnly = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'INCLUDE_NAME_PLATE_ONLY')
+		if data and aura then
+			data.auraIsRaid = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'RAID')
+			data.auraIsPlayer = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'PLAYER')
+			data.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
+			data.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
+			data.auraIsNameplateOnly = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'INCLUDE_NAME_PLATE_ONLY')
 		end
 
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
@@ -193,21 +214,22 @@ function oUF:CreateUnitAuraInfo(unit)
 end
 
 -- now you can just use AuraFiltered
-function oUF:ShouldSkipAuraFilter(aura, filter)
+function oUF:ShouldSkipAuraFilter(aura, filter, auraInstanceID)
 	if not aura then
 		return true
 	end
 
+	local data = auraData[auraInstanceID]
 	if filter == 'HELPFUL' then
-		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
+		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (data and not data.auraIsHelpful)
 	elseif filter == 'HARMFUL' then
-		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
+		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (data and not data.auraIsHarmful)
 	elseif filter == 'RAID' then
-		return (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
+		return (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (data and not data.auraIsRaid)
 	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
-		return (oUF:NotSecretValue(aura.isNameplateOnly) and not aura.isNameplateOnly) or (not aura.auraIsNameplateOnly)
+		return (oUF:NotSecretValue(aura.isNameplateOnly) and not aura.isNameplateOnly) or (data and not data.auraIsNameplateOnly)
 	elseif filter == 'PLAYER' then
-		return (oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)) or (not aura.auraIsNameplateOnly)
+		return (oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)) or (data and not data.auraIsPlayer)
 	end
 end
 

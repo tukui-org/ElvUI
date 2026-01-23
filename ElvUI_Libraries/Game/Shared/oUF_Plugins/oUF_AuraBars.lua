@@ -1,6 +1,7 @@
 local _, ns = ...
 local oUF = ns.oUF
 local AuraFiltered = oUF.AuraFiltered
+local AuraData = oUF.AuraData
 
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
@@ -184,6 +185,8 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 
 	element.active[position] = bar
 
+	local auraData = AuraData[aura.auraInstanceID or nil]
+
 	bar.aura = aura
 	bar.unit = unit
 	bar.count = count
@@ -193,7 +196,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.isDebuff = isDebuff
 	bar.debuffType = debuffType
 	bar.isStealable = isStealable
-	bar.isPlayer = oUF:NotSecretValue(source) and (source == 'player' or source == 'vehicle') or (aura and aura.auraIsPlayer) or nil
+	bar.isPlayer = oUF:NotSecretValue(source) and (source == 'player' or source == 'vehicle') or (auraData and auraData.auraIsPlayer) or nil
 	bar.position = position
 	bar.duration = duration
 	bar.expiration = expiration
