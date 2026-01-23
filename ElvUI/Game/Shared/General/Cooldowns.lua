@@ -102,7 +102,7 @@ function E:RegisterCooldown(cooldown, which)
 		if parent and parent.chargeCooldown then
 			cooldown.charge = parent.chargeCooldown
 
-			E:CooldownInitialize(cooldown.charge, db.charge)
+			E:CooldownInitialize(cooldown.charge, db)
 		end
 	end
 
