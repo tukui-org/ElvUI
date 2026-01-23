@@ -440,25 +440,29 @@ function TT:AddMountInfo(tt, unit)
 	local unitAuraFiltered = AuraFiltered.HELPFUL[unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		local mountID = E.MountIDs[aura.spellId]
-		if mountID then
-			tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
+		if E:IsSecretValue(aura.spellId) then
+			break
+		else
+			local mountID = E.MountIDs[aura.spellId]
+			if mountID then
+				tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
 
-			local sourceText = E.MountText[mountID]
-			local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
-			if mountText then
-				local sourceModified = gsub(mountText, '|n', '\10')
-				for x in gmatch(sourceModified, '[^\10]+\10?') do
-					local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
-					if left and right then
-						tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
-					else
-						tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+				local sourceText = E.MountText[mountID]
+				local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
+				if mountText then
+					local sourceModified = gsub(mountText, '|n', '\10')
+					for x in gmatch(sourceModified, '[^\10]+\10?') do
+						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
+						if left and right then
+							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+						else
+							tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+						end
 					end
 				end
-			end
 
-			break
+				break
+			end
 		end
 
 		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
