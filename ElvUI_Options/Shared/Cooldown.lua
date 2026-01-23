@@ -7,14 +7,14 @@ local function Group(order, db, label)
 	E.Options.args.cooldown.args[db] = main
 
 	local mainArgs = main.args
-
 	local colors = ACH:Group(L["Color"], nil, 10, nil, function(info) local t = E.db.cooldown[db].colors[info[#info]] local d = P.cooldown[db].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
 	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
 	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
 	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
-	colors.args.swipeCharge = ACH:Color(L["Swipe Charge"], nil, 4, true, nil, nil, nil, nil, db ~= 'actionbar')
-	colors.args.edgeCharge = ACH:Color(L["Edge Charge"], nil, 5, true, nil, nil, nil, nil, db ~= 'actionbar')
-	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.args.spacer1 = ACH:Spacer(4, 'full')
+	colors.args.swipeCharge = ACH:Color(L["Swipe Charge"], nil, 10, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.args.edgeCharge = ACH:Color(L["Edge Charge"], nil, 11, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 12, true, nil, nil, nil, nil, E.Retail or db ~= 'actionbar')
 	colors.inline = true
 	mainArgs.colorGroup = colors
 
@@ -49,14 +49,14 @@ E.Options.args.cooldown = ACH:Group(L["Cooldown Text"], nil, 2, 'tab', function(
 E.Options.args.cooldown.args.intro = ACH:Description(L["COOLDOWN_DESC"], 0)
 E.Options.args.cooldown.args.enable = ACH:Toggle(L["Enable"], L["Display cooldown text on anything with the cooldown spiral."], 1, nil, nil, nil, nil, function(info, value) E.db.cooldown[info[#info]] = value; E:CooldownSettings('global'); E.ShowPopup = true end)
 
-Group( 5, 'global',		L["Global"])
-Group( 6, 'auras',		L["BUFFOPTIONS_LABEL"])
-Group( 7, 'actionbar',	L["ActionBars"])
-Group( 8, 'bags',		L["Bags"])
-Group( 9, 'nameplates',	L["Nameplates"])
-Group(10, 'unitframe',	L["UnitFrames"])
-Group(11, 'aurabars',	L["Aura Bars"])
-Group(12, 'cdmanager',	L["Cooldown Manager"])
-Group(13, 'totemtracker', L["Totem Tracker"])
-Group(14, 'bossbutton',	L["Boss Button"])
-Group(15, 'zonebutton',	L["Zone Button"])
+Group(10, 'global',		L["Global"])
+Group(11, 'auras',		L["BUFFOPTIONS_LABEL"])
+Group(12, 'actionbar',	L["ActionBars"])
+Group(13, 'bags',		L["Bags"])
+Group(14, 'nameplates',	L["Nameplates"])
+Group(15, 'unitframe',	L["UnitFrames"])
+Group(16, 'aurabars',	L["Aura Bars"])
+Group(17, 'cdmanager',	L["Cooldown Manager"])
+Group(18, 'totemtracker', L["Totem Tracker"])
+Group(19, 'bossbutton',	L["Boss Button"])
+Group(20, 'zonebutton',	L["Zone Button"])
