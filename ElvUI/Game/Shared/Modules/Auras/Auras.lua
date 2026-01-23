@@ -171,6 +171,11 @@ function A:CreateIcon(button)
 
 	button.cooldown = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
 
+	-- show the cooldown so that count appears
+	if not E.Retail then
+		button.cooldown:Show()
+	end
+
 	button.texture = button:CreateTexture(nil, 'ARTWORK')
 	button.texture:SetInside()
 
