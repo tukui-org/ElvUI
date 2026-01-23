@@ -2420,7 +2420,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			if E.Retail and arg1 == 'YOU_CHANGED' and GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
 				if frame.UpdateDefaultChatTarget then
-					frame.UpdateDefaultChatTarget()
+					frame:UpdateDefaultChatTarget()
 				else
 					_G.ChatFrame_UpdateDefaultChatTarget(frame)
 				end
