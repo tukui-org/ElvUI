@@ -370,7 +370,7 @@ function TT:PopulateInspectGUIDCache(unitGUID, itemLevel)
 end
 
 function TT:INSPECT_READY(event, unitGUID)
-	if UnitExists('mouseover') and UnitGUID('mouseover') == unitGUID then
+	if E:UnitExists('mouseover') and UnitGUID('mouseover') == unitGUID then
 		local itemLevel, retryUnit, retryTable, iLevelDB = E:GetUnitItemLevel('mouseover')
 		if itemLevel == 'tooSoon' then
 			E:Delay(0.05, function()
