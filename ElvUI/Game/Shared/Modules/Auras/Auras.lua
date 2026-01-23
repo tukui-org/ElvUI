@@ -149,7 +149,7 @@ function A:UpdateButton(button)
 	elseif button.timeLeft > threshold then
 		E:StopFlash(button, 1)
 	else
-		E:Flash(button, 1)
+		E:Flash(button, 1, true)
 	end
 end
 
