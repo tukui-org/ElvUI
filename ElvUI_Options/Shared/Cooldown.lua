@@ -8,7 +8,17 @@ local function Group(order, db, label)
 
 	local mainArgs = main.args
 
-	local general = ACH:Group(L["General"], nil, 10)
+	local colors = ACH:Group(L["Color"], nil, 10, nil, function(info) local t = E.db.cooldown[db].colors[info[#info]] local d = P.cooldown[db].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
+	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
+	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
+	colors.args.swipeCharge = ACH:Color(L["Swipe Charge"], nil, 4, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.args.edgeCharge = ACH:Color(L["Edge Charge"], nil, 5, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.inline = true
+	mainArgs.colorGroup = colors
+
+	local general = ACH:Group(L["General"], nil, 20)
 	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 1)
 	general.args.hideBling = ACH:Toggle(L["Hide Bling"], L["Completion flash when the cooldown finishes."], 4)
 	general.args.altBling = ACH:Toggle(L["Alternative Bling"], nil, 5)
@@ -18,26 +28,13 @@ local function Group(order, db, label)
 	general.args.minDuration = ACH:Range(L["Minimum Duration"], L["Minimum countdown duration (in milliseconds)."], 11, { min = 0, softMax = 5000, max = 60000, step = 1 })
 	-- general.args.rotation = ACH:Range(L["Rotation"], L["Rotates the entire cooldown clockwise."], 12, { min = 0, max = 360, step = 1 })
 	general.inline = true
-
 	mainArgs.generalGroup = general
-
-	local colors = ACH:Group(L["Color"], nil, 20, nil, function(info) local t = E.db.cooldown[db].colors[info[#info]] local d = P.cooldown[db].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
-	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
-	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true)
-	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true)
-	colors.args.swipeCharge = ACH:Color(L["Swipe Charge"], nil, 4, true, nil, nil, nil, nil, db ~= 'actionbar')
-	colors.args.edgeCharge = ACH:Color(L["Edge Charge"], nil, 5, true, nil, nil, nil, nil, db ~= 'actionbar')
-	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 6, true, nil, nil, nil, nil, db ~= 'actionbar')
-	colors.inline = true
-
-	mainArgs.colorGroup = colors
 
 	local fonts = ACH:Group(L["Fonts"], nil, 30)
 	fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 	fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 2, { min = 10, max = 50, step = 1 })
 	fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 	fonts.inline = true
-
 	mainArgs.fontGroup = fonts
 
 	local position = ACH:Group(L["Text Position"], nil, 40)
@@ -45,7 +42,6 @@ local function Group(order, db, label)
 	position.args.offsetX = ACH:Range(L["X-Offset"], nil, 2, { min = -50, max = 50, step = 1 })
 	position.args.offsetY = ACH:Range(L["Y-Offset"], nil, 3, { min = -50, max = 50, step = 1 })
 	position.inline = true
-
 	mainArgs.positionGroup = position
 end
 

@@ -20,12 +20,12 @@ function E:CooldownUpdate(cooldown, db)
 	cooldown:SetMinimumCountdownDuration(db.minDuration) -- minimum duration above which text will be shown
 	--cooldown:SetRotation(rad(db.rotation))
 	cooldown:SetReverse(db.reverse)
-	cooldown:SetDrawBling(not db.hideBling)
 
 	E:CooldownBling(cooldown)
 
-	cooldown:SetEdgeColor(db.colors.edge.r, db.colors.edge.g, db.colors.edge.b, db.colors.edge.a)
-	cooldown:SetSwipeColor(db.colors.swipe.r, db.colors.swipe.g, db.colors.swipe.b, db.colors.swipe.a)
+	cooldown:SetDrawBling(db ~= 'aurabars' and not db.hideBling)
+	cooldown:SetEdgeColor(db.colors.edge.r, db.colors.edge.g, db.colors.edge.b, (db == 'aurabars' and 0) or db.colors.edge.a)
+	cooldown:SetSwipeColor(db.colors.swipe.r, db.colors.swipe.g, db.colors.swipe.b, (db == 'aurabars' and 0) or db.colors.swipe.a)
 
 	if cooldown.charge then
 		cooldown.charge:SetEdgeColor(db.colors.edgeCharge.r, db.colors.edgeCharge.g, db.colors.edgeCharge.b, db.colors.edgeCharge.a)
