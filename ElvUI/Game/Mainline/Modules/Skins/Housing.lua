@@ -117,13 +117,49 @@ function S:Blizzard_HousingDashboard()
 
 		local InitiativesFrame = ContentFrame.InitiativesFrame
 		if InitiativesFrame then
+			InitiativesFrame.InitiativesArt:Hide() -- Main Top Art BG
+
 			local Tasks = InitiativesFrame.InitiativeSetFrame.InitiativeTasks
 			if Tasks then
+				Tasks.BG:StripTextures()
+				Tasks:SetTemplate('Transparent')
 				S:HandleTrimScrollBar(Tasks.ScrollBar)
+
+				local toStrip = {
+					Tasks.BG,
+					Tasks.BorderRight,
+					Tasks.BorderTop,
+					Tasks.TitleCornerBR,
+					Tasks.TitleCornerTR,
+					Tasks.TaskListTitleContainer.TitleCornerBR,
+					Tasks.TaskListTitleContainer.TitleFoliage
+				}
+				for _, frame in next, toStrip do
+					if frame then
+						frame:StripTextures()
+					end
+				end
 			end
+
 			local Activity = InitiativesFrame.InitiativeSetFrame.InitiativeActivity
 			if Activity then
+				Activity:SetTemplate('Transparent')
 				S:HandleTrimScrollBar(Activity.ScrollBar)
+
+				local toStrip = {
+					Activity.BG,
+					Activity.BGTexture,
+					Activity.BorderTop,
+					Activity.TitleCornerBL,
+					Activity.TitleCornerTR,
+					Activity.ActivityLogTitleContainer.TitleCornerBL,
+					Activity.ActivityLogTitleContainer.TitleFoliage
+				}
+				for _, frame in next, toStrip do
+					if frame then
+						frame:StripTextures()
+					end
+				end
 			end
 		end
 	end
