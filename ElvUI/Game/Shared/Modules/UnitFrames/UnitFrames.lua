@@ -2191,6 +2191,7 @@ function UF:Initialize()
 	UF.thinBorders = UF.db.thinBorders
 	UF.maxAllowedGroups = 8
 	UF.multiplier = 0.35
+	UF.multiplierPrediction = 1.25
 
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2

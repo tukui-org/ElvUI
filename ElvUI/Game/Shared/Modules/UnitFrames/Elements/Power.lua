@@ -284,17 +284,19 @@ do
 
 		UF.PostUpdateColor(self, unit, color, r, g, b)
 
-		if parent and parent.PowerPrediction and parent.PowerPrediction.mainBar then
-			if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
-				local predColor = UF.db.colors.powerPrediction.color
-				parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(predColor.r, predColor.g, predColor.b, predColor.a)
+		local predictionBar = parent and parent.PowerPrediction and parent.PowerPrediction.mainBar
+		local predictionDB = predictionBar and UF.db.colors and UF.db.colors.powerPrediction
+		if predictionDB then
+			local c = predictionDB.enable and predictionDB.color
+			if c then
+				predictionBar:GetStatusBarTexture():SetVertexColor(c.r, c.g, c.b, c.a)
 			else
 				if not r and color then
 					r, g, b = color:GetRGB()
 				end
 
 				if r then
-					parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
+					predictionBar:GetStatusBarTexture():SetVertexColor(r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
 				end
 			end
 		end
