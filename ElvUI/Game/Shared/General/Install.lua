@@ -226,43 +226,43 @@ function E:SetupTheme(theme, noDisplayMsg)
 
 	--Set colors
 	if theme == 'classic' then
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
-		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
+		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.31, 0.31, 0.31, 1))
+		E.db.general.backdropcolor = E:GetColor(0.1, 0.1, 0.1, 1)
 		E.db.general.backdropfadecolor = E:GetColor(0.13, 0.13, 0.13, 0.69)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.31, 0.31, 0.31, 1))
 		E.db.unitframe.colors.healthclass = false
-		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
-		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
+		E.db.unitframe.colors.health = E:GetColor(0.31, 0.31, 0.31, 1)
+		E.db.unitframe.colors.auraBarBuff = E:GetColor(0.31, 0.31, 0.31, 1)
+		E.db.unitframe.colors.castColor = E:GetColor(0.31, 0.31, 0.31, 1)
 		E.db.unitframe.colors.castClassColor = false
-		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82, a = 1}
+		E.db.chat.tabSelectorColor = E:GetColor(0.09, 0.51, 0.82, 1)
 	elseif theme == 'class' then
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
-		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
+		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.31, 0.31, 0.31, 1))
+		E.db.general.backdropcolor = E:GetColor(0.1, 0.1, 0.1, 1)
+		E.db.general.backdropfadecolor = E:GetColor(0.06, 0.06, 0.06, 0.8)
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.31, 0.31, 0.31, 1))
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.g, classColor.b)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.colors.castClassColor = true
 		E.db.chat.tabSelectorColor = E:GetColor(classColor.r, classColor.g, classColor.b)
 	else
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.1, .1, .1))
-		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(.054, .054, .054, .8)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.1, .1, .1))
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(.1, .1, .1)
+		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.1, 0.1, 0.1, 1))
+		E.db.general.backdropcolor = E:GetColor(0.1, 0.1, 0.1, 1)
+		E.db.general.backdropfadecolor = E:GetColor(0.054, 0.054, 0.054, 0.8)
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.1, 0.1, 0.1, 1))
+		E.db.unitframe.colors.auraBarBuff = E:GetColor(0.1, 0.1, 0.1, 1)
 		E.db.unitframe.colors.healthclass = false
-		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
-		E.db.unitframe.colors.castColor = E:GetColor(.1, .1, .1)
+		E.db.unitframe.colors.health = E:GetColor(0.1, 0.1, 0.1, 1)
+		E.db.unitframe.colors.castColor = E:GetColor(0.1, 0.1, 0.1, 1)
 		E.db.unitframe.colors.castClassColor = false
 		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82, a = 1}
 	end
 
 	--Value Color
 	if theme == 'class' then
-		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.g, classColor.b)
+		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.g, classColor.b, classColor.a)
 	else
-		E.db.general.valuecolor = E:GetColor(0.09, 0.52, 0.82)
+		E.db.general.valuecolor = E:GetColor(0.09, 0.52, 0.82, 1)
 	end
 
 	E:UpdateStart(true, true)
@@ -1403,7 +1403,7 @@ function E:SetPage(num)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetText(L["Small"])
 		InstallOption2Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .6
+			E.global.general.UIScale = 0.6
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -1411,7 +1411,7 @@ function E:SetPage(num)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetText(L["Medium"])
 		InstallOption3Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .7
+			E.global.general.UIScale = 0.7
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -1419,7 +1419,7 @@ function E:SetPage(num)
 		InstallOption4Button:Show()
 		InstallOption4Button:SetText(L["Large"])
 		InstallOption4Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .8
+			E.global.general.UIScale = 0.8
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -1570,7 +1570,7 @@ function E:Install()
 		f.Status.anim = _G.CreateAnimationGroup(f.Status)
 		f.Status.anim.progress = f.Status.anim:CreateAnimation('Progress')
 		f.Status.anim.progress:SetEasing('Out')
-		f.Status.anim.progress:SetDuration(.3)
+		f.Status.anim.progress:SetDuration(0.3)
 
 		f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')
 		f.Status.text:FontTemplate(nil, 14, 'OUTLINE')
