@@ -25,14 +25,23 @@ function S:Blizzard_CombatLog()
 	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', StyleButtons)
 	StyleButtons()
 
+	local bar = _G.CombatLogQuickButtonFrame_Custom
+	bar:StripTextures()
+	bar:SetTemplate('Transparent')
+
+	bar:ClearAllPoints()
+	bar:Point('BOTTOMLEFT', _G.ChatFrame2, 'TOPLEFT', -3, 2)
+	bar:Point('BOTTOMRIGHT', _G.ChatFrame2, 'TOPRIGHT', 3, 0)
 
 	local progress = _G.CombatLogQuickButtonFrame_CustomProgressBar
 	progress:SetStatusBarTexture(E.media.normTex)
-
+	progress:SetInside(bar)
 
 	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:ClearAllPoints()
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Point('TOPRIGHT', bar, 'TOPRIGHT', -2, -2)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetHitRectInsets(0,0,0,0)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:OffsetFrameLevel(3, bar)
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 end

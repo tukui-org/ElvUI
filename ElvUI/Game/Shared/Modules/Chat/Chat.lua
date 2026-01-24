@@ -1557,6 +1557,17 @@ function CH:ResnapDock(event, arg1, arg2)
 	CH:SnappingChanged(_G.GeneralDockManager.primary)
 end
 
+function CH:ShowBackground(background, show)
+	if not background then return end
+
+	if show then
+		background.Show = nil
+		background:Show()
+	else
+		background:Kill()
+	end
+end
+
 function CH:PositionChat(chat)
 	CH.LeftChatWindow, CH.RightChatWindow = CH:FindChatWindows()
 
@@ -1589,12 +1600,18 @@ function CH:PositionChat(chat)
 		chat:ClearAllPoints()
 		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
 		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
+
+		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
 		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
 
 		chat:ClearAllPoints()
 		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
 		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
+
+		CH:ShowBackground(chat.Background, false)
+	else -- show if: not docked, or ChatFrame1, or attached to ChatFrame1
+		CH:ShowBackground(chat.Background, CH:IsUndocked(chat, docker))
 	end
 end
 
@@ -2640,6 +2657,8 @@ do
 		local hl = btn:GetHighlightTexture()
 		hl:SetVertexColor(unpack(E.media.rgbvaluecolor))
 		hl:SetRotation(S.ArrowRotation.down)
+
+		btn.list:SetTemplate('Transparent')
 	end
 end
 
@@ -3433,6 +3452,8 @@ function CH:HandleChatVoiceIcons()
 		for index, button in ipairs(channelButtons) do
 			if index == 1 then
 				CH:HandleTextToSpeechButton(button)
+			else
+				S:HandleButton(button, nil, nil, true)
 			end
 
 			if button.Icon then
@@ -3485,6 +3506,8 @@ function CH:CreateChatVoicePanel()
 	for index, button in ipairs(channelButtons) do
 		if index == 1 then
 			CH:HandleTextToSpeechButton(button)
+		else
+			S:HandleButton(button, nil, nil, true)
 		end
 
 		if button.Icon then
