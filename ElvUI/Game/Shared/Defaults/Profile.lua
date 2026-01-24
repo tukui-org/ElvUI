@@ -2840,8 +2840,8 @@ do
 			edgeCharge = { r = 0.6, g = 1, b = 0, a = 1 },
 			edgeLOC = { r = 1, g = 0.2, b = 0.8, a = 1 },
 			swipe = { r = 0, g = 0, b = 0, a = 0.7 },
-			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.25 },
-			swipeLOC = { r = 1, g = 0.2, b = 0.6, a = 0.25 },
+			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.3 },
+			swipeLOC = { r = 1, g = 0.2, b = 0.6, a = 0.3 },
 		},
 
 		position = 'CENTER',
