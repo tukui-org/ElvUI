@@ -245,7 +245,6 @@ function AB:ExtraButtons_SetupAbility()
 	if ExtraAbilityContainer then
 		if not extraHooked[ExtraAbilityContainer] then
 			-- try to shutdown the container movement and taints
-			ExtraAbilityContainer:KillEditMode()
 			ExtraAbilityContainer:SetScript('OnShow', nil)
 			ExtraAbilityContainer:SetScript('OnUpdate', nil)
 			ExtraAbilityContainer.OnUpdate = nil -- remove BaseLayoutMixin.OnUpdate

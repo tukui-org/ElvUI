@@ -2838,9 +2838,10 @@ do
 			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
 			edge = { r = 0, g = 0, b = 0, a = 1 },
 			edgeCharge = { r = 0.6, g = 1, b = 0, a = 1 },
+			edgeLOC = { r = 1, g = 0.2, b = 0.8, a = 1 },
 			swipe = { r = 0, g = 0, b = 0, a = 0.6 },
-			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.2 },
-			swipeLOC = { r = 0.3, g = 0, b = 0, a = 0.6 },
+			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.25 },
+			swipeLOC = { r = 1, g = 0.2, b = 0.6, a = 0.25 },
 		},
 
 		position = 'CENTER',
@@ -2853,7 +2854,7 @@ do
 	}
 
 	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
-	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton' } do
+	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton' } do
 		local object = CopyTable(defaults)
 
 		if key == 'global' then
@@ -2861,6 +2862,9 @@ do
 		elseif key == 'aurabars' then
 			object.position = 'RIGHT'
 			object.offsetX = -10
+		elseif key == 'auraindicator' then
+			object.hideNumbers = true
+			object.fontSize = 10
 		elseif key == 'auras' then
 			object.reverse = true
 			object.position = 'BOTTOM'

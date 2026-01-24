@@ -105,7 +105,7 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:SetCompareItems(tt, value)
-	if tt ~= GameTooltip then return end
+	if E.Retail or tt ~= GameTooltip then return end
 
 	tt.supportsItemComparison = value
 end
@@ -1145,8 +1145,6 @@ function TT:Initialize()
 		TT:SecureHook(GameTooltip, 'SetBackpackToken')
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
 		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
-
-		_G.GameTooltipDefaultContainer:KillEditMode()
 	else
 		TT:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	end

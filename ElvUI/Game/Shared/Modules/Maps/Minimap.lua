@@ -752,11 +752,7 @@ function M:Initialize()
 	M.MapHolder = mapHolder
 	M:SetScale(mapHolder, 1)
 
-	if E.TBC then
-		MinimapCluster:KillEditMode()
-	elseif E.Retail then
-		MinimapCluster:KillEditMode()
-
+	if E.Retail then
 		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
 		clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()
 		clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)

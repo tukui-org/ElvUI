@@ -623,7 +623,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.pointIndex = i
 		dt.parent = panel
 		dt.parentName = panelName
-		dt.battlePanel = battlePanel
+		dt.battlePanel = not E.Retail and battlePanel
 		dt.db = db
 		dt.watchModKey = nil
 		dt.name = nil
@@ -647,7 +647,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')
 		end
 
-		local panelDB = (not E.Retail and battlePanel) and DT.db.battlePanel or DT.db.panels
+		local panelDB = (battlePanel and DT.db.battlePanel) or DT.db.panels
 		local data = DT.RegisteredDataTexts[panelDB[panelName][i]]
 		DT.AssignedDatatexts[dt] = data
 		if data then DT:AssignPanelToDataText(dt, data, ...) end
@@ -684,7 +684,7 @@ function DT:LoadDataTexts(...)
 		end
 	end
 
-	if DT.ShowingBattleStats and not E.Retail then
+	if DT.ShowingBattleStats then
 		DT:UPDATE_BATTLEFIELD_SCORE()
 	end
 end
@@ -978,7 +978,7 @@ function DT:Initialize()
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)
 	E.EasyMenu.MenuSetItem = function(dt, value)
-		local panelDB = (not E.Retail and dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
+		local panelDB = (dt and dt.battlePanel and DT.db.battlePanel) or DT.db.panels
 		if panelDB then
 			panelDB[dt.parentName][dt.pointIndex] = value
 			DT:UpdatePanelInfo(dt.parentName, dt.parent)
@@ -989,7 +989,7 @@ function DT:Initialize()
 		DT:CloseMenus()
 	end
 	E.EasyMenu.MenuGetItem = function(dt, value)
-		local panelDB = (not E.Retail and dt and dt.battlePanel) and DT.db.battlePanel or DT.db.panels
+		local panelDB = (dt and dt.battlePanel and DT.db.battlePanel) or DT.db.panels
 		return dt and (panelDB[dt.parentName] and panelDB[dt.parentName][dt.pointIndex] == value)
 	end
 
