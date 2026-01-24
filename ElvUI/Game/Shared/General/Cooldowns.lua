@@ -9,12 +9,12 @@ E.RegisteredCooldowns = {}
 E.CooldownByModule = {}
 
 function E:CooldownUpdate(cooldown)
-	local data = cooldown.Text and E.RegisteredCooldowns[cooldown]
-	if not data then return end
+	local db, data = E:CooldownData(cooldown)
+	if not db or not cooldown.Text then return end
 
-	local db, which, c = data.db, data.which, data.colors
+	local which, colors = data.which, db.colors
 	cooldown.Text:ClearAllPoints()
-	cooldown.Text:SetTextColor(c.text.r, c.text.g, c.text.b)
+	cooldown.Text:SetTextColor(colors.text.r, colors.text.g, colors.text.b)
 	cooldown.Text:Point('CENTER', nil, db.position, db.offsetX, db.offsetY)
 	cooldown.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 
@@ -28,40 +28,38 @@ function E:CooldownUpdate(cooldown)
 
 	local aurabars = which == 'aurabars' and 0 or nil
 	cooldown:SetDrawBling(not aurabars and not db.hideBling)
-	cooldown:SetEdgeColor(c.edge.r, c.edge.g, c.edge.b, aurabars or c.edge.a)
-	cooldown:SetSwipeColor(c.swipe.r, c.swipe.g, c.swipe.b, aurabars or c.swipe.a)
+	cooldown:SetEdgeColor(colors.edge.r, colors.edge.g, colors.edge.b, aurabars or colors.edge.a)
+	cooldown:SetSwipeColor(colors.swipe.r, colors.swipe.g, colors.swipe.b, aurabars or colors.swipe.a)
 
 	local charge = data.chargeCooldown
 	if charge then
-		charge:SetEdgeColor(c.edgeCharge.r, c.edgeCharge.g, c.edgeCharge.b, c.edgeCharge.a)
-		charge:SetSwipeColor(c.swipeCharge.r, c.swipeCharge.g, c.swipeCharge.b, c.swipeCharge.a)
+		charge:SetEdgeColor(colors.edgeCharge.r, colors.edgeCharge.g, colors.edgeCharge.b, colors.edgeCharge.a)
+		charge:SetSwipeColor(colors.swipeCharge.r, colors.swipeCharge.g, colors.swipeCharge.b, colors.swipeCharge.a)
 	end
 
 	local lossControl = data.lossOfControl
 	if lossControl then
-		lossControl:SetEdgeColor(c.edgeLOC.r, c.edgeLOC.g, c.edgeLOC.b, c.edgeLOC.a)
-		lossControl:SetSwipeColor(c.swipeLOC.r, c.swipeLOC.g, c.swipeLOC.b, c.swipeLOC.a)
+		lossControl:SetEdgeColor(colors.edgeLOC.r, colors.edgeLOC.g, colors.edgeLOC.b, colors.edgeLOC.a)
+		lossControl:SetSwipeColor(colors.swipeLOC.r, colors.swipeLOC.g, colors.swipeLOC.b, colors.swipeLOC.a)
 	end
 end
 
 function E:CooldownSettings(which)
-	if not E.db.cooldown.enable then return end
-
-	local cooldowns = E.CooldownByModule[which]
+	local cooldowns = E.db.cooldown.enable and E.CooldownByModule[which]
 	if not cooldowns then return end
 
-	for cooldown, data in next, cooldowns do
-		E:CooldownUpdate(cooldown, data)
+	for cooldown in next, cooldowns do
+		E:CooldownUpdate(cooldown)
 	end
 end
 
 do	-- mainly used to prevent the bling from triggering when
 	local blings = {} -- the actionbars are faded out
 	function E:CooldownBling(cooldown, alpha)
-		local data = E.RegisteredCooldowns[cooldown]
-		if not data then return end
+		local db = E:CooldownData(cooldown)
+		if not db then return end
 
-		local texture = (alpha and alpha > 0.5) and (data.db.altBling and 131011 or 131010) or E.Media.Textures.Invisible
+		local texture = (alpha and alpha > 0.5) and (db.altBling and 131011 or 131010) or E.Media.Textures.Invisible
 		if blings[cooldown] ~= texture then		-- dont change the texture unless we need to
 			cooldown:SetBlingTexture(texture)	-- starburst or star4 or invisible
 
@@ -80,10 +78,10 @@ function E:CooldownTextures(cooldown, texture, edge, swipe)
 end
 
 function E:CooldownInitialize(cooldown)
-	local data = not cooldown.Text and E.RegisteredCooldowns[cooldown]
-	if not data then return end
+	local db, data = E:CooldownData(cooldown)
+	if not db or cooldown.Text then return end
 
-	local c = data.colors
+	local c = db.colors
 	cooldown.Text = cooldown:GetRegions() -- extract the timer text
 
 	E:CooldownTextures(cooldown, E.Media.Textures.Edge, c.edge, c.swipe)
@@ -100,13 +98,20 @@ function E:CooldownInitialize(cooldown)
 end
 
 function E:LABCooldownUpdate(cooldown) -- non retail
-	local data = E.RegisteredCooldowns[cooldown]
-	if not data then return end
+	local db = E:CooldownData(cooldown)
+	if not db then return end
 
-	local c = data.colors[(cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and 'swipeLOC') or 'swipe']
+	local c = db.colors[(cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and 'swipeLOC') or 'swipe']
 	if c then
 		cooldown:SetSwipeColor(c.r, c.g, c.b, c.a)
 	end
+end
+
+function E:CooldownData(cooldown)
+	local data = E.RegisteredCooldowns[cooldown]
+	local db = data and E.db.cooldown[data.which]
+
+	return db, data
 end
 
 function E:RegisterCooldown(cooldown, which)
@@ -116,7 +121,7 @@ function E:RegisterCooldown(cooldown, which)
 
 	-- storage by cooldown (to grab a cooldowns data)
 	if not E.RegisteredCooldowns[cooldown] then -- data can include: charge = chargeCooldown
-		E.RegisteredCooldowns[cooldown] = { db = db, colors = db.colors, which = which }
+		E.RegisteredCooldowns[cooldown] = { which = which }
 	else -- this cooldown was already added
 		return -- stop here
 	end
