@@ -31,10 +31,16 @@ function E:CooldownUpdate(cooldown)
 	cooldown:SetEdgeColor(c.edge.r, c.edge.g, c.edge.b, aurabars or c.edge.a)
 	cooldown:SetSwipeColor(c.swipe.r, c.swipe.g, c.swipe.b, aurabars or c.swipe.a)
 
-	local charge = data.charge
+	local charge = data.chargeCooldown
 	if charge then
 		charge:SetEdgeColor(c.edgeCharge.r, c.edgeCharge.g, c.edgeCharge.b, c.edgeCharge.a)
 		charge:SetSwipeColor(c.swipeCharge.r, c.swipeCharge.g, c.swipeCharge.b, c.swipeCharge.a)
+	end
+
+	local lossControl = data.lossOfControl
+	if lossControl then
+		lossControl:SetEdgeColor(c.edgeLOC.r, c.edgeLOC.g, c.edgeLOC.b, c.edgeLOC.a)
+		lossControl:SetSwipeColor(c.swipeLOC.r, c.swipeLOC.g, c.swipeLOC.b, c.swipeLOC.a)
 	end
 end
 
@@ -64,6 +70,15 @@ do	-- mainly used to prevent the bling from triggering when
 	end
 end
 
+function E:CooldownTextures(cooldown, texture, edge, swipe)
+	cooldown:SetAllPoints()
+	cooldown:SetDrawEdge(true)
+	cooldown:SetDrawSwipe(true)
+
+	cooldown:SetEdgeTexture(texture, edge.r, edge.g, edge.b, edge.a)
+	cooldown:SetSwipeTexture(E.media.blankTex, swipe.r, swipe.g, swipe.b, swipe.a)
+end
+
 function E:CooldownInitialize(cooldown)
 	local data = not cooldown.Text and E.RegisteredCooldowns[cooldown]
 	if not data then return end
@@ -71,21 +86,16 @@ function E:CooldownInitialize(cooldown)
 	local c = data.colors
 	cooldown.Text = cooldown:GetRegions() -- extract the timer text
 
-	cooldown:SetAllPoints()
-	cooldown:SetDrawEdge(true)
-	cooldown:SetDrawSwipe(true)
+	E:CooldownTextures(cooldown, E.Media.Textures.Edge, c.edge, c.swipe)
 
-	cooldown:SetEdgeTexture(E.Media.Textures.Edge, c.edge.r, c.edge.g, c.edge.b, c.edge.a)
-	cooldown:SetSwipeTexture(E.media.blankTex, c.swipe.r, c.swipe.g, c.swipe.b, c.swipe.a)
-
-	local charge = data.charge
+	local charge = data.chargeCooldown
 	if charge then
-		charge:SetAllPoints()
-		charge:SetDrawEdge(true)
-		charge:SetDrawSwipe(true)
+		E:CooldownTextures(cooldown, E.Media.Textures.Edge2, c.edgeCharge, c.swipeCharge)
+	end
 
-		charge:SetEdgeTexture(E.Media.Textures.Edge2, c.edgeCharge.r, c.edgeCharge.g, c.edgeCharge.b, c.edgeCharge.a)
-		charge:SetSwipeTexture(E.media.blankTex, c.swipeCharge.r, c.swipeCharge.g, c.swipeCharge.b, c.swipeCharge.a)
+	local lossControl = data.lossOfControl
+	if lossControl then
+		E:CooldownTextures(lossControl, E.Media.Textures.Edge, c.edgeLOC, c.swipeLOC)
 	end
 end
 
@@ -122,7 +132,8 @@ function E:RegisterCooldown(cooldown, which)
 
 	-- reference the charge cooldown from LAB
 	local parent = which == 'actionbar' and cooldown:GetParent()
-	data.charge = parent and parent.chargeCooldown or nil
+	data.chargeCooldown = parent and parent.chargeCooldown or nil
+	data.lossOfControl = parent and parent.lossOfControlCooldown or nil
 
 	-- extract the blizzard cooldown region
 	E:CooldownInitialize(cooldown)

@@ -1983,11 +1983,13 @@ function UF:MergeUnitSettings(from, to)
 	UF:Update_AllFrames()
 end
 
-function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
+function UF:SetStatusBarColor(bar, r, g, b, custom)
 	local mainR, mainG, mainB, mainA = r, g, b, bar.isTransparent and UF.multiplier or 1
 	local bgR, bgG, bgB, bgA = r, g, b, bar.isTransparent and 1 or UF.multiplier
-	if custom_backdrop then
-		bgR, bgG, bgB, bgA = custom_backdrop.r, custom_backdrop.g, custom_backdrop.b, custom_backdrop.a
+
+	local color = custom or bar.custom_backdrop
+	if color then
+		bgR, bgG, bgB, bgA = color.r, color.g, color.b, color.a
 	end
 
 	if bar.bg then
@@ -2005,11 +2007,14 @@ function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
 	end
 end
 
-function UF:PostUpdateColor(_, color)
-	if not color then return end
+function UF:PostUpdateColor(_, color, r, g, b) -- r, g, b would be from from UnitPowerType (alternative color for this power type)
+	if not r and color then -- color would be the standard color for this power type
+		r, g, b = color:GetRGB()
+	end
 
-	local r, g, b = color:GetRGB()
-	UF:SetStatusBarColor(self, r, g, b)
+	if r then
+		UF:SetStatusBarColor(self, r, g, b)
+	end
 end
 
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
@@ -2188,6 +2193,7 @@ function UF:Initialize()
 	UF.thinBorders = UF.db.thinBorders
 	UF.maxAllowedGroups = 8
 	UF.multiplier = 0.35
+	UF.multiplierPrediction = 1.25
 
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1
 	UF.BORDER = (UF.thinBorders and not E.twoPixelsPlease) and 1 or 2

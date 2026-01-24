@@ -606,7 +606,7 @@ function UF:PostColorAdditionalPower(unit, color)
 			bar:GetStatusBarTexture():SetVertexColor(pred.additional.r, pred.additional.g, pred.additional.b, pred.additional.a)
 		else
 			local r, g, b = color:GetRGB()
-			bar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
+			bar:GetStatusBarTexture():SetVertexColor(r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
 		end
 	end
 end

@@ -253,6 +253,6 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 	bar.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
 
 	if colors then
-		UF:SetStatusBarColor(bar, colors.r, colors.g, colors.b, bar.custom_backdrop)
+		UF:SetStatusBarColor(bar, colors.r, colors.g, colors.b)
 	end
 end
