@@ -1983,11 +1983,16 @@ function UF:MergeUnitSettings(from, to)
 	UF:Update_AllFrames()
 end
 
-function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
+function UF:SetStatusBarColor(bar, r, g, b, backdrop)
 	local mainR, mainG, mainB, mainA = r, g, b, bar.isTransparent and UF.multiplier or 1
 	local bgR, bgG, bgB, bgA = r, g, b, bar.isTransparent and 1 or UF.multiplier
-	if custom_backdrop then
-		bgR, bgG, bgB, bgA = custom_backdrop.r, custom_backdrop.g, custom_backdrop.b, custom_backdrop.a
+
+	if not backdrop then
+		backdrop = self.custom_backdrop
+	end
+
+	if backdrop then
+		bgR, bgG, bgB, bgA = backdrop.r, backdrop.g, backdrop.b, backdrop.a
 	end
 
 	if bar.bg then
