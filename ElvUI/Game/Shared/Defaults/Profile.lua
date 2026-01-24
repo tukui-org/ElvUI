@@ -109,7 +109,7 @@ P.general = {
 	},
 	bordercolor = { r = 0, g = 0, b = 0, a = 1 }, -- updated in E.Initialize
 	backdropcolor = { r = 0.1, g = 0.1, b = 0.1, a = 1 },
-	backdropfadecolor = { r = .06, g = .06, b = .06, a = 0.8 },
+	backdropfadecolor = { r = 0.06, g = 0.06, b = 0.06, a = 0.8 },
 	valuecolor = { r = 0.09, g = 0.52, b = 0.82, a = 1 },
 	itemLevel = {
 		displayCharacterInfo = true,
@@ -234,7 +234,7 @@ P.general = {
 		qualityItemLevel = false,
 		qualityStatusBar = true,
 		qualityStatusBarBackdrop = true,
-		statusBarColor = { r = 0, g = .4, b = 1, a = 1 },
+		statusBarColor = { r = 0, g = 0.4, b = 1, a = 1 },
 		statusBarTexture = 'ElvUI Norm',
 		style = 'halfbar',
 		nameFont = 'Expressway',
@@ -349,22 +349,22 @@ P.databars = {
 	colors = {
 		reputationAlpha = 1,
 		useCustomFactionColors = false,
-		petExperience = { r = 1, g = 1, b = .41, a = .8 },
-		experience = { r = 0, g = .4, b = 1, a = .8 },
-		rested = { r = 1, g = 0, b = 1, a = .4 },
-		quest = { r = 0, g = 1, b = 0, a = .4 },
-		honor = { r = .94, g = .45, b = .25, a = 1 },
-		azerite = { r = .901, g = .8, b = .601, a = 1 },
+		petExperience = { r = 1, g = 1, b = 0.41, a = 0.8 },
+		experience = { r = 0, g = 0.4, b = 1, a = 0.8 },
+		rested = { r = 1, g = 0, b = 1, a = 0.4 },
+		quest = { r = 0, g = 1, b = 0, a = 0.4 },
+		honor = { r = 0.94, g = 0.45, b = 0.25, a = 1 },
+		azerite = { r = 0.901, g = 0.8, b = 0.601, a = 1 },
 		factionColors = {
-			{ r = .8, g = .3, b = .22, a = 1 },	-- 1
-			{ r = .8, g = .3, b = .22, a = 1 },	-- 2
-			{ r = .75, g = .27, b = 0, a = 1 },	-- 3
-			{ r = .9, g = .7, b = 0, a = 1 },		-- 4
-			{ r = 0, g = .6, b = .1, a = 1 },		-- 5
-			{ r = 0, g = .6, b = .1, a = 1 },		-- 6
-			{ r = 0, g = .6, b = .1, a = 1 },		-- 7
-			{ r = 0, g = .6, b = .1, a = 1 },		-- 8
-			{ r = 0, g = .6, b = .1, a = 1 },		-- 9 (Paragon)
+			{ r = 0.8, g = 0.3, b = 0.22, a = 1 },	-- 1
+			{ r = 0.8, g = 0.3, b = 0.22, a = 1 },	-- 2
+			{ r = 0.75, g = 0.27, b = 0, a = 1 },	-- 3
+			{ r = 0.9, g = 0.7, b = 0, a = 1 },		-- 4
+			{ r = 0, g = 0.6, b = 0.1, a = 1 },		-- 5
+			{ r = 0, g = 0.6, b = 0.1, a = 1 },		-- 6
+			{ r = 0, g = 0.6, b = 0.1, a = 1 },		-- 7
+			{ r = 0, g = 0.6, b = 0.1, a = 1 },		-- 8
+			{ r = 0, g = 0.6, b = 0.1, a = 1 },		-- 9 (Paragon)
 			{ r = 0, g = 0.74, b = 0.95, a = 1 },	-- 10 (Renown)
 		}
 	}
@@ -457,7 +457,7 @@ P.bags = {
 	itemInfoFont = 'Homespun',
 	itemInfoFontSize = 10,
 	itemInfoFontOutline = 'MONOCHROMEOUTLINE',
-	itemInfoColor = { r = 0, g = .75, b = .98, a = 1 },
+	itemInfoColor = { r = 0, g = 0.75, b = 0.98, a = 1 },
 	countFont = 'Homespun',
 	countFontSize = 10,
 	countFontOutline = 'MONOCHROMEOUTLINE',
@@ -997,10 +997,10 @@ P.nameplates = {
 			},
 			SHAMAN = {
 				TOTEMS = {
-					{ r = .23, g = .45, b = .13, a = 1 }, -- earth
-					{ r = .58, g = .23, b = .10, a = 1 }, -- fire
-					{ r = .19, g = .48, b = .60, a = 1 }, -- water
-					{ r = .42, g = .18, b = .74, a = 1 }, -- air
+					{ r = 0.23, g = 0.45, b = 0.13, a = 1 }, -- earth
+					{ r = 0.58, g = 0.23, b = 0.10, a = 1 }, -- fire
+					{ r = 0.19, g = 0.48, b = 0.60, a = 1 }, -- water
+					{ r = 0.42, g = 0.18, b = 0.74, a = 1 }, -- air
 				},
 				MAELSTROM = { r = 0.35, g = 0.15, b = 1, a = 1 }
 			},
@@ -1230,7 +1230,7 @@ P.nameplates.units.ENEMY_NPC.title.format = '[npctitle]'
 P.nameplates.units.ENEMY_NPC.name.format = '[reactioncolor][name]'
 
 local TopAuras = {
-	barColor = { r = 0, g = .8, b = 0, a = 1 },
+	barColor = { r = 0, g = 0.8, b = 0, a = 1 },
 	barColorGradient = false,
 	barSize = 2,
 	barNoDuration = true,
@@ -1322,7 +1322,7 @@ P.chat = {
 	tabSelector = 'ARROW1',
 	tabSelectedTextEnabled = true,
 	tabSelectedTextColor = { r = 1, g = 1, b = 1, a = 1 },
-	tabSelectorColor = { r = .3, g = 1, b = .3, a = 1 },
+	tabSelectorColor = { r = 0.3, g = 1, b = 0.3, a = 1 },
 	timeStampFormat = 'NONE',
 	timeStampLocalTime = false,
 	keywords = 'ElvUI',
@@ -1358,7 +1358,7 @@ P.chat = {
 	tabFontOutline = 'SHADOW',
 	copyChatLines = false,
 	useBTagName = false,
-	panelColor = { r = .06, g = .06, b = .06, a = 0.8 },
+	panelColor = { r = 0.06, g = 0.06, b = 0.06, a = 0.8 },
 	pinVoiceButtons = true,
 	hideVoiceButtons = false,
 	desaturateVoiceIcons = true,
@@ -1580,7 +1580,7 @@ local UF_Castbar = {
 		useClassColor = false,
 		useCustomBackdrop = false,
 		useReactionColor = false,
-		color = { r = .31, g = .31, b = .31, a = 1 },
+		color = { r = 0.31, g = 0.31, b = 0.31, a = 1 },
 		colorNoInterrupt = { r = 0.78, g = 0.25, b = 0.25, a = 1 },
 		colorInterrupted = { r = 0.30, g = 0.30, b = 0.30, a = 1 },
 		colorBackdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
@@ -1995,21 +1995,21 @@ P.unitframe = {
 		invertAurabars = false,
 		invertPower = false,
 		invertClasspower = false,
-		castColor = { r = .31, g = .31, b = .31, a = 1 },
+		castColor = { r = 0.31, g = 0.31, b = 0.31, a = 1 },
 		castNoInterrupt = { r = 0.78, g = 0.25, b = 0.25, a = 1 },
 		castInterruptedColor = { r = 0.30, g = 0.30, b = 0.30, a = 1 },
 		castClassColor = false,
 		castReactionColor = false,
-		health = { r = .31, g = .31, b = .31, a = 1 },
-		health_backdrop = { r = .8, g = .01, b = .01, a = 1 },
-		health_backdrop_dead = { r = .8, g = .01, b = .01, a = 1 },
+		health = { r = 0.31, g = 0.31, b = 0.31, a = 1 },
+		health_backdrop = { r = 0.8, g = 0.01, b = 0.01, a = 1 },
+		health_backdrop_dead = { r = 0.8, g = 0.01, b = 0.01, a = 1 },
 		castbar_backdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 		classpower_backdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 		aurabar_backdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 		power_backdrop = { r = 0.5, g = 0.5, b = 0.5, a = 1 },
 		tapped = { r = 0.55, g = 0.57, b = 0.61, a = 1 },
 		disconnected = { r = 0.84, g = 0.75, b = 0.65, a = 1 },
-		auraBarBuff = { r = .31, g = .31, b = .31, a = 1 },
+		auraBarBuff = { r = 0.31, g = 0.31, b = 0.31, a = 1 },
 		auraBarDebuff = { r = 0.8, g = 0.1, b = 0.1, a = 1 },
 		power = {
 			ENERGY = { r = 1, g = 0.96, b = 0.41, a = 1 },
@@ -2025,9 +2025,9 @@ P.unitframe = {
 			ALT_POWER = { r = 0.2, g = 0.4, b = 0.8, a = 1 },
 		},
 		happiness = {
-			{ r = .69, g = .31, b = .31, a = 1 },
-			{ r = .65, g = .63, b = .35, a = 1 },
-			{ r = .33, g = .59, b = .33, a = 1 },
+			{ r = 0.69, g = 0.31, b = 0.31, a = 1 },
+			{ r = 0.65, g = 0.63, b = 0.35, a = 1 },
+			{ r = 0.33, g = 0.59, b = 0.33, a = 1 },
 		},
 		reaction = {
 			[1] = { r = 0.80, g = 0.30, b = 0.21, a = 1 }, -- Hated
