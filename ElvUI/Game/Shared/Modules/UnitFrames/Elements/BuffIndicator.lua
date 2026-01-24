@@ -47,7 +47,7 @@ end
 function UF:BuffIndicator_PostCreateIcon(button)
 	button.cd.skipScale = true
 
-	E:RegisterCooldown(button.cd, 'auraindicator')
+	E:RegisterCooldown(button.cd, 'auraindicator', button.icon)
 
 	local blizzCooldownText = button.cd:GetRegions()
 	if blizzCooldownText:IsObjectType('FontString') then
