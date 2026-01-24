@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
+local ElvUF = E.oUF
 
 local _G = _G
 local next = next
@@ -131,15 +132,17 @@ end
 function A:CreateIcon(button)
 	local header = button:GetParent()
 
+	button.name = button:GetName()
 	button.header = header
 	button.filter = header.filter
 	button.auraType = (header.filter == 'HELPFUL' and 'buffs') or 'debuffs'
 
-	button.name = button:GetName()
-	button.enchantIndex = tonumber(strmatch(button.name, 'TempEnchant(%d)$'))
-	if button.enchantIndex then
-		header['enchant'..button.enchantIndex] = button
-		header.enchantButtons[button.enchantIndex] = button
+	local enchantIndex = tonumber(strmatch(button.name, 'TempEnchant(%d)$'))
+	button.enchantIndex = enchantIndex
+
+	if enchantIndex then
+		header['enchant'..enchantIndex] = button
+		header.enchantButtons[enchantIndex] = button
 	else
 		button.instant = true -- let update on attribute change
 	end
@@ -155,6 +158,10 @@ function A:CreateIcon(button)
 
 	button.count = button.RaisedElement:CreateFontString(nil, 'OVERLAY')
 	button.count:FontTemplate()
+
+	-- the text element is only used for enchant timer text
+	button.text = button.RaisedElement:CreateFontString(nil, 'OVERLAY')
+	button.text:FontTemplate()
 
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .45)
@@ -213,6 +220,14 @@ function A:UpdateIcon(button, update)
 		button.count:ClearAllPoints()
 		button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
 		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+	end
+
+	if button.text then
+		local cd = E.db.cooldown.auras -- use the data from the cooldown module
+		button.text:ClearAllPoints()
+		button.text:SetTextColor(cd.colors.text.r, cd.colors.text.g, cd.colors.text.b)
+		button.text:Point('CENTER', nil, cd.position, cd.offsetX, cd.offsetY)
+		button.text:FontTemplate(LSM:Fetch('font', cd.font), cd.fontSize, cd.fontOutline)
 	end
 
 	if button.statusBar then
@@ -355,6 +370,9 @@ end
 
 function A:UpdateButton(button, duration, expiration, modRate)
 	local db = A.db[button.auraType]
+
+	A:UpdateTime(button, expiration, modRate)
+
 	if E.Retail then
 		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
 		button.auraDuration = auraDuration or nil
@@ -370,8 +388,6 @@ function A:UpdateButton(button, duration, expiration, modRate)
 			button.cooldown:Hide()
 		end
 	else
-		A:UpdateTime(button, expiration, modRate)
-
 		local r, g, b
 		if db.barColorGradient then
 			r, g, b = E:ColorGradient(button.duration == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
@@ -401,15 +417,26 @@ function A:UpdateButton(button, duration, expiration, modRate)
 end
 
 function A:UpdateTime(button, expiration, modRate)
-	button.timeLeft = (expiration - GetTime()) / (modRate or 1)
-
-	if button.timeLeft < 0.1 then
-		button.cooldown:Clear()
-
+	local timeLeft = button.timeLeft
+	if not expiration or (timeLeft and timeLeft < 0.1) then
 		A:ClearAuraTime(button)
+
+		if not E.Retail then
+			button.cooldown:Clear()
+		end
+
+		return
 	end
 
-	A:UpdateFlash(button)
+	timeLeft = (expiration - GetTime()) / (modRate or 1)
+
+	if button.enchantIndex then
+		button.text:SetFormattedText(ElvUF:GetTime(timeLeft))
+	end
+
+	if not E.Retail then
+		A:UpdateFlash(button)
+	end
 end
 
 function A:UpdateFlash(button)
