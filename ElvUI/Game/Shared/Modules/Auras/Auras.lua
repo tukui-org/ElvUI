@@ -396,7 +396,7 @@ function A:UpdateButton(button, duration, expiration, modRate)
 end
 
 function A:UpdateTime(button, duration, expiration, modRate)
-	button.timeLeft = ((expiration or 0) - GetTime()) / (modRate or 1)
+	button.timeLeft = (E:IsSecretValue(expiration) and 0) or (((expiration or 0) - GetTime()) / (modRate or 1))
 
 	if button.timeLeft < 0.1 then
 		A:ClearAuraTime(button)
