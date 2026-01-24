@@ -124,6 +124,12 @@ function A:UpdateStatusBar(button)
 			button.statusBar:SetValue(remaining, button.statusBar.smoothing)
 		end
 	elseif button.timeLeft then
+		local db = A.db[button.auraType]
+		if db.barColorGradient then
+			local r, g, b = E:ColorGradient(button.duration == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
+			button.statusBar:SetStatusBarColor(r, g, b)
+		end
+
 		button.statusBar:SetValue(button.timeLeft, button.statusBar.smoothing)
 	end
 end
@@ -358,29 +364,25 @@ function A:UpdateButton(button, duration, expiration, modRate)
 			button.cooldown:SetCooldownFromDurationObject(auraDuration)
 			button.cooldown:Show()
 
-			button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
 			button.statusBar:SetMinMaxValues(0, duration)
+			button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
 		else
 			button.cooldown:Hide()
 		end
 	elseif not E.Retail or button.enchantIndex then
-		local r, g, b
-		if db.barColorGradient then
-			r, g, b = E:ColorGradient(button.duration == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
-		else
-			r, g, b = db.barColor.r, db.barColor.g, db.barColor.b
-		end
-
 		local hasCooldown = duration > 0
 		local barShown = db.barShow and (hasCooldown or (db.barNoDuration and duration == 0))
 		button.statusBar:SetShown(barShown)
-		button.statusBar:SetStatusBarColor(r, g, b)
 
 		if barShown then
 			button.statusBar:SetMinMaxValues(0, (hasCooldown and duration) or 1)
 
-			if not hasCooldown then
-				button.statusBar:SetValue(1, button.statusBar.smoothing)
+			if E.Retail or not hasCooldown then
+				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
+
+				if not E.Retail then -- this can cause temp enchants to flicker on retail
+					button.statusBar:SetValue(1, button.statusBar.smoothing)
+				end
 			end
 		end
 
