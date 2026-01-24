@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
-local ElvUF = E.oUF
 
 local _G = _G
 local next = next
@@ -159,10 +158,6 @@ function A:CreateIcon(button)
 	button.count = button.RaisedElement:CreateFontString(nil, 'OVERLAY')
 	button.count:FontTemplate()
 
-	-- the text element is only used for enchant timer text
-	button.text = button.RaisedElement:CreateFontString(nil, 'OVERLAY')
-	button.text:FontTemplate()
-
 	button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	button.highlight:SetColorTexture(1, 1, 1, .45)
 	button.highlight:SetInside()
@@ -222,14 +217,6 @@ function A:UpdateIcon(button, update)
 		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 	end
 
-	if button.text then
-		local cd = E.db.cooldown.auras -- use the data from the cooldown module
-		button.text:ClearAllPoints()
-		button.text:SetTextColor(cd.colors.text.r, cd.colors.text.g, cd.colors.text.b)
-		button.text:Point('CENTER', nil, cd.position, cd.offsetX, cd.offsetY)
-		button.text:FontTemplate(LSM:Fetch('font', cd.font), cd.fontSize, cd.fontOutline)
-	end
-
 	if button.statusBar then
 		if E.Retail then
 			button.statusBar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
@@ -257,9 +244,9 @@ function A:SetAuraTime(button, expiration, duration, modRate)
 	button.expiration = expiration
 	button.modRate = modRate
 
-	A:UpdateButton(button, duration, expiration, modRate)
-
-	button.elapsed = 0
+	if not button.enchantIndex then
+		A:UpdateButton(button, duration, expiration, modRate)
+	end
 end
 
 function A:ClearAuraTime(button)
@@ -305,8 +292,6 @@ function A:UpdateAura(button, index)
 
 	if E.Retail then
 		A:UpdateButton(button, duration, expiration, modRate)
-
-		button.elapsed = 0
 	elseif duration and expiration then
 		A:SetAuraTime(button, expiration, duration, modRate)
 	else
@@ -319,18 +304,24 @@ function A:UpdateTempEnchant(button, index, expiration)
 	button.statusBar:SetShown((db.barShow and expiration) or (db.barShow and db.barNoDuration and not expiration))
 
 	if expiration then
-		button.texture:SetTexture(GetInventoryItemTexture('player', index))
-
 		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
 		local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
 
 		button:SetBackdropBorderColor(r, g, b)
 		button.statusBar.backdrop:SetBackdropBorderColor(r, g, b)
+		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
-		local remaining = (expiration * 0.001) or 0
-		A:SetAuraTime(button, remaining + GetTime(), (remaining <= 3600 and remaining > 1800) and 3600 or (remaining <= 1800 and remaining > 600) and 1800 or 600)
+		local remain = (expiration * 0.001) or 0
+		local duration = (remain <= 3600 and remain > 1800) and 3600 or (remain <= 1800 and remain > 600) and 1800 or 600
+		local expire = remain + GetTime()
+
+		A:SetAuraTime(button, expire, duration)
+
+		button.cooldown:SetCooldown(expire - duration, duration, 1)
 	else
 		A:ClearAuraTime(button)
+
+		button.cooldown:Clear()
 	end
 end
 
@@ -371,8 +362,6 @@ end
 function A:UpdateButton(button, duration, expiration, modRate)
 	local db = A.db[button.auraType]
 
-	A:UpdateTime(button, expiration, modRate)
-
 	if E.Retail then
 		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
 		button.auraDuration = auraDuration or nil
@@ -388,6 +377,8 @@ function A:UpdateButton(button, duration, expiration, modRate)
 			button.cooldown:Hide()
 		end
 	else
+		A:UpdateTime(button, expiration, modRate)
+
 		local r, g, b
 		if db.barColorGradient then
 			r, g, b = E:ColorGradient(button.duration == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
@@ -414,6 +405,8 @@ function A:UpdateButton(button, duration, expiration, modRate)
 			button.cooldown:Clear()
 		end
 	end
+
+	button.elapsed = 0
 end
 
 function A:UpdateTime(button, expiration, modRate)
@@ -421,22 +414,14 @@ function A:UpdateTime(button, expiration, modRate)
 	if not expiration or (timeLeft and timeLeft < 0.1) then
 		A:ClearAuraTime(button)
 
-		if not E.Retail then
-			button.cooldown:Clear()
-		end
+		button.cooldown:Clear()
 
 		return
 	end
 
 	button.timeLeft = (expiration - GetTime()) / (modRate or 1)
 
-	if button.enchantIndex then
-		button.text:SetFormattedText(ElvUF:GetTime(timeLeft))
-	end
-
-	if not E.Retail then
-		A:UpdateFlash(button)
-	end
+	A:UpdateFlash(button)
 end
 
 function A:UpdateFlash(button)
