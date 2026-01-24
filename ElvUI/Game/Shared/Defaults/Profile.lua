@@ -601,6 +601,10 @@ local NP_Auras = {
 	growthX = 'RIGHT',
 	growthY = 'UP',
 	onlyShowPlayer = false,
+	isAuraPlayer = false,
+	isAuraRaid = false,
+	isAuraNameplate = false,
+	isAuraDefensive = false,
 	stackAuras = true,
 	filter = 'HELPFUL',
 	sortDirection = 'DESCENDING',
@@ -1155,9 +1159,10 @@ for unit, data in next, P.nameplates.units do
 		data.showTitle = true
 
 		local useCCDebuffs = npcEnemy or (unit == 'ENEMY_PLAYER' or unit == 'FRIENDLY_PLAYER')
-		data.auras.enable = not E.Retail and useCCDebuffs -- enemy npc and players
+		data.auras.enable = useCCDebuffs -- enemy npc and players
 
 		if useCCDebuffs then
+			data.auras.isAuraDefensive = true
 			data.auras.priority = 'Blacklist,CCDebuffs'
 			data.auras.anchorPoint = 'RIGHT'
 			data.auras.filter = 'HARMFUL'
@@ -1505,6 +1510,10 @@ local UF_Auras = {
 	stackAuras = true,
 	growthX = 'RIGHT',
 	growthY = 'UP',
+	isAuraPlayer = false,
+	isAuraRaid = false,
+	isAuraNameplate = false,
+	isAuraDefensive = false,
 	durationPosition = 'CENTER',
 	enable = false,
 	numrows = 1,
@@ -2486,7 +2495,8 @@ P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
 P.unitframe.units.target.aurabar.priority = 'Blacklist,blockNoDuration,Personal,RaidDebuffs'
-P.unitframe.units.target.auras.enable = not E.Retail
+P.unitframe.units.target.auras.enable = true
+P.unitframe.units.target.auras.isAuraDefensive = true
 P.unitframe.units.target.auras.priority = 'Blacklist,CCDebuffs'
 P.unitframe.units.target.auras.filter = 'HARMFUL'
 P.unitframe.units.target.auras.xOffset = 2

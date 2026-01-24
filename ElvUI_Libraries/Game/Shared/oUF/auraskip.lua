@@ -51,10 +51,27 @@ local function AllowAura(frame, aura)
 	return true
 end
 
+local function InstanceFiltered(unit, aura, helpful, harmful)
+	local isHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, helpful)
+	local isHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, harmful)
+
+	return isHelpful or isHarmful
+end
+
 local function UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
 	local unitAuraFiltered = filtered[unit]
 
-	unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and (which ~= 'remove' and allow and aura) or nil
+	local allowed = which ~= 'remove' and allow and aura
+	if allowed then
+		aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
+		aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
+		aura.auraIsDefensive = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL|EXTERNAL_DEFENSIVE')
+		aura.auraIsNameplateOnly = InstanceFiltered(unit, aura, 'HELPFUL|INCLUDE_NAME_PLATE_ONLY', 'HARMFUL|INCLUDE_NAME_PLATE_ONLY')
+		aura.auraIsPlayer = InstanceFiltered(unit, aura, 'HELPFUL|PLAYER', 'HARMFUL|PLAYER')
+		aura.auraIsRaid = InstanceFiltered(unit, aura, 'HELPFUL|RAID', 'HARMFUL|RAID')
+	end
+
+	unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and allowed or nil
 end
 
 local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID, aura)
@@ -81,14 +98,6 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
 
 	for filter, filtered in next, auraFiltered do
-		if aura then
-			aura.auraIsRaid = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'RAID')
-			aura.auraIsPlayer = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'PLAYER')
-			aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
-			aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
-			aura.auraIsNameplateOnly = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'INCLUDE_NAME_PLATE_ONLY')
-		end
-
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
 	end
 

@@ -124,7 +124,6 @@ function NP:Configure_Auras(nameplate, which)
 	auras.height = not db.keepSizeRatio and db.height
 	auras.numAuras = db.numAuras
 	auras.numRows = db.numRows
-	auras.onlyShowPlayer = false
 	auras.spacing = db.spacing
 	auras.growthY = UF.MatchGrowthY[db.anchorPoint] or db.growthY
 	auras.growthX = UF.MatchGrowthX[db.anchorPoint] or db.growthX

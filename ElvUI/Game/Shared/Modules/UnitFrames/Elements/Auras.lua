@@ -279,6 +279,7 @@ function UF:UpdateAuraSettings(button)
 		end
 	end
 
+	button.noFilter = db and not (db.isAuraPlayer or db.isAuraRaid or db.isAuraNameplate or db.isAuraDefensive)
 	button.needsButtonTrim = true
 end
 
@@ -699,10 +700,14 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = self.db
-	if not db or E:IsSecretValue(duration) then -- database or secret: just allow it
+	if not db or not aura then
 		button.priority = 0
 
 		return true
+	elseif E.Retail then
+		button.priority = 0
+
+		return (button.noFilter and true) or (db.isAuraPlayer and aura.auraIsPlayer) or (db.isAuraRaid and aura.auraIsRaid) or (db.isAuraNameplate and aura.auraIsNameplateOnly) or (db.isAuraDefensive and aura.auraIsDefensive)
 	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	end
