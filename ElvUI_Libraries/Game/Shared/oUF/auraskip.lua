@@ -207,7 +207,7 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
 		return (oUF:NotSecretValue(aura.isNameplateOnly) and not aura.isNameplateOnly) or (not aura.auraIsNameplateOnly)
 	elseif filter == 'PLAYER' then
-		return (oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)) or (not aura.auraIsNameplateOnly)
+		return (oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)) or (not aura.auraIsPlayer)
 	end
 end
 
