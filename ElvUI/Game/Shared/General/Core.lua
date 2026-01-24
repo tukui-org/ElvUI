@@ -2025,6 +2025,10 @@ function E:Initialize()
 	E:UIScale()
 	E:LoadStaticPopups()
 
+	if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
+	end
+
 	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	else
@@ -2041,10 +2045,6 @@ function E:Initialize()
 
 		if E.Retail then
 			E:Tutorials()
-		end
-
-		if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
-			E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 		end
 
 		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
