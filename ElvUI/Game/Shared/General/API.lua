@@ -530,7 +530,8 @@ do
 	local function FindAura(key, value, unit, index, filter, ...)
 		local name, _, _, _, _, _, _, _, _, spellID = ...
 
-		if not name then
+		local spell = (E:NotSecretValue(name) and E:NotSecretValue(spellID) and name) or nil
+		if not spell then
 			return
 		elseif key == 'name' and value == name then
 			return ...
