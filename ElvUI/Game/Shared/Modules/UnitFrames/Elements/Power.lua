@@ -276,23 +276,26 @@ do
 		return ElvUF.colors.power[classPowers[random(0, #classPowers)]]
 	end
 
-	function UF:PostUpdatePowerColor(unit, color)
+	function UF:PostUpdatePowerColor(unit, color, r, g, b)
 		local parent = self.origParent or self:GetParent()
 		if parent.isForced and not self.colorClass then
 			color = GetRandomPowerColor()
 		end
 
-		if not color then return end
-
-		UF.PostUpdateColor(self, unit, color)
+		UF.PostUpdateColor(self, unit, color, r, g, b)
 
 		if parent and parent.PowerPrediction and parent.PowerPrediction.mainBar then
 			if UF and UF.db and UF.db.colors and UF.db.colors.powerPrediction and UF.db.colors.powerPrediction.enable then
 				local predColor = UF.db.colors.powerPrediction.color
 				parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(predColor.r, predColor.g, predColor.b, predColor.a)
 			else
-				local r, g, b = color:GetRGB()
-				parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
+				if not r and color then
+					r, g, b = color:GetRGB()
+				end
+
+				if r then
+					parent.PowerPrediction.mainBar:GetStatusBarTexture():SetVertexColor(r * 1.25, g * 1.25, b * 1.25)
+				end
 			end
 		end
 	end

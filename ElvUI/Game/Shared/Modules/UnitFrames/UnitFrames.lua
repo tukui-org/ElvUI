@@ -2005,11 +2005,14 @@ function UF:SetStatusBarColor(bar, r, g, b, custom_backdrop)
 	end
 end
 
-function UF:PostUpdateColor(_, color)
-	if not color then return end
+function UF:PostUpdateColor(_, color, r, g, b) -- r, g, b would be from from UnitPowerType (alternative color for this power type)
+	if not r and color then -- color would be the standard color for this power type
+		r, g, b = color:GetRGB()
+	end
 
-	local r, g, b = color:GetRGB()
-	UF:SetStatusBarColor(self, r, g, b)
+	if r then
+		UF:SetStatusBarColor(self, r, g, b)
+	end
 end
 
 function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, statusBarOrientation, reverseFill)
