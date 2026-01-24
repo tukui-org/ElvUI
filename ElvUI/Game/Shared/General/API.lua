@@ -587,12 +587,12 @@ function E:CheckRole()
 	E.myrole = E:GetPlayerRole()
 end
 
-function E:UpdateColorCurve(data)
+function E:UpdateColorCurve(which, data)
 	if not data then return end
 
 	local colors = ElvUF.colors.dispel
-	for which, index in next, DispelIndexes do
-		data:AddPoint(index, colors[which])
+	for key, index in next, DispelIndexes do
+		data:AddPoint(index, (which == 'debuffs' or key ~= 'None') and colors[key] or E.media.bordercolor)
 	end
 end
 
@@ -606,7 +606,7 @@ function E:UpdateColorCurves()
 			curves[which] = data
 		end
 
-		E:UpdateColorCurve(data)
+		E:UpdateColorCurve(which, data)
 	end
 end
 
