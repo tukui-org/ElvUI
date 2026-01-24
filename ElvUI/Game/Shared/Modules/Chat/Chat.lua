@@ -3406,13 +3406,35 @@ function CH:UpdateVoiceChatIcons()
 	end
 end
 
+do -- securely lock the atlas texture; we need this cause its not shown on init login
+	local ttsAtlas = 'chatframe-button-icon-TTS'
+	local function LockAtlas(icon, atlas)
+		if atlas ~= ttsAtlas then
+			icon:SetAtlas(ttsAtlas)
+		end
+	end
+
+	function CH:HandleTextToSpeechButton(button)
+		button.highlightAtlas = nil -- hide the highlight
+
+		if button.Icon and not button.Icon.isHookedAtlas then
+			hooksecurefunc(button.Icon, 'SetAtlas', LockAtlas)
+			button.Icon.isHookedAtlas = true
+		end
+	end
+end
+
 function CH:HandleChatVoiceIcons()
 	if CH.db.hideVoiceButtons then
 		for _, button in ipairs(channelButtons) do
 			button:Hide()
 		end
 	elseif CH.db.pinVoiceButtons then
-		for _, button in ipairs(channelButtons) do
+		for index, button in ipairs(channelButtons) do
+			if index == 1 then
+				CH:HandleTextToSpeechButton(button)
+			end
+
 			if button.Icon then
 				button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)
 			end
@@ -3460,7 +3482,11 @@ function CH:CreateChatVoicePanel()
 	Holder:SetScript('OnLeave', CH.LeaveVoicePanel)
 	CH.LeaveVoicePanel(Holder)
 
-	for _, button in ipairs(channelButtons) do
+	for index, button in ipairs(channelButtons) do
+		if index == 1 then
+			CH:HandleTextToSpeechButton(button)
+		end
+
 		if button.Icon then
 			button.Icon:SetParent(button)
 			button.Icon:SetDesaturated(CH.db.desaturateVoiceIcons)

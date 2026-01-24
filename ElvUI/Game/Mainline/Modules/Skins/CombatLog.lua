@@ -20,14 +20,21 @@ end
 -- credit: Aftermathh, edited by Simpy
 function S:Blizzard_CombatLog()
 	if not E.private.chat.enable then return end
+	-- this is always on with the chat module, it's only handle the top bar in combat log chat frame
 
-	StyleButtons()
 	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', StyleButtons)
+	StyleButtons()
+
 
 	local progress = _G.CombatLogQuickButtonFrame_CustomProgressBar
-	if progress then
-		progress:SetStatusBarTexture(E.media.normTex)
-	end
+	progress:SetStatusBarTexture(E.media.normTex)
+
+
+	S:HandleNextPrevButton(_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:ClearAllPoints()
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:SetHitRectInsets(0,0,0,0)
+	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20)
+	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 end
 
 S:AddCallbackForAddon('Blizzard_CombatLog')
