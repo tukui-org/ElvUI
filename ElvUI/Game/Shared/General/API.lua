@@ -1,4 +1,3 @@
-------------------------------------------------------------------------
 -- Collection of functions that can be used in multiple places
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
@@ -552,7 +551,9 @@ do
 	end
 
 	-- Midnight PTR: Centralized SECRET-aware aura helper
-	-- Handles ShouldUnitIdentityBeSecret check and sanitizes aura data accordingly
+	-- Handles C_Secrets.ShouldUnitIdentityBeSecret and SECRET aura fields
+	-- Fields marked SECRET: isBossAura, canApplyAura, isTrivial
+	-- Reference: https://www.wowinterface.com/forums/showpost.php?p=332650&postcount=8
 	function E:GetSafeAuraData(unit, index, filter)
 		if not unit or not index then return end
 
@@ -563,6 +564,17 @@ do
 		if ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit) then
 			data.name = nil
 			data.sourceUnit = nil
+		end
+
+		-- Handle SECRET fields (isBossAura, canApplyAura, isTrivial)
+		-- These may throw Protected() error on Midnight PTR
+		local secretFields = { 'isBossAura', 'canApplyAura', 'isTrivial' }
+		for _, field in ipairs(secretFields) do
+			local success, result = pcall(function() return data[field] end)
+			if not success then
+				-- Field is SECRET, set safe default
+				data[field] = nil
+			end
 		end
 
 		return data
