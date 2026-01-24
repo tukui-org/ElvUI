@@ -2026,7 +2026,7 @@ function E:Initialize()
 	E:UIScale()
 	E:LoadStaticPopups()
 
-	if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+	if not E.Classic or not (E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 	end
 
