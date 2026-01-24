@@ -454,7 +454,7 @@ function UF:PreUpdateAura()
 end
 
 function UF:GetAuraCurve(unit, button, allow)
-	if not allow then return end
+	if not unit or not allow then return end
 
 	local which = GetAuraDispelTypeColor and button.filter == 'HARMFUL' and 'debuffs'
 	if not which then return end
@@ -467,7 +467,7 @@ function UF:PostUpdateAura(unit, button)
 	local enemyNPC = not button.isFriend and not button.isPlayer
 	local steal = DebuffColors.Stealable
 
-	local color = E.Retail and not self.isForced and UF:GetAuraCurve(unit, button, db.auraByType)
+	local color = E.Retail and not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
 	if color then
 		r, g, b = color:GetRGB()
 	elseif button.isDebuff then
