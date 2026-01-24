@@ -428,7 +428,7 @@ function A:UpdateTime(button, expiration, modRate)
 		return
 	end
 
-	timeLeft = (expiration - GetTime()) / (modRate or 1)
+	button.timeLeft = (expiration - GetTime()) / (modRate or 1)
 
 	if button.enchantIndex then
 		button.text:SetFormattedText(ElvUF:GetTime(timeLeft))
