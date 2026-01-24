@@ -8,7 +8,6 @@ local strmatch = strmatch
 local tonumber = tonumber
 
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
-local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 local GetAuraDuration = C_UnitAuras.GetAuraDuration
 
 local GetInventoryItemQuality = GetInventoryItemQuality
@@ -262,7 +261,7 @@ end
 
 function A:UpdateAura(button, index)
 	local unitToken = button.header:GetAttribute('unit')
-	local data = GetAuraDataByIndex(unitToken, index, button.filter)
+	local data = E:GetSafeAuraData(unitToken, index, button.filter)
 	if not data then return end
 
 	local duration = data.duration
@@ -512,7 +511,7 @@ function A:UpdateChild(child, index, db) -- self here is the header
 
 	A:UpdateIcon(child, true)
 
-	-- blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
+	-- blizzard bug fix, icons arent being.hidden when you reduce the amount of maximum buttons
 	if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
 		child:Hide()
 	end
