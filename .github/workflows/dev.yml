@@ -12,6 +12,7 @@ on:
 
 jobs:
   release:
+    if: github.repository == 'tukui-org/ElvUI'
     name: Publish development build to CDN
     runs-on: ubuntu-22.04
     env:
