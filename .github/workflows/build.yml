@@ -1,0 +1,56 @@
+name: Build ElvUI (Fork)
+
+on:
+  push:
+    branches:
+      - main
+      - ptr
+      - beta
+      - alpha
+  pull_request:
+    branches:
+      - main
+      - ptr
+  workflow_dispatch:  # Allow manual triggering
+
+jobs:
+  build:
+    # Only run on this fork, not on upstream
+    if: github.repository != 'tukui-org/ElvUI'
+    name: Package ElvUI with externals
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Workaround checkout issues
+        run: |
+          git fetch --tags --force
+
+      - name: Create Package
+        uses: BigWigsMods/packager@v2
+        with:
+          args: -d -z  # -d: don't upload to curseforge, -z: skip zip creation for dirs
+
+      - name: Upload ElvUI artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ElvUI-${{ github.ref_name }}-${{ github.sha }}
+          path: .release/ElvUI
+          retention-days: 30
+
+      - name: Upload ElvUI_Libraries artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ElvUI_Libraries-${{ github.ref_name }}-${{ github.sha }}
+          path: .release/ElvUI_Libraries
+          retention-days: 30
+
+      - name: Upload ElvUI_Options artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ElvUI_Options-${{ github.ref_name }}-${{ github.sha }}
+          path: .release/ElvUI_Options
+          retention-days: 30
