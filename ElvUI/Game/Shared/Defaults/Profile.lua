@@ -1160,7 +1160,7 @@ for unit, data in next, P.nameplates.units do
 		data.showTitle = true
 
 		local useCCDebuffs = npcEnemy or (unit == 'ENEMY_PLAYER' or unit == 'FRIENDLY_PLAYER')
-		data.auras.enable = useCCDebuffs -- enemy npc and players
+		data.auras.enable = not E.Retail and useCCDebuffs -- enemy npc and players
 
 		if useCCDebuffs then
 			data.auras.priority = 'Blacklist,CCDebuffs'
@@ -2491,7 +2491,7 @@ P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
 P.unitframe.units.target.aurabar.priority = 'Blacklist,blockNoDuration,Personal,RaidDebuffs'
-P.unitframe.units.target.auras.enable = true
+P.unitframe.units.target.auras.enable = not E.Retail
 P.unitframe.units.target.auras.priority = 'Blacklist,CCDebuffs'
 P.unitframe.units.target.auras.filter = 'HARMFUL'
 P.unitframe.units.target.auras.xOffset = 2
