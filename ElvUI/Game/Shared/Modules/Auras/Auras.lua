@@ -353,7 +353,7 @@ function A:Button_OnHide()
 	end
 end
 
-function A:UpdateButton(button, duration)
+function A:UpdateButton(button, duration, expiration, modRate)
 	local db = A.db[button.auraType]
 	if E.Retail then
 		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
@@ -370,7 +370,7 @@ function A:UpdateButton(button, duration)
 			button.cooldown:Hide()
 		end
 	else
-		A:UpdateTime(button, button.expiration, button.modRate)
+		A:UpdateTime(button, expiration, modRate)
 
 		local r, g, b
 		if db.barColorGradient then
@@ -393,7 +393,7 @@ function A:UpdateButton(button, duration)
 		end
 
 		if hasCooldown then
-			button.cooldown:SetCooldown((button.expiration - duration), duration, button.modRate)
+			button.cooldown:SetCooldown((expiration - duration), duration, modRate)
 		else
 			button.cooldown:Clear()
 		end
