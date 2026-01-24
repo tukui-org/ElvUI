@@ -33,8 +33,9 @@ function E:CooldownSwipe(cooldown) -- non retail
 	end
 end
 
-function E:CooldownTextures(cooldown, texture, edge, swipe)
-	cooldown:SetAllPoints()
+function E:CooldownTextures(cooldown, attach, texture, edge, swipe)
+	cooldown:SetInside(attach, attach and 0, attach and 0)
+
 	cooldown:SetDrawEdge(true)
 	cooldown:SetDrawSwipe(true)
 
@@ -78,23 +79,23 @@ function E:CooldownUpdate(cooldown)
 	end
 end
 
-function E:CooldownInitialize(cooldown)
+function E:CooldownInitialize(cooldown, attach)
 	local db, data = E:CooldownData(cooldown)
 	if not db or cooldown.Text then return end
 
 	local c = db.colors
 	cooldown.Text = cooldown:GetRegions() -- extract the timer text
 
-	E:CooldownTextures(cooldown, E.Media.Textures.Edge, c.edge, c.swipe)
+	E:CooldownTextures(cooldown, attach, E.Media.Textures.Edge, c.edge, c.swipe)
 
 	local charge = data.chargeCooldown
 	if charge then
-		E:CooldownTextures(cooldown, E.Media.Textures.Edge2, c.edgeCharge, c.swipeCharge)
+		E:CooldownTextures(charge, attach, E.Media.Textures.Edge2, c.edgeCharge, c.swipeCharge)
 	end
 
 	local lossControl = data.lossOfControl
 	if lossControl then
-		E:CooldownTextures(lossControl, E.Media.Textures.Edge, c.edgeLOC, c.swipeLOC)
+		E:CooldownTextures(lossControl, attach, E.Media.Textures.Edge, c.edgeLOC, c.swipeLOC)
 	end
 end
 
@@ -114,7 +115,7 @@ function E:CooldownSettings(which)
 	end
 end
 
-function E:RegisterCooldown(cooldown, which)
+function E:RegisterCooldown(cooldown, which, attach)
 	if not which then which = 'global' end
 	local db = E.db.cooldown.enable and E.db.cooldown[which]
 	if not db then return end -- verify the settings exist here
@@ -141,7 +142,7 @@ function E:RegisterCooldown(cooldown, which)
 	data.lossOfControl = parent and parent.lossOfControlCooldown or nil
 
 	-- extract the blizzard cooldown region
-	E:CooldownInitialize(cooldown)
+	E:CooldownInitialize(cooldown, attach)
 
 	-- init set for the settings
 	E:CooldownUpdate(cooldown)
