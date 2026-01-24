@@ -466,7 +466,7 @@ function UF:PostUpdateAura(unit, button)
 	local enemyNPC = not button.isFriend and not button.isPlayer
 	local steal = DebuffColors.Stealable
 
-	local color = E.Retail and UF:GetAuraCurve(unit, button, db.auraByType)
+	local color = false -- UF:GetAuraCurve(unit, button, db.auraByType)
 	if color then
 		r, g, b = color:GetRGB()
 	elseif button.isDebuff then
