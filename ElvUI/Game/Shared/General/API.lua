@@ -53,7 +53,6 @@ local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
-local CreateColorCurve = C_CurveUtil and C_CurveUtil.CreateColorCurve
 local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
@@ -75,7 +74,6 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
-local LuaCurveTypeStep = Enum.LuaCurveType and Enum.LuaCurveType.Step
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_HORDE = FACTION_HORDE
@@ -89,7 +87,6 @@ local UIErrorsFrame = UIErrorsFrame
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
-local DispelIndexes = ElvUF.Enum.DispelType
 
 E.MountIDs = {}
 E.MountText = {}
@@ -587,29 +584,6 @@ function E:CheckRole()
 	E.myrole = E:GetPlayerRole()
 end
 
-function E:UpdateColorCurve(which, data)
-	if not data then return end
-
-	local colors = ElvUF.colors.dispel
-	for key, index in next, DispelIndexes do
-		data:AddPoint(index, (which == 'debuffs' or key ~= 'None') and colors[key] or E.media.bordercolor)
-	end
-end
-
-function E:UpdateColorCurves()
-	local curves = E.ColorCurves
-	for which, data in next, curves do
-		if not data then
-			data = CreateColorCurve()
-			data:SetType(LuaCurveTypeStep)
-
-			curves[which] = data
-		end
-
-		E:UpdateColorCurve(which, data)
-	end
-end
-
 function E:IsDispellableByMe(debuffType)
 	return DispelTypes[debuffType]
 end
@@ -632,13 +606,8 @@ function E:UpdateDispelColors()
 		local color = DebuffColors[debuffType]
 		if color then
 			E:UpdateClassColor(db)
-
 			color.r, color.g, color.b = db.r, db.g, db.b
 		end
-	end
-
-	if E.Retail then
-		E:UpdateColorCurves()
 	end
 end
 
