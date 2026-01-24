@@ -18,7 +18,7 @@ end
 
 function UF:Configure_AuraWatch(frame, isPet)
 	local db = frame.db and frame.db.buffIndicator
-	if db and db.enable then
+	if db and db.enable and not E.Retail then
 		if not frame:IsElementEnabled('AuraWatch') then
 			frame:EnableElement('AuraWatch')
 		end
