@@ -75,6 +75,12 @@ UF.SmartPosition = {
 UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.BUFFS_ON_DEBUFFS)
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
+-- MIDNIGHT: CYCLE 2 - Secret aura detection
+function UF:IsAuraSecret(aura)
+	if not aura then return false end
+	return aura.isSecret or (not aura.name or aura.name == UNKNOWN or not aura.spellID)
+end
+
 function UF:Construct_Auras(frame)
 	local auras = CreateFrame('Frame', '$parentAuras', frame)
 	auras.PreSetPosition = UF.SortAuras
@@ -461,31 +467,41 @@ function UF:GetAuraCurve(unit, button, allow)
 	return GetAuraDispelTypeColor(unit, button.auraInstanceID, E.ColorCurves[which])
 end
 
+-- MIDNIGHT: CYCLE 3 - Visual behavior for SECRET auras
 function UF:PostUpdateAura(unit, button)
 	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local enemyNPC = not button.isFriend and not button.isPlayer
 	local steal = DebuffColors.Stealable
 
-	local color = E.Retail and UF:GetAuraCurve(unit, button, db.auraByType)
-	if color then
-		r, g, b = color:GetRGB()
-	elseif button.isDebuff then
-		local debuffType = E:NotSecretValue(button.debuffType) and button.debuffType
-		local spellID = E:NotSecretValue(button.spellID) and button.spellID
-		local bad, enemy = DebuffColors.BadDispel, DebuffColors.EnemyNPC
+	-- MIDNIGHT: Check if aura is secret
+	local midnight = E.db.unitframe.midnight
+	local isSecret = button.isSecret or UF:IsAuraSecret(button.aura)
 
-		if enemyNPC then
-			if enemy and db.auraByType then
-				r, g, b = enemy.r, enemy.g, enemy.b
+	-- MIDNIGHT: Apply neutral styling for secret auras
+	if isSecret and midnight and midnight.neutralSecretAuras then
+		r, g, b = 0.5, 0.5, 0.5
+	elseif not isSecret then
+		local color = E.Retail and UF:GetAuraCurve(unit, button, db.auraByType)
+		if color then
+			r, g, b = color:GetRGB()
+		elseif button.isDebuff then
+			local debuffType = E:NotSecretValue(button.debuffType) and button.debuffType
+			local spellID = E:NotSecretValue(button.spellID) and button.spellID
+			local bad, enemy = DebuffColors.BadDispel, DebuffColors.EnemyNPC
+
+			if enemyNPC then
+				if enemy and db.auraByType then
+					r, g, b = enemy.r, enemy.g, enemy.b
+				end
+			elseif bad and db.auraByDispels and (spellID and BadDispels[spellID]) and (debuffType and DispelTypes[debuffType]) then
+				r, g, b = bad.r, bad.g, bad.b
+			elseif db.auraByType and debuffType then
+				local debuffColor = DebuffColors[debuffType or 'None']
+				r, g, b = debuffColor.r * 0.6, debuffColor.g * 0.6, debuffColor.b * 0.6
 			end
-		elseif bad and db.auraByDispels and (spellID and BadDispels[spellID]) and (debuffType and DispelTypes[debuffType]) then
-			r, g, b = bad.r, bad.g, bad.b
-		elseif db.auraByType and debuffType then
-			local debuffColor = DebuffColors[debuffType or 'None']
-			r, g, b = debuffColor.r * 0.6, debuffColor.g * 0.6, debuffColor.b * 0.6
+		elseif steal and db.auraByDispels and button.isStealable and not button.isFriend then
+			r, g, b = steal.r, steal.g, steal.b
 		end
-	elseif steal and db.auraByDispels and button.isStealable and not button.isFriend then
-		r, g, b = steal.r, steal.g, steal.b
 	end
 
 	if not r then
@@ -495,10 +511,17 @@ function UF:PostUpdateAura(unit, button)
 	button:SetBackdropBorderColor(r, g, b)
 	button.Icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
 
+	-- MIDNIGHT: Suppress duration text for secret auras
+	if isSecret and midnight and midnight.redactSecretDurations then
+		if button.Time then
+			button.Time:SetText('')
+		end
+	end
+
 	if button.Text then
 		local bdb = button.db
 		local aura = bdb and bdb.sourceText and bdb.sourceText.enable and button.aura
-		if aura then
+		if aura and not isSecret then
 			local text = aura.unitName or UNKNOWN
 			local length = bdb.sourceText.length
 			local shortText = length and length > 0 and utf8sub(text, 1, length)
@@ -694,6 +717,9 @@ function UF:AuraPopulate(auras, db, unit, button, aura)
 	button.isFriend = isFriend
 	button.unitIsCaster = unitIsCaster
 
+	-- MIDNIGHT: CYCLE 2 - Tag button as secret
+	button.isSecret = aura.isSecret or (not name or name == UNKNOWN or not spellID)
+
 	-- used elsewhere
 	button.canDesaturate = db.desaturate
 	button.noTime = duration == 0 and expiration == 0
@@ -714,6 +740,15 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 	if not self.db then
 		button.priority = 0
 		return true
+	end
+
+	-- MIDNIGHT: CYCLE 3 - Hard-hide secret auras when configured
+	if button.isSecret then
+		local midnight = E.db.unitframe.midnight
+		if midnight and midnight.hideSecretAuras then
+			button.priority = 0
+			return false
+		end
 	end
 
 	if UF:AuraStacks(self, self.db, button, name, icon, count, spellID, source, castByPlayer) then
