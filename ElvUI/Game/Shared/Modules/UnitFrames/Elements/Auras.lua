@@ -470,8 +470,8 @@ function UF:PostUpdateAura(unit, button)
 	if color then
 		r, g, b = color:GetRGB()
 	elseif button.isDebuff then
-		local debuffType = E:NotSecretValue(button.debuffType) and button.debuffType or nil
-		local spellID = E:NotSecretValue(button.spellID) and button.spellID or nil
+		local debuffType = button.debuffType
+		local spellID = button.spellID
 		local bad, enemy = DebuffColors.BadDispel, DebuffColors.EnemyNPC
 
 		if enemyNPC then
@@ -554,6 +554,7 @@ function UF:GetFilterNameInfo(name)
 
 	return friend or enemy or name, friend, enemy, block, allow
 end
+
 
 do
 	local specialOldNames = { -- also in Options Core
@@ -656,7 +657,7 @@ function UF:AuraStacks(auras, db, button, name, icon, count, spellID, source, ca
 	end
 end
 
-function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
+function UF:AuraPopulate(auras, db, unit, button, aura)
 	-- already set by oUF:
 	--- button.aura = aura
 	--- button.filter = filter
@@ -664,6 +665,11 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	--- button.debuffType = debuffType
 	--- button.auraInstanceID = auraInstanceID
 	--- button.isPlayer = source == 'player' or source == 'vehicle'
+
+	local name, icon, count, debuffType, duration, expiration, source, isStealable, _, spellID = E:NotSecretValue(aura) and E:GetSafeAuraData(unit, aura.index, aura.filter)
+	if not name then
+		return
+	end
 
 	local myPet = source == 'pet'
 	local otherPet = source and source ~= 'pet' and strfind(source, 'pet')
@@ -692,32 +698,35 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	button.canDesaturate = db.desaturate
 	button.noTime = duration == 0 and expiration == 0
 
-	return myPet, otherPet, canDispel, isFriend, unitIsCaster
+	return name, icon, count, debuffType, duration, expiration, source, isStealable, spellID, myPet, otherPet, canDispel, isFriend, unitIsCaster
 end
 
 function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossAura, castByPlayer, nameplateShowAll)
-	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
-
-	local db = self.db
-	if not db or E:IsSecretValue(duration) then -- database or secret: just allow it
+	local safeName, safeIcon, safeCount, safeDebuffType, safeDuration, safeExpiration, safeSource, safeIsStealable, safeSpellID, myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(self, self.db, unit, button, aura)
+	if not safeName then
 		button.priority = 0
+		return false
+	end
 
+	-- override original arguments with safe versions
+	name, icon, count, debuffType, duration, expiration, source, isStealable, spellID = safeName, safeIcon, safeCount, safeDebuffType, safeDuration, safeExpiration, safeSource, safeIsStealable, safeSpellID
+
+	if not self.db then
+		button.priority = 0
 		return true
-	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
+	end
+
+	if UF:AuraStacks(self, self.db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	end
 
-	local noDuration, allowDuration = UF:AuraDuration(db, duration)
+	local noDuration, allowDuration = UF:AuraDuration(self.db, duration)
 	if not allowDuration or not self.filterList then
 		button.priority = 0
-
-		return allowDuration -- Allow all auras to be shown when the filter list is empty, while obeying duration sliders
+		return allowDuration -- obey duration sliders even when filter list is empty
 	else
-		local myPet, otherPet, canDispel, isFriend, unitIsCaster = UF:AuraPopulate(self, db, unit, button, name, icon, count, debuffType, duration, expiration, source, isStealable, spellID)
 		local pass, priority = UF:CheckFilter(source, name, spellID, canDispel, isFriend, button.isPlayer, unitIsCaster, myPet, otherPet, isBossAura, noDuration, castByPlayer, nameplateShowAll or (nameplateShowPersonal and (button.isPlayer or myPet)), E.MountIDs[spellID], self.filterList)
-
-		button.priority = priority or 0 -- This is the only difference from auarbars code
-
+		button.priority = priority or 0
 		return pass
 	end
 end
