@@ -592,7 +592,7 @@ function E:UpdateColorCurve(which, data)
 
 	local colors = ElvUF.colors.dispel
 	for key, index in next, DispelIndexes do
-		data:AddPoint(index, (which == 'debuffs' or key ~= 'None') and colors[key] or E.media.bordercolor)
+		data:AddPoint(index, ((which == 'debuffs' or key ~= 'None') and colors and colors[key]) or E.media.bordercolor)
 	end
 end
 
