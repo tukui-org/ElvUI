@@ -411,13 +411,13 @@ do
 		local tt = E.ScanTooltip
 
 		if not tt.gems then
-			tt.gems = {}
+			t.gems = {}
 		else
 			wipe(tt.gems)
 		end
 
 		if not tt.essences then
-			tt.essences = {}
+			t.essences = {}
 		else
 			for _, essences in pairs(tt.essences) do
 				wipe(essences)
@@ -433,9 +433,9 @@ do
 					local selected = (tt.gems[i-1] ~= essenceTextureID and tt.gems[i-1]) or nil
 					if not tt.essences[step] then tt.essences[step] = {} end
 
-					tt.essences[step][1] = selected			--essence texture if selected or nil
-					tt.essences[step][2] = tex:GetAtlas()	--atlas place 'tooltip-heartofazerothessence-major' or 'tooltip-heartofazerothessence-minor'
-					tt.essences[step][3] = texture			--border texture placed by the atlas
+					t.essences[step][1] = selected			--essence texture if selected or nil
+					t.essences[step][2] = tex:GetAtlas()	--atlas place 'tooltip-heartofazerothessence-major' or 'tooltip-heartofazerothessence-minor'
+					t.essences[step][3] = texture			--border texture placed by the atlas
 					--`CollectEssenceInfo` will add 4 (hex quality color) and 5 (essence name)
 
 					step = step + 1
@@ -549,6 +549,23 @@ do
 
 	function E:GetAuraByName(unit, name, filter)
 		return FindAura('name', name, unit, 1, filter, E:GetAuraData(unit, 1, filter))
+	end
+
+	-- Midnight PTR: Centralized SECRET-aware aura helper
+	-- Handles ShouldUnitIdentityBeSecret check and sanitizes aura data accordingly
+	function E:GetSafeAuraData(unit, index, filter)
+		if not unit or not index then return end
+
+		local data = GetAuraDataByIndex(unit, index, filter)
+		if not data then return end
+
+		-- If this unit's identity should be secret, redact sensitive fields
+		if ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit) then
+			data.name = nil
+			data.sourceUnit = nil
+		end
+
+		return data
 	end
 end
 
