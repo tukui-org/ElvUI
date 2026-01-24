@@ -233,15 +233,13 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 				local auraDuration = aura and GetAuraDuration(unit, aura.auraInstanceID)
 				if auraDuration then
 					button.Cooldown:SetCooldownFromDurationObject(auraDuration)
-					button.Cooldown:Show()
 				else
-					button.Cooldown:Hide()
+					button.Cooldown:Clear()
 				end
 			elseif(duration and duration > 0) then
 				button.Cooldown:SetCooldown(expirationTime - duration, duration, timeMod)
-				button.Cooldown:Show()
 			else
-				button.Cooldown:Hide()
+				button.Cooldown:Clear()
 			end
 		end
 
