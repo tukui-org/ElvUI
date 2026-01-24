@@ -1988,7 +1988,7 @@ function UF:SetStatusBarColor(bar, r, g, b, backdrop)
 	local bgR, bgG, bgB, bgA = r, g, b, bar.isTransparent and 1 or UF.multiplier
 
 	if not backdrop then
-		backdrop = self.custom_backdrop
+		backdrop = bar.custom_backdrop
 	end
 
 	if backdrop then
