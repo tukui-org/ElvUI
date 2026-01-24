@@ -1716,9 +1716,8 @@ function AB:LAB_CooldownUpdate(button, _, duration)
 	if button.cooldown then
 		E:CooldownBling(button.cooldown, button.cooldown:GetEffectiveAlpha())
 
-		-- Loss of Control Swipe
-		if not E.Retail then
-			E:LABCooldownUpdate(button.cooldown)
+		if not E.Retail then -- Loss of Control Swipe
+			E:CooldownSwipe(button.cooldown)
 		end
 	end
 end
