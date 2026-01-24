@@ -862,11 +862,6 @@ P.nameplates = {
 		indicator = false,
 		useSoloColor = false,
 	},
-	filters = {
-		ElvUI_Boss = {triggers = {enable = false}},
-		ElvUI_Target = {triggers = {enable = false}},
-		ElvUI_NonTarget = {triggers = {enable = true}},
-	},
 	widgets = {
 		below = true,
 		xOffset = 0,
