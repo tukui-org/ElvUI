@@ -511,7 +511,6 @@ function AB:CreateVehicleLeave()
 	-- taints because of EditModeManager, in UpdateBottomActionBarPositions
 	button:SetScript('OnShow', nil)
 	button:SetScript('OnHide', nil)
-	button:KillEditMode()
 
 	if Masque and E.private.actionbar.masque.actionbars then
 		button:StyleButton(true, true, true)
@@ -1220,8 +1219,6 @@ do
 
 				if not (E.Retail or E.TBC) then
 					AB:SetNoopsi(frame)
-				elseif name == 'PetActionBar' then -- EditMode messes with it, be specific otherwise bags taint
-					frame.UpdateVisibility = E.noop
 				end
 			end
 		end
@@ -1247,11 +1244,6 @@ do
 		if E.Retail or E.TBC then
 			_G.StatusTrackingBarManager:Kill()
 			_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
-
-			if E.Retail then
-				-- take encounter bar out of edit mode
-				_G.EncounterBar:KillEditMode()
-			end
 
 			-- lets only keep ExtraActionButtons in here
 			hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)

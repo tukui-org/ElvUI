@@ -10,24 +10,9 @@ local hooksecurefunc = hooksecurefunc
 local GetLayouts = C_EditMode.GetLayouts
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
 
-local CheckTargetFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.target end
-local CheckCastFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.castbar end
-local CheckArenaFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.arena end
-local CheckPartyFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.party end
-local CheckFocusFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.focus end
-local CheckRaidFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.raid end
-local CheckBossFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.boss end
-local CheckActionBar = function() return E.private.actionbar.enable end
-
-local ignoreFrames = {
-	'MainStatusTrackingBarContainer',	-- Experience Bar
-	'MicroMenuContainer'				-- MicroBar / Menu
-}
-
 local hideFrames = {}
 EM.needsUpdate = false
 EM.hideFrames = hideFrames -- used to temp hide editmode panels
-EM.ignoreFrames = ignoreFrames -- used to ignore stuff in actionbar
 
 function EM:LAYOUTS_UPDATED(event, arg1)
 	local allow = event ~= 'PLAYER_SPECIALIZATION_CHANGED' or arg1 == 'player'
@@ -140,30 +125,6 @@ function EM:Initialize()
 	EM:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'LAYOUTS_UPDATED')
 	EM:RegisterEvent('PLAYER_REGEN_ENABLED', 'PLAYER_REGEN')
 	EM:RegisterEvent('PLAYER_REGEN_DISABLED', 'PLAYER_REGEN')
-
-	-- account settings will be tainted
-	local mixin = _G.EditModeManagerFrame.AccountSettings
-	if CheckCastFrame() then mixin.RefreshCastBar = E.noop end
-	if CheckBossFrame() then mixin.RefreshBossFrames = E.noop end
-	if CheckArenaFrame() then mixin.RefreshArenaFrames = E.noop end
-	if CheckRaidFrame() then mixin.RefreshRaidFrames = E.noop end
-	if CheckPartyFrame() then mixin.RefreshPartyFrames = E.noop end
-	if CheckTargetFrame() and CheckFocusFrame() then
-		mixin.RefreshTargetAndFocus = E.noop
-	end
-	if CheckActionBar() then
-		mixin.RefreshVehicleLeaveButton = E.noop
-		mixin.RefreshActionBarShown = E.noop
-		mixin.RefreshEncounterBar = E.noop
-		mixin.RefreshStatusTrackingBar2 = E.noop
-
-		for _, name in next, ignoreFrames do
-			local frame = _G[name]
-			if frame then
-				frame.OnEditModeEnter = E.noop
-			end
-		end
-	end
 end
 
 E:RegisterModule(EM:GetName())

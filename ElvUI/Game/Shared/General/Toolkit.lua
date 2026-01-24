@@ -400,11 +400,6 @@ local function CreateShadow(frame, size, pass)
 	end
 end
 
-local function KillEditMode(object)
-	object.HighlightSystem = E.noop
-	object.ClearHighlight = E.noop
-end
-
 local function Kill(object)
 	if object.UnregisterAllEvents then
 		object:UnregisterAllEvents()
@@ -558,7 +553,6 @@ local API = {
 	SetTemplate = SetTemplate,
 	CreateBackdrop = CreateBackdrop,
 	CreateShadow = CreateShadow,
-	KillEditMode = KillEditMode,
 	FontTemplate = FontTemplate,
 	StripTextures = StripTextures,
 	StripTexts = StripTexts,
