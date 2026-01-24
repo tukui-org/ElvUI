@@ -362,12 +362,11 @@ function A:UpdateButton(button, duration, expiration, modRate)
 
 		if auraDuration then
 			button.cooldown:SetCooldownFromDurationObject(auraDuration)
-			button.cooldown:Show()
 
 			button.statusBar:SetMinMaxValues(0, duration)
 			button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
 		else
-			button.cooldown:Hide()
+			button.cooldown:Clear()
 		end
 	elseif not E.Retail or button.enchantIndex then
 		local hasCooldown = duration > 0
