@@ -90,7 +90,7 @@ function E:CooldownInitialize(cooldown, attach)
 
 	local charge = data.chargeCooldown
 	if charge then
-		E:CooldownTextures(cooldown, attach, E.Media.Textures.Edge2, c.edgeCharge, c.swipeCharge)
+		E:CooldownTextures(charge, attach, E.Media.Textures.Edge2, c.edgeCharge, c.swipeCharge)
 	end
 
 	local lossControl = data.lossOfControl
