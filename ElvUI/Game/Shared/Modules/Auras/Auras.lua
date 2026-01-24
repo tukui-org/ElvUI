@@ -244,7 +244,7 @@ function A:SetAuraTime(button, expiration, duration, modRate)
 	button.expiration = expiration
 	button.modRate = modRate
 
-	if not button.enchantIndex then
+	if not button.enchantIndex or not E.Retail then
 		A:UpdateButton(button, duration, expiration, modRate)
 	end
 end
@@ -399,10 +399,12 @@ function A:UpdateButton(button, duration, expiration, modRate)
 			end
 		end
 
-		if hasCooldown then
-			button.cooldown:SetCooldown((expiration - duration), duration, modRate)
-		else
-			button.cooldown:Clear()
+		if not button.enchantIndex then
+			if hasCooldown then -- the cooldown was already set for enchants
+				button.cooldown:SetCooldown((expiration - duration), duration, modRate)
+			else
+				button.cooldown:Clear()
+			end
 		end
 	end
 
