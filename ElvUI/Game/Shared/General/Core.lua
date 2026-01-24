@@ -155,10 +155,6 @@ E.GemTypeInfo = {
 	Fiber			= { r = 0.90, g = 0.80, b = 0.50 },
 }
 
--- Midnight aura colors
-E.ColorCurves = { auras = false, buffs = false, debuffs = false }
-ElvUF.ColorCurves = E.ColorCurves -- reference to oUF
-
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
 E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
@@ -2025,6 +2021,10 @@ function E:Initialize()
 	E:UIScale()
 	E:LoadStaticPopups()
 
+	if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
+	end
+
 	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	else
@@ -2041,10 +2041,6 @@ function E:Initialize()
 
 		if E.Retail then
 			E:Tutorials()
-		end
-
-		if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
-			E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 		end
 
 		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
