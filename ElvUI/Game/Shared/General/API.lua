@@ -527,7 +527,7 @@ do
 	end
 
 	local function FindAura(key, value, unit, index, filter, ...)
-		local name, _, _, _, _, _, _, _, _, spellID = ...
+		local name, _, _, _, _, duration, expiration, _, _, spellID = ...
 
 		local spell = (E:NotSecretValue(spellID) and E:NotSecretValue(name) and name) or nil
 		if not spell then
@@ -552,7 +552,7 @@ do
 
 	-- Midnight PTR: Centralized SECRET-aware aura helper
 	-- Handles C_Secrets.ShouldUnitIdentityBeSecret and SECRET aura fields
-	-- Fields marked SECRET: isBossAura, canApplyAura, isTrivial
+	-- Fields marked SECRET: isBossAura, canApplyAura, isTrivial, duration, expiration
 	-- Reference: https://www.wowinterface.com/forums/showpost.php?p=332650&postcount=8
 	function E:GetSafeAuraData(unit, index, filter)
 		if not unit or not index then return end
@@ -566,18 +566,25 @@ do
 			data.sourceUnit = nil
 		end
 
-		-- Handle SECRET fields (isBossAura, canApplyAura, isTrivial)
-		-- These may throw Protected() error on Midnight PTR
-		local secretFields = { 'isBossAura', 'canApplyAura', 'isTrivial' }
+		-- Handle SECRET fields that can throw Protected() errors on Midnight PTR
+		local secretFields = { 'isBossAura', 'canApplyAura', 'isTrivial', 'duration', 'expirationTime' }
 		for _, field in ipairs(secretFields) do
-			local success, result = pcall(function() return data[field] end)
+			local success, value = pcall(function() return data[field] end)
 			if not success then
-				-- Field is SECRET, set safe default
 				data[field] = nil
+			else
+				data[field] = value
 			end
 		end
 
-		return data
+		local name, icon, count, debuffType = data.name, data.icon, data.applications, data.dispelName
+		local duration = data.duration or 0
+		local expirationTime = data.expirationTime or 0
+		local sourceUnit = data.sourceUnit
+		local isStealable = data.isStealable
+		local spellID = data.spellId
+
+		return name, icon, count, debuffType, duration, expirationTime, sourceUnit, isStealable, nil, spellID
 	end
 end
 
