@@ -17,7 +17,6 @@ local CheckPartyFrame = function() return E.private.unitframe.enable and E.priva
 local CheckFocusFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.focus end
 local CheckRaidFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.raid end
 local CheckBossFrame = function() return E.private.unitframe.enable and E.private.unitframe.disabledBlizzardFrames.boss end
-local CheckAuraFrame = function() return E.private.auras.disableBlizzard end
 local CheckActionBar = function() return E.private.actionbar.enable end
 
 local ignoreFrames = {
@@ -145,7 +144,6 @@ function EM:Initialize()
 	-- account settings will be tainted
 	local mixin = _G.EditModeManagerFrame.AccountSettings
 	if CheckCastFrame() then mixin.RefreshCastBar = E.noop end
-	if CheckAuraFrame() then mixin.RefreshBuffsAndDebuffs = E.noop end
 	if CheckBossFrame() then mixin.RefreshBossFrames = E.noop end
 	if CheckArenaFrame() then mixin.RefreshArenaFrames = E.noop end
 	if CheckRaidFrame() then mixin.RefreshRaidFrames = E.noop end
