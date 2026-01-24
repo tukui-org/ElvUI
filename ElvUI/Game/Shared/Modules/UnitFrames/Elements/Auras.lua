@@ -707,7 +707,7 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 	elseif E.Retail then
 		button.priority = 0
 
-		return (button.noFilter and true) or (db.isAuraPlayer and aura.auraIsPlayer) or (db.isAuraRaid and aura.auraIsRaid) or (db.isAuraNameplate and aura.auraIsNameplateOnly) or (db.isAuraDefensive and aura.auraIsDefensive)
+		return button.noFilter or (db.isAuraPlayer and aura.auraIsPlayer) or (db.isAuraRaid and aura.auraIsRaid) or (db.isAuraNameplate and aura.auraIsNameplateOnly) or (db.isAuraDefensive and aura.auraIsDefensive)
 	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	end
