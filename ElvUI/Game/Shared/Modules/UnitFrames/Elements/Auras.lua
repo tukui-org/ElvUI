@@ -470,8 +470,8 @@ function UF:PostUpdateAura(unit, button)
 	if color then
 		r, g, b = color:GetRGB()
 	elseif button.isDebuff then
-		local debuffType = button.debuffType
-		local spellID = button.spellID
+		local debuffType = E:NotSecretValue(button.debuffType) and button.debuffType
+		local spellID = E:NotSecretValue(button.spellID) and button.spellID
 		local bad, enemy = DebuffColors.BadDispel, DebuffColors.EnemyNPC
 
 		if enemyNPC then

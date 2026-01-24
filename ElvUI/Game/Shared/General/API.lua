@@ -570,7 +570,7 @@ do
 		local secretFields = { 'isBossAura', 'canApplyAura', 'isTrivial', 'duration', 'expirationTime' }
 		for _, field in ipairs(secretFields) do
 			local success, value = pcall(function() return data[field] end)
-			if not success then
+			if not success or E:IsSecretValue(value) then
 				data[field] = nil
 			else
 				data[field] = value
