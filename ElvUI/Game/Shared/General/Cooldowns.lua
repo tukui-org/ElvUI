@@ -8,6 +8,40 @@ local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL or 1
 E.RegisteredCooldowns = {}
 E.CooldownByModule = {}
 
+do	-- mainly used to prevent the bling from triggering when
+	local blings = {} -- the actionbars are faded out
+	function E:CooldownBling(cooldown, alpha)
+		local db = E:CooldownData(cooldown)
+		if not db then return end
+
+		local texture = (alpha and alpha > 0.5) and (db.altBling and 131011 or 131010) or E.Media.Textures.Invisible
+		if blings[cooldown] ~= texture then		-- dont change the texture unless we need to
+			cooldown:SetBlingTexture(texture)	-- starburst or star4 or invisible
+
+			blings[cooldown] = texture
+		end
+	end
+end
+
+function E:CooldownSwipe(cooldown) -- non retail
+	local db = E:CooldownData(cooldown)
+	if not db then return end
+
+	local c = db.colors[(cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and 'swipeLOC') or 'swipe']
+	if c then
+		cooldown:SetSwipeColor(c.r, c.g, c.b, c.a)
+	end
+end
+
+function E:CooldownTextures(cooldown, texture, edge, swipe)
+	cooldown:SetAllPoints()
+	cooldown:SetDrawEdge(true)
+	cooldown:SetDrawSwipe(true)
+
+	cooldown:SetEdgeTexture(texture, edge.r, edge.g, edge.b, edge.a)
+	cooldown:SetSwipeTexture(E.media.blankTex, swipe.r, swipe.g, swipe.b, swipe.a)
+end
+
 function E:CooldownUpdate(cooldown)
 	local db, data = E:CooldownData(cooldown)
 	if not db or not cooldown.Text then return end
@@ -44,39 +78,6 @@ function E:CooldownUpdate(cooldown)
 	end
 end
 
-function E:CooldownSettings(which)
-	local cooldowns = E.db.cooldown.enable and E.CooldownByModule[which]
-	if not cooldowns then return end
-
-	for cooldown in next, cooldowns do
-		E:CooldownUpdate(cooldown)
-	end
-end
-
-do	-- mainly used to prevent the bling from triggering when
-	local blings = {} -- the actionbars are faded out
-	function E:CooldownBling(cooldown, alpha)
-		local db = E:CooldownData(cooldown)
-		if not db then return end
-
-		local texture = (alpha and alpha > 0.5) and (db.altBling and 131011 or 131010) or E.Media.Textures.Invisible
-		if blings[cooldown] ~= texture then		-- dont change the texture unless we need to
-			cooldown:SetBlingTexture(texture)	-- starburst or star4 or invisible
-
-			blings[cooldown] = texture
-		end
-	end
-end
-
-function E:CooldownTextures(cooldown, texture, edge, swipe)
-	cooldown:SetAllPoints()
-	cooldown:SetDrawEdge(true)
-	cooldown:SetDrawSwipe(true)
-
-	cooldown:SetEdgeTexture(texture, edge.r, edge.g, edge.b, edge.a)
-	cooldown:SetSwipeTexture(E.media.blankTex, swipe.r, swipe.g, swipe.b, swipe.a)
-end
-
 function E:CooldownInitialize(cooldown)
 	local db, data = E:CooldownData(cooldown)
 	if not db or cooldown.Text then return end
@@ -97,21 +98,20 @@ function E:CooldownInitialize(cooldown)
 	end
 end
 
-function E:LABCooldownUpdate(cooldown) -- non retail
-	local db = E:CooldownData(cooldown)
-	if not db then return end
-
-	local c = db.colors[(cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and 'swipeLOC') or 'swipe']
-	if c then
-		cooldown:SetSwipeColor(c.r, c.g, c.b, c.a)
-	end
-end
-
 function E:CooldownData(cooldown)
 	local data = E.RegisteredCooldowns[cooldown]
 	local db = data and E.db.cooldown[data.which]
 
 	return db, data
+end
+
+function E:CooldownSettings(which)
+	local cooldowns = E.db.cooldown.enable and E.CooldownByModule[which]
+	if not cooldowns then return end
+
+	for cooldown in next, cooldowns do
+		E:CooldownUpdate(cooldown)
+	end
 end
 
 function E:RegisterCooldown(cooldown, which)
