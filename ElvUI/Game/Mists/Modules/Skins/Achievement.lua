@@ -14,7 +14,7 @@ local IsInGuild = IsInGuild
 
 local FLAG_PROGRESS_BAR = EVALUATION_TREE_FLAG_PROGRESS_BAR
 
-local blueAchievement = { r = 0.1, g = 0.2, b = 0.3 }
+local blueAchievement = { r = 0.1, g = 0.2, b = 0.3, a = 1 }
 local function BlueBackdrop(frame)
 	frame:SetBackdropColor(blueAchievement.r, blueAchievement.g, blueAchievement.b)
 end

@@ -235,7 +235,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
 		E.db.unitframe.colors.castClassColor = false
-		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
+		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82, a = 1}
 	elseif theme == 'class' then
 		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
 		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
@@ -255,7 +255,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.castColor = E:GetColor(.1, .1, .1)
 		E.db.unitframe.colors.castClassColor = false
-		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
+		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82, a = 1}
 	end
 
 	--Value Color
@@ -400,7 +400,7 @@ function E:LayoutAnniversary()
 	E.db.bags.vendorGrays.enable = true
 	E.db.chat.chatHistory = false
 	E.db.chat.copyChatLines = true
-	E.db.chat.customTimeColor = { r = 0.60784316062927, g = 0.60000002384186, b = 0.59607845544815 }
+	E.db.chat.customTimeColor = { r = 0.60784316062927, g = 0.60000002384186, b = 0.59607845544815, a = 1 }
 	E.db.chat.editBoxPosition = 'ABOVE_CHAT_INSIDE'
 	E.db.chat.fadeTabsNoBackdrop = false
 	E.db.chat.font = 'Expressway'
@@ -419,7 +419,7 @@ function E:LayoutAnniversary()
 	E.db.chat.tabFont = 'Expressway'
 	E.db.chat.tabFontOutline = 'OUTLINE'
 	E.db.chat.tabSelector = 'BOX1'
-	E.db.chat.tabSelectorColor = { r = 0.09, g = 0.51, b = 0.82 }
+	E.db.chat.tabSelectorColor = { r = 0.09, g = 0.51, b = 0.82, a = 1 }
 	E.db.chat.timeStampFormat = "%I:%M %p "
 	E.db.chat.timeStampLocalTime = true
 	E.db.chat.useBTagName = true
@@ -541,10 +541,10 @@ function E:LayoutAnniversary()
 	E.db.general.totems.growthDirection = 'HORIZONTAL'
 	E.db.general.totems.size = 36
 	E.db.general.vehicleSeatIndicatorSize = 76
-	E.db.nameplates.colors.selection[0] = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
-	E.db.nameplates.colors.selection[2] = { r = 0.85098046064377, g = 0.76862752437592, b = 0.36078432202339 }
-	E.db.nameplates.colors.threat.badColor = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
-	E.db.nameplates.colors.threat.goodColor = { r = 0.29019609093666, g = 0.678431391716, b = 0.30196079611778 }
+	E.db.nameplates.colors.selection[0] = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959, a = 1 }
+	E.db.nameplates.colors.selection[2] = { r = 0.85098046064377, g = 0.76862752437592, b = 0.36078432202339, a = 1 }
+	E.db.nameplates.colors.threat.badColor = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959, a = 1 }
+	E.db.nameplates.colors.threat.goodColor = { r = 0.29019609093666, g = 0.678431391716, b = 0.30196079611778, a = 1 }
 	E.db.nameplates.enviromentConditions.enemyEnabled = true
 	E.db.nameplates.enviromentConditions.friendlyEnabled = true
 	E.db.nameplates.enviromentConditions.stackingEnabled = true
@@ -847,7 +847,7 @@ function E:LayoutAnniversary()
 	E.db.unitframe.units.player.castbar.height = 8
 	E.db.unitframe.units.player.castbar.iconAttached = false
 	E.db.unitframe.units.player.castbar.smoothbars = true
-	E.db.unitframe.units.player.castbar.textColor = { r = 0.83921575546265, g = 0.74901962280273, b = 0.65098041296005 }
+	E.db.unitframe.units.player.castbar.textColor = { r = 0.83921575546265, g = 0.74901962280273, b = 0.65098041296005, a = 1 }
 	E.db.unitframe.units.player.castbar.width = 231
 	E.db.unitframe.units.player.castbar.xOffsetText = 2
 	E.db.unitframe.units.player.castbar.xOffsetTime = -2
@@ -904,7 +904,7 @@ function E:LayoutAnniversary()
 	E.db.unitframe.units.target.castbar.iconPosition = 'RIGHT'
 	E.db.unitframe.units.target.castbar.iconXOffset = 10
 	E.db.unitframe.units.target.castbar.smoothbars = true
-	E.db.unitframe.units.target.castbar.textColor = { r = 0.83921575546265, g = 0.74901962280273, b = 0.65098041296005 }
+	E.db.unitframe.units.target.castbar.textColor = { r = 0.83921575546265, g = 0.74901962280273, b = 0.65098041296005, a = 1 }
 	E.db.unitframe.units.target.castbar.width = 231
 	E.db.unitframe.units.target.castbar.xOffsetText = 2
 	E.db.unitframe.units.target.castbar.xOffsetTime = -2

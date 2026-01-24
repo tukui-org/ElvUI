@@ -1188,11 +1188,11 @@ G.unitframe.HastedChannelTicks = {
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825]	= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Bloodlust
-	[32182]	= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- Heroism
+	[2825]	= {enable = true, color = { r = 0.98, g = 0.57, b = 0.10, a = 1 }}, -- Bloodlust
+	[32182]	= {enable = true, color = { r = 0.98, g = 0.57, b = 0.10, a = 1 }}, -- Heroism
 }
 
 -- Auras which should change the color of the UnitFrame
 G.unitframe.AuraHighlightColors = {
-	[25771]	= {enable = false, style = 'FILL', color = {r = 0.85, g = 0, b = 0, a = 0.85}}, -- Forbearance
+	[25771]	= {enable = false, style = 'FILL', color = { r = 0.85, g = 0, b = 0, a = 0.85 }}, -- Forbearance
 }

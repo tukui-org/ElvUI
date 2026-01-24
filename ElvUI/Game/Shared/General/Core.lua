@@ -134,25 +134,25 @@ E.PriestColors = { r = 0.99, g = 0.99, b = 0.99, colorStr = 'fffcfcfc' }
 
 -- Socket Type info from 11.2.0 (63003): Interface\AddOns\Blizzard_ItemSocketing\Blizzard_ItemSocketingUI.lua
 E.GemTypeInfo = {
-	Yellow			= { r = 0.97, g = 0.82, b = 0.29 },
-	Red				= { r = 1.00, g = 0.47, b = 0.47 },
-	Blue			= { r = 0.47, g = 0.67, b = 1.00 },
-	Hydraulic		= { r = 1.00, g = 1.00, b = 1.00 },
-	Cogwheel		= { r = 1.00, g = 1.00, b = 1.00 },
-	Meta			= { r = 1.00, g = 1.00, b = 1.00 },
-	Prismatic		= { r = 1.00, g = 1.00, b = 1.00 },
-	PunchcardRed	= { r = 1.00, g = 0.47, b = 0.47 },
-	PunchcardYellow	= { r = 0.97, g = 0.82, b = 0.29 },
-	PunchcardBlue	= { r = 0.47, g = 0.67, b = 1.00 },
-	Domination		= { r = 0.24, g = 0.50, b = 0.70 },
-	Cypher			= { r = 1.00, g = 0.80, b = 0.00 },
-	Tinker			= { r = 1.00, g = 0.47, b = 0.47 },
-	Primordial		= { r = 1.00, g = 0.00, b = 1.00 },
-	Fragrance		= { r = 1.00, g = 1.00, b = 1.00 },
-	SingingThunder	= { r = 0.97, g = 0.82, b = 0.29 },
-	SingingSea		= { r = 0.47, g = 0.67, b = 1.00 },
-	SingingWind		= { r = 1.00, g = 0.47, b = 0.47 },
-	Fiber			= { r = 0.90, g = 0.80, b = 0.50 },
+	Yellow			= { r = 0.97, g = 0.82, b = 0.29, a = 1 },
+	Red				= { r = 1.00, g = 0.47, b = 0.47, a = 1 },
+	Blue			= { r = 0.47, g = 0.67, b = 1.00, a = 1 },
+	Hydraulic		= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	Cogwheel		= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	Meta			= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	Prismatic		= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	PunchcardRed	= { r = 1.00, g = 0.47, b = 0.47, a = 1 },
+	PunchcardYellow	= { r = 0.97, g = 0.82, b = 0.29, a = 1 },
+	PunchcardBlue	= { r = 0.47, g = 0.67, b = 1.00, a = 1 },
+	Domination		= { r = 0.24, g = 0.50, b = 0.70, a = 1 },
+	Cypher			= { r = 1.00, g = 0.80, b = 0.00, a = 1 },
+	Tinker			= { r = 1.00, g = 0.47, b = 0.47, a = 1 },
+	Primordial		= { r = 1.00, g = 0.00, b = 1.00, a = 1 },
+	Fragrance		= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	SingingThunder	= { r = 0.97, g = 0.82, b = 0.29, a = 1 },
+	SingingSea		= { r = 0.47, g = 0.67, b = 1.00, a = 1 },
+	SingingWind		= { r = 1.00, g = 0.47, b = 0.47, a = 1 },
+	Fiber			= { r = 0.90, g = 0.80, b = 0.50, a = 1 },
 }
 
 -- Midnight aura colors
@@ -1217,7 +1217,7 @@ do -- BFA Convert, deprecated..
 			end
 
 			if type(info) == 'boolean' then
-				auraBarColors[spell] = { color = { r = 1, g = 1, b = 1 }, enable = info }
+				auraBarColors[spell] = { color = { r = 1, g = 1, b = 1, a = 1 }, enable = info }
 			elseif type(info) == 'table' then
 				if info.r or info.g or info.b then
 					auraBarColors[spell] = { color = { r = info.r or 1, g = info.g or 1, b = info.b or 1 }, enable = true }
@@ -1504,8 +1504,8 @@ function E:UpdateDB()
 	E:SetupDB()
 
 	-- default the non thing pixel border color to 191919, otherwise its 000000
-	if not E.PixelMode then P.general.bordercolor = { r = 0.1, g = 0.1, b = 0.1 } end
-	if not E.db.unitframe.thinBorders then P.unitframe.colors.borderColor = { r = 0.1, g = 0.1, b = 0.1 } end
+	if not E.PixelMode then P.general.bordercolor = { r = 0.1, g = 0.1, b = 0.1, a = 1 } end
+	if not E.db.unitframe.thinBorders then P.unitframe.colors.borderColor = { r = 0.1, g = 0.1, b = 0.1, a = 1 } end
 end
 
 function E:UpdateMoverPositions()
