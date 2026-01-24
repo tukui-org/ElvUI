@@ -215,10 +215,6 @@ function E:SetupCVars(noDisplayMsg)
 	end
 end
 
-function E:GetColor(r, g, b, a)
-	return { r = r, b = b, g = g, a = a }
-end
-
 function E:SetupTheme(theme, noDisplayMsg)
 	E.private.theme = theme
 
@@ -226,43 +222,43 @@ function E:SetupTheme(theme, noDisplayMsg)
 
 	--Set colors
 	if theme == 'classic' then
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.31, 0.31, 0.31, 1))
-		E.db.general.backdropcolor = E:GetColor(0.1, 0.1, 0.1, 1)
-		E.db.general.backdropfadecolor = E:GetColor(0.13, 0.13, 0.13, 0.69)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.31, 0.31, 0.31, 1))
+		E.db.general.bordercolor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.31, 0.31, 0.31, 1))
+		E.db.general.backdropcolor = E:NewColorTable(0.1, 0.1, 0.1, 1)
+		E.db.general.backdropfadecolor = E:NewColorTable(0.13, 0.13, 0.13, 0.69)
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.31, 0.31, 0.31, 1))
 		E.db.unitframe.colors.healthclass = false
-		E.db.unitframe.colors.health = E:GetColor(0.31, 0.31, 0.31, 1)
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(0.31, 0.31, 0.31, 1)
-		E.db.unitframe.colors.castColor = E:GetColor(0.31, 0.31, 0.31, 1)
+		E.db.unitframe.colors.health = E:NewColorTable(0.31, 0.31, 0.31, 1)
+		E.db.unitframe.colors.auraBarBuff = E:NewColorTable(0.31, 0.31, 0.31, 1)
+		E.db.unitframe.colors.castColor = E:NewColorTable(0.31, 0.31, 0.31, 1)
 		E.db.unitframe.colors.castClassColor = false
-		E.db.chat.tabSelectorColor = E:GetColor(0.09, 0.51, 0.82, 1)
+		E.db.chat.tabSelectorColor = E:NewColorTable(0.09, 0.51, 0.82, 1)
 	elseif theme == 'class' then
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.31, 0.31, 0.31, 1))
-		E.db.general.backdropcolor = E:GetColor(0.1, 0.1, 0.1, 1)
-		E.db.general.backdropfadecolor = E:GetColor(0.06, 0.06, 0.06, 0.8)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.31, 0.31, 0.31, 1))
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.g, classColor.b)
+		E.db.general.bordercolor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.31, 0.31, 0.31, 1))
+		E.db.general.backdropcolor = E:NewColorTable(0.1, 0.1, 0.1, 1)
+		E.db.general.backdropfadecolor = E:NewColorTable(0.06, 0.06, 0.06, 0.8)
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.31, 0.31, 0.31, 1))
+		E.db.unitframe.colors.auraBarBuff = E:NewColorTable(classColor.r, classColor.g, classColor.b)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.colors.castClassColor = true
-		E.db.chat.tabSelectorColor = E:GetColor(classColor.r, classColor.g, classColor.b)
+		E.db.chat.tabSelectorColor = E:NewColorTable(classColor.r, classColor.g, classColor.b)
 	else
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.1, 0.1, 0.1, 1))
-		E.db.general.backdropcolor = E:GetColor(0.1, 0.1, 0.1, 1)
-		E.db.general.backdropfadecolor = E:GetColor(0.054, 0.054, 0.054, 0.8)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0, 1) or E:GetColor(0.1, 0.1, 0.1, 1))
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(0.1, 0.1, 0.1, 1)
+		E.db.general.bordercolor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.1, 0.1, 0.1, 1))
+		E.db.general.backdropcolor = E:NewColorTable(0.1, 0.1, 0.1, 1)
+		E.db.general.backdropfadecolor = E:NewColorTable(0.054, 0.054, 0.054, 0.8)
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.1, 0.1, 0.1, 1))
+		E.db.unitframe.colors.auraBarBuff = E:NewColorTable(0.1, 0.1, 0.1, 1)
 		E.db.unitframe.colors.healthclass = false
-		E.db.unitframe.colors.health = E:GetColor(0.1, 0.1, 0.1, 1)
-		E.db.unitframe.colors.castColor = E:GetColor(0.1, 0.1, 0.1, 1)
+		E.db.unitframe.colors.health = E:NewColorTable(0.1, 0.1, 0.1, 1)
+		E.db.unitframe.colors.castColor = E:NewColorTable(0.1, 0.1, 0.1, 1)
 		E.db.unitframe.colors.castClassColor = false
 		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82, a = 1}
 	end
 
 	--Value Color
 	if theme == 'class' then
-		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.g, classColor.b, classColor.a)
+		E.db.general.valuecolor = E:NewColorTable(classColor.r, classColor.g, classColor.b, classColor.a)
 	else
-		E.db.general.valuecolor = E:GetColor(0.09, 0.52, 0.82, 1)
+		E.db.general.valuecolor = E:NewColorTable(0.09, 0.52, 0.82, 1)
 	end
 
 	E:UpdateStart(true, true)

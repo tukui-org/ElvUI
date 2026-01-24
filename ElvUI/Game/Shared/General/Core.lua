@@ -260,10 +260,6 @@ function E:UpdateClassColor(db)
 end
 
 function E:SetColorTable(t, data)
-	if not data.r or not data.g or not data.b then
-		error('SetColorTable: Could not unpack color values.')
-	end
-
 	if t and (type(t) == 'table') then
 		local r, g, b, a = E:UpdateColorTable(data)
 
@@ -281,27 +277,32 @@ function E:SetColorTable(t, data)
 end
 
 function E:VerifyColorTable(data)
-	if data.r > 1 or data.r < 0 then data.r = 1 end
-	if data.g > 1 or data.g < 0 then data.g = 1 end
-	if data.b > 1 or data.b < 0 then data.b = 1 end
-	if data.a and (data.a > 1 or data.a < 0) then data.a = 1 end
+	-- we just need to verify all the values exist or assume they are meant to be one
+	if not data.r or (data.r > 1 or data.r < 0) then data.r = 1 end
+	if not data.g or (data.g > 1 or data.g < 0) then data.g = 1 end
+	if not data.b or (data.b > 1 or data.b < 0) then data.b = 1 end
+	if not data.a or (data.a > 1 or data.a < 0) then data.a = 1 end
+end
+
+function E:NewColorTable(r, g, b, a)
+	-- this function doesnt update the color to a mixin (unlike SetColorTable)
+	-- that makes it safe to use it for creating new colors for the db
+	-- dont upgrade the table to a mixin here
+
+	local data = { r = r, g = g, b = b, a = a }
+
+	E:VerifyColorTable(data)
+
+	return data
 end
 
 function E:UpdateColorTable(data)
-	if not data.r or not data.g or not data.b then
-		error('UpdateColorTable: Could not unpack color values.')
-	end
-
 	E:VerifyColorTable(data)
 
 	return data.r, data.g, data.b, data.a
 end
 
 function E:GetColorTable(data)
-	if not data.r or not data.g or not data.b then
-		error('GetColorTable: Could not unpack color values.')
-	end
-
 	E:VerifyColorTable(data)
 
 	local r, g, b, a = data.r, data.g, data.b, data.a
