@@ -37,7 +37,6 @@ local UnitClassBase = UnitClassBase
 local UnitClassification = UnitClassification
 local UnitExists = UnitExists
 local UnitFactionGroup = UnitFactionGroup
-local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitIsMercenary = UnitIsMercenary
@@ -49,6 +48,7 @@ local UnitThreatSituation = UnitThreatSituation
 local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
+local CreateColorCurve = C_CurveUtil and C_CurveUtil.CreateColorCurve
 
 local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
@@ -70,6 +70,7 @@ local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
+local LuaCurveTypeStep = Enum.LuaCurveType and Enum.LuaCurveType.Step
 
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
@@ -84,6 +85,7 @@ local UIErrorsFrame = UIErrorsFrame
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
+local DispelIndexes = ElvUF.Enum.DispelType
 
 E.MountIDs = {}
 E.MountText = {}
@@ -249,4 +251,25 @@ function E:NormalizeAuraData(data)
 	return aura
 end
 
--- rest of file omitted for brevity
+function E:UpdateColorCurve(which, data)
+	if not data then return end
+
+	local colors = ElvUF.colors.dispel
+	for key, index in next, DispelIndexes do
+		data:AddPoint(index, ((which == 'debuffs' or key ~= 'None') and colors and colors[key]) or E.media.bordercolor)
+	end
+end
+
+function E:UpdateColorCurves()
+	local curves = E.ColorCurves
+	for which, data in next, curves do
+		if not data then
+			data = CreateColorCurve()
+			data:SetType(LuaCurveTypeStep)
+
+			curves[which] = data
+		end
+
+		E:UpdateColorCurve(which, data)
+	end
+end
