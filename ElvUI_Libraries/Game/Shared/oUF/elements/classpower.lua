@@ -49,6 +49,7 @@ local SPEC_SHAMAN_ELEMENTAL = SPEC_SHAMAN_ELEMENTAL or 1
 local SPEC_SHAMAN_ENHANCEMENT = SPEC_SHAMAN_ENHANCEMENT or 2
 local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY or 2
 local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION or 3
+local SPEC_DEMONHUNTER_DEVOURER = SPEC_DEMONHUNTER_DEVOURER or 3
 
 local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local POWERTYPE_ENERGY = Enum.PowerType.Energy or 3
@@ -67,7 +68,11 @@ local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
 -- we also cant do fake icicles anymore either
 local POWERTYPE_ICICLES = -1
 local POWERTYPE_MAELSTROM = -2
+local POWERTYPE_SOUL_FRAGMENTS = -3 -- wait this isnt fake kek
 
+local SPELL_DARK_HEART = 1225789
+local SPELL_SILENCE_WHISPERS = 1227702
+local SPELL_VOID_METAMORPHOSIS = 1217607
 local SPELL_FROST_ICICLES = 205473
 local SPELL_ARCANE_CHARGE = 36032
 local SPELL_MAELSTROM = 344179
@@ -84,9 +89,11 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitPowerDisplayMod = UnitPowerDisplayMod
 local PlayerVehicleHasComboPoints = PlayerVehicleHasComboPoints
 local GetUnitChargedPowerPoints = GetUnitChargedPowerPoints
+local GetCollapsingStarCost = GetCollapsingStarCost
 local GetComboPoints = GetComboPoints
 
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
+local GetSpellMaxCumulativeAuraApplications = C_Spell.GetSpellMaxCumulativeAuraApplications
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
 
@@ -103,6 +110,7 @@ local ClassPowerType = {
 	[POWERTYPE_SOUL_SHARDS] = 'SOUL_SHARDS',
 	[POWERTYPE_DEMONIC_FURY] = 'DEMONIC_FURY',
 	[POWERTYPE_BURNING_EMBERS] = 'BURNING_EMBERS',
+	[POWERTYPE_SOUL_FRAGMENTS] = 'SOUL_FRAGMENTS'
 }
 
 local ClassPowerMax = {
@@ -113,6 +121,7 @@ local ClassPowerMax = {
 }
 
 local UseFakePower = {
+	[POWERTYPE_SOUL_FRAGMENTS] = oUF.isRetail,
 	[POWERTYPE_ARCANE_CHARGES] = oUF.isMists,
 	[POWERTYPE_MAELSTROM] = oUF.isRetail,
 	[POWERTYPE_ICICLES] = oUF.isRetail
@@ -170,15 +179,26 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local current, maximum, previousMax, chargedPoints
+	local current, maximum, powerMax, previousMax, chargedPoints
 	if event ~= 'ClassPowerDisable' then
 		local powerID = (vehicle and POWERTYPE_COMBO_POINTS) or classPowerID
 		local displayMod = (powerID > 0 and UnitPowerDisplayMod(powerID)) or 1
 		local warlockDest = classPowerID == POWERTYPE_BURNING_EMBERS or nil
 		local warlockDemo = classPowerID == POWERTYPE_DEMONIC_FURY or nil
+		local devourerDemon = classPowerID == POWERTYPE_SOUL_FRAGMENTS or nil
 
 		if displayMod == 0 then -- mod should never be 0, but according to Blizz code it can actually happen
 			current = 0
+		elseif devourerDemon then
+			local metamorphosis = GetPlayerAuraBySpellID(SPELL_VOID_METAMORPHOSIS)
+			local spell = metamorphosis and SPELL_SILENCE_WHISPERS or SPELL_DARK_HEART
+			current = CurrentApplications(spell, 'HELPFUL')
+
+			if metamorphosis then
+				maximum, powerMax = 1, GetCollapsingStarCost()
+			else
+				maximum, powerMax = 1, GetSpellMaxCumulativeAuraApplications(SPELL_DARK_HEART)
+			end
 		elseif oUF.isRetail and (myClass == 'WARLOCK' and currentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
 		elseif oUF.isMists and classPowerID == POWERTYPE_ARCANE_CHARGES then
@@ -192,8 +212,11 @@ local function Update(self, event, unit, powerType)
 			current = warlockDest and (cur * 0.1) or warlockDemo and (cur * 0.001) or cur
 		end
 
-		local powerMax = ClassPowerMax[classPowerID] or UnitPowerMax(unit, powerID, warlockDest)
-		maximum = (classPowerID == POWERTYPE_MANA and 1) or powerMax or 0
+		if not maximum then
+			powerMax = ClassPowerMax[classPowerID] or UnitPowerMax(unit, powerID, warlockDest)
+			maximum = (classPowerID == POWERTYPE_MANA and 1) or powerMax or 0
+		end
+
 		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
 
 		for i = 1, maximum do
@@ -202,7 +225,9 @@ local function Update(self, event, unit, powerType)
 
 			bar:Show()
 
-			if classPowerID == POWERTYPE_MANA then
+			if devourerDemon then
+				bar:SetValue(current / powerMax)
+			elseif classPowerID == POWERTYPE_MANA then
 				bar:SetValue((powerMax <= 0 and 0) or current / powerMax)
 			elseif warlockDest and i == floor(current + 1) then
 				bar:SetValue(current % 1)
@@ -278,6 +303,8 @@ local function Visibility(self, event, unit)
 		classPowerID = (oUF.isMists or currentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or nil
 	elseif myClass == 'SHAMAN' then
 		classPowerID = oUF.isRetail and (currentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM) or nil
+	elseif myClass == 'DEMONHUNTER' then
+		classPowerID = oUF.isRetail and (currentSpec == SPEC_DEMONHUNTER_DEVOURER and POWERTYPE_SOUL_FRAGMENTS) or nil
 	elseif myClass == 'WARLOCK' then
 		classPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
 	elseif myClass == 'MAGE' then

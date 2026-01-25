@@ -975,6 +975,9 @@ P.nameplates = {
 				{ r = 0.8, g = 0.4, b = 1, a = 1 }
 			},
 			PALADIN = { r = 0.89, g = 0.88, b = 0.06, a = 1 },
+			DEMONHUNTER = {
+				SOUL_FRAGMENTS = { r = 0.3, g = 0.15, b = 1, a = 1 },
+			},
 			MAGE = {
 				FROST_ICICLES = { r = 0, g = 0.80, b = 1.00, a = 1 },
 				ARCANE_CHARGES = { r = 0, g = 0.40, b = 1.00, a = 1 }
