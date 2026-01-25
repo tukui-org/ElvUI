@@ -62,6 +62,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
 	group.args.desaturate = ACH:Toggle(L["Desaturate Icon"], L["Set auras that are not from you to desaturated."], 3)
 	group.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 4)
+	group.args.useMidnight = ACH:Toggle(L["Use Midnight Filters"], nil, 5, nil, nil, nil, nil, nil, nil, E.Retail)
 
 	group.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	group.args.generalGroup.args.size = ACH:Range(function() return E.db.nameplates.units[unit][auraType].keepSizeRatio and L["Size"] or L["Width"] end, nil, 5, { min = 6, max = 60, step = 1 })
@@ -105,32 +106,30 @@ local function GetUnitAuras(unit, auraType)
 	group.args.sourceGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 11, C.Values.FontSize)
 	group.args.sourceGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 12)
 
-	group.args.filtersGroup = ACH:Group(L["Filters"], nil, 30)
+	group.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.nameplates.units[unit][auraType].useMidnight end)
+	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player Auras"], nil, 1)
+	group.args.midnightGroup.args.isAuraRaid = ACH:Toggle(L["Raid Auras"], nil, 2)
+	group.args.midnightGroup.args.isAuraNameplate = ACH:Toggle(L["Nameplate Auras"], nil, 3, nil, nil, nil, nil, nil, nil, true)
+	group.args.midnightGroup.args.isAuraDefensive = ACH:Toggle(L["Defensive Auras"], nil, 4, nil, nil, nil, nil, nil, nil, not E.Retail)
 
-	if E.Retail then
-		group.args.filtersGroup.args.isAuraPlayer = ACH:Toggle(L["Player Auras"], nil, 1)
-		group.args.filtersGroup.args.isAuraRaid = ACH:Toggle(L["Raid Auras"], nil, 2)
-		group.args.filtersGroup.args.isAuraNameplate = ACH:Toggle(L["Nameplate Auras"], nil, 3, nil, nil, nil, nil, nil, nil, true)
-		group.args.filtersGroup.args.isAuraDefensive = ACH:Toggle(L["Defensive Auras"], nil, 4)
-	else
-		group.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
-		group.args.filtersGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
-		group.args.filtersGroup.args.jumpToFilter = ACH:Execute(L["Filters Page"], L["Shortcut to global filters."], 3, function() ACD:SelectGroup('ElvUI', 'filters') end)
-		group.args.filtersGroup.args.specialFilters = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 4, function() wipe(filters) local list = E.global.unitframe.specialFilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.nameplates.units, unit, auraType, value) NP:ConfigureAll() end, nil, nil, true)
-		group.args.filtersGroup.args.filter = ACH:Select(L["Add Regular Filter"], L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."], 5, function() wipe(filters) local list = E.global.unitframe.aurafilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.nameplates.units, unit, auraType, value) NP:ConfigureAll() end)
-		group.args.filtersGroup.args.resetPriority = ACH:Execute(L["Reset Priority"], L["Reset filter priority to the default state."], 7, function() E.db.nameplates.units[unit][auraType].priority = P.nameplates.units[unit][auraType].priority NP:ConfigureAll() end)
+	group.args.legacyGroup = ACH:Group(L["Filters: Legacy"], nil, 50, nil, nil, nil, nil, function() return E.Retail or E.db.nameplates.units[unit][auraType].useMidnight end)
+	group.args.legacyGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
+	group.args.legacyGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
+	group.args.legacyGroup.args.jumpToFilter = ACH:Execute(L["Filters Page"], L["Shortcut to global filters."], 3, function() ACD:SelectGroup('ElvUI', 'filters') end)
+	group.args.legacyGroup.args.specialFilters = ACH:Select(L["Add Special Filter"], L["These filters don't use a list of spells like the regular filters. Instead they use the WoW API and some code logic to determine if an aura should be allowed or blocked."], 4, function() wipe(filters) local list = E.global.unitframe.specialFilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.nameplates.units, unit, auraType, value) NP:ConfigureAll() end, nil, nil, true)
+	group.args.legacyGroup.args.filter = ACH:Select(L["Add Regular Filter"], L["These filters use a list of spells to determine if an aura should be allowed or blocked. The content of these filters can be modified in the Filters section of the config."], 5, function() wipe(filters) local list = E.global.unitframe.aurafilters if not (list and next(list)) then return filters end for filter in pairs(list) do filters[filter] = L[filter] end return filters end, nil, nil, nil, function(_, value) C.SetFilterPriority(E.db.nameplates.units, unit, auraType, value) NP:ConfigureAll() end)
+	group.args.legacyGroup.args.resetPriority = ACH:Execute(L["Reset Priority"], L["Reset filter priority to the default state."], 7, function() E.db.nameplates.units[unit][auraType].priority = P.nameplates.units[unit][auraType].priority NP:ConfigureAll() end)
 
-		group.args.filtersGroup.args.filterPriority = ACH:MultiSelect(L["Filter Priority"], nil, 8, function() local str = E.db.nameplates.units[unit][auraType].priority if str == '' then return {} end return {strsplit(',', str)} end, nil, nil, function(_, value) local str = E.db.nameplates.units[unit][auraType].priority if str == '' then return end local tbl = {strsplit(',', str)} return tbl[value] end, function() NP:ConfigureAll() end)
-		group.args.filtersGroup.args.filterPriority.dragdrop = true
-		group.args.filtersGroup.args.filterPriority.dragGetTitle = C.DragGetTitle
-		group.args.filtersGroup.args.filterPriority.dragGetDesc = C.DragGetDesc
-		group.args.filtersGroup.args.filterPriority.dragOnLeave = E.noop -- keep it here
-		group.args.filtersGroup.args.filterPriority.dragOnEnter = function(info) carryFilterTo = info.obj.value end
-		group.args.filtersGroup.args.filterPriority.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
-		group.args.filtersGroup.args.filterPriority.dragOnMouseUp = function() C.SetFilterPriority(E.db.nameplates.units, unit, auraType, carryFilterTo, nil, carryFilterFrom) carryFilterFrom, carryFilterTo = nil, nil end
-		group.args.filtersGroup.args.filterPriority.dragOnClick = function(_, button) C.SetFilterPriority(E.db.nameplates.units, unit, auraType, carryFilterFrom, button == 'RightButton', nil, button == 'LeftButton' and IsShiftKeyDown(), button == 'LeftButton' and IsControlKeyDown()) end
-		group.args.filtersGroup.args.spacer1 = ACH:Description(L["FILTER_PRIORITY_DESC"], 9)
-	end
+	group.args.legacyGroup.args.filterPriority = ACH:MultiSelect(L["Filter Priority"], nil, 8, function() local str = E.db.nameplates.units[unit][auraType].priority if str == '' then return {} end return {strsplit(',', str)} end, nil, nil, function(_, value) local str = E.db.nameplates.units[unit][auraType].priority if str == '' then return end local tbl = {strsplit(',', str)} return tbl[value] end, function() NP:ConfigureAll() end)
+	group.args.legacyGroup.args.filterPriority.dragdrop = true
+	group.args.legacyGroup.args.filterPriority.dragGetTitle = C.DragGetTitle
+	group.args.legacyGroup.args.filterPriority.dragGetDesc = C.DragGetDesc
+	group.args.legacyGroup.args.filterPriority.dragOnLeave = E.noop -- keep it here
+	group.args.legacyGroup.args.filterPriority.dragOnEnter = function(info) carryFilterTo = info.obj.value end
+	group.args.legacyGroup.args.filterPriority.dragOnMouseDown = function(info) carryFilterFrom, carryFilterTo = info.obj.value, nil end
+	group.args.legacyGroup.args.filterPriority.dragOnMouseUp = function() C.SetFilterPriority(E.db.nameplates.units, unit, auraType, carryFilterTo, nil, carryFilterFrom) carryFilterFrom, carryFilterTo = nil, nil end
+	group.args.legacyGroup.args.filterPriority.dragOnClick = function(_, button) C.SetFilterPriority(E.db.nameplates.units, unit, auraType, carryFilterFrom, button == 'RightButton', nil, button == 'LeftButton' and IsShiftKeyDown(), button == 'LeftButton' and IsControlKeyDown()) end
+	group.args.legacyGroup.args.spacer1 = ACH:Description(L["FILTER_PRIORITY_DESC"], 9)
 
 	return group
 end

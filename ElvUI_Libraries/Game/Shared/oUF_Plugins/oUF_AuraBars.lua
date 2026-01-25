@@ -201,7 +201,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.spellID = spellID
 	bar.spell = name
 	bar.auraInstanceID = aura.auraInstanceID
-	bar.auraDuration = aura and GetAuraDuration(unit, aura.auraInstanceID) or nil
+	bar.auraDuration = aura and GetAuraDuration and GetAuraDuration(unit, aura.auraInstanceID) or nil
 	bar.noTime = oUF:NotSecretValue(duration) and (duration == 0 and expiration == 0)
 
 	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, aura, name, texture,
