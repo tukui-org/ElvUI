@@ -190,13 +190,11 @@ function AB:PositionAndSizeBarPet()
 			autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
 		end
 
-		if E.Retail or E.TBC then
-			local corners = autoCast.Corners
-			if corners then
-				local cornerWidth = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonWidth * 0.5) - (buttonWidth / 7.5))
-				local cornerHeight = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonHeight * 0.5) - (buttonHeight / 7.5))
-				corners:SetOutside(button, cornerWidth, cornerHeight)
-			end
+		local corners = autoCast.Corners
+		if corners then
+			local cornerWidth = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonWidth * 0.5) - (buttonWidth / 7.5))
+			local cornerHeight = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonHeight * 0.5) - (buttonHeight / 7.5))
+			corners:SetOutside(button, cornerWidth, cornerHeight)
 		end
 
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
