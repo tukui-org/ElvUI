@@ -11,12 +11,26 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
+local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
+local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local AbbreviateNumbers = AbbreviateNumbers
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
 -- GLOBALS: UnitPower -- override during testing groups
+
+E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
+	local absorb = UnitGetTotalAbsorbs(unit)
+
+	return AbbreviateNumbers(absorb, E.Abbreviate.short)
+end)
+
+E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
+	local healAbsorb = UnitGetTotalHealAbsorbs(unit)
+
+	return AbbreviateNumbers(healAbsorb, E.Abbreviate.short)
+end)
 
 E:AddTag('health:current:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 	local currentHealth = UnitHealth(unit)
