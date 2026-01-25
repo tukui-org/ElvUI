@@ -18,10 +18,7 @@ local IsAuraFilteredOutByInstanceID = C_UnitAuras.IsAuraFilteredOutByInstanceID
 local auraInfo = {}
 local auraFiltered = {
 	HELPFUL = {},
-	HARMFUL = {},
-	RAID = {},
-	PLAYER = {},
-	INCLUDE_NAME_PLATE_ONLY = {}
+	HARMFUL = {}
 }
 
 oUF.AuraInfo = auraInfo -- export it, not filtered
@@ -38,10 +35,6 @@ eventFrame:SetScript('OnEvent', function(_, event)
 		hasValidPlayer = false
 	end
 end)
-
-local function CheckIsMine(sourceUnit)
-	return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
-end
 
 local function AllowAura(frame, aura)
 	if oUF:NotSecretValue(aura.isNameplateOnly) and aura.isNameplateOnly then
@@ -65,8 +58,8 @@ local function UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID
 	if allowed then
 		aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
 		aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
-		aura.auraIsDefensive = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL|EXTERNAL_DEFENSIVE')
-		aura.auraIsNameplateOnly = InstanceFiltered(unit, aura, 'HELPFUL|INCLUDE_NAME_PLATE_ONLY', 'HARMFUL|INCLUDE_NAME_PLATE_ONLY')
+		aura.auraIsDefensive = InstanceFiltered(unit, aura, 'HELPFUL|EXTERNAL_DEFENSIVE', 'HARMFUL|EXTERNAL_DEFENSIVE')
+		-- aura.auraIsNameplateOnly = InstanceFiltered(unit, aura, 'HELPFUL|INCLUDE_NAME_PLATE_ONLY', 'HARMFUL|INCLUDE_NAME_PLATE_ONLY')
 		aura.auraIsPlayer = InstanceFiltered(unit, aura, 'HELPFUL|PLAYER', 'HARMFUL|PLAYER')
 		aura.auraIsRaid = InstanceFiltered(unit, aura, 'HELPFUL|RAID', 'HARMFUL|RAID')
 	end
@@ -209,14 +202,8 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 
 	if filter == 'HELPFUL' then
 		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
-	elseif filter == 'HARMFUL' then
+	else
 		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
-	elseif filter == 'RAID' then
-		return (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
-	elseif filter == 'INCLUDE_NAME_PLATE_ONLY' then
-		return (oUF:NotSecretValue(aura.isNameplateOnly) and not aura.isNameplateOnly) or (not aura.auraIsNameplateOnly)
-	elseif filter == 'PLAYER' then
-		return (oUF:NotSecretValue(aura.sourceUnit) and not CheckIsMine(aura.sourceUnit)) or (not aura.auraIsPlayer)
 	end
 end
 

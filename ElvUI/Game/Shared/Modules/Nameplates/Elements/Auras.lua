@@ -225,6 +225,6 @@ function NP:UpdateAuraSettings(button)
 		end
 	end
 
-	button.noFilter = db and not (db.isAuraPlayer or db.isAuraRaid or db.isAuraNameplate or db.isAuraDefensive)
+	button.noFilter = db and not (db.isAuraPlayer or db.isAuraRaid or db.isAuraDefensive)
 	button.needsButtonTrim = true
 end
