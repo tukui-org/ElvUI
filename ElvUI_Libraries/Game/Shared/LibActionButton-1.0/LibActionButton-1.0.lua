@@ -2188,25 +2188,7 @@ function UpdateCount(self)
 		return
 	end
 
-	if GetActionDisplayCount and self._state_type == "action" then
-		self.Count:SetText(GetActionDisplayCount(self._state_action, self.maxDisplayCount or 9999))
-	else
-		if self:IsConsumableOrStackable() then
-			local count = self:GetCount()
-			if count > (self.maxDisplayCount or 9999) then
-				self.Count:SetText("*")
-			else
-				self.Count:SetText(count)
-			end
-		else
-			local charges, maxCharges, _chargeStart, _chargeDuration = self:GetCharges()
-			if charges and maxCharges and maxCharges > 1 then
-				self.Count:SetText(charges)
-			else
-				self.Count:SetText("")
-			end
-		end
-	end
+	self.Count:SetText(self:GetDisplayCount())
 end
 
 function ClearChargeCooldown(self)
@@ -2796,6 +2778,24 @@ Generic.SetTooltip               = function(self) return nil end
 Generic.GetSpellId               = function(self) return nil end
 Generic.GetPassiveCooldownSpellID = function(self) return nil end
 
+Generic.GetDisplayCount          = function(self)
+	if self:IsConsumableOrStackable() then
+		local count = self:GetCount()
+		if count > (self.maxDisplayCount or 9999) then
+			return "*"
+		else
+			return count
+		end
+	else
+		local charges, maxCharges, _chargeStart, _chargeDuration = self:GetCharges()
+		if charges and maxCharges and maxCharges > 1 then
+			return charges
+		end
+	end
+
+	return ""
+end
+
 -- legacy cooldown functions
 Generic.GetCharges = function(self)
 	local charge = self:GetChargeInfo()
@@ -2883,6 +2883,10 @@ Action.GetSpellId               = function(self)
 			return (GetMacroSpell(id))
 		end
 	end
+end
+
+if GetActionDisplayCount then
+	Action.GetDisplayCount      = function(self) return GetActionDisplayCount(self._state_action) end
 end
 
 -- legacy cooldown functions, avoiding table creation on game versions that still have the old API
