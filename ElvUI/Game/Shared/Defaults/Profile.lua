@@ -2725,8 +2725,7 @@ P.unitframe.units.arena.power.xOffset = -2
 
 P.unitframe.units.party.health.position = 'LEFT'
 P.unitframe.units.party.health.xOffset = 2
-P.unitframe.units.party.buffs.isAuraPlayer = true
-P.unitframe.units.party.buffs.isAuraDefensive = true
+P.unitframe.units.party.buffs.isAuraRaid = true
 P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.party.buffs.maxDuration = 300
 P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
