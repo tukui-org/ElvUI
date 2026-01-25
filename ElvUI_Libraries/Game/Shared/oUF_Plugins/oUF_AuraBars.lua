@@ -126,7 +126,8 @@ local function UpdateBar(element, bar)
 	if oUF:IsSecretValue(bar.count) then
 		if bar.aura then
 			local minCount, maxCount = 2, 999
-			bar.nameText:SetFormattedText('%s%s', WrapString(GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount), '[', '] '), bar.spell)
+			local count = GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount)
+			bar.nameText:SetFormattedText('%s%s', count and WrapString(count, '[', '] ') or '', bar.spell)
 		else
 			bar.nameText:SetText(bar.spell)
 		end
