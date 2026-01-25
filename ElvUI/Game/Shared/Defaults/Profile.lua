@@ -983,12 +983,15 @@ P.nameplates = {
 				ARCANE_CHARGES = { r = 0, g = 0.40, b = 1.00, a = 1 }
 			},
 			EVOKER = {
-				{ r = 0.10, g = 0.92, b = 1.00, a = 1 },
-				{ r = 0.17, g = 0.94, b = 0.84, a = 1 },
-				{ r = 0.24, g = 0.96, b = 0.69, a = 1 },
-				{ r = 0.31, g = 0.98, b = 0.53, a = 1 },
-				{ r = 0.34, g = 0.99, b = 0.45, a = 1 },
-				{ r = 0.38, g = 1.00, b = 0.38, a = 1 },
+				ESSENCE = {
+					{ r = 0.10, g = 0.92, b = 1.00, a = 1 },
+					{ r = 0.17, g = 0.94, b = 0.84, a = 1 },
+					{ r = 0.24, g = 0.96, b = 0.69, a = 1 },
+					{ r = 0.31, g = 0.98, b = 0.53, a = 1 },
+					{ r = 0.34, g = 0.99, b = 0.45, a = 1 },
+					{ r = 0.38, g = 1.00, b = 0.38, a = 1 },
+				},
+				EBON_MIGHT = { r = 0, g = 0.80, b = 1.00, a = 1 },
 			},
 			MONK = {
 				{ r = 0.71, g = 0.76, b = 0.32, a = 1 },
@@ -1965,6 +1968,7 @@ P.unitframe = {
 		ALT = 'NONE',
 	},
 	altManaPowers = {
+		EVOKER = { EbonMight = true },
 		DRUID = { Energy = true, Rage = true, LunarPower = true },
 		MONK = { Energy = true, Stagger = true }
 	},

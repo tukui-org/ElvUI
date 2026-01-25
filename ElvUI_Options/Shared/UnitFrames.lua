@@ -1073,7 +1073,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
 		config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
-		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'DRUID' or E.myclass == 'MONK') end)
+		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'EVOKER' or E.myclass == 'DRUID' or E.myclass == 'MONK') end)
 		config.args.additionalGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 15, max = 1000, step = 1 })
 		config.args.additionalGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 		config.args.additionalGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
@@ -1092,6 +1092,8 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		elseif E.myclass == 'MONK' then
 			config.args.additionalGroup.args.altManaGroup.args.Stagger = ACH:Toggle(L["Stagger"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail)
 			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
+		elseif E.myclass == 'EVOKER' then
+			config.args.additionalGroup.args.altManaGroup.args.EbonMight = ACH:Toggle(L["EBON_MIGHT"], nil, 1)
 		end
 
 		config.args.detachGroup = ACH:Group(L["Detach From Frame"], nil, 30, nil, function(info) return E.db.unitframe.units.player.classbar[info[#info]] end, function(info, value) E.db.unitframe.units.player.classbar[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, altPower)
@@ -1427,6 +1429,7 @@ Colors.classResourceGroup.args.class.args.MAELSTROM = ACH:Color(L["MAELSTROM_WEA
 Colors.classResourceGroup.args.class.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 13, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.WARLOCK[info[#info]], P.unitframe.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, E.Classic)
 Colors.classResourceGroup.args.class.args.DEMONIC_FURY = ACH:Color(L["DEMONIC_FURY"], nil, 14, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.WARLOCK[info[#info]], P.unitframe.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Mists)
 Colors.classResourceGroup.args.class.args.SOUL_FRAGMENTS = ACH:Color(L["SOUL_FRAGMENTS"], nil, 14, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.DEMONHUNTER[info[#info]], P.unitframe.colors.classResources.DEMONHUNTER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DEMONHUNTER[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.classResourceGroup.args.class.args.EBON_MIGHT = ACH:Color(L["EBON_MIGHT"], nil, 14, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.EVOKER[info[#info]], P.unitframe.colors.classResources.EVOKER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 
 Colors.classResourceGroup.args.BURNING_EMBERS = ACH:Group(L["BURNING_EMBERS"], nil, 25, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.WARLOCK.BURNING_EMBERS[i], P.unitframe.colors.classResources.WARLOCK.BURNING_EMBERS[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.WARLOCK.BURNING_EMBERS[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Mists)
 Colors.classResourceGroup.args.BURNING_EMBERS.inline = true
@@ -1442,13 +1445,13 @@ Colors.classResourceGroup.args.COMBO_POINTS.inline = true
 Colors.classResourceGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 25, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.MONK[i], P.unitframe.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, E.Classic)
 Colors.classResourceGroup.args.CHI_POWER.inline = true
 
-Colors.classResourceGroup.args.EVOKER = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 30, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.EVOKER[i], P.unitframe.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
-Colors.classResourceGroup.args.EVOKER.inline = true
+Colors.classResourceGroup.args.ESSENCE = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 30, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.EVOKER.ESSENCE[i], P.unitframe.colors.classResources.EVOKER.ESSENCE[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER.ESSENCE[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
+Colors.classResourceGroup.args.ESSENCE.inline = true
 
 for i = 1, 7 do
 	if i ~= 7 then
 		Colors.classResourceGroup.args.CHI_POWER.args[''..i] = ACH:Color(C.Values.Roman[i])
-		Colors.classResourceGroup.args.EVOKER.args[''..i] = ACH:Color(C.Values.Roman[i])
+		Colors.classResourceGroup.args.ESSENCE.args[''..i] = ACH:Color(C.Values.Roman[i])
 	end
 
 	Colors.classResourceGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(C.Values.Roman[i])
