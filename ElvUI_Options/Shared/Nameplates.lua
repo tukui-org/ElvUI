@@ -493,7 +493,7 @@ NamePlates.generalGroup.args.clickableRange.args.enemy.inline = true
 NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 })
 NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 })
 
-NamePlates.generalGroup.args.cutaway = ACH:Group(L["Cutaway Bars"], nil, 75)
+NamePlates.generalGroup.args.cutaway = ACH:Group(L["Cutaway Bars"], nil, 75, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.cutaway.args.health = ACH:Group(L["Health"], nil, 1, nil, function(info) return E.db.nameplates.cutaway.health[info[#info]] end, function(info, value) E.db.nameplates.cutaway.health[info[#info]] = value NP:ConfigureAll() end)
 NamePlates.generalGroup.args.cutaway.args.health.inline = true
 NamePlates.generalGroup.args.cutaway.args.health.args.enabled = ACH:Toggle(L["Enable"], nil, 1)

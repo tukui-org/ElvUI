@@ -513,7 +513,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 end
 
 local function GetOptionsTable_Cutaway(updateFunc, groupName, numGroup)
-	local config = ACH:Group(L["Cutaway Bars"])
+	local config = ACH:Group(L["Cutaway Bars"], nil, nil, nil, nil, nil, nil, E.Retail)
 	config.args.health = ACH:Group(L["Health"], nil, 1, nil, function(info) return E.db.unitframe.units[groupName].cutaway.health[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].cutaway.health[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.health.inline = true
 	config.args.health.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
