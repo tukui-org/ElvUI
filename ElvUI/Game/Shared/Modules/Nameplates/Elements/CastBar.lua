@@ -149,19 +149,14 @@ function NP:Castbar_PostCastInterruptible(unit)
 end
 
 function NP:Castbar_PostCastInterrupted(unit, spellID, interruptedBy)
+	if not interruptedBy then return end
+
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
 	if db.castbar and db.castbar.enable and db.castbar.sourceInterrupt and (db.castbar.timeToHold > 0) then
-		local unitName = interruptedBy and UnitNameFromGUID(interruptedBy)
+		local unitName = UnitNameFromGUID(interruptedBy)
 		if unitName then
-			if db.castbar.sourceInterruptClassColor then
-				local _, classFilename = UnitClassFromGUID(interruptedBy)
-				local classColor = classFilename and E:ClassColor(classFilename)
-
-				self.Text:SetFormattedText('%s [|c%s%s|r]', INTERRUPTED, classColor or 'FFdddddd', unitName)
-			else
-				self.Text:SetFormattedText('%s [%s]', INTERRUPTED, unitName)
-			end
+			self.Text:SetFormattedText('%s [%s]', INTERRUPTED, unitName)
 		end
 	end
 end
