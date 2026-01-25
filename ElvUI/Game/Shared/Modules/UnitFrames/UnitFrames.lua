@@ -522,9 +522,12 @@ function UF:UpdateColors()
 	ElvUF.colors.ClassBars.PRIEST = E:SetColorTable(ElvUF.colors.ClassBars.PRIEST, db.classResources.PRIEST)
 
 	if not ElvUF.colors.ClassBars.EVOKER then ElvUF.colors.ClassBars.EVOKER = {} end
+	ElvUF.colors.ClassBars.EVOKER.EBON_MIGHT = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER.EBON_MIGHT, db.classResources.EVOKER.EBON_MIGHT)
+
 	if not ElvUF.colors.ClassBars.MONK then ElvUF.colors.ClassBars.MONK = {} end
+	if not ElvUF.colors.ClassBars.EVOKER.ESSENCE then ElvUF.colors.ClassBars.EVOKER.ESSENCE = {} end
 	for i = 1, 6 do
-		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
+		ElvUF.colors.ClassBars.EVOKER.ESSENCE[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER.ESSENCE[i], db.classResources.EVOKER.ESSENCE[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
 	end
 

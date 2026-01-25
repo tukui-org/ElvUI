@@ -631,6 +631,8 @@ NamePlates.colorsGroup.args.classResources = ACH:Group(L["Class Resources"], nil
 NamePlates.colorsGroup.args.classResources.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, E.Classic)
 NamePlates.colorsGroup.args.classResources.args.ARCANE_CHARGES = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.MAGE[info[#info]], P.nameplates.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.classResources.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.WARLOCK[info[#info]], P.nameplates.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, E.Classic)
+NamePlates.colorsGroup.args.classResources.args.SOUL_FRAGMENTS = ACH:Color(L["SOUL_FRAGMENTS"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.DEMONHUNTER[info[#info]], P.nameplates.colors.classResources.DEMONHUNTER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.DEMONHUNTER[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not E.Retail)
+NamePlates.colorsGroup.args.classResources.args.EBON_MIGHT = ACH:Color(L["EBON_MIGHT"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.EVOKER[info[#info]], P.nameplates.colors.classResources.EVOKER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.EVOKER[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.classResources.inline = true
 
 NamePlates.colorsGroup.args.COMBO_POINTS = ACH:Group(L["COMBO_POINTS"], nil, 10, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.comboPoints[i], P.nameplates.colors.classResources.comboPoints[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.comboPoints[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
@@ -640,13 +642,13 @@ NamePlates.colorsGroup.args.COMBO_POINTS.inline = true
 NamePlates.colorsGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 11, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.MONK[i], P.nameplates.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, E.Classic)
 NamePlates.colorsGroup.args.CHI_POWER.inline = true
 
-NamePlates.colorsGroup.args.EVOKER = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 12, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.EVOKER[i], P.nameplates.colors.classResources.EVOKER[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.EVOKER[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
-NamePlates.colorsGroup.args.EVOKER.inline = true
+NamePlates.colorsGroup.args.ESSENCE = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 12, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.EVOKER.ESSENCE[i], P.nameplates.colors.classResources.EVOKER.ESSENCE[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.EVOKER.ESSENCE[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
+NamePlates.colorsGroup.args.ESSENCE.inline = true
 
 for i = 1, 7 do
 	if i ~= 7 then
 		NamePlates.colorsGroup.args.CHI_POWER.args[''..i] = ACH:Color(C.Values.Roman[i])
-		NamePlates.colorsGroup.args.EVOKER.args[''..i] = ACH:Color(C.Values.Roman[i])
+		NamePlates.colorsGroup.args.ESSENCE.args[''..i] = ACH:Color(C.Values.Roman[i])
 	end
 
 	NamePlates.colorsGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(C.Values.Roman[i])

@@ -50,6 +50,7 @@ local SPEC_SHAMAN_ENHANCEMENT = SPEC_SHAMAN_ENHANCEMENT or 2
 local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY or 2
 local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION or 3
 local SPEC_DEMONHUNTER_DEVOURER = SPEC_DEMONHUNTER_DEVOURER or 3
+local SPEC_EVOKER_AUGMENTATION = SPEC_EVOKER_AUGMENTATION or 3
 
 local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local POWERTYPE_ENERGY = Enum.PowerType.Energy or 3
@@ -69,7 +70,9 @@ local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
 local POWERTYPE_ICICLES = -1
 local POWERTYPE_MAELSTROM = -2
 local POWERTYPE_SOUL_FRAGMENTS = -3 -- wait this isnt fake kek
+local POWERTYPE_EBON_MIGHT = -4 -- wait this isnt fake either
 
+local SPELL_EBON_MIGHT = 395296
 local SPELL_DARK_HEART = 1225789
 local SPELL_SILENCE_WHISPERS = 1227702
 local SPELL_VOID_METAMORPHOSIS = 1217607
@@ -80,7 +83,9 @@ local SPELL_SOULBURN = 74434
 local SPELL_CATFORM = 768
 local SPELL_SHRED = 5221
 
+local next = next
 local floor = floor
+local GetTime = GetTime
 local UnitPower = UnitPower
 local UnitIsUnit = UnitIsUnit
 local UnitPowerMax = UnitPowerMax
@@ -96,6 +101,7 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpellMaxCumulativeAuraApplications = C_Spell.GetSpellMaxCumulativeAuraApplications
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local ClassPowerType = {
 	[POWERTYPE_CHI] = 'CHI',
@@ -110,10 +116,12 @@ local ClassPowerType = {
 	[POWERTYPE_SOUL_SHARDS] = 'SOUL_SHARDS',
 	[POWERTYPE_DEMONIC_FURY] = 'DEMONIC_FURY',
 	[POWERTYPE_BURNING_EMBERS] = 'BURNING_EMBERS',
-	[POWERTYPE_SOUL_FRAGMENTS] = 'SOUL_FRAGMENTS'
+	[POWERTYPE_SOUL_FRAGMENTS] = 'SOUL_FRAGMENTS',
+	[POWERTYPE_EBON_MIGHT] = 'EBON_MIGHT'
 }
 
 local ClassPowerMax = {
+	[POWERTYPE_EBON_MIGHT] = 20,
 	[POWERTYPE_DEMONIC_FURY] = 1,
 	[POWERTYPE_BURNING_EMBERS] = 4,
 	[POWERTYPE_MAELSTROM] = 10,
@@ -121,14 +129,12 @@ local ClassPowerMax = {
 }
 
 local UseFakePower = {
+	[POWERTYPE_EBON_MIGHT] = oUF.isRetail,
 	[POWERTYPE_SOUL_FRAGMENTS] = oUF.isRetail,
 	[POWERTYPE_ARCANE_CHARGES] = oUF.isMists,
 	[POWERTYPE_MAELSTROM] = oUF.isRetail,
 	[POWERTYPE_ICICLES] = oUF.isRetail
 }
-
--- holds class-specific information for enablement toggles
-local requirePower, requireSpell, classPowerID, currentSpec
 
 local function UpdateColor(element, powerType)
 	local color = element.__owner.colors.power[powerType]
@@ -150,15 +156,60 @@ local function UpdateColor(element, powerType)
 	end
 end
 
-local function CurrentApplications(spellID, filter)
+local function CheckAura(spellID, filter)
 	local info = GetPlayerAuraBySpellID(spellID)
-	local checkFilter = info and (not filter or (filter == 'HELPFUL' and info.isHelpful) or (filter == 'HARMFUL' and info.isHarmful))
-	return checkFilter and info.applications or 0
+	local allow = info and (not filter or (filter == 'HELPFUL' and info.isHelpful) or (filter == 'HARMFUL' and info.isHarmful))
+	return (allow and info) or nil
 end
 
-local function Update(self, event, unit, powerType)
+local function GetApplications(spellID, filter)
+	local info = CheckAura(spellID, filter)
+	return (info and info.applications) or 0
+end
+
+local function GetExpiration(spellID, filter)
+	local info = CheckAura(spellID, filter)
+	return (info and info.expirationTime) or nil
+end
+
+local function GetDuration(spellID)
+	local expiration = GetExpiration(spellID, 'HELPFUL')
+	return (not expiration and 0) or (expiration - GetTime())
+end
+
+local watcher = CreateFrame('Frame')
+watcher.frames = {}
+watcher:Hide()
+watcher:SetScript('OnUpdate', function(w, elapsed)
+	w.waiting = (w.waiting or 0) + elapsed
+
+	if w.waiting > 0.1 then
+		for frame, spellID in next, w.frames do
+			frame:SetValue(GetDuration(spellID), frame.smoothing)
+		end
+
+		w.waiting = 0
+	end
+end)
+
+local function ThirdVisibility(element, enabled)
+	if not element then return end
+
+	if enabled == nil then
+		enabled = element.__allowPower
+	end
+
+	element:SetShown(enabled)
+
+	if not enabled then
+		watcher:Hide()
+	end
+end
+
+local function Update(self, element, event, unit, powerType)
 	if not unit or not UnitIsUnit(unit, 'player') then return end
 
+	local classPowerID = element.classPowerID
 	local currentType = ClassPowerType[classPowerID]
 	if event == 'UNIT_AURA' then powerType = currentType end
 	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
@@ -167,8 +218,6 @@ local function Update(self, event, unit, powerType)
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
 	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (myClass == 'ROGUE' and powerType == 'ENERGY'))
 	if not (vehicle or classic or powerType == currentType) then return end
-
-	local element = self.ClassPower
 
 	--[[ Callback: ClassPower:PreUpdate(event)
 	Called before the element has been updated.
@@ -192,21 +241,28 @@ local function Update(self, event, unit, powerType)
 		elseif devourerDemon then
 			local metamorphosis = GetPlayerAuraBySpellID(SPELL_VOID_METAMORPHOSIS)
 			local spell = metamorphosis and SPELL_SILENCE_WHISPERS or SPELL_DARK_HEART
-			current = CurrentApplications(spell, 'HELPFUL')
+			current = GetApplications(spell, 'HELPFUL')
 
 			if metamorphosis then
 				maximum, powerMax = 1, GetCollapsingStarCost()
 			else
 				maximum, powerMax = 1, GetSpellMaxCumulativeAuraApplications(SPELL_DARK_HEART)
 			end
-		elseif oUF.isRetail and (myClass == 'WARLOCK' and currentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
+		elseif oUF.isRetail and (myClass == 'WARLOCK' and element.currentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
+		elseif oUF.isRetail and classPowerID == POWERTYPE_EBON_MIGHT then
+			local duration = GetDuration(SPELL_EBON_MIGHT)
+
+			element:SetMinMaxValues(0, duration)
+			watcher:SetShown(duration > 0)
+
+			watcher.frames[element] = SPELL_EBON_MIGHT or nil
 		elseif oUF.isMists and classPowerID == POWERTYPE_ARCANE_CHARGES then
-			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HARMFUL')
+			current = GetApplications(SPELL_ARCANE_CHARGE, 'HARMFUL')
 		elseif classPowerID == POWERTYPE_ICICLES then
-			current = CurrentApplications(SPELL_FROST_ICICLES, 'HELPFUL')
+			current = GetApplications(SPELL_FROST_ICICLES, 'HELPFUL')
 		elseif classPowerID == POWERTYPE_MAELSTROM then
-			current = CurrentApplications(SPELL_MAELSTROM, 'HELPFUL')
+			current = GetApplications(SPELL_MAELSTROM, 'HELPFUL')
 		else
 			local cur = classic and GetComboPoints(unit, 'target') or UnitPower(unit, powerID, warlockDest)
 			current = warlockDest and (cur * 0.1) or warlockDemo and (cur * 0.001) or cur
@@ -277,16 +333,20 @@ local function Path(self, ...)
 	* unit  - the unit accompanying the event (string)
 	* ...   - the arguments accompanying the event
 	--]]
-	return (self.ClassPower.Override or Update) (self, ...)
+
+	if self.ThirdPower then
+		(self.ThirdPower.Override or Update) (self, self.ThirdPower, ...)
+	end
+
+	return (self.ClassPower.Override or Update) (self, self.ClassPower, ...)
 end
 
-local function Visibility(self, event, unit)
-	local element = self.ClassPower
+local function Visibility(self, element, event, unit)
 	local shouldEnable
 
-	currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
-	requirePower, requireSpell = nil, nil -- clear these
+	local currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
 
+	local classPowerID, requirePower, requireSpell
 	local myClass = oUF.myclass
 	if myClass == 'DRUID' then
 		classPowerID = POWERTYPE_COMBO_POINTS
@@ -295,14 +355,16 @@ local function Visibility(self, event, unit)
 		requireSpell = oUF.isRetail and SPELL_SHRED or SPELL_CATFORM
 	elseif myClass == 'PALADIN' then
 		classPowerID = POWERTYPE_HOLY_POWER
-	elseif myClass == 'EVOKER' then
-		classPowerID = POWERTYPE_ESSENCE
 	elseif myClass == 'ROGUE' then
 		classPowerID = POWERTYPE_COMBO_POINTS
 	elseif myClass == 'MONK' then
 		classPowerID = (oUF.isMists or currentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or nil
 	elseif myClass == 'SHAMAN' then
 		classPowerID = oUF.isRetail and (currentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM) or nil
+	elseif myClass == 'EVOKER' and not element.which then
+		classPowerID = POWERTYPE_ESSENCE
+	elseif myClass == 'EVOKER' and element.which then
+		classPowerID = oUF.isRetail and (currentSpec == SPEC_EVOKER_AUGMENTATION and POWERTYPE_EBON_MIGHT) or nil
 	elseif myClass == 'DEMONHUNTER' then
 		classPowerID = oUF.isRetail and (currentSpec == SPEC_DEMONHUNTER_DEVOURER and POWERTYPE_SOUL_FRAGMENTS) or nil
 	elseif myClass == 'WARLOCK' then
@@ -328,8 +390,15 @@ local function Visibility(self, event, unit)
 		unit = 'player'
 	end
 
+	element.currentSpec = currentSpec
+	element.classPowerID = classPowerID
+
 	local isEnabled = element.__isEnabled
 	local powerType = (unit == 'vehicle' and 'COMBO_POINTS') or ClassPowerType[classPowerID]
+
+	if element.which then
+		ThirdVisibility(element)
+	end
 
 	if(shouldEnable) then
 		--[[ Override: ClassPower:UpdateColor(powerType)
@@ -372,7 +441,12 @@ local function VisibilityPath(self, ...)
 	* event - the event triggering the update (string)
 	* unit  - the unit accompanying the event (string)
 	--]]
-	return (self.ClassPower.OverrideVisibility or Visibility) (self, ...)
+
+	if self.ThirdPower then
+		(self.ThirdPower.OverrideVisibility or Visibility) (self, self.ThirdPower, ...)
+	end
+
+	return (self.ClassPower.OverrideVisibility or Visibility) (self, self.ClassPower, ...)
 end
 
 local function ForceUpdate(element)
@@ -389,16 +463,18 @@ local function ClassPowerEnable(element, owner)
 		owner:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 	end
 
-	if UseFakePower[classPowerID] then
+	if UseFakePower[element.classPowerID] then
 		owner:RegisterEvent('UNIT_AURA', Path)
 	end
+
+	ThirdVisibility(owner.ThirdPower, true)
 
 	element.__isEnabled = true
 
 	if (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI('player') then
 		Path(owner, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
 	else
-		Path(owner, 'ClassPowerEnable', 'player', ClassPowerType[classPowerID])
+		Path(owner, 'ClassPowerEnable', 'player', ClassPowerType[element.classPowerID])
 	end
 end
 
@@ -412,7 +488,7 @@ local function ClassPowerDisable(element, owner)
 		owner:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 	end
 
-	if UseFakePower[classPowerID] then
+	if UseFakePower[element.classPowerID] then
 		owner:UnregisterEvent('UNIT_AURA')
 	end
 
@@ -420,9 +496,11 @@ local function ClassPowerDisable(element, owner)
 		element[i]:Hide()
 	end
 
+	ThirdVisibility(owner.ThirdPower, false)
+
 	element.__isEnabled = false
 
-	Path(owner, 'ClassPowerDisable', 'player', ClassPowerType[classPowerID])
+	Path(owner, 'ClassPowerDisable', 'player', ClassPowerType[element.classPowerID])
 end
 
 local function Enable(self, unit)
@@ -431,6 +509,23 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
+
+		local timer = self.ThirdPower
+		if timer then
+			timer.__owner = self
+			timer.__max = 1
+			timer.which = 'ThirdPower'
+
+			timer:SetMinMaxValues(0, 1)
+			timer:SetValue(0)
+
+			if(not timer.smoothing) then
+				timer.smoothing = StatusBarInterpolation and StatusBarInterpolation.Immediate or nil
+			end
+
+			timer.ClassPowerEnable = ClassPowerEnable
+			timer.ClassPowerDisable = ClassPowerDisable
+		end
 
 		element.ClassPowerEnable = ClassPowerEnable
 		element.ClassPowerDisable = ClassPowerDisable
