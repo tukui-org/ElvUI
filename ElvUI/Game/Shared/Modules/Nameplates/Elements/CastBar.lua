@@ -148,6 +148,24 @@ function NP:Castbar_PostCastInterruptible(unit)
 	self:CheckInterrupt(unit)
 end
 
+function NP:Castbar_PostCastInterrupted(unit, spellID, interruptedBy)
+	local plate = self.__owner
+	local db = NP:PlateDB(plate)
+	if db.castbar and db.castbar.enable and db.castbar.sourceInterrupt and (db.castbar.timeToHold > 0) then
+		local unitName = interruptedBy and UnitNameFromGUID(interruptedBy)
+		if unitName then
+			if db.castbar.sourceInterruptClassColor then
+				local _, classFilename = UnitClassFromGUID(interruptedBy)
+				local classColor = classFilename and E:ClassColor(classFilename)
+
+				self.Text:SetFormattedText('%s [|c%s%s|r]', INTERRUPTED, classColor or 'FFdddddd', unitName)
+			else
+				self.Text:SetFormattedText('%s [%s]', INTERRUPTED, unitName)
+			end
+		end
+	end
+end
+
 function NP:Castbar_PostCastStop() end
 
 function NP:BuildPip(stage)
@@ -194,6 +212,7 @@ function NP:Construct_Castbar(nameplate)
 	castbar.PostCastStart = NP.Castbar_PostCastStart
 	castbar.PostCastFail = NP.Castbar_PostCastFail
 	castbar.PostCastInterruptible = NP.Castbar_PostCastInterruptible
+	castbar.PostCastInterrupted = NP.Castbar_PostCastInterrupted
 	castbar.PostCastStop = NP.Castbar_PostCastStop
 	castbar.UpdatePipStep = UF.UpdatePipStep
 	castbar.PostUpdatePip = UF.PostUpdatePip
