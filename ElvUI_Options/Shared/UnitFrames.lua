@@ -215,7 +215,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
 	config.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
-	config.args.useMidnight = ACH:Toggle(L["Use Midnight Filters"], nil, 4)
+	config.args.useMidnight = ACH:Toggle(L["Use Midnight Filters"], nil, 4, nil, nil, nil, nil, nil, nil, E.Retail)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	config.args.generalGroup.args.sizeOverride = ACH:Range(function() return E.db.unitframe.units[groupName][auraType].keepSizeRatio and L["Size Override"] or L["Icon Width"] end, L["If not set to 0 then override the size of the aura icon to this."], 4, { min = 0, max = 80, step = 1 })
@@ -270,13 +270,13 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.strataAndLevel.inline = nil
 	config.args.strataAndLevel.order = 35
 
-	config.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName][auraType].useMidnight end)
+	config.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.unitframe.units[groupName][auraType].useMidnight end)
 	config.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player Auras"], nil, 1)
 	config.args.midnightGroup.args.isAuraRaid = ACH:Toggle(L["Raid Auras"], nil, 2)
 	config.args.midnightGroup.args.isAuraNameplate = ACH:Toggle(L["Nameplate Auras"], nil, 3, nil, nil, nil, nil, nil, nil, true)
 	config.args.midnightGroup.args.isAuraDefensive = ACH:Toggle(L["Defensive Auras"], nil, 4, nil, nil, nil, nil, nil, nil, not E.Retail)
 
-	config.args.legacyGroup = ACH:Group(L["Filters: Legacy"], nil, 50, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName][auraType].useMidnight end)
+	config.args.legacyGroup = ACH:Group(L["Filters: Legacy"], nil, 50, nil, nil, nil, nil, function() return E.Retail or E.db.unitframe.units[groupName][auraType].useMidnight end)
 	config.args.legacyGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.legacyGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
 	config.args.legacyGroup.args.jumpToFilter = ACH:Execute(L["Filters Page"], L["Shortcut to global filters."], 3, function() ACD:SelectGroup('ElvUI', 'filters') end)
