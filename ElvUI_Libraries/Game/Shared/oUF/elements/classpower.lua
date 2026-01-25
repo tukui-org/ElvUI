@@ -156,21 +156,25 @@ local function UpdateColor(element, powerType)
 	end
 end
 
-local function CurrentApplications(spellID, filter)
+local function CheckAura(spellID, filter)
 	local info = GetPlayerAuraBySpellID(spellID)
-	local checkFilter = info and (not filter or (filter == 'HELPFUL' and info.isHelpful) or (filter == 'HARMFUL' and info.isHarmful))
-	return checkFilter and info.applications or 0
+	local allow = info and (not filter or (filter == 'HELPFUL' and info.isHelpful) or (filter == 'HARMFUL' and info.isHarmful))
+	return (allow and info) or nil
 end
 
-local function CurrentExpirationTime(spellID, filter)
-	local info = GetPlayerAuraBySpellID(spellID)
-	local checkFilter = info and (not filter or (filter == 'HELPFUL' and info.isHelpful) or (filter == 'HARMFUL' and info.isHarmful))
-	return checkFilter and info.expirationTime or nil
+local function GetApplications(spellID, filter)
+	local info = CheckAura(spellID, filter)
+	return (info and info.applications) or 0
 end
 
-local function GetTimeLeft(spellID)
-	local expirationTime = CurrentExpirationTime(spellID, 'HELPFUL')
-	return (not expirationTime and 0) or (expirationTime - GetTime())
+local function GetExpiration(spellID, filter)
+	local info = CheckAura(spellID, filter)
+	return (info and info.expirationTime) or nil
+end
+
+local function GetDuration(spellID)
+	local expiration = GetExpiration(spellID, 'HELPFUL')
+	return (not expiration and 0) or (expiration - GetTime())
 end
 
 local watcher = CreateFrame('Frame')
@@ -181,7 +185,7 @@ watcher:SetScript('OnUpdate', function(w, elapsed)
 
 	if w.waiting > 0.1 then
 		for frame, spellID in next, w.frames do
-			frame:SetValue(GetTimeLeft(spellID), frame.smoothing)
+			frame:SetValue(GetDuration(spellID), frame.smoothing)
 		end
 
 		w.waiting = 0
@@ -237,7 +241,7 @@ local function Update(self, element, event, unit, powerType)
 		elseif devourerDemon then
 			local metamorphosis = GetPlayerAuraBySpellID(SPELL_VOID_METAMORPHOSIS)
 			local spell = metamorphosis and SPELL_SILENCE_WHISPERS or SPELL_DARK_HEART
-			current = CurrentApplications(spell, 'HELPFUL')
+			current = GetApplications(spell, 'HELPFUL')
 
 			if metamorphosis then
 				maximum, powerMax = 1, GetCollapsingStarCost()
@@ -247,18 +251,18 @@ local function Update(self, element, event, unit, powerType)
 		elseif oUF.isRetail and (myClass == 'WARLOCK' and element.currentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
 		elseif oUF.isRetail and classPowerID == POWERTYPE_EBON_MIGHT then
-			local timeLeft = GetTimeLeft(SPELL_EBON_MIGHT)
+			local duration = GetDuration(SPELL_EBON_MIGHT)
 
-			element:SetMinMaxValues(0, timeLeft)
-			watcher:SetShown(timeLeft > 0)
+			element:SetMinMaxValues(0, duration)
+			watcher:SetShown(duration > 0)
 
 			watcher.frames[element] = SPELL_EBON_MIGHT or nil
 		elseif oUF.isMists and classPowerID == POWERTYPE_ARCANE_CHARGES then
-			current = CurrentApplications(SPELL_ARCANE_CHARGE, 'HARMFUL')
+			current = GetApplications(SPELL_ARCANE_CHARGE, 'HARMFUL')
 		elseif classPowerID == POWERTYPE_ICICLES then
-			current = CurrentApplications(SPELL_FROST_ICICLES, 'HELPFUL')
+			current = GetApplications(SPELL_FROST_ICICLES, 'HELPFUL')
 		elseif classPowerID == POWERTYPE_MAELSTROM then
-			current = CurrentApplications(SPELL_MAELSTROM, 'HELPFUL')
+			current = GetApplications(SPELL_MAELSTROM, 'HELPFUL')
 		else
 			local cur = classic and GetComboPoints(unit, 'target') or UnitPower(unit, powerID, warlockDest)
 			current = warlockDest and (cur * 0.1) or warlockDemo and (cur * 0.001) or cur
