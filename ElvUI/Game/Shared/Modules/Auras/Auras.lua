@@ -378,7 +378,7 @@ function A:UpdateButton(button, duration, expiration, modRate)
 
 			if E.Retail or not db.barColorGradient then
 				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
-			elseif not hasCooldown then -- this can cause temp enchants to flicker on retail
+			elseif not hasCooldown then
 				button.statusBar:SetValue(1, button.statusBar.smoothing)
 				button.statusBar:SetStatusBarColor(0, .8, 0)
 			end
