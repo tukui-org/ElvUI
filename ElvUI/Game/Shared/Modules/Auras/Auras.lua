@@ -395,12 +395,26 @@ function A:UpdateButton(button, duration, expiration, modRate)
 	button.elapsed = 0
 end
 
+-- Midnight 12.0 SECRET value handling for UpdateTime
 function A:UpdateTime(button, duration, expiration, modRate)
-	button.timeLeft = ((expiration or 0) - GetTime()) / (modRate or 1)
+	-- Guard against SECRET values that Midnight 12.0 restricts in secure frame context
+	if E:IsSecretValue(expiration) or E:IsSecretValue(duration) or E:IsSecretValue(modRate) then
+		button.timeLeft = 0
+		return
+	end
+
+	-- Only perform arithmetic on non-SECRET values
+	if not expiration or not modRate or expiration == 0 or modRate == 0 then
+		button.timeLeft = 0
+		A:ClearAuraTime(button)
+		return
+	end
+
+	button.timeLeft = (expiration - GetTime()) / modRate
 
 	if button.timeLeft < 0.1 then
 		A:ClearAuraTime(button)
-	elseif not E.Retail and duration > 0 then
+	elseif not E.Retail and duration and duration > 0 then
 		A:UpdateFlash(button)
 	end
 end
