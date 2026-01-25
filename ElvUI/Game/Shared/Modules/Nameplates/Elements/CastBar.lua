@@ -9,12 +9,13 @@ local next = next
 local strmatch = strmatch
 local utf8sub = string.utf8sub
 
+local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local UnitName = UnitName
+local UnitNameFromGUID = UnitNameFromGUID
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local INTERRUPTED = INTERRUPTED
 
 function NP:Castbar_CheckInterrupt(unit)
