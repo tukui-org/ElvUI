@@ -370,8 +370,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	-- end block
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	local useTimerAPI = oUF.isRetail and element.SetTimerDuration
-	if useTimerAPI then
+	if oUF.isRetail then
 		if oUF:NotSecretValue(startTime) then
 			element.startTime = startTime / 1000
 
@@ -519,8 +518,7 @@ local function CastUpdate(self, event, unit, ...)
 	if(not name) then return end
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	local useTimerAPI = oUF.isRetail and element.SetTimerDuration
-	if useTimerAPI then
+	if oUF.isRetail then
 		if oUF:NotSecretValue(startTime) then
 			if(element.empowering) then
 				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
@@ -781,8 +779,7 @@ local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
 		local duration, durationObject
 
-		local useTimerAPI = oUF.isRetail and self.GetTimerDuration
-		if useTimerAPI then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
+		if oUF.isRetail then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
 			if durationObject then
@@ -866,7 +863,7 @@ local function onUpdate(self, elapsed)
 		end
 		]]
 
-		if not useTimerAPI then
+		if not oUF.isRetail then
 			if self.SetValue_ then
 				self:SetValue_(duration)
 			else
