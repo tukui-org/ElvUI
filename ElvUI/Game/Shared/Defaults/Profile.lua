@@ -2739,7 +2739,6 @@ P.unitframe.units.party.castbar.width = 256
 P.unitframe.units.party.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0 }
 P.unitframe.units.party.CombatIcon.enable = false
 P.unitframe.units.party.debuffs.enable = true
-P.unitframe.units.party.debuffs.isAuraRaid = true
 P.unitframe.units.party.debuffs.anchorPoint = 'RIGHT'
 P.unitframe.units.party.debuffs.maxDuration = 300
 P.unitframe.units.party.debuffs.priority = 'Blacklist,Dispellable,RaidDebuffs,CCDebuffs'
@@ -2775,7 +2774,6 @@ P.unitframe.units.raid1.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.raid1.castbar = nil
 P.unitframe.units.raid1.CombatIcon.enable = false
 P.unitframe.units.raid1.debuffs.enable = false
-P.unitframe.units.raid1.debuffs.isAuraRaid = true
 P.unitframe.units.raid1.debuffs.numrows = 1
 P.unitframe.units.raid1.debuffs.perrow = 3
 P.unitframe.units.raid1.debuffs.priority = 'Blacklist,Dispellable,RaidDebuffs'
