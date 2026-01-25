@@ -8,7 +8,6 @@ local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitHonorLevel = UnitHonorLevel
 local UnitIsPlayer = UnitIsPlayer
-local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
