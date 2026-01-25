@@ -7,6 +7,7 @@ local next = next
 local pairs = pairs
 local tinsert = tinsert
 local strsub = strsub
+
 local CreateFrame = CreateFrame
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer

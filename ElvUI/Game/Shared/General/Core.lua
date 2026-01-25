@@ -3,7 +3,7 @@ ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale 
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local tonumber, pairs, ipairs, error, unpack, tostring = tonumber, pairs, ipairs, error, unpack, tostring
+local tonumber, pairs, ipairs, unpack, tostring = tonumber, pairs, ipairs, unpack, tostring
 local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
