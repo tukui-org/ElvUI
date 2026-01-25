@@ -36,7 +36,7 @@ function UF:GetClassPower_Construct(frame)
 			frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 		end
 	elseif E.Retail and E.myclass == 'EVOKER' then
-		frame.TimerPower = UF:Construct_TimerPower(frame)
+		frame.ThirdPower = UF:Construct_ThirdPower(frame)
 	elseif E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame) -- Retail: Classbar, Mists: AdditionalPower
 
@@ -110,7 +110,7 @@ function UF:Configure_ClassBar(frame)
 	if not bars then return end
 
 	bars.Holder = frame.ClassBarHolder
-	bars.AdditionalHolder = (frame.TimerPower or frame.AdditionalPower) and frame.ClassAdditionalHolder
+	bars.AdditionalHolder = (frame.ThirdPower or frame.AdditionalPower) and frame.ClassAdditionalHolder
 	bars.origParent = frame
 
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
@@ -252,7 +252,7 @@ function UF:Configure_ClassBar(frame)
 			E:EnableMover(bars.AdditionalHolder.mover.name)
 		end
 
-		local thirdPower = frame.Stagger or frame.TimerPower
+		local thirdPower = frame.Stagger or frame.ThirdPower
 		if thirdPower then
 			thirdPower:ClearAllPoints()
 			thirdPower:Point('BOTTOMLEFT', bars.AdditionalHolder, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING)
@@ -261,7 +261,7 @@ function UF:Configure_ClassBar(frame)
 			thirdPower:SetFrameStrata(db.classAdditional.frameStrata)
 			thirdPower:SetOrientation(db.classAdditional.orientation)
 
-			if thirdPower == frame.TimerPower then
+			if thirdPower == frame.ThirdPower then
 				local altPower = E.db.unitframe.altManaPowers[E.myclass]
 				thirdPower.__allowPower = altPower.EbonMight or nil
 				thirdPower.smoothing = StatusBarInterpolation.ExponentialEaseOut
@@ -730,15 +730,15 @@ function UF:EclipsePostUpdateVisibility(enabled)
 end
 
 -----------------------------------------------------------
--- Timer Power: Ebon Might
+-- Third Power: Ebon Might
 -----------------------------------------------------------
-function UF:Construct_TimerPower(frame)
-	local timerbar = CreateFrame('Statusbar', '$parent_TimerPower', frame)
+function UF:Construct_ThirdPower(frame)
+	local timerbar = CreateFrame('Statusbar', '$parent_ThirdPower', frame)
 	timerbar:CreateBackdrop(nil,nil, nil, nil, true)
 
 	timerbar.UpdateColor = UF.ClassPower_UpdateColor
 
-	UF.statusbars[timerbar] = 'timerpower'
+	UF.statusbars[timerbar] = 'thirdpower'
 	UF.classbars[timerbar] = true
 
 	timerbar.bg = timerbar:CreateTexture(nil, 'BORDER')

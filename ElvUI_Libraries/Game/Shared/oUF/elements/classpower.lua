@@ -330,8 +330,8 @@ local function Path(self, ...)
 	* ...   - the arguments accompanying the event
 	--]]
 
-	if self.TimerPower then
-		(self.TimerPower.Override or Update) (self, self.TimerPower, ...)
+	if self.ThirdPower then
+		(self.ThirdPower.Override or Update) (self, self.ThirdPower, ...)
 	end
 
 	return (self.ClassPower.Override or Update) (self, self.ClassPower, ...)
@@ -438,8 +438,8 @@ local function VisibilityPath(self, ...)
 	* unit  - the unit accompanying the event (string)
 	--]]
 
-	if self.TimerPower then
-		(self.TimerPower.OverrideVisibility or Visibility) (self, self.TimerPower, ...)
+	if self.ThirdPower then
+		(self.ThirdPower.OverrideVisibility or Visibility) (self, self.ThirdPower, ...)
 	end
 
 	return (self.ClassPower.OverrideVisibility or Visibility) (self, self.ClassPower, ...)
@@ -463,7 +463,7 @@ local function ClassPowerEnable(element, owner)
 		owner:RegisterEvent('UNIT_AURA', Path)
 	end
 
-	ThirdVisibility(owner.TimerPower, true)
+	ThirdVisibility(owner.ThirdPower, true)
 
 	element.__isEnabled = true
 
@@ -492,7 +492,7 @@ local function ClassPowerDisable(element, owner)
 		element[i]:Hide()
 	end
 
-	ThirdVisibility(owner.TimerPower, false)
+	ThirdVisibility(owner.ThirdPower, false)
 
 	element.__isEnabled = false
 
@@ -506,11 +506,11 @@ local function Enable(self, unit)
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate
 
-		local timer = self.TimerPower
+		local timer = self.ThirdPower
 		if timer then
 			timer.__owner = self
 			timer.__max = 1
-			timer.which = 'TimerPower'
+			timer.which = 'ThirdPower'
 
 			timer:SetMinMaxValues(0, 1)
 			timer:SetValue(0)
