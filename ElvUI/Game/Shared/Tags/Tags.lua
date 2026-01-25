@@ -656,6 +656,8 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		elseif E:NotSecretValue(name) and name then
 			return E:ShortenString(name, length)
 		end
+
+		return name
 	end)
 
 	E:AddTag(format('health:deficit-percent:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
@@ -678,6 +680,8 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		if E:NotSecretValue(name) and name then
 			return E:ShortenString(name, length)
 		end
+
+		return name
 	end)
 
 	E:AddTag(format('name:%s', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
@@ -685,16 +689,21 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		if E:NotSecretValue(name) and name then
 			return E:ShortenString(name, length)
 		end
+
+		return name
 	end)
 
 	E:AddTag(format('name:%s:status', textFormat), 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local name = UnitName(unit)
+
 		if status then
 			return status
 		elseif E:NotSecretValue(name) and name then
 			return E:ShortenString(name, length)
 		end
+
+		return name
 	end)
 
 	E:AddTag(format('name:%s:translit', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
@@ -703,6 +712,8 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		if name then
 			return E:ShortenString(name, length)
 		end
+
+		return name
 	end)
 
 	E:AddTag(format('target:abbrev:%s', textFormat), 'UNIT_TARGET', function(unit)
@@ -714,6 +725,8 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		if E:NotSecretValue(targetName) and targetName then
 			return E:ShortenString(targetName, length)
 		end
+
+		return targetName
 	end)
 
 	E:AddTag(format('target:%s', textFormat), 'UNIT_TARGET', function(unit)
@@ -721,6 +734,8 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		if E:NotSecretValue(targetName) and targetName then
 			return E:ShortenString(targetName, length)
 		end
+
+		return targetName
 	end)
 
 	E:AddTag(format('target:%s:translit', textFormat), 'UNIT_TARGET', function(unit)
@@ -731,6 +746,8 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 				return E:ShortenString(translitName, length)
 			end
 		end
+
+		return targetName
 	end)
 end
 
