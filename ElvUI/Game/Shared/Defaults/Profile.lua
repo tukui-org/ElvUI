@@ -2500,8 +2500,13 @@ P.unitframe.units.player.aurabar.friendlyAuraType = 'HELPFUL'
 P.unitframe.units.player.aurabar.maxDuration = 120
 P.unitframe.units.player.aurabar.priority = 'Blacklist,blockNoDuration,Personal,RaidDebuffs'
 P.unitframe.units.player.buffs.attachTo = 'DEBUFFS'
+P.unitframe.units.player.buffs.isAuraDefensive = true
 P.unitframe.units.player.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal,NonPersonal'
 P.unitframe.units.player.debuffs.enable = true
+--P.unitframe.units.player.debuffs.isAuraPlayer = false
+--P.unitframe.units.player.debuffs.isAuraRaid = false
+--P.unitframe.units.player.debuffs.isAuraNameplate = false
+--P.unitframe.units.player.debuffs.isAuraDefensive = false
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,NonPersonal'
 P.unitframe.units.player.castbar.latency = true
 
