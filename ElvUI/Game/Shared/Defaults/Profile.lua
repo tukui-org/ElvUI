@@ -2720,7 +2720,7 @@ P.unitframe.units.boss.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.boss.castbar.width = 215
 P.unitframe.units.boss.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0 }
 P.unitframe.units.boss.debuffs.enable = true
---P.unitframe.units.boss.debuffs.isAuraPlayer = false
+P.unitframe.units.boss.debuffs.isAuraPlayer = true
 --P.unitframe.units.boss.debuffs.isAuraRaid = false
 --P.unitframe.units.boss.debuffs.isAuraNameplate = false
 --P.unitframe.units.boss.debuffs.isAuraDefensive = false
@@ -2743,7 +2743,7 @@ P.unitframe.units.arena.buffs.enable = true
 --P.unitframe.units.arena.buffs.isAuraPlayer = false
 --P.unitframe.units.arena.buffs.isAuraRaid = false
 --P.unitframe.units.arena.buffs.isAuraNameplate = false
---P.unitframe.units.arena.buffs.isAuraDefensive = false
+P.unitframe.units.arena.buffs.isAuraDefensive = true
 P.unitframe.units.arena.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.arena.buffs.maxDuration = 300
 P.unitframe.units.arena.buffs.numrows = 1
@@ -2754,7 +2754,7 @@ P.unitframe.units.arena.buffs.yOffset = 16
 P.unitframe.units.arena.castbar.width = 256
 P.unitframe.units.arena.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0 }
 P.unitframe.units.arena.debuffs.enable = true
---P.unitframe.units.arena.debuffs.isAuraPlayer = false
+P.unitframe.units.arena.debuffs.isAuraPlayer = true
 --P.unitframe.units.arena.debuffs.isAuraRaid = false
 --P.unitframe.units.arena.debuffs.isAuraNameplate = false
 --P.unitframe.units.arena.debuffs.isAuraDefensive = false
