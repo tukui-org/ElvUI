@@ -2613,7 +2613,7 @@ function CH:FCFDockOverflowButton_UpdatePulseState(btn)
 end
 
 do
-	local overflowColor = { r = 1, g = 1, b = 1 } -- use this to prevent HandleNextPrevButton from setting the scripts, as this has its own
+	local overflowColor = { r = 1, g = 1, b = 1, a = 1 } -- use this to prevent HandleNextPrevButton from setting the scripts, as this has its own
 	function CH:Overflow_OnEnter()
 		if self.Texture then
 			self.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))

@@ -1479,13 +1479,13 @@ G.unitframe.HastedChannelTicks = {
 
 -- This should probably be the same as the whitelist filter + any personal class ones that may be important to watch
 G.unitframe.AuraBarColors = {
-	[2825]		= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Shaman] Bloodlust
-	[32182]		= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Shaman] Heroism
-	[80353]		= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Mage] Time Warp
-	[90355]		= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10 }}, -- [Hunter] Ancient Hysteria
-	[390386]	= {enable = true, color = {r = 0.99, g = 0.82, b = 0.24 }}, -- [Evoker] Fury of the Aspects
-	[395296]	= {enable = true, color = {r = 0.98, g = 0.44, b = 0.00 }}, -- [Evoker] Ebon Might < self
-	[395152]	= {enable = true, color = {r = 0.98, g = 0.44, b = 0.00 }}, -- [Evoker] Ebon Might < others
+	[2825]		= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10, a = 1 }}, -- [Shaman] Bloodlust
+	[32182]		= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10, a = 1 }}, -- [Shaman] Heroism
+	[80353]		= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10, a = 1 }}, -- [Mage] Time Warp
+	[90355]		= {enable = true, color = {r = 0.98, g = 0.57, b = 0.10, a = 1 }}, -- [Hunter] Ancient Hysteria
+	[390386]	= {enable = true, color = {r = 0.99, g = 0.82, b = 0.24, a = 1 }}, -- [Evoker] Fury of the Aspects
+	[395296]	= {enable = true, color = {r = 0.98, g = 0.44, b = 0.00, a = 1 }}, -- [Evoker] Ebon Might < self
+	[395152]	= {enable = true, color = {r = 0.98, g = 0.44, b = 0.00, a = 1 }}, -- [Evoker] Ebon Might < others
 }
 
 -- Auras which should change the color of the UnitFrame

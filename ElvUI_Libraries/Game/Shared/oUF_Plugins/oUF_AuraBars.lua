@@ -44,11 +44,10 @@ end
 
 local function UpdateValue(bar, start)
 	if oUF.isRetail then
-		local auraDuration = (bar.unit and bar.aura) and GetAuraDuration(bar.unit, bar.aura.auraInstanceID)
-		if auraDuration then
-			bar.cooldown:SetCooldownFromDurationObject(auraDuration)
+		if bar.auraDuration then
+			bar.cooldown:SetCooldownFromDurationObject(bar.auraDuration)
 
-			local remain = auraDuration:GetRemainingDuration()
+			local remain = bar.auraDuration:GetRemainingDuration()
 			if remain then
 				bar:SetMinMaxValues(0, bar.aura.duration)
 				bar:SetValue(remain, bar.smoothing)
@@ -126,7 +125,8 @@ local function UpdateBar(element, bar)
 	if oUF:IsSecretValue(bar.count) then
 		if bar.aura then
 			local minCount, maxCount = 2, 999
-			bar.nameText:SetFormattedText('%s%s', WrapString(GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount), '[', '] '), bar.spell)
+			local count = GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount)
+			bar.nameText:SetFormattedText('%s%s', count and WrapString(count, '[', '] ') or '', bar.spell)
 		else
 			bar.nameText:SetText(bar.spell)
 		end
@@ -201,6 +201,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.spellID = spellID
 	bar.spell = name
 	bar.auraInstanceID = aura.auraInstanceID
+	bar.auraDuration = aura and GetAuraDuration and GetAuraDuration(unit, aura.auraInstanceID) or nil
 	bar.noTime = oUF:NotSecretValue(duration) and (duration == 0 and expiration == 0)
 
 	local show = (element.CustomFilter or CustomFilter) (element, unit, bar, aura, name, texture,

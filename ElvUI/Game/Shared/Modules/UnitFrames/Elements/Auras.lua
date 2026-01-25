@@ -279,6 +279,9 @@ function UF:UpdateAuraSettings(button)
 		end
 	end
 
+	button.useMidnight = db and db.useMidnight
+	button.noFilter = db and not (db.isAuraPlayer or db.isAuraRaid or (E.Retail and db.isAuraDefensive))
+
 	button.needsButtonTrim = true
 end
 
@@ -453,7 +456,7 @@ function UF:PreUpdateAura()
 end
 
 function UF:GetAuraCurve(unit, button, allow)
-	if not allow then return end
+	if not unit or not allow then return end
 
 	local which = GetAuraDispelTypeColor and button.filter == 'HARMFUL' and 'debuffs'
 	if not which then return end
@@ -466,7 +469,7 @@ function UF:PostUpdateAura(unit, button)
 	local enemyNPC = not button.isFriend and not button.isPlayer
 	local steal = DebuffColors.Stealable
 
-	local color = E.Retail and UF:GetAuraCurve(unit, button, db.auraByType)
+	local color = E.Retail and not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
 	if color then
 		r, g, b = color:GetRGB()
 	elseif button.isDebuff then
@@ -699,10 +702,14 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = self.db
-	if not db or E:IsSecretValue(duration) then -- database or secret: just allow it
+	if not db or not aura then
 		button.priority = 0
 
 		return true
+	elseif E.Retail or button.useMidnight then
+		button.priority = 0
+
+		return button.noFilter or (db.isAuraPlayer and aura.auraIsPlayer) or (db.isAuraRaid and aura.auraIsRaid) or ((E.Retail and db.isAuraDefensive) and aura.auraIsDefensive)
 	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	end

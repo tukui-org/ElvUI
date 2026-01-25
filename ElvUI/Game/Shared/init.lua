@@ -109,9 +109,9 @@ end
 
 -- DONT USE: Deprecated
 E.QualityColors = CopyTable(_G.BAG_ITEM_QUALITY_COLORS)
-E.QualityColors[Enum.ItemQuality.Poor] = {r = .61, g = .61, b = .61}
-E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = {r = 0, g = 0, b = 0}
-E.QualityColors[-1] = {r = 0, g = 0, b = 0}
+E.QualityColors[Enum.ItemQuality.Poor] = { r = .61, g = .61, b = .61, a = 1 }
+E.QualityColors[Enum.ItemQuality.Common or Enum.ItemQuality.Standard] = { r = 0, g = 0, b = 0, a = 1 }
+E.QualityColors[-1] = { r = 0, g = 0, b = 0, a = 1 }
 
 do -- secret stuff, keep it synced in auraskip
 	function E:IsSecretValue(value)

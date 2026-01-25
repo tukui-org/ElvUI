@@ -535,6 +535,9 @@ function UF:UpdateColors()
 	ElvUF.colors.ClassBars.MAGE.FROST_ICICLES = E:SetColorTable(ElvUF.colors.ClassBars.MAGE.FROST_ICICLES, db.classResources.MAGE.FROST_ICICLES)
 	ElvUF.colors.ClassBars.MAGE.ARCANE_CHARGES = E:SetColorTable(ElvUF.colors.ClassBars.MAGE.ARCANE_CHARGES, db.classResources.MAGE.ARCANE_CHARGES)
 
+	if not ElvUF.colors.ClassBars.DEMONHUNTER then ElvUF.colors.ClassBars.DEMONHUNTER = {} end
+	ElvUF.colors.ClassBars.DEMONHUNTER.SOUL_FRAGMENTS = E:SetColorTable(ElvUF.colors.ClassBars.DEMONHUNTER.SOUL_FRAGMENTS, db.classResources.DEMONHUNTER.SOUL_FRAGMENTS)
+
 	if not ElvUF.colors.ClassBars.WARLOCK then ElvUF.colors.ClassBars.WARLOCK = {} end
 	ElvUF.colors.ClassBars.WARLOCK.SOUL_SHARDS = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.SOUL_SHARDS, db.classResources.WARLOCK.SOUL_SHARDS)
 	ElvUF.colors.ClassBars.WARLOCK.DEMONIC_FURY = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.DEMONIC_FURY, db.classResources.WARLOCK.DEMONIC_FURY)
