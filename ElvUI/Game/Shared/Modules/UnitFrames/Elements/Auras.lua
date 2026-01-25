@@ -279,7 +279,9 @@ function UF:UpdateAuraSettings(button)
 		end
 	end
 
-	button.noFilter = db and not (db.isAuraPlayer or db.isAuraRaid or db.isAuraDefensive)
+	button.useMidnight = db and db.useMidnight
+	button.noFilter = db and not (db.isAuraPlayer or db.isAuraRaid or (E.Retail and db.isAuraDefensive))
+
 	button.needsButtonTrim = true
 end
 
@@ -704,10 +706,10 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 		button.priority = 0
 
 		return true
-	elseif E.Retail then
+	elseif E.Retail or button.useMidnight then
 		button.priority = 0
 
-		return button.noFilter or (db.isAuraPlayer and aura.auraIsPlayer) or (db.isAuraRaid and aura.auraIsRaid) or (db.isAuraDefensive and aura.auraIsDefensive)
+		return button.noFilter or (db.isAuraPlayer and aura.auraIsPlayer) or (db.isAuraRaid and aura.auraIsRaid) or ((E.Retail and db.isAuraDefensive) and aura.auraIsDefensive)
 	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	end
