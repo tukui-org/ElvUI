@@ -125,21 +125,23 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Text:SetWordWrap(false)
 	castbar.Text:FontTemplate()
 
+	--Set to castbar.SafeZone
+	castbar.LatencyTexture = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
+	castbar.LatencyTexture:SetTexture(E.media.blankTex)
+	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)
+
 	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY', nil, 3)
 	castbar.Spark_:SetTexture(E.media.blankTex)
 	castbar.Spark_:SetVertexColor(0.9, 0.9, 0.9, 0.6)
 	castbar.Spark_:SetBlendMode('ADD')
 	castbar.Spark_:Width(2)
 
-	--Set to castbar.SafeZone
-	castbar.LatencyTexture = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
-	castbar.LatencyTexture:SetTexture(E.media.blankTex)
-	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)
+	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 4)
+	castbar.Shield:SetTexture(E.media.blankTex)
 
 	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
 	castbar.bg:SetTexture(E.media.blankTex)
 	castbar.bg:SetAllPoints()
-	castbar.bg:Show()
 
 	local button = CreateFrame('Frame', nil, castbar)
 	local holder = CreateFrame('Frame', nil, castbar)
@@ -228,10 +230,19 @@ function UF:Configure_Castbar(frame)
 	castbar.Text:Point('LEFT', castbar, 'LEFT', db.xOffsetText, db.yOffsetText)
 	castbar.Time:Point('RIGHT', castbar, 'RIGHT', db.xOffsetTime, db.yOffsetTime)
 
+	local barTexture = castbar:GetStatusBarTexture()
+	castbar.Shield:ClearAllPoints()
+	castbar.Shield:Point(db.reverse and 'LEFT' or 'RIGHT', barTexture)
+	castbar.Shield:Point(db.reverse and 'RIGHT' or 'LEFT')
+	castbar.Shield:Point('BOTTOM')
+	castbar.Shield:Point('TOP')
+
+	UF:Update_StatusBar(castbar.Shield)
+
 	if db.spark then
 		castbar.Spark = castbar.Spark_
 		castbar.Spark:ClearAllPoints()
-		castbar.Spark:Point(db.reverse and 'LEFT' or 'RIGHT', castbar:GetStatusBarTexture())
+		castbar.Spark:Point(db.reverse and 'LEFT' or 'RIGHT', barTexture)
 		castbar.Spark:Point('BOTTOM')
 		castbar.Spark:Point('TOP')
 	elseif castbar.Spark then
@@ -323,11 +334,16 @@ function UF:Configure_Castbar(frame)
 		E:UpdateClassColor(customColor.colorNoInterrupt)
 		E:UpdateClassColor(customColor.colorInterrupted)
 
+		castbar.Shield:SetVertexColor(customColor.colorNoInterrupt.r, customColor.colorNoInterrupt.g, customColor.colorNoInterrupt.b)
+
 		castbar.custom_backdrop = customColor.useCustomBackdrop and E:UpdateClassColor(customColor.colorBackdrop)
 		UF:ToggleTransparentStatusBar(customColor.transparent, castbar, castbar.bg, nil, customColor.invertColors, db.reverse)
 	else
 		castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and E:UpdateClassColor(UF.db.colors.castbar_backdrop)
 		UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar, db.reverse)
+
+
+		castbar.Shield:SetVertexColor(UF.db.colors.castNoInterrupt.r, UF.db.colors.castNoInterrupt.g, UF.db.colors.castNoInterrupt.b)
 	end
 
 	if castbar.Holder.mover then
