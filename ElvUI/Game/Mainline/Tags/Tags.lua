@@ -13,8 +13,6 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
-local AbbreviateNumbers = AbbreviateNumbers
-local TruncateWhenZero = C_StringUtil and C_StringUtil.TruncateWhenZero
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 
@@ -23,40 +21,34 @@ local POWERTYPE_MANA = Enum.PowerType.Mana
 
 E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 	local absorb = UnitGetTotalAbsorbs(unit)
-	local text = TruncateWhenZero(absorb)
-	return text or AbbreviateNumbers(absorb, E.Abbreviate.short)
+	return E:AbbreviateNumbers(absorb, E.Abbreviate.short)
 end)
 
 E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
 	local healAbsorb = UnitGetTotalHealAbsorbs(unit)
-	local text = TruncateWhenZero(healAbsorb)
-	return text or AbbreviateNumbers(healAbsorb, E.Abbreviate.short)
+	return E:AbbreviateNumbers(healAbsorb, E.Abbreviate.short)
 end)
 
 E:AddTag('health:current:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 	local currentHealth = UnitHealth(unit)
-	local text = TruncateWhenZero(currentHealth)
-	return text or AbbreviateNumbers(currentHealth, E.Abbreviate.short)
+	return E:AbbreviateNumbers(currentHealth, E.Abbreviate.short)
 end)
 
 E:AddTag('power:current:shortvalue', 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 	local powerType = UnitPowerType(unit)
 	local currentPower = UnitPower(unit, powerType)
-	local text = TruncateWhenZero(currentPower)
-	return text or AbbreviateNumbers(currentPower, E.Abbreviate.short)
+	return E:AbbreviateNumbers(currentPower, E.Abbreviate.short)
 end)
 
 E:AddTag('health:max:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 	local maxHealth = UnitHealthMax(unit)
-	local text = TruncateWhenZero(maxHealth)
-	return text or AbbreviateNumbers(maxHealth, E.Abbreviate.short)
+	return E:AbbreviateNumbers(maxHealth, E.Abbreviate.short)
 end)
 
 E:AddTag('power:max:shortvalue', 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 	local powerType = UnitPowerType(unit)
 	local maxPower = UnitPowerMax(unit, powerType)
-	local text = TruncateWhenZero(maxPower)
-	return text or AbbreviateNumbers(maxPower, E.Abbreviate.short)
+	return E:AbbreviateNumbers(maxPower, E.Abbreviate.short)
 end)
 
 E:AddTag('pvp:honorlevel', 'UNIT_NAME_UPDATE', function(unit)
