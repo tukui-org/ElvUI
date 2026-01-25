@@ -24,7 +24,7 @@ E:AddTag('health:current:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(uni
 	return AbbreviateNumbers(currentHealth, E.Abbreviate.short)
 end)
 
-E:AddTag('power:current:shortvalue', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
+E:AddTag('power:current:shortvalue', 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 	local powerType = UnitPowerType(unit)
 	local currentPower = UnitPower(unit, powerType)
 
@@ -37,7 +37,7 @@ E:AddTag('health:max:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 	return AbbreviateNumbers(maxHealth, E.Abbreviate.short)
 end)
 
-E:AddTag('power:max:shortvalue', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
+E:AddTag('power:max:shortvalue', 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 	local powerType = UnitPowerType(unit)
 	local maxPower = UnitPowerMax(unit, powerType)
 
