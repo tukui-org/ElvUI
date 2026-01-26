@@ -19,36 +19,48 @@ local POWERTYPE_MANA = Enum.PowerType.Mana
 -- GLOBALS: UnitPower -- override during testing groups
 
 E:AddTag('absorbs', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
-	local absorb = UnitGetTotalAbsorbs(unit)
-	return E:AbbreviateNumbers(absorb, E.Abbreviate.short)
+	return UnitGetTotalAbsorbs(unit)
 end)
 
 E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
-	local healAbsorb = UnitGetTotalHealAbsorbs(unit)
-	return E:AbbreviateNumbers(healAbsorb, E.Abbreviate.short)
+	return UnitGetTotalHealAbsorbs(unit)
 end)
 
-E:AddTag('health:current:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
-	local currentHealth = UnitHealth(unit)
-	return E:AbbreviateNumbers(currentHealth, E.Abbreviate.short)
-end)
+for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
+	local abbrev = E.Abbreviate[which]
 
-E:AddTag('power:current:shortvalue', 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
-	local powerType = UnitPowerType(unit)
-	local currentPower = UnitPower(unit, powerType)
-	return E:AbbreviateNumbers(currentPower, E.Abbreviate.short)
-end)
+	E:AddTag('absorbs:%s', 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
+		local absorb = UnitGetTotalAbsorbs(unit)
+		return E:AbbreviateNumbers(absorb, abbrev)
+	end)
 
-E:AddTag('health:max:shortvalue', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
-	local maxHealth = UnitHealthMax(unit)
-	return E:AbbreviateNumbers(maxHealth, E.Abbreviate.short)
-end)
+	E:AddTag('healabsorbs:%s', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
+		local healAbsorb = UnitGetTotalHealAbsorbs(unit)
+		return E:AbbreviateNumbers(healAbsorb, abbrev)
+	end)
 
-E:AddTag('power:max:shortvalue', 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
-	local powerType = UnitPowerType(unit)
-	local maxPower = UnitPowerMax(unit, powerType)
-	return E:AbbreviateNumbers(maxPower, E.Abbreviate.short)
-end)
+	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+		local currentHealth = UnitHealth(unit)
+		return E:AbbreviateNumbers(currentHealth, abbrev)
+	end)
+
+	E:AddTag(format('power:current:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+		local powerType = UnitPowerType(unit)
+		local currentPower = UnitPower(unit, powerType)
+		return E:AbbreviateNumbers(currentPower, abbrev)
+	end)
+
+	E:AddTag(format('health:max:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+		local maxHealth = UnitHealthMax(unit)
+		return E:AbbreviateNumbers(maxHealth, abbrev)
+	end)
+
+	E:AddTag(format('power:max:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+		local powerType = UnitPowerType(unit)
+		local maxPower = UnitPowerMax(unit, powerType)
+		return E:AbbreviateNumbers(maxPower, abbrev)
+	end)
+end
 
 E:AddTag('pvp:honorlevel', 'UNIT_NAME_UPDATE', function(unit)
 	if not UnitIsPlayer(unit) then return end
@@ -92,6 +104,10 @@ do
 end
 
 local info = E.TagInfo
+info['absorbs:shortvalue'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of absorbs' }
+info['absorbs:longvalue'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of absorbs' }
+info['healabsorbs:shortvalue'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of heal absorbs' }
+info['healabsorbs:longvalue'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of heal absorbs' }
 info['altpowercolor'] = { category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" }
 info['spec:icon'] = { category = 'Class', description = "Displays the specialization icon of the unit, if that unit is a player" }
 info['additionalmana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max additional mana of the unit, separated by a dash (% when not full)" }
