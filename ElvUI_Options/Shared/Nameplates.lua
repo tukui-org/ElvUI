@@ -430,6 +430,7 @@ NamePlates.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info
 NamePlates.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 2)
 NamePlates.resetFilters = ACH:Execute(L["Reset Aura Filters"], nil, 3, function() E:StaticPopup_Show('RESET_NP_AF') end)
 NamePlates.resetcvars = ACH:Execute(L["Reset CVars"], L["Reset Nameplate CVars to the ElvUI recommended defaults."], 4, function() NP:CVarReset() end, nil, true)
+NamePlates.persistentFriendlyNP = ACH:Toggle(E.NewSign..L["Lock Friendly NPC Plates"], L["Prevent Friendly NPC nameplates from being reset to enabled on login."], 5, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 NamePlates.generalGroup = ACH:Group(L["General"], nil, 5, nil, nil, function(info, value) E.db.nameplates[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end)
 NamePlates.generalGroup.args.motionType = ACH:Select(L["UNIT_NAMEPLATES_TYPES"], L["Set to either stack nameplates vertically or allow them to overlap."], 1, { STACKED = L["UNIT_NAMEPLATES_TYPE_2"], OVERLAP = L["UNIT_NAMEPLATES_TYPE_1"] })
