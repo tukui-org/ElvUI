@@ -1643,7 +1643,7 @@ function AB:SetButtonDesaturation(button, duration)
 		return
 	end
 
-	if AB.db.desaturateOnCooldown and (duration and duration > 1.5) then
+	if AB.db.desaturateOnCooldown and E:NotSecretValue(duration) and (duration and duration > 1.5) then
 		button.icon:SetDesaturated(true)
 		button.saturationLocked = true
 	else
@@ -1710,7 +1710,7 @@ end
 
 function AB:LAB_CooldownUpdate(button, _, duration)
 	if button._state_type == 'action' then
-		AB:SetButtonDesaturation(button, E:NotSecretValue(duration) and duration or nil)
+		AB:SetButtonDesaturation(button, duration)
 	end
 
 	if button.cooldown then
