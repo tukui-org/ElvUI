@@ -138,7 +138,7 @@ function UF:Construct_Castbar(frame, moverName)
 
 	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 4)
 	castbar.Shield:SetTexture(E.media.blankTex)
-	castbar.Shield:Hide() -- disable is so its hidden on classic
+	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
 
 	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
 	castbar.bg:SetTexture(E.media.blankTex)
