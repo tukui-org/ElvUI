@@ -142,11 +142,11 @@ function BL:UpdateAltPowerBar()
 		bar:Hide()
 	end
 
-	local barInfo = GetUnitPowerBarInfo('player')
+	local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX) or 0
+	local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
+	local barInfo = E:NotSecretValue(power) and E:NotSecretValue(maxPower) and GetUnitPowerBarInfo('player')
 	if barInfo then
 		local powerName, powerTooltip = GetUnitPowerBarStrings('player')
-		local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX) or 0
-		local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
 		local perc = (maxPower > 0 and floor(power / maxPower * 100)) or 0
 
 		self.powerMaxValue = maxPower
