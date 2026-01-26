@@ -292,10 +292,13 @@ function UF:FrameGlow_CheckUnit(frame, element, setting, color, glowEnabled, fra
 	if not (element and frame:IsVisible()) then return end
 
 	local unit = frame.unit or (frame.isForced and 'player')
-	if (glowEnabled and not frameDisabled) and E:UnitExists(unit) and unit and UnitIsUnit(unit, strsub(setting, 0, -5)) then
+	local source = E:NotSecretValue(unit) and unit
+	local target = UnitIsUnit(source, strsub(setting, 0, -5))
+	if E:NotSecretValue(target) and target and (glowEnabled and not frameDisabled) then
 		if color then
-			UF:FrameGlow_SetGlowColor(element, unit, setting)
+			UF:FrameGlow_SetGlowColor(element, source, setting)
 		end
+
 		if element.powerGlow then
 			if frame.USE_POWERBAR_OFFSET or frame.USE_MINI_POWERBAR then
 				element.powerGlow:Show()
@@ -303,6 +306,7 @@ function UF:FrameGlow_CheckUnit(frame, element, setting, color, glowEnabled, fra
 				element.powerGlow:Hide()
 			end
 		end
+
 		element:Show()
 	else
 		UF:FrameGlow_HideGlow(element)
