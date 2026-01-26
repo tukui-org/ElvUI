@@ -224,7 +224,7 @@ local function Enable(self, unit)
 		element.ForceUpdate = ForceUpdate
 
 		if(not element.smoothing) then
-			element.smoothing = StatusBarInterpolation.Immediate
+			element.smoothing = StatusBarInterpolation and StatusBarInterpolation.Immediate
 		end
 
 		self:RegisterEvent('PLAYER_TALENT_UPDATE', VisibilityPath, true)
