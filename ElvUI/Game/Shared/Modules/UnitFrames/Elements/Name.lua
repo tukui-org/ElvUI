@@ -39,6 +39,6 @@ function UF:PostNamePosition(frame, unit)
 		frame.Power.value:SetAlpha(db.power.hideonnpc and 0 or 1)
 
 		frame.Name:ClearAllPoints()
-		frame.Name:Point(frame.Power.value:GetPoint())
+		frame.Name:SetPoint(frame.Power.value:GetPoint()) -- its a secret value
 	end
 end
