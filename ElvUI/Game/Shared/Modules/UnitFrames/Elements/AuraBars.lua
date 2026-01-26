@@ -30,6 +30,12 @@ function UF:Construct_AuraBars(bar)
 	UF.statusbars[bar] = 'aurabars'
 	UF:Update_StatusBar(bar)
 
+	-- we dont wanna format them in the cd module
+	bar.cooldown:SetDrawSwipe(false)
+	bar.cooldown:SetDrawBling(false)
+	bar.cooldown:SetHideCountdownNumbers(true)
+	bar.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
+
 	E:RegisterCooldown(bar.cooldown, 'aurabars')
 
 	UF:Configure_FontString(bar.timeText)
