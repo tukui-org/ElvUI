@@ -282,12 +282,7 @@ function NP:Construct_Cutaway(nameplate)
 end
 
 function NP:Update_Cutaway(nameplate)
-	local eitherEnabled = NP.db.cutaway.health.enabled or NP.db.cutaway.power.enabled
-	if not eitherEnabled then
-		if nameplate:IsElementEnabled('Cutaway') then
-			nameplate:DisableElement('Cutaway')
-		end
-	else
+	if not E.Retail and (NP.db.cutaway.health.enabled or NP.db.cutaway.power.enabled) then
 		if not nameplate:IsElementEnabled('Cutaway') then
 			nameplate:EnableElement('Cutaway')
 		end
@@ -305,6 +300,8 @@ function NP:Update_Cutaway(nameplate)
 		else
 			nameplate.Cutaway.Power:SetTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 		end
+	elseif nameplate:IsElementEnabled('Cutaway') then
+		nameplate:DisableElement('Cutaway')
 	end
 end
 

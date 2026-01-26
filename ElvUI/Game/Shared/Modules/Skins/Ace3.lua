@@ -191,7 +191,7 @@ function S:Ace3_SkinEditBox(editbox, button)
 	end
 end
 
-local nextPrevColor = {r = 1, g = .8, b = 0}
+local nextPrevColor = {r = 1, g = .8, b = 0, a = 1 }
 function S:Ace3_RegisterAsWidget(widget)
 	local TYPE = widget.type
 	if TYPE == 'MultiLineEditBox' or TYPE == 'MultiLineEditBox-ElvUI' then

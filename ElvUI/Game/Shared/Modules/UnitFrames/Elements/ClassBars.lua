@@ -10,11 +10,13 @@ local ipairs = ipairs
 local unpack = unpack
 
 local CreateFrame = CreateFrame
+local StatusBarInterpolation = Enum.StatusBarInterpolation
+
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
 
 UF.ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
-UF.ClassPowerColors = { COMBO_POINTS = 'comboPoints', ESSENCE = 'EVOKER', CHI = 'MONK' }
+UF.ClassPowerColors = { COMBO_POINTS = 'comboPoints', CHI = 'MONK' }
 
 local AltManaTypes = { Rage = 1, Energy = 3 }
 if E.Retail then
@@ -33,6 +35,8 @@ function UF:GetClassPower_Construct(frame)
 		if E.Mists then
 			frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 		end
+	elseif E.Retail and E.myclass == 'EVOKER' then
+		frame.ThirdPower = UF:Construct_ThirdPower(frame)
 	elseif E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame) -- Retail: Classbar, Mists: AdditionalPower
 
@@ -79,6 +83,13 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 	elseif isRunes and rune then
 		local color = UF:ClassPower_BarColor(rune, nil, colors, powers, isRunes)
 		UF:SetStatusBarColor(rune, color.r, color.g, color.b, custom_backdrop)
+	elseif powerType == 'EBON_MIGHT' then
+		local color = UF:ClassPower_BarColor(self, nil, colors, powers, isRunes)
+		if not color or not color.r then
+			UF:SetStatusBarColor(self, fallback.r, fallback.g, fallback.b, custom_backdrop)
+		else
+			UF:SetStatusBarColor(self, color.r, color.g, color.b, custom_backdrop)
+		end
 	else
 		for index, bar in ipairs(self) do
 			local color = UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
@@ -99,7 +110,7 @@ function UF:Configure_ClassBar(frame)
 	if not bars then return end
 
 	bars.Holder = frame.ClassBarHolder
-	bars.AdditionalHolder = frame.AdditionalPower and frame.ClassAdditionalHolder
+	bars.AdditionalHolder = (frame.ThirdPower or frame.AdditionalPower) and frame.ClassAdditionalHolder
 	bars.origParent = frame
 
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
@@ -241,13 +252,20 @@ function UF:Configure_ClassBar(frame)
 			E:EnableMover(bars.AdditionalHolder.mover.name)
 		end
 
-		if frame.Stagger then
-			frame.Stagger:ClearAllPoints()
-			frame.Stagger:Point('BOTTOMLEFT', bars.AdditionalHolder, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING)
-			frame.Stagger:Size(db.classAdditional.width - SPACING, db.classAdditional.height - SPACING)
-			frame.Stagger:SetFrameLevel(db.classAdditional.frameLevel)
-			frame.Stagger:SetFrameStrata(db.classAdditional.frameStrata)
-			frame.Stagger:SetOrientation(db.classAdditional.orientation)
+		local thirdPower = frame.Stagger or frame.ThirdPower
+		if thirdPower then
+			thirdPower:ClearAllPoints()
+			thirdPower:Point('BOTTOMLEFT', bars.AdditionalHolder, 'BOTTOMLEFT', UF.BORDER + UF.SPACING, UF.BORDER + UF.SPACING)
+			thirdPower:Size(db.classAdditional.width - SPACING, db.classAdditional.height - SPACING)
+			thirdPower:SetFrameLevel(db.classAdditional.frameLevel)
+			thirdPower:SetFrameStrata(db.classAdditional.frameStrata)
+			thirdPower:SetOrientation(db.classAdditional.orientation)
+
+			if thirdPower == frame.ThirdPower then
+				local altPower = E.db.unitframe.altManaPowers[E.myclass]
+				thirdPower.__allowPower = altPower.EbonMight or nil
+				thirdPower.smoothing = StatusBarInterpolation.ExponentialEaseOut
+			end
 		end
 
 		if frame.AdditionalPower then
@@ -709,6 +727,28 @@ function UF:EclipsePostUpdateVisibility(enabled)
 	frame.ClassBar = (enabled and 'EclipseBar') or 'ClassPower'
 
 	UF:PostVisibility_ClassBars(frame)
+end
+
+-----------------------------------------------------------
+-- Third Power: Ebon Might
+-----------------------------------------------------------
+function UF:Construct_ThirdPower(frame)
+	local timerbar = CreateFrame('Statusbar', '$parent_ThirdPower', frame)
+	timerbar:CreateBackdrop(nil,nil, nil, nil, true)
+
+	timerbar.UpdateColor = UF.ClassPower_UpdateColor
+
+	UF.statusbars[timerbar] = 'thirdpower'
+	UF.classbars[timerbar] = true
+
+	timerbar.bg = timerbar:CreateTexture(nil, 'BORDER')
+	timerbar.bg:SetTexture(E.media.blankTex)
+	timerbar.bg:SetInside(timerbar.backdrop)
+
+	timerbar:SetScript('OnShow', UF.ToggleResourceBar)
+	timerbar:SetScript('OnHide', UF.ToggleResourceBar)
+
+	return timerbar
 end
 
 -----------------------------------------------------------

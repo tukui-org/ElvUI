@@ -522,9 +522,12 @@ function UF:UpdateColors()
 	ElvUF.colors.ClassBars.PRIEST = E:SetColorTable(ElvUF.colors.ClassBars.PRIEST, db.classResources.PRIEST)
 
 	if not ElvUF.colors.ClassBars.EVOKER then ElvUF.colors.ClassBars.EVOKER = {} end
+	ElvUF.colors.ClassBars.EVOKER.EBON_MIGHT = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER.EBON_MIGHT, db.classResources.EVOKER.EBON_MIGHT)
+
 	if not ElvUF.colors.ClassBars.MONK then ElvUF.colors.ClassBars.MONK = {} end
+	if not ElvUF.colors.ClassBars.EVOKER.ESSENCE then ElvUF.colors.ClassBars.EVOKER.ESSENCE = {} end
 	for i = 1, 6 do
-		ElvUF.colors.ClassBars.EVOKER[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER[i], db.classResources.EVOKER[i])
+		ElvUF.colors.ClassBars.EVOKER.ESSENCE[i] = E:SetColorTable(ElvUF.colors.ClassBars.EVOKER.ESSENCE[i], db.classResources.EVOKER.ESSENCE[i])
 		ElvUF.colors.ClassBars.MONK[i] = E:SetColorTable(ElvUF.colors.ClassBars.MONK[i], db.classResources.MONK[i])
 	end
 
@@ -534,6 +537,9 @@ function UF:UpdateColors()
 	if not ElvUF.colors.ClassBars.MAGE then ElvUF.colors.ClassBars.MAGE = {} end
 	ElvUF.colors.ClassBars.MAGE.FROST_ICICLES = E:SetColorTable(ElvUF.colors.ClassBars.MAGE.FROST_ICICLES, db.classResources.MAGE.FROST_ICICLES)
 	ElvUF.colors.ClassBars.MAGE.ARCANE_CHARGES = E:SetColorTable(ElvUF.colors.ClassBars.MAGE.ARCANE_CHARGES, db.classResources.MAGE.ARCANE_CHARGES)
+
+	if not ElvUF.colors.ClassBars.DEMONHUNTER then ElvUF.colors.ClassBars.DEMONHUNTER = {} end
+	ElvUF.colors.ClassBars.DEMONHUNTER.SOUL_FRAGMENTS = E:SetColorTable(ElvUF.colors.ClassBars.DEMONHUNTER.SOUL_FRAGMENTS, db.classResources.DEMONHUNTER.SOUL_FRAGMENTS)
 
 	if not ElvUF.colors.ClassBars.WARLOCK then ElvUF.colors.ClassBars.WARLOCK = {} end
 	ElvUF.colors.ClassBars.WARLOCK.SOUL_SHARDS = E:SetColorTable(ElvUF.colors.ClassBars.WARLOCK.SOUL_SHARDS, db.classResources.WARLOCK.SOUL_SHARDS)

@@ -1,3 +1,29 @@
+### Version 15.00 [ January 25th 2026 ]
+*   Actionbar spells not activating when also clicking it with right mouse button.
+*   Warband bank should open to the first tab now.
+*   Portraits shut off for now, as they were causing several issues, not specific to Midnight.
+*   Stylefilters removed entirely; under Blizzard's new rules, keeping them alive is not viable.
+*   Nameplates have their Health Width setting separate from Nameplates > General > Clickable Width.
+*   New Cooldown settings.
+    *   Adjusts Blizzard's cooldown text; if you don't see them on Actionbars: you may need the "Show Numbers for Cooldowns" checked in Blizzard settings.
+*   **Midnight**
+    *   Cutaway can't be handled anymore, so it's removed on Retail.
+    *   Tags are very limited by Blizzard, some are no longer possible.  Reset button added by Text Formats now.
+        *   Name tags will attempt to work on some units but fallback to original name when it's secret.
+    *   Aura Filtering is severely limited by Blizzard, currently filter settings do nothing.  Buffs for buffs, Debuffs for debuffs, Auras will do both.
+    *   Aura Sorting is severely limited by Blizzard, currently all auras are sorted so that your own player auras are first.
+*   **TBC**
+    *   Adjusted position for Quest Frame Goodbye button.
+    *   Hunter Actionbar paging for Eyes of The Beast to include "[possessbar] 16;" by default.
+    *   Chat URLs not clickable.
+    *   Addon Category in Addon List; same as Retail.
+    *   Group loot not staying anchored.
+    *   Item level in Tooltip was disabled by Blizzard.
+    *   Bag sorting also fixed. (Thanks Lowcaltoast)
+*   **Thank you**
+    *   p3lim from oUF team for working to get our Unitframe and Nameplate framework ready for Midnight!
+    *   Nevcairiel for keeping LibActionButton updated, which makes it easier for us to have our Actionbars!
+
 ### Version 14.07 [ January 16th 2026 ]
 *   Item level option to Show on Item (default: enabled for non-retail).
 *   TBC / Wrath:

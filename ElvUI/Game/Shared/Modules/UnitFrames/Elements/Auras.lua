@@ -17,6 +17,8 @@ local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
 local UnitIsUnit = UnitIsUnit
 
+local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
+
 local UNKNOWN = UNKNOWN
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
@@ -277,6 +279,9 @@ function UF:UpdateAuraSettings(button)
 		end
 	end
 
+	button.useMidnight = db and db.useMidnight
+	button.noFilter = db and not (db.isAuraPlayer or db.isAuraRaid or (E.Retail and db.isAuraDefensive))
+
 	button.needsButtonTrim = true
 end
 
@@ -450,12 +455,24 @@ function UF:PreUpdateAura()
 	self.currentRow = nil
 end
 
-function UF:PostUpdateAura(_, button)
+function UF:GetAuraCurve(unit, button, allow)
+	if not unit or not allow then return end
+
+	local which = GetAuraDispelTypeColor and button.filter == 'HARMFUL' and 'debuffs'
+	if not which then return end
+
+	return GetAuraDispelTypeColor(unit, button.auraInstanceID, E.ColorCurves[which])
+end
+
+function UF:PostUpdateAura(unit, button)
 	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local enemyNPC = not button.isFriend and not button.isPlayer
 	local steal = DebuffColors.Stealable
 
-	if button.isDebuff then
+	local color = E.Retail and not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
+	if color then
+		r, g, b = color:GetRGB()
+	elseif button.isDebuff then
 		local debuffType = E:NotSecretValue(button.debuffType) and button.debuffType or nil
 		local spellID = E:NotSecretValue(button.spellID) and button.spellID or nil
 		local bad, enemy = DebuffColors.BadDispel, DebuffColors.EnemyNPC
@@ -467,8 +484,8 @@ function UF:PostUpdateAura(_, button)
 		elseif bad and db.auraByDispels and (spellID and BadDispels[spellID]) and (debuffType and DispelTypes[debuffType]) then
 			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType and debuffType then
-			local color = DebuffColors[debuffType or 'None']
-			r, g, b = color.r * 0.6, color.g * 0.6, color.b * 0.6
+			local debuffColor = DebuffColors[debuffType or 'None']
+			r, g, b = debuffColor.r * 0.6, debuffColor.g * 0.6, debuffColor.b * 0.6
 		end
 	elseif steal and db.auraByDispels and button.isStealable and not button.isFriend then
 		r, g, b = steal.r, steal.g, steal.b
@@ -488,8 +505,8 @@ function UF:PostUpdateAura(_, button)
 			local text = aura.unitName or UNKNOWN
 			local length = bdb.sourceText.length
 			local shortText = length and length > 0 and utf8sub(text, 1, length)
-			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
-			button.Text:SetTextColor(color.r, color.g, color.b)
+			local classColor = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
+			button.Text:SetTextColor(classColor.r, classColor.g, classColor.b)
 			button.Text:SetText(shortText or text)
 		else
 			button.Text:SetText('')
@@ -685,10 +702,14 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
 	local db = self.db
-	if not db or E:IsSecretValue(duration) then -- database or secret: just allow it
+	if not db or not aura then
 		button.priority = 0
 
 		return true
+	elseif E.Retail or button.useMidnight then
+		button.priority = 0
+
+		return button.noFilter or (db.isAuraPlayer and aura.auraIsPlayer) or (db.isAuraRaid and aura.auraIsRaid) or ((E.Retail and db.isAuraDefensive) and aura.auraIsDefensive)
 	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	end

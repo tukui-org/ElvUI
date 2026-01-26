@@ -3,7 +3,7 @@ ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale 
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local tonumber, pairs, ipairs, error, unpack, tostring = tonumber, pairs, ipairs, error, unpack, tostring
+local tonumber, pairs, ipairs, unpack, tostring = tonumber, pairs, ipairs, unpack, tostring
 local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
@@ -134,26 +134,30 @@ E.PriestColors = { r = 0.99, g = 0.99, b = 0.99, colorStr = 'fffcfcfc' }
 
 -- Socket Type info from 11.2.0 (63003): Interface\AddOns\Blizzard_ItemSocketing\Blizzard_ItemSocketingUI.lua
 E.GemTypeInfo = {
-	Yellow			= { r = 0.97, g = 0.82, b = 0.29 },
-	Red				= { r = 1.00, g = 0.47, b = 0.47 },
-	Blue			= { r = 0.47, g = 0.67, b = 1.00 },
-	Hydraulic		= { r = 1.00, g = 1.00, b = 1.00 },
-	Cogwheel		= { r = 1.00, g = 1.00, b = 1.00 },
-	Meta			= { r = 1.00, g = 1.00, b = 1.00 },
-	Prismatic		= { r = 1.00, g = 1.00, b = 1.00 },
-	PunchcardRed	= { r = 1.00, g = 0.47, b = 0.47 },
-	PunchcardYellow	= { r = 0.97, g = 0.82, b = 0.29 },
-	PunchcardBlue	= { r = 0.47, g = 0.67, b = 1.00 },
-	Domination		= { r = 0.24, g = 0.50, b = 0.70 },
-	Cypher			= { r = 1.00, g = 0.80, b = 0.00 },
-	Tinker			= { r = 1.00, g = 0.47, b = 0.47 },
-	Primordial		= { r = 1.00, g = 0.00, b = 1.00 },
-	Fragrance		= { r = 1.00, g = 1.00, b = 1.00 },
-	SingingThunder	= { r = 0.97, g = 0.82, b = 0.29 },
-	SingingSea		= { r = 0.47, g = 0.67, b = 1.00 },
-	SingingWind		= { r = 1.00, g = 0.47, b = 0.47 },
-	Fiber			= { r = 0.90, g = 0.80, b = 0.50 },
+	Yellow			= { r = 0.97, g = 0.82, b = 0.29, a = 1 },
+	Red				= { r = 1.00, g = 0.47, b = 0.47, a = 1 },
+	Blue			= { r = 0.47, g = 0.67, b = 1.00, a = 1 },
+	Hydraulic		= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	Cogwheel		= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	Meta			= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	Prismatic		= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	PunchcardRed	= { r = 1.00, g = 0.47, b = 0.47, a = 1 },
+	PunchcardYellow	= { r = 0.97, g = 0.82, b = 0.29, a = 1 },
+	PunchcardBlue	= { r = 0.47, g = 0.67, b = 1.00, a = 1 },
+	Domination		= { r = 0.24, g = 0.50, b = 0.70, a = 1 },
+	Cypher			= { r = 1.00, g = 0.80, b = 0.00, a = 1 },
+	Tinker			= { r = 1.00, g = 0.47, b = 0.47, a = 1 },
+	Primordial		= { r = 1.00, g = 0.00, b = 1.00, a = 1 },
+	Fragrance		= { r = 1.00, g = 1.00, b = 1.00, a = 1 },
+	SingingThunder	= { r = 0.97, g = 0.82, b = 0.29, a = 1 },
+	SingingSea		= { r = 0.47, g = 0.67, b = 1.00, a = 1 },
+	SingingWind		= { r = 1.00, g = 0.47, b = 0.47, a = 1 },
+	Fiber			= { r = 0.90, g = 0.80, b = 0.50, a = 1 },
 }
+
+-- Midnight aura colors
+E.ColorCurves = { auras = false, buffs = false, debuffs = false }
+ElvUF.ColorCurves = E.ColorCurves -- reference to oUF
 
 --This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
@@ -256,10 +260,6 @@ function E:UpdateClassColor(db)
 end
 
 function E:SetColorTable(t, data)
-	if not data.r or not data.g or not data.b then
-		error('SetColorTable: Could not unpack color values.')
-	end
-
 	if t and (type(t) == 'table') then
 		local r, g, b, a = E:UpdateColorTable(data)
 
@@ -277,27 +277,32 @@ function E:SetColorTable(t, data)
 end
 
 function E:VerifyColorTable(data)
-	if data.r > 1 or data.r < 0 then data.r = 1 end
-	if data.g > 1 or data.g < 0 then data.g = 1 end
-	if data.b > 1 or data.b < 0 then data.b = 1 end
-	if data.a and (data.a > 1 or data.a < 0) then data.a = 1 end
+	-- we just need to verify all the values exist or assume they are meant to be one
+	if not data.r or (data.r > 1 or data.r < 0) then data.r = 1 end
+	if not data.g or (data.g > 1 or data.g < 0) then data.g = 1 end
+	if not data.b or (data.b > 1 or data.b < 0) then data.b = 1 end
+	if not data.a or (data.a > 1 or data.a < 0) then data.a = 1 end
+end
+
+function E:NewColorTable(r, g, b, a)
+	-- this function doesnt update the color to a mixin (unlike SetColorTable)
+	-- that makes it safe to use it for creating new colors for the db
+	-- dont upgrade the table to a mixin here
+
+	local data = { r = r, g = g, b = b, a = a }
+
+	E:VerifyColorTable(data)
+
+	return data
 end
 
 function E:UpdateColorTable(data)
-	if not data.r or not data.g or not data.b then
-		error('UpdateColorTable: Could not unpack color values.')
-	end
-
 	E:VerifyColorTable(data)
 
 	return data.r, data.g, data.b, data.a
 end
 
 function E:GetColorTable(data)
-	if not data.r or not data.g or not data.b then
-		error('GetColorTable: Could not unpack color values.')
-	end
-
 	E:VerifyColorTable(data)
 
 	local r, g, b, a = data.r, data.g, data.b, data.a
@@ -1213,7 +1218,7 @@ do -- BFA Convert, deprecated..
 			end
 
 			if type(info) == 'boolean' then
-				auraBarColors[spell] = { color = { r = 1, g = 1, b = 1 }, enable = info }
+				auraBarColors[spell] = { color = { r = 1, g = 1, b = 1, a = 1 }, enable = info }
 			elseif type(info) == 'table' then
 				if info.r or info.g or info.b then
 					auraBarColors[spell] = { color = { r = info.r or 1, g = info.g or 1, b = info.b or 1 }, enable = true }
@@ -1500,8 +1505,8 @@ function E:UpdateDB()
 	E:SetupDB()
 
 	-- default the non thing pixel border color to 191919, otherwise its 000000
-	if not E.PixelMode then P.general.bordercolor = { r = 0.1, g = 0.1, b = 0.1 } end
-	if not E.db.unitframe.thinBorders then P.unitframe.colors.borderColor = { r = 0.1, g = 0.1, b = 0.1 } end
+	if not E.PixelMode then P.general.bordercolor = { r = 0.1, g = 0.1, b = 0.1, a = 1 } end
+	if not E.db.unitframe.thinBorders then P.unitframe.colors.borderColor = { r = 0.1, g = 0.1, b = 0.1, a = 1 } end
 end
 
 function E:UpdateMoverPositions()
@@ -2021,6 +2026,10 @@ function E:Initialize()
 	E:UIScale()
 	E:LoadStaticPopups()
 
+	if not E.Classic or (E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then
+		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
+	end
+
 	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	else
@@ -2037,10 +2046,6 @@ function E:Initialize()
 
 		if E.Retail then
 			E:Tutorials()
-		end
-
-		if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
-			E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
 		end
 
 		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then

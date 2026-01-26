@@ -215,10 +215,6 @@ function E:SetupCVars(noDisplayMsg)
 	end
 end
 
-function E:GetColor(r, g, b, a)
-	return { r = r, b = b, g = g, a = a }
-end
-
 function E:SetupTheme(theme, noDisplayMsg)
 	E.private.theme = theme
 
@@ -226,43 +222,43 @@ function E:SetupTheme(theme, noDisplayMsg)
 
 	--Set colors
 	if theme == 'classic' then
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
-		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(0.13, 0.13, 0.13, 0.69)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
+		E.db.general.bordercolor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.31, 0.31, 0.31, 1))
+		E.db.general.backdropcolor = E:NewColorTable(0.1, 0.1, 0.1, 1)
+		E.db.general.backdropfadecolor = E:NewColorTable(0.13, 0.13, 0.13, 0.69)
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.31, 0.31, 0.31, 1))
 		E.db.unitframe.colors.healthclass = false
-		E.db.unitframe.colors.health = E:GetColor(.31, .31, .31)
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(.31, .31, .31)
-		E.db.unitframe.colors.castColor = E:GetColor(.31, .31, .31)
+		E.db.unitframe.colors.health = E:NewColorTable(0.31, 0.31, 0.31, 1)
+		E.db.unitframe.colors.auraBarBuff = E:NewColorTable(0.31, 0.31, 0.31, 1)
+		E.db.unitframe.colors.castColor = E:NewColorTable(0.31, 0.31, 0.31, 1)
 		E.db.unitframe.colors.castClassColor = false
-		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
+		E.db.chat.tabSelectorColor = E:NewColorTable(0.09, 0.51, 0.82, 1)
 	elseif theme == 'class' then
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
-		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(.06, .06, .06, .8)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.31, .31, .31))
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(classColor.r, classColor.g, classColor.b)
+		E.db.general.bordercolor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.31, 0.31, 0.31, 1))
+		E.db.general.backdropcolor = E:NewColorTable(0.1, 0.1, 0.1, 1)
+		E.db.general.backdropfadecolor = E:NewColorTable(0.06, 0.06, 0.06, 0.8)
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.31, 0.31, 0.31, 1))
+		E.db.unitframe.colors.auraBarBuff = E:NewColorTable(classColor.r, classColor.g, classColor.b)
 		E.db.unitframe.colors.healthclass = true
 		E.db.unitframe.colors.castClassColor = true
-		E.db.chat.tabSelectorColor = E:GetColor(classColor.r, classColor.g, classColor.b)
+		E.db.chat.tabSelectorColor = E:NewColorTable(classColor.r, classColor.g, classColor.b)
 	else
-		E.db.general.bordercolor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.1, .1, .1))
-		E.db.general.backdropcolor = E:GetColor(.1, .1, .1)
-		E.db.general.backdropfadecolor = E:GetColor(.054, .054, .054, .8)
-		E.db.unitframe.colors.borderColor = (E.PixelMode and E:GetColor(0, 0, 0) or E:GetColor(.1, .1, .1))
-		E.db.unitframe.colors.auraBarBuff = E:GetColor(.1, .1, .1)
+		E.db.general.bordercolor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.1, 0.1, 0.1, 1))
+		E.db.general.backdropcolor = E:NewColorTable(0.1, 0.1, 0.1, 1)
+		E.db.general.backdropfadecolor = E:NewColorTable(0.054, 0.054, 0.054, 0.8)
+		E.db.unitframe.colors.borderColor = (E.PixelMode and E:NewColorTable(0, 0, 0, 1) or E:NewColorTable(0.1, 0.1, 0.1, 1))
+		E.db.unitframe.colors.auraBarBuff = E:NewColorTable(0.1, 0.1, 0.1, 1)
 		E.db.unitframe.colors.healthclass = false
-		E.db.unitframe.colors.health = E:GetColor(.1, .1, .1)
-		E.db.unitframe.colors.castColor = E:GetColor(.1, .1, .1)
+		E.db.unitframe.colors.health = E:NewColorTable(0.1, 0.1, 0.1, 1)
+		E.db.unitframe.colors.castColor = E:NewColorTable(0.1, 0.1, 0.1, 1)
 		E.db.unitframe.colors.castClassColor = false
-		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82}
+		E.db.chat.tabSelectorColor = {r = 0.09, g = 0.51, b = 0.82, a = 1}
 	end
 
 	--Value Color
 	if theme == 'class' then
-		E.db.general.valuecolor = E:GetColor(classColor.r, classColor.g, classColor.b)
+		E.db.general.valuecolor = E:NewColorTable(classColor.r, classColor.g, classColor.b, classColor.a)
 	else
-		E.db.general.valuecolor = E:GetColor(0.09, 0.52, 0.82)
+		E.db.general.valuecolor = E:NewColorTable(0.09, 0.52, 0.82, 1)
 	end
 
 	E:UpdateStart(true, true)
@@ -400,14 +396,14 @@ function E:LayoutAnniversary()
 	E.db.bags.vendorGrays.enable = true
 	E.db.chat.chatHistory = false
 	E.db.chat.copyChatLines = true
-	E.db.chat.customTimeColor = { r = 0.60784316062927, g = 0.60000002384186, b = 0.59607845544815 }
+	E.db.chat.customTimeColor = { r = 0.607, g = 0.6, b = 0.596, a = 1 }
 	E.db.chat.editBoxPosition = 'ABOVE_CHAT_INSIDE'
 	E.db.chat.fadeTabsNoBackdrop = false
 	E.db.chat.font = 'Expressway'
 	E.db.chat.fontSize = 11
 	E.db.chat.hideChatToggles = true
 	E.db.chat.numScrollMessages = 1
-	E.db.chat.panelColor = { r = 0.05882353335619, g = 0.05882353335619, b = 0.05882353335619, a = 0.80000001192093 }
+	E.db.chat.panelColor = { r = 0.058, g = 0.058, b = 0.058, a = 0.8 }
 	E.db.chat.panelHeight = E.Classic and 206 or 204
 	E.db.chat.panelHeightRight = 227
 	E.db.chat.panelTabBackdrop = true
@@ -419,7 +415,7 @@ function E:LayoutAnniversary()
 	E.db.chat.tabFont = 'Expressway'
 	E.db.chat.tabFontOutline = 'OUTLINE'
 	E.db.chat.tabSelector = 'BOX1'
-	E.db.chat.tabSelectorColor = { r = 0.09, g = 0.51, b = 0.82 }
+	E.db.chat.tabSelectorColor = { r = 0.09, g = 0.51, b = 0.82, a = 1 }
 	E.db.chat.timeStampFormat = "%I:%M %p "
 	E.db.chat.timeStampLocalTime = true
 	E.db.chat.useBTagName = true
@@ -541,10 +537,10 @@ function E:LayoutAnniversary()
 	E.db.general.totems.growthDirection = 'HORIZONTAL'
 	E.db.general.totems.size = 36
 	E.db.general.vehicleSeatIndicatorSize = 76
-	E.db.nameplates.colors.selection[0] = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
-	E.db.nameplates.colors.selection[2] = { r = 0.85098046064377, g = 0.76862752437592, b = 0.36078432202339 }
-	E.db.nameplates.colors.threat.badColor = { r = 0.78039222955704, g = 0.25098040699959, b = 0.25098040699959 }
-	E.db.nameplates.colors.threat.goodColor = { r = 0.29019609093666, g = 0.678431391716, b = 0.30196079611778 }
+	E.db.nameplates.colors.selection[0] = { r = 0.78, g = 0.25, b = 0.25, a = 1 }
+	E.db.nameplates.colors.selection[2] = { r = 0.85, g = 0.768, b = 0.36, a = 1 }
+	E.db.nameplates.colors.threat.badColor = { r = 0.78, g = 0.25, b = 0.25, a = 1 }
+	E.db.nameplates.colors.threat.goodColor = { r = 0.29, g = 0.678, b = 0.3, a = 1 }
 	E.db.nameplates.enviromentConditions.enemyEnabled = true
 	E.db.nameplates.enviromentConditions.friendlyEnabled = true
 	E.db.nameplates.enviromentConditions.stackingEnabled = true
@@ -847,7 +843,7 @@ function E:LayoutAnniversary()
 	E.db.unitframe.units.player.castbar.height = 8
 	E.db.unitframe.units.player.castbar.iconAttached = false
 	E.db.unitframe.units.player.castbar.smoothbars = true
-	E.db.unitframe.units.player.castbar.textColor = { r = 0.83921575546265, g = 0.74901962280273, b = 0.65098041296005 }
+	E.db.unitframe.units.player.castbar.textColor = { r = 0.839, g = 0.749, b = 0.65, a = 1 }
 	E.db.unitframe.units.player.castbar.width = 231
 	E.db.unitframe.units.player.castbar.xOffsetText = 2
 	E.db.unitframe.units.player.castbar.xOffsetTime = -2
@@ -904,7 +900,7 @@ function E:LayoutAnniversary()
 	E.db.unitframe.units.target.castbar.iconPosition = 'RIGHT'
 	E.db.unitframe.units.target.castbar.iconXOffset = 10
 	E.db.unitframe.units.target.castbar.smoothbars = true
-	E.db.unitframe.units.target.castbar.textColor = { r = 0.83921575546265, g = 0.74901962280273, b = 0.65098041296005 }
+	E.db.unitframe.units.target.castbar.textColor = { r = 0.839, g = 0.749, b = 0.65, a = 1 }
 	E.db.unitframe.units.target.castbar.width = 231
 	E.db.unitframe.units.target.castbar.xOffsetText = 2
 	E.db.unitframe.units.target.castbar.xOffsetTime = -2
@@ -1403,7 +1399,7 @@ function E:SetPage(num)
 		InstallOption2Button:Show()
 		InstallOption2Button:SetText(L["Small"])
 		InstallOption2Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .6
+			E.global.general.UIScale = 0.6
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -1411,7 +1407,7 @@ function E:SetPage(num)
 		InstallOption3Button:Show()
 		InstallOption3Button:SetText(L["Medium"])
 		InstallOption3Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .7
+			E.global.general.UIScale = 0.7
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -1419,7 +1415,7 @@ function E:SetPage(num)
 		InstallOption4Button:Show()
 		InstallOption4Button:SetText(L["Large"])
 		InstallOption4Button:SetScript('OnClick', function()
-			E.global.general.UIScale = .8
+			E.global.general.UIScale = 0.8
 			InstallSlider.Cur:SetText(E.global.general.UIScale)
 			E.PixelScaleChanged()
 		end)
@@ -1570,7 +1566,7 @@ function E:Install()
 		f.Status.anim = _G.CreateAnimationGroup(f.Status)
 		f.Status.anim.progress = f.Status.anim:CreateAnimation('Progress')
 		f.Status.anim.progress:SetEasing('Out')
-		f.Status.anim.progress:SetDuration(.3)
+		f.Status.anim.progress:SetDuration(0.3)
 
 		f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')
 		f.Status.text:FontTemplate(nil, 14, 'OUTLINE')

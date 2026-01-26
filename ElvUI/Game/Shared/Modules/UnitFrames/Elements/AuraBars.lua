@@ -226,7 +226,8 @@ function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar,
 		if E:IsSecretValue(bar.count) then
 			if bar.aura then
 				local minCount, maxCount = 2, 999
-				bar.nameText:SetFormattedText('%s%s', WrapString(GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount), '[', '] '), text)
+				local count = GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount)
+				bar.nameText:SetFormattedText('%s%s', count and WrapString(count, '[', '] ') or '', text)
 			else
 				bar.nameText:SetText(text)
 			end

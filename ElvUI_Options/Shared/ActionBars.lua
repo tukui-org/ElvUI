@@ -96,8 +96,8 @@ macroTextGroup.args.macroTextXOffset = ACH:Range(L["X-Offset"], nil, 5, { min = 
 macroTextGroup.args.macroTextYOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -24, max = 24, step = 1 }, nil, nil, nil, function() return (E.Masque and E.private.actionbar.masque.actionbars) end)
 macroTextGroup.args.spacer2 = ACH:Spacer(7, 'full')
 macroTextGroup.args.macroFont = ACH:SharedMediaFont(L["Font"], nil, 8)
-macroTextGroup.args.macroFontSize = ACH:Range(L["Font Size"], nil, 9, C.Values.FontSize)
-macroTextGroup.args.macroFontOutline = ACH:FontFlags(L["Font Outline"], nil, 10)
+macroTextGroup.args.macroFontOutline = ACH:FontFlags(L["Font Outline"], nil, 9)
+macroTextGroup.args.macroFontSize = ACH:Range(L["Font Size"], nil, 10, C.Values.FontSize)
 SharedBarOptions.macroTextGroup = macroTextGroup
 
 local professionQuality = ACH:Group(L["Profession Quality"], nil, 70, nil, function(info) return E.db.actionbar[info[#info-2]].professionQuality[info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]].professionQuality[info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end, nil, not E.Retail)

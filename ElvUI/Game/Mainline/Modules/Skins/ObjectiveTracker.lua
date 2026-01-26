@@ -16,6 +16,7 @@ local trackers = {
 	_G.ProfessionsRecipeTracker,
 	_G.BonusObjectiveTracker,
 	_G.WorldQuestObjectiveTracker,
+	_G.InitiativeTasksObjectiveTracker
 }
 
 local function SkinOjectiveTrackerHeaders(header)

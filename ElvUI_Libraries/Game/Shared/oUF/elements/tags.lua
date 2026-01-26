@@ -92,9 +92,11 @@ local POWERTYPE_HOLY_POWER = Enum.PowerType.HolyPower or 9
 local POWERTYPE_CHI = Enum.PowerType.Chi or 12
 local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 
-local CreateFrame = CreateFrame
 local C_Timer_NewTimer = C_Timer.NewTimer
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local CreateFrame = CreateFrame
+local UnitIsUnit = UnitIsUnit
+local IsInRaid = IsInRaid
 
 local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
 local GenerateTextColorCode = C_ColorUtil and C_ColorUtil.GenerateTextColorCode

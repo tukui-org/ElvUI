@@ -336,11 +336,11 @@ do
 		if visibility then
 			local _, powerType = UnitPowerType(unit)
 			local fullType = powerTypesFull[powerType]
-			local isFull = (E:IsSecretValue(cur) or E:IsSecretValue(max)) or (fullType and cur == max) or (not fullType and cur == min)
+			local autoHide = (E:IsSecretValue(cur) or E:IsSecretValue(max)) or not db.autoHide or ((fullType and cur ~= max) or (not fullType and cur ~= min))
 			local onlyHealer = not db.onlyHealer or (((parent.db.roleIcon and parent.db.roleIcon.enable and parent.role) or UF:GetRoleIcon(parent)) == 'HEALER')
 			local notInCombat = not db.notInCombat or InCombatLockdown()
 
-			local shouldShow = (not db.autoHide or not isFull) and onlyHealer and notInCombat
+			local shouldShow = autoHide and onlyHealer and notInCombat
 			if shouldShow and not barShown then
 				self:Show()
 

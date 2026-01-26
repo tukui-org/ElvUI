@@ -844,7 +844,7 @@ do
 			SetNamePlateSize(driver.plateWidth or 200, driver.plateHeight or 30)
 
 			if SetNamePlateHitTestInsets then
-				local enemyInset = driver.friendlyNonInteractible and hitInset or -hitInset
+				local enemyInset = driver.enemyNonInteractible and hitInset or -hitInset
 				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Enemy, enemyInset, enemyInset, enemyInset, enemyInset)
 
 				local friendlyInset = driver.friendlyNonInteractible and hitInset or -hitInset

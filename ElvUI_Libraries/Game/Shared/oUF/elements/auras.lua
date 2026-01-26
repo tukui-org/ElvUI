@@ -200,6 +200,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 	button.aura = aura or nil
 	button.filter = filter or nil
 	button.auraInstanceID = auraInstanceID or nil
+	button.auraDuration = aura and GetAuraDuration and GetAuraDuration(unit, aura.auraInstanceID) or nil
 	button.isDebuff = (forceShow and which ~= 'Buffs') or isDebuff or nil
 	button.isPlayer = oUF:NotSecretValue(sourceUnit) and (sourceUnit == 'player' or sourceUnit == 'vehicle') or (aura and aura.auraIsPlayer) or nil
 	button.debuffType = dispelName
@@ -230,9 +231,8 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 		-- complicated.
 		if(button.Cooldown and not element.disableCooldown) then
 			if button.Cooldown.SetCooldownFromDurationObject then
-				local auraDuration = aura and GetAuraDuration(unit, aura.auraInstanceID)
-				if auraDuration then
-					button.Cooldown:SetCooldownFromDurationObject(auraDuration)
+				if button.auraDuration then
+					button.Cooldown:SetCooldownFromDurationObject(button.auraDuration)
 				else
 					button.Cooldown:Clear()
 				end

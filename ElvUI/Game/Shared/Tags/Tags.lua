@@ -222,96 +222,6 @@ if not E.Retail then
 			end, E.Classic, classSpecificSpells)
 		end
 	end
-
-	for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long = 20 }) do
-		E:AddTag(format('health:current:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
-			local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
-			local cur, max = UnitHealth(unit), UnitHealthMax(unit)
-			local name = UnitName(unit)
-
-			if status then
-				return status
-			elseif cur ~= max then
-				return E:GetFormattedText('CURRENT', cur, max, nil, true)
-			elseif name then
-				return E:ShortenString(name, length)
-			end
-		end)
-
-		E:AddTag(format('health:deficit-percent:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
-			local cur, max = UnitHealth(unit), UnitHealthMax(unit)
-			local deficit = max - cur
-
-			if deficit > 0 and cur > 0 then
-				return _TAGS['health:deficit-percent:nostatus'](unit)
-			else
-				return _TAGS[format('name:%s', textFormat)](unit)
-			end
-		end)
-
-		E:AddTag(format('name:abbrev:%s', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-			local name = UnitName(unit)
-			if name and strfind(name, '%s') then
-				name = Abbrev(name)
-			end
-
-			if name then
-				return E:ShortenString(name, length)
-			end
-		end)
-
-		E:AddTag(format('name:%s', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-			local name = UnitName(unit)
-			if name then
-				return E:ShortenString(name, length)
-			end
-		end)
-
-		E:AddTag(format('name:%s:status', textFormat), 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-			local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
-			local name = UnitName(unit)
-			if status then
-				return status
-			elseif name then
-				return E:ShortenString(name, length)
-			end
-		end)
-
-		E:AddTag(format('name:%s:translit', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-			local name = Translit:Transliterate(UnitName(unit), translitMark)
-			if name then
-				return E:ShortenString(name, length)
-			end
-		end)
-
-		E:AddTag(format('target:abbrev:%s', textFormat), 'UNIT_TARGET', function(unit)
-			local targetName = UnitName(unit..'target')
-			if targetName and strfind(targetName, '%s') then
-				targetName = Abbrev(targetName)
-			end
-
-			if targetName then
-				return E:ShortenString(targetName, length)
-			end
-		end)
-
-		E:AddTag(format('target:%s', textFormat), 'UNIT_TARGET', function(unit)
-			local targetName = UnitName(unit..'target')
-			if targetName then
-				return E:ShortenString(targetName, length)
-			end
-		end)
-
-		E:AddTag(format('target:%s:translit', textFormat), 'UNIT_TARGET', function(unit)
-			local targetName = UnitName(unit..'target')
-			if targetName then
-				local translitName = Translit:Transliterate(targetName, translitMark)
-				if translitName then
-					return E:ShortenString(translitName, length)
-				end
-			end
-		end)
-	end
 end
 
 ------------------------------------------------------------------------
@@ -730,6 +640,114 @@ if not E.Retail then
 		else
 			return _TAGS.name(unit)
 		end
+	end)
+end
+
+for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long = 20 }) do
+	E:AddTag(format('health:current:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+		local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
+		local name = UnitName(unit)
+
+		if status then
+			return status
+		elseif E:NotSecretValue(cur) and E:NotSecretValue(max) and cur and max and (cur ~= max) then
+			return E:GetFormattedText('CURRENT', cur, max, nil, true)
+		elseif E:NotSecretValue(name) and name then
+			return E:ShortenString(name, length)
+		end
+
+		return name
+	end)
+
+	E:AddTag(format('health:deficit-percent:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
+
+		local deficit = E:NotSecretValue(cur) and E:NotSecretValue(max) and cur and max and (max - cur) or 0
+		if deficit > 0 and cur > 0 then
+			return _TAGS['health:deficit-percent:nostatus'](unit)
+		else
+			return _TAGS[format('name:%s', textFormat)](unit)
+		end
+	end)
+
+	E:AddTag(format('name:abbrev:%s', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+		local name = UnitName(unit)
+		if E:NotSecretValue(name) and name and strfind(name, '%s') then
+			name = Abbrev(name)
+		end
+
+		if E:NotSecretValue(name) and name then
+			return E:ShortenString(name, length)
+		end
+
+		return name
+	end)
+
+	E:AddTag(format('name:%s', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+		local name = UnitName(unit)
+		if E:NotSecretValue(name) and name then
+			return E:ShortenString(name, length)
+		end
+
+		return name
+	end)
+
+	E:AddTag(format('name:%s:status', textFormat), 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
+		local name = UnitName(unit)
+
+		if status then
+			return status
+		elseif E:NotSecretValue(name) and name then
+			return E:ShortenString(name, length)
+		end
+
+		return name
+	end)
+
+	E:AddTag(format('name:%s:translit', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+		local unitName = UnitName(unit)
+		local name = E:NotSecretValue(unitName) and Translit:Transliterate(unitName, translitMark)
+		if name then
+			return E:ShortenString(name, length)
+		end
+
+		return name
+	end)
+
+	E:AddTag(format('target:abbrev:%s', textFormat), 'UNIT_TARGET', function(unit)
+		local targetName = UnitName(unit..'target')
+		if E:NotSecretValue(targetName) and targetName and strfind(targetName, '%s') then
+			targetName = Abbrev(targetName)
+		end
+
+		if E:NotSecretValue(targetName) and targetName then
+			return E:ShortenString(targetName, length)
+		end
+
+		return targetName
+	end)
+
+	E:AddTag(format('target:%s', textFormat), 'UNIT_TARGET', function(unit)
+		local targetName = UnitName(unit..'target')
+		if E:NotSecretValue(targetName) and targetName then
+			return E:ShortenString(targetName, length)
+		end
+
+		return targetName
+	end)
+
+	E:AddTag(format('target:%s:translit', textFormat), 'UNIT_TARGET', function(unit)
+		local targetName = UnitName(unit..'target')
+		if E:NotSecretValue(targetName) and targetName then
+			local translitName = Translit:Transliterate(targetName, translitMark)
+			if translitName then
+				return E:ShortenString(translitName, length)
+			end
+		end
+
+		return targetName
 	end)
 end
 

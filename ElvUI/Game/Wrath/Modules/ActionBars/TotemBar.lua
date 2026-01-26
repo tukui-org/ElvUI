@@ -17,11 +17,11 @@ local bar = CreateFrame('Frame', 'ElvUI_TotemBar', E.UIParent, 'SecureHandlerSta
 bar:SetFrameStrata('LOW')
 
 local SLOT_BORDER_COLORS = {
-	summon					= {r = 0, g = 0, b = 0},
-	[_G.EARTH_TOTEM_SLOT]	= {r = 0.23, g = 0.45, b = 0.13},
-	[_G.FIRE_TOTEM_SLOT]	= {r = 0.58, g = 0.23, b = 0.10},
-	[_G.WATER_TOTEM_SLOT]	= {r = 0.19, g = 0.48, b = 0.60},
-	[_G.AIR_TOTEM_SLOT]		= {r = 0.42, g = 0.18, b = 0.74}
+	summon					= { r = 0, g = 0, b = 0, a = 1 },
+	[_G.EARTH_TOTEM_SLOT]	= { r = 0.23, g = 0.45, b = 0.13, a = 1 },
+	[_G.FIRE_TOTEM_SLOT]	= { r = 0.58, g = 0.23, b = 0.10, a = 1 },
+	[_G.WATER_TOTEM_SLOT]	= { r = 0.19, g = 0.48, b = 0.60, a = 1 },
+	[_G.AIR_TOTEM_SLOT]		= { r = 0.42, g = 0.18, b = 0.74, a = 1 }
 }
 
 local SLOT_EMPTY_TCOORDS = {

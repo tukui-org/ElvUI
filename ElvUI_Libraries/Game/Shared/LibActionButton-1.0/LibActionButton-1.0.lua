@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 69 -- the real minor version is 142
+local MINOR_VERSION = 70 -- the real minor version is 143
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2188,25 +2188,7 @@ function UpdateCount(self)
 		return
 	end
 
-	if GetActionDisplayCount and self._state_type == "action" then
-		self.Count:SetText(GetActionDisplayCount(self._state_action, self.maxDisplayCount or 9999))
-	else
-		if self:IsConsumableOrStackable() then
-			local count = self:GetCount()
-			if count > (self.maxDisplayCount or 9999) then
-				self.Count:SetText("*")
-			else
-				self.Count:SetText(count)
-			end
-		else
-			local charges, maxCharges, _chargeStart, _chargeDuration = self:GetCharges()
-			if charges and maxCharges and maxCharges > 1 then
-				self.Count:SetText(charges)
-			else
-				self.Count:SetText("")
-			end
-		end
-	end
+	self.Count:SetText(self:GetDisplayCount())
 end
 
 function ClearChargeCooldown(self)
@@ -2796,6 +2778,24 @@ Generic.SetTooltip               = function(self) return nil end
 Generic.GetSpellId               = function(self) return nil end
 Generic.GetPassiveCooldownSpellID = function(self) return nil end
 
+Generic.GetDisplayCount          = function(self)
+	if self:IsConsumableOrStackable() then
+		local count = self:GetCount()
+		if count > (self.maxDisplayCount or 9999) then
+			return "*"
+		else
+			return count
+		end
+	else
+		local charges, maxCharges, _chargeStart, _chargeDuration = self:GetCharges()
+		if charges and maxCharges and maxCharges > 1 then
+			return charges
+		end
+	end
+
+	return ""
+end
+
 -- legacy cooldown functions
 Generic.GetCharges = function(self)
 	local charge = self:GetChargeInfo()
@@ -2885,6 +2885,10 @@ Action.GetSpellId               = function(self)
 	end
 end
 
+if GetActionDisplayCount then
+	Action.GetDisplayCount      = function(self) return GetActionDisplayCount(self._state_action) end
+end
+
 -- legacy cooldown functions, avoiding table creation on game versions that still have the old API
 -- LAB does not call these, but external things might
 Action.GetCharges = function(self)
@@ -2963,6 +2967,10 @@ Spell.IsConsumableOrStackable  = function(self) return IsConsumableSpell(self._s
 Spell.IsUnitInRange           = function(self, unit) return C_Spell.IsSpellInRange(self._state_action, unit) or nil end
 Spell.SetTooltip               = function(self) return GameTooltip:SetSpellByID(self._state_action) end
 Spell.GetSpellId               = function(self) return self._state_action end
+
+if C_Spell.GetSpellDisplayCount then
+	Spell.GetDisplayCount      = function(self) return C_Spell.GetSpellDisplayCount(self._state_action) end
+end
 
 Spell.GetPassiveCooldownSpellID = function(self)
 	if self._state_action then

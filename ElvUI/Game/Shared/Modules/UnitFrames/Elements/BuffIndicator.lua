@@ -18,7 +18,7 @@ end
 
 function UF:Configure_AuraWatch(frame, isPet)
 	local db = frame.db and frame.db.buffIndicator
-	if db and db.enable then
+	if db and db.enable and not E.Retail then
 		if not frame:IsElementEnabled('AuraWatch') then
 			frame:EnableElement('AuraWatch')
 		end
@@ -47,7 +47,7 @@ end
 function UF:BuffIndicator_PostCreateIcon(button)
 	button.cd.skipScale = true
 
-	E:RegisterCooldown(button.cd, 'auraindicator')
+	E:RegisterCooldown(button.cd, 'auraindicator', button.icon)
 
 	local blizzCooldownText = button.cd:GetRegions()
 	if blizzCooldownText:IsObjectType('FontString') then

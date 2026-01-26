@@ -25,7 +25,7 @@ oUF.isClassicSOD = season == 2 -- Season of Discovery
 oUF.isClassicAnniv = season == 11 -- Anniversary
 oUF.isClassicAnnivHC = season == 12 -- Anniversary Hardcore
 
-do
+do -- Time function by Simpy
 	local YEAR, DAY, HOUR, MINUTE, SECOND = 31557600, 86400, 3600, 60, 1
 	function oUF:GetTime(value, noSecondText)
 		if not value then
@@ -47,7 +47,7 @@ do
 	end
 end
 
-do -- secret stuff, keep it synced to ElvUI
+do -- API for secrets by Simpy
 	function oUF:IsSecretValue(value)
 		if issecretvalue and issecretvalue(value) then
 			return true
