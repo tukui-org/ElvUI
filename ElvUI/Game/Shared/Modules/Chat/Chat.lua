@@ -189,7 +189,7 @@ do
 	local function GetToken(chatType, chatTarget, chanSender) -- ChatHistory_GetToken
 		local sender = E:NotSecretValue(chanSender) and chanSender and strlower(chanSender) or ''
 
-		return format('%s;;%s;;%s', strlower(chatType), chatTarget, sender)
+		return format('%s;;%s;;%s', strlower(chatType), chatTarget or '', sender)
 	end
 
 	function CH:GetAccessID(chatType, chatTarget, chanSender) -- ChatHistory_GetAccessID
