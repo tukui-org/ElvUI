@@ -71,6 +71,10 @@ do -- Thanks ls-
 end
 
 function E:AbbreviateNumbers(value, data)
+	if type(value) == 'string' then
+		return value -- we cant continue with strings
+	end
+
 	local str = AbbreviateNumbers(value, data)
 	local num = tonumber(str)
 

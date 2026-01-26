@@ -104,6 +104,7 @@ function S:Blizzard_Transmog()
 				S:HandleButton(ItemsFrame.DisplayTypeUnassignedButton) -- Leave it or change it (unskinned it fits really good tbh)
 				S:HandleButton(ItemsFrame.DisplayTypeEquippedButton) -- Leave it or change it (unskinned it fits really good tbh)
 			]]
+			S:HandleDropDownBox(ItemsFrame.WeaponDropdown)
 
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.NextPageButton)

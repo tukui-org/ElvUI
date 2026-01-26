@@ -429,7 +429,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 	end
 
-	if(element.Shield) then
+	if(element.Shield and oUF.isRetail) then
 		if(element.Shield.SetAlphaFromBoolean) then
 			element.Shield:SetAlphaFromBoolean(notInterruptible, 1, 0)
 		else
@@ -724,7 +724,7 @@ local function CastInterruptible(self, event, unit)
 
 	element.notInterruptible = event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE'
 
-	if(element.Shield) then
+	if(element.Shield and oUF.isRetail) then
 		if(element.Shield.SetAlphaFromBoolean) then
 			element.Shield:SetAlphaFromBoolean(element.notInterruptible, 1, 0)
 		else

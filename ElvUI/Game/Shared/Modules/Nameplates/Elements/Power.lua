@@ -3,6 +3,8 @@ local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
+local unpack = unpack
+
 local UnitPlayerControlled = UnitPlayerControlled
 local UnitIsTapDenied = UnitIsTapDenied
 local UnitClass = UnitClass
@@ -95,7 +97,7 @@ function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
 		return
 	end
 
-	if db.power and db.power.enable and db.power.hideWhenEmpty and (cur == 0) then
+	if db.power and db.power.enable and db.power.hideWhenEmpty and E:NotSecretValue(cur) and (cur == 0) then
 		self:Hide()
 	else
 		self:Show()

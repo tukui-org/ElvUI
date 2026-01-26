@@ -187,10 +187,7 @@ do
 	local accessSender = {}	-- indexed
 
 	local function GetToken(chatType, chatTarget, chanSender) -- ChatHistory_GetToken
-		local target = chatTarget and strlower(chatTarget) or ''
-		local sender = E:NotSecretValue(chanSender) and chanSender and strlower(chanSender) or ''
-
-		return format('%s;;%s;;%s', strlower(chatType), target, sender)
+		return format('%s;;%s;;%s', strlower(chatType), chatTarget or '', chanSender or '')
 	end
 
 	function CH:GetAccessID(chatType, chatTarget, chanSender) -- ChatHistory_GetAccessID
