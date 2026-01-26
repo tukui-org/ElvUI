@@ -192,6 +192,10 @@ do
 
 	function CH:GetAccessID(chatType, chatTarget, chanSender) -- ChatHistory_GetAccessID
 		local token = GetToken(chatType, chatTarget, chanSender)
+
+		-- this is not ideal but we have no choice
+		if E:IsSecretValue(token) then return end
+
 		if not accessInfo[token] then
 			accessInfo[token] = accessIndex
 
