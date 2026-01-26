@@ -279,6 +279,7 @@ function lib:CreateButton(id, name, header, config)
 
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
+	button.cooldown:SetAllPoints()
 
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
@@ -2202,6 +2203,8 @@ local function CreateChargeCooldownFrame(parent)
 
 	local cooldown = CreateFrame("Cooldown", "LAB10ChargeCooldown"..lib.NumChargeCooldowns, parent, "CooldownFrameTemplate");
 	cooldown:SetFrameLevel(parent:GetFrameLevel())
+	cooldown:SetHideCountdownNumbers(true)
+	cooldown:SetDrawSwipe(false)
 
 	return cooldown
 end
