@@ -567,11 +567,11 @@ function UF:UpdateColors()
 	local health = ElvUF.colors.health
 	local smooth = ElvUF.colors.smooth
 	if smooth then
-		ElvUF.colors.smooth[7] = health.r
-		ElvUF.colors.smooth[8] = health.g
-		ElvUF.colors.smooth[9] = health.b
-	elseif not ElvUF.colors.smooth then
-		ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0, health.r, health.g, health.b}
+		smooth[7] = health.r
+		smooth[8] = health.g
+		smooth[9] = health.b
+	elseif not smooth then
+		ElvUF.colors.smooth = { 1, 0, 0, 1, 1, 0, health.r, health.g, health.b }
 	end
 
 	if health.SetCurve then
