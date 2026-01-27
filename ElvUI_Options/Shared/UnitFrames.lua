@@ -1246,7 +1246,7 @@ UnitFrame.generalOptionsGroup.args.fontGroup.args.font = ACH:SharedMediaFont(L["
 UnitFrame.generalOptionsGroup.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 UnitFrame.generalOptionsGroup.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 5)
 
-UnitFrame.generalOptionsGroup.args.modifiers = ACH:Group(L["Filter Modifiers"], nil, 20, nil, function(info) return E.db.unitframe.modifiers[info[#info]] end, function(info, value) E.db.unitframe.modifiers[info[#info]] = value end)
+UnitFrame.generalOptionsGroup.args.modifiers = ACH:Group(L["Filter Modifiers"], nil, 20, nil, function(info) return E.db.unitframe.modifiers[info[#info]] end, function(info, value) E.db.unitframe.modifiers[info[#info]] = value end, nil, E.Retail)
 UnitFrame.generalOptionsGroup.args.modifiers.inline = true
 UnitFrame.generalOptionsGroup.args.modifiers.args.SHIFT = ACH:Select(L["SHIFT"], nil, 1, ModifierList)
 UnitFrame.generalOptionsGroup.args.modifiers.args.ALT = ACH:Select(L["ALT"], nil, 2, ModifierList)
