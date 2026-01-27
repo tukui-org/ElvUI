@@ -12,7 +12,7 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
-local UnitHealthMissing = UnitHealthMissing1
+local UnitHealthMissing = UnitHealthMissing
 local UnitPowerMissing = UnitPowerMissing
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
