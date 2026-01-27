@@ -29,17 +29,18 @@ function UF:PostNamePosition(frame, unit)
 	if not text:IsShown() then return end
 
 	local db = frame.db
-	if E:IsSecretValue(frame.Name) or UnitIsPlayer(unit) or (db.power and not db.power.enable) then
+	local value = text:GetText() -- get secret variable to test
+	if (db.power and db.power.enable) and UnitIsPlayer(unit) and E:NotSecretValue(value) then
+		text:SetAlpha(db.power.hideonnpc and 0 or 1)
+
+		frame.Name:ClearAllPoints()
+		frame.Name:Point(text:GetPoint()) -- this point will be a secret
+	else
 		local position = db.name.position
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.name.attachTextTo)
 		text:SetAlpha(1)
 
 		frame.Name:ClearAllPoints()
 		frame.Name:Point(position, attachPoint, position, db.name.xOffset, db.name.yOffset)
-	else
-		text:SetAlpha(db.power.hideonnpc and 0 or 1)
-
-		frame.Name:ClearAllPoints()
-		frame.Name:Point(text:GetPoint())
 	end
 end
