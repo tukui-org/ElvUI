@@ -620,7 +620,7 @@ function UF:PostColorAdditionalPower(unit, color)
 	if bar then
 		local pred = UF.db.colors and UF.db.colors.powerPrediction
 		if pred and pred.enable then
-			UF:SetStatusBarColor(bar, pred.additional.r, pred.additional.g, pred.additional.b, pred.additional.a)
+			UF:SetStatusBarColor(bar, pred.additional.r, pred.additional.g, pred.additional.b)
 		else
 			local r, g, b = color:GetRGB()
 			UF:SetStatusBarColor(bar, r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)

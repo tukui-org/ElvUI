@@ -289,7 +289,7 @@ do
 		if predictionDB then
 			local c = predictionDB.enable and predictionDB.color
 			if c then
-				UF:SetStatusBarColor(predictionBar, c.r, c.g, c.b, c.a)
+				UF:SetStatusBarColor(predictionBar, c.r, c.g, c.b)
 			else
 				if not r and color then
 					r, g, b = color:GetRGB()
