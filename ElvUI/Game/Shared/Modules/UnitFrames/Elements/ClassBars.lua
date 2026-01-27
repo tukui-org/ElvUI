@@ -223,14 +223,14 @@ function UF:Configure_ClassBar(frame)
 
 		local lr, lg, lb = unpack(ElvUF.colors.ClassBars.DRUID[1])
 		bars.LunarBar:SetMinMaxValues(-1, 1)
-		bars.LunarBar:GetStatusBarTexture():SetVertexColor(lr, lg, lb)
+		UF:SetStatusBarColor(bars.LunarBar, lr, lg, lb)
 		bars.LunarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.LunarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		E:SetSmoothing(bars.LunarBar, db.classbar and db.classbar.smoothbars)
 
 		local sr, sg, sb = unpack(ElvUF.colors.ClassBars.DRUID[2])
 		bars.SolarBar:SetMinMaxValues(-1, 1)
-		bars.SolarBar:GetStatusBarTexture():SetVertexColor(sr, sg, sb)
+		UF:SetStatusBarColor(bars.SolarBar, sr, sg, sb)
 		bars.SolarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.SolarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		bars.SolarBar:ClearAllPoints()
@@ -474,8 +474,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 			for _, cIndex in next, chargedPoints do
 				local cPoint = self[cIndex]
 				if cPoint then
-					cPoint:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
-					cPoint.bg:SetVertexColor(color.r, color.g, color.b, UF.multiplier)
+					UF:SetStatusBarColor(cPoint, color.r, color.g, color.b)
 				end
 			end
 		end
@@ -621,10 +620,10 @@ function UF:PostColorAdditionalPower(unit, color)
 	if bar then
 		local pred = UF.db.colors and UF.db.colors.powerPrediction
 		if pred and pred.enable then
-			bar:GetStatusBarTexture():SetVertexColor(pred.additional.r, pred.additional.g, pred.additional.b, pred.additional.a)
+			UF:SetStatusBarColor(bar, pred.additional.r, pred.additional.g, pred.additional.b, pred.additional.a)
 		else
 			local r, g, b = color:GetRGB()
-			bar:GetStatusBarTexture():SetVertexColor(r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
+			UF:SetStatusBarColor(bar, r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
 		end
 	end
 end
