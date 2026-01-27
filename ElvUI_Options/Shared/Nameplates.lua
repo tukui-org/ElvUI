@@ -4,9 +4,8 @@ local NP = E:GetModule('NamePlates')
 local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
-local max, wipe, strfind = max, wipe, strfind
 local pairs, type, strsplit = pairs, type, strsplit
-local next, tonumber = next, tonumber
+local wipe, next, tonumber = wipe, next, tonumber
 
 local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -14,21 +13,14 @@ local GetCVarBool = C_CVar.GetCVarBool
 
 local carryFilterFrom, carryFilterTo
 
-local TEXT_FORMAT_WIDTH = 330
-local ORDER = 100
-
 local filters = {}
 
-local minHeight, minWidth = 2, 40
-local function ClickSize(unit)
-	local width = (E.Retail and 'width') or (unit == 'PLAYER' and 'personalWidth' or strfind(unit, 'FRIENDLY') and 'friendlyWidth' or strfind(unit, 'ENEMY') and 'enemyWidth')
-	local height = (E.Retail and 'height') or (unit == 'PLAYER' and 'personalHeight' or strfind(unit, 'FRIENDLY') and 'friendlyHeight' or strfind(unit, 'ENEMY') and 'enemyHeight')
-
-	return width, height
-end
-
-local function MaxHeight(unit) local _, height = ClickSize(unit) return max(NP.db.clickSize[height] or 0, 20) end
-local function MaxWidth(unit) local width = ClickSize(unit) return max(NP.db.clickSize[width] or 0, 200) end
+local ORDER = 100
+local MIN_HEIGHT = 2
+local MAX_HEIGHT = 40
+local MIN_WIDTH = 20
+local MAX_WIDTH = 400
+local TEXT_FORMAT_WIDTH = 330
 
 local auraKeys = {
 	buffs = { name = L["Buffs"], order = 1 },
@@ -163,8 +155,8 @@ local function GetUnitSettings(unit, name)
 
 	group.args.healthGroup = ACH:Group(L["Health"], nil, 10, nil, function(info) return E.db.nameplates.units[unit].health[info[#info]] end, function(info, value) E.db.nameplates.units[unit].health[info[#info]] = value NP:ConfigureAll() end)
 	group.args.healthGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, nil, function() return unit == 'PLAYER' end)
-	group.args.healthGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = minHeight, max = MaxHeight(unit), step = 1 })
-	group.args.healthGroup.args.width = ACH:Range(L["Width"], nil, 4, { min = minHeight, max = MaxWidth(unit), step = 1 })
+	group.args.healthGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = MIN_HEIGHT, max = MAX_HEIGHT, step = 1 })
+	group.args.healthGroup.args.width = ACH:Range(L["Width"], nil, 4, { min = MIN_HEIGHT, max = MAX_WIDTH, step = 1 })
 	group.args.healthGroup.args.healPrediction = ACH:Toggle(L["Heal Prediction"], nil, 5)
 	group.args.healthGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
 
@@ -193,8 +185,8 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup.args.useAtlas = ACH:Toggle(L["Use Atlas Textures"], nil, 4)
 	group.args.powerGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 5)
 	group.args.powerGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 7)
-	group.args.powerGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = minWidth, max = MaxWidth(unit), step = 1 })
-	group.args.powerGroup.args.height = ACH:Range(L["Height"], nil, 9, { min = minHeight, max = MaxHeight(unit), step = 1 })
+	group.args.powerGroup.args.width = ACH:Range(L["Width"], nil, 8, { min = MIN_WIDTH, max = MAX_WIDTH, step = 1 })
+	group.args.powerGroup.args.height = ACH:Range(L["Height"], nil, 9, { min = MIN_HEIGHT, max = MAX_HEIGHT, step = 1 })
 	group.args.powerGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 10, { min = -100, max = 100, step = 1 })
 	group.args.powerGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 11, { min = -100, max = 100, step = 1 })
 	group.args.powerGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 12, C.Values.AllPoints)
@@ -224,8 +216,8 @@ local function GetUnitSettings(unit, name)
 	-- order 4 is player Display Target
 	group.args.castGroup.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	group.args.castGroup.args.generalGroup.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 5, { min = 0, max = 5, step = .1 })
-	group.args.castGroup.args.generalGroup.args.width = ACH:Range(L["Width"], nil, 6, { min = minWidth, max = MaxWidth(unit), step = 1 })
-	group.args.castGroup.args.generalGroup.args.height = ACH:Range(L["Height"], nil, 7, { min = minHeight, max = MaxHeight(unit), step = 1 })
+	group.args.castGroup.args.generalGroup.args.width = ACH:Range(L["Width"], nil, 6, { min = MIN_WIDTH, max = MAX_WIDTH, step = 1 })
+	group.args.castGroup.args.generalGroup.args.height = ACH:Range(L["Height"], nil, 7, { min = MIN_HEIGHT, max = MAX_HEIGHT, step = 1 })
 	group.args.castGroup.args.generalGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -300, softMin = -100, softMax = 100, max = 300, step = 1 })
 	group.args.castGroup.args.generalGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -300, softMin = -100, softMax = 100, max = 300, step = 1 })
 	group.args.castGroup.args.generalGroup.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 10, C.Values.AllPoints)
@@ -361,8 +353,8 @@ local function GetUnitSettings(unit, name)
 		group.args.classBarGroup = ACH:Group(L["Class Bar"], nil, 80, nil, function(info) return E.db.nameplates.units[unit].classpower[info[#info]] end, function(info, value) E.db.nameplates.units[unit].classpower[info[#info]] = value NP:ConfigureAll() end)
 		group.args.classBarGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.classBarGroup.args.classColor = ACH:Toggle(L["Use Class Color"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail and E.myclass == 'DEATHKNIGHT')
-		group.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = minWidth, max = MaxWidth(unit), step = 1 })
-		group.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = minHeight, max = MaxHeight(unit), step = 1 })
+		group.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = MIN_WIDTH, max = MAX_WIDTH, step = 1 })
+		group.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = MIN_HEIGHT, max = MAX_HEIGHT, step = 1 })
 		group.args.classBarGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 		group.args.classBarGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 		group.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
@@ -476,23 +468,23 @@ NamePlates.generalGroup.args.clickThrough.args.friendly = ACH:Toggle(L["Friendly
 NamePlates.generalGroup.args.clickThrough.args.enemy = ACH:Toggle(L["Enemy"], nil, 3, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateEnemyClickThrough() end)
 
 NamePlates.generalGroup.args.clickableRange = ACH:Group(L["Clickable Size"], nil, 70, nil, function(info) return E.db.nameplates.clickSize[info[#info]] end, function(info, value) E.db.nameplates.clickSize[info[#info]] = value NP:ConfigureAll() end)
-NamePlates.generalGroup.args.clickableRange.args.width = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 }, nil, nil, nil, nil, not E.Retail)
-NamePlates.generalGroup.args.clickableRange.args.height = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 }, nil, nil, nil, nil, not E.Retail)
+NamePlates.generalGroup.args.clickableRange.args.width = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = MAX_WIDTH, step = 1 }, nil, nil, nil, nil, not E.Retail)
+NamePlates.generalGroup.args.clickableRange.args.height = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = MAX_HEIGHT, step = 1 }, nil, nil, nil, nil, not E.Retail)
 
 NamePlates.generalGroup.args.clickableRange.args.personal = ACH:Group(L["Personal"], nil, 1, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.clickableRange.args.personal.inline = true
-NamePlates.generalGroup.args.clickableRange.args.personal.args.personalWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 })
-NamePlates.generalGroup.args.clickableRange.args.personal.args.personalHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.personal.args.personalWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = MAX_WIDTH, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.personal.args.personalHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = MAX_HEIGHT, step = 1 })
 
 NamePlates.generalGroup.args.clickableRange.args.friendly = ACH:Group(L["Friendly"], nil, 2, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.clickableRange.args.friendly.inline = true
-NamePlates.generalGroup.args.clickableRange.args.friendly.args.friendlyWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 })
-NamePlates.generalGroup.args.clickableRange.args.friendly.args.friendlyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.friendly.args.friendlyWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = MAX_WIDTH, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.friendly.args.friendlyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = MAX_HEIGHT, step = 1 })
 
 NamePlates.generalGroup.args.clickableRange.args.enemy = ACH:Group(L["Enemy"], nil, 3, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.clickableRange.args.enemy.inline = true
-NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = 300, step = 1 })
-NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = 100, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyWidth = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = MAX_WIDTH, step = 1 })
+NamePlates.generalGroup.args.clickableRange.args.enemy.args.enemyHeight = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = MAX_HEIGHT, step = 1 })
 
 NamePlates.generalGroup.args.cutaway = ACH:Group(L["Cutaway Bars"], nil, 75, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.cutaway.args.health = ACH:Group(L["Health"], nil, 1, nil, function(info) return E.db.nameplates.cutaway.health[info[#info]] end, function(info, value) E.db.nameplates.cutaway.health[info[#info]] = value NP:ConfigureAll() end)
@@ -703,8 +695,8 @@ NamePlates.targetGroup.args.classBarGroup = ACH:Group(L["Class Bar"], nil, 13, n
 NamePlates.targetGroup.args.classBarGroup.inline = true
 NamePlates.targetGroup.args.classBarGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 NamePlates.targetGroup.args.classBarGroup.args.classColor = ACH:Toggle(L["Use Class Color"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail and E.myclass == 'DEATHKNIGHT')
-NamePlates.targetGroup.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = minWidth, max = MaxWidth('PLAYER'), step = 1 })
-NamePlates.targetGroup.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = minHeight, max = MaxHeight('PLAYER'), step = 1 })
+NamePlates.targetGroup.args.classBarGroup.args.width = ACH:Range(L["Width"], nil, 3, { min = MIN_WIDTH, max = MAX_WIDTH, step = 1 })
+NamePlates.targetGroup.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = MIN_HEIGHT, max = MAX_HEIGHT, step = 1 })
 NamePlates.targetGroup.args.classBarGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 NamePlates.targetGroup.args.classBarGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 NamePlates.targetGroup.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
