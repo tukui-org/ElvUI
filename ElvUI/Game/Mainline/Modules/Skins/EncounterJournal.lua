@@ -661,6 +661,23 @@ function S:Blizzard_EncounterJournal()
 			Contents.StartButton.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
 		end
 	end
+
+	local JourneysFrame = _G.EncounterJournalJourneysFrame
+	if JourneysFrame then
+		local LevelSkipButton = JourneysFrame.JourneyProgress and JourneysFrame.JourneyProgress.LevelSkipButton
+		if LevelSkipButton then
+			S:HandleButton(LevelSkipButton, nil, nil, nil, true)
+			LevelSkipButton:SetNormalFontObject('ElvUIFontSmall')
+			LevelSkipButton:SetHighlightFontObject('ElvUIFontSmall')
+			LevelSkipButton:SetDisabledFontObject('ElvUIFontSmall')
+		end
+
+		local OverviewButton = JourneysFrame.JourneyProgress and JourneysFrame.JourneyProgress.OverviewBtn
+		if OverviewButton then S:HandleButton(OverviewButton) end
+
+		OverviewButton = JourneysFrame.JourneyOverview and JourneysFrame.JourneyOverview.OverviewBtn
+		if OverviewButton then S:HandleButton(OverviewButton) end
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal')
