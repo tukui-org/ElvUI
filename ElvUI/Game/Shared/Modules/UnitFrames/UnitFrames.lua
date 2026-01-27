@@ -1606,7 +1606,7 @@ do
 		if not AllowedFuncs[func] then return end
 
 		local name = (not self.IsForbidden or not self:IsForbidden()) and self:GetDebugName()
-		if not name then return end
+		if E:IsSecretValue(name) or not name then return end
 
 		for _, pattern in next, SetFrameUp do
 			if strmatch(name, pattern) then
