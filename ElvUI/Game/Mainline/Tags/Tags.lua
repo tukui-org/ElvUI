@@ -116,10 +116,15 @@ do
 end
 
 local info = E.TagInfo
-info['absorbs:shortvalue'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of absorbs' }
-info['absorbs:longvalue'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of absorbs' }
-info['healabsorbs:shortvalue'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of heal absorbs' }
-info['healabsorbs:longvalue'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of heal absorbs' }
+
+info['absorbs:longvalue'] = { category = 'Health', description = 'Displays the amount of absorbs' }
+info['absorbs:shortvalue'] = { category = 'Health', description = 'Displays the amount of absorbs' }
+info['healabsorbs:longvalue'] = { category = 'Health', description = 'Displays the amount of heal absorbs' }
+info['healabsorbs:shortvalue'] = { category = 'Health', description = 'Displays the amount of heal absorbs' }
+info['missinghp:longvalue'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" }
+info['missinghp:shortvalue'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" }
+info['missingpp:longvalue'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" }
+info['missingpp:shortvalue'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" }
 info['altpowercolor'] = { category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" }
 info['spec:icon'] = { category = 'Class', description = "Displays the specialization icon of the unit, if that unit is a player" }
 info['additionalmana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max additional mana of the unit, separated by a dash (% when not full)" }
