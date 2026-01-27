@@ -29,7 +29,7 @@ function UF:PostNamePosition(frame, unit)
 	if not text:IsShown() then return end
 
 	local db = frame.db
-	if E:IsSecretValue(text) or UnitIsPlayer(unit) or (db.power and not db.power.enable) then
+	if E:IsSecretValue(frame.Name) or UnitIsPlayer(unit) or (db.power and not db.power.enable) then
 		local position = db.name.position
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.name.attachTextTo)
 		text:SetAlpha(1)
