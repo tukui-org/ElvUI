@@ -1,9 +1,0 @@
-<Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<Button name='ElvUIAuraIconTemplate' inherits='SecureActionButtonTemplate, BackdropTemplate' virtual='true'>
-		<Scripts><OnLoad>ElvUI[1]:GetModule('Auras'):CreateIcon(self)</OnLoad></Scripts>
-		<Attributes><Attribute name='type' value='cancelaura'/></Attributes>
-	</Button>
-
-	<!-- Oh, Look! A file we need to load -->
-	<Script file='Auras.lua'/>
-</Ui>

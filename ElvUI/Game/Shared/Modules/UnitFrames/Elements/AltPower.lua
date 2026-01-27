@@ -49,7 +49,7 @@ function UF:Configure_AltPowerBar(frame)
 		UF:ToggleTransparentStatusBar(false, frame.AlternativePower, frame.AlternativePower.bg)
 
 		local color = db.altPowerColor
-		frame.AlternativePower:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
+		UF:SetStatusBarColor(frame.AlternativePower, color.r, color.g, color.b)
 
 		if E.Retail then
 			frame.AlternativePower.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil

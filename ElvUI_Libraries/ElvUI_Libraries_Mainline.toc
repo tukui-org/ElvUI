@@ -18,4 +18,4 @@
 ## Category-zhTW: UI重構
 ## Group: ElvUI_Libraries
 
-Game\Mainline\!load.xml
+Game\load_mainline.xml

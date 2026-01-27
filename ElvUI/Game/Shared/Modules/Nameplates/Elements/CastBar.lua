@@ -171,11 +171,13 @@ function NP:BuildPip(stage)
 end
 
 function NP:Construct_Castbar(nameplate)
+	local castbarTexture = LSM:Fetch('statusbar', NP.db.statusbar)
+
 	local castbar = CreateFrame('StatusBar', '$parentCastbar', nameplate)
 	castbar:SetFrameStrata(nameplate:GetFrameStrata())
 	castbar:SetFrameLevel(5)
 	castbar:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
-	castbar:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
+	castbar:SetStatusBarTexture(castbarTexture)
 
 	NP.StatusBars[castbar] = 'castbar'
 	castbar.ModuleStatusBars = NP.StatusBars -- not oUF
@@ -201,6 +203,10 @@ function NP:Construct_Castbar(nameplate)
 	castbar.TargetText = castbar:CreateFontString(nil, 'OVERLAY')
 	castbar.TargetText:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	castbar.TargetText:SetJustifyH('LEFT')
+
+	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 4)
+	castbar.Shield:SetTexture(castbarTexture)
+	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
 
 	castbar.CheckInterrupt = NP.Castbar_CheckInterrupt
 	castbar.CustomDelayText = NP.Castbar_CustomDelayText
@@ -315,6 +321,14 @@ function NP:Update_Castbar(nameplate)
 			castbar.Time:Point('RIGHT', castbar, 'RIGHT', db.timeXOffset, db.timeYOffset)
 			castbar.Text:Point('LEFT', castbar, 'LEFT', db.textXOffset, db.textYOffset)
 		end
+
+		local barTexture = castbar:GetStatusBarTexture()
+		castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
+		castbar.Shield:ClearAllPoints()
+		castbar.Shield:Point('RIGHT', barTexture)
+		castbar.Shield:Point('LEFT')
+		castbar.Shield:Point('BOTTOM')
+		castbar.Shield:Point('TOP')
 
 		if db.hideTime then
 			castbar.Time:Hide()

@@ -12,6 +12,7 @@ local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostrin
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local pcall, min, next, pairs, ipairs, tinsert, strsub = pcall, min, next, pairs, ipairs, tinsert, strsub
 
+local CreateColor = CreateColor
 local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local PlaySound = PlaySound
@@ -40,6 +41,9 @@ local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
+local CURVE_RED = CreateColor(1, 0, 0)
+local CURVE_YELLOW = CreateColor(1, 1, 0)
+local CURVE_HEALTH = {}
 
 -- GLOBALS: Arena_LoadUI
 
@@ -560,16 +564,25 @@ function UF:UpdateColors()
 	ElvUF.colors.ClassBars.DRUID[1] = E:SetColorTable(ElvUF.colors.ClassBars.DRUID[1], db.classResources.DRUID[1])
 	ElvUF.colors.ClassBars.DRUID[2] = E:SetColorTable(ElvUF.colors.ClassBars.DRUID[2], db.classResources.DRUID[2])
 
-	if not ElvUF.colors.smoothHealth then ElvUF.colors.smoothHealth = {} end
-	ElvUF.colors.smoothHealth = E:SetColorTable(ElvUF.colors.smoothHealth, db.health)
-
-	if not ElvUF.colors.smooth then
-		ElvUF.colors.smooth = {1, 0, 0, 1, 1, 0}
+	local health = ElvUF.colors.health
+	local smooth = ElvUF.colors.smooth
+	if smooth then
+		smooth[7] = health.r
+		smooth[8] = health.g
+		smooth[9] = health.b
+	elseif not smooth then
+		ElvUF.colors.smooth = { CURVE_RED.r, CURVE_RED.g, CURVE_RED.b, CURVE_YELLOW.r, CURVE_YELLOW.g, CURVE_YELLOW.b, health.r, health.g, health.b }
 	end
 
-	ElvUF.colors.smooth[7] = ElvUF.colors.smoothHealth[1]
-	ElvUF.colors.smooth[8] = ElvUF.colors.smoothHealth[2]
-	ElvUF.colors.smooth[9] = ElvUF.colors.smoothHealth[3]
+	if health.SetCurve then
+		wipe(CURVE_HEALTH)
+
+		CURVE_HEALTH[0.0] = CURVE_RED
+		CURVE_HEALTH[0.5] = CURVE_YELLOW
+		CURVE_HEALTH[1.0] = health
+
+		health:SetCurve(CURVE_HEALTH)
+	end
 
 	ElvUF.colors.castColor = E:SetColorTable(ElvUF.colors.castColor, db.castColor)
 	ElvUF.colors.castNoInterrupt = E:SetColorTable(ElvUF.colors.castNoInterrupt, db.castNoInterrupt)
@@ -1606,7 +1619,7 @@ do
 		if not AllowedFuncs[func] then return end
 
 		local name = (not self.IsForbidden or not self:IsForbidden()) and self:GetDebugName()
-		if not name then return end
+		if E:IsSecretValue(name) or not name then return end
 
 		for _, pattern in next, SetFrameUp do
 			if strmatch(name, pattern) then

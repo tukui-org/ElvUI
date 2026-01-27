@@ -138,7 +138,7 @@ function TT:GameTooltip_SetDefaultAnchor(tt, parent)
 		end
 	end
 
-	if parent then
+	if parent and not parent:IsForbidden() then
 		if TT.db.cursorAnchor then
 			tt:SetOwner(parent, TT.db.cursorAnchorType, TT.db.cursorAnchorX, TT.db.cursorAnchorY)
 			return

@@ -10,4 +10,4 @@
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
 
-Game\Wrath\!load.xml
+Game\load_wrath.xml

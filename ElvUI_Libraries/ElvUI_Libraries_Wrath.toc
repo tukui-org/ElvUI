@@ -6,4 +6,4 @@
 ## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
 
-Game\Wrath\!load.xml
+Game\load_wrath.xml
