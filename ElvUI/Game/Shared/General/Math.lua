@@ -46,7 +46,7 @@ do -- Thanks ls-
 	if asianUnits then
 		long.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
 		long.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
-		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3],  significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
+		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
 	else
 		long.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'THIRD_NUMBER_CAP_NO_SPACE', significandDivisor = 1e8, fractionDivisor = 10 }
 		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e5, fractionDivisor = 10 }
@@ -60,7 +60,7 @@ do -- Thanks ls-
 	if asianUnits then
 		short.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
 		short.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3],  significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
+		short.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
 	else
 		short.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'B', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
 		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'M', significandDivisor = 1e4, fractionDivisor = 100, abbreviationIsGlobal = false }
