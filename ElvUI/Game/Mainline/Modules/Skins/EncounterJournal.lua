@@ -665,17 +665,18 @@ function S:Blizzard_EncounterJournal()
 	local JourneysFrame = _G.EncounterJournalJourneysFrame
 	if JourneysFrame then
 		local LevelSkipButton = JourneysFrame.JourneyProgress and JourneysFrame.JourneyProgress.LevelSkipButton
-		local OverviewButton1 = JourneysFrame.JourneyProgress and JourneysFrame.JourneyProgress.OverviewBtn
-		local OverviewButton2 = JourneysFrame.JourneyOverview and JourneysFrame.JourneyOverview.OverviewBtn
-
-		for _, button in next, { LevelSkipButton, OverviewButton1, OverviewButton2 } do
-			if button then
-				S:HandleButton(button, nil, nil, nil, true)
-				button:SetNormalFontObject('ElvUIFontSmall')
-				button:SetHighlightFontObject('ElvUIFontSmall')
-				button:SetDisabledFontObject('ElvUIFontSmall')
-			end
+		if LevelSkipButton then
+			S:HandleButton(LevelSkipButton, nil, nil, nil, true)
+			LevelSkipButton:SetNormalFontObject('ElvUIFontSmall')
+			LevelSkipButton:SetHighlightFontObject('ElvUIFontSmall')
+			LevelSkipButton:SetDisabledFontObject('ElvUIFontSmall')
 		end
+
+		local OverviewButton = JourneysFrame.JourneyProgress and JourneysFrame.JourneyProgress.OverviewBtn
+		if OverviewButton then S:HandleButton(OverviewButton) end
+
+		OverviewButton = JourneysFrame.JourneyOverview and JourneysFrame.JourneyOverview.OverviewBtn
+		if OverviewButton then S:HandleButton(OverviewButton) end
 	end
 end
 
