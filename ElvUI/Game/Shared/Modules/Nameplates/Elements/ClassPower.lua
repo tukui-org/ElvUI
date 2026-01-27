@@ -9,14 +9,6 @@ local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
-function NP:SetStatusBarColor(bar, r, g, b)
-	bar:SetStatusBarColor(r, g, b)
-
-	if bar.bg then
-		bar.bg:SetVertexColor(r, g, b, NP.multiplier)
-	end
-end
-
 function NP:ClassPower_UpdateColor(powerType, rune)
 	local isRunes = powerType == 'RUNES'
 	local colors, powers, fallback = UF:ClassPower_GetColor(NP.db.colors, powerType)
@@ -49,9 +41,11 @@ function NP:ClassPower_PostUpdate(current, _, needUpdate, powerType, chargedPoin
 
 		if chargedPoints then
 			local color = NP.db.colors.classResources.chargedComboPoint
-			for _, chargedIndex in next, chargedPoints do
-				self[chargedIndex]:SetStatusBarColor(color.r, color.g, color.b)
-				self[chargedIndex].bg:SetVertexColor(color.r, color.g, color.b, NP.multiplier)
+			for _, index in next, chargedPoints do
+				local charged = self[index]
+				if charged then
+					NP:SetStatusBarColor(charged, color.r, color.g, color.b, NP.multiplier)
+				end
 			end
 		end
 	end
@@ -76,9 +70,9 @@ function NP:Construct_ClassPower(nameplate)
 		bar:SetFrameLevel(6)
 		NP.StatusBars[bar] = 'classpower'
 
-		bar.bg = ClassPower:CreateTexture(barName..'bg', 'BORDER')
+		bar.bg = ClassPower:CreateTexture(barName..'bg'..i, 'BORDER')
 		bar.bg:SetTexture(texture)
-		bar.bg:SetAllPoints()
+		bar.bg:SetAllPoints(bar)
 
 		if nameplate == NP.TestFrame then
 			local combo = NP.db.colors.classResources.comboPoints[i]
@@ -212,7 +206,7 @@ function NP:Construct_Runes(nameplate)
 		local barName = containerName..i
 		local rune = CreateFrame('StatusBar', barName, Runes)
 		rune:SetStatusBarTexture(texture)
-		rune:SetStatusBarColor(color.r, color.g, color.b)
+		NP:SetStatusBarColor(rune, color.r, color.g, color.b)
 		rune.PostUpdateColor = NP.Runes_UpdateChargedColor
 		rune.__owner = Runes
 		NP.StatusBars[rune] = 'runes'
