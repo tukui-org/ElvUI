@@ -1340,7 +1340,7 @@ function E:GetClassificationColor(unit)
 
 	local classification = UnitClassification(unit)
 	local unitLevel = E:UnitEffectiveLevel(unit)
-	local maxLevel = E.expansionLevel
+	local maxLevel = E.expansionLevelMax
 
 	if classification == 'worldboss' or classification == 'rareelite' or classification == 'rare' then
 		return classification
