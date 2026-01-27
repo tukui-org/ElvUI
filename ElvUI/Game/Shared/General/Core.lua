@@ -622,7 +622,8 @@ do
 			'Healers-Have-To-Die',
 			'Kui_Nameplates',
 			'Plater',
-			'Aloft'
+			'Aloft',
+			'Platynator'
 		},
 		Minimap = {
 			info = {
