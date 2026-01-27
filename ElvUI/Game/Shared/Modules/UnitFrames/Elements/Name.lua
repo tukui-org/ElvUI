@@ -30,7 +30,7 @@ function UF:PostNamePosition(frame, unit)
 
 	local db = frame.db
 	local value = text:GetText() -- get secret variable to test
-	if (db.power and db.power.enable) and UnitIsPlayer(unit) and E:NotSecretValue(value) then
+	if (db.power and db.power.enable) and E:NotSecretValue(value) and not UnitIsPlayer(unit) then
 		text:SetAlpha(db.power.hideonnpc and 0 or 1)
 
 		frame.Name:ClearAllPoints()
