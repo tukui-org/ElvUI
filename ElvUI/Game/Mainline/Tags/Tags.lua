@@ -12,6 +12,8 @@ local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitGetTotalAbsorbs = UnitGetTotalAbsorbs
 local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
+local UnitHealthMissing = UnitHealthMissing1
+local UnitPowerMissing = UnitPowerMissing
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 
@@ -39,7 +41,17 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 		return E:AbbreviateNumbers(healAbsorb, abbrev)
 	end)
 
-	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+	E:AddTag(format('missinghp:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+		local healthMissing = UnitHealthMissing(unit)
+		return E:AbbreviateNumbers(healthMissing, abbrev)
+	end)
+
+	E:AddTag(format('missingpp:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+		local powerMissing = UnitPowerMissing(unit)
+		return E:AbbreviateNumbers(powerMissing, abbrev)
+	end)
+
+	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_MAXPOWER UNIT_POWER_FREQUENT', function(unit)
 		local currentHealth = UnitHealth(unit)
 		return E:AbbreviateNumbers(currentHealth, abbrev)
 	end)
