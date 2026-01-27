@@ -284,7 +284,8 @@ local function Update(self, element, event, unit, powerType)
 			if devourerDemon then
 				bar:SetValue(current / powerMax)
 			elseif classPowerID == POWERTYPE_MANA then
-				bar:SetValue((powerMax <= 0 and 0) or current / powerMax)
+				bar:SetValue(current)
+				bar:SetMinMaxValues(0, powerMax)
 			elseif warlockDest and i == floor(current + 1) then
 				bar:SetValue(current % 1)
 			else
@@ -360,7 +361,7 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'MONK' then
 		classPowerID = (oUF.isMists or currentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or nil
 	elseif myClass == 'SHAMAN' then
-		classPowerID = oUF.isRetail and (currentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM) or nil
+		classPowerID = oUF.isRetail and (currentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM or currentSpec == SPEC_SHAMAN_ELEMENTAL and POWERTYPE_MANA) or nil
 	elseif myClass == 'EVOKER' and not element.which then
 		classPowerID = POWERTYPE_ESSENCE
 	elseif myClass == 'EVOKER' and element.which then
@@ -372,7 +373,7 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'MAGE' then
 		classPowerID = (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
 	elseif myClass == 'PRIEST' then
-		classPowerID = (oUF.isMists and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
+		classPowerID = (oUF.isRetail and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
 	end
 
 	if (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI('player') then

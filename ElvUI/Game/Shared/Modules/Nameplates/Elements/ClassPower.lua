@@ -37,12 +37,8 @@ function NP:ClassPower_UpdateColor(powerType, rune)
 	end
 end
 
-function NP:ClassPower_PostUpdate(Cur, _, needUpdate, powerType, chargedPoints)
-	if Cur and Cur > 0 then
-		self:Show()
-	else
-		self:Hide()
-	end
+function NP:ClassPower_PostUpdate(current, _, needUpdate, powerType, chargedPoints)
+	self:SetShown(E:IsSecretValue(current) or (current and current > 0))
 
 	if needUpdate then
 		NP:Update_ClassPower(self.__owner)

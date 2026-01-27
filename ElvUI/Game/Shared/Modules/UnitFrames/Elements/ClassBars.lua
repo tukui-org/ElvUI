@@ -437,26 +437,16 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 	local db = frame.db
 	if not db then return end
 
-	local isShown = self:IsShown()
-	local stateChanged
+	local wasShown = self:IsShown()
+	local shouldShow = frame.USE_CLASSBAR and (maxBars and maxBars ~= 0) and (not db.classbar.autoHide or (E:IsSecretValue(current) or current ~= 0))
+	self:SetShown(shouldShow)
 
-	if not frame.USE_CLASSBAR or (current == 0 and db.classbar.autoHide) or maxBars == 0 or not maxBars then
-		self:Hide()
-		if isShown then
-			stateChanged = true
-		end
-	else
-		self:Show()
-		if not isShown then
-			stateChanged = true
-		end
-	end
-
-	if maxBars and maxBars > 0 and hasMaxChanged then
+	if (maxBars and maxBars > 0) and hasMaxChanged then
 		frame.MAX_CLASS_BAR = maxBars
-		UF:Configure_ClassBar(frame, current)
-	elseif stateChanged then
-		UF:Configure_ClassBar(frame, current)
+
+		UF:Configure_ClassBar(frame)
+	elseif (not shouldShow and wasShown) or (shouldShow and not wasShown) then
+		UF:Configure_ClassBar(frame)
 	end
 
 	for i, bar in ipairs(self) do
