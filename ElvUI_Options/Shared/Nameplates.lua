@@ -600,10 +600,24 @@ do
 	end
 end
 
-NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 6, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
-NamePlates.colorsGroup.args.reactions.inline = true
-for i = 1, 8 do
-	NamePlates.colorsGroup.args.reactions.args[''..i] = ACH:Color(C.Values.Roman[i], nil, i)
+do
+	local names = {
+		L["FACTION_STANDING_LABEL1"],
+		L["FACTION_STANDING_LABEL2"],
+		L["FACTION_STANDING_LABEL3"],
+		L["FACTION_STANDING_LABEL4"],
+		L["FACTION_STANDING_LABEL5"],
+		L["FACTION_STANDING_LABEL6"],
+		L["FACTION_STANDING_LABEL7"],
+		L["FACTION_STANDING_LABEL8"]
+	}
+
+	NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 6, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+	NamePlates.colorsGroup.args.reactions.inline = true
+
+	for i = 1, 8 do
+		NamePlates.colorsGroup.args.reactions.args[''..i] = ACH:Color(names[i], nil, i)
+	end
 end
 
 NamePlates.colorsGroup.args.healPrediction = ACH:Group(L["Heal Prediction"], nil, 7, nil, function(info) local t, d = E.db.nameplates.colors.healPrediction[info[#info]], P.nameplates.colors.healPrediction[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.healPrediction[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
