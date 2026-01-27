@@ -4,6 +4,7 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local next = next
+local ceil = ceil
 local strmatch = strmatch
 local tonumber = tonumber
 
@@ -307,7 +308,7 @@ function A:UpdateTempEnchant(button, index, expiration)
 		button.texture:SetTexture(GetInventoryItemTexture('player', index))
 
 		local remain = (expiration * 0.001) or 0
-		local duration = (remain <= 3600 and remain > 1800) and 3600 or (remain <= 1800 and remain > 600) and 1800 or 600
+		local duration = (remain <= 600 and 600) or (remain <= 1800 and 1800) or (ceil(remain / 3600)*3600)
 		local expire = remain + GetTime()
 
 		A:SetAuraTime(button, expire, duration)
