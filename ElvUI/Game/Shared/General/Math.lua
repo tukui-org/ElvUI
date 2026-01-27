@@ -38,8 +38,8 @@ do -- Thanks ls-
 		zhTW = { '兆', '億', '萬' },
 		koKR = { '조', '억', '만' },
 	}
-	local asianUnits = asianUnitsCollection[E.locale]
 
+	local asianUnits = asianUnitsCollection[E.locale]
 	local long = { breakpoints = {} }
 	E.Abbreviate.long = long
 
@@ -74,18 +74,20 @@ do -- Thanks ls-
 		short.config = CreateAbbreviateConfig(short.breakpoints)
 		short.breakpoints = nil -- create the configuration for short numbers
 	end
-end
 
-function E:AbbreviateNumbers(value, data)
-	if type(value) == 'string' then
-		return value -- we cant continue with strings
+	function E:AbbreviateNumbers(value, data)
+		if type(value) == 'string' then
+			return value -- we cant continue with strings
+		end
+
+		local str = AbbreviateNumbers(value, data)
+		if asianUnits then
+			return str
+		else -- behaves like ALN, but actually works
+			local num = tonumber(str)
+			return num and BreakUpLargeNumbers(num) or str
+		end
 	end
-
-	local str = AbbreviateNumbers(value, data)
-	local num = tonumber(str)
-
-	-- behaves like ALN, but actually works
-	return num and BreakUpLargeNumbers(num) or str
 end
 
 function E:BuildPrefixValues()
