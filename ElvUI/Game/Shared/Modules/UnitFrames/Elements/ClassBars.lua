@@ -263,6 +263,7 @@ function UF:Configure_ClassBar(frame)
 
 			if thirdPower == frame.ThirdPower then
 				local altPower = E.db.unitframe.altManaPowers[E.myclass]
+
 				thirdPower.__allowPower = altPower.EbonMight or nil
 				thirdPower.smoothing = StatusBarInterpolation.ExponentialEaseOut
 			end
