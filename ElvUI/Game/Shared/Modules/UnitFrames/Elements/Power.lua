@@ -289,14 +289,14 @@ do
 		if predictionDB then
 			local c = predictionDB.enable and predictionDB.color
 			if c then
-				predictionBar:GetStatusBarTexture():SetVertexColor(c.r, c.g, c.b, c.a)
+				UF:SetStatusBarColor(predictionBar, c.r, c.g, c.b)
 			else
 				if not r and color then
 					r, g, b = color:GetRGB()
 				end
 
 				if r then
-					predictionBar:GetStatusBarTexture():SetVertexColor(r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
+					UF:SetStatusBarColor(predictionBar, r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
 				end
 			end
 		end

@@ -223,14 +223,14 @@ function UF:Configure_ClassBar(frame)
 
 		local lr, lg, lb = unpack(ElvUF.colors.ClassBars.DRUID[1])
 		bars.LunarBar:SetMinMaxValues(-1, 1)
-		bars.LunarBar:GetStatusBarTexture():SetVertexColor(lr, lg, lb)
+		UF:SetStatusBarColor(bars.LunarBar, lr, lg, lb)
 		bars.LunarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.LunarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		E:SetSmoothing(bars.LunarBar, db.classbar and db.classbar.smoothbars)
 
 		local sr, sg, sb = unpack(ElvUF.colors.ClassBars.DRUID[2])
 		bars.SolarBar:SetMinMaxValues(-1, 1)
-		bars.SolarBar:GetStatusBarTexture():SetVertexColor(sr, sg, sb)
+		UF:SetStatusBarColor(bars.SolarBar, sr, sg, sb)
 		bars.SolarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.SolarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		bars.SolarBar:ClearAllPoints()
@@ -263,6 +263,7 @@ function UF:Configure_ClassBar(frame)
 
 			if thirdPower == frame.ThirdPower then
 				local altPower = E.db.unitframe.altManaPowers[E.myclass]
+
 				thirdPower.__allowPower = altPower.EbonMight or nil
 				thirdPower.smoothing = StatusBarInterpolation.ExponentialEaseOut
 			end
@@ -436,26 +437,16 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 	local db = frame.db
 	if not db then return end
 
-	local isShown = self:IsShown()
-	local stateChanged
+	local wasShown = self:IsShown()
+	local shouldShow = frame.USE_CLASSBAR and (maxBars and maxBars ~= 0) and (not db.classbar.autoHide or (E:IsSecretValue(current) or current ~= 0))
+	self:SetShown(shouldShow)
 
-	if not frame.USE_CLASSBAR or (current == 0 and db.classbar.autoHide) or maxBars == 0 or not maxBars then
-		self:Hide()
-		if isShown then
-			stateChanged = true
-		end
-	else
-		self:Show()
-		if not isShown then
-			stateChanged = true
-		end
-	end
-
-	if maxBars and maxBars > 0 and hasMaxChanged then
+	if (maxBars and maxBars > 0) and hasMaxChanged then
 		frame.MAX_CLASS_BAR = maxBars
-		UF:Configure_ClassBar(frame, current)
-	elseif stateChanged then
-		UF:Configure_ClassBar(frame, current)
+
+		UF:Configure_ClassBar(frame)
+	elseif (not shouldShow and wasShown) or (shouldShow and not wasShown) then
+		UF:Configure_ClassBar(frame)
 	end
 
 	for i, bar in ipairs(self) do
@@ -474,8 +465,7 @@ function UF:UpdateClassBar(current, maxBars, hasMaxChanged, powerType, chargedPo
 			for _, cIndex in next, chargedPoints do
 				local cPoint = self[cIndex]
 				if cPoint then
-					cPoint:GetStatusBarTexture():SetVertexColor(color.r, color.g, color.b)
-					cPoint.bg:SetVertexColor(color.r, color.g, color.b, UF.multiplier)
+					UF:SetStatusBarColor(cPoint, color.r, color.g, color.b)
 				end
 			end
 		end
@@ -621,10 +611,10 @@ function UF:PostColorAdditionalPower(unit, color)
 	if bar then
 		local pred = UF.db.colors and UF.db.colors.powerPrediction
 		if pred and pred.enable then
-			bar:GetStatusBarTexture():SetVertexColor(pred.additional.r, pred.additional.g, pred.additional.b, pred.additional.a)
+			UF:SetStatusBarColor(bar, pred.additional.r, pred.additional.g, pred.additional.b)
 		else
 			local r, g, b = color:GetRGB()
-			bar:GetStatusBarTexture():SetVertexColor(r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
+			UF:SetStatusBarColor(bar, r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
 		end
 	end
 end

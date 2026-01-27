@@ -255,7 +255,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.textGroup.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.textGroup.args.duration.inline = true
 
-	config.args.sourceGroup = ACH:Group(E.NewSign..L["Source Text"], nil, 40, nil, function(info) return E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.sourceGroup = ACH:Group(L["Source Text"], nil, 40, nil, function(info) return E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.sourceGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.sourceGroup.args.class = ACH:Toggle(L["Use Class Color"], nil, 2)
 	config.args.sourceGroup.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
@@ -1073,7 +1073,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
 		config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
-		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'EVOKER' or E.myclass == 'DRUID' or E.myclass == 'MONK') end)
+		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'EVOKER' or E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) end)
 		config.args.additionalGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 15, max = 1000, step = 1 })
 		config.args.additionalGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 		config.args.additionalGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
@@ -1359,9 +1359,23 @@ Colors.auraBars.args.auraBarBuff = ACH:Color(L["Buffs"], nil, 10)
 Colors.auraBars.args.auraBarDebuff = ACH:Color(L["Debuffs"], nil, 11)
 Colors.auraBars.args.auraBarTurtleColor = ACH:Color(L["Turtle Color"], nil, 12)
 
-Colors.reactionGroup = ACH:Group(L["Reactions"], nil, nil, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.reaction[i], P.unitframe.colors.reaction[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.unitframe.colors.reaction[i] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
-for i = 1, 8 do
-	Colors.reactionGroup.args[''..i] = ACH:Color(C.Values.Roman[i], nil, i)
+do
+	local names = {
+		L["FACTION_STANDING_LABEL1"],
+		L["FACTION_STANDING_LABEL2"],
+		L["FACTION_STANDING_LABEL3"],
+		L["FACTION_STANDING_LABEL4"],
+		L["FACTION_STANDING_LABEL5"],
+		L["FACTION_STANDING_LABEL6"],
+		L["FACTION_STANDING_LABEL7"],
+		L["FACTION_STANDING_LABEL8"]
+	}
+
+	Colors.reactionGroup = ACH:Group(E.NewSign..L["Reactions"], nil, nil, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.reaction[i], P.unitframe.colors.reaction[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.unitframe.colors.reaction[i] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+
+	for i = 1, 8 do
+		Colors.reactionGroup.args[''..i] = ACH:Color(names[i], nil, i)
+	end
 end
 
 Colors.happiness = ACH:Group(L["Pet Happiness"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.happiness[n], P.unitframe.colors.happiness[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.happiness[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Classic or E.TBC))

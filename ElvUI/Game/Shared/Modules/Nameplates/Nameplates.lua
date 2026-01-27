@@ -955,6 +955,14 @@ function NP:UpdateColors()
 	NP.Colors.selection[13] = E:SetColorTable(NP.Colors.selection[13], NP.db.colors.selection[13])
 end
 
+function NP:SetStatusBarColor(bar, r, g, b)
+	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
+
+	if bar.bg then
+		bar.bg:SetVertexColor(r, g, b, NP.multiplier)
+	end
+end
+
 function NP:Initialize()
 	if not E.private.nameplates.enable then return end
 	NP.Initialized = true
