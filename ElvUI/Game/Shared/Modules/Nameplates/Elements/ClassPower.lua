@@ -211,10 +211,10 @@ function NP:Construct_Runes(nameplate)
 		rune.__owner = Runes
 		NP.StatusBars[rune] = 'runes'
 
-		rune.bg = rune:CreateTexture(barName..'bg', 'BORDER')
+		rune.bg = rune:CreateTexture(barName..'bg'..i, 'BORDER')
 		rune.bg:SetVertexColor(color.r, color.g, color.b, NP.multiplier)
 		rune.bg:SetTexture(texture)
-		rune.bg:SetAllPoints()
+		rune.bg:SetAllPoints(rune)
 
 		Runes[i] = rune
 	end
