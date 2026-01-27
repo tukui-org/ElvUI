@@ -36,7 +36,7 @@ General.args.socialQueueMessages = ACH:Toggle(L["Quick Join Messages"], L["Show 
 General.args.copyChatLines = ACH:Toggle(L["Copy Chat Lines"], L["Adds an arrow infront of the chat lines to copy the entire line."], 12)
 General.args.hideCopyButton = ACH:Toggle(L["Hide Copy Button"], nil, 13, nil, nil, nil, nil, function(_, value) E.db.chat.hideCopyButton = value CH:ToggleCopyChatButtons() end)
 General.args.mentorshipIcon = ACH:Toggle(L["Mentorship Icon"], L["Display Mentorship status icon before names."], 14, nil, nil, nil, nil, nil, nil, not E.Retail)
-General.args.recentAllyIcon = ACH:Toggle(E.NewSign..L["Recent Ally Icon"], L["Display Recent Ally icon after names in chat (excludes whispers and emotes)."], 15, nil, nil, nil, nil, nil, nil, not E.Retail)
+General.args.recentAllyIcon = ACH:Toggle(L["Recent Ally Icon"], L["Display Recent Ally icon after names in chat (excludes whispers and emotes)."], 15, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.args.timerunningIcon = ACH:Toggle(L["Timerunning Icon"], L["Display Timerunning seasonal icon before names."], 16, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.args.spacer = ACH:Spacer(20, 'full')
 General.args.throttleInterval = ACH:Range(L["Spam Interval"], L["Prevent the same messages from displaying in chat more than once within this set amount of seconds, set to zero to disable."], 21, { min = 0, max = 120, step = 1 }, nil, nil, function(info, value) E.db.chat[info[#info]] = value if value == 0 then CH:DisableChatThrottle() end end)

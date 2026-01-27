@@ -47,7 +47,7 @@ local function Group(order, db, label)
 end
 
 E.Options.args.cooldown = ACH:Group(L["Cooldown Text"], nil, 2, 'tab', function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; E:CooldownSettings('global'); end)
-E.Options.args.cooldown.args.intro = ACH:Description(L["COOLDOWN_DESC"], 0)
+E.Options.args.cooldown.args.intro = ACH:Description(E.NewSign..L["COOLDOWN_DESC"], 0)
 E.Options.args.cooldown.args.enable = ACH:Toggle(L["Enable"], L["Display cooldown text on anything with the cooldown spiral."], 1, nil, nil, nil, nil, function(info, value) E.db.cooldown[info[#info]] = value; E:CooldownSettings('global'); E.ShowPopup = true end)
 
 Group(10, 'global',		L["Global"])

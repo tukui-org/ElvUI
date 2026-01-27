@@ -87,7 +87,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.textGroup.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'nameplates') end)
 	group.args.textGroup.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 
-	group.args.sourceGroup = ACH:Group(E.NewSign..L["Source Text"], nil, 20, nil, function(info) return E.db.nameplates.units[unit][auraType].sourceText[info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].sourceText[info[#info]] = value NP:ConfigureAll() end)
+	group.args.sourceGroup = ACH:Group(L["Source Text"], nil, 20, nil, function(info) return E.db.nameplates.units[unit][auraType].sourceText[info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].sourceText[info[#info]] = value NP:ConfigureAll() end)
 	group.args.sourceGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.sourceGroup.args.class = ACH:Toggle(L["Use Class Color"], nil, 2)
 	group.args.sourceGroup.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
@@ -170,7 +170,7 @@ local function GetUnitSettings(unit, name)
 	group.args.healthGroup.args.textGroup.args.format = ACH:Input(L["Text Format"], nil, 6, nil, TEXT_FORMAT_WIDTH)
 	group.args.healthGroup.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].health.text.format = P.nameplates.units[unit].health.text.format NP:ConfigureAll() end)
 
-	group.args.healthGroup.args.useClassificationColor = ACH:Toggle(L["Use Classification Color"], nil, 10)
+	group.args.healthGroup.args.useClassificationColor = ACH:Toggle(E.NewSign..L["Use Classification Color"], nil, 10)
 
 	group.args.healthGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 20)
 	group.args.healthGroup.args.textGroup.args.fontGroup.inline = true
