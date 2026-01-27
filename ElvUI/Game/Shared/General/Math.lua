@@ -33,15 +33,20 @@ E.GetFormattedTextStyles = {
 }
 
 do -- Thanks ls-
-	local locale = E.locale
+	local asianUnitsCollection = {
+		zhCN = { '兆', '亿', '万' },
+		zhTW = { '兆', '億', '萬' },
+		koKR = { '조', '억', '만' },
+	}
+	local asianUnits = asianUnitsCollection[E.locale]
+
 	local long = { breakpoints = {} }
 	E.Abbreviate.long = long
 
-	local kr, cn, tw = locale == 'koKR', locale == 'zhCN', locale == 'zhTW'
-
-	if kr or cn or tw then
-		long.breakpoints[1] = { breakpoint = 1e8, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e7, fractionDivisor = 10 }
-		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'FIRST_NUMBER_CAP_NO_SPACE',  significandDivisor = 1e3, fractionDivisor = 10 }
+	if asianUnits then
+		long.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
+		long.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
+		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3],  significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
 	else
 		long.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'THIRD_NUMBER_CAP_NO_SPACE', significandDivisor = 1e8, fractionDivisor = 10 }
 		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e5, fractionDivisor = 10 }
@@ -52,9 +57,10 @@ do -- Thanks ls-
 	local short = { breakpoints = {} }
 	E.Abbreviate.short = short
 
-	if cn or tw then
-		short.breakpoints[1] = { breakpoint = 1e8, abbreviation = cn and '亿' or '万', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = tw and '億' or '萬',  significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
+	if asianUnits then
+		short.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
+		short.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
+		short.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3],  significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
 	else
 		short.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'B', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
 		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'M', significandDivisor = 1e4, fractionDivisor = 100, abbreviationIsGlobal = false }
