@@ -1,0 +1,57 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='UnitFrames\UnitFrames.lua'/>
+	<Script file='UnitFrames\ConfigEnviroment.lua'/>
+
+	<Script file='UnitFrames\Elements\AltPower.lua'/>
+	<Script file='UnitFrames\Elements\AuraBars.lua'/>
+	<Script file='UnitFrames\Elements\Auras.lua'/>
+	<Script file='UnitFrames\Elements\AuraHighlight.lua'/>
+	<Script file='UnitFrames\Elements\BuffIndicator.lua'/>
+	<Script file='UnitFrames\Elements\CastBar.lua'/>
+	<Script file='UnitFrames\Elements\ClassBars.lua'/>
+	<Script file='UnitFrames\Elements\CombatIndicator.lua'/>
+	<Script file='UnitFrames\Elements\CustomText.lua'/>
+	<Script file='UnitFrames\Elements\Cutaway.lua'/>
+	<Script file='UnitFrames\Elements\HealPrediction.lua'/>
+	<Script file='UnitFrames\Elements\Health.lua'/>
+	<Script file='UnitFrames\Elements\InfoPanel.lua'/>
+	<Script file='UnitFrames\Elements\Name.lua'/>
+	<Script file='UnitFrames\Elements\PhaseIndicator.lua'/>
+	<Script file='UnitFrames\Elements\PartyIndicator.lua'/>
+	<Script file='UnitFrames\Elements\Portrait.lua'/>
+	<Script file='UnitFrames\Elements\Power.lua'/>
+	<Script file='UnitFrames\Elements\PowerPrediction.lua'/>
+	<Script file='UnitFrames\Elements\PVPIcon.lua'/>
+	<Script file='UnitFrames\Elements\PVPClassificationIndicator.lua'/>
+	<Script file='UnitFrames\Elements\PVPText.lua'/>
+	<Script file='UnitFrames\Elements\PVPSpecIcon.lua'/>
+	<Script file='UnitFrames\Elements\RaidDebuffs.lua'/>
+	<Script file='UnitFrames\Elements\RaidIcon.lua'/>
+	<Script file='UnitFrames\Elements\RaidRoleIcons.lua'/>
+	<Script file='UnitFrames\Elements\Range.lua'/>
+	<Script file='UnitFrames\Elements\ReadyCheckIcon.lua'/>
+	<Script file='UnitFrames\Elements\RestingIndicator.lua'/>
+	<Script file='UnitFrames\Elements\ResurrectionIcon.lua'/>
+	<Script file='UnitFrames\Elements\SummonIndicator.lua'/>
+	<Script file='UnitFrames\Elements\RoleIcons.lua'/>
+	<Script file='UnitFrames\Elements\FrameGlow.lua'/>
+	<Script file='UnitFrames\Elements\Threat.lua'/>
+	<Script file='UnitFrames\Elements\Trinket.lua'/>
+
+	<Script file='UnitFrames\Units\Player.lua'/>
+	<Script file='UnitFrames\Units\Target.lua'/>
+	<Script file='UnitFrames\Units\TargetTarget.lua'/>
+	<Script file='UnitFrames\Units\Focus.lua'/>
+	<Script file='UnitFrames\Units\FocusTarget.lua'/>
+	<Script file='UnitFrames\Units\Pet.lua'/>
+	<Script file='UnitFrames\Units\PetTarget.lua'/>
+	<Script file='UnitFrames\Units\TargetTargetTarget.lua'/>
+
+	<Script file='UnitFrames\Groups\Party.lua'/>
+	<Script file='UnitFrames\Groups\Raid.lua'/>
+	<Script file='UnitFrames\Groups\Arena.lua'/>
+	<Script file='UnitFrames\Groups\Boss.lua'/>
+	<Script file='UnitFrames\Groups\Tank.lua'/>
+	<Script file='UnitFrames\Groups\Assist.lua'/>
+	<Script file='UnitFrames\Groups\RaidPets.lua'/>
+</Ui>

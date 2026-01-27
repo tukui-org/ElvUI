@@ -23,4 +23,4 @@
 ## Category-zhTW: UI重構
 ## Group: ElvUI
 
-Game\TBC\!load.xml
+Game\load_tbc.xml

@@ -19,4 +19,4 @@
 ## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
 
-Game\TBC\!load.xml
+Game\load_tbc.xml

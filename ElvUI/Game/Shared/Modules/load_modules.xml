@@ -1,0 +1,105 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='Maps\Minimap.lua'/>
+	<Script file='Maps\Worldmap.lua'/>
+
+	<Script file='Auras\Auras.lua'/>
+
+	<Script file='Nameplates\Nameplates.lua'/> <!-- main file -->
+	<Script file='Nameplates\Elements\Auras.lua'/>
+	<Script file='Nameplates\Elements\CastBar.lua'/>
+	<Script file='Nameplates\Elements\ClassPower.lua'/>
+	<Script file='Nameplates\Elements\Health.lua'/>
+	<Script file='Nameplates\Elements\Plugins.lua'/>
+	<Script file='Nameplates\Elements\Power.lua'/>
+	<Script file='Nameplates\Elements\Portraits.lua'/>
+	<Script file='Nameplates\Elements\PvP.lua'/>
+	<Script file='Nameplates\Elements\RaidTargetIndicator.lua'/>
+	<Script file='Nameplates\Elements\Tags.lua'/>
+	<Script file='Nameplates\Elements\Threat.lua'/>
+	<Script file='Nameplates\Plugins\ClassificationIndicator.lua'/>
+	<Script file='Nameplates\Plugins\Highlight.lua'/>
+	<Script file='Nameplates\Plugins\QuestIcons.lua'/>
+	<Script file='Nameplates\Plugins\TargetIndicator.lua'/>
+
+	<Script file='Tooltip\Tooltip.lua'/>
+
+	<Script file='DataTexts\DataTexts.lua'/> <!-- main file -->
+	<Script file='DataTexts\Agility.lua'/>
+	<Script file='DataTexts\Armor.lua'/>
+	<Script file='DataTexts\AttackPower.lua'/>
+	<Script file='DataTexts\Bags.lua'/>
+	<Script file='DataTexts\Battlegrounds.lua'/>
+	<Script file='DataTexts\CombatIndicator.lua'/>
+	<Script file='DataTexts\CombatTime.lua'/>
+	<Script file='DataTexts\Coordinates.lua'/>
+	<Script file='DataTexts\Crit.lua'/>
+	<Script file='DataTexts\CustomCurrency.lua'/>
+	<Script file='DataTexts\Date.lua'/>
+	<Script file='DataTexts\DPS.lua'/>
+	<Script file='DataTexts\Durability.lua'/>
+	<Script file='DataTexts\ElvUI.lua'/>
+	<Script file='DataTexts\Experience.lua'/>
+	<Script file='DataTexts\Friends.lua'/>
+	<Script file='DataTexts\Gold.lua'/>
+	<Script file='DataTexts\Guild.lua'/>
+	<Script file='DataTexts\Haste.lua'/>
+	<Script file='DataTexts\HPS.lua'/>
+	<Script file='DataTexts\Intellect.lua'/>
+	<Script file='DataTexts\ItemLevel.lua'/>
+	<Script file='DataTexts\Location.lua'/>
+	<Script file='DataTexts\Mail.lua'/>
+	<Script file='DataTexts\ManaRegen.lua'/>
+	<Script file='DataTexts\MicroBar.lua'/>
+	<Script file='DataTexts\MovementSpeed.lua'/>
+	<Script file='DataTexts\Quests.lua'/>
+	<Script file='DataTexts\Reputation.lua'/>
+	<Script file='DataTexts\Stamina.lua'/>
+	<Script file='DataTexts\Strength.lua'/>
+	<Script file='DataTexts\System.lua'/>
+	<Script file='DataTexts\Time.lua'/>
+	<Script file='DataTexts\Volume.lua'/>
+
+	<Script file='DataBars\DataBars.lua'/>
+	<Script file='DataBars\Experience.lua'/>
+	<Script file='DataBars\Reputation.lua'/>
+	<Script file='DataBars\Threat.lua'/>
+
+	<Script file='ActionBars\ActionBars.lua'/>
+	<Script file='ActionBars\PetBar.lua'/>
+	<Script file='ActionBars\StanceBar.lua'/>
+	<Script file='ActionBars\Bind.lua'/>
+	<Script file='ActionBars\MicroBar.lua'/>
+
+	<Include file='load_unitframes.xml'/> <!-- yes it gets its own xml -->
+
+	<Script file='Chat\Chat.lua'/>
+
+	<Script file='Bags\Bags.lua'/>
+	<Script file='Bags\BagBar.lua'/>
+	<Script file='Bags\Sort.lua'/>
+
+	<Script file='Blizzard\Blizzard.lua'/>
+	<Script file='Blizzard\AlertFrame.lua'/>
+	<Script file='Blizzard\CaptureBar.lua'/>
+	<Script file='Blizzard\GuildBank.lua'/>
+	<Script file='Blizzard\TalkingHeadFrame.lua'/>
+	<Script file='Blizzard\TimerTracker.lua'/>
+	<Script file='Blizzard\TutorialFrames.lua'/>
+	<Script file='Blizzard\Vehicle.lua'/>
+	<Script file='Blizzard\WidgetsUI.lua'/>
+
+	<Script file='Misc\Misc.lua'/>
+	<Script file='Misc\DebugTools.lua'/>
+	<Script file='Misc\ChatBubbles.lua'/>
+	<Script file='Misc\RaidMarker.lua'/>
+	<Script file='Misc\Loot.lua'/>
+	<Script file='Misc\LootRoll.lua'/>
+	<Script file='Misc\TotemTracker.lua'/>
+	<Script file='Misc\InfoItemLevel.lua'/>
+	<Script file='Misc\RaidUtility.lua'/>
+	<Script file='Misc\QueueStatus.lua'/>
+	<Script file='Misc\AFK.lua'/>
+
+	<Script file='Skins\Skins.lua'/>
+	<Script file='Skins\Ace3.lua'/>
+</Ui>
