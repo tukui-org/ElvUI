@@ -190,7 +190,10 @@ do
 	end
 
 	-- so we can retrigger the curves
-	E:SecureHook(E.Libs.Dispel, 'ListUpdated', E.DispelListUpdated)
+	local dispel = E.Libs.Dispel
+	if dispel and dispel.ListUpdated then
+		E:SecureHook(dispel, 'ListUpdated', E.DispelListUpdated)
+	end
 
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM
