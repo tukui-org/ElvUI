@@ -665,21 +665,27 @@ function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
 	end
 end
 
+local function SetTooltipBorder(tt, r, g, b)
+	local target = tt.backdrop or tt -- prefer ElvUI backdrop if it exists
+
+	if target.SetBackdropBorderColor then
+		target:SetBackdropBorderColor(r, g, b)
+	elseif tt.NineSlice and tt.NineSlice.SetBorderColor then
+		tt.NineSlice:SetBorderColor(r, g, b)
+	end
+end
+
 function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt:IsForbidden() then return end
-
-	if tt.qualityChanged then
-		tt.qualityChanged = nil
-
-		local r, g, b = 1, 1, 1
-		if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
-			r, g, b = unpack(E.media.bordercolor)
-		end
-
-		tt:SetBackdropBorderColor(r, g, b)
-	end
-
+	
+	tt.qualityChanged = nil
 	tt.ItemLevelShown = nil
+	
+	local r, g, b = 1, 1, 1
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
+		r, g, b = unpack(E.media.bordercolor)
+	end
+	SetTooltipBorder(tt, r, g, b)
 
 	if tt.ItemTooltip then
 		tt.ItemTooltip:Hide()
@@ -736,9 +742,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 			local quality = GetItemQualityByID(link)
 			if quality and quality > 1 then
 				local r, g, b = E:GetItemQualityColor(quality)
-
-				self:SetBackdropBorderColor(r, g, b)
-
+				SetTooltipBorder(self, r, g, b)
 				self.qualityChanged = true
 			end
 		end
@@ -1110,7 +1114,12 @@ function TT:Initialize()
 	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
-
+	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
+	TT:SecureHookScript(_G.ShoppingTooltip1, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
+	TT:SecureHookScript(_G.ShoppingTooltip2, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
+	TT:SecureHook(_G.ShoppingTooltip1, 'Hide', 'GameTooltip_OnTooltipCleared')
+	TT:SecureHook(_G.ShoppingTooltip2, 'Hide', 'GameTooltip_OnTooltipCleared')
+	
 	if GameTooltip.SetUnitBuffByAuraInstanceID then -- not yet on Era or Mists
 		TT:SecureHook(GameTooltip, 'SetUnitBuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
 		TT:SecureHook(GameTooltip, 'SetUnitDebuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
