@@ -156,11 +156,12 @@ E.GemTypeInfo = {
 	Fiber			= { r = 0.90, g = 0.80, b = 0.50, a = 1 },
 }
 
--- Midnight aura colors
-E.ColorCurves = { auras = false, buffs = false, debuffs = false }
+-- Midnight Color Curves
+E.ColorCurves = {} -- also has a Dispel object (which has a curve for IsDispellableByMe)
+E.ColorCurves.Auras = { auras = false, buffs = false, debuffs = false }
 ElvUF.ColorCurves = E.ColorCurves -- reference to oUF
 
---This frame everything in ElvUI should be anchored to for Eyefinity support.
+-- This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
 E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 E.UIParent:SetSize(E.screenWidth, E.screenHeight)

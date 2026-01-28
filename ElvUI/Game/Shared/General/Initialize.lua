@@ -145,6 +145,7 @@ end
 do
 	E.Libs = { version = E:ParseVersionString('ElvUI_Libraries') }
 	E.LibsMinor = {}
+
 	function E:AddLib(name, major, minor)
 		if not name then return end
 
@@ -153,6 +154,12 @@ do
 			E.Libs[name], E.LibsMinor[name] = major, minor
 		else -- in this case: `major` is the lib name and `minor` is the silent switch
 			E.Libs[name], E.LibsMinor[name] = _G.LibStub(major, minor)
+		end
+	end
+
+	function E:DispelListUpdated()
+		if E.Retail then
+			E:UpdateDispelCurves()
 		end
 	end
 
@@ -181,6 +188,9 @@ do
 	if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
+
+	-- so we can retrigger the curves
+	E:SecureHook(E.Libs.Dispel, 'ListUpdated', E.DispelListUpdated)
 
 	-- backwards compatible for plugins
 	E.LSM = E.Libs.LSM

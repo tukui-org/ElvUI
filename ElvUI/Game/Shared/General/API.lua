@@ -596,8 +596,28 @@ function E:UpdateColorCurve(which, data)
 	end
 end
 
+do
+	local fallback = { r = 0, g = 0, b = 0, a = 0 }
+	function E:UpdateDispelCurves()
+		local curves = E.ColorCurves.Dispel
+		if not curves then
+			curves = CreateColorCurve()
+			curves:SetType(LuaCurveTypeStep)
+
+			E.ColorCurves.Dispel = curves
+		else -- empty the list
+			curves:ClearPoints()
+		end
+
+		local colors = ElvUF.colors.dispel
+		for key, index in next, DispelIndexes do
+			curves:AddPoint(index, E:IsDispellableByMe(key) and colors[key] or fallback)
+		end
+	end
+end
+
 function E:UpdateColorCurves()
-	local curves = E.ColorCurves
+	local curves = E.ColorCurves.Auras
 	for which, data in next, curves do
 		if not data then
 			data = CreateColorCurve()
