@@ -15,11 +15,11 @@ local C_Timer_After = C_Timer.After
 
 E.ShortPrefixValues = {}
 E.ShortPrefixStyles = {
-	TCHINESE = {{1e8,'億'}, {1e4,'萬'}},
-	CHINESE = {{1e8,'亿'}, {1e4,'万'}},
+	CHINESE = {{1e12,'兆'}, {1e8,'亿'}, {1e4,'万'}},
+	TCHINESE = {{1e12,'兆'}, {1e8,'億'}, {1e4,'萬'}},
+	KOREAN = {{1e12,'조'}, {1e8,'억'}, {1e4,'만'}},
 	ENGLISH = {{1e12,'T'}, {1e9,'B'}, {1e6,'M'}, {1e3,'K'}},
 	GERMAN = {{1e12,'Bio'}, {1e9,'Mrd'}, {1e6,'Mio'}, {1e3,'Tsd'}},
-	KOREAN = {{1e8,'억'}, {1e4,'만'}, {1e3,'천'}},
 	METRIC = {{1e12,'T'}, {1e9,'G'}, {1e6,'M'}, {1e3,'k'}}
 }
 
@@ -33,15 +33,20 @@ E.GetFormattedTextStyles = {
 }
 
 do -- Thanks ls-
-	local locale = E.locale
+	local asianUnitsCollection = {
+		zhCN = { '兆', '亿', '万' },
+		zhTW = { '兆', '億', '萬' },
+		koKR = { '조', '억', '만' },
+	}
+
+	local asianUnits = asianUnitsCollection[E.locale]
 	local long = { breakpoints = {} }
 	E.Abbreviate.long = long
 
-	local kr, cn, tw = locale == 'koKR', locale == 'zhCN', locale == 'zhTW'
-
-	if kr or cn or tw then
-		long.breakpoints[1] = { breakpoint = 1e8, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e7, fractionDivisor = 10 }
-		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'FIRST_NUMBER_CAP_NO_SPACE',  significandDivisor = 1e3, fractionDivisor = 10 }
+	if asianUnits then
+		long.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
+		long.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
+		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
 	else
 		long.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'THIRD_NUMBER_CAP_NO_SPACE', significandDivisor = 1e8, fractionDivisor = 10 }
 		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e5, fractionDivisor = 10 }
@@ -52,9 +57,10 @@ do -- Thanks ls-
 	local short = { breakpoints = {} }
 	E.Abbreviate.short = short
 
-	if cn or tw then
-		short.breakpoints[1] = { breakpoint = 1e8, abbreviation = cn and '亿' or '万', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = tw and '億' or '萬',  significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
+	if asianUnits then
+		short.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
+		short.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
+		short.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
 	else
 		short.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'B', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
 		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'M', significandDivisor = 1e4, fractionDivisor = 100, abbreviationIsGlobal = false }
@@ -68,18 +74,20 @@ do -- Thanks ls-
 		short.config = CreateAbbreviateConfig(short.breakpoints)
 		short.breakpoints = nil -- create the configuration for short numbers
 	end
-end
 
-function E:AbbreviateNumbers(value, data)
-	if type(value) == 'string' then
-		return value -- we cant continue with strings
+	function E:AbbreviateNumbers(value, data)
+		if type(value) == 'string' then
+			return value -- we cant continue with strings
+		end
+
+		local str = AbbreviateNumbers(value, data)
+		if asianUnits then
+			return str
+		else -- behaves like ALN, but actually works
+			local num = tonumber(str)
+			return num and BreakUpLargeNumbers(num) or str
+		end
 	end
-
-	local str = AbbreviateNumbers(value, data)
-	local num = tonumber(str)
-
-	-- behaves like ALN, but actually works
-	return num and BreakUpLargeNumbers(num) or str
 end
 
 function E:BuildPrefixValues()

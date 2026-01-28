@@ -1,4 +1,0 @@
-<Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<!-- framelevel 4 for Masque support -->
-	<Button name='ElvUIAuraTemplate' inherits='ElvUIAuraIconTemplate' virtual='true' framelevel='4' registerForClicks='RightButtonUp, RightButtonDown'></Button>
-</Ui>

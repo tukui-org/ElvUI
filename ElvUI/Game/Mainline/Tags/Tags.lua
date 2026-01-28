@@ -46,12 +46,12 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 		return E:AbbreviateNumbers(healthMissing, abbrev)
 	end)
 
-	E:AddTag(format('missingpp:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+	E:AddTag(format('missingpp:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerMissing = UnitPowerMissing(unit)
 		return E:AbbreviateNumbers(powerMissing, abbrev)
 	end)
 
-	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_MAXPOWER UNIT_POWER_FREQUENT', function(unit)
+	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		local currentHealth = UnitHealth(unit)
 		return E:AbbreviateNumbers(currentHealth, abbrev)
 	end)

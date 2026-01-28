@@ -1,0 +1,99 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<!-- Remove the scripts added from GameDialogMixin -->
+	<Frame name='ElvUIStaticPopupTemplate' inherits='StaticPopupTemplate' toplevel='true' enableKeyboard='true' enableMouse='true' hyperlinksEnabled='true' virtual='true'>
+		<Scripts>
+			<OnUpdate></OnUpdate>
+			<OnEvent></OnEvent>
+			<OnShow></OnShow>
+			<OnHide></OnHide>
+			<OnLoad></OnLoad>
+		</Scripts>
+	</Frame>
+
+	<!-- aura template -->
+	<Button name='ElvUIAuraIconTemplate' inherits='SecureActionButtonTemplate, BackdropTemplate' virtual='true'>
+		<Scripts><OnLoad>ElvUI[1]:GetModule('Auras'):CreateIcon(self)</OnLoad></Scripts>
+		<Attributes><Attribute name='type' value='cancelaura'/></Attributes>
+	</Button>
+
+	<!-- unitframe templates -->
+	<Button name='ELVUI_UNITTARGET' inherits='SecureUnitButtonTemplate' hidden='true' virtual='true'>
+		<Frames>
+			<Button name='$parentTarget' inherits='SecureUnitButtonTemplate'>
+				<Anchors>
+					<Anchor point='TOPLEFT' relativePoint='TOPRIGHT' relativeTo='$parent'>
+						<Offset>
+							<AbsDimension x='7' y='0'/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Attributes>
+					<Attribute name='unitsuffix' type='string' value='target'/>
+					<Attribute name='useparent-unit' type='boolean' value='true'/>
+					<Attribute name='type1' type='string' value='target'/>
+					<Attribute name='initial-unitWatch' type='boolean' value='true'/>
+				</Attributes>
+			</Button>
+		</Frames>
+	</Button>
+
+	<Button name='ELVUI_UNITTARGET_PINGABLE' inherits='SecureUnitButtonTemplate, PingableUnitFrameTemplate' hidden='true' virtual='true'>
+		<Frames>
+			<Button name='$parentTarget' inherits='SecureUnitButtonTemplate, PingableUnitFrameTemplate'>
+				<Anchors>
+					<Anchor point='TOPLEFT' relativePoint='TOPRIGHT' relativeTo='$parent'>
+						<Offset>
+							<AbsDimension x='7' y='0'/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Attributes>
+					<Attribute name='unitsuffix' type='string' value='target'/>
+					<Attribute name='useparent-unit' type='boolean' value='true'/>
+					<Attribute name='type1' type='string' value='target'/>
+					<Attribute name='initial-unitWatch' type='boolean' value='true'/>
+				</Attributes>
+			</Button>
+		</Frames>
+	</Button>
+
+	<Button name='ELVUI_UNITPET' inherits='SecureUnitButtonTemplate' hidden='true' virtual='true'>
+		<Frames>
+			<Button name='$parentPet' inherits='SecureUnitButtonTemplate'>
+				<Anchors>
+					<Anchor point='BOTTOM' relativePoint='TOP' relativeTo='$parent'>
+						<Offset>
+							<AbsDimension x='0' y='1'/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Attributes>
+					<Attribute name='unitsuffix' type='string' value='pet'/>
+					<Attribute name='useparent-unit' type='boolean' value='true'/>
+					<Attribute name='type1' type='string' value='target'/>
+					<Attribute name='initial-unitWatch' type='boolean' value='true'/>
+				</Attributes>
+			</Button>
+		</Frames>
+	</Button>
+
+	<Button name='ELVUI_UNITPET_PINGABLE' inherits='SecureUnitButtonTemplate, PingableUnitFrameTemplate' hidden='true' virtual='true'>
+		<Frames>
+			<Button name='$parentPet' inherits='SecureUnitButtonTemplate, PingableUnitFrameTemplate'>
+				<Anchors>
+					<Anchor point='BOTTOM' relativePoint='TOP' relativeTo='$parent'>
+						<Offset>
+							<AbsDimension x='0' y='1'/>
+						</Offset>
+					</Anchor>
+				</Anchors>
+				<Attributes>
+					<Attribute name='unitsuffix' type='string' value='pet'/>
+					<Attribute name='useparent-unit' type='boolean' value='true'/>
+					<Attribute name='type1' type='string' value='target'/>
+					<Attribute name='initial-unitWatch' type='boolean' value='true'/>
+				</Attributes>
+			</Button>
+		</Frames>
+	</Button>
+</Ui>
