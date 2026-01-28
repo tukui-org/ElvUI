@@ -178,11 +178,13 @@ function TT:RemoveTrashLines(tt)
 	local info = tt:GetTooltipData()
 	if not (info and info.lines[3]) then return end
 
+	local allowPVP = TT.db.allowTagPVP
+	local allowFaction = TT.db.allowTagFaction
 	for i, line in next, info.lines, 3 do
 		local text = line and line.leftText
 		if not text or text == '' then
 			break
-		elseif text == _G.PVP or text == _G.FACTION_ALLIANCE or text == _G.FACTION_HORDE then
+		elseif (not allowPVP and text == _G.PVP) or (not allowFaction and (text == _G.FACTION_ALLIANCE or text == _G.FACTION_HORDE)) then
 			local left = _G['GameTooltipTextLeft'..i]
 			left:SetText('')
 			left:Hide()
