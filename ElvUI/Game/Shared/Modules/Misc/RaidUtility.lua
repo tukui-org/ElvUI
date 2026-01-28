@@ -345,14 +345,23 @@ do
 		else
 			local modType = E.db.general.raidUtility.modifierSwap or 'world'
 			local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
-			local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
 			local world = modType == 'world'
 
-			button:SetAttribute(modifier..'type*', 'macro')
-			button:SetAttribute('macrotext', world and wm or tm)
-			button:SetAttribute('macrotext1', world and tm or wm)
-			button:SetAttribute('macrotext2', world and tm or wm)
-			button:SetAttribute('macrotext3', world and tm or wm)
+			if E.Retail and i == 0 then
+				button:SetAttribute(modifier .. 'type*', world and 'worldmarker' or 'raidtarget')
+				button:SetAttribute(modifier .. 'action*', world and 'clear' or 'clear-all')
+				button:SetAttribute('type1', world and 'raidtarget' or 'worldmarker')
+				button:SetAttribute('type2', world and 'raidtarget' or 'worldmarker')
+				button:SetAttribute('type3', world and 'raidtarget' or 'worldmarker')
+				button:SetAttribute('action', world and 'clear-all' or 'clear')
+			else
+				local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
+				button:SetAttribute(modifier .. 'type*', 'macro')
+				button:SetAttribute('macrotext', world and wm or tm)
+				button:SetAttribute('macrotext1', world and tm or wm)
+				button:SetAttribute('macrotext2', world and tm or wm)
+				button:SetAttribute('macrotext3', world and tm or wm)
+			end
 		end
 	end
 end
