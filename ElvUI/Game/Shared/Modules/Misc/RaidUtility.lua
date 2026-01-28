@@ -339,6 +339,8 @@ do
 		local id = ground[i]
 		local tm = format('%s %d', TM, i)
 
+		button:SetAttribute('isclearbutton', i == 0)
+
 		if E.Classic then
 			button:SetAttribute('type', 'macro')
 			button:SetAttribute('macrotext', tm)
@@ -449,8 +451,9 @@ function RU:TargetIcons_OnEnter()
 	if E.Classic or _G.GameTooltip:IsForbidden() or not E.db.general.raidUtility.showTooltip then return end
 
 	local isTarget = E.db.general.raidUtility.modifierSwap == 'target'
+	local isClearButton = self:GetAttribute('isclearbutton')
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM')
-	_G.GameTooltip:SetText(L["Raid Markers"])
+	_G.GameTooltip:SetText(isClearButton and L["Clear All Markers"] or L["Raid Markers"])
 	_G.GameTooltip:AddLine(' ')
 	_G.GameTooltip:AddDoubleLine(isTarget and _G.TARGET or _G.WORLD, L[E.db.general.raidUtility.modifier or "SHIFT"], 0, 1, 0, 1, 1, 1)
 	_G.GameTooltip:AddDoubleLine(isTarget and _G.WORLD or _G.TARGET, _G.NONE, 0, 1, 0, 1, 1, 1)
