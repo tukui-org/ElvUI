@@ -328,7 +328,7 @@ do
 	function RU:TargetIcons_Update()
 		for id, button in next, raidMarkers do
 			for _, key in next, keys do -- clear the last ones
-				button:SetAttribute(key..'type*', nil)
+				button:ClearAttribute(key..'type*')
 			end
 
 			RU:TargetIcons_UpdateMacro(button, id)
