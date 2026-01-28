@@ -461,8 +461,8 @@ do
 		nameplateMaxScale = { name = L["Max Scale"], max = 3, order = 22 },
 		nameplateSelectedScale = { name = L["Selected Scale"], max = 4, order = 23 },
 
-		nameplateMaxAlpha = { name = L["Max Alpha"], max = 1, order = 25 },
-		nameplateMinAlpha = { name = L["Min Alpha"], max = 1, order = 26 },
+		nameplateMinAlpha = { name = L["Min Alpha"], max = 1, order = 25 },
+		nameplateMaxAlpha = { name = L["Max Alpha"], max = 1, order = 26 },
 		nameplateSelectedAlpha = { name = L["Selected Alpha"], max = 1, order = 27 }
 	}
 
