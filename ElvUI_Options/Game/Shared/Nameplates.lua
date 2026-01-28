@@ -468,20 +468,21 @@ do
 
 	local cvarToggles = {
 		nameplateOtherAtBase = L["Nameplate At Base"],
-		nameplateShowOnlyNames = L["Show Only Names"]
 	}
 
 	if E.Retail then
 		cvarRanges.nameplatePlayerLargerScale = { name = L["Player Larger Scale"], max = 3, order = 24 }
+		cvarToggles.nameplateShowOnlyNameForFriendlyPlayerUnits  = L["Show Only Names"]
 	else
 		cvarRanges.nameplateNotSelectedAlpha = { name = L["Non Selected Alpha"], max = 1, order = 28 }
+		cvarToggles.nameplateShowOnlyNames = L["Show Only Names"]
 	end
 
 	local function ApplyCVar(key, value)
 		if cvarToggles[key] then
 			E:SetCVar(key, value and (key == 'nameplateOtherAtBase' and 2 or 1) or 0)
 
-			if key == 'nameplateShowOnlyNames' then
+			if key == 'nameplateShowOnlyNames' or key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
 				E.db.nameplates.visibility.showOnlyNames = value
 			end
 		else
@@ -490,7 +491,7 @@ do
 	end
 
 	local function CheckCVar(key)
-		if key == 'nameplateShowOnlyNames' then
+		if key == 'nameplateShowOnlyNames' or key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
 			return E.db.nameplates.visibility.showOnlyNames
 		elseif cvarRanges[key] then
 			return tonumber(GetCVar(key)) or 0

@@ -177,7 +177,7 @@ function NP:SetCVars()
 	-- the order of these is important !!
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
-	NP:ToggleCVar('nameplateShowOnlyNames', visibility.showOnlyNames)
+	NP:ToggleCVar(E.Retail and 'nameplateShowOnlyNameForFriendlyPlayerUnits' or 'nameplateShowOnlyNames', visibility.showOnlyNames)
 
 	local enemyVisibility = visibility.enemy
 	NP:ToggleCVar('nameplateShowEnemyMinions', enemyVisibility.minions)
