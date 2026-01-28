@@ -259,40 +259,37 @@ function UF:PostUpdateHealthColor(unit, color)
 	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
 
-	local r, g, b = colors.health.r, colors.health.g, colors.health.b
+	local r, g, b, healthColor = colors.health.r, colors.health.g, colors.health.b
 
 	-- Recheck offline status when forced
-	if parent.isForced and self.colorDisconnected and not env.UnitIsConnected(unit) then
-		color = parent.colors.disconnected
+	if parent.isForced and (self.colorDisconnected and not env.UnitIsConnected(unit)) then
+		healthColor = parent.colors.disconnected
 	end
 
 	-- Charmed player should have hostile color
-	if unit and (strmatch(unit, 'raid%d+') or strmatch(unit, 'party%d+')) then
-		if not isDeadOrGhost and env.UnitIsConnected(unit) and UnitIsCharmed(unit) and UnitIsEnemy('player', unit) then
-			color = parent.colors.reaction[HOSTILE_REACTION]
-		end
+	local grouped = unit and (strmatch(unit, 'raid%d+') or strmatch(unit, 'party%d+'))
+	if grouped and (not isDeadOrGhost and env.UnitIsConnected(unit)) and (UnitIsCharmed(unit) and UnitIsEnemy('player', unit)) then
+		healthColor = parent.colors.reaction[HOSTILE_REACTION]
 	end
 
 	local minValue, maxValue = self.cur, self.max
 	local newr, newg, newb, healthbreakBackdrop
-	if not color and not E.Retail then -- dont need to process this when its hostile
-		if not parent.db or parent.db.colorOverride ~= 'ALWAYS' then
-			if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
-				newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
-			elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
-				local breakPoint = self.max > 0 and (self.cur / self.max) or 1
-				local threshold = healthBreak.threshold
+	if (not healthColor and not E.Retail) or (not parent.db or parent.db.colorOverride ~= 'ALWAYS') then
+		if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
+			newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
+		elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
+			local breakPoint = self.max > 0 and (self.cur / self.max) or 1
+			local threshold = healthBreak.threshold
 
-				if threshold.bad and (breakPoint <= healthBreak.low) then
-					color = healthBreak.bad
-				elseif threshold.good and (breakPoint >= healthBreak.high and breakPoint ~= 1) then
-					color = healthBreak.good
-				elseif threshold.neutral and (breakPoint >= healthBreak.low and breakPoint < healthBreak.high) then
-					color = colors.healthBreak.neutral
-				end
-
-				healthbreakBackdrop = color and healthBreak.colorBackdrop
+			if threshold.bad and (breakPoint <= healthBreak.low) then
+				healthColor = healthBreak.bad
+			elseif threshold.good and (breakPoint >= healthBreak.high and breakPoint ~= 1) then
+				healthColor = healthBreak.good
+			elseif threshold.neutral and (breakPoint >= healthBreak.low and breakPoint < healthBreak.high) then
+				healthColor = colors.healthBreak.neutral
 			end
+
+			healthbreakBackdrop = healthColor and healthBreak.colorBackdrop
 		end
 	end
 
@@ -301,7 +298,7 @@ function UF:PostUpdateHealthColor(unit, color)
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			bgc = colors.health_backdrop_dead
 		elseif healthbreakBackdrop then
-			bgc = color
+			bgc = healthColor
 		elseif colors.healthbackdropbyvalue and not E.Retail then
 			if colors.customhealthbackdrop then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
@@ -327,10 +324,14 @@ function UF:PostUpdateHealthColor(unit, color)
 		end
 	end
 
+	if not healthColor then
+		healthColor = color
+	end
+
 	if newb then
 		UF:SetStatusBarColor(self, newr, newg, newb, (bgc == true and customBackdrop) or bgc)
-	elseif color then
-		UF:SetStatusBarColor(self, color.r, color.g, color.b, (bgc == true and customBackdrop) or bgc)
+	elseif healthColor then
+		UF:SetStatusBarColor(self, healthColor.r, healthColor.g, healthColor.b, (bgc == true and customBackdrop) or bgc)
 	end
 end
 
