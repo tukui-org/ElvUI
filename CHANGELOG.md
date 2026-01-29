@@ -1,3 +1,6 @@
+### Version 15.02 [ January 28th 2026 ]
+*   Classic loading issue
+
 ### Version 15.01 [ January 28th 2026 ]
 *   Classic:
     *   Unitframe Castbars no longer always red.
