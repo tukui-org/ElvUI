@@ -29,48 +29,46 @@ E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
 end)
 
 for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
-	local abbrev = E.Abbreviate[which]
-
 	E:AddTag(format('absorbs:%s', tagFormat), 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 		local absorb = UnitGetTotalAbsorbs(unit)
-		return E:AbbreviateNumbers(absorb, abbrev)
+		return E:AbbreviateNumbers(absorb, E.Abbreviate[which])
 	end)
 
 	E:AddTag(format('healabsorbs:%s', tagFormat), 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
 		local healAbsorb = UnitGetTotalHealAbsorbs(unit)
-		return E:AbbreviateNumbers(healAbsorb, abbrev)
+		return E:AbbreviateNumbers(healAbsorb, E.Abbreviate[which])
 	end)
 
 	E:AddTag(format('missinghp:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		local healthMissing = UnitHealthMissing(unit)
-		return E:AbbreviateNumbers(healthMissing, abbrev)
+		return E:AbbreviateNumbers(healthMissing, E.Abbreviate[which])
 	end)
 
 	E:AddTag(format('missingpp:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerMissing = UnitPowerMissing(unit)
-		return E:AbbreviateNumbers(powerMissing, abbrev)
+		return E:AbbreviateNumbers(powerMissing, E.Abbreviate[which])
 	end)
 
 	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		local currentHealth = UnitHealth(unit)
-		return E:AbbreviateNumbers(currentHealth, abbrev)
+		return E:AbbreviateNumbers(currentHealth, E.Abbreviate[which])
 	end)
 
 	E:AddTag(format('power:current:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerType = UnitPowerType(unit)
 		local currentPower = UnitPower(unit, powerType)
-		return E:AbbreviateNumbers(currentPower, abbrev)
+		return E:AbbreviateNumbers(currentPower, E.Abbreviate[which])
 	end)
 
 	E:AddTag(format('health:max:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		local maxHealth = UnitHealthMax(unit)
-		return E:AbbreviateNumbers(maxHealth, abbrev)
+		return E:AbbreviateNumbers(maxHealth, E.Abbreviate[which])
 	end)
 
 	E:AddTag(format('power:max:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerType = UnitPowerType(unit)
 		local maxPower = UnitPowerMax(unit, powerType)
-		return E:AbbreviateNumbers(maxPower, abbrev)
+		return E:AbbreviateNumbers(maxPower, E.Abbreviate[which])
 	end)
 end
 

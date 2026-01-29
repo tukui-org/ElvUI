@@ -33,47 +33,60 @@ E.GetFormattedTextStyles = {
 }
 
 do -- Thanks ls-
-	local asianUnitsCollection = {
-		zhCN = { '兆', '亿', '万' },
-		zhTW = { '兆', '億', '萬' },
-		koKR = { '조', '억', '만' },
+	local asianUnits = {
+		CHINESE = { '兆', '亿', '万' },
+		TCHINESE = { '兆', '億', '萬' },
+		KOREAN = { '조', '억', '만' },
 	}
 
-	local asianUnits = asianUnitsCollection[E.locale]
-	local long = { breakpoints = {} }
-	E.Abbreviate.long = long
+	local westernUnits = {
+		ENGLISH = { 'T', 'B', 'M', 'k' },
+		GERMAN = { ' Bio.', ' Mrd.', ' Mio.', 'K' },
+		METRIC = { 'T', 'G', 'M', 'k' },
+	}
 
-	if asianUnits then
-		long.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
-		long.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
-		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
-	else
-		long.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'THIRD_NUMBER_CAP_NO_SPACE', significandDivisor = 1e8, fractionDivisor = 10 }
-		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e5, fractionDivisor = 10 }
-		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = 'FIRST_NUMBER_CAP_NO_SPACE', significandDivisor = 100, fractionDivisor = 10 }
-	end
+	function E:BuildAbbreviateConfigs()
+		local style = E.db and E.db.general and E.db.general.numberPrefixStyle or 'ENGLISH'
+		local units = asianUnits[style] or westernUnits[style]
+		local asian = asianUnits[style] ~= nil
 
-	-- start a new one
-	local short = { breakpoints = {} }
-	E.Abbreviate.short = short
+		local long = { breakpoints = {} }
+		E.Abbreviate.long = long
 
-	if asianUnits then
-		short.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
-	else
-		short.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'B', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'M', significandDivisor = 1e4, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[3] = { breakpoint = 1e3, abbreviation = 'k', significandDivisor = 100, fractionDivisor = 10, abbreviationIsGlobal = false }
-	end
+		if asian then
+			long.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
+			long.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
+			long.breakpoints[3] = { breakpoint = 1e4, abbreviation = units[3], significandDivisor = 1e2, fractionDivisor = 100, abbreviationIsGlobal = false }
+		else
+			long.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
+			long.breakpoints[2] = { breakpoint = 1e9, abbreviation = units[2], significandDivisor = 1e8, fractionDivisor = 10, abbreviationIsGlobal = false }
+			long.breakpoints[3] = { breakpoint = 1e6, abbreviation = units[3], significandDivisor = 1e5, fractionDivisor = 10, abbreviationIsGlobal = false }
+			long.breakpoints[4] = { breakpoint = 1e5, abbreviation = units[4], significandDivisor = 100, fractionDivisor = 10, abbreviationIsGlobal = false }
+		end
 
-	if CreateAbbreviateConfig then
-		long.config = CreateAbbreviateConfig(long.breakpoints)
-		long.breakpoints = nil -- create the configuration for long numbers
+		local short = { breakpoints = {} }
+		E.Abbreviate.short = short
 
-		short.config = CreateAbbreviateConfig(short.breakpoints)
-		short.breakpoints = nil -- create the configuration for short numbers
-	end
+		if asian then
+			short.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
+			short.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
+			short.breakpoints[3] = { breakpoint = 1e4, abbreviation = units[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
+		else
+			units = westernUnits.ENGLISH
+			short.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
+			short.breakpoints[2] = { breakpoint = 1e9, abbreviation = units[2], significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
+			short.breakpoints[3] = { breakpoint = 1e6, abbreviation = units[3], significandDivisor = 1e4, fractionDivisor = 100, abbreviationIsGlobal = false }
+			short.breakpoints[4] = { breakpoint = 1e3, abbreviation = units[4], significandDivisor = 100, fractionDivisor = 10, abbreviationIsGlobal = false }
+		end
+
+		if CreateAbbreviateConfig then
+			long.config = CreateAbbreviateConfig(long.breakpoints)
+			long.breakpoints = nil -- create the configuration for long numbers
+
+			short.config = CreateAbbreviateConfig(short.breakpoints)
+			short.breakpoints = nil -- create the configuration for short numbers
+		end
+    end
 
 	function E:AbbreviateNumbers(value, data)
 		if type(value) == 'string' then

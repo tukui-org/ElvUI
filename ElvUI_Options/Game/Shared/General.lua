@@ -45,7 +45,7 @@ GenGen.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed 
 
 GenGen.locale = ACH:Select(L["LANGUAGE"], nil, 6, { deDE = 'Deutsch', enUS = 'English', esMX = 'Español', frFR = 'Français', ptBR = 'Português', ruRU = 'Русский', trTR ='Turkce', zhCN = '简体中文', zhTW = '繁體中文', koKR = '한국어', itIT = 'Italiano' }, nil, nil, function() return E.global.general.locale or 'enUS' end, function(_, value) E.global.general.locale = value E.ShowPopup = true end)
 GenGen.messageRedirect = ACH:Select(L["Chat Output"], L["This selects the Chat Frame to use as the output of ElvUI messages."], 7, function() return GetChatWindowInfo() end)
-GenGen.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 8, { CHINESE = '万, 亿, 兆', TCHINESE = '萬, 億, 兆', KOREAN = '만, 억, 조', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+GenGen.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 8, { CHINESE = '万, 亿, 兆', TCHINESE = '萬, 億, 兆', KOREAN = '만, 억, 조', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:BuildAbbreviateConfigs() E:StaggeredUpdateAll() end)
 
 GenGen.textureGroup = ACH:Group(L["Textures"], nil, 20, nil, function(info) return E.private.general[info[#info]] end)
 GenGen.textureGroup.inline = true

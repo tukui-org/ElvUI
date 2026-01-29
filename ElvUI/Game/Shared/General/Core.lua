@@ -2037,6 +2037,7 @@ function E:Initialize()
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	else
 		E:BuildPrefixValues()
+		E:BuildAbbreviateConfigs()
 		E:LoadAPI()
 		E:LoadCommands()
 		E:InitializeModules()
