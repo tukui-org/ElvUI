@@ -6,6 +6,7 @@ local ACH = E.Libs.ACH
 
 local pairs, type, strsplit = pairs, type, strsplit
 local wipe, next, tonumber = wipe, next, tonumber
+local format = format
 
 local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -456,14 +457,14 @@ NamePlates.generalGroup.args.blizzardCVars = ACH:Group(E.NewSign..L["Blizzard CV
 
 do
 	local cvarRanges = {
-		nameplateLargerScale = { name = L["Larger Scale"], desc = L["Default:"] .. ' 1.2', max = 3, order = 20 },
-		nameplateMinScale = { name = L["Min Scale"], desc = L["Default:"] .. ' 0.8', max = 3, order = 21 },
-		nameplateMaxScale = { name = L["Max Scale"], desc = L["Default:"] .. ' 1.0', max = 3, order = 22 },
-		nameplateSelectedScale = { name = L["Selected Scale"], desc = L["Default:"] .. (E.Retail and ' 1.2' or ' 1.0'), max = 4, order = 23 },
+		nameplateLargerScale = { name = L["Larger Scale"], default = '1.2', max = 3, order = 20 },
+		nameplateMinScale = { name = L["Min Scale"], default = '0.8', max = 3, order = 21 },
+		nameplateMaxScale = { name = L["Max Scale"], default = '1.0', max = 3, order = 22 },
+		nameplateSelectedScale = { name = L["Selected Scale"], default = (E.Retail and '1.2' or '1.0'), max = 4, order = 23 },
 
-		nameplateMinAlpha = { name = L["Min Alpha"], desc = L["Default:"] .. ' 0.6', max = 1, order = 25 },
-		nameplateMaxAlpha = { name = L["Max Alpha"], desc = L["Default:"] .. ' 1.0', max = 1, order = 26 },
-		nameplateSelectedAlpha = { name = L["Selected Alpha"], desc = L["Default:"] .. ' 1.0', max = 1, order = 27 }
+		nameplateMinAlpha = { name = L["Min Alpha"], default = '0.6', max = 1, order = 25 },
+		nameplateMaxAlpha = { name = L["Max Alpha"], default = '1.0', max = 1, order = 26 },
+		nameplateSelectedAlpha = { name = L["Selected Alpha"], default = '1.0', max = 1, order = 27 }
 	}
 
 	local cvarToggles = {
@@ -471,10 +472,10 @@ do
 	}
 
 	if E.Retail then
-		cvarRanges.nameplatePlayerLargerScale = { name = L["Player Larger Scale"], desc = L["Default:"] .. ' 1.8', max = 3, order = 24 }
+		cvarRanges.nameplatePlayerLargerScale = { name = L["Player Larger Scale"], default = '1.8', max = 3, order = 24 }
 		cvarToggles.nameplateShowOnlyNameForFriendlyPlayerUnits  = L["Show Only Names"]
 	else
-		cvarRanges.nameplateNotSelectedAlpha = { name = L["Non Selected Alpha"], desc = L["Default:"] .. ' 0.5', max = 1, order = 28 }
+		cvarRanges.nameplateNotSelectedAlpha = { name = L["Non Selected Alpha"], default = '0.5', max = 1, order = 28 }
 		cvarToggles.nameplateShowOnlyNames = L["Show Only Names"]
 	end
 
@@ -504,7 +505,7 @@ do
 	NamePlates.generalGroup.args.blizzardCVars.args.rangeSliders.inline = true
 
 	for cvar, data in next, cvarRanges do
-		NamePlates.generalGroup.args.blizzardCVars.args.rangeSliders.args[cvar] = ACH:Range(data.name, data.desc, data.order, { min = 0, max = data.max, step = 0.01, bigStep = 0.1 }, nil, function(info) return CheckCVar(info[#info]) end, function(info, value) ApplyCVar(info[#info], value) end)
+		NamePlates.generalGroup.args.blizzardCVars.args.rangeSliders.args[cvar] = ACH:Range(data.name, data.desc or (data.default and format('%s %s', L["Default:"], data.default)) or '', data.order, { min = 0, max = data.max, step = 0.01, bigStep = 0.1 }, nil, function(info) return CheckCVar(info[#info]) end, function(info, value) ApplyCVar(info[#info], value) end)
 	end
 
 	NamePlates.generalGroup.args.blizzardCVars.args.cvars = ACH:MultiSelect(C.Blank, nil, 10, cvarToggles, nil, nil, function(_, key) return CheckCVar(key) end, function(_, key, value) ApplyCVar(key, value) end)
