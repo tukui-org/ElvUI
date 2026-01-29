@@ -274,7 +274,7 @@ function UF:PostUpdateHealthColor(unit, color)
 
 	local minValue, maxValue = self.cur, self.max
 	local newr, newg, newb, healthbreakBackdrop
-	if (not healthColor and not E.Retail) or (not parent.db or parent.db.colorOverride ~= 'ALWAYS') then
+	if (not healthColor and not E.Retail) and (not parent.db or parent.db.colorOverride ~= 'ALWAYS') then
 		if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
 			newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
 		elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then

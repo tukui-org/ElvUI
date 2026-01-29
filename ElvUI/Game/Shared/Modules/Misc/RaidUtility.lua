@@ -328,7 +328,7 @@ do
 	function RU:TargetIcons_Update()
 		for id, button in next, raidMarkers do
 			for _, key in next, keys do -- clear the last ones
-				button:SetAttribute(key..'type*', nil)
+				button:ClearAttribute(key..'type*')
 			end
 
 			RU:TargetIcons_UpdateMacro(button, id)
@@ -339,20 +339,31 @@ do
 		local id = ground[i]
 		local tm = format('%s %d', TM, i)
 
+		button:SetAttribute('isclearbutton', i == 0)
+
 		if E.Classic then
 			button:SetAttribute('type', 'macro')
 			button:SetAttribute('macrotext', tm)
 		else
 			local modType = E.db.general.raidUtility.modifierSwap or 'world'
 			local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
-			local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
 			local world = modType == 'world'
 
-			button:SetAttribute(modifier..'type*', 'macro')
-			button:SetAttribute('macrotext', world and wm or tm)
-			button:SetAttribute('macrotext1', world and tm or wm)
-			button:SetAttribute('macrotext2', world and tm or wm)
-			button:SetAttribute('macrotext3', world and tm or wm)
+			if E.Retail and i == 0 then
+				button:SetAttribute(modifier .. 'type*', world and 'worldmarker' or 'raidtarget')
+				button:SetAttribute(modifier .. 'action*', world and 'clear' or 'clear-all')
+				button:SetAttribute('type1', world and 'raidtarget' or 'worldmarker')
+				button:SetAttribute('type2', world and 'raidtarget' or 'worldmarker')
+				button:SetAttribute('type3', world and 'raidtarget' or 'worldmarker')
+				button:SetAttribute('action', world and 'clear-all' or 'clear')
+			else
+				local wm = format(i == 0 and '%s 0' or '%s %d\n%s %d', CWM, id, WM, id)
+				button:SetAttribute(modifier .. 'type*', 'macro')
+				button:SetAttribute('macrotext', world and wm or tm)
+				button:SetAttribute('macrotext1', world and tm or wm)
+				button:SetAttribute('macrotext2', world and tm or wm)
+				button:SetAttribute('macrotext3', world and tm or wm)
+			end
 		end
 	end
 end
@@ -440,8 +451,9 @@ function RU:TargetIcons_OnEnter()
 	if E.Classic or _G.GameTooltip:IsForbidden() or not E.db.general.raidUtility.showTooltip then return end
 
 	local isTarget = E.db.general.raidUtility.modifierSwap == 'target'
+	local isClearButton = self:GetAttribute('isclearbutton')
 	_G.GameTooltip:SetOwner(self, 'ANCHOR_BOTTOM')
-	_G.GameTooltip:SetText(L["Raid Markers"])
+	_G.GameTooltip:SetText(isClearButton and L["Clear All Markers"] or L["Raid Markers"])
 	_G.GameTooltip:AddLine(' ')
 	_G.GameTooltip:AddDoubleLine(isTarget and _G.TARGET or _G.WORLD, L[E.db.general.raidUtility.modifier or "SHIFT"], 0, 1, 0, 1, 1, 1)
 	_G.GameTooltip:AddDoubleLine(isTarget and _G.WORLD or _G.TARGET, _G.NONE, 0, 1, 0, 1, 1, 1)
