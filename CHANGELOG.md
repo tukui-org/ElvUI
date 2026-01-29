@@ -1,3 +1,38 @@
+### Version 15.01 [ January 28th 2026 ]
+*   Classic:
+    *   Unitframe Castbars no longer always red.
+    *   Stagger issue caused Unitframes to not load on Monks.
+    *   LibCustomGlow error resolved for Action Button Glow.
+*   Cooldowns:
+    *   Aurabars would have entire swipe cooldown with Cooldown Text module disabled.
+    *   Temporary enchants not displaying the correct time and instead starting at 10m.
+*   Unitframes:
+    *   Statusbars for Eclipse, Alternative Power, Combo Points, and Power Prediction backdrops fixed.
+    *   Mana showing again for Enhancement Shaman and Shadow Priests.
+    *   Health by Value not inheriting the health color.
+*   Nameplates:
+    *   Classbar backdrop was not handled properly.
+    *   Blizzard CVar section to help adjust some settings with style filters gone now.
+    *   Midnight: Option to keep NPC nameplates disabled on login.
+    *   Use Classification had some incorrect logic.
+    *   Some defaults were incorrect.
+*   Midnight:
+    *   Tags: Health, Power, Absorbs, Missing Health and Power shortvalue and longvalue variants added.
+    *   Tags: Formatting corrected for Asian languages. (Thanks fang2hou)
+    *   Raid Utility should be working correctly again. (Thanks fang2hou)
+*   Tooltips:
+    *   Allow showing tagged PVP and units faction lines (off by default).
+*   Secret Errors (Midnight):
+    *   oUF power prediction secret error on line 87.
+    *   Actionbar reload secret error on line 1646.
+    *   Nameplate power secret error on line 100.
+    *   Nameplate name secret error on line 42.
+    *   Alternative Power bar secret error on line 150.
+    *   FrameGlow secret error on line 295.
+    *   Tooltip forbidden error on line 146.
+    *   Chat secret error on line 190 - preventing whispers
+    *   Unitframe secret error on line 42 - target unitframe would get stuck
+
 ### Version 15.00 [ January 25th 2026 ]
 *   Actionbar spells not activating when also clicking it with right mouse button.
 *   Warband bank should open to the first tab now.

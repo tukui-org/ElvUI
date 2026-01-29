@@ -6,10 +6,12 @@ local ACH = E.Libs.ACH
 
 local pairs, type, strsplit = pairs, type, strsplit
 local wipe, next, tonumber = wipe, next, tonumber
+local format = format
 
 local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local GetCVarBool = C_CVar.GetCVarBool
+local GetCVar = C_CVar.GetCVar
 
 local carryFilterFrom, carryFilterTo
 
@@ -441,7 +443,6 @@ NamePlates.generalGroup.args.spacer2 = ACH:Spacer(15, 'full')
 NamePlates.generalGroup.args.plateVisibility = ACH:Group(L["Visibility"], nil, 50)
 NamePlates.generalGroup.args.plateVisibility.args.showAll = ACH:Toggle(L["UNIT_NAMEPLATES_AUTOMODE"], L["This option controls the Blizzard setting for whether or not the Nameplates should be shown."], 0, nil, nil, 250, function(info) return E.db.nameplates.visibility[info[#info]] end, function(info, value) E.db.nameplates.visibility[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end)
 NamePlates.generalGroup.args.plateVisibility.args.showAlways = ACH:Toggle(L["Always Show Player"], nil, 1, nil, nil, nil, function(info) return E.db.nameplates.units.PLAYER.visibility[info[#info]] end, function(info, value) E.db.nameplates.units.PLAYER.visibility[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, nil, not E.Retail)
-NamePlates.generalGroup.args.plateVisibility.args.cvars = ACH:MultiSelect(L["Blizzard CVars"], nil, 3, { nameplateOtherAtBase = L["Nameplate At Base"], nameplateShowOnlyNames = L["Show Only Names"] }, nil, nil, function(_, key) return E.db.nameplates.visibility[key] or GetCVarBool(key) end, function(_, key, value) E:SetCVar(key, value and (key == 'nameplateOtherAtBase' and 2 or 1) or 0) if key == 'nameplateShowOnlyNames' then E.db.nameplates.visibility[key] = value end end)
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility = ACH:Group(L["Player"], nil, 5, nil, function(info) return E.db.nameplates.units.PLAYER.visibility[info[#info]] end, function(info, value) E.db.nameplates.units.PLAYER.visibility[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility.inline = true
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility.args.showInCombat = ACH:Toggle(L["Show In Combat"], nil, 1, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways end)
@@ -449,9 +450,66 @@ NamePlates.generalGroup.args.plateVisibility.args.playerVisibility.args.showWith
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility.args.spacer1 = ACH:Spacer(3, 'full')
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility.args.hideDelay = ACH:Range(L["Hide Delay"], nil, 4, { min = 0, max = 20, step = .01, bigStep = 1 }, nil, nil, nil, function() return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways end)
 NamePlates.generalGroup.args.plateVisibility.args.playerVisibility.args.alphaDelay = ACH:Range(L["Delay Alpha"], nil, 5, { min = 0, max = 1, step = .01, bigStep = .1 }, nil, nil, nil, function() return not E.db.nameplates.units.PLAYER.enable or E.db.nameplates.units.PLAYER.visibility.showAlways end)
+NamePlates.generalGroup.args.plateVisibility.args.enemyVisibility = ACH:MultiSelect(L["Enemy"], nil, 6, { guardians = L["Guardians"], minions = L["Minions"], minus = L["Minus"], pets = L["Pets"], totems = L["Totems"] }, nil, nil, function(_, key) return E.db.nameplates.visibility.enemy[key] end, function(_, key, value) E.db.nameplates.visibility.enemy[key] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.db.nameplates.visibility.showAll end)
+NamePlates.generalGroup.args.plateVisibility.args.friendlyVisibility = ACH:MultiSelect(L["Friendly"], nil, 7, { guardians = L["Guardians"], minions = L["Minions"], npcs = L["NPC"], pets = L["Pets"], totems = L["Totems"] }, nil, nil, function(_, key) return E.db.nameplates.visibility.friendly[key] end, function(_, key, value) E.db.nameplates.visibility.friendly[key] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.db.nameplates.visibility.showAll end)
 
-NamePlates.generalGroup.args.plateVisibility.args.enemyVisibility = ACH:MultiSelect(L["Enemy"], nil, 10, { guardians = L["Guardians"], minions = L["Minions"], minus = L["Minus"], pets = L["Pets"], totems = L["Totems"] }, nil, nil, function(_, key) return E.db.nameplates.visibility.enemy[key] end, function(_, key, value) E.db.nameplates.visibility.enemy[key] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.db.nameplates.visibility.showAll end)
-NamePlates.generalGroup.args.plateVisibility.args.friendlyVisibility = ACH:MultiSelect(L["Friendly"], nil, 15, { guardians = L["Guardians"], minions = L["Minions"], npcs = L["NPC"], pets = L["Pets"], totems = L["Totems"] }, nil, nil, function(_, key) return E.db.nameplates.visibility.friendly[key] end, function(_, key, value) E.db.nameplates.visibility.friendly[key] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.db.nameplates.visibility.showAll end)
+NamePlates.generalGroup.args.blizzardCVars = ACH:Group(E.NewSign..L["Blizzard CVars"], nil, 55)
+
+do
+	local cvarRanges = {
+		nameplateLargerScale = { name = L["Larger Scale"], default = '1.2', max = 3, order = 20 },
+		nameplateMinScale = { name = L["Min Scale"], default = '0.8', max = 3, order = 21 },
+		nameplateMaxScale = { name = L["Max Scale"], default = '1.0', max = 3, order = 22 },
+		nameplateSelectedScale = { name = L["Selected Scale"], default = (E.Retail and '1.2' or '1.0'), max = 4, order = 23 },
+
+		nameplateMinAlpha = { name = L["Min Alpha"], default = '0.6', max = 1, order = 25 },
+		nameplateMaxAlpha = { name = L["Max Alpha"], default = '1.0', max = 1, order = 26 },
+		nameplateSelectedAlpha = { name = L["Selected Alpha"], default = '1.0', max = 1, order = 27 }
+	}
+
+	local cvarToggles = {
+		nameplateOtherAtBase = L["Nameplate At Base"],
+	}
+
+	if E.Retail then
+		cvarRanges.nameplatePlayerLargerScale = { name = L["Player Larger Scale"], default = '1.8', max = 3, order = 24 }
+		cvarToggles.nameplateShowOnlyNameForFriendlyPlayerUnits  = L["Show Only Names"]
+	else
+		cvarRanges.nameplateNotSelectedAlpha = { name = L["Non Selected Alpha"], default = '0.5', max = 1, order = 28 }
+		cvarToggles.nameplateShowOnlyNames = L["Show Only Names"]
+	end
+
+	local function ApplyCVar(key, value)
+		if cvarToggles[key] then
+			E:SetCVar(key, value and (key == 'nameplateOtherAtBase' and 2 or 1) or 0)
+
+			if key == 'nameplateShowOnlyNames' or key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
+				E.db.nameplates.visibility.showOnlyNames = value
+			end
+		else
+			E:SetCVar(key, value)
+		end
+	end
+
+	local function CheckCVar(key)
+		if key == 'nameplateShowOnlyNames' or key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
+			return E.db.nameplates.visibility.showOnlyNames
+		elseif cvarRanges[key] then
+			return tonumber(GetCVar(key)) or 0
+		else
+			return GetCVarBool(key)
+		end
+	end
+
+	NamePlates.generalGroup.args.blizzardCVars.args.rangeSliders = ACH:Group(' ', nil, 20)
+	NamePlates.generalGroup.args.blizzardCVars.args.rangeSliders.inline = true
+
+	for cvar, data in next, cvarRanges do
+		NamePlates.generalGroup.args.blizzardCVars.args.rangeSliders.args[cvar] = ACH:Range(data.name, data.desc or (data.default and format('%s %s', L["Default:"], data.default)) or '', data.order, { min = 0, max = data.max, step = 0.01, bigStep = 0.1 }, nil, function(info) return CheckCVar(info[#info]) end, function(info, value) ApplyCVar(info[#info], value) end)
+	end
+
+	NamePlates.generalGroup.args.blizzardCVars.args.cvars = ACH:MultiSelect(C.Blank, nil, 10, cvarToggles, nil, nil, function(_, key) return CheckCVar(key) end, function(_, key, value) ApplyCVar(key, value) end)
+end
 
 local envConditions = { party = L["Dungeons"], raid = L["Raids"], scenario = L["Scenario"], arena = L["Arena"], pvp = L["Battleground"], resting = L["Resting"], world = L["World"] }
 NamePlates.generalGroup.args.enviromentConditions = ACH:Group(L["Enviroment Conditions"], nil, 60, nil, function(info) return E.db.nameplates.enviromentConditions[info[#info]] end, function(info, value) E.db.nameplates.enviromentConditions[info[#info]] = value NP:EnviromentConditionals() end)

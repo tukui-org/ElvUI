@@ -111,7 +111,7 @@ function TT:SetCompareItems(tt, value)
 end
 
 function TT:GameTooltip_SetDefaultAnchor(tt, parent)
-	if not E.private.tooltip.enable or not TT.db.visibility or tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE' then
+	if not E.private.tooltip.enable or not TT.db.visibility or (tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE') then
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
 		TT:SetCompareItems(tt, nil)
@@ -178,11 +178,13 @@ function TT:RemoveTrashLines(tt)
 	local info = tt:GetTooltipData()
 	if not (info and info.lines[3]) then return end
 
+	local allowPVP = TT.db.allowTagPVP
+	local allowFaction = TT.db.allowTagFaction
 	for i, line in next, info.lines, 3 do
 		local text = line and line.leftText
 		if not text or text == '' then
 			break
-		elseif text == _G.PVP or text == _G.FACTION_ALLIANCE or text == _G.FACTION_HORDE then
+		elseif (not allowPVP and text == _G.PVP) or (not allowFaction and (text == _G.FACTION_ALLIANCE or text == _G.FACTION_HORDE)) then
 			local left = _G['GameTooltipTextLeft'..i]
 			left:SetText('')
 			left:Hide()
@@ -546,10 +548,11 @@ function TT:AddMythicInfo(tt, unit)
 end
 
 function TT:GameTooltip_OnTooltipSetUnit(data)
-	if self ~= GameTooltip or self:IsForbidden() or not TT.db.visibility then return end
+	if self:IsForbidden() or (self ~= GameTooltip) or not TT.db.visibility then return end
 
-	if self:GetOwner() ~= UIParent and not TT:IsModKeyDown(TT.db.visibility.unitFrames) then
+	if (self:GetOwner() ~= UIParent) and not TT:IsModKeyDown(TT.db.visibility.unitFrames) then
 		self:Hide()
+
 		return
 	end
 
@@ -831,7 +834,6 @@ function TT:SetStyle(tt, _, isEmbedded)
 	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
 	if tt.NineSlice then tt.NineSlice:SetAlpha(0) end
 
-	-- Blizzard_SharedXML/Backdrop.lua: secrets cause backdrop system to crash out
 	-- Blizzard_MoneyFrame/Mainline/MoneyFrame.lua: secrets cause `MoneyFrame_Update` to crash out via `GameTooltip:SetLootItem(id)`
 	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use `alwaysCompareItems 0`
 	if E:NotSecretValue(tt:GetWidth()) then

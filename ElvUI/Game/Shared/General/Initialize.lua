@@ -135,7 +135,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.00, '15.00-git', nil, true
+		return 15.01, '15.01-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -145,6 +145,7 @@ end
 do
 	E.Libs = { version = E:ParseVersionString('ElvUI_Libraries') }
 	E.LibsMinor = {}
+
 	function E:AddLib(name, major, minor)
 		if not name then return end
 
@@ -153,6 +154,12 @@ do
 			E.Libs[name], E.LibsMinor[name] = major, minor
 		else -- in this case: `major` is the lib name and `minor` is the silent switch
 			E.Libs[name], E.LibsMinor[name] = _G.LibStub(major, minor)
+		end
+	end
+
+	function E:DispelListUpdated()
+		if E.Retail then
+			E:UpdateDispelCurves()
 		end
 	end
 
@@ -180,6 +187,12 @@ do
 
 	if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
+	end
+
+	-- so we can retrigger the curves
+	local dispel = E.Libs.Dispel
+	if dispel and dispel.ListUpdated then
+		E:SecureHook(dispel, 'ListUpdated', E.DispelListUpdated)
 	end
 
 	-- backwards compatible for plugins

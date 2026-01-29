@@ -105,33 +105,40 @@ do
 end
 
 function NP:CVarReset()
-	E:SetCVar('nameplateLargerScale', 1)
-	E:SetCVar('nameplateMaxAlpha', 1)
-	E:SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
-	E:SetCVar('nameplateMaxScale', 1)
-	E:SetCVar('nameplateMaxScaleDistance', 40)
-	E:SetCVar('nameplateMinAlpha', 1)
-	E:SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
-	E:SetCVar('nameplateMinScale', 1)
+	-- not in options
+	E:SetCVar('nameplateSelfAlpha', 1)
 	E:SetCVar('nameplateMinScaleDistance', 0)
+	E:SetCVar('nameplateMaxScaleDistance', 40)
+	E:SetCVar('nameplateTargetBehindMaxDistance', 40)
+	E:SetCVar('nameplateMaxAlphaDistance', GetCVarDefault('nameplateMaxAlphaDistance'))
+	E:SetCVar('nameplateMinAlphaDistance', GetCVarDefault('nameplateMinAlphaDistance'))
 	E:SetCVar('nameplateOccludedAlphaMult', GetCVarDefault('nameplateOccludedAlphaMult'))
 	E:SetCVar('nameplateOtherAtBase', GetCVarDefault('nameplateOtherAtBase'))
+
+	-- listed in options
+	E:SetCVar('nameplateMaxAlpha', 1)
+	E:SetCVar('nameplateMaxScale', 1)
+	E:SetCVar('nameplateMinAlpha', 1)
+	E:SetCVar('nameplateMinScale', 1)
+	E:SetCVar('nameplateLargerScale', 1)
 	E:SetCVar('nameplateSelectedAlpha', 1)
 	E:SetCVar('nameplateSelectedScale', 1)
-	E:SetCVar('nameplateSelfAlpha', 1)
-	E:SetCVar('nameplateTargetBehindMaxDistance', 40)
+	E:SetCVar('nameplatePlayerLargerScale', 1.8)
 
 	if not E.Retail then
-		E:SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
+		-- listed in options
+		E:SetCVar('nameplateNotSelectedAlpha', 1)
+
+		-- not in options
+		E:SetCVar('nameplateSelfScale', 1)
 		E:SetCVar('nameplateGlobalScale', 1)
 		E:SetCVar('NamePlateHorizontalScale', 1)
+		E:SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
 		E:SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
 		E:SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
 		E:SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
-		E:SetCVar('nameplateNotSelectedAlpha', 1)
 		E:SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
 		E:SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
-		E:SetCVar('nameplateSelfScale', 1)
 		E:SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
 	end
 end
@@ -170,7 +177,7 @@ function NP:SetCVars()
 	-- the order of these is important !!
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
-	NP:ToggleCVar('nameplateShowOnlyNames', visibility.nameplateShowOnlyNames)
+	NP:ToggleCVar(E.Retail and 'nameplateShowOnlyNameForFriendlyPlayerUnits' or 'nameplateShowOnlyNames', visibility.showOnlyNames)
 
 	local enemyVisibility = visibility.enemy
 	NP:ToggleCVar('nameplateShowEnemyMinions', enemyVisibility.minions)
