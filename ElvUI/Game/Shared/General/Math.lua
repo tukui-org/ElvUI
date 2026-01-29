@@ -54,9 +54,9 @@ do -- Thanks ls-
 		E.Abbreviate.long = long
 
 		if asian then
-			long.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
-			long.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
-			long.breakpoints[3] = { breakpoint = 1e5, abbreviation = units[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
+			long.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
+			long.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
+			long.breakpoints[3] = { breakpoint = 1e4, abbreviation = units[3], significandDivisor = 1e2, fractionDivisor = 100, abbreviationIsGlobal = false }
 		else
 			long.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
 			long.breakpoints[2] = { breakpoint = 1e9, abbreviation = units[2], significandDivisor = 1e8, fractionDivisor = 10, abbreviationIsGlobal = false }
@@ -68,9 +68,9 @@ do -- Thanks ls-
 		E.Abbreviate.short = short
 
 		if asian then
-			short.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
-			short.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
-			short.breakpoints[3] = { breakpoint = 1e5, abbreviation = units[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
+			short.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
+			short.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
+			short.breakpoints[3] = { breakpoint = 1e4, abbreviation = units[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
 		else
 			units = westernUnits.ENGLISH
 			short.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
