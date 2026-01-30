@@ -292,22 +292,21 @@ function UF:PostUpdateHealthColor(unit, color)
 		end
 	end
 
-	local mult = (colors.healthMultiplier > 0) and colors.healthMultiplier
 	local bg, bgc = self.bg
 	if bg then
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			bgc = colors.health_backdrop_dead
 		elseif healthbreakBackdrop then
-			customBackdrop:SetRGBA(healthColor.r, healthColor.g, healthColor.b, mult or 1)
+			customBackdrop:SetRGB(healthColor.r, healthColor.g, healthColor.b)
 			bgc = true
 		elseif colors.healthbackdropbyvalue and not E.Retail then
 			if colors.customhealthbackdrop then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
-				customBackdrop:SetRGBA(bgr, bgg, bgb, mult or 1)
+				customBackdrop:SetRGB(bgr, bgg, bgb)
 				bgc = true
 			elseif not newb and not colors.colorhealthbyvalue then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
-				customBackdrop:SetRGBA(bgr, bgg, bgb, mult or 1)
+				customBackdrop:SetRGB(bgr, bgg, bgb)
 				bgc = true
 			end
 		elseif colors.customhealthbackdrop then
@@ -317,7 +316,7 @@ function UF:PostUpdateHealthColor(unit, color)
 				local _, unitClass = UnitClass(unit)
 				local classColor = parent.colors.class[unitClass]
 				if classColor then
-					customBackdrop:SetRGBA(classColor.r, classColor.g, classColor.b, mult or 1)
+					customBackdrop:SetRGB(classColor.r, classColor.g, classColor.b)
 					bgc = true
 				end
 			end
@@ -326,27 +325,28 @@ function UF:PostUpdateHealthColor(unit, color)
 			if reaction then
 				local reactionColor = parent.colors.reaction[reaction]
 				if reactionColor then
-					customBackdrop:SetRGBA(reactionColor.r, reactionColor.g, reactionColor.b, mult or 1)
+					customBackdrop:SetRGB(reactionColor.r, reactionColor.g, reactionColor.b)
 					bgc = true
 				end
 			end
 		end
 	end
 
+	local inheritAlpha
+	if bgc == true then
+		bgc = customBackdrop
+		inheritAlpha = true
+	end
+
 	if not healthColor then
 		healthColor = color
 	end
 
-	local ignoreAlpha
-	if bgc == true then
-		bgc = customBackdrop
-		ignoreAlpha = not mult
-	end
-
+	local mult = ((colors.healthMultiplier > 0) and colors.healthMultiplier) or inheritAlpha
 	if newb then
-		UF:SetStatusBarColor(self, newr, newg, newb, bgc, ignoreAlpha)
+		UF:SetStatusBarColor(self, newr, newg, newb, bgc, mult)
 	elseif healthColor then
-		UF:SetStatusBarColor(self, healthColor.r, healthColor.g, healthColor.b, bgc, ignoreAlpha)
+		UF:SetStatusBarColor(self, healthColor.r, healthColor.g, healthColor.b, bgc, mult)
 	end
 end
 
