@@ -298,16 +298,16 @@ function UF:PostUpdateHealthColor(unit, color)
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			bgc = colors.health_backdrop_dead
 		elseif healthbreakBackdrop then
-			customBackdrop:SetRGB(healthColor.r, healthColor.g, healthColor.b, mult or 1)
+			customBackdrop:SetRGBA(healthColor.r, healthColor.g, healthColor.b, mult or 1)
 			bgc = true
 		elseif colors.healthbackdropbyvalue and not E.Retail then
 			if colors.customhealthbackdrop then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
-				customBackdrop:SetRGB(bgr, bgg, bgb, mult or 1)
+				customBackdrop:SetRGBA(bgr, bgg, bgb, mult or 1)
 				bgc = true
 			elseif not newb and not colors.colorhealthbyvalue then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
-				customBackdrop:SetRGB(bgr, bgg, bgb, mult or 1)
+				customBackdrop:SetRGBA(bgr, bgg, bgb, mult or 1)
 				bgc = true
 			end
 		elseif colors.customhealthbackdrop then
@@ -317,7 +317,7 @@ function UF:PostUpdateHealthColor(unit, color)
 				local _, unitClass = UnitClass(unit)
 				local classColor = parent.colors.class[unitClass]
 				if classColor then
-					customBackdrop:SetRGB(classColor.r, classColor.g, classColor.b, mult or 1)
+					customBackdrop:SetRGBA(classColor.r, classColor.g, classColor.b, mult or 1)
 					bgc = true
 				end
 			end
@@ -326,7 +326,7 @@ function UF:PostUpdateHealthColor(unit, color)
 			if reaction then
 				local reactionColor = parent.colors.reaction[reaction]
 				if reactionColor then
-					customBackdrop:SetRGB(reactionColor.r, reactionColor.g, reactionColor.b, mult or 1)
+					customBackdrop:SetRGBA(reactionColor.r, reactionColor.g, reactionColor.b, mult or 1)
 					bgc = true
 				end
 			end
