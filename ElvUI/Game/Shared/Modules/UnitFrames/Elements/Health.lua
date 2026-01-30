@@ -258,7 +258,10 @@ function UF:PostUpdateHealthColor(unit, color)
 	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
 
-	local r, g, b, healthColor = colors.health.r, colors.health.g, colors.health.b
+	local r, g, b, healthColor
+	if color and color.r then
+		r, g, b = color.r, color.g, color.b
+	end
 
 	-- Recheck offline status when forced
 	if parent.isForced and (self.colorDisconnected and not env.UnitIsConnected(unit)) then
@@ -272,10 +275,10 @@ function UF:PostUpdateHealthColor(unit, color)
 	end
 
 	local minValue, maxValue = self.cur, self.max
-	local newr, newg, newb, healthbreakBackdrop
+	local healthR, healthG, healthB, healthbreakBackdrop
 	if (not healthColor and not E.Retail) and (not parent.db or parent.db.colorOverride ~= 'ALWAYS') then
 		if ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) and not isTapped then
-			newr, newg, newb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
+			healthR, healthG, healthB = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
 		elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
 			local breakPoint = self.max > 0 and (self.cur / self.max) or 1
 			local threshold = healthBreak.threshold
@@ -304,7 +307,7 @@ function UF:PostUpdateHealthColor(unit, color)
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
 				customBackdrop:SetRGB(bgr, bgg, bgb)
 				bgc = true
-			elseif not newb and not colors.colorhealthbyvalue then
+			elseif not healthR and not colors.colorhealthbyvalue then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
 				customBackdrop:SetRGB(bgr, bgg, bgb)
 				bgc = true
@@ -338,15 +341,13 @@ function UF:PostUpdateHealthColor(unit, color)
 		inheritAlpha = true
 	end
 
-	if not healthColor then
-		healthColor = color
-	end
-
 	local mult = ((colors.healthMultiplier > 0) and colors.healthMultiplier) or inheritAlpha
-	if newb then
-		UF:SetStatusBarColor(self, newr, newg, newb, bgc, mult)
-	elseif healthColor then
+	if healthColor then
 		UF:SetStatusBarColor(self, healthColor.r, healthColor.g, healthColor.b, bgc, mult)
+	elseif healthR then
+		UF:SetStatusBarColor(self, healthR, healthG, healthB, bgc, mult)
+	elseif r then
+		UF:SetStatusBarColor(self, r, g, b, bgc, mult)
 	end
 end
 
