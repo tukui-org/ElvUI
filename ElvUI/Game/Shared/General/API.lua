@@ -53,7 +53,8 @@ local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
-local CreateCurve = C_CurveUtil.CreateCurve
+local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
+local CreateCurve = C_CurveUtil and C_CurveUtil.CreateCurve
 local CreateColorCurve = C_CurveUtil and C_CurveUtil.CreateColorCurve
 local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
@@ -603,19 +604,32 @@ function E:CreateColorCurve(which)
 end
 
 function E:BuildCurves()
-	local float = E.Curves.Float
-	if not float then return end
+	if not E.Retail then return end
 
-	if not float.Alpha then
+	local duration = E.Curves.Duration
+	if not duration then
+		duration = CreateDuration()
 
+		E.Curves.Duration = duration
 	end
 
-	if not float.Desaturate then
-		local desaturate = E:CreateCurve(LuaCurveTypeStep)
-		desaturate:AddPoint(0, 0)
-		desaturate:AddPoint(1.5, 1)
+	local float = E.Curves.Float
+	if float then
+		if not float.Alpha then
+			local alpha = E:CreateCurve(LuaCurveTypeStep)
+			alpha:AddPoint(0, 0)
+			alpha:AddPoint(0.001, 1)
 
-		float.Desaturate = desaturate
+			float.Alpha = alpha
+		end
+
+		if not float.Desaturate then
+			local desaturate = E:CreateCurve(LuaCurveTypeStep)
+			desaturate:AddPoint(0, 0)
+			desaturate:AddPoint(1.5, 1)
+
+			float.Desaturate = desaturate
+		end
 	end
 end
 

@@ -47,7 +47,6 @@ local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
 local BINDING_SET = Enum.BindingSet
 
-local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
 local IsHouseEditorActive = C_HouseEditor and C_HouseEditor.IsHouseEditorActive
 local GetNextCastSpell = C_AssistedCombat and C_AssistedCombat.GetNextCastSpell
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
@@ -1638,34 +1637,30 @@ function AB:ToggleCooldownOptions()
 	end
 end
 
-do
-	local durationObject
-	function AB:SetButtonDesaturation(button, start, duration)
-		if button.LevelLinkLockIcon and button.LevelLinkLockIcon:IsShown() then
-			button.saturationLocked = nil
-			return
-		end
+function AB:SetButtonDesaturation(button, start, duration)
+	if button.LevelLinkLockIcon and button.LevelLinkLockIcon:IsShown() then
+		button.saturationLocked = nil
+		return
+	end
 
-		local allow
-		if E:IsSecretValue(duration) then
-			if not durationObject then
-				durationObject = CreateDuration()
-			end
-
+	local allow
+	if E:IsSecretValue(duration) then
+		local durationObject = E.Curves.Duration
+		if durationObject then
 			durationObject:SetTimeFromStart(start, duration)
 
-			allow = duration:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
-		else
-			allow = duration and duration > 1.5
+			allow = durationObject:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
 		end
+	else
+		allow = duration and duration > 1.5
+	end
 
-		if AB.db.desaturateOnCooldown and allow then
-			button.icon:SetDesaturated(allow)
-			button.saturationLocked = true
-		else
-			button.icon:SetDesaturated(false)
-			button.saturationLocked = nil
-		end
+	if AB.db.desaturateOnCooldown and allow then
+		button.icon:SetDesaturated(allow)
+		button.saturationLocked = true
+	else
+		button.icon:SetDesaturated(false)
+		button.saturationLocked = nil
 	end
 end
 

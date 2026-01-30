@@ -156,13 +156,18 @@ E.GemTypeInfo = {
 	Fiber			= { r = 0.90, g = 0.80, b = 0.50, a = 1 },
 }
 
-E.Curves = { -- Midnight Color Curves
+E.Curves = { -- Midnight Color Curves (nil values created later)
+	Duration = nil, -- duration object for SetTimeFromStart
 	Float = {
-		-- Desaturation: for stuff (Actionbars)
+		Desaturation = nil, -- float curve for SetDesaturation
 	},
 	Color = {
-		Auras = { auras = false, buffs = false, debuffs = false }
-		-- Dispel: which has a curve for IsDispellableByMe
+		Auras = { -- color curves created and updated by UpdateAuraCurves
+			auras = false,	-- these all
+			buffs = false,	-- stay false
+			debuffs = false	-- on classics
+		},
+		Dispel = nil, -- color curve for IsDispellableByMe; updated by ListUpdated in LibDispel
 	}
 }
 
