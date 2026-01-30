@@ -588,15 +588,32 @@ function E:CheckRole()
 	E.myrole = E:GetPlayerRole()
 end
 
+function E:CreateCurve(which)
+	local curve = CreateCurve()
+	curve:SetType(which)
+
+	return curve
+end
+
+function E:CreateColorCurve(which)
+	local curve = CreateColorCurve()
+	curve:SetType(which)
+
+	return curve
+end
+
 function E:BuildCurves()
 	local float = E.Curves.Float
 	if not float then return end
 
+	if not float.Alpha then
+
+	end
+
 	if not float.Desaturate then
-		local desaturate = CreateCurve()
-		desaturate:SetType(LuaCurveTypeStep)
+		local desaturate = E:CreateCurve(LuaCurveTypeStep)
 		desaturate:AddPoint(0, 0)
-		desaturate:AddPoint(0.001, 1)
+		desaturate:AddPoint(1.5, 1)
 
 		float.Desaturate = desaturate
 	end
@@ -616,8 +633,7 @@ do
 	function E:UpdateDispelCurves()
 		local curves = E.Curves.Color.Dispel
 		if not curves then
-			curves = CreateColorCurve()
-			curves:SetType(LuaCurveTypeStep)
+			curves = E:CreateColorCurve(LuaCurveTypeStep)
 
 			E.Curves.Color.Dispel = curves
 		else -- empty the list
@@ -637,8 +653,7 @@ function E:UpdateAuraCurves()
 	local curves = E.Curves.Color.Auras
 	for which, data in next, curves do
 		if not data then
-			data = CreateColorCurve()
-			data:SetType(LuaCurveTypeStep)
+			data = E:CreateColorCurve(LuaCurveTypeStep)
 
 			curves[which] = data
 		end
