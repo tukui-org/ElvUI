@@ -419,7 +419,7 @@ Filters.mainOptions.args.auraIndicator.args.countGroup.args.countAnchor = ACH:Se
 Filters.mainOptions.args.auraIndicator.args.countGroup.args.countX = ACH:Range(L["X-Offset"], nil, 2, { min = -75, max = 75, step = 1 })
 Filters.mainOptions.args.auraIndicator.args.countGroup.args.countY = ACH:Range(L["Y-Offset"], nil, 3, { min = -75, max = 75, step = 1 })
 
-Filters.mainOptions.args.auraIndicator.args.cooldownGroup = ACH:Group(L["Cooldown Text"], nil, 25)
+Filters.mainOptions.args.auraIndicator.args.cooldownGroup = ACH:Group(L["Cooldown & Duration"], nil, 25)
 Filters.mainOptions.args.auraIndicator.args.cooldownGroup.args.cooldownAnchor = ACH:Select(L["Anchor Point"], nil, 1, C.Values.AllPoints)
 Filters.mainOptions.args.auraIndicator.args.cooldownGroup.args.cooldownX = ACH:Range(L["X-Offset"], nil, 2, { min = -75, max = 75, step = 1 })
 Filters.mainOptions.args.auraIndicator.args.cooldownGroup.args.cooldownY = ACH:Range(L["Y-Offset"], nil, 3, { min = -75, max = 75, step = 1 })
