@@ -76,7 +76,8 @@ function NP:Power_UpdateColor(_, unit)
 	elseif b then
 		NP:SetStatusBarColor(element, r, g, b)
 	elseif color then
-		NP:SetStatusBarColor(element, color:GetRGB())
+		local cr, cg, cb = color:GetRGB()
+		NP:SetStatusBarColor(element, cr, cg, cb)
 	end
 
 	if element.PostUpdateColor then
