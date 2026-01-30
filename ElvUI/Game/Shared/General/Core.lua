@@ -1532,6 +1532,7 @@ end
 
 function E:UpdateMediaItems(skipCallback)
 	E:UpdateMedia()
+	E:UpdateAuraCurves()
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
 	E:UpdateFrameTemplates()
@@ -2043,6 +2044,7 @@ function E:Initialize()
 		E:InitializeModules()
 		E:LoadMovers()
 		E:UpdateMedia()
+		E:UpdateAuraCurves()
 		E:UpdateDispelColors()
 		E:UpdateCustomClassColors()
 

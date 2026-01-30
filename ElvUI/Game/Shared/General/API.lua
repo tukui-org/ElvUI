@@ -617,6 +617,8 @@ do
 end
 
 function E:UpdateAuraCurves()
+	if not E.Retail then return end
+
 	local curves = E.ColorCurves.Auras
 	for which, data in next, curves do
 		if not data then
@@ -655,10 +657,6 @@ function E:UpdateDispelColors()
 
 			color.r, color.g, color.b = db.r, db.g, db.b
 		end
-	end
-
-	if E.Retail then
-		E:UpdateAuraCurves()
 	end
 end
 
