@@ -732,15 +732,13 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 
 		if not link then return end
 
-		if TT.db.itemQuality then
-			local quality = GetItemQualityByID(link)
-			if quality and quality > 1 then
-				local r, g, b = E:GetItemQualityColor(quality)
+		local quality = (self.SetBackdropBorderColor and TT.db.itemQuality) and GetItemQualityByID(link)
+		if quality and quality > 1 then
+			local r, g, b = E:GetItemQualityColor(quality)
 
-				self:SetBackdropBorderColor(r, g, b)
+			self:SetBackdropBorderColor(r, g, b)
 
-				self.qualityChanged = true
-			end
+			self.qualityChanged = true
 		end
 
 		if modKey then
