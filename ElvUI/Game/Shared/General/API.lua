@@ -589,16 +589,16 @@ function E:CheckRole()
 end
 
 function E:BuildCurves()
-	local curves = E.ColorCurves
-	if not curves then return end
+	local float = E.Curves.Float
+	if not float then return end
 
-	if not curves.Desaturate then
+	if not float.Desaturate then
 		local desaturate = CreateCurve()
 		desaturate:SetType(LuaCurveTypeStep)
 		desaturate:AddPoint(0, 0)
 		desaturate:AddPoint(0.001, 1)
 
-		curves.Desaturate = desaturate
+		float.Desaturate = desaturate
 	end
 end
 
@@ -614,12 +614,12 @@ end
 do
 	local fallback = { r = 0, g = 0, b = 0, a = 0 }
 	function E:UpdateDispelCurves()
-		local curves = E.ColorCurves.Dispel
+		local curves = E.Curves.Color.Dispel
 		if not curves then
 			curves = CreateColorCurve()
 			curves:SetType(LuaCurveTypeStep)
 
-			E.ColorCurves.Dispel = curves
+			E.Curves.Color.Dispel = curves
 		else -- empty the list
 			curves:ClearPoints()
 		end
@@ -634,7 +634,7 @@ end
 function E:UpdateAuraCurves()
 	if not E.Retail then return end
 
-	local curves = E.ColorCurves.Auras
+	local curves = E.Curves.Color.Auras
 	for which, data in next, curves do
 		if not data then
 			data = CreateColorCurve()

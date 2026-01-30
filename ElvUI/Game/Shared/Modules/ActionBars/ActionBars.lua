@@ -1654,7 +1654,7 @@ do
 
 			durationObject:SetTimeFromStart(start, duration)
 
-			allow = duration:EvaluateRemainingDuration(E.ColorCurves.Desaturate)
+			allow = duration:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
 		else
 			allow = duration and duration > 1.5
 		end
