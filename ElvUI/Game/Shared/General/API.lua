@@ -53,6 +53,7 @@ local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
+local CreateCurve = C_CurveUtil.CreateCurve
 local CreateColorCurve = C_CurveUtil and C_CurveUtil.CreateColorCurve
 local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
@@ -585,6 +586,20 @@ function E:CheckRole()
 	end
 
 	E.myrole = E:GetPlayerRole()
+end
+
+function E:BuildCurves()
+	local curves = E.ColorCurves
+	if not curves then return end
+
+	if not curves.Desaturate then
+		local desaturate = CreateCurve()
+		desaturate:SetType(LuaCurveTypeStep)
+		desaturate:AddPoint(0, 0)
+		desaturate:AddPoint(0.001, 1)
+
+		curves.Desaturate = desaturate
+	end
 end
 
 function E:UpdateAuraCurve(which, data)

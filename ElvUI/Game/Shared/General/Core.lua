@@ -156,8 +156,9 @@ E.GemTypeInfo = {
 	Fiber			= { r = 0.90, g = 0.80, b = 0.50, a = 1 },
 }
 
--- Midnight Color Curves
-E.ColorCurves = {} -- also has a Dispel object (which has a curve for IsDispellableByMe)
+-- Midnight Color Curves:
+--- Desaturation curve / Dispel object (which has a curve for IsDispellableByMe)
+E.ColorCurves = {}
 E.ColorCurves.Auras = { auras = false, buffs = false, debuffs = false }
 ElvUF.ColorCurves = E.ColorCurves -- reference to oUF
 
@@ -2037,6 +2038,7 @@ function E:Initialize()
 	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	else
+		E:BuildCurves()
 		E:BuildPrefixValues()
 		E:BuildAbbreviateConfigs()
 		E:LoadAPI()
