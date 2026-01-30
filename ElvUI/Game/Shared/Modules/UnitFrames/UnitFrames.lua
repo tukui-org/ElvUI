@@ -2006,16 +2006,20 @@ function UF:SetStatusBarColor(bar, r, g, b, custom, bgAlpha)
 	local mainR, mainG, mainB, mainA = r, g, b, bar.isTransparent and UF.multiplier or 1
 	local bgR, bgG, bgB, bgA = r, g, b, bar.isTransparent and 1 or UF.multiplier
 
+	if bgAlpha == true then
+		bgAlpha = bgA
+	end
+
 	local color = custom or bar.custom_backdrop
 	if color then
-		bgR, bgG, bgB, bgA = color.r, color.g, color.b, (bgAlpha == true and bgA) or bgAlpha or color.a
+		bgR, bgG, bgB, bgA = color.r, color.g, color.b, bgAlpha or color.a
 	end
 
 	if bar.bg then
 		if bar.invertColors then
-			bar.bg:SetVertexColor(mainR, mainG, mainB, bgA)
+			bar.bg:SetVertexColor(mainR, mainG, mainB, bgAlpha or bgA)
 		else
-			bar.bg:SetVertexColor(bgR, bgG, bgB, bgA)
+			bar.bg:SetVertexColor(bgR, bgG, bgB, bgAlpha or bgA)
 		end
 	end
 
