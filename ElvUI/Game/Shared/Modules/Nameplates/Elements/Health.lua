@@ -57,7 +57,8 @@ function NP:Health_UpdateColor(_, unit)
 	end
 
 	if color then
-		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+		local r, g, b = color:GetRGB()
+		NP:SetStatusBarColor(element, r, g, b)
 	end
 
 	if element.PostUpdateColor then
