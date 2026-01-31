@@ -225,7 +225,7 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 
 	if powerUpdate then return end -- we dont need to redo this stuff, power updated it
 
-	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true, nil, db.health and db.health.reverseFill)
+	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true, UF.db.colors.invertHealth, db.health and db.health.reverseFill)
 
 	UF:Configure_FrameGlow(frame)
 
@@ -298,29 +298,33 @@ function UF:PostUpdateHealthColor(unit, color)
 	local bg, bgc = self.bg
 	if bg then
 		if colors.useDeadBackdrop and isDeadOrGhost then
-			bgc = colors.health_backdrop_dead
+			local dead = colors.health_backdrop_dead
+			customBackdrop:SetRGB(dead.r, dead.g, dead.b)
+			bgc = customBackdrop
 		elseif healthbreakBackdrop then
 			customBackdrop:SetRGB(healthColor.r, healthColor.g, healthColor.b)
-			bgc = true
+			bgc = customBackdrop
 		elseif colors.healthbackdropbyvalue and not E.Retail then
 			if colors.customhealthbackdrop then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
 				customBackdrop:SetRGB(bgr, bgg, bgb)
-				bgc = true
+				bgc = customBackdrop
 			elseif not healthR and not colors.colorhealthbyvalue then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
 				customBackdrop:SetRGB(bgr, bgg, bgb)
-				bgc = true
+				bgc = customBackdrop
 			end
 		elseif colors.customhealthbackdrop then
-			bgc = colors.health_backdrop
+			local health = colors.health_backdrop
+			customBackdrop:SetRGB(health.r, health.g, health.b)
+			bgc = customBackdrop
 		elseif colors.classbackdrop then
 			if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
 				local _, unitClass = UnitClass(unit)
 				local classColor = parent.colors.class[unitClass]
 				if classColor then
 					customBackdrop:SetRGB(classColor.r, classColor.g, classColor.b)
-					bgc = true
+					bgc = customBackdrop
 				end
 			end
 
@@ -329,25 +333,18 @@ function UF:PostUpdateHealthColor(unit, color)
 				local reactionColor = parent.colors.reaction[reaction]
 				if reactionColor then
 					customBackdrop:SetRGB(reactionColor.r, reactionColor.g, reactionColor.b)
-					bgc = true
+					bgc = customBackdrop
 				end
 			end
 		end
 	end
 
-	local inheritAlpha
-	if bgc == true then
-		bgc = customBackdrop
-		inheritAlpha = true
-	end
-
-	local mult = ((colors.healthMultiplier > 0) and colors.healthMultiplier) or inheritAlpha
 	if healthColor then
-		UF:SetStatusBarColor(self, healthColor.r, healthColor.g, healthColor.b, bgc, mult)
+		UF:SetStatusBarColor(self, healthColor.r, healthColor.g, healthColor.b, bgc, true)
 	elseif healthR then
-		UF:SetStatusBarColor(self, healthR, healthG, healthB, bgc, mult)
+		UF:SetStatusBarColor(self, healthR, healthG, healthB, bgc, true)
 	elseif r then
-		UF:SetStatusBarColor(self, r, g, b, bgc, mult)
+		UF:SetStatusBarColor(self, r, g, b, bgc, true)
 	end
 end
 

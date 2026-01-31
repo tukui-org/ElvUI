@@ -44,7 +44,7 @@ function NP:ClassPower_PostUpdate(current, _, needUpdate, powerType, chargedPoin
 			for _, index in next, chargedPoints do
 				local charged = self[index]
 				if charged then
-					NP:SetStatusBarColor(charged, color.r, color.g, color.b, NP.multiplier)
+					NP:SetStatusBarColor(charged, color.r, color.g, color.b)
 				end
 			end
 		end

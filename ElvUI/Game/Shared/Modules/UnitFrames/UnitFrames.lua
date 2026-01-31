@@ -745,6 +745,8 @@ end
 function UF:Update_AllFrames()
 	if not E.private.unitframe.enable then return end
 
+	UF.multiplier = UF.db.multiplier
+
 	UF:UpdateColors()
 	UF:Update_FontStrings()
 	UF:Update_StatusBars()
@@ -2002,29 +2004,25 @@ function UF:MergeUnitSettings(from, to)
 	UF:Update_AllFrames()
 end
 
-function UF:SetStatusBarColor(bar, r, g, b, custom, bgAlpha)
-	local mainR, mainG, mainB, mainA = r, g, b, bar.isTransparent and UF.multiplier or 1
-	local bgR, bgG, bgB, bgA = r, g, b, bar.isTransparent and 1 or UF.multiplier
-
-	if bgAlpha == true then
-		bgAlpha = bgA
-	end
+function UF:SetStatusBarColor(bar, r, g, b, custom, overrideAlpha)
+	local mainR, mainG, mainB, mainA = r, g, b, (bar.isTransparent and (UF.multiplier * 2)) or 1
+	local bgR, bgG, bgB, bgA = r, g, b, (bar.isTransparent and (UF.multiplier * 0.5)) or UF.multiplier
 
 	local color = custom or bar.custom_backdrop
 	if color then
-		bgR, bgG, bgB, bgA = color.r, color.g, color.b, bgAlpha or color.a
+		bgR, bgG, bgB, bgA = color.r, color.g, color.b, (overrideAlpha and bgA) or color.a
 	end
 
 	if bar.bg then
 		if bar.invertColors then
-			bar.bg:SetVertexColor(mainR, mainG, mainB, bgAlpha or bgA)
+			bar.bg:SetVertexColor(mainR, mainG, mainB, mainA)
 		else
-			bar.bg:SetVertexColor(bgR, bgG, bgB, bgAlpha or bgA)
+			bar.bg:SetVertexColor(bgR, bgG, bgB, bgA)
 		end
 	end
 
 	if bar.invertColors then
-		bar:GetStatusBarTexture():SetVertexColor(bgR, bgG, bgB, mainA)
+		bar:GetStatusBarTexture():SetVertexColor(bgR, bgG, bgB, bgA)
 	else
 		bar:GetStatusBarTexture():SetVertexColor(mainR, mainG, mainB, mainA)
 	end
