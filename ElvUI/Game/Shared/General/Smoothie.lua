@@ -10,19 +10,6 @@ local TARGET_FPS = 60
 local AMOUNT = 0.33
 
 local frame = CreateFrame('Frame')
-function E:Smoothing_Clamp(v, min, max)
-	if not min then min = 0 end
-	if not max then max = 1 end
-
-	if v > max then
-		return max
-	elseif v < min then
-		return min
-	end
-
-	return v
-end
-
 function E:Smoothing_IsCloseEnough(new, target, range)
 	if range > 0 then
 		return abs((new - target) / range) <= 0.001
@@ -33,7 +20,7 @@ end
 
 function E:Smoothing_OnUpdate(elapsed)
 	for object, target in next, activeObjects do
-		local new = Lerp(object._value, target, E:Smoothing_Clamp(AMOUNT * elapsed * TARGET_FPS))
+		local new = Lerp(object._value, target, E:Clamp(AMOUNT * elapsed * TARGET_FPS))
 		if E:Smoothing_IsCloseEnough(new, target, object._max - object._min) then
 			new = target
 
@@ -51,7 +38,7 @@ function E:Smoothing_SetSmoothedValue(value)
 	assert(value, 'bar_SetSmoothedValue requires (value) to be a number.')
 
 	self._value = self:GetValue()
-	activeObjects[self] = E:Smoothing_Clamp(value, self._min, self._max)
+	activeObjects[self] = E:Clamp(value, self._min, self._max)
 end
 
 function E:Smoothing_SetSmoothedMinMaxValues(min, max)
@@ -128,7 +115,7 @@ function E:Smoothing_Disable(bar)
 end
 
 function E:SetSmoothingAmount(amount)
-	AMOUNT = E:Smoothing_Clamp(amount, 0.2, 0.8)
+	AMOUNT = E:Clamp(amount, 0.2, 0.8)
 end
 
 function E:SetSmoothing(bar, enable)

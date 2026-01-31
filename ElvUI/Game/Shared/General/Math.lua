@@ -181,6 +181,20 @@ function E:HexsToRGBs(rgb, ...)
 	return unpack(rgb)
 end
 
+-- clamp a number
+function E:Clamp(value, minimum, maximum)
+	if not minimum then minimum = 0 end
+	if not maximum then maximum = 1 end
+
+	if value > maximum then
+		return maximum
+	elseif value < minimum then
+		return minimum
+	end
+
+	return value
+end
+
 --Return rounded number
 function E:Round(num, idp)
 	if type(num) ~= 'number' then
