@@ -72,6 +72,13 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 	end)
 end
 
+E:AddTag('health:current', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+	local currentHealth = UnitHealth(unit)
+	return E:AbbreviateNumbers(currentHealth, E.Abbreviate[which])
+end)
+
+
+
 E:AddTag('pvp:honorlevel', 'UNIT_NAME_UPDATE', function(unit)
 	if not UnitIsPlayer(unit) then return end
 
