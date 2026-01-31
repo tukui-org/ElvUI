@@ -39,8 +39,15 @@ function NP:Castbar_CheckInterrupt(unit)
 	end
 end
 
-function NP:Castbar_CustomDelayText(duration)
-	if E:IsSecretValue(duration) or not duration then return end
+function NP:Castbar_CustomDelayText(duration, durationObject)
+	if durationObject then
+		local remain = durationObject:GetRemainingDuration()
+		self.Time:SetFormattedText('%.1f', remain)
+
+		return
+	elseif not duration then
+		return
+	end
 
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
@@ -65,8 +72,15 @@ function NP:Castbar_CustomDelayText(duration)
 	end
 end
 
-function NP:Castbar_CustomTimeText(duration)
-	if E:IsSecretValue(duration) or not duration then return end
+function NP:Castbar_CustomTimeText(duration, durationObject)
+	if durationObject then
+		local remain = durationObject:GetRemainingDuration()
+		self.Time:SetFormattedText('%.1f', remain)
+
+		return
+	elseif not duration then
+		return
+	end
 
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
