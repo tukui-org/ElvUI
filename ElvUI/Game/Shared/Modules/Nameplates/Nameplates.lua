@@ -611,6 +611,8 @@ end
 function NP:ConfigureAll(init)
 	if not E.private.nameplates.enable then return end
 
+	NP.multiplier = NP.db.multiplier
+
 	NP:PLAYER_REGEN_ENABLED()
 	NP:UpdateTargetPlate(NP.TargetClassPower)
 	NP:Update_StatusBars()

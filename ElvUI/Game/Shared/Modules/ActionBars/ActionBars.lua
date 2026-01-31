@@ -51,6 +51,7 @@ local IsHouseEditorActive = C_HouseEditor and C_HouseEditor.IsHouseEditorActive
 local GetNextCastSpell = C_AssistedCombat and C_AssistedCombat.GetNextCastSpell
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
+local GetActionCooldownDuration = C_ActionBar.GetActionCooldownDuration
 
 local GetProfessionQuality = C_ActionBar.GetProfessionQuality
 local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
@@ -1631,23 +1632,33 @@ end
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
 		if button._state_type == 'action' then
-			local _, duration = button:GetCooldown()
-			AB:SetButtonDesaturation(button, duration)
+			local start, duration = button:GetCooldown()
+			AB:SetButtonDesaturation(button, start, duration)
 		end
 	end
 end
 
-function AB:SetButtonDesaturation(button, duration)
+function AB:SetButtonDesaturation(button, start, duration)
 	if button.LevelLinkLockIcon and button.LevelLinkLockIcon:IsShown() then
 		button.saturationLocked = nil
 		return
 	end
 
-	if AB.db.desaturateOnCooldown and E:NotSecretValue(duration) and (duration and duration > 1.5) then
-		button.icon:SetDesaturated(true)
+	local allow
+	if E:IsSecretValue(duration) then
+		local action = button._state_type == 'action' and button._state_action
+		local info = action and button:GetCooldownInfo()
+		local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
+		allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
+	else
+		allow = (duration and duration > 1.5) and 1 or 0
+	end
+
+	if AB.db.desaturateOnCooldown and allow then
+		button.icon:SetDesaturation(allow)
 		button.saturationLocked = true
 	else
-		button.icon:SetDesaturated(false)
+		button.icon:SetDesaturation(0)
 		button.saturationLocked = nil
 	end
 end
@@ -1705,12 +1716,16 @@ function AB:LAB_ButtonUpdate(button)
 end
 
 function AB:LAB_CooldownDone(button)
-	AB:SetButtonDesaturation(button, 0)
+	AB:SetButtonDesaturation(button, 0, 0)
 end
 
-function AB:LAB_CooldownUpdate(button, _, duration)
+function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	if button._state_type == 'action' then
-		AB:SetButtonDesaturation(button, duration)
+		if info then
+			AB:SetButtonDesaturation(button, info.startTime or 0, info.duration or 0)
+		else
+			AB:SetButtonDesaturation(button, start, duration)
+		end
 	end
 
 	if button.cooldown then

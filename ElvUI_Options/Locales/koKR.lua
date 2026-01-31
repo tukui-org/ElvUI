@@ -426,7 +426,7 @@ L["Controls the amount of decimals used in values displayed on elements like Nam
 L["Controls the speed at which smoothed bars will be updated."] = "진행바(생명/마나 등)의 갱신 속도를 조정합니다."
 L["Controls the text displayed. Tags are available in the Available Tags section of the config."] = "표시할 텍스트를 설정합니다. 사용 가능한 태그는 [사용 가능한 태그] 섹션에서 볼 수 있습니다."
 L["Cooldown Manager"] = "재사용 대기시간 관리자"
-L["Cooldown Text"] = "재사용 대기시간 설정"
+L["Cooldown & Duration"] = true
 L["Cooldowns"] = "재사용 대기시간"
 L["Copy Chat Lines"] = "대화 행별 복사 기능"
 L["Copy From"] = "복사해오기"

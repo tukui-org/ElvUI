@@ -2226,10 +2226,14 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 end
 
 local function OnCooldownDone(self, requireCooldownUpdate)
+	local button = self:GetParent()
+
 	self:SetScript("OnCooldownDone", nil)
 
+	lib.callbacks:Fire("OnCooldownDone", button, self)
+
 	if requireCooldownUpdate then
-		UpdateCooldown(self:GetParent())
+		UpdateCooldown(button)
 	end
 end
 

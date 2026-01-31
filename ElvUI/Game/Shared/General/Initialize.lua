@@ -158,9 +158,9 @@ do
 	end
 
 	function E:DispelListUpdated()
-		if E.Retail then
-			E:UpdateDispelCurves()
-		end
+		if not E.Retail then return end
+
+		E:UpdateDispelCurves()
 	end
 
 	E:AddLib('AceAddon', AceAddon, AceAddonMinor)

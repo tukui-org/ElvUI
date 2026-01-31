@@ -72,15 +72,12 @@ function NP:Power_UpdateColor(_, unit)
 
 	if atlas then
 		element:SetStatusBarTexture(atlas)
-		element:GetStatusBarTexture():SetVertexColor(1, 1, 1)
+		NP:SetStatusBarColor(element, 1, 1, 1)
 	elseif b then
-		element:GetStatusBarTexture():SetVertexColor(r, g, b)
+		NP:SetStatusBarColor(element, r, g, b)
 	elseif color then
-		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
-	end
-
-	if element.bg and b then
-		element.bg:SetVertexColor(r, g, b, NP.multiplier)
+		local cr, cg, cb = color:GetRGB()
+		NP:SetStatusBarColor(element, cr, cg, cb)
 	end
 
 	if element.PostUpdateColor then

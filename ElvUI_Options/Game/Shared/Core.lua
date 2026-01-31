@@ -646,7 +646,7 @@ do -- Module Copy
 
 	--Cooldowns
 	local function CreateCooldownConfig()
-		local config = MC:CreateModuleConfigGroup(L["Cooldown Text"], 'cooldown')
+		local config = MC:CreateModuleConfigGroup(L["Cooldown & Duration"], 'cooldown')
 
 		MC:AddConfigOptions(P.cooldown, config, 'cooldown')
 
@@ -822,7 +822,7 @@ do -- Module Copy
 	E.Options.args.profiles.args.modulereset.args.bags = ACH:Execute(L["Bags"], nil, 5, nil, nil, L["Are you sure you want to reset Bags settings?"])
 	E.Options.args.profiles.args.modulereset.args.auras = ACH:Execute(L["Auras"], nil, 6, nil, nil, L["Are you sure you want to reset Auras settings?"])
 	E.Options.args.profiles.args.modulereset.args.chat = ACH:Execute(L["Chat"], nil, 7, nil, nil, L["Are you sure you want to reset Chat settings?"])
-	E.Options.args.profiles.args.modulereset.args.cooldown = ACH:Execute(L["Cooldown Text"], nil, 8, nil, nil, L["Are you sure you want to reset Cooldown settings?"])
+	E.Options.args.profiles.args.modulereset.args.cooldown = ACH:Execute(L["Cooldown & Duration"], nil, 8, nil, nil, L["Are you sure you want to reset Cooldown settings?"])
 	E.Options.args.profiles.args.modulereset.args.databars = ACH:Execute(L["DataBars"], nil, 9, nil, nil, L["Are you sure you want to reset DataBars settings?"])
 	E.Options.args.profiles.args.modulereset.args.datatexts = ACH:Execute(L["DataTexts"], nil, 10, nil, nil, L["Are you sure you want to reset DataTexts settings?"])
 	E.Options.args.profiles.args.modulereset.args.nameplates = ACH:Execute(L["Nameplates"], nil, 11, nil, nil, L["Are you sure you want to reset NamePlates settings?"])

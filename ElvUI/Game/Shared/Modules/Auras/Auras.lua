@@ -119,13 +119,19 @@ function A:MasqueData(texture, highlight)
 end
 
 function A:UpdateStatusBar(button)
+	local db = A.db[button.auraType]
 	if E.Retail and not button.enchantIndex then
+		local percent = db.barColorGradient and button.auraDuration and button.auraDuration:GetRemainingPercent()
+		local color = percent and E.Curves.Color.Default:Evaluate(percent)
+		if color then
+			button.statusBar:SetStatusBarColor(color.r, color.g, color.b)
+		end
+
 		local remaining = button.auraDuration and button.auraDuration:GetRemainingDuration()
 		if remaining then
 			button.statusBar:SetValue(remaining, button.statusBar.smoothing)
 		end
 	elseif button.timeLeft then
-		local db = A.db[button.auraType]
 		if db.barColorGradient then
 			local r, g, b = E:ColorGradient(button.duration == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
 			button.statusBar:SetStatusBarColor(r, g, b)
@@ -266,8 +272,8 @@ function A:UpdateAura(button, index)
 	local data = GetAuraDataByIndex(unitToken, index, button.filter)
 	if not data then return end
 
-	local duration = data.duration
 	local icon = data.icon
+	local duration = data.duration
 	local expiration = data.expirationTime
 	local debuffType = data.dispelName
 	local count = data.applications
@@ -276,6 +282,7 @@ function A:UpdateAura(button, index)
 	button.texture:SetTexture(icon)
 	button.auraInstanceID = data.auraInstanceID
 	button.unit = unitToken
+	button.aura = data
 
 	local minCount, maxCount = 2, 999 -- maybe do options for this
 	if E:IsSecretValue(count) then
@@ -359,29 +366,40 @@ function A:UpdateButton(button, duration, expiration, modRate)
 	if E.Retail and not button.enchantIndex then -- midnight auras
 		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
 		button.auraDuration = auraDuration or nil
-		button.statusBar:SetShown(db.barShow)
 
+		local showBar = db.barShow and (db.barNoDuration and 1)
 		if auraDuration then
+			local aura = not showBar and (db.barShow and button.aura)
+			if aura then
+				auraDuration:SetTimeFromEnd(aura.expirationTime, aura.duration)
+				showBar = auraDuration:EvaluateRemainingDuration(E.Curves.Float.Alpha)
+			end
+
 			button.cooldown:SetCooldownFromDurationObject(auraDuration)
 
 			button.statusBar:SetMinMaxValues(0, duration)
-			button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
+
+			if not db.barColorGradient then
+				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
+			end
 		else
 			button.cooldown:Clear()
 		end
+
+		button.statusBar:SetAlpha(showBar or 0)
 	elseif not E.Retail or button.enchantIndex then
 		local hasCooldown = duration > 0
 		local barShown = db.barShow and (hasCooldown or (db.barNoDuration and duration == 0))
-		button.statusBar:SetShown(barShown)
+		button.statusBar:SetAlpha(barShown and 1 or 0)
 
 		if barShown then
 			button.statusBar:SetMinMaxValues(0, (hasCooldown and duration) or 1)
 
-			if E.Retail or not db.barColorGradient then
+			if not db.barColorGradient then
 				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
 			elseif not hasCooldown then
 				button.statusBar:SetValue(1, button.statusBar.smoothing)
-				button.statusBar:SetStatusBarColor(0, .8, 0)
+				button.statusBar:SetStatusBarColor(0, 0.8, 0)
 			end
 		end
 

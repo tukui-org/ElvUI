@@ -6,6 +6,7 @@ local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack,
 local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
+local CreateAbbreviateConfig = CreateAbbreviateConfig
 local AbbreviateNumbers = AbbreviateNumbers
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetPlayerFacing = GetPlayerFacing

@@ -433,7 +433,7 @@ L["Controls the text displayed. Tags are available in the Available Tags section
 L["Cooldown Manager"] = "冷卻管理器"
 L["Cooldown Numbers"] = "冷卻數字"
 L["Cooldown Spiral"] = "冷卻旋轉"
-L["Cooldown Text"] = "冷卻文字"
+L["Cooldown & Duration"] = true
 L["Cooldowns"] = "冷卻"
 L["Copy Chat Lines"] = "複製聊天記錄"
 L["Copy From"] = "複製自"
