@@ -133,6 +133,7 @@ L["Disabled"] = true
 L["Disband Group"] = true
 L["Discard"] = true
 L["Discord"] = true
+L["Damage Meter"] = true
 L["DND"] = true
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = true
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = true

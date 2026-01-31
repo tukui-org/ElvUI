@@ -133,6 +133,7 @@ L["Disabled"] = "Desabilitado"
 L["Disband Group"] = "Dissolver Grupo"
 L["Discard"] = "Descartar"
 L["Discord"] = true
+L["Damage Meter"] = true
 L["DND"] = "NP"
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "Você jura não postar no suporte técnico sobre alguma coisa não funcionando sem antes desabilitar a combinação de addon/módulo primeiro?"
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "Não se esqueça de fazer um backup da sua pasta WTF, todos os perfis e configurações estão lá."
