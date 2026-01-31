@@ -77,6 +77,7 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
+local LuaCurveTypeLinear = Enum.LuaCurveType and Enum.LuaCurveType.Linear
 local LuaCurveTypeStep = Enum.LuaCurveType and Enum.LuaCurveType.Step
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
@@ -603,32 +604,50 @@ function E:CreateColorCurve(which)
 	return curve
 end
 
-function E:BuildCurves()
-	if not E.Retail then return end
+do
+	local RED = { r = 1, g = 0.3, b = 0.3, a = 1 }
+	local YELLOW = { r = 1, g = 1, b = 0.3, a = 1 }
+	local GREEN = { r = 0.3, g = 1, b = 0, a = 1 }
+	function E:BuildCurves()
+		if not E.Retail then return end
 
-	local duration = E.Curves.Duration
-	if not duration then
-		duration = CreateDuration()
+		local color = E.Curves.Color
+		if color then
+			local default = color.Default
+			if not default then
+				default = E:CreateColorCurve(LuaCurveTypeLinear)
+				default:AddPoint(0.2, RED)
+				default:AddPoint(0.6, YELLOW)
+				default:AddPoint(0.8, GREEN)
 
-		E.Curves.Duration = duration
-	end
-
-	local float = E.Curves.Float
-	if float then
-		if not float.Alpha then
-			local alpha = E:CreateCurve(LuaCurveTypeStep)
-			alpha:AddPoint(0, 0)
-			alpha:AddPoint(0.001, 1)
-
-			float.Alpha = alpha
+				color.Default = default
+			end
 		end
 
-		if not float.Desaturate then
-			local desaturate = E:CreateCurve(LuaCurveTypeStep)
-			desaturate:AddPoint(0, 0)
-			desaturate:AddPoint(1.5, 1)
+		local duration = E.Curves.Duration
+		if not duration then
+			duration = CreateDuration()
 
-			float.Desaturate = desaturate
+			E.Curves.Duration = duration
+		end
+
+		local float = E.Curves.Float
+		if float then
+			if not float.Alpha then
+				local alpha = E:CreateCurve(LuaCurveTypeStep)
+				alpha:AddPoint(0, 0)
+				alpha:AddPoint(0.001, 1)
+
+				float.Alpha = alpha
+			end
+
+			if not float.Desaturate then
+				local desaturate = E:CreateCurve(LuaCurveTypeStep)
+				desaturate:AddPoint(0, 0)
+				desaturate:AddPoint(1.5, 1)
+
+				float.Desaturate = desaturate
+			end
 		end
 	end
 end

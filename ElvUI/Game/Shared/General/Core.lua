@@ -163,6 +163,7 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 		Desaturation = nil, -- float curve for SetDesaturation
 	},
 	Color = {
+		Default = nil, -- simple red, yellow, green curve for various places
 		Auras = { -- color curves created and updated by UpdateAuraCurves
 			auras = false,	-- these all
 			buffs = false,	-- stay false
