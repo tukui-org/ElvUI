@@ -62,7 +62,7 @@ local function SkinHeader(window)
 		Header:Hide()
 		window.headerBackdrop = CreateFrame('Frame', nil, window)
 		window.headerBackdrop:SetTemplate('Transparent')
-		window.headerBackdrop:Point('TOPLEFT', 17, -2)
+		window.headerBackdrop:Point('TOPLEFT', 16, -2)
 		window.headerBackdrop:Point('BOTTOMRIGHT', window, 'TOPRIGHT', -22, -28)
 		window.headerBackdrop:SetFrameLevel(window.backdrop:GetFrameLevel())
 	end
