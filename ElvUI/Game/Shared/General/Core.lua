@@ -2049,7 +2049,7 @@ function E:Initialize()
 	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	else
-		E:BuildCurves()
+		E:UpdateCurves()
 		E:BuildPrefixValues()
 		E:BuildAbbreviateConfigs()
 		E:LoadAPI()

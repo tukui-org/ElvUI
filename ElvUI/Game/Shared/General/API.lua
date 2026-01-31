@@ -608,8 +608,8 @@ do
 	local RED = { r = 1, g = 0.3, b = 0.3, a = 1 }
 	local YELLOW = { r = 1, g = 1, b = 0.3, a = 1 }
 	local GREEN = { r = 0.3, g = 1, b = 0, a = 1 }
-	function E:BuildCurves()
-		if not E.Retail then return end
+	function E:UpdateCurves() -- this is for the standard curves
+		if not E.Retail then return end -- it does not include all the curves
 
 		local color = E.Curves.Color
 		if color then
