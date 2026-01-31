@@ -9,6 +9,8 @@ local pi = math.pi
 
 local CreateFrame = CreateFrame
 
+local DROPDOWN_WIDTH_OFFSET = 8
+
 local function ButtonOnEnter(button)
 	local normalTex = button:GetNormalTexture()
 	if not normalTex then return end
@@ -73,7 +75,7 @@ end
 local function SessionDropdownSetWidth(dropdown, width, overrideFlag)
 	if overrideFlag then return end
 
-	dropdown:SetWidth(width + 8, true)
+	dropdown:SetWidth(width + DROPDOWN_WIDTH_OFFSET, true)
 end
 
 local function SkinHeader(window)
@@ -127,7 +129,7 @@ local function SkinHeader(window)
 		SessionDropdown:NudgePoint(nil, -3)
 		SessionDropdown:Height(20)
 
-		local newWidth = SessionDropdown:GetWidth() + 8
+		local newWidth = SessionDropdown:GetWidth() + DROPDOWN_WIDTH_OFFSET
 		SessionDropdown:Width(newWidth, true)
 
 		-- Blizzard's dynamic width is actually bugged now, but add some horizontal padding for styling anyway
