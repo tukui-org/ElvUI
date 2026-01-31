@@ -1268,6 +1268,7 @@ UnitFrame.allColorsGroup = ACH:Group(L["Colors"], nil, 40, 'tree', function(info
 local Colors = UnitFrame.allColorsGroup.args
 
 Colors.healthGroup = ACH:Group(L["Health"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors[info[#info]], P.unitframe.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b else return E.db.unitframe.colors[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a or 1 else local value = ... E.db.unitframe.colors[info[#info]] = value end UF:Update_AllFrames() end)
+Colors.healthGroup.args.healthMultiplier = ACH:Range(L["Backdrop Multiplier"], L["Zero is disabled."], 1, { min = 0, softMax = 0.75, max = 1, step = 0.01 })
 Colors.healthGroup.args.transparentHealth = ACH:Toggle(L["Transparent"], L["Make textures transparent."], 2)
 Colors.healthGroup.args.invertHealth = ACH:Toggle(E.NewSign..L["Invert Colors"], L["Invert foreground and background colors."], 3)
 Colors.healthGroup.args.colorhealthbyvalue = ACH:Toggle(L["Health By Value"], L["Color health by amount remaining."], 4)

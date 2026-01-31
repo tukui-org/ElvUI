@@ -339,12 +339,13 @@ function UF:PostUpdateHealthColor(unit, color)
 		end
 	end
 
+	local mult = (colors.healthMultiplier > 0) and colors.healthMultiplier
 	if healthColor then
-		UF:SetStatusBarColor(self, healthColor.r, healthColor.g, healthColor.b, bgc, true)
+		UF:SetStatusBarColor(self, healthColor.r, healthColor.g, healthColor.b, bgc, true, mult)
 	elseif healthR then
-		UF:SetStatusBarColor(self, healthR, healthG, healthB, bgc, true)
+		UF:SetStatusBarColor(self, healthR, healthG, healthB, bgc, true, mult)
 	elseif r then
-		UF:SetStatusBarColor(self, r, g, b, bgc, true)
+		UF:SetStatusBarColor(self, r, g, b, bgc, true, mult)
 	end
 end
 

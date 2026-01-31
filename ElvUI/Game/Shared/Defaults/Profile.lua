@@ -2012,6 +2012,7 @@ P.unitframe = {
 		customclasspowerbackdrop = false,
 		useDeadBackdrop = false,
 		classbackdrop = false,
+		healthMultiplier = 0,
 		auraBarByType = true,
 		auraByType = true,
 		auraByDispels = true,
