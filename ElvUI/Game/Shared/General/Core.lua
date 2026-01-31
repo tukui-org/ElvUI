@@ -159,6 +159,7 @@ E.GemTypeInfo = {
 E.Curves = { -- Midnight Color Curves (nil values created later)
 	Duration = nil, -- duration object for SetTimeFromStart
 	Float = {
+		Alpha = nil, -- float for hiding at Zero
 		Desaturation = nil, -- float curve for SetDesaturation
 	},
 	Color = {
