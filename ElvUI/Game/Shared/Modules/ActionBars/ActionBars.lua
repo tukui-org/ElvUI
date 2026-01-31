@@ -51,6 +51,7 @@ local IsHouseEditorActive = C_HouseEditor and C_HouseEditor.IsHouseEditorActive
 local GetNextCastSpell = C_AssistedCombat and C_AssistedCombat.GetNextCastSpell
 local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookItemInfo
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
+local GetActionCooldownDuration = C_ActionBar.GetActionCooldownDuration
 
 local GetProfessionQuality = C_ActionBar.GetProfessionQuality
 local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
@@ -1645,21 +1646,19 @@ function AB:SetButtonDesaturation(button, start, duration)
 
 	local allow
 	if E:IsSecretValue(duration) then
-		local durationObject = E.Curves.Duration
-		if durationObject then
-			durationObject:SetTimeFromStart(start, duration)
-
-			allow = durationObject:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
-		end
+		local action = button._state_type == 'action' and button._state_action
+		local info = action and button:GetCooldownInfo()
+		local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
+		allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
 	else
-		allow = duration and duration > 1.5
+		allow = (duration and duration > 1.5) and 1 or 0
 	end
 
 	if AB.db.desaturateOnCooldown and allow then
-		button.icon:SetDesaturated(allow)
+		button.icon:SetDesaturation(allow)
 		button.saturationLocked = true
 	else
-		button.icon:SetDesaturated(false)
+		button.icon:SetDesaturation(0)
 		button.saturationLocked = nil
 	end
 end
