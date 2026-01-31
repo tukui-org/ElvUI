@@ -133,6 +133,7 @@ L["Disabled"] = "장애가 있는"
 L["Disband Group"] = "그룹 해산"
 L["Discard"] = "작업 취소"
 L["Discord"] = "디스코드"
+L["Damage Meter"] = true
 L["DND"] = "다른 용무 중"
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "두 애드온을 병행하여 생기는 문제를 스스로 감수하며 관련 질문글을 올리지 마세요."
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "WTF 폴더 백업을 잊지 마세요. 모든 프로필과 설정이 거기 있습니다."

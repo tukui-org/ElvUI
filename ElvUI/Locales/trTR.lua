@@ -133,6 +133,7 @@ L["Disabled"] = "Devre Disi Birakildi"
 L["Disband Group"] = "Grubu Dagit"
 L["Discard"] = "At"
 L["Discord"] = true
+L["Damage Meter"] = true
 L["DND"] = "REM"
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "once AddOn/Modul kombinasyonunu devre disi birakmadan, calismayan bir sey hakkinda teknik destege mesaj gondermeyeceginize yemin ediyor musunuz?"
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "WTF klasorunuzu yedeklemeyi unutmayin, tum profilleriniz ve ayarlariniz orada."

@@ -133,6 +133,7 @@ L["Disabled"] = "Отключено"
 L["Disband Group"] = "Распустить группу"
 L["Discard"] = "Отменить"
 L["Discord"] = true --Doesn't need translating
+L["Damage Meter"] = true
 L["DND"] = "ДНД"
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "Клянетесь ли Вы не постить на форуме технической поддержки, что что-то не работает, до того, как отключите другие аддоны/модули?"
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "Не забудьте сделать резервную копию своей папки WTF, все Ваши профили и настройки находятся там."

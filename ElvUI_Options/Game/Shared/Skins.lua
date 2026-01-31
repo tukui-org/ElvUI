@@ -98,6 +98,7 @@ if E.Retail then
 	toggles.covenantPreview = L["Covenant Preview"]
 	toggles.covenantRenown = L["Covenant Renown"]
 	toggles.covenantSanctum = L["Covenant Sanctum"]
+	toggles.damageMeter = L["Damage Meter"]
 	toggles.deathRecap = L["DEATH_RECAP_TITLE"]
 	toggles.expansionLanding = L["Expansion Landing Page"]
 	toggles.garrison = L["GARRISON_LOCATION_TOOLTIP"]
