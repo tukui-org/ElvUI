@@ -164,12 +164,12 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 	},
 	Color = {
 		Default = nil, -- simple red, yellow, green curve for various places
+		Dispel = nil, -- color curve for IsDispellableByMe; updated by ListUpdated in LibDispel
 		Auras = { -- color curves created and updated by UpdateAuraCurves
 			auras = false,	-- these all
 			buffs = false,	-- stay false
 			debuffs = false	-- on classics
-		},
-		Dispel = nil, -- color curve for IsDispellableByMe; updated by ListUpdated in LibDispel
+		}
 	}
 }
 
