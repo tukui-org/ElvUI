@@ -397,9 +397,9 @@ function A:UpdateButton(button, duration, expiration, modRate)
 
 			if not db.barColorGradient then
 				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
-			elseif not E.Retail and not hasCooldown then
+			elseif not hasCooldown then
 				button.statusBar:SetValue(1, button.statusBar.smoothing)
-				button.statusBar:SetStatusBarColor(0, .8, 0)
+				button.statusBar:SetStatusBarColor(0, 0.8, 0)
 			end
 		end
 
