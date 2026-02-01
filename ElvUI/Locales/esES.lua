@@ -177,6 +177,7 @@ L["Item Level:"] = "Nivel de Objeto:"
 L["Item level: %.2f"] = "Nivel de Objeto: %.2f"
 L["joined a group"] = "se unió a un grupo"
 L["Key"] = "Tecla"
+L["Key Binds"] = true
 L["Large"] = "Grande"
 L["Layout"] = "Distribución"
 L["Layout Set"] = "Distribución Establecida"

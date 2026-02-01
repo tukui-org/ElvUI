@@ -71,9 +71,10 @@ do
 	Auras.args.debuffColors.inline = true
 
 	local order = { None = 0, Magic = 1, Curse = 2, Disease = 3, Poison = 4, EnemyNPC = 11, BadDispel = 12, Bleed = 13, Stealable = 14 }
+	local names = { None = L["None"], Magic = L["Magic"], Curse = L["Curse"], Disease = L["Disease"], Poison = L["Poison"], EnemyNPC = L["Enemy NPC"], BadDispel = L["Bad Dispel"], Bleed = L["Bleed"], Stealable = L["Stealable"], Enrage = L["Enrage"] }
 	for key in next, DebuffColors do
 		if key ~= '' and key ~= 'none' then -- this is a reference to none
-			Auras.args.debuffColors.args[key] = ACH:Color(key, nil, order[key] or -1, nil, 120)
+			Auras.args.debuffColors.args[key] = ACH:Color(names[key] or key, nil, order[key] or -1, nil, 120)
 		end
 	end
 end

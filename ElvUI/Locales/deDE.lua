@@ -177,6 +177,7 @@ L["Item Level:"] = "Gegenstandsstufe:"
 L["Item level: %.2f"] = "Gegenstandsstufe: %.2f"
 L["joined a group"] = "ist einer Gruppe beigetreten"
 L["Key"] = "Taste"
+L["Key Binds"] = true
 L["Large"] = "Groß"
 L["Layout"] = "Layout"
 L["Layout Set"] = "Layout gesetzt"

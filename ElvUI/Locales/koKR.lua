@@ -177,6 +177,7 @@ L["Item Level:"] = "아이템 레벨"
 L["Item level: %.2f"] = "아이템 레벨: %.2f"
 L["joined a group"] = "그룹에 참가"
 L["Key"] = "단축키"
+L["Key Binds"] = true
 L["Large"] = "크게"
 L["Layout"] = "레이아웃"
 L["Layout Set"] = "레이아웃 설정"

@@ -177,6 +177,7 @@ L["Item Level:"] = true
 L["Item level: %.2f"] = true
 L["joined a group"] = true
 L["Key"] = true
+L["Key Binds"] = true
 L["Large"] = true
 L["Layout"] = true
 L["Layout Set"] = true

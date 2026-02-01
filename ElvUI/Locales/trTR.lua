@@ -177,6 +177,7 @@ L["Item Level:"] = "Esya Seviyesi:"
 L["Item level: %.2f"] = "Esya Seviyesi: %.2f"
 L["joined a group"] = "gruba katildi."
 L["Key"] = true
+L["Key Binds"] = true
 L["Large"] = "Buyuk"
 L["Layout"] = "Duzen"
 L["Layout Set"] = "Duzen Seti"
