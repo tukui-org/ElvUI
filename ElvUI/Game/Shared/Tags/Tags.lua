@@ -1304,7 +1304,6 @@ if info then
 	info['absorbs'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of absorbs' }
 	info['deficit:name'] = { category = 'Health', description = "Displays the health as a deficit and the name at full health" }
 	info['healabsorbs'] = { hidden = E.Classic, category = 'Health', description = 'Displays the amount of heal absorbs' }
-	info['health:current'] = { category = 'Health', description = "Displays the current health of the unit" }
 	info['health:current-max'] = { category = 'Health', description = "Displays the current and maximum health of the unit, separated by a dash" }
 	info['health:current-max-nostatus'] = { category = 'Health', description = "Displays the current and maximum health of the unit, separated by a dash, without status" }
 	info['health:current-max-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current and max health, without status" }
@@ -1325,6 +1324,8 @@ if info then
 	info['health:current:name-short'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the name of the unit (limited to 10 letters) when at full health" }
 	info['health:current:name-veryshort'] = { category = 'Health', description = "Displays the current health as a shortvalue and then the name of the unit (limited to 5 letters) when at full health" }
 	info['health:current:shortvalue'] = { category = 'Health', description = "Shortvalue of the unit's current health (e.g. 81k instead of 81200)" }
+	info['health:current:longvalue'] = { category = 'Health', description = "Longvalue of the unit's current health" }
+	info['health:current:verylongvalue'] = { category = 'Health', description = "Verylongvalue of the unit's current health" }
 	info['health:deficit'] = { category = 'Health', description = "Displays the health of the unit as a deficit (Total Health - Current Health = -Deficit)" }
 	info['health:deficit-nostatus'] = { category = 'Health', description = "Displays the health of the unit as a deficit, without status" }
 	info['health:deficit-nostatus:shortvalue'] = { category = 'Health', description = "Shortvalue of the health deficit, without status" }

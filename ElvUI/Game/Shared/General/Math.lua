@@ -51,6 +51,22 @@ do -- Thanks ls-
 		local units = asianUnits[style] or westernUnits[style]
 		local asian = asianUnits[style] ~= nil
 
+
+		local verylong = { breakpoints = {} }
+		E.Abbreviate.verylong = verylong
+
+		if asian then
+		    verylong.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
+		    verylong.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
+		    verylong.breakpoints[3] = { breakpoint = 1e4, abbreviation = units[3], significandDivisor = 1e2, fractionDivisor = 100, abbreviationIsGlobal = false }
+		else
+		    units = westernUnits.ENGLISH
+		    verylong.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e12, fractionDivisor = 1, abbreviationIsGlobal = false }
+		    verylong.breakpoints[2] = { breakpoint = 1e9, abbreviation = units[2], significandDivisor = 1e9, fractionDivisor = 1, abbreviationIsGlobal = false }
+		    verylong.breakpoints[3] = { breakpoint = 1e6, abbreviation = units[3], significandDivisor = 1e6, fractionDivisor = 1, abbreviationIsGlobal = false }
+		    verylong.breakpoints[4] = { breakpoint = 1e3, abbreviation = units[4], significandDivisor = 1e3, fractionDivisor = 1, abbreviationIsGlobal = false }
+		end
+
 		local long = { breakpoints = {} }
 		E.Abbreviate.long = long
 

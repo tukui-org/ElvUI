@@ -28,7 +28,7 @@ E:AddTag('healabsorbs', 'UNIT_HEAL_ABSORB_AMOUNT_CHANGED', function(unit)
 	return UnitGetTotalHealAbsorbs(unit)
 end)
 
-for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
+for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long', verylongvalue = 'verylong' } do
 	E:AddTag(format('absorbs:%s', tagFormat), 'UNIT_ABSORB_AMOUNT_CHANGED', function(unit)
 		local absorb = UnitGetTotalAbsorbs(unit)
 		return E:AbbreviateNumbers(absorb, E.Abbreviate[which])
@@ -71,13 +71,6 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 		return E:AbbreviateNumbers(maxPower, E.Abbreviate[which])
 	end)
 end
-
-E:AddTag('health:current', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
-	local currentHealth = UnitHealth(unit)
-	return E:AbbreviateNumbers(currentHealth, E.Abbreviate[which])
-end)
-
-
 
 E:AddTag('pvp:honorlevel', 'UNIT_NAME_UPDATE', function(unit)
 	if not UnitIsPlayer(unit) then return end
