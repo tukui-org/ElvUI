@@ -51,6 +51,8 @@ E.IsSecretValue = oUF.IsSecretValue
 E.IsSecretTable = oUF.IsSecretTable
 E.NotSecretValue = oUF.NotSecretValue
 E.NotSecretTable = oUF.NotSecretTable
+E.HasSecretValues = oUF.HasSecretValues
+E.NoSecretValues = oUF.NoSecretValues
 
 Engine[1] = E
 Engine[2] = {}
