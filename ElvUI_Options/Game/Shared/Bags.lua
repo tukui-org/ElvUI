@@ -250,7 +250,7 @@ Bags.args.bagBar.args.countGroup.args.fontOutline = ACH:FontFlags(L["Font Outlin
 
 Bags.args.vendorGrays = ACH:Group(L["Vendor Grays"], nil, 4, nil, function(info) return E.db.bags.vendorGrays[info[#info]] end, function(info, value) E.db.bags.vendorGrays[info[#info]] = value; B:UpdateSellFrameSettings() end)
 Bags.args.vendorGrays.args.enable = ACH:Toggle(L["Enable"], L["Automatically vendor gray items when visiting a vendor."], 1)
-Bags.args.vendorGrays.args.interval = ACH:Range(L["Sell Interval"], L["Will attempt to sell another item in set interval after previous one was sold."], 2, { min = .1, max = 1, step = .1 })
+Bags.args.vendorGrays.args.interval = ACH:Range(L["Sell Interval"], L["Will attempt to sell another item in set interval after the previous one was sold."], 2, { min = .1, max = 1, step = .1 })
 Bags.args.vendorGrays.args.details = ACH:Toggle(L["Vendor Gray Detailed Report"], L["Displays a detailed report of every item sold when enabled."], 3)
 Bags.args.vendorGrays.args.progressBar = ACH:Toggle(L["Progress Bar"], nil, 4)
 

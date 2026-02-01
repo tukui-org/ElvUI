@@ -375,7 +375,6 @@ L["Voice Overlay"] = true
 L["Volume"] = true
 L["Volume Streams"] = true
 L["Warband"] = true
-L["Welcome to ElvUI version %.2f!"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["whispers"] = true
 L["Withdraw"] = true
