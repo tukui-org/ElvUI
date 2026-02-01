@@ -30,7 +30,6 @@ L["Are you sure you want to apply this font to all ElvUI elements?"] = true
 L["Are you sure you want to disband the group?"] = true
 L["Are you sure you want to reset all the settings on this profile?"] = true
 L["Are you sure you want to reset every mover back to it's default position?"] = true
-L["Are you sure you want to reset every mover back to its default position?"] = true
 L["Arena"] = true
 L["Arena Frames"] = true
 L["Armor Penetration"] = true
