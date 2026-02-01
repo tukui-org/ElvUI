@@ -2005,8 +2005,8 @@ function UF:MergeUnitSettings(from, to)
 end
 
 function UF:SetStatusBarColor(bar, r, g, b, custom, overrideAlpha, overrideBackdrop)
-	local mainR, mainG, mainB, mainA = r, g, b, (bar.isTransparent and (UF.multiplier * 2)) or 1
-	local bgR, bgG, bgB, bgA = r, g, b, overrideBackdrop or (bar.isTransparent and (UF.multiplier * 0.5)) or UF.multiplier
+	local mainR, mainG, mainB, mainA = r, g, b, E:Clamp((bar.isTransparent and (UF.multiplier * 2)) or 1)
+	local bgR, bgG, bgB, bgA = r, g, b, E:Clamp(overrideBackdrop or (bar.isTransparent and (UF.multiplier * 0.5)) or UF.multiplier)
 
 	local color = custom or bar.custom_backdrop
 	if color then

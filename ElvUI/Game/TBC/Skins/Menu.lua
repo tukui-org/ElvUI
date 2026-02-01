@@ -12,7 +12,6 @@ local function SkinFrame(frame)
 		frame.backdrop = backdrops[frame] -- relink it back
 	else
 		frame:CreateBackdrop('Transparent') -- :SetTemplate errors out
-		frame.backdrop:NudgePoint(nil, 8, nil, 'BOTTOMRIGHT')
 		backdrops[frame] = frame.backdrop -- keep below CreateBackdrop
 
 		if frame.ScrollBar then
@@ -21,7 +20,11 @@ local function SkinFrame(frame)
 	end
 
 	if frame.backdrop then
-		frame.backdrop:OffsetFrameLevel(0, frame)
+		frame.backdrop:OffsetFrameLevel(nil, frame)
+
+		if E:NoSecretValues(frame) then
+			frame.backdrop:NudgePoint(nil, 8, nil, 'BOTTOMRIGHT')
+		end
 	end
 end
 

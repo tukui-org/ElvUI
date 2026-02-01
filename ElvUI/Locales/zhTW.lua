@@ -137,6 +137,7 @@ L["Disabled"] = "停用"
 L["Disband Group"] = "解散隊伍"
 L["Discard"] = "取消"
 L["Discord"] = true
+L["Damage Meter"] = "傷害統計"
 L["DND"] = "忙碌"
 L["Do you swear not to post in technical support about something not working without first disabling the addon/module combination first?"] = "你發誓在你沒停用其他插件或是模組前不會到技術支援發文詢問某些功能失效嗎?"
 L["Don't forget to backup your WTF folder, all your profiles and settings are in there."] = "別忘記備份你的 WTF 資料夾, 這裡存有你的全部設定及配置文件."

@@ -90,7 +90,7 @@ function E:UIScale()
 end
 
 function E:PixelBestSize()
-	return max(0.4, min(1.15, E.perfect))
+	return E:Clamp(E.perfect, 0.4, 1.15)
 end
 
 function E:PixelScaleChanged(event)
