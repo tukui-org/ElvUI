@@ -2052,7 +2052,7 @@ L["UNIT_NAMEPLATES_AUTOMODE"] = "一直顯示名條"
 L["UNIT_NAMEPLATES_TYPE_1"] = "重疊名條"
 L["UNIT_NAMEPLATES_TYPE_2"] = "堆疊名條"
 L["UNIT_NAMEPLATES_TYPES"] = "名條排列類型"
-L["WORLD_MAP"] = "地圖"
+L["WORLD_MAP"] = "世界地圖"
 
 -- done by using labelN
 L["FACTION_STANDING_LABEL1"] = "仇恨"

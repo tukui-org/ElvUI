@@ -2052,7 +2052,7 @@ L["UNIT_NAMEPLATES_AUTOMODE"] = "显示所有姓名板"
 L["UNIT_NAMEPLATES_TYPE_1"] = "重叠姓名板"
 L["UNIT_NAMEPLATES_TYPE_2"] = "堆叠姓名板"
 L["UNIT_NAMEPLATES_TYPES"] = "姓名板排列方式"
-L["WORLD_MAP"] = "地图"
+L["WORLD_MAP"] = "世界地图"
 
 -- done by using labelN
 L["FACTION_STANDING_LABEL1"] = "仇恨"
