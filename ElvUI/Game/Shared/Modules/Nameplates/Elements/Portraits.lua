@@ -49,8 +49,6 @@ function NP:Update_PortraitBackdrop()
 end
 
 function NP:Construct_Portrait(nameplate)
-	if not false then return end -- dont allow portraits for now
-
 	local Portrait = nameplate.RaisedElement:CreateTexture(nameplate.frameName..'Portrait', 'OVERLAY', nil, 2)
 	Portrait:CreateBackdrop(nil, nil, nil, nil, nil, true, true)
 	Portrait:SetTexCoord(.18, .82, .18, .82)
