@@ -68,6 +68,9 @@ local function SkinBackground(window)
 	window.backdrop:NudgePoint(13, nil, nil, 'TOPLEFT')
 	window.backdrop:NudgePoint(-18, nil, nil, 'BOTTOMRIGHT')
 
+	-- Set initial alpha
+	window.backdrop:SetAlpha(window.backgroundAlpha or 0.5)
+
 	-- Inherit background alpha changes from Blizzard Edit Mode
 	hooksecurefunc(window.Background, 'SetAlpha', BackdropSetAlpha)
 end

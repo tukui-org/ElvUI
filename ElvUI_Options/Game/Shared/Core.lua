@@ -815,7 +815,7 @@ do -- Module Copy
 	E.Options.args.profiles.args.modulecopy.args.movers.args = MC:CreateMoversConfigGroup()
 
 	E.Options.args.profiles.args.modulereset = ACH:Group(L["Module Reset"], nil, 6, 'tab', nil, nil, nil, nil, function(info) E:CopyTable(E.db[info[#info]], P[info[#info]]) end)
-	E.Options.args.profiles.args.modulereset.args.intro = ACH:Description(L["This section will help reset specfic settings back to default."], 1)
+	E.Options.args.profiles.args.modulereset.args.intro = ACH:Description(L["This section will help reset specific settings back to default."], 1)
 	E.Options.args.profiles.args.modulereset.args.space1 = ACH:Spacer(2)
 	E.Options.args.profiles.args.modulereset.args.general = ACH:Execute(L["General"], nil, 3, nil, nil, L["Are you sure you want to reset General settings?"])
 	E.Options.args.profiles.args.modulereset.args.actionbar = ACH:Execute(L["ActionBars"], nil, 4, nil, nil, L["Are you sure you want to reset ActionBars settings?"])
