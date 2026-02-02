@@ -21,10 +21,6 @@ local function SkinFrame(frame)
 
 	if frame.backdrop then
 		frame.backdrop:OffsetFrameLevel(nil, frame)
-
-		if E:NoSecretValues(frame) then
-			frame.backdrop:NudgePoint(nil, 8, nil, 'BOTTOMRIGHT')
-		end
 	end
 end
 
