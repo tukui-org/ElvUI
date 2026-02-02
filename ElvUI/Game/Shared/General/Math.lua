@@ -47,10 +47,10 @@ do -- Thanks ls-
 	}
 
 	local divisors = {
-		[0] = {1e3, 1e6, 1e9, 1e12},
-		{1e2, 1e5, 1e8, 1e11},
-		{1e1, 1e4, 1e7, 1e10},
-		{1e0, 1e3, 1e6, 1e9},
+		[0] = {1e12, 1e9, 1e6, 1e3},
+		{1e11, 1e8, 1e5, 1e2},
+		{1e10, 1e7, 1e4, 1e1},
+		{1e9, 1e6, 1e3, 1e0},
 	}
 
 	local short = { breakpoints = {} }
@@ -80,10 +80,10 @@ do -- Thanks ls-
 			local factor = 10 ^ decimal
 			local signi = divisors[decimal]
 
-			short.breakpoints[1] = { breakpoint = units[1][1], abbreviation = units[1][2], significandDivisor = signi[4], fractionDivisor = factor, abbreviationIsGlobal = false }
-			short.breakpoints[2] = { breakpoint = units[2][1], abbreviation = units[2][2], significandDivisor = signi[3], fractionDivisor = factor, abbreviationIsGlobal = false }
-			short.breakpoints[3] = { breakpoint = units[3][1], abbreviation = units[3][2], significandDivisor = signi[2], fractionDivisor = factor, abbreviationIsGlobal = false }
-			short.breakpoints[4] = { breakpoint = units[4][1], abbreviation = units[4][2], significandDivisor = signi[1], fractionDivisor = factor, abbreviationIsGlobal = false }
+			short.breakpoints[1] = { breakpoint = units[1][1], abbreviation = units[1][2], significandDivisor = signi[1], fractionDivisor = factor, abbreviationIsGlobal = false }
+			short.breakpoints[2] = { breakpoint = units[2][1], abbreviation = units[2][2], significandDivisor = signi[2], fractionDivisor = factor, abbreviationIsGlobal = false }
+			short.breakpoints[3] = { breakpoint = units[3][1], abbreviation = units[3][2], significandDivisor = signi[3], fractionDivisor = factor, abbreviationIsGlobal = false }
+			short.breakpoints[4] = { breakpoint = units[4][1], abbreviation = units[4][2], significandDivisor = signi[4], fractionDivisor = factor, abbreviationIsGlobal = false }
 		end
 
 		if CreateAbbreviateConfig then
