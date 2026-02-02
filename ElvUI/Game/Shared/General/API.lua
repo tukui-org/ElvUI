@@ -1266,15 +1266,10 @@ function E:GetClassCoords(classFile, crop, get)
 	end
 end
 
-function E:CropRatio(width, height, mult, left, right, top, bottom)
-	if not mult then
-		mult = 0.5
-	end
+function E:CropRatio(width, height, mult)
+	if not mult then mult = 0.5 end
 
-	if not left then
-		left, right, top, bottom = E:GetTexCoords()
-	end
-
+	local left, right, top, bottom = E:GetTexCoords()
 	local ratio = width / height
 	if ratio > 1 then
 		local trimAmount = (1 - (1 / ratio)) * mult

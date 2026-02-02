@@ -26,14 +26,7 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged)
 		self.backdrop:Show()
 	elseif self.customTexture then
 		local _, className = UnitClass(unit)
-		if db.portrait.keepSizeRatio then
-			self:SetTexCoord(E:GetClassCoords(className, true))
-		else
-			local width, height = self:GetSize()
-			local classL, classR, classT, classB = E:GetClassCoords(className, true)
-			local left, right, top, bottom = E:CropRatio(width, height, nil, classL, classR, classT, classB)
-			self:SetTexCoord(left, right, top, bottom)
-		end
+		self:SetTexCoord(E:GetClassCoords(className, true))
 	end
 end
 
