@@ -39,7 +39,7 @@ General.general = ACH:Group(L["General"], nil, 1)
 local GenGen = General.general.args
 
 GenGen.loginmessage = ACH:Toggle(L["Login Message"], nil, 1)
-GenGen.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 2, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+GenGen.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 2, { min = 0, max = 3, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:BuildAbbreviateConfigs() E:StaggeredUpdateAll() end)
 GenGen.tagUpdateRate = ACH:Range(L["Tag Update Rate"], L["Maximum tick rate allowed for tag updates per second."], 3, { min = 0.05, max = 0.5, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value; E:TagUpdateRate(value) end)
 GenGen.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 4, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
 
