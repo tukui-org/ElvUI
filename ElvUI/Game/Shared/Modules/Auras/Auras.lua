@@ -118,13 +118,16 @@ function A:MasqueData(texture, highlight)
 	return data
 end
 
+function A:SetStatusBarColor(bar, r, g, b)
+	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
+end
+
 function A:UpdateStatusBar(button)
 	local db = A.db[button.auraType]
 	if E.Retail and not button.enchantIndex then
-		local percent = db.barColorGradient and button.auraDuration and button.auraDuration:GetRemainingPercent()
-		local color = percent and E.Curves.Color.Default:Evaluate(percent)
+		local color = db.barColorGradient and button.auraDuration and button.auraDuration:EvaluateRemainingPercent(E.Curves.Color.Default)
 		if color then
-			button.statusBar:SetStatusBarColor(color.r, color.g, color.b)
+			A:SetStatusBarColor(button.statusBar, color.r, color.g, color.b)
 		end
 
 		local remaining = button.auraDuration and button.auraDuration:GetRemainingDuration()
@@ -134,7 +137,7 @@ function A:UpdateStatusBar(button)
 	elseif button.timeLeft then
 		if db.barColorGradient then
 			local r, g, b = E:ColorGradient(button.duration == 0 and 0 or (button.timeLeft / button.duration), .8, 0, 0, .8, .8, 0, 0, .8, 0)
-			button.statusBar:SetStatusBarColor(r, g, b)
+			A:SetStatusBarColor(button.statusBar, r, g, b)
 		end
 
 		button.statusBar:SetValue(button.timeLeft, button.statusBar.smoothing)
@@ -369,9 +372,7 @@ function A:UpdateButton(button, duration, expiration, modRate)
 
 		local showBar = db.barShow and (db.barNoDuration and 1)
 		if auraDuration then
-			local aura = not showBar and (db.barShow and button.aura)
-			if aura then
-				auraDuration:SetTimeFromEnd(aura.expirationTime, aura.duration)
+			if not showBar and (db.barShow and button.aura) then
 				showBar = auraDuration:EvaluateRemainingDuration(E.Curves.Float.Alpha)
 			end
 
@@ -380,7 +381,7 @@ function A:UpdateButton(button, duration, expiration, modRate)
 			button.statusBar:SetMinMaxValues(0, duration)
 
 			if not db.barColorGradient then
-				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
+				A:SetStatusBarColor(button.statusBar, db.barColor.r, db.barColor.g, db.barColor.b)
 			end
 		else
 			button.cooldown:Clear()
@@ -396,10 +397,10 @@ function A:UpdateButton(button, duration, expiration, modRate)
 			button.statusBar:SetMinMaxValues(0, (hasCooldown and duration) or 1)
 
 			if not db.barColorGradient then
-				button.statusBar:SetStatusBarColor(db.barColor.r, db.barColor.g, db.barColor.b)
+				A:SetStatusBarColor(button.statusBar, db.barColor.r, db.barColor.g, db.barColor.b)
 			elseif not hasCooldown then
 				button.statusBar:SetValue(1, button.statusBar.smoothing)
-				button.statusBar:SetStatusBarColor(0, 0.8, 0)
+				A:SetStatusBarColor(button.statusBar, 0, 0.8, 0)
 			end
 		end
 
