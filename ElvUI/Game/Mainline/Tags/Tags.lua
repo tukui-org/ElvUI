@@ -84,7 +84,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 		local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
-		if min and min ~= 0 then
+		if E:NotSecretValue(min) and (min and min ~= 0) then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 		end
 	end)
@@ -93,7 +93,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 			local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
 			local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
-			if min and min ~= 0 and tagFormat ~= 'deficit' then
+			if E:NotSecretValue(min) and (min and min ~= 0) then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 			end
 		end)
