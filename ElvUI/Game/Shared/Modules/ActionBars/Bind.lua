@@ -386,7 +386,7 @@ function AB:LoadKeyBinder()
 	Popup.header:RegisterForClicks('AnyUp', 'AnyDown')
 	Popup.header:SetScript('OnMouseDown', function() Popup:StartMoving() end)
 	Popup.header:SetScript('OnMouseUp', function() Popup:StopMovingOrSizing() end)
-	Popup.header:SetText(L["Key Binds"])
+	Popup.header:SetText(L["Keybinds"])
 
 	Popup.desc = Popup:CreateFontString('ElvUIBindPopupWindowDescription', 'ARTWORK')
 	Popup.desc:SetFontObject('GameFontHighlight')
