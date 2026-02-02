@@ -217,9 +217,7 @@ function S:DamageMeter_HandleScrollBoxes(window)
 end
 
 function S:DamageMeter_RepositionResizeButton()
-	if not self or not self.backdrop then return end
-
-	local ResizeButton = self.GetResizeButton and self:GetResizeButton()
+	local ResizeButton = self.backdrop and self.GetResizeButton and self:GetResizeButton()
 	if not ResizeButton then return end
 
 	S:DamageMeter_HandleResizeButton(ResizeButton)
