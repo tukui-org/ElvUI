@@ -53,6 +53,10 @@ do -- Thanks ls-
 		{1e9, 1e6, 1e3, 1e0},
 	}
 
+	local asianDivisors = {
+		1e11, 1e7, 1e3
+	}
+
 	local short = { breakpoints = {} }
 	local long = { long = true }
 
@@ -70,9 +74,16 @@ do -- Thanks ls-
 		short.isAsian = asian
 
 		if short.isAsian then
-			short.breakpoints[1] = { breakpoint = units[1][1], abbreviation = units[1][2], significandDivisor = 1e11, fractionDivisor = 100, abbreviationIsGlobal = false }
-			short.breakpoints[2] = { breakpoint = units[2][1], abbreviation = units[2][2], significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
-			short.breakpoints[3] = { breakpoint = units[3][1], abbreviation = units[3][2], significandDivisor = 1e3, fractionDivisor = 100, abbreviationIsGlobal = false }
+			for i = 1, 3 do
+				local unit = units[i]
+				short.breakpoints[i] = {
+					breakpoint = unit[1],
+					abbreviation = unit[2],
+					significandDivisor = asianDivisors[i],
+					fractionDivisor = 100,
+					abbreviationIsGlobal = false
+				}
+			end
 		else
 			local decimal = E.db.general.decimalLength or 1
 			if decimal > 3 then decimal = 3 end
@@ -80,10 +91,16 @@ do -- Thanks ls-
 			local factor = 10 ^ decimal
 			local signi = divisors[decimal]
 
-			short.breakpoints[1] = { breakpoint = units[1][1], abbreviation = units[1][2], significandDivisor = signi[1], fractionDivisor = factor, abbreviationIsGlobal = false }
-			short.breakpoints[2] = { breakpoint = units[2][1], abbreviation = units[2][2], significandDivisor = signi[2], fractionDivisor = factor, abbreviationIsGlobal = false }
-			short.breakpoints[3] = { breakpoint = units[3][1], abbreviation = units[3][2], significandDivisor = signi[3], fractionDivisor = factor, abbreviationIsGlobal = false }
-			short.breakpoints[4] = { breakpoint = units[4][1], abbreviation = units[4][2], significandDivisor = signi[4], fractionDivisor = factor, abbreviationIsGlobal = false }
+			for i = 1, 4 do
+				local unit = units[i]
+				short.breakpoints[i] = {
+					breakpoint = unit[1],
+					abbreviation = unit[2],
+					significandDivisor = signi[i],
+					fractionDivisor = factor,
+					abbreviationIsGlobal = false
+				}
+			end
 		end
 
 		if CreateAbbreviateConfig then
