@@ -53,11 +53,12 @@ local function Update(self, event)
 	if not unit then return end
 
 	local guid = UnitGUID(unit)
-	local newGUID = oUF:IsSecretValue(guid) or (element.guid ~= guid)
+	local secretGUID = oUF:IsSecretValue(guid)
+	local newGUID = secretGUID or (element.guid ~= guid)
 
 	local nameplate = event == 'NAME_PLATE_UNIT_ADDED'
 	if newGUID then
-		element.guid = oUF:NotSecretValue(guid) and guid or nil
+		element.guid = not secretGUID and guid or nil
 	elseif nameplate then
 		return
 	end
