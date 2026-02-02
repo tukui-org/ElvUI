@@ -59,10 +59,10 @@ function S:DamageMeter_BackdropSetAlpha(alpha)
 	end
 end
 
-function S:DamageMeter_HandleBackground(window)
-	if not window or not window.Background or window.backdrop then return end
+function S:DamageMeter_HandleBackground(window, background)
+	if not window or not background or window.backdrop then return end
 
-	window.Background:Hide()
+	background:Hide()
 
 	window:CreateBackdrop('Transparent')
 	window.backdrop:NudgePoint(13, nil, nil, 'TOPLEFT')
@@ -72,7 +72,7 @@ function S:DamageMeter_HandleBackground(window)
 	window.backdrop:SetAlpha(window.backgroundAlpha or 0.5)
 
 	-- Inherit background alpha changes from Blizzard Edit Mode
-	hooksecurefunc(window.Background, 'SetAlpha', S.DamageMeter_BackdropSetAlpha)
+	hooksecurefunc(background, 'SetAlpha', S.DamageMeter_BackdropSetAlpha)
 end
 
 function S:DamageMeter_DropdownSetWidth(width, overrideFlag)
@@ -81,10 +81,10 @@ function S:DamageMeter_DropdownSetWidth(width, overrideFlag)
 	self:SetWidth(width + DROPDOWN_WIDTH_OFFSET, true)
 end
 
-function S:DamageMeter_HandleHeader(window)
+function S:DamageMeter_HandleHeader(window, header)
 	if not window then return end
 
-	local Header = not window.headerBackdrop and window.Header
+	local Header = not window.headerBackdrop and header
 	if Header then
 		Header:Hide()
 
@@ -198,7 +198,7 @@ function S:DamageMeter_HandleScrollBox()
 	self:ForEachFrame(S.DamageMeter_HandleStatusBar)
 end
 
-function S:DamageMeter_HandleWindow(window)
+function S:DamageMeter_HandleScrollBoxes(window)
 	local ScrollBar = window.GetScrollBar and window:GetScrollBar()
 	if ScrollBar then
 		S:HandleTrimScrollBar(ScrollBar)
@@ -235,39 +235,39 @@ function S:DamageMeter_RepositionResizeButton()
 	ResizeButton:Point(point, self.backdrop, point, xOffset, 4)
 end
 
-function S:DamageMeter_HandleSourceWindow(window)
-	if not window or window.IsSkinned then return end
+function S:DamageMeter_HandleSourceWindow(window, sourceWindow)
+	if not sourceWindow or sourceWindow.IsSkinned then return end
 
-	S:DamageMeter_HandleBackground(window)
-	S:DamageMeter_HandleWindow(window)
+	S:DamageMeter_HandleBackground(sourceWindow, sourceWindow.Background)
+	S:DamageMeter_HandleScrollBoxes(sourceWindow)
 
-	if window.AnchorToSessionWindow then
-		hooksecurefunc(window, 'AnchorToSessionWindow', S.DamageMeter_RepositionResizeButton)
+	if sourceWindow.AnchorToSessionWindow then
+		hooksecurefunc(sourceWindow, 'AnchorToSessionWindow', S.DamageMeter_RepositionResizeButton)
 	end
 
-	window.IsSkinned = true
+	sourceWindow.IsSkinned = true
 end
 
 function S:DamageMeter_HandleSessionWindow(window)
 	if not window or window.IsSkinned then return end
 
-	S:DamageMeter_HandleBackground(window)
-	S:DamageMeter_HandleHeader(window)
-	S:DamageMeter_HandleWindow(window)
-	S:DamageMeter_HandleSourceWindow(window.SourceWindow)
+	S:DamageMeter_HandleBackground(window, window.Background)
+	S:DamageMeter_HandleHeader(window, window.Header)
+	S:DamageMeter_HandleSourceWindow(window, window.SourceWindow)
+	S:DamageMeter_HandleScrollBoxes(window)
 
 	window.IsSkinned = true
 end
 
-function S:DamageMeter_HandleSessionWindows()
+function S:DamageMeter_SetupSessionWindow()
 	_G.DamageMeter:ForEachSessionWindow(S.DamageMeter_HandleSessionWindow)
 end
 
 function S:Blizzard_DamageMeter()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.damageMeter) then return end
 
-	hooksecurefunc(_G.DamageMeter, 'SetupSessionWindow', S.DamageMeter_HandleSessionWindows)
-	S.DamageMeter_HandleSessionWindows()
+	hooksecurefunc(_G.DamageMeter, 'SetupSessionWindow', S.DamageMeter_SetupSessionWindow)
+	S.DamageMeter_SetupSessionWindow()
 end
 
 S:AddCallbackForAddon('Blizzard_DamageMeter')
