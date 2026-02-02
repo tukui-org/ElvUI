@@ -1356,9 +1356,9 @@ do
 			UF:Configure_PowerPrediction(frame)
 		end
 
-		--[[if not noPortrait[which] then
+		if not noPortrait[which] then
 			UF:Configure_Portrait(frame)
-		end]]
+		end
 
 		if not noAuras[which] then
 			UF:EnableDisable_Auras(frame)

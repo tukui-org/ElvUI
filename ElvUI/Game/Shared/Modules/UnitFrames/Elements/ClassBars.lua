@@ -379,7 +379,7 @@ function UF:ToggleResourceBar()
 
 	UF:Configure_CustomTexts(frame)
 	UF:Configure_HealthBar(frame)
-	-- UF:Configure_Portrait(frame)
+	UF:Configure_Portrait(frame)
 
 	-- keep this after the configure_healtbar, we need the one updated before we match the healpred size to -1
 	if frame.HealthPrediction then

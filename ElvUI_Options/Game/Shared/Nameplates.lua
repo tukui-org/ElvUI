@@ -282,7 +282,7 @@ local function GetUnitSettings(unit, name)
 	group.args.privateAuras.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
 	group.args.privateAuras.args.parent.inline = true
 
-	group.args.portraitGroup = ACH:Group(L["Portrait"], nil, 40, nil, function(info) return E.db.nameplates.units[unit].portrait[info[#info]] end, function(info, value) E.db.nameplates.units[unit].portrait[info[#info]] = value NP:ConfigureAll() end, nil, true) -- temp disabled
+	group.args.portraitGroup = ACH:Group(L["Portrait"], nil, 40, nil, function(info) return E.db.nameplates.units[unit].portrait[info[#info]] end, function(info, value) E.db.nameplates.units[unit].portrait[info[#info]] = value NP:ConfigureAll() end)
 	group.args.portraitGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.portraitGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 12, max = 64, step = 1 })
 	group.args.portraitGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 12, max = 64, step = 1 })

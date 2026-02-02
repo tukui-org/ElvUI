@@ -855,7 +855,7 @@ local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
 end
 
 local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Portrait"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].portrait[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].portrait[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, true) -- temp disabled
+	local config = ACH:Group(L["Portrait"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].portrait[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].portrait[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.warning = ACH:Description(function() return (E.db.unitframe.units[groupName].orientation == 'MIDDLE' and L["Overlay mode is forced when the Frame Orientation is set to Middle."]) or '' end, 1, 'medium', nil, nil, nil, nil, 'full')
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."])
 	config.args.style = ACH:Select(L["Style"], L["Select the display method of the portrait."], 3, { ['3D'] = L["3D"], Class = L["CLASS"] })
