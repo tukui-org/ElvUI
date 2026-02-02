@@ -70,7 +70,6 @@ function NP:Update_Portrait(nameplate)
 			nameplate.Portrait.customTexture = nil
 		end
 
-		--nameplate.Portrait.customTexture = db.portrait and (db.portrait.specicon and nameplate.specIcon) or nil
 		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)
 
 		-- These values are forced in name only mode inside of DisablePlate

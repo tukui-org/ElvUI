@@ -57,6 +57,10 @@ function UF:Configure_Portrait(frame)
 			frame.Portrait.backdrop:Hide()
 		end
 
+		if frame.Portrait3D then
+			frame.Portrait3D:ClearModel()
+		end
+
 		frame.Portrait = portrait -- then update the new one
 	end
 

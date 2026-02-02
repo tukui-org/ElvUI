@@ -157,6 +157,11 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
+		local playerModel = element:IsObjectType('PlayerModel')
+		if playerModel then
+			element:ClearModel()
+		end
+
 		self:UnregisterEvent('UNIT_MODEL_CHANGED', Path)
 		self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		self:UnregisterEvent('PORTRAITS_UPDATED', Path)
