@@ -1,10 +1,5 @@
 local E, _, V, P, G = unpack(ElvUI)
 
--- Legacy filter lists are not available for Retail
-if E.Retail then
-	return
-end
-
 local C, L = unpack(E.Config)
 local UF = E:GetModule('UnitFrames')
 local ACH = E.Libs.ACH

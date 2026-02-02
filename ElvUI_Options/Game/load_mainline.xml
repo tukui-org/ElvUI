@@ -1,0 +1,31 @@
+<Ui xmlns='http://www.blizzard.com/wow/ui/'>
+	<Script file='..\Locales\enUS.lua'/>
+	<Script file='..\Locales\deDE.lua'/>
+	<Script file='..\Locales\esMX.lua'/>
+	<Script file='..\Locales\esES.lua'/>
+	<Script file='..\Locales\frFR.lua'/>
+	<Script file='..\Locales\itIT.lua'/>
+	<Script file='..\Locales\koKR.lua'/>
+	<Script file='..\Locales\ptBR.lua'/>
+	<Script file='..\Locales\ruRU.lua'/>
+	<Script file='..\Locales\trTR.lua'/>
+	<Script file='..\Locales\zhTW.lua'/>
+	<Script file='..\Locales\zhCN.lua'/>
+
+	<Script file='Shared\Core.lua'/>
+	<Script file='Shared\General.lua'/>
+	<Script file='Shared\ActionBars.lua'/>
+	<Script file='Shared\Auras.lua'/>
+	<Script file='Shared\Bags.lua'/>
+	<Script file='Shared\Chat.lua'/>
+	<Script file='Shared\Cooldown.lua'/>
+	<Script file='Shared\DataTexts.lua'/>
+	<Script file='Shared\DataBars.lua'/>
+	<Script file='Shared\Skins.lua'/>
+	<Script file='Shared\Tooltip.lua'/>
+	<Script file='Shared\UnitFrames.lua'/>
+	<Script file='Shared\Nameplates.lua'/>
+	<Script file='Shared\Maps.lua'/>
+	<Script file='Shared\Search.lua'/>
+	<Script file='Shared\Tags.lua'/>
+</Ui>
