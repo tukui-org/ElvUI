@@ -11,22 +11,22 @@ local CreateFrame = CreateFrame
 
 local DROPDOWN_WIDTH_OFFSET = 8
 
-local function ButtonOnEnter(button)
-	local normalTex = button:GetNormalTexture()
+function S:DamageMeter_ButtonOnEnter()
+	local normalTex = self:GetNormalTexture()
 	if not normalTex then return end
 
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	normalTex:SetVertexColor(r, g, b)
 end
 
-local function ButtonOnLeave(button)
-	local normalTex = button:GetNormalTexture()
+function S:DamageMeter_ButtonOnLeave()
+	local normalTex = self:GetNormalTexture()
 	if not normalTex then return end
 
 	normalTex:SetVertexColor(1, 1, 1)
 end
 
-local function HandleResizeButton(button)
+function S:DamageMeter_HandleResizeButton(button)
 	if not button or button.IsSkinned then return end
 
 	button:SetNormalTexture(E.Media.Textures.ArrowUp)
@@ -46,20 +46,20 @@ local function HandleResizeButton(button)
 	pushedTex:SetTexCoord(0, 1, 0, 1)
 	pushedTex:SetAllPoints()
 
-	button:HookScript('OnEnter', ButtonOnEnter)
-	button:HookScript('OnLeave', ButtonOnLeave)
+	button:HookScript('OnEnter', S.DamageMeter_ButtonOnEnter)
+	button:HookScript('OnLeave', S.DamageMeter_ButtonOnLeave)
 
 	button.IsSkinned = true
 end
 
-local function BackdropSetAlpha(background, alpha)
-	local parent = background:GetParent()
+function S:DamageMeter_BackdropSetAlpha(alpha)
+	local parent = self:GetParent()
 	if parent and parent.backdrop then
 		parent.backdrop:SetAlpha(alpha)
 	end
 end
 
-local function SkinBackground(window)
+function S:DamageMeter_HandleBackground(window)
 	if not window or not window.Background or window.backdrop then return end
 
 	window.Background:Hide()
@@ -72,16 +72,16 @@ local function SkinBackground(window)
 	window.backdrop:SetAlpha(window.backgroundAlpha or 0.5)
 
 	-- Inherit background alpha changes from Blizzard Edit Mode
-	hooksecurefunc(window.Background, 'SetAlpha', BackdropSetAlpha)
+	hooksecurefunc(window.Background, 'SetAlpha', S.DamageMeter_BackdropSetAlpha)
 end
 
-local function SessionDropdownSetWidth(dropdown, width, overrideFlag)
+function S:DamageMeter_DropdownSetWidth(width, overrideFlag)
 	if overrideFlag then return end
 
-	dropdown:SetWidth(width + DROPDOWN_WIDTH_OFFSET, true)
+	self:SetWidth(width + DROPDOWN_WIDTH_OFFSET, true)
 end
 
-local function SkinHeader(window)
+function S:DamageMeter_HandleHeader(window)
 	if not window then return end
 
 	local Header = not window.headerBackdrop and window.Header
@@ -136,7 +136,7 @@ local function SkinHeader(window)
 		SessionDropdown:Width(newWidth, true)
 
 		-- Blizzard's dynamic width is actually bugged now, but add some horizontal padding for styling anyway
-		hooksecurefunc(SessionDropdown, 'SetWidth', SessionDropdownSetWidth)
+		hooksecurefunc(SessionDropdown, 'SetWidth', S.DamageMeter_DropdownSetWidth)
 
 		if SessionDropdown.Arrow then
 			SessionDropdown.Arrow:SetAlpha(0)
@@ -173,32 +173,32 @@ local function SkinHeader(window)
 	end
 end
 
-local function SkinMeter(content)
-	local StatusBar = content.StatusBar
-	if StatusBar then
-		if StatusBar.Background then
-			StatusBar.Background:Hide()
-		end
+function S:DamageMeter_HandleStatusBar()
+	local StatusBar = self.StatusBar
+	if not StatusBar then return end
 
-		if StatusBar.BackgroundEdge then
-			StatusBar.BackgroundEdge:Hide()
-		end
-
-		if not StatusBar.backdrop then
-			StatusBar:CreateBackdrop('Transparent')
-		end
-
-		StatusBar:GetStatusBarTexture():SetTexture(E.media.normTex)
+	if StatusBar.Background then
+		StatusBar.Background:Hide()
 	end
+
+	if StatusBar.BackgroundEdge then
+		StatusBar.BackgroundEdge:Hide()
+	end
+
+	if not StatusBar.backdrop then
+		StatusBar:CreateBackdrop('Transparent')
+	end
+
+	StatusBar:GetStatusBarTexture():SetTexture(E.media.normTex)
 end
 
-local function HandleMeterScrollBox(scrollBox)
-	if not scrollBox or not scrollBox.ForEachFrame then return end
+function S:DamageMeter_HandleScrollBox()
+	if not self.ForEachFrame then return end
 
-	scrollBox:ForEachFrame(SkinMeter)
+	self:ForEachFrame(S.DamageMeter_HandleStatusBar)
 end
 
-local function SkinMeters(window)
+function S:DamageMeter_HandleWindow(window)
 	local ScrollBar = window.GetScrollBar and window:GetScrollBar()
 	if ScrollBar then
 		S:HandleTrimScrollBar(ScrollBar)
@@ -206,68 +206,68 @@ local function SkinMeters(window)
 
 	local ScrollBox = window.GetScrollBox and window:GetScrollBox()
 	if ScrollBox and not ScrollBox.IsSkinned then
-		hooksecurefunc(ScrollBox, 'Update', HandleMeterScrollBox)
+		hooksecurefunc(ScrollBox, 'Update', S.DamageMeter_HandleScrollBox)
 
-		HandleMeterScrollBox(ScrollBox)
+		S.DamageMeter_HandleScrollBox(ScrollBox)
 
 		ScrollBox.IsSkinned = true
 	end
 end
 
-local function RepositionResizeButton(window)
-	if not window or not window.backdrop then return end
+function S:DamageMeter_RepositionResizeButton()
+	if not self or not self.backdrop then return end
 
-	local ResizeButton = window.GetResizeButton and window:GetResizeButton()
+	local ResizeButton = self.GetResizeButton and self:GetResizeButton()
 	if not ResizeButton then return end
 
-	HandleResizeButton(ResizeButton)
+	S:DamageMeter_HandleResizeButton(ResizeButton)
 
 	ResizeButton:Size(14)
 	ResizeButton:ClearAllPoints()
 
-	local isRightSide = window.IsRightSide and window:IsRightSide()
+	local isRightSide = self.IsRightSide and self:IsRightSide()
 	local rotation = pi * (isRightSide and 1.25 or 0.75)
 	local point = isRightSide and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
 	local xOffset = isRightSide and -4 or 4
 
 	ResizeButton:GetNormalTexture():SetRotation(rotation)
 	ResizeButton:GetPushedTexture():SetRotation(rotation)
-	ResizeButton:Point(point, window.backdrop, point, xOffset, 4)
+	ResizeButton:Point(point, self.backdrop, point, xOffset, 4)
 end
 
-local function SkinSourceWindow(window)
+function S:DamageMeter_HandleSourceWindow(window)
 	if not window or window.IsSkinned then return end
 
-	SkinBackground(window)
-	SkinMeters(window)
+	S:DamageMeter_HandleBackground(window)
+	S:DamageMeter_HandleWindow(window)
 
 	if window.AnchorToSessionWindow then
-		hooksecurefunc(window, 'AnchorToSessionWindow', RepositionResizeButton)
+		hooksecurefunc(window, 'AnchorToSessionWindow', S.DamageMeter_RepositionResizeButton)
 	end
 
 	window.IsSkinned = true
 end
 
-local function HandleSessionWindow(window)
+function S:DamageMeter_HandleSessionWindow(window)
 	if not window or window.IsSkinned then return end
 
-	SkinBackground(window)
-	SkinHeader(window)
-	SkinMeters(window)
-	SkinSourceWindow(window.SourceWindow)
+	S:DamageMeter_HandleBackground(window)
+	S:DamageMeter_HandleHeader(window)
+	S:DamageMeter_HandleWindow(window)
+	S:DamageMeter_HandleSourceWindow(window.SourceWindow)
 
 	window.IsSkinned = true
 end
 
-local function ReskinAllSessionWindows()
-	_G.DamageMeter:ForEachSessionWindow(HandleSessionWindow)
+function S:DamageMeter_HandleSessionWindows()
+	_G.DamageMeter:ForEachSessionWindow(S.DamageMeter_HandleSessionWindow)
 end
 
 function S:Blizzard_DamageMeter()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.damageMeter) then return end
 
-	hooksecurefunc(_G.DamageMeter, 'SetupSessionWindow', ReskinAllSessionWindows)
-	ReskinAllSessionWindows()
+	hooksecurefunc(_G.DamageMeter, 'SetupSessionWindow', S.DamageMeter_HandleSessionWindows)
+	S.DamageMeter_HandleSessionWindows()
 end
 
 S:AddCallbackForAddon('Blizzard_DamageMeter')
