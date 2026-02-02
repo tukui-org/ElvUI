@@ -78,7 +78,7 @@ function E:AddTagInfo(tagName, category, description, order, hidden)
 		E.TagInfo[tagName] = info
 	end
 
-	info.category = category or L["Miscellaneous"]
+	info.category = category or 'Miscellaneous'
 	info.description = description or ''
 	info.order = order or nil
 	info.hidden = hidden or nil
@@ -375,70 +375,49 @@ E.TagFunctions = {
 	GetQuestData = Tags.Env.GetQuestData
 }
 
-E.TagInfo = {}
-
-local tagInfoRegistry = {}
-
-function E:RegisterInternalTagInfo(func)
-	tinsert(tagInfoRegistry, func)
-end
-
-function E:LoadTagInfo()
-	local info = E.TagInfo -- lets add the ones from this file into the table
-	if not info then return end
-
-	for _, func in ipairs(tagInfoRegistry) do
-		func(info)
-	end
-
-	tagInfoRegistry = nil
-end
+local info = {}
+E.TagInfo = info
 
 ------------------------------------------------------------------------
 --	Available Tags: this is the list of stock oUF tags
 ------------------------------------------------------------------------
-E:RegisterInternalTagInfo(function(info)
-	local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
-	E:CopyTable(info, {
-		affix				= { category = L["Classification"], description = L["Displays low level critter mobs"] },
-		arenaspec			= { category = L["PvP"], description = L["Displays the area spec of an unit"] },
-		cpoints				= { category = L["Classpower"], description = L["Displays amount of combo points the player has (only for player, shows nothing on 0)"] },
-		curhp				= { category = L["Health"], description = L["Displays the current HP without decimals"] },
-		curmana				= { category = L["Mana"], description = L["Displays the unit's current mana"] },
-		curpp				= { category = L["Power"], description = L["Displays the unit's current power without decimals"] },
-		dead				= { category = L["Status"], description = L["Displays <DEAD> if the unit is dead"] },
-		difficulty			= { category = L["Colors"], description = L["Changes color of the next tag based on how difficult the unit is compared to the players level"] },
-		faction				= { category = L["PvP"], description = L["Displays 'Alliance' or 'Horde'"] },
-		group				= { category = L["Party and Raid"], description = L["Displays the group number the unit is in (1-8)"] },
-		leader				= { category = L["Party and Raid"], description = L["Displays 'L' if the unit is the group/raid leader"] },
-		leaderlong			= { category = L["Party and Raid"], description = L["Displays 'Leader' if the unit is the group/raid leader"] },
-		level				= { category = L["Level"], description = L["Displays the level of the unit"] },
-		maxhp				= { category = L["Health"], description = L["Displays max HP without decimals"] },
-		maxmana				= { category = L["Mana"], description = L["Displays the max amount of mana the unit can have"] },
-		maxpp				= { category = L["Power"], description = L["Displays the max amount of power of the unit in whole numbers without decimals"] },
-		missinghp			= { category = L["Health"], description = L["Displays the missing health of the unit in whole numbers, when not at full health"] },
-		missingpp			= { category = L["Power"], description = L["Displays the missing power of the unit in whole numbers when not at full power"] },
-		name				= { category = L["Names"], description = L["Displays the full name of the unit without any letter limitation"] },
-		offline				= { category = L["Status"], description = L["Displays 'OFFLINE' if the unit is disconnected"] },
-		perhp				= { category = L["Health"], description = L["Displays percentage HP without decimals or the % sign. You can display the percent sign by adjusting the tag to [perhp<%]."] },
-		perpp				= { category = L["Power"], description = L["Displays the unit's percentage power without decimals"] },
-		plus				= { category = L["Classification"], description = L["Displays the character '+' if the unit is an elite or rare-elite"] },
-		powercolor			= { category = L["Colors"], description = L["Colors the power text based upon its type"] },
-		pvp					= { category = L["PvP"], description = L["Displays 'PvP' if the unit is pvp flagged"] },
-		rare				= { category = L["Classification"], description = L["Displays 'Rare' when the unit is a rare or rareelite"] },
-		resting				= { category = L["Status"], description = L["Displays 'zzz' if the unit is resting"] },
-		runes				= { hidden = E.Classic, category = L["Classpower"], description = L["Displays the runes (Death Knight)"] },
-		shortclassification	= { category = L["Classification"], description = L["Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)"] },
-		smartlevel			= { category = L["Level"], description = L["Only display the unit's level if it is not the same as yours"] },
-		soulshards			= { hidden = E.Classic, category = L["Classpower"], description = L["Displays the soulshards (Warlock)"] },
-		status				= { category = L["Status"], description = L["Displays zzz, dead, ghost, offline"] },
-		threat				= { category = L["Threat"], description = L["Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)"] },
-		threatcolor			= { category = L["Colors"], description = L["Changes the text color, depending on the unit's threat situation"] },
-		spec				= { hidden = not E.Retail, category = L["Class"], description = L["Displays the specialization icon of the unit as text"] },
-		arcanecharges		= { hidden = not E.Retail, category = L["Classpower"], description = L["Displays the arcane charges (Mage)"] },
-		chi					= { hidden = not E.Retail, category = L["Classpower"], description = L["Displays the chi points (Monk)"] }
-	})
-end)
+info.affix					= { category = "Classification", description = "Displays low level critter mobs" }
+info.arenaspec				= { category = "PvP", description = "Displays the area spec of an unit" }
+info.cpoints				= { category = "Classpower", description = "Displays amount of combo points the player has (only for player, shows nothing on 0)" }
+info.curhp					= { category = "Health", description = "Displays the current HP without decimals" }
+info.curmana				= { category = "Mana", description = "Displays the unit's current mana" }
+info.curpp					= { category = "Power", description = "Displays the unit's current power without decimals" }
+info.dead					= { category = "Status", description = "Displays <DEAD> if the unit is dead" }
+info.difficulty				= { category = "Colors", description = "Changes color of the next tag based on how difficult the unit is compared to the players level" }
+info.faction				= { category = "PvP", description = "Displays 'Alliance' or 'Horde'" }
+info.group					= { category = "Party and Raid", description = "Displays the group number the unit is in (1-8)" }
+info.leader					= { category = "Party and Raid", description = "Displays 'L' if the unit is the group/raid leader" }
+info.leaderlong				= { category = "Party and Raid", description = "Displays 'Leader' if the unit is the group/raid leader" }
+info.level					= { category = "Level", description = "Displays the level of the unit" }
+info.maxhp					= { category = "Health", description = "Displays max HP without decimals" }
+info.maxmana				= { category = "Mana", description = "Displays the max amount of mana the unit can have" }
+info.maxpp					= { category = "Power", description = "Displays the max amount of power of the unit in whole numbers without decimals" }
+info.missinghp				= { category = "Health", description = "Displays the missing health of the unit in whole numbers, when not at full health" }
+info.missingpp				= { category = "Power", description = "Displays the missing power of the unit in whole numbers when not at full power" }
+info.name					= { category = "Names", description = "Displays the full name of the unit without any letter limitation" }
+info.offline				= { category = "Status", description = "Displays 'OFFLINE' if the unit is disconnected" }
+info.perhp					= { category = "Health", description = "Displays percentage HP without decimals or the % sign. You can display the percent sign by adjusting the tag to [perhp<%]." }
+info.perpp					= { category = "Power", description = "Displays the unit's percentage power without decimals" }
+info.plus					= { category = "Classification", description = "Displays the character '+' if the unit is an elite or rare-elite" }
+info.powercolor				= { category = "Colors", description = "Colors the power text based upon its type" }
+info.pvp					= { category = "PvP", description = "Displays 'PvP' if the unit is pvp flagged" }
+info.rare					= { category = "Classification", description = "Displays 'Rare' when the unit is a rare or rareelite" }
+info.resting				= { category = "Status", description = "Displays 'zzz' if the unit is resting" }
+info.runes					= { hidden = E.Classic, category = "Classpower", description = "Displays the runes (Death Knight)" }
+info.shortclassification	= { category = "Classification", description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" }
+info.smartlevel				= { category = "Level", description = "Only display the unit's level if it is not the same as yours" }
+info.soulshards				= { hidden = E.Classic, category = "Classpower", description = "Displays the soulshards (Warlock)" }
+info.status					= { category = "Status", description = "Displays zzz, dead, ghost, offline" }
+info.threat					= { category = "Threat", description = "Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)" }
+info.threatcolor			= { category = "Colors", description = "Changes the text color, depending on the unit's threat situation" }
+info.spec					= { hidden = not E.Retail, category = "Class", description = "Displays the specialization icon of the unit as text" }
+info.arcanecharges			= { hidden = not E.Retail, category = "Classpower", description = "Displays the arcane charges (Mage)" }
+info.chi					= { hidden = not E.Retail, category = "Classpower", description = "Displays the chi points (Monk)" }
 
 -- Allow Refreshing
 RefreshNewTags = true

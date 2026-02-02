@@ -19,21 +19,28 @@ TagGroup.args.Names.args.nameHealthInfo2 = ACH:Input('|cFF666666[2/5]|r ' .. L["
 TagGroup.args.Names.args.nameHealthInfo3 = ACH:Input('|cFF666666[3/5]|r ' .. L["Class color name text, missing hp based on hex code"], nil, 3, nil, 'full', function() return '[name:health{class:00ff00}]' end)
 TagGroup.args.Names.args.nameHealthInfo4 = ACH:Input('|cFF666666[4/5]|r ' .. L["Name text based on hex code, missing hp red"], nil, 4, nil, 'full', function() return '[name:health{00ff00}]' end)
 TagGroup.args.Names.args.nameHealthInfo5 = ACH:Input('|cFF666666[5/5]|r ' .. L["Name text based on hex code, missing hp class color"], nil, 5, nil, 'full', function() return '[name:health{00ff00:class}]' end)
-local getTag = function(info) return format('[%s]', info[#info]) end
-local groups = {}
 
+local getTag = function(info)
+	return format('[%s]', info[#info])
+end
+
+local groups = {}
 for tag in next, ElvUF.Tags.Methods do
 	local info = E.TagInfo[tag] or E:AddTagInfo(tag, L["Miscellaneous"])
 
-	local group = TagGroup.args[info.category]
+	local category = info.category
+	local group = TagGroup.args[category]
 	if not group then
-		group = { name = info.category, type = 'group', args = {} }
-		TagGroup.args[info.category] = group
-		groups[info.category] = group
+		group = { name = L[category], type = 'group', args = {} }
+
+		TagGroup.args[category] = group
+
+		groups[category] = group
 	end
 
+	local desc = (info.description and info.description ~= '') and L[info.description]
 	local input = group.args[tag] or {}
-	input.name = info.description ~= '' and info.description or getTag
+	input.name = desc or getTag
 	input.order = info.order or nil
 	input.width = 'full'
 	input.type = 'input'

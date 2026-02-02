@@ -1259,244 +1259,243 @@ do
 	end)
 end
 
-E:RegisterInternalTagInfo(function(info)
-	local L = E.Libs.ACL:GetLocale('ElvUI', E.global.general.locale or 'enUS')
+local info = E.TagInfo
+if info then
+	info['class'] = { category = "Class", description = "Displays the class of the unit, if that unit is a player" }
+	info['class:icon'] = { category = "Class", description = "Displays the class icon of the unit, if that unit is a player" }
+	info['smartclass'] = { category = "Class", description = "Displays the player's class or creature's type" }
 
-	info['class'] = { category = L["Class"], description = L["Displays the class of the unit, if that unit is a player"] }
-	info['class:icon'] = { category = L["Class"], description = L["Displays the class icon of the unit, if that unit is a player"] }
-	info['smartclass'] = { category = L["Class"], description = L["Displays the player's class or creature's type"] }
+	info['affix'] = { category = "Classification", description = "Displays low level critter mobs" }
+	info['classification'] = { category = "Classification", description = "Displays the unit's classification (e.g. 'ELITE' and 'RARE')" }
+	info['classification:icon'] = { category = "Classification", description = "Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')" }
+	info['creature'] = { category = "Classification", description = "Displays the creature type of the unit" }
 
-	info['affix'] = { category = L["Classification"], description = L["Displays low level critter mobs"] }
-	info['classification'] = { category = L["Classification"], description = L["Displays the unit's classification (e.g. 'ELITE' and 'RARE')"] }
-	info['classification:icon'] = { category = L["Classification"], description = L["Displays the unit's classification in icon form (golden icon for 'ELITE' silver icon for 'RARE')"] }
-	info['creature'] = { category = L["Classification"], description = L["Displays the creature type of the unit"] }
+	info['classpower:current'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's current amount of special power" }
+	info['classpower:current-max'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's current and max amount of special power, separated by a dash" }
+	info['classpower:current-max-percent'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's current and max amount of special power, separated by a dash (% when not full power)" }
+	info['classpower:current-max-percent:shortvalue'] = { hidden = E.Classic, category = "Classpower", description = "" }
+	info['classpower:current-max:shortvalue'] = { hidden = E.Classic, category = "Classpower", description = "" }
+	info['classpower:current-percent'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's current and percentage amount of special power, separated by a dash" }
+	info['classpower:current-percent:shortvalue'] = { hidden = E.Classic, category = "Classpower", description = "" }
+	info['classpower:current:shortvalue'] = { hidden = E.Classic, category = "Classpower", description = "" }
+	info['classpower:deficit'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" }
+	info['classpower:deficit:shortvalue'] = { hidden = E.Classic, category = "Classpower", description = "" }
+	info['classpower:percent'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's current amount of special power as a percentage" }
+	info['holypower'] = { hidden = E.Classic, category = "Classpower", description = "Displays the holy power (Paladin)" }
 
-	info['classpower:current'] = { hidden = E.Classic, category = L["Classpower"], description = L["Displays the unit's current amount of special power"] }
-	info['classpower:current-max'] = { hidden = E.Classic, category = L["Classpower"], description = L["Displays the unit's current and max amount of special power, separated by a dash"] }
-	info['classpower:current-max-percent'] = { hidden = E.Classic, category = L["Classpower"], description = L["Displays the unit's current and max amount of special power, separated by a dash (% when not full power)"] }
-	info['classpower:current-max-percent:shortvalue'] = { hidden = E.Classic, category = L["Classpower"], description = "" }
-	info['classpower:current-max:shortvalue'] = { hidden = E.Classic, category = L["Classpower"], description = "" }
-	info['classpower:current-percent'] = { hidden = E.Classic, category = L["Classpower"], description = L["Displays the unit's current and percentage amount of special power, separated by a dash"] }
-	info['classpower:current-percent:shortvalue'] = { hidden = E.Classic, category = L["Classpower"], description = "" }
-	info['classpower:current:shortvalue'] = { hidden = E.Classic, category = L["Classpower"], description = "" }
-	info['classpower:deficit'] = { hidden = E.Classic, category = L["Classpower"], description = L["Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)"] }
-	info['classpower:deficit:shortvalue'] = { hidden = E.Classic, category = L["Classpower"], description = "" }
-	info['classpower:percent'] = { hidden = E.Classic, category = L["Classpower"], description = L["Displays the unit's current amount of special power as a percentage"] }
-	info['holypower'] = { hidden = E.Classic, category = L["Classpower"], description = L["Displays the holy power (Paladin)"] }
+	info['classcolor'] = { category = "Colors", description = "Colors names by player class or NPC reaction (Ex: [classcolor][name])" }
+	info['classificationcolor'] = { category = "Colors", description = "Changes the text color, depending on the unit's classification" }
+	info['classpowercolor'] = { category = "Colors", description = "Changes the color of the special power based upon its type" }
+	info['difficultycolor'] = { category = "Colors", description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" }
+	info['factioncolor'] = { category = "Colors", description = "Colors names by Faction (Alliance, Horde, Neutral)" }
+	info['happiness:color'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Colors", description = "Changes the text color, depending on the pet happiness" }
+	info['healthcolor'] = { category = "Colors", description = "Changes the text color, depending on the unit's current health" }
+	info['manacolor'] = { category = "Colors", description = "Colors the power text based on the mana color" }
+	info['namecolor'] = { hidden = true, category = "Colors", description = "Deprecated version of [classcolor]" }
+	info['reactioncolor'] = { category = "Colors", description = "Colors names by NPC reaction (Bad/Neutral/Good)" }
+	info['selectioncolor'] = { category = "Colors", description = "Colors the text, depending on the type of the unit's selection" }
 
-	info['classcolor'] = { category = L["Colors"], description = L["Colors names by player class or NPC reaction (Ex: [classcolor][name])"] }
-	info['classificationcolor'] = { category = L["Colors"], description = L["Changes the text color, depending on the unit's classification"] }
-	info['classpowercolor'] = { category = L["Colors"], description = L["Changes the color of the special power based upon its type"] }
-	info['difficultycolor'] = { category = L["Colors"], description = L["Colors the following tags by difficulty, red for impossible, orange for hard, green for easy"] }
-	info['factioncolor'] = { category = L["Colors"], description = L["Colors names by Faction (Alliance, Horde, Neutral)"] }
-	info['happiness:color'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = L["Colors"], description = L["Changes the text color, depending on the pet happiness"] }
-	info['healthcolor'] = { category = L["Colors"], description = L["Changes the text color, depending on the unit's current health"] }
-	info['manacolor'] = { category = L["Colors"], description = L["Colors the power text based on the mana color"] }
-	info['namecolor'] = { hidden = true, category = L["Colors"], description = L["Deprecated version of [classcolor]"] }
-	info['reactioncolor'] = { category = L["Colors"], description = L["Colors names by NPC reaction (Bad/Neutral/Good)"] }
-	info['selectioncolor'] = { category = L["Colors"], description = L["Colors the text, depending on the type of the unit's selection"] }
+	info['guild'] = { category = "Guild", description = "Displays the guild name" }
+	info['guild:brackets'] = { category = "Guild", description = "Displays the guild name with < > brackets (e.g. <GUILD>)" }
+	info['guild:brackets:translit'] = { category = "Guild", description = "Displays the guild name with < > and transliteration (e.g. <GUILD>)" }
+	info['guild:rank'] = { category = "Guild", description = "Displays the guild rank" }
+	info['guild:translit'] = { category = "Guild", description = "Displays the guild name with transliteration for cyrillic letters" }
 
-	info['guild'] = { category = L["Guild"], description = L["Displays the guild name"] }
-	info['guild:brackets'] = { category = L["Guild"], description = L["Displays the guild name with < > brackets (e.g. <GUILD>)"] }
-	info['guild:brackets:translit'] = { category = L["Guild"], description = L["Displays the guild name with < > and transliteration (e.g. <GUILD>)"] }
-	info['guild:rank'] = { category = L["Guild"], description = L["Displays the guild rank"] }
-	info['guild:translit'] = { category = L["Guild"], description = L["Displays the guild name with transliteration for cyrillic letters"] }
+	info['absorbs'] = { hidden = E.Classic, category = "Health", description = "Displays the amount of absorbs" }
+	info['deficit:name'] = { category = "Health", description = "Displays the health as a deficit and the name at full health" }
+	info['healabsorbs'] = { hidden = E.Classic, category = "Health", description = "Displays the amount of heal absorbs" }
+	info['health:current'] = { category = "Health", description = "Displays the current health of the unit" }
+	info['health:current-max'] = { category = "Health", description = "Displays the current and maximum health of the unit, separated by a dash" }
+	info['health:current-max-nostatus'] = { category = "Health", description = "Displays the current and maximum health of the unit, separated by a dash, without status" }
+	info['health:current-max-nostatus:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's current and max health, without status" }
+	info['health:current-max-percent'] = { category = "Health", description = "Displays the current and max hp of the unit, separated by a dash (% when not full hp)" }
+	info['health:current-max-percent-nostatus'] = { category = "Health", description = "Displays the current and max hp of the unit, separated by a dash (% when not full hp), without status" }
+	info['health:current-max-percent-nostatus:shortvalue'] = { category = "Health", description = "Shortvalue of current and max hp (% when not full hp, without status)" }
+	info['health:current-max-percent:shortvalue'] = { category = "Health", description = "Shortvalue of current and max hp (% when not full hp)" }
+	info['health:current-max:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's current and max hp, separated by a dash" }
+	info['health:current-nostatus'] = { category = "Health", description = "Displays the current health of the unit, without status" }
+	info['health:current-nostatus:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's current health without status" }
+	info['health:current-percent'] = { category = "Health", description = "Displays the current hp of the unit (% when not full hp)" }
+	info['health:current-percent-nostatus'] = { category = "Health", description = "Displays the current hp of the unit (% when not full hp), without status" }
+	info['health:current-percent-nostatus:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's current hp (% when not full hp), without status" }
+	info['health:current-percent:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's current hp (% when not full hp)" }
+	info['health:current:name'] = { category = "Health", description = "Displays the current health as a shortvalue and then the full name of the unit when at full health" }
+	info['health:current:name-long'] = { category = "Health", description = "Displays the current health as a shortvalue and then the name of the unit (limited to 20 letters) when at full health" }
+	info['health:current:name-medium'] = { category = "Health", description = "Displays the current health as a shortvalue and then the name of the unit (limited to 15 letters) when at full health" }
+	info['health:current:name-short'] = { category = "Health", description = "Displays the current health as a shortvalue and then the name of the unit (limited to 10 letters) when at full health" }
+	info['health:current:name-veryshort'] = { category = "Health", description = "Displays the current health as a shortvalue and then the name of the unit (limited to 5 letters) when at full health" }
+	info['health:current:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's current health (e.g. 81k instead of 81200)" }
+	info['health:deficit'] = { category = "Health", description = "Displays the health of the unit as a deficit (Total Health - Current Health = -Deficit)" }
+	info['health:deficit-nostatus'] = { category = "Health", description = "Displays the health of the unit as a deficit, without status" }
+	info['health:deficit-nostatus:shortvalue'] = { category = "Health", description = "Shortvalue of the health deficit, without status" }
+	info['health:deficit-percent-absorbs'] = { hidden = E.Classic, category = "Health", description = "Displays the percentage deficit health including absorb values. If greater than max health that will be reflected." }
+	info['health:deficit-percent:name'] = { category = "Health", description = "Displays the health deficit as a percentage and the full name of the unit" }
+	info['health:deficit-percent:name-long'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 20 letters)" }
+	info['health:deficit-percent:name-medium'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 15 letters)" }
+	info['health:deficit-percent:name-short'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 10 letters)" }
+	info['health:deficit-percent:name-veryshort'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 5 letters)" }
+	info['health:deficit-percent:nostatus'] = { category = "Health", description = "Displays the health deficit as a percentage, without status" }
+	info['health:deficit:shortvalue'] = { category = "Health", description = "Shortvalue of the health deficit (e.g. -41k instead of -41300)" }
+	info['health:max'] = { category = "Health", description = "Displays the maximum health of the unit" }
+	info['health:max:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's maximum health" }
+	info['health:percent'] = { category = "Health", description = "Displays the current health of the unit as a percentage" }
+	info['health:percent-nostatus'] = { category = "Health", description = "Displays the unit's current health as a percentage, without status" }
+	info['health:percent-with-absorbs'] = { hidden = E.Classic, category = "Health", description = "Displays the unit's current health as a percentage with absorb values" }
+	info['health:percent-with-absorbs:nostatus'] = { hidden = E.Classic, category = "Health", description = "Displays the unit's current health as a percentage with absorb values, without status" }
+	info['incomingheals'] = { category = "Health", description = "Displays all incoming heals" }
+	info['incomingheals:others'] = { category = "Health", description = "Displays only incoming heals from other units" }
+	info['incomingheals:personal'] = { category = "Health", description = "Displays only personal incoming heals" }
 
-	info['absorbs'] = { hidden = E.Classic, category = L["Health"], description = L["Displays the amount of absorbs"] }
-	info['deficit:name'] = { category = L["Health"], description = L["Displays the health as a deficit and the name at full health"] }
-	info['healabsorbs'] = { hidden = E.Classic, category = L["Health"], description = L["Displays the amount of heal absorbs"] }
-	info['health:current'] = { category = L["Health"], description = L["Displays the current health of the unit"] }
-	info['health:current-max'] = { category = L["Health"], description = L["Displays the current and maximum health of the unit, separated by a dash"] }
-	info['health:current-max-nostatus'] = { category = L["Health"], description = L["Displays the current and maximum health of the unit, separated by a dash, without status"] }
-	info['health:current-max-nostatus:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the unit's current and max health, without status"] }
-	info['health:current-max-percent'] = { category = L["Health"], description = L["Displays the current and max hp of the unit, separated by a dash (% when not full hp)"] }
-	info['health:current-max-percent-nostatus'] = { category = L["Health"], description = L["Displays the current and max hp of the unit, separated by a dash (% when not full hp), without status"] }
-	info['health:current-max-percent-nostatus:shortvalue'] = { category = L["Health"], description = L["Shortvalue of current and max hp (% when not full hp, without status)"] }
-	info['health:current-max-percent:shortvalue'] = { category = L["Health"], description = L["Shortvalue of current and max hp (% when not full hp)"] }
-	info['health:current-max:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the unit's current and max hp, separated by a dash"] }
-	info['health:current-nostatus'] = { category = L["Health"], description = L["Displays the current health of the unit, without status"] }
-	info['health:current-nostatus:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the unit's current health without status"] }
-	info['health:current-percent'] = { category = L["Health"], description = L["Displays the current hp of the unit (% when not full hp)"] }
-	info['health:current-percent-nostatus'] = { category = L["Health"], description = L["Displays the current hp of the unit (% when not full hp), without status"] }
-	info['health:current-percent-nostatus:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the unit's current hp (% when not full hp), without status"] }
-	info['health:current-percent:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the unit's current hp (% when not full hp)"] }
-	info['health:current:name'] = { category = L["Health"], description = L["Displays the current health as a shortvalue and then the full name of the unit when at full health"] }
-	info['health:current:name-long'] = { category = L["Health"], description = L["Displays the current health as a shortvalue and then the name of the unit (limited to 20 letters) when at full health"] }
-	info['health:current:name-medium'] = { category = L["Health"], description = L["Displays the current health as a shortvalue and then the name of the unit (limited to 15 letters) when at full health"] }
-	info['health:current:name-short'] = { category = L["Health"], description = L["Displays the current health as a shortvalue and then the name of the unit (limited to 10 letters) when at full health"] }
-	info['health:current:name-veryshort'] = { category = L["Health"], description = L["Displays the current health as a shortvalue and then the name of the unit (limited to 5 letters) when at full health"] }
-	info['health:current:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the unit's current health (e.g. 81k instead of 81200)"] }
-	info['health:deficit'] = { category = L["Health"], description = L["Displays the health of the unit as a deficit (Total Health - Current Health = -Deficit)"] }
-	info['health:deficit-nostatus'] = { category = L["Health"], description = L["Displays the health of the unit as a deficit, without status"] }
-	info['health:deficit-nostatus:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the health deficit, without status"] }
-	info['health:deficit-percent-absorbs'] = { hidden = E.Classic, category = L["Health"], description = L["Displays the percentage deficit health including absorb values. If greater than max health that will be reflected."] }
-	info['health:deficit-percent:name'] = { category = L["Health"], description = L["Displays the health deficit as a percentage and the full name of the unit"] }
-	info['health:deficit-percent:name-long'] = { category = L["Health"], description = L["Displays the health deficit as a percentage and the name of the unit (limited to 20 letters)"] }
-	info['health:deficit-percent:name-medium'] = { category = L["Health"], description = L["Displays the health deficit as a percentage and the name of the unit (limited to 15 letters)"] }
-	info['health:deficit-percent:name-short'] = { category = L["Health"], description = L["Displays the health deficit as a percentage and the name of the unit (limited to 10 letters)"] }
-	info['health:deficit-percent:name-veryshort'] = { category = L["Health"], description = L["Displays the health deficit as a percentage and the name of the unit (limited to 5 letters)"] }
-	info['health:deficit-percent:nostatus'] = { category = L["Health"], description = L["Displays the health deficit as a percentage, without status"] }
-	info['health:deficit:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the health deficit (e.g. -41k instead of -41300)"] }
-	info['health:max'] = { category = L["Health"], description = L["Displays the maximum health of the unit"] }
-	info['health:max:shortvalue'] = { category = L["Health"], description = L["Shortvalue of the unit's maximum health"] }
-	info['health:percent'] = { category = L["Health"], description = L["Displays the current health of the unit as a percentage"] }
-	info['health:percent-nostatus'] = { category = L["Health"], description = L["Displays the unit's current health as a percentage, without status"] }
-	info['health:percent-with-absorbs'] = { hidden = E.Classic, category = L["Health"], description = L["Displays the unit's current health as a percentage with absorb values"] }
-	info['health:percent-with-absorbs:nostatus'] = { hidden = E.Classic, category = L["Health"], description = L["Displays the unit's current health as a percentage with absorb values, without status"] }
-	info['incomingheals'] = { category = L["Health"], description = L["Displays all incoming heals"] }
-	info['incomingheals:others'] = { category = L["Health"], description = L["Displays only incoming heals from other units"] }
-	info['incomingheals:personal'] = { category = L["Health"], description = L["Displays only personal incoming heals"] }
+	info['diet'] = { hidden = E.Retail, category = "Hunter", description = "Displays the diet of your pet (Fish, Meat, ...)" }
+	info['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like a Discord emoji" }
+	info['happiness:full'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness as a word (e.g. 'Happy')" }
+	info['happiness:icon'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like the default Blizzard icon" }
+	info['loyalty'] = { hidden = E.Retail, category = "Hunter", description = "Displays the pet loyalty level" }
 
-	info['diet'] = { hidden = E.Retail, category = L["Hunter"], description = L["Displays the diet of your pet (Fish, Meat, ...)"] }
-	info['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = L["Hunter"], description = L["Displays the pet happiness like a Discord emoji"] }
-	info['happiness:full'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = L["Hunter"], description = L["Displays the pet happiness as a word (e.g. 'Happy')"] }
-	info['happiness:icon'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = L["Hunter"], description = L["Displays the pet happiness like the default Blizzard icon"] }
-	info['loyalty'] = { hidden = E.Retail, category = L["Hunter"], description = L["Displays the pet loyalty level"] }
+	info['mana:current'] = { category = "Mana", description = "Displays the unit's current mana" }
+	info['mana:current-max'] = { category = "Mana", description = "Displays the unit's current and maximum mana, separated by a dash" }
+	info['mana:current-max-percent'] = { category = "Mana", description = "Displays the current and max mana of the unit, separated by a dash (% when not full)" }
+	info['mana:current-max-percent:healeronly'] = { category = "Mana", description = "Displays the current and max mana of the unit, separated by a dash (% when not full) if their role is set to healer" }
+	info['mana:current-max-percent:shortvalue'] = { category = "Mana", description = "" }
+	info['mana:current-max-percent:shortvalue:healeronly'] = { category = "Mana", description = "" }
+	info['mana:current-max:healeronly'] = { category = "Mana", description = "Displays the unit's current and maximum mana, separated by a dash if their role is set to healer" }
+	info['mana:current-max:shortvalue'] = { category = "Mana", description = "" }
+	info['mana:current-max:shortvalue:healeronly'] = { category = "Mana", description = "" }
+	info['mana:current-percent'] = { category = "Mana", description = "Displays the current mana of the unit and % when not full" }
+	info['mana:current-percent:healeronly'] = { category = "Mana", description = "Displays the current mana of the unit and % when not full if their role is set to healer" }
+	info['mana:current-percent:shortvalue'] = { category = "Mana", description = "" }
+	info['mana:current-percent:shortvalue:healeronly'] = { category = "Mana", description = "" }
+	info['mana:current:healeronly'] = { category = "Mana", description = "Displays the unit's current mana if their role is set to healer" }
+	info['mana:current:shortvalue'] = { category = "Mana", description = "" }
+	info['mana:current:shortvalue:healeronly'] = { category = "Mana", description = "" }
+	info['mana:deficit'] = { category = "Mana", description = "Displays the player's mana as a deficit" }
+	info['mana:deficit:healeronly'] = { category = "Mana", description = "Displays the player's mana as a deficit if their role is set to healer" }
+	info['mana:deficit:shortvalue'] = { category = "Mana", description = "" }
+	info['mana:deficit:shortvalue:healeronly'] = { category = "Mana", description = "" }
+	info['mana:max:shortvalue'] = { category = "Mana", description = "" }
+	info['mana:max:shortvalue:healeronly'] = { category = "Mana", description = "" }
+	info['mana:percent'] = { category = "Mana", description = "Displays the player's mana as a percentage" }
+	info['mana:percent:healeronly'] = { category = "Mana", description = "Displays the player's mana as a percentage if their role is set to healer" }
+	info['permana'] = { category = "Mana", description = "Displays the unit's mana percentage without decimals" }
 
-	info['mana:current'] = { category = L["Mana"], description = L["Displays the unit's current mana"] }
-	info['mana:current-max'] = { category = L["Mana"], description = L["Displays the unit's current and maximum mana, separated by a dash"] }
-	info['mana:current-max-percent'] = { category = L["Mana"], description = L["Displays the current and max mana of the unit, separated by a dash (% when not full)"] }
-	info['mana:current-max-percent:healeronly'] = { category = L["Mana"], description = L["Displays the current and max mana of the unit, separated by a dash (% when not full) if their role is set to healer"] }
-	info['mana:current-max-percent:shortvalue'] = { category = L["Mana"], description = "" }
-	info['mana:current-max-percent:shortvalue:healeronly'] = { category = L["Mana"], description = "" }
-	info['mana:current-max:healeronly'] = { category = L["Mana"], description = L["Displays the unit's current and maximum mana, separated by a dash if their role is set to healer"] }
-	info['mana:current-max:shortvalue'] = { category = L["Mana"], description = "" }
-	info['mana:current-max:shortvalue:healeronly'] = { category = L["Mana"], description = "" }
-	info['mana:current-percent'] = { category = L["Mana"], description = L["Displays the current mana of the unit and % when not full"] }
-	info['mana:current-percent:healeronly'] = { category = L["Mana"], description = L["Displays the current mana of the unit and % when not full if their role is set to healer"] }
-	info['mana:current-percent:shortvalue'] = { category = L["Mana"], description = "" }
-	info['mana:current-percent:shortvalue:healeronly'] = { category = L["Mana"], description = "" }
-	info['mana:current:healeronly'] = { category = L["Mana"], description = L["Displays the unit's current mana if their role is set to healer"] }
-	info['mana:current:shortvalue'] = { category = L["Mana"], description = "" }
-	info['mana:current:shortvalue:healeronly'] = { category = L["Mana"], description = "" }
-	info['mana:deficit'] = { category = L["Mana"], description = L["Displays the player's mana as a deficit"] }
-	info['mana:deficit:healeronly'] = { category = L["Mana"], description = L["Displays the player's mana as a deficit if their role is set to healer"] }
-	info['mana:deficit:shortvalue'] = { category = L["Mana"], description = "" }
-	info['mana:deficit:shortvalue:healeronly'] = { category = L["Mana"], description = "" }
-	info['mana:max:shortvalue'] = { category = L["Mana"], description = "" }
-	info['mana:max:shortvalue:healeronly'] = { category = L["Mana"], description = "" }
-	info['mana:percent'] = { category = L["Mana"], description = L["Displays the player's mana as a percentage"] }
-	info['mana:percent:healeronly'] = { category = L["Mana"], description = L["Displays the player's mana as a percentage if their role is set to healer"] }
-	info['permana'] = { category = L["Mana"], description = L["Displays the unit's mana percentage without decimals"] }
+	info['race'] = { category = "Miscellaneous", description = "Displays the race" }
 
-	info['race'] = { category = L["Miscellaneous"], description = L["Displays the race"] }
+	info['name:abbrev'] = { category = "Names", description = "Displays the name of the unit with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')" }
+	info['name:abbrev:long'] = { category = "Names", description = "Displays the name of the unit with abbreviation (limited to 20 letters)" }
+	info['name:abbrev:medium'] = { category = "Names", description = "Displays the name of the unit with abbreviation (limited to 15 letters)" }
+	info['name:abbrev:short'] = { category = "Names", description = "Displays the name of the unit with abbreviation (limited to 10 letters)" }
+	info['name:abbrev:veryshort'] = { category = "Names", description = "Displays the name of the unit with abbreviation (limited to 5 letters)" }
+	info['name:first'] = { category = "Names", description = "Displays the first word of the unit's name" }
+	info['name:health'] = { hidden = true, category = "Names", description = "" }
+	info['name:last'] = { category = "Names", description = "Displays the last word of the unit's name" }
+	info['name:long'] = { category = "Names", description = "Displays the name of the unit (limited to 20 letters)" }
+	info['name:long:status'] = { category = "Names", description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 20 letters)" }
+	info['name:long:translit'] = { category = "Names", description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 20 letters)" }
+	info['name:medium'] = { category = "Names", description = "Displays the name of the unit (limited to 15 letters)" }
+	info['name:medium:status'] = { category = "Names", description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 15 letters)" }
+	info['name:medium:translit'] = { category = "Names", description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 15 letters)" }
+	info['name:short'] = { category = "Names", description = "Displays the name of the unit (limited to 10 letters)" }
+	info['name:short:status'] = { category = "Names", description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 10 letters)" }
+	info['name:short:translit'] = { category = "Names", description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 10 letters)" }
+	info['name:title'] = { category = "Names", description = "Displays player name and title" }
+	info['name:veryshort'] = { category = "Names", description = "Displays the name of the unit (limited to 5 letters)" }
+	info['name:veryshort:status'] = { category = "Names", description = "Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 5 letters)" }
+	info['name:veryshort:translit'] = { category = "Names", description = "Displays the name of the unit with transliteration for cyrillic letters (limited to 5 letters)" }
+	info['npctitle'] = { category = "Names", description = "Displays the NPC title (e.g. General Goods Vendor)" }
+	info['npctitle:brackets'] = { category = "Names", description = "Displays the NPC title with brackets (e.g. <General Goods Vendor>)" }
+	info['title'] = { category = "Names", description = "Displays player title" }
 
-	info['name:abbrev'] = { category = L["Names"], description = L["Displays the name of the unit with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')"] }
-	info['name:abbrev:long'] = { category = L["Names"], description = L["Displays the name of the unit with abbreviation (limited to 20 letters)"] }
-	info['name:abbrev:medium'] = { category = L["Names"], description = L["Displays the name of the unit with abbreviation (limited to 15 letters)"] }
-	info['name:abbrev:short'] = { category = L["Names"], description = L["Displays the name of the unit with abbreviation (limited to 10 letters)"] }
-	info['name:abbrev:veryshort'] = { category = L["Names"], description = L["Displays the name of the unit with abbreviation (limited to 5 letters)"] }
-	info['name:first'] = { category = L["Names"], description = L["Displays the first word of the unit's name"] }
-	info['name:health'] = { hidden = true, category = L["Names"], description = "" }
-	info['name:last'] = { category = L["Names"], description = L["Displays the last word of the unit's name"] }
-	info['name:long'] = { category = L["Names"], description = L["Displays the name of the unit (limited to 20 letters)"] }
-	info['name:long:status'] = { category = L["Names"], description = L["Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 20 letters)"] }
-	info['name:long:translit'] = { category = L["Names"], description = L["Displays the name of the unit with transliteration for cyrillic letters (limited to 20 letters)"] }
-	info['name:medium'] = { category = L["Names"], description = L["Displays the name of the unit (limited to 15 letters)"] }
-	info['name:medium:status'] = { category = L["Names"], description = L["Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 15 letters)"] }
-	info['name:medium:translit'] = { category = L["Names"], description = L["Displays the name of the unit with transliteration for cyrillic letters (limited to 15 letters)"] }
-	info['name:short'] = { category = L["Names"], description = L["Displays the name of the unit (limited to 10 letters)"] }
-	info['name:short:status'] = { category = L["Names"], description = L["Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 10 letters)"] }
-	info['name:short:translit'] = { category = L["Names"], description = L["Displays the name of the unit with transliteration for cyrillic letters (limited to 10 letters)"] }
-	info['name:title'] = { category = L["Names"], description = L["Displays player name and title"] }
-	info['name:veryshort'] = { category = L["Names"], description = L["Displays the name of the unit (limited to 5 letters)"] }
-	info['name:veryshort:status'] = { category = L["Names"], description = L["Replace the name of the unit with 'DEAD' or 'OFFLINE' if applicable (limited to 5 letters)"] }
-	info['name:veryshort:translit'] = { category = L["Names"], description = L["Displays the name of the unit with transliteration for cyrillic letters (limited to 5 letters)"] }
-	info['npctitle'] = { category = L["Names"], description = L["Displays the NPC title (e.g. General Goods Vendor)"] }
-	info['npctitle:brackets'] = { category = L["Names"], description = L["Displays the NPC title with brackets (e.g. <General Goods Vendor>)"] }
-	info['title'] = { category = L["Names"], description = L["Displays player title"] }
+	info['group:raid'] = { category = "Party and Raid", description = "Displays the group number the unit is in (1-8): Only while in a raid." }
 
-	info['group:raid'] = { category = L["Party and Raid"], description = L["Displays the group number the unit is in (1-8): Only while in a raid."] }
+	info['power:current'] = { category = "Power", description = "Displays the unit's current amount of power" }
+	info['power:current-max'] = { category = "Power", description = "Displays the current power and max power, separated by a dash" }
+	info['power:current-max-percent'] = { category = "Power", description = "Displays the current power and max power, separated by a dash (% when not full power)" }
+	info['power:current-max-percent:healeronly'] = { category = "Power", description = "Displays the current power and max power, separated by a dash (% when not full power) if their role is set to healer" }
+	info['power:current-max-percent:shortvalue'] = { category = "Power", description = "Shortvalue of the current power and max power, separated by a dash (% when not full power)" }
+	info['power:current-max-percent:shortvalue:healeronly'] = { category = "Power", description = "Shortvalue of the current power and max power, separated by a dash (% when not full power) if their role is set to healer" }
+	info['power:current-max:healeronly'] = { category = "Power", description = "Displays the current power and max power, separated by a dash if their role is set to healer" }
+	info['power:current-max:shortvalue'] = { category = "Power", description = "Shortvalue of the current power and max power, separated by a dash" }
+	info['power:current-max:shortvalue:healeronly'] = { category = "Power", description = "Shortvalue of the current power and max power, separated by a dash if their role is set to healer" }
+	info['power:current-percent'] = { category = "Power", description = "Displays the current power and power as a percentage, separated by a dash" }
+	info['power:current-percent:healeronly'] = { category = "Power", description = "Displays the current power and power as a percentage, separated by a dash if their role is set to healer" }
+	info['power:current-percent:shortvalue'] = { category = "Power", description = "Shortvalue of the current power and power as a percentage, separated by a dash" }
+	info['power:current-percent:shortvalue:healeronly'] = { category = "Power", description = "Shortvalue of the current power and power as a percentage, separated by a dash if their role is set to healer" }
+	info['power:current:healeronly'] = { category = "Power", description = "Displays the unit's current amount of power if their role is set to healer" }
+	info['power:current:shortvalue'] = { category = "Power", description = "Shortvalue of the unit's current amount of power (e.g. 4k instead of 4000)" }
+	info['power:current:shortvalue:healeronly'] = { category = "Power", description = "Shortvalue of the unit's current amount of power (e.g. 4k instead of 4000) if their role is set to healer" }
+	info['power:deficit'] = { category = "Power", description = "Displays the power as a deficit (Total Power - Current Power = -Deficit)" }
+	info['power:deficit:healeronly'] = { category = "Power", description = "Displays the power as a deficit (Total Power - Current Power = -Deficit) if their role is set to healer" }
+	info['power:deficit:shortvalue'] = { category = "Power", description = "Shortvalue of the power as a deficit (Total Power - Current Power = -Deficit)" }
+	info['power:deficit:shortvalue:healeronly'] = { category = "Power", description = "Shortvalue of the power as a deficit (Total Power - Current Power = -Deficit) if their role is set to healer" }
+	info['power:max'] = { category = "Power", description = "Displays the unit's maximum power" }
+	info['power:max:shortvalue'] = { category = "Power", description = "Shortvalue of the unit's maximum power" }
+	info['power:max:shortvalue:healeronly'] = { category = "Power", description = "Shortvalue of the unit's maximum power if their role is set to healer" }
+	info['power:percent'] = { category = "Power", description = "Displays the unit's power as a percentage" }
+	info['power:percent:healeronly'] = { category = "Power", description = "Displays the unit's power as a percentage if their role is set to healer" }
 
-	info['power:current'] = { category = L["Power"], description = L["Displays the unit's current amount of power"] }
-	info['power:current-max'] = { category = L["Power"], description = L["Displays the current power and max power, separated by a dash"] }
-	info['power:current-max-percent'] = { category = L["Power"], description = L["Displays the current power and max power, separated by a dash (% when not full power)"] }
-	info['power:current-max-percent:healeronly'] = { category = L["Power"], description = L["Displays the current power and max power, separated by a dash (% when not full power) if their role is set to healer"] }
-	info['power:current-max-percent:shortvalue'] = { category = L["Power"], description = L["Shortvalue of the current power and max power, separated by a dash (% when not full power)"] }
-	info['power:current-max-percent:shortvalue:healeronly'] = { category = L["Power"], description = L["Shortvalue of the current power and max power, separated by a dash (% when not full power) if their role is set to healer"] }
-	info['power:current-max:healeronly'] = { category = L["Power"], description = L["Displays the current power and max power, separated by a dash if their role is set to healer"] }
-	info['power:current-max:shortvalue'] = { category = L["Power"], description = L["Shortvalue of the current power and max power, separated by a dash"] }
-	info['power:current-max:shortvalue:healeronly'] = { category = L["Power"], description = L["Shortvalue of the current power and max power, separated by a dash if their role is set to healer"] }
-	info['power:current-percent'] = { category = L["Power"], description = L["Displays the current power and power as a percentage, separated by a dash"] }
-	info['power:current-percent:healeronly'] = { category = L["Power"], description = L["Displays the current power and power as a percentage, separated by a dash if their role is set to healer"] }
-	info['power:current-percent:shortvalue'] = { category = L["Power"], description = L["Shortvalue of the current power and power as a percentage, separated by a dash"] }
-	info['power:current-percent:shortvalue:healeronly'] = { category = L["Power"], description = L["Shortvalue of the current power and power as a percentage, separated by a dash if their role is set to healer"] }
-	info['power:current:healeronly'] = { category = L["Power"], description = L["Displays the unit's current amount of power if their role is set to healer"] }
-	info['power:current:shortvalue'] = { category = L["Power"], description = L["Shortvalue of the unit's current amount of power (e.g. 4k instead of 4000)"] }
-	info['power:current:shortvalue:healeronly'] = { category = L["Power"], description = L["Shortvalue of the unit's current amount of power (e.g. 4k instead of 4000) if their role is set to healer"] }
-	info['power:deficit'] = { category = L["Power"], description = L["Displays the power as a deficit (Total Power - Current Power = -Deficit)"] }
-	info['power:deficit:healeronly'] = { category = L["Power"], description = L["Displays the power as a deficit (Total Power - Current Power = -Deficit) if their role is set to healer"] }
-	info['power:deficit:shortvalue'] = { category = L["Power"], description = L["Shortvalue of the power as a deficit (Total Power - Current Power = -Deficit)"] }
-	info['power:deficit:shortvalue:healeronly'] = { category = L["Power"], description = L["Shortvalue of the power as a deficit (Total Power - Current Power = -Deficit) if their role is set to healer"] }
-	info['power:max'] = { category = L["Power"], description = L["Displays the unit's maximum power"] }
-	info['power:max:shortvalue'] = { category = L["Power"], description = L["Shortvalue of the unit's maximum power"] }
-	info['power:max:shortvalue:healeronly'] = { category = L["Power"], description = L["Shortvalue of the unit's maximum power if their role is set to healer"] }
-	info['power:percent'] = { category = L["Power"], description = L["Displays the unit's power as a percentage"] }
-	info['power:percent:healeronly'] = { category = L["Power"], description = L["Displays the unit's power as a percentage if their role is set to healer"] }
+	info['arena:number'] = { category = "PvP", description = "Displays the arena number 1-5" }
+	info['faction:icon'] = { category = "PvP", description = "Displays the 'Alliance' or 'Horde' texture" }
+	info['pvp:icon'] = { hidden = E.Retail, category = "PvP", description = "Displays player pvp rank icon" }
+	info['pvp:rank'] = { hidden = E.Retail, category = "PvP", description = "Displays player pvp rank number" }
+	info['pvp:title'] = { hidden = E.Retail, category = "PvP", description = "Displays player pvp title" }
+	info['pvptimer'] = { category = "PvP", description = "Displays remaining time on pvp-flagged status" }
 
-	info['arena:number'] = { category = L["PvP"], description = L["Displays the arena number 1-5"] }
-	info['faction:icon'] = { category = L["PvP"], description = L["Displays the 'Alliance' or 'Horde' texture"] }
-	info['pvp:icon'] = { hidden = E.Retail, category = L["PvP"], description = L["Displays player pvp rank icon"] }
-	info['pvp:rank'] = { hidden = E.Retail, category = L["PvP"], description = L["Displays player pvp rank number"] }
-	info['pvp:title'] = { hidden = E.Retail, category = L["PvP"], description = L["Displays player pvp title"] }
-	info['pvptimer'] = { category = L["PvP"], description = L["Displays remaining time on pvp-flagged status"] }
+	info['quest:count'] = { category = "Quest", description = "Displays the quest count" }
+	info['quest:full'] = { category = "Quest", description = "Quest full" }
+	info['quest:info'] = { category = "Quest", description = "Displays the quest objectives" }
+	info['quest:text'] = { category = "Quest", description = "Quest text" }
+	info['quest:title'] = { category = "Quest", description = "Displays the quest title" }
 
-	info['quest:count'] = { category = L["Quest"], description = L["Displays the quest count"] }
-	info['quest:full'] = { category = L["Quest"], description = L["Quest full"] }
-	info['quest:info'] = { category = L["Quest"], description = L["Displays the quest objectives"] }
-	info['quest:text'] = { category = L["Quest"], description = L["Quest text"] }
-	info['quest:title'] = { category = L["Quest"], description = L["Displays the quest title"] }
+	info['distance'] = { category = "Range", description = "Displays the distance" }
+	info['nearbyplayers:10'] = { category = "Range", description = "Displays all players within 10 yards" }
+	info['nearbyplayers:15'] = { category = "Range", description = "Displays all players within 15 yards" }
+	info['nearbyplayers:20'] = { category = "Range", description = "Displays all players within 20 yards" }
+	info['nearbyplayers:25'] = { category = "Range", description = "Displays all players within 25 yards" }
+	info['nearbyplayers:30'] = { category = "Range", description = "Displays all players within 30 yards" }
+	info['nearbyplayers:35'] = { category = "Range", description = "Displays all players within 35 yards" }
+	info['nearbyplayers:4'] = { category = "Range", description = "Displays all players within 4 yards" }
+	info['nearbyplayers:40'] = { category = "Range", description = "Displays all players within 40 yards" }
+	info['nearbyplayers:8'] = { category = "Range", description = "Displays all players within 8 yards" }
 
-	info['distance'] = { category = L["Range"], description = L["Displays the distance"] }
-	info['nearbyplayers:10'] = { category = L["Range"], description = L["Displays all players within 10 yards"] }
-	info['nearbyplayers:15'] = { category = L["Range"], description = L["Displays all players within 15 yards"] }
-	info['nearbyplayers:20'] = { category = L["Range"], description = L["Displays all players within 20 yards"] }
-	info['nearbyplayers:25'] = { category = L["Range"], description = L["Displays all players within 25 yards"] }
-	info['nearbyplayers:30'] = { category = L["Range"], description = L["Displays all players within 30 yards"] }
-	info['nearbyplayers:35'] = { category = L["Range"], description = L["Displays all players within 35 yards"] }
-	info['nearbyplayers:4'] = { category = L["Range"], description = L["Displays all players within 4 yards"] }
-	info['nearbyplayers:40'] = { category = L["Range"], description = L["Displays all players within 40 yards"] }
-	info['nearbyplayers:8'] = { category = L["Range"], description = L["Displays all players within 8 yards"] }
+	info['realm'] = { category = "Realm", description = "Displays the server name" }
+	info['realm:dash'] = { category = "Realm", description = "Displays the server name with a dash in front (e.g. -Realm)" }
+	info['realm:dash:translit'] = { category = "Realm", description = "Displays the server name with transliteration for cyrillic letters and a dash in front" }
+	info['realm:translit'] = { category = "Realm", description = "Displays the server name with transliteration for cyrillic letters" }
 
-	info['realm'] = { category = L["Realm"], description = L["Displays the server name"] }
-	info['realm:dash'] = { category = L["Realm"], description = L["Displays the server name with a dash in front (e.g. -Realm)"] }
-	info['realm:dash:translit'] = { category = L["Realm"], description = L["Displays the server name with transliteration for cyrillic letters and a dash in front"] }
-	info['realm:translit'] = { category = L["Realm"], description = L["Displays the server name with transliteration for cyrillic letters"] }
+	info['speed:percent'] = { category = "Speed" }
+	info['speed:percent-moving'] = { category = "Speed" }
+	info['speed:percent-moving-raw'] = { category = "Speed" }
+	info['speed:percent-raw'] = { category = "Speed" }
+	info['speed:yardspersec'] = { category = "Speed" }
+	info['speed:yardspersec-moving'] = { category = "Speed" }
+	info['speed:yardspersec-moving-raw'] = { category = "Speed" }
+	info['speed:yardspersec-raw'] = { category = "Speed" }
 
-	info['speed:percent'] = { category = L["Speed"] }
-	info['speed:percent-moving'] = { category = L["Speed"] }
-	info['speed:percent-moving-raw'] = { category = L["Speed"] }
-	info['speed:percent-raw'] = { category = L["Speed"] }
-	info['speed:yardspersec'] = { category = L["Speed"] }
-	info['speed:yardspersec-moving'] = { category = L["Speed"] }
-	info['speed:yardspersec-moving-raw'] = { category = L["Speed"] }
-	info['speed:yardspersec-raw'] = { category = L["Speed"] }
+	info['afk'] = { category = "Status", description = "Displays <AFK> if the unit is afk" }
+	info['ElvUI-Users'] = { category = "Status", description = "Displays current ElvUI users" }
+	info['status:icon'] = { category = "Status", description = "Displays AFK/DND as an orange(afk) / red(dnd) icon" }
+	info['status:text'] = { category = "Status", description = "Displays <AFK> and <DND>" }
+	info['statustimer'] = { category = "Status", description = "Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')" }
 
-	info['afk'] = { category = L["Status"], description = L["Displays <AFK> if the unit is afk"] }
-	info['ElvUI-Users'] = { category = L["Status"], description = L["Displays current ElvUI users"] }
-	info['status:icon'] = { category = L["Status"], description = L["Displays AFK/DND as an orange(afk) / red(dnd) icon"] }
-	info['status:text'] = { category = L["Status"], description = L["Displays <AFK> and <DND>"] }
-	info['statustimer'] = { category = L["Status"], description = L["Displays a timer for how long a unit has had the status (e.g 'DEAD - 0:34')"] }
+	info['classcolor:target'] = { category = "Target", description = "[classcolor] but for the current target of the unit" }
+	info['target'] = { category = "Target", description = "Displays the current target of the unit" }
+	info['target:abbrev'] = { category = "Target", description = "Displays the name of the unit's target with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')" }
+	info['target:abbrev:long'] = { category = "Target", description = "Displays the name of the unit's target with abbreviation (limited to 20 letters)" }
+	info['target:abbrev:medium'] = { category = "Target", description = "Displays the name of the unit's target with abbreviation (limited to 15 letters)" }
+	info['target:abbrev:short'] = { category = "Target", description = "Displays the name of the unit's target with abbreviation (limited to 10 letters)" }
+	info['target:abbrev:veryshort'] = { category = "Target", description = "Displays the name of the unit's target with abbreviation (limited to 5 letters)" }
+	info['target:last'] = { category = "Target", description = "Displays the last word of the unit's target's name" }
+	info['target:long'] = { category = "Target", description = "Displays the current target of the unit (limited to 20 letters)" }
+	info['target:long:translit'] = { category = "Target", description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)" }
+	info['target:medium'] = { category = "Target", description = "Displays the current target of the unit (limited to 15 letters)" }
+	info['target:medium:translit'] = { category = "Target", description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)" }
+	info['target:short'] = { category = "Target", description = "Displays the current target of the unit (limited to 10 letters)" }
+	info['target:short:translit'] = { category = "Target", description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 10 letters)" }
+	info['target:translit'] = { category = "Target", description = "Displays the current target of the unit with transliteration for cyrillic letters" }
+	info['target:veryshort'] = { category = "Target", description = "Displays the current target of the unit (limited to 5 letters)" }
+	info['target:veryshort:translit'] = { category = "Target", description = "Displays the current target of the unit with transliteration for cyrillic letters (limited to 5 letters)" }
 
-	info['classcolor:target'] = { category = L["Target"], description = L["[classcolor] but for the current target of the unit"] }
-	info['target'] = { category = L["Target"], description = L["Displays the current target of the unit"] }
-	info['target:abbrev'] = { category = L["Target"], description = L["Displays the name of the unit's target with abbreviation (e.g. 'Shadowfury Witch Doctor' becomes 'S. W. Doctor')"] }
-	info['target:abbrev:long'] = { category = L["Target"], description = L["Displays the name of the unit's target with abbreviation (limited to 20 letters)"] }
-	info['target:abbrev:medium'] = { category = L["Target"], description = L["Displays the name of the unit's target with abbreviation (limited to 15 letters)"] }
-	info['target:abbrev:short'] = { category = L["Target"], description = L["Displays the name of the unit's target with abbreviation (limited to 10 letters)"] }
-	info['target:abbrev:veryshort'] = { category = L["Target"], description = L["Displays the name of the unit's target with abbreviation (limited to 5 letters)"] }
-	info['target:last'] = { category = L["Target"], description = L["Displays the last word of the unit's target's name"] }
-	info['target:long'] = { category = L["Target"], description = L["Displays the current target of the unit (limited to 20 letters)"] }
-	info['target:long:translit'] = { category = L["Target"], description = L["Displays the current target of the unit with transliteration for cyrillic letters (limited to 20 letters)"] }
-	info['target:medium'] = { category = L["Target"], description = L["Displays the current target of the unit (limited to 15 letters)"] }
-	info['target:medium:translit'] = { category = L["Target"], description = L["Displays the current target of the unit with transliteration for cyrillic letters (limited to 15 letters)"] }
-	info['target:short'] = { category = L["Target"], description = L["Displays the current target of the unit (limited to 10 letters)"] }
-	info['target:short:translit'] = { category = L["Target"], description = L["Displays the current target of the unit with transliteration for cyrillic letters (limited to 10 letters)"] }
-	info['target:translit'] = { category = L["Target"], description = L["Displays the current target of the unit with transliteration for cyrillic letters"] }
-	info['target:veryshort'] = { category = L["Target"], description = L["Displays the current target of the unit (limited to 5 letters)"] }
-	info['target:veryshort:translit'] = { category = L["Target"], description = L["Displays the current target of the unit with transliteration for cyrillic letters (limited to 5 letters)"] }
-
-	info['threat:current'] = { category = L["Threat"], description = L["Displays the current threat as a value"] }
-	info['threat:lead'] = { category = L["Threat"], description = L["Displays the current threat of lead as a percent"] }
-	info['threat:percent'] = { category = L["Threat"], description = L["Displays the current threat as a percent"] }
-end)
+	info['threat:current'] = { category = "Threat", description = "Displays the current threat as a value" }
+	info['threat:lead'] = { category = "Threat", description = "Displays the current threat of lead as a percent" }
+	info['threat:percent'] = { category = "Threat", description = "Displays the current threat as a percent" }
+end
