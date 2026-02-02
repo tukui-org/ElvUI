@@ -1,17 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 local UnitClass = UnitClass
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
-
-function NP:Portrait_PreUpdate()
-	--[[if self.backdrop then
-		self.backdrop:Hide()
-	end]]
-end
 
 function NP:Update_PortraitBackdrop()
 	if self.backdrop then
@@ -19,7 +12,9 @@ function NP:Update_PortraitBackdrop()
 	end
 end
 
-function NP:Portrait_PostUpdate(unit, hasStateChanged, texCoords)
+function NP:Portrait_PostUpdate(unit, hasStateChanged)
+	if not hasStateChanged then return end
+
 	local nameplate = self.__owner
 	local db = NP:PlateDB(nameplate)
 
@@ -29,17 +24,6 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged, texCoords)
 	if specIcon then
 		self:SetTexture(specIcon)
 		self.backdrop:Show()
-	elseif self.useClassBase then -- not currently used
-		if texCoords then -- monks on Mists Classic
-			local left, right, top, bottom = unpack(texCoords)
-			self:SetTexCoord(left+0.02, right-0.02, top+0.02, bottom-0.02)
-		elseif db.portrait.keepSizeRatio then
-			self:SetTexCoords()
-		else
-			local width, height = self:GetSize()
-			local left, right, top, bottom = E:CropRatio(width, height)
-			self:SetTexCoord(left, right, top, bottom)
-		end
 	elseif self.customTexture then
 		local _, className = UnitClass(unit)
 		if db.portrait.keepSizeRatio then
@@ -60,7 +44,6 @@ function NP:Construct_Portrait(nameplate)
 	Portrait:SetSize(28, 28)
 	Portrait:Hide()
 
-	Portrait.PreUpdate = NP.Portrait_PreUpdate
 	Portrait.PostUpdate = NP.Portrait_PostUpdate
 
 	hooksecurefunc(Portrait, 'Hide', NP.Update_PortraitBackdrop)
@@ -78,7 +61,8 @@ function NP:Update_Portrait(nameplate)
 			nameplate.Portrait:ForceUpdate()
 		end
 
-		if db.portrait.classicon and not db.portrait.specicon then
+		local specIcon = db.portrait.specicon and nameplate.specIcon
+		if db.portrait.classicon and not specIcon then
 			nameplate.Portrait:SetTexture(classIcon)
 			nameplate.Portrait.customTexture = classIcon
 		else -- spec icon or portrait

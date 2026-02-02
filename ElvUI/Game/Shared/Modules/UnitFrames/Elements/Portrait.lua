@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local rad = rad
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
+
 local CreateFrame = CreateFrame
 local UnitClass = UnitClass
 
@@ -130,7 +130,7 @@ function UF:Configure_Portrait(frame)
 	end
 end
 
-function UF:PortraitUpdate(unit, hasStateChanged, texCoords)
+function UF:PortraitUpdate(unit, hasStateChanged)
 	if not hasStateChanged then return end
 
 	local db = self.db
@@ -151,19 +151,15 @@ function UF:PortraitUpdate(unit, hasStateChanged, texCoords)
 		-- handle the other settings
 		self:SetDesaturation(db.desaturation or 0)
 		self:SetPaused(db.paused or false)
-	elseif self.useClassBase then -- not currently used
-		if texCoords then
-			local left, right, top, bottom = unpack(texCoords)
-			self:SetTexCoord(left+0.02, right-0.02, top+0.02, bottom-0.02)
-		elseif db.keepSizeRatio then
-			self:SetTexCoords()
-		else
-			local width, height = self:GetSize()
-			local left, right, top, bottom = E:CropRatio(width, height)
-			self:SetTexCoord(left, right, top, bottom)
-		end
 	elseif self.customTexture then
 		local _, className = UnitClass(unit)
-		self:SetTexCoord(E:GetClassCoords(className, true))
+		if db.keepSizeRatio then
+			self:SetTexCoord(E:GetClassCoords(className, true))
+		else
+			local width, height = self:GetSize()
+			local classL, classR, classT, classB = E:GetClassCoords(className, true)
+			local left, right, top, bottom = E:CropRatio(width, height, nil, classL, classR, classT, classB)
+			self:SetTexCoord(left, right, top, bottom)
+		end
 	end
 end

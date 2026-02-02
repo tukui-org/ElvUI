@@ -45,8 +45,6 @@ local UnitIsVisible = UnitIsVisible
 local UnitIsConnected = UnitIsConnected
 local SetPortraitTexture = SetPortraitTexture
 
-local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
-
 local function Update(self, event)
 	local element = self.Portrait
 	if not element then return end
@@ -72,7 +70,6 @@ local function Update(self, event)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local texCoords
 	local isAvailable = element:IsVisible() and UnitIsConnected(unit) and UnitIsVisible(unit)
 	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
@@ -96,15 +93,7 @@ local function Update(self, event)
 
 			local _, className = UnitClass(unit)
 			if className then
-				if oUF.isMists and className == 'MONK' then -- currently doesnt work on Mists Classic
-					local coords = CLASS_ICON_TCOORDS[className]
-					if coords then
-						element:SetTexture([[Interface\WorldStateFrame\ICONS-CLASSES]])
-						texCoords = coords
-					end
-				else
-					element:SetAtlas('classicon-' .. className)
-				end
+				element:SetAtlas('classicon-' .. className)
 			end
 		elseif not element.customTexture then
 			SetPortraitTexture(element, unit)
@@ -119,7 +108,7 @@ local function Update(self, event)
 	* hasStateChanged - indicates whether the state has changed since the last update (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(unit, hasStateChanged, texCoords)
+		return element:PostUpdate(unit, hasStateChanged)
 	end
 end
 

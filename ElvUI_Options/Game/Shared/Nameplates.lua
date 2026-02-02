@@ -402,7 +402,7 @@ local function GetUnitSettings(unit, name)
 		group.args.healthGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 10)
 
 		group.args.portraitGroup.args.classicon = ACH:Toggle(L["Class Icon"], nil, 20)
-		group.args.portraitGroup.args.specicon = ACH:Toggle(L["Spec Icon"], nil, 21)
+		group.args.portraitGroup.args.specicon = ACH:Toggle(L["Spec Icon"], nil, 21, nil, 21, nil, nil, nil, nil, nil, nil, not E.Retail)
 		group.args.portraitGroup.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 22)
 
 		group.args.pvpclassificationindicator = ACH:Group(L["PvP Classification Indicator"], L["Cart / Flag / Orb / Assassin Bounty"], 70, nil, function(info) return E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] = value NP:ConfigureAll() end)
