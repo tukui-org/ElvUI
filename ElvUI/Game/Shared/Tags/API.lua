@@ -3,8 +3,8 @@ local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 local Tags = ElvUF.Tags
 
+local gsub, type, next = gsub, type, next
 local strlower, strfind = strlower, strfind
-local gsub, type, next, ipairs, tinsert = gsub, type, next, ipairs, tinsert
 local format, gmatch, strmatch, strsub = format, gmatch, strmatch, strsub
 local utf8lower, utf8sub = string.utf8lower, string.utf8sub
 
