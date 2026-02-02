@@ -39,12 +39,11 @@ the unit.
 local _, ns = ...
 local oUF = ns.oUF
 
--- ElvUI block
 local UnitGUID = UnitGUID
-local UnitIsConnected = UnitIsConnected
-local UnitIsVisible = UnitIsVisible
 local UnitClass = UnitClass
--- end block
+local UnitIsVisible = UnitIsVisible
+local UnitIsConnected = UnitIsConnected
+local SetPortraitTexture = SetPortraitTexture
 
 local CLASS_ICON_TCOORDS = CLASS_ICON_TCOORDS
 
@@ -56,11 +55,11 @@ local function Update(self, event)
 	if not unit then return end
 
 	local guid = UnitGUID(unit)
-	local newGUID = element.guid ~= guid
+	local newGUID = oUF:IsSecretValue(guid) or (element.guid ~= guid)
 
 	local nameplate = event == 'NAME_PLATE_UNIT_ADDED'
 	if newGUID then
-		element.guid = guid
+		element.guid = oUF:NotSecretValue(guid) and guid or nil
 	elseif nameplate then
 		return
 	end
@@ -81,16 +80,15 @@ local function Update(self, event)
 		element.state = isAvailable
 
 		if element.playerModel then
-			if not isAvailable then
-				element:SetCamDistanceScale(0.25)
-				element:SetPortraitZoom(0)
-				element:SetPosition(0, 0, 0.25)
-				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
-			else
-				element:SetCamDistanceScale(1)
-				element:SetPortraitZoom(1)
-				element:SetPosition(0, 0, 0)
+			element:ClearModel()
+			element:SetCamDistanceScale(isAvailable and 1 or 0.25)
+			element:SetPortraitZoom(isAvailable and 1 or 0)
+			element:SetPosition(0, 0, isAvailable and 0 or 0.25)
+
+			if isAvailable then
 				element:SetUnit(unit)
+			else
+				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
 			end
 		elseif element.useClassBase then
 			-- BUG: UnitClassBase can't be trusted
@@ -108,6 +106,8 @@ local function Update(self, event)
 					element:SetAtlas('classicon-' .. className)
 				end
 			end
+		elseif not element.customTexture then
+			SetPortraitTexture(element, unit)
 		end
 	end
 
