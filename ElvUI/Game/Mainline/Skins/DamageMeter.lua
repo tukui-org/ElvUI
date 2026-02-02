@@ -255,7 +255,7 @@ function S:DamageMeter_HandleSessionWindow()
 	S:DamageMeter_HandleHeader(self, self.Header)
 	S:DamageMeter_HandleTypeDropdown(self, self.DamageMeterTypeDropdown)
 	S:DamageMeter_HandleSessionDropdown(self, self.SessionDropdown)
-	S:DamageMeter_HandleSettingsDropdown(self.SettingsDropdown)
+	S:DamageMeter_HandleSettingsDropdown(self, self.SettingsDropdown)
 	S:DamageMeter_HandleSourceWindow(self, self.SourceWindow)
 	S:DamageMeter_HandleScrollBoxes(self)
 
