@@ -82,7 +82,7 @@ function UF:Update_AssistFrames(frame, db)
 		frame.POWERBAR_OFFSET = 0
 		frame.POWERBAR_HEIGHT = 0
 		frame.POWERBAR_WIDTH = 0
-	--	frame.USE_PORTRAIT = false
+		frame.USE_PORTRAIT = false
 		frame.USE_PORTRAIT_OVERLAY = false
 		frame.PORTRAIT_WIDTH = 0
 		frame.CLASSBAR_YOFFSET = 0
