@@ -7,7 +7,7 @@ local huge = math.huge
 
 local ToggleCharacter = ToggleCharacter
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
-local C_Reputation_IsFactionParagon = C_Reputation.IsFactionParagon
+local C_Reputation_IsFactionParagonForCurrentPlayer = C_Reputation.IsFactionParagonForCurrentPlayer
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
 local C_MajorFactions_GetMajorFactionData = C_MajorFactions and C_MajorFactions.GetMajorFactionData
 local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.HasMaximumRenown
@@ -54,7 +54,7 @@ local function OnEvent(panel)
 		standing, currentReactionThreshold, nextReactionThreshold, currentStanding = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 	end
 
-	if E.Retail and not standing and factionID and C_Reputation_IsFactionParagon(factionID) then
+	if E.Retail and not standing and factionID and C_Reputation_IsFactionParagonForCurrentPlayer(factionID) then
 		local current, threshold
 		current, threshold = C_Reputation_GetFactionParagonInfo(factionID)
 
@@ -108,7 +108,7 @@ local function OnEnter()
 	if not data then return end
 	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
 
-	local isParagon = E.Retail and factionID and C_Reputation_IsFactionParagon(factionID)
+	local isParagon = E.Retail and factionID and C_Reputation_IsFactionParagonForCurrentPlayer(factionID)
 	local standing
 
 	if isParagon then
