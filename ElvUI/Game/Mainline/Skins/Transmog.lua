@@ -37,8 +37,11 @@ function S:Blizzard_Transmog()
 
 	local TransmogFrame = _G.TransmogFrame
 	S:HandlePortraitFrame(TransmogFrame)
-	TransmogFrame.HelpPlateButton:Kill()
-	TransmogFrame.HelpPlateButton.Ring:Hide()
+
+	if TransmogFrame.HelpPlateButton then
+		TransmogFrame.HelpPlateButton:Kill()
+		TransmogFrame.HelpPlateButton.Ring:Hide()
+	end
 
 	local OutfitCollection = TransmogFrame.OutfitCollection
 	if OutfitCollection then
