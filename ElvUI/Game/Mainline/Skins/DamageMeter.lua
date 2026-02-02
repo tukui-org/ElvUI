@@ -250,18 +250,18 @@ function S:DamageMeter_HandleSourceWindow(window, sourceWindow)
 	sourceWindow.IsSkinned = true
 end
 
-function S:DamageMeter_HandleSessionWindow(window)
-	if not window or window.IsSkinned then return end
+function S:DamageMeter_HandleSessionWindow()
+	if self.IsSkinned then return end
 
-	S:DamageMeter_HandleBackground(window, window.Background)
-	S:DamageMeter_HandleHeader(window, window.Header)
-	S:DamageMeter_HandleTypeDropdown(window, window.DamageMeterTypeDropdown)
-	S:DamageMeter_HandleSessionDropdown(window, window.SessionDropdown)
-	S:DamageMeter_HandleSettingsDropdown(window.SettingsDropdown)
-	S:DamageMeter_HandleSourceWindow(window, window.SourceWindow)
-	S:DamageMeter_HandleScrollBoxes(window)
+	S:DamageMeter_HandleBackground(self, self.Background)
+	S:DamageMeter_HandleHeader(self, self.Header)
+	S:DamageMeter_HandleTypeDropdown(self, self.DamageMeterTypeDropdown)
+	S:DamageMeter_HandleSessionDropdown(self, self.SessionDropdown)
+	S:DamageMeter_HandleSettingsDropdown(self.SettingsDropdown)
+	S:DamageMeter_HandleSourceWindow(self, self.SourceWindow)
+	S:DamageMeter_HandleScrollBoxes(self)
 
-	window.IsSkinned = true
+	self.IsSkinned = true
 end
 
 function S:DamageMeter_SetupSessionWindow()
