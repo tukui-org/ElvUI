@@ -413,17 +413,13 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = "|cFFffffffShift + Sag Tiklama:|r cikis Ses Aygitini Sec"
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% ustunde |cff%02x%02x%02x%s|r]"
 L["AFK"] = "KBD"
-L["AP:"] = true
 L["AVD: "] = "AVD: "
 L["BINDINGS_HELP"] = ("Baglamak icin farenizi herhangi bir *action|r, *micro|r, *macro|r veya *spellbook|r dugmesinin uzerine getirin. Bu ayni zamanda *bag|r'inizdaki ogeler icin de gecerlidir. ^ESC|r tusuna basin gecerli baglamalari ^clear|r."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["DND"] = "REM"
 L["DPS"] = true
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffWorld of Warcraft icin eksiksiz bir Kullanici Arayuzu degistirme eklentisidir.|r"):gsub('*', E.InfoColor)
-L["G"] = true
 L["HP"] = true
 L["HPS"] = true
-L["I"] = true
-L["IL"] = true
 L["INCOMPATIBLE_ADDON"] = "%s, %s ile uyumlu degil.\nLutfen kullanilacak AddOn/modulu secin."
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
@@ -446,16 +442,20 @@ L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("*ElvUI|r surum *%s|r'ye hos geldiniz, oyun ici yapilandirma menusune erismek icin */ec|r yazin. Teknik destege ihtiyaciniz varsa bizi https://www.tukui adresinden ziyaret edebilirsiniz. .org veya Discord'umuza katilin: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Kullanilabilir *ElvUI|r komutlarinin listesi icin lutfen */ehelp|r kullanin."):gsub('*', E.InfoColor)
-L["O"] = true
-L["P"] = true
-L["PL"] = true
-L["R"] = true
-L["RL"] = true
-L["RW"] = true
-L["SP"] = true
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
-L["XP:"] = true
-
+----------------------------------
+L["AP:"] = true		-- Attack Power
+L["XP:"] = true		-- Experience
+L["G"] = true		-- Chat: Guild
+L["I"] = true		-- Chat: Instance
+L["IL"] = true		-- Chat: Instance Leader
+L["O"] = true		-- Chat: Guild Officer
+L["P"] = true		-- Chat: Party
+L["PL"] = true		-- Chat: Party Leader
+L["R"] = true		-- Chat: Raid
+L["RL"] = true		-- Chat: Raid Leader
+L["RW"] = true		-- Chat: Raid Warning
+L["SP"] = true		-- Spellpower
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.
 

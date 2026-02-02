@@ -413,17 +413,13 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = "|cFFffffffShift + 우 클릭:|r 출력 오디오 장치 선택"
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% 정도 |cff%02x%02x%02x%s|r보다 많음]"
 L["AFK"] = "자리 비움"
-L["AP:"] = "전투력"
 L["AVD: "] = "방어율: "
 L["BINDINGS_HELP"] = ("단축키 지정:*단축바|r,*매크로|r 또는 *마법책|r 에 마우스를 대고 단축키를 눌러 입력.*가방|r의 항목에도 적용됨. 저장을 눌러야만 적용됨."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["DND"] = "다른 용무 중"
 L["DPS"] = "DPS"
 L["ELVUI_DESC"] = ("*ElvUI|r|cFFffffff는 WoW에서 지원하는 대부분의 기능을 대체하는 통합 애드온입니다.|r"):gsub('*', E.InfoColor)
-L["G"] = "길드"
 L["HP"] = "생명력"
 L["HPS"] = "초당 힐"
-L["I"] = "인던채팅"
-L["IL"] = "인스장"
 L["INCOMPATIBLE_ADDON"] = "%s의 기능이 ElvUI의 %s 모듈과 충돌 됩니다. \n사용할 기능 또는 모듈을 선택하세요."
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
@@ -446,16 +442,20 @@ L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "Spc"
 L["LOGIN_MSG"] = ("*ElvUI|r 버전 *%s|r이 설치되었습니다.\n메뉴 호출은*/ec|r.기술 지원은 https://tukui.org \n또는,*Discord :|r https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("*ElvUI|r 명령어 목록은 */ehelp|r를 입력하면 됩니다."):gsub('*', E.InfoColor)
-L["O"] = "관리자"
-L["P"] = "파티"
-L["PL"] = "파티장"
-L["R"] = "공대"
-L["RL"] = "공대장"
-L["RW"] = "경보"
-L["SP"] = "주문력"
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
-L["XP:"] = "경험치:"
-
+----------------------------------
+L["AP:"] = "전투력"		-- Attack Power
+L["XP:"] = "경험치:"	-- Experience
+L["G"] = "길드"			-- Chat: Guild
+L["I"] = "인던채팅"		-- Chat: Instance
+L["IL"] = "인스장"		-- Chat: Instance Leader
+L["O"] = "관리자"		-- Chat: Guild Officer
+L["P"] = "파티"			-- Chat: Party
+L["PL"] = "파티장"		-- Chat: Party Leader
+L["R"] = "공대"			-- Chat: Raid
+L["RL"] = "공대장"		-- Chat: Raid Leader
+L["RW"] = "경보"		-- Chat: Raid Warning
+L["SP"] = "주문력"		-- Spellpower
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[프레임을 드래그하여 원하는 위치로 이동시키세요.
 [잠금] 버튼을 누르면 이동모드가 종료됩니다.

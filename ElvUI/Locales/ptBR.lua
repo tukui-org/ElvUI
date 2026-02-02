@@ -413,17 +413,13 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = "|cFFffffffShift + Clique Direito:|r Selecionar o Dispositivo de Saída de Aúdio"
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% acima de |cff%02x%02x%02x%s|r]"
 L["AFK"] = true
-L["AP:"] = "PA:"
 L["AVD: "] = "ESQ: "
 L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["DND"] = "NP"
 L["DPS"] = "DPS"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffé um Addon de substituição completa da interface original do World of Warcraft.|r"):gsub('*', E.InfoColor)
-L["G"] = "G"
 L["HP"] = "PV"
 L["HPS"] = "PVS"
-L["I"] = true
-L["IL"] = true
 L["INCOMPATIBLE_ADDON"] = "%s não é compatível com %s.\nPor favor selecione o addon/módulo que deseja usar."
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
@@ -446,16 +442,20 @@ L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("Bem-vindo ao *ElvUI|r versão *%s|r, digite */ec|r para acessar as configurações dentro do jogo. Se você precisa de suporte técnico nos contate em https://tukui.org ou se entre no Discord: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Por favor use */ehelp|r para ver a lista de comandos do *ElvUI|r."):gsub('*', E.InfoColor)
-L["O"] = "O"
-L["P"] = "P"
-L["PL"] = "PL"
-L["R"] = "R"
-L["RL"] = "RL"
-L["RW"] = "AR"
-L["SP"] = "PM"
 L["UPDATE_REQUEST"] = "Parece haver um problema com sua instalação. Por favor reinstale o ElvUI."
-L["XP:"] = "XP:"
-
+----------------------------------
+L["AP:"] = "PA:"	-- Attack Power
+L["XP:"] = true		-- Experience
+L["G"] = true		-- Chat: Guild
+L["I"] = true		-- Chat: Instance
+L["IL"] = true		-- Chat: Instance Leader
+L["O"] = true		-- Chat: Guild Officer
+L["P"] = true		-- Chat: Party
+L["PL"] = true		-- Chat: Party Leader
+L["R"] = true		-- Chat: Raid
+L["RL"] = true		-- Chat: Raid Leader
+L["RW"] = "AR"		-- Chat: Raid Warning
+L["SP"] = "PM"		-- Spellpower
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Movedores destravados. Mova-os agora e clique Travar quando acabar.
 

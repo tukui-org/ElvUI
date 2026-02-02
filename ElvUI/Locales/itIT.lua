@@ -413,17 +413,13 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = true
 L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = true
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% above |cff%02x%02x%02x%s|r]"
 L["AFK"] = true
-L["AP:"] = true
 L["AVD: "] = true
 L["BINDINGS_HELP"] = ("Hover your mouse over any *action|r, *micro|r, *macro|r, or *spellbook|r button to bind it. This also works for items in your *bag|r. Press the ^ESC|r key to ^clear|r the current bindings."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["DND"] = true
 L["DPS"] = true
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffè un componente aggiuntivo di sostituzione dell'interfaccia utente per World of Warcraft.|r"):gsub('*', E.InfoColor)
-L["G"] = true
 L["HP"] = true
 L["HPS"] = true
-L["I"] = true
-L["IL"] = true
 L["INCOMPATIBLE_ADDON"] = "%s is not compatible with %s.\nPlease select the addon/module to use."
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
@@ -446,16 +442,20 @@ L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("Welcome to *ElvUI|r version *%s|r, type */ec|r to access the in-game configuration menu. If you are in need of technical support you can visit us at https://tukui.org or join our Discord: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Please use */ehelp|r for a list of available *ElvUI|r commands."):gsub('*', E.InfoColor)
-L["O"] = true
-L["P"] = true
-L["PL"] = true
-L["R"] = true
-L["RL"] = true
-L["RW"] = true
-L["SP"] = true
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
-L["XP:"] = true
-
+----------------------------------
+L["AP:"] = true		-- Attack Power
+L["XP:"] = true		-- Experience
+L["G"] = true		-- Chat: Guild
+L["I"] = true		-- Chat: Instance
+L["IL"] = true		-- Chat: Instance Leader
+L["O"] = true		-- Chat: Guild Officer
+L["P"] = true		-- Chat: Party
+L["PL"] = true		-- Chat: Party Leader
+L["R"] = true		-- Chat: Raid
+L["RL"] = true		-- Chat: Raid Leader
+L["RW"] = true		-- Chat: Raid Warning
+L["SP"] = true		-- Spellpower
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Movers unlocked. Move them now and click Lock when you are done.
 

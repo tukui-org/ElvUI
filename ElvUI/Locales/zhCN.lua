@@ -413,17 +413,13 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = "|cFFffffffShift + 右键点击:|r 选择输出音频设备"
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]"
 L["AFK"] = "离开"
-L["AP:"] = "神器能量:"
 L["AVD: "] = "免伤: "
 L["BINDINGS_HELP"] = ("将鼠标悬停在任何 *动作条|r, *微型系统菜单|r, *宏命令|r, 或者 *法术书|r 按钮上以绑定它, 这也适用于 *背包|r 中的物品.按 ^ESC|r 键用以 ^清除|r 当前绑定."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["DND"] = "忙碌"
 L["DPS"] = "伤害输出"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffff是一套功能完整, 可用来替换WoW原始界面的套件|r"):gsub('*', E.InfoColor)
-L["G"] = "公会"
 L["HP"] = "生命值"
 L["HPS"] = "治疗输出"
-L["I"] = "副本"
-L["IL"] = "副本领袖"
 L["INCOMPATIBLE_ADDON"] = "%s 与 %s 不兼容\n请选择需要使用的插件/模块"
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
@@ -446,16 +442,20 @@ L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("欢迎使用*ElvUI|r 版本*%s|r, 输入*/ec|r 访问游戏内配置菜单.如果您需要技术支持, 您可以访问我们的 https://tukui.org 或加入我们的 Discord https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("请使用 */ehelp|r 获取可用的 *ElvUI|r 命令列表"):gsub('*', E.InfoColor)
-L["O"] = "官员"
-L["P"] = "队伍"
-L["PL"] = "队长"
-L["R"] = "团队"
-L["RL"] = "团队领袖"
-L["RW"] = "团队警告"
-L["SP"] = "法术强度"
 L["UPDATE_REQUEST"] = "您的安装似乎有些问题. 请重新安装 ElvUI."
-L["XP:"] = "经验:"
-
+----------------------------------
+L["AP:"] = "神器能量:"	-- Attack Power
+L["XP:"] = "经验:"		-- Experience
+L["G"] = "公会"			-- Chat: Guild
+L["I"] = "副本"			-- Chat: Instance
+L["IL"] = "副本领袖"	-- Chat: Instance Leader
+L["O"] = "官员"			-- Chat: Guild Officer
+L["P"] = "队伍"			-- Chat: Party
+L["PL"] = "队长"		-- Chat: Party Leader
+L["R"] = "团队"			-- Chat: Raid
+L["RL"] = "团队领袖"	-- Chat: Raid Leader
+L["RW"] = "团队警告"	-- Chat: Raid Warning
+L["SP"] = "法术强度"	-- Spellpower
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[解除框体移动锁定. 现在可以移动它们, 移好后请点击「锁定」.
 

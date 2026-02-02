@@ -413,17 +413,13 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = "|cFFffffffShift + 右鍵:|r 選擇輸出音頻裝置"
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [%.0f%% 以上 |cff%02x%02x%02x%s|r]"
 L["AFK"] = "暫離"
-L["AP:"] = "神兵之力:"
 L["AVD: "] = "免傷: "
 L["BINDINGS_HELP"] = ("將滑鼠移動到任意 *動作|r, *菜單按鍵|r, *巨集|r, 或 *法術書中的法術|r 來進行綁定. 這同時支援 *背包|r 中的物品. 按下 ^ESC|r 鍵可以 ^清除|r 當前的綁定狀態."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["DND"] = "忙碌"
 L["DPS"] = "傷害輸出"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffff為一套功能完整, 可用來替換 WoW 原始介面的 UI 套件.|r"):gsub('*', E.InfoColor)
-L["G"] = "公會"
 L["HP"] = "生命值"
 L["HPS"] = "治療輸出"
-L["I"] = "副本"
-L["IL"] = "副本隊長"
 L["INCOMPATIBLE_ADDON"] = "%s 無法與 %s 兼容.\n請選擇要保持啟用的模組/插件."
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
@@ -446,16 +442,20 @@ L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("歡迎使用 *ElvUI|r *%s 版本|r, 輸入 */ec|r 可打開遊戲內設置介面. 如果你需要技術協助, 可訪問我們的網址 https://tukui.org 或是加入我們的 Discord 伺服器: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("請使用 */ehelp|r 以獲取可用的 *ElvUI|r 命令."):gsub('*', E.InfoColor)
-L["O"] = "幹部"
-L["P"] = "隊伍"
-L["PL"] = "隊長"
-L["R"] = "團隊"
-L["RL"] = "團長"
-L["RW"] = "團隊警告"
-L["SP"] = "法術能量"
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
-L["XP:"] = "經驗:"
-
+----------------------------------
+L["AP:"] = "神兵之力:"	-- Attack Power
+L["XP:"] = "經驗:"		-- Experience
+L["G"] = "公會"			-- Chat: Guild
+L["I"] = "副本"			-- Chat: Instance
+L["IL"] = "副本隊長"	-- Chat: Instance Leader
+L["O"] = "幹部"			-- Chat: Guild Officer
+L["P"] = "隊伍"			-- Chat: Party
+L["PL"] = "隊長"		-- Chat: Party Leader
+L["R"] = "團隊"			-- Chat: Raid
+L["RL"] = "團長"		-- Chat: Raid Leader
+L["RW"] = "團隊警告"	-- Chat: Raid Warning
+L["SP"] = "法術能量"	-- Spellpower
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[解除框架移動鎖定. 現在可以移動它們, 移好後請點擊「鎖定」.
 

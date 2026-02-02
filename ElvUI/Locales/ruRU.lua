@@ -413,17 +413,13 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = "|cFFffffffShift + ПКМ:|r Выбрать устройство воспроизведения"
 L["ABOVE_THREAT_FORMAT"] = "%s: %.0f%% [на %.0f%% опережаем |cff%02x%02x%02x%s|r]"
 L["AFK"] = "АФК"
-L["AP:"] = "СА:"
 L["AVD: "] = "Защита: "
 L["BINDINGS_HELP"] = ("Наведите курсор на любую кнопку *панели команд|r, *микроменю|r, *макроса|r или *книги заклинаний|r для назначения. Также работает для предметов в *сумках|r. Нажмите ^ESC|r для ^удаления|r текущей назначенной клавиши."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["DND"] = "ДНД"
 L["DPS"] = "УВС"
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffэто аддон для полной замены пользовательского интерфейса World of Warcraft.|r"):gsub('*', E.InfoColor)
-L["G"] = "Г"
 L["HP"] = "+ Исцел."
 L["HPS"] = "ИВС"
-L["I"] = "П"
-L["IL"] = "ЛП"
 L["INCOMPATIBLE_ADDON"] = "%s несовместимо с %s.\nВыберите какой аддон/модуль использовать."
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
@@ -446,16 +442,20 @@ L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%s|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://tukui.org или присоединяйтесь к серверу Discord: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Используйте */ehelp|r для вызова доступных команд *ElvUI|r."):gsub('*', E.InfoColor)
-L["O"] = "Оф"
-L["P"] = "Гр"
-L["PL"] = "Лидер гр."
-L["R"] = "Р"
-L["RL"] = "РЛ"
-L["RW"] = "Объявление"
-L["SP"] = "+ Закл."
 L["UPDATE_REQUEST"] = "Кажется, возникла проблема с установкой. Пожалуйста, переустановите ElvUI."
-L["XP:"] = "Опыт:"
-
+----------------------------------
+L["AP:"] = "СА:"		-- Attack Power
+L["XP:"] = "Опыт:"		-- Experience
+L["G"] = "Г"			-- Chat: Guild
+L["I"] = "П"			-- Chat: Instance
+L["IL"] = "ЛП"			-- Chat: Instance Leader
+L["O"] = "Оф"			-- Chat: Guild Officer
+L["P"] = "Гр"			-- Chat: Party
+L["PL"] = "Лидер гр."	-- Chat: Party Leader
+L["R"] = "Р"			-- Chat: Raid
+L["RL"] = "РЛ"			-- Chat: Raid Leader
+L["RW"] = "Объявление"	-- Chat: Raid Warning
+L["SP"] = "+ Закл."		-- Spellpower
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Блокировка отключена. Передвиньте фреймы и нажмите "Закрепить", когда закончите.
 

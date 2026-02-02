@@ -413,17 +413,13 @@ L["|cffFFFFFFShift + Left Click:|r Show Talent Specialization UI"] = "|cffFFFFFF
 L["|cFFffffffShift + Right Click:|r Select Output Audio Device"] = "|cFFffffffMaj + Clic droit :|r Sélectionner le périphérique audio de sortie"
 L["ABOVE_THREAT_FORMAT"] = "%s : %.0f%% [%.0f%% au-dessus de |cff%02x%02x%02x%s|r]"
 L["AFK"] = "ABS"
-L["AP:"] = "PA :"
 L["AVD: "] = "AVD : "
 L["BINDINGS_HELP"] = ("Passez votre souris sur n'importe quel bouton *action|r, *micro|r, *macro|r, ou *spellbook|r pour le lier. Cela fonctionne aussi pour les objets dans votre *sac|r. Appuyez sur la touche ^ESC|r pour ^effacer|r les raccourcis actuels."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["DND"] = "NP"
 L["DPS"] = true
 L["ELVUI_DESC"] = ("*ElvUI|r |cFFffffffest une interface de remplacement complète pour World of Warcraft.|r"):gsub('*', E.InfoColor)
-L["G"] = true
 L["HP"] = "PV"
 L["HPS"] = true
-L["I"] = true
-L["IL"] = true
 L["INCOMPATIBLE_ADDON"] = "%s n'est pas compatible avec %s.\nVeuillez sélectionner l'addon/module à utiliser."
 L["KEY_ALT"] = "A"
 L["KEY_CTRL"] = "C"
@@ -446,16 +442,20 @@ L["KEY_SHIFT"] = "S"
 L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("Bienvenue sur *ElvUI|r version *%s|r. Tapez */ec|r pour accéder au menu de configuration en jeu. Si vous avez besoin d'assistance technique, vous pouvez nous rendre visite sur https://tukui.org ou rejoindre notre serveur Discord : https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Utilisez */ehelp|r pour obtenir la liste des commandes disponibles dans *ElvUI|r."):gsub('*', E.InfoColor)
-L["O"] = true
-L["P"] = true
-L["PL"] = true
-L["R"] = true
-L["RL"] = true
-L["RW"] = true
-L["SP"] = "PdS"
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
-L["XP:"] = "XP :"
-
+----------------------------------
+L["AP:"] = "PA :"	-- Attack Power
+L["XP:"] = "XP :"	-- Experience
+L["G"] = true		-- Chat: Guild
+L["I"] = true		-- Chat: Instance
+L["IL"] = true		-- Chat: Instance Leader
+L["O"] = true		-- Chat: Guild Officer
+L["P"] = true		-- Chat: Party
+L["PL"] = true		-- Chat: Party Leader
+L["R"] = true		-- Chat: Raid
+L["RL"] = true		-- Chat: Raid Leader
+L["RW"] = true		-- Chat: Raid Warning
+L["SP"] = "PdS"		-- Spellpower
 ----------------------------------
 L["DESC_MOVERCONFIG"] = [=[Cadres déverrouillés. Déplacez-les et cliquez sur Verrouiller une fois terminé.
 
