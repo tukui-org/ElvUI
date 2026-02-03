@@ -287,11 +287,10 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	local real, castDuration = event
-	local name, text, texture, startTime, endTime, isTradeSkill, isEmpowered, castID, barID, notInterruptible, _
+	local real, isCasting, isChanneling = event, true, false
+	local name, text, texture, startTime, endTime, isTradeSkill, isEmpowered, castID, barID, notInterruptible, castDuration, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
-		event = 'UNIT_SPELLCAST_START'
 
 		if name then
 			if castDuration and castDuration ~= 0 then
@@ -307,20 +306,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			startTime = GetTime() * 1000
 			endTime = startTime + castTime
 		end
-	elseif event == 'UNIT_SPELLCAST_START' then
-		if oUF.isRetail then
-			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
-			castID = barID -- because of secrets
-		else
-			name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
-		end
-	elseif event == 'UNIT_SPELLCAST_EMPOWER_START' or event == 'UNIT_SPELLCAST_CHANNEL_START' then
-		name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, isEmpowered, _, castID = UnitChannelInfo(unit)
-
-		-- if castID == castTime then
-		----- BUG: Dream Breath maybe others have double start events (?)
-		-- end
-	else -- try both API when its forced
+	else
 		if oUF.isRetail then
 			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
 
@@ -328,11 +314,10 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		else
 			name, text, texture, startTime, endTime, isTradeSkill, castID, notInterruptible, spellID = UnitCastingInfo(unit)
 		end
-
-		event = 'UNIT_SPELLCAST_START'
 
 		if not name then
 			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, isEmpowered, _, castID = UnitChannelInfo(unit)
+			isCasting, isChanneling = false, not isEmpowered
 		end
 	end
 
@@ -345,8 +330,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	element.casting = event == 'UNIT_SPELLCAST_START'
-	element.channeling = event == 'UNIT_SPELLCAST_CHANNEL_START'
+	element.casting = isCasting
+	element.channeling = isChanneling
 	element.empowering = isEmpowered
 
 	local isPlayer = UnitIsUnit(unit, 'player')
