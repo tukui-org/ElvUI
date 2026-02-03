@@ -538,10 +538,14 @@ function UF:PostCastStart(unit)
 			if parent.unitframeType == 'player' then
 				UF:SetCastText(self, db, changed, name, self.curTarget)
 			elseif parent.unitframeType == 'pet' or parent.unitframeType == 'boss' then
-				local unitName = UnitName(unit)
-				local targetName = UnitName(unit..'target')
-				local allowText = E:NotSecretValue(targetName) and (targetName and targetName ~= '') and (E:NotSecretValue(unitName) and (targetName ~= unitName))
-				UF:SetCastText(self, db, changed, name, self.curTarget or (allowText and targetName))
+				if self.curTarget then
+					UF:SetCastText(self, db, changed, name, self.curTarget)
+				else
+					local unitName = UnitName(unit)
+					local targetName = UnitName(unit..'target')
+					local allowText = E:NotSecretValue(targetName) and (targetName and targetName ~= '') and (E:NotSecretValue(unitName) and (targetName ~= unitName))
+					UF:SetCastText(self, db, changed, name, allowText and targetName)
+				end
 			end
 		elseif changed then
 			self.Text:SetText(name)
