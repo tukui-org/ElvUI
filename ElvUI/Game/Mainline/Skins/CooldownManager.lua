@@ -131,10 +131,11 @@ end
 function S:CooldownManager_SkinBar(frame, bar)
 	S:CooldownManager_UpdateTextBar(bar)
 
-	if frame.Icon then
-		bar:Point('LEFT', frame.Icon, 'RIGHT', 3, 0)
+	local icon = frame.Icon
+	if icon then
+		bar:Point('LEFT', icon, 'RIGHT', 3, 0)
 
-		S:CooldownManager_SkinIcon(frame.Icon, frame.Icon.Icon)
+		S:CooldownManager_SkinIcon(icon, icon.Icon)
 	end
 
 	for _, region in next, { bar:GetRegions() } do
@@ -155,7 +156,7 @@ end
 
 function S:CooldownManager_SkinItemFrame(frame)
 	if frame.Cooldown then
-		E:RegisterCooldown(frame.Cooldown, 'cdmanager', frame.Icon)
+		E:RegisterCooldown(frame.Cooldown, 'cdmanager', frame)
 	end
 
 	if frame.Bar then
@@ -290,7 +291,7 @@ function S:Blizzard_CooldownViewer()
 	S:CooldownManager_HandleViewer(_G.BuffBarCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer)
-	E:CooldownManager_HandleSettings(_G.CooldownViewerSettings)
+	S:CooldownManager_HandleSettings(_G.CooldownViewerSettings)
 end
 
 S:AddCallbackForAddon('Blizzard_CooldownViewer')
