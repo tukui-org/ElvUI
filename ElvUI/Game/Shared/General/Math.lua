@@ -46,7 +46,7 @@ do -- Thanks ls-
 		METRIC = E.ShortPrefixStyles.METRIC
 	}
 
-	local divisors = {
+	local westernDivisors = {
 		[0] = {1e12, 1e9, 1e6, 1e3},
 		{1e11, 1e8, 1e5, 1e2},
 		{1e10, 1e7, 1e4, 1e1},
@@ -73,34 +73,22 @@ do -- Thanks ls-
 		long.isAsian = asian
 		short.isAsian = asian
 
-		if short.isAsian then
-			for i = 1, 3 do
-				local unit = units[i]
-				short.breakpoints[i] = {
-					breakpoint = unit[1],
-					abbreviation = unit[2],
-					significandDivisor = asianDivisors[i],
-					fractionDivisor = 100,
-					abbreviationIsGlobal = false
-				}
-			end
-		else
-			local decimal = E.db.general.decimalLength or 1
-			if decimal > 3 then decimal = 3 end
+		local decimal = E.db.general.decimalLength or 1
+		if decimal > 3 then decimal = 3 end
 
-			local factor = 10 ^ decimal
-			local signi = divisors[decimal]
+		local signi = (asian and asianDivisors) or westernDivisors[decimal]
+		local factor = (asian and 100) or (10 ^ decimal)
 
-			for i = 1, 4 do
-				local unit = units[i]
-				short.breakpoints[i] = {
-					breakpoint = unit[1],
-					abbreviation = unit[2],
-					significandDivisor = signi[i],
-					fractionDivisor = factor,
-					abbreviationIsGlobal = false
-				}
-			end
+		for i = 1, (asian and 3) or 4 do
+			local unit = units[i]
+
+			short.breakpoints[i] = {
+				breakpoint = unit[1],
+				abbreviation = unit[2],
+				significandDivisor = signi[i],
+				fractionDivisor = factor,
+				abbreviationIsGlobal = false
+			}
 		end
 
 		if CreateAbbreviateConfig then
