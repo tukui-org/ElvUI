@@ -105,7 +105,7 @@ function NP:Castbar_CustomTimeText(duration, durationObject)
 	end
 end
 
-function NP:SetCastText(castbar, db, changed, spellName, unit)
+function NP:Castbar_SetText(castbar, db, changed, spellName, unit)
 	local targetChanged
 	if db.castbar.displayTarget then
 		local plate = castbar.__owner
@@ -145,12 +145,12 @@ function NP:Castbar_PostCastStart(unit)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
 		local spellName = self.spellName
 		if E:IsSecretValue(self.spellID) then
-			targetChanged = NP:SetCastText(self, db, true, spellName, unit)
+			targetChanged = NP:Castbar_SetText(self, db, true, spellName, unit)
 		else
 			local length = db.castbar.nameLength
 			local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
 
-			targetChanged = NP:SetCastText(self, db, name ~= spellName, spellName, unit)
+			targetChanged = NP:Castbar_SetText(self, db, name ~= spellName, spellName, unit)
 		end
 	else
 		self.Text:SetText('')
