@@ -155,7 +155,7 @@ end
 
 function S:CooldownManager_SkinItemFrame(frame)
 	if frame.Cooldown then
-		E:RegisterCooldown(frame.Cooldown, 'cdmanager')
+		E:RegisterCooldown(frame.Cooldown, 'cdmanager', frame.Icon)
 	end
 
 	if frame.Bar then
@@ -223,6 +223,59 @@ do
 	end
 end
 
+function S:CooldownManager_HandleAbilityTabs(viewer)
+	for i, tab in next, { viewer.SpellsTab, viewer.AurasTab } do
+		tab:CreateBackdrop()
+		tab:Size(30, 40)
+
+		if i == 1 then
+			tab:ClearAllPoints()
+			tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 1, -10)
+
+			hooksecurefunc(tab, 'SetPoint', PositionCooldownViewerTab)
+		end
+
+		if tab.Icon then
+			tab.Icon:ClearAllPoints()
+			tab.Icon:SetPoint('CENTER')
+
+			hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
+		end
+
+		if tab.Background then
+			tab.Background:SetAlpha(0)
+		end
+
+		if tab.SelectedTexture then
+			tab.SelectedTexture:SetDrawLayer('ARTWORK')
+			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+			tab.SelectedTexture:SetAllPoints()
+		end
+
+		for _, region in next, { tab:GetRegions() } do
+			if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
+				region:SetColorTexture(1, 1, 1, 0.3)
+				region:SetAllPoints()
+			end
+		end
+	end
+end
+
+function S:CooldownManager_HandleSettings(viewer)
+	if not viewer then return end
+
+	S:HandlePortraitFrame(viewer)
+	S:HandleEditBox(viewer.SearchBox)
+	S:HandleTrimScrollBar(viewer.CooldownScroll.ScrollBar)
+	S:HandleButton(viewer.UndoButton)
+	S:HandleDropDownBox(viewer.LayoutDropdown)
+
+	S:CooldownManager_HandleAbilityTabs(viewer)
+	S:CooldownManager_RefreshLayout()
+
+	hooksecurefunc(viewer, 'RefreshLayout', S.CooldownManager_RefreshLayout)
+end
+
 function S:Blizzard_CooldownViewer()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) then return end
 
@@ -237,55 +290,7 @@ function S:Blizzard_CooldownViewer()
 	S:CooldownManager_HandleViewer(_G.BuffBarCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer)
-
-	local CooldownViewer = _G.CooldownViewerSettings
-	if CooldownViewer then
-		S:HandlePortraitFrame(CooldownViewer)
-		S:HandleEditBox(CooldownViewer.SearchBox)
-		S:HandleTrimScrollBar(CooldownViewer.CooldownScroll.ScrollBar)
-		S:HandleButton(CooldownViewer.UndoButton)
-		S:HandleDropDownBox(CooldownViewer.LayoutDropdown)
-
-		for i, tab in next, { CooldownViewer.SpellsTab, CooldownViewer.AurasTab } do
-			tab:CreateBackdrop()
-			tab:Size(30, 40)
-
-			if i == 1 then
-				tab:ClearAllPoints()
-				tab:SetPoint('TOPLEFT', CooldownViewer, 'TOPRIGHT', 1, -10)
-
-				hooksecurefunc(tab, 'SetPoint', PositionCooldownViewerTab)
-			end
-
-			if tab.Icon then
-				tab.Icon:ClearAllPoints()
-				tab.Icon:SetPoint('CENTER')
-
-				hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
-			end
-
-			if tab.Background then
-				tab.Background:SetAlpha(0)
-			end
-
-			if tab.SelectedTexture then
-				tab.SelectedTexture:SetDrawLayer('ARTWORK')
-				tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
-				tab.SelectedTexture:SetAllPoints()
-			end
-
-			for _, region in next, { tab:GetRegions() } do
-				if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
-					region:SetColorTexture(1, 1, 1, 0.3)
-					region:SetAllPoints()
-				end
-			end
-		end
-
-		S:CooldownManager_RefreshLayout()
-
-		hooksecurefunc(CooldownViewer, 'RefreshLayout', S.CooldownManager_RefreshLayout)
-	end
+	E:CooldownManager_HandleSettings(_G.CooldownViewerSettings)
 end
 
 S:AddCallbackForAddon('Blizzard_CooldownViewer')
