@@ -281,8 +281,6 @@ function S:Blizzard_CooldownViewer()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) then return end
 
 	local db = E.db.general.cooldownManager
-	E:UpdateClassColor(db.swipeColorSpell)
-	E:UpdateClassColor(db.swipeColorAura)
 	E:UpdateClassColor(db.nameFontColor)
 	E:UpdateClassColor(db.durationFontColor)
 	E:UpdateClassColor(db.countFontColor)

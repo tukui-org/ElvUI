@@ -316,8 +316,6 @@ P.general = {
 		countyOffset = 2,
 	},
 	cooldownManager = {
-		swipeColorSpell = { r = 0, g = 0, b = 0, a = 0.6 },
-		swipeColorAura = { r = 0, g = 1, b = 0.9, a = 0.6 },
 		nameFont = 'Expressway',
 		nameFontSize = 14,
 		nameFontOutline = 'OUTLINE',
