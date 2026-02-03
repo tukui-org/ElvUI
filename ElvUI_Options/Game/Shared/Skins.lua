@@ -76,6 +76,10 @@ if E.Retail or E.TBC then
 	toggles.editor = L["Editor Manager"]
 end
 
+if E.Wrath or E.TBC then
+	toggles.arena = L["Arena"]
+end
+
 if not E.Retail then
 	toggles.questTimers = L["Quest Timers"]
 end
