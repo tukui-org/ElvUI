@@ -84,7 +84,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 		local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
 		local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
-		if min and min ~= 0 then
+		if E:NotSecretValue(min) and (min and min ~= 0) then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
 		end
 	end)
@@ -93,7 +93,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 			local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
 			local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
-			if min and min ~= 0 and tagFormat ~= 'deficit' then
+			if E:NotSecretValue(min) and (min and min ~= 0) then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 			end
 		end)
@@ -114,32 +114,33 @@ do
 end
 
 local info = E.TagInfo
-
-info['absorbs:longvalue'] = { category = 'Health', description = 'Displays the amount of absorbs' }
-info['absorbs:shortvalue'] = { category = 'Health', description = 'Displays the amount of absorbs' }
-info['healabsorbs:longvalue'] = { category = 'Health', description = 'Displays the amount of heal absorbs' }
-info['healabsorbs:shortvalue'] = { category = 'Health', description = 'Displays the amount of heal absorbs' }
-info['missinghp:longvalue'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" }
-info['missinghp:shortvalue'] = { category = 'Health', description = "Displays the missing health of the unit in whole numbers, when not at full health" }
-info['missingpp:longvalue'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" }
-info['missingpp:shortvalue'] = { category = 'Power', description = "Displays the missing power of the unit in whole numbers when not at full power" }
-info['altpowercolor'] = { category = 'Colors', description = "Changes the text color to the current alternative power color (Blizzard defined)" }
-info['spec:icon'] = { category = 'Class', description = "Displays the specialization icon of the unit, if that unit is a player" }
-info['additionalmana:current-max-percent'] = { category = 'Mana', description = "Displays the current and max additional mana of the unit, separated by a dash (% when not full)" }
-info['additionalmana:current-max'] = { category = 'Mana', description = "Displays the unit's current and maximum additional mana, separated by a dash" }
-info['additionalmana:current-percent'] = { category = 'Mana', description = "Displays the current additional mana of the unit and % when not full" }
-info['additionalmana:current'] = { category = 'Mana', description = "Displays the unit's current additional mana" }
-info['additionalmana:deficit'] = { category = 'Mana', description = "Displays the player's additional mana as a deficit" }
-info['additionalmana:percent'] = { category = 'Mana', description = "Displays the player's additional mana as a percentage" }
-info['additionalmana:current-max-percent:shortvalue'] = { category = 'Mana', description = "" }
-info['additionalmana:current-max:shortvalue'] = { category = 'Mana', description = "" }
-info['additionalmana:current-percent:shortvalue'] = { category = 'Mana', description = "" }
-info['additionalmana:current:shortvalue'] = { category = 'Mana', description = "" }
-info['additionalmana:deficit:shortvalue'] = { category = 'Mana', description = "" }
-info['altpower:current-max-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max-percent format" }
-info['altpower:current-max'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-max format" }
-info['altpower:current-percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in current-percent format" }
-info['altpower:current'] = { category = 'Altpower', description = "Displays altpower text on a unit in current format" }
-info['altpower:deficit'] = { category = 'Altpower', description = "Displays altpower text on a unit in deficit format" }
-info['altpower:percent'] = { category = 'Altpower', description = "Displays altpower text on a unit in percent format" }
-info['pvp:honorlevel'] = { category = 'PvP', description = "Displays honor level of the unit" }
+if info then
+	info['absorbs:longvalue'] = { category = "Health", description = "Displays the amount of absorbs" }
+	info['absorbs:shortvalue'] = { category = "Health", description = "Displays the amount of absorbs" }
+	info['healabsorbs:longvalue'] = { category = "Health", description = "Displays the amount of heal absorbs" }
+	info['healabsorbs:shortvalue'] = { category = "Health", description = "Displays the amount of heal absorbs" }
+	info['missinghp:longvalue'] = { category = "Health", description = "Displays the missing health of the unit in whole numbers, when not at full health" }
+	info['missinghp:shortvalue'] = { category = "Health", description = "Displays the missing health of the unit in whole numbers, when not at full health" }
+	info['missingpp:longvalue'] = { category = "Power", description = "Displays the missing power of the unit in whole numbers when not at full power" }
+	info['missingpp:shortvalue'] = { category = "Power", description = "Displays the missing power of the unit in whole numbers when not at full power" }
+	info['altpowercolor'] = { category = "Colors", description = "Changes the text color to the current alternative power color (Blizzard defined)" }
+	info['spec:icon'] = { category = "Class", description = "Displays the specialization icon of the unit, if that unit is a player" }
+	info['additionalmana:current-max-percent'] = { category = "Mana", description = "Displays the current and max additional mana of the unit, separated by a dash (% when not full)" }
+	info['additionalmana:current-max'] = { category = "Mana", description = "Displays the unit's current and maximum additional mana, separated by a dash" }
+	info['additionalmana:current-percent'] = { category = "Mana", description = "Displays the current additional mana of the unit and % when not full" }
+	info['additionalmana:current'] = { category = "Mana", description = "Displays the unit's current additional mana" }
+	info['additionalmana:deficit'] = { category = "Mana", description = "Displays the player's additional mana as a deficit" }
+	info['additionalmana:percent'] = { category = "Mana", description = "Displays the player's additional mana as a percentage" }
+	info['additionalmana:current-max-percent:shortvalue'] = { category = "Mana", description = "" }
+	info['additionalmana:current-max:shortvalue'] = { category = "Mana", description = "" }
+	info['additionalmana:current-percent:shortvalue'] = { category = "Mana", description = "" }
+	info['additionalmana:current:shortvalue'] = { category = "Mana", description = "" }
+	info['additionalmana:deficit:shortvalue'] = { category = "Mana", description = "" }
+	info['altpower:current-max-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max-percent format" }
+	info['altpower:current-max'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max format" }
+	info['altpower:current-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-percent format" }
+	info['altpower:current'] = { category = "Altpower", description = "Displays altpower text on a unit in current format" }
+	info['altpower:deficit'] = { category = "Altpower", description = "Displays altpower text on a unit in deficit format" }
+	info['altpower:percent'] = { category = "Altpower", description = "Displays altpower text on a unit in percent format" }
+	info['pvp:honorlevel'] = { category = "PvP", description = "Displays honor level of the unit" }
+end

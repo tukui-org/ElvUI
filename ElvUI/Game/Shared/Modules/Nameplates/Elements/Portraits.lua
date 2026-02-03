@@ -1,46 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
+local UnitClass = UnitClass
 
-function NP:Portrait_PreUpdate()
-	local nameplate = self.__owner
-
-	if self.backdrop then
-		self.backdrop:Hide()
-	end
-
-	local db = NP:PlateDB(nameplate)
-	local specIcon = db.portrait and db.portrait.specicon and nameplate.specIcon
-	self.useClassBase = not specIcon
-end
-
-function NP:Portrait_PostUpdate(unit, hasStateChanged, texCoords)
-	local nameplate = self.__owner
-	local db = NP:PlateDB(nameplate)
-
-	if db.portrait and db.portrait.enable then
-		local specIcon = db.portrait.specicon and nameplate.specIcon
-		if specIcon then
-			self:SetTexture(specIcon)
-			self.backdrop:Show()
-		elseif self.useClassBase then
-			self.backdrop:Show()
-		end
-
-		if texCoords then -- monks on Mists Classic
-			local left, right, top, bottom = unpack(texCoords)
-			self:SetTexCoord(left+0.02, right-0.02, top+0.02, bottom-0.02)
-		elseif db.portrait.keepSizeRatio then
-			self:SetTexCoords()
-		else
-			local width, height = self:GetSize()
-			local left, right, top, bottom = E:CropRatio(width, height)
-			self:SetTexCoord(left, right, top, bottom)
-		end
-	end
-end
+local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
 function NP:Update_PortraitBackdrop()
 	if self.backdrop then
@@ -48,16 +12,31 @@ function NP:Update_PortraitBackdrop()
 	end
 end
 
-function NP:Construct_Portrait(nameplate)
-	if not false then return end -- dont allow portraits for now
+function NP:Portrait_PostUpdate(unit, hasStateChanged)
+	if not hasStateChanged then return end
 
+	local nameplate = self.__owner
+	local db = NP:PlateDB(nameplate)
+
+	if not db.portrait or not db.portrait.enable then return end
+
+	local specIcon = db.portrait.specicon and nameplate.specIcon
+	if specIcon then
+		self:SetTexture(specIcon)
+		self.backdrop:Show()
+	elseif self.customTexture then
+		local _, className = UnitClass(unit)
+		self:SetTexCoord(E:GetClassCoords(className, true))
+	end
+end
+
+function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate.RaisedElement:CreateTexture(nameplate.frameName..'Portrait', 'OVERLAY', nil, 2)
 	Portrait:CreateBackdrop(nil, nil, nil, nil, nil, true, true)
 	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:SetSize(28, 28)
 	Portrait:Hide()
 
-	Portrait.PreUpdate = NP.Portrait_PreUpdate
 	Portrait.PostUpdate = NP.Portrait_PostUpdate
 
 	hooksecurefunc(Portrait, 'Hide', NP.Update_PortraitBackdrop)
@@ -73,6 +52,15 @@ function NP:Update_Portrait(nameplate)
 		if not nameplate:IsElementEnabled('Portrait') then
 			nameplate:EnableElement('Portrait')
 			nameplate.Portrait:ForceUpdate()
+		end
+
+		local specIcon = db.portrait.specicon and nameplate.specIcon
+		if db.portrait.classicon and not specIcon then
+			nameplate.Portrait:SetTexture(classIcon)
+			nameplate.Portrait.customTexture = classIcon
+		else -- spec icon or portrait
+			nameplate.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+			nameplate.Portrait.customTexture = nil
 		end
 
 		nameplate.Portrait:Size(db.portrait.width, db.portrait.height)

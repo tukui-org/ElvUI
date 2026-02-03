@@ -503,28 +503,6 @@ do
 	end
 end
 
-do -- Spell renaming provided by BigWigs
-	function E:GetSpellRename(spellID)
-		if not spellID then return end
-
-		local API = _G.BigWigsAPI
-		local GetRename = API and API.GetSpellRename
-		if GetRename then
-			return GetRename(spellID)
-		end
-	end
-
-	function E:SetSpellRename(spellID, text)
-		if not spellID then return end
-
-		local API = _G.BigWigsAPI
-		local SetRename = API and API.SetSpellRename
-		if SetRename then
-			SetRename(spellID, text)
-		end
-	end
-end
-
 do
 	function E:GetAuraData(unitToken, index, filter)
 		local data = GetAuraDataByIndex(unitToken, index, filter)
@@ -1270,7 +1248,6 @@ function E:CropRatio(width, height, mult)
 	if not mult then mult = 0.5 end
 
 	local left, right, top, bottom = E:GetTexCoords()
-
 	local ratio = width / height
 	if ratio > 1 then
 		local trimAmount = (1 - (1 / ratio)) * mult

@@ -39,7 +39,7 @@ General.general = ACH:Group(L["General"], nil, 1)
 local GenGen = General.general.args
 
 GenGen.loginmessage = ACH:Toggle(L["Login Message"], nil, 1)
-GenGen.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 2, { min = 0, max = 4, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:StaggeredUpdateAll() end)
+GenGen.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 2, { min = 0, max = 3, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:BuildAbbreviateConfigs() E:StaggeredUpdateAll() end)
 GenGen.tagUpdateRate = ACH:Range(L["Tag Update Rate"], L["Maximum tick rate allowed for tag updates per second."], 3, { min = 0.05, max = 0.5, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value; E:TagUpdateRate(value) end)
 GenGen.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 4, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
 
@@ -86,7 +86,7 @@ GenGen.gameMenuGroup.args.gameMenuScale = ACH:Range(L["Scale"], L["Change the sc
 GenGen.automation = ACH:Group(L["Automation"], nil, 80)
 GenGen.automation.inline = true
 
-GenGen.automation.args.interruptAnnounce = ACH:Select(L["Announce Interrupts"], L["Announce when you interrupt a spell to the specified chat channel."], 1, { NONE = L["None"], SAY = L["Say"], YELL = L["Yell"], PARTY = L["Party Only"], RAID = L["Party / Raid"], RAID_ONLY = L["Raid Only"], EMOTE = L["CHAT_MSG_EMOTE"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value M:ToggleInterrupt() end)
+GenGen.automation.args.interruptAnnounce = ACH:Select(L["Announce Interrupts"], L["Announce when you interrupt a spell to the specified chat channel."], 1, { NONE = L["None"], SAY = L["Say"], YELL = L["Yell"], PARTY = L["Party Only"], RAID = L["Party / Raid"], RAID_ONLY = L["Raid Only"], EMOTE = L["CHAT_MSG_EMOTE"] }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value M:ToggleInterrupt() end, nil, E.Retail)
 GenGen.automation.args.autoAcceptInvite = ACH:Toggle(L["Accept Invites"], L["Automatically accept invites from guild/friends."], 2)
 GenGen.automation.args.autoTrackReputation = ACH:Toggle(L["Auto Track Reputation"], nil, 4)
 GenGen.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automatically repair using the following method when visiting a merchant."], 5, { NONE = L["None"], GUILD = not E.Classic and L["Guild"] or nil, PLAYER = L["Player"] })

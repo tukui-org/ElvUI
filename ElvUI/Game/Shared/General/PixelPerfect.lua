@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local min, max, format = min, max, format
+local format = format
 
 local _G = _G
 local UIParent = UIParent

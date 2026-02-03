@@ -5,8 +5,6 @@ local ElvUF = E.oUF
 local CreateFrame = CreateFrame
 local MAX_BOSS_FRAMES = 5
 
--- GLOBALS: BossHeaderMover
-
 local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
 function UF:Construct_BossFrames(frame)
 	UF:PrepareFrame(frame, 'boss')
@@ -56,7 +54,7 @@ function UF:Update_BossFrames(frame, db)
 		frame.POWERBAR_OFFSET = frame.USE_POWERBAR_OFFSET and db.power.offset or 0
 		frame.POWERBAR_HEIGHT = not frame.USE_POWERBAR and 0 or db.power.height
 		frame.POWERBAR_WIDTH = frame.USE_MINI_POWERBAR and (frame.UNIT_WIDTH - (UF.BORDER*2))*0.5 or (frame.POWERBAR_DETACHED and db.power.detachedWidth or (frame.UNIT_WIDTH - ((UF.BORDER+UF.SPACING)*2)))
-	--	frame.USE_PORTRAIT = db.portrait and db.portrait.enable
+		frame.USE_PORTRAIT = db.portrait and db.portrait.enable
 		frame.USE_PORTRAIT_OVERLAY = frame.USE_PORTRAIT and (db.portrait.overlay or frame.ORIENTATION == 'MIDDLE')
 		frame.PORTRAIT_WIDTH = (frame.USE_PORTRAIT_OVERLAY or not frame.USE_PORTRAIT) and 0 or db.portrait.width
 		frame.USE_INFO_PANEL = not frame.USE_MINI_POWERBAR and not frame.USE_POWERBAR_OFFSET and db.infoPanel.enable

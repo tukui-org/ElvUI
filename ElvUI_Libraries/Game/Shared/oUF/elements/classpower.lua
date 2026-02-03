@@ -195,7 +195,10 @@ end)
 local function ThirdVisibility(element, enabled)
 	if not element then return end
 
-	if enabled == nil then
+	local classPowerID = element.classPowerID
+	if classPowerID ~= POWERTYPE_EBON_MIGHT then
+		enabled = false
+	elseif enabled == nil then
 		enabled = element.__allowPower
 	end
 

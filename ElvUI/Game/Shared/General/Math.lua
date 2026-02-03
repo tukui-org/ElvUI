@@ -35,57 +35,66 @@ E.GetFormattedTextStyles = {
 
 do -- Thanks ls-
 	local asianUnits = {
-		CHINESE = { '兆', '亿', '万' },
-		TCHINESE = { '兆', '億', '萬' },
-		KOREAN = { '조', '억', '만' },
+		CHINESE = E.ShortPrefixStyles.CHINESE,
+		TCHINESE = E.ShortPrefixStyles.TCHINESE,
+		KOREAN = E.ShortPrefixStyles.KOREAN,
 	}
 
 	local westernUnits = {
-		ENGLISH = { 'T', 'B', 'M', 'k' },
-		GERMAN = { ' Bio.', ' Mrd.', ' Mio.', 'K' },
-		METRIC = { 'T', 'G', 'M', 'k' },
+		ENGLISH = E.ShortPrefixStyles.ENGLISH,
+		GERMAN = E.ShortPrefixStyles.GERMAN,
+		METRIC = E.ShortPrefixStyles.METRIC
 	}
 
+	local westernDivisors = {
+		[0] = {1e12, 1e9, 1e6, 1e3},
+		{1e11, 1e8, 1e5, 1e2},
+		{1e10, 1e7, 1e4, 1e1},
+		{1e9, 1e6, 1e3, 1e0},
+	}
+
+	local asianDivisors = {
+		1e11, 1e7, 1e3
+	}
+
+	local short = { breakpoints = {} }
+	local long = { long = true }
+
+	E.Abbreviate.short = short
+	E.Abbreviate.long = long
+
 	function E:BuildAbbreviateConfigs()
-		local style = E.db and E.db.general and E.db.general.numberPrefixStyle or 'ENGLISH'
-		local units = asianUnits[style] or westernUnits[style]
-		local asian = asianUnits[style] ~= nil
+		if not E.Retail then return end
 
-		local long = { breakpoints = {} }
-		E.Abbreviate.long = long
+		local style = E.db.general.numberPrefixStyle
+		local asian = asianUnits[style]
+		local units = asian or westernUnits[style or 'ENGLISH']
 
-		if asian then
-			long.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
-			long.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
-			long.breakpoints[3] = { breakpoint = 1e4, abbreviation = units[3], significandDivisor = 1e2, fractionDivisor = 100, abbreviationIsGlobal = false }
-		else
-			long.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
-			long.breakpoints[2] = { breakpoint = 1e9, abbreviation = units[2], significandDivisor = 1e8, fractionDivisor = 10, abbreviationIsGlobal = false }
-			long.breakpoints[3] = { breakpoint = 1e6, abbreviation = units[3], significandDivisor = 1e5, fractionDivisor = 10, abbreviationIsGlobal = false }
-			long.breakpoints[4] = { breakpoint = 1e5, abbreviation = units[4], significandDivisor = 100, fractionDivisor = 10, abbreviationIsGlobal = false }
-		end
+		long.isAsian = asian
+		short.isAsian = asian
 
-		local short = { breakpoints = {} }
-		E.Abbreviate.short = short
+		local decimal = E.db.general.decimalLength or 1
+		if decimal > 3 then decimal = 3 end
 
-		if asian then
-			short.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
-			short.breakpoints[2] = { breakpoint = 1e8, abbreviation = units[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
-			short.breakpoints[3] = { breakpoint = 1e4, abbreviation = units[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
-		else
-			units = westernUnits.ENGLISH
-			short.breakpoints[1] = { breakpoint = 1e12, abbreviation = units[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
-			short.breakpoints[2] = { breakpoint = 1e9, abbreviation = units[2], significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
-			short.breakpoints[3] = { breakpoint = 1e6, abbreviation = units[3], significandDivisor = 1e4, fractionDivisor = 100, abbreviationIsGlobal = false }
-			short.breakpoints[4] = { breakpoint = 1e3, abbreviation = units[4], significandDivisor = 100, fractionDivisor = 10, abbreviationIsGlobal = false }
+		local signi = (asian and asianDivisors) or westernDivisors[decimal]
+		local factor = (asian and 100) or (10 ^ decimal)
+
+		for i = 1, (asian and 3) or 4 do
+			local unit = units[i]
+
+			short.breakpoints[i] = {
+				breakpoint = unit[1],
+				abbreviation = unit[2],
+				significandDivisor = signi[i],
+				fractionDivisor = factor,
+				abbreviationIsGlobal = false
+			}
 		end
 
 		if CreateAbbreviateConfig then
-			long.config = CreateAbbreviateConfig(long.breakpoints)
-			long.breakpoints = nil -- create the configuration for long numbers
-
 			short.config = CreateAbbreviateConfig(short.breakpoints)
-			short.breakpoints = nil -- create the configuration for short numbers
+
+			wipe(short.breakpoints)
 		end
     end
 
@@ -94,10 +103,11 @@ do -- Thanks ls-
 			return value -- we cant continue with strings
 		end
 
-		local str = AbbreviateNumbers(value, data)
-		if asianUnits then
-			return str
-		else -- behaves like ALN, but actually works
+		if data and data.isAsian then
+			return (data.long and value) or AbbreviateNumbers(value, data)
+		else
+			local str = (data and not data.long and AbbreviateNumbers(value, data)) or value
+
 			local num = tonumber(str)
 			return num and BreakUpLargeNumbers(num) or str
 		end
