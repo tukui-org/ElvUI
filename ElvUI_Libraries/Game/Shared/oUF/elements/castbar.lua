@@ -267,10 +267,6 @@ local function UpdatePips(element, stages)
 	end
 end
 
-local function CastMatch(element, castID)
-	return element.castID == castID
-end
-
 --[[ Override: Castbar:ShouldShow(unit)
 Handles check for which unit the castbar should show for.
 Defaults to the object unit.
@@ -476,22 +472,13 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element:Show()
 end
 
-local function CastUpdate(self, event, unit, ...)
+local function CastUpdate(self, event, unit)
 	local element = self.Castbar
 	if not (element.ShouldShow or ShouldShow) (element, unit) then
 		return
 	end
 
-	local castID, _
-	if oUF.isRetail then
-		_, _, castID = ...
-	else
-		castID = ...
-	end
-
-	if not element:IsShown() or not CastMatch(element, castID) then
-		return
-	end
+	if not element:IsShown() then return end
 
 	local name, startTime, endTime, _
 	if(event == 'UNIT_SPELLCAST_DELAYED') then
@@ -581,22 +568,18 @@ local function CastStop(self, event, unit, ...)
 		return
 	end
 
-	local castID, spellID, interruptedBy, empowerComplete, _
+	local spellID, interruptedBy, empowerComplete, _
 	if oUF.isRetail then
-		if(event == 'UNIT_SPELLCAST_STOP') then
-			_, _, castID = ...
-		elseif(event == 'UNIT_SPELLCAST_EMPOWER_STOP') then
-			_, _, empowerComplete, interruptedBy, castID = ...
+		if(event == 'UNIT_SPELLCAST_EMPOWER_STOP') then
+			_, _, empowerComplete, interruptedBy = ...
 		elseif(event == 'UNIT_SPELLCAST_CHANNEL_STOP') then
-			_, _, interruptedBy, castID = ...
+			_, _, interruptedBy = ...
 		end
 	else
-		castID, spellID = ...
+		_, spellID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID) then
-		return
-	end
+	if not element:IsShown() then return end
 
 	local isPlayer = UnitIsUnit(unit, 'player')
 	if mergeTradeskill and isPlayer and (tradeskillCurrent == tradeskillTotal) then
@@ -646,20 +629,14 @@ local function CastFail(self, event, unit, ...)
 		return
 	end
 
-	local castID, interruptedBy, _
+	local interruptedBy, _
 	if oUF.isRetail then
 		if(event == 'UNIT_SPELLCAST_INTERRUPTED') then
-			_, _, interruptedBy, castID = ...
-		elseif(event == 'UNIT_SPELLCAST_FAILED') then
-			_, _, castID = ...
+			_, _, interruptedBy = ...
 		end
-	else
-		castID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID) then
-		return
-	end
+	if not element:IsShown() then return end
 
 	if(element.Text) then
 		element.Text:SetText(event == 'UNIT_SPELLCAST_FAILED' and FAILED or INTERRUPTED)
