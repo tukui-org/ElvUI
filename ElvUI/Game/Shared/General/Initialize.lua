@@ -45,7 +45,7 @@ E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.locale = GetLocale()
 E.oUF = oUF
 
--- moved this to oUF relink it so it works on E
+-- moved this to oUF but relink it
 E.ColorGradient = oUF.ColorGradient
 E.IsSecretValue = oUF.IsSecretValue
 E.IsSecretTable = oUF.IsSecretTable
@@ -53,6 +53,8 @@ E.NotSecretValue = oUF.NotSecretValue
 E.NotSecretTable = oUF.NotSecretTable
 E.HasSecretValues = oUF.HasSecretValues
 E.NoSecretValues = oUF.NoSecretValues
+E.CanAccessValue = oUF.CanAccessValue
+E.CanNotAccessValue = oUF.CanNotAccessValue
 
 Engine[1] = E
 Engine[2] = {}
