@@ -107,7 +107,7 @@ end
 
 function NP:Castbar_SetText(castbar, db, changed, spellName, unit)
 	local targetChanged
-	if db.castbar.displayTarget then
+	if db.displayTarget then
 		local plate = castbar.__owner
 		local target, frameType = castbar.curTarget, plate.frameType
 		if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
@@ -115,8 +115,8 @@ function NP:Castbar_SetText(castbar, db, changed, spellName, unit)
 		end -- the cast target doesn't match their target, can be misleading if they mouseover cast
 
 		if E:NotSecretValue(target) and (target and target ~= '') and (E:NotSecretValue(plate.unitName) and (target ~= plate.unitName)) then
-			local color = (db.castbar.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
-			if db.castbar.targetStyle == 'SEPARATE' then
+			local color = (db.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
+			if db.targetStyle == 'SEPARATE' then
 				castbar.TargetText:SetFormattedText('|c%s%s|r', color, target)
 				targetChanged = true
 
@@ -145,12 +145,12 @@ function NP:Castbar_PostCastStart(unit)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
 		local spellName = self.spellName
 		if E:IsSecretValue(self.spellID) then
-			targetChanged = NP:Castbar_SetText(self, db, true, spellName, unit)
+			targetChanged = NP:Castbar_SetText(self, db.castbar, true, spellName, unit)
 		else
 			local length = db.castbar.nameLength
 			local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
 
-			targetChanged = NP:Castbar_SetText(self, db, name ~= spellName, spellName, unit)
+			targetChanged = NP:Castbar_SetText(self, db.castbar, name ~= spellName, spellName, unit)
 		end
 	else
 		self.Text:SetText('')
