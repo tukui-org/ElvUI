@@ -93,7 +93,6 @@ L["Allow newly learned spells to be automatically placed on an empty actionbar s
 L["Allow Sharing"] = "Разрешить обмен"
 L["Allow Tag: Faction"] = true
 L["Allow Tag: PVP"] = true
-L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = "Позволяет добавить счетчик стаков к ауре, когда Вы добавляете ее в список. Позволяет выполнение действия, когда накопится нужное кол-во стаков."
 L["Alpha"] = "Прозрачность"
 L["Alpha channel is taken from the color option."] = "Альфа канал берется из опции цвета."
@@ -213,7 +212,6 @@ L["Below Chat"] = "Под чатом"
 L["Below Chat (Inside)"] = "Под чатом (внутри)"
 L["BG Map"] = "Карта ПБ"
 L["BG Score"] = true
-L["BigWigs Spell Rename"] = true
 L["Bind on Equip/Use Text"] = "Текст ПпН/ПпИ"
 L["Blacklist"] = "Черный список"
 L["Blank Texture"] = "Пустая текстура"

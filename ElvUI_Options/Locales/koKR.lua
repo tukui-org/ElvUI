@@ -92,7 +92,6 @@ L["Allow newly learned spells to be automatically placed on an empty actionbar s
 L["Allow Sharing"] = "공유 허용"
 L["Allow Tag: Faction"] = true
 L["Allow Tag: PVP"] = true
-L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = "목록에 추가 할 때 오라에 중첩값을 추가할 수 있습니다. 설정한 중첩값에 도달하면 작업을 수행할 수 있습니다."
 L["Alpha"] = "투명도"
 L["Alpha channel is taken from the color option."] = "투명도 채널 값은 색상 옵션에서 가져옵니다."
@@ -212,7 +211,6 @@ L["Below Chat"] = "채팅창 아래에 배치"
 L["Below Chat (Inside)"] = "채팅창(안쪽) 아래에 배치"
 L["BG Map"] = "전장 맵"
 L["BG Score"] = "전장 점수판"
-L["BigWigs Spell Rename"] = true
 L["Bind on Equip/Use Text"] = "착용귀속/표시"
 L["Blacklist"] = "블랙리스트"
 L["Blank Texture"] = "택스처 공간"

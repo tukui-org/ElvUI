@@ -92,7 +92,6 @@ L["Allow newly learned spells to be automatically placed on an empty actionbar s
 L["Allow Sharing"] = "Paylasmaya Izin Ver"
 L["Allow Tag: Faction"] = true
 L["Allow Tag: PVP"] = true
-L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = "Listeye eklediginizde bir auraya yigin sayimi baglamaniza izin verir, bu da bir aura X yigin sayisina ulastiginda tetikleyicinin harekete gecmesine izin verir."
 L["Alpha"] = "Alfa"
 L["Alpha channel is taken from the color option."] = "Alfa kanali renk seceneginden alinmistir."
@@ -212,7 +211,6 @@ L["Below Chat"] = "Sohbetin Altinda"
 L["Below Chat (Inside)"] = "Sohbetin Altinda (Iceride)"
 L["BG Map"] = "Savas Alani Haritasi"
 L["BG Score"] = true
-L["BigWigs Spell Rename"] = true
 L["Bind on Equip/Use Text"] = "Kullan/Kusan Metnine Bagla"
 L["Blacklist"] = "Kara liste"
 L["Blank Texture"] = "Bos Doku"

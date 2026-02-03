@@ -423,7 +423,6 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 
 	config.args.reverse = ACH:Toggle(L["Reverse"], nil, 14)
 	config.args.spark = ACH:Toggle(L["Spark"], L["Display a spark texture at the end of the castbar statusbar to help show the differance between castbar and backdrop."], 15)
-	config.args.spellRename = ACH:Toggle(L["BigWigs Spell Rename"], L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."], 16)
 	config.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 17)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)

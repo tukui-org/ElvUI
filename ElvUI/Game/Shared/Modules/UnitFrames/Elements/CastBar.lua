@@ -529,11 +529,10 @@ function UF:PostCastStart(unit)
 			UF:HideTicks(self)
 		end
 	else
-		local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
-		local spellName = spellRename or self.spellName
+		local spellName = self.spellName
 		local length = db.castbar.nameLength
 		local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
-		local changed = spellRename or (name ~= spellName)
+		local changed = name ~= spellName
 
 		if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
 			if parent.unitframeType == 'player' then

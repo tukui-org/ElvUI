@@ -503,28 +503,6 @@ do
 	end
 end
 
-do -- Spell renaming provided by BigWigs
-	function E:GetSpellRename(spellID)
-		if not spellID then return end
-
-		local API = _G.BigWigsAPI
-		local GetRename = API and API.GetSpellRename
-		if GetRename then
-			return GetRename(spellID)
-		end
-	end
-
-	function E:SetSpellRename(spellID, text)
-		if not spellID then return end
-
-		local API = _G.BigWigsAPI
-		local SetRename = API and API.SetSpellRename
-		if SetRename then
-			SetRename(spellID, text)
-		end
-	end
-end
-
 do
 	function E:GetAuraData(unitToken, index, filter)
 		local data = GetAuraDataByIndex(unitToken, index, filter)

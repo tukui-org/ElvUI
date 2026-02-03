@@ -92,7 +92,6 @@ L["Allow newly learned spells to be automatically placed on an empty actionbar s
 L["Allow Sharing"] = "Autoriser le partage"
 L["Allow Tag: Faction"] = true
 L["Allow Tag: PVP"] = true
-L["Allows BigWigs to rename specific encounter spells on your castbar to something better to understand.\nExample: 'Impaling Eruption' becomes 'Frontal' and 'Twilight Massacre' becomes 'Dash'."] = true
 L["Allows you to tie a stack count to an aura when you add it to the list, which allows the trigger to act when an aura reaches X number of stacks."] = "Vous permet d'associer un compte de piles à une aura lorsque vous l'ajoutez à la liste, ce qui permet au déclencheur d'agir lorsque une aura atteint un nombre de piles X."
 L["Alpha"] = "Transparence"
 L["Alpha channel is taken from the color option."] = "Le canal alpha est pris à partir de l'option de couleur."
@@ -212,7 +211,6 @@ L["Below Chat"] = "En-dessous du tchat"
 L["Below Chat (Inside)"] = "En dessous du tchat (intérieur)"
 L["BG Map"] = "Carte Champs de bataille"
 L["BG Score"] = true
-L["BigWigs Spell Rename"] = true
 L["Bind on Equip/Use Text"] = "Texte Lier à l'équipement/utiliser"
 L["Blacklist"] = "Liste noire"
 L["Blank Texture"] = "Texture vide"

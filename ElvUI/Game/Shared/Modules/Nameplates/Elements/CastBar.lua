@@ -143,16 +143,14 @@ function NP:Castbar_PostCastStart(unit)
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
+		local spellName = self.spellName
 		if E:IsSecretValue(self.spellID) then
-			targetChanged = NP:SetCastText(self, db, true, self.spellName, unit)
+			targetChanged = NP:SetCastText(self, db, true, spellName, unit)
 		else
-			local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
-			local spellName = spellRename or self.spellName
 			local length = db.castbar.nameLength
 			local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
-			local textChanged = spellRename or (name ~= spellName)
 
-			targetChanged = NP:SetCastText(self, db, textChanged, spellName, unit)
+			targetChanged = NP:SetCastText(self, db, name ~= spellName, spellName, unit)
 		end
 	else
 		self.Text:SetText('')
