@@ -287,8 +287,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	local real, isCasting, isChanneling = event, true, false
-	local name, text, texture, startTime, endTime, isTradeSkill, isEmpowered, castID, barID, notInterruptible, castDuration, _
+	local real, casting, channeling = event, true, false
+	local name, text, texture, startTime, endTime, isTradeSkill, empowering, castID, barID, notInterruptible, castDuration, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
 
@@ -316,8 +316,8 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 
 		if not name then
-			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, isEmpowered, _, castID = UnitChannelInfo(unit)
-			isCasting, isChanneling = false, not isEmpowered
+			name, text, texture, startTime, endTime, isTradeSkill, notInterruptible, spellID, empowering, _, castID = UnitChannelInfo(unit)
+			casting, channeling = false, not empowering
 		end
 	end
 
@@ -330,9 +330,9 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	element.casting = isCasting
-	element.channeling = isChanneling
-	element.empowering = isEmpowered
+	element.casting = casting
+	element.channeling = channeling
+	element.empowering = empowering
 
 	local isPlayer = UnitIsUnit(unit, 'player')
 	if not isPlayer or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START') then
@@ -347,7 +347,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.spellName = name
 
 	-- ElvUI block
-	local stages = isEmpowered and UnitEmpoweredStagePercentages(unit) or nil
+	local stages = empowering and UnitEmpoweredStagePercentages(unit) or nil
 
 	element.isTradeSkill = isTradeSkill
 	element.tradeSkillCastID = (isTradeSkill and castID) or nil
