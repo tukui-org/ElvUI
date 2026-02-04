@@ -126,7 +126,7 @@ local function ChatBubble_OnEvent(_, event, msg, sender, _, _, _, _, _, _, _, _,
 	if event == 'PLAYER_ENTERING_WORLD' then --Clear caches
 		wipe(messageToGUID)
 		wipe(messageToSender)
-	elseif E:NotSecretValue(guid) and E.private.general.chatBubbleName then
+	elseif E.private.general.chatBubbleName and E:NotSecretValue(guid) and E:NotSecretValue(msg) then
 		messageToGUID[msg] = guid
 		messageToSender[msg] = Ambiguate(sender, 'none')
 	end
