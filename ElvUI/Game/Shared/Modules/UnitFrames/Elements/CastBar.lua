@@ -29,6 +29,8 @@ do
 
 	local pipMapAlpha = {2, 3, 4, 1, 5}
 	function UF:UpdatePipStep(stage) -- self is element
+		if not self.Pips then return end
+
 		local onlyThree = (stage == 3 and self.numStages == 3) and 4
 		local pip = self.Pips[pipMapAlpha[onlyThree or stage]]
 		if not pip then return end
@@ -39,19 +41,34 @@ do
 	end
 end
 
+function UF:PostUpdatePips(stages)
+	if not self.Pips or not self.setupPips then
+		return -- we only need this once
+	end
+
+	self.setupPips = nil -- clear this
+
+	for stage in next, stages do
+		local pip = self.Pips[stage]
+		if not pip then break end
+
+		UF.PostUpdatePip(self, pip, stage)
+	end
+end
+
 function UF:PostUpdatePip(pip, stage, stages) -- self is element
 	-- pip.texture:SetAlpha(pip.pipAlpha or 1)
 	-- currently UpdatePipStep is broken: pip.pipAlpha or 1
 
 	local reverse = self:GetReverseFill()
-	local nextPip = self.Pips[stage + 1]
+	local nextPip = self.Pips and self.Pips[stage + 1]
 	local anchor = nextPip or self
 	if reverse then
-		pip.texture:Point('RIGHT', -3, 0)
-		pip.texture:Point('LEFT', anchor, 3, 0)
+		pip.texture:Point('LEFT', anchor, 4, 0)
+		pip.texture:Point('RIGHT', -4, 0)
 	else
-		pip.texture:Point('LEFT', 3, 0)
-		pip.texture:Point('RIGHT', anchor, -3, 0)
+		pip.texture:Point('LEFT', 4, 0)
+		pip.texture:Point('RIGHT', anchor, -4, 0)
 	end
 end
 
@@ -59,7 +76,9 @@ function UF:CreatePip(stage)
 	local pip = CreateFrame('Frame', nil, self, 'CastingBarFrameStagePipTemplate')
 
 	-- clear the original art (the line)
-	pip.BasePip:SetAlpha(0)
+	if pip.BasePip then
+		pip.BasePip:SetAlpha(0)
+	end
 
 	-- create the texture
 	pip.texture = pip:CreateTexture(nil, 'ARTWORK', nil, 2)
@@ -85,7 +104,9 @@ end
 
 function UF:BuildPip(stage)
 	local pip = UF.CreatePip(self, stage)
+
 	UF:Update_StatusBar(pip.texture)
+
 	return pip
 end
 
@@ -104,9 +125,11 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.PostCastFail = UF.PostCastFail
 	castbar.UpdatePipStep = UF.UpdatePipStep
 	castbar.PostUpdatePip = UF.PostUpdatePip
+	castbar.PostUpdatePips = UF.PostUpdatePips
 	castbar.CreatePip = UF.BuildPip
 	castbar.TickLines = {}
 
+	castbar.setupPips = true
 	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop(nil, nil, nil, nil, true)
 
@@ -196,8 +219,11 @@ function UF:Configure_Castbar(frame)
 
 	--Empowered
 	castbar.pipColor = UF.db.colors.empoweredCast
-	for stage, pip in next, castbar.Pips do
-		UF:CastBar_UpdatePip(castbar, pip, stage)
+
+	if castbar.Pips then
+		for stage, pip in next, castbar.Pips do
+			UF:CastBar_UpdatePip(castbar, pip, stage)
+		end
 	end
 
 	--Latency
