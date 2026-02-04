@@ -267,6 +267,10 @@ local function UpdatePips(element, stages)
 	end
 end
 
+local function CastMatch(element, castID)
+	return element.castID == castID
+end
+
 --[[ Override: Castbar:ShouldShow(unit)
 Handles check for which unit the castbar should show for.
 Defaults to the object unit.
@@ -629,14 +633,18 @@ local function CastFail(self, event, unit, ...)
 		return
 	end
 
-	local interruptedBy, _
+	local castID, interruptedBy, _
 	if oUF.isRetail then
 		if(event == 'UNIT_SPELLCAST_INTERRUPTED') then
-			_, _, interruptedBy = ...
+			_, _, interruptedBy, castID = ...
+		elseif(event == 'UNIT_SPELLCAST_FAILED') then
+			_, _, castID = ...
 		end
+	else
+		castID = ...
 	end
 
-	if not element:IsShown() then return end
+	if not element:IsShown() or not CastMatch(element, castID) then return end
 
 	if(element.Text) then
 		element.Text:SetText(event == 'UNIT_SPELLCAST_FAILED' and FAILED or INTERRUPTED)
