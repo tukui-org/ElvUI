@@ -443,6 +443,7 @@ L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("Добро пожаловать в *ElvUI|r версии *%s|r, наберите */ec|r для доступа в меню настроек. Если Вам нужна техническая поддержка, посетите наш форум на https://tukui.org или присоединяйтесь к серверу Discord: https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("Используйте */ehelp|r для вызова доступных команд *ElvUI|r."):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "Кажется, возникла проблема с установкой. Пожалуйста, переустановите ElvUI."
+
 ----------------------------------
 L["AP:"] = "СА:"		-- Attack Power
 L["XP:"] = "Опыт:"		-- Experience

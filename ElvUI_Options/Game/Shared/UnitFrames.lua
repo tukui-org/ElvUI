@@ -1284,7 +1284,7 @@ Colors.healthGroup.args.healthBackdrop.args.healthbackdropbyvalue = ACH:Toggle(L
 Colors.healthGroup.args.healthBackdrop.args.customhealthbackdrop = ACH:Toggle(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 2)
 Colors.healthGroup.args.healthBackdrop.args.health_backdrop = ACH:Color(L["Custom Backdrop"], nil, 3, nil, nil, nil, nil, function() return not E.db.unitframe.colors.customhealthbackdrop end)
 Colors.healthGroup.args.healthBackdrop.args.classbackdrop = ACH:Toggle(L["Class Backdrop"], L["Color the health backdrop by class or reaction."], 4, nil, nil, nil, nil, nil, function() return E.db.unitframe.colors.customhealthbackdrop end)
-Colors.healthGroup.args.healthBackdrop.args.useDeadBackdrop = ACH:Toggle(L["Dead Backdrop"], nil, 5)
+Colors.healthGroup.args.healthBackdrop.args.useDeadBackdrop = ACH:Toggle(L["Use Dead Backdrop"], nil, 5)
 Colors.healthGroup.args.healthBackdrop.args.health_backdrop_dead = ACH:Color(L["Dead Backdrop"], L["Use this backdrop color for units that are dead or ghosts."], 6, nil, 250)
 
 Colors.healthBreak = ACH:Group(L["Health Breakpoint"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors.healthBreak[info[#info]], P.unitframe.colors.healthBreak[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b else return E.db.unitframe.colors.healthBreak[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors.healthBreak[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a or 1 else local value = ... E.db.unitframe.colors.healthBreak[info[#info]] = value end UF:Update_AllFrames() end)

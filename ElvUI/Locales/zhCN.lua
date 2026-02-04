@@ -443,6 +443,7 @@ L["KEY_SPACE"] = "SpB"
 L["LOGIN_MSG"] = ("欢迎使用*ElvUI|r 版本*%s|r, 输入*/ec|r 访问游戏内配置菜单.如果您需要技术支持, 您可以访问我们的 https://tukui.org 或加入我们的 Discord https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("请使用 */ehelp|r 获取可用的 *ElvUI|r 命令列表"):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "您的安装似乎有些问题. 请重新安装 ElvUI."
+
 ----------------------------------
 L["AP:"] = "神器能量:"	-- Attack Power
 L["XP:"] = "经验:"		-- Experience
