@@ -21,6 +21,8 @@ end
 function LO:ChatPanel_OnEvent(event)
 	if event == 'HOUSE_EDITOR_MODE_CHANGED' then
 		self:SetParent(IsHouseEditorActive() and _G.HousingControlsFrame or E.UIParent)
+
+		LO.Panel_OnShow(self) -- adjust panel levels back to normal
 	end
 end
 
