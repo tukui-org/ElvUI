@@ -39,8 +39,8 @@ function DB:ThreatBar_GetColor(unit)
 	end
 
 	local unitReaction = UnitReaction(unit, 'player')
-	if unitReaction then
-		local reaction = ElvUF.colors.reaction[unitReaction]
+	local reaction = unitReaction and ElvUF.colors.reaction[unitReaction]
+	if reaction then
 		return reaction.r*255, reaction.g*255, reaction.b*255
 	end
 
