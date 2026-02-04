@@ -443,6 +443,7 @@ L["KEY_SPACE"] = "Spc"
 L["LOGIN_MSG"] = ("*ElvUI|r 버전 *%s|r이 설치되었습니다.\n메뉴 호출은*/ec|r.기술 지원은 https://tukui.org \n또는,*Discord :|r https://discord.tukui.org"):gsub('*', E.InfoColor)
 L["LOGIN_MSG_HELP"] = ("*ElvUI|r 명령어 목록은 */ehelp|r를 입력하면 됩니다."):gsub('*', E.InfoColor)
 L["UPDATE_REQUEST"] = "There seems to be an issue with your installation. Please reinstall ElvUI."
+
 ----------------------------------
 L["AP:"] = "전투력"		-- Attack Power
 L["XP:"] = "경험치:"	-- Experience
