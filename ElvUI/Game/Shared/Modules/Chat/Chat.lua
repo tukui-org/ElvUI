@@ -68,6 +68,7 @@ local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
 local GetChannelRuleset = C_ChatInfo.GetChannelRuleset
@@ -1932,14 +1933,16 @@ end
 
 --Modified copy from FrameXML ChatFrame.lua to add CUSTOM_CLASS_COLORS (args were changed)
 function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
-	if E:IsSecretValue(arg2) then
+	if E:IsSecretValue(arg12) then -- guid is blocked so use uncached
+		local _, englishClass = GetPlayerInfoByGUID(arg12)
+		local classColor = C_ClassColor_GetClassColor(englishClass)
+		return (classColor and classColor:WrapTextInColorCode(arg2)) or arg2
+	elseif E:IsSecretValue(arg2) then -- when the name is secret
 		return arg2
 	end
 
 	-- guild deaths is called here with no arg2
-	if not arg2 then
-		return
-	end
+	if not arg2 then return end
 
 	local chatType = strsub(event, 10)
 	local subType = strsub(chatType, 1, 7)
