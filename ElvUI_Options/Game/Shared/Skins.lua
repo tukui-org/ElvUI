@@ -80,6 +80,10 @@ if E.Wrath or E.TBC then
 	toggles.arena = L["Arena"]
 end
 
+if E.Mists or E.Wrath or E.TBC then
+	toggles.arenaRegistrar = L["Arena Registrar"]
+end
+
 if not E.Retail then
 	toggles.questTimers = L["Quest Timers"]
 end
@@ -128,7 +132,6 @@ if E.Retail then
 	toggles.torghastLevelPicker = L["Torghast Level Picker"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
 elseif E.Mists then
-	toggles.arenaRegistrar = L["Arena Registrar"]
 	toggles.reforge = L["Reforge"]
 elseif E.Classic then
 	toggles.engraving = L["Engraving"]

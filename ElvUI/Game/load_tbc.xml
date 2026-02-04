@@ -73,6 +73,7 @@
 	<Script file='Shared\Modules\DataBars\PetExperience.lua'/>
 	<Script file='TBC\Skins\AddonManager.lua'/>
 	<Script file='TBC\Skins\Arena.lua'/>
+	<Script file='TBC\Skins\ArenaRegistrar.lua'/>
 	<Script file='TBC\Skins\AuctionHouse.lua'/>
 	<Script file='TBC\Skins\Bags.lua'/>
 	<Script file='TBC\Skins\Battlefield.lua'/>
