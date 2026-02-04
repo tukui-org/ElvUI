@@ -68,7 +68,7 @@ local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
-local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
+local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
 local GetChannelRuleset = C_ChatInfo.GetChannelRuleset
@@ -1961,7 +1961,7 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 		local data = CH:GetPlayerInfoByGUID(arg12)
 		local color = data and data.classColor
 		if color then
-			return format('|cff%.2x%.2x%.2x%s|r', color.r*255, color.g*255, color.b*255, name)
+			return color:WrapTextInColorCode(name)
 		end
 	end
 
@@ -1988,11 +1988,13 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 					if name and subgroup == groupIndex then
 						local classColorTable = E:ClassColor(classFilename)
 						if classColorTable then
-							name = format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
+							name = classColorTable:WrapTextInColorCode(name)
 						end
+
 						groupList = groupList..(groupList == '[' and '' or _G.PLAYER_LIST_DELIMITER)..name
 					end
 				end
+
 				if groupList ~= '[' then
 					groupList = groupList..']'
 					message = gsub(message, tag, groupList, 1)
@@ -2842,11 +2844,12 @@ function CH:CheckKeyword(message, author)
 
 				local classMatch = CH.ClassNames[lowerCaseWord]
 				local wordMatch = classMatch and lowerCaseWord
-
 				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
 					local classColorTable = E:ClassColor(classMatch)
-					if classColorTable then
-						word = gsub(word, gsub(tempWord, '%-','%%-'), format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+					local classColoredName = classColorTable and classColorTable:WrapTextInColorCode(tempWord)
+					if classColoredName then
+						local tempstr = gsub(tempWord, '%-','%%-')
+						word = gsub(word, tempstr, classColoredName)
 					end
 				end
 			end
