@@ -224,7 +224,7 @@ function NP:Construct_Castbar(nameplate)
 	castbar.TargetText:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	castbar.TargetText:SetJustifyH('LEFT')
 
-	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 4)
+	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
 	castbar.Shield:SetTexture(castbarTexture)
 	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
 
