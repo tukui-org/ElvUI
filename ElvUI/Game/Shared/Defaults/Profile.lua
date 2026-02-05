@@ -264,7 +264,7 @@ P.general = {
 	privateAuras = {
 		enable = true,
 		countdownFrame = true,
-		countdownNumbers = true,
+		countdownNumbers = false,
 		borderScale = 2,
 		icon = {
 			offset = 3,
@@ -1955,6 +1955,7 @@ UF_PrivateAuras.enable = false
 UF_PrivateAuras.borderScale = 1
 UF_PrivateAuras.icon.size = 24
 UF_PrivateAuras.parent.point = 'BOTTOM'
+UF_PrivateAuras.countdownNumbers = true
 UF_PrivateAuras.duration.enable = false
 
 --UnitFrame
