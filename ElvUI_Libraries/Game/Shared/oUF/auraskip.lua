@@ -216,8 +216,7 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 		return harmful
 	end
 
-	-- assume its both
-	return helpful or harmful
+	return true
 end
 
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
