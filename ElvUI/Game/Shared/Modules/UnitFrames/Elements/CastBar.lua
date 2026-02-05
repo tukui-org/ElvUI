@@ -362,8 +362,10 @@ function UF:Configure_Castbar(frame)
 		E:UpdateClassColor(customColor.colorNoInterrupt)
 		E:UpdateClassColor(customColor.colorInterrupted)
 
-		castbar.Shield:SetVertexColor(customColor.colorNoInterrupt.r, customColor.colorNoInterrupt.g, customColor.colorNoInterrupt.b, customColor.colorNoInterrupt.a)
-		castbar.Shield.alphaValue = customColor.colorNoInterrupt.a
+		if E.Retail then
+			castbar.Shield:SetVertexColor(customColor.colorNoInterrupt.r, customColor.colorNoInterrupt.g, customColor.colorNoInterrupt.b, customColor.colorNoInterrupt.a)
+			castbar.Shield.alphaValue = customColor.colorNoInterrupt.a
+		end
 
 		castbar.custom_backdrop = customColor.useCustomBackdrop and E:UpdateClassColor(customColor.colorBackdrop)
 		UF:ToggleTransparentStatusBar(customColor.transparent, castbar, castbar.bg, nil, customColor.invertColors, db.reverse)
@@ -371,9 +373,10 @@ function UF:Configure_Castbar(frame)
 		castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and E:UpdateClassColor(UF.db.colors.castbar_backdrop)
 		UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar, db.reverse)
 
-
-		castbar.Shield:SetVertexColor(UF.db.colors.castNoInterrupt.r, UF.db.colors.castNoInterrupt.g, UF.db.colors.castNoInterrupt.b, UF.db.colors.castNoInterrupt.a)
-		castbar.Shield.alphaValue = UF.db.colors.castNoInterrupt.a
+		if E.Retail then
+			castbar.Shield:SetVertexColor(UF.db.colors.castNoInterrupt.r, UF.db.colors.castNoInterrupt.g, UF.db.colors.castNoInterrupt.b, UF.db.colors.castNoInterrupt.a)
+			castbar.Shield.alphaValue = UF.db.colors.castNoInterrupt.a
+		end
 	end
 
 	if castbar.Holder.mover then

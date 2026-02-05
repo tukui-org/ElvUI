@@ -343,13 +343,16 @@ function NP:Update_Castbar(nameplate)
 		end
 
 		local barTexture = castbar:GetStatusBarTexture()
-		castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, NP.db.colors.castNoInterruptColor.a)
 		castbar.Shield:ClearAllPoints()
 		castbar.Shield:Point('RIGHT', barTexture)
 		castbar.Shield:Point('LEFT')
 		castbar.Shield:Point('BOTTOM')
 		castbar.Shield:Point('TOP')
-		castbar.Shield.alphaValue = NP.db.colors.castNoInterruptColor.a
+
+		if E.Retail then
+			castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, NP.db.colors.castNoInterruptColor.a)
+			castbar.Shield.alphaValue = NP.db.colors.castNoInterruptColor.a
+		end
 
 		if db.hideTime then
 			castbar.Time:Hide()
