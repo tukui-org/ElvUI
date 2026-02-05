@@ -148,7 +148,6 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Text:SetWordWrap(false)
 	castbar.Text:FontTemplate()
 
-	-- ticks are overlay 5
 	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
 	castbar.Shield:SetTexture(E.media.blankTex)
 	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
@@ -158,7 +157,8 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.LatencyTexture:SetTexture(E.media.blankTex)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 
-	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY', nil, 4)
+	-- ticks are overlay 4 (under spark)
+	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY', nil, 5)
 	castbar.Spark_:SetTexture(E.media.blankTex)
 	castbar.Spark_:SetVertexColor(0.9, 0.9, 0.9, 0.6)
 	castbar.Spark_:SetBlendMode('ADD')
@@ -481,7 +481,7 @@ function UF:SetCastTicks(frame, numTicks)
 	for i = 1, numTicks - 1 do
 		local tick = frame.TickLines[i]
 		if not tick then
-			tick = frame:CreateTexture(nil, 'OVERLAY', nil, 5)
+			tick = frame:CreateTexture(nil, 'OVERLAY', nil, 4)
 			tick:SetTexture(E.media.blankTex)
 			tick:Width(frame.tickWidth)
 			frame.TickLines[i] = tick
