@@ -277,6 +277,7 @@ function lib:CreateButton(id, name, header, config)
 		button:RegisterForClicks("AnyUp")
 	end
 
+	button.cooldown:SetSwipeColor(0, 0, 0, 0.8)
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
 	button.cooldown:SetAllPoints()
