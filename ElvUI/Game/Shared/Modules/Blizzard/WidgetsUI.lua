@@ -35,7 +35,8 @@ function BL:UIWidgetTemplateStatusBar()
 	if not bar.backdrop then
 		bar:CreateBackdrop('Transparent')
 
-		if NP.Initialized and strmatch(self:GetDebugName(), 'NamePlate') then
+		local name = self:GetDebugName()
+		if NP.Initialized and E:NotSecretValue(name) and strmatch(name, 'NamePlate') then
 			self:SetIgnoreParentScale(true)
 			self:SetIgnoreParentAlpha(true)
 		else

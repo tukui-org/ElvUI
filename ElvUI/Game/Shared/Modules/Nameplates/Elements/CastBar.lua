@@ -25,13 +25,13 @@ function NP:Castbar_CheckInterrupt(unit)
 
 	local notInterruptible = E:NotSecretValue(self.notInterruptible) and self.notInterruptible
 	if notInterruptible and UnitCanAttack('player', unit) then
-		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
+		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, NP.db.colors.castNoInterruptColor.a)
 
 		if self.Icon and NP.db.colors.castbarDesaturate then
 			self.Icon:SetDesaturated(true)
 		end
 	else
-		self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
+		self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, NP.db.colors.castColor.a)
 
 		if self.Icon then
 			self.Icon:SetDesaturated(false)
@@ -39,8 +39,15 @@ function NP:Castbar_CheckInterrupt(unit)
 	end
 end
 
-function NP:Castbar_CustomDelayText(duration)
-	if E:IsSecretValue(duration) or not duration then return end
+function NP:Castbar_CustomDelayText(duration, durationObject)
+	if durationObject then
+		local remain = durationObject:GetRemainingDuration()
+		self.Time:SetFormattedText('%.1f', remain)
+
+		return
+	elseif not duration then
+		return
+	end
 
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
@@ -65,8 +72,15 @@ function NP:Castbar_CustomDelayText(duration)
 	end
 end
 
-function NP:Castbar_CustomTimeText(duration)
-	if E:IsSecretValue(duration) or not duration then return end
+function NP:Castbar_CustomTimeText(duration, durationObject)
+	if durationObject then
+		local remain = durationObject:GetRemainingDuration()
+		self.Time:SetFormattedText('%.1f', remain)
+
+		return
+	elseif not duration then
+		return
+	end
 
 	if self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
@@ -91,6 +105,37 @@ function NP:Castbar_CustomTimeText(duration)
 	end
 end
 
+function NP:Castbar_SetText(castbar, db, changed, spellName, unit)
+	local targetChanged
+	if db.displayTarget then
+		local plate = castbar.__owner
+		local target, frameType = castbar.curTarget, plate.frameType
+		if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
+			target = UnitName(unit..'target') -- player or NPCs; if used on other players:
+		end -- the cast target doesn't match their target, can be misleading if they mouseover cast
+
+		if E:NotSecretValue(target) and (target and target ~= '') and (E:NotSecretValue(plate.unitName) and (target ~= plate.unitName)) then
+			local color = (db.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
+			if db.targetStyle == 'SEPARATE' then
+				castbar.TargetText:SetFormattedText('|c%s%s|r', color, target)
+				targetChanged = true
+
+				if changed then
+					castbar.Text:SetText(spellName)
+				end
+			else
+				castbar.Text:SetFormattedText('%s: |c%s%s|r', spellName, color, target)
+			end
+		elseif changed then -- always true when secret
+			castbar.Text:SetText(spellName)
+		end
+	elseif changed then
+		castbar.Text:SetText(spellName)
+	end
+
+	return targetChanged
+end
+
 function NP:Castbar_PostCastStart(unit)
 	self:CheckInterrupt(unit)
 
@@ -98,39 +143,14 @@ function NP:Castbar_PostCastStart(unit)
 	local plate = self.__owner
 	local db = NP:PlateDB(plate)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
+		local spellName = self.spellName
 		if E:IsSecretValue(self.spellID) then
-			self.Text:SetText(self.spellName)
+			targetChanged = NP:Castbar_SetText(self, db.castbar, true, spellName, unit)
 		else
-			local spellRename = db.castbar.spellRename and E:GetSpellRename(self.spellID)
-			local spellName = spellRename or self.spellName
 			local length = db.castbar.nameLength
 			local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
-			local textChanged = spellRename or (name ~= spellName)
 
-			if db.castbar.displayTarget then
-				local target, frameType = self.curTarget, plate.frameType
-				if not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then
-					target = UnitName(unit..'target') -- player or NPCs; if used on other players:
-				end -- the cast target doesn't match their target, can be misleading if they mouseover cast
-
-				if target and target ~= '' and target ~= plate.unitName then
-					local color = (db.castbar.displayTargetClass and UF:GetCasterColor(target)) or 'FFdddddd'
-					if db.castbar.targetStyle == 'SEPARATE' then
-						self.TargetText:SetFormattedText('|c%s%s|r', color, target)
-						targetChanged = true
-
-						if textChanged then
-							self.Text:SetText(name)
-						end
-					else
-						self.Text:SetFormattedText('%s: |c%s%s|r', name, color, target)
-					end
-				elseif textChanged then
-					self.Text:SetText(name)
-				end
-			elseif textChanged then
-				self.Text:SetText(name)
-			end
+			targetChanged = NP:Castbar_SetText(self, db.castbar, name ~= spellName, spellName, unit)
 		end
 	else
 		self.Text:SetText('')
@@ -204,7 +224,7 @@ function NP:Construct_Castbar(nameplate)
 	castbar.TargetText:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	castbar.TargetText:SetJustifyH('LEFT')
 
-	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 4)
+	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
 	castbar.Shield:SetTexture(castbarTexture)
 	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
 
@@ -227,7 +247,7 @@ function NP:Construct_Castbar(nameplate)
 		castbar.TargetText:SetText(E.myname)
 		castbar.Time:SetText('3.1')
 		castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
-		castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
+		castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, NP.db.colors.castColor.a)
 	end
 
 	return castbar
@@ -323,12 +343,16 @@ function NP:Update_Castbar(nameplate)
 		end
 
 		local barTexture = castbar:GetStatusBarTexture()
-		castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
 		castbar.Shield:ClearAllPoints()
 		castbar.Shield:Point('RIGHT', barTexture)
 		castbar.Shield:Point('LEFT')
 		castbar.Shield:Point('BOTTOM')
 		castbar.Shield:Point('TOP')
+
+		if E.Retail then
+			castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, NP.db.colors.castNoInterruptColor.a)
+			castbar.Shield.alphaValue = NP.db.colors.castNoInterruptColor.a
+		end
 
 		if db.hideTime then
 			castbar.Time:Hide()

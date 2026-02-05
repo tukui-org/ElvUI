@@ -107,6 +107,7 @@
 	<Script file='Mainline\Skins\CovenantPreview.lua'/>
 	<Script file='Mainline\Skins\CovenantRenown.lua'/>
 	<Script file='Mainline\Skins\CovenantSanctum.lua'/>
+	<Script file='Mainline\Skins\DamageMeter.lua'/>
 	<Script file='Mainline\Skins\DeathRecap.lua'/>
 	<Script file='Mainline\Skins\Debug.lua'/>
 	<Script file='Mainline\Skins\Delves.lua'/>

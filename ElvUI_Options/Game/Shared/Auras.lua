@@ -61,7 +61,7 @@ Auras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Auras.args.buffsHeader = ACH:Toggle(L["Buffs"], nil, 2, nil, nil, 80)
 Auras.args.debuffsHeader = ACH:Toggle(L["Debuffs"], nil, 3, nil, nil, 80)
 Auras.args.disableBlizzard = ACH:Toggle(L["Disabled Blizzard"], nil, 4, nil, nil, 140)
-Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown Text"], nil, 5, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'cooldown', 'auras') end)
+Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown & Duration"], nil, 5, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'cooldown', 'auras') end)
 
 Auras.args.colorGroup = ACH:MultiSelect(L["Colors"], nil, 6, { colorEnchants = L["Color Enchants"], colorDebuffs = L["Color Debuffs"] }, nil, nil, function(_, key) return E.db.auras[key] end, function(_, key, value) E.db.auras[key] = value end)
 
@@ -71,9 +71,10 @@ do
 	Auras.args.debuffColors.inline = true
 
 	local order = { None = 0, Magic = 1, Curse = 2, Disease = 3, Poison = 4, EnemyNPC = 11, BadDispel = 12, Bleed = 13, Stealable = 14 }
+	local names = { None = L["None"], Magic = L["Magic"], Curse = L["Curse"], Disease = L["Disease"], Poison = L["Poison"], EnemyNPC = L["Enemy NPC"], BadDispel = L["Bad Dispel"], Bleed = L["Bleed"], Stealable = L["Stealable"], Enrage = L["Enrage"] }
 	for key in next, DebuffColors do
 		if key ~= '' and key ~= 'none' then -- this is a reference to none
-			Auras.args.debuffColors.args[key] = ACH:Color(key, nil, order[key] or -1, nil, 120)
+			Auras.args.debuffColors.args[key] = ACH:Color(names[key] or key, nil, order[key] or -1, nil, 120)
 		end
 	end
 end
@@ -98,6 +99,7 @@ Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(i
 Auras.args.privateAuras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Auras.args.privateAuras.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 Auras.args.privateAuras.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
+Auras.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 5, { min = -5, max = 10, step = 0.01 })
 
 Auras.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.general.privateAuras.icon[info[#info]] end, function(info, value) E.db.general.privateAuras.icon[info[#info]] = value; PA:Update() end)
 Auras.args.privateAuras.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })

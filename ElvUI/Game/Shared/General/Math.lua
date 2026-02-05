@@ -6,6 +6,7 @@ local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack,
 local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
 local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
 
+local CreateAbbreviateConfig = CreateAbbreviateConfig
 local AbbreviateNumbers = AbbreviateNumbers
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 local GetPlayerFacing = GetPlayerFacing
@@ -33,57 +34,80 @@ E.GetFormattedTextStyles = {
 }
 
 do -- Thanks ls-
-	local asianUnitsCollection = {
-		zhCN = { '兆', '亿', '万' },
-		zhTW = { '兆', '億', '萬' },
-		koKR = { '조', '억', '만' },
+	local asianUnits = {
+		CHINESE = E.ShortPrefixStyles.CHINESE,
+		TCHINESE = E.ShortPrefixStyles.TCHINESE,
+		KOREAN = E.ShortPrefixStyles.KOREAN,
 	}
 
-	local asianUnits = asianUnitsCollection[E.locale]
-	local long = { breakpoints = {} }
+	local westernUnits = {
+		ENGLISH = E.ShortPrefixStyles.ENGLISH,
+		GERMAN = E.ShortPrefixStyles.GERMAN,
+		METRIC = E.ShortPrefixStyles.METRIC
+	}
+
+	local westernDivisors = {
+		[0] = {1e12, 1e9, 1e6, 1e3},
+		{1e11, 1e8, 1e5, 1e2},
+		{1e10, 1e7, 1e4, 1e1},
+		{1e9, 1e6, 1e3, 1e0},
+	}
+
+	local asianDivisors = {
+		1e11, 1e7, 1e3
+	}
+
+	local short = { breakpoints = {} }
+	local long = { long = true }
+
+	E.Abbreviate.short = short
 	E.Abbreviate.long = long
 
-	if asianUnits then
-		long.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e11, fractionDivisor = 10, abbreviationIsGlobal = false }
-		long.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e7, fractionDivisor = 10, abbreviationIsGlobal = false }
-		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
-	else
-		long.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'THIRD_NUMBER_CAP_NO_SPACE', significandDivisor = 1e8, fractionDivisor = 10 }
-		long.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'SECOND_NUMBER_CAP_NO_SPACE', significandDivisor = 1e5, fractionDivisor = 10 }
-		long.breakpoints[3] = { breakpoint = 1e5, abbreviation = 'FIRST_NUMBER_CAP_NO_SPACE', significandDivisor = 100, fractionDivisor = 10 }
-	end
+	function E:BuildAbbreviateConfigs()
+		if not E.Retail then return end
 
-	-- start a new one
-	local short = { breakpoints = {} }
-	E.Abbreviate.short = short
+		local style = E.db.general.numberPrefixStyle
+		local asian = asianUnits[style]
+		local units = asian or westernUnits[style or 'ENGLISH']
 
-	if asianUnits then
-		short.breakpoints[1] = { breakpoint = 1e12, abbreviation = asianUnits[1], significandDivisor = 1e10, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[2] = { breakpoint = 1e8, abbreviation = asianUnits[2], significandDivisor = 1e6, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[3] = { breakpoint = 1e5, abbreviation = asianUnits[3], significandDivisor = 1e3, fractionDivisor = 10, abbreviationIsGlobal = false }
-	else
-		short.breakpoints[1] = { breakpoint = 1e9, abbreviation = 'B', significandDivisor = 1e7, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[2] = { breakpoint = 1e6, abbreviation = 'M', significandDivisor = 1e4, fractionDivisor = 100, abbreviationIsGlobal = false }
-		short.breakpoints[3] = { breakpoint = 1e3, abbreviation = 'k', significandDivisor = 100, fractionDivisor = 10, abbreviationIsGlobal = false }
-	end
+		long.isAsian = asian
+		short.isAsian = asian
 
-	if CreateAbbreviateConfig then
-		long.config = CreateAbbreviateConfig(long.breakpoints)
-		long.breakpoints = nil -- create the configuration for long numbers
+		local decimal = E.db.general.decimalLength or 1
+		if decimal > 3 then decimal = 3 end
 
-		short.config = CreateAbbreviateConfig(short.breakpoints)
-		short.breakpoints = nil -- create the configuration for short numbers
-	end
+		local signi = (asian and asianDivisors) or westernDivisors[decimal]
+		local factor = (asian and 10) or (10 ^ decimal)
+
+		for i = 1, (asian and 3) or 4 do
+			local unit = units[i]
+
+			short.breakpoints[i] = {
+				breakpoint = unit[1],
+				abbreviation = unit[2],
+				significandDivisor = signi[i],
+				fractionDivisor = factor,
+				abbreviationIsGlobal = false
+			}
+		end
+
+		if CreateAbbreviateConfig then
+			short.config = CreateAbbreviateConfig(short.breakpoints)
+
+			wipe(short.breakpoints)
+		end
+    end
 
 	function E:AbbreviateNumbers(value, data)
 		if type(value) == 'string' then
 			return value -- we cant continue with strings
 		end
 
-		local str = AbbreviateNumbers(value, data)
-		if asianUnits then
-			return str
-		else -- behaves like ALN, but actually works
+		if data and data.isAsian then
+			return (data.long and value) or AbbreviateNumbers(value, data)
+		else
+			local str = (data and not data.long and AbbreviateNumbers(value, data)) or value
+
 			local num = tonumber(str)
 			return num and BreakUpLargeNumbers(num) or str
 		end
@@ -165,6 +189,20 @@ function E:HexsToRGBs(rgb, ...)
 	end
 
 	return unpack(rgb)
+end
+
+-- clamp a number
+function E:Clamp(value, minimum, maximum)
+	if not minimum then minimum = 0 end
+	if not maximum then maximum = 1 end
+
+	if value > maximum then
+		return maximum
+	elseif value < minimum then
+		return minimum
+	end
+
+	return value
 end
 
 --Return rounded number

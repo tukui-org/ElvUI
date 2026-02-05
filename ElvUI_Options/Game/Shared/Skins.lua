@@ -76,6 +76,14 @@ if E.Retail or E.TBC then
 	toggles.editor = L["Editor Manager"]
 end
 
+if E.Wrath or E.TBC then
+	toggles.arena = L["Arena"]
+end
+
+if E.Mists or E.Wrath or E.TBC then
+	toggles.arenaRegistrar = L["Arena Registrar"]
+end
+
 if not E.Retail then
 	toggles.questTimers = L["Quest Timers"]
 end
@@ -98,6 +106,7 @@ if E.Retail then
 	toggles.covenantPreview = L["Covenant Preview"]
 	toggles.covenantRenown = L["Covenant Renown"]
 	toggles.covenantSanctum = L["Covenant Sanctum"]
+	toggles.damageMeter = L["Damage Meter"]
 	toggles.deathRecap = L["DEATH_RECAP_TITLE"]
 	toggles.expansionLanding = L["Expansion Landing Page"]
 	toggles.garrison = L["GARRISON_LOCATION_TOOLTIP"]
@@ -123,7 +132,6 @@ if E.Retail then
 	toggles.torghastLevelPicker = L["Torghast Level Picker"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
 elseif E.Mists then
-	toggles.arenaRegistrar = L["Arena Registrar"]
 	toggles.reforge = L["Reforge"]
 elseif E.Classic then
 	toggles.engraving = L["Engraving"]

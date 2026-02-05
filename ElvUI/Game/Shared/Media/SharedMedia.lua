@@ -110,6 +110,7 @@ for i = 0, 2 do -- resting icons
 end
 
 -- nameplate target arrows
+AddMedia('arrow', 'ArrowBracket')
 AddMedia('arrow', 'ArrowRed')
 for i = 0, 72 do
 	AddMedia('arrow', 'Arrow'..i)

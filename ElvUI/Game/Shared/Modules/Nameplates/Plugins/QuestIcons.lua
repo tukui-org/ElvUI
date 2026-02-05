@@ -149,27 +149,29 @@ local function GetQuests(unitID)
 	if info and info.lines[2] then
 		for _, line in next, info.lines, 2 do
 			local text = line and line.leftText
-			if not text or text == '' then return end
+			if E:NotSecretValue(text) then -- are only some lines secret?
+				if not text or text == '' then return end
 
-			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
-				notMyQuest = text ~= E.myname
-			elseif text and not notMyQuest then
-				if line.type == 17 or (not E.Retail and not lastTitle) then
-					lastTitle = activeQuests[text]
-				end -- this line comes from one line up in the tooltip
+				if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
+					notMyQuest = text ~= E.myname
+				elseif text and not notMyQuest then
+					if line.type == 17 or (not E.Retail and not lastTitle) then
+						lastTitle = activeQuests[text]
+					end -- this line comes from one line up in the tooltip
 
-				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
-				if objectives then
-					local quest = objectives[text] or (not E.Retail and objectives[strsub(text, 4)])
-					if quest then
-						if not QuestList then QuestList = {} end
+					local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
+					if objectives then
+						local quest = objectives[text] or (not E.Retail and objectives[strsub(text, 4)])
+						if quest then
+							if not QuestList then QuestList = {} end
 
-						QuestList[#QuestList + 1] = {
-							itemTexture = lastTitle.texture,
-							isPercent = quest.isPercent,
-							objectiveCount = quest.value,
-							questType = quest.type or 'DEFAULT',
-						}
+							QuestList[#QuestList + 1] = {
+								itemTexture = lastTitle.texture,
+								isPercent = quest.isPercent,
+								objectiveCount = quest.value,
+								questType = quest.type or 'DEFAULT',
+							}
+						end
 					end
 				end
 			end

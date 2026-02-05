@@ -68,6 +68,7 @@ local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
+local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
 local GetChannelRuleset = C_ChatInfo.GetChannelRuleset
@@ -1932,14 +1933,16 @@ end
 
 --Modified copy from FrameXML ChatFrame.lua to add CUSTOM_CLASS_COLORS (args were changed)
 function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
-	if E:IsSecretValue(arg2) then
+	if E:IsSecretValue(arg12) then -- guid is blocked so use uncached
+		local _, englishClass = GetPlayerInfoByGUID(arg12)
+		local classColor = C_ClassColor_GetClassColor(englishClass)
+		return (classColor and classColor:WrapTextInColorCode(arg2)) or arg2
+	elseif E:IsSecretValue(arg2) then -- when the name is secret
 		return arg2
 	end
 
 	-- guild deaths is called here with no arg2
-	if not arg2 then
-		return
-	end
+	if not arg2 then return end
 
 	local chatType = strsub(event, 10)
 	local subType = strsub(chatType, 1, 7)
@@ -1958,7 +1961,7 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 		local data = CH:GetPlayerInfoByGUID(arg12)
 		local color = data and data.classColor
 		if color then
-			return format('|cff%.2x%.2x%.2x%s|r', color.r*255, color.g*255, color.b*255, name)
+			return color:WrapTextInColorCode(name)
 		end
 	end
 
@@ -1985,11 +1988,13 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 					if name and subgroup == groupIndex then
 						local classColorTable = E:ClassColor(classFilename)
 						if classColorTable then
-							name = format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, name)
+							name = classColorTable:WrapTextInColorCode(name)
 						end
+
 						groupList = groupList..(groupList == '[' and '' or _G.PLAYER_LIST_DELIMITER)..name
 					end
 				end
+
 				if groupList ~= '[' then
 					groupList = groupList..']'
 					message = gsub(message, tag, groupList, 1)
@@ -2296,7 +2301,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		if chatType == 'VOICE_TEXT' and not GetCVarBool('speechToText') then
 			return
-		elseif chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
+		elseif chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((E:NotSecretValue(arg1) and arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
 			if arg1 == 'WRONG_PASSWORD' then
 				local _, popup = _G.StaticPopup_Visible('CHAT_CHANNEL_PASSWORD')
 				if popup and strupper(popup.data) == strupper(arg9) then
@@ -2839,11 +2844,12 @@ function CH:CheckKeyword(message, author)
 
 				local classMatch = CH.ClassNames[lowerCaseWord]
 				local wordMatch = classMatch and lowerCaseWord
-
 				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
 					local classColorTable = E:ClassColor(classMatch)
-					if classColorTable then
-						word = gsub(word, gsub(tempWord, '%-','%%-'), format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+					local classColoredName = classColorTable and classColorTable:WrapTextInColorCode(tempWord)
+					if classColoredName then
+						local tempstr = gsub(tempWord, '%-','%%-')
+						word = gsub(word, tempstr, classColoredName)
 					end
 				end
 			end

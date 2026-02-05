@@ -156,10 +156,22 @@ E.GemTypeInfo = {
 	Fiber			= { r = 0.90, g = 0.80, b = 0.50, a = 1 },
 }
 
--- Midnight Color Curves
-E.ColorCurves = {} -- also has a Dispel object (which has a curve for IsDispellableByMe)
-E.ColorCurves.Auras = { auras = false, buffs = false, debuffs = false }
-ElvUF.ColorCurves = E.ColorCurves -- reference to oUF
+E.Curves = { -- Midnight Color Curves (nil values created later)
+	Duration = nil, -- duration object for SetTimeFromStart
+	Float = {
+		Alpha = nil, -- float for hiding at Zero
+		Desaturation = nil, -- float curve for SetDesaturation
+	},
+	Color = {
+		Default = nil, -- simple red, yellow, green curve for various places
+		Dispel = nil, -- color curve for IsDispellableByMe; updated by ListUpdated in LibDispel
+		Auras = { -- color curves created and updated by UpdateAuraCurves
+			auras = false,	-- these all
+			buffs = false,	-- stay false
+			debuffs = false	-- on classics
+		}
+	}
+}
 
 -- This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
@@ -478,7 +490,7 @@ function E:UpdateBorderColors()
 end
 
 function E:UpdateBackdropColors()
-	local r, g, b = unpack(E.media.backdropcolor)
+	local r, g, b, a = unpack(E.media.backdropcolor)
 	local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
 
 	for frame in pairs(E.frames) do
@@ -487,7 +499,7 @@ function E:UpdateBackdropColors()
 				if frame.callbackBackdropColor then
 					frame:callbackBackdropColor()
 				elseif frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b)
+					frame:SetBackdropColor(r, g, b, frame.customBackdropAlpha or a)
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
 				end
@@ -503,7 +515,7 @@ function E:UpdateBackdropColors()
 				if frame.callbackBackdropColor then
 					frame:callbackBackdropColor()
 				elseif frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b)
+					frame:SetBackdropColor(r, g, b, frame.customBackdropAlpha or a)
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
 				end
@@ -1532,6 +1544,7 @@ end
 
 function E:UpdateMediaItems(skipCallback)
 	E:UpdateMedia()
+	E:UpdateAuraCurves()
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
 	E:UpdateFrameTemplates()
@@ -2036,12 +2049,15 @@ function E:Initialize()
 	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	else
+		E:UpdateCurves()
 		E:BuildPrefixValues()
+		E:BuildAbbreviateConfigs()
 		E:LoadAPI()
 		E:LoadCommands()
 		E:InitializeModules()
 		E:LoadMovers()
 		E:UpdateMedia()
+		E:UpdateAuraCurves()
 		E:UpdateDispelColors()
 		E:UpdateCustomClassColors()
 

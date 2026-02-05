@@ -46,11 +46,12 @@ function M:UpdateBubbleBorder()
 
 				local classMatch = CH.ClassNames[lowerCaseWord]
 				local wordMatch = classMatch and lowerCaseWord
-
 				if wordMatch and not E.global.chat.classColorMentionExcludedNames[wordMatch] then
 					local classColorTable = E:ClassColor(classMatch)
-					if classColorTable then
-						word = gsub(word, gsub(tempWord, '%-','%%-'), format('|cff%.2x%.2x%.2x%s|r', classColorTable.r*255, classColorTable.g*255, classColorTable.b*255, tempWord))
+					local classColorName = classColorTable and classColorTable:WrapTextInColorCode(tempWord)
+					if classColorName then
+						local tempstr = gsub(tempWord, '%-','%%-')
+						word = gsub(word, tempstr, classColorName)
 					end
 				end
 
@@ -125,7 +126,7 @@ local function ChatBubble_OnEvent(_, event, msg, sender, _, _, _, _, _, _, _, _,
 	if event == 'PLAYER_ENTERING_WORLD' then --Clear caches
 		wipe(messageToGUID)
 		wipe(messageToSender)
-	elseif E.private.general.chatBubbleName then
+	elseif E.private.general.chatBubbleName and E:NotSecretValue(guid) and E:NotSecretValue(msg) then
 		messageToGUID[msg] = guid
 		messageToSender[msg] = Ambiguate(sender, 'none')
 	end

@@ -33,7 +33,7 @@ General.args.useAltKey = ACH:Toggle(L["Use Alt Key"], L["Require holding the Alt
 General.args.autoClosePetBattleLog = ACH:Toggle(L["Auto-Close Pet Battle Log"], nil, 9, nil, nil, nil, nil, nil, nil, E.Classic)
 General.args.useBTagName = ACH:Toggle(L["Use Real ID BattleTag"], L["Use BattleTag instead of Real ID names in chat. Chat History will always use BattleTag."], 10)
 General.args.socialQueueMessages = ACH:Toggle(L["Quick Join Messages"], L["Show clickable Quick Join messages inside of the chat."], 11, nil, nil, nil, nil, nil, nil, not E.Retail)
-General.args.copyChatLines = ACH:Toggle(L["Copy Chat Lines"], L["Adds an arrow infront of the chat lines to copy the entire line."], 12)
+General.args.copyChatLines = ACH:Toggle(L["Copy Chat Lines"], L["Adds an arrow in front of the chat lines to copy the entire line."], 12)
 General.args.hideCopyButton = ACH:Toggle(L["Hide Copy Button"], nil, 13, nil, nil, nil, nil, function(_, value) E.db.chat.hideCopyButton = value CH:ToggleCopyChatButtons() end)
 General.args.mentorshipIcon = ACH:Toggle(L["Mentorship Icon"], L["Display Mentorship status icon before names."], 14, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.args.recentAllyIcon = ACH:Toggle(L["Recent Ally Icon"], L["Display Recent Ally icon after names in chat (excludes whispers and emotes)."], 15, nil, nil, nil, nil, nil, nil, not E.Retail)
@@ -54,7 +54,7 @@ General.args.tabSelection.args.tabSelector = ACH:Select(L["Selector Style"], nil
 General.args.tabSelection.args.tabSelectorColor = ACH:Color(L["Selector Color"], nil, 4, nil, nil, function(info) local t, d = E.db.chat[info[#info]], P.chat[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.chat[info[#info]] t.r, t.g, t.b = r, g, b E:UpdateMedia() end, function() return E.db.chat.tabSelector == 'NONE' end)
 
 General.args.historyGroup = ACH:Group(L["History"], nil, 65)
-General.args.historyGroup.args.chatHistory = ACH:Toggle(L["Enable"], L["Log the main chat frames history. So when you reloadui or log in and out you see the history from your last session."], 1)
+General.args.historyGroup.args.chatHistory = ACH:Toggle(L["Enable"], L["Log the main chat frames history. So when you reloadui or log in and out, you see the history from your last session."], 1)
 General.args.historyGroup.args.resetHistory = ACH:Execute(L["Reset History"], nil, 2, function() CH:ResetHistory() end)
 General.args.historyGroup.args.historySize = ACH:Range(L["History Size"], nil, 3, { min = 10, max = 500, step = 1 }, nil, nil, nil, function() return not E.db.chat.chatHistory end)
 General.args.historyGroup.args.showHistory = ACH:MultiSelect(L["Display Types"], nil, 4, { WHISPER = L["Whisper"], GUILD = L["Guild"], PARTY = L["Party"], RAID = L["Raid"], INSTANCE = L["Instance"], CHANNEL = L["Channel"], SAY = L["Say"], YELL = L["Yell"], EMOTE = L["Emote"] }, nil, nil, function(info, key) return E.db.chat[info[#info]][key] end, function(info, key, value) E.db.chat[info[#info]][key] = value end, function() return not E.db.chat.chatHistory end)

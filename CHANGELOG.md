@@ -1,3 +1,41 @@
+### Version 15.03 [ February 5th 2026 ]
+*   General
+    *   Unitframe and Nameplates have a new setting to adjust backdrop multiplier (under UF / NP > General > Multiplier).
+    *   Unitframe Health has new setting Invert Colors and it's backdrop logic adjusted (more setting combinations are fixed).
+    *   Unitframe Health by value and Class Health works together again (currently only for non retail).
+    *   Nameplate castbars will show timers again.
+    *   Nameplate new arrow style added named Bracket. (Thanks Barkskin)
+    *   Castbar for Nameplates and Unitframes now have an alpha channel (more useful on retail with the new layer).
+    *   Actionbar Desaturate Cooldowns works again.
+    *   Localize the Available Tags section. (Thanks fang2hou)
+*   Portraits
+    *   Yes, they are back in this build; we may move portraits into a plugin in the future.
+    *   Please don't use these if you have FPS issues, especially not on Raid frames.
+*   Classics
+    *   (TBC, Era) Totems for Air and Water were swapped.
+    *   (TBC, Wrath) Arena queue skin updated.
+*   Midnight
+    *   Aura status bars No Duration can be hidden again and Color by value now works.
+    *   Tags now obey the abbreviation setting. (Thanks fang2hou)
+    *   Damage meter skin added by fang2hou. (Thank you)
+    *   Reputation bar showing factions as Paragon when they aren't for that character.
+    *   Tags will now use the decimal setting (shortvalue variants).
+    *   Castbars will attempt to show the target again (when its not secret).
+    *   Unitframe Classbar Additional power for Ebon Might wont show for all Evokers.
+    *   Minimap off was changing the mask, this is not required for retail anymore.
+    *   Evoker Castbar sometimes getting stuck on Disintegrate, also fixed up the look a bit.
+    *   Cooldown Manager swipe layer adjusted to fit better.
+    *   Chat class colors should work under restrictions again.
+    *   House Editing would cause chat panel backdrops to be on wrong layer.
+*   Secret errors:
+    *   Chat secret error on line 2299
+    *   Chat bubble secret error on line 129
+    *   Tooltip error on line 740
+    *   Widget secret error on line 38
+    *   Tags secret error on line 87 or 96
+    *   Nameplate quest icons secret error on line 152
+    *   oUF unitGUID secret error on line 278
+
 ### Version 15.02 [ January 28th 2026 ]
 *   Classic loading issue
 

@@ -112,6 +112,7 @@ V.skins = {
 		covenantRenown = true,
 		covenantSanctum = true,
 		craft = true,
+		damageMeter = true,
 		deathRecap = true,
 		debug = true,
 		dressingroom = true,

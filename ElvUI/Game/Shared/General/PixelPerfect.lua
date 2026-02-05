@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local min, max, format = min, max, format
+local format = format
 
 local _G = _G
 local UIParent = UIParent
@@ -90,7 +90,7 @@ function E:UIScale()
 end
 
 function E:PixelBestSize()
-	return max(0.4, min(1.15, E.perfect))
+	return E:Clamp(E.perfect, 0.4, 1.15)
 end
 
 function E:PixelScaleChanged(event)

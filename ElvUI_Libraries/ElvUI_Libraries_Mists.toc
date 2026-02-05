@@ -2,7 +2,7 @@
 ## Notes: Libraries that power ElvUI
 ## Author: Elv, Simpy
 ## Version: @project-version@
-## Interface: 50502
+## Interface: 50503
 ## OptionalDeps: LibHealComm-4.0
 ## X-oUF: ElvUF
 

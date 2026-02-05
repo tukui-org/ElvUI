@@ -34,7 +34,7 @@ function E:CooldownSwipe(cooldown) -- non retail
 end
 
 function E:CooldownTextures(cooldown, attach, texture, edge, swipe)
-	cooldown:SetInside(attach, attach and 0, attach and 0)
+	cooldown:SetInside(attach, attach and 0 or nil, attach and 0 or nil)
 
 	cooldown:SetDrawEdge(true)
 	cooldown:SetDrawSwipe(true)

@@ -130,10 +130,13 @@ local function UpdateColor(self, event, unit)
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer)
-		or ((element.colorClassPet or element.colorPetByUnitClass) and UnitPlayerControlled(unit) and not isPlayer) then
-		if element.colorPetByUnitClass then unit = unit == 'pet' and 'player' or gsub(unit, 'pet', '') end
-		local _, class = UnitClass(unit)
-		color = self.colors.class[class]
+	or ((element.colorClassPet or element.colorPetByUnitClass) and UnitPlayerControlled(unit) and not isPlayer) then
+		if element.colorPetByUnitClass then
+			unit = (unit == 'pet' and 'player') or gsub(unit, 'pet', '')
+		end
+
+		local _, className = UnitClass(unit)
+		color = self.colors.class[className]
 	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
 		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
 	elseif(element.colorReaction and UnitReaction(unit, 'player')) then

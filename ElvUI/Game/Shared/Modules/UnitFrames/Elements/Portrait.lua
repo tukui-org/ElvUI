@@ -2,9 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local rad = rad
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
+
 local CreateFrame = CreateFrame
+local UnitClass = UnitClass
+
+local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
 function UF:ModelAlphaFix(value)
 	local portrait = self.Portrait3D
@@ -16,8 +19,6 @@ function UF:ModelAlphaFix(value)
 end
 
 function UF:Construct_Portrait(frame, which)
-	if not false then return end -- dont allow portraits for now
-
 	local portrait
 
 	if which == 'texture' then
@@ -28,7 +29,6 @@ function UF:Construct_Portrait(frame, which)
 		backdrop:OffsetFrameLevel(nil, frame)
 		backdrop:SetTemplate(nil, nil, nil, nil, true)
 		portrait.backdrop = backdrop
-		portrait.useClassBase = true
 	else
 		portrait = CreateFrame('PlayerModel', nil, frame)
 		portrait:CreateBackdrop(nil, nil, nil, nil, true)
@@ -57,12 +57,24 @@ function UF:Configure_Portrait(frame)
 			frame.Portrait.backdrop:Hide()
 		end
 
+		if frame.Portrait3D then
+			frame.Portrait3D:ClearModel()
+		end
+
 		frame.Portrait = portrait -- then update the new one
 	end
 
 	portrait.backdrop:SetShown(frame.USE_PORTRAIT and not frame.USE_PORTRAIT_OVERLAY)
 	portrait:SetAlpha(frame.USE_PORTRAIT_OVERLAY and portrait.db.overlayAlpha or 1)
 	portrait:SetShown(frame.USE_PORTRAIT)
+
+	if portrait.db.style == 'Class' then
+		portrait:SetTexture(classIcon)
+		portrait.customTexture = classIcon
+	elseif portrait.db.style == '2D' then
+		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+		portrait.customTexture = nil
+	end
 
 	if frame.USE_PORTRAIT then
 		if not frame:IsElementEnabled('Portrait') then
@@ -122,13 +134,13 @@ function UF:Configure_Portrait(frame)
 	end
 end
 
-function UF:PortraitUpdate(unit, hasStateChanged, texCoords)
+function UF:PortraitUpdate(unit, hasStateChanged)
 	if not hasStateChanged then return end
 
-	if self.playerModel then
-		local db = self.db
-		if not db then return end
+	local db = self.db
+	if not db then return end
 
+	if self.playerModel then
 		if self.state then
 			self:SetCamDistanceScale(db.camDistanceScale or 2)
 			self:SetViewTranslation((db.xOffset or 0) * 100, (db.yOffset or 0) * 100)
@@ -143,12 +155,8 @@ function UF:PortraitUpdate(unit, hasStateChanged, texCoords)
 		-- handle the other settings
 		self:SetDesaturation(db.desaturation or 0)
 		self:SetPaused(db.paused or false)
-	elseif self.useClassBase then
-		if texCoords then
-			local left, right, top, bottom = unpack(texCoords)
-			self:SetTexCoord(left+0.02, right-0.02, top+0.02, bottom-0.02)
-		else
-			self:SetTexCoords()
-		end
+	elseif self.customTexture then
+		local _, className = UnitClass(unit)
+		self:SetTexCoord(E:GetClassCoords(className, true))
 	end
 end

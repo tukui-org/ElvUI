@@ -264,7 +264,8 @@ P.general = {
 	privateAuras = {
 		enable = true,
 		countdownFrame = true,
-		countdownNumbers = true,
+		countdownNumbers = false,
+		borderScale = 2,
 		icon = {
 			offset = 3,
 			point = 'LEFT',
@@ -316,8 +317,6 @@ P.general = {
 		countyOffset = 2,
 	},
 	cooldownManager = {
-		swipeColorSpell = { r = 0, g = 0, b = 0, a = 0.6 },
-		swipeColorAura = { r = 0, g = 1, b = 0.9, a = 0.6 },
 		nameFont = 'Expressway',
 		nameFontSize = 14,
 		nameFontOutline = 'OUTLINE',
@@ -699,6 +698,7 @@ local NP_PvPClassificationIndicator = {
 local NP_Portrait = {
 	enable = false,
 	position = 'RIGHT',
+	classicon = true,
 	specicon = E.Retail,
 	keepSizeRatio = true,
 	height = 28,
@@ -757,7 +757,6 @@ local NP_Castbar = {
 	hideSpellName = false,
 	hideTime = false,
 	smoothbars = false,
-	spellRename = true,
 	sourceInterrupt = true,
 	sourceInterruptClassColor = true,
 	castTimeFormat = 'CURRENT',
@@ -819,10 +818,10 @@ local NP_QuestIcon = {
 
 local NP_PrivateAuras = CopyTable(P.general.privateAuras)
 NP_PrivateAuras.enable = false
+NP_PrivateAuras.borderScale = 1
 NP_PrivateAuras.icon.size = 20
 NP_PrivateAuras.parent.point = 'BOTTOM'
 NP_PrivateAuras.duration.enable = false
-NP_PrivateAuras.countdownNumbers = false
 
 --NamePlate
 P.nameplates = {
@@ -843,6 +842,7 @@ P.nameplates = {
 	showFriendlyCombat = 'DISABLED',
 	statusbar = 'ElvUI Norm',
 	thinBorders = true,
+	multiplier = 0.35,
 	clickThrough = {
 		personal = false,
 		friendly = false,
@@ -881,9 +881,9 @@ P.nameplates = {
 		lowHealthColor = { r = 1, g = 1, b = 0.3, a = 1 },
 		lowHealthHalf = { r = 1, g = 0.3, b = 0.3, a = 1 },
 		tapped = { r = 0.6, g = 0.6, b = 0.6, a = 1 },
-		castColor = { r = 0.4, g = 0.4, b = 0.4, a = 1 },
-		castNoInterruptColor = { r = 0.78, g = 0.25, b = 0.25, a = 1 },
-		castInterruptedColor = { r = 0.20, g = 0.20, b = 0.20, a = 1 },
+		castColor = { r = 0.4, g = 0.4, b = 0.4, a = 0.9 },
+		castNoInterruptColor = { r = 0.78, g = 0.25, b = 0.25, a = 0.9 },
+		castInterruptedColor = { r = 0.20, g = 0.20, b = 0.20, a = 0.9 },
 		castbarDesaturate = true,
 		chargingRunes = true,
 		runeBySpec = true,
@@ -1640,7 +1640,6 @@ local UF_Castbar = {
 	iconSize = 42,
 	iconXOffset = -10,
 	iconYOffset = 0,
-	spellRename = true,
 	insideInfoPanel = true,
 	overlayOnFrame = 'None',
 	displayTarget = false,
@@ -1952,8 +1951,10 @@ local UF_ClassAdditional = {
 
 local UF_PrivateAuras = CopyTable(P.general.privateAuras)
 UF_PrivateAuras.enable = false
+UF_PrivateAuras.borderScale = 1
 UF_PrivateAuras.icon.size = 24
 UF_PrivateAuras.parent.point = 'BOTTOM'
+UF_PrivateAuras.countdownNumbers = true
 UF_PrivateAuras.duration.enable = false
 
 --UnitFrame
@@ -1965,6 +1966,7 @@ P.unitframe = {
 	debuffHighlighting = 'FILL',
 	targetOnMouseDown = false,
 	maxAllowedGroups = true,
+	multiplier = 0.35,
 	modifiers = {
 		SHIFT = 'NONE',
 		CTRL = 'NONE',
@@ -2025,11 +2027,12 @@ P.unitframe = {
 		runeBySpec = true,
 		invertCastBar = false,
 		invertAurabars = false,
+		invertHealth = false,
 		invertPower = false,
 		invertClasspower = false,
-		castColor = { r = 0.40, g = 0.40, b = 0.40, a = 1 },
-		castNoInterrupt = { r = 0.78, g = 0.25, b = 0.25, a = 1 },
-		castInterruptedColor = { r = 0.20, g = 0.20, b = 0.20, a = 1 },
+		castColor = { r = 0.40, g = 0.40, b = 0.40, a = 0.9 },
+		castNoInterrupt = { r = 0.78, g = 0.25, b = 0.25, a = 0.9 },
+		castInterruptedColor = { r = 0.20, g = 0.20, b = 0.20, a = 0.9 },
 		castClassColor = false,
 		castReactionColor = false,
 		health = { r = 0.31, g = 0.31, b = 0.31, a = 1 },
