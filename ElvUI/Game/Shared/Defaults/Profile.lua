@@ -265,6 +265,7 @@ P.general = {
 		enable = true,
 		countdownFrame = true,
 		countdownNumbers = true,
+		borderScale = 2,
 		icon = {
 			offset = 3,
 			point = 'LEFT',
@@ -817,6 +818,7 @@ local NP_QuestIcon = {
 
 local NP_PrivateAuras = CopyTable(P.general.privateAuras)
 NP_PrivateAuras.enable = false
+NP_PrivateAuras.borderScale = 1
 NP_PrivateAuras.icon.size = 20
 NP_PrivateAuras.parent.point = 'BOTTOM'
 NP_PrivateAuras.duration.enable = false
@@ -1950,6 +1952,7 @@ local UF_ClassAdditional = {
 
 local UF_PrivateAuras = CopyTable(P.general.privateAuras)
 UF_PrivateAuras.enable = false
+UF_PrivateAuras.borderScale = 1
 UF_PrivateAuras.icon.size = 24
 UF_PrivateAuras.parent.point = 'BOTTOM'
 UF_PrivateAuras.duration.enable = false

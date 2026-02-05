@@ -260,6 +260,7 @@ local function GetUnitSettings(unit, name)
 	group.args.privateAuras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.privateAuras.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 	group.args.privateAuras.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
+	group.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 5, { min = -5, max = 10, step = 0.01 })
 
 	group.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.nameplates.units[unit].privateAuras.icon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].privateAuras.icon[info[#info]] = value NP:ConfigureAll() end)
 	group.args.privateAuras.args.icon.args.point = ACH:Select(L["Direction"], nil, 1, C.Values.EdgePositions)
