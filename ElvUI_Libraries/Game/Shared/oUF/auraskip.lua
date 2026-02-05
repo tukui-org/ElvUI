@@ -199,24 +199,15 @@ end
 function oUF:ShouldSkipAuraFilter(aura, filter)
 	if not aura then
 		return true
+	elseif filter == 'HELPFUL' then
+		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
+	elseif filter == 'HARMFUL' then
+		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
+	elseif filter == 'RAID' then
+		return (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
+	else -- hello?
+		return true
 	end
-
-	local helpful = (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
-	if filter == 'HELPFUL' then
-		return helpful
-	end
-
-	local harmful = (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
-	if filter == 'HARMFUL' then
-		return harmful
-	end
-
-	local raid = (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
-	if filter == 'RAID' then
-		return raid
-	end
-
-	return true
 end
 
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
