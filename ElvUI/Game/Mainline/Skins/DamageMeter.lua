@@ -225,7 +225,7 @@ function S:DamageMeter_RepositionResizeButton()
 	ResizeButton:Size(14)
 	ResizeButton:ClearAllPoints()
 
-	local isRightSide = self.IsRightSide and self:IsRightSide() or true
+	local isRightSide = not self.IsRightSide or self:IsRightSide()
 	local rotation = pi * (isRightSide and 1.25 or 0.75)
 	local point = isRightSide and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
 	local xOffset = isRightSide and -4 or 4
