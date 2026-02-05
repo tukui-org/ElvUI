@@ -18,7 +18,8 @@ local IsAuraFilteredOutByInstanceID = C_UnitAuras.IsAuraFilteredOutByInstanceID
 local auraInfo = {}
 local auraFiltered = {
 	HELPFUL = {},
-	HARMFUL = {}
+	HARMFUL = {},
+	RAID = {}
 }
 
 oUF.AuraInfo = auraInfo -- export it, not filtered
@@ -200,11 +201,23 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 		return true
 	end
 
-	if filter == 'HELPFUL' then
-		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
-	else
-		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
+	local raid = (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
+	if filter == 'RAID' then
+		return raid
 	end
+
+	local helpful = (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
+	if filter == 'HELPFUL' then
+		return helpful
+	end
+
+	local harmful = (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
+	if filter == 'HARMFUL' then
+		return harmful
+	end
+
+	-- assume its both
+	return helpful or harmful
 end
 
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
