@@ -28,21 +28,24 @@ end
 
 function LO:Initialize()
 	LO.Initialized = true
+
 	LO:CreateChatPanels()
 	LO:CreateMinimapPanels()
 	LO:SetDataPanelStyle()
 
 	LO.BottomPanel = CreateFrame('Frame', 'ElvUI_BottomPanel', E.UIParent)
 	LO.BottomPanel:SetScript('OnShow', LO.Panel_OnShow)
-	E.FrameLocks.ElvUI_BottomPanel = true
 	LO.Panel_OnShow(LO.BottomPanel)
 	LO:UpdateBottomPanel()
+
+	E.FrameLocks.ElvUI_BottomPanel = true
 
 	LO.TopPanel = CreateFrame('Frame', 'ElvUI_TopPanel', E.UIParent)
 	LO.TopPanel:SetScript('OnShow', LO.Panel_OnShow)
 	LO.Panel_OnShow(LO.TopPanel)
-	E.FrameLocks.ElvUI_TopPanel = true
 	LO:UpdateTopPanel()
+
+	E.FrameLocks.ElvUI_TopPanel = true
 end
 
 function LO:UpdateBottomPanel()
