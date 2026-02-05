@@ -201,11 +201,6 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 		return true
 	end
 
-	local raid = (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
-	if filter == 'RAID' then
-		return raid
-	end
-
 	local helpful = (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
 	if filter == 'HELPFUL' then
 		return helpful
@@ -214,6 +209,11 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	local harmful = (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
 	if filter == 'HARMFUL' then
 		return harmful
+	end
+
+	local raid = (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
+	if filter == 'RAID' then
+		return raid
 	end
 
 	return true
