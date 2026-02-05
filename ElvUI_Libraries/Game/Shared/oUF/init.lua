@@ -6,6 +6,7 @@ local mod = mod
 local unpack = unpack
 local issecretvalue = issecretvalue
 local issecrettable = issecrettable
+local canaccessvalue = canaccessvalue
 
 local _, _, _, wowtoc = GetBuildInfo()
 oUF.wowtoc = wowtoc
@@ -62,6 +63,14 @@ do -- API for secrets by Simpy
 
 	function oUF:NotSecretTable(object)
 		return not issecrettable or not issecrettable(object)
+	end
+
+	function oUF:CanAccessValue(value)
+		return not canaccessvalue or canaccessvalue(value)
+	end
+
+	function oUF:CanNotAccessValue(value)
+		return canaccessvalue and not canaccessvalue(value)
 	end
 
 	function oUF:HasSecretValues(object)

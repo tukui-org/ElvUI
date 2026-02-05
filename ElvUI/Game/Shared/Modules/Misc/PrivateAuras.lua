@@ -41,6 +41,7 @@ local tempAnchor = {
 	durationAnchor = tempDuration,
 
 	iconInfo = {
+		borderScale = 1,
 		iconWidth = 32,
 		iconHeight = 32,
 		iconAnchor = {
@@ -70,6 +71,9 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	tempAnchor.showCountdownFrame = db.countdownFrame
 	tempAnchor.showCountdownNumbers = db.countdownNumbers
 
+	local borderScale = db.borderScale
+	if not borderScale then borderScale = 1 end
+
 	local iconSize = db.icon.size
 	if not iconSize then iconSize = 32 end
 
@@ -80,6 +84,7 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	if not durationPoint then durationPoint = 'CENTER' end
 
 	local icon = tempAnchor.iconInfo
+	icon.borderScale = borderScale
 	icon.iconWidth = iconSize
 	icon.iconHeight = iconSize
 	icon.iconAnchor.relativeTo = aura

@@ -697,7 +697,9 @@ end
 
 function M:Initialize()
 	if not E.private.general.minimap.enable then
-		M:SetMinimapMask(false)
+		if not E.Retail then
+			M:SetMinimapMask(false)
+		end
 
 		return
 	else

@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 71 -- the real minor version is 143
+local MINOR_VERSION = 72 -- the real minor version is 143
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -277,6 +277,7 @@ function lib:CreateButton(id, name, header, config)
 		button:RegisterForClicks("AnyUp")
 	end
 
+	button.cooldown:SetSwipeColor(0, 0, 0, 0.8)
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
 	button.cooldown:SetAllPoints()

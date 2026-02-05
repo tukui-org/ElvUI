@@ -32,18 +32,19 @@ function DB:ThreatBar_GetLargestThreatOnList(percent)
 end
 
 function DB:ThreatBar_GetColor(unit)
-	local unitReaction = UnitReaction(unit, 'player')
 	local _, unitClass = UnitClass(unit)
-	if UnitIsPlayer(unit) then
-		local class = E:ClassColor(unitClass)
-		if not class then return 194, 194, 194 end
-		return class.r*255, class.g*255, class.b*255
-	elseif unitReaction then
-		local reaction = ElvUF.colors.reaction[unitReaction]
-		return reaction.r*255, reaction.g*255, reaction.b*255
-	else
-		return 194, 194, 194
+	local classColor = unitClass and UnitIsPlayer(unit) and E:ClassColor(unitClass)
+	if classColor then
+		return classColor.r*255, classColor.g*255, classColor.b*255
 	end
+
+	local unitReaction = UnitReaction(unit, 'player')
+	local reaction = unitReaction and ElvUF.colors.reaction[unitReaction]
+	if reaction then
+		return reaction.r*255, reaction.g*255, reaction.b*255
+	end
+
+	return 194, 194, 194
 end
 
 function DB:ThreatBar_Update()

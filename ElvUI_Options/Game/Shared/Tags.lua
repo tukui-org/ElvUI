@@ -26,7 +26,7 @@ end
 
 local groups = {}
 for tag in next, ElvUF.Tags.Methods do
-	local info = E.TagInfo[tag] or E:AddTagInfo(tag, L["Miscellaneous"])
+	local info = E.TagInfo[tag] or E:AddTagInfo(tag)
 
 	local category = info.category
 	local group = TagGroup.args[category]

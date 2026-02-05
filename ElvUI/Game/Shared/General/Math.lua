@@ -77,7 +77,7 @@ do -- Thanks ls-
 		if decimal > 3 then decimal = 3 end
 
 		local signi = (asian and asianDivisors) or westernDivisors[decimal]
-		local factor = (asian and 100) or (10 ^ decimal)
+		local factor = (asian and 10) or (10 ^ decimal)
 
 		for i = 1, (asian and 3) or 4 do
 			local unit = units[i]

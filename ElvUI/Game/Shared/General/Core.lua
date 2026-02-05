@@ -490,7 +490,7 @@ function E:UpdateBorderColors()
 end
 
 function E:UpdateBackdropColors()
-	local r, g, b = unpack(E.media.backdropcolor)
+	local r, g, b, a = unpack(E.media.backdropcolor)
 	local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
 
 	for frame in pairs(E.frames) do
@@ -499,7 +499,7 @@ function E:UpdateBackdropColors()
 				if frame.callbackBackdropColor then
 					frame:callbackBackdropColor()
 				elseif frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b)
+					frame:SetBackdropColor(r, g, b, frame.customBackdropAlpha or a)
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
 				end
@@ -515,7 +515,7 @@ function E:UpdateBackdropColors()
 				if frame.callbackBackdropColor then
 					frame:callbackBackdropColor()
 				elseif frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b)
+					frame:SetBackdropColor(r, g, b, frame.customBackdropAlpha or a)
 				elseif frame.template == 'Transparent' then
 					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
 				end

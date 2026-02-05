@@ -29,6 +29,8 @@ do
 
 	local pipMapAlpha = {2, 3, 4, 1, 5}
 	function UF:UpdatePipStep(stage) -- self is element
+		if not self.Pips then return end
+
 		local onlyThree = (stage == 3 and self.numStages == 3) and 4
 		local pip = self.Pips[pipMapAlpha[onlyThree or stage]]
 		if not pip then return end
@@ -39,19 +41,34 @@ do
 	end
 end
 
+function UF:PostUpdatePips(stages)
+	if not self.Pips or not self.setupPips then
+		return -- we only need this once
+	end
+
+	self.setupPips = nil -- clear this
+
+	for stage in next, stages do
+		local pip = self.Pips[stage]
+		if not pip then break end
+
+		UF.PostUpdatePip(self, pip, stage)
+	end
+end
+
 function UF:PostUpdatePip(pip, stage, stages) -- self is element
 	-- pip.texture:SetAlpha(pip.pipAlpha or 1)
 	-- currently UpdatePipStep is broken: pip.pipAlpha or 1
 
 	local reverse = self:GetReverseFill()
-	local nextPip = self.Pips[stage + 1]
+	local nextPip = self.Pips and self.Pips[stage + 1]
 	local anchor = nextPip or self
 	if reverse then
-		pip.texture:Point('RIGHT', -3, 0)
-		pip.texture:Point('LEFT', anchor, 3, 0)
+		pip.texture:Point('LEFT', anchor, 4, 0)
+		pip.texture:Point('RIGHT', -4, 0)
 	else
-		pip.texture:Point('LEFT', 3, 0)
-		pip.texture:Point('RIGHT', anchor, -3, 0)
+		pip.texture:Point('LEFT', 4, 0)
+		pip.texture:Point('RIGHT', anchor, -4, 0)
 	end
 end
 
@@ -59,7 +76,9 @@ function UF:CreatePip(stage)
 	local pip = CreateFrame('Frame', nil, self, 'CastingBarFrameStagePipTemplate')
 
 	-- clear the original art (the line)
-	pip.BasePip:SetAlpha(0)
+	if pip.BasePip then
+		pip.BasePip:SetAlpha(0)
+	end
 
 	-- create the texture
 	pip.texture = pip:CreateTexture(nil, 'ARTWORK', nil, 2)
@@ -85,7 +104,9 @@ end
 
 function UF:BuildPip(stage)
 	local pip = UF.CreatePip(self, stage)
+
 	UF:Update_StatusBar(pip.texture)
+
 	return pip
 end
 
@@ -104,9 +125,11 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.PostCastFail = UF.PostCastFail
 	castbar.UpdatePipStep = UF.UpdatePipStep
 	castbar.PostUpdatePip = UF.PostUpdatePip
+	castbar.PostUpdatePips = UF.PostUpdatePips
 	castbar.CreatePip = UF.BuildPip
 	castbar.TickLines = {}
 
+	castbar.setupPips = true
 	castbar:SetClampedToScreen(true)
 	castbar:CreateBackdrop(nil, nil, nil, nil, true)
 
@@ -125,20 +148,21 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Text:SetWordWrap(false)
 	castbar.Text:FontTemplate()
 
+	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
+	castbar.Shield:SetTexture(E.media.blankTex)
+	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
+
 	--Set to castbar.SafeZone
-	castbar.LatencyTexture = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
+	castbar.LatencyTexture = castbar:CreateTexture(nil, 'OVERLAY', nil, 3)
 	castbar.LatencyTexture:SetTexture(E.media.blankTex)
 	castbar.LatencyTexture:SetVertexColor(0.69, 0.31, 0.31, 0.75)
 
-	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY', nil, 3)
+	-- ticks are overlay 4 (under spark)
+	castbar.Spark_ = castbar:CreateTexture(nil, 'OVERLAY', nil, 5)
 	castbar.Spark_:SetTexture(E.media.blankTex)
 	castbar.Spark_:SetVertexColor(0.9, 0.9, 0.9, 0.6)
 	castbar.Spark_:SetBlendMode('ADD')
 	castbar.Spark_:Width(2)
-
-	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 4)
-	castbar.Shield:SetTexture(E.media.blankTex)
-	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
 
 	castbar.bg = castbar:CreateTexture(nil, 'BORDER')
 	castbar.bg:SetTexture(E.media.blankTex)
@@ -196,8 +220,11 @@ function UF:Configure_Castbar(frame)
 
 	--Empowered
 	castbar.pipColor = UF.db.colors.empoweredCast
-	for stage, pip in next, castbar.Pips do
-		UF:CastBar_UpdatePip(castbar, pip, stage)
+
+	if castbar.Pips then
+		for stage, pip in next, castbar.Pips do
+			UF:CastBar_UpdatePip(castbar, pip, stage)
+		end
 	end
 
 	--Latency
@@ -335,7 +362,10 @@ function UF:Configure_Castbar(frame)
 		E:UpdateClassColor(customColor.colorNoInterrupt)
 		E:UpdateClassColor(customColor.colorInterrupted)
 
-		castbar.Shield:SetVertexColor(customColor.colorNoInterrupt.r, customColor.colorNoInterrupt.g, customColor.colorNoInterrupt.b)
+		if E.Retail then
+			castbar.Shield:SetVertexColor(customColor.colorNoInterrupt.r, customColor.colorNoInterrupt.g, customColor.colorNoInterrupt.b, customColor.colorNoInterrupt.a)
+			castbar.Shield.alphaValue = customColor.colorNoInterrupt.a
+		end
 
 		castbar.custom_backdrop = customColor.useCustomBackdrop and E:UpdateClassColor(customColor.colorBackdrop)
 		UF:ToggleTransparentStatusBar(customColor.transparent, castbar, castbar.bg, nil, customColor.invertColors, db.reverse)
@@ -343,8 +373,10 @@ function UF:Configure_Castbar(frame)
 		castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and E:UpdateClassColor(UF.db.colors.castbar_backdrop)
 		UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar, db.reverse)
 
-
-		castbar.Shield:SetVertexColor(UF.db.colors.castNoInterrupt.r, UF.db.colors.castNoInterrupt.g, UF.db.colors.castNoInterrupt.b)
+		if E.Retail then
+			castbar.Shield:SetVertexColor(UF.db.colors.castNoInterrupt.r, UF.db.colors.castNoInterrupt.g, UF.db.colors.castNoInterrupt.b, UF.db.colors.castNoInterrupt.a)
+			castbar.Shield.alphaValue = UF.db.colors.castNoInterrupt.a
+		end
 	end
 
 	if castbar.Holder.mover then
@@ -452,7 +484,7 @@ function UF:SetCastTicks(frame, numTicks)
 	for i = 1, numTicks - 1 do
 		local tick = frame.TickLines[i]
 		if not tick then
-			tick = frame:CreateTexture(nil, 'OVERLAY')
+			tick = frame:CreateTexture(nil, 'OVERLAY', nil, 4)
 			tick:SetTexture(E.media.blankTex)
 			tick:Width(frame.tickWidth)
 			frame.TickLines[i] = tick

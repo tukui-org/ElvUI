@@ -25,13 +25,13 @@ function NP:Castbar_CheckInterrupt(unit)
 
 	local notInterruptible = E:NotSecretValue(self.notInterruptible) and self.notInterruptible
 	if notInterruptible and UnitCanAttack('player', unit) then
-		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
+		self:SetStatusBarColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, NP.db.colors.castNoInterruptColor.a)
 
 		if self.Icon and NP.db.colors.castbarDesaturate then
 			self.Icon:SetDesaturated(true)
 		end
 	else
-		self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
+		self:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, NP.db.colors.castColor.a)
 
 		if self.Icon then
 			self.Icon:SetDesaturated(false)
@@ -224,7 +224,7 @@ function NP:Construct_Castbar(nameplate)
 	castbar.TargetText:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
 	castbar.TargetText:SetJustifyH('LEFT')
 
-	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 4)
+	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
 	castbar.Shield:SetTexture(castbarTexture)
 	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
 
@@ -247,7 +247,7 @@ function NP:Construct_Castbar(nameplate)
 		castbar.TargetText:SetText(E.myname)
 		castbar.Time:SetText('3.1')
 		castbar.Icon:SetTexture([[Interface\Icons\Achievement_Character_Pandaren_Female]])
-		castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b)
+		castbar:SetStatusBarColor(NP.db.colors.castColor.r, NP.db.colors.castColor.g, NP.db.colors.castColor.b, NP.db.colors.castColor.a)
 	end
 
 	return castbar
@@ -343,12 +343,16 @@ function NP:Update_Castbar(nameplate)
 		end
 
 		local barTexture = castbar:GetStatusBarTexture()
-		castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b)
 		castbar.Shield:ClearAllPoints()
 		castbar.Shield:Point('RIGHT', barTexture)
 		castbar.Shield:Point('LEFT')
 		castbar.Shield:Point('BOTTOM')
 		castbar.Shield:Point('TOP')
+
+		if E.Retail then
+			castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, NP.db.colors.castNoInterruptColor.a)
+			castbar.Shield.alphaValue = NP.db.colors.castNoInterruptColor.a
+		end
 
 		if db.hideTime then
 			castbar.Time:Hide()

@@ -45,7 +45,7 @@ E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.locale = GetLocale()
 E.oUF = oUF
 
--- moved this to oUF relink it so it works on E
+-- moved this to oUF but relink it
 E.ColorGradient = oUF.ColorGradient
 E.IsSecretValue = oUF.IsSecretValue
 E.IsSecretTable = oUF.IsSecretTable
@@ -53,6 +53,8 @@ E.NotSecretValue = oUF.NotSecretValue
 E.NotSecretTable = oUF.NotSecretTable
 E.HasSecretValues = oUF.HasSecretValues
 E.NoSecretValues = oUF.NoSecretValues
+E.CanAccessValue = oUF.CanAccessValue
+E.CanNotAccessValue = oUF.CanNotAccessValue
 
 Engine[1] = E
 Engine[2] = {}
@@ -137,7 +139,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.02, '15.02-git', nil, true
+		return 15.03, '15.03-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''

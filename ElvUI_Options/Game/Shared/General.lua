@@ -316,9 +316,6 @@ blizz.addonCompartment.args.fontGroup.inline = true
 blizz.cooldownManager = ACH:Group(L["Cooldown Manager"], nil, 80, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateViewers() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
 local cdManager = blizz.cooldownManager.args
 
-cdManager.swipeColorSpell = ACH:Color(L["Swipe: Spell"], nil, 1, true, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a S:CooldownManager_UpdateViewers() end)
-cdManager.swipeColorAura = ACH:Color(L["Swipe: Aura"], nil, 2, true, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a S:CooldownManager_UpdateViewers() end)
-
 cdManager.nameGroup = ACH:Group(L["Name"], nil, 10)
 cdManager.nameGroup.args.nameFontColor = ACH:Color(L["COLOR"], nil, 1, nil, nil, function(info) local t = E.db.general.cooldownManager[info[#info]] local d = P.general.cooldownManager[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.general.cooldownManager[info[#info]] t.r, t.g, t.b = r, g, b S:CooldownManager_UpdateViewers() end)
 

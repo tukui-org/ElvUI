@@ -1716,13 +1716,13 @@ function AB:LAB_ButtonUpdate(button)
 end
 
 function AB:LAB_CooldownDone(button)
-	AB:SetButtonDesaturation(button, 0, 0)
+	AB:SetButtonDesaturation(button)
 end
 
 function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	if button._state_type == 'action' then
 		if info then
-			AB:SetButtonDesaturation(button, info.startTime or 0, info.duration or 0)
+			AB:SetButtonDesaturation(button, info.startTime, info.duration)
 		else
 			AB:SetButtonDesaturation(button, start, duration)
 		end
