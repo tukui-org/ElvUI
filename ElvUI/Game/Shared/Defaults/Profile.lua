@@ -822,7 +822,6 @@ NP_PrivateAuras.borderScale = 1
 NP_PrivateAuras.icon.size = 20
 NP_PrivateAuras.parent.point = 'BOTTOM'
 NP_PrivateAuras.duration.enable = false
-NP_PrivateAuras.countdownNumbers = false
 
 --NamePlate
 P.nameplates = {
