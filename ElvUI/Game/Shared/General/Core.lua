@@ -283,19 +283,20 @@ function E:SetColorTable(t, data)
 		t = E:GetColorTable(data)
 	end
 
-	if not t.GetRGB then
-		Mixin(t, ColorMixin)
-	end
-
 	return t
 end
 
-function E:VerifyColorTable(data)
+function E:VerifyColorTable(data, mixed)
 	-- we just need to verify all the values exist or assume they are meant to be one
 	if not data.r or (data.r > 1 or data.r < 0) then data.r = 1 end
 	if not data.g or (data.g > 1 or data.g < 0) then data.g = 1 end
 	if not data.b or (data.b > 1 or data.b < 0) then data.b = 1 end
 	if not data.a or (data.a > 1 or data.a < 0) then data.a = 1 end
+
+	-- verify the object is mixed
+	if mixed and not data.GetRGB then
+		Mixin(data, ColorMixin)
+	end
 end
 
 function E:NewColorTable(r, g, b, a)
@@ -311,13 +312,13 @@ function E:NewColorTable(r, g, b, a)
 end
 
 function E:UpdateColorTable(data)
-	E:VerifyColorTable(data)
+	E:VerifyColorTable(data, true)
 
 	return data.r, data.g, data.b, data.a
 end
 
 function E:GetColorTable(data)
-	E:VerifyColorTable(data)
+	E:VerifyColorTable(data, true)
 
 	local r, g, b, a = data.r, data.g, data.b, data.a
 	return { r, g, b, a, r = r, g = g, b = b, a = a }
