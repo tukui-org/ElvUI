@@ -844,7 +844,6 @@ P.nameplates = {
 	thinBorders = true,
 	multiplier = 0.35,
 	clickThrough = {
-		personal = false,
 		friendly = false,
 		enemy = false,
 	},
