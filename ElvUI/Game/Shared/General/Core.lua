@@ -625,6 +625,14 @@ do
 			'Chattynator',
 			'Glass'
 		},
+		Cooldown = {
+			info = {
+				enabled = function() return E.db.cooldown.enable end,
+				accept = function() E.db.cooldown.enable = false; ReloadUI() end,
+				name = 'ElvUI Cooldown Text'
+			},
+			'OmniCC'
+		},
 		NamePlates = {
 			info = {
 				enabled = function() return E.private.nameplates.enable end,
