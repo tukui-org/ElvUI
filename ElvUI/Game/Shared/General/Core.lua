@@ -318,10 +318,12 @@ function E:UpdateColorTable(data)
 end
 
 function E:GetColorTable(data)
-	E:VerifyColorTable(data, true)
-
 	local r, g, b, a = data.r, data.g, data.b, data.a
-	return { r, g, b, a, r = r, g = g, b = b, a = a }
+	local color = { r, g, b, a, r = r, g = g, b = b, a = a }
+
+	E:VerifyColorTable(color, true)
+
+	return color
 end
 
 function E:UpdateMedia(mediaType)
