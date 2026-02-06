@@ -1079,12 +1079,6 @@ function NP:Initialize()
 
 	NP:HideInterfaceOptions()
 	NP:SetCVars()
-
-	-- Temporary implementation
-	-- Midnight: Blizzard always resets friendly npc nameplates to enabled on login, this is a fix to prevent that.
-	if E.db.nameplates.persistentFriendlyNP and E.Retail then
-		E:SetCVar('nameplateShowFriendlyNpcs', 0)
-	end
 end
 
 E:RegisterModule(NP:GetName())
