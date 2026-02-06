@@ -239,7 +239,12 @@ end
 function E:ClassColor(class, usePriestColor)
 	if not class then return end
 
-	local color = (_G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class]) or _G.RAID_CLASS_COLORS[class]
+	local custom = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class]
+	if custom then -- make sure the custom table is using ColorMixin
+		E:VerifyColorTable(custom, true)
+	end
+
+	local color = custom or _G.RAID_CLASS_COLORS[class]
 	if type(color) ~= 'table' then return end
 
 	if not color.colorStr then
