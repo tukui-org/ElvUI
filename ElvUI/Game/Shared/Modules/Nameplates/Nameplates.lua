@@ -875,6 +875,12 @@ function NP:NamePlateCallBack(event, unit)
 	end
 end
 
+function NP:CVAR_UPDATE(_, cvar, value)
+	if cvar == 'nameplateShowFriendlyNpcs' then
+		NP.db.visibility.friendly.npcs = (value == "1")
+	end
+end
+
 local optionsTable = {
 	'EnemyMinus',
 	'EnemyMinions',
@@ -1072,6 +1078,7 @@ function NP:Initialize()
 	NP:RegisterEvent('UNIT_MAXHEALTH', 'NamePlateCallBack')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
+	NP:RegisterEvent('CVAR_UPDATE')
 
 	if not E.Retail then
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
