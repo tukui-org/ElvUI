@@ -24,7 +24,8 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 
 local _, ns = ...
 local oUF = ns.oUF
-local SUMMON_ICON_PREFIX = oUF.isRetail and 'RaidFrame-Icon-' or 'Raid-Icon-'
+
+local RESURRECT_ICON = oUF.isRetail and [[Interface\RaidFrame\RaidFrame-Icon-Rez]] or [[Interface\RaidFrame\Raid-Icon-Rez]]
 
 local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end
@@ -81,8 +82,8 @@ local function Enable(self)
 
 		self:RegisterEvent('INCOMING_RESURRECT_CHANGED', Path)
 
-		if(element:IsObjectType('Texture') and not element:GetAtlas()) then
-			element:SetAtlas(SUMMON_ICON_PREFIX .. 'Rez')
+		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+			element:SetTexture(RESURRECT_ICON)
 		end
 
 		return true
