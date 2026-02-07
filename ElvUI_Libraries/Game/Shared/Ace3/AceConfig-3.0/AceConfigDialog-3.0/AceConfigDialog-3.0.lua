@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 95 -- based off 92
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 96 -- based off 92
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -35,6 +35,56 @@ local PlaySound = PlaySound
 local Settings = Settings
 
 local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
+
+
+--[[
+	Localization of AceConfigRegistry-3.0-ElvUI
+]]
+
+local L = {
+    min = "Min",
+    max = "Max",
+    step = "Step",
+}
+
+local LOCALE = GetLocale()
+if LOCALE == "deDE" then
+    L["min"] = "Min"
+    L["max"] = "Max"
+    L["step"] = "Step"
+elseif LOCALE == "frFR" then
+    L["min"] = "Min"
+    L["max"] = "Max"
+    L["step"] = "Step"
+elseif LOCALE == "koKR" then
+    L["min"] = "최소값"
+    L["max"] = "최대값"
+    L["step"] = "간격"
+elseif LOCALE == "esES" or LOCALE == "esMX" then
+    L["max"] = "Max"
+    L["min"] = "Min"
+    L["step"] = "Step"
+elseif LOCALE == "zhTW" then
+    L["min"] = "最小值"
+    L["max"] = "最大值"
+    L["step"] = "增量"
+elseif LOCALE == "zhCN" then
+    L["min"] = "最小值"
+    L["max"] = "最大值"
+    L["step"] = "步长"
+elseif LOCALE == "ruRU" then
+    L["max"] = "Max"
+    L["min"] = "Min"
+    L["step"] = "Step"
+elseif LOCALE == "itIT" then
+    L["max"] = "Max"
+    L["min"] = "Min"
+    L["step"] = "Step"
+elseif LOCALE == "ptBR" then
+    L["max"] = "Max"
+    L["min"] = "Min"
+    L["step"] = "Step"
+end
 
 -- GLOBALS: CloseSpecialWindows
 
@@ -528,15 +578,15 @@ local function OptionOnMouseOver(widget, event)
 	local Min, Max, Step
 
 	if softText then
-		Min = (opt.min and "|cFFCCCCCCMin:|r "..(opt.isPercent and (opt.min*100).."%" or opt.min)) or ""
-		Max = (opt.max and "|cFFCCCCCCMax:|r "..(opt.isPercent and (opt.max*100).."%" or opt.max)) or ""
+		Min = (opt.min and "|cFFCCCCCC"..L["min"]..":|r "..(opt.isPercent and (opt.min*100).."%" or opt.min)) or ""
+		Max = (opt.max and "|cFFCCCCCC"..L["max"]..":|r "..(opt.isPercent and (opt.max*100).."%" or opt.max)) or ""
 		softText = Min ~= "" or Max ~= ""
 	end
 
 	if bigText then
 		local dec = opt.step and format("%f", opt.step):gsub('%.?0-$','')
 		local num = dec and tonumber(dec)
-		Step = (num and num > 0 and "|cFFCCCCCCStep:|r "..dec) or ""
+		Step = (num and num > 0 and "|cFFCCCCCC"..L["step"]..":|r "..dec) or ""
 		bigText = Step ~= ""
 	end
 
