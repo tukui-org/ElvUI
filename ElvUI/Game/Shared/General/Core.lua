@@ -281,6 +281,7 @@ function E:VerifyColorTable(color, mixed)
 	if not color.a or (color.a > 1 or color.a < 0) then color.a = 1 end
 
 	-- this is old compatibility. we should use RGBA instead
+	-- note: several places still unpack the color table
 	if color[1] ~= color.r then color[1] = color.r end
 	if color[2] ~= color.g then color[2] = color.r end
 	if color[3] ~= color.b then color[3] = color.r end
