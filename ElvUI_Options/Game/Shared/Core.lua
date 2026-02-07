@@ -423,7 +423,7 @@ for index, data in next, {
 	E.Options.args.info.args.main.args[data.key].focusSelect = true
 end
 
-local credits = ('*%s|r|cFFffffff below.  Made with|r |cFFff75dd<3|r |cFFffffffby the Tukui Community.|r'):gsub('*', E.InfoColor)
+local credits = (L["*%s|r|cFFffffff below.  Made with|r |cFFff75dd<3|r |cFFffffffby the Tukui Community.|r"]):gsub('*', E.InfoColor)
 E.Options.args.info.args.credits = ACH:Group(format(credits, L["Credits"]), nil, 10)
 E.Options.args.info.args.credits.inline = true
 E.Options.args.info.args.credits.args.string = ACH:Description(L["ELVUI_CREDITS"], 1, 'medium')
