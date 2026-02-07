@@ -7,13 +7,14 @@ on:
 
 jobs:
   release:
+    if: github.repository == 'tukui-org/ElvUI'
     name: Publish release to CDN
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
     steps:
       - name: Clone project
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
       - name: Workaround checkout issues
