@@ -108,7 +108,7 @@ function BL:DirtyTempRetailSolutionForPlayerPowerAltBar()
 		end
 	end)
 
-	hooksecurefunc(PlayerPowerBarAlt.statusFrame, "Hide", function(self)
+	hooksecurefunc(PlayerPowerBarAlt.statusFrame, 'Hide', function(self)
 		self:Show()
 	end)
 end
