@@ -707,6 +707,8 @@ do -- Module Copy
 		config.args.clickSize.name = L["Clickable Size"]
 		config.args.colors.name = L["Colors"]
 		config.args.visibility.name = L["Visibility"]
+		config.args.enviromentConditions.name = L["Environment Conditions"]
+		config.args.widgets.name = L["Widget"]
 
 		-- Modify Tables
 		config.args.filters = nil
