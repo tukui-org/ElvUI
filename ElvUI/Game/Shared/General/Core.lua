@@ -281,10 +281,10 @@ function E:VerifyColorTable(color, mixed)
 	if not color.a or (color.a > 1 or color.a < 0) then color.a = 1 end
 
 	-- this is old compatibility. we should use RGBA instead
-	if color[1] and (color[1] ~= color.r) then color[1] = color.r end
-	if color[2] and (color[2] ~= color.g) then color[2] = color.r end
-	if color[3] and (color[3] ~= color.b) then color[3] = color.r end
-	if color[4] and (color[4] ~= color.a) then color[4] = color.r end
+	if color[1] ~= color.r then color[1] = color.r end
+	if color[2] ~= color.g then color[2] = color.r end
+	if color[3] ~= color.b then color[3] = color.r end
+	if color[4] ~= color.a then color[4] = color.r end
 
 	-- verify if we need the object to be mixed
 	if mixed and not color.GetRGB then
