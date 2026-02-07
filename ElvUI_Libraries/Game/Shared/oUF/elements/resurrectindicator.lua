@@ -81,7 +81,7 @@ local function Enable(self)
 
 		self:RegisterEvent('INCOMING_RESURRECT_CHANGED', Path)
 
-		if(element:IsObjectType('Texture') and not element:GetTexture()) then
+		if(element:IsObjectType('Texture') and not element:GetAtlas()) then
 			element:SetAtlas(SUMMON_ICON_PREFIX .. 'Rez')
 		end
 
