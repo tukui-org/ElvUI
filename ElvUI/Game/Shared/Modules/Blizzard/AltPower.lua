@@ -103,12 +103,12 @@ function BL:DirtyTempRetailSolutionForPlayerPowerAltBar()
 
 	hooksecurefunc(bar, 'SetPoint', function(_, _, parent)
 		if parent ~= 'Temp_AltPowerBarHolder' then
-			PlayerPowerBarAlt:ClearAllPoints()
-			PlayerPowerBarAlt:SetPoint('CENTER', 'Temp_AltPowerBarHolder')
+			bar:ClearAllPoints()
+			bar:SetPoint('CENTER', 'Temp_AltPowerBarHolder')
 		end
 	end)
 
-	hooksecurefunc(PlayerPowerBarAlt.statusFrame, 'Hide', function(self)
+	hooksecurefunc(bar.statusFrame, 'Hide', function(self)
 		self:Show()
 	end)
 end
