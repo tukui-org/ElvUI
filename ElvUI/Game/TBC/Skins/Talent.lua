@@ -8,6 +8,7 @@ function S:Blizzard_TalentUI()
 
 	S:HandleFrame(_G.PlayerTalentFrame, true, nil, 11, -12, -32, 76)
 	S:HandleCloseButton(_G.PlayerTalentFrameCloseButton, _G.PlayerTalentFrame.backdrop)
+	S:HandleButton(_G.PlayerTalentFrameCancelButton)
 
 	for i = 1, 4 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])

@@ -54,7 +54,13 @@ S.Blizzard.Regions = {
 	'BottomRightTex',
 	'RightTex',
 	'MiddleTex',
-	'Center'
+	'Center',
+	'ArtOverlayFrame',
+	'FilligreeOverlay',
+	'PortraitOverlay',
+	'ScrollFrameBorder',
+	'ScrollUpBorder',
+	'ScrollDownBorder'
 }
 
 -- Depends on the arrow texture to be up by default.

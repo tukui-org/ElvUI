@@ -18,7 +18,8 @@ local IsAuraFilteredOutByInstanceID = C_UnitAuras.IsAuraFilteredOutByInstanceID
 local auraInfo = {}
 local auraFiltered = {
 	HELPFUL = {},
-	HARMFUL = {}
+	HARMFUL = {},
+	RAID = {}
 }
 
 oUF.AuraInfo = auraInfo -- export it, not filtered
@@ -198,12 +199,14 @@ end
 function oUF:ShouldSkipAuraFilter(aura, filter)
 	if not aura then
 		return true
-	end
-
-	if filter == 'HELPFUL' then
+	elseif filter == 'HELPFUL' then
 		return (oUF:NotSecretValue(aura.isHelpful) and not aura.isHelpful) or (not aura.auraIsHelpful)
-	else
+	elseif filter == 'HARMFUL' then
 		return (oUF:NotSecretValue(aura.isHarmful) and not aura.isHarmful) or (not aura.auraIsHarmful)
+	elseif filter == 'RAID' then
+		return (oUF:NotSecretValue(aura.isRaid) and not aura.isRaid) or (not aura.auraIsRaid)
+	else -- hello?
+		return true
 	end
 end
 

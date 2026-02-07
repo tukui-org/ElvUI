@@ -68,8 +68,9 @@ function S:DamageMeter_HandleBackground(window, background)
 	window.backdrop:NudgePoint(13, nil, nil, 'TOPLEFT')
 	window.backdrop:NudgePoint(-18, nil, nil, 'BOTTOMRIGHT')
 
-	-- Set initial alpha
-	window.backdrop:SetAlpha(window.backgroundAlpha or 0.5)
+	-- Set initial alpha; 100% will not set backgroundAlpha so default to 1
+	-- this copies the functionality of GetBackgroundAlpha
+	window.backdrop:SetAlpha(window.backgroundAlpha or 1)
 
 	-- Inherit background alpha changes from Blizzard Edit Mode
 	hooksecurefunc(background, 'SetAlpha', S.DamageMeter_BackdropSetAlpha)
@@ -225,7 +226,7 @@ function S:DamageMeter_RepositionResizeButton()
 	ResizeButton:Size(14)
 	ResizeButton:ClearAllPoints()
 
-	local isRightSide = self.IsRightSide and self:IsRightSide()
+	local isRightSide = not self.IsRightSide or self:IsRightSide()
 	local rotation = pi * (isRightSide and 1.25 or 0.75)
 	local point = isRightSide and 'BOTTOMRIGHT' or 'BOTTOMLEFT'
 	local xOffset = isRightSide and -4 or 4
@@ -258,6 +259,7 @@ function S:DamageMeter_HandleSessionWindow()
 	S:DamageMeter_HandleSettingsDropdown(self, self.SettingsDropdown)
 	S:DamageMeter_HandleSourceWindow(self, self.SourceWindow)
 	S:DamageMeter_HandleScrollBoxes(self)
+	S.DamageMeter_RepositionResizeButton(self)
 
 	self.IsSkinned = true
 end

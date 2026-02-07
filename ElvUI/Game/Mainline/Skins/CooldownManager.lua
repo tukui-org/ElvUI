@@ -119,9 +119,9 @@ function S:CooldownManager_SkinIcon(container, icon)
 			local texture = region:GetTexture()
 			local atlas = region:GetAtlas()
 
-			if texture == 6707800 then
+			if E:NotSecretValue(texture) and texture == 6707800 then
 				region:SetTexture(E.media.blankTex)
-			elseif atlas == 'UI-HUD-CoolDownManager-IconOverlay' then -- 6704514
+			elseif E:NotSecretValue(atlas) and atlas == 'UI-HUD-CoolDownManager-IconOverlay' then -- 6704514
 				region:SetAlpha(0)
 			end
 		end

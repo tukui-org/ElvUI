@@ -522,9 +522,8 @@ NamePlates.generalGroup.args.enviromentConditions.args.stackingEnabled = ACH:Tog
 NamePlates.generalGroup.args.enviromentConditions.args.stacking = ACH:MultiSelect(L["Stacking Plates"], nil, 31, envConditions, nil, nil, function(_, key) return E.db.nameplates.enviromentConditions.stackingNameplates[key] end, function(_, key, value) E.db.nameplates.enviromentConditions.stackingNameplates[key] = value NP:EnviromentConditionals() end, nil, function() return not E.db.nameplates.enviromentConditions.stackingEnabled end)
 
 NamePlates.generalGroup.args.clickThrough = ACH:Group(L["Click Through"], nil, 65, nil, function(info) return E.db.nameplates.clickThrough[info[#info]] end)
-NamePlates.generalGroup.args.clickThrough.args.personal = ACH:Toggle(L["Personal"], nil, 1, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateSelfClickThrough() end)
-NamePlates.generalGroup.args.clickThrough.args.friendly = ACH:Toggle(L["Friendly"], nil, 2, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateFriendlyClickThrough() end)
-NamePlates.generalGroup.args.clickThrough.args.enemy = ACH:Toggle(L["Enemy"], nil, 3, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateEnemyClickThrough() end)
+NamePlates.generalGroup.args.clickThrough.args.friendly = ACH:Toggle(L["Friendly"], nil, 2, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateClickThrough() end)
+NamePlates.generalGroup.args.clickThrough.args.enemy = ACH:Toggle(L["Enemy"], nil, 3, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateClickThrough() end)
 
 NamePlates.generalGroup.args.clickableRange = ACH:Group(L["Clickable Size"], nil, 70, nil, function(info) return E.db.nameplates.clickSize[info[#info]] end, function(info, value) E.db.nameplates.clickSize[info[#info]] = value NP:ConfigureAll() end)
 NamePlates.generalGroup.args.clickableRange.args.width = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = MAX_WIDTH, step = 1 }, nil, nil, nil, nil, not E.Retail)
