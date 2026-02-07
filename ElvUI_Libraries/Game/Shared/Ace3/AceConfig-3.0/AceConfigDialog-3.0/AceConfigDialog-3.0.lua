@@ -36,54 +36,31 @@ local Settings = Settings
 
 local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
 
-
 --[[
 	Localization of AceConfigRegistry-3.0-ElvUI
 ]]
 
-local L = {
-    min = "Min",
-    max = "Max",
-    step = "Step",
-}
+local L = {}
 
-local LOCALE = GetLocale()
-if LOCALE == "deDE" then
-    L["min"] = "Min"
-    L["max"] = "Max"
-    L["step"] = "Step"
-elseif LOCALE == "frFR" then
-    L["min"] = "Min"
-    L["max"] = "Max"
-    L["step"] = "Step"
-elseif LOCALE == "koKR" then
-    L["min"] = "최소값"
-    L["max"] = "최대값"
-    L["step"] = "간격"
-elseif LOCALE == "esES" or LOCALE == "esMX" then
-    L["max"] = "Max"
-    L["min"] = "Min"
-    L["step"] = "Step"
-elseif LOCALE == "zhTW" then
-    L["min"] = "最小值"
-    L["max"] = "最大值"
-    L["step"] = "增量"
-elseif LOCALE == "zhCN" then
-    L["min"] = "最小值"
-    L["max"] = "最大值"
-    L["step"] = "步长"
-elseif LOCALE == "ruRU" then
-    L["max"] = "Max"
-    L["min"] = "Min"
-    L["step"] = "Step"
-elseif LOCALE == "itIT" then
-    L["max"] = "Max"
-    L["min"] = "Min"
-    L["step"] = "Step"
-elseif LOCALE == "ptBR" then
-    L["max"] = "Max"
-    L["min"] = "Min"
-    L["step"] = "Step"
+do
+	local translations = {
+		koKR = { min = "최소값",	max = "최대값",	step = "간격" },
+		zhTW = { min = "最小值",	max = "最大值",	step = "增量" },
+		zhCN = { min = "最小值",	max = "最大值",	step = "步长" },
+		frFR = { min = "Min",		max = "Max",	step = "Pas"  },
+		ruRU = { min = "Мин",		max = "Макс",	step = "Шаг"  },
+		esES = { min = "Mín",		max = "Máx",	step = "Paso" },
+		esMX = { min = "Mín",		max = "Máx",	step = "Paso" },
+		ptBR = { min = "Mín",		max = "Máx",	step = "Passo" },
+		itIT = { min = "Min",		max = "Max",	step = "Passo" }
+	}
+
+	local LOCALE = GetLocale()
+	local data = translations[LOCALE] or {}
+
+	L.min  = data.min or "Min"
+	L.max  = data.max or "Max"
+	L.step = data.step or "Step"
 end
 
 -- GLOBALS: CloseSpecialWindows
