@@ -991,7 +991,7 @@ function NP:Initialize()
 		power = {}
 	}
 
-	NP.multiplier = 0.35
+	NP.multiplier = NP.db.multiplier or 0.35
 	NP.numPlates = 0
 
 	NP:UpdateColors()

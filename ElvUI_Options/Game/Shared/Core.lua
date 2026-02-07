@@ -601,6 +601,7 @@ do -- Module Copy
 		config.args.barPet.name = L["Pet Bar"]
 		config.args.stanceBar.name = L["Stance Bar"]
 		config.args.microbar.name = L["Micro Bar"]
+		config.args.totemBar.name = L["Totem Bar"]
 		config.args.extraActionButton.name = L["Boss Button"]
 		config.args.vehicleExitButton.name = L["Vehicle Exit"]
 		config.args.zoneActionButton.name = L["Zone Ability"]
@@ -627,9 +628,13 @@ do -- Module Copy
 		MC:AddConfigOptions(P.bags, config, 'bags')
 
 		config.args.ignoredItems = nil
+		config.args.shownBags = nil
+
 		config.args.colors.name = L["Colors"]
 		config.args.bagBar.name = L["Bag Bar"]
 		config.args.split.name = L["Split"]
+		config.args.spinner.name = L["Sort Spinner"]
+		config.args.autoToggle.name = L["Auto Toggle"]
 		config.args.vendorGrays.name = L["Vendor Grays"]
 
 		return config
@@ -641,6 +646,9 @@ do -- Module Copy
 
 		MC:AddConfigOptions(P.chat, config, 'chat')
 
+		config.args.channelAlerts.name = L["Channel Alerts"]
+		config.args.showHistory.name = L["Display Types"]
+
 		return config
 	end
 
@@ -649,6 +657,19 @@ do -- Module Copy
 		local config = MC:CreateModuleConfigGroup(L["Cooldown & Duration"], 'cooldown')
 
 		MC:AddConfigOptions(P.cooldown, config, 'cooldown')
+
+		config.args.global.name = L["Global"]
+		config.args.auras.name = L["BUFFOPTIONS_LABEL"]
+		config.args.actionbar.name = L["ActionBars"]
+		config.args.bags.name = L["Bags"]
+		config.args.nameplates.name = L["Nameplates"]
+		config.args.unitframe.name = L["UnitFrames"]
+		config.args.aurabars.name = L["Aura Bars"]
+		config.args.auraindicator.name = L["Aura Indicator"]
+		config.args.cdmanager.name = L["Cooldown Manager"]
+		config.args.totemtracker.name = L["Totem Tracker"]
+		config.args.bossbutton.name = L["Boss Button"]
+		config.args.zonebutton.name = L["Zone Button"]
 
 		return config
 	end
@@ -665,6 +686,7 @@ do -- Module Copy
 		config.args.honor.name = L["Honor"]
 		config.args.threat.name = L["Threat"]
 		config.args.azerite.name = L["Azerite"]
+		config.args.petExperience.name = L["Pet Experience"]
 
 		return config
 	end
@@ -676,6 +698,7 @@ do -- Module Copy
 		MC:AddConfigOptions(P.datatexts, config, 'datatexts')
 
 		config.args.panels = ACH:Toggle(L["Panels"], nil, 2)
+		config.args.battlePanel.name = L["Battlegrounds"]
 
 		return config
 	end
@@ -690,6 +713,23 @@ do -- Module Copy
 		config.args.minimap.name = L["Minimap"]
 		config.args.totems.name = L["Class Totems"]
 		config.args.itemLevel.name = L["Item Level"]
+		config.args.addonCompartment.name = L["Addon Compartment"]
+		config.args.bottomPanelSettings.name = L["Bottom Panel"]
+		config.args.classColors.name = L["Custom Class Colors"]
+		config.args.cooldownManager.name = L["Cooldown Manager"]
+		config.args.customGlow.name = L["Custom Glow"]
+		config.args.fonts.name = L["Fonts"]
+		config.args.guildBank.name = L["Guild Bank"]
+		config.args.lootRoll.name = L["Loot Roll"]
+		config.args.privateRaidWarning.name = L["Raid Warning"]
+		config.args.queueStatus.name = L["Queue Status"]
+		config.args.raidUtility.name = L["RAID_CONTROL"]
+		config.args.rotationAssist.name = L["Rotation Assist"]
+		config.args.topPanelSettings.name = L["Top Panel"]
+
+		-- these are acutally in Auras section
+		config.args.privateAuras.name = L["Private Auras"]
+		config.args.debuffColors.name = L["Debuff Colors"]
 
 		return config
 	end
@@ -707,6 +747,8 @@ do -- Module Copy
 		config.args.clickSize.name = L["Clickable Size"]
 		config.args.colors.name = L["Colors"]
 		config.args.visibility.name = L["Visibility"]
+		config.args.enviromentConditions.name = L["Environment Conditions"]
+		config.args.widgets.name = L["Widget"]
 
 		-- Modify Tables
 		config.args.filters = nil
@@ -735,6 +777,7 @@ do -- Module Copy
 		config.args.visibility.name = L["Visibility"]
 		config.args.healthBar.name = L["Health Bar"]
 		config.args.factionColors.name = L["Custom Faction Colors"]
+		config.args.itemCount.name = L["Item Count"]
 
 		return config
 	end
@@ -744,6 +787,10 @@ do -- Module Copy
 		local config = MC:CreateModuleConfigGroup(L["UnitFrames"], 'unitframe')
 
 		MC:AddConfigOptions(P.unitframe, config, 'unitframe')
+
+		config.args.altManaPowers.name = L["Additional Power"]
+		config.args.modifiers.name = L["Filter Modifiers"]
+		config.args.filters.name = L["Filters"]
 
 		config.args.colors = ACH:Group(L["Colors"], nil, -9, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
 		config.args.colors.inline = true
@@ -757,6 +804,9 @@ do -- Module Copy
 		config.args.colors.args.frameGlow.name = L["Frame Glow"]
 		config.args.colors.args.debuffHighlight.name = L["Debuff Highlighting"]
 		config.args.colors.args.powerPrediction.name = L["Power Prediction"]
+		config.args.colors.args.empoweredCast.name = L["Empower Stages"]
+		config.args.colors.args.happiness.name = L["Pet Happiness"]
+		config.args.colors.args.healthBreak.name = L["Health Breakpoint"]
 		config.args.colors.args.selection.name = L["Selection"]
 		config.args.colors.args.threat.name = L["Threat"]
 

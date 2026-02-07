@@ -3651,7 +3651,7 @@ function B:Initialize()
 	BIND_START, BIND_END = B:GetBindLines()
 
 	B.AssignmentColors = {
-		[0] = { r = .99, g = .23, b = .21, a = 1 }, -- fallback
+		[0] = E:NewColorTable(0.99, 0.23, 0.21, 1), -- fallback
 		[FILTER_FLAG_EQUIPMENT] = E:GetColorTable(B.db.colors.assignment.equipment),
 		[FILTER_FLAG_CONSUMABLES] = E:GetColorTable(B.db.colors.assignment.consumables),
 		[FILTER_FLAG_TRADE_GOODS] = E:GetColorTable(B.db.colors.assignment.tradegoods),

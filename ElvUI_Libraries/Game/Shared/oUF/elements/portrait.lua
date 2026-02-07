@@ -44,6 +44,7 @@ local UnitClass = UnitClass
 local UnitIsVisible = UnitIsVisible
 local UnitIsConnected = UnitIsConnected
 local SetPortraitTexture = SetPortraitTexture
+local IsUnitModelReadyForUI = IsUnitModelReadyForUI
 
 local function Update(self, event)
 	local element = self.Portrait
@@ -71,7 +72,7 @@ local function Update(self, event)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local isAvailable = element:IsVisible() and UnitIsConnected(unit) and UnitIsVisible(unit)
+	local isAvailable = element:IsVisible() and IsUnitModelReadyForUI(unit) and UnitIsConnected(unit) and UnitIsVisible(unit)
 	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
@@ -134,14 +135,18 @@ local function Enable(self, unit)
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 
-		self:RegisterEvent('UNIT_MODEL_CHANGED', Path)
-		self:RegisterEvent('UNIT_PORTRAIT_UPDATE', Path)
-		self:RegisterEvent('PORTRAITS_UPDATED', Path, true)
+		local playerModel = element:IsObjectType('PlayerModel')
+		if playerModel then
+			self:RegisterEvent('UNIT_MODEL_CHANGED', Path)
+		else
+			self:RegisterEvent('UNIT_PORTRAIT_UPDATE', Path)
+			self:RegisterEvent('PORTRAITS_UPDATED', Path, true)
+		end
+
 		self:RegisterEvent('UNIT_CONNECTION', Path)
 
-		-- The quest log uses PARTY_MEMBER_{ENABLE,DISABLE} to handle updating of
-		-- party members overlapping quests. This will probably be enough to handle
-		-- model updating.
+		-- The quest log uses PARTY_MEMBER_{ENABLE,DISABLE} to handle updating of party
+		-- members overlapping quests. This will probably be enough to handle model updating.
 		if unit == 'party' or unit == 'target' then
 			self:RegisterEvent('PARTY_MEMBER_ENABLE', Path)
 			self:RegisterEvent('PARTY_MEMBER_DISABLE', Path)
@@ -161,11 +166,13 @@ local function Disable(self)
 		local playerModel = element:IsObjectType('PlayerModel')
 		if playerModel then
 			element:ClearModel()
+
+			self:UnregisterEvent('UNIT_MODEL_CHANGED', Path)
+		else
+			self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
+			self:UnregisterEvent('PORTRAITS_UPDATED', Path)
 		end
 
-		self:UnregisterEvent('UNIT_MODEL_CHANGED', Path)
-		self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
-		self:UnregisterEvent('PORTRAITS_UPDATED', Path)
 		self:UnregisterEvent('PARTY_MEMBER_ENABLE', Path)
 		self:UnregisterEvent('PARTY_MEMBER_DISABLE', Path)
 		self:UnregisterEvent('UNIT_CONNECTION', Path)
