@@ -58,9 +58,9 @@ do
 	local LOCALE = GetLocale()
 	local data = translations[LOCALE] or {}
 
-	L.min  = data.min or "Min"
-	L.max  = data.max or "Max"
-	L.step = data.step or "Step"
+	L["min"]	= data.min or "Min"
+	L["max"]	= data.max or "Max"
+	L["step"]	= data.step or "Step"
 end
 
 -- GLOBALS: CloseSpecialWindows
