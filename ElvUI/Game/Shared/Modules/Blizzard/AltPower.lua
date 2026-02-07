@@ -96,23 +96,6 @@ function BL:PositionAltPowerBar()
 	E:CreateMover(holder, 'AltPowerBarMover', L["Alternative Power"], nil, nil, nil, nil, nil, 'general,alternativePowerGroup')
 end
 
-function BL:DirtyTempRetailSolutionForPlayerPowerAltBar()
-	-- Temp solution for PlayerPowerAltBar on Retail
-	local bar = _G.PlayerPowerBarAlt
-	E:CreateMover(bar, 'Temp_AltPowerBarHolder', L["Temp Mover for PlayerPowerAltBar"])
-
-	hooksecurefunc(bar, 'SetPoint', function(_, _, parent)
-		if parent ~= 'Temp_AltPowerBarHolder' then
-			bar:ClearAllPoints()
-			bar:SetPoint('CENTER', 'Temp_AltPowerBarHolder')
-		end
-	end)
-
-	hooksecurefunc(bar.statusFrame, 'Hide', function(self)
-		self:Show()
-	end)
-end
-
 function BL:UpdateAltPowerBarColors()
 	local bar = BL.AltPowerBar
 	if not bar then return end

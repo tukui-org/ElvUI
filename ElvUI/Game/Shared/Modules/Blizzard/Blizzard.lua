@@ -194,13 +194,9 @@ function BL:Initialize()
 		BL:PositionVehicleFrame()
 	end
 
-	if E.Mists and not E.OtherAddons.SimplePowerBar then
-		--[[Someone need to test on Mist plx
+	if (E.Retail or E.Mists) and not E.OtherAddons.SimplePowerBar then
 		BL:PositionAltPowerBar()
 		BL:SkinAltPowerBar()
-		]]
-	elseif E.Retail and not E.OtherAddons.SimplePowerBar then
-		BL:DirtyTempRetailSolutionForPlayerPowerAltBar() -- Remove me sooonish
 	end
 
 	if E.Retail then

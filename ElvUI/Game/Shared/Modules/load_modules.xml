@@ -80,7 +80,6 @@
 
 	<Script file='Blizzard\Blizzard.lua'/>
 	<Script file='Blizzard\AlertFrame.lua'/>
-	<Script file='Blizzard\AltPower.lua'/>
 	<Script file='Blizzard\CaptureBar.lua'/>
 	<Script file='Blizzard\GuildBank.lua'/>
 	<Script file='Blizzard\TalkingHeadFrame.lua'/>
