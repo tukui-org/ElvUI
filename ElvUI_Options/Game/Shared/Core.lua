@@ -249,6 +249,7 @@ local TESTERS = {
 	'|T134297:15:15:0:0:64:64:5:59:5:59|t |cffFF7D0ABladesdruid|r - AKA SUPERBEAR',
 }
 
+-- Automated by Discord Bot
 local DONATORS = {
 	'Dandruff',
 	'Tobur/Tarilya',
@@ -290,6 +291,7 @@ local DONATORS = {
 	'Portable',
 	'Ithilyn'
 }
+-- End of automation
 
 local CREDITS_OVERRIDE = {
 	['Simpy but my name needs to be longer.'] = 'Simpy',
@@ -305,7 +307,6 @@ end
 
 sort(DEVELOPERS, SortList)
 sort(TESTERS, SortList)
-sort(DONATORS, SortList)
 
 local DEVELOPER_STRING = tconcat(DEVELOPERS, '|n')
 local TESTER_STRING = tconcat(TESTERS, '|n')
