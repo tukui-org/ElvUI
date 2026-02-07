@@ -284,9 +284,9 @@ function E:VerifyColorTable(color, shouldMixin, shouldIndex)
 	-- note: several places still unpack the color table
 	if shouldIndex then
 		if color[1] ~= color.r then color[1] = color.r end
-		if color[2] ~= color.g then color[2] = color.r end
-		if color[3] ~= color.b then color[3] = color.r end
-		if color[4] ~= color.a then color[4] = color.r end
+		if color[2] ~= color.g then color[2] = color.g end
+		if color[3] ~= color.b then color[3] = color.b end
+		if color[4] ~= color.a then color[4] = color.a end
 	end
 
 	-- verify if we need the object to be mixed
