@@ -148,8 +148,9 @@ function BL:UpdateAltPowerBar()
 	local powerPercent = UnitPowerPercent and UnitPowerPercent('player', _G.ALTERNATE_POWER_INDEX)
 	local barInfo = GetUnitPowerBarInfo('player')
 	if barInfo then
+		local allowed = E:NotSecretValue(power) and E:NotSecretValue(maxPower)
 		local powerName, powerTooltip = GetUnitPowerBarStrings('player')
-		local perc = powerPercent or (maxPower > 0 and floor(power / maxPower * 100)) or 0
+		local perc = powerPercent or (allowed and (maxPower > 0 and floor(power / maxPower * 100))) or 0
 
 		self.powerMaxValue = maxPower
 		self.powerName = powerName
@@ -161,7 +162,7 @@ function BL:UpdateAltPowerBar()
 		self:SetMinMaxValues(barInfo.minPower, maxPower)
 		self:SetValue(power, bar.smoothing)
 
-		if E.db.general.altPowerBar.statusBarColorGradient and E:NotSecretValue(power) and E:NotSecretValue(maxPower) then
+		if allowed and E.db.general.altPowerBar.statusBarColorGradient then
 			local value = (maxPower > 0 and power / maxPower) or 0
 
 			if self.colorGradientValue ~= value then
