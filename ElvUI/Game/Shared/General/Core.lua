@@ -273,7 +273,7 @@ function E:UpdateClassColor(db)
 	return db
 end
 
-function E:VerifyColorTable(color, mixed)
+function E:VerifyColorTable(color, shouldMixin, shouldIndex)
 	-- we just need to verify all the values exist or assume they are meant to be one
 	if not color.r or (color.r > 1 or color.r < 0) then color.r = 1 end
 	if not color.g or (color.g > 1 or color.g < 0) then color.g = 1 end
@@ -282,13 +282,15 @@ function E:VerifyColorTable(color, mixed)
 
 	-- this is old compatibility. we should use RGBA instead
 	-- note: several places still unpack the color table
-	if color[1] ~= color.r then color[1] = color.r end
-	if color[2] ~= color.g then color[2] = color.r end
-	if color[3] ~= color.b then color[3] = color.r end
-	if color[4] ~= color.a then color[4] = color.r end
+	if shouldIndex then
+		if color[1] ~= color.r then color[1] = color.r end
+		if color[2] ~= color.g then color[2] = color.r end
+		if color[3] ~= color.b then color[3] = color.r end
+		if color[4] ~= color.a then color[4] = color.r end
+	end
 
 	-- verify if we need the object to be mixed
-	if mixed and not color.GetRGB then
+	if shouldMixin and not color.GetRGB then
 		Mixin(color, ColorMixin)
 	end
 
@@ -314,7 +316,7 @@ function E:UpdateColorTable(color, data)
 		color.r, color.g, color.b, color.a = r, g, b, a
 	end
 
-	return E:VerifyColorTable(color, true)
+	return E:VerifyColorTable(color, true, true)
 end
 
 function E:UpdateMedia(mediaType)
