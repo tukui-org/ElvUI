@@ -273,57 +273,47 @@ function E:UpdateClassColor(db)
 	return db
 end
 
-function E:SetColorTable(t, data)
-	if t and (type(t) == 'table') then
-		local r, g, b, a = E:UpdateColorTable(data)
-
-		t.r, t.g, t.b, t.a = r, g, b, a
-		t[1], t[2], t[3], t[4] = r, g, b, a
-	else
-		t = E:GetColorTable(data)
-	end
-
-	return t
-end
-
-function E:VerifyColorTable(data, mixed)
+function E:VerifyColorTable(color, mixed)
 	-- we just need to verify all the values exist or assume they are meant to be one
-	if not data.r or (data.r > 1 or data.r < 0) then data.r = 1 end
-	if not data.g or (data.g > 1 or data.g < 0) then data.g = 1 end
-	if not data.b or (data.b > 1 or data.b < 0) then data.b = 1 end
-	if not data.a or (data.a > 1 or data.a < 0) then data.a = 1 end
+	if not color.r or (color.r > 1 or color.r < 0) then color.r = 1 end
+	if not color.g or (color.g > 1 or color.g < 0) then color.g = 1 end
+	if not color.b or (color.b > 1 or color.b < 0) then color.b = 1 end
+	if not color.a or (color.a > 1 or color.a < 0) then color.a = 1 end
 
-	-- verify the object is mixed
-	if mixed and not data.GetRGB then
-		Mixin(data, ColorMixin)
+	-- this is old compatibility. we should use RGBA instead
+	if color[1] and (color[1] ~= color.r) then color[1] = color.r end
+	if color[2] and (color[2] ~= color.g) then color[2] = color.r end
+	if color[3] and (color[3] ~= color.b) then color[3] = color.r end
+	if color[4] and (color[4] ~= color.a) then color[4] = color.r end
+
+	-- verify if we need the object to be mixed
+	if mixed and not color.GetRGB then
+		Mixin(color, ColorMixin)
 	end
-end
-
-function E:NewColorTable(r, g, b, a)
-	-- this function doesnt update the color to a mixin (unlike SetColorTable)
-	-- that makes it safe to use it for creating new colors for the db
-	-- dont upgrade the table to a mixin here
-
-	local data = { r = r, g = g, b = b, a = a }
-
-	E:VerifyColorTable(data)
-
-	return data
-end
-
-function E:UpdateColorTable(data)
-	E:VerifyColorTable(data, true)
-
-	return data.r, data.g, data.b, data.a
-end
-
-function E:GetColorTable(data)
-	local r, g, b, a = data.r, data.g, data.b, data.a
-	local color = { r, g, b, a, r = r, g = g, b = b, a = a }
-
-	E:VerifyColorTable(color, true)
 
 	return color
+end
+
+function E:SetColorTable(color, data) -- this function does update the color to a mixin
+	return E:UpdateColorTable(type(color) == 'table' and color or {}, data)
+end
+
+function E:NewColorTable(r, g, b, a) -- this function doesnt update the color to a mixin
+	return E:VerifyColorTable({ r = r, g = g, b = b, a = a })
+end
+
+function E:UpdateColorTable(color, data)
+	local r, g, b, a
+
+	if data then
+		r, g, b, a = data.r, data.g, data.b, data.a
+	end
+
+	if r or g or b or a then
+		color.r, color.g, color.b, color.a = r, g, b, a
+	end
+
+	return E:VerifyColorTable(color, true)
 end
 
 function E:UpdateMedia(mediaType)
