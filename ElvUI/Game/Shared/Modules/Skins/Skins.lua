@@ -170,37 +170,37 @@ do
 end
 
 function S:ClearSetTexture(texture)
-	if texture ~= E.ClearTexture then
+	if self.SetTexture and (texture ~= E.ClearTexture) then
 		self:SetTexture(E.ClearTexture)
 	end
 end
 
 function S:ClearNormalTexture(texture)
-	if texture ~= E.ClearTexture then
+	if self.SetNormalTexture and (texture ~= E.ClearTexture) then
 		self:SetNormalTexture(E.ClearTexture)
 	end
 end
 
 function S:ClearPushedTexture(texture)
-	if texture ~= E.ClearTexture then
+	if self.SetPushedTexture and (texture ~= E.ClearTexture) then
 		self:SetPushedTexture(E.ClearTexture)
 	end
 end
 
 function S:ClearDisabledTexture(texture)
-	if texture ~= E.ClearTexture then
+	if self.SetDisabledTexture and (texture ~= E.ClearTexture) then
 		self:SetDisabledTexture(E.ClearTexture)
 	end
 end
 
 function S:ClearHighlightTexture(texture)
-	if texture ~= E.ClearTexture then
+	if self.SetHighlightTexture and (texture ~= E.ClearTexture) then
 		self:SetHighlightTexture(E.ClearTexture)
 	end
 end
 
 function S:ClearCheckedTexture(texture)
-	if texture ~= E.ClearTexture then
+	if self.SetCheckedTexture and (texture ~= E.ClearTexture) then
 		self:SetCheckedTexture(E.ClearTexture)
 	end
 end
@@ -324,19 +324,19 @@ function S:SetBackdropBorderColor(frame, script)
 end
 
 function S:SetModifiedBackdrop()
-	if self:IsEnabled() then
+	if self.SetBackdropBorderColor and self.IsEnabled and self:IsEnabled() then
 		S:SetBackdropBorderColor(self, 'OnEnter')
 	end
 end
 
 function S:SetOriginalBackdrop()
-	if self:IsEnabled() then
+	if self.SetBackdropBorderColor and self.IsEnabled and self:IsEnabled() then
 		S:SetBackdropBorderColor(self, 'OnLeave')
 	end
 end
 
 function S:SetDisabledBackdrop()
-	if self:IsMouseOver() then
+	if self.SetBackdropBorderColor and self.IsMouseOver and self:IsMouseOver() then
 		S:SetBackdropBorderColor(self, 'OnDisable')
 	end
 end
@@ -1509,12 +1509,16 @@ do
 
 	local function CheckCheckedTexture(checkbox, texture)
 		if texture == E.Media.Textures.Melli or texture == check then return end
-		checkbox:SetCheckedTexture(S.db.checkBoxSkin and E.Media.Textures.Melli or check)
+
+		if checkbox.SetCheckedTexture then
+			checkbox:SetCheckedTexture(S.db.checkBoxSkin and E.Media.Textures.Melli or check)
+		end
 	end
 
 	local function CheckOnDisable(checkbox)
-		if not checkbox.SetDisabledTexture then return end
-		checkbox:SetDisabledTexture(checkbox:GetChecked() and (S.db.checkBoxSkin and E.Media.Textures.Melli or disabled) or '')
+		if checkbox.SetDisabledTexture then
+			checkbox:SetDisabledTexture(checkbox:GetChecked() and (S.db.checkBoxSkin and E.Media.Textures.Melli or disabled) or '')
+		end
 	end
 
 	function S:HandleCheckBox(frame, noBackdrop, noReplaceTextures, frameLevel, template)

@@ -7,7 +7,7 @@ local LibStub = LibStub
 local gui = LibStub("AceGUI-3.0")
 local reg = LibStub("AceConfigRegistry-3.0-ElvUI")
 
-local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 95 -- based off 92
+local MAJOR, MINOR = "AceConfigDialog-3.0-ElvUI", 96 -- based off 92
 local AceConfigDialog, oldminor = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not AceConfigDialog then return end
@@ -35,6 +35,33 @@ local PlaySound = PlaySound
 local Settings = Settings
 
 local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
+
+--[[
+	Localization of AceConfigRegistry-3.0-ElvUI
+]]
+
+local L = {}
+
+do
+	local translations = {
+		koKR = { min = "최소값",	max = "최대값",	step = "간격" },
+		zhTW = { min = "最小值",	max = "最大值",	step = "增量" },
+		zhCN = { min = "最小值",	max = "最大值",	step = "步长" },
+		frFR = { min = "Min",		max = "Max",	step = "Pas"  },
+		ruRU = { min = "Мин",		max = "Макс",	step = "Шаг"  },
+		esES = { min = "Mín",		max = "Máx",	step = "Paso" },
+		esMX = { min = "Mín",		max = "Máx",	step = "Paso" },
+		ptBR = { min = "Mín",		max = "Máx",	step = "Passo" },
+		itIT = { min = "Min",		max = "Max",	step = "Passo" }
+	}
+
+	local LOCALE = GetLocale()
+	local data = translations[LOCALE] or {}
+
+	L["min"]	= data.min or "Min"
+	L["max"]	= data.max or "Max"
+	L["step"]	= data.step or "Step"
+end
 
 -- GLOBALS: CloseSpecialWindows
 
@@ -528,15 +555,15 @@ local function OptionOnMouseOver(widget, event)
 	local Min, Max, Step
 
 	if softText then
-		Min = (opt.min and "|cFFCCCCCCMin:|r "..(opt.isPercent and (opt.min*100).."%" or opt.min)) or ""
-		Max = (opt.max and "|cFFCCCCCCMax:|r "..(opt.isPercent and (opt.max*100).."%" or opt.max)) or ""
+		Min = (opt.min and "|cFFCCCCCC"..L["min"]..":|r "..(opt.isPercent and (opt.min*100).."%" or opt.min)) or ""
+		Max = (opt.max and "|cFFCCCCCC"..L["max"]..":|r "..(opt.isPercent and (opt.max*100).."%" or opt.max)) or ""
 		softText = Min ~= "" or Max ~= ""
 	end
 
 	if bigText then
 		local dec = opt.step and format("%f", opt.step):gsub('%.?0-$','')
 		local num = dec and tonumber(dec)
-		Step = (num and num > 0 and "|cFFCCCCCCStep:|r "..dec) or ""
+		Step = (num and num > 0 and "|cFFCCCCCC"..L["step"]..":|r "..dec) or ""
 		bigText = Step ~= ""
 	end
 

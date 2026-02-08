@@ -3652,37 +3652,37 @@ function B:Initialize()
 
 	B.AssignmentColors = {
 		[0] = E:NewColorTable(0.99, 0.23, 0.21, 1), -- fallback
-		[FILTER_FLAG_EQUIPMENT] = E:GetColorTable(B.db.colors.assignment.equipment),
-		[FILTER_FLAG_CONSUMABLES] = E:GetColorTable(B.db.colors.assignment.consumables),
-		[FILTER_FLAG_TRADE_GOODS] = E:GetColorTable(B.db.colors.assignment.tradegoods),
-		[FILTER_FLAG_QUEST] = E:GetColorTable(B.db.colors.items.questItem),
-		[FILTER_FLAG_JUNK] = E:GetColorTable(B.db.colors.assignment.junk),
-		[FILTER_FLAG_REAGENTS] = E:GetColorTable(B.db.colors.profession.reagent)
+		[FILTER_FLAG_EQUIPMENT] = E:UpdateColorTable({}, B.db.colors.assignment.equipment),
+		[FILTER_FLAG_CONSUMABLES] = E:UpdateColorTable({}, B.db.colors.assignment.consumables),
+		[FILTER_FLAG_TRADE_GOODS] = E:UpdateColorTable({}, B.db.colors.assignment.tradegoods),
+		[FILTER_FLAG_QUEST] = E:UpdateColorTable({}, B.db.colors.items.questItem),
+		[FILTER_FLAG_JUNK] = E:UpdateColorTable({}, B.db.colors.assignment.junk),
+		[FILTER_FLAG_REAGENTS] = E:UpdateColorTable({}, B.db.colors.profession.reagent)
 	}
 
 	B.ProfessionColors = {
-		[0x1]		= E:GetColorTable(B.db.colors.profession.quiver),
-		[0x2]		= E:GetColorTable(B.db.colors.profession.ammoPouch),
-		[0x4]		= E:GetColorTable(B.db.colors.profession.soulBag),
-		[0x8]		= E:GetColorTable(B.db.colors.profession.leatherworking),
-		[0x10]		= E:GetColorTable(B.db.colors.profession.inscription),
-		[0x20]		= E:GetColorTable(B.db.colors.profession.herbs),
-		[0x40]		= E:GetColorTable(B.db.colors.profession.enchanting),
-		[0x80]		= E:GetColorTable(B.db.colors.profession.engineering),
-		[0x100]		= E:GetColorTable(B.db.colors.profession.keyring),
-		[0x200]		= E:GetColorTable(B.db.colors.profession.gems),
-		[0x400]		= E:GetColorTable(B.db.colors.profession.mining),
-		[0x8000]	= E:GetColorTable(B.db.colors.profession.fishing),
-		[0x10000]	= E:GetColorTable(B.db.colors.profession.cooking),
+		[0x1]		= E:UpdateColorTable({}, B.db.colors.profession.quiver),
+		[0x2]		= E:UpdateColorTable({}, B.db.colors.profession.ammoPouch),
+		[0x4]		= E:UpdateColorTable({}, B.db.colors.profession.soulBag),
+		[0x8]		= E:UpdateColorTable({}, B.db.colors.profession.leatherworking),
+		[0x10]		= E:UpdateColorTable({}, B.db.colors.profession.inscription),
+		[0x20]		= E:UpdateColorTable({}, B.db.colors.profession.herbs),
+		[0x40]		= E:UpdateColorTable({}, B.db.colors.profession.enchanting),
+		[0x80]		= E:UpdateColorTable({}, B.db.colors.profession.engineering),
+		[0x100]		= E:UpdateColorTable({}, B.db.colors.profession.keyring),
+		[0x200]		= E:UpdateColorTable({}, B.db.colors.profession.gems),
+		[0x400]		= E:UpdateColorTable({}, B.db.colors.profession.mining),
+		[0x8000]	= E:UpdateColorTable({}, B.db.colors.profession.fishing),
+		[0x10000]	= E:UpdateColorTable({}, B.db.colors.profession.cooking),
 	}
 
 	if E.Retail then
-		B.ProfessionColors[B.BagIndice.reagent] = E:GetColorTable(B.db.colors.profession.reagent)
+		B.ProfessionColors[B.BagIndice.reagent] = E:UpdateColorTable({}, B.db.colors.profession.reagent)
 	end
 
 	B.QuestColors = {
-		questStarter = E:GetColorTable(B.db.colors.items.questStarter),
-		questItem = E:GetColorTable(B.db.colors.items.questItem),
+		questStarter = E:UpdateColorTable({}, B.db.colors.items.questStarter),
+		questItem = E:UpdateColorTable({}, B.db.colors.items.questItem),
 	}
 
 	B:LoadBagBar()
