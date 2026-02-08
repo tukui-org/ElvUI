@@ -187,11 +187,11 @@ function NP:SetCVars()
 	NP:ToggleCVar('nameplateShowEnemyTotems', enemyVisibility.totems)
 
 	local friendlyVisibility = visibility.friendly
-	NP:ToggleCVar('nameplateShowFriendlyMinions', friendlyVisibility.minions)
-	NP:ToggleCVar('nameplateShowFriendlyGuardians', friendlyVisibility.guardians)
+	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerMinions' or 'nameplateShowFriendlyMinions', friendlyVisibility.minions)
+	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerGuardians' or 'nameplateShowFriendlyGuardians', friendlyVisibility.guardians)
 	NP:ToggleCVar('nameplateShowFriendlyNPCs', friendlyVisibility.npcs)
-	NP:ToggleCVar('nameplateShowFriendlyPets', friendlyVisibility.pets)
-	NP:ToggleCVar('nameplateShowFriendlyTotems', friendlyVisibility.totems)
+	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerPets' or 'nameplateShowFriendlyPets', friendlyVisibility.pets)
+	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerTotems' or 'nameplateShowFriendlyTotems', friendlyVisibility.totems)
 
 	local playerDB = db.units.PLAYER
 	local playerVisibility = playerDB.visibility
@@ -875,6 +875,32 @@ function NP:NamePlateCallBack(event, unit)
 	end
 end
 
+local CVAR_MAP = {
+	nameplateShowEnemyMinions            = { 'enemy', 'minions' },
+	nameplateShowEnemyGuardians          = { 'enemy', 'guardians' },
+	nameplateShowEnemyMinus              = { 'enemy', 'minus' },
+	nameplateShowEnemyPets               = { 'enemy', 'pets' },
+	nameplateShowEnemyTotems             = { 'enemy', 'totems' },
+	nameplateShowFriendlyNPCs            = { 'friendly', 'npcs' },
+	-- Retail
+	nameplateShowFriendlyPlayerMinions   = { 'friendly', 'minions' },
+	nameplateShowFriendlyPlayerGuardians = { 'friendly', 'guardians' },
+	nameplateShowFriendlyPlayerPets      = { 'friendly', 'pets' },
+	nameplateShowFriendlyPlayerTotems    = { 'friendly', 'totems' },
+	-- Mists, TBC, Classic
+	nameplateShowFriendlyMinions   		 = { 'friendly', 'minions' },
+	nameplateShowFriendlyGuardians 		 = { 'friendly', 'guardians' },
+	nameplateShowFriendlyPets      		 = { 'friendly', 'pets' },
+	nameplateShowFriendlyTotems    		 = { 'friendly', 'totems' }
+}
+
+function NP:CVAR_UPDATE(_, cvar, value)
+	local map = CVAR_MAP[cvar]
+	if not map then return end
+
+	NP.db.visibility[map[1]][map[2]] = (value == '1')
+end
+
 local optionsTable = {
 	'EnemyMinus',
 	'EnemyMinions',
@@ -1068,6 +1094,7 @@ function NP:Initialize()
 	NP:RegisterEvent('UNIT_MAXHEALTH', 'NamePlateCallBack')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
+	NP:RegisterEvent('CVAR_UPDATE')
 
 	if not E.Retail then
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
@@ -1075,12 +1102,6 @@ function NP:Initialize()
 
 	NP:HideInterfaceOptions()
 	NP:SetCVars()
-
-	-- Temporary implementation
-	-- Midnight: Blizzard always resets friendly npc nameplates to enabled on login, this is a fix to prevent that.
-	if E.db.nameplates.persistentFriendlyNP and E.Retail then
-		E:SetCVar('nameplateShowFriendlyNpcs', 0)
-	end
 end
 
 E:RegisterModule(NP:GetName())

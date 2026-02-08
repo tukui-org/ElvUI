@@ -837,7 +837,6 @@ P.nameplates = {
 	nameColoredGlow = false,
 	overlapH = 0.8,
 	overlapV = 1.1,
-	persistentFriendlyNP = false,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
 	statusbar = 'ElvUI Norm',
