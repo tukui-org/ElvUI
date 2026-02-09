@@ -89,6 +89,80 @@ function S:Blizzard_InspectUI()
 
 	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	_G.InspectModelFrameRotateRightButton:Point('TOPLEFT', _G.InspectModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
+
+	-- Talents
+	S:HandleFrame(_G.InspectTalentFrame, true, nil, 15, -14, -32, 78)
+
+	for i = 1, 3 do
+		S:HandleTab(_G['InspectTalentFrameTab'..i], true)
+	end
+
+	_G.InspectTalentFrameScrollFrame:StripTextures()
+	_G.InspectTalentFrameScrollFrame:CreateBackdrop()
+
+	S:HandleScrollBar(_G.InspectTalentFrameScrollFrameScrollBar)
+	_G.InspectTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.InspectTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
+
+	for i = 1, _G.MAX_NUM_TALENTS do
+		local talent = _G['InspectTalentFrameTalent'..i]
+		local icon = _G['InspectTalentFrameTalent'..i..'IconTexture']
+		local rank = _G['InspectTalentFrameTalent'..i..'Rank']
+
+		if talent then
+			talent:StripTextures()
+			talent:SetTemplate()
+			talent:StyleButton()
+
+			icon:SetInside()
+			icon:SetTexCoord(unpack(E.TexCoords))
+			icon:SetDrawLayer('ARTWORK')
+
+			rank:SetFont(E.LSM:Fetch('font', E.db['general'].font), 12, 'OUTLINE')
+		end
+	end
+
+	local PointsBar = _G.InspectTalentFramePointsBar
+	PointsBar:StripTextures()
+	PointsBar:SetTemplate('Transparent')
+
+	-- Honor/Arena/PvP Tab
+	local InspectPVPFrame = _G.InspectPVPFrame
+	InspectPVPFrame:StripTextures(true)
+
+	for i = 1, MAX_ARENA_TEAMS do
+		local inspectpvpTeam = _G['InspectPVPTeam'..i]
+
+		inspectpvpTeam:StripTextures()
+		inspectpvpTeam:CreateBackdrop()
+		inspectpvpTeam.backdrop:Point('TOPLEFT', 9, -4)
+		inspectpvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
+
+		inspectpvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
+		inspectpvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
+
+		_G['InspectPVPTeam'..i..'Highlight']:Kill()
+	end
+
+	local PVPTeamDetails = _G.PVPTeamDetails
+	PVPTeamDetails:StripTextures()
+	PVPTeamDetails:SetTemplate('Transparent')
+	PVPTeamDetails:Point('TOPLEFT', InspectPVPFrame, 'TOPRIGHT', -30, -12)
+
+	for i = 1, 5 do
+		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
+		header:StripTextures()
+		header:StyleButton()
+	end
+
+	for i = 1, 10 do
+		local button = _G['PVPTeamDetailsButton'..i]
+		button:Width(335)
+		S:HandleButtonHighlight(button)
+	end
+
+	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
+	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
+	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')
