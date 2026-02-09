@@ -23,9 +23,6 @@
 	<Include file='Shared\TaintLess\TaintLess.xml'/>
 	<Include file='Shared\UTF8\lib.xml'/>
 
-	<Script file='Classic\LibQuestXP\LibQuestXPDB.lua'/>
-	<Script file='Classic\LibQuestXP\LibQuestXP.lua'/>
-
 	<Script file='Shared\LibAceConfigHelper\LibAceConfigHelper.lua'/>
 	<Script file='Shared\LibCustomGlow-1.0\LibCustomGlow-1.0.lua'/>
 	<Script file='Shared\LibActionButton-1.0\LibActionButton-1.0.lua'/>
