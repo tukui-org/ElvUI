@@ -91,39 +91,54 @@ function S:Blizzard_InspectUI()
 	_G.InspectModelFrameRotateRightButton:Point('TOPLEFT', _G.InspectModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
 	-- Talents
-	S:HandleFrame(_G.InspectTalentFrame, true, nil, 15, -14, -32, 78)
+	local InspectTalentFrame = _G.InspectTalentFrame
+	S:HandleFrame(InspectTalentFrame, true, nil, 15, -14, -32, 78)
 
 	for i = 1, 3 do
-		S:HandleTab(_G['InspectTalentFrameTab'..i], true)
+		local tab = _G['InspectTalentFrameTab'..i]
+		if tab then
+			S:HandleTab(tab, true)
+		end
 	end
 
-	_G.InspectTalentFrameScrollFrame:StripTextures()
-	_G.InspectTalentFrameScrollFrame:CreateBackdrop()
+	local scrollFrame = _G.InspectTalentFrameScrollFrame
+	if scrollFrame then
+		scrollFrame:StripTextures()
+		scrollFrame:CreateBackdrop()
 
-	S:HandleScrollBar(_G.InspectTalentFrameScrollFrameScrollBar)
-	_G.InspectTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.InspectTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
+		local scrollBar = _G.InspectTalentFrameScrollFrameScrollBar
+		if scrollBar then
+			S:HandleScrollBar(scrollBar)
+			scrollBar:Point('TOPLEFT', scrollFrame, 'TOPRIGHT', 10, -16)
+		end
+	end
 
 	for i = 1, _G.MAX_NUM_TALENTS do
 		local talent = _G['InspectTalentFrameTalent'..i]
-		local icon = _G['InspectTalentFrameTalent'..i..'IconTexture']
-		local rank = _G['InspectTalentFrameTalent'..i..'Rank']
-
 		if talent then
 			talent:StripTextures()
 			talent:SetTemplate()
 			talent:StyleButton()
 
-			icon:SetInside()
-			icon:SetTexCoord(unpack(E.TexCoords))
-			icon:SetDrawLayer('ARTWORK')
+			local icon = _G['InspectTalentFrameTalent'..i..'IconTexture']
+			if icon then
+				icon:SetInside()
+				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetDrawLayer('ARTWORK')
+			end
 
-			rank:SetFont(E.LSM:Fetch('font', E.db['general'].font), 12, 'OUTLINE')
+			local rank = _G['InspectTalentFrameTalent'..i..'Rank']
+			if rank then
+				rank:SetFont(E.LSM:Fetch('font', E.db['general'].font), 12, 'OUTLINE')
+			end
 		end
 	end
 
 	local PointsBar = _G.InspectTalentFramePointsBar
-	PointsBar:StripTextures()
-	PointsBar:SetTemplate('Transparent')
+	if PointsBar then
+		PointsBar:StripTextures()
+		PointsBar:SetTemplate('Transparent')
+	end
 
 	-- Honor/Arena/PvP Tab
 	local InspectPVPFrame = _G.InspectPVPFrame
@@ -131,16 +146,20 @@ function S:Blizzard_InspectUI()
 
 	for i = 1, MAX_ARENA_TEAMS do
 		local inspectpvpTeam = _G['InspectPVPTeam'..i]
+		if inspectpvpTeam then
+			inspectpvpTeam:StripTextures()
+			inspectpvpTeam:CreateBackdrop()
+			inspectpvpTeam.backdrop:Point('TOPLEFT', 9, -4)
+			inspectpvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
 
-		inspectpvpTeam:StripTextures()
-		inspectpvpTeam:CreateBackdrop()
-		inspectpvpTeam.backdrop:Point('TOPLEFT', 9, -4)
-		inspectpvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
+			inspectpvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
+			inspectpvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
 
-		inspectpvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
-		inspectpvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
-
-		_G['InspectPVPTeam'..i..'Highlight']:Kill()
+			local highlight = _G['InspectPVPTeam'..i..'Highlight']
+			if highlight then
+				highlight:Kill()
+			end
+		end
 	end
 
 	local PVPTeamDetails = _G.PVPTeamDetails
@@ -150,14 +169,18 @@ function S:Blizzard_InspectUI()
 
 	for i = 1, 5 do
 		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
-		header:StripTextures()
-		header:StyleButton()
+		if header then
+			header:StripTextures()
+			header:StyleButton()
+		end
 	end
 
 	for i = 1, 10 do
 		local button = _G['PVPTeamDetailsButton'..i]
-		button:Width(335)
-		S:HandleButtonHighlight(button)
+		if button then
+			button:Width(335)
+			S:HandleButtonHighlight(button)
+		end
 	end
 
 	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
