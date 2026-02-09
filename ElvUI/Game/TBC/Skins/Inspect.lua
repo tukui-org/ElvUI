@@ -144,7 +144,7 @@ function S:Blizzard_InspectUI()
 	local InspectPVPFrame = _G.InspectPVPFrame
 	InspectPVPFrame:StripTextures(true)
 
-	for i = 1, MAX_ARENA_TEAMS do
+	for i = 1, _G.MAX_ARENA_TEAMS do
 		local inspectpvpTeam = _G['InspectPVPTeam'..i]
 		if inspectpvpTeam then
 			inspectpvpTeam:StripTextures()
