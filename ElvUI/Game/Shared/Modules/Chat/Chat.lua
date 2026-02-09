@@ -2107,6 +2107,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 			arg1 = gsub(arg1, '(%d%s?%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
 			arg1 = gsub(arg1, '(%d%s?%%)$', '%1%%') -- escape percentages on the end
 			arg1 = gsub(arg1, '^%%o', '%%s') -- replace %o to %s [broken in cata classic?]: "%o gular zila amanare rukadare." from "Cabal Zealot"
+			arg1 = gsub(arg1, '^%%bur', '%%s') -- "%bur uden agol mod ru se ruftos lo nevren algos!" from "Gan'arg Sapper"
 		end
 	elseif not isProtected then
 		arg1 = gsub(arg1, '%%', '%%%%') -- escape any % characters, as it may otherwise cause an 'invalid option in format' error
