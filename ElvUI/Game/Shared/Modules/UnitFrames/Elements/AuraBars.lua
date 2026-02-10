@@ -8,7 +8,6 @@ local strfind = strfind
 local CreateFrame = CreateFrame
 local WrapString = C_StringUtil and C_StringUtil.WrapString
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
-local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
