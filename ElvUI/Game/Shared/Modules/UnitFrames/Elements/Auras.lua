@@ -504,25 +504,17 @@ end
 
 function UF:PostUpdateAura(unit, button)
 	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
-	local enemyNPC = not button.isFriend and not button.isPlayer
 	local steal = DebuffColors.Stealable
 
 	local color = E.Retail and not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
 	if color then
 		r, g, b = color:GetRGB()
 	elseif button.isDebuff then
-		local debuffType = E:NotSecretValue(button.debuffType) and button.debuffType or nil
-		local spellID = E:NotSecretValue(button.spellID) and button.spellID or nil
-		local bad, enemy = DebuffColors.BadDispel, DebuffColors.EnemyNPC
-
-		if enemyNPC then
-			if enemy and db.auraByType then
-				r, g, b = enemy.r, enemy.g, enemy.b
-			end
-		elseif bad and db.auraByDispels and (BadDispels[spellID] and DispelTypes[debuffType]) then
+		local bad = DebuffColors.BadDispel
+		if bad and db.auraByDispels and (BadDispels[button.spellID] and DispelTypes[button.debuffType]) then
 			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType then
-			local debuffColor = DebuffColors[debuffType or 'None']
+			local debuffColor = DebuffColors[button.debuffType or 'None']
 			r, g, b = debuffColor.r * 0.6, debuffColor.g * 0.6, debuffColor.b * 0.6
 		end
 	elseif steal and db.auraByDispels and button.isStealable and not button.isFriend then
@@ -534,7 +526,7 @@ function UF:PostUpdateAura(unit, button)
 	end
 
 	button:SetBackdropBorderColor(r, g, b)
-	button.Icon:SetDesaturated(button.isDebuff and enemyNPC and button.canDesaturate)
+	button.Icon:SetDesaturated(button.isDebuff and not button.isPlayer and button.canDesaturate)
 
 	if button.Text then
 		local bdb = button.db
