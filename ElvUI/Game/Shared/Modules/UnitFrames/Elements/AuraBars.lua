@@ -123,6 +123,7 @@ function UF:Configure_AuraBars(frame)
 
 		for _, bar in ipairs(bars) do
 			UF:AuraBars_UpdateBar(bar)
+			UF:UpdateFilters(bar)
 		end
 
 		E:UpdateClassColor(UF.db.colors.auraBarBuff)
