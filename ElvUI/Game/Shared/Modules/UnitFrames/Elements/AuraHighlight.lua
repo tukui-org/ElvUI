@@ -55,14 +55,10 @@ function UF:Configure_AuraHighlight(frame)
 end
 
 function UF:PostUpdate_AuraHighlight(frame, unit, aura, debuffType, _, wasFiltered)
-	if wasFiltered or not aura then return end
+	if wasFiltered then return end
 
-	local color
-	if E.Retail then
-		color = GetAuraDispelTypeColor(unit, aura.auraInstanceID, E.Curves.Color.Dispel)
-	else
-		color = UF.db.colors.debuffHighlight[debuffType or 'None']
-	end
+	local secretColor = E.Retail and aura and GetAuraDispelTypeColor(unit, aura.auraInstanceID, E.Curves.Color.Dispel)
+	local color = secretColor or (E:NotSecretValue(debuffType) and UF.db.colors.debuffHighlight[debuffType]) or UF.db.colors.debuffHighlight.None
 
 	if frame.AuraHighlightBackdrop and frame.AuraHightlightGlow then
 		frame.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
