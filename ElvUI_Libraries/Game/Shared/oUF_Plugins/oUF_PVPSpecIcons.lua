@@ -1,6 +1,5 @@
 local _, ns = ...
-local oUF = ns.oUF or oUF
-assert(oUF, 'oUF not loaded')
+local oUF = ns.oUF
 
 local tonumber = tonumber
 
