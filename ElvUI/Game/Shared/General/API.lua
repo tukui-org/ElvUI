@@ -10,7 +10,7 @@ local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
 local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
-local strlen, tonumber, tostring = strlen, tonumber, tostring
+local pcall, strlen, tonumber, tostring = pcall, strlen, tonumber, tostring
 
 local CopyTable = CopyTable
 local CreateFrame = CreateFrame
