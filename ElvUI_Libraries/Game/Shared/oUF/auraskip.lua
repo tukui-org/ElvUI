@@ -3,6 +3,7 @@ local oUF = ns.oUF
 
 local next = next
 local wipe = wipe
+local pcall = pcall
 local select = select
 
 local UnitGUID = UnitGUID
@@ -151,8 +152,11 @@ local function ProcessTokens(frame, event, unit, token, ...)
 end
 
 local function ProcessExisting(frame, event, unit)
-	ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HELPFUL'))
-	ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HARMFUL'))
+	local success = pcall(GetAuraSlots, unit, 'HELPFUL')
+	if success then
+		ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HELPFUL'))
+		ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HARMFUL'))
+	end
 end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
@@ -239,14 +243,14 @@ end
 -- Blizzard didnt implement the tooltip functions on Era or Mists
 function oUF:GetAuraIndexByInstanceID(unit, auraInstanceID, filter)
 	local index = 1
-	local aura = GetAuraDataByIndex(unit, index, filter)
-	while aura do
+	local success, aura = pcall(GetAuraDataByIndex, unit, index, filter)
+	while (success and aura) do
 		if aura.auraInstanceID == auraInstanceID then
 			return index
 		end
 
 		index = index + 1
-		aura = GetAuraDataByIndex(unit, index, filter)
+		success, aura = pcall(GetAuraDataByIndex, unit, index, filter)
 	end
 end
 
