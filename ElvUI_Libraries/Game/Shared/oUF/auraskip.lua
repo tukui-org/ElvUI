@@ -99,7 +99,6 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
 	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
-
 	for filter, filtered in next, auraFiltered do
 		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
 	end
