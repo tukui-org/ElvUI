@@ -132,8 +132,8 @@ local function BuildGuildTable()
 				rank = rank,					--2
 				level = level,					--3
 				zone = zone,					--4
-				note = note,					--5
-				officerNote = officerNote,		--6
+				note = E:NotSecretValue(note) and note or '',							--5
+				officerNote = E:NotSecretValue(officerNote) and officerNote or '',		--6
 				online = connected,				--7
 				status = statusInfo,			--8
 				class = className,				--9
