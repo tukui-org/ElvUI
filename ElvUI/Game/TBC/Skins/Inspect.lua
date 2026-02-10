@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetInventoryItemQuality = GetInventoryItemQuality
