@@ -34,6 +34,6 @@
 	<Script file='Shared\LibAnim\LibAnim.lua'/>
 
 	<Script file='Shared\LibDispel\LibDispel.lua'/> <!-- keep over oUF -->
-	<Include file='Shared\oUF\oUF.xml'/>
+	<Include file='Shared\oUF\oUF_Mainline.xml'/>
 	<Include file='Shared\oUF_Plugins\oUF_Plugins.xml'/>
 </Ui>
