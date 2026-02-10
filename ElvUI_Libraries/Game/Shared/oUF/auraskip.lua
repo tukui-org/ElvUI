@@ -1,8 +1,5 @@
 local _, ns = ...
 local oUF = ns.oUF
-local Private = oUF.Private
-
-local unitExists = Private.unitExists
 
 local next = next
 local wipe = wipe
@@ -232,7 +229,7 @@ end
 
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, showFunc)
-	if not unitExists(unit) or (frame.unit and frame.unit ~= unit) then
+	if not unit or (frame.unit and frame.unit ~= unit) then
 		return true
 	end
 
