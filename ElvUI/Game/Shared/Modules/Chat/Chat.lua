@@ -2317,9 +2317,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			local found = false
 			for index, value in pairs(frame.channelList) do
-				if channelLength > strlen(value) then -- arg9 is the channel name without the number in front...
+				if channelLength > strlen(value) then
 					local match = strupper(value) == strupper(arg9)
-					if not match then
+					if not match then -- arg9 is the channel name without the number in front
 						local success, zoneChannel = pcall(CH.ChatFrame_GetZoneChannelList, frame, index)
 						match = success and arg7 > 0 and arg7 == zoneChannel
 					end
