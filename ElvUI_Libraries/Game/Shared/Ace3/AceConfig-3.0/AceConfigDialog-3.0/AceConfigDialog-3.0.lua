@@ -30,6 +30,7 @@ local math_min, math_max, math_floor = math.min, math.max, math.floor
 
 local _G = _G
 local geterrorhandler = geterrorhandler
+local C_SettingsUtil = C_SettingsUtil
 local CreateFrame = CreateFrame
 local PlaySound = PlaySound
 local Settings = Settings
