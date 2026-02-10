@@ -717,8 +717,7 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	button.canDispel = canDispel
 	button.unitIsCaster = unitIsCaster
 
-	-- used elsewhere
-	button.canDesaturate = db.desaturate
+	-- used by GetAuraSortTime
 	button.noTime = duration == 0 and expiration == 0
 
 	return myPet, otherPet, canDispel, unitIsCaster
@@ -751,11 +750,12 @@ end
 
 function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossAura, castByPlayer, nameplateShowAll)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
+	local db = self.db
 
 	-- this should be secret safe, rest are populated in oUF or AuraPopulate
 	button.isFriend = UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
+	button.canDesaturate = (db and db.desaturate) or false
 
-	local db = self.db
 	if not db or not aura then
 		button.priority = 0
 
