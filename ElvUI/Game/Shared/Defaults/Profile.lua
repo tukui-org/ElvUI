@@ -1193,10 +1193,12 @@ for unit, data in next, P.nameplates.units do
 end
 
 P.nameplates.units.PLAYER.buffs.maxDuration = 300
+P.nameplates.units.PLAYER.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal,NonPersonal'
 P.nameplates.units.PLAYER.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.PLAYER.debuffs.yOffset = 35
+P.nameplates.units.PLAYER.debuffs.priority = 'Blacklist,Personal,NonPersonal'
 P.nameplates.units.PLAYER.name.enable = false
 P.nameplates.units.PLAYER.name.format = '[classcolor][name]'
 P.nameplates.units.PLAYER.level.enable = false
