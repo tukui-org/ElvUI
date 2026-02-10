@@ -2,39 +2,44 @@ local _, ns = ...
 local oUF = ns.oUF
 local AuraFiltered = oUF.AuraFiltered
 
-local next = next
-local UnitCanAssist = UnitCanAssist
-
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 local DispelFilter = LibDispel:GetMyDispelTypes()
 local BlockList = LibDispel:GetBlockList()
 
-local function DebuffLoop(check, list, name, icon, _, auraType, _, _, _, _, _, spellID)
+local next = next
+local UnitCanAssist = UnitCanAssist
+
+local function DebuffLoop(_, check, list, name, icon, _, auraType, _, _, _, _, _, spellID)
 	local allowSpell = oUF:NotSecretValue(spellID)
 	local spell = list and (allowSpell and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
-	local dispelType = auraType or nil
 
 	if spell then
 		if spell.enable then
-			return dispelType, icon, true, spell.style, spell.color
+			return auraType, icon, true, spell.style, spell.color
 		end
-	elseif oUF:NotSecretValue(dispelType) and dispelType then
+	elseif oUF:NotSecretValue(auraType) and auraType then
 		local allow = not check
 		if not allow then
-			allow = DispelFilter[dispelType]
+			allow = DispelFilter[auraType]
 		end
 
 		if allow and not BlockList[spellID] then
-			return dispelType, icon
+			return auraType, icon
 		end
 	end
 end
 
-local function BuffLoop(_, list, name, icon, _, auraType, _, _, source, _, _, spellID)
+local function BuffLoop(_, _, list, name, icon, _, auraType, _, _, source, _, _, spellID)
 	local spell = list and (oUF:NotSecretValue(spellID) and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
 	if spell and spell.enable and (not spell.ownOnly or source == 'player') then
 		return auraType, icon, true, spell.style, spell.color
+	end
+end
+
+local function MidnightLoop(aura, _, _, _, icon, _, auraType)
+	if aura.auraIsRaidPlayerDispellable then
+		return auraType, icon
 	end
 end
 
@@ -43,10 +48,10 @@ local function Looper(unit, filter, check, list, func)
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
 		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:UnpackAuraData(aura)
-		local AuraType, Icon, filtered, style, color = func(check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+		local AuraType, Icon, filtered, style, color = func(aura, check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
 
 		if Icon then
-			return AuraType, Icon, filtered, style, color
+			return aura, AuraType, Icon, filtered, style, color
 		end
 
 		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
@@ -56,17 +61,24 @@ end
 local function GetAuraType(unit, check, list)
 	if not unit or not UnitCanAssist('player', unit) then return end
 
-	local auraType, icon, filtered, style, color = Looper(unit, 'HARMFUL', check, list, DebuffLoop)
-	if icon then return auraType, icon, filtered, style, color end
+	local aura, auraType, icon, filtered, style, color = Looper(unit, 'HARMFUL', check, list, oUF.isRetail and MidnightLoop or DebuffLoop)
+	if icon then
+		return aura, auraType, icon, filtered, style, color
+	end
 
-	auraType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
-	if icon then return auraType, icon, filtered, style, color end
+	if not oUF.isRetail then
+		aura, auraType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
+
+		if icon then
+			return aura, auraType, icon, filtered, style, color
+		end
+	end
 end
 
 local function Update(self, event, unit, updateInfo)
 	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
 
-	local auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
+	local aura, auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
 	if wasFiltered then
 		if style == 'GLOW' and self.AuraHightlightGlow then
@@ -77,7 +89,9 @@ local function Update(self, event, unit, updateInfo)
 			self.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
 		end
 	elseif auraType then
-		color = DebuffColors[auraType or 'None']
+		if not color then
+			color = oUF:NotSecretValue(auraType) and DebuffColors[auraType] or DebuffColors.None
+		end
 
 		if self.AuraHighlightBackdrop and self.AuraHightlightGlow then
 			self.AuraHightlightGlow:Show()
@@ -100,7 +114,7 @@ local function Update(self, event, unit, updateInfo)
 	end
 
 	if self.AuraHighlight.PostUpdate then
-		self.AuraHighlight:PostUpdate(self, auraType, texture, wasFiltered, style, color)
+		self.AuraHighlight:PostUpdate(self, unit, aura, auraType, texture, wasFiltered, style, color)
 	end
 end
 

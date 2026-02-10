@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
+local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
+
 function UF:Construct_AuraHighlight(frame)
 	local dbh = frame:CreateTexture(nil, 'OVERLAY')
 	dbh:SetInside(frame.Health.backdrop)
@@ -52,13 +54,19 @@ function UF:Configure_AuraHighlight(frame)
 	end
 end
 
-function UF:PostUpdate_AuraHighlight(object, debuffType, _, wasFiltered)
-	if debuffType and not wasFiltered then
-		local color = UF.db.colors.debuffHighlight[debuffType]
-		if object.AuraHighlightBackdrop and object.AuraHightlightGlow then
-			object.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
-		else
-			object.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
-		end
+function UF:PostUpdate_AuraHighlight(frame, unit, aura, debuffType, _, wasFiltered)
+	if wasFiltered or not aura then return end
+
+	local color
+	if E.Retail then
+		color = GetAuraDispelTypeColor(unit, aura.auraInstanceID, E.Curves.Color.Dispel)
+	else
+		color = UF.db.colors.debuffHighlight[debuffType or 'None']
+	end
+
+	if frame.AuraHighlightBackdrop and frame.AuraHightlightGlow then
+		frame.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+	else
+		frame.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
 	end
 end
