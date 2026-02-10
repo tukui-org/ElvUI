@@ -146,17 +146,14 @@ local function ProcessAura(frame, event, unit, token, ...)
 	return token
 end
 
-local function ProcessTokens(frame, event, unit, token, ...)
-	repeat token = ProcessAura(frame, event, unit, token, ...)
+local function ProcessTokens(frame, event, unit, success, token, ...)
+	repeat token = success and ProcessAura(frame, event, unit, token, ...)
 	until not token
 end
 
 local function ProcessExisting(frame, event, unit)
-	local success = pcall(GetAuraSlots, unit, 'HELPFUL')
-	if success then
-		ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HELPFUL'))
-		ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HARMFUL'))
-	end
+	ProcessTokens(frame, event, unit, pcall(GetAuraSlots, unit, 'HELPFUL'))
+	ProcessTokens(frame, event, unit, pcall(GetAuraSlots, unit, 'HARMFUL'))
 end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
