@@ -103,9 +103,11 @@ function E:Cooldown_OnHide()
 end
 
 function E:CooldownRegion(cooldown, main)
-	if not cooldown or cooldown.Text then return end
+	if not cooldown then return end
 
-	cooldown.Text = cooldown:GetRegions() -- extract the timer text
+	if not cooldown.Text then -- extract the timer text
+		cooldown.Text = cooldown:GetRegions()
+	end
 
 	if main and not cooldown.mainCooldown then
 		cooldown.mainCooldown = main
