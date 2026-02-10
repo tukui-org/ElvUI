@@ -1193,29 +1193,28 @@ for unit, data in next, P.nameplates.units do
 end
 
 P.nameplates.units.PLAYER.buffs.maxDuration = 300
-P.nameplates.units.PLAYER.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal,TurtleBuffs'
 P.nameplates.units.PLAYER.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.PLAYER.debuffs.yOffset = 35
-P.nameplates.units.PLAYER.debuffs.priority = 'Blacklist,Dispellable,blockNoDuration,CCDebuffs,RaidDebuffs'
 P.nameplates.units.PLAYER.name.enable = false
 P.nameplates.units.PLAYER.name.format = '[classcolor][name]'
 P.nameplates.units.PLAYER.level.enable = false
 P.nameplates.units.PLAYER.power.enable = true
 P.nameplates.units.PLAYER.castbar.yOffset = -20
 
-P.nameplates.units.FRIENDLY_PLAYER.buffs.isAuraRaid = true
-P.nameplates.units.FRIENDLY_PLAYER.buffs.isAuraDefensive = true
+P.nameplates.units.FRIENDLY_PLAYER.buffs.isAuraBigDefensive = true
+P.nameplates.units.FRIENDLY_PLAYER.buffs.isAuraRaidInCombat = true
 P.nameplates.units.FRIENDLY_PLAYER.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal,TurtleBuffs'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.yOffset = 35
-P.nameplates.units.FRIENDLY_PLAYER.debuffs.isAuraRaid = true
+P.nameplates.units.FRIENDLY_PLAYER.debuffs.isAuraImportant = true
+P.nameplates.units.FRIENDLY_PLAYER.debuffs.isAuraRaidPlayerDispellable = true
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.priority = 'Blacklist,Dispellable'
 
-P.nameplates.units.ENEMY_PLAYER.buffs.isAuraRaid = true
+P.nameplates.units.ENEMY_PLAYER.buffs.isAuraBigDefensive = true
 P.nameplates.units.ENEMY_PLAYER.buffs.isAuraDefensive = true
 P.nameplates.units.ENEMY_PLAYER.buffs.priority = 'Blacklist,Whitelist,Dispellable,TurtleBuffs'
 P.nameplates.units.ENEMY_PLAYER.buffs.maxDuration = 300
@@ -1224,11 +1223,12 @@ P.nameplates.units.ENEMY_PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.ENEMY_PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.ENEMY_PLAYER.debuffs.yOffset = 35
 P.nameplates.units.ENEMY_PLAYER.debuffs.isAuraPlayer = true
+P.nameplates.units.ENEMY_PLAYER.debuffs.isAuraCrowdControl = true
 P.nameplates.units.ENEMY_PLAYER.debuffs.priority = 'Blacklist,blockNoDuration,Personal'
 P.nameplates.units.ENEMY_PLAYER.name.format = E.Retail and '[classcolor][name]' or '[classcolor][name:abbrev:long]'
 
-P.nameplates.units.FRIENDLY_NPC.buffs.isAuraRaid = true
 P.nameplates.units.FRIENDLY_NPC.buffs.isAuraDefensive = true
+P.nameplates.units.FRIENDLY_NPC.buffs.isAuraImportant = true
 P.nameplates.units.FRIENDLY_NPC.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal'
 P.nameplates.units.FRIENDLY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.FRIENDLY_NPC.debuffs.growthX = 'LEFT'
@@ -1240,8 +1240,8 @@ P.nameplates.units.FRIENDLY_NPC.level.format = '[difficultycolor][level][shortcl
 P.nameplates.units.FRIENDLY_NPC.name.format = '[reactioncolor][name]'
 P.nameplates.units.FRIENDLY_NPC.title.format = '[npctitle]'
 
-P.nameplates.units.ENEMY_NPC.buffs.isAuraRaid = true
-P.nameplates.units.ENEMY_NPC.buffs.isAuraDefensive = true
+P.nameplates.units.ENEMY_NPC.buffs.isAuraImportant = true
+P.nameplates.units.ENEMY_NPC.buffs.isAuraRaidPlayerDispellable = true
 P.nameplates.units.ENEMY_NPC.buffs.priority = 'Blacklist,Whitelist,Dispellable,blockNoDuration,RaidBuffsElvUI'
 P.nameplates.units.ENEMY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.ENEMY_NPC.debuffs.growthX = 'LEFT'
@@ -2509,6 +2509,19 @@ P.unitframe = {
 
 P.unitframe.colors.classResources = CopyTable(P.nameplates.colors.classResources)
 P.unitframe.colors.empoweredCast = CopyTable(P.nameplates.colors.empoweredCast)
+
+--[[
+	isAuraImportant = false
+	isAuraCrowdControl = false
+	isAuraBigDefensive = false
+	isAuraRaidInCombat = false
+	isAuraRaidPlayerDispellable = false
+	isAuraDefensive = false
+	isAuraCancelable = false
+	notAuraCancelable = false
+	isAuraPlayer = false
+	isAuraRaid = false
+]]
 
 P.unitframe.units.player.aurabar.enemyAuraType = 'HARMFUL'
 P.unitframe.units.player.aurabar.friendlyAuraType = 'HELPFUL'
