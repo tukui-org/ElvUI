@@ -190,7 +190,7 @@ local eventHandlers = {
 	end,
 	-- our guild message of the day changed
 	GUILD_MOTD = function(_, arg1)
-		guildMotD = arg1
+		guildMotD = E:NotSecretValue(arg1) and arg1 or ''
 	end
 }
 
