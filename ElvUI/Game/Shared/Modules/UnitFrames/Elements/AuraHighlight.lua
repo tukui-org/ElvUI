@@ -4,12 +4,12 @@ local UF = E:GetModule('UnitFrames')
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
 function UF:Construct_AuraHighlight(frame)
-	local dbh = frame:CreateTexture(nil, 'OVERLAY')
-	dbh:SetInside(frame.Health.backdrop)
-	dbh:SetTexture(E.media.blankTex)
-	dbh:SetVertexColor(0, 0, 0, 0)
-	dbh:SetBlendMode('ADD')
-	dbh.PostUpdate = UF.PostUpdate_AuraHighlight
+	local element = frame:CreateTexture(nil, 'OVERLAY')
+	element:SetInside(frame.Health.backdrop)
+	element:SetTexture(E.media.blankTex)
+	element:SetVertexColor(0, 0, 0, 0)
+	element:SetBlendMode('ADD')
+	element.PostUpdate = UF.PostUpdate_AuraHighlight
 
 	local glow = frame:CreateShadow(nil, true)
 	glow:Hide()
@@ -19,11 +19,11 @@ function UF:Construct_AuraHighlight(frame)
 	frame.AuraHighlightFilterTable = E.global.unitframe.AuraHighlightColors
 
 	if frame.Health then
-		dbh:SetParent(frame.Health)
+		element:SetParent(frame.Health)
 		glow:SetParent(frame.Health)
 	end
 
-	return dbh
+	return element
 end
 
 function UF:Configure_AuraHighlight(frame)
