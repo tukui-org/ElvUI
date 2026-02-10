@@ -266,11 +266,12 @@ function UF:UpdateFilters(button)
 		button.auraFilters = {}
 	end
 
-	local isImportant = E.Retail and db and db.isAuraImportant
-	local isCrowdControl = E.Retail and db and db.isAuraCrowdControl
-	local isBigDefensive = E.Retail and db and db.isAuraBigDefensive
-	local isRaidInCombat = E.Retail and db and db.isAuraRaidInCombat
-	local isRaidPlayerDispellable = E.Retail and db and db.isAuraRaidPlayerDispellable
+	local patchReady = E.wowtoc > 120000
+	local isImportant = patchReady and db and db.isAuraImportant
+	local isCrowdControl = patchReady and db and db.isAuraCrowdControl
+	local isBigDefensive = patchReady and db and db.isAuraBigDefensive
+	local isRaidInCombat = patchReady and db and db.isAuraRaidInCombat
+	local isRaidPlayerDispellable = patchReady and db and db.isAuraRaidPlayerDispellable
 	local isDefensive = E.Retail and db and db.isAuraDefensive
 	local isCancelable = db and db.isAuraCancelable
 	local notCancelable = db and db.notAuraCancelable
