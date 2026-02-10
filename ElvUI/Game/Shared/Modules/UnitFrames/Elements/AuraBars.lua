@@ -8,6 +8,7 @@ local strfind = strfind
 local CreateFrame = CreateFrame
 local WrapString = C_StringUtil and C_StringUtil.WrapString
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
+local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
@@ -205,13 +206,19 @@ end
 
 local GOTAK_ID = 86659
 local GOTAK = E:GetSpellInfo(GOTAK_ID)
-function UF:PostUpdateBar_AuraBars(_, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
+function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
 	local spellID, spellName = E:NotSecretValue(bar.spellID) and bar.spellID or nil, E:NotSecretValue(bar.spell) and bar.spell or nil
 
-	local auraBarColor = E.global.unitframe.AuraBarColors[spellID]
-	local colors = auraBarColor and auraBarColor.enable and auraBarColor.color
-	if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
-		colors = E.db.unitframe.colors.auraBarTurtleColor
+	local colors
+	if E.Retail then
+		colors = UF:GetAuraCurve(unit, bar, bar.aura)
+	else
+		local auraColor = E.global.unitframe.AuraBarColors[spellID]
+		colors = auraColor and auraColor.enable and auraColor.color
+
+		if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
+			colors = E.db.unitframe.colors.auraBarTurtleColor
+		end
 	end
 
 	if not colors then

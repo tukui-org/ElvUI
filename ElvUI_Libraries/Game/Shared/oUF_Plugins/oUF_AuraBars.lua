@@ -200,7 +200,7 @@ local function AuraUpdate(element, unit, aura, index, offset, filter, isDebuff, 
 	bar.modRate = modRate
 	bar.spellID = spellID
 	bar.spell = name
-	bar.auraInstanceID = aura.auraInstanceID
+	bar.auraInstanceID = aura and aura.auraInstanceID or nil
 	bar.auraDuration = aura and GetAuraDuration and GetAuraDuration(unit, aura.auraInstanceID) or nil
 	bar.noTime = oUF:NotSecretValue(duration) and (duration == 0 and expiration == 0)
 
