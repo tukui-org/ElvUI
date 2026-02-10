@@ -137,8 +137,8 @@ local function ProcessAura(frame, event, unit, token, ...)
 	local numSlots = select('#', ...)
 	for i = 1, numSlots do
 		local slot = select(i, ...)
-		local success, aura = pcall(GetAuraDataBySlot, unit, slot)
-		if success and aura then
+		local aura = GetAuraDataBySlot(unit, slot)
+		if aura then
 			TryAdded('add', frame, event, unit, nil, aura)
 		end
 	end
