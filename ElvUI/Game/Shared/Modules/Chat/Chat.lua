@@ -2245,7 +2245,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 end
 
 -- we dont have a good way to check: attempted to index a forbidden table
-function CH:ChatFrame_GetZoneChannelList(frame, index)
+function CH:ChatFrame_GetZoneChannel(frame, index)
 	return frame.zoneChannelList[index]
 end
 
@@ -2320,7 +2320,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				if channelLength > strlen(value) then
 					local match = strupper(value) == strupper(arg9)
 					if not match then -- arg9 is the channel name without the number in front
-						local success, zoneChannel = pcall(CH.ChatFrame_GetZoneChannelList, frame, index)
+						local success, zoneChannel = pcall(CH.ChatFrame_GetZoneChannel, frame, index)
 						match = success and arg7 > 0 and arg7 == zoneChannel
 					end
 
