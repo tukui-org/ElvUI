@@ -519,7 +519,7 @@ function UF:PostUpdateAura(unit, button)
 			if enemy and db.auraByType then
 				r, g, b = enemy.r, enemy.g, enemy.b
 			end
-		elseif bad and db.auraByDispels and (BadDispels[spellID] or DispelTypes[debuffType]) then
+		elseif bad and db.auraByDispels and (BadDispels[spellID] and DispelTypes[debuffType]) then
 			r, g, b = bad.r, bad.g, bad.b
 		elseif db.auraByType then
 			local debuffColor = DebuffColors[debuffType or 'None']
@@ -668,9 +668,7 @@ function UF:CheckFilter(source, spellName, spellID, canDispel, isFriend, isPlaye
 end
 
 function UF:AuraDispellable(debuffType, spellID)
-	if debuffType then
-		return DispelTypes[debuffType]
-	end
+	return DispelTypes[debuffType]
 end
 
 function UF:AuraDuration(db, duration)
