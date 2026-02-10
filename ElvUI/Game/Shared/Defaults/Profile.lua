@@ -2917,6 +2917,8 @@ do
 		hideBling = false,
 		hideNumbers = false,
 		altBling = false,
+		chargeText = true,
+		locText = true,
 
 		rotation = 0,
 		threshold = 0, -- seconds
