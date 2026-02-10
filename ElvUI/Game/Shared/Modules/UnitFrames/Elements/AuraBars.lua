@@ -206,12 +206,13 @@ end
 local GOTAK_ID = 86659
 local GOTAK = E:GetSpellInfo(GOTAK_ID)
 function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
-	local spellID, spellName = E:NotSecretValue(bar.spellID) and bar.spellID or nil, E:NotSecretValue(bar.spell) and bar.spell or nil
+	local spellName = E:NotSecretValue(bar.spell) and bar.spell or nil
 
 	local colors
 	if E.Retail then
 		colors = UF:GetAuraCurve(unit, bar, bar.aura)
 	else
+		local spellID = E:NotSecretValue(bar.spellID) and bar.spellID or nil
 		local auraColor = E.global.unitframe.AuraBarColors[spellID]
 		colors = auraColor and auraColor.enable and auraColor.color
 
