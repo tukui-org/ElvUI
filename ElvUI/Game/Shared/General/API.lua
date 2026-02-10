@@ -1417,6 +1417,18 @@ function E:GetClassificationColor(unit)
 	end
 end
 
+function E:UnitIsAFK(unit)
+	local afk = UnitIsAFK(unit)
+
+	return E:NotSecretValue(afk) and afk or nil
+end
+
+function E:UnitIsDND(unit)
+	local dnd = UnitIsDND(unit)
+
+	return E:NotSecretValue(dnd) and dnd or nil
+end
+
 function E:LoadAPI()
 	E:RegisterEvent('GROUP_LEFT')
 	E:RegisterEvent('GROUP_ROSTER_UPDATE')
