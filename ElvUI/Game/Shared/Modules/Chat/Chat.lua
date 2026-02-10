@@ -2244,6 +2244,11 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	return body
 end
 
+-- we dont have a good way to check: attempted to index a forbidden table
+function CH:ChatFrame_GetZoneChannelList(frame, index)
+	return frame.zoneChannelList[index]
+end
+
 function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 	-- ElvUI Chat History Note: isHistory, historyTime, historyName, and historyBTag are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
 	-- we also send isHistory and historyTime into CH:AddMessage so that we don't have to override the timestamp.
@@ -2312,9 +2317,14 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			local found = false
 			for index, value in pairs(frame.channelList) do
-				if channelLength > strlen(value) then
-					-- arg9 is the channel name without the number in front...
-					if (arg7 > 0 and frame.zoneChannelList[index] == arg7) or (strupper(value) == strupper(arg9)) then
+				if channelLength > strlen(value) then -- arg9 is the channel name without the number in front...
+					local match = strupper(value) == strupper(arg9)
+					if not match then
+						local success, zoneChannel = pcall(CH.ChatFrame_GetZoneChannelList, frame, index)
+						match = success and arg7 > 0 and arg7 == zoneChannel
+					end
+
+					if match then
 						found = true
 
 						infoType = 'CHANNEL'..arg8
@@ -2324,6 +2334,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 							frame.channelList[index] = nil
 							frame.zoneChannelList[index] = nil
 						end
+
 						break
 					end
 				end
