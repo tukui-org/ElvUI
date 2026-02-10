@@ -259,6 +259,45 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraSettings(button)
 end
 
+function UF:UpdateFilters(button)
+	local db = button.db
+
+	if not button.auraFilters then
+		button.auraFilters = {}
+	end
+
+	local isImportant = E.Retail and db and db.isAuraImportant
+	local isCrowdControl = E.Retail and db and db.isAuraCrowdControl
+	local isBigDefensive = E.Retail and db and db.isAuraBigDefensive
+	local isRaidInCombat = E.Retail and db and db.isAuraRaidInCombat
+	local isRaidPlayerDispellable = E.Retail and db and db.isAuraRaidPlayerDispellable
+	local isDefensive = E.Retail and db and db.isAuraDefensive
+	local isCancelable = db and db.isAuraCancelable
+	local notCancelable = db and db.notAuraCancelable
+	local isPlayer = db and db.isAuraPlayer
+	local isRaid = db and db.isAuraRaid
+
+	local filters = button.auraFilters
+	filters.isImportant = isImportant
+	filters.isCrowdControl = isCrowdControl
+	filters.isBigDefensive = isBigDefensive
+	filters.isRaidInCombat = isRaidInCombat
+	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
+	filters.isDefensive = isDefensive
+	filters.isCancelable = isCancelable
+	filters.notCancelable = notCancelable
+	filters.isPlayer = isPlayer
+	filters.isRaid = isRaid
+
+	button.useMidnight = db and db.useMidnight
+
+	if E.Retail then
+		button.noFilter = db and not (isImportant or isCrowdControl or isBigDefensive or isRaidInCombat or isRaidPlayerDispellable or isDefensive or isCancelable or notCancelable or isPlayer or isRaid)
+	else
+		button.noFilter = db and not (isCancelable or notCancelable or isPlayer or isRaid)
+	end
+end
+
 function UF:UpdateAuraSettings(button)
 	local db = button.db
 	if db then
@@ -279,10 +318,9 @@ function UF:UpdateAuraSettings(button)
 		end
 	end
 
-	button.useMidnight = db and db.useMidnight
-	button.noFilter = db and not (db.isAuraPlayer or db.isAuraRaid or (E.Retail and db.isAuraDefensive))
-
 	button.needsButtonTrim = true
+
+	UF:UpdateFilters(button)
 end
 
 function UF:EnableDisable_Auras(frame)
@@ -698,6 +736,31 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	return myPet, otherPet, canDispel, isFriend, unitIsCaster
 end
 
+function UF:VerifyFilter(button, aura)
+	local filters = button.auraFilters
+	if not filters or button.noFilter then
+		return true
+	end
+
+	if E.Retail then
+		return (filters.isImportant and aura.auraIsImportant)
+		or (filters.isCrowdControl and aura.auraIsCrowdControl)
+		or (filters.isBigDefensive and aura.auraIsBigDefensive)
+		or (filters.isRaidInCombat and aura.auraIsRaidInCombat)
+		or (filters.isRaidPlayerDispellable and aura.auraIsRaidPlayerDispellable)
+		or (filters.isDefensive and aura.auraIsExternalDefensive)
+		or (filters.isCancelable and aura.auraIsCancelable)
+		or (filters.notCancelable and not aura.auraIsCancelable)
+		or (filters.isPlayer and aura.auraIsPlayer)
+		or (filters.isRaid and aura.auraIsRaid)
+	else
+		return (filters.isCancelable and aura.auraIsCancelable)
+		or (filters.notCancelable and not aura.auraIsCancelable)
+		or (filters.isPlayer and aura.auraIsPlayer)
+		or (filters.isRaid and aura.auraIsRaid)
+	end
+end
+
 function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossAura, castByPlayer, nameplateShowAll)
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 
@@ -709,7 +772,7 @@ function UF:AuraFilter(unit, button, aura, name, icon, count, debuffType, durati
 	elseif E.Retail or button.useMidnight then
 		button.priority = 0
 
-		return button.noFilter or (db.isAuraPlayer and aura.auraIsPlayer) or (db.isAuraRaid and aura.auraIsRaid) or ((E.Retail and db.isAuraDefensive) and aura.auraIsDefensive)
+		return UF:VerifyFilter(button, aura)
 	elseif UF:AuraStacks(self, db, button, name, icon, count, spellID, source, castByPlayer) then
 		return false -- stacking so dont allow it
 	end
