@@ -66,7 +66,7 @@ Auras.args.cooldownShortcut = ACH:Execute(L["Cooldown & Duration"], nil, 5, func
 Auras.args.colorGroup = ACH:MultiSelect(L["Colors"], nil, 6, { colorEnchants = L["Color Enchants"], colorDebuffs = L["Color Debuffs"] }, nil, nil, function(_, key) return E.db.auras[key] end, function(_, key, value) E.db.auras[key] = value end)
 
 do
-	Auras.args.debuffColors = ACH:Group(L["Debuff Colors"], nil, 7, nil, function(info) local t, d = E.db.general.debuffColors[info[#info]], P.general.debuffColors[info[#info]] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) E:UpdateDispelColor(info[#info], r, g, b) end)
+	Auras.args.debuffColors = ACH:Group(L["Debuff Colors"], nil, 7, nil, function(info) local t, d = E.db.general.debuffColors[info[#info]], P.general.debuffColors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b) E:UpdateDispelColor(info[#info], r, g, b) end)
 	Auras.args.debuffColors.args.spacer1 = ACH:Spacer(10, 'full')
 	Auras.args.debuffColors.inline = true
 

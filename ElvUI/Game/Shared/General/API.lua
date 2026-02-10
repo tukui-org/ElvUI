@@ -682,15 +682,15 @@ function E:IsDispellableByMe(debuffType)
 	return DispelTypes[debuffType]
 end
 
-function E:UpdateDispelColor(debuffType, r, g, b)
+function E:UpdateDispelColor(debuffType, r, g, b, a)
 	local color = DebuffColors[debuffType]
 	if color then
-		color.r, color.g, color.b = r, g, b
+		color.r, color.g, color.b, color.a = r, g, b, a
 	end
 
 	local db = E.db.general.debuffColors[debuffType]
 	if db then
-		db.r, db.g, db.b = r, g, b
+		db.r, db.g, db.b, db.a = r, g, b, a
 	end
 end
 
