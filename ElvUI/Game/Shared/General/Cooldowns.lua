@@ -107,7 +107,7 @@ function E:CooldownRegion(cooldown, main)
 
 	cooldown.Text = cooldown:GetRegions() -- extract the timer text
 
-	if not cooldown.mainCooldown then
+	if main and not cooldown.mainCooldown then
 		cooldown.mainCooldown = main
 
 		cooldown:HookScript('OnShow', E.Cooldown_OnShow)
