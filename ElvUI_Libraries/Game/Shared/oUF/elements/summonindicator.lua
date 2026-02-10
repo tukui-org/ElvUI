@@ -32,6 +32,8 @@ local SUMMON_STATUS_ACCEPTED = Enum.SummonStatus.Accepted or 2
 local SUMMON_STATUS_DECLINED = Enum.SummonStatus.Declined or 3
 local SUMMON_ICON_PREFIX = oUF.isRetail and 'RaidFrame-Icon-' or 'Raid-Icon-'
 
+local C_IncomingSummon_IncomingSummonStatus = C_IncomingSummon.IncomingSummonStatus
+
 local function Update(self, event, unit)
 	if(self.unit ~= unit) then return end
 
@@ -46,7 +48,7 @@ local function Update(self, event, unit)
 		element:PreUpdate()
 	end
 
-	local status = C_IncomingSummon.IncomingSummonStatus(unit)
+	local status = C_IncomingSummon_IncomingSummonStatus(unit)
 	if(status ~= SUMMON_STATUS_NONE) then
 		if(status == SUMMON_STATUS_PENDING) then
 			element:SetAtlas(SUMMON_ICON_PREFIX .. 'SummonPending')

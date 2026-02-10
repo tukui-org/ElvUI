@@ -1,6 +1,5 @@
 local _, ns = ...
-local oUF = _G.oUF or ns.oUF
-assert(oUF, "oUF_Fader cannot find an instance of oUF. If your oUF is embedded into a layout, it may not be embedded properly.")
+local oUF = ns.oUF
 
 -------------
 -- Credits --  p3lim, Azilroka, Simpy

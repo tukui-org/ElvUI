@@ -194,8 +194,8 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 
 	element.active[position] = button
 
-	local isDebuff = aura and oUF:NotSecretValue(aura.isHarmful) and aura.isHarmful or nil
 	local auraInstanceID = aura and oUF:NotSecretValue(aura.auraInstanceID) and aura.auraInstanceID or nil
+	local isDebuff = aura and (oUF:NotSecretValue(aura.isHarmful) and aura.isHarmful or aura.auraIsHarmful) or nil
 
 	button.aura = aura or nil
 	button.filter = filter or nil

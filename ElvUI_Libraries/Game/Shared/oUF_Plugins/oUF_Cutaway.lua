@@ -1,5 +1,5 @@
 local _, ns = ...
-local oUF = _G.oUF or ns.oUF
+local oUF = ns.oUF
 
 --[[
 	Configuration values for both health and power:

@@ -3,10 +3,8 @@ local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local next = next
-local ceil = ceil
-local strmatch = strmatch
-local tonumber = tonumber
+local next, ceil, pcall = next, ceil, pcall
+local strmatch, tonumber = strmatch, tonumber
 
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
@@ -272,8 +270,8 @@ end
 
 function A:UpdateAura(button, index)
 	local unitToken = button.header:GetAttribute('unit')
-	local data = GetAuraDataByIndex(unitToken, index, button.filter)
-	if not data then return end
+	local success, data = pcall(GetAuraDataByIndex, unitToken, index, button.filter)
+	if not success or not data then return end
 
 	local icon = data.icon
 	local duration = data.duration

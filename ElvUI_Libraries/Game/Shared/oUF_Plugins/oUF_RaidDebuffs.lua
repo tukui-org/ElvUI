@@ -1,5 +1,5 @@
 local _, ns = ...
-local oUF = ns.oUF or oUF
+local oUF = ns.oUF
 local AuraFiltered = oUF.AuraFiltered
 
 local _G = _G
