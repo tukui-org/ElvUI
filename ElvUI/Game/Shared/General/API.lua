@@ -510,8 +510,8 @@ end
 
 do
 	function E:GetAuraData(unitToken, index, filter)
-		local data = GetAuraDataByIndex(unitToken, index, filter)
-		if not data then return end
+		local success, data = pcall(GetAuraDataByIndex, unitToken, index, filter)
+		if not success or not data then return end
 
 		return ElvUF:UnpackAuraData(data)
 	end

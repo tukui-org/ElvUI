@@ -272,8 +272,8 @@ end
 
 function A:UpdateAura(button, index)
 	local unitToken = button.header:GetAttribute('unit')
-	local data = GetAuraDataByIndex(unitToken, index, button.filter)
-	if not data then return end
+	local success, data = pcall(GetAuraDataByIndex, unitToken, index, button.filter)
+	if not success or not data then return end
 
 	local icon = data.icon
 	local duration = data.duration
