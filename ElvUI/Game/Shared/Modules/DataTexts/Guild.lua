@@ -98,7 +98,7 @@ local function BuildGuildTable()
 	wipe(clubTable)
 
 	local clubs = E.Retail and GetSubscribedClubs()
-	if clubs then -- use this to get the timerunning flag (and other info?)
+	if E:NotSecretValue(clubs) and clubs then -- use this to get the timerunning flag (and other info?)
 		local guildClubID
 		for _, data in next, clubs do
 			if data.clubType == CLUBTYPE_GUILD then
