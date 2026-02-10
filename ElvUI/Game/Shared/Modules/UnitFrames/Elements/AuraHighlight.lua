@@ -3,6 +3,8 @@ local UF = E:GetModule('UnitFrames')
 
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
+local fallback = { r = 0, g = 0, b = 0, a = 0 }
+
 function UF:Construct_AuraHighlight(frame)
 	local element = frame:CreateTexture(nil, 'OVERLAY')
 	element:SetInside(frame.Health.backdrop)
@@ -58,7 +60,7 @@ function UF:PostUpdate_AuraHighlight(frame, unit, aura, debuffType, _, wasFilter
 	if wasFiltered then return end
 
 	local secretColor = E.Retail and aura and GetAuraDispelTypeColor(unit, aura.auraInstanceID, E.Curves.Color.Dispel)
-	local color = secretColor or (E:NotSecretValue(debuffType) and UF.db.colors.debuffHighlight[debuffType]) or UF.db.colors.debuffHighlight.None
+	local color = secretColor or (E:NotSecretValue(debuffType) and UF.db.colors.debuffHighlight[debuffType]) or fallback
 
 	if frame.AuraHighlightBackdrop and frame.AuraHightlightGlow then
 		frame.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
