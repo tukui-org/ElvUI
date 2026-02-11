@@ -104,7 +104,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.nameplates.units[unit][auraType].useMidnight end)
 
 	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], nil, 1)
-	group.args.midnightGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispelable"], nil, 2, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], nil, 2, nil, nil, nil, nil, nil, nil, not patchReady)
 
 	group.args.midnightGroup.args.player = ACH:Group(L["Player"], nil, 10)
 	group.args.midnightGroup.args.player.args.isAuraImportantPlayer = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not patchReady)
