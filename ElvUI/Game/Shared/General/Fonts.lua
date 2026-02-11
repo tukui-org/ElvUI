@@ -305,6 +305,9 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.DestinyFontHuge,						NORMAL, (blizz and 32) or unscale or enormous)				-- Garrison Mission Report
 		E:SetFont(_G.GameFont_Gigantic,						NORMAL, (blizz and 32) or unscale or enormous, 'SHADOW')	-- Used at the install steps
 		E:SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, (blizz and 32) or unscale or enormous, outline)		-- WorldMap
+		E:SetFont(_G.Game15Font_Shadow,						NORMAL, (blizz and 15) or unscale or medium, 'SHADOW')		-- House Relinquish
+		E:SetFont(_G.Game17Font_Shadow,						NORMAL, (blizz and 17) or unscale or big, 'SHADOW')			-- House Settings
+		E:SetFont(_G.Game22Font,							NORMAL, (blizz and 22) or unscale or large)					-- Housing Neighborhood
 
 		-- big fonts
 		E:SetFont(_G.QuestFont_39,							NORMAL, (blizz and 39) or unscale or gigantic)				-- Wrath
