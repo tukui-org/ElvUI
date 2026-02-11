@@ -77,6 +77,11 @@ function S:CooldownManager_UpdateTextContainer(container)
 		S:CooldownManager_CountText(countText)
 	end
 
+	local barCountText = container.Count
+	if barCountText then
+		S:CooldownManager_CountText(barCountText)
+	end
+
 	local chargeText = container.ChargeCount and container.ChargeCount.Current
 	if chargeText then
 		S:CooldownManager_CountText(chargeText)
