@@ -3,11 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local hooksecurefunc = hooksecurefunc
-local unpack = unpack
 local pi = math.pi
-
-local CreateFrame = CreateFrame
+local unpack = unpack
+local hooksecurefunc = hooksecurefunc
 
 local DROPDOWN_WIDTH_OFFSET = 8
 
