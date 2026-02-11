@@ -3118,6 +3118,8 @@ function CH:CheckLFGRoles()
 end
 
 function CH:SocialQueueIsLeader(playerName, leaderName)
+	if E:IsSecretValue(leaderName) then return end
+
 	if leaderName == playerName then
 		return true
 	end
