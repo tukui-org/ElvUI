@@ -3215,11 +3215,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 			activityInfo = C_LFGList_GetActivityInfoTable(activityID or firstQueue.queueData.activityID)
 		end
 
-		if name then
-			CH:SocialQueueMessage(guid, format('%s %s: [%s] |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], activityInfo and activityInfo.fullName or UNKNOWN, name))
-		else
-			CH:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], activityInfo and activityInfo.fullName or UNKNOWN))
-		end
+		CH:SocialQueueMessage(guid, format(name and '%s %s: [%s] |cff00CCFF%s|r' or '%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], activityInfo and activityInfo.fullName or UNKNOWN, name))
 	elseif firstQueue then
 		local output, outputCount, queueCount = '', '', 0
 		for _, queue in pairs(queues) do
