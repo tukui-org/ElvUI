@@ -15,7 +15,6 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetInventoryItemID = GetInventoryItemID
 
 local BANK_CONTAINER = Enum.BagIndex.Bank
-local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 
 local bagIconCache = {
 	[-2] = [[Interface\ICONS\INV_Misc_Key_03]],

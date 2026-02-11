@@ -5,6 +5,7 @@ local B = E:GetModule('Bags')
 
 local _G = _G
 local next = next
+local unpack = unpack
 local select = select
 
 local CreateFrame = CreateFrame

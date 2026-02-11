@@ -47,6 +47,8 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsVisible = UnitIsVisible
 local UnitSex = UnitSex
+local UnitIsAFK = UnitIsAFK
+local UnitIsDND = UnitIsDND
 local UnitThreatSituation = UnitThreatSituation
 
 local WorldFrame = WorldFrame
