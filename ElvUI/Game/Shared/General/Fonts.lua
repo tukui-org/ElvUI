@@ -271,6 +271,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Med3,						NORMAL, (blizz and 14) or unscale or medium)
 		E:SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')		-- Shows Order resourses on OrderHallTalentFrame
 		E:SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')
+		E:SetFont(_G.Game15Font_Shadow,						NORMAL, (blizz and 15) or unscale or medium, 'SHADOW')		-- House Relinquish
 		E:SetFont(_G.Game15Font_o1,							NORMAL, (blizz and 15) or unscale or medium)				-- CharacterStatsPane, ItemLevelFrame
 		E:SetFont(_G.MailFont_Large,						NORMAL, (blizz and 15) or unscale or medium)				-- Mail
 		E:SetFont(_G.QuestFont_Large,						NORMAL, (blizz and 15) or unscale or medium)
@@ -280,13 +281,16 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Large,						NORMAL, (blizz and 16) or unscale or big)
 		E:SetFont(_G.SystemFont_Shadow_Large,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
 		E:SetFont(_G.SystemFont16_Shadow_ThickOutline,		NORMAL, (blizz and 16) or unscale or big, outline)			-- Talent & Profession SpendText
+		E:SetFont(_G.Game17Font_Shadow,						NORMAL, (blizz and 17) or unscale or big, 'SHADOW')			-- House Settings
 		E:SetFont(_G.Game18Font,							NORMAL, (blizz and 18) or unscale or big)					-- MissionUI Bonus Chance
 		E:SetFont(_G.GameFontNormalLarge2,					NORMAL, (blizz and 18) or unscale or big, 'SHADOW')			-- Garrison Follower Names
 		E:SetFont(_G.QuestFont_Huge,						NORMAL, (blizz and 18) or unscale or big)					-- Quest rewards title, Rewards
 		E:SetFont(_G.SystemFont_Shadow_Large2,				NORMAL, (blizz and 18) or unscale or big, 'SHADOW')			-- Auction House ItemDisplay
 		E:SetFont(_G.SystemFont_Huge1, 						NORMAL, (blizz and 20) or unscale or large)					-- Garrison Mission XP
+		E:SetFont(_G.Game20Font,							NORMAL, (blizz and 20) or unscale or large)					-- House Relinquish title
 		E:SetFont(_G.SystemFont_Huge1_Outline,				NORMAL, (blizz and 20) or unscale or large, outline)		-- Garrison Mission Chance
 		E:SetFont(_G.SystemFont_Shadow_Huge1,				NORMAL, (blizz and 20) or unscale or large, outline)
+		E:SetFont(_G.Game22Font,							NORMAL, (blizz and 22) or unscale or large)					-- Housing Neighborhood
 		E:SetFont(_G.Fancy22Font,							NORMAL, (blizz and 22) or unscale or large)					-- Talking frame Title font
 		E:SetFont(_G.SystemFont_OutlineThick_Huge2,			NORMAL, (blizz and 22) or unscale or large, thick)
 		E:SetFont(_G.Fancy24Font,							NORMAL, (blizz and 24) or unscale or huge)					-- Artifact frame - weapon name
@@ -305,10 +309,6 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.DestinyFontHuge,						NORMAL, (blizz and 32) or unscale or enormous)				-- Garrison Mission Report
 		E:SetFont(_G.GameFont_Gigantic,						NORMAL, (blizz and 32) or unscale or enormous, 'SHADOW')	-- Used at the install steps
 		E:SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, (blizz and 32) or unscale or enormous, outline)		-- WorldMap
-		E:SetFont(_G.Game15Font_Shadow,						NORMAL, (blizz and 15) or unscale or medium, 'SHADOW')		-- House Relinquish
-		E:SetFont(_G.Game17Font_Shadow,						NORMAL, (blizz and 17) or unscale or big, 'SHADOW')			-- House Settings
-		E:SetFont(_G.Game20Font,							NORMAL, (blizz and 20) or unscale or large)					-- House Relinquish title
-		E:SetFont(_G.Game22Font,							NORMAL, (blizz and 22) or unscale or large)					-- Housing Neighborhood
 
 		-- big fonts
 		E:SetFont(_G.QuestFont_39,							NORMAL, (blizz and 39) or unscale or gigantic)				-- Wrath
