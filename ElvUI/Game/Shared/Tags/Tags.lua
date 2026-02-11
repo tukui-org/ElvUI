@@ -40,9 +40,7 @@ local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
 local UnitHealthMax = UnitHealthMax
 local UnitInPartyIsAI = UnitInPartyIsAI
-local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
-local UnitIsDND = UnitIsDND
 local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
@@ -552,11 +550,11 @@ if not E.Retail then
 			local guid = UnitGUID(unit)
 			local status = unitStatus[guid]
 
-			if UnitIsAFK(unit) then
+			if E:UnitIsAFK(unit) then
 				if not status or status[1] ~= 'AFK' then
 					unitStatus[guid] = {'AFK', GetTime()}
 				end
-			elseif UnitIsDND(unit) then
+			elseif E:UnitIsDND(unit) then
 				if not status or status[1] ~= 'DND' then
 					unitStatus[guid] = {'DND', GetTime()}
 				end
@@ -963,15 +961,15 @@ E:AddTag('title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(un
 end)
 
 E:AddTag('afk', 'PLAYER_FLAGS_CHANGED', function(unit)
-	if UnitIsAFK(unit) then
+	if E:UnitIsAFK(unit) then
 		return format('|cffFFFFFF[|r|cffFF9900%s|r|cFFFFFFFF]|r', L["AFK"])
 	end
 end)
 
 E:AddTag('status:text', 'PLAYER_FLAGS_CHANGED', function(unit)
-	if UnitIsAFK(unit) then
+	if E:UnitIsAFK(unit) then
 		return format('|cffFF9900<|r%s|cffFF9900>|r', L["AFK"])
-	elseif UnitIsDND(unit) then
+	elseif E:UnitIsDND(unit) then
 		return format('|cffFF3333<|r%s|cffFF3333>|r', L["DND"])
 	end
 end)
@@ -980,9 +978,9 @@ do
 	local afk = [[|TInterface\FriendsFrame\StatusIcon-Away:16:16|t]]
 	local dnd = [[|TInterface\FriendsFrame\StatusIcon-DnD:16:16|t]]
 	E:AddTag('status:icon', 'PLAYER_FLAGS_CHANGED', function(unit)
-		if UnitIsAFK(unit) then
+		if E:UnitIsAFK(unit) then
 			return afk
-		elseif UnitIsDND(unit) then
+		elseif E:UnitIsDND(unit) then
 			return dnd
 		end
 	end)

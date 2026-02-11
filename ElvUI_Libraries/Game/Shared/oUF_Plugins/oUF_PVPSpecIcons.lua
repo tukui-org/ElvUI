@@ -1,6 +1,12 @@
 local _, ns = ...
-local oUF = ns.oUF or oUF
-assert(oUF, 'oUF not loaded')
+local oUF = ns.oUF
+
+local tonumber = tonumber
+
+local IsInInstance = IsInInstance
+local UnitFactionGroup = UnitFactionGroup
+local GetArenaOpponentSpec = GetArenaOpponentSpec
+local GetSpecializationInfoByID = GetSpecializationInfoByID
 
 local factions = {
 	Horde = [[Interface\Icons\INV_BannerPVP_01]],

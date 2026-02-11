@@ -1,13 +1,17 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
+local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
+
+local fallback = { r = 0, g = 0, b = 0, a = 0 }
+
 function UF:Construct_AuraHighlight(frame)
-	local dbh = frame:CreateTexture(nil, 'OVERLAY')
-	dbh:SetInside(frame.Health.backdrop)
-	dbh:SetTexture(E.media.blankTex)
-	dbh:SetVertexColor(0, 0, 0, 0)
-	dbh:SetBlendMode('ADD')
-	dbh.PostUpdate = UF.PostUpdate_AuraHighlight
+	local element = frame:CreateTexture(nil, 'OVERLAY')
+	element:SetInside(frame.Health.backdrop)
+	element:SetTexture(E.media.blankTex)
+	element:SetVertexColor(0, 0, 0, 0)
+	element:SetBlendMode('ADD')
+	element.PostUpdate = UF.PostUpdate_AuraHighlight
 
 	local glow = frame:CreateShadow(nil, true)
 	glow:Hide()
@@ -17,11 +21,11 @@ function UF:Construct_AuraHighlight(frame)
 	frame.AuraHighlightFilterTable = E.global.unitframe.AuraHighlightColors
 
 	if frame.Health then
-		dbh:SetParent(frame.Health)
+		element:SetParent(frame.Health)
 		glow:SetParent(frame.Health)
 	end
 
-	return dbh
+	return element
 end
 
 function UF:Configure_AuraHighlight(frame)
@@ -52,13 +56,15 @@ function UF:Configure_AuraHighlight(frame)
 	end
 end
 
-function UF:PostUpdate_AuraHighlight(object, debuffType, _, wasFiltered)
-	if debuffType and not wasFiltered then
-		local color = UF.db.colors.debuffHighlight[debuffType]
-		if object.AuraHighlightBackdrop and object.AuraHightlightGlow then
-			object.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
-		else
-			object.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
-		end
+function UF:PostUpdate_AuraHighlight(frame, unit, aura, debuffType, _, wasFiltered)
+	if wasFiltered then return end
+
+	local secretColor = E.Retail and aura and GetAuraDispelTypeColor(unit, aura.auraInstanceID, E.Curves.Color.Dispel)
+	local color = secretColor or (E:NotSecretValue(debuffType) and UF.db.colors.debuffHighlight[debuffType]) or fallback
+
+	if frame.AuraHighlightBackdrop and frame.AuraHightlightGlow then
+		frame.AuraHightlightGlow:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
+	else
+		frame.AuraHighlight:SetVertexColor(color.r, color.g, color.b, color.a)
 	end
 end

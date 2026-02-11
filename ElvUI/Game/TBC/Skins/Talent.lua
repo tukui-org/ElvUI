@@ -8,7 +8,11 @@ function S:Blizzard_TalentUI()
 
 	S:HandleFrame(_G.PlayerTalentFrame, true, nil, 11, -12, -32, 76)
 	S:HandleCloseButton(_G.PlayerTalentFrameCloseButton, _G.PlayerTalentFrame.backdrop)
-	S:HandleButton(_G.PlayerTalentFrameCancelButton)
+
+	-- Not a "cancel button", just a duplicate Closebutton
+	if _G.PlayerTalentFrameCancelButton then
+		_G.PlayerTalentFrameCancelButton:SetAlpha(0)
+	end
 
 	for i = 1, 4 do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])
@@ -46,7 +50,8 @@ function S:Blizzard_TalentUI()
 	_G.PlayerTalentFrameScrollFrameScrollBar:Point('TOPLEFT', _G.PlayerTalentFrameScrollFrame, 'TOPRIGHT', 10, -16)
 
 	_G.PlayerTalentFrameSpentPointsText:Point('LEFT', _G.PlayerTalentFramePointsBar, 'LEFT', 12, -1)
-	_G.PlayerTalentFrameTalentPointsText:Point('RIGHT', _G.PlayerTalentFramePointsBar, 'RIGHT', -12, -1)
+	_G.PlayerTalentFrameTalentPointsText:ClearAllPoints()
+	_G.PlayerTalentFrameTalentPointsText:Point('RIGHT', _G.PlayerTalentFramePointsBar, 'RIGHT', 60, -1)
 
 	for i = 1, _G.MAX_NUM_TALENTS do
 		local talent = _G['PlayerTalentFrameTalent'..i]

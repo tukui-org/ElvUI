@@ -10,7 +10,7 @@ local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
 local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
-local strlen, tonumber, tostring = strlen, tonumber, tostring
+local pcall, strlen, tonumber, tostring = pcall, strlen, tonumber, tostring
 
 local CopyTable = CopyTable
 local CreateFrame = CreateFrame
@@ -47,6 +47,8 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsVisible = UnitIsVisible
 local UnitSex = UnitSex
+local UnitIsAFK = UnitIsAFK
+local UnitIsDND = UnitIsDND
 local UnitThreatSituation = UnitThreatSituation
 
 local WorldFrame = WorldFrame
@@ -510,8 +512,8 @@ end
 
 do
 	function E:GetAuraData(unitToken, index, filter)
-		local data = GetAuraDataByIndex(unitToken, index, filter)
-		if not data then return end
+		local success, data = pcall(GetAuraDataByIndex, unitToken, index, filter)
+		if not success or not data then return end
 
 		return ElvUF:UnpackAuraData(data)
 	end
@@ -682,15 +684,15 @@ function E:IsDispellableByMe(debuffType)
 	return DispelTypes[debuffType]
 end
 
-function E:UpdateDispelColor(debuffType, r, g, b)
+function E:UpdateDispelColor(debuffType, r, g, b, a)
 	local color = DebuffColors[debuffType]
 	if color then
-		color.r, color.g, color.b = r, g, b
+		color.r, color.g, color.b, color.a = r, g, b, a
 	end
 
 	local db = E.db.general.debuffColors[debuffType]
 	if db then
-		db.r, db.g, db.b = r, g, b
+		db.r, db.g, db.b, db.a = r, g, b, a
 	end
 end
 
@@ -1415,6 +1417,18 @@ function E:GetClassificationColor(unit)
 		local baseClass = UnitClassBase(unit)
 		return (baseClass == 'PALADIN' and 'caster') or 'melee'
 	end
+end
+
+function E:UnitIsAFK(unit)
+	local afk = UnitIsAFK(unit)
+
+	return E:NotSecretValue(afk) and afk or nil
+end
+
+function E:UnitIsDND(unit)
+	local dnd = UnitIsDND(unit)
+
+	return E:NotSecretValue(dnd) and dnd or nil
 end
 
 function E:LoadAPI()

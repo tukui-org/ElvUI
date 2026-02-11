@@ -2107,6 +2107,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 			arg1 = gsub(arg1, '(%d%s?%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
 			arg1 = gsub(arg1, '(%d%s?%%)$', '%1%%') -- escape percentages on the end
 			arg1 = gsub(arg1, '^%%o', '%%s') -- replace %o to %s [broken in cata classic?]: "%o gular zila amanare rukadare." from "Cabal Zealot"
+			arg1 = gsub(arg1, '^%%bur', '%%s') -- "%bur uden agol mod ru se ruftos lo nevren algos!" from "Gan'arg Sapper"
 		end
 	elseif not isProtected then
 		arg1 = gsub(arg1, '%%', '%%%%') -- escape any % characters, as it may otherwise cause an 'invalid option in format' error
@@ -2243,6 +2244,11 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	return body
 end
 
+-- we dont have a good way to check: attempted to index a forbidden table
+function CH:ChatFrame_GetZoneChannel(frame, index)
+	return frame.zoneChannelList[index]
+end
+
 function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
 	-- ElvUI Chat History Note: isHistory, historyTime, historyName, and historyBTag are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
 	-- we also send isHistory and historyTime into CH:AddMessage so that we don't have to override the timestamp.
@@ -2312,8 +2318,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local found = false
 			for index, value in pairs(frame.channelList) do
 				if channelLength > strlen(value) then
-					-- arg9 is the channel name without the number in front...
-					if (arg7 > 0 and frame.zoneChannelList[index] == arg7) or (strupper(value) == strupper(arg9)) then
+					local match = strupper(value) == strupper(arg9)
+					if not match then -- arg9 is the channel name without the number in front
+						local success, zoneChannel = pcall(CH.ChatFrame_GetZoneChannel, frame, index)
+						match = success and arg7 > 0 and arg7 == zoneChannel
+					end
+
+					if match then
 						found = true
 
 						infoType = 'CHANNEL'..arg8
@@ -2323,6 +2334,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 							frame.channelList[index] = nil
 							frame.zoneChannelList[index] = nil
 						end
+
 						break
 					end
 				end
@@ -3106,6 +3118,8 @@ function CH:CheckLFGRoles()
 end
 
 function CH:SocialQueueIsLeader(playerName, leaderName)
+	if E:IsSecretValue(leaderName) then return end
+
 	if leaderName == playerName then
 		return true
 	end
@@ -3201,11 +3215,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 			activityInfo = C_LFGList_GetActivityInfoTable(activityID or firstQueue.queueData.activityID)
 		end
 
-		if name then
-			CH:SocialQueueMessage(guid, format('%s %s: [%s] |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], activityInfo and activityInfo.fullName or UNKNOWN, name))
-		else
-			CH:SocialQueueMessage(guid, format('%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], activityInfo and activityInfo.fullName or UNKNOWN))
-		end
+		CH:SocialQueueMessage(guid, format(name and '%s %s: [%s] |cff00CCFF%s|r' or '%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], activityInfo and activityInfo.fullName or UNKNOWN, name))
 	elseif firstQueue then
 		local output, outputCount, queueCount = '', '', 0
 		for _, queue in pairs(queues) do

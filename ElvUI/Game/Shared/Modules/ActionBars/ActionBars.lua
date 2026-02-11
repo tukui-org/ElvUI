@@ -60,6 +60,8 @@ local FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell or Spell
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
 
 local GetCVarBool = C_CVar.GetCVarBool
+local COOLDOWN_GLOBAL = 61304
+local COOLDOWN_WAND = 5009
 
 local LAB = E.Libs.LAB
 local LSM = E.Libs.LSM
@@ -1638,6 +1640,20 @@ function AB:ToggleCooldownOptions()
 	end
 end
 
+function AB:GetGlobalCooldown()
+	local _, wgcd = E:GetSpellCooldown(COOLDOWN_WAND)
+	if E:NotSecretValue(wgcd) and (wgcd and wgcd > 0) then
+		return wgcd
+	end
+
+	local _, gcd = E:GetSpellCooldown(COOLDOWN_GLOBAL)
+	if E:NotSecretValue(gcd) and (gcd and gcd > 0) then
+		return gcd
+	end
+
+	return 1.5
+end
+
 function AB:SetButtonDesaturation(button, start, duration)
 	if button.LevelLinkLockIcon and button.LevelLinkLockIcon:IsShown() then
 		button.saturationLocked = nil
@@ -1651,7 +1667,8 @@ function AB:SetButtonDesaturation(button, start, duration)
 		local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
 		allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
 	else
-		allow = (duration and duration > 1.5) and 1 or 0
+		local GCD = AB:GetGlobalCooldown()
+		allow = (duration and duration > GCD) and 1 or 0
 	end
 
 	if AB.db.desaturateOnCooldown and allow then

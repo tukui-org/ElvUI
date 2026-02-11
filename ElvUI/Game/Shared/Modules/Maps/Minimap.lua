@@ -255,10 +255,6 @@ function M:Minimap_OnMouseDown(btn)
 				button.menu:Point(left and 'TOPRIGHT' or 'TOPLEFT', Minimap, left and 'LEFT' or 'RIGHT', left and -4 or 4, 0)
 			end
 		end
-	elseif E.Retail then
-		Minimap.OnClick(self)
-	else
-		_G.Minimap_OnClick(self)
 	end
 end
 
@@ -776,6 +772,12 @@ function M:Initialize()
 		Minimap:SetQuestBlobRingScalar(0)
 	end
 
+	local clickHandler = CreateFrame('Frame', 'ElvUI_MinimapClickHandler', Minimap)
+	clickHandler:SetPassThroughButtons('LeftButton')
+	clickHandler:SetPropagateMouseMotion(true)
+	clickHandler:SetAllPoints()
+	M.MinimapClickHandler = clickHandler
+
 	M:ClusterPoint()
 	MinimapCluster:EnableMouse(false)
 	MinimapCluster:SetFrameLevel(20) -- set before minimap itself
@@ -806,9 +808,8 @@ function M:Initialize()
 	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
 
-	Minimap:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
-	Minimap:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
-	Minimap:SetScript('OnMouseUp', E.noop)
+	clickHandler:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
+	clickHandler:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
 
 	Minimap:HookScript('OnShow', M.Minimap_OnShow)
 	Minimap:HookScript('OnHide', M.Minimap_OnHide)

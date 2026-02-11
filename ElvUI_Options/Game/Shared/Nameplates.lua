@@ -100,11 +100,33 @@ local function GetUnitAuras(unit, auraType)
 	group.args.sourceGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 11, C.Values.FontSize)
 	group.args.sourceGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 12)
 
+	local patchReady = E.wowtoc > 120000
 	group.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.nameplates.units[unit][auraType].useMidnight end)
-	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player Auras"], nil, 1)
-	group.args.midnightGroup.args.isAuraRaid = ACH:Toggle(L["Raid Auras"], nil, 2)
-	group.args.midnightGroup.args.isAuraNameplate = ACH:Toggle(L["Nameplate Auras"], nil, 3, nil, nil, nil, nil, nil, nil, true)
-	group.args.midnightGroup.args.isAuraDefensive = ACH:Toggle(L["Defensive Auras"], nil, 4, nil, nil, nil, nil, nil, nil, not E.Retail)
+
+	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], nil, 1)
+	group.args.midnightGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispelable"], nil, 2, nil, nil, nil, nil, nil, nil, not patchReady)
+
+	group.args.midnightGroup.args.player = ACH:Group(L["Player"], nil, 10)
+	group.args.midnightGroup.args.player.args.isAuraImportantPlayer = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.player.args.isAuraRaidPlayer = ACH:Toggle(L["Raid"], nil, 2)
+	group.args.midnightGroup.args.player.args.isAuraRaidInCombatPlayer = ACH:Toggle(L["Raid Frames"], nil, 3, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.player.args.isAuraCancelablePlayer = ACH:Toggle(L["Is Cancelable"], nil, 4)
+	group.args.midnightGroup.args.player.args.notAuraCancelablePlayer = ACH:Toggle(L["Not Cancelable"], nil, 5)
+	group.args.midnightGroup.args.player.args.isAuraCrowdControlPlayer = ACH:Toggle(L["Crowd Control"], nil, 6, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], nil, 7, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], nil, 8, nil, nil, nil, nil, nil, nil, not E.Retail)
+	group.args.midnightGroup.args.player.inline = true
+
+	group.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20)
+	group.args.midnightGroup.args.others.args.isAuraImportant = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.others.args.isAuraRaid = ACH:Toggle(L["Raid"], nil, 2)
+	group.args.midnightGroup.args.others.args.isAuraRaidInCombat = ACH:Toggle(L["Raid Frames"], nil, 3, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.others.args.isAuraCancelable = ACH:Toggle(L["Is Cancelable"], nil, 4)
+	group.args.midnightGroup.args.others.args.notAuraCancelable = ACH:Toggle(L["Not Cancelable"], nil, 5)
+	group.args.midnightGroup.args.others.args.isAuraCrowdControl = ACH:Toggle(L["Crowd Control"], nil, 6, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], nil, 7, nil, nil, nil, nil, nil, nil, not patchReady)
+	group.args.midnightGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], nil, 8, nil, nil, nil, nil, nil, nil, not E.Retail)
+	group.args.midnightGroup.args.others.inline = true
 
 	group.args.legacyGroup = ACH:Group(L["Filters: Legacy"], nil, 50, nil, nil, nil, nil, function() return E.Retail or E.db.nameplates.units[unit][auraType].useMidnight end)
 	group.args.legacyGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
