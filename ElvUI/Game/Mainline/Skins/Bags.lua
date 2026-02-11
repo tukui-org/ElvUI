@@ -21,7 +21,8 @@ local QUESTS_LABEL = QUESTS_LABEL
 
 local function UpdateBorderColors(button)
 	if button.type and button.type == QUESTS_LABEL then
-		button:SetBackdropBorderColor(1, 0.2, 0.2)
+		local r, g, b = unpack(B.QuestColors.questItem)
+		button:SetBackdropBorderColor(r, g, b)
 	else
 		local r, g, b = E:GetItemQualityColor(button.quality and button.quality > 1 and button.quality)
 		button:SetBackdropBorderColor(r, g, b)
@@ -127,7 +128,7 @@ local function SkinItemButton(button, bagID)
 
 		local questIcon = button.IconQuestTexture
 		local texture = questIcon and questIcon:GetTexture()
-		if texture and texture ~= E.Media.Textures.BagQuestIcon then
+		if texture ~= E.Media.Textures.BagQuestIcon then
 			questIcon:ClearAllPoints()
 			questIcon:Point('TOPLEFT', button, 3, -3)
 			questIcon:Point('BOTTOMRIGHT', button, -3, 3)
