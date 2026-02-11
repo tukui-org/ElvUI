@@ -82,6 +82,14 @@ function E:SafeGetPoint(frame)
 	end
 end
 
+-- 12.0 secret restrictions break SetBackdrop
+function E:NotSizeRestricted(frame)
+	if not frame or not frame.GetSize then return true end -- what?
+
+	local width, height = frame:GetSize()
+	return E:NotSecretValue(width) and E:NotSecretValue(height)
+end
+
 local function WatchPixelSnap(frame, snap)
 	if (frame and not frame:IsForbidden()) and frame.PixelSnapDisabled and snap then
 		frame.PixelSnapDisabled = nil
@@ -285,15 +293,19 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 	end
 
 	if template == 'NoBackdrop' then
-		frame:SetBackdrop()
+		if E:NotSizeRestricted(frame) then
+			frame:SetBackdrop()
+		end
 	else
 		local edgeSize = E.twoPixelsPlease and 2 or 1
 
-		frame:SetBackdrop({
-			edgeFile = E.media.blankTex,
-			bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
-			edgeSize = noScale and edgeSize or E:Scale(edgeSize)
-		})
+		if E:NotSizeRestricted(frame) then
+			frame:SetBackdrop({
+				edgeFile = E.media.blankTex,
+				bgFile = glossTex and (type(glossTex) == 'string' and glossTex or E.media.glossTex) or E.media.blankTex,
+				edgeSize = noScale and edgeSize or E:Scale(edgeSize)
+			})
+		end
 
 		if frame.callbackBackdropColor then
 			frame:callbackBackdropColor()
