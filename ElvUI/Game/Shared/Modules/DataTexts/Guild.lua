@@ -98,7 +98,7 @@ local function BuildGuildTable()
 	wipe(clubTable)
 
 	local clubs = E.Retail and GetSubscribedClubs()
-	if clubs then -- use this to get the timerunning flag (and other info?)
+	if E:NotSecretValue(clubs) and clubs then -- use this to get the timerunning flag (and other info?)
 		local guildClubID
 		for _, data in next, clubs do
 			if data.clubType == CLUBTYPE_GUILD then
@@ -132,8 +132,8 @@ local function BuildGuildTable()
 				rank = rank,					--2
 				level = level,					--3
 				zone = zone,					--4
-				note = note,					--5
-				officerNote = officerNote,		--6
+				note = E:NotSecretValue(note) and note or '',							--5
+				officerNote = E:NotSecretValue(officerNote) and officerNote or '',		--6
 				online = connected,				--7
 				status = statusInfo,			--8
 				class = className,				--9
@@ -190,7 +190,7 @@ local eventHandlers = {
 	end,
 	-- our guild message of the day changed
 	GUILD_MOTD = function(_, arg1)
-		guildMotD = arg1
+		guildMotD = E:NotSecretValue(arg1) and arg1 or ''
 	end
 }
 

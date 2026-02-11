@@ -68,8 +68,8 @@ local BOOST_THANKSFORPLAYING_SMALLER = SOUNDKIT.UI_70_BOOST_THANKSFORPLAYING_SMA
 local INTERRUPT_MSG = L["Interrupted %s's |cff71d5ff|Hspell:%d:0|h[%s]|h|r!"]
 
 local function KillFeedback(frame)
-	local debug = true
-	if debug then return end
+	local allow = true
+	if allow then return end
 
 	frame:Kill()
 

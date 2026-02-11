@@ -38,7 +38,7 @@
 --]]
 
 local _, ns = ...
-local oUF = oUF or ns.oUF
+local oUF = ns.oUF
 
 local select, unpack, strfind = select, unpack, strfind
 local CreateFrame = CreateFrame

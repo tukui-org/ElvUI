@@ -138,6 +138,13 @@ function S:CooldownManager_SkinBar(frame, bar)
 		S:CooldownManager_SkinIcon(icon, icon.Icon)
 	end
 
+	local statusBarTex = bar:GetStatusBarTexture()
+	if statusBarTex then
+		statusBarTex:SetTexture(E.media.normTex)
+		statusBarTex:ClearTextureSlice()
+		statusBarTex:SetTextureSliceMode(0)
+	end
+
 	for _, region in next, { bar:GetRegions() } do
 		if region:IsObjectType('Texture') then
 			local atlas = region:GetAtlas()

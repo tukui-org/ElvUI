@@ -68,8 +68,9 @@ function S:DamageMeter_HandleBackground(window, background)
 	window.backdrop:NudgePoint(13, nil, nil, 'TOPLEFT')
 	window.backdrop:NudgePoint(-18, nil, nil, 'BOTTOMRIGHT')
 
-	-- Set initial alpha
-	window.backdrop:SetAlpha(window.backgroundAlpha or 0.5)
+	-- Set initial alpha; 100% will not set backgroundAlpha so default to 1
+	-- this copies the functionality of GetBackgroundAlpha
+	window.backdrop:SetAlpha(window.backgroundAlpha or 1)
 
 	-- Inherit background alpha changes from Blizzard Edit Mode
 	hooksecurefunc(background, 'SetAlpha', S.DamageMeter_BackdropSetAlpha)

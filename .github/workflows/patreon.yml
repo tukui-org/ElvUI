@@ -1,0 +1,30 @@
+name: Patreon updater
+
+on:
+  workflow_dispatch:
+
+jobs:
+  patreon:
+    if: github.repository == 'tukui-org/ElvUI'
+    name: Update donor list
+    runs-on: ubuntu-latest
+    env:
+      DISCORD_TOKEN: ${{ secrets.DISCORD_TOKEN }}
+    steps:
+      - name: Clone project
+        uses: actions/checkout@v6
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: '3.14' 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
+      - name: Run the updater
+        run: |
+          uv run .github/scripts/PatreonUpdate.py
+      - name: Create Pull Request
+        uses: peter-evans/create-pull-request@v8
+        with:
+          title: Update Patreon donor list        
+          commit-message: Updated Patreon donor list
+          body: Automated update of Patreon donor list.

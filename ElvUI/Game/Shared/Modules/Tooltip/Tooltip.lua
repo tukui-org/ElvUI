@@ -50,10 +50,8 @@ local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local UnitIsAFK = UnitIsAFK
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local UnitIsDeadOrGhost = UnitIsDeadOrGhost
-local UnitIsDND = UnitIsDND
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsTapDenied = UnitIsTapDenied
@@ -245,7 +243,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			end
 		end
 
-		local awayText = UnitIsAFK(unit) and AFK_LABEL or UnitIsDND(unit) and DND_LABEL or ''
+		local awayText = E:UnitIsAFK(unit) and AFK_LABEL or E:UnitIsDND(unit) and DND_LABEL or ''
 		_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s%s|r', nameColor.colorStr, name or UNKNOWN, awayText)
 
 		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 2) or 1)

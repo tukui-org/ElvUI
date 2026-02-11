@@ -4,7 +4,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local hooksecurefunc = hooksecurefunc
+local pcall, hooksecurefunc = pcall, hooksecurefunc
 local next, strsplit, tonumber = next, strsplit, tonumber
 local pairs, ipairs, wipe, tinsert = pairs, ipairs, wipe, tinsert
 
@@ -863,9 +863,9 @@ function NP:CheckDeath(event, unit)
 end
 
 function NP:NamePlateCallBack(event, unit)
-	local nameplate = C_NamePlate_GetNamePlateForUnit(unit)
-	if not nameplate or nameplate.widgetsOnly or not nameplate.UpdateAllElements then
-		return -- prevent error when loading in with our plates and Plater
+	local success, nameplate = pcall(C_NamePlate_GetNamePlateForUnit, unit)
+	if not success or not nameplate or not nameplate.UpdateAllElements or nameplate.widgetsOnly then
+		return -- prevent error when loading in with our plates and Plater or on restricted units
 	end
 
 	if event == 'UNIT_FACTION' then
@@ -971,10 +971,6 @@ function NP:UpdateColors()
 	NP.Colors.power[POWERTYPE_ALTERNATE] = E:SetColorTable(NP.Colors.power[POWERTYPE_ALTERNATE], NP.db.colors.power.ALT_POWER)
 
 	for key in next, NP.db.colors.classification do
-		if not NP.Colors.classification[key] then
-			NP.Colors.classification[key] = {}
-		end
-
 		NP.Colors.classification[key] = E:SetColorTable(NP.Colors.classification[key], NP.db.colors.classification[key])
 	end
 
@@ -1017,7 +1013,7 @@ function NP:Initialize()
 		power = {}
 	}
 
-	NP.multiplier = 0.35
+	NP.multiplier = NP.db.multiplier or 0.35
 	NP.numPlates = 0
 
 	NP:UpdateColors()

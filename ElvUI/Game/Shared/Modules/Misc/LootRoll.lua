@@ -329,9 +329,13 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 	bar.button.icon:SetTexture(texture)
 	bar.button.stack:SetShown(count > 1)
 	bar.button.stack:SetText(count)
-	bar.button.ilvl:SetShown(B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, quality))
 	bar.button.ilvl:SetText(itemLevel)
-	bar.button.questIcon:SetShown(B:GetItemQuestInfo(itemLink, bindType, itemClassID))
+
+	local canShowItemLevel = B:IsItemEligibleForItemLevelDisplay(itemClassID, itemSubClassID, itemEquipLoc, quality)
+	bar.button.ilvl:SetShown(canShowItemLevel)
+
+	local questItem = B:GetItemQuestInfo(itemLink, bindType, itemClassID)
+	bar.button.questIcon:SetShown(questItem)
 
 	bar.need.text:SetText('')
 	bar.greed.text:SetText('')
