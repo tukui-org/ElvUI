@@ -267,37 +267,51 @@ function UF:UpdateFilters(button)
 	end
 
 	local patchReady = E.wowtoc > 120000
+	local isPlayer = db and db.isAuraPlayer
+	local isRaidPlayerDispellable = patchReady and db and db.isAuraRaidPlayerDispellable
 	local isImportant = patchReady and db and db.isAuraImportant
+	local isImportantPlayer = patchReady and db and db.isAuraImportantPlayer
 	local isCrowdControl = patchReady and db and db.isAuraCrowdControl
+	local isCrowdControlPlayer = patchReady and db and db.isAuraCrowdControlPlayer
 	local isBigDefensive = patchReady and db and db.isAuraBigDefensive
+	local isBigDefensivePlayer = patchReady and db and db.isAuraBigDefensivePlayer
 	local isRaidInCombat = patchReady and db and db.isAuraRaidInCombat
 	local isRaidInCombatPlayer = patchReady and db and db.isAuraRaidInCombatPlayer
-	local isRaidPlayerDispellable = patchReady and db and db.isAuraRaidPlayerDispellable
-	local isDefensive = E.Retail and db and db.isAuraExternalDefensive
+	local isExternalDefensive = E.Retail and db and db.isAuraExternalDefensive
+	local isExternalDefensivePlayer = E.Retail and db and db.isAuraExternalDefensivePlayer
 	local isCancelable = db and db.isAuraCancelable
+	local isCancelablePlayer = db and db.isAuraCancelablePlayer
 	local notCancelable = db and db.notAuraCancelable
-	local isPlayer = db and db.isAuraPlayer
+	local notCancelablePlayer = db and db.notAuraCancelablePlayer
 	local isRaid = db and db.isAuraRaid
+	local isRaidPlayer = db and db.isAuraRaidPlayer
 
 	local filters = button.auraFilters
+	filters.isPlayer = isPlayer
+	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
 	filters.isImportant = isImportant
+	filters.isImportantPlayer = isImportantPlayer
 	filters.isCrowdControl = isCrowdControl
+	filters.isCrowdControlPlayer = isCrowdControlPlayer
 	filters.isBigDefensive = isBigDefensive
+	filters.isBigDefensivePlayer = isBigDefensivePlayer
 	filters.isRaidInCombat = isRaidInCombat
 	filters.isRaidInCombatPlayer = isRaidInCombatPlayer
-	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
-	filters.isDefensive = isDefensive
+	filters.isExternalDefensive = isExternalDefensive
+	filters.isExternalDefensivePlayer = isExternalDefensivePlayer
 	filters.isCancelable = isCancelable
+	filters.isCancelablePlayer = isCancelablePlayer
 	filters.notCancelable = notCancelable
-	filters.isPlayer = isPlayer
+	filters.notCancelablePlayer = notCancelablePlayer
 	filters.isRaid = isRaid
+	filters.isRaidPlayer = isRaidPlayer
 
 	button.useMidnight = db and db.useMidnight
 
 	if E.Retail then
-		button.noFilter = db and not (isImportant or isCrowdControl or isBigDefensive or isRaidInCombat or isRaidInCombatPlayer or isRaidPlayerDispellable or isDefensive or isCancelable or notCancelable or isPlayer or isRaid)
+		button.noFilter = db and not (isPlayer or isRaidPlayerDispellable or isImportant or isImportantPlayer or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer or isCancelable or isCancelablePlayer or notCancelable or notCancelablePlayer or isRaid or isRaidPlayer)
 	else
-		button.noFilter = db and not (isCancelable or notCancelable or isPlayer or isRaid)
+		button.noFilter = db and not (isPlayer or isCancelable or isCancelablePlayer or notCancelable or notCancelablePlayer or isRaid or isRaidPlayer)
 	end
 end
 
