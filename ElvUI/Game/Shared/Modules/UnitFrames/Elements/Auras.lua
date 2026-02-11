@@ -271,6 +271,7 @@ function UF:UpdateFilters(button)
 	local isCrowdControl = patchReady and db and db.isAuraCrowdControl
 	local isBigDefensive = patchReady and db and db.isAuraBigDefensive
 	local isRaidInCombat = patchReady and db and db.isAuraRaidInCombat
+	local isRaidInCombatPlayer = patchReady and db and db.isAuraRaidInCombatPlayer
 	local isRaidPlayerDispellable = patchReady and db and db.isAuraRaidPlayerDispellable
 	local isDefensive = E.Retail and db and db.isAuraDefensive
 	local isCancelable = db and db.isAuraCancelable
@@ -283,6 +284,7 @@ function UF:UpdateFilters(button)
 	filters.isCrowdControl = isCrowdControl
 	filters.isBigDefensive = isBigDefensive
 	filters.isRaidInCombat = isRaidInCombat
+	filters.isRaidInCombatPlayer = isRaidInCombatPlayer
 	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
 	filters.isDefensive = isDefensive
 	filters.isCancelable = isCancelable
@@ -293,7 +295,7 @@ function UF:UpdateFilters(button)
 	button.useMidnight = db and db.useMidnight
 
 	if E.Retail then
-		button.noFilter = db and not (isImportant or isCrowdControl or isBigDefensive or isRaidInCombat or isRaidPlayerDispellable or isDefensive or isCancelable or notCancelable or isPlayer or isRaid)
+		button.noFilter = db and not (isImportant or isCrowdControl or isBigDefensive or isRaidInCombat or isRaidInCombatPlayer or isRaidPlayerDispellable or isDefensive or isCancelable or notCancelable or isPlayer or isRaid)
 	else
 		button.noFilter = db and not (isCancelable or notCancelable or isPlayer or isRaid)
 	end
@@ -734,7 +736,8 @@ function UF:VerifyFilter(button, aura)
 		return (filters.isImportant and aura.auraIsImportant)
 		or (filters.isCrowdControl and aura.auraIsCrowdControl)
 		or (filters.isBigDefensive and aura.auraIsBigDefensive)
-		or (filters.isRaidInCombat and aura.auraIsRaidInCombat)
+		or (filters.isRaidInCombat and aura.auraIsRaidInCombat and not aura.auraIsPlayer)
+		or (filters.isRaidInCombatPlayer and aura.auraIsRaidInCombat and aura.auraIsPlayer)
 		or (filters.isRaidPlayerDispellable and aura.auraIsRaidPlayerDispellable)
 		or (filters.isDefensive and aura.auraIsExternalDefensive)
 		or (filters.isCancelable and aura.auraIsCancelable)
