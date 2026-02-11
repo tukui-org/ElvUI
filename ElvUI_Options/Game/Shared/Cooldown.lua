@@ -3,7 +3,7 @@ local C, L = unpack(E.Config)
 local ACH = E.Libs.ACH
 
 local function Group(order, db, label)
-	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, nil, function() return (db == 'auraindicator' and E.Retail) or (db == 'cdmanager' and not E.Retail) end)
+	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'auraindicator' and E.Retail) or (db == 'cdmanager' and not E.Retail) end)
 	E.Options.args.cooldown.args[db] = main
 
 	local mainArgs = main.args

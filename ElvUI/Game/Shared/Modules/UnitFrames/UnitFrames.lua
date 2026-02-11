@@ -2211,7 +2211,7 @@ function UF:Setup()
 end
 
 function UF:Initialize()
-	UF.thinBorders = UF.db.thinBorders or true
+	UF.thinBorders = UF.db.thinBorders
 	UF.multiplier = UF.db.multiplier or 0.35
 	UF.multiplierPrediction = 1.25
 	UF.maxAllowedGroups = 8

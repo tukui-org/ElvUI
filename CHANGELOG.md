@@ -1,3 +1,11 @@
+### Version 15.05 [ February 10th 2026 ]
+*   Trade chat not working.
+*   Default aura filters adjusted and basic descriptions added for a few filters.
+*   Unitframe thin border option not working.
+*   Unitframe aura secret on line 527.
+*   Damage meter skin causing errors (one about text and another about durationSeconds).
+*   Cooldown Manager skin disabled by default for now (feel free to use it if you want still).
+
 ### Version 15.04 [ February 10th 2026 ]
 *   12.0.1
     *   Aura Filtering checkboxes added using Blizzard's new filters.
