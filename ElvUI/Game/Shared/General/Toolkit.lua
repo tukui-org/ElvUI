@@ -324,7 +324,11 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 			local level = frame:GetFrameLevel()
 			if not frame.iborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-				border:SetBackdrop(backdrop)
+
+				if E:NotSizeRestricted(border) then
+					border:SetBackdrop(backdrop)
+				end
+
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetFrameLevel(level)
 				border:SetInside(frame, 1, 1, nil, noScale)
@@ -333,7 +337,11 @@ local function SetTemplate(frame, template, glossTex, ignoreUpdates, forcePixelM
 
 			if not frame.oborder then
 				local border = CreateFrame('Frame', nil, frame, 'BackdropTemplate')
-				border:SetBackdrop(backdrop)
+
+				if E:NotSizeRestricted(border) then
+					border:SetBackdrop(backdrop)
+				end
+
 				border:SetBackdropBorderColor(0, 0, 0, 1)
 				border:SetFrameLevel(level)
 				border:SetOutside(frame, 1, 1, nil, noScale)
@@ -401,7 +409,11 @@ local function CreateShadow(frame, size, pass)
 	shadow:SetFrameLevel(1)
 	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, offset, offset, nil, true)
-	shadow:SetBackdrop({edgeFile = E.Media.Textures.GlowTex, edgeSize = size})
+
+	if E:NotSizeRestricted(shadow) then
+		shadow:SetBackdrop({ edgeFile = E.Media.Textures.GlowTex, edgeSize = size })
+	end
+
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
 
