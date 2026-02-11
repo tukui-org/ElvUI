@@ -3,7 +3,7 @@
 *   Default aura filters adjusted and basic descriptions added for a few filters.
 *   Unitframe thin border option not working.
 *   Unitframe aura secret on line 527.
-*   Damager meter skin causing errors (one about text and another about durationSeconds).
+*   Damage meter skin causing errors (one about text and another about durationSeconds).
 *   Cooldown Manager skin disabled by default for now (feel free to use it if you want still).
 
 ### Version 15.04 [ February 10th 2026 ]
