@@ -273,7 +273,7 @@ function UF:UpdateFilters(button)
 	local isRaidInCombat = patchReady and db and db.isAuraRaidInCombat
 	local isRaidInCombatPlayer = patchReady and db and db.isAuraRaidInCombatPlayer
 	local isRaidPlayerDispellable = patchReady and db and db.isAuraRaidPlayerDispellable
-	local isDefensive = E.Retail and db and db.isAuraDefensive
+	local isDefensive = E.Retail and db and db.isAuraExternalDefensive
 	local isCancelable = db and db.isAuraCancelable
 	local notCancelable = db and db.notAuraCancelable
 	local isPlayer = db and db.isAuraPlayer
@@ -733,20 +733,29 @@ function UF:VerifyFilter(button, aura)
 	end
 
 	if E.Retail then
-		return (filters.isImportant and aura.auraIsImportant)
-		or (filters.isCrowdControl and aura.auraIsCrowdControl)
-		or (filters.isBigDefensive and aura.auraIsBigDefensive)
+		return (filters.isImportant and aura.auraIsImportant and not aura.auraIsPlayer)
+		or (filters.isImportantPlayer and aura.auraIsImportant and aura.auraIsPlayer)
+		or (filters.isCrowdControl and aura.auraIsCrowdControl and not aura.auraIsPlayer)
+		or (filters.isCrowdControlPlayer and aura.auraIsCrowdControl and aura.auraIsPlayer)
+		or (filters.isBigDefensive and aura.auraIsBigDefensive and not aura.auraIsPlayer)
+		or (filters.isBigDefensivePlayer and aura.auraIsBigDefensive and aura.auraIsPlayer)
 		or (filters.isRaidInCombat and aura.auraIsRaidInCombat and not aura.auraIsPlayer)
 		or (filters.isRaidInCombatPlayer and aura.auraIsRaidInCombat and aura.auraIsPlayer)
+		or (filters.isExternalDefensive and aura.auraIsExternalDefensive and not aura.auraIsPlayer)
+		or (filters.isExternalDefensivePlayer and aura.auraIsExternalDefensive and aura.auraIsPlayer)
+		or (filters.isCancelable and aura.auraIsCancelable and not aura.auraIsPlayer)
+		or (filters.isCancelablePlayer and aura.auraIsCancelable and aura.auraIsPlayer)
+		or (filters.notCancelable and not aura.auraIsCancelable and not aura.auraIsPlayer)
+		or (filters.notCancelablePlayer and not aura.auraIsCancelable and aura.auraIsPlayer)
+		or (filters.isRaid and aura.auraIsRaid and not aura.auraIsPlayer)
+		or (filters.isRaidPlayer and aura.auraIsRaid and aura.auraIsPlayer)
 		or (filters.isRaidPlayerDispellable and aura.auraIsRaidPlayerDispellable)
-		or (filters.isDefensive and aura.auraIsExternalDefensive)
-		or (filters.isCancelable and aura.auraIsCancelable)
-		or (filters.notCancelable and not aura.auraIsCancelable)
 		or (filters.isPlayer and aura.auraIsPlayer)
-		or (filters.isRaid and aura.auraIsRaid)
 	else
-		return (filters.isCancelable and aura.auraIsCancelable)
-		or (filters.notCancelable and not aura.auraIsCancelable)
+		return (filters.isCancelable and aura.auraIsCancelable and not aura.auraIsPlayer)
+		or (filters.isCancelablePlayer and aura.auraIsCancelable and aura.auraIsPlayer)
+		or (filters.notCancelable and not aura.auraIsCancelable and not aura.auraIsPlayer)
+		or (filters.notCancelablePlayer and not aura.auraIsCancelable and aura.auraIsPlayer)
 		or (filters.isPlayer and aura.auraIsPlayer)
 		or (filters.isRaid and aura.auraIsRaid)
 	end
