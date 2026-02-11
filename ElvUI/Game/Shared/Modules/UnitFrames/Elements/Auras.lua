@@ -747,7 +747,9 @@ function UF:VerifyFilter(button, aura)
 	end
 
 	if E.Retail then
-		return (filters.isImportant and aura.auraIsImportant and not aura.auraIsPlayer)
+		return (filters.isPlayer and aura.auraIsPlayer)
+		or (filters.isRaidPlayerDispellable and aura.auraIsRaidPlayerDispellable)
+		or (filters.isImportant and aura.auraIsImportant and not aura.auraIsPlayer)
 		or (filters.isImportantPlayer and aura.auraIsImportant and aura.auraIsPlayer)
 		or (filters.isCrowdControl and aura.auraIsCrowdControl and not aura.auraIsPlayer)
 		or (filters.isCrowdControlPlayer and aura.auraIsCrowdControl and aura.auraIsPlayer)
@@ -763,15 +765,14 @@ function UF:VerifyFilter(button, aura)
 		or (filters.notCancelablePlayer and not aura.auraIsCancelable and aura.auraIsPlayer)
 		or (filters.isRaid and aura.auraIsRaid and not aura.auraIsPlayer)
 		or (filters.isRaidPlayer and aura.auraIsRaid and aura.auraIsPlayer)
-		or (filters.isRaidPlayerDispellable and aura.auraIsRaidPlayerDispellable)
-		or (filters.isPlayer and aura.auraIsPlayer)
 	else
-		return (filters.isCancelable and aura.auraIsCancelable and not aura.auraIsPlayer)
+		return (filters.isPlayer and aura.auraIsPlayer)
+		or (filters.isCancelable and aura.auraIsCancelable and not aura.auraIsPlayer)
 		or (filters.isCancelablePlayer and aura.auraIsCancelable and aura.auraIsPlayer)
 		or (filters.notCancelable and not aura.auraIsCancelable and not aura.auraIsPlayer)
 		or (filters.notCancelablePlayer and not aura.auraIsCancelable and aura.auraIsPlayer)
-		or (filters.isPlayer and aura.auraIsPlayer)
-		or (filters.isRaid and aura.auraIsRaid)
+		or (filters.isRaid and aura.auraIsRaid and not aura.auraIsPlayer)
+		or (filters.isRaidPlayer and aura.auraIsRaid and aura.auraIsPlayer)
 	end
 end
 
