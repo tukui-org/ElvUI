@@ -72,14 +72,14 @@ function S:CooldownManager_CountText(text)
 end
 
 function S:CooldownManager_UpdateTextContainer(container)
-	local countText = container.Applications and container.Applications.Applications
-	if countText then
-		S:CooldownManager_CountText(countText)
+	local applicationText = container.Applications and container.Applications.Applications
+	if applicationText then
+		S:CooldownManager_CountText(applicationText)
 	end
 
-	local barCountText = container.Count
-	if barCountText then
-		S:CooldownManager_CountText(barCountText)
+	local countText = container.Count
+	if countText then
+		S:CooldownManager_CountText(countText)
 	end
 
 	local chargeText = container.ChargeCount and container.ChargeCount.Current
