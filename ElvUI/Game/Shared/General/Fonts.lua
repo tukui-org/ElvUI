@@ -307,6 +307,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_OutlineThick_WTF,			NORMAL, (blizz and 32) or unscale or enormous, outline)		-- WorldMap
 		E:SetFont(_G.Game15Font_Shadow,						NORMAL, (blizz and 15) or unscale or medium, 'SHADOW')		-- House Relinquish
 		E:SetFont(_G.Game17Font_Shadow,						NORMAL, (blizz and 17) or unscale or big, 'SHADOW')			-- House Settings
+		E:SetFont(_G.Game20Font,							NORMAL, (blizz and 20) or unscale or large)					-- House Relinquish title
 		E:SetFont(_G.Game22Font,							NORMAL, (blizz and 22) or unscale or large)					-- Housing Neighborhood
 
 		-- big fonts
