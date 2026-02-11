@@ -96,8 +96,8 @@ function E:SetupTextureCoordinates()
 	end
 end
 
-function E:ReplaceSetupTextureCoordinates(frame)
-	if frame.SetupTextureCoordinates ~= E.SetupTextureCoordinates then
+function E:ReplaceSetupTextureCoordinates(frame) -- temp until blizzard fixes the backdrop mixin from this error
+	if E.Retail and (frame.SetupTextureCoordinates ~= E.SetupTextureCoordinates) then
 		frame.SetupTextureCoordinates = E.SetupTextureCoordinates
 	end
 end
