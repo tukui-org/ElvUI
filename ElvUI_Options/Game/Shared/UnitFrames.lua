@@ -156,29 +156,29 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 
 	if E.Retail then
 		local patchReady = E.wowtoc > 120000
-		config.args.filtersGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], nil, 1)
-		config.args.filtersGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], nil, 2, nil, nil, nil, nil, nil, nil, not patchReady)
+		config.args.filtersGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 1)
+		config.args.filtersGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], L["Auras you can dispel."], 2, nil, nil, nil, nil, nil, nil, not patchReady)
 
 		config.args.filtersGroup.args.player = ACH:Group(L["Player"], nil, 10)
 		config.args.filtersGroup.args.player.args.isAuraImportantPlayer = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not patchReady)
 		config.args.filtersGroup.args.player.args.isAuraRaidPlayer = ACH:Toggle(L["Raid"], nil, 2)
-		config.args.filtersGroup.args.player.args.isAuraRaidInCombatPlayer = ACH:Toggle(L["Raid Frames"], nil, 3, nil, nil, nil, nil, nil, nil, not patchReady)
+		config.args.filtersGroup.args.player.args.isAuraRaidInCombatPlayer = ACH:Toggle(L["Raid Frames"], L["Auras displayed on Blizzard's raid frames."], 3, nil, nil, nil, nil, nil, nil, not patchReady)
 		config.args.filtersGroup.args.player.args.isAuraCancelablePlayer = ACH:Toggle(L["Is Cancelable"], nil, 4)
 		config.args.filtersGroup.args.player.args.notAuraCancelablePlayer = ACH:Toggle(L["Not Cancelable"], nil, 5)
 		config.args.filtersGroup.args.player.args.isAuraCrowdControlPlayer = ACH:Toggle(L["Crowd Control"], nil, 6, nil, nil, nil, nil, nil, nil, not patchReady)
-		config.args.filtersGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], nil, 7, nil, nil, nil, nil, nil, nil, not patchReady)
-		config.args.filtersGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], nil, 8, nil, nil, nil, nil, nil, nil, not E.Retail)
+		config.args.filtersGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 7, nil, nil, nil, nil, nil, nil, not patchReady)
+		config.args.filtersGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 8, nil, nil, nil, nil, nil, nil, not E.Retail)
 		config.args.filtersGroup.args.player.inline = true
 
 		config.args.filtersGroup.args.others = ACH:Group(L["Others"], nil, 20)
 		config.args.filtersGroup.args.others.args.isAuraImportant = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not patchReady)
 		config.args.filtersGroup.args.others.args.isAuraRaid = ACH:Toggle(L["Raid"], nil, 2)
-		config.args.filtersGroup.args.others.args.isAuraRaidInCombat = ACH:Toggle(L["Raid Frames"], nil, 3, nil, nil, nil, nil, nil, nil, not patchReady)
+		config.args.filtersGroup.args.others.args.isAuraRaidInCombat = ACH:Toggle(L["Raid Frames"], L["Auras displayed on Blizzard's raid frames."], 3, nil, nil, nil, nil, nil, nil, not patchReady)
 		config.args.filtersGroup.args.others.args.isAuraCancelable = ACH:Toggle(L["Is Cancelable"], nil, 4)
 		config.args.filtersGroup.args.others.args.notAuraCancelable = ACH:Toggle(L["Not Cancelable"], nil, 5)
 		config.args.filtersGroup.args.others.args.isAuraCrowdControl = ACH:Toggle(L["Crowd Control"], nil, 6, nil, nil, nil, nil, nil, nil, not patchReady)
-		config.args.filtersGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], nil, 7, nil, nil, nil, nil, nil, nil, not patchReady)
-		config.args.filtersGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], nil, 8, nil, nil, nil, nil, nil, nil, not E.Retail)
+		config.args.filtersGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 7, nil, nil, nil, nil, nil, nil, not patchReady)
+		config.args.filtersGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 8, nil, nil, nil, nil, nil, nil, not E.Retail)
 		config.args.filtersGroup.args.others.inline = true
 	else
 		config.args.filtersGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
@@ -295,29 +295,29 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	local patchReady = E.wowtoc > 120000
 	config.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.unitframe.units[groupName][auraType].useMidnight end)
 
-	config.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], nil, 1)
-	config.args.midnightGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], nil, 2, nil, nil, nil, nil, nil, nil, not patchReady)
+	config.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 1)
+	config.args.midnightGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], L["Auras you can dispel."], 2, nil, nil, nil, nil, nil, nil, not patchReady)
 
 	config.args.midnightGroup.args.player = ACH:Group(L["Player"], nil, 10)
 	config.args.midnightGroup.args.player.args.isAuraImportantPlayer = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not patchReady)
 	config.args.midnightGroup.args.player.args.isAuraRaidPlayer = ACH:Toggle(L["Raid"], nil, 2)
-	config.args.midnightGroup.args.player.args.isAuraRaidInCombatPlayer = ACH:Toggle(L["Raid Frames"], nil, 3, nil, nil, nil, nil, nil, nil, not patchReady)
+	config.args.midnightGroup.args.player.args.isAuraRaidInCombatPlayer = ACH:Toggle(L["Raid Frames"], L["Auras displayed on Blizzard's raid frames."], 3, nil, nil, nil, nil, nil, nil, not patchReady)
 	config.args.midnightGroup.args.player.args.isAuraCancelablePlayer = ACH:Toggle(L["Is Cancelable"], nil, 4)
 	config.args.midnightGroup.args.player.args.notAuraCancelablePlayer = ACH:Toggle(L["Not Cancelable"], nil, 5)
 	config.args.midnightGroup.args.player.args.isAuraCrowdControlPlayer = ACH:Toggle(L["Crowd Control"], nil, 6, nil, nil, nil, nil, nil, nil, not patchReady)
-	config.args.midnightGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], nil, 7, nil, nil, nil, nil, nil, nil, not patchReady)
-	config.args.midnightGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], nil, 8, nil, nil, nil, nil, nil, nil, not E.Retail)
+	config.args.midnightGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 7, nil, nil, nil, nil, nil, nil, not patchReady)
+	config.args.midnightGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 8, nil, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.player.inline = true
 
 	config.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20)
 	config.args.midnightGroup.args.others.args.isAuraImportant = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not patchReady)
 	config.args.midnightGroup.args.others.args.isAuraRaid = ACH:Toggle(L["Raid"], nil, 2)
-	config.args.midnightGroup.args.others.args.isAuraRaidInCombat = ACH:Toggle(L["Raid Frames"], nil, 3, nil, nil, nil, nil, nil, nil, not patchReady)
+	config.args.midnightGroup.args.others.args.isAuraRaidInCombat = ACH:Toggle(L["Raid Frames"], L["Auras displayed on Blizzard's raid frames."], 3, nil, nil, nil, nil, nil, nil, not patchReady)
 	config.args.midnightGroup.args.others.args.isAuraCancelable = ACH:Toggle(L["Is Cancelable"], nil, 4)
 	config.args.midnightGroup.args.others.args.notAuraCancelable = ACH:Toggle(L["Not Cancelable"], nil, 5)
 	config.args.midnightGroup.args.others.args.isAuraCrowdControl = ACH:Toggle(L["Crowd Control"], nil, 6, nil, nil, nil, nil, nil, nil, not patchReady)
-	config.args.midnightGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], nil, 7, nil, nil, nil, nil, nil, nil, not patchReady)
-	config.args.midnightGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], nil, 8, nil, nil, nil, nil, nil, nil, not E.Retail)
+	config.args.midnightGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 7, nil, nil, nil, nil, nil, nil, not patchReady)
+	config.args.midnightGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 8, nil, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.others.inline = true
 
 	config.args.legacyGroup = ACH:Group(L["Filters: Legacy"], nil, 50, nil, nil, nil, nil, function() return E.Retail or E.db.unitframe.units[groupName][auraType].useMidnight end)
