@@ -524,9 +524,11 @@ function UF:PostUpdateAura(unit, button)
 	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local steal = DebuffColors.Stealable
 
-	local color = E.Retail and not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
-	if color then
-		r, g, b = color:GetRGB()
+	if E.Retail then
+		local color = not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
+		if color then
+			r, g, b = color:GetRGB()
+		end
 	elseif button.isDebuff then
 		local bad = DebuffColors.BadDispel
 		if bad and db.auraByDispels and (BadDispels[button.spellID] and DispelTypes[button.debuffType]) then
