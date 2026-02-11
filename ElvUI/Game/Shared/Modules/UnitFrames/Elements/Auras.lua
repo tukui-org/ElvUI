@@ -267,35 +267,52 @@ function UF:UpdateFilters(button)
 	end
 
 	local patchReady = E.wowtoc > 120000
-	local isImportant = patchReady and db and db.isAuraImportant
-	local isCrowdControl = patchReady and db and db.isAuraCrowdControl
-	local isBigDefensive = patchReady and db and db.isAuraBigDefensive
-	local isRaidInCombat = patchReady and db and db.isAuraRaidInCombat
-	local isRaidPlayerDispellable = patchReady and db and db.isAuraRaidPlayerDispellable
-	local isDefensive = E.Retail and db and db.isAuraDefensive
-	local isCancelable = db and db.isAuraCancelable
-	local notCancelable = db and db.notAuraCancelable
 	local isPlayer = db and db.isAuraPlayer
+	local isRaidPlayerDispellable = patchReady and db and db.isAuraRaidPlayerDispellable
+	local isImportant = patchReady and db and db.isAuraImportant
+	local isImportantPlayer = patchReady and db and db.isAuraImportantPlayer
+	local isCrowdControl = patchReady and db and db.isAuraCrowdControl
+	local isCrowdControlPlayer = patchReady and db and db.isAuraCrowdControlPlayer
+	local isBigDefensive = patchReady and db and db.isAuraBigDefensive
+	local isBigDefensivePlayer = patchReady and db and db.isAuraBigDefensivePlayer
+	local isRaidInCombat = patchReady and db and db.isAuraRaidInCombat
+	local isRaidInCombatPlayer = patchReady and db and db.isAuraRaidInCombatPlayer
+	local isExternalDefensive = E.Retail and db and db.isAuraExternalDefensive
+	local isExternalDefensivePlayer = E.Retail and db and db.isAuraExternalDefensivePlayer
+	local isCancelable = db and db.isAuraCancelable
+	local isCancelablePlayer = db and db.isAuraCancelablePlayer
+	local notCancelable = db and db.notAuraCancelable
+	local notCancelablePlayer = db and db.notAuraCancelablePlayer
 	local isRaid = db and db.isAuraRaid
+	local isRaidPlayer = db and db.isAuraRaidPlayer
 
 	local filters = button.auraFilters
-	filters.isImportant = isImportant
-	filters.isCrowdControl = isCrowdControl
-	filters.isBigDefensive = isBigDefensive
-	filters.isRaidInCombat = isRaidInCombat
-	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
-	filters.isDefensive = isDefensive
-	filters.isCancelable = isCancelable
-	filters.notCancelable = notCancelable
 	filters.isPlayer = isPlayer
+	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
+	filters.isImportant = isImportant
+	filters.isImportantPlayer = isImportantPlayer
+	filters.isCrowdControl = isCrowdControl
+	filters.isCrowdControlPlayer = isCrowdControlPlayer
+	filters.isBigDefensive = isBigDefensive
+	filters.isBigDefensivePlayer = isBigDefensivePlayer
+	filters.isRaidInCombat = isRaidInCombat
+	filters.isRaidInCombatPlayer = isRaidInCombatPlayer
+	filters.isExternalDefensive = isExternalDefensive
+	filters.isExternalDefensivePlayer = isExternalDefensivePlayer
+	filters.isCancelable = isCancelable
+	filters.isCancelablePlayer = isCancelablePlayer
+	filters.notCancelable = notCancelable
+	filters.notCancelablePlayer = notCancelablePlayer
 	filters.isRaid = isRaid
+	filters.isRaidPlayer = isRaidPlayer
 
 	button.useMidnight = db and db.useMidnight
 
+	local shared = isPlayer or isCancelable or isCancelablePlayer or notCancelable or notCancelablePlayer or isRaid or isRaidPlayer
 	if E.Retail then
-		button.noFilter = db and not (isImportant or isCrowdControl or isBigDefensive or isRaidInCombat or isRaidPlayerDispellable or isDefensive or isCancelable or notCancelable or isPlayer or isRaid)
+		button.noFilter = db and not (shared or isRaidPlayerDispellable or isImportant or isImportantPlayer or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer)
 	else
-		button.noFilter = db and not (isCancelable or notCancelable or isPlayer or isRaid)
+		button.noFilter = db and not shared
 	end
 end
 
@@ -507,9 +524,11 @@ function UF:PostUpdateAura(unit, button)
 	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local steal = DebuffColors.Stealable
 
-	local color = E.Retail and not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
-	if color then
-		r, g, b = color:GetRGB()
+	if E.Retail then
+		local color = not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
+		if color then
+			r, g, b = color:GetRGB()
+		end
 	elseif button.isDebuff then
 		local bad = DebuffColors.BadDispel
 		if bad and db.auraByDispels and (BadDispels[button.spellID] and DispelTypes[button.debuffType]) then
@@ -730,22 +749,36 @@ function UF:VerifyFilter(button, aura)
 		return true
 	end
 
+	local player, cancel = aura.auraIsPlayer, aura.auraIsCancelable
+	local other, perma = not player, not cancel
+
 	if E.Retail then
-		return (filters.isImportant and aura.auraIsImportant)
-		or (filters.isCrowdControl and aura.auraIsCrowdControl)
-		or (filters.isBigDefensive and aura.auraIsBigDefensive)
-		or (filters.isRaidInCombat and aura.auraIsRaidInCombat)
+		return (filters.isPlayer and player)
 		or (filters.isRaidPlayerDispellable and aura.auraIsRaidPlayerDispellable)
-		or (filters.isDefensive and aura.auraIsExternalDefensive)
-		or (filters.isCancelable and aura.auraIsCancelable)
-		or (filters.notCancelable and not aura.auraIsCancelable)
-		or (filters.isPlayer and aura.auraIsPlayer)
-		or (filters.isRaid and aura.auraIsRaid)
+		or (filters.isImportant and aura.auraIsImportant and other)
+		or (filters.isImportantPlayer and aura.auraIsImportant and player)
+		or (filters.isCrowdControl and aura.auraIsCrowdControl and other)
+		or (filters.isCrowdControlPlayer and aura.auraIsCrowdControl and player)
+		or (filters.isBigDefensive and aura.auraIsBigDefensive and other)
+		or (filters.isBigDefensivePlayer and aura.auraIsBigDefensive and player)
+		or (filters.isRaidInCombat and aura.auraIsRaidInCombat and other)
+		or (filters.isRaidInCombatPlayer and aura.auraIsRaidInCombat and player)
+		or (filters.isExternalDefensive and aura.auraIsExternalDefensive and other)
+		or (filters.isExternalDefensivePlayer and aura.auraIsExternalDefensive and player)
+		or (filters.isCancelable and cancel and other)
+		or (filters.isCancelablePlayer and cancel and player)
+		or (filters.notCancelable and perma and other)
+		or (filters.notCancelablePlayer and perma and player)
+		or (filters.isRaid and aura.auraIsRaid and other)
+		or (filters.isRaidPlayer and aura.auraIsRaid and player)
 	else
-		return (filters.isCancelable and aura.auraIsCancelable)
-		or (filters.notCancelable and not aura.auraIsCancelable)
-		or (filters.isPlayer and aura.auraIsPlayer)
-		or (filters.isRaid and aura.auraIsRaid)
+		return (filters.isPlayer and player)
+		or (filters.isCancelable and cancel and other)
+		or (filters.isCancelablePlayer and cancel and player)
+		or (filters.notCancelable and perma and other)
+		or (filters.notCancelablePlayer and perma and player)
+		or (filters.isRaid and aura.auraIsRaid and other)
+		or (filters.isRaidPlayer and aura.auraIsRaid and player)
 	end
 end
 

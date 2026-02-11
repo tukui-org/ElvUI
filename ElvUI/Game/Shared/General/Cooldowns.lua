@@ -27,13 +27,15 @@ function E:CooldownSwipe(cooldown) -- non retail
 	local db = E:CooldownData(cooldown)
 	if not db then return end
 
-	local c = db.colors[(cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and 'swipeLOC') or 'swipe']
-	if c then
-		cooldown:SetSwipeColor(c.r, c.g, c.b, c.a)
+	local colors = db.colors[(cooldown.currentCooldownType == COOLDOWN_TYPE_LOSS_OF_CONTROL and 'swipeLOC') or 'swipe']
+	if colors then
+		cooldown:SetSwipeColor(colors.r, colors.g, colors.b, colors.a)
 	end
 end
 
 function E:CooldownTextures(cooldown, attach, texture, edge, swipe)
+	if not cooldown then return end
+
 	cooldown:SetInside(attach, attach and 0 or nil, attach and 0 or nil)
 
 	cooldown:SetDrawEdge(true)
@@ -43,60 +45,91 @@ function E:CooldownTextures(cooldown, attach, texture, edge, swipe)
 	cooldown:SetSwipeTexture(E.media.blankTex, swipe.r, swipe.g, swipe.b, swipe.a)
 end
 
-function E:CooldownUpdate(cooldown)
-	local db, data = E:CooldownData(cooldown)
-	if not db or not cooldown.Text then return end
+function E:CooldownText(cooldown, db, hide)
+	if not cooldown then return end
 
-	local which, colors = data.which, db.colors
+	cooldown:SetHideCountdownNumbers(hide)
+
+	if not cooldown.Text then return end
+
+	local colors = db.colors.text
 	cooldown.Text:ClearAllPoints()
-	cooldown.Text:SetTextColor(colors.text.r, colors.text.g, colors.text.b)
+	cooldown.Text:SetTextColor(colors.r, colors.g, colors.b)
 	cooldown.Text:Point('CENTER', nil, db.position, db.offsetX, db.offsetY)
 	cooldown.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+end
 
-	cooldown:SetHideCountdownNumbers(db.hideNumbers) -- hide text
+function E:CooldownColors(cooldown, edge, swipe, alpha)
+	if not cooldown then return end
+
+	cooldown:SetEdgeColor(edge.r, edge.g, edge.b, alpha or edge.a)
+	cooldown:SetSwipeColor(swipe.r, swipe.g, swipe.b, alpha or swipe.a)
+end
+
+function E:CooldownUpdate(cooldown)
+	local db, data = E:CooldownData(cooldown)
+	if not db then return end
+
+	E:CooldownBling(cooldown)
+
+	E:CooldownText(cooldown, db, db.hideNumbers)
+	E:CooldownText(data.chargeCooldown, db, not db.chargeText)
+	E:CooldownText(data.lossOfControl, db, not db.locText)
+
+	local colors = db.colors
+	local aurabars = data.which == 'aurabars' and 0 or nil
+	E:CooldownColors(cooldown, colors.edge, colors.swipe, aurabars)
+	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
+	E:CooldownColors(data.lossOfControl, colors.edgeLOC, colors.swipeLOC)
+
+	cooldown:SetDrawBling(not aurabars and not db.hideBling)
 	cooldown:SetCountdownAbbrevThreshold(db.threshold)
 	cooldown:SetMinimumCountdownDuration(db.minDuration) -- minimum duration above which text will be shown
 	--cooldown:SetRotation(rad(db.rotation))
 	cooldown:SetReverse(db.reverse)
+end
 
-	E:CooldownBling(cooldown)
+function E:Cooldown_OnShow()
+	if not self.mainCooldown then return end
 
-	local aurabars = which == 'aurabars' and 0 or nil
-	cooldown:SetDrawBling(not aurabars and not db.hideBling)
-	cooldown:SetEdgeColor(colors.edge.r, colors.edge.g, colors.edge.b, aurabars or colors.edge.a)
-	cooldown:SetSwipeColor(colors.swipe.r, colors.swipe.g, colors.swipe.b, aurabars or colors.swipe.a)
+	self.mainCooldown:SetHideCountdownNumbers(true)
+end
 
-	local charge = data.chargeCooldown
-	if charge then
-		charge:SetEdgeColor(colors.edgeCharge.r, colors.edgeCharge.g, colors.edgeCharge.b, colors.edgeCharge.a)
-		charge:SetSwipeColor(colors.swipeCharge.r, colors.swipeCharge.g, colors.swipeCharge.b, colors.swipeCharge.a)
+function E:Cooldown_OnHide()
+	local db = E:CooldownData(self.mainCooldown)
+	if not db then return end
+
+	self.mainCooldown:SetHideCountdownNumbers(db.hideNumbers)
+end
+
+function E:CooldownRegion(cooldown, main)
+	if not cooldown then return end
+
+	if not cooldown.Text then -- extract the timer text
+		cooldown.Text = cooldown:GetRegions()
 	end
 
-	local lossControl = data.lossOfControl
-	if lossControl then
-		lossControl:SetEdgeColor(colors.edgeLOC.r, colors.edgeLOC.g, colors.edgeLOC.b, colors.edgeLOC.a)
-		lossControl:SetSwipeColor(colors.swipeLOC.r, colors.swipeLOC.g, colors.swipeLOC.b, colors.swipeLOC.a)
+	if main and not cooldown.mainCooldown then
+		cooldown.mainCooldown = main
+
+		cooldown:HookScript('OnShow', E.Cooldown_OnShow)
+		cooldown:HookScript('OnHide', E.Cooldown_OnHide)
 	end
 end
 
 function E:CooldownInitialize(cooldown, attach)
 	local db, data = E:CooldownData(cooldown)
-	if not db or cooldown.Text then return end
+	if not db then return end
 
-	local c = db.colors
-	cooldown.Text = cooldown:GetRegions() -- extract the timer text
+	-- setup the text region
+	E:CooldownRegion(cooldown)
+	E:CooldownRegion(data.chargeCooldown, cooldown)
+	E:CooldownRegion(data.lossOfControl, cooldown)
 
-	E:CooldownTextures(cooldown, attach, E.Media.Textures.Edge, c.edge, c.swipe)
-
-	local charge = data.chargeCooldown
-	if charge then
-		E:CooldownTextures(charge, attach, E.Media.Textures.Edge2, c.edgeCharge, c.swipeCharge)
-	end
-
-	local lossControl = data.lossOfControl
-	if lossControl then
-		E:CooldownTextures(lossControl, attach, E.Media.Textures.Edge, c.edgeLOC, c.swipeLOC)
-	end
+	local colors = db.colors
+	E:CooldownTextures(cooldown, attach, E.Media.Textures.Edge, colors.edge, colors.swipe)
+	E:CooldownTextures(data.chargeCooldown, attach, E.Media.Textures.Edge2, colors.edgeCharge, colors.swipeCharge)
+	E:CooldownTextures(data.lossOfControl, attach, E.Media.Textures.Edge, colors.edgeLOC, colors.swipeLOC)
 end
 
 function E:CooldownData(cooldown)
@@ -121,7 +154,7 @@ function E:RegisterCooldown(cooldown, which, attach)
 	if not db then return end -- verify the settings exist here
 
 	-- storage by cooldown (to grab a cooldowns data)
-	if not E.RegisteredCooldowns[cooldown] then -- data can include: charge = chargeCooldown
+	if not E.RegisteredCooldowns[cooldown] then
 		E.RegisteredCooldowns[cooldown] = { which = which }
 	else -- this cooldown was already added
 		return -- stop here

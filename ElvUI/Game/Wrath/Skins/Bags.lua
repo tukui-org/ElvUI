@@ -15,7 +15,6 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetInventoryItemID = GetInventoryItemID
 
 local BANK_CONTAINER = Enum.BagIndex.Bank
-local LE_ITEM_CLASS_QUESTITEM = LE_ITEM_CLASS_QUESTITEM
 
 local bagIconCache = {
 	[-2] = [[Interface\ICONS\INV_Misc_Key_03]],
@@ -117,9 +116,10 @@ function S:ContainerFrame()
 				item:SetBackdropBorderColor(profession.r, profession.g, profession.b, profession.a)
 				item.ignoreBorderColors = true
 			elseif link then
-				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(link)
+				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
 
-				if itemClassID == LE_ITEM_CLASS_QUESTITEM then
+				local questItem = B:GetItemQuestInfo(link, bindType, itemClassID)
+				if questItem then
 					item:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 					item.ignoreBorderColors = true
 
@@ -218,9 +218,10 @@ function S:ContainerFrame()
 
 			local link = GetContainerItemLink(BANK_CONTAINER, id)
 			if link then
-				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID = GetItemInfo(link)
+				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
 
-				if itemClassID == LE_ITEM_CLASS_QUESTITEM then
+				local questItem = B:GetItemQuestInfo(link, bindType, itemClassID)
+				if questItem then
 					button:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
 					button.ignoreBorderColors = true
 

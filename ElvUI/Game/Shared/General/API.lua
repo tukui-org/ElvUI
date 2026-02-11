@@ -47,6 +47,8 @@ local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsVisible = UnitIsVisible
 local UnitSex = UnitSex
+local UnitIsAFK = UnitIsAFK
+local UnitIsDND = UnitIsDND
 local UnitThreatSituation = UnitThreatSituation
 
 local WorldFrame = WorldFrame
@@ -1415,6 +1417,18 @@ function E:GetClassificationColor(unit)
 		local baseClass = UnitClassBase(unit)
 		return (baseClass == 'PALADIN' and 'caster') or 'melee'
 	end
+end
+
+function E:UnitIsAFK(unit)
+	local afk = UnitIsAFK(unit)
+
+	return E:NotSecretValue(afk) and afk or nil
+end
+
+function E:UnitIsDND(unit)
+	local dnd = UnitIsDND(unit)
+
+	return E:NotSecretValue(dnd) and dnd or nil
 end
 
 function E:LoadAPI()

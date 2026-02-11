@@ -226,7 +226,7 @@ function UF:Configure_ClassBar(frame)
 		UF:SetStatusBarColor(bars.LunarBar, lr, lg, lb)
 		bars.LunarBar:Size(CLASSBAR_WIDTH - SPACING, frame.CLASSBAR_HEIGHT - SPACING)
 		bars.LunarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
-		E:SetSmoothing(bars.LunarBar, db.classbar and db.classbar.smoothbars)
+		E:SetSmoothing(bars.LunarBar, db.classbar.smoothbars)
 
 		local sr, sg, sb = unpack(ElvUF.colors.ClassBars.DRUID[2])
 		bars.SolarBar:SetMinMaxValues(-1, 1)
@@ -235,7 +235,7 @@ function UF:Configure_ClassBar(frame)
 		bars.SolarBar:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 		bars.SolarBar:ClearAllPoints()
 		bars.SolarBar:Point(isVertical and 'BOTTOM' or 'LEFT', lunarTex, isVertical and 'TOP' or 'RIGHT')
-		E:SetSmoothing(bars.SolarBar, db.classbar and db.classbar.smoothbars)
+		E:SetSmoothing(bars.SolarBar, db.classbar.smoothbars)
 
 		bars.Arrow:ClearAllPoints()
 		bars.Arrow:Point('CENTER', lunarTex, isVertical and 'TOP' or 'RIGHT', 0, isVertical and -4 or 0)
@@ -265,7 +265,7 @@ function UF:Configure_ClassBar(frame)
 				local altPower = E.db.unitframe.altManaPowers[E.myclass]
 
 				thirdPower.__allowPower = altPower.EbonMight or nil
-				thirdPower.smoothing = StatusBarInterpolation.ExponentialEaseOut
+				thirdPower.smoothing = (db.classbar.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 			end
 		end
 
@@ -374,7 +374,7 @@ function UF:ToggleResourceBar()
 
 	if self.text then self.text:SetAlpha(frame.CLASSBAR_SHOWN and 1 or 0) end
 
-	frame.CLASSBAR_HEIGHT = frame.USE_CLASSBAR and ((db.classbar and db.classbar.height) or (frame.AlternativePower and db.power.height)) or 0
+	frame.CLASSBAR_HEIGHT = (frame.USE_CLASSBAR and db.classbar.height) or (frame.AlternativePower and db.power.height) or 0
 	frame.CLASSBAR_YOFFSET = ((not frame.USE_CLASSBAR or not frame.CLASSBAR_SHOWN or frame.CLASSBAR_DETACHED)) and 0 or (frame.USE_MINI_CLASSBAR and ((UF.SPACING+(frame.CLASSBAR_HEIGHT*0.5))) or (frame.CLASSBAR_HEIGHT - (UF.BORDER-UF.SPACING)))
 
 	UF:Configure_CustomTexts(frame)

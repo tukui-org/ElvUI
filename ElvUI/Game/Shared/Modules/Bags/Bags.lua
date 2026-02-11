@@ -636,9 +636,11 @@ function B:GetItemQuestInfo(itemLink, bindType, itemClassID)
 				local line = info.lines[i]
 				local text = line and line.leftText
 
-				if not text or text == '' then break end
-				if not isQuestItem and text == _G.ITEM_BIND_QUEST then isQuestItem = true end
-				if not isStarterItem and text == _G.ITEM_STARTS_QUEST then isStarterItem = true end
+				if E:NotSecretValue(text) then
+					if not text or text == '' then break end
+					if not isQuestItem and text == _G.ITEM_BIND_QUEST then isQuestItem = true end
+					if not isStarterItem and text == _G.ITEM_STARTS_QUEST then isStarterItem = true end
+				end
 			end
 		end
 

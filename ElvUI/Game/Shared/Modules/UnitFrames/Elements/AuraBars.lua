@@ -70,6 +70,8 @@ function UF:AuraBars_UpdateBar(bar)
 	bar.spark:Point('BOTTOM')
 	bar.spark:Point('TOP')
 
+	UF:UpdateFilters(bar)
+
 	UF:Update_FontString(bar.timeText)
 	UF:Update_FontString(bar.nameText)
 end
@@ -123,7 +125,6 @@ function UF:Configure_AuraBars(frame)
 
 		for _, bar in ipairs(bars) do
 			UF:AuraBars_UpdateBar(bar)
-			UF:UpdateFilters(bar)
 		end
 
 		E:UpdateClassColor(UF.db.colors.auraBarBuff)
