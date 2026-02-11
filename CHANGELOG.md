@@ -1,3 +1,39 @@
+### Version 15.04 [ February 10th 2026 ]
+*   12.0.1
+    *   Aura Filtering checkboxes added using Blizzard's new filters.
+    *   Aurabar colors work in combat again.
+    *   Aura Highlighting is back.
+    *   Cooldoown charge and loss of control text is back.
+*   General
+    *   Options Nameplate error with using Click Through options.
+    *   oUF colors: attempt to perform arithmetic on local 'r2' on line 108
+    *   oUF auras: attempt to index field '?' (a nil value) on line 355
+    *   OmniCC added to incompatible list. The cooldown module has too many issues with it right now.
+    *   Custom Class Color addons causing WrapTextInColorCode error. We have an option for this in (General > Blizzard Improvement) section, please use it instead.
+    *   Portraits: experimenting with some changes to reduce chances the UI may glitch out hiding itself.
+    *   Wrath: Totem bar settings were missing in Actionbar settings.
+    *   Updated locales for Module Copy.
+    *   Unitframe and Nameplate multiplier setting not working initially.
+    *   Minimap pings not working on Beta Midnight (this is an early change - works on classic already).
+    *   Summon indicator wasn't appearing. (Thanks expor)
+    *   Resurrect indicator wasn't appearing either.
+    *   Alternative Power bar should work again on Retail.
+    *   LibQuestXP should no longer be needed.
+    *   Aura borders were yellow too often, removed Enemy NPC type color.
+    *   Possessbar needs to be in front on paging for TBC quests.
+    *   Actionbar buttons turning grey when using wands.
+    *   Ebon might bar not following classbar smooth checkbox.
+    *   Bag skin not showing quest items properly.
+*   Secrets
+    *   Cooldown Manager secret error on line 122 or 124. (Thanks fang2hou)
+    *   Chat secret error on line 2305 or 2322. (Thanks fang2hou)
+    *   Attempted fix for the backdrop error about width for our templates.
+*   Skins
+    *   Damage meter resize button adjusted. (Thanks fang2hou)
+    *   Damage meter not setting backdrop alpha to 100% initially.
+    *   Cooldown Manager bar texture skinned. (Thanks fang2hou)
+    *   TBC Inspect skin updated for talents.
+
 ### Version 15.03 [ February 5th 2026 ]
 *   General
     *   Unitframe and Nameplates have a new setting to adjust backdrop multiplier (under UF / NP > General > Multiplier).
@@ -84,9 +120,9 @@
     *   Adjusts Blizzard's cooldown text; if you don't see them on Actionbars: you may need the "Show Numbers for Cooldowns" checked in Blizzard settings.
 *   **Midnight**
     *   Cutaway can't be handled anymore, so it's removed on Retail.
-    *   Tags are very limited by Blizzard, some are no longer possible.  Reset button added by Text Formats now.
+    *   Tags are very limited by Blizzard, some are no longer possible. Reset button added by Text Formats now.
         *   Name tags will attempt to work on some units but fallback to original name when it's secret.
-    *   Aura Filtering is severely limited by Blizzard, currently filter settings do nothing.  Buffs for buffs, Debuffs for debuffs, Auras will do both.
+    *   Aura Filtering is severely limited by Blizzard, currently filter settings do nothing. Buffs for buffs, Debuffs for debuffs, Auras will do both.
     *   Aura Sorting is severely limited by Blizzard, currently all auras are sorted so that your own player auras are first.
 *   **TBC**
     *   Adjusted position for Quest Frame Goodbye button.
@@ -484,7 +520,7 @@
 ### Version 13.79 [ October 22nd 2024 ]
 *   Unitframe range issue with Mage resolved.
 *   Reorganized Aura Filter priority list for all Unitframes and merged PlayerBuffs filter into Whitelist.
-*   Reset All button added for Filters section; this will entirely wipe any custom filters used and reset default filters.  AuraBar Colors, Aura Highlight, and Aura Indicators are excluded from this.
+*   Reset All button added for Filters section; this will entirely wipe any custom filters used and reset default filters. AuraBar Colors, Aura Highlight, and Aura Indicators are excluded from this.
 *   Reputation error on Datatext and Databars on Classic or Cataclysm.
 *   Range issues resolved on Classic Era (you must have Show All Spell Ranked enabled).
 *   Scale option added for Private Raid Warnings (Buffs and Debuffs > Private Auras > Raid Warning > Scale).
@@ -558,7 +594,7 @@
     *   Unitframe range was a bit messed up.
     *   Better compatibility with DejaCharacterStats.
     *   WeakAura Cooldowns not showing timers for Grow animation Auras.
-    *   Share Global Profile and Private Profile added.  Profiles take less time than previous versions to send now.
+    *   Share Global Profile and Private Profile added. Profiles take less time than previous versions to send now.
 *   **Datatext issues:**
     *   Reputation would error about GetNumFactions.
     *   Quick switching to another Datatext would cause an error.
@@ -1326,9 +1362,9 @@
 
 ### Version 13.01 [ November 11th 2022 ]
 *   **Important Changes:**
-    *   Export Compression method changed to use LibDeflate.  
+    *   Export Compression method changed to use LibDeflate.
         _This renders past exports useless, a plugin will be provided to convert to the new format._
-    *   Libraries moved to **ElvUI_Libraries** and **ElvUI_OptionsUI** is now renamed **ElvUI_Options**.  
+    *   Libraries moved to **ElvUI_Libraries** and **ElvUI_OptionsUI** is now renamed **ElvUI_Options**.
         _The three folders for ElvUI are now: **ElvUI**, **ElvUI_Libraries**, and **ElvUI_Options**._
     *   Bag search will now be simplified to using the same API Blizzard provides for their bags.
     *   CustomGlow is now back to ButtonGlow for the time being (no settings for this right now. however, it might change in the future).
