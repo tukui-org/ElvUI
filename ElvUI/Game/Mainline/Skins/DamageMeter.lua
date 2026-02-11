@@ -42,7 +42,8 @@ function S:DamageMeter_HandleResizeButton(button)
 	normalTex:SetTexCoord(0, 1, 0, 1)
 	normalTex:SetAllPoints()
 
-	pushedTex:SetVertexColor(unpack(E.media.rgbvaluecolor))
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	pushedTex:SetVertexColor(r, g, b)
 	pushedTex:SetTexCoord(0, 1, 0, 1)
 	pushedTex:SetAllPoints()
 
@@ -163,17 +164,12 @@ end
 function S:DamageMeter_HandleHeader(window, header)
 	if not window or not header then return end
 
-	header:Hide()
-
-	if not window.headerBackdrop then
-		local headerBackdrop = CreateFrame('Frame', nil, window)
-		headerBackdrop:SetTemplate('Transparent')
-		headerBackdrop:Point('TOPLEFT', 16, -2)
-		headerBackdrop:Point('BOTTOMRIGHT', window, 'TOPRIGHT', -22, -28)
-		headerBackdrop:OffsetFrameLevel(nil, window.backdrop)
-
-		window.headerBackdrop = headerBackdrop
-	end
+	local r, g, b, a = unpack(E.media.backdropfadecolor)
+	header:SetTexture(E.media.blankTex)
+	header:SetVertexColor(r, g, b, a)
+	header:ClearAllPoints()
+	header:Point('TOPLEFT', 16, -2)
+	header:Point('BOTTOMRIGHT', window, 'TOPRIGHT', -22, -32)
 end
 
 function S:DamageMeter_HandleStatusBar()
@@ -181,15 +177,13 @@ function S:DamageMeter_HandleStatusBar()
 	if not StatusBar then return end
 
 	if StatusBar.Background then
-		StatusBar.Background:Hide()
+		local r, g, b, a = unpack(E.media.backdropfadecolor)
+		StatusBar.Background:SetTexture(E.media.blankTex)
+		StatusBar.Background:SetVertexColor(r, g, b, a)
 	end
 
 	if StatusBar.BackgroundEdge then
 		StatusBar.BackgroundEdge:Hide()
-	end
-
-	if not StatusBar.backdrop then
-		StatusBar:CreateBackdrop('Transparent')
 	end
 
 	StatusBar:GetStatusBarTexture():SetTexture(E.media.normTex)
