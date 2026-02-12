@@ -188,6 +188,10 @@ function A:CreateIcon(button)
 	button:SetScript('OnHide', A.Button_OnHide)
 	button:SetScript('OnShow', A.Button_OnShow)
 
+	button.cooldown:SetDrawSwipe(false)
+	button.cooldown:SetDrawBling(false)
+	button.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
+
 	E:RegisterCooldown(button.cooldown, 'auras')
 
 	A:UpdateIcon(button)
