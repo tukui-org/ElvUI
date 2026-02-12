@@ -768,7 +768,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		E:RegisterCooldown(button.cooldown, 'actionbar')
+		E:RegisterCooldown(button.cooldown, 'actionbar', icon)
 
 		AB.handledbuttons[button] = true
 	end
