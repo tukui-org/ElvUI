@@ -191,6 +191,7 @@ function A:CreateIcon(button)
 	button.cooldown:SetDrawSwipe(false)
 	button.cooldown:SetDrawBling(false)
 	button.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
+	button.cooldown:SetAllPoints(button.texture)
 
 	E:RegisterCooldown(button.cooldown, 'auras')
 
