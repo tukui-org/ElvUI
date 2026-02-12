@@ -609,12 +609,14 @@ function A:CreateAuraHeader(filter)
 	header:Show() -- should trigger SecureAuraHeader_OnShow
 
 	header.ForEachChild = A.ForEachChild
-	header.auraType = auraType
-	header.filter = filter
-	header.name = name
+
 	header.enchantButtons = {}
 	header.enchants = {}
 	header.spells = {}
+
+	header.auraType = auraType
+	header.filter = filter
+	header.name = name
 
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
 	header.visibility:SetScript('OnUpdate', A.Visibility_OnUpdate) -- dont put this on the main frame
