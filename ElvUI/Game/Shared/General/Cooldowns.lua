@@ -110,8 +110,8 @@ function E:CooldownRegion(cooldown, main)
 	if main and not cooldown.mainCooldown then
 		cooldown.mainCooldown = main
 
-		cooldown:HookScript('OnShow', E.Cooldown_OnShow)
-		cooldown:HookScript('OnHide', E.Cooldown_OnHide)
+	--	cooldown:HookScript('OnShow', E.Cooldown_OnShow)
+	--	cooldown:HookScript('OnHide', E.Cooldown_OnHide)
 	end
 end
 
