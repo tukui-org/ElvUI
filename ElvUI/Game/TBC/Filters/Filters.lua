@@ -421,7 +421,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[36922]	= List(2), -- Bellowing Roar
 	-- Gruul's Lair
 		-- High King Maulgar
-		[36032]	= List(2), -- Arcane Blast
 		[11726]	= List(2), -- Enslave Demon
 		[33129]	= List(2), -- Dark Decay
 		[33175]	= List(2), -- Arcane Shock
