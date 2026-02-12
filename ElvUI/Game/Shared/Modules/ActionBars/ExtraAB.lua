@@ -33,8 +33,8 @@ function AB:ExtraButtons_BossStyle(button)
 	AB:FixKeybindText(button)
 	AB:FixKeybindColor(button)
 
-	if button.Cooldown then
-		E:RegisterCooldown(button.Cooldown, 'bossbutton', button.icon)
+	if button.cooldown then
+		E:RegisterCooldown(button.cooldown, 'bossbutton', button.icon)
 	end
 
 	AB:ExtraButtons_BossAlpha(button)
