@@ -36,7 +36,9 @@ end
 function E:CooldownTextures(cooldown, attach, texture, edge, swipe)
 	if not cooldown then return end
 
-	cooldown:SetInside(attach, attach and 0 or nil, attach and 0 or nil)
+	if attach then
+		cooldown:SetAllPoints(attach)
+	end
 
 	cooldown:SetDrawEdge(true)
 	cooldown:SetDrawSwipe(true)
