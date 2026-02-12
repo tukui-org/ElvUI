@@ -87,31 +87,9 @@ function E:CooldownUpdate(cooldown)
 	cooldown:SetReverse(db.reverse)
 end
 
-function E:Cooldown_OnShow()
-	if not self.mainCooldown then return end
-
-	self.mainCooldown:SetHideCountdownNumbers(true)
-end
-
-function E:Cooldown_OnHide()
-	local db = E:CooldownData(self.mainCooldown)
-	if not db then return end
-
-	self.mainCooldown:SetHideCountdownNumbers(db.hideNumbers)
-end
-
-function E:CooldownRegion(cooldown, main)
-	if not cooldown then return end
-
-	if not cooldown.Text then -- extract the timer text
+function E:CooldownRegion(cooldown)
+	if cooldown and not cooldown.Text then
 		cooldown.Text = cooldown:GetRegions()
-	end
-
-	if main and not cooldown.mainCooldown then
-		cooldown.mainCooldown = main
-
-	--	cooldown:HookScript('OnShow', E.Cooldown_OnShow)
-	--	cooldown:HookScript('OnHide', E.Cooldown_OnHide)
 	end
 end
 
@@ -119,10 +97,10 @@ function E:CooldownInitialize(cooldown)
 	local db, data = E:CooldownData(cooldown)
 	if not db then return end
 
-	-- setup the text region
+	-- extract the text region
 	E:CooldownRegion(cooldown)
-	E:CooldownRegion(data.chargeCooldown, cooldown)
-	E:CooldownRegion(data.lossOfControl, cooldown)
+	E:CooldownRegion(data.chargeCooldown)
+	E:CooldownRegion(data.lossOfControl)
 
 	local colors = db.colors
 	E:CooldownTextures(cooldown, E.Media.Textures.Edge, colors.edge, colors.swipe)
