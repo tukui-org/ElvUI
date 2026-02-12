@@ -768,7 +768,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		E:RegisterCooldown(button.cooldown, 'actionbar', icon)
+		E:RegisterCooldown(button.cooldown, 'actionbar')
 
 		AB.handledbuttons[button] = true
 	end
@@ -1699,9 +1699,8 @@ function AB:LAB_FlyoutCreated(btn)
 	btn.MasqueSkinned = true -- skip LAB styling
 end
 
-function AB:LAB_ChargeCreated(button, cd)
-	local icon = button.icon or button.Icon
-	E:RegisterCooldown(cd, 'actionbar', icon)
+function AB:LAB_ChargeCreated(_, cd)
+	E:RegisterCooldown(cd, 'actionbar')
 end
 
 function AB:LAB_MouseUp()

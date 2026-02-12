@@ -34,7 +34,7 @@ function AB:ExtraButtons_BossStyle(button)
 	AB:FixKeybindColor(button)
 
 	if button.cooldown then
-		E:RegisterCooldown(button.cooldown, 'bossbutton', button.icon)
+		E:RegisterCooldown(button.cooldown, 'bossbutton')
 	end
 
 	AB:ExtraButtons_BossAlpha(button)
@@ -64,7 +64,7 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 				if spellButton.Cooldown then
-					E:RegisterCooldown(spellButton.Cooldown, 'zonebutton', spellButton.Icon)
+					E:RegisterCooldown(spellButton.Cooldown, 'zonebutton')
 				end
 
 				spellButton.IsSkinned = true

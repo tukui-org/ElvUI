@@ -356,7 +356,7 @@ local function SkinPetFrame()
 	_G.PetJournalRightInset:StripTextures()
 	_G.PetJournalLeftInset:StripTextures()
 	S:HandleItemButton(PetJournal.SummonRandomPetSpellFrame.Button, true)
-	E:RegisterCooldown(PetJournal.SummonRandomPetSpellFrame.Button.Cooldown, nil, PetJournal.SummonRandomPetSpellFrame.Button.Icon)
+	E:RegisterCooldown(PetJournal.SummonRandomPetSpellFrame.Button.Cooldown)
 
 	if E.global.general.disableTutorialButtons then
 		_G.PetJournalTutorialButton:Kill()
@@ -381,7 +381,7 @@ local function SkinPetFrame()
 	_G.PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
 
 	S:HandleItemButton(PetJournal.HealPetSpellFrame.Button, true)
-	E:RegisterCooldown(PetJournal.HealPetSpellFrame.Button.Cooldown, nil, PetJournal.HealPetSpellFrame.Button.Icon)
+	E:RegisterCooldown(PetJournal.HealPetSpellFrame.Button.Cooldown)
 	PetJournal.HealPetSpellFrame.Button.Icon:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
 	_G.PetJournalLoadoutBorder:StripTextures()
 	_G.PetJournalSpellSelect:StripTextures()

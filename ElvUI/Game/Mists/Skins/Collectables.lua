@@ -199,7 +199,7 @@ local function HeirloomsJournalUpdateButton(_, button)
 		button.special:SetJustifyH('RIGHT')
 		button.special:ClearAllPoints()
 
-		E:RegisterCooldown(button.cooldown, nil, button.iconTexture)
+		E:RegisterCooldown(button.cooldown)
 
 		button.IsSkinned = true
 	end
