@@ -2207,6 +2207,8 @@ local function CreateChargeCooldownFrame(parent)
 	cooldown:SetHideCountdownNumbers(true)
 	cooldown:SetDrawSwipe(false)
 
+	lib.callbacks:Fire("OnChargeCreated", parent, cooldown)
+
 	return cooldown
 end
 
