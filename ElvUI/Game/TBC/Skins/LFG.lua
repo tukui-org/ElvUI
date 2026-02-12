@@ -106,6 +106,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	S:HandleEditBox(_G.LFGListingComment)
 
 	-- DropDowns
+	S:HandleDropDownBox(_G.LFGListingFrameGroupRoleButtonsRoleDropdown, 180)
 	S:HandleDropDownBox(_G.LFGBrowseFrameActivityDropdown, 180)
 	S:HandleDropDownBox(_G.LFGBrowseFrameCategoryDropdown, 140)
 

@@ -72,7 +72,12 @@ function S:CooldownManager_CountText(text)
 end
 
 function S:CooldownManager_UpdateTextContainer(container)
-	local countText = container.Applications and container.Applications.Applications
+	local applicationText = container.Applications and container.Applications.Applications
+	if applicationText then
+		S:CooldownManager_CountText(applicationText)
+	end
+
+	local countText = container.Count
 	if countText then
 		S:CooldownManager_CountText(countText)
 	end
