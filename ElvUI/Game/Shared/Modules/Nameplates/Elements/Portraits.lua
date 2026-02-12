@@ -6,6 +6,21 @@ local UnitClass = UnitClass
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
+local function Portrait_CropRatio(portrait, left, right, top, bottom, width, height)
+	local ratio = width / height
+	if ratio > 1 then
+		local trimAmount = (right - left) * (1 - 1 / ratio) * 0.5
+		top = top + trimAmount
+		bottom = bottom - trimAmount
+	elseif ratio < 1 then
+		local trimAmount = (bottom - top) * (1 - ratio) * 0.5
+		left = left + trimAmount
+		right = right - trimAmount
+	end
+
+	portrait:SetTexCoord(left, right, top, bottom)
+end
+
 function NP:Update_PortraitBackdrop()
 	if self.backdrop then
 		self.backdrop:SetShown(self:IsShown())
@@ -26,7 +41,13 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged)
 		self.backdrop:Show()
 	elseif self.customTexture then
 		local _, className = UnitClass(unit)
-		self:SetTexCoord(E:GetClassCoords(className, true))
+		local left, right, top, bottom = E:GetClassCoords(className, true)
+
+		if db.portrait.keepSizeRatio then
+			Portrait_CropRatio(self, left, right, top, bottom, db.portrait.width, db.portrait.height)
+		else
+			self:SetTexCoord(left, right, top, bottom)
+		end
 	end
 end
 
@@ -59,7 +80,15 @@ function NP:Update_Portrait(nameplate)
 			nameplate.Portrait:SetTexture(classIcon)
 			nameplate.Portrait.customTexture = classIcon
 		else -- spec icon or portrait
-			nameplate.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+			if db.portrait.keepSizeRatio then
+				if specIcon then
+					nameplate.Portrait:SetTexCoord(E:CropRatio(db.portrait.width, db.portrait.height))
+				else
+					Portrait_CropRatio(nameplate.Portrait, 0.15, 0.85, 0.15, 0.85, db.portrait.width, db.portrait.height)
+				end
+			else
+				nameplate.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+			end
 			nameplate.Portrait.customTexture = nil
 		end
 
