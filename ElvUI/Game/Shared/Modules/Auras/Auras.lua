@@ -210,11 +210,11 @@ function A:UpdateTexture(button) -- self here can be the header from UpdateMasqu
 	end
 end
 
-function A:UpdateIcon(button, update)
+function A:UpdateIcon(button, index)
 	local db = A.db[button.auraType]
 
 	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
-	if update then
+	if index then
 		button:SetWidth(width)
 		button:SetHeight(height)
 	elseif button.header.MasqueGroup then
@@ -532,7 +532,7 @@ function A:UpdateChild(child, index, db) -- self here is the header
 	child.auraType = self.auraType
 	child.db = db
 
-	A:UpdateIcon(child, true)
+	A:UpdateIcon(child, index)
 
 	-- blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 	if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
@@ -586,8 +586,13 @@ end
 function A:ForEachChild(func, ...)
 	if not func then return end
 
-	for index, child in next, { self:GetChildren() } do
+	local index = 1
+	local child = self:GetAttribute('child'..index)
+	while child do
 		func(self, child, index, ...)
+
+		index = index + 1
+		child = self:GetAttribute('child'..index)
 	end
 end
 
