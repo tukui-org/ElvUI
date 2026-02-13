@@ -188,6 +188,11 @@ function A:CreateIcon(button)
 	button:SetScript('OnHide', A.Button_OnHide)
 	button:SetScript('OnShow', A.Button_OnShow)
 
+	button.cooldown:SetDrawSwipe(false)
+	button.cooldown:SetDrawBling(false)
+	button.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
+	button.cooldown:SetAllPoints(button.texture)
+
 	E:RegisterCooldown(button.cooldown, 'auras')
 
 	A:UpdateIcon(button)
@@ -205,11 +210,11 @@ function A:UpdateTexture(button) -- self here can be the header from UpdateMasqu
 	end
 end
 
-function A:UpdateIcon(button, update)
+function A:UpdateIcon(button, index)
 	local db = A.db[button.auraType]
 
 	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
-	if update then
+	if index then
 		button:SetWidth(width)
 		button:SetHeight(height)
 	elseif button.header.MasqueGroup then
@@ -527,7 +532,7 @@ function A:UpdateChild(child, index, db) -- self here is the header
 	child.auraType = self.auraType
 	child.db = db
 
-	A:UpdateIcon(child, true)
+	A:UpdateIcon(child, index)
 
 	-- blizzard bug fix, icons arent being hidden when you reduce the amount of maximum buttons
 	if index > (db.maxWraps * db.wrapAfter) and child:IsShown() then
@@ -581,8 +586,13 @@ end
 function A:ForEachChild(func, ...)
 	if not func then return end
 
-	for index, child in next, { self:GetChildren() } do
+	local index = 1
+	local child = self:GetAttribute('child'..index)
+	while child do
 		func(self, child, index, ...)
+
+		index = index + 1
+		child = self:GetAttribute('child'..index)
 	end
 end
 
@@ -596,18 +606,22 @@ function A:CreateAuraHeader(filter)
 	header:SetAttribute('unit', 'player')
 	header:SetAttribute('filter', filter)
 	header:HookScript('OnEvent', A.Header_OnEvent)
+	header:Show() -- should trigger SecureAuraHeader_OnShow
+
 	header.ForEachChild = A.ForEachChild
+
 	header.enchantButtons = {}
 	header.enchants = {}
 	header.spells = {}
+
+	header.auraType = auraType
+	header.filter = filter
+	header.name = name
 
 	header.visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
 	header.visibility:SetScript('OnUpdate', A.Visibility_OnUpdate) -- dont put this on the main frame
 	header.visibility:SetScript('OnEvent', A.Visibility_OnEvent) -- dont put this on the main frame
 	header.visibility.frame = header
-	header.auraType = auraType
-	header.filter = filter
-	header.name = name
 
 	if E.Retail then
 		header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
@@ -628,8 +642,6 @@ function A:CreateAuraHeader(filter)
 	elseif MasqueGroupDebuffs and E.private.auras.masque.debuffs then
 		header.MasqueGroup = MasqueGroupDebuffs
 	end
-
-	header:Show()
 
 	return header
 end
