@@ -6,21 +6,6 @@ local UnitClass = UnitClass
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
-local function Portrait_CropRatio(left, right, top, bottom, width, height)
-	local ratio = width / height
-	if ratio > 1 then
-		local trimAmount = (right - left) * (1 - 1 / ratio) * 0.5
-		top = top + trimAmount
-		bottom = bottom - trimAmount
-	elseif ratio < 1 then
-		local trimAmount = (bottom - top) * (1 - ratio) * 0.5
-		left = left + trimAmount
-		right = right - trimAmount
-	end
-
-	return left, right, top, bottom
-end
-
 function NP:Update_PortraitBackdrop()
 	if self.backdrop then
 		self.backdrop:SetShown(self:IsShown())
@@ -43,8 +28,9 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged)
 		local _, className = UnitClass(unit)
 		local left, right, top, bottom = E:GetClassCoords(className, true)
 
-		if db.portrait.keepSizeRatio then
-			left, right, top, bottom = Portrait_CropRatio(left, right, top, bottom, db.portrait.width, db.portrait.height)
+		if not db.portrait.keepSizeRatio then
+			local width, height = db.portrait.width, db.portrait.height
+			left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
 		end
 
 		self:SetTexCoord(left, right, top, bottom)
@@ -81,13 +67,16 @@ function NP:Update_Portrait(nameplate)
 			nameplate.Portrait.customTexture = classIcon
 		else -- spec icon or portrait
 			local left, right, top, bottom = 0.15, 0.85, 0.15, 0.85
-			if db.portrait.keepSizeRatio then
+
+			if not db.portrait.keepSizeRatio then
+				local width, height = db.portrait.width, db.portrait.height
 				if specIcon then
 					left, right, top, bottom = E:CropRatio(db.portrait.width, db.portrait.height)
 				else
-					left, right, top, bottom = Portrait_CropRatio(0.15, 0.85, 0.15, 0.85, db.portrait.width, db.portrait.height)
+					left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
 				end
 			end
+
 			nameplate.Portrait:SetTexCoord(left, right, top, bottom)
 			nameplate.Portrait.customTexture = nil
 		end
