@@ -280,7 +280,15 @@ function lib:CreateButton(id, name, header, config)
 	button.cooldown:SetSwipeColor(0, 0, 0, 0.8)
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
-	button.cooldown:SetAllPoints()
+	button.cooldown:SetAllPoints(button.icon)
+
+	if button.chargeCooldown then
+		button.chargeCooldown:SetAllPoints(button.icon)
+	end
+
+	if button.lossOfControlCooldown then
+		button.lossOfControlCooldown:SetAllPoints(button.icon)
+	end
 
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
@@ -2206,6 +2214,8 @@ local function CreateChargeCooldownFrame(parent)
 	cooldown:SetFrameLevel(parent:GetFrameLevel())
 	cooldown:SetHideCountdownNumbers(true)
 	cooldown:SetDrawSwipe(false)
+
+	lib.callbacks:Fire("OnChargeCreated", parent, cooldown)
 
 	return cooldown
 end

@@ -261,8 +261,13 @@ function AB:CreateBarPet()
 
 	for i = 1, _G.NUM_PET_ACTION_SLOTS do
 		local button = _G['PetActionButton'..i]
-		button:Show() -- for some reason they start hidden on DF ?
+		if not button:IsShown() then
+			button:Show() -- for some reason they start hidden on DF ?
+		end
+
 		button.parentName = 'ElvUI_BarPet'
+		button.cooldown:SetAllPoints(button.icon)
+
 		bar.buttons[i] = button
 
 		if not E.Retail then

@@ -421,7 +421,6 @@ G.unitframe.aurafilters.RaidDebuffs = {
 		[36922]	= List(2), -- Bellowing Roar
 	-- Gruul's Lair
 		-- High King Maulgar
-		[36032]	= List(2), -- Arcane Blast
 		[11726]	= List(2), -- Enslave Demon
 		[33129]	= List(2), -- Dark Decay
 		[33175]	= List(2), -- Arcane Shock
@@ -807,6 +806,8 @@ G.unitframe.aurawatch = {
 		[1044]	= Aura(1044, nil, 'CENTER', {0.89, 0.45, 0}), -- Blessing of Freedom
 		[1038]	= Aura(1038, nil, 'TOPLEFT', {0.11, 1.00, 0.45}, true), -- Blessing of Salvation
 		[6940]	= Aura(6940, {20729, 27147, 27148}, 'CENTER', {0.89, 0.1, 0.1}), -- Blessing Sacrifice
+		[20217] = Aura(20217, nil, 'TOPLEFT', {0.89, 0.45, 0}), -- Blessing of Kings
+		[25898] = Aura(25898, nil, 'TOPLEFT', {0.89, 0.45, 0}), -- Greater Blessing of Kings
 		[19740]	= Aura(19740, {19834, 19835, 19836, 19837, 19838, 25291, 27140}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Might
 		[19742]	= Aura(19742, {19850, 19852, 19853, 19854, 25290, 27142}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Blessing of Wisdom
 		[25782]	= Aura(25782, {25916, 27141}, 'TOPLEFT', {0.2, 0.8, 0.2}, true), -- Greater Blessing of Might
