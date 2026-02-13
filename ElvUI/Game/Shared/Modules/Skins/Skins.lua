@@ -1091,6 +1091,7 @@ do
 		hooksecurefunc(frame, 'Disable', ThumbStatus)
 		hooksecurefunc(frame, 'SetEnabled', ThumbStatus)
 		hooksecurefunc(frame, 'SetMinMaxValues', ThumbStatus)
+
 		ThumbStatus(frame)
 	end
 
@@ -1103,6 +1104,7 @@ do
 
 		local upButton, downButton = GetButton(frame, upButtons), GetButton(frame, downButtons)
 		local thumb = GetButton(frame, thumbButtons) or (frame.GetThumbTexture and frame:GetThumbTexture())
+		local frameLevel = frame:GetFrameLevel()
 
 		frame:StripTextures()
 		frame:CreateBackdrop(template or 'Transparent', nil, nil, nil, nil, nil, nil, nil, true)
@@ -1113,15 +1115,16 @@ do
 		if frame.ScrollUpBorder then frame.ScrollUpBorder:Hide() end
 		if frame.ScrollDownBorder then frame.ScrollDownBorder:Hide() end
 
-		local frameLevel = frame:GetFrameLevel()
 		if upButton then
 			S:HandleNextPrevButton(upButton, 'up')
 			upButton:SetFrameLevel(frameLevel + 2)
 		end
+
 		if downButton then
 			S:HandleNextPrevButton(downButton, 'down')
 			downButton:SetFrameLevel(frameLevel + 2)
 		end
+
 		if thumb and not thumb.backdrop then
 			thumb:SetTexture()
 			thumb:CreateBackdrop(nil, true, true, nil, nil, nil, nil, nil, frameLevel + 1)
@@ -1148,54 +1151,61 @@ do
 	end
 
 	-- WoWTrimScrollBar
-	local function ReskinScrollBarArrow(frame, direction)
-		S:HandleNextPrevButton(frame, direction)
+	local function ReskinScrollBarArrow(button, direction)
+		S:HandleNextPrevButton(button, direction)
 
-		if frame.Texture then
-			frame.Texture:SetAlpha(0)
+		if button.Overlay then
+			button.Overlay:SetAlpha(0)
+		end
 
-			if frame.Overlay then
-				frame.Overlay:SetAlpha(0)
-			end
+		if button.Texture then
+			button.Texture:SetAlpha(0)
 		else
-			frame:StripTextures()
+			button:StripTextures()
 		end
 	end
 
 	local function ThumbOnEnter(frame)
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		local thumb = frame.thumb or frame
+		local thumb = (frame and frame.thumb) or frame
+		if not thumb then return end
+
 		if thumb.backdrop then
-			thumb.backdrop:SetBackdropColor(r, g, b, .75)
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			thumb.backdrop:SetBackdropColor(r, g, b, 0.75)
 		end
 	end
 
 	local function ThumbOnLeave(frame)
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		local thumb = frame.thumb or frame
+		local thumb = (frame and frame.thumb) or frame
+		if not thumb then return end
 
 		if thumb.backdrop and not thumb.__isActive then
-			thumb.backdrop:SetBackdropColor(r, g, b, .25)
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			thumb.backdrop:SetBackdropColor(r, g, b, 0.25)
 		end
 	end
 
 	local function ThumbOnMouseDown(frame)
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		local thumb = frame.thumb or frame
+		local thumb = (frame and frame.thumb) or frame
+		if not thumb then return end
+
 		thumb.__isActive = true
 
 		if thumb.backdrop then
-			thumb.backdrop:SetBackdropColor(r, g, b, .75)
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			thumb.backdrop:SetBackdropColor(r, g, b, 0.75)
 		end
 	end
 
 	local function ThumbOnMouseUp(frame)
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		local thumb = frame.thumb or frame
+		local thumb = (frame and frame.thumb) or frame
+		if not thumb then return end
+
 		thumb.__isActive = nil
 
 		if thumb.backdrop then
-			thumb.backdrop:SetBackdropColor(r, g, b, .25)
+			local r, g, b = unpack(E.media.rgbvaluecolor)
+			thumb.backdrop:SetBackdropColor(r, g, b, 0.25)
 		end
 	end
 
@@ -1205,8 +1215,9 @@ do
 		ReskinScrollBarArrow(frame.Back, 'up')
 		ReskinScrollBarArrow(frame.Forward, 'down')
 
-		if frame.Background then
-			frame.Background:Hide()
+		local background = frame.Background
+		if background then
+			background:Hide()
 		end
 
 		local track = frame.Track
@@ -1214,7 +1225,7 @@ do
 			track:DisableDrawLayer('ARTWORK')
 		end
 
-		local thumb = frame:GetThumb()
+		local thumb = frame.GetThumb and frame:GetThumb()
 		if thumb then
 			thumb:DisableDrawLayer('ARTWORK')
 			thumb:DisableDrawLayer('BACKGROUND')
