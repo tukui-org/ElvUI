@@ -6,7 +6,7 @@ local UnitClass = UnitClass
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
-local function Portrait_CropRatio(portrait, left, right, top, bottom, width, height)
+local function Portrait_CropRatio(left, right, top, bottom, width, height)
 	local ratio = width / height
 	if ratio > 1 then
 		local trimAmount = (right - left) * (1 - 1 / ratio) * 0.5
@@ -18,7 +18,7 @@ local function Portrait_CropRatio(portrait, left, right, top, bottom, width, hei
 		right = right - trimAmount
 	end
 
-	portrait:SetTexCoord(left, right, top, bottom)
+	return left, right, top, bottom
 end
 
 function NP:Update_PortraitBackdrop()
@@ -44,10 +44,10 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged)
 		local left, right, top, bottom = E:GetClassCoords(className, true)
 
 		if db.portrait.keepSizeRatio then
-			Portrait_CropRatio(self, left, right, top, bottom, db.portrait.width, db.portrait.height)
-		else
-			self:SetTexCoord(left, right, top, bottom)
+			left, right, top, bottom = Portrait_CropRatio(left, right, top, bottom, db.portrait.width, db.portrait.height)
 		end
+
+		self:SetTexCoord(left, right, top, bottom)
 	end
 end
 
@@ -80,15 +80,15 @@ function NP:Update_Portrait(nameplate)
 			nameplate.Portrait:SetTexture(classIcon)
 			nameplate.Portrait.customTexture = classIcon
 		else -- spec icon or portrait
+			local left, right, top, bottom = 0.15, 0.85, 0.15, 0.85
 			if db.portrait.keepSizeRatio then
 				if specIcon then
-					nameplate.Portrait:SetTexCoord(E:CropRatio(db.portrait.width, db.portrait.height))
+					left, right, top, bottom = E:CropRatio(db.portrait.width, db.portrait.height)
 				else
-					Portrait_CropRatio(nameplate.Portrait, 0.15, 0.85, 0.15, 0.85, db.portrait.width, db.portrait.height)
+					left, right, top, bottom = Portrait_CropRatio(0.15, 0.85, 0.15, 0.85, db.portrait.width, db.portrait.height)
 				end
-			else
-				nameplate.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
 			end
+			nameplate.Portrait:SetTexCoord(left, right, top, bottom)
 			nameplate.Portrait.customTexture = nil
 		end
 
