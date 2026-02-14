@@ -130,7 +130,9 @@ function UF:Configure_Portrait(frame)
 
 			if not db.portrait.keepSizeRatio then
 				local width, height = portrait:GetSize()
-				left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
+				if width > 0 then
+					left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
+				end
 			end
 
 			portrait:SetTexCoord(left, right, top, bottom)
@@ -168,7 +170,9 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 
 		if not db.keepSizeRatio then
 			local width, height = self:GetSize()
-			left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
+			if width > 0 then
+				left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
+			end
 		end
 
 		self:SetTexCoord(left, right, top, bottom)
