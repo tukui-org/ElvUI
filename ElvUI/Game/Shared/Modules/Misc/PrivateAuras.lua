@@ -23,35 +23,35 @@ local warningAnchor = {
 	offsetY = 0,
 }
 
-local durationDefaults = {
-	relativeTo = UIParent,
-	point = 'BOTTOM',
-	relativePoint = 'BOTTOM',
-	offsetX = 0,
-	offsetY = 0,
-}
-
-local anchorDefaults = {
-	unitToken = 'player',
-	parent = UIParent,
-	auraIndex = 1,
-
-	showCountdownFrame = true,
-	showCountdownNumbers = true,
-
-	durationAnchor = nil, -- added on creation
-
+local defaults = {
+	durationAnchor = {
+		relativeTo = UIParent,
+		point = 'BOTTOM',
+		relativePoint = 'BOTTOM',
+		offsetX = 0,
+		offsetY = 0,
+	},
+	iconAnchor = {
+		relativeTo = UIParent,
+		point = 'CENTER',
+		relativePoint = 'CENTER',
+		offsetX = 0,
+		offsetY = 0
+	},
 	iconInfo = {
 		borderScale = 1,
 		iconWidth = 32,
 		iconHeight = 32,
-		iconAnchor = {
-			relativeTo = UIParent,
-			point = 'CENTER',
-			relativePoint = 'CENTER',
-			offsetX = 0,
-			offsetY = 0,
-		},
+		iconAnchor = nil -- added on creation
+	},
+	anchor = {
+		unitToken = 'player',
+		parent = UIParent,
+		auraIndex = 1,
+		showCountdownFrame = true,
+		showCountdownNumbers = true,
+		durationAnchor = nil, -- added on creation
+		iconInfo = nil, -- added on creation
 	}
 }
 
@@ -63,20 +63,6 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	if previousAura then
 		PA:RemoveAura(previousAura)
 	end
-
-	-- update all possible entries to this as the table is dirty
-	local data = aura.data
-	if not data then
-		data = CopyTable(anchorDefaults)
-		aura.data = data
-	end
-
-	data.parent = aura
-	data.unitToken = unit
-	data.auraIndex = index
-
-	data.showCountdownFrame = db.countdownFrame
-	data.showCountdownNumbers = db.countdownNumbers
 
 	local borderScale = db.borderScale
 	if not borderScale then borderScale = 1 end
@@ -90,20 +76,46 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	local durationPoint = db.duration.point
 	if not durationPoint then durationPoint = 'CENTER' end
 
+	-- update all possible entries to this as the table is dirty
+	local data = aura.data
+	if not data then
+		data = CopyTable(defaults.anchor)
+		aura.data = data
+	end
+
+	data.parent = aura
+	data.unitToken = unit
+	data.auraIndex = index
+
+	data.showCountdownFrame = db.countdownFrame
+	data.showCountdownNumbers = db.countdownNumbers
+
 	local icon = data.iconInfo
+	if not icon then
+		icon = CopyTable(defaults.iconInfo)
+		data.iconInfo = icon
+	end
+
 	icon.borderScale = borderScale
 	icon.iconWidth = iconSize
 	icon.iconHeight = iconSize
-	icon.iconAnchor.relativeTo = aura
-	icon.iconAnchor.point = iconPoint
-	icon.iconAnchor.relativePoint = iconPoint
-	icon.iconAnchor.offsetX = 0
-	icon.iconAnchor.offsetY = 0
+
+	local anchor = icon.iconAnchor
+	if not anchor then
+		anchor = CopyTable(defaults.iconAnchor)
+		icon.iconAnchor = anchor
+	end
+
+	anchor.relativeTo = aura
+	anchor.point = iconPoint
+	anchor.relativePoint = iconPoint
+	anchor.offsetX = 0
+	anchor.offsetY = 0
 
 	local duration = data.durationAnchor
 	if db.duration.enable then
 		if not duration then
-			duration = CopyTable(durationDefaults)
+			duration = CopyTable(defaults.durationAnchor)
 			data.durationAnchor = duration
 		end
 
