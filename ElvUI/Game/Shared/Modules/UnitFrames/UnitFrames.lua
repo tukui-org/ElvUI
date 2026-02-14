@@ -1654,7 +1654,6 @@ do
 		tinsert(DisabledElements, frame.powerBarAlt or frame.PowerBarAlt or nil)
 		tinsert(DisabledElements, frame.CastingBarFrame or nil)
 		tinsert(DisabledElements, frame.CcRemoverFrame or nil)
-		tinsert(DisabledElements, frame.classPowerBar or nil)
 		tinsert(DisabledElements, frame.DebuffFrame or nil)
 		tinsert(DisabledElements, frame.BuffFrame or frame.AurasFrame or nil)
 		tinsert(DisabledElements, frame.totFrame or nil)
