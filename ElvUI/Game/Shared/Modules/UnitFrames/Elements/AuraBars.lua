@@ -225,15 +225,13 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 	end
 
 	local isDebuff, colors = bar.filter == 'HARMFUL', UF.db.colors
-	if not color then -- debuffType is None here when secret
-		if colors.auraBarByType and isDebuff then
-			if E.Retail then
-				color = UF:GetAuraCurve(unit, bar, bar.aura)
-			elseif not debuffType or (debuffType == '' or debuffType == 'None') then
-				color = colors.auraBarDebuff
-			else
-				color = DebuffColors[debuffType]
-			end
+	if not color and colors.auraBarByType and isDebuff then
+		if E.Retail then
+			color = UF:GetAuraCurve(unit, bar, bar.aura)
+		elseif not debuffType or (debuffType == '' or debuffType == 'None') then
+			color = colors.auraBarDebuff -- debuffType is None here when secret
+		else
+			color = DebuffColors[debuffType]
 		end
 	end
 
