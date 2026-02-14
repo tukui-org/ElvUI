@@ -6,24 +6,27 @@ local function Group(order, db, label)
 	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'auraindicator' and E.Retail) or (db == 'cdmanager' and not E.Retail) end)
 	E.Options.args.cooldown.args[db] = main
 
+	local charges = db ~= 'actionbar' and db ~= 'bossbutton' and db ~= 'zonebutton'
+	local lossOfControl = db ~= 'actionbar' and db ~= 'bossbutton'
+
 	local mainArgs = main.args
 	local colors = ACH:Group(L["Color"], nil, 10, nil, function(info) local t = E.db.cooldown[db].colors[info[#info]] local d = P.cooldown[db].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
 	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
 	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
 	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
 	colors.args.spacer1 = ACH:Spacer(4, 'full')
-	colors.args.swipeCharge = ACH:Color(L["Swipe: Charge"], nil, 10, true, nil, nil, nil, nil, db ~= 'actionbar')
-	colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, db ~= 'actionbar')
-	colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, db ~= 'actionbar')
-	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, db ~= 'actionbar')
+	colors.args.swipeCharge = ACH:Color(L["Swipe: Charge"], nil, 10, true, nil, nil, nil, nil, charges)
+	colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, charges)
+	colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
+	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
 	colors.inline = true
 	mainArgs.colorGroup = colors
 
 	local general = ACH:Group(L["General"], nil, 20)
 	general.args.reverse = ACH:Toggle(L["Reverse"], L["Reverse the cooldown animation."], 1)
 	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 2)
-	general.args.chargeText = ACH:Toggle(L["Text: Charge"], L["The charge cooldown text."], 3, nil, nil, nil, nil, nil, nil, db ~= 'actionbar')
-	general.args.locText = ACH:Toggle(L["Text: Loss of Control"], L["The loss of control cooldown text."], 4, nil, nil, nil, nil, nil, nil, db ~= 'actionbar')
+	general.args.chargeText = ACH:Toggle(L["Text: Charge"], L["The charge cooldown text."], 3, nil, nil, nil, nil, nil, nil, charges)
+	general.args.locText = ACH:Toggle(L["Text: Loss of Control"], L["The loss of control cooldown text."], 4, nil, nil, nil, nil, nil, nil, lossOfControl)
 	general.args.hideBling = ACH:Toggle(L["Hide Bling"], L["Completion flash when the cooldown finishes."], 11)
 	general.args.altBling = ACH:Toggle(L["Alternative Bling"], nil, 12)
 	general.args.spacer1 = ACH:Spacer(20, 'full', db == 'actionbar')
