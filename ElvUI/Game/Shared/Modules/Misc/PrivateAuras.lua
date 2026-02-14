@@ -16,7 +16,7 @@ local RemovePrivateAuraAnchor = C_UnitAuras.RemovePrivateAuraAnchor
 local SetPrivateWarningTextAnchor = C_UnitAuras.SetPrivateWarningTextAnchor
 
 local warningAnchor = {
-	relativeTo = nil, -- added in RaidWarning_Reposition
+	relativeTo = nil, -- dynamically added in RaidWarning_Reposition
 	relativePoint = 'TOP',
 	point = 'TOP',
 	offsetX = 0,
@@ -25,14 +25,14 @@ local warningAnchor = {
 
 local defaults = {
 	durationAnchor = {
-		relativeTo = nil, -- dynamically added
+		relativeTo = nil, -- dynamically added in CreateAnchor
 		point = 'BOTTOM',
 		relativePoint = 'BOTTOM',
 		offsetX = 0,
 		offsetY = 0,
 	},
 	iconAnchor = {
-		relativeTo = nil, -- dynamically added
+		relativeTo = nil, -- dynamically added in CreateAnchor
 		point = 'CENTER',
 		relativePoint = 'CENTER',
 		offsetX = 0,
@@ -49,7 +49,7 @@ local defaults = {
 		auraIndex = 1,
 		showCountdownFrame = true,
 		showCountdownNumbers = true,
-		parent = nil, -- dynamically added
+		parent = nil, -- dynamically added in CreateAnchor
 		iconInfo = nil, -- added on creation
 		durationAnchor = nil, -- added on creation
 	}
