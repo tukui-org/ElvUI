@@ -71,7 +71,7 @@ function NP:Update_Portrait(nameplate)
 			if not db.portrait.keepSizeRatio then
 				local width, height = db.portrait.width, db.portrait.height
 				if specIcon then
-					left, right, top, bottom = E:CropRatio(db.portrait.width, db.portrait.height)
+					left, right, top, bottom = E:CropRatio(width, height)
 				else
 					left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
 				end

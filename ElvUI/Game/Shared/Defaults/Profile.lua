@@ -1820,6 +1820,7 @@ local UF_Portrait = {
 	overlay = false,
 	overlayAlpha = 0.5,
 	camDistanceScale = 2,
+	keepSizeRatio = true,
 	desaturation = 0,
 	rotation = 0,
 	style = '3D',
