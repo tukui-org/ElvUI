@@ -72,8 +72,6 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 				if spellButton.Cooldown then
-					spellButton.Cooldown:SetAllPoints(spellButton.Icon)
-
 					E:RegisterCooldown(spellButton.Cooldown, 'zonebutton')
 				end
 
