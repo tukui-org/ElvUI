@@ -265,28 +265,26 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 			damageAbsorb:SetValue(1.5)
 			damageAbsorb:SetMinMaxValues(0, 100)
 		end
-	else
-		if hasOverAbsorb then -- non normal mode overflowing
-			if db.absorbStyle == 'WRAPPED' then -- engage backfilling
-				damageAbsorb:SetReverseFill(not pred.reverseFill)
-
-				damageAbsorb:ClearAllPoints()
-				damageAbsorb:Point(pred.anchor, pred.health)
-				damageAbsorb:Point(pred.anchor2, pred.health, pred.anchor2)
-			elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
-				local overflowAbsorb = absorb * (colors.maxOverflow or 0)
-				if health == maxHealth then
-					damageAbsorb:SetValue(overflowAbsorb)
-				else -- fill the inner part along with the overflow amount so it smoothly transitions
-					damageAbsorb:SetValue((maxHealth - health) + overflowAbsorb)
-				end
-			end
-		elseif db.absorbStyle == 'WRAPPED' then -- restore wrapped to its forward filling state
-			damageAbsorb:SetReverseFill(pred.reverseFill)
+	elseif hasOverAbsorb then -- non normal mode overflowing
+		if db.absorbStyle == 'WRAPPED' then -- engage backfilling
+			damageAbsorb:SetReverseFill(not pred.reverseFill)
 
 			damageAbsorb:ClearAllPoints()
 			damageAbsorb:Point(pred.anchor, pred.health)
-			damageAbsorb:Point(pred.anchor1, pred.healingOtherTexture, pred.anchor2)
+			damageAbsorb:Point(pred.anchor2, pred.health, pred.anchor2)
+		elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
+			local overflowAbsorb = absorb * (colors.maxOverflow or 0)
+			if health == maxHealth then
+				damageAbsorb:SetValue(overflowAbsorb)
+			else -- fill the inner part along with the overflow amount so it smoothly transitions
+				damageAbsorb:SetValue((maxHealth - health) + overflowAbsorb)
+			end
 		end
+	elseif db.absorbStyle == 'WRAPPED' then -- restore wrapped to its forward filling state
+		damageAbsorb:SetReverseFill(pred.reverseFill)
+
+		damageAbsorb:ClearAllPoints()
+		damageAbsorb:Point(pred.anchor, pred.health)
+		damageAbsorb:Point(pred.anchor1, pred.healingOtherTexture, pred.anchor2)
 	end
 end
