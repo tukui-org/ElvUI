@@ -23,6 +23,8 @@ function AB:ExtraButtons_BossStyle(button)
 	-- to skip the cooldown register and use custom one
 	if not AB.handledbuttons[button] then
 		if button.cooldown then
+			button.cooldown:SetAllPoints(button.icon)
+
 			E:RegisterCooldown(button.cooldown, 'bossbutton')
 		end
 
@@ -70,6 +72,8 @@ function AB:ExtraButtons_ZoneStyle()
 				spellButton:HookScript('OnLeave', AB.ExtraButtons_OnLeave)
 
 				if spellButton.Cooldown then
+					spellButton.Cooldown:SetAllPoints(spellButton.Icon)
+
 					E:RegisterCooldown(spellButton.Cooldown, 'zonebutton')
 				end
 
