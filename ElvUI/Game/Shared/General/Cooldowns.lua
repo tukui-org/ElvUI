@@ -147,7 +147,7 @@ function E:RegisterCooldown(cooldown, which)
 
 	-- reference the charge cooldown from LAB
 	local parent = which == 'actionbar' and cooldown:GetParent()
-	data.chargeCooldown = parent and (parent.chargeCooldown or parent.ChargeCooldown) or nil
+	data.chargeCooldown = parent and (parent.chargeCooldown or parent.ChargeCooldown) or nil -- ChargeCooldown is the zone ability
 	data.lossOfControl = parent and parent.lossOfControlCooldown or nil
 
 	-- extract the blizzard cooldown region
