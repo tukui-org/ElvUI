@@ -36,6 +36,7 @@ local attributeBlacklist = {
 }
 
 local allowTags = {
+	name = true,
 	dead = true,
 	ghost = true,
 	status = true,
