@@ -16,10 +16,6 @@ local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatc
 
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
-local GameTooltip_ClearMoney = GameTooltip_ClearMoney
-local GameTooltip_ClearProgressBars = GameTooltip_ClearProgressBars
-local GameTooltip_ClearStatusBars = GameTooltip_ClearStatusBars
-local GameTooltip_ClearWidgetSet = GameTooltip_ClearWidgetSet
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
@@ -682,12 +678,6 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt.ItemTooltip then
 		tt.ItemTooltip:Hide()
 	end
-
-	-- This code is to reset stuck widgets.
-	GameTooltip_ClearMoney(tt)
-	GameTooltip_ClearStatusBars(tt)
-	GameTooltip_ClearProgressBars(tt)
-	GameTooltip_ClearWidgetSet(tt)
 end
 
 function TT:EmbeddedItemTooltip_ID(tt, id)
