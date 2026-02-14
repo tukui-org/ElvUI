@@ -25,14 +25,14 @@ local warningAnchor = {
 
 local defaults = {
 	durationAnchor = {
-		relativeTo = UIParent,
+		relativeTo = nil, -- dynamically added
 		point = 'BOTTOM',
 		relativePoint = 'BOTTOM',
 		offsetX = 0,
 		offsetY = 0,
 	},
 	iconAnchor = {
-		relativeTo = UIParent,
+		relativeTo = nil, -- dynamically added
 		point = 'CENTER',
 		relativePoint = 'CENTER',
 		offsetX = 0,
@@ -46,12 +46,12 @@ local defaults = {
 	},
 	anchor = {
 		unitToken = 'player',
-		parent = UIParent,
 		auraIndex = 1,
 		showCountdownFrame = true,
 		showCountdownNumbers = true,
-		durationAnchor = nil, -- added on creation
+		parent = nil, -- dynamically added
 		iconInfo = nil, -- added on creation
+		durationAnchor = nil, -- added on creation
 	}
 }
 
