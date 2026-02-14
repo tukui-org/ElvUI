@@ -365,15 +365,15 @@ end
 local function SetupPredictionValues(element)
 	-- setup some defaults
 	if not (element.damageAbsorbClampMode) then
-		element.damageAbsorbClampMode = UnitDamageAbsorbClampMode.MaximumHealth
+		element.damageAbsorbClampMode = UnitDamageAbsorbClampMode.MissingHealth
 	end
 
 	if not (element.healAbsorbClampMode) then
-		element.healAbsorbClampMode = UnitHealAbsorbClampMode.MaximumHealth
+		element.healAbsorbClampMode = UnitHealAbsorbClampMode.MissingHealth
 	end
 
 	if not (element.incomingHealClampMode) then
-		element.incomingHealClampMode = UnitIncomingHealClampMode.MaximumHealth
+		element.incomingHealClampMode = UnitIncomingHealClampMode.MissingHealth
 	end
 
 	-- spawn the values element
