@@ -47,6 +47,8 @@ function E:CooldownText(cooldown, db, hide)
 	if not cooldown then return end
 
 	cooldown:SetHideCountdownNumbers(hide)
+	cooldown:SetCountdownAbbrevThreshold(db.threshold)
+	cooldown:SetMinimumCountdownDuration(db.minDuration) -- minimum duration above which text will be shown
 
 	if not cooldown.Text then return end
 
@@ -80,10 +82,8 @@ function E:CooldownUpdate(cooldown)
 	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
 	E:CooldownColors(data.lossOfControl, colors.edgeLOC, colors.swipeLOC)
 
-	cooldown:SetDrawBling(not aurabars and not db.hideBling)
-	cooldown:SetCountdownAbbrevThreshold(db.threshold)
-	cooldown:SetMinimumCountdownDuration(db.minDuration) -- minimum duration above which text will be shown
 	--cooldown:SetRotation(rad(db.rotation))
+	cooldown:SetDrawBling(not aurabars and not db.hideBling)
 	cooldown:SetReverse(db.reverse)
 end
 
