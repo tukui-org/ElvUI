@@ -8,6 +8,7 @@ local hooksecurefunc = hooksecurefunc
 
 local C_UnitAuras = C_UnitAuras
 local CreateFrame = CreateFrame
+local CopyTable = CopyTable
 local UIParent = UIParent
 
 local AddPrivateAuraAnchor = C_UnitAuras.AddPrivateAuraAnchor
@@ -22,7 +23,7 @@ local warningAnchor = {
 	offsetY = 0,
 }
 
-local tempDuration = {
+local durationDefaults = {
 	relativeTo = UIParent,
 	point = 'BOTTOM',
 	relativePoint = 'BOTTOM',
@@ -30,7 +31,7 @@ local tempDuration = {
 	offsetY = 0,
 }
 
-local tempAnchor = {
+local anchorDefaults = {
 	unitToken = 'player',
 	parent = UIParent,
 	auraIndex = 1,
@@ -38,7 +39,7 @@ local tempAnchor = {
 	showCountdownFrame = true,
 	showCountdownNumbers = true,
 
-	durationAnchor = tempDuration,
+	durationAnchor = nil, -- added on creation
 
 	iconInfo = {
 		borderScale = 1,
@@ -64,12 +65,18 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	end
 
 	-- update all possible entries to this as the table is dirty
-	tempAnchor.unitToken = unit
-	tempAnchor.parent = aura
-	tempAnchor.auraIndex = index
+	local data = aura.data
+	if not data then
+		data = CopyTable(anchorDefaults)
+		aura.data = data
+	end
 
-	tempAnchor.showCountdownFrame = db.countdownFrame
-	tempAnchor.showCountdownNumbers = db.countdownNumbers
+	data.parent = aura
+	data.unitToken = unit
+	data.auraIndex = index
+
+	data.showCountdownFrame = db.countdownFrame
+	data.showCountdownNumbers = db.countdownNumbers
 
 	local borderScale = db.borderScale
 	if not borderScale then borderScale = 1 end
@@ -83,7 +90,7 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	local durationPoint = db.duration.point
 	if not durationPoint then durationPoint = 'CENTER' end
 
-	local icon = tempAnchor.iconInfo
+	local icon = data.iconInfo
 	icon.borderScale = borderScale
 	icon.iconWidth = iconSize
 	icon.iconHeight = iconSize
@@ -93,11 +100,11 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	icon.iconAnchor.offsetX = 0
 	icon.iconAnchor.offsetY = 0
 
-	local duration = tempAnchor.durationAnchor
+	local duration = data.durationAnchor
 	if db.duration.enable then
 		if not duration then
-			duration = tempDuration
-			tempAnchor.durationAnchor = duration
+			duration = CopyTable(durationDefaults)
+			data.durationAnchor = duration
 		end
 
 		duration.relativeTo = aura
@@ -106,10 +113,10 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 		duration.offsetX = db.duration.offsetX
 		duration.offsetY = db.duration.offsetY
 	elseif duration then
-		tempAnchor.durationAnchor = nil
+		data.durationAnchor = nil
 	end
 
-	return AddPrivateAuraAnchor(tempAnchor)
+	return AddPrivateAuraAnchor(data)
 end
 
 function PA:RemoveAura(aura)
