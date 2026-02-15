@@ -34,4 +34,4 @@ jobs:
           echo "PACKAGE=$(find .release -type f -name *.zip -printf "%f\n")" >> $GITHUB_ENV
       - name: Publish package
         run: |
-          curl https://api.tukui.org/v1/upload/dev/$PACKAGE --upload-file .release/$PACKAGE -H "X-Tukui-Key: $DEPLOY_KEY" -H "Content-Type: application/zip"
+          curl https://api.tukui.org/v1/upload/dev/$PACKAGE --silent --show-error --fail --upload-file .release/$PACKAGE -H "X-Tukui-Key: $DEPLOY_KEY" -H "Content-Type: application/zip"

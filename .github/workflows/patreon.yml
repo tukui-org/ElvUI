@@ -26,5 +26,5 @@ jobs:
         uses: peter-evans/create-pull-request@v8
         with:
           title: Update Patreon donor list        
-          commit-message: Updated Patreon donor list
+          commit-message: 'CI: Updated Patreon donor list'
           body: Automated update of Patreon donor list.

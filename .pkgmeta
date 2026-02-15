@@ -43,13 +43,6 @@ plain-copy:
   - ElvUI/Game/Shared
   - ElvUI/Game/TBC
   - ElvUI/Game/Wrath
-  - ElvUI_Libraries/Game/Classic
-  - ElvUI_Libraries/Game/Mainline
-  - ElvUI_Libraries/Game/Mists
-  - ElvUI_Libraries/Game/Shared
-  - ElvUI_Libraries/Game/TBC
-  - ElvUI_Libraries/Game/Wrath
-  - ElvUI_Libraries/Game/Classic/LibClassicSpecs
   - ElvUI_Libraries/Game/Shared/Ace3
   - ElvUI_Libraries/Game/Shared/Ace3-ElvUI
   - ElvUI_Libraries/Game/Shared/LibAceConfigHelper
@@ -60,8 +53,8 @@ plain-copy:
   - ElvUI_Libraries/Game/Shared/LibSimpleSticky
   - ElvUI_Libraries/Game/Shared/oUF
   - ElvUI_Libraries/Game/Shared/oUF_Plugins
-  - ElvUI_Options/Shared
   - ElvUI_Options/Locales
+  - ElvUI_Options/Game/Shared
 
 move-folders:
   ElvUI/ElvUI: ElvUI
