@@ -506,7 +506,7 @@ do
 		if cvarToggles[key] then
 			E:SetCVar(key, value and (key == 'nameplateOtherAtBase' and 2 or 1) or 0)
 
-			if key == 'nameplateShowOnlyNames' or key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
+			if (E.Retail and key == 'nameplateShowOnlyNameForFriendlyPlayerUnits') or key == 'nameplateShowOnlyNames' then
 				E.db.nameplates.visibility.showOnlyNames = value
 			end
 		else
@@ -515,7 +515,7 @@ do
 	end
 
 	local function CheckCVar(key)
-		if key == 'nameplateShowOnlyNames' or key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
+		if (E.Retail and key == 'nameplateShowOnlyNameForFriendlyPlayerUnits') or key == 'nameplateShowOnlyNames' then
 			return E.db.nameplates.visibility.showOnlyNames
 		elseif cvarRanges[key] then
 			return tonumber(GetCVar(key)) or 0
