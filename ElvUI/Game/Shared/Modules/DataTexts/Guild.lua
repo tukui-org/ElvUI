@@ -107,7 +107,14 @@ local function BuildGuildTable()
 			end
 		end
 
-		local members = guildClubID and GetAndSortMemberInfo(guildClubID)
+		-- Guard against Blizzard returning "secret" values or protected errors
+		local members
+		if guildClubID then
+			local ok, result = pcall(GetAndSortMemberInfo, guildClubID)
+			if ok and type(result) == "table" then
+				members = result
+			end
+		end
 		if members then
 			for _, data in next, members do
 				if data.guid then
