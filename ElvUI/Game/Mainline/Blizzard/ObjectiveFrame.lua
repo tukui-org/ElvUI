@@ -48,9 +48,7 @@ function BL:ObjectiveTracker_RecoverVisibility()
 
 	local tracker = _G.ObjectiveTrackerFrame
 	if tracker and not tracker:IsShown() then
-		if _G.ObjectiveTracker_Update then
-			_G.ObjectiveTracker_Update()
-		end
+		-- Do not call ObjectiveTracker_Update here; full updates can cause taint on the Quest Button.
 		tracker:Show()
 
 		local scenarioTracker = _G.ScenarioObjectiveTracker
