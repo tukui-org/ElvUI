@@ -333,8 +333,9 @@ function AB:PositionAndSizeBar(barName)
 		end
 
 		local targetReticle = button.TargetReticleAnimFrame
-		if targetReticle then
-			targetReticle.Base:SetVertexColor(reticleColor.r, reticleColor.g, reticleColor.b)
+		local reticleBase = targetReticle and targetReticle.Base
+		if reticleBase then
+			reticleBase:SetVertexColor(reticleColor.r, reticleColor.g, reticleColor.b)
 		end
 
 		AB:HandleButtonState(button, i, vehicleIndex, pages)
@@ -396,15 +397,32 @@ function AB:CreateBar(id)
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonTextureOverlayTemplate')
 		end
 
+		local icon = button.icon or button.Icon
+		local spellCastAnim = button.SpellCastAnimFrame
+		local spellCastFill = spellCastAnim and spellCastAnim.Fill
+		if spellCastFill then
+			spellCastFill.InnerGlowTexture:SetAllPoints(icon)
+			spellCastFill.InnerGlowTexture:SetTexCoords()
+		end
+
+		local interruptDisplay = button.InterruptDisplay
+		local interruptBase = interruptDisplay and interruptDisplay.Base
+		if interruptBase then
+			interruptBase.Base:SetAllPoints(icon)
+			interruptBase.Base:SetTexCoords()
+		end
+
 		local targetReticle = button.TargetReticleAnimFrame
-		if targetReticle then
-			targetReticle:SetAllPoints()
+		local reticleBase = targetReticle and targetReticle.Base
+		if reticleBase then
+			reticleBase:SetTexCoords()
+			reticleBase:SetTexture(E.Media.Textures.TargetReticle)
+			reticleBase:SetAllPoints(icon)
+		end
 
-			targetReticle.Base:SetTexCoords()
-			targetReticle.Base:SetTexture(E.Media.Textures.TargetReticle)
-			targetReticle.Base:SetInside()
-
-			targetReticle.Highlight:SetInside()
+		local reticleHighlight = targetReticle and targetReticle.Highlight
+		if reticleHighlight then
+			reticleHighlight:SetAllPoints(icon)
 		end
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
@@ -1391,6 +1409,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	config.enabled = db.enabled -- only used to keep events off for targetReticle
 	config.showGrid = db.showGrid
 	config.targetReticle = db.targetReticle
+	config.spellCastVFX = db.spellCastVFX
 	config.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	config.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	config.colors.range = E:SetColorTable(config.colors.range, AB.db.noRangeColor)

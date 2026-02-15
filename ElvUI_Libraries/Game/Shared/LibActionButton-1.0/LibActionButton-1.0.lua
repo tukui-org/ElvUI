@@ -171,7 +171,8 @@ local DefaultConfig = {
 	tooltip = "enabled",
 	enabled = true,
 	showGrid = false,
-	targetReticle = true,
+	targetReticle = false,
+	spellCastVFX = false, -- enable cast vfx
 	useColoring = true,
 	colors = {
 		range = { 0.8, 0.1, 0.1 },
@@ -195,7 +196,6 @@ local DefaultConfig = {
 	flyoutDirection = "UP",
 	useDrawBling = true,
 	handleOverlay = true,
-	spellCastVFX = false, -- enable cast vfx
 	text = {
 		hotkey = {
 			font = {
@@ -602,18 +602,8 @@ function WrapOnClick(button, unwrapheader)
 	]])
 end
 
--- reticle handling ~Simpy
-function Generic:OnButtonEvent(event, key, down, spellID)
-	if event == "UNIT_SPELLCAST_RETICLE_TARGET" then
-		if not WoWMidnight and (self.abilityID == spellID) and not self.TargetReticleAnimFrame:IsShown() then
-			self.TargetReticleAnimFrame.HighlightAnim:Play()
-			self.TargetReticleAnimFrame:Show()
-		end
-	elseif event == "UNIT_SPELLCAST_RETICLE_CLEAR" or event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_SUCCEEDED" or event == "UNIT_SPELLCAST_FAILED" then
-		if self.TargetReticleAnimFrame:IsShown() then
-			self.TargetReticleAnimFrame:Hide()
-		end
-	elseif event == "GLOBAL_MOUSE_UP" then
+function Generic:OnButtonEvent(event, ...)
+	if event == "GLOBAL_MOUSE_UP" then
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
@@ -1409,22 +1399,6 @@ function Generic:UpdateConfig(config)
 		self.Name:Show()
 	end
 
-	if WoWRetail then
-		if self.config.enabled and self.config.targetReticle then
-			self:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
-			self:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
-			self:RegisterUnitEvent('UNIT_SPELLCAST_FAILED', 'player')
-			self:RegisterUnitEvent('UNIT_SPELLCAST_RETICLE_TARGET', 'player')
-			self:RegisterUnitEvent('UNIT_SPELLCAST_RETICLE_CLEAR', 'player')
-		else
-			self:UnregisterEvent('UNIT_SPELLCAST_STOP')
-			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED')
-			self:UnregisterEvent('UNIT_SPELLCAST_FAILED')
-			self:UnregisterEvent('UNIT_SPELLCAST_RETICLE_TARGET')
-			self:UnregisterEvent('UNIT_SPELLCAST_RETICLE_CLEAR')
-		end
-	end
-
 	UpdateTextElements(self)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
@@ -1522,8 +1496,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
 
-	local tempAllowVFX = false
-	if WoWRetail and tempAllowVFX then
+	if WoWRetail then
 		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
@@ -1548,7 +1521,7 @@ function InitializeEventHandler()
 	end
 end
 
-function OnEvent(_, event, arg1, arg2, ...)
+function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	if event == "PLAYER_LOGIN" then
 		if UseCustomFlyout then
 			DiscoverFlyoutSpells()
@@ -1601,7 +1574,7 @@ function OnEvent(_, event, arg1, arg2, ...)
 		local buttons = lib.buttonsBySlot[arg1]
 		if buttons then
 			for button in next, buttons do
-				UpdateRange(button, nil, arg2, ...) -- inRange, checksRange
+				UpdateRange(button, nil, arg2, arg3) -- inRange, checksRange
 			end
 		end
 	elseif event == "ACTION_USABLE_CHANGED" then
@@ -1743,50 +1716,37 @@ function OnEvent(_, event, arg1, arg2, ...)
 		end
 	elseif event == "SPELL_UPDATE_ICON" then
 		ForAllButtons(Update, true, event)
-
 	elseif event == "UNIT_SPELLCAST_INTERRUPTED" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellInterruptedAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellInterruptedAnim)
 	elseif event == "UNIT_SPELLCAST_START" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Cast)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Cast)
 	elseif event == "UNIT_SPELLCAST_STOP" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, true, ActionButtonCastType.Cast)
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopSpellCastAnim, true, ActionButtonCastType.Cast)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Cast)
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Cast)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_SENT" then
-		local _, _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg4, SpellVFX_StopTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_FAILED" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_EMPOWER_START" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Empowered)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Empowered)
 	elseif event == "UNIT_SPELLCAST_EMPOWER_STOP" then
-		local _, spellID, castComplete = ...
-		local interrupted = not castComplete
+		local interrupted = not arg4
 		if interrupted then
-			ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellInterruptedAnim)
+			ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellInterruptedAnim)
 		else
-			ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, interrupted, ActionButtonCastType.Empowered)
+			ForAllButtonsWithSpell(arg3, SpellVFX_StopSpellCastAnim, interrupted, ActionButtonCastType.Empowered)
 		end
 	elseif event == "UNIT_SPELLCAST_CHANNEL_START" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Channel)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Channel)
 	elseif event == "UNIT_SPELLCAST_CHANNEL_STOP" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Channel)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Channel)
 	elseif event == "UNIT_SPELLCAST_RETICLE_TARGET" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlayTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlayTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_RETICLE_CLEAR" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopTargettingReticleAnim)
 	end
 end
 
@@ -2440,15 +2400,26 @@ end
 
 function SpellVFX_CastingAnim_OnHide(self)
 	local parent = self:GetParent()
+
 	SpellVFX_ClearReticle(parent)
-	parent.cooldown:SetSwipeColor(0, 0, 0, 1)
+
+	-- parent.cooldown:SetSwipeColor(0, 0, 0, 1)
+
 	UpdateCooldown(parent)
 end
 
 function SpellVFX_CastingAnim_Finish_OnFinished(self)
-	self:GetParent():GetParent():Hide()
-	local parentButton = self:GetParent():GetParent():GetParent()
-	SpellVFX_StopSpellCastAnim(parentButton, false, parentButton.actionButtonCastType)
+	local owner = self:GetParent()
+	local parent = owner and owner:GetParent()
+	local button = parent and parent:GetParent()
+
+	if parent then
+		parent:Hide()
+	end
+
+	if button then
+		SpellVFX_StopSpellCastAnim(button, false, button.actionButtonCastType)
+	end
 end
 
 function SpellVFX_ClearReticle(self)
@@ -2464,27 +2435,30 @@ function SpellVFX_ClearInterruptDisplay(self)
 end
 
 function SpellVFX_PlaySpellCastAnim(self, actionButtonCastType)
-	if not self.config.spellCastVFX then return end
+	if self.config.targetReticle then
+		SpellVFX_ClearReticle(self)
+	end
 
-	-- __Swipe_Hook is to stop Masque from re-setting it
-	self.cooldown.__Swipe_Hook = true
-	self.cooldown:SetSwipeColor(0, 0, 0, 0)
-	self.cooldown.__Swipe_Hook = nil
+	if self.config.spellCastVFX then
+		-- stop Masque from re-setting it
+		-- self.cooldown.__Swipe_Hook = true
+		-- self.cooldown:SetSwipeColor(0, 0, 0, 0)
+		-- self.cooldown.__Swipe_Hook = nil
 
-	SpellVFX_ClearInterruptDisplay(self)
-	SpellVFX_ClearReticle(self)
-	self.SpellCastAnimFrame:Setup(actionButtonCastType)
-	self.actionButtonCastType = actionButtonCastType
+		SpellVFX_ClearInterruptDisplay(self)
+
+		self.SpellCastAnimFrame:Setup(actionButtonCastType)
+		self.actionButtonCastType = actionButtonCastType
+	end
 end
 
 function SpellVFX_PlayTargettingReticleAnim(self)
-	if not self.config.spellCastVFX then return end
-
-	if self.InterruptDisplay:IsShown() then
-		self.InterruptDisplay:Hide()
-	end
-	if not self._state_type == "action" or not IsAssistedCombatAction(self._state_action) then
+	if self.config.targetReticle and (not self._state_type == "action" or not IsAssistedCombatAction(self._state_action)) then
 		self.TargetReticleAnimFrame:Setup()
+	end
+
+	if self.config.spellCastVFX and self.InterruptDisplay:IsShown() then
+		self.InterruptDisplay:Hide()
 	end
 end
 
@@ -2497,25 +2471,28 @@ end
 function SpellVFX_StopSpellCastAnim(self, forceStop, actionButtonCastType)
 	SpellVFX_StopTargettingReticleAnim(self)
 
-	if (self.actionButtonCastType == actionButtonCastType) then
-		if(forceStop) then
+	if self.config.spellCastVFX and self.actionButtonCastType == actionButtonCastType then
+		if forceStop then
 			self.SpellCastAnimFrame:Hide()
-		elseif(self.SpellCastAnimFrame.Fill.CastingAnim:IsPlaying()) then
+		elseif self.SpellCastAnimFrame.Fill.CastingAnim:IsPlaying() then
 			self.SpellCastAnimFrame:FinishAnimAndPlayBurst()
 		end
+
 		self.actionButtonCastType = nil
 	end
 end
 
 function SpellVFX_PlaySpellInterruptedAnim(self)
-	if not self.config.spellCastVFX then return end
-
 	SpellVFX_StopSpellCastAnim(self, true, self.actionButtonCastType)
-	--Hide if it's already showing to clear the anim.
-	if self.InterruptDisplay:IsShown() then
-		self.InterruptDisplay:Hide()
+
+	if self.config.spellCastVFX then
+		--Hide if it's already showing to clear the anim.
+		if self.InterruptDisplay:IsShown() then
+			self.InterruptDisplay:Hide()
+		end
+
+		self.InterruptDisplay:Show()
 	end
-	self.InterruptDisplay:Show()
 end
 
 function ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, value)

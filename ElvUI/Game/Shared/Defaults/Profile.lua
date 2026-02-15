@@ -3179,6 +3179,7 @@ local AB_Bar = {
 	inheritGlobalFade = false,
 	showGrid = true,
 	targetReticle = true,
+	spellCastVFX = true,
 	flyoutDirection = 'AUTOMATIC',
 	paging = {},
 	countColor = { r = 1, g = 1, b = 1, a = 1 },
