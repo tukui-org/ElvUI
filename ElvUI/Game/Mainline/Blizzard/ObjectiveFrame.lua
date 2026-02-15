@@ -5,6 +5,7 @@ local _G = _G
 local ShowUIPanel = ShowUIPanel
 local GetInstanceInfo = GetInstanceInfo
 local InCombatLockdown = InCombatLockdown
+local IsInInstance = IsInInstance
 
 local C_TalkingHead_SetConversationsDeferred = C_TalkingHead.SetConversationsDeferred
 
@@ -38,6 +39,27 @@ local function SplashFrame_OnHide(frame)
 	frame.showingQuestDialog = nil
 end
 
+-- Recovery for ObjectiveTracker not restoring after scenario/Nemesis transitions with ElvUI.
+function BL:ObjectiveTracker_RecoverVisibility()
+	if InCombatLockdown() then return end
+
+	local isInstance, instanceType = IsInInstance()
+	if not (isInstance and instanceType == 'scenario') then return end
+
+	local tracker = _G.ObjectiveTrackerFrame
+	if tracker and not tracker:IsShown() then
+		if _G.ObjectiveTracker_Update then
+			_G.ObjectiveTracker_Update()
+		end
+		tracker:Show()
+
+		local scenarioTracker = _G.ScenarioObjectiveTracker
+		if scenarioTracker then
+			scenarioTracker:Show()
+		end
+	end
+end
+
 function BL:ObjectiveTracker_Setup()
 	BL:ObjectiveTracker_AutoHide()
 
@@ -45,4 +67,9 @@ function BL:ObjectiveTracker_Setup()
 	if splash then
 		splash:SetScript('OnHide', SplashFrame_OnHide)
 	end
+
+	-- Register events for ObjectiveTracker recovery in scenarios
+	BL:RegisterEvent('PLAYER_REGEN_ENABLED', 'ObjectiveTracker_RecoverVisibility')
+	BL:RegisterEvent('SCENARIO_UPDATE', 'ObjectiveTracker_RecoverVisibility')
+	BL:RegisterEvent('QUEST_LOG_UPDATE', 'ObjectiveTracker_RecoverVisibility')
 end
