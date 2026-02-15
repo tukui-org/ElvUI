@@ -850,7 +850,6 @@ P.nameplates = {
 	nameColoredGlow = false,
 	overlapH = 0.8,
 	overlapV = 1.1,
-	persistentFriendlyNP = false, -- ToDo: Remove me later, leaving it to not break installer imports
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
 	statusbar = 'ElvUI Norm',
