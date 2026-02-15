@@ -11,7 +11,6 @@ local GetGuildRosterMOTD = GetGuildRosterMOTD
 local MouseIsOver = MouseIsOver
 local GetNumGuildMembers = GetNumGuildMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
-local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
 local ToggleGuildFrame = ToggleGuildFrame
@@ -26,8 +25,11 @@ local REMOTE_CHAT = REMOTE_CHAT
 local GUILD_MOTD = GUILD_MOTD
 local GUILD = GUILD
 
+local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
 local GetGuildFactionData = C_Reputation.GetGuildFactionData
-local GetAndSortMemberInfo = CommunitiesUtil.GetAndSortMemberInfo
+local GetMemberIdsSortedByName = CommunitiesUtil.GetMemberIdsSortedByName
+local SortMemberInfo = CommunitiesUtil.SortMemberInfo
+local GetMemberInfo = CommunitiesUtil.GetMemberInfo
 local GetSubscribedClubs = C_Club.GetSubscribedClubs
 local CLUBTYPE_GUILD = Enum.ClubType.Guild
 
@@ -107,9 +109,12 @@ local function BuildGuildTable()
 			end
 		end
 
-		local members = guildClubID and GetAndSortMemberInfo(guildClubID)
-		if members then
-			for _, data in next, members do
+		-- replicate GetAndSortMemberInfo while protecting secret failure during chat restrictions
+		local members = GetMemberIdsSortedByName(guildClubID)
+		local memberInfo = E:NotSecretValue(members) and GetMemberInfo(guildClubID, members)
+		local membersSorted = memberInfo and SortMemberInfo(guildClubID, memberInfo)
+		if membersSorted then
+			for _, data in next, membersSorted do
 				if data.guid then
 					clubTable[data.guid] = data
 				end
