@@ -3003,6 +3003,7 @@ do
 			object.position = 'RIGHT'
 			object.offsetX = -10
 		elseif key == 'auraindicator' then
+			object.reverse = true
 			object.hideNumbers = true
 			object.fontSize = 10
 		elseif key == 'auras' then
