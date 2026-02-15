@@ -510,7 +510,7 @@ do
 			if key == 'nameplateShowOnlyNames' then
 				E.db.nameplates.visibility.showOnlyNames = value
 			elseif key == 'useClassColorNames' then
-				E.db.nameplates.visibility.classColorNames = value
+				E.db.nameplates.classColorNames = value
 			end
 		else
 			E:SetCVar(key, value)
@@ -521,7 +521,7 @@ do
 		if key == 'nameplateShowOnlyNames' then
 			return E.db.nameplates.visibility.showOnlyNames
 		elseif key == 'useClassColorNames' then
-			return E.db.nameplates.visibility.classColorNames
+			return E.db.nameplates.classColorNames
 		elseif cvarRanges[key] then
 			return tonumber(GetCVar(key)) or 0
 		else

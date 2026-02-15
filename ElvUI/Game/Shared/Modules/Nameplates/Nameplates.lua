@@ -170,7 +170,9 @@ function NP:SetCVars()
 		end
 	end
 
-	if E.TBC or E.Wrath or E.Mists then
+	if E.Retail then
+		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
+	elseif E.TBC or E.Wrath or E.Mists then
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
@@ -178,10 +180,6 @@ function NP:SetCVars()
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
 	NP:ToggleCVar(E.Retail and 'nameplateShowOnlyNameForFriendlyPlayerUnits' or 'nameplateShowOnlyNames', visibility.showOnlyNames)
-
-	if E.Retail then
-		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', visibility.classColorNames)
-	end
 
 	local enemyVisibility = visibility.enemy
 	NP:ToggleCVar('nameplateShowEnemyMinions', enemyVisibility.minions)
