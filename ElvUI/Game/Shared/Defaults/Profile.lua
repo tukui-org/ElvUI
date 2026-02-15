@@ -1043,6 +1043,7 @@ P.nameplates = {
 	visibility = {
 		showAll = true,
 		showOnlyNames = false,
+		classColorFriendlyPlayerNames = false,
 		enemy = {
 			guardians = false,
 			minions = false,

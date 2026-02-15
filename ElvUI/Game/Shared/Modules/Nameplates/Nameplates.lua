@@ -174,10 +174,14 @@ function NP:SetCVars()
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
-	-- the order of these is important !!
+	-- The order of these is important !!
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
 	NP:ToggleCVar((E.Retail and 'nameplateShowOnlyNameForFriendlyPlayerUnits') or 'nameplateShowOnlyNames', visibility.showOnlyNames)
+
+	if E.Retail then
+		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', visibility.classColorFriendlyPlayerNames)
+	end
 
 	local enemyVisibility = visibility.enemy
 	NP:ToggleCVar('nameplateShowEnemyMinions', enemyVisibility.minions)
