@@ -180,7 +180,7 @@ function NP:SetCVars()
 	NP:ToggleCVar((E.Retail and 'nameplateShowOnlyNameForFriendlyPlayerUnits') or 'nameplateShowOnlyNames', visibility.showOnlyNames)
 
 	if E.Retail then
-		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', visibility.classColorFriendlyPlayerNames)
+		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', visibility.classColorNames)
 	end
 
 	local enemyVisibility = visibility.enemy
