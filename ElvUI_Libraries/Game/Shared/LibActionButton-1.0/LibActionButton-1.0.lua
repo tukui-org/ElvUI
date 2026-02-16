@@ -2348,9 +2348,10 @@ function UpdateFlash(self)
 		local actionType, actionID = GetActionInfo(self._state_action)
 		local isLockedOutfit = actionType == 'outfit' and C_TransmogOutfitInfo_IsLockedOutfit(actionID)
 		local isLockedEquippedGear = IsEquippedGearOutfitAction(self._state_action) and C_TransmogOutfitInfo_IsEquippedGearOutfitLocked()
+		local active = isLockedOutfit or isLockedEquippedGear
 
-		self.AutoCastOverlay:SetShown(isLockedOutfit or isLockedEquippedGear)
-		self.AutoCastOverlay:ShowAutoCastEnabled(isLockedOutfit or isLockedEquippedGear)
+		self.AutoCastOverlay:SetShown(active)
+		self.AutoCastOverlay:ShowAutoCastEnabled(active)
 	end
 end
 
