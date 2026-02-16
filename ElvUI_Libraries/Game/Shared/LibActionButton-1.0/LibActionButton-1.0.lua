@@ -1952,6 +1952,11 @@ function Update(self, which)
 		if self.LevelLinkLockIcon then
 			self.LevelLinkLockIcon:SetShown(false)
 		end
+
+		if self.AutoCastOverlay then
+			self.AutoCastOverlay:SetShown(false)
+			self.AutoCastOverlay:ShowAutoCastEnabled(false)
+		end
 	end
 
 	-- Add a green border if button is an equipped item
@@ -2344,7 +2349,7 @@ function UpdateFlash(self)
 	end
 
 	-- ours does not include the pet checks
-	if C_TransmogOutfitInfo_IsLockedOutfit and (self.AutoCastOverlay and self._state_type == 'action') then
+	if C_TransmogOutfitInfo_IsLockedOutfit and self.AutoCastOverlay then
 		local actionType, actionID = GetActionInfo(self._state_action)
 		local isLockedOutfit = actionType == 'outfit' and C_TransmogOutfitInfo_IsLockedOutfit(actionID)
 		local isLockedEquippedGear = IsEquippedGearOutfitAction(self._state_action) and C_TransmogOutfitInfo_IsEquippedGearOutfitLocked()
