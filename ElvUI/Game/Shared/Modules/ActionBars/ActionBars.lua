@@ -1,10 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
-local _G = _G
-local format, unpack, tonumber = format, unpack, tonumber
-local next, type, pairs, ipairs, gsub = next, type, pairs, ipairs, gsub
-local strmatch, strsplit, strfind, strsub, strupper = strmatch, strsplit, strfind, strsub, strupper
+local _G, wipe = _G, wipe
+local ipairs, pairs, strmatch, next, type, unpack, tonumber = ipairs, pairs, strmatch, next, type, unpack, tonumber
+local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -1856,6 +1855,36 @@ do
 			end
 		end
 	end
+
+	-- a few functions to modify what spells are rotation assisted
+	function AB:RotationUpdate()
+		AB:RotationSpellsAdjust()
+	end
+
+	function AB:RotationSpellsClear()
+		AB:RotationSpellsAdjust(true) -- set them back to true
+		wipe(E.db.general.rotationAssist.spells[E.myclass]) -- clear our table now
+	end
+
+	function AB:RotationSpellsAdjust(value)
+		local rotations = _G.AssistedCombatManager.rotationSpells -- Blizzards table
+		if not next(rotations) then return end
+
+		local spells = E.db.general.rotationAssist.spells[E.myclass] -- our table for toggling
+		for spellID, active in next, spells do
+			if rotations[spellID] ~= nil then
+				if value ~= nil then
+					rotations[spellID] = value
+				else
+					rotations[spellID] = active
+				end
+			else -- remove old ones
+				spells[spellID] = nil
+			end
+		end
+
+		_G.AssistedCombatManager:ForceUpdateAtEndOfFrame()
+	end
 end
 
 function AB:Initialize()
@@ -1972,6 +2001,7 @@ function AB:Initialize()
 
 		AB:AssistedGlowUpdate()
 		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
+		_G.EventRegistry:RegisterCallback('AssistedCombatManager.RotationSpellsUpdated', AB.RotationUpdate)
 		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
 	end
 
