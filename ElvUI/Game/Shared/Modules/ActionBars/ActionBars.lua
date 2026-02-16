@@ -1,9 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
-local _G, wipe = _G, wipe
+local _G = _G
 local ipairs, pairs, strmatch, next, type, unpack, tonumber = ipairs, pairs, strmatch, next, type, unpack, tonumber
-local format, gsub, strsplit, strfind, strsub, strupper = format, gsub, strsplit, strfind, strsub, strupper
+local format, wipe, gsub, strsplit, strfind, strsub, strupper = format, wipe, gsub, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
