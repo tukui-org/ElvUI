@@ -546,7 +546,7 @@ function RU:OnClick_RaidCountdownButton()
 end
 
 function RU:OnClick_RaidControlButton()
-	ToggleFriendsFrame(3)
+	ToggleFriendsFrame(not E.Retail and 3 or nil)
 end
 
 function RU:OnEvent_MainTankButton()
