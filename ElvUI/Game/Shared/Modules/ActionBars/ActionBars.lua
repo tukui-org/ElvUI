@@ -311,6 +311,10 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, 'page', page)
 	bar:SetAttribute('page', page)
 
+	local buttonWidth = db.buttonSize
+	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
+	local maskWidth, maskHeight = buttonWidth * 1.5, buttonHeight * 1.5
+
 	local reticleColor = E:UpdateClassColor(AB.db.targetReticleColor)
 	local pages = enabled and AB:ActivePages(page) or nil
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -330,6 +334,25 @@ function AB:PositionAndSizeBar(barName)
 			button:Show()
 			button.handleBackdrop = true -- keep over HandleButton
 			lastShownButton = button
+		end
+
+		local spellCastAnim = button.SpellCastAnimFrame
+		if spellCastAnim then
+			local endBurst = spellCastAnim.EndBurst
+			if endBurst then
+				endBurst.EndMask:Size(maskWidth, maskHeight)
+			end
+
+			local spellCastFill = spellCastAnim.Fill
+			if spellCastFill then
+				spellCastFill.FillMask:Size(maskWidth, maskHeight)
+			end
+		end
+
+		local interruptDisplay = button.InterruptDisplay
+		local interruptHighlight = interruptDisplay and interruptDisplay.Highlight
+		if interruptHighlight then
+			interruptHighlight.Mask:Size(maskWidth, maskHeight)
 		end
 
 		local targetReticle = button.TargetReticleAnimFrame
@@ -410,6 +433,12 @@ function AB:CreateBar(id)
 		if interruptBase then
 			interruptBase.Base:SetAllPoints(icon)
 			interruptBase.Base:SetTexCoords()
+		end
+
+		local interruptHighlight = interruptDisplay and interruptDisplay.Highlight
+		if interruptHighlight then
+			interruptHighlight.Mask:ClearAllPoints()
+			interruptHighlight.Mask:Point('CENTER')
 		end
 
 		local targetReticle = button.TargetReticleAnimFrame
