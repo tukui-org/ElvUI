@@ -39,7 +39,9 @@ local function SplashFrame_OnHide(frame)
 	frame.showingQuestDialog = nil
 end
 
--- Recovery for ObjectiveTracker not restoring after scenario/Nemesis transitions with ElvUI.
+-- Recovery for ObjectiveTracker not restoring after scenario transitions.
+-- In some cases ElvUI collapses the tracker by re-parenting it to E.HiddenFrame.
+-- A simple :Show() will not restore visibility in that state, so we must expand first.
 function BL:ObjectiveTracker_RecoverVisibility()
 	if InCombatLockdown() then return end
 
@@ -47,14 +49,27 @@ function BL:ObjectiveTracker_RecoverVisibility()
 	if not (isInstance and instanceType == 'scenario') then return end
 
 	local tracker = _G.ObjectiveTrackerFrame
-	if tracker and not tracker:IsShown() then
-		-- Do not call ObjectiveTracker_Update here; full updates can cause taint on the Quest Button.
-		tracker:Show()
+	if not tracker then return end
 
-		local scenarioTracker = _G.ScenarioObjectiveTracker
-		if scenarioTracker then
-			scenarioTracker:Show()
+	-- If the tracker is collapsed (re-parented to E.HiddenFrame),
+	-- expanding it restores the proper parent and visibility state.
+	if self.ObjectiveTracker_IsCollapsed and self:ObjectiveTracker_IsCollapsed(tracker) then
+		if self.ObjectiveTracker_Expand then
+			self:ObjectiveTracker_Expand(tracker)
 		end
+	end
+
+	-- Fallback: ensure the tracker frame itself is visible.
+	-- We intentionally avoid calling ObjectiveTracker_Update()
+	-- to prevent potential taint or secure execution issues.
+	if not tracker:IsShown() then
+		tracker:Show()
+	end
+
+	-- Ensure the Scenario sub-tracker is visible as well.
+	local scenarioTracker = _G.ScenarioObjectiveTracker
+	if scenarioTracker and not scenarioTracker:IsShown() then
+		scenarioTracker:Show()
 	end
 end
 
