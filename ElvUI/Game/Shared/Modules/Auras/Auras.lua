@@ -594,6 +594,15 @@ function A:ForEachChild(func, ...)
 		index = index + 1
 		child = self:GetAttribute('child'..index)
 	end
+
+	local enchantIndex = 1
+	local enchantChild = self:GetAttribute('tempEnchant'..enchantIndex)
+	while enchantChild do
+		func(self, enchantChild, enchantIndex, ...)
+
+		enchantIndex = enchantIndex + 1
+		enchantChild = self:GetAttribute('tempEnchant'..enchantIndex)
+	end
 end
 
 function A:CreateAuraHeader(filter)
