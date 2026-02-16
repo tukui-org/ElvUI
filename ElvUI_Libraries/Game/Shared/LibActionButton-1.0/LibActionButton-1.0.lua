@@ -1963,7 +1963,9 @@ function Update(self, which)
 			self.LevelLinkLockIcon:SetShown(false)
 		end
 
-		UpdateAutoCastOverlay(self, false)
+		if self.AutoCastOverlay then
+			UpdateAutoCastOverlay(self, false)
+		end
 	end
 
 	-- Add a green border if button is an equipped item
