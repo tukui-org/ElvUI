@@ -607,7 +607,8 @@ function UF:PostColorAdditionalPower(unit, color)
 	local r, g, b = color:GetRGB()
 
 	if frame.USE_CLASSBAR then
-		UF:SetStatusBarColor(self, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
+		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
+		UF:SetStatusBarColor(self, r, g, b, custom_backdrop)
 	end
 
 	local bar = frame and frame.PowerPrediction and frame.PowerPrediction.altBar
