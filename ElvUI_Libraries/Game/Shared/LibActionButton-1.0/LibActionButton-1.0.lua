@@ -1955,7 +1955,10 @@ function Update(self, which)
 
 		if self.AutoCastOverlay then
 			self.AutoCastOverlay:SetShown(false)
-			self.AutoCastOverlay:ShowAutoCastEnabled(false)
+
+			if self.AutoCastOverlay.ShowAutoCastEnabled then
+				self.AutoCastOverlay:ShowAutoCastEnabled(false)
+			end
 		end
 	end
 
@@ -2356,7 +2359,10 @@ function UpdateFlash(self)
 		local active = isLockedOutfit or isLockedEquippedGear
 
 		self.AutoCastOverlay:SetShown(active)
-		self.AutoCastOverlay:ShowAutoCastEnabled(active)
+
+		if self.AutoCastOverlay.ShowAutoCastEnabled then
+			self.AutoCastOverlay:ShowAutoCastEnabled(active)
+		end
 	end
 end
 
