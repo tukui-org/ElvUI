@@ -145,6 +145,32 @@ function AB:HandleBackdropMover(bar, backdropSpacing)
 	end
 end
 
+function AB:HandleButtonAutoCast(bar, button)
+	local db = bar.db
+	if not db then return end
+
+	local buttonWidth = db.buttonSize
+	local buttonHeight = (db.keepSizeRatio and db.buttonSize) or db.buttonHeight
+
+	local autoCast = button.AutoCastOverlay or button.AutoCastable
+	if E.Retail then
+		autoCast:SetOutside(button, 3, 3)
+	elseif E.TBC then
+		autoCast:SetOutside(button, 1, 1)
+	else
+		local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
+		local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
+		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
+	end
+
+	local corners = autoCast.Corners
+	if corners then
+		local cornerWidth = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonWidth * 0.5) - (buttonWidth / 7.5))
+		local cornerHeight = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonHeight * 0.5) - (buttonHeight / 7.5))
+		corners:SetOutside(button, cornerWidth, cornerHeight)
+	end
+end
+
 function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	local db = bar.db
 
@@ -360,6 +386,7 @@ function AB:PositionAndSizeBar(barName)
 			reticleBase:SetVertexColor(reticleColor.r, reticleColor.g, reticleColor.b)
 		end
 
+		AB:HandleButtonAutoCast(bar, button)
 		AB:HandleButtonState(button, i, vehicleIndex, pages)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)

@@ -121,8 +121,6 @@ function AB:PositionAndSizeBarPet()
 	local db = AB.db.barPet
 	if not db then return end
 
-	local buttonWidth = db.buttonSize
-	local buttonHeight = (db.keepSizeRatio and db.buttonSize) or db.buttonHeight
 	local buttonSpacing = db.buttonSpacing
 	local backdropSpacing = db.backdropSpacing
 	local buttonsPerRow = db.buttonsPerRow
@@ -161,7 +159,6 @@ function AB:PositionAndSizeBarPet()
 	for i, button in ipairs(bar.buttons) do
 		local lastButton = _G['PetActionButton'..i-1]
 		local lastColumnButton = _G['PetActionButton'..i-buttonsPerRow]
-		local autoCast = button.AutoCastOverlay or button.AutoCastable
 
 		button.db = db
 
@@ -180,23 +177,7 @@ function AB:PositionAndSizeBarPet()
 			button.handleBackdrop = true -- keep over HandleButton
 		end
 
-		if E.Retail then
-			autoCast:SetOutside(button, 3, 3)
-		elseif E.TBC then
-			autoCast:SetOutside(button, 1, 1)
-		else
-			local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
-			local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
-			autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
-		end
-
-		local corners = autoCast.Corners
-		if corners then
-			local cornerWidth = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonWidth * 0.5) - (buttonWidth / 7.5))
-			local cornerHeight = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonHeight * 0.5) - (buttonHeight / 7.5))
-			corners:SetOutside(button, cornerWidth, cornerHeight)
-		end
-
+		AB:HandleButtonAutoCast(bar, button)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, useMasque, true)
 	end

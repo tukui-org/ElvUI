@@ -42,9 +42,12 @@ local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or G
 
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetActionDisplayCount = C_ActionBar.GetActionDisplayCount
+local IsEquippedGearOutfitAction = C_ActionBar.IsEquippedGearOutfitAction
 local C_Container_GetItemCooldown = C_Container.GetItemCooldown
 local C_EquipmentSet_PickupEquipmentSet = C_EquipmentSet.PickupEquipmentSet
 local C_LevelLink_IsActionLocked = C_LevelLink and C_LevelLink.IsActionLocked
+local C_TransmogOutfitInfo_IsLockedOutfit = C_TransmogOutfitInfo and C_TransmogOutfitInfo.IsLockedOutfit
+local C_TransmogOutfitInfo_IsEquippedGearOutfitLocked = C_TransmogOutfitInfo and C_TransmogOutfitInfo.IsEquippedGearOutfitLocked
 
 local SpellVFX_ClearReticle, SpellVFX_ClearInterruptDisplay, SpellVFX_PlaySpellCastAnim, SpellVFX_PlayTargettingReticleAnim, SpellVFX_StopTargettingReticleAnim, SpellVFX_StopSpellCastAnim, SpellVFX_PlaySpellInterruptedAnim
 local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
@@ -2338,6 +2341,16 @@ function UpdateFlash(self)
 		StartFlash(self)
 	else
 		StopFlash(self)
+	end
+
+	-- ours does not include the pet checks
+	if C_TransmogOutfitInfo_IsLockedOutfit and (self.AutoCastOverlay and self._state_type == 'action') then
+		local actionType, actionID = GetActionInfo(self._state_action)
+		local isLockedOutfit = actionType == 'outfit' and C_TransmogOutfitInfo_IsLockedOutfit(actionID)
+		local isLockedEquippedGear = IsEquippedGearOutfitAction(self._state_action) and C_TransmogOutfitInfo_IsEquippedGearOutfitLocked()
+
+		self.AutoCastOverlay:SetShown(isLockedOutfit or isLockedEquippedGear)
+		self.AutoCastOverlay:ShowAutoCastEnabled(isLockedOutfit or isLockedEquippedGear)
 	end
 end
 
