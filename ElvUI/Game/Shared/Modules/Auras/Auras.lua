@@ -583,26 +583,22 @@ function A:UpdateHeader(header)
 	end
 end
 
+function A:LoopChildren(header, key, func, ...)
+	local index = 1
+	local child = header:GetAttribute(key..index)
+	while child do
+		func(header, child, index, ...)
+
+		index = index + 1
+		child = header:GetAttribute(key..index)
+	end
+end
+
 function A:ForEachChild(func, ...)
 	if not func then return end
 
-	local index = 1
-	local child = self:GetAttribute('child'..index)
-	while child do
-		func(self, child, index, ...)
-
-		index = index + 1
-		child = self:GetAttribute('child'..index)
-	end
-
-	local enchantIndex = 1
-	local enchantChild = self:GetAttribute('tempEnchant'..enchantIndex)
-	while enchantChild do
-		func(self, enchantChild, enchantIndex, ...)
-
-		enchantIndex = enchantIndex + 1
-		enchantChild = self:GetAttribute('tempEnchant'..enchantIndex)
-	end
+	A:LoopChildren(self, 'child', func, ...)
+	A:LoopChildren(self, 'tempEnchant', func, ...)
 end
 
 function A:CreateAuraHeader(filter)
