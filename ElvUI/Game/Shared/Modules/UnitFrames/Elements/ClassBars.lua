@@ -18,6 +18,8 @@ local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
 UF.ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
 UF.ClassPowerColors = { COMBO_POINTS = 'comboPoints', CHI = 'MONK' }
 
+local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
+
 local AltManaTypes = { Rage = 1, Energy = 3 }
 if E.Retail then
 	AltManaTypes.LunarPower = 8
@@ -600,11 +602,12 @@ end
 
 function UF:PostColorAdditionalPower(unit, color)
 	local frame = self.origParent or self:GetParent()
+
+	if not color then color = FALLBACK end
+	local r, g, b = color:GetRGB()
+
 	if frame.USE_CLASSBAR then
-		local custom_backdrop = UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop
-		if custom_backdrop then
-			self.bg:SetVertexColor(custom_backdrop.r, custom_backdrop.g, custom_backdrop.b)
-		end
+		UF:SetStatusBarColor(self, r, g, b, UF.db.colors.customclasspowerbackdrop and UF.db.colors.classpower_backdrop)
 	end
 
 	local bar = frame and frame.PowerPrediction and frame.PowerPrediction.altBar
@@ -613,7 +616,6 @@ function UF:PostColorAdditionalPower(unit, color)
 		if pred and pred.enable then
 			UF:SetStatusBarColor(bar, pred.additional.r, pred.additional.g, pred.additional.b)
 		else
-			local r, g, b = color:GetRGB()
 			UF:SetStatusBarColor(bar, r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
 		end
 	end
