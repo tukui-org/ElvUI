@@ -614,6 +614,16 @@ function Generic:OnButtonEvent(event, ...)
 end
 
 -----------------------------------------------------------
+--- handle AutoCastOverlay ~Simpy
+local function UpdateAutoCastOverlay(button, shown)
+	button.AutoCastOverlay:SetShown(shown)
+
+	if button.AutoCastOverlay.ShowAutoCastEnabled then
+		button.AutoCastOverlay:ShowAutoCastEnabled(shown)
+	end
+end
+
+-----------------------------------------------------------
 --- retail range event api ~Simpy
 
 local function WatchRange(button, slot)
@@ -1953,13 +1963,7 @@ function Update(self, which)
 			self.LevelLinkLockIcon:SetShown(false)
 		end
 
-		if self.AutoCastOverlay then
-			self.AutoCastOverlay:SetShown(false)
-
-			if self.AutoCastOverlay.ShowAutoCastEnabled then
-				self.AutoCastOverlay:ShowAutoCastEnabled(false)
-			end
-		end
+		UpdateAutoCastOverlay(self, false)
 	end
 
 	-- Add a green border if button is an equipped item
@@ -2353,15 +2357,14 @@ function UpdateFlash(self)
 
 	-- ours does not include the pet checks
 	if C_TransmogOutfitInfo_IsLockedOutfit and self.AutoCastOverlay then
-		local actionType, actionID = GetActionInfo(self._state_action)
-		local isLockedOutfit = actionType == 'outfit' and C_TransmogOutfitInfo_IsLockedOutfit(actionID)
-		local isLockedEquippedGear = IsEquippedGearOutfitAction(self._state_action) and C_TransmogOutfitInfo_IsEquippedGearOutfitLocked()
-		local active = isLockedOutfit or isLockedEquippedGear
+		if self._state_type == 'action' then
+			local actionType, actionID = GetActionInfo(self._state_action)
+			local isLockedOutfit = actionType == 'outfit' and C_TransmogOutfitInfo_IsLockedOutfit(actionID)
+			local isLockedEquippedGear = IsEquippedGearOutfitAction(self._state_action) and C_TransmogOutfitInfo_IsEquippedGearOutfitLocked()
 
-		self.AutoCastOverlay:SetShown(active)
-
-		if self.AutoCastOverlay.ShowAutoCastEnabled then
-			self.AutoCastOverlay:ShowAutoCastEnabled(active)
+			UpdateAutoCastOverlay(self, isLockedOutfit or isLockedEquippedGear)
+		else
+			UpdateAutoCastOverlay(self, false)
 		end
 	end
 end
