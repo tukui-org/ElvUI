@@ -243,7 +243,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		local awayText = E:UnitIsAFK(unit) and AFK_LABEL or E:UnitIsDND(unit) and DND_LABEL or ''
-		_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s%s|r', nameColor.colorStr, name or UNKNOWN, awayText)
+		_G.GameTooltipTextLeft1:SetFormattedText('%s%s', nameColor:WrapTextInColorCode(name or UNKNOWN), awayText)
 
 		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 2) or 1)
 		if guildName then
@@ -277,10 +277,10 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			if E.Retail then
 				local specText = specLine and specLine:GetText()
 				if specText then
-					specLine:SetFormattedText('|c%s%s|r', nameColor.colorStr, specText)
+					specLine:SetText(nameColor:WrapTextInColorCode(specText))
 				end
 			else -- put the class in classic
-				levelText = format('%s |c%s%s|r', levelText, nameColor.colorStr, localeClass)
+				levelText = format('%s %s', levelText, nameColor:WrapTextInColorCode(localeClass))
 			end
 
 			levelLine:SetFormattedText(levelText)
@@ -346,7 +346,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local nameColor = unitReaction and ((TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]) or _G.FACTION_BAR_COLORS[unitReaction]) or PRIEST_COLOR
 
 		if not isPetCompanion then
-			_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s|r', nameColor.colorStr or E:RGBToHex(nameColor.r, nameColor.g, nameColor.b, 'ff'), name or UNKNOWN)
+			_G.GameTooltipTextLeft1:SetText(nameColor:WrapTextInColorCode(name or UNKNOWN))
 		end
 
 		return (UnitIsTapDenied(unit) and TAPPED_COLOR) or nameColor
@@ -894,11 +894,11 @@ function TT:ShowAuraInfo(tt, source, spellID, aura)
 
 		if aura and aura.unitClassFilename then
 			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
-			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), format('|c%s%s|r', color.colorStr, aura.unitName or UNKNOWN))
+			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), color:WrapTextInColorCode(aura.unitName or UNKNOWN))
 		elseif source then
 			local _, className = UnitClass(source)
 			local color = E:ClassColor(className) or PRIEST_COLOR
-			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), format('|c%s%s|r', color.colorStr, UnitName(source) or UNKNOWN))
+			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), color:WrapTextInColorCode(UnitName(source) or UNKNOWN))
 		else
 			tt:AddLine(format(IDLine, _G.ID, spellID))
 		end
