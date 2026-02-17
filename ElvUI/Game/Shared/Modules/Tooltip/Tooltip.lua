@@ -283,7 +283,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 				levelText = format('%s %s', levelText, nameColor:WrapTextInColorCode(localeClass))
 			end
 
-			levelLine:SetFormattedText(levelText)
+			levelLine:SetText(levelText)
 		end
 
 		if TT.db.showElvUIUsers then
