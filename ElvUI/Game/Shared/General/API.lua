@@ -58,7 +58,6 @@ local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
 local CreateCurve = C_CurveUtil and C_CurveUtil.CreateCurve
 local CreateColorCurve = C_CurveUtil and C_CurveUtil.CreateColorCurve
-local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 
