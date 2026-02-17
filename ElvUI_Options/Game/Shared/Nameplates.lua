@@ -161,7 +161,7 @@ local function GetUnitSettings(unit, name)
 
 	local group = ACH:Group(name, nil, ORDER, 'tree', function(info) return E.db.nameplates.units[unit][info[#info]] end, function(info, value) E.db.nameplates.units[unit][info[#info]] = value NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end, unit == 'PLAYER' and not E.Retail)
 	group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	group.args.showTestFrame = ACH:Execute(L["Show/Hide Test Frame"], nil, 2, function() if not NP.TestFrame:IsEnabled() or NP.TestFrame.frameType ~= unit then NP.TestFrame:Enable() NP.TestFrame.frameType = unit NP:NamePlateCallBack(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED') NP.TestFrame:UpdateAllElements('ForceUpdate') else NP:DisablePlate(NP.TestFrame) NP.TestFrame:Disable() end end)
+	group.args.showTestFrame = ACH:Execute(L["Show/Hide Test Frame"], nil, 2, function() if not NP.TestFrame:IsEnabled() or NP.TestFrame.frameType ~= unit then NP.TestFrame:Enable() NP.TestFrame.frameType = unit NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.unit) NP.TestFrame:UpdateAllElements('ForceUpdate') else NP:DisablePlate(NP.TestFrame) NP.TestFrame:Disable() end end)
 	group.args.defaultSettings = ACH:Execute(L["Default Settings"], L["Set Settings to Default"], 3, function() NP:ResetSettings(unit) NP:ConfigureAll() end)
 	group.args.copySettings = ACH:Select(L["Copy settings from"], L["Copy settings from another unit."], 4, copyValues, nil, nil, C.Blank, function(_, value) NP:CopySettings(value, unit) NP:ConfigureAll() end)
 
