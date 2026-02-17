@@ -1272,7 +1272,8 @@ do
 		assist = true,
 		party = true,
 		raid = true,
-		raidpet = true
+		raidpet = true,
+		boss = E.Retail
 	}
 
 	-- 1) we need to get some things ready very early on
