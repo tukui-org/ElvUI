@@ -1073,6 +1073,7 @@ function TT:Initialize()
 	statusText:Point('CENTER', GameTooltipStatusBar)
 	GameTooltipStatusBar.Text = statusText
 	GameTooltipStatusBar:Height(TT.db.healthBar.height)
+	GameTooltipStatusBar:SetScript('OnValueChanged', nil) -- keeps the health bar from flickering
 
 	TT:SetTooltipFonts()
 
