@@ -887,7 +887,7 @@ function TT:ShowAuraInfo(tt, source, spellID, aura)
 end
 
 function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
-	if not tt or tt:IsForbidden() then return end
+	if not tt or tt:IsForbidden() or tt:NumLines() < 1 then return end
 
 	local unitAuraInfo = AuraInfo[unit]
 	local aura = unitAuraInfo and unitAuraInfo[auraInstanceID]
@@ -899,7 +899,7 @@ function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
 end
 
 function TT:SetUnitAura(tt, unit, index, filter)
-	if not tt or tt:IsForbidden() then return end
+	if not tt or tt:IsForbidden() or tt:NumLines() < 1 then return end
 
 	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
 	if not name then return end
