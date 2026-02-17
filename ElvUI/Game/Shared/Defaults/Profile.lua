@@ -3241,8 +3241,8 @@ local AB_Bar = {
 	},
 }
 
-for i = 1, 15 do
-	if i ~= 11 and i ~= 12 then
+for i = 1, 15 do -- if this indexing changes
+	if i ~= 11 and i ~= 12 then -- also update in distributor
 		local barN = 'bar'..i
 		P.actionbar[barN] = CopyTable(AB_Bar)
 
