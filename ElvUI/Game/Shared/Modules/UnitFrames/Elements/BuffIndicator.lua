@@ -45,7 +45,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 end
 
 function UF:BuffIndicator_PostCreateIcon(button)
-	button.cd.skipScale = true
+	button.cd:SetAllPoints(button.icon)
 
 	E:RegisterCooldown(button.cd, 'auraindicator')
 

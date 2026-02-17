@@ -103,6 +103,8 @@ function NP:Construct_AuraIcon(button)
 	button.Overlay:SetTexture()
 	button.Stealable:SetTexture()
 
+	button.Cooldown:SetAllPoints(button.Icon)
+
 	E:RegisterCooldown(button.Cooldown, 'nameplates')
 
 	local auras = button:GetParent()

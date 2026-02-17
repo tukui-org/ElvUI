@@ -250,6 +250,8 @@ function UF:Construct_AuraIcon(button)
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnClick', UF.Aura_OnClick)
 
+	button.Cooldown:SetAllPoints(button.Icon)
+
 	E:RegisterCooldown(button.Cooldown, 'unitframe')
 
 	local auras = button:GetParent()
