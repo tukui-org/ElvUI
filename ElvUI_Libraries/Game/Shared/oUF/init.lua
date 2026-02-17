@@ -7,6 +7,7 @@ local unpack = unpack
 local issecretvalue = issecretvalue
 local issecrettable = issecrettable
 local canaccessvalue = canaccessvalue
+local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 
 local _, _, _, wowtoc = GetBuildInfo()
 oUF.wowtoc = wowtoc
@@ -49,6 +50,14 @@ do -- Time function by Simpy
 end
 
 do -- API for secrets by Simpy
+	function oUF:IsSecretUnit(unit)
+		return ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit)
+	end
+
+	function oUF:NotSecretUnit(unit)
+		return not ShouldUnitIdentityBeSecret or not ShouldUnitIdentityBeSecret(unit)
+	end
+
 	function oUF:IsSecretValue(value)
 		return issecretvalue and issecretvalue(value)
 	end

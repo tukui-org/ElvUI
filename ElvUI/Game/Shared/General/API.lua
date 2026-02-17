@@ -1394,7 +1394,7 @@ function E:GROUP_LEFT()
 end
 
 function E:UnitExists(unit)
-	if ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit) then return end
+	if E:IsSecretUnit(unit) then return end
 
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end

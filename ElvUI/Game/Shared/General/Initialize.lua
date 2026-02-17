@@ -47,6 +47,8 @@ E.oUF = oUF
 
 -- moved this to oUF but relink it
 E.ColorGradient = oUF.ColorGradient
+E.IsSecretUnit = oUF.IsSecretUnit
+E.NotSecretUnit = oUF.NotSecretUnit
 E.IsSecretValue = oUF.IsSecretValue
 E.IsSecretTable = oUF.IsSecretTable
 E.NotSecretValue = oUF.NotSecretValue
