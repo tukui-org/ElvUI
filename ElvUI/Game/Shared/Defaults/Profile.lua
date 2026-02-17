@@ -3024,6 +3024,10 @@ do
 			object.reverse = true
 			object.position = 'BOTTOM'
 			object.offsetY = -3
+		elseif key == 'unitframe' then
+			object.reverse = true
+		elseif key == 'nameplates' then
+			object.reverse = true
 		elseif key == 'actionbar' then
 			object.threshold = 300
 			object.altBling = useAltBling
