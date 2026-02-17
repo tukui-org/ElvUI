@@ -552,16 +552,16 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 
 	local color
 	local _, unit = self:GetUnit()
-	if E:NotSecretValue(unit) and not unit then
-		local GMF = E:GetMouseFocus()
-		local focusUnit = GMF and GMF.GetAttribute and GMF:GetAttribute('unit')
-		if focusUnit then unit = focusUnit end
-		if not unit or not UnitExists(unit) then
-			return
-		end
-	end
-
 	if E:NotSecretValue(unit) then
+		if not unit then
+			local GMF = E:GetMouseFocus()
+			local focusUnit = GMF and GMF.GetAttribute and GMF:GetAttribute('unit')
+			if focusUnit then unit = focusUnit end
+			if not unit or not UnitExists(unit) then
+				return
+			end
+		end
+
 		local isShiftKeyDown = IsShiftKeyDown()
 		local isControlKeyDown = IsControlKeyDown()
 		local isInCombat = InCombatLockdown()
