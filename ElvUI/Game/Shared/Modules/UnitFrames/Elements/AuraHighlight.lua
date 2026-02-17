@@ -59,7 +59,8 @@ end
 function UF:PostUpdate_AuraHighlight(frame, unit, aura, debuffType, _, wasFiltered)
 	if wasFiltered then return end
 
-	local secretColor = E.Retail and aura and GetAuraDispelTypeColor(unit, aura.auraInstanceID, E.Curves.Color.Dispel)
+	local dispelCurve = E.Retail and E.Curves.Color.Dispel -- not ready on init
+	local secretColor = dispelCurve and aura and GetAuraDispelTypeColor(unit, aura.auraInstanceID, dispelCurve)
 	local color = secretColor or (E:NotSecretValue(debuffType) and UF.db.colors.debuffHighlight[debuffType]) or FALLBACK
 
 	if frame.AuraHighlightBackdrop and frame.AuraHightlightGlow then
