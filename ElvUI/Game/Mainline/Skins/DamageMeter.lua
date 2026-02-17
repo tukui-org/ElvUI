@@ -58,14 +58,14 @@ function S:DamageMeter_BackdropSetAlpha(alpha)
 	end
 end
 
-function S:DamageMeter_HandleBackground(window, background, isSourceWindow)
+function S:DamageMeter_HandleBackground(window, background, x1, y1, x2, y2)
 	if not window or not background or window.backdrop then return end
 
 	background:Hide()
 
 	window:CreateBackdrop('Transparent')
-	window.backdrop:NudgePoint(isSourceWindow and -4 or 13, nil, nil, 'TOPLEFT')
-	window.backdrop:NudgePoint(-18, nil, nil, 'BOTTOMRIGHT')
+	window.backdrop:NudgePoint(x1, y1, nil, 'TOPLEFT')
+	window.backdrop:NudgePoint(x2, y2, nil, 'BOTTOMRIGHT')
 
 	-- Set initial alpha; 100% will not set backgroundAlpha so default to 1
 	-- this copies the functionality of GetBackgroundAlpha
@@ -81,13 +81,13 @@ function S:DamageMeter_DropdownSetWidth(width, overrideFlag)
 	self:SetWidth(width + DROPDOWN_WIDTH_OFFSET, true)
 end
 
-function S:DamageMeter_HandleSessionTimer(sessionTimer)
+function S:DamageMeter_HandleSessionTimer(window, sessionTimer)
 	if not sessionTimer then return end
 
 	sessionTimer:NudgePoint(-15)
 end
 
-function S:DamageMeter_HandleTypeDropdown(dropdown)
+function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
 	S:HandleButton(dropdown, nil, nil, nil, true, 'Default')
@@ -116,7 +116,7 @@ function S:DamageMeter_HandleTypeDropdown(dropdown)
 	dropdown.IsSkinned = true
 end
 
-function S:DamageMeter_HandleSessionDropdown(dropdown)
+function S:DamageMeter_HandleSessionDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
 	S:HandleButton(dropdown, nil, nil, nil, true, 'Default')
@@ -141,7 +141,7 @@ function S:DamageMeter_HandleSessionDropdown(dropdown)
 	dropdown.IsSkinned = true
 end
 
-function S:DamageMeter_HandleSettingsDropdown(dropdown)
+function S:DamageMeter_HandleSettingsDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
 	S:HandleButton(dropdown, nil, nil, nil, true, 'Default')
@@ -193,7 +193,7 @@ function S:DamageMeter_HandleStatusBar()
 	StatusBar:GetStatusBarTexture():SetTexture(E.media.normTex)
 end
 
-function S:DamageMeter_HandleScrollBox()
+function S:DamageMeter_ScrollBoxUpdate()
 	if not self.ForEachFrame then return end
 
 	self:ForEachFrame(S.DamageMeter_HandleStatusBar)
@@ -201,8 +201,8 @@ end
 
 do
 	local updating = false
-	function S:DamageMeter_HandleScrollBoxSetPoint(point)
-		if not updating and point and point == 'TOPLEFT' then
+	function S:DamageMeter_ScrollBoxSetPoint(point)
+		if not updating and point == 'TOPLEFT' then
 			updating = true
 			self:NudgePoint(-15)
 			updating = false
@@ -218,11 +218,11 @@ function S:DamageMeter_HandleScrollBoxes(window)
 
 	local ScrollBox = window.GetScrollBox and window:GetScrollBox()
 	if ScrollBox and not ScrollBox.IsSkinned then
-		hooksecurefunc(ScrollBox, 'Update', S.DamageMeter_HandleScrollBox)
-		hooksecurefunc(ScrollBox, "SetPoint", S.DamageMeter_HandleScrollBoxSetPoint)
+		hooksecurefunc(ScrollBox, 'Update', S.DamageMeter_ScrollBoxUpdate)
+		hooksecurefunc(ScrollBox, 'SetPoint', S.DamageMeter_ScrollBoxSetPoint)
 
-		S.DamageMeter_HandleScrollBox(ScrollBox)
-		S.DamageMeter_HandleScrollBoxSetPoint(ScrollBox, 'TOPLEFT')
+		S.DamageMeter_ScrollBoxUpdate(ScrollBox)
+		S.DamageMeter_ScrollBoxSetPoint(ScrollBox, 'TOPLEFT')
 
 		ScrollBox.IsSkinned = true
 	end
@@ -247,10 +247,10 @@ function S:DamageMeter_RepositionResizeButton()
 	ResizeButton:Point(point, self.backdrop, point, xOffset, 4)
 end
 
-function S:DamageMeter_HandleSourceWindow(sourceWindow)
+function S:DamageMeter_HandleSourceWindow(window, sourceWindow)
 	if not sourceWindow or sourceWindow.IsSkinned then return end
 
-	S:DamageMeter_HandleBackground(sourceWindow, sourceWindow.Background, true)
+	S:DamageMeter_HandleBackground(sourceWindow, sourceWindow.Background, -4, nil, -18)
 	S:DamageMeter_HandleScrollBoxes(sourceWindow)
 
 	if sourceWindow.AnchorToSessionWindow then
@@ -263,13 +263,13 @@ end
 function S:DamageMeter_HandleSessionWindow()
 	if self.IsSkinned then return end
 
-	S:DamageMeter_HandleBackground(self, self.Background)
+	S:DamageMeter_HandleBackground(self, self.Background, 13, nil, -18)
 	S:DamageMeter_HandleHeader(self, self.Header)
-	S:DamageMeter_HandleSessionTimer(self.SessionTimer)
-	S:DamageMeter_HandleTypeDropdown(self.DamageMeterTypeDropdown)
-	S:DamageMeter_HandleSessionDropdown(self.SessionDropdown)
-	S:DamageMeter_HandleSettingsDropdown(self.SettingsDropdown)
-	S:DamageMeter_HandleSourceWindow(self.SourceWindow)
+	S:DamageMeter_HandleTypeDropdown(self, self.DamageMeterTypeDropdown)
+	S:DamageMeter_HandleSessionDropdown(self, self.SessionDropdown)
+	S:DamageMeter_HandleSettingsDropdown(self, self.SettingsDropdown)
+	S:DamageMeter_HandleSourceWindow(self, self.SourceWindow)
+	S:DamageMeter_HandleSessionTimer(self, self.SessionTimer)
 	S:DamageMeter_HandleScrollBoxes(self)
 	S.DamageMeter_RepositionResizeButton(self)
 
