@@ -548,7 +548,7 @@ function UF:PostUpdateAura(unit, button)
 	end
 
 	button:SetBackdropBorderColor(r, g, b)
-	button.Icon:SetDesaturated(button.canDesaturate and button.isDebuff and not button.isPlayer)
+	button.Icon:SetDesaturated(button.canDesaturate and button.isDebuff and not button.isFriend and not button.isPlayer)
 
 	if button.Text then
 		local bdb = button.db
