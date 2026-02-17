@@ -1267,15 +1267,6 @@ function UF:CreateAndUpdateUF(unit)
 end
 
 do
-	local mouseover = {
-		tank = true,
-		assist = true,
-		party = true,
-		raid = true,
-		raidpet = true,
-		boss = true
-	}
-
 	-- 1) we need to get some things ready very early on
 	function UF:PrepareFrame(frame, group)
 		-- we use this to move various objects over the base frame
@@ -1296,11 +1287,9 @@ do
 			end
 		end
 
-		-- handle the enter / leave scripts, for ones that need it
-		if not group or mouseover[group] then
-			frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
-			frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
-		end
+		-- handle the enter / leave scripts
+		frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
+		frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
 	end
 
 	-- 2) after that we need to setup additional things
