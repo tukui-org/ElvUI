@@ -792,8 +792,8 @@ do
 			end
 		end
 
-		-- recalculate the character count correctly with hyperlinks in it, using gsub so it matches multiple without gmatch
-		charCount = 0
+		-- recalculate the character count correctly with hyperlinks in it
+		charCount = 0 -- using gsub so it matches multiple without gmatch
 		gsub(text, '(|c%x-|H.-|h).-|h|r', CH.CountLinkCharacters)
 		if charCount ~= 0 then len = len - charCount end
 
