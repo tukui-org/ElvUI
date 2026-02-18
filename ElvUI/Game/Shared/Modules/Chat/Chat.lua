@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local issecurevariable = issecurevariable
 local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
 local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
 local pairs, unpack, select, pcall, next, tonumber, type = pairs, unpack, select, pcall, next, tonumber, type
@@ -81,7 +80,6 @@ local GetClientTexture = BNet_GetClientEmbeddedAtlas or BNet_GetClientEmbeddedTe
 
 local ChatEditSetLastTellTarget = (ChatFrameUtil and ChatFrameUtil.SetLastTellTarget) or ChatEdit_SetLastTellTarget
 local ChatEditSetLastActiveWindow = (ChatFrameUtil and ChatFrameUtil.SetLastActiveWindow) or ChatEdit_SetLastActiveWindow
-local ChatEditGetActiveWindow = (ChatFrameUtil and ChatFrameUtil.GetActiveWindow) or ChatEdit_GetActiveWindow
 local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
 local ResolvePrefixedChannelName = (ChatFrameUtil and ChatFrameUtil.ResolvePrefixedChannelName) or ChatFrame_ResolvePrefixedChannelName
 local ShouldColorChatByClass = (ChatFrameUtil and ChatFrameUtil.ShouldColorChatByClass) or Chat_ShouldColorChatByClass
@@ -807,36 +805,6 @@ do
 	end
 end
 
-do -- this fixes a taint when you push tab on editbox which blocks secure commands to the chat
-	local safe, list = {}, _G.hash_ChatTypeInfoList
-
-	function CH:ChatEdit_UntaintTabList()
-		for cmd, name in next, list do
-			if not issecurevariable(list, cmd) then
-				safe[cmd] = name
-				list[cmd] = nil
-			end
-		end
-	end
-
-	function CH:ChatEdit_PleaseRetaint()
-		for cmd, name in next, safe do
-			list[cmd] = name
-			safe[cmd] = nil
-		end
-	end
-
-	function CH:ChatEdit_PleaseUntaint(event)
-		if event == 'PLAYER_REGEN_DISABLED' then
-			if ChatEditGetActiveWindow() then
-				CH:ChatEdit_UntaintTabList()
-			end
-		elseif InCombatLockdown() then
-			CH:ChatEdit_UntaintTabList()
-		end
-	end
-end
-
 function CH:ChatEdit_UpdateHeader(editbox)
 	local chatType = editbox:GetAttribute('chatType')
 	if not chatType then return end
@@ -1091,14 +1059,6 @@ function CH:StyleChat(frame)
 
 	if editbox.OnEnterPressed then
 		CH:SecureHookScript(editbox, 'OnEnterPressed', 'ChatEdit_OnEnterPressed')
-	end
-
-	if editbox.OnShow then
-		CH:SecureHookScript(editbox, 'OnShow', 'ChatEdit_PleaseUntaint')
-	end
-
-	if editbox.OnHide then
-		CH:SecureHookScript(editbox, 'OnHide', 'ChatEdit_PleaseRetaint')
 	end
 
 	--copy chat button
@@ -4075,14 +4035,6 @@ function CH:Initialize()
 		CH:SecureHook('ChatEdit_OnEnterPressed')
 	end
 
-	if _G.ChatEdit_OnShow then
-		CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_PleaseUntaint')
-	end
-
-	if _G.ChatEdit_OnHide then
-		CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_PleaseRetaint')
-	end
-
 	if _G.ChatEdit_UpdateHeader then
 		CH:SecureHook('ChatEdit_UpdateHeader', 'ChatEdit_UpdateHeader')
 	end
@@ -4090,7 +4042,6 @@ function CH:Initialize()
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
-	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_PleaseUntaint')
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 	CH:RegisterEvent('CVAR_UPDATE')
 
