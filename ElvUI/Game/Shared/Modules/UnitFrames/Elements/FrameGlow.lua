@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
+local ElvUF = E.oUF
 
 local _G = _G
 local next = next
@@ -218,7 +219,7 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 				end
 			end
 		elseif reaction then
-			local color = _G.FACTION_BAR_COLORS[reaction]
+			local color = ElvUF.colors.reaction[reaction]
 			if color then
 				r, g, b = color.r, color.g, color.b
 			end

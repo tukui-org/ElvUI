@@ -343,7 +343,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		local unitReaction = UnitReaction(unit, 'player')
-		local nameColor = unitReaction and ((TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]) or _G.FACTION_BAR_COLORS[unitReaction]) or PRIEST_COLOR
+		local nameColor = unitReaction and ((TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]) or ElvUF.colors.reaction[unitReaction]) or PRIEST_COLOR
 
 		if not isPetCompanion then
 			_G.GameTooltipTextLeft1:SetText(nameColor:WrapTextInColorCode(name or UNKNOWN))
@@ -480,7 +480,7 @@ function TT:AddTargetInfo(tt, unit)
 			targetColor = E:ClassColor(className) or PRIEST_COLOR
 		else
 			local reaction = UnitReaction(unitTarget, 'player')
-			targetColor = (TT.db.useCustomFactionColors and TT.db.factionColors[reaction]) or _G.FACTION_BAR_COLORS[reaction] or PRIEST_COLOR
+			targetColor = (TT.db.useCustomFactionColors and TT.db.factionColors[reaction]) or ElvUF.colors.reaction[reaction] or PRIEST_COLOR
 		end
 
 		local targetName = UnitName(unitTarget) or UNKNOWN
