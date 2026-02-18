@@ -864,9 +864,12 @@ function CH:ChatEdit_UpdateHeader(editbox)
 end
 
 function CH:EditBoxOnKeyDown(key)
-	-- Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
-	local lines = self.historyLines
+	local lines = self.historyLines -- Code originally from Prat and modified by Simpy
 	if not lines then return end
+
+	-- Require holding alt when restricted: will use default editbox history
+	-- Override to allow using default editbox history for secure commands
+	if E:IsChatRestricted() or IsAltKeyDown() then return end
 
 	local maxLines = #lines
 	if maxLines == 0 then return end
@@ -1070,12 +1073,11 @@ function CH:StyleChat(frame)
 	editbox:HookScript('OnKeyDown', CH.EditBoxOnKeyDown)
 	editbox:Hide()
 
-	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
 
-	--[[ Don't need to do this since SetAltArrowKeyMode is broken, keep before AddHistory hook
-	for _, text in ipairs(editbox.historyLines) do
+	--[[ we use our own history, so we dont need to do this as it will also taints the lines
+	for _, text in ipairs(editbox.historyLines) do -- keep before AddHistory hook
 		editbox:AddHistoryLine(text)
 	end]]
 
@@ -1083,20 +1085,20 @@ function CH:StyleChat(frame)
 		CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
 	end
 
-	if editbox.OnEnterPressed then
-		CH:SecureHook(editbox, 'OnEnterPressed', 'ChatEdit_OnEnterPressed')
-	end
-
 	if editbox.UpdateHeader then
 		CH:SecureHook(editbox, 'UpdateHeader', 'ChatEdit_UpdateHeader')
 	end
 
+	if editbox.OnEnterPressed then
+		CH:SecureHookScript(editbox, 'OnEnterPressed', 'ChatEdit_OnEnterPressed')
+	end
+
 	if editbox.OnShow then
-		CH:SecureHook(editbox, 'OnShow', 'ChatEdit_PleaseUntaint')
+		CH:SecureHookScript(editbox, 'OnShow', 'ChatEdit_PleaseUntaint')
 	end
 
 	if editbox.OnHide then
-		CH:SecureHook(editbox, 'OnHide', 'ChatEdit_PleaseRetaint')
+		CH:SecureHookScript(editbox, 'OnHide', 'ChatEdit_PleaseRetaint')
 	end
 
 	--copy chat button
@@ -1161,7 +1163,7 @@ function CH:UpdateSettings()
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[frameName]
 		local editbox = chat and chat.editBox
-		if editbox then
+		if editbox then -- controls the character movement based on holding alt
 			editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 		end
 	end
@@ -2881,8 +2883,6 @@ function CH:AddLines(lines, ...)
 end
 
 function CH:ChatEdit_OnEnterPressed(editBox)
-	editBox:ClearHistory() -- we will use our own editbox history so keeping them populated on blizzards end is pointless
-
 	local chatType = editBox:GetAttribute('chatType')
 	local chatFrame = chatType and editBox:GetParent()
 	if chatFrame and (not chatFrame.isTemporary) and (_G.ChatTypeInfo[chatType].sticky == 1) then
@@ -2900,25 +2900,25 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	CH:UpdateEditboxFont(chatFrame)
 end
 
-function CH:ChatEdit_AddHistory(_, line)
-	local msg = line and strtrim(line)
+function CH:ChatEdit_AddHistory(editbox, line)
+	local lines = editbox.historyLines
+	local msg = lines and line and strtrim(line)
 	if not msg or strlen(msg) <= 0 then return end
 
 	local cmd = strmatch(msg, '^/%w+')
 	if cmd and IsSecureCmd(cmd) then return end -- block secure commands
 
-	local history = ElvCharacterDB.ChatEditHistory
-	for index, text in pairs(history) do
+	for index, text in pairs(lines) do
 		if text == msg then
-			tremove(history, index)
+			tremove(lines, index)
 			break
 		end
 	end
 
-	tinsert(history, msg)
+	tinsert(lines, msg)
 
-	if #history > CH.db.editboxHistorySize then
-		tremove(history, 1)
+	if #lines > CH.db.editboxHistorySize then
+		tremove(lines, 1)
 	end
 end
 

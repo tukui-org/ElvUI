@@ -55,6 +55,7 @@ local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
+local GetAddOnRestrictionState = C_RestrictedActions and C_RestrictedActions.GetAddOnRestrictionState
 local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
 local CreateCurve = C_CurveUtil and C_CurveUtil.CreateCurve
 local CreateColorCurve = C_CurveUtil and C_CurveUtil.CreateColorCurve
@@ -78,6 +79,7 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
+local AddOnRestrictionType = Enum.AddOnRestrictionType
 local LuaCurveTypeLinear = Enum.LuaCurveType and Enum.LuaCurveType.Linear
 local LuaCurveTypeStep = Enum.LuaCurveType and Enum.LuaCurveType.Step
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
@@ -1435,6 +1437,17 @@ function E:UnitIsDND(unit)
 	local dnd = UnitIsDND(unit)
 
 	return E:NotSecretValue(dnd) and dnd or nil
+end
+
+function E:CheckRestrictionState(which)
+	local ok, state = pcall(GetAddOnRestrictionState, AddOnRestrictionType[which] or which)
+	if not ok then return 0 end
+
+	return state
+end
+
+function E:IsChatRestricted()
+	return E:CheckRestrictionState('ChallengeMode') > 1 or E:CheckRestrictionState('Encounter') > 1
 end
 
 function E:LoadAPI()
