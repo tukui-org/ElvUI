@@ -738,56 +738,58 @@ do
 	end
 
 	local repeatedText
-	function CH:EditBoxOnTextChanged()
+	function CH:EditBoxOnTextChanged(userInput)
 		local text = self:GetText()
 		local len = strlen(text)
 
-		if CH.db.enableCombatRepeat and InCombatLockdown() and (not repeatedText or not strfind(text, repeatedText, 1, true)) then
-			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
-			if len > MIN_REPEAT_CHARACTERS then
-				local repeatChar = true
-				for i = 1, MIN_REPEAT_CHARACTERS do
-					local first = -1 - i
-					if strsub(text,-i,-i) ~= strsub(text,first,first) then
-						repeatChar = false
-						break
+		if userInput then
+			if CH.db.enableCombatRepeat and InCombatLockdown() and (not repeatedText or not strfind(text, repeatedText, 1, true)) then
+				local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
+				if len > MIN_REPEAT_CHARACTERS then
+					local repeatChar = true
+					for i = 1, MIN_REPEAT_CHARACTERS do
+						local first = -1 - i
+						if strsub(text,-i,-i) ~= strsub(text,first,first) then
+							repeatChar = false
+							break
+						end
 					end
-				end
-				if repeatChar then
-					repeatedText = text
-					self:Hide()
-					return
+					if repeatChar then
+						repeatedText = text
+						self:Hide()
+						return
+					end
 				end
 			end
-		end
 
-		if len == 4 then
-			if text == '/tt ' then
-				local Name, Realm = UnitName('target')
-				if Name then
-					Name = gsub(Name,'%s','')
+			if len == 4 then
+				if text == '/tt ' then
+					local Name, Realm = UnitName('target')
+					if Name then
+						Name = gsub(Name,'%s','')
 
-					if Realm and Realm ~= '' then
-						Name = format('%s-%s', Name, E:ShortenRealm(Realm))
+						if Realm and Realm ~= '' then
+							Name = format('%s-%s', Name, E:ShortenRealm(Realm))
+						end
 					end
-				end
 
-				if Name then
-					if _G.ChatFrameUtil and _G.ChatFrameUtil.SendTell then
-						_G.ChatFrameUtil.SendTell(Name, self.chatFrame)
+					if Name then
+						if _G.ChatFrameUtil and _G.ChatFrameUtil.SendTell then
+							_G.ChatFrameUtil.SendTell(Name, self.chatFrame)
+						else
+							_G.ChatFrame_SendTell(Name, self.chatFrame)
+						end
 					else
-						_G.ChatFrame_SendTell(Name, self.chatFrame)
+						_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
 					end
-				else
-					_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
-				end
-			elseif text == '/gr ' then
-				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
+				elseif text == '/gr ' then
+					self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
 
-				if self.ParseText then
-					self:ParseText(0)
-				else
-					_G.ChatEdit_ParseText(self, 0)
+					if self.ParseText then
+						self:ParseText(0)
+					else
+						_G.ChatEdit_ParseText(self, 0)
+					end
 				end
 			end
 		end
@@ -862,10 +864,12 @@ function CH:ChatEdit_UpdateHeader(editbox)
 end
 
 function CH:EditBoxOnKeyDown(key)
-	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
-	if (not self.historyLines) or #self.historyLines == 0 then
-		return
-	end
+	-- Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
+	local lines = self.historyLines
+	if not lines then return end
+
+	local maxLines = #lines
+	if maxLines == 0 then return end
 
 	if key == 'DOWN' then
 		self.historyIndex = self.historyIndex - 1
@@ -873,19 +877,24 @@ function CH:EditBoxOnKeyDown(key)
 		if self.historyIndex < 1 then
 			self.historyIndex = 0
 			self:SetText('')
+
 			return
 		end
 	elseif key == 'UP' then
 		self.historyIndex = self.historyIndex + 1
 
-		if self.historyIndex > #self.historyLines then
-			self.historyIndex = #self.historyLines
+		if self.historyIndex > maxLines then
+			self.historyIndex = maxLines
 		end
 	else
 		return
 	end
 
-	self:SetText(strtrim(self.historyLines[#self.historyLines - (self.historyIndex - 1)]))
+	local historyLine = maxLines - (self.historyIndex - 1)
+	local historyText = lines[historyLine]
+	if historyText then
+		self:SetText(historyText)
+	end
 end
 
 function CH:EditBoxFocusGained()
@@ -1067,7 +1076,7 @@ function CH:StyleChat(frame)
 
 	--[[ Don't need to do this since SetAltArrowKeyMode is broken, keep before AddHistory hook
 	for _, text in ipairs(editbox.historyLines) do
-			editbox:AddHistoryLine(text)
+		editbox:AddHistoryLine(text)
 	end]]
 
 	if editbox.AddHistoryLine then
@@ -2891,25 +2900,25 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	CH:UpdateEditboxFont(chatFrame)
 end
 
-function CH:ChatEdit_AddHistory(_, line) -- editBox, line
-	line = line and strtrim(line)
+function CH:ChatEdit_AddHistory(_, line)
+	local msg = line and strtrim(line)
+	if not msg or strlen(msg) <= 0 then return end
 
-	if line and strlen(line) > 0 then
-		local cmd = strmatch(line, '^/%w+')
-		if cmd and IsSecureCmd(cmd) then return end -- block secure commands from history
+	local cmd = strmatch(msg, '^/%w+')
+	if cmd and IsSecureCmd(cmd) then return end -- block secure commands
 
-		for index, text in pairs(ElvCharacterDB.ChatEditHistory) do
-			if text == line then
-				tremove(ElvCharacterDB.ChatEditHistory, index)
-				break
-			end
+	local history = ElvCharacterDB.ChatEditHistory
+	for index, text in pairs(history) do
+		if text == msg then
+			tremove(history, index)
+			break
 		end
+	end
 
-		tinsert(ElvCharacterDB.ChatEditHistory, line)
+	tinsert(history, msg)
 
-		if #ElvCharacterDB.ChatEditHistory > CH.db.editboxHistorySize then
-			tremove(ElvCharacterDB.ChatEditHistory, 1)
-		end
+	if #history > CH.db.editboxHistorySize then
+		tremove(history, 1)
 	end
 end
 
