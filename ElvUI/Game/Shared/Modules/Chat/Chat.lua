@@ -2845,9 +2845,10 @@ end
 function CH:ChatEdit_OnEnterPressed(editBox)
 	local chatType = editBox:GetAttribute('chatType')
 	local chatFrame = chatType and editBox:GetParent()
-	if chatFrame and (not chatFrame.isTemporary) and (_G.ChatTypeInfo[chatType].sticky == 1) then
-		if not CH.db.sticky then chatType = 'SAY' end
-		editBox:SetAttribute('chatType', chatType)
+	local allowed = chatFrame and not chatFrame.isTemporary and not CH.db.sticky
+	local info = allowed and _G.ChatTypeInfo[chatType]
+	if info and info.sticky == 1 then -- we only use this to unsticky
+		editBox:SetAttribute('chatType', 'SAY')
 	end
 end
 
