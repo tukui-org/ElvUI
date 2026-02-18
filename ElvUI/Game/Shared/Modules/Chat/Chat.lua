@@ -29,7 +29,6 @@ local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GMChatFrame_IsGM = GMChatFrame_IsGM
-local GMError = GMError
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
@@ -2420,30 +2419,24 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE_USER' then
-			local globalstring = _G['CHAT_'..arg1..'_NOTICE_BN']
-			if not globalstring then
-				globalstring = _G['CHAT_'..arg1..'_NOTICE']
-			end
-			if not globalstring then
-				GMError(format('Missing global string for %q', 'CHAT_'..arg1..'_NOTICE_BN'))
-				return
-			end
-			if arg5 ~= '' then
-				-- TWO users in this notice (E.G. x kicked y)
+			local globalstring = E:NotSecretValue(arg1) and (_G['CHAT_'..arg1..'_NOTICE_BN'] or _G['CHAT_'..arg1..'_NOTICE'])
+			if not globalstring then return end
+
+			if arg5 ~= '' then -- TWO users in this notice (E.G. x kicked y)
 				frame:AddMessage(format(globalstring, arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			elseif arg1 == 'INVITE' then
 				frame:AddMessage(format(globalstring, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			else
 				frame:AddMessage(format(globalstring, arg8, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
+
 			if arg1 == 'INVITE' and GetCVarBool('blockChannelInvites') then
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE' then
-			local accessID = CH:GetAccessID(chatGroup, arg8)
-			local typeID = CH:GetAccessID(infoType, arg8, arg12)
-
-			if E.Retail and arg1 == 'YOU_CHANGED' and GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
+			if E:IsSecretValue(arg1) then
+				return -- we cant get the globalstring because arg1 is secret
+			elseif E.Retail and arg1 == 'YOU_CHANGED' and (GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR) then
 				if frame.UpdateDefaultChatTarget then
 					frame:UpdateDefaultChatTarget()
 				else
@@ -2456,65 +2449,47 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					frame.editBox:UpdateNewcomerEditBoxHint(arg8)
 				end
 
-				local globalstring
-				if arg1 == 'TRIAL_RESTRICTED' then
-					globalstring = _G.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL
-				else
-					globalstring = _G['CHAT_'..arg1..'_NOTICE_BN']
-					if not globalstring then
-						globalstring = _G['CHAT_'..arg1..'_NOTICE']
-						if not globalstring then
-							GMError(format('Missing global string for %q', 'CHAT_'..arg1..'_NOTICE'))
-							return
-						end
-					end
-				end
+				local globalstring = _G['CHAT_'..arg1..'_NOTICE_TRIAL'] or _G['CHAT_'..arg1..'_NOTICE_BN'] or _G['CHAT_'..arg1..'_NOTICE']
+				if not globalstring then return end
 
+				local accessID = CH:GetAccessID(chatGroup, arg8)
+				local typeID = CH:GetAccessID(infoType, arg8, arg12)
 				frame:AddMessage(format(globalstring, arg8, ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_ALERT' then
-			if E:NotSecretValue(arg1) then
-				local globalstring = _G['BN_INLINE_TOAST_'..arg1]
-				if not globalstring then
-					GMError(format('Missing global string for %q', 'BN_INLINE_TOAST_'..arg1))
-					return
-				end
+			local globalstring = E:NotSecretValue(arg1) and _G['BN_INLINE_TOAST_'..arg1]
+			if not globalstring then return end
 
-				local message
-				if arg1 == 'FRIEND_REQUEST' then
-					message = globalstring
-				elseif arg1 == 'FRIEND_PENDING' then
-					message = format(_G.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites())
-				elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
-					message = format(globalstring, arg2)
-				elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
-					local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
-					local gameInfo = accountInfo and accountInfo.gameAccountInfo
-					if gameInfo and gameInfo.clientProgram and gameInfo.clientProgram ~= '' then
-						if GetTitleIconTexture then
-							GetTitleIconTexture(gameInfo.clientProgram, TitleIconVersion_Small, function(success, texture)
-								if success then
-									local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(gameInfo.characterName, accountInfo.battleTag, texture, 32, 32, 10)
-									local linkDisplayText = format('[%s] (%s)', arg2, charName)
-									local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-									frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+			local message
+			if arg1 == 'FRIEND_REQUEST' then
+				message = globalstring
+			elseif arg1 == 'FRIEND_PENDING' then
+				message = format(_G.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites())
+			elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
+				message = format(globalstring, arg2)
+			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
+				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
+				local gameInfo = accountInfo and accountInfo.gameAccountInfo
+				if gameInfo and gameInfo.clientProgram and gameInfo.clientProgram ~= '' then
+					if GetTitleIconTexture then
+						GetTitleIconTexture(gameInfo.clientProgram, TitleIconVersion_Small, function(success, texture)
+							if success then
+								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(gameInfo.characterName, accountInfo.battleTag, texture, 32, 32, 10)
+								local linkDisplayText = format('[%s] (%s)', arg2, charName)
+								local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+								frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 
-									if notChatHistory then
-										FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
-									end
+								if notChatHistory then
+									FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
 								end
-							end)
+							end
+						end)
 
-							return
-						else
-							local clientTexture = GetClientTexture(gameInfo.clientProgram, 14)
-							local charName = _G.BNet_GetValidatedCharacterName(gameInfo.characterName, accountInfo.battleTag, gameInfo.clientProgram) or ''
-							local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
-							local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-							message = format(globalstring, playerLink)
-						end
+						return
 					else
-						local linkDisplayText = format('[%s]', arg2)
+						local clientTexture = GetClientTexture(gameInfo.clientProgram, 14)
+						local charName = _G.BNet_GetValidatedCharacterName(gameInfo.characterName, accountInfo.battleTag, gameInfo.clientProgram) or ''
+						local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
 						local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 						message = format(globalstring, playerLink)
 					end
@@ -2523,9 +2498,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
 				end
-
-				frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+			else
+				local linkDisplayText = format('[%s]', arg2)
+				local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+				message = format(globalstring, playerLink)
 			end
+
+			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST' then
 			if E:NotSecretValue(arg1) and arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
@@ -3977,8 +3956,6 @@ function CH:FCF_Tab_OnClick(button)
 				return
 			elseif chat.chatType == 'PET_BATTLE_COMBAT_LOG' then
 				CH.FCF_Close(chat)
-			else
-				GMError(format('Unhandled temporary window type. chatType: %s, chatTarget %s', tostring(chat.chatType), tostring(chat.chatTarget)))
 			end
 		end
 	else
