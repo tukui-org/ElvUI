@@ -835,9 +835,9 @@ function CH:EditBoxOnKeyDown(key)
 	local lines = self.historyLines -- Code originally from Prat and modified by Simpy
 	if not lines then return end
 
-	-- Require holding alt when restricted: will use default editbox history
 	-- Override to allow using default editbox history for secure commands
-	if E:IsChatRestricted() or IsAltKeyDown() then return end
+	-- Require holding alt when restricted: will use default editbox history
+	if IsAltKeyDown() or E:IsChatRestricted() then return end
 
 	local maxLines = #lines
 	if maxLines == 0 then return end
