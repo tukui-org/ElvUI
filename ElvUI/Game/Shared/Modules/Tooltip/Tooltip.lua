@@ -93,6 +93,7 @@ local DND_LABEL = ' |cffFFFFFF[|r|cffFF3333'..L["DND"]..'|r|cffFFFFFF]|r'
 local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
 local blanchyFix = '|n%s*|n' -- thanks blizz -x- lol
 local whiteRGB = { r = 1, g = 1, b = 1, a = 1 }
+local FACTION_CUSTOM = Mixin({}, ColorMixin)
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -343,8 +344,12 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		local unitReaction = UnitReaction(unit, 'player')
-		local nameColor = unitReaction and ((TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]) or ElvUF.colors.reaction[unitReaction]) or PRIEST_COLOR
+		local factionColor = TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]
+		if factionColor then
+			FACTION_CUSTOM:SetRGB(factionColor.r, factionColor.g, factionColor.b)
+		end
 
+		local nameColor = unitReaction and ((factionColor and FACTION_CUSTOM) or ElvUF.colors.reaction[unitReaction]) or PRIEST_COLOR
 		if not isPetCompanion then
 			_G.GameTooltipTextLeft1:SetText(nameColor:WrapTextInColorCode(name or UNKNOWN))
 		end
@@ -479,8 +484,13 @@ function TT:AddTargetInfo(tt, unit)
 			local _, className = UnitClass(unitTarget)
 			targetColor = E:ClassColor(className) or PRIEST_COLOR
 		else
-			local reaction = UnitReaction(unitTarget, 'player')
-			targetColor = (TT.db.useCustomFactionColors and TT.db.factionColors[reaction]) or ElvUF.colors.reaction[reaction] or PRIEST_COLOR
+			local unitReaction = UnitReaction(unit, 'player')
+			local factionColor = TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]
+			if factionColor then
+				FACTION_CUSTOM:SetRGB(factionColor.r, factionColor.g, factionColor.b)
+			end
+
+			targetColor = (factionColor and FACTION_CUSTOM) or ElvUF.colors.reaction[unitReaction] or PRIEST_COLOR
 		end
 
 		local targetName = UnitName(unitTarget) or UNKNOWN
