@@ -3008,7 +3008,7 @@ do
 	}
 
 	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
-	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton' } do
+	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton', 'targetaura' } do
 		local object = CopyTable(defaults)
 
 		if key == 'global' then
@@ -3031,6 +3031,13 @@ do
 		elseif key == 'actionbar' then
 			object.threshold = 300
 			object.altBling = useAltBling
+		elseif key == 'targetaura' then
+			local color = object.colors.text
+			if color then
+				color.r, color.g, color.b = 1, 0.6, 0
+			end
+
+			object.minDuration = 3600
 		end
 
 		P.cooldown[key] = object

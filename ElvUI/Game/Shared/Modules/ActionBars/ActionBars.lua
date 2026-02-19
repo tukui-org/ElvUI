@@ -843,6 +843,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	if not AB.handledbuttons[button] then
 		E:RegisterCooldown(button.cooldown, 'actionbar')
 
+		if button.AuraCooldown then
+			E:RegisterCooldown(button.AuraCooldown, 'targetaura')
+		end
+
 		AB.handledbuttons[button] = true
 	end
 
@@ -1705,12 +1709,7 @@ function AB:StyleFlyout(button, arrow)
 	end
 end
 
-function AB:SetTargetAuraDuration(value)
-	LAB:SetTargetAuraDuration(value)
-end
-
 function AB:SetTargetAuraCooldowns(enabled)
-	--local enable, reverse = E.db.cooldown.enable, E.db.actionbar.cooldown.reverse
 	LAB:SetTargetAuraCooldowns(enabled)
 end
 
@@ -1998,8 +1997,7 @@ function AB:Initialize()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 
-	AB:SetTargetAuraDuration(3600) -- E.db.cooldown.targetAuraDuration
-	AB:SetTargetAuraCooldowns(true) -- E.db.cooldown.targetAura
+	AB:SetTargetAuraCooldowns(E.db.cooldown.targetaura.enable)
 
 	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')

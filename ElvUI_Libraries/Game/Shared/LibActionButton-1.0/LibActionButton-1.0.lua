@@ -40,6 +40,11 @@ local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
 local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
 local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
 
+local CopyTable = CopyTable
+local UnitIsFriend = UnitIsFriend
+local UnpackAuraData = AuraUtil.UnpackAuraData
+local GetAuraDataBySpellName = C_UnitAuras.GetAuraDataBySpellName
+local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetActionDisplayCount = C_ActionBar.GetActionDisplayCount
 local IsEquippedGearOutfitAction = C_ActionBar.IsEquippedGearOutfitAction
@@ -137,15 +142,8 @@ local ShowOverlayGlow, HideOverlayGlow
 local ClearChargeCooldown
 local UpdateRange -- Sezz
 
-local CopyTable = CopyTable
-local UnitIsFriend = UnitIsFriend
-local UnpackAuraData = AuraUtil.UnpackAuraData
-local GetAuraDataBySpellName = C_UnitAuras.GetAuraDataBySpellName
-local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
-
 local UpdateTargetAuras -- Simpy
 local TARGETAURA_ENABLED = true
-local TARGETAURA_DURATION = 0
 
 local RangeFont
 do -- properly support range symbol when it's shown ~Simpy
@@ -1896,7 +1894,7 @@ do
 		if not aura then return end
 
 		local _, _, _, _, duration, expiration = UnpackAuraData(aura)
-		local start = (duration and duration > 0 and duration <= TARGETAURA_DURATION) and (expiration - duration)
+		local start = (duration and duration > 0) and (expiration - duration)
 		return start, duration, expiration
 	end
 
@@ -1950,26 +1948,28 @@ do
 		end
 	end
 
-	function UpdateTargetAuras(event, arg1, updateInfo)
+	function UpdateTargetAuras(event, arg1, arg2)
 		local isFriend = UnitIsFriend('player', 'target')
-		if event == 'UNIT_AURA' and updateInfo and not updateInfo.isFullUpdate then
+		if event == 'UNIT_AURA' and arg2 and not arg2.isFullUpdate then
 			local filter = isFriend and 'HELPFUL' or 'HARMFUL'
-			ProcessTargetAuras('add', filter, updateInfo.addedAuras)
-			ProcessTargetAuras('update', filter, updateInfo.updatedAuraInstanceIDs)
-			ProcessTargetAuras('remove', filter, updateInfo.removedAuraInstanceIDs)
-		elseif event ~= 'SetTargetAuraCooldowns' or not arg1 then
+			ProcessTargetAuras('add', filter, arg2.addedAuras)
+			ProcessTargetAuras('update', filter, arg2.updatedAuraInstanceIDs)
+			ProcessTargetAuras('remove', filter, arg2.removedAuraInstanceIDs)
+		else
 			local previous = CopyTable(current, true) -- shallow copy
 
 			wipe(current) -- clear the current ones
 			wipe(auraInstances) -- keep this clean
 
-			local filter = isFriend and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
-			for spellName, buttons in next, AuraButtons.auras do
-				local aura = GetAuraDataBySpellName('target', spellName, filter)
-				if aura then -- collect what we can
-					auraInstances[aura.auraInstanceID] = aura
+			if event ~= 'SetTargetAuraCooldowns' or arg1 then
+				local filter = isFriend and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
+				for spellName, buttons in next, AuraButtons.auras do
+					local aura = GetAuraDataBySpellName('target', spellName, filter)
+					if aura then -- collect what we can
+						auraInstances[aura.auraInstanceID] = aura
 
-					CheckTargetAuraCooldown(aura, nil, buttons, previous)
+						CheckTargetAuraCooldown(aura, nil, buttons, previous)
+					end
 				end
 			end
 
@@ -1980,16 +1980,10 @@ do
 	end
 end
 
-function lib:SetTargetAuraDuration(value)
-	TARGETAURA_DURATION = value
-
-	UpdateTargetAuras('SetTargetAuraDuration')
-end
-
 function lib:SetTargetAuraCooldowns(enabled)
 	TARGETAURA_ENABLED = not WoWRetail and enabled
 
-	UpdateTargetAuras('SetTargetAuraCooldowns', not enabled)
+	UpdateTargetAuras('SetTargetAuraCooldowns', enabled)
 end
 
 -----------------------------------------------------------

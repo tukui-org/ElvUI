@@ -1,5 +1,6 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
+local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
 local function Group(order, db, label)
@@ -10,7 +11,14 @@ local function Group(order, db, label)
 	local lossOfControl = db ~= 'actionbar' and db ~= 'bossbutton'
 
 	local mainArgs = main.args
-	local colors = ACH:Group(L["Color"], nil, 10, nil, function(info) local t = E.db.cooldown[db].colors[info[#info]] local d = P.cooldown[db].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+	local targetAura = ACH:Group(L["Target Aura"], nil, 10, nil, function(info) return E.db.cooldown.targetaura[info[#info]] end, function(info, value) E.db.cooldown.targetaura[info[#info]] = value; E:CooldownSettings('targetaura'); end, nil, E.Retail or db ~= 'actionbar')
+	targetAura.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return E.db.cooldown.targetaura[info[#info]] end, function(info, value) E.db.cooldown.targetaura[info[#info]] = value; AB:SetTargetAuraCooldowns(value) end)
+	targetAura.args.minDuration = ACH:Range(L["Minimum Duration"], L["Minimum countdown duration (in milliseconds)."], 2, { min = 0, softMax = 5000, max = 60000, step = 1 })
+	targetAura.args.text = ACH:Color(L["Text Color"], nil, 1, nil, nil, function(info) local t = E.db.cooldown.targetaura.colors[info[#info]] local d = P.cooldown.targetaura.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.cooldown.targetaura.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings('targetaura'); end)
+	targetAura.inline = true
+	mainArgs.targetAuraGroup = targetAura
+
+	local colors = ACH:Group(L["Color"], nil, 20, nil, function(info) local t = E.db.cooldown[db].colors[info[#info]] local d = P.cooldown[db].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
 	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
 	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
 	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
@@ -22,7 +30,7 @@ local function Group(order, db, label)
 	colors.inline = true
 	mainArgs.colorGroup = colors
 
-	local general = ACH:Group(L["General"], nil, 20)
+	local general = ACH:Group(L["General"], nil, 30)
 	general.args.reverse = ACH:Toggle(L["Reverse"], L["Reverse the cooldown animation."], 1)
 	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 2)
 	general.args.chargeText = ACH:Toggle(L["Text: Charge"], L["The charge cooldown text."], 3, nil, nil, nil, nil, nil, nil, charges)
@@ -36,14 +44,14 @@ local function Group(order, db, label)
 	general.inline = true
 	mainArgs.generalGroup = general
 
-	local fonts = ACH:Group(L["Fonts"], nil, 30)
+	local fonts = ACH:Group(L["Fonts"], nil, 40)
 	fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 	fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 	fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 	fonts.inline = true
 	mainArgs.fontGroup = fonts
 
-	local position = ACH:Group(L["Text Position"], nil, 40)
+	local position = ACH:Group(L["Text Position"], nil, 50)
 	position.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPositions)
 	position.args.offsetX = ACH:Range(L["X-Offset"], nil, 2, { min = -50, max = 50, step = 1 })
 	position.args.offsetY = ACH:Range(L["Y-Offset"], nil, 3, { min = -50, max = 50, step = 1 })

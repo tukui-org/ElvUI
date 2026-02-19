@@ -77,13 +77,18 @@ function E:CooldownUpdate(cooldown)
 	E:CooldownText(data.lossOfControl, db, not db.locText)
 
 	local colors = db.colors
-	local aurabars = data.which == 'aurabars' and 0 or nil
-	E:CooldownColors(cooldown, colors.edge, colors.swipe, aurabars)
+	local target = data.which == 'targetaura'
+	local aurabars = data.which == 'aurabars'
+
+	local exclude = target or aurabars
+	local invisible = exclude and 0 or nil
+
+	E:CooldownColors(cooldown, colors.edge, colors.swipe, invisible)
 	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
 	E:CooldownColors(data.lossOfControl, colors.edgeLOC, colors.swipeLOC)
 
 	--cooldown:SetRotation(rad(db.rotation))
-	cooldown:SetDrawBling(not aurabars and not db.hideBling)
+	cooldown:SetDrawBling(not exclude and not db.hideBling)
 	cooldown:SetReverse(db.reverse)
 end
 
