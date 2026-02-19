@@ -50,8 +50,8 @@ function Private.validateUnit(unit)
 	local ok = pcall(UnitHealth, unit)
 	if not ok then return end
 
-	local isOK, _ = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
-	if not isOK then return end
+	local success = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
+	if not success then return end
 
 	local _, unit1 = validator:IsEventRegistered('UNIT_HEALTH')
 	validator:UnregisterEvent('UNIT_HEALTH')
