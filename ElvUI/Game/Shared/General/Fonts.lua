@@ -129,9 +129,11 @@ function E:UpdateBlizzardFonts()
 		local LARGE = LSM:Fetch('font', db.nameplateLargeFont)
 
 		E:SetFont(_G.SystemFont_NamePlate,				PLATE, db.nameplateFontSize,		db.nameplateFontOutline)		-- 9
-		E:SetFont(_G.SystemFont_NamePlateFixed,			PLATE, db.nameplateFontSize,		db.nameplateFontOutline)		-- 9
+		E:SetFont(_G.SystemFont_NamePlateFixed,			PLATE, db.nameplateFontSize,		db.nameplateFontOutline)		-- 14
+		E:SetFont(_G.SystemFont_NamePlateCastBar,		PLATE, db.nameplateFontSize,		db.nameplateFontOutline)		-- 10
+		E:SetFont(_G.SystemFont_NamePlate_Outlined,		PLATE, db.nameplateFontSize,		db.nameplateFontOutline)		-- 9
 		E:SetFont(_G.SystemFont_LargeNamePlate,			LARGE, db.nameplateLargeFontSize,	db.nameplateLargeFontOutline)	-- 12
-		E:SetFont(_G.SystemFont_LargeNamePlateFixed,	LARGE, db.nameplateLargeFontSize,	db.nameplateLargeFontOutline)	-- 12
+		E:SetFont(_G.SystemFont_LargeNamePlateFixed,	LARGE, db.nameplateLargeFontSize,	db.nameplateLargeFontOutline)	-- 20
 	end
 
 	-- advanced fonts
