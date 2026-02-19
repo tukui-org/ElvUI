@@ -508,6 +508,11 @@ function S:Blizzard_HousingModelPreview()
 		local ModelPreview = PreviewFrame.ModelPreview
 		if ModelPreview then
 			ModelPreview:StripTextures()
+
+			local ModelSceneControls = ModelPreview.ModelSceneControls
+			if ModelSceneControls then
+				S:HandleModelSceneControlButtons(ModelSceneControls)
+			end
 		end
 	end
 end
