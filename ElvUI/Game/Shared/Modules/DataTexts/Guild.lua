@@ -243,9 +243,9 @@ local function OnEnter(_, _, noUpdate)
 	DT.tooltip:ClearLines()
 
 	local shiftDown = IsShiftKeyDown()
-	local total, _, online = GetNumGuildMembers()
+	local total, mobile, online = GetNumGuildMembers() -- mobile arg was removed in 10.2
+	if not online then online = mobile or 0 end
 	if not total then total = 0 end
-	if not online then online = 0 end
 
 	if #guildTable == 0 then BuildGuildTable() end
 
