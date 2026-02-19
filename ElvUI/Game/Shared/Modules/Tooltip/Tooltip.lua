@@ -484,7 +484,7 @@ function TT:AddTargetInfo(tt, unit)
 			local _, className = UnitClass(unitTarget)
 			targetColor = E:ClassColor(className) or PRIEST_COLOR
 		else
-			local unitReaction = UnitReaction(unit, 'player')
+			local unitReaction = UnitReaction(unitTarget, 'player')
 			local factionColor = TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]
 			if factionColor then
 				FACTION_CUSTOM:SetRGB(factionColor.r, factionColor.g, factionColor.b)
