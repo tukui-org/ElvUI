@@ -16,8 +16,6 @@ local UnitIsVisible = UnitIsVisible
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
 
-local validator = CreateFrame('Frame')
-
 function Private.argcheck(value, num, ...)
 	assert(type(num) == 'number', "Bad argument #2 to 'argcheck' (number expected, got " .. type(num) .. ')')
 
@@ -46,35 +44,38 @@ function Private.unitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
-function Private.validateUnit(unit)
-	local ok = pcall(UnitHealth, unit)
-	if not ok then return end
+do
+	local validator = CreateFrame('Frame')
+	function Private.validateUnit(unit)
+		local ok = pcall(UnitHealth, unit)
+		if not ok then return end
 
-	local success = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
-	if not success then return end
+		local success = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
+		if not success then return end
 
-	local _, unit1 = validator:IsEventRegistered('UNIT_HEALTH')
-	validator:UnregisterEvent('UNIT_HEALTH')
+		local _, unit1 = validator:IsEventRegistered('UNIT_HEALTH')
+		validator:UnregisterEvent('UNIT_HEALTH')
 
-	return not not unit1
-end
-
-function Private.validateEvent(event)
-	local isOK = xpcall(validator.RegisterEvent, Private.nierror, validator, event)
-	if(isOK) then
-		validator:UnregisterEvent(event)
+		return not not unit1
 	end
 
-	return isOK
-end
+	function Private.validateEvent(event)
+		local isOK = xpcall(validator.RegisterEvent, Private.nierror, validator, event)
+		if(isOK) then
+			validator:UnregisterEvent(event)
+		end
 
-function Private.isUnitEvent(event, unit)
-	local isOK = pcall(validator.RegisterUnitEvent, validator, event, unit)
-	if(isOK) then
-		validator:UnregisterEvent(event)
+		return isOK
 	end
 
-	return isOK
+	function Private.isUnitEvent(event, unit)
+		local isOK = pcall(validator.RegisterUnitEvent, validator, event, unit)
+		if(isOK) then
+			validator:UnregisterEvent(event)
+		end
+
+		return isOK
+	end
 end
 
 do
