@@ -3032,12 +3032,12 @@ do
 			object.threshold = 300
 			object.altBling = useAltBling
 		elseif key == 'targetaura' then
+			object.threshold = 300
+
 			local color = object.colors.text
 			if color then
 				color.r, color.g, color.b = 1, 0.6, 0
 			end
-
-			object.minDuration = 36e5 -- 1 hr
 		end
 
 		P.cooldown[key] = object

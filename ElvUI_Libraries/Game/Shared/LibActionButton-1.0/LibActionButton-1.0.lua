@@ -143,7 +143,7 @@ local ClearChargeCooldown
 local UpdateRange -- Sezz
 
 local UpdateTargetAuras -- Simpy
-local TARGETAURA_ENABLED = true
+local TARGETAURA_ENABLED = false
 
 local RangeFont
 do -- properly support range symbol when it's shown ~Simpy
@@ -1475,8 +1475,6 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("TRADE_SKILL_CLOSE")
 	lib.eventFrame:RegisterEvent("TRADE_CLOSED")
 
-	lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
-	lib.eventFrame:RegisterUnitEvent("UNIT_FACTION", "target")
 	lib.eventFrame:RegisterUnitEvent("UNIT_INVENTORY_CHANGED", "player")
 	lib.eventFrame:RegisterUnitEvent("UNIT_MODEL_CHANGED", "player")
 
@@ -1513,6 +1511,9 @@ function InitializeEventHandler()
 		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
 		lib.eventFrame:RegisterEvent("ACTION_RANGE_CHECK_UPDATE")
 	else
+		lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
+		lib.eventFrame:RegisterUnitEvent("UNIT_FACTION", "target")
+
 		lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
 		lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID") -- Needed for classics show grid.. ACTIONBAR_SHOWGRID fires with PET_BAR_SHOWGRID but ACTIONBAR_HIDEGRID doesn't fire with PET_BAR_HIDEGRID
 	end
@@ -1981,9 +1982,11 @@ do
 end
 
 function lib:SetTargetAuraCooldowns(enabled)
-	TARGETAURA_ENABLED = not WoWRetail and enabled
+	local activate = not WoWRetail and enabled
 
-	UpdateTargetAuras('SetTargetAuraCooldowns', enabled)
+	TARGETAURA_ENABLED = activate
+
+	UpdateTargetAuras('SetTargetAuraCooldowns', activate)
 end
 
 -----------------------------------------------------------
