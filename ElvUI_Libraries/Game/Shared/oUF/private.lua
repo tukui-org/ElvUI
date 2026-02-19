@@ -16,6 +16,8 @@ local UnitIsVisible = UnitIsVisible
 local UnitSelectionType = UnitSelectionType
 local UnitThreatSituation = UnitThreatSituation
 
+local validator = CreateFrame('Frame')
+
 function Private.argcheck(value, num, ...)
 	assert(type(num) == 'number', "Bad argument #2 to 'argcheck' (number expected, got " .. type(num) .. ')')
 
@@ -43,8 +45,6 @@ end
 function Private.unitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
-
-local validator = CreateFrame('Frame')
 
 function Private.validateUnit(unit)
 	local ok = pcall(UnitHealth, unit)
@@ -77,15 +77,17 @@ function Private.isUnitEvent(event, unit)
 	return isOK
 end
 
-local validSelectionTypes = {}
-for _, selectionType in next, oUF.Enum.SelectionType do
-	validSelectionTypes[selectionType] = selectionType
-end
+do
+	local validSelectionTypes = {}
+	for _, selectionType in next, oUF.Enum.SelectionType do
+		validSelectionTypes[selectionType] = selectionType
+	end
 
-function Private.unitSelectionType(unit, considerHostile)
-	if(considerHostile and UnitThreatSituation('player', unit)) then
-		return 0
-	else
-		return validSelectionTypes[UnitSelectionType(unit, true)]
+	function Private.unitSelectionType(unit, considerHostile)
+		if(considerHostile and UnitThreatSituation('player', unit)) then
+			return 0
+		else
+			return validSelectionTypes[UnitSelectionType(unit, true)]
+		end
 	end
 end
