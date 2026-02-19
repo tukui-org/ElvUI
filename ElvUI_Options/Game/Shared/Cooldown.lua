@@ -13,7 +13,7 @@ local function Group(order, db, label)
 	local mainArgs = main.args
 	local targetAura = ACH:Group(L["Target Aura"], nil, 10, nil, function(info) return E.db.cooldown.targetaura[info[#info]] end, function(info, value) E.db.cooldown.targetaura[info[#info]] = value; E:CooldownSettings('targetaura'); end, nil, E.Retail or db ~= 'actionbar')
 	targetAura.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return E.db.cooldown.targetaura[info[#info]] end, function(info, value) E.db.cooldown.targetaura[info[#info]] = value; AB:SetTargetAuraCooldowns(value) end)
-	targetAura.args.minDuration = ACH:Range(L["Minimum Duration"], L["Minimum countdown duration (in milliseconds)."], 2, { min = 0, softMax = 5000, max = 60000, step = 1 })
+	targetAura.args.minDuration = ACH:Range(L["Minimum Duration"], L["Minimum countdown duration (in milliseconds)."], 2, { min = 0, softMax = 18e5, max = 864e5, step = 1 })
 	targetAura.args.text = ACH:Color(L["Text Color"], nil, 1, nil, nil, function(info) local t = E.db.cooldown.targetaura.colors[info[#info]] local d = P.cooldown.targetaura.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.cooldown.targetaura.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings('targetaura'); end)
 	targetAura.inline = true
 	mainArgs.targetAuraGroup = targetAura
@@ -39,7 +39,7 @@ local function Group(order, db, label)
 	general.args.altBling = ACH:Toggle(L["Alternative Bling"], nil, 12)
 	general.args.spacer1 = ACH:Spacer(20, 'full', db == 'actionbar' or db == 'bossbutton')
 	general.args.threshold = ACH:Range(L["Threshold"], L["Abbreviation threshold (in seconds)."], 21, { min = 0, softMax = 3600, max = 86400, step = 1 })
-	general.args.minDuration = ACH:Range(L["Minimum Duration"], L["Minimum countdown duration (in milliseconds)."], 22, { min = 0, softMax = 5000, max = 60000, step = 1 })
+	general.args.minDuration = ACH:Range(L["Minimum Duration"], L["Minimum countdown duration (in milliseconds)."], 22, { min = 0, softMax = 18e5, max = 864e5, step = 1 })
 	-- general.args.rotation = ACH:Range(L["Rotation"], L["Rotates the entire cooldown clockwise."], 23, { min = 0, max = 360, step = 1 })
 	general.inline = true
 	mainArgs.generalGroup = general

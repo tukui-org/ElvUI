@@ -3037,7 +3037,7 @@ do
 				color.r, color.g, color.b = 1, 0.6, 0
 			end
 
-			object.minDuration = 3600
+			object.minDuration = 36e5 -- 1 hr
 		end
 
 		P.cooldown[key] = object
