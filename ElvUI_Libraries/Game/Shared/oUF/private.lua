@@ -10,6 +10,7 @@ local strjoin, format = strjoin, format
 local geterrorhandler = geterrorhandler
 local debugstack = debugstack
 
+local UnitHealth = UnitHealth
 local UnitExists = UnitExists
 local UnitIsVisible = UnitIsVisible
 local UnitSelectionType = UnitSelectionType
@@ -46,13 +47,16 @@ end
 local validator = CreateFrame('Frame')
 
 function Private.validateUnit(unit)
-	local isOK, _ = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
-	if(isOK) then
-		_, unit = validator:IsEventRegistered('UNIT_HEALTH')
-		validator:UnregisterEvent('UNIT_HEALTH')
+	local ok = pcall(UnitHealth, unit)
+	if not ok then return end
 
-		return not not unit
-	end
+	local isOK, _ = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
+	if not isOK then return end
+
+	local _, unit1 = validator:IsEventRegistered('UNIT_HEALTH')
+	validator:UnregisterEvent('UNIT_HEALTH')
+
+	return not not unit1
 end
 
 function Private.validateEvent(event)

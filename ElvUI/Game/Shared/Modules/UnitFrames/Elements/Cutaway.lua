@@ -57,6 +57,7 @@ function UF:Configure_Cutaway(frame)
 		end
 
 		frame.Cutaway:UpdateConfigurationValues(db)
+
 		local health = frame.Cutaway.Health
 		if health and healthEnabled then
 			local point1, point2 = UF:GetPoints_Cutaway(frame.db.health)
