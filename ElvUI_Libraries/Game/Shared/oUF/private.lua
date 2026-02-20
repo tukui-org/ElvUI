@@ -45,7 +45,7 @@ function Private.unitExists(unit)
 end
 
 function Private.validateToken(unit)
-	return pcall(UnitHealth, unit) and unit
+	return pcall(UnitHealth, unit) and unit or nil
 end
 
 do

@@ -66,7 +66,7 @@ function Private.UpdateUnits(frame, unit, realUnit)
 		end
 
 		frame.realUnit = realUnit
-		frame.unit = validateToken(unit) or nil
+		frame.unit = validateToken(unit)
 		frame.id = unit:match('^.-(%d+)')
 
 		return true
