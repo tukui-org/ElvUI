@@ -658,11 +658,7 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
 	local _, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
-	if perc then
-		bar.Text:SetFormattedText('%d', perc)
-	else
-		bar.Text:SetText('')
-	end
+	bar.Text:SetText(perc or '')
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
