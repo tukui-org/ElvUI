@@ -44,12 +44,13 @@ function Private.unitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
+function Private.validateToken(unit)
+	return pcall(UnitHealth, unit) and unit
+end
+
 do
 	local validator = CreateFrame('Frame')
 	function Private.validateUnit(unit)
-		local ok = pcall(UnitHealth, unit)
-		if not ok then return end
-
 		local success = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
 		if not success then return end
 
