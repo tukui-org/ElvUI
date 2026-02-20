@@ -10,7 +10,6 @@ local strjoin, format = strjoin, format
 local geterrorhandler = geterrorhandler
 local debugstack = debugstack
 
-local UnitHealth = UnitHealth
 local UnitExists = UnitExists
 local UnitIsVisible = UnitIsVisible
 local UnitSelectionType = UnitSelectionType
