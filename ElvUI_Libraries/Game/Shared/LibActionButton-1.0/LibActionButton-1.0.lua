@@ -1899,6 +1899,14 @@ do
 		return start, duration, expiration
 	end
 
+	local function HasActiveCooldown(button)
+		local _, duration = button:GetCooldown()
+		if duration and duration > 0 then return true end
+
+		local _, _, chargeDuration = button:GetCharges()
+		if chargeDuration and chargeDuration > 0 then return true end
+	end
+
 	local function CheckTargetAuraCooldown(aura, filter, buttons, previous)
 		local allow = CheckAuraFilter(aura, filter)
 		if not allow then return end
@@ -1910,12 +1918,14 @@ do
 		if not start then return end
 
 		for _, button in next, buttons do
-			button.AuraCooldown:SetCooldown(start, duration, 1)
+			if not HasActiveCooldown(button) then
+				button.AuraCooldown:SetCooldown(start, duration, 1)
 
-			current[button] = true
+				current[button] = true
 
-			if previous then
-				previous[button] = nil
+				if previous then
+					previous[button] = nil
+				end
 			end
 		end
 	end
@@ -2359,7 +2369,9 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 		return
 	end
 
-	parent.chargeCooldown = parent.chargeCooldown or CreateChargeCooldownFrame(parent)
+	if not parent.chargeCooldown then
+		parent.chargeCooldown = CreateChargeCooldownFrame(parent)
+	end
 
 	CooldownFrame_Set(parent.chargeCooldown, chargeStart, chargeDuration, true, true, chargeModRate)
 
