@@ -44,10 +44,6 @@ function Private.unitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
-function Private.validateToken(unit)
-	return pcall(UnitHealth, unit) and unit or nil
-end
-
 do
 	local validator = CreateFrame('Frame')
 	function Private.validateUnit(unit)
