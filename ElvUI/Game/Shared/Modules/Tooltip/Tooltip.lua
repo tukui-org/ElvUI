@@ -43,6 +43,7 @@ local UnitGUID = UnitGUID
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UnitHealthPercent = UnitHealthPercent
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
@@ -59,7 +60,6 @@ local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
-local UnitHealthPercent = UnitHealthPercent
 
 local TooltipDataType = Enum.TooltipDataType
 local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
@@ -657,8 +657,9 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
-	if unit then
-		bar.Text:SetFormattedText('%d', UnitHealthPercent(unit, true, ScaleTo100))
+	local _, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
+	if perc then
+		bar.Text:SetFormattedText('%d', perc)
 	else
 		bar.Text:SetText('')
 	end
