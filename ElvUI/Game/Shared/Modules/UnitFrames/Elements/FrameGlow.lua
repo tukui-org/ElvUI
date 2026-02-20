@@ -294,7 +294,7 @@ function UF:FrameGlow_CheckUnit(frame, element, setting, color, glowEnabled, fra
 
 	local unit = frame.unit or (frame.isForced and 'player')
 	local source = E:NotSecretValue(unit) and unit
-	local target = UnitIsUnit(source, strsub(setting, 0, -5))
+	local target = source and UnitIsUnit(source, strsub(setting, 0, -5))
 	if E:NotSecretValue(target) and target and (glowEnabled and not frameDisabled) then
 		if color then
 			UF:FrameGlow_SetGlowColor(element, source, setting)
