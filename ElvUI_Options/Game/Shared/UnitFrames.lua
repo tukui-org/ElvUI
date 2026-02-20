@@ -630,7 +630,7 @@ local function CreateCustomTextGroup(unit, objectName)
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 8, { min = -400, max = 400, step = 1 })
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 9, attachToValues)
 	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, TEXT_FORMAT_WIDTH)
-	config.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units[unit].customTexts[objectName].text_format = P.unitframe.units[unit].customTexts[objectName].text_format UpdateCustomTextGroup(unit) end)
+	config.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units[unit].customTexts[objectName].text_format = '' UpdateCustomTextGroup(unit) end)
 
 	if unit == 'player' then
 		config.args.attachTextTo.values.AdditionalPower = UF.player.AdditionalPower and L["Additional Power"] or nil
