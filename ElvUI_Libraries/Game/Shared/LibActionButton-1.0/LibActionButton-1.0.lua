@@ -1904,7 +1904,7 @@ do
 		local _, duration = button:GetCooldown()
 		if duration and duration > GCD then return true end
 
-		local _, _, chargeDuration = button:GetCharges()
+		local _, _, _, chargeDuration = button:GetCharges()
 		if chargeDuration and chargeDuration > GCD then return true end
 	end
 
