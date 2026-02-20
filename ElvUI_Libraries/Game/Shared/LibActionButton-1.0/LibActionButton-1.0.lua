@@ -1899,12 +1899,13 @@ do
 		return start, duration, expiration
 	end
 
+	local GCD = 1.5
 	local function HasActiveCooldown(button)
 		local _, duration = button:GetCooldown()
-		if duration and duration > 0 then return true end
+		if duration and duration > GCD then return true end
 
 		local _, _, chargeDuration = button:GetCharges()
-		if chargeDuration and chargeDuration > 0 then return true end
+		if chargeDuration and chargeDuration > GCD then return true end
 	end
 
 	local function CheckTargetAuraCooldown(aura, filter, buttons, previous)
