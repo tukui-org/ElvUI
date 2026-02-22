@@ -85,6 +85,8 @@ local SPELL_SHRED = 5221
 
 local next = next
 local floor = floor
+local pcall = pcall
+
 local GetTime = GetTime
 local UnitPower = UnitPower
 local UnitIsUnit = UnitIsUnit
@@ -272,7 +274,15 @@ local function Update(self, element, event, unit, powerType)
 		end
 
 		if not maximum then
-			powerMax = ClassPowerMax[classPowerID] or UnitPowerMax(unit, powerID, warlockDest)
+			powerMax = ClassPowerMax[classPowerID]
+
+			if not powerMax then
+				local okMax, max = pcall(UnitPowerMax, unit, powerID, warlockDest)
+				if okMax then
+					powerMax = max
+				end
+			end
+
 			maximum = (classPowerID == POWERTYPE_MANA and 1) or powerMax or 0
 		end
 

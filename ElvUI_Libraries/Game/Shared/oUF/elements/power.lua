@@ -86,6 +86,7 @@ local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
 
+local pcall = pcall
 local unpack = unpack
 
 local UnitClass = UnitClass
@@ -254,8 +255,12 @@ local function Update(self, event, unit)
 		displayType, min = element:GetDisplayPower(unit)
 	end
 
-	local cur, max = UnitPower(unit, displayType), UnitPowerMax(unit, displayType)
+	local okCur, cur = pcall(UnitPower, unit, displayType)
+	local okMax, max = pcall(UnitPowerMax, unit, displayType)
+
 	if not min then min = 0 end
+	if not okCur then cur = 1 end
+	if not okMax then max = 1 end
 
 	element:SetMinMaxValues(min, max)
 

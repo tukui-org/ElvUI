@@ -76,7 +76,7 @@ local validateUnit = Private.validateUnit
 local _G = _G
 
 local wipe, rawset, tonumber = wipe, rawset, tonumber
-local format, tinsert, floor = format, tinsert, floor
+local pcall, format, tinsert, floor = pcall, format, tinsert, floor
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
@@ -320,7 +320,10 @@ tagFunctions.level = function(u)
 end
 
 tagFunctions.maxmana = function(unit)
-	return UnitPowerMax(unit, POWERTYPE_MANA)
+	local okMana, maxMana = pcall(UnitPowerMax, unit, POWERTYPE_MANA)
+	if okMana then
+		return maxMana
+	end
 end
 
 tagFunctions.missinghp = function(u)

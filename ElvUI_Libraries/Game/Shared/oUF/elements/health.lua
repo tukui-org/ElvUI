@@ -95,6 +95,7 @@ local Private = oUF.Private
 local unitSelectionType = Private.unitSelectionType
 
 local gsub = gsub
+local pcall = pcall
 local unpack = unpack
 
 local GetPetHappiness = GetPetHappiness
@@ -199,7 +200,12 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local cur, max = UnitHealth(unit), UnitHealthMax(unit)
+	local okCur, cur = pcall(UnitHealth, unit)
+	local okMax, max = pcall(UnitHealthMax, unit)
+
+	if not okCur then cur = 1 end
+	if not okMax then max = 1 end
+
 	element:SetMinMaxValues(0, max)
 
 	if(UnitIsConnected(unit)) then

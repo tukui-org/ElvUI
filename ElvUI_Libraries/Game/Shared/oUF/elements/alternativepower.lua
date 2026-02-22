@@ -57,6 +57,7 @@ local Private = oUF.Private
 local unitSelectionType = Private.unitSelectionType
 
 local _G = _G
+local pcall = pcall
 local unpack = unpack
 
 local GameTooltip = GameTooltip
@@ -168,11 +169,14 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate()
 	end
 
-	local min, max, cur = 0
+	local min, max, cur, okCur, okMax = 0
 	local barInfo = element.__barInfo
 	if(barInfo) then
-		cur = UnitPower(unit, ALTERNATE_POWER_INDEX)
-		max = UnitPowerMax(unit, ALTERNATE_POWER_INDEX)
+		okCur, cur = pcall(UnitPower, unit, ALTERNATE_POWER_INDEX)
+		okMax, max = pcall(UnitPowerMax, unit, ALTERNATE_POWER_INDEX)
+
+		if not okCur then cur = 1 end
+		if not okMax then max = 1 end
 
 		if barInfo.minPower then
 			min = barInfo.minPower
