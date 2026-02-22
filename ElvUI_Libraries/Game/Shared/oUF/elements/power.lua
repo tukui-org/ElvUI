@@ -141,7 +141,7 @@ local function UpdateColor(self, event, unit)
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorPower) then
-		local okType, pType, pToken, altR, altG, altB = UnitPowerType(unit)
+		local okType, pType, pToken, altR, altG, altB = pcall(UnitPowerType, unit)
 		if(element.displayType) then
 			color = self.colors.power[element.displayType]
 		end

@@ -82,7 +82,7 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local okType, mainType = UnitPowerType(unit)
+	local okType, mainType = pcall(UnitPowerType, unit)
 	local powerType = okType and mainType or 0
 
 	local okMax, mainMax = pcall(UnitPowerMax, unit, powerType)

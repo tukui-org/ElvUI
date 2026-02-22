@@ -392,7 +392,7 @@ tagFunctions.plus = function(u)
 end
 
 tagFunctions.powercolor = function(u)
-	local okType, pType, pToken, altR, altG, altB = UnitPowerType(u)
+	local okType, pType, pToken, altR, altG, altB = pcall(UnitPowerType, u)
 	local color = _COLORS.power[pToken]
 
 	if(not color) then
