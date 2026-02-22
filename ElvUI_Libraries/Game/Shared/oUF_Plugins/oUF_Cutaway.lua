@@ -10,7 +10,9 @@ local oUF = ns.oUF
 -- GLOBALS: ElvUI
 
 local max = math.max
+local pcall = pcall
 local assert = assert
+
 local hooksecurefunc = hooksecurefunc
 local UnitHealthMax = UnitHealthMax
 local UnitPowerMax = UnitPowerMax
