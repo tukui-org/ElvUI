@@ -90,7 +90,7 @@ local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
-local UIErrorsFrame = UIErrorsFrame
+
 -- GLOBALS: ElvDB
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
@@ -1045,7 +1045,7 @@ end
 
 do
 	local function NoCombat()
-		UIErrorsFrame:AddMessage(ERR_NOT_IN_COMBAT, 1.0, 0.2, 0.2, 1.0)
+		_G.UIErrorsFrame:AddMessage(ERR_NOT_IN_COMBAT, 1.0, 0.2, 0.2, 1.0)
 	end
 
 	function E:PLAYER_REGEN_DISABLED()
