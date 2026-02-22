@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local ElvUF = E.oUF
 
 local _G = _G
 local random = random
@@ -226,6 +227,11 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	if powerUpdate then return end -- we dont need to redo this stuff, power updated it
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true, UF.db.colors.invertHealth, db.health and db.health.reverseFill)
+
+	if not frame.unit then -- this is a unit token failure case
+		local color = ElvUF.colors.health
+		UF:SetStatusBarColor(health, color.r, color.g, color.b)
+	end
 
 	UF:Configure_FrameGlow(frame)
 

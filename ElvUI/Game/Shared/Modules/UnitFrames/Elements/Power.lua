@@ -249,6 +249,11 @@ function UF:Configure_Power(frame, healthUpdate)
 	frame.Power.custom_backdrop = UF.db.colors.custompowerbackdrop and UF.db.colors.power_backdrop
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg, nil, UF.db.colors.invertPower, db.power.reverseFill)
+
+	if not frame.unit then -- this is a unit token failure case
+		local color = ElvUF.colors.power.MANA
+		UF:SetStatusBarColor(power, color.r, color.g, color.b)
+	end
 end
 
 function UF:GetDisplayPower(unit)
