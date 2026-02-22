@@ -2052,11 +2052,27 @@ function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, sta
 	end
 end
 
+function UF.StatusBarBackdropColor(frame)
+	frame:SetBackdropColor(0, 0, 0, 1)
+end
+
 function UF:HandleStatusBarTemplate(statusBar, parent, isTransparent)
+	local frame
 	if statusBar.backdrop then
-		statusBar.backdrop:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+		frame = statusBar.backdrop
 	elseif parent.template then
-		parent:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+		frame = parent
+	end
+
+	if frame then
+		frame:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+
+		if not isTransparent then
+			frame:SetBackdropColor(0, 0, 0, 1)
+			frame.callbackBackdropColor = UF.StatusBarBackdropColor
+		else
+			frame.callbackBackdropColor = nil
+		end
 	end
 end
 
