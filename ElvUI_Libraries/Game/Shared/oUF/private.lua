@@ -10,6 +10,7 @@ local strjoin, format = strjoin, format
 local geterrorhandler = geterrorhandler
 local debugstack = debugstack
 
+local UnitHealth = UnitHealth
 local UnitExists = UnitExists
 local UnitIsVisible = UnitIsVisible
 local UnitSelectionType = UnitSelectionType
@@ -41,6 +42,10 @@ end
 
 function Private.unitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
+end
+
+function Private.validateToken(unit)
+	return pcall(UnitHealth, unit) and unit or nil
 end
 
 do
