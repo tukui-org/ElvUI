@@ -132,6 +132,10 @@ end
 
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
+
+	local okTap, tapDenied = pcall(UnitIsTapDenied, unit)
+	if not okTap or tapDenied then return end
+
 	local GetPowerMax = element.GetPowerMax or UnitPowerMax
 	local maxV = GetPowerMax(unit)
 	if Shared_UpdateCheckReturn(self, element, PRE, nil, maxV, unit) then
