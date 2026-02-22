@@ -392,7 +392,7 @@ tagFunctions.plus = function(u)
 end
 
 tagFunctions.powercolor = function(u)
-	local pType, pToken, altR, altG, altB = UnitPowerType(u)
+	local okType, pType, pToken, altR, altG, altB = UnitPowerType(u)
 	local color = _COLORS.power[pToken]
 
 	if(not color) then
@@ -403,7 +403,7 @@ tagFunctions.powercolor = function(u)
 				return Hex(altR, altG, altB)
 			end
 		else
-			return Hex(_COLORS.power[pType] or _COLORS.power.MANA)
+			return Hex((okType and _COLORS.power[pType]) or _COLORS.power.MANA)
 		end
 	end
 

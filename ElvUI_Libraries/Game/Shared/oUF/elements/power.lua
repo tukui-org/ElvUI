@@ -141,7 +141,7 @@ local function UpdateColor(self, event, unit)
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorPower) then
-		local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+		local okType, pType, pToken, altR, altG, altB = UnitPowerType(unit)
 		if(element.displayType) then
 			color = self.colors.power[element.displayType]
 		end
@@ -149,7 +149,7 @@ local function UpdateColor(self, event, unit)
 		if(not color) then
 			color = self.colors.power[pToken]
 
-			if(element.GetAlternativeColor) then
+			if(okType and element.GetAlternativeColor) then
 				r, g, b = element:GetAlternativeColor(unit, pType, pToken, altR, altG, altB)
 			elseif(not color and altR) then
 				r, g, b = altR, altG, altB
@@ -158,7 +158,7 @@ local function UpdateColor(self, event, unit)
 					r, g, b = r / 255, g / 255, b / 255
 				end
 			else
-				color = self.colors.power[pType] or self.colors.power.MANA
+				color = (okType and self.colors.power[pType]) or self.colors.power.MANA
 			end
 		end
 

@@ -82,15 +82,19 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local mainCost, altCost = 0, 0
-	local mainType = UnitPowerType(unit)
-	local okMax, mainMax = pcall(UnitPowerMax, unit, mainType)
+	local okType, mainType = UnitPowerType(unit)
+	local powerType = okType and mainType or 0
+
+	local okMax, mainMax = pcall(UnitPowerMax, unit, powerType)
 	local isPlayer = UnitIsUnit('player', unit)
+
 	local DISPLAY_INFO = oUF:NotSecretValue(isPlayer) and isPlayer and ALT_POWER_BAR_PAIR_DISPLAY_INFO
 	local altManaInfo = DISPLAY_INFO and DISPLAY_INFO[oUF.myclass]
-	local hasAltManaBar = altManaInfo and altManaInfo[mainType]
+
+	local hasAltManaBar = altManaInfo and altManaInfo[powerType]
 	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
 
+	local mainCost, altCost = 0, 0
 	if(event == 'UNIT_SPELLCAST_START' and oUF:NotSecretValue(startTime) and (startTime ~= endTime)) then
 		local costTable = oUF:NotSecretValue(spellID) and GetSpellPowerCost(spellID)
 		if not costTable then
@@ -101,7 +105,7 @@ local function Update(self, event, unit)
 			for _, costInfo in next, costTable do
 				local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
 				local checkSpec = not checkRequiredAura or costInfo.hasRequiredAura
-				if checkSpec and (okMax and ctype == mainType) then
+				if checkSpec and (okMax and ctype == powerType) then
 					mainCost = ((isPlayer or cost < mainMax) and cost) or (mainMax * cperc) / 100
 					element.mainCost = mainCost
 
