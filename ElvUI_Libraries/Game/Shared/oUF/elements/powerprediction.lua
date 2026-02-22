@@ -129,7 +129,7 @@ local function Update(self, event, unit)
 	end
 
 	if(element.mainBar) then
-		element.mainBar:SetMinMaxValues(0, mainMax)
+		element.mainBar:SetMinMaxValues(0, okMax and mainMax or 1)
 		element.mainBar:SetValue(mainCost)
 		element.mainBar:Show()
 	end
