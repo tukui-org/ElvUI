@@ -6,7 +6,8 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local function PositionCooldownViewerTab(tab, _, _, _, x, y)
+local function PositionCooldownViewerTab(tab, _, _, _, x, y, skip)
+	if skip then return end
 	if x ~= 1 or y ~= -10 then
 		tab:ClearAllPoints()
 		tab:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 1, -10)
