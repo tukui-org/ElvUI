@@ -1520,8 +1520,8 @@ end
 do
 	local function EventlessUpdate(frame, elapsed)
 		local unit = frame.__eventless and frame.unit
-		local guid = unit and UnitExists(unit) and UnitGUID(unit)
-		if not guid then return end
+		local ok, guid = pcall(UnitGUID, unit)
+		if not ok or not guid then return end
 
 		if E:IsSecretValue(guid) then
 			local frequency = frame.elapsed or 0
