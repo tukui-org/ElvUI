@@ -1995,11 +1995,23 @@ end
 
 function UF:SetStatusBarColor(bar, r, g, b, custom, overrideAlpha, overrideBackdrop)
 	local mainR, mainG, mainB, mainA = r, g, b, E:Clamp((bar.isTransparent and (UF.multiplier * 2)) or 1)
-	local bgR, bgG, bgB, bgA = r, g, b, E:Clamp(overrideBackdrop or (bar.isTransparent and (UF.multiplier * 0.5)) or UF.multiplier)
+
+	local bgR, bgG, bgB, bgA
+	if bar.isTransparent then
+		bgR, bgG, bgB, bgA = r, g, b, E:Clamp(overrideBackdrop or (UF.multiplier * 0.5))
+	else
+		local m = E:Clamp(overrideBackdrop or UF.multiplier)
+		bgR, bgG, bgB, bgA = r * m, g * m, b * m, 1
+	end
 
 	local color = custom or bar.custom_backdrop
 	if color then
-		bgR, bgG, bgB, bgA = color.r, color.g, color.b, overrideBackdrop or (overrideAlpha and bgA) or color.a
+		if bar.isTransparent then
+			bgR, bgG, bgB, bgA = color.r, color.g, color.b, overrideBackdrop or (overrideAlpha and bgA) or color.a
+		else
+			local m = E:Clamp(overrideBackdrop or UF.multiplier)
+			bgR, bgG, bgB, bgA = color.r * m, color.g * m, color.b * m, 1
+		end
 	end
 
 	if bar.bg then
