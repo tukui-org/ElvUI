@@ -654,7 +654,10 @@ function NP:GetNPCID(guid)
 end
 
 function NP:UnitNPCID(unit) -- also used by Bags.lua
-	return NP:GetNPCID(UnitGUID(unit))
+	local ok, guid = pcall(UnitGUID, unit)
+	if ok then
+		return NP:GetNPCID(guid)
+	end
 end
 
 function NP:UpdateNumPlates()
