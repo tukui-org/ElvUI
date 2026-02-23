@@ -56,13 +56,13 @@ local defaults = {
 }
 
 function PA:CreateAnchor(aura, parent, unit, index, db)
-	if not unit then unit = parent.unit end
-
-	-- clear any old ones, respawn the new ones
 	local previousAura = parent.auraIcons[index]
-	if previousAura then
+	if previousAura then -- clear any old ones
 		PA:RemoveAura(previousAura)
 	end
+
+	if not unit then unit = parent.unit end
+	if not unit then return end -- something went wrong
 
 	local borderScale = db.borderScale
 	if not borderScale then borderScale = 1 end
@@ -139,10 +139,10 @@ function PA:RemoveAura(aura)
 end
 
 function PA:RemoveAuras(parent)
-	if parent.auraIcons then
-		for _, aura in next, parent.auraIcons do
-			PA:RemoveAura(aura)
-		end
+	if not parent or not parent.auraIcons then return end
+
+	for _, aura in next, parent.auraIcons do
+		PA:RemoveAura(aura)
 	end
 end
 
@@ -152,6 +152,9 @@ function PA:CreateAura(parent, unit, index, db)
 		aura = CreateFrame('Frame', format('%s%d', parent:GetName(), index), parent)
 	end
 
+	aura.anchorID = PA:CreateAnchor(aura, parent, unit, index, db)
+
+	aura:Size(db.icon.size)
 	aura:ClearAllPoints()
 
 	if index == 1 then
@@ -171,10 +174,6 @@ function PA:CreateAura(parent, unit, index, db)
 		aura:Point(E.InversePoints[db.icon.point], parent.auraIcons[index-1], db.icon.point, offsetX, offsetY)
 	end
 
-	aura:Size(db.icon.size)
-
-	aura.anchorID = PA:CreateAnchor(aura, parent, unit or 'player', index, db)
-
 	return aura
 end
 
@@ -187,7 +186,7 @@ function PA:SetupPrivateAuras(db, parent, unit)
 	end
 
 	for i = 1, db.icon.amount do
-		parent.auraIcons[i] = PA:CreateAura(parent, unit or 'player', i, db)
+		parent.auraIcons[i] = PA:CreateAura(parent, unit, i, db)
 	end
 end
 

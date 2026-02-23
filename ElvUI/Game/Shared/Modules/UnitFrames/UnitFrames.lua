@@ -636,18 +636,16 @@ end
 function UF:Configure_PrivateAuras(frame)
 	if not E.Retail then return end -- dont exist on classic
 
-	if frame.PrivateAuras then
-		PA:RemoveAuras(frame.PrivateAuras)
-	end
+	PA:RemoveAuras(frame.PrivateAuras)
 
 	local db = frame.db and frame.db.privateAuras
 	if db and db.enable then
-		PA:SetupPrivateAuras(db, frame.PrivateAuras, frame.unit)
-
+		frame.PrivateAuras:SetFrameLevel(frame.RaisedElementParent.PrivateAurasLevel)
 		frame.PrivateAuras:ClearAllPoints()
 		frame.PrivateAuras:Point(E.InversePoints[db.parent.point], frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		frame.PrivateAuras:Size(db.icon.size)
-		frame.PrivateAuras:SetFrameLevel(frame.RaisedElementParent.PrivateAurasLevel)
+
+		PA:SetupPrivateAuras(db, frame.PrivateAuras, frame.unit)
 	end
 end
 
@@ -1299,26 +1297,7 @@ do
 		frame.customTexts = {}
 	end
 
-	-- various checks to determine the setup
-	local isPet = { partypet = true, pet = true, raidpet = true }
-	local noAuras = { assisttarget = true, partypet = true, partytarget = true, tanktarget = true }
-	local noInfoPanel = { assist = true, assisttarget = true, partypet = true, partytarget = true, raidpet = true, tank = true, tanktarget = true }
-	local noPortrait = { assist = true, assisttarget = true, partypet = true, partytarget = true, tank = true, tanktarget = true }
-	local noPower = { assist = true, assisttarget = true, partypet = true, partytarget = true, raidpet = true, tank = true, tanktarget = true }
-	local noBossArena = { arena = true, boss = true }
-	local noTargets = { arena = true, assisttarget = true, focustarget = true, partytarget = true, pettarget = true, tanktarget = true, targettarget = true, targettargettarget = true }
-
-	-- which elements on what
-	local auraHighlight = { assist = true, boss = true, focus = true, party = true, pet = true, player = true, raid = true, raidpet = true, tank = true, target = true }
-	local castBar = { arena = true, boss = true, focus = true, party = true, pet = true, player = true, target = true }
-	local classBar = { party = true, player = true, raid = true }
-	local iconCombat = { party = true, raid = true, player = true, target = true, focus = true }
-	local iconPhase = { party = true, raid = true, target = true }
-	local iconPVP = { player = true, target = true }
-	local iconRaid = { party = true, player = true, raid = true, target = true }
-	local iconRoles = { party = true, raid = true }
-	local pvpIndicator = { arena = true, party = true, raid = true }
-	local raidDebuffs = { assist = true, party = true, raid = true, raidpet = true, tank = true }
+	local isPet = { pet = true, raidpet = true, partypet = true }
 
 	-- 3) this is used on all the unitframes to configure elements
 	--- the order of these is sometimes very important, try not to change them
@@ -1328,97 +1307,116 @@ do
 	---- assist: 'assist', 'assisttarget'
 	---- tank: 'tank', 'tanktarget'
 	function UF:ConfigureFrame(frame, which, offset)
-		if not noInfoPanel[which] then
+		if frame.InfoPanel then
 			UF:Configure_InfoPanel(frame)
 		end
 
-		UF:Configure_HealthBar(frame)
-		UF:Configure_HealComm(frame)
-		UF:Configure_Cutaway(frame)
-		UF:Configure_Fader(frame)
+		if frame.Health then
+			UF:Configure_HealthBar(frame)
+		end
 
-		if not noBossArena[which] then
+		if frame.HealthPrediction then
+			UF:Configure_HealComm(frame)
+		end
+
+		if frame.Cutaway then
+			UF:Configure_Cutaway(frame)
+		end
+
+		if frame.Fader then
+			UF:Configure_Fader(frame)
+		end
+
+		if frame.ThreatIndicator then
 			UF:Configure_Threat(frame)
 		end
 
-		if not noPower[which] then
+		if frame.Power then
 			UF:Configure_Power(frame)
+		end
+
+		if frame.PowerPrediction then
 			UF:Configure_PowerPrediction(frame)
 		end
 
-		if not noPortrait[which] then
+		if frame.Portrait then
 			UF:Configure_Portrait(frame)
 		end
 
-		if not noAuras[which] then
+		if frame.Auras then
 			UF:EnableDisable_Auras(frame)
 			UF:Configure_AllAuras(frame)
+		end
 
+		if frame.customTexts then
 			UF:Configure_CustomTexts(frame)
 		end
 
-		if not noTargets[which] then
+		if frame.AuraWatch then
 			UF:Configure_AuraWatch(frame, isPet[which])
+		end
+
+		if frame.PrivateAuras then
 			UF:Configure_PrivateAuras(frame)
 		end
 
-		if raidDebuffs[which] then
+		if frame.RaidDebuffs then
 			UF:Configure_RaidDebuffs(frame)
 		end
 
-		if auraHighlight[which] then
+		if frame.AuraHighlight then
 			UF:Configure_AuraHighlight(frame)
 		end
 
-		if castBar[which] then
+		if frame.Castbar then
 			UF:Configure_Castbar(frame)
 		end
 
-		if which ~= 'arena' then
+		if frame.RaidTargetIndicator then
 			UF:Configure_RaidIcon(frame)
 		end
 
-		if iconPhase[which] then
+		if frame.PhaseIndicator then
 			UF:Configure_PhaseIcon(frame)
 		end
 
-		if iconPVP[which] then
+		if frame.PvPIndicator then
 			UF:Configure_PVPIcon(frame)
 		end
 
-		if iconCombat[which] then
+		if frame.CombatIndicator then
 			UF:Configure_CombatIndicator(frame)
 		end
 
-		if iconRaid[which] then
+		if frame.RaidRoleFramesAnchor then
 			UF:Configure_RaidRoleIcons(frame)
-
-			if not E.Classic then
-				UF:Configure_ResurrectionIcon(frame)
-			end
 		end
 
-		if iconRoles[which] then
+		if frame.ResurrectIndicator then
+			UF:Configure_ResurrectionIcon(frame)
+		end
+
+		if frame.ReadyCheckIndicator then
 			UF:Configure_ReadyCheckIcon(frame)
-
-			if E.allowRoles then
-				UF:Configure_RoleIcon(frame)
-			end
-
-			if not E.Classic then
-				UF:Configure_SummonIcon(frame)
-			end
-
-			if E.Retail or E.Mists then
-				UF:Configure_AltPowerBar(frame)
-			end
 		end
 
-		if not E.Classic and pvpIndicator[which] then
+		if frame.GroupRoleIndicator then
+			UF:Configure_RoleIcon(frame)
+		end
+
+		if frame.SummonIndicator then
+			UF:Configure_SummonIcon(frame)
+		end
+
+		if frame.AlternativePower then
+			UF:Configure_AltPowerBar(frame)
+		end
+
+		if frame.PvPClassificationIndicator then
 			UF:Configure_PvPClassificationIndicator(frame)
 		end
 
-		if classBar[which] then
+		if frame.ClassPower then
 			UF:Configure_ClassBar(frame)
 		end
 
@@ -1994,24 +1992,25 @@ function UF:MergeUnitSettings(from, to)
 end
 
 function UF:SetStatusBarColor(bar, r, g, b, custom, overrideAlpha, overrideBackdrop)
-	local mainR, mainG, mainB, mainA = r, g, b, E:Clamp((bar.isTransparent and (UF.multiplier * 2)) or 1)
-	local bgR, bgG, bgB, bgA = r, g, b, E:Clamp(overrideBackdrop or (bar.isTransparent and (UF.multiplier * 0.5)) or UF.multiplier)
+	local clampBackdrop = overrideBackdrop and E:Clamp(overrideBackdrop)
+	local mainR, mainG, mainB, mainA = r, g, b, E:Clamp(bar.isTransparent and (UF.multiplier * 2) or 1)
+	local backR, backG, backB, backA = r, g, b, clampBackdrop or E:Clamp(bar.isTransparent and (UF.multiplier * 0.5) or UF.multiplier)
 
 	local color = custom or bar.custom_backdrop
 	if color then
-		bgR, bgG, bgB, bgA = color.r, color.g, color.b, overrideBackdrop or (overrideAlpha and bgA) or color.a
+		backR, backG, backB, backA = color.r, color.g, color.b, clampBackdrop or (overrideAlpha and backA) or color.a
 	end
 
 	if bar.bg then
 		if bar.invertColors then
 			bar.bg:SetVertexColor(mainR, mainG, mainB, mainA)
 		else
-			bar.bg:SetVertexColor(bgR, bgG, bgB, bgA)
+			bar.bg:SetVertexColor(backR, backG, backB, backA)
 		end
 	end
 
 	if bar.invertColors then
-		bar:GetStatusBarTexture():SetVertexColor(bgR, bgG, bgB, bgA)
+		bar:GetStatusBarTexture():SetVertexColor(backR, backG, backB, backA)
 	else
 		bar:GetStatusBarTexture():SetVertexColor(mainR, mainG, mainB, mainA)
 	end
@@ -2170,6 +2169,12 @@ do -- Clique support for registering clicks
 	end
 end
 
+function UF:UpdateAllElements(event)
+	if self.PrivateAuras and event == 'OnShow' then
+		UF:Configure_PrivateAuras(self)
+	end
+end
+
 function UF:AfterStyleCallback()
 	-- this will wait until after ouf pushes `EnableElement` onto the newly spawned frames
 	-- calling an update onto assist or tank in the styleFunc is before the `EnableElement`
@@ -2183,6 +2188,10 @@ function UF:AfterStyleCallback()
 	elseif unit == 'assist' or unit == 'assisttarget' then
 		UF:Update_AssistFrames(self, UF.db.units.assist)
 		UF:Update_FontStrings()
+	end
+
+	if self.UpdateAllElements then
+		hooksecurefunc(self, 'UpdateAllElements', UF.UpdateAllElements)
 	end
 end
 

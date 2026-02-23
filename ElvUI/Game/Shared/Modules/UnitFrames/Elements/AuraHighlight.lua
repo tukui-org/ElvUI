@@ -30,8 +30,8 @@ end
 
 function UF:Configure_AuraHighlight(frame)
 	local mode = E.db.unitframe.debuffHighlighting
-	local db = frame.db and frame.db.debuffHighlight
-	if db.enable and mode ~= 'NONE' then
+	local db = mode ~= 'NONE' and (frame.db and frame.db.debuffHighlight)
+	if db and db.enable then
 		if not frame:IsElementEnabled('AuraHighlight') then
 			frame:EnableElement('AuraHighlight')
 		end

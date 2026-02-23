@@ -6,18 +6,18 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local function PositionCooldownViewerTab(tab, _, _, _, x, y)
+function S:CooldownManager_PositionViewerTab(_, _, _, x, y)
 	if x ~= 1 or y ~= -10 then
-		tab:ClearAllPoints()
-		tab:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 1, -10)
+		self:ClearAllPoints()
+		self:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 1, -10)
 	end
 end
 
-local function PositionTabIcons(icon, point)
-	if point ~= 'CENTER' then
-		icon:ClearAllPoints()
-		icon:SetPoint('CENTER')
-	end
+function S:CooldownManager_PositionTabIcons(point)
+	if point == 'CENTER' then return end
+
+	self:ClearAllPoints()
+	self:SetPoint('CENTER')
 end
 
 function S:CooldownManager_HandleHeaders(header)
@@ -245,14 +245,14 @@ function S:CooldownManager_HandleAbilityTabs(viewer)
 			tab:ClearAllPoints()
 			tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 1, -10)
 
-			hooksecurefunc(tab, 'SetPoint', PositionCooldownViewerTab)
+			hooksecurefunc(tab, 'SetPoint', S.CooldownManager_PositionViewerTab)
 		end
 
 		if tab.Icon then
 			tab.Icon:ClearAllPoints()
 			tab.Icon:SetPoint('CENTER')
 
-			hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
+			hooksecurefunc(tab.Icon, 'SetPoint', S.CooldownManager_PositionTabIcons)
 		end
 
 		if tab.Background then

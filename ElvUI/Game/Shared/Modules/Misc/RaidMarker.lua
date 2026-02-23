@@ -2,6 +2,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 
+local _G = _G
 local format = format
 local sin, cos, rad = math.sin, math.cos, rad -- sin~=math.sin, cos~=math.cos, rad==math.rad; why? who knows? :P
 

@@ -312,18 +312,16 @@ end
 function NP:Update_PrivateAuras(nameplate, disable)
 	if not E.Retail then return end -- dont exist on classic
 
-	if nameplate.PrivateAuras then
-		PA:RemoveAuras(nameplate.PrivateAuras)
-	end
+	PA:RemoveAuras(nameplate.PrivateAuras)
 
 	local plateDB = not disable and NP:PlateDB(nameplate)
 	local db = plateDB and plateDB.privateAuras
 	if db and db.enable then
-		PA:SetupPrivateAuras(db, nameplate.PrivateAuras, nameplate.unit)
-
+		nameplate.PrivateAuras:SetFrameLevel(16)
 		nameplate.PrivateAuras:ClearAllPoints()
 		nameplate.PrivateAuras:Point(E.InversePoints[db.parent.point], nameplate, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		nameplate.PrivateAuras:Size(db.icon.size)
-		nameplate.PrivateAuras:SetFrameLevel(16)
+
+		PA:SetupPrivateAuras(db, nameplate.PrivateAuras, nameplate.unit)
 	end
 end
