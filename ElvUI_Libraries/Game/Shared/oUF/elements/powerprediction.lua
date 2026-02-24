@@ -44,6 +44,8 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local next = next
+local pcall = pcall
+
 local GetSpellPowerCost = C_Spell.GetSpellPowerCost or GetSpellPowerCost
 local UnitCastingInfo = UnitCastingInfo
 local UnitPowerType = UnitPowerType
@@ -80,15 +82,19 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local mainCost, altCost = 0, 0
-	local mainType = UnitPowerType(unit)
-	local mainMax = UnitPowerMax(unit, mainType)
+	local okType, mainType = pcall(UnitPowerType, unit)
+	local powerType = okType and mainType or 0
+
+	local okMax, mainMax = pcall(UnitPowerMax, unit, powerType)
 	local isPlayer = UnitIsUnit('player', unit)
+
 	local DISPLAY_INFO = oUF:NotSecretValue(isPlayer) and isPlayer and ALT_POWER_BAR_PAIR_DISPLAY_INFO
 	local altManaInfo = DISPLAY_INFO and DISPLAY_INFO[oUF.myclass]
-	local hasAltManaBar = altManaInfo and altManaInfo[mainType]
+
+	local hasAltManaBar = altManaInfo and altManaInfo[powerType]
 	local _, _, _, startTime, endTime, _, _, _, spellID = UnitCastingInfo(unit)
 
+	local mainCost, altCost = 0, 0
 	if(event == 'UNIT_SPELLCAST_START' and oUF:NotSecretValue(startTime) and (startTime ~= endTime)) then
 		local costTable = oUF:NotSecretValue(spellID) and GetSpellPowerCost(spellID)
 		if not costTable then
@@ -99,12 +105,12 @@ local function Update(self, event, unit)
 			for _, costInfo in next, costTable do
 				local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
 				local checkSpec = not checkRequiredAura or costInfo.hasRequiredAura
-				if checkSpec and ctype == mainType then
+				if checkSpec and (okMax and ctype == powerType) then
 					mainCost = ((isPlayer or cost < mainMax) and cost) or (mainMax * cperc) / 100
 					element.mainCost = mainCost
 
 					break
-				elseif hasAltManaBar and checkSpec and ctype == POWERTYPE_MANA then
+				elseif hasAltManaBar and (checkSpec and ctype == POWERTYPE_MANA) then
 					altCost = cost
 					element.altCost = altCost
 
@@ -123,13 +129,14 @@ local function Update(self, event, unit)
 	end
 
 	if(element.mainBar) then
-		element.mainBar:SetMinMaxValues(0, mainMax)
+		element.mainBar:SetMinMaxValues(0, okMax and mainMax or 1)
 		element.mainBar:SetValue(mainCost)
 		element.mainBar:Show()
 	end
 
 	if(element.altBar and hasAltManaBar) then
-		element.altBar:SetMinMaxValues(0, UnitPowerMax(unit, POWERTYPE_MANA))
+		local okMana, maxMana = UnitPowerMax(unit, POWERTYPE_MANA)
+		element.altBar:SetMinMaxValues(0, okMana and maxMana or 0)
 		element.altBar:SetValue(altCost)
 		element.altBar:Show()
 	end

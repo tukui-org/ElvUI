@@ -9,17 +9,12 @@ local AuraInfo = ElvUF.AuraInfo
 local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
-local unpack, ipairs = unpack, ipairs
-local tonumber, strlower, floor = tonumber, strlower, floor
-local wipe, next, tinsert, tconcat = wipe, next, tinsert, table.concat
+local unpack, ipairs, next = unpack, ipairs, next
+local tonumber, strlower, floor, pcall = tonumber, strlower, floor, pcall
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect
 local CreateFrame = CreateFrame
-local GameTooltip_ClearMoney = GameTooltip_ClearMoney
-local GameTooltip_ClearProgressBars = GameTooltip_ClearProgressBars
-local GameTooltip_ClearStatusBars = GameTooltip_ClearStatusBars
-local GameTooltip_ClearWidgetSet = GameTooltip_ClearWidgetSet
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
@@ -48,6 +43,7 @@ local UnitGUID = UnitGUID
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
+local UnitHealthPercent = UnitHealthPercent
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
@@ -64,7 +60,6 @@ local UnitRace = UnitRace
 local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitSex = UnitSex
-local UnitHealthPercent = UnitHealthPercent
 
 local TooltipDataType = Enum.TooltipDataType
 local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
@@ -83,6 +78,8 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
+local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
+
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local UNKNOWN = UNKNOWN
 
@@ -90,12 +87,13 @@ local UNKNOWN = UNKNOWN
 local LEVEL1 = strlower(_G.TOOLTIP_UNIT_LEVEL:gsub('%s?%%s%s?%-?',''))
 local LEVEL2 = strlower((_G.TOOLTIP_UNIT_LEVEL_RACE or _G.TOOLTIP_UNIT_LEVEL_CLASS):gsub('^%%2$s%s?(.-)%s?%%1$s','%1'):gsub('^%-?г?о?%s?',''):gsub('%s?%%s%s?%-?',''))
 local IDLine = '|cFFCA3C3C%s:|r %d'
-local targetList, TAPPED_COLOR = {}, { r=0.6, g=0.6, b=0.6 }
+local TAPPED_COLOR = { r=0.6, g=0.6, b=0.6 }
 local AFK_LABEL = ' |cffFFFFFF[|r|cffFF9900'..L["AFK"]..'|r|cffFFFFFF]|r'
 local DND_LABEL = ' |cffFFFFFF[|r|cffFF3333'..L["DND"]..'|r|cffFFFFFF]|r'
 local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
 local blanchyFix = '|n%s*|n' -- thanks blizz -x- lol
 local whiteRGB = { r = 1, g = 1, b = 1, a = 1 }
+local FACTION_CUSTOM = Mixin({}, ColorMixin)
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -180,12 +178,14 @@ function TT:RemoveTrashLines(tt)
 	local allowFaction = TT.db.allowTagFaction
 	for i, line in next, info.lines, 3 do
 		local text = line and line.leftText
-		if not text or text == '' then
-			break
-		elseif (not allowPVP and text == _G.PVP) or (not allowFaction and (text == _G.FACTION_ALLIANCE or text == _G.FACTION_HORDE)) then
-			local left = _G['GameTooltipTextLeft'..i]
-			left:SetText('')
-			left:Hide()
+		if E:NotSecretValue(text) then -- are only some lines secret?
+			if not text or text == '' then
+				break
+			elseif (not allowPVP and text == _G.PVP) or (not allowFaction and (text == _G.FACTION_ALLIANCE or text == _G.FACTION_HORDE)) then
+				local left = _G['GameTooltipTextLeft'..i]
+				left:SetText('')
+				left:Hide()
+			end
 		end
 	end
 end
@@ -216,9 +216,9 @@ end
 function TT:SetUnitText(tt, unit, isPlayerUnit)
 	local name, realm = UnitName(unit)
 
-	if isPlayerUnit then
-		local localeClass, class = UnitClass(unit)
-		if not localeClass or not class then return end
+	if isPlayerUnit and not E:IsSecretUnit(unit) then
+		local localeClass, className = UnitClass(unit)
+		if not localeClass or not className then return end
 
 		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
@@ -227,7 +227,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
 
-		local nameColor = E:ClassColor(class) or PRIEST_COLOR
+		local nameColor = E:ClassColor(className) or PRIEST_COLOR
 
 		if TT.db.playerTitles and pvpName and pvpName ~= '' then
 			name = pvpName
@@ -244,7 +244,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		local awayText = E:UnitIsAFK(unit) and AFK_LABEL or E:UnitIsDND(unit) and DND_LABEL or ''
-		_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s%s|r', nameColor.colorStr, name or UNKNOWN, awayText)
+		_G.GameTooltipTextLeft1:SetFormattedText('%s%s', nameColor:WrapTextInColorCode(name or UNKNOWN), awayText)
 
 		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 2) or 1)
 		if guildName then
@@ -278,13 +278,13 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			if E.Retail then
 				local specText = specLine and specLine:GetText()
 				if specText then
-					specLine:SetFormattedText('|c%s%s|r', nameColor.colorStr, specText)
+					specLine:SetText(nameColor:WrapTextInColorCode(specText))
 				end
 			else -- put the class in classic
-				levelText = format('%s |c%s%s|r', levelText, nameColor.colorStr, localeClass)
+				levelText = format('%s %s', levelText, nameColor:WrapTextInColorCode(localeClass))
 			end
 
-			levelLine:SetFormattedText(levelText)
+			levelLine:SetText(levelText)
 		end
 
 		if TT.db.showElvUIUsers then
@@ -344,10 +344,14 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		local unitReaction = UnitReaction(unit, 'player')
-		local nameColor = unitReaction and ((TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]) or _G.FACTION_BAR_COLORS[unitReaction]) or PRIEST_COLOR
+		local factionColor = TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]
+		if factionColor then
+			FACTION_CUSTOM:SetRGB(factionColor.r, factionColor.g, factionColor.b)
+		end
 
+		local nameColor = unitReaction and ((factionColor and FACTION_CUSTOM) or ElvUF.colors.reaction[unitReaction]) or PRIEST_COLOR
 		if not isPetCompanion then
-			_G.GameTooltipTextLeft1:SetFormattedText('|c%s%s|r', nameColor.colorStr or E:RGBToHex(nameColor.r, nameColor.g, nameColor.b, 'ff'), name or UNKNOWN)
+			_G.GameTooltipTextLeft1:SetText(nameColor:WrapTextInColorCode(name or UNKNOWN))
 		end
 
 		return (UnitIsTapDenied(unit) and TAPPED_COLOR) or nameColor
@@ -473,51 +477,71 @@ function TT:AddTargetInfo(tt, unit)
 	local unitTarget = unit..'target'
 	if unit ~= 'player' and UnitExists(unitTarget) then
 		local targetColor
-		if UnitIsPlayer(unitTarget) and (not E.Retail or not UnitHasVehicleUI(unitTarget)) then
-			local _, class = UnitClass(unitTarget)
-			targetColor = E:ClassColor(class) or PRIEST_COLOR
+		if E:IsSecretUnit(unitTarget) then
+			local _, className = UnitClass(unitTarget)
+			targetColor = C_ClassColor_GetClassColor(className) or PRIEST_COLOR
+		elseif UnitIsPlayer(unitTarget) and (not E.Retail or not UnitHasVehicleUI(unitTarget)) then
+			local _, className = UnitClass(unitTarget)
+			targetColor = E:ClassColor(className) or PRIEST_COLOR
 		else
-			local reaction = UnitReaction(unitTarget, 'player')
-			targetColor = (TT.db.useCustomFactionColors and TT.db.factionColors[reaction]) or _G.FACTION_BAR_COLORS[reaction] or PRIEST_COLOR
+			local unitReaction = UnitReaction(unitTarget, 'player')
+			local factionColor = TT.db.useCustomFactionColors and TT.db.factionColors[unitReaction]
+			if factionColor then
+				FACTION_CUSTOM:SetRGB(factionColor.r, factionColor.g, factionColor.b)
+			end
+
+			targetColor = (factionColor and FACTION_CUSTOM) or ElvUF.colors.reaction[unitReaction] or PRIEST_COLOR
 		end
 
-		tt:AddDoubleLine(format('%s:', _G.TARGET), format('|cff%02x%02x%02x%s|r', targetColor.r * 255, targetColor.g * 255, targetColor.b * 255, UnitName(unitTarget)))
+		local targetName = UnitName(unitTarget) or UNKNOWN
+		tt:AddDoubleLine(format('%s:', _G.TARGET), targetColor:WrapTextInColorCode(targetName))
 	end
 
-	if IsInGroup() then
-		local isInRaid = IsInRaid()
-		for i = 1, GetNumGroupMembers() do
-			local groupUnit = (isInRaid and 'raid' or 'party')..i
-			local unitIsTarget = UnitIsUnit(groupUnit..'target', unit)
-			local unitIsMe = UnitIsUnit(groupUnit, 'player')
-			if E:NotSecretValue(unitIsTarget) and unitIsTarget and not unitIsMe then
-				local _, class = UnitClass(groupUnit)
-				local classColor = E:ClassColor(class) or PRIEST_COLOR
-				tinsert(targetList, format('|c%s%s|r', classColor.colorStr, UnitName(groupUnit)))
-			end
-		end
+	-- even though technically this would work on retail it
+	-- we stop it because unitFound is always secret when we need it
+	if E.Retail or not IsInGroup() then return end
 
-		local numList = #targetList
-		if numList > 0 then
-			tt:AddLine(format('%s (|cffffffff%d|r): %s', L["Targeted By:"], numList, tconcat(targetList, ', ')), nil, nil, nil, true)
-			wipe(targetList)
+	local text, count = '', 0
+	local isInRaid = IsInRaid()
+	for i = 1, GetNumGroupMembers() do
+		local groupUnit = (isInRaid and 'raid' or 'party')..i
+		local unitFound = not UnitIsUnit(groupUnit, 'player') and UnitIsUnit(groupUnit..'target', unit)
+		if E:NotSecretValue(unitFound) and unitFound then
+			local _, className = UnitClass(groupUnit)
+			local classColor
+			if E:IsSecretUnit(groupUnit) then
+				classColor = C_ClassColor_GetClassColor(className) or PRIEST_COLOR
+			else
+				classColor = E:ClassColor(className) or PRIEST_COLOR
+			end
+
+			local unitName = UnitName(groupUnit) or UNKNOWN
+			text = format('%s, %s', text, classColor:WrapTextInColorCode(unitName))
+			count = count + 1
 		end
+	end
+
+	if count > 0 then
+		tt:AddLine(format('%s (|cffffffff%d|r): %s', L["Targeted By:"], count, text), nil, nil, nil, true)
 	end
 end
 
 function TT:AddRoleInfo(tt, unit)
-	local r, g, b, role = 1, 1, 1, UnitGroupRolesAssigned(unit)
-	if IsInGroup() and (UnitInParty(unit) or UnitInRaid(unit)) and (role ~= 'NONE') then
-		if role == 'HEALER' then
-			role, r, g, b = L["Healer"], 0, 1, .59
-		elseif role == 'TANK' then
-			role, r, g, b = _G.TANK, .16, .31, .61
-		elseif role == 'DAMAGER' then
-			role, r, g, b = L["DPS"], .77, .12, .24
-		end
+	if not IsInGroup() or not (UnitInParty(unit) or UnitInRaid(unit)) then return end
 
-		tt:AddDoubleLine(format('%s:', _G.ROLE), role, nil, nil, nil, r, g, b)
+	local role = UnitGroupRolesAssigned(unit)
+	if not role or role == 'NONE' then return end
+
+	local r, g, b
+	if role == 'HEALER' then
+		role, r, g, b = L["Healer"], 0, 1, .59
+	elseif role == 'TANK' then
+		role, r, g, b = L["Tank"], .16, .31, .61
+	elseif role == 'DAMAGER' then
+		role, r, g, b = L["DPS"], .77, .12, .24
 	end
+
+	tt:AddDoubleLine(format('%s:', _G.ROLE), role, nil, nil, nil, r or 1, g or 1, b or 1)
 end
 
 function TT:AddMythicInfo(tt, unit)
@@ -545,6 +569,71 @@ function TT:AddMythicInfo(tt, unit)
 	end
 end
 
+function TT:SetUnitInfo(tt, unit, data)
+	local isShiftKeyDown = IsShiftKeyDown()
+	local isControlKeyDown = IsControlKeyDown()
+	local isInCombat = InCombatLockdown()
+
+	TT:RemoveTrashLines(tt) -- text here can be a secret
+
+	local isPlayerUnit = UnitIsPlayer(unit)
+	local color = TT:SetUnitText(tt, unit, isPlayerUnit)
+
+	if TT.db.targetInfo and not isShiftKeyDown and not isControlKeyDown then
+		TT:AddTargetInfo(tt, unit)
+	end
+
+	if TT.db.role and E.allowRoles then
+		TT:AddRoleInfo(tt, unit)
+	end
+
+	if (E.Retail or E.Mists) and not isInCombat then
+		if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
+			TT:AddMountInfo(tt, unit)
+		end
+	end
+
+	if E.Retail and not isInCombat then
+		if TT.db.mythicDataEnable then
+			TT:AddMythicInfo(tt, unit)
+		end
+	end
+
+	if (E.Retail or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not tt.ItemLevelShown then
+		if color then
+			TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
+		else
+			TT:AddInspectInfo(tt, unit, 0, 0.9, 0.9, 0.9)
+		end
+	end
+
+	if not isPlayerUnit and TT:IsModKeyDown() and not ((E.Retail or E.Mists) and C_PetBattles_IsInBattle()) then
+		local guid = (data and data.guid) or UnitGUID(unit) or ''
+		local id = E:NotSecretValue(guid) and tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
+		if id then -- NPC ID's
+			tt:AddLine(format(IDLine, _G.ID, id))
+		end
+	end
+
+	return color
+end
+
+function TT:GetUnitToken(tt)
+	if not tt or tt:IsForbidden() then return end
+
+	local mouseover = UnitExists('mouseover') and 'mouseover'
+	local _, unit = tt:GetUnit()
+	if unit then
+		return (E:NotSecretValue(unit) and UnitExists(unit) and unit) or mouseover or nil
+	end
+
+	local focus = E:GetMouseFocus()
+	local focusUnit = focus and focus.GetAttribute and focus:GetAttribute('unit')
+	if focusUnit then
+		return (E:NotSecretValue(unit) and UnitExists(focusUnit) and focusUnit) or mouseover or nil
+	end
+end
+
 function TT:GameTooltip_OnTooltipSetUnit(data)
 	if self:IsForbidden() or (self ~= GameTooltip) or not TT.db.visibility then return end
 
@@ -554,64 +643,8 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 		return
 	end
 
-	local color
-	local _, unit = self:GetUnit()
-	if E:NotSecretValue(unit) and not unit then
-		local GMF = E:GetMouseFocus()
-		local focusUnit = GMF and GMF.GetAttribute and GMF:GetAttribute('unit')
-		if focusUnit then unit = focusUnit end
-		if not unit or not UnitExists(unit) then
-			return
-		end
-	end
-
-	if E:NotSecretValue(unit) then
-		local isShiftKeyDown = IsShiftKeyDown()
-		local isControlKeyDown = IsControlKeyDown()
-		local isInCombat = InCombatLockdown()
-
-		TT:RemoveTrashLines(self) -- text here can be a secret
-
-		local isPlayerUnit = UnitIsPlayer(unit)
-		color = TT:SetUnitText(self, unit, isPlayerUnit)
-
-		if TT.db.targetInfo and not isShiftKeyDown and not isControlKeyDown then
-			TT:AddTargetInfo(self, unit)
-		end
-
-		if TT.db.role and E.allowRoles then
-			TT:AddRoleInfo(self, unit)
-		end
-
-		if (E.Retail or E.Mists) and not isInCombat then
-			if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
-				TT:AddMountInfo(self, unit)
-			end
-		end
-
-		if E.Retail and not isInCombat then
-			if TT.db.mythicDataEnable then
-				TT:AddMythicInfo(self, unit)
-			end
-		end
-
-		if (E.Retail or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not self.ItemLevelShown then
-			if color then
-				TT:AddInspectInfo(self, unit, 0, color.r, color.g, color.b)
-			else
-				TT:AddInspectInfo(self, unit, 0, 0.9, 0.9, 0.9)
-			end
-		end
-
-		if not isPlayerUnit and TT:IsModKeyDown() and not ((E.Retail or E.Mists) and C_PetBattles_IsInBattle()) then
-			local guid = (data and data.guid) or UnitGUID(unit) or ''
-			local id = tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
-			if id then -- NPC ID's
-				self:AddLine(format(IDLine, _G.ID, id))
-			end
-		end
-	end
-
+	local unit = TT:GetUnitToken(self)
+	local color = unit and TT:SetUnitInfo(self, unit, data)
 	if color then
 		GameTooltipStatusBar:SetStatusBarColor(color.r, color.g, color.b)
 	else
@@ -623,9 +656,10 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	if not bar.Text or not TT.db.healthBar.text then return end
 
 	local tt = bar:GetParent()
-	local unit = tt and tt:GetUnit()
-	if E:NotSecretValue(unit) and unit and (UnitIsUnit(unit, 'player') or UnitInParty(unit) or UnitInRaid(unit)) then
-		bar.Text:SetFormattedText('%d', UnitHealthPercent(unit, true, ScaleTo100))
+	local unit = TT:GetUnitToken(tt)
+	local ok, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
+	if ok and perc then
+		bar.Text:SetFormattedText('%d', perc)
 	else
 		bar.Text:SetText('')
 	end
@@ -634,14 +668,8 @@ end
 function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
 	if not current or not bar.Text or not TT.db.healthBar.text then return end
 
-	-- try to get ahold of the unit token
-	local _, unit = bar:GetParent():GetUnit()
-	if not unit then
-		local frame = E:GetMouseFocus()
-		if frame and frame.GetAttribute then
-			unit = frame:GetAttribute('unit')
-		end
-	end
+	local tt = bar:GetParent()
+	local unit = TT:GetUnitToken(tt)
 
 	-- check if dead
 	if current == 0 or (unit and UnitIsDeadOrGhost(unit)) then
@@ -682,12 +710,6 @@ function TT:GameTooltip_OnTooltipCleared(tt)
 	if tt.ItemTooltip then
 		tt.ItemTooltip:Hide()
 	end
-
-	-- This code is to reset stuck widgets.
-	GameTooltip_ClearMoney(tt)
-	GameTooltip_ClearStatusBars(tt)
-	GameTooltip_ClearProgressBars(tt)
-	GameTooltip_ClearWidgetSet(tt)
 end
 
 function TT:EmbeddedItemTooltip_ID(tt, id)
@@ -865,7 +887,7 @@ function TT:MODIFIER_STATE_CHANGED()
 end
 
 function TT:ShowAuraInfo(tt, source, spellID, aura)
-	local mountID, mountText = E.MountIDs[spellID]
+	local mountID, mountText = E:NotSecretValue(spellID) and E.MountIDs[spellID]
 	if mountID then
 		local sourceText = E.MountText[mountID]
 		mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
@@ -883,11 +905,15 @@ function TT:ShowAuraInfo(tt, source, spellID, aura)
 
 		if aura and aura.unitClassFilename then
 			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
-			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), format('|c%s%s|r', color.colorStr, aura.unitName or UNKNOWN))
+			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), color:WrapTextInColorCode(aura.unitName or UNKNOWN))
 		elseif source then
-			local _, class = UnitClass(source)
-			local color = E:ClassColor(class) or PRIEST_COLOR
-			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), format('|c%s%s|r', color.colorStr, UnitName(source) or UNKNOWN))
+			if E:NotSecretValue(source) then
+				local _, className = UnitClass(source)
+				local color = E:ClassColor(className) or PRIEST_COLOR
+				tt:AddDoubleLine(format(IDLine, _G.ID, spellID), color:WrapTextInColorCode(UnitName(source) or UNKNOWN))
+			else
+				tt:AddDoubleLine(format(IDLine, _G.ID, spellID), UnitName(source) or UNKNOWN)
+			end
 		else
 			tt:AddLine(format(IDLine, _G.ID, spellID))
 		end
@@ -897,26 +923,22 @@ function TT:ShowAuraInfo(tt, source, spellID, aura)
 end
 
 function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
-	if not tt or tt:IsForbidden() then return end
+	if not tt or tt:IsForbidden() or tt:NumLines() < 1 then return end
 
 	local unitAuraInfo = AuraInfo[unit]
 	local aura = unitAuraInfo and unitAuraInfo[auraInstanceID]
 	if not aura then return end
 
-	if E:NotSecretValue(aura.spellId) then
-		TT:ShowAuraInfo(tt, aura.sourceUnit, aura.spellId, aura)
-	end
+	TT:ShowAuraInfo(tt, aura.sourceUnit, aura.spellId, aura)
 end
 
 function TT:SetUnitAura(tt, unit, index, filter)
-	if not tt or tt:IsForbidden() then return end
+	if not tt or tt:IsForbidden() or tt:NumLines() < 1 then return end
 
 	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
 	if not name then return end
 
-	if E:NotSecretValue(spellID) then
-		TT:ShowAuraInfo(tt, source, spellID)
-	end
+	TT:ShowAuraInfo(tt, source, spellID)
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(data)
@@ -1083,6 +1105,7 @@ function TT:Initialize()
 	statusText:Point('CENTER', GameTooltipStatusBar)
 	GameTooltipStatusBar.Text = statusText
 	GameTooltipStatusBar:Height(TT.db.healthBar.height)
+	GameTooltipStatusBar:SetScript('OnValueChanged', nil) -- keeps the health bar from flickering
 
 	TT:SetTooltipFonts()
 

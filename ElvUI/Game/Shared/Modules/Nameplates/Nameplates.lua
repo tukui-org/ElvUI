@@ -170,11 +170,13 @@ function NP:SetCVars()
 		end
 	end
 
-	if E.TBC or E.Wrath or E.Mists then
+	if E.Retail then
+		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
+	elseif E.TBC or E.Wrath or E.Mists then
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
-	-- the order of these is important !!
+	-- The order of these is important !!
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
 	NP:ToggleCVar(E.Retail and 'nameplateShowOnlyNameForFriendlyPlayerUnits' or 'nameplateShowOnlyNames', visibility.showOnlyNames)
@@ -187,11 +189,11 @@ function NP:SetCVars()
 	NP:ToggleCVar('nameplateShowEnemyTotems', enemyVisibility.totems)
 
 	local friendlyVisibility = visibility.friendly
-	NP:ToggleCVar('nameplateShowFriendlyMinions', friendlyVisibility.minions)
-	NP:ToggleCVar('nameplateShowFriendlyGuardians', friendlyVisibility.guardians)
 	NP:ToggleCVar('nameplateShowFriendlyNPCs', friendlyVisibility.npcs)
-	NP:ToggleCVar('nameplateShowFriendlyPets', friendlyVisibility.pets)
-	NP:ToggleCVar('nameplateShowFriendlyTotems', friendlyVisibility.totems)
+	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerMinions' or 'nameplateShowFriendlyMinions', friendlyVisibility.minions)
+	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerGuardians' or 'nameplateShowFriendlyGuardians', friendlyVisibility.guardians)
+	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerPets' or 'nameplateShowFriendlyPets', friendlyVisibility.pets)
+	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerTotems' or 'nameplateShowFriendlyTotems', friendlyVisibility.totems)
 
 	local playerDB = db.units.PLAYER
 	local playerVisibility = playerDB.visibility
@@ -652,7 +654,10 @@ function NP:GetNPCID(guid)
 end
 
 function NP:UnitNPCID(unit) -- also used by Bags.lua
-	return NP:GetNPCID(UnitGUID(unit))
+	local ok, guid = pcall(UnitGUID, unit)
+	if ok then
+		return NP:GetNPCID(guid)
+	end
 end
 
 function NP:UpdateNumPlates()
@@ -1075,12 +1080,6 @@ function NP:Initialize()
 
 	NP:HideInterfaceOptions()
 	NP:SetCVars()
-
-	-- Temporary implementation
-	-- Midnight: Blizzard always resets friendly npc nameplates to enabled on login, this is a fix to prevent that.
-	if E.db.nameplates.persistentFriendlyNP and E.Retail then
-		E:SetCVar('nameplateShowFriendlyNpcs', 0)
-	end
 end
 
 E:RegisterModule(NP:GetName())

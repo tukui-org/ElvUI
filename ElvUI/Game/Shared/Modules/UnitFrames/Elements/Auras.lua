@@ -250,6 +250,8 @@ function UF:Construct_AuraIcon(button)
 	button:RegisterForClicks('RightButtonUp')
 	button:SetScript('OnClick', UF.Aura_OnClick)
 
+	button.Cooldown:SetAllPoints(button.Icon)
+
 	E:RegisterCooldown(button.Cooldown, 'unitframe')
 
 	local auras = button:GetParent()
@@ -546,7 +548,7 @@ function UF:PostUpdateAura(unit, button)
 	end
 
 	button:SetBackdropBorderColor(r, g, b)
-	button.Icon:SetDesaturated(button.canDesaturate and button.isDebuff and not button.isPlayer)
+	button.Icon:SetDesaturated(button.canDesaturate and button.isDebuff and not button.isFriend and not button.isPlayer)
 
 	if button.Text then
 		local bdb = button.db

@@ -3,10 +3,12 @@ local oUF = { Private = {} }
 ns.oUF = oUF
 
 local mod = mod
+local pcall = pcall
 local unpack = unpack
 local issecretvalue = issecretvalue
 local issecrettable = issecrettable
 local canaccessvalue = canaccessvalue
+local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 
 local _, _, _, wowtoc = GetBuildInfo()
 oUF.wowtoc = wowtoc
@@ -49,20 +51,31 @@ do -- Time function by Simpy
 end
 
 do -- API for secrets by Simpy
+	function oUF:IsSecretUnit(unit)
+		local ok, value = pcall(ShouldUnitIdentityBeSecret, unit)
+		if ok then
+			return value
+		end
+	end
+
+	function oUF:NotSecretUnit(unit)
+		return not oUF:IsSecretUnit(unit)
+	end
+
 	function oUF:IsSecretValue(value)
 		return issecretvalue and issecretvalue(value)
+	end
+
+	function oUF:NotSecretValue(value)
+		return not oUF:IsSecretValue(value)
 	end
 
 	function oUF:IsSecretTable(object)
 		return issecrettable and issecrettable(object)
 	end
 
-	function oUF:NotSecretValue(value)
-		return not issecretvalue or not issecretvalue(value)
-	end
-
 	function oUF:NotSecretTable(object)
-		return not issecrettable or not issecrettable(object)
+		return not oUF:IsSecretTable(object)
 	end
 
 	function oUF:CanAccessValue(value)
@@ -70,7 +83,7 @@ do -- API for secrets by Simpy
 	end
 
 	function oUF:CanNotAccessValue(value)
-		return canaccessvalue and not canaccessvalue(value)
+		return not oUF:CanAccessValue(value)
 	end
 
 	function oUF:HasSecretValues(object)
@@ -78,7 +91,7 @@ do -- API for secrets by Simpy
 	end
 
 	function oUF:NoSecretValues(object)
-		return not object.HasSecretValues or not object:HasSecretValues()
+		return not oUF:HasSecretValues(object)
 	end
 end
 

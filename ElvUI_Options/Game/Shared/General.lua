@@ -13,6 +13,7 @@ local RU = E:GetModule('RaidUtility')
 local ACH = E.Libs.ACH
 
 local _G = _G
+local tonumber, format = tonumber, format
 local wipe, next, ceil = wipe, next, ceil
 local IsMouseButtonDown = IsMouseButtonDown
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
@@ -28,6 +29,28 @@ local function GetChatWindowInfo()
 	end
 
 	return ChatTabInfo
+end
+
+local function GetSpellText(spell)
+	local spellID = tonumber(spell)
+	if spellID then
+		local spellName = E:GetSpellInfo(spellID)
+		if spellName then
+			spell = format('|cFFffff00%s|r |cFFffffff(%d)|r', spellName, spellID)
+		end
+	end
+
+	return spell
+end
+
+local function RotationAssistSpells()
+	local info = {}
+
+	for spellID in next, _G.AssistedCombatManager.rotationSpells do
+		info[spellID] = GetSpellText(spellID)
+	end
+
+	return info
 end
 
 local modifierValues = { SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
@@ -312,6 +335,12 @@ blizz.addonCompartment.args.fontGroup.args.font = ACH:SharedMediaFont(L["Font"],
 blizz.addonCompartment.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 blizz.addonCompartment.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 blizz.addonCompartment.args.fontGroup.inline = true
+
+blizz.rotationAssist = ACH:Group(L["Assisted Highlight"], nil, 70, nil, function(info) return E.db.general.rotationAssist[info[#info]] end, function(info, value) E.db.general.rotationAssist[info[#info]] = value end, nil, not E.Retail)
+blizz.rotationAssist.args.spellsDesc = ACH:Description(L["List of spells that will show when using Blizzard's assisted highlighting."], 1, 'medium')
+blizz.rotationAssist.args.resetSpells = ACH:Execute(L["Reset"], nil, 2, function() AB:RotationSpellsClear() end)
+blizz.rotationAssist.args.colorButton = ACH:Execute(L["Colors"], nil, 3, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'general', 'cosmetic') end)
+blizz.rotationAssist.args.spells = ACH:MultiSelect(L["Spells"], nil, 10, RotationAssistSpells, nil, nil, function(_, key) local t = E.db.general.rotationAssist.spells[E.myclass] return t[key] == nil or t[key] end, function(_, key, value) E.db.general.rotationAssist.spells[E.myclass][key] = value; AB:RotationSpellsAdjust() end)
 
 blizz.cooldownManager = ACH:Group(L["Cooldown Manager"], nil, 80, 'tab', function(info) return E.db.general.cooldownManager[info[#info]] end, function(info, value) E.db.general.cooldownManager[info[#info]] = value S:CooldownManager_UpdateViewers() end, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, not E.Retail)
 local cdManager = blizz.cooldownManager.args

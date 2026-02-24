@@ -26,7 +26,14 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged)
 		self.backdrop:Show()
 	elseif self.customTexture then
 		local _, className = UnitClass(unit)
-		self:SetTexCoord(E:GetClassCoords(className, true))
+		local left, right, top, bottom = E:GetClassCoords(className, true)
+
+		if not db.portrait.keepSizeRatio then
+			local width, height = db.portrait.width, db.portrait.height
+			left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
+		end
+
+		self:SetTexCoord(left, right, top, bottom)
 	end
 end
 
@@ -59,7 +66,18 @@ function NP:Update_Portrait(nameplate)
 			nameplate.Portrait:SetTexture(classIcon)
 			nameplate.Portrait.customTexture = classIcon
 		else -- spec icon or portrait
-			nameplate.Portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+			local left, right, top, bottom = 0.15, 0.85, 0.15, 0.85
+
+			if not db.portrait.keepSizeRatio then
+				local width, height = db.portrait.width, db.portrait.height
+				if specIcon then
+					left, right, top, bottom = E:CropRatio(width, height)
+				else
+					left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
+				end
+			end
+
+			nameplate.Portrait:SetTexCoord(left, right, top, bottom)
 			nameplate.Portrait.customTexture = nil
 		end
 

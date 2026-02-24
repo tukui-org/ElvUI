@@ -1,3 +1,45 @@
+### Version 15.06 [ February 24th 2026 ]
+*   **General**
+    *   Housing things missing pretty fonts.
+    *   Cooldown Manager skin missing count text style. (Thanks RedAces)
+    *   TBC Aura Indicator list updated.
+    *   Damage meter skin causing another error.
+    *   Portrait Keep Size Ratio readded to nameplates and now also unit frames (non 3d).
+    *   Visit house not working when accessing the friends window from Datatext (this is a workaround which breaks opening to a specific friends frame tab).
+    *   Raid Target Marker key bind not setting the marker.
+    *   Chat secret error involving bnetIDAccount.
+    *   Various PVP (Battleground and Arena) errors with the new restrictions in build 66044.
+    *   Combo log error when using its configuration frame.
+*   **Unitframes**
+    *   Aurabar by type checkbox not working.
+    *   Over absorbs are back and over healing.
+    *   Additional class bar backdrop color works again.
+    *   Boss frames were missing a tooltip.
+    *   Private Auras not appearing on correct unit.
+*   **Nameplates**
+    *   QuestIcons secret error on line 212.
+    *   Personal Resource class bar not updating properly.
+    *   Test nameplate was not showing up until changing a setting.
+*   **Actionbars**
+    *   Boss button cooldown settings not applying.
+    *   Target Reticle works again and added support for Spellcast VFX from LibActionButton. (Thanks Nevcairiel)
+    *   Assisted Highlight spell control readded to General > Blizzard Improvements section.
+    *   Transmog outfit lock is now displayed.
+    *   Hide count text option not working.
+*   **Cooldowns**
+    *   Text missing when not using charge text.
+    *   Boss and Zone button settings updated to include charge for both and loss of control for boss.
+    *   Target Aura for Actionbar settings reimplemented for non-retail.
+*   **Auras**
+    *   Top Aura method to acquire buttons updated.
+    *   Top Aura temp enchants not showing on login (this was only broken in previous dev builds).
+*   **Tooltip**
+    *   World map was causing some tooltip errors.
+    *   Sometimes Spell ID would appear multiple times when a unit is not in range on non-retail.
+    *   Health status bar flashing colors.
+    *   Attempt to show the unit's target and health (when possible).
+    *   Spell ID not showing during combat, source name will not be class color when its secret.
+
 ### Version 15.05 [ February 10th 2026 ]
 *   Trade chat not working.
 *   Default aura filters adjusted and basic descriptions added for a few filters.

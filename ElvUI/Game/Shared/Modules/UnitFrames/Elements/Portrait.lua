@@ -68,14 +68,6 @@ function UF:Configure_Portrait(frame)
 	portrait:SetAlpha(frame.USE_PORTRAIT_OVERLAY and portrait.db.overlayAlpha or 1)
 	portrait:SetShown(frame.USE_PORTRAIT)
 
-	if portrait.db.style == 'Class' then
-		portrait:SetTexture(classIcon)
-		portrait.customTexture = classIcon
-	elseif portrait.db.style == '2D' then
-		portrait:SetTexCoord(0.15, 0.85, 0.15, 0.85)
-		portrait.customTexture = nil
-	end
-
 	if frame.USE_PORTRAIT then
 		if not frame:IsElementEnabled('Portrait') then
 			frame:EnableElement('Portrait')
@@ -129,6 +121,23 @@ function UF:Configure_Portrait(frame)
 				end
 			end
 		end
+
+		if portrait.db.style == 'Class' then
+			portrait:SetTexture(classIcon)
+			portrait.customTexture = classIcon
+		elseif portrait.db.style == '2D' then
+			local left, right, top, bottom = 0.15, 0.85, 0.15, 0.85
+
+			if not db.portrait.keepSizeRatio then
+				local width, height = portrait:GetSize()
+				if width > 0 then
+					left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
+				end
+			end
+
+			portrait:SetTexCoord(left, right, top, bottom)
+			portrait.customTexture = nil
+		end
 	elseif frame:IsElementEnabled('Portrait') then
 		frame:DisableElement('Portrait')
 	end
@@ -157,6 +166,15 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		self:SetPaused(db.paused or false)
 	elseif self.customTexture then
 		local _, className = UnitClass(unit)
-		self:SetTexCoord(E:GetClassCoords(className, true))
+		local left, right, top, bottom = E:GetClassCoords(className, true)
+
+		if not db.keepSizeRatio then
+			local width, height = self:GetSize()
+			if width > 0 then
+				left, right, top, bottom = E:CropRatio(width, height, nil, left, right, top, bottom, true)
+			end
+		end
+
+		self:SetTexCoord(left, right, top, bottom)
 	end
 end

@@ -9,6 +9,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local min, next, wipe, pairs, tinsert = min, next, wipe, pairs, tinsert
+
 local GetSpellTexture = C_Spell.GetSpellTexture
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
@@ -18,14 +19,14 @@ local function CreateAuraIcon(element, index)
 	button:EnableMouse(false)
 	button:Hide()
 
+	local icon = button:CreateTexture(nil, 'ARTWORK')
+	icon:SetAllPoints()
+
 	local cd = CreateFrame('Cooldown', '$parentCooldown', button, 'CooldownFrameTemplate')
-	cd:SetAllPoints()
 	cd:SetReverse(true)
 	cd:SetDrawBling(false)
 	cd:SetDrawEdge(false)
-
-	local icon = button:CreateTexture(nil, 'ARTWORK')
-	icon:SetAllPoints()
+	cd:SetAllPoints(icon)
 
 	local countFrame = CreateFrame('Frame', nil, button)
 	countFrame:SetAllPoints(button)

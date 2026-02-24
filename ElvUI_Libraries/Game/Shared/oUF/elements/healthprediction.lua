@@ -62,6 +62,10 @@ local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local UnitGetDetailedHealPrediction = UnitGetDetailedHealPrediction
 local CreateUnitHealPredictionCalculator = CreateUnitHealPredictionCalculator
 
+local UnitDamageAbsorbClampMode = Enum.UnitDamageAbsorbClampMode
+local UnitIncomingHealClampMode = Enum.UnitIncomingHealClampMode
+local UnitHealAbsorbClampMode = Enum.UnitHealAbsorbClampMode
+
 local function UpdateSize(self, event, unit)
 	local element = self.HealthPrediction
 
@@ -112,14 +116,17 @@ local function Update(self, event, unit)
 		if(element.healingAll) then
 			element.healingAll:SetMinMaxValues(0, maxHealth)
 			element.healingAll:SetValue(allHeal)
+			element.healingAll:Show()
 		end
 		if(element.healingPlayer) then
 			element.healingPlayer:SetMinMaxValues(0, maxHealth)
 			element.healingPlayer:SetValue(playerHeal)
+			element.healingPlayer:Show()
 		end
 		if(element.healingOther) then
 			element.healingOther:SetMinMaxValues(0, maxHealth)
 			element.healingOther:SetValue(otherHeal)
+			element.healingOther:Show()
 		end
 		if(element.overHealIndicator) then
 			element.overHealIndicator:SetAlphaFromBoolean(healClamped, 1, 0)
@@ -129,6 +136,7 @@ local function Update(self, event, unit)
 		if(element.damageAbsorb) then
 			element.damageAbsorb:SetMinMaxValues(0, maxHealth)
 			element.damageAbsorb:SetValue(damageAbsorbAmount)
+			element.damageAbsorb:Show()
 		end
 		if(element.overDamageAbsorbIndicator) then
 			element.overDamageAbsorbIndicator:SetAlphaFromBoolean(damageAbsorbClamped, 1, 0)
@@ -138,6 +146,7 @@ local function Update(self, event, unit)
 		if(element.healAbsorb) then
 			element.healAbsorb:SetMinMaxValues(0, maxHealth)
 			element.healAbsorb:SetValue(healAbsorbAmount)
+			element.healAbsorb:Show()
 		end
 		if(element.overHealAbsorbIndicator) then
 			element.overHealAbsorbIndicator:SetAlphaFromBoolean(healAbsorbClamped, 1, 0)
@@ -190,7 +199,7 @@ local function Update(self, event, unit)
 			allIncomingHeal = allIncomingHeal - healAbsorb
 			healAbsorb = 0
 
-			local maxOverflow = element.incomingHealOverflow or element.maxOverflow or 1.05
+			local maxOverflow = element.maxOverflow or 1.05
 			if(health + allIncomingHeal > maxHealth * maxOverflow) then
 				allIncomingHeal = maxHealth * maxOverflow - health
 			end
@@ -353,39 +362,63 @@ local function SetUseHealComm(element, state)
 	end
 end
 
+local function SetupPredictionValues(element)
+	-- setup some defaults
+	if not (element.damageAbsorbClampMode) then
+		element.damageAbsorbClampMode = UnitDamageAbsorbClampMode.MissingHealth
+	end
+
+	if not (element.healAbsorbClampMode) then
+		element.healAbsorbClampMode = UnitHealAbsorbClampMode.MissingHealth
+	end
+
+	if not (element.incomingHealClampMode) then
+		element.incomingHealClampMode = UnitIncomingHealClampMode.MissingHealth
+	end
+
+	-- spawn the values element
+	if(element.values) then
+		element.values:Reset()
+	else
+		element.values = CreateUnitHealPredictionCalculator()
+	end
+
+	-- set the variables
+	if(element.damageAbsorbClampMode) then
+		element.values:SetDamageAbsorbClampMode(element.damageAbsorbClampMode)
+	end
+
+	if(element.healAbsorbClampMode) then
+		element.values:SetHealAbsorbClampMode(element.healAbsorbClampMode)
+	end
+
+	if(element.incomingHealClampMode) then
+		element.values:SetIncomingHealClampMode(element.incomingHealClampMode)
+	end
+
+	if(element.healAbsorbMode) then
+		element.values:SetHealAbsorbMode(element.healAbsorbMode)
+	end
+
+	if(element.maxOverflow) then
+		element.values:SetIncomingHealOverflowPercent(element.maxOverflow)
+	end
+end
+
 local function Enable(self)
 	local element = self.HealthPrediction
 	if(element) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 		element.SetUseHealComm = SetUseHealComm
+		element.SetupPredictionValues = SetupPredictionValues
+
+		if (not element.maxOverflow) then
+			element.maxOverflow = 1.05
+		end
 
 		if(oUF.isRetail) then
-			if(element.values) then
-				element.values:Reset()
-			else
-				element.values = CreateUnitHealPredictionCalculator()
-			end
-
-			if(element.damageAbsorbClampMode) then
-				element.values:SetDamageAbsorbClampMode(element.damageAbsorbClampMode)
-			end
-
-			if(element.healAbsorbClampMode) then
-				element.values:SetHealAbsorbClampMode(element.healAbsorbClampMode)
-			end
-
-			if(element.healAbsorbMode) then
-				element.values:SetHealAbsorbMode(element.healAbsorbMode)
-			end
-
-			if(element.incomingHealClampMode) then
-				element.values:SetIncomingHealClampMode(element.incomingHealClampMode)
-			end
-
-			if(element.incomingHealOverflow) then
-				element.values:SetIncomingHealOverflowPercent(element.incomingHealOverflow)
-			end
+			SetupPredictionValues(element)
 		end
 
 		self:RegisterEvent('UNIT_HEALTH', Path)
@@ -402,10 +435,6 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
 		else
 			element:SetUseHealComm(true)
-		end
-
-		if (not element.maxOverflow) then
-			element.maxOverflow = 1.05
 		end
 
 		-- Setup retail widget names
@@ -487,7 +516,7 @@ local function Disable(self)
 		end
 
 		if(element.overHealIndicator) then
-			element.overHealIndicator:Hide()
+			element.overHealIndicator:SetAlpha(0)
 		end
 
 		if(element.overDamageAbsorbIndicator) then
@@ -495,7 +524,7 @@ local function Disable(self)
 		end
 
 		if(element.overHealAbsorbIndicator) then
-			element.overHealAbsorbIndicator:Hide()
+			element.overHealAbsorbIndicator:SetAlpha(0)
 		end
 
 		if(element.healingPlayer) then

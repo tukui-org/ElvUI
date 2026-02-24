@@ -17,34 +17,35 @@ local function GetTrinketIconByFaction(unit)
 end
 
 local function UpdateSpell(element, id)
-	if id and id ~= 0 and element.spellID ~= id then
-		element.spellID = id
+	local spellID = oUF:NotSecretValue(id) and (element.spellID ~= id and id) or nil
 
-		local _, _, spellTexture = oUF:GetSpellInfo(id)
-		element.icon:SetTexture(spellTexture or factions.Unknown)
+	local texture, _
+	if spellID then
+		_, _, texture = oUF:GetSpellInfo(spellID)
 	end
 
+	element.icon:SetTexture(texture or factions.Unknown)
+
+	return spellID
 end
 
 local function UpdateTrinket(frame, unit)
 	local element = frame.Trinket
 
 	local spellID, startTime, duration = GetArenaCrowdControlInfo(unit or frame.unit)
-	UpdateSpell(element, spellID)
+	element.spellID = UpdateSpell(element, spellID)
 
-	if startTime and duration > 0 then
+	if element.spellID and (startTime and duration > 0) then
 		element.cd:SetCooldown(startTime / 1000, duration / 1000, 1)
-		element.cd:Show()
 	else
 		element.cd:Clear()
-		element.cd:Hide()
 	end
 end
 
 local function ClearCooldowns(frame)
 	local element = frame.Trinket
 
-	element.spellID = 0
+	element.spellID = nil
 	element.cd:Clear()
 end
 
@@ -53,13 +54,14 @@ local function Update(frame, event, unit, arg2)
 
 	local element = frame.Trinket
 	if frame.isForced then
-		element.icon:SetTexture(GetTrinketIconByFaction('player'))
+		local trinket = GetTrinketIconByFaction('player')
+		element.icon:SetTexture(trinket)
 		element:Show()
 
 		return
 	end
 
-	if (element.PreUpdate) then
+	if element.PreUpdate then
 		element:PreUpdate(event, unit)
 	end
 
@@ -68,12 +70,12 @@ local function Update(frame, event, unit, arg2)
 	elseif event == 'ARENA_COOLDOWNS_UPDATE' then
 		UpdateTrinket(frame, unit)
 	elseif event == 'ARENA_CROWD_CONTROL_SPELL_UPDATE' then
-		UpdateSpell(element, arg2) -- arg2: spellID
+		element.spellID = UpdateSpell(element, arg2) -- arg2: spellID
 	end
 
-	element:SetShown(element.spellID and element.spellID ~= 0)
+	element:SetShown(element.spellID)
 
-	if (element.PostUpdate) then
+	if element.PostUpdate then
 		element:PostUpdate(event, unit)
 	end
 end

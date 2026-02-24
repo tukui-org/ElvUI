@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DB = E:GetModule('DataBars')
+local ElvUF = E.oUF
 
 local _G = _G
 local format = format
@@ -89,7 +90,7 @@ function DB:ReputationBar_Update()
 
 	local customColors = DB.db.colors.useCustomFactionColors
 	local customReaction = reaction == 9 or reaction == 10 -- 9 is paragon, 10 is renown
-	local color = (customColors or customReaction) and DB.db.colors.factionColors[reaction] or _G.FACTION_BAR_COLORS[reaction]
+	local color = (customColors or customReaction) and DB.db.colors.factionColors[reaction] or ElvUF.colors.reaction[reaction]
 	local alpha = (customColors and color.a) or DB.db.colors.reputationAlpha
 	local total = nextReactionThreshold == huge and 1 or nextReactionThreshold -- we need to correct the min/max of friendship factions to display the bar at 100%
 

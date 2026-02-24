@@ -8,6 +8,7 @@ local hooksecurefunc = hooksecurefunc
 
 local C_UnitAuras = C_UnitAuras
 local CreateFrame = CreateFrame
+local CopyTable = CopyTable
 local UIParent = UIParent
 
 local AddPrivateAuraAnchor = C_UnitAuras.AddPrivateAuraAnchor
@@ -15,61 +16,53 @@ local RemovePrivateAuraAnchor = C_UnitAuras.RemovePrivateAuraAnchor
 local SetPrivateWarningTextAnchor = C_UnitAuras.SetPrivateWarningTextAnchor
 
 local warningAnchor = {
-	relativeTo = nil, -- added in RaidWarning_Reposition
+	relativeTo = nil, -- dynamically added in RaidWarning_Reposition
 	relativePoint = 'TOP',
 	point = 'TOP',
 	offsetX = 0,
 	offsetY = 0,
 }
 
-local tempDuration = {
-	relativeTo = UIParent,
-	point = 'BOTTOM',
-	relativePoint = 'BOTTOM',
-	offsetX = 0,
-	offsetY = 0,
-}
-
-local tempAnchor = {
-	unitToken = 'player',
-	parent = UIParent,
-	auraIndex = 1,
-
-	showCountdownFrame = true,
-	showCountdownNumbers = true,
-
-	durationAnchor = tempDuration,
-
+local defaults = {
+	durationAnchor = {
+		relativeTo = nil, -- dynamically added in CreateAnchor
+		point = 'BOTTOM',
+		relativePoint = 'BOTTOM',
+		offsetX = 0,
+		offsetY = 0,
+	},
+	iconAnchor = {
+		relativeTo = nil, -- dynamically added in CreateAnchor
+		point = 'CENTER',
+		relativePoint = 'CENTER',
+		offsetX = 0,
+		offsetY = 0
+	},
 	iconInfo = {
 		borderScale = 1,
 		iconWidth = 32,
 		iconHeight = 32,
-		iconAnchor = {
-			relativeTo = UIParent,
-			point = 'CENTER',
-			relativePoint = 'CENTER',
-			offsetX = 0,
-			offsetY = 0,
-		},
+		iconAnchor = nil -- added on creation
+	},
+	anchor = {
+		unitToken = 'player',
+		auraIndex = 1,
+		showCountdownFrame = true,
+		showCountdownNumbers = true,
+		parent = nil, -- dynamically added in CreateAnchor
+		iconInfo = nil, -- added on creation
+		durationAnchor = nil, -- added on creation
 	}
 }
 
 function PA:CreateAnchor(aura, parent, unit, index, db)
-	if not unit then unit = parent.unit end
-
-	-- clear any old ones, respawn the new ones
 	local previousAura = parent.auraIcons[index]
-	if previousAura then
+	if previousAura then -- clear any old ones
 		PA:RemoveAura(previousAura)
 	end
 
-	-- update all possible entries to this as the table is dirty
-	tempAnchor.unitToken = unit
-	tempAnchor.parent = aura
-	tempAnchor.auraIndex = index
-
-	tempAnchor.showCountdownFrame = db.countdownFrame
-	tempAnchor.showCountdownNumbers = db.countdownNumbers
+	if not unit then unit = parent.unit end
+	if not unit then return end -- something went wrong
 
 	local borderScale = db.borderScale
 	if not borderScale then borderScale = 1 end
@@ -83,21 +76,47 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	local durationPoint = db.duration.point
 	if not durationPoint then durationPoint = 'CENTER' end
 
-	local icon = tempAnchor.iconInfo
+	-- update all possible entries to this as the table is dirty
+	local data = aura.data
+	if not data then
+		data = CopyTable(defaults.anchor)
+		aura.data = data
+	end
+
+	data.parent = aura
+	data.unitToken = unit
+	data.auraIndex = index
+
+	data.showCountdownFrame = db.countdownFrame
+	data.showCountdownNumbers = db.countdownNumbers
+
+	local icon = data.iconInfo
+	if not icon then
+		icon = CopyTable(defaults.iconInfo)
+		data.iconInfo = icon
+	end
+
 	icon.borderScale = borderScale
 	icon.iconWidth = iconSize
 	icon.iconHeight = iconSize
-	icon.iconAnchor.relativeTo = aura
-	icon.iconAnchor.point = iconPoint
-	icon.iconAnchor.relativePoint = iconPoint
-	icon.iconAnchor.offsetX = 0
-	icon.iconAnchor.offsetY = 0
 
-	local duration = tempAnchor.durationAnchor
+	local anchor = icon.iconAnchor
+	if not anchor then
+		anchor = CopyTable(defaults.iconAnchor)
+		icon.iconAnchor = anchor
+	end
+
+	anchor.relativeTo = aura
+	anchor.point = iconPoint
+	anchor.relativePoint = iconPoint
+	anchor.offsetX = 0
+	anchor.offsetY = 0
+
+	local duration = data.durationAnchor
 	if db.duration.enable then
 		if not duration then
-			duration = tempDuration
-			tempAnchor.durationAnchor = duration
+			duration = CopyTable(defaults.durationAnchor)
+			data.durationAnchor = duration
 		end
 
 		duration.relativeTo = aura
@@ -106,10 +125,10 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 		duration.offsetX = db.duration.offsetX
 		duration.offsetY = db.duration.offsetY
 	elseif duration then
-		tempAnchor.durationAnchor = nil
+		data.durationAnchor = nil
 	end
 
-	return AddPrivateAuraAnchor(tempAnchor)
+	return AddPrivateAuraAnchor(data)
 end
 
 function PA:RemoveAura(aura)
@@ -120,10 +139,10 @@ function PA:RemoveAura(aura)
 end
 
 function PA:RemoveAuras(parent)
-	if parent.auraIcons then
-		for _, aura in next, parent.auraIcons do
-			PA:RemoveAura(aura)
-		end
+	if not parent or not parent.auraIcons then return end
+
+	for _, aura in next, parent.auraIcons do
+		PA:RemoveAura(aura)
 	end
 end
 
@@ -133,6 +152,9 @@ function PA:CreateAura(parent, unit, index, db)
 		aura = CreateFrame('Frame', format('%s%d', parent:GetName(), index), parent)
 	end
 
+	aura.anchorID = PA:CreateAnchor(aura, parent, unit, index, db)
+
+	aura:Size(db.icon.size)
 	aura:ClearAllPoints()
 
 	if index == 1 then
@@ -152,10 +174,6 @@ function PA:CreateAura(parent, unit, index, db)
 		aura:Point(E.InversePoints[db.icon.point], parent.auraIcons[index-1], db.icon.point, offsetX, offsetY)
 	end
 
-	aura:Size(db.icon.size)
-
-	aura.anchorID = PA:CreateAnchor(aura, parent, unit or 'player', index, db)
-
 	return aura
 end
 
@@ -168,7 +186,7 @@ function PA:SetupPrivateAuras(db, parent, unit)
 	end
 
 	for i = 1, db.icon.amount do
-		parent.auraIcons[i] = PA:CreateAura(parent, unit or 'player', i, db)
+		parent.auraIcons[i] = PA:CreateAura(parent, unit, i, db)
 	end
 end
 

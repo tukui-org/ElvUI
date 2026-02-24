@@ -161,7 +161,7 @@ local function GetUnitSettings(unit, name)
 
 	local group = ACH:Group(name, nil, ORDER, 'tree', function(info) return E.db.nameplates.units[unit][info[#info]] end, function(info, value) E.db.nameplates.units[unit][info[#info]] = value NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end, unit == 'PLAYER' and not E.Retail)
 	group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	group.args.showTestFrame = ACH:Execute(L["Show/Hide Test Frame"], nil, 2, function() if not NP.TestFrame:IsEnabled() or NP.TestFrame.frameType ~= unit then NP.TestFrame:Enable() NP.TestFrame.frameType = unit NP:NamePlateCallBack(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED') NP.TestFrame:UpdateAllElements('ForceUpdate') else NP:DisablePlate(NP.TestFrame) NP.TestFrame:Disable() end end)
+	group.args.showTestFrame = ACH:Execute(L["Show/Hide Test Frame"], nil, 2, function() if not NP.TestFrame:IsEnabled() or NP.TestFrame.frameType ~= unit then NP.TestFrame:Enable() NP.TestFrame.frameType = unit NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.unit) NP.TestFrame:UpdateAllElements('ForceUpdate') else NP:DisablePlate(NP.TestFrame) NP.TestFrame:Disable() end end)
 	group.args.defaultSettings = ACH:Execute(L["Default Settings"], L["Set Settings to Default"], 3, function() NP:ResetSettings(unit) NP:ConfigureAll() end)
 	group.args.copySettings = ACH:Select(L["Copy settings from"], L["Copy settings from another unit."], 4, copyValues, nil, nil, C.Blank, function(_, value) NP:CopySettings(value, unit) NP:ConfigureAll() end)
 
@@ -306,11 +306,12 @@ local function GetUnitSettings(unit, name)
 
 	group.args.portraitGroup = ACH:Group(L["Portrait"], nil, 40, nil, function(info) return E.db.nameplates.units[unit].portrait[info[#info]] end, function(info, value) E.db.nameplates.units[unit].portrait[info[#info]] = value NP:ConfigureAll() end)
 	group.args.portraitGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	group.args.portraitGroup.args.width = ACH:Range(L["Width"], nil, 2, { min = 12, max = 64, step = 1 })
-	group.args.portraitGroup.args.height = ACH:Range(L["Height"], nil, 3, { min = 12, max = 64, step = 1 })
-	group.args.portraitGroup.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPositions)
-	group.args.portraitGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
-	group.args.portraitGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+	group.args.portraitGroup.args.position = ACH:Select(L["Position"], nil, 2, C.Values.AllPositions)
+	group.args.portraitGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, { min = -100, max = 100, step = 1 })
+	group.args.portraitGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, { min = -100, max = 100, step = 1 })
+	group.args.portraitGroup.args.width = ACH:Range(function() return E.db.nameplates.units[unit].portrait.keepSizeRatio and L["Size"] or L["Width"] end, nil, 5, { min = 12, max = 64, step = 1 })
+	group.args.portraitGroup.args.height = ACH:Range(L["Height"], nil, 6, { min = 12, max = 64, step = 1 }, nil, nil, nil, nil, function() return E.db.nameplates.units[unit].portrait.keepSizeRatio end)
+	group.args.portraitGroup.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 7)
 
 	group.args.levelGroup = ACH:Group(L["Level"], nil, 45, nil, function(info) return E.db.nameplates.units[unit].level[info[#info]] end, function(info, value) E.db.nameplates.units[unit].level[info[#info]] = value NP:ConfigureAll() end)
 	group.args.levelGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -446,7 +447,6 @@ NamePlates.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info
 NamePlates.statusbar = ACH:SharedMediaStatusbar(L["StatusBar Texture"], nil, 2)
 NamePlates.resetFilters = ACH:Execute(L["Reset Aura Filters"], nil, 3, function() E:StaticPopup_Show('RESET_NP_AF') end)
 NamePlates.resetcvars = ACH:Execute(L["Reset CVars"], L["Reset Nameplate CVars to the ElvUI recommended defaults."], 4, function() NP:CVarReset() end, nil, true)
-NamePlates.persistentFriendlyNP = ACH:Toggle(E.NewSign..L["Lock Friendly NPC Plates"], L["Prevent Friendly NPC nameplates from being reset to enabled on login."], 5, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 NamePlates.generalGroup = ACH:Group(L["General"], nil, 5, nil, nil, function(info, value) E.db.nameplates[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end)
 NamePlates.generalGroup.args.motionType = ACH:Select(L["UNIT_NAMEPLATES_TYPES"], L["Set to either stack nameplates vertically or allow them to overlap."], 1, { STACKED = L["UNIT_NAMEPLATES_TYPE_2"], OVERLAP = L["UNIT_NAMEPLATES_TYPE_1"] }, nil, nil, nil, nil, nil, E.Retail)
@@ -492,22 +492,25 @@ do
 
 	local cvarToggles = {
 		nameplateOtherAtBase = L["Nameplate At Base"],
+		nameplateShowOnlyNames = L["Show Only Names"]
 	}
 
+	-- Descriptions based on GetCVar
 	if E.Retail then
 		cvarRanges.nameplatePlayerLargerScale = { name = L["Player Larger Scale"], default = '1.8', max = 3, order = 24 }
-		cvarToggles.nameplateShowOnlyNameForFriendlyPlayerUnits  = L["Show Only Names"]
+		cvarToggles.useClassColorNames = L["Class Color Names"]
 	else
 		cvarRanges.nameplateNotSelectedAlpha = { name = L["Non Selected Alpha"], default = '0.5', max = 1, order = 28 }
-		cvarToggles.nameplateShowOnlyNames = L["Show Only Names"]
 	end
 
 	local function ApplyCVar(key, value)
 		if cvarToggles[key] then
 			E:SetCVar(key, value and (key == 'nameplateOtherAtBase' and 2 or 1) or 0)
 
-			if key == 'nameplateShowOnlyNames' or key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
+			if key == 'nameplateShowOnlyNames' then
 				E.db.nameplates.visibility.showOnlyNames = value
+			elseif key == 'useClassColorNames' then
+				E.db.nameplates.classColorNames = value
 			end
 		else
 			E:SetCVar(key, value)
@@ -515,8 +518,10 @@ do
 	end
 
 	local function CheckCVar(key)
-		if key == 'nameplateShowOnlyNames' or key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
+		if key == 'nameplateShowOnlyNames' then
 			return E.db.nameplates.visibility.showOnlyNames
+		elseif key == 'useClassColorNames' then
+			return E.db.nameplates.classColorNames
 		elseif cvarRanges[key] then
 			return tonumber(GetCVar(key)) or 0
 		else

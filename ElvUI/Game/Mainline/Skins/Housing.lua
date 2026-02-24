@@ -45,16 +45,21 @@ function S:Blizzard_HousingHouseFinder()
 	if FinderFrame then
 		S:HandleFrame(FinderFrame, true)
 		FinderFrame.WoodBorderFrame:Hide()
-	end
 
-	local NeighborhoodListFrame = FinderFrame.NeighborhoodListFrame
-	if NeighborhoodListFrame then
-		NeighborhoodListFrame:StripTextures()
+		local NeighborhoodListFrame = FinderFrame.NeighborhoodListFrame
+		if NeighborhoodListFrame then
+			NeighborhoodListFrame:StripTextures()
 
-		NeighborhoodListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
-		S:HandleEditBox(NeighborhoodListFrame.BNetFriendSearchBox)
-		S:HandleButton(NeighborhoodListFrame.RefreshButton)
-		S:HandleTrimScrollBar(NeighborhoodListFrame.ScrollFrame.ScrollBar)
+			NeighborhoodListFrame.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
+			S:HandleEditBox(NeighborhoodListFrame.BNetFriendSearchBox)
+			S:HandleButton(NeighborhoodListFrame.RefreshButton)
+			S:HandleTrimScrollBar(NeighborhoodListFrame.ScrollFrame.ScrollBar)
+		end
+
+		local GuildSubdivisionDropdown = FinderFrame.GuildSubdivisionDropdown
+		if GuildSubdivisionDropdown then
+			S:HandleDropDownBox(GuildSubdivisionDropdown)
+		end
 	end
 end
 
@@ -508,6 +513,11 @@ function S:Blizzard_HousingModelPreview()
 		local ModelPreview = PreviewFrame.ModelPreview
 		if ModelPreview then
 			ModelPreview:StripTextures()
+
+			local ModelSceneControls = ModelPreview.ModelSceneControls
+			if ModelSceneControls then
+				S:HandleModelSceneControlButtons(ModelSceneControls)
+			end
 		end
 	end
 end

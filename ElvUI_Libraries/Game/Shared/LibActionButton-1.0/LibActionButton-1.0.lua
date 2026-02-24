@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 72 -- the real minor version is 143
+local MINOR_VERSION = 73 -- the real minor version is 143
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -40,11 +40,19 @@ local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
 local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
 local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
 
+local CopyTable = CopyTable
+local UnitIsFriend = UnitIsFriend
+local UnpackAuraData = AuraUtil.UnpackAuraData
+local GetAuraDataBySpellName = C_UnitAuras.GetAuraDataBySpellName
+local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetActionDisplayCount = C_ActionBar.GetActionDisplayCount
+local IsEquippedGearOutfitAction = C_ActionBar.IsEquippedGearOutfitAction
 local C_Container_GetItemCooldown = C_Container.GetItemCooldown
 local C_EquipmentSet_PickupEquipmentSet = C_EquipmentSet.PickupEquipmentSet
 local C_LevelLink_IsActionLocked = C_LevelLink and C_LevelLink.IsActionLocked
+local C_TransmogOutfitInfo_IsLockedOutfit = C_TransmogOutfitInfo and C_TransmogOutfitInfo.IsLockedOutfit
+local C_TransmogOutfitInfo_IsEquippedGearOutfitLocked = C_TransmogOutfitInfo and C_TransmogOutfitInfo.IsEquippedGearOutfitLocked
 
 local SpellVFX_ClearReticle, SpellVFX_ClearInterruptDisplay, SpellVFX_PlaySpellCastAnim, SpellVFX_PlayTargettingReticleAnim, SpellVFX_StopTargettingReticleAnim, SpellVFX_StopSpellCastAnim, SpellVFX_PlaySpellInterruptedAnim
 local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
@@ -134,6 +142,9 @@ local ShowOverlayGlow, HideOverlayGlow
 local ClearChargeCooldown
 local UpdateRange -- Sezz
 
+local UpdateTargetAuras -- Simpy
+local TARGETAURA_ENABLED = false
+
 local RangeFont
 do -- properly support range symbol when it's shown ~Simpy
 	local locale = GetLocale()
@@ -171,7 +182,8 @@ local DefaultConfig = {
 	tooltip = "enabled",
 	enabled = true,
 	showGrid = false,
-	targetReticle = true,
+	targetReticle = false,
+	spellCastVFX = false, -- enable cast vfx
 	useColoring = true,
 	colors = {
 		range = { 0.8, 0.1, 0.1 },
@@ -195,7 +207,6 @@ local DefaultConfig = {
 	flyoutDirection = "UP",
 	useDrawBling = true,
 	handleOverlay = true,
-	spellCastVFX = false, -- enable cast vfx
 	text = {
 		hotkey = {
 			font = {
@@ -280,7 +291,21 @@ function lib:CreateButton(id, name, header, config)
 	button.cooldown:SetSwipeColor(0, 0, 0, 0.8)
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
 	button.cooldown:SetFrameLevel(button:GetFrameLevel() + 1)
-	button.cooldown:SetAllPoints()
+	button.cooldown:SetAllPoints(button.icon)
+
+	local AuraCooldown = CreateFrame("Cooldown", nil, button, "CooldownFrameTemplate")
+	AuraCooldown:SetDrawBling(false)
+	AuraCooldown:SetDrawSwipe(false)
+	AuraCooldown:SetDrawEdge(false)
+	button.AuraCooldown = AuraCooldown
+
+	if button.chargeCooldown then
+		button.chargeCooldown:SetAllPoints(button.icon)
+	end
+
+	if button.lossOfControlCooldown then
+		button.lossOfControlCooldown:SetAllPoints(button.icon)
+	end
 
 	-- Frame Scripts
 	button:SetScript("OnEnter", Generic.OnEnter)
@@ -594,21 +619,21 @@ function WrapOnClick(button, unwrapheader)
 	]])
 end
 
--- reticle handling ~Simpy
-function Generic:OnButtonEvent(event, key, down, spellID)
-	if event == "UNIT_SPELLCAST_RETICLE_TARGET" then
-		if not WoWMidnight and (self.abilityID == spellID) and not self.TargetReticleAnimFrame:IsShown() then
-			self.TargetReticleAnimFrame.HighlightAnim:Play()
-			self.TargetReticleAnimFrame:Show()
-		end
-	elseif event == "UNIT_SPELLCAST_RETICLE_CLEAR" or event == "UNIT_SPELLCAST_STOP" or event == "UNIT_SPELLCAST_SUCCEEDED" or event == "UNIT_SPELLCAST_FAILED" then
-		if self.TargetReticleAnimFrame:IsShown() then
-			self.TargetReticleAnimFrame:Hide()
-		end
-	elseif event == "GLOBAL_MOUSE_UP" then
+function Generic:OnButtonEvent(event, ...)
+	if event == "GLOBAL_MOUSE_UP" then
 		self:UnregisterEvent(event)
 
 		UpdateFlyout(self)
+	end
+end
+
+-----------------------------------------------------------
+--- handle AutoCastOverlay ~Simpy
+local function UpdateAutoCastOverlay(button, shown)
+	button.AutoCastOverlay:SetShown(shown)
+
+	if button.AutoCastOverlay.ShowAutoCastEnabled then
+		button.AutoCastOverlay:ShowAutoCastEnabled(shown)
 	end
 end
 
@@ -1401,22 +1426,6 @@ function Generic:UpdateConfig(config)
 		self.Name:Show()
 	end
 
-	if WoWRetail then
-		if self.config.enabled and self.config.targetReticle then
-			self:RegisterUnitEvent('UNIT_SPELLCAST_STOP', 'player')
-			self:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
-			self:RegisterUnitEvent('UNIT_SPELLCAST_FAILED', 'player')
-			self:RegisterUnitEvent('UNIT_SPELLCAST_RETICLE_TARGET', 'player')
-			self:RegisterUnitEvent('UNIT_SPELLCAST_RETICLE_CLEAR', 'player')
-		else
-			self:UnregisterEvent('UNIT_SPELLCAST_STOP')
-			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED')
-			self:UnregisterEvent('UNIT_SPELLCAST_FAILED')
-			self:UnregisterEvent('UNIT_SPELLCAST_RETICLE_TARGET')
-			self:UnregisterEvent('UNIT_SPELLCAST_RETICLE_CLEAR')
-		end
-	end
-
 	UpdateTextElements(self)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
@@ -1502,6 +1511,9 @@ function InitializeEventHandler()
 		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
 		lib.eventFrame:RegisterEvent("ACTION_RANGE_CHECK_UPDATE")
 	else
+		lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
+		lib.eventFrame:RegisterUnitEvent("UNIT_FACTION", "target")
+
 		lib.eventFrame:RegisterEvent("ACTIONBAR_UPDATE_USABLE")
 		lib.eventFrame:RegisterEvent("PET_BAR_HIDEGRID") -- Needed for classics show grid.. ACTIONBAR_SHOWGRID fires with PET_BAR_SHOWGRID but ACTIONBAR_HIDEGRID doesn't fire with PET_BAR_HIDEGRID
 	end
@@ -1514,8 +1526,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
 
-	local tempAllowVFX = false
-	if WoWRetail and tempAllowVFX then
+	if WoWRetail then
 		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
@@ -1540,7 +1551,7 @@ function InitializeEventHandler()
 	end
 end
 
-function OnEvent(_, event, arg1, arg2, ...)
+function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	if event == "PLAYER_LOGIN" then
 		if UseCustomFlyout then
 			DiscoverFlyoutSpells()
@@ -1560,6 +1571,10 @@ function OnEvent(_, event, arg1, arg2, ...)
 				button.icon:SetTexture(texture)
 			end
 		end
+
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event)
+		end
 	elseif event == "UNIT_INVENTORY_CHANGED" then
 		local tooltipOwner = GameTooltip_GetOwnerForbidden()
 		if tooltipOwner and ButtonRegistry[tooltipOwner] then
@@ -1572,6 +1587,10 @@ function OnEvent(_, event, arg1, arg2, ...)
 				Update(button, event)
 			end
 		end
+
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event)
+		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
 		ForAllButtons(Update, nil, event)
 	elseif event == "ACTIONBAR_SHOWGRID" then
@@ -1581,10 +1600,22 @@ function OnEvent(_, event, arg1, arg2, ...)
 	elseif event == "UPDATE_BINDINGS" or event == "GAME_PAD_ACTIVE_CHANGED" then
 		ForAllButtons(UpdateHotkeys, nil, event)
 	elseif event == "PLAYER_TARGET_CHANGED" then
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event)
+		end
+
 		if not WoWRetail then
 			for button in next, ActiveButtons do
 				UpdateRangeTimer(button)
 			end
+		end
+	elseif event == "UNIT_FACTION" then
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event)
+		end
+	elseif event == "UNIT_AURA" then
+		if TARGETAURA_ENABLED then
+			UpdateTargetAuras(event, arg1, arg2)
 		end
 	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
@@ -1593,7 +1624,7 @@ function OnEvent(_, event, arg1, arg2, ...)
 		local buttons = lib.buttonsBySlot[arg1]
 		if buttons then
 			for button in next, buttons do
-				UpdateRange(button, nil, arg2, ...) -- inRange, checksRange
+				UpdateRange(button, nil, arg2, arg3) -- inRange, checksRange
 			end
 		end
 	elseif event == "ACTION_USABLE_CHANGED" then
@@ -1735,50 +1766,37 @@ function OnEvent(_, event, arg1, arg2, ...)
 		end
 	elseif event == "SPELL_UPDATE_ICON" then
 		ForAllButtons(Update, true, event)
-
 	elseif event == "UNIT_SPELLCAST_INTERRUPTED" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellInterruptedAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellInterruptedAnim)
 	elseif event == "UNIT_SPELLCAST_START" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Cast)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Cast)
 	elseif event == "UNIT_SPELLCAST_STOP" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, true, ActionButtonCastType.Cast)
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopSpellCastAnim, true, ActionButtonCastType.Cast)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_SUCCEEDED" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Cast)
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Cast)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_SENT" then
-		local _, _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg4, SpellVFX_StopTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_FAILED" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_EMPOWER_START" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Empowered)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Empowered)
 	elseif event == "UNIT_SPELLCAST_EMPOWER_STOP" then
-		local _, spellID, castComplete = ...
-		local interrupted = not castComplete
+		local interrupted = not arg4
 		if interrupted then
-			ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellInterruptedAnim)
+			ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellInterruptedAnim)
 		else
-			ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, interrupted, ActionButtonCastType.Empowered)
+			ForAllButtonsWithSpell(arg3, SpellVFX_StopSpellCastAnim, interrupted, ActionButtonCastType.Empowered)
 		end
 	elseif event == "UNIT_SPELLCAST_CHANNEL_START" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Channel)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlaySpellCastAnim, ActionButtonCastType.Channel)
 	elseif event == "UNIT_SPELLCAST_CHANNEL_STOP" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Channel)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopSpellCastAnim, false, ActionButtonCastType.Channel)
 	elseif event == "UNIT_SPELLCAST_RETICLE_TARGET" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_PlayTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_PlayTargettingReticleAnim)
 	elseif event == "UNIT_SPELLCAST_RETICLE_CLEAR" then
-		local _, spellID = ...
-		ForAllButtonsWithSpell(spellID, SpellVFX_StopTargettingReticleAnim)
+		ForAllButtonsWithSpell(arg3, SpellVFX_StopTargettingReticleAnim)
 	end
 end
 
@@ -1850,6 +1868,136 @@ function UpdateRange(button, force, inRange, checksRange) -- Sezz: moved from On
 
 		lib.callbacks:Fire("OnUpdateRange", button)
 	end
+end
+
+-----------------------------------------------------------
+--- Active Aura Cooldowns for Target ~ By Simpy
+
+do
+	local current = {}
+	local auraInstances = {}
+
+	local function CheckIsMine(sourceUnit)
+		return sourceUnit == 'player' or sourceUnit == 'pet' or sourceUnit == 'vehicle'
+	end
+
+	local function CheckAuraFilter(aura, filter)
+		if not filter then
+			return true -- already filtered by GetAuraDataBySpellName
+		elseif filter == 'HELPFUL' then
+			return aura.isHelpful
+		elseif filter == 'HARMFUL' then
+			return aura.isHarmful
+		end
+	end
+
+	local function GetTargetAuraCooldown(aura)
+		if not aura then return end
+
+		local _, _, _, _, duration, expiration = UnpackAuraData(aura)
+		local start = (duration and duration > 0) and (expiration - duration)
+		return start, duration, expiration
+	end
+
+	local GCD = 1.5
+	local function HasActiveCooldown(button)
+		local _, duration = button:GetCooldown()
+		if duration and duration > GCD then return true end
+
+		local _, _, _, chargeDuration = button:GetCharges()
+		if chargeDuration and chargeDuration > GCD then return true end
+	end
+
+	local function CheckTargetAuraCooldown(aura, filter, buttons, previous)
+		local allow = CheckAuraFilter(aura, filter)
+		if not allow then return end
+
+		local isMine = CheckIsMine(aura.sourceUnit)
+		if not isMine then return end
+
+		local start, duration = GetTargetAuraCooldown(aura)
+		if not start then return end
+
+		for _, button in next, buttons do
+			if not HasActiveCooldown(button) then
+				button.AuraCooldown:SetCooldown(start, duration, 1)
+
+				current[button] = true
+
+				if previous then
+					previous[button] = nil
+				end
+			end
+		end
+	end
+
+	local function ProcessTargetAuras(which, filter, auras)
+		if not auras then return end
+
+		for _, value in next, auras do
+			if which == 'add' then
+				auraInstances[value.auraInstanceID] = value
+
+				local buttons = AuraButtons.auras[value.name]
+				if buttons then
+					CheckTargetAuraCooldown(value, filter, buttons)
+				end
+			else
+				local aura
+				if which == 'update' then -- update it
+					aura = GetAuraDataByAuraInstanceID('target', value)
+					auraInstances[value] = aura
+				else
+					aura = auraInstances[value] -- use cache to remove
+					auraInstances[value] = nil -- clear the old one
+				end
+
+				local buttons = aura and AuraButtons.auras[aura.name]
+				if buttons then
+					CheckTargetAuraCooldown(aura, filter, buttons)
+				end
+			end
+		end
+	end
+
+	function UpdateTargetAuras(event, arg1, arg2)
+		local isFriend = UnitIsFriend('player', 'target')
+		if event == 'UNIT_AURA' and arg2 and not arg2.isFullUpdate then
+			local filter = isFriend and 'HELPFUL' or 'HARMFUL'
+			ProcessTargetAuras('add', filter, arg2.addedAuras)
+			ProcessTargetAuras('update', filter, arg2.updatedAuraInstanceIDs)
+			ProcessTargetAuras('remove', filter, arg2.removedAuraInstanceIDs)
+		else
+			local previous = CopyTable(current, true) -- shallow copy
+
+			wipe(current) -- clear the current ones
+			wipe(auraInstances) -- keep this clean
+
+			if event ~= 'SetTargetAuraCooldowns' or arg1 then
+				local filter = isFriend and 'PLAYER|HELPFUL' or 'PLAYER|HARMFUL'
+				for spellName, buttons in next, AuraButtons.auras do
+					local aura = GetAuraDataBySpellName('target', spellName, filter)
+					if aura then -- collect what we can
+						auraInstances[aura.auraInstanceID] = aura
+
+						CheckTargetAuraCooldown(aura, nil, buttons, previous)
+					end
+				end
+			end
+
+			for button in next, previous do
+				button.AuraCooldown:Clear()
+			end
+		end
+	end
+end
+
+function lib:SetTargetAuraCooldowns(enabled)
+	local activate = not WoWRetail and enabled
+
+	TARGETAURA_ENABLED = activate
+
+	UpdateTargetAuras('SetTargetAuraCooldowns', activate)
 end
 
 -----------------------------------------------------------
@@ -1980,6 +2128,10 @@ function Update(self, which)
 
 		if self.LevelLinkLockIcon then
 			self.LevelLinkLockIcon:SetShown(false)
+		end
+
+		if self.AutoCastOverlay then
+			UpdateAutoCastOverlay(self, false)
 		end
 	end
 
@@ -2185,7 +2337,7 @@ function UpdateUsable(self, isUsable, notEnoughMana)
 end
 
 function UpdateCount(self)
-	if not self:HasAction() then
+	if self.config.hideElements.count or not self:HasAction() then
 		self.Count:SetText("")
 		return
 	end
@@ -2207,6 +2359,8 @@ local function CreateChargeCooldownFrame(parent)
 	cooldown:SetHideCountdownNumbers(true)
 	cooldown:SetDrawSwipe(false)
 
+	lib.callbacks:Fire("OnChargeCreated", parent, cooldown)
+
 	return cooldown
 end
 
@@ -2216,7 +2370,9 @@ local function StartChargeCooldown(parent, chargeStart, chargeDuration, chargeMo
 		return
 	end
 
-	parent.chargeCooldown = parent.chargeCooldown or CreateChargeCooldownFrame(parent)
+	if not parent.chargeCooldown then
+		parent.chargeCooldown = CreateChargeCooldownFrame(parent)
+	end
 
 	CooldownFrame_Set(parent.chargeCooldown, chargeStart, chargeDuration, true, true, chargeModRate)
 
@@ -2369,6 +2525,19 @@ function UpdateFlash(self)
 	else
 		StopFlash(self)
 	end
+
+	-- ours does not include the pet checks
+	if C_TransmogOutfitInfo_IsLockedOutfit and self.AutoCastOverlay then
+		if self._state_type == 'action' then
+			local actionType, actionID = GetActionInfo(self._state_action)
+			local isLockedOutfit = actionType == 'outfit' and C_TransmogOutfitInfo_IsLockedOutfit(actionID)
+			local isLockedEquippedGear = IsEquippedGearOutfitAction(self._state_action) and C_TransmogOutfitInfo_IsEquippedGearOutfitLocked()
+
+			UpdateAutoCastOverlay(self, isLockedOutfit or isLockedEquippedGear)
+		else
+			UpdateAutoCastOverlay(self, false)
+		end
+	end
 end
 
 function UpdateTooltip(self)
@@ -2430,15 +2599,26 @@ end
 
 function SpellVFX_CastingAnim_OnHide(self)
 	local parent = self:GetParent()
+
 	SpellVFX_ClearReticle(parent)
-	parent.cooldown:SetSwipeColor(0, 0, 0, 1)
+
+	-- parent.cooldown:SetSwipeColor(0, 0, 0, 1)
+
 	UpdateCooldown(parent)
 end
 
 function SpellVFX_CastingAnim_Finish_OnFinished(self)
-	self:GetParent():GetParent():Hide()
-	local parentButton = self:GetParent():GetParent():GetParent()
-	SpellVFX_StopSpellCastAnim(parentButton, false, parentButton.actionButtonCastType)
+	local owner = self:GetParent()
+	local parent = owner and owner:GetParent()
+	local button = parent and parent:GetParent()
+
+	if parent then
+		parent:Hide()
+	end
+
+	if button then
+		SpellVFX_StopSpellCastAnim(button, false, button.actionButtonCastType)
+	end
 end
 
 function SpellVFX_ClearReticle(self)
@@ -2454,27 +2634,30 @@ function SpellVFX_ClearInterruptDisplay(self)
 end
 
 function SpellVFX_PlaySpellCastAnim(self, actionButtonCastType)
-	if not self.config.spellCastVFX then return end
+	if self.config.targetReticle then
+		SpellVFX_ClearReticle(self)
+	end
 
-	-- __Swipe_Hook is to stop Masque from re-setting it
-	self.cooldown.__Swipe_Hook = true
-	self.cooldown:SetSwipeColor(0, 0, 0, 0)
-	self.cooldown.__Swipe_Hook = nil
+	if self.config.spellCastVFX then
+		-- stop Masque from re-setting it
+		-- self.cooldown.__Swipe_Hook = true
+		-- self.cooldown:SetSwipeColor(0, 0, 0, 0)
+		-- self.cooldown.__Swipe_Hook = nil
 
-	SpellVFX_ClearInterruptDisplay(self)
-	SpellVFX_ClearReticle(self)
-	self.SpellCastAnimFrame:Setup(actionButtonCastType)
-	self.actionButtonCastType = actionButtonCastType
+		SpellVFX_ClearInterruptDisplay(self)
+
+		self.SpellCastAnimFrame:Setup(actionButtonCastType)
+		self.actionButtonCastType = actionButtonCastType
+	end
 end
 
 function SpellVFX_PlayTargettingReticleAnim(self)
-	if not self.config.spellCastVFX then return end
-
-	if self.InterruptDisplay:IsShown() then
-		self.InterruptDisplay:Hide()
-	end
-	if not self._state_type == "action" or not IsAssistedCombatAction(self._state_action) then
+	if self.config.targetReticle and (not self._state_type == "action" or not IsAssistedCombatAction(self._state_action)) then
 		self.TargetReticleAnimFrame:Setup()
+	end
+
+	if self.config.spellCastVFX and self.InterruptDisplay:IsShown() then
+		self.InterruptDisplay:Hide()
 	end
 end
 
@@ -2487,25 +2670,28 @@ end
 function SpellVFX_StopSpellCastAnim(self, forceStop, actionButtonCastType)
 	SpellVFX_StopTargettingReticleAnim(self)
 
-	if (self.actionButtonCastType == actionButtonCastType) then
-		if(forceStop) then
+	if self.config.spellCastVFX and self.actionButtonCastType == actionButtonCastType then
+		if forceStop then
 			self.SpellCastAnimFrame:Hide()
-		elseif(self.SpellCastAnimFrame.Fill.CastingAnim:IsPlaying()) then
+		elseif self.SpellCastAnimFrame.Fill.CastingAnim:IsPlaying() then
 			self.SpellCastAnimFrame:FinishAnimAndPlayBurst()
 		end
+
 		self.actionButtonCastType = nil
 	end
 end
 
 function SpellVFX_PlaySpellInterruptedAnim(self)
-	if not self.config.spellCastVFX then return end
-
 	SpellVFX_StopSpellCastAnim(self, true, self.actionButtonCastType)
-	--Hide if it's already showing to clear the anim.
-	if self.InterruptDisplay:IsShown() then
-		self.InterruptDisplay:Hide()
+
+	if self.config.spellCastVFX then
+		--Hide if it's already showing to clear the anim.
+		if self.InterruptDisplay:IsShown() then
+			self.InterruptDisplay:Hide()
+		end
+
+		self.InterruptDisplay:Show()
 	end
-	self.InterruptDisplay:Show()
 end
 
 function ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, value)

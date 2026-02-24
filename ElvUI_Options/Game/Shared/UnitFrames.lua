@@ -630,7 +630,7 @@ local function CreateCustomTextGroup(unit, objectName)
 	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 8, { min = -400, max = 400, step = 1 })
 	config.args.attachTextTo = ACH:Select(L["Attach Text To"], L["The object you want to attach to."], 9, attachToValues)
 	config.args.text_format = ACH:Input(L["Text Format"], L["Controls the text displayed. Tags are available in the Available Tags section of the config."], 100, nil, TEXT_FORMAT_WIDTH)
-	config.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units[unit].customTexts[objectName].text_format = P.unitframe.units[unit].customTexts[objectName].text_format UpdateCustomTextGroup(unit) end)
+	config.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 101, function() E.db.unitframe.units[unit].customTexts[objectName].text_format = '' UpdateCustomTextGroup(unit) end)
 
 	if unit == 'player' then
 		config.args.attachTextTo.values.AdditionalPower = UF.player.AdditionalPower and L["Additional Power"] or nil
@@ -812,7 +812,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, s
 	config.args.height = ACH:Range(L["Height"], nil, 2, { min = -1, max = 500, step = 1 })
 	config.args.colorsButton = ACH:Execute(L["Colors"], nil, 3, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
 	config.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 4, { TOP = 'TOP', BOTTOM = 'BOTTOM', CENTER = 'CENTER' })
-	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["None"], NORMAL = L["Normal"], REVERSED = L["Reversed"], WRAPPED = L["Wrapped"], OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
+	config.args.absorbStyle = ACH:Select(L["Absorb Style"], nil, 5, { NONE = L["None"], NORMAL = not E.Retail and L["Normal"] or nil, REVERSED = L["Reversed"], WRAPPED = not E.Retail and L["Wrapped"] or nil, OVERFLOW = L["Overflow"] }, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 	config.args.overflowButton = ACH:Execute(L["Max Overflow"], nil, 7, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup', 'healPrediction') end)
 	config.args.warning = ACH:Description(function()
 		if E.db.unitframe.colors.healPrediction.maxOverflow == 0 then
@@ -902,16 +902,17 @@ local function GetOptionsTable_Portrait(updateFunc, groupName, numUnits)
 	config.args.warning = ACH:Description(function() return (E.db.unitframe.units[groupName].orientation == 'MIDDLE' and L["Overlay mode is forced when the Frame Orientation is set to Middle."]) or '' end, 1, 'medium', nil, nil, nil, nil, 'full')
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 2, nil, L["If you have a lot of 3D Portraits active then it will likely have a big impact on your FPS. Disable some portraits if you experience FPS issues."])
 	config.args.style = ACH:Select(L["Style"], L["Select the display method of the portrait."], 3, { ['2D'] = L["2D"], ['3D'] = L["3D"], Class = L["CLASS"] })
-	config.args.paused = ACH:Toggle(L["Pause"], nil, 4, nil, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
+	config.args.paused = ACH:Toggle(L["Pause"], nil, 4, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
 	config.args.overlay = ACH:Toggle(L["Overlay"], L["The Portrait will overlay the Healthbar. This will be automatically happen if the Frame Orientation is set to Middle."], 5, nil, nil, nil, function(info) return (E.db.unitframe.units[groupName].orientation == 'MIDDLE') or E.db.unitframe.units[groupName].portrait[info[#info]] end, nil, function() return E.db.unitframe.units[groupName].orientation == 'MIDDLE' end)
 	config.args.fullOverlay = ACH:Toggle(L["Full Overlay"], L["This option allows the overlay to span the whole health, including the background."], 6, nil, nil, nil, nil, nil, function() return not (E.db.unitframe.units[groupName].orientation == 'MIDDLE' or E.db.unitframe.units[groupName].portrait.overlay) end)
 	config.args.width = ACH:Range(L["Width"], nil, 8, { min = 15, max = 150, step = 1 }, nil, nil, nil, function() return (E.db.unitframe.units[groupName].orientation == 'MIDDLE' or E.db.unitframe.units[groupName].portrait.overlay) end)
-	config.args.overlayAlpha = ACH:Range(L["Overlay Alpha"], L["Set the alpha level of portrait when frame is overlayed."], 9, { min = 0.01, max = 1, step = 0.01 }, nil, nil, nil, function() return not (E.db.unitframe.units[groupName].orientation == 'MIDDLE' or E.db.unitframe.units[groupName].portrait.overlay) end)
-	config.args.rotation = ACH:Range(L["Model Rotation"], nil, 10, { min = 0, max = 360, step = 1 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
-	config.args.desaturation = ACH:Range(L["Desaturate"], nil, 11, { min = 0, max = 1, step = 0.01 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
-	config.args.camDistanceScale = ACH:Range(L["Camera Distance Scale"], L["How far away the portrait is from the camera."], 12, { min = 0.01, max = 4, step = 0.01 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
-	config.args.xOffset = ACH:Range(L["X-Offset"], L["Position the Model horizontally."], 13, { min = -1, max = 1, step = 0.01 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
-	config.args.yOffset = ACH:Range(L["Y-Offset"], L["Position the Model vertically."], 14, { min = -1, max = 1, step = 0.01 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
+	config.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 9, nil, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style == '3D' end)
+	config.args.overlayAlpha = ACH:Range(L["Overlay Alpha"], L["Set the alpha level of portrait when frame is overlayed."], 10, { min = 0.01, max = 1, step = 0.01 }, nil, nil, nil, function() return not (E.db.unitframe.units[groupName].orientation == 'MIDDLE' or E.db.unitframe.units[groupName].portrait.overlay) end)
+	config.args.rotation = ACH:Range(L["Model Rotation"], nil, 11, { min = 0, max = 360, step = 1 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
+	config.args.desaturation = ACH:Range(L["Desaturate"], nil, 12, { min = 0, max = 1, step = 0.01 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
+	config.args.camDistanceScale = ACH:Range(L["Camera Distance Scale"], L["How far away the portrait is from the camera."], 13, { min = 0.01, max = 4, step = 0.01 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
+	config.args.xOffset = ACH:Range(L["X-Offset"], L["Position the Model horizontally."], 14, { min = -1, max = 1, step = 0.01 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], L["Position the Model vertically."], 15, { min = -1, max = 1, step = 0.01 }, nil, nil, nil, function() return E.db.unitframe.units[groupName].portrait.style ~= '3D' end)
 
 	return config
 end

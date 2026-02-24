@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
+local ElvUF = E.oUF
 
 local _G = _G
 local format = format
@@ -63,7 +64,7 @@ local function OnEvent(panel)
 		end
 	end
 
-	local color = _G.FACTION_BAR_COLORS[reaction]
+	local color = ElvUF.colors.reaction[reaction]
 	if not standing and factionID and E.Retail and C_Reputation_IsMajorFaction(factionID) then
 		local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 		color = E.DataBars.db.colors.factionColors[10]

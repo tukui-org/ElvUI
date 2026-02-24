@@ -33,10 +33,8 @@ function E:CooldownSwipe(cooldown) -- non retail
 	end
 end
 
-function E:CooldownTextures(cooldown, attach, texture, edge, swipe)
+function E:CooldownTextures(cooldown, texture, edge, swipe)
 	if not cooldown then return end
-
-	cooldown:SetInside(attach, attach and 0 or nil, attach and 0 or nil)
 
 	cooldown:SetDrawEdge(true)
 	cooldown:SetDrawSwipe(true)
@@ -45,18 +43,27 @@ function E:CooldownTextures(cooldown, attach, texture, edge, swipe)
 	cooldown:SetSwipeTexture(E.media.blankTex, swipe.r, swipe.g, swipe.b, swipe.a)
 end
 
-function E:CooldownText(cooldown, db, hide)
-	if not cooldown then return end
+function E:CooldownText(cooldown, hide)
+	local db, data = E:CooldownData(cooldown)
+	if not db then return end
 
 	cooldown:SetHideCountdownNumbers(hide)
+	cooldown:SetCountdownAbbrevThreshold(db.threshold)
+	cooldown:SetMinimumCountdownDuration(db.minDuration) -- minimum duration above which text will be shown
 
-	if not cooldown.Text then return end
+	local text = cooldown.Text
+	if text then
+		local colors = db.colors.text -- define the color before switching the db for font settings
+		local target = data.which == 'targetaura'
+		if target then -- use the ab settings for text
+			db = E.db.cooldown.actionbar
+		end
 
-	local colors = db.colors.text
-	cooldown.Text:ClearAllPoints()
-	cooldown.Text:SetTextColor(colors.r, colors.g, colors.b)
-	cooldown.Text:Point('CENTER', nil, db.position, db.offsetX, db.offsetY)
-	cooldown.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		text:ClearAllPoints()
+		text:SetTextColor(colors.r, colors.g, colors.b)
+		text:Point('CENTER', nil, db.position, db.offsetX, db.offsetY)
+		text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+	end
 end
 
 function E:CooldownColors(cooldown, edge, swipe, alpha)
@@ -70,66 +77,47 @@ function E:CooldownUpdate(cooldown)
 	local db, data = E:CooldownData(cooldown)
 	if not db then return end
 
+	local colors = db.colors
+	local target = data.which == 'targetaura'
+	local aurabars = data.which == 'aurabars'
+
+	local exclude = target or aurabars
+	local invisible = exclude and 0 or nil
+
 	E:CooldownBling(cooldown)
 
-	E:CooldownText(cooldown, db, db.hideNumbers)
-	E:CooldownText(data.chargeCooldown, db, not db.chargeText)
-	E:CooldownText(data.lossOfControl, db, not db.locText)
+	E:CooldownText(cooldown, db.hideNumbers)
+	E:CooldownText(data.chargeCooldown, not db.chargeText)
+	E:CooldownText(data.lossOfControl, not db.locText)
 
-	local colors = db.colors
-	local aurabars = data.which == 'aurabars' and 0 or nil
-	E:CooldownColors(cooldown, colors.edge, colors.swipe, aurabars)
+	E:CooldownColors(cooldown, colors.edge, colors.swipe, invisible)
 	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
 	E:CooldownColors(data.lossOfControl, colors.edgeLOC, colors.swipeLOC)
 
-	cooldown:SetDrawBling(not aurabars and not db.hideBling)
-	cooldown:SetCountdownAbbrevThreshold(db.threshold)
-	cooldown:SetMinimumCountdownDuration(db.minDuration) -- minimum duration above which text will be shown
 	--cooldown:SetRotation(rad(db.rotation))
+	cooldown:SetDrawBling(not exclude and not db.hideBling)
 	cooldown:SetReverse(db.reverse)
 end
 
-function E:Cooldown_OnShow()
-	if not self.mainCooldown then return end
-
-	self.mainCooldown:SetHideCountdownNumbers(true)
-end
-
-function E:Cooldown_OnHide()
-	local db = E:CooldownData(self.mainCooldown)
-	if not db then return end
-
-	self.mainCooldown:SetHideCountdownNumbers(db.hideNumbers)
-end
-
-function E:CooldownRegion(cooldown, main)
-	if not cooldown then return end
-
-	if not cooldown.Text then -- extract the timer text
+function E:CooldownRegion(cooldown)
+	if cooldown and not cooldown.Text then
 		cooldown.Text = cooldown:GetRegions()
 	end
-
-	if main and not cooldown.mainCooldown then
-		cooldown.mainCooldown = main
-
-		cooldown:HookScript('OnShow', E.Cooldown_OnShow)
-		cooldown:HookScript('OnHide', E.Cooldown_OnHide)
-	end
 end
 
-function E:CooldownInitialize(cooldown, attach)
+function E:CooldownInitialize(cooldown)
 	local db, data = E:CooldownData(cooldown)
 	if not db then return end
 
-	-- setup the text region
+	-- extract the text region
 	E:CooldownRegion(cooldown)
-	E:CooldownRegion(data.chargeCooldown, cooldown)
-	E:CooldownRegion(data.lossOfControl, cooldown)
+	E:CooldownRegion(data.chargeCooldown)
+	E:CooldownRegion(data.lossOfControl)
 
 	local colors = db.colors
-	E:CooldownTextures(cooldown, attach, E.Media.Textures.Edge, colors.edge, colors.swipe)
-	E:CooldownTextures(data.chargeCooldown, attach, E.Media.Textures.Edge2, colors.edgeCharge, colors.swipeCharge)
-	E:CooldownTextures(data.lossOfControl, attach, E.Media.Textures.Edge, colors.edgeLOC, colors.swipeLOC)
+	E:CooldownTextures(cooldown, E.Media.Textures.Edge, colors.edge, colors.swipe)
+	E:CooldownTextures(data.chargeCooldown, E.Media.Textures.Edge2, colors.edgeCharge, colors.swipeCharge)
+	E:CooldownTextures(data.lossOfControl, E.Media.Textures.Edge, colors.edgeLOC, colors.swipeLOC)
 end
 
 function E:CooldownData(cooldown)
@@ -148,7 +136,7 @@ function E:CooldownSettings(which)
 	end
 end
 
-function E:RegisterCooldown(cooldown, which, attach)
+function E:RegisterCooldown(cooldown, which)
 	if not which then which = 'global' end
 	local db = E.db.cooldown.enable and E.db.cooldown[which]
 	if not db then return end -- verify the settings exist here
@@ -171,11 +159,11 @@ function E:RegisterCooldown(cooldown, which, attach)
 
 	-- reference the charge cooldown from LAB
 	local parent = which == 'actionbar' and cooldown:GetParent()
-	data.chargeCooldown = parent and parent.chargeCooldown or nil
+	data.chargeCooldown = parent and (parent.chargeCooldown or parent.ChargeCooldown) or nil -- ChargeCooldown is the zone ability
 	data.lossOfControl = parent and parent.lossOfControlCooldown or nil
 
 	-- extract the blizzard cooldown region
-	E:CooldownInitialize(cooldown, attach)
+	E:CooldownInitialize(cooldown)
 
 	-- init set for the settings
 	E:CooldownUpdate(cooldown)

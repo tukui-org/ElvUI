@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local issecurevariable = issecurevariable
 local gsub, strfind, gmatch, format = gsub, strfind, gmatch, format
 local ipairs, sort, wipe, time, difftime = ipairs, sort, wipe, time, difftime
 local pairs, unpack, select, pcall, next, tonumber, type = pairs, unpack, select, pcall, next, tonumber, type
@@ -29,10 +28,11 @@ local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GMChatFrame_IsGM = GMChatFrame_IsGM
-local GMError = GMError
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
+local IsBuiltinChatWindow = IsBuiltinChatWindow
+local IsCombatLog = IsCombatLog
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local IsSecureCmd = IsSecureCmd
 local IsShiftKeyDown = IsShiftKeyDown
@@ -82,7 +82,6 @@ local GetClientTexture = BNet_GetClientEmbeddedAtlas or BNet_GetClientEmbeddedTe
 
 local ChatEditSetLastTellTarget = (ChatFrameUtil and ChatFrameUtil.SetLastTellTarget) or ChatEdit_SetLastTellTarget
 local ChatEditSetLastActiveWindow = (ChatFrameUtil and ChatFrameUtil.SetLastActiveWindow) or ChatEdit_SetLastActiveWindow
-local ChatEditGetActiveWindow = (ChatFrameUtil and ChatFrameUtil.GetActiveWindow) or ChatEdit_GetActiveWindow
 local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
 local ResolvePrefixedChannelName = (ChatFrameUtil and ChatFrameUtil.ResolvePrefixedChannelName) or ChatFrame_ResolvePrefixedChannelName
 local ShouldColorChatByClass = (ChatFrameUtil and ChatFrameUtil.ShouldColorChatByClass) or Chat_ShouldColorChatByClass
@@ -739,62 +738,64 @@ do
 	end
 
 	local repeatedText
-	function CH:EditBoxOnTextChanged()
+	function CH:EditBoxOnTextChanged(userInput)
 		local text = self:GetText()
 		local len = strlen(text)
 
-		if CH.db.enableCombatRepeat and InCombatLockdown() and (not repeatedText or not strfind(text, repeatedText, 1, true)) then
-			local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
-			if len > MIN_REPEAT_CHARACTERS then
-				local repeatChar = true
-				for i = 1, MIN_REPEAT_CHARACTERS do
-					local first = -1 - i
-					if strsub(text,-i,-i) ~= strsub(text,first,first) then
-						repeatChar = false
-						break
+		if userInput then
+			if CH.db.enableCombatRepeat and InCombatLockdown() and (not repeatedText or not strfind(text, repeatedText, 1, true)) then
+				local MIN_REPEAT_CHARACTERS = CH.db.numAllowedCombatRepeat
+				if len > MIN_REPEAT_CHARACTERS then
+					local repeatChar = true
+					for i = 1, MIN_REPEAT_CHARACTERS do
+						local first = -1 - i
+						if strsub(text,-i,-i) ~= strsub(text,first,first) then
+							repeatChar = false
+							break
+						end
 					end
-				end
-				if repeatChar then
-					repeatedText = text
-					self:Hide()
-					return
+					if repeatChar then
+						repeatedText = text
+						self:Hide()
+						return
+					end
 				end
 			end
-		end
 
-		if len == 4 then
-			if text == '/tt ' then
-				local Name, Realm = UnitName('target')
-				if Name then
-					Name = gsub(Name,'%s','')
+			if len == 4 then
+				if text == '/tt ' then
+					local Name, Realm = UnitName('target')
+					if Name then
+						Name = gsub(Name,'%s','')
 
-					if Realm and Realm ~= '' then
-						Name = format('%s-%s', Name, E:ShortenRealm(Realm))
+						if Realm and Realm ~= '' then
+							Name = format('%s-%s', Name, E:ShortenRealm(Realm))
+						end
 					end
-				end
 
-				if Name then
-					if _G.ChatFrameUtil and _G.ChatFrameUtil.SendTell then
-						_G.ChatFrameUtil.SendTell(Name, self.chatFrame)
+					if Name then
+						if _G.ChatFrameUtil and _G.ChatFrameUtil.SendTell then
+							_G.ChatFrameUtil.SendTell(Name, self.chatFrame)
+						else
+							_G.ChatFrame_SendTell(Name, self.chatFrame)
+						end
 					else
-						_G.ChatFrame_SendTell(Name, self.chatFrame)
+						_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
 					end
-				else
-					_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
-				end
-			elseif text == '/gr ' then
-				self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
+				elseif text == '/gr ' then
+					self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
 
-				if self.ParseText then
-					self:ParseText(0)
-				else
-					_G.ChatEdit_ParseText(self, 0)
+					if self.ParseText then
+						self:ParseText(0)
+					else
+						_G.ChatEdit_ParseText(self, 0)
+					end
 				end
 			end
 		end
 
-		-- recalculate the character count correctly with hyperlinks in it, using gsub so it matches multiple without gmatch
-		charCount = 0
+		-- recalculate the character count correctly with hyperlinks in it
+		charCount = 0 -- using gsub so it matches multiple without gmatch
 		gsub(text, '(|c%x-|H.-|h).-|h|r', CH.CountLinkCharacters)
 		if charCount ~= 0 then len = len - charCount end
 
@@ -802,36 +803,6 @@ do
 
 		if repeatedText then
 			repeatedText = nil
-		end
-	end
-end
-
-do -- this fixes a taint when you push tab on editbox which blocks secure commands to the chat
-	local safe, list = {}, _G.hash_ChatTypeInfoList
-
-	function CH:ChatEdit_UntaintTabList()
-		for cmd, name in next, list do
-			if not issecurevariable(list, cmd) then
-				safe[cmd] = name
-				list[cmd] = nil
-			end
-		end
-	end
-
-	function CH:ChatEdit_PleaseRetaint()
-		for cmd, name in next, safe do
-			list[cmd] = name
-			safe[cmd] = nil
-		end
-	end
-
-	function CH:ChatEdit_PleaseUntaint(event)
-		if event == 'PLAYER_REGEN_DISABLED' then
-			if ChatEditGetActiveWindow() then
-				CH:ChatEdit_UntaintTabList()
-			end
-		elseif InCombatLockdown() then
-			CH:ChatEdit_UntaintTabList()
 		end
 	end
 end
@@ -863,10 +834,15 @@ function CH:ChatEdit_UpdateHeader(editbox)
 end
 
 function CH:EditBoxOnKeyDown(key)
-	--Work around broken SetAltArrowKeyMode API. Code from Prat and modified by Simpy
-	if (not self.historyLines) or #self.historyLines == 0 then
-		return
-	end
+	local lines = self.historyLines -- Code originally from Prat and modified by Simpy
+	if not lines then return end
+
+	-- Override to allow using default editbox history for secure commands
+	-- Require holding alt when restricted: will use default editbox history
+	if IsAltKeyDown() or E:IsChatRestricted() then return end
+
+	local maxLines = #lines
+	if maxLines == 0 then return end
 
 	if key == 'DOWN' then
 		self.historyIndex = self.historyIndex - 1
@@ -874,19 +850,24 @@ function CH:EditBoxOnKeyDown(key)
 		if self.historyIndex < 1 then
 			self.historyIndex = 0
 			self:SetText('')
+
 			return
 		end
 	elseif key == 'UP' then
 		self.historyIndex = self.historyIndex + 1
 
-		if self.historyIndex > #self.historyLines then
-			self.historyIndex = #self.historyLines
+		if self.historyIndex > maxLines then
+			self.historyIndex = maxLines
 		end
 	else
 		return
 	end
 
-	self:SetText(strtrim(self.historyLines[#self.historyLines - (self.historyIndex - 1)]))
+	local historyLine = maxLines - (self.historyIndex - 1)
+	local historyText = lines[historyLine]
+	if historyText then
+		self:SetText(historyText)
+	end
 end
 
 function CH:EditBoxFocusGained()
@@ -962,7 +943,10 @@ function CH:StyleChat(frame)
 	frame:SetMaxLines(CH.db.maxLines)
 	frame:SetFading(CH.db.fade)
 
-	tab:SetScript('OnClick', CH.Tab_OnClick)
+	if not IsCombatLog(frame) then -- setting this script to log is problematic on retail
+		tab:SetScript('OnClick', CH.Tab_OnClick)
+	end
+
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
 	if frame == _G.GeneralDockManager.primary then
@@ -1062,33 +1046,24 @@ function CH:StyleChat(frame)
 	editbox:HookScript('OnKeyDown', CH.EditBoxOnKeyDown)
 	editbox:Hide()
 
-	--Work around broken SetAltArrowKeyMode API
 	editbox.historyLines = ElvCharacterDB.ChatEditHistory
 	editbox.historyIndex = 0
 
-	--[[ Don't need to do this since SetAltArrowKeyMode is broken, keep before AddHistory hook
-	for _, text in ipairs(editbox.historyLines) do
-			editbox:AddHistoryLine(text)
+	--[[ we use our own history, so we dont need to do this as it will also taints the lines
+	for _, text in ipairs(editbox.historyLines) do -- keep before AddHistory hook
+		editbox:AddHistoryLine(text)
 	end]]
 
 	if editbox.AddHistoryLine then
 		CH:SecureHook(editbox, 'AddHistoryLine', 'ChatEdit_AddHistory')
 	end
 
-	if editbox.OnEnterPressed then
-		CH:SecureHook(editbox, 'OnEnterPressed', 'ChatEdit_OnEnterPressed')
-	end
-
 	if editbox.UpdateHeader then
 		CH:SecureHook(editbox, 'UpdateHeader', 'ChatEdit_UpdateHeader')
 	end
 
-	if editbox.OnShow then
-		CH:SecureHook(editbox, 'OnShow', 'ChatEdit_PleaseUntaint')
-	end
-
-	if editbox.OnHide then
-		CH:SecureHook(editbox, 'OnHide', 'ChatEdit_PleaseRetaint')
+	if editbox.OnEnterPressed then
+		CH:SecureHookScript(editbox, 'OnEnterPressed', 'ChatEdit_OnEnterPressed')
 	end
 
 	--copy chat button
@@ -1153,7 +1128,7 @@ function CH:UpdateSettings()
 	for _, frameName in ipairs(_G.CHAT_FRAMES) do
 		local chat = _G[frameName]
 		local editbox = chat and chat.editBox
-		if editbox then
+		if editbox then -- controls the character movement based on holding alt
 			editbox:SetAltArrowKeyMode(CH.db.useAltKey)
 		end
 	end
@@ -1596,17 +1571,14 @@ function CH:PositionChat(chat)
 	end
 
 	local BASE_OFFSET = 32
+	local LOG_OFFSET = IsCombatLog(chat) and (_G.LeftChatTab:GetHeight() + 4) or 0
 	if chat == CH.LeftChatWindow then
-		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
-
 		chat:ClearAllPoints()
 		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
 		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
-		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
-
 		chat:ClearAllPoints()
 		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
 		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
@@ -2151,25 +2123,22 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		playerLinkDisplayText = format('[%s]', coloredName)
 	end
 
-	local isCommunityType = chatType == 'COMMUNITIES_CHANNEL'
-	local playerName, lineID, bnetIDAccount = (nameWithRealm ~= arg2 and nameWithRealm) or arg2, arg11, arg13
-	if isCommunityType then
-		local isBattleNetCommunity = bnetIDAccount ~= nil and bnetIDAccount ~= 0
+	local playerName = (nameWithRealm ~= arg2 and nameWithRealm) or arg2
+	if chatType == 'COMMUNITIES_CHANNEL' then -- isCommunityType
 		local messageInfo, clubId, streamId = C_Club_GetInfoFromLastCommunityChatLine()
-
-		if messageInfo ~= nil then
-			if isBattleNetCommunity then
-				playerLink = GetBNPlayerCommunityLink(playerName, playerLinkDisplayText, bnetIDAccount, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position)
+		if messageInfo and E:NotSecretValue(arg13) then
+			if arg13 and arg13 ~= 0 then -- isBattleNetCommunity: arg13 is bnetIDAccount
+				playerLink = GetBNPlayerCommunityLink(playerName, playerLinkDisplayText, arg13, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position)
 			else
 				playerLink = GetPlayerCommunityLink(playerName, playerLinkDisplayText, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position)
 			end
 		else
 			playerLink = playerLinkDisplayText
 		end
-	elseif chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then
-		playerLink = CH:GetBNPlayerLink(playerName, playerLinkDisplayText, bnetIDAccount, lineID, chatGroup, chatTarget)
+	elseif chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then -- arg11: lineID
+		playerLink = CH:GetBNPlayerLink(playerName, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget)
 	else
-		playerLink = CH:GetPlayerLink(playerName, playerLinkDisplayText, lineID, chatGroup, chatTarget)
+		playerLink = CH:GetPlayerLink(playerName, playerLinkDisplayText, arg11, chatGroup, chatTarget)
 	end
 
 	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
@@ -2420,30 +2389,24 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE_USER' then
-			local globalstring = _G['CHAT_'..arg1..'_NOTICE_BN']
-			if not globalstring then
-				globalstring = _G['CHAT_'..arg1..'_NOTICE']
-			end
-			if not globalstring then
-				GMError(format('Missing global string for %q', 'CHAT_'..arg1..'_NOTICE_BN'))
-				return
-			end
-			if arg5 ~= '' then
-				-- TWO users in this notice (E.G. x kicked y)
+			local globalstring = E:NotSecretValue(arg1) and (_G['CHAT_'..arg1..'_NOTICE_BN'] or _G['CHAT_'..arg1..'_NOTICE'])
+			if not globalstring then return end
+
+			if arg5 ~= '' then -- TWO users in this notice (E.G. x kicked y)
 				frame:AddMessage(format(globalstring, arg8, arg4, arg2, arg5), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			elseif arg1 == 'INVITE' then
 				frame:AddMessage(format(globalstring, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			else
 				frame:AddMessage(format(globalstring, arg8, arg4, arg2), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
+
 			if arg1 == 'INVITE' and GetCVarBool('blockChannelInvites') then
 				frame:AddMessage(_G.CHAT_MSG_BLOCK_CHAT_CHANNEL_INVITE, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE' then
-			local accessID = CH:GetAccessID(chatGroup, arg8)
-			local typeID = CH:GetAccessID(infoType, arg8, arg12)
-
-			if E.Retail and arg1 == 'YOU_CHANGED' and GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR then
+			if E:IsSecretValue(arg1) then
+				return -- we cant get the globalstring because arg1 is secret
+			elseif E.Retail and arg1 == 'YOU_CHANGED' and (GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR) then
 				if frame.UpdateDefaultChatTarget then
 					frame:UpdateDefaultChatTarget()
 				else
@@ -2456,65 +2419,47 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					frame.editBox:UpdateNewcomerEditBoxHint(arg8)
 				end
 
-				local globalstring
-				if arg1 == 'TRIAL_RESTRICTED' then
-					globalstring = _G.CHAT_TRIAL_RESTRICTED_NOTICE_TRIAL
-				else
-					globalstring = _G['CHAT_'..arg1..'_NOTICE_BN']
-					if not globalstring then
-						globalstring = _G['CHAT_'..arg1..'_NOTICE']
-						if not globalstring then
-							GMError(format('Missing global string for %q', 'CHAT_'..arg1..'_NOTICE'))
-							return
-						end
-					end
-				end
+				local globalstring = _G['CHAT_'..arg1..'_NOTICE_TRIAL'] or _G['CHAT_'..arg1..'_NOTICE_BN'] or _G['CHAT_'..arg1..'_NOTICE']
+				if not globalstring then return end
 
+				local accessID = CH:GetAccessID(chatGroup, arg8)
+				local typeID = CH:GetAccessID(infoType, arg8, arg12)
 				frame:AddMessage(format(globalstring, arg8, ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_ALERT' then
-			if E:NotSecretValue(arg1) then
-				local globalstring = _G['BN_INLINE_TOAST_'..arg1]
-				if not globalstring then
-					GMError(format('Missing global string for %q', 'BN_INLINE_TOAST_'..arg1))
-					return
-				end
+			local globalstring = E:NotSecretValue(arg1) and _G['BN_INLINE_TOAST_'..arg1]
+			if not globalstring then return end
 
-				local message
-				if arg1 == 'FRIEND_REQUEST' then
-					message = globalstring
-				elseif arg1 == 'FRIEND_PENDING' then
-					message = format(_G.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites())
-				elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
-					message = format(globalstring, arg2)
-				elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
-					local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
-					local gameInfo = accountInfo and accountInfo.gameAccountInfo
-					if gameInfo and gameInfo.clientProgram and gameInfo.clientProgram ~= '' then
-						if GetTitleIconTexture then
-							GetTitleIconTexture(gameInfo.clientProgram, TitleIconVersion_Small, function(success, texture)
-								if success then
-									local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(gameInfo.characterName, accountInfo.battleTag, texture, 32, 32, 10)
-									local linkDisplayText = format('[%s] (%s)', arg2, charName)
-									local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-									frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+			local message
+			if arg1 == 'FRIEND_REQUEST' then
+				message = globalstring
+			elseif arg1 == 'FRIEND_PENDING' then
+				message = format(_G.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites())
+			elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
+				message = format(globalstring, arg2)
+			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
+				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
+				local gameInfo = accountInfo and accountInfo.gameAccountInfo
+				if gameInfo and gameInfo.clientProgram and gameInfo.clientProgram ~= '' then
+					if GetTitleIconTexture then
+						GetTitleIconTexture(gameInfo.clientProgram, TitleIconVersion_Small, function(success, texture)
+							if success then
+								local charName = _G.BNet_GetValidatedCharacterNameWithClientEmbeddedTexture(gameInfo.characterName, accountInfo.battleTag, texture, 32, 32, 10)
+								local linkDisplayText = format('[%s] (%s)', arg2, charName)
+								local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+								frame:AddMessage(format(globalstring, playerLink), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 
-									if notChatHistory then
-										FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
-									end
+								if notChatHistory then
+									FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
 								end
-							end)
+							end
+						end)
 
-							return
-						else
-							local clientTexture = GetClientTexture(gameInfo.clientProgram, 14)
-							local charName = _G.BNet_GetValidatedCharacterName(gameInfo.characterName, accountInfo.battleTag, gameInfo.clientProgram) or ''
-							local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
-							local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-							message = format(globalstring, playerLink)
-						end
+						return
 					else
-						local linkDisplayText = format('[%s]', arg2)
+						local clientTexture = GetClientTexture(gameInfo.clientProgram, 14)
+						local charName = _G.BNet_GetValidatedCharacterName(gameInfo.characterName, accountInfo.battleTag, gameInfo.clientProgram) or ''
+						local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
 						local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 						message = format(globalstring, playerLink)
 					end
@@ -2523,9 +2468,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 					local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
 					message = format(globalstring, playerLink)
 				end
-
-				frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+			else
+				local linkDisplayText = format('[%s]', arg2)
+				local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
+				message = format(globalstring, playerLink)
 			end
+
+			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST' then
 			if E:NotSecretValue(arg1) and arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
@@ -2893,13 +2842,12 @@ function CH:AddLines(lines, ...)
 end
 
 function CH:ChatEdit_OnEnterPressed(editBox)
-	editBox:ClearHistory() -- we will use our own editbox history so keeping them populated on blizzards end is pointless
-
 	local chatType = editBox:GetAttribute('chatType')
 	local chatFrame = chatType and editBox:GetParent()
-	if chatFrame and (not chatFrame.isTemporary) and (_G.ChatTypeInfo[chatType].sticky == 1) then
-		if not CH.db.sticky then chatType = 'SAY' end
-		editBox:SetAttribute('chatType', chatType)
+	local allowed = chatFrame and not chatFrame.isTemporary and not CH.db.sticky
+	local info = allowed and _G.ChatTypeInfo[chatType]
+	if info and info.sticky == 1 then -- we only use this to unsticky
+		editBox:SetAttribute('chatType', 'SAY')
 	end
 end
 
@@ -2912,25 +2860,25 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	CH:UpdateEditboxFont(chatFrame)
 end
 
-function CH:ChatEdit_AddHistory(_, line) -- editBox, line
-	line = line and strtrim(line)
+function CH:ChatEdit_AddHistory(editbox, line)
+	local lines = editbox.historyLines
+	local msg = lines and line and strtrim(line)
+	if not msg or strlen(msg) <= 0 then return end
 
-	if line and strlen(line) > 0 then
-		local cmd = strmatch(line, '^/%w+')
-		if cmd and IsSecureCmd(cmd) then return end -- block secure commands from history
+	local cmd = strmatch(msg, '^/%w+')
+	if cmd and IsSecureCmd(cmd) then return end -- block secure commands
 
-		for index, text in pairs(ElvCharacterDB.ChatEditHistory) do
-			if text == line then
-				tremove(ElvCharacterDB.ChatEditHistory, index)
-				break
-			end
+	for index, text in pairs(lines) do
+		if text == msg then
+			tremove(lines, index)
+			break
 		end
+	end
 
-		tinsert(ElvCharacterDB.ChatEditHistory, line)
+	tinsert(lines, msg)
 
-		if #ElvCharacterDB.ChatEditHistory > CH.db.editboxHistorySize then
-			tremove(ElvCharacterDB.ChatEditHistory, 1)
-		end
+	if #lines > CH.db.editboxHistorySize then
+		tremove(lines, 1)
 	end
 end
 
@@ -3968,7 +3916,7 @@ function CH:FCF_Tab_OnClick(button)
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
 		_G.FCF_Tab_SetupMenu(self)
 	elseif button == 'MiddleButton' then
-		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
+		if not IsBuiltinChatWindow(chat) then
 			if not chat.isTemporary then
 				CH.FCF_PopInWindow(self, chat)
 				return
@@ -3977,8 +3925,6 @@ function CH:FCF_Tab_OnClick(button)
 				return
 			elseif chat.chatType == 'PET_BATTLE_COMBAT_LOG' then
 				CH.FCF_Close(chat)
-			else
-				GMError(format('Unhandled temporary window type. chatType: %s, chatTarget %s', tostring(chat.chatType), tostring(chat.chatTarget)))
 			end
 		end
 	else
@@ -4089,14 +4035,6 @@ function CH:Initialize()
 		CH:SecureHook('ChatEdit_OnEnterPressed')
 	end
 
-	if _G.ChatEdit_OnShow then
-		CH:SecureHook('ChatEdit_OnShow', 'ChatEdit_PleaseUntaint')
-	end
-
-	if _G.ChatEdit_OnHide then
-		CH:SecureHook('ChatEdit_OnHide', 'ChatEdit_PleaseRetaint')
-	end
-
 	if _G.ChatEdit_UpdateHeader then
 		CH:SecureHook('ChatEdit_UpdateHeader', 'ChatEdit_UpdateHeader')
 	end
@@ -4104,7 +4042,6 @@ function CH:Initialize()
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('GROUP_ROSTER_UPDATE', 'CheckLFGRoles')
-	CH:RegisterEvent('PLAYER_REGEN_DISABLED', 'ChatEdit_PleaseUntaint')
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 	CH:RegisterEvent('CVAR_UPDATE')
 

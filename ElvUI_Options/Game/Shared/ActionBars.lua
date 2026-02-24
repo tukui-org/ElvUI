@@ -350,6 +350,7 @@ local function CreateBarOptions(num)
 
 	if E.Retail then
 		bar.args.generalOptions.values.targetReticle = L["Target Reticle"]
+		bar.args.generalOptions.values.spellCastVFX = L["Spell Cast VFX"]
 	end
 
 	bar.args.visibilityGroup.args.visibility.set = function(_, value) E.db.actionbar[barNumber].visibility = value AB:UpdateButtonSettings(barNumber) end

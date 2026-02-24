@@ -209,7 +209,7 @@ local function Update(self, event)
 
 	local list -- quests
 	local guid = UnitGUID(unit)
-	if element.guid ~= guid then
+	if E:NotSecretValue(guid) and element.guid ~= guid then
 		element.guid = guid -- if its the same guid on these events reuse the quest data
 	elseif event == 'UNIT_NAME_UPDATE' or event == 'NAME_PLATE_UNIT_ADDED' then
 		list = element.lastQuests

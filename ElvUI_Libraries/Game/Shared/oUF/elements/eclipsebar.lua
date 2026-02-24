@@ -1,6 +1,8 @@
 local _, ns = ...
 local oUF = ns.oUF
 
+local pcall = pcall
+
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -10,8 +12,9 @@ local GetEclipseDirection = GetEclipseDirection
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 
-local SPEC_DRUID_BALANCE = SPEC_DRUID_BALANCE or 1
 local POWERTYPE_BALANCE = Enum.PowerType.Balance
+local SPEC_DRUID_BALANCE = SPEC_DRUID_BALANCE or 1
+
 local TREANT_GLYPH = 114282
 local AQUATIC_FORM = 1066
 
@@ -21,8 +24,11 @@ local function Update(self, event, unit, powerType)
 	local element = self.EclipseBar
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local CUR = UnitPower('player', POWERTYPE_BALANCE)
-	local MAX = UnitPowerMax('player', POWERTYPE_BALANCE)
+	local okCur, CUR = pcall(UnitPower, 'player', POWERTYPE_BALANCE)
+	local okMax, MAX = pcall(UnitPowerMax, 'player', POWERTYPE_BALANCE)
+
+	if not okCur then CUR = 1 end
+	if not okMax then MAX = 1 end
 
 	if(element.LunarBar) then
 		element.LunarBar:SetMinMaxValues(-MAX, MAX)

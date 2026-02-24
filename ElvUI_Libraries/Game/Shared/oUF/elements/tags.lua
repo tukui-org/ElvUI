@@ -74,11 +74,10 @@ local validateEvent = Private.validateEvent
 local validateUnit = Private.validateUnit
 
 local _G = _G
-
+local next, type, unpack = next, type, unpack
 local wipe, rawset, tonumber = wipe, rawset, tonumber
-local format, tinsert, floor = format, tinsert, floor
+local pcall, format, tinsert, floor = pcall, format, tinsert, floor
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
-local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
 
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
@@ -320,7 +319,10 @@ tagFunctions.level = function(u)
 end
 
 tagFunctions.maxmana = function(unit)
-	return UnitPowerMax(unit, POWERTYPE_MANA)
+	local okMana, maxMana = pcall(UnitPowerMax, unit, POWERTYPE_MANA)
+	if okMana then
+		return maxMana
+	end
 end
 
 tagFunctions.missinghp = function(u)
@@ -389,7 +391,7 @@ tagFunctions.plus = function(u)
 end
 
 tagFunctions.powercolor = function(u)
-	local pType, pToken, altR, altG, altB = UnitPowerType(u)
+	local okType, pType, pToken, altR, altG, altB = pcall(UnitPowerType, u)
 	local color = _COLORS.power[pToken]
 
 	if(not color) then
@@ -400,7 +402,7 @@ tagFunctions.powercolor = function(u)
 				return Hex(altR, altG, altB)
 			end
 		else
-			return Hex(_COLORS.power[pType] or _COLORS.power.MANA)
+			return Hex((okType and _COLORS.power[pType]) or _COLORS.power.MANA)
 		end
 	end
 

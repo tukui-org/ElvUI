@@ -125,8 +125,10 @@ do
 		units[unit] = { customTexts = true }
 	end
 
-	for i = 1, 10 do
-		D.GeneratedKeys.profile.actionbar['bar'..i] = { paging = true }
+	for i = 1, 15 do
+		if i ~= 11 and i ~= 12 then
+			D.GeneratedKeys.profile.actionbar['bar'..i] = { paging = true }
+		end
 	end
 end
 

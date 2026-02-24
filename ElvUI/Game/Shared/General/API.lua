@@ -55,10 +55,10 @@ local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
+local GetAddOnRestrictionState = C_RestrictedActions and C_RestrictedActions.GetAddOnRestrictionState
 local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
 local CreateCurve = C_CurveUtil and C_CurveUtil.CreateCurve
 local CreateColorCurve = C_CurveUtil and C_CurveUtil.CreateColorCurve
-local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 
@@ -79,6 +79,7 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
+local AddOnRestrictionType = Enum.AddOnRestrictionType or {}
 local LuaCurveTypeLinear = Enum.LuaCurveType and Enum.LuaCurveType.Linear
 local LuaCurveTypeStep = Enum.LuaCurveType and Enum.LuaCurveType.Step
 local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
@@ -89,7 +90,7 @@ local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 local GameMenuButtonAddons = GameMenuButtonAddons
 local GameMenuButtonLogout = GameMenuButtonLogout
 local GameMenuFrame = GameMenuFrame
-local UIErrorsFrame = UIErrorsFrame
+
 -- GLOBALS: ElvDB
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
@@ -1044,7 +1045,7 @@ end
 
 do
 	local function NoCombat()
-		UIErrorsFrame:AddMessage(ERR_NOT_IN_COMBAT, 1.0, 0.2, 0.2, 1.0)
+		_G.UIErrorsFrame:AddMessage(ERR_NOT_IN_COMBAT, 1.0, 0.2, 0.2, 1.0)
 	end
 
 	function E:PLAYER_REGEN_DISABLED()
@@ -1251,19 +1252,26 @@ function E:GetClassCoords(classFile, crop, get)
 	end
 end
 
-function E:CropRatio(width, height, mult)
+function E:CropRatio(width, height, mult, left, right, top, bottom, factor)
 	if not mult then mult = 0.5 end
 
-	local left, right, top, bottom = E:GetTexCoords()
+	if not (left and right and top and bottom) then
+		left, right, top, bottom = E:GetTexCoords()
+	end
+
 	local ratio = width / height
 	if ratio > 1 then
-		local trimAmount = (1 - (1 / ratio)) * mult
-		top = top + trimAmount
-		bottom = bottom - trimAmount
+		local split = 1 / ratio
+		local range = factor and (right - left) or 1
+		local trim = range * (1 - split) * mult
+
+		top, bottom = top + trim, bottom - trim
 	else
-		local trimAmount = (1 - ratio) * mult
-		left = left + trimAmount
-		right = right - trimAmount
+		local split = 1 - ratio
+		local range = factor and (bottom - top) or 1
+		local trim = range * split * mult
+
+		left, right = left + trim, right - trim
 	end
 
 	return left, right, top, bottom
@@ -1387,7 +1395,7 @@ function E:GROUP_LEFT()
 end
 
 function E:UnitExists(unit)
-	if ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit) then return end
+	if E:IsSecretUnit(unit) then return end
 
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
@@ -1429,6 +1437,17 @@ function E:UnitIsDND(unit)
 	local dnd = UnitIsDND(unit)
 
 	return E:NotSecretValue(dnd) and dnd or nil
+end
+
+function E:CheckRestrictionState(which)
+	local ok, state = pcall(GetAddOnRestrictionState, AddOnRestrictionType[which] or which)
+	if not ok then return 0 end
+
+	return state
+end
+
+function E:IsChatRestricted()
+	return E:CheckRestrictionState('ChallengeMode') > 1 or E:CheckRestrictionState('Encounter') > 1
 end
 
 function E:LoadAPI()

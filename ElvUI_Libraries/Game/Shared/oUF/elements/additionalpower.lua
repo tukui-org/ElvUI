@@ -42,6 +42,7 @@ The following options are listed by priority. The first check that returns true 
 local _, ns = ...
 local oUF = ns.oUF
 
+local pcall = pcall
 local unpack = unpack
 
 local CopyTable = CopyTable
@@ -115,7 +116,12 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate(unit)
 	end
 
-	local cur, max = UnitPower('player', POWER_INDEX), UnitPowerMax('player', POWER_INDEX)
+	local okCur, cur = pcall(UnitPower, 'player', POWER_INDEX)
+	local okMax, max = pcall(UnitPowerMax, 'player', POWER_INDEX)
+
+	if not okCur then cur = 1 end
+	if not okMax then max = 1 end
+
 	element:SetMinMaxValues(0, max)
 
 	element:SetValue(cur, element.smoothing)
@@ -186,8 +192,9 @@ local function Visibility(self, event, unit)
 	local shouldEnable
 
 	if (oUF.isClassic or oUF.isTBC) or not UnitHasVehicleUI('player') then
+		local okPower, maxPower = pcall(UnitPowerMax, unit, POWER_INDEX)
 		local allowed = element.displayPairs[oUF.myclass]
-		if allowed and UnitPowerMax(unit, POWER_INDEX) ~= 0 then
+		if allowed and (okPower and maxPower ~= 0) then
 			shouldEnable = allowed[UnitPowerType(unit)]
 		end
 	end

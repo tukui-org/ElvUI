@@ -208,33 +208,35 @@ end
 local GOTAK_ID = 86659
 local GOTAK = E:GetSpellInfo(GOTAK_ID)
 function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
-	local spellName = E:NotSecretValue(bar.spell) and bar.spell or nil
+	local spellName, color = E:NotSecretValue(bar.spell) and bar.spell or nil
 
-	local colors
-	if E.Retail then
-		colors = UF:GetAuraCurve(unit, bar, bar.aura)
-	else
+	if not E.Retail then
 		local spellID = E:NotSecretValue(bar.spellID) and bar.spellID or nil
 		local auraColor = E.global.unitframe.AuraBarColors[spellID]
-		colors = auraColor and auraColor.enable and auraColor.color
+		color = auraColor and auraColor.enable and auraColor.color
 
-		if E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName]) and not colors and (spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)) then
-			colors = E.db.unitframe.colors.auraBarTurtleColor
+		if not color then
+			local turtle = E.db.unitframe.colors.auraBarTurtle and (E.global.unitframe.aurafilters.TurtleBuffs.spells[spellID] or E.global.unitframe.aurafilters.TurtleBuffs.spells[spellName])
+			local gotak = spellName ~= GOTAK or (spellName == GOTAK and spellID == GOTAK_ID)
+			if turtle and gotak then
+				color = E.db.unitframe.colors.auraBarTurtleColor
+			end
 		end
 	end
 
-	if not colors then -- debuffType is None here when secret
-		if UF.db.colors.auraBarByType and bar.filter == 'HARMFUL' then
-			if not debuffType or (debuffType == '' or debuffType == 'None') then
-				colors = UF.db.colors.auraBarDebuff
-			else
-				colors = DebuffColors[debuffType]
-			end
-		elseif bar.filter == 'HARMFUL' then
-			colors = UF.db.colors.auraBarDebuff
+	local isDebuff, colors = bar.filter == 'HARMFUL', UF.db.colors
+	if not color and colors.auraBarByType and isDebuff then
+		if E.Retail then
+			color = UF:GetAuraCurve(unit, bar, bar.aura)
+		elseif not debuffType or (debuffType == '' or debuffType == 'None') then
+			color = colors.auraBarDebuff -- debuffType is None here when secret
 		else
-			colors = UF.db.colors.auraBarBuff
+			color = DebuffColors[debuffType]
 		end
+	end
+
+	if not color then
+		color = (isDebuff and colors.auraBarDebuff) or colors.auraBarBuff
 	end
 
 	local text = self.db and self.db.abbrevName and spellName and E.TagFunctions.Abbrev(spellName)
@@ -255,11 +257,11 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 	end
 
 	if bar.bg then
-		if (bar.invertColors ~= UF.db.colors.invertAurabars) or ((UF.db.colors.transparentAurabars and not bar.isTransparent) or (bar.isTransparent and not UF.db.colors.transparentAurabars)) then
-			UF:ToggleTransparentStatusBar(UF.db.colors.transparentAurabars, bar, bar.bg, true, UF.db.colors.invertAurabars)
+		if (bar.invertColors ~= colors.invertAurabars) or ((colors.transparentAurabars and not bar.isTransparent) or (bar.isTransparent and not colors.transparentAurabars)) then
+			UF:ToggleTransparentStatusBar(colors.transparentAurabars, bar, bar.bg, true, colors.invertAurabars)
 		else
 			if not bar.bg:GetTexture() then
-				UF:Update_StatusBar(bar.bg, UF.db.colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
+				UF:Update_StatusBar(bar.bg, colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
 			end
 
 			local orientation = bar:GetOrientation()
@@ -267,9 +269,9 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 		end
 	end
 
-	bar.custom_backdrop = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop
+	bar.custom_backdrop = colors.customaurabarbackdrop and colors.aurabar_backdrop
 
-	if colors then
-		UF:SetStatusBarColor(bar, colors.r, colors.g, colors.b)
+	if color then
+		UF:SetStatusBarColor(bar, color.r, color.g, color.b)
 	end
 end

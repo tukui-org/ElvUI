@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local format, unpack, tonumber = format, unpack, tonumber
-local next, type, pairs, ipairs, gsub = next, type, pairs, ipairs, gsub
-local strmatch, strsplit, strfind, strsub, strupper = strmatch, strsplit, strfind, strsub, strupper
+local ipairs, pairs, strmatch, next, type, unpack, tonumber = ipairs, pairs, strmatch, next, type, unpack, tonumber
+local format, wipe, gsub, strsplit, strfind, strsub, strupper = format, wipe, gsub, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
 local ClearOverrideBindings = ClearOverrideBindings
@@ -143,6 +142,32 @@ function AB:HandleBackdropMover(bar, backdropSpacing)
 		bar:SetSize(width - spacing, height - spacing)
 	else
 		bar:SetSize(width, height)
+	end
+end
+
+function AB:HandleButtonAutoCast(bar, button)
+	local db = bar.db
+	if not db then return end
+
+	local buttonWidth = db.buttonSize
+	local buttonHeight = (db.keepSizeRatio and db.buttonSize) or db.buttonHeight
+
+	local autoCast = button.AutoCastOverlay or button.AutoCastable
+	if E.Retail then
+		autoCast:SetOutside(button, 3, 3)
+	elseif E.TBC then
+		autoCast:SetOutside(button, 1, 1)
+	else
+		local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
+		local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
+		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
+	end
+
+	local corners = autoCast.Corners
+	if corners then
+		local cornerWidth = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonWidth * 0.5) - (buttonWidth / 7.5))
+		local cornerHeight = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonHeight * 0.5) - (buttonHeight / 7.5))
+		corners:SetOutside(button, cornerWidth, cornerHeight)
 	end
 end
 
@@ -311,6 +336,10 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, 'page', page)
 	bar:SetAttribute('page', page)
 
+	local buttonWidth = db.buttonSize
+	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
+	local maskWidth, maskHeight = buttonWidth * 1.5, buttonHeight * 1.5
+
 	local reticleColor = E:UpdateClassColor(AB.db.targetReticleColor)
 	local pages = enabled and AB:ActivePages(page) or nil
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
@@ -332,11 +361,32 @@ function AB:PositionAndSizeBar(barName)
 			lastShownButton = button
 		end
 
-		local targetReticle = button.TargetReticleAnimFrame
-		if targetReticle then
-			targetReticle.Base:SetVertexColor(reticleColor.r, reticleColor.g, reticleColor.b)
+		local spellCastAnim = button.SpellCastAnimFrame
+		if spellCastAnim then
+			local endBurst = spellCastAnim.EndBurst
+			if endBurst then
+				endBurst.EndMask:Size(maskWidth, maskHeight)
+			end
+
+			local spellCastFill = spellCastAnim.Fill
+			if spellCastFill then
+				spellCastFill.FillMask:Size(maskWidth, maskHeight)
+			end
 		end
 
+		local interruptDisplay = button.InterruptDisplay
+		local interruptHighlight = interruptDisplay and interruptDisplay.Highlight
+		if interruptHighlight then
+			interruptHighlight.Mask:Size(maskWidth, maskHeight)
+		end
+
+		local targetReticle = button.TargetReticleAnimFrame
+		local reticleBase = targetReticle and targetReticle.Base
+		if reticleBase then
+			reticleBase:SetVertexColor(reticleColor.r, reticleColor.g, reticleColor.b)
+		end
+
+		AB:HandleButtonAutoCast(bar, button)
 		AB:HandleButtonState(button, i, vehicleIndex, pages)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
@@ -396,15 +446,38 @@ function AB:CreateBar(id)
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonTextureOverlayTemplate')
 		end
 
+		local icon = button.icon or button.Icon
+		local spellCastAnim = button.SpellCastAnimFrame
+		local spellCastFill = spellCastAnim and spellCastAnim.Fill
+		if spellCastFill then
+			spellCastFill.InnerGlowTexture:SetAllPoints(icon)
+			spellCastFill.InnerGlowTexture:SetTexCoords()
+		end
+
+		local interruptDisplay = button.InterruptDisplay
+		local interruptBase = interruptDisplay and interruptDisplay.Base
+		if interruptBase then
+			interruptBase.Base:SetAllPoints(icon)
+			interruptBase.Base:SetTexCoords()
+		end
+
+		local interruptHighlight = interruptDisplay and interruptDisplay.Highlight
+		if interruptHighlight then
+			interruptHighlight.Mask:ClearAllPoints()
+			interruptHighlight.Mask:Point('CENTER')
+		end
+
 		local targetReticle = button.TargetReticleAnimFrame
-		if targetReticle then
-			targetReticle:SetAllPoints()
+		local reticleBase = targetReticle and targetReticle.Base
+		if reticleBase then
+			reticleBase:SetTexCoords()
+			reticleBase:SetTexture(E.Media.Textures.TargetReticle)
+			reticleBase:SetAllPoints(icon)
+		end
 
-			targetReticle.Base:SetTexCoords()
-			targetReticle.Base:SetTexture(E.Media.Textures.TargetReticle)
-			targetReticle.Base:SetInside()
-
-			targetReticle.Highlight:SetInside()
+		local reticleHighlight = targetReticle and targetReticle.Highlight
+		if reticleHighlight then
+			reticleHighlight:SetAllPoints(icon)
 		end
 
 		button.MasqueSkinned = true -- skip LAB styling (we handle it and masque as well)
@@ -769,6 +842,10 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 
 	if not AB.handledbuttons[button] then
 		E:RegisterCooldown(button.cooldown, 'actionbar')
+
+		if button.AuraCooldown then
+			E:RegisterCooldown(button.AuraCooldown, 'targetaura')
+		end
 
 		AB.handledbuttons[button] = true
 	end
@@ -1391,6 +1468,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	config.enabled = db.enabled -- only used to keep events off for targetReticle
 	config.showGrid = db.showGrid
 	config.targetReticle = db.targetReticle
+	config.spellCastVFX = db.spellCastVFX
 	config.clickOnDown = GetCVarBool('ActionButtonUseKeyDown')
 	config.outOfRangeColoring = (AB.db.useRangeColorText and 'hotkey') or 'button'
 	config.colors.range = E:SetColorTable(config.colors.range, AB.db.noRangeColor)
@@ -1631,6 +1709,10 @@ function AB:StyleFlyout(button, arrow)
 	end
 end
 
+function AB:SetTargetAuraCooldowns(enabled)
+	LAB:SetTargetAuraCooldowns(enabled)
+end
+
 function AB:ToggleCooldownOptions()
 	for button in pairs(LAB.actionButtons) do
 		if button._state_type == 'action' then
@@ -1808,6 +1890,36 @@ do
 			end
 		end
 	end
+
+	-- a few functions to modify what spells are rotation assisted
+	function AB:RotationUpdate()
+		AB:RotationSpellsAdjust()
+	end
+
+	function AB:RotationSpellsClear()
+		AB:RotationSpellsAdjust(true) -- set them back to true
+		wipe(E.db.general.rotationAssist.spells[E.myclass]) -- clear our table now
+	end
+
+	function AB:RotationSpellsAdjust(value)
+		local rotations = _G.AssistedCombatManager.rotationSpells -- Blizzards table
+		if not next(rotations) then return end
+
+		local spells = E.db.general.rotationAssist.spells[E.myclass] -- our table for toggling
+		for spellID, active in next, spells do
+			if rotations[spellID] ~= nil then
+				if value ~= nil then
+					rotations[spellID] = value
+				else
+					rotations[spellID] = active
+				end
+			else -- remove old ones
+				spells[spellID] = nil
+			end
+		end
+
+		_G.AssistedCombatManager:ForceUpdateAtEndOfFrame()
+	end
 end
 
 function AB:Initialize()
@@ -1885,6 +1997,8 @@ function AB:Initialize()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 
+	AB:SetTargetAuraCooldowns(E.db.cooldown.targetaura.enable)
+
 	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'UpdateAllBinds')
@@ -1924,6 +2038,7 @@ function AB:Initialize()
 
 		AB:AssistedGlowUpdate()
 		hooksecurefunc(_G.AssistedCombatManager, 'UpdateAllAssistedHighlightFramesForSpell', AB.AssistedUpdate)
+		_G.EventRegistry:RegisterCallback('AssistedCombatManager.RotationSpellsUpdated', AB.RotationUpdate)
 		_G.AssistedCombatManager.OnUpdate = AB.AssistedOnUpdate -- use our update function instead
 	end
 

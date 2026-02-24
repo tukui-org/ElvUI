@@ -3,6 +3,9 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
+local UnitDamageAbsorbClampMode = Enum.UnitDamageAbsorbClampMode
+local UnitIncomingHealClampMode = Enum.UnitIncomingHealClampMode
+local UnitHealAbsorbClampMode = Enum.UnitHealAbsorbClampMode
 
 function UF.HealthClipFrame_HealComm(frame)
 	if frame.HealthPrediction then
@@ -99,6 +102,16 @@ function UF:Configure_HealComm(frame)
 
 		local colors = UF.db.colors.healPrediction
 		pred.maxOverflow = 1 + (colors.maxOverflow or 0)
+
+		if E.Retail then
+			local canOverflow = db.absorbStyle == 'REVERSED' or db.absorbStyle == 'OVERFLOW'
+			local clampMode = (canOverflow and (pred.maxOverflow > 1) and 'MaximumHealth') or 'MissingHealth'
+			pred.damageAbsorbClampMode = UnitDamageAbsorbClampMode[clampMode]
+			pred.healAbsorbClampMode = UnitHealAbsorbClampMode[clampMode]
+			pred.incomingHealClampMode = UnitIncomingHealClampMode[clampMode]
+
+			pred:SetupPredictionValues()
+		end
 
 		if not frame:IsElementEnabled('HealthPrediction') then
 			frame:EnableElement('HealthPrediction')
@@ -207,22 +220,18 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	local db = frame and frame.db and frame.db.healPrediction
 	if not db or not db.absorbStyle then return end
 
-	local isHealthSecret = E:IsSecretValue(health)
-	local isMaxHealthSecret = E:IsSecretValue(maxHealth)
-	local isAbsorbSecret = E:IsSecretValue(absorb)
-	local hasSecretValues = isHealthSecret or isMaxHealthSecret or isAbsorbSecret
-
 	local pred = frame.HealthPrediction
 	local healAbsorb = pred.healAbsorb
 	local damageAbsorb = pred.damageAbsorb
 
 	UF:SetSize_HealComm(frame)
 
-	-- absorbs is set to none so hide both and kill code execution
+	-- absorbs is set to none so hide both
 	if E.Classic or db.absorbStyle == 'NONE' then
 		healAbsorb:Hide()
 		damageAbsorb:Hide()
-		return
+
+		return -- dont proceed
 	end
 
 	-- handle over heal absorbs
@@ -247,7 +256,8 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 		damageAbsorb:GetStatusBarTexture():SetVertexColor(colors.absorbs.r, colors.absorbs.g, colors.absorbs.b, colors.absorbs.a)
 	end
 
-	if hasSecretValues then return end
+	-- no need to proceed for retail here, we cant use these modes anymore
+	if E.Retail then return end
 
 	-- if we are in normal mode and overflowing happens we should let a bit show, like blizzard does
 	if db.absorbStyle == 'NORMAL' then
@@ -255,28 +265,26 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 			damageAbsorb:SetValue(1.5)
 			damageAbsorb:SetMinMaxValues(0, 100)
 		end
-	else
-		if hasOverAbsorb then -- non normal mode overflowing
-			if db.absorbStyle == 'WRAPPED' then -- engage backfilling
-				damageAbsorb:SetReverseFill(not pred.reverseFill)
-
-				damageAbsorb:ClearAllPoints()
-				damageAbsorb:Point(pred.anchor, pred.health)
-				damageAbsorb:Point(pred.anchor2, pred.health, pred.anchor2)
-			elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
-				local overflowAbsorb = absorb * (colors.maxOverflow or 0)
-				if health == maxHealth then
-					damageAbsorb:SetValue(overflowAbsorb)
-				else -- fill the inner part along with the overflow amount so it smoothly transitions
-					damageAbsorb:SetValue((maxHealth - health) + overflowAbsorb)
-				end
-			end
-		elseif db.absorbStyle == 'WRAPPED' then -- restore wrapped to its forward filling state
-			damageAbsorb:SetReverseFill(pred.reverseFill)
+	elseif hasOverAbsorb then -- non normal mode overflowing
+		if db.absorbStyle == 'WRAPPED' then -- engage backfilling
+			damageAbsorb:SetReverseFill(not pred.reverseFill)
 
 			damageAbsorb:ClearAllPoints()
 			damageAbsorb:Point(pred.anchor, pred.health)
-			damageAbsorb:Point(pred.anchor1, pred.healingOtherTexture, pred.anchor2)
+			damageAbsorb:Point(pred.anchor2, pred.health, pred.anchor2)
+		elseif db.absorbStyle == 'OVERFLOW' then -- we need to display the overflow but adjusting the values
+			local overflowAbsorb = absorb * (colors.maxOverflow or 0)
+			if health == maxHealth then
+				damageAbsorb:SetValue(overflowAbsorb)
+			else -- fill the inner part along with the overflow amount so it smoothly transitions
+				damageAbsorb:SetValue((maxHealth - health) + overflowAbsorb)
+			end
 		end
+	elseif db.absorbStyle == 'WRAPPED' then -- restore wrapped to its forward filling state
+		damageAbsorb:SetReverseFill(pred.reverseFill)
+
+		damageAbsorb:ClearAllPoints()
+		damageAbsorb:Point(pred.anchor, pred.health)
+		damageAbsorb:Point(pred.anchor1, pred.healingOtherTexture, pred.anchor2)
 	end
 end

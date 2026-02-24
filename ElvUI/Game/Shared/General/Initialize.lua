@@ -47,14 +47,16 @@ E.oUF = oUF
 
 -- moved this to oUF but relink it
 E.ColorGradient = oUF.ColorGradient
-E.IsSecretValue = oUF.IsSecretValue
-E.IsSecretTable = oUF.IsSecretTable
-E.NotSecretValue = oUF.NotSecretValue
-E.NotSecretTable = oUF.NotSecretTable
-E.HasSecretValues = oUF.HasSecretValues
-E.NoSecretValues = oUF.NoSecretValues
 E.CanAccessValue = oUF.CanAccessValue
 E.CanNotAccessValue = oUF.CanNotAccessValue
+E.HasSecretValues = oUF.HasSecretValues
+E.IsSecretTable = oUF.IsSecretTable
+E.IsSecretUnit = oUF.IsSecretUnit
+E.IsSecretValue = oUF.IsSecretValue
+E.NoSecretValues = oUF.NoSecretValues
+E.NotSecretTable = oUF.NotSecretTable
+E.NotSecretUnit = oUF.NotSecretUnit
+E.NotSecretValue = oUF.NotSecretValue
 
 Engine[1] = E
 Engine[2] = {}
@@ -139,7 +141,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.05, '15.05-git', nil, true
+		return 15.06, '15.06-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''

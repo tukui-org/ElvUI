@@ -5,6 +5,7 @@ local Private = oUF.Private
 local argcheck = Private.argcheck
 local validateEvent = Private.validateEvent
 local validateUnit = Private.validateUnit
+local validateToken = Private.validateToken
 local isUnitEvent = Private.isUnitEvent
 local frame_metatable = Private.frame_metatable
 
@@ -40,6 +41,7 @@ function Private.UpdateUnits(frame, unit, realUnit)
 	if(frame.unit ~= unit or frame.realUnit ~= realUnit) then
 		-- don't let invalid units in, otherwise unit events will end up being
 		-- registered as unitless
+
 		if(frame.unitEvents and validateUnit(unit)) then
 			local resetRealUnit = false
 
@@ -63,8 +65,8 @@ function Private.UpdateUnits(frame, unit, realUnit)
 			end
 		end
 
-		frame.unit = unit
 		frame.realUnit = realUnit
+		frame.unit = validateToken(unit)
 		frame.id = unit:match('^.-(%d+)')
 
 		return true

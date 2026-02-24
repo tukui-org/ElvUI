@@ -131,7 +131,22 @@ P.general = {
 	},
 	rotationAssist = {
 		nextcast = { r = 0.20, g = 0.60, b = 0.95, a = 0.9 },
-		alternative = { r = 0.40, g = 0.99, b = 0.20, a = 0.9 }
+		alternative = { r = 0.40, g = 0.99, b = 0.20, a = 0.9 },
+		spells = {
+			HUNTER = {},
+			WARRIOR = {},
+			ROGUE = {},
+			MAGE = {},
+			PRIEST = {},
+			EVOKER = {},
+			SHAMAN = {},
+			WARLOCK = {},
+			DEMONHUNTER = {},
+			DEATHKNIGHT = {},
+			DRUID = {},
+			MONK = {},
+			PALADIN = {}
+		}
 	},
 	customGlow = {
 		style = 'Pixel Glow',
@@ -850,7 +865,7 @@ P.nameplates = {
 	nameColoredGlow = false,
 	overlapH = 0.8,
 	overlapV = 1.1,
-	persistentFriendlyNP = false,
+	classColorNames = false,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
 	statusbar = 'ElvUI Norm',
@@ -1820,6 +1835,7 @@ local UF_Portrait = {
 	overlay = false,
 	overlayAlpha = 0.5,
 	camDistanceScale = 2,
+	keepSizeRatio = true,
 	desaturation = 0,
 	rotation = 0,
 	style = '3D',
@@ -2992,7 +3008,7 @@ do
 	}
 
 	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
-	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton' } do
+	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton', 'targetaura' } do
 		local object = CopyTable(defaults)
 
 		if key == 'global' then
@@ -3001,15 +3017,27 @@ do
 			object.position = 'RIGHT'
 			object.offsetX = -10
 		elseif key == 'auraindicator' then
+			object.reverse = true
 			object.hideNumbers = true
 			object.fontSize = 10
 		elseif key == 'auras' then
 			object.reverse = true
 			object.position = 'BOTTOM'
 			object.offsetY = -3
+		elseif key == 'unitframe' then
+			object.reverse = true
+		elseif key == 'nameplates' then
+			object.reverse = true
 		elseif key == 'actionbar' then
 			object.threshold = 300
 			object.altBling = useAltBling
+		elseif key == 'targetaura' then
+			object.threshold = 300
+
+			local color = object.colors.text
+			if color then
+				color.r, color.g, color.b = 1, 0.6, 0
+			end
 		end
 
 		P.cooldown[key] = object
@@ -3178,6 +3206,7 @@ local AB_Bar = {
 	inheritGlobalFade = false,
 	showGrid = true,
 	targetReticle = true,
+	spellCastVFX = true,
 	flyoutDirection = 'AUTOMATIC',
 	paging = {},
 	countColor = { r = 1, g = 1, b = 1, a = 1 },
@@ -3219,8 +3248,8 @@ local AB_Bar = {
 	},
 }
 
-for i = 1, 15 do
-	if i ~= 11 and i ~= 12 then
+for i = 1, 15 do -- if this indexing changes
+	if i ~= 11 and i ~= 12 then -- also update in distributor
 		local barN = 'bar'..i
 		P.actionbar[barN] = CopyTable(AB_Bar)
 
