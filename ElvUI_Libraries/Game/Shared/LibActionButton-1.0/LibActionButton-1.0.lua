@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 72 -- the real minor version is 143
+local MINOR_VERSION = 73 -- the real minor version is 143
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2337,7 +2337,7 @@ function UpdateUsable(self, isUsable, notEnoughMana)
 end
 
 function UpdateCount(self)
-	if not self:HasAction() then
+	if self.config.hideElements.count or not self:HasAction() then
 		self.Count:SetText("")
 		return
 	end

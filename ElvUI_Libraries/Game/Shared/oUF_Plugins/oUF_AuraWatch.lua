@@ -9,6 +9,7 @@ local VISIBLE = 1
 local HIDDEN = 0
 
 local min, next, wipe, pairs, tinsert = min, next, wipe, pairs, tinsert
+
 local GetSpellTexture = C_Spell.GetSpellTexture
 local CreateFrame = CreateFrame
 local UnitIsUnit = UnitIsUnit
@@ -288,8 +289,8 @@ local function ForceUpdate(element)
 	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local function SetNewTable(element, table)
-	element.watched = table or {}
+local function SetNewTable(element, object)
+	element.watched = object or {}
 end
 
 local function Enable(self)

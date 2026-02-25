@@ -74,11 +74,10 @@ local validateEvent = Private.validateEvent
 local validateUnit = Private.validateUnit
 
 local _G = _G
-
+local next, type, unpack = next, type, unpack
 local wipe, rawset, tonumber = wipe, rawset, tonumber
 local pcall, format, tinsert, floor = pcall, format, tinsert, floor
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
-local next, type, pcall, unpack = next, type, pcall, unpack
 local error, assert, loadstring = error, assert, loadstring
 
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1

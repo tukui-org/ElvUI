@@ -10,7 +10,7 @@ local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
 local unpack, ipairs, next = unpack, ipairs, next
-local tonumber, strlower, floor = tonumber, strlower, floor
+local tonumber, strlower, floor, pcall = tonumber, strlower, floor, pcall
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect
@@ -887,7 +887,7 @@ function TT:MODIFIER_STATE_CHANGED()
 end
 
 function TT:ShowAuraInfo(tt, source, spellID, aura)
-	local mountID, mountText = E.MountIDs[spellID]
+	local mountID, mountText = E:NotSecretValue(spellID) and E.MountIDs[spellID]
 	if mountID then
 		local sourceText = E.MountText[mountID]
 		mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
@@ -907,9 +907,13 @@ function TT:ShowAuraInfo(tt, source, spellID, aura)
 			local color = E:ClassColor(aura.unitClassFilename) or PRIEST_COLOR
 			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), color:WrapTextInColorCode(aura.unitName or UNKNOWN))
 		elseif source then
-			local _, className = UnitClass(source)
-			local color = E:ClassColor(className) or PRIEST_COLOR
-			tt:AddDoubleLine(format(IDLine, _G.ID, spellID), color:WrapTextInColorCode(UnitName(source) or UNKNOWN))
+			if E:NotSecretValue(source) then
+				local _, className = UnitClass(source)
+				local color = E:ClassColor(className) or PRIEST_COLOR
+				tt:AddDoubleLine(format(IDLine, _G.ID, spellID), color:WrapTextInColorCode(UnitName(source) or UNKNOWN))
+			else
+				tt:AddDoubleLine(format(IDLine, _G.ID, spellID), UnitName(source) or UNKNOWN)
+			end
 		else
 			tt:AddLine(format(IDLine, _G.ID, spellID))
 		end
@@ -925,9 +929,7 @@ function TT:SetUnitAuraByAuraInstanceID(tt, unit, auraInstanceID)
 	local aura = unitAuraInfo and unitAuraInfo[auraInstanceID]
 	if not aura then return end
 
-	if E:NotSecretValue(aura.spellId) then
-		TT:ShowAuraInfo(tt, aura.sourceUnit, aura.spellId, aura)
-	end
+	TT:ShowAuraInfo(tt, aura.sourceUnit, aura.spellId, aura)
 end
 
 function TT:SetUnitAura(tt, unit, index, filter)
@@ -936,9 +938,7 @@ function TT:SetUnitAura(tt, unit, index, filter)
 	local name, _, _, _, _, _, source, _, _, spellID = E:GetAuraData(unit, index, filter)
 	if not name then return end
 
-	if E:NotSecretValue(spellID) then
-		TT:ShowAuraInfo(tt, source, spellID)
-	end
+	TT:ShowAuraInfo(tt, source, spellID)
 end
 
 function TT:GameTooltip_OnTooltipSetSpell(data)

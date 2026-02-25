@@ -31,6 +31,8 @@ local GMChatFrame_IsGM = GMChatFrame_IsGM
 local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
+local IsBuiltinChatWindow = IsBuiltinChatWindow
+local IsCombatLog = IsCombatLog
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local IsSecureCmd = IsSecureCmd
 local IsShiftKeyDown = IsShiftKeyDown
@@ -941,7 +943,10 @@ function CH:StyleChat(frame)
 	frame:SetMaxLines(CH.db.maxLines)
 	frame:SetFading(CH.db.fade)
 
-	tab:SetScript('OnClick', CH.Tab_OnClick)
+	if not IsCombatLog(frame) then -- setting this script to log is problematic on retail
+		tab:SetScript('OnClick', CH.Tab_OnClick)
+	end
+
 	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
 	if frame == _G.GeneralDockManager.primary then
@@ -1566,17 +1571,14 @@ function CH:PositionChat(chat)
 	end
 
 	local BASE_OFFSET = 32
+	local LOG_OFFSET = IsCombatLog(chat) and (_G.LeftChatTab:GetHeight() + 4) or 0
 	if chat == CH.LeftChatWindow then
-		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
-
 		chat:ClearAllPoints()
 		chat:SetPoint('BOTTOMLEFT', _G.LeftChatPanel, 'BOTTOMLEFT', 5, 5)
 		chat:SetSize(CH.db.panelWidth - 10, CH.db.panelHeight - BASE_OFFSET - LOG_OFFSET)
 
 		CH:ShowBackground(chat.Background, false)
 	elseif chat == CH.RightChatWindow then
-		local LOG_OFFSET = chat:GetID() == 2 and (_G.LeftChatTab:GetHeight() + 4) or 0
-
 		chat:ClearAllPoints()
 		chat:SetPoint('BOTTOMLEFT', _G.RightChatPanel, 'BOTTOMLEFT', 5, 5)
 		chat:SetSize((CH.db.separateSizes and CH.db.panelWidthRight or CH.db.panelWidth) - 10, (CH.db.separateSizes and CH.db.panelHeightRight or CH.db.panelHeight) - BASE_OFFSET - LOG_OFFSET)
@@ -3914,7 +3916,7 @@ function CH:FCF_Tab_OnClick(button)
 		_G.CURRENT_CHAT_FRAME_ID = self:GetID()
 		_G.FCF_Tab_SetupMenu(self)
 	elseif button == 'MiddleButton' then
-		if (E.Retail or (chat ~= _G.DEFAULT_CHAT_FRAME and not _G.IsCombatLog(chat))) and not _G.IsBuiltinChatWindow(chat) then -- Dynamic between classic/wrath/retail ~Simpy
+		if not IsBuiltinChatWindow(chat) then
 			if not chat.isTemporary then
 				CH.FCF_PopInWindow(self, chat)
 				return

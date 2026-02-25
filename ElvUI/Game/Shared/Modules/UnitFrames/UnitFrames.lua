@@ -595,26 +595,26 @@ function UF:UpdateColors()
 end
 
 function UF:Update_StatusBars(statusbars)
-	for statusbar in pairs(statusbars or UF.statusbars) do
-		UF:Update_StatusBar(statusbar)
-		UF:Update_StatusBar(statusbar.bg)
+	for statusBar in pairs(statusbars or UF.statusbars) do
+		UF:Update_StatusBar(statusBar)
+		UF:Update_StatusBar(statusBar.bg)
 	end
 end
 
-function UF:Update_StatusBar(statusbar, texture)
-	if not statusbar then return end
+function UF:Update_StatusBar(statusBar, texture)
+	if not statusBar then return end
 
 	if not texture then
 		texture = LSM:Fetch('statusbar', UF.db.statusbar)
 	end
 
-	local useBlank = statusbar.parent and statusbar.parent.isTransparent or statusbar.isTransparent
+	local useBlank = statusBar.parent and statusBar.parent.isTransparent or statusBar.isTransparent
 	local newTexture = (not useBlank and texture) or E.media.blankTex
 
-	if statusbar:IsObjectType('StatusBar') then
-		statusbar:SetStatusBarTexture(newTexture)
-	elseif statusbar:IsObjectType('Texture') then
-		statusbar:SetTexture(newTexture)
+	if statusBar:IsObjectType('StatusBar') then
+		statusBar:SetStatusBarTexture(newTexture)
+	elseif statusBar:IsObjectType('Texture') then
+		statusBar:SetTexture(newTexture)
 	end
 end
 
@@ -1339,11 +1339,11 @@ do
 			UF:Configure_PowerPrediction(frame)
 		end
 
-		if frame.Portrait then
+		if frame.Portrait2D then -- only check for one
 			UF:Configure_Portrait(frame)
 		end
 
-		if frame.Auras then
+		if frame.Auras then -- will also update buffs and debuffs
 			UF:EnableDisable_Auras(frame)
 			UF:Configure_AllAuras(frame)
 		end
@@ -2052,11 +2052,24 @@ function UF:SetStatusBarBackdropPoints(statusBar, statusBarTex, backdropTex, sta
 	end
 end
 
+function UF:StatusBarBlackBackdrop()
+	self:SetBackdropColor(0, 0, 0, 1)
+end
+
 function UF:HandleStatusBarTemplate(statusBar, parent, isTransparent)
-	if statusBar.backdrop then
-		statusBar.backdrop:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
-	elseif parent.template then
-		parent:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+	local frame = statusBar.backdrop or (parent.template and parent)
+	if not frame then return end
+
+	frame:SetTemplate(isTransparent and 'Transparent', nil, nil, nil, true)
+
+	-- when we have a background: lock the frames backdrop color
+	if not statusBar.bg then return end
+
+	if isTransparent then
+		frame.callbackBackdropColor = nil
+	else
+		frame.callbackBackdropColor = UF.StatusBarBlackBackdrop
+		frame:SetBackdropColor(0, 0, 0, 1)
 	end
 end
 
@@ -2170,7 +2183,7 @@ do -- Clique support for registering clicks
 end
 
 function UF:UpdateAllElements(event)
-	if self.PrivateAuras and event == 'OnShow' then
+	if self.PrivateAuras and (event == 'OnShow' or event == 'PLAYER_ENTERING_WORLD') then
 		UF:Configure_PrivateAuras(self)
 	end
 end
