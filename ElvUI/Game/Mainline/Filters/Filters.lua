@@ -157,8 +157,8 @@ G.unitframe.aurawatch = {
 		-- Mistweaver Monk
 		[115175]	= Aura(115175, nil, 'TOP', {0.6, 0.9, 0.9}), -- Soothing Mist
 		[119611]	= Aura(119611, nil, 'TOPLEFT', {0.3, 0.8, 0.6}), -- Renewing Mist
+		[450769]	= Aura(450769, nil, 'TOPLEFT', {0.3, 0.8, 0.6}), -- Aspect of Harmony (Modified version of Renewing Mist)
 		[124682]	= Aura(124682, nil, 'BOTTOMLEFT', {0.8, 0.8, 0.25}), -- Enveloping Mist
-		-- ToDo 450769: Aspect of Harmony
 	},
 	-- Not used for now
 	ROGUE = {},
