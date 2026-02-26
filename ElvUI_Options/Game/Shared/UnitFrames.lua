@@ -370,11 +370,11 @@ local function BuffIndicator_ApplyToAll(info, value, profile, pet)
 end
 
 local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGroup)
-	local config = ACH:Group(L["Aura Indicator"], nil, 5, nil, function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end, nil, E.Retail)
+	local config = ACH:Group(L["Aura Indicator"], nil, 5, nil, function(info) return E.db.unitframe.units[groupName].buffIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 2)
-	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 1, function() local configString = format('Aura Indicator (%s)', (petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific and 'Pet') or (E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile') or 'Class') C:SetToFilterConfig(configString) end, nil, nil, nil, nil, nil, nil, E.Retail)
+	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 1, function() local configString = format('Aura Indicator (%s)', (petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific and 'Pet') or (E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile') or 'Class') C:SetToFilterConfig(configString) end)
 	config.args.generalGroup.args.size = ACH:Range(L["Size"], nil, 2, { min = 6, max = 48, step = 1 })
 	config.args.generalGroup.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 3)
 	config.args.generalGroup.args.petSpecific = ACH:Toggle(L["Pet Specific"], L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."], 4, nil, nil, nil, nil, nil, nil, function() return not petTypes[groupName] end)
@@ -392,7 +392,6 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 		config.args.applyToAll = ACH:Group(L["Apply To All"], nil, 50, nil, function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) end, function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) updateFunc(UF, groupName, numGroup) end)
 		config.args.applyToAll.args.header = ACH:Description(L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1)
 		config.args.applyToAll.args.style = ACH:Select(L["Style"], nil, 2, { timerOnly = L["Timer Only"], coloredIcon = L["Colored Icon"], texturedIcon = L["Textured Icon"] })
-		config.args.applyToAll.args.textThreshold = ACH:Range(L["Text Threshold"], L["At what point should the text be displayed. Set to -1 to disable."], 3, { min = -1, max = 60, step = 1 })
 		config.args.applyToAll.args.displayText = ACH:Toggle(L["Display Text"], nil, 4)
 
 		config.args.applyToAll.args.countGroup = ACH:Group(L["Count Text"], nil, 20)

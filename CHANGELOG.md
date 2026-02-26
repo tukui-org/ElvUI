@@ -1,3 +1,11 @@
+### Version 15.07 [ February 26th 2026 ]
+*   Party and Raid having incorrect height on classic variants because of Alternative Power.
+*   Cooldown text for charges not appearing.
+*   Aura Indicator back (only works in combat when the aura is not secret).
+*   Aura Highlight back for Buffs (only works in combat when the aura is not secret); Debuffs are still only for things you can dispel.
+*   Aura Indicator settings handled better with cooldown module.
+*   Chat secret error involving ShouldSuppressMessageFlash.
+
 ### Version 15.06 [ February 24th 2026 ]
 *   **General**
     *   Housing things missing pretty fonts.

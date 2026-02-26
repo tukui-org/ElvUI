@@ -7,7 +7,7 @@ local THRESHOLD = { min = 0, softMax = 3600, max = 86400, step = 1 }
 local MIN_DURATION = { min = 0, softMax = 60, max = 3600, step = 0.001, bigStep = 1 }
 
 local function Group(order, db, label)
-	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'auraindicator' and E.Retail) or (db == 'cdmanager' and not E.Retail) end)
+	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not E.Retail) end)
 	E.Options.args.cooldown.args[db] = main
 
 	local charges = db ~= 'actionbar' and db ~= 'bossbutton' and db ~= 'zonebutton'
@@ -36,7 +36,7 @@ local function Group(order, db, label)
 
 	local general = ACH:Group(L["General"], nil, 30)
 	general.args.reverse = ACH:Toggle(L["Reverse"], L["Reverse the cooldown animation."], 1)
-	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 2)
+	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 2, nil, nil, nil, nil, nil, nil, db == 'auraindicator')
 	general.args.chargeText = ACH:Toggle(L["Text: Charge"], L["The charge cooldown text."], 3, nil, nil, nil, nil, nil, nil, charges)
 	general.args.locText = ACH:Toggle(L["Text: Loss of Control"], L["The loss of control cooldown text."], 4, nil, nil, nil, nil, nil, nil, lossOfControl)
 	general.args.hideBling = ACH:Toggle(L["Hide Bling"], L["Completion flash when the cooldown finishes."], 11)

@@ -2056,7 +2056,7 @@ local function FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
 	if frame:IsShown() then return end
 
 	local allowAlerts = ((frame ~= _G.DEFAULT_CHAT_FRAME and info.flashTab) or (frame == _G.DEFAULT_CHAT_FRAME and info.flashTabOnGeneral)) and ((chatType == 'WHISPER' or chatType == 'BN_WHISPER') or (_G.CHAT_OPTIONS and not _G.CHAT_OPTIONS.HIDE_FRAME_ALERTS))
-	if allowAlerts and not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
+	if allowAlerts and E:NotSecretValue(chatTarget) and not _G.FCFManager_ShouldSuppressMessageFlash(frame, chatGroup, chatTarget) then
 		_G.FCF_StartAlertFlash(frame)
 	end
 end

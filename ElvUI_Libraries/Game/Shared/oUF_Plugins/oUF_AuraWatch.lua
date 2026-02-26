@@ -289,8 +289,8 @@ local function ForceUpdate(element)
 	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
-local function SetNewTable(element, table)
-	element.watched = table or {}
+local function SetNewTable(element, object)
+	element.watched = object or {}
 end
 
 local function Enable(self)

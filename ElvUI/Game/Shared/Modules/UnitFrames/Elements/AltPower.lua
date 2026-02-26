@@ -37,9 +37,8 @@ function UF:Construct_AltPowerBar(frame)
 end
 
 function UF:Configure_AltPowerBar(frame)
-	local db = frame.db.classbar
-
-	if db.enable then
+	local db = (E.Retail or E.Mists) and frame.db.classbar
+	if db and db.enable then
 		if not frame:IsElementEnabled('AlternativePower') then
 			frame:EnableElement('AlternativePower')
 			frame.AlternativePower:Show()
