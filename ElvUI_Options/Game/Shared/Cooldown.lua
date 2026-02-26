@@ -7,7 +7,7 @@ local THRESHOLD = { min = 0, softMax = 3600, max = 86400, step = 1 }
 local MIN_DURATION = { min = 0, softMax = 60, max = 3600, step = 0.001, bigStep = 1 }
 
 local function Group(order, db, label)
-	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'auraindicator' and E.Retail) or (db == 'cdmanager' and not E.Retail) end)
+	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not E.Retail) end)
 	E.Options.args.cooldown.args[db] = main
 
 	local charges = db ~= 'actionbar' and db ~= 'bossbutton' and db ~= 'zonebutton'

@@ -67,12 +67,10 @@ local function GetAuraType(unit, check, list)
 		return aura, auraType, icon, filtered, style, color
 	end
 
-	if not oUF.isRetail then
-		aura, auraType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
+	aura, auraType, icon, filtered, style, color = Looper(unit, 'HELPFUL', check, list, BuffLoop)
 
-		if icon then
-			return aura, auraType, icon, filtered, style, color
-		end
+	if icon then
+		return aura, auraType, icon, filtered, style, color
 	end
 end
 

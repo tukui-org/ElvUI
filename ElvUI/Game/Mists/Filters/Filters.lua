@@ -565,62 +565,62 @@ G.unitframe.aurafilters.RaidBuffsElvUI = {
 G.unitframe.aurawatch = {
 	GLOBAL = {},
 	MONK = {
-		[119611] = Aura(119611, nil, 'TOPLEFT', {0.8, 0.4, 0.8}), -- Renewing Mist
-		[116849] = Aura(116849, nil, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Life Cocoon
-		[124081] = Aura(124081, nil, 'BOTTOMRIGHT', {0.7, 0.4, 0}), -- Zen Sphere
-		[132120] = Aura(132120, nil, 'BOTTOMLEFT', {0.4, 0.8, 0.2}) -- Enveloping Mist
+		[119611] = Aura(119611, nil, true, 'TOPLEFT', {0.8, 0.4, 0.8}), -- Renewing Mist
+		[116849] = Aura(116849, nil, true, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Life Cocoon
+		[124081] = Aura(124081, nil, true, 'BOTTOMRIGHT', {0.7, 0.4, 0}), -- Zen Sphere
+		[132120] = Aura(132120, nil, true, 'BOTTOMLEFT', {0.4, 0.8, 0.2}) -- Enveloping Mist
 	},
 	DEATHKNIGHT = {
-		[49016] = Aura(49016, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Unholy Frenzy
+		[49016] = Aura(49016, nil, true, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Unholy Frenzy
 	},
 	DRUID = {
-		[774]	= Aura(774, nil, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation
-		[8936]	= Aura(8936, nil, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth
-		[29166]	= Aura(29166, nil, 'CENTER', {0.49, 0.60, 0.55}, true), -- Innervate
-		[33763]	= Aura(33763, nil, 'BOTTOM', {0.33, 0.37, 0.47}), -- Lifebloom
-		[48438]	= Aura(48438, nil, 'BOTTOMRIGHT', {0.8, 0.4, 0}) -- Wild Growth
+		[774]	= Aura(774, nil, true, 'BOTTOMLEFT', {0.83, 1.00, 0.25}), -- Rejuvenation
+		[8936]	= Aura(8936, nil, true, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Regrowth
+		[29166]	= Aura(29166, nil, true, 'CENTER', {0.49, 0.60, 0.55}, true), -- Innervate
+		[33763]	= Aura(33763, nil, true, 'BOTTOM', {0.33, 0.37, 0.47}), -- Lifebloom
+		[48438]	= Aura(48438, nil, true, 'BOTTOMRIGHT', {0.8, 0.4, 0}) -- Wild Growth
 	},
 	HUNTER = {
-		[34477] = Aura(34477, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Misdirection
+		[34477] = Aura(34477, nil, true, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Misdirection
 	},
 	MAGE = {
-		[130]	= Aura(130, nil, 'CENTER', {0.00, 0.00, 0.50}, true), -- Slow Fall
+		[130]	= Aura(130, nil, true, 'CENTER', {0.00, 0.00, 0.50}, true), -- Slow Fall
 	},
 	PALADIN = {
-		[1044]	= Aura(1044, nil, 'CENTER', {0.89, 0.45, 0}, true), -- Hand of Freedom
-		[1038]	= Aura(1038, nil, 'CENTER', {0.11, 1.00, 0.45}, true), -- Hand of Salvation
-		[6940]	= Aura(6940, nil, 'CENTER', {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice
-		[1022]	= Aura(1022, nil, 'CENTER', {0.17, 1.00, 0.75}, true), -- Hand of Protection
-		[53563]	= Aura(53563, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}, true), -- Beacon of Light
+		[1044]	= Aura(1044, nil, true, 'CENTER', {0.89, 0.45, 0}, true), -- Hand of Freedom
+		[1038]	= Aura(1038, nil, true, 'CENTER', {0.11, 1.00, 0.45}, true), -- Hand of Salvation
+		[6940]	= Aura(6940, nil, true, 'CENTER', {0.89, 0.1, 0.1}, true), -- Hand of Sacrifice
+		[1022]	= Aura(1022, nil, true, 'CENTER', {0.17, 1.00, 0.75}, true), -- Hand of Protection
+		[53563]	= Aura(53563, nil, true, 'TOPRIGHT', {0.7, 0.3, 0.7}, true), -- Beacon of Light
 	},
 	PRIEST = {
-		[17]	= Aura(17, nil, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
-		[139]	= Aura(139, nil, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
-		[6788]	= Aura(6788, nil, 'TOP', {0.89, 0.1, 0.1}), -- Weakened Soul
-		[41635]	= Aura(41635, nil, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}), -- Prayer of Mending
-		[10060] = Aura(10060, nil, 'TOP', {0.17, 1.00, 0.45}), -- Power Infusion
-		[47788] = Aura(47788, nil, 'TOP', {0.17, 1.00, 0.45}), -- Guardian Spirit
-		[33206] = Aura(33206, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}), -- Pain Suppression
+		[17]	= Aura(17, nil, true, 'BOTTOM', {0.00, 0.00, 1.00}), -- Power Word: Shield
+		[139]	= Aura(139, nil, true, 'BOTTOMRIGHT', {0.33, 0.73, 0.75}), -- Renew
+		[6788]	= Aura(6788, nil, true, 'TOP', {0.89, 0.1, 0.1}), -- Weakened Soul
+		[41635]	= Aura(41635, nil, true, 'BOTTOMRIGHT', {0.2, 0.7, 0.2}), -- Prayer of Mending
+		[10060] = Aura(10060, nil, true, 'TOP', {0.17, 1.00, 0.45}), -- Power Infusion
+		[47788] = Aura(47788, nil, true, 'TOP', {0.17, 1.00, 0.45}), -- Guardian Spirit
+		[33206] = Aura(33206, nil, true, 'TOPRIGHT', {0.17, 1.00, 0.45}), -- Pain Suppression
 	},
 	ROGUE = {
-		[57933] = Aura(57933, nil, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Tricks of the Trade
+		[57933] = Aura(57933, nil, true, 'TOPRIGHT', {0.17, 1.00, 0.45}) -- Tricks of the Trade
 	},
 	SHAMAN = {
-		[974]	= Aura(974, nil, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield
-		[61295] = Aura(61295, nil, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
-		[51945] = Aura(51945, nil, 'LEFT', {0.7, 0.3, 0.7}) -- Earthliving
+		[974]	= Aura(974, nil, true, 'TOP', {0.08, 0.21, 0.43}, true), -- Earth Shield
+		[61295] = Aura(61295, nil, true, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
+		[51945] = Aura(51945, nil, true, 'LEFT', {0.7, 0.3, 0.7}) -- Earthliving
 	},
 	WARLOCK = {
-		[5697]	= Aura(5697, nil, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
-		[20707]	= Aura(20707, nil, 'TOP', {0.00, 0.00, 0.85}, true) -- Soulstone
+		[5697]	= Aura(5697, nil, true, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
+		[20707]	= Aura(20707, nil, true, 'TOP', {0.00, 0.00, 0.85}, true) -- Soulstone
 	},
 	WARRIOR = {
-		[3411]	= Aura(3411, nil, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Intervene
-		[50720]	= Aura(50720, nil, 'TOPRIGHT', {0.4, 0.2, 0.8}, true) -- Vigilance
+		[3411]	= Aura(3411, nil, true, 'TOPLEFT', {0.2, 0.2, 1}, true), -- Intervene
+		[50720]	= Aura(50720, nil, true, 'TOPRIGHT', {0.4, 0.2, 0.8}, true) -- Vigilance
 	},
 	PET = {
 	-- Hunter Pets
-		[136]	= Aura(136, nil, 'TOPRIGHT', {0.08, 0.59, 0.41}) -- Mend Pet
+		[136]	= Aura(136, nil, true, 'TOPRIGHT', {0.08, 0.59, 0.41}) -- Mend Pet
 	},
 }
 
