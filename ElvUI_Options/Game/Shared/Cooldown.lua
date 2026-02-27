@@ -36,7 +36,7 @@ local function Group(order, db, label)
 
 	local general = ACH:Group(L["General"], nil, 30)
 	general.args.reverse = ACH:Toggle(L["Reverse"], L["Reverse the cooldown animation."], 1)
-	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 2)
+	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 2, nil, nil, nil, nil, nil, nil, db == 'auraindicator')
 	general.args.chargeText = ACH:Toggle(L["Text: Charge"], L["The charge cooldown text."], 3, nil, nil, nil, nil, nil, nil, charges)
 	general.args.locText = ACH:Toggle(L["Text: Loss of Control"], L["The loss of control cooldown text."], 4, nil, nil, nil, nil, nil, nil, lossOfControl)
 	general.args.hideBling = ACH:Toggle(L["Hide Bling"], L["Completion flash when the cooldown finishes."], 11)

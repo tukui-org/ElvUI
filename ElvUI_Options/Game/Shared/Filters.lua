@@ -18,6 +18,7 @@ local GetSpellSubtext = GetSpellSubtext
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
 local auraBarDefaults = { enable = true, color = { r = 1, g = 1, b = 1, a = 1 } }
 local defaultFilterList = {
+	['Aura Highlight'] = 'Aura Highlight',
 	['Aura Indicator (Global)'] = 'Aura Indicator (Global)',
 	['Aura Indicator (Class)'] = 'Aura Indicator (Class)',
 	['Aura Indicator (Pet)'] = 'Aura Indicator (Pet)',
@@ -26,7 +27,6 @@ local defaultFilterList = {
 
 if not E.Retail then
 	defaultFilterList['AuraBar Colors'] = 'AuraBar Colors'
-	defaultFilterList['Aura Highlight'] = 'Aura Highlight'
 end
 
 local function GetSelectedFilters()
@@ -418,7 +418,6 @@ Filters.mainOptions.args.auraIndicator.args.spacer = ACH:Spacer(5)
 Filters.mainOptions.args.auraIndicator.args.anyUnit = ACH:Toggle(L["Show Aura From Other Players"], nil, 6, nil, nil, 205)
 Filters.mainOptions.args.auraIndicator.args.onlyShowMissing = ACH:Toggle(L["Show When Not Active"], nil, 7)
 Filters.mainOptions.args.auraIndicator.args.displayText = ACH:Toggle(L["Display Text"], nil, 8, nil, nil, nil, function(info) local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return (selectedTable[spell].style == 'timerOnly') or selectedTable[spell][info[#info]] end, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'timerOnly' end)
-Filters.mainOptions.args.auraIndicator.args.textThreshold = ACH:Range(L["Text Threshold"], L["At what point should the text be displayed. Set to -1 to disable."], 9, { min = -1, max = 60, step = 1 })
 
 Filters.mainOptions.args.auraIndicator.args.positionGroup = ACH:Group(L["Position"], nil, 15)
 Filters.mainOptions.args.auraIndicator.args.positionGroup.args.point = ACH:Select(L["Anchor Point"], nil, 5, C.Values.AllPoints)
