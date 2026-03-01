@@ -28,8 +28,14 @@ function S:Blizzard_AdventureMap()
 	AdventureMapQuestChoiceDialog.backdrop:ClearAllPoints()
 	AdventureMapQuestChoiceDialog.backdrop:Point('TOPLEFT', 0, -13)
 	AdventureMapQuestChoiceDialog.backdrop:Point('BOTTOMRIGHT', 0, -3)
-	if AdventureMapQuestChoiceDialog.Portrait then AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3) end
-	if AdventureMapQuestChoiceDialog.Background then AdventureMapQuestChoiceDialog.Background:SetAlpha(0) end
+
+	if AdventureMapQuestChoiceDialog.Portrait then
+		AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
+	end
+
+	if E.private.skins.parchmentRemoverEnable and AdventureMapQuestChoiceDialog.Background then
+		AdventureMapQuestChoiceDialog.Background:SetAlpha(0)
+	end
 
 	-- Rewards
 	hooksecurefunc(AdventureMapQuestChoiceDialog, 'RefreshRewards', SkinRewards)
