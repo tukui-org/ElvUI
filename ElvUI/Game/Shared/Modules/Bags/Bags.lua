@@ -200,32 +200,9 @@ if not E.Classic then
 	tinsert(B.GearFilters, FILTER_FLAG_JUNKSELL)
 end
 
-do
-	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
-
-	function B:GetBackpackCurrencyInfo(index)
-		if _G.GetBackpackCurrencyInfo then
-			local info = {}
-			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
-			return info
-		else
-			return GetBackpackCurrencyInfo(index)
-		end
-	end
-
-	function B:GetContainerItemInfo(containerIndex, slotIndex)
-		return GetContainerItemInfo(containerIndex, slotIndex) or {}
-	end
-
-	function B:GetContainerItemQuestInfo(containerIndex, slotIndex)
-		return GetContainerItemQuestInfo(containerIndex, slotIndex)
-	end
-end
-
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover
 
 local BANK_SPACE_OFFSET = E.Retail and 30 or 0
-local MAX_CONTAINER_ITEMS = 38
 local CONTAINER_SPACING = 0
 local CONTAINER_SCALE = 0.75
 local BOTTOM_OFFSET = 8
@@ -337,6 +314,28 @@ end
 
 for bankID = bankOffset + 1, maxBankSlots do
 	tinsert(bankIDs, bankID)
+end
+
+do
+	local GetBackpackCurrencyInfo = GetBackpackCurrencyInfo or C_CurrencyInfo.GetBackpackCurrencyInfo
+
+	function B:GetBackpackCurrencyInfo(index)
+		if _G.GetBackpackCurrencyInfo then
+			local info = {}
+			info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
+			return info
+		else
+			return GetBackpackCurrencyInfo(index)
+		end
+	end
+
+	function B:GetContainerItemInfo(containerIndex, slotIndex)
+		return GetContainerItemInfo(containerIndex, slotIndex) or {}
+	end
+
+	function B:GetContainerItemQuestInfo(containerIndex, slotIndex)
+		return GetContainerItemQuestInfo(containerIndex, slotIndex)
+	end
 end
 
 function B:GetContainerFrame(arg)
@@ -2115,7 +2114,7 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 		bag.staleSlots = {}
 	end
 
-	for slotID = 1, (E.Retail and isBank and 98) or MAX_CONTAINER_ITEMS do
+	for slotID = 1, (E.Retail and isBank and B.CHARACTERBANK_SIZE) or B.MAX_CONTAINER_ITEMS do
 		bag[slotID] = B:ConstructContainerButton(f, bagID, slotID)
 	end
 
@@ -3688,9 +3687,7 @@ function B:Initialize()
 	}
 
 	B:LoadBagBar()
-
-	--Creating vendor grays frame
-	B:CreateSellFrame()
+	B:CreateSellFrame() -- Creating vendor grays frame
 	B:RegisterEvent('MERCHANT_CLOSED')
 
 	--Bag Mover (We want it created even if Bags module is disabled, so we can use it for default bags too)
@@ -3710,8 +3707,11 @@ function B:Initialize()
 
 	B.Initialized = true
 	B.BagFrames = {}
+
+	B.MAX_CONTAINER_ITEMS = 42
 	B.CHARACTERBANK_SIZE = 98
 	B.WARBANDBANK_SIZE = 98
+	B.GUILDBANK_SIZE = 98
 
 	--Bag Mover: Set default anchor point and create mover
 	BagFrameHolder:Point('BOTTOMRIGHT', _G.RightChatPanel, 'BOTTOMRIGHT', 0, 22 + E.Border*4 - E.Spacing*2)

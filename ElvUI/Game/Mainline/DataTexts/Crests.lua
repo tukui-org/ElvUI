@@ -10,11 +10,11 @@ local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local CRESTS_EARNED = strsplit('%', _G.CURRENCY_SEASON_TOTAL_MAXIMUM)
 
 local crests = {
-	{ id = 3008, color = _G.HEIRLOOM_BLUE_COLOR:GenerateHexColor() },		-- Valorstones
-	{ id = 3284, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },		-- Weathered
-	{ id = 3286, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },			-- Carved
-	{ id = 3288, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },			-- Runed
-	{ id = 3290, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() }		-- Gilded
+	{ id = 3383, color = 'ffffffff' },									-- Adventurer
+	{ id = 3341, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },	 -- Veteran
+	{ id = 3343, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },		 -- Champion
+	{ id = 3345, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },		 -- Hero
+	{ id = 3347, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() }	 -- Myth
 }
 
 local crestIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
@@ -25,7 +25,7 @@ local function GetCrestIcon(info)
 end
 
 local function GetCrestText(crest, info)
-	return format(crestText, crest.color, (crest.id == 3008 and info.quantity) or info.totalEarned, info.maxQuantity)
+	return format(crestText, crest.color, info.totalEarned, info.maxQuantity)
 end
 
 local function OnEvent(self)
@@ -56,4 +56,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext(format('%s %s', _G.EXPANSION_NAME10, _G.ARCHAEOLOGY_RUNE_STONES), _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter)
+DT:RegisterDatatext(format('%s %s', _G.EXPANSION_NAME11, _G.ARCHAEOLOGY_RUNE_STONES), _G.CURRENCY, {'CHAT_MSG_CURRENCY', 'CURRENCY_DISPLAY_UPDATE'}, OnEvent, nil, nil, OnEnter)
