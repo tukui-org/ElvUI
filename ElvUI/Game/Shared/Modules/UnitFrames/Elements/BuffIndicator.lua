@@ -4,6 +4,19 @@ local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
 
+
+local function AnchorAuraIndicatorCooldown(cooldown, icon)
+	-- Slight overscan plus disabled pixel snapping prevents one-pixel gap on the radial swipe when icons are offset/sized on sub-pixel boundaries.
+
+	cooldown:ClearAllPoints()
+	cooldown:SetPoint('TOPLEFT', icon, 'TOPLEFT', -0.5, 0.5)
+	cooldown:SetPoint('BOTTOMRIGHT', icon, 'BOTTOMRIGHT', 0.5, -0.5)
+
+	if cooldown.SetSnapToPixelGrid then
+		cooldown:SetSnapToPixelGrid(false)
+	end
+
+end
 function UF:Construct_AuraWatch(frame)
 	local auras = CreateFrame('Frame', '$parentAuraWatch', frame)
 	auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
@@ -45,7 +58,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 end
 
 function UF:BuffIndicator_PostCreateIcon(button)
-	button.cd:SetAllPoints(button.icon)
+	AnchorAuraIndicatorCooldown(button.cd, button.icon)
 
 	E:RegisterCooldown(button.cd, 'auraindicator')
 
