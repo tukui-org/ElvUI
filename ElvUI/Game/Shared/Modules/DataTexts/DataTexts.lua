@@ -970,10 +970,19 @@ function DT:CloseMenus()
 	end
 end
 
-function DT:MenuSetItem(dt, value)
+function DT:MenuGetIndex(dt)
 	local panelDB = (dt and dt.battlePanel and DT.db.battlePanel) or DT.db.panels
-	if panelDB then
-		panelDB[dt.parentName][dt.pointIndex] = value
+	local options = panelDB and panelDB[dt.parentName]
+	if not options then return end
+
+	return dt.pointIndex, options
+end
+
+function DT:MenuSetItem(dt, value)
+	local index, options = DT:MenuGetIndex(dt)
+	if index then
+		options[index] = value
+
 		DT:UpdatePanelInfo(dt.parentName, dt.parent)
 	end
 
@@ -983,8 +992,8 @@ function DT:MenuSetItem(dt, value)
 end
 
 function DT:MenuGetItem(dt, value)
-	local panelDB = (dt and dt.battlePanel and DT.db.battlePanel) or DT.db.panels
-	return dt and (panelDB[dt.parentName] and panelDB[dt.parentName][dt.pointIndex] == value)
+	local index, options = DT:MenuGetIndex(dt)
+	return index and options[index] == value
 end
 
 function DT:Initialize()
