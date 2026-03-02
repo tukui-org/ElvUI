@@ -88,8 +88,6 @@ do
 			local button = CreateFrame('Button', name, marker, 'SecureActionButtonTemplate')
 			button:SetScript('OnEnter', M.RaidMarkButton_OnEnter)
 			button:SetScript('OnLeave', M.RaidMarkButton_OnLeave)
-			button:SetAttribute('type1', 'macro')
-			button:SetAttribute('type2', 'macro')
 
 			if E.Classic then
 				button:SetAttribute('type', 'macro')
@@ -98,6 +96,8 @@ do
 
 				button:RegisterForClicks('AnyDown')
 			else
+				button:SetAttribute('type1', 'macro')
+				button:SetAttribute('type2', 'macro')
 				button:SetAttribute('macrotext1', tm)
 				button:SetAttribute('macrotext2', tm)
 				button:SetScript('OnMouseUp', M.RaidMarkButton_MouseUp)
