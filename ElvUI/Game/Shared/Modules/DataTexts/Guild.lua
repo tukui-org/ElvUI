@@ -7,16 +7,16 @@ local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, s
 
 local GetGuildInfo = GetGuildInfo
 local GetGuildRosterInfo = GetGuildRosterInfo
-local GetGuildRosterMOTD = GetGuildRosterMOTD
-local MouseIsOver = MouseIsOver
 local GetNumGuildMembers = GetNumGuildMembers
 local GetQuestDifficultyColor = GetQuestDifficultyColor
+local InCombatLockdown = InCombatLockdown
+local IsAltKeyDown = IsAltKeyDown
 local IsInGuild = IsInGuild
 local IsShiftKeyDown = IsShiftKeyDown
+local MouseIsOver = MouseIsOver
 local ToggleGuildFrame = ToggleGuildFrame
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local IsAltKeyDown = IsAltKeyDown
 
 local LoadAddOn = C_AddOns.LoadAddOn
 
@@ -25,6 +25,7 @@ local REMOTE_CHAT = REMOTE_CHAT
 local GUILD_MOTD = GUILD_MOTD
 local GUILD = GUILD
 
+local GetGuildRosterMOTD = C_GuildInfo.GetMOTD or GetGuildRosterMOTD
 local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
 local GetGuildFactionData = C_Reputation.GetGuildFactionData
 local GetMemberIdsSortedByName = CommunitiesUtil.GetMemberIdsSortedByName
@@ -158,7 +159,7 @@ local function BuildGuildTable()
 end
 
 local function UpdateGuildMessage()
-	guildMotD = GetGuildRosterMOTD()
+	guildMotD = not InCombatLockdown() and GetGuildRosterMOTD() or ''
 end
 
 local FRIEND_ONLINE = select(2, strsplit(' ', _G.ERR_FRIEND_ONLINE_SS, 2))
@@ -188,6 +189,7 @@ local eventHandlers = {
 		else
 			BuildGuildTable()
 			UpdateGuildMessage()
+
 			if MouseIsOver(frame) then
 				frame:GetScript('OnEnter')(frame, nil, true)
 			end

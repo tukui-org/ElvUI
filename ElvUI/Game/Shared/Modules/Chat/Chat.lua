@@ -21,7 +21,6 @@ local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
 local GetChannelName = GetChannelName
 local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
-local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
@@ -68,6 +67,7 @@ local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
+local GetGuildRosterMOTD = C_GuildInfo.GetMOTD or GetGuildRosterMOTD
 local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
@@ -2961,11 +2961,14 @@ end
 tremove(_G.ChatTypeGroup.GUILD, 2)
 function CH:DelayGuildMOTD()
 	local delay, checks, delayFrame = 0, 0, CreateFrame('Frame')
+
 	tinsert(_G.ChatTypeGroup.GUILD, 2, 'GUILD_MOTD')
+
 	delayFrame:SetScript('OnUpdate', function(df, elapsed)
 		delay = delay + elapsed
+
 		if delay < 5 then return end
-		local msg = GetGuildRosterMOTD()
+		local msg = not InCombatLockdown() and GetGuildRosterMOTD()
 		if msg and strlen(msg) > 0 then
 			for _, frameName in ipairs(_G.CHAT_FRAMES) do
 				local chat = _G[frameName]
@@ -2974,9 +2977,11 @@ function CH:DelayGuildMOTD()
 					chat:RegisterEvent('GUILD_MOTD')
 				end
 			end
+
 			df:SetScript('OnUpdate', nil)
 		else -- 5 seconds can be too fast for the API response. let's try once every 5 seconds (max 5 checks).
 			delay, checks = 0, checks + 1
+
 			if checks >= 5 then
 				df:SetScript('OnUpdate', nil)
 			end
