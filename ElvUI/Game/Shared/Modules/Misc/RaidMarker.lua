@@ -97,7 +97,7 @@ do
 				button:SetScript('OnMouseUp', M.RaidMarkButton_MouseUp)
 
 				button:RegisterForClicks('AnyDown', 'AnyUp')
-			else
+			else -- should follow RegisterClicks check but use AnyDown
 				button:SetAttribute('type', 'macro')
 				button:SetAttribute('macrotext', tm)
 				button:SetScript('OnMouseDown', M.RaidMarkButton_MouseDown)
