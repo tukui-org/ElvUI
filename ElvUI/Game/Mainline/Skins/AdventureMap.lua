@@ -23,12 +23,19 @@ function S:Blizzard_AdventureMap()
 
 	-- Quest Choice
 	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog
-	AdventureMapQuestChoiceDialog:StripTextures(true)
+	AdventureMapQuestChoiceDialog:StripTextures()
 	AdventureMapQuestChoiceDialog:CreateBackdrop('Transparent')
 	AdventureMapQuestChoiceDialog.backdrop:ClearAllPoints()
 	AdventureMapQuestChoiceDialog.backdrop:Point('TOPLEFT', 0, -13)
 	AdventureMapQuestChoiceDialog.backdrop:Point('BOTTOMRIGHT', 0, -3)
-	AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
+
+	if AdventureMapQuestChoiceDialog.Portrait then
+		AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
+	end
+
+	if E.private.skins.parchmentRemoverEnable and AdventureMapQuestChoiceDialog.Background then
+		AdventureMapQuestChoiceDialog.Background:SetAlpha(0)
+	end
 
 	-- Rewards
 	hooksecurefunc(AdventureMapQuestChoiceDialog, 'RefreshRewards', SkinRewards)
