@@ -657,11 +657,24 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
-	local ok, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
-	if ok and perc then
-		bar.Text:SetFormattedText('%d%%', perc)
-	else
-		bar.Text:SetText('')
+	if TT.db.healthBar.text == 'PERCENT' or TT.db.healthBar.text == true
+	then
+		local ok, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
+		if ok and perc then
+			bar.Text:SetFormattedText('%d%%', perc)
+		else
+			bar.Text:SetText('')
+		end
+	elseif TT.db.healthBar.text == 'RAW_VALUES'
+	then
+		local okCur, cur = pcall(UnitHealth, unit, true)
+		local okMax, max = pcall(UnitHealthMax, unit, true)
+		if okCur and okMax and cur and max then
+			-- TODO how can I shorten this value? E:ShortValue() throws errors
+			bar.Text:SetFormattedText('%d / %d', cur, max)
+		else
+			bar.Text:SetText('')
+		end
 	end
 end
 
