@@ -57,10 +57,21 @@ function M:RaidMarkButton_OnLeave()
 	self.Texture:SetAllPoints()
 end
 
-function M:RaidMarkButton_MouseUp()
+function M:RaidMarkButton_Clicked(button)
 	PlaySound(1115) -- U_CHAT_SCROLL_BUTTON
 
-	self:GetParent():Hide()
+	local parent = button:GetParent()
+	if parent then
+		parent:Hide()
+	end
+end
+
+function M:RaidMarkButton_MouseUp()
+	M:RaidMarkButton_Clicked(self)
+end
+
+function M:RaidMarkButton_MouseDown()
+	M:RaidMarkButton_Clicked(self)
 end
 
 do
@@ -75,17 +86,27 @@ do
 			local tm = format('%s %d', TM, i)
 			local name = 'RaidMarkIconButton'..i
 			local button = CreateFrame('Button', name, marker, 'SecureActionButtonTemplate')
-			button:SetScript('OnMouseUp', M.RaidMarkButton_MouseUp)
 			button:SetScript('OnEnter', M.RaidMarkButton_OnEnter)
 			button:SetScript('OnLeave', M.RaidMarkButton_OnLeave)
 			button:SetAttribute('type1', 'macro')
 			button:SetAttribute('type2', 'macro')
-			button:SetAttribute('macrotext1', tm)
-			button:SetAttribute('macrotext2', tm)
+
+			if E.Classic then
+				button:SetAttribute('type', 'macro')
+				button:SetAttribute('macrotext', tm)
+				button:SetScript('OnMouseDown', M.RaidMarkButton_MouseDown)
+
+				button:RegisterForClicks('AnyDown')
+			else
+				button:SetAttribute('macrotext1', tm)
+				button:SetAttribute('macrotext2', tm)
+				button:SetScript('OnMouseUp', M.RaidMarkButton_MouseUp)
+
+				E:RegisterClicks(button)
+			end
+
 			button:Size(40)
 			button:SetID(i)
-
-			E:RegisterClicks(button)
 
 			button.Texture = button:CreateTexture(name..'NormalTexture', 'ARTWORK')
 			button.Texture:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
