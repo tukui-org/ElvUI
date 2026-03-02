@@ -67,7 +67,7 @@ local function Update(frame, event, unit, arg2)
 
 	if event == 'OnShow' or (event == 'ARENA_OPPONENT_UPDATE' and arg2 == 'seen') then -- arg2: updateReason
 		RequestCrowdControlSpell(unit)
-	elseif event == 'ARENA_COOLDOWNS_UPDATE' then
+	elseif event == 'ARENA_COOLDOWNS_UPDATE' or event == 'UNIT_ARENA_COOLDOWNS_UPDATE' then
 		UpdateTrinket(frame, unit)
 	elseif event == 'ARENA_CROWD_CONTROL_SPELL_UPDATE' then
 		element.spellID = UpdateSpell(element, arg2) -- arg2: spellID
@@ -92,11 +92,13 @@ local function Enable(frame)
 		element.Factions = factions
 
 		frame:RegisterEvent('ARENA_OPPONENT_UPDATE', Update)
-		frame:RegisterEvent('ARENA_COOLDOWNS_UPDATE', Update, true)
 		frame:RegisterEvent('ARENA_CROWD_CONTROL_SPELL_UPDATE', Update, true)
 
 		if oUF.isRetail then
 			frame:RegisterEvent('PVP_MATCH_INACTIVE', ClearCooldowns, true)
+			frame:RegisterEvent('UNIT_ARENA_COOLDOWNS_UPDATE', Update, true)
+		else
+			frame:RegisterEvent('ARENA_COOLDOWNS_UPDATE', Update, true)
 		end
 
 		return true
@@ -107,11 +109,13 @@ local function Disable(frame)
 	local element = frame.Trinket
 	if element then
 		frame:UnregisterEvent('ARENA_OPPONENT_UPDATE', Update)
-		frame:UnregisterEvent('ARENA_COOLDOWNS_UPDATE', Update)
 		frame:UnregisterEvent('ARENA_CROWD_CONTROL_SPELL_UPDATE', Update)
 
 		if oUF.isRetail then
 			frame:UnregisterEvent('PVP_MATCH_INACTIVE', ClearCooldowns)
+			frame:UnregisterEvent('UNIT_ARENA_COOLDOWNS_UPDATE', Update)
+		else
+			frame:UnregisterEvent('ARENA_COOLDOWNS_UPDATE', Update)
 		end
 
 		element:Hide()
