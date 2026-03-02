@@ -96,7 +96,7 @@ local function Enable(frame)
 
 		if oUF.isRetail then
 			frame:RegisterEvent('PVP_MATCH_INACTIVE', ClearCooldowns, true)
-			frame:RegisterEvent('UNIT_ARENA_COOLDOWNS_UPDATE', Update, true)
+			frame:RegisterEvent('UNIT_ARENA_COOLDOWNS_UPDATE', Update)
 		else
 			frame:RegisterEvent('ARENA_COOLDOWNS_UPDATE', Update, true)
 		end
