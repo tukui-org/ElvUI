@@ -5,7 +5,6 @@ local S = E:GetModule('Skins')
 local ACH = E.Libs.ACH
 
 local tonumber = tonumber
-local GameTooltip = GameTooltip
 local GameTooltipStatusBar = GameTooltipStatusBar
 
 local modifierValues = { SHOW = L["Show"], HIDE = L["Hide"], SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
@@ -52,7 +51,6 @@ General.mythicPlus.args.mythicDataEnable = ACH:Toggle(L["Enable"], nil, 1)
 General.mythicPlus.args.dungeonScore = ACH:Toggle(L["Mythic+ Score"], L["Display the current Mythic+ Dungeon Score."], 2, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
 General.mythicPlus.args.mythicBestRun = ACH:Toggle(L["Mythic+ Best Run"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
 General.mythicPlus.args.dungeonScoreColor = ACH:Toggle(L["Color Score"], L["Color score based on Blizzards API."], 4, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
-General.mythicPlus.inline = true
 
 General.anchorGroup = ACH:Group(L["Cursor Anchor"], nil, 50)
 General.anchorGroup.args.cursorAnchor = ACH:Toggle(L["Enable"], L["Should tooltip be anchored to mouse cursor"], 1)
@@ -84,14 +82,21 @@ General.fontGroup.args.body.args.fontOutline = ACH:FontFlags(L["Font Outline"], 
 General.fontGroup.args.body.args.textFontSize = ACH:Range(L["Font Size"], nil, 3, C.Values.FontSize)
 General.fontGroup.args.body.inline = true
 
+local BarDisabled = function() return E.db.tooltip.healthBar.statusPosition == 'DISABLED' end
+local TextDisabled = function() return not E.db.tooltip.healthBar.text or BarDisabled() end
+
 General.healthBar = ACH:Group(L["Health Bar"], nil, 80, nil, function(info) return E.db.tooltip.healthBar[info[#info]] end, function(info, value) E.db.tooltip.healthBar[info[#info]] = value; end)
-General.healthBar.args.text = ACH:Toggle(L["Text"], nil, 1, nil, nil, nil, nil, function(_, value) E.db.tooltip.healthBar.text = value; if not GameTooltip:IsForbidden() then if value then GameTooltipStatusBar.Text:Show(); else GameTooltipStatusBar.Text:Hide() end end end, function() return E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
-General.healthBar.args.short = ACH:Toggle(L["Short Values"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.tooltip.healthBar.short = value end, function() return E.db.tooltip.healthBar.statusPosition == 'DISABLED' end, not E.Retail)
-General.healthBar.args.statusPosition = ACH:Select(L["Position"], nil, 5, { BOTTOM = L["Bottom"], TOP = L["Top"], DISABLED = L["Disabled"] })
-General.healthBar.args.height = ACH:Range(L["Height"], nil, 6, { min = 2, max = 32, step = 1 }, nil, nil, function(_, value) E.db.tooltip.healthBar.height = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar:Height(value); end end, function() return E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
-General.healthBar.args.font = ACH:SharedMediaFont(L["Font"], nil, 10, nil, nil, function(_, value) E.db.tooltip.healthBar.font = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.Text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text or E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
-General.healthBar.args.fontSize = ACH:Range(L["Font Size"], nil, 11, C.Values.FontSize, nil, nil, function(_, value) E.db.tooltip.healthBar.fontSize = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.Text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text or E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
-General.healthBar.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 12, nil, nil, function(_, value) E.db.tooltip.healthBar.fontOutline = value; if not GameTooltip:IsForbidden() then GameTooltipStatusBar.Text:FontTemplate(E.Libs.LSM:Fetch('font', E.db.tooltip.healthBar.font), E.db.tooltip.healthBar.fontSize, E.db.tooltip.healthBar.fontOutline) end end, function() return not E.db.tooltip.healthBar.text or E.db.tooltip.healthBar.statusPosition == 'DISABLED' end)
+General.healthBar.args.text = ACH:Toggle(L["Text"], nil, 1, nil, nil, nil, nil, function(_, value) E.db.tooltip.healthBar.text = value; if value then GameTooltipStatusBar.Text:Show(); else GameTooltipStatusBar.Text:Hide() end end, BarDisabled)
+General.healthBar.args.short = ACH:Toggle(L["Short Values"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.tooltip.healthBar.short = value end, BarDisabled, not E.Retail)
+General.healthBar.args.spacer = ACH:Spacer(10)
+General.healthBar.args.statusPosition = ACH:Select(L["Position"], nil, 11, { BOTTOM = L["Bottom"], TOP = L["Top"], DISABLED = L["Disabled"] })
+General.healthBar.args.height = ACH:Range(L["Height"], nil, 12, { min = 2, max = 32, step = 1 }, nil, nil, function(_, value) E.db.tooltip.healthBar.height = value; GameTooltipStatusBar:Height(value); end, BarDisabled)
+
+General.healthBar.args.statusFont = ACH:Group(L["Font"], nil, 50)
+General.healthBar.args.statusFont.args.font = ACH:SharedMediaFont(L["Font"], nil, 10, nil, nil, function(_, value) E.db.tooltip.healthBar.font = value; TT:SetStatusBarFont() end, TextDisabled)
+General.healthBar.args.statusFont.args.fontSize = ACH:Range(L["Font Size"], nil, 11, C.Values.FontSize, nil, nil, function(_, value) E.db.tooltip.healthBar.fontSize = value; TT:SetStatusBarFont() end, TextDisabled)
+General.healthBar.args.statusFont.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 12, nil, nil, function(_, value) E.db.tooltip.healthBar.fontOutline = value; TT:SetStatusBarFont() end, TextDisabled)
+General.healthBar.args.statusFont.inline = true
 
 General.visibility = ACH:Group(L["Visibility"], nil, 90, nil, function(info) return E.db.tooltip.visibility[info[#info]] end, function(info, value) E.db.tooltip.visibility[info[#info]] = value; end)
 General.visibility.args.actionbars = ACH:Select(L["ActionBars"], L["Choose when you want the tooltip to show. If a modifier is chosen, then you need to hold that down to show the tooltip."], 1, modifierValues)

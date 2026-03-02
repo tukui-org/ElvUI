@@ -653,7 +653,8 @@ function TT:GameTooltip_OnTooltipSetUnit(data)
 end
 
 function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
-	if not bar.Text or not TT.db.healthBar.text then return end
+	local statusText = bar.Text
+	if not statusText or not TT.db.healthBar.text then return end
 
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
@@ -664,7 +665,7 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 		if okCur and okMax and current and maximum then
 			local currentAbbrev = E:AbbreviateNumbers(current, 'short')
 			local maximumAbbrev = E:AbbreviateNumbers(maximum, 'short')
-			bar.Text:SetFormattedText('%s / %s', currentAbbrev, maximumAbbrev)
+			statusText:SetFormattedText('%s / %s', currentAbbrev, maximumAbbrev)
 
 			return
 		end
@@ -673,21 +674,22 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	-- fallback to percent if possible
 	local ok, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
 	if ok and perc then
-		bar.Text:SetFormattedText('%d%%', perc)
+		statusText:SetFormattedText('%d%%', perc)
 	else
-		bar.Text:SetText('')
+		statusText:SetText('')
 	end
 end
 
 function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
-	if not current or not bar.Text or not TT.db.healthBar.text then return end
+	local statusText = bar.Text
+	if not statusText or not current or not TT.db.healthBar.text then return end
 
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
 
 	-- check if dead
 	if current == 0 or (unit and UnitIsDeadOrGhost(unit)) then
-		bar.Text:SetText(_G.DEAD)
+		statusText:SetText(_G.DEAD)
 	else
 		local maximum, _
 		if unit then -- try to get the real health values if possible
@@ -698,9 +700,11 @@ function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
 
 		-- return what we got
 		if current > 0 and maximum == 1 then
-			bar.Text:SetFormattedText('%d%%', floor(current * 100))
+			statusText:SetFormattedText('%d%%', floor(current * 100))
 		else
-			bar.Text:SetFormattedText('%s / %s', E:ShortValue(current), E:ShortValue(maximum))
+			local currentShort = E:ShortValue(current)
+			local maximumShort = E:ShortValue(maximum)
+			statusText:SetFormattedText('%s / %s', currentShort, maximumShort)
 		end
 	end
 end
@@ -1052,6 +1056,13 @@ function TT:SetBackpackToken(tt, id)
 	end
 end
 
+function TT:SetStatusBarFont()
+	local statusText = GameTooltipStatusBar.Text
+	if not statusText then return end
+
+	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+end
+
 function TT:SetTooltipFonts()
 	local font, fontSize, fontOutline = LSM:Fetch('font', TT.db.font), TT.db.textFontSize, TT.db.fontOutline
 	_G.GameTooltipText:FontTemplate(font, fontSize, fontOutline)
@@ -1115,13 +1126,14 @@ function TT:Initialize()
 	TT.Initialized = true
 
 	local statusText = GameTooltipStatusBar:CreateFontString(nil, 'OVERLAY')
-	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
 	statusText:Point('CENTER', GameTooltipStatusBar)
+
 	GameTooltipStatusBar.Text = statusText
 	GameTooltipStatusBar:Height(TT.db.healthBar.height)
 	GameTooltipStatusBar:SetScript('OnValueChanged', nil) -- keeps the health bar from flickering
 
 	TT:SetTooltipFonts()
+	TT:SetStatusBarFont()
 
 	local TooltipAnchor = CreateFrame('Frame', 'ElvUI_TooltipAnchor', E.UIParent)
 	if TooltipAnchor then
