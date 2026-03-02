@@ -657,6 +657,20 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
+
+	if TT.db.healthBar.short then
+		local okCur, current = pcall(UnitHealth, unit)
+		local okMax, maximum = pcall(UnitHealthMax, unit)
+		if okCur and okMax and current and maximum then
+			local currentAbbrev = E:AbbreviateNumbers(current, 'short')
+			local maximumAbbrev = E:AbbreviateNumbers(maximum, 'short')
+			bar.Text:SetFormattedText('%s / %s', currentAbbrev, maximumAbbrev)
+
+			return
+		end
+	end
+
+	-- fallback to percent if possible
 	local ok, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
 	if ok and perc then
 		bar.Text:SetFormattedText('%d%%', perc)

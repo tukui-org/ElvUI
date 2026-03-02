@@ -1527,6 +1527,7 @@ P.tooltip = {
 	},
 	healthBar = {
 		text = true,
+		short = false,
 		height = 12,
 		font = 'PT Sans Narrow',
 		fontSize = 12,
