@@ -2324,36 +2324,36 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			return true
 		end
 
-		if chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
-			if frame.privateMessageList and not frame.privateMessageList[strlower(arg2)] then
+
+		if not isProtected and (chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER') then
+			local nameLower = strlower(arg2)
+			if frame.privateMessageList and not frame.privateMessageList[nameLower] then
 				return true
-			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[strlower(arg2)] and ((chatGroup == 'WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline') or (chatGroup == 'BN_WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline')) then
+			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[nameLower] and ((chatGroup == 'WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline') or (chatGroup == 'BN_WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline')) then
 				return true
 			end
 		end
 
 		if frame.privateMessageList then
-			-- Dedicated BN whisper windows need online/offline messages for only that player
-			if (chatGroup == 'BN_INLINE_TOAST_ALERT' or chatGroup == 'BN_WHISPER_PLAYER_OFFLINE') and not frame.privateMessageList[strlower(arg2)] then
-				return true
-			end
-
-			-- HACK to put certain system messages into dedicated whisper windows
-			if chatGroup == 'SYSTEM' then
-				local matchFound = false
-				local message = strlower(arg1)
+			if chatGroup == 'SYSTEM' then -- HACK to put certain system messages into dedicated whisper windows
+				local found, msg = false, strlower(arg1)
 				for playerName in pairs(frame.privateMessageList) do
 					local playerNotFoundMsg = strlower(format(_G.ERR_CHAT_PLAYER_NOT_FOUND_S, playerName))
 					local charOnlineMsg = strlower(format(_G.ERR_FRIEND_ONLINE_SS, playerName, playerName))
 					local charOfflineMsg = strlower(format(_G.ERR_FRIEND_OFFLINE_S, playerName))
-					if message == playerNotFoundMsg or message == charOnlineMsg or message == charOfflineMsg then
-						matchFound = true
+					if msg == playerNotFoundMsg or msg == charOnlineMsg or msg == charOfflineMsg then
+						found = true
 						break
 					end
 				end
 
-				if not matchFound then
+				if not found then
 					return true
+				end
+			elseif not isProtected and (chatGroup == 'BN_INLINE_TOAST_ALERT' or chatGroup == 'BN_WHISPER_PLAYER_OFFLINE') then
+				local nameLower = strlower(arg2)
+				if not frame.privateMessageList[nameLower] then
+					return true -- Dedicated BN whisper windows need online/offline messages for only that player
 				end
 			end
 		end
