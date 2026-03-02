@@ -70,7 +70,6 @@ local HEX_FALLBACK = '|cFFcccccc'
 -- GLOBALS: UnitPower, UnitHealth, UnitName, UnitClass, UnitIsDead, UnitIsGhost, UnitIsDeadOrGhost, UnitIsConnected -- override during testing groups
 -- GLOBALS: GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
 
-
 ------------------------------------------------------------------------
 --	Looping
 ------------------------------------------------------------------------
