@@ -89,20 +89,20 @@ do
 			button:SetScript('OnEnter', M.RaidMarkButton_OnEnter)
 			button:SetScript('OnLeave', M.RaidMarkButton_OnLeave)
 
-			if E.Classic then
-				button:SetAttribute('type', 'macro')
-				button:SetAttribute('macrotext', tm)
-				button:SetScript('OnMouseDown', M.RaidMarkButton_MouseDown)
-
-				button:RegisterForClicks('AnyDown')
-			else
+			if E.Retail or E.TBC then
 				button:SetAttribute('type1', 'macro')
 				button:SetAttribute('type2', 'macro')
 				button:SetAttribute('macrotext1', tm)
 				button:SetAttribute('macrotext2', tm)
 				button:SetScript('OnMouseUp', M.RaidMarkButton_MouseUp)
 
-				E:RegisterClicks(button)
+				button:RegisterForClicks('AnyDown', 'AnyUp')
+			else
+				button:SetAttribute('type', 'macro')
+				button:SetAttribute('macrotext', tm)
+				button:SetScript('OnMouseDown', M.RaidMarkButton_MouseDown)
+
+				button:RegisterForClicks('AnyDown')
 			end
 
 			button:Size(40)
