@@ -2320,10 +2320,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local chatGroup = GetChatCategory(chatType)
 		local chatTarget = CH:FCFManager_GetChatTarget(chatGroup, arg2, arg8)
 
-		if _G.FCFManager_ShouldSuppressMessage(frame, chatGroup, chatTarget) then
+		if E:NotSecretValue(chatTarget) and _G.FCFManager_ShouldSuppressMessage(frame, chatGroup, chatTarget) then
 			return true
 		end
-
 
 		if not isProtected and (chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER') then
 			local nameLower = strlower(arg2)
