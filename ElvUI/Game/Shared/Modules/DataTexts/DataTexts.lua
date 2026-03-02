@@ -988,6 +988,7 @@ function DT:Initialize()
 
 		DT:CloseMenus()
 	end
+
 	E.EasyMenu.MenuGetItem = function(dt, value)
 		local panelDB = (dt and dt.battlePanel and DT.db.battlePanel) or DT.db.panels
 		return dt and (panelDB[dt.parentName] and panelDB[dt.parentName][dt.pointIndex] == value)
@@ -1034,7 +1035,10 @@ function DT:Initialize()
 	DT:RegisterLDB() -- LibDataBroker
 	DT:UpdateQuickDT()
 
-	DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE')
+	if not E.Retail then
+		DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE') -- function added by the Battlegrounds file.
+	end
+
 	DT:RegisterEvent('MODIFIER_STATE_CHANGED', 'QuickDTMode')
 	DT:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
