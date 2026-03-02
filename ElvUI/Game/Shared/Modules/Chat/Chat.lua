@@ -2329,8 +2329,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local nameLower = strlower(arg2)
 			if frame.privateMessageList and not frame.privateMessageList[nameLower] then
 				return true
-			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[nameLower] and ((chatGroup == 'WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline') or (chatGroup == 'BN_WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline')) then
-				return true
+			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[nameLower] then
+				if GetCVar('whisperMode') ~= 'popout_and_inline' then
+					return true
+				end
 			end
 		end
 
