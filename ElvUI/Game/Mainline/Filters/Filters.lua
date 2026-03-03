@@ -137,8 +137,9 @@ G.unitframe.aurawatch = {
 		[61295]		= Aura(61295, nil, true, 'TOPRIGHT', {0.7, 0.3, 0.7}), -- Riptide
 		[974]		= Aura(974, nil, true, 'BOTTOMRIGHT', {0.91, 0.80, 0.44}), -- Earth Shield
 		[383648]	= Aura(383648, nil, true, 'BOTTOMRIGHT', {0.91, 0.80, 0.44}), -- Earth Shield (Elemental Orbit)
-		[207400]		= Aura(207400, nil, true, 'TOPLEFT', {0.59, 0.23, 0.70}), -- Ancestral Vigor
-		[382024]		= Aura(382024, nil, true, 'TOP', {0.87, 0.98, 0.76}), -- Earthliving Weapon
+		[207400]	= Aura(207400, nil, true, 'TOPLEFT', {0.59, 0.23, 0.70}), -- Ancestral Vigor
+		[382024]	= Aura(382024, nil, true, 'TOP', {0.87, 0.98, 0.76}), -- Earthliving Weapon
+		[444490]	= Aura(444490, nil, false, 'RIGHT', {0.67, 1.00, 0.62}), -- Hydrobubble
 	},
 	MONK = {
 		-- Mistweaver
