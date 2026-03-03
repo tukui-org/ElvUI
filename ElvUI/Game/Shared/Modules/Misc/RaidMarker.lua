@@ -14,6 +14,7 @@ local UnitExists, UnitIsDead = UnitExists, UnitIsDead
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 local UnitIsGroupAssistant = UnitIsGroupAssistant
 local UnitIsGroupLeader = UnitIsGroupLeader
+local InCombatLockdown = InCombatLockdown
 local GetCVarBool = C_CVar.GetCVarBool
 local PlaySound = PlaySound
 
@@ -43,8 +44,13 @@ function M:RaidMarkUpdateKeyDown(keydown)
 	local marker = M.RaidMarkFrame
 	if not marker or not marker.buttons then return end
 
+	local useAttribute = E.Retail or E.TBC
+	if useAttribute and InCombatLockdown() then
+		return -- we cant change the attribute during combat
+	end
+
 	for _, button in next, marker.buttons do
-		if E.Retail or E.TBC then
+		if useAttribute then
 			button:SetAttribute('useOnKeyDown', keydown)
 		else
 			button:RegisterForClicks(keydown and 'AnyDown' or 'AnyUp')
