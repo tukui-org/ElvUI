@@ -39,11 +39,10 @@ function M:RaidMarkCanMark()
 	return true
 end
 
-function M:RaidMarkUpdateKeyDown()
+function M:RaidMarkUpdateKeyDown(keydown)
 	local marker = M.RaidMarkFrame
 	if not marker or not marker.buttons then return end
 
-	local keydown = GetCVarBool('ActionButtonUseKeyDown')
 	for _, button in next, marker.buttons do
 		if E.Retail or E.TBC then
 			button:SetAttribute('useOnKeyDown', keydown)
@@ -76,6 +75,12 @@ function M:RaidMarkButton_OnLeave()
 	self.Texture:SetAllPoints()
 end
 
+function M:RaidMarkButton_OnEvent(_, cvar, keydown)
+	if cvar == 'ActionButtonUseKeyDown' then
+		M:RaidMarkUpdateKeyDown(keydown == '1')
+	end
+end
+
 function M:RaidMarkButton_MouseUp()
 	PlaySound(1115) -- U_CHAT_SCROLL_BUTTON
 end
@@ -84,8 +89,10 @@ do
 	local ANG_RAD = rad(360) / 7
 	function M:LoadRaidMarker()
 		local marker = CreateFrame('Frame', nil, E.UIParent)
-		marker:EnableMouse(true)
+		marker:SetScript('OnEvent', M.RaidMarkButton_OnEvent)
+		marker:RegisterEvent('CVAR_UPDATE')
 		marker:SetFrameStrata('DIALOG')
+		marker:EnableMouse(true)
 		marker:Size(100)
 		marker.buttons = {}
 
