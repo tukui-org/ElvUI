@@ -3007,7 +3007,7 @@ do
 	}
 
 	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
-	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton', 'targetaura' } do
+	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager_essential', 'cdmanager_utility', 'cdmanager_buff', 'totemtracker', 'bossbutton', 'zonebutton', 'targetaura' } do
 		local object = CopyTable(defaults)
 
 		if key == 'global' then

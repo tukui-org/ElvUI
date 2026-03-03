@@ -6,9 +6,9 @@ local ACH = E.Libs.ACH
 local THRESHOLD = { min = 0, softMax = 3600, max = 86400, step = 1 }
 local MIN_DURATION = { min = 0, softMax = 60, max = 3600, step = 0.001, bigStep = 1 }
 
-local function Group(order, db, label)
-	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not E.Retail) end)
-	E.Options.args.cooldown.args[db] = main
+local function Group(order, db, label, container)
+	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end)
+	;(container or E.Options.args.cooldown.args)[db] = main
 
 	local charges = db ~= 'actionbar' and db ~= 'bossbutton' and db ~= 'zonebutton'
 	local lossOfControl = db ~= 'actionbar' and db ~= 'bossbutton'
@@ -75,7 +75,11 @@ Group(14, 'nameplates',	L["Nameplates"])
 Group(15, 'unitframe',	L["UnitFrames"])
 Group(16, 'aurabars',	L["Aura Bars"])
 Group(17, 'auraindicator', L["Aura Indicator"])
-Group(18, 'cdmanager',	L["Cooldown Manager"])
+local cdmanager = ACH:Group(L["Cooldown Manager"], nil, 18, nil, nil, nil, function() return not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return not E.Retail end)
+E.Options.args.cooldown.args.cdmanager = cdmanager
+Group(1, 'cdmanager_essential', L["Essential Cooldowns"], cdmanager.args)
+Group(2, 'cdmanager_utility',   L["Utility Cooldowns"],   cdmanager.args)
+Group(3, 'cdmanager_buff',      L["Buff Cooldowns"],      cdmanager.args)
 Group(19, 'totemtracker', L["Totem Tracker"])
 Group(20, 'bossbutton',	L["Boss Button"])
 Group(21, 'zonebutton',	L["Zone Button"])

@@ -166,9 +166,9 @@ function S:CooldownManager_SkinBar(frame, bar)
 	end
 end
 
-function S:CooldownManager_SkinItemFrame(frame)
+function S:CooldownManager_SkinItemFrame(frame, key)
 	if frame.Cooldown then
-		E:RegisterCooldown(frame.Cooldown, 'cdmanager')
+		E:RegisterCooldown(frame.Cooldown, key)
 	end
 
 	if frame.Bar then
@@ -178,15 +178,13 @@ function S:CooldownManager_SkinItemFrame(frame)
 	end
 end
 
-function S:CooldownManager_AcquireItemFrame(frame)
-	S:CooldownManager_SkinItemFrame(frame)
-end
-
-function S:CooldownManager_HandleViewer(element)
-	hooksecurefunc(element, 'OnAcquireItemFrame', S.CooldownManager_AcquireItemFrame)
+function S:CooldownManager_HandleViewer(element, key)
+	hooksecurefunc(element, 'OnAcquireItemFrame', function(frame)
+		S:CooldownManager_SkinItemFrame(frame, key)
+	end)
 
 	for frame in element.itemFramePool:EnumerateActive() do
-		S:CooldownManager_SkinItemFrame(frame)
+		S:CooldownManager_SkinItemFrame(frame, key)
 	end
 end
 
@@ -297,10 +295,10 @@ function S:Blizzard_CooldownViewer()
 	E:UpdateClassColor(db.durationFontColor)
 	E:UpdateClassColor(db.countFontColor)
 
-	S:CooldownManager_HandleViewer(_G.UtilityCooldownViewer)
-	S:CooldownManager_HandleViewer(_G.BuffBarCooldownViewer)
-	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer)
-	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer)
+	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer, 'cdmanager_essential')
+	S:CooldownManager_HandleViewer(_G.UtilityCooldownViewer, 'cdmanager_utility')
+	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer, 'cdmanager_buff')
+	S:CooldownManager_HandleViewer(_G.BuffBarCooldownViewer, 'cdmanager_buff')
 	S:CooldownManager_HandleSettings(_G.CooldownViewerSettings)
 end
 
