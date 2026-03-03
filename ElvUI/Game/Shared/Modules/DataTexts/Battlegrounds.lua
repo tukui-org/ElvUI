@@ -45,8 +45,11 @@ function DT:UPDATE_BATTLEFIELD_SCORE()
 			name, data.killingBlows, data.honorableKills, data.deaths, data.honorGained, _, _, _, _, data.damageDone, data.healingDone = GetBattlefieldScore(i)
 		end
 
-		if name == E.myname then
+		if E:IsSecretValue(name) then
+			break
+		elseif name == E.myname then
 			data.myIndex = i
+
 			break
 		end
 	end

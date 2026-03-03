@@ -61,6 +61,7 @@
 	<Script file='Classic\Blizzard\ColorPicker.lua'/>
 	<Script file='Shared\Modules\DataTexts\ArmorPenetration.lua'/>
 	<Script file='Shared\Modules\DataTexts\Avoidance.lua'/>
+	<Script file='Shared\Modules\DataTexts\Battlegrounds.lua'/>
 	<Script file='Shared\Modules\DataTexts\Block.lua'/>
 	<Script file='Shared\Modules\DataTexts\Currencies.lua'/>
 	<Script file='Shared\Modules\DataTexts\Defense.lua'/>

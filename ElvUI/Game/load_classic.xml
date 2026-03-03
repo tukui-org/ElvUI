@@ -58,6 +58,7 @@
 	<Script file='Shared\Modules\Blizzard\QuestWatch.lua'/>
 	<Script file='Shared\Modules\DataTexts\Ammo.lua'/>
 	<Script file='Shared\Modules\DataTexts\Avoidance.lua'/>
+	<Script file='Shared\Modules\DataTexts\Battlegrounds.lua'/>
 	<Script file='Shared\Modules\DataTexts\Block.lua'/>
 	<Script file='Shared\Modules\DataTexts\Defense.lua'/>
 	<Script file='Shared\Modules\DataTexts\Dodge.lua'/>

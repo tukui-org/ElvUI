@@ -1527,6 +1527,7 @@ P.tooltip = {
 	},
 	healthBar = {
 		text = true,
+		short = false,
 		height = 12,
 		font = 'PT Sans Narrow',
 		fontSize = 12,
@@ -2753,7 +2754,6 @@ P.unitframe.units.boss.buffs.perrow = 3
 P.unitframe.units.boss.buffs.priority = 'Blacklist,Dispellable,RaidBuffsElvUI'
 P.unitframe.units.boss.buffs.sizeOverride = 22
 P.unitframe.units.boss.buffs.yOffset = 20
-P.unitframe.units.boss.buffIndicator.enable = true
 P.unitframe.units.boss.privateAuras.enable = true
 P.unitframe.units.boss.privateAuras.countdownNumbers = false
 P.unitframe.units.boss.privateAuras.icon.size = 20
@@ -2914,7 +2914,6 @@ P.unitframe.units.raid3.visibility = E.Retail and '[@raid31,noexists] hide;show'
 
 P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raidpet.pvpclassificationindicator = nil
-P.unitframe.units.raidpet.buffIndicator.enable = false
 P.unitframe.units.raidpet.enable = false
 P.unitframe.units.raidpet.raidWideSorting = true
 P.unitframe.units.raidpet.buffs.numrows = 1
