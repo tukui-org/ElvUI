@@ -295,10 +295,10 @@ function S:Blizzard_CooldownViewer()
 	E:UpdateClassColor(db.durationFontColor)
 	E:UpdateClassColor(db.countFontColor)
 
-	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer, 'cdmanager_essential')
 	S:CooldownManager_HandleViewer(_G.UtilityCooldownViewer, 'cdmanager_utility')
-	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer, 'cdmanager_buff')
 	S:CooldownManager_HandleViewer(_G.BuffBarCooldownViewer, 'cdmanager_buff')
+	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer, 'cdmanager_buff')
+	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer, 'cdmanager_essential')
 	S:CooldownManager_HandleSettings(_G.CooldownViewerSettings)
 end
 
