@@ -21,7 +21,7 @@ local TM = _G.SLASH_TARGET_MARKER4
 -- GLOBALS: RaidMark_HotkeyPressed
 
 function M:RaidMarkCanMark()
-	if not self.RaidMarkFrame then
+	if not M.RaidMarkFrame then
 		return false
 	elseif GetNumGroupMembers() > 0 then
 		if UnitIsGroupLeader('player') or UnitIsGroupAssistant('player') then
@@ -43,17 +43,21 @@ function M:RaidMarkShowIcons()
 
 	local x, y = GetCursorPosition()
 	local scale = E.UIParent:GetEffectiveScale()
-	self.RaidMarkFrame:Point('CENTER', E.UIParent, 'BOTTOMLEFT', x / scale, y / scale)
-	self.RaidMarkFrame:Show()
+	M.RaidMarkFrame:Point('CENTER', E.UIParent, 'BOTTOMLEFT', x / scale, y / scale)
+	M.RaidMarkFrame:Show()
 end
 
 function M:RaidMarkButton_OnEnter()
+	if not self.Texture then return end
+
 	self.Texture:ClearAllPoints()
 	self.Texture:Point('TOPLEFT', -10, 10)
 	self.Texture:Point('BOTTOMRIGHT', 10, -10)
 end
 
 function M:RaidMarkButton_OnLeave()
+	if not self.Texture then return end
+
 	self.Texture:SetAllPoints()
 end
 
@@ -108,11 +112,13 @@ do
 			button:Size(40)
 			button:SetID(i)
 
-			button.Texture = button:CreateTexture(name..'NormalTexture', 'ARTWORK')
-			button.Texture:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
-			button.Texture:SetAllPoints()
+			if not button.Texture then
+				button.Texture = button:CreateTexture(name..'NormalTexture', 'ARTWORK')
+				button.Texture:SetTexture([[Interface\TargetingFrame\UI-RaidTargetingIcons]])
+				button.Texture:SetAllPoints()
 
-			SetRaidTargetIconTexture(button.Texture, i)
+				SetRaidTargetIconTexture(button.Texture, i)
+			end
 
 			if i == 8 then
 				button:Point('CENTER')
@@ -129,17 +135,19 @@ end
 do
 	local ButtonIsDown
 	function M:RaidMark_OnEvent()
-		if ButtonIsDown and self.RaidMarkFrame then
-			self:RaidMarkShowIcons()
+		if ButtonIsDown and M.RaidMarkFrame then
+			M:RaidMarkShowIcons()
 		end
 	end
 
 	function RaidMark_HotkeyPressed(keystate)
 		ButtonIsDown = (keystate == 'down') and M:RaidMarkCanMark()
 
-		if ButtonIsDown and M.RaidMarkFrame then
+		if not M.RaidMarkFrame then return end
+
+		if ButtonIsDown then
 			M:RaidMarkShowIcons()
-		elseif M.RaidMarkFrame then
+		else
 			M.RaidMarkFrame:Hide()
 		end
 	end
