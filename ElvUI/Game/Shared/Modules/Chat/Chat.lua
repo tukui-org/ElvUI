@@ -3681,7 +3681,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 		local name = chat.name or UNKNOWN
 
 		if whisper and not tab.whisperName then
-			tab.whisperName = gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r')
+			tab.whisperName = E:NotSecretValue(name) and gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r') or nil
 		end
 
 		if selected then -- color tables are class updated in UpdateMedia
@@ -3709,9 +3709,12 @@ function CH:FCFTab_UpdateColors(tab, selected)
 				tab:SetText(tab.whisperName or name)
 			end
 
-			if not tab.classColor then
-				local classMatch = CH.ClassNames[strlower(name)]
-				if classMatch then tab.classColor = E:ClassColor(classMatch) end
+			local nameLower = not tab.classColor and E:NotSecretValue(name) and strlower(name)
+			if nameLower then
+				local classMatch = CH.ClassNames[nameLower]
+				if classMatch then
+					tab.classColor = E:ClassColor(classMatch)
+				end
 			end
 
 			if tab.classColor then
