@@ -3,7 +3,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 
 local _G = _G
-local format = format
+local format, tinsert, next = format, tinsert, next
 local sin, cos, rad = math.sin, math.cos, rad -- sin~=math.sin, cos~=math.cos, rad==math.rad; why? who knows? :P
 
 local CreateFrame = CreateFrame
@@ -14,6 +14,7 @@ local UnitExists, UnitIsDead = UnitExists, UnitIsDead
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 local UnitIsGroupAssistant = UnitIsGroupAssistant
 local UnitIsGroupLeader = UnitIsGroupLeader
+local GetCVarBool = C_CVar.GetCVarBool
 local PlaySound = PlaySound
 
 local TM = _G.SLASH_TARGET_MARKER4
@@ -36,6 +37,20 @@ function M:RaidMarkCanMark()
 	end
 
 	return true
+end
+
+function M:RaidMarkUpdateKeyDown()
+	local marker = M.RaidMarkFrame
+	if not marker or not marker.buttons then return end
+
+	local keydown = GetCVarBool('ActionButtonUseKeyDown')
+	for _, button in next, marker.buttons do
+		if E.Retail or E.TBC then
+			button:SetAttribute('useOnKeyDown', keydown)
+		else
+			button:RegisterForClicks(keydown and 'AnyDown' or 'AnyUp')
+		end
+	end
 end
 
 function M:RaidMarkShowIcons()
@@ -61,21 +76,8 @@ function M:RaidMarkButton_OnLeave()
 	self.Texture:SetAllPoints()
 end
 
-function M:RaidMarkButton_Clicked(button)
-	PlaySound(1115) -- U_CHAT_SCROLL_BUTTON
-
-	local parent = button:GetParent()
-	if parent then
-		parent:Hide()
-	end
-end
-
 function M:RaidMarkButton_MouseUp()
-	M:RaidMarkButton_Clicked(self)
-end
-
-function M:RaidMarkButton_MouseDown()
-	M:RaidMarkButton_Clicked(self)
+	PlaySound(1115) -- U_CHAT_SCROLL_BUTTON
 end
 
 do
@@ -85,28 +87,32 @@ do
 		marker:EnableMouse(true)
 		marker:SetFrameStrata('DIALOG')
 		marker:Size(100)
+		marker.buttons = {}
 
+		M.RaidMarkFrame = marker
+
+		local keydown = GetCVarBool('ActionButtonUseKeyDown')
 		for i = 1, 8 do
 			local tm = format('%s %d', TM, i)
 			local name = 'RaidMarkIconButton'..i
 			local button = CreateFrame('Button', name, marker, 'SecureActionButtonTemplate')
 			button:SetScript('OnEnter', M.RaidMarkButton_OnEnter)
 			button:SetScript('OnLeave', M.RaidMarkButton_OnLeave)
+			button:SetScript('OnMouseUp', M.RaidMarkButton_MouseUp)
+
+			tinsert(marker.buttons, button)
 
 			if E.Retail or E.TBC then
 				button:SetAttribute('type1', 'macro')
 				button:SetAttribute('type2', 'macro')
 				button:SetAttribute('macrotext1', tm)
 				button:SetAttribute('macrotext2', tm)
-				button:SetScript('OnMouseUp', M.RaidMarkButton_MouseUp)
-
+				button:SetAttribute('useOnKeyDown', keydown)
 				button:RegisterForClicks('AnyDown', 'AnyUp')
 			else -- should follow RegisterClicks check but use AnyDown
 				button:SetAttribute('type', 'macro')
 				button:SetAttribute('macrotext', tm)
-				button:SetScript('OnMouseDown', M.RaidMarkButton_MouseDown)
-
-				button:RegisterForClicks('AnyDown')
+				button:RegisterForClicks(keydown and 'AnyDown' or 'AnyUp')
 			end
 
 			button:Size(40)
@@ -127,8 +133,6 @@ do
 				button:Point('CENTER', sin(angle) * 60, cos(angle) * 60)
 			end
 		end
-
-		M.RaidMarkFrame = marker
 	end
 end
 
