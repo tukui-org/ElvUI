@@ -3710,11 +3710,9 @@ function CH:FCFTab_UpdateColors(tab, selected)
 			end
 
 			local nameLower = not tab.classColor and E:NotSecretValue(name) and strlower(name)
-			if nameLower then
-				local classMatch = CH.ClassNames[nameLower]
-				if classMatch then
-					tab.classColor = E:ClassColor(classMatch)
-				end
+			local classMatch = nameLower and CH.ClassNames[nameLower]
+			if classMatch then
+				tab.classColor = E:ClassColor(classMatch)
 			end
 
 			if tab.classColor then
