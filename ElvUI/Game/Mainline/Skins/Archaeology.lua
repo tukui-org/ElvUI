@@ -75,6 +75,14 @@ function S:Blizzard_ArchaeologyUI()
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 
+	local helpScroll = _G.ArchaeologyFrameHelpPageHelpScroll
+	if helpScroll then
+		local scrollBar = helpScroll.ScrollBar
+		if scrollBar then
+			S:HandleTrimScrollBar(scrollBar)
+		end
+	end
+
 	-- ButtonFrameTemplate reparents the help button; Blizzard's ArchaeologyFrame_OnTabClick expects GetParent() == ArchaeologyFrame.
 	local infoBtn = ArchaeologyFrame.infoButton
 	if infoBtn and infoBtn:GetParent() ~= ArchaeologyFrame then
