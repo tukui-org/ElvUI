@@ -21,7 +21,6 @@ local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
 local GetChannelName = GetChannelName
 local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
-local GetGuildRosterMOTD = GetGuildRosterMOTD
 local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
@@ -68,6 +67,7 @@ local GetGroupQueues = E.Retail and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
+local GetGuildRosterMOTD = C_GuildInfo.GetMOTD or GetGuildRosterMOTD
 local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
@@ -2320,40 +2320,41 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		local chatGroup = GetChatCategory(chatType)
 		local chatTarget = CH:FCFManager_GetChatTarget(chatGroup, arg2, arg8)
 
-		if _G.FCFManager_ShouldSuppressMessage(frame, chatGroup, chatTarget) then
+		if E:NotSecretValue(chatTarget) and _G.FCFManager_ShouldSuppressMessage(frame, chatGroup, chatTarget) then
 			return true
 		end
 
-		if chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
-			if frame.privateMessageList and not frame.privateMessageList[strlower(arg2)] then
+		if not isProtected and (chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER') then
+			local nameLower = strlower(arg2)
+			if frame.privateMessageList and not frame.privateMessageList[nameLower] then
 				return true
-			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[strlower(arg2)] and ((chatGroup == 'WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline') or (chatGroup == 'BN_WHISPER' and GetCVar('whisperMode') ~= 'popout_and_inline')) then
-				return true
+			elseif frame.excludePrivateMessageList and frame.excludePrivateMessageList[nameLower] then
+				if GetCVar('whisperMode') ~= 'popout_and_inline' then
+					return true
+				end
 			end
 		end
 
 		if frame.privateMessageList then
-			-- Dedicated BN whisper windows need online/offline messages for only that player
-			if (chatGroup == 'BN_INLINE_TOAST_ALERT' or chatGroup == 'BN_WHISPER_PLAYER_OFFLINE') and not frame.privateMessageList[strlower(arg2)] then
-				return true
-			end
-
-			-- HACK to put certain system messages into dedicated whisper windows
-			if chatGroup == 'SYSTEM' then
-				local matchFound = false
-				local message = strlower(arg1)
+			if chatGroup == 'SYSTEM' then -- HACK to put certain system messages into dedicated whisper windows
+				local found, msg = false, strlower(arg1)
 				for playerName in pairs(frame.privateMessageList) do
 					local playerNotFoundMsg = strlower(format(_G.ERR_CHAT_PLAYER_NOT_FOUND_S, playerName))
 					local charOnlineMsg = strlower(format(_G.ERR_FRIEND_ONLINE_SS, playerName, playerName))
 					local charOfflineMsg = strlower(format(_G.ERR_FRIEND_OFFLINE_S, playerName))
-					if message == playerNotFoundMsg or message == charOnlineMsg or message == charOfflineMsg then
-						matchFound = true
+					if msg == playerNotFoundMsg or msg == charOnlineMsg or msg == charOfflineMsg then
+						found = true
 						break
 					end
 				end
 
-				if not matchFound then
+				if not found then
 					return true
+				end
+			elseif not isProtected and (chatGroup == 'BN_INLINE_TOAST_ALERT' or chatGroup == 'BN_WHISPER_PLAYER_OFFLINE') then
+				local nameLower = strlower(arg2)
+				if not frame.privateMessageList[nameLower] then
+					return true -- Dedicated BN whisper windows need online/offline messages for only that player
 				end
 			end
 		end
@@ -2961,11 +2962,14 @@ end
 tremove(_G.ChatTypeGroup.GUILD, 2)
 function CH:DelayGuildMOTD()
 	local delay, checks, delayFrame = 0, 0, CreateFrame('Frame')
+
 	tinsert(_G.ChatTypeGroup.GUILD, 2, 'GUILD_MOTD')
+
 	delayFrame:SetScript('OnUpdate', function(df, elapsed)
 		delay = delay + elapsed
+
 		if delay < 5 then return end
-		local msg = GetGuildRosterMOTD()
+		local msg = not InCombatLockdown() and GetGuildRosterMOTD()
 		if msg and strlen(msg) > 0 then
 			for _, frameName in ipairs(_G.CHAT_FRAMES) do
 				local chat = _G[frameName]
@@ -2974,9 +2978,11 @@ function CH:DelayGuildMOTD()
 					chat:RegisterEvent('GUILD_MOTD')
 				end
 			end
+
 			df:SetScript('OnUpdate', nil)
 		else -- 5 seconds can be too fast for the API response. let's try once every 5 seconds (max 5 checks).
 			delay, checks = 0, checks + 1
+
 			if checks >= 5 then
 				df:SetScript('OnUpdate', nil)
 			end
@@ -3675,7 +3681,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 		local name = chat.name or UNKNOWN
 
 		if whisper and not tab.whisperName then
-			tab.whisperName = gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r')
+			tab.whisperName = E:NotSecretValue(name) and gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r') or nil
 		end
 
 		if selected then -- color tables are class updated in UpdateMedia
@@ -3703,9 +3709,10 @@ function CH:FCFTab_UpdateColors(tab, selected)
 				tab:SetText(tab.whisperName or name)
 			end
 
-			if not tab.classColor then
-				local classMatch = CH.ClassNames[strlower(name)]
-				if classMatch then tab.classColor = E:ClassColor(classMatch) end
+			local nameLower = not tab.classColor and E:NotSecretValue(name) and strlower(name)
+			local classMatch = nameLower and CH.ClassNames[nameLower]
+			if classMatch then
+				tab.classColor = E:ClassColor(classMatch)
 			end
 
 			if tab.classColor then

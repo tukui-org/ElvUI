@@ -465,16 +465,12 @@ function B:SplitItem(bag, slot, amount)
 end
 
 function B:GetNumSlots(bag)
-	if IsGuildBankBag(bag) then
-		local name, _, canView = GetGuildBankTabInfo(bag - 50)
-		if name and canView then
-			return 98
-		end
-	else
-		return GetContainerNumSlots(bag)
+	if not IsGuildBankBag(bag) then
+		return GetContainerNumSlots(bag) or 0
 	end
 
-	return 0
+	local name, _, canView = GetGuildBankTabInfo(bag - 50)
+	return (name and canView) and B.GUILDBANK_SIZE or 0
 end
 
 function B:ConvertLinkToID(link)

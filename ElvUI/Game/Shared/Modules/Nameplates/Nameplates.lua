@@ -1000,7 +1000,6 @@ function NP:Initialize()
 	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
 
-
 	if E.Retail then
 		NP.SetupClassNameplateBars(_G.NamePlateDriverFrame)
 

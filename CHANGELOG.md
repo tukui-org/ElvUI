@@ -1,3 +1,16 @@
+### Version 15.08 [ March 3rd 2026 ]
+*   Datatext for Crests updated.
+*   Bag error resolved when using the new bags.
+*   Adventure map skin updated.
+*   Datatext for Battlegrounds causing error on Retail by new restrictions.
+*   Tooltip has Short Value option for the Health bar and percent will show % now.
+*   Guild Message of the day error by new restrictions in a Blizzard hotfix.
+*   Trinket module using wrong event on Retail (quite sure this is still secret information).
+*   Aura indicator has more Shaman auras now.
+*   Vehicle seat indicator causing a Cooldown Viewer taint error involving mounting up.
+*   Chat secret errors on line 2323, line 2337, and line 3684.
+*   Raid markers set by keybind not working correctly.
+
 ### Version 15.07 [ February 26th 2026 ]
 *   Party and Raid having incorrect height on classic variants because of Alternative Power.
 *   Cooldown text for charges not appearing.

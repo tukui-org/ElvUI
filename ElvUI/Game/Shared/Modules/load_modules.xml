@@ -28,7 +28,6 @@
 	<Script file='DataTexts\Armor.lua'/>
 	<Script file='DataTexts\AttackPower.lua'/>
 	<Script file='DataTexts\Bags.lua'/>
-	<Script file='DataTexts\Battlegrounds.lua'/>
 	<Script file='DataTexts\CombatIndicator.lua'/>
 	<Script file='DataTexts\CombatTime.lua'/>
 	<Script file='DataTexts\Coordinates.lua'/>
