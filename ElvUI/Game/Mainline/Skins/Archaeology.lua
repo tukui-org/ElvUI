@@ -74,6 +74,14 @@ function S:Blizzard_ArchaeologyUI()
 	_G.ArcheologyDigsiteProgressBar:StripTextures()
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
+
+	-- ButtonFrameTemplate reparents the help button; Blizzard's ArchaeologyFrame_OnTabClick expects GetParent() == ArchaeologyFrame.
+	local infoBtn = ArchaeologyFrame.infoButton
+	if infoBtn and infoBtn:GetParent() ~= ArchaeologyFrame then
+		infoBtn:SetParent(ArchaeologyFrame)
+		infoBtn:ClearAllPoints()
+		infoBtn:SetPoint('TOPLEFT', ArchaeologyFrame, 'TOPLEFT', 39, 20)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_ArchaeologyUI')
