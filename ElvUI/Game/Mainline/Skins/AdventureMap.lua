@@ -33,7 +33,7 @@ function S:Blizzard_AdventureMap()
 		AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
 	end
 
-	if E.private.skins.parchmentRemoverEnable and AdventureMapQuestChoiceDialog.Background then
+	if AdventureMapQuestChoiceDialog.Background then
 		AdventureMapQuestChoiceDialog.Background:SetAlpha(0)
 	end
 

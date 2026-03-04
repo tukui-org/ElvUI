@@ -35,37 +35,30 @@ function BL:SetUpVehicle()
 	end
 end
 
-function BL:UnloadVehicleTextures() -- removes UIParent_ManageFramePositions()
-	self.BackgroundTexture:SetTexture()
-	self.currSkin = nil
-
-	self:HideButtons()
-	self:UpdateShownState()
-
-	_G.DurabilityFrame:SetAlerts()
-end
-
 function BL:UpdateVehicleFrame()
-	BL.SetUpVehicle(_G.VehicleSeatIndicator.currSkin)
+	local indicator = _G.VehicleSeatIndicator
+	if not indicator then return end
+
+	BL.SetUpVehicle(indicator.currSkin)
 end
 
-function BL:PositionVehicleFrame()
-	local indicator = _G.VehicleSeatIndicator
-	if E.Wrath or E.Mists then
-		if not indicator.PositionVehicleFrameHooked then
-			hooksecurefunc(indicator, 'SetPoint', BL.SetVehiclePosition)
-			hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', BL.SetUpVehicle)
+do
+	local hooked = {}
+	function BL:PositionVehicleFrame()
+		local indicator = _G.VehicleSeatIndicator
+		if not indicator or hooked[indicator] then return end
 
-			indicator:ClearAllPoints()
-			indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
-			indicator:Size(E.db.general.vehicleSeatIndicatorSize)
+		hooksecurefunc(indicator, 'SetPoint', BL.SetVehiclePosition)
+		hooksecurefunc('VehicleSeatIndicator_SetUpVehicle', BL.SetUpVehicle)
 
-			E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzardImprovements')
-			indicator.PositionVehicleFrameHooked = true
-		end
+		indicator:ClearAllPoints()
+		indicator:SetPoint('TOPRIGHT', _G.MinimapCluster, 'BOTTOMRIGHT', 0, 0)
+		indicator:Size(E.db.general.vehicleSeatIndicatorSize)
+
+		hooked[indicator] = true
+
+		E:CreateMover(indicator, 'VehicleSeatMover', L["Vehicle Seat Frame"], nil, nil, nil, nil, nil, 'general,blizzardImprovements')
 
 		BL:UpdateVehicleFrame()
-	elseif E.Retail and E.private.actionbar.enable then
-		indicator.UnloadTextures = BL.UnloadVehicleTextures -- fix a taint when actionbars in use
 	end
 end
