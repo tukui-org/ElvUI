@@ -54,7 +54,13 @@ function S:Blizzard_ArchaeologyUI()
 	end
 
 	if E.global.general.disableTutorialButtons then
-		_G.ArchaeologyFrameInfoButton:Kill()
+		_G.ArchaeologyFrameInfoButton:SetAlpha(0) -- dont kill because of an onclick error
+	end
+
+	local HelpPageHelpScroll = _G.ArchaeologyFrameHelpPageHelpScroll
+	local HelpPageScrollBar = HelpPageHelpScroll and HelpPageHelpScroll.ScrollBar
+	if HelpPageScrollBar then
+		S:HandleTrimScrollBar(HelpPageScrollBar)
 	end
 
 	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton, nil, nil, true)
@@ -74,22 +80,6 @@ function S:Blizzard_ArchaeologyUI()
 	_G.ArcheologyDigsiteProgressBar:StripTextures()
 	_G.ArcheologyDigsiteProgressBar.BarTitle:FontTemplate(nil, nil, 'OUTLINE')
 	S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
-
-	local helpScroll = _G.ArchaeologyFrameHelpPageHelpScroll
-	if helpScroll then
-		local scrollBar = helpScroll.ScrollBar
-		if scrollBar then
-			S:HandleTrimScrollBar(scrollBar)
-		end
-	end
-
-	-- ButtonFrameTemplate reparents the help button; Blizzard's ArchaeologyFrame_OnTabClick expects GetParent() == ArchaeologyFrame.
-	local infoBtn = ArchaeologyFrame.infoButton
-	if infoBtn and infoBtn:GetParent() ~= ArchaeologyFrame then
-		infoBtn:SetParent(ArchaeologyFrame)
-		infoBtn:ClearAllPoints()
-		infoBtn:SetPoint('TOPLEFT', ArchaeologyFrame, 'TOPLEFT', 39, 20)
-	end
 end
 
 S:AddCallbackForAddon('Blizzard_ArchaeologyUI')
