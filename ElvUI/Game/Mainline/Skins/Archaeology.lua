@@ -54,7 +54,13 @@ function S:Blizzard_ArchaeologyUI()
 	end
 
 	if E.global.general.disableTutorialButtons then
-		_G.ArchaeologyFrameInfoButton:Kill()
+		_G.ArchaeologyFrameInfoButton:SetAlpha(0) -- dont kill because of an onclick error
+	end
+
+	local HelpPageHelpScroll = _G.ArchaeologyFrameHelpPageHelpScroll
+	local HelpPageScrollBar = HelpPageHelpScroll and HelpPageHelpScroll.ScrollBar
+	if HelpPageScrollBar then
+		S:HandleTrimScrollBar(HelpPageScrollBar)
 	end
 
 	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton, nil, nil, true)

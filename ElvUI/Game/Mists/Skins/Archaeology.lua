@@ -54,7 +54,7 @@ function S:Blizzard_ArchaeologyUI()
 	end
 
 	if E.global.general.disableTutorialButtons then
-		_G.ArchaeologyFrameInfoButton:Kill()
+		_G.ArchaeologyFrameInfoButton:SetAlpha(0) -- dont kill because of an onclick error
 	end
 
 	S:HandleButton(ArchaeologyFrame.summaryPage.prevPageButton, nil, nil, true)
