@@ -103,13 +103,13 @@ function E:ReplaceSetupTextureCoordinates(frame) -- temp until blizzard fixes th
 end
 
 local function WatchPixelSnap(frame, snap)
-	if (frame and not frame:IsForbidden()) and frame.PixelSnapDisabled and snap then
+	if E:NotSecretTable(frame) and (frame and not frame:IsForbidden()) and frame.PixelSnapDisabled and snap then
 		frame.PixelSnapDisabled = nil
 	end
 end
 
 local function DisablePixelSnap(frame)
-	if (frame and not frame:IsForbidden()) and not frame.PixelSnapDisabled then
+	if E:NotSecretTable(frame) and (frame and not frame:IsForbidden()) and not frame.PixelSnapDisabled then
 		if frame.SetSnapToPixelGrid then
 			frame:SetSnapToPixelGrid(false)
 			frame:SetTexelSnappingBias(0)
