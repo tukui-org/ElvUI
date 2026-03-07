@@ -38,8 +38,7 @@ local function BuffLoop(_, _, list, name, icon, _, auraType, _, _, source, _, _,
 end
 
 local function MidnightLoop(aura, _, _, _, icon, _, auraType)
-	local patchReady = oUF.wowtoc > 120000
-	if patchReady and aura.auraIsRaidPlayerDispellable then
+	if aura.auraIsRaidPlayerDispellable then
 		return auraType, icon
 	end
 end
