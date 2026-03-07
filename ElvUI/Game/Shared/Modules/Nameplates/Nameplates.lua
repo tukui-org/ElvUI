@@ -868,10 +868,12 @@ function NP:CheckDeath(event, unit)
 end
 
 function NP:NamePlateCallBack(event, unit)
-	local success, nameplate = pcall(C_NamePlate_GetNamePlateForUnit, unit)
-	if not success or not nameplate or not nameplate.UpdateAllElements or nameplate.widgetsOnly then
-		return -- prevent error when loading in with our plates and Plater or on restricted units
-	end
+	local success, plate = pcall(C_NamePlate_GetNamePlateForUnit, unit)
+	if not success or not plate then return end -- prevent error on restricted units
+
+	local nameplate = plate.unitFrame
+	if not nameplate or not nameplate.UpdateAllElements then return end -- prevent error with plater
+	if nameplate.widgetsOnly then return end -- not required to update this one
 
 	if event == 'UNIT_FACTION' then
 		NP.UNIT_FACTION(nameplate, event, unit)
