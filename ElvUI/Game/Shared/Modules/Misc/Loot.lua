@@ -24,7 +24,6 @@ local LCG = E.Libs.CustomGlow
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 local tinsert = tinsert
-local format = format
 local next = next
 local max = max
 
@@ -50,7 +49,7 @@ local UnitName = UnitName
 local StaticPopup_Hide = StaticPopup_Hide
 
 local GetCVarBool = C_CVar.GetCVarBool
-local GetItemReagentQualityByItemInfo = C_TradeSkillUI.GetItemReagentQualityByItemInfo
+local GetItemReagentQualityInfo = C_TradeSkillUI.GetItemReagentQualityInfo
 
 local TEXTURE_ITEM_QUEST_BANG = TEXTURE_ITEM_QUEST_BANG
 local LOOT = LOOT
@@ -286,10 +285,9 @@ function M:LOOT_OPENED(_, autoloot)
 			end
 
 			if slot.ProfessionQualityOverlayFrame then
-				local profQuality = itemLink and GetItemReagentQualityByItemInfo(itemLink)
-				if profQuality then
-					local atlas = format('Professions-Icon-Quality-Tier%d-Inv', profQuality)
-					slot.ProfessionQualityOverlayFrame:SetAtlas(atlas, true)
+				local info = itemLink and GetItemReagentQualityInfo(itemLink)
+				if info and info.iconInventory then
+					slot.ProfessionQualityOverlayFrame:SetAtlas(info.iconInventory, true)
 				else
 					slot.ProfessionQualityOverlayFrame:SetAtlas(nil)
 				end
