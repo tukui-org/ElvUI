@@ -57,11 +57,10 @@ local function UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID
 	local unitAuraFiltered = filtered[unit]
 
 	local allowed = which ~= 'remove' and allow and aura
-	if allowed then -- irrelevant filters: Maw
+	if allowed then -- irrelevant filters: IncludeNameplateOnly, Maw
 		aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
 		aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
 
-		aura.auraIsNameplateOnly = InstanceFiltered(unit, aura, 'HELPFUL|INCLUDE_NAME_PLATE_ONLY', 'HARMFUL|INCLUDE_NAME_PLATE_ONLY')
 		aura.auraIsImportant = InstanceFiltered(unit, aura, 'HELPFUL|IMPORTANT', 'HARMFUL|IMPORTANT')
 		aura.auraIsCancelable = InstanceFiltered(unit, aura, 'HELPFUL|CANCELABLE', 'HARMFUL|CANCELABLE')
 		aura.auraIsCrowdControl = InstanceFiltered(unit, aura, 'HELPFUL|CROWD_CONTROL', 'HARMFUL|CROWD_CONTROL')

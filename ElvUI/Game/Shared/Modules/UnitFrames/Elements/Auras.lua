@@ -269,7 +269,6 @@ function UF:UpdateFilters(button)
 	end
 
 	local isPlayer = db and db.isAuraPlayer
-	local isNameplateOnly = db and db.isAuraNameplateOnly
 	local isRaidPlayerDispellable = db and db.isAuraRaidPlayerDispellable
 	local isImportant = db and db.isAuraImportant
 	local isImportantPlayer = db and db.isAuraImportantPlayer
@@ -290,7 +289,6 @@ function UF:UpdateFilters(button)
 
 	local filters = button.auraFilters
 	filters.isPlayer = isPlayer
-	filters.isNameplateOnly = isNameplateOnly
 	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
 	filters.isImportant = isImportant
 	filters.isImportantPlayer = isImportantPlayer
@@ -757,7 +755,6 @@ function UF:VerifyFilter(button, aura)
 
 	if E.Retail then
 		return (filters.isPlayer and player)
-		or (filters.isNameplateOnly and aura.auraIsNameplateOnly)
 		or (filters.isRaidPlayerDispellable and aura.auraIsRaidPlayerDispellable)
 		or (filters.isImportant and aura.auraIsImportant and other)
 		or (filters.isImportantPlayer and aura.auraIsImportant and player)

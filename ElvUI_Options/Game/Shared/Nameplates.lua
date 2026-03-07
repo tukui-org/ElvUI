@@ -104,7 +104,6 @@ local function GetUnitAuras(unit, auraType)
 
 	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 1)
 	group.args.midnightGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], L["Auras you can dispel."], 2)
-	group.args.midnightGroup.args.isAuraNameplateOnly = ACH:Toggle(L["Only Nameplate"], nil, 3)
 
 	group.args.midnightGroup.args.player = ACH:Group(L["Player"], nil, 10)
 	group.args.midnightGroup.args.player.args.isAuraImportantPlayer = ACH:Toggle(L["Important"], nil, 1)

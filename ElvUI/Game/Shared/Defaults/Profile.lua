@@ -627,7 +627,6 @@ local NP_Auras = {
 	isAuraExternalDefensivePlayer = false,
 	isAuraCancelable = false,
 	isAuraCancelablePlayer = false,
-	isAuraNameplateOnly = false,
 	notAuraCancelable = false,
 	notAuraCancelablePlayer = false,
 	isAuraPlayer = false,
