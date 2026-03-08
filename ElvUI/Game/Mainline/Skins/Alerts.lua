@@ -857,6 +857,8 @@ function S:AlertSystem()
 	hooksecurefunc(_G.EntitlementDeliveredAlertSystem, 'setUpFunction', SkinEntitlementDeliveredAlert) -- 8.2.5 New
 	hooksecurefunc(_G.RafRewardDeliveredAlertSystem, 'setUpFunction', SkinRafRewardDeliveredAlert) -- 8.2.5 New
 	hooksecurefunc(_G.HousingItemEarnedAlertFrameSystem, 'setUpFunction', SkinHousingItemEarnedAlert) -- 11.2.7 New
+	hooksecurefunc(_G.InitiativeTaskCompleteAlertFrameSystem, 'setUpFunction', SkinHousingItemEarnedAlert) -- 11.2.7 New
+
 	-- Professions
 	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
