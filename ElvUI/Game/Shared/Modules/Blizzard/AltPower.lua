@@ -46,17 +46,17 @@ function BL:SetAltPowerBarText(text, name, value, max, percent)
 	elseif textFormat == 'NAME' then
 		text:SetFormattedText('%s', name)
 	elseif textFormat == 'NAMEPERC' then
-		text:SetFormattedText('%s: %s%%', name, percent)
+		text:SetFormattedText('%s: %d%%', name, percent)
 	elseif textFormat == 'NAMECURMAX' then
 		text:SetFormattedText('%s: %s / %s', name, value, max)
 	elseif textFormat == 'NAMECURMAXPERC' then
-		text:SetFormattedText('%s: %s / %s - %s%%', name, value, max, percent)
+		text:SetFormattedText('%s: %s / %s - %d%%', name, value, max, percent)
 	elseif textFormat == 'PERCENT' then
-		text:SetFormattedText('%s%%', percent)
+		text:SetFormattedText('%d%%', percent)
 	elseif textFormat == 'CURMAX' then
 		text:SetFormattedText('%s / %s', value, max)
 	elseif textFormat == 'CURMAXPERC' then
-		text:SetFormattedText('%s / %s - %s%%', value, max, percent)
+		text:SetFormattedText('%s / %s - %d%%', value, max, percent)
 	end
 end
 
