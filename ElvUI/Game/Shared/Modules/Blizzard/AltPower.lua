@@ -13,6 +13,7 @@ local UnitPowerPercent = UnitPowerPercent
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
+local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local function UpdateTooltip(self)
@@ -145,7 +146,7 @@ function BL:UpdateAltPowerBar()
 
 	local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX) or 0
 	local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
-	local powerPercent = UnitPowerPercent and UnitPowerPercent('player', _G.ALTERNATE_POWER_INDEX)
+	local powerPercent = UnitPowerPercent and UnitPowerPercent('player', _G.ALTERNATE_POWER_INDEX, true, ScaleTo100)
 	local barInfo = GetUnitPowerBarInfo('player')
 	if barInfo then
 		local allowed = E:NotSecretValue(power) and E:NotSecretValue(maxPower)
