@@ -52,7 +52,7 @@ local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookIte
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local GetActionCooldownDuration = C_ActionBar.GetActionCooldownDuration
 
-local GetProfessionQuality = C_ActionBar.GetProfessionQuality
+local GetProfessionQualityInfo = C_ActionBar.GetProfessionQualityInfo
 local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 local FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell or SpellBook_GetSpellBookSlot
@@ -887,8 +887,9 @@ function AB:UpdateProfessionQuality(button)
 	local enable = db and db.enable
 	if enable then
 		local action = button._state_type == 'action' and button._state_action
-		local quality = action and IsItemAction(action) and GetProfessionQuality(action)
-		atlas = quality and format('Professions-Icon-Quality-Tier%d', quality)
+		local info = action and IsItemAction(action) and GetProfessionQualityInfo(action)
+
+		atlas = info and info.iconInventory or nil
 
 		if atlas then
 			button.ProfessionQualityOverlayFrame.Texture:SetAtlas(atlas, true)

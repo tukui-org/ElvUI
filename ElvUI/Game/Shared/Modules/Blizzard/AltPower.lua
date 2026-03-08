@@ -13,6 +13,7 @@ local UnitPowerPercent = UnitPowerPercent
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
+local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local function UpdateTooltip(self)
@@ -45,17 +46,17 @@ function BL:SetAltPowerBarText(text, name, value, max, percent)
 	elseif textFormat == 'NAME' then
 		text:SetFormattedText('%s', name)
 	elseif textFormat == 'NAMEPERC' then
-		text:SetFormattedText('%s: %s%%', name, percent)
+		text:SetFormattedText('%s: %d%%', name, percent)
 	elseif textFormat == 'NAMECURMAX' then
 		text:SetFormattedText('%s: %s / %s', name, value, max)
 	elseif textFormat == 'NAMECURMAXPERC' then
-		text:SetFormattedText('%s: %s / %s - %s%%', name, value, max, percent)
+		text:SetFormattedText('%s: %s / %s - %d%%', name, value, max, percent)
 	elseif textFormat == 'PERCENT' then
-		text:SetFormattedText('%s%%', percent)
+		text:SetFormattedText('%d%%', percent)
 	elseif textFormat == 'CURMAX' then
 		text:SetFormattedText('%s / %s', value, max)
 	elseif textFormat == 'CURMAXPERC' then
-		text:SetFormattedText('%s / %s - %s%%', value, max, percent)
+		text:SetFormattedText('%s / %s - %d%%', value, max, percent)
 	end
 end
 
@@ -145,7 +146,7 @@ function BL:UpdateAltPowerBar()
 
 	local power = UnitPower('player', _G.ALTERNATE_POWER_INDEX) or 0
 	local maxPower = UnitPowerMax('player', _G.ALTERNATE_POWER_INDEX) or 0
-	local powerPercent = UnitPowerPercent and UnitPowerPercent('player', _G.ALTERNATE_POWER_INDEX)
+	local powerPercent = UnitPowerPercent and UnitPowerPercent('player', _G.ALTERNATE_POWER_INDEX, true, ScaleTo100)
 	local barInfo = GetUnitPowerBarInfo('player')
 	if barInfo then
 		local allowed = E:NotSecretValue(power) and E:NotSecretValue(maxPower)

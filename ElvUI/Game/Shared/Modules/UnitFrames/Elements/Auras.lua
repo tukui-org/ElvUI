@@ -268,17 +268,16 @@ function UF:UpdateFilters(button)
 		button.auraFilters = {}
 	end
 
-	local patchReady = E.wowtoc > 120000
 	local isPlayer = db and db.isAuraPlayer
-	local isRaidPlayerDispellable = patchReady and db and db.isAuraRaidPlayerDispellable
-	local isImportant = patchReady and db and db.isAuraImportant
-	local isImportantPlayer = patchReady and db and db.isAuraImportantPlayer
-	local isCrowdControl = patchReady and db and db.isAuraCrowdControl
-	local isCrowdControlPlayer = patchReady and db and db.isAuraCrowdControlPlayer
-	local isBigDefensive = patchReady and db and db.isAuraBigDefensive
-	local isBigDefensivePlayer = patchReady and db and db.isAuraBigDefensivePlayer
-	local isRaidInCombat = patchReady and db and db.isAuraRaidInCombat
-	local isRaidInCombatPlayer = patchReady and db and db.isAuraRaidInCombatPlayer
+	local isRaidPlayerDispellable = db and db.isAuraRaidPlayerDispellable
+	local isImportant = db and db.isAuraImportant
+	local isImportantPlayer = db and db.isAuraImportantPlayer
+	local isCrowdControl = db and db.isAuraCrowdControl
+	local isCrowdControlPlayer = db and db.isAuraCrowdControlPlayer
+	local isBigDefensive = db and db.isAuraBigDefensive
+	local isBigDefensivePlayer = db and db.isAuraBigDefensivePlayer
+	local isRaidInCombat = db and db.isAuraRaidInCombat
+	local isRaidInCombatPlayer = db and db.isAuraRaidInCombatPlayer
 	local isExternalDefensive = E.Retail and db and db.isAuraExternalDefensive
 	local isExternalDefensivePlayer = E.Retail and db and db.isAuraExternalDefensivePlayer
 	local isCancelable = db and db.isAuraCancelable

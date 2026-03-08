@@ -119,7 +119,7 @@ local function UpdateColor(self, event, unit, powerType)
 			if oUF.isRetail then
 				local curve = color:GetCurve()
 				if curve then
-					color = UnitPowerPercent(unit, true, curve)
+					color = UnitPowerPercent(unit, nil, true, curve)
 				end
 			else
 				local adjust = 0 - (element.min or 0)
