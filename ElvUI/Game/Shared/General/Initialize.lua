@@ -279,6 +279,7 @@ do
 		'ElvUI_SecondsToBuff',
 		'ElvUI_BuffHighlight',
 		'ElvUI_RatioMinimapAuras',
+		'PatchWerk', -- no Thanks
 	}
 
 	if not IsAddOnLoaded('ShadowedUnitFrames') then
