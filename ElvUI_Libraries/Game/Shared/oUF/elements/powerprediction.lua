@@ -46,6 +46,7 @@ local oUF = ns.oUF
 local next = next
 local pcall = pcall
 
+local _G = _G
 local GetSpellPowerCost = C_Spell.GetSpellPowerCost or GetSpellPowerCost
 local UnitCastingInfo = UnitCastingInfo
 local UnitPowerType = UnitPowerType
