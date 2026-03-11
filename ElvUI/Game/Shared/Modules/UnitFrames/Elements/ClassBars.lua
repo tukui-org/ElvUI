@@ -9,26 +9,25 @@ local ipairs = ipairs
 local unpack = unpack
 
 local CreateFrame = CreateFrame
-local UnitPowerType = UnitPowerType
-local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
+local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW or 3
+local SPEC_SHAMAN_ELEMENTAL = SPEC_SHAMAN_ELEMENTAL or 1
 local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
+
+local StatusBarInterpolation = Enum.StatusBarInterpolation
+local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
+
+local AltManaTypes = {
+	Rage = 1,
+	Energy = 3,
+	LunarPower = (E.Retail or E.Mists) and 8 or nil,
+	Maelstrom = E.Retail and 11 or nil,
+	Insanity = E.Retail and 13 or nil
+}
 
 UF.ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
 UF.ClassPowerColors = { COMBO_POINTS = 'comboPoints', CHI = 'MONK' }
-
-local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
-
-local AltManaTypes = { Rage = 1, Energy = 3 }
-if E.Retail or E.Mists then
-	AltManaTypes.LunarPower = 8
-end
-
-if E.Retail then
-	AltManaTypes.Maelstrom = 11
-	AltManaTypes.Insanity = 13
-end
 
 function UF:GetClassPower_Construct(frame)
 	frame.ClassPower = UF:Construct_ClassBar(frame)
@@ -343,9 +342,8 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	local activeBar = frame.USE_CLASSBAR
-	local unitPowerType = UnitPowerType('player')
-	local allowPriest = E.myclass == 'PRIEST' and (unitPowerType == AltManaTypes.Insanity)
-	local allowShaman = E.myclass == 'SHAMAN' and (unitPowerType == AltManaTypes.Maelstrom)
+	local allowPriest = E.Retail and E.myclass == 'PRIEST' and (E.myspec == SPEC_PRIEST_SHADOW)
+	local allowShaman = E.Retail and E.myclass == 'SHAMAN' and (E.myspec == SPEC_SHAMAN_ELEMENTAL)
 	for _, powerType in pairs(UF.ClassPowerTypes) do
 		if frame[powerType] then
 			local enabled = frame:IsElementEnabled(powerType)
