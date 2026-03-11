@@ -1114,7 +1114,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
 		config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
-		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'EVOKER' or E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) end)
+		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' or E.myclass == 'EVOKER' or E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) end)
 		config.args.additionalGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 15, max = 1000, step = 1 })
 		config.args.additionalGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 		config.args.additionalGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
@@ -1133,6 +1133,10 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		elseif E.myclass == 'MONK' then
 			config.args.additionalGroup.args.altManaGroup.args.Stagger = ACH:Toggle(L["Stagger"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail)
 			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
+		elseif E.myclass == 'PRIEST' then
+			config.args.additionalGroup.args.altManaGroup.args.Insanity = ACH:Toggle(L["Insanity"], nil, 1)
+		elseif E.myclass == 'SHAMAN' then
+			config.args.additionalGroup.args.altManaGroup.args.Maelstrom = ACH:Toggle(L["Maelstrom"], nil, 1)
 		elseif E.myclass == 'EVOKER' then
 			config.args.additionalGroup.args.altManaGroup.args.EbonMight = ACH:Toggle(L["EBON_MIGHT"], nil, 1)
 		end

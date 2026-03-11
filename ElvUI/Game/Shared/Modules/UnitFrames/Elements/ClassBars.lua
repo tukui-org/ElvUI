@@ -3,13 +3,13 @@ local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
 local max = max
-local wipe = wipe
 local next = next
 local pairs = pairs
 local ipairs = ipairs
 local unpack = unpack
 
 local CreateFrame = CreateFrame
+local UnitPowerType = UnitPowerType
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
@@ -21,8 +21,11 @@ UF.ClassPowerColors = { COMBO_POINTS = 'comboPoints', CHI = 'MONK' }
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 
 local AltManaTypes = { Rage = 1, Energy = 3 }
-if E.Retail then
+if E.Retail or E.Mists then
 	AltManaTypes.LunarPower = 8
+end
+
+if E.Retail then
 	AltManaTypes.Maelstrom = 11
 	AltManaTypes.Insanity = 13
 end
@@ -100,6 +103,17 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 			else
 				UF:SetStatusBarColor(bar, color.r, color.g, color.b, custom_backdrop)
 			end
+		end
+	end
+end
+
+function UF:ClassPower_ShouldShowAdditionalPower()
+	local altPower = E.db.unitframe.altManaPowers[E.myclass]
+	if not altPower then return end
+
+	for name, value in pairs(altPower) do
+		if value and AltManaTypes[name] then
+			return true
 		end
 	end
 end
@@ -328,34 +342,26 @@ function UF:Configure_ClassBar(frame)
 		bars:SetParent(frame)
 	end
 
+	local activeBar = frame.USE_CLASSBAR
+	local unitPowerType = UnitPowerType('player')
+	local allowPriest = E.myclass == 'PRIEST' and (unitPowerType == AltManaTypes.Insanity)
+	local allowShaman = E.myclass == 'SHAMAN' and (unitPowerType == AltManaTypes.Maelstrom)
 	for _, powerType in pairs(UF.ClassPowerTypes) do
 		if frame[powerType] then
-			if frame.USE_CLASSBAR then
-				if powerType == 'AdditionalPower' then
-					local displayMana = frame.AdditionalPower.displayPairs[E.myclass]
-					wipe(displayMana)
-
-					local altMana = E.db.unitframe.altManaPowers[E.myclass]
-					if altMana then
-						for name, value in pairs(altMana) do
-							local altType = value and AltManaTypes[name]
-							if altType then
-								displayMana[altType] = value
-							end
-						end
-					end
-
-					local display = next(displayMana)
-					local enabled = frame:IsElementEnabled(powerType)
-					if display and not enabled then
-						frame:EnableElement(powerType)
-					elseif enabled and not display then
-						frame:DisableElement(powerType)
-					end
-				elseif not frame:IsElementEnabled(powerType) then
+			local enabled = frame:IsElementEnabled(powerType)
+			local additional = powerType == 'AdditionalPower'
+			local classpower = powerType == 'ClassPower'
+			if additional or classpower then
+				local allowed = additional or (classpower and (allowPriest or allowShaman))
+				local display = allowed and activeBar and UF:ClassPower_ShouldShowAdditionalPower()
+				if display and not enabled then
 					frame:EnableElement(powerType)
+				elseif enabled and not display then
+					frame:DisableElement(powerType)
 				end
-			elseif frame:IsElementEnabled(powerType) then
+			elseif activeBar and not enabled then
+				frame:EnableElement(powerType)
+			elseif enabled and not activeBar then
 				frame:DisableElement(powerType)
 			end
 		end
@@ -586,7 +592,6 @@ function UF:Construct_AdditionalPowerBar(frame)
 
 	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower)
 	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
-	additionalPower.displayPairs = {[E.myclass] = {}} -- display power types
 
 	additionalPower.bg = additionalPower:CreateTexture(nil, 'BORDER')
 	additionalPower.bg:SetTexture(E.media.blankTex)
