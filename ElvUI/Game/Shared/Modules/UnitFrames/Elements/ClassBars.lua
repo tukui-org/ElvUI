@@ -352,8 +352,9 @@ function UF:Configure_ClassBar(frame)
 			local additional = powerType == 'AdditionalPower'
 			local classpower = powerType == 'ClassPower'
 			if additional or classpower then
-				local normal, special = classpower and not (checkPriest or checkShaman), classpower and (allowPriest or allowShaman)
-				local allowed = activeBar and (normal or ((special or additional) and UF:ClassPower_ShouldShowAdditionalPower()))
+				local special = allowPriest or allowShaman
+				local normal = not (checkPriest or checkShaman) or not special
+				local allowed = classpower and activeBar and (normal or ((special or additional) and UF:ClassPower_ShouldShowAdditionalPower()))
 				if allowed and not enabled then
 					frame:EnableElement(powerType)
 				elseif enabled and not allowed then
