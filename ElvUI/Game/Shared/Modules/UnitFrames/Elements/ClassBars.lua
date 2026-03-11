@@ -342,16 +342,19 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	local activeBar = frame.USE_CLASSBAR
-	local allowPriest = E.Retail and E.myclass == 'PRIEST' and (E.myspec == SPEC_PRIEST_SHADOW)
-	local allowShaman = E.Retail and E.myclass == 'SHAMAN' and (E.myspec == SPEC_SHAMAN_ELEMENTAL)
+	local checkPriest = E.Retail and E.myclass == 'PRIEST'
+	local checkShaman = E.Retail and E.myclass == 'SHAMAN'
+	local allowPriest = checkPriest and E.myspec == SPEC_PRIEST_SHADOW
+	local allowShaman = checkShaman and E.myspec == SPEC_SHAMAN_ELEMENTAL
 	for _, powerType in pairs(UF.ClassPowerTypes) do
 		if frame[powerType] then
 			local enabled = frame:IsElementEnabled(powerType)
 			local additional = powerType == 'AdditionalPower'
 			local classpower = powerType == 'ClassPower'
 			if additional or classpower then
-				local allowed = additional or (classpower and (allowPriest or allowShaman))
-				local display = allowed and activeBar and UF:ClassPower_ShouldShowAdditionalPower()
+				local normal, special = classpower and not (checkPriest or checkShaman), classpower and (allowPriest or allowShaman)
+				local allowed = normal or ((special or additional) and UF:ClassPower_ShouldShowAdditionalPower())
+				local display = allowed and activeBar
 				if display and not enabled then
 					frame:EnableElement(powerType)
 				elseif enabled and not display then
