@@ -592,6 +592,7 @@ function UF:UpdateColors()
 	ElvUF.colors.DebuffHighlight.Curse = E:SetColorTable(ElvUF.colors.DebuffHighlight.Curse, db.debuffHighlight.Curse)
 	ElvUF.colors.DebuffHighlight.Disease = E:SetColorTable(ElvUF.colors.DebuffHighlight.Disease, db.debuffHighlight.Disease)
 	ElvUF.colors.DebuffHighlight.Poison = E:SetColorTable(ElvUF.colors.DebuffHighlight.Poison, db.debuffHighlight.Poison)
+	ElvUF.colors.DebuffHighlight.Bleed = E:SetColorTable(ElvUF.colors.DebuffHighlight.Bleed, db.debuffHighlight.Bleed)
 end
 
 function UF:Update_StatusBars(statusbars)
