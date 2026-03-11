@@ -11,6 +11,12 @@ function S:Blizzard_GenericTraitUI()
 	if E.private.skins.parchmentRemoverEnable then
 		GenericTrait.Background:SetAlpha(0)
 		GenericTrait.BorderOverlay:SetAlpha(0)
+		GenericTrait.NineSlice:SetAlpha(0)
+
+		-- should we also handle these?
+		--GenericTrait.Header.TitleDivider:SetAlpha(0)
+		--GenericTrait.Inset:StripTextures()
+		--GenericTrait.Currency.CurrencyBackground:SetAlpha(0)
 	end
 
 	GenericTrait:SetTemplate('Transparent')
