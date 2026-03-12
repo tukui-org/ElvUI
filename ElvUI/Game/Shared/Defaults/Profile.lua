@@ -2038,6 +2038,8 @@ P.unitframe = {
 		ALT = 'NONE',
 	},
 	altManaPowers = {
+		PRIEST = { Insanity = true },
+		SHAMAN = { Maelstrom = true },
 		EVOKER = { EbonMight = true },
 		DRUID = { Energy = true, Rage = true, LunarPower = true },
 		MONK = { Energy = true, Stagger = true }

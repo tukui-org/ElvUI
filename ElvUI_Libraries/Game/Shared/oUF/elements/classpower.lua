@@ -64,9 +64,7 @@ local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 local POWERTYPE_ESSENCE = Enum.PowerType.Essence or 19
 local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
 
--- these are not real class powers: some removed because of Midnight
--- we used to have class mana bars for elemental and shadow
--- we also cant do fake icicles anymore either
+-- these are not real class powers
 local POWERTYPE_ICICLES = -1
 local POWERTYPE_MAELSTROM = -2
 local POWERTYPE_SOUL_FRAGMENTS = -3 -- wait this isnt fake kek
@@ -384,7 +382,7 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'WARLOCK' then
 		classPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
 	elseif myClass == 'MAGE' then
-		classPowerID = (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
+		classPowerID = (oUF.isRetail and currentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
 	elseif myClass == 'PRIEST' then
 		classPowerID = (oUF.isRetail and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
 	end

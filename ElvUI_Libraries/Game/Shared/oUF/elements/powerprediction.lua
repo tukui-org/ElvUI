@@ -46,6 +46,7 @@ local oUF = ns.oUF
 local next = next
 local pcall = pcall
 
+local _G = _G
 local GetSpellPowerCost = C_Spell.GetSpellPowerCost or GetSpellPowerCost
 local UnitCastingInfo = UnitCastingInfo
 local UnitPowerType = UnitPowerType
@@ -53,7 +54,6 @@ local UnitPowerMax = UnitPowerMax
 local UnitIsUnit = UnitIsUnit
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
-local ALT_POWER_BAR_PAIR_DISPLAY_INFO = ALT_POWER_BAR_PAIR_DISPLAY_INFO
 
 local function UpdateSize(self, event, unit)
 	local element = self.PowerPrediction
@@ -88,7 +88,7 @@ local function Update(self, event, unit)
 	local okMax, mainMax = pcall(UnitPowerMax, unit, powerType)
 	local isPlayer = UnitIsUnit('player', unit)
 
-	local DISPLAY_INFO = oUF:NotSecretValue(isPlayer) and isPlayer and ALT_POWER_BAR_PAIR_DISPLAY_INFO
+	local DISPLAY_INFO = oUF:NotSecretValue(isPlayer) and isPlayer and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO
 	local altManaInfo = DISPLAY_INFO and DISPLAY_INFO[oUF.myclass]
 
 	local hasAltManaBar = altManaInfo and altManaInfo[powerType]
