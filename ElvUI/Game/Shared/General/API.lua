@@ -641,9 +641,17 @@ end
 function E:UpdateAuraCurve(which, data)
 	if not data then return end
 
-	local colors = ElvUF.colors.dispel
+	local hl = which == 'highlight'
+	local colors = (hl and ElvUF.colors.DebuffHighlight) or ElvUF.colors.dispel
 	for key, index in next, DispelIndexes do
-		data:AddPoint(index, (which == 'debuffs' or key ~= 'None') and colors[key] or E.media.bordercolor)
+		if hl then
+			local color = colors[key]
+			if color then
+				data:AddPoint(index, color)
+			end
+		else
+			data:AddPoint(index, (which == 'debuffs' or key ~= 'None') and colors[key] or E.media.bordercolor)
+		end
 	end
 end
 
@@ -675,6 +683,8 @@ function E:UpdateAuraCurves()
 			data = E:CreateColorCurve(LuaCurveTypeStep)
 
 			curves[which] = data
+		else -- empty the list
+			data:ClearPoints()
 		end
 
 		E:UpdateAuraCurve(which, data)

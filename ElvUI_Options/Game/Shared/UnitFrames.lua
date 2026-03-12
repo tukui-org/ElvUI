@@ -1114,7 +1114,7 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
 		config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
 
-		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'EVOKER' or E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) end)
+		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' or E.myclass == 'EVOKER' or E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) end)
 		config.args.additionalGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 15, max = 1000, step = 1 })
 		config.args.additionalGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 		config.args.additionalGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
@@ -1133,6 +1133,10 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		elseif E.myclass == 'MONK' then
 			config.args.additionalGroup.args.altManaGroup.args.Stagger = ACH:Toggle(L["Stagger"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail)
 			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
+		elseif E.myclass == 'PRIEST' then
+			config.args.additionalGroup.args.altManaGroup.args.Insanity = ACH:Toggle(L["Insanity"], nil, 1)
+		elseif E.myclass == 'SHAMAN' then
+			config.args.additionalGroup.args.altManaGroup.args.Maelstrom = ACH:Toggle(L["Maelstrom"], nil, 1)
 		elseif E.myclass == 'EVOKER' then
 			config.args.additionalGroup.args.altManaGroup.args.EbonMight = ACH:Toggle(L["EBON_MIGHT"], nil, 1)
 		end
@@ -1438,7 +1442,7 @@ Colors.selectionGroup.args['8'] = ACH:Color(L["Friend"], nil, 8)
 Colors.selectionGroup.args['9'] = ACH:Color(L["Dead"], nil, 9)
 Colors.selectionGroup.args['13'] = ACH:Color(L["Battleground Friendly"], nil, 13)
 
-Colors.debuffHighlight = ACH:Group(L["Aura Highlight"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors.debuffHighlight[info[#info]], P.unitframe.colors.debuffHighlight[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return E.db.unitframe.colors.debuffHighlight[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors.debuffHighlight[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a else local value = ... E.db.unitframe.colors.debuffHighlight[info[#info]] = value end UF:Update_AllFrames() end)
+Colors.debuffHighlight = ACH:Group(L["Aura Highlight"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors.debuffHighlight[info[#info]], P.unitframe.colors.debuffHighlight[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return E.db.unitframe.colors.debuffHighlight[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors.debuffHighlight[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a else local value = ... E.db.unitframe.colors.debuffHighlight[info[#info]] = value end UF:Update_AllFrames() E:UpdateAuraCurves() end)
 Colors.debuffHighlight.args.debuffHighlighting = ACH:Select(L["Highlight Color Style"], L["Color the unit healthbar if there is a debuff that can be dispelled by you."], 1, { NONE = L["None"], GLOW = L["Glow"], FILL = L["Fill"] }, nil, nil, function(info) return E.db.unitframe[info[#info]] end, function(info, value) E.db.unitframe[info[#info]] = value end)
 Colors.debuffHighlight.args.blendMode = ACH:Select(L["Blend Mode"], nil, 2, blendModeValues)
 Colors.debuffHighlight.args.spacer1 = ACH:Spacer(3, 'full')
