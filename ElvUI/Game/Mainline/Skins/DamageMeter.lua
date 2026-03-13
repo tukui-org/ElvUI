@@ -262,14 +262,12 @@ end
 
 function S:DamageMeter_HandleLocalPlayerEntry()
 	local entry = self.LocalPlayerEntry
-
 	if not entry then return end
 
 	S.DamageMeter_HandleStatusBar(entry)
 
 	local StatusBarBackground = entry.StatusBar and entry.StatusBar.Background
-	if StatusBarBackground then
-		-- Local player entry is floating above the other entries
+	if StatusBarBackground then -- Local player entry is floating above the other entries
 		StatusBarBackground:SetAlpha(1)
 	end
 end
@@ -287,7 +285,9 @@ function S:DamageMeter_HandleSessionWindow()
 	S:DamageMeter_HandleScrollBoxes(self)
 	S.DamageMeter_RepositionResizeButton(self)
 
-	hooksecurefunc(self, 'ShowLocalPlayerEntry', S.DamageMeter_HandleLocalPlayerEntry)
+	if self.ShowLocalPlayerEntry then
+		hooksecurefunc(self, 'ShowLocalPlayerEntry', S.DamageMeter_HandleLocalPlayerEntry)
+	end
 
 	self.IsSkinned = true
 end
