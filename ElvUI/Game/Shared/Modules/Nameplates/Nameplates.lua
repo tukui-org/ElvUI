@@ -532,6 +532,7 @@ function NP:EnviromentConditionals()
 
 	local inInstance, instanceType = IsInInstance()
 	local value = (inInstance and instanceType) or (IsResting() and 'resting') or 'world'
+	NP.inInstance = inInstance
 
 	-- Handle friendly nameplates if friendly combat toggle is not set
 	if env.friendlyEnabled and db.showFriendlyCombat == 'DISABLED' then

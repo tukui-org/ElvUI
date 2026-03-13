@@ -94,7 +94,7 @@ function NP:Health_SetColors(nameplate, threatColors)
 		nameplate.Health:SetColorTapping(true)
 		nameplate.Health:SetColorSelection(E.Retail)
 		nameplate.Health.colorReaction = not E.Retail
-		nameplate.Health.colorClassification = db.health and db.health.useClassificationColor
+		nameplate.Health.colorClassification = db.health and db.health.useClassificationColor and (not db.health.useClassificationColorInInstance or NP.inInstance)
 		nameplate.Health.colorClass = db.health and db.health.useClassColor
 	end
 end

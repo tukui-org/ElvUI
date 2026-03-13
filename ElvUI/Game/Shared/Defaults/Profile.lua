@@ -666,6 +666,7 @@ local NP_Health = {
 	healPrediction = true,
 	useClassColor = true,
 	useClassificationColor = false,
+	useClassificationColorInInstance = false,
 	smoothbars = false,
 	text = {
 		enable = true,

@@ -194,6 +194,7 @@ local function GetUnitSettings(unit, name)
 	group.args.healthGroup.args.textGroup.args.text_reset = ACH:Execute(L["Reset Text"], L["Reset the Text Format to default."], 7, function() E.db.nameplates.units[unit].health.text.format = P.nameplates.units[unit].health.text.format NP:ConfigureAll() end)
 
 	group.args.healthGroup.args.useClassificationColor = ACH:Toggle(E.NewSign..L["Use Classification Color"], nil, 10)
+	group.args.healthGroup.args.useClassificationColorInInstance = ACH:Toggle(E.NewSign..L["In Instances"], L["Use classification color only in instances."], 11, nil, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].health.useClassificationColor end)
 
 	group.args.healthGroup.args.textGroup.args.fontGroup = ACH:Group('', nil, 20)
 	group.args.healthGroup.args.textGroup.args.fontGroup.inline = true
