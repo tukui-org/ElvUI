@@ -40,6 +40,7 @@ L["Auto Deposit"] = true
 L["Auto Scale"] = "Oto-Olcekleme"
 L["Avoidance Breakdown"] = "Kacinma Dagilimi"
 L["Azerite Bar"] = "Azerite Cubugu"
+L["Backpack"] = true
 L["Bag Bar"] = "Canta Cubugu"
 L["Bags"] = "Cantalar"
 L["Bags (Grow Down)"] = "Cantalar (Asagi Buyumek)"

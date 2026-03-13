@@ -40,6 +40,7 @@ L["Auto Deposit"] = "Depósito Automático"
 L["Auto Scale"] = "Escalado Automático"
 L["Avoidance Breakdown"] = "Desglose de Evasión"
 L["Azerite Bar"] = "Barra de Azerita"
+L["Backpack"] = true
 L["Bag Bar"] = "Barra de las Bolsas"
 L["Bags"] = "Bolsas"
 L["Bags (Grow Down)"] = "Bolsas (Crecer hacia abajo)"
