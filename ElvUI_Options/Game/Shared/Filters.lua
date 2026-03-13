@@ -18,15 +18,15 @@ local GetSpellSubtext = GetSpellSubtext
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
 local auraBarDefaults = { enable = true, color = { r = 1, g = 1, b = 1, a = 1 } }
 local defaultFilterList = {
-	['Aura Highlight'] = 'Aura Highlight',
-	['Aura Indicator (Global)'] = 'Aura Indicator (Global)',
-	['Aura Indicator (Class)'] = 'Aura Indicator (Class)',
-	['Aura Indicator (Pet)'] = 'Aura Indicator (Pet)',
-	['Aura Indicator (Profile)'] = 'Aura Indicator (Profile)'
+	['Aura Highlight'] = L["Aura Highlight"],
+	['Aura Indicator (Global)'] = L["Aura Indicator (Global)"],
+	['Aura Indicator (Class)'] = L["Aura Indicator (Class)"],
+	['Aura Indicator (Pet)'] = L["Aura Indicator (Pet)"],
+	['Aura Indicator (Profile)'] = L["Aura Indicator (Profile)"]
 }
 
 if not E.Retail then
-	defaultFilterList['AuraBar Colors'] = 'AuraBar Colors'
+	defaultFilterList['AuraBar Colors'] = L["AuraBar Colors"]
 end
 
 local function GetSelectedFilters()
@@ -397,7 +397,7 @@ Filters.mainOptions.args.deleteFilter = ACH:Select(L["Delete Filter"], L["Delete
 Filters.mainOptions.args.resetGroup = ACH:Select(L["Reset Filter"], L["This will reset the contents of this filter back to default. Any spell you have added to this filter will be removed."], 4, ResetFilterList, ConfirmResetFilter, nil, nil, ResetFilter)
 Filters.mainOptions.args.resetFilters = ACH:Execute(L["Reset All"], L["This reset excludes AuraBar Colors, Aura Highlight, and Aura Indicators."], 5, function() E:StaticPopup_Show('RESET_ALL_FILTERS') ResetSelectedFilter() end, nil, nil, 100, nil, nil, nil, E.Retail)
 
-Filters.mainOptions.args.filterGroup = ACH:Group(function() return selectedFilter end, nil, 10, nil, nil, nil, nil, function() return not selectedFilter end)
+Filters.mainOptions.args.filterGroup = ACH:Group(function() return defaultFilterList[selectedFilter] or G.unitframe.aurafilters[selectedFilter] end, nil, 10, nil, nil, nil, nil, function() return not selectedFilter end)
 Filters.mainOptions.args.filterGroup.inline = true
 Filters.mainOptions.args.filterGroup.args.selectSpellheader = ACH:Description(L["|cffFF3333Warning:|r Click the arrow on the dropdown box to see a list of spells."], 0, 'medium')
 Filters.mainOptions.args.filterGroup.args.selectSpell = ACH:Select(L["Select Aura"], nil, 1, SetSpellList, nil, 350, function(_) return selectedSpell or '' end, function(_, value) selectedSpell = (value ~= '' and value) end, nil, nil, true)

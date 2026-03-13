@@ -40,6 +40,7 @@ L["Auto Deposit"] = true
 L["Auto Scale"] = "UI 자동조절"
 L["Avoidance Breakdown"] = "방어율 목록"
 L["Azerite Bar"] = "아제라이트 바"
+L["Backpack"] = true
 L["Bag Bar"] = "가방바"
 L["Bags"] = "가방"
 L["Bags (Grow Down)"] = "가방 위치(아래로 성장)"

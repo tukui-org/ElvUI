@@ -40,6 +40,7 @@ L["Auto Deposit"] = "Automatische Einzahlung"
 L["Auto Scale"] = "Auto Skalierung"
 L["Avoidance Breakdown"] = "Vermeidung Aufgliederung"
 L["Azerite Bar"] = "Azeritleiste"
+L["Backpack"] = true
 L["Bag Bar"] = "Taschenleiste"
 L["Bags"] = "Taschen"
 L["Bags (Grow Down)"] = "Taschen (Nach unten wachsen)"

@@ -40,6 +40,7 @@ L["Auto Deposit"] = true
 L["Auto Scale"] = "Автомасштаб"
 L["Avoidance Breakdown"] = "Распределение защиты"
 L["Azerite Bar"] = "Азерит"
+L["Backpack"] = true
 L["Bag Bar"] = "Панель сумок"
 L["Bags"] = "Сумки"
 L["Bags (Grow Down)"] = "Сумки (Рост вниз)"
