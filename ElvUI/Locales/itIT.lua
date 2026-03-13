@@ -40,6 +40,7 @@ L["Auto Deposit"] = true
 L["Auto Scale"] = true
 L["Avoidance Breakdown"] = true
 L["Azerite Bar"] = true
+L["Backpack"] = true
 L["Bag Bar"] = true
 L["Bags"] = "Borse"
 L["Bags (Grow Down)"] = true

@@ -10,7 +10,7 @@ local GetMoney = GetMoney
 local BONUS_ROLL_REWARD_MONEY = BONUS_ROLL_REWARD_MONEY
 
 local iconString, db = '|T%s:16:16:0:0:64:64:4:60:4:60|t'
-DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = 'Backpack' }
+DT.CurrencyList = { GOLD = BONUS_ROLL_REWARD_MONEY, BACKPACK = L["Backpack"] }
 
 local function OnClick()
 	_G.ToggleCharacter('TokenFrame')
