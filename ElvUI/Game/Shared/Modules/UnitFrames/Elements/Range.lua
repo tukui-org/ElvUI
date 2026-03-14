@@ -114,10 +114,6 @@ function UF:UpdateRange(unit)
 	local element = self.Fader
 	if not element then return end
 
-	if not unit then
-		unit = self.realUnit or self.unit
-	end
-
 	local exists = E:UnitExists(unit)
 	if self.forceInRange or (exists and unit == 'player') then
 		element.RangeAlpha = element.MaxAlpha
