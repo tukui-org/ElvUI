@@ -1281,7 +1281,7 @@ UnitFrame.resetFilters = ACH:Execute(L["Reset Aura Filters"], nil, 3, function()
 UnitFrame.borderOptions = ACH:Execute(L["Border Options"], nil, 4, function() ACD:SelectGroup('ElvUI', 'general', 'media') end)
 
 UnitFrame.generalOptionsGroup = ACH:Group(L["General"], nil, 5, 'tree')
-UnitFrame.generalOptionsGroup.args.multiplier = ACH:Range(E.NewSign..L["Multiplier"], L["Backdrop Multiplier. Also used for the Transparent multiplier."], 1, { softMin = 0.2, min = 0, softMax = 0.8, max = 1, step = 0.01 }, nil, function(info) return E.db.unitframe[info[#info]] end, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_AllFrames() end)
+UnitFrame.generalOptionsGroup.args.multiplier = ACH:Range(L["Multiplier"], L["Backdrop Multiplier. Also used for the Transparent multiplier."], 1, { softMin = 0.2, min = 0, softMax = 0.8, max = 1, step = 0.01 }, nil, function(info) return E.db.unitframe[info[#info]] end, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_AllFrames() end)
 UnitFrame.generalOptionsGroup.args.targetOnMouseDown = ACH:Toggle(L["Target On Mouse-Down"], L["Target units on mouse down rather than mouse up.\n\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."], 2)
 UnitFrame.generalOptionsGroup.args.targetSound = ACH:Toggle(L["Targeting Sound"], L["Enable a sound if you select a unit."], 3)
 UnitFrame.generalOptionsGroup.args.maxAllowedGroups = ACH:Toggle(L["Max Allowed Groups"], L["Groups will be maxed as Mythic to 4, Other Raids to 6, and PVP / World to 8."], 4, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:ZONE_CHANGED_NEW_AREA() end, nil, not E.Retail)
@@ -1315,7 +1315,7 @@ local Colors = UnitFrame.allColorsGroup.args
 Colors.healthGroup = ACH:Group(L["Health"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors[info[#info]], P.unitframe.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b else return E.db.unitframe.colors[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a or 1 else local value = ... E.db.unitframe.colors[info[#info]] = value end UF:Update_AllFrames() end)
 Colors.healthGroup.args.healthMultiplier = ACH:Range(L["Backdrop Multiplier"], L["Zero will inherit the unitframe general Multiplier. Disabling this override."], 1, { min = 0, softMax = 0.75, max = 1, step = 0.01 })
 Colors.healthGroup.args.transparentHealth = ACH:Toggle(L["Transparent"], L["Make textures transparent."], 2)
-Colors.healthGroup.args.invertHealth = ACH:Toggle(E.NewSign..L["Invert Colors"], L["Invert foreground and background colors."], 3)
+Colors.healthGroup.args.invertHealth = ACH:Toggle(L["Invert Colors"], L["Invert foreground and background colors."], 3)
 Colors.healthGroup.args.colorhealthbyvalue = ACH:Toggle(L["Health By Value"], L["Color health by amount remaining."], 4)
 Colors.healthGroup.args.healthselection = ACH:Toggle(L["Selection Health"], L["Color health by color selection."], 5, nil, nil, nil, nil, nil, nil, not E.Retail)
 Colors.healthGroup.args.healthclass = ACH:Toggle(L["Class Health"], L["Color health by classcolor or reaction."], 6, nil, nil, nil, nil, nil, function() return E.Retail and E.db.unitframe.colors.healthselection end)
@@ -1418,7 +1418,7 @@ do
 		L["FACTION_STANDING_LABEL8"]
 	}
 
-	Colors.reactionGroup = ACH:Group(E.NewSign..L["Reactions"], nil, nil, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.reaction[i], P.unitframe.colors.reaction[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.unitframe.colors.reaction[i] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+	Colors.reactionGroup = ACH:Group(L["Reactions"], nil, nil, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.reaction[i], P.unitframe.colors.reaction[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.unitframe.colors.reaction[i] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 
 	for i = 1, 8 do
 		Colors.reactionGroup.args[''..i] = ACH:Color(names[i], nil, i)
