@@ -1424,6 +1424,15 @@ function E:GetClassificationColor(unit)
 	local classification = UnitClassification(unit)
 	local unitLevel = E:UnitEffectiveLevel(unit)
 	local maxLevel = E.expansionLevelMax
+	local _, instanceType = GetInstanceInfo()
+
+    -- In dungeons, check caster first so elite casters aren't missed
+    if instanceType == 'party' then
+		local baseClass = UnitClassBase(unit)
+		if baseClass == 'PALADIN' then
+			return 'caster'
+		end
+	end
 
 	if classification == 'worldboss' or classification == 'rareelite' or classification == 'rare' then
 		return classification
