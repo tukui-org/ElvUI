@@ -862,6 +862,7 @@ function S:AlertSystem()
 	-- Professions
 	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
+	hooksecurefunc(_G.SkillLineSpecsUnlockedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
 
 	-- Pets/Mounts/Toys
 	hooksecurefunc(_G.NewPetAlertSystem, 'setUpFunction', SkinMiscAlerts)
