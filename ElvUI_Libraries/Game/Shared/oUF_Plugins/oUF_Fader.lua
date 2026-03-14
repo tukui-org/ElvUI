@@ -187,6 +187,13 @@ local function TargetScript(self)
 	end
 end
 
+local function CheckRange(self, event, value)
+	local element = self.Fader
+	if not element then return end
+
+	element.isInRange = value
+end
+
 local options = {
 	Range = {
 		enable = function(self)
@@ -197,6 +204,8 @@ local options = {
 
 			onRangeFrame:Show()
 			tinsert(onRangeObjects, self)
+
+			self:RegisterEvent('UNIT_IN_RANGE_UPDATE', CheckRange)
 		end,
 		disable = function(self)
 			if onRangeFrame then
@@ -212,6 +221,9 @@ local options = {
 					onRangeFrame:Hide()
 				end
 			end
+
+			self.Fader.isInRange = nil
+			self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', CheckRange)
 		end
 	},
 	Hover = {
