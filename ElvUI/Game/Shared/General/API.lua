@@ -26,6 +26,7 @@ local GetSpecializationInfoForSpecID = C_SpecializationInfo.GetSpecializationInf
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsInGroup = IsInGroup
+local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local IsRestrictedAccount = IsRestrictedAccount
@@ -43,11 +44,11 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
 local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitIsAFK = UnitIsAFK
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsVisible = UnitIsVisible
 local UnitSex = UnitSex
-local UnitIsAFK = UnitIsAFK
 local UnitIsDND = UnitIsDND
 local UnitThreatSituation = UnitThreatSituation
 
@@ -1422,7 +1423,7 @@ function E:GetClassificationColor(unit)
 	if UnitIsPlayer(unit) then return end
 
 	local baseClass = UnitClassBase(unit)
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	local classification = UnitClassification(unit)
 	local unitLevel = E:UnitEffectiveLevel(unit)
 	local maxLevel = E.expansionLevelMax
