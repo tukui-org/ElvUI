@@ -607,9 +607,9 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		local assigned = DT.AssignedDatatexts[dt]
 
 		dt:SetShown(i <= numPoints)
-		dt:SetSize(width, height)
+		dt:Size(width, height)
 		dt:ClearAllPoints()
-		dt:SetPoint(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
+		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
 		dt:UnregisterAllEvents()
 		dt:EnableMouseWheel(false)
 		dt:SetScript('OnUpdate', nil)
@@ -695,9 +695,9 @@ function DT:PanelSizeChanged()
 	local width, height, vertical, numPoints = DT:GetTextAttributes(self, db)
 
 	for i, dt in ipairs(self.dataPanels) do
-		dt:SetSize(width, height)
+		dt:Size(width, height)
 		dt:ClearAllPoints()
-		dt:SetPoint(DT:GetDataPanelPoint(self, i, numPoints, vertical))
+		dt:Point(DT:GetDataPanelPoint(self, i, numPoints, vertical))
 	end
 end
 
