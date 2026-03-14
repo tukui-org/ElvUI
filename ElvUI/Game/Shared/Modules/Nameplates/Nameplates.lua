@@ -74,11 +74,24 @@ function NP:ResetAuraPriority()
 	for unitType, content in pairs(E.db.nameplates.units) do
 		local default = P.nameplates.units[unitType]
 		if default then
-			if content.buffs and content.buffs.filters then
-				content.buffs.filters.priority = default.buffs.filters.priority
+			local buffs = content.buffs
+			if buffs and buffs.filters then
+				buffs.filters.priority = default.buffs.filters.priority
 			end
-			if content.debuffs and content.debuffs.filters then
-				content.debuffs.filters.priority = default.debuffs.filters.priority
+
+			local debuffs = content.debuffs
+			if debuffs and debuffs.filters then
+				debuffs.filters.priority = default.debuffs.filters.priority
+			end
+
+			for key in next, E.AuraDefaults do
+				if buffs then
+					buffs[key] = default.buffs[key]
+				end
+
+				if debuffs then
+					debuffs[key] = default.debuffs[key]
+				end
 			end
 		end
 	end

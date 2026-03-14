@@ -265,6 +265,12 @@ E.PopupDialogs.RESET_UF_AF = {
 	button2 = CANCEL,
 	OnAccept = function()
 		UF:ResetAuraPriority()
+
+		if E:Config_GetWindow() then
+			E:RefreshGUI()
+		end
+
+		UF:Update_AllFrames()
 	end,
 	whileDead = 1,
 	hideOnEscape = false,
@@ -276,6 +282,12 @@ E.PopupDialogs.RESET_NP_AF = {
 	button2 = CANCEL,
 	OnAccept = function()
 		NP:ResetAuraPriority()
+
+		if E:Config_GetWindow() then
+			E:RefreshGUI()
+		end
+
+		NP:ConfigureAll()
 	end,
 	whileDead = 1,
 	hideOnEscape = false,

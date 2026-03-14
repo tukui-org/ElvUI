@@ -7,6 +7,27 @@ P.gridSize = 64
 P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
 
+E.AuraDefaults = {
+	isAuraImportant = false,
+	isAuraImportantPlayer = false,
+	isAuraCrowdControl = false,
+	isAuraCrowdControlPlayer = false,
+	isAuraBigDefensive = false,
+	isAuraBigDefensivePlayer = false,
+	isAuraRaidInCombat = false,
+	isAuraRaidInCombatPlayer = false,
+	isAuraRaidPlayerDispellable = false,
+	isAuraExternalDefensive = false,
+	isAuraExternalDefensivePlayer = false,
+	isAuraCancelable = false,
+	isAuraCancelablePlayer = false,
+	notAuraCancelable = false,
+	notAuraCancelablePlayer = false,
+	isAuraPlayer = false,
+	isAuraRaid = false,
+	isAuraRaidPlayer = false,
+}
+
 --Core
 P.general = {
 	messageRedirect = _G.DEFAULT_CHAT_FRAME:GetName(),
@@ -614,24 +635,6 @@ local NP_Auras = {
 	growthX = 'RIGHT',
 	growthY = 'UP',
 	onlyShowPlayer = false,
-	isAuraImportant = false,
-	isAuraImportantPlayer = false,
-	isAuraCrowdControl = false,
-	isAuraCrowdControlPlayer = false,
-	isAuraBigDefensive = false,
-	isAuraBigDefensivePlayer = false,
-	isAuraRaidInCombat = false,
-	isAuraRaidInCombatPlayer = false,
-	isAuraRaidPlayerDispellable = false,
-	isAuraExternalDefensive = false,
-	isAuraExternalDefensivePlayer = false,
-	isAuraCancelable = false,
-	isAuraCancelablePlayer = false,
-	notAuraCancelable = false,
-	notAuraCancelablePlayer = false,
-	isAuraPlayer = false,
-	isAuraRaid = false,
-	isAuraRaidPlayer = false,
 	useMidnight = false,
 	stackAuras = true,
 	filter = 'HELPFUL',
@@ -658,6 +661,10 @@ local NP_Auras = {
 	sourceText = CopyTable(NP_AuraSourceText),
 	priority = ''
 }
+
+for key, value in next, E.AuraDefaults do
+	NP_Auras[key] = value
+end
 
 local NP_Health = {
 	enable = true,
@@ -1569,24 +1576,6 @@ local UF_Auras = {
 	stackAuras = true,
 	growthX = 'RIGHT',
 	growthY = 'UP',
-	isAuraImportant = false,
-	isAuraImportantPlayer = false,
-	isAuraCrowdControl = false,
-	isAuraCrowdControlPlayer = false,
-	isAuraBigDefensive = false,
-	isAuraBigDefensivePlayer = false,
-	isAuraRaidInCombat = false,
-	isAuraRaidInCombatPlayer = false,
-	isAuraRaidPlayerDispellable = false,
-	isAuraExternalDefensive = false,
-	isAuraExternalDefensivePlayer = false,
-	isAuraCancelable = false,
-	isAuraCancelablePlayer = false,
-	notAuraCancelable = false,
-	notAuraCancelablePlayer = false,
-	isAuraPlayer = false,
-	isAuraRaid = false,
-	isAuraRaidPlayer = false,
 	useMidnight = false,
 	durationPosition = 'CENTER',
 	enable = false,
@@ -1611,6 +1600,10 @@ local UF_Auras = {
 	sourceText = CopyTable(NP_AuraSourceText)
 }
 
+for key, value in next, E.AuraDefaults do
+	UF_Auras[key] = value
+end
+
 local UF_DebuffHighlight = {
 	enable = true,
 }
@@ -1626,24 +1619,6 @@ local UF_AuraBars = {
 	maxBars = 6,
 	maxDuration = 0,
 	minDuration = 0,
-	isAuraImportant = false,
-	isAuraImportantPlayer = false,
-	isAuraCrowdControl = false,
-	isAuraCrowdControlPlayer = false,
-	isAuraBigDefensive = false,
-	isAuraBigDefensivePlayer = false,
-	isAuraRaidInCombat = false,
-	isAuraRaidInCombatPlayer = false,
-	isAuraRaidPlayerDispellable = false,
-	isAuraExternalDefensive = false,
-	isAuraExternalDefensivePlayer = false,
-	isAuraCancelable = false,
-	isAuraCancelablePlayer = false,
-	notAuraCancelable = false,
-	notAuraCancelablePlayer = false,
-	isAuraPlayer = false,
-	isAuraRaid = false,
-	isAuraRaidPlayer = false,
 	sortDirection = 'DESCENDING',
 	sortMethod = 'TIME_REMAINING',
 	priority = '',
@@ -1657,6 +1632,10 @@ local UF_AuraBars = {
 	abbrevName = false,
 	smoothbars = false,
 }
+
+for key, value in next, E.AuraDefaults do
+	UF_AuraBars[key] = value
+end
 
 local UF_AuraWatch = {
 	enable = false,
