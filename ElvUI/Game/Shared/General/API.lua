@@ -16,7 +16,6 @@ local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetGameTime = GetGameTime
-local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetPartyAssignment = GetPartyAssignment
@@ -26,6 +25,7 @@ local GetSpecializationInfoForSpecID = C_SpecializationInfo.GetSpecializationInf
 local HideUIPanel = HideUIPanel
 local InCombatLockdown = InCombatLockdown
 local IsInGroup = IsInGroup
+local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local IsLevelAtEffectiveMaxLevel = IsLevelAtEffectiveMaxLevel
 local IsRestrictedAccount = IsRestrictedAccount
@@ -43,12 +43,12 @@ local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitGUID = UnitGUID
 local UnitHasVehicleUI = UnitHasVehicleUI
+local UnitIsAFK = UnitIsAFK
+local UnitIsDND = UnitIsDND
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsVisible = UnitIsVisible
 local UnitSex = UnitSex
-local UnitIsAFK = UnitIsAFK
-local UnitIsDND = UnitIsDND
 local UnitThreatSituation = UnitThreatSituation
 
 local WorldFrame = WorldFrame
@@ -1035,7 +1035,7 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 		E.MediaUpdated = true
 	end
 
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' then
 		E.BGTimer = E:ScheduleRepeatingTimer('RequestBGInfo', 5)
 		E:RequestBGInfo()
@@ -1421,18 +1421,21 @@ end
 function E:GetClassificationColor(unit)
 	if UnitIsPlayer(unit) then return end
 
+	local baseClass = UnitClassBase(unit)
+	local _, instanceType = IsInInstance()
 	local classification = UnitClassification(unit)
 	local unitLevel = E:UnitEffectiveLevel(unit)
 	local maxLevel = E.expansionLevelMax
 
-	if classification == 'worldboss' or classification == 'rareelite' or classification == 'rare' then
+	if instanceType == 'party' and baseClass == 'PALADIN' then
+		return 'caster' -- In dungeons, check caster first so elite casters aren't missed
+	elseif classification == 'worldboss' or classification == 'rareelite' or classification == 'rare' then
 		return classification
-	elseif (classification == 'elite') and (unitLevel >= (maxLevel + 2)) then
+	elseif classification == 'elite' and (unitLevel >= (maxLevel + 2)) then
 		return 'eliteBoss'
-	elseif (classification == 'elite') and (unitLevel >= (maxLevel + 1)) then
+	elseif classification == 'elite' and (unitLevel >= (maxLevel + 1)) then
 		return 'eliteMini'
 	else
-		local baseClass = UnitClassBase(unit)
 		return (baseClass == 'PALADIN' and 'caster') or 'melee'
 	end
 end

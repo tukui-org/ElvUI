@@ -21,7 +21,6 @@ local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
 local GetChannelName = GetChannelName
 local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
-local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
 local GetPlayerInfoByGUID = GetPlayerInfoByGUID
@@ -32,6 +31,7 @@ local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsBuiltinChatWindow = IsBuiltinChatWindow
 local IsCombatLog = IsCombatLog
+local IsInInstance = IsInInstance
 local IsInRaid, IsInGroup = IsInRaid, IsInGroup
 local IsSecureCmd = IsSecureCmd
 local IsShiftKeyDown = IsShiftKeyDown
@@ -640,11 +640,12 @@ function CH:ChatFrame_OnMouseScroll(delta)
 end
 
 function CH:GetGroupDistribution()
-	local _, instanceType = GetInstanceInfo()
-	if instanceType == 'pvp' then return '/bg ' end
-	if IsInRaid() then return '/ra ' end
-	if IsInGroup() then return '/p ' end
-	return '/s '
+	local _, instanceType = IsInInstance()
+	if instanceType == 'pvp' then
+		return '/bg '
+	end
+
+	return (IsInRaid() and '/ra ') or (IsInGroup() and '/p ') or '/s '
 end
 
 function CH:InsertEmotions(msg)

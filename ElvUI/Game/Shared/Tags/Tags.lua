@@ -14,7 +14,6 @@ local utf8sub, utf8len = string.utf8sub, string.utf8len
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetCurrentTitle = GetCurrentTitle
 local GetGuildInfo = GetGuildInfo
-local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPetLoyalty = GetPetLoyalty
 local GetPVPRankInfo = GetPVPRankInfo
@@ -23,9 +22,11 @@ local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetTime = GetTime
 local GetTitleName = GetTitleName
+local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 local GetUnitSpeed = GetUnitSpeed
 local HasPetUI = HasPetUI
 local IsInGroup = IsInGroup
+local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local QuestDifficultyColors = QuestDifficultyColors
 local UnitBattlePetLevel = UnitBattlePetLevel
@@ -53,7 +54,6 @@ local UnitPVPName = UnitPVPName
 local UnitPVPRank = UnitPVPRank
 local UnitReaction = UnitReaction
 local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
-local GetUnitPowerBarTextureInfo = GetUnitPowerBarTextureInfo
 
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 
@@ -932,7 +932,7 @@ E:AddTag('guild:rank', 'UNIT_NAME_UPDATE', function(unit)
 end)
 
 E:AddTag('arena:number', 'UNIT_NAME_UPDATE', function(unit)
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	if instanceType == 'arena' then
 		for i = 1, 5 do
 			if UnitIsUnit(unit, 'arena'..i) then

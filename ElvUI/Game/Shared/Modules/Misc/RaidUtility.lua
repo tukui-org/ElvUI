@@ -7,30 +7,30 @@ local unpack, next, mod, floor = unpack, next, mod, floor
 local strsub, format, gsub, type = strsub, format, gsub, type
 local strfind, tinsert, wipe, sort = strfind, tinsert, wipe, sort
 
-local IsInRaid = IsInRaid
 local CreateFrame = CreateFrame
 local DoReadyCheck = DoReadyCheck
 local GameTooltip_Hide = GameTooltip_Hide
-local GetInstanceInfo = GetInstanceInfo
+local GetDungeonDifficultyID = GetDungeonDifficultyID
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetTexCoordsByGrid = GetTexCoordsByGrid
 local InCombatLockdown = InCombatLockdown
 local InitiateRolePoll = InitiateRolePoll
-local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
+local IsEveryoneAssistant = IsEveryoneAssistant
+local IsInGroup = IsInGroup
+local IsInInstance = IsInInstance
+local IsInRaid = IsInRaid
+local PlaySound = PlaySound
 local SecureHandler_OnClick = SecureHandler_OnClick
+local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
+local SetDungeonDifficultyID = SetDungeonDifficultyID
+local SetEveryoneIsAssistant = SetEveryoneIsAssistant
 local ToggleFriendsFrame = ToggleFriendsFrame
+local UnitClass = UnitClass
+local UnitExists = UnitExists
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitIsGroupAssistant = UnitIsGroupAssistant
 local UnitIsGroupLeader = UnitIsGroupLeader
-local IsEveryoneAssistant = IsEveryoneAssistant
-local SetEveryoneIsAssistant = SetEveryoneIsAssistant
-local SetDungeonDifficultyID = SetDungeonDifficultyID
-local GetDungeonDifficultyID = GetDungeonDifficultyID
-local IsInGroup = IsInGroup
-local PlaySound = PlaySound
-local UnitClass = UnitClass
-local UnitExists = UnitExists
 local UnitName = UnitName
 
 local ConvertToRaid = C_PartyInfo.ConvertToRaid
@@ -110,7 +110,7 @@ function RU:CleanButton(button)
 end
 
 function RU:NotInPVP()
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	return instanceType ~= 'pvp' and instanceType ~= 'arena'
 end
 

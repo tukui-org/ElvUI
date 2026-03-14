@@ -7,7 +7,7 @@ local next = next
 local format = format
 
 local UnitName = UnitName
-local GetInstanceInfo = GetInstanceInfo
+local IsInInstance = IsInInstance
 local GetBattlefieldScore = GetBattlefieldScore
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
@@ -43,7 +43,7 @@ local function Event(_, event, initLogin, isReload)
 
 	if not E.private.nameplates.enable then return end
 
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		local numOpps = GetNumArenaOpponentSpecs()
 		if numOpps >= 1 then
@@ -102,7 +102,7 @@ local function Update(self)
 		element:PreUpdate()
 	end
 
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		local name, realm = UnitName(self.unit)
 		if E:NotSecretValue(name) then

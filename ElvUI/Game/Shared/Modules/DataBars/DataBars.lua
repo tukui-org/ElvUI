@@ -4,11 +4,10 @@ local LSM = E.Libs.LSM
 
 local _G = _G
 local next = next
-local select = select
 local unpack = unpack
 
 local CreateFrame = CreateFrame
-local GetInstanceInfo = GetInstanceInfo
+local IsInInstance = IsInInstance
 local UnitAffectingCombat = UnitAffectingCombat
 local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
 
@@ -152,8 +151,9 @@ function DB:SetVisibility(bar)
 		bar:SetShown(bar.showBar)
 		bar.holder:SetShown(bar.showBar)
 	elseif bar.db.enable then
+		local _, instanceType = IsInInstance()
 		local hideBar = (bar == DB.StatusBars.Threat or bar.db.hideInCombat) and UnitAffectingCombat('player')
-		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or select(2, GetInstanceInfo()) == 'pvp'))
+		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or instanceType == 'pvp'))
 		or (bar.ShouldHide and bar:ShouldHide())
 
 		bar:SetShown(not hideBar)
