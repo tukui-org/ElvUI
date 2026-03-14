@@ -104,8 +104,8 @@ function UF:FriendlyInRange(unit, isInRange)
 
 	local range, checked = UnitInRange(unit)
 	if E:IsSecretValue(checked) then
-		if isInRange ~= nil then
-			return not isInRange
+		if isInRange == false then -- dont allow nil
+			return false
 		end
 	elseif checked and not range then
 		return false -- blizz checked and unit is out of range
