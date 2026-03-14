@@ -86,7 +86,7 @@ function UF:UnitInSpellsRange(unit, which)
 	end
 end
 
-function UF:FriendlyInRange(unit, isInRange)
+function UF:FriendlyInRange(unit)
 	if UnitIsPlayer(unit) then
 		if E.Retail then
 			local phaseReason = UnitPhaseReason(unit)
@@ -103,11 +103,7 @@ function UF:FriendlyInRange(unit, isInRange)
 	end
 
 	local range, checked = UnitInRange(unit)
-	if E:IsSecretValue(checked) then
-		if isInRange == false then -- dont allow nil
-			return false
-		end
-	elseif checked and not range then
+	if E:NotSecretValue(checked) and (checked and not range) then
 		return false -- blizz checked and unit is out of range
 	end
 
@@ -130,8 +126,8 @@ function UF:UpdateRange(unit)
 			element.RangeAlpha = UF:UnitInSpellsRange(unit, 1) and element.MaxAlpha or element.MinAlpha
 		elseif UnitIsUnit('pet', unit) then
 			element.RangeAlpha = UF:UnitInSpellsRange(unit, 4) and element.MaxAlpha or element.MinAlpha
-		elseif UnitIsConnected(unit) then -- isInRange is set by UNIT_IN_RANGE_UPDATE
-			element.RangeAlpha = UF:FriendlyInRange(unit, element.isInRange) and element.MaxAlpha or element.MinAlpha
+		elseif UnitIsConnected(unit) then
+			element.RangeAlpha = UF:FriendlyInRange(unit) and element.MaxAlpha or element.MinAlpha
 		else
 			element.RangeAlpha = element.MinAlpha
 		end

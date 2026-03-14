@@ -33,8 +33,12 @@ end
 
 local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
-local onRangeObjects, onRangeFrame = {}
+local secretRange, onRangeObjects, onRangeFrame = {}, {}
 local PowerTypesFull = { MANA = true, FOCUS = true, ENERGY = true }
+
+local function GetUnit(self)
+	return self.realUnit or self.unit
+end
 
 local function ClearTimers(element)
 	if not E then E = _G.ElvUI[1] end
@@ -50,10 +54,12 @@ local function ClearTimers(element)
 	end
 end
 
-local function ToggleAlpha(self, element, endAlpha)
+local function ToggleAlpha(self, element, endAlpha, secretAlpha)
 	element:ClearTimers()
 
-	if element.Smooth then
+	if oUF:IsSecretValue(secretAlpha) then
+		self:SetAlphaFromBoolean(secretAlpha, element.MaxAlpha, element.MinAlpha)
+	elseif element.Smooth then
 		E:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
 	else
 		self:SetAlpha(endAlpha)
@@ -86,7 +92,7 @@ local function Update(self, event, unit)
 
 	-- try to get the unit from the parent
 	if not unit or type(unit) ~= 'string' then
-		unit = self.realUnit or self.unit
+		unit = GetUnit(self)
 	end
 
 	-- range fader
@@ -96,7 +102,7 @@ local function Update(self, event, unit)
 		end
 
 		if element.RangeAlpha then
-			ToggleAlpha(self, element, element.RangeAlpha)
+			ToggleAlpha(self, element, element.RangeAlpha, secretRange[element])
 		end
 
 		return
@@ -187,11 +193,13 @@ local function TargetScript(self)
 	end
 end
 
-local function CheckRange(self, event, value)
+local function CheckRange(self, event, unit, value)
+	if not unit or unit ~= GetUnit(self) then return end
+
 	local element = self.Fader
 	if not element then return end
 
-	element.isInRange = value
+	secretRange[element] = value
 end
 
 local options = {
@@ -222,7 +230,7 @@ local options = {
 				end
 			end
 
-			self.Fader.isInRange = nil
+			secretRange[self.Fader] = nil
 			self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', CheckRange)
 		end
 	},
