@@ -116,9 +116,11 @@ local function GetObjectiveType(text, texture)
 end
 
 local function GetQuestObjectives(id, texture)
-	local list = {}
+	local objectives = C_QuestLog_GetQuestObjectives(id)
+	if not objectives then return end
 
-	for _, objective in next, C_QuestLog_GetQuestObjectives(id) do
+	local list = {}
+	for _, objective in next, objectives do
 		local text = not objective.finished and objective.text
 		if text then
 			if objective.type == 'progressbar' then
