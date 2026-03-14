@@ -42,6 +42,7 @@ local oUF = ns.oUF
 
 -- sourced from Blizzard_FrameXMLBase/Constants.lua
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
+local SPEC_MAGE_FIRE = SPEC_MAGE_FIRE or 2
 local SPEC_MAGE_FROST = SPEC_MAGE_FROST or 3
 local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW or 3
 local SPEC_MONK_WINDWALKER = SPEC_MONK_WINDWALKER or 3
@@ -67,9 +68,11 @@ local POWERTYPE_SHADOW_ORBS = Enum.PowerType.ShadowOrbs or 28
 -- these are not real class powers
 local POWERTYPE_ICICLES = -1
 local POWERTYPE_MAELSTROM = -2
-local POWERTYPE_SOUL_FRAGMENTS = -3 -- wait this isnt fake kek
-local POWERTYPE_EBON_MIGHT = -4 -- wait this isnt fake either
+local POWERTYPE_FIREBLAST = -3
+local POWERTYPE_SOUL_FRAGMENTS = -4 -- wait this isnt fake kek
+local POWERTYPE_EBON_MIGHT = -5 -- wait this isnt fake either
 
+local SPELL_FIRE_BLAST = 108853 -- currently can be secret; so not allowing it
 local SPELL_EBON_MIGHT = 395296
 local SPELL_DARK_HEART = 1225789
 local SPELL_SILENCE_WHISPERS = 1227702
@@ -97,6 +100,7 @@ local GetUnitChargedPowerPoints = GetUnitChargedPowerPoints
 local GetCollapsingStarCost = GetCollapsingStarCost
 local GetComboPoints = GetComboPoints
 
+local GetSpellCharges = C_Spell.GetSpellCharges
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpellMaxCumulativeAuraApplications = C_Spell.GetSpellMaxCumulativeAuraApplications
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
@@ -111,6 +115,7 @@ local ClassPowerType = {
 	[POWERTYPE_ARCANE_CHARGES] = 'ARCANE_CHARGES',
 	[POWERTYPE_ICICLES] = 'FROST_ICICLES',
 	[POWERTYPE_MAELSTROM] = 'MAELSTROM',
+	[POWERTYPE_FIREBLAST] = 'FIREBLAST',
 	[POWERTYPE_ESSENCE] = 'ESSENCE',
 	[POWERTYPE_HOLY_POWER] = 'HOLY_POWER',
 	[POWERTYPE_SOUL_SHARDS] = 'SOUL_SHARDS',
@@ -125,10 +130,15 @@ local ClassPowerMax = {
 	[POWERTYPE_DEMONIC_FURY] = 1,
 	[POWERTYPE_BURNING_EMBERS] = 4,
 	[POWERTYPE_MAELSTROM] = 10,
+	[POWERTYPE_FIREBLAST] = 3,
 	[POWERTYPE_ICICLES] = 5,
 }
 
-local UseFakePower = {
+local PoweredByCharges = {
+	[POWERTYPE_FIREBLAST] = oUF.isRetail
+}
+
+local PoweredByAuras = {
 	[POWERTYPE_EBON_MIGHT] = oUF.isRetail,
 	[POWERTYPE_SOUL_FRAGMENTS] = oUF.isRetail,
 	[POWERTYPE_ARCANE_CHARGES] = oUF.isMists,
@@ -177,6 +187,11 @@ local function GetDuration(spellID)
 	return (not expiration and 0) or (expiration - GetTime())
 end
 
+local function CheckSpellCharges(spellID)
+	local info = GetSpellCharges(spellID)
+	return (info and info.currentCharges) or nil
+end
+
 local watcher = CreateFrame('Frame')
 watcher.frames = {}
 watcher:Hide()
@@ -214,7 +229,7 @@ local function Update(self, element, event, unit, powerType)
 
 	local classPowerID = element.classPowerID
 	local currentType = ClassPowerType[classPowerID]
-	if event == 'UNIT_AURA' then powerType = currentType end
+	if event == 'UNIT_AURA' or event == 'SPELL_UPDATE_CHARGES' then powerType = currentType end
 	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
 
 	local myClass = oUF.myclass
@@ -253,6 +268,8 @@ local function Update(self, element, event, unit, powerType)
 			end
 		elseif oUF.isRetail and (myClass == 'WARLOCK' and element.currentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
+		elseif oUF.isRetail and classPowerID == POWERTYPE_FIREBLAST then
+			current = CheckSpellCharges(SPELL_FIRE_BLAST)
 		elseif oUF.isRetail and classPowerID == POWERTYPE_EBON_MIGHT then
 			local duration = GetDuration(SPELL_EBON_MIGHT)
 
@@ -382,6 +399,7 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'WARLOCK' then
 		classPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
 	elseif myClass == 'MAGE' then
+		-- see SPELL_FIRE_BLAST note: (oUF.isRetail and currentSpec == SPEC_MAGE_FIRE and POWERTYPE_FIREBLAST)
 		classPowerID = (oUF.isRetail and currentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
 	elseif myClass == 'PRIEST' then
 		classPowerID = (oUF.isRetail and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
@@ -465,18 +483,27 @@ local function ForceUpdate(element)
 	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
 end
 
+local function CheckCharges(self, event)
+	Path(self, event, 'player')
+end
+
 local function ClassPowerEnable(element, owner)
-	owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
 	owner:RegisterEvent('UNIT_MAXPOWER', Path)
+	owner:RegisterEvent('UNIT_POWER_FREQUENT', Path)
+
+	local classPowerID = element.classPowerID
+	if PoweredByCharges[classPowerID] then
+		owner:RegisterEvent('SPELL_UPDATE_CHARGES', CheckCharges, true)
+	end
+
+	if PoweredByAuras[classPowerID] then
+		owner:RegisterEvent('UNIT_AURA', Path)
+	end
 
 	if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
 		owner:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 	else
 		owner:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
-	end
-
-	if UseFakePower[element.classPowerID] then
-		owner:RegisterEvent('UNIT_AURA', Path)
 	end
 
 	ThirdVisibility(owner.ThirdPower, true)
@@ -486,22 +513,20 @@ local function ClassPowerEnable(element, owner)
 	if (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI('player') then
 		Path(owner, 'ClassPowerEnable', 'vehicle', 'COMBO_POINTS')
 	else
-		Path(owner, 'ClassPowerEnable', 'player', ClassPowerType[element.classPowerID])
+		Path(owner, 'ClassPowerEnable', 'player', ClassPowerType[classPowerID])
 	end
 end
 
 local function ClassPowerDisable(element, owner)
-	owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	owner:UnregisterEvent('UNIT_MAXPOWER', Path)
+	owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
+	owner:UnregisterEvent('SPELL_UPDATE_CHARGES', CheckCharges)
+	owner:UnregisterEvent('UNIT_AURA')
 
 	if oUF.isRetail then
 		owner:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 	else
 		owner:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
-	end
-
-	if UseFakePower[element.classPowerID] then
-		owner:UnregisterEvent('UNIT_AURA')
 	end
 
 	for i = 1, #element do
