@@ -98,7 +98,7 @@ local function OnRangeUpdate(_, elapsed)
 
 	if(timer >= .20) then
 		for _, object in next, _FRAMES do
-			if(object:IsShown()) then
+			if object:IsVisible() then
 				Path(object, 'OnUpdate')
 			end
 		end
@@ -114,7 +114,7 @@ local function Enable(self)
 		element.insideAlpha = element.insideAlpha or 1
 		element.outsideAlpha = element.outsideAlpha or 0.55
 
-		if oUF.isRetail then
+		if oUF.isRetail or oUF.isTBC then
 			self:RegisterEvent('UNIT_IN_RANGE_UPDATE', Path)
 		else
 			if not OnRangeFrame then
@@ -135,7 +135,7 @@ local function Disable(self)
 	if(element) then
 		self:SetAlpha(element.insideAlpha)
 
-		if oUF.isRetail then
+		if oUF.isRetail or oUF.isTBC then
 			self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', Path)
 		else
 			for index, frame in next, _FRAMES do
