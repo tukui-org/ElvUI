@@ -50,13 +50,13 @@ local function ClearTimers(element)
 	end
 end
 
-local function ToggleAlpha(self, element, endAlpha)
+local function ToggleAlpha(frame, element, endAlpha)
 	element:ClearTimers()
 
 	if element.Smooth then
-		E:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
+		E:UIFrameFadeOut(frame, element.Smooth, frame:GetAlpha(), endAlpha)
 	else
-		self:SetAlpha(endAlpha)
+		frame:SetAlpha(endAlpha)
 	end
 end
 
@@ -66,10 +66,10 @@ local function UpdateInstanceDifficulty(element)
 end
 
 local isGliding = false
-local function Update(self, event, unit)
-	local element = self.Fader
-	if self.isForced or (not element or not element.count or element.count <= 0) then
-		self:SetAlpha(1)
+local function Update(frame, event, unit)
+	local element = frame.Fader
+	if frame.isForced or (not element or not element.count or element.count <= 0) then
+		frame:SetAlpha(1)
 		return
 	elseif element.Range and event ~= 'OnRangeUpdate' then
 		return
@@ -86,17 +86,17 @@ local function Update(self, event, unit)
 
 	-- try to get the unit from the parent
 	if not unit or type(unit) ~= 'string' then
-		unit = self.realUnit or self.unit
+		unit = frame.realUnit or frame.unit
 	end
 
 	-- range fader
 	if element.Range then
 		if element.UpdateRange then
-			element.UpdateRange(self, unit)
+			element.UpdateRange(frame, unit)
 		end
 
 		if element.RangeAlpha then
-			ToggleAlpha(self, element, element.RangeAlpha)
+			ToggleAlpha(frame, element, element.RangeAlpha)
 		end
 
 		return
@@ -128,18 +128,18 @@ local function Update(self, event, unit)
 		(element.Power and (PowerTypesFull[powerType] and oUF:NotSecretValue(currentPower) and (currentPower < maxPower))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI(unit)) or
 		(element.DynamicFlight and oUF.isRetail and not isGliding) or
-		(element.Hover and GetMouseFocus() == (self.__faderobject or self))
+		(element.Hover and GetMouseFocus() == (frame.__faderobject or frame))
 	then
-		ToggleAlpha(self, element, element.MaxAlpha)
+		ToggleAlpha(frame, element, element.MaxAlpha)
 	elseif element.Delay then
 		if element.DelayAlpha then
-			ToggleAlpha(self, element, element.DelayAlpha)
+			ToggleAlpha(frame, element, element.DelayAlpha)
 		end
 
 		element:ClearTimers()
-		element.delayTimer = E:ScheduleTimer(ToggleAlpha, element.Delay, self, element, element.MinAlpha)
+		element.delayTimer = E:ScheduleTimer(ToggleAlpha, element.Delay, frame, element, element.MinAlpha)
 	else
-		ToggleAlpha(self, element, element.MinAlpha)
+		ToggleAlpha(frame, element, element.MinAlpha)
 	end
 end
 
@@ -169,49 +169,49 @@ local function OnUnitInRangeUpdate(frame)
 	end
 end
 
-local function OnInstanceDifficulty(self)
-	local element = self.Fader
+local function OnInstanceDifficulty(frame)
+	local element = frame.Fader
 	UpdateInstanceDifficulty(element)
 
 	element:ForceUpdate('OnInstanceDifficulty')
 end
 
-local function HoverScript(self)
-	local Fader = self.__faderelement or self.Fader
+local function HoverScript(frame)
+	local Fader = frame.__faderelement or frame.Fader
 	if Fader and Fader.HoverHooked == 1 then
 		Fader:ForceUpdate('HoverScript')
 	end
 end
 
-local function TargetScript(self)
-	local element = self.Fader
+local function TargetScript(frame)
+	local element = frame.Fader
 	if element and element.TargetHooked == 1 then
-		if self:IsShown() then
+		if frame:IsShown() then
 			element:ForceUpdate('TargetScript')
 		else
-			self:SetAlpha(0)
+			frame:SetAlpha(0)
 		end
 	end
 end
 
 local options = {
 	Range = {
-		enable = function(self)
+		enable = function(frame)
 			if not onRangeFrame then
 				onRangeFrame = CreateFrame('Frame')
 				onRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
 			end
 
 			onRangeFrame:Show()
-			tinsert(onRangeObjects, self)
+			tinsert(onRangeObjects, frame)
 
-			-- self:RegisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
+			-- frame:RegisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
 		end,
-		disable = function(self)
+		disable = function(frame)
 			if onRangeFrame then
 				for idx, obj in next, onRangeObjects do
-					if obj == self then
-						self.Fader.RangeAlpha = nil
+					if obj == frame then
+						frame.Fader.RangeAlpha = nil
 						tremove(onRangeObjects, idx)
 						break
 					end
@@ -222,110 +222,110 @@ local options = {
 				end
 			end
 
-			-- self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
+			-- frame:UnregisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
 		end
 	},
 	Hover = {
-		enable = function(self)
-			if not self.Fader.HoverHooked then
-				local Frame = self.__faderobject or self
+		enable = function(frame)
+			if not frame.Fader.HoverHooked then
+				local Frame = frame.__faderobject or frame
 				Frame:HookScript('OnEnter', HoverScript)
 				Frame:HookScript('OnLeave', HoverScript)
 			end
 
-			self.Fader.HoverHooked = 1 -- on state
+			frame.Fader.HoverHooked = 1 -- on state
 		end,
-		disable = function(self)
-			if self.Fader.HoverHooked == 1 then
-				self.Fader.HoverHooked = 0 -- off state
+		disable = function(frame)
+			if frame.Fader.HoverHooked == 1 then
+				frame.Fader.HoverHooked = 0 -- off state
 			end
 		end
 	},
 	Combat = {
-		enable = function(self)
-			self:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
-			self:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
-			self:RegisterEvent('UNIT_FLAGS', Update)
+		enable = function(frame)
+			frame:RegisterEvent('PLAYER_REGEN_ENABLED', Update, true)
+			frame:RegisterEvent('PLAYER_REGEN_DISABLED', Update, true)
+			frame:RegisterEvent('UNIT_FLAGS', Update)
 		end,
 		events = {'PLAYER_REGEN_ENABLED','PLAYER_REGEN_DISABLED','UNIT_FLAGS'}
 	},
 	Target = { --[[ UnitTarget, PlayerTarget ]]
-		enable = function(self)
-			if not self.Fader.TargetHooked then
-				self:HookScript('OnShow', TargetScript)
-				self:HookScript('OnHide', TargetScript)
+		enable = function(frame)
+			if not frame.Fader.TargetHooked then
+				frame:HookScript('OnShow', TargetScript)
+				frame:HookScript('OnHide', TargetScript)
 			end
 
-			self.Fader.TargetHooked = 1 -- on state
+			frame.Fader.TargetHooked = 1 -- on state
 
-			if not self:IsShown() then
-				self:SetAlpha(0)
+			if not frame:IsShown() then
+				frame:SetAlpha(0)
 			end
 
-			self:RegisterEvent('UNIT_TARGET', Update)
-			self:RegisterEvent('PLAYER_TARGET_CHANGED', Update, true)
-			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
+			frame:RegisterEvent('UNIT_TARGET', Update)
+			frame:RegisterEvent('PLAYER_TARGET_CHANGED', Update, true)
+			frame:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
 		end,
 		events = {'UNIT_TARGET','PLAYER_TARGET_CHANGED','PLAYER_FOCUS_CHANGED'},
-		disable = function(self)
-			if self.Fader.TargetHooked == 1 then
-				self.Fader.TargetHooked = 0 -- off state
+		disable = function(frame)
+			if frame.Fader.TargetHooked == 1 then
+				frame.Fader.TargetHooked = 0 -- off state
 			end
 		end
 	},
 	Health = {
-		enable = function(self)
+		enable = function(frame)
 			if oUF.isClassic then
-				self:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
+				frame:RegisterEvent('UNIT_HEALTH_FREQUENT', Update)
 			end
 
-			self:RegisterEvent('UNIT_HEALTH', Update)
-			self:RegisterEvent('UNIT_MAXHEALTH', Update)
+			frame:RegisterEvent('UNIT_HEALTH', Update)
+			frame:RegisterEvent('UNIT_MAXHEALTH', Update)
 		end,
 		events = oUF.isClassic and {'UNIT_HEALTH_FREQUENT','UNIT_HEALTH','UNIT_MAXHEALTH'} or {'UNIT_HEALTH','UNIT_MAXHEALTH'}
 	},
 	Power = {
-		enable = function(self)
-			self:RegisterEvent('UNIT_POWER_UPDATE', Update)
-			self:RegisterEvent('UNIT_MAXPOWER', Update)
+		enable = function(frame)
+			frame:RegisterEvent('UNIT_POWER_UPDATE', Update)
+			frame:RegisterEvent('UNIT_MAXPOWER', Update)
 		end,
 		events = {'UNIT_POWER_UPDATE','UNIT_MAXPOWER'}
 	},
 	Casting = {
-		enable = function(self)
-			self:RegisterEvent('UNIT_SPELLCAST_START', Update)
-			self:RegisterEvent('UNIT_SPELLCAST_FAILED', Update)
-			self:RegisterEvent('UNIT_SPELLCAST_STOP', Update)
-			self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', Update)
-			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', Update)
-			self:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', Update)
+		enable = function(frame)
+			frame:RegisterEvent('UNIT_SPELLCAST_START', Update)
+			frame:RegisterEvent('UNIT_SPELLCAST_FAILED', Update)
+			frame:RegisterEvent('UNIT_SPELLCAST_STOP', Update)
+			frame:RegisterEvent('UNIT_SPELLCAST_INTERRUPTED', Update)
+			frame:RegisterEvent('UNIT_SPELLCAST_CHANNEL_START', Update)
+			frame:RegisterEvent('UNIT_SPELLCAST_CHANNEL_STOP', Update)
 
 			if oUF.isRetail then
-				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', Update)
-				self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', Update)
+				frame:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', Update)
+				frame:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', Update)
 			end
 		end,
 		events = {'UNIT_SPELLCAST_START','UNIT_SPELLCAST_FAILED','UNIT_SPELLCAST_STOP','UNIT_SPELLCAST_INTERRUPTED','UNIT_SPELLCAST_CHANNEL_START','UNIT_SPELLCAST_CHANNEL_STOP'}
 	},
 	InstanceDifficulty = {
-		enable = function(self)
-			self:RegisterEvent('ZONE_CHANGED', OnInstanceDifficulty, true)
-			self:RegisterEvent('ZONE_CHANGED_INDOORS', OnInstanceDifficulty, true)
-			self:RegisterEvent('ZONE_CHANGED_NEW_AREA', OnInstanceDifficulty, true)
-			self:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', OnInstanceDifficulty, true)
+		enable = function(frame)
+			frame:RegisterEvent('ZONE_CHANGED', OnInstanceDifficulty, true)
+			frame:RegisterEvent('ZONE_CHANGED_INDOORS', OnInstanceDifficulty, true)
+			frame:RegisterEvent('ZONE_CHANGED_NEW_AREA', OnInstanceDifficulty, true)
+			frame:RegisterEvent('PLAYER_DIFFICULTY_CHANGED', OnInstanceDifficulty, true)
 		end,
 		events = {'ZONE_CHANGED', 'ZONE_CHANGED_INDOORS', 'ZONE_CHANGED_NEW_AREA', 'PLAYER_DIFFICULTY_CHANGED'}
 	},
 	MinAlpha = {
 		countIgnored = true,
-		enable = function(self, state)
-			self.Fader.MinAlpha = state or MIN_ALPHA
+		enable = function(frame, state)
+			frame.Fader.MinAlpha = state or MIN_ALPHA
 		end
 	},
 	MaxAlpha = {
 		countIgnored = true,
-		enable = function(self, state)
-			self.Fader.MaxAlpha = state or MAX_ALPHA
+		enable = function(frame, state)
+			frame.Fader.MaxAlpha = state or MAX_ALPHA
 		end
 	},
 	Smooth = {countIgnored = true},
@@ -337,8 +337,8 @@ if oUF.isRetail then
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_START')
 	tinsert(options.Casting.events, 'UNIT_SPELLCAST_EMPOWER_STOP')
 	options.DynamicFlight = {
-		enable = function(self)
-			self:RegisterEvent('PLAYER_IS_GLIDING_CHANGED', Update, true)
+		enable = function(frame)
+			frame:RegisterEvent('PLAYER_IS_GLIDING_CHANGED', Update, true)
 		end,
 		events = {'PLAYER_IS_GLIDING_CHANGED'}
 	}
@@ -346,8 +346,8 @@ end
 
 if not oUF.isClassic then
 	options.Focus = {
-		enable = function(self)
-			self:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
+		enable = function(frame)
+			frame:RegisterEvent('PLAYER_FOCUS_CHANGED', Update, true)
 		end,
 		events = {'PLAYER_FOCUS_CHANGED'}
 	}
@@ -355,9 +355,9 @@ end
 
 if oUF.isRetail or oUF.isWrath or oUF.isMists then
 	options.Vehicle = {
-		enable = function(self)
-			self:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
-			self:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
+		enable = function(frame)
+			frame:RegisterEvent('UNIT_ENTERED_VEHICLE', Update, true)
+			frame:RegisterEvent('UNIT_EXITED_VEHICLE', Update, true)
 		end,
 		events = {'UNIT_ENTERED_VEHICLE','UNIT_EXITED_VEHICLE'}
 	}
@@ -409,10 +409,10 @@ local function SetOption(element, opt, state)
 	end
 end
 
-local function Enable(self)
-	local element = self.Fader
+local function Enable(frame)
+	local element = frame.Fader
 	if element then
-		element.__owner = self
+		element.__owner = frame
 		element.ForceUpdate = ForceUpdate
 		element.SetOption = SetOption
 		element.ClearTimers = ClearTimers
@@ -424,8 +424,8 @@ local function Enable(self)
 	end
 end
 
-local function Disable(self)
-	local element = self.Fader
+local function Disable(frame)
+	local element = frame.Fader
 	if element then
 		for opt in pairs(options) do
 			if opt == 'Target' then
