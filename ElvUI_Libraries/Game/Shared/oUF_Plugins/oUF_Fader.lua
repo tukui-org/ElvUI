@@ -161,6 +161,13 @@ local function OnRangeUpdate(frame, elapsed)
 	end
 end
 
+local function OnUnitInRangeUpdate(self)
+	local element = self.Fader
+	if element and element.Range and self:IsVisible() then
+		element:ForceUpdate('OnRangeUpdate')
+	end
+end
+
 local function OnInstanceDifficulty(self)
 	local element = self.Fader
 	UpdateInstanceDifficulty(element)
@@ -176,9 +183,10 @@ local function HoverScript(self)
 end
 
 local function TargetScript(self)
-	if self.Fader and self.Fader.TargetHooked == 1 then
+	local element = self.Fader
+	if element and element.TargetHooked == 1 then
 		if self:IsShown() then
-			self.Fader:ForceUpdate('TargetScript')
+			element:ForceUpdate('TargetScript')
 		else
 			self:SetAlpha(0)
 		end
@@ -188,16 +196,22 @@ end
 local options = {
 	Range = {
 		enable = function(self)
-			if not onRangeFrame then
-				onRangeFrame = CreateFrame('Frame')
-				onRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
-			end
+			if oUF.isRetail then
+				self:RegisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
+			else
+				if not onRangeFrame then
+					onRangeFrame = CreateFrame('Frame')
+					onRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
+				end
 
-			onRangeFrame:Show()
-			tinsert(onRangeObjects, self)
+				onRangeFrame:Show()
+				tinsert(onRangeObjects, self)
+			end
 		end,
 		disable = function(self)
-			if onRangeFrame then
+			if oUF.isRetail then
+				self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
+			elseif onRangeFrame then
 				for idx, obj in next, onRangeObjects do
 					if obj == self then
 						self.Fader.RangeAlpha = nil
@@ -397,32 +411,34 @@ local function SetOption(element, opt, state)
 end
 
 local function Enable(self)
-	if self.Fader then
-		self.Fader.__owner = self
-		self.Fader.ForceUpdate = ForceUpdate
-		self.Fader.SetOption = SetOption
-		self.Fader.ClearTimers = ClearTimers
+	local element = self.Fader
+	if element then
+		element.__owner = self
+		element.ForceUpdate = ForceUpdate
+		element.SetOption = SetOption
+		element.ClearTimers = ClearTimers
 
-		self.Fader.MinAlpha = MIN_ALPHA
-		self.Fader.MaxAlpha = MAX_ALPHA
+		element.MinAlpha = MIN_ALPHA
+		element.MaxAlpha = MAX_ALPHA
 
 		return true
 	end
 end
 
 local function Disable(self)
-	if self.Fader then
+	local element = self.Fader
+	if element then
 		for opt in pairs(options) do
 			if opt == 'Target' then
-				self.Fader:SetOption('UnitTarget')
-				self.Fader:SetOption('PlayerTarget')
+				element:SetOption('UnitTarget')
+				element:SetOption('PlayerTarget')
 			else
-				self.Fader:SetOption(opt)
+				element:SetOption(opt)
 			end
 		end
 
-		self.Fader.count = nil
-		self.Fader:ClearTimers()
+		element.count = nil
+		element:ClearTimers()
 	end
 end
 
