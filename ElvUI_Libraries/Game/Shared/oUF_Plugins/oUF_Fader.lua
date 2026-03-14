@@ -161,13 +161,6 @@ local function OnRangeUpdate(frame, elapsed)
 	end
 end
 
-local function OnUnitInRangeUpdate(self)
-	local element = self.Fader
-	if element and element.Range and self:IsVisible() then
-		element:ForceUpdate('OnRangeUpdate')
-	end
-end
-
 local function OnInstanceDifficulty(self)
 	local element = self.Fader
 	UpdateInstanceDifficulty(element)
@@ -196,22 +189,16 @@ end
 local options = {
 	Range = {
 		enable = function(self)
-			if oUF.isRetail then
-				self:RegisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
-			else
-				if not onRangeFrame then
-					onRangeFrame = CreateFrame('Frame')
-					onRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
-				end
-
-				onRangeFrame:Show()
-				tinsert(onRangeObjects, self)
+			if not onRangeFrame then
+				onRangeFrame = CreateFrame('Frame')
+				onRangeFrame:SetScript('OnUpdate', OnRangeUpdate)
 			end
+
+			onRangeFrame:Show()
+			tinsert(onRangeObjects, self)
 		end,
 		disable = function(self)
-			if oUF.isRetail then
-				self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
-			elseif onRangeFrame then
+			if onRangeFrame then
 				for idx, obj in next, onRangeObjects do
 					if obj == self then
 						self.Fader.RangeAlpha = nil
