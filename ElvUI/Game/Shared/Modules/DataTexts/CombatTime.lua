@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local floor, strjoin = floor, strjoin
-local GetInstanceInfo = GetInstanceInfo
+local IsInInstance = IsInInstance
 local GetTime = GetTime
 
 local displayString, db = ''
@@ -26,7 +26,7 @@ local function DelayOnUpdate(panel, elapsed)
 end
 
 local function OnEvent(panel, event, _, timeSeconds)
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	local inArena, started, ended = instanceType == 'arena', event == 'ENCOUNTER_START', event == 'ENCOUNTER_END'
 	timerText = (db.NoLabel and '') or inArena and L["Arena"] or L["Combat"]
 

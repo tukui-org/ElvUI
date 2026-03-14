@@ -13,19 +13,20 @@ local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub,
 local pcall, min, next, pairs, ipairs, tinsert, strsub = pcall, min, next, pairs, ipairs, tinsert, strsub
 
 local CreateColor = CreateColor
-local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
+local GameTooltip = GameTooltip
+local GetInstanceInfo = GetInstanceInfo
+local GetInventoryItemLink = GetInventoryItemLink
+local GetInventorySlotInfo = GetInventorySlotInfo
+local IsInInstance = IsInInstance
 local PlaySound = PlaySound
+local RegisterStateDriver = RegisterStateDriver
 local UIParent = UIParent
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
-local GetInstanceInfo = GetInstanceInfo
-local GetInventorySlotInfo = GetInventorySlotInfo
-local GetInventoryItemLink = GetInventoryItemLink
 local UnregisterStateDriver = UnregisterStateDriver
-local RegisterStateDriver = RegisterStateDriver
 
 local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
 local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
@@ -454,7 +455,7 @@ function UF:GetAuraAnchorFrame(frame, attachTo)
 	elseif attachTo == 'POWER' and frame.Power then
 		return frame.Power
 	elseif attachTo == 'TRINKET' and (frame.Trinket or frame.PVPSpecIcon) then
-		local _, instanceType = GetInstanceInfo()
+		local _, instanceType = IsInInstance()
 		return (instanceType == 'arena' and frame.Trinket) or frame.PVPSpecIcon
 	else
 		return frame
@@ -1101,7 +1102,7 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:RegisterRaidDebuffIndicator()
 	UF:UpdateRangeSpells()
 
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	if instanceType == 'raid' then
 		if initLogin or isReload then
 			UF:ZONE_CHANGED_NEW_AREA()
@@ -1493,7 +1494,7 @@ function UF:RegisterRaidDebuffIndicator()
 	if ORD then
 		ORD:ResetDebuffData()
 
-		local _, instanceType = GetInstanceInfo()
+		local _, instanceType = IsInInstance()
 		if instanceType == 'party' or instanceType == 'raid' then
 			local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
 			local instanceSpells = ((E.global.unitframe.aurafilters[instance] and E.global.unitframe.aurafilters[instance].spells) or E.global.unitframe.aurafilters.RaidDebuffs.spells)

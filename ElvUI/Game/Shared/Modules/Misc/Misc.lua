@@ -17,7 +17,6 @@ local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local CreateFrame = CreateFrame
 local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
-local GetInstanceInfo = GetInstanceInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumQuestChoices = GetNumQuestChoices
 local GetQuestItemInfo = GetQuestItemInfo
@@ -30,6 +29,7 @@ local IsArenaSkirmish = IsArenaSkirmish
 local IsGuildMember = IsGuildMember
 local IsInGroup = IsInGroup
 local IsInGuild = IsInGuild
+local IsInInstance = IsInInstance
 local IsInRaid = IsInRaid
 local IsPartyLFG = IsPartyLFG
 local IsShiftKeyDown = IsShiftKeyDown
@@ -118,7 +118,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	local inRaid, inPartyLFG = IsInRaid(), M:IsRandomGroup()
 
 	--Skirmish/non-rated arenas need to use INSTANCE_CHAT but IsPartyLFG() returns 'false'
-	local _, instanceType = GetInstanceInfo()
+	local _, instanceType = IsInInstance()
 	if not E.Classic and instanceType == 'arena' then
 		local skirmish = IsArenaSkirmish()
 		local _, isRegistered = IsActiveBattlefieldArena()
@@ -291,7 +291,8 @@ end
 
 function M:PVPMessageEnhancement(_, msg)
 	if not E.db.general.enhancedPvpMessages then return end
-	local _, instanceType = GetInstanceInfo()
+
+	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' or instanceType == 'arena' then
 		RaidNotice_AddMessage(_G.RaidBossEmoteFrame, msg, _G.ChatTypeInfo.RAID_BOSS_EMOTE)
 	end
