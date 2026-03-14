@@ -33,12 +33,8 @@ end
 
 local E -- ElvUI engine defined in ClearTimers
 local MIN_ALPHA, MAX_ALPHA = .35, 1
-local secretRange, onRangeObjects, onRangeFrame = {}, {}
+local onRangeObjects, onRangeFrame = {}
 local PowerTypesFull = { MANA = true, FOCUS = true, ENERGY = true }
-
-local function GetUnit(self)
-	return self.realUnit or self.unit
-end
 
 local function ClearTimers(element)
 	if not E then E = _G.ElvUI[1] end
@@ -54,12 +50,10 @@ local function ClearTimers(element)
 	end
 end
 
-local function ToggleAlpha(self, element, endAlpha, secretAlpha)
+local function ToggleAlpha(self, element, endAlpha)
 	element:ClearTimers()
 
-	if oUF:IsSecretValue(secretAlpha) then
-		self:SetAlphaFromBoolean(secretAlpha, element.MaxAlpha, element.MinAlpha)
-	elseif element.Smooth then
+	if element.Smooth then
 		E:UIFrameFadeOut(self, element.Smooth, self:GetAlpha(), endAlpha)
 	else
 		self:SetAlpha(endAlpha)
@@ -92,7 +86,7 @@ local function Update(self, event, unit)
 
 	-- try to get the unit from the parent
 	if not unit or type(unit) ~= 'string' then
-		unit = GetUnit(self)
+		unit = self.realUnit or self.unit
 	end
 
 	-- range fader
@@ -102,7 +96,7 @@ local function Update(self, event, unit)
 		end
 
 		if element.RangeAlpha then
-			ToggleAlpha(self, element, element.RangeAlpha, secretRange[element])
+			ToggleAlpha(self, element, element.RangeAlpha)
 		end
 
 		return
@@ -168,6 +162,13 @@ local function OnRangeUpdate(frame, elapsed)
 	end
 end
 
+local function OnUnitInRangeUpdate(frame)
+	local element = frame:IsVisible() and frame.Fader
+	if element and element.Range then
+		element:ForceUpdate('OnRangeUpdate')
+	end
+end
+
 local function OnInstanceDifficulty(self)
 	local element = self.Fader
 	UpdateInstanceDifficulty(element)
@@ -193,15 +194,6 @@ local function TargetScript(self)
 	end
 end
 
-local function CheckRange(self, event, unit, value)
-	if not unit or unit ~= GetUnit(self) then return end
-
-	local element = self.Fader
-	if not element then return end
-
-	secretRange[element] = value
-end
-
 local options = {
 	Range = {
 		enable = function(self)
@@ -213,7 +205,7 @@ local options = {
 			onRangeFrame:Show()
 			tinsert(onRangeObjects, self)
 
-			self:RegisterEvent('UNIT_IN_RANGE_UPDATE', CheckRange)
+			-- self:RegisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
 		end,
 		disable = function(self)
 			if onRangeFrame then
@@ -230,8 +222,7 @@ local options = {
 				end
 			end
 
-			secretRange[self.Fader] = nil
-			self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', CheckRange)
+			-- self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
 		end
 	},
 	Hover = {

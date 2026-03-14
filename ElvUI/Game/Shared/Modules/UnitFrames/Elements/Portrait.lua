@@ -12,8 +12,7 @@ local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 function UF:ModelAlphaFix(value)
 	local portrait = self.Portrait3D
 	if portrait then
-		local secretAlpha = portrait:GetAlpha()
-		local alpha = value * (E:IsSecretValue(secretAlpha) and 1 or secretAlpha)
+		local alpha = value * portrait:GetAlpha()
 		portrait:SetModelAlpha(alpha)
 		portrait.backdrop:SetAlpha(alpha)
 	end
@@ -160,8 +159,7 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		-- mimic ModelAlphaFix, so when the module updates the correct alpha is set
 		local frame = self.__owner
 		local alpha = frame.USE_PORTRAIT_OVERLAY and db.overlayAlpha or 1
-		local secretAlpha = frame:GetAlpha()
-		self:SetModelAlpha(alpha * (E:IsSecretValue(secretAlpha) and 1 or secretAlpha))
+		self:SetModelAlpha(alpha * frame:GetAlpha())
 
 		-- handle the other settings
 		self:SetDesaturation(db.desaturation or 0)
