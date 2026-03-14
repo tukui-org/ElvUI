@@ -641,10 +641,11 @@ end
 
 function CH:GetGroupDistribution()
 	local _, instanceType = IsInInstance()
-	if instanceType == 'pvp' then return '/bg ' end
-	if IsInRaid() then return '/ra ' end
-	if IsInGroup() then return '/p ' end
-	return '/s '
+	if instanceType == 'pvp' then
+		return '/bg '
+	end
+
+	return (IsInRaid() and '/ra ') or (IsInGroup() and '/p ') or '/s '
 end
 
 function CH:InsertEmotions(msg)
