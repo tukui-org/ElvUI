@@ -210,9 +210,35 @@ do
 	end
 end
 
+local function ScrollBarArrowButtonOnDisable(self)
+	if self.customTex then self.customTex:SetVertexColor(0.5, 0.5, 0.5) end
+end
+
+local function ScrollBarArrowButtonOnEnable(self)
+	if self.customTex then self.customTex:SetVertexColor(1, 1, 1) end
+end
+
+local function ReskinScrollBarArrow(btn, arrowDir)
+	if not btn or btn.IsSkinned then return end
+
+	btn.customTex = btn:CreateTexture(nil, 'ARTWORK')
+	btn.customTex:SetTexture(E.Media.Textures.ArrowUp)
+	btn.customTex:SetRotation(S.ArrowRotation[arrowDir])
+	btn.customTex:Size(15)
+	btn.customTex:Point('CENTER')
+
+	btn:HookScript('OnDisable', ScrollBarArrowButtonOnDisable)
+	btn:HookScript('OnEnable', ScrollBarArrowButtonOnEnable)
+
+	btn.IsSkinned = true
+end
+
 function S:DamageMeter_HandleScrollBoxes(window)
 	local ScrollBar = window.GetScrollBar and window:GetScrollBar()
 	if ScrollBar then
+		-- To avoid tainting the scroll bar, we apply minimal styling and leave the rest to HandleTrimScrollBar
+		ReskinScrollBarArrow(ScrollBar.Back, 'up')
+		ReskinScrollBarArrow(ScrollBar.Forward, 'down')
 		S:HandleTrimScrollBar(ScrollBar)
 	end
 
