@@ -35,7 +35,6 @@ local next, tinsert, tremove = next, tinsert, tremove
 
 local CreateFrame = CreateFrame
 local UnitInRange = UnitInRange
-local UnitInParty = UnitInParty
 local UnitIsConnected = UnitIsConnected
 
 local function Update(self, event)
@@ -53,8 +52,7 @@ local function Update(self, event)
 
 	local inRange, checkedRange
 	local connected = UnitIsConnected(unit)
-	local isEligible = connected and UnitInParty(unit)
-	if(isEligible) then
+	if connected then
 		inRange, checkedRange = UnitInRange(unit)
 
 		if oUF.isRetail then
@@ -74,10 +72,9 @@ local function Update(self, event)
 	* self       - the Range element
 	* object     - the parent object
 	* inRange    - indicates if the unit is within 40 yards of the player (boolean)
-	* isEligible - indicates if the unit is eligible for the range check (boolean)
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(self, inRange, isEligible, connected)
+		return element:PostUpdate(self, inRange, connected)
 	end
 end
 

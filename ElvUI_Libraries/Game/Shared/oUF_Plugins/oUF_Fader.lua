@@ -53,7 +53,9 @@ end
 local function ToggleAlpha(frame, element, endAlpha)
 	element:ClearTimers()
 
-	if element.Smooth then
+	if oUF:IsSecretValue(element.isInRange) then
+		frame:SetAlphaFromBoolean(element.isInRange, element.MaxAlpha, element.MinAlpha)
+	elseif element.Smooth then
 		E:UIFrameFadeOut(frame, element.Smooth, frame:GetAlpha(), endAlpha)
 	else
 		frame:SetAlpha(endAlpha)
@@ -162,13 +164,6 @@ local function OnRangeUpdate(frame, elapsed)
 	end
 end
 
-local function OnUnitInRangeUpdate(frame)
-	local element = frame:IsVisible() and frame.Fader
-	if element and element.Range then
-		element:ForceUpdate('OnRangeUpdate')
-	end
-end
-
 local function OnInstanceDifficulty(frame)
 	local element = frame.Fader
 	UpdateInstanceDifficulty(element)
@@ -204,8 +199,6 @@ local options = {
 
 			onRangeFrame:Show()
 			tinsert(onRangeObjects, frame)
-
-			-- frame:RegisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
 		end,
 		disable = function(frame)
 			if onRangeFrame then
@@ -221,8 +214,6 @@ local options = {
 					onRangeFrame:Hide()
 				end
 			end
-
-			-- frame:UnregisterEvent('UNIT_IN_RANGE_UPDATE', OnUnitInRangeUpdate)
 		end
 	},
 	Hover = {
