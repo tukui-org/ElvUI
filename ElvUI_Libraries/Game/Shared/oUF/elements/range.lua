@@ -52,15 +52,15 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local inRange, checkedRange
+	local inRange, wasChecked
 	local connected = UnitIsConnected(unit)
 	local isEligible = connected and (UnitInParty(unit) or UnitInRaid(unit))
 	if(isEligible) then
-		inRange, checkedRange = UnitInRange(unit)
+		inRange, wasChecked = UnitInRange(unit)
 
 		if oUF.isRetail then
 			self:SetAlphaFromBoolean(inRange, element.insideAlpha, element.outsideAlpha)
-		elseif(checkedRange and not inRange) then
+		elseif(wasChecked and not inRange) then
 			self:SetAlpha(element.outsideAlpha)
 		else
 			self:SetAlpha(element.insideAlpha)

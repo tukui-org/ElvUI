@@ -104,13 +104,13 @@ function UF:FriendlyInRange(unit, element)
 		end
 	end
 
-	local inRange, checkedRange = UnitInRange(unit)
-	if E:IsSecretValue(checkedRange) then
+	local inRange, wasChecked = UnitInRange(unit)
+	if E:IsSecretValue(wasChecked) then
 		if element and (UnitInParty(unit) or UnitInRaid(unit)) then -- if its eligible
-			element.isInRange, element.checkedRange = inRange, checkedRange
+			element.isInRange, element.checkedRange = inRange, wasChecked
 			return -- will be handled by these values so no need to proceed
 		end
-	elseif checkedRange and not inRange then
+	elseif wasChecked and not inRange then
 		return false -- blizz checked and unit is out of range
 	end
 
