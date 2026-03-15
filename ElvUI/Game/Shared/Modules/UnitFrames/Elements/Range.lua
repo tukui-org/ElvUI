@@ -15,6 +15,8 @@ local CheckInteractDistance = CheckInteractDistance
 local InCombatLockdown = InCombatLockdown
 local UnitPhaseReason = UnitPhaseReason
 local IsInInstance = IsInInstance
+local UnitInParty = UnitInParty
+local UnitInRaid = UnitInRaid
 
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local IsSpellInRange = C_Spell.IsSpellInRange
@@ -86,7 +88,7 @@ function UF:UnitInSpellsRange(unit, which)
 	end
 end
 
-function UF:FriendlyInRange(unit, inRange, checkedRange)
+function UF:FriendlyInRange(unit, element)
 	if UnitIsPlayer(unit) then
 		if E.Retail then
 			local phaseReason = UnitPhaseReason(unit)
@@ -102,7 +104,13 @@ function UF:FriendlyInRange(unit, inRange, checkedRange)
 		end
 	end
 
-	if E:NotSecretValue(checkedRange) and (checkedRange and not inRange) then
+	local inRange, checkedRange = UnitInRange(unit)
+	if E:IsSecretValue(checkedRange) then
+		if element and (UnitInParty(unit) or UnitInRaid(unit)) then -- if its eligible
+			element.isInRange, element.checkedRange = inRange, checkedRange
+			return -- will be handled by these values so no need to proceed
+		end
+	elseif checkedRange and not inRange then
 		return false -- blizz checked and unit is out of range
 	end
 
@@ -129,10 +137,7 @@ function UF:UpdateRange(unit)
 		elseif UnitIsUnit('pet', unit) then
 			element.RangeAlpha = UF:UnitInSpellsRange(unit, 4) and element.MaxAlpha or element.MinAlpha
 		elseif UnitIsConnected(unit) then
-			local inRange, checkedRange = UnitInRange(unit)
-			element.isInRange, element.checkedRange = inRange, checkedRange -- we want to send these to oUF Fader
-
-			element.RangeAlpha = UF:FriendlyInRange(unit, inRange, checkedRange) and element.MaxAlpha or element.MinAlpha
+			element.RangeAlpha = UF:FriendlyInRange(unit, element) and element.MaxAlpha or element.MinAlpha
 		else
 			element.RangeAlpha = element.MinAlpha
 		end
