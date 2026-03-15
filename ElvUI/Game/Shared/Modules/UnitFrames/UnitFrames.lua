@@ -740,7 +740,13 @@ do -- IDs maintained in Difficulty Datatext
 			fader.configTimer = E:ScheduleTimer(fader.ForceUpdate, 0.25, fader, true)
 		elseif frame:IsElementEnabled('Fader') then
 			frame:DisableElement('Fader')
-			E:UIFrameFadeIn(frame, 1, frame:GetAlpha(), 1)
+
+			local alpha = frame:GetAlpha()
+			if E:NotSecretValue(alpha) then
+				E:UIFrameFadeIn(frame, 1, alpha, 1)
+			else
+				frame:SetAlpha(1)
+			end
 		end
 	end
 end
