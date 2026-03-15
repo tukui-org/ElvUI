@@ -53,12 +53,16 @@ end
 local function ToggleAlpha(frame, element, endAlpha)
 	element:ClearTimers()
 
-	if oUF:IsSecretValue(element.isInRange) then
-		frame:SetAlphaFromBoolean(element.isInRange, element.MaxAlpha, element.MinAlpha)
-	elseif element.Smooth then
-		E:UIFrameFadeOut(frame, element.Smooth, frame:GetAlpha(), endAlpha)
+	local IsInRange = element.isInRange
+	if oUF:IsSecretValue(IsInRange) then -- this value is secret when it exists on retail
+		frame:SetAlphaFromBoolean(IsInRange, element.MaxAlpha, element.MinAlpha)
 	else
-		frame:SetAlpha(endAlpha)
+		local alpha = frame:GetAlpha()
+		if element.Smooth and oUF:NotSecretValue(alpha) then
+			E:UIFrameFadeOut(frame, element.Smooth, alpha, endAlpha)
+		else
+			frame:SetAlpha(endAlpha)
+		end
 	end
 end
 
