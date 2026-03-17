@@ -46,7 +46,16 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillCollapseAllButton:GetDisabledTexture():SetDesaturated(true)
 
 	S:HandleEditBox(_G.TradeSearchInputBox)
+	-- Attach the top-right of the search field to the bottom-right of the rank progress bar
+	_G.TradeSearchInputBox:ClearAllPoints()
+	_G.TradeSearchInputBox:Point('TOPRIGHT', TradeSkillRankFrame, 'BOTTOMRIGHT', 0, 0)
+
 	S:HandleCheckBox(_G.TradeSkillFrameAvailableFilterCheckButton)
+	-- Attach the top-left of the "Have Materials" checkbox to the bottom-left of the rank progress bar
+	_G.TradeSkillFrameAvailableFilterCheckButton:ClearAllPoints()
+	_G.TradeSkillFrameAvailableFilterCheckButton:Point('TOPLEFT', TradeSkillRankFrame, 'BOTTOMLEFT', 0, 0)
+
+	_G.TradeSkillFrameAvailableFilterCheckButton:ClearAllPoints()
 
 	S:HandleDropDownBox(_G.TradeSkillInvSlotDropdown, 110)
 	_G.TradeSkillInvSlotDropdown:ClearAllPoints()
