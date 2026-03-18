@@ -53,8 +53,6 @@ function S:Blizzard_TradeSkillUI()
 	_G.TradeSkillFrameAvailableFilterCheckButton:ClearAllPoints()
 	_G.TradeSkillFrameAvailableFilterCheckButton:Point('TOPLEFT', TradeSkillRankFrame, 'BOTTOMLEFT', 0, 0)
 
-	_G.TradeSkillFrameAvailableFilterCheckButton:ClearAllPoints()
-
 	S:HandleDropDownBox(_G.TradeSkillInvSlotDropdown, 110)
 	_G.TradeSkillInvSlotDropdown:ClearAllPoints()
 	_G.TradeSkillInvSlotDropdown:Point('TOPRIGHT', TradeSkillFrame, 'TOPRIGHT', -32, -68)
