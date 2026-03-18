@@ -151,12 +151,10 @@ function S:SkinCraft()
 		end
 	end)
 
-	-- Attach the top-left of the "Have Materials" checkbox to the bottom-left of the rank progress bar
 	S:HandleCheckBox(_G.CraftFrameAvailableFilterCheckButton)
 	_G.CraftFrameAvailableFilterCheckButton:ClearAllPoints()
 	_G.CraftFrameAvailableFilterCheckButton:Point('TOPLEFT', CraftRankFrame, 'BOTTOMLEFT', 0, 0)
 
-	-- Attach the top-right of the dropdown to the bottom-right of the rank progress bar
 	S:HandleDropDownBox(CraftFrame.Dropdown)
 	CraftFrame.Dropdown:ClearAllPoints()
 	CraftFrame.Dropdown:Point('TOPRIGHT', CraftRankFrame, 'BOTTOMRIGHT', 0, 0)
