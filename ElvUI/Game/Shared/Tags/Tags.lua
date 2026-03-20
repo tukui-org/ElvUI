@@ -1287,6 +1287,7 @@ if info then
 	info['classpower:deficit:shortvalue'] = { hidden = E.Classic, category = "Classpower", description = "" }
 	info['classpower:percent'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's current amount of special power as a percentage" }
 	info['holypower'] = { hidden = E.Classic, category = "Classpower", description = "Displays the holy power (Paladin)" }
+	info['staggerpercent'] = { hidden = E.Classic, category = "Classpower", description = "Displays the current stagger percent (Brewmaster Monk)" }
 
 	info['classcolor'] = { category = "Colors", description = "Colors names by player class or NPC reaction (Ex: [classcolor][name])" }
 	info['classificationcolor'] = { category = "Colors", description = "Changes the text color, depending on the unit's classification" }
