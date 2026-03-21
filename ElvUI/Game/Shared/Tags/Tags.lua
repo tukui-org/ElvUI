@@ -476,7 +476,12 @@ if not E.Retail then
 		if IsInRaid() then
 			local name, realm = UnitName(unit)
 			if name then
-				local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
+				local nameRealm = name
+	
+				if E:NotSecretValue(realm) and realm and realm ~= '' then
+					nameRealm = format('%s-%s', name, realm)
+				end
+	
 				for i = 1, GetNumGroupMembers() do
 					local raidName, _, group = GetRaidRosterInfo(i)
 					if raidName == nameRealm then
@@ -838,14 +843,18 @@ end)
 
 E:AddTag('realm', 'UNIT_NAME_UPDATE', function(unit)
 	local _, realm = UnitName(unit)
-	if realm and realm ~= '' then
+	if E:NotSecretValue(realm) and realm and realm ~= '' then
 		return realm
 	end
 end)
 
 E:AddTag('realm:dash', 'UNIT_NAME_UPDATE', function(unit)
 	local _, realm = UnitName(unit)
-	if realm and (realm ~= '' and realm ~= E.myrealm) then
+	if not (E:NotSecretValue(realm) and realm) then
+		return
+	end
+
+	if realm ~= '' and realm ~= E.myrealm then
 		return format('-%s', realm)
 	elseif realm ~= '' then
 		return realm
@@ -854,15 +863,18 @@ end)
 
 E:AddTag('realm:translit', 'UNIT_NAME_UPDATE', function(unit)
 	local _, realm = Translit:Transliterate(UnitName(unit), translitMark)
-	if realm and realm ~= '' then
+	if E:NotSecretValue(realm) and realm and realm ~= '' then
 		return realm
 	end
 end)
 
 E:AddTag('realm:dash:translit', 'UNIT_NAME_UPDATE', function(unit)
 	local _, realm = Translit:Transliterate(UnitName(unit), translitMark)
+	if not (E:NotSecretValue(realm) and realm) then
+		return
+	end
 
-	if realm and (realm ~= '' and realm ~= E.myrealm) then
+	if realm ~= '' and realm ~= E.myrealm then
 		return format('-%s', realm)
 	elseif realm ~= '' then
 		return realm
