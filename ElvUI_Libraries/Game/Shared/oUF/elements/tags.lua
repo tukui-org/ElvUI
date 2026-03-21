@@ -689,10 +689,13 @@ end
 local function CreateTagFunc(tag, prefix, suffix)
 	return function(unit, realUnit, customArgs)
 		local str = tag(unit, realUnit, customArgs)
+		if not str then return nil end
 		if oUF:IsSecretValue(str) then
-			return str and WrapString(str, prefix or '', suffix or '') or nil
+			return WrapString(str, prefix or '', suffix or '')
+		elseif not prefix and not suffix then
+			return str
 		else
-			return str and format('%s%s%s', prefix or '', str, suffix or '') or nil
+			return format('%s%s%s', prefix or '', str, suffix or '')
 		end
 	end
 end

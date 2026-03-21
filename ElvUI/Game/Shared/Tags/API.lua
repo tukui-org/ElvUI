@@ -149,9 +149,14 @@ Tags.Env.UnitEffectiveLevel = function(unit)
 	end
 end
 
+local abbrevCache = {}
 Tags.Env.Abbrev = function(name)
+	local cached = abbrevCache[name]
+	if cached then return cached end
+
 	local letters, text = '', gsub(name, '%s<.+>$', '') -- clean titles
 	local lastWord = strmatch(text, '.+%s(.+)$')
+	local result
 	if lastWord then
 		for word in gmatch(text, '.-%s') do
 			local firstLetter = utf8sub(gsub(word, '^[%s%p]*', ''), 1, 1)
@@ -160,10 +165,13 @@ Tags.Env.Abbrev = function(name)
 			end
 		end
 
-		name = format('%s%s', letters, lastWord)
+		result = format('%s%s', letters, lastWord)
+	else
+		result = name
 	end
 
-	return name
+	abbrevCache[name] = result
+	return result
 end
 
 Tags.Env.NameHealthColor = function(tags, str, unit, default)
