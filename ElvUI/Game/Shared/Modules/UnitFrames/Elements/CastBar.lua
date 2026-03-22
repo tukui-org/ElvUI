@@ -429,9 +429,14 @@ function UF:CustomCastDelayText(duration, durationObject)
 		end
 	end
 
-	if newText and self.Time._last ~= newText then
-		self.Time._last = newText
-		self.Time:SetText(newText)
+	if newText then
+		if E:IsSecretValue(newText) then
+			self.Time._last = nil
+			self.Time:SetText(newText)
+		elseif self.Time._last ~= newText then
+			self.Time._last = newText
+			self.Time:SetText(newText)
+		end
 	end
 end
 
@@ -469,9 +474,14 @@ function UF:CustomTimeText(duration, durationObject)
 		end
 	end
 
-	if newText and self.Time._last ~= newText then
-		self.Time._last = newText
-		self.Time:SetText(newText)
+	if newText then
+		if E:IsSecretValue(newText) then
+			self.Time._last = nil
+			self.Time:SetText(newText)
+		elseif self.Time._last ~= newText then
+			self.Time._last = newText
+			self.Time:SetText(newText)
+		end
 	end
 end
 
