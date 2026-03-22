@@ -316,7 +316,38 @@ function E:GetXYOffset(position, forcedX, forcedY)
 	end
 end
 
+function E:SafeValue(v, default)
+	if v == nil or E:IsSecretValue(v) then return default end
+	return v
+end
+
+function E:SafeToNumber(v)
+	if v == nil or E:IsSecretValue(v) then return nil end
+	return tonumber(v)
+end
+
+function E:SafeArithmetic(a, op, b)
+	if E:IsSecretValue(a) or E:IsSecretValue(b) then return nil end
+	if op == '/' then return b ~= 0 and a / b or nil
+	elseif op == '*' then return a * b
+	elseif op == '+' then return a + b
+	elseif op == '-' then return a - b
+	end
+end
+
+function E:SafeCompare(a, op, b)
+	if E:IsSecretValue(a) or E:IsSecretValue(b) then return nil end
+	if op == '<'  then return a < b
+	elseif op == '<=' then return a <= b
+	elseif op == '>'  then return a > b
+	elseif op == '>=' then return a >= b
+	elseif op == '==' then return a == b
+	elseif op == '~=' then return a ~= b
+	end
+end
+
 function E:GetFormattedText(style, min, max, dec, short)
+	if E:IsSecretValue(min) or E:IsSecretValue(max) then return end
 	if max == 0 then max = 1 end
 
 	if style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then

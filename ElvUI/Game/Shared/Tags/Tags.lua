@@ -293,7 +293,9 @@ if not E.Retail then
 			return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 		end
 
-		local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
+		local health = UnitHealth(unit)
+		if E:IsSecretValue(health) then return end
+		local healthTotalIncludingAbsorbs = health + absorb
 		return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 	end, E.Classic)
 
@@ -303,7 +305,9 @@ if not E.Retail then
 			return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
 		end
 
-		local healthTotalIncludingAbsorbs = UnitHealth(unit) + absorb
+		local health = UnitHealth(unit)
+		if E:IsSecretValue(health) then return end
+		local healthTotalIncludingAbsorbs = health + absorb
 		return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 	end, E.Classic)
 
@@ -322,6 +326,7 @@ if not E.Retail then
 
 			local current = UnitHealth(unit)
 			local maximum = UnitHealthMax(unit)
+			if E:IsSecretValue(current) or E:IsSecretValue(maximum) then return end
 			local absorb = UnitGetTotalAbsorbs(unit) or 0
 			local effective = current + absorb
 
@@ -337,8 +342,12 @@ if not E.Retail then
 
 	E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 		local currentHealth = UnitHealth(unit)
-		local deficit = UnitHealthMax(unit) - currentHealth
+		local maxHealth = UnitHealthMax(unit)
+		if E:IsSecretValue(currentHealth) or E:IsSecretValue(maxHealth) then
+			return _TAGS.name(unit)
+		end
 
+		local deficit = maxHealth - currentHealth
 		if deficit > 0 and currentHealth > 0 then
 			return _TAGS['health:percent-nostatus'](unit)
 		else
@@ -442,10 +451,13 @@ if not E.Retail then
 
 	E:AddTag('permana', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER', function(unit)
 		local m = UnitPowerMax(unit)
+		if E:IsSecretValue(m) then return end
 		if m == 0 then
 			return 0
 		else
-			return floor(UnitPower(unit, POWERTYPE_MANA) / m * 100 + .5)
+			local p = UnitPower(unit, POWERTYPE_MANA)
+			if E:IsSecretValue(p) then return end
+			return floor(p / m * 100 + .5)
 		end
 	end)
 
@@ -492,6 +504,7 @@ if not E.Retail then
 			return Hex(0.84, 0.75, 0.65)
 		else
 			local minHealth, maxHealth = UnitHealth(unit), UnitHealthMax(unit)
+			if E:IsSecretValue(minHealth) or E:IsSecretValue(maxHealth) then return end
 			local r, g, b = E:ColorGradient(maxHealth == 0 and 0 or (minHealth / maxHealth), 0.69, 0.31, 0.31, 0.65, 0.63, 0.35, 0.33, 0.59, 0.33)
 			return Hex(r, g, b)
 		end
@@ -538,6 +551,7 @@ if not E.Retail then
 		if not name then return end
 
 		local min, max, bco, fco = UnitHealth(unit), UnitHealthMax(unit), strsplit(':', args or '')
+		if E:IsSecretValue(min) or E:IsSecretValue(max) then return name end
 		local to = ceil(utf8len(name) * (min / max))
 
 		local fill = NameHealthColor(_TAGS, fco, unit, '|cFFff3333')
