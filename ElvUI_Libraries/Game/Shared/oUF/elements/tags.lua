@@ -748,7 +748,10 @@ local function GetTagFunc(tagstr)
 
 			-- we do 1 to num because buffer is shared by all tags and can hold several unneeded vars.
 			local newText = format(frmt, unpack(tagBuffer, 1, numTags))
-			if self._last ~= newText then
+			if oUF:IsSecretValue(newText) then
+				self._last = nil -- secret values can't be cached via Lua comparison
+				self:SetText(newText)
+			elseif self._last ~= newText then
 				self._last = newText
 				self:SetText(newText)
 			end
