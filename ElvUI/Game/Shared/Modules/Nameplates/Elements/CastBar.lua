@@ -6,6 +6,7 @@ local LSM = E.Libs.LSM
 
 local abs = abs
 local next = next
+local format = format
 local strmatch = strmatch
 local utf8sub = string.utf8sub
 
@@ -40,68 +41,70 @@ function NP:Castbar_CheckInterrupt(unit)
 end
 
 function NP:Castbar_CustomDelayText(duration, durationObject)
+	local newText
 	if durationObject then
-		local remain = durationObject:GetRemainingDuration()
-		self.Time:SetFormattedText('%.1f', remain)
-
-		return
+		newText = format('%.1f', durationObject:GetRemainingDuration())
 	elseif not duration then
 		return
-	end
-
-	if self.channeling then
+	elseif self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', abs(duration - self.max), self.delay)
+			newText = format('%.1f |cffaf5050%.1f|r', abs(duration - self.max), self.delay)
 		elseif self.channelTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%.1f|r', duration, self.max, self.delay)
+			newText = format('%.1f / %.1f |cffaf5050%.1f|r', duration, self.max, self.delay)
 		elseif self.channelTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText('%.1f |cffaf5050%.1f|r', duration, self.delay)
+			newText = format('%.1f |cffaf5050%.1f|r', duration, self.delay)
 		elseif self.channelTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%.1f|r', abs(duration - self.max), self.max, self.delay)
+			newText = format('%.1f / %.1f |cffaf5050%.1f|r', abs(duration - self.max), self.max, self.delay)
 		end
 	else
 		if self.castTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText('%.1f |cffaf5050%s %.1f|r', duration, '+', self.delay)
+			newText = format('%.1f |cffaf5050%s %.1f|r', duration, '+', self.delay)
 		elseif self.castTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%s %.1f|r', duration, self.max, '+', self.delay)
+			newText = format('%.1f / %.1f |cffaf5050%s %.1f|r', duration, self.max, '+', self.delay)
 		elseif self.castTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText('%.1f |cffaf5050%s %.1f|r', abs(duration - self.max), '+', self.delay)
+			newText = format('%.1f |cffaf5050%s %.1f|r', abs(duration - self.max), '+', self.delay)
 		elseif self.castTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText('%.1f / %.1f |cffaf5050%s %.1f|r', abs(duration - self.max), self.max, '+', self.delay)
+			newText = format('%.1f / %.1f |cffaf5050%s %.1f|r', abs(duration - self.max), self.max, '+', self.delay)
 		end
+	end
+
+	if newText and self.Time._last ~= newText then
+		self.Time._last = newText
+		self.Time:SetText(newText)
 	end
 end
 
 function NP:Castbar_CustomTimeText(duration, durationObject)
+	local newText
 	if durationObject then
-		local remain = durationObject:GetRemainingDuration()
-		self.Time:SetFormattedText('%.1f', remain)
-
-		return
+		newText = format('%.1f', durationObject:GetRemainingDuration())
 	elseif not duration then
 		return
-	end
-
-	if self.channeling then
+	elseif self.channeling then
 		if self.channelTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
+			newText = format('%.1f', abs(duration - self.max))
 		elseif self.channelTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText('%.1f / %.1f', abs(duration - self.max), self.max)
+			newText = format('%.1f / %.1f', abs(duration - self.max), self.max)
 		elseif self.channelTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText('%.1f', duration)
+			newText = format('%.1f', duration)
 		elseif self.channelTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText('%.1f / %.1f', duration, self.max)
+			newText = format('%.1f / %.1f', duration, self.max)
 		end
 	else
 		if self.castTimeFormat == 'CURRENT' then
-			self.Time:SetFormattedText('%.1f', duration)
+			newText = format('%.1f', duration)
 		elseif self.castTimeFormat == 'CURRENTMAX' then
-			self.Time:SetFormattedText('%.1f / %.1f', duration, self.max)
+			newText = format('%.1f / %.1f', duration, self.max)
 		elseif self.castTimeFormat == 'REMAINING' then
-			self.Time:SetFormattedText('%.1f', abs(duration - self.max))
+			newText = format('%.1f', abs(duration - self.max))
 		elseif self.castTimeFormat == 'REMAININGMAX' then
-			self.Time:SetFormattedText('%.1f / %.1f', abs(duration - self.max), self.max)
+			newText = format('%.1f / %.1f', abs(duration - self.max), self.max)
 		end
+	end
+
+	if newText and self.Time._last ~= newText then
+		self.Time._last = newText
+		self.Time:SetText(newText)
 	end
 end
 
