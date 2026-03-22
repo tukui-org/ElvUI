@@ -747,7 +747,11 @@ local function GetTagFunc(tagstr)
 			end
 
 			-- we do 1 to num because buffer is shared by all tags and can hold several unneeded vars.
-			self:SetFormattedText(frmt, unpack(tagBuffer, 1, numTags))
+			local newText = format(frmt, unpack(tagBuffer, 1, numTags))
+			if self._last ~= newText then
+				self._last = newText
+				self:SetText(newText)
+			end
 		end
 
 		tagStringFuncs[tagstr] = func
