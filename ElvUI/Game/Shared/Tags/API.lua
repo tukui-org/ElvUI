@@ -151,6 +151,7 @@ end
 
 local abbrevCache = {}
 Tags.Env.Abbrev = function(name)
+	if not name or E:IsSecretValue(name) then return name end
 	local cached = abbrevCache[name]
 	if cached then return cached end
 

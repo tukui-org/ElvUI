@@ -327,6 +327,7 @@ function E:SafeToNumber(v)
 end
 
 function E:SafeArithmetic(a, op, b)
+	if a == nil or b == nil then return nil end
 	if E:IsSecretValue(a) or E:IsSecretValue(b) then return nil end
 	if op == '/' then return b ~= 0 and a / b or nil
 	elseif op == '*' then return a * b
@@ -336,6 +337,7 @@ function E:SafeArithmetic(a, op, b)
 end
 
 function E:SafeCompare(a, op, b)
+	if a == nil or b == nil then return nil end
 	if E:IsSecretValue(a) or E:IsSecretValue(b) then return nil end
 	if op == '<'  then return a < b
 	elseif op == '<=' then return a <= b
@@ -347,7 +349,7 @@ function E:SafeCompare(a, op, b)
 end
 
 function E:GetFormattedText(style, min, max, dec, short)
-	if E:IsSecretValue(min) or E:IsSecretValue(max) then return end
+	if E:IsSecretValue(min) or E:IsSecretValue(max) then return '' end
 	if max == 0 then max = 1 end
 
 	if style == 'CURRENT' or ((style == 'CURRENT_MAX' or style == 'CURRENT_MAX_PERCENT' or style == 'CURRENT_PERCENT') and min == max) then
