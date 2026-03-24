@@ -351,8 +351,8 @@ function E:UpdateMedia(mediaType)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 
 	if E.db.cooldown.enable then
-		for key in next, P.cooldown do
-			local db = type(key) == 'table' and E.db.cooldown[key]
+		for key, object in next, P.cooldown do
+			local db = type(object) == 'table' and E.db.cooldown[key]
 			if db then
 				E:UpdateClassColor(db.colors.text)
 				E:UpdateClassColor(db.colors.edge)
