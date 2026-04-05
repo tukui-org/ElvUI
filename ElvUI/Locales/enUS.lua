@@ -144,6 +144,7 @@ L["GM Ticket Frame"] = true
 L["Gold"] = true
 L["goldabbrev"] = "|cffffd700g|r"
 L["Grays"] = true
+L["Grid Line Width:"] = true
 L["Grid Size:"] = true
 L["Heal Power"] = true
 L["Healer"] = true

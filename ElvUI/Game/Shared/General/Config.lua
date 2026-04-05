@@ -62,7 +62,7 @@ end
 function E:Grid_Show()
 	if not grid then
 		E:Grid_Create()
-	elseif grid.boxSize ~= E.db.gridSize then
+	elseif grid.boxSize ~= E.db.gridSize or grid.lineWidth ~= E.db.gridLineWidth then
 		grid:Hide()
 		E:Grid_Create()
 	else
@@ -145,7 +145,8 @@ function E:Grid_Create()
 	end
 
 	local width, height = E.UIParent:GetSize()
-	local size, half = E.mult * 0.5, height * 0.5
+	local lineWidth = (E.db.gridLineWidth or 1) * E.mult
+	local size, half = lineWidth * 0.5, height * 0.5
 
 	local gSize = E.db.gridSize
 	local gHalf = gSize * 0.5
@@ -156,6 +157,7 @@ function E:Grid_Create()
 	local hStep = hHeight / gSize
 
 	grid.boxSize = gSize
+	grid.lineWidth = E.db.gridLineWidth
 	grid:SetPoint('CENTER', E.UIParent)
 	grid:Size(width, height)
 	grid:Show()
@@ -389,16 +391,54 @@ function E:CreateMoverPopup()
 	align.text:FontTemplate(nil, 12, 'SHADOW')
 	f.align = align
 
+	local lineWidth = CreateFrame('EditBox', f:GetName()..'LineWidthBox', f, 'InputBoxTemplate')
+	lineWidth:Size(30, 22)
+	lineWidth:SetAutoFocus(false)
+	lineWidth:SetScript('OnEscapePressed', function(eb)
+		eb:SetText(E.db.gridLineWidth)
+		EditBox_ClearFocus(eb)
+	end)
+	lineWidth:SetScript('OnEnterPressed', function(eb)
+		local text = eb:GetText()
+		if tonumber(text) then
+			if tonumber(text) <= 10 and tonumber(text) >= 1 then
+				E.db.gridLineWidth = tonumber(text)
+			else
+				eb:SetText(E.db.gridLineWidth)
+			end
+		else
+			eb:SetText(E.db.gridLineWidth)
+		end
+		E:Grid_Show()
+		EditBox_ClearFocus(eb)
+	end)
+	lineWidth:SetScript('OnEditFocusLost', function(eb)
+		eb:SetText(E.db.gridLineWidth)
+	end)
+	lineWidth:SetScript('OnEditFocusGained', EditBox_HighlightText)
+	lineWidth:SetScript('OnShow', function(eb)
+		EditBox_ClearFocus(eb)
+		eb:SetText(E.db.gridLineWidth)
+	end)
+
+	lineWidth.text = lineWidth:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
+	lineWidth.text:Point('RIGHT', lineWidth, 'LEFT', -4, 0)
+	lineWidth.text:SetText(L["Grid Line Width:"])
+	lineWidth.text:FontTemplate(nil, 12, 'SHADOW')
+	f.lineWidth = lineWidth
+
 	--position buttons
 	reset:Point('BOTTOMLEFT', 5, 5)
 	snapping:Point('BOTTOMLEFT', reset, 'TOPLEFT', -4, 0)
 	lock:Point('BOTTOMRIGHT', -5, 5)
 	align:Point('TOPRIGHT', lock, 'TOPLEFT', -3, 0)
+	lineWidth:Point('RIGHT', align.text, 'LEFT', -4, 0)
 
 	S:HandleCheckBox(snapping)
 	S:HandleButton(lock)
 	S:HandleButton(reset)
 	S:HandleEditBox(align)
+	S:HandleEditBox(lineWidth)
 
 	f:RegisterEvent('PLAYER_REGEN_DISABLED')
 	f:SetScript('OnEvent', function(mover)
