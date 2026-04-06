@@ -10,6 +10,7 @@ local issecrettable = issecrettable
 local canaccessvalue = canaccessvalue
 
 local UnitExists = UnitExists
+local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
 local UnitThreatSituation = UnitThreatSituation
 local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
@@ -97,6 +98,12 @@ do -- API for secrets by Simpy
 	function oUF:NoSecretValues(object)
 		return not oUF:HasSecretValues(object)
 	end
+end
+
+-- TODO: use C_Secrets.CanCompareUnitTokens instead of pcall
+function oUF:UnitIsUnit(unit1, unit2)
+	local ok, isUnit = pcall(UnitIsUnit, unit1, unit2)
+	return ok and isUnit
 end
 
 function oUF:UnitExists(unit)

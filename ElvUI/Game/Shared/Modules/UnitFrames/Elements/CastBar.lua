@@ -541,12 +541,12 @@ end
 
 function UF:GetCasterColor(targetClass)
 	if E:IsSecretValue(targetClass) then
-		local color = C_ClassColor_GetClassColor(targetClass)
+		local color = targetClass and C_ClassColor_GetClassColor(targetClass)
 		if color then
 			return color:GenerateHexColor()
 		end
-	elseif targetClass then
-		local color = E:ClassColor(targetClass)
+	else
+		local color = targetClass and E:ClassColor(targetClass)
 		if color then
 			return color.colorStr
 		end

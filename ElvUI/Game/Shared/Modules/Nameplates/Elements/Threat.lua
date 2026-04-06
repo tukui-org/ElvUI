@@ -1,13 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
-local UnitIsUnit = UnitIsUnit
 local UnitIsTapDenied = UnitIsTapDenied
 
 function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local targetUnit, db = unit..'target', NP.db.threat
 	local isTank = E.myrole == 'TANK' or E.GroupRoles.player == 'TANK'
-	local offTank = isTank and (E:UnitExists(targetUnit) and not UnitIsUnit(targetUnit, 'player')) and ((db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)]) or (db.beingTankedByTank and E:UnitTankedByGroup(targetUnit)))
+	local offTank = isTank and (E:UnitExists(targetUnit) and not E:UnitIsUnit(targetUnit, 'player')) and ((db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)]) or (db.beingTankedByTank and E:UnitTankedByGroup(targetUnit)))
 	local useSolo = not E.IsInGroup and db.useSoloColor
 
 	if pass then

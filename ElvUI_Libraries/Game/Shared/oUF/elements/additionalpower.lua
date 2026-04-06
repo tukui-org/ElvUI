@@ -46,7 +46,6 @@ local pcall = pcall
 local unpack = unpack
 
 local CopyTable = CopyTable
-local UnitIsUnit = UnitIsUnit
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -66,7 +65,7 @@ local ALT_POWER_INFO = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO and CopyTable(_G.ALT_P
 }
 
 local function UpdateColor(self, event, unit, powerType)
-	if(not (unit and UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
+	if(not (unit and oUF:UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
 	local element = self.AdditionalPower
 
 	local color
@@ -108,7 +107,7 @@ local function UpdateColor(self, event, unit, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if(not (unit and UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
+	if(not (unit and oUF:UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
 	local element = self.AdditionalPower
 
 	--[[ Callback: AdditionalPower:PreUpdate(unit)
@@ -245,7 +244,7 @@ end
 
 local function Enable(self, unit)
 	local element = self.AdditionalPower
-	if(element and UnitIsUnit(unit, 'player')) then
+	if(element and oUF:UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 

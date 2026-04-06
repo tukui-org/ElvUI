@@ -68,7 +68,6 @@ local CREATED = 2
 local floor, wipe, next = floor, wipe, next
 local pcall, tinsert = pcall, tinsert
 
-local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetAuraDuration = C_UnitAuras.GetAuraDuration
@@ -261,7 +260,7 @@ local function updateAura(frame, which, unit, aura, index, offset, filter, visib
 			if showStealable and button.Stealable.SetAlphaFromBoolean then
 				button.Stealable:SetAlphaFromBoolean(isStealable, 1, 0)
 			elseif showStealable then
-				button.Stealable:SetAlpha((isStealable and not UnitIsUnit('player', unit)) and 1 or 0)
+				button.Stealable:SetAlpha((isStealable and not oUF:UnitIsUnit('player', unit)) and 1 or 0)
 			else
 				button.Stealable:SetAlpha(0)
 			end

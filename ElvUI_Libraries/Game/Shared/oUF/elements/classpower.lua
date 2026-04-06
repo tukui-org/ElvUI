@@ -96,7 +96,6 @@ local pcall = pcall
 
 local GetTime = GetTime
 local UnitPower = UnitPower
-local UnitIsUnit = UnitIsUnit
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -242,7 +241,7 @@ local function ThirdVisibility(element, enabled)
 end
 
 local function Update(self, element, event, unit, powerType)
-	if not unit or not UnitIsUnit(unit, 'player') then return end
+	if not unit or not oUF:UnitIsUnit(unit, 'player') then return end
 
 	local classPowerID = element.classPowerID
 	local currentType = ClassPowerType[classPowerID]
@@ -567,7 +566,7 @@ end
 
 local function Enable(self, unit)
 	local element = self.ClassPower
-	if(element and UnitIsUnit(unit, 'player')) then
+	if(element and oUF:UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.__max = #element
 		element.ForceUpdate = ForceUpdate

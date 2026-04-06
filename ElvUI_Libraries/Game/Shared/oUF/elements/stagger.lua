@@ -32,7 +32,6 @@ local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecializ
 local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
 local UnitHealthMax = UnitHealthMax
 local UnitStagger = UnitStagger
-local UnitIsUnit = UnitIsUnit
 local wipe = wipe
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
@@ -219,7 +218,7 @@ local function Enable(self, unit)
 	end
 
 	local element = self.Stagger
-	if(element and UnitIsUnit(unit, 'player')) then
+	if(element and oUF:UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 

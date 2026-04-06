@@ -11,7 +11,6 @@ local GetAverageItemLevel = GetAverageItemLevel
 local GetInspectSpecialization = GetInspectSpecialization
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventoryItemLink = GetInventoryItemLink
-local UnitIsUnit = UnitIsUnit
 local WorldFrame = WorldFrame
 
 local RETRIEVING_ITEM_INFO = RETRIEVING_ITEM_INFO
@@ -214,7 +213,7 @@ end
 do
 	local iLevelDB, tryAgain = {}, {}
 	function E:GetUnitItemLevel(unit)
-		if UnitIsUnit(unit, 'player') then
+		if E:UnitIsUnit(unit, 'player') then
 			local _, equipped = E:GetPlayerItemLevel()
 			return equipped
 		end

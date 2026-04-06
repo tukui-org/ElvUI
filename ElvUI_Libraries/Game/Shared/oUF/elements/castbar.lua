@@ -101,7 +101,6 @@ local next = next
 local GetTime = GetTime
 local CreateFrame = CreateFrame
 local GetNetStats = GetNetStats
-local UnitIsUnit = UnitIsUnit
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
 local UnitCastingInfo = UnitCastingInfo
@@ -341,7 +340,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.channeling = channeling
 	element.empowering = empowering
 
-	local isPlayer = UnitIsUnit(unit, 'player')
+	local isPlayer = oUF:UnitIsUnit(unit, 'player')
 	if not isPlayer or (oUF.isRetail or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START')) then
 		UpdateCurrentTarget(element, unit) -- we want to ignore the start events on player unit because sent adds the target info
 	end
@@ -592,7 +591,7 @@ local function CastStop(self, event, unit, ...)
 
 	if not element:IsShown() then return end
 
-	local isPlayer = UnitIsUnit(unit, 'player')
+	local isPlayer = oUF:UnitIsUnit(unit, 'player')
 	if mergeTradeskill and isPlayer and (tradeskillCurrent == tradeskillTotal) then
 		mergeTradeskill = false
 	end
@@ -661,7 +660,7 @@ local function CastFail(self, event, unit, ...)
 
 	element.holdTime = element.timeToHold or 0
 
-	local isPlayer = UnitIsUnit(unit, 'player')
+	local isPlayer = oUF:UnitIsUnit(unit, 'player')
 	if mergeTradeskill and isPlayer then
 		mergeTradeskill = false
 	end

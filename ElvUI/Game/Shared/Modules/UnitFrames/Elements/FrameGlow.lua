@@ -12,14 +12,13 @@ local strsub = strsub
 local CreateFrame = CreateFrame
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
-local UnitIsUnit = UnitIsUnit
 local UnitReaction = UnitReaction
 local UnitInPartyIsAI = UnitInPartyIsAI
 
 function UF:FrameGlow_MouseOnUnit(frame)
 	if frame and frame:IsVisible() and E:UnitExists('mouseover') then
 		local unit = (E:UnitExists(frame.unit) and frame.unit) or (frame.isForced and 'player')
-		return unit and UnitIsUnit('mouseover', unit)
+		return unit and E:UnitIsUnit('mouseover', unit)
 	end
 
 	return false
@@ -294,7 +293,7 @@ function UF:FrameGlow_CheckUnit(frame, element, setting, color, glowEnabled, fra
 
 	local unit = frame.unit or (frame.isForced and 'player')
 	local source = E:NotSecretValue(unit) and unit
-	local target = source and UnitIsUnit(source, strsub(setting, 0, -5))
+	local target = source and E:UnitIsUnit(source, strsub(setting, 0, -5))
 	if E:NotSecretValue(target) and target and (glowEnabled and not frameDisabled) then
 		if color then
 			UF:FrameGlow_SetGlowColor(element, source, setting)

@@ -2,11 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local ElvUF = E.oUF
 
 local UnitExists = UnitExists
-local UnitIsUnit = UnitIsUnit
 
 local function MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then
-		return frame.unit and UnitIsUnit('mouseover', frame.unit)
+		return frame.unit and E:UnitIsUnit('mouseover', frame.unit)
 	end
 
 	return false

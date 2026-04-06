@@ -15,7 +15,6 @@ local IsControlKeyDown = IsControlKeyDown
 local IsShiftKeyDown = IsShiftKeyDown
 local UnitCanAttack = UnitCanAttack
 local UnitIsFriend = UnitIsFriend
-local UnitIsUnit = UnitIsUnit
 
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
@@ -729,7 +728,7 @@ function UF:AuraPopulate(auras, db, unit, button, name, icon, count, debuffType,
 	local otherPet = source and source ~= 'pet' and strfind(source, 'pet')
 	local dispellable = UF:AuraDispellable(debuffType, spellID)
 	local canDispel = (auras.type == 'auras' and (isStealable or dispellable)) or (auras.type == 'buffs' and isStealable) or (auras.type == 'debuffs' and dispellable)
-	local unitIsCaster = source and ((unit == source) or UnitIsUnit(unit, source))
+	local unitIsCaster = source and ((unit == source) or E:UnitIsUnit(unit, source))
 
 	-- straight from the args
 	button.duration = duration

@@ -4,12 +4,11 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
-local UnitIsUnit = UnitIsUnit
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 local function FixReadyCheckFrame(frame)
-	if frame.initiator and UnitIsUnit('player', frame.initiator) then
+	if frame.initiator and E:UnitIsUnit('player', frame.initiator) then
 		frame:Hide() -- bug fix, don't show it if player is initiator
 	end
 end

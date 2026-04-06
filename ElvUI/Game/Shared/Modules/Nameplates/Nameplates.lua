@@ -24,7 +24,6 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsGameObject = UnitIsGameObject
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVPSanctuary = UnitIsPVPSanctuary
-local UnitIsUnit = UnitIsUnit
 local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitWidgetSet = UnitWidgetSet
@@ -757,8 +756,8 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.widgetSet = E.Retail and UnitWidgetSet(unit)
 	self.classification = UnitClassification(unit)
 	self.creatureType = UnitCreatureType(unit)
-	self.isMe = UnitIsUnit(unit, 'player')
-	self.isPet = UnitIsUnit(unit, 'pet')
+	self.isMe = E:UnitIsUnit(unit, 'player')
+	self.isPet = E:UnitIsUnit(unit, 'pet')
 	self.isFriend = UnitIsFriend('player', unit)
 	self.isEnemy = UnitIsEnemy('player', unit)
 	self.isPlayer = UnitIsPlayer(unit)
@@ -871,7 +870,7 @@ end
 function NP:UNIT_FACTION(_, unit)
 	if not unit or self.unit ~= unit then return end
 
-	self.isMe = UnitIsUnit(unit, 'player')
+	self.isMe = E:UnitIsUnit(unit, 'player')
 	self.reaction = UnitReaction('player', unit) -- Player Reaction
 	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
 	self.isFriend = UnitIsFriend('player', unit)

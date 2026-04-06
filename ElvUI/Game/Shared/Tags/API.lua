@@ -11,7 +11,6 @@ local utf8lower, utf8sub = string.utf8lower, string.utf8sub
 local _G = _G
 local GetRuneCooldown = GetRuneCooldown
 local UnitHealthMax = UnitHealthMax
-local UnitIsUnit = UnitIsUnit
 local IsInInstance = IsInInstance
 local UnitIsPlayer = UnitIsPlayer
 local UnitPowerMax = UnitPowerMax
@@ -273,7 +272,7 @@ do
 	end
 
 	Tags.Env.GetClassPower = function(unit)
-		local isme = UnitIsUnit(unit, 'player')
+		local isme = E:UnitIsUnit(unit, 'player')
 
 		local spec, unitClass, barType, Min, Max
 		if isme then

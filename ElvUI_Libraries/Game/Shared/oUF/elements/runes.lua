@@ -44,7 +44,6 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetRuneCooldown = GetRuneCooldown
 local GetRuneType = GetRuneType
-local UnitIsUnit = UnitIsUnit
 local GetTime = GetTime
 
 local runemap = (oUF.isWrath or oUF.isMists) and {1, 2, 5, 6, 3, 4} or {1, 2, 3, 4, 5, 6}
@@ -269,7 +268,7 @@ local function Enable(self, unit)
 	end
 
 	local element = self.Runes
-	if(element and UnitIsUnit(unit, 'player')) then
+	if(element and oUF:UnitIsUnit(unit, 'player')) then
 		element.__owner = self
 		element.ForceUpdate = ForceUpdate
 

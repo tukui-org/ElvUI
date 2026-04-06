@@ -10,7 +10,6 @@ local UnitDetailedThreatSituation = UnitDetailedThreatSituation
 local UnitIsPlayer = UnitIsPlayer
 local UnitReaction = UnitReaction
 local UnitExists = UnitExists
-local UnitIsUnit = UnitIsUnit
 local UnitClass = UnitClass
 local UnitName = UnitName
 local UNKNOWN = UNKNOWN
@@ -64,7 +63,7 @@ function DB:ThreatBar_Update()
 				end
 
 				for unit in next, E.GroupRoles do
-					if not UnitIsUnit(unit, 'player') then
+					if not E:UnitIsUnit(unit, 'player') then
 						_, _, bar.list[unit] = UnitDetailedThreatSituation(unit, 'target')
 					end
 				end

@@ -45,7 +45,6 @@ local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
-local UnitIsUnit = UnitIsUnit
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
@@ -598,7 +597,7 @@ if not E.Retail then
 		if not UnitIsPlayer(unit) then return end
 
 		-- handle player
-		if UnitIsUnit(unit, 'player') then
+		if E:UnitIsUnit(unit, 'player') then
 			return E.myspecName
 		end
 
@@ -904,7 +903,7 @@ E:AddTag('pvptimer', 1, function(unit)
 end)
 
 E:AddTag('distance', 0.1, function(unit)
-	if UnitIsConnected(unit) and not UnitIsUnit(unit, 'player') then
+	if UnitIsConnected(unit) and not E:UnitIsUnit(unit, 'player') then
 		local distance = E:GetDistance('player', unit)
 		if distance then
 			return format('%.1f', distance)
@@ -969,7 +968,7 @@ E:AddTag('arena:number', 'UNIT_NAME_UPDATE', function(unit)
 	local _, instanceType = IsInInstance()
 	if instanceType == 'arena' then
 		for i = 1, 5 do
-			if UnitIsUnit(unit, 'arena'..i) then
+			if E:UnitIsUnit(unit, 'arena'..i) then
 				return i
 			end
 		end
@@ -1064,7 +1063,7 @@ for _, var in ipairs({4,8,10,15,20,25,30,35,40}) do
 
 		if UnitIsConnected(unit) then
 			for unitToken in next, E.GroupRoles do
-				if UnitIsConnected(unitToken) and not UnitIsUnit(unit, unitToken) then
+				if UnitIsConnected(unitToken) and not E:UnitIsUnit(unit, unitToken) then
 					local distance = E:GetDistance(unit, unitToken)
 					if distance and distance <= var then
 						inRange = inRange + 1
@@ -1208,7 +1207,7 @@ end
 
 E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	local hasPetUI, isHunterPet = HasPetUI()
-	if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+	if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
 		return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
 	end
 end, not (E.Classic or E.TBC or E.Wrath))
@@ -1231,35 +1230,35 @@ if E.Classic or E.TBC or E.Wrath then
 
 	E:AddTag('happiness:full', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+		if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
 			return _G['PET_HAPPINESS'..GetPetHappiness()]
 		end
 	end)
 
 	E:AddTag('happiness:icon', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+		if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
 			return emotionsIcons[GetPetHappiness()]
 		end
 	end)
 
 	E:AddTag('happiness:discord', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+		if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
 			return emotionsDiscord[GetPetHappiness()]
 		end
 	end)
 
 	E:AddTag('happiness:color', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+		if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
 			return Hex(_COLORS.happiness[GetPetHappiness()])
 		end
 	end)
 
 	E:AddTag('diet', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
-		if hasPetUI and isHunterPet and UnitIsUnit('pet', unit) then
+		if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
 			return GetPetFoodTypes()
 		end
 	end)

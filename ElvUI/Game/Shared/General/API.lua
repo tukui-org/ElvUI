@@ -48,7 +48,6 @@ local UnitIsDND = UnitIsDND
 local UnitIsMercenary = UnitIsMercenary
 local UnitIsPlayer = UnitIsPlayer
 local UnitSex = UnitSex
-local UnitIsUnit = UnitIsUnit
 local UnitThreatSituation = UnitThreatSituation
 local UnitSelectionType = UnitSelectionType
 
@@ -1395,7 +1394,7 @@ function E:GROUP_ROSTER_UPDATE()
 		local unit = group..i
 		local role = not E.allowRoles and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
 		if role then
-			if UnitIsUnit(unit, 'player') then
+			if E:UnitIsUnit(unit, 'player') then
 				unit = 'player'
 			end
 

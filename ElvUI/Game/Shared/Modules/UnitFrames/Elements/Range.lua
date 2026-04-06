@@ -4,7 +4,6 @@ local UF = E:GetModule('UnitFrames')
 local next = next
 local tonumber = tonumber
 
-local UnitIsUnit = UnitIsUnit
 local UnitInPhase = UnitInPhase
 local UnitInRange = UnitInRange
 local UnitIsPlayer = UnitIsPlayer
@@ -134,7 +133,7 @@ function UF:UpdateRange(unit)
 			element.RangeAlpha = UF:UnitInSpellsRange(unit, 3) == true and element.MaxAlpha or element.MinAlpha
 		elseif UnitCanAttack('player', unit) then
 			element.RangeAlpha = UF:UnitInSpellsRange(unit, 1) and element.MaxAlpha or element.MinAlpha
-		elseif UnitIsUnit('pet', unit) then
+		elseif E:UnitIsUnit('pet', unit) then
 			element.RangeAlpha = UF:UnitInSpellsRange(unit, 4) and element.MaxAlpha or element.MinAlpha
 		elseif UnitIsConnected(unit) then
 			element.RangeAlpha = UF:FriendlyInRange(unit, element) and element.MaxAlpha or element.MinAlpha

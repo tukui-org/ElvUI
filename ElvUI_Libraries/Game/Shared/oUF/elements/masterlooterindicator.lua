@@ -29,7 +29,6 @@ local GetLootMethod = C_PartyInfo.GetLootMethod or GetLootMethod
 local UnitAffectingCombat = UnitAffectingCombat
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local UnitIsUnit = UnitIsUnit
 
 local function Update(self, event)
 	local unit = self.unit
@@ -61,7 +60,7 @@ local function Update(self, event)
 				mlUnit = 'raid' .. raidIndex
 			end
 
-			isShown = mlUnit and UnitIsUnit(unit, mlUnit)
+			isShown = mlUnit and oUF:UnitIsUnit(unit, mlUnit)
 		end
 	end
 

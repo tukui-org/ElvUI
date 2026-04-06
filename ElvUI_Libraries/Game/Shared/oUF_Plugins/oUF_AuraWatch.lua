@@ -12,7 +12,6 @@ local min, next, wipe, pairs, tinsert = min, next, wipe, pairs, tinsert
 
 local GetSpellTexture = C_Spell.GetSpellTexture
 local CreateFrame = CreateFrame
-local UnitIsUnit = UnitIsUnit
 
 local function CreateAuraIcon(element, index)
 	local button = CreateFrame('Button', element:GetName() .. 'Button' .. index, element)
@@ -109,7 +108,7 @@ local function HandleElements(element, unit, button, setting, icon, count, durat
 	end
 
 	if button.stealable then
-		if not isDebuff and isStealable and element.showStealableBuffs and not UnitIsUnit(unit, 'player') then
+		if not isDebuff and isStealable and element.showStealableBuffs and not oUF:UnitIsUnit(unit, 'player') then
 			button.stealable:Show()
 		else
 			button.stealable:Hide()

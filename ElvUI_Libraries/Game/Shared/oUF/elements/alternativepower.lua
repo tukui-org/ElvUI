@@ -73,7 +73,6 @@ local UnitReaction = UnitReaction
 local UnitPowerMax = UnitPowerMax
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
-local UnitIsUnit = UnitIsUnit
 local UnitClass = UnitClass
 local UnitPower = UnitPower
 
@@ -237,7 +236,7 @@ local function Visibility(self, event, unit)
 	element.__barID = barID
 	element.__barInfo = barInfo
 
-	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not barInfo.hideFromOthers or UnitIsUnit(unit, 'player'))) then
+	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not barInfo.hideFromOthers or oUF:UnitIsUnit(unit, 'player'))) then
 		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 
