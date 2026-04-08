@@ -6,7 +6,7 @@ local UnitIsTapDenied = UnitIsTapDenied
 function NP:ThreatIndicator_PreUpdate(unit, pass)
 	local targetUnit, db = unit..'target', NP.db.threat
 	local isTank = E.myrole == 'TANK' or E.GroupRoles.player == 'TANK'
-	local offTank = isTank and (E:UnitExists(targetUnit) and E:UnitNotUnit(targetUnit, 'player')) and ((db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)]) or (db.beingTankedByTank and E:UnitTankedByGroup(targetUnit)))
+	local offTank = isTank and (E:UnitExists(targetUnit) and E:UnitNotUnit(targetUnit, 'player')) and ((db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)]) or (db.beingTankedByTank and E:UnitTankedByGroup(target)))
 	local useSolo = not E.IsInGroup and db.useSoloColor
 
 	if pass then
