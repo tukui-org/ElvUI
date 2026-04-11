@@ -64,7 +64,7 @@ end
 
 function LO:UpdateTopPanel()
 	local shown = E.db.general.topPanel
-	LO.TopPanel:SetShown()
+	LO.TopPanel:SetShown(shown)
 	LO.TopPanel:Point('TOP', 0, E.Border)
 
 	if shown then
