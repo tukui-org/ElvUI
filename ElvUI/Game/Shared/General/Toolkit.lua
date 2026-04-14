@@ -497,6 +497,10 @@ local function FontTemplate(fs, font, size, style, skip)
 	local shadow = strsub(style, 0, 6) == 'SHADOW'
 	if shadow then style = strsub(style, 7) end -- shadow isnt a real style
 
+	if E.Retail and E.db.general.fontSlug and (style ~= '' or not shadow) then
+		style = style ~= '' and (style .. ' SLUG') or 'SLUG'
+	end
+
 	fs:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
 	fs:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
 
