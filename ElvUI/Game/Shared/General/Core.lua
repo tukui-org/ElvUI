@@ -1695,7 +1695,12 @@ do
 				nextDelay = 0.05
 			end
 
-			E:Delay(nextDelay or staggerDelay, E[nextUpdate])
+			local updateFunc = E[nextUpdate]
+            if type(updateFunc) == 'function' then
+                E:Delay(nextDelay or staggerDelay, function()
+                    updateFunc(E)
+                end)
+            end
 		end
 	end
 	E:RegisterCallback('StaggeredUpdate', CallStaggeredUpdate)
