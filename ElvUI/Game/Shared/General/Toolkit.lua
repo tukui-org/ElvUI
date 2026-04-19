@@ -493,6 +493,7 @@ local function FontTemplate(fs, font, size, style, skip)
 	if not style then style = E.db.general.fontStyle or P.general.fontStyle end
 	if not size then size = E.db.general.fontSize or P.general.fontSize end
 	if style == 'NONE' then style = '' end -- none isnt a real style
+	if E:CanFlagSlug(style) then style = style..'SLUG' end -- handle before shadow
 
 	local shadow = strsub(style, 0, 6) == 'SHADOW'
 	if shadow then style = strsub(style, 7) end -- shadow isnt a real style

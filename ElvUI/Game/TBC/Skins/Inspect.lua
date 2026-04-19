@@ -130,7 +130,7 @@ function S:Blizzard_InspectUI()
 
 			local rank = _G['InspectTalentFrameTalent'..i..'Rank']
 			if rank then
-				rank:SetFont(E.LSM:Fetch('font', E.db['general'].font), 12, 'OUTLINE')
+				rank:SetFont(E.media.normFont, 12, 'OUTLINE')
 			end
 		end
 	end

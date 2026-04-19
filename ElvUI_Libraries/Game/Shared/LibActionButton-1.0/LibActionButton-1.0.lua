@@ -10,7 +10,7 @@ local lib, oldversion = LibStub:NewLibrary(MAJOR_VERSION, MINOR_VERSION)
 if not lib then return end
 
 local _G = _G
-local type, error, tostring, tonumber, assert, select = type, error, tostring, tonumber, assert, select
+local type, error, tostring, tonumber, assert, select, strsub = type, error, tostring, tonumber, assert, select, strsub
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strmatch, format, tinsert, tremove
 
@@ -1383,8 +1383,18 @@ local function UpdateTextElement(button, element, config, defaultFont, fromRange
 	if rangeIndicator then
 		element:SetShown(button.outOfRange)
 		element:SetFont(RangeFont.font.font, RangeFont.font.size, RangeFont.font.flags)
+		element:SetShadowColor(0, 0, 0, 0)
+		element:SetShadowOffset(0, 0)
 	else
-		element:SetFont(config.font.font or defaultFont, config.font.size or 11, config.font.flags or "")
+		local opt = config.font
+		local style = opt.flags or ''
+
+		local shadow = strsub(style, 0, 6) == 'SHADOW'
+		if shadow then style = strsub(style, 7) end -- shadow isnt a real style
+
+		element:SetFont(opt.font or defaultFont, opt.size or 11, style)
+		element:SetShadowColor(0, 0, 0, shadow and (style == '' and 1 or 0.6) or 0)
+		element:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
 	end
 
 	if fromRange and button.outOfRange then

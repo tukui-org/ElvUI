@@ -378,6 +378,12 @@ do
 	frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
+function E:CanFlagSlug(outline)
+	if not E.Retail or not E.global.general.fontSlug then return end
+
+	return not outline or (not strfind(outline, 'SHADOW') and not strfind(outline, 'MONOCHROME') and not strfind(outline, 'THICKOUTLINE'))
+end
+
 function E:SetCVar(cvar, value, ...)
 	local valstr = ((type(value) == 'boolean') and (value and '1' or '0')) or tostring(value)
 	if GetCVar(cvar) ~= valstr then

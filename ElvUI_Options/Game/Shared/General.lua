@@ -117,11 +117,12 @@ GenGen.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automaticall
 General.fonts = ACH:Group(L["Fonts"], nil, 10, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value end)
 local Fonts = General.fonts.args
 
-Fonts.general = ACH:Group('', nil, 11, nil, nil, function(info, value) E.db.general[info[#info]] = value E:UpdateMedia() E:UpdateFontTemplates() end)
+Fonts.general = ACH:Group('', nil, 11, nil, function(info) local key = info[#info] if key == 'fontSlug' then return E.global.general[key] else return E.db.general[key] end end, function(info, value) local key = info[#info] if key == 'fontSlug' then E.global.general[key] = value else E.db.general[key] = value end E:UpdateMedia() E:UpdateFontTemplates() end)
 Fonts.general.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the core of the UI will use."], 1)
 Fonts.general.args.fontSize = ACH:Range(L["Font Size"], L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own separate options (UnitFrame Font, Datatext Font, ect..)"], 2, C.Values.FontSize)
 Fonts.general.args.fontStyle = ACH:FontFlags(L["Font Outline"], nil, 3)
-Fonts.general.args.applyFontToAll = ACH:Execute(L["Apply Font To All"], L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."], 4, function() E:StaticPopup_Show('APPLY_FONT_WARNING') end)
+Fonts.general.args.fontSlug = ACH:Toggle(L["Font Slug"], L["Appends the SLUG rendering flag for sharper edges.\n\n|cffff3333Note:|r Slug will not work on Shadow, Mono, or Thick outline."], 4, nil, nil, nil, nil, nil, not E.Retail)
+Fonts.general.args.applyFontToAll = ACH:Execute(L["Apply Font To All"], L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."], 5, function() E:StaticPopup_Show('APPLY_FONT_WARNING') end)
 Fonts.general.inline = true
 
 Fonts.blizzard = ACH:Group('', nil, 12, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)

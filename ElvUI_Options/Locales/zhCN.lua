@@ -32,6 +32,9 @@ L["SOUL_CLEAVE"] = "灵魂裂劈"
 L["SOUL_FRAGMENTS"] = "灵魂碎片"
 L["SPEAR_TIP"] = "利矛之刃"
 
+L["Appends the SLUG rendering flag for sharper edges.\n\n|cffff3333Note:|r Slug will not work on Shadow, Mono, or Thick outline."] = true
+L["Font Slug"] = true
+
 L["%s and then %s"] = "先%s后%s"
 L["*%s|r|cFFffffff below.  Made with|r |cFFff75dd<3|r |cFFffffffby the Tukui Community.|r"] = "*%s|r |cFFffffff此插件由 Tukui 社区共建, 为|cFFff75dd爱|r|cFFffffff而生.|r"
 L["24-Hour Time"] = "24小时制"

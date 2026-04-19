@@ -381,7 +381,7 @@ end
 function UF:SetSmartPosition(frame, db)
 	if frame.isNamePlate then db = NP:PlateDB(frame) end
 
-	local position, fluid = db.smartAuraPosition
+	local position = db.smartAuraPosition
 	local buffs, debuffs = UF:GetAuraElements(frame)
 	local info = UF.SmartPosition[position]
 	if info then
@@ -397,8 +397,7 @@ function UF:SetSmartPosition(frame, db)
 			element:Point(element.initialAnchor, element.attachTo, element.anchorPoint, element.xOffset, element.yOffset)
 		end
 
-		fluid = info.fluid
-		info.func(db, buffs, debuffs, info.fluid)
+		info.func(db, buffs, debuffs)
 	else
 		buffs.PostUpdate = nil
 		debuffs.PostUpdate = nil
@@ -409,7 +408,7 @@ function UF:SetSmartPosition(frame, db)
 		db.buffs.attachTo = 'FRAME'
 	end
 
-	return position, fluid
+	return position, info and info.fluid or nil
 end
 
 function UF:Configure_Auras(frame, which)

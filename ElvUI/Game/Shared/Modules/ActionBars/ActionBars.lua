@@ -1378,11 +1378,15 @@ function AB:GetTextJustify(anchor)
 	return (anchor == 'TOPLEFT' or anchor == 'BOTTOMLEFT') and 'LEFT' or (anchor == 'TOP' or anchor == 'BOTTOM') and 'CENTER' or 'RIGHT'
 end
 
-function AB:GetHotkeyConfig(db)
-	local font = LSM:Fetch('font', db and db.hotkeyFont or AB.db.font)
-	local size = db and db.hotkeyFontSize or AB.db.fontSize
-	local flags = db and db.hotkeyFontOutline or AB.db.fontOutline
+function AB:GetFont(name, size, outline)
+	if not outline then outline = AB.db.fontOutline end
+	if E:CanFlagSlug(outline) then outline = outline..'SLUG' end
 
+	local font = LSM:Fetch('font', name or AB.db.font)
+	return font, size or AB.db.fontSize, outline
+end
+
+function AB:GetHotkeyConfig(db)
 	local anchor = db and db.hotkeyTextPosition or 'TOPRIGHT'
 	local offsetX = db and db.hotkeyTextXOffset or 0
 	local offsetY = db and db.hotkeyTextYOffset or -3
@@ -1390,7 +1394,8 @@ function AB:GetHotkeyConfig(db)
 	local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
 	local show = not (db and not db.hotkeytext)
 
-	return font, size, flags, anchor, offsetX, offsetY, AB:GetTextJustify(anchor), { color.r or 1, color.g or 1, color.b or 1 }, show
+	local font, size, flags = AB:GetFont(db and db.hotkeyFont, db and db.hotkeyFontSize, db and db.hotkeyFontOutline)
+	return font, size, flags, anchor, offsetX, offsetY, AB:GetTextJustify(anchor), { color.r or 1, color.g or 1, color.b or 1, color.a or 1 }, show
 end
 
 do
@@ -1422,45 +1427,68 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	local text = config.text
 	local db = AB.db[barName]
 
-	do -- hotkey text
+	local hotkeyText = text.hotkey
+	if hotkeyText then
 		local font, size, flags, anchor, offsetX, offsetY, justify, color = AB:GetHotkeyConfig(db)
-		text.hotkey.color = color
-		text.hotkey.font.font = font
-		text.hotkey.font.size = size
-		text.hotkey.font.flags = flags
-		text.hotkey.position.anchor = anchor
-		text.hotkey.position.relAnchor = false
-		text.hotkey.position.offsetX = offsetX
-		text.hotkey.position.offsetY = offsetY
-		text.hotkey.justifyH = justify
+		hotkeyText.color = color
+		hotkeyText.justifyH = justify
+
+		local fontText = hotkeyText.font
+		if fontText then
+			fontText.font = font
+			fontText.size = size
+			fontText.flags = flags
+		end
+
+		local position = hotkeyText.position
+		if position then
+			position.anchor = anchor
+			position.relAnchor = false
+			position.offsetX = offsetX
+			position.offsetY = offsetY
+		end
 	end
 
-	do -- count text
-		text.count.font.font = LSM:Fetch('font', db and db.countFont or AB.db.font)
-		text.count.font.size = db and db.countFontSize or AB.db.fontSize
-		text.count.font.flags = db and db.countFontOutline or AB.db.fontOutline
-		text.count.position.anchor = db and db.countTextPosition or 'BOTTOMRIGHT'
-		text.count.position.relAnchor = false
-		text.count.position.offsetX = db and db.countTextXOffset or 0
-		text.count.position.offsetY = db and db.countTextYOffset or 2
-		text.count.justifyH = AB:GetTextJustify(text.count.position.anchor)
+	local countText = text.count
+	if countText then
+		local fontText = countText.font
+		if fontText then
+			fontText.font, fontText.size, fontText.flags = AB:GetFont(db and db.countFont, db and db.countFontSize, db and db.countFontOutline)
+		end
+
+		local position = countText.position
+		if position then
+			position.anchor = db and db.countTextPosition or 'BOTTOMRIGHT'
+			position.relAnchor = false
+			position.offsetX = db and db.countTextXOffset or 0
+			position.offsetY = db and db.countTextYOffset or 2
+
+			countText.justifyH = AB:GetTextJustify(position.anchor)
+		end
 
 		local c = db and db.useCountColor and db.countColor or AB.db.fontColor
-		text.count.color = { c.r, c.g, c.b }
+		countText.color = { c.r, c.g, c.b, c.a }
 	end
 
-	do -- macro text
-		text.macro.font.font = LSM:Fetch('font', db and db.macroFont or AB.db.font)
-		text.macro.font.size = db and db.macroFontSize or AB.db.fontSize
-		text.macro.font.flags = db and db.macroFontOutline or AB.db.fontOutline
-		text.macro.position.anchor = db and db.macroTextPosition or 'BOTTOM'
-		text.macro.position.relAnchor = false
-		text.macro.position.offsetX = db and db.macroTextXOffset or 0
-		text.macro.position.offsetY = db and db.macroTextYOffset or 1
-		text.macro.justifyH = AB:GetTextJustify(text.macro.position.anchor)
+	local macroText = text.macro
+	if macroText then
+		local fontText = macroText.font
+		if fontText then
+			fontText.font, fontText.size, fontText.flags = AB:GetFont(db and db.macroFont, db and db.macroFontSize, db and db.macroFontOutline)
+		end
+
+		local position = macroText.position
+		if position then
+			position.anchor = db and db.macroTextPosition or 'BOTTOM'
+			position.relAnchor = false
+			position.offsetX = db and db.macroTextXOffset or 0
+			position.offsetY = db and db.macroTextYOffset or 1
+
+			macroText.justifyH = AB:GetTextJustify(position.anchor)
+		end
 
 		local c = db and db.useMacroColor and db.macroColor or AB.db.fontColor
-		text.macro.color = { c.r, c.g, c.b }
+		macroText.color = { c.r, c.g, c.b, c.a }
 	end
 
 	config.hideElements.count = not db.counttext

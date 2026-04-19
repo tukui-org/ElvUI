@@ -32,6 +32,9 @@ L["SOUL_CLEAVE"] = "Soul Cleave"
 L["SOUL_FRAGMENTS"] = "Soul Fragments"
 L["SPEAR_TIP"] = "Tip of the Spear"
 
+L["Appends the SLUG rendering flag for sharper edges.\n\n|cffff3333Note:|r Slug will not work on Shadow, Mono, or Thick outline."] = true
+L["Font Slug"] = true
+
 L["%s and then %s"] = "%s et alors %s"
 L["*%s|r|cFFffffff below.  Made with|r |cFFff75dd<3|r |cFFffffffby the Tukui Community.|r"] = true
 L["24-Hour Time"] = "Mode 24 Heures"

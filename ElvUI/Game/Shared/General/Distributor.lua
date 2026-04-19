@@ -47,6 +47,7 @@ D.blacklistedKeys = {
 	private = {},
 	global = {
 		profileCopy = true,
+		fontSlug = true,
 		general = {
 			AceGUI = true,
 			UIScale = true,
