@@ -46,9 +46,13 @@ end
 local function Looper(unit, filter, check, list, func)
 	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
+	local count = 0
 	while aura do
-		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:UnpackAuraData(aura)
-		local AuraType, Icon, filtered, style, color = func(aura, check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
+		count = count + 1
+		if count > 40 then break end -- Safety break to prevent 'script ran too long' errors
+
+		local name, icon, countAura, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:UnpackAuraData(aura)
+		local AuraType, Icon, filtered, style, color = func(aura, check, list, name, icon, countAura, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
 
 		if Icon then
 			return aura, AuraType, Icon, filtered, style, color

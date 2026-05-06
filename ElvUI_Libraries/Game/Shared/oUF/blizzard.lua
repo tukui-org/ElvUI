@@ -88,7 +88,13 @@ local function handleFrame(baseName, doNotReparent, isNamePlate)
 
 		local castbar = frame.castBar or frame.spellbar or frame.CastingBarFrame
 		if(castbar) then
-			castbar:UnregisterAllEvents()
+			-- Prevent CastingBarFrame taint by disconnecting unit instead of unregistering events
+			if(castbar == _G.CastingBarFrame) then
+				castbar:SetUnit(nil)
+				castbar:SetAlpha(0)
+			else
+				castbar:UnregisterAllEvents()
+			end
 		end
 
 		local altpowerbar = frame.powerBarAlt or frame.PowerBarAlt
