@@ -190,10 +190,10 @@ function oUF:HandleUnit(object, unit)
 		object:RegisterEvent('UPDATE_MOUSEOVER_UNIT', object.UpdateAllElements, true)
 	elseif(unit == 'focus') then
 		object:RegisterEvent('PLAYER_FOCUS_CHANGED', object.UpdateAllElements, true)
-	elseif(unit:match('boss%d?$')) then
+	elseif(unit:match('boss%d+$')) then
 		object:RegisterEvent('INSTANCE_ENCOUNTER_ENGAGE_UNIT', object.UpdateAllElements, true)
 		object:RegisterEvent('UNIT_TARGETABLE_CHANGED', object.UpdateAllElements)
-	elseif(unit:match('arena%d?$')) then
+	elseif(unit:match('arena%d+$')) then
 		object:RegisterEvent('ARENA_OPPONENT_UPDATE', object.UpdateAllElements, true)
 		if not (oUF.isClassic or oUF.isWrath) then
 			object:RegisterEvent('ARENA_PREP_OPPONENT_SPECIALIZATIONS', updateArenaPreparation, true)

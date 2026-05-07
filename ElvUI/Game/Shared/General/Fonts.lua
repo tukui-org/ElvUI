@@ -7,6 +7,8 @@ local strsub = strsub
 local tinsert = tinsert
 local strmatch = strmatch
 
+local FontStringScaleAnimationMode = Enum.FontStringScaleAnimationMode
+
 local FontMap = {
 	worldzone		= { objects = { _G.ZoneTextFont, _G.WorldMapTextFont } },
 	worldsubzone	= { object = _G.SubZoneTextFont },
@@ -60,10 +62,16 @@ function E:SetFont(obj, font, size, style, sR, sG, sB, sA, sX, sY, r, g, b, a)
 	if not obj then return end
 
 	if style == 'NONE' or not style then style = '' end
-	if E:CanFlagSlug(style) then style = style..'SLUG' end -- handle before shadow
+
+	local slug = E:CanFlagSlug(style)
+	if slug then style = style..'SLUG' end -- handle before shadow
 
 	local shadow = strsub(style, 0, 6) == 'SHADOW'
 	if shadow then style = strsub(style, 7) end -- shadow isnt a real style
+
+	if obj.SetScaleAnimationMode then
+		obj:SetScaleAnimationMode(slug and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
+	end
 
 	obj:SetFont(font, size, style)
 	obj:SetShadowColor(sR or 0, sG or 0, sB or 0, sA or (shadow and (style == '' and 1 or 0.6)) or 0)

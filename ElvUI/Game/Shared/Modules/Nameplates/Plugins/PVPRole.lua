@@ -74,7 +74,7 @@ local function Event(_, event, initLogin, isReload)
 		else
 			for i = 1, GetNumBattlefieldScores() do
 				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, specName = GetBattlefieldScore(i)
-				if E:IsSecretValue(name) then
+				if E:IsSecretValue(name) or E:IsSecretValue(specName) then
 					break -- bail out
 				elseif name and name ~= UNKNOWN then
 					local playerName = E:StripMyRealm(name)

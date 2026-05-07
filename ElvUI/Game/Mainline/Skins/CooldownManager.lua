@@ -302,6 +302,31 @@ function S:Blizzard_CooldownViewer()
 	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer)
 	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer)
 	S:CooldownManager_HandleSettings(_G.CooldownViewerSettings)
+
+	local ImportLayoutDialog = _G.CooldownViewerImportLayoutDialog
+	if ImportLayoutDialog then
+		ImportLayoutDialog.Border:Hide()
+		ImportLayoutDialog:SetTemplate('Transparent')
+
+		S:HandleButton(ImportLayoutDialog.AcceptButton)
+		S:HandleButton(ImportLayoutDialog.CancelButton)
+		S:HandleEditBox(ImportLayoutDialog.ImportBox)
+		S:HandleEditBox(ImportLayoutDialog.LayoutNameEditBox)
+		ImportLayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, -3, nil, 'TOPLEFT')
+		ImportLayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(10, 3, nil, 'BOTTOMRIGHT')
+	end
+
+	local LayoutDialog = _G.CooldownViewerLayoutDialog
+	if LayoutDialog then
+		LayoutDialog.Border:Hide()
+		LayoutDialog:SetTemplate('Transparent')
+
+		S:HandleButton(LayoutDialog.AcceptButton)
+		S:HandleButton(LayoutDialog.CancelButton)
+		S:HandleEditBox(LayoutDialog.LayoutNameEditBox)
+		LayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, -3, nil, 'TOPLEFT')
+		LayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, 3, nil, 'BOTTOMRIGHT')
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_CooldownViewer')

@@ -20,6 +20,61 @@ local function AbilityTooltip(frame)
 	TT:SetStyle(frame)
 end
 
+local function SetGarrisonFollower(tt)
+	-- Abilities
+	local numAbilities = tt.numAbilitiesStyled or 1
+	local abilities = tt.Abilities
+	local ability = abilities[numAbilities]
+	while ability do
+		ability.Icon:SetTexCoords()
+
+		if not ability.border then
+			ability.border = CreateFrame('Frame', nil, ability)
+			S:HandleIcon(ability.Icon, ability.border)
+		end
+
+		numAbilities = numAbilities + 1
+		ability = abilities[numAbilities]
+	end
+	tt.numAbilitiesStyled = numAbilities
+
+	-- Traits
+	local numTraits = tt.numTraitsStyled or 1
+	local traits = tt.Traits
+	local trait = traits[numTraits]
+	while trait do
+		trait.Icon:SetTexCoords()
+
+		if not trait.border then
+			trait.border = CreateFrame('Frame', nil, trait)
+			S:HandleIcon(trait.Icon, trait.border)
+		end
+
+		numTraits = numTraits + 1
+		trait = traits[numTraits]
+	end
+	tt.numTraitsStyled = numTraits
+end
+
+local function SetShipyardFollower(tt)
+	local numProperties = tt.numPropertiesStyled or 1
+	local properties = tt.Properties
+	local property = properties[numProperties]
+	while property do
+		property.Icon:SetTexCoords()
+
+		if not property.border then
+			property.border = CreateFrame('Frame', nil, property)
+			S:HandleIcon(property.Icon, property.border)
+		end
+
+		numProperties = numProperties + 1
+		property = properties[numProperties]
+	end
+
+	tt.numPropertiesStyled = numProperties
+end
+
 function S:GarrisonShipyardTooltip()
 	local tt = _G.GarrisonShipyardMapMissionTooltip
 	TT:SetStyle(tt)
@@ -43,16 +98,17 @@ function S:GarrisonShipyardTooltip()
 	StyleTooltip(_G.GarrisonBuildingFrame and _G.GarrisonBuildingFrame.BuildingLevelTooltip)
 	StyleTooltip(_G.GarrisonMissionMechanicFollowerCounterTooltip)
 	StyleTooltip(_G.GarrisonMissionMechanicTooltip)
+	StyleTooltip(_G.GarrisonBonusAreaTooltip)
 end
 
 function S:GarrisonTooltip()
 	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.tooltip then return end
 
-	StyleTooltip(_G.GarrisonFollowerTooltip)
 	StyleTooltip(_G.FloatingGarrisonFollowerTooltip)
 	StyleTooltip(_G.FloatingGarrisonMissionTooltip)
 	StyleTooltip(_G.FloatingGarrisonShipyardFollowerTooltip)
 	StyleTooltip(_G.GarrisonShipyardFollowerTooltip)
+	StyleTooltip(_G.GarrisonFollowerTooltip)
 
 	AbilityTooltip(_G.GarrisonFollowerAbilityTooltip)
 	AbilityTooltip(_G.FloatingGarrisonFollowerAbilityTooltip)
@@ -64,74 +120,8 @@ function S:GarrisonTooltip()
 	S:HandleCloseButton(_G.FloatingGarrisonMissionTooltip.CloseButton)
 	S:HandleCloseButton(_G.FloatingGarrisonShipyardFollowerTooltip.CloseButton)
 
-	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetGarrisonFollower', function(tooltipFrame)
-		-- Abilities
-		if tooltipFrame.numAbilitiesStyled == nil then
-			tooltipFrame.numAbilitiesStyled = 1
-		end
-
-		local numAbilitiesStyled = tooltipFrame.numAbilitiesStyled
-		local abilities = tooltipFrame.Abilities
-		local ability = abilities[numAbilitiesStyled]
-		while ability do
-			local icon = ability.Icon
-			icon:SetTexCoords()
-
-			if not ability.border then
-				ability.border = CreateFrame('Frame', nil, ability)
-				S:HandleIcon(ability.Icon, ability.border)
-			end
-
-			numAbilitiesStyled = numAbilitiesStyled + 1
-			ability = abilities[numAbilitiesStyled]
-		end
-		tooltipFrame.numAbilitiesStyled = numAbilitiesStyled
-
-		-- Traits
-		if tooltipFrame.numTraitsStyled == nil then
-			tooltipFrame.numTraitsStyled = 1
-		end
-
-		local numTraitsStyled = tooltipFrame.numTraitsStyled
-		local traits = tooltipFrame.Traits
-		local trait = traits[numTraitsStyled]
-		while trait do
-			local icon = trait.Icon
-			icon:SetTexCoords()
-
-			if not trait.border then
-				trait.border = CreateFrame('Frame', nil, trait)
-				S:HandleIcon(trait.Icon, trait.border)
-			end
-
-			numTraitsStyled = numTraitsStyled + 1
-			trait = traits[numTraitsStyled]
-		end
-		tooltipFrame.numTraitsStyled = numTraitsStyled
-	end)
-
-	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetShipyardFollower', function(tooltipFrame)
-		if tooltipFrame.numPropertiesStyled == nil then
-			tooltipFrame.numPropertiesStyled = 1
-		end
-
-		local numPropertiesStyled = tooltipFrame.numPropertiesStyled
-		local properties = tooltipFrame.Properties
-		local property = properties[numPropertiesStyled]
-		while property do
-			property.Icon:SetTexCoords()
-
-			if not property.border then
-				property.border = CreateFrame('Frame', nil, property)
-				S:HandleIcon(property.Icon, property.border)
-			end
-
-			numPropertiesStyled = numPropertiesStyled + 1
-			property = properties[numPropertiesStyled]
-		end
-
-		tooltipFrame.numPropertiesStyled = numPropertiesStyled
-	end)
+	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetGarrisonFollower', SetGarrisonFollower)
+	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetShipyardFollower', SetShipyardFollower)
 end
 
 S:AddCallback('GarrisonTooltip')

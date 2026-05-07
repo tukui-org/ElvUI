@@ -79,16 +79,23 @@ function S:BlizzardMiscFrames()
 	-- we can just hook onto this function so that we can get the correct `self`
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
 	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(frame)
-		if frame and frame.closeDialog and not frame.closeDialog.template then
-			frame.closeDialog:StripTextures()
-			frame.closeDialog:SetTemplate('Transparent')
-			frame:SetScale(E.uiscale)
+		frame:SetScale(E.uiscale)
 
-			local dialogName = frame.closeDialog.GetName and frame.closeDialog:GetName()
-			local closeButton = frame.closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
-			local resumeButton = frame.closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
-			if closeButton then S:HandleButton(closeButton) end
-			if resumeButton then S:HandleButton(resumeButton) end
+		local closeDialog = frame.closeDialog
+		if closeDialog and not closeDialog.template then
+			closeDialog:StripTextures()
+			closeDialog:SetTemplate('Transparent')
+
+			local dialogName = closeDialog.GetName and closeDialog:GetName()
+			local closeButton = closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
+			if closeButton then
+				S:HandleButton(closeButton, nil, nil, nil, true)
+			end
+
+			local resumeButton = closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
+			if resumeButton then
+				S:HandleButton(resumeButton, nil, nil, nil, true)
+			end
 		end
 	end)
 
@@ -96,12 +103,15 @@ function S:BlizzardMiscFrames()
 	-- cant be hooked directly so we can just use this
 	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
 	hooksecurefunc('MovieFrame_PlayMovie', function(frame)
-		if frame and frame.CloseDialog and not frame.CloseDialog.template then
-			frame:SetScale(E.uiscale)
-			frame.CloseDialog:StripTextures()
-			frame.CloseDialog:SetTemplate('Transparent')
-			S:HandleButton(frame.CloseDialog.ConfirmButton)
-			S:HandleButton(frame.CloseDialog.ResumeButton)
+		frame:SetScale(E.uiscale)
+
+		local closeDialog = frame.CloseDialog
+		if closeDialog and not closeDialog.template then
+			closeDialog:StripTextures()
+			closeDialog:SetTemplate('Transparent')
+
+			S:HandleButton(closeDialog.ConfirmButton)
+			S:HandleButton(closeDialog.ResumeButton)
 		end
 	end)
 

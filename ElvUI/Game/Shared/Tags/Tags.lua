@@ -89,7 +89,7 @@ local classSpecificSpells = { -- stagger IDs also in oUF stagger element
 if not E.Retail then
 	for textFormat in pairs(E.GetFormattedTextStyles) do
 		local tagFormat = strlower(gsub(textFormat, '_', '-'))
-		E:AddTag(format('health:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+		E:AddTag(format('health:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE', function(unit)
 			local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 			if status then
 				return status
@@ -166,7 +166,7 @@ if not E.Retail then
 		end, E.Classic, classSpecificSpells)
 
 		if tagFormat ~= 'percent' then
-			E:AddTag(format('health:%s:shortvalue', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+			E:AddTag(format('health:%s:shortvalue', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE', function(unit)
 				local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 				if status then
 					return status
@@ -275,7 +275,7 @@ if not E.Retail then
 		end
 	end, E.Classic)
 
-	E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+	E:AddTag('health:percent-with-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE', function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 		if status then
@@ -291,7 +291,7 @@ if not E.Retail then
 		return E:GetFormattedText('PERCENT', healthTotalIncludingAbsorbs, UnitHealthMax(unit))
 	end, E.Classic)
 
-	E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+	E:AddTag('health:percent-with-absorbs:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE', function(unit)
 		local absorb = UnitGetTotalAbsorbs(unit) or 0
 		if absorb == 0 then
 			return E:GetFormattedText('PERCENT', UnitHealth(unit), UnitHealthMax(unit))
@@ -307,7 +307,7 @@ if not E.Retail then
 			return E:GetFormattedText('PERCENT', perc, 100, dec)
 		end
 
-		E:AddTag('health:deficit-percent-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+		E:AddTag('health:deficit-percent-absorbs', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_ABSORB_AMOUNT_CHANGED UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE', function(unit)
 			local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 
 			if status then
@@ -466,7 +466,7 @@ if not E.Retail then
 		end
 	end)
 
-	E:AddTag('healthcolor', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PLAYER_FLAGS_CHANGED', function(unit)
+	E:AddTag('healthcolor', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE', function(unit)
 		if UnitIsDeadOrGhost(unit) or not UnitIsConnected(unit) then
 			return Hex(0.84, 0.75, 0.65)
 		else
@@ -674,7 +674,7 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		return name
 	end)
 
-	E:AddTag(format('name:%s:status', textFormat), 'UNIT_NAME_UPDATE UNIT_CONNECTION PLAYER_FLAGS_CHANGED UNIT_HEALTH INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	E:AddTag(format('name:%s:status', textFormat), 'UNIT_NAME_UPDATE UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE UNIT_HEALTH INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 		local status = UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local name = UnitName(unit)
 
@@ -879,7 +879,7 @@ E:AddTag('group:raid', 'GROUP_ROSTER_UPDATE', function(unit)
 	if not IsInRaid() then return end
 
 	local name, realm = UnitName(unit)
-	if E:IsSecretValue(realm) or not name then return end
+	if E:IsSecretValue(name) or E:IsSecretValue(realm) or not name then return end
 
 	local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 	for i = 1, GetNumGroupMembers() do
@@ -1285,19 +1285,19 @@ do
 	local iconRed = E:TextureString(E.Media.ChatLogos.ElvRed,':13:25')
 
 	E:AddTag('ElvUI-Users', 20, function(unit)
-		if E.UserList and next(E.UserList) then
-			local name, realm = UnitName(unit)
-			if name then
-				local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
-				local userVersion = nameRealm and E.UserList[nameRealm]
-				if userVersion then
-					if highestVersion < userVersion then
-						highestVersion = userVersion
-					end
+		if not E.UserList or not next(E.UserList) then return end
 
-					return (userVersion < highestVersion) and iconRed or iconBlue
-				end
+		local name, realm = UnitName(unit)
+		if E:IsSecretValue(name) or E:IsSecretValue(realm) or not name then return end
+
+		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
+		local userVersion = nameRealm and E.UserList[nameRealm]
+		if userVersion then
+			if highestVersion < userVersion then
+				highestVersion = userVersion
 			end
+
+			return (userVersion < highestVersion) and iconRed or iconBlue
 		end
 	end)
 end

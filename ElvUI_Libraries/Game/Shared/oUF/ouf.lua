@@ -958,7 +958,7 @@ do
 			local nameplate = GetNamePlateForUnit(unit)
 			if(not nameplate) then return end
 
-			oUF:DisableBlizzardNamePlate(nameplate)
+			oUF:DisableBlizzard(unit)
 
 			if(not nameplate.unitFrame) then
 				nameplate.style = self.style
@@ -973,6 +973,11 @@ do
 				walkObject(nameplate.unitFrame, unit)
 			else
 				Private.UpdateUnits(nameplate.unitFrame, unit)
+			end
+
+			if nameplate.SetAllHitTestPoints then
+				nameplate:ClearAllHitTestPoints() -- to prevent lingering hit test points on default
+				nameplate:SetAllHitTestPoints(nameplate.unitFrame)
 			end
 
 			nameplate.unitFrame:SetAttribute('unit', unit)

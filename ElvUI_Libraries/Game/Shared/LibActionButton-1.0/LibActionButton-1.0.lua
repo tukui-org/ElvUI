@@ -61,6 +61,7 @@ local SpellVFX_ClearReticle, SpellVFX_ClearInterruptDisplay, SpellVFX_PlaySpellC
 local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
 
 local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- Enable custom flyouts
+local FontStringScaleAnimationMode = Enum.FontStringScaleAnimationMode
 
 -- GLOBALS: C_Item, C_Spell, C_ToyBox, UIParent
 -- GLOBALS: CooldownFrame_Clear, ClearActionButtonCooldowns, ClearCursor, CooldownFrame_Set, CreateFrame
@@ -167,6 +168,7 @@ do -- properly support range symbol when it's shown ~Simpy
 			font = stockFont,
 			size = stockFontSize,
 			flags = stockFontOutline,
+			slug = false,
 		},
 		color = { 0.9, 0.9, 0.9 }
 	}
@@ -216,6 +218,7 @@ local DefaultConfig = {
 				font = false, -- "Fonts\\ARIALN.TTF",
 				size = 14,
 				flags = "OUTLINE",
+				slug = false
 			},
 			color = { 0.75, 0.75, 0.75 },
 			position = {
@@ -231,6 +234,7 @@ local DefaultConfig = {
 				font = false, -- "Fonts\\ARIALN.TTF",
 				size = 16,
 				flags = "OUTLINE",
+				slug = false
 			},
 			color = { 1, 1, 1 },
 			position = {
@@ -246,6 +250,7 @@ local DefaultConfig = {
 				font = false, -- "Fonts\\FRIZQT__.TTF",
 				size = 12,
 				flags = "OUTLINE",
+				slug = false
 			},
 			color = { 1, 1, 1 },
 			position = {
@@ -1395,6 +1400,10 @@ local function UpdateTextElement(button, element, config, defaultFont, fromRange
 		element:SetFont(opt.font or defaultFont, opt.size or 11, style)
 		element:SetShadowColor(0, 0, 0, shadow and (style == '' and 1 or 0.6) or 0)
 		element:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
+	end
+
+	if element.SetScaleAnimationMode then
+		element:SetScaleAnimationMode((not rangeIndicator and config.font.slug) and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
 	end
 
 	if fromRange and button.outOfRange then

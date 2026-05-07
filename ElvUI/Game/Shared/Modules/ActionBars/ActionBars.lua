@@ -38,6 +38,7 @@ local SPELLS_PER_PAGE = SPELLS_PER_PAGE
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
+local FontStringScaleAnimationMode = Enum.FontStringScaleAnimationMode
 local BINDING_SET = Enum.BindingSet
 
 local IsHouseEditorActive = C_HouseEditor and C_HouseEditor.IsHouseEditorActive
@@ -1382,10 +1383,12 @@ function AB:GetFont(name, size, outline)
 	if not outline then outline = AB.db.fontOutline end
 
 	if outline == 'NONE' then outline = '' end -- none isnt a real style
-	if E:CanFlagSlug(outline) then outline = outline..'SLUG' end
+
+	local slug = E:CanFlagSlug(outline)
+	if slug then outline = outline..'SLUG' end
 
 	local font = LSM:Fetch('font', name or AB.db.font)
-	return font, size or AB.db.fontSize, outline
+	return font, size or AB.db.fontSize, outline, slug
 end
 
 function AB:GetHotkeyConfig(db)
@@ -1396,8 +1399,8 @@ function AB:GetHotkeyConfig(db)
 	local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
 	local show = not (db and not db.hotkeytext)
 
-	local font, size, flags = AB:GetFont(db and db.hotkeyFont, db and db.hotkeyFontSize, db and db.hotkeyFontOutline)
-	return font, size, flags, anchor, offsetX, offsetY, AB:GetTextJustify(anchor), { color.r or 1, color.g or 1, color.b or 1, color.a or 1 }, show
+	local font, size, flags, slug = AB:GetFont(db and db.hotkeyFont, db and db.hotkeyFontSize, db and db.hotkeyFontOutline)
+	return font, size, flags, slug, anchor, offsetX, offsetY, AB:GetTextJustify(anchor), { color.r or 1, color.g or 1, color.b or 1, color.a or 1 }, show
 end
 
 do
@@ -1431,7 +1434,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 
 	local hotkeyText = text.hotkey
 	if hotkeyText then
-		local font, size, flags, anchor, offsetX, offsetY, justify, color = AB:GetHotkeyConfig(db)
+		local font, size, flags, slug, anchor, offsetX, offsetY, justify, color = AB:GetHotkeyConfig(db)
 		hotkeyText.color = color
 		hotkeyText.justifyH = justify
 
@@ -1440,6 +1443,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 			fontText.font = font
 			fontText.size = size
 			fontText.flags = flags
+			fontText.slug = slug
 		end
 
 		local position = hotkeyText.position
@@ -1455,7 +1459,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	if countText then
 		local fontText = countText.font
 		if fontText then
-			fontText.font, fontText.size, fontText.flags = AB:GetFont(db and db.countFont, db and db.countFontSize, db and db.countFontOutline)
+			fontText.font, fontText.size, fontText.flags, fontText.slug = AB:GetFont(db and db.countFont, db and db.countFontSize, db and db.countFontOutline)
 		end
 
 		local position = countText.position
@@ -1476,7 +1480,7 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	if macroText then
 		local fontText = macroText.font
 		if fontText then
-			fontText.font, fontText.size, fontText.flags = AB:GetFont(db and db.macroFont, db and db.macroFontSize, db and db.macroFontOutline)
+			fontText.font, fontText.size, fontText.flags, fontText.slug = AB:GetFont(db and db.macroFont, db and db.macroFontSize, db and db.macroFontOutline)
 		end
 
 		local position = macroText.position
@@ -1550,17 +1554,22 @@ do
 		local hotkey = button.HotKey
 		if not hotkey then return end
 
-		local font, size, flags, anchor, offsetX, offsetY, justify, color, show = AB:GetHotkeyConfig(button:GetParent().db)
+		local font, size, flags, slug, anchor, offsetX, offsetY, justify, color, show = AB:GetHotkeyConfig(button:GetParent().db)
 
 		hotkey:SetShown(show)
 
 		local text = hotkey:GetText()
-		if text == _G.RANGE_INDICATOR then
+		local rangeIndicator = text == _G.RANGE_INDICATOR
+		if rangeIndicator then
 			hotkey:SetFont(stockFont, stockFontSize, stockFontOutline)
 			hotkey:SetTextColor(0.9, 0.9, 0.9)
 		elseif text then
 			hotkey:FontTemplate(font, size, flags)
 			hotkey:SetTextColor(unpack(color))
+		end
+
+		if hotkey.SetScaleAnimationMode then
+			hotkey:SetScaleAnimationMode((not rangeIndicator and slug) and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
 		end
 
 		if not button.useMasque then
