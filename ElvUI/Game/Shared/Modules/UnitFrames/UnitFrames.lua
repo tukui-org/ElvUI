@@ -1816,7 +1816,7 @@ do
 	function ElvUF:DisableBlizzard(unit)
 		if not unit then return end
 
-		if strmatch(unit, 'nameplate%d?%d?%d?$') then
+		if strmatch(unit, 'nameplate%d+$') then
 			if E.private.nameplates.enable then
 				local frame = GetNamePlateForUnit(unit)
 				local plate = frame and frame.UnitFrame
