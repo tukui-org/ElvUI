@@ -26,8 +26,7 @@ local function SetGarrisonFollower(tt)
 	local abilities = tt.Abilities
 	local ability = abilities[numAbilities]
 	while ability do
-		local icon = ability.Icon
-		icon:SetTexCoords()
+		ability.Icon:SetTexCoords()
 
 		if not ability.border then
 			ability.border = CreateFrame('Frame', nil, ability)
@@ -44,8 +43,7 @@ local function SetGarrisonFollower(tt)
 	local traits = tt.Traits
 	local trait = traits[numTraits]
 	while trait do
-		local icon = trait.Icon
-		icon:SetTexCoords()
+		trait.Icon:SetTexCoords()
 
 		if not trait.border then
 			trait.border = CreateFrame('Frame', nil, trait)
