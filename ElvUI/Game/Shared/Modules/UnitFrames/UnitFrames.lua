@@ -1872,10 +1872,10 @@ do
 				HideFrame(_G.TargetofFocusFrame)
 			elseif disable.target and unit == 'targettarget' then
 				HideFrame(_G.TargetFrameToT)
-			elseif disable.boss and strmatch(unit, 'boss%d?$') then
+			elseif disable.boss and strmatch(unit, 'boss%d+$') then
 				HideFrame(_G.BossTargetFrameContainer, 1)
 
-				local id = strmatch(unit, 'boss(%d)')
+				local id = strmatch(unit, 'boss(%d+)')
 				if id then
 					HideFrame(_G['Boss'..id..'TargetFrame'], true)
 				else
@@ -1883,7 +1883,7 @@ do
 						HideFrame(_G['Boss'..i..'TargetFrame'], true)
 					end
 				end
-			elseif disable.party and strmatch(unit, 'party%d?$') then
+			elseif disable.party and strmatch(unit, 'party%d+$') then
 				local frame = _G.PartyFrame
 				if frame then -- Retail
 					HideFrame(frame, 1)
@@ -1905,7 +1905,7 @@ do
 						HideFrame(_G['CompactPartyFrameMember'..i])
 					end
 				end
-			elseif disable.arena and strmatch(unit, 'arena%d?$') then
+			elseif disable.arena and strmatch(unit, 'arena%d+$') then
 				if _G.CompactArenaFrame then -- Retail
 					HideFrame(_G.CompactArenaFrame, 1)
 
