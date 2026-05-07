@@ -1883,7 +1883,7 @@ do
 				for i = 1, MAX_BOSS_FRAMES do
 					HideFrame(_G['Boss'..i..'TargetFrame'], true)
 				end
-			elseif not disabledParty and disable.party and strmatch(unit, 'boss%d+$') then
+			elseif not disabledParty and disable.party and strmatch(unit, 'party%d+$') then
 				disabledParty = true
 
 				local frame = _G.PartyFrame
