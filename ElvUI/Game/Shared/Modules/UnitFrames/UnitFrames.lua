@@ -1769,6 +1769,7 @@ do
 	local MAX_BOSS_FRAMES = 5
 
 	local handledUnits = {}
+	local handledPlates = {}
 	local lockedFrames = {}
 
 	-- lock Boss, Party, and Arena
@@ -1813,15 +1814,21 @@ do
 	end
 
 	function ElvUF:DisableBlizzard(unit)
-		if not unit or handledUnits[unit] then return end
-		handledUnits[unit] = true
+		if not unit then return end
 
 		if strmatch(unit, 'nameplate%d?%d?%d?$') then
 			if E.private.nameplates.enable then
 				local frame = GetNamePlateForUnit(unit)
-				HideFrame(frame and frame.UnitFrame, 2)
+				local plate = frame and frame.UnitFrame
+				if plate and not handledPlates[plate] then
+					handledPlates[plate] = true
+
+					HideFrame(frame and frame.UnitFrame, 2)
+				end
 			end
-		elseif E.private.unitframe.enable then
+		elseif E.private.unitframe.enable and not handledUnits[unit] then
+			handledUnits[unit] = true
+
 			local disable = E.private.unitframe.disabledBlizzardFrames
 			if unit == 'player' then
 				if disable.player then
