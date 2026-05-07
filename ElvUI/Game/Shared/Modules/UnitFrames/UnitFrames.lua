@@ -1823,7 +1823,7 @@ do
 				if plate and not handledPlates[plate] then
 					handledPlates[plate] = true
 
-					HideFrame(frame and frame.UnitFrame, 2)
+					HideFrame(plate, 2)
 				end
 			end
 		elseif E.private.unitframe.enable and not handledUnits[unit] then
