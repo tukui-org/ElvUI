@@ -1770,6 +1770,9 @@ do
 
 	local handledUnits = {}
 	local handledPlates = {}
+	local disabledBoss = false
+	local disabledParty = false
+	local disabledArena = false
 	local lockedFrames = {}
 
 	-- lock Boss, Party, and Arena
@@ -1872,18 +1875,17 @@ do
 				HideFrame(_G.TargetofFocusFrame)
 			elseif disable.target and unit == 'targettarget' then
 				HideFrame(_G.TargetFrameToT)
-			elseif disable.boss and strmatch(unit, 'boss%d+$') then
+			elseif not disabledBoss and disable.boss and strmatch(unit, 'boss%d+$') then
+				disabledBoss = true
+
 				HideFrame(_G.BossTargetFrameContainer, 1)
 
-				local id = strmatch(unit, 'boss(%d+)')
-				if id then
-					HideFrame(_G['Boss'..id..'TargetFrame'], true)
-				else
-					for i = 1, MAX_BOSS_FRAMES do
-						HideFrame(_G['Boss'..i..'TargetFrame'], true)
-					end
+				for i = 1, MAX_BOSS_FRAMES do
+					HideFrame(_G['Boss'..i..'TargetFrame'], true)
 				end
-			elseif disable.party and strmatch(unit, 'party%d+$') then
+			elseif not disabledParty and disable.party and strmatch(unit, 'boss%d+$') then
+				disabledParty = true
+
 				local frame = _G.PartyFrame
 				if frame then -- Retail
 					HideFrame(frame, 1)
@@ -1895,17 +1897,13 @@ do
 					HideFrame(_G.PartyMemberBackground)
 				end
 
-				local id = strmatch(unit, 'party(%d)')
-				if id then
-					HideFrame(_G['PartyMemberFrame'..id])
-					HideFrame(_G['CompactPartyFrameMember'..id])
-				else
-					for i = 1, MAX_PARTY do
-						HideFrame(_G['PartyMemberFrame'..i])
-						HideFrame(_G['CompactPartyFrameMember'..i])
-					end
+				for i = 1, MAX_PARTY do
+					HideFrame(_G['PartyMemberFrame'..i])
+					HideFrame(_G['CompactPartyFrameMember'..i])
 				end
-			elseif disable.arena and strmatch(unit, 'arena%d+$') then
+			elseif not disabledArena and disable.arena and strmatch(unit, 'arena%d+$') then
+				disabledArena = true
+
 				if _G.CompactArenaFrame then -- Retail
 					HideFrame(_G.CompactArenaFrame, 1)
 
@@ -1921,20 +1919,15 @@ do
 					-- reference on oUF and clear the global frame reference, to fix ClearAllPoints taint
 					ElvUF.ArenaEnemyFrames = _G.ArenaEnemyFrames
 					ElvUF.ArenaPrepFrames = _G.ArenaPrepFrames
+
 					_G.ArenaEnemyFrames = nil
 					_G.ArenaPrepFrames = nil
 				end
 
 				-- actually handle the sub frames now
-				local id = strmatch(unit, 'arena(%d)')
-				if id then
-					HideFrame(_G['ArenaEnemyMatchFrame'..id], true)
-					HideFrame(_G['ArenaEnemyPrepFrame'..id], true)
-				else
-					for i = 1, MAX_ARENA_ENEMIES do
-						HideFrame(_G['ArenaEnemyMatchFrame'..i], true)
-						HideFrame(_G['ArenaEnemyPrepFrame'..i], true)
-					end
+				for i = 1, MAX_ARENA_ENEMIES do
+					HideFrame(_G['ArenaEnemyMatchFrame'..i], true)
+					HideFrame(_G['ArenaEnemyPrepFrame'..i], true)
 				end
 			end
 		end
