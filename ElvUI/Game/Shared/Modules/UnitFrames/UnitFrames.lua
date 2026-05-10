@@ -1773,7 +1773,8 @@ do
 	local disabledBoss = false
 	local disabledParty = false
 	local disabledArena = false
-	local lockedFrames = {}
+	local lockedParent = {}
+	local lockedAlpha = {}
 
 	-- lock Boss, Party, and Arena
 	local function LockParent(frame, parent)
@@ -1800,19 +1801,19 @@ do
 		if lockParent or not which then
 			frame:SetParent(E.HiddenFrame)
 
-			if lockParent and not lockedFrames[frame] then
+			if lockParent and not lockedParent[frame] then
 				hooksecurefunc(frame, 'SetParent', LockParent)
-				lockedFrames[frame] = true
+				lockedParent[frame] = true
 			end
 		end
 
 		local lockAlpha = which == 2
-		if lockAlpha and not lockedFrames[frame] then
+		if lockAlpha and not lockedAlpha[frame] then
 			NP:BlizzardPlate_HookAuras(frame) -- setup Blizzard Auras
 
 			hooksecurefunc(frame, 'SetAlpha', LockAlpha)
 
-			lockedFrames[frame] = true
+			lockedAlpha[frame] = true
 		end
 	end
 
