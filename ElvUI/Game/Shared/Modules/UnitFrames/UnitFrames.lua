@@ -1773,7 +1773,8 @@ do
 	local disabledBoss = false
 	local disabledParty = false
 	local disabledArena = false
-	local lockedFrames = {}
+	local lockedParent = {}
+	local lockedAlpha = {}
 
 	-- lock Boss, Party, and Arena
 	local function LockParent(frame, parent)
@@ -1800,19 +1801,19 @@ do
 		if lockParent or not which then
 			frame:SetParent(E.HiddenFrame)
 
-			if lockParent and not lockedFrames[frame] then
+			if lockParent and not lockedParent[frame] then
 				hooksecurefunc(frame, 'SetParent', LockParent)
-				lockedFrames[frame] = true
+				lockedParent[frame] = true
 			end
 		end
 
 		local lockAlpha = which == 2
-		if lockAlpha and not lockedFrames[frame] then
+		if lockAlpha and not lockedAlpha[frame] then
 			NP:BlizzardPlate_HookAuras(frame) -- setup Blizzard Auras
 
 			hooksecurefunc(frame, 'SetAlpha', LockAlpha)
 
-			lockedFrames[frame] = true
+			lockedAlpha[frame] = true
 		end
 	end
 
@@ -1875,7 +1876,7 @@ do
 				HideFrame(_G.TargetofFocusFrame)
 			elseif disable.target and unit == 'targettarget' then
 				HideFrame(_G.TargetFrameToT)
-			elseif not disabledBoss and disable.boss and strmatch(unit, 'boss%d+$') then
+			elseif not disabledBoss and disable.boss and strmatch(unit, 'boss%d*$') then
 				disabledBoss = true
 
 				HideFrame(_G.BossTargetFrameContainer, 1)
@@ -1883,7 +1884,7 @@ do
 				for i = 1, MAX_BOSS_FRAMES do
 					HideFrame(_G['Boss'..i..'TargetFrame'], true)
 				end
-			elseif not disabledParty and disable.party and strmatch(unit, 'party%d+$') then
+			elseif not disabledParty and disable.party and strmatch(unit, 'party%d*$') then
 				disabledParty = true
 
 				local frame = _G.PartyFrame
@@ -1901,7 +1902,7 @@ do
 					HideFrame(_G['PartyMemberFrame'..i])
 					HideFrame(_G['CompactPartyFrameMember'..i])
 				end
-			elseif not disabledArena and disable.arena and strmatch(unit, 'arena%d+$') then
+			elseif not disabledArena and disable.arena and strmatch(unit, 'arena%d*$') then
 				disabledArena = true
 
 				if _G.CompactArenaFrame then -- Retail
