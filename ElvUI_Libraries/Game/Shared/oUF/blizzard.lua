@@ -128,7 +128,7 @@ function oUF:DisableBlizzard(unit)
 		handleFrame(_G.TargetFrame)
 	elseif(unit == 'focus') then
 		handleFrame(_G.FocusFrame)
-	elseif(unit:match('boss%d+$')) then
+	elseif(unit:match('boss%d*$')) then
 		if(not isBossHooked) then
 			isBossHooked = true
 
@@ -147,7 +147,7 @@ function oUF:DisableBlizzard(unit)
 				handleFrame('Boss' .. i .. 'TargetFrame', true)
 			end
 		end
-	elseif(unit:match('party%d+$')) then
+	elseif(unit:match('party%d*$')) then
 		if(not isPartyHooked) then
 			isPartyHooked = true
 
@@ -161,7 +161,7 @@ function oUF:DisableBlizzard(unit)
 				handleFrame('CompactPartyFrameMember' .. i)
 			end
 		end
-	elseif(unit:match('arena%d+$')) then
+	elseif(unit:match('arena%d*$')) then
 		if(not isArenaHooked) then
 			isArenaHooked = true
 
