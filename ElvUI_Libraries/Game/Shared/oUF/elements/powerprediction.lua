@@ -100,12 +100,13 @@ local function Update(self, event, unit)
 			element.mainCost = mainCost
 			element.altCost = altCost
 		else
+			local secretMax = oUF:IsSecretValue(mainMax)
 			local checkRequiredAura = isPlayer and #costTable > 1
 			for _, costInfo in next, costTable do
 				local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
 				local checkSpec = not checkRequiredAura or costInfo.hasRequiredAura
 				if checkSpec and (okMax and ctype == powerType) then
-					mainCost = ((isPlayer or cost < mainMax) and cost) or (mainMax * cperc) / 100
+					mainCost = (isPlayer and cost) or (secretMax and 1) or (cost < mainMax and cost) or (mainMax * cperc) / 100
 					element.mainCost = mainCost
 
 					break
