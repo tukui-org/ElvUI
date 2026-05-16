@@ -178,6 +178,10 @@ function PA:CreateAura(parent, unit, index, db)
 		aura:Size(db.icon.size)
 	end
 
+	-- for some reason, its not obeying the frame level; Blizzard bug?
+	aura:OffsetFrameLevel(nil, parent) -- set it to something else, fixes the bug
+	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
+
 	aura:ClearAllPoints()
 
 	local offsetNoMouse = (db.clickThrough and db.icon.size) or 0
