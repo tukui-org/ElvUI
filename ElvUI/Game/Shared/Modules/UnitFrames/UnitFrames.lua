@@ -1791,7 +1791,7 @@ do
 	end
 
 	-- which is used for sepcific handling
-	-- true: do not reparent, 1: lock parent, 2: is nameplate
+	-- true: do not reparent, 1: lock parent, 2: retail nameplate (required this way specifically for Blizzard Auras)
 	local function HideFrame(frame, which)
 		if not frame then return end
 
@@ -1827,7 +1827,7 @@ do
 				if plate and not handledPlates[plate] then
 					handledPlates[plate] = true
 
-					HideFrame(plate, 2)
+					HideFrame(plate, E.Retail and 2 or 1)
 				end
 			end
 		elseif E.private.unitframe.enable and not handledUnits[unit] then
