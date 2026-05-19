@@ -1,10 +1,29 @@
+### Version 15.14 [ May 18th 2026 ]
+*   Unitframes: Additional class power not showing up.
+*   Datatext volume error when shift clicking.
+*   Datatext could error when quick switching.
+*   Aura Indicator for all totems updated (Classic, TBC, and Wrath).
+*   Movie and Cinematic dialogs skinned again.
+*   Setting some fonts was tainting a few areas.
+*   Nameplate PVP Role erroring from secrets.
+*   Item level erroring from secrets.
+*   Nameplate clickable area (hitrects) handled differently.
+*   Skinned the CDM Import and Dialog window.
+*   LibDispel: Emergency Salve for Hunters added.
+*   Protected tag [group:raid] from secret errors.
+*   Prefer vertex scaling with slugged fonts.
+*   Chat not showing linked achievements.
+*   Skinned missing Garrison tooltip.
+*   Power Prediction causing secret error.
+*   Private Auras would sometimes be on the wrong level.
+
 ### Version 15.13 [ April 22nd 2026 ]
 *   Tooltip: UnitName not allowed when secret.
 *   MapInfo: GetUnitSpeed not allowed when secret.
 *   Unitframes: Auras source text can't be shortened when secret.
 *   Minimap: Rare error when profile is switching and ZoomReset happens.
 *   Datatext: Stat calculations are no longer allowed when secret.  Versatility, Critical, Mana Regen, Movement Speed, Attack Power, and Mastery all updated.
-*   Tags: Movement speed updated to use a secret-safe method. However "speed:yardspersec-moving", "speed:percent-moving", and "speed:percent-moving-raw" were removed on Retail.
+*   Tags: Movement speed updated to use a secret-safe method. However [speed:yardspersec-moving], [speed:percent-moving], and [speed:percent-moving-raw] were removed on Retail.
 *   Unitframes: Shadow Priest additional mana bar not showing.
 *   Layout: Rare error when profile is switching involving ExtraActionBarHolder.
 *   Actionbars: Font outline issue causing some bars to not be shown.

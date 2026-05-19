@@ -3,7 +3,6 @@ local PA = E:GetModule('PrivateAuras')
 
 local _G = _G
 local next = next
-local format = format
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local CopyTable = CopyTable
@@ -165,7 +164,7 @@ end
 function PA:CreateAura(parent, unit, index, db)
 	local aura = parent.auraIcons[index]
 	if not aura then
-		aura = CreateFrame('Frame', format('%s%d', parent:GetName(), index), parent)
+		aura = CreateFrame('Frame', '$parent'..index, parent)
 	end
 
 	if not aura.anchorID then
@@ -178,6 +177,10 @@ function PA:CreateAura(parent, unit, index, db)
 	else
 		aura:Size(db.icon.size)
 	end
+
+	-- for some reason, its not obeying the frame level; Blizzard bug?
+	aura:OffsetFrameLevel(nil, parent) -- set it to something else, fixes the bug
+	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
 
 	aura:ClearAllPoints()
 
