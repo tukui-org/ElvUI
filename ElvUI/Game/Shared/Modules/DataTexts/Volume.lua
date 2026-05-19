@@ -2,20 +2,17 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local tonumber = tonumber
 local format = format
 local ipairs = ipairs
 local tinsert = tinsert
-
-local IsShiftKeyDown = IsShiftKeyDown
-local SOUND = SOUND
+local tonumber = tonumber
 
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
-
-local Sound_GameSystem_GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDriverNameByIndex
-local Sound_GameSystem_GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers
-local Sound_GameSystem_RestartSoundSystem = Sound_GameSystem_RestartSoundSystem
+local GetOutputDriverNameByIndex = Sound_GameSystem_GetOutputDriverNameByIndex
+local GetNumOutputDrivers = Sound_GameSystem_GetNumOutputDrivers
+local RestartSoundSystem = Sound_GameSystem_RestartSoundSystem
+local IsShiftKeyDown = IsShiftKeyDown
 
 local Sound_CVars = {
 	Sound_EnableAllSound = true,
@@ -76,18 +73,18 @@ end
 
 local function SelectSoundOutput(_, arg1)
 	E:SetCVar('Sound_OutputDriverIndex', arg1, 'ELVUI_VOLUME')
-	Sound_GameSystem_RestartSoundSystem()
+	RestartSoundSystem()
 end
 
-for i = 0, Sound_GameSystem_GetNumOutputDrivers() - 1 do
-	tinsert(deviceMenu, { text = Sound_GameSystem_GetOutputDriverNameByIndex(i), checked = function() return i == tonumber(GetCVar('Sound_OutputDriverIndex')) end, func = SelectSoundOutput, arg1 = i })
+for i = 0, GetNumOutputDrivers() - 1 do
+	tinsert(deviceMenu, { text = GetOutputDriverNameByIndex(i), checked = function() return i == tonumber(GetCVar('Sound_OutputDriverIndex')) end, func = SelectSoundOutput, arg1 = i })
 end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	DT.tooltip:AddLine(L["Active Output Audio Device"], 1, 1, 1)
-	DT.tooltip:AddLine(Sound_GameSystem_GetOutputDriverNameByIndex(GetCVar('Sound_OutputDriverIndex')))
+	DT.tooltip:AddLine(GetOutputDriverNameByIndex(GetCVar('Sound_OutputDriverIndex')))
 	DT.tooltip:AddLine(' ')
 	DT.tooltip:AddLine(L["Volume Streams"], 1, 1, 1)
 

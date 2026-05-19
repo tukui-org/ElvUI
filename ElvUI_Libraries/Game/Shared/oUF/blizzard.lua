@@ -4,6 +4,7 @@ local oUF = ns.oUF
 local wipe, next, type = wipe, next, type
 local hooksecurefunc = hooksecurefunc
 
+local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local InCombatLockdown = InCombatLockdown
 local _G = _G
 
@@ -172,7 +173,7 @@ function oUF:DisableBlizzard(unit)
 			end
 		end
 	elseif(unit:match('nameplate%d+$')) then
-		local frame = C_NamePlate.GetNamePlateForUnit(unit)
+		local frame = GetNamePlateForUnit(unit)
 		if frame and frame.UnitFrame then
 			handleFrame(frame.UnitFrame, true)
 		end

@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local gsub, format = gsub, format
+local gsub = gsub
+local format = format
 local strlower = strlower
 
 local UnitHealth = UnitHealth
