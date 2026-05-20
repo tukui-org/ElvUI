@@ -42,6 +42,7 @@ local oUF = ns.oUF
 local UnitGUID = UnitGUID
 local UnitClass = UnitClass
 local UnitIsVisible = UnitIsVisible
+local UnitIsPlayer = UnitIsPlayer
 local UnitIsConnected = UnitIsConnected
 local SetPortraitTexture = SetPortraitTexture
 local IsUnitModelReadyForUI = IsUnitModelReadyForUI
@@ -72,21 +73,30 @@ local function Update(self, event)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local isAvailable = element:IsVisible() and IsUnitModelReadyForUI(unit) and UnitIsConnected(unit) and UnitIsVisible(unit)
+	local isPlayer = UnitIsPlayer(unit)
+	local isVisible = not isPlayer or UnitIsVisible(unit)
+	local isAvailable = element:IsVisible() and isVisible and (not isPlayer or (IsUnitModelReadyForUI(unit) and UnitIsConnected(unit)))
 	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
+		local prevState = element.state
 		element.state = isAvailable
 
 		if element.playerModel then
-			element:ClearModel()
-			element:SetCamDistanceScale(isAvailable and 1 or 0.25)
-			element:SetPortraitZoom(isAvailable and 1 or 0)
-			element:SetPosition(0, 0, isAvailable and 0 or 0.25)
-
 			if isAvailable then
-				element:SetUnit(unit)
+				element:SetCamDistanceScale(1)
+				element:SetPortraitZoom(1)
+				element:SetPosition(0, 0, 0)
+				-- Only interrupt model streaming for genuine unit/state changes.
+				-- ClearModel() on every UNIT_PORTRAIT_UPDATE would abort async NPC model loads.
+				if newGUID or event == 'UNIT_MODEL_CHANGED' or not prevState then
+					element:SetUnit(unit)
+				end
 			else
+				element:ClearModel()
+				element:SetCamDistanceScale(0.25)
+				element:SetPortraitZoom(0)
+				element:SetPosition(0, 0, 0.25)
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
 			end
 		elseif element.useClassBase then
@@ -138,6 +148,7 @@ local function Enable(self, unit)
 		local playerModel = element:IsObjectType('PlayerModel')
 		if playerModel then
 			self:RegisterEvent('UNIT_MODEL_CHANGED', Path)
+			self:RegisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		else
 			self:RegisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 			self:RegisterEvent('PORTRAITS_UPDATED', Path, true)
@@ -168,6 +179,7 @@ local function Disable(self)
 			element:ClearModel()
 
 			self:UnregisterEvent('UNIT_MODEL_CHANGED', Path)
+			self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		else
 			self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 			self:UnregisterEvent('PORTRAITS_UPDATED', Path)
