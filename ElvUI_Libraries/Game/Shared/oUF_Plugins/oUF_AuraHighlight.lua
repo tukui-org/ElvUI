@@ -12,7 +12,10 @@ local UnitCanAssist = UnitCanAssist
 
 local function DebuffLoop(_, check, list, name, icon, _, auraType, _, _, _, _, _, spellID)
 	local allowSpell = oUF:NotSecretValue(spellID)
-	local spell = list and (allowSpell and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
+	local spell
+	if list and allowSpell and oUF:NotSecretValue(name) then
+		spell = list[spellID] or list[name]
+	end
 
 	if spell then
 		if spell.enable then
@@ -31,7 +34,10 @@ local function DebuffLoop(_, check, list, name, icon, _, auraType, _, _, _, _, _
 end
 
 local function BuffLoop(_, _, list, name, icon, _, auraType, _, _, source, _, _, spellID)
-	local spell = list and (oUF:NotSecretValue(spellID) and oUF:NotSecretValue(name)) and (list[spellID] or list[name])
+	if not list then return end
+	if oUF:IsSecretValue(spellID) or oUF:IsSecretValue(name) then return end
+
+	local spell = list[spellID] or list[name]
 	if spell and spell.enable and (not spell.ownOnly or source == 'player') then
 		return auraType, icon, true, spell.style, spell.color
 	end
@@ -45,8 +51,13 @@ end
 
 local function Looper(unit, filter, check, list, func)
 	local unitAuraFiltered = AuraFiltered[filter][unit]
+	if not unitAuraFiltered then return end
+
 	local auraInstanceID, aura = next(unitAuraFiltered)
+	local checked = 0
 	while aura do
+		checked = checked + 1
+		if checked > 40 then return end
 		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:UnpackAuraData(aura)
 		local AuraType, Icon, filtered, style, color = func(aura, check, list, name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID)
 
