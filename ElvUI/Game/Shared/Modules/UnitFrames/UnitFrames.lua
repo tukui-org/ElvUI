@@ -1777,9 +1777,19 @@ do
 	local lockedAlpha = {}
 
 	-- lock Boss, Party, and Arena
+	-- Defer SetParent to the next tick to avoid ADDON_ACTION_BLOCKED in Midnight (12.0).
+	-- EditMode runs BreakFromFrameManager inside secureexecuterange, which calls SetParent
+	-- on Blizzard unit frames. This triggers LockParent, and calling SetParent from tainted
+	-- addon code inside a secure execution blocks the internal protected C call (UNKNOWN).
+	-- Deferring via C_Timer.After(0) moves the re-parent outside the secure context.
 	local function LockParent(frame, parent)
 		if parent ~= E.HiddenFrame then
-			frame:SetParent(E.HiddenFrame)
+			if InCombatLockdown() then return end
+			C_Timer.After(0, function()
+				if not InCombatLockdown() and frame:GetParent() ~= E.HiddenFrame then
+					frame:SetParent(E.HiddenFrame)
+				end
+			end)
 		end
 	end
 

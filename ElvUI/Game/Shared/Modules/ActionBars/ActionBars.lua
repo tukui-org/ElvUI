@@ -1321,8 +1321,12 @@ do
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show
 		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
 
-		-- modified to fix a taint when closing the options while in combat
-		_G.SettingsPanel:SetScript('OnHide', AB.SettingsPanel_OnHide)
+		-- Use HookScript instead of SetScript to avoid tainting SettingsPanel's OnHide.
+		-- In Midnight (12.0), SetScript replaces the handler entirely and taints SettingsPanel.
+		-- When the talent frame closes, UIParentPanelManager may hide SettingsPanel in the same
+		-- secure execution chain, causing ElvUI's tainted OnHide to run and block subsequent
+		-- protected calls (e.g. MultiBarBottomLeft:SetFrameStrata).
+		_G.SettingsPanel:HookScript('OnHide', AB.SettingsPanel_OnHide)
 
 		if E.hasEditMode then
 			_G.StatusTrackingBarManager:Kill()
@@ -1335,8 +1339,15 @@ do
 			-- crop the new spells being added to the actionbars
 			_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
 
-			-- dont reopen game menu and fix settings panel not being able to close during combat
-			_G.SettingsPanel.TransitionBackOpeningPanel = AB.SettingsPanel_TransitionBackOpeningPanel
+			-- Direct function replacement taints SettingsPanel in Midnight (12.0).
+			-- When UIParentPanelManager calls TransitionBackOpeningPanel() inside a secure
+			-- execution (triggered by SetAttribute), the tainted ElvUI function poisons the
+			-- context, causing ADDON_ACTION_BLOCKED for MultiBarBottomLeft:SetFrameStrata().
+			-- Use hooksecurefunc so the original Blizzard function runs untainted; suppress
+			-- the game menu reopening by clearing the opener before the original fires.
+			hooksecurefunc(_G.SettingsPanel, 'TransitionBackOpeningPanel', function(self)
+				self.opener = nil
+			end)
 
 			-- change the text of the remove paging
 			hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
