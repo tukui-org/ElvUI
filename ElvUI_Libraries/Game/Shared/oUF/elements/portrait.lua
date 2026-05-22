@@ -42,41 +42,9 @@ local oUF = ns.oUF
 local UnitGUID = UnitGUID
 local UnitClass = UnitClass
 local UnitIsVisible = UnitIsVisible
-local UnitIsPlayer = UnitIsPlayer
 local UnitIsConnected = UnitIsConnected
 local SetPortraitTexture = SetPortraitTexture
-local C_Timer = C_Timer
 local IsUnitModelReadyForUI = IsUnitModelReadyForUI
-
-local function HidePortraitFallback(element)
-	if element.Fallback2D then
-		element.Fallback2D:Hide()
-	end
-
-	element.secretRetryUnit = nil
-	element.secretRetryCount = nil
-end
-
-local function RetrySecretPortrait(element, unit)
-	if not C_Timer then return end
-	if element.secretRetryUnit == unit then return end
-
-	element.secretRetryUnit = unit
-	element.secretRetryCount = 0
-
-	local function retry()
-		if element.secretRetryUnit ~= unit or not element:IsShown() then return end
-
-		element.secretRetryCount = (element.secretRetryCount or 0) + 1
-		element:SetUnit(unit)
-
-		if element.secretRetryCount < 4 then
-			C_Timer.After(0.2 * element.secretRetryCount, retry)
-		end
-	end
-
-	C_Timer.After(0.1, retry)
-end
 
 local function Update(self, event)
 	local element = self.Portrait
@@ -87,14 +55,10 @@ local function Update(self, event)
 
 	local guid = UnitGUID(unit)
 	local secretGUID = oUF:IsSecretValue(guid)
-	local storedGUID = element.guid
-	local secretStoredGUID = oUF:IsSecretValue(storedGUID)
-	local newGUID = secretGUID or secretStoredGUID or (storedGUID ~= guid)
+	local newGUID = secretGUID or (element.guid ~= guid)
 
 	local nameplate = event == 'NAME_PLATE_UNIT_ADDED'
 	if newGUID then
-		element.secretRetryUnit = nil
-		element.secretRetryCount = nil
 		element.guid = not secretGUID and guid or nil
 	elseif nameplate then
 		return
@@ -108,73 +72,21 @@ local function Update(self, event)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	-- In Midnight, UnitIsPlayer returns a secret boolean for instanced NPCs.
-	-- A secret boolean is truthy in Lua, so `not secretFalse == false`, which
-	-- incorrectly treats NPCs as players and forces IsUnitModelReadyForUI checks.
-	local isPlayerRaw = UnitIsPlayer(unit)
-	local isPlayer = (isPlayerRaw == true)
-	local isSecret = oUF:IsSecretValue(isPlayerRaw)
-	local isVisible = not isPlayer or UnitIsVisible(unit)
-	local isAvailable = element:IsVisible() and isVisible and (not isPlayer or isSecret or (IsUnitModelReadyForUI(unit) and UnitIsConnected(unit)))
+	local isAvailable = element:IsVisible() and IsUnitModelReadyForUI(unit) and UnitIsConnected(unit) and UnitIsVisible(unit)
 	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
 		element.playerModel = element:IsObjectType('PlayerModel')
-		local prevState = element.state
 		element.state = isAvailable
 
 		if element.playerModel then
-			if not element.modelLoadedHooked then
-				element.modelLoadedHooked = true
-				pcall(element.HookScript, element, "OnModelLoaded", HidePortraitFallback)
-			end
+			element:ClearModel()
+			element:SetCamDistanceScale(isAvailable and 1 or 0.25)
+			element:SetPortraitZoom(isAvailable and 1 or 0)
+			element:SetPosition(0, 0, isAvailable and 0 or 0.25)
 
 			if isAvailable then
-				if element.Fallback2D and not secretGUID then
-					HidePortraitFallback(element)
-				end
-
-				element:SetCamDistanceScale(1)
-				element:SetPortraitZoom(1)
-				element:SetPosition(0, 0, 0)
-				-- For secret GUIDs (dungeon/raid units in Midnight), newGUID is always true.
-				-- These events fire repeatedly without a genuine unit change (streaming, party status,
-				-- connection state) and would abort async model loading if they triggered SetUnit.
-				-- OnShow is added explicitly: when a frame re-appears (new pull, pet revival) with
-				-- the same GUID, the engine may have cleared the model while the frame was hidden.
-				-- UNIT_MODEL_CHANGED in Midnight fires when SetUnit starts streaming, not only on
-				-- genuine model changes. Allowing it for secret GUIDs causes SetUnit→event→SetUnit loops.
-				local noUnitChange = event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_CONNECTION" or event == "PARTY_MEMBER_ENABLE" or event == "PARTY_MEMBER_DISABLE" or event == "UNIT_MODEL_CHANGED" or event == "OnUpdate"
-				local needsLoad = (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
-				if needsLoad then
-					if secretGUID then
-						element:ClearModel()
-
-						if not element.Fallback2D then
-							local fallback = element:CreateTexture(nil, "BACKGROUND")
-							fallback:SetAllPoints(element)
-							fallback:SetTexCoord(0.15, 0.85, 0.15, 0.85)
-							element.Fallback2D = fallback
-						else
-							element.Fallback2D:SetDrawLayer("BACKGROUND")
-						end
-
-						SetPortraitTexture(element.Fallback2D, unit)
-						element.Fallback2D:Show()
-					end
-
-					element:SetUnit(unit)
-
-					if secretGUID then
-						RetrySecretPortrait(element, unit)
-					end
-				end
+				element:SetUnit(unit)
 			else
-				HidePortraitFallback(element)
-
-				element:ClearModel()
-				element:SetCamDistanceScale(0.25)
-				element:SetPortraitZoom(0)
-				element:SetPosition(0, 0, 0.25)
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
 			end
 		elseif element.useClassBase then
@@ -226,7 +138,6 @@ local function Enable(self, unit)
 		local playerModel = element:IsObjectType('PlayerModel')
 		if playerModel then
 			self:RegisterEvent('UNIT_MODEL_CHANGED', Path)
-			self:RegisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		else
 			self:RegisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 			self:RegisterEvent('PORTRAITS_UPDATED', Path, true)
@@ -254,12 +165,9 @@ local function Disable(self)
 
 		local playerModel = element:IsObjectType('PlayerModel')
 		if playerModel then
-			HidePortraitFallback(element)
-
 			element:ClearModel()
 
 			self:UnregisterEvent('UNIT_MODEL_CHANGED', Path)
-			self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 		else
 			self:UnregisterEvent('UNIT_PORTRAIT_UPDATE', Path)
 			self:UnregisterEvent('PORTRAITS_UPDATED', Path)

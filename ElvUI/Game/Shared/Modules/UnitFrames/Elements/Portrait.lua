@@ -9,6 +9,52 @@ local UnitClass = UnitClass
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
+local UnitGUID = UnitGUID
+local UnitIsPlayer = UnitIsPlayer
+local UnitIsVisible = UnitIsVisible
+local UnitIsConnected = UnitIsConnected
+local SetPortraitTexture = SetPortraitTexture
+local IsUnitModelReadyForUI = IsUnitModelReadyForUI
+
+local function HidePortraitFallback(element)
+	if element.Fallback2D then
+		element.Fallback2D:Hide()
+	end
+
+	element.secretRetryUnit = nil
+	element.secretRetryCount = nil
+end
+
+local function RetrySecretPortrait(element, unit)
+	if not C_Timer then return end
+	if element.secretRetryUnit == unit then return end
+
+	element.secretRetryUnit = unit
+	element.secretRetryCount = 0
+
+	local function retry()
+		if element.secretRetryUnit ~= unit or not element:IsShown() then return end
+
+		element.secretRetryCount = (element.secretRetryCount or 0) + 1
+		element:SetUnit(unit)
+
+		if element.secretRetryCount < 4 then
+			C_Timer.After(0.2 * element.secretRetryCount, retry)
+		end
+	end
+
+	C_Timer.After(0.1, retry)
+end
+
+function UF.PortraitForceUpdate(frame, event, unit)
+	if unit == frame.unit then
+		local element = frame.Portrait
+		if element and element.ForceUpdate then
+			element:ForceUpdate()
+		end
+	end
+end
+
 function UF:ModelAlphaFix(value)
 	local portrait = self.Portrait3D
 	if not portrait then return end
@@ -17,6 +63,103 @@ function UF:ModelAlphaFix(value)
 	local modelAlpha = value * (E:IsSecretValue(alpha) and 1 or alpha)
 	portrait:SetModelAlpha(modelAlpha)
 	portrait.backdrop:SetAlpha(modelAlpha)
+end
+
+function UF:PortraitOverride(event)
+	local element = self.Portrait
+	if not element then return end
+
+	local unit = self.unit
+	if not unit then return end
+
+	local guid = UnitGUID(unit)
+	local secretGUID = E:IsSecretValue(guid)
+	local storedGUID = element.guid
+	local secretStoredGUID = E:IsSecretValue(storedGUID)
+	local newGUID = secretGUID or secretStoredGUID or (storedGUID ~= guid)
+
+	local nameplate = event == 'NAME_PLATE_UNIT_ADDED'
+	if newGUID then
+		element.secretRetryUnit = nil
+		element.secretRetryCount = nil
+		element.guid = not secretGUID and guid or nil
+	elseif nameplate then
+		return
+	end
+
+	if element.PreUpdate then element:PreUpdate(unit) end
+
+	local isPlayerRaw = UnitIsPlayer(unit)
+	local isPlayer = (isPlayerRaw == true)
+	local isSecret = E:IsSecretValue(isPlayerRaw)
+	local isVisible = not isPlayer or UnitIsVisible(unit)
+	local isAvailable = element:IsVisible() and isVisible and (not isPlayer or isSecret or (IsUnitModelReadyForUI(unit) and UnitIsConnected(unit)))
+
+	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
+	if hasStateChanged then
+		element.playerModel = element:IsObjectType('PlayerModel')
+		local prevState = element.state
+		element.state = isAvailable
+
+		if element.playerModel then
+			if not element.modelLoadedHooked then
+				element.modelLoadedHooked = true
+				pcall(element.HookScript, element, "OnModelLoaded", HidePortraitFallback)
+			end
+
+			if isAvailable then
+				if element.Fallback2D and not secretGUID then
+					HidePortraitFallback(element)
+				end
+
+				element:SetCamDistanceScale(1)
+				element:SetPortraitZoom(1)
+				element:SetPosition(0, 0, 0)
+
+				local noUnitChange = event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_CONNECTION" or event == "PARTY_MEMBER_ENABLE" or event == "PARTY_MEMBER_DISABLE" or event == "UNIT_MODEL_CHANGED" or event == "OnUpdate"
+				local needsLoad = (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
+				if needsLoad then
+					if secretGUID then
+						element:ClearModel()
+						if not element.Fallback2D then
+							local fallback = element:CreateTexture(nil, "BACKGROUND")
+							fallback:SetAllPoints(element)
+							fallback:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+							element.Fallback2D = fallback
+						else
+							element.Fallback2D:SetDrawLayer("BACKGROUND")
+						end
+						SetPortraitTexture(element.Fallback2D, unit)
+						element.Fallback2D:Show()
+					end
+
+					element:SetUnit(unit)
+
+					if secretGUID then
+						RetrySecretPortrait(element, unit)
+					end
+				end
+			else
+				HidePortraitFallback(element)
+				element:ClearModel()
+				element:SetCamDistanceScale(0.25)
+				element:SetPortraitZoom(0)
+				element:SetPosition(0, 0, 0.25)
+				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
+			end
+		elseif element.useClassBase then
+			local _, className = UnitClass(unit)
+			if className then
+				element:SetAtlas('classicon-' .. className)
+			end
+		elseif not element.customTexture then
+			SetPortraitTexture(element, unit)
+		end
+	end
+
+	if element.PostUpdate then
+		return element:PostUpdate(unit, hasStateChanged)
+	end
 end
 
 function UF:Construct_Portrait(frame, which)
@@ -43,6 +186,7 @@ function UF:Construct_Portrait(frame, which)
 
 	portrait.__owner = frame -- set this for both, oUF will only set it when active
 	portrait.PostUpdate = UF.PortraitUpdate
+	portrait.Override = UF.PortraitOverride
 
 	return portrait
 end
@@ -76,8 +220,10 @@ function UF:Configure_Portrait(frame)
 
 		if portrait.db.style == '3D' then
 			portrait:OffsetFrameLevel(nil, frame.Health)
+			frame:RegisterEvent('UNIT_PORTRAIT_UPDATE', UF.PortraitForceUpdate)
 		else
 			portrait:SetParent(frame.USE_PORTRAIT_OVERLAY and frame.Health or frame)
+			frame:UnregisterEvent('UNIT_PORTRAIT_UPDATE', UF.PortraitForceUpdate)
 		end
 
 		portrait:ClearAllPoints()
@@ -141,6 +287,7 @@ function UF:Configure_Portrait(frame)
 		end
 	elseif frame:IsElementEnabled('Portrait') then
 		frame:DisableElement('Portrait')
+		frame:UnregisterEvent('UNIT_PORTRAIT_UPDATE', UF.PortraitForceUpdate)
 	end
 end
 
