@@ -2199,10 +2199,10 @@ do -- Clique support for registering clicks
 end
 
 function UF:UpdateAllElements(event)
-       if self.PrivateAuras and (event == 'PLAYER_ENTERING_WORLD' or event == 'GROUP_ROSTER_UPDATE') then
-           UF:Configure_PrivateAuras(self)
-       end
-   end
+	if self.PrivateAuras and (event == 'PLAYER_ENTERING_WORLD' or event == 'GROUP_ROSTER_UPDATE') then
+		UF:Configure_PrivateAuras(self)
+	end
+end
 
 function UF:AfterStyleCallback()
 	-- this will wait until after ouf pushes `EnableElement` onto the newly spawned frames
