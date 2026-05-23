@@ -184,23 +184,21 @@ function PA:CreateAura(parent, unit, index, db)
 
 	aura:ClearAllPoints()
 
-	local offsetNoMouse = (db.clickThrough and db.icon.size) or 0
-	if index == 1 then
-		aura:Point('CENTER', parent, -(offsetNoMouse * 0.5), 0)
-	else
-		local offsetX, offsetY, offsetIcon = 0, 0, db.icon.offset + offsetNoMouse
-		if db.icon.point == 'RIGHT' then
-			offsetX = offsetIcon
-		elseif db.icon.point == 'LEFT' then
-			offsetX = -offsetIcon
-		elseif db.icon.point == 'TOP' then
-			offsetY = offsetIcon
-		else
-			offsetY = -offsetIcon
-		end
+	local step = db.icon.size + (db.icon.offset or 0)
+	local compensate = (db.clickThrough and db.icon.size * 0.5) or 0
+	local x, y = 0, 0
 
-		aura:Point(E.InversePoints[db.icon.point], parent.auraIcons[index-1], db.icon.point, offsetX, offsetY)
+	if db.icon.point == 'RIGHT' then
+		x = (index - 1) * step + compensate
+	elseif db.icon.point == 'LEFT' then
+		x = -(index - 1) * step - compensate
+	elseif db.icon.point == 'TOP' then
+		y = (index - 1) * step + compensate
+	elseif db.icon.point == 'BOTTOM' then
+		y = -(index - 1) * step - compensate
 	end
+
+	aura:Point('CENTER', parent, x, y)
 
 	return aura
 end
