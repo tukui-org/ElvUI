@@ -182,8 +182,6 @@ function PA:CreateAura(parent, unit, index, db)
 	aura:OffsetFrameLevel(nil, parent) -- set it to something else, fixes the bug
 	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
 
-	aura:ClearAllPoints()
-
 	local point, step = db.icon.point, db.icon.size + (db.icon.offset or 0)
 	local compensate = (db.clickThrough and db.icon.size * 0.5) or 0
 	local previous, x, y = index - 1, 0, 0
@@ -198,6 +196,7 @@ function PA:CreateAura(parent, unit, index, db)
 		y = -previous * step - compensate
 	end
 
+	aura:ClearAllPoints()
 	aura:Point('CENTER', parent, x, y)
 
 	return aura
