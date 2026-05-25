@@ -102,6 +102,13 @@ local blanchyFix = '|n%s*|n' -- thanks blizz -x- lol
 local whiteRGB = { r = 1, g = 1, b = 1, a = 1 }
 local FACTION_CUSTOM = Mixin({}, ColorMixin)
 
+local englishRaces = {
+	Pandaren = true,
+	Dracthyr = true,
+	EarthenDwarf = true,
+	Harronir = true
+}
+
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
 	return k == 'SHOW' or ((k == 'SHIFT' and IsShiftKeyDown()) or (k == 'CTRL' and IsControlKeyDown()) or (k == 'ALT' and IsAltKeyDown()))
@@ -268,14 +275,16 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		if levelLine then
-			local diffColor = GetCreatureDifficultyColor(level)
 			local race, englishRace = UnitRace(unit)
 			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
-			if localizedFaction and (englishRace == 'Pandaren' or englishRace == 'Dracthyr' or englishRace == 'EarthenDwarf') then race = localizedFaction..' '..race end
-			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
-			local unitGender = TT.db.gender and genderTable[gender]
+			if localizedFaction and englishRaces[englishRace] then
+				race = localizedFaction..' '..race
+			end
 
 			local levelText
+			local diffColor = GetCreatureDifficultyColor(level)
+			local unitGender = TT.db.gender and genderTable[gender]
+			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			if level < realLevel then
 				levelText = format('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')
 			else
