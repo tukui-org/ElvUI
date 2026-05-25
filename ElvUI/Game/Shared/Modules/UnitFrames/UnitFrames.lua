@@ -2199,7 +2199,7 @@ do -- Clique support for registering clicks
 end
 
 function UF:UpdateAllElements(event)
-	if self.PrivateAuras and (event == 'OnShow' or event == 'PLAYER_ENTERING_WORLD') then
+	if self.PrivateAuras and (event == 'GROUP_ROSTER_UPDATE' or event == 'PLAYER_ENTERING_WORLD') then
 		UF:Configure_PrivateAuras(self)
 	end
 end
