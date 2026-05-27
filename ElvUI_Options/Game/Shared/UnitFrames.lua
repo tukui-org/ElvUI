@@ -85,25 +85,26 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
 	config.args.clickThrough = ACH:Toggle(L["Click Through"], nil, 5)
 	config.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -10, max = 10, step = 0.01 })
 
-	config.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.parent = ACH:Group(L["Holder"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
+	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetShort)
+	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetShort)
+	config.args.parent.args.intro = ACH:Description(L["|cffff3333Note:|r Click Through slightly modifies the offsets of the icons."], 10)
+	config.args.parent.inline = true
+
+	config.args.icon = ACH:Group(L["Icon"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.icon.args.point = ACH:Select(L["Direction"], nil, 1, C.Values.EdgePositions)
 	config.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
 	config.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
 	config.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
 	config.args.icon.inline = true
 
-	config.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.duration = ACH:Group(L["Duration"], nil, 30, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 100)
 	config.args.duration.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
 	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetShort)
 	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetShort)
 	config.args.duration.inline = true
-
-	config.args.parent = ACH:Group(L["Holder"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
-	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetShort)
-	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetShort)
-	config.args.parent.inline = true
 
 	return config
 end
