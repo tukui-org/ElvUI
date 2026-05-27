@@ -187,35 +187,48 @@ function PA:CreateAura(parent, unit, index, db)
 	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
 
 	-- EnableMouse doesnt work; set the size to 1x1
-	local iconWidth, iconHeight, iconSisze = 1, 1, db.icon.size
+	local iconWidth, iconHeight, iconSize = 1, 1, db.icon.size
 	if not db.clickThrough then
-		iconWidth, iconHeight = iconSisze, iconSisze
+		iconWidth, iconHeight = iconSize, iconSize
 	end
 
 	aura:Size(iconWidth, iconHeight)
 
-	local previous, x, y = index - 1, 0, 0
-	local point, step = db.icon.point, iconSisze + (db.icon.offset or 0)
+	local previous, offsetX, offsetY = index - 1, 0, 0
+	local point, step = db.icon.point, iconSize + (db.icon.offset or 0)
 	if point == 'RIGHT' then
-		x = previous * step
+		offsetX = previous * step
 	elseif point == 'LEFT' then
-		x = -previous * step
+		offsetX = -previous * step
 	elseif point == 'TOP' then
-		y = previous * step
+		offsetY = previous * step
 	else -- bottom
-		y = -previous * step
+		offsetY = -previous * step
 	end
 
 	aura:ClearAllPoints()
-	aura:Point('CENTER', parent, x, y)
+	aura:Point('CENTER', parent, offsetX, offsetY)
 
 	local piggy = aura.pig
 	if piggy then
-		piggy:Size(iconSisze)
+		piggy:Size(iconSize)
 		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
 
+		if db.clickThrough then
+			local compensate = iconSize * 0.5
+			if point == 'RIGHT' then
+				offsetX = offsetX - compensate
+			elseif point == 'LEFT' then
+				offsetX = offsetX + compensate
+			elseif point == 'TOP' then
+				offsetY = offsetY - compensate
+			else
+				offsetY = offsetY + compensate
+			end
+		end
+
 		piggy:ClearAllPoints()
-		piggy:Point('CENTER', parent, x, y)
+		piggy:Point('CENTER', parent, offsetX, offsetY)
 	end
 
 	return aura
