@@ -175,17 +175,13 @@ function PA:OffsetAura(index, db)
 	if db.clickThrough then
 		local half = size * 0.5
 		if point == 'RIGHT' then
-			x = x + half
-			X = x - half
+			X, x = x, x + half
 		elseif point == 'LEFT' then
-			x = x - half
-			X = x + half
+			X, x = x, x - half
 		elseif point == 'TOP' then
-			y = y + half
-			Y = y - half
+			Y, y = y, y + half
 		else
-			y = y - half
-			Y = y + half
+			Y, y = y, y - half
 		end
 	end
 
