@@ -89,7 +89,6 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
 	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
 	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetShort)
 	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetShort)
-	config.args.parent.args.intro = ACH:Description(L["|cffff3333Note:|r Click Through slightly modifies the offsets of the icons."], 10)
 	config.args.parent.inline = true
 
 	config.args.icon = ACH:Group(L["Icon"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName, numUnits) end)

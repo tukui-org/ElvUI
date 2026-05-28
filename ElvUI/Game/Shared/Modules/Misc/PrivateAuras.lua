@@ -206,29 +206,38 @@ function PA:CreateAura(parent, unit, index, db)
 		offsetY = -previous * step
 	end
 
+	local anchorX, piggyX, piggyY = 0
+	if db.clickThrough then
+		if index == 1 then
+			anchorX = 1
+		end
+
+		local compensate = iconSize * 0.5
+		if point == 'RIGHT' then
+			offsetX = offsetX + compensate
+			piggyX = offsetX - compensate
+		elseif point == 'LEFT' then
+			offsetX = offsetX - compensate
+			piggyX = offsetX + compensate
+		elseif point == 'TOP' then
+			offsetY = offsetY + compensate
+			piggyY = offsetY - compensate
+		else
+			offsetY = offsetY - compensate
+			piggyY = offsetY + compensate
+		end
+	end
+
 	aura:ClearAllPoints()
-	aura:Point('CENTER', parent, offsetX, offsetY)
+	aura:Point('CENTER', parent, offsetX + anchorX, offsetY)
 
 	local piggy = aura.pig
 	if piggy then
 		piggy:Size(iconSize)
 		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
 
-		if db.clickThrough then
-			local compensate = iconSize * 0.5
-			if point == 'RIGHT' then
-				offsetX = offsetX - compensate
-			elseif point == 'LEFT' then
-				offsetX = offsetX + compensate
-			elseif point == 'TOP' then
-				offsetY = offsetY - compensate
-			else
-				offsetY = offsetY + compensate
-			end
-		end
-
 		piggy:ClearAllPoints()
-		piggy:Point('CENTER', parent, offsetX, offsetY)
+		piggy:Point('CENTER', parent, piggyX or offsetX, piggyY or offsetY)
 	end
 
 	return aura
