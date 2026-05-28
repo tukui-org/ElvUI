@@ -326,7 +326,7 @@ function NP:Update_PrivateAuras(nameplate, disable)
 	if db and db.enable then
 		element:SetFrameLevel(16)
 		element:ClearAllPoints()
-		element:Point(E.InversePoints[db.parent.point], nameplate, db.parent.point, db.parent.offsetX, db.parent.offsetY)
+		element:Point(db.parent.invertAnchor and E.InversePoints[db.parent.point] or db.parent.anchorPoint, nameplate, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		element:Size(db.icon.size)
 
 		PA:SetupAuras(element)
