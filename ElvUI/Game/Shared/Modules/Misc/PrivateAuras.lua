@@ -121,8 +121,8 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	end
 
 	anchor.relativeTo = aura
-	anchor.point = iconPoint
-	anchor.relativePoint = iconPoint
+	anchor.point = 'CENTER'
+	anchor.relativePoint = 'CENTER'
 	anchor.offsetX = 0
 	anchor.offsetY = 0
 
@@ -158,36 +158,6 @@ function PA:RemoveAura(aura)
 	aura.anchorID = nil
 end
 
-function PA:OffsetAura(index, db)
-	local size, z, x, y, X, Y = db.icon.size, index - 1, 0, 0
-	local point, offset = db.icon.point, size + (db.icon.offset or 0)
-	if point == 'RIGHT' then
-		x = z * offset
-	elseif point == 'LEFT' then
-		x = -z * offset
-	elseif point == 'TOP' then
-		y = z * offset
-	else
-		y = -z * offset
-	end
-
-	-- offset because we cant use EnableMouse
-	if db.clickThrough then
-		local half = size * 0.5
-		if point == 'RIGHT' then
-			X = x + half
-		elseif point == 'LEFT' then
-			X = x - half
-		elseif point == 'TOP' then
-			Y = y + half
-		else
-			Y = y - half
-		end
-	end
-
-	return x, y, X, Y
-end
-
 function PA:RemoveAuras(parent)
 	if not parent or not parent.auraIcons then return end
 
@@ -216,18 +186,36 @@ function PA:CreateAura(parent, unit, index, db)
 	aura:OffsetFrameLevel(nil, parent) -- set it to something else, fixes the bug
 	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
 
-	local iconSize = db.icon.size
-	local iconX, iconY, offsetX, offsetY = PA:OffsetAura(index, db)
+	-- EnableMouse doesnt work; set the size to a sub-pixel value.
+	local iconWidth, iconHeight, iconSize = 0.001, 0.001, db.icon.size
+	if not db.clickThrough then
+		iconWidth, iconHeight = iconSize, iconSize
+	end
+
+	aura:Size(iconWidth, iconHeight)
+
+	local previous, offsetX, offsetY = index - 1, 0, 0
+	local point, step = db.icon.point, iconSize + (db.icon.offset or 0)
+	if point == 'RIGHT' then
+		offsetX = previous * step
+	elseif point == 'LEFT' then
+		offsetX = -previous * step
+	elseif point == 'TOP' then
+		offsetY = previous * step
+	else -- bottom
+		offsetY = -previous * step
+	end
+
 	aura:ClearAllPoints()
-	aura:Point('CENTER', parent, offsetX or iconX, offsetY or iconY)
-	aura:Size(db.clickThrough and 1 or iconSize)
+	aura:Point('CENTER', parent, offsetX, offsetY)
 
 	local piggy = aura.pig
 	if piggy then
-		piggy:ClearAllPoints()
-		piggy:Point('CENTER', parent, iconX, iconY)
-		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
 		piggy:Size(iconSize)
+		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
+
+		piggy:ClearAllPoints()
+		piggy:Point('CENTER', parent, offsetX, offsetY)
 	end
 
 	return aura
