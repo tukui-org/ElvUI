@@ -158,6 +158,41 @@ function PA:RemoveAura(aura)
 	aura.anchorID = nil
 end
 
+function PA:OffsetAura(index, db)
+	local size, z, x, y = db.icon.size, index - 1, 0, 0
+	local point, offset = db.icon.point, size + (db.icon.offset or 0)
+	if point == 'RIGHT' then
+		x = z * offset
+	elseif point == 'LEFT' then
+		x = -z * offset
+	elseif point == 'TOP' then
+		y = z * offset
+	else
+		y = -z * offset
+	end
+
+	-- offset because we cant use EnableMouse
+	local piggyX, piggyY
+	if db.clickThrough then
+		local half = size * 0.5
+		if point == 'RIGHT' then
+			x = x + half
+			piggyX = x - half
+		elseif point == 'LEFT' then
+			x = x - half
+			piggyX = x + half
+		elseif point == 'TOP' then
+			y = y + half
+			piggyY = y - half
+		else
+			y = y - half
+			piggyY = y + half
+		end
+	end
+
+	return x, y, piggyX, piggyY
+end
+
 function PA:RemoveAuras(parent)
 	if not parent or not parent.auraIcons then return end
 
@@ -186,54 +221,22 @@ function PA:CreateAura(parent, unit, index, db)
 	aura:OffsetFrameLevel(nil, parent) -- set it to something else, fixes the bug
 	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
 
-	-- EnableMouse doesnt work; set the size to 1x1
-	local iconWidth, iconHeight, iconSize = 1, 1, db.icon.size
+	local iconSize, iconWidth, iconHeight = db.icon.size, 1, 1
 	if not db.clickThrough then
 		iconWidth, iconHeight = iconSize, iconSize
 	end
 
-	aura:Size(iconWidth, iconHeight)
-
-	local previous, offsetX, offsetY = index - 1, 0, 0
-	local point, step = db.icon.point, iconSize + (db.icon.offset or 0)
-	if point == 'RIGHT' then
-		offsetX = previous * step
-	elseif point == 'LEFT' then
-		offsetX = -previous * step
-	elseif point == 'TOP' then
-		offsetY = previous * step
-	else -- bottom
-		offsetY = -previous * step
-	end
-
-	local piggyX, piggyY
-	if db.clickThrough then
-		local compensate = iconSize * 0.5
-		if point == 'RIGHT' then
-			offsetX = offsetX + compensate
-			piggyX = offsetX - compensate
-		elseif point == 'LEFT' then
-			offsetX = offsetX - compensate
-			piggyX = offsetX + compensate
-		elseif point == 'TOP' then
-			offsetY = offsetY + compensate
-			piggyY = offsetY - compensate
-		else
-			offsetY = offsetY - compensate
-			piggyY = offsetY + compensate
-		end
-	end
-
+	local iconX, iconY, piggyX, piggyY = PA:OffsetAura(index, db)
 	aura:ClearAllPoints()
-	aura:Point('CENTER', parent, offsetX, offsetY)
+	aura:Point('CENTER', parent, iconX, iconY)
+	aura:Size(iconWidth, iconHeight)
 
 	local piggy = aura.pig
 	if piggy then
-		piggy:Size(iconSize)
-		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
-
 		piggy:ClearAllPoints()
-		piggy:Point('CENTER', parent, piggyX or offsetX, piggyY or offsetY)
+		piggy:Point('CENTER', parent, piggyX or iconX, piggyY or iconY)
+		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
+		piggy:Size(iconSize)
 	end
 
 	return aura
