@@ -288,21 +288,7 @@ local function GetUnitSettings(unit, name)
 	group.args.privateAuras.args.clickThrough = ACH:Toggle(L["Click Through"], nil, 5)
 	group.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -10, max = 10, step = 0.01 })
 
-	group.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.nameplates.units[unit].privateAuras.icon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].privateAuras.icon[info[#info]] = value NP:ConfigureAll() end)
-	group.args.privateAuras.args.icon.args.point = ACH:Select(L["Direction"], nil, 1, C.Values.EdgePositions)
-	group.args.privateAuras.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
-	group.args.privateAuras.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
-	group.args.privateAuras.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
-	group.args.privateAuras.args.icon.inline = true
-
-	group.args.privateAuras.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.nameplates.units[unit].privateAuras.duration[info[#info]] end, function(info, value) E.db.nameplates.units[unit].privateAuras.duration[info[#info]] = value NP:ConfigureAll() end)
-	group.args.privateAuras.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 100)
-	group.args.privateAuras.args.duration.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
-	group.args.privateAuras.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
-	group.args.privateAuras.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
-	group.args.privateAuras.args.duration.inline = true
-
-	group.args.privateAuras.args.parent = ACH:Group(L["Holder"], nil, 20, nil, function(info) return E.db.nameplates.units[unit].privateAuras.parent[info[#info]] end, function(info, value) E.db.nameplates.units[unit].privateAuras.parent[info[#info]] = value NP:ConfigureAll() end)
+	group.args.privateAuras.args.parent = ACH:Group(L["Holder"], nil, 10, nil, function(info) return E.db.nameplates.units[unit].privateAuras.parent[info[#info]] end, function(info, value) E.db.nameplates.units[unit].privateAuras.parent[info[#info]] = value NP:ConfigureAll() end)
 	group.args.privateAuras.args.parent.args.invertAnchor = ACH:Toggle(L["Invert Anchor"], nil, 1)
 	group.args.privateAuras.args.parent.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 2, C.Values.AllPoints, nil, nil, nil, nil, function() return E.db.nameplates.units[unit].privateAuras.parent.invertAnchor end)
 	group.args.privateAuras.args.parent.args.spacer = ACH:Spacer(10)
@@ -310,6 +296,20 @@ local function GetUnitSettings(unit, name)
 	group.args.privateAuras.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 12, { min = -100, max = 100, step = 1 })
 	group.args.privateAuras.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 13, { min = -100, max = 100, step = 1 })
 	group.args.privateAuras.args.parent.inline = true
+
+	group.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 20, nil, function(info) return E.db.nameplates.units[unit].privateAuras.icon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].privateAuras.icon[info[#info]] = value NP:ConfigureAll() end)
+	group.args.privateAuras.args.icon.args.point = ACH:Select(L["Direction"], nil, 1, C.Values.EdgePositions)
+	group.args.privateAuras.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
+	group.args.privateAuras.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
+	group.args.privateAuras.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
+	group.args.privateAuras.args.icon.inline = true
+
+	group.args.privateAuras.args.duration = ACH:Group(L["Duration"], nil, 30, nil, function(info) return E.db.nameplates.units[unit].privateAuras.duration[info[#info]] end, function(info, value) E.db.nameplates.units[unit].privateAuras.duration[info[#info]] = value NP:ConfigureAll() end)
+	group.args.privateAuras.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 100)
+	group.args.privateAuras.args.duration.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
+	group.args.privateAuras.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
+	group.args.privateAuras.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -100, max = 100, step = 1 })
+	group.args.privateAuras.args.duration.inline = true
 
 	group.args.portraitGroup = ACH:Group(L["Portrait"], nil, 40, nil, function(info) return E.db.nameplates.units[unit].portrait[info[#info]] end, function(info, value) E.db.nameplates.units[unit].portrait[info[#info]] = value NP:ConfigureAll() end)
 	group.args.portraitGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
