@@ -84,9 +84,6 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	local iconSize = db.icon.size
 	if not iconSize then iconSize = 32 end
 
-	local iconPoint = db.icon.point
-	if not iconPoint then iconPoint = 'CENTER' end
-
 	local durationPoint = db.duration.point
 	if not durationPoint then durationPoint = 'CENTER' end
 
@@ -121,8 +118,8 @@ function PA:CreateAnchor(aura, parent, unit, index, db)
 	end
 
 	anchor.relativeTo = aura
-	anchor.point = iconPoint
-	anchor.relativePoint = iconPoint
+	anchor.point = 'CENTER'
+	anchor.relativePoint = 'CENTER'
 	anchor.offsetX = 0
 	anchor.offsetY = 0
 
@@ -159,7 +156,7 @@ function PA:RemoveAura(aura)
 end
 
 function PA:OffsetAura(index, db)
-	local size, z, x, y, X, Y = db.icon.size, index - 1, 0, 0
+	local size, z, x, y = db.icon.size, index - 1, 0, 0
 	local point, offset = db.icon.point, size + (db.icon.offset or 0)
 	if point == 'RIGHT' then
 		x = z * offset
@@ -171,21 +168,7 @@ function PA:OffsetAura(index, db)
 		y = -z * offset
 	end
 
-	-- offset because we cant use EnableMouse
-	if db.clickThrough then
-		local half = size * 0.5
-		if point == 'RIGHT' then
-			X = x + half
-		elseif point == 'LEFT' then
-			X = x - half
-		elseif point == 'TOP' then
-			Y = y + half
-		else
-			Y = y - half
-		end
-	end
-
-	return x, y, X, Y
+	return x, y
 end
 
 function PA:RemoveAuras(parent)
@@ -217,9 +200,9 @@ function PA:CreateAura(parent, unit, index, db)
 	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
 
 	local iconSize = db.icon.size
-	local iconX, iconY, offsetX, offsetY = PA:OffsetAura(index, db)
+	local iconX, iconY = PA:OffsetAura(index, db)
 	aura:ClearAllPoints()
-	aura:Point('CENTER', parent, offsetX or iconX, offsetY or iconY)
+	aura:Point('CENTER', parent, iconX, iconY)
 	aura:Size(db.clickThrough and 1 or iconSize)
 
 	local piggy = aura.pig
