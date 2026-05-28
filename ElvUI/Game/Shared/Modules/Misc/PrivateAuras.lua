@@ -206,12 +206,8 @@ function PA:CreateAura(parent, unit, index, db)
 		offsetY = -previous * step
 	end
 
-	local anchorX, piggyX, piggyY = 0
+	local piggyX, piggyY
 	if db.clickThrough then
-		if index == 1 then
-			anchorX = 1
-		end
-
 		local compensate = iconSize * 0.5
 		if point == 'RIGHT' then
 			offsetX = offsetX + compensate
@@ -229,7 +225,7 @@ function PA:CreateAura(parent, unit, index, db)
 	end
 
 	aura:ClearAllPoints()
-	aura:Point('CENTER', parent, offsetX + anchorX, offsetY)
+	aura:Point('CENTER', parent, offsetX, offsetY)
 
 	local piggy = aura.pig
 	if piggy then
