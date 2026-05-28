@@ -175,13 +175,13 @@ function PA:OffsetAura(index, db)
 	if db.clickThrough then
 		local half = size * 0.5
 		if point == 'RIGHT' then
-			X, x = x, x + half
+			X = x + half
 		elseif point == 'LEFT' then
-			X, x = x, x - half
+			X = x - half
 		elseif point == 'TOP' then
-			Y, y = y, y + half
+			Y = y + half
 		else
-			Y, y = y, y - half
+			Y = y - half
 		end
 	end
 
@@ -221,15 +221,15 @@ function PA:CreateAura(parent, unit, index, db)
 		iconWidth, iconHeight = iconSize, iconSize
 	end
 
-	local iconX, iconY, piggyX, piggyY = PA:OffsetAura(index, db)
+	local iconX, iconY, offsetX, offsetY = PA:OffsetAura(index, db)
 	aura:ClearAllPoints()
-	aura:Point('CENTER', parent, iconX, iconY)
+	aura:Point('CENTER', parent, offsetX or iconX, offsetY or iconY)
 	aura:Size(iconWidth, iconHeight)
 
 	local piggy = aura.pig
 	if piggy then
 		piggy:ClearAllPoints()
-		piggy:Point('CENTER', parent, piggyX or iconX, piggyY or iconY)
+		piggy:Point('CENTER', parent, iconX, iconY)
 		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
 		piggy:Size(iconSize)
 	end
