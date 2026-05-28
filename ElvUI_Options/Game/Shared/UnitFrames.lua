@@ -86,9 +86,12 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
 	config.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -10, max = 10, step = 0.01 })
 
 	config.args.parent = ACH:Group(L["Holder"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
-	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetShort)
-	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetShort)
+	config.args.parent.args.invertAnchor = ACH:Toggle(L["Invert Anchor"], nil, 1)
+	config.args.parent.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 2, C.Values.AllPoints, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].privateAuras.parent.invertAnchor end)
+	config.args.parent.args.spacer = ACH:Spacer(10)
+	config.args.parent.args.point = ACH:Select(L["Point"], nil, 11, C.Values.AllPoints)
+	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 12, offsetShort)
+	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 13, offsetShort)
 	config.args.parent.inline = true
 
 	config.args.icon = ACH:Group(L["Icon"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName, numUnits) end)

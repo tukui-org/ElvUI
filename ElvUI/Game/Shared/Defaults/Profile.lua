@@ -319,6 +319,8 @@ P.general = {
 			offsetY = -1
 		},
 		parent = {
+			invertAnchor = true,
+			anchorPoint = 'CENTER',
 			point = 'TOP',
 			offsetX = 0,
 			offsetY = 0

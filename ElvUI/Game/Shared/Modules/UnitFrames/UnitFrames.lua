@@ -674,7 +674,7 @@ function UF:Configure_PrivateAuras(frame)
 	if db and db.enable then
 		element:SetFrameLevel(frame.RaisedElementParent.PrivateAurasLevel)
 		element:ClearAllPoints()
-		element:Point(E.InversePoints[db.parent.point], frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
+		element:Point(db.parent.invertAnchor and E.InversePoints[db.parent.point] or db.parent.anchorPoint, frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		element:Size(db.icon.size)
 
 		PA:SetupAuras(element)
