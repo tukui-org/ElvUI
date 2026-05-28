@@ -159,7 +159,7 @@ function PA:RemoveAura(aura)
 end
 
 function PA:OffsetAura(index, db)
-	local size, z, x, y = db.icon.size, index - 1, 0, 0
+	local size, z, x, y, X, Y = db.icon.size, index - 1, 0, 0
 	local point, offset = db.icon.point, size + (db.icon.offset or 0)
 	if point == 'RIGHT' then
 		x = z * offset
@@ -172,25 +172,24 @@ function PA:OffsetAura(index, db)
 	end
 
 	-- offset because we cant use EnableMouse
-	local piggyX, piggyY
 	if db.clickThrough then
 		local half = size * 0.5
 		if point == 'RIGHT' then
 			x = x + half
-			piggyX = x - half
+			X = x - half
 		elseif point == 'LEFT' then
 			x = x - half
-			piggyX = x + half
+			X = x + half
 		elseif point == 'TOP' then
 			y = y + half
-			piggyY = y - half
+			Y = y - half
 		else
 			y = y - half
-			piggyY = y + half
+			Y = y + half
 		end
 	end
 
-	return x, y, piggyX, piggyY
+	return x, y, X, Y
 end
 
 function PA:RemoveAuras(parent)
