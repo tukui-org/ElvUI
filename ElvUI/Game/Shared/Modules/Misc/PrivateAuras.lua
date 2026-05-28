@@ -206,6 +206,22 @@ function PA:CreateAura(parent, unit, index, db)
 		offsetY = -previous * step
 	end
 
+	-- The piggy placeholder uses these uncompensated offsets directly.
+	local pigX, pigY = offsetX, offsetY
+
+	if db.clickThrough then
+		local compensate = iconSize * 0.5
+		if point == 'RIGHT' then
+			offsetX = offsetX + compensate
+		elseif point == 'LEFT' then
+			offsetX = offsetX - compensate
+		elseif point == 'TOP' then
+			offsetY = offsetY + compensate
+		else
+			offsetY = offsetY - compensate
+		end
+	end
+
 	aura:ClearAllPoints()
 	aura:Point('CENTER', parent, offsetX, offsetY)
 
@@ -214,23 +230,9 @@ function PA:CreateAura(parent, unit, index, db)
 		piggy:Size(iconSize)
 		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
 
-		if db.clickThrough then
-			local compensate = iconSize * 0.5
-			if point == 'RIGHT' then
-				offsetX = offsetX - compensate
-			elseif point == 'LEFT' then
-				offsetX = offsetX + compensate
-			elseif point == 'TOP' then
-				offsetY = offsetY - compensate
-			else
-				offsetY = offsetY + compensate
-			end
-		end
-
 		piggy:ClearAllPoints()
-		piggy:Point('CENTER', parent, offsetX, offsetY)
+		piggy:Point('CENTER', parent, pigX, pigY)
 	end
-
 	return aura
 end
 
