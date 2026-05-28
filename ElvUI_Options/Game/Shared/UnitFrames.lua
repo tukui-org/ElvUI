@@ -87,8 +87,9 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
 
 	config.args.parent = ACH:Group(L["Holder"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.parent.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
-	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetShort)
-	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetShort)
+	config.args.parent.args.anchorPoint = ACH:Select(L["Anchor Point"], L["The point on the holder that anchors to the frame. Default mirrors the frame point automatically."], 6, function() local t = E:CopyTable({}, C.Values.AllPoints) t.AUTO = L["Auto (mirror)"] return t end, nil, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent.anchorPoint or 'AUTO' end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent.anchorPoint = (value ~= 'AUTO') and value or nil updateFunc(UF, groupName, numUnits) end)
+	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 7, offsetShort)
+	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 8, offsetShort)
 	config.args.parent.inline = true
 
 	config.args.icon = ACH:Group(L["Icon"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
