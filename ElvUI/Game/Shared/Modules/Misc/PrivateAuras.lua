@@ -216,15 +216,11 @@ function PA:CreateAura(parent, unit, index, db)
 	aura:OffsetFrameLevel(nil, parent) -- set it to something else, fixes the bug
 	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
 
-	local iconSize, iconWidth, iconHeight = db.icon.size, 1, 1
-	if not db.clickThrough then
-		iconWidth, iconHeight = iconSize, iconSize
-	end
-
+	local iconSize = db.icon.size
 	local iconX, iconY, offsetX, offsetY = PA:OffsetAura(index, db)
 	aura:ClearAllPoints()
 	aura:Point('CENTER', parent, offsetX or iconX, offsetY or iconY)
-	aura:Size(iconWidth, iconHeight)
+	aura:Size(db.clickThrough and 1 or iconSize)
 
 	local piggy = aura.pig
 	if piggy then
