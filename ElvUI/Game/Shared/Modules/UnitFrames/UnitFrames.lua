@@ -681,6 +681,28 @@ function UF:Configure_PrivateAuras(frame)
 	end
 end
 
+function UF:RefreshAllPrivateAuras()
+	for _, frame in pairs(UF.units) do
+		if frame.PrivateAuras then
+			UF:Configure_PrivateAuras(frame)
+		end
+	end
+
+	for _, header in pairs(UF.headers) do
+		if header.ExecuteForChildren then
+			header:ExecuteForChildren(nil, function(child)
+				if child.PrivateAuras then
+					UF:Configure_PrivateAuras(child)
+				end
+			end)
+		end
+	end
+end
+
+function UF:GROUP_ROSTER_UPDATE()
+	C_Timer.After(0, UF.RefreshAllPrivateAuras)
+end
+
 function UF:Construct_Fader()
 	return { UpdateRange = UF.UpdateRange }
 end
@@ -2254,6 +2276,7 @@ function UF:Initialize()
 	UF:UpdateColors()
 
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
+	UF:RegisterEvent('GROUP_ROSTER_UPDATE')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	UF:RegisterEvent('SOUNDKIT_FINISHED')
