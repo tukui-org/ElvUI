@@ -682,12 +682,8 @@ function UF:Configure_PrivateAuras(frame)
 end
 
 function UF:RefreshAllPrivateAuras()
-	-- Rebuild every frame's private aura anchors against the current,
-	-- settled roster. Relying on oUF's per-frame UpdateAllElements
-	-- dispatch can miss frames whose unit assignment changed during a
-	-- leave+reinvite shuffle, leaving anchors bound to the wrong unit
-	-- (private auras showing on the wrong frame). Walking all frames
-	-- directly — like toggling the option off/on does — fixes this.
+	-- Walk every unit frame and reconfigure its private aura anchors.
+	-- Equivalent to what toggling the option off/on in /ec does.
 	for _, frame in pairs(UF.units) do
 		if frame.PrivateAuras then
 			UF:Configure_PrivateAuras(frame)
@@ -703,6 +699,19 @@ function UF:RefreshAllPrivateAuras()
 			end)
 		end
 	end
+end
+
+local refreshPending
+function UF:GROUP_ROSTER_UPDATE()
+	-- Coalesce bursts of roster events into a single deferred refresh.
+	-- Wait long enough for late-appearing units to register (e.g.
+	-- followers in follower raids appear a few seconds after zone-in).
+	if refreshPending then return end
+	refreshPending = true
+	C_Timer.After(2, function()
+		refreshPending = false
+		UF:RefreshAllPrivateAuras()
+	end)
 end
 
 function UF:GROUP_ROSTER_UPDATE()
@@ -2227,17 +2236,8 @@ do -- Clique support for registering clicks
 end
 
 function UF:UpdateAllElements(event)
-	if not self.PrivateAuras then return end
-
-	if event == 'GROUP_ROSTER_UPDATE' or event == 'PLAYER_ENTERING_WORLD' then
+	if self.PrivateAuras and (event == 'GROUP_ROSTER_UPDATE' or event == 'PLAYER_ENTERING_WORLD') then
 		UF:Configure_PrivateAuras(self)
-	elseif event == 'OnShow' then
-		local frame = self
-		C_Timer.After(0, function()
-			if frame.PrivateAuras and frame.unit and UnitExists(frame.unit) then
-				UF:Configure_PrivateAuras(frame)
-			end
-		end)
 	end
 end
 
