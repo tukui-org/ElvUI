@@ -714,10 +714,6 @@ function UF:GROUP_ROSTER_UPDATE()
 	end)
 end
 
-function UF:GROUP_ROSTER_UPDATE()
-	C_Timer.After(0, UF.RefreshAllPrivateAuras)
-end
-
 function UF:Construct_Fader()
 	return { UpdateRange = UF.UpdateRange }
 end
