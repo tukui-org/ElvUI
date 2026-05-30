@@ -682,35 +682,23 @@ function UF:Configure_PrivateAuras(frame)
 end
 
 function UF:RefreshAllPrivateAuras()
-	-- Walk every unit frame and reconfigure its private aura anchors.
-	-- Equivalent to what toggling the option off/on in /ec does.
-	for _, frame in pairs(UF.units) do
-		if frame.PrivateAuras then
-			UF:Configure_PrivateAuras(frame)
-		end
-	end
-
-	for _, header in pairs(UF.headers) do
-		if header.ExecuteForChildren then
-			header:ExecuteForChildren(nil, function(child)
-				if child.PrivateAuras then
-					UF:Configure_PrivateAuras(child)
-				end
-			end)
-		end
+	-- Equivalent to toggling enable off/on PAs for each group in /ec-unitframes.
+	-- Rebuilds each existing header, which properly refreshes private
+	-- auras after roster changes (including late-appearing follower units).
+	for groupName in pairs(UF.headers) do
+		UF:CreateAndUpdateHeaderGroup(groupName)
 	end
 end
 
-local refreshPending
 function UF:GROUP_ROSTER_UPDATE()
-	-- Coalesce bursts of roster events into a single deferred refresh.
-	-- Wait long enough for late-appearing units to register (e.g.
-	-- followers in follower raids appear a few seconds after zone-in).
+	if InCombatLockdown() then return end
 	if refreshPending then return end
 	refreshPending = true
-	C_Timer.After(2, function()
+	C_Timer.After(1, function()
 		refreshPending = false
-		UF:RefreshAllPrivateAuras()
+		if not InCombatLockdown() then
+			UF:RefreshAllPrivateAuras()
+		end
 	end)
 end
 
