@@ -35,11 +35,12 @@ local function RetrySecretPortrait(element, unit)
 	local function retry()
 		if element.secretRetryUnit ~= unit or not element:IsShown() then return end
 
-		element.secretRetryCount = (element.secretRetryCount or 0) + 1
+		local retryCount = (element.secretRetryCount or 0) + 1
+		element.secretRetryCount = retryCount
 		element:SetUnit(unit)
 
-		if element.secretRetryCount < 4 then
-			C_Timer.After(0.2 * element.secretRetryCount, retry)
+		if element.secretRetryUnit == unit and retryCount < 4 then
+			C_Timer.After(0.2 * retryCount, retry)
 		end
 	end
 
@@ -92,8 +93,12 @@ function UF:PortraitOverride(event)
 	local isPlayerRaw = UnitIsPlayer(unit)
 	local isPlayer = (isPlayerRaw == true)
 	local isSecret = E:IsSecretValue(isPlayerRaw)
-	local isVisible = not isPlayer or UnitIsVisible(unit)
-	local isAvailable = element:IsVisible() and isVisible and (not isPlayer or isSecret or (IsUnitModelReadyForUI(unit) and UnitIsConnected(unit)))
+	local isVisibleRaw = UnitIsVisible(unit)
+	local isVisible = not isPlayer or E:IsSecretValue(isVisibleRaw) or (isVisibleRaw == true)
+	local isConnectedRaw = UnitIsConnected(unit)
+	local isConnected = E:IsSecretValue(isConnectedRaw) or (isConnectedRaw == true)
+	local isModelReady = IsUnitModelReadyForUI and IsUnitModelReadyForUI(unit)
+	local isAvailable = element:IsVisible() and isVisible and (not isPlayer or isSecret or (isModelReady and isConnected))
 
 	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
