@@ -690,7 +690,7 @@ function UF:RefreshAllPrivateAuras()
 	end
 end
 
-local refreshpending
+local refreshPending
 function UF:GROUP_ROSTER_UPDATE()
 	if InCombatLockdown() then return end
 	if refreshPending then return end
