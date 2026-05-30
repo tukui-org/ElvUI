@@ -2227,8 +2227,17 @@ do -- Clique support for registering clicks
 end
 
 function UF:UpdateAllElements(event)
-	if self.PrivateAuras and (event == 'GROUP_ROSTER_UPDATE' or event == 'PLAYER_ENTERING_WORLD' or event == 'OnShow') then
+	if not self.PrivateAuras then return end
+
+	if event == 'GROUP_ROSTER_UPDATE' or event == 'PLAYER_ENTERING_WORLD' then
 		UF:Configure_PrivateAuras(self)
+	elseif event == 'OnShow' then
+		local frame = self
+		C_Timer.After(0, function()
+			if frame.PrivateAuras and frame.unit and UnitExists(frame.unit) then
+				UF:Configure_PrivateAuras(frame)
+			end
+		end)
 	end
 end
 
