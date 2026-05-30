@@ -70,7 +70,6 @@ local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
 local GetItemQualityByID = C_Item.GetItemQualityByID
 local GetItemCount = C_Item.GetItemCount
 local GetItemInfo = C_Item.GetItemInfo
-local GetItemInfoInstant = C_Item.GetItemInfoInstant or GetItemInfoInstant
 
 local GameTooltip, GameTooltipStatusBar = GameTooltip, GameTooltipStatusBar
 local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
@@ -102,58 +101,6 @@ local genderTable = { _G.UNKNOWN..' ', _G.MALE..' ', _G.FEMALE..' ' }
 local blanchyFix = '|n%s*|n' -- thanks blizz -x- lol
 local whiteRGB = { r = 1, g = 1, b = 1, a = 1 }
 local FACTION_CUSTOM = Mixin({}, ColorMixin)
-
-local function SetTooltipHealthText(statusText, unit, current, maximum)
-	if unit then
-		local okCur, unitCurrent = pcall(UnitHealth, unit)
-		local okMax, unitMaximum = pcall(UnitHealthMax, unit)
-		if okCur and okMax then
-			current, maximum = unitCurrent, unitMaximum
-		end
-	end
-
-	if not current or not maximum then return end
-
-	local isDead = current == 0
-	if unit then
-		local okDead, dead = pcall(UnitIsDeadOrGhost, unit)
-		isDead = isDead or (okDead and dead)
-	end
-
-	if isDead then
-		statusText:SetText(_G.DEAD)
-	elseif current > 0 and maximum == 1 then
-		statusText:SetFormattedText('%d%%', floor(current * 100))
-	elseif maximum > 1 then
-		local currentText = TT.db.healthBar.short and E:AbbreviateNumbers(current, 'short') or E:FormatLargeNumber(tostring(current))
-		local maximumText = TT.db.healthBar.short and E:AbbreviateNumbers(maximum, 'short') or E:FormatLargeNumber(tostring(maximum))
-		statusText:SetFormattedText('%s / %s', currentText, maximumText)
-	else
-		return
-	end
-
-	return true
-end
-
-local function GetElvUIBankItemCount(link)
-	local itemID = GetItemInfoInstant and GetItemInfoInstant(link)
-	local bankFrame = itemID and B.BankFrame
-	if not (bankFrame and bankFrame.Bags) then return end
-
-	local count = 0
-	for bagID in next, bankFrame.Bags do
-		if not B.WarbandBanks[bagID] or TT.db.includeWarband then
-			for slotID = 1, B:GetContainerNumSlots(bagID) do
-				local info = B:GetContainerItemInfo(bagID, slotID)
-				if info.itemID == itemID then
-					count = count + (info.stackCount or 1)
-				end
-			end
-		end
-	end
-
-	return count
-end
 
 function TT:IsModKeyDown(db)
 	local k = db or TT.db.modifierID -- defaulted to 'HIDE' unless otherwise specified
@@ -737,7 +684,17 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
 
-	if SetTooltipHealthText(statusText, unit) then return end
+	if TT.db.healthBar.short then
+		local okCur, current = pcall(UnitHealth, unit)
+		local okMax, maximum = pcall(UnitHealthMax, unit)
+		if okCur and okMax and current and maximum then
+			local currentAbbrev = E:AbbreviateNumbers(current, 'short')
+			local maximumAbbrev = E:AbbreviateNumbers(maximum, 'short')
+			statusText:SetFormattedText('%s / %s', currentAbbrev, maximumAbbrev)
+
+			return
+		end
+	end
 
 	-- fallback to percent if possible
 	local ok, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
@@ -755,12 +712,26 @@ function TT:GameTooltipStatusBar_OnValueChanged(bar, current)
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
 
-	local maximum
-	if not unit then
-		_, maximum = bar:GetMinMaxValues()
-	end
+	-- check if dead
+	if current == 0 or (unit and UnitIsDeadOrGhost(unit)) then
+		statusText:SetText(_G.DEAD)
+	else
+		local maximum, _
+		if unit then -- try to get the real health values if possible
+			current, maximum = UnitHealth(unit), UnitHealthMax(unit)
+		else
+			_, maximum = bar:GetMinMaxValues()
+		end
 
-	SetTooltipHealthText(statusText, unit, current, maximum)
+		-- return what we got
+		if current > 0 and maximum == 1 then
+			statusText:SetFormattedText('%d%%', floor(current * 100))
+		else
+			local currentShort = E:ShortValue(current)
+			local maximumShort = E:ShortValue(maximum)
+			statusText:SetFormattedText('%s / %s', currentShort, maximumShort)
+		end
+	end
 end
 
 function TT:GameTooltip_OnTooltipCleared(tt)
@@ -847,11 +818,6 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 			if itemCount.bank then
 				local bank = GetItemCount(link, true, nil, TT.db.includeReagents, TT.db.includeWarband)
 				local amount = bank and (bank - count)
-				local elvBank = GetElvUIBankItemCount(link)
-				if elvBank and (not amount or elvBank > amount) then
-					amount = elvBank
-				end
-
 				if amount and amount > 0 then
 					bankCount = format(IDNumber, L["Bank"], amount)
 				end
