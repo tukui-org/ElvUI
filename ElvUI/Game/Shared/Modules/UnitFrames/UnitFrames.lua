@@ -682,6 +682,12 @@ function UF:Configure_PrivateAuras(frame)
 end
 
 function UF:RefreshAllPrivateAuras()
+	-- Rebuild every frame's private aura anchors against the current,
+	-- settled roster. Relying on oUF's per-frame UpdateAllElements
+	-- dispatch can miss frames whose unit assignment changed during a
+	-- leave+reinvite shuffle, leaving anchors bound to the wrong unit
+	-- (private auras showing on the wrong frame). Walking all frames
+	-- directly — like toggling the option off/on does — fixes this.
 	for _, frame in pairs(UF.units) do
 		if frame.PrivateAuras then
 			UF:Configure_PrivateAuras(frame)
@@ -2221,7 +2227,7 @@ do -- Clique support for registering clicks
 end
 
 function UF:UpdateAllElements(event)
-	if self.PrivateAuras and (event == 'GROUP_ROSTER_UPDATE' or event == 'PLAYER_ENTERING_WORLD') then
+	if self.PrivateAuras and (event == 'GROUP_ROSTER_UPDATE' or event == 'PLAYER_ENTERING_WORLD' or event == 'OnShow') then
 		UF:Configure_PrivateAuras(self)
 	end
 end
