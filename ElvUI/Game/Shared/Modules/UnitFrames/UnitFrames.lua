@@ -681,6 +681,17 @@ function UF:Configure_PrivateAuras(frame)
 	end
 end
 
+function UF:RefreshAllPrivateAuras()
+	for groupName in pairs(UF.headers) do
+		UF:CreateAndUpdateHeaderGroup(groupName)
+	end
+end
+
+function UF:GROUP_ROSTER_UPDATE()
+	if InCombatLockdown() then return end
+	UF:RefreshAllPrivateAuras()
+end
+
 function UF:Construct_Fader()
 	return { UpdateRange = UF.UpdateRange }
 end
@@ -2254,6 +2265,7 @@ function UF:Initialize()
 	UF:UpdateColors()
 
 	UF:RegisterEvent('PLAYER_ENTERING_WORLD')
+	UF:RegisterEvent('GROUP_ROSTER_UPDATE')
 	UF:RegisterEvent('PLAYER_TARGET_CHANGED')
 	UF:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	UF:RegisterEvent('SOUNDKIT_FINISHED')
