@@ -682,25 +682,14 @@ function UF:Configure_PrivateAuras(frame)
 end
 
 function UF:RefreshAllPrivateAuras()
-	-- Equivalent to toggling enable off/on PAs for each group in /ec-unitframes.
-	-- Rebuilds each existing header, which properly refreshes private
-	-- auras after roster changes (including late-appearing follower units).
 	for groupName in pairs(UF.headers) do
 		UF:CreateAndUpdateHeaderGroup(groupName)
 	end
 end
 
-local refreshPending
 function UF:GROUP_ROSTER_UPDATE()
 	if InCombatLockdown() then return end
-	if refreshPending then return end
-	refreshPending = true
-	C_Timer.After(1, function()
-		refreshPending = false
-		if not InCombatLockdown() then
-			UF:RefreshAllPrivateAuras()
-		end
-	end)
+	UF:RefreshAllPrivateAuras()
 end
 
 function UF:Construct_Fader()
