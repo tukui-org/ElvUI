@@ -60,6 +60,7 @@ local UnitReaction = UnitReaction
 local UnitRealmRelationship = UnitRealmRelationship
 local UnitTokenFromGUID = UnitTokenFromGUID
 local UnitSex = UnitSex
+local securecallfunction = securecallfunction
 
 local TooltipDataType = Enum.TooltipDataType
 local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
@@ -1185,6 +1186,13 @@ function TT:Initialize()
 
 	TT:SetTooltipFonts()
 	TT:SetStatusBarFont()
+
+	if E.Retail and _G.GameTooltip_AddWidgetSet and not _G.ElvUI_TaintFix_GameTooltip_AddWidgetSet then
+		_G.ElvUI_TaintFix_GameTooltip_AddWidgetSet = _G.GameTooltip_AddWidgetSet
+		_G.GameTooltip_AddWidgetSet = function(...)
+			return securecallfunction(_G.ElvUI_TaintFix_GameTooltip_AddWidgetSet, ...)
+		end
+	end
 
 	local TooltipAnchor = CreateFrame('Frame', 'ElvUI_TooltipAnchor', E.UIParent)
 	if TooltipAnchor then
