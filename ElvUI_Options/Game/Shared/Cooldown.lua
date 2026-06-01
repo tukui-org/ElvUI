@@ -56,7 +56,7 @@ local function Group(order, db, label)
 	mainArgs.fontGroup = fonts
 
 	local position = ACH:Group(L["Text Position"], nil, 50)
-	position.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPositions)
+	position.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPoints)
 	position.args.offsetX = ACH:Range(L["X-Offset"], nil, 2, { min = -50, max = 50, step = 1 })
 	position.args.offsetY = ACH:Range(L["Y-Offset"], nil, 3, { min = -50, max = 50, step = 1 })
 	position.inline = true
