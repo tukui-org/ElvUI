@@ -132,6 +132,7 @@ end
 
 function BL:ObjectiveTracker_Expand(frame)
 	frame:SetParent(_G.UIParent)
+	if not frame:IsShown() then frame:Show() end
 end
 
 function BL:ObjectiveTracker_AutoHideOnShow()
