@@ -831,7 +831,7 @@ end
 function Generic:GetAction(state)
 	if not state then state = self:GetAttribute("state") end
 	state = tostring(state)
-	return self.state_types[state] or "empty", self.state_actions[state]
+	return (self.state_types or {})[state] or "empty", (self.state_actions or {})[state]
 end
 
 function Generic:UpdateAllStates()
