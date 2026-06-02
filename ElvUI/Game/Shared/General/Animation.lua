@@ -411,6 +411,7 @@ end
 -- Convenience function to do a simple fade out
 function E:UIFrameFadeOut(frame, timeToFade, startAlpha, endAlpha)
 	if not frame or frame:IsForbidden() then return end
+	if E:IsSecretValue(startAlpha) then return end
 
 	if frame.FadeObject then
 		frame.FadeObject.fadeTimer = nil

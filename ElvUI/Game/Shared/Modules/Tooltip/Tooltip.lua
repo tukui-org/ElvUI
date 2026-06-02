@@ -1201,7 +1201,9 @@ function TT:Initialize()
 	TT:SecureHook('GameTooltip_SetDefaultAnchor')
 	TT:SecureHook('EmbeddedItemTooltip_SetItemByID', 'EmbeddedItemTooltip_ID')
 	TT:SecureHook('EmbeddedItemTooltip_SetCurrencyByID', 'EmbeddedItemTooltip_ID')
-	TT:SecureHook('EmbeddedItemTooltip_SetItemByQuestReward', 'EmbeddedItemTooltip_QuestReward')
+	-- Do not hook quest reward embedded tooltips on Retail. Blizzard's
+	-- EmbeddedItemTooltip_UpdateSize can receive secret sizes there, and
+	-- running that path in ElvUI's hooked execution taints arithmetic.
 	TT:SecureHook(GameTooltip, 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
 	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
@@ -1238,7 +1240,6 @@ function TT:Initialize()
 		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')
-		TT:SecureHook('EmbeddedItemTooltip_SetSpellByQuestReward', 'EmbeddedItemTooltip_QuestReward')
 		TT:SecureHook(GameTooltipStatusBar, 'UpdateUnitHealth', 'GameTooltipStatusBar_UpdateUnitHealth')
 
 		TT:SecureHook(GameTooltip, 'SetCurrencyByID')
