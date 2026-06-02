@@ -17,6 +17,9 @@ local SetPortraitTexture = SetPortraitTexture
 local IsUnitModelReadyForUI = IsUnitModelReadyForUI
 
 local function HidePortraitFallback(element)
+	if element.Fallback2DFrame then
+		element.Fallback2DFrame:Hide()
+	end
 	if element.Fallback2D then
 		element.Fallback2D:Hide()
 	end
@@ -30,9 +33,24 @@ local function HasPortraitModel(element)
 end
 
 local function HidePortraitFallbackIfLoaded(element)
+	if element.hasSecretUnit then return false end -- handled by OnModelLoadedCheck
 	if HasPortraitModel(element) then
 		HidePortraitFallback(element)
 		return true
+	end
+end
+
+-- Fired by OnModelLoaded. For secret-GUID units, only hide the 2D cover when a
+-- DIFFERENT model file has loaded — that means the real NPC 3D model streamed in.
+-- A same-ID fire means the stale cached model was re-applied; keep the 2D cover.
+local function OnModelLoadedCheck(element)
+	if element.hasSecretUnit then
+		local newID = element:GetModelFileID()
+		if newID and newID ~= element.secretPreloadModelID then
+			HidePortraitFallback(element)
+		end
+	else
+		HidePortraitFallback(element)
 	end
 end
 
@@ -120,6 +138,7 @@ function UF:PortraitOverride(event)
 
 	local guid = UnitGUID(unit)
 	local secretGUID = E:IsSecretValue(guid)
+	element.hasSecretUnit = secretGUID
 	local storedGUID = element.guid
 	local secretStoredGUID = E:IsSecretValue(storedGUID)
 	local newGUID = secretGUID or secretStoredGUID or (storedGUID ~= guid)
@@ -158,7 +177,7 @@ function UF:PortraitOverride(event)
 		if element.playerModel then
 			if not element.modelLoadedHooked then
 				element.modelLoadedHooked = true
-				pcall(element.HookScript, element, "OnModelLoaded", HidePortraitFallback)
+				pcall(element.HookScript, element, "OnModelLoaded", OnModelLoadedCheck)
 			end
 
 			if isAvailable then
@@ -172,23 +191,36 @@ function UF:PortraitOverride(event)
 				element:SetPosition(0, 0, 0)
 
 				local noUnitChange = event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_CONNECTION" or event == "PARTY_MEMBER_ENABLE" or event == "PARTY_MEMBER_DISABLE" or event == "UNIT_MODEL_CHANGED" or event == "OnUpdate"
-				local needsLoad = needsModel or (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
+				-- For secret-GUID units, needsModel and newGUID are always truthy
+				-- (secret values can't be compared), so exclude them to avoid OnUpdate loops.
+				local needsLoad = (not secretGUID and needsModel) or (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
 				if needsLoad then
 					if secretGUID then
-						-- SetUnit for a secret-GUID unit loads a stale cached model
-						-- (usually the previous target's model). Never call it; the 2D
-						-- fallback is the permanent solution for non-grouped instance units.
-						element:ClearModel()
-						if not element.Fallback2D then
-							local fallback = element:CreateTexture(nil, "BACKGROUND")
-							fallback:SetAllPoints(element)
-							fallback:SetTexCoord(0.15, 0.85, 0.15, 0.85)
-							element.Fallback2D = fallback
-						else
-							element.Fallback2D:SetDrawLayer("BACKGROUND")
+						-- Show a 2D cover frame immediately so any stale cached 3D model
+						-- (from the previous target) is hidden while we try to load the real
+						-- NPC model. The cover is a child Frame placed above the PlayerModel,
+						-- so it renders on top of any 3D content regardless of draw layers.
+						-- SetUnit is called WITHOUT ClearModel so the old model stays as an
+						-- invisible placeholder; if the NPC's actual model streams in,
+						-- OnModelLoadedCheck detects the new file ID and hides the cover.
+						if not element.Fallback2DFrame then
+							local cover = CreateFrame("Frame", nil, element)
+							cover:SetAllPoints(element)
+							local tex = cover:CreateTexture(nil, "BACKGROUND")
+							tex:SetAllPoints(cover)
+							tex:SetTexCoord(0.15, 0.85, 0.15, 0.85)
+							element.Fallback2D = tex
+							element.Fallback2DFrame = cover
 						end
+						element.Fallback2DFrame:SetFrameLevel(element:GetFrameLevel() + 5)
 						SetPortraitTexture(element.Fallback2D, unit)
+						element.Fallback2DFrame:Show()
 						element.Fallback2D:Show()
+
+						-- Snapshot the current model ID before SetUnit so OnModelLoadedCheck
+						-- can tell a real new NPC load from a stale cache hit.
+						element.secretPreloadModelID = element:GetModelFileID()
+						element:SetUnit(unit)
 					else
 						HidePortraitFallback(element)
 						element:SetUnit(unit)
