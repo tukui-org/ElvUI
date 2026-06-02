@@ -25,6 +25,50 @@ local function HidePortraitFallback(element)
 	element.secretRetryCount = nil
 end
 
+local function HasPortraitModel(element)
+	return not element.GetModelFileID or element:GetModelFileID()
+end
+
+local function HidePortraitFallbackIfLoaded(element)
+	if HasPortraitModel(element) then
+		HidePortraitFallback(element)
+		return true
+	end
+end
+
+local function RetryPortraitModel(element, unit)
+	if not C_Timer then return end
+	if element.modelRetryUnit == unit then return end
+
+	element.modelRetryUnit = unit
+	element.modelRetryCount = 0
+
+	local function retry()
+		if element.modelRetryUnit ~= unit or not element:IsShown() then return end
+		if HidePortraitFallbackIfLoaded(element) then
+			element.modelRetryUnit = nil
+			element.modelRetryCount = nil
+			return
+		end
+
+		local retryCount = (element.modelRetryCount or 0) + 1
+		element.modelRetryCount = retryCount
+		element:ClearModel()
+		element:SetUnit(unit)
+		if HidePortraitFallbackIfLoaded(element) then
+			element.modelRetryUnit = nil
+			element.modelRetryCount = nil
+			return
+		end
+
+		if element.modelRetryUnit == unit and retryCount < 10 then
+			C_Timer.After(0.25 * retryCount, retry)
+		end
+	end
+
+	C_Timer.After(0.1, retry)
+end
+
 local function RetrySecretPortrait(element, unit)
 	if not C_Timer then return end
 	if element.secretRetryUnit == unit then return end
@@ -69,6 +113,7 @@ end
 function UF:PortraitOverride(event)
 	local element = self.Portrait
 	if not element then return end
+	element.elvPortraitPatch = 1
 
 	local unit = self.unit
 	if not unit then return end
@@ -83,6 +128,8 @@ function UF:PortraitOverride(event)
 	if newGUID then
 		element.secretRetryUnit = nil
 		element.secretRetryCount = nil
+		element.modelRetryUnit = nil
+		element.modelRetryCount = nil
 		element.guid = not secretGUID and guid or nil
 	elseif nameplate then
 		return
@@ -99,10 +146,12 @@ function UF:PortraitOverride(event)
 	local isConnected = E:IsSecretValue(isConnectedRaw) or (isConnectedRaw == true)
 	local isModelReady = IsUnitModelReadyForUI and IsUnitModelReadyForUI(unit)
 	local isAvailable = element:IsVisible() and isVisible and (not isPlayer or isSecret or (isModelReady and isConnected))
+	local playerModel = element:IsObjectType('PlayerModel')
+	local needsModel = playerModel and isAvailable and not HasPortraitModel(element)
 
-	local hasStateChanged = newGUID or (not nameplate or element.state ~= isAvailable)
+	local hasStateChanged = newGUID or needsModel or (not nameplate or element.state ~= isAvailable)
 	if hasStateChanged then
-		element.playerModel = element:IsObjectType('PlayerModel')
+		element.playerModel = playerModel
 		local prevState = element.state
 		element.state = isAvailable
 
@@ -113,8 +162,9 @@ function UF:PortraitOverride(event)
 			end
 
 			if isAvailable then
-				if element.Fallback2D and not secretGUID then
-					HidePortraitFallback(element)
+				if element.Fallback2D and HidePortraitFallbackIfLoaded(element) then
+					element.modelRetryUnit = nil
+					element.modelRetryCount = nil
 				end
 
 				element:SetCamDistanceScale(1)
@@ -122,7 +172,7 @@ function UF:PortraitOverride(event)
 				element:SetPosition(0, 0, 0)
 
 				local noUnitChange = event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_CONNECTION" or event == "PARTY_MEMBER_ENABLE" or event == "PARTY_MEMBER_DISABLE" or event == "UNIT_MODEL_CHANGED" or event == "OnUpdate"
-				local needsLoad = (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
+				local needsLoad = needsModel or (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
 				if needsLoad then
 					if secretGUID then
 						element:ClearModel()
@@ -140,12 +190,20 @@ function UF:PortraitOverride(event)
 
 					element:SetUnit(unit)
 
-					if secretGUID then
-						RetrySecretPortrait(element, unit)
+					if HidePortraitFallbackIfLoaded(element) then
+						element.modelRetryUnit = nil
+						element.modelRetryCount = nil
+					else
+						RetryPortraitModel(element, unit)
+						if secretGUID then
+							RetrySecretPortrait(element, unit)
+						end
 					end
 				end
 			else
 				HidePortraitFallback(element)
+				element.modelRetryUnit = nil
+				element.modelRetryCount = nil
 				element:ClearModel()
 				element:SetCamDistanceScale(0.25)
 				element:SetPortraitZoom(0)
