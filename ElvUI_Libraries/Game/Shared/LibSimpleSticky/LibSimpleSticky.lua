@@ -142,6 +142,76 @@ end
   Internal Functions -- Do not call these.
 ------------------------------------------------------------------------------------]]
 
+local function IsOverlapping(lA, rA, bA, tA, lB, rB, bB, tB)
+	return lA < rB and rA > lB and bA < tB and tA > bB
+end
+
+local function ResolveCollisions(self, targetX, targetY, frameList)
+	local w = self:GetWidth()
+	local h = self:GetHeight()
+	if not w or not h then return targetX, targetY end
+	local halfW = w * 0.5
+	local halfH = h * 0.5
+
+	local sA = self:GetEffectiveScale()
+	if not sA or sA <= 0 then sA = 1 end
+
+	local lA = targetX - halfW
+	local rA = targetX + halfW
+	local bA = targetY - halfH
+	local tA = targetY + halfH
+
+	for _, other in ipairs(frameList) do
+		local otherName = other:GetName()
+		if other ~= self and other ~= UIParent and otherName ~= "UIParent" and otherName ~= "ElvUIParent" and otherName ~= "WorldFrame" and other:IsVisible() and other.parent ~= self and self.parent ~= other then
+			local sB = other:GetEffectiveScale()
+			local lB = other:GetLeft()
+			local rB = other:GetRight()
+			local bB = other:GetBottom()
+			local tB = other:GetTop()
+			if lB and rB and bB and tB and sB and sB > 0 then
+				-- Convert other to self's scale
+				lB, rB, bB, tB = (lB * sB) / sA, (rB * sB) / sA, (bB * sB) / sA, (tB * sB) / sA
+
+				if IsOverlapping(lA, rA, bA, tA, lB, rB, bB, tB) then
+					-- Calculate penetration depths on all sides
+					local penLeft = rA - lB
+					local penRight = rB - lA
+					local penBottom = tA - bB
+					local penTop = tB - bA
+
+					local penX = math.min(penLeft, penRight)
+					local penY = math.min(penBottom, penTop)
+
+					if penX < penY then
+						-- Resolve along X (push out the smaller distance)
+						if penLeft < penRight then
+							targetX = lB - halfW
+						else
+							targetX = rB + halfW
+						end
+						-- Update AABB bounds
+						lA = targetX - halfW
+						rA = targetX + halfW
+					else
+						-- Resolve along Y (push out the smaller distance)
+						if penBottom < penTop then
+							targetY = bB - halfH
+						else
+							targetY = tB + halfH
+						end
+						-- Update AABB bounds
+						bA = targetY - halfH
+						tA = targetY + halfH
+					end
+				end
+			end
+		end
+	end
+
+	return targetX, targetY
+end
+
 function StickyFrames:GetUpdateFunc() -- self is frame
 	local data = StickyFrames.data[self]
 	if not data then return end
@@ -151,7 +221,36 @@ function StickyFrames:GetUpdateFunc() -- self is frame
 	if s > 0 then x, y = x / s, y / s end
 
 	self:ClearAllPoints()
-	self:SetPoint("CENTER", UIParent, "BOTTOMLEFT", x + data.xoffset, y + data.yoffset)
+
+	local elv = _G.ElvUI and _G.ElvUI[1]
+	local targetX = x + data.xoffset
+	local targetY = y + data.yoffset
+
+	if elv and elv.db and elv.db.general and elv.db.general.gridSnap ~= false and not IsShiftKeyDown() then
+		local width, height = UIParent:GetSize()
+		local gSize = elv.db.gridSize or 64
+		local step = width / gSize
+		local halfY = height * 0.5
+
+		local frameScale = self:GetEffectiveScale()
+		local parentScale = UIParent:GetEffectiveScale()
+		local scaleRatio = frameScale / parentScale
+
+		local parentX = targetX * scaleRatio
+		local parentY = targetY * scaleRatio
+
+		parentX = math.floor(parentX / step + 0.5) * step
+		parentY = halfY + math.floor((parentY - halfY) / step + 0.5) * step
+
+		targetX = parentX / scaleRatio
+		targetY = parentY / scaleRatio
+	end
+
+	if elv and elv.db and elv.db.general and elv.db.general.moverCollision and not IsShiftKeyDown() and data.frameList then
+		targetX, targetY = ResolveCollisions(self, targetX, targetY, data.frameList)
+	end
+
+	self:SetPoint("CENTER", UIParent, "BOTTOMLEFT", targetX, targetY)
 
 	StickyFrames.sticky[self] = nil
 
