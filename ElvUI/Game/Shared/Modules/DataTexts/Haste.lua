@@ -12,7 +12,6 @@ local UnitAttackSpeed = UnitAttackSpeed
 local GetCombatRating = GetCombatRating
 local UnitRangedDamage = UnitRangedDamage
 local GetCombatRatingBonus = GetCombatRatingBonus
-local GetPVPGearStatRules = GetPVPGearStatRules
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 
 local STAT_HASTE = STAT_HASTE
@@ -37,7 +36,8 @@ local function OnEnter()
 		end
 	else
 		local haste = GetHaste()
-		DT.tooltip:AddLine(format('%s: %s%.2f%%|r', STAT_HASTE, (haste < 0 and (not E.Retail or not GetPVPGearStatRules())) and '|cffFF3333' or '|cffFFFFFF', haste), 1, 1, 1)
+		local color = (not E.Retail and (haste < 0) and '|cffFF3333') or '|cffFFFFFF'
+		DT.tooltip:AddLine(format('%s: %s%.2f%%|r', STAT_HASTE, color, haste), 1, 1, 1)
 	end
 
 	local rating = ((E.Wrath or E.Mists) and E.myclass == 'HUNTER' and CR_HASTE_RANGED) or CR_HASTE_MELEE
