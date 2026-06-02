@@ -175,6 +175,9 @@ function UF:PortraitOverride(event)
 				local needsLoad = needsModel or (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
 				if needsLoad then
 					if secretGUID then
+						-- SetUnit for a secret-GUID unit loads a stale cached model
+						-- (usually the previous target's model). Never call it; the 2D
+						-- fallback is the permanent solution for non-grouped instance units.
 						element:ClearModel()
 						if not element.Fallback2D then
 							local fallback = element:CreateTexture(nil, "BACKGROUND")
@@ -186,17 +189,15 @@ function UF:PortraitOverride(event)
 						end
 						SetPortraitTexture(element.Fallback2D, unit)
 						element.Fallback2D:Show()
-					end
-
-					element:SetUnit(unit)
-
-					if HidePortraitFallbackIfLoaded(element) then
-						element.modelRetryUnit = nil
-						element.modelRetryCount = nil
 					else
-						RetryPortraitModel(element, unit)
-						if secretGUID then
-							RetrySecretPortrait(element, unit)
+						HidePortraitFallback(element)
+						element:SetUnit(unit)
+
+						if HidePortraitFallbackIfLoaded(element) then
+							element.modelRetryUnit = nil
+							element.modelRetryCount = nil
+						else
+							RetryPortraitModel(element, unit)
 						end
 					end
 				end
