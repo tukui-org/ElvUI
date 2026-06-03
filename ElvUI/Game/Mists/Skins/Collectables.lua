@@ -507,8 +507,10 @@ local function SkinTransmogFrames()
 	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
 	WardrobeCollectionFrame.FilterButton.ResetButton:ClearAllPoints()
 	WardrobeCollectionFrame.FilterButton.ResetButton:Point('CENTER', WardrobeCollectionFrame.FilterButton, 'TOPRIGHT', 0, 0)
+
 	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ItemsCollectionFrame.WeaponDropdown)
 	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
+	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')
 
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
 		if Frame.Models then
@@ -580,96 +582,6 @@ local function SkinTransmogFrames()
 			S:HandleNextPrevButton(paging.NextPageButton, nil, nil, true)
 		end
 	end
-
-	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
-	SetsCollectionFrame:SetTemplate('Transparent')
-	SetsCollectionFrame.RightInset:StripTextures()
-	SetsCollectionFrame.LeftInset:StripTextures()
-	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
-
-	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', SetsFrame_ScrollBoxUpdate)
-
-	local DetailsFrame = SetsCollectionFrame.DetailsFrame
-	DetailsFrame.ModelFadeTexture:Hide()
-	DetailsFrame.IconRowBackground:Hide()
-	DetailsFrame.Name:FontTemplate(nil, 16)
-	DetailsFrame.LongName:FontTemplate(nil, 16)
-	S:HandleDropDownBox(DetailsFrame.VariantSetsDropdown)
-	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
-
-	local WardrobeFrame = _G.WardrobeFrame
-	S:HandlePortraitFrame(WardrobeFrame)
-
-	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
-	WardrobeTransmogFrame:StripTextures()
-	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
-	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 200)
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
-
-	for i = 1, #WardrobeTransmogFrame.SlotButtons do
-		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
-		slotButton:OffsetFrameLevel(2)
-		slotButton:StripTextures()
-		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
-		slotButton.Border:Kill()
-		slotButton.Icon:SetTexCoords()
-		slotButton.Icon:SetInside(slotButton.backdrop)
-
-		local undo = slotButton.UndoButton
-		if undo then undo:SetHighlightTexture(E.ClearTexture) end
-
-		local pending = slotButton.PendingFrame
-		if pending then
-			if slotButton.transmogType == 1 then
-				pending.Glow:Size(48)
-				pending.Ants:Size(30)
-			else
-				pending.Glow:Size(74)
-				pending.Ants:Size(48)
-			end
-		end
-	end
-
-	local SpecButton = WardrobeTransmogFrame.SpecDropdown
-	if SpecButton then
-		S:HandleButton(SpecButton)
-
-		SpecButton:SetPoint('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -3, 0)
-
-		if SpecButton.Arrow then
-			SpecButton.Arrow:SetAlpha(0)
-		end
-
-		if not SpecButton.customArrow then
-			local tex = SpecButton:CreateTexture(nil, 'ARTWORK')
-			tex:SetAllPoints()
-			tex:SetTexture(E.Media.Textures.ArrowUp)
-			tex:SetRotation(S.ArrowRotation.down)
-
-			SpecButton.customArrow = tex
-		end
-	end
-
-	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
-	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
-
-	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
-	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')
-
-	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
-	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate('Transparent')
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
-
-	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
-	WardrobeOutfitEditFrame:StripTextures()
-	WardrobeOutfitEditFrame:SetTemplate('Transparent')
-	WardrobeOutfitEditFrame.EditBox:StripTextures()
-	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
-	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
-	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
-	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
 local function HandleTabs()
