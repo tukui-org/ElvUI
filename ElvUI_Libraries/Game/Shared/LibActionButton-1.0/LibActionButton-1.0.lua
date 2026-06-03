@@ -2502,7 +2502,7 @@ else
 		end
 
 		-- 12.0 helper function
-		if ActionButton_ApplyCooldown then
+		if WoWRetail and ActionButton_ApplyCooldown then
 			ActionButton_ApplyCooldown(self.cooldown, cooldownInfo, self.chargeCooldown, chargeInfo, self.lossOfControlCooldown, lossOfControlInfo)
 
 			lib.callbacks:Fire("OnCooldownUpdate", self, nil, nil, nil, cooldownInfo, chargeInfo, lossOfControlInfo)
