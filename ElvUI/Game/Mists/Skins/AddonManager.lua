@@ -59,6 +59,7 @@ function S:AddonList()
 	S:HandleCheckBox(AddonList.ForceLoad)
 	AddonList.ForceLoad:Size(26)
 	S:HandleEditBox(AddonList.SearchBox)
+	_G.AddonListSearchIcon:Hide()
 
 	hooksecurefunc('AddonList_InitAddon', HandleButton)
 end
