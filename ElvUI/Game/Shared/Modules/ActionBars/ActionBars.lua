@@ -757,7 +757,7 @@ function AB:UpdateButtonSettings(specific)
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
 
-		if E.Retail then
+		if E.Retail or E.Mists then
 			AB:UpdateExtraBindings()
 			AB:UpdateFlyoutButtons()
 

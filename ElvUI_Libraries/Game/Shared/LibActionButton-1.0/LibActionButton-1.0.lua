@@ -290,7 +290,7 @@ function lib:CreateButton(id, name, header, config)
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 
-	if WoWRetail or WoWBCC then
+	if WoWRetail or WoWBCC or WoWMists then
 		button:RegisterForClicks("AnyDown", "AnyUp")
 	else
 		button:RegisterForClicks("AnyUp")
@@ -1456,7 +1456,7 @@ function Generic:UpdateConfig(config)
 	self:SetAttribute('flyoutDirection', self.config.flyoutDirection)
 	self:SetAttribute('useOnKeyDown', self.config.clickOnDown)
 
-	if not (WoWRetail or WoWBCC) then
+	if not (WoWRetail or WoWBCC or WoWMists) then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 	end
 end
