@@ -84,7 +84,6 @@
 	<Script file='Blizzard\TalkingHeadFrame.lua'/>
 	<Script file='Blizzard\TimerTracker.lua'/>
 	<Script file='Blizzard\TutorialFrames.lua'/>
-	<Script file='Blizzard\Vehicle.lua'/>
 	<Script file='Blizzard\WidgetsUI.lua'/>
 
 	<Script file='Misc\Misc.lua'/>

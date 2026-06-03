@@ -415,7 +415,7 @@ function M:Initialize()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
 
-	if not E.Retail then
+	if not (E.Retail or E.Mists) then -- why is mist here blizzard?
 		M:ToggleInterrupt()
 	end
 

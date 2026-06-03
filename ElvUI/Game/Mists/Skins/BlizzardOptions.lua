@@ -57,8 +57,7 @@ function S:BlizzardOptions()
 		_G.ChatConfigCombatSettingsFiltersDeleteButton,
 		_G.ChatConfigCombatSettingsFiltersAddFilterButton,
 		_G.ChatConfigCombatSettingsFiltersCopyFilterButton,
-		_G.CombatConfigSettingsSaveButton,
-		_G.CombatLogDefaultButton,
+		_G.CombatConfigSettingsSaveButton
 	}
 
 	local ChatCheckBoxs = {

@@ -1165,13 +1165,13 @@ function E:PositionGameMenuButton()
 
 			local lastIndex = gameMenuLastButtons[text]
 			if lastIndex == gameMenuLastButtons.ElvUI and GameMenuFrame.ElvUI then
-				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
+				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, (E.Mists and -30) or -10)
 			elseif not lastIndex then
 				button:NudgePoint(nil, -offset)
 			end
 		end
 
-		GameMenuFrame:Height(GameMenuFrame:GetHeight() + offset)
+		GameMenuFrame:Height(GameMenuFrame:GetHeight() + ((E.Mists and 10) or offset))
 	else
 		local button = GameMenuFrame.ElvUI
 		if button then
