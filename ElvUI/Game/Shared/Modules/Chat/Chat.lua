@@ -180,8 +180,10 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 }
 
 local ExcludeSecureCmd = { -- Blizzard forgot to add into IsSecureCmd
-	['/outfit'] = true
-}
+	['/outfit'] = true, -- transmog swap
+	['/m'] = true,		-- macro window
+	['/macro'] = true	-- macro window
+} -- these break something in combat if used by the history chat
 
 do
 	local accessIndex = 1
