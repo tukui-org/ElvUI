@@ -379,7 +379,7 @@ do
 end
 
 function E:CanFlagSlug(outline)
-	if not E.Retail or not E.global.general.fontSlug then return end
+	if not (E.Retail or E.Mists) or not E.global.general.fontSlug then return end
 
 	return not outline or (not strfind(outline, 'SHADOW') and not strfind(outline, 'MONOCHROME') and not strfind(outline, 'THICKOUTLINE'))
 end
