@@ -163,14 +163,19 @@ function NP:SetCVars()
 
 	if E.Retail then
 		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
-	elseif E.TBC or E.Wrath or E.Mists then
+	elseif E.Mists then
+		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
+		E:SetCVar('nameplateMaxDistance', db.loadDistance)
+	elseif E.TBC or E.Wrath then
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
 	-- The order of these is important !!
+
+	local newPlates = E.Retail or E.Mists
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
-	NP:ToggleCVar(E.Retail and 'nameplateShowOnlyNameForFriendlyPlayerUnits' or 'nameplateShowOnlyNames', visibility.showOnlyNames)
+	NP:ToggleCVar(newPlates and 'nameplateShowOnlyNameForFriendlyPlayerUnits' or 'nameplateShowOnlyNames', visibility.showOnlyNames)
 
 	local enemyVisibility = visibility.enemy
 	NP:ToggleCVar('nameplateShowEnemyMinions', enemyVisibility.minions)
@@ -181,10 +186,10 @@ function NP:SetCVars()
 
 	local friendlyVisibility = visibility.friendly
 	NP:ToggleCVar('nameplateShowFriendlyNPCs', friendlyVisibility.npcs)
-	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerMinions' or 'nameplateShowFriendlyMinions', friendlyVisibility.minions)
-	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerGuardians' or 'nameplateShowFriendlyGuardians', friendlyVisibility.guardians)
-	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerPets' or 'nameplateShowFriendlyPets', friendlyVisibility.pets)
-	NP:ToggleCVar(E.Retail and 'nameplateShowFriendlyPlayerTotems' or 'nameplateShowFriendlyTotems', friendlyVisibility.totems)
+	NP:ToggleCVar(newPlates and 'nameplateShowFriendlyPlayerMinions' or 'nameplateShowFriendlyMinions', friendlyVisibility.minions)
+	NP:ToggleCVar(newPlates and 'nameplateShowFriendlyPlayerGuardians' or 'nameplateShowFriendlyGuardians', friendlyVisibility.guardians)
+	NP:ToggleCVar(newPlates and 'nameplateShowFriendlyPlayerPets' or 'nameplateShowFriendlyPets', friendlyVisibility.pets)
+	NP:ToggleCVar(newPlates and 'nameplateShowFriendlyPlayerTotems' or 'nameplateShowFriendlyTotems', friendlyVisibility.totems)
 
 	local playerDB = db.units.PLAYER
 	local playerVisibility = playerDB.visibility

@@ -507,6 +507,10 @@ do
 		cvarToggles.useClassColorNames = L["Class Color Names"]
 	else
 		cvarRanges.nameplateNotSelectedAlpha = { name = L["Non Selected Alpha"], default = '0.5', max = 1, order = 28 }
+
+		if E.Mists then
+			cvarToggles.useClassColorNames = L["Class Color Names"]
+		end
 	end
 
 	local function ApplyCVar(key, value)
