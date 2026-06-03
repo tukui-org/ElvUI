@@ -95,6 +95,7 @@
 	<Script file='Mists\Skins\BlackMarket.lua'/>
 	<Script file='Mists\Skins\BlizzardOptions.lua'/>
 	<Script file='Mists\Skins\Calendar.lua'/>
+	<Script file='Mists\Skins\CatalogShop.lua'/>
 	<Script file='Mists\Skins\Channels.lua'/>
 	<Script file='Mists\Skins\Character.lua'/>
 	<Script file='Mists\Skins\Collectables.lua'/>
