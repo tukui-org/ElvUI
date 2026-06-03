@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 78 -- the real minor version is 145
+local MINOR_VERSION = 78 -- the real minor version is 147
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -32,8 +32,6 @@ local Masque = LibStub("Masque", true)
 
 local GetCVar = C_CVar.GetCVar
 local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
-local GetCooldownAuraBySpellID = C_UnitAuras.GetCooldownAuraBySpellID
-local GetItemActionOnEquipSpellID = C_ActionBar.GetItemActionOnEquipSpellID
 local IsAssistedCombatAction = C_ActionBar.IsAssistedCombatAction
 local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
 local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
@@ -44,7 +42,6 @@ local UnitIsFriend = UnitIsFriend
 local UnpackAuraData = AuraUtil.UnpackAuraData
 local GetAuraDataBySpellName = C_UnitAuras.GetAuraDataBySpellName
 local GetAuraDataByAuraInstanceID = C_UnitAuras.GetAuraDataByAuraInstanceID
-local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetActionDisplayCount = C_ActionBar.GetActionDisplayCount
 local IsEquippedGearOutfitAction = C_ActionBar.IsEquippedGearOutfitAction
 local GetActionChargeDuration = C_ActionBar.GetActionChargeDuration
