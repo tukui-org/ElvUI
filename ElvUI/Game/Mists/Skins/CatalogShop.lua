@@ -20,6 +20,7 @@ function S:Blizzard_CatalogShop()
 		local CloseButton = CatalogShopFrame.CloseButton
 		if CloseButton then
 			S:HandleCloseButton(CatalogShopFrame.CloseButton)
+			CloseButton:SetFrameLevel(510)
 		end
 
 		local TitleContainer = CatalogShopFrame.TitleContainer
