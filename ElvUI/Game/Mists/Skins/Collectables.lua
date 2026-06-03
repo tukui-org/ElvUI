@@ -489,15 +489,20 @@ local function SkinHeirloomFrame()
 	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', HeirloomsJournalLayoutCurrentPage)
 end
 
-local function SkinTransmogFrames()
+local function SkinWardrobeFrame()
 	local WardrobeCollectionFrame = _G.WardrobeCollectionFrame
-	S:HandleTab(WardrobeCollectionFrame.ItemsTab)
-	S:HandleTab(WardrobeCollectionFrame.SetsTab)
+	S:HandleTab(_G.WardrobeCollectionFrameTab1)
+	S:HandleTab(_G.WardrobeCollectionFrameTab2)
 
-	WardrobeCollectionFrame.progressBar:StripTextures()
-	WardrobeCollectionFrame.progressBar:CreateBackdrop()
-	WardrobeCollectionFrame.progressBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(WardrobeCollectionFrame.progressBar)
+	local WardrobeProgressBar = WardrobeCollectionFrame.progressBar
+	if WardrobeProgressBar then
+		WardrobeProgressBar.border:Hide()
+		WardrobeProgressBar:DisableDrawLayer('BACKGROUND')
+		WardrobeProgressBar:SetStatusBarTexture(E.media.normTex)
+		WardrobeProgressBar:CreateBackdrop()
+
+		E:RegisterStatusBar(WardrobeProgressBar)
+	end
 
 	S:HandleEditBox(_G.WardrobeCollectionFrameSearchBox)
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
@@ -554,34 +559,27 @@ local function SkinTransmogFrames()
 			end
 		end
 
-		local pending = Frame.PendingTransmogFrame
-		if pending then
-			local Glowframe = pending.Glowframe
-			Glowframe:SetAtlas(nil)
-			Glowframe:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, pending:GetFrameLevel())
-
-			if Glowframe.backdrop then
-				Glowframe.backdrop:Point('TOPLEFT', pending, 'TOPLEFT', 0, 1) -- dont use set inside, left side needs to be 0
-				Glowframe.backdrop:Point('BOTTOMRIGHT', pending, 'BOTTOMRIGHT', 1, -1)
-				Glowframe.backdrop:SetBackdropBorderColor(1, 0.7, 1)
-				Glowframe.backdrop:SetBackdropColor(0, 0, 0, 0)
-			end
-
-			for i = 1, 12 do
-				if i < 5 then
-					Frame.PendingTransmogFrame['Smoke'..i]:Hide()
-				end
-
-				Frame.PendingTransmogFrame['Wisp'..i]:Hide()
-			end
-		end
-
 		local paging = Frame.PagingFrame
 		if paging then
 			S:HandleNextPrevButton(paging.PrevPageButton, nil, nil, true)
 			S:HandleNextPrevButton(paging.NextPageButton, nil, nil, true)
 		end
 	end
+
+	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
+	SetsCollectionFrame:SetTemplate('Transparent')
+	SetsCollectionFrame.RightInset:StripTextures()
+	SetsCollectionFrame.LeftInset:StripTextures()
+	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
+	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', SetsFrame_ScrollBoxUpdate)
+
+	local DetailsFrame = SetsCollectionFrame.DetailsFrame
+	DetailsFrame.ModelFadeTexture:Hide()
+	DetailsFrame.IconRowBackground:Hide()
+	DetailsFrame.Name:FontTemplate(nil, 16)
+	DetailsFrame.LongName:FontTemplate(nil, 16)
+	S:HandleDropDownBox(DetailsFrame.VariantSetsDropdown)
+	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
 end
 
 local function HandleTabs()
@@ -638,7 +636,7 @@ end
 function S:Blizzard_Collections()
 	if not E.private.skins.blizzard.enable then return end
 	if E.private.skins.blizzard.collections then SkinCollectionsFrames() end
-	if E.private.skins.blizzard.transmogrify then SkinTransmogFrames() end
+	if E.private.skins.blizzard.transmogrify then SkinWardrobeFrame() end
 end
 
 S:AddCallbackForAddon('Blizzard_Collections')
