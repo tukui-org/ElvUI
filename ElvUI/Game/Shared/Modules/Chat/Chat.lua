@@ -179,6 +179,12 @@ local historyTypes = { -- most of these events are set in FindURL_Events, this i
 	CHAT_MSG_EMOTE			= 'EMOTE' -- this never worked, check it sometime
 }
 
+local ExcludeSecureCmd = { -- Blizzard forgot to add into IsSecureCmd
+	['/outfit'] = true, -- transmog swap
+	['/m'] = true,		-- macro window
+	['/macro'] = true	-- macro window
+} -- these break something in combat if used by the history chat
+
 do
 	local accessIndex = 1
 	local accessInfo = {}	-- keyed by token
@@ -2870,7 +2876,7 @@ function CH:ChatEdit_AddHistory(editbox, line)
 	if not msg or strlen(msg) <= 0 then return end
 
 	local cmd = strmatch(msg, '^/%w+')
-	if cmd and IsSecureCmd(cmd) then return end -- block secure commands
+	if cmd and (IsSecureCmd(cmd) or ExcludeSecureCmd[cmd]) then return end -- block secure commands
 
 	for index, text in pairs(lines) do
 		if text == msg then

@@ -144,7 +144,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.14, '15.14-git', nil, true
+		return 15.15, '15.15-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -379,7 +379,7 @@ do
 end
 
 function E:CanFlagSlug(outline)
-	if not E.Retail or not E.global.general.fontSlug then return end
+	if not (E.Retail or E.Mists) or not E.global.general.fontSlug then return end
 
 	return not outline or (not strfind(outline, 'SHADOW') and not strfind(outline, 'MONOCHROME') and not strfind(outline, 'THICKOUTLINE'))
 end

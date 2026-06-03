@@ -674,7 +674,7 @@ function UF:Configure_PrivateAuras(frame)
 	if db and db.enable then
 		element:SetFrameLevel(frame.RaisedElementParent.PrivateAurasLevel)
 		element:ClearAllPoints()
-		element:Point(E.InversePoints[db.parent.point], frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
+		element:Point(db.parent.invertAnchor and E.InversePoints[db.parent.point] or db.parent.anchorPoint, frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		element:Size(db.icon.size)
 
 		PA:SetupAuras(element)
@@ -1791,7 +1791,7 @@ do
 	end
 
 	-- which is used for sepcific handling
-	-- true: do not reparent, 1: lock parent, 2: is nameplate
+	-- true: do not reparent, 1: lock parent, 2: retail nameplate (required this way specifically for Blizzard Auras)
 	local function HideFrame(frame, which)
 		if not frame then return end
 
@@ -1827,7 +1827,7 @@ do
 				if plate and not handledPlates[plate] then
 					handledPlates[plate] = true
 
-					HideFrame(plate, 2)
+					HideFrame(plate, E.Retail and 2 or 1)
 				end
 			end
 		elseif E.private.unitframe.enable and not handledUnits[unit] then
@@ -2199,7 +2199,7 @@ do -- Clique support for registering clicks
 end
 
 function UF:UpdateAllElements(event)
-	if self.PrivateAuras and (event == 'OnShow' or event == 'PLAYER_ENTERING_WORLD') then
+	if self.PrivateAuras and event == 'OnAttributeChanged' then
 		UF:Configure_PrivateAuras(self)
 	end
 end

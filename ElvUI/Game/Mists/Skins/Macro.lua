@@ -7,7 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local function MacroSelectorScrollUpdateChild(button)
 	if button.Icon and not button.IsSkinned then
-		S:HandleItemButton(button, true)
+		S:HandleItemButton(button, true, true)
 	end
 end
 

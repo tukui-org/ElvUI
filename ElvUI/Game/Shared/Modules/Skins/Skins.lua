@@ -1658,7 +1658,7 @@ function S:HandleIcon(icon, backdrop)
 	end
 end
 
-function S:HandleItemButton(b, setInside)
+function S:HandleItemButton(b, setInside, ignoreParent)
 	if b.IsSkinned then return end
 
 	local name = b:GetName()
@@ -1678,7 +1678,9 @@ function S:HandleItemButton(b, setInside)
 			b.backdrop:SetOutside(icon, 1, 1)
 		end
 
-		icon:SetParent(b.backdrop)
+		if not ignoreParent then
+			icon:SetParent(b.backdrop)
+		end
 
 		if texture then
 			icon:SetTexture(texture)
