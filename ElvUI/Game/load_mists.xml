@@ -140,6 +140,7 @@
 	<Script file='Mists\Skins\Trade.lua'/>
 	<Script file='Mists\Skins\TradeSkill.lua'/>
 	<Script file='Mists\Skins\Trainer.lua'/>
+	<Script file='Mists\Skins\Transmog.lua'/>
 	<Script file='Mists\Skins\Tutorial.lua'/>
 	<Script file='Mists\Skins\WorldMap.lua'/>
 </Ui>
