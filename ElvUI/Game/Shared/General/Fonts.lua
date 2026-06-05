@@ -9,6 +9,10 @@ local strmatch = strmatch
 
 local FontStringScaleAnimationMode = Enum.FontStringScaleAnimationMode
 
+local IgnoreSlug = {
+	QuestFont = true
+}
+
 local FontMap = {
 	worldzone		= { objects = { _G.ZoneTextFont, _G.WorldMapTextFont } },
 	worldsubzone	= { object = _G.SubZoneTextFont },
@@ -28,7 +32,7 @@ local FontMap = {
 }
 
 if E.Retail or E.Mists then
-	FontMap.questtext		= { object = _G.QuestFont, noSlug = E.Mists }
+	FontMap.questtext		= { object = _G.QuestFont }
 	FontMap.questtitle		= { object = _G.QuestTitleFont }
 	FontMap.questsmall		= { object = _G.QuestFontNormalSmall }
 end
@@ -66,7 +70,7 @@ function E:SetFont(obj, font, size, style, sR, sG, sB, sA, sX, sY, r, g, b, a)
 
 	if style == 'NONE' or not style then style = '' end
 
-	local slug = E:CanFlagSlug(style) and not obj.noSlug
+	local slug = E:CanFlagSlug(style) and not IgnoreSlug[obj:GetName()]
 	if slug then style = style..'SLUG' end -- handle before shadow
 
 	local shadow = strsub(style, 0, 6) == 'SHADOW'
