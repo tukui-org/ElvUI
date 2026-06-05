@@ -41,6 +41,7 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
+local RemoveFrameLock = RemoveFrameLock
 local UIParent = UIParent
 local UnitName = UnitName
 
@@ -3994,6 +3995,10 @@ do
 	end
 end
 
+function CH:PetBattleFrame_Display()
+	RemoveFrameLock('PETBATTLES')
+end
+
 function CH:Initialize()
 	if ElvCharacterDB.ChatHistory then ElvCharacterDB.ChatHistory = nil end --Depreciated
 	if ElvCharacterDB.ChatLog then ElvCharacterDB.ChatLog = nil end --Depreciated
@@ -4081,6 +4086,10 @@ function CH:Initialize()
 		end
 	else
 		CH:RegisterEvent('PLAYER_ENTERING_WORLD', 'ResnapDock')
+	end
+
+	if E.Mists then -- allow chat to stay shown
+		hooksecurefunc('PetBattleFrame_Display', CH.PetBattleFrame_Display)
 	end
 
 	if _G.WIM then
