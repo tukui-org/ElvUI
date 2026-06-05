@@ -111,7 +111,6 @@ function NP:CVarReset()
 	E:SetCVar('nameplateMaxScale', 1)
 	E:SetCVar('nameplateMinAlpha', 1)
 	E:SetCVar('nameplateMinScale', 1)
-	E:SetCVar('nameplateLargerScale', 1)
 	E:SetCVar('nameplateSelectedAlpha', 1)
 	E:SetCVar('nameplateSelectedScale', 1)
 	E:SetCVar('nameplatePlayerLargerScale', 1.8)
@@ -119,6 +118,7 @@ function NP:CVarReset()
 	if not (E.Retail or E.Mists) then
 		-- listed in options
 		E:SetCVar('nameplateNotSelectedAlpha', 1)
+		E:SetCVar('nameplateLargerScale', 1)
 
 		-- not in options
 		E:SetCVar('nameplateSelfScale', 1)
