@@ -27,10 +27,13 @@ local FontMap = {
 	end }
 }
 
-if E.Retail then
-	FontMap.questtext		= { object = _G.QuestFont }
+if E.Retail or E.Mists then
+	FontMap.questtext		= { object = _G.QuestFont, noSlug = E.Mists }
 	FontMap.questtitle		= { object = _G.QuestTitleFont }
 	FontMap.questsmall		= { object = _G.QuestFontNormalSmall }
+end
+
+if E.Retail then
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
 	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
 	FontMap.objective = { objects = { _G.ObjectiveFont, _G.ObjectiveTrackerLineFont, _G.ObjectiveTrackerHeaderFont } }
@@ -63,7 +66,7 @@ function E:SetFont(obj, font, size, style, sR, sG, sB, sA, sX, sY, r, g, b, a)
 
 	if style == 'NONE' or not style then style = '' end
 
-	local slug = E:CanFlagSlug(style)
+	local slug = E:CanFlagSlug(style) and not obj.noSlug
 	if slug then style = style..'SLUG' end -- handle before shadow
 
 	local shadow = strsub(style, 0, 6) == 'SHADOW'
@@ -156,10 +159,13 @@ function E:UpdateBlizzardFonts()
 		E:MapFont(FontMap.worldsubzone,				NORMAL, (blizz and 24) or unscale or huge, outline)
 		E:MapFont(FontMap.worldzone,				NORMAL, (blizz and 25) or unscale or mega, outline)
 
-		if E.Retail then
+		if E.Retail or E.Mists then
 			E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
 			E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
 			E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')
+		end
+
+		if E.Retail then
 			E:MapFont(FontMap.objective,			NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
 			E:MapFont(FontMap.talkingtext,			NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
 			E:MapFont(FontMap.talkingtitle,			NORMAL, (blizz and 22) or unscale or large, outline)
