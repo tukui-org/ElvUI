@@ -41,7 +41,6 @@ local RemoveExtraSpaces = RemoveExtraSpaces
 local RemoveNewlines = RemoveNewlines
 local ToggleFrame = ToggleFrame
 local ToggleQuickJoinPanel = ToggleQuickJoinPanel
-local RemoveFrameLock = RemoveFrameLock
 local UIParent = UIParent
 local UnitName = UnitName
 
@@ -3996,7 +3995,15 @@ do
 end
 
 function CH:PetBattleFrame_Display()
-	RemoveFrameLock('PETBATTLES')
+	_G.RemoveFrameLock('PETBATTLES')
+
+	-- we want to display the pet battle tab now since it is faded initially without mousing over
+	for _, frameName in ipairs(_G.CHAT_FRAMES) do
+		local chat = _G[frameName]
+		if (chat and chat.isTemporary) and (not chat.hasBeenFaded and chat.chatType == 'PET_BATTLE_COMBAT_LOG') and not chat:IsShown() then
+			_G.FCF_FadeInChatFrame(chat)
+		end
+	end
 end
 
 function CH:Initialize()
