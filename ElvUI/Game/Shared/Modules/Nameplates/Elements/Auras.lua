@@ -153,7 +153,7 @@ function NP:Configure_Auras(nameplate, which)
 		index = index + 1
 	end
 
-	auras:SetFrameLevel(6)
+	auras:SetFrameLevel(7)
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 	auras:Size(db.numAuras * db.size + ((db.numAuras - 1) * db.spacing), 1)
