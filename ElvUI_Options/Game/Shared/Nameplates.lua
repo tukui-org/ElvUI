@@ -486,7 +486,6 @@ NamePlates.generalGroup.args.blizzardCVars = ACH:Group(L["Blizzard CVars"], nil,
 
 do
 	local cvarRanges = {
-		nameplateLargerScale = { name = L["Larger Scale"], default = '1.2', max = 3, order = 20 },
 		nameplateMinScale = { name = L["Min Scale"], default = '0.8', max = 3, order = 21 },
 		nameplateMaxScale = { name = L["Max Scale"], default = '1.0', max = 3, order = 22 },
 		nameplateSelectedScale = { name = L["Selected Scale"], default = (E.Retail and '1.2' or '1.0'), max = 4, order = 23 },
@@ -510,6 +509,8 @@ do
 
 		if E.Mists then
 			cvarToggles.useClassColorNames = L["Class Color Names"]
+		else
+			cvarRanges.nameplateLargerScale = { name = L["Larger Scale"], default = '1.2', max = 3, order = 20 }
 		end
 	end
 
