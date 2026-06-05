@@ -170,6 +170,14 @@ local function SettingsListScrollUpdateChild(child)
 		else
 			button:StripTextures()
 
+			if button.Left then
+				button.Left:SetAlpha(0)
+			end
+
+			if button.Middle then
+				button.Middle:SetAlpha(0)
+			end
+
 			if button.Right then
 				button.Right:SetAlpha(0)
 			end
