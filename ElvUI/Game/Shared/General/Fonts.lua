@@ -33,7 +33,8 @@ if E.Retail or E.Mists then
 	FontMap.questtitle		= { object = _G.QuestTitleFont }
 	FontMap.questsmall		= { object = _G.QuestFontNormalSmall }
 
-	IgnoreSlug[_G.QuestFont] = E.Mists
+	-- this will break the `instantQuestText` and prevent the text from rendering correctly
+	IgnoreSlug[_G.QuestFont] = E.Mists -- on Mop at least
 end
 
 if E.Retail then
