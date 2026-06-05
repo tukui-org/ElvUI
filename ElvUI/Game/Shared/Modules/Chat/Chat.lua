@@ -2190,6 +2190,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	local header, body = _G['CHAT_'..chatType..'_GET']
 	local sender = (not bossMonster and playerLink) or arg2
+	local specialType = bossMonster or (chatType == 'PET_BATTLE_INFO' or chatType == 'PET_BATTLE_COMBAT_LOG')
 	if usingDifferentLanguage then
 		body = format(header..'[%s] %s', pflag..sender, arg3, message) -- arg3 is language
 	elseif chatType == 'GUILD_ITEM_LOOTED' then
@@ -2197,18 +2198,17 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	elseif chatType == 'TEXT_EMOTE' then
 		local classLink = realm and playerLink and not isProtected and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
 		body = (classLink and gsub(message, arg2..'%-'..realm, pflag..classLink, 1)) or ((E:NotSecretValue(arg2) and arg2 ~= sender) and gsub(message, arg2, sender, 1)) or message
-	elseif bossMonster then -- may contain special formatting
+	elseif specialType then -- contains special formatting
 		body = format(header..message, pflag..sender)
 	else -- ignore special characters from players
 		body = format(header..'%s', pflag..sender, message)
 	end
 
-	-- Add Channel
-	if channelLength > 0 then
+	if not specialType and (channelLength > 0) then -- Add Channel
 		body = '|Hchannel:channel:'..arg8..'|h['..ResolvePrefixedChannelName(arg4)..']|h '..body
 	end
 
-	if not isProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
+	if not specialType and not isProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
 		body = CH:HandleShortChannels(body, CH.db.hideChannels)
 	end
 
