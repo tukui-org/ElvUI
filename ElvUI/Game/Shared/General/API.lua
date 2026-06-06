@@ -1139,18 +1139,6 @@ function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
 end
 
-local gameMenuLastButtons = {}
-if _G.GAMEMENU_EXTERNALEVENT then
-	gameMenuLastButtons.ElvUI = StoreEnabled and StoreEnabled() and 3 or 2
-	gameMenuLastButtons[_G.GAMEMENU_EXTERNALEVENT] = 1
-	gameMenuLastButtons[_G.GAMEMENU_OPTIONS] = 2
-	gameMenuLastButtons[_G.BLIZZARD_STORE] = 3
-else
-	gameMenuLastButtons.ElvUI = StoreEnabled and StoreEnabled() and 2 or 1
-	gameMenuLastButtons[_G.GAMEMENU_OPTIONS] = 1
-	gameMenuLastButtons[_G.BLIZZARD_STORE] = 2
-end
-
 function E:PositionGameMenuButton()
 	if E.hasEditMode then
 		if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
@@ -1161,12 +1149,9 @@ function E:PositionGameMenuButton()
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
 			local text = button:GetText()
 
-			GameMenuFrame.MenuButtons[text] = button -- export these
-
-			local lastIndex = gameMenuLastButtons[text]
-			if lastIndex == gameMenuLastButtons.ElvUI and GameMenuFrame.ElvUI then
-				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
-			elseif not lastIndex then
+			if text == _G["MACROS"] then
+				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT')
+			elseif text == _G["LOG_OUT"] or text == _G["EXIT_GAME"] or text == _G["RETURN_TO_GAME"] then
 				button:NudgePoint(nil, -offset)
 			end
 		end
