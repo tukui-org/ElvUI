@@ -1,0 +1,4 @@
+<Ui>
+	<Include file="utf8data.lua"/>
+	<Include file="utf8.lua"/>
+</Ui>

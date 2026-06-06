@@ -48,7 +48,6 @@ local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW or 3
 local SPEC_MONK_WINDWALKER = SPEC_MONK_WINDWALKER or 3
 local SPEC_HUNTER_SURVIVAL = SPEC_HUNTER_SURVIVAL or 3
 local SPEC_SHAMAN_ELEMENTAL = SPEC_SHAMAN_ELEMENTAL or 1
-local SPEC_SHAMAN_ENHANCEMENT = SPEC_SHAMAN_ENHANCEMENT or 2
 local SPEC_WARLOCK_DEMONOLOGY = SPEC_WARLOCK_DEMONOLOGY or 2
 local SPEC_WARLOCK_DESTRUCTION = SPEC_WARLOCK_DESTRUCTION or 3
 local SPEC_DEMONHUNTER_VENGEANCE = SPEC_DEMONHUNTER_VENGEANCE or 2
@@ -414,7 +413,7 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'HUNTER' then
 		classPowerID = (oUF.isRetail and currentSpec == SPEC_HUNTER_SURVIVAL) and POWERTYPE_SPEAR_TIP or nil
 	elseif myClass == 'SHAMAN' then
-		classPowerID = oUF.isRetail and (currentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM or currentSpec == SPEC_SHAMAN_ELEMENTAL and POWERTYPE_MANA) or nil
+		classPowerID = oUF.isRetail and (currentSpec == SPEC_SHAMAN_ELEMENTAL and POWERTYPE_MANA) or nil
 	elseif myClass == 'EVOKER' and not element.which then
 		classPowerID = POWERTYPE_ESSENCE
 	elseif myClass == 'EVOKER' and element.which then

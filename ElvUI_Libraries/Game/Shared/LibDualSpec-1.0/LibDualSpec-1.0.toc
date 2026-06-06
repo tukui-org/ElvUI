@@ -1,0 +1,11 @@
+## Interface: 11508, 20505, 30405, 38000, 40402, 50503, 120001
+## LoadOnDemand: 1
+## Title: Lib: DualSpec-1.0
+## Version: v1.29.0
+## X-Date: 2026-02-14T16:34:33Z
+## Notes: Adds spec switching support to individual AceDB-3.0 databases.
+## Author: Adirelle, Nebula
+## OptionalDeps: Ace3
+
+LibStub.lua
+LibDualSpec-1.0.lua
