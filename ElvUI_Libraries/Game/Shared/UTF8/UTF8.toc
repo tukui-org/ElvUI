@@ -1,0 +1,10 @@
+## Interface: 100002
+## Version: v15.16
+
+## Title: Lib: UTF8
+## Notes: A library for manipulating UTF-8 strings
+## Author: Pastamancer
+## X-License: BSD License
+## X-Website: http://www.wowace.com/addons/utf8/
+
+lib.xml
