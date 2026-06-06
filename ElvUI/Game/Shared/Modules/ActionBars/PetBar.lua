@@ -28,6 +28,16 @@ local bar = CreateFrame('Frame', 'ElvUI_BarPet', E.UIParent, 'SecureHandlerState
 bar:SetFrameStrata('LOW')
 bar.buttons = {}
 
+local function ClearPetButtonSpellData(button)
+	if button.spellDataLoadedCancelFunc then
+		button.spellDataLoadedCancelFunc()
+		button.spellDataLoadedCancelFunc = nil
+	end
+
+	button.spellDataLoadedSpellID = nil
+	button.tooltipSubtext = nil
+end
+
 function AB:UpdatePet(event, unit)
 	if (event == 'UNIT_FLAGS' and unit ~= 'pet') or (event == 'UNIT_PET' and unit ~= 'player') then return end
 
@@ -54,11 +64,23 @@ function AB:UpdatePet(event, unit)
 			button.tooltipName = _G[name]
 		end
 
-		if spellID then
+		if spellID and button.spellDataLoadedSpellID ~= spellID then
+			ClearPetButtonSpellData(button)
+			button.spellDataLoadedSpellID = spellID
+
 			local spell = _G.Spell:CreateFromSpellID(spellID)
-			button.spellDataLoadedCancelFunc = spell:ContinueWithCancelOnSpellLoad(function()
-				button.tooltipSubtext = spell:GetSpellSubtext()
+			local spellDataLoaded
+			local cancelFunc = spell:ContinueWithCancelOnSpellLoad(function()
+				if button.spellDataLoadedSpellID == spellID then
+					button.tooltipSubtext = spell:GetSpellSubtext()
+					button.spellDataLoadedCancelFunc = nil
+				end
+
+				spellDataLoaded = true
 			end)
+			button.spellDataLoadedCancelFunc = not spellDataLoaded and cancelFunc or nil
+		elseif not spellID and button.spellDataLoadedSpellID then
+			ClearPetButtonSpellData(button)
 		end
 
 		if isActive and name ~= 'PET_ACTION_FOLLOW' then
@@ -227,10 +249,7 @@ end
 
 function AB:PetBar_OnHide()
 	for _, button in ipairs(bar.buttons) do
-		if button.spellDataLoadedCancelFunc then
-			button.spellDataLoadedCancelFunc()
-			button.spellDataLoadedCancelFunc = nil
-		end
+		ClearPetButtonSpellData(button)
 	end
 end
 
