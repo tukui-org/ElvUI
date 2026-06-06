@@ -26,6 +26,8 @@ local list = {}
 UF.RangeSpells = list
 
 function UF:UpdateRangeList(db)
+	if not db then return {} end
+
 	local spells = {}
 	for spell, value in next, db do
 		if value then
@@ -78,6 +80,8 @@ end
 
 function UF:UnitInSpellsRange(unit, which)
 	local spells = list[which]
+	if not spells then return nil end
+
 	local range = (not next(spells) and 1) or UF:UnitSpellRange(unit, spells)
 
 	if (not range or range == 1) and not InCombatLockdown() then
