@@ -111,14 +111,14 @@ function NP:CVarReset()
 	E:SetCVar('nameplateMaxScale', 1)
 	E:SetCVar('nameplateMinAlpha', 1)
 	E:SetCVar('nameplateMinScale', 1)
-	E:SetCVar('nameplateLargerScale', 1)
 	E:SetCVar('nameplateSelectedAlpha', 1)
 	E:SetCVar('nameplateSelectedScale', 1)
 	E:SetCVar('nameplatePlayerLargerScale', 1.8)
 
-	if not E.Retail then
+	if not (E.Retail or E.Mists) then
 		-- listed in options
 		E:SetCVar('nameplateNotSelectedAlpha', 1)
+		E:SetCVar('nameplateLargerScale', 1)
 
 		-- not in options
 		E:SetCVar('nameplateSelfScale', 1)
@@ -149,7 +149,7 @@ end
 function NP:SetCVars()
 	local db = NP.db
 
-	if not E.Retail then
+	if not (E.Retail or E.Mists) then
 		if db.clampToScreen then
 			E:SetCVar('nameplateOtherTopInset', 0.08)
 			E:SetCVar('nameplateOtherBottomInset', 0.1)
@@ -292,7 +292,7 @@ function NP:Update_ClassPowerTwo(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
-	nameplate:SetScale(E.Retail and 1 or E.uiscale)
+	nameplate:SetScale((E.Retail or E.Mists) and 1 or E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
@@ -312,7 +312,7 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = (E.Retail or (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame)) and 1 or E.uiscale
+	local mult = ((E.Retail or E.Mists) or (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame)) and 1 or E.uiscale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
@@ -335,7 +335,7 @@ function NP:PostUpdateAllElements(event)
 end
 
 function NP:StylePlate(nameplate)
-	nameplate:SetScale(E.Retail and 1 or E.uiscale)
+	nameplate:SetScale((E.Retail or E.Mists) and 1 or E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 

@@ -157,7 +157,7 @@ function AB:HandleButtonAutoCast(bar, button)
 	local autoCast = button.AutoCastOverlay or button.AutoCastable
 	if E.Retail then
 		autoCast:SetOutside(button, 3, 3)
-	elseif (E.TBC or E.Wrath) then
+	elseif (E.TBC or E.Mists or E.Wrath) then
 		autoCast:SetOutside(button, 1, 1)
 	else
 		local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
@@ -757,7 +757,7 @@ function AB:UpdateButtonSettings(specific)
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
 
-		if E.Retail then
+		if E.Retail or E.Mists then
 			AB:UpdateExtraBindings()
 			AB:UpdateFlyoutButtons()
 

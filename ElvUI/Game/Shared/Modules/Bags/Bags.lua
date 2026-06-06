@@ -1783,11 +1783,11 @@ function B:GetPurchaseTabButton()
 end
 
 function B:SetupSecurePurchase(button)
-	local purcahseTab = B:GetPurchaseTabButton()
-	if not purcahseTab then return end
+	local purchaseTab = B:GetPurchaseTabButton()
+	if not purchaseTab then return end
 
 	button:SetAttribute('type', 'click')
-	button:SetAttribute('clickbutton', purcahseTab)
+	button:SetAttribute('clickbutton', purchaseTab)
 	button:RegisterForClicks('AnyUp', 'AnyDown')
 end
 
@@ -2027,7 +2027,7 @@ end
 function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - bankOffset)) or (bagID - (E.Retail and 0 or 1))
 	local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or B:ConstructContainerName(isBank, bagNum)
-	local inherit = (E.Retail and '' or isBank and 'BankItemButtonBagTemplate') or (E.TBC or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
+	local inherit = (E.Retail and '' or isBank and 'BankItemButtonBagTemplate') or (E.TBC or E.Mists or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
 	local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 	f.ContainerHolderByBagID[bagID] = holder
@@ -3160,7 +3160,7 @@ function B:ShowBankTab(f, bankTab)
 	f.bankType = warbandIndex and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
 	f.ContainerHolder:Hide()
 
-	local purcahseTab = B:GetPurchaseTabButton()
+	local purchaseTab = B:GetPurchaseTabButton()
 	if warbandIndex then
 		f.fullBank = not CanPurchaseBankTab(WARBANDBANK_TYPE)
 
@@ -3171,10 +3171,10 @@ function B:ShowBankTab(f, bankTab)
 		end
 
 		f.depositButton:SetScript('OnClick', B.BankTabs_DepositWarband)
-		f.purchaseTabButton:SetShown(purcahseTab and not f.fullBank)
+		f.purchaseTabButton:SetShown(purchaseTab and not f.fullBank)
 
-		if purcahseTab then
-			purcahseTab:SetAttribute('overrideBankType', WARBANDBANK_TYPE)
+		if purchaseTab then
+			purchaseTab:SetAttribute('overrideBankType', WARBANDBANK_TYPE)
 		end
 
 		f.holderFrame:Hide()
@@ -3190,10 +3190,10 @@ function B:ShowBankTab(f, bankTab)
 			end
 
 			f.depositButton:SetScript('OnClick', B.BankTabs_DepositCharacter)
-			f.purchaseTabButton:SetShown(purcahseTab and not f.fullBank)
+			f.purchaseTabButton:SetShown(purchaseTab and not f.fullBank)
 
-			if purcahseTab then
-				purcahseTab:SetAttribute('overrideBankType', CHARACTERBANK_TYPE)
+			if purchaseTab then
+				purchaseTab:SetAttribute('overrideBankType', CHARACTERBANK_TYPE)
 			end
 		else
 			f.fullBank = select(2, GetNumBankSlots())
@@ -3302,9 +3302,9 @@ function B:CloseBank()
 	B:PanelHide(_G.BankFrame)
 	B:PanelHide(_G.BankPanel)
 
-	local purcahseTab = B:GetPurchaseTabButton()
-	if purcahseTab then
-		purcahseTab:SetAttribute('overrideBankType', nil)
+	local purchaseTab = B:GetPurchaseTabButton()
+	if purchaseTab then
+		purchaseTab:SetAttribute('overrideBankType', nil)
 	end
 
 	if B.BankFrame:IsShown() then

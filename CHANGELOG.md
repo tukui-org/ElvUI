@@ -1,3 +1,20 @@
+### Version 15.16 [ June 5th 2026 ]
+*   **Mist**
+    *   Transmog skin updated.
+    *   CatalogShop skin updated.
+    *   Actionbar autocast glow adjusted.
+    *   Actionbar flyouts fixed.
+    *   Spellbook flyout arrow fixed.
+    *   Nameplates having the wrong scale value.
+    *   Nameplate clickable range sliders added to options.
+    *   Bag buttons disappearing.
+    *   Pet battle chat works properly now (and shows up finally).
+    *   Font option overrides added for Quest fonts and fixed the Quest Text display getting stuck.
+*   **General**
+    *   Updated LibActionButton. (Thanks Nevcairiel)
+    *   Nameplate layers adjusted so the Castbar will be over health.
+    *   Reset Tutorial button in settings wasn't skinned properly.
+
 ### Version 15.15 [ June 2nd 2026 ]
 *   Era: Nameplate highlight showing up weird.
 *   Inspect Itemlevel moved to top left to avoid overlap.
