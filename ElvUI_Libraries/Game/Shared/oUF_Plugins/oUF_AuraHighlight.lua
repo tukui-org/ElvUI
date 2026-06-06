@@ -45,6 +45,8 @@ end
 
 local function Looper(unit, filter, check, list, func)
 	local unitAuraFiltered = AuraFiltered[filter][unit]
+	if not unitAuraFiltered then return end -- next(nil) would error
+
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
 		local name, icon, count, auraType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID = oUF:UnpackAuraData(aura)
