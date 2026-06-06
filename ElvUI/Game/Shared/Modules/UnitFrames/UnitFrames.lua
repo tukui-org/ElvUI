@@ -1100,7 +1100,15 @@ function UF:ZONE_CHANGED_NEW_AREA(event)
 
 	if E.Retail and UF.db.maxAllowedGroups then
 		local _, instanceType, difficultyID = GetInstanceInfo()
-		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
+		if E:IsSecretValue(instanceType) or E:IsSecretValue(difficultyID) then
+			-- 12.0: instance info is secret here; comparing it would taint this
+			-- execution and the Update_AllFrames pass below. Tainted execution gets a
+			-- drastically reduced budget, so configuring all raid frames then throws
+			-- "script ran too long" (NineSlice ApplyLayout / Toolkit Point, etc.).
+			UF.maxAllowedGroups = 8
+		else
+			UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
+		end
 	else
 		UF.maxAllowedGroups = 8
 	end
@@ -1139,7 +1147,8 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:UpdateRangeSpells()
 
 	local _, instanceType = IsInInstance()
-	if instanceType == 'raid' then
+	-- 12.0: short-circuit on secret instanceType so the comparison below never taints this handler
+	if E:IsSecretValue(instanceType) or instanceType == 'raid' then
 		if initLogin or isReload then
 			UF:ZONE_CHANGED_NEW_AREA()
 		else
