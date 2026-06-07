@@ -1149,14 +1149,16 @@ function E:PositionGameMenuButton()
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
 			local text = button:GetText()
 
-			if text == _G.LOG_OUT or text == _G.EXIT_GAME or text == _G.RETURN_TO_GAME then
-				button:NudgePoint(nil, -25)
+			if text and (text == _G.LOGOUT or text == _G.LOG_OUT or text == _G.EXIT_GAME or text == _G.RETURN_TO_GAME) then
+				button:NudgePoint(nil, E.Retail and -25 or -20)
 			else
 				if text == _G.MACROS then
 					GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT')
 				end
 
-				button:NudgePoint(nil, 10)
+				if E.Retail then
+					button:NudgePoint(nil, 10)
+				end
 			end
 		end
 	else
