@@ -67,7 +67,6 @@ local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo or GetS
 
 local GetCVarBool = C_CVar.GetCVarBool
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local StoreEnabled = C_StorePublic.IsEnabled
 local GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
@@ -1145,18 +1144,21 @@ function E:PositionGameMenuButton()
 			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end
 
-		local offset = (E.Retail and 35) or 20
+		GameMenuFrame:Height(GameMenuFrame:GetHeight() + 10)
+
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
 			local text = button:GetText()
 
-			if text == _G["MACROS"] then
-				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT')
-			elseif text == _G["LOG_OUT"] or text == _G["EXIT_GAME"] or text == _G["RETURN_TO_GAME"] then
-				button:NudgePoint(nil, -offset)
+			if text == _G.LOG_OUT or text == _G.EXIT_GAME or text == _G.RETURN_TO_GAME then
+				button:NudgePoint(nil, -25)
+			else
+				if text == _G.MACROS then
+					GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT')
+				end
+
+				button:NudgePoint(nil, 10)
 			end
 		end
-
-		GameMenuFrame:Height(GameMenuFrame:GetHeight() + offset)
 	else
 		local button = GameMenuFrame.ElvUI
 		if button then
