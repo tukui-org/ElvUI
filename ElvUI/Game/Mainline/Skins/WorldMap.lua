@@ -226,14 +226,14 @@ function S:WorldMapFrame()
 	QuestMapFrame:SetScript('OnHide', S.WorldMap_QuestMapHide)
 
 	local DetailsFrame = QuestMapFrame.DetailsFrame
-	DetailsFrame.BorderFrame:SetAlpha(0)
-	
+
 	S:HandleButton(DetailsFrame.BackFrame.BackButton, true)
 	S:HandleButton(DetailsFrame.AbandonButton, true)
 	DetailsFrame.ShareButton:StripTextures() -- strip the Blizz Art around from it
 	S:HandleButton(DetailsFrame.ShareButton, true)
 	S:HandleButton(DetailsFrame.TrackButton, true)
 
+	DetailsFrame.BorderFrame:SetAlpha(0)
 	DetailsFrame.BackFrame:StripTextures()
 	DetailsFrame.BackFrame.BackButton:SetFrameLevel(5)
 	DetailsFrame.AbandonButton:SetFrameLevel(5)
