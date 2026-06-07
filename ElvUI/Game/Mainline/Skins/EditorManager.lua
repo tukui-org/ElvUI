@@ -93,7 +93,7 @@ function S:EditorManagerFrame()
 	end
 
 	-- Layout Creator
-	local layout = _G.EditModeNewLayoutDialog
+	local layout = _G.EditModeLayoutDialog
 	if layout then
 		layout:StripTextures()
 		layout:CreateBackdrop('Transparent')
