@@ -268,9 +268,6 @@ function S:FriendsFrame()
 
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropdown, 70)
 
-	_G.FriendsFrameStatusDropdown:ClearAllPoints()
-	_G.FriendsFrameStatusDropdown:Point('TOPLEFT', FriendsFrame, 'TOPLEFT', 5, -24)
-
 	local FriendsFrameBattlenetFrame = _G.FriendsFrameBattlenetFrame
 	FriendsFrameBattlenetFrame:StripTextures()
 	FriendsFrameBattlenetFrame:SetTemplate('Transparent')
