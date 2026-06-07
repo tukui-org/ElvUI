@@ -2,33 +2,40 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+
+local reaction = {}
+reaction["EXHAUSTION"] = {
+	r = 1.00, g = 0.90, b = 0.00
+}
+reaction["BREATH"] = {
+	r = 0.00, g = 0.50, b = 1.00
+}
+reaction["DEATH"] = {
+	r = 1.00, g = 0.70, b = 0.00
+}
+reaction["FEIGNDEATH"] = {
+	r = 1.00, g = 0.70, b = 0.00
+}
 
 local function SetupTimer(container, timer)
 	local bar = container:GetAvailableTimer(timer)
 	if not bar then return end
 
-	if not bar.atlasHolder then
-		bar.atlasHolder = CreateFrame('Frame', nil, bar)
-		bar.atlasHolder:SetClipsChildren(true)
-		bar.atlasHolder:SetInside()
-
-		bar.StatusBar:SetParent(bar.atlasHolder)
-		bar.StatusBar:ClearAllPoints()
-		bar.StatusBar:SetSize(204, 22)
-		bar.StatusBar:Point('TOP', 0, 2)
-
-		bar:SetSize(200, 18)
-
-		bar.Text:FontTemplate()
-		bar.Text:ClearAllPoints()
-		bar.Text:SetParent(bar.StatusBar)
-		bar.Text:Point('CENTER', bar.StatusBar, 0, 1)
-	end
-
 	bar:StripTextures()
-	bar:SetTemplate('Transparent')
+	bar:Size(222, 18)
+
+	local color = reaction[timer]
+	bar.StatusBar:SetStatusBarTexture(E.media.normTex)
+	bar.StatusBar:SetStatusBarColor(color.r, color.g, color.b)
+	E:RegisterStatusBar(bar.StatusBar)
+	bar.StatusBar:CreateBackdrop()
+	bar.StatusBar:Size(222, 18)
+
+	bar.Text:FontTemplate()
+	bar.Text:ClearAllPoints()
+	bar.Text:SetParent(bar.StatusBar)
+	bar.Text:Point('CENTER', bar.StatusBar, 'CENTER')
 end
 
 function S:MirrorTimers() -- Mirror Timers (Underwater Breath, etc.)
