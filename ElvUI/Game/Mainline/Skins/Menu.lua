@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local backdrops = {}
@@ -28,17 +30,14 @@ end
 
 local function SkinFrameAttachments(frame)
 	if not frame.attachments then return end
-	local r, g, b = unpack(E.media.rgbvaluecolor)
 
-	for _, widget in ipairs(frame.attachments) do
-		local widgetType = widget:GetObjectType()
-		if widgetType == 'Texture' then
-			if widget:GetTexture() == 130940 then
-				widget:SetTexture(E.Media.Textures.ArrowUp)
-				widget:SetVertexColor(r, g, b, 1)
-				widget:SetRotation(S.ArrowRotation.right)
-				widget:Size(12)
-			end
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	for _, widget in next, frame.attachments do
+		if widget:IsObjectType('Texture') and widget:GetTexture() == 130940 then
+			widget:SetTexture(E.Media.Textures.ArrowUp)
+			widget:SetRotation(S.ArrowRotation.right)
+			widget:SetVertexColor(r, g, b)
+			widget:Size(12)
 		end
 	end
 end
@@ -68,7 +67,7 @@ function S:Blizzard_Menu()
 		hooksecurefunc(manager, 'OpenContextMenu', S.OpenContextMenu)
 	end
 
-	hooksecurefunc(CompositorMixin, 'AttachTexture', SkinFrameAttachments)
+	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', SkinFrameAttachments)
 end
 
 S:AddCallbackForAddon('Blizzard_Menu')
