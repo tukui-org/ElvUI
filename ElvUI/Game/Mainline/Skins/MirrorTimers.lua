@@ -4,18 +4,11 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local reaction = {}
-reaction["EXHAUSTION"] = {
-	r = 1.00, g = 0.90, b = 0.00
-}
-reaction["BREATH"] = {
-	r = 0.00, g = 0.50, b = 1.00
-}
-reaction["DEATH"] = {
-	r = 1.00, g = 0.70, b = 0.00
-}
-reaction["FEIGNDEATH"] = {
-	r = 1.00, g = 0.70, b = 0.00
+local MirrorTimerColors = {
+	EXHAUSTION = { r = 1.00, g = 0.90, b = 0.00 },
+	BREATH = { r = 0.00, g = 0.50, b = 1.00 },
+	DEATH = { r = 1.00, g = 0.70, b = 0.00 },
+	FEIGNDEATH = { r = 1.00, g = 0.70, b = 0.00 },
 }
 
 local function SetupTimer(container, timer)
@@ -25,7 +18,7 @@ local function SetupTimer(container, timer)
 	bar:StripTextures()
 	bar:Size(222, 18)
 
-	local color = reaction[timer]
+	local color = MirrorTimerColors[timer]
 	bar.StatusBar:SetStatusBarTexture(E.media.normTex)
 	bar.StatusBar:SetStatusBarColor(color.r, color.g, color.b)
 	E:RegisterStatusBar(bar.StatusBar)
