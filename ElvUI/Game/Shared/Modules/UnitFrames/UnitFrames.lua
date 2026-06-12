@@ -478,7 +478,9 @@ function UF:GetAuraAnchorFrame(frame, attachTo)
 		return frame.Power
 	elseif attachTo == 'TRINKET' and (frame.Trinket or frame.PVPSpecIcon) then
 		local _, instanceType = IsInInstance()
-		return (instanceType == 'arena' and frame.Trinket) or frame.PVPSpecIcon
+		-- 12.0: instanceType is secret inside instances; treat secret (we're in an
+		-- instance, e.g. arena) as arena so the comparison can't taint this execution
+		return ((E:IsSecretValue(instanceType) or instanceType == 'arena') and frame.Trinket) or frame.PVPSpecIcon
 	else
 		return frame
 	end
@@ -1540,7 +1542,11 @@ function UF:RegisterRaidDebuffIndicator()
 		ORD:ResetDebuffData()
 
 		local _, instanceType = IsInInstance()
-		if instanceType == 'party' or instanceType == 'raid' then
+		-- 12.0: short-circuit on secret instanceType (we're in a party/raid instance)
+		-- so the comparison never taints this handler (PLAYER_ENTERING_WORLD calls
+		-- this, then may call ZONE_CHANGED_NEW_AREA -> Update_AllFrames in the same
+		-- tainted execution, blowing the reduced budget -> "script ran too long")
+		if E:IsSecretValue(instanceType) or instanceType == 'party' or instanceType == 'raid' then
 			local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
 			local instanceSpells = ((E.global.unitframe.aurafilters[instance] and E.global.unitframe.aurafilters[instance].spells) or E.global.unitframe.aurafilters.RaidDebuffs.spells)
 			ORD:RegisterDebuffs(instanceSpells)
