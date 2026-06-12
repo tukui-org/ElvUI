@@ -46,9 +46,18 @@ local function AllowAura(frame, aura)
 	return true
 end
 
+local function NotFilteredOut(unit, auraInstanceID, filter)
+	-- C_UnitAuras.IsAuraFilteredOutByInstanceID returns a SECRET boolean for secret auras in Midnight.
+	-- `not <secret>` would propagate secretness into the auraIsX flags and taint UF:VerifyFilter's
+	-- and/or chain (-> reduced budget -> "script ran too long"). Coerce to a plain boolean; a secret
+	-- aura defaults to false (not matched by this special filter) which is a safe, no-freeze default.
+	local filtered = IsAuraFilteredOutByInstanceID(unit, auraInstanceID, filter)
+	return oUF:NotSecretValue(filtered) and not filtered
+end
+
 local function InstanceFiltered(unit, aura, helpful, harmful)
-	local isHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, helpful)
-	local isHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, harmful)
+	local isHelpful = NotFilteredOut(unit, aura.auraInstanceID, helpful)
+	local isHarmful = NotFilteredOut(unit, aura.auraInstanceID, harmful)
 
 	return isHelpful or isHarmful
 end
@@ -56,8 +65,8 @@ end
 -- These flags are per-aura and do NOT depend on the filter, so compute them
 -- once instead of recomputing identical values inside the 3x filter loop.
 local function ComputeAuraFlags(unit, aura)
-	aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
-	aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
+	aura.auraIsHarmful = NotFilteredOut(unit, aura.auraInstanceID, 'HARMFUL')
+	aura.auraIsHelpful = NotFilteredOut(unit, aura.auraInstanceID, 'HELPFUL')
 
 	aura.auraIsImportant = InstanceFiltered(unit, aura, 'HELPFUL|IMPORTANT', 'HARMFUL|IMPORTANT')
 	aura.auraIsCancelable = InstanceFiltered(unit, aura, 'HELPFUL|CANCELABLE', 'HARMFUL|CANCELABLE')
