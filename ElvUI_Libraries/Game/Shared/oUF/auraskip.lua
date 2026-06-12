@@ -53,25 +53,25 @@ local function InstanceFiltered(unit, aura, helpful, harmful)
 	return isHelpful or isHarmful
 end
 
-local function UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
+-- These flags are per-aura and do NOT depend on the filter, so compute them
+-- once instead of recomputing identical values inside the 3x filter loop.
+local function ComputeAuraFlags(unit, aura)
+	aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
+	aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
+
+	aura.auraIsImportant = InstanceFiltered(unit, aura, 'HELPFUL|IMPORTANT', 'HARMFUL|IMPORTANT')
+	aura.auraIsCancelable = InstanceFiltered(unit, aura, 'HELPFUL|CANCELABLE', 'HARMFUL|CANCELABLE')
+	aura.auraIsCrowdControl = InstanceFiltered(unit, aura, 'HELPFUL|CROWD_CONTROL', 'HARMFUL|CROWD_CONTROL')
+	aura.auraIsBigDefensive = InstanceFiltered(unit, aura, 'HELPFUL|BIG_DEFENSIVE', 'HARMFUL|BIG_DEFENSIVE')
+	aura.auraIsExternalDefensive = InstanceFiltered(unit, aura, 'HELPFUL|EXTERNAL_DEFENSIVE', 'HARMFUL|EXTERNAL_DEFENSIVE')
+	aura.auraIsPlayer = InstanceFiltered(unit, aura, 'HELPFUL|PLAYER', 'HARMFUL|PLAYER')
+	aura.auraIsRaid = InstanceFiltered(unit, aura, 'HELPFUL|RAID', 'HARMFUL|RAID')
+	aura.auraIsRaidInCombat = InstanceFiltered(unit, aura, 'HELPFUL|RAID_IN_COMBAT', 'HARMFUL|RAID_IN_COMBAT') -- Auras flagged to show on raid frames in combat
+	aura.auraIsRaidPlayerDispellable = InstanceFiltered(unit, aura, 'HELPFUL|RAID_PLAYER_DISPELLABLE', 'HARMFUL|RAID_PLAYER_DISPELLABLE') -- Auras with a dispel type the player can dispel
+end
+
+local function UpdateFilter(filter, filtered, allowed, unit, auraInstanceID, aura)
 	local unitAuraFiltered = filtered[unit]
-
-	local allowed = which ~= 'remove' and allow and aura
-	if allowed then -- irrelevant filters: IncludeNameplateOnly, Maw
-		aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
-		aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
-
-		aura.auraIsImportant = InstanceFiltered(unit, aura, 'HELPFUL|IMPORTANT', 'HARMFUL|IMPORTANT')
-		aura.auraIsCancelable = InstanceFiltered(unit, aura, 'HELPFUL|CANCELABLE', 'HARMFUL|CANCELABLE')
-		aura.auraIsCrowdControl = InstanceFiltered(unit, aura, 'HELPFUL|CROWD_CONTROL', 'HARMFUL|CROWD_CONTROL')
-		aura.auraIsBigDefensive = InstanceFiltered(unit, aura, 'HELPFUL|BIG_DEFENSIVE', 'HARMFUL|BIG_DEFENSIVE')
-		aura.auraIsExternalDefensive = InstanceFiltered(unit, aura, 'HELPFUL|EXTERNAL_DEFENSIVE', 'HARMFUL|EXTERNAL_DEFENSIVE')
-		aura.auraIsPlayer = InstanceFiltered(unit, aura, 'HELPFUL|PLAYER', 'HARMFUL|PLAYER')
-		aura.auraIsRaid = InstanceFiltered(unit, aura, 'HELPFUL|RAID', 'HARMFUL|RAID')
-		aura.auraIsRaidInCombat = InstanceFiltered(unit, aura, 'HELPFUL|RAID_IN_COMBAT', 'HARMFUL|RAID_IN_COMBAT') -- Auras flagged to show on raid frames in combat
-		aura.auraIsRaidPlayerDispellable = InstanceFiltered(unit, aura, 'HELPFUL|RAID_PLAYER_DISPELLABLE', 'HARMFUL|RAID_PLAYER_DISPELLABLE') -- Auras with a dispel type the player can dispel
-	end
-
 	unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and allowed or nil
 end
 
@@ -97,8 +97,13 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
 	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
+	local allowed = which ~= 'remove' and allow and aura
+	if allowed then -- irrelevant filters: IncludeNameplateOnly, Maw
+		ComputeAuraFlags(unit, aura)
+	end
+
 	for filter, filtered in next, auraFiltered do
-		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
+		UpdateFilter(filter, filtered, allowed, unit, auraInstanceID, aura)
 	end
 
 	if showFunc then
