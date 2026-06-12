@@ -7,10 +7,12 @@ local next = next
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
 local GetGuildRosterInfo = GetGuildRosterInfo
-local GUILDMEMBERS_TO_DISPLAY = GUILDMEMBERS_TO_DISPLAY
-local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
-local GetCVarBool = C_CVar.GetCVarBool
+local GetQuestDifficultyColor = GetQuestDifficultyColor
 local hooksecurefunc = hooksecurefunc
+
+local GetCVarBool = C_CVar.GetCVarBool
+local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
+local GUILDMEMBERS_TO_DISPLAY = GUILDMEMBERS_TO_DISPLAY
 
 local function SkinFriendRequest(frame)
 	if frame.IsSkinned then return end
