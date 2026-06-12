@@ -70,11 +70,6 @@ local function ComputeAuraFlags(unit, aura)
 	aura.auraIsRaidPlayerDispellable = InstanceFiltered(unit, aura, 'HELPFUL|RAID_PLAYER_DISPELLABLE', 'HARMFUL|RAID_PLAYER_DISPELLABLE') -- Auras with a dispel type the player can dispel
 end
 
-local function UpdateFilter(filter, filtered, allowed, unit, auraInstanceID, aura)
-	local unitAuraFiltered = filtered[unit]
-	unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and allowed or nil
-end
-
 local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID, aura)
 	local unitAuraInfo = auraInfo[unit]
 
@@ -103,7 +98,10 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	end
 
 	for filter, filtered in next, auraFiltered do
-		UpdateFilter(filter, filtered, allowed, unit, auraInstanceID, aura)
+		local unitAuraFiltered = filtered[unit]
+		if unitAuraFiltered then -- should always exist but to be safe
+			unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and allowed or nil
+		end
 	end
 
 	if showFunc then
