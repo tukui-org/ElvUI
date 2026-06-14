@@ -122,6 +122,7 @@ function S:Blizzard_Transmog()
 			S:HandleEditBox(ItemsFrame.SearchBox)
 			S:HandleButton(ItemsFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 			S:HandleDropDownBox(ItemsFrame.WeaponDropdown)
+			S:HandleDropDownBox(ItemsFrame.WeaponSheatheDropdown)
 
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.NextPageButton)
