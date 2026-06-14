@@ -140,19 +140,22 @@ function S:Blizzard_ObjectiveTracker()
 	end
 
 	for _, tracker in pairs(trackers) do
-		SkinOjectiveTrackerHeaders(tracker.Header)
-
 		hooksecurefunc(tracker, 'AddBlock', HandleQuestIcons)
 		hooksecurefunc(tracker, 'GetProgressBar', HandleProgressBar)
 		hooksecurefunc(tracker, 'GetTimerBar', HandleTimers)
 
-		local MinimizeButton = tracker.Header.MinimizeButton
-		if MinimizeButton then
-			MinimizeButton:Size(15)
-			MinimizeButton:SetHighlightAtlas('ui-questtrackerbutton-red-highlight', 'ADD')
+		local header = tracker.Header
+		if header then
+			SkinOjectiveTrackerHeaders(header)
 
-			SetCollapsed(tracker.Header, TrackerFrame.isCollapsed)
-			hooksecurefunc(tracker.Header, 'SetCollapsed', SetCollapsed)
+			local MinimizeButton = header.MinimizeButton
+			if MinimizeButton then
+				MinimizeButton:Size(15)
+				MinimizeButton:SetHighlightAtlas('ui-questtrackerbutton-red-highlight', 'ADD')
+
+				SetCollapsed(header, header.isCollapsed)
+				hooksecurefunc(header, 'SetCollapsed', SetCollapsed)
+			end
 		end
 	end
 end
