@@ -151,7 +151,7 @@ function S:Blizzard_ObjectiveTracker()
 			local MinimizeButton = header.MinimizeButton
 			if MinimizeButton then
 				MinimizeButton:Size(15)
-				MinimizeButton:SetHighlightAtlas('ui-questtrackerbutton-red-highlight', 'ADD')
+				MinimizeButton:SetHighlightAtlas('UI-QuestTrackerButton-Red-Highlight', 'ADD')
 
 				SetCollapsed(header, header.isCollapsed)
 				hooksecurefunc(header, 'SetCollapsed', SetCollapsed)
