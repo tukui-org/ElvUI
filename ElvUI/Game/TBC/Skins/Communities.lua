@@ -367,8 +367,22 @@ function S:Blizzard_Communities()
 	GuildDetails.InsetBorderBottomLeft2:Hide()
 	GuildDetails.InsetBorderTopLeft2:Hide()
 
-	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameInfo.DetailsFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar)
+	-- Filters Frame
+	local FiltersFrame = _G.CommunitiesGuildNewsFiltersFrame
+	FiltersFrame:SetTemplate('Transparent')
+	S:HandleCheckBox(FiltersFrame.GuildAchievement)
+	S:HandleCheckBox(FiltersFrame.Achievement)
+	S:HandleCheckBox(FiltersFrame.DungeonEncounter)
+	S:HandleCheckBox(FiltersFrame.EpicItemLooted)
+	S:HandleCheckBox(FiltersFrame.EpicItemCrafted)
+	S:HandleCheckBox(FiltersFrame.EpicItemPurchased)
+	S:HandleCheckBox(FiltersFrame.LegendaryItemLooted)
+	S:HandleCloseButton(FiltersFrame.CloseButton)
+
+	local GuildDetailsFrameNews = _G.CommunitiesFrameGuildDetailsFrameNews
+	local GuildDetailsFrameInfo = _G.CommunitiesFrameGuildDetailsFrameInfo
+	S:HandleTrimScrollBar(GuildDetailsFrameInfo.DetailsFrame.ScrollBar)
+	S:HandleTrimScrollBar(GuildDetailsFrameNews.ScrollBar)
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
 		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
@@ -379,15 +393,14 @@ function S:Blizzard_Communities()
 
 	if E.private.skins.parchmentRemoverEnable then
 		for _, frame in pairs({
-			_G.CommunitiesFrameGuildDetailsFrameInfo,
-			_G.CommunitiesFrameGuildDetailsFrameNews,
-			_G.CommunitiesGuildNewsFiltersFrame,
+			GuildDetailsFrameInfo,
+			GuildDetailsFrameNews,
+			FiltersFrame,
 		}) do
 			frame:StripTextures()
 		end
 
 		-- Guild Challenges Background
-		local GuildDetailsFrameInfo = _G.CommunitiesFrameGuildDetailsFrameInfo
 		local backdrop1 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
 		backdrop1:SetTemplate('Transparent')
 		backdrop1:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
@@ -416,29 +429,17 @@ function S:Blizzard_Communities()
 		backdrop4:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 18, 1)
 	end
 
-	_G.CommunitiesFrameGuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
-	_G.CommunitiesFrameGuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
+	GuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
+	GuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
-	_G.CommunitiesFrameGuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
+	GuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
-	local BossModel = _G.CommunitiesFrameGuildDetailsFrameNews.BossModel
+	local BossModel = GuildDetailsFrameNews.BossModel
 	BossModel:StripTextures()
 	BossModel:SetTemplate('Transparent')
 	BossModel.TextFrame:StripTextures()
 	BossModel.TextFrame:SetTemplate('Transparent')
-
-	-- Filters Frame
-	local FiltersFrame = _G.CommunitiesGuildNewsFiltersFrame
-	FiltersFrame:SetTemplate('Transparent')
-	S:HandleCheckBox(FiltersFrame.GuildAchievement)
-	S:HandleCheckBox(FiltersFrame.Achievement)
-	S:HandleCheckBox(FiltersFrame.DungeonEncounter)
-	S:HandleCheckBox(FiltersFrame.EpicItemLooted)
-	S:HandleCheckBox(FiltersFrame.EpicItemCrafted)
-	S:HandleCheckBox(FiltersFrame.EpicItemPurchased)
-	S:HandleCheckBox(FiltersFrame.LegendaryItemLooted)
-	S:HandleCloseButton(FiltersFrame.CloseButton)
 
 	-- Guild Message EditBox
 	local EditFrame = _G.CommunitiesGuildTextEditFrame
