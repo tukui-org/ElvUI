@@ -82,6 +82,7 @@
 	<Script file='TBC\Skins\BGMap.lua'/>
 	<Script file='TBC\Skins\BGScore.lua'/>
 	<Script file='TBC\Skins\BlizzardOptions.lua'/>
+	<Script file='TBC\Skins\CatalogShop.lua'/>
 	<Script file='TBC\Skins\Channels.lua'/>
 	<Script file='TBC\Skins\Character.lua'/>
 	<Script file='TBC\Skins\Communities.lua'/>
