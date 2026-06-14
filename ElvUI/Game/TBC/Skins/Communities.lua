@@ -422,11 +422,11 @@ function S:Blizzard_Communities()
 		backdrop3:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', -7, 1)
 
 		-- Guild News Background
-		local backdrop4 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
+		local backdrop4 = CreateFrame('Frame', nil, GuildDetailsFrameNews)
 		backdrop4:SetTemplate('Transparent')
-		backdrop4:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
-		backdrop4:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 591, -22)
-		backdrop4:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 18, 1)
+		backdrop4:OffsetFrameLevel(-1, GuildDetailsFrameNews)
+		backdrop4:Point('TOPLEFT', GuildDetailsFrameNews, 'TOPLEFT', 7, -22)
+		backdrop4:Point('BOTTOMRIGHT', GuildDetailsFrameNews, 'BOTTOMRIGHT', -13, 1)
 	end
 
 	GuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)

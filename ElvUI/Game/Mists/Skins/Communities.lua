@@ -411,7 +411,7 @@ function S:Blizzard_Communities()
 		backdrop3:SetTemplate('Transparent')
 		backdrop3:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
 		backdrop3:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -236)
-		backdrop3:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 1)
+		backdrop3:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', -7, 1)
 
 		-- Guild News Background
 		local backdrop4 = CreateFrame('Frame', nil, GuildDetailsFrameNews)
