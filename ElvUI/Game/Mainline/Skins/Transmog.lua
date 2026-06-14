@@ -127,6 +127,11 @@ function S:Blizzard_Transmog()
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.PrevPageButton)
 			S:HandleNextPrevButton(ItemsFrame.PagedContent.PagingControls.NextPageButton)
 			hooksecurefunc(ItemsFrame.PagedContent.PagingControls, 'ShouldClearOnUpdateAfterClean', PageControlsPositionUpdate)
+
+			local SecondaryAppearanceToggle = ItemsFrame.SecondaryAppearanceToggle
+			if SecondaryAppearanceToggle then
+				S:HandleCheckBox(SecondaryAppearanceToggle.Checkbox)
+			end
 		end
 
 		local SetsFrame = WardrobeCollection.TabContent.SetsFrame
