@@ -66,7 +66,8 @@ function NP:Power_UpdateColor(_, unit)
 			end
 		else
 			local adjust = 0 - (element.min or 0)
-			r, g, b = self:ColorGradient((element.cur or 1) + adjust, (element.max or 1) + adjust, unpack(element.smoothGradient or self.colors.smooth))
+			local curValue, maxValue = (element.cur or 1) + adjust, (element.max or 1) + adjust
+			r, g, b = E:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
 		end
 	end
 
