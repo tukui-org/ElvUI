@@ -10,7 +10,7 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostring
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
-local pcall, min, next, pairs, ipairs, tinsert, strsub = pcall, min, next, pairs, ipairs, tinsert, strsub
+local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
 local CreateColor = CreateColor
 local CreateFrame = CreateFrame
@@ -1556,8 +1556,8 @@ end
 do
 	local function EventlessUpdate(frame, elapsed)
 		local unit = frame.__eventless and frame.unit
-		local ok, guid = pcall(UnitGUID, unit)
-		if not ok or not guid then return end
+		local guid = UnitGUID(unit)
+		if not guid then return end
 
 		if E:IsSecretValue(guid) then
 			local frequency = frame.elapsed or 0

@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local pcall, hooksecurefunc = pcall, hooksecurefunc
+local hooksecurefunc = hooksecurefunc
 local next, strsplit, tonumber = next, strsplit, tonumber
 local pairs, wipe, tinsert = pairs, wipe, tinsert
 
@@ -693,8 +693,8 @@ function NP:GetNPCID(guid)
 end
 
 function NP:UnitNPCID(unit) -- also used by Bags.lua
-	local ok, guid = pcall(UnitGUID, unit)
-	if ok then
+	local guid = UnitGUID(unit)
+	if guid then
 		return NP:GetNPCID(guid)
 	end
 end
@@ -980,8 +980,8 @@ do
 end
 
 function NP:NamePlateCallBack(event, unit, updateInfo)
-	local success, plate = pcall(C_NamePlate_GetNamePlateForUnit, unit)
-	if not success or not plate then return end -- prevent error on restricted units
+	local plate = C_NamePlate_GetNamePlateForUnit(unit)
+	if not plate then return end -- prevent error on restricted units
 
 	local nameplate = plate.unitFrame
 	if not nameplate or not nameplate.UpdateAllElements then return end -- prevent error with plater
