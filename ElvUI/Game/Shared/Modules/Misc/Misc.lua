@@ -38,12 +38,12 @@ local RaidNotice_AddMessage = RaidNotice_AddMessage
 local RepairAllItems = RepairAllItems
 local StaticPopup_Hide = StaticPopup_Hide
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
-local UninviteUnit = UninviteUnit
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
 local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitName = UnitName
 
+local UninviteUnit = C_PartyInfo.UninviteUnit or UninviteUnit
 local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
 local GetNumFactions = C_Reputation.GetNumFactions or GetNumFactions
 local GetFactionInfo = C_Reputation.GetFactionDataByIndex or GetFactionInfo
