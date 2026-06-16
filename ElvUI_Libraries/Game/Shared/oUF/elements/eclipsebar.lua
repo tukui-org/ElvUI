@@ -1,8 +1,6 @@
 local _, ns = ...
 local oUF = ns.oUF
 
-local pcall = pcall
-
 local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -24,11 +22,8 @@ local function Update(self, event, unit, powerType)
 	local element = self.EclipseBar
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	local okCur, CUR = pcall(UnitPower, 'player', POWERTYPE_BALANCE)
-	local okMax, MAX = pcall(UnitPowerMax, 'player', POWERTYPE_BALANCE)
-
-	if not okCur then CUR = 1 end
-	if not okMax then MAX = 1 end
+	local CUR = UnitPower('player', POWERTYPE_BALANCE)
+	local MAX = UnitPowerMax('player', POWERTYPE_BALANCE)
 
 	if(element.LunarBar) then
 		element.LunarBar:SetMinMaxValues(-MAX, MAX)

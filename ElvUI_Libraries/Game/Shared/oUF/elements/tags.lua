@@ -317,10 +317,7 @@ tagFunctions.level = function(u)
 end
 
 tagFunctions.maxmana = function(unit)
-	local okMana, maxMana = pcall(UnitPowerMax, unit, POWERTYPE_MANA)
-	if okMana then
-		return maxMana
-	end
+	return UnitPowerMax(unit, POWERTYPE_MANA)
 end
 
 tagFunctions.missinghp = function(u)
@@ -357,10 +354,8 @@ end
 
 tagFunctions.perhp = function(u)
 	if oUF.isRetail then
-		local ok, precent = pcall(UnitHealthPercent, u, true, ScaleTo100)
-		if ok then
-			return format('%d', precent)
-		end
+		local precent = UnitHealthPercent(u, true, ScaleTo100)
+		return format('%d', precent)
 	else
 		local m = UnitHealthMax(u)
 		if(m == 0) then
@@ -373,10 +368,8 @@ end
 
 tagFunctions.perpp = function(u)
 	if oUF.isRetail then
-		local ok, precent = pcall(UnitPowerPercent, u, nil, true, ScaleTo100)
-		if ok then
-			return format('%d', precent)
-		end
+		local precent = UnitPowerPercent(u, nil, true, ScaleTo100)
+		return format('%d', precent)
 	else
 		local m = UnitPowerMax(u)
 		if(m == 0) then
@@ -395,7 +388,7 @@ tagFunctions.plus = function(u)
 end
 
 tagFunctions.powercolor = function(u)
-	local okType, pType, pToken, altR, altG, altB = pcall(UnitPowerType, u)
+	local pType, pToken, altR, altG, altB = UnitPowerType(u)
 	local color = _COLORS.power[pToken]
 
 	if(not color) then
@@ -406,7 +399,7 @@ tagFunctions.powercolor = function(u)
 				return Hex(altR, altG, altB)
 			end
 		else
-			return Hex((okType and _COLORS.power[pType]) or _COLORS.power.MANA)
+			return Hex(_COLORS.power[pType] or _COLORS.power.MANA)
 		end
 	end
 
