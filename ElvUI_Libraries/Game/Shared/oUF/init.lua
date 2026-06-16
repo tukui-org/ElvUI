@@ -57,7 +57,7 @@ end
 
 do -- API for secrets by Simpy
 	function oUF:IsSecretUnit(unit)
-		return ShouldUnitIdentityBeSecret(unit)
+		return ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit)
 	end
 
 	function oUF:NotSecretUnit(unit)
