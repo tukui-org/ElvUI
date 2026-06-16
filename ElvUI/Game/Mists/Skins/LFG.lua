@@ -8,7 +8,6 @@ local unpack, pairs = unpack, pairs
 local hooksecurefunc = hooksecurefunc
 
 local UnitIsGroupLeader = UnitIsGroupLeader
-
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 
