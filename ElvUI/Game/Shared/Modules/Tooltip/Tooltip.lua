@@ -706,7 +706,7 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	end
 
 	-- fallback to percent if possible
-	local perc = UnitHealthPercent(unit, true, ScaleTo100)
+	local perc = unit and UnitHealthPercent(unit, true, ScaleTo100)
 	if perc then
 		statusText:SetFormattedText('%d%%', perc)
 	else
