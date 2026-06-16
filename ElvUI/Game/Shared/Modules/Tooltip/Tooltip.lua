@@ -697,8 +697,8 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 		local current = UnitHealth(unit)
 		local maximum = UnitHealthMax(unit)
 		if current and maximum then
-			local currentAbbrev = E:AbbreviateNumbers(current, 'short')
-			local maximumAbbrev = E:AbbreviateNumbers(maximum, 'short')
+			local currentAbbrev = E:AbbreviateNumbers(current, E.Abbreviate.short)
+			local maximumAbbrev = E:AbbreviateNumbers(maximum, E.Abbreviate.short)
 			statusText:SetFormattedText('%s / %s', currentAbbrev, maximumAbbrev)
 
 			return
