@@ -693,7 +693,7 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
 
-	if TT.db.healthBar.short then
+	if unit and TT.db.healthBar.short then
 		local current = UnitHealth(unit)
 		local maximum = UnitHealthMax(unit)
 		if current and maximum then
