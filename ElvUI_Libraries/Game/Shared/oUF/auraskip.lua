@@ -58,7 +58,6 @@ local function ComputeAuraFlags(unit, aura)
 	aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
 	aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
 
-	aura.auraIsImportant = InstanceFiltered(unit, aura, 'HELPFUL|IMPORTANT', 'HARMFUL|IMPORTANT')
 	aura.auraIsCancelable = InstanceFiltered(unit, aura, 'HELPFUL|CANCELABLE', 'HARMFUL|CANCELABLE')
 	aura.auraIsCrowdControl = InstanceFiltered(unit, aura, 'HELPFUL|CROWD_CONTROL', 'HARMFUL|CROWD_CONTROL')
 	aura.auraIsBigDefensive = InstanceFiltered(unit, aura, 'HELPFUL|BIG_DEFENSIVE', 'HARMFUL|BIG_DEFENSIVE')

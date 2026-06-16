@@ -10,8 +10,6 @@ P.dbConverted = nil -- use this to let DBConversions run once per profile
 
 E.AuraDefaults = {
 	useBlocklist = false,
-	isAuraImportant = false,
-	isAuraImportantPlayer = false,
 	isAuraCrowdControl = false,
 	isAuraCrowdControlPlayer = false,
 	isAuraBigDefensive = false,
@@ -1259,8 +1257,6 @@ P.nameplates.units.FRIENDLY_PLAYER.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.yOffset = 35
-P.nameplates.units.FRIENDLY_PLAYER.debuffs.isAuraImportant = true
-P.nameplates.units.FRIENDLY_PLAYER.debuffs.isAuraImportantPlayer = true
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.isAuraRaidPlayerDispellable = true
 P.nameplates.units.FRIENDLY_PLAYER.debuffs.priority = 'Blacklist,Dispellable'
 
@@ -1279,8 +1275,6 @@ P.nameplates.units.ENEMY_PLAYER.name.format = E.Retail and '[classcolor][name]' 
 
 P.nameplates.units.FRIENDLY_NPC.buffs.isAuraExternalDefensive = true
 P.nameplates.units.FRIENDLY_NPC.buffs.isAuraExternalDefensivePlayer = true
-P.nameplates.units.FRIENDLY_NPC.buffs.isAuraImportant = true
-P.nameplates.units.FRIENDLY_NPC.buffs.isAuraImportantPlayer = true
 P.nameplates.units.FRIENDLY_NPC.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal'
 P.nameplates.units.FRIENDLY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
 P.nameplates.units.FRIENDLY_NPC.debuffs.growthX = 'LEFT'
@@ -1293,8 +1287,6 @@ P.nameplates.units.FRIENDLY_NPC.level.format = '[difficultycolor][level][shortcl
 P.nameplates.units.FRIENDLY_NPC.name.format = '[reactioncolor][name]'
 P.nameplates.units.FRIENDLY_NPC.title.format = '[npctitle]'
 
-P.nameplates.units.ENEMY_NPC.buffs.isAuraImportant = true
-P.nameplates.units.ENEMY_NPC.buffs.isAuraImportantPlayer = true
 P.nameplates.units.ENEMY_NPC.buffs.isAuraRaidPlayerDispellable = true
 P.nameplates.units.ENEMY_NPC.buffs.priority = 'Blacklist,Whitelist,Dispellable,blockNoDuration,RaidBuffsElvUI'
 P.nameplates.units.ENEMY_NPC.debuffs.anchorPoint = 'TOPRIGHT'
@@ -2564,8 +2556,6 @@ P.unitframe.units.player.aurabar.enemyAuraType = 'HARMFUL'
 P.unitframe.units.player.aurabar.friendlyAuraType = 'HELPFUL'
 P.unitframe.units.player.aurabar.maxDuration = 120
 P.unitframe.units.player.aurabar.priority = 'Blacklist,blockNoDuration,Personal,RaidDebuffs'
-P.unitframe.units.player.aurabar.isAuraImportant = true
-P.unitframe.units.player.aurabar.isAuraImportantPlayer = true
 P.unitframe.units.player.aurabar.isAuraBigDefensive = true
 P.unitframe.units.player.aurabar.isAuraExternalDefensive = true
 P.unitframe.units.player.aurabar.isAuraExternalDefensivePlayer = true
@@ -2747,8 +2737,6 @@ P.unitframe.units.pettarget.debuffHighlight = nil
 
 P.unitframe.units.boss.buffs.enable = true
 P.unitframe.units.boss.buffs.anchorPoint = 'LEFT'
-P.unitframe.units.boss.buffs.isAuraImportant = true
-P.unitframe.units.boss.buffs.isAuraImportantPlayer = true
 P.unitframe.units.boss.buffs.isAuraRaidPlayerDispellable = true
 P.unitframe.units.boss.buffs.numrows = 1
 P.unitframe.units.boss.buffs.perrow = 3
