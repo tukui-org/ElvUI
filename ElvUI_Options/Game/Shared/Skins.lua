@@ -52,17 +52,12 @@ local toggles = {
 	worldmap = L["WORLD_MAP"]
 }
 
-if E.Mists or E.Retail or E.Wrath then
-	toggles.achievement = L["ACHIEVEMENTS"]
-end
-
 if E.Mists or E.Retail then
 	toggles.alertframes = L["Alert Frames"]
 	toggles.archaeology = L["Archaeology Frame"]
 	toggles.barber = L["BARBERSHOP"]
 	toggles.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
 	toggles.calendar = L["Calendar Frame"]
-	toggles.catalogShop = L["BLIZZARD_STORE"]
 	toggles.collections = L["COLLECTIONS"]
 	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	toggles.gbank = L["Guild Bank"]
@@ -75,6 +70,14 @@ end
 
 if E.hasEditMode then
 	toggles.editor = L["Editor Manager"]
+end
+
+if E.Retail or E.Mists or E.TBC then
+	toggles.catalogShop = L["BLIZZARD_STORE"]
+end
+
+if E.Retail or E.Mists or E.Wrath then
+	toggles.achievement = L["ACHIEVEMENTS"]
 end
 
 if E.Wrath or E.TBC then

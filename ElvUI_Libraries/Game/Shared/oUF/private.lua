@@ -39,7 +39,7 @@ function Private.xpcall(func, ...)
 end
 
 function Private.validateToken(unit)
-	if pcall(UnitHealth, unit) then
+	if UnitHealth(unit) then
 		return unit
 	end
 end

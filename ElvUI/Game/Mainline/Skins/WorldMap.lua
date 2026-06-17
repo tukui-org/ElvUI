@@ -226,12 +226,14 @@ function S:WorldMapFrame()
 	QuestMapFrame:SetScript('OnHide', S.WorldMap_QuestMapHide)
 
 	local DetailsFrame = QuestMapFrame.DetailsFrame
+
 	S:HandleButton(DetailsFrame.BackFrame.BackButton, true)
 	S:HandleButton(DetailsFrame.AbandonButton, true)
 	DetailsFrame.ShareButton:StripTextures() -- strip the Blizz Art around from it
 	S:HandleButton(DetailsFrame.ShareButton, true)
 	S:HandleButton(DetailsFrame.TrackButton, true)
 
+	DetailsFrame.BorderFrame:SetAlpha(0)
 	DetailsFrame.BackFrame:StripTextures()
 	DetailsFrame.BackFrame.BackButton:SetFrameLevel(5)
 	DetailsFrame.AbandonButton:SetFrameLevel(5)
@@ -291,8 +293,6 @@ function S:WorldMapFrame()
 
 	local QuestScrollBar = _G.QuestScrollFrame.ScrollBar
 	S:HandleTrimScrollBar(QuestScrollBar)
-	QuestScrollBar:Point('TOPLEFT', _G.QuestDetailFrame, 'TOPRIGHT', 4, -15)
-	QuestScrollBar:Point('BOTTOMLEFT', _G.QuestDetailFrame, 'BOTTOMRIGHT', 9, 10)
 
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(QuestMapFrame.QuestsFrame.StoryTooltip)

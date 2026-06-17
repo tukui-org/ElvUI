@@ -32,7 +32,7 @@ function S:Blizzard_NewPlayerExperienceGuide()
 	frame.Title:SetTextColor(1, 1, 1)
 
 	local scrollFrame = frame.ScrollFrame
-	S:HandleScrollBar(scrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(scrollFrame.ScrollBar)
 	S:HandleButton(scrollFrame.ConfirmationButton)
 
 	local scrollChild = scrollFrame.Child

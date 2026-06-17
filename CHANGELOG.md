@@ -1,3 +1,24 @@
+### Version 15.17 [ June 16th 2026 ]
+*   **General**
+    *   Menu arrows converted to our style and colors. (Thanks Daenarys)
+    *   Game Menu ElvUI button moved above Logout. (Thanks Daenarys)
+    *   Titan: Actionbar hotkey not working properly. (Thanks Jettie)
+    *   oUF: Aura Skip adjustment to reduce calls when filtering an aura. (Thanks mjodheim)
+    *   oUF: Unitframe colors error because of bad values being sent to ColorGradient.
+    *   oUF: Aura system cleaned up to stop calling unneeded safe calls.
+    *   Tooltip short value on Retail works again.
+    *   Patch 12.0.7 support - the Important aura filter was removed by Blizzard.
+    *   Item level on inspect frame moved to the top right to avoid overlap with portrait.
+*   **Skins**
+    *   Retail Quest Log scrollbar adjusted. (Thanks Daenarys)
+    *   Retail Quest Map Border frame hidden. (Thanks Daenarys)
+    *   Transmog skin dropdown missed. (Thanks Daenarys)
+    *   Objective tracker collapse icons. (Thanks Daenarys)
+    *   New player experience scrollbar. (Thanks Daenarys)
+    *   Mist talent mask adjusted.
+    *   Mist old guild skin readded.
+    *   Damage meter skin updated.
+
 ### Version 15.16 [ June 5th 2026 ]
 *   **Mist**
     *   Transmog skin updated.

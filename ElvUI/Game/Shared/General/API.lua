@@ -67,7 +67,6 @@ local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo or GetS
 
 local GetCVarBool = C_CVar.GetCVarBool
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local StoreEnabled = C_StorePublic.IsEnabled
 local GetClassInfo = C_CreatureInfo.GetClassInfo
 local C_TooltipInfo_GetUnit = C_TooltipInfo and C_TooltipInfo.GetUnit
 local C_TooltipInfo_GetHyperlink = C_TooltipInfo and C_TooltipInfo.GetHyperlink
@@ -527,8 +526,8 @@ end
 
 do
 	function E:GetAuraData(unitToken, index, filter)
-		local success, data = pcall(GetAuraDataByIndex, unitToken, index, filter)
-		if not success or not data then return end
+		local data = GetAuraDataByIndex(unitToken, index, filter)
+		if not data then return end
 
 		return ElvUF:UnpackAuraData(data)
 	end
@@ -1139,39 +1138,29 @@ function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
 end
 
-local gameMenuLastButtons = {}
-if _G.GAMEMENU_EXTERNALEVENT then
-	gameMenuLastButtons.ElvUI = StoreEnabled and StoreEnabled() and 3 or 2
-	gameMenuLastButtons[_G.GAMEMENU_EXTERNALEVENT] = 1
-	gameMenuLastButtons[_G.GAMEMENU_OPTIONS] = 2
-	gameMenuLastButtons[_G.BLIZZARD_STORE] = 3
-else
-	gameMenuLastButtons.ElvUI = StoreEnabled and StoreEnabled() and 2 or 1
-	gameMenuLastButtons[_G.GAMEMENU_OPTIONS] = 1
-	gameMenuLastButtons[_G.BLIZZARD_STORE] = 2
-end
-
 function E:PositionGameMenuButton()
 	if E.hasEditMode then
 		if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
 		end
 
-		local offset = (E.Retail and 35) or 20
+		GameMenuFrame:Height(GameMenuFrame:GetHeight() + 10)
+
 		for button in GameMenuFrame.buttonPool:EnumerateActive() do
 			local text = button:GetText()
 
-			GameMenuFrame.MenuButtons[text] = button -- export these
+			if text and (text == _G.LOGOUT or text == _G.LOG_OUT or text == _G.EXIT_GAME or text == _G.RETURN_TO_GAME) then
+				button:NudgePoint(nil, E.Retail and -25 or -20)
+			else
+				if text == _G.MACROS then
+					GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT')
+				end
 
-			local lastIndex = gameMenuLastButtons[text]
-			if lastIndex == gameMenuLastButtons.ElvUI and GameMenuFrame.ElvUI then
-				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, -10)
-			elseif not lastIndex then
-				button:NudgePoint(nil, -offset)
+				if E.Retail then
+					button:NudgePoint(nil, 10)
+				end
 			end
 		end
-
-		GameMenuFrame:Height(GameMenuFrame:GetHeight() + offset)
 	else
 		local button = GameMenuFrame.ElvUI
 		if button then

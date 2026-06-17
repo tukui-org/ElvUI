@@ -8,7 +8,6 @@ local unpack, pairs = unpack, pairs
 local hooksecurefunc = hooksecurefunc
 
 local UnitIsGroupLeader = UnitIsGroupLeader
-
 local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 
@@ -381,11 +380,11 @@ function S:LookingForGroupFrames()
 	S:HandleButton(LFGListFrame.CategorySelection.StartGroupButton)
 	LFGListFrame.CategorySelection.StartGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.StartGroupButton:Point('BOTTOMLEFT', -1, 3)
-	LFGListFrame.CategorySelection.StartGroupButton.RightSeparator:StripTextures()
+	LFGListFrame.CategorySelection.StartGroupButton.RightSeparator:Hide()
 	S:HandleButton(LFGListFrame.CategorySelection.FindGroupButton)
 	LFGListFrame.CategorySelection.FindGroupButton:ClearAllPoints()
 	LFGListFrame.CategorySelection.FindGroupButton:Point('BOTTOMRIGHT', -6, 3)
-	LFGListFrame.CategorySelection.FindGroupButton.LeftSeparator:StripTextures()
+	LFGListFrame.CategorySelection.FindGroupButton.LeftSeparator:Hide()
 
 	local EntryCreation = LFGListFrame.EntryCreation
 	EntryCreation.Inset:StripTextures()
@@ -393,8 +392,10 @@ function S:LookingForGroupFrames()
 	S:HandleButton(EntryCreation.ListGroupButton)
 	EntryCreation.CancelButton:ClearAllPoints()
 	EntryCreation.CancelButton:Point('BOTTOMLEFT', -1, 3)
+	EntryCreation.CancelButton.RightSeparator:Hide()
 	EntryCreation.ListGroupButton:ClearAllPoints()
 	EntryCreation.ListGroupButton:Point('BOTTOMRIGHT', -6, 3)
+	EntryCreation.ListGroupButton.LeftSeparator:Hide()
 	S:HandleEditBox(EntryCreation.Description)
 
 	S:HandleDropDownBox(EntryCreation.GroupDropdown)
@@ -445,10 +446,10 @@ function S:LookingForGroupFrames()
 
 	LFGListFrame.SearchPanel.BackButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
-	LFGListFrame.SearchPanel.BackButton.RightSeparator:StripTextures()
+	LFGListFrame.SearchPanel.BackButton.RightSeparator:Hide()
 	LFGListFrame.SearchPanel.SignUpButton:ClearAllPoints()
 	LFGListFrame.SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
-	LFGListFrame.SearchPanel.SignUpButton.LeftSeparator:StripTextures()
+	LFGListFrame.SearchPanel.SignUpButton.LeftSeparator:Hide()
 	LFGListFrame.SearchPanel.ResultsInset:StripTextures()
 	S:HandleTrimScrollBar(LFGListFrame.SearchPanel.ScrollBar)
 

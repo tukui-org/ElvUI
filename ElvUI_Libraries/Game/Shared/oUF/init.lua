@@ -3,7 +3,6 @@ local oUF = { Private = {} }
 ns.oUF = oUF
 
 local mod = mod
-local pcall = pcall
 local unpack = unpack
 local issecretvalue = issecretvalue
 local issecrettable = issecrettable
@@ -58,10 +57,7 @@ end
 
 do -- API for secrets by Simpy
 	function oUF:IsSecretUnit(unit)
-		local ok, value = pcall(ShouldUnitIdentityBeSecret, unit)
-		if ok then
-			return value
-		end
+		return ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit)
 	end
 
 	function oUF:NotSecretUnit(unit)

@@ -134,11 +134,19 @@ local function PlayerTalentFrame_UpdateSpecFrame(s, spec)
 	scrollChild.specIcon:SetTexture(icon)
 	scrollChild:SetScale(0.99) -- the scrollbar showed on simpy's when it shouldn't, this fixes it by reducing the scale by .01 lol
 
+	if scrollChild.CircleMask then
+		scrollChild.CircleMask:Hide()
+	end
+
 	local numSpecs = GetNumSpecializations(nil, s.isPet)
 	for i = 1, numSpecs do
 		local button = s['specButton'..i]
 		if button then
 			button.SelectedTexture:SetShown(button.selected)
+
+			if button.CircleMask then
+				button.CircleMask:Hide()
+			end
 
 			if button.backdrop then
 				button.SelectedTexture:SetInside(button.backdrop)

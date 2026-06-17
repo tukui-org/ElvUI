@@ -95,7 +95,6 @@ local Private = oUF.Private
 local unitSelectionType = Private.unitSelectionType
 
 local gsub = gsub
-local pcall = pcall
 local unpack = unpack
 
 local GetPetHappiness = GetPetHappiness
@@ -144,10 +143,7 @@ local function UpdateColor(self, event, unit)
 	elseif(element.colorSmooth) then
 		if oUF.isRetail then
 			local curve = self.colors.health:GetCurve()
-			local ok, colorPercent = pcall(UnitHealthPercent, unit, true, curve)
-			if ok then
-				color = colorPercent
-			end
+			color = UnitHealthPercent(unit, true, curve)
 		else
 			local curValue, maxValue = element.cur or 1, element.max or 1
 			local r, g, b = oUF:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
@@ -200,11 +196,8 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local okCur, cur = pcall(UnitHealth, unit)
-	local okMax, max = pcall(UnitHealthMax, unit)
-
-	if not okCur then cur = 1 end
-	if not okMax then max = 1 end
+	local cur = UnitHealth(unit)
+	local max = UnitHealthMax(unit)
 
 	element:SetMinMaxValues(0, max)
 

@@ -123,7 +123,7 @@ function PI:SetPage(PageNum, PrevPage)
 	f.CurrentPage = PageNum
 	f.PrevPage = PrevPage
 
-	local r, g, b = E:ColorGradient(f.CurrentPage / f.MaxPage, 1, 0, 0, 1, 1, 0, 0, 1, 0)
+	local r, g, b = E:ColorGradient(f.MaxPage == 0 and 0 or (f.CurrentPage / f.MaxPage), 1, 0, 0, 1, 1, 0, 0, 1, 0)
 	f.Status:SetStatusBarColor(r, g, b)
 
 	f.Next:SetEnabled(PageNum ~= f.MaxPage)

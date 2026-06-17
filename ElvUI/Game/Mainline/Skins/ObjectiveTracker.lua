@@ -114,11 +114,11 @@ local function SetCollapsed(header, collapsed)
 	local pushedTexture = MinimizeButton:GetPushedTexture()
 
 	if collapsed then
-		normalTexture:SetAtlas('UI-QuestTrackerButton-Secondary-Expand', true)
-		pushedTexture:SetAtlas('UI-QuestTrackerButton-Secondary-Expand-Pressed', true)
+		normalTexture:SetTexture(E.Media.Textures.PlusButton)
+		pushedTexture:SetTexture(E.Media.Textures.PlusButton)
 	else
-		normalTexture:SetAtlas('UI-QuestTrackerButton-Secondary-Collapse', true)
-		pushedTexture:SetAtlas('UI-QuestTrackerButton-Secondary-Collapse-Pressed', true)
+		normalTexture:SetTexture(E.Media.Textures.MinusButton)
+		pushedTexture:SetTexture(E.Media.Textures.MinusButton)
 	end
 end
 
@@ -132,8 +132,7 @@ function S:Blizzard_ObjectiveTracker()
 
 		local MinimizeButton = TrackerHeader.MinimizeButton
 		if MinimizeButton then
-			MinimizeButton:Size(16)
-			MinimizeButton:SetHighlightAtlas('UI-QuestTrackerButton-Yellow-Highlight', 'ADD')
+			MinimizeButton:Size(15)
 
 			SetCollapsed(TrackerHeader, TrackerFrame.isCollapsed)
 			hooksecurefunc(TrackerHeader, 'SetCollapsed', SetCollapsed)
@@ -141,11 +140,23 @@ function S:Blizzard_ObjectiveTracker()
 	end
 
 	for _, tracker in pairs(trackers) do
-		SkinOjectiveTrackerHeaders(tracker.Header)
-
 		hooksecurefunc(tracker, 'AddBlock', HandleQuestIcons)
 		hooksecurefunc(tracker, 'GetProgressBar', HandleProgressBar)
 		hooksecurefunc(tracker, 'GetTimerBar', HandleTimers)
+
+		local header = tracker.Header
+		if header then
+			SkinOjectiveTrackerHeaders(header)
+
+			local MinimizeButton = header.MinimizeButton
+			if MinimizeButton then
+				MinimizeButton:Size(15)
+				MinimizeButton:SetHighlightAtlas('UI-QuestTrackerButton-Red-Highlight', 'ADD')
+
+				SetCollapsed(header, header.isCollapsed)
+				hooksecurefunc(header, 'SetCollapsed', SetCollapsed)
+			end
+		end
 	end
 end
 

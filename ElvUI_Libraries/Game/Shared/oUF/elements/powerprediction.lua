@@ -44,7 +44,6 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local next = next
-local pcall = pcall
 
 local _G = _G
 local GetSpellPowerCost = C_Spell.GetSpellPowerCost or GetSpellPowerCost
@@ -81,10 +80,8 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local okType, mainType = pcall(UnitPowerType, unit)
-	local powerType = okType and mainType or 0
-
-	local okMax, mainMax = pcall(UnitPowerMax, unit, powerType)
+	local powerType = UnitPowerType(unit) or 0
+	local mainMax = UnitPowerMax(unit, powerType)
 	local isPlayer = oUF:UnitIsUnit('player', unit)
 
 	local DISPLAY_INFO = oUF:NotSecretValue(isPlayer) and isPlayer and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO
@@ -105,7 +102,7 @@ local function Update(self, event, unit)
 			for _, costInfo in next, costTable do
 				local cost, ctype, cperc = costInfo.cost, costInfo.type, costInfo.costPercent
 				local checkSpec = not checkRequiredAura or costInfo.hasRequiredAura
-				if checkSpec and (okMax and ctype == powerType) then
+				if checkSpec and (ctype == powerType) then
 					mainCost = (isPlayer and cost) or (secretMax and 1) or (cost < mainMax and cost) or (mainMax * cperc) / 100
 					element.mainCost = mainCost
 
@@ -129,14 +126,14 @@ local function Update(self, event, unit)
 	end
 
 	if(element.mainBar) then
-		element.mainBar:SetMinMaxValues(0, okMax and mainMax or 1)
+		element.mainBar:SetMinMaxValues(0, mainMax or 1)
 		element.mainBar:SetValue(mainCost)
 		element.mainBar:Show()
 	end
 
 	if(element.altBar and hasAltManaBar) then
-		local okMana, maxMana = UnitPowerMax(unit, POWERTYPE_MANA)
-		element.altBar:SetMinMaxValues(0, okMana and maxMana or 0)
+		local maxMana = UnitPowerMax(unit, POWERTYPE_MANA)
+		element.altBar:SetMinMaxValues(0, maxMana or 0)
 		element.altBar:SetValue(altCost)
 		element.altBar:Show()
 	end
