@@ -78,7 +78,7 @@ end
 function S:DamageMeter_HandleSessionTimer(window, sessionTimer)
 	if not sessionTimer then return end
 
-	sessionTimer:ClearAllPoints()
+	sessionTimer:ClearAllPoints() -- point is a secret
 	sessionTimer:Point('TOPLEFT', window.Header, 3, -9)
 end
 
@@ -88,7 +88,7 @@ function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 	S:HandleButton(dropdown, nil, nil, nil, true)
 
 	dropdown:Size(20)
-	dropdown:ClearAllPoints()
+	dropdown:ClearAllPoints() -- point is a secret
 	dropdown:Point('TOPLEFT', window.SessionTimer, 'TOPRIGHT', 0, 4)
 
 	local customArrow = not dropdown.customArrow and dropdown:CreateTexture(nil, 'BACKGROUND')
@@ -108,7 +108,7 @@ function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 
 	local typeName = dropdown.TypeName
 	if typeName then
-		typeName:ClearAllPoints()
+		typeName:ClearAllPoints() -- point is a secret
 		typeName:Point('LEFT', dropdown, 'RIGHT', 3, 0)
 		typeName:Point('RIGHT', window.SessionDropdown, 'LEFT', -3, 0)
 	end
