@@ -41,6 +41,19 @@ local function HandleDialogs()
 			dropdown.IsSkinned = true
 		end
 
+		local slider = frame.Slider
+		if slider and not slider.backdrop then
+			S:HandleStepSlider(slider)
+
+			if slider.Back then
+				S:HandleNextPrevButton(slider.Back)
+			end
+
+			if slider.Forward then
+				S:HandleNextPrevButton(slider.Forward)
+			end
+		end
+
 		local checkbox = frame.Button
 		if checkbox and not checkbox.backdrop then
 			HandleCheckBox(checkbox)
