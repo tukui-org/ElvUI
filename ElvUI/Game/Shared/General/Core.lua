@@ -1782,6 +1782,17 @@ function E:UpdateAll(doUpdates)
 	end
 end
 
+function E:CreateFonts()
+	local fontBig = E:GenerateFontFamily('ElvUIFontBig', E.Media.Fonts.Expressway, 15)
+	local fontNormal = E:GenerateFontFamily('ElvUIFontNormal', E.Media.Fonts.Expressway, 15)
+	local fontSmall = E:GenerateFontFamily('ElvUIFontSmall', E.Media.Fonts.Expressway, 15)
+
+	local style = '' -- empty string is alpha 1
+	E:SetFontShadow(fontBig, style, true)
+	E:SetFontShadow(fontNormal, style, true)
+	E:SetFontShadow(fontSmall, style, true)
+end
+
 do
 	E.ObjectEventTable, E.ObjectEventFrame = {}, CreateFrame('Frame')
 	local eventFrame, eventTable = E.ObjectEventFrame, E.ObjectEventTable
@@ -2048,14 +2059,7 @@ function E:Initialize()
 	E.charSettings.RegisterCallback(E, 'OnProfileCopied', ReloadUI)
 	E.charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
 
-	local fontBig = E:GenerateFontFamily('ElvUIFontBig', E.Media.Fonts.Expressway, 15)
-	local fontNormal = E:GenerateFontFamily('ElvUIFontNormal', E.Media.Fonts.Expressway, 15)
-	local fontSmall = E:GenerateFontFamily('ElvUIFontSmall', E.Media.Fonts.Expressway, 15)
-
-	E:SetFontShadow(fontBig, '', true)
-	E:SetFontShadow(fontNormal, '', true)
-	E:SetFontShadow(fontSmall, '', true)
-
+	E:CreateFonts()
 	E:UpdateDB()
 	E:UIScale()
 	E:LoadStaticPopups()
