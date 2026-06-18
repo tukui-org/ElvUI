@@ -35,15 +35,15 @@ local function HandleDialogs()
 	end
 
 	for _, frame in next, { dialog.Settings:GetChildren() } do
-		local checkbox = frame.Button
-		if checkbox and not checkbox.backdrop then
-			HandleCheckBox(checkbox)
-		end
-
 		local dropdown = frame.Dropdown
 		if dropdown and not dropdown.IsSkinned then
 			S:HandleDropDownBox(dropdown, 250)
 			dropdown.IsSkinned = true
+		end
+
+		local checkbox = frame.Button
+		if checkbox and not checkbox.backdrop then
+			HandleCheckBox(checkbox)
 		end
 	end
 end
