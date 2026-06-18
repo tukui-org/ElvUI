@@ -353,13 +353,14 @@ end
 
 do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us to generate font objects
 	local members, alphabets = {}, { roman = {}, korean = {}, simplifiedchinese = {}, traditionalchinese = {}, russian = {} }
+	local override = { korean = 'Fonts/2002.TTF', simplifiedchinese = 'Fonts/ARKai_T.ttf', traditionalchinese = 'Fonts/blei00d.TTF' }
 	local function GenerateFontMembers(font, size, style)
 		local index = 0
 		for which, data in next, alphabets do
 			index = index + 1
 
 			data.alphabet = which
-			data.file = font
+			data.file = --[[override[which] or]] font
 			data.height = size
 			data.flags = style
 
