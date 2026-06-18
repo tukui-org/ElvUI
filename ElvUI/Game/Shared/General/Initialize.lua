@@ -380,15 +380,20 @@ do
 end
 
 do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us to generate font objects
-	local members, alphabets = {}, { roman = {}, korean = {}, simplifiedchinese = {}, traditionalchinese = {}, russian = {} }
-	local override = { korean = 'Fonts/2002.TTF', simplifiedchinese = 'Fonts/ARKai_T.ttf', traditionalchinese = 'Fonts/blei00d.TTF' }
+	local members, alphabets = {}, { roman = {}, russian = {}, korean = {}, simplifiedchinese = {}, traditionalchinese = {} }
+	local override = { korean = true, simplifiedchinese = true, traditionalchinese = true }
+	for which in next, override do
+		local obj = _G.GameFontNormal:GetFontObjectForAlphabet(which)
+		override[which] = obj:GetFont()
+	end
+
 	local function GenerateFontMembers(font, size, style)
 		local index = 0
 		for which, data in next, alphabets do
 			index = index + 1
 
 			data.alphabet = which
-			data.file = --[[override[which] or]] font
+			data.file = override[which] or font
 			data.height = size
 			data.flags = style
 
@@ -398,19 +403,23 @@ do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us t
 		return members
 	end
 
-	local index = {}
-	local function GenerateFontFamily(prefix, font, size, style)
-		local x = (index[prefix] or 0) + 1
-		index[prefix] = x -- save index
+	local prefixed = {}
+	local function GetPrefixName(name)
+		local x = (prefixed[name] or 0) + 1
+		prefixed[name] = x -- save index
 
-		local obj = CreateFontFamily(prefix..x, GenerateFontMembers(font, size, style))
+		return name .. x
+	end
+
+	function E:GenerateFontFamily(name, font, size, style, prefix)
+		local obj = CreateFontFamily((prefix and GetPrefixName(name)) or name, GenerateFontMembers(font, size, style or ''))
 		obj:SetJustifyH('LEFT') -- default is usually CENTER
 
 		return obj
 	end
 
 	local objects = {}
-	function E:GenerateFontObject(prefix, font, size, style)
+	function E:GenerateFontObject(name, font, size, style)
 		local x = objects[font]
 		if not x then x = {} objects[font] = x end
 
@@ -418,7 +427,7 @@ do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us t
 		if not y then y = {} x[size] = y end
 
 		local z = y[style]
-		if not z then z = GenerateFontFamily(prefix, font, size, style) y[style] = z end
+		if not z then z = E:GenerateFontFamily(name, font, size, style, true) y[style] = z end
 
 		return z
 	end
