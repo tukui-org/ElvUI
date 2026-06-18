@@ -1877,6 +1877,12 @@ function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	end
 end
 
+function AB:LAB_UpdateTextElement(_, element, font, size, style, shadow)
+	local obj = E:GenerateFontObject('ElvUI_FontAB', font or E.media.normFont, size, style)
+	E:SetFontShadow(obj, style, shadow)
+	element:SetFontObject(obj)
+end
+
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 
@@ -1983,6 +1989,7 @@ function AB:Initialize()
 	LAB.RegisterCallback(AB, 'OnChargeCreated', AB.LAB_ChargeCreated)
 	LAB.RegisterCallback(AB, 'OnCooldownUpdate', AB.LAB_CooldownUpdate)
 	LAB.RegisterCallback(AB, 'OnCooldownDone', AB.LAB_CooldownDone)
+	LAB.RegisterCallback(AB, 'OnUpdateTextElement', AB.LAB_UpdateTextElement)
 
 	AB.fadeParent = CreateFrame('Frame', 'Elv_ABFade', UIParent)
 	AB.fadeParent:SetAlpha(1 - (AB.db.globalFadeAlpha or 0))

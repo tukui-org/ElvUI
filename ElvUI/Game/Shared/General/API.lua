@@ -16,6 +16,7 @@ local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetGameTime = GetGameTime
+local CreateFontFamily = CreateFontFamily
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
 local GetPartyAssignment = GetPartyAssignment
@@ -347,6 +348,58 @@ do -- other non-english locales require this
 	function E:LocalizedClassName(className, unit)
 		local gender = (type(unit) == 'number' and unit) or (not unit and E.mygender) or UnitSex(unit)
 		return (gender == 3 and classFemale[className]) or classMale[className]
+	end
+end
+
+do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us to generate font objects
+	local members, alphabets = {}, { roman = {}, korean = {}, simplifiedchinese = {}, traditionalchinese = {}, russian = {} }
+	local function GenerateFontMembers(font, size, style)
+		local index = 0
+		for which, data in next, alphabets do
+			index = index + 1
+
+			data.alphabet = which
+			data.file = font
+			data.height = size
+			data.flags = style
+
+			members[index] = data
+		end
+
+		return members
+	end
+
+	local index = {}
+	local function GenerateFontFamily(prefix, font, size, style)
+		local x = (index[prefix] or 0) + 1
+		index[prefix] = x -- save index
+
+		local obj = CreateFontFamily(prefix..x, GenerateFontMembers(font, size, style))
+		obj:SetJustifyH('LEFT') -- default is usually CENTER
+
+		return obj
+	end
+
+	local objects = {}
+	function E:GenerateFontObject(prefix, font, size, style)
+		local x = objects[font]
+		if not x then x = {} objects[font] = x end
+
+		local y = x[size]
+		if not y then y = {} x[size] = y end
+
+		local z = y[style]
+		if not z then z = GenerateFontFamily(prefix, font, size, style) y[style] = z end
+
+		return z
+	end
+
+	function E:SetFontShadow(fontObject, style, shadow)
+		for which in next, alphabets do
+			local obj = fontObject:GetFontObjectForAlphabet(which)
+			obj:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
+			obj:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
+		end
 	end
 end
 
