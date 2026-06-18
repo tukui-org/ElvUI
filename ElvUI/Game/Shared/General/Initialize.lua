@@ -17,6 +17,7 @@ local WorldFrame = WorldFrame
 local UIParent = UIParent
 local UnitGUID = UnitGUID
 
+local CreateFontFamily = CreateFontFamily
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
 local DisableAddOn = C_AddOns.DisableAddOn
@@ -376,6 +377,59 @@ do
 	frame:SetScript('OnUpdate', TrackRate)
 	frame:SetScript('OnEvent', ResetRate)
 	frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+end
+
+do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us to generate font objects
+	local members, alphabets = {}, { roman = {}, korean = {}, simplifiedchinese = {}, traditionalchinese = {}, russian = {} }
+	local override = { korean = 'Fonts/2002.TTF', simplifiedchinese = 'Fonts/ARKai_T.ttf', traditionalchinese = 'Fonts/blei00d.TTF' }
+	local function GenerateFontMembers(font, size, style)
+		local index = 0
+		for which, data in next, alphabets do
+			index = index + 1
+
+			data.alphabet = which
+			data.file = --[[override[which] or]] font
+			data.height = size
+			data.flags = style
+
+			members[index] = data
+		end
+
+		return members
+	end
+
+	local index = {}
+	local function GenerateFontFamily(prefix, font, size, style)
+		local x = (index[prefix] or 0) + 1
+		index[prefix] = x -- save index
+
+		local obj = CreateFontFamily(prefix..x, GenerateFontMembers(font, size, style))
+		obj:SetJustifyH('LEFT') -- default is usually CENTER
+
+		return obj
+	end
+
+	local objects = {}
+	function E:GenerateFontObject(prefix, font, size, style)
+		local x = objects[font]
+		if not x then x = {} objects[font] = x end
+
+		local y = x[size]
+		if not y then y = {} x[size] = y end
+
+		local z = y[style]
+		if not z then z = GenerateFontFamily(prefix, font, size, style) y[style] = z end
+
+		return z
+	end
+
+	function E:SetFontShadow(font, style, shadow)
+		for which in next, alphabets do
+			local obj = font:GetFontObjectForAlphabet(which)
+			obj:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
+			obj:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
+		end
+	end
 end
 
 function E:CanFlagSlug(outline)
