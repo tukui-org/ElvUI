@@ -42,7 +42,7 @@ local function OnEnter()
 
 		text = AbbreviateNumbers((bonus or 0), breakpoint)
 	else
-		text = (bonus or 0) * coeffect
+		text = format('%.2f', (bonus or 0) * coeffect)
 	end
 
 	local rating = GetCombatRating(CR_MASTERY)
