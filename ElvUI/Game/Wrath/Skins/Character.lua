@@ -104,6 +104,101 @@ local function HandleResistanceFrame(frameName)
 	end
 end
 
+local function HandleItemButtonQuality(button, rarity)
+	local r, g, b = E:GetItemQualityColor(rarity and rarity > 1 and rarity)
+	button:SetBackdropBorderColor(r, g, b)
+end
+
+local function PaperDollItemButtonQuality(button)
+	if not button.SetBackdropBorderColor then return end
+
+	local id = button.id or button:GetID()
+	local rarity = id and GetInventoryItemQuality('player', id)
+
+	HandleItemButtonQuality(button, rarity)
+end
+
+
+local function UpdateCurrencySkins()
+	local TokenFramePopup = _G.TokenFramePopup
+	if TokenFramePopup then
+		TokenFramePopup:ClearAllPoints()
+		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 1, 0)
+		TokenFramePopup:StripTextures()
+		TokenFramePopup:SetTemplate('Transparent')
+
+		S:HandleCheckBox(_G.TokenFramePopupInactiveCheckbox)
+		S:HandleCheckBox(_G.TokenFramePopupBackpackCheckbox)
+	end
+
+	local TokenFrameContainer = _G.TokenFrameContainer
+	if not TokenFrameContainer.buttons then return end
+
+	for _, button in next, TokenFrameContainer.buttons do
+		if button.highlight then button.highlight:Kill() end
+		if button.categoryLeft then button.categoryLeft:Kill() end
+		if button.categoryRight then button.categoryRight:Kill() end
+		if button.categoryMiddle then button.categoryMiddle:Kill() end
+
+		if not button.backdrop then
+			button:CreateBackdrop(nil, nil, nil, true)
+		end
+
+		if button.icon then
+			if button.itemID == HONOR_CURRENCY and E.myfaction then
+				button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
+			else
+				button.icon:SetTexCoords()
+			end
+
+			button.icon:Size(17)
+
+			button.backdrop:SetOutside(button.icon, 1, 1)
+			button.backdrop:Show()
+		else
+			button.backdrop:Hide()
+		end
+
+		if button.expandIcon then
+			if not button.highlightTexture then
+				button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
+				button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
+				button.highlightTexture:SetBlendMode('ADD')
+				button.highlightTexture:SetInside(button.expandIcon)
+
+				-- these two only need to be called once
+				-- adding them here will prevent additional calls
+				button.expandIcon:ClearAllPoints()
+				button.expandIcon:Point('LEFT', 4, 0)
+				button.expandIcon:Size(15)
+			end
+
+			if button.isHeader then
+				button.backdrop:Hide()
+
+				for _, region in next, { button:GetRegions() } do
+					if region:IsObjectType('FontString') and region:GetText() then
+						region:ClearAllPoints()
+						region:Point('LEFT', 25, 0)
+					end
+				end
+
+				if button.isExpanded then
+					button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
+					button.expandIcon:SetTexCoord(0,1,0,1)
+				else
+					button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
+					button.expandIcon:SetTexCoord(0,1,0,1)
+				end
+
+				button.highlightTexture:Show()
+			else
+				button.highlightTexture:Hide()
+			end
+		end
+	end
+end
+
 function S:CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
@@ -111,6 +206,7 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
+	S:HandleDropDownBox(_G.PlayerTitleDropdown, 160)
 	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
 
 	_G.PaperDollFrame:StripTextures()
@@ -214,39 +310,22 @@ function S:CharacterFrame()
 
 	for i = 1, NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
-		local factionHeader = _G['ReputationHeader'..i]
+		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
+		local factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
 		local factionName = _G['ReputationBar'..i..'FactionName']
-		local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
-		factionBar:CreateBackdrop()
-		--factionBar:SetStatusBarTexture(E.media.normTex)
-		factionBar:Size(108, 13)
-		E:RegisterStatusBar(factionBar)
+		factionStatusBar:StripTextures()
+		factionStatusBar:CreateBackdrop()
+		factionStatusBar:SetStatusBarTexture(E.media.normTex)
+		factionStatusBar:Size(108, 13)
 
-		if i == 1 then
-			factionBar:Point('TOPLEFT', 190, -86)
-		end
+		S:HandleCollapseTexture(factionBarButton, nil, true)
+		E:RegisterStatusBar(factionStatusBar)
 
 		factionName:Width(140)
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
-
-		if factionHeader then
-			factionHeader:GetNormalTexture():Size(14)
-			factionHeader:SetHighlightTexture(E.ClearTexture)
-			factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
-		end
-
-		if factionWar then
-			factionWar:StripTextures()
-			factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
-
-			factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
-			factionWar.Icon:Point('LEFT', 6, -8)
-			factionWar.Icon:Size(32)
-			factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
-		end
 	end
 
 	hooksecurefunc('ReputationFrame_Update', ReputationFrameUpdate)
@@ -312,15 +391,19 @@ function S:CharacterFrame()
 	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', 5, 0)
 	_G.SkillDetailStatusBarUnlearnButton:SetHitRectInsets(0, 0, 0, 0)
 
-	-- Honor Tab
-	_G.HonorFrame:StripTextures()
+	-- TokenFrame (Currency Tab)
+	_G.TokenFrame:StripTextures()
 
-	_G.HonorFrameProgressBar:StripTextures()
-	_G.HonorFrameProgressBar:Height(22)
-	_G.HonorFrameProgressBar:SetParent(_G.HonorFrame)
-	_G.HonorFrameProgressBar:CreateBackdrop()
-	_G.HonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(_G.HonorFrameProgressBar)
+	if _G.TokenFrameCancelButton and _G.TokenFrameCancelButton:IsShown() then
+		_G.TokenFrameCancelButton:Hide()
+	end
+
+	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
+	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
+
+	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
+	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
+	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemButtonQuality)
 end
 
 S:AddCallback('CharacterFrame')
