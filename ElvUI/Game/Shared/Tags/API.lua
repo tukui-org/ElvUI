@@ -127,6 +127,20 @@ function E:TagUpdateRate(second)
 	Tags:SetEventUpdateTimer(second)
 end
 
+E:AddTag('staggerpercent', 0.2, function()
+	if E.myclass ~= 'MONK' or E.myspec ~= SPEC_MONK_BREWMASTER then return '' end
+
+	local stagger = UnitStagger('player') or 0
+	local maxHealth = UnitHealthMax('player') or 0
+
+	local percent = 0
+	if E:NotSecretValue(stagger) and E:NotSecretValue(maxHealth) and stagger > 0 and maxHealth > 0 then
+		percent = (stagger / maxHealth) * 100
+	end
+
+	return ('%d'):format(percent)
+end)
+
 ------------------------------------------------------------------------
 --	Tag Extra Events
 ------------------------------------------------------------------------
