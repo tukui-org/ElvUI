@@ -526,11 +526,14 @@ function UF:PostUpdateAura(unit, button)
 	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local steal = DebuffColors.Stealable
 
+	-- In Midnight, GetAuraDispelTypeColor (via GetAuraCurve) returns a color whose
+	-- r/g/b are SECRET numbers (see AuraHighlight's `secretColor`). Extracting them with
+	-- color:GetRGB() and then doing `if not r` below would branch on a secret value and
+	-- taint the per-aura update loop -> "script ran too long". Keep it as an object and
+	-- feed its components straight into the setter (widget setters accept secret values).
+	local curveColor
 	if E.Retail then
-		local color = not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
-		if color then
-			r, g, b = color:GetRGB()
-		end
+		curveColor = (not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)) or nil
 	elseif button.isDebuff then
 		local bad = DebuffColors.BadDispel
 		if bad and db.auraByDispels and (BadDispels[button.spellID] and DispelTypes[button.debuffType]) then
@@ -543,11 +546,15 @@ function UF:PostUpdateAura(unit, button)
 		r, g, b = steal.r, steal.g, steal.b
 	end
 
-	if not r then
-		r, g, b = unpack((self.isNameplate and E.media.bordercolor) or E.media.unitframeBorderColor)
-	end
+	if curveColor then
+		button:SetBackdropBorderColor(curveColor:GetRGB())
+	else
+		if not r then
+			r, g, b = unpack((self.isNameplate and E.media.bordercolor) or E.media.unitframeBorderColor)
+		end
 
-	button:SetBackdropBorderColor(r, g, b)
+		button:SetBackdropBorderColor(r, g, b)
+	end
 	button.Icon:SetDesaturated(button.canDesaturate and button.isDebuff and not button.isFriend and not button.isPlayer)
 
 	if button.Text then
