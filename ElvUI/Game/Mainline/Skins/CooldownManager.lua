@@ -237,7 +237,7 @@ do
 end
 
 function S:CooldownManager_HandleAbilityTabs(viewer)
-	for i, tab in next, { viewer.SpellsTab, viewer.AurasTab } do
+	for i, tab in next, { viewer.SpellsTab, viewer.AurasTab, viewer.GroupBuffsTab } do
 		tab:CreateBackdrop()
 		tab:Size(30, 40)
 
