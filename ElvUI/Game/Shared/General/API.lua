@@ -1105,8 +1105,22 @@ function E:XPIsTrialMax()
 	return (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
 end
 
+function E:IsLevelAtEffectiveMaxLevel(level)
+	if GameRulesUtil and GameRulesUtil.GetEffectiveMaxLevelForPlayer then
+		return level >= GameRulesUtil.GetEffectiveMaxLevelForPlayer()
+	elseif IsLevelAtEffectiveMaxLevel then
+		return IsLevelAtEffectiveMaxLevel(level)
+	end
+
+	return false
+end
+
 function E:XPIsLevelMax()
-	return IsLevelAtEffectiveMaxLevel(E.mylevel) or IsXPUserDisabled() or E:XPIsTrialMax()
+	local atMax = (GameRulesUtil and GameRulesUtil.IsPlayerAtEffectiveMaxLevel and GameRulesUtil.IsPlayerAtEffectiveMaxLevel())
+		or (IsPlayerAtEffectiveMaxLevel and IsPlayerAtEffectiveMaxLevel())
+		or E:IsLevelAtEffectiveMaxLevel(E.mylevel)
+
+	return atMax or IsXPUserDisabled() or E:XPIsTrialMax()
 end
 
 function E:GetUnitBattlefieldFaction(unit)
