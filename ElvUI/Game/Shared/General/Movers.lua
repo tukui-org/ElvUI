@@ -116,7 +116,34 @@ local function OnDragStart(frame)
 end
 
 local function StopMoving(frame)
-	Sticky:StopMoving(frame)
+	local wasSticky = Sticky:StopMoving(frame)
+
+	if not wasSticky and E.db.general.gridSnap ~= false and not IsShiftKeyDown() then
+		local width, height = UIParent:GetSize()
+		local gSize = E.db.gridSize or 64
+		local step = width / gSize
+		local halfY = height * 0.5
+
+		local frameScale = frame:GetEffectiveScale()
+		local parentScale = UIParent:GetEffectiveScale()
+		local scaleRatio = frameScale / parentScale
+
+		local left = frame:GetLeft()
+		local bottom = frame:GetBottom()
+		if left and bottom then
+			local parentX = left * scaleRatio
+			local parentY = bottom * scaleRatio
+
+			parentX = math.floor(parentX / step + 0.5) * step
+			parentY = halfY + math.floor((parentY - halfY) / step + 0.5) * step
+
+			local snappedLeft = parentX / scaleRatio
+			local snappedBottom = parentY / scaleRatio
+
+			frame:ClearAllPoints()
+			frame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", snappedLeft, snappedBottom)
+		end
+	end
 
 	local x2, y2, p2 = E:CalculateMoverPoints(frame)
 	frame:ClearAllPoints()
