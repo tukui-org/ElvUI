@@ -308,6 +308,7 @@ function S:FriendsFrame()
 	S:HandleEditBox(broadcastEdit)
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(_G.AddFriendFrame.CloseButton)
 
 	hooksecurefunc('FriendsFrame_UpdateFriendButton', UpdateFriendButton)
 	hooksecurefunc('FriendsFrame_UpdateFriendInviteButton', UpdateFriendInviteButton)
