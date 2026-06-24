@@ -37,12 +37,12 @@ local function OnEnter()
 
 	if E.Retail then
 		if E:NotSecretValue(coeffect) then
-			data.significandDivisor = (1 / coeffect) / data.fractionDivisor
+			data.significandDivisor = (coeffect == 0 and 1) or ((1 / coeffect) / data.fractionDivisor)
 		end
 
 		text = AbbreviateNumbers((bonus or 0), breakpoint)
 	else
-		text = (bonus or 0) * coeffect
+		text = format('%.2f', (bonus or 0) * coeffect)
 	end
 
 	local rating = GetCombatRating(CR_MASTERY)

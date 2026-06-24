@@ -28,16 +28,24 @@ local function SkinFrame(frame)
 	end
 end
 
+local widgets = {}
 local function SkinFrameAttachments(frame)
 	if not frame.attachments then return end
 
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	for _, widget in next, frame.attachments do
-		if widget:IsObjectType('Texture') and widget:GetTexture() == 130940 then
-			widget:SetTexture(E.Media.Textures.ArrowUp)
-			widget:SetRotation(S.ArrowRotation.right)
-			widget:SetVertexColor(r, g, b)
-			widget:Size(12)
+		if widget:IsObjectType('Texture') then
+			if widget:GetTexture() == 130940 then
+				widget:SetTexture(E.Media.Textures.ArrowUp)
+				widget:SetRotation(S.ArrowRotation.right)
+				widget:SetVertexColor(r, g, b)
+				widget:Size(12)
+
+				widgets[widget] = true
+			elseif widgets[widget] then
+				widget:SetRotation(S.ArrowRotation.up)
+				widgets[widget] = nil
+			end
 		end
 	end
 end

@@ -378,6 +378,7 @@ L["Voice Overlay"] = "Superposition vocale"
 L["Volume"] = true
 L["Volume Streams"] = "Flux de volume"
 L["Warband"] = true
+L["Warband:"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["whispers"] = "chuchotements"
 L["Withdraw"] = true

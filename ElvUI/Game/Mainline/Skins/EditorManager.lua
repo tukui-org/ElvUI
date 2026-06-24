@@ -35,10 +35,23 @@ local function HandleDialogs()
 	end
 
 	for _, frame in next, { dialog.Settings:GetChildren() } do
-		local dd = frame.Dropdown
-		if dd and (dd.DropDownMenu and not dd.IsSkinned) then
-			S:HandleDropDownBox(dd.DropDownMenu, 250)
-			dd.IsSkinned = true
+		local dropdown = frame.Dropdown
+		if dropdown and not dropdown.IsSkinned then
+			S:HandleDropDownBox(dropdown, 250)
+			dropdown.IsSkinned = true
+		end
+
+		local slider = frame.Slider
+		if slider and not slider.backdrop then
+			S:HandleStepSlider(slider)
+
+			if slider.Back then
+				S:HandleNextPrevButton(slider.Back)
+			end
+
+			if slider.Forward then
+				S:HandleNextPrevButton(slider.Forward)
+			end
 		end
 
 		local checkbox = frame.Button

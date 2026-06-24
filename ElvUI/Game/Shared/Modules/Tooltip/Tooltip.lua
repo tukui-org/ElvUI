@@ -230,7 +230,7 @@ end
 function TT:SetUnitText(tt, unit, isPlayerUnit)
 	local name, realm = UnitName(unit)
 
-	if isPlayerUnit and not E:IsSecretUnit(unit) then
+	if isPlayerUnit and E:NotSecretUnit(unit) then
 		local localeClass, className = UnitClass(unit)
 		if not localeClass or not className then return end
 

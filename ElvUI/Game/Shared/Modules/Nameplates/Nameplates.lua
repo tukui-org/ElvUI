@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local hooksecurefunc = hooksecurefunc
+local pcall, hooksecurefunc = pcall, hooksecurefunc
 local next, strsplit, tonumber = next, strsplit, tonumber
 local pairs, wipe, tinsert = pairs, wipe, tinsert
 
@@ -980,8 +980,8 @@ do
 end
 
 function NP:NamePlateCallBack(event, unit, updateInfo)
-	local plate = C_NamePlate_GetNamePlateForUnit(unit)
-	if not plate then return end -- prevent error on restricted units
+	local success, plate = pcall(C_NamePlate_GetNamePlateForUnit, unit)
+	if not success or not plate then return end -- prevent error on restricted units
 
 	local nameplate = plate.unitFrame
 	if not nameplate or not nameplate.UpdateAllElements then return end -- prevent error with plater
@@ -1218,7 +1218,7 @@ function NP:Initialize()
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')
 
-	if not (E.Retail or E.Mists) then -- why is mist here blizzard?
+	if not E.Retail then
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 
