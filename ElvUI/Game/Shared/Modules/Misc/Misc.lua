@@ -130,7 +130,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 
 	local name, msg = destName or UNKNOWN
-	if E.locale == 'msMX' or E.locale == 'esES' or E.locale == 'ptBR' then -- name goes after
+	if E.locale == 'esMX' or E.locale == 'esES' or E.locale == 'ptBR' then -- name goes after
 		msg = format(INTERRUPT_MSG, spellID, spellName, name)
 	else
 		msg = format(INTERRUPT_MSG, name, spellID, spellName)
