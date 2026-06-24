@@ -35,6 +35,7 @@ function S:BattleNetFrames()
 	ReportCheatingDialog:SetTemplate('Transparent')
 	S:HandleEditBox(_G.ReportCheatingDialogCommentFrameEditBox)
 
+	--[[
 	local BattleTagInviteFrame = _G.BattleTagInviteFrame
 	BattleTagInviteFrame:StripTextures()
 	BattleTagInviteFrame:SetTemplate('Transparent')
@@ -44,6 +45,7 @@ function S:BattleNetFrames()
 			S:HandleButton(child)
 		end
 	end
+	]]
 end
 
 S:AddCallback('BattleNetFrames')

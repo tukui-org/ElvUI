@@ -24,6 +24,8 @@ local function UpdateButton(self)
 end
 
 local function HandleOptionSlot(frame, skip)
+	if not frame then return end
+
 	local option = frame.OptionsList
 	option:StripTextures()
 	option:SetTemplate()
