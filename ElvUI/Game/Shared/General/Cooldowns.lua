@@ -43,6 +43,10 @@ function E:CooldownTextures(cooldown, texture, edge, swipe)
 	cooldown:SetSwipeTexture(E.media.blankTex, swipe.r, swipe.g, swipe.b, swipe.a)
 end
 
+local function GetTextJustify(anchor)
+	return (anchor == 'TOPLEFT' or anchor == 'BOTTOMLEFT' or anchor == 'LEFT') and 'LEFT' or (anchor == 'TOPRIGHT' or anchor == 'BOTTOMRIGHT' or anchor == 'RIGHT') and 'RIGHT' or 'CENTER'
+end
+
 function E:CooldownText(cooldown, db, data, hide)
 	if not cooldown then return end
 
@@ -60,7 +64,8 @@ function E:CooldownText(cooldown, db, data, hide)
 
 		text:ClearAllPoints()
 		text:SetTextColor(colors.r, colors.g, colors.b)
-		text:Point('CENTER', nil, db.position, db.offsetX, db.offsetY)
+		text:Point(db.position, db.offsetX, db.offsetY)
+		text:SetJustifyH(GetTextJustify(db.position))
 		text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
 	end
 end
