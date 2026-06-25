@@ -187,6 +187,14 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:UnpackAuraData(aura)
 	if not name then return end
 
+	-- In Midnight, secret auras return a secret count (applications) and a secret castByPlayer
+	-- boolean. This AuraWatch path uses them raw in CustomFilter/HandleElements (`count < 1`,
+	-- `count > 1`, `setting.anyUnit and button.castByPlayer`), which taints the FilterIcons loop
+	-- -> "script ran too long". Coerce to safe, non-secret values (count 0 = no stack text,
+	-- castByPlayer nil = treated as not-by-player for anyUnit watches).
+	if oUF:IsSecretValue(count) then count = 0 end
+	if oUF:IsSecretValue(castByPlayer) then castByPlayer = nil end
+
 	local button, position = FetIcon(element, visible, offset)
 
 	button.aura = aura

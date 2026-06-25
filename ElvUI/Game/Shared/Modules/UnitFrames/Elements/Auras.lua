@@ -801,8 +801,14 @@ function UF:AuraFilter(element, unit, button, aura, name, icon, count, debuffTyp
 	if not name then return end -- checking for an aura that is not there, pass nil to break while loop
 	local db = element.db
 
-	-- this should be secret safe, rest are populated in oUF or AuraPopulate
-	button.isFriend = UnitIsFriend('player', unit) and not UnitCanAttack('player', unit)
+	-- rest are populated in oUF or AuraPopulate
+	-- In Midnight, UnitIsFriend/UnitCanAttack can return SECRET booleans (e.g. in instances/arenas).
+	-- Leaving them raw makes button.isFriend secret, so the later `not button.isFriend` in
+	-- PostUpdateAura/CheckFilter taints the per-aura update loop -> "script ran too long".
+	-- Coerce to plain booleans; a secret relationship defaults to "not friend" (cosmetic only).
+	local isFriend = UnitIsFriend('player', unit)
+	local canAttack = UnitCanAttack('player', unit)
+	button.isFriend = (E:NotSecretValue(isFriend) and isFriend) and not (E:NotSecretValue(canAttack) and canAttack) or false
 	button.canDesaturate = (db and db.desaturate) or false
 
 	if not db or not aura then
