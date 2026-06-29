@@ -29,7 +29,6 @@ This element updates by changing the texture.
 local _, ns = ...
 local oUF = ns.oUF
 
-local pcall = pcall
 local UnitPvpClassification = UnitPvpClassification
 
 -- sourced from Blizzard_UnitFrame/Mainline/CompactUnitFrame.lua
@@ -62,8 +61,8 @@ local function Update(self, event, unit)
 		element:PreUpdate(unit)
 	end
 
-	local ok, className = pcall(UnitPvpClassification, unit)
-	local icon = ok and ICONS[className]
+	local className = UnitPvpClassification(unit)
+	local icon = ICONS[className]
 	if(icon) then
 		element:SetAtlas(icon, element.useAtlasSize)
 		element:Show()

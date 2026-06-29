@@ -693,8 +693,8 @@ function NP:GetNPCID(guid)
 end
 
 function NP:UnitNPCID(unit) -- also used by Bags.lua
-	local ok, guid = pcall(UnitGUID, unit)
-	if ok then
+	local guid = UnitGUID(unit)
+	if guid then
 		return NP:GetNPCID(guid)
 	end
 end
@@ -1218,7 +1218,7 @@ function NP:Initialize()
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')
 
-	if not (E.Retail or E.Mists) then -- why is mist here blizzard?
+	if not E.Retail then
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 

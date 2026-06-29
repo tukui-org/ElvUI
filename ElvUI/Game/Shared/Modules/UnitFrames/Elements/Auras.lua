@@ -269,8 +269,6 @@ function UF:UpdateFilters(button)
 
 	local isPlayer = db and db.isAuraPlayer
 	local isRaidPlayerDispellable = db and db.isAuraRaidPlayerDispellable
-	local isImportant = db and db.isAuraImportant
-	local isImportantPlayer = db and db.isAuraImportantPlayer
 	local isCrowdControl = db and db.isAuraCrowdControl
 	local isCrowdControlPlayer = db and db.isAuraCrowdControlPlayer
 	local isBigDefensive = db and db.isAuraBigDefensive
@@ -296,8 +294,6 @@ function UF:UpdateFilters(button)
 
 	filters.isPlayer = isPlayer
 	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
-	filters.isImportant = isImportant
-	filters.isImportantPlayer = isImportantPlayer
 	filters.isCrowdControl = isCrowdControl
 	filters.isCrowdControlPlayer = isCrowdControlPlayer
 	filters.isBigDefensive = isBigDefensive
@@ -317,7 +313,7 @@ function UF:UpdateFilters(button)
 
 	local shared = isPlayer or isCancelable or isCancelablePlayer or notCancelable or notCancelablePlayer or isRaid or isRaidPlayer
 	if E.Retail then
-		button.noFilter = db and not (shared or isRaidPlayerDispellable or isImportant or isImportantPlayer or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer)
+		button.noFilter = db and not (shared or isRaidPlayerDispellable or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer)
 	else
 		button.noFilter = db and not shared
 	end
@@ -776,8 +772,6 @@ function UF:VerifyFilter(button, aura)
 	elseif E.Retail then
 		return (filters.isPlayer and player)
 		or (filters.isRaidPlayerDispellable and aura.auraIsRaidPlayerDispellable)
-		or (filters.isImportant and aura.auraIsImportant and other)
-		or (filters.isImportantPlayer and aura.auraIsImportant and player)
 		or (filters.isCrowdControl and aura.auraIsCrowdControl and other)
 		or (filters.isCrowdControlPlayer and aura.auraIsCrowdControl and player)
 		or (filters.isBigDefensive and aura.auraIsBigDefensive and other)

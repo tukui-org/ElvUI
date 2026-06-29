@@ -284,7 +284,7 @@ function UF:PostUpdateHealthColor(unit, color)
 	local healthR, healthG, healthB, healthbreakBackdrop
 	if (not healthColor and not E.Retail) and (not parent.db or parent.db.colorOverride ~= 'ALWAYS') then
 		if r and not isTapped and ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) then
-			healthR, healthG, healthB = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
+			healthR, healthG, healthB = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r or 1, g or 1, b or 1)
 		elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
 			local breakPoint = self.max > 0 and (self.cur / self.max) or 1
 			local threshold = healthBreak.threshold
@@ -312,17 +312,18 @@ function UF:PostUpdateHealthColor(unit, color)
 			bgc = customBackdrop
 		elseif colors.healthbackdropbyvalue and not E.Retail then
 			if colors.customhealthbackdrop then
-				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, colors.health_backdrop.r, colors.health_backdrop.g, colors.health_backdrop.b)
+				local backdrop = colors.health_backdrop
+				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1,0,0, 1,1,0, backdrop.r or 1, backdrop.g or 1, backdrop.b or 1)
 				customBackdrop:SetRGB(bgr, bgg, bgb)
 				bgc = customBackdrop
 			elseif not healthR and not colors.colorhealthbyvalue then
-				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r, g, b)
+				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1,0,0, 1,1,0, r or 1, g or 1, b or 1)
 				customBackdrop:SetRGB(bgr, bgg, bgb)
 				bgc = customBackdrop
 			end
 		elseif colors.customhealthbackdrop then
-			local health = colors.health_backdrop
-			customBackdrop:SetRGB(health.r, health.g, health.b)
+			local backdrop = colors.health_backdrop
+			customBackdrop:SetRGB(backdrop.r, backdrop.g, backdrop.b)
 			bgc = customBackdrop
 		elseif colors.classbackdrop then
 			if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then

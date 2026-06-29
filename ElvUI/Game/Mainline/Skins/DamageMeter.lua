@@ -78,7 +78,8 @@ end
 function S:DamageMeter_HandleSessionTimer(window, sessionTimer)
 	if not sessionTimer then return end
 
-	sessionTimer:NudgePoint(-15)
+	sessionTimer:ClearAllPoints() -- point is a secret
+	sessionTimer:Point('TOPLEFT', window.Header, 3, -9)
 end
 
 function S:DamageMeter_HandleTypeDropdown(window, dropdown)
@@ -87,7 +88,8 @@ function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 	S:HandleButton(dropdown, nil, nil, nil, true)
 
 	dropdown:Size(20)
-	dropdown:NudgePoint(nil, -2)
+	dropdown:ClearAllPoints() -- point is a secret
+	dropdown:Point('TOPLEFT', window.SessionTimer, 'TOPRIGHT', 0, 4)
 
 	local customArrow = not dropdown.customArrow and dropdown:CreateTexture(nil, 'BACKGROUND')
 	if customArrow then
@@ -99,12 +101,16 @@ function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 		dropdown.customArrow = customArrow
 	end
 
-	if dropdown.Arrow then
-		dropdown.Arrow:SetAlpha(0)
+	local arrow = dropdown.Arrow
+	if arrow then
+		arrow:SetAlpha(0)
 	end
 
-	if dropdown.TypeName then
-		dropdown.TypeName:NudgePoint(-4, -1)
+	local typeName = dropdown.TypeName
+	if typeName then
+		typeName:ClearAllPoints() -- point is a secret
+		typeName:Point('LEFT', dropdown, 'RIGHT', 3, 0)
+		typeName:Point('RIGHT', window.SessionDropdown, 'LEFT', -3, 0)
 	end
 
 	dropdown.IsSkinned = true
@@ -166,8 +172,8 @@ function S:DamageMeter_HandleHeader(window, header)
 	header:SetTexture(E.media.blankTex)
 	header:SetVertexColor(r, g, b, a)
 	header:ClearAllPoints()
-	header:Point('TOPLEFT', 16, -2)
-	header:Point('BOTTOMRIGHT', window, 'TOPRIGHT', -22, -32)
+	header:Point('TOPLEFT', window, 6, -2)
+	header:Point('BOTTOMRIGHT', window, 'TOPRIGHT', -12, -32)
 end
 
 function S:DamageMeter_HandleStatusBar()
@@ -201,9 +207,9 @@ do
 		updating = true
 
 		if point == 'TOPLEFT' then
-			self:NudgePoint(-16, 0, nil, point)
-		elseif point == 'BOTTOMRIGHT' then
 			self:NudgePoint(-5, 0, nil, point)
+		elseif point == 'BOTTOMRIGHT' then
+			self:NudgePoint(-9, 0, nil, point)
 		end
 
 		updating = false
@@ -309,7 +315,6 @@ function S:DamageMeter_HandleMinimizeButton(window, button)
 	if not button or button.IsSkinned then return end
 
 	button:Size(16)
-	button:NudgePoint(13)
 	button:SetHighlightAtlas('UI-QuestTrackerButton-Yellow-Highlight', 'ADD')
 
 	S.DamageMeter_SetMinimized(window, window.isMinimized)

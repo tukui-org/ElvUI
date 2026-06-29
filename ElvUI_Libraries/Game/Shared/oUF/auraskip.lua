@@ -3,7 +3,6 @@ local oUF = ns.oUF
 
 local next = next
 local wipe = wipe
-local pcall = pcall
 local select = select
 
 local UnitGUID = UnitGUID
@@ -53,26 +52,20 @@ local function InstanceFiltered(unit, aura, helpful, harmful)
 	return isHelpful or isHarmful
 end
 
-local function UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
-	local unitAuraFiltered = filtered[unit]
+-- These flags are per-aura and do NOT depend on the filter, so compute them
+-- once instead of recomputing identical values inside the 3x filter loop.
+local function ComputeAuraFlags(unit, aura)
+	aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
+	aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
 
-	local allowed = which ~= 'remove' and allow and aura
-	if allowed then -- irrelevant filters: IncludeNameplateOnly, Maw
-		aura.auraIsHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HARMFUL')
-		aura.auraIsHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, 'HELPFUL')
-
-		aura.auraIsImportant = InstanceFiltered(unit, aura, 'HELPFUL|IMPORTANT', 'HARMFUL|IMPORTANT')
-		aura.auraIsCancelable = InstanceFiltered(unit, aura, 'HELPFUL|CANCELABLE', 'HARMFUL|CANCELABLE')
-		aura.auraIsCrowdControl = InstanceFiltered(unit, aura, 'HELPFUL|CROWD_CONTROL', 'HARMFUL|CROWD_CONTROL')
-		aura.auraIsBigDefensive = InstanceFiltered(unit, aura, 'HELPFUL|BIG_DEFENSIVE', 'HARMFUL|BIG_DEFENSIVE')
-		aura.auraIsExternalDefensive = InstanceFiltered(unit, aura, 'HELPFUL|EXTERNAL_DEFENSIVE', 'HARMFUL|EXTERNAL_DEFENSIVE')
-		aura.auraIsPlayer = InstanceFiltered(unit, aura, 'HELPFUL|PLAYER', 'HARMFUL|PLAYER')
-		aura.auraIsRaid = InstanceFiltered(unit, aura, 'HELPFUL|RAID', 'HARMFUL|RAID')
-		aura.auraIsRaidInCombat = InstanceFiltered(unit, aura, 'HELPFUL|RAID_IN_COMBAT', 'HARMFUL|RAID_IN_COMBAT') -- Auras flagged to show on raid frames in combat
-		aura.auraIsRaidPlayerDispellable = InstanceFiltered(unit, aura, 'HELPFUL|RAID_PLAYER_DISPELLABLE', 'HARMFUL|RAID_PLAYER_DISPELLABLE') -- Auras with a dispel type the player can dispel
-	end
-
-	unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and allowed or nil
+	aura.auraIsCancelable = InstanceFiltered(unit, aura, 'HELPFUL|CANCELABLE', 'HARMFUL|CANCELABLE')
+	aura.auraIsCrowdControl = InstanceFiltered(unit, aura, 'HELPFUL|CROWD_CONTROL', 'HARMFUL|CROWD_CONTROL')
+	aura.auraIsBigDefensive = InstanceFiltered(unit, aura, 'HELPFUL|BIG_DEFENSIVE', 'HARMFUL|BIG_DEFENSIVE')
+	aura.auraIsExternalDefensive = InstanceFiltered(unit, aura, 'HELPFUL|EXTERNAL_DEFENSIVE', 'HARMFUL|EXTERNAL_DEFENSIVE')
+	aura.auraIsPlayer = InstanceFiltered(unit, aura, 'HELPFUL|PLAYER', 'HARMFUL|PLAYER')
+	aura.auraIsRaid = InstanceFiltered(unit, aura, 'HELPFUL|RAID', 'HARMFUL|RAID')
+	aura.auraIsRaidInCombat = InstanceFiltered(unit, aura, 'HELPFUL|RAID_IN_COMBAT', 'HARMFUL|RAID_IN_COMBAT') -- Auras flagged to show on raid frames in combat
+	aura.auraIsRaidPlayerDispellable = InstanceFiltered(unit, aura, 'HELPFUL|RAID_PLAYER_DISPELLABLE', 'HARMFUL|RAID_PLAYER_DISPELLABLE') -- Auras with a dispel type the player can dispel
 end
 
 local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstanceID, aura)
@@ -97,8 +90,16 @@ local function UpdateAuraFilters(which, frame, event, unit, showFunc, auraInstan
 	unitAuraInfo[auraInstanceID] = (which ~= 'remove' and aura) or nil
 
 	local allow = (which == 'remove') or not aura or AllowAura(frame, aura)
+	local allowed = which ~= 'remove' and allow and aura
+	if allowed then -- irrelevant filters: IncludeNameplateOnly, Maw
+		ComputeAuraFlags(unit, aura)
+	end
+
 	for filter, filtered in next, auraFiltered do
-		UpdateFilter(which, filter, filtered, allow, unit, auraInstanceID, aura)
+		local unitAuraFiltered = filtered[unit]
+		if unitAuraFiltered then -- should always exist but to be safe
+			unitAuraFiltered[auraInstanceID] = not oUF:ShouldSkipAuraFilter(aura, filter) and allowed or nil
+		end
 	end
 
 	if showFunc then
@@ -146,14 +147,14 @@ local function ProcessAura(frame, event, unit, token, ...)
 	return token
 end
 
-local function ProcessTokens(frame, event, unit, success, token, ...)
-	repeat token = success and ProcessAura(frame, event, unit, token, ...)
+local function ProcessTokens(frame, event, unit, token, ...)
+	repeat token = ProcessAura(frame, event, unit, token, ...)
 	until not token
 end
 
 local function ProcessExisting(frame, event, unit)
-	ProcessTokens(frame, event, unit, pcall(GetAuraSlots, unit, 'HELPFUL'))
-	ProcessTokens(frame, event, unit, pcall(GetAuraSlots, unit, 'HARMFUL'))
+	ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HELPFUL'))
+	ProcessTokens(frame, event, unit, GetAuraSlots(unit, 'HARMFUL'))
 end
 
 local function ShouldSkipAura(frame, event, unit, updateInfo, showFunc)
@@ -240,14 +241,14 @@ end
 -- Blizzard didnt implement the tooltip functions on Era or Mists
 function oUF:GetAuraIndexByInstanceID(unit, auraInstanceID, filter)
 	local index = 1
-	local success, aura = pcall(GetAuraDataByIndex, unit, index, filter)
-	while (success and aura) do
+	local aura = GetAuraDataByIndex(unit, index, filter)
+	while aura do
 		if aura.auraInstanceID == auraInstanceID then
 			return index
 		end
 
 		index = index + 1
-		success, aura = pcall(GetAuraDataByIndex, unit, index, filter)
+		aura = GetAuraDataByIndex(unit, index, filter)
 	end
 end
 

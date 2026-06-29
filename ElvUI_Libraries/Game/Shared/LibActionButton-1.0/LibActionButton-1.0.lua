@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 79 -- the real minor version is 147
+local MINOR_VERSION = 80 -- the real minor version is 147
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -287,7 +287,7 @@ function lib:CreateButton(id, name, header, config)
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 
-	if WoWRetail or WoWBCC or WoWMists then
+	if WoWRetail or WoWBCC or WoWMists or WoWWrath then
 		button:RegisterForClicks("AnyDown", "AnyUp")
 	else
 		button:RegisterForClicks("AnyUp")
@@ -1385,8 +1385,6 @@ local function UpdateTextElement(button, element, config, defaultFont, fromRange
 	if rangeIndicator then
 		element:SetShown(button.outOfRange)
 		element:SetFont(RangeFont.font.font, RangeFont.font.size, RangeFont.font.flags)
-		element:SetShadowColor(0, 0, 0, 0)
-		element:SetShadowOffset(0, 0)
 	else
 		local opt = config.font
 		local style = opt.flags or ''
@@ -1395,8 +1393,9 @@ local function UpdateTextElement(button, element, config, defaultFont, fromRange
 		if shadow then style = strsub(style, 7) end -- shadow isnt a real style
 
 		element:SetFont(opt.font or defaultFont, opt.size or 11, style)
-		element:SetShadowColor(0, 0, 0, shadow and (style == '' and 1 or 0.6) or 0)
-		element:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
+
+		-- normally the shadow would be set here but Blizzard broke it in 12.0.7 so we use a callback
+		lib.callbacks:Fire("OnUpdateTextElement", button, element, opt.font or defaultFont, opt.size or 11, style, shadow)
 	end
 
 	if element.SetScaleAnimationMode then
@@ -1453,7 +1452,7 @@ function Generic:UpdateConfig(config)
 	self:SetAttribute('flyoutDirection', self.config.flyoutDirection)
 	self:SetAttribute('useOnKeyDown', self.config.clickOnDown)
 
-	if not (WoWRetail or WoWBCC or WoWMists) then
+	if not (WoWRetail or WoWBCC or WoWMists or WoWWrath) then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 	end
 end

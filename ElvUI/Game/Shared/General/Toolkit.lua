@@ -505,9 +505,9 @@ local function FontTemplate(fs, font, size, style, skip)
 		fs:SetScaleAnimationMode(slug and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
 	end
 
-	fs:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
-	fs:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
-	fs:SetFont(font or E.media.normFont, size, style)
+	local obj = E:GenerateFontObject('ElvUI_FontTemplate', font or E.media.normFont, size, style)
+	E:SetFontShadow(obj, style, shadow)
+	fs:SetFontObject(obj)
 end
 
 local function StyleButton(button, noHover, noPushed, noChecked)

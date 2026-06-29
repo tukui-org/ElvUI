@@ -20,7 +20,6 @@
 	<Script file='Shared\Developer\Frame.lua'/>
 	<Script file='Shared\Developer\TInspect.lua'/>
 	<Script file='Shared\Media\SharedMedia.lua'/>
-	<Include file ='Shared\Modules\load_fonts.xml'/> <!-- Dynamic Fonts -->
 	<Script file='Shared\Defaults\Profile.lua'/>
 	<Script file='Shared\Defaults\Global.lua'/>
 	<Script file='Shared\Defaults\Private.lua'/>
@@ -82,6 +81,7 @@
 	<Script file='TBC\Skins\BGMap.lua'/>
 	<Script file='TBC\Skins\BGScore.lua'/>
 	<Script file='TBC\Skins\BlizzardOptions.lua'/>
+	<Script file='TBC\Skins\CatalogShop.lua'/>
 	<Script file='TBC\Skins\Channels.lua'/>
 	<Script file='TBC\Skins\Character.lua'/>
 	<Script file='TBC\Skins\Communities.lua'/>

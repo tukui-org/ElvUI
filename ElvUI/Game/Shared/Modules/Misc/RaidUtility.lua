@@ -8,7 +8,6 @@ local strsub, format, gsub, type = strsub, format, gsub, type
 local strfind, tinsert, wipe, sort = strfind, tinsert, wipe, sort
 
 local CreateFrame = CreateFrame
-local DoReadyCheck = DoReadyCheck
 local GameTooltip_Hide = GameTooltip_Hide
 local GetDungeonDifficultyID = GetDungeonDifficultyID
 local GetNumGroupMembers = GetNumGroupMembers
@@ -24,7 +23,6 @@ local PlaySound = PlaySound
 local SecureHandler_OnClick = SecureHandler_OnClick
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local SetDungeonDifficultyID = SetDungeonDifficultyID
-local SetEveryoneIsAssistant = SetEveryoneIsAssistant
 local ToggleFriendsFrame = ToggleFriendsFrame
 local UnitClass = UnitClass
 local UnitExists = UnitExists
@@ -38,6 +36,8 @@ local ConvertToParty = C_PartyInfo.ConvertToParty
 local SetRestrictPings = C_PartyInfo.SetRestrictPings
 local GetRestrictPings = C_PartyInfo.GetRestrictPings
 local RestrictPingsTo = Enum.RestrictPingsTo
+local SetEveryoneIsAssistant = C_PartyInfo.SetEveryoneIsAssistant or SetEveryoneIsAssistant
+local DoReadyCheck = C_PartyInfo.DoReadyCheck or DoReadyCheck
 
 local IG_MAINMENU_OPTION_CHECKBOX_ON = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST

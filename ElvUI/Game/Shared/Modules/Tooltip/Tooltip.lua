@@ -10,7 +10,7 @@ local AuraFiltered = ElvUF.AuraFiltered
 
 local _G = _G
 local unpack, ipairs, next = unpack, ipairs, next
-local tonumber, strlower, floor, pcall = tonumber, strlower, floor, pcall
+local tonumber, strlower, floor = tonumber, strlower, floor
 local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatch, gsub
 
 local CanInspect = CanInspect
@@ -230,7 +230,7 @@ end
 function TT:SetUnitText(tt, unit, isPlayerUnit)
 	local name, realm = UnitName(unit)
 
-	if isPlayerUnit and not E:IsSecretUnit(unit) then
+	if isPlayerUnit and E:NotSecretUnit(unit) then
 		local localeClass, className = UnitClass(unit)
 		if not localeClass or not className then return end
 
@@ -693,12 +693,12 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
 
-	if TT.db.healthBar.short then
-		local okCur, current = pcall(UnitHealth, unit)
-		local okMax, maximum = pcall(UnitHealthMax, unit)
-		if okCur and okMax and current and maximum then
-			local currentAbbrev = E:AbbreviateNumbers(current, 'short')
-			local maximumAbbrev = E:AbbreviateNumbers(maximum, 'short')
+	if unit and TT.db.healthBar.short then
+		local current = UnitHealth(unit)
+		local maximum = UnitHealthMax(unit)
+		if current and maximum then
+			local currentAbbrev = E:AbbreviateNumbers(current, E.Abbreviate.short)
+			local maximumAbbrev = E:AbbreviateNumbers(maximum, E.Abbreviate.short)
 			statusText:SetFormattedText('%s / %s', currentAbbrev, maximumAbbrev)
 
 			return
@@ -706,8 +706,8 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	end
 
 	-- fallback to percent if possible
-	local ok, perc = pcall(UnitHealthPercent, unit, true, ScaleTo100)
-	if ok and perc then
+	local perc = unit and UnitHealthPercent(unit, true, ScaleTo100)
+	if perc then
 		statusText:SetFormattedText('%d%%', perc)
 	else
 		statusText:SetText('')

@@ -29,6 +29,7 @@ local smallerMapScale = 0.8
 function M:SetLargeWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
+	WorldMapFrame:SetFrameStrata('HIGH')
 	WorldMapFrame:SetScale(1)
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
@@ -55,11 +56,12 @@ end
 
 function M:SetSmallWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
+	WorldMapFrame:SetParent(E.UIParent)
+	WorldMapFrame:SetFrameStrata('HIGH')
+
 	if not E.Retail then
 		WorldMapFrame:EnableMouse(false)
 		WorldMapFrame:EnableKeyboard(false)
-		WorldMapFrame:SetFrameStrata('HIGH')
-		WorldMapFrame:SetParent(E.UIParent)
 		WorldMapFrame:SetScale(smallerMapScale)
 
 		_G.WorldMapTooltip:OffsetFrameLevel(100, WorldMapFrame.ScrollContainer)

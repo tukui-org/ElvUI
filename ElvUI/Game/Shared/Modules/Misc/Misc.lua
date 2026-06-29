@@ -38,12 +38,12 @@ local RaidNotice_AddMessage = RaidNotice_AddMessage
 local RepairAllItems = RepairAllItems
 local StaticPopup_Hide = StaticPopup_Hide
 local StaticPopupSpecial_Hide = StaticPopupSpecial_Hide
-local UninviteUnit = UninviteUnit
 local UnitGUID = UnitGUID
 local UnitInRaid = UnitInRaid
 local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitName = UnitName
 
+local UninviteUnit = C_PartyInfo.UninviteUnit or UninviteUnit
 local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
 local GetNumFactions = C_Reputation.GetNumFactions or GetNumFactions
 local GetFactionInfo = C_Reputation.GetFactionDataByIndex or GetFactionInfo
@@ -130,7 +130,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 
 	local name, msg = destName or UNKNOWN
-	if E.locale == 'msMX' or E.locale == 'esES' or E.locale == 'ptBR' then -- name goes after
+	if E.locale == 'esMX' or E.locale == 'esES' or E.locale == 'ptBR' then -- name goes after
 		msg = format(INTERRUPT_MSG, spellID, spellName, name)
 	else
 		msg = format(INTERRUPT_MSG, name, spellID, spellName)
@@ -415,7 +415,7 @@ function M:Initialize()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
 
-	if not (E.Retail or E.Mists) then -- why is mist here blizzard?
+	if not E.Retail then
 		M:ToggleInterrupt()
 	end
 

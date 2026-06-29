@@ -17,6 +17,7 @@ local WorldFrame = WorldFrame
 local UIParent = UIParent
 local UnitGUID = UnitGUID
 
+local CreateFontFamily = CreateFontFamily
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
 
 local DisableAddOn = C_AddOns.DisableAddOn
@@ -144,7 +145,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.16, '15.16-git', nil, true
+		return 15.17, '15.17-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -376,6 +377,68 @@ do
 	frame:SetScript('OnUpdate', TrackRate)
 	frame:SetScript('OnEvent', ResetRate)
 	frame:RegisterEvent('PLAYER_ENTERING_WORLD')
+end
+
+do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us to generate font objects
+	local members, alphabets = {}, { roman = {}, russian = {}, korean = {}, simplifiedchinese = {}, traditionalchinese = {} }
+	local override = { korean = true, simplifiedchinese = true, traditionalchinese = true }
+	for which in next, override do
+		local obj = _G.GameFontNormal:GetFontObjectForAlphabet(which)
+		override[which] = obj:GetFont()
+	end
+
+	local function GenerateFontMembers(font, size, style)
+		local index = 0
+		for which, data in next, alphabets do
+			index = index + 1
+
+			data.alphabet = which
+			data.file = override[which] or font
+			data.height = size
+			data.flags = style
+
+			members[index] = data
+		end
+
+		return members
+	end
+
+	local prefixed = {}
+	local function GetPrefixName(name)
+		local x = (prefixed[name] or 0) + 1
+		prefixed[name] = x -- save index
+
+		return name .. x
+	end
+
+	function E:GenerateFontFamily(name, font, size, style, prefix)
+		local obj = CreateFontFamily((prefix and GetPrefixName(name)) or name, GenerateFontMembers(font, size, style or ''))
+		obj:SetJustifyH('LEFT') -- default is usually CENTER
+
+		return obj
+	end
+
+	local objects = {}
+	function E:GenerateFontObject(name, font, size, style)
+		local x = objects[font]
+		if not x then x = {} objects[font] = x end
+
+		local y = x[size]
+		if not y then y = {} x[size] = y end
+
+		local z = y[style]
+		if not z then z = E:GenerateFontFamily(name, font, size, style, true) y[style] = z end
+
+		return z
+	end
+
+	function E:SetFontShadow(font, style, shadow)
+		for which in next, alphabets do
+			local obj = font:GetFontObjectForAlphabet(which)
+			obj:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
+			obj:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
+		end
+	end
 end
 
 function E:CanFlagSlug(outline)

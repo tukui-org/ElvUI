@@ -85,8 +85,6 @@ local oUF = ns.oUF
 local Private = oUF.Private
 
 local unitSelectionType = Private.unitSelectionType
-
-local pcall = pcall
 local unpack = unpack
 
 local UnitClass = UnitClass
@@ -141,15 +139,15 @@ local function UpdateColor(self, event, unit)
 	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
 		color =  self.colors.threat[UnitThreatSituation('player', unit)]
 	elseif(element.colorPower) then
-		local okType, pType, pToken, altR, altG, altB = pcall(UnitPowerType, unit)
-		if(element.displayType) then
+		local pType, pToken, altR, altG, altB = UnitPowerType(unit)
+		if element.displayType then
 			color = self.colors.power[element.displayType]
 		end
 
 		if(not color) then
 			color = self.colors.power[pToken]
 
-			if(okType and element.GetAlternativeColor) then
+			if element.GetAlternativeColor then
 				r, g, b = element:GetAlternativeColor(unit, pType, pToken, altR, altG, altB)
 			elseif(not color and altR) then
 				r, g, b = altR, altG, altB
@@ -158,7 +156,7 @@ local function UpdateColor(self, event, unit)
 					r, g, b = r / 255, g / 255, b / 255
 				end
 			else
-				color = (okType and self.colors.power[pType]) or self.colors.power.MANA
+				color = self.colors.power[pType] or self.colors.power.MANA
 			end
 		end
 
@@ -171,10 +169,7 @@ local function UpdateColor(self, event, unit)
 		if(element.colorPowerSmooth) then
 			if oUF.isRetail then
 				local curve = color and color:GetCurve()
-				local ok, colorPercent = pcall(UnitPowerPercent, unit, nil, true, curve)
-				if ok then
-					color = colorPercent
-				end
+				color = UnitPowerPercent(unit, nil, true, curve)
 			else
 				local adjust = 0 - (element.min or 0)
 				local curValue, maxValue = (element.cur or 1) + adjust, (element.max or 1) + adjust
@@ -256,12 +251,10 @@ local function Update(self, event, unit)
 		displayType, min = element:GetDisplayPower(unit)
 	end
 
-	local okCur, cur = pcall(UnitPower, unit, displayType)
-	local okMax, max = pcall(UnitPowerMax, unit, displayType)
+	local cur = UnitPower(unit, displayType)
+	local max = UnitPowerMax(unit, displayType)
 
 	if not min then min = 0 end
-	if not okCur then cur = 1 end
-	if not okMax then max = 1 end
 
 	element:SetMinMaxValues(min, max)
 

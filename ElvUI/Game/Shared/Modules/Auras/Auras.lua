@@ -3,7 +3,7 @@ local A = E:GetModule('Auras')
 local LSM = E.Libs.LSM
 
 local _G = _G
-local next, ceil, pcall = next, ceil, pcall
+local next, ceil = next, ceil
 local strmatch, tonumber = strmatch, tonumber
 
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
@@ -276,8 +276,8 @@ end
 
 function A:UpdateAura(button, index)
 	local unitToken = button.header:GetAttribute('unit')
-	local success, data = pcall(GetAuraDataByIndex, unitToken, index, button.filter)
-	if not success or not data then return end
+	local data = GetAuraDataByIndex(unitToken, index, button.filter)
+	if not data then return end
 
 	local icon = data.icon
 	local duration = data.duration

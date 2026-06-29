@@ -42,7 +42,6 @@ The following options are listed by priority. The first check that returns true 
 local _, ns = ...
 local oUF = ns.oUF
 
-local pcall = pcall
 local unpack = unpack
 
 local UnitPower = UnitPower
@@ -68,10 +67,7 @@ local function UpdateColor(self, event, unit, powerType)
 		if(element.colorPowerSmooth) then
 			if oUF.isRetail then
 				local curve = color:GetCurve()
-				local ok, colorPercent = pcall(UnitPowerPercent, unit, nil, true, curve)
-				if ok then
-					color = colorPercent
-				end
+				color = UnitPowerPercent(unit, nil, true, curve)
 			else
 				local curValue, maxValue = element.cur or 1, element.max or 1
 				local r, g, b = oUF:ColorGradient(maxValue == 0 and 0 or (curValue / maxValue), unpack(element.smoothGradient or self.colors.smooth))
@@ -113,14 +109,10 @@ local function Update(self, event, unit, powerType)
 		element:PreUpdate(unit)
 	end
 
-	local okCur, cur = pcall(UnitPower, 'player', POWER_INDEX)
-	local okMax, max = pcall(UnitPowerMax, 'player', POWER_INDEX)
-
-	if not okCur then cur = 1 end
-	if not okMax then max = 1 end
+	local cur = UnitPower('player', POWER_INDEX)
+	local max = UnitPowerMax('player', POWER_INDEX)
 
 	element:SetMinMaxValues(0, max)
-
 	element:SetValue(cur, element.smoothing)
 
 	element.cur = cur
@@ -188,10 +180,11 @@ local function Visibility(self, event, unit)
 	local element = self.AdditionalPower
 	local shouldEnable
 
-	if element.displayPairs and ((oUF.isClassic or oUF.isTBC) or not UnitHasVehicleUI('player')) then
-		local okPower, maxPower = pcall(UnitPowerMax, unit, POWER_INDEX)
-		local allowed = element.displayPairs[oUF.myclass]
-		if allowed and (okPower and maxPower ~= 0) then
+	local display = element.displayPairs and ((oUF.isClassic or oUF.isTBC) or not UnitHasVehicleUI('player'))
+	local allowed = display and element.displayPairs[oUF.myclass]
+	if allowed then
+		local maxPower = UnitPowerMax(unit, POWER_INDEX)
+		if oUF:NotSecretValue(maxPower) and (maxPower ~= 0) then
 			shouldEnable = allowed[UnitPowerType(unit)]
 		end
 	end
