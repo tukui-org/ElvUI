@@ -115,7 +115,7 @@ function NP:CVarReset()
 	E:SetCVar('nameplateSelectedScale', 1)
 	E:SetCVar('nameplatePlayerLargerScale', 1.8)
 
-	if not (E.Retail or E.Mists) then
+	if not (E.Retail or E.Mists or E.TBC) then
 		-- listed in options
 		E:SetCVar('nameplateNotSelectedAlpha', 1)
 		E:SetCVar('nameplateLargerScale', 1)
@@ -149,7 +149,7 @@ end
 function NP:SetCVars()
 	local db = NP.db
 
-	if not (E.Retail or E.Mists) then
+	if not (E.Retail or E.Mists or E.TBC) then
 		if db.clampToScreen then
 			E:SetCVar('nameplateOtherTopInset', 0.08)
 			E:SetCVar('nameplateOtherBottomInset', 0.1)
@@ -163,16 +163,16 @@ function NP:SetCVars()
 
 	if E.Retail then
 		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
-	elseif E.Mists then
+	elseif E.Mists or E.TBC then
 		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
-	elseif E.TBC or E.Wrath then
+	elseif E.Wrath then
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
 	-- The order of these is important !!
 
-	local newPlates = E.Retail or E.Mists
+	local newPlates = E.Retail or E.Mists  or E.TBC
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
 	NP:ToggleCVar(newPlates and 'nameplateShowOnlyNameForFriendlyPlayerUnits' or 'nameplateShowOnlyNames', visibility.showOnlyNames)
@@ -292,7 +292,7 @@ function NP:Update_ClassPowerTwo(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
-	nameplate:SetScale((E.Retail or E.Mists) and 1 or E.uiscale)
+	nameplate:SetScale((E.Retail or E.Mists or E.TBC) and 1 or E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
@@ -312,7 +312,7 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = ((E.Retail or E.Mists) or (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame)) and 1 or E.uiscale
+	local mult = ((E.Retail or E.Mists or E.TBC) or (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame)) and 1 or E.uiscale
 	if targetPlate and NP.targetPlate then
 		NP.targetPlate:SetScale(mult)
 		NP.targetPlate = nil
@@ -335,7 +335,7 @@ function NP:PostUpdateAllElements(event)
 end
 
 function NP:StylePlate(nameplate)
-	nameplate:SetScale((E.Retail or E.Mists) and 1 or E.uiscale)
+	nameplate:SetScale((E.Retail or E.Mists or E.TBC) and 1 or E.uiscale)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
@@ -1027,7 +1027,7 @@ function NP:HideInterfaceOptions()
 end
 
 function NP:SetNamePlateSizes()
-	if E.Retail or E.Mists then
+	if E.Retail or E.Mists or E.TBC then
 		NP.PlateDriver:SetSize(NP.db.clickSize.width, NP.db.clickSize.height)
 	else
 		C_NamePlate_SetNamePlateSelfSize(NP.db.clickSize.personalWidth * E.uiscale, NP.db.clickSize.personalHeight * E.uiscale)

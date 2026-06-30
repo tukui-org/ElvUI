@@ -451,7 +451,7 @@ NamePlates.resetFilters = ACH:Execute(L["Reset Aura Filters"], nil, 3, function(
 NamePlates.resetcvars = ACH:Execute(L["Reset CVars"], L["Reset Nameplate CVars to the ElvUI recommended defaults."], 4, function() NP:CVarReset() end, nil, true)
 
 NamePlates.generalGroup = ACH:Group(L["General"], nil, 5, nil, nil, function(info, value) E.db.nameplates[info[#info]] = value NP:SetCVars() NP:ConfigureAll() end, function() return not E.NamePlates.Initialized end)
-NamePlates.generalGroup.args.motionType = ACH:Select(L["UNIT_NAMEPLATES_TYPES"], L["Set to either stack nameplates vertically or allow them to overlap."], 1, { STACKED = L["UNIT_NAMEPLATES_TYPE_2"], OVERLAP = L["UNIT_NAMEPLATES_TYPE_1"] }, nil, nil, nil, nil, nil, E.Retail or E.Mists)
+NamePlates.generalGroup.args.motionType = ACH:Select(L["UNIT_NAMEPLATES_TYPES"], L["Set to either stack nameplates vertically or allow them to overlap."], 1, { STACKED = L["UNIT_NAMEPLATES_TYPE_2"], OVERLAP = L["UNIT_NAMEPLATES_TYPE_1"] }, nil, nil, nil, nil, nil, E.Retail or E.Mists or E.TBC)
 NamePlates.generalGroup.args.showEnemyCombat = ACH:Select(L["Enemy Combat Toggle"], L["Control enemy nameplates toggling on or off when in combat."], 2, { DISABLED = L["Disable"], TOGGLE_ON = L["Toggle On While In Combat"], TOGGLE_OFF = L["Toggle Off While In Combat"] }, nil, nil, nil, function(info, value) E.db.nameplates[info[#info]] = value NP:PLAYER_REGEN_ENABLED() end)
 NamePlates.generalGroup.args.showFriendlyCombat = ACH:Select(L["Friendly Combat Toggle"], L["Control friendly nameplates toggling on or off when in combat."], 3, { DISABLED = L["Disable"], TOGGLE_ON = L["Toggle On While In Combat"], TOGGLE_OFF = L["Toggle Off While In Combat"] }, nil, nil, nil, function(info, value) E.db.nameplates[info[#info]] = value NP:PLAYER_REGEN_ENABLED() end)
 NamePlates.generalGroup.args.spacer1 = ACH:Spacer(5)
@@ -505,7 +505,7 @@ do
 	else
 		cvarRanges.nameplateNotSelectedAlpha = { name = L["Non Selected Alpha"], default = '0.5', max = 1, order = 28 }
 
-		if E.Mists then
+		if E.Mists or E.TBC then
 			cvarToggles.useClassColorNames = L["Class Color Names"]
 		else
 			cvarRanges.nameplateLargerScale = { name = L["Larger Scale"], default = '1.2', max = 3, order = 20 }
@@ -562,8 +562,8 @@ NamePlates.generalGroup.args.clickThrough.args.friendly = ACH:Toggle(L["Friendly
 NamePlates.generalGroup.args.clickThrough.args.enemy = ACH:Toggle(L["Enemy"], nil, 3, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateClickThrough() end)
 
 NamePlates.generalGroup.args.clickableRange = ACH:Group(L["Clickable Size"], nil, 70, nil, function(info) return E.db.nameplates.clickSize[info[#info]] end, function(info, value) E.db.nameplates.clickSize[info[#info]] = value NP:ConfigureAll() end)
-NamePlates.generalGroup.args.clickableRange.args.width = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = MAX_WIDTH, step = 1 }, nil, nil, nil, nil, not (E.Retail or E.Mists))
-NamePlates.generalGroup.args.clickableRange.args.height = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = MAX_HEIGHT, step = 1 }, nil, nil, nil, nil, not (E.Retail or E.Mists))
+NamePlates.generalGroup.args.clickableRange.args.width = ACH:Range(L["Clickable Width"], L["Change the width and controls how big of an area on the screen will accept clicks to target unit."], 1, { min = 1, max = MAX_WIDTH, step = 1 }, nil, nil, nil, nil, not (E.Retail or E.Mists or E.TBC))
+NamePlates.generalGroup.args.clickableRange.args.height = ACH:Range(L["Clickable Height"], L["Controls how big of an area on the screen will accept clicks to target unit."], 2, { min = 1, max = MAX_HEIGHT, step = 1 }, nil, nil, nil, nil, not (E.Retail or E.Mists or E.TBC))
 
 NamePlates.generalGroup.args.clickableRange.args.personal = ACH:Group(L["Personal"], nil, 10, nil, nil, nil, nil, E.Retail)
 NamePlates.generalGroup.args.clickableRange.args.personal.inline = true
