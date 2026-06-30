@@ -3283,7 +3283,7 @@ P.actionbar.bar1.paging.ROGUE = (E.TBC and '[possessbar] 16; ' or '') .. '[bonus
 P.actionbar.bar1.paging.WARLOCK = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Wrath or E.Mists) and '[form:1] 7;' or '')
 P.actionbar.bar1.paging.DRUID = (E.TBC and '[possessbar] 16; ' or '') .. '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
 P.actionbar.bar1.paging.PRIEST = (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Retail and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.WARRIOR = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Classic or E.TBC) and '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' or '')
+P.actionbar.bar1.paging.WARRIOR = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Classic or E.TBC or E.Wrath) and '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' or '')
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
 
 if E.Mists then
