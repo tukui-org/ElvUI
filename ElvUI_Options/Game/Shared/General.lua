@@ -122,7 +122,7 @@ Fonts.general = ACH:Group('', nil, 11, nil, function(info) local key = info[#inf
 Fonts.general.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the core of the UI will use."], 1)
 Fonts.general.args.fontSize = ACH:Range(L["Font Size"], L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own separate options (UnitFrame Font, Datatext Font, ect..)"], 2, C.Values.FontSize)
 Fonts.general.args.fontStyle = ACH:FontFlags(L["Font Outline"], nil, 3)
-Fonts.general.args.fontSlug = ACH:Toggle(L["Font Slug"], L["Appends the SLUG rendering flag for sharper edges.\n\n|cffff3333Note:|r Slug will not work on Shadow, Mono, or Thick outline."], 4, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
+Fonts.general.args.fontSlug = ACH:Toggle(L["Font Slug"], L["Appends the SLUG rendering flag for sharper edges.\n\n|cffff3333Note:|r Slug will not work on Shadow, Mono, or Thick outline."], 4, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Mists or E.TBC))
 Fonts.general.args.applyFontToAll = ACH:Execute(L["Apply Font To All"], L["Applies the font and font size settings throughout the entire user interface. Note: Some font size settings will be skipped due to them having a smaller font size by default."], 5, function() E:StaticPopup_Show('APPLY_FONT_WARNING') end)
 Fonts.general.inline = true
 
@@ -164,9 +164,9 @@ do
 		objective = { name = L["Objective Text"], order = 56, hidden = not E.Retail },
 		errortext = { name = L["Quest Progress and Error Text"], order = 57 },
 		mailbody = { name = L["Mail Text"], order = 58 },
-		questtitle = { name = L["Quest Title"], order = 59, hidden = not E.Retail and not E.Mists },
-		questtext = { name = L["Quest Text"], order = 60, hidden = not E.Retail and not E.Mists },
-		questsmall = { name = L["Quest Small"], order = 61, hidden = not E.Retail and not E.Mists },
+		questtitle = { name = L["Quest Title"], order = 59, hidden = not E.Retail and not E.Mists and not E.TBC },
+		questtext = { name = L["Quest Text"], order = 60, hidden = not E.Retail and not E.Mists and not E.TBC },
+		questsmall = { name = L["Quest Small"], order = 61, hidden = not E.Retail and not E.Mists and not E.TBC },
 		talkingtitle = { name = L["Talking Head Name"], order = 62, hidden = not E.Retail },
 		talkingtext = { name = L["Talking Head Text"], order = 63, hidden = not E.Retail },
 	}
