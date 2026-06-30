@@ -551,16 +551,26 @@ function S:LookingForGroupFrames()
 		end
 	end
 
+	-- Midnight: this hook runs inside Blizzard's secure applicant-update pass. Skinning the
+	-- buttons inline (StripTextures/SetTemplate) taints the execution thread, and that taint
+	-- propagates to the caller (LFGListApplicationViewer_UpdateResultList), so Blizzard's own
+	-- LFGListUtil_SortApplicants then errors comparing the secret 'isNew' field
+	-- ("attempt to compare ... a secret boolean value, while execution tainted by 'ElvUI'").
+	-- Defer the frame work one frame so it runs in a clean, untainted execution.
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
-		if not button.DeclineButton.template then
-			S:HandleButton(button.DeclineButton, nil, true)
-		end
-		if not button.InviteButton.template then
-			S:HandleButton(button.InviteButton)
-		end
-		if not button.InviteButtonSmall.template then
-			S:HandleButton(button.InviteButtonSmall)
-		end
+		if button.DeclineButton.template and button.InviteButton.template and button.InviteButtonSmall.template then return end
+
+		C_Timer.After(0, function()
+			if not button.DeclineButton.template then
+				S:HandleButton(button.DeclineButton, nil, true)
+			end
+			if not button.InviteButton.template then
+				S:HandleButton(button.InviteButton)
+			end
+			if not button.InviteButtonSmall.template then
+				S:HandleButton(button.InviteButtonSmall)
+			end
+		end)
 	end)
 
 	hooksecurefunc('LFGListSearchEntry_Update', function(button)
@@ -615,14 +625,19 @@ function S:LookingForGroupFrames()
 		S:HandleTrimScrollBar(ApplicationViewer.ScrollBar)
 	end
 
+	-- Same as UpdateApplicant: this runs in Blizzard's secure pass and mutates frames + reads
+	-- UnitIsGroupLeader (a secret-prone boolean in Midnight) on every call, tainting the thread
+	-- that feeds LFGListUtil_SortApplicants. Defer it out of the secure execution.
 	hooksecurefunc('LFGListApplicationViewer_UpdateInfo', function(frame)
-		frame.RemoveEntryButton:ClearAllPoints()
+		C_Timer.After(0, function()
+			frame.RemoveEntryButton:ClearAllPoints()
 
-		if UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
-			frame.RemoveEntryButton:Point('RIGHT', frame.EditButton, 'LEFT', -2, 0)
-		else
-			frame.RemoveEntryButton:Point('BOTTOMLEFT', -1, 3)
-		end
+			if UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
+				frame.RemoveEntryButton:Point('RIGHT', frame.EditButton, 'LEFT', -2, 0)
+			else
+				frame.RemoveEntryButton:Point('BOTTOMLEFT', -1, 3)
+			end
+		end)
 	end)
 
 	hooksecurefunc('LFGListCategorySelection_AddButton', function(btn, btnIndex, categoryID, filters)
