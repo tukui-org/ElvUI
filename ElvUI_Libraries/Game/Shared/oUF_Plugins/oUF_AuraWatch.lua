@@ -227,7 +227,10 @@ local function FilterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	local index, visible, hidden = 1, 0, 0
 	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
+	local budgetEnd = debugprofilestop() + 20
 	while aura and (visible < limit) do
+		if debugprofilestop() >= budgetEnd then break end
+
 		local result = UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, visible)
 		if result == VISIBLE then
 			visible = visible + 1
