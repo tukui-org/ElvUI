@@ -1784,8 +1784,8 @@ end
 
 function E:CreateFonts()
 	local big = E:GenerateFontFamily('ElvUIFontBig', E.Media.Fonts.Expressway, 15)
-	local normal = E:GenerateFontFamily('ElvUIFontNormal', E.Media.Fonts.Expressway, 15)
-	local small = E:GenerateFontFamily('ElvUIFontSmall', E.Media.Fonts.Expressway, 15)
+	local normal = E:GenerateFontFamily('ElvUIFontNormal', E.Media.Fonts.Expressway, 13)
+	local small = E:GenerateFontFamily('ElvUIFontSmall', E.Media.Fonts.Expressway, 11)
 
 	local style = '' -- empty string is alpha 1
 	E:SetFontShadow(big, style, true)
