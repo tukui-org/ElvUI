@@ -187,6 +187,18 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	local name, icon, count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID, canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3 = oUF:UnpackAuraData(aura)
 	if not name then return end
 
+	-- In Midnight, secret auras return secret values for several fields (applications,
+	-- castByPlayer, spellID, sourceUnit). Storing these on button frames or using them
+	-- in comparisons (`count < 1`, `setting.anyUnit and button.castByPlayer`, table
+	-- lookups with spellID) taints the FilterIcons loop - not by slowing the C function
+	-- `issecretvalue`, but because tainted control-flow paths break WoW's execution
+	-- budget tracking on return to the loop, causing "script ran too long".
+	-- Coerce ALL potentially-secret fields to safe defaults immediately.
+	if oUF:IsSecretValue(count) then count = 0 end
+	if oUF:IsSecretValue(castByPlayer) then castByPlayer = nil end
+	if oUF:IsSecretValue(spellID) then spellID = 0 end
+	if oUF:IsSecretValue(source) then source = nil end
+
 	local button, position = FetIcon(element, visible, offset)
 
 	button.aura = aura
@@ -195,7 +207,7 @@ local function UpdateIcon(element, unit, aura, index, offset, filter, isDebuff, 
 	button.isDebuff = isDebuff
 	button.debuffType = debuffType
 	button.castByPlayer = castByPlayer
-	button.isPlayer = (oUF:NotSecretValue(source) and source == 'player') or (aura and aura.auraIsPlayer) or nil
+	button.isPlayer = (source == 'player') or (aura and aura.auraIsPlayer) or nil
 
 	button:SetID(index)
 
