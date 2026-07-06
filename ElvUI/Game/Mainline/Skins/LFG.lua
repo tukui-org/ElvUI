@@ -590,7 +590,12 @@ function S:LookingForGroupFrames()
 		ApplicationViewer.Inset:StripTextures()
 		ApplicationViewer.Inset:SetTemplate('Transparent')
 
-		S:HandleButton(ApplicationViewer.NameColumnHeader)
+		-- Midnight: skinning ApplicationViewer buttons here taints the frame in the same
+	-- execution pass as Blizzard's LFGListApplicationViewer_UpdateInfo, causing
+	-- secret-value comparison errors ("attempt to compare field 'comment'").
+	-- Defer skinning so it runs in a clean, untainted thread.
+	C_Timer.After(0, function()
+	S:HandleButton(ApplicationViewer.NameColumnHeader)
 		S:HandleButton(ApplicationViewer.RoleColumnHeader)
 		S:HandleButton(ApplicationViewer.ItemLevelColumnHeader)
 		S:HandleButton(ApplicationViewer.RatingColumnHeader)
@@ -623,7 +628,8 @@ function S:LookingForGroupFrames()
 		ApplicationViewer.BrowseGroupsButton:Size(120, 22)
 
 		S:HandleTrimScrollBar(ApplicationViewer.ScrollBar)
-	end
+	end)
+end
 
 	-- Same as UpdateApplicant: this runs in Blizzard's secure pass and mutates frames + reads
 	-- UnitIsGroupLeader (a secret-prone boolean in Midnight) on every call, tainting the thread
