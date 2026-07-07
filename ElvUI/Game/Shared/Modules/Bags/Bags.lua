@@ -460,6 +460,14 @@ function B:UpdateItemDisplay()
 	local itemInfoFont = LSM:Fetch('font', db.itemInfoFont)
 	local countFont = LSM:Fetch('font', db.countFont)
 
+	local countFontSize, countFontOutline = db.countFontSize, db.countFontOutline
+	local countPosition, countxOffset, countyOffset = db.countPosition, db.countxOffset, db.countyOffset
+	local itemInfoFontSize, itemInfoFontOutline = db.itemInfoFontSize, db.itemInfoFontOutline
+	local itemLevelFontSize, itemLevelFontOutline = db.itemLevelFontSize, db.itemLevelFontOutline
+	local itemLevelPosition, itemLevelxOffset, itemLevelyOffset = db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset
+	local itemInfoColorR, itemInfoColorG, itemInfoColorB = db.itemInfoColor.r, db.itemInfoColor.g, db.itemInfoColor.b
+	local itemLevelCustomColorR, itemLevelCustomColorG, itemLevelCustomColorB = db.itemLevelCustomColor.r, db.itemLevelCustomColor.g, db.itemLevelCustomColor.b
+
 	for _, bagFrame in next, B.BagFrames do
 		for _, bag in next, bagFrame.Bags do
 			for _, slot in ipairs(bag) do
@@ -469,20 +477,20 @@ function B:UpdateItemDisplay()
 					slot.itemLevel:SetText('')
 				end
 
-				slot.bindType:FontTemplate(itemLevelFont, db.itemLevelFontSize, db.itemLevelFontOutline)
-				slot.centerText:FontTemplate(itemInfoFont, db.itemInfoFontSize, db.itemInfoFontOutline)
-				slot.centerText:SetTextColor(db.itemInfoColor.r, db.itemInfoColor.g, db.itemInfoColor.b)
+				slot.bindType:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+				slot.centerText:FontTemplate(itemInfoFont, itemInfoFontSize, itemInfoFontOutline)
+				slot.centerText:SetTextColor(itemInfoColorR, itemInfoColorG, itemInfoColorB)
 
 				slot.itemLevel:ClearAllPoints()
-				slot.itemLevel:Point(db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset)
-				slot.itemLevel:FontTemplate(itemLevelFont, db.itemLevelFontSize, db.itemLevelFontOutline)
+				slot.itemLevel:Point(itemLevelPosition, itemLevelxOffset, itemLevelyOffset)
+				slot.itemLevel:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 
 				slot.Count:ClearAllPoints()
-				slot.Count:Point(db.countPosition, db.countxOffset, db.countyOffset)
-				slot.Count:FontTemplate(countFont, db.countFontSize, db.countFontOutline)
+				slot.Count:Point(countPosition, countxOffset, countyOffset)
+				slot.Count:FontTemplate(countFont, countFontSize, countFontOutline)
 
 				if db.itemLevelCustomColorEnable then
-					slot.itemLevel:SetTextColor(db.itemLevelCustomColor.r, db.itemLevelCustomColor.g, db.itemLevelCustomColor.b)
+					slot.itemLevel:SetTextColor(itemLevelCustomColorR, itemLevelCustomColorG, itemLevelCustomColorB)
 				else
 					local r, g, b = E:GetItemQualityColor(slot.rarity)
 					slot.itemLevel:SetTextColor(r, g, b)
