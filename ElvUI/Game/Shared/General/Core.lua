@@ -321,6 +321,18 @@ function E:UpdateColorTable(color, data)
 	return E:VerifyColorTable(color, true, true)
 end
 
+function E:ForceBorderColor(frame, r, g, b, a)
+	local colors = frame.forcedBorderColors or {}
+
+	if r then
+		colors[1], colors[2], colors[3], colors[4] = r, g, b, a
+	else
+		colors = nil
+	end
+
+	frame.forcedBorderColors = colors
+end
+
 function E:UpdateMedia(mediaType)
 	if not E.db.general or not E.private.general then return end
 

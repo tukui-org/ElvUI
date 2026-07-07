@@ -623,8 +623,12 @@ function B:UpdateSlotColors(slot, isQuestItem, QuestID, isActiveQuest)
 	end
 
 	if not a then a = 1 end
-	slot.forcedBorderColors = r and {r, g, b, a}
-	if not r then r, g, b = unpack(E.media.bordercolor) end
+
+	E:ForceBorderColor(slot, r, g, b, a)
+
+	if not r then
+		r, g, b = unpack(E.media.bordercolor)
+	end
 
 	slot.newItemGlow:SetVertexColor(r, g, b, a)
 	slot:SetBackdropBorderColor(r, g, b, a)
@@ -1077,12 +1081,12 @@ function B:GetBagAssignedInfo(holder, isBank)
 
 	if active and color then
 		holder:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
-		holder.forcedBorderColors = {color.r, color.g, color.b, color.a}
+		E:ForceBorderColor(holder, color.r, color.g, color.b, color.a)
 
 		return active
 	else
 		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		holder.forcedBorderColors = nil
+		E:ForceBorderColor(holder)
 	end
 end
 
