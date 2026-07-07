@@ -950,11 +950,13 @@ function CH:StyleChat(frame)
 	frame:SetMaxLines(CH.db.maxLines)
 	frame:SetFading(CH.db.fade)
 
+	if tab.Text then
+		tab:SetScript('OnUpdate', CH.Tab_OnUpdate)
+	end
+
 	if not IsCombatLog(frame) then -- setting this script to log is problematic on retail
 		tab:SetScript('OnClick', CH.Tab_OnClick)
 	end
-
-	tab.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
 
 	if frame == _G.GeneralDockManager.primary then
 		local GMChatFrame = _G.GMChatFrame
@@ -3968,6 +3970,14 @@ end
 function CH:Tab_OnClick(button)
 	CH.FCF_Tab_OnClick(self, button)
 	PlaySound(SOUND_U_CHAT_SCROLL_BUTTON)
+end
+
+function CH:Tab_OnUpdate(elapsed)
+	self.lastUpdate = (self.lastUpdate or 0) + elapsed
+
+	if self.lastUpdate > 0.1 and self.Text:GetFontObject() == _G.GameFontNormalSmall then
+		self.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
+	end
 end
 
 do
