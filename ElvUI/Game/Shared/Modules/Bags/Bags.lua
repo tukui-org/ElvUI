@@ -455,34 +455,38 @@ end
 function B:UpdateItemDisplay()
 	if not E.private.bags.enable then return end
 
+	local db = B.db
+	local itemLevelFont = LSM:Fetch('font', db.itemLevelFont)
+	local itemInfoFont = LSM:Fetch('font', db.itemInfoFont)
+	local countFont = LSM:Fetch('font', db.countFont)
+
 	for _, bagFrame in next, B.BagFrames do
 		for _, bag in next, bagFrame.Bags do
 			for _, slot in ipairs(bag) do
-				if B.db.itemLevel then
+				if db.itemLevel then
 					B:UpdateItemLevel(slot)
 				else
 					slot.itemLevel:SetText('')
 				end
 
-				slot.itemLevel:ClearAllPoints()
-				slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
-				slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
+				slot.bindType:FontTemplate(itemLevelFont, db.itemLevelFontSize, db.itemLevelFontOutline)
+				slot.centerText:FontTemplate(itemInfoFont, db.itemInfoFontSize, db.itemInfoFontOutline)
+				slot.centerText:SetTextColor(db.itemInfoColor.r, db.itemInfoColor.g, db.itemInfoColor.b)
 
-				if B.db.itemLevelCustomColorEnable then
-					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+				slot.itemLevel:ClearAllPoints()
+				slot.itemLevel:Point(db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset)
+				slot.itemLevel:FontTemplate(itemLevelFont, db.itemLevelFontSize, db.itemLevelFontOutline)
+
+				slot.Count:ClearAllPoints()
+				slot.Count:Point(db.countPosition, db.countxOffset, db.countyOffset)
+				slot.Count:FontTemplate(countFont, db.countFontSize, db.countFontOutline)
+
+				if db.itemLevelCustomColorEnable then
+					slot.itemLevel:SetTextColor(db.itemLevelCustomColor.r, db.itemLevelCustomColor.g, db.itemLevelCustomColor.b)
 				else
 					local r, g, b = E:GetItemQualityColor(slot.rarity)
 					slot.itemLevel:SetTextColor(r, g, b)
 				end
-
-				slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
-
-				slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
-				slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
-
-				slot.Count:ClearAllPoints()
-				slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
-				slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 			end
 		end
 	end
