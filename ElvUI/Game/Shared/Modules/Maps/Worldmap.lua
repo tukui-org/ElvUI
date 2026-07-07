@@ -26,10 +26,11 @@ local INVERTED_POINTS = {
 
 -- this will be updated later
 local smallerMapScale = 0.8
+local worldMapStrata = E.Retail and 'MEDIUM' or 'HIGH'
 function M:SetLargeWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
-	WorldMapFrame:SetFrameStrata('HIGH')
+	WorldMapFrame:SetFrameStrata(worldMapStrata)
 	WorldMapFrame:SetScale(1)
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
@@ -42,7 +43,7 @@ end
 function M:SetSmallWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
-	WorldMapFrame:SetFrameStrata('HIGH')
+	WorldMapFrame:SetFrameStrata(worldMapStrata)
 
 	if not E.Retail then
 		WorldMapFrame:EnableMouse(false)
