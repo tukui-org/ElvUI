@@ -330,7 +330,10 @@ function E:ForceBorderColor(frame, r, g, b, a)
 		colors = nil
 	end
 
-	frame.forcedBorderColors = colors
+	-- refrence when changed
+	if frame.forcedBorderColors ~= colors then
+		frame.forcedBorderColors = colors
+	end
 end
 
 function E:UpdateMedia(mediaType)
