@@ -39,21 +39,6 @@ function M:SetLargeWorldMap()
 	end
 end
 
-function M:UpdateMaximizedSize()
-	local WorldMapFrame = _G.WorldMapFrame
-	local width, height = WorldMapFrame:GetSize()
-	local magicNumber = (1 - smallerMapScale) * 100
-	WorldMapFrame:Size((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
-end
-
-function M:SynchronizeDisplayState()
-	local WorldMapFrame = _G.WorldMapFrame
-	if WorldMapFrame:IsMaximized() then
-		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:Point('CENTER', E.UIParent)
-	end
-end
-
 function M:SetSmallWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
@@ -68,6 +53,21 @@ function M:SetSmallWorldMap()
 	elseif not WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
 		WorldMapFrame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)
+	end
+end
+
+function M:UpdateMaximizedSize()
+	local WorldMapFrame = _G.WorldMapFrame
+	local width, height = WorldMapFrame:GetSize()
+	local magicNumber = (1 - smallerMapScale) * 100
+	WorldMapFrame:Size((width * smallerMapScale) - (magicNumber + 2), (height * smallerMapScale) - 2)
+end
+
+function M:SynchronizeDisplayState()
+	local WorldMapFrame = _G.WorldMapFrame
+	if WorldMapFrame:IsMaximized() then
+		WorldMapFrame:ClearAllPoints()
+		WorldMapFrame:Point('CENTER', E.UIParent)
 	end
 end
 
