@@ -289,7 +289,7 @@ function E:CreateMoverPopup()
 	f:EnableMouse(true)
 	f:SetMovable(true)
 	f:SetClampedToScreen(true)
-	f:Size(390, 190)
+	f:Size(390, 215)
 	f:SetTemplate('Transparent')
 	f:Point('BOTTOM', UIParent, 'CENTER', 0, 100)
 	f:Hide()
@@ -333,6 +333,24 @@ function E:CreateMoverPopup()
 	snapping.text:SetText(L["Sticky Frames"])
 	snapping.text:FontTemplate(nil, 12, 'SHADOW')
 	f.snapping = snapping
+
+	local gridSnapName = frameName..'GridSnapCheckButton'
+	local gridSnap = CreateFrame('CheckButton', gridSnapName, f, 'UICheckButtonTemplate')
+	gridSnap:SetScript('OnShow', function(cb) cb:SetChecked(E.db.general.gridSnap) end)
+	gridSnap:SetScript('OnClick', function(cb) E.db.general.gridSnap = cb:GetChecked() end)
+	gridSnap.text = _G[gridSnapName..'Text']
+	gridSnap.text:SetText("Grid Snapping")
+	gridSnap.text:FontTemplate(nil, 12, 'SHADOW')
+	f.gridSnap = gridSnap
+
+	local collisionName = frameName..'CollisionCheckButton'
+	local moverCollision = CreateFrame('CheckButton', collisionName, f, 'UICheckButtonTemplate')
+	moverCollision:SetScript('OnShow', function(cb) cb:SetChecked(E.db.general.moverCollision) end)
+	moverCollision:SetScript('OnClick', function(cb) E.db.general.moverCollision = cb:GetChecked() end)
+	moverCollision.text = _G[collisionName..'Text']
+	moverCollision.text:SetText("Mover Collision")
+	moverCollision.text:FontTemplate(nil, 12, 'SHADOW')
+	f.moverCollision = moverCollision
 
 	local lock = CreateFrame('Button', frameName..'CloseButton', f, 'UIPanelButtonTemplate')
 	lock.Text:SetText(L["Lock"])
@@ -433,11 +451,15 @@ function E:CreateMoverPopup()
 	--position buttons
 	reset:Point('BOTTOMLEFT', 5, 5)
 	snapping:Point('BOTTOMLEFT', reset, 'TOPLEFT', -4, 0)
+	gridSnap:Point('BOTTOMLEFT', snapping, 'TOPLEFT', 0, 2)
+	moverCollision:Point('BOTTOMLEFT', gridSnap, 'TOPLEFT', 0, 2)
 	lock:Point('BOTTOMRIGHT', -5, 5)
 	align:Point('TOPRIGHT', lock, 'TOPLEFT', -4, 0)
 	lineWidth:Point('RIGHT', align.text, 'LEFT', -4, 0)
 
 	S:HandleCheckBox(snapping)
+	S:HandleCheckBox(gridSnap)
+	S:HandleCheckBox(moverCollision)
 	S:HandleButton(lock)
 	S:HandleButton(reset)
 	S:HandleEditBox(align)
