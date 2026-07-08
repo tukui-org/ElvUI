@@ -26,16 +26,34 @@ local INVERTED_POINTS = {
 
 -- this will be updated later
 local smallerMapScale = 0.8
+local worldMapStrata = E.Retail and 'MEDIUM' or 'HIGH'
 function M:SetLargeWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
-	WorldMapFrame:SetFrameStrata('HIGH')
+	WorldMapFrame:SetFrameStrata(worldMapStrata)
 	WorldMapFrame:SetScale(1)
 	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
 
 	WorldMapFrame:OnFrameSizeChanged()
 	if WorldMapFrame:GetMapID() then
 		WorldMapFrame.NavBar:Refresh()
+	end
+end
+
+function M:SetSmallWorldMap()
+	local WorldMapFrame = _G.WorldMapFrame
+	WorldMapFrame:SetParent(E.UIParent)
+	WorldMapFrame:SetFrameStrata(worldMapStrata)
+
+	if not E.Retail then
+		WorldMapFrame:EnableMouse(false)
+		WorldMapFrame:EnableKeyboard(false)
+		WorldMapFrame:SetScale(smallerMapScale)
+
+		_G.WorldMapTooltip:OffsetFrameLevel(100, WorldMapFrame.ScrollContainer)
+	elseif not WorldMapFrame:IsMaximized() then
+		WorldMapFrame:ClearAllPoints()
+		WorldMapFrame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)
 	end
 end
 
@@ -51,23 +69,6 @@ function M:SynchronizeDisplayState()
 	if WorldMapFrame:IsMaximized() then
 		WorldMapFrame:ClearAllPoints()
 		WorldMapFrame:Point('CENTER', E.UIParent)
-	end
-end
-
-function M:SetSmallWorldMap()
-	local WorldMapFrame = _G.WorldMapFrame
-	WorldMapFrame:SetParent(E.UIParent)
-	WorldMapFrame:SetFrameStrata('HIGH')
-
-	if not E.Retail then
-		WorldMapFrame:EnableMouse(false)
-		WorldMapFrame:EnableKeyboard(false)
-		WorldMapFrame:SetScale(smallerMapScale)
-
-		_G.WorldMapTooltip:OffsetFrameLevel(100, WorldMapFrame.ScrollContainer)
-	elseif not WorldMapFrame:IsMaximized() then
-		WorldMapFrame:ClearAllPoints()
-		WorldMapFrame:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 16, -94)
 	end
 end
 

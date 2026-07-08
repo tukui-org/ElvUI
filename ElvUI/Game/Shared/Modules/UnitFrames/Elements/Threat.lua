@@ -69,22 +69,10 @@ function UF:Configure_Threat(frame)
 	end
 end
 
-do
-	local function GetTable(backdrop)
-		if not backdrop.forcedThreatBorders then
-			backdrop.forcedThreatBorders = {}
-		end
+function UF:ThreatBorderColor(backdrop, lock, r, g, b)
+	backdrop:SetBackdropBorderColor(r, g, b)
 
-		return backdrop.forcedThreatBorders
-	end
-
-	function UF:ThreatBorderColor(backdrop, lock, r, g, b)
-		local c = GetTable(backdrop)
-		c[1], c[2], c[3] = r, g, b
-
-		backdrop.forcedBorderColors = lock and c or nil
-		backdrop:SetBackdropBorderColor(r, g, b)
-	end
+	E:ForceBorderColor(backdrop, lock and r or nil, g, b)
 end
 
 do

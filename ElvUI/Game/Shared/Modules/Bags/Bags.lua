@@ -455,34 +455,46 @@ end
 function B:UpdateItemDisplay()
 	if not E.private.bags.enable then return end
 
+	local db = B.db
+	local itemLevelFont = LSM:Fetch('font', db.itemLevelFont)
+	local itemInfoFont = LSM:Fetch('font', db.itemInfoFont)
+	local countFont = LSM:Fetch('font', db.countFont)
+
+	local countFontSize, countFontOutline = db.countFontSize, db.countFontOutline
+	local countPosition, countxOffset, countyOffset = db.countPosition, db.countxOffset, db.countyOffset
+	local itemInfoFontSize, itemInfoFontOutline = db.itemInfoFontSize, db.itemInfoFontOutline
+	local itemLevelFontSize, itemLevelFontOutline = db.itemLevelFontSize, db.itemLevelFontOutline
+	local itemLevelPosition, itemLevelxOffset, itemLevelyOffset = db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset
+	local itemInfoColorR, itemInfoColorG, itemInfoColorB = db.itemInfoColor.r, db.itemInfoColor.g, db.itemInfoColor.b
+	local itemLevelCustomColorR, itemLevelCustomColorG, itemLevelCustomColorB = db.itemLevelCustomColor.r, db.itemLevelCustomColor.g, db.itemLevelCustomColor.b
+
 	for _, bagFrame in next, B.BagFrames do
 		for _, bag in next, bagFrame.Bags do
 			for _, slot in ipairs(bag) do
-				if B.db.itemLevel then
+				if db.itemLevel then
 					B:UpdateItemLevel(slot)
 				else
 					slot.itemLevel:SetText('')
 				end
 
-				slot.itemLevel:ClearAllPoints()
-				slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
-				slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
+				slot.bindType:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+				slot.centerText:FontTemplate(itemInfoFont, itemInfoFontSize, itemInfoFontOutline)
+				slot.centerText:SetTextColor(itemInfoColorR, itemInfoColorG, itemInfoColorB)
 
-				if B.db.itemLevelCustomColorEnable then
-					slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+				slot.itemLevel:ClearAllPoints()
+				slot.itemLevel:Point(itemLevelPosition, itemLevelxOffset, itemLevelyOffset)
+				slot.itemLevel:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
+
+				slot.Count:ClearAllPoints()
+				slot.Count:Point(countPosition, countxOffset, countyOffset)
+				slot.Count:FontTemplate(countFont, countFontSize, countFontOutline)
+
+				if db.itemLevelCustomColorEnable then
+					slot.itemLevel:SetTextColor(itemLevelCustomColorR, itemLevelCustomColorG, itemLevelCustomColorB)
 				else
 					local r, g, b = E:GetItemQualityColor(slot.rarity)
 					slot.itemLevel:SetTextColor(r, g, b)
 				end
-
-				slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
-
-				slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
-				slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
-
-				slot.Count:ClearAllPoints()
-				slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
-				slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
 			end
 		end
 	end
@@ -582,12 +594,13 @@ function B:CheckSlotNewItem(slot, bagID, slotID)
 end
 
 function B:UpdateSlotColors(slot, isQuestItem, QuestID, isActiveQuest)
-	local questColors, r, g, b, a = B.db.qualityColors and (isQuestItem or QuestID) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
+	local db = B.db
 	local qR, qG, qB = E:GetItemQualityColor(slot.rarity)
+	local questColors, r, g, b, a = db.qualityColors and (isQuestItem or QuestID) and B.QuestColors[not isActiveQuest and 'questStarter' or 'questItem']
 
 	if slot.itemLevel then
-		if B.db.itemLevelCustomColorEnable then
-			slot.itemLevel:SetTextColor(B.db.itemLevelCustomColor.r, B.db.itemLevelCustomColor.g, B.db.itemLevelCustomColor.b)
+		if db.itemLevelCustomColorEnable then
+			slot.itemLevel:SetTextColor(db.itemLevelCustomColor.r, db.itemLevelCustomColor.g, db.itemLevelCustomColor.b)
 		else
 			slot.itemLevel:SetTextColor(qR, qG, qB)
 		end
@@ -599,28 +612,32 @@ function B:UpdateSlotColors(slot, isQuestItem, QuestID, isActiveQuest)
 
 	if questColors then
 		r, g, b, a = unpack(questColors)
-	elseif B.db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
+	elseif db.qualityColors and (slot.rarity and slot.rarity > ITEMQUALITY_COMMON) then
 		r, g, b = qR, qG, qB
 	else
 		local bag = slot.bagFrame.Bags[slot.BagID]
-		local colors = bag and ((B.db.specialtyColors and B.ProfessionColors[bag.type]) or (B.db.showAssignedColor and B.AssignmentColors[bag.assigned]))
+		local colors = bag and ((db.specialtyColors and B.ProfessionColors[bag.type]) or (db.showAssignedColor and B.AssignmentColors[bag.assigned]))
 		if colors then
 			r, g, b, a = colors.r, colors.g, colors.b, colors.a
 		end
 	end
 
 	if not a then a = 1 end
-	slot.forcedBorderColors = r and {r, g, b, a}
-	if not r then r, g, b = unpack(E.media.bordercolor) end
+
+	E:ForceBorderColor(slot, r, g, b, a)
+
+	if not r then
+		r, g, b = unpack(E.media.bordercolor)
+	end
 
 	slot.newItemGlow:SetVertexColor(r, g, b, a)
 	slot:SetBackdropBorderColor(r, g, b, a)
 
-	if B.db.colorBackdrop then
-		local fadeAlpha = B.db.transparent and E.media.backdropfadecolor[4]
+	if db.colorBackdrop then
+		local fadeAlpha = db.transparent and E.media.backdropfadecolor[4]
 		slot:SetBackdropColor(r, g, b, fadeAlpha or a)
 	else
-		slot:SetBackdropColor(unpack(B.db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
+		slot:SetBackdropColor(unpack(db.transparent and E.media.backdropfadecolor or E.media.backdropcolor))
 	end
 end
 
@@ -670,12 +687,13 @@ function B:UpdateSlot(frame, bagID, slotID)
 	local slot = bag and bag[slotID]
 	if not slot then return end
 
+	local db = B.db
 	local info = B:GetContainerItemInfo(bagID, slotID)
 
 	slot.name, slot.spellID, slot.itemID, slot.rarity, slot.locked, slot.readable, slot.itemLink, slot.isBound = nil, nil, info.itemID, info.quality, info.isLocked, info.isReadable, info.hyperlink, info.isBound
 	slot.isQuestItem, slot.QuestID, slot.isActiveQuest = nil, nil, nil
 	slot.isJunk = (slot.rarity and slot.rarity == ITEMQUALITY_POOR) and not info.hasNoValue
-	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and B.db.junkDesaturate
+	slot.isEquipment, slot.junkDesaturate = nil, slot.isJunk and db.junkDesaturate
 	slot.hasItem = (info.iconFileID and 1) or nil -- used for ShowInspectCursor
 
 	SetItemButtonTexture(slot, (info.iconFileID ~= 4701874 and info.iconFileID) or E.Media.Textures.Invisible)
@@ -683,7 +701,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 	SetItemButtonDesaturated(slot, slot.locked or slot.junkDesaturate)
 	SetItemButtonQuality(slot, slot.rarity, slot.itemLink)
 
-	slot.Count:SetTextColor(B.db.countFontColor.r, B.db.countFontColor.g, B.db.countFontColor.b)
+	slot.Count:SetTextColor(db.countFontColor.r, db.countFontColor.g, db.countFontColor.b)
 	slot.itemLevel:SetText('')
 	slot.bindType:SetText('')
 	slot.centerText:SetText('')
@@ -706,10 +724,10 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 
 		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and WARBAND_UNTIL_EQUIPPED
-		local bindTo = (not slot.isBound and bindType ~= 1) and B.db.showBindType and B.BindText[WuE or bindType]
+		local bindTo = (not slot.isBound and bindType ~= 1) and db.showBindType and B.BindText[WuE or bindType]
 		if bindTo then slot.bindType:SetText(bindTo) end
 
-		local mult = E.Retail and B.db.itemInfo and itemSpellID[spellID]
+		local mult = E.Retail and db.itemInfo and itemSpellID[spellID]
 		if mult then
 			slot.centerText:SetText(mult * info.stackCount)
 		end
@@ -754,11 +772,11 @@ function B:UpdateSlot(frame, bagID, slotID)
 	B:UpdateItemLevel(slot)
 	B:UpdateSlotColors(slot, slot.isQuestItem, slot.QuestID, slot.isActiveQuest)
 
-	if slot.questIcon then slot.questIcon:SetShown(B.db.questIcon and ((E.Classic and slot.isQuestItem or slot.QuestID) and not slot.isActiveQuest)) end
-	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and B.db.junkIcon) end
+	if slot.questIcon then slot.questIcon:SetShown(db.questIcon and ((E.Classic and slot.isQuestItem or slot.QuestID) and not slot.isActiveQuest)) end
+	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and db.junkIcon) end
 	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end -- Check if item is an upgrade and show/hide upgrade icon accordingly
 
-	if B.db.newItemGlow then
+	if db.newItemGlow then
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 
@@ -792,9 +810,10 @@ function B:SortingFadeBags(bagFrame, sortingSlots)
 	if not (bagFrame and bagFrame.BagIDs) then return end
 	bagFrame.sortingSlots = sortingSlots
 
-	if bagFrame.spinnerIcon and B.db.spinner.enable then
-		local color = E:UpdateClassColor(B.db.spinner.color)
-		E:StartSpinner(bagFrame.spinnerIcon, nil, nil, nil, nil, B.db.spinner.size, color.r, color.g, color.b)
+	local db = B.db
+	if bagFrame.spinnerIcon and db.spinner.enable then
+		local color = E:UpdateClassColor(db.spinner.color)
+		E:StartSpinner(bagFrame.spinnerIcon, nil, nil, nil, nil, db.spinner.size, color.r, color.g, color.b)
 	end
 
 	for _, bagID in next, bagFrame.BagIDs do
@@ -1062,12 +1081,12 @@ function B:GetBagAssignedInfo(holder, isBank)
 
 	if active and color then
 		holder:SetBackdropBorderColor(color.r, color.g, color.b, color.a)
-		holder.forcedBorderColors = {color.r, color.g, color.b, color.a}
+		E:ForceBorderColor(holder, color.r, color.g, color.b, color.a)
 
 		return active
 	else
 		holder:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		holder.forcedBorderColors = nil
+		E:ForceBorderColor(holder)
 	end
 end
 
@@ -1134,17 +1153,18 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns, ba
 	local key = isWarband and 'WarbandTabs' or 'BankTabs'
 	local keySplit = isWarband and 'warband' or 'bank'
 
+	local db = B.db
 	local tabs = isWarband and f.WarbandTabs or f.BankTabs
 	if tabs then
 		B:BankTabs_CheckCover(tabs, bankType)
 
-		tabs.cover.text:SetWidth((isWarband and B.db.warbandWidth or B.db.bankWidth) - 40)
+		tabs.cover.text:SetWidth((isWarband and db.warbandWidth or db.bankWidth) - 40)
 		tabs.cover.text:SetText(isWarband and _G.ACCOUNT_BANK_TAB_PURCHASE_PROMPT or _G.CHARACTER_BANK_TAB_PURCHASE_PROMPT)
 	end
 
 	local data = B:BankTab_PurchasedData(bankType)
-	local combined = B.db[isWarband and 'warbandCombined' or 'bankCombined']
-	local isSplit, bagSpacing, numSpaced, numRows, lastSlot, lastRow, totalSlots = B.db.split[keySplit], B.db.split[isWarband and 'warbandSpacing' or 'bankSpacing'], 0, 0
+	local combined = db[isWarband and 'warbandCombined' or 'bankCombined']
+	local isSplit, bagSpacing, numSpaced, numRows, lastSlot, lastRow, totalSlots = db.split[keySplit], db.split[isWarband and 'warbandSpacing' or 'bankSpacing'], 0, 0
 	for index, tabID in next, (isWarband and B.WarbandIndexs) or B.CharacterBankIndexs do
 		B:BankTabs_UpdateIcon(f, tabID, data)
 
@@ -1152,7 +1172,7 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns, ba
 		f[key..index]:SetShown(showTab)
 
 		if showTab then
-			local tabSplit = isSplit and B.db.split[keySplit..tabID]
+			local tabSplit = isSplit and db.split[keySplit..tabID]
 			if tabSplit then numSpaced = numSpaced + 1 end
 			if numRows == 0 then numRows = 1 end
 
@@ -1176,20 +1196,21 @@ function B:Layout(isBank)
 	local f = B:GetContainerFrame(isBank)
 	if not f then return end
 
+	local db = B.db
 	local lastButton, lastRowButton
 	local numContainerRows, numBags, numBagSlots = 0, 0, 0
 	local bankSpaceOffset = isBank and BANK_SPACE_OFFSET or 0
 	local warbandIndex = isBank and B.WarbandBanks[B.BankTab]
 	local characterIndex = isBank and B.CharacterBanks[B.BankTab]
-	local buttonSpacing = warbandIndex and B.db.warbandButtonSpacing or (isBank and B.db.bankButtonSpacing) or B.db.bagButtonSpacing
-	local buttonSize = E:Scale(warbandIndex and B.db.warbandSize or (isBank and B.db.bankSize) or B.db.bagSize)
-	local containerWidth = warbandIndex and B.db.warbandWidth or (isBank and B.db.bankWidth) or B.db.bagWidth
+	local buttonSpacing = warbandIndex and db.warbandButtonSpacing or (isBank and db.bankButtonSpacing) or db.bagButtonSpacing
+	local buttonSize = E:Scale(warbandIndex and db.warbandSize or (isBank and db.bankSize) or db.bagSize)
+	local containerWidth = warbandIndex and db.warbandWidth or (isBank and db.bankWidth) or db.bagWidth
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
-	local bagSpacing = isBank and B.db.split.bankSpacing or B.db.split.bagSpacing
-	local professionSplit = (not E.Retail and isBank and B.db.split.alwaysProfessionBank) or B.db.split.alwaysProfessionBags
-	local isSplit = B.db.split[isBank and 'bank' or 'player']
-	local reverseSlots = B.db.reverseSlots
+	local bagSpacing = isBank and db.split.bankSpacing or db.split.bagSpacing
+	local professionSplit = (not E.Retail and isBank and db.split.alwaysProfessionBank) or db.split.alwaysProfessionBags
+	local isSplit = db.split[isBank and 'bank' or 'player']
+	local reverseSlots = db.reverseSlots
 
 	f.totalSlots = 0
 	f.holderFrame:SetWidth(holderWidth)
@@ -1211,7 +1232,7 @@ function B:Layout(isBank)
 
 					local tokenWidth = token.text:GetWidth() + 28
 					rowWidth = rowWidth + tokenWidth
-					if rowWidth > (B.db.bagWidth - (B.db.bagButtonSpacing * 4)) then
+					if rowWidth > (db.bagWidth - (db.bagButtonSpacing * 4)) then
 						currentRow = currentRow + 1
 						rowWidth = tokenWidth
 					end
@@ -1265,7 +1286,7 @@ function B:Layout(isBank)
 				end
 
 				local mainBag = bagID ~= BANK_CONTAINER or bagID ~= BACKPACK_CONTAINER
-				local doSplit = B.db.split['bag'..bagID] or (professionSplit and B.ProfessionColors[bag.type])
+				local doSplit = db.split['bag'..bagID] or (professionSplit and B.ProfessionColors[bag.type])
 				local splitBag = isSplit and not not (mainBag and doSplit)
 
 				for slotID = 1, numSlots do
@@ -1331,7 +1352,7 @@ function B:Layout(isBank)
 	local splitOffset = bankSplitOffset or (isSplit and (numBags * bagSpacing)) or 0
 	local buttonsHeight = (((buttonSize + buttonSpacing) * numContainerRows) - buttonSpacing)
 	f:SetSize(containerWidth, buttonsHeight + f.topOffset + bankSpaceOffset + f.bottomOffset + splitOffset)
-	f:SetFrameStrata(B.db.strata or 'HIGH')
+	f:SetFrameStrata(db.strata or 'HIGH')
 end
 
 function B:TotalSlotsChanged(bagFrame)
@@ -1503,7 +1524,8 @@ function B:UpdateTokens()
 		button:Hide()
 	end
 
-	local currencyFormat = B.db.currencyFormat
+	local db = B.db
+	local currencyFormat = db.currencyFormat
 	local numCurrencies = (currencyFormat ~= 'NONE' and MAX_WATCHED_TOKENS) or 0
 
 	local numTokens = 0
@@ -1530,11 +1552,11 @@ function B:UpdateTokens()
 		local icon = button.icon or button.Icon
 		icon:SetTexture(info.iconFileID)
 
-		if B.db.currencyFormat == 'ICON_TEXT' then
+		if db.currencyFormat == 'ICON_TEXT' then
 			button.text:SetText(info.name..': '..BreakUpLargeNumbers(info.quantity))
-		elseif B.db.currencyFormat == 'ICON_TEXT_ABBR' then
+		elseif db.currencyFormat == 'ICON_TEXT_ABBR' then
 			button.text:SetText(E:AbbreviateString(info.name)..': '..BreakUpLargeNumbers(info.quantity))
-		elseif B.db.currencyFormat == 'ICON' then
+		elseif db.currencyFormat == 'ICON' then
 			button.text:SetText(BreakUpLargeNumbers(info.quantity))
 		end
 
@@ -1548,13 +1570,14 @@ function B:UpdateTokens()
 end
 
 function B:UpdateGoldText()
+	local db = B.db
 	if E.Retail then
 		B.BankFrame.goldText:SetShown(true)
-		B.BankFrame.goldText:SetText(E:FormatMoney(FetchDepositedMoney(WARBANDBANK_TYPE), B.db.moneyFormat, not B.db.moneyCoins))
+		B.BankFrame.goldText:SetText(E:FormatMoney(FetchDepositedMoney(WARBANDBANK_TYPE), db.moneyFormat, not db.moneyCoins))
 	end
 
-	B.BagFrame.goldText:SetShown(B.db.moneyFormat ~= 'HIDE')
-	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney() - GetCursorMoney() - GetPlayerTradeMoney(), B.db.moneyFormat, not B.db.moneyCoins))
+	B.BagFrame.goldText:SetShown(db.moneyFormat ~= 'HIDE')
+	B.BagFrame.goldText:SetText(E:FormatMoney(GetMoney() - GetCursorMoney() - GetPlayerTradeMoney(), db.moneyFormat, not db.moneyCoins))
 end
 
 -- These items should not be destroyed/sold automatically
@@ -2634,9 +2657,10 @@ end
 function B:ConstructContainerButton(f, bagID, slotID)
 	local slotName, parent, inherit = B:GetBagSlotInfo(f, bagID, slotID)
 
+	local db = B.db
 	local slot = CreateFrame('ItemButton', slotName, parent, inherit)
 	slot:StyleButton()
-	slot:SetTemplate(B.db.transparent and 'Transparent', true)
+	slot:SetTemplate(db.transparent and 'Transparent', true)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
 	slot:HookScript('OnEnter', B.Slot_OnEnter)
 	slot:HookScript('OnLeave', B.Slot_OnLeave)
@@ -2655,8 +2679,8 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	end
 
 	slot.Count:ClearAllPoints()
-	slot.Count:Point(B.db.countPosition, B.db.countxOffset, B.db.countyOffset)
-	slot.Count:FontTemplate(LSM:Fetch('font', B.db.countFont), B.db.countFontSize, B.db.countFontOutline)
+	slot.Count:Point(db.countPosition, db.countxOffset, db.countyOffset)
+	slot.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
 
 	if not slot.questIcon then
 		slot.questIcon = _G[slotName..'IconQuestTexture'] or _G[slotName].IconQuestTexture
@@ -2732,17 +2756,17 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot.icon:SetTexCoords()
 
 	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
-	slot.itemLevel:Point(B.db.itemLevelPosition, B.db.itemLevelxOffset, B.db.itemLevelyOffset)
-	slot.itemLevel:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
+	slot.itemLevel:Point(db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset)
+	slot.itemLevel:FontTemplate(LSM:Fetch('font', db.itemLevelFont), db.itemLevelFontSize, db.itemLevelFontOutline)
 
 	slot.bindType = slot:CreateFontString(nil, 'OVERLAY')
 	slot.bindType:Point('TOP', 0, -2)
-	slot.bindType:FontTemplate(LSM:Fetch('font', B.db.itemLevelFont), B.db.itemLevelFontSize, B.db.itemLevelFontOutline)
+	slot.bindType:FontTemplate(LSM:Fetch('font', db.itemLevelFont), db.itemLevelFontSize, db.itemLevelFontOutline)
 
 	slot.centerText = slot:CreateFontString(nil, 'OVERLAY')
 	slot.centerText:Point('CENTER', 0, 0)
-	slot.centerText:FontTemplate(LSM:Fetch('font', B.db.itemInfoFont), B.db.itemInfoFontSize, B.db.itemInfoFontOutline)
-	slot.centerText:SetTextColor(B.db.itemInfoColor.r, B.db.itemInfoColor.g, B.db.itemInfoColor.b)
+	slot.centerText:FontTemplate(LSM:Fetch('font', db.itemInfoFont), db.itemInfoFontSize, db.itemInfoFontOutline)
+	slot.centerText:SetTextColor(db.itemInfoColor.r, db.itemInfoColor.g, db.itemInfoColor.b)
 
 	if slot.BattlepayItemTexture then
 		slot.BattlepayItemTexture:Hide()
@@ -3456,9 +3480,10 @@ function B:ProgressQuickVendor()
 	local item = B.SellFrame.Info.itemList[1]
 	if not item then return nil, true end -- No more to sell
 
+	local db = B.db
 	local bagID, slotID, itemLink, stackCount, stackPrice = unpack(item)
-	if B.db.vendorGrays.details and itemLink then
-		E:Print(format('%s|cFF00DDDDx%d|r %s', itemLink, stackCount, E:FormatMoney(stackPrice, B.db.moneyFormat, not B.db.moneyCoins)))
+	if db.vendorGrays.details and itemLink then
+		E:Print(format('%s|cFF00DDDDx%d|r %s', itemLink, stackCount, E:FormatMoney(stackPrice, db.moneyFormat, not db.moneyCoins)))
 	end
 
 	UseContainerItem(bagID, slotID)
@@ -3649,41 +3674,43 @@ function B:PlayerInteraction_ShowFrame(_, interactionType)
 end
 
 function B:Initialize()
+	local db = B.db
+
 	BIND_START, BIND_END = B:GetBindLines()
 
 	B.AssignmentColors = {
 		[0] = E:NewColorTable(0.99, 0.23, 0.21, 1), -- fallback
-		[FILTER_FLAG_EQUIPMENT] = E:UpdateColorTable({}, B.db.colors.assignment.equipment),
-		[FILTER_FLAG_CONSUMABLES] = E:UpdateColorTable({}, B.db.colors.assignment.consumables),
-		[FILTER_FLAG_TRADE_GOODS] = E:UpdateColorTable({}, B.db.colors.assignment.tradegoods),
-		[FILTER_FLAG_QUEST] = E:UpdateColorTable({}, B.db.colors.items.questItem),
-		[FILTER_FLAG_JUNK] = E:UpdateColorTable({}, B.db.colors.assignment.junk),
-		[FILTER_FLAG_REAGENTS] = E:UpdateColorTable({}, B.db.colors.profession.reagent)
+		[FILTER_FLAG_EQUIPMENT] = E:UpdateColorTable({}, db.colors.assignment.equipment),
+		[FILTER_FLAG_CONSUMABLES] = E:UpdateColorTable({}, db.colors.assignment.consumables),
+		[FILTER_FLAG_TRADE_GOODS] = E:UpdateColorTable({}, db.colors.assignment.tradegoods),
+		[FILTER_FLAG_QUEST] = E:UpdateColorTable({}, db.colors.items.questItem),
+		[FILTER_FLAG_JUNK] = E:UpdateColorTable({}, db.colors.assignment.junk),
+		[FILTER_FLAG_REAGENTS] = E:UpdateColorTable({}, db.colors.profession.reagent)
 	}
 
 	B.ProfessionColors = {
-		[0x1]		= E:UpdateColorTable({}, B.db.colors.profession.quiver),
-		[0x2]		= E:UpdateColorTable({}, B.db.colors.profession.ammoPouch),
-		[0x4]		= E:UpdateColorTable({}, B.db.colors.profession.soulBag),
-		[0x8]		= E:UpdateColorTable({}, B.db.colors.profession.leatherworking),
-		[0x10]		= E:UpdateColorTable({}, B.db.colors.profession.inscription),
-		[0x20]		= E:UpdateColorTable({}, B.db.colors.profession.herbs),
-		[0x40]		= E:UpdateColorTable({}, B.db.colors.profession.enchanting),
-		[0x80]		= E:UpdateColorTable({}, B.db.colors.profession.engineering),
-		[0x100]		= E:UpdateColorTable({}, B.db.colors.profession.keyring),
-		[0x200]		= E:UpdateColorTable({}, B.db.colors.profession.gems),
-		[0x400]		= E:UpdateColorTable({}, B.db.colors.profession.mining),
-		[0x8000]	= E:UpdateColorTable({}, B.db.colors.profession.fishing),
-		[0x10000]	= E:UpdateColorTable({}, B.db.colors.profession.cooking),
+		[0x1]		= E:UpdateColorTable({}, db.colors.profession.quiver),
+		[0x2]		= E:UpdateColorTable({}, db.colors.profession.ammoPouch),
+		[0x4]		= E:UpdateColorTable({}, db.colors.profession.soulBag),
+		[0x8]		= E:UpdateColorTable({}, db.colors.profession.leatherworking),
+		[0x10]		= E:UpdateColorTable({}, db.colors.profession.inscription),
+		[0x20]		= E:UpdateColorTable({}, db.colors.profession.herbs),
+		[0x40]		= E:UpdateColorTable({}, db.colors.profession.enchanting),
+		[0x80]		= E:UpdateColorTable({}, db.colors.profession.engineering),
+		[0x100]		= E:UpdateColorTable({}, db.colors.profession.keyring),
+		[0x200]		= E:UpdateColorTable({}, db.colors.profession.gems),
+		[0x400]		= E:UpdateColorTable({}, db.colors.profession.mining),
+		[0x8000]	= E:UpdateColorTable({}, db.colors.profession.fishing),
+		[0x10000]	= E:UpdateColorTable({}, db.colors.profession.cooking),
 	}
 
 	if E.Retail then
-		B.ProfessionColors[B.BagIndice.reagent] = E:UpdateColorTable({}, B.db.colors.profession.reagent)
+		B.ProfessionColors[B.BagIndice.reagent] = E:UpdateColorTable({}, db.colors.profession.reagent)
 	end
 
 	B.QuestColors = {
-		questStarter = E:UpdateColorTable({}, B.db.colors.items.questStarter),
-		questItem = E:UpdateColorTable({}, B.db.colors.items.questItem),
+		questStarter = E:UpdateColorTable({}, db.colors.items.questStarter),
+		questItem = E:UpdateColorTable({}, db.colors.items.questItem),
 	}
 
 	B:LoadBagBar()
@@ -3780,7 +3807,7 @@ function B:Initialize()
 	B:RegisterEvent('CVAR_UPDATE', 'UpdateBindLines')
 
 	--Enable/Disable 'Loot to Leftmost Bag'
-	SetInsertItemsLeftToRight(B.db.reverseLoot)
+	SetInsertItemsLeftToRight(db.reverseLoot)
 end
 
 E:RegisterModule(B:GetName())

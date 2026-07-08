@@ -162,7 +162,7 @@ end
 
 do
 	local function DataPanelStyle(panel, db)
-		panel.forcedBorderColors = (db.border == false and {0,0,0,0}) or nil
+		E:ForceBorderColor(panel, db.border == false and 0 or nil, 0, 0, 0)
 		panel:SetTemplate(db.backdrop and (db.panelTransparency and 'Transparent' or 'Default') or 'NoBackdrop', true)
 
 		if db.border ~= nil then

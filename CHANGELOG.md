@@ -1,3 +1,11 @@
+### Version 15.18 [ July 7th 2026 ]
+*   Nameplate issue involving GetNamePlateForUnit.
+*   Skinned edit mode settings frame dropdowns. (Thanks Daenarys)
+*   Fonts were missing shadows because of a Blizzard bug.
+*   Menus had it's mouseover highlight texture rotated incorrectly.
+*   Mastery Datatext causing an error in some cases.
+*   Mist: Interrupt outputs work again.
+
 ### Version 15.17 [ June 16th 2026 ]
 *   **General**
     *   Menu arrows converted to our style and colors. (Thanks Daenarys)

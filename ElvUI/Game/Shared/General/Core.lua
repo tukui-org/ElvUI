@@ -321,6 +321,21 @@ function E:UpdateColorTable(color, data)
 	return E:VerifyColorTable(color, true, true)
 end
 
+function E:ForceBorderColor(frame, r, g, b, a)
+	local colors = frame.forcedBorderColors or {}
+
+	if r then
+		colors[1], colors[2], colors[3], colors[4] = r, g, b, a
+	else
+		colors = nil
+	end
+
+	-- refrence when changed
+	if frame.forcedBorderColors ~= colors then
+		frame.forcedBorderColors = colors
+	end
+end
+
 function E:UpdateMedia(mediaType)
 	if not E.db.general or not E.private.general then return end
 
@@ -1784,8 +1799,8 @@ end
 
 function E:CreateFonts()
 	local big = E:GenerateFontFamily('ElvUIFontBig', E.Media.Fonts.Expressway, 15)
-	local normal = E:GenerateFontFamily('ElvUIFontNormal', E.Media.Fonts.Expressway, 15)
-	local small = E:GenerateFontFamily('ElvUIFontSmall', E.Media.Fonts.Expressway, 15)
+	local normal = E:GenerateFontFamily('ElvUIFontNormal', E.Media.Fonts.Expressway, 13)
+	local small = E:GenerateFontFamily('ElvUIFontSmall', E.Media.Fonts.Expressway, 11)
 
 	local style = '' -- empty string is alpha 1
 	E:SetFontShadow(big, style, true)
