@@ -66,7 +66,7 @@ local HIDDEN = 0
 local CREATED = 2
 
 local floor, wipe, next = floor, wipe, next
-local pcall, tinsert = pcall, tinsert
+local tinsert = tinsert
 
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
@@ -493,7 +493,7 @@ local function Enable(self)
 		if(buffs) then
 			buffs.__owner = self
 			-- check if there's any anchoring restrictions
-			buffs.__restricted = not pcall(self.GetCenter, self)
+			buffs.__restricted = self:IsAnchoringRestricted()
 			buffs.ForceUpdate = ForceUpdate
 			buffs.UpdateAuras = UpdateAuras
 			buffs.active = {}
@@ -511,7 +511,7 @@ local function Enable(self)
 		if(debuffs) then
 			debuffs.__owner = self
 			-- check if there's any anchoring restrictions
-			debuffs.__restricted = not pcall(self.GetCenter, self)
+			debuffs.__restricted = self:IsAnchoringRestricted()
 			debuffs.ForceUpdate = ForceUpdate
 			debuffs.UpdateAuras = UpdateAuras
 			debuffs.active = {}
@@ -529,7 +529,7 @@ local function Enable(self)
 		if(auras) then
 			auras.__owner = self
 			-- check if there's any anchoring restrictions
-			auras.__restricted = not pcall(self.GetCenter, self)
+			auras.__restricted = self:IsAnchoringRestricted()
 			auras.ForceUpdate = ForceUpdate
 			auras.UpdateAuras = UpdateAuras
 			auras.active = {}

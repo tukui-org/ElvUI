@@ -106,6 +106,7 @@ do -- Expansions
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 	E.PTR = E.wowtoc >= 120100
+	E.AuraContainer = E.Retail and E.wowtoc >= 120100 -- 12.1 aura container system
 
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore

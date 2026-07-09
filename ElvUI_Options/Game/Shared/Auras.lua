@@ -9,14 +9,14 @@ local CopyTable = CopyTable
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
 local SharedOptions = {
-	smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 2),
+	smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 2, nil, nil, nil, nil, nil, E.AuraContainer),
 	keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3),
 	spacer1 = ACH:Spacer(5, 'full'),
 
 	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 10, C.Values.GrowthDirection),
 	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 11, { INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
 	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 12, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
-	seperateOwn = ACH:Select(L["Separate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 13, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
+	seperateOwn = ACH:Select(L["Separate"], E.AuraContainer and L["Indicate whether buffs you cast yourself should be separated before or after.\n\n|cffff3333Note:|r Other's First is not supported and behaves like No Sorting."] or L["Indicate whether buffs you cast yourself should be separated before or after."], 13, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
 
 	size = ACH:Range(L["Size"], L["Set the size of the individual auras."], 20, { min = 10, max = 80, step = 1 }),
 	height = ACH:Range(L["Height"], L["Set the size of the individual auras."], 21, { min = 10, max = 80, step = 1 }),
@@ -44,10 +44,10 @@ SharedOptions.countGroup.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 5, { 
 do
 	local notBarShow = function(info) local db = E.db.auras[info[#info-2]] if db then return not db.barShow end end
 	SharedOptions.statusBar.args.barShow = ACH:Toggle(L["Enable"], nil, 1)
-	SharedOptions.statusBar.args.barNoDuration = ACH:Toggle(L["No Duration"], nil, 2, nil, nil, nil, nil, nil, notBarShow)
+	SharedOptions.statusBar.args.barNoDuration = ACH:Toggle(L["No Duration"], nil, 2, nil, nil, nil, nil, nil, function(info) return E.AuraContainer or notBarShow(info) end)
 	SharedOptions.statusBar.args.barTexture = ACH:SharedMediaStatusbar(L["Texture"], nil, 3, nil, nil, nil, notBarShow)
 	SharedOptions.statusBar.args.barColor = ACH:Color(L.COLOR, nil, 4, true, nil, nil, nil, notBarShow)
-	SharedOptions.statusBar.args.barColorGradient = ACH:Toggle(L["Color by Value"], nil, 5, nil, nil, nil, nil, nil, notBarShow)
+	SharedOptions.statusBar.args.barColorGradient = ACH:Toggle(L["Color by Value"], nil, 5, nil, nil, nil, nil, nil, function(info) return E.AuraContainer or notBarShow(info) end)
 	SharedOptions.statusBar.args.barPosition = ACH:Select(L["Position"], nil, 6, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, notBarShow)
 	SharedOptions.statusBar.args.barSize = ACH:Range(L["Size"], nil, 7, { min = 1, max = 10, step = 1 }, nil, nil, nil, notBarShow)
 	SharedOptions.statusBar.args.barSpacing = ACH:Range(L["Spacing"], nil, 8, { min = -10, max = 10, step = 1 }, nil, nil, nil, notBarShow)

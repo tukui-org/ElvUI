@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
-local pcall, hooksecurefunc = pcall, hooksecurefunc
+local hooksecurefunc = hooksecurefunc
 local next, strsplit, tonumber = next, strsplit, tonumber
 local pairs, wipe, tinsert = pairs, wipe, tinsert
 
@@ -980,8 +980,10 @@ do
 end
 
 function NP:NamePlateCallBack(event, unit, updateInfo)
-	local success, plate = pcall(C_NamePlate_GetNamePlateForUnit, unit)
-	if not success or not plate then return end -- prevent error on restricted units
+	if not unit or E:IsSecretUnit(unit) then return end -- prevent error on restricted units
+
+	local plate = C_NamePlate_GetNamePlateForUnit(unit)
+	if not plate then return end
 
 	local nameplate = plate.unitFrame
 	if not nameplate or not nameplate.UpdateAllElements then return end -- prevent error with plater

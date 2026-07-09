@@ -5,6 +5,9 @@ local LSM = E.Libs.LSM
 local _G = _G
 local next, ceil = next, ceil
 local strmatch, tonumber = strmatch, tonumber
+local unpack = unpack
+local InCombatLockdown = InCombatLockdown
+local UnitHasVehicleUI = UnitHasVehicleUI
 
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
@@ -550,8 +553,265 @@ function A:UpdateChild(child, index, db) -- self here is the header
 	end
 end
 
+do -- 12.1 aura container support, replaces SecureAuraHeaderTemplate
+	local UF = E:GetModule('UnitFrames')
+
+	local DIRECTION_TO_HORIZONTAL_GROWTH = {
+		DOWN_RIGHT = 'RIGHT', DOWN_LEFT = 'LEFT', UP_RIGHT = 'RIGHT', UP_LEFT = 'LEFT',
+		RIGHT_DOWN = 'RIGHT', RIGHT_UP = 'RIGHT', LEFT_DOWN = 'LEFT', LEFT_UP = 'LEFT'
+	}
+
+	local DIRECTION_TO_VERTICAL_GROWTH = {
+		DOWN_RIGHT = 'DOWN', DOWN_LEFT = 'DOWN', UP_RIGHT = 'UP', UP_LEFT = 'UP',
+		RIGHT_DOWN = 'DOWN', RIGHT_UP = 'UP', LEFT_DOWN = 'DOWN', LEFT_UP = 'UP'
+	}
+
+	local sortMethods = { TIME = 'Expiration', INDEX = 'Default', NAME = 'Name' }
+
+	function A:ContainerHeader_OnEvent(event)
+		if event == 'PLAYER_REGEN_ENABLED' then
+			self:UnregisterEvent(event)
+
+			A:UpdateContainerHeader(self)
+		else -- UNIT_ENTERED_VEHICLE / UNIT_EXITED_VEHICLE
+			self.container:SetUnit((UnitHasVehicleUI('player') and 'vehicle') or 'player')
+		end
+	end
+
+	function A:UpdateContainerButton(header, button)
+		local db = A.db[header.auraType]
+		local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
+
+		button:SetSize(width, height)
+
+		if db.keepSizeRatio then
+			button.texture:SetTexCoord(unpack(E.TexCoords))
+		else
+			local left, right, top, bottom = E:CropRatio(width, height)
+			button.texture:SetTexCoord(left, right, top, bottom)
+		end
+
+		if button.count then
+			button.count:ClearAllPoints()
+			button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
+			button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		end
+
+		if button.timeText then
+			button.timeText:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		end
+
+		if button.statusBar then
+			local pos, iconSize = db.barPosition, db.size - (E.Border * 2)
+			local onTop, onBottom, onLeft = pos == 'TOP', pos == 'BOTTOM', pos == 'LEFT'
+			local barSpacing = db.barSpacing + (E.PixelMode and 1 or 3)
+			local barSize = db.barSize + (E.PixelMode and 0 or 2)
+			local isHorizontal = onTop or onBottom
+
+			button.statusBar:ClearAllPoints()
+			button.statusBar:Size(isHorizontal and iconSize or barSize, isHorizontal and barSize or iconSize)
+			button.statusBar:Point(E.InversePoints[pos], button, pos, isHorizontal and 0 or (onLeft and -barSpacing or barSpacing), not isHorizontal and 0 or (onTop and barSpacing or -barSpacing))
+			button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
+			button.statusBar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
+			button.statusBar:SetRotatesTexture(not isHorizontal)
+			button.statusBar:SetAlpha(db.barShow and 1 or 0)
+
+			A:SetStatusBarColor(button.statusBar, db.barColor.r, db.barColor.g, db.barColor.b)
+		end
+
+		if button.dispelBorder then
+			local colorDebuffs = header.filter == 'HARMFUL' and A.db.colorDebuffs
+			button:SetAuraBorder(button.dispelBorder, { style = AuraButtonBorderStyle.Color, showWhenHarmful = not not colorDebuffs, showWhenHelpful = false })
+		end
+	end
+
+	function A:InitializeContainerButton(header, button)
+		header.buttons[#header.buttons + 1] = button
+
+		local border = button:CreateTexture(nil, 'BACKGROUND', nil, -8)
+		border:SetAllPoints(button)
+		border:SetTexture(E.media.blankTex)
+		border:SetVertexColor(unpack(E.media.bordercolor))
+		button.border = border
+
+		local dispel = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
+		dispel:SetAllPoints(button)
+		dispel:SetTexture(E.media.blankTex)
+		button.dispelBorder = dispel
+
+		local backdrop = button:CreateTexture(nil, 'BACKGROUND', nil, -6)
+		backdrop:SetPoint('TOPLEFT', button, 'TOPLEFT', E.mult, -E.mult)
+		backdrop:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -E.mult, E.mult)
+		backdrop:SetTexture(E.media.blankTex)
+		backdrop:SetVertexColor(0, 0, 0)
+		button.backdrop = backdrop
+
+		button.texture = button:CreateTexture(nil, 'ARTWORK')
+		button.texture:SetPoint('TOPLEFT', button, 'TOPLEFT', E.mult, -E.mult)
+		button.texture:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -E.mult, E.mult)
+
+		button.highlight = button:CreateTexture(nil, 'HIGHLIGHT')
+		button.highlight:SetColorTexture(1, 1, 1, .45)
+		button.highlight:SetPoint('TOPLEFT', button, 'TOPLEFT', E.mult, -E.mult)
+		button.highlight:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -E.mult, E.mult)
+
+		local textFrame = CreateFrame('Frame', nil, button)
+		textFrame:SetAllPoints(button)
+
+		button.count = textFrame:CreateFontString(nil, 'OVERLAY')
+		button.count:FontTemplate()
+
+		button.timeText = textFrame:CreateFontString(nil, 'OVERLAY')
+		button.timeText:FontTemplate()
+		button.timeText:Point('CENTER')
+
+		button.statusBar = CreateFrame('StatusBar', nil, button)
+		button.statusBar:SetFrameStrata(button:GetFrameStrata())
+
+		button:SetIcon(button.texture)
+		button:SetApplicationCount(button.count)
+		button:SetDurationText(button.timeText, { formatter = UF:GetAuraDurationFormatter() })
+		button:SetDurationBar(button.statusBar)
+
+		if header.filter == 'HELPFUL' then
+			button:SetCancelAuraButtons('RightButtonUp')
+		end
+
+		if header.MasqueGroup then
+			header.MasqueGroup:AddButton(button, A:MasqueData(button.texture, button.highlight))
+		end
+
+		A:UpdateContainerButton(header, button)
+	end
+
+	function A:CreateContainerHeader(filter)
+		local name, auraType = filter == 'HELPFUL' and 'ElvUIPlayerBuffs' or 'ElvUIPlayerDebuffs', filter == 'HELPFUL' and 'buffs' or 'debuffs'
+
+		local header = CreateFrame('Frame', name, E.UIParent)
+		header:SetClampedToScreen(true)
+		header:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
+		header:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
+		header:SetScript('OnEvent', A.ContainerHeader_OnEvent)
+
+		header.auraType = auraType
+		header.filter = filter
+		header.name = name
+		header.buttons = {}
+		header.groupKeys = {}
+
+		if filter == 'HELPFUL' then
+			if MasqueGroupBuffs and E.private.auras.masque.buffs then
+				header.MasqueGroup = MasqueGroupBuffs
+			end
+		elseif MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+			header.MasqueGroup = MasqueGroupDebuffs
+		end
+
+		local container = CreateFrame('AuraContainer', '$parentContainer', header, 'CustomAuraContainerTemplate')
+		container:SetUnit('player')
+		header.container = container
+
+		local visibility = CreateFrame('Frame', nil, UIParent, 'SecureHandlerStateTemplate')
+		SecureHandlerSetFrameRef(visibility, 'AuraHeader', header)
+		RegisterStateDriver(visibility, 'customVisibility', '[petbattle] 0;1')
+		visibility:SetAttribute('_onstate-customVisibility', A.AttributeCustomVisibility)
+		header.visibility = visibility
+
+		if filter == 'HELPFUL' then -- weapon enchants, replaces includeWeapons
+			local enchantOptions = { initializeFrame = function(button) A:InitializeContainerButton(header, button) end }
+			container:AddItemEnchantment(AuraContainerItemEnchantmentSlot.MainHand, enchantOptions)
+			container:AddItemEnchantment(AuraContainerItemEnchantmentSlot.OffHand, enchantOptions)
+		end
+
+		return header
+	end
+
+	function A:UpdateContainerHeader(header)
+		if not E.private.auras.enable then return end
+
+		if InCombatLockdown() then -- container groups cannot be modified in combat
+			header:RegisterEvent('PLAYER_REGEN_ENABLED')
+			return
+		end
+
+		local db = A.db[header.auraType]
+		local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
+
+		E:UpdateClassColor(db.barColor)
+
+		local container = header.container
+		local point = DIRECTION_TO_POINT[db.growthDirection]
+
+		container:ClearAllPoints()
+		container:SetPoint(point, header, point)
+		container:SetAuraLayoutAnchorPoint(point)
+
+		local flow = _G.AnchorUtil.FlowDirection
+		local horizontal = (DIRECTION_TO_HORIZONTAL_GROWTH[db.growthDirection] == 'LEFT' and flow.Left) or flow.Right
+		local vertical = (DIRECTION_TO_VERTICAL_GROWTH[db.growthDirection] == 'DOWN' and flow.Down) or flow.Up
+		container:SetAuraLayoutGrowthDirection(horizontal, vertical)
+
+		if IS_HORIZONTAL_GROWTH[db.growthDirection] then
+			header:SetSize(((db.wrapAfter == 1 and 0 or db.horizontalSpacing) + width) * db.wrapAfter, (db.verticalSpacing + height) * db.maxWraps)
+			container:SetAuraLayoutRowWidth(db.wrapAfter * (width + db.horizontalSpacing))
+		else
+			header:SetSize((db.horizontalSpacing + width) * db.maxWraps, ((db.wrapAfter == 1 and 0 or db.verticalSpacing) + height) * db.wrapAfter)
+			container:SetAuraLayoutRowWidth(db.wrapAfter * (width + db.horizontalSpacing))
+		end
+
+		local layout = {
+			elementSpacingX = db.horizontalSpacing,
+			elementSpacingY = db.verticalSpacing,
+			elementWidth = width,
+			elementHeight = height
+		}
+
+		local sortMethod = AuraContainerSortMethod[sortMethods[db.sortMethod] or 'Default'] or AuraContainerSortMethod.Default
+		local sortDirection = (db.sortDir == '-' and AuraContainerSortDirection.Reverse) or AuraContainerSortDirection.Normal
+		local maxCount = db.wrapAfter * db.maxWraps
+
+		-- groups cannot be removed or reordered once added, so always create the
+		-- own group first and collapse it when the setting is off; -1 (own last)
+		-- is not supported by containers
+		local separateOwn = db.seperateOwn == 1
+		local function UpdateGroup(key, filter, count)
+			if header.groupKeys[key] then
+				container:SetAuraGroupMaxFrameCount(key, count)
+				container:SetAuraGroupSortMethod(key, sortMethod, sortDirection)
+				container:SetAuraGroupLayout(key, layout)
+			else
+				header.groupKeys[key] = true
+
+				container:AddAuraGroup(key, filter, {
+					maxFrameCount = count,
+					sortMethod = sortMethod,
+					sortDirection = sortDirection,
+					initializeFrame = function(button) A:InitializeContainerButton(header, button) end,
+					layout = layout
+				})
+			end
+		end
+
+		UpdateGroup('own', header.filter..'|PLAYER', separateOwn and maxCount or 0)
+		UpdateGroup('all', header.filter, maxCount)
+
+		for _, button in next, header.buttons do
+			A:UpdateContainerButton(header, button)
+		end
+
+		if header.MasqueGroup then
+			header.MasqueGroup:ReSkin()
+		end
+	end
+end
+
 function A:UpdateHeader(header)
 	if not E.private.auras.enable then return end
+
+	if E.AuraContainer then
+		A:UpdateContainerHeader(header)
+		return
+	end
 
 	local db = A.db[header.auraType]
 	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
@@ -621,6 +881,10 @@ function A:ForEachChild(func, ...)
 end
 
 function A:CreateAuraHeader(filter)
+	if E.AuraContainer then
+		return A:CreateContainerHeader(filter)
+	end
+
 	local name, auraType = filter == 'HELPFUL' and 'ElvUIPlayerBuffs' or 'ElvUIPlayerDebuffs', filter == 'HELPFUL' and 'buffs' or 'debuffs'
 
 	local header = CreateFrame('Frame', name, E.UIParent, 'SecureAuraHeaderTemplate')
@@ -696,7 +960,7 @@ function A:Initialize()
 	local mapOffsetY = (mapAnchor == mapCluster and 3 or 0) + E.Spacing
 	local mapOffsetX = 6 + E.Border
 
-	if not E.PTR and E.private.auras.buffsHeader then
+	if E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 		A:UpdateHeader(A.BuffFrame)
 
@@ -706,7 +970,7 @@ function A:Initialize()
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 	end
 
-	if not E.PTR and E.private.auras.debuffsHeader then
+	if E.private.auras.debuffsHeader then
 		A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
 		A:UpdateHeader(A.DebuffFrame)
 

@@ -322,4 +322,177 @@ end
 
 if oUF.wowtoc < 120100 then
 	oUF:AddElement('AuraWatch', Update, Enable, Disable)
+else -- 12.1: aura data is secret, watched spells become AuraSlots on Blizzard's AuraContainer
+	local InCombatLockdown = InCombatLockdown
+
+	local pendingWatch = {}
+	local watcher = CreateFrame('Frame')
+	watcher:RegisterEvent('PLAYER_REGEN_ENABLED')
+
+	local function InitializeSlot(element, button)
+		button.__owner = element
+
+		local icon = button:CreateTexture(nil, 'ARTWORK')
+		icon:SetAllPoints()
+		button.icon = icon
+
+		local cd = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
+		cd:SetReverse(true)
+		cd:SetDrawBling(false)
+		cd:SetDrawEdge(false)
+		cd:SetHideCountdownNumbers(true)
+		cd:SetAllPoints(icon)
+		button.cd = cd
+
+		local countFrame = CreateFrame('Frame', nil, button)
+		countFrame:SetAllPoints(button)
+		countFrame:SetFrameLevel(cd:GetFrameLevel() + 1)
+
+		local count = countFrame:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
+		count:SetPoint('BOTTOMRIGHT', countFrame, 'BOTTOMRIGHT', -1, 0)
+		button.count = count
+
+		button:SetIcon(icon)
+		button:SetDurationCooldown(cd)
+		button:SetApplicationCount(count)
+
+		if element.PostCreateIcon then element:PostCreateIcon(button) end
+	end
+
+	local function ConfigureSlot(element, spellID, setting, button)
+		button.spellID = spellID
+
+		local sizeOffset = setting.sizeOffset or 0
+		button:SetSize(sizeOffset + element.size, sizeOffset + element.size)
+
+		button:ClearAllPoints()
+		button:SetPoint(setting.point or 'TOPRIGHT', element, setting.point or 'TOPRIGHT', setting.xOffset or 0, setting.yOffset or 0)
+
+		-- slots cannot be removed once added; fade disabled ones out instead
+		button:SetAlpha(setting.enabled and 1 or 0)
+
+		if element.PostUpdateSlot then
+			element:PostUpdateSlot(spellID, setting, button)
+		end
+	end
+
+	local function ConfigureWatch(element)
+		local frame = element.__owner
+		local unit = frame.unit
+		if not unit then return end
+
+		if InCombatLockdown() then
+			pendingWatch[element] = true
+			return
+		end
+
+		local container = element.Container
+		if not container then
+			container = CreateFrame('AuraContainer', nil, element, 'CustomAuraContainerTemplate')
+			element.Container = container
+		end
+
+		container:SetUnit(unit)
+
+		for spellID, setting in pairs(element.watched) do
+			local key = tostring(spellID)
+			local button = element.slots[key]
+			if not button and setting.enabled then
+				local candidateFilters = { includeSpellIDs = { spellID } }
+				if not setting.anyUnit then
+					candidateFilters.isFromPlayerOrPlayerPet = true
+				end
+
+				button = container:AddAuraSlot(key, 'HELPFUL', {
+					candidateFilters = candidateFilters,
+					initializeFrame = element.initializeFrame
+				})
+
+				element.slots[key] = button
+			end
+
+			if button then
+				ConfigureSlot(element, spellID, setting, button)
+			end
+		end
+
+		for key, button in next, element.slots do
+			if not element.watched[tonumber(key)] then
+				button:SetAlpha(0) -- spell was removed from the watch list
+			end
+		end
+
+		container:SetEnabled(true)
+		container:Show()
+	end
+
+	watcher:SetScript('OnEvent', function()
+		local element = next(pendingWatch)
+		while element do
+			pendingWatch[element] = nil
+			ConfigureWatch(element)
+
+			element = next(pendingWatch)
+		end
+	end)
+
+	local function ContainerUpdate(self, _, unit)
+		if self.unit ~= unit then return end
+
+		local element = self.AuraWatch
+		if element then
+			ConfigureWatch(element)
+		end
+	end
+
+	local function ContainerForceUpdate(element)
+		return ContainerUpdate(element.__owner, 'ForceUpdate', element.__owner.unit)
+	end
+
+	local function ContainerSetNewTable(element, object)
+		element.watched = object or {}
+
+		ConfigureWatch(element)
+	end
+
+	local function ContainerEnable(self)
+		local element = self.AuraWatch
+		if element then
+			element.__owner = self
+			element.SetNewTable = ContainerSetNewTable
+			element.ForceUpdate = ContainerForceUpdate
+			element.UpdateContainer = ConfigureWatch
+
+			element.watched = element.watched or {}
+			element.slots = element.slots or {}
+			element.size = element.size or 8
+
+			if not element.initializeFrame then
+				element.initializeFrame = function(button)
+					InitializeSlot(element, button)
+				end
+			end
+
+			ConfigureWatch(element)
+
+			element:Show()
+
+			return true
+		end
+	end
+
+	local function ContainerDisable(self)
+		local element = self.AuraWatch
+		if element then
+			pendingWatch[element] = nil
+
+			if element.Container then
+				element.Container:SetEnabled(false)
+			end
+
+			element:Hide()
+		end
+	end
+
+	oUF:AddElement('AuraWatch', ContainerUpdate, ContainerEnable, ContainerDisable)
 end

@@ -73,15 +73,47 @@ function UF:AuraBars_UpdateBar(bar)
 	UF:Update_FontString(bar.nameText)
 end
 
+function UF:Construct_ContainerAuraBar(button) -- self is the element holder
+	button.bar:CreateBackdrop(nil, nil, nil, nil, true)
+
+	button.icon:CreateBackdrop(nil, nil, nil, nil, true)
+	button.icon:SetTexCoords()
+
+	button.nameText:SetJustifyH('LEFT')
+	button.nameText:SetWordWrap(false)
+	button.timeText:SetJustifyH('RIGHT')
+
+	UF.UpdateContainerAuraBarSettings(self, button)
+end
+
+function UF:UpdateContainerAuraBarSettings(button) -- self is the element holder
+	button.nameText:FontTemplate(LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline)
+	button.timeText:FontTemplate(LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline)
+
+	button.bar:SetStatusBarTexture(LSM:Fetch('statusbar', UF.db.statusbar))
+
+	local buffColor = UF.db.colors.auraBarBuff
+	button.bar:SetStatusBarColor(buffColor.r, buffColor.g, buffColor.b)
+
+	if button.SetMouseMotionEnabled then
+		button:SetMouseMotionEnabled(not self.disableMouse)
+	end
+end
+
 function UF:Construct_AuraBarHeader(frame)
 	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
 	auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
 	auraBar:SetSize(1, 1)
 
-	auraBar.PreSetPosition = UF.SortAuras
-	auraBar.PostCreateBar = UF.Construct_AuraBars
-	auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
-	auraBar.CustomFilter = UF.AuraFilter
+	if E.AuraContainer then
+		auraBar.PostCreateBar = UF.Construct_ContainerAuraBar
+		auraBar.PostUpdateBarSettings = UF.UpdateContainerAuraBarSettings
+	else
+		auraBar.PreSetPosition = UF.SortAuras
+		auraBar.PostCreateBar = UF.Construct_AuraBars
+		auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
+		auraBar.CustomFilter = UF.AuraFilter
+	end
 
 	auraBar.sparkEnabled = true
 	auraBar.initialAnchor = 'BOTTOMRIGHT'
@@ -195,6 +227,10 @@ function UF:Configure_AuraBars(frame)
 			local p3, p4 = below and 'TOP' or 'BOTTOM', right and 'RIGHT' or 'LEFT'
 			bars.initialAnchor = 'BOTTOM'..p4
 			bars:Point(p3..p4, attachTo, p1..p4, xOffset or (right and -(BORDER * 2)) or (bars.height + UF.BORDER), yOffset)
+		end
+
+		if E.AuraContainer and bars.UpdateContainer then
+			bars:UpdateContainer()
 		end
 	elseif frame:IsElementEnabled('AuraBars') then
 		frame:DisableElement('AuraBars')

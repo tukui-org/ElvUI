@@ -9,11 +9,59 @@ function UF:Construct_AuraWatch(frame)
 	auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
 	auras:SetInside(frame.Health)
 
-	auras.allowStacks = UF.SourceStacks -- fake stacking (same spell id)
-	auras.PostCreateIcon = UF.BuffIndicator_PostCreateIcon
-	auras.PostUpdateIcon = UF.BuffIndicator_PostUpdateIcon
+	if E.AuraContainer then
+		auras.PostCreateIcon = UF.BuffIndicator_PostCreateSlot
+		auras.PostUpdateSlot = UF.BuffIndicator_PostUpdateSlot
+	else
+		auras.allowStacks = UF.SourceStacks -- fake stacking (same spell id)
+		auras.PostCreateIcon = UF.BuffIndicator_PostCreateIcon
+		auras.PostUpdateIcon = UF.BuffIndicator_PostUpdateIcon
+	end
 
 	return auras
+end
+
+function UF:BuffIndicator_PostCreateSlot(button) -- 12.1 aura container slots
+	button.icon.border = button:CreateTexture(nil, 'BACKGROUND')
+	button.icon.border:SetOutside(button.icon, 1, 1)
+	button.icon.border:SetTexture(E.media.blankTex)
+	button.icon.border:SetVertexColor(0, 0, 0)
+
+	button.count:ClearAllPoints()
+	button.count:Point('BOTTOMRIGHT', 1, 1)
+	button.count:SetJustifyH('RIGHT')
+end
+
+function UF:BuffIndicator_PostUpdateSlot(spellID, settings, button) -- self is the element
+	local onlyText = settings.style == 'timerOnly'
+	local colorIcon = settings.style == 'coloredIcon'
+
+	if onlyText then
+		button.icon:Hide()
+		button.icon.border:Hide()
+
+		button.cd:SetDrawSwipe(false)
+		button.cd:SetDrawEdge(false)
+	else
+		button.icon:Show()
+		button.icon.border:Show()
+
+		button.cd:SetDrawSwipe(true)
+		button.cd:SetDrawEdge(true)
+
+		if colorIcon then -- approximated: the container binds the aura icon, so tint it
+			button.icon:SetVertexColor(settings.color.r, settings.color.g, settings.color.b, settings.color.a)
+		else
+			button.icon:SetVertexColor(1, 1, 1)
+			button.icon:SetTexCoords()
+		end
+	end
+
+	if button.count then
+		button.count:ClearAllPoints()
+		button.count:Point(settings.countAnchor or 'BOTTOMRIGHT', settings.countX or 1, settings.countY or 1)
+		button.count:FontTemplate(self.countFont, self.countFontSize or 12, self.countFontOutline or 'OUTLINE')
+	end
 end
 
 function UF:Configure_AuraWatch(frame, isPet)
