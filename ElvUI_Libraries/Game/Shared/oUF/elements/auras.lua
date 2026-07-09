@@ -557,4 +557,6 @@ local function Disable(self)
 	end
 end
 
--- oUF:AddElement('Auras', Update, Enable, Disable)
+if oUF.wowtoc < 120100 then
+	oUF:AddElement('Auras', Update, Enable, Disable)
+end

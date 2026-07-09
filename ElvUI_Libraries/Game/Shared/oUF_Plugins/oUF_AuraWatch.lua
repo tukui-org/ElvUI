@@ -320,4 +320,6 @@ local function Disable(self)
 	end
 end
 
--- oUF:AddElement('AuraWatch', Update, Enable, Disable)
+if oUF.wowtoc < 120100 then
+	oUF:AddElement('AuraWatch', Update, Enable, Disable)
+end

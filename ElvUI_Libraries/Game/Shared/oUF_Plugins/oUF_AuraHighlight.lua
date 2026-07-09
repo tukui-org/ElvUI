@@ -139,4 +139,6 @@ local function Disable(self)
 	end
 end
 
--- oUF:AddElement('AuraHighlight', Update, Enable, Disable)
+if oUF.wowtoc < 120100 then
+	oUF:AddElement('AuraHighlight', Update, Enable, Disable)
+end
