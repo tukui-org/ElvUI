@@ -5,6 +5,7 @@ local LSM = E.Libs.LSM
 
 local unpack = unpack
 local strfind = strfind
+local tinsert = tinsert
 
 local CreateFrame = CreateFrame
 
@@ -57,32 +58,72 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.stacks = {}
 	Debuffs.rows = {}
 
-	Auras.PreUpdate = UF.PreUpdateAura
-	Auras.PreSetPosition = UF.SortAuras
-	Auras.SetPosition = UF.SetPosition
-	Auras.PostCreateButton = NP.Construct_AuraIcon
-	Auras.PostUpdateButton = UF.PostUpdateAura
-	Auras.GetBlizzardAuras = NP.GetBlizzardCrowdControl
-	Auras.CustomFilter = NP.AuraFilter
+	if E.AuraContainer then
+		Auras.PostCreateButton = UF.Construct_ContainerButton
+		Auras.PostUpdateButtonSettings = UF.UpdateContainerButtonSettings
 
-	Buffs.PreUpdate = UF.PreUpdateAura
-	Buffs.PreSetPosition = UF.SortAuras
-	Buffs.SetPosition = UF.SetPosition
-	Buffs.PostCreateButton = NP.Construct_AuraIcon
-	Buffs.PostUpdateButton = UF.PostUpdateAura
-	Buffs.GetBlizzardAuras = NP.GetBlizzardBuffs
-	Buffs.CustomFilter = NP.AuraFilter
+		Buffs.PostCreateButton = UF.Construct_ContainerButton
+		Buffs.PostUpdateButtonSettings = UF.UpdateContainerButtonSettings
 
-	Debuffs.PreUpdate = UF.PreUpdateAura
-	Debuffs.PreSetPosition = UF.SortAuras
-	Debuffs.SetPosition = UF.SetPosition
-	Debuffs.PostCreateButton = NP.Construct_AuraIcon
-	Debuffs.PostUpdateButton = UF.PostUpdateAura
-	Debuffs.GetBlizzardAuras = NP.GetBlizzardDebuffs
-	Debuffs.CustomFilter = NP.AuraFilter
+		Debuffs.PostCreateButton = UF.Construct_ContainerButton
+		Debuffs.PostUpdateButtonSettings = UF.UpdateContainerButtonSettings
+	else
+		Auras.PreUpdate = UF.PreUpdateAura
+		Auras.PreSetPosition = UF.SortAuras
+		Auras.SetPosition = UF.SetPosition
+		Auras.PostCreateButton = NP.Construct_AuraIcon
+		Auras.PostUpdateButton = UF.PostUpdateAura
+		Auras.GetBlizzardAuras = NP.GetBlizzardCrowdControl
+		Auras.CustomFilter = NP.AuraFilter
+
+		Buffs.PreUpdate = UF.PreUpdateAura
+		Buffs.PreSetPosition = UF.SortAuras
+		Buffs.SetPosition = UF.SetPosition
+		Buffs.PostCreateButton = NP.Construct_AuraIcon
+		Buffs.PostUpdateButton = UF.PostUpdateAura
+		Buffs.GetBlizzardAuras = NP.GetBlizzardBuffs
+		Buffs.CustomFilter = NP.AuraFilter
+
+		Debuffs.PreUpdate = UF.PreUpdateAura
+		Debuffs.PreSetPosition = UF.SortAuras
+		Debuffs.SetPosition = UF.SetPosition
+		Debuffs.PostCreateButton = NP.Construct_AuraIcon
+		Debuffs.PostUpdateButton = UF.PostUpdateAura
+		Debuffs.GetBlizzardAuras = NP.GetBlizzardDebuffs
+		Debuffs.CustomFilter = NP.AuraFilter
+	end
 
 	nameplate.Auras_, nameplate.Buffs_, nameplate.Debuffs_ = Auras, Buffs, Debuffs
 	nameplate.Auras, nameplate.Buffs, nameplate.Debuffs = Auras, Buffs, Debuffs
+end
+
+-- approximates the Blizzard nameplate aura lists, their own frames read
+-- secret aura data on 12.1 so copying them like before is not possible
+function NP:BuildBlizzardContainerGroups(auras)
+	local groups = {}
+	local maxCount = auras.num or 4
+
+	if auras.type == 'buffs' then -- stealable enemy buffs
+		tinsert(groups, {
+			filter = 'HELPFUL|INCLUDE_NAME_PLATE_ONLY',
+			candidateFilters = { isStealable = true },
+			maxFrameCount = maxCount
+		})
+	elseif auras.type == 'debuffs' then -- debuffs from the player or their pet
+		tinsert(groups, {
+			filter = 'HARMFUL|INCLUDE_NAME_PLATE_ONLY',
+			candidateFilters = { isFromPlayerOrPlayerPet = true },
+			maxFrameCount = maxCount
+		})
+	else -- crowd control
+		tinsert(groups, {
+			filter = 'HARMFUL|INCLUDE_NAME_PLATE_ONLY',
+			candidateFilters = { nameplateShowAll = true },
+			maxFrameCount = maxCount
+		})
+	end
+
+	return groups
 end
 
 function NP:Construct_AuraIcon(button)
@@ -157,6 +198,18 @@ function NP:Configure_Auras(nameplate, which)
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 	auras:Size(db.numAuras * db.size + ((db.numAuras - 1) * db.spacing), 1)
+
+	if E.AuraContainer then
+		if NP.db.useBlizzardAuras then
+			auras.containerGroups = NP:BuildBlizzardContainerGroups(auras)
+
+			if auras.UpdateContainer then
+				auras:UpdateContainer()
+			end
+		else
+			UF:Configure_AuraContainer(auras, db)
+		end
+	end
 end
 
 function NP:Update_Auras(nameplate)

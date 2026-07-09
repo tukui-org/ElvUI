@@ -224,4 +224,7 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('RaidDebuffs', Update, Enable, Disable)
+-- aura data is secret on 12.1 and ElvUI keeps this element disabled on Retail
+if oUF.wowtoc < 120100 then
+	oUF:AddElement('RaidDebuffs', Update, Enable, Disable)
+end

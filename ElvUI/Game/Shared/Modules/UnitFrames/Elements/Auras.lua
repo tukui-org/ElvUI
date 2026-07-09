@@ -74,17 +74,27 @@ UF.SmartPosition = {
 UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.BUFFS_ON_DEBUFFS)
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
+function UF:SetAuraCallbacks(element)
+	if E.AuraContainer then
+		element.PostCreateButton = UF.Construct_ContainerButton
+		element.PostUpdateButtonSettings = UF.UpdateContainerButtonSettings
+	else
+		element.PreSetPosition = UF.SortAuras
+		element.PostCreateButton = UF.Construct_AuraIcon
+		element.PostUpdateButton = UF.PostUpdateAura
+		element.SetPosition = UF.SetPosition
+		element.PreUpdate = UF.PreUpdateAura
+		element.CustomFilter = UF.AuraFilter
+	end
+end
+
 function UF:Construct_Auras(frame)
 	local auras = CreateFrame('Frame', '$parentAuras', frame)
-	auras.PreSetPosition = UF.SortAuras
-	auras.PostCreateButton = UF.Construct_AuraIcon
-	auras.PostUpdateButton = UF.PostUpdateAura
-	auras.SetPosition = UF.SetPosition
-	auras.PreUpdate = UF.PreUpdateAura
-	auras.CustomFilter = UF.AuraFilter
 	auras.stacks = {}
 	auras.rows = {}
 	auras.type = 'auras'
+
+	UF:SetAuraCallbacks(auras)
 
 	auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 	auras:SetSize(1, 1)
@@ -94,15 +104,11 @@ end
 
 function UF:Construct_Buffs(frame)
 	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
-	buffs.PreSetPosition = UF.SortAuras
-	buffs.PostCreateButton = UF.Construct_AuraIcon
-	buffs.PostUpdateButton = UF.PostUpdateAura
-	buffs.SetPosition = UF.SetPosition
-	buffs.PreUpdate = UF.PreUpdateAura
-	buffs.CustomFilter = UF.AuraFilter
 	buffs.stacks = {}
 	buffs.rows = {}
 	buffs.type = 'buffs'
+
+	UF:SetAuraCallbacks(buffs)
 
 	buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 	buffs:SetSize(1, 1)
@@ -112,15 +118,11 @@ end
 
 function UF:Construct_Debuffs(frame)
 	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
-	debuffs.PreSetPosition = UF.SortAuras
-	debuffs.PostCreateButton = UF.Construct_AuraIcon
-	debuffs.PostUpdateButton = UF.PostUpdateAura
-	debuffs.SetPosition = UF.SetPosition
-	debuffs.PreUpdate = UF.PreUpdateAura
-	debuffs.CustomFilter = UF.AuraFilter
 	debuffs.stacks = {}
 	debuffs.rows = {}
 	debuffs.type = 'debuffs'
+
+	UF:SetAuraCallbacks(debuffs)
 
 	debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 	debuffs:SetSize(1, 1)
@@ -344,6 +346,223 @@ function UF:UpdateAuraSettings(button)
 	UF:UpdateFilters(button)
 end
 
+do -- 12.1 aura container support
+	local blockedDuration = 999999 -- any non-nil maxDuration hides permanent auras
+
+	function UF:GetAuraDurationFormatter()
+		local formatter = UF.AuraDurationFormatter
+		if formatter == nil then
+			local create = C_StringUtil and C_StringUtil.CreateSecondsFormatter
+			formatter = (create and create()) or false -- dont retry when unavailable
+
+			if formatter then -- the api is still moving on ptr, verify before configuring
+				local abbreviation = Enum.SecondsFormatterAbbreviation
+				if abbreviation and formatter.SetDefaultAbbreviation then
+					formatter:SetDefaultAbbreviation(abbreviation.OneLetter)
+				end
+
+				if formatter.SetDesiredUnitCount then
+					formatter:SetDesiredUnitCount(1)
+				end
+			end
+
+			UF.AuraDurationFormatter = formatter
+		end
+
+		return formatter or nil
+	end
+
+	function UF:Construct_ContainerButton(button) -- self is the element holder
+		local isNameplate = self.isNameplate
+		local borderColor = (isNameplate and E.media.bordercolor) or E.media.unitframeBorderColor
+
+		local border = button:CreateTexture(nil, 'BACKGROUND', nil, -8)
+		border:SetAllPoints(button)
+		border:SetTexture(E.media.blankTex)
+		border:SetVertexColor(borderColor[1], borderColor[2], borderColor[3])
+		button.Border = border
+
+		local dispel = button:CreateTexture(nil, 'BACKGROUND', nil, -7)
+		dispel:SetAllPoints(button)
+		dispel:SetTexture(E.media.blankTex)
+		button.DispelBorder = dispel
+
+		local backdrop = button:CreateTexture(nil, 'BACKGROUND', nil, -6)
+		backdrop:SetPoint('TOPLEFT', button, 'TOPLEFT', E.mult, -E.mult)
+		backdrop:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -E.mult, E.mult)
+		backdrop:SetTexture(E.media.blankTex)
+		backdrop:SetVertexColor(0, 0, 0)
+		button.Backdrop = backdrop
+
+		local icon = button:CreateTexture(nil, 'ARTWORK')
+		icon:SetPoint('TOPLEFT', button, 'TOPLEFT', E.mult, -E.mult)
+		icon:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -E.mult, E.mult)
+		icon:SetTexCoord(unpack(E.TexCoords))
+		button.Icon = icon
+
+		local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
+		cooldown:SetAllPoints(icon)
+		cooldown:SetHideCountdownNumbers(true)
+		cooldown:SetDrawBling(false)
+		button.Cooldown = cooldown
+
+		local textFrame = CreateFrame('Frame', nil, button)
+		textFrame:SetAllPoints(button)
+		textFrame:SetFrameLevel(cooldown:GetFrameLevel() + 1)
+
+		local count = textFrame:CreateFontString(nil, 'OVERLAY')
+		count:FontTemplate()
+		button.Count = count
+
+		local duration = textFrame:CreateFontString(nil, 'OVERLAY')
+		duration:FontTemplate()
+		duration:Point('CENTER')
+		button.DurationText = duration
+
+		button:SetIcon(icon)
+		button:SetDurationCooldown(cooldown)
+		button:SetDurationText(duration, { formatter = UF:GetAuraDurationFormatter() })
+		button:SetApplicationCount(count)
+		button:SetAuraBorder(dispel, { style = AuraButtonBorderStyle.Color, showWhenHarmful = true, showWhenHelpful = true })
+
+		UF.UpdateContainerButtonSettings(self, button)
+	end
+
+	function UF:UpdateContainerButtonSettings(button) -- self is the element holder
+		local db = self.db
+		if db then
+			if button.Count then
+				local point = db.countPosition or 'CENTER'
+				button.Count:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
+				button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+				button.Count:ClearAllPoints()
+				button.Count:Point(point, db.countXOffset, db.countYOffset)
+			end
+
+			if button.DurationText then
+				button.DurationText:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+			end
+		end
+
+		if button.SetMouseMotionEnabled then
+			button:SetMouseMotionEnabled(not self.disableMouse)
+		end
+	end
+
+	local sortMethods = {
+		TIME_REMAINING = 'Expiration',
+		DURATION = 'Expiration',
+		NAME = 'Name',
+		INDEX = 'Default',
+		PLAYER = 'Default'
+	}
+
+	local function GetCandidateFilters(db, player, blocklist)
+		local blockPermanent = (player and db.isAuraPermanentPlayer) or (not player and db.isAuraPermanent)
+		local maxDuration = (db.maxDuration and db.maxDuration > 0 and db.maxDuration) or (blockPermanent and blockedDuration) or nil
+
+		if not maxDuration and not blocklist then
+			return nil
+		end
+
+		return { excludeSpellIDs = blocklist, maxDuration = maxDuration }
+	end
+
+	local function AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, token, player)
+		for _, filter in next, base do
+			if token then filter = filter..'|'..token end
+			if player then filter = filter..'|PLAYER' end
+			if nameplate then filter = filter..'|INCLUDE_NAME_PLATE_ONLY' end
+
+			tinsert(groups, {
+				filter = filter,
+				candidateFilters = GetCandidateFilters(db, player, blocklist),
+				sortMethod = sortMethod,
+				sortDirection = sortDirection,
+				maxFrameCount = maxCount
+			})
+		end
+	end
+
+	function UF:GetContainerBlocklist(db)
+		if not db.useBlocklist then return end
+
+		local filterList = E.global.unitframe.aurafilters
+		local spells = filterList and filterList.Blocklist and filterList.Blocklist.spells
+		if not spells then return end
+
+		local blocklist
+		for spellID, spell in next, spells do
+			if spell.enable and type(spellID) == 'number' then
+				if not blocklist then blocklist = {} end
+				blocklist[spellID] = true
+			end
+		end
+
+		return blocklist
+	end
+
+	function UF:BuildContainerGroups(auras, db)
+		local groups = {}
+
+		local base
+		local which = (auras.type == 'buffs' and 'HELPFUL') or (auras.type == 'debuffs' and 'HARMFUL') or auras.filter or 'HARMFUL'
+		if which == 'HELPFUL|HARMFUL' then
+			base = { 'HELPFUL', 'HARMFUL' }
+		elseif which == 'RAID' then -- needs a helpful or harmful base to be a valid filter string
+			base = { 'HELPFUL|RAID', 'HARMFUL|RAID' }
+		else
+			base = { which }
+		end
+
+		local nameplate = auras.isNameplate
+		local sortMethod = AuraContainerSortMethod[sortMethods[db.sortMethod] or 'Default'] or AuraContainerSortMethod.Default
+		local sortDirection = (db.sortDirection == 'DESCENDING' and AuraContainerSortDirection.Reverse) or AuraContainerSortDirection.Normal
+		local maxCount = auras.num or 32
+		local blocklist = UF:GetContainerBlocklist(db)
+
+		local noFilter = not (db.isAuraPlayer or db.isAuraRaidPlayerDispellable
+			or db.isAuraCrowdControl or db.isAuraCrowdControlPlayer
+			or db.isAuraBigDefensive or db.isAuraBigDefensivePlayer
+			or db.isAuraRaidInCombat or db.isAuraRaidInCombatPlayer
+			or db.isAuraExternalDefensive or db.isAuraExternalDefensivePlayer
+			or db.isAuraCancelable or db.isAuraCancelablePlayer
+			or db.notAuraCancelable or db.notAuraCancelablePlayer
+			or db.isAuraRaid or db.isAuraRaidPlayer)
+
+		if noFilter then -- no allow boxes checked, show everything (like VerifyFilter)
+			AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist)
+		else -- mirrors the order of UF:VerifyFilter
+			if db.isAuraPlayer then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, nil, true) end
+			if db.isAuraRaidPlayerDispellable then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'RAID_PLAYER_DISPELLABLE') end
+			if db.isAuraCrowdControl then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'CROWD_CONTROL') end
+			if db.isAuraCrowdControlPlayer then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'CROWD_CONTROL', true) end
+			if db.isAuraBigDefensive then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'BIG_DEFENSIVE') end
+			if db.isAuraBigDefensivePlayer then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'BIG_DEFENSIVE', true) end
+			if db.isAuraRaidInCombat then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'RAID_IN_COMBAT') end
+			if db.isAuraRaidInCombatPlayer then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'RAID_IN_COMBAT', true) end
+			if db.isAuraExternalDefensive then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'EXTERNAL_DEFENSIVE') end
+			if db.isAuraExternalDefensivePlayer then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'EXTERNAL_DEFENSIVE', true) end
+			if db.isAuraCancelable then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'CANCELABLE') end
+			if db.isAuraCancelablePlayer then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'CANCELABLE', true) end
+			if db.notAuraCancelable then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'NOT_CANCELABLE') end
+			if db.notAuraCancelablePlayer then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'NOT_CANCELABLE', true) end
+			if db.isAuraRaid then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'RAID') end
+			if db.isAuraRaidPlayer then AddContainerGroup(groups, db, base, nameplate, sortMethod, sortDirection, maxCount, blocklist, 'RAID', true) end
+		end
+
+		return groups
+	end
+
+	function UF:Configure_AuraContainer(auras, db)
+		auras.containerGroups = UF:BuildContainerGroups(auras, db)
+
+		if auras.UpdateContainer then -- set by the oUF element once enabled
+			auras:UpdateContainer()
+		end
+	end
+end
+
 function UF:EnableDisable_Auras(frame)
 	if frame.db.debuffs.enable or frame.db.buffs.enable or frame.db.auras.enable then
 		if not frame:IsElementEnabled('Auras') then
@@ -483,6 +702,10 @@ function UF:Configure_Auras(frame, which)
 		end
 
 		index = index + 1
+	end
+
+	if E.AuraContainer then
+		UF:Configure_AuraContainer(auras, settings)
 	end
 
 	if settings.enable then

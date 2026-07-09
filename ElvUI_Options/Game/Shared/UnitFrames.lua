@@ -238,7 +238,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	local config = ACH:Group(key.name, nil, key.order, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
+	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2, nil, nil, nil, nil, nil, E.AuraContainer)
 	config.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
 	config.args.useMidnight = ACH:Toggle(L["Use Midnight Filters"], nil, 4, nil, nil, nil, nil, nil, nil, E.Retail)
 
@@ -256,7 +256,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.generalGroup.args.growthX = ACH:Select(L["Growth X-Direction"], nil, 13, { LEFT = L["Left"], RIGHT = L["Right"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint return point == 'LEFT' or point == 'RIGHT' end)
 	config.args.generalGroup.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 14, { UP = L["Up"], DOWN = L["Down"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint return point == 'TOP' or point == 'BOTTOM' end)
 	config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 15, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
-	config.args.generalGroup.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = L["Player"] })
+	config.args.generalGroup.args.sortMethod = ACH:Select(L["Sort By"], E.AuraContainer and L["Method to sort by.\n\n|cffff3333Note:|r Duration and Player are approximated by Time Remaining and Index."] or L["Method to sort by."], 16, { TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = L["Player"] })
 	config.args.generalGroup.args.filter = ACH:Select(L["Aura Filter"], nil, 17, { RAID = L["Raid"], HELPFUL = L["Buffs"], HARMFUL = L["Debuffs"], ["HELPFUL|HARMFUL"] = L["Buffs and Debuffs"] }, nil, nil, nil, nil, nil, auraType ~= 'auras')
 	config.args.generalGroup.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 18)
 
@@ -280,7 +280,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.textGroup.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.textGroup.args.duration.inline = true
 
-	config.args.sourceGroup = ACH:Group(L["Source Text"], nil, 40, nil, function(info) return E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.sourceGroup = ACH:Group(L["Source Text"], nil, 40, nil, function(info) return E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] = value updateFunc(UF, groupName, numUnits) end, E.AuraContainer)
 	config.args.sourceGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.sourceGroup.args.class = ACH:Toggle(L["Use Class Color"], nil, 2)
 	config.args.sourceGroup.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
@@ -343,7 +343,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.legacyGroup.args.spacer1 = ACH:Description(L["FILTER_PRIORITY_DESC"], 9)
 
 	if auraType == 'debuffs' then
-		config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], L["Set auras that are not from you to desaturated."], 3)
+		config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], L["Set auras that are not from you to desaturated."], 3, nil, nil, nil, nil, nil, E.AuraContainer)
 		config.args.generalGroup.args.attachTo.values = { FRAME = L["Frame"], BUFFS = L["Buffs"], HEALTH = L["Health"], POWER = L["Power"] }
 		config.args.generalGroup.args.attachTo.disabled = function() local position = E.db.unitframe.units[groupName].smartAuraPosition return position == 'DEBUFFS_ON_BUFFS' or position == 'FLUID_DEBUFFS_ON_BUFFS' end
 	end
@@ -1685,7 +1685,7 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 	}
 
 	if unitType ~= 'party' and unitType ~= 'assist' and unitType ~= 'tank' and not strmatch(unitType, '^raid') then
-		config.auraGroup.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 1, C.Values.SmartAuraPositions)
+		config.auraGroup.args.smartAuraPosition = ACH:Select(L["Smart Aura Position"], L["Will show Buffs in the Debuff position when there are no Debuffs active, or vice versa."], 1, C.Values.SmartAuraPositions, nil, nil, nil, nil, E.AuraContainer)
 	end
 
 	if P.unitframe.units[unitType].debuffHighlight then

@@ -10,7 +10,6 @@ local HIDDEN = 0
 
 local next = next
 local wipe = wipe
-local pcall = pcall
 local unpack = unpack
 local tinsert = tinsert
 
@@ -350,7 +349,7 @@ local function Enable(self)
 		-- Avoid parenting GameTooltip to frames with anchoring restrictions,
 		-- otherwise it'll inherit said restrictions which will cause issues
 		-- with its further positioning, clamping, etc
-		element.__restricted = not pcall(self.GetCenter, self)
+		element.__restricted = self:IsAnchoringRestricted()
 
 		element:Show()
 
@@ -370,4 +369,192 @@ end
 
 if oUF.wowtoc < 120100 then
 	oUF:AddElement('AuraBars', Update, Enable, Disable)
+else -- 12.1: aura data is secret, rebuild on Blizzard's AuraContainer
+	local InCombatLockdown = InCombatLockdown
+
+	local groupFilters = { 'HELPFUL', 'HARMFUL' }
+
+	local pendingBars = {}
+	local watcher = CreateFrame('Frame')
+	watcher:RegisterEvent('PLAYER_REGEN_ENABLED')
+
+	local function InitializeBar(element, button)
+		element.bars[#element.bars + 1] = button
+
+		button.__owner = element
+
+		local height = element.height or 12
+		local barSpacing = element.barSpacing or 2
+
+		local icon = button:CreateTexture(nil, 'ARTWORK')
+		icon:SetPoint('LEFT', button, 'LEFT', 0, 0)
+		icon:SetSize(height, height)
+		button.icon = icon
+
+		local bar = CreateFrame('StatusBar', nil, button)
+		bar:SetPoint('TOPLEFT', icon, 'TOPRIGHT', barSpacing, 0)
+		bar:SetPoint('BOTTOMRIGHT', button, 'BOTTOMRIGHT', 0, 0)
+		bar:SetStatusBarTexture([[Interface\TargetingFrame\UI-StatusBar]])
+		button.bar = bar
+
+		local nameText = bar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
+		nameText:SetPoint('LEFT', bar, 'LEFT', 2, 0)
+		button.nameText = nameText
+
+		local timeText = bar:CreateFontString(nil, 'OVERLAY', 'NumberFontNormal')
+		timeText:SetPoint('RIGHT', bar, 'RIGHT', -2, 0)
+		button.timeText = timeText
+
+		button:SetIcon(icon)
+		button:SetDurationBar(bar)
+		button:SetSpellName(nameText)
+		button:SetDurationText(timeText)
+
+		if element.PostCreateBar then element:PostCreateBar(button) end
+	end
+
+	local function GetUnitFilter(element, unit)
+		local isEnemy = UnitIsEnemy(unit, 'player')
+		local reaction = UnitReaction(unit, 'player')
+
+		return (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
+	end
+
+	local function ConfigureBars(element)
+		local frame = element.__owner
+		local unit = frame.unit
+		if not unit then return end
+
+		if InCombatLockdown() then
+			pendingBars[element] = true
+			return
+		end
+
+		local container = element.Container
+		if not container then
+			container = CreateFrame('AuraContainer', nil, element, 'CustomAuraContainerTemplate')
+			element.Container = container
+		end
+
+		container:SetUnit(unit)
+
+		local anchor = element.initialAnchor or 'BOTTOMLEFT'
+		container:ClearAllPoints()
+		container:SetPoint(anchor, element, anchor)
+		container:SetAuraLayoutAnchorPoint(anchor)
+
+		local flow = _G.AnchorUtil.FlowDirection
+		container:SetAuraLayoutGrowthDirection(flow.Right, (element.growth == 'DOWN' and flow.Down) or flow.Up)
+
+		local height = element.height or 12
+		local width = (element.width or 240) + height + (element.barSpacing or 2)
+		container:SetAuraLayoutRowWidth(width)
+
+		local layout = element.groupLayout
+		if not layout then
+			layout = {}
+			element.groupLayout = layout
+		end
+
+		layout.elementWidth = width
+		layout.elementHeight = height
+		layout.elementSpacingY = element.spacing or 2
+		layout.forceNewRow = true -- one bar per row
+
+		local active = GetUnitFilter(element, unit)
+		for _, filter in next, groupFilters do -- both groups exist, toggled by unit reaction
+			local maxCount = (filter == active and element.maxBars) or 0
+
+			if element.groupKeys[filter] then
+				container:SetAuraGroupMaxFrameCount(filter, maxCount)
+				container:SetAuraGroupLayout(filter, layout)
+			else
+				element.groupKeys[filter] = true
+
+				container:AddAuraGroup(filter, filter, {
+					maxFrameCount = maxCount,
+					initializeFrame = element.initializeFrame,
+					layout = layout
+				})
+			end
+		end
+
+		for _, button in next, element.bars do
+			button:SetSize(width, height)
+			button.icon:SetSize(height, height)
+
+			if element.PostUpdateBarSettings then
+				element:PostUpdateBarSettings(button)
+			end
+		end
+
+		container:SetEnabled(true)
+		container:Show()
+	end
+
+	watcher:SetScript('OnEvent', function()
+		local element = next(pendingBars)
+		while element do
+			pendingBars[element] = nil
+			ConfigureBars(element)
+
+			element = next(pendingBars)
+		end
+	end)
+
+	local function ContainerUpdate(self, _, unit)
+		if self.unit ~= unit then return end
+
+		local element = self.AuraBars
+		if element then
+			ConfigureBars(element)
+		end
+	end
+
+	local function ContainerForceUpdate(element)
+		return ContainerUpdate(element.__owner, 'ForceUpdate', element.__owner.unit)
+	end
+
+	local function ContainerEnable(self)
+		local element = self.AuraBars
+		if element then
+			element.__owner = self
+			element.__restricted = self:IsAnchoringRestricted()
+			element.ForceUpdate = ContainerForceUpdate
+			element.UpdateContainer = ConfigureBars
+
+			if not element.bars then element.bars = {} end
+			if not element.groupKeys then element.groupKeys = {} end
+
+			element.maxBars = element.maxBars or 32
+			element.barSpacing = element.barSpacing or 2
+
+			if not element.initializeFrame then
+				element.initializeFrame = function(button)
+					InitializeBar(element, button)
+				end
+			end
+
+			ConfigureBars(element)
+
+			element:Show()
+
+			return true
+		end
+	end
+
+	local function ContainerDisable(self)
+		local element = self.AuraBars
+		if element then
+			pendingBars[element] = nil
+
+			if element.Container then
+				element.Container:SetEnabled(false)
+			end
+
+			element:Hide()
+		end
+	end
+
+	oUF:AddElement('AuraBars', ContainerUpdate, ContainerEnable, ContainerDisable)
 end
