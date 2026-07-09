@@ -593,16 +593,14 @@ function A:UpdateHeader(header)
 	end
 end
 
-function A:NextChild(header, key, index)
-	return index + 1, header:GetAttribute(key..index)
-end
-
 function A:LoopChildren(header, key, func, ...)
-	local index, child = A:NextChild(header, key, 1)
+	local index = 1
+	local child = header:GetAttribute(key..index)
 	while child do
 		func(header, child, index, ...)
 
-		index, child = A:NextChild(header, key, index)
+		index = index + 1
+		child = header:GetAttribute(key..index)
 	end
 end
 
