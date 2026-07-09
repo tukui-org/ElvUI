@@ -617,7 +617,7 @@ function A:ForEachChild(func, ...)
 	if not func then return end
 
 	A:LoopChildren(self, 'child', func, ...)
-	A:LoopIndex(self, 'tempEnchant', 2, func, ...)
+	A:LoopIndex(self, 'tempEnchant', 3, func, ...)
 end
 
 function A:CreateAuraHeader(filter)
