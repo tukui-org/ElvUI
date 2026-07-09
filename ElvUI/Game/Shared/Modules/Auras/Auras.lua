@@ -687,7 +687,7 @@ function A:Initialize()
 	local mapOffsetY = (mapAnchor == mapCluster and 3 or 0) + E.Spacing
 	local mapOffsetX = 6 + E.Border
 
-	if E.private.auras.buffsHeader then
+	if not E.PTR and E.private.auras.buffsHeader then
 		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 		A:UpdateHeader(A.BuffFrame)
 
@@ -697,7 +697,7 @@ function A:Initialize()
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 	end
 
-	if E.private.auras.debuffsHeader then
+	if not E.PTR and E.private.auras.debuffsHeader then
 		A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
 		A:UpdateHeader(A.DebuffFrame)
 
