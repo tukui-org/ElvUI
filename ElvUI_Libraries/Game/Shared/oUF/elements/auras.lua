@@ -557,4 +557,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('Auras', Update, Enable, Disable)
+-- oUF:AddElement('Auras', Update, Enable, Disable)

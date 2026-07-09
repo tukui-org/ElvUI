@@ -139,4 +139,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('AuraHighlight', Update, Enable, Disable)
+-- oUF:AddElement('AuraHighlight', Update, Enable, Disable)

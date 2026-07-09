@@ -368,4 +368,4 @@ local function Disable(self)
 	end
 end
 
-oUF:AddElement('AuraBars', Update, Enable, Disable)
+-- oUF:AddElement('AuraBars', Update, Enable, Disable)
