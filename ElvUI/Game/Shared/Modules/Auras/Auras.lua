@@ -593,14 +593,25 @@ function A:UpdateHeader(header)
 	end
 end
 
+function A:NextChild(header, key, index)
+	return index + 1, header:GetAttribute(key..index)
+end
+
 function A:LoopChildren(header, key, func, ...)
-	local index = 1
-	local child = header:GetAttribute(key..index)
+	local index, child = A:NextChild(header, key, 1)
 	while child do
 		func(header, child, index, ...)
 
-		index = index + 1
-		child = header:GetAttribute(key..index)
+		index, child = A:NextChild(header, key, index)
+	end
+end
+
+function A:LoopIndex(header, key, count, func, ...)
+	for index = 1, count do
+		local child = header:GetAttribute(key..index)
+		if child then
+			func(header, child, index, ...)
+		end
 	end
 end
 
@@ -608,7 +619,7 @@ function A:ForEachChild(func, ...)
 	if not func then return end
 
 	A:LoopChildren(self, 'child', func, ...)
-	A:LoopChildren(self, 'tempEnchant', func, ...)
+	A:LoopIndex(self, 'tempEnchant', 2, func, ...)
 end
 
 function A:CreateAuraHeader(filter)
