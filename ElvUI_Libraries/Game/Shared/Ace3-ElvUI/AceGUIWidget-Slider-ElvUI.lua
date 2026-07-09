@@ -12,6 +12,7 @@ local tonumber, pairs = tonumber, pairs
 
 -- WoW APIs
 local PlaySound = PlaySound
+local C_Timer_After = C_Timer.After
 local CreateFrame, UIParent = CreateFrame, UIParent
 
 --[[-----------------------------------------------------------------------------
@@ -276,6 +277,11 @@ local function Constructor()
 		widget[method] = func
 	end
 	slider.obj, editbox.obj = widget, widget
+
+	C_Timer_After(0.3, function()
+		editbox:SetText(" ")
+		UpdateText(widget)
+	end) -- Workaround for font loading issue, making the editboxes blank until the text is changed
 
 	return AceGUI:RegisterAsWidget(widget)
 end
