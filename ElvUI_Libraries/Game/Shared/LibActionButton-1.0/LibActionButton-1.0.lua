@@ -77,7 +77,6 @@ lib.buttonRegistry = lib.buttonRegistry or {}
 lib.activeButtons = lib.activeButtons or {}
 lib.actionButtons = lib.actionButtons or {}
 lib.nonActionButtons = lib.nonActionButtons or {}
-lib.actionButtonsNonUI = lib.actionButtonsNonUI or {}
 lib.activeAlerts = lib.activeAlerts or {}
 lib.activeAssist = lib.activeAssist or {}
 
@@ -135,9 +134,9 @@ local type_meta_map = {
 
 local GetFlyoutHandler
 local InitializeEventHandler, OnEvent, ForAllButtonsWithSpell, ForAllButtons
-local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons, ActionButtonsNonUI = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons, lib.actionButtonsNonUI
+local ButtonRegistry, ActiveButtons, ActionButtons, NonActionButtons = lib.buttonRegistry, lib.activeButtons, lib.actionButtons, lib.nonActionButtons
 
-local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateCooldownNumberHidden, UpdateTooltip, UpdateNewAction, UpdateSpellHighlight, ClearNewActionHighlight
+local Update, UpdateButtonState, UpdateUsable, UpdateCount, UpdateCooldown, UpdateTooltip, UpdateNewAction, UpdateSpellHighlight, ClearNewActionHighlight
 local StartFlash, StopFlash, UpdateFlash, UpdateHotkeys, UpdateRangeTimer, UpdateOverlayGlow
 local UpdateFlyout, ShowGrid, HideGrid, UpdateGrid, SetupSecureSnippets, WrapOnClick
 local ShowOverlayGlow, HideOverlayGlow
@@ -208,7 +207,6 @@ local DefaultConfig = {
 	cooldownCount = nil, -- nil: use cvar, true/false: enable/disable
 	lossOfControlCooldown = true,
 	flyoutDirection = "UP",
-	actionButtonUI = false, -- register the button with SetActionUIButton, this has some side-effects if the button changes from action type to another type, but is required for certain UI integrations. Recommended to only set on pure type=action buttons
 	useDrawBling = true,
 	handleOverlay = true,
 	text = {
@@ -289,7 +287,7 @@ function lib:CreateButton(id, name, header, config)
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 
-	if WoWRetail or WoWBCC or WoWMists or WoWWrath then
+	if not WoWClassic then
 		button:RegisterForClicks("AnyDown", "AnyUp")
 	else
 		button:RegisterForClicks("AnyUp")
@@ -1450,7 +1448,6 @@ function Generic:UpdateConfig(config)
 		self.Name:Show()
 	end
 
-	UpdateCooldownNumberHidden(self)
 	UpdateTextElements(self)
 	UpdateHotkeys(self)
 	UpdateGrid(self)
@@ -1459,7 +1456,7 @@ function Generic:UpdateConfig(config)
 	self:SetAttribute('flyoutDirection', self.config.flyoutDirection)
 	self:SetAttribute('useOnKeyDown', self.config.clickOnDown)
 
-	if not (WoWRetail or WoWBCC or WoWMists or WoWWrath) then
+	if WoWClassic then
 		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
 	end
 end
@@ -1512,7 +1509,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
-	if WoWRetail or WoWBCC or WoWWrath or WoWMists then -- hasEditMode
+	if not WoWClassic then
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 	else
 		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
@@ -1584,8 +1581,6 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	elseif event == "CVAR_UPDATE" then
 		if arg1 == "assistedCombatHighlight" then
 			wipe(lib.activeAssist)
-		elseif arg1 == "countdownForCooldowns" then
-			ForAllButtons(UpdateCooldownNumberHidden)
 		end
 	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
 		if UseCustomFlyout then
@@ -1644,11 +1639,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 		if TARGETAURA_ENABLED then
 			UpdateTargetAuras(event, arg1, arg2)
 		end
-	elseif event == "ACTIONBAR_UPDATE_STATE" then
-		for button in next, ActionButtonsNonUI do
-			UpdateButtonState(button)
-		end
-	elseif (event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
+	elseif (event == "ACTIONBAR_UPDATE_STATE" or event == "UNIT_ENTERED_VEHICLE" or event == "UNIT_EXITED_VEHICLE")
 		or (event == "TRADE_SKILL_SHOW" or event == "TRADE_SKILL_CLOSE"  or event == "ARCHAEOLOGY_CLOSED" or event == "TRADE_CLOSED") then
 		ForAllButtons(UpdateButtonState, true, event)
 	elseif event == "ACTION_RANGE_CHECK_UPDATE" then
@@ -2114,10 +2105,7 @@ function Generic:UpdateAction(force)
 		self._state_action = action
 
 		-- set action attribute for action buttons
-		self.action = self._state_type == "action" and action or 0
-		if self.config.actionButtonUI then
-			SetActionUIButton(self, self.action, self.cooldown)
-		end
+		self.action = self._state_type == "action" and action or nil
 
 		Update(self, 'UpdateAction')
 	end
@@ -2129,13 +2117,9 @@ function Update(self, which)
 		if self._state_type == "action" then
 			ActionButtons[self] = true
 			NonActionButtons[self] = nil
-			if not self.config.actionButtonUI then
-				ActionButtonsNonUI[self] = true
-			end
 		else
 			ActionButtons[self] = nil
 			NonActionButtons[self] = true
-			ActionButtonsNonUI[self] = nil
 		end
 
 		self:SetAlpha(1.0)
@@ -2148,7 +2132,6 @@ function Update(self, which)
 		ActiveButtons[self] = nil
 		ActionButtons[self] = nil
 		NonActionButtons[self] = nil
-		ActionButtonsNonUI[self] = nil
 
 		if gridCounter == 0 and not self.config.showGrid then
 			self:SetAlpha(0.0)
@@ -2214,7 +2197,7 @@ function Update(self, which)
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 
-		if WoWRetail then
+		if not WoWClassic then
 			if not self.MasqueSkinned then
 				self.SlotBackground:Hide()
 				if self.config.hideElements.border then
@@ -2249,7 +2232,7 @@ function Update(self, which)
 			self.cooldown:Hide()
 		end
 
-		if WoWRetail then
+		if not WoWClassic then
 			if not self.MasqueSkinned then
 				self.SlotBackground:Show()
 				if self.config.hideElements.borderIfEmpty then
@@ -2384,16 +2367,6 @@ function UpdateCount(self)
 	self.Count:SetText(self:GetDisplayCount())
 end
 
-function UpdateCooldownNumberHidden(self)
-	local shouldBeHidden
-	if self.config.cooldownCount == nil then
-		shouldBeHidden = GetCVar("countdownForCooldowns") ~= "1"
-	else
-		shouldBeHidden = not self.config.cooldownCount
-	end
-	self.cooldown:SetHideCountdownNumbers(shouldBeHidden)
-end
-
 function ClearChargeCooldown(self)
 	if self.chargeCooldown then
 		CooldownFrame_Clear(self.chargeCooldown)
@@ -2500,7 +2473,6 @@ else
 		if hasLocCooldown and ((not hasCooldown) or ((locStart + locDuration) > (start + duration))) then
 			if self.cooldown.currentCooldownType ~= _G.COOLDOWN_TYPE_LOSS_OF_CONTROL then
 				self.cooldown.currentCooldownType = _G.COOLDOWN_TYPE_LOSS_OF_CONTROL
-				UpdateCooldownNumberHidden(self)
 			end
 
 			CooldownFrame_Set(self.cooldown, locStart, locDuration, true, true, modRate)
@@ -2509,7 +2481,6 @@ else
 		else
 			if self.cooldown.currentCooldownType ~= _G.COOLDOWN_TYPE_NORMAL then
 				self.cooldown.currentCooldownType = _G.COOLDOWN_TYPE_NORMAL
-				UpdateCooldownNumberHidden(self)
 			end
 
 			self.cooldown:SetScript("OnCooldownDone", OnCooldownDone, hasLocCooldown)
@@ -3056,7 +3027,7 @@ end
 
 -- fallback for pre-12.0
 
-local GetActionCount = GetActionCount
+local GetActionCount = C_ActionBar.GetActionUseCount or GetActionCount
 
 -- the remaining uses of GetActionCount can't deal with secrets, so disable on Midnight
 if WoWRetail then
@@ -3179,7 +3150,9 @@ if WoWClassic then
 			return LibClassicSpellActionCount:GetActionCount(self._state_action)
 		end
 	else -- if we don't have the library, only show count for items, like the default UI
-		Action.IsConsumableOrStackable = function(self) return IsItemAction(self._state_action) and (IsConsumableAction(self._state_action) or IsStackableAction(self._state_action)) end
+		Action.IsConsumableOrStackable = function(self)
+			return IsConsumableAction(self._state_action) or IsStackableAction(self._state_action) or (not IsItemAction(self._state_action) and GetActionCount(self._state_action) > 0)
+		end
 	end
 end
 
@@ -3204,31 +3177,22 @@ else
 end
 local GetSpellLossOfControlCooldownInfo = C_Spell and C_Spell.GetSpellLossOfControlCooldownInfo or GetSpellLoCCooldownInfoFallback
 
-local GetSpellTexture = C_Spell and C_Spell.GetSpellTexture or GetSpellTexture
-local GetSpellCastCount = C_Spell and C_Spell.GetSpellCastCount or GetSpellCount
-local IsAttackSpell = C_SpellBook and C_SpellBook.IsAutoAttackSpellBookItem or IsAttackSpell
-local IsCurrentSpell = C_Spell and C_Spell.IsCurrentSpell or IsCurrentSpell
-local IsAutoRepeatSpell = C_Spell and C_Spell.IsAutoRepeatSpell or IsAutoRepeatSpell
-local IsSpellUsable = C_Spell and C_Spell.IsSpellUsable or IsUsableSpell
-local IsSpellInRange = C_Spell and C_Spell.IsSpellInRange or IsSpellInRange
-
-local BOOKTYPE_SPELL = Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player or "spell"
 -----------------------------------------------------------
 --- Spell Button
 Spell.HasAction                = function(self) return true end
 Spell.GetActionText            = function(self) return "" end
-Spell.GetTexture               = function(self) return GetSpellTexture(self._state_action) end
-Spell.GetCount                 = function(self) return GetSpellCastCount(self._state_action) end
+Spell.GetTexture               = function(self) return C_Spell.GetSpellTexture(self._state_action) end
+Spell.GetCount                 = function(self) return C_Spell.GetSpellCastCount(self._state_action) end
 Spell.GetChargeInfo            = function(self) return C_Spell.GetSpellCharges(self._state_action) end
 Spell.GetCooldownInfo          = function(self) return C_Spell.GetSpellCooldown(self._state_action) end
 Spell.GetLoCCooldownInfo       = function(self) return GetSpellLossOfControlCooldownInfo(self._state_action) end
-Spell.IsAttack                 = function(self) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsAttackSpell(slot, BOOKTYPE_SPELL) or nil end
+Spell.IsAttack                = function(self) return C_Spell.IsAutoAttackSpell(self._state_action) or nil end
 Spell.IsEquipped               = function(self) return nil end
-Spell.IsCurrentlyActive        = function(self) return IsCurrentSpell(self._state_action) end
-Spell.IsAutoRepeat             = function(self) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsAutoRepeatSpell(slot, BOOKTYPE_SPELL) or nil end
-Spell.IsUsable                 = function(self) return IsSpellUsable(self._state_action) end
+Spell.IsCurrentlyActive        = function(self) return C_Spell.IsCurrentSpell(self._state_action) end
+Spell.IsAutoRepeat            = function(self) return C_Spell.IsAutoRepeatSpell(self._state_action) or nil end
+Spell.IsUsable                 = function(self) return C_Spell.IsSpellUsable(self._state_action) end
 Spell.IsConsumableOrStackable  = function(self) return IsConsumableSpell(self._state_action) end
-Spell.IsUnitInRange            = function(self, unit) local slot = FindSpellBookSlotBySpellID(self._state_action) return slot and IsSpellInRange(slot, BOOKTYPE_SPELL, unit) or nil end
+Spell.IsUnitInRange           = function(self, unit) return C_Spell.IsSpellInRange(self._state_action, unit) or nil end
 Spell.SetTooltip               = function(self) return GameTooltip:SetSpellByID(self._state_action) end
 Spell.GetSpellId               = function(self) return self._state_action end
 
