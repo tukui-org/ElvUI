@@ -23,9 +23,6 @@ local function HidePortraitFallback(element)
 	if element.Fallback2D then
 		element.Fallback2D:Hide()
 	end
-
-	element.secretRetryUnit = nil
-	element.secretRetryCount = nil
 end
 
 local function HasPortraitModel(element)
@@ -40,18 +37,11 @@ local function HidePortraitFallbackIfLoaded(element)
 	end
 end
 
--- Fired by OnModelLoaded. For secret-GUID units, only hide the 2D cover when a
--- DIFFERENT model file has loaded — that means the real NPC 3D model streamed in.
--- A same-ID fire means the stale cached model was re-applied; keep the 2D cover.
+-- A secret-identity unit cannot be passed to PlayerModel:SetUnit on 12.0.5+.
+-- Ignore stale model callbacks for it and keep the supported 2D cover visible.
 local function OnModelLoadedCheck(element)
-	if element.hasSecretUnit then
-		local newID = element:GetModelFileID()
-		if newID and newID ~= element.secretPreloadModelID then
-			HidePortraitFallback(element)
-		end
-	else
-		HidePortraitFallback(element)
-	end
+	if element.hasSecretUnit then return end
+	HidePortraitFallback(element)
 end
 
 local function RetryPortraitModel(element, unit)
@@ -62,7 +52,12 @@ local function RetryPortraitModel(element, unit)
 	element.modelRetryCount = 0
 
 	local function retry()
-		if element.modelRetryUnit ~= unit or not element:IsShown() then return end
+		if element.modelRetryUnit ~= unit then return end
+		if not element:IsShown() then
+			element.modelRetryUnit = nil
+			element.modelRetryCount = nil
+			return
+		end
 		if HidePortraitFallbackIfLoaded(element) then
 			element.modelRetryUnit = nil
 			element.modelRetryCount = nil
@@ -81,28 +76,6 @@ local function RetryPortraitModel(element, unit)
 
 		if element.modelRetryUnit == unit and retryCount < 10 then
 			C_Timer.After(0.25 * retryCount, retry)
-		end
-	end
-
-	C_Timer.After(0.1, retry)
-end
-
-local function RetrySecretPortrait(element, unit)
-	if not C_Timer then return end
-	if element.secretRetryUnit == unit then return end
-
-	element.secretRetryUnit = unit
-	element.secretRetryCount = 0
-
-	local function retry()
-		if element.secretRetryUnit ~= unit or not element:IsShown() then return end
-
-		local retryCount = (element.secretRetryCount or 0) + 1
-		element.secretRetryCount = retryCount
-		element:SetUnit(unit)
-
-		if element.secretRetryUnit == unit and retryCount < 4 then
-			C_Timer.After(0.2 * retryCount, retry)
 		end
 	end
 
@@ -145,8 +118,6 @@ function UF:PortraitOverride(event)
 
 	local nameplate = event == 'NAME_PLATE_UNIT_ADDED'
 	if newGUID then
-		element.secretRetryUnit = nil
-		element.secretRetryCount = nil
 		element.modelRetryUnit = nil
 		element.modelRetryCount = nil
 		element.guid = not secretGUID and guid or nil
@@ -157,14 +128,15 @@ function UF:PortraitOverride(event)
 	if element.PreUpdate then element:PreUpdate(unit) end
 
 	local isPlayerRaw = UnitIsPlayer(unit)
-	local isPlayer = (isPlayerRaw == true)
-	local isSecret = E:IsSecretValue(isPlayerRaw)
+	local isPlayerSecret = E:IsSecretValue(isPlayerRaw)
+	local isPlayer = not isPlayerSecret and isPlayerRaw == true
 	local isVisibleRaw = UnitIsVisible(unit)
 	local isVisible = not isPlayer or E:IsSecretValue(isVisibleRaw) or (isVisibleRaw == true)
 	local isConnectedRaw = UnitIsConnected(unit)
 	local isConnected = E:IsSecretValue(isConnectedRaw) or (isConnectedRaw == true)
-	local isModelReady = IsUnitModelReadyForUI and IsUnitModelReadyForUI(unit)
-	local isAvailable = element:IsVisible() and isVisible and (not isPlayer or isSecret or (isModelReady and isConnected))
+	local isModelReadyRaw = IsUnitModelReadyForUI and IsUnitModelReadyForUI(unit)
+	local isModelReady = E:IsSecretValue(isModelReadyRaw) or isModelReadyRaw == true
+	local isAvailable = element:IsVisible() and isVisible and (not isPlayer or isPlayerSecret or (isModelReady and isConnected))
 	local playerModel = element:IsObjectType('PlayerModel')
 	local needsModel = playerModel and isAvailable and not HasPortraitModel(element)
 
@@ -196,13 +168,8 @@ function UF:PortraitOverride(event)
 				local needsLoad = (not secretGUID and needsModel) or (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
 				if needsLoad then
 					if secretGUID then
-						-- Show a 2D cover frame immediately so any stale cached 3D model
-						-- (from the previous target) is hidden while we try to load the real
-						-- NPC model. The cover is a child Frame placed above the PlayerModel,
-						-- so it renders on top of any 3D content regardless of draw layers.
-						-- SetUnit is called WITHOUT ClearModel so the old model stays as an
-						-- invisible placeholder; if the NPC's actual model streams in,
-						-- OnModelLoadedCheck detects the new file ID and hides the cover.
+						-- PlayerModel:SetUnit rejects secret identities on 12.0.5+.
+						-- Cover any stale 3D model with the supported 2D portrait.
 						if not element.Fallback2DFrame then
 							local cover = CreateFrame("Frame", nil, element)
 							cover:SetAllPoints(element)
@@ -216,11 +183,6 @@ function UF:PortraitOverride(event)
 						SetPortraitTexture(element.Fallback2D, unit)
 						element.Fallback2DFrame:Show()
 						element.Fallback2D:Show()
-
-						-- Snapshot the current model ID before SetUnit so OnModelLoadedCheck
-						-- can tell a real new NPC load from a stale cache hit.
-						element.secretPreloadModelID = element:GetModelFileID()
-						element:SetUnit(unit)
 					else
 						HidePortraitFallback(element)
 						element:SetUnit(unit)
