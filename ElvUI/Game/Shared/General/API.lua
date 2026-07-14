@@ -55,6 +55,9 @@ local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
+local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local GameRulesUtil_IsPlayerAtEffectiveMaxLevel = GameRulesUtil and GameRulesUtil.IsPlayerAtEffectiveMaxLevel
+local GameRulesUtil_GetEffectiveMaxLevelForPlayer = GameRulesUtil and GameRulesUtil.GetEffectiveMaxLevelForPlayer
 local GetAddOnRestrictionState = C_RestrictedActions and C_RestrictedActions.GetAddOnRestrictionState
 local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
 local CreateCurve = C_CurveUtil and C_CurveUtil.CreateCurve
@@ -1106,21 +1109,19 @@ function E:XPIsTrialMax()
 end
 
 function E:IsLevelAtEffectiveMaxLevel(level)
-	if GameRulesUtil and GameRulesUtil.GetEffectiveMaxLevelForPlayer then
-		return level >= GameRulesUtil.GetEffectiveMaxLevelForPlayer()
+	if GameRulesUtil_GetEffectiveMaxLevelForPlayer then
+		return level >= GameRulesUtil_GetEffectiveMaxLevelForPlayer()
 	elseif IsLevelAtEffectiveMaxLevel then
 		return IsLevelAtEffectiveMaxLevel(level)
 	end
-
-	return false
 end
 
 function E:XPIsLevelMax()
-	local atMax = (GameRulesUtil and GameRulesUtil.IsPlayerAtEffectiveMaxLevel and GameRulesUtil.IsPlayerAtEffectiveMaxLevel())
-		or (IsPlayerAtEffectiveMaxLevel and IsPlayerAtEffectiveMaxLevel())
-		or E:IsLevelAtEffectiveMaxLevel(E.mylevel)
-
-	return atMax or IsXPUserDisabled() or E:XPIsTrialMax()
+	return (GameRulesUtil_IsPlayerAtEffectiveMaxLevel and GameRulesUtil_IsPlayerAtEffectiveMaxLevel())
+	or (IsPlayerAtEffectiveMaxLevel and IsPlayerAtEffectiveMaxLevel())
+	or E:IsLevelAtEffectiveMaxLevel(E.mylevel)
+	or IsXPUserDisabled()
+	or E:XPIsTrialMax()
 end
 
 function E:GetUnitBattlefieldFaction(unit)
