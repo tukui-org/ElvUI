@@ -85,8 +85,8 @@ end
 function UF.PortraitForceUpdate(frame, event, unit)
 	if unit == frame.unit then
 		local element = frame.Portrait
-		if element and element.ForceUpdate then
-			element:ForceUpdate()
+		if element and element.Override then
+			element.Override(frame, event, unit)
 		end
 	end
 end
@@ -163,9 +163,10 @@ function UF:PortraitOverride(event)
 				element:SetPosition(0, 0, 0)
 
 				local noUnitChange = event == "UNIT_PORTRAIT_UPDATE" or event == "UNIT_CONNECTION" or event == "PARTY_MEMBER_ENABLE" or event == "PARTY_MEMBER_DISABLE" or event == "UNIT_MODEL_CHANGED" or event == "OnUpdate"
-				-- For secret-GUID units, needsModel and newGUID are always truthy
-				-- (secret values can't be compared), so exclude them to avoid OnUpdate loops.
-				local needsLoad = (not secretGUID and needsModel) or (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and not noUnitChange)
+				-- Secret GUIDs cannot be compared, so only refresh them for real events or
+				-- eventless frames whose nested unit (such as targettarget) may have changed.
+				local eventlessRefresh = event == "OnUpdate" and self.__eventless
+				local needsLoad = (not secretGUID and needsModel) or (not secretGUID and newGUID) or (not secretGUID and event == "UNIT_MODEL_CHANGED") or (not prevState) or (event == "OnShow") or (secretGUID and (event == "UNIT_PORTRAIT_UPDATE" or eventlessRefresh or not noUnitChange))
 				if needsLoad then
 					if secretGUID then
 						-- PlayerModel:SetUnit rejects secret identities on 12.0.5+.
