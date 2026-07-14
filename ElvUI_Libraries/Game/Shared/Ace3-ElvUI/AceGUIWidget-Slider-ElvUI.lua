@@ -98,9 +98,11 @@ local function EditBox_OnEnterPressed(frame)
 	local value = frame:GetText()
 	if self.ispercent then
 		value = value:gsub('%%', '')
-		value = tonumber(value) / 100
-	else
-		value = tonumber(value)
+	end
+
+	value = tonumber(value)
+	if value and self.ispercent then
+		value = value / 100
 	end
 
 	if value then
