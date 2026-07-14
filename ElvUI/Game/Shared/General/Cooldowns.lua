@@ -2,7 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local LSM = E.Libs.LSM
 
 local next = next
+local CreateColor = CreateColor
+local CreateNumericRuleFormatter = C_StringUtil and C_StringUtil.CreateNumericRuleFormatter
 
+local ROUNDING = Enum.NumericRuleFormatRounding
+local ROUNDUP = ROUNDING and ROUNDING.Up or 1
+local ROUNDDOWN = ROUNDING and ROUNDING.Down or 2
 local COOLDOWN_TYPE_LOSS_OF_CONTROL = COOLDOWN_TYPE_LOSS_OF_CONTROL or 1
 
 E.RegisteredCooldowns = {}
@@ -93,9 +98,52 @@ function E:CooldownUpdate(cooldown)
 	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
 	E:CooldownColors(data.lossOfControl, colors.edgeLOC, colors.swipeLOC)
 
+	E:CooldownFormats(cooldown, db, data)
+
 	--cooldown:SetRotation(rad(db.rotation))
 	cooldown:SetDrawBling(not exclude and not db.hideBling)
 	cooldown:SetReverse(db.reverse)
+end
+
+do
+	local YEAR, DAY, HOUR, MINUTE, SECOND = 31557600, 86400, 3600, 60, 1
+	local Y, D, H, M = YEAR - DAY, DAY - HOUR, HOUR - MINUTE, MINUTE - SECOND
+	local default = { r = 1, g = 1, b = 1, a = 1 }
+	local times = { -- fake entries: key, fmt
+		{ key = 'expiring', fmt = '%.1f', threshold = 0, step = 0.1 },
+		{ key = 'seconds', fmt = '%.0f', threshold = 5, step = 1 },
+		{ key = 'minutes', fmt = '%.0fm', threshold = M, components = {{ div = M }} },
+		{ key = 'hours', fmt = '%.0fh', threshold = H, components = {{ div = H }} },
+		{ key = 'days', fmt = '%.0fd', threshold = D, components = {{ div = D }} },
+		{ key = 'years', fmt = '%.0fy', threshold = Y, components = {{ div = Y }} }
+	}
+
+	function E:CooldownBreakpoints(db, data)
+		local breakpoints = data.breakpoints
+		for index, point in next, times do
+			if point.key == 'seconds' then
+				point.rounding = (db.roundup and ROUNDUP) or ROUNDDOWN
+				point.threshold = db.minThreshold or point.threshold
+			end
+
+			local colors = db.colors[point.key] or default
+			data.color:SetRGBA(colors.r, colors.g, colors.b, colors.a)
+			point.format = data.color:WrapTextInColorCode(point.fmt)
+
+			breakpoints[index] = point
+		end
+
+		return breakpoints
+	end
+end
+
+function E:CooldownFormats(cooldown, db, data)
+	if not data.formatter then return end
+
+	local breakpoints = E:CooldownBreakpoints(db, data)
+	data.formatter:SetBreakpoints(breakpoints)
+
+	cooldown:SetCountdownFormatter(data.formatter)
 end
 
 function E:CooldownRegion(cooldown)
@@ -142,7 +190,7 @@ function E:RegisterCooldown(cooldown, which)
 
 	-- storage by cooldown (to grab a cooldowns data)
 	if not E.RegisteredCooldowns[cooldown] then
-		E.RegisteredCooldowns[cooldown] = { which = which }
+		E.RegisteredCooldowns[cooldown] = { which = which, breakpoints = {}, color = CreateColor(1, 1, 1, 1) }
 	else -- this cooldown was already added
 		return -- stop here
 	end
@@ -160,6 +208,10 @@ function E:RegisterCooldown(cooldown, which)
 	local parent = which == 'actionbar' and cooldown:GetParent()
 	data.chargeCooldown = parent and (parent.chargeCooldown or parent.ChargeCooldown) or nil -- ChargeCooldown is the zone ability
 	data.lossOfControl = parent and parent.lossOfControlCooldown or nil
+
+	if CreateNumericRuleFormatter then
+		data.formatter = CreateNumericRuleFormatter()
+	end
 
 	-- extract the blizzard cooldown region
 	E:CooldownInitialize(cooldown)

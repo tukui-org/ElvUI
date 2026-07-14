@@ -31,19 +31,30 @@ local function Group(order, db, label)
 	colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, charges)
 	colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
 	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
+
+	local thresholds = ACH:Group(L["Threshold Colors"], nil, 30)
+	thresholds.args.expiring = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 1)
+	thresholds.args.seconds = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 2)
+	thresholds.args.minutes = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 3)
+	thresholds.args.hours = ACH:Color(L["Hours"], L["Color when the text is in the hours format."], 4)
+	thresholds.args.days = ACH:Color(L["Days"], L["Color when the text is in the days format."], 5)
+	colors.args.timeColors = thresholds
+
 	colors.inline = true
 	mainArgs.colorGroup = colors
 
 	local general = ACH:Group(L["General"], nil, 30)
-	general.args.reverse = ACH:Toggle(L["Reverse"], L["Reverse the cooldown animation."], 1)
-	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 2, nil, nil, nil, nil, nil, nil, db == 'auraindicator')
-	general.args.chargeText = ACH:Toggle(L["Text: Charge"], L["The charge cooldown text."], 3, nil, nil, nil, nil, nil, nil, charges)
-	general.args.locText = ACH:Toggle(L["Text: Loss of Control"], L["The loss of control cooldown text."], 4, nil, nil, nil, nil, nil, nil, lossOfControl)
-	general.args.hideBling = ACH:Toggle(L["Hide Bling"], L["Completion flash when the cooldown finishes."], 11)
-	general.args.altBling = ACH:Toggle(L["Alternative Bling"], nil, 12)
+	general.args.roundup = ACH:Toggle(L["Round Timers"], nil, 1)
+	general.args.reverse = ACH:Toggle(L["Reverse"], L["Reverse the cooldown animation."], 2)
+	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 3, nil, nil, nil, nil, nil, nil, db == 'auraindicator')
+	general.args.chargeText = ACH:Toggle(L["Text: Charge"], L["The charge cooldown text."], 4, nil, nil, nil, nil, nil, nil, charges)
+	general.args.locText = ACH:Toggle(L["Text: Loss of Control"], L["The loss of control cooldown text."], 5, nil, nil, nil, nil, nil, nil, lossOfControl)
+	general.args.hideBling = ACH:Toggle(L["Hide Bling"], L["Completion flash when the cooldown finishes."], 6)
+	general.args.altBling = ACH:Toggle(L["Alternative Bling"], nil, 7)
 	general.args.spacer1 = ACH:Spacer(20, 'full', db == 'actionbar' or db == 'bossbutton')
-	general.args.threshold = ACH:Range(L["Threshold"], L["Abbreviation threshold (in seconds)."], 21, THRESHOLD)
+	general.args.minThreshold = ACH:Range(L["Low Threshold"], L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"], 21, { min = -1, max = 20, step = 1 })
 	general.args.minDuration = ACH:Range(L["Minimum Duration"], L["Minimum countdown duration (in seconds)."], 22, MIN_DURATION, nil, function(info) return E.db.cooldown[db][info[#info]] * 0.001 end, function(info, value) E.db.cooldown[db][info[#info]] = value * 1000; E:CooldownSettings(db); end)
+	general.args.threshold = ACH:Range(L["Threshold"], L["Abbreviation threshold (in seconds)."], 23, THRESHOLD)
 	-- general.args.rotation = ACH:Range(L["Rotation"], L["Rotates the entire cooldown clockwise."], 23, { min = 0, max = 360, step = 1 })
 	general.inline = true
 	mainArgs.generalGroup = general
