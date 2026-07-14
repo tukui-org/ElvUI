@@ -24,8 +24,6 @@ local function UpdateButton(self)
 end
 
 local function HandleOptionSlot(frame, skip)
-	if not frame then return end
-
 	local option = frame.OptionsList
 	option:StripTextures()
 	option:SetTemplate()
@@ -62,15 +60,18 @@ end
 function S:Blizzard_DelvesCompanionConfiguration()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
-	local CompanionConfigurationFrame = _G.DelvesCompanionConfigurationFrame
-	CompanionConfigurationFrame.CloseButton:ClearAllPoints()
-	CompanionConfigurationFrame.CloseButton:Point('TOPRIGHT', CompanionConfigurationFrame, 'TOPRIGHT', -3, -3)
-	S:HandlePortraitFrame(CompanionConfigurationFrame)
-	S:HandleButton(CompanionConfigurationFrame.CompanionConfigShowAbilitiesButton)
+	local CompanionConfiguration = _G.DelvesCompanionConfigurationFrame
+	CompanionConfiguration.CloseButton:ClearAllPoints()
+	CompanionConfiguration.CloseButton:Point('TOPRIGHT', CompanionConfiguration, 'TOPRIGHT', -3, -3)
+	S:HandlePortraitFrame(CompanionConfiguration)
+	S:HandleButton(CompanionConfiguration.CompanionConfigShowAbilitiesButton)
 
-	HandleOptionSlot(CompanionConfigurationFrame.CompanionCombatRoleSlot, true)
-	HandleOptionSlot(CompanionConfigurationFrame.CompanionUtilityTrinketSlot)
-	HandleOptionSlot(CompanionConfigurationFrame.CompanionCombatTrinketSlot)
+	local CompanionSlots = CompanionConfiguration.CompanionSlots
+	if CompanionSlots then
+		HandleOptionSlot(CompanionSlots.CompanionCombatRoleSlot, true)
+		HandleOptionSlot(CompanionSlots.CompanionUtilityTrinketSlot)
+		HandleOptionSlot(CompanionSlots.CompanionCombatTrinketSlot)
+	end
 
 	local CompanionAbilityListFrame = _G.DelvesCompanionAbilityListFrame
 	S:HandlePortraitFrame(CompanionAbilityListFrame)
