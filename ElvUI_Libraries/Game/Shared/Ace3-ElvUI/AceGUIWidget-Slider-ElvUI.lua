@@ -6,11 +6,10 @@ local Type, Version = "Slider-ElvUI", 3
 local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
--- Lua APIs
 local min, max, floor = math.min, math.max, math.floor
-local tonumber, pairs = tonumber, pairs
+local tonumber, pairs, type = tonumber, pairs, type
 
--- WoW APIs
+local _G = _G
 local PlaySound = PlaySound
 local C_Timer_After = C_Timer.After
 local CreateFrame, UIParent = CreateFrame, UIParent
@@ -95,16 +94,16 @@ end
 
 local function EditBox_OnEnterPressed(frame)
 	local self = frame.obj
-	local value = frame:GetText()
-	if self.ispercent then
-		value = value:gsub('%%', '')
-		value = tonumber(value) / 100
-	else
-		value = tonumber(value)
-	end
+	local text = frame:GetText()
 
+	local value = tonumber(self.ispercent and text:gsub('%%', '') or text)
 	if value then
+		if self.ispercent then
+			value = value / 100
+		end
+
 		PlaySound(856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
+
 		self.slider:SetValue(value)
 		self:Fire("OnMouseUp", value)
 	end
@@ -249,7 +248,7 @@ local function Constructor()
 
 	local editbox = CreateFrame("EditBox", nil, frame, "BackdropTemplate")
 	editbox:SetAutoFocus(false)
-	editbox:SetFontObject(GameFontHighlightSmall)
+	editbox:SetFontObject(_G.GameFontHighlightSmall)
 	editbox:SetPoint("TOP", slider, "BOTTOM")
 	editbox:SetHeight(14)
 	editbox:SetWidth(70)
