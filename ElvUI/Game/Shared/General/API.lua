@@ -1118,10 +1118,10 @@ end
 
 function E:XPIsLevelMax()
 	return (GameRulesUtil_IsPlayerAtEffectiveMaxLevel and GameRulesUtil_IsPlayerAtEffectiveMaxLevel())
-		or (IsPlayerAtEffectiveMaxLevel and IsPlayerAtEffectiveMaxLevel())
-		or E:IsLevelAtEffectiveMaxLevel(E.mylevel)
-		or IsXPUserDisabled()
-		or E:XPIsTrialMax()
+	or (IsPlayerAtEffectiveMaxLevel and IsPlayerAtEffectiveMaxLevel())
+	or E:IsLevelAtEffectiveMaxLevel(E.mylevel)
+	or IsXPUserDisabled()
+	or E:XPIsTrialMax()
 end
 
 function E:GetUnitBattlefieldFaction(unit)

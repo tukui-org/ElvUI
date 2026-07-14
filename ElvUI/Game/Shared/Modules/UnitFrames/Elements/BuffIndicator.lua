@@ -38,7 +38,9 @@ function UF:Configure_AuraWatch(frame, isPet)
 			E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 		end
 
-		frame.AuraWatch:SetNewTable(auraTable)
+		if frame.AuraWatch.SetNewTable then
+			frame.AuraWatch:SetNewTable(auraTable)
+		end
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
 	end
