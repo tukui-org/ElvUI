@@ -2960,6 +2960,7 @@ do
 	local defaults = {
 		enable = true,
 
+		roundup = false,
 		reverse = false,
 		hideBling = false,
 		hideNumbers = false,
@@ -2969,6 +2970,7 @@ do
 
 		rotation = 0,
 		threshold = 0, -- seconds
+		minThreshold = 3, -- low threshold
 		minDuration = 1500, -- ms
 
 		colors = {
@@ -2979,6 +2981,11 @@ do
 			swipe = { r = 0, g = 0, b = 0, a = 0.7 },
 			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.3 },
 			swipeLOC = { r = 1, g = 0.2, b = 0.6, a = 0.3 },
+			expiring = { r = 1, g = 0.2, b = 0.2 },
+			seconds = { r = 1, g = 1, b = 0.2 },
+			minutes = { r = 1, g = 1, b = 1 },
+			hours = { r = 0.4, g = 1, b = 1 },
+			days = { r = 0.4, g = 0.4, b = 1 },
 		},
 
 		position = 'CENTER',
