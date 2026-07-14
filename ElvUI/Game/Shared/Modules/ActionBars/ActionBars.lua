@@ -1366,11 +1366,9 @@ do
 		if E.Mists or E.Wrath then
 			if _G.PlayerTalentFrame then
 				_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-			elseif _G.TalentFrame_LoadUI then
+			else
 				hooksecurefunc('TalentFrame_LoadUI', function()
-					if _G.PlayerTalentFrame then
-						_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-					end
+					_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
 				end)
 			end
 		end
