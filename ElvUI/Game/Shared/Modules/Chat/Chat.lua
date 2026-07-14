@@ -12,7 +12,7 @@ local strlower, strsub, strlen, strupper, strtrim, strmatch = strlower, strsub, 
 local tostring, tinsert, tremove, tconcat = tostring, tinsert, tremove, table.concat
 
 local Ambiguate = Ambiguate
-local BetterDate = BetterDate
+local BetterDate = TimeUtil and TimeUtil.BetterDate or BetterDate
 local BNGetNumFriendInvites = BNGetNumFriendInvites
 local BNGetNumFriends = BNGetNumFriends
 local CreateFrame = CreateFrame

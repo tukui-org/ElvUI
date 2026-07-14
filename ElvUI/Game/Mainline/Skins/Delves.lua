@@ -60,15 +60,15 @@ end
 function S:Blizzard_DelvesCompanionConfiguration()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
-	local CompanionConfigurationFrame = _G.DelvesCompanionConfigurationFrame
-	CompanionConfigurationFrame.CloseButton:ClearAllPoints()
-	CompanionConfigurationFrame.CloseButton:Point('TOPRIGHT', CompanionConfigurationFrame, 'TOPRIGHT', -3, -3)
-	S:HandlePortraitFrame(CompanionConfigurationFrame)
-	S:HandleButton(CompanionConfigurationFrame.CompanionConfigShowAbilitiesButton)
+	local CompanionConfiguration = _G.DelvesCompanionConfigurationFrame
+	CompanionConfiguration.CloseButton:ClearAllPoints()
+	CompanionConfiguration.CloseButton:Point('TOPRIGHT', CompanionConfiguration, 'TOPRIGHT', -3, -3)
+	S:HandlePortraitFrame(CompanionConfiguration)
+	S:HandleButton(CompanionConfiguration.CompanionConfigShowAbilitiesButton)
 
-	HandleOptionSlot(CompanionConfigurationFrame.CompanionCombatRoleSlot, true)
-	HandleOptionSlot(CompanionConfigurationFrame.CompanionUtilityTrinketSlot)
-	HandleOptionSlot(CompanionConfigurationFrame.CompanionCombatTrinketSlot)
+	HandleOptionSlot(CompanionConfiguration.CompanionCombatRoleSlot, true)
+	HandleOptionSlot(CompanionConfiguration.CompanionUtilityTrinketSlot)
+	HandleOptionSlot(CompanionConfiguration.CompanionCombatTrinketSlot)
 
 	local CompanionAbilityListFrame = _G.DelvesCompanionAbilityListFrame
 	S:HandlePortraitFrame(CompanionAbilityListFrame)
