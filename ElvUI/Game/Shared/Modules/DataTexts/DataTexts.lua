@@ -36,7 +36,7 @@ local InviteUnit = C_PartyInfo.InviteUnit
 local GetDisplayedInviteType = GetDisplayedInviteType
 local ChatFrame_SendBNetTell = (ChatFrameUtil and ChatFrameUtil.SendBNetTell) or ChatFrame_SendBNetTell
 local BNRequestInviteFriend = BNRequestInviteFriend
-local BNInviteFriend = C_BattleNet and C_BattleNet.InviteFriend or BNInviteFriend
+local BNInviteFriend = C_BattleNet.InviteFriend or BNInviteFriend
 local SetItemRef = SetItemRef
 
 local MISCELLANEOUS = MISCELLANEOUS
