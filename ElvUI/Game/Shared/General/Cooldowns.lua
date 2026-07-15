@@ -108,7 +108,7 @@ end
 do
 	local YEAR, DAY, HOUR, MINUTE, SECOND = 31557600, 86400, 3600, 60, 1
 	local Y, D, H, M = YEAR - DAY, DAY - HOUR, HOUR - MINUTE, MINUTE - SECOND
-	local default = { r = 1, g = 1, b = 1, a = 1 }
+	local breakpoints, default = {}, { r = 1, g = 1, b = 1, a = 1 }
 	local times = { -- fake entries: key, fmt, thr
 		{ key = 'expiring', fmt = '%.1f', thr = 0, step = 0.1 },
 		{ key = 'seconds', fmt = '%.0f', thr = 5, step = 1 },
@@ -119,7 +119,6 @@ do
 	}
 
 	function E:CooldownBreakpoints(db, data)
-		local breakpoints = data.breakpoints
 		for index, point in next, times do
 			if point.key == 'seconds' then
 				point.rounding = (db.roundup and ROUNDUP) or ROUNDDOWN
@@ -193,7 +192,7 @@ function E:RegisterCooldown(cooldown, which)
 
 	-- storage by cooldown (to grab a cooldowns data)
 	if not E.RegisteredCooldowns[cooldown] then
-		E.RegisteredCooldowns[cooldown] = { which = which, breakpoints = {}, color = CreateColor(1, 1, 1, 1) }
+		E.RegisteredCooldowns[cooldown] = { which = which, color = CreateColor(1, 1, 1, 1) }
 	else -- this cooldown was already added
 		return -- stop here
 	end
