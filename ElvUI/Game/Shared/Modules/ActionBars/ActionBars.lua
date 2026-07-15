@@ -1371,7 +1371,7 @@ do
 			end
 		end
 
-		if (E.Mists or E.Wrath) and not AB.UnloadTalentFrame() then
+		if (E.Retail or E.Mists or E.Wrath) and not AB.UnloadTalentFrame() then
 			hooksecurefunc('TalentFrame_LoadUI', AB.UnloadTalentFrame)
 		end
 	end
