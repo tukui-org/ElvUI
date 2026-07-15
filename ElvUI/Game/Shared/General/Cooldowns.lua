@@ -108,7 +108,7 @@ end
 do
 	local YEAR, DAY, HOUR, MINUTE, SECOND = 31557600, 86400, 3600, 60, 1
 	local Y, D, H, M = YEAR - DAY, DAY - HOUR, HOUR - MINUTE, MINUTE - SECOND
-	local breakpoints, default = {}, { r = 1, g = 1, b = 1, a = 1 }
+	local breakpoints, default, color = {}, { r = 1, g = 1, b = 1, a = 1 }, CreateColor(1, 1, 1, 1)
 	local times = { -- fake entries: key, fmt, thr
 		{ key = 'expiring', fmt = '%.1f', thr = 0, step = 0.1 },
 		{ key = 'seconds', fmt = '%.0f', thr = 5, step = 1 },
@@ -129,8 +129,8 @@ do
 			end
 
 			local colors = db.colors[point.key] or default
-			data.color:SetRGBA(colors.r, colors.g, colors.b, colors.a)
-			point.format = data.color:WrapTextInColorCode(point.fmt)
+			color:SetRGBA(colors.r, colors.g, colors.b, colors.a)
+			point.format = color:WrapTextInColorCode(point.fmt)
 
 			breakpoints[index] = point
 		end
@@ -192,7 +192,7 @@ function E:RegisterCooldown(cooldown, which)
 
 	-- storage by cooldown (to grab a cooldowns data)
 	if not E.RegisteredCooldowns[cooldown] then
-		E.RegisteredCooldowns[cooldown] = { which = which, color = CreateColor(1, 1, 1, 1) }
+		E.RegisteredCooldowns[cooldown] = { which = which }
 	else -- this cooldown was already added
 		return -- stop here
 	end
