@@ -142,7 +142,7 @@ function S:Ace3_SkinCheckBox(widget, check, checkbg, highlight)
 		hooksecurefunc(widget, 'SetType', S.Ace3_CheckBoxSetType)
 
 		if E.private.skins.checkBoxSkin then
-			S.Ace3_CheckBoxSetDesaturated(check, check:GetDesaturation())
+			S.Ace3_CheckBoxSetDesaturated(check, check:IsDesaturated())
 			hooksecurefunc(check, 'SetDesaturated', S.Ace3_CheckBoxSetDesaturated)
 
 			checkbg.backdrop:SetInside(widget.checkbg, 5, 5)
