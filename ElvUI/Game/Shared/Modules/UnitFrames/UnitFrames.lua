@@ -1905,11 +1905,28 @@ do
 			elseif not disabledArena and disable.arena and strmatch(unit, 'arena%d*$') then
 				disabledArena = true
 
-				if _G.CompactArenaFrame then -- Retail
-					HideFrame(_G.CompactArenaFrame, 1)
+				local compactArena = _G.CompactArenaFrame
+				if compactArena then -- Retail
+					HideFrame(compactArena, 1)
 
-					for _, frame in next, _G.CompactArenaFrame.memberUnitFrames do
-						HideFrame(frame, true)
+					local compactUnitframes = compactArena.memberUnitFrames
+					if compactUnitframes then
+						for _, frame in next, compactUnitframes do
+							HideFrame(frame, true)
+						end
+					end
+
+					-- Old Arena Frames, they're still used for flag carriers etc in battlegrounds
+					local arenaContainer = _G.ArenaEnemyMatchFramesContainer
+					if arenaContainer then
+						HideFrame(arenaContainer)
+
+						local arenaUnitframes = arenaContainer.UnitFrames
+						if arenaUnitframes then
+							for _, frame in next, arenaUnitframes do
+								HideFrame(frame, true)
+							end
+						end
 					end
 				elseif _G.ArenaEnemyFrames then
 					_G.ArenaEnemyFrames:UnregisterAllEvents()
