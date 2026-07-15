@@ -34,7 +34,6 @@ local IsInRaid = IsInRaid
 local IsPartyLFG = IsPartyLFG
 local IsShiftKeyDown = IsShiftKeyDown
 local PlaySound = PlaySound
-local RaidWarningUtil_AddMessage = RaidWarningUtil and RaidWarningUtil.AddMessage
 local RaidNotice_AddMessage = RaidNotice_AddMessage
 local RepairAllItems = RepairAllItems
 local StaticPopup_Hide = StaticPopup_Hide
@@ -58,6 +57,7 @@ local GetItemInfo = C_Item.GetItemInfo
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 local IsFriend = C_FriendList.IsFriend
 local SetWatchedFactionByID = C_Reputation.SetWatchedFactionByID
+local RaidWarningUtil_AddMessage = RaidWarningUtil and RaidWarningUtil.AddMessage
 
 local LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY = LE_GAME_ERR_GUILD_NOT_ENOUGH_MONEY
 local LE_GAME_ERR_NOT_ENOUGH_MONEY = LE_GAME_ERR_NOT_ENOUGH_MONEY
@@ -67,14 +67,6 @@ local UNKNOWN = UNKNOWN
 
 local BOOST_THANKSFORPLAYING_SMALLER = SOUNDKIT.UI_70_BOOST_THANKSFORPLAYING_SMALLER
 local INTERRUPT_MSG = L["Interrupted %s's |cff71d5ff|Hspell:%d:0|h[%s]|h|r!"]
-
-local function AddRaidNoticeMessage(noticeFrame, textString, colorInfo, displayTime)
-	if RaidWarningUtil_AddMessage then
-		RaidWarningUtil_AddMessage(textString, colorInfo, displayTime)
-	else
-		RaidNotice_AddMessage(noticeFrame, textString, colorInfo, displayTime)
-	end
-end
 
 local function KillFeedback(frame)
 	local allow = true
@@ -89,6 +81,14 @@ local function KillFeedback(frame)
 	local data = frame.Data
 	if data and data.RegisteredEvents then
 		wipe(data.RegisteredEvents)
+	end
+end
+
+function M:AddRaidNoticeMessage(noticeFrame, textString, colorInfo, displayTime)
+	if RaidWarningUtil_AddMessage then
+		RaidWarningUtil_AddMessage(textString, colorInfo, displayTime)
+	else
+		RaidNotice_AddMessage(noticeFrame, textString, colorInfo, displayTime)
 	end
 end
 
@@ -303,7 +303,7 @@ function M:PVPMessageEnhancement(_, msg)
 
 	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' or instanceType == 'arena' then
-		AddRaidNoticeMessage(_G.RaidBossEmoteFrame, msg, _G.ChatTypeInfo.RAID_BOSS_EMOTE)
+		M:AddRaidNoticeMessage(_G.RaidBossEmoteFrame, msg, _G.ChatTypeInfo.RAID_BOSS_EMOTE)
 	end
 end
 
