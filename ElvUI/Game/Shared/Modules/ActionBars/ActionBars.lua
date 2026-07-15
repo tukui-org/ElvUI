@@ -1211,6 +1211,14 @@ function AB:IconIntroTracker_Skin()
 	end
 end
 
+function AB:UnloadTalentFrame()
+	if not _G.PlayerTalentFrame then return end
+
+	_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
+
+	return true
+end
+
 do
 	local untaint = {
 		MultiBar5 = true,
@@ -1363,14 +1371,8 @@ do
 			end
 		end
 
-		if E.Mists or E.Wrath then
-			if _G.PlayerTalentFrame then
-				_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-			else
-				hooksecurefunc('TalentFrame_LoadUI', function()
-					_G.PlayerTalentFrame:UnregisterEvent('ACTIVE_TALENT_GROUP_CHANGED')
-				end)
-			end
+		if (E.Mists or E.Wrath) and not AB.UnloadTalentFrame() then
+			hooksecurefunc('TalentFrame_LoadUI', AB.UnloadTalentFrame)
 		end
 	end
 end
