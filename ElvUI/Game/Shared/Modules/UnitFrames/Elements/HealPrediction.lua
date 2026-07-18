@@ -69,6 +69,9 @@ function UF:SetSize_HealComm(frame)
 	if not width or width <= 0 then width = health.WIDTH end
 	if not height or height <= 0 then height = health.HEIGHT end
 
+	-- keep the clip frame at the health size for reversed style, so prediction cant overflow the frame
+	local overflow = (E.Retail and db.absorbStyle == 'REVERSED' and 1) or pred.maxOverflow or 0
+
 	if orientation == 'HORIZONTAL' then
 		local barHeight = db.height or height
 		if barHeight == -1 or barHeight > height then barHeight = height end
@@ -77,7 +80,7 @@ function UF:SetSize_HealComm(frame)
 		pred.healingOther:SetSize(width, barHeight)
 		pred.healAbsorb:SetSize(width, barHeight)
 		pred.damageAbsorb:SetSize(width, barHeight)
-		pred.parent:SetSize(width * (pred.maxOverflow or 0), height)
+		pred.parent:SetSize(width * overflow, height)
 	else
 		local barWidth = db.height or width -- this is really width now not height
 		if barWidth == -1 or barWidth > width then barWidth = width end
@@ -86,7 +89,7 @@ function UF:SetSize_HealComm(frame)
 		pred.healingOther:SetSize(barWidth, height)
 		pred.healAbsorb:SetSize(barWidth, height)
 		pred.damageAbsorb:SetSize(barWidth, height)
-		pred.parent:SetSize(width, height * (pred.maxOverflow or 0))
+		pred.parent:SetSize(width, height * overflow)
 	end
 end
 
