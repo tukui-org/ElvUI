@@ -1857,6 +1857,7 @@ do
 				if E.hasEditMode then
 					if disable.castbar then
 						HideFrame(_G.PlayerCastingBarFrame)
+						HideFrame(_G.OverlayPlayerCastingBarFrame)
 						HideFrame(_G.PetCastingBarFrame)
 					end
 				elseif disable.castbar then
