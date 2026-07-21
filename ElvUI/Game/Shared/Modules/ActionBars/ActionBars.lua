@@ -154,16 +154,9 @@ function AB:HandleButtonAutoCast(bar, button)
 	local buttonWidth = db.buttonSize
 	local buttonHeight = (db.keepSizeRatio and db.buttonSize) or db.buttonHeight
 
+	local offset = E.Retail and 3 or 1
 	local autoCast = button.AutoCastOverlay or button.AutoCastable
-	if E.Retail then
-		autoCast:SetOutside(button, 3, 3)
-	elseif (E.TBC or E.Mists or E.Wrath) then
-		autoCast:SetOutside(button, 1, 1)
-	else
-		local autoCastWidth = (buttonWidth * 0.5) - (buttonWidth / 7.5)
-		local autoCastHeight = (buttonHeight * 0.5) - (buttonHeight / 7.5)
-		autoCast:SetOutside(button, autoCastWidth, autoCastHeight)
-	end
+	autoCast:SetOutside(button, offset, offset)
 
 	local corners = autoCast.Corners
 	if corners then
