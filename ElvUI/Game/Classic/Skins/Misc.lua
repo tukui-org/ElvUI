@@ -21,6 +21,34 @@ local function FixAutoCompleteLevel(frame)
 	frame:SetFrameLevel(frameLevel + 4)
 end
 
+local function ClearedHooks(button, script)
+	if script == 'OnEnter' then
+		button:HookScript('OnEnter', S.SetModifiedBackdrop)
+	elseif script == 'OnLeave' then
+		button:HookScript('OnLeave', S.SetOriginalBackdrop)
+	elseif script == 'OnDisable' then
+		button:HookScript('OnDisable', S.SetDisabledBackdrop)
+	end
+end
+
+local function GameMenuInitButtons(menu)
+	if not menu.buttonPool then return end
+
+	for button in menu.buttonPool:EnumerateActive() do
+		if not button.IsSkinned then
+			S:HandleButton(button, nil, nil, nil, true)
+			button.backdrop:SetInside(nil, 1, 1)
+
+			hooksecurefunc(button, 'SetScript', ClearedHooks)
+		end
+	end
+
+	if menu.ElvUI and not menu.ElvUI.IsSkinned then
+		S:HandleButton(menu.ElvUI, nil, nil, nil, true)
+		menu.ElvUI.backdrop:SetInside(nil, 1, 1)
+	end
+end
+
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
@@ -56,19 +84,18 @@ function S:BlizzardMiscFrames()
 
 	S:HandleButton(_G.StaticPopup1ExtraButton)
 
+	-- reskin all esc/menu buttons
 	if not E.OtherAddons.ConsolePort then
-		-- reskin all esc/menu buttons
-		for _, Button in next, { _G.GameMenuFrame:GetChildren() } do
-			if Button.IsObjectType and Button:IsObjectType('Button') then
-				S:HandleButton(Button)
-			end
+		local GameMenuFrame = _G.GameMenuFrame
+		GameMenuFrame:StripTextures()
+		GameMenuFrame:CreateBackdrop('Transparent')
+
+		local header = GameMenuFrame.Header
+		if header then
+			header:StripTextures()
 		end
 
-		_G.GameMenuFrame:StripTextures()
-		_G.GameMenuFrame:SetTemplate('Transparent')
-		_G.GameMenuFrameHeader:SetTexture()
-		_G.GameMenuFrameHeader:ClearAllPoints()
-		_G.GameMenuFrameHeader:Point('TOP', _G.GameMenuFrame, 0, 7)
+		hooksecurefunc(GameMenuFrame, 'InitButtons', GameMenuInitButtons)
 	end
 
 	if E.OtherAddons.OptionHouse then
