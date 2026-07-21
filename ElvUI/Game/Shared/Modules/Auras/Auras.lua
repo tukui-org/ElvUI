@@ -681,10 +681,6 @@ function A:Initialize()
 		if _G.DebuffFrame then
 			_G.DebuffFrame:Kill()
 		end
-
-		if E.Classic then
-			_G.TemporaryEnchantFrame:Kill()
-		end
 	end
 
 	if not E.private.auras.enable then return end
