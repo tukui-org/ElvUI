@@ -87,8 +87,8 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	_G.LFGListingFramePostButton:Point('BOTTOMRIGHT', LFGListingFrame, 'BOTTOMRIGHT', -40, 76)
 	_G.LFGBrowseFrameGroupInviteButton:Point('BOTTOMRIGHT', LFGBrowseFrame, 'BOTTOMRIGHT', -40, 76)
 
-	_G.LFGBrowseFrameActivityDropDown.ResetButton:ClearAllPoints()
-	_G.LFGBrowseFrameActivityDropDown.ResetButton:Point('TOPRIGHT', _G.LFGBrowseFrameActivityDropDown, 'TOPRIGHT', 0, 16)
+	_G.LFGBrowseFrameActivityDropdown.ResetButton:ClearAllPoints()
+	_G.LFGBrowseFrameActivityDropdown.ResetButton:Point('TOPRIGHT', _G.LFGBrowseFrameActivityDropdown, 'TOPRIGHT', 0, 16)
 
 	-- CheckBoxes
 	local checkBoxes = {
@@ -106,14 +106,14 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	S:HandleEditBox(_G.LFGListingComment)
 
 	-- DropDowns
-	S:HandleDropDownBox(_G.LFGListingFrameGroupRoleButtonsRoleDropDown, 180)
-	S:HandleDropDownBox(_G.LFGBrowseFrameActivityDropDown, 180)
-	S:HandleDropDownBox(_G.LFGBrowseFrameCategoryDropDown, 140)
+	S:HandleDropDownBox(_G.LFGListingFrameGroupRoleButtonsRoleDropdown, 180)
+	S:HandleDropDownBox(_G.LFGBrowseFrameActivityDropdown, 180)
+	S:HandleDropDownBox(_G.LFGBrowseFrameCategoryDropdown, 140)
 
-	_G.LFGBrowseFrameCategoryDropDown:ClearAllPoints()
-	_G.LFGBrowseFrameCategoryDropDown:Point('TOPLEFT', _G.LFGParentFrame, 'TOPLEFT', 22, -90)
-	_G.LFGBrowseFrameActivityDropDown:ClearAllPoints()
-	_G.LFGBrowseFrameActivityDropDown:Point('LEFT', _G.LFGBrowseFrameCategoryDropDown, 'RIGHT', 4, 0)
+	_G.LFGBrowseFrameCategoryDropdown:ClearAllPoints()
+	_G.LFGBrowseFrameCategoryDropdown:Point('TOPLEFT', _G.LFGParentFrame, 'TOPLEFT', 22, -90)
+	_G.LFGBrowseFrameActivityDropdown:ClearAllPoints()
+	_G.LFGBrowseFrameActivityDropdown:Point('LEFT', _G.LFGBrowseFrameCategoryDropdown, 'RIGHT', 4, 0)
 
 	-- Refresh
 	S:HandleButton(_G.LFGBrowseFrameRefreshButton)
