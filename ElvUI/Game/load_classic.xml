@@ -85,6 +85,7 @@
 	<Script file='Classic\Skins\Craft.lua'/>
 	<Script file='Classic\Skins\Debug.lua'/>
 	<Script file='Classic\Skins\DressingRoom.lua'/>
+	<Script file='Classic\Skins\EditorManager.lua'/>
 	<Script file='Classic\Skins\Engraving.lua'/>
 	<Script file='Classic\Skins\EventTrace.lua'/>
 	<Script file='Classic\Skins\Friends.lua'/>
