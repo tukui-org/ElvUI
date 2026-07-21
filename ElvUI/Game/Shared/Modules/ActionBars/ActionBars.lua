@@ -1224,10 +1224,6 @@ do
 		OverrideActionBarButton = E.Wrath or E.Mists or nil
 	}
 
-	if E.Wrath and _G.UIPARENT_MANAGED_FRAME_POSITIONS then
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS.MultiCastActionBarFrame = nil
-	end
-
 	local settingsHider = CreateFrame('Frame')
 	settingsHider:SetScript('OnEvent', function(frame, event)
 		HideUIPanel(_G.SettingsPanel)
@@ -1280,10 +1276,6 @@ do
 
 	function AB:DisableBlizzard()
 		for name in next, untaint do
-			if _G.UIPARENT_MANAGED_FRAME_POSITIONS then
-				_G.UIPARENT_MANAGED_FRAME_POSITIONS[name] = nil
-			end
-
 			local frame = _G[name]
 			if frame then
 				frame:SetParent(E.HiddenFrame)

@@ -220,12 +220,7 @@ function AB:ExtraButtons_SetupBoss()
 
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
-
-	if E.Retail then
-		ExtraActionBarFrame.ignoreInLayout = true
-	elseif _G.UIPARENT_MANAGED_FRAME_POSITIONS then
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS.ExtraActionBarFrame = nil
-	end
+	ExtraActionBarFrame.ignoreInLayout = true
 end
 
 function AB:ExtraButtons_SetupZone()
