@@ -282,15 +282,13 @@ function B:BagBar_UpdateDesaturated(inactive)
 end
 
 function B:LoadBagBar()
-	if E.hasEditMode then
-		_G.BagsBar:SetParent(E.HiddenFrame)
-		_G.BagsBar:UnregisterAllEvents()
+	_G.BagsBar:SetParent(E.HiddenFrame)
+	_G.BagsBar:UnregisterAllEvents()
 
-		--_G.EventRegistry:UnregisterCallback('MainMenuBarManager.OnExpandChanged', _G.BagsBar.Layout, _G.BagsBar)
+	--_G.EventRegistry:UnregisterCallback('MainMenuBarManager.OnExpandChanged', _G.BagsBar.Layout, _G.BagsBar)
 
-		if _G.MainMenuBarBagManager.OnCursorChanged then
-			_G.EventRegistry:UnregisterFrameEventAndCallback('CURSOR_CHANGED', _G.MainMenuBarBagManager.OnCursorChanged, _G.MainMenuBarBagManager)
-		end
+	if _G.MainMenuBarBagManager.OnCursorChanged then
+		_G.EventRegistry:UnregisterFrameEventAndCallback('CURSOR_CHANGED', _G.MainMenuBarBagManager.OnCursorChanged, _G.MainMenuBarBagManager)
 	end
 
 	if not E.private.bags.bagBar then return end
@@ -313,12 +311,8 @@ function B:LoadBagBar()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 0, 1)
 	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', E.db.bags.bagBar.font), E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
 
-	if E.hasEditMode then
-		hooksecurefunc(_G.BagsBar, 'Layout', B.SizeAndPositionBagBar)
-		hooksecurefunc(_G.MainMenuBarBagManager, 'OnExpandBarChanged', B.SizeAndPositionBagBar)
-	else
-		_G.MainMenuBarBackpackButton.commandName = commandNames[-1]
-	end
+	hooksecurefunc(_G.BagsBar, 'Layout', B.SizeAndPositionBagBar)
+	hooksecurefunc(_G.MainMenuBarBagManager, 'OnExpandBarChanged', B.SizeAndPositionBagBar)
 
 	if _G.BagBarExpandToggle then
 		_G.BagBarExpandToggle:Kill()

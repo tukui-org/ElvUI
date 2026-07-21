@@ -831,20 +831,18 @@ function M:Initialize()
 		E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton
 	}
 
-	if E.hasEditMode then
-		tinsert(killFrames, Minimap.ZoomIn)
-		tinsert(killFrames, Minimap.ZoomOut)
+	tinsert(killFrames, Minimap.ZoomIn)
+	tinsert(killFrames, Minimap.ZoomOut)
 
-		MinimapCluster.BorderTop:StripTextures()
+	MinimapCluster.BorderTop:StripTextures()
 
-		if E.Retail then
-			MinimapCluster.Tracking.Background:StripTextures()
+	if E.Retail then
+		MinimapCluster.Tracking.Background:StripTextures()
 
-			if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
-				hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)
-			else
-				hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
-			end
+		if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
+			hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)
+		else
+			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
 		end
 	end
 

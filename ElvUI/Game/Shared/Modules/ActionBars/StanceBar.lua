@@ -65,10 +65,6 @@ function AB:StyleShapeShift()
 				button.cooldown:SetAlpha(texture and 1 or 0)
 
 				if isActive then
-					if not E.hasEditMode then
-						_G.StanceBarFrame.lastSelected = button:GetID()
-					end
-
 					button:SetChecked(numForms == 1 and darken)
 					button.checked:SetVertexColor(1, 1, 1, 0.3)
 				elseif numForms == 1 or stance == 0 then

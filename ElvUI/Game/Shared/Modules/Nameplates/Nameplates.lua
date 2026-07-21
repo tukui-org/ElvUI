@@ -30,9 +30,6 @@ local UnitWidgetSet = UnitWidgetSet
 
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local C_NamePlate_SetNamePlateEnemySize = C_NamePlate.SetNamePlateEnemySize
-local C_NamePlate_SetNamePlateFriendlySize = C_NamePlate.SetNamePlateFriendlySize
-local C_NamePlate_SetNamePlateSelfSize = C_NamePlate.SetNamePlateSelfSize
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 
 local GetCVarDefault = C_CVar.GetCVarDefault
@@ -114,24 +111,6 @@ function NP:CVarReset()
 	E:SetCVar('nameplateSelectedAlpha', 1)
 	E:SetCVar('nameplateSelectedScale', 1)
 	E:SetCVar('nameplatePlayerLargerScale', 1.8)
-
-	if not (E.Retail or E.Mists or E.TBC) then
-		-- listed in options
-		E:SetCVar('nameplateNotSelectedAlpha', 1)
-		E:SetCVar('nameplateLargerScale', 1)
-
-		-- not in options
-		E:SetCVar('nameplateSelfScale', 1)
-		E:SetCVar('nameplateGlobalScale', 1)
-		E:SetCVar('NamePlateHorizontalScale', 1)
-		E:SetCVar('nameplateClassResourceTopInset', GetCVarDefault('nameplateClassResourceTopInset'))
-		E:SetCVar('nameplateLargeBottomInset', GetCVarDefault('nameplateLargeBottomInset'))
-		E:SetCVar('nameplateLargeTopInset', GetCVarDefault('nameplateLargeTopInset'))
-		E:SetCVar('nameplateMotionSpeed', GetCVarDefault('nameplateMotionSpeed'))
-		E:SetCVar('nameplateResourceOnTarget', GetCVarDefault('nameplateResourceOnTarget'))
-		E:SetCVar('nameplateSelfBottomInset', GetCVarDefault('nameplateSelfBottomInset'))
-		E:SetCVar('nameplateSelfTopInset', GetCVarDefault('nameplateSelfTopInset'))
-	end
 end
 
 function NP:ToggleCVar(cvar, enabled)
@@ -149,21 +128,9 @@ end
 function NP:SetCVars()
 	local db = NP.db
 
-	if not (E.Retail or E.Mists or E.TBC) then
-		if db.clampToScreen then
-			E:SetCVar('nameplateOtherTopInset', 0.08)
-			E:SetCVar('nameplateOtherBottomInset', 0.1)
-			E:SetCVar('clampTargetNameplateToScreen', 1)
-		elseif GetCVar('nameplateOtherTopInset') == '0.08' and GetCVar('nameplateOtherBottomInset') == '0.1' then
-			E:SetCVar('nameplateOtherTopInset', -1)
-			E:SetCVar('nameplateOtherBottomInset', -1)
-			E:SetCVar('clampTargetNameplateToScreen', 0)
-		end
-	end
-
 	if E.Retail then
 		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
-	elseif E.Mists or E.TBC then
+	elseif E.Mists or E.TBC or E.Classic then
 		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	elseif E.Wrath then
@@ -172,10 +139,9 @@ function NP:SetCVars()
 
 	-- The order of these is important !!
 
-	local newPlates = E.Retail or E.Mists  or E.TBC
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)
-	NP:ToggleCVar(newPlates and 'nameplateShowOnlyNameForFriendlyPlayerUnits' or 'nameplateShowOnlyNames', visibility.showOnlyNames)
+	NP:ToggleCVar('nameplateShowOnlyNameForFriendlyPlayerUnits', visibility.showOnlyNames)
 
 	local enemyVisibility = visibility.enemy
 	NP:ToggleCVar('nameplateShowEnemyMinions', enemyVisibility.minions)
@@ -186,10 +152,10 @@ function NP:SetCVars()
 
 	local friendlyVisibility = visibility.friendly
 	NP:ToggleCVar('nameplateShowFriendlyNPCs', friendlyVisibility.npcs)
-	NP:ToggleCVar(newPlates and 'nameplateShowFriendlyPlayerMinions' or 'nameplateShowFriendlyMinions', friendlyVisibility.minions)
-	NP:ToggleCVar(newPlates and 'nameplateShowFriendlyPlayerGuardians' or 'nameplateShowFriendlyGuardians', friendlyVisibility.guardians)
-	NP:ToggleCVar(newPlates and 'nameplateShowFriendlyPlayerPets' or 'nameplateShowFriendlyPets', friendlyVisibility.pets)
-	NP:ToggleCVar(newPlates and 'nameplateShowFriendlyPlayerTotems' or 'nameplateShowFriendlyTotems', friendlyVisibility.totems)
+	NP:ToggleCVar('nameplateShowFriendlyPlayerMinions', friendlyVisibility.minions)
+	NP:ToggleCVar('nameplateShowFriendlyPlayerGuardians', friendlyVisibility.guardians)
+	NP:ToggleCVar('nameplateShowFriendlyPlayerPets', friendlyVisibility.pets)
+	NP:ToggleCVar('nameplateShowFriendlyPlayerTotems', friendlyVisibility.totems)
 
 	local playerDB = db.units.PLAYER
 	local playerVisibility = playerDB.visibility
@@ -292,7 +258,7 @@ function NP:Update_ClassPowerTwo(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
-	nameplate:SetScale((E.Retail or E.Mists or E.TBC) and 1 or E.uiscale)
+	nameplate:SetScale(1)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
@@ -312,14 +278,13 @@ function NP:UpdateTargetPlate(nameplate)
 end
 
 function NP:ScalePlate(nameplate, scale, targetPlate)
-	local mult = ((E.Retail or E.Mists or E.TBC) or (nameplate == NP.PlayerFrame or nameplate == NP.TestFrame)) and 1 or E.uiscale
 	if targetPlate and NP.targetPlate then
-		NP.targetPlate:SetScale(mult)
+		NP.targetPlate:SetScale(1)
 		NP.targetPlate = nil
 	end
 
 	if not nameplate then return end
-	nameplate:SetScale(scale * mult)
+	nameplate:SetScale(scale)
 
 	if targetPlate then
 		NP.targetPlate = nameplate
@@ -335,7 +300,7 @@ function NP:PostUpdateAllElements(event)
 end
 
 function NP:StylePlate(nameplate)
-	nameplate:SetScale((E.Retail or E.Mists or E.TBC) and 1 or E.uiscale)
+	nameplate:SetScale(1)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
@@ -586,7 +551,7 @@ function NP:EnviromentConditionals()
 	if env.stackingEnabled then
 		NP:ToggleCVar('nameplateMotion', env.stackingNameplates[value])
 	else
-		NP:ToggleCVar('nameplateMotion', db.motionType == 'STACKED')
+		NP:ToggleCVar('nameplateMotion', false)
 	end
 end
 
@@ -659,8 +624,6 @@ function NP:ConfigureAll(init)
 	NP:Update_StatusBars()
 
 	NP:SetNamePlateClickThrough()
-	NP:SetNamePlateSizes()
-
 	NP:ConfigurePlates(init) -- keep before toggle static
 	NP:ToggleStaticPlate()
 end
@@ -1023,16 +986,6 @@ function NP:HideInterfaceOptions()
 			o:SetAlpha(0)
 			o:Hide()
 		end
-	end
-end
-
-function NP:SetNamePlateSizes()
-	if E.Retail or E.Mists or E.TBC then
-		NP.PlateDriver:SetSize(NP.db.clickSize.width, NP.db.clickSize.height)
-	else
-		C_NamePlate_SetNamePlateSelfSize(NP.db.clickSize.personalWidth * E.uiscale, NP.db.clickSize.personalHeight * E.uiscale)
-		C_NamePlate_SetNamePlateEnemySize(NP.db.clickSize.enemyWidth * E.uiscale, NP.db.clickSize.enemyHeight * E.uiscale)
-		C_NamePlate_SetNamePlateFriendlySize(NP.db.clickSize.friendlyWidth * E.uiscale, NP.db.clickSize.friendlyHeight * E.uiscale)
 	end
 end
 

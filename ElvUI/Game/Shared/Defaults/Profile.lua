@@ -875,7 +875,6 @@ P.nameplates = {
 	highlight = true,
 	loadDistance = 41,
 	lowHealthThreshold = 0.4,
-	motionType = 'STACKED',
 	nameColoredGlow = false,
 	overlapH = 0.8,
 	overlapV = 1.1,

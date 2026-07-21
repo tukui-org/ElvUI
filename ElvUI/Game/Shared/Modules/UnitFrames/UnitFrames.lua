@@ -1854,17 +1854,9 @@ do
 					end
 				end
 
-				if E.hasEditMode then
-					if disable.castbar then
-						HideFrame(_G.PlayerCastingBarFrame)
-						HideFrame(_G.PetCastingBarFrame)
-					end
-				elseif disable.castbar then
-					CastingBarFrame_SetUnit(_G.CastingBarFrame)
-					CastingBarFrame_SetUnit(_G.PetCastingBarFrame)
-				else
-					CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
-					PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
+				if disable.castbar then
+					HideFrame(_G.PlayerCastingBarFrame)
+					HideFrame(_G.PetCastingBarFrame)
 				end
 			elseif disable.player and unit == 'pet' then
 				HideFrame(_G.PetFrame)
@@ -2277,12 +2269,7 @@ function UF:Initialize()
 
 	UF:RegisterEvent('SPELLS_CHANGED', 'UpdateRangeSpells')
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
-
-	if E.hasEditMode then
-		UF:RegisterEvent('LEARNED_SPELL_IN_SKILL_LINE', 'UpdateRangeSpells')
-	else
-		UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
-	end
+	UF:RegisterEvent('LEARNED_SPELL_IN_SKILL_LINE', 'UpdateRangeSpells')
 
 	if E.Retail or E.Wrath or E.Mists then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')

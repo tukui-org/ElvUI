@@ -14,11 +14,8 @@ local GetPetActionCooldown = GetPetActionCooldown
 local RegisterStateDriver = RegisterStateDriver
 local GameTooltip = GameTooltip
 
-local AutoCastShine_AutoCastStart = AutoCastShine_AutoCastStart
-local AutoCastShine_AutoCastStop = AutoCastShine_AutoCastStop
 local PetActionButton_StartFlash = PetActionButton_StartFlash
 local PetActionButton_StopFlash = PetActionButton_StopFlash
-local PetActionBar_ShowGrid = PetActionBar_ShowGrid
 local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns
 
 local Masque = E.Masque
@@ -89,13 +86,7 @@ function AB:UpdatePet(event, unit)
 			autoCast:Hide()
 		end
 
-		if E.hasEditMode then
-			autoCast:ShowAutoCastEnabled(autoCastEnabled)
-		elseif autoCastEnabled then
-			AutoCastShine_AutoCastStart(button.AutoCastShine)
-		else
-			AutoCastShine_AutoCastStop(button.AutoCastShine)
-		end
+		autoCast:ShowAutoCastEnabled(autoCastEnabled)
 
 		if not PetHasActionBar() and texture and name ~= 'PET_ACTION_FOLLOW' then
 			if PetActionButton_StopFlash then
@@ -280,12 +271,7 @@ function AB:CreateBarPet()
 	bar:SetScript('OnHide', AB.PetBar_OnHide)
 	bar:SetScript('OnShow', AB.PetBar_OnShow)
 
-	if E.hasEditMode then
-		AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
-	else
-		PetActionBar_ShowGrid()
-	end
-
+	AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
 	AB:RegisterEvent('PET_BAR_UPDATE', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_LOST', 'UpdatePet')

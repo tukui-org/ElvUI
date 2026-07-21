@@ -281,22 +281,16 @@ end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
 local bankOffset, maxBankSlots = (E.Classic or E.TBC or E.Wrath or E.Mists) and 4 or 5, E.Classic and 10 or 11
-local bankEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
-local bagEvents = {'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
+local bankEvents = {'BAG_CONTAINER_UPDATE', 'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
+local bagEvents = {'BAG_CONTAINER_UPDATE', 'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
+	BAG_CONTAINER_UPDATE = true,
 	BAG_SLOT_FLAGS_UPDATED = true,
 	BANK_BAG_SLOT_FLAGS_UPDATED = true,
 	BAG_UPDATE_DELAYED = true,
 	BAG_UPDATE = true,
 	BAG_CLOSED = true
 }
-
-if E.hasEditMode then
-	tinsert(bagEvents, 'BAG_CONTAINER_UPDATE')
-	tinsert(bankEvents, 'BAG_CONTAINER_UPDATE')
-
-	presistentEvents.BAG_CONTAINER_UPDATE = true
-end
 
 if E.Retail then
 	tinsert(bagIDs, REAGENT_CONTAINER)

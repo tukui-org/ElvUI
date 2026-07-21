@@ -96,12 +96,7 @@ end
 
 function BL:HandleGroupLootContainer()
 	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
-
-	if E.hasEditMode then
-		_G.GroupLootContainer.ignoreInLayout = true
-	elseif _G.UIPARENT_MANAGED_FRAME_POSITIONS then
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS.GroupLootContainer = nil
-	end
+	_G.GroupLootContainer.ignoreInLayout = true
 
 	hooksecurefunc('GroupLootContainer_Update', M.PositionGroupLootContainer)
 end

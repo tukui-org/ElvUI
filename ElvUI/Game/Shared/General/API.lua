@@ -224,11 +224,7 @@ end
 -- the secure header is different on retail because of evokers
 -- if both are registered on non-retail, it will fire on down and up
 function E:RegisterClicks(frame)
-	if E.hasEditMode then
-		frame:RegisterForClicks('AnyDown', 'AnyUp')
-	else
-		frame:RegisterForClicks('AnyUp')
-	end
+	frame:RegisterForClicks('AnyDown', 'AnyUp')
 end
 
 function E:GetCurrencyIDFromLink(link)
@@ -1154,44 +1150,26 @@ function E:PLAYER_LEVEL_UP(_, level)
 end
 
 function E:PositionGameMenuButton()
-	if E.hasEditMode then
-		if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
-			GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
-		end
+	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
+		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	end
 
-		GameMenuFrame:Height(GameMenuFrame:GetHeight() + 10)
+	GameMenuFrame:Height(GameMenuFrame:GetHeight() + 10)
 
-		for button in GameMenuFrame.buttonPool:EnumerateActive() do
-			local text = button:GetText()
+	for button in GameMenuFrame.buttonPool:EnumerateActive() do
+		local text = button:GetText()
 
-			if text and (text == _G.LOGOUT or text == _G.LOG_OUT or text == _G.EXIT_GAME or text == _G.RETURN_TO_GAME) then
-				button:NudgePoint(nil, E.Retail and -25 or -20)
-			else
-				if text == _G.MACROS then
-					GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT')
-				end
+		if text and (text == _G.LOGOUT or text == _G.LOG_OUT or text == _G.EXIT_GAME or text == _G.RETURN_TO_GAME) then
+			button:NudgePoint(nil, E.Retail and -25 or -20)
+		else
+			if text == _G.MACROS then
+				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT')
+			end
 
-				if E.Retail then
-					button:NudgePoint(nil, 10)
-				end
+			if E.Retail then
+				button:NudgePoint(nil, 10)
 			end
 		end
-	else
-		local button = GameMenuFrame.ElvUI
-		if button then
-			button:SetFormattedText('%sElvUI|r', E.media.hexvaluecolor)
-
-			local _, relTo, _, _, offY = GameMenuButtonLogout:GetPoint()
-			if relTo ~= button then
-				button:ClearAllPoints()
-				button:Point('TOPLEFT', relTo, 'BOTTOMLEFT', 0, -1)
-
-				GameMenuButtonLogout:ClearAllPoints()
-				GameMenuButtonLogout:Point('TOPLEFT', button, 'BOTTOMLEFT', 0, offY)
-			end
-		end
-
-		GameMenuFrame:Height(GameMenuFrame:GetHeight() + GameMenuButtonLogout:GetHeight() - 4)
 	end
 
 	if GameMenuFrame.ElvUI then
@@ -1214,33 +1192,23 @@ end
 function E:SetupGameMenu()
 	if GameMenuFrame.ElvUI then return end
 
-	if E.hasEditMode then
-		local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'MainMenuFrameButtonTemplate')
-		button:SetScript('OnClick', E.ClickGameMenu)
+	local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'MainMenuFrameButtonTemplate')
+	button:SetScript('OnClick', E.ClickGameMenu)
 
-		if E.Retail then
-			button:Size(200, 35)
-		else
-			button:Size(144, 21)
-		end
-
-		GameMenuFrame.ElvUI = button
-		GameMenuFrame.MenuButtons = {}
-
-		if E.Retail then
-			E:ScaleGameMenu()
-		end
-
-		hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
+	if E.Retail then
+		button:Size(200, 35)
 	else
-		local button = CreateFrame('Button', nil, GameMenuFrame, 'GameMenuButtonTemplate')
-		button:SetScript('OnClick', E.ClickGameMenu)
-		GameMenuFrame.ElvUI = button
-
-		button:Size(GameMenuButtonLogout:GetSize())
-		button:Point('TOPLEFT', GameMenuButtonAddons, 'BOTTOMLEFT', 0, -1)
-		hooksecurefunc('GameMenuFrame_UpdateVisibleButtons', E.PositionGameMenuButton)
+		button:Size(144, 21)
 	end
+
+	GameMenuFrame.ElvUI = button
+	GameMenuFrame.MenuButtons = {}
+
+	if E.Retail then
+		E:ScaleGameMenu()
+	end
+
+	hooksecurefunc(GameMenuFrame, 'Layout', E.PositionGameMenuButton)
 end
 
 function E:CompatibleTooltip(tt) -- knock off compatibility
