@@ -102,6 +102,9 @@ function S:MerchantFrame()
 	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	_G.MerchantRepairAllIcon:SetInside()
 
+	_G.MerchantRepairAllButton:ClearAllPoints()
+	_G.MerchantRepairAllButton:Point('BOTTOMLEFT', _G.MerchantFrame, 'BOTTOMLEFT', 124, 57)
+
 	_G.MerchantMoneyBg:StripTextures()
 	_G.MerchantMoneyInset:StripTextures()
 
