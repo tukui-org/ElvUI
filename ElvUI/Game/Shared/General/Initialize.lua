@@ -489,10 +489,6 @@ function E:OnPrivateProfileReset()
 	E:ResetPrivateProfile()
 end
 
-function E:OnEnable()
-	E:Initialize()
-end
-
 do
 	local info = {
 		Auras = 'auras',
@@ -581,4 +577,6 @@ function E:OnInitialize()
 	if E.private.general.minimap.enable then
 		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult
 	end
+
+	E:Initialize()
 end

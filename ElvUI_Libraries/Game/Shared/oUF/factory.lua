@@ -10,10 +10,10 @@ factory:SetScript('OnEvent', function(self, event, ...)
 	return self[event](self, event, ...)
 end)
 
-factory:RegisterEvent('PLAYER_LOGIN')
+factory:RegisterEvent('ADDON_LOADED')
 factory.active = true
 
-function factory:PLAYER_LOGIN()
+function factory:ADDON_LOADED()
 	if(not self.active) then return end
 
 	for _, func in next, queue do
@@ -26,7 +26,7 @@ end
 
 --[[ Factory: oUF:Factory(func)
 Used to call a function directly if the current character is logged in and the factory is active. Else the function is
-queued up to be executed at a later time (upon PLAYER_LOGIN by default).
+queued up to be executed at a later time (upon ADDON_LOADED by default).
 
 * self - the global oUF object
 * func - function to be executed or delayed (function)
@@ -67,5 +67,5 @@ this to succeed.
 * self - the global oUF object
 --]]
 function oUF:RunFactoryQueue()
-	factory:PLAYER_LOGIN()
+	factory:ADDON_LOADED()
 end
