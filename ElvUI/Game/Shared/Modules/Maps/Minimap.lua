@@ -775,8 +775,8 @@ function M:Initialize()
 
 	menuFrame:SetTemplate('Transparent')
 
-	local mapHolder = CreateFrame('Frame', 'ElvUI_MinimapHolder', Minimap)
-	mapHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
+	local mapHolder = CreateFrame('Frame', 'ElvUI_MinimapHolder', E.UIParent)
+	mapHolder:Point('TOPRIGHT', -3, -3)
 	mapHolder:Size(Minimap:GetSize())
 	E:CreateMover(mapHolder, 'MinimapMover', L["Minimap"], nil, nil, M.Minimap_PostDrag, nil, nil, 'maps,minimap')
 	M.MapHolder = mapHolder
