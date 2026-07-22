@@ -224,11 +224,15 @@ function E:RegisterCooldown(cooldown, which)
 	data.lossOfControl = parent and parent.lossOfControlCooldown or nil
 
 	if CreateNumericRuleFormatter then
-		data.formatters = {
-			text = CreateNumericRuleFormatter(),
-			charge = CreateNumericRuleFormatter(),
-			loc = CreateNumericRuleFormatter()
-		}
+		data.formatters = { text = CreateNumericRuleFormatter() }
+
+		if data.chargeCooldown then
+			data.formatters.charge = CreateNumericRuleFormatter()
+		end
+
+		if data.lossOfControl then
+			data.formatters.loc = CreateNumericRuleFormatter()
+		end
 	end
 
 	-- extract the blizzard cooldown region
