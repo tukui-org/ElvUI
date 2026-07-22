@@ -151,8 +151,11 @@ function AB:HandleButtonAutoCast(bar, button)
 	local autoCast = button.AutoCastOverlay or button.AutoCastable
 	if not autoCast then return end
 
-	local offset = E.Retail and 3 or 1
-	autoCast:SetOutside(button, offset, offset)
+	if E.Retail then
+		autoCast:SetOutside(button, 3, 3)
+	else
+		autoCast:SetInside(button, 3, 3)
+	end
 
 	local corners = autoCast.Corners
 	if not corners then return end
