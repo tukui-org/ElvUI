@@ -2237,10 +2237,13 @@ function UF:Style(unit)
 	UF:Construct_UF(self, unit)
 end
 
-function UF:Setup()
+function UF:Setup(_, addon)
+	if addon ~= 'ElvUI' then return end
+
 	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
 	ElvUF:RegisterStyle('ElvUF', UF.Style)
 	ElvUF:SetActiveStyle('ElvUF')
+	ElvUF:DisableFactory() -- we want to turn off ADDON_LOADED
 
 	UF:LoadUnits()
 	UF:Update_FontStrings()

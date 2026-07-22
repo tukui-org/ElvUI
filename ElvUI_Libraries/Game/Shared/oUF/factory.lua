@@ -13,11 +13,11 @@ end)
 factory:RegisterEvent('ADDON_LOADED')
 factory.active = true
 
-function factory:ADDON_LOADED()
+function factory:ADDON_LOADED(...)
 	if(not self.active) then return end
 
 	for _, func in next, queue do
-		func(oUF)
+		func(oUF, ...)
 	end
 
 	-- Avoid creating dupes.
