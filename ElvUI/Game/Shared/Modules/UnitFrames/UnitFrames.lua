@@ -478,7 +478,9 @@ function UF:GetAuraAnchorFrame(frame, attachTo)
 		return frame.Power
 	elseif attachTo == 'TRINKET' and (frame.Trinket or frame.PVPSpecIcon) then
 		local _, instanceType = IsInInstance()
-		return (instanceType == 'arena' and frame.Trinket) or frame.PVPSpecIcon
+		-- 12.0: instanceType is secret inside instances; treat secret (we're in an
+		-- instance, e.g. arena) as arena so the comparison can't taint this execution
+		return ((E:IsSecretValue(instanceType) or instanceType == 'arena') and frame.Trinket) or frame.PVPSpecIcon
 	else
 		return frame
 	end
@@ -1100,7 +1102,15 @@ function UF:ZONE_CHANGED_NEW_AREA(event)
 
 	if E.Retail and UF.db.maxAllowedGroups then
 		local _, instanceType, difficultyID = GetInstanceInfo()
-		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
+		if E:IsSecretValue(instanceType) or E:IsSecretValue(difficultyID) then
+			-- 12.0: instance info is secret here; comparing it would taint this
+			-- execution and the Update_AllFrames pass below. Tainted execution gets a
+			-- drastically reduced budget, so configuring all raid frames then throws
+			-- "script ran too long" (NineSlice ApplyLayout / Toolkit Point, etc.).
+			UF.maxAllowedGroups = 8
+		else
+			UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
+		end
 	else
 		UF.maxAllowedGroups = 8
 	end
@@ -1139,7 +1149,8 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:UpdateRangeSpells()
 
 	local _, instanceType = IsInInstance()
-	if instanceType == 'raid' then
+	-- 12.0: short-circuit on secret instanceType so the comparison below never taints this handler
+	if E:IsSecretValue(instanceType) or instanceType == 'raid' then
 		if initLogin or isReload then
 			UF:ZONE_CHANGED_NEW_AREA()
 		else
@@ -1531,7 +1542,11 @@ function UF:RegisterRaidDebuffIndicator()
 		ORD:ResetDebuffData()
 
 		local _, instanceType = IsInInstance()
-		if instanceType == 'party' or instanceType == 'raid' then
+		-- 12.0: short-circuit on secret instanceType (we're in a party/raid instance)
+		-- so the comparison never taints this handler (PLAYER_ENTERING_WORLD calls
+		-- this, then may call ZONE_CHANGED_NEW_AREA -> Update_AllFrames in the same
+		-- tainted execution, blowing the reduced budget -> "script ran too long")
+		if E:IsSecretValue(instanceType) or instanceType == 'party' or instanceType == 'raid' then
 			local instance = E.global.unitframe.raidDebuffIndicator.instanceFilter
 			local instanceSpells = ((E.global.unitframe.aurafilters[instance] and E.global.unitframe.aurafilters[instance].spells) or E.global.unitframe.aurafilters.RaidDebuffs.spells)
 			ORD:RegisterDebuffs(instanceSpells)
