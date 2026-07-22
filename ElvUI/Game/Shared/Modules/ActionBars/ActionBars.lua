@@ -148,27 +148,26 @@ function AB:HandleBackdropMover(bar, backdropSpacing)
 end
 
 function AB:HandleButtonAutoCast(bar, button)
-	local db = bar.db
-	if not db then return end
-
-	local buttonWidth = db.buttonSize
-	local buttonHeight = (db.keepSizeRatio and db.buttonSize) or db.buttonHeight
+	local autoCast = button.AutoCastOverlay or button.AutoCastable
+	if not autoCast then return end
 
 	local offset = E.Retail and 3 or 1
-	local autoCast = button.AutoCastOverlay or button.AutoCastable
 	autoCast:SetOutside(button, offset, offset)
 
 	local corners = autoCast.Corners
-	if corners then
-		local cornerWidth = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonWidth * 0.5) - (buttonWidth / 7.5))
-		local cornerHeight = E.Retail and ((buttonWidth * 0.5) - (buttonWidth / 2)) or ((buttonHeight * 0.5) - (buttonHeight / 7.5))
-		corners:SetOutside(button, cornerWidth, cornerHeight)
-	end
+	if not corners then return end
+
+	local db = bar.db
+	local size = db and db.buttonSize or 32
+	local height = (db and db.keepSizeRatio and size) or (db and db.buttonHeight or 32)
+
+	local cornerWidth = E.Retail and 0 or ((size * 0.5) - (size / 7.5))
+	local cornerHeight = E.Retail and 0 or ((height * 0.5) - (height / 7.5))
+	corners:SetOutside(button, cornerWidth, cornerHeight)
 end
 
 function AB:HandleButton(bar, button, index, lastButton, lastColumnButton)
 	local db = bar.db
-
 	local numButtons = db.buttons
 	local buttonsPerRow = db.buttonsPerRow
 	local buttonWidth = db.buttonSize
