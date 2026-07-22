@@ -201,7 +201,18 @@ function M:HideNonInstancePanels()
 	HideUIPanel(WorldMapFrame)
 end
 
-function M:HandleClockButton()
+function M:ClearClockTextures()
+	local clock = _G.TimeManagerClockButton
+	if not clock then return end
+
+	for _, region in next, { clock:GetRegions() } do
+		if region:IsObjectType('Texture') then
+			region:SetAlpha(0)
+		end
+	end
+end
+
+function M:UpdateClockButton()
 	local ticker = _G.TimeManagerClockTicker
 	if ticker then
 		ticker:FontTemplate(LSM:Fetch('font', M.db.timeFont), M.db.timeFontSize, M.db.timeFontOutline)
@@ -215,13 +226,20 @@ function M:HandleClockButton()
 			clock.Show = nil
 			clock:SetParent(MinimapCluster)
 			clock:Show()
+
+			if not E.Retail then
+				clock:ClearAllPoints()
+				clock:Point('TOPRIGHT')
+
+				M:ClearClockTextures()
+			end
 		end
 	end
 end
 
 function M:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_TimeManager' then
-		M:HandleClockButton()
+		M:UpdateClockButton()
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
 	elseif addon == 'Blizzard_EncounterJournal' and E.Retail then
@@ -248,7 +266,6 @@ do
 			frame:Kill()
 		end
 
-		M:HandleClockButton()
 		M:UpdateSettings()
 	end
 end
@@ -562,8 +579,8 @@ function M:UpdateSettings()
 		end
 	end
 
-	-- handle the icons placed around the minimap (also the cluster)
-	M:UpdateIcons()
+	M:UpdateIcons() -- handle the icons placed around the minimap (also the cluster)
+	M:UpdateClockButton() -- handle the time text on the cluster
 
 	-- silly little hack to get the canvas to update
 	if E.MinimapSize ~= M.NeedsCanvasUpdate then
@@ -644,8 +661,10 @@ function M:UpdateSettings()
 
 	MinimapCluster:SetScale(mmScale)
 
-	local mcWidth = MinimapCluster:GetWidth()
-	local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
+	local clusterWidth = MinimapCluster:GetWidth()
+	local definedWidth = E.Retail and 30 or 0
+	local definedHeight = E.Retail and 20 or 26
+	local height, width = definedHeight * mmScale, (clusterWidth - definedWidth) * mmScale
 	M.ClusterHolder:SetSize(width, height)
 	M.ClusterBackdrop:SetSize(width, height)
 	M.ClusterBackdrop:SetShown(M.db.clusterBackdrop and not noCluster)
