@@ -1616,9 +1616,13 @@ function E:ToggleOptions(msg)
 		return
 	end
 
-	if IsAddOnLoaded('ElvUI_Options') then return end
-
 	E.ToggleMessage = msg -- used from Options: load.lua
+
+	if IsAddOnLoaded('ElvUI_Options') then
+		E:ExecuteOptions(E.ToggleMessage)
+
+		return
+	end
 
 	local _, _, _, _, reason = GetAddOnInfo('ElvUI_Options')
 	if reason == 'MISSING' then
