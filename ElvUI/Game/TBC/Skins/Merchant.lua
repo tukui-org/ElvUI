@@ -5,14 +5,10 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local CreateFrame = CreateFrame
-local GetMerchantNumItems = GetMerchantNumItems
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
-
+local GetMerchantNumItems = GetMerchantNumItems
 local GetItemQualityByID = C_Item.GetItemQualityByID
-
-local MERCHANT_ITEMS_PER_PAGE = MERCHANT_ITEMS_PER_PAGE
 
 local function MerchantItemPoint()
 	_G.MerchantItem1:PointXY(6, -40)
@@ -93,16 +89,18 @@ function S:MerchantFrame()
 
 	S:HandleButton(_G.MerchantRepairItemButton)
 	_G.MerchantRepairItemButton:StyleButton(false)
-	_G.MerchantRepairItemButton:GetRegions():SetTexCoord(0.04, 0.24, 0.07, 0.5)
+	_G.MerchantRepairItemButton:GetRegions():SetTexCoord(0.04, 0.24, 0.06, 0.5)
 	_G.MerchantRepairItemButton:GetRegions():SetInside()
+
+	S:HandleButton(_G.MerchantGuildBankRepairButton)
+	_G.MerchantGuildBankRepairButton:StyleButton()
+	_G.MerchantGuildBankRepairButtonIcon:SetTexCoord(0.61, 0.82, 0.1, 0.52)
+	_G.MerchantGuildBankRepairButtonIcon:SetInside()
 
 	S:HandleButton(_G.MerchantRepairAllButton)
 	_G.MerchantRepairAllIcon:StyleButton(false)
 	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	_G.MerchantRepairAllIcon:SetInside()
-
-	_G.MerchantRepairAllButton:ClearAllPoints()
-	_G.MerchantRepairAllButton:Point('BOTTOMLEFT', _G.MerchantFrame, 'BOTTOMLEFT', 124, 57)
 
 	_G.MerchantMoneyBg:StripTextures()
 	_G.MerchantMoneyInset:StripTextures()
@@ -130,7 +128,7 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemMoneyFrame:ClearAllPoints()
 	_G.MerchantBuyBackItemMoneyFrame:Point('BOTTOMLEFT', _G.MerchantBuyBackItemItemButton, 'BOTTOMRIGHT', 3, 0)
 
-	-- skin tabs
+	-- Skin Tabs
 	for i = 1, 2 do
 		S:HandleTab(_G['MerchantFrameTab'..i])
 	end
@@ -142,7 +140,7 @@ function S:MerchantFrame()
 
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
 		local numMerchantItems = GetMerchantNumItems()
-		local index = (MerchantFrame.page - 1) * MERCHANT_ITEMS_PER_PAGE
+		local index = (MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
 
 		for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 			index = index + 1
@@ -194,11 +192,11 @@ function S:MerchantFrame()
 		for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 			if i <= numBuybackItems then
 				local itemName = GetBuybackItemInfo(i)
-
 				if itemName then
 					local button = _G['MerchantItem'..i..'ItemButton']
 					local name = _G['MerchantItem'..i..'Name']
 					local quality = GetItemQualityByID(itemName)
+
 					if quality and quality > 1 then
 						local r, g, b = E:GetItemQualityColor(quality)
 						button:SetBackdropBorderColor(r, g, b)
