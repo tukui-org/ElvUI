@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local LSM = E.Libs.LSM
 
 local next = next
+local tremove = tremove
+
 local CreateColor = CreateColor
 local CreateNumericRuleFormatter = C_StringUtil and C_StringUtil.CreateNumericRuleFormatter
 
@@ -123,32 +125,37 @@ do
 		{ key = 'years', fmt = '%.0fy', thr = Y, components = {{ div = Y }} }
 	}
 
-	function E:CooldownBreakpoints(db, data) -- data not used here but sent for plugins
+	function E:CooldownBreakpoints(db, opt, data) -- data not used here but sent for plugins
 		for index, point in next, times do
 			if point.key == 'seconds' then
 				point.rounding = (db.roundup and ROUNDUP) or ROUNDDOWN
-				point.threshold = db.minThreshold or point.thr
+				point.threshold = opt.minThreshold or point.thr
 			else
 				point.rounding = nil
 				point.threshold = point.thr
 			end
 
-			local colors = db.colors[point.key] or default
+			local colors = opt.colors[point.key] or default
 			color:SetRGBA(colors.r, colors.g, colors.b, colors.a)
 			point.format = color:WrapTextInColorCode(point.fmt)
 
 			breakpoints[index] = point
 		end
 
+		-- remove expiration when toggled
+		if opt.minThreshold == -1 then
+			tremove(breakpoints, 1)
+		end
+
 		return breakpoints
 	end
 end
 
-function E:CooldownFormats(cooldown, db, data, formatter, alt)
+function E:CooldownFormats(cooldown, db, data, formatter, opt)
 	if not cooldown or not db or not formatter then return end
 
-	local override = (alt and alt.override) and alt -- chargeCooldown or lossOfControl
-	local breakpoints = E:CooldownBreakpoints(override or db.thresholdText, data)
+	local override = (opt and opt.override) and opt -- chargeCooldown or lossOfControl
+	local breakpoints = E:CooldownBreakpoints(db, override or db.thresholdText, data)
 	formatter:SetBreakpoints(breakpoints)
 	cooldown:SetCountdownFormatter(formatter)
 end

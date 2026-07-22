@@ -2966,7 +2966,6 @@ do
 
 	local thresholds = {
 		minThreshold = 3, -- low threshold
-		roundup = false,
 		override = false,
 		colors = CopyTable(colors)
 	}
@@ -2974,6 +2973,7 @@ do
 	local defaults = {
 		enable = true,
 
+		roundup = false,
 		reverse = false,
 		hideBling = false,
 		hideNumbers = false,
