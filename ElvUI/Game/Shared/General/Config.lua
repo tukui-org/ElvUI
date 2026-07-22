@@ -1410,32 +1410,7 @@ function E:Config_GetToggleMode(frame, msg)
 	end
 end
 
-function E:ToggleOptions(msg)
-	if E:AlertCombat() then
-		self.ShowOptions = true
-		return
-	end
-
-	if not IsAddOnLoaded('ElvUI_Options') then
-		local _, _, _, _, reason = GetAddOnInfo('ElvUI_Options')
-
-		if reason == 'MISSING' then
-			E:Print('|cffff0000Error|r -- Addon "ElvUI_Options" not found.')
-			return
-		else
-			EnableAddOn('ElvUI_Options', E.myguid)
-			LoadAddOn('ElvUI_Options')
-
-			-- version check if it's actually enabled
-			local config = E.Config and E.Config[1]
-			if not config or (E.version ~= config.version) then
-				E.updateRequestTriggered = true
-				E:StaticPopup_Show('UPDATE_REQUEST')
-				return
-			end
-		end
-	end
-
+function E:ExecuteOptions(msg)
 	local frame = E:Config_GetWindow()
 	local mode, pages = E:Config_GetToggleMode(frame, msg)
 
@@ -1450,187 +1425,213 @@ function E:ToggleOptions(msg)
 		frame = E:Config_GetWindow()
 	end
 
-	if mode == 'Open' and frame then
-		local ACR = E.Libs.AceConfigRegistry
-		if ACR and not ACR.NotifyHookedElvUI then
-			hooksecurefunc(E.Libs.AceConfigRegistry, 'NotifyChange', E.Config_UpdateLeftButtons)
-			ACR.NotifyHookedElvUI = true
-			E:Config_UpdateSize()
-		end
+	if not frame or mode ~= 'Open' then return end
 
-		local unskinned = not E.private.skins.ace3Enable
-		if not frame.bottomHolder then -- window was released or never opened
-			frame:HookScript('OnHide', E.Config_WindowClosed)
+	local ACR = E.Libs.AceConfigRegistry
+	if ACR and not ACR.NotifyHookedElvUI then
+		hooksecurefunc(E.Libs.AceConfigRegistry, 'NotifyChange', E.Config_UpdateLeftButtons)
+		ACR.NotifyHookedElvUI = true
+		E:Config_UpdateSize()
+	end
 
-			for _, child in next, { frame:GetChildren() } do
-				local button = child:IsObjectType('Button')
-				if button and child:GetText() == _G.CLOSE then
-					frame.originalClose = child
-					child:Hide()
-				elseif button or child:IsObjectType('Frame') then
-					if unskinned and child.GetBackdrop then
-						local info = child:GetBackdrop()
-						if info and info.edgeFile == [[Interface\Tooltips\UI-Tooltip-Border]] then
-							child:SetBackdrop()
-						end
+	local unskinned = not E.private.skins.ace3Enable
+	if not frame.bottomHolder then -- window was released or never opened
+		frame:HookScript('OnHide', E.Config_WindowClosed)
+
+		for _, child in next, { frame:GetChildren() } do
+			local button = child:IsObjectType('Button')
+			if button and child:GetText() == _G.CLOSE then
+				frame.originalClose = child
+				child:Hide()
+			elseif button or child:IsObjectType('Frame') then
+				if unskinned and child.GetBackdrop then
+					local info = child:GetBackdrop()
+					if info and info.edgeFile == [[Interface\Tooltips\UI-Tooltip-Border]] then
+						child:SetBackdrop()
 					end
+				end
 
-					local point = not unskinned and not frame.resizeArrow and child:GetPoint()
-					if point == 'BOTTOMRIGHT' then
-						for _, region in next, { child:GetRegions() } do
-							local texture = region:IsObjectType('Texture') and region:GetTexture()
-							if texture == 137057 then
-								if not child.resizeTexture then
-									region:SetTexture(E.Media.Textures.ArrowUp)
-									region:SetTexCoord(0, 1, 0, 1)
-									region:SetRotation(-2.35)
-									region:SetAllPoints()
+				local point = not unskinned and not frame.resizeArrow and child:GetPoint()
+				if point == 'BOTTOMRIGHT' then
+					for _, region in next, { child:GetRegions() } do
+						local texture = region:IsObjectType('Texture') and region:GetTexture()
+						if texture == 137057 then
+							if not child.resizeTexture then
+								region:SetTexture(E.Media.Textures.ArrowUp)
+								region:SetTexCoord(0, 1, 0, 1)
+								region:SetRotation(-2.35)
+								region:SetAllPoints()
 
-									child.resizeTexture = region
-								elseif texture then -- this is the smaller texture, we don't need it
-									region:SetAlpha(0)
-								end
+								child.resizeTexture = region
+							elseif texture then -- this is the smaller texture, we don't need it
+								region:SetAlpha(0)
 							end
 						end
-
-						child:Size(24)
-						child:Point('BOTTOMRIGHT', 1, -1)
-						child:SetFrameLevel(200)
-
-						frame.resizeArrow = child
 					end
 
-					if child:HasScript('OnMouseUp') then
-						child:HookScript('OnMouseUp', E.Config_StopMoving)
-					end
+					child:Size(24)
+					child:Point('BOTTOMRIGHT', 1, -1)
+					child:SetFrameLevel(200)
+
+					frame.resizeArrow = child
+				end
+
+				if child:HasScript('OnMouseUp') then
+					child:HookScript('OnMouseUp', E.Config_StopMoving)
 				end
 			end
-
-			local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton')
-			close:SetScript('OnClick', E.Config_CloseClicked)
-			close:SetFrameLevel(1000)
-			close:Point('TOPRIGHT', unskinned and -12 or 1, unskinned and -12 or 2)
-			close:Size(unskinned and 30 or 32)
-			close.originalClose = frame.originalClose
-			frame.closeButton = close
-
-			local statusText = frame.obj.statustext
-			if statusText then
-				frame.statusText = statusText
-
-				statusText.parent = statusText:GetParent()
-				statusText.content = frame.obj.content
-				statusText.frame = frame
-
-				if not statusTextHooked[statusText] then
-					statusTextHooked[statusText] = true
-
-					hooksecurefunc(statusText, 'SetText', E.Config_SetStatusText)
-				end
-			end
-
-			local left = CreateFrame('Frame', nil, frame)
-			left:Point('TOPLEFT', unskinned and 10 or 2, unskinned and -6 or -2)
-			left:Point('BOTTOMRIGHT', frame, 'BOTTOMLEFT', 182, 2)
-			frame.leftHolder = left
-
-			local top = CreateFrame('Frame', nil, frame)
-			top.version = frame.obj.titletext
-			top:Point('TOPRIGHT', frame, -2, 0)
-			top:Point('TOPLEFT', left, 'TOPRIGHT', 1, 0)
-			top:Height(24)
-			frame.topHolder = top
-
-			local bottom = CreateFrame('Frame', nil, frame)
-			bottom:Point('TOPLEFT', top, 'BOTTOMLEFT', unskinned and -15 or 0, -(unskinned and 15 or 1))
-			bottom:Point('TOPRIGHT', top, 'BOTTOMRIGHT', unskinned and 10 or 0, -(unskinned and 15 or 1))
-			bottom:Height(37)
-			frame.bottomHolder = bottom
-
-			local LogoBottom = left:CreateTexture()
-			LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
-			LogoBottom:Point('CENTER', left, 'TOP', unskinned and 10 or 0, unskinned and -40 or -36)
-			LogoBottom:Size(128, 64)
-			left.LogoBottom = LogoBottom
-
-			local LogoTop = left:CreateTexture()
-			LogoTop:SetTexture(E.Media.Textures.LogoTopSmall)
-			LogoTop:Point('CENTER', left, 'TOP', unskinned and 10 or 0, unskinned and -40 or -36)
-			LogoTop:Size(128, 64)
-			left.LogoTop = LogoTop
-
-			local buttonsHolder = CreateFrame('Frame', nil, left)
-			buttonsHolder:Point('TOPLEFT', unskinned and 4 or 1, -70)
-			buttonsHolder:Point('BOTTOMRIGHT', unskinned and 6 or 1, unskinned and 10 or 0)
-			buttonsHolder:SetClipsChildren(true)
-			left.buttonsHolder = buttonsHolder
-
-			local buttons = CreateFrame('Frame', nil, buttonsHolder)
-			buttons:Point('BOTTOMRIGHT')
-			buttons:Point('TOPLEFT', 0, 0)
-			left.buttons = buttons
-
-			local slider = CreateFrame('Slider', nil, frame)
-			slider:SetThumbTexture(E.Media.Textures.White8x8)
-			slider:SetScript('OnMouseWheel', E.Config_SliderOnMouseWheel)
-			slider:SetScript('OnValueChanged', E.Config_SliderOnValueChanged)
-			slider:SetOrientation('VERTICAL')
-			slider:SetObeyStepOnDrag(true)
-			slider:SetValueStep(1)
-			slider:SetValue(0)
-			slider:Width(192)
-			slider:Point('TOPLEFT', buttons, 'TOPLEFT', 0, 0)
-			slider:Point('BOTTOMRIGHT', left, 'BOTTOMRIGHT', unskinned and 3 or 0, unskinned and 10 or 1)
-			slider.buttons = buttons
-			left.slider = slider
-
-			local thumb = slider:GetThumbTexture()
-			thumb:Point('LEFT', left, 'RIGHT', unskinned and 6 or 2, 0)
-			thumb:Size(8, 12)
-			thumb:SetAlpha(0) -- hide this one, its under the unskinned buttons
-			left.slider.thumb = thumb
-
-			local thumbHolder = CreateFrame('Frame', nil, left)
-			thumbHolder:SetFrameLevel(200)
-			thumbHolder:SetAllPoints(thumb)
-			thumb.holder = thumbHolder
-
-			local thumbTexture = thumbHolder:CreateTexture()
-			thumbTexture:SetTexture(E.media.blankTex)
-			thumbTexture:SetDrawLayer('OVERLAY')
-			thumbTexture:SetVertexColor(1, 1, 1, 0.5)
-			thumbTexture:SetAllPoints()
-			thumbHolder.texture = thumbTexture
-
-			if not unskinned then
-				local statusParent = statusText and statusText.parent
-				if statusParent then
-					statusParent:Hide()
-					statusParent:SetTemplate('Transparent')
-				end
-
-				bottom:SetTemplate('Transparent')
-				left:SetTemplate('Transparent')
-				top:SetTemplate('Transparent')
-
-				E.Skins:HandleCloseButton(close)
-			else
-				for _, region in next, { frame:GetRegions() } do
-					local texture = region:IsObjectType('Texture') and region:GetTexture()
-					if texture == 131080 then
-						region:SetAlpha(0)
-					end
-				end
-			end
-
-			E:Config_CreateLeftButtons(frame, unskinned, E.Options.args)
-			E:Config_CreateBottomButtons(frame, unskinned)
-			E:Config_UpdateLeftScroller(frame)
-			E:Config_WindowOpened(frame)
 		end
 
-		if pages then
-			ACD:SelectGroup('ElvUI', unpack(pages))
+		local close = CreateFrame('Button', nil, frame, 'UIPanelCloseButton')
+		close:SetScript('OnClick', E.Config_CloseClicked)
+		close:SetFrameLevel(1000)
+		close:Point('TOPRIGHT', unskinned and -12 or 1, unskinned and -12 or 2)
+		close:Size(unskinned and 30 or 32)
+		close.originalClose = frame.originalClose
+		frame.closeButton = close
+
+		local statusText = frame.obj.statustext
+		if statusText then
+			frame.statusText = statusText
+
+			statusText.parent = statusText:GetParent()
+			statusText.content = frame.obj.content
+			statusText.frame = frame
+
+			if not statusTextHooked[statusText] then
+				statusTextHooked[statusText] = true
+
+				hooksecurefunc(statusText, 'SetText', E.Config_SetStatusText)
+			end
+		end
+
+		local left = CreateFrame('Frame', nil, frame)
+		left:Point('TOPLEFT', unskinned and 10 or 2, unskinned and -6 or -2)
+		left:Point('BOTTOMRIGHT', frame, 'BOTTOMLEFT', 182, 2)
+		frame.leftHolder = left
+
+		local top = CreateFrame('Frame', nil, frame)
+		top.version = frame.obj.titletext
+		top:Point('TOPRIGHT', frame, -2, 0)
+		top:Point('TOPLEFT', left, 'TOPRIGHT', 1, 0)
+		top:Height(24)
+		frame.topHolder = top
+
+		local bottom = CreateFrame('Frame', nil, frame)
+		bottom:Point('TOPLEFT', top, 'BOTTOMLEFT', unskinned and -15 or 0, -(unskinned and 15 or 1))
+		bottom:Point('TOPRIGHT', top, 'BOTTOMRIGHT', unskinned and 10 or 0, -(unskinned and 15 or 1))
+		bottom:Height(37)
+		frame.bottomHolder = bottom
+
+		local LogoBottom = left:CreateTexture()
+		LogoBottom:SetTexture(E.Media.Textures.LogoBottomSmall)
+		LogoBottom:Point('CENTER', left, 'TOP', unskinned and 10 or 0, unskinned and -40 or -36)
+		LogoBottom:Size(128, 64)
+		left.LogoBottom = LogoBottom
+
+		local LogoTop = left:CreateTexture()
+		LogoTop:SetTexture(E.Media.Textures.LogoTopSmall)
+		LogoTop:Point('CENTER', left, 'TOP', unskinned and 10 or 0, unskinned and -40 or -36)
+		LogoTop:Size(128, 64)
+		left.LogoTop = LogoTop
+
+		local buttonsHolder = CreateFrame('Frame', nil, left)
+		buttonsHolder:Point('TOPLEFT', unskinned and 4 or 1, -70)
+		buttonsHolder:Point('BOTTOMRIGHT', unskinned and 6 or 1, unskinned and 10 or 0)
+		buttonsHolder:SetClipsChildren(true)
+		left.buttonsHolder = buttonsHolder
+
+		local buttons = CreateFrame('Frame', nil, buttonsHolder)
+		buttons:Point('BOTTOMRIGHT')
+		buttons:Point('TOPLEFT', 0, 0)
+		left.buttons = buttons
+
+		local slider = CreateFrame('Slider', nil, frame)
+		slider:SetThumbTexture(E.Media.Textures.White8x8)
+		slider:SetScript('OnMouseWheel', E.Config_SliderOnMouseWheel)
+		slider:SetScript('OnValueChanged', E.Config_SliderOnValueChanged)
+		slider:SetOrientation('VERTICAL')
+		slider:SetObeyStepOnDrag(true)
+		slider:SetValueStep(1)
+		slider:SetValue(0)
+		slider:Width(192)
+		slider:Point('TOPLEFT', buttons, 'TOPLEFT', 0, 0)
+		slider:Point('BOTTOMRIGHT', left, 'BOTTOMRIGHT', unskinned and 3 or 0, unskinned and 10 or 1)
+		slider.buttons = buttons
+		left.slider = slider
+
+		local thumb = slider:GetThumbTexture()
+		thumb:Point('LEFT', left, 'RIGHT', unskinned and 6 or 2, 0)
+		thumb:Size(8, 12)
+		thumb:SetAlpha(0) -- hide this one, its under the unskinned buttons
+		left.slider.thumb = thumb
+
+		local thumbHolder = CreateFrame('Frame', nil, left)
+		thumbHolder:SetFrameLevel(200)
+		thumbHolder:SetAllPoints(thumb)
+		thumb.holder = thumbHolder
+
+		local thumbTexture = thumbHolder:CreateTexture()
+		thumbTexture:SetTexture(E.media.blankTex)
+		thumbTexture:SetDrawLayer('OVERLAY')
+		thumbTexture:SetVertexColor(1, 1, 1, 0.5)
+		thumbTexture:SetAllPoints()
+		thumbHolder.texture = thumbTexture
+
+		if not unskinned then
+			local statusParent = statusText and statusText.parent
+			if statusParent then
+				statusParent:Hide()
+				statusParent:SetTemplate('Transparent')
+			end
+
+			bottom:SetTemplate('Transparent')
+			left:SetTemplate('Transparent')
+			top:SetTemplate('Transparent')
+
+			E.Skins:HandleCloseButton(close)
+		else
+			for _, region in next, { frame:GetRegions() } do
+				local texture = region:IsObjectType('Texture') and region:GetTexture()
+				if texture == 131080 then
+					region:SetAlpha(0)
+				end
+			end
+		end
+
+		E:Config_CreateLeftButtons(frame, unskinned, E.Options.args)
+		E:Config_CreateBottomButtons(frame, unskinned)
+		E:Config_UpdateLeftScroller(frame)
+		E:Config_WindowOpened(frame)
+	end
+
+	if pages then
+		ACD:SelectGroup('ElvUI', unpack(pages))
+	end
+end
+
+function E:ToggleOptions(msg)
+	if E:AlertCombat() then
+		self.ShowOptions = true
+		return
+	end
+
+	if IsAddOnLoaded('ElvUI_Options') then return end
+
+	E.ToggleMessage = msg -- used from Options: load.lua
+
+	local _, _, _, _, reason = GetAddOnInfo('ElvUI_Options')
+	if reason == 'MISSING' then
+		E:Print('|cffff0000Error|r -- Addon "ElvUI_Options" not found.')
+	else
+		EnableAddOn('ElvUI_Options', E.myguid)
+		LoadAddOn('ElvUI_Options')
+
+		-- version check if it's actually enabled
+		local config = E.Config and E.Config[1]
+		if not config or (E.version ~= config.version) then
+			E.updateRequestTriggered = true
+			E:StaticPopup_Show('UPDATE_REQUEST')
 		end
 	end
 end
