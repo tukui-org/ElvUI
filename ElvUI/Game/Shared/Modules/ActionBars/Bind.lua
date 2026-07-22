@@ -42,8 +42,12 @@ AB.KeyBinder = bind
 function AB:ActivateBindMode()
 	if InCombatLockdown() then return end
 
+	if bind.Popup then
+		E:StaticPopupSpecial_Show(bind.Popup)
+	end
+
 	bind.active = true
-	E:StaticPopupSpecial_Show(bind.Popup)
+
 	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'DeactivateBindMode', false)
 end
 
@@ -56,11 +60,15 @@ function AB:DeactivateBindMode(save)
 		E:Print(L["Binds Discarded"])
 	end
 
+	if bind.Popup then
+		E:StaticPopupSpecial_Hide(bind.Popup)
+	end
+
 	bind.active = false
+	AB.bindingsChanged = false
+
 	self:BindHide()
 	self:UnregisterEvent('PLAYER_REGEN_DISABLED')
-	E:StaticPopupSpecial_Hide(bind.Popup)
-	AB.bindingsChanged = false
 end
 
 function AB:BindHide()
@@ -256,13 +264,10 @@ function AB:BindUpdate(button, spellmacro)
 end
 
 function AB:ChangeBindingProfile()
-	if bind.Popup.perCharCheck:GetChecked() then
-		LoadBindings(2)
-		SaveBindings(2)
-	else
-		LoadBindings(1)
-		SaveBindings(1)
-	end
+	local checked = (bind.Popup and bind.Popup.perCharCheck:GetChecked()) and 2 or 1
+
+	LoadBindings(checked)
+	SaveBindings(checked)
 end
 
 do
