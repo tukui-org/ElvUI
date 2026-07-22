@@ -98,7 +98,12 @@ function E:CooldownUpdate(cooldown)
 	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
 	E:CooldownColors(data.lossOfControl, colors.edgeLOC, colors.swipeLOC)
 
-	E:CooldownFormats(cooldown, db, data)
+	local formatters = data.formatters
+	if formatters then
+		E:CooldownFormats(cooldown, db, data, formatters.text)
+		E:CooldownFormats(data.chargeCooldown, db, data, formatters.charge, db.thresholdCharge)
+		E:CooldownFormats(data.lossOfControl, db, data, formatters.loc, db.thresholdLoc)
+	end
 
 	--cooldown:SetRotation(rad(db.rotation))
 	cooldown:SetDrawBling(not exclude and not db.hideBling)
@@ -118,7 +123,7 @@ do
 		{ key = 'years', fmt = '%.0fy', thr = Y, components = {{ div = Y }} }
 	}
 
-	function E:CooldownBreakpoints(db, data)
+	function E:CooldownBreakpoints(db, data) -- data not used here but sent for plugins
 		for index, point in next, times do
 			if point.key == 'seconds' then
 				point.rounding = (db.roundup and ROUNDUP) or ROUNDDOWN
@@ -139,13 +144,13 @@ do
 	end
 end
 
-function E:CooldownFormats(cooldown, db, data)
-	if not data.formatter then return end
+function E:CooldownFormats(cooldown, db, data, formatter, alt)
+	if not cooldown or not db or not formatter then return end
 
-	local breakpoints = E:CooldownBreakpoints(db, data)
-	data.formatter:SetBreakpoints(breakpoints)
-
-	cooldown:SetCountdownFormatter(data.formatter)
+	local override = (alt and alt.override) and alt -- chargeCooldown or lossOfControl
+	local breakpoints = E:CooldownBreakpoints(override or db.thresholdText, data)
+	formatter:SetBreakpoints(breakpoints)
+	cooldown:SetCountdownFormatter(formatter)
 end
 
 function E:CooldownRegion(cooldown)
@@ -212,7 +217,11 @@ function E:RegisterCooldown(cooldown, which)
 	data.lossOfControl = parent and parent.lossOfControlCooldown or nil
 
 	if CreateNumericRuleFormatter then
-		data.formatter = CreateNumericRuleFormatter()
+		data.formatters = {
+			text = CreateNumericRuleFormatter(),
+			charge = CreateNumericRuleFormatter(),
+			loc = CreateNumericRuleFormatter()
+		}
 	end
 
 	-- extract the blizzard cooldown region
