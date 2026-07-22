@@ -2659,6 +2659,10 @@ function CH:SetupChat()
 		if chat then
 			CH:StyleChat(chat)
 
+			if not chat.oldAlpha then
+				CH:FCF_SetWindowAlpha(chat)
+			end
+
 			_G.FCFTab_UpdateAlpha(chat)
 
 			local id = chat:GetID()
@@ -4066,8 +4070,8 @@ function CH:Initialize()
 	CH:SecureHook('FCF_SavePositionAndDimensions', 'SnappingChanged')
 	CH:SecureHook('FCF_SetButtonSide', 'PositionButtonFrame')
 	CH:SecureHook('FCF_SetChatWindowFontSize', 'SetChatFont')
-	CH:SecureHook('FCF_SetWindowAlpha')
 	CH:SecureHook('FCF_UnDockFrame', 'SnappingChanged')
+	CH:SecureHook('FCF_SetWindowAlpha')
 	CH:SecureHook('RedockChatWindows', 'ClearSnapping')
 	CH:SecureHook('UIDropDownMenu_AddButton')
 	CH:SecureHook('GetPlayerInfoByGUID')
