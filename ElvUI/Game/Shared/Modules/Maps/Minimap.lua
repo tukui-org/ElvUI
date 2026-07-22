@@ -201,15 +201,37 @@ function M:HideNonInstancePanels()
 	HideUIPanel(WorldMapFrame)
 end
 
+function M:HandleClockButton()
+	local ticker = _G.TimeManagerClockTicker
+	if ticker then
+		ticker:FontTemplate(LSM:Fetch('font', M.db.timeFont), M.db.timeFontSize, M.db.timeFontOutline)
+	end
+
+	local clock = _G.TimeManagerClockButton
+	if clock then
+		if not E.Retail or M.db.clusterDisable then -- noCluster
+			clock:Kill()
+		else
+			clock.Show = nil
+			clock:SetParent(MinimapCluster)
+			clock:Show()
+		end
+	end
+end
+
 function M:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_TimeManager' then
-		_G.TimeManagerClockButton:Kill()
+		M:HandleClockButton()
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
 	elseif addon == 'Blizzard_EncounterJournal' and E.Retail then
 		-- Since the default non-quest map is full screen, it overrides the showing of the encounter journal
 		hooksecurefunc('EJ_HideNonInstancePanels', M.HideNonInstancePanels)
 	end
+end
+
+function M:PLAYER_LOGIN()
+	M:HandleClockButton()
 end
 
 function M:Minimap_OnShow()
@@ -611,20 +633,14 @@ function M:UpdateSettings()
 		M.ClusterBackdrop:SetShown(M.db.clusterBackdrop and not noCluster)
 
 		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
-		_G.TimeManagerClockTicker:FontTemplate(LSM:Fetch('font', M.db.timeFont), M.db.timeFontSize, M.db.timeFontOutline)
 
 		if noCluster then
 			MinimapCluster.ZoneTextButton:Kill()
-			_G.TimeManagerClockButton:Kill()
 		else
 			MinimapCluster.ZoneTextButton.Show = nil
 			MinimapCluster.ZoneTextButton:SetParent(MinimapCluster)
 			MinimapCluster.ZoneTextButton:RegisterEvent('UPDATE_BINDINGS')
 			MinimapCluster.ZoneTextButton:Show()
-
-			_G.TimeManagerClockButton.Show = nil
-			_G.TimeManagerClockButton:SetParent(MinimapCluster)
-			_G.TimeManagerClockButton:Show()
 		end
 	end
 end
@@ -806,6 +822,8 @@ function M:Initialize()
 	M:SetScale(Minimap.location, 1)
 	M:SetMinimapMask(not M.db.circle)
 
+	M:RegisterEvent('ADDON_LOADED')
+	M:RegisterEvent('PLAYER_LOGIN')
 	M:RegisterEvent('PLAYER_ENTERING_WORLD')
 	M:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
@@ -850,10 +868,6 @@ function M:Initialize()
 		hooksecurefunc('SetLookingForGroupUIAvailable', M.HandleTrackingButton)
 	end
 
-	if _G.TimeManagerClockButton then
-		tinsert(killFrames, _G.TimeManagerClockButton)
-	end
-
 	for _, frame in next, killFrames do
 		frame:Kill()
 	end
@@ -862,7 +876,6 @@ function M:Initialize()
 		M:SetupHybridMinimap()
 	end
 
-	M:RegisterEvent('ADDON_LOADED')
 	M:UpdateSettings()
 end
 
