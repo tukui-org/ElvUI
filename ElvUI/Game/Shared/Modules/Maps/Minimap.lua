@@ -209,7 +209,7 @@ function M:HandleClockButton()
 
 	local clock = _G.TimeManagerClockButton
 	if clock then
-		if not E.Retail or M.db.clusterDisable then -- noCluster
+		if M.db.clusterDisable then -- noCluster
 			clock:Kill()
 		else
 			clock.Show = nil
@@ -230,8 +230,27 @@ function M:ADDON_LOADED(_, addon)
 	end
 end
 
-function M:PLAYER_LOGIN()
-	M:HandleClockButton()
+do
+	local killFrames = {
+		_G.MinimapBorderTop,
+		_G.MiniMapMailBorder,
+		_G.MinimapNorthTag,
+		_G.MiniMapWorldMapButton,
+		_G.MinimapZoneTextButton
+	}
+
+	function M:PLAYER_LOGIN()
+		tinsert(killFrames, E.Retail and Minimap.ZoomIn or _G.MinimapZoomIn)
+		tinsert(killFrames, E.Retail and Minimap.ZoomOut or _G.MinimapZoomOut)
+		tinsert(killFrames, E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton)
+
+		for _, frame in next, killFrames do
+			frame:Kill()
+		end
+
+		M:HandleClockButton()
+		M:UpdateSettings()
+	end
 end
 
 function M:Minimap_OnShow()
@@ -251,7 +270,7 @@ function M:Minimap_OnLeave()
 end
 
 function M:Minimap_EnterLeave(minimap, show)
-	if M.db.locationText == 'MOUSEOVER' and (not E.Retail or M.db.clusterDisable) then
+	if M.db.locationText == 'MOUSEOVER' and M.db.clusterDisable then -- noCluster
 		minimap.location:SetShown(show)
 	end
 end
@@ -322,10 +341,13 @@ function M:GetLocTextColor()
 end
 
 function M:Update_ZoneText()
-	if M.db.locationText == 'HIDE' then return end
+	if not Minimap.location:IsShown() or M.db.locationText == 'HIDE' then return end
 
-	Minimap.location:SetText(utf8sub(GetMinimapZoneText(), 1, 46))
-	Minimap.location:SetTextColor(M:GetLocTextColor())
+	local r, g, b = M:GetLocTextColor()
+	local zone = GetMinimapZoneText()
+	local text = utf8sub(zone, 1, 46)
+	Minimap.location:SetTextColor(r, g, b)
+	Minimap.location:SetText(text)
 end
 
 do
@@ -430,8 +452,7 @@ function M:UpdateIcons()
 		end
 	end
 
-	local noCluster = not E.Retail or M.db.clusterDisable
-	if not noCluster then
+	if not M.db.clusterDisable then -- noCluster
 		if M.ClusterHolder then
 			E:EnableMover(M.ClusterHolder.mover.name)
 		end
@@ -519,7 +540,7 @@ end
 function M:UpdateSettings()
 	if not M.Initialized then return end
 
-	local noCluster = not E.Retail or M.db.clusterDisable
+	local noCluster = M.db.clusterDisable
 	E.MinimapSize = M.db.size or Minimap:GetWidth()
 
 	local indicator = MinimapCluster.IndicatorFrame
@@ -621,27 +642,23 @@ function M:UpdateSettings()
 		_G.MiniMapMailIcon:Size(20)
 	end
 
-	if not E.Retail then
-		Minimap:SetScale(mmScale)
+	MinimapCluster:SetScale(mmScale)
+
+	local mcWidth = MinimapCluster:GetWidth()
+	local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
+	M.ClusterHolder:SetSize(width, height)
+	M.ClusterBackdrop:SetSize(width, height)
+	M.ClusterBackdrop:SetShown(M.db.clusterBackdrop and not noCluster)
+
+	_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
+
+	if noCluster then
+		MinimapCluster.ZoneTextButton:Kill()
 	else
-		MinimapCluster:SetScale(mmScale)
-
-		local mcWidth = MinimapCluster:GetWidth()
-		local height, width = 20 * mmScale, (mcWidth - 30) * mmScale
-		M.ClusterHolder:SetSize(width, height)
-		M.ClusterBackdrop:SetSize(width, height)
-		M.ClusterBackdrop:SetShown(M.db.clusterBackdrop and not noCluster)
-
-		_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
-
-		if noCluster then
-			MinimapCluster.ZoneTextButton:Kill()
-		else
-			MinimapCluster.ZoneTextButton.Show = nil
-			MinimapCluster.ZoneTextButton:SetParent(MinimapCluster)
-			MinimapCluster.ZoneTextButton:RegisterEvent('UPDATE_BINDINGS')
-			MinimapCluster.ZoneTextButton:Show()
-		end
+		MinimapCluster.ZoneTextButton.Show = nil
+		MinimapCluster.ZoneTextButton:SetParent(MinimapCluster)
+		MinimapCluster.ZoneTextButton:RegisterEvent('UPDATE_BINDINGS')
+		MinimapCluster.ZoneTextButton:Show()
 	end
 end
 
@@ -658,7 +675,7 @@ function M:ClusterSize(width, height)
 end
 
 function M:ClusterPoint(_, anchor)
-	local noCluster = not E.Retail or M.db.clusterDisable
+	local noCluster = M.db.clusterDisable
 	local frame = (noCluster and UIParent) or M.ClusterHolder
 
 	if anchor ~= frame then
@@ -712,10 +729,6 @@ end
 
 function M:Initialize()
 	if not E.private.general.minimap.enable then
-		if not E.Retail then
-			M:SetMinimapMask(false)
-		end
-
 		return
 	else
 		local container = MinimapCluster.MinimapContainer
@@ -769,32 +782,26 @@ function M:Initialize()
 	M.MapHolder = mapHolder
 	M:SetScale(mapHolder, 1)
 
-	if E.Retail then
-		local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
-		clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()
-		clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
-		clusterHolder:SetSize(clusterHolder.savedWidth, clusterHolder.savedHeight)
-		clusterHolder:SetFrameLevel(10) -- over minimap mover
-		E:CreateMover(clusterHolder, 'MinimapClusterMover', L["Minimap Cluster"], nil, nil, nil, nil, nil, 'maps,minimap')
-		M.ClusterHolder = clusterHolder
+	local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
+	clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()
+	clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
+	clusterHolder:SetSize(clusterHolder.savedWidth, clusterHolder.savedHeight)
+	clusterHolder:SetFrameLevel(10) -- over minimap mover
+	E:CreateMover(clusterHolder, 'MinimapClusterMover', L["Minimap Cluster"], nil, nil, nil, nil, nil, 'maps,minimap')
+	M.ClusterHolder = clusterHolder
 
-		local clusterBackdrop = CreateFrame('Frame', 'ElvUI_MinimapClusterBackdrop', MinimapCluster)
-		clusterBackdrop:Point('TOPRIGHT', 0, -1)
-		clusterBackdrop:SetTemplate()
-		M:SetScale(clusterBackdrop, 1)
-		M.ClusterBackdrop = clusterBackdrop
-
-		--Hide the BlopRing on Minimap
-		Minimap:SetArchBlobRingAlpha(0)
-		Minimap:SetArchBlobRingScalar(0)
-		Minimap:SetQuestBlobRingAlpha(0)
-		Minimap:SetQuestBlobRingScalar(0)
-	end
+	local clusterBackdrop = CreateFrame('Frame', 'ElvUI_MinimapClusterBackdrop', MinimapCluster)
+	clusterBackdrop:Point('TOPRIGHT', 0, -1)
+	clusterBackdrop:SetTemplate()
+	M:SetScale(clusterBackdrop, 1)
+	M.ClusterBackdrop = clusterBackdrop
 
 	local clickHandler = CreateFrame('Frame', 'ElvUI_MinimapClickHandler', Minimap)
 	clickHandler:SetPassThroughButtons('LeftButton')
 	clickHandler:SetPropagateMouseMotion(true)
 	clickHandler:SetAllPoints()
+	clickHandler:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
+	clickHandler:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
 	M.MinimapClickHandler = clickHandler
 
 	M:ClusterPoint()
@@ -803,9 +810,13 @@ function M:Initialize()
 	hooksecurefunc(MinimapCluster, 'SetPoint', M.ClusterPoint)
 	hooksecurefunc(MinimapCluster, 'SetSize', M.ClusterSize)
 
+	Minimap:HookScript('OnShow', M.Minimap_OnShow)
+	Minimap:HookScript('OnHide', M.Minimap_OnHide)
+	Minimap:HookScript('OnEnter', M.Minimap_OnEnter)
+	Minimap:HookScript('OnLeave', M.Minimap_OnLeave)
 	Minimap:EnableMouseWheel(true)
-	Minimap:SetFrameLevel(10)
 	Minimap:SetFrameStrata('LOW')
+	Minimap:SetFrameLevel(10)
 	Minimap:CreateBackdrop()
 
 	if Minimap.backdrop then -- level to hybrid maps fixed values
@@ -829,32 +840,15 @@ function M:Initialize()
 	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
 
-	clickHandler:SetScript('OnMouseWheel', M.Minimap_OnMouseWheel)
-	clickHandler:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
-
-	Minimap:HookScript('OnShow', M.Minimap_OnShow)
-	Minimap:HookScript('OnHide', M.Minimap_OnHide)
-
-	Minimap:HookScript('OnEnter', M.Minimap_OnEnter)
-	Minimap:HookScript('OnLeave', M.Minimap_OnLeave)
-
-	local killFrames = {
-		_G.MinimapBorderTop,
-		_G.MiniMapMailBorder,
-		_G.MinimapNorthTag,
-		_G.MiniMapWorldMapButton,
-		_G.MinimapZoneTextButton,
-		_G.MinimapZoomIn,
-		_G.MinimapZoomOut,
-		E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton
-	}
-
-	tinsert(killFrames, Minimap.ZoomIn)
-	tinsert(killFrames, Minimap.ZoomOut)
-
 	MinimapCluster.BorderTop:StripTextures()
 
 	if E.Retail then
+		-- hide the BlopRing on Minimap
+		Minimap:SetArchBlobRingAlpha(0)
+		Minimap:SetArchBlobRingScalar(0)
+		Minimap:SetQuestBlobRingAlpha(0)
+		Minimap:SetQuestBlobRingScalar(0)
+
 		MinimapCluster.Tracking.Background:StripTextures()
 
 		if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
@@ -868,15 +862,9 @@ function M:Initialize()
 		hooksecurefunc('SetLookingForGroupUIAvailable', M.HandleTrackingButton)
 	end
 
-	for _, frame in next, killFrames do
-		frame:Kill()
-	end
-
 	if _G.HybridMinimap then
 		M:SetupHybridMinimap()
 	end
-
-	M:UpdateSettings()
 end
 
 E:RegisterModule(M:GetName())
