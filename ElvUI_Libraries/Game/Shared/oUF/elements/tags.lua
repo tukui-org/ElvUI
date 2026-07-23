@@ -1031,12 +1031,12 @@ end
 
 oUF.Tags = {
 	Env = _ENV,
+	Vars = vars,
 	Methods = tagFuncs,
 	Events = tagEvents,
 	Spells = tagSpells,
 	SharedEvents = unitlessEvents,
 	OnUpdateThrottle = onUpdateDelay,
-	Vars = vars,
 	RefreshMethods = function(_, tag)
 		if not tag then return end
 
@@ -1065,7 +1065,7 @@ oUF.Tags = {
 			end
 		end
 	end,
-	RefreshEvents = function(self, tag)
+	RefreshEvents = function(_, tag)
 		if not tag then return end
 
 		-- if a tag's name contains magic chars, there's a chance that string.match will fail to find the match
