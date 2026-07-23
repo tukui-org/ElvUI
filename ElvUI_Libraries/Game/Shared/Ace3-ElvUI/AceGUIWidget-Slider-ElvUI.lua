@@ -7,7 +7,7 @@ local AceGUI = LibStub and LibStub("AceGUI-3.0", true)
 if not AceGUI or (AceGUI:GetWidgetVersion(Type) or 0) >= Version then return end
 
 local min, max, floor = math.min, math.max, math.floor
-local tonumber, pairs, type = tonumber, pairs, type
+local tonumber, pairs, type, format = tonumber, pairs, type, format
 
 local _G = _G
 local PlaySound = PlaySound
@@ -19,11 +19,9 @@ Support functions
 -------------------------------------------------------------------------------]]
 local function UpdateText(self)
 	local value = self.value or 0
-	if self.ispercent then
-		self.editbox:SetText(("%s%%"):format(floor(value * 1000 + 0.5) / 10))
-	else
-		self.editbox:SetText(floor(value * 100 + 0.5) / 100)
-	end
+	local text = self.ispercent and format('%s%%', floor(value * 1000 + 0.5) * 0.1) or (floor(value * 100 + 0.5) * 0.01)
+
+	self.editbox:SetText(text)
 end
 
 local function UpdateLabels(self)
@@ -99,7 +97,7 @@ local function EditBox_OnEnterPressed(frame)
 	local value = tonumber(self.ispercent and text:gsub('%%', '') or text)
 	if value then
 		if self.ispercent then
-			value = value / 100
+			value = value * 0.01
 		end
 
 		PlaySound(856) -- SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
