@@ -271,40 +271,6 @@ function AB:ChangeBindingProfile()
 end
 
 do
-	local function OnEnter(button)
-		AB:BindUpdate(button, 'MACRO')
-	end
-
-	local function MacroSelectorScrollUpdateChild(button)
-		button:HookScript('OnEnter', OnEnter)
-	end
-
-	local function MacroSelectorScrollUpdate(frame)
-		if frame.MacroSelector then
-			frame.MacroSelector.ScrollBox:ForEachFrame(MacroSelectorScrollUpdateChild)
-		end
-
-		AB:Unhook(frame, 'Update')
-	end
-
-	function AB:ADDON_LOADED(_, addon)
-		if addon == 'Blizzard_MacroUI' then
-			if _G.MacroFrame.Update then
-				AB:SecureHook(_G.MacroFrame, 'Update', MacroSelectorScrollUpdate)
-			else
-				for i = 1, MAX_ACCOUNT_MACROS do
-					_G['MacroButton'..i]:HookScript('OnEnter', OnEnter)
-				end
-			end
-
-			AB:UnregisterEvent('ADDON_LOADED')
-		elseif addon == 'Blizzard_PlayerSpells' then
-			AB:FixSpellBookTaint()
-		end
-	end
-end
-
-do
 	local function KeybindButtonClick()
 		if InCombatLockdown() then return end
 

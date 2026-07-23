@@ -35,6 +35,7 @@ local SaveBindings = SaveBindings
 local VehicleExit = VehicleExit
 
 local SPELLS_PER_PAGE = SPELLS_PER_PAGE
+local MAX_ACCOUNT_MACROS = MAX_ACCOUNT_MACROS
 local TOOLTIP_UPDATE_TIME = TOOLTIP_UPDATE_TIME
 local NUM_ACTIONBAR_BUTTONS = NUM_ACTIONBAR_BUTTONS
 local CLICK_BINDING_NOT_AVAILABLE = CLICK_BINDING_NOT_AVAILABLE
@@ -1929,6 +1930,41 @@ do
 	end
 end
 
+do
+	local function OnEnter(button)
+		AB:BindUpdate(button, 'MACRO')
+	end
+
+	local function MacroSelectorScrollUpdateChild(button)
+		button:HookScript('OnEnter', OnEnter)
+	end
+
+	local function MacroSelectorScrollUpdate(frame)
+		if frame.MacroSelector then
+			frame.MacroSelector.ScrollBox:ForEachFrame(MacroSelectorScrollUpdateChild)
+		end
+
+		AB:Unhook(frame, 'Update')
+	end
+
+	function AB:ADDON_LOADED(_, addon)
+		print(addon)
+
+		if addon == 'Blizzard_MacroUI' then
+			if _G.MacroFrame.Update then
+				AB:SecureHook(_G.MacroFrame, 'Update', MacroSelectorScrollUpdate)
+			else
+				for i = 1, MAX_ACCOUNT_MACROS do
+					_G['MacroButton'..i]:HookScript('OnEnter', OnEnter)
+				end
+			end
+
+			AB:UnregisterEvent('ADDON_LOADED')
+		elseif addon == 'Blizzard_PlayerSpells' then
+			AB:FixSpellBookTaint()
+		end
+	end
+end
 
 function AB:PLAYER_LOGIN()
 	AB:ShowPetButtons()
