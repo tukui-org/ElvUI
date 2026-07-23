@@ -1946,8 +1946,6 @@ do
 	end
 
 	function AB:ADDON_LOADED(_, addon)
-		print(addon)
-
 		if addon == 'Blizzard_MacroUI' then
 			if _G.MacroFrame.Update then
 				AB:SecureHook(_G.MacroFrame, 'Update', MacroSelectorScrollUpdate)
