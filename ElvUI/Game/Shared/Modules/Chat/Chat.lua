@@ -151,13 +151,6 @@ local hyperlinkTypes = {
 	unit = true
 }
 
-local tabTexs = {
-	'',
-	'Selected',
-	'Active',
-	'Highlight'
-}
-
 local historyTypes = { -- most of these events are set in FindURL_Events, this is mainly used to ignore types
 	CHAT_MSG_WHISPER			= 'WHISPER',
 	CHAT_MSG_WHISPER_INFORM		= 'WHISPER',
@@ -947,6 +940,23 @@ function CH:PositionButtonFrame(chat)
 	chat.buttonFrame:SetClipsChildren(true)
 end
 
+do
+	local tabTexs = { '', 'Selected', 'Active', 'Highlight' }
+	function CH:ClearTabTextures(name)
+		for _, texName in next, tabTexs do
+			local t, l, m, r = name..'Tab', texName..'Left', texName..'Middle', texName..'Right'
+			local main = _G[t]
+			local left = _G[t..l] or (main and main[l])
+			local middle = _G[t..m] or (main and main[m])
+			local right = _G[t..r] or (main and main[r])
+
+			if left then left:SetTexture() end
+			if middle then middle:SetTexture() end
+			if right then right:SetTexture() end
+		end
+	end
+end
+
 function CH:StyleChat(frame)
 	local name = frame:GetName()
 	local tab = CH:GetTab(frame)
@@ -1006,24 +1016,11 @@ function CH:StyleChat(frame)
 	charCount:Width(40)
 	editbox.characterCount = charCount
 
-	for _, texName in pairs(tabTexs) do
-		local t, l, m, r = name..'Tab', texName..'Left', texName..'Middle', texName..'Right'
-		local main = _G[t]
-		local left = _G[t..l] or (main and main[l])
-		local middle = _G[t..m] or (main and main[m])
-		local right = _G[t..r] or (main and main[r])
-
-		if left then left:SetTexture() end
-		if middle then middle:SetTexture() end
-		if right then right:SetTexture() end
-	end
+	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
+	tab:Height(22)
 
 	tab.Text:ClearAllPoints()
 	tab.Text:Point('CENTER', tab, 0, -1)
-
-	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
-
-	tab:Height(22)
 
 	if tab.conversationIcon then
 		tab.conversationIcon:ClearAllPoints()
@@ -1036,7 +1033,7 @@ function CH:StyleChat(frame)
 		editbox.focusMid:SetAlpha(0)
 	end
 
-	-- stuff to hide
+	CH:ClearTabTextures(name)
 	CH:PositionButtonFrame(frame)
 
 	local scrollBar = frame.ScrollBar
