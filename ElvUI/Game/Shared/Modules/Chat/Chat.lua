@@ -943,8 +943,8 @@ end
 do
 	local tabTexs = { '', 'Selected', 'Active', 'Highlight' }
 	function CH:ClearTabTextures(name)
-		for _, texName in next, tabTexs do
-			local t, l, m, r = name..'Tab', texName..'Left', texName..'Middle', texName..'Right'
+		for _, tex in next, tabTexs do
+			local t, l, m, r = name..'Tab', tex..'Left', tex..'Middle', tex..'Right'
 			local main = _G[t]
 			local left = _G[t..l] or (main and main[l])
 			local middle = _G[t..m] or (main and main[m])
