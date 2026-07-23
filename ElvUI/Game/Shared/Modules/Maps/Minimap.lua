@@ -801,9 +801,9 @@ function M:Initialize()
 	M.MapHolder = mapHolder
 	M:SetScale(mapHolder, 1)
 
-	local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', MinimapCluster)
+	local clusterHolder = CreateFrame('Frame', 'ElvUI_MinimapClusterHolder', E.UIParent)
 	clusterHolder.savedWidth, clusterHolder.savedHeight = MinimapCluster:GetSize()
-	clusterHolder:Point('TOPRIGHT', E.UIParent, -3, -3)
+	clusterHolder:Point('TOPRIGHT', -3, -3)
 	clusterHolder:SetSize(clusterHolder.savedWidth, clusterHolder.savedHeight)
 	clusterHolder:SetFrameLevel(10) -- over minimap mover
 	E:CreateMover(clusterHolder, 'MinimapClusterMover', L["Minimap Cluster"], nil, nil, nil, nil, nil, 'maps,minimap')
