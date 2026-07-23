@@ -952,7 +952,7 @@ function CH:StyleChat(frame)
 	local tab = CH:GetTab(frame)
 
 	local id = frame:GetID()
-	local _, fontSize, r, g, b, a = CH:GetChatWindowInfo(id)
+	local _, fontSize, colorR, colorG, colorB, colorA = CH:GetChatWindowInfo(id)
 	local font, size, outline = LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline
 	frame:FontTemplate(font, size, outline)
 
@@ -961,7 +961,7 @@ function CH:StyleChat(frame)
 	frame:SetFading(CH.db.fade)
 
 	if frame.Background then
-		frame.Background:SetVertexColor(r, g, b, a)
+		frame.Background:SetVertexColor(colorR, colorG, colorB, colorA)
 	end
 
 	if tab.Text then
