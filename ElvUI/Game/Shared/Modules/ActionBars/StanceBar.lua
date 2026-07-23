@@ -3,8 +3,8 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local gsub = gsub
-local ipairs = ipairs
 local format = format
+
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local GetNumShapeshiftForms = GetNumShapeshiftForms
@@ -188,7 +188,7 @@ function AB:AdjustMaxStanceButtons(event)
 		return
 	end
 
-	for _, button in ipairs(bar.buttons) do
+	for _, button in next, bar.buttons do
 		button:Hide()
 	end
 
