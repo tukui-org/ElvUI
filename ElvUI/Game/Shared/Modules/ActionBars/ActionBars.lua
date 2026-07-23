@@ -1222,6 +1222,25 @@ do
 		OverrideActionBarButton = E.Wrath or E.Mists or nil
 	}
 
+	-- These bars stay registered as Edit Mode systems, so Edit Mode still runs UpdateSystem on
+	-- them (eg opening PlayerSpellsFrame via TOGGLETALENTS re-applies the layout). Since we
+	-- reparent them into our hidden frame they carry our taint, and every protected setter that
+	-- UpdateSystem drives through ApplySystemAnchor and AnchorSelectionFrame gets blocked one by
+	-- one. They are fully disabled and we never use their layout, so no-op that whole set.
+	local noops = { 'ClearAllPoints', 'SetPoint', 'SetSize', 'SetScale', 'SetAlpha', 'SetShown', 'SetFrameStrata', 'SetFrameLevel', 'SetClampRectInsets' }
+
+	-- Opening the spell book (or picking up an action) makes Blizzard show every action
+	-- button's empty grid, which calls SetShown on the buttons of the bars above. Those
+	-- buttons are children of frames we reparented, so they carry our taint and the call is
+	-- blocked. We use our own buttons, so no-op the visibility setters on the Blizzard ones.
+	local buttonNoops = { 'SetShown', 'Show', 'Hide' }
+	local actionButtons = {
+		'ActionButton',
+		'MultiBarBottomLeftButton', 'MultiBarBottomRightButton',
+		'MultiBarLeftButton', 'MultiBarRightButton',
+		'MultiBar5Button', 'MultiBar6Button', 'MultiBar7Button'
+	}
+
 	local settingsHider = CreateFrame('Frame')
 	settingsHider:SetScript('OnEvent', function(frame, event)
 		HideUIPanel(_G.SettingsPanel)
@@ -1278,6 +1297,27 @@ do
 			if frame then
 				frame:SetParent(E.HiddenFrame)
 				frame:UnregisterAllEvents()
+
+				for _, func in next, noops do
+					if frame[func] ~= E.noop then
+						frame[func] = E.noop
+					end
+				end
+			end
+		end
+
+		for _, name in next, actionButtons do
+			local index = 1
+			local button = _G[name..index]
+			while button do
+				for _, func in next, buttonNoops do
+					if button[func] ~= E.noop then
+						button[func] = E.noop
+					end
+				end
+
+				index = index + 1
+				button = _G[name..index]
 			end
 		end
 
