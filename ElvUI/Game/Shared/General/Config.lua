@@ -665,7 +665,7 @@ function E:Config_UpdateSize(reset)
 	local frame = E:Config_GetWindow()
 	if not frame then return end
 
-	local maxWidth, maxHeight = self.UIParent:GetSize()
+	local maxWidth, maxHeight = E.UIParent:GetSize()
 	if frame.SetResizeBounds then
 		frame:SetResizeBounds(800, 600, maxWidth-50, maxHeight-50)
 	else
@@ -673,7 +673,7 @@ function E:Config_UpdateSize(reset)
 		frame:SetMaxResize(maxWidth-50, maxHeight-50)
 	end
 
-	self.Libs.AceConfigDialog:SetDefaultSize('ElvUI', E:Config_GetDefaultSize())
+	E.Libs.AceConfigDialog:SetDefaultSize('ElvUI', E:Config_GetDefaultSize())
 
 	local status = E:Config_GetStatus(frame)
 	if status then
@@ -1612,7 +1612,7 @@ end
 
 function E:ToggleOptions(msg)
 	if E:AlertCombat() then
-		self.ShowOptions = true
+		E.ShowOptions = true
 		return
 	end
 
