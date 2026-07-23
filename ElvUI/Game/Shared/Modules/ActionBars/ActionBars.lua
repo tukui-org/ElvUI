@@ -1929,6 +1929,11 @@ do
 	end
 end
 
+
+function AB:PLAYER_LOGIN()
+	AB:ShowPetButtons()
+end
+
 function AB:Initialize()
 	_G.BINDING_HEADER_ELVUI = E.title
 
@@ -2006,6 +2011,7 @@ function AB:Initialize()
 
 	AB:SetTargetAuraCooldowns(E.db.cooldown.targetaura.enable)
 
+	AB:RegisterEvent('PLAYER_LOGIN')
 	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'UpdateAllBinds')

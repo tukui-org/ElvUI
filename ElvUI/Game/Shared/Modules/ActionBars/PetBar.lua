@@ -274,8 +274,12 @@ function AB:CreateBarPet()
 	bar:SetScript('OnHide', AB.PetBar_OnHide)
 	bar:SetScript('OnShow', AB.PetBar_OnShow)
 
-	AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
+	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
+	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
+
+	AB:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', 'UpdatePetCooldowns')
 	AB:RegisterEvent('PET_BAR_UPDATE', 'UpdatePet')
+	AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_LOST', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdatePet')
@@ -283,12 +287,6 @@ function AB:CreateBarPet()
 	AB:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
 	AB:RegisterEvent('UNIT_FLAGS', 'UpdatePet')
 	AB:RegisterEvent('UNIT_PET', 'UpdatePet')
-	AB:RegisterEvent('PET_BAR_UPDATE_COOLDOWN', 'UpdatePetCooldowns')
 
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,barPet')
-
-	AB:UpdatePetBindings()
-
-	AB:HookScript(bar, 'OnEnter', 'Bar_OnEnter')
-	AB:HookScript(bar, 'OnLeave', 'Bar_OnLeave')
 end
