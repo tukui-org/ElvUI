@@ -1953,6 +1953,7 @@ function AB:Initialize()
 
 	AB.fadeParent = CreateFrame('Frame', 'Elv_ABFade', UIParent)
 	AB.fadeParent:SetAlpha(1 - (AB.db.globalFadeAlpha or 0))
+	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_DISABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_REGEN_ENABLED')
 	AB.fadeParent:RegisterEvent('PLAYER_TARGET_CHANGED')
@@ -1984,8 +1985,6 @@ function AB:Initialize()
 		AB:RegisterEvent('PET_BATTLE_CLOSE', 'HandleBinds') -- set override binds
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'UpdateBinds') -- no function passed, clears bindings
 	end
-
-	AB.fadeParent:SetScript('OnEvent', AB.FadeParent_OnEvent)
 
 	AB:DisableBlizzard()
 	AB:SetupMicroBar()
