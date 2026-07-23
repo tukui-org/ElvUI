@@ -1075,8 +1075,8 @@ oUF.Tags = {
 			if StripTag(tagstr):match(tag) then
 				for fs, ts in next, taggedFontStrings do
 					if ts == tagstr then
-						UnregisterEvents(self, fs)
-						RegisterEvents(self, fs, tagstr)
+						UnregisterEvents(fs.parent, fs)
+						RegisterEvents(fs.parent, fs, tagstr)
 					end
 				end
 			end
