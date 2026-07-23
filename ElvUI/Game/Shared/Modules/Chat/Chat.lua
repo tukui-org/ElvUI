@@ -942,13 +942,17 @@ function CH:StyleChat(frame)
 	local tab = CH:GetTab(frame)
 
 	local id = frame:GetID()
-	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
+	local _, fontSize, r, g, b, a = _G.FCF_GetChatWindowInfo(id)
 	local font, size, outline = LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline
 	frame:FontTemplate(font, size, outline)
 
 	frame:SetTimeVisible(CH.db.inactivityTimer)
 	frame:SetMaxLines(CH.db.maxLines)
 	frame:SetFading(CH.db.fade)
+
+	if frame.Background then
+		frame.Background:SetVertexColor(r, g, b, a)
+	end
 
 	if tab.Text then
 		tab:SetScript('OnUpdate', CH.Tab_OnUpdate)
