@@ -3,6 +3,8 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local gsub = gsub
+local next = next
+
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar

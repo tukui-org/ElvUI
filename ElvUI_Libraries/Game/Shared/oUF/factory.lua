@@ -4,6 +4,11 @@ local Private = oUF.Private
 
 local argcheck = Private.argcheck
 
+local next = next
+local wipe = wipe
+local tinsert = tinsert
+local IsLoggedIn = IsLoggedIn
+
 local queue = {}
 local factory = CreateFrame('Frame')
 factory:SetScript('OnEvent', function(self, event, ...)
@@ -21,7 +26,7 @@ function factory:ADDON_LOADED(...)
 	end
 
 	-- Avoid creating dupes.
-	table.wipe(queue)
+	wipe(queue)
 end
 
 --[[ Factory: oUF:Factory(func)
@@ -38,7 +43,7 @@ function oUF:Factory(func)
 	if(IsLoggedIn() and factory.active) then
 		return func(self)
 	else
-		table.insert(queue, func)
+		tinsert(queue, func)
 	end
 end
 

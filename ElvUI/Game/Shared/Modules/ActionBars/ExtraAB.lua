@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
+local next = next
 local tinsert = tinsert
 
 local CreateFrame = CreateFrame

@@ -3,6 +3,7 @@ local AB = E:GetModule('ActionBars')
 
 local _G = _G
 local gsub = gsub
+local next = next
 local format = format
 
 local CreateFrame = CreateFrame
