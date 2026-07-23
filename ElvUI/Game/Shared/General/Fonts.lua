@@ -29,7 +29,7 @@ local FontMap = {
 
 local IgnoreSlug = {
 	-- this will break the `instantQuestText` and prevent the text from rendering correctly
-	[_G.QuestFont] = E.Mists or E.TBC -- on Mop at least
+	[_G.QuestFont] = E.Mists or E.TBC or E.Classic
 }
 
 FontMap.questtext		= { object = _G.QuestFont }
