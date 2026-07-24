@@ -5,6 +5,9 @@ local ElvUF = E.oUF
 local _G = _G
 local format = format
 local ipairs = ipairs
+local next = next
+local strmatch = strmatch
+local wipe = wipe
 local huge = math.huge
 
 local GameTooltip = GameTooltip
@@ -12,8 +15,11 @@ local ToggleCharacter = ToggleCharacter
 
 local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
+local C_Reputation_GetFactionDataByIndex = C_Reputation.GetFactionDataByIndex
+local C_Reputation_GetNumFactions = C_Reputation.GetNumFactions
 local C_Reputation_IsFactionParagonForCurrentPlayer = C_Reputation.IsFactionParagonForCurrentPlayer
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
+local C_Reputation_SetWatchedFactionByID = C_Reputation.SetWatchedFactionByID
 local C_MajorFactions_GetMajorFactionData = C_MajorFactions and C_MajorFactions.GetMajorFactionData
 local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.HasMaximumRenown
 
@@ -28,6 +34,8 @@ local STANDING = STANDING
 local UNKNOWN = UNKNOWN
 
 local QuestRep = 0
+local pendingFactionGains = {}
+local pendingFactionTimer
 
 local function GetValues(currentStanding, currentReactionThreshold, nextReactionThreshold)
 	local current = currentStanding - currentReactionThreshold
@@ -42,6 +50,55 @@ local function GetValues(currentStanding, currentReactionThreshold, nextReaction
 	else
 		local diff = (maximum ~= 0 and maximum) or 1 -- prevent a division by zero
 		return current, maximum, current / diff * 100
+	end
+end
+
+local function SetWatchedFactionByName(faction)
+	local data = E:GetWatchedFactionInfo()
+	if data and data.name == faction then return end
+
+	C_Reputation.ExpandAllFactionHeaders()
+
+	for i = 1, C_Reputation_GetNumFactions() do
+		local info = C_Reputation_GetFactionDataByIndex(i)
+		if info and info.name == faction and info.factionID and info.factionID ~= 0 then
+			C_Reputation_SetWatchedFactionByID(info.factionID)
+			return
+		end
+	end
+end
+
+local function ApplyPendingFactionGain()
+	pendingFactionTimer = nil
+
+	local bestFaction, bestGain
+	for faction, gain in next, pendingFactionGains do
+		if not bestGain or gain > bestGain then
+			bestFaction, bestGain = faction, gain
+		end
+	end
+
+	wipe(pendingFactionGains)
+
+	if bestFaction then
+		SetWatchedFactionByName(bestFaction)
+	end
+end
+
+function DB:CHAT_MSG_COMBAT_FACTION_CHANGE(_, msg)
+	if not (E.Retail and E.db.general.autoTrackReputation and msg) then return end
+
+	local faction, amount = strmatch(msg, '[Rr]eputation with (.-) increased by ([%d,]+)')
+	if not faction or not amount then return end
+
+	local gain = tonumber((amount:gsub(',', '')))
+	if not gain or gain <= 0 then return end
+
+	pendingFactionGains[faction] = (pendingFactionGains[faction] or 0) + gain
+
+	if not pendingFactionTimer then
+		pendingFactionTimer = true
+		E:Delay(0.1, ApplyPendingFactionGain)
 	end
 end
 
@@ -253,6 +310,10 @@ function DB:ReputationBar()
 	end
 
 	E:CreateMover(Reputation.holder, 'ReputationBarMover', L["Reputation Bar"], nil, nil, nil, nil, nil, 'databars,reputation')
+
+	if E.Retail then
+		DB:RegisterEvent('CHAT_MSG_COMBAT_FACTION_CHANGE')
+	end
 
 	DB:ReputationBar_Toggle()
 end
