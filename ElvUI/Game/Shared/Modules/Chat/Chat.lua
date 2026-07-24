@@ -952,17 +952,13 @@ function CH:StyleChat(frame)
 	local tab = CH:GetTab(frame)
 
 	local id = frame:GetID()
-	local _, fontSize, colorR, colorG, colorB, colorA = _G.FCF_GetChatWindowInfo(id)
+	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 	local font, size, outline = LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline
 	frame:FontTemplate(font, size, outline)
 
 	frame:SetTimeVisible(CH.db.inactivityTimer)
 	frame:SetMaxLines(CH.db.maxLines)
 	frame:SetFading(CH.db.fade)
-
-	if frame.Background then
-		frame.Background:SetVertexColor(colorR, colorG, colorB, colorA)
-	end
 
 	if tab.Text then
 		tab:SetScript('OnUpdate', CH.Tab_OnUpdate)
@@ -2572,11 +2568,27 @@ function CH:ChatFrame_OnEvent(frame, ...)
 	if CH:ChatFrame_MessageEventHandler(frame, ...) then return end
 end
 
-function CH:FloatingChatFrame_OnEvent(...)
-	CH:ChatFrame_OnEvent(...)
+function CH:FloatingChatFrame_OnEvent(frame, event, ...)
+	CH:ChatFrame_OnEvent(frame, event, ...)
 
-	if _G.FloatingChatFrame_OnEvent then
-		_G.FloatingChatFrame_OnEvent(...)
+	-- copy of FloatingChatFrameMixin:OnEvent without `ChatFrameMixin.OnEvent`
+	if event == 'UPDATE_CHAT_WINDOWS' or event == 'UPDATE_FLOATING_CHAT_WINDOWS' then
+		_G.FloatingChatFrame_Update(frame:GetID(), 1)
+
+		frame.isInitialized = 1 -- set but not used for a check, shouldnt be an issue with tainting
+	elseif event == 'UPDATE_CHAT_COLOR' then
+		local chatType, r, g, b = ...
+		if not (frame.isTemporary and frame.chatType == chatType) then return end
+
+		local tab = CH:GetTab(frame)
+		if not tab then return end
+
+		local selected = tab.selectedColorTable
+		if selected then
+			selected.r, selected.g, selected.b = r, g, b
+		end
+
+		_G.FCFTab_UpdateColors(tab, not frame.isDocked or frame == _G.FCFDock_GetSelectedWindow(_G.GeneralDockManager))
 	end
 end
 
