@@ -2672,10 +2672,6 @@ function CH:SetupChat()
 		if chat then
 			CH:StyleChat(chat)
 
-			if not chat.oldAlpha then
-				CH:FCF_SetWindowAlpha(chat)
-			end
-
 			_G.FCFTab_UpdateAlpha(chat)
 
 			local id = chat:GetID()
