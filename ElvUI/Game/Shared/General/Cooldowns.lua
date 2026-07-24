@@ -208,14 +208,14 @@ function E:CooldownSettings(which)
 	end
 end
 
-function E:RegisterCooldown(cooldown, which)
+function E:RegisterCooldown(cooldown, which, override, subgroup)
 	if not which then which = 'global' end
 	local db = E.db.cooldown.enable and E.db.cooldown[which]
 	if not db then return end -- verify the settings exist here
 
 	-- storage by cooldown (to grab a cooldowns data)
 	if not E.RegisteredCooldowns[cooldown] then
-		E.RegisteredCooldowns[cooldown] = { which = which }
+		E.RegisteredCooldowns[cooldown] = { which = which, override = override, subgroup = subgroup }
 	else -- this cooldown was already added
 		return -- stop here
 	end

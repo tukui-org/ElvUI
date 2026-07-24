@@ -82,7 +82,6 @@ local buttonDefaults = {
 	},
 }
 
-AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
 AB.barDefaults = {
@@ -384,7 +383,7 @@ function AB:PositionAndSizeBar(barName)
 		AB:HandleButtonAutoCast(bar, button)
 		AB:HandleButtonState(button, i, vehicleIndex, pages)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
-		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
+		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars, nil, 'bar'..button.header.id)
 	end
 
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
@@ -771,7 +770,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition..' '..defaultPage
 end
 
-function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
+function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal, cooldownKey)
 	local name = button:GetName()
 	local icon = button.icon or _G[name..'Icon']
 	local hotkey = button.HotKey or _G[name..'HotKey']
@@ -834,7 +833,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		E:RegisterCooldown(button.cooldown, 'actionbar')
+		E:RegisterCooldown(button.cooldown, 'actionbar', cooldownKey)
 
 		if button.AuraCooldown then
 			E:RegisterCooldown(button.AuraCooldown, 'targetaura')
