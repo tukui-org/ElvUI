@@ -2965,8 +2965,9 @@ do
 	}
 
 	local thresholds = {
-		minThreshold = 3, -- low threshold
 		override = false,
+		expireThreshold = 4,
+		secondsThreshold = 11,
 		colors = CopyTable(colors)
 	}
 
@@ -2982,7 +2983,7 @@ do
 		locText = true,
 
 		rotation = 0,
-		threshold = 0, -- seconds, different than low threshold
+		threshold = 0, -- seconds, different than thresholds
 		minDuration = 1500, -- ms
 		thresholdText = CopyTable(thresholds),
 

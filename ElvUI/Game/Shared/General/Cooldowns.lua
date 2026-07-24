@@ -119,6 +119,7 @@ do
 	local times = { -- fake entries: key, fmt, thr
 		{ key = 'expiring', fmt = '%.1f', thr = 0, step = 0.1 },
 		{ key = 'seconds', fmt = '%.0f', thr = 5, step = 1 },
+		{ key = 'secondsLong', fmt = '%.0f', thr = 10, step = 1 },
 		{ key = 'minutes', fmt = '%.0fm', thr = M, components = {{ div = M }} },
 		{ key = 'hours', fmt = '%.0fh', thr = H, components = {{ div = H }} },
 		{ key = 'days', fmt = '%.0fd', thr = D, components = {{ div = D }} },
@@ -127,23 +128,33 @@ do
 
 	function E:CooldownBreakpoints(db, opt, data) -- data not used here but sent for plugins
 		for index, point in next, times do
+			local colorKey = point.key
 			if point.key == 'seconds' then
 				point.rounding = (db.roundup and ROUNDUP) or ROUNDDOWN
-				point.threshold = opt.minThreshold or point.thr
+				point.threshold = opt.expireThreshold or point.thr
+			elseif point.key == 'secondsLong' then
+				point.rounding = (db.roundup and ROUNDUP) or ROUNDDOWN
+				point.threshold = opt.secondsThreshold or point.thr
+				colorKey = 'minutes' -- use minutes color
 			else
 				point.rounding = nil
 				point.threshold = point.thr
 			end
 
-			local colors = opt.colors[point.key] or default
+			local colors = opt.colors[colorKey] or default
 			color:SetRGBA(colors.r, colors.g, colors.b, colors.a)
 			point.format = color:WrapTextInColorCode(point.fmt)
 
 			breakpoints[index] = point
 		end
 
-		-- remove expiration when toggled
-		if opt.minThreshold == -1 then
+		-- when toggled remove: secondsLong
+		if opt.secondsThreshold == -1 then
+			tremove(breakpoints, 3)
+		end
+
+		-- when toggled remove: expiring
+		if opt.expireThreshold == -1 then
 			tremove(breakpoints, 1)
 		end
 

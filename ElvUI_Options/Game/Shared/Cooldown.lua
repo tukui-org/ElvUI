@@ -18,7 +18,8 @@ local function GetThresholds(which, name, order, db)
 		thresholds.args.override = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function(info) return E.db.cooldown[db][which][info[#info]] end, function(info, value) E.db.cooldown[db][which][info[#info]] = value; E:CooldownSettings(db); end)
 	end
 
-	thresholds.args.minThreshold = ACH:Range(L["Low Threshold"], L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"], 1, { min = -1, max = 20, step = 1 }, nil, function(info) return E.db.cooldown[db][which][info[#info]] end, function(info, value) E.db.cooldown[db][which][info[#info]] = value; E:CooldownSettings(db); end)
+	thresholds.args.expireThreshold = ACH:Range(L["Expiring Threshold"], L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"], 1, { min = -1, max = 20, step = 1 }, nil, function(info) return E.db.cooldown[db][which][info[#info]] end, function(info, value) E.db.cooldown[db][which][info[#info]] = value; E:CooldownSettings(db); end)
+	thresholds.args.secondsThreshold = ACH:Range(L["Seconds Threshold"], nil, 2, { min = -1, max = 50, step = 1 }, nil, function(info) return E.db.cooldown[db][which][info[#info]] end, function(info, value) E.db.cooldown[db][which][info[#info]] = value; E:CooldownSettings(db); end)
 	thresholds.args.spacer1 = ACH:Spacer(10, 'full')
 
 	return thresholds
