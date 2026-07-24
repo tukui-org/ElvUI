@@ -744,20 +744,20 @@ do -- 12.1 aura container support, replaces SecureAuraHeaderTemplate
 
 		container:ClearAllPoints()
 		container:SetPoint(point, header, point)
-		container:SetAuraLayoutAnchorPoint(point)
+	container:SetFlowLayoutAnchorPoint(point)
 
-		local flow = _G.AnchorUtil.FlowDirection
-		local horizontal = (DIRECTION_TO_HORIZONTAL_GROWTH[db.growthDirection] == 'LEFT' and flow.Left) or flow.Right
-		local vertical = (DIRECTION_TO_VERTICAL_GROWTH[db.growthDirection] == 'DOWN' and flow.Down) or flow.Up
-		container:SetAuraLayoutGrowthDirection(horizontal, vertical)
+	local flow = _G.AnchorUtil.FlowDirection
+	local horizontal = (DIRECTION_TO_HORIZONTAL_GROWTH[db.growthDirection] == 'LEFT' and flow.Left) or flow.Right
+	local vertical = (DIRECTION_TO_VERTICAL_GROWTH[db.growthDirection] == 'DOWN' and flow.Down) or flow.Up
+	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-		if IS_HORIZONTAL_GROWTH[db.growthDirection] then
-			header:SetSize(((db.wrapAfter == 1 and 0 or db.horizontalSpacing) + width) * db.wrapAfter, (db.verticalSpacing + height) * db.maxWraps)
-			container:SetAuraLayoutRowWidth(db.wrapAfter * (width + db.horizontalSpacing))
-		else
-			header:SetSize((db.horizontalSpacing + width) * db.maxWraps, ((db.wrapAfter == 1 and 0 or db.verticalSpacing) + height) * db.wrapAfter)
-			container:SetAuraLayoutRowWidth(db.wrapAfter * (width + db.horizontalSpacing))
-		end
+	if IS_HORIZONTAL_GROWTH[db.growthDirection] then
+		header:SetSize(((db.wrapAfter == 1 and 0 or db.horizontalSpacing) + width) * db.wrapAfter, (db.verticalSpacing + height) * db.maxWraps)
+		container:SetFlowLayoutMaximumLineSize(db.wrapAfter * (width + db.horizontalSpacing))
+	else
+		header:SetSize((db.horizontalSpacing + width) * db.maxWraps, ((db.wrapAfter == 1 and 0 or db.verticalSpacing) + height) * db.wrapAfter)
+		container:SetFlowLayoutMaximumLineSize(db.wrapAfter * (width + db.horizontalSpacing))
+	end
 
 		local layout = {
 			elementSpacingX = db.horizontalSpacing,

@@ -441,14 +441,14 @@ else -- 12.1: aura data is secret, rebuild on Blizzard's AuraContainer
 		local anchor = element.initialAnchor or 'BOTTOMLEFT'
 		container:ClearAllPoints()
 		container:SetPoint(anchor, element, anchor)
-		container:SetAuraLayoutAnchorPoint(anchor)
+		container:SetFlowLayoutAnchorPoint(anchor)
 
 		local flow = _G.AnchorUtil.FlowDirection
-		container:SetAuraLayoutGrowthDirection(flow.Right, (element.growth == 'DOWN' and flow.Down) or flow.Up)
+		container:SetFlowLayoutGrowthDirection(flow.Right, (element.growth == 'DOWN' and flow.Down) or flow.Up)
 
 		local height = element.height or 12
 		local width = (element.width or 240) + height + (element.barSpacing or 2)
-		container:SetAuraLayoutRowWidth(width)
+		container:SetFlowLayoutMaximumLineSize(width)
 
 		local layout = element.groupLayout
 		if not layout then

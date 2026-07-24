@@ -156,14 +156,14 @@ local function ConfigureContainer(element)
 	local anchor = element.initialAnchor or 'BOTTOMLEFT'
 	container:ClearAllPoints()
 	container:SetPoint(anchor, element, anchor)
-	container:SetAuraLayoutAnchorPoint(anchor)
-	container:SetAuraLayoutGrowthDirection(GrowthToFlow(element.growthX, element.growthY))
+	container:SetFlowLayoutAnchorPoint(anchor)
+	container:SetFlowLayoutGrowthDirection(GrowthToFlow(element.growthX, element.growthY))
 
 	local width = element.size or 16
 	local spacing = element.spacing or 0
 	local perRow = element.numAuras
 	local rowWidth = (perRow and perRow > 0 and (perRow * (width + spacing))) or element:GetWidth()
-	container:SetAuraLayoutRowWidth((rowWidth and rowWidth > 0 and rowWidth) or HUGE)
+	container:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or HUGE)
 
 	ConfigureGroups(element, container)
 
