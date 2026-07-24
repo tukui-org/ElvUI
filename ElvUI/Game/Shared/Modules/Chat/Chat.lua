@@ -891,16 +891,6 @@ function CH:EditBoxFocusLost()
 	self.historyIndex = 0
 end
 
-function CH:GetChatWindowInfo(id)
-	local name, size, r, g, b, a, isShown, isLocked, isDocked, isUninteractable = GetChatWindowInfo(id)
-
-	if not size or size == 0 then
-		size = _G.CHAT_FRAME_DEFAULT_FONT_SIZE
-	end
-
-	return name, size, r, g, b, a, isShown, isLocked, isDocked, isUninteractable
-end
-
 function CH:UpdateEditboxFont(chatFrame)
 	local style = GetCVar('chatStyle')
 	if style == 'classic' and CH.LeftChatWindow then
@@ -913,7 +903,7 @@ function CH:UpdateEditboxFont(chatFrame)
 
 	local id = chatFrame:GetID()
 	local font, outline = LSM:Fetch('font', CH.db.font), CH.db.fontOutline
-	local _, fontSize = CH:GetChatWindowInfo(id)
+	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 
 	local editbox = ChooseBoxForSend(chatFrame)
 	editbox:FontTemplate(font, fontSize, outline)
@@ -962,7 +952,7 @@ function CH:StyleChat(frame)
 	local tab = CH:GetTab(frame)
 
 	local id = frame:GetID()
-	local _, fontSize, colorR, colorG, colorB, colorA = CH:GetChatWindowInfo(id)
+	local _, fontSize, colorR, colorG, colorB, colorA = _G.FCF_GetChatWindowInfo(id)
 	local font, size, outline = LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline
 	frame:FontTemplate(font, size, outline)
 
@@ -3685,25 +3675,24 @@ CH.TabStyles = {
 function CH:FCFTab_UpdateColors(tab, selected)
 	if not tab then return end
 
-	local chat = CH:GetOwner(tab)
-	local name = CH:GetChatWindowInfo(tab:GetID())
-	if not name then
-		name = (chat and chat.name) or UNKNOWN
-	end
-
 	if tab:GetParent() == _G.ChatConfigFrameChatTabManager then
 		if selected then
 			tab.Text:SetTextColor(1, 1, 1)
 		end
 
+		local name = GetChatWindowInfo(tab:GetID())
 		if name and E:NotSecretValue(name) then
 			tab.Text:SetText(name)
 		end
 
 		tab:SetAlpha(1) -- for some reason blizzard likes to change the alpha here? idk
-	elseif chat then -- actual chat tab and other
+	else -- actual chat tab and other
+		local chat = CH:GetOwner(tab)
+		if not chat then return end
+
 		tab.selected = selected
 
+		local name = chat.name or UNKNOWN
 		local whisper = tab.conversationIcon and chat.chatTarget
 		tab.whisperName = (whisper and not tab.whisperName) and E:NotSecretValue(name) and gsub(E:StripMyRealm(name), '([%S]-)%-[%S]+', '%1|cFF999999*|r') or nil
 
