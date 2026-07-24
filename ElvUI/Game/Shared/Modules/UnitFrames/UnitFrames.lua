@@ -1854,6 +1854,17 @@ do
 				if disable.castbar then
 					HideFrame(_G.PlayerCastingBarFrame)
 					HideFrame(_G.PetCastingBarFrame)
+
+					-- The overlay bar (talent commit, crafting, override bar) reaches into
+					-- PlayerCastingBarFrame from StartReplacingPlayerBarAt, which we just tainted
+					-- by reparenting it, so the overlay bar ends up tainted as well and then errors
+					-- out of its own UNIT_SPELLCAST handler. We replace the player cast bar anyway,
+					-- so turn its events off. Nothing re-registers them and the talent frame falls
+					-- back to its commit spinner.
+					local overlay = _G.OverlayPlayerCastingBarFrame
+					if overlay then
+						overlay:UnregisterAllEvents()
+					end
 				end
 			elseif disable.player and unit == 'pet' then
 				HideFrame(_G.PetFrame)
