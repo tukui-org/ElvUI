@@ -1198,6 +1198,17 @@ function AB:UnloadTalentFrame()
 	return true
 end
 
+function AB:UnloadController()
+	_G.ActionBarController:UnregisterAllEvents() -- shut down some events for things we dont use
+	_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
+	_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
+
+	_G.ActionBarActionEventsFrame:UnregisterAllEvents()
+	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
+	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show
+	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
+end
+
 do
 	local untaint = {
 		MultiBar5 = true,
@@ -1281,40 +1292,6 @@ do
 			end
 		end
 
-		if not E.Retail then
-			AB:FixSpellBookTaint()
-		end
-
-		-- shut down some events for things we dont use
-		_G.ActionBarController:UnregisterAllEvents()
-		_G.ActionBarController:RegisterEvent('SETTINGS_LOADED') -- this is needed for page controller to spawn properly
-
-		_G.ActionBarActionEventsFrame:UnregisterAllEvents()
-		_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
-
-		-- used for ExtraActionButton
-		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show
-		_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
-
-		-- modified to fix a taint when closing the options while in combat
-		_G.SettingsPanel:SetScript('OnHide', AB.SettingsPanel_OnHide)
-
-		_G.StatusTrackingBarManager:Kill()
-		_G.ActionBarController:RegisterEvent('UPDATE_EXTRA_ACTIONBAR') -- this is needed to let the ExtraActionBar show
-
-		-- lets only keep ExtraActionButtons in here
-		hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
-		AB.ButtonEventsRegisterFrame()
-
-		-- crop the new spells being added to the actionbars
-		_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
-
-		-- dont reopen game menu and fix settings panel not being able to close during combat
-		_G.SettingsPanel.TransitionBackOpeningPanel = AB.SettingsPanel_TransitionBackOpeningPanel
-
-		-- change the text of the remove paging
-		hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
-
 		for name in next, untaintButtons do
 			local index = 1
 			local button = _G[name..index]
@@ -1328,6 +1305,29 @@ do
 			end
 		end
 
+		if not E.Retail then
+			AB:FixSpellBookTaint()
+		end
+
+		_G.StatusTrackingBarManager:Kill()
+
+		-- crop the new spells being added to the actionbars
+		_G.IconIntroTracker:HookScript('OnEvent', AB.IconIntroTracker_Skin)
+
+		-- modified to fix a taint when closing the options while in combat
+		_G.SettingsPanel:SetScript('OnHide', AB.SettingsPanel_OnHide)
+
+		-- dont reopen game menu and fix settings panel not being able to close during combat
+		_G.SettingsPanel.TransitionBackOpeningPanel = AB.SettingsPanel_TransitionBackOpeningPanel
+
+		-- lets only keep ExtraActionButtons in here
+		hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
+		AB.ButtonEventsRegisterFrame()
+
+		-- change the text of the remove paging
+		hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
+
+		-- remove events from talent frame
 		if (E.Retail or E.Mists or E.Wrath) and not AB.UnloadTalentFrame() then
 			hooksecurefunc('TalentFrame_LoadUI', AB.UnloadTalentFrame)
 		end
@@ -1963,6 +1963,7 @@ do
 end
 
 function AB:PLAYER_LOGIN()
+	AB:UnloadController()
 	AB:ShowPetButtons()
 end
 
