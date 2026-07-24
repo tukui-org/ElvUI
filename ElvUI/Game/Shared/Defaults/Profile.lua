@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local CopyTable = CopyTable -- Our function doesn't exist yet.
 local next = next
+local type = type
 
 P.gridSize = 64
 P.gridLineWidth = 1
@@ -3287,10 +3288,30 @@ do
 		fontSize = 16,
 	}
 
+	local auras = { 'auras', 'buffs', 'debuffs', 'aurabar', 'buffIndicator' }
 	local function OverrideUnits(units)
 		local override = {}
-		for unit in next, units do
-			override[unit] = CopyTable(defaults)
+		for unit, main in next, units do
+			local data = override[unit]
+			if not data then
+				data = {}
+				override[unit] = data
+			end
+
+			for _, key in next, auras do
+				if main[key] then
+					local opt = data[key]
+					if not opt then
+						opt = {}
+						data[key] = opt
+					end
+
+					opt = CopyTable(defaults)
+					opt.enable = false
+
+					data[key] = opt
+				end
+			end
 		end
 
 		return override
@@ -3298,9 +3319,12 @@ do
 
 	local function OverrideBars(db)
 		local override = {}
-		for opt, data in next, db do
+		for key, data in next, db do
 			if type(data) == 'table' and data.buttons then
-				override[opt] = CopyTable(defaults)
+				local opt = CopyTable(defaults)
+				opt.enable = false
+
+				override[key] = opt
 			end
 		end
 
