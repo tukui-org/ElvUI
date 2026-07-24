@@ -12,6 +12,7 @@
 	<Script file='..\Locales\zhTW.lua'/>
 	<Script file='..\Locales\zhCN.lua'/>
 
+	<!-- build all the options -->
 	<Script file='Shared\Core.lua'/>
 	<Script file='Shared\General.lua'/>
 	<Script file='Shared\ActionBars.lua'/>
@@ -29,4 +30,7 @@
 	<Script file='Shared\Maps.lua'/>
 	<Script file='Shared\Search.lua'/>
 	<Script file='Shared\Tags.lua'/>
+
+	<!-- ClassicHC has harsh Lua Resource Limits [Script ran too long]: keep the loading inside of ADDON_LOADED -->
+	<Script file='load.lua'/>
 </Ui>

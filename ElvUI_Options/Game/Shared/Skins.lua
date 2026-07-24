@@ -19,6 +19,7 @@ local toggles = {
 	communities = L["COMMUNITIES"],
 	debug = L["Debug Tools"],
 	dressingroom = L["DRESSUP_FRAME"],
+	editor = L["Editor Manager"],
 	eventLog = L["Event Log"],
 	friends = format(E.Retail and '%s' or '%s & %s', L["Friends"], L["Guild"]),
 	gossip = L["Gossip Frame"],
@@ -66,10 +67,6 @@ if E.Mists or E.Retail then
 	toggles.petbattleui = L["Pet Battle"]
 	toggles.transmogrify = L["TRANSMOGRIFY"]
 	toggles.guild = L["Guild"]
-end
-
-if E.hasEditMode then
-	toggles.editor = L["Editor Manager"]
 end
 
 if E.Retail or E.Mists or E.TBC then

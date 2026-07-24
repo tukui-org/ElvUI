@@ -443,7 +443,7 @@ do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us t
 end
 
 function E:CanFlagSlug(outline)
-	if not (E.Retail or E.Mists or E.TBC) or not E.global.general.fontSlug then return end
+	if not E.global.general.fontSlug then return end
 
 	return not outline or (not strfind(outline, 'SHADOW') and not strfind(outline, 'MONOCHROME') and not strfind(outline, 'THICKOUTLINE'))
 end
@@ -488,10 +488,6 @@ end
 
 function E:OnPrivateProfileReset()
 	E:ResetPrivateProfile()
-end
-
-function E:OnEnable()
-	E:Initialize()
 end
 
 do
@@ -582,4 +578,6 @@ function E:OnInitialize()
 	if E.private.general.minimap.enable then
 		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult
 	end
+
+	E:Initialize()
 end

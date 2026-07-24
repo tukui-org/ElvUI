@@ -286,12 +286,7 @@ function lib:CreateButton(id, name, header, config)
 
 	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
-
-	if not WoWClassic then
-		button:RegisterForClicks("AnyDown", "AnyUp")
-	else
-		button:RegisterForClicks("AnyUp")
-	end
+	button:RegisterForClicks("AnyDown", "AnyUp")
 
 	button.cooldown:SetSwipeColor(0, 0, 0, 0.8)
 	button.cooldown:SetFrameStrata(button:GetFrameStrata())
@@ -1455,10 +1450,6 @@ function Generic:UpdateConfig(config)
 
 	self:SetAttribute('flyoutDirection', self.config.flyoutDirection)
 	self:SetAttribute('useOnKeyDown', self.config.clickOnDown)
-
-	if WoWClassic then
-		self:RegisterForClicks(self.config.clickOnDown and "AnyDown" or "AnyUp")
-	end
 end
 
 -----------------------------------------------------------
@@ -1509,11 +1500,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_CHARGES")
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_ICON")
 
-	if not WoWClassic then
-		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
-	else
-		lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_TAB")
-	end
+	lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 
 	if not WoWClassic and not WoWBCC then
 		if WoWRetail then

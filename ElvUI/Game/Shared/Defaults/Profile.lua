@@ -875,7 +875,6 @@ P.nameplates = {
 	highlight = true,
 	loadDistance = 41,
 	lowHealthThreshold = 0.4,
-	motionType = 'STACKED',
 	nameColoredGlow = false,
 	overlapH = 0.8,
 	overlapV = 1.1,
@@ -2957,6 +2956,20 @@ do
 		enable = true
 	}
 
+	local colors = {
+		expiring = { r = 1, g = 0.2, b = 0.2 },
+		seconds = { r = 1, g = 1, b = 0.2 },
+		minutes = { r = 1, g = 1, b = 1 },
+		hours = { r = 0.4, g = 1, b = 1 },
+		days = { r = 0.4, g = 0.4, b = 1 }
+	}
+
+	local thresholds = {
+		minThreshold = 3, -- low threshold
+		override = false,
+		colors = CopyTable(colors)
+	}
+
 	local defaults = {
 		enable = true,
 
@@ -2969,9 +2982,9 @@ do
 		locText = true,
 
 		rotation = 0,
-		threshold = 0, -- seconds
-		minThreshold = 3, -- low threshold
+		threshold = 0, -- seconds, different than low threshold
 		minDuration = 1500, -- ms
+		thresholdText = CopyTable(thresholds),
 
 		colors = {
 			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
@@ -2980,12 +2993,7 @@ do
 			edgeLOC = { r = 1, g = 0.2, b = 0.8, a = 1 },
 			swipe = { r = 0, g = 0, b = 0, a = 0.7 },
 			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.3 },
-			swipeLOC = { r = 1, g = 0.2, b = 0.6, a = 0.3 },
-			expiring = { r = 1, g = 0.2, b = 0.2 },
-			seconds = { r = 1, g = 1, b = 0.2 },
-			minutes = { r = 1, g = 1, b = 1 },
-			hours = { r = 0.4, g = 1, b = 1 },
-			days = { r = 0.4, g = 0.4, b = 1 },
+			swipeLOC = { r = 1, g = 0.2, b = 0.6, a = 0.3 }
 		},
 
 		position = 'CENTER',
@@ -3021,6 +3029,9 @@ do
 		elseif key == 'actionbar' then
 			object.threshold = 300
 			object.altBling = useAltBling
+
+			object.thresholdLoc = CopyTable(thresholds)
+			object.thresholdCharge = CopyTable(thresholds)
 		elseif key == 'targetaura' then
 			object.threshold = 300
 

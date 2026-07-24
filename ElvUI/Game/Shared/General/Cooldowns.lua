@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local LSM = E.Libs.LSM
 
 local next = next
+local tremove = tremove
+
 local CreateColor = CreateColor
 local CreateNumericRuleFormatter = C_StringUtil and C_StringUtil.CreateNumericRuleFormatter
 
@@ -98,7 +100,12 @@ function E:CooldownUpdate(cooldown)
 	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
 	E:CooldownColors(data.lossOfControl, colors.edgeLOC, colors.swipeLOC)
 
-	E:CooldownFormats(cooldown, db, data)
+	local formatters = data.formatters
+	if formatters then
+		E:CooldownFormats(cooldown, db, data, formatters.text)
+		E:CooldownFormats(data.chargeCooldown, db, data, formatters.charge, db.thresholdCharge)
+		E:CooldownFormats(data.lossOfControl, db, data, formatters.loc, db.thresholdLoc)
+	end
 
 	--cooldown:SetRotation(rad(db.rotation))
 	cooldown:SetDrawBling(not exclude and not db.hideBling)
@@ -118,34 +125,39 @@ do
 		{ key = 'years', fmt = '%.0fy', thr = Y, components = {{ div = Y }} }
 	}
 
-	function E:CooldownBreakpoints(db, data)
+	function E:CooldownBreakpoints(db, opt, data) -- data not used here but sent for plugins
 		for index, point in next, times do
 			if point.key == 'seconds' then
 				point.rounding = (db.roundup and ROUNDUP) or ROUNDDOWN
-				point.threshold = db.minThreshold or point.thr
+				point.threshold = opt.minThreshold or point.thr
 			else
 				point.rounding = nil
 				point.threshold = point.thr
 			end
 
-			local colors = db.colors[point.key] or default
+			local colors = opt.colors[point.key] or default
 			color:SetRGBA(colors.r, colors.g, colors.b, colors.a)
 			point.format = color:WrapTextInColorCode(point.fmt)
 
 			breakpoints[index] = point
 		end
 
+		-- remove expiration when toggled
+		if opt.minThreshold == -1 then
+			tremove(breakpoints, 1)
+		end
+
 		return breakpoints
 	end
 end
 
-function E:CooldownFormats(cooldown, db, data)
-	if not data.formatter then return end
+function E:CooldownFormats(cooldown, db, data, formatter, opt)
+	if not cooldown or not db or not formatter then return end
 
-	local breakpoints = E:CooldownBreakpoints(db, data)
-	data.formatter:SetBreakpoints(breakpoints)
-
-	cooldown:SetCountdownFormatter(data.formatter)
+	local override = (opt and opt.override) and opt -- chargeCooldown or lossOfControl
+	local breakpoints = E:CooldownBreakpoints(db, override or db.thresholdText, data)
+	formatter:SetBreakpoints(breakpoints)
+	cooldown:SetCountdownFormatter(formatter)
 end
 
 function E:CooldownRegion(cooldown)
@@ -212,7 +224,15 @@ function E:RegisterCooldown(cooldown, which)
 	data.lossOfControl = parent and parent.lossOfControlCooldown or nil
 
 	if CreateNumericRuleFormatter then
-		data.formatter = CreateNumericRuleFormatter()
+		data.formatters = { text = CreateNumericRuleFormatter() }
+
+		if data.chargeCooldown then
+			data.formatters.charge = CreateNumericRuleFormatter()
+		end
+
+		if data.lossOfControl then
+			data.formatters.loc = CreateNumericRuleFormatter()
+		end
 	end
 
 	-- extract the blizzard cooldown region

@@ -23,11 +23,6 @@ function BL:ScaleTalkingHeadFrame()
 end
 
 function BL:HandleTalkingHead()
-	-- Prevent WoW from moving the frame around
-	if _G.UIPARENT_MANAGED_FRAME_POSITIONS then
-		_G.UIPARENT_MANAGED_FRAME_POSITIONS.TalkingHeadFrame = nil
-	end
-
 	-- Iterate through all alert subsystems in order to find the one created for TalkingHeadFrame, and then remove it.
 	-- We do this to prevent alerts from anchoring to this frame when it is shown.
 	for index, alertFrameSubSystem in ipairs(_G.AlertFrame.alertFrameSubSystems) do

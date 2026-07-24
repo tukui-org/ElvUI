@@ -4,29 +4,34 @@ local Private = oUF.Private
 
 local argcheck = Private.argcheck
 
+local next = next
+local wipe = wipe
+local tinsert = tinsert
+local IsLoggedIn = IsLoggedIn
+
 local queue = {}
 local factory = CreateFrame('Frame')
 factory:SetScript('OnEvent', function(self, event, ...)
 	return self[event](self, event, ...)
 end)
 
-factory:RegisterEvent('PLAYER_LOGIN')
+factory:RegisterEvent('ADDON_LOADED')
 factory.active = true
 
-function factory:PLAYER_LOGIN()
+function factory:ADDON_LOADED(...)
 	if(not self.active) then return end
 
 	for _, func in next, queue do
-		func(oUF)
+		func(oUF, ...)
 	end
 
 	-- Avoid creating dupes.
-	table.wipe(queue)
+	wipe(queue)
 end
 
 --[[ Factory: oUF:Factory(func)
 Used to call a function directly if the current character is logged in and the factory is active. Else the function is
-queued up to be executed at a later time (upon PLAYER_LOGIN by default).
+queued up to be executed at a later time (upon ADDON_LOADED by default).
 
 * self - the global oUF object
 * func - function to be executed or delayed (function)
@@ -38,7 +43,7 @@ function oUF:Factory(func)
 	if(IsLoggedIn() and factory.active) then
 		return func(self)
 	else
-		table.insert(queue, func)
+		tinsert(queue, func)
 	end
 end
 
@@ -67,5 +72,5 @@ this to succeed.
 * self - the global oUF object
 --]]
 function oUF:RunFactoryQueue()
-	factory:PLAYER_LOGIN()
+	factory:ADDON_LOADED()
 end

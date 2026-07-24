@@ -28,9 +28,6 @@ local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
 local UnregisterStateDriver = UnregisterStateDriver
 
-local CastingBarFrame_OnLoad = CastingBarFrame_OnLoad
-local CastingBarFrame_SetUnit = CastingBarFrame_SetUnit
-local PetCastingBarFrame_OnLoad = PetCastingBarFrame_OnLoad
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
@@ -1854,17 +1851,9 @@ do
 					end
 				end
 
-				if E.hasEditMode then
-					if disable.castbar then
-						HideFrame(_G.PlayerCastingBarFrame)
-						HideFrame(_G.PetCastingBarFrame)
-					end
-				elseif disable.castbar then
-					CastingBarFrame_SetUnit(_G.CastingBarFrame)
-					CastingBarFrame_SetUnit(_G.PetCastingBarFrame)
-				else
-					CastingBarFrame_OnLoad(_G.CastingBarFrame, 'player', true, false)
-					PetCastingBarFrame_OnLoad(_G.PetCastingBarFrame)
+				if disable.castbar then
+					HideFrame(_G.PlayerCastingBarFrame)
+					HideFrame(_G.PetCastingBarFrame)
 				end
 			elseif disable.player and unit == 'pet' then
 				HideFrame(_G.PetFrame)
@@ -2245,10 +2234,13 @@ function UF:Style(unit)
 	UF:Construct_UF(self, unit)
 end
 
-function UF:Setup()
+function UF:Setup(_, addon)
+	if addon ~= 'ElvUI' then return end
+
 	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
 	ElvUF:RegisterStyle('ElvUF', UF.Style)
 	ElvUF:SetActiveStyle('ElvUF')
+	ElvUF:DisableFactory() -- we want to turn off ADDON_LOADED
 
 	UF:LoadUnits()
 	UF:Update_FontStrings()
@@ -2277,12 +2269,7 @@ function UF:Initialize()
 
 	UF:RegisterEvent('SPELLS_CHANGED', 'UpdateRangeSpells')
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
-
-	if E.hasEditMode then
-		UF:RegisterEvent('LEARNED_SPELL_IN_SKILL_LINE', 'UpdateRangeSpells')
-	else
-		UF:RegisterEvent('LEARNED_SPELL_IN_TAB', 'UpdateRangeSpells')
-	end
+	UF:RegisterEvent('LEARNED_SPELL_IN_SKILL_LINE', 'UpdateRangeSpells')
 
 	if E.Retail or E.Wrath or E.Mists then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')

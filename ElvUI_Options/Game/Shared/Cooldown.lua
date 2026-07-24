@@ -6,6 +6,24 @@ local ACH = E.Libs.ACH
 local THRESHOLD = { min = 0, softMax = 3600, max = 86400, step = 1 }
 local MIN_DURATION = { min = 0, softMax = 60, max = 3600, step = 0.001, bigStep = 1 }
 
+local function GetThresholds(which, name, order, db)
+	local thresholds = ACH:Group(name, nil, order, nil, function(info) local t = E.db.cooldown[db][which].colors[info[#info]] local d = P.cooldown[db][which].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db][which].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+	thresholds.args.expiring = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 20)
+	thresholds.args.seconds = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 21)
+	thresholds.args.minutes = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 22)
+	thresholds.args.hours = ACH:Color(L["Hours"], L["Color when the text is in the hours format."], 23)
+	thresholds.args.days = ACH:Color(L["Days"], L["Color when the text is in the days format."], 24)
+
+	if which ~= 'thresholdText' then
+		thresholds.args.override = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function(info) return E.db.cooldown[db][which][info[#info]] end, function(info, value) E.db.cooldown[db][which][info[#info]] = value; E:CooldownSettings(db); end)
+	end
+
+	thresholds.args.minThreshold = ACH:Range(L["Low Threshold"], L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"], 1, { min = -1, max = 20, step = 1 }, nil, function(info) return E.db.cooldown[db][which][info[#info]] end, function(info, value) E.db.cooldown[db][which][info[#info]] = value; E:CooldownSettings(db); end)
+	thresholds.args.spacer1 = ACH:Spacer(10, 'full')
+
+	return thresholds
+end
+
 local function Group(order, db, label)
 	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not E.Retail) end)
 	E.Options.args.cooldown.args[db] = main
@@ -22,28 +40,7 @@ local function Group(order, db, label)
 	targetAura.inline = true
 	mainArgs.targetAuraGroup = targetAura
 
-	local colors = ACH:Group(L["Color"], nil, 20, nil, function(info) local t = E.db.cooldown[db].colors[info[#info]] local d = P.cooldown[db].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
-	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
-	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
-	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
-	colors.args.spacer1 = ACH:Spacer(4, 'full')
-	colors.args.swipeCharge = ACH:Color(L["Swipe: Charge"], nil, 10, true, nil, nil, nil, nil, charges)
-	colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, charges)
-	colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
-	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
-
-	local thresholds = ACH:Group(L["Threshold Colors"], nil, 30)
-	thresholds.args.expiring = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 1)
-	thresholds.args.seconds = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 2)
-	thresholds.args.minutes = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 3)
-	thresholds.args.hours = ACH:Color(L["Hours"], L["Color when the text is in the hours format."], 4)
-	thresholds.args.days = ACH:Color(L["Days"], L["Color when the text is in the days format."], 5)
-	colors.args.timeColors = thresholds
-
-	colors.inline = true
-	mainArgs.colorGroup = colors
-
-	local general = ACH:Group(L["General"], nil, 30)
+	local general = ACH:Group(L["General"], nil, 20)
 	general.args.roundup = ACH:Toggle(L["Round Timers"], nil, 1)
 	general.args.reverse = ACH:Toggle(L["Reverse"], L["Reverse the cooldown animation."], 2)
 	general.args.hideNumbers = ACH:Toggle(L["Hide Text"], L["The cooldown timer text."], 3, nil, nil, nil, nil, nil, nil, db == 'auraindicator')
@@ -52,26 +49,42 @@ local function Group(order, db, label)
 	general.args.hideBling = ACH:Toggle(L["Hide Bling"], L["Completion flash when the cooldown finishes."], 6)
 	general.args.altBling = ACH:Toggle(L["Alternative Bling"], nil, 7)
 	general.args.spacer1 = ACH:Spacer(20, 'full', db == 'actionbar' or db == 'bossbutton')
-	general.args.minThreshold = ACH:Range(L["Low Threshold"], L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"], 21, { min = -1, max = 20, step = 1 })
 	general.args.minDuration = ACH:Range(L["Minimum Duration"], L["Minimum countdown duration (in seconds)."], 22, MIN_DURATION, nil, function(info) return E.db.cooldown[db][info[#info]] * 0.001 end, function(info, value) E.db.cooldown[db][info[#info]] = value * 1000; E:CooldownSettings(db); end)
 	general.args.threshold = ACH:Range(L["Threshold"], L["Abbreviation threshold (in seconds)."], 23, THRESHOLD)
 	-- general.args.rotation = ACH:Range(L["Rotation"], L["Rotates the entire cooldown clockwise."], 23, { min = 0, max = 360, step = 1 })
 	general.inline = true
 	mainArgs.generalGroup = general
 
-	local fonts = ACH:Group(L["Fonts"], nil, 40)
+	local fonts = ACH:Group(L["Fonts"], nil, 30)
 	fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 	fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 	fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 	fonts.inline = true
 	mainArgs.fontGroup = fonts
 
+	local colors = ACH:Group(L["Color"], nil, 40, nil, function(info) local t = E.db.cooldown[db].colors[info[#info]] local d = P.cooldown[db].colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = E.db.cooldown[db].colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
+	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
+	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
+	colors.args.spacer1 = ACH:Spacer(4, 'full')
+	colors.args.swipeCharge = ACH:Color(L["Swipe: Charge"], nil, 10, true, nil, nil, nil, nil, charges)
+	colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, charges)
+	colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
+	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
+	mainArgs.colorGroup = colors
+
 	local position = ACH:Group(L["Text Position"], nil, 50)
 	position.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPositions)
 	position.args.offsetX = ACH:Range(L["X-Offset"], nil, 2, { min = -50, max = 50, step = 1 })
 	position.args.offsetY = ACH:Range(L["Y-Offset"], nil, 3, { min = -50, max = 50, step = 1 })
-	position.inline = true
 	mainArgs.positionGroup = position
+
+	mainArgs.colorsTime = GetThresholds('thresholdText', L["Threshold: Text"], 60, db)
+
+	if db == 'actionbar' then
+		mainArgs.colorsCharge = GetThresholds('thresholdCharge', L["Threshold: Charge"], 70, db)
+		mainArgs.colorsLoc = GetThresholds('thresholdLoc', L["Threshold: Loss of Control"], 80, db)
+	end
 end
 
 E.Options.args.cooldown = ACH:Group(L["Cooldown & Duration"], nil, 2, 'tab', function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; E:CooldownSettings('global'); end)

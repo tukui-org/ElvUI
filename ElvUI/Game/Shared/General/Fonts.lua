@@ -27,15 +27,14 @@ local FontMap = {
 	end }
 }
 
-local IgnoreSlug = {}
-if E.Retail or E.Mists or E.TBC then
-	FontMap.questtext		= { object = _G.QuestFont }
-	FontMap.questtitle		= { object = _G.QuestTitleFont }
-	FontMap.questsmall		= { object = _G.QuestFontNormalSmall }
-
+local IgnoreSlug = {
 	-- this will break the `instantQuestText` and prevent the text from rendering correctly
-	IgnoreSlug[_G.QuestFont] = E.Mists or E.TBC -- on Mop at least
-end
+	[_G.QuestFont] = E.Mists or E.TBC or E.Classic
+}
+
+FontMap.questtext		= { object = _G.QuestFont }
+FontMap.questtitle		= { object = _G.QuestTitleFont }
+FontMap.questsmall		= { object = _G.QuestFontNormalSmall }
 
 if E.Retail then
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
@@ -163,11 +162,9 @@ function E:UpdateBlizzardFonts()
 		E:MapFont(FontMap.worldsubzone,				NORMAL, (blizz and 24) or unscale or huge, outline)
 		E:MapFont(FontMap.worldzone,				NORMAL, (blizz and 25) or unscale or mega, outline)
 
-		if E.Retail or E.Mists or E.TBC then
-			E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
-			E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
-			E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')
-		end
+		E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
+		E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
+		E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')
 
 		if E.Retail then
 			E:MapFont(FontMap.objective,			NORMAL, (blizz and 12) or unscale or size, 'SHADOW')

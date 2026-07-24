@@ -1,7 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
+local CH = E:GetModule('Chat')
 local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 
+local _G = _G
 local pairs, sort, tonumber, time = pairs, sort, tonumber, time
 local type, lower, wipe, next, print = type, strlower, wipe, next, print
 local ipairs, format, tinsert = ipairs, format, tinsert
@@ -68,6 +70,19 @@ function E:LuaError(msg)
 		end
 	else
 		E:Print('/edebug on - /edebug off')
+	end
+end
+
+function E:ClearSnapping()
+	CH:ClearSnapping()
+
+	if not CH.Initialized then return end
+
+	for _, frameName in ipairs(_G.CHAT_FRAMES) do
+		local chat = _G[frameName]
+		if chat then
+			CH:SnappingChanged(chat)
+		end
 	end
 end
 
@@ -213,6 +228,7 @@ function E:LoadCommands()
 	E:RegisterChatCommand('ecommands', 'DisplayCommands')
 	E:RegisterChatCommand('estatus', 'ShowStatusReport')
 	E:RegisterChatCommand('efixdb', 'DBConvertProfile')
+	E:RegisterChatCommand('efixsnap', 'ClearSnapping')
 	E:RegisterChatCommand('egrid', 'Grid')
 
 	-- Register Guild Apply Commands

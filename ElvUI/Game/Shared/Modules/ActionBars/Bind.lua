@@ -42,8 +42,12 @@ AB.KeyBinder = bind
 function AB:ActivateBindMode()
 	if InCombatLockdown() then return end
 
+	if bind.Popup then
+		E:StaticPopupSpecial_Show(bind.Popup)
+	end
+
 	bind.active = true
-	E:StaticPopupSpecial_Show(bind.Popup)
+
 	AB:RegisterEvent('PLAYER_REGEN_DISABLED', 'DeactivateBindMode', false)
 end
 
@@ -56,11 +60,15 @@ function AB:DeactivateBindMode(save)
 		E:Print(L["Binds Discarded"])
 	end
 
+	if bind.Popup then
+		E:StaticPopupSpecial_Hide(bind.Popup)
+	end
+
 	bind.active = false
+	AB.bindingsChanged = false
+
 	self:BindHide()
 	self:UnregisterEvent('PLAYER_REGEN_DISABLED')
-	E:StaticPopupSpecial_Hide(bind.Popup)
-	AB.bindingsChanged = false
 end
 
 function AB:BindHide()
@@ -256,47 +264,10 @@ function AB:BindUpdate(button, spellmacro)
 end
 
 function AB:ChangeBindingProfile()
-	if bind.Popup.perCharCheck:GetChecked() then
-		LoadBindings(2)
-		SaveBindings(2)
-	else
-		LoadBindings(1)
-		SaveBindings(1)
-	end
-end
+	local checked = (bind.Popup and bind.Popup.perCharCheck:GetChecked()) and 2 or 1
 
-do
-	local function OnEnter(button)
-		AB:BindUpdate(button, 'MACRO')
-	end
-
-	local function MacroSelectorScrollUpdateChild(button)
-		button:HookScript('OnEnter', OnEnter)
-	end
-
-	local function MacroSelectorScrollUpdate(frame)
-		if frame.MacroSelector then
-			frame.MacroSelector.ScrollBox:ForEachFrame(MacroSelectorScrollUpdateChild)
-		end
-
-		AB:Unhook(frame, 'Update')
-	end
-
-	function AB:ADDON_LOADED(_, addon)
-		if addon == 'Blizzard_MacroUI' then
-			if _G.MacroFrame.Update then
-				AB:SecureHook(_G.MacroFrame, 'Update', MacroSelectorScrollUpdate)
-			else
-				for i = 1, MAX_ACCOUNT_MACROS do
-					_G['MacroButton'..i]:HookScript('OnEnter', OnEnter)
-				end
-			end
-
-			AB:UnregisterEvent('ADDON_LOADED')
-		elseif addon == 'Blizzard_PlayerSpells' then
-			AB:FixSpellBookTaint()
-		end
-	end
+	LoadBindings(checked)
+	SaveBindings(checked)
 end
 
 do
