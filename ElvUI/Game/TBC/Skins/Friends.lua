@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
+local IsLoggedIn = IsLoggedIn
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
 local GetGuildRosterInfo = GetGuildRosterInfo
@@ -342,11 +343,12 @@ function S:FriendsFrame()
 	_G.FriendsFrameBroadcastInputRight:Kill()
 	_G.FriendsFrameBroadcastInputMiddle:Kill()
 
+	hooksecurefunc('FriendsFrame_Update', UpdateFriendsFrame)
 	hooksecurefunc('FriendsFrame_CheckBattlenetStatus', CheckBattlenetStatus)
 
-	_G.FriendsFrame_CheckBattlenetStatus()
-
-	hooksecurefunc('FriendsFrame_Update', UpdateFriendsFrame)
+	if IsLoggedIn() then
+		_G.FriendsFrame_CheckBattlenetStatus()
+	end
 
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate('Transparent')
