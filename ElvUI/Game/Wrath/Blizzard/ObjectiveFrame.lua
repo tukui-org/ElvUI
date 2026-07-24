@@ -42,7 +42,7 @@ end
 
 function BL:ObjectiveTracker_Setup()
 	local holder = CreateFrame('Frame', 'ObjectiveFrameHolder', E.UIParent)
-	holder:Point('TOPRIGHT', E.UIParent, -135, -300)
+	holder:Point('TOPRIGHT', -135, -300)
 	holder:Size(130, 22)
 
 	E:CreateMover(holder, 'ObjectiveFrameMover', L["Objective Frame"], nil, nil, nil, nil, nil, 'general,blizzUIImprovements')
@@ -60,5 +60,4 @@ function BL:ObjectiveTracker_Setup()
 	hooksecurefunc(Tracker, 'SetPoint', ObjectiveTracker_SetPoint)
 
 	BL:ObjectiveTracker_AutoHide() -- supported but no boss frames, only works for arena
-	BL:ObjectiveTracker_SetHeight()
 end
