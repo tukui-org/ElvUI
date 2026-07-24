@@ -1030,15 +1030,12 @@ do
 				return -- don't do this twice, ever
 			end
 
-			button:SetScript('OnEnter', AB.SpellButtonOnEnter)
 			button:SetScript('OnLeave', AB.SpellButtonOnLeave)
+			button:SetScript('OnEnter', AB.SpellButtonOnEnter)
+			button:HookScript('OnEnter', BindOnEnter)
 
 			button.OnEnter = AB.SpellButtonOnEnter
 			button.OnLeave = AB.SpellButtonOnLeave
-
-			for i = 1, 12 do
-				_G['SpellButton'..i]:HookScript('OnEnter', BindOnEnter)
-			end
 
 			AB:StyleFlyout(button) -- not a part of the taint fix, this just gets the arrows in line
 		end
