@@ -19,7 +19,6 @@ local CreateFrame = CreateFrame
 local FlashClientIcon = FlashClientIcon
 local GetBNPlayerCommunityLink = GetBNPlayerCommunityLink
 local GetChannelName = GetChannelName
-local GetChatWindowInfo = GetChatWindowInfo
 local GetCursorPosition = GetCursorPosition
 local GetNumGroupMembers = GetNumGroupMembers
 local GetPlayerCommunityLink = GetPlayerCommunityLink
@@ -3688,7 +3687,7 @@ function CH:FCFTab_UpdateColors(tab, selected)
 			tab.Text:SetTextColor(1, 1, 1)
 		end
 
-		local name = GetChatWindowInfo(tab:GetID())
+		local name = _G.FCF_GetChatWindowInfo(tab:GetID())
 		if name and E:NotSecretValue(name) then
 			tab.Text:SetText(name)
 		end
