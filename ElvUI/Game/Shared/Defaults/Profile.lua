@@ -3292,24 +3292,26 @@ do
 	local function OverrideUnits(units)
 		local override = {}
 		for unit, main in next, units do
-			local data = override[unit]
-			if not data then
-				data = {}
-				override[unit] = data
-			end
+			if unit ~= 'TARGET' then -- ignore target nameplate
+				local data = override[unit]
+				if not data then
+					data = {}
+					override[unit] = data
+				end
 
-			for _, key in next, auras do
-				if main[key] then
-					local opt = data[key]
-					if not opt then
-						opt = {}
+				for _, key in next, auras do
+					if main[key] then
+						local opt = data[key]
+						if not opt then
+							opt = {}
+							data[key] = opt
+						end
+
+						opt = CopyTable(defaults)
+						opt.enable = false
+
 						data[key] = opt
 					end
-
-					opt = CopyTable(defaults)
-					opt.enable = false
-
-					data[key] = opt
 				end
 			end
 		end
