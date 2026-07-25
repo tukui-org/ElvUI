@@ -3325,6 +3325,8 @@ do
 			if type(data) == 'table' and data.buttons then
 				local opt = CopyTable(defaults)
 				opt.enable = false
+				opt.thresholdLoc = CopyTable(thresholds)
+				opt.thresholdCharge = CopyTable(thresholds)
 
 				override[key] = opt
 			end

@@ -3,116 +3,8 @@ local C, L = unpack(E.Config)
 local AB = E:GetModule('ActionBars')
 local ACH = E.Libs.ACH
 
-local next = next
-
 local THRESHOLD = { min = 0, softMax = 3600, max = 86400, step = 1 }
 local MIN_DURATION = { min = 0, softMax = 60, max = 3600, step = 0.001, bigStep = 1 }
-
-local Subnames = {
-	auras = { order = 10, name = L["Auras"] },
-	buffs = { order = 11, name = L["Buffs"] },
-	debuffs = { order = 12, name = L["Debuffs"] },
-	aurabar = { order = 13, name = L["Aura Bars"] },
-	buffIndicator = { order = 14, name = L["Aura Indicator"] },
-}
-
-local Subgroups = {
-	nameplates = {
-		PLAYER = { order = 50, name = L["Player"] },
-		FRIENDLY_PLAYER = { order = 52, name = L["FRIENDLY_PLAYER"] },
-		ENEMY_PLAYER = { order = 53, name = L["ENEMY_PLAYER"] },
-		FRIENDLY_NPC = { order = 54, name = L["FRIENDLY_NPC"] },
-		ENEMY_NPC = { order = 55, name = L["ENEMY_NPC"] }
-	},
-	unitframe = {
-		player = { order = 50, name = L["Player"] },
-		pet = { order = 51, name = L["Pet"] },
-		target = { order = 52, name = L["Target"] },
-		targettarget = { order = 53, name = L["TargetTarget"] },
-		targettargettarget = { order = 54, name = L["TargetTargetTarget"] },
-		focus = { order = 55, name = L["Focus"] },
-		focustarget = { order = 56, name = L["Focus Target"] },
-		pettarget = { order = 57, name = L["Pet Target"] },
-
-		arena = { order = 60, name = L["Arena"] },
-		assist = { order = 61, name = L["Assist"] },
-		boss = { order = 62, name = L["Boss"] },
-		party = { order = 63, name = L["Party"] },
-		raid1 = { order = 64, name = L["Raid 1"] },
-		raid2 = { order = 65, name = L["Raid 2"] },
-		raid3 = { order = 66, name = L["Raid 3"] },
-		raidpet = { order = 67, name = L["Raid Pet"] },
-		tank = { order = 68, name = L["Tank"] },
-	},
-	actionbar = {
-		barPet = { order = 50, name = L["Bar: Pet"] },
-		stanceBar = { order = 51, name = L["Bar: Stance"] }
-	}
-}
-
-for i = 1, 15 do
-	Subgroups.actionbar['bar'..i] = { order = 30 + i, name = L["Bar: "..i] }
-end
-
-local function GetThresholds(which, name, order, profile, private, db)
-	local thresholds = ACH:Group(name, nil, order, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
-	if which ~= 'thresholdText' then
-		thresholds.args.override = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end)
-	end
-
-	local hidden = thresholds.args.override and function() return not profile.override end
-	thresholds.args.expiring = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 20, nil, nil, nil, nil, nil, hidden)
-	thresholds.args.seconds = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 21, nil, nil, nil, nil, nil, hidden)
-	thresholds.args.minutes = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 22, nil, nil, nil, nil, nil, hidden)
-	thresholds.args.hours = ACH:Color(L["Hours"], L["Color when the text is in the hours format."], 23, nil, nil, nil, nil, nil, hidden)
-	thresholds.args.days = ACH:Color(L["Days"], L["Color when the text is in the days format."], 24, nil, nil, nil, nil, nil, hidden)
-
-	thresholds.args.expireThreshold = ACH:Range(L["Expiring Threshold"], L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"], 1, { min = -1, max = 20, step = 1 }, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end, nil, hidden)
-	thresholds.args.secondsThreshold = ACH:Range(L["Seconds Threshold"], nil, 2, { min = -1, max = 50, step = 1 }, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end, nil, hidden)
-	thresholds.args.spacer1 = ACH:Spacer(10, 'full')
-
-	return thresholds
-end
-
-local function GetCooldownConfig(profile, private, db, charges, lossOfControl)
-	local text = ACH:Group(L["Text"], nil, 10)
-
-	local fonts = ACH:Group(L["Fonts"], nil, 10)
-	fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
-	fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
-	fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
-	fonts.inline = true
-	text.args.fontGroup = fonts
-
-	local position = ACH:Group(L["Text Position"], nil, 20)
-	position.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPositions)
-	position.args.offsetX = ACH:Range(L["X-Offset"], nil, 2, { min = -50, max = 50, step = 1 })
-	position.args.offsetY = ACH:Range(L["Y-Offset"], nil, 3, { min = -50, max = 50, step = 1 })
-	position.inline = true
-	text.args.positionGroup = position
-
-	local colors = ACH:Group(L["Color"], nil, 30, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
-	colors.args.text = ACH:Color(L["Text Color"], nil, 1)
-	colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
-	colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
-	colors.args.spacer1 = ACH:Spacer(4, 'full')
-	colors.args.swipeCharge = ACH:Color(L["Swipe: Charge"], nil, 10, true, nil, nil, nil, nil, charges)
-	colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, charges)
-	colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
-	colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
-	colors.inline = true
-	text.args.colorGroup = colors
-
-	local thresholds = ACH:Group(L["Thresholds"], nil, 20, 'tab')
-	thresholds.args.colorsTime = GetThresholds('thresholdText', L["Threshold: Text"], 10, profile.thresholdText, private.thresholdText, db)
-
-	if db == 'actionbar' then
-		thresholds.args.colorsCharge = GetThresholds('thresholdCharge', L["Threshold: Charge"], 20, profile.thresholdCharge, private.thresholdCharge, db)
-		thresholds.args.colorsLoc = GetThresholds('thresholdLoc', L["Threshold: Loss of Control"], 30, profile.thresholdLoc, private.thresholdLoc, db)
-	end
-
-	return text, thresholds
-end
 
 local function Group(order, db, label)
 	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not E.Retail) end)
@@ -144,37 +36,7 @@ local function Group(order, db, label)
 	general.inline = true
 	mainArgs.generalGroup = general
 
-	mainArgs.textGroup, mainArgs.thresholdGroup = GetCooldownConfig(E.db.cooldown[db], P.cooldown[db], db, charges, lossOfControl)
-
-	if db == 'actionbar' then
-		local names = Subgroups[db]
-		local settings = P.cooldown[db]
-		for key, data in next, settings.override do
-			local group = ACH:Group(names[key].name, nil, names[key].order, 'tab')
-			local groupArgs = group.args
-			groupArgs.textGroup, groupArgs.thresholdGroup = GetCooldownConfig(E.db.cooldown[db].override[key], data, db, charges, lossOfControl)
-
-			mainArgs[key] = group
-		end
-	elseif db == 'unitframe' or db == 'nameplates' then
-		local settings = P.cooldown[db]
-		local names = Subgroups[db]
-		for key, data in next, settings.override do -- key: arena, player, pet, raid1, etc
-			local group = ACH:Group(names[key].name, nil, names[key].order, 'tab')
-			local groupArgs = group.args
-			for which, opts in next, data do -- data: auras, buffs, debuffs, aurabar, etc
-				local subopt = Subnames[which]
-				local subgroup = ACH:Group(subopt and subopt.name or which, nil, subopt and subopt.order)
-				local subgroupArgs = group.args
-
-				groupArgs[which] = subgroup
-			end
-
-			-- groupArgs.textGroup, groupArgs.thresholdGroup = GetCooldownConfig(E.db.cooldown[db].override[key], data, db, charges, lossOfControl)
-
-			mainArgs[key] = group
-		end
-	end
+	mainArgs.textGroup, mainArgs.thresholdGroup = C:GetCooldownConfig(E.db.cooldown[db], P.cooldown[db], db, charges, lossOfControl)
 end
 
 E.Options.args.cooldown = ACH:Group(L["Cooldown & Duration"], nil, 2, 'tab', function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; E:CooldownSettings('global'); end)

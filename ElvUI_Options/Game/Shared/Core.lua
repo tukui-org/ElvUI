@@ -961,3 +961,66 @@ do -- Module Copy
 	E.Options.args.profiles.args.modulereset.args.tooltip = ACH:Execute(L["Tooltip"], nil, 12, nil, nil, L["Are you sure you want to reset Tooltip settings?"])
 	E.Options.args.profiles.args.modulereset.args.uniframes = ACH:Execute(L["UnitFrames"], nil, 13, function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end, nil, L["Are you sure you want to reset UnitFrames settings?"])
 end
+
+do -- shared cooldown
+	local function GetThresholds(which, name, order, profile, private, db)
+		local thresholds = ACH:Group(name, nil, order, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+		if which ~= 'thresholdText' then
+			thresholds.args.override = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end)
+		end
+
+		local hidden = thresholds.args.override and function() return not profile.override end
+		thresholds.args.expiring = ACH:Color(L["Expiring"], L["Color when the text is about to expire."], 20, nil, nil, nil, nil, nil, hidden)
+		thresholds.args.seconds = ACH:Color(L["Seconds"], L["Color when the text is in the seconds format."], 21, nil, nil, nil, nil, nil, hidden)
+		thresholds.args.minutes = ACH:Color(L["Minutes"], L["Color when the text is in the minutes format."], 22, nil, nil, nil, nil, nil, hidden)
+		thresholds.args.hours = ACH:Color(L["Hours"], L["Color when the text is in the hours format."], 23, nil, nil, nil, nil, nil, hidden)
+		thresholds.args.days = ACH:Color(L["Days"], L["Color when the text is in the days format."], 24, nil, nil, nil, nil, nil, hidden)
+
+		thresholds.args.expireThreshold = ACH:Range(L["Expiring Threshold"], L["Threshold before text turns red and is in decimal form. Set to -1 for it to never turn red"], 1, { min = -1, max = 20, step = 1 }, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end, nil, hidden)
+		thresholds.args.secondsThreshold = ACH:Range(L["Seconds Threshold"], nil, 2, { min = -1, max = 50, step = 1 }, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end, nil, hidden)
+		thresholds.args.spacer1 = ACH:Spacer(10, 'full')
+
+		return thresholds
+	end
+
+	function C:GetCooldownConfig(profile, private, db, charges, lossOfControl)
+		local override = ACH:Toggle(L["Enable"], nil, 0)
+
+		local text = ACH:Group(L["Text"], nil, 10, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end)
+		local fonts = ACH:Group(L["Fonts"], nil, 1)
+		fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
+		fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
+		fonts.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
+		fonts.inline = true
+		text.args.fontGroup = fonts
+
+		local position = ACH:Group(L["Text Position"], nil, 2)
+		position.args.position = ACH:Select(L["Position"], nil, 1, C.Values.AllPositions)
+		position.args.offsetX = ACH:Range(L["X-Offset"], nil, 2, { min = -50, max = 50, step = 1 })
+		position.args.offsetY = ACH:Range(L["Y-Offset"], nil, 3, { min = -50, max = 50, step = 1 })
+		position.inline = true
+		text.args.positionGroup = position
+
+		local colors = ACH:Group(L["Color"], nil, 3, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+		colors.args.text = ACH:Color(L["Text Color"], nil, 1)
+		colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
+		colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
+		colors.args.spacer1 = ACH:Spacer(4, 'full')
+		colors.args.swipeCharge = ACH:Color(L["Swipe: Charge"], nil, 10, true, nil, nil, nil, nil, charges)
+		colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, charges)
+		colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
+		colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
+		colors.inline = true
+		text.args.colorGroup = colors
+
+		local thresholds = ACH:Group(L["Thresholds"], nil, 20, 'tab')
+		thresholds.args.colorsTime = GetThresholds('thresholdText', L["Threshold: Text"], 10, profile.thresholdText, private.thresholdText, db)
+
+		if db == 'actionbar' then
+			thresholds.args.colorsCharge = GetThresholds('thresholdCharge', L["Threshold: Charge"], 20, profile.thresholdCharge, private.thresholdCharge, db)
+			thresholds.args.colorsLoc = GetThresholds('thresholdLoc', L["Threshold: Loss of Control"], 30, profile.thresholdLoc, private.thresholdLoc, db)
+		end
+
+		return override, text, thresholds
+	end
+end

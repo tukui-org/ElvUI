@@ -30,7 +30,8 @@ local SharedBarOptions = {
 	barGroup = ACH:Group(L["Bar Settings"], nil, 6),
 	strataAndLevel = ACH:Group(L["Strata and Level"], nil, 7),
 	visibilityGroup = ACH:Group(L["Visibility State"], nil, 8),
-	pagingGroup = ACH:Group(L["Action Paging"], nil, 9)
+	pagingGroup = ACH:Group(L["Action Paging"], nil, 9),
+	cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 10, 'tab')
 }
 
 SharedBarOptions.pagingGroup.args.defaults = ACH:Execute(L["Restore Defaults"], nil, 1, nil, nil, L["You are about to reset paging. Are you sure?"])
@@ -273,6 +274,7 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.macroTextGroup = nil
 		options.professionQuality = nil
 		options.pagingGroup = nil
+		options.cooldownGroup = nil
 	elseif name == 'stanceBar' then
 		options.countTextGroup = nil
 		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[name][info[#info]] = value AB:UpdateStanceBindings() end
@@ -369,6 +371,8 @@ local function CreateBarOptions(num)
 	bar.args.buttonGroup.args.buttonHeight.hidden = function() return E.db.actionbar[barNumber].keepSizeRatio end
 
 	bar.args.backdropGroup.hidden = function() return not E.db.actionbar[barNumber].backdrop end
+
+	bar.args.cooldownGroup.args.enable, bar.args.cooldownGroup.args.textGroup, bar.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig(E.db.cooldown.actionbar.override[barNumber], P.cooldown.actionbar.override[barNumber], 'actionbar')
 
 	for group, func in pairs({
 		countTextGroup = function() return not E.db.actionbar[barNumber].counttext end,
