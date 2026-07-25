@@ -134,8 +134,8 @@ do
 		{ key = 'years', fmt = '%.0fy', thr = Y, components = {{ div = Y }} }
 	}
 
-	function E:CooldownBreakpoints(cooldown, opt) -- data not used here but sent for plugins
-		local db, ob, data = E:CooldownData(cooldown)
+	function E:CooldownBreakpoints(cooldown, opt)
+		local db = E:CooldownData(cooldown)
 		if not db then return end
 
 		for index, point in next, times do
@@ -174,7 +174,7 @@ do
 end
 
 function E:CooldownFormats(cooldown, secondary, formatter, which)
-	local db, ob, data = E:CooldownData(cooldown)
+	local db, ob = E:CooldownData(cooldown)
 	if not db then return end
 
 	if secondary then -- charge or Loc
