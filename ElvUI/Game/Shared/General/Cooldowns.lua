@@ -51,8 +51,13 @@ function E:CooldownTextures(cooldown, texture, edge, swipe)
 	cooldown:SetSwipeTexture(E.media.blankTex, swipe.r, swipe.g, swipe.b, swipe.a)
 end
 
-function E:CooldownText(cooldown, db, ob, data, hide)
-	if not cooldown then return end
+function E:CooldownText(cooldown, secondary, hide)
+	local db, ob, data = E:CooldownData(cooldown)
+	if not db then return end
+
+	if secondary then -- charge or Loc
+		cooldown = secondary
+	end
 
 	cooldown:SetHideCountdownNumbers(hide)
 	cooldown:SetCountdownAbbrevThreshold(db.threshold)
@@ -95,9 +100,9 @@ function E:CooldownUpdate(cooldown)
 
 	E:CooldownBling(cooldown, invisible)
 
-	E:CooldownText(cooldown, db, ob, data, db.hideNumbers)
-	E:CooldownText(data.chargeCooldown, db, ob, data, not db.chargeText)
-	E:CooldownText(data.lossOfControl, db, ob, data, not db.locText)
+	E:CooldownText(cooldown, nil, db.hideNumbers)
+	E:CooldownText(cooldown, data.chargeCooldown, not db.chargeText)
+	E:CooldownText(cooldown, data.lossOfControl, not db.locText)
 
 	E:CooldownColors(cooldown, colors.edge, colors.swipe, invisible)
 	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
@@ -105,9 +110,9 @@ function E:CooldownUpdate(cooldown)
 
 	local formatters = data.formatters
 	if formatters then
-		E:CooldownFormats(cooldown, db, ob, data, formatters.text)
-		E:CooldownFormats(data.chargeCooldown, db, ob, data, formatters.charge, 'thresholdCharge')
-		E:CooldownFormats(data.lossOfControl, db, ob, data, formatters.loc, 'thresholdLoc')
+		E:CooldownFormats(cooldown, nil, formatters.text)
+		E:CooldownFormats(cooldown, data.chargeCooldown, formatters.charge, 'thresholdCharge')
+		E:CooldownFormats(cooldown, data.lossOfControl, formatters.loc, 'thresholdLoc')
 	end
 
 	--cooldown:SetRotation(rad(db.rotation))
@@ -129,7 +134,10 @@ do
 		{ key = 'years', fmt = '%.0fy', thr = Y, components = {{ div = Y }} }
 	}
 
-	function E:CooldownBreakpoints(db, opt, data) -- data not used here but sent for plugins
+	function E:CooldownBreakpoints(cooldown, opt) -- data not used here but sent for plugins
+		local db, ob, data = E:CooldownData(cooldown)
+		if not db then return end
+
 		for index, point in next, times do
 			local colorKey = point.key
 			if point.key == 'seconds' then
@@ -165,12 +173,17 @@ do
 	end
 end
 
-function E:CooldownFormats(cooldown, db, ob, data, formatter, which)
-	if not cooldown or not db or not formatter then return end
+function E:CooldownFormats(cooldown, secondary, formatter, which)
+	local db, ob, data = E:CooldownData(cooldown)
+	if not db then return end
+
+	if secondary then -- charge or Loc
+		cooldown = secondary
+	end
 
 	local opt = ob[which] or db[which] -- try to use the module override first
 	local override = (opt and opt.override) and opt -- otherwise use the global override: chargeCooldown or lossOfControl
-	local breakpoints = E:CooldownBreakpoints(db, ob, override or db.thresholdText, data)
+	local breakpoints = E:CooldownBreakpoints(cooldown, override or db.thresholdText)
 	formatter:SetBreakpoints(breakpoints)
 	cooldown:SetCountdownFormatter(formatter)
 end
@@ -199,9 +212,12 @@ end
 function E:CooldownData(cooldown)
 	local data = E.RegisteredCooldowns[cooldown]
 	local db = data and E.db.cooldown[data.which]
-	local override = db and db.override
 
-	return db, override[data.subgroup] or override, data
+	local obj = db and db.override and db.override[data.override]
+	local sub = obj and obj[data.subgroup] -- switch to the subgroup
+	if sub then obj = sub end -- auras on NP and UF
+
+	return db, obj and obj.enable and obj or nil, data
 end
 
 function E:CooldownSettings(which)
