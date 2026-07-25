@@ -36,7 +36,9 @@ local function Group(order, db, label)
 	general.inline = true
 	mainArgs.generalGroup = general
 
-	mainArgs.textGroup, mainArgs.thresholdGroup = C:GetCooldownConfig(E.db.cooldown[db], P.cooldown[db], db, charges, lossOfControl)
+	local _, textGroup, thresholdGroup = C:GetCooldownConfig(db, E.db.cooldown[db], P.cooldown[db], charges, lossOfControl)
+	mainArgs.textGroup = textGroup
+	mainArgs.thresholdGroup = thresholdGroup
 end
 
 E.Options.args.cooldown = ACH:Group(L["Cooldown & Duration"], nil, 2, 'tab', function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; E:CooldownSettings('global'); end)

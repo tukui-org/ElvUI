@@ -158,7 +158,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 17)
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig(E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar, 'unitframe')
+	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar)
 
 	config.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.unitframe.units[groupName].aurabar.useMidnight end)
 	config.args.midnightGroup.args.useBlocklist = ACH:Toggle(L["Blocklist"], E.Retail and L["Activate the blocklist filter.\n\n|cffff3333Note:|r Only non-secret auras will be checked."] or L["Activate the blocklist filter."], 1)
@@ -299,7 +299,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.strataAndLevel.order = 35
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig(E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType], 'unitframe')
+	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType])
 
 	config.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.unitframe.units[groupName][auraType].useMidnight end)
 
@@ -395,7 +395,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.generalGroup.args.countGroup.inline = true
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig(E.db.cooldown.unitframe.override[groupName].buffIndicator, P.cooldown.unitframe.override[groupName].buffIndicator, 'unitframe')
+	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].buffIndicator, P.cooldown.unitframe.override[groupName].buffIndicator)
 
 	if subGroup then
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
