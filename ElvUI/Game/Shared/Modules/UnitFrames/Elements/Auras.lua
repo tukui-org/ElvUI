@@ -251,11 +251,12 @@ function UF:Construct_AuraIcon(button)
 
 	button.Cooldown:SetAllPoints(button.Icon)
 
-	E:RegisterCooldown(button.Cooldown, 'unitframe')
-
 	local auras = button:GetParent()
 	local frame = auras:GetParent()
-	button.db = frame.db and frame.db[auras.type]
+
+	button.db = frame.db and frame.db[auras.type] or nil
+
+	E:RegisterCooldown(button.Cooldown, 'unitframe', frame.unitframeType, auras.type)
 
 	UF:UpdateAuraSettings(button)
 end

@@ -171,7 +171,7 @@ function AB:PositionAndSizeBarPet()
 
 		AB:HandleButtonAutoCast(bar, button)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
-		AB:StyleButton(button, nil, useMasque, true)
+		AB:StyleButton(button, nil, useMasque, true, 'barPet')
 	end
 
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)

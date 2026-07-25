@@ -98,6 +98,9 @@ local function GetUnitAuras(unit, auraType)
 	group.args.sourceGroup.args.fontSize = ACH:Range(L["Font Size"], nil, 11, C.Values.FontSize)
 	group.args.sourceGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 12)
 
+	group.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
+	group.args.cooldownGroup.args.enable, group.args.cooldownGroup.args.textGroup, group.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType])
+
 	group.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() if E.Retail then return NP.db.useBlizzardAuras else return not E.db.nameplates.units[unit][auraType].useMidnight end end)
 
 	group.args.midnightGroup.args.useBlocklist = ACH:Toggle(L["Blocklist"], E.Retail and L["Activate the blocklist filter.\n\n|cffff3333Note:|r Only non-secret auras will be checked."] or L["Activate the blocklist filter."], 1)

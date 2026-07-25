@@ -102,13 +102,13 @@ function NP:Construct_AuraIcon(button)
 
 	button.Cooldown:SetAllPoints(button.Icon)
 
-	E:RegisterCooldown(button.Cooldown, 'nameplates')
-
 	local auras = button:GetParent()
-	if auras and auras.type then
-		local db = NP:PlateDB(auras.__owner)
-		button.db = db[auras.type]
-	end
+	local nameplate = auras:GetParent()
+
+	local db = NP:PlateDB(nameplate)
+	button.db = db[auras.type]
+
+	E:RegisterCooldown(button.Cooldown, 'nameplates', nameplate.frameType, auras.type)
 
 	NP:UpdateAuraSettings(button)
 end
