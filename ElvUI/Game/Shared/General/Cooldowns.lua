@@ -177,8 +177,8 @@ function E:CooldownFormats(cooldown, secondary, formatter, which)
 	local db, ob = E:CooldownData(cooldown)
 	if not db or not formatter then return end
 
-	local opt = (ob and ob[which]) or db[which] -- try to use the module override first
-	local breakpoints = E:CooldownBreakpoints(cooldown, (opt and opt.override and opt) or db.thresholdText)
+	local opt = (ob and ob.enable and ob[which]) or db[which] -- try to use the module override first
+	local breakpoints = E:CooldownBreakpoints(cooldown, (opt and opt.override and opt) or (ob and ob.enable and ob.thresholdText) or db.thresholdText)
 
 	if secondary then -- charge or Loc
 		cooldown = secondary
