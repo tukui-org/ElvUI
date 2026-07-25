@@ -26,8 +26,8 @@ local SharedBarOptions = {
 	restorePosition = ACH:Execute(L["Restore Bar"], L["Restore the actionbars default settings"], 1),
 	generalOptions = ACH:MultiSelect('', nil, 3, { backdrop = L["Backdrop"], mouseover = L["Mouseover"], clickThrough = L["Click Through"], inheritGlobalFade = L["Inherit Global Fade"] }),
 	buttonGroup = ACH:Group(L["Button Settings"], nil, 4),
-	backdropGroup = ACH:Group(L["Backdrop Settings"], nil, 5),
-	barGroup = ACH:Group(L["Bar Settings"], nil, 6),
+	barGroup = ACH:Group(L["Bar Settings"], nil, 5),
+	backdropGroup = ACH:Group(L["Backdrop Settings"], nil, 6),
 	strataAndLevel = ACH:Group(L["Strata and Level"], nil, 7),
 	visibilityGroup = ACH:Group(L["Visibility State"], nil, 8),
 	pagingGroup = ACH:Group(L["Action Paging"], nil, 9),
@@ -45,14 +45,12 @@ local castKeyValues = { NONE = L["None"], SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L[
 local getTextColor = function(info) local t = E.db.actionbar[info[#info-2]][info[#info]] local d = P.actionbar[info[#info-2]][info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
 local setTextColor = function(info, r, g, b, a) local t = E.db.actionbar[info[#info-2]][info[#info]] t.r, t.g, t.b, t.a = r, g, b, a AB:UpdateButtonSettings(info[#info-2]) end
 
-SharedBarOptions.buttonGroup.inline = true
 SharedBarOptions.buttonGroup.args.buttons = ACH:Range(L["Buttons"], L["The amount of buttons to display."], 1, { min = 1, max = _G.NUM_ACTIONBAR_BUTTONS, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonsPerRow = ACH:Range(L["Buttons Per Row"], L["The amount of buttons to display per row."], 2, { min = 1, max = _G.NUM_ACTIONBAR_BUTTONS, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonSpacing = ACH:Range(L["Button Spacing"], L["The spacing between buttons."], 3, { min = -3, max = 20, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonSize = ACH:Range('', nil, 4, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
 SharedBarOptions.buttonGroup.args.buttonHeight = ACH:Range(L["Button Height"], L["The height of the action buttons."], 5, { softMin = 14, softMax = 64, min = 12, max = 128, step = 1 })
 
-SharedBarOptions.barGroup.inline = true
 SharedBarOptions.barGroup.args.point = ACH:Select(L["Anchor Point"], L["The first button anchors itself to this point on the bar."], 1, { TOPLEFT = L["TOPLEFT"], TOPRIGHT = L["TOPRIGHT"], BOTTOMLEFT = L["BOTTOMLEFT"], BOTTOMRIGHT = L["BOTTOMRIGHT"] })
 SharedBarOptions.barGroup.args.alpha = ACH:Range(L["Alpha"], nil, 2, { min = 0, max = 1, step = 0.01, isPercent = true })
 
@@ -282,6 +280,8 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.macroTextGroup = nil
 		options.professionQuality = nil
 		options.pagingGroup = nil
+
+		options.cooldownGroup.args.enable, options.cooldownGroup.args.textGroup, options.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig(E.db.cooldown.actionbar.override.stanceBar, P.cooldown.actionbar.override.stanceBar, 'actionbar')
 	elseif name == 'barPet' then
 		options.countTextGroup = nil
 		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[name][info[#info]] = value AB:UpdatePetBindings() end
@@ -289,6 +289,8 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.macroTextGroup = nil
 		options.professionQuality = nil
 		options.pagingGroup = nil
+
+		options.cooldownGroup.args.enable, options.cooldownGroup.args.textGroup, options.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig(E.db.cooldown.actionbar.override.barPet, P.cooldown.actionbar.override.barPet, 'actionbar')
 	end
 end
 

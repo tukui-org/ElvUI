@@ -984,9 +984,9 @@ do -- shared cooldown
 	end
 
 	function C:GetCooldownConfig(profile, private, db, charges, lossOfControl)
-		local override = ACH:Toggle(L["Enable"], nil, 0)
+		local override = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() return profile.override end, function(_, value) profile.override = value; E:CooldownSettings(db); end)
 
-		local text = ACH:Group(L["Text"], nil, 10, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end)
+		local text = ACH:Group(L["Text"], nil, 10, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end, nil, function() return not profile.override end)
 		local fonts = ACH:Group(L["Fonts"], nil, 1)
 		fonts.args.font = ACH:SharedMediaFont(L["Font"], nil, 1)
 		fonts.args.fontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
@@ -1013,7 +1013,7 @@ do -- shared cooldown
 		colors.inline = true
 		text.args.colorGroup = colors
 
-		local thresholds = ACH:Group(L["Thresholds"], nil, 20, 'tab')
+		local thresholds = ACH:Group(L["Thresholds"], nil, 20, 'tab', nil, nil, nil, function() return not profile.override end)
 		thresholds.args.colorsTime = GetThresholds('thresholdText', L["Threshold: Text"], 10, profile.thresholdText, private.thresholdText, db)
 
 		if db == 'actionbar' then
