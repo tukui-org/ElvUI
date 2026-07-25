@@ -2234,13 +2234,10 @@ function UF:Style(unit)
 	UF:Construct_UF(self, unit)
 end
 
-function UF:Setup(_, addon)
-	if addon ~= 'ElvUI' then return end
-
+function UF:Setup()
 	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
 	ElvUF:RegisterStyle('ElvUF', UF.Style)
 	ElvUF:SetActiveStyle('ElvUF')
-	ElvUF:DisableFactory() -- we want to turn off ADDON_LOADED
 
 	UF:LoadUnits()
 	UF:Update_FontStrings()
@@ -2258,7 +2255,11 @@ function UF:Initialize()
 	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
+	-- oUF factory waits for PLAYER_LOGIN this is not acceptable in Classic HC
+	-- so we force the loading here instead to skip `script ran too long` issue
 	ElvUF:Factory(UF.Setup)
+	ElvUF:RunFactoryQueue()
+	ElvUF:DisableFactory()
 
 	UF:UpdateColors()
 
