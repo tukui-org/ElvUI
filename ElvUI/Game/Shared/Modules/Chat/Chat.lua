@@ -1871,7 +1871,7 @@ function CH:GetBNFriendColor(name, id, useBTag)
 	end
 
 	local info = C_BattleNet_GetAccountInfoByID(id)
-	local BNET_TAG = info and info.isBattleTagFriend and info.battleTag and strmatch(info.battleTag,'([^#]+)')
+	local BNET_TAG = info and info.battleTag and strmatch(info.battleTag,'([^#]+)')
 	local TAG = (useBTag or CH.db.useBTagName) and BNET_TAG
 
 	local Class
