@@ -446,7 +446,7 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.unitframe.units.raid2.rdebuffs.font = font
 	E.db.unitframe.units.raid3.rdebuffs.font = font
 
-	E:StaggeredUpdateAll()
+	E:UpdateAll()
 end
 
 function E:ValueFuncCall()
@@ -1082,7 +1082,7 @@ do
 	f:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
-function E:UpdateStart(skipCallback, skipUpdateDB)
+function E:UpdateStart(skipUpdateDB)
 	if not skipUpdateDB then
 		E:UpdateDB()
 	end
@@ -1090,10 +1090,6 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 	E:UpdateMoverPositions()
 	E:UpdateMediaItems()
 	E:UpdateUnitFrames()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
 do -- BFA Convert, deprecated..
@@ -1597,43 +1593,31 @@ function E:UpdateMoverPositions()
 	--We set movers to be clamped again at the bottom of this function.
 	E:SetMoversClampedToScreen(false)
 	E:SetMoversPositions()
-
-	--Not part of staggered update
 end
 
 function E:UpdateUnitFrames()
 	if E.private.unitframe.enable then
 		UnitFrames:Update_AllFrames()
 	end
-
-	--Not part of staggered update
 end
 
-function E:UpdateMediaItems(skipCallback)
+function E:UpdateMediaItems()
 	E:UpdateMedia()
 	E:UpdateAuraCurves()
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateLayout(skipCallback)
+function E:UpdateLayout()
 	Layout:ToggleChatPanels()
 	Layout:UpdateBottomPanel()
 	Layout:UpdateTopPanel()
 	Layout:SetDataPanelStyle()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateActionBars(skipCallback)
+function E:UpdateActionBars()
 	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroButtons()
@@ -1641,88 +1625,52 @@ function E:UpdateActionBars(skipCallback)
 	if E.Retail or E.Mists then
 		ActionBars:UpdateExtraButtons()
 	end
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateNamePlates(skipCallback)
+function E:UpdateNamePlates()
 	NamePlates:ConfigureAll()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
 function E:UpdateTooltip()
 	Tooltip:SetTooltipFonts()
 end
 
-function E:UpdateBags(skipCallback)
+function E:UpdateBags()
 	Bags:SizeAndPositionBagBar()
 	Bags:UpdateItemDisplay()
 	Bags:UpdateLayouts()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateChat(skipCallback)
+function E:UpdateChat()
 	Chat:SetupChat()
 	Chat:UpdateEditboxAnchors()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateDataBars(skipCallback)
+function E:UpdateDataBars()
 	DataBars:ToggleAll()
 	DataBars:UpdateAll()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateDataTexts(skipCallback)
+function E:UpdateDataTexts()
 	DataTexts:LoadDataTexts()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateMinimap(skipCallback)
+function E:UpdateMinimap()
 	Minimap:UpdateSettings()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateAuras(skipCallback)
+function E:UpdateAuras()
 	if Auras.BuffFrame then Auras:UpdateHeader(Auras.BuffFrame) end
 	if Auras.DebuffFrame then Auras:UpdateHeader(Auras.DebuffFrame) end
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateMisc(skipCallback)
+function E:UpdateMisc()
 	AFK:Toggle()
 
 	if E.Retail then
 		TotemTracker:PositionAndSize()
 	elseif E.Wrath then
 		ActionBars:PositionAndSizeTotemBar()
-	end
-
-	if not skipCallback then
-		E:StaggeredUpdate()
 	end
 end
 
@@ -1733,118 +1681,48 @@ function E:UpdateEnd()
 
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
-	if E.staggerUpdateRunning then
-		--We're doing a staggered update, but plugins expect the old UpdateAll to be called
-		--So call it, but skip updates inside it
-		E:UpdateAll(false)
-	elseif not E.private.install_complete then
+	if not E.private.install_complete then
 		E:Install()
 	end
-
-	--Done updating, let code now
-	E.staggerUpdateRunning = false
 end
 
-do
-	local staggerDelay = 0.02
-	local staggerTable = {}
-	function E:StaggeredUpdate()
-		local nextUpdate, nextDelay = staggerTable[1]
-		if nextUpdate then
-			tremove(staggerTable, 1)
+function E:UpdateAll()
+	E:UpdateStart()
+	E:UpdateLayout()
 
-			if nextUpdate == 'UpdateNamePlates' or nextUpdate == 'UpdateBags' then
-				nextDelay = 0.05
-			end
-
-			E:Delay(nextDelay or staggerDelay, E[nextUpdate], E)
-		end
+	if ActionBars.Initialized then
+		E:UpdateActionBars()
 	end
 
-	function E:StaggeredUpdateAll(event)
-		if not E.initialized then
-			E:Delay(1, E.StaggeredUpdateAll, E, event)
-			return
-		end
-
-		if (not event or event == 'OnProfileChanged' or event == 'OnProfileCopied') and not E.staggerUpdateRunning then
-			tinsert(staggerTable, 'UpdateLayout')
-
-			if ActionBars.Initialized then
-				tinsert(staggerTable, 'UpdateActionBars')
-			end
-
-			if NamePlates.Initialized then
-				tinsert(staggerTable, 'UpdateNamePlates')
-			end
-
-			if Bags.Initialized then
-				tinsert(staggerTable, 'UpdateBags')
-			end
-
-			if Chat.Initialized then
-				tinsert(staggerTable, 'UpdateChat')
-			end
-
-			if Tooltip.Initialized then
-				tinsert(staggerTable, 'UpdateTooltip')
-			end
-
-			tinsert(staggerTable, 'UpdateDataBars')
-			tinsert(staggerTable, 'UpdateDataTexts')
-
-			if Minimap.Initialized then
-				tinsert(staggerTable, 'UpdateMinimap')
-			end
-
-			if Auras.BuffFrame or Auras.DebuffFrame then
-				tinsert(staggerTable, 'UpdateAuras')
-			end
-
-			tinsert(staggerTable, 'UpdateMisc')
-			tinsert(staggerTable, 'UpdateEnd')
-
-			--Stagger updates
-			E.staggerUpdateRunning = true
-			E:UpdateStart()
-		else
-			--Fire away
-			E:UpdateAll(true)
-		end
+	if NamePlates.Initialized then
+		E:UpdateNamePlates()
 	end
-end
 
-function E:UpdateAll(doUpdates)
-	if doUpdates then
-		E:UpdateStart(true)
-
-		E:UpdateLayout()
-		if ActionBars.Initialized then
-			E:UpdateActionBars()
-		end
-		if NamePlates.Initialized then
-			E:UpdateNamePlates()
-		end
-		if Bags.Initialized then
-			E:UpdateBags()
-		end
-		if Chat.Initialized then
-			E:UpdateChat()
-		end
-		if Tooltip.Initialized then
-			E:UpdateTooltip()
-		end
-		E:UpdateDataBars()
-		E:UpdateDataTexts()
-		if Minimap.Initialized then
-			E:UpdateMinimap()
-		end
-		if Auras.BuffFrame or Auras.DebuffFrame then
-			E:UpdateAuras()
-		end
-		E:UpdateMisc()
-		E:UpdateEnd()
+	if Bags.Initialized then
+		E:UpdateBags()
 	end
+
+	if Chat.Initialized then
+		E:UpdateChat()
+	end
+
+	if Tooltip.Initialized then
+		E:UpdateTooltip()
+	end
+
+	E:UpdateDataBars()
+	E:UpdateDataTexts()
+
+	if Minimap.Initialized then
+		E:UpdateMinimap()
+	end
+
+	if Auras.BuffFrame or Auras.DebuffFrame then
+		E:UpdateAuras()
+	end
+
+	E:UpdateMisc()
+	E:UpdateEnd()
 end
 
 function E:CreateFonts()
@@ -2115,8 +1993,8 @@ function E:Initialize()
 	E.TimerunningID = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()
 
 	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)
-	E.data.RegisterCallback(E, 'OnProfileChanged', 'StaggeredUpdateAll')
-	E.data.RegisterCallback(E, 'OnProfileCopied', 'StaggeredUpdateAll')
+	E.data.RegisterCallback(E, 'OnProfileChanged', 'UpdateAll')
+	E.data.RegisterCallback(E, 'OnProfileCopied', 'UpdateAll')
 	E.data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
 
 	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)

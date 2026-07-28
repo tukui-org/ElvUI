@@ -63,13 +63,13 @@ General.general = ACH:Group(L["General"], nil, 1)
 local GenGen = General.general.args
 
 GenGen.loginmessage = ACH:Toggle(L["Login Message"], nil, 1)
-GenGen.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 2, { min = 0, max = 3, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:BuildAbbreviateConfigs() E:StaggeredUpdateAll() end)
+GenGen.decimalLength = ACH:Range(L["Decimal Length"], L["Controls the amount of decimals used in values displayed on elements like NamePlates and UnitFrames."], 2, { min = 0, max = 3, step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:BuildAbbreviateConfigs() E:UpdateAll() end)
 GenGen.tagUpdateRate = ACH:Range(L["Tag Update Rate"], L["Maximum tick rate allowed for tag updates per second."], 3, { min = 0.05, max = 0.5, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value; E:TagUpdateRate(value) end)
 GenGen.smoothingAmount = ACH:Range(L["Smoothing Amount"], L["Controls the speed at which smoothed bars will be updated."], 4, { isPercent = true, min = 0.2, max = 0.8, softMax = 0.75, softMin = 0.25, step = 0.01 }, nil, nil, function(info, value) E.db.general[info[#info]] = value E:SetSmoothingAmount(value) end)
 
 GenGen.locale = ACH:Select(L["LANGUAGE"], nil, 6, { deDE = 'Deutsch', enUS = 'English', esMX = 'Español', frFR = 'Français', ptBR = 'Português', ruRU = 'Русский', trTR ='Turkce', zhCN = '简体中文', zhTW = '繁體中文', koKR = '한국어', itIT = 'Italiano' }, nil, nil, function() return E.global.general.locale or 'enUS' end, function(_, value) E.global.general.locale = value E.ShowPopup = true end)
 GenGen.messageRedirect = ACH:Select(L["Chat Output"], L["This selects the Chat Frame to use as the output of ElvUI messages."], 7, function() return GetChatWindowInfo() end)
-GenGen.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 8, { CHINESE = '万, 亿, 兆', TCHINESE = '萬, 億, 兆', KOREAN = '만, 억, 조', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:BuildAbbreviateConfigs() E:StaggeredUpdateAll() end)
+GenGen.numberPrefixStyle = ACH:Select(L["Unit Prefix Style"], L["The unit prefixes you want to use when values are shortened in ElvUI. This is mostly used on UnitFrames."], 8, { CHINESE = '万, 亿, 兆', TCHINESE = '萬, 億, 兆', KOREAN = '만, 억, 조', ENGLISH = 'K, M, B', GERMAN = 'Tsd, Mio, Mrd', METRIC = 'k, M, G' }, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value E:BuildPrefixValues() E:BuildAbbreviateConfigs() E:UpdateAll() end)
 
 GenGen.textureGroup = ACH:Group(L["Textures"], nil, 20, nil, function(info) return E.private.general[info[#info]] end)
 GenGen.textureGroup.inline = true

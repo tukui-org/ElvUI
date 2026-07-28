@@ -334,7 +334,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 							ElvDB.profiles[profileKey] = data
 
 							E.data:SetProfile(profileKey)
-							E:StaggeredUpdateAll()
+							E:UpdateAll()
 						end
 
 						Downloads[sender] = nil
@@ -365,7 +365,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 			confirm.OnAccept = function()
 				if download.dataKey == 'global' then
 					E:CopyTable(ElvDB.global, data)
-					E:StaggeredUpdateAll()
+					E:UpdateAll()
 				elseif download.dataKey == 'private' then
 					import.OnAccept = function()
 						E.charSettings:SetProfile(profileKey)
@@ -558,7 +558,7 @@ function D:SetImportedProfile(dataType, dataKey, dataProfile, force)
 	elseif dataType == 'global' then
 		local profileData = E:FilterTableFromBlacklist(dataProfile, D.blacklistedKeys.global) --Remove unwanted options from import
 		E:CopyTable(ElvDB.global, profileData)
-		E:StaggeredUpdateAll()
+		E:UpdateAll()
 	elseif dataType == 'filters' then
 		E:CopyTable(ElvDB.global.unitframe, dataProfile.unitframe)
 		E:UpdateUnitFrames()

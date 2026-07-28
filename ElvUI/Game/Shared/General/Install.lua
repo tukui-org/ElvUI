@@ -261,7 +261,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.valuecolor = E:NewColorTable(0.09, 0.52, 0.82, 1)
 	end
 
-	E:UpdateStart(true, true)
+	E:UpdateStart(true)
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Theme Set"]
@@ -1161,7 +1161,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E:LayoutMovers(layout)
 	end
 
-	E:StaggeredUpdateAll()
+	E:UpdateAll()
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Layout Set"]

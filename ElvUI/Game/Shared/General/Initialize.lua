@@ -474,7 +474,7 @@ function E:SetEasyMenuAnchor(menu, frame)
 end
 
 function E:ResetProfile()
-	E:StaggeredUpdateAll()
+	E:UpdateAll()
 end
 
 function E:OnProfileReset()
