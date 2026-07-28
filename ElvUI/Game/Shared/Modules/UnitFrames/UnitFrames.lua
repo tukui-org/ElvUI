@@ -775,7 +775,7 @@ function UF:Configure_FontString(obj)
 	obj:FontTemplate() --This is temporary.
 end
 
-function UF:Update_AllUnits(frame)
+function UF:Update_UnitFrame(frame)
 	local enabled = UF.db.units[self].enable
 	frame:SetEnabled(enabled)
 
@@ -787,7 +787,7 @@ function UF:Update_AllUnits(frame)
 	end
 end
 
-function UF:Update_AllGroupUnits(group)
+function UF:Update_GroupFrame(group)
 	local frame = UF[self]
 
 	local enabled = UF.db.units[group].enable
@@ -818,13 +818,13 @@ function UF:Update_AllFrames()
 	UF:Update_FontStrings()
 	UF:Update_StatusBars()
 
-	E:CoroutineUpdate(UF.Update_AllUnits, UF.units)
-	E:CoroutineUpdate(UF.Update_AllGroupUnits, UF.groupunits)
+	E:CoroutineUpdate(UF.Update_UnitFrame, UF.units)
+	E:CoroutineUpdate(UF.Update_GroupFrame, UF.groupunits)
 
 	UF:UpdateAllHeaders()
 end
 
-function UF:UpdateAllHeadersSlow(_, args)
+function UF:UpdateGroupHeader(_, args)
 	UF:CreateAndUpdateHeaderGroup(self, unpack(args))
 end
 
@@ -833,7 +833,7 @@ function UF:UpdateAllHeaders(skip)
 		ElvUF:DisableBlizzard('party')
 	end
 
-	E:CoroutineUpdate(UF.UpdateAllHeadersSlow, UF.headers, { nil, nil, nil, skip })
+	E:CoroutineUpdate(UF.UpdateGroupHeader, UF.headers, { nil, nil, nil, skip })
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
@@ -1240,10 +1240,6 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	Header.enableState = enable
 	Header.numGroups = numGroups
 	Header.db = db
-
-	if skip then
-		print('yep')
-	end
 
 	if numGroups then
 		if db.raidWideSorting then

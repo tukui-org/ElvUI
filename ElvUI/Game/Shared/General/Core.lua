@@ -501,11 +501,11 @@ do
 end
 
 function E:UpdateFrameTemplates()
-	E:CoroutineUpdate(E.UpdateTemplatesFrames, E.frames)
-	E:CoroutineUpdate(E.UpdateTemplatesUnitframes, E.unitFrameElements)
+	E:CoroutineUpdate(E.UpdateFrameTemplate, E.frames)
+	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
 end
 
-function E:UpdateTemplatesFrames(frame)
+function E:UpdateFrameTemplate(frame)
 	if frame and frame.template and not frame:IsForbidden() then
 		if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
 			frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode)
@@ -515,7 +515,7 @@ function E:UpdateTemplatesFrames(frame)
 	end
 end
 
-function E:UpdateTemplatesUnitframes(frame)
+function E:UpdateUnitframeTemplate(frame)
 	if frame and frame.template and not frame:IsForbidden() then
 		if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
 			frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode, frame.isUnitFrameElement)
