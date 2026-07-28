@@ -618,10 +618,12 @@ do
 	end
 end
 
+function E:UpdateFontTemplate(info)
+	self:FontTemplate(info.fontName, info.fontSize, info.fontStyle, true)
+end
+
 function E:UpdateFontTemplates()
-	for fs, data in next, E.texts do
-		fs:FontTemplate(data.fontName, data.fontSize, data.fontStyle, true)
-	end
+	E:CoroutineUpdate(E.UpdateFontTemplate, E.texts)
 end
 
 function E:RegisterStatusBar(statusBar)
