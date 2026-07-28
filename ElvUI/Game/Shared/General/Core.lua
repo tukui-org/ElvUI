@@ -554,7 +554,7 @@ function E:UpdateBorderColor(_, data)
 	end
 end
 
-function E:UpdateUnitframeBorderColor(data)
+function E:UpdateUnitframeBorderColor(_, data)
 	if self and self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
 			self:SetBackdropBorderColor(data.r, data.g, data.b)
@@ -575,40 +575,46 @@ do
 	end
 end
 
-function E:UpdateBackdropColors()
-	local r, g, b, a = unpack(E.media.backdropcolor)
-	local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
-
-	for frame in next, E.frames do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not frame.ignoreUpdates then
-				if frame.callbackBackdropColor then
-					frame:callbackBackdropColor()
-				elseif frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b, frame.customBackdropAlpha or a)
-				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
-				end
+function E:UpdateBackdropColor(_, data)
+	if self and self.template and not self:IsForbidden() then
+		if not self.ignoreUpdates then
+			if self.callbackBackdropColor then
+				self:callbackBackdropColor()
+			elseif self.template == 'Default' then
+				self:SetBackdropColor(data.r, data.g, data.b, self.customBackdropAlpha or data.a)
+			elseif self.template == 'Transparent' then
+				self:SetBackdropColor(data.transparent.r, data.transparent.g, data.transparent.b, self.customBackdropAlpha or data.transparent.a)
 			end
-		else
-			E.frames[frame] = nil
 		end
+	else
+		E.frames[self] = nil
 	end
+end
 
-	for frame in next, E.unitFrameElements do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not frame.ignoreUpdates then
-				if frame.callbackBackdropColor then
-					frame:callbackBackdropColor()
-				elseif frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b, frame.customBackdropAlpha or a)
-				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
-				end
+function E:UpdateUnitframeBackdropColor(_, data)
+	if self and self.template and not self:IsForbidden() then
+		if not self.ignoreUpdates then
+			if self.callbackBackdropColor then
+				self:callbackBackdropColor()
+			elseif self.template == 'Default' then
+				self:SetBackdropColor(data.r, data.g, data.b, self.customBackdropAlpha or data.a)
+			elseif self.template == 'Transparent' then
+				self:SetBackdropColor(data.transparent.r, data.transparent.g, data.transparent.b, self.customBackdropAlpha or data.transparent.a)
 			end
-		else
-			E.unitFrameElements[frame] = nil
 		end
+	else
+		E.unitFrameElements[self] = nil
+	end
+end
+
+do
+	local info = { transparent = {} }
+	function E:UpdateBackdropColors()
+		info.r, info.g, info.b, info.a = unpack(E.media.backdropcolor)
+		info.transparent.r, info.transparent.g, info.transparent.b, info.transparent.a = unpack(E.media.backdropfadecolor)
+
+		E:CoroutineUpdate(E.UpdateBackdropColor, E.frames, info)
+		E:CoroutineUpdate(E.UpdateUnitframeBackdropColor, E.unitFrameElements, info)
 	end
 end
 
