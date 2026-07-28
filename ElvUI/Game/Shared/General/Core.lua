@@ -583,17 +583,19 @@ end
 
 function E:IsIncompatible(module, addons)
 	for _, addon in next, addons do
-		local incompatible
-		if addon == 'Leatrix_Plus' then
-			local db = _G.LeaPlusDB
-			incompatible = db and db.MinimapMod == 'On'
-		else
-			incompatible = E:IsAddOnEnabled(addon)
-		end
+		if type(addon) == 'string' then
+			local incompatible
+			if addon == 'Leatrix_Plus' then
+				local db = _G.LeaPlusDB
+				incompatible = db and db.MinimapMod == 'On'
+			else
+				incompatible = E:IsAddOnEnabled(addon)
+			end
 
-		if incompatible then
-			E:IncompatibleAddOn(addon, module, addons.info)
-			return true
+			if incompatible then
+				E:IncompatibleAddOn(addon, module, addons.info)
+				return true
+			end
 		end
 	end
 end
@@ -679,7 +681,8 @@ do
 		if E.global.ignoreIncompatible then return end
 
 		for module, addons in next, ADDONS do
-			if addons[1] and addons.info.enabled() and E:IsIncompatible(module, addons) then
+			local active = addons.info and addons.info.enabled()
+			if active and E:IsIncompatible(module, addons) then
 				break
 			end
 		end
