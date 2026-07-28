@@ -824,8 +824,8 @@ function UF:Update_AllFrames()
 	UF:UpdateAllHeaders()
 end
 
-function UF:UpdateGroupHeader(_, args)
-	UF:CreateAndUpdateHeaderGroup(self, unpack(args))
+function UF:UpdateGroupHeader(_, data)
+	UF:CreateAndUpdateHeaderGroup(self, nil, nil, nil, data.skip)
 end
 
 function UF:UpdateAllHeaders(skip)
@@ -833,7 +833,7 @@ function UF:UpdateAllHeaders(skip)
 		ElvUF:DisableBlizzard('party')
 	end
 
-	E:CoroutineUpdate(UF.UpdateGroupHeader, UF.headers, { nil, nil, nil, skip })
+	E:CoroutineUpdate(UF.UpdateGroupHeader, UF.headers, { skip = skip })
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)

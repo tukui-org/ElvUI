@@ -449,14 +449,21 @@ function E:GeneralMedia_ApplyToAll()
 	E:UpdateAll()
 end
 
-function E:ValueFuncCall()
-	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
-	for obj, func in next, E.valueColorUpdateFuncs do
-		func(obj, hex, r, g, b)
-	end
+function E:ValueFunc(func, data)
+	func(self, data.hex, data.r, data.g, data.b)
 end
 
 do
+	local data = {}
+	function E:ValueFuncCall()
+		data.hex = E.media.hexvaluecolor
+		data.r, data.g, data.b = unpack(E.media.rgbvaluecolor)
+
+		E:CoroutineUpdate(E.ValueFunc, E.valueColorUpdateFuncs, data)
+	end
+end
+
+do	-- i guess we finally need it ~Simpy
 	local funcs = {}
 	local watcher = CreateFrame('Frame')
 	function E:Coroutine_OnUpdate()
@@ -479,16 +486,16 @@ do
 
 	E.CoroutineFrame = watcher
 
-	function E:CoroutineLoop(func, frames, data, args)
+	function E:CoroutineLoop(func, frames, info, data)
 		return function()
 			for key, frame in next, frames do
-				func(key, frame, args and unpack(args) or nil)
+				func(key, frame, data)
 
-				if data.count < data.limit then
-					data.count = data.count + 1
+				if info.count < info.limit then
+					info.count = info.count + 1
 				else
-					data.count = 0
-					data.next = frame
+					info.count = 0
+					info.next = frame
 
 					co_yield()
 				end
@@ -496,19 +503,19 @@ do
 		end
 	end
 
-	function E:CoroutineUpdate(func, frames, args, limit)
+	function E:CoroutineUpdate(func, frames, data, limit)
 		if funcs[func] then return end -- excuse me?
 
-		local data = { limit = limit or 100, count = 0 }
-		local loop = E:CoroutineLoop(func, frames, data, args)
-		data.routine = co_create(loop)
-		data.frames = frames
+		local info = { limit = limit or 100, count = 0 }
+		local loop = E:CoroutineLoop(func, frames, info, data)
+		info.routine = co_create(loop)
+		info.frames = frames
 
 		if not watcher:IsShown() then
 			watcher:Show()
 		end
 
-		funcs[func] = data
+		funcs[func] = info
 	end
 end
 
