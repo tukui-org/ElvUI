@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 local B = E:GetModule('Bags')
 local BL = E:GetModule('Blizzard')
-
 local LSM = E.Libs.LSM
 
 local _G = _G

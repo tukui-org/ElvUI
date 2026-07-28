@@ -1,5 +1,4 @@
 local E, L, V, P, G = unpack(ElvUI)
-local LSM = E.Libs.LSM
 
 local wipe, sort, unpack = wipe, sort, unpack
 local next, pairs, tinsert = next, pairs, tinsert

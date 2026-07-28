@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
-local LSM = E.Libs.LSM
 
 function NP:Construct_TagText(nameplate)
 	local Text = nameplate.RaisedElement:CreateFontString(nil, 'OVERLAY')

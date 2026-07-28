@@ -3,7 +3,7 @@ local TT = E:GetModule('Tooltip')
 local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 local B = E:GetModule('Bags')
-local LSM = E.Libs.LSM
+
 local ElvUF = E.oUF
 local AuraInfo = ElvUF.AuraInfo
 local AuraFiltered = ElvUF.AuraFiltered

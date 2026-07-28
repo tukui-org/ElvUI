@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Minimap')
 local AB = E:GetModule('ActionBars')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local next = next

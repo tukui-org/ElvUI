@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local ipairs, next, gsub = ipairs, next, gsub

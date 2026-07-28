@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
-local LSM = E.Libs.LSM
 
 local unpack = unpack
 local strfind = strfind

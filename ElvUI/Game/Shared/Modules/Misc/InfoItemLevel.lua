@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local rad = rad

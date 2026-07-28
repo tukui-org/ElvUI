@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 local TT = E:GetModule('Tooltip')
 local LDB = E.Libs.LDB
-local LSM = E.Libs.LSM
 
 -- GLOBALS: ElvDB
 

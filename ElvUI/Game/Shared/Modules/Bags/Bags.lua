@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 local AB = E:GetModule('ActionBars')
 local NP = E:GetModule('NamePlates')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local tinsert, tremove, wipe = tinsert, tremove, wipe

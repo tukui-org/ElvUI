@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
 local AB = E:GetModule('ActionBars')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local gsub = gsub

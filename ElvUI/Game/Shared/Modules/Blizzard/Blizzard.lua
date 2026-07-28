@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local BL = E:GetModule('Blizzard')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local wipe = wipe
