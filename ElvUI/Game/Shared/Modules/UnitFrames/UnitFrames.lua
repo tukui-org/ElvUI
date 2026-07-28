@@ -617,10 +617,17 @@ function UF:UpdateColors()
 	ElvUF.colors.DebuffHighlight.Bleed = E:SetColorTable(ElvUF.colors.DebuffHighlight.Bleed, db.debuffHighlight.Bleed)
 end
 
-function UF:Update_StatusBars(statusbars)
-	for statusBar in pairs(statusbars or UF.statusbars) do
-		UF:Update_StatusBar(statusBar)
-		UF:Update_StatusBar(statusBar.bg)
+do
+	function UF:Update_AllStatusBars(_, data)
+		UF:Update_StatusBar(self, data.texture)
+		UF:Update_StatusBar(self.bg, data.texture)
+	end
+
+	local info = {}
+	function UF:Update_StatusBars(statusbars)
+		info.texture = LSM:Fetch('statusbar', UF.db.statusbar)
+
+		E:CoroutineUpdate(UF.Update_AllStatusBars, statusbars or UF.statusbars, info)
 	end
 end
 
@@ -645,10 +652,16 @@ function UF:Update_FontString(object)
 	object:FontTemplate(LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline)
 end
 
-function UF:Update_FontStrings()
-	local font, size, outline = LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline
-	for obj in pairs(UF.fontstrings) do
-		obj:FontTemplate(font, size, outline)
+do
+	function UF:Update_AllFontStrings(_, data)
+		self:FontTemplate(data.font, data.size, data.outline)
+	end
+
+	local info = {}
+	function UF:Update_FontStrings()
+		info.font, info.size, info.outline = LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline
+
+		E:CoroutineUpdate(UF.Update_AllFontStrings, UF.fontstrings, info)
 	end
 end
 
@@ -815,6 +828,7 @@ function UF:Update_AllFrames()
 	UF.multiplier = UF.db.multiplier
 
 	UF:UpdateColors()
+
 	UF:Update_FontStrings()
 	UF:Update_StatusBars()
 
