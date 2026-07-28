@@ -137,7 +137,7 @@ function M:HandleQueueStatus(creation)
 	if queueDisplay then
 		queueDisplay.text:ClearAllPoints()
 		queueDisplay.text:Point(db.position, queueButton, db.xOffset, db.yOffset)
-		queueDisplay.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		queueDisplay.text:FontTemplate(db.font, db.fontSize, db.fontOutline)
 
 		if not db.enable and queueDisplay.title then
 			M:ClearQueueStatus()

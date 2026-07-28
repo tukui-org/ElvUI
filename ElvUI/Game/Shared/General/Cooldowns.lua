@@ -76,7 +76,7 @@ function E:CooldownText(cooldown, secondary, hide)
 		text:ClearAllPoints()
 		text:SetTextColor(colors.r, colors.g, colors.b)
 		text:Point('CENTER', nil, db.position, db.offsetX, db.offsetY)
-		text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+		text:FontTemplate(db.font, db.fontSize, db.fontOutline)
 	end
 end
 

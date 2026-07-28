@@ -553,7 +553,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	local info = DT.LoadedInfo
 	local font, fontSize, fontOutline = info.font, info.fontSize, info.fontOutline
 	if db and db.fonts and db.fonts.enable then
-		font, fontSize, fontOutline = LSM:Fetch('font', db.fonts.font), db.fonts.fontSize, db.fonts.fontOutline
+		font, fontSize, fontOutline = db.fonts.font, db.fonts.fontSize, db.fonts.fontOutline
 	end
 
 	local battlePanel = not E.Retail and info.isInBattle and (not DT.ForceHideBGStats and E.db.datatexts.panels[panelName].battleground)
@@ -668,7 +668,7 @@ end
 
 function DT:LoadDataTexts(...)
 	local data = DT.LoadedInfo
-	data.font, data.fontSize, data.fontOutline = LSM:Fetch('font', DT.db.font), DT.db.fontSize, DT.db.fontOutline
+	data.font, data.fontSize, data.fontOutline = DT.db.font, DT.db.fontSize, DT.db.fontOutline
 	data.inInstance, data.instanceType = IsInInstance()
 	data.isInBattle = data.inInstance and data.instanceType == 'pvp'
 
@@ -1008,7 +1008,7 @@ function DT:Initialize()
 	end
 
 	-- Ignore header font size on DatatextTooltip
-	local font = LSM:Fetch('font', E.db.tooltip.font)
+	local font = E.db.tooltip.font
 	local fontOutline = E.db.tooltip.fontOutline
 	local textSize = E.db.tooltip.textFontSize
 	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)

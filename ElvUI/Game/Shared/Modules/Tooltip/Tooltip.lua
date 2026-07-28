@@ -1090,11 +1090,11 @@ function TT:SetStatusBarFont()
 	local statusText = GameTooltipStatusBar.Text
 	if not statusText then return end
 
-	statusText:FontTemplate(LSM:Fetch('font', TT.db.healthBar.font), TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
+	statusText:FontTemplate(TT.db.healthBar.font, TT.db.healthBar.fontSize, TT.db.healthBar.fontOutline)
 end
 
 function TT:SetTooltipFonts()
-	local font, fontSize, fontOutline = LSM:Fetch('font', TT.db.font), TT.db.textFontSize, TT.db.fontOutline
+	local font, fontSize, fontOutline = TT.db.font, TT.db.textFontSize, TT.db.fontOutline
 	_G.GameTooltipText:FontTemplate(font, fontSize, fontOutline)
 
 	if GameTooltip.hasMoney then
@@ -1108,7 +1108,7 @@ function TT:SetTooltipFonts()
 	end
 
 	-- Header has its own font settings
-	_G.GameTooltipHeaderText:FontTemplate(LSM:Fetch('font', TT.db.headerFont), TT.db.headerFontSize, TT.db.headerFontOutline)
+	_G.GameTooltipHeaderText:FontTemplate(TT.db.headerFont, TT.db.headerFontSize, TT.db.headerFontOutline)
 
 	-- Ignore header font size on DatatextTooltip
 	if _G.DatatextTooltip then

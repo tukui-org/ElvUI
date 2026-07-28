@@ -266,8 +266,12 @@ do -- LSM Font Preloader ~Simpy
 		if mtype == 'font' then
 			cacheFont(key, data)
 			callMedia(mtype)
+			LSM.needsRefreshFont = true
+			print('fonts')
 		elseif mtype == 'background' or mtype == 'statusbar' then
 			callMedia(mtype)
+			LSM.needsRefreshStatusbars = true
+			print(mtype)
 		end
 	end)
 end

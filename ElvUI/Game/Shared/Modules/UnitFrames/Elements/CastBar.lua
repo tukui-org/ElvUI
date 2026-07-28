@@ -241,14 +241,14 @@ function UF:Configure_Castbar(frame)
 	--Font Options
 	local customFont = db.customTextFont
 	if customFont.enable then
-		castbar.Text:FontTemplate(LSM:Fetch('font', customFont.font), customFont.fontSize, customFont.fontStyle)
+		castbar.Text:FontTemplate(customFont.font, customFont.fontSize, customFont.fontStyle)
 	else
 		UF:Update_FontString(castbar.Text)
 	end
 
 	customFont = db.customTimeFont
 	if customFont.enable then
-		castbar.Time:FontTemplate(LSM:Fetch('font', customFont.font), customFont.fontSize, customFont.fontStyle)
+		castbar.Time:FontTemplate(customFont.font, customFont.fontSize, customFont.fontStyle)
 	else
 		UF:Update_FontString(castbar.Time)
 	end

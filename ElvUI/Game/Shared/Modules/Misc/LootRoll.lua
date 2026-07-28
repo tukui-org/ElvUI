@@ -467,7 +467,7 @@ function M:UpdateLootRollFrames()
 	if not E.private.general.lootRoll then return end
 
 	local db = E.db.general.lootRoll
-	local font = LSM:Fetch('font', db.nameFont)
+	local font = db.nameFont
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 	local maxBars = E.Retail and db.maxBars or _G.NUM_GROUP_LOOT_FRAMES or 4
 

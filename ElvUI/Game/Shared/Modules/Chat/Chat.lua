@@ -901,7 +901,7 @@ function CH:UpdateEditboxFont(chatFrame)
 	end
 
 	local id = chatFrame:GetID()
-	local font, outline = LSM:Fetch('font', CH.db.font), CH.db.fontOutline
+	local font, outline = CH.db.font, CH.db.fontOutline
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 
 	local editbox = ChooseBoxForSend(chatFrame)
@@ -952,7 +952,7 @@ function CH:StyleChat(frame)
 
 	local id = frame:GetID()
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
-	local font, size, outline = LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline
+	local font, size, outline = CH.db.font, fontSize, CH.db.fontOutline
 	frame:FontTemplate(font, size, outline)
 
 	frame:SetTimeVisible(CH.db.inactivityTimer)
@@ -2879,7 +2879,7 @@ function CH:SetChatFont(dropDown, chatFrame, fontSize)
 	if not chatFrame then chatFrame = _G.FCF_GetCurrentChatFrame() end
 	if not fontSize then fontSize = dropDown.value end
 
-	chatFrame:FontTemplate(LSM:Fetch('font', CH.db.font), fontSize, CH.db.fontOutline)
+	chatFrame:FontTemplate(CH.db.font, fontSize, CH.db.fontOutline)
 
 	CH:UpdateEditboxFont(chatFrame)
 end
@@ -3988,7 +3988,7 @@ function CH:Tab_OnUpdate(elapsed)
 	self.lastUpdate = (self.lastUpdate or 0) + elapsed
 
 	if self.lastUpdate > 0.1 and self.Text:GetFontObject() == _G.GameFontNormalSmall then
-		self.Text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
+		self.Text:FontTemplate(CH.db.tabFont, CH.db.tabFontSize, CH.db.tabFontOutline)
 	end
 end
 

@@ -170,18 +170,18 @@ function NP:Construct_Castbar(nameplate)
 	castbar.Icon:SetInside()
 
 	castbar.Time = castbar:CreateFontString(nil, 'OVERLAY')
-	castbar.Time:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	castbar.Time:FontTemplate(NP.db.font, NP.db.fontSize, NP.db.fontOutline)
 	castbar.Time:Point('RIGHT', castbar, 'RIGHT', -4, 0)
 	castbar.Time:SetJustifyH('RIGHT')
 
 	castbar.Text = castbar:CreateFontString(nil, 'OVERLAY')
-	castbar.Text:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	castbar.Text:FontTemplate(NP.db.font, NP.db.fontSize, NP.db.fontOutline)
 	castbar.Text:Point('LEFT', castbar, 'LEFT', 4, 0)
 	castbar.Text:SetJustifyH('LEFT')
 	castbar.Text:SetWordWrap(false)
 
 	castbar.TargetText = castbar:CreateFontString(nil, 'OVERLAY')
-	castbar.TargetText:FontTemplate(LSM:Fetch('font', NP.db.font), NP.db.fontSize, NP.db.fontOutline)
+	castbar.TargetText:FontTemplate(NP.db.font, NP.db.fontSize, NP.db.fontOutline)
 	castbar.TargetText:SetJustifyH('LEFT')
 
 	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
@@ -282,7 +282,7 @@ function NP:Update_Castbar(nameplate)
 		if db.displayTarget and db.targetStyle == 'SEPARATE' then
 			castbar.TargetText:ClearAllPoints()
 			castbar.TargetText:Point(E.InversePoints[db.targetAnchorPoint], castbar, db.targetAnchorPoint, db.targetXOffset, db.targetYOffset)
-			castbar.TargetText:FontTemplate(LSM:Fetch('font', db.targetFont), db.targetFontSize, db.targetFontOutline)
+			castbar.TargetText:FontTemplate(db.targetFont, db.targetFontSize, db.targetFontOutline)
 			castbar.TargetText:SetJustifyH(db.targetJustifyH)
 			castbar.TargetText:Show()
 		else
@@ -318,14 +318,14 @@ function NP:Update_Castbar(nameplate)
 		if db.hideTime then
 			castbar.Time:Hide()
 		else
-			castbar.Time:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			castbar.Time:FontTemplate(db.font, db.fontSize, db.fontOutline)
 			castbar.Time:Show()
 		end
 
 		if db.hideSpellName then
 			castbar.Text:Hide()
 		else
-			castbar.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			castbar.Text:FontTemplate(db.font, db.fontSize, db.fontOutline)
 			castbar.Text:Show()
 		end
 	elseif nameplate:IsElementEnabled('Castbar') then

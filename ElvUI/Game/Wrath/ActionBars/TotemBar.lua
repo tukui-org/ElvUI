@@ -304,7 +304,7 @@ function AB:PositionAndSizeTotemBar()
 end
 
 function AB:UpdateTotemBindings()
-	local font = LSM:Fetch('font', AB.db.totemBar.font)
+	local font = AB.db.totemBar.font
 	local size, outline = AB.db.totemBar.fontSize, AB.db.totemBar.fontOutline
 
 	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(font, size, outline)

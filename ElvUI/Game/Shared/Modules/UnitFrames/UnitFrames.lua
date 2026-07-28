@@ -649,7 +649,7 @@ function UF:Update_StatusBar(statusBar, texture)
 end
 
 function UF:Update_FontString(object)
-	object:FontTemplate(LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline)
+	object:FontTemplate(UF.db.font, UF.db.fontSize, UF.db.fontOutline)
 end
 
 do
@@ -659,7 +659,7 @@ do
 
 	local info = {}
 	function UF:Update_FontStrings()
-		info.font, info.size, info.outline = LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline
+		info.font, info.size, info.outline = UF.db.font, UF.db.fontSize, UF.db.fontOutline
 
 		E:CoroutineUpdate(UF.Update_AllFontStrings, UF.fontstrings, info)
 	end

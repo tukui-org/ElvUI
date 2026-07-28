@@ -151,7 +151,7 @@ function B:SizeAndPositionBagBar()
 
 	B.BagBar:SetAlpha(db.mouseover and 0 or 1)
 
-	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(db.font, db.fontSize, db.fontOutline)
 
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
@@ -309,7 +309,7 @@ function B:LoadBagBar()
 
 	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
 	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 0, 1)
-	_G.MainMenuBarBackpackButtonCount:FontTemplate(LSM:Fetch('font', E.db.bags.bagBar.font), E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
+	_G.MainMenuBarBackpackButtonCount:FontTemplate(E.db.bags.bagBar.font, E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
 
 	hooksecurefunc(_G.BagsBar, 'Layout', B.SizeAndPositionBagBar)
 	hooksecurefunc(_G.MainMenuBarBagManager, 'OnExpandBarChanged', B.SizeAndPositionBagBar)

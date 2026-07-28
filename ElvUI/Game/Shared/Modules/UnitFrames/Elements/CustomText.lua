@@ -30,7 +30,6 @@ function UF:Configure_CustomTexts(frame)
 	end
 
 	if not frameDB then return end
-	local mainFont = LSM:Fetch('font', UF.db.font)
 
 	for name, db in pairs(frameDB) do
 		local object = customTexts[name]
@@ -40,7 +39,7 @@ function UF:Configure_CustomTexts(frame)
 		end
 
 		local horizontal = db.justifyH or 'CENTER'
-		local tagFont = (db.font and LSM:Fetch('font', db.font)) or mainFont
+		local tagFont = (db.font and db.font) or UF.db.font
 		local attachPoint = UF:GetObjectAnchorPoint(frame, db.attachTextTo, db.attachTextTo == 'Power')
 		object:ClearAllPoints()
 		object:Point(horizontal, attachPoint, horizontal, db.xOffset, db.yOffset)

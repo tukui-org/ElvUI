@@ -24,7 +24,7 @@ function BL:GuildBank_ItemLevel(button)
 
 	button.itemLevel:ClearAllPoints()
 	button.itemLevel:Point(db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset)
-	button.itemLevel:FontTemplate(LSM:Fetch('font', db.itemLevelFont), db.itemLevelFontSize, db.itemLevelFontOutline)
+	button.itemLevel:FontTemplate(db.itemLevelFont, db.itemLevelFontSize, db.itemLevelFontOutline)
 
 	local ilvl, r, g, b
 	local tab = db.itemLevel and GetCurrentGuildBankTab()
@@ -69,7 +69,7 @@ function BL:GuildBank_CountText(button)
 
 	button.Count:ClearAllPoints()
 	button.Count:Point(db.countPosition, db.countxOffset, db.countyOffset)
-	button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+	button.Count:FontTemplate(db.countFont, db.countFontSize, db.countFontOutline)
 	button.Count:SetTextColor(db.countFontColor.r, db.countFontColor.g, db.countFontColor.b)
 end
 

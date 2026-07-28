@@ -607,7 +607,7 @@ end
 
 function E:UpdateFontTemplates()
 	for fs, data in next, E.texts do
-		fs:FontTemplate(data.font, data.fontSize, data.fontStyle, true)
+		fs:FontTemplate(data.fontName, data.fontSize, data.fontStyle, true)
 	end
 end
 
@@ -2001,6 +2001,20 @@ do
 		end
 
 		return db
+	end
+end
+
+function E:OnEnable()
+	if ActionBars.Initialized then
+		ActionBars:UpdateButtonSettings()
+	end
+
+	if LSM.needsRefreshFont then
+		E:Delay(0.10, E.UpdateFontTemplates, E)
+	end
+
+	if LSM.needsRefreshStatusbars then
+		E:Delay(0.15, E.UpdateStatusBars, E)
 	end
 end
 

@@ -125,7 +125,7 @@ function BL:UpdateAltPowerBarSettings()
 	local db = E.db.general.altPowerBar
 	bar:Size(db.width or 250, db.height or 20)
 	bar:SetStatusBarTexture(LSM:Fetch('statusbar', db.statusBar))
-	bar.text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize or 12, db.fontOutline or 'OUTLINE')
+	bar.text:FontTemplate(db.font, db.fontSize or 12, db.fontOutline or 'OUTLINE')
 	BL.AltPowerBarHolder:Size(bar.backdrop:GetSize())
 
 	if E.Retail then

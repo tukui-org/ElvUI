@@ -2034,7 +2034,6 @@ function AB:Initialize()
 	AB:CreateBarPet()
 	AB:CreateBarShapeShift()
 	AB:CreateVehicleLeave()
-	AB:UpdateButtonSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 
