@@ -450,14 +450,14 @@ function E:GeneralMedia_ApplyToAll()
 end
 
 function E:ValueFunc(func, data)
-	func(self, data.hex, data.r, data.g, data.b)
+	func(self, data.hex, data.r, data.g, data.b, data.a)
 end
 
 do
 	local data = {}
 	function E:ValueFuncCall()
 		data.hex = E.media.hexvaluecolor
-		data.r, data.g, data.b = unpack(E.media.rgbvaluecolor)
+		data.r, data.g, data.b, data.a = unpack(E.media.rgbvaluecolor)
 
 		E:CoroutineUpdate(E.ValueFunc, E.valueColorUpdateFuncs, data)
 	end
