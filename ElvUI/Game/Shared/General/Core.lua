@@ -1688,41 +1688,42 @@ end
 
 function E:UpdateAll()
 	E:UpdateStart()
-	E:UpdateLayout()
+
+	E:Delay(0.01, E.UpdateLayout, E)
 
 	if ActionBars.Initialized then
-		E:UpdateActionBars()
+		E:Delay(0.10, E.UpdateActionBars, E)
 	end
 
 	if NamePlates.Initialized then
-		E:UpdateNamePlates()
+		E:Delay(0.12, E.UpdateNamePlates, E)
 	end
 
 	if Bags.Initialized then
-		E:UpdateBags()
+		E:Delay(0.14, E.UpdateBags, E)
 	end
 
 	if Chat.Initialized then
-		E:UpdateChat()
+		E:Delay(0.16, E.UpdateChat, E)
 	end
 
 	if Tooltip.Initialized then
-		E:UpdateTooltip()
+		E:Delay(0.18, E.UpdateTooltip, E)
 	end
 
-	E:UpdateDataBars()
-	E:UpdateDataTexts()
+	E:Delay(0.20, E.UpdateDataBars, E)
+	E:Delay(0.22, E.UpdateDataTexts, E)
 
 	if Minimap.Initialized then
-		E:UpdateMinimap()
+		E:Delay(0.24, E.UpdateMinimap, E)
 	end
 
 	if Auras.BuffFrame or Auras.DebuffFrame then
-		E:UpdateAuras()
+		E:Delay(0.26, E.UpdateAuras, E)
 	end
 
-	E:UpdateMisc()
-	E:UpdateEnd()
+	E:Delay(0.28, E.UpdateMisc, E)
+	E:Delay(0.30, E.UpdateEnd, E)
 end
 
 function E:CreateFonts()
