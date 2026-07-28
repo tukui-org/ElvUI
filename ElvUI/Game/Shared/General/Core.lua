@@ -3,7 +3,7 @@ ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale 
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local tonumber, pairs, ipairs, unpack, tostring = tonumber, pairs, ipairs, unpack, tostring
+local tonumber, next, unpack, tostring = tonumber, next, unpack, tostring
 local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
@@ -193,7 +193,7 @@ E.HiddenFrame:Hide()
 
 do -- used in options
 	E.DEFAULT_FILTER = {}
-	for filter, tbl in pairs(G.unitframe.aurafilters) do
+	for filter, tbl in next, G.unitframe.aurafilters do
 		E.DEFAULT_FILTER[filter] = tbl.type
 	end
 end
@@ -252,7 +252,7 @@ end
 function E:CheckClassColor(r, g, b)
 	r, g, b = E:GrabColorPickerValues(r, g, b)
 
-	for class in pairs(_G.RAID_CLASS_COLORS) do
+	for class in next, _G.RAID_CLASS_COLORS do
 		if class ~= E.myclass then
 			local color = E:ClassColor(class, true)
 			local red, green, blue = E:GrabColorPickerValues(color.r, color.g, color.b)
@@ -450,13 +450,13 @@ end
 
 function E:ValueFuncCall()
 	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
-	for obj, func in pairs(E.valueColorUpdateFuncs) do
+	for obj, func in next, E.valueColorUpdateFuncs do
 		func(obj, hex, r, g, b)
 	end
 end
 
 function E:UpdateFrameTemplates()
-	for frame in pairs(E.frames) do
+	for frame in next, E.frames do
 		if frame and frame.template and not frame:IsForbidden() then
 			if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
 				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode)
@@ -466,7 +466,7 @@ function E:UpdateFrameTemplates()
 		end
 	end
 
-	for frame in pairs(E.unitFrameElements) do
+	for frame in next, E.unitFrameElements do
 		if frame and frame.template and not frame:IsForbidden() then
 			if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
 				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode, frame.isUnitFrameElement)
@@ -479,7 +479,7 @@ end
 
 function E:UpdateBorderColors()
 	local r, g, b = unpack(E.media.bordercolor)
-	for frame in pairs(E.frames) do
+	for frame in next, E.frames do
 		if frame and frame.template and not frame:IsForbidden() then
 			if not (frame.ignoreUpdates or frame.forcedBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
 				frame:SetBackdropBorderColor(r, g, b)
@@ -490,7 +490,7 @@ function E:UpdateBorderColors()
 	end
 
 	local r2, g2, b2 = unpack(E.media.unitframeBorderColor)
-	for frame in pairs(E.unitFrameElements) do
+	for frame in next, E.unitFrameElements do
 		if frame and frame.template and not frame:IsForbidden() then
 			if not (frame.ignoreUpdates or frame.forcedBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
 				frame:SetBackdropBorderColor(r2, g2, b2)
@@ -505,7 +505,7 @@ function E:UpdateBackdropColors()
 	local r, g, b, a = unpack(E.media.backdropcolor)
 	local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
 
-	for frame in pairs(E.frames) do
+	for frame in next, E.frames do
 		if frame and frame.template and not frame:IsForbidden() then
 			if not frame.ignoreUpdates then
 				if frame.callbackBackdropColor then
@@ -521,7 +521,7 @@ function E:UpdateBackdropColors()
 		end
 	end
 
-	for frame in pairs(E.unitFrameElements) do
+	for frame in next, E.unitFrameElements do
 		if frame and frame.template and not frame:IsForbidden() then
 			if not frame.ignoreUpdates then
 				if frame.callbackBackdropColor then
@@ -539,7 +539,7 @@ function E:UpdateBackdropColors()
 end
 
 function E:UpdateFontTemplates()
-	for fs, data in pairs(E.texts) do
+	for fs, data in next, E.texts do
 		fs:FontTemplate(data.font, data.fontSize, data.fontStyle, true)
 	end
 end
@@ -553,7 +553,7 @@ function E:UnregisterStatusBar(statusBar)
 end
 
 function E:UpdateStatusBars()
-	for statusBar in pairs(E.statusBars) do
+	for statusBar in next, E.statusBars do
 		if statusBar and statusBar:IsObjectType('StatusBar') then
 			statusBar:SetStatusBarTexture(E.media.normTex)
 		elseif statusBar and statusBar:IsObjectType('Texture') then
@@ -582,7 +582,7 @@ do
 end
 
 function E:IsIncompatible(module, addons)
-	for _, addon in ipairs(addons) do
+	for _, addon in next, addons do
 		local incompatible
 		if addon == 'Leatrix_Plus' then
 			local db = _G.LeaPlusDB
@@ -678,7 +678,7 @@ do
 	function E:CheckIncompatible()
 		if E.global.ignoreIncompatible then return end
 
-		for module, addons in pairs(ADDONS) do
+		for module, addons in next, ADDONS do
 			if addons[1] and addons.info.enabled() and E:IsIncompatible(module, addons) then
 				break
 			end
@@ -692,7 +692,7 @@ function E:CopyTable(current, default, merge)
 	end
 
 	if type(default) == 'table' then
-		for option, value in pairs(default) do
+		for option, value in next, default do
 			local isTable = type(value) == 'table'
 			if not merge or (isTable or current[option] == nil) then
 				current[option] = (isTable and E:CopyTable(current[option], value, merge)) or value
@@ -709,7 +709,7 @@ function E:RemoveEmptySubTables(tbl)
 		return
 	end
 
-	for k, v in pairs(tbl) do
+	for k, v in next, tbl do
 		if type(v) == 'table' then
 			if next(v) == nil then
 				tbl[k] = nil
@@ -737,7 +737,7 @@ function E:RemoveTableDuplicates(cleanTable, checkTable, generatedKeys)
 
 	local rtdCleaned = {}
 	local keyed = type(generatedKeys) == 'table'
-	for option, value in pairs(cleanTable) do
+	for option, value in next, cleanTable do
 		local default, genTable, genOption = checkTable[option]
 		if keyed then genTable = generatedKeys[option] else genOption = generatedKeys end
 
@@ -777,7 +777,7 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 	end
 
 	local tfbCleaned = {}
-	for option, value in pairs(cleanTable) do
+	for option, value in next, cleanTable do
 		if type(value) == 'table' and blacklistTable[option] and type(blacklistTable[option]) == 'table' then
 			tfbCleaned[option] = E:FilterTableFromBlacklist(value, blacklistTable[option])
 		else
@@ -812,10 +812,10 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	--Code slightly modified by Simpy, sorting from @sighol
 	local function Recurse(tbl, level, ret)
 		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, i) end
+		for i in next, tbl do tinsert(tkeys, i) end
 		sort(tkeys, KeySort)
 
-		for _, i in ipairs(tkeys) do
+		for _, i in next, tkeys do
 			local v = tbl[i]
 
 			ret = ret..strrep('    ', level)..'['
@@ -864,7 +864,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	}
 
 	local function BuildLineStructure(str) -- str is profileText
-		for _, v in ipairs(lineStructureTable) do
+		for _, v in next, lineStructureTable do
 			if type(v) == 'string' then
 				str = str..'["'..v..'"]'
 			else
@@ -878,11 +878,11 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	local sameLine
 	local function Recurse(tbl, ret, profileText)
 		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, i) end
+		for i in next, tbl do tinsert(tkeys, i) end
 		sort(tkeys, KeySort)
 
 		local lineStructure = BuildLineStructure(profileText)
-		for _, k in ipairs(tkeys) do
+		for _, k in next, tkeys do
 			local v = tbl[k]
 
 			if not sameLine then
@@ -1107,7 +1107,7 @@ do -- BFA Convert, deprecated..
 				E.db.unitframe.OORAlpha = nil
 			end
 
-			for _, unit in ipairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid1','raid2','raid3','raidpet','tank','assist'}) do
+			for _, unit in next, {'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid1','raid2','raid3','raidpet','tank','assist'} do
 				if E.db.unitframe.units[unit].rangeCheck ~= nil then
 					local enabled = E.db.unitframe.units[unit].rangeCheck
 					E.db.unitframe.units[unit].fader.enable = enabled
@@ -1127,7 +1127,7 @@ do -- BFA Convert, deprecated..
 		end
 
 		--Removed additional table in nameplate filters cause it was basically useless
-		for _, unit in ipairs({'PLAYER','FRIENDLY_PLAYER','ENEMY_PLAYER','FRIENDLY_NPC','ENEMY_NPC'}) do
+		for _, unit in next, {'PLAYER','FRIENDLY_PLAYER','ENEMY_PLAYER','FRIENDLY_NPC','ENEMY_NPC'} do
 			if E.db.nameplates.units[unit].buffs and E.db.nameplates.units[unit].buffs.filters ~= nil then
 				E.db.nameplates.units[unit].buffs.minDuration = E.db.nameplates.units[unit].buffs.filters.minDuration or P.nameplates.units[unit].buffs.minDuration
 				E.db.nameplates.units[unit].buffs.maxDuration = E.db.nameplates.units[unit].buffs.filters.maxDuration or P.nameplates.units[unit].buffs.maxDuration
@@ -1156,7 +1156,7 @@ do -- BFA Convert, deprecated..
 		end
 
 		--Heal Prediction is now a table instead of a bool
-		for _, unit in ipairs({'player','target','focus','pet','arena','party','raid1','raid2','raid3','raidpet'}) do
+		for _, unit in next, {'player','target','focus','pet','arena','party','raid1','raid2','raid3','raidpet'} do
 			if type(E.db.unitframe.units[unit].healPrediction) ~= 'table' then
 				local enabled = E.db.unitframe.units[unit].healPrediction
 				E.db.unitframe.units[unit].healPrediction = {}
@@ -1223,22 +1223,22 @@ do -- BFA Convert, deprecated..
 
 		-- removed override stuff from aurawatch
 		if E.global.unitframe.buffwatch then
-			for _, spells in pairs(E.global.unitframe.buffwatch) do
-				for _, spell in pairs(spells) do
+			for _, spells in next, E.global.unitframe.buffwatch do
+				for _, spell in next, spells do
 					ConvertAurawatch(spell)
 				end
 			end
 		end
 
 		if E.db.unitframe.filters.buffwatch then
-			for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
+			for _, spell in next, E.db.unitframe.filters.buffwatch do
 				ConvertAurawatch(spell)
 			end
 		end
 
 		-- fix aurabars colors
 		local auraBarColors = E.global.unitframe.AuraBarColors
-		for spell, info in pairs(auraBarColors) do
+		for spell, info in next, auraBarColors do
 			if type(spell) == 'string' then
 				local _, _, _, _, _, _, spellID = E:GetSpellInfo(spell)
 				if spellID and not auraBarColors[spellID] then
@@ -1383,14 +1383,14 @@ function E:DBConvertSL()
 		E.db.unitframe.units.raidpet.groupBy = 'ROLE'
 	end
 
-	for name, infoTable in pairs(G.unitframe.aurafilters) do -- cause people change things they aren't supposed to.
+	for name, infoTable in next, G.unitframe.aurafilters do -- cause people change things they aren't supposed to.
 		if E.global.unitframe.aurafilters[name] and E.global.unitframe.aurafilters[name].type ~= infoTable.type then
 			E.global.unitframe.aurafilters[name].type = infoTable.type
 		end
 	end
 
 	-- rune convert
-	for _, data in ipairs({E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT}) do
+	for _, data in next, {E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT} do
 		if data.r or data.g or data.b then
 			data[0].r, data[0].g, data[0].b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
@@ -1492,7 +1492,7 @@ function E:DBConvertTWW()
 	end
 
 	-- soulshard convert
-	for _, data in ipairs({ E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK }) do
+	for _, data in next, { E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK } do
 		if data.r or data.g or data.b then
 			data.SOUL_SHARDS.r, data.SOUL_SHARDS.g, data.SOUL_SHARDS.b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
@@ -1507,7 +1507,7 @@ function E:DBConvertDev()
 	end
 
 	-- mage resource convert
-	for _, data in ipairs({ E.db.unitframe.colors.classResources.MAGE, E.db.nameplates.colors.classResources.MAGE }) do
+	for _, data in next, { E.db.unitframe.colors.classResources.MAGE, E.db.nameplates.colors.classResources.MAGE } do
 		if data.r or data.g or data.b then
 			data.ARCANE_CHARGES.r, data.ARCANE_CHARGES.g, data.ARCANE_CHARGES.b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
@@ -1515,7 +1515,7 @@ function E:DBConvertDev()
 	end
 
 	-- hide text -> hide name & hide time
-	for _, unit in ipairs({'player','target','focus','pet','boss','arena','party'}) do
+	for _, unit in next, {'player','target','focus','pet','boss','arena','party'} do
 		local db = E.db.unitframe.units[unit].castbar
 		local previous = db.hidetext
 		if previous ~= nil then
@@ -1814,8 +1814,8 @@ do
 	eventFrame:SetScript('OnEvent', function(_, event, ...)
 		local objs = eventTable[event]
 		if objs then
-			for object, funcs in pairs(objs) do
-				for _, func in ipairs(funcs) do
+			for object, funcs in next, objs do
+				for _, func in next, funcs do
 					func(object, event, ...)
 				end
 			end
@@ -1888,7 +1888,7 @@ do
 		local objs = eventTable[event]
 		local funcs = objs and objs[object]
 		if funcs then
-			for index, fnc in ipairs(funcs) do
+			for index, fnc in next, funcs do
 				if func == fnc then
 					tremove(funcs, index)
 					break
@@ -1912,7 +1912,7 @@ do
 			return
 		end
 
-		for event in pairs(eventTable) do
+		for event in next, eventTable do
 			if E:IsEventRegisteredForObject(event, object) then
 				E:UnregisterEventForObject(event, object, func)
 			end
@@ -1982,13 +1982,13 @@ do
 end
 
 function E:InitializeInitialModules()
-	for index, object in ipairs(E.RegisteredInitialModules) do
+	for index, object in next, E.RegisteredInitialModules do
 		E:CallLoadedModule(object, true, E.RegisteredInitialModules, index)
 	end
 end
 
 function E:InitializeModules()
-	for index, object in ipairs(E.RegisteredModules) do
+	for index, object in next, E.RegisteredModules do
 		E:CallLoadedModule(object, true, E.RegisteredModules, index)
 	end
 end
@@ -2009,7 +2009,7 @@ function E:DBConversions()
 end
 
 function E:ConvertActionBarKeybinds()
-	for oldcmd, newcmd in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
+	for oldcmd, newcmd in next, { ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' } do
 		for i = 1, 12 do
 			local oldkey, newkey = format('%s%d', oldcmd, i), format('%s%d', newcmd, i)
 			for _, key in next, { GetBindingKey(oldkey) } do
@@ -2027,7 +2027,7 @@ end
 do
 	-- Shamelessly taken from AceDB-3.0 and stripped down by Simpy
 	function E:CopyDefaults(dest, src)
-		for k, v in pairs(src) do
+		for k, v in next, src do
 			if type(v) == 'table' then
 				if not rawget(dest, k) then rawset(dest, k, {}) end
 				if type(dest[k]) == 'table' then E:CopyDefaults(dest[k], v) end
@@ -2042,7 +2042,7 @@ do
 	function E:RemoveDefaults(db, defaults)
 		setmetatable(db, nil)
 
-		for k, v in pairs(defaults) do
+		for k, v in next, defaults do
 			if type(v) == 'table' and type(db[k]) == 'table' then
 				E:RemoveDefaults(db[k], v)
 				if next(db[k]) == nil then db[k] = nil end
