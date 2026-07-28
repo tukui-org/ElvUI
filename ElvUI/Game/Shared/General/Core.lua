@@ -2020,10 +2020,12 @@ do
 end
 
 function E:OnEnable()
+	-- the fonts on actionbars are handled by LAB we can delay that until PLAYER_LOGIN
 	if ActionBars.Initialized then
 		ActionBars:UpdateButtonSettings()
 	end
 
+	-- requirement for plugins adding media; after ADDON_LOADED but before PLAYER_LOGIN
 	if LSM.needsRefreshFont then
 		E:Delay(0.10, E.UpdateFontTemplates, E)
 	end
