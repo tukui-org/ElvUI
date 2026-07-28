@@ -775,6 +775,40 @@ function UF:Configure_FontString(obj)
 	obj:FontTemplate() --This is temporary.
 end
 
+function UF:Update_AllUnits(frame)
+	local enabled = UF.db.units[self].enable
+	frame:SetEnabled(enabled)
+
+	if enabled then
+		frame:Update()
+		E:EnableMover(frame.mover.name)
+	else
+		E:DisableMover(frame.mover.name)
+	end
+end
+
+function UF:Update_AllGroupUnits(group)
+	local frame = UF[self]
+
+	local enabled = UF.db.units[group].enable
+	if group == 'arena' then
+		frame:SetAttribute('oUF-enableArenaPrep', enabled)
+	end
+
+	frame:SetEnabled(enabled)
+
+	if enabled then
+		frame:Update()
+		E:EnableMover(frame.mover.name)
+	else
+		E:DisableMover(frame.mover.name)
+	end
+
+	if frame.isForced then
+		UF:ForceShow(frame)
+	end
+end
+
 function UF:Update_AllFrames()
 	if not E.private.unitframe.enable then return end
 
@@ -784,41 +818,22 @@ function UF:Update_AllFrames()
 	UF:Update_FontStrings()
 	UF:Update_StatusBars()
 
-	for unit, frame in pairs(UF.units) do
-		local enabled = UF.db.units[unit].enable
-		frame:SetEnabled(enabled)
-
-		if enabled then
-			frame:Update()
-			E:EnableMover(frame.mover.name)
-		else
-			E:DisableMover(frame.mover.name)
-		end
-	end
-
-	for unit, group in pairs(UF.groupunits) do
-		local frame = UF[unit]
-
-		local enabled = UF.db.units[group].enable
-		if group == 'arena' then
-			frame:SetAttribute('oUF-enableArenaPrep', enabled)
-		end
-
-		frame:SetEnabled(enabled)
-
-		if enabled then
-			frame:Update()
-			E:EnableMover(frame.mover.name)
-		else
-			E:DisableMover(frame.mover.name)
-		end
-
-		if frame.isForced then
-			UF:ForceShow(frame)
-		end
-	end
+	E:CoroutineUpdate(UF.Update_AllUnits, UF.units)
+	E:CoroutineUpdate(UF.Update_AllGroupUnits, UF.groupunits)
 
 	UF:UpdateAllHeaders()
+end
+
+function UF:UpdateAllHeadersSlow(_, args)
+	UF:CreateAndUpdateHeaderGroup(self, unpack(args))
+end
+
+function UF:UpdateAllHeaders(skip)
+	if E.private.unitframe.disabledBlizzardFrames.party then
+		ElvUF:DisableBlizzard('party')
+	end
+
+	E:CoroutineUpdate(UF.UpdateAllHeadersSlow, UF.headers, { nil, nil, nil, skip })
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
@@ -1226,6 +1241,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	Header.numGroups = numGroups
 	Header.db = db
 
+	if skip then
+		print('yep')
+	end
+
 	if numGroups then
 		if db.raidWideSorting then
 			if not Header.groups[1] then
@@ -1537,16 +1556,6 @@ function UF:RegisterRaidDebuffIndicator()
 			local otherSpells = ((E.global.unitframe.aurafilters[other] and E.global.unitframe.aurafilters[other].spells) or E.global.unitframe.aurafilters.CCDebuffs.spells)
 			ORD:RegisterDebuffs(otherSpells)
 		end
-	end
-end
-
-function UF:UpdateAllHeaders(skip)
-	if E.private.unitframe.disabledBlizzardFrames.party then
-		ElvUF:DisableBlizzard('party')
-	end
-
-	for group in pairs(UF.headers) do
-		UF:CreateAndUpdateHeaderGroup(group, nil, nil, nil, skip)
 	end
 end
 

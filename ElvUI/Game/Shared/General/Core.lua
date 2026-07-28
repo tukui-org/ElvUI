@@ -8,6 +8,7 @@ local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, ti
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
+local co_yield, co_resume, co_create = coroutine.yield, coroutine.resume, coroutine.create
 
 local Mixin = Mixin
 local ColorMixin = ColorMixin
@@ -455,25 +456,72 @@ function E:ValueFuncCall()
 	end
 end
 
-function E:UpdateFrameTemplates()
-	for frame in next, E.frames do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
-				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode)
+do
+	local funcs = {}
+	function E:Coroutine_OnUpdate()
+		for func, data in next, funcs do
+			local resumed = co_resume(data.routine, data.next)
+			if not resumed then -- cant continue
+				funcs[func] = nil
 			end
-		else
-			E.frames[frame] = nil
 		end
 	end
 
-	for frame in next, E.unitFrameElements do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
-				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode, frame.isUnitFrameElement)
+	function E:CoroutineLoop(func, frames, data, args)
+		return function()
+			for key, frame in next, frames do
+				func(key, frame, args and unpack(args) or nil)
+
+				if data.count < data.limit then
+					data.count = data.count + 1
+				else
+					data.count = 0
+					data.next = frame
+
+					co_yield()
+				end
 			end
-		else
-			E.unitFrameElements[frame] = nil
 		end
+	end
+
+	function E:CoroutineUpdate(func, frames, args, limit)
+		if funcs[func] then return end -- excuse me?
+
+		local data = { limit = limit or 100, count = 0 }
+		local loop = E:CoroutineLoop(func, frames, data, args)
+		data.routine = co_create(loop)
+		data.frames = frames
+
+		funcs[func] = data
+	end
+
+	E.CoroutineFrame = CreateFrame('Frame')
+	E.CoroutineFrame:SetScript('OnUpdate', E.Coroutine_OnUpdate)
+	E.CoroutineFrame.funcs = funcs
+end
+
+function E:UpdateFrameTemplates()
+	E:CoroutineUpdate(E.UpdateTemplatesFrames, E.frames)
+	E:CoroutineUpdate(E.UpdateTemplatesUnitframes, E.unitFrameElements)
+end
+
+function E:UpdateTemplatesFrames(frame)
+	if frame and frame.template and not frame:IsForbidden() then
+		if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
+			frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode)
+		end
+	else
+		E.frames[frame] = nil
+	end
+end
+
+function E:UpdateTemplatesUnitframes(frame)
+	if frame and frame.template and not frame:IsForbidden() then
+		if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
+			frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode, frame.isUnitFrameElement)
+		end
+	else
+		E.unitFrameElements[frame] = nil
 	end
 end
 
