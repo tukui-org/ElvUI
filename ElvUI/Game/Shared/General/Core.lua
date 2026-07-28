@@ -544,27 +544,34 @@ function E:UpdateUnitframeTemplate()
 	end
 end
 
-function E:UpdateBorderColors()
-	local r, g, b = unpack(E.media.bordercolor)
-	for frame in next, E.frames do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.forcedBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
-				frame:SetBackdropBorderColor(r, g, b)
-			end
-		else
-			E.frames[frame] = nil
+function E:UpdateBorderColor(_, data)
+	if self and self.template and not self:IsForbidden() then
+		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
+			self:SetBackdropBorderColor(data.r, data.g, data.b)
 		end
+	else
+		E.frames[self] = nil
 	end
+end
 
-	local r2, g2, b2 = unpack(E.media.unitframeBorderColor)
-	for frame in next, E.unitFrameElements do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.forcedBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
-				frame:SetBackdropBorderColor(r2, g2, b2)
-			end
-		else
-			E.unitFrameElements[frame] = nil
+function E:UpdateUnitframeBorderColor(data)
+	if self and self.template and not self:IsForbidden() then
+		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
+			self:SetBackdropBorderColor(data.r, data.g, data.b)
 		end
+	else
+		E.unitFrameElements[self] = nil
+	end
+end
+
+do
+	local info = { frames = {}, unitframes = {} }
+	function E:UpdateBorderColors()
+		info.frames.r, info.frames.g, info.frames.b = unpack(E.media.bordercolor)
+		E:CoroutineUpdate(E.UpdateBorderColor, E.frames, info.frames)
+
+		info.unitframes.r, info.unitframes.g, info.unitframes.b = unpack(E.media.unitframeBorderColor)
+		E:CoroutineUpdate(E.UpdateUnitframeBorderColor, E.unitFrameElements, info.unitframes)
 	end
 end
 
