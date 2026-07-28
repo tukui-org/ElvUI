@@ -524,23 +524,23 @@ function E:UpdateFrameTemplates()
 	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
 end
 
-function E:UpdateFrameTemplate(frame)
-	if frame and frame.template and not frame:IsForbidden() then
-		if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
-			frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode)
+function E:UpdateFrameTemplate()
+	if self and self.template and not self:IsForbidden() then
+		if not (self.ignoreUpdates or self.ignoreFrameTemplates) then
+			self:SetTemplate(self.template, self.glossTex, nil, self.forcePixelMode)
 		end
 	else
-		E.frames[frame] = nil
+		E.frames[self] = nil
 	end
 end
 
-function E:UpdateUnitframeTemplate(frame)
-	if frame and frame.template and not frame:IsForbidden() then
-		if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
-			frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode, frame.isUnitFrameElement)
+function E:UpdateUnitframeTemplate()
+	if self and self.template and not self:IsForbidden() then
+		if not (self.ignoreUpdates or self.ignoreFrameTemplates) then
+			self:SetTemplate(self.template, self.glossTex, nil, self.forcePixelMode, self.isUnitFrameElement)
 		end
 	else
-		E.unitFrameElements[frame] = nil
+		E.unitFrameElements[self] = nil
 	end
 end
 
