@@ -53,7 +53,7 @@ end
 
 function E:CooldownText(cooldown, secondary, hide)
 	local db, ob, data = E:CooldownData(cooldown)
-	if not db then return end
+	if not db or secondary == nil then return end
 
 	if secondary then -- charge or Loc
 		cooldown = secondary
@@ -100,7 +100,7 @@ function E:CooldownUpdate(cooldown)
 
 	E:CooldownBling(cooldown, invisible)
 
-	E:CooldownText(cooldown, nil, db.hideNumbers)
+	E:CooldownText(cooldown, false, db.hideNumbers)
 	E:CooldownText(cooldown, data.chargeCooldown, not db.chargeText)
 	E:CooldownText(cooldown, data.lossOfControl, not db.locText)
 
@@ -110,7 +110,7 @@ function E:CooldownUpdate(cooldown)
 
 	local formatters = data.formatters
 	if formatters then
-		E:CooldownFormats(cooldown, nil, formatters.text)
+		E:CooldownFormats(cooldown, false, formatters.text)
 		E:CooldownFormats(cooldown, data.chargeCooldown, formatters.charge, 'thresholdCharge')
 		E:CooldownFormats(cooldown, data.lossOfControl, formatters.loc, 'thresholdLoc')
 	end
@@ -175,7 +175,7 @@ end
 
 function E:CooldownFormats(cooldown, secondary, formatter, which)
 	local db, ob = E:CooldownData(cooldown)
-	if not db or not formatter then return end
+	if not db or not formatter or secondary == nil then return end
 
 	local opt = (ob and ob.enable and ob[which]) or db[which] -- try to use the module override first
 	local breakpoints = E:CooldownBreakpoints(cooldown, (opt and opt.override and opt) or (ob and ob.enable and ob.thresholdText) or db.thresholdText)
