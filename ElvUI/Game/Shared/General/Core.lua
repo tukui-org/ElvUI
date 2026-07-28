@@ -458,6 +458,7 @@ end
 
 do
 	local funcs = {}
+	local watcher = CreateFrame('Frame')
 	function E:Coroutine_OnUpdate()
 		for func, data in next, funcs do
 			local resumed = co_resume(data.routine, data.next)
@@ -465,7 +466,18 @@ do
 				funcs[func] = nil
 			end
 		end
+
+		-- no more to process
+		if not next(funcs) then
+			watcher:Hide()
+		end
 	end
+
+	watcher.funcs = funcs -- just for debugging
+	watcher:Hide() -- wont need this right away
+	watcher:SetScript('OnUpdate', E.Coroutine_OnUpdate)
+
+	E.CoroutineFrame = watcher
 
 	function E:CoroutineLoop(func, frames, data, args)
 		return function()
@@ -492,12 +504,12 @@ do
 		data.routine = co_create(loop)
 		data.frames = frames
 
+		if not watcher:IsShown() then
+			watcher:Show()
+		end
+
 		funcs[func] = data
 	end
-
-	E.CoroutineFrame = CreateFrame('Frame')
-	E.CoroutineFrame:SetScript('OnUpdate', E.Coroutine_OnUpdate)
-	E.CoroutineFrame.funcs = funcs
 end
 
 function E:UpdateFrameTemplates()
