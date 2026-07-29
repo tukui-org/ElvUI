@@ -486,7 +486,7 @@ do	-- i guess we finally need it ~Simpy
 
 	E.CoroutineFrame = watcher
 
-	function E:CoroutineLoop(func, frames, info, data)
+	function E:GenerateCoroutineLoop(func, frames, info, data)
 		return function()
 			for key, frame in next, frames do
 				func(key, frame, data)
@@ -507,7 +507,7 @@ do	-- i guess we finally need it ~Simpy
 		if funcs[func] then return end -- excuse me?
 
 		local info = { limit = limit or 100, count = 0 }
-		local loop = E:CoroutineLoop(func, frames, info, data)
+		local loop = E:GenerateCoroutineLoop(func, frames, info, data)
 		info.routine = co_create(loop)
 		info.frames = frames
 
