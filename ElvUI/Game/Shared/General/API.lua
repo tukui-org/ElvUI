@@ -1067,11 +1067,6 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 		end
 	end
 
-	if not E.MediaUpdated then
-		E:UpdateMedia()
-		E.MediaUpdated = true
-	end
-
 	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' then
 		E.BGTimer = E:ScheduleRepeatingTimer('RequestBGInfo', 5)
