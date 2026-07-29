@@ -354,13 +354,11 @@ function PI:CreateFrame()
 	f.Desc2:Width(f:GetWidth() - 40)
 	f.Desc2:SetJustifyH('CENTER')
 
-
 	f.Desc3 = f:CreateFontString(nil, 'OVERLAY')
 	f.Desc3:FontTemplate()
 	f.Desc3:Point('TOP', f.Desc2, 'BOTTOM', 0, -20)
 	f.Desc3:Width(f:GetWidth() - 40)
 	f.Desc3:SetJustifyH('CENTER')
-
 
 	f.Desc4 = f:CreateFontString(nil, 'OVERLAY')
 	f.Desc4:FontTemplate()
