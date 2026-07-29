@@ -1612,9 +1612,9 @@ function E:DBConvertDev()
 end
 
 function E:UpdateDB()
-	E.private = E.charSettings.profile
-	E.global = E.data.global
-	E.db = E.data.profile
+	E.private = E.charSettings.profile -- E.privateVars.profile / V
+	E.global = E.data.global -- E.DF.global / G
+	E.db = E.data.profile -- E.DF.profile / P
 
 	E:DBConversions()
 	E:SetupDB()
@@ -2022,26 +2022,18 @@ do
 	end
 end
 
-function E:Initialize()
-	wipe(E.db)
-	wipe(E.global)
-	wipe(E.private)
+function E:OnEnable()
+	E.initialized = true
 
+	E:RefreshDB() -- plugins add defaults, refresh them
+	E:InitializeModules() -- trigger any new updates
+end
+
+function E:Initialize()
 	E.myspec = GetSpecialization()
 	E.TimerunningID = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()
 
-	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)
-	E.data.RegisterCallback(E, 'OnProfileChanged', 'UpdateAll')
-	E.data.RegisterCallback(E, 'OnProfileCopied', 'UpdateAll')
-	E.data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
-
-	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
-	E.charSettings.RegisterCallback(E, 'OnProfileChanged', ReloadUI)
-	E.charSettings.RegisterCallback(E, 'OnProfileCopied', ReloadUI)
-	E.charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
-
 	E:CreateFonts()
-	E:UpdateDB()
 	E:UIScale()
 	E:LoadStaticPopups()
 
@@ -2063,8 +2055,6 @@ function E:Initialize()
 		E:UpdateAuraCurves()
 		E:UpdateDispelColors()
 		E:UpdateCustomClassColors()
-
-		E.initialized = true
 
 		if E.Retail then
 			E:Tutorials()

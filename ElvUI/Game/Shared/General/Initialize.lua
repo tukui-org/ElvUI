@@ -62,11 +62,10 @@ E.GetThreatSituation = oUF.GetThreatSituation
 E.UnitNotUnit = oUF.UnitNotUnit
 E.UnitIsUnit = oUF.UnitIsUnit
 
-Engine[1] = E
-Engine[2] = {}
-Engine[3] = E.privateVars.profile
-Engine[4] = E.DF.profile
-Engine[5] = E.DF.global
+for i, k in next, { E, {}, E.privateVars.profile, E.DF.profile, E.DF.global } do
+	Engine[i] = k -- E, L, V, P, G
+end
+
 _G.ElvUI = Engine
 
 E.ActionBars = E:NewModule('ActionBars','AceHook-3.0','AceEvent-3.0')
@@ -516,7 +515,14 @@ do
 	end
 end
 
-function E:OnInitialize()
+function E:RefreshDB()
+	E.data:RegisterDefaults(E.DF)
+	E.charSettings:RegisterDefaults(E.privateVars)
+
+	E:UpdateDB()
+end
+
+function E:BuildDB()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
 	end
@@ -525,27 +531,22 @@ function E:OnInitialize()
 	ElvPrivateData = nil --Depreciated
 	ElvData = nil --Depreciated
 
-	E.db = E:CopyTable({}, E.DF.profile)
-	E.global = E:CopyTable({}, E.DF.global)
-	E.private = E:CopyTable({}, E.privateVars.profile)
+	local data = E.Libs.AceDB:New('ElvDB', E.DF, true)
+	data.RegisterCallback(E, 'OnProfileChanged', 'UpdateAll')
+	data.RegisterCallback(E, 'OnProfileCopied', 'UpdateAll')
+	data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
+	E.data = data
 
-	if ElvDB then
-		if ElvDB.global then
-			E:CopyTable(E.global, ElvDB.global)
-		end
+	local charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
+	charSettings.RegisterCallback(E, 'OnProfileChanged', ReloadUI)
+	charSettings.RegisterCallback(E, 'OnProfileCopied', ReloadUI)
+	charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
+	E.charSettings = charSettings
+end
 
-		local key = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
-		if key and ElvDB.profiles and ElvDB.profiles[key] then
-			E:CopyTable(E.db, ElvDB.profiles[key])
-		end
-	end
-
-	if ElvPrivateDB then
-		local key = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
-		if key and ElvPrivateDB.profiles and ElvPrivateDB.profiles[key] then
-			E:CopyTable(E.private, ElvPrivateDB.profiles[key])
-		end
-	end
+function E:OnInitialize()
+	E:BuildDB()
+	E:UpdateDB()
 
 	E.SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUI_SpellBookTooltip', UIParent, 'GameTooltipTemplate')
 	E.ConfigTooltip = CreateFrame('GameTooltip', 'ElvUI_ConfigTooltip', UIParent, 'GameTooltipTemplate')
@@ -566,7 +567,6 @@ function E:OnInitialize()
 
 	E:DisableAddons()
 	E:CheckAddons()
-	E:SetupDB()
 	E:UIMult()
 	E:UpdateMedia()
 
