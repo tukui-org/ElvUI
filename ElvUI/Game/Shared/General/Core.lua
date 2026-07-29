@@ -486,10 +486,10 @@ do	-- i guess we finally need it ~Simpy
 
 	E.CoroutineFrame = watcher
 
-	function E:GenerateCoroutineLoop(func, frames, info, data)
+	function E:GenerateCoroutineLoop(info)
 		return function()
-			for key, frame in next, frames do
-				func(key, frame, data)
+			for key, frame in next, info.frames do
+				info.func(key, frame, info.data)
 
 				if info.count < info.limit then
 					info.count = info.count + 1
@@ -504,12 +504,15 @@ do	-- i guess we finally need it ~Simpy
 	end
 
 	function E:CoroutineUpdate(func, frames, data, limit)
-		if funcs[func] then return end -- excuse me?
+		local info = funcs[func]
+		if info then
+			return -- excuse me?
+		else
+			info = { count = 0, limit = limit or 100, data = data, frames = frames, func = func }
+		end
 
-		local info = { limit = limit or 100, count = 0 }
-		local loop = E:GenerateCoroutineLoop(func, frames, info, data)
+		local loop = E:GenerateCoroutineLoop(info)
 		info.routine = co_create(loop)
-		info.frames = frames
 
 		if not watcher:IsShown() then
 			watcher:Show()
