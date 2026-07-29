@@ -1750,41 +1750,41 @@ end
 function E:UpdateAll()
 	E:UpdateStart()
 
-	E:Delay(0.01, E.UpdateLayout, E)
+	E:Delay(0.02, E.UpdateLayout, E)
 
 	if ActionBars.Initialized then
-		E:Delay(0.10, E.UpdateActionBars, E)
+		E:Delay(0.04, E.UpdateActionBars, E)
 	end
 
 	if NamePlates.Initialized then
-		E:Delay(0.12, E.UpdateNamePlates, E)
+		E:Delay(0.06, E.UpdateNamePlates, E)
 	end
 
 	if Bags.Initialized then
-		E:Delay(0.14, E.UpdateBags, E)
+		E:Delay(0.08, E.UpdateBags, E)
 	end
 
 	if Chat.Initialized then
-		E:Delay(0.16, E.UpdateChat, E)
+		E:Delay(0.10, E.UpdateChat, E)
 	end
 
 	if Tooltip.Initialized then
-		E:Delay(0.18, E.UpdateTooltip, E)
+		E:Delay(0.12, E.UpdateTooltip, E)
 	end
 
-	E:Delay(0.20, E.UpdateDataBars, E)
-	E:Delay(0.22, E.UpdateDataTexts, E)
+	E:Delay(0.14, E.UpdateDataBars, E)
+	E:Delay(0.16, E.UpdateDataTexts, E)
 
 	if Minimap.Initialized then
-		E:Delay(0.24, E.UpdateMinimap, E)
+		E:Delay(0.18, E.UpdateMinimap, E)
 	end
 
 	if Auras.BuffFrame or Auras.DebuffFrame then
-		E:Delay(0.26, E.UpdateAuras, E)
+		E:Delay(0.20, E.UpdateAuras, E)
 	end
 
-	E:Delay(0.28, E.UpdateMisc, E)
-	E:Delay(0.30, E.UpdateEnd, E)
+	E:Delay(0.22, E.UpdateMisc, E)
+	E:Delay(0.24, E.UpdateEnd, E)
 end
 
 function E:CreateFonts()
