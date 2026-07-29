@@ -232,7 +232,7 @@ function A:UpdateIcon(button, index)
 	if button.count then
 		button.count:ClearAllPoints()
 		button.count:Point('BOTTOMRIGHT', db.countXOffset, db.countYOffset)
-		button.count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+		button.count:FontTemplate(db.countFont, db.countFontSize, db.countFontOutline)
 	end
 
 	if button.statusBar then

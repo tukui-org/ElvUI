@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
-local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
 
@@ -24,7 +23,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 		end
 
 		frame.AuraWatch.size = db.size
-		frame.AuraWatch.countFont = LSM:Fetch('font', db.countFont)
+		frame.AuraWatch.countFont = db.countFont
 		frame.AuraWatch.countFontSize = db.countFontSize
 		frame.AuraWatch.countFontOutline = db.countFontOutline
 

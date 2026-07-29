@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local CH = E:GetModule('Chat')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local ipairs = ipairs
@@ -12,7 +11,7 @@ local function StyleButtons()
 		local button = _G['CombatLogQuickButtonFrameButton'..index]
 		local text = button and button:GetFontString()
 		if text then
-			text:FontTemplate(LSM:Fetch('font', CH.db.tabFont), CH.db.tabFontSize, CH.db.tabFontOutline)
+			text:FontTemplate(CH.db.tabFont, CH.db.tabFontSize, CH.db.tabFontOutline)
 		end
 	end
 end

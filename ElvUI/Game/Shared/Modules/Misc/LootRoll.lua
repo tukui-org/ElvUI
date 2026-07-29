@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
 local B = E:GetModule('Bags')
 local BL = E:GetModule('Blizzard')
-
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -467,7 +466,6 @@ function M:UpdateLootRollFrames()
 	if not E.private.general.lootRoll then return end
 
 	local db = E.db.general.lootRoll
-	local font = LSM:Fetch('font', db.nameFont)
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
 	local maxBars = E.Retail and db.maxBars or _G.NUM_GROUP_LOOT_FRAMES or 4
 
@@ -486,8 +484,8 @@ function M:UpdateLootRollFrames()
 		bar.button.questIcon:Point('RIGHT', bar.button, 'LEFT', -3, 0)
 		bar.button.questIcon:Size(db.height)
 
-		bar.name:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
-		bar.bind:FontTemplate(font, db.nameFontSize, db.nameFontOutline)
+		bar.name:FontTemplate(db.nameFont, db.nameFontSize, db.nameFontOutline)
+		bar.bind:FontTemplate(db.nameFont, db.nameFontSize, db.nameFontOutline)
 
 		for _, button in next, rollTypes do
 			local icon = bar[button]

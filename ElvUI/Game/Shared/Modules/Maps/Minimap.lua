@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Minimap')
 local AB = E:GetModule('ActionBars')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local next = next
@@ -215,7 +214,7 @@ end
 function M:UpdateClockButton()
 	local ticker = _G.TimeManagerClockTicker
 	if ticker then
-		ticker:FontTemplate(LSM:Fetch('font', M.db.timeFont), M.db.timeFontSize, M.db.timeFontOutline)
+		ticker:FontTemplate(M.db.timeFont, M.db.timeFontSize, M.db.timeFontOutline)
 	end
 
 	local clock = _G.TimeManagerClockButton
@@ -606,7 +605,7 @@ function M:UpdateSettings()
 	local HEIGHT, WIDTH = (mHeight * mmScale) + (panelSize - joinPanel), mWidth * mmScale
 	holder:SetSize(WIDTH + bWidth, HEIGHT + bHeight)
 
-	local locationFont, locaitonSize, locationOutline = LSM:Fetch('font', M.db.locationFont), M.db.locationFontSize, M.db.locationFontOutline
+	local locationFont, locaitonSize, locationOutline = M.db.locationFont, M.db.locationFontSize, M.db.locationFontOutline
 	if Minimap.location then
 		Minimap.location:Width(E.MinimapSize)
 		Minimap.location:FontTemplate(locationFont, locaitonSize, locationOutline)

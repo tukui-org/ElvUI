@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 local AB = E:GetModule('ActionBars')
 local NP = E:GetModule('NamePlates')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local tinsert, tremove, wipe = tinsert, tremove, wipe
@@ -450,9 +449,9 @@ function B:UpdateItemDisplay()
 	if not E.private.bags.enable then return end
 
 	local db = B.db
-	local itemLevelFont = LSM:Fetch('font', db.itemLevelFont)
-	local itemInfoFont = LSM:Fetch('font', db.itemInfoFont)
-	local countFont = LSM:Fetch('font', db.countFont)
+	local itemLevelFont = db.itemLevelFont
+	local itemInfoFont = db.itemInfoFont
+	local countFont = db.countFont
 
 	local countFontSize, countFontOutline = db.countFontSize, db.countFontOutline
 	local countPosition, countxOffset, countyOffset = db.countPosition, db.countxOffset, db.countyOffset
@@ -2674,7 +2673,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	slot.Count:ClearAllPoints()
 	slot.Count:Point(db.countPosition, db.countxOffset, db.countyOffset)
-	slot.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+	slot.Count:FontTemplate(db.countFont, db.countFontSize, db.countFontOutline)
 
 	if not slot.questIcon then
 		slot.questIcon = _G[slotName..'IconQuestTexture'] or _G[slotName].IconQuestTexture
@@ -2751,15 +2750,15 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
 	slot.itemLevel:Point(db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset)
-	slot.itemLevel:FontTemplate(LSM:Fetch('font', db.itemLevelFont), db.itemLevelFontSize, db.itemLevelFontOutline)
+	slot.itemLevel:FontTemplate(db.itemLevelFont, db.itemLevelFontSize, db.itemLevelFontOutline)
 
 	slot.bindType = slot:CreateFontString(nil, 'OVERLAY')
 	slot.bindType:Point('TOP', 0, -2)
-	slot.bindType:FontTemplate(LSM:Fetch('font', db.itemLevelFont), db.itemLevelFontSize, db.itemLevelFontOutline)
+	slot.bindType:FontTemplate(db.itemLevelFont, db.itemLevelFontSize, db.itemLevelFontOutline)
 
 	slot.centerText = slot:CreateFontString(nil, 'OVERLAY')
 	slot.centerText:Point('CENTER', 0, 0)
-	slot.centerText:FontTemplate(LSM:Fetch('font', db.itemInfoFont), db.itemInfoFontSize, db.itemInfoFontOutline)
+	slot.centerText:FontTemplate(db.itemInfoFont, db.itemInfoFontSize, db.itemInfoFontOutline)
 	slot.centerText:SetTextColor(db.itemInfoColor.r, db.itemInfoColor.g, db.itemInfoColor.b)
 
 	if slot.BattlepayItemTexture then

@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('Misc')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local rad = rad
@@ -373,7 +372,7 @@ function M:CreateSlotStrings(frame, which)
 	end
 
 	local db = E.db.general.itemLevel
-	local totalLevelFont = LSM:Fetch('font', db.totalLevelFont)
+	local totalLevelFont = db.totalLevelFont
 	local totalLevelFontSize = db.totalLevelFontSize or 12
 	local totalLevelFontOutline = db.totalLevelFontOutline or 'OUTLINE'
 	frame.ItemLevelText:FontTemplate(totalLevelFont, totalLevelFontSize, totalLevelFontOutline)
@@ -383,7 +382,7 @@ end
 
 function M:UpdateSlotPoints(which, config)
 	local db = E.db.general.itemLevel
-	local itemLevelFont = LSM:Fetch('font', db.itemLevelFont)
+	local itemLevelFont = db.itemLevelFont
 	local itemLevelFontSize = db.itemLevelFontSize or 12
 	local itemLevelFontOutline = db.itemLevelFontOutline or 'OUTLINE'
 	local showItemLevel = db.showItemLevel
@@ -457,7 +456,7 @@ end
 function M:UpdateInspectPageFonts(which)
 	local db = E.db.general.itemLevel
 
-	local totalLevelFont = LSM:Fetch('font', db.totalLevelFont)
+	local totalLevelFont = db.totalLevelFont
 	local totalLevelFontSize = db.totalLevelFontSize or 12
 	local totalLevelFontOutline = db.totalLevelFontOutline or 'OUTLINE'
 	local frame = (which == 'Character' and _G.CharacterFrame) or _G.InspectFrame
@@ -465,7 +464,7 @@ function M:UpdateInspectPageFonts(which)
 		frame.ItemLevelText:FontTemplate(totalLevelFont, totalLevelFontSize, totalLevelFontOutline)
 	end
 
-	local itemLevelFont = LSM:Fetch('font', db.itemLevelFont)
+	local itemLevelFont = db.itemLevelFont
 	local itemLevelFontSize = db.itemLevelFontSize or 12
 	local itemLevelFontOutline = db.itemLevelFontOutline or 'OUTLINE'
 	for i, s in pairs(InspectItems) do

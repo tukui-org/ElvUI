@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 
 local CopyTable = CopyTable -- Our function doesn't exist yet.
 local next = next
+local type = type
 
 P.gridSize = 64
 P.gridLineWidth = 1
@@ -2951,100 +2952,6 @@ for i, role in next, { 'TANK', 'HEALER', 'DAMAGER' } do
 	P.unitframe.units.raidpet['ROLE'..i] = role
 end
 
-do
-	P.cooldown = {
-		enable = true
-	}
-
-	local colors = {
-		expiring = { r = 1, g = 0.2, b = 0.2 },
-		seconds = { r = 1, g = 1, b = 0.2 },
-		minutes = { r = 1, g = 1, b = 1 },
-		hours = { r = 0.4, g = 1, b = 1 },
-		days = { r = 0.4, g = 0.4, b = 1 }
-	}
-
-	local thresholds = {
-		minThreshold = 3, -- low threshold
-		override = false,
-		colors = CopyTable(colors)
-	}
-
-	local defaults = {
-		enable = true,
-
-		roundup = false,
-		reverse = false,
-		hideBling = false,
-		hideNumbers = false,
-		altBling = false,
-		chargeText = true,
-		locText = true,
-
-		rotation = 0,
-		threshold = 0, -- seconds, different than low threshold
-		minDuration = 1500, -- ms
-		thresholdText = CopyTable(thresholds),
-
-		colors = {
-			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
-			edge = { r = 0, g = 0, b = 0, a = 1 },
-			edgeCharge = { r = 0.6, g = 1, b = 0, a = 1 },
-			edgeLOC = { r = 1, g = 0.2, b = 0.8, a = 1 },
-			swipe = { r = 0, g = 0, b = 0, a = 0.7 },
-			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.3 },
-			swipeLOC = { r = 1, g = 0.2, b = 0.6, a = 0.3 }
-		},
-
-		position = 'CENTER',
-		offsetX = 0,
-		offsetY = 0,
-
-		font = 'Expressway',
-		fontOutline = 'OUTLINE',
-		fontSize = 16,
-	}
-
-	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
-	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton', 'targetaura' } do
-		local object = CopyTable(defaults)
-
-		if key == 'global' then
-			object.fontSize = 18
-		elseif key == 'aurabars' then
-			object.position = 'RIGHT'
-			object.offsetX = -10
-		elseif key == 'auraindicator' then
-			object.reverse = true
-			object.hideNumbers = true
-			object.fontSize = 10
-		elseif key == 'auras' then
-			object.reverse = true
-			object.position = 'BOTTOM'
-			object.offsetY = -3
-		elseif key == 'unitframe' then
-			object.reverse = true
-		elseif key == 'nameplates' then
-			object.reverse = true
-		elseif key == 'actionbar' then
-			object.threshold = 300
-			object.altBling = useAltBling
-
-			object.thresholdLoc = CopyTable(thresholds)
-			object.thresholdCharge = CopyTable(thresholds)
-		elseif key == 'targetaura' then
-			object.threshold = 300
-
-			local color = object.colors.text
-			if color then
-				color.r, color.g, color.b = 1, 0.6, 0
-			end
-		end
-
-		P.cooldown[key] = object
-	end
-end
-
 --Actionbar
 local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
@@ -3325,6 +3232,150 @@ P.actionbar.bar4.backdrop = true
 P.actionbar.bar5.enabled = true
 P.actionbar.bar5.buttons = 6
 P.actionbar.bar5.buttonsPerRow = 6
+
+do
+	P.cooldown = {
+		enable = true
+	}
+
+	local colors = {
+		expiring = { r = 1, g = 0.2, b = 0.2 },
+		seconds = { r = 1, g = 1, b = 0.2 },
+		minutes = { r = 1, g = 1, b = 1 },
+		hours = { r = 0.4, g = 1, b = 1 },
+		days = { r = 0.4, g = 0.4, b = 1 }
+	}
+
+	local thresholds = {
+		override = false,
+		expireThreshold = 4,
+		secondsThreshold = 11,
+		colors = CopyTable(colors)
+	}
+
+	local defaults = {
+		enable = true,
+
+		roundup = false,
+		reverse = false,
+		hideBling = false,
+		hideNumbers = false,
+		altBling = false,
+		chargeText = true,
+		locText = true,
+
+		rotation = 0,
+		threshold = 0, -- seconds, different than thresholds
+		minDuration = 1500, -- ms
+		thresholdText = CopyTable(thresholds),
+
+		colors = {
+			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
+			edge = { r = 0, g = 0, b = 0, a = 1 },
+			edgeCharge = { r = 0.6, g = 1, b = 0, a = 1 },
+			edgeLOC = { r = 1, g = 0.2, b = 0.8, a = 1 },
+			swipe = { r = 0, g = 0, b = 0, a = 0.7 },
+			swipeCharge = { r = 0, g = 0.6, b = 1, a = 0.3 },
+			swipeLOC = { r = 1, g = 0.2, b = 0.6, a = 0.3 }
+		},
+
+		position = 'CENTER',
+		offsetX = 0,
+		offsetY = 0,
+
+		font = 'Expressway',
+		fontOutline = 'OUTLINE',
+		fontSize = 16,
+	}
+
+	local auras = { 'auras', 'buffs', 'debuffs', 'aurabar', 'buffIndicator' }
+	local function OverrideUnits(units)
+		local override = {}
+		for unit, main in next, units do
+			if unit ~= 'TARGET' then -- ignore target nameplate
+				local data = override[unit]
+				if not data then
+					data = {}
+					override[unit] = data
+				end
+
+				for _, key in next, auras do
+					if main[key] then
+						local opt = data[key]
+						if not opt then
+							opt = {}
+							data[key] = opt
+						end
+
+						opt = CopyTable(defaults)
+						opt.enable = false
+
+						data[key] = opt
+					end
+				end
+			end
+		end
+
+		return override
+	end
+
+	local function OverrideBars(db)
+		local override = {}
+		for key, data in next, db do
+			if type(data) == 'table' and data.buttons then
+				local opt = CopyTable(defaults)
+				opt.enable = false
+				opt.thresholdLoc = CopyTable(thresholds)
+				opt.thresholdCharge = CopyTable(thresholds)
+
+				override[key] = opt
+			end
+		end
+
+		return override
+	end
+
+	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
+	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton', 'targetaura' } do
+		local object = CopyTable(defaults)
+
+		if key == 'global' then
+			object.fontSize = 18
+		elseif key == 'aurabars' then
+			object.position = 'RIGHT'
+			object.offsetX = -10
+		elseif key == 'auraindicator' then
+			object.reverse = true
+			object.hideNumbers = true
+			object.fontSize = 10
+		elseif key == 'auras' then
+			object.reverse = true
+			object.position = 'BOTTOM'
+			object.offsetY = -3
+		elseif key == 'unitframe' then
+			object.reverse = true
+			object.override = OverrideUnits(P.unitframe.units)
+		elseif key == 'nameplates' then
+			object.reverse = true
+			object.override = OverrideUnits(P.nameplates.units)
+		elseif key == 'actionbar' then
+			object.threshold = 300
+			object.altBling = useAltBling
+			object.override = OverrideBars(P.actionbar)
+			object.thresholdLoc = CopyTable(thresholds)
+			object.thresholdCharge = CopyTable(thresholds)
+		elseif key == 'targetaura' then
+			object.threshold = 300
+
+			local color = object.colors.text
+			if color then
+				color.r, color.g, color.b = 1, 0.6, 0
+			end
+		end
+
+		P.cooldown[key] = object
+	end
+end
 
 -- This allows movers positions to be reset to whatever profile is being used
 E.LayoutMoverPositions = {
