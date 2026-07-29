@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
-local LSM = E.Libs.LSM
 
 local unpack = unpack
 local CreateFrame = CreateFrame
@@ -44,15 +43,14 @@ function UF:Configure_RaidDebuffs(frame)
 		debuff:Point('BOTTOM', frame, 'BOTTOM', db.xOffset, db.yOffset + UF.SPACING)
 		debuff:Size(db.size)
 
-		local font = LSM:Fetch('font', db.font)
 		local stackColor = db.stack.color
-		debuff.count:FontTemplate(font, db.fontSize, db.fontOutline)
+		debuff.count:FontTemplate(db.font, db.fontSize, db.fontOutline)
 		debuff.count:ClearAllPoints()
 		debuff.count:Point(db.stack.position, db.stack.xOffset, db.stack.yOffset)
 		debuff.count:SetTextColor(stackColor.r, stackColor.g, stackColor.b, stackColor.a)
 
 		local durationColor = db.duration.color
-		debuff.time:FontTemplate(font, db.fontSize, db.fontOutline)
+		debuff.time:FontTemplate(db.font, db.fontSize, db.fontOutline)
 		debuff.time:ClearAllPoints()
 		debuff.time:Point(db.duration.position, db.duration.xOffset, db.duration.yOffset)
 		debuff.time:SetTextColor(durationColor.r, durationColor.g, durationColor.b, durationColor.a)

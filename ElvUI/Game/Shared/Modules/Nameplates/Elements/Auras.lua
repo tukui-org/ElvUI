@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
-local LSM = E.Libs.LSM
 
 local unpack = unpack
 local strfind = strfind
@@ -143,13 +142,13 @@ function NP:Construct_AuraIcon(button)
 
 	button.Cooldown:SetAllPoints(button.Icon)
 
-	E:RegisterCooldown(button.Cooldown, 'nameplates')
-
 	local auras = button:GetParent()
-	if auras and auras.type then
-		local db = NP:PlateDB(auras.__owner)
-		button.db = db[auras.type]
-	end
+	local nameplate = auras:GetParent()
+
+	local db = NP:PlateDB(nameplate)
+	button.db = db[auras.type]
+
+	E:RegisterCooldown(button.Cooldown, 'nameplates', nameplate.frameType, auras.type)
 
 	NP:UpdateAuraSettings(button)
 end
@@ -263,7 +262,7 @@ function NP:UpdateAuraSettings(button)
 		if button.Count then
 			local point = db.countPosition or 'CENTER'
 			button.Count:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
-			button.Count:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+			button.Count:FontTemplate(db.countFont, db.countFontSize, db.countFontOutline)
 			button.Count:ClearAllPoints()
 			button.Count:Point(point, db.countXOffset, db.countYOffset)
 		end
@@ -271,7 +270,7 @@ function NP:UpdateAuraSettings(button)
 		if button.Text then
 			local point = db.sourceText.position or 'TOP'
 			button.Text:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
-			button.Text:FontTemplate(LSM:Fetch('font', db.sourceText.font), db.sourceText.fontSize, db.sourceText.fontOutline)
+			button.Text:FontTemplate(db.sourceText.font, db.sourceText.fontSize, db.sourceText.fontOutline)
 			button.Text:ClearAllPoints()
 			button.Text:Point(point or 'TOP', db.sourceText.xOffset, db.sourceText.yOffset)
 		end

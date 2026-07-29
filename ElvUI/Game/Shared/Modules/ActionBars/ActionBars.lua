@@ -82,7 +82,6 @@ local buttonDefaults = {
 	},
 }
 
-AB.RegisterCooldown = E.RegisterCooldown
 AB.handledBars = {} --List of all bars
 AB.handledbuttons = {} --List of all buttons that have been modified.
 AB.barDefaults = {
@@ -384,7 +383,7 @@ function AB:PositionAndSizeBar(barName)
 		AB:HandleButtonAutoCast(bar, button)
 		AB:HandleButtonState(button, i, vehicleIndex, pages)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
-		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars)
+		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars, nil, 'bar'..button.header.id)
 	end
 
 	AB:HandleBackdropMultiplier(bar, backdropSpacing, buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastShownButton, anchorRowButton)
@@ -707,18 +706,20 @@ do
 	end
 end
 
-function AB:UpdateButtonSettings(specific)
-	if not E.private.actionbar.enable then return end
-
-	if InCombatLockdown() then
-		AB.NeedsUpdateButtonSettings = true
-		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-		return
-	end
-
+-- normally UpdateBarConfig and UpdateBarPosition would be the same function
+-- however, because of Classic HC we need to split the load on init and another
+-- part to load later, so fonts will load in properly from plugins with LSM ~Simpy
+function AB:UpdateBarConfig(specific)
 	for barName, bar in next, AB.handledBars do
 		if not specific or specific == barName then
-			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
+			AB:UpdateButtonConfig(barName, bar.bindButtons)
+		end
+	end
+end
+
+function AB:UpdateBarPosition(specific)
+	for barName, bar in next, AB.handledBars do
+		if not specific or specific == barName then
 			AB:PositionAndSizeBar(barName) -- db is set here, button style, and paging also runs here
 
 			for _, button in next, bar.buttons do
@@ -730,6 +731,19 @@ function AB:UpdateButtonSettings(specific)
 			end
 		end
 	end
+end
+
+function AB:UpdateButtonSettings(specific)
+	if not E.private.actionbar.enable then return end
+
+	if InCombatLockdown() then
+		AB.NeedsUpdateButtonSettings = true
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
+	end
+
+	AB:UpdateBarPosition(specific)
+	E:Delay(0.1, AB.UpdateBarConfig, AB, specific) -- see note above function about why this is delayed
 
 	if not specific then
 		-- we can safely toggle these events when we arent using the handle overlay
@@ -771,7 +785,7 @@ function AB:GetPage(bar, defaultPage, condition)
 	return condition..' '..defaultPage
 end
 
-function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
+function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal, cooldownKey)
 	local name = button:GetName()
 	local icon = button.icon or _G[name..'Icon']
 	local hotkey = button.HotKey or _G[name..'HotKey']
@@ -834,7 +848,7 @@ function AB:StyleButton(button, noBackdrop, useMasque, ignoreNormal)
 	end
 
 	if not AB.handledbuttons[button] then
-		E:RegisterCooldown(button.cooldown, 'actionbar')
+		E:RegisterCooldown(button.cooldown, 'actionbar', cooldownKey)
 
 		if button.AuraCooldown then
 			E:RegisterCooldown(button.AuraCooldown, 'targetaura')

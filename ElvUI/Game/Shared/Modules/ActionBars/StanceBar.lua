@@ -155,7 +155,7 @@ function AB:PositionAndSizeBarShapeShift()
 		end
 
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
-		AB:StyleButton(button, nil, useMasque, true)
+		AB:StyleButton(button, nil, useMasque, true, 'stanceBar')
 
 		if useMasque then
 			MasqueGroup:AddButton(bar.buttons[i])

@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
+local LSM = E.Libs.LSM
 
 local _G = _G
 local strsub, type = strsub, type
@@ -485,28 +486,29 @@ local function StripTexts(object, kill, zero)
 	StripType(STRIP_FONT, object, kill, zero)
 end
 
-local function FontTemplate(fs, font, size, style, skip)
+local function FontTemplate(fs, fontName, fontSize, fontStyle, skip)
 	if not skip then -- ignore updates from UpdateFontTemplates
-		E.texts[fs] = { font = font, fontSize = size, fontStyle = style }
+		E.texts[fs] = { fontName = fontName, fontSize = fontSize, fontStyle = fontStyle }
 	end
 
 	-- grab values from profile before conversion
-	if not style then style = E.db.general.fontStyle or P.general.fontStyle end
-	if not size then size = E.db.general.fontSize or P.general.fontSize end
-	if style == 'NONE' then style = '' end -- none isnt a real style
+	if not fontStyle then fontStyle = E.db.general.fontStyle or P.general.fontStyle end
+	if not fontSize then fontSize = E.db.general.fontSize or P.general.fontSize end
+	if fontStyle == 'NONE' then fontStyle = '' end -- none isnt a real style
 
-	local slug = E:CanFlagSlug(style)
-	if slug then style = style..'SLUG' end -- handle before shadow
+	local slug = E:CanFlagSlug(fontStyle)
+	if slug then fontStyle = fontStyle..'SLUG' end -- handle before shadow
 
-	local shadow = strsub(style, 0, 6) == 'SHADOW'
-	if shadow then style = strsub(style, 7) end -- shadow isnt a real style
+	local shadow = strsub(fontStyle, 0, 6) == 'SHADOW'
+	if shadow then fontStyle = strsub(fontStyle, 7) end -- shadow isnt a real style
 
 	if fs.SetScaleAnimationMode then
 		fs:SetScaleAnimationMode(slug and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
 	end
 
-	local obj = E:GenerateFontObject('ElvUI_FontTemplate', font or E.media.normFont, size, style)
-	E:SetFontShadow(obj, style, shadow)
+	local font = LSM:Fetch('font', fontName) or E.media.normFont
+	local obj = E:GenerateFontObject('ElvUI_FontTemplate', font, fontSize, fontStyle)
+	E:SetFontShadow(obj, fontStyle, shadow)
 	fs:SetFontObject(obj)
 end
 

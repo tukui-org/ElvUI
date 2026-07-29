@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local next = next
@@ -63,7 +62,7 @@ function S:CooldownManager_CountText(text)
 	text:SetIgnoreParentScale(true)
 	text:ClearAllPoints()
 	text:Point(db.countPosition, db.countxOffset, db.countyOffset)
-	text:FontTemplate(LSM:Fetch('font', db.countFont), db.countFontSize, db.countFontOutline)
+	text:FontTemplate(db.countFont, db.countFontSize, db.countFontOutline)
 
 	local color = db.countFontColor
 	if color then
@@ -95,7 +94,7 @@ function S:CooldownManager_UpdateTextBar(bar)
 	if bar.Name then
 		bar.Name:ClearAllPoints()
 		bar.Name:Point(db.namePosition, db.namexOffset, db.nameyOffset)
-		bar.Name:FontTemplate(LSM:Fetch('font', db.nameFont), db.nameFontSize, db.nameFontOutline)
+		bar.Name:FontTemplate(db.nameFont, db.nameFontSize, db.nameFontOutline)
 
 		local color = db.nameFontColor
 		if color then
@@ -106,7 +105,7 @@ function S:CooldownManager_UpdateTextBar(bar)
 	if bar.Duration then
 		bar.Duration:ClearAllPoints()
 		bar.Duration:Point(db.durationPosition, db.durationxOffset, db.durationyOffset)
-		bar.Duration:FontTemplate(LSM:Fetch('font', db.durationFont), db.durationFontSize, db.durationFontOutline)
+		bar.Duration:FontTemplate(db.durationFont, db.durationFontSize, db.durationFontOutline)
 
 		local color = db.durationFontColor
 		if color then

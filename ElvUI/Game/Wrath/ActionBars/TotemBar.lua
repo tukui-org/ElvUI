@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local ipairs, next, gsub = ipairs, next, gsub
@@ -304,7 +303,7 @@ function AB:PositionAndSizeTotemBar()
 end
 
 function AB:UpdateTotemBindings()
-	local font = LSM:Fetch('font', AB.db.totemBar.font)
+	local font = AB.db.totemBar.font
 	local size, outline = AB.db.totemBar.fontSize, AB.db.totemBar.fontOutline
 
 	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(font, size, outline)

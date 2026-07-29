@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local BL = E:GetModule('Blizzard')
-local LSM = E.Libs.LSM
 
 local _G = _G
 local wipe = wipe
@@ -109,7 +108,7 @@ function BL:HandleAddonCompartment()
 			compartment:SetParent(E.HiddenFrame)
 		else
 			E:EnableMover(compartment.mover.name)
-			compartment.Text:FontTemplate(LSM:Fetch('font', db.font), db.fontSize, db.fontOutline)
+			compartment.Text:FontTemplate(db.font, db.fontSize, db.fontOutline)
 			compartment:SetFrameLevel(db.frameLevel or 20)
 			compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
 			compartment:SetParent(UIParent)

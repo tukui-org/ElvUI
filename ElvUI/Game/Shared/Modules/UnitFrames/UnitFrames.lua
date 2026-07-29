@@ -617,10 +617,17 @@ function UF:UpdateColors()
 	ElvUF.colors.DebuffHighlight.Bleed = E:SetColorTable(ElvUF.colors.DebuffHighlight.Bleed, db.debuffHighlight.Bleed)
 end
 
-function UF:Update_StatusBars(statusbars)
-	for statusBar in pairs(statusbars or UF.statusbars) do
-		UF:Update_StatusBar(statusBar)
-		UF:Update_StatusBar(statusBar.bg)
+do
+	function UF:Update_AllStatusBars(_, data)
+		UF:Update_StatusBar(self, data.texture)
+		UF:Update_StatusBar(self.bg, data.texture)
+	end
+
+	local info = {}
+	function UF:Update_StatusBars(statusbars)
+		info.texture = LSM:Fetch('statusbar', UF.db.statusbar)
+
+		E:CoroutineUpdate(UF.Update_AllStatusBars, statusbars or UF.statusbars, info)
 	end
 end
 
@@ -642,13 +649,19 @@ function UF:Update_StatusBar(statusBar, texture)
 end
 
 function UF:Update_FontString(object)
-	object:FontTemplate(LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline)
+	object:FontTemplate(UF.db.font, UF.db.fontSize, UF.db.fontOutline)
 end
 
-function UF:Update_FontStrings()
-	local font, size, outline = LSM:Fetch('font', UF.db.font), UF.db.fontSize, UF.db.fontOutline
-	for obj in pairs(UF.fontstrings) do
-		obj:FontTemplate(font, size, outline)
+do
+	function UF:Update_AllFontStrings(_, data)
+		self:FontTemplate(data.font, data.size, data.outline)
+	end
+
+	local info = {}
+	function UF:Update_FontStrings()
+		info.font, info.size, info.outline = UF.db.font, UF.db.fontSize, UF.db.fontOutline
+
+		E:CoroutineUpdate(UF.Update_AllFontStrings, UF.fontstrings, info)
 	end
 end
 
@@ -775,50 +788,66 @@ function UF:Configure_FontString(obj)
 	obj:FontTemplate() --This is temporary.
 end
 
+function UF:Update_UnitFrame(frame)
+	local enabled = UF.db.units[self].enable
+	frame:SetEnabled(enabled)
+
+	if enabled then
+		frame:Update()
+		E:EnableMover(frame.mover.name)
+	else
+		E:DisableMover(frame.mover.name)
+	end
+end
+
+function UF:Update_GroupFrame(group)
+	local frame = UF[self]
+
+	local enabled = UF.db.units[group].enable
+	if group == 'arena' then
+		frame:SetAttribute('oUF-enableArenaPrep', enabled)
+	end
+
+	frame:SetEnabled(enabled)
+
+	if enabled then
+		frame:Update()
+		E:EnableMover(frame.mover.name)
+	else
+		E:DisableMover(frame.mover.name)
+	end
+
+	if frame.isForced then
+		UF:ForceShow(frame)
+	end
+end
+
 function UF:Update_AllFrames()
 	if not E.private.unitframe.enable then return end
 
 	UF.multiplier = UF.db.multiplier
 
 	UF:UpdateColors()
+
 	UF:Update_FontStrings()
 	UF:Update_StatusBars()
 
-	for unit, frame in pairs(UF.units) do
-		local enabled = UF.db.units[unit].enable
-		frame:SetEnabled(enabled)
-
-		if enabled then
-			frame:Update()
-			E:EnableMover(frame.mover.name)
-		else
-			E:DisableMover(frame.mover.name)
-		end
-	end
-
-	for unit, group in pairs(UF.groupunits) do
-		local frame = UF[unit]
-
-		local enabled = UF.db.units[group].enable
-		if group == 'arena' then
-			frame:SetAttribute('oUF-enableArenaPrep', enabled)
-		end
-
-		frame:SetEnabled(enabled)
-
-		if enabled then
-			frame:Update()
-			E:EnableMover(frame.mover.name)
-		else
-			E:DisableMover(frame.mover.name)
-		end
-
-		if frame.isForced then
-			UF:ForceShow(frame)
-		end
-	end
+	E:CoroutineUpdate(UF.Update_UnitFrame, UF.units)
+	E:CoroutineUpdate(UF.Update_GroupFrame, UF.groupunits)
 
 	UF:UpdateAllHeaders()
+end
+
+function UF:UpdateGroupHeader(_, data)
+	UF:CreateAndUpdateHeaderGroup(self, nil, nil, nil, data.skip)
+end
+
+function UF:UpdateAllHeaders(skip)
+	if E.private.unitframe.disabledBlizzardFrames.party then
+		ElvUF:DisableBlizzard('party')
+	end
+
+	E:CoroutineUpdate(UF.UpdateGroupHeader, UF.headers, { skip = skip })
 end
 
 function UF:CreateAndUpdateUFGroup(group, numGroup)
@@ -1540,16 +1569,6 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-function UF:UpdateAllHeaders(skip)
-	if E.private.unitframe.disabledBlizzardFrames.party then
-		ElvUF:DisableBlizzard('party')
-	end
-
-	for group in pairs(UF.headers) do
-		UF:CreateAndUpdateHeaderGroup(group, nil, nil, nil, skip)
-	end
-end
-
 do
 	local function EventlessUpdate(frame, elapsed)
 		local unit = frame.__eventless and frame.unit
@@ -2234,13 +2253,10 @@ function UF:Style(unit)
 	UF:Construct_UF(self, unit)
 end
 
-function UF:Setup(_, addon)
-	if addon ~= 'ElvUI' then return end
-
+function UF:Setup()
 	ElvUF:RegisterInitCallback(UF.AfterStyleCallback)
 	ElvUF:RegisterStyle('ElvUF', UF.Style)
 	ElvUF:SetActiveStyle('ElvUF')
-	ElvUF:DisableFactory() -- we want to turn off ADDON_LOADED
 
 	UF:LoadUnits()
 	UF:Update_FontStrings()
@@ -2258,7 +2274,11 @@ function UF:Initialize()
 	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
+	-- oUF factory waits for PLAYER_LOGIN this is not acceptable in Classic HC
+	-- so we force the loading here instead to skip `script ran too long` issue
 	ElvUF:Factory(UF.Setup)
+	ElvUF:RunFactoryQueue()
+	ElvUF:DisableFactory()
 
 	UF:UpdateColors()
 

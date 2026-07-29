@@ -261,7 +261,7 @@ function E:SetupTheme(theme, noDisplayMsg)
 		E.db.general.valuecolor = E:NewColorTable(0.09, 0.52, 0.82, 1)
 	end
 
-	E:UpdateStart(true, true)
+	E:UpdateStart(true)
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Theme Set"]
@@ -1161,7 +1161,7 @@ function E:SetupLayout(layout, noDataReset, noDisplayMsg)
 		E:LayoutMovers(layout)
 	end
 
-	E:StaggeredUpdateAll()
+	E:UpdateAll()
 
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Layout Set"]
@@ -1640,16 +1640,19 @@ function E:Install()
 		f.Desc1:FontTemplate(nil, 16)
 		f.Desc1:Point('TOPLEFT', 20, -75)
 		f.Desc1:Width(f:GetWidth() - 40)
+		f.Desc1:SetJustifyH('CENTER')
 
 		f.Desc2 = f:CreateFontString(nil, 'OVERLAY')
 		f.Desc2:FontTemplate(nil, 16)
 		f.Desc2:Point('TOPLEFT', 20, -125)
 		f.Desc2:Width(f:GetWidth() - 40)
+		f.Desc2:SetJustifyH('CENTER')
 
 		f.Desc3 = f:CreateFontString(nil, 'OVERLAY')
 		f.Desc3:FontTemplate(nil, 16)
 		f.Desc3:Point('TOPLEFT', 20, -175)
 		f.Desc3:Width(f:GetWidth() - 40)
+		f.Desc3:SetJustifyH('CENTER')
 
 		local close = CreateFrame('Button', 'InstallCloseButton', f, 'UIPanelCloseButton')
 		close:Point('TOPRIGHT', f, 'TOPRIGHT')

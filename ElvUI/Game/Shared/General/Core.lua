@@ -3,11 +3,12 @@ ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale 
 local E, L, V, P, G = unpack(ElvUI)
 
 local _G = _G
-local tonumber, pairs, ipairs, unpack, tostring = tonumber, pairs, ipairs, unpack, tostring
+local tonumber, next, unpack, tostring = tonumber, next, unpack, tostring
 local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
-local assert, type, pcall, xpcall, next, print = assert, type, pcall, xpcall, next, print
+local assert, type, pcall, xpcall, print = assert, type, pcall, xpcall, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
+local co_yield, co_resume, co_create = coroutine.yield, coroutine.resume, coroutine.create
 
 local Mixin = Mixin
 local ColorMixin = ColorMixin
@@ -193,7 +194,7 @@ E.HiddenFrame:Hide()
 
 do -- used in options
 	E.DEFAULT_FILTER = {}
-	for filter, tbl in pairs(G.unitframe.aurafilters) do
+	for filter, tbl in next, G.unitframe.aurafilters do
 		E.DEFAULT_FILTER[filter] = tbl.type
 	end
 end
@@ -252,7 +253,7 @@ end
 function E:CheckClassColor(r, g, b)
 	r, g, b = E:GrabColorPickerValues(r, g, b)
 
-	for class in pairs(_G.RAID_CLASS_COLORS) do
+	for class in next, _G.RAID_CLASS_COLORS do
 		if class ~= E.myclass then
 			local color = E:ClassColor(class, true)
 			local red, green, blue = E:GrabColorPickerValues(color.r, color.g, color.b)
@@ -445,103 +446,187 @@ function E:GeneralMedia_ApplyToAll()
 	E.db.unitframe.units.raid2.rdebuffs.font = font
 	E.db.unitframe.units.raid3.rdebuffs.font = font
 
-	E:StaggeredUpdateAll()
+	E:UpdateAll()
 end
 
-function E:ValueFuncCall()
-	local hex, r, g, b = E.media.hexvaluecolor, unpack(E.media.rgbvaluecolor)
-	for obj, func in pairs(E.valueColorUpdateFuncs) do
-		func(obj, hex, r, g, b)
+do	-- i guess we finally need it ~Simpy
+	local funcs = {}
+	local watcher = CreateFrame('Frame')
+	function E:Coroutine_OnUpdate()
+		for func, data in next, funcs do
+			local resumed = co_resume(data.routine, data.next)
+			if not resumed then -- cant continue
+				funcs[func] = nil
+			end
+		end
+
+		-- no more to process
+		if not next(funcs) then
+			watcher:Hide()
+		end
+	end
+
+	watcher.funcs = funcs -- just for debugging
+	watcher:Hide() -- wont need this right away
+	watcher:SetScript('OnUpdate', E.Coroutine_OnUpdate)
+
+	E.CoroutineFrame = watcher
+
+	function E:GenerateCoroutineLoop(info)
+		return function()
+			for key, frame in next, info.frames do
+				info.func(key, frame, info.data)
+
+				if info.count < info.limit then
+					info.count = info.count + 1
+				else
+					info.count = 0
+					info.next = frame
+
+					co_yield()
+				end
+			end
+		end
+	end
+
+	function E:CoroutineUpdate(func, frames, data, limit)
+		local info = funcs[func]
+		if info then
+			return -- excuse me?
+		else
+			info = { count = 0, limit = limit or 100, data = data, frames = frames, func = func }
+		end
+
+		local loop = E:GenerateCoroutineLoop(info)
+		info.routine = co_create(loop)
+
+		if not watcher:IsShown() then
+			watcher:Show()
+		end
+
+		funcs[func] = info
+	end
+end
+
+function E:ValueFunc(func, data)
+	func(self, data.hex, data.r, data.g, data.b, data.a)
+end
+
+do
+	local data = {}
+	function E:ValueFuncCall()
+		data.hex = E.media.hexvaluecolor
+		data.r, data.g, data.b, data.a = unpack(E.media.rgbvaluecolor)
+
+		E:CoroutineUpdate(E.ValueFunc, E.valueColorUpdateFuncs, data)
+	end
+end
+
+function E:UpdateFrameTemplate()
+	if self and self.template and not self:IsForbidden() then
+		if not (self.ignoreUpdates or self.ignoreFrameTemplates) then
+			self:SetTemplate(self.template, self.glossTex, nil, self.forcePixelMode)
+		end
+	else
+		E.frames[self] = nil
+	end
+end
+
+function E:UpdateUnitframeTemplate()
+	if self and self.template and not self:IsForbidden() then
+		if not (self.ignoreUpdates or self.ignoreFrameTemplates) then
+			self:SetTemplate(self.template, self.glossTex, nil, self.forcePixelMode, self.isUnitFrameElement)
+		end
+	else
+		E.unitFrameElements[self] = nil
 	end
 end
 
 function E:UpdateFrameTemplates()
-	for frame in pairs(E.frames) do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
-				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode)
-			end
-		else
-			E.frames[frame] = nil
-		end
-	end
+	E:CoroutineUpdate(E.UpdateFrameTemplate, E.frames)
+	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
+end
 
-	for frame in pairs(E.unitFrameElements) do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.ignoreFrameTemplates) then
-				frame:SetTemplate(frame.template, frame.glossTex, nil, frame.forcePixelMode, frame.isUnitFrameElement)
-			end
-		else
-			E.unitFrameElements[frame] = nil
+function E:UpdateBorderColor(_, data)
+	if self and self.template and not self:IsForbidden() then
+		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
+			self:SetBackdropBorderColor(data.r, data.g, data.b)
 		end
+	else
+		E.frames[self] = nil
 	end
 end
 
-function E:UpdateBorderColors()
-	local r, g, b = unpack(E.media.bordercolor)
-	for frame in pairs(E.frames) do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.forcedBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
-				frame:SetBackdropBorderColor(r, g, b)
-			end
-		else
-			E.frames[frame] = nil
+function E:UpdateUnitframeBorderColor(_, data)
+	if self and self.template and not self:IsForbidden() then
+		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
+			self:SetBackdropBorderColor(data.r, data.g, data.b)
 		end
-	end
-
-	local r2, g2, b2 = unpack(E.media.unitframeBorderColor)
-	for frame in pairs(E.unitFrameElements) do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not (frame.ignoreUpdates or frame.forcedBorderColors) and (frame.template == 'Default' or frame.template == 'Transparent') then
-				frame:SetBackdropBorderColor(r2, g2, b2)
-			end
-		else
-			E.unitFrameElements[frame] = nil
-		end
+	else
+		E.unitFrameElements[self] = nil
 	end
 end
 
-function E:UpdateBackdropColors()
-	local r, g, b, a = unpack(E.media.backdropcolor)
-	local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
+do
+	local info = { frames = {}, unitframes = {} }
+	function E:UpdateBorderColors()
+		info.frames.r, info.frames.g, info.frames.b = unpack(E.media.bordercolor)
+		E:CoroutineUpdate(E.UpdateBorderColor, E.frames, info.frames)
 
-	for frame in pairs(E.frames) do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not frame.ignoreUpdates then
-				if frame.callbackBackdropColor then
-					frame:callbackBackdropColor()
-				elseif frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b, frame.customBackdropAlpha or a)
-				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
-				end
-			end
-		else
-			E.frames[frame] = nil
-		end
+		info.unitframes.r, info.unitframes.g, info.unitframes.b = unpack(E.media.unitframeBorderColor)
+		E:CoroutineUpdate(E.UpdateUnitframeBorderColor, E.unitFrameElements, info.unitframes)
 	end
+end
 
-	for frame in pairs(E.unitFrameElements) do
-		if frame and frame.template and not frame:IsForbidden() then
-			if not frame.ignoreUpdates then
-				if frame.callbackBackdropColor then
-					frame:callbackBackdropColor()
-				elseif frame.template == 'Default' then
-					frame:SetBackdropColor(r, g, b, frame.customBackdropAlpha or a)
-				elseif frame.template == 'Transparent' then
-					frame:SetBackdropColor(r2, g2, b2, frame.customBackdropAlpha or a2)
-				end
+function E:UpdateBackdropColor(_, data)
+	if self and self.template and not self:IsForbidden() then
+		if not self.ignoreUpdates then
+			if self.callbackBackdropColor then
+				self:callbackBackdropColor()
+			elseif self.template == 'Default' then
+				self:SetBackdropColor(data.r, data.g, data.b, self.customBackdropAlpha or data.a)
+			elseif self.template == 'Transparent' then
+				self:SetBackdropColor(data.transparent.r, data.transparent.g, data.transparent.b, self.customBackdropAlpha or data.transparent.a)
 			end
-		else
-			E.unitFrameElements[frame] = nil
 		end
+	else
+		E.frames[self] = nil
 	end
+end
+
+function E:UpdateUnitframeBackdropColor(_, data)
+	if self and self.template and not self:IsForbidden() then
+		if not self.ignoreUpdates then
+			if self.callbackBackdropColor then
+				self:callbackBackdropColor()
+			elseif self.template == 'Default' then
+				self:SetBackdropColor(data.r, data.g, data.b, self.customBackdropAlpha or data.a)
+			elseif self.template == 'Transparent' then
+				self:SetBackdropColor(data.transparent.r, data.transparent.g, data.transparent.b, self.customBackdropAlpha or data.transparent.a)
+			end
+		end
+	else
+		E.unitFrameElements[self] = nil
+	end
+end
+
+do
+	local info = { transparent = {} }
+	function E:UpdateBackdropColors()
+		info.r, info.g, info.b, info.a = unpack(E.media.backdropcolor)
+		info.transparent.r, info.transparent.g, info.transparent.b, info.transparent.a = unpack(E.media.backdropfadecolor)
+
+		E:CoroutineUpdate(E.UpdateBackdropColor, E.frames, info)
+		E:CoroutineUpdate(E.UpdateUnitframeBackdropColor, E.unitFrameElements, info)
+	end
+end
+
+function E:UpdateFontTemplate(info)
+	self:FontTemplate(info.fontName, info.fontSize, info.fontStyle, true)
 end
 
 function E:UpdateFontTemplates()
-	for fs, data in pairs(E.texts) do
-		fs:FontTemplate(data.font, data.fontSize, data.fontStyle, true)
-	end
+	E:CoroutineUpdate(E.UpdateFontTemplate, E.texts)
 end
 
 function E:RegisterStatusBar(statusBar)
@@ -553,7 +638,7 @@ function E:UnregisterStatusBar(statusBar)
 end
 
 function E:UpdateStatusBars()
-	for statusBar in pairs(E.statusBars) do
+	for statusBar in next, E.statusBars do
 		if statusBar and statusBar:IsObjectType('StatusBar') then
 			statusBar:SetStatusBarTexture(E.media.normTex)
 		elseif statusBar and statusBar:IsObjectType('Texture') then
@@ -582,18 +667,20 @@ do
 end
 
 function E:IsIncompatible(module, addons)
-	for _, addon in ipairs(addons) do
-		local incompatible
-		if addon == 'Leatrix_Plus' then
-			local db = _G.LeaPlusDB
-			incompatible = db and db.MinimapMod == 'On'
-		else
-			incompatible = E:IsAddOnEnabled(addon)
-		end
+	for _, addon in next, addons do
+		if type(addon) == 'string' then
+			local incompatible
+			if addon == 'Leatrix_Plus' then
+				local db = _G.LeaPlusDB
+				incompatible = db and db.MinimapMod == 'On'
+			else
+				incompatible = E:IsAddOnEnabled(addon)
+			end
 
-		if incompatible then
-			E:IncompatibleAddOn(addon, module, addons.info)
-			return true
+			if incompatible then
+				E:IncompatibleAddOn(addon, module, addons.info)
+				return true
+			end
 		end
 	end
 end
@@ -678,8 +765,9 @@ do
 	function E:CheckIncompatible()
 		if E.global.ignoreIncompatible then return end
 
-		for module, addons in pairs(ADDONS) do
-			if addons[1] and addons.info.enabled() and E:IsIncompatible(module, addons) then
+		for module, addons in next, ADDONS do
+			local active = addons.info and addons.info.enabled()
+			if active and E:IsIncompatible(module, addons) then
 				break
 			end
 		end
@@ -692,7 +780,7 @@ function E:CopyTable(current, default, merge)
 	end
 
 	if type(default) == 'table' then
-		for option, value in pairs(default) do
+		for option, value in next, default do
 			local isTable = type(value) == 'table'
 			if not merge or (isTable or current[option] == nil) then
 				current[option] = (isTable and E:CopyTable(current[option], value, merge)) or value
@@ -709,7 +797,7 @@ function E:RemoveEmptySubTables(tbl)
 		return
 	end
 
-	for k, v in pairs(tbl) do
+	for k, v in next, tbl do
 		if type(v) == 'table' then
 			if next(v) == nil then
 				tbl[k] = nil
@@ -737,7 +825,7 @@ function E:RemoveTableDuplicates(cleanTable, checkTable, generatedKeys)
 
 	local rtdCleaned = {}
 	local keyed = type(generatedKeys) == 'table'
-	for option, value in pairs(cleanTable) do
+	for option, value in next, cleanTable do
 		local default, genTable, genOption = checkTable[option]
 		if keyed then genTable = generatedKeys[option] else genOption = generatedKeys end
 
@@ -777,7 +865,7 @@ function E:FilterTableFromBlacklist(cleanTable, blacklistTable)
 	end
 
 	local tfbCleaned = {}
-	for option, value in pairs(cleanTable) do
+	for option, value in next, cleanTable do
 		if type(value) == 'table' and blacklistTable[option] and type(blacklistTable[option]) == 'table' then
 			tfbCleaned[option] = E:FilterTableFromBlacklist(value, blacklistTable[option])
 		else
@@ -812,10 +900,10 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	--Code slightly modified by Simpy, sorting from @sighol
 	local function Recurse(tbl, level, ret)
 		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, i) end
+		for i in next, tbl do tinsert(tkeys, i) end
 		sort(tkeys, KeySort)
 
-		for _, i in ipairs(tkeys) do
+		for _, i in next, tkeys do
 			local v = tbl[i]
 
 			ret = ret..strrep('    ', level)..'['
@@ -864,7 +952,7 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	}
 
 	local function BuildLineStructure(str) -- str is profileText
-		for _, v in ipairs(lineStructureTable) do
+		for _, v in next, lineStructureTable do
 			if type(v) == 'string' then
 				str = str..'["'..v..'"]'
 			else
@@ -878,11 +966,11 @@ do	--The code in this function is from WeakAuras, credit goes to Mirrored and th
 	local sameLine
 	local function Recurse(tbl, ret, profileText)
 		local tkeys = {}
-		for i in pairs(tbl) do tinsert(tkeys, i) end
+		for i in next, tbl do tinsert(tkeys, i) end
 		sort(tkeys, KeySort)
 
 		local lineStructure = BuildLineStructure(profileText)
-		for _, k in ipairs(tkeys) do
+		for _, k in next, tkeys do
 			local v = tbl[k]
 
 			if not sameLine then
@@ -1031,7 +1119,7 @@ do
 	f:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
-function E:UpdateStart(skipCallback, skipUpdateDB)
+function E:UpdateStart(skipUpdateDB)
 	if not skipUpdateDB then
 		E:UpdateDB()
 	end
@@ -1039,10 +1127,6 @@ function E:UpdateStart(skipCallback, skipUpdateDB)
 	E:UpdateMoverPositions()
 	E:UpdateMediaItems()
 	E:UpdateUnitFrames()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
 do -- BFA Convert, deprecated..
@@ -1107,7 +1191,7 @@ do -- BFA Convert, deprecated..
 				E.db.unitframe.OORAlpha = nil
 			end
 
-			for _, unit in ipairs({'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid1','raid2','raid3','raidpet','tank','assist'}) do
+			for _, unit in next, {'target','targettarget','targettargettarget','focus','focustarget','pet','pettarget','boss','arena','party','raid1','raid2','raid3','raidpet','tank','assist'} do
 				if E.db.unitframe.units[unit].rangeCheck ~= nil then
 					local enabled = E.db.unitframe.units[unit].rangeCheck
 					E.db.unitframe.units[unit].fader.enable = enabled
@@ -1127,7 +1211,7 @@ do -- BFA Convert, deprecated..
 		end
 
 		--Removed additional table in nameplate filters cause it was basically useless
-		for _, unit in ipairs({'PLAYER','FRIENDLY_PLAYER','ENEMY_PLAYER','FRIENDLY_NPC','ENEMY_NPC'}) do
+		for _, unit in next, {'PLAYER','FRIENDLY_PLAYER','ENEMY_PLAYER','FRIENDLY_NPC','ENEMY_NPC'} do
 			if E.db.nameplates.units[unit].buffs and E.db.nameplates.units[unit].buffs.filters ~= nil then
 				E.db.nameplates.units[unit].buffs.minDuration = E.db.nameplates.units[unit].buffs.filters.minDuration or P.nameplates.units[unit].buffs.minDuration
 				E.db.nameplates.units[unit].buffs.maxDuration = E.db.nameplates.units[unit].buffs.filters.maxDuration or P.nameplates.units[unit].buffs.maxDuration
@@ -1156,7 +1240,7 @@ do -- BFA Convert, deprecated..
 		end
 
 		--Heal Prediction is now a table instead of a bool
-		for _, unit in ipairs({'player','target','focus','pet','arena','party','raid1','raid2','raid3','raidpet'}) do
+		for _, unit in next, {'player','target','focus','pet','arena','party','raid1','raid2','raid3','raidpet'} do
 			if type(E.db.unitframe.units[unit].healPrediction) ~= 'table' then
 				local enabled = E.db.unitframe.units[unit].healPrediction
 				E.db.unitframe.units[unit].healPrediction = {}
@@ -1223,22 +1307,22 @@ do -- BFA Convert, deprecated..
 
 		-- removed override stuff from aurawatch
 		if E.global.unitframe.buffwatch then
-			for _, spells in pairs(E.global.unitframe.buffwatch) do
-				for _, spell in pairs(spells) do
+			for _, spells in next, E.global.unitframe.buffwatch do
+				for _, spell in next, spells do
 					ConvertAurawatch(spell)
 				end
 			end
 		end
 
 		if E.db.unitframe.filters.buffwatch then
-			for _, spell in pairs(E.db.unitframe.filters.buffwatch) do
+			for _, spell in next, E.db.unitframe.filters.buffwatch do
 				ConvertAurawatch(spell)
 			end
 		end
 
 		-- fix aurabars colors
 		local auraBarColors = E.global.unitframe.AuraBarColors
-		for spell, info in pairs(auraBarColors) do
+		for spell, info in next, auraBarColors do
 			if type(spell) == 'string' then
 				local _, _, _, _, _, _, spellID = E:GetSpellInfo(spell)
 				if spellID and not auraBarColors[spellID] then
@@ -1383,14 +1467,14 @@ function E:DBConvertSL()
 		E.db.unitframe.units.raidpet.groupBy = 'ROLE'
 	end
 
-	for name, infoTable in pairs(G.unitframe.aurafilters) do -- cause people change things they aren't supposed to.
+	for name, infoTable in next, G.unitframe.aurafilters do -- cause people change things they aren't supposed to.
 		if E.global.unitframe.aurafilters[name] and E.global.unitframe.aurafilters[name].type ~= infoTable.type then
 			E.global.unitframe.aurafilters[name].type = infoTable.type
 		end
 	end
 
 	-- rune convert
-	for _, data in ipairs({E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT}) do
+	for _, data in next, {E.db.unitframe.colors.classResources.DEATHKNIGHT, E.db.nameplates.colors.classResources.DEATHKNIGHT} do
 		if data.r or data.g or data.b then
 			data[0].r, data[0].g, data[0].b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
@@ -1492,7 +1576,7 @@ function E:DBConvertTWW()
 	end
 
 	-- soulshard convert
-	for _, data in ipairs({ E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK }) do
+	for _, data in next, { E.db.unitframe.colors.classResources.WARLOCK, E.db.nameplates.colors.classResources.WARLOCK } do
 		if data.r or data.g or data.b then
 			data.SOUL_SHARDS.r, data.SOUL_SHARDS.g, data.SOUL_SHARDS.b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
@@ -1507,7 +1591,7 @@ function E:DBConvertDev()
 	end
 
 	-- mage resource convert
-	for _, data in ipairs({ E.db.unitframe.colors.classResources.MAGE, E.db.nameplates.colors.classResources.MAGE }) do
+	for _, data in next, { E.db.unitframe.colors.classResources.MAGE, E.db.nameplates.colors.classResources.MAGE } do
 		if data.r or data.g or data.b then
 			data.ARCANE_CHARGES.r, data.ARCANE_CHARGES.g, data.ARCANE_CHARGES.b = data.r, data.g, data.b
 			data.r, data.g, data.b = nil, nil, nil
@@ -1515,7 +1599,7 @@ function E:DBConvertDev()
 	end
 
 	-- hide text -> hide name & hide time
-	for _, unit in ipairs({'player','target','focus','pet','boss','arena','party'}) do
+	for _, unit in next, {'player','target','focus','pet','boss','arena','party'} do
 		local db = E.db.unitframe.units[unit].castbar
 		local previous = db.hidetext
 		if previous ~= nil then
@@ -1528,9 +1612,9 @@ function E:DBConvertDev()
 end
 
 function E:UpdateDB()
-	E.private = E.charSettings.profile
-	E.global = E.data.global
-	E.db = E.data.profile
+	E.private = E.charSettings.profile -- E.privateVars.profile / V
+	E.global = E.data.global -- E.DF.global / G
+	E.db = E.data.profile -- E.DF.profile / P
 
 	E:DBConversions()
 	E:SetupDB()
@@ -1546,43 +1630,31 @@ function E:UpdateMoverPositions()
 	--We set movers to be clamped again at the bottom of this function.
 	E:SetMoversClampedToScreen(false)
 	E:SetMoversPositions()
-
-	--Not part of staggered update
 end
 
 function E:UpdateUnitFrames()
 	if E.private.unitframe.enable then
 		UnitFrames:Update_AllFrames()
 	end
-
-	--Not part of staggered update
 end
 
-function E:UpdateMediaItems(skipCallback)
+function E:UpdateMediaItems()
 	E:UpdateMedia()
 	E:UpdateAuraCurves()
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateLayout(skipCallback)
+function E:UpdateLayout()
 	Layout:ToggleChatPanels()
 	Layout:UpdateBottomPanel()
 	Layout:UpdateTopPanel()
 	Layout:SetDataPanelStyle()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateActionBars(skipCallback)
+function E:UpdateActionBars()
 	ActionBars:ToggleCooldownOptions()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroButtons()
@@ -1590,88 +1662,52 @@ function E:UpdateActionBars(skipCallback)
 	if E.Retail or E.Mists then
 		ActionBars:UpdateExtraButtons()
 	end
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateNamePlates(skipCallback)
+function E:UpdateNamePlates()
 	NamePlates:ConfigureAll()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
 function E:UpdateTooltip()
 	Tooltip:SetTooltipFonts()
 end
 
-function E:UpdateBags(skipCallback)
+function E:UpdateBags()
 	Bags:SizeAndPositionBagBar()
 	Bags:UpdateItemDisplay()
 	Bags:UpdateLayouts()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateChat(skipCallback)
+function E:UpdateChat()
 	Chat:SetupChat()
 	Chat:UpdateEditboxAnchors()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateDataBars(skipCallback)
+function E:UpdateDataBars()
 	DataBars:ToggleAll()
 	DataBars:UpdateAll()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateDataTexts(skipCallback)
+function E:UpdateDataTexts()
 	DataTexts:LoadDataTexts()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateMinimap(skipCallback)
+function E:UpdateMinimap()
 	Minimap:UpdateSettings()
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateAuras(skipCallback)
+function E:UpdateAuras()
 	if Auras.BuffFrame then Auras:UpdateHeader(Auras.BuffFrame) end
 	if Auras.DebuffFrame then Auras:UpdateHeader(Auras.DebuffFrame) end
-
-	if not skipCallback then
-		E:StaggeredUpdate()
-	end
 end
 
-function E:UpdateMisc(skipCallback)
+function E:UpdateMisc()
 	AFK:Toggle()
 
 	if E.Retail then
 		TotemTracker:PositionAndSize()
 	elseif E.Wrath then
 		ActionBars:PositionAndSizeTotemBar()
-	end
-
-	if not skipCallback then
-		E:StaggeredUpdate()
 	end
 end
 
@@ -1682,118 +1718,49 @@ function E:UpdateEnd()
 
 	E:SetMoversClampedToScreen(true) -- Go back to using clamp after resizing has taken place.
 
-	if E.staggerUpdateRunning then
-		--We're doing a staggered update, but plugins expect the old UpdateAll to be called
-		--So call it, but skip updates inside it
-		E:UpdateAll(false)
-	elseif not E.private.install_complete then
+	if not E.private.install_complete then
 		E:Install()
 	end
-
-	--Done updating, let code now
-	E.staggerUpdateRunning = false
 end
 
-do
-	local staggerDelay = 0.02
-	local staggerTable = {}
-	function E:StaggeredUpdate()
-		local nextUpdate, nextDelay = staggerTable[1]
-		if nextUpdate then
-			tremove(staggerTable, 1)
+function E:UpdateAll()
+	E:UpdateStart()
 
-			if nextUpdate == 'UpdateNamePlates' or nextUpdate == 'UpdateBags' then
-				nextDelay = 0.05
-			end
+	E:Delay(0.01, E.UpdateLayout, E)
 
-			E:Delay(nextDelay or staggerDelay, E[nextUpdate], E)
-		end
+	if ActionBars.Initialized then
+		E:Delay(0.10, E.UpdateActionBars, E)
 	end
 
-	function E:StaggeredUpdateAll(event)
-		if not E.initialized then
-			E:Delay(1, E.StaggeredUpdateAll, E, event)
-			return
-		end
-
-		if (not event or event == 'OnProfileChanged' or event == 'OnProfileCopied') and not E.staggerUpdateRunning then
-			tinsert(staggerTable, 'UpdateLayout')
-
-			if ActionBars.Initialized then
-				tinsert(staggerTable, 'UpdateActionBars')
-			end
-
-			if NamePlates.Initialized then
-				tinsert(staggerTable, 'UpdateNamePlates')
-			end
-
-			if Bags.Initialized then
-				tinsert(staggerTable, 'UpdateBags')
-			end
-
-			if Chat.Initialized then
-				tinsert(staggerTable, 'UpdateChat')
-			end
-
-			if Tooltip.Initialized then
-				tinsert(staggerTable, 'UpdateTooltip')
-			end
-
-			tinsert(staggerTable, 'UpdateDataBars')
-			tinsert(staggerTable, 'UpdateDataTexts')
-
-			if Minimap.Initialized then
-				tinsert(staggerTable, 'UpdateMinimap')
-			end
-
-			if Auras.BuffFrame or Auras.DebuffFrame then
-				tinsert(staggerTable, 'UpdateAuras')
-			end
-
-			tinsert(staggerTable, 'UpdateMisc')
-			tinsert(staggerTable, 'UpdateEnd')
-
-			--Stagger updates
-			E.staggerUpdateRunning = true
-			E:UpdateStart()
-		else
-			--Fire away
-			E:UpdateAll(true)
-		end
+	if NamePlates.Initialized then
+		E:Delay(0.12, E.UpdateNamePlates, E)
 	end
-end
 
-function E:UpdateAll(doUpdates)
-	if doUpdates then
-		E:UpdateStart(true)
-
-		E:UpdateLayout()
-		if ActionBars.Initialized then
-			E:UpdateActionBars()
-		end
-		if NamePlates.Initialized then
-			E:UpdateNamePlates()
-		end
-		if Bags.Initialized then
-			E:UpdateBags()
-		end
-		if Chat.Initialized then
-			E:UpdateChat()
-		end
-		if Tooltip.Initialized then
-			E:UpdateTooltip()
-		end
-		E:UpdateDataBars()
-		E:UpdateDataTexts()
-		if Minimap.Initialized then
-			E:UpdateMinimap()
-		end
-		if Auras.BuffFrame or Auras.DebuffFrame then
-			E:UpdateAuras()
-		end
-		E:UpdateMisc()
-		E:UpdateEnd()
+	if Bags.Initialized then
+		E:Delay(0.14, E.UpdateBags, E)
 	end
+
+	if Chat.Initialized then
+		E:Delay(0.16, E.UpdateChat, E)
+	end
+
+	if Tooltip.Initialized then
+		E:Delay(0.18, E.UpdateTooltip, E)
+	end
+
+	E:Delay(0.20, E.UpdateDataBars, E)
+	E:Delay(0.22, E.UpdateDataTexts, E)
+
+	if Minimap.Initialized then
+		E:Delay(0.24, E.UpdateMinimap, E)
+	end
+
+	if Auras.BuffFrame or Auras.DebuffFrame then
+		E:Delay(0.26, E.UpdateAuras, E)
+	end
+
+	E:Delay(0.28, E.UpdateMisc, E)
+	E:Delay(0.30, E.UpdateEnd, E)
 end
 
 function E:CreateFonts()
@@ -1814,8 +1781,8 @@ do
 	eventFrame:SetScript('OnEvent', function(_, event, ...)
 		local objs = eventTable[event]
 		if objs then
-			for object, funcs in pairs(objs) do
-				for _, func in ipairs(funcs) do
+			for object, funcs in next, objs do
+				for _, func in next, funcs do
 					func(object, event, ...)
 				end
 			end
@@ -1888,7 +1855,7 @@ do
 		local objs = eventTable[event]
 		local funcs = objs and objs[object]
 		if funcs then
-			for index, fnc in ipairs(funcs) do
+			for index, fnc in next, funcs do
 				if func == fnc then
 					tremove(funcs, index)
 					break
@@ -1912,7 +1879,7 @@ do
 			return
 		end
 
-		for event in pairs(eventTable) do
+		for event in next, eventTable do
 			if E:IsEventRegisteredForObject(event, object) then
 				E:UnregisterEventForObject(event, object, func)
 			end
@@ -1982,13 +1949,13 @@ do
 end
 
 function E:InitializeInitialModules()
-	for index, object in ipairs(E.RegisteredInitialModules) do
+	for index, object in next, E.RegisteredInitialModules do
 		E:CallLoadedModule(object, true, E.RegisteredInitialModules, index)
 	end
 end
 
 function E:InitializeModules()
-	for index, object in ipairs(E.RegisteredModules) do
+	for index, object in next, E.RegisteredModules do
 		E:CallLoadedModule(object, true, E.RegisteredModules, index)
 	end
 end
@@ -2009,7 +1976,7 @@ function E:DBConversions()
 end
 
 function E:ConvertActionBarKeybinds()
-	for oldcmd, newcmd in pairs({ ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' }) do
+	for oldcmd, newcmd in next, { ELVUIBAR6BUTTON = 'ELVUIBAR2BUTTON', EXTRABAR7BUTTON = 'ELVUIBAR7BUTTON', EXTRABAR8BUTTON = 'ELVUIBAR8BUTTON', EXTRABAR9BUTTON = 'ELVUIBAR9BUTTON', EXTRABAR10BUTTON = 'ELVUIBAR10BUTTON' } do
 		for i = 1, 12 do
 			local oldkey, newkey = format('%s%d', oldcmd, i), format('%s%d', newcmd, i)
 			for _, key in next, { GetBindingKey(oldkey) } do
@@ -2027,7 +1994,7 @@ end
 do
 	-- Shamelessly taken from AceDB-3.0 and stripped down by Simpy
 	function E:CopyDefaults(dest, src)
-		for k, v in pairs(src) do
+		for k, v in next, src do
 			if type(v) == 'table' then
 				if not rawget(dest, k) then rawset(dest, k, {}) end
 				if type(dest[k]) == 'table' then E:CopyDefaults(dest[k], v) end
@@ -2042,7 +2009,7 @@ do
 	function E:RemoveDefaults(db, defaults)
 		setmetatable(db, nil)
 
-		for k, v in pairs(defaults) do
+		for k, v in next, defaults do
 			if type(v) == 'table' and type(db[k]) == 'table' then
 				E:RemoveDefaults(db[k], v)
 				if next(db[k]) == nil then db[k] = nil end
@@ -2055,26 +2022,18 @@ do
 	end
 end
 
-function E:Initialize()
-	wipe(E.db)
-	wipe(E.global)
-	wipe(E.private)
+function E:OnEnable()
+	E.initialized = true
 
+	E:RefreshDB() -- plugins add defaults, refresh them
+	E:InitializeModules() -- late modules
+end
+
+function E:Initialize()
 	E.myspec = GetSpecialization()
 	E.TimerunningID = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()
 
-	E.data = E.Libs.AceDB:New('ElvDB', E.DF, true)
-	E.data.RegisterCallback(E, 'OnProfileChanged', 'StaggeredUpdateAll')
-	E.data.RegisterCallback(E, 'OnProfileCopied', 'StaggeredUpdateAll')
-	E.data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
-
-	E.charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
-	E.charSettings.RegisterCallback(E, 'OnProfileChanged', ReloadUI)
-	E.charSettings.RegisterCallback(E, 'OnProfileCopied', ReloadUI)
-	E.charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
-
 	E:CreateFonts()
-	E:UpdateDB()
 	E:UIScale()
 	E:LoadStaticPopups()
 
@@ -2090,14 +2049,11 @@ function E:Initialize()
 		E:BuildAbbreviateConfigs()
 		E:LoadAPI()
 		E:LoadCommands()
-		E:InitializeModules()
+		E:InitializeModules() -- early modules
 		E:LoadMovers()
-		E:UpdateMedia()
 		E:UpdateAuraCurves()
 		E:UpdateDispelColors()
 		E:UpdateCustomClassColors()
-
-		E.initialized = true
 
 		if E.Retail then
 			E:Tutorials()
