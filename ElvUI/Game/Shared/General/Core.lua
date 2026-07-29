@@ -2026,7 +2026,7 @@ function E:OnEnable()
 	E.initialized = true
 
 	E:RefreshDB() -- plugins add defaults, refresh them
-	E:InitializeModules() -- trigger any new updates
+	E:InitializeModules() -- late modules
 end
 
 function E:Initialize()
@@ -2049,7 +2049,7 @@ function E:Initialize()
 		E:BuildAbbreviateConfigs()
 		E:LoadAPI()
 		E:LoadCommands()
-		E:InitializeModules()
+		E:InitializeModules() -- early modules
 		E:LoadMovers()
 		E:UpdateAuraCurves()
 		E:UpdateDispelColors()

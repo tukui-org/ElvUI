@@ -522,7 +522,7 @@ function E:RefreshDB()
 	E:UpdateDB()
 end
 
-function E:BuildDB()
+function E:PrepDB()
 	if not ElvCharacterDB then
 		ElvCharacterDB = {}
 	end
@@ -544,9 +544,35 @@ function E:BuildDB()
 	E.charSettings = charSettings
 end
 
+function E:InitDB()
+	E.db = E:CopyTable({}, E.DF.profile)
+	E.global = E:CopyTable({}, E.DF.global)
+	E.private = E:CopyTable({}, E.privateVars.profile)
+
+	if ElvDB then
+		if ElvDB.global then
+			E:CopyTable(E.global, ElvDB.global)
+		end
+
+		local key = ElvDB.profileKeys and ElvDB.profileKeys[E.mynameRealm]
+		if key and ElvDB.profiles and ElvDB.profiles[key] then
+			E:CopyTable(E.db, ElvDB.profiles[key])
+		end
+	end
+
+	if ElvPrivateDB then
+		local key = ElvPrivateDB.profileKeys and ElvPrivateDB.profileKeys[E.mynameRealm]
+		if key and ElvPrivateDB.profiles and ElvPrivateDB.profiles[key] then
+			E:CopyTable(E.private, ElvPrivateDB.profiles[key])
+		end
+	end
+
+	E:SetupDB()
+end
+
 function E:OnInitialize()
-	E:BuildDB()
-	E:UpdateDB()
+	E:PrepDB() -- generate AceDB
+	E:InitDB() -- starting profile
 
 	E.SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUI_SpellBookTooltip', UIParent, 'GameTooltipTemplate')
 	E.ConfigTooltip = CreateFrame('GameTooltip', 'ElvUI_ConfigTooltip', UIParent, 'GameTooltipTemplate')
