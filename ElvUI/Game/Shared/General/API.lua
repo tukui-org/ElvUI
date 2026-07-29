@@ -3,6 +3,8 @@
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
+local UF = E:GetModule('UnitFrames')
+local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
@@ -1024,6 +1026,30 @@ do
 	end
 end
 
+-- requirement for plugins adding media; after ADDON_LOADED but before PLAYER_LOGIN
+function E:RefreshMedia()
+	if LSM.needsRefreshFont then
+		E:Delay(0.02, E.UpdateFontTemplates, E)
+
+		if UF.Initialized then
+			E:Delay(0.06, UF.Update_FontStrings, UF)
+		end
+
+		LSM.needsRefreshFont = nil
+	end
+
+	-- do the same for statusbars
+	if LSM.needsRefreshStatusbars then
+		E:Delay(0.04, E.UpdateStatusBars, E)
+
+		if UF.Initialized then
+			E:Delay(0.08, UF.Update_StatusBars, UF)
+		end
+
+		LSM.needsRefreshStatusbars = nil
+	end
+end
+
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	E:CheckRole()
 
@@ -1033,6 +1059,7 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 
 	if initLogin or isReload then
 		E:CheckIncompatible()
+		E:RefreshMedia()
 
 		-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
 		if not E.Retail and E.db.general.lockCameraDistanceMax then

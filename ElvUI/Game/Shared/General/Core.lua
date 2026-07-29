@@ -2022,22 +2022,6 @@ do
 	end
 end
 
-function E:OnEnable()
-	-- requirement for plugins adding media; after ADDON_LOADED but before PLAYER_LOGIN
-	if LSM.needsRefreshFont then
-		E:Delay(0.10, E.UpdateFontTemplates, E)
-
-		LSM.needsRefreshFont = nil
-	end
-
-	-- do the same for statusbars
-	if LSM.needsRefreshStatusbars then
-		E:Delay(0.12, E.UpdateStatusBars, E)
-
-		LSM.needsRefreshStatusbars = nil
-	end
-end
-
 function E:Initialize()
 	wipe(E.db)
 	wipe(E.global)
