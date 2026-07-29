@@ -706,15 +706,7 @@ do
 	end
 end
 
-function AB:UpdateButtonSettings(specific)
-	if not E.private.actionbar.enable then return end
-
-	if InCombatLockdown() then
-		AB.NeedsUpdateButtonSettings = true
-		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-		return
-	end
-
+function AB:UpdateButtonConfigs(specific)
 	for barName, bar in next, AB.handledBars do
 		if not specific or specific == barName then
 			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
@@ -728,6 +720,20 @@ function AB:UpdateButtonSettings(specific)
 				end
 			end
 		end
+	end
+end
+
+function AB:UpdateButtonSettings(specific, skip)
+	if not E.private.actionbar.enable then return end
+
+	if InCombatLockdown() then
+		AB.NeedsUpdateButtonSettings = true
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+		return
+	end
+
+	if not skip then
+		AB:UpdateButtonConfigs(specific)
 	end
 
 	if not specific then
@@ -2034,6 +2040,7 @@ function AB:Initialize()
 	AB:CreateBarPet()
 	AB:CreateBarShapeShift()
 	AB:CreateVehicleLeave()
+	AB:UpdateButtonSettings(nil, true)
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 
