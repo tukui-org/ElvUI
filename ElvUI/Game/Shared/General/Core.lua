@@ -450,11 +450,11 @@ function E:GeneralMedia_ApplyToAll()
 end
 
 do	-- i guess we finally need it ~Simpy
-	local funcs = {}
+	local funcs, callbacks = {}, {}
 	local watcher = CreateFrame('Frame')
 	function E:Coroutine_OnUpdate()
 		for func, data in next, funcs do
-			local resumed = co_resume(data.routine, data.next)
+			local resumed = co_resume(data.routine)
 			if not resumed then -- cant continue
 				funcs[func] = nil
 			end
@@ -474,14 +474,20 @@ do	-- i guess we finally need it ~Simpy
 
 	function E:GenerateCoroutineLoop(info)
 		return function()
-			for key, frame in next, info.frames do
-				info.func(key, frame, info.data)
+			for key, value in next, info.obj do
+				info.func(key, value, info.data)
+
+				local cbs = callbacks[info.func]
+				if cbs then
+					for callback in next, cbs do
+						callback(key, value, info.data)
+					end
+				end
 
 				if info.count < info.limit then
 					info.count = info.count + 1
 				else
 					info.count = 0
-					info.next = frame
 
 					co_yield()
 				end
@@ -489,12 +495,12 @@ do	-- i guess we finally need it ~Simpy
 		end
 	end
 
-	function E:CoroutineUpdate(func, frames, data, limit)
+	function E:CoroutineUpdate(func, obj, data, limit)
 		local info = funcs[func]
 		if info then
 			return -- excuse me?
 		else
-			info = { count = 0, limit = limit or 100, data = data, frames = frames, func = func }
+			info = { count = 0, limit = limit or 100, data = data, obj = obj, func = func }
 		end
 
 		local loop = E:GenerateCoroutineLoop(info)
@@ -505,6 +511,24 @@ do	-- i guess we finally need it ~Simpy
 		end
 
 		funcs[func] = info
+	end
+
+	function E:CoroutineCallback(func, callback, remove)
+		local cbs = callbacks[func]
+		if not cbs then
+			cbs = {}
+			callbacks[func] = cbs
+		end
+
+		if remove then
+			cbs[callback] = nil
+
+			if not next(cbs) then
+				callbacks[func] = nil
+			end
+		else
+			cbs[callback] = true
+		end
 	end
 end
 
