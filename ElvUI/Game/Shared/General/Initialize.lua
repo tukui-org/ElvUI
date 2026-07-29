@@ -501,7 +501,8 @@ do
 		UnitFrames = 'unitframe'
 	}
 
-	function E:SetupDB()
+	-- we call this when profile references change:
+	function E:SetupDB() -- E.db, E.private, E.global
 		for key, value in next, info do
 			local module = E[key]
 			if module then
