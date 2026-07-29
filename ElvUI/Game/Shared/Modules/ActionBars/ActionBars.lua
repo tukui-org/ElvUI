@@ -706,10 +706,20 @@ do
 	end
 end
 
-function AB:UpdateButtonConfigs(specific)
+-- normally UpdateBarConfig and UpdateBarPosition would be the same function
+-- however, because of Classic HC we need to split the load on init and another
+-- part to load later, so fonts will load in properly from plugins with LSM ~Simpy
+function AB:UpdateBarConfig(specific)
 	for barName, bar in next, AB.handledBars do
 		if not specific or specific == barName then
-			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
+			AB:UpdateButtonConfig(barName, bar.bindButtons)
+		end
+	end
+end
+
+function AB:UpdateBarPosition(specific)
+	for barName, bar in next, AB.handledBars do
+		if not specific or specific == barName then
 			AB:PositionAndSizeBar(barName) -- db is set here, button style, and paging also runs here
 
 			for _, button in next, bar.buttons do
@@ -723,7 +733,7 @@ function AB:UpdateButtonConfigs(specific)
 	end
 end
 
-function AB:UpdateButtonSettings(specific, skip)
+function AB:UpdateButtonSettings(specific)
 	if not E.private.actionbar.enable then return end
 
 	if InCombatLockdown() then
@@ -732,9 +742,8 @@ function AB:UpdateButtonSettings(specific, skip)
 		return
 	end
 
-	if not skip then
-		AB:UpdateButtonConfigs(specific)
-	end
+	AB:UpdateBarPosition(specific)
+	E:Delay(0.1, AB.UpdateBarConfig, AB, specific) -- see note above function about why this is delayed
 
 	if not specific then
 		-- we can safely toggle these events when we arent using the handle overlay
@@ -2040,7 +2049,7 @@ function AB:Initialize()
 	AB:CreateBarPet()
 	AB:CreateBarShapeShift()
 	AB:CreateVehicleLeave()
-	AB:UpdateButtonSettings(nil, true)
+	AB:UpdateButtonSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 
