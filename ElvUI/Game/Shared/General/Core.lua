@@ -449,20 +449,6 @@ function E:GeneralMedia_ApplyToAll()
 	E:UpdateAll()
 end
 
-function E:ValueFunc(func, data)
-	func(self, data.hex, data.r, data.g, data.b, data.a)
-end
-
-do
-	local data = {}
-	function E:ValueFuncCall()
-		data.hex = E.media.hexvaluecolor
-		data.r, data.g, data.b, data.a = unpack(E.media.rgbvaluecolor)
-
-		E:CoroutineUpdate(E.ValueFunc, E.valueColorUpdateFuncs, data)
-	end
-end
-
 do	-- i guess we finally need it ~Simpy
 	local funcs = {}
 	local watcher = CreateFrame('Frame')
@@ -522,9 +508,18 @@ do	-- i guess we finally need it ~Simpy
 	end
 end
 
-function E:UpdateFrameTemplates()
-	E:CoroutineUpdate(E.UpdateFrameTemplate, E.frames)
-	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
+function E:ValueFunc(func, data)
+	func(self, data.hex, data.r, data.g, data.b, data.a)
+end
+
+do
+	local data = {}
+	function E:ValueFuncCall()
+		data.hex = E.media.hexvaluecolor
+		data.r, data.g, data.b, data.a = unpack(E.media.rgbvaluecolor)
+
+		E:CoroutineUpdate(E.ValueFunc, E.valueColorUpdateFuncs, data)
+	end
 end
 
 function E:UpdateFrameTemplate()
@@ -545,6 +540,11 @@ function E:UpdateUnitframeTemplate()
 	else
 		E.unitFrameElements[self] = nil
 	end
+end
+
+function E:UpdateFrameTemplates()
+	E:CoroutineUpdate(E.UpdateFrameTemplate, E.frames)
+	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
 end
 
 function E:UpdateBorderColor(_, data)
