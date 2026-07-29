@@ -84,10 +84,11 @@ local function HideEditBoxBorders(editBox)
 	end
 end
 
-function S:SocialUI_PositionTab(_, _, _, x, y)
-	if x ~= 1 or y ~= -122 then
+function S:SocialUI_PositionTab(_, _, relativeTo, x, y)
+	local frame = _G.SocialUIFrame
+	if relativeTo == frame and (x ~= 1 or y ~= -122) then
 		self:ClearAllPoints()
-		self:SetPoint('TOPLEFT', _G.SocialUIFrame, 'TOPRIGHT', 1, -122)
+		self:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 1, -122)
 	end
 end
 
@@ -136,21 +137,19 @@ function S:SocialUI_RefreshTabs()
 	local frame = _G.SocialUIFrame
 	if not frame or not frame.socialTabPool then return end
 
-	local isFirst = true
 	for tab in frame.socialTabPool:EnumerateActive() do
 		S:SocialUI_HandleTab(tab)
 
-		if isFirst then
-			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 1, -122)
-
-			if not tab.SocialUITabHooked then
-				hooksecurefunc(tab, 'SetPoint', S.SocialUI_PositionTab)
-				tab.SocialUITabHooked = true
-			end
+		if not tab.SocialUITabHooked then
+			hooksecurefunc(tab, 'SetPoint', S.SocialUI_PositionTab)
+			tab.SocialUITabHooked = true
 		end
 
-		isFirst = false
+		local _, relativeTo, _, x, y = tab:GetPoint(1)
+		if relativeTo == frame and (x ~= 1 or y ~= -122) then
+			tab:ClearAllPoints()
+			tab:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 1, -122)
+		end
 	end
 end
 
