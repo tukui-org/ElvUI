@@ -302,6 +302,8 @@ function S:Blizzard_HousingCornerstone()
 		PurchaseFrame:CreateBackdrop('Transparent')
 		S:HandleCloseButton(PurchaseFrame.CloseButton)
 		S:HandleButton(PurchaseFrame.BuyButton)
+		PurchaseFrame.MoneyFrameBackdrop.NineSlice:StripTextures()
+		PurchaseFrame.MoneyFrame:SetTemplate('Transparent')
 	end
 
 	local MoveHouseConfirmation = _G.MoveHouseConfirmationDialog
@@ -390,6 +392,7 @@ function S:Blizzard_HousingHouseSettings()
 	if SettingsFrame then
 		local PlotAccess = SettingsFrame.PlotAccess
 		local HouseAccess = SettingsFrame.HouseAccess
+		local BlueprintExport = SettingsFrame.BlueprintExport
 
 		SettingsFrame:StripTextures()
 		SettingsFrame:SetTemplate('Transparent')
@@ -398,11 +401,14 @@ function S:Blizzard_HousingHouseSettings()
 		S:HandleButton(SettingsFrame.AbandonHouseButton)
 		S:HandleDropDownBox(PlotAccess.AccessTypeDropdown)
 		S:HandleDropDownBox(HouseAccess.AccessTypeDropdown)
+		S:HandleDropDownBox(BlueprintExport.AccessTypeDropdown)
 
 		hooksecurefunc(PlotAccess, 'SetupOptions', SkinHouseSettingOptions)
 		hooksecurefunc(HouseAccess, 'SetupOptions', SkinHouseSettingOptions)
+		hooksecurefunc(BlueprintExport, 'SetupOptions', SkinHouseSettingOptions)
 		SkinHouseSettingOptions(PlotAccess)
 		SkinHouseSettingOptions(HouseAccess)
+		SkinHouseSettingOptions(BlueprintExport)
 
 		S:HandleButton(SettingsFrame.IgnoreListButton)
 		S:HandleButton(SettingsFrame.SaveButton)
