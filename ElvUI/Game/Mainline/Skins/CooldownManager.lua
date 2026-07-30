@@ -6,9 +6,10 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 
 function S:CooldownManager_PositionViewerTab(_, _, _, x, y)
-	if x ~= 1 or y ~= -10 then
+	if x ~= 1 or y ~= 0 then
+		print("x ~= 1 or y ~= 0")
 		self:ClearAllPoints()
-		self:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 1, -10)
+		self:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 2, -1)
 	end
 end
 
@@ -242,7 +243,7 @@ function S:CooldownManager_HandleAbilityTabs(viewer)
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 1, -10)
+			tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 2, -1)
 
 			hooksecurefunc(tab, 'SetPoint', S.CooldownManager_PositionViewerTab)
 		end

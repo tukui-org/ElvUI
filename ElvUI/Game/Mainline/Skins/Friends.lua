@@ -86,9 +86,9 @@ end
 
 function S:SocialUI_PositionTab(_, _, relativeTo, x, y)
 	local frame = _G.SocialUIFrame
-	if relativeTo == frame and (x ~= 1 or y ~= -122) then
+	if relativeTo == frame and (x ~= 1 or y ~= 0) then
 		self:ClearAllPoints()
-		self:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 1, -122)
+		self:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 2, -1)
 	end
 end
 
@@ -146,9 +146,9 @@ function S:SocialUI_RefreshTabs()
 		end
 
 		local _, relativeTo, _, x, y = tab:GetPoint(1)
-		if relativeTo == frame and (x ~= 1 or y ~= -122) then
+		if relativeTo == frame and (x ~= 1 or y ~= 0) then
 			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 1, -122)
+			tab:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 2, -1)
 		end
 	end
 end

@@ -382,8 +382,9 @@ function S:WorldMapFrame()
 	}
 
 	local function PositionQuestTab(tab, _, _, _, x, y)
-		if x ~= 10 or y ~= -10 then
-			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 10, -10)
+		if x ~= 1 or y ~= 0 then
+			tab:ClearAllPoints()
+			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 1, 0)
 		end
 	end
 
@@ -399,7 +400,7 @@ function S:WorldMapFrame()
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 10, -10)
+			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 11, 24)
 
 			hooksecurefunc(tab, 'SetPoint', PositionQuestTab)
 		end
@@ -429,11 +430,6 @@ function S:WorldMapFrame()
 		if tab.TabGlow then
 			tab.TabGlow:SetAlpha(0)
 		end
-	end
-
-	if QuestMapFrame.QuestsTab then
-		QuestMapFrame.QuestsTab:ClearAllPoints()
-		QuestMapFrame.QuestsTab:Point('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 1, 2)
 	end
 
 	local EventsFrame = QuestMapFrame.EventsFrame
