@@ -421,11 +421,13 @@ function S:WorldMapFrame()
 			tab.SelectedTexture:SetAllPoints()
 		end
 
-		for _, region in next, { tab:GetRegions() } do
-			if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
-				region:SetColorTexture(1, 1, 1, 0.3)
-				region:SetAllPoints()
-			end
+		if tab.HighlightTexture then
+			tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+			tab.HighlightTexture:SetAllPoints()
+		end
+
+		if tab.TabGlow then
+			tab.TabGlow:SetAlpha(0)
 		end
 	end
 
