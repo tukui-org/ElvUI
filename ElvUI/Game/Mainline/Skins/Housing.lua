@@ -599,6 +599,91 @@ function S:Blizzard_HousingModelPreview()
 	end
 end
 
+local function SkinHousingBlueprintBaseFrame(frame)
+	if not frame or frame.IsSkinned then return end
+
+	if frame.Background then
+		frame.Background:SetAlpha(0)
+	end
+
+	if frame.Header then
+		frame.Header:SetAlpha(0)
+	end
+
+	frame:StripTextures()
+	frame:CreateBackdrop('Transparent')
+	S:HandleCloseButton(frame.CloseButton)
+	frame.CloseButton:ClearAllPoints()
+	frame.CloseButton:Point('TOPRIGHT', frame, 'TOPRIGHT', -2, -2)
+
+	frame.IsSkinned = true
+end
+
+local function SkinHousingBlueprintShareCodeBox(shareCodeBox)
+	if not shareCodeBox or shareCodeBox.IsSkinned then return end
+
+	shareCodeBox:StripTextures(true)
+	S:HandleEditBox(shareCodeBox)
+
+	shareCodeBox.IsSkinned = true
+end
+
+function S:Blizzard_HousingBlueprint()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local ImportFrame = _G.HousingBlueprintImportFrame
+	if ImportFrame then
+		SkinHousingBlueprintBaseFrame(ImportFrame)
+
+		local InputContent = ImportFrame.InputContent
+		if InputContent then
+			SkinHousingBlueprintShareCodeBox(InputContent.ShareCodeBox)
+			S:HandleButton(InputContent.NextButton)
+			--S:HandleButton(InputContent.GearDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+		end
+
+		local ValidationContent = ImportFrame.ValidationContent
+		if ValidationContent then
+			S:HandleButton(ValidationContent.ImportButton)
+			--S:HandleButton(ValidationContent.GearDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+
+			local ContentSummary = ValidationContent.ContentSummary
+			if ContentSummary then
+				S:HandleButton(ContentSummary.ContentsListButton)
+
+				local BudgetsContainer = ContentSummary.BudgetsContainer
+				if BudgetsContainer then
+					if BudgetsContainer.Background then
+						BudgetsContainer.Background:SetAlpha(0)
+					end
+
+					BudgetsContainer:SetTemplate('Transparent')
+				end
+			end
+		end
+	end
+
+	local ExportFrame = _G.HousingBlueprintExportFrame
+	if ExportFrame then
+		SkinHousingBlueprintBaseFrame(ExportFrame)
+
+		local InputContent = ExportFrame.InputContent
+		if InputContent then
+			S:HandleDropDownBox(InputContent.TypeDropdown)
+			S:HandleEditBox(InputContent.NameInputBox)
+			S:HandleButton(InputContent.SaveButton)
+		end
+
+		local SuccessContent = ExportFrame.SuccessContent
+		if SuccessContent then
+			S:HandleButton(SuccessContent.BlueprintsCollectionButton)
+			SkinHousingBlueprintShareCodeBox(SuccessContent.ShareCodeBox)
+			S:HandleButton(SuccessContent.ChatLinkButton)
+			S:HandleButton(SuccessContent.ClipboardButton)
+		end
+	end
+end
+
 S:AddCallbackForAddon('Blizzard_HouseList')
 S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
 S:AddCallbackForAddon('Blizzard_HousingCornerstone')
@@ -608,3 +693,4 @@ S:AddCallbackForAddon('Blizzard_HousingHouseFinder')
 S:AddCallbackForAddon('Blizzard_HousingHouseSettings')
 S:AddCallbackForAddon('Blizzard_HouseEditor')
 S:AddCallbackForAddon('Blizzard_HousingModelPreview')
+S:AddCallbackForAddon('Blizzard_HousingBlueprint')
