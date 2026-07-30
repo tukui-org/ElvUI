@@ -201,8 +201,8 @@ function DB:Initialize()
 	DB.StatusBars = {}
 
 	DB:CreateAll()
-	DB:UpdateAll()
 
+	DB:RegisterEvent('PLAYER_LOGIN', 'UpdateAll')
 	DB:RegisterEvent('PLAYER_LEVEL_UP', 'HandleVisibility')
 	DB:RegisterEvent('PLAYER_ENTERING_WORLD', 'HandleVisibility')
 	DB:RegisterEvent('PLAYER_REGEN_DISABLED', 'HandleVisibility')
