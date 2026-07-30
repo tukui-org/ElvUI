@@ -7,7 +7,6 @@ local hooksecurefunc = hooksecurefunc
 
 function S:CooldownManager_PositionViewerTab(_, _, _, x, y)
 	if x ~= 1 or y ~= 0 then
-		print("x ~= 1 or y ~= 0")
 		self:ClearAllPoints()
 		self:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 2, -1)
 	end
