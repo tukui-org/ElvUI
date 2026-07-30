@@ -15,6 +15,7 @@ local strfind, format, strmatch, gmatch, gsub = strfind, format, strmatch, gmatc
 
 local CanInspect = CanInspect
 local CheckInteractDistance = CheckInteractDistance
+local CreateColor = CreateColor
 local CreateFrame = CreateFrame
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
@@ -23,6 +24,7 @@ local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
 local GetTime = GetTime
+local hooksecurefunc = hooksecurefunc
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsControlKeyDown = IsControlKeyDown
@@ -909,6 +911,37 @@ function TT:SetStyle(tt, _, isEmbedded)
 	if E:NotSecretValue(tt:GetWidth()) then
 		tt.customBackdropAlpha = TT.db.colorAlpha
 		tt:SetTemplate('Transparent')
+	end
+end
+
+do
+	local auraTooltipStyleHooked
+	function TT:SetAuraButtonTooltipStyle()
+		if not E.AuraContainer then return end -- TODO: Replace with E.Retail
+		if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
+
+		local inbound = _G.AuraContainerInbound
+		if not inbound or not inbound.SetTooltipBackdrop then return end
+
+		local border = E.media.bordercolor
+		local fade = E.media.backdropfadecolor
+		local alpha = (TT.db and TT.db.colorAlpha) or fade[4]
+
+		inbound.SetTooltipBackdrop({
+			backdropInfo = {
+				bgFile = E.media.blankTex,
+				edgeFile = E.media.blankTex,
+				edgeSize = E:Scale(E.twoPixelsPlease and 2 or 1), -- Match :SetTemplate edgeSize?
+			},
+			borderColor = CreateColor(border[1], border[2], border[3], 1),
+			centerColor = CreateColor(fade[1], fade[2], fade[3], alpha),
+		})
+
+		if not auraTooltipStyleHooked then
+			auraTooltipStyleHooked = true
+			hooksecurefunc(E, 'UpdateBorderColors', TT.SetAuraButtonTooltipStyle)
+			hooksecurefunc(E, 'UpdateBackdropColors', TT.SetAuraButtonTooltipStyle)
+		end
 	end
 end
 
