@@ -715,6 +715,13 @@ function AB:UpdateBarConfig(specific)
 			AB:UpdateButtonConfig(barName, bar.bindButtons)
 		end
 	end
+
+	-- handle the first set of bindings unless in a pet battle
+	if (E.Retail or E.Mists) and IsInBattle() then
+		AB:UpdateBinds() -- no function passed, clears bindings
+	else
+		AB:HandleBinds() -- set override binds
+	end
 end
 
 function AB:UpdateBarPosition(specific)
@@ -2071,13 +2078,6 @@ function AB:Initialize()
 
 	if (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:CreateTotemBar()
-	end
-
-	-- handle the first set of bindings unless in a pet battle
-	if (E.Retail or E.Mists) and IsInBattle() then
-		AB:UpdateBinds() -- no function passed, clears bindings
-	else
-		AB:HandleBinds() -- set override binds
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
