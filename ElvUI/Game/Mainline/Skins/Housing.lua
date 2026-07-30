@@ -3,12 +3,72 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
-local function PositionDashboardTab(tab, _, _, _, x, y)
-	if x ~= 3 or y ~= -10 then
-		tab:ClearAllPoints()
-		tab:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 3, -10)
+function S:Housing_PositionDashboardTab(_, _, _, x, y)
+	if x ~= 1 or y ~= 0 then
+		self:ClearAllPoints()
+		self:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 2, -1)
+	end
+end
+
+function S:Housing_PositionTabIcons(point)
+	if point == 'CENTER' then return end
+
+	self:ClearAllPoints()
+	self:SetPoint('CENTER')
+end
+
+function S:Housing_HandleDashboardTabs(frame)
+	local tabs = {
+		frame.HouseInfoTabButton,
+		frame.CatalogTabButton,
+		frame.CollectionTabButton
+	}
+
+	for i, tab in ipairs(tabs) do
+		tab:CreateBackdrop()
+		tab:Size(30, 40)
+
+		if i == 1 then
+			tab:ClearAllPoints()
+			tab:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 2, -1)
+
+			hooksecurefunc(tab, 'SetPoint', S.Housing_PositionDashboardTab)
+		else
+			local previous = tabs[i - 1]
+			if previous then
+				tab:ClearAllPoints()
+				tab:SetPoint('TOPLEFT', previous, 'BOTTOMLEFT', 0, -3)
+			end
+		end
+
+		if tab.Icon then
+			tab.Icon:ClearAllPoints()
+			tab.Icon:SetPoint('CENTER')
+
+			hooksecurefunc(tab.Icon, 'SetPoint', S.Housing_PositionTabIcons)
+		end
+
+		if tab.Background then
+			tab.Background:SetAlpha(0)
+		end
+
+		if tab.SelectedTexture then
+			tab.SelectedTexture:SetDrawLayer('ARTWORK')
+			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+			tab.SelectedTexture:SetAllPoints()
+		end
+
+		if tab.HighlightTexture then
+			tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+			tab.HighlightTexture:SetAllPoints()
+		end
+
+		if tab.TabGlow then
+			tab.TabGlow:SetAlpha(0)
+		end
 	end
 end
 
@@ -69,44 +129,18 @@ function S:Blizzard_HousingDashboard()
 	local DashBoardFrame = _G.HousingDashboardFrame
 	if DashBoardFrame then
 		S:HandleFrame(DashBoardFrame, true)
+		S:Housing_HandleDashboardTabs(DashBoardFrame)
 	end
 
-	for i, tab in next, { DashBoardFrame.HouseInfoTabButton, DashBoardFrame.CatalogTabButton } do
-		if tab then
-			tab:StripTextures(true)
-			tab:CreateBackdrop()
-			tab:Size(30, 40)
-
-			if not tab.texture then
-				tab.texture = tab:CreateTexture(nil, 'ARTWORK')
-				tab.texture:SetInside(tab.backdrop)
-			end
-
-			if not tab.hl then
-				tab.hl = tab:CreateTexture(nil, 'HIGHLIGHT')
-				tab.hl:SetColorTexture(0.8, 0.8, 0, 0.4)
-				tab.hl:SetInside(tab.backdrop)
-				tab.hl:SetBlendMode('ADD')
-			end
-
-			if i == 1 then
-				tab:ClearAllPoints()
-				tab:SetPoint('TOPLEFT', DashBoardFrame, 'TOPRIGHT', 3, -10)
-
-				tab.texture:SetTexture(E.Media.Textures.Dashboard)
-
-				hooksecurefunc(tab, 'SetPoint', PositionDashboardTab)
-			else
-				tab.texture:SetTexture(E.Media.Textures.Catalog)
-			end
-		end
+	local HouseDropdown = DashBoardFrame.HouseDropdown
+	if HouseDropdown then
+		S:HandleDropDownBox(HouseDropdown.Dropdown or HouseDropdown)
 	end
 
 	local InfoContent = DashBoardFrame.HouseInfoContent
 	if InfoContent then
 		S:HandleButton(InfoContent.DashboardNoHousesFrame.NoHouseButton)
 		S:HandleButton(InfoContent.HouseFinderButton)
-		S:HandleDropDownBox(InfoContent.HouseDropdown)
 
 		local ContentFrame = InfoContent.ContentFrame
 		if ContentFrame then
@@ -206,6 +240,43 @@ function S:Blizzard_HousingDashboard()
 			PreviewFrame.PreviewCornerRight:Hide()
 		end
 	end
+
+	-- 12.1 "Blueprints"-tab WIP
+	--[[
+	local CollectionContent = DashBoardFrame.CollectionContent
+	if CollectionContent then
+		if CollectionContent.Divider then
+			CollectionContent.Divider:Hide()
+		end
+
+		if CollectionContent.Background then
+			CollectionContent.Background:Hide()
+		end
+
+		local Categories = CollectionContent.Categories
+		if Categories then
+			if Categories.TopBorder then
+				Categories.TopBorder:Hide()
+			end
+
+			if Categories.Background then
+				Categories.Background:Hide()
+			end
+		end
+
+		local BlueprintCollection = CollectionContent.BlueprintCollection
+		if BlueprintCollection and BlueprintCollection.ScrollBar then
+			S:HandleTrimScrollBar(BlueprintCollection.ScrollBar)
+		end
+
+		local BlueprintDetails = CollectionContent.BlueprintDetails
+		if BlueprintDetails then
+			if BlueprintDetails.PreviewBackground then
+				BlueprintDetails.PreviewBackground:Hide()
+			end
+		end
+	end
+	]]
 end
 
 function S:Blizzard_HousingCornerstone()
