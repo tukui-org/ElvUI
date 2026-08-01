@@ -1743,29 +1743,28 @@ function E:UpdateAll()
 	E:UpdateStart()
 
 	E:Delay(0.02, E.UpdateLayout, E)
+	E:Delay(0.04, E.UpdateDataBars, E)
+	E:Delay(0.06, E.UpdateDataTexts, E)
 
 	if ActionBars.Initialized then
-		E:Delay(0.04, E.UpdateActionBars, E)
+		E:Delay(0.08, E.UpdateActionBars, E)
 	end
 
 	if NamePlates.Initialized then
-		E:Delay(0.06, E.UpdateNamePlates, E)
+		E:Delay(0.10, E.UpdateNamePlates, E)
 	end
 
 	if Bags.Initialized then
-		E:Delay(0.08, E.UpdateBags, E)
+		E:Delay(0.12, E.UpdateBags, E)
 	end
 
 	if Chat.Initialized then
-		E:Delay(0.10, E.UpdateChat, E)
+		E:Delay(0.14, E.UpdateChat, E)
 	end
 
 	if Tooltip.Initialized then
-		E:Delay(0.12, E.UpdateTooltip, E)
+		E:Delay(0.16, E.UpdateTooltip, E)
 	end
-
-	E:Delay(0.14, E.UpdateDataBars, E)
-	E:Delay(0.16, E.UpdateDataTexts, E)
 
 	if Minimap.Initialized then
 		E:Delay(0.18, E.UpdateMinimap, E)

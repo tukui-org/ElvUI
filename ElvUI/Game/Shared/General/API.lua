@@ -4,7 +4,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
 local UF = E:GetModule('UnitFrames')
-local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
@@ -1028,19 +1027,18 @@ end
 
 function E:FIRST_FRAME_RENDERED()
 	E:UpdateMedia()
-	E:UpdateBlizzardFonts()
 
+	E:Delay(0.01, E.UpdateBlizzardFonts, E)
 	E:Delay(0.02, E.UpdateMediaItems, E)
-	E:Delay(0.04, E.UpdateFontTemplates, E)
+	E:Delay(0.03, E.UpdateFontTemplates, E)
+	E:Delay(0.04, E.UpdateStatusBars, E)
 
 	if UF.Initialized then
-		E:Delay(0.06, UF.Update_FontStrings, UF)
+		E:Delay(0.05, UF.Update_FontStrings, UF)
 	end
 
-	E:Delay(0.08, E.UpdateStatusBars, E)
-
 	if UF.Initialized then
-		E:Delay(0.10, UF.Update_StatusBars, UF)
+		E:Delay(0.06, UF.Update_StatusBars, UF)
 	end
 end
 
