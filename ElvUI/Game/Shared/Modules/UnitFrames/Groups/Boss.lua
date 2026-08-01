@@ -102,6 +102,6 @@ function UF:Update_BossFrames(frame, db)
 	end
 end
 
-if not E.Classic then
+if not (E.Classic or E.TBC) then
 	UF.unitgroupstoload.boss = {MAX_BOSS_FRAMES}
 end
