@@ -336,7 +336,7 @@ function E:ForceBorderColor(frame, r, g, b, a)
 	end
 end
 
-function E:UpdateMedia(mediaType)
+function E:UpdateMedia()
 	if not E.db.general or not E.private.general then return end
 
 	E.media.normFont = LSM:Fetch('font', E.db.general.font)
@@ -344,14 +344,6 @@ function E:UpdateMedia(mediaType)
 	E.media.blankTex = LSM:Fetch('background', 'ElvUI Blank')
 	E.media.normTex = LSM:Fetch('statusbar', E.private.general.normTex)
 	E.media.glossTex = LSM:Fetch('statusbar', E.private.general.glossTex)
-
-	if mediaType then -- callback from SharedMedia: LSM.Register
-		if mediaType == 'font' then
-			E:UpdateBlizzardFonts()
-		end
-
-		return
-	end
 
 	-- Colors
 	E.media.bordercolor = E:SetColorTable(E.media.bordercolor, E:UpdateClassColor(E.db.general.bordercolor))
@@ -405,7 +397,6 @@ function E:UpdateMedia(mediaType)
 	end
 
 	E:ValueFuncCall()
-	E:UpdateBlizzardFonts()
 end
 
 function E:GeneralMedia_ApplyToAll()
@@ -1149,7 +1140,9 @@ function E:UpdateStart(skipUpdateDB)
 	end
 
 	E:UpdateMoverPositions()
+	E:UpdateMedia()
 	E:UpdateMediaItems()
+	E:UpdateBlizzardFonts()
 	E:UpdateUnitFrames()
 end
 
@@ -1663,7 +1656,6 @@ function E:UpdateUnitFrames()
 end
 
 function E:UpdateMediaItems()
-	E:UpdateMedia()
 	E:UpdateAuraCurves()
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
@@ -2075,9 +2067,6 @@ function E:Initialize()
 		E:LoadCommands()
 		E:InitializeModules() -- early modules
 		E:LoadMovers()
-		E:UpdateAuraCurves()
-		E:UpdateDispelColors()
-		E:UpdateCustomClassColors()
 
 		if E.Retail then
 			E:Tutorials()

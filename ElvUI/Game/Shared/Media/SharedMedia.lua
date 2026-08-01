@@ -255,21 +255,12 @@ do -- LSM Font Preloader ~Simpy
 		cacheFont(key, data)
 	end
 
-	-- this helps fix most of the issues with fonts or textures reverting to default because the addon providing them is loading after ElvUI
-	local callMedia = function(mediaType) E:UpdateMedia(mediaType) end
-
 	-- Now lets hook it so we can preload any other AddOns add to LSM
-	hooksecurefunc(LSM, 'Register', function(_, mediaType, key, data)
-		if not mediaType or type(mediaType) ~= 'string' then return end
+	hooksecurefunc(LSM, 'Register', function(_, which, key, data)
+		if not which or type(which) ~= 'string' then return end
 
-		local mtype = mediaType:lower()
-		if mtype == 'font' then
+		if which:lower() == 'font' then
 			cacheFont(key, data)
-			callMedia(mtype)
-			LSM.needsRefreshFont = true
-		elseif mtype == 'background' or mtype == 'statusbar' then
-			callMedia(mtype)
-			LSM.needsRefreshStatusbars = true
 		end
 	end)
 end
