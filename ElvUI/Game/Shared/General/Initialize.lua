@@ -596,6 +596,7 @@ function E:OnInitialize()
 	E:CheckAddons()
 	E:UIMult()
 	E:UpdateMedia()
+	E:UpdateTexCoords()
 
 	if not E.OtherAddons.Tukui then
 		E:InitializeInitialModules()

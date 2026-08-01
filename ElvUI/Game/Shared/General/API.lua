@@ -1467,7 +1467,6 @@ function E:LoadAPI()
 
 	E:GROUP_ROSTER_UPDATE()
 	E:SetupGameMenu()
-	E:UpdateTexCoords() -- update cropIcon texCoords
 
 	if E.Retail or E.Mists then
 		E:PopulateSpecInfo()
