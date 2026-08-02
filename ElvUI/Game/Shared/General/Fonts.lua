@@ -92,6 +92,19 @@ function E:SetFont(obj, font, size, style, sR, sG, sB, sA, sX, sY, r, g, b, a)
 	end
 end
 
+function E:UpdateBlizzardSpecialFonts()
+	local db = E.private.general
+	local COMBAT	= LSM:Fetch('font', db.dmgfont)
+	local NAMEFONT	= LSM:Fetch('font', db.namefont)
+
+	-- these require a relog to take effect
+	if db.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
+	if db.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
+	if db.replaceCombatText then -- Blizzard_CombatText
+		E:SetFont(_G.CombatTextFont, COMBAT, 120, 'SHADOW')
+	end
+end
+
 local lastFont = {}
 function E:UpdateBlizzardFonts()
 	local db = E.private.general
@@ -123,16 +136,8 @@ function E:UpdateBlizzardFonts()
 	local tiny		= size * 0.8 -- 9.6
 
 	-- set an invisible font for xp, honor kill, etc
-	local COMBAT		= LSM:Fetch('font', db.dmgfont)
-	local NAMEFONT		= LSM:Fetch('font', db.namefont)
 	local NORMAL		= E.media.normFont
 	local NUMBER		= E.media.normFont
-
-	if db.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
-	if db.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
-	if db.replaceCombatText then -- Blizzard_CombatText
-		E:SetFont(_G.CombatTextFont, COMBAT, 120, 'SHADOW')
-	end
 
 	if db.replaceBubbleFont then
 		local BUBBLE = LSM:Fetch('font', db.chatBubbleFont)

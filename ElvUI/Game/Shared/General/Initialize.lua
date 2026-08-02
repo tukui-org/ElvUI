@@ -599,6 +599,7 @@ function E:OnInitialize()
 	E:UpdateAuraCurves()
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
+	E:UpdateBlizzardSpecialFonts()
 
 	if not E.OtherAddons.Tukui then
 		E:InitializeInitialModules()
