@@ -491,7 +491,7 @@ function D:Decode(dataString)
 		end
 
 		local serializedData
-		serializedData, profileType, profileKey = E:SplitString(decompressed, '::') -- '^^' indicates the end of the AceSerializer string
+		serializedData, profileType, profileKey = E:SplitString(decompressed, '::')
 
 		profileData = DeserializeCBOR(serializedData)
 
