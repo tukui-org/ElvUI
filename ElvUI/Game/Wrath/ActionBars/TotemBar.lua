@@ -307,8 +307,7 @@ end
 
 function AB:UpdateTotemBindings()
 	local db = AB.db.totemBar
-	local font = db.font
-	local size, outline = db.fontSize, db.fontOutline
+	local font, size, outline = db.font, db.fontSize, db.fontOutline
 
 	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(font, size, outline)
 	_G.MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
