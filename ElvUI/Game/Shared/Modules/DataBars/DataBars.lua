@@ -197,7 +197,10 @@ function DB:CreateAll()
 end
 
 function DB:PLAYER_LOGIN()
-	DB:HonorBar_Update()
+	if E.Retail then
+		DB:HonorBar_Update()
+	end
+
 	DB:UpdateAll()
 end
 
