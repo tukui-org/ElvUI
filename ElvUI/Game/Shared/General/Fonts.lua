@@ -135,10 +135,6 @@ function E:UpdateBlizzardFonts()
 	local small		= size * 0.9 -- 10.8
 	local tiny		= size * 0.8 -- 9.6
 
-	-- set an invisible font for xp, honor kill, etc
-	local NORMAL		= E.media.normFont
-	local NUMBER		= E.media.normFont
-
 	if db.replaceBubbleFont then
 		local BUBBLE = LSM:Fetch('font', db.chatBubbleFont)
 		E:SetFont(_G.ChatBubbleFont, BUBBLE, db.chatBubbleFontSize, db.chatBubbleFontOutline)	-- 13
@@ -155,6 +151,9 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_LargeNamePlate,			LARGE, db.nameplateLargeFontSize,	db.nameplateLargeFontOutline)	-- 12
 		E:SetFont(_G.SystemFont_LargeNamePlateFixed,	LARGE, db.nameplateLargeFontSize,	db.nameplateLargeFontOutline)	-- 20
 	end
+
+	local NORMAL		= E.media.normFont
+	local NUMBER		= E.media.normFont
 
 	-- advanced fonts
 	local replaceFonts = db.replaceBlizzFonts
