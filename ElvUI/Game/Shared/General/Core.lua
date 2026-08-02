@@ -444,6 +444,9 @@ do	-- i guess we finally need it ~Simpy
 	local funcs, callbacks = {}, {}
 	local watcher = CreateFrame('Frame')
 	function E:Coroutine_OnUpdate()
+		if InCombatLockdown() then return end
+
+		-- resume is a protected function, wait until after combat
 		for func, data in next, funcs do
 			local resumed = co_resume(data.routine)
 			if not resumed then -- cant continue
