@@ -4,7 +4,7 @@ local LibStub = _G.LibStub
 
 local _G = _G
 local unpack, type, gsub, rad = unpack, type, gsub, rad
-local tremove, tinsert, next, strfind = tremove, tinsert, next, strfind
+local tinsert, next, strfind = tinsert, next, strfind
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
@@ -2494,7 +2494,7 @@ end
 function S:CallLoadedNonAddon(index, func)
 	E:CallLoadFunc(func)
 
-	tremove(S.nonAddonsToLoad, index)
+	S.nonAddonsToLoad[index] = nil
 end
 
 function S:CallLoadedAddon(addonName, object)
