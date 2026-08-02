@@ -13,7 +13,6 @@
 	<Include file='Shared\Ace3\AceDB-3.0\AceDB-3.0.xml'/>
 	<Include file='Shared\Ace3\AceLocale-3.0\AceLocale-3.0.xml'/>
 	<Include file='Shared\Ace3\AceComm-3.0\AceComm-3.0.xml'/>
-	<Include file='Shared\Ace3\AceSerializer-3.0\AceSerializer-3.0.xml'/>
 	<Include file='Shared\Ace3\AceTimer-3.0\AceTimer-3.0.xml'/>
 	<Include file='Shared\Ace3\AceHook-3.0\AceHook-3.0.xml'/>
 
