@@ -329,8 +329,8 @@ function AB:MultiCastRecallSpellButton_Update(button)
 	if InCombatLockdown() then
 		AB.NeedsRecallButtonUpdate = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-	else
-		if not button then button = _G.MultiCastRecallSpellButton end -- if we call it with no button, assume it's this one
+	else -- if we call it with no button, assume it's this one
+		if not button then button = _G.MultiCastRecallSpellButton end
 		if button and button:GetID() then
 			if self.hooks.MultiCastRecallSpellButton_Update then
 				self.hooks.MultiCastRecallSpellButton_Update(button)
@@ -360,6 +360,19 @@ function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	end
 
 	bar.buttons[button] = true
+end
+
+function AB:TotemBar_SpellButtonSetPoint(point, attachTo, anchorPoint, xOffset, yOffset)
+	local db = AB.db.totemBar
+	local buttonSpacing = (db and db.spacing) or 0
+
+	if InCombatLockdown() then
+		AB.NeedsRecallButtonUpdate = true
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+	elseif xOffset ~= buttonSpacing or self:GetPoint(2) then
+		self:ClearAllPoints()
+		self:SetPoint(point, attachTo, anchorPoint, buttonSpacing, yOffset)
+	end
 end
 
 function AB:CreateTotemBar()
@@ -412,16 +425,7 @@ function AB:CreateTotemBar()
 		button:HookScript('OnLeave', AB.TotemButton_OnLeave)
 	end
 
-	hooksecurefunc(spellButton, 'SetPoint', function(button, point, attachTo, anchorPoint, xOffset, yOffset)
-		local db = AB.db.totemBar
-		if InCombatLockdown() then
-			AB.NeedsRecallButtonUpdate = true
-			AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-		elseif xOffset ~= db.spacing or button:GetPoint(2) then
-			button:ClearAllPoints()
-			button:SetPoint(point, attachTo, anchorPoint, db.spacing, yOffset)
-		end
-	end)
+	hooksecurefunc(spellButton, 'SetPoint', AB.TotemBar_SpellButtonSetPoint)
 
 	AB:UpdateTotemBindings()
 
