@@ -112,6 +112,10 @@ function E:UpdateBlizzardFonts()
 	local db = E.private.general
 	local size, style, blizz, noscale = E.db.general.fontSize, E.db.general.fontStyle, db.blizzardFontSize, db.noFontScale
 
+	-- default fonts
+	local NORMAL	= E.media.normFont
+	local NUMBER	= E.media.normFont
+
 	-- handle outlines
 	local prefix = strmatch(style, '(SHADOW)') or strmatch(style, '(MONOCHROME)') or ''
 	local thick, outline = prefix..'THICKOUTLINE', prefix..'OUTLINE'
@@ -154,16 +158,9 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_LargeNamePlateFixed,	LARGE, db.nameplateLargeFontSize,	db.nameplateLargeFontOutline)	-- 20
 	end
 
-	local NORMAL		= E.media.normFont
-	local NUMBER		= E.media.normFont
-
 	local replaceFonts = db.replaceBlizzFonts -- handle replace blizzard, when needed
 	if replaceFonts and (lastFont.font ~= NORMAL or lastFont.size ~= size or lastFont.style ~= style or lastFont.blizz ~= blizz or lastFont.noscale ~= noscale) then
-		lastFont.font = NORMAL
-		lastFont.size = size
-		lastFont.style = style
-		lastFont.blizz = blizz
-		lastFont.noscale = noscale
+		lastFont.font, lastFont.size, lastFont.style, lastFont.blizz, lastFont.noscale = NORMAL, size, style, blizz, noscale
 
 		-- Raid Warnings look blurry when animated, even without addons. This is due to a mismatch between Font Size and SetTextHeight.
 		-- RaidBossEmoteFramePrivate: The size of this cant be changed without looking blurry. We have no access to its RAID_NOTICE_MIN_HEIGHT and RAID_NOTICE_MAX_HEIGHT.
@@ -311,22 +308,22 @@ function E:UpdateBlizzardFonts()
 
 	-- advanced fonts
 	if replaceFonts then
-		E:MapFont(FontMap.mailbody,					NORMAL, (blizz and 15) or unscale or big, 'NONE')
-		E:MapFont(FontMap.cooldown,					NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
-		E:MapFont(FontMap.errortext,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
-		E:MapFont(FontMap.pvpsubzone,				NORMAL, (blizz and 22) or unscale or large, outline)
-		E:MapFont(FontMap.pvpzone,					NORMAL, (blizz and 22) or unscale or large, outline)
-		E:MapFont(FontMap.worldsubzone,				NORMAL, (blizz and 24) or unscale or huge, outline)
-		E:MapFont(FontMap.worldzone,				NORMAL, (blizz and 25) or unscale or mega, outline)
+		E:MapFont(FontMap.mailbody,				NORMAL, (blizz and 15) or unscale or big, 'NONE')
+		E:MapFont(FontMap.cooldown,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+		E:MapFont(FontMap.errortext,			NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+		E:MapFont(FontMap.pvpsubzone,			NORMAL, (blizz and 22) or unscale or large, outline)
+		E:MapFont(FontMap.pvpzone,				NORMAL, (blizz and 22) or unscale or large, outline)
+		E:MapFont(FontMap.worldsubzone,			NORMAL, (blizz and 24) or unscale or huge, outline)
+		E:MapFont(FontMap.worldzone,			NORMAL, (blizz and 25) or unscale or mega, outline)
 
 		E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')
 
 		if E.Retail then
-			E:MapFont(FontMap.objective,			NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
-			E:MapFont(FontMap.talkingtext,			NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
-			E:MapFont(FontMap.talkingtitle,			NORMAL, (blizz and 22) or unscale or large, outline)
+			E:MapFont(FontMap.objective,		NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
+			E:MapFont(FontMap.talkingtext,		NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+			E:MapFont(FontMap.talkingtitle,		NORMAL, (blizz and 22) or unscale or large, outline)
 		end
 	end
 
