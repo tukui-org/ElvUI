@@ -1145,6 +1145,9 @@ function E:UpdateStart(skipUpdateDB)
 	E:UpdateMoverPositions()
 	E:UpdateMedia()
 	E:UpdateMediaItems()
+	E:UpdateAuraCurves()
+	E:UpdateDispelColors()
+	E:UpdateCustomClassColors()
 	E:UpdateBlizzardFonts()
 	E:UpdateUnitFrames()
 end
@@ -1659,9 +1662,6 @@ function E:UpdateUnitFrames()
 end
 
 function E:UpdateMediaItems()
-	E:UpdateAuraCurves()
-	E:UpdateDispelColors()
-	E:UpdateCustomClassColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 end

@@ -596,6 +596,9 @@ function E:OnInitialize()
 	E:UIMult()
 	E:UpdateMedia()
 	E:UpdateTexCoords()
+	E:UpdateAuraCurves()
+	E:UpdateDispelColors()
+	E:UpdateCustomClassColors()
 
 	if not E.OtherAddons.Tukui then
 		E:InitializeInitialModules()
