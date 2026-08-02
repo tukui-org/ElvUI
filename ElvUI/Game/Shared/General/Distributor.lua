@@ -472,11 +472,19 @@ function D:CreateProfileExport(dataType, dataKey, dataString)
 	return (dataType == 'profile' and format('%s::%s::%s', dataString, dataType, dataKey)) or (dataType and format('%s::%s', dataString, dataType))
 end
 
+function D:IsPreviousImport(dataString)
+	return strmatch(dataString, '^!E1!')
+end
+
 function D:GetImportStringType(dataString)
 	return (strmatch(dataString, '^'..EXPORT_PREFIX) and 'Deflate') or (strmatch(dataString, '^{') and 'Table') or ''
 end
 
 function D:Decode(dataString)
+	if D:IsPreviousImport() then
+		E:Print('This import needs to be upgraded: https://github.com/tukui-org/ElvUI/wiki/export')
+	end
+
 	local stringType = D:GetImportStringType(dataString)
 	local profileInfo, profileType, profileKey, profileData
 
