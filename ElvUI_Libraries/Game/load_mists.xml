@@ -13,11 +13,9 @@
 	<Include file='Shared\Ace3\AceDB-3.0\AceDB-3.0.xml'/>
 	<Include file='Shared\Ace3\AceLocale-3.0\AceLocale-3.0.xml'/>
 	<Include file='Shared\Ace3\AceComm-3.0\AceComm-3.0.xml'/>
-	<Include file='Shared\Ace3\AceSerializer-3.0\AceSerializer-3.0.xml'/>
 	<Include file='Shared\Ace3\AceTimer-3.0\AceTimer-3.0.xml'/>
 	<Include file='Shared\Ace3\AceHook-3.0\AceHook-3.0.xml'/>
 
-	<Script file='Shared\LibDeflate\LibDeflate.lua'/>
 	<Script file='Shared\LibSharedMedia-3.0\LibSharedMedia-3.0.lua'/>
 	<Include file='Shared\AceGUI-3.0-SharedMediaWidgets\widget.xml'/>
 	<Include file='Shared\TaintLess\TaintLess.xml'/>

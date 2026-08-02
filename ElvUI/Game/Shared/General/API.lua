@@ -4,7 +4,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
 local UF = E:GetModule('UnitFrames')
-local LSM = E.Libs.LSM
 local ElvUF = E.oUF
 
 local _G = _G
@@ -1026,36 +1025,21 @@ do
 	end
 end
 
--- requirement for plugins adding media; after ADDON_LOADED but before PLAYER_LOGIN
-function E:RefreshMedia()
-	if LSM.needsRefreshFont then
-		--E:UpdateFontTemplates()
-		E:Delay(0.02, E.UpdateFontTemplates, E)
-
-		if UF.Initialized then
-			--UF:Update_FontStrings()
-			E:Delay(0.06, UF.Update_FontStrings, UF)
-		end
-
-		LSM.needsRefreshFont = nil
-	end
-
-	-- do the same for statusbars
-	if LSM.needsRefreshStatusbars then
-		--E:UpdateStatusBars()
-		E:Delay(0.04, E.UpdateStatusBars, E)
-
-		if UF.Initialized then
-			--UF:Update_StatusBars()
-			E:Delay(0.08, UF.Update_StatusBars, UF)
-		end
-
-		LSM.needsRefreshStatusbars = nil
-	end
-end
-
 function E:FIRST_FRAME_RENDERED()
-	E:RefreshMedia()
+	E:UpdateMedia()
+
+	E:Delay(0.01, E.UpdateBlizzardFonts, E)
+	E:Delay(0.02, E.UpdateMediaItems, E)
+	E:Delay(0.03, E.UpdateFontTemplates, E)
+	E:Delay(0.04, E.UpdateStatusBars, E)
+
+	if UF.Initialized then
+		E:Delay(0.05, UF.Update_FontStrings, UF)
+	end
+
+	if UF.Initialized then
+		E:Delay(0.06, UF.Update_StatusBars, UF)
+	end
 end
 
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
@@ -1481,7 +1465,6 @@ function E:LoadAPI()
 
 	E:GROUP_ROSTER_UPDATE()
 	E:SetupGameMenu()
-	E:UpdateTexCoords() -- update cropIcon texCoords
 
 	if E.Retail or E.Mists then
 		E:PopulateSpecInfo()

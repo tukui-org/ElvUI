@@ -1001,7 +1001,7 @@ do -- shared cooldown
 		position.inline = true
 		text.args.positionGroup = position
 
-		local colors = ACH:Group(L["Color"], nil, 3, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) C:SetCooldownSettings(db, nil, 'colors', nil, r, g, b, a); E:CooldownSettings(db); end)
+		local colors = ACH:Group(L["Color"], nil, 3, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
 		colors.args.text = ACH:Color(L["Text Color"], nil, 1)
 		colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
 		colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')

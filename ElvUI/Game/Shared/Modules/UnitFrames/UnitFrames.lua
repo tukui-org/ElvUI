@@ -638,7 +638,7 @@ function UF:Update_StatusBar(statusBar, texture)
 		texture = LSM:Fetch('statusbar', UF.db.statusbar)
 	end
 
-	local useBlank = statusBar.parent and statusBar.parent.isTransparent or statusBar.isTransparent
+	local useBlank = (statusBar.parent and statusBar.parent.isTransparent) or statusBar.isTransparent
 	local newTexture = (not useBlank and texture) or E.media.blankTex
 
 	if statusBar:IsObjectType('StatusBar') then
