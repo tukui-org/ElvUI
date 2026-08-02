@@ -94,10 +94,12 @@ end
 
 function E:UpdateBlizzardSpecialFonts()
 	local db = E.private.general
+	local NORMAL	= E.media.normFont
 	local COMBAT	= LSM:Fetch('font', db.dmgfont)
 	local NAMEFONT	= LSM:Fetch('font', db.namefont)
 
 	-- these require a relog to take effect
+	if db.replaceBlizzFonts then _G.STANDARD_TEXT_FONT = NORMAL end
 	if db.replaceNameFont then _G.UNIT_NAME_FONT = NAMEFONT end
 	if db.replaceCombatFont then _G.DAMAGE_TEXT_FONT = COMBAT end
 	if db.replaceCombatText then -- Blizzard_CombatText
@@ -155,45 +157,8 @@ function E:UpdateBlizzardFonts()
 	local NORMAL		= E.media.normFont
 	local NUMBER		= E.media.normFont
 
-	-- advanced fonts
-	local replaceFonts = db.replaceBlizzFonts
-	if replaceFonts then
-		E:MapFont(FontMap.mailbody,					NORMAL, (blizz and 15) or unscale or big, 'NONE')
-		E:MapFont(FontMap.cooldown,					NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
-		E:MapFont(FontMap.errortext,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
-		E:MapFont(FontMap.pvpsubzone,				NORMAL, (blizz and 22) or unscale or large, outline)
-		E:MapFont(FontMap.pvpzone,					NORMAL, (blizz and 22) or unscale or large, outline)
-		E:MapFont(FontMap.worldsubzone,				NORMAL, (blizz and 24) or unscale or huge, outline)
-		E:MapFont(FontMap.worldzone,				NORMAL, (blizz and 25) or unscale or mega, outline)
-
-		E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
-		E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
-		E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')
-
-		if E.Retail then
-			E:MapFont(FontMap.objective,			NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
-			E:MapFont(FontMap.talkingtext,			NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
-			E:MapFont(FontMap.talkingtitle,			NORMAL, (blizz and 22) or unscale or large, outline)
-		end
-	end
-
-	-- custom font settings
-	for name, data in next, FontMap do
-		local font = E.db.general.fonts[name]
-
-		if data.objects then
-			for _, object in next, data.objects do
-				E:SetFontMap(object, font, data, replaceFonts)
-			end
-		elseif data.object then
-			E:SetFontMap(data.object, font, data, replaceFonts)
-		end
-	end
-
-	-- handle replace blizzard, when needed
+	local replaceFonts = db.replaceBlizzFonts -- handle replace blizzard, when needed
 	if replaceFonts and (lastFont.font ~= NORMAL or lastFont.size ~= size or lastFont.style ~= style or lastFont.blizz ~= blizz or lastFont.noscale ~= noscale) then
-		_G.STANDARD_TEXT_FONT = NORMAL
-
 		lastFont.font = NORMAL
 		lastFont.size = size
 		lastFont.style = style
@@ -342,5 +307,39 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Game60Font,							NORMAL, (blizz and 60) or unscale or colossal, 'OUTLINE')
 		E:SetFont(_G.Game72Font,							NORMAL, (blizz and 72) or unscale or monstrous, 'OUTLINE')
 		E:SetFont(_G.Game120Font,							NORMAL, (blizz and 120) or unscale or titanic, 'OUTLINE')
+	end
+
+	-- advanced fonts
+	if replaceFonts then
+		E:MapFont(FontMap.mailbody,					NORMAL, (blizz and 15) or unscale or big, 'NONE')
+		E:MapFont(FontMap.cooldown,					NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+		E:MapFont(FontMap.errortext,				NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+		E:MapFont(FontMap.pvpsubzone,				NORMAL, (blizz and 22) or unscale or large, outline)
+		E:MapFont(FontMap.pvpzone,					NORMAL, (blizz and 22) or unscale or large, outline)
+		E:MapFont(FontMap.worldsubzone,				NORMAL, (blizz and 24) or unscale or huge, outline)
+		E:MapFont(FontMap.worldzone,				NORMAL, (blizz and 25) or unscale or mega, outline)
+
+		E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
+		E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
+		E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')
+
+		if E.Retail then
+			E:MapFont(FontMap.objective,			NORMAL, (blizz and 12) or unscale or size, 'SHADOW')
+			E:MapFont(FontMap.talkingtext,			NORMAL, (blizz and 16) or unscale or big, 'SHADOW')
+			E:MapFont(FontMap.talkingtitle,			NORMAL, (blizz and 22) or unscale or large, outline)
+		end
+	end
+
+	-- custom font settings
+	for name, data in next, FontMap do
+		local font = E.db.general.fonts[name]
+
+		if data.objects then
+			for _, object in next, data.objects do
+				E:SetFontMap(object, font, data, replaceFonts)
+			end
+		elseif data.object then
+			E:SetFontMap(data.object, font, data, replaceFonts)
+		end
 	end
 end
