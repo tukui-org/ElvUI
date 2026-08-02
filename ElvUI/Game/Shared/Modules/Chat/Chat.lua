@@ -43,6 +43,8 @@ local ToggleQuickJoinPanel = ToggleQuickJoinPanel
 local UIParent = UIParent
 local UnitName = UnitName
 
+local EncodeBase64 = C_EncodingUtil.EncodeBase64
+local DecodeBase64 = C_EncodingUtil.DecodeBase64
 local C_BattleNet_GetAccountInfoByID = C_BattleNet.GetAccountInfoByID
 local C_BattleNet_GetFriendAccountInfo = C_BattleNet.GetFriendAccountInfo
 local C_BattleNet_GetFriendGameAccountInfo = C_BattleNet.GetFriendGameAccountInfo
@@ -652,7 +654,7 @@ function CH:InsertEmotions(msg)
 		local pattern = E:EscapeString(word)
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
-			local encode = E.Libs.Deflate:EncodeForPrint(word) -- btw keep `|h|cFFffffff|r|h` as it is
+			local encode = EncodeBase64(word) -- btw keep `|h|cFFffffff|r|h` as it is
 			msg = gsub(msg, '([%s%p]-)'..pattern..'([%s%p]*)', (encode and ('%1|Helvmoji:%%'..encode..'|h|cFFffffff|r|h') or '%1')..emoji..'%2')
 		end
 	end
@@ -1145,7 +1147,7 @@ do
 	local stripTextureFunc = function(w, x, y) if x=='' then return (w~='' and w) or (y~='' and y) or '' end end
 	local hyperLinkFunc = function(w, x, y) if w~='' then return end
 		local emoji = (x~='' and x) and strmatch(x, 'elvmoji:%%(.+)')
-		return (emoji and E.Libs.Deflate:DecodeForPrint(emoji)) or y
+		return (emoji and DecodeBase64(emoji)) or y
 	end
 	local fourString = function(v, w, x, y)
 		return format('%s%s%s', v, w, (v and v == '1' and x) or y)

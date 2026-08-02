@@ -336,7 +336,7 @@ function E:ForceBorderColor(frame, r, g, b, a)
 	end
 end
 
-function E:UpdateMedia(mediaType)
+function E:UpdateMedia()
 	if not E.db.general or not E.private.general then return end
 
 	E.media.normFont = LSM:Fetch('font', E.db.general.font)
@@ -344,14 +344,6 @@ function E:UpdateMedia(mediaType)
 	E.media.blankTex = LSM:Fetch('background', 'ElvUI Blank')
 	E.media.normTex = LSM:Fetch('statusbar', E.private.general.normTex)
 	E.media.glossTex = LSM:Fetch('statusbar', E.private.general.glossTex)
-
-	if mediaType then -- callback from SharedMedia: LSM.Register
-		if mediaType == 'font' then
-			E:UpdateBlizzardFonts()
-		end
-
-		return
-	end
 
 	-- Colors
 	E.media.bordercolor = E:SetColorTable(E.media.bordercolor, E:UpdateClassColor(E.db.general.bordercolor))
@@ -405,7 +397,6 @@ function E:UpdateMedia(mediaType)
 	end
 
 	E:ValueFuncCall()
-	E:UpdateBlizzardFonts()
 end
 
 function E:GeneralMedia_ApplyToAll()
@@ -1149,7 +1140,9 @@ function E:UpdateStart(skipUpdateDB)
 	end
 
 	E:UpdateMoverPositions()
+	E:UpdateMedia()
 	E:UpdateMediaItems()
+	E:UpdateBlizzardFonts()
 	E:UpdateUnitFrames()
 end
 
@@ -1663,7 +1656,6 @@ function E:UpdateUnitFrames()
 end
 
 function E:UpdateMediaItems()
-	E:UpdateMedia()
 	E:UpdateAuraCurves()
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
@@ -1751,29 +1743,28 @@ function E:UpdateAll()
 	E:UpdateStart()
 
 	E:Delay(0.02, E.UpdateLayout, E)
+	E:Delay(0.04, E.UpdateDataBars, E)
+	E:Delay(0.06, E.UpdateDataTexts, E)
 
 	if ActionBars.Initialized then
-		E:Delay(0.04, E.UpdateActionBars, E)
+		E:Delay(0.08, E.UpdateActionBars, E)
 	end
 
 	if NamePlates.Initialized then
-		E:Delay(0.06, E.UpdateNamePlates, E)
+		E:Delay(0.10, E.UpdateNamePlates, E)
 	end
 
 	if Bags.Initialized then
-		E:Delay(0.08, E.UpdateBags, E)
+		E:Delay(0.12, E.UpdateBags, E)
 	end
 
 	if Chat.Initialized then
-		E:Delay(0.10, E.UpdateChat, E)
+		E:Delay(0.14, E.UpdateChat, E)
 	end
 
 	if Tooltip.Initialized then
-		E:Delay(0.12, E.UpdateTooltip, E)
+		E:Delay(0.16, E.UpdateTooltip, E)
 	end
-
-	E:Delay(0.14, E.UpdateDataBars, E)
-	E:Delay(0.16, E.UpdateDataTexts, E)
 
 	if Minimap.Initialized then
 		E:Delay(0.18, E.UpdateMinimap, E)
@@ -2075,9 +2066,6 @@ function E:Initialize()
 		E:LoadCommands()
 		E:InitializeModules() -- early modules
 		E:LoadMovers()
-		E:UpdateAuraCurves()
-		E:UpdateDispelColors()
-		E:UpdateCustomClassColors()
 
 		if E.Retail then
 			E:Tutorials()

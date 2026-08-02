@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local D = E:GetModule('Distributor')
-local LibDeflate = E.Libs.Deflate
 
 local _G = _G
 local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
@@ -10,19 +9,26 @@ local ReloadUI = ReloadUI
 local CreateFrame = CreateFrame
 local IsInRaid, UnitInRaid = IsInRaid, UnitInRaid
 local IsInGroup, UnitInParty = IsInGroup, UnitInParty
+local SerializeCBOR = C_EncodingUtil.SerializeCBOR
+local DeserializeCBOR = C_EncodingUtil.DeserializeCBOR
+local CompressString = C_EncodingUtil.CompressString
+local DecompressString = C_EncodingUtil.DecompressString
+local EncodeBase64 = C_EncodingUtil.EncodeBase64
+local DecodeBase64 = C_EncodingUtil.DecodeBase64
+
+local COMPRESS = Enum.CompressionMethod.Deflate or 0
+local OPTIMIZE = Enum.CompressionLevel.Default or 0
+
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 local LE_PARTY_CATEGORY_INSTANCE = LE_PARTY_CATEGORY_INSTANCE
 local ACCEPT, CANCEL, YES, NO = ACCEPT, CANCEL, YES, NO
 -- GLOBALS: ElvDB, ElvPrivateDB
 
-local EXPORT_PREFIX = '!E1!'
+local EXPORT_PREFIX = '!E2!'
 local REQUEST_PREFIX = 'ELVUI_REQUEST'
 local REPLY_PREFIX = 'ELVUI_REPLY'
 local TRANSFER_PREFIX = 'ELVUI_TRANSFER'
 local TRANSFER_COMPLETE_PREFIX = 'ELVUI_COMPLETE'
-
--- Set compression
-LibDeflate.compressLevel = { level = 5 }
 
 -- The active downloads
 local Downloads = {}
@@ -189,7 +195,7 @@ function D:Distribute(target, otherServer, dataKey)
 		data = E:FilterTableFromBlacklist(data, D.blacklistedKeys.profile)
 	end
 
-	local serialString = D:Serialize(data)
+	local serialString = SerializeCBOR(data)
 	local length = strlen(serialString)
 	local message = format('%s:%d:%s:%s', profileKey, length, target, dataKey or 'profile')
 
@@ -287,13 +293,13 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		D:UnregisterComm(TRANSFER_PREFIX)
 		E:StaticPopupSpecial_Hide(D.StatusBar)
 
-		local download, success, data = Downloads[sender]
+		local download, data = Downloads[sender]
 		local profileKey = download and download.profile
 		if profileKey then -- verify sender first before trying to handle the msg
-			success, data = D:Deserialize(msg)
+			data = DeserializeCBOR(msg)
 		end
 
-		if success then
+		if data then
 			local textString = format(L["Profile download complete from %s, would you like to load the profile %s now?"], sender, profileKey)
 
 			local confirm = E.PopupDialogs.DISTRIBUTOR_CONFIRM
@@ -447,10 +453,10 @@ function D:GetProfileExport(dataType, dataKey, dataFormat)
 
 	local profileExport
 	if dataFormat == 'text' then
-		local serialString = D:Serialize(profileData)
+		local serialString = SerializeCBOR(profileData)
 		local exportString = D:CreateProfileExport(dataType, profileKey, serialString)
-		local compressedData = LibDeflate:CompressDeflate(exportString, LibDeflate.compressLevel)
-		local printableString = LibDeflate:EncodeForPrint(compressedData)
+		local compressedData = CompressString(exportString, COMPRESS, OPTIMIZE)
+		local printableString = EncodeBase64(compressedData)
 		profileExport = printableString and format('%s%s', EXPORT_PREFIX, printableString) or nil
 	elseif dataFormat == 'luaTable' then
 		local exportString = E:TableToLuaString(profileData)
@@ -476,27 +482,20 @@ function D:Decode(dataString)
 
 	if stringType == 'Deflate' then
 		local data = gsub(dataString, '^'..EXPORT_PREFIX, '')
-		local decodedData = LibDeflate:DecodeForPrint(data)
-		local decompressed = LibDeflate:DecompressDeflate(decodedData)
+		local decodedData = DecodeBase64(data)
+		local decompressed = DecompressString(decodedData, COMPRESS)
 
 		if not decompressed then
 			E:Print('Error decompressing data.')
 			return
 		end
 
-		local serializedData, success
-		serializedData, profileInfo = E:SplitString(decompressed, '^^::') -- '^^' indicates the end of the AceSerializer string
+		local serializedData
+		serializedData, profileType, profileKey = E:SplitString(decompressed, '::')
 
-		if not profileInfo then
-			E:Print('Error importing profile. String is invalid or corrupted!')
-			return
-		end
+		profileData = DeserializeCBOR(serializedData)
 
-		serializedData = format('%s%s', serializedData, '^^') --Add back the AceSerializer terminator
-		profileType, profileKey = E:SplitString(profileInfo, '::')
-		success, profileData = D:Deserialize(serializedData)
-
-		if not success then
+		if not profileData then
 			E:Print('Error deserializing:', profileData)
 			return
 		end

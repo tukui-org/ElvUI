@@ -152,6 +152,7 @@ function UF:Construct_Castbar(frame, moverName)
 	castbar.Shield = castbar:CreateTexture(nil, 'OVERLAY', nil, 2)
 	castbar.Shield:SetTexture(E.media.blankTex)
 	castbar.Shield:SetAlpha(0) -- disable is so its hidden on classic
+	UF.statusbars[castbar.Shield] = 'castbarShield'
 
 	--Set to castbar.SafeZone
 	castbar.LatencyTexture = castbar:CreateTexture(nil, 'OVERLAY', nil, 3)
@@ -265,8 +266,6 @@ function UF:Configure_Castbar(frame)
 	castbar.Shield:Point(db.reverse and 'RIGHT' or 'LEFT')
 	castbar.Shield:Point('BOTTOM')
 	castbar.Shield:Point('TOP')
-
-	UF:Update_StatusBar(castbar.Shield)
 
 	if db.spark then
 		castbar.Spark = castbar.Spark_

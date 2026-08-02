@@ -118,7 +118,7 @@ GenGen.automation.args.autoRepair = ACH:Select(L["Auto Repair"], L["Automaticall
 General.fonts = ACH:Group(L["Fonts"], nil, 10, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value end)
 local Fonts = General.fonts.args
 
-Fonts.general = ACH:Group('', nil, 11, nil, function(info) local key = info[#info] if key == 'fontSlug' then return E.global.general[key] else return E.db.general[key] end end, function(info, value) local key = info[#info] if key == 'fontSlug' then E.global.general[key] = value else E.db.general[key] = value end E:UpdateMedia() E:UpdateFontTemplates() end)
+Fonts.general = ACH:Group('', nil, 11, nil, function(info) local key = info[#info] if key == 'fontSlug' then return E.global.general[key] else return E.db.general[key] end end, function(info, value) local key = info[#info] if key == 'fontSlug' then E.global.general[key] = value else E.db.general[key] = value end E:UpdateMedia() E:UpdateBlizzardFonts() E:UpdateFontTemplates() end)
 Fonts.general.args.font = ACH:SharedMediaFont(L["Default Font"], L["The font that the core of the UI will use."], 1)
 Fonts.general.args.fontSize = ACH:Range(L["Font Size"], L["Set the font size for everything in UI. Note: This doesn't effect somethings that have their own separate options (UnitFrame Font, Datatext Font, ect..)"], 2, C.Values.FontSize)
 Fonts.general.args.fontStyle = ACH:FontFlags(L["Font Outline"], nil, 3)
