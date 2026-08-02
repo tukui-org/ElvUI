@@ -2418,7 +2418,7 @@ function S:SkinWidgetContainer(widget)
 end
 
 function S:ADDON_LOADED(_, addonName)
-	if not S.allowBypass[addonName] and not E.initialized then
+	if not S.allowBypass[addonName] and not E.Initialized then
 		return
 	end
 

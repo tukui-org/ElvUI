@@ -1955,7 +1955,7 @@ end
 do
 	local loaded = {}
 	function E:RegisterModule(name, func)
-		if E.initialized then
+		if E.Initialized then
 			loaded.name = name
 			loaded.func = func
 
@@ -2041,7 +2041,7 @@ do
 end
 
 function E:OnEnable()
-	E.initialized = true
+	E.Initialized = true
 
 	E:RefreshDB() -- plugins add defaults, refresh them
 	E:InitializeModules() -- late modules
