@@ -48,7 +48,6 @@ plain-copy:
   - ElvUI_Libraries/Game/Shared/LibAceConfigHelper
   - ElvUI_Libraries/Game/Shared/LibActionButton-1.0
   - ElvUI_Libraries/Game/Shared/LibAnim
-  - ElvUI_Libraries/Game/Shared/LibDeflate
   - ElvUI_Libraries/Game/Shared/LibElvUIPlugin-1.0
   - ElvUI_Libraries/Game/Shared/LibSimpleSticky
   - ElvUI_Libraries/Game/Shared/oUF
