@@ -2054,6 +2054,8 @@ function E:Initialize()
 	E:CreateFonts()
 	E:UIScale()
 	E:LoadStaticPopups()
+	E:UpdateAuraCurves()
+	E:UpdateDispelColors()
 
 	if not E.Classic or (E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
