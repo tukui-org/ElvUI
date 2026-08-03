@@ -716,11 +716,19 @@ function AB:UpdateBarConfig(specific)
 		end
 	end
 
-	-- handle the first set of bindings unless in a pet battle
-	if (E.Retail or E.Mists) and IsInBattle() then
-		AB:UpdateBinds() -- no function passed, clears bindings
+	AB:UpdatePetBindings()
+	AB:UpdateStanceBindings() -- needs to be after AdjustMaxStanceButtons in the chain
+
+	if E.Retail or E.Mists then
+		if IsInBattle() then -- handle the first set of bindings unless in a pet battle
+			AB:UpdateBinds() -- no function passed, clears bindings
+		else
+			AB:HandleBinds() -- set override binds
+		end
+
+		AB:UpdateExtraBindings()
 	else
-		AB:HandleBinds() -- set override binds
+		AB:HandleBinds()
 	end
 end
 
@@ -766,11 +774,7 @@ function AB:UpdateButtonSettings(specific)
 		AB:PositionAndSizeBarPet()
 		AB:PositionAndSizeBarShapeShift()
 
-		AB:UpdatePetBindings()
-		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
-
 		if E.Retail or E.Mists then
-			AB:UpdateExtraBindings()
 			AB:UpdateFlyoutButtons()
 
 			-- handle LAB custom flyout button sizes again
@@ -1364,8 +1368,7 @@ function AB:GetFont(name, size, outline)
 	local slug = E:CanFlagSlug(outline)
 	if slug then outline = outline..'SLUG' end
 
-	local font = LSM:Fetch('font', name or AB.db.font)
-	return font, size or AB.db.fontSize, outline, slug
+	return name or AB.db.font, size or AB.db.fontSize, outline, slug
 end
 
 function AB:GetHotkeyConfig(db)
@@ -1373,11 +1376,11 @@ function AB:GetHotkeyConfig(db)
 	local offsetX = db and db.hotkeyTextXOffset or 0
 	local offsetY = db and db.hotkeyTextYOffset or -3
 
-	local color = db and db.useHotkeyColor and db.hotkeyColor or AB.db.fontColor
-	local show = not (db and not db.hotkeytext)
+	local enabled = db and db.hotkeytext
+	local color = (db and db.useHotkeyColor and db.hotkeyColor) or AB.db.fontColor
 
-	local font, size, flags, slug = AB:GetFont(db and db.hotkeyFont, db and db.hotkeyFontSize, db and db.hotkeyFontOutline)
-	return font, size, flags, slug, anchor, offsetX, offsetY, AB:GetTextJustify(anchor), { color.r or 1, color.g or 1, color.b or 1, color.a or 1 }, show
+	local font, size, flags, slug = AB:GetFont(enabled and db.hotkeyFont, enabled and db.hotkeyFontSize, enabled and db.hotkeyFontOutline)
+	return enabled, font, size, flags, slug, anchor, offsetX, offsetY, AB:GetTextJustify(anchor), { color.r or 1, color.g or 1, color.b or 1, color.a or 1 }
 end
 
 do
@@ -1411,16 +1414,14 @@ function AB:UpdateButtonConfig(barName, buttonName)
 
 	local hotkeyText = text.hotkey
 	if hotkeyText then
-		local font, size, flags, slug, anchor, offsetX, offsetY, justify, color = AB:GetHotkeyConfig(db)
+		local _, font, size, flags, slug, anchor, offsetX, offsetY, justify, color = AB:GetHotkeyConfig(db)
 		hotkeyText.color = color
 		hotkeyText.justifyH = justify
 
 		local fontText = hotkeyText.font
 		if fontText then
-			fontText.font = font
-			fontText.size = size
-			fontText.flags = flags
-			fontText.slug = slug
+			fontText.size, fontText.flags, fontText.slug = size, flags, slug
+			fontText.font = LSM:Fetch('font', font)
 		end
 
 		local position = hotkeyText.position
@@ -1436,7 +1437,9 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	if countText then
 		local fontText = countText.font
 		if fontText then
-			fontText.font, fontText.size, fontText.flags, fontText.slug = AB:GetFont(db and db.countFont, db and db.countFontSize, db and db.countFontOutline)
+			local font, size, flags, slug = AB:GetFont(db and db.countFont, db and db.countFontSize, db and db.countFontOutline)
+			fontText.size, fontText.flags, fontText.slug = size, flags, slug
+			fontText.font = LSM:Fetch('font', font)
 		end
 
 		local position = countText.position
@@ -1457,7 +1460,9 @@ function AB:UpdateButtonConfig(barName, buttonName)
 	if macroText then
 		local fontText = macroText.font
 		if fontText then
-			fontText.font, fontText.size, fontText.flags, fontText.slug = AB:GetFont(db and db.macroFont, db and db.macroFontSize, db and db.macroFontOutline)
+			local font, size, flags, slug = AB:GetFont(db and db.macroFont, db and db.macroFontSize, db and db.macroFontOutline)
+			fontText.size, fontText.flags, fontText.slug = size, flags, slug
+			fontText.font = LSM:Fetch('font', font)
 		end
 
 		local position = macroText.position
@@ -1531,9 +1536,10 @@ do
 		local hotkey = button.HotKey
 		if not hotkey then return end
 
-		local font, size, flags, slug, anchor, offsetX, offsetY, justify, color, show = AB:GetHotkeyConfig(button:GetParent().db)
+		local bar = button:GetParent()
+		local enabled, font, size, flags, slug, anchor, offsetX, offsetY, justify, color = AB:GetHotkeyConfig(bar.db)
 
-		hotkey:SetShown(show)
+		hotkey:SetShown(enabled)
 
 		local text = hotkey:GetText()
 		local rangeIndicator = text == _G.RANGE_INDICATOR

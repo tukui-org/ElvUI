@@ -127,9 +127,10 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
 	local numButtons, totalHeight = 0, 0
 
-	local buttonWidth = AB.db.totemBar.flyoutSize
-	local buttonHeight = (AB.db.totemBar.keepSizeRatio and AB.db.totemBar.flyoutSize) or AB.db.totemBar.flyoutHeight
-	local buttonSpacing = AB.db.totemBar.flyoutSpacing
+	local db = AB.db.totemBar
+	local buttonWidth = db.flyoutSize
+	local buttonHeight = (db.keepSizeRatio and db.flyoutSize) or db.flyoutHeight
+	local buttonSpacing = db.flyoutSpacing
 
 	for i, button in ipairs(frame.buttons) do
 		if not button.IsSkinned then
@@ -153,7 +154,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 			AB:TrimIcon(button, useMasque)
 
 			local anchor = (i == 1 and parent) or frame.buttons[i - 1]
-			if AB.db.totemBar.flyoutDirection == 'UP' then
+			if db.flyoutDirection == 'UP' then
 				button:Point('BOTTOM', anchor, 'TOP', 0, buttonSpacing)
 			else
 				button:Point('TOP', anchor, 'BOTTOM', 0, -buttonSpacing)
@@ -173,7 +174,7 @@ function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
 
 	frame:ClearAllPoints()
 	closeButton:ClearAllPoints()
-	if AB.db.totemBar.flyoutDirection == 'UP' then
+	if db.flyoutDirection == 'UP' then
 		frame:Point('BOTTOM', parent, 'TOP')
 		closeButton:Point('TOP', frame, 'TOP')
 	else
@@ -227,12 +228,16 @@ function AB:PositionAndSizeTotemBar()
 		return
 	end
 
+	local db = AB.db.totemBar
+	bar.mouseover = db.mouseover
+	bar.db = db
+
 	local barFrame = _G.MultiCastActionBarFrame
 	local numActiveSlots = barFrame.numActiveSlots
-	local buttonSpacing = AB.db.totemBar.spacing
+	local buttonSpacing = db.spacing
 
-	local buttonWidth = AB.db.totemBar.buttonSize
-	local buttonHeight = (AB.db.totemBar.keepSizeRatio and AB.db.totemBar.buttonSize) or AB.db.totemBar.buttonHeight
+	local buttonWidth = db.buttonSize
+	local buttonHeight = (db.keepSizeRatio and db.buttonSize) or db.buttonHeight
 	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
 
 	local mainWidth = (buttonWidth * (2 + numActiveSlots)) + (buttonSpacing * (2 + numActiveSlots - 1))
@@ -248,12 +253,10 @@ function AB:PositionAndSizeTotemBar()
 		barFrame:SetPoint('BOTTOM', barFrameAnchor)
 	end -- this is Simpy voodoo, dont change it
 
-	bar.mouseover = AB.db.totemBar.mouseover
-
-	local fadeAlpha = bar.mouseover and 0 or AB.db.totemBar.alpha
+	local fadeAlpha = bar.mouseover and 0 or db.alpha
 	bar:SetAlpha(fadeAlpha)
 
-	local visibility = gsub(AB.db.totemBar.visibility, '[\n\r]', '')
+	local visibility = gsub(db.visibility, '[\n\r]', '')
 	RegisterStateDriver(bar, 'visibility', visibility)
 
 	local summonButton = _G.MultiCastSummonSpellButton
@@ -303,8 +306,8 @@ function AB:PositionAndSizeTotemBar()
 end
 
 function AB:UpdateTotemBindings()
-	local font = AB.db.totemBar.font
-	local size, outline = AB.db.totemBar.fontSize, AB.db.totemBar.fontOutline
+	local db = AB.db.totemBar
+	local font, size, outline = db.font, db.fontSize, db.fontOutline
 
 	_G.MultiCastSummonSpellButtonHotKey:FontTemplate(font, size, outline)
 	_G.MultiCastSummonSpellButtonHotKey:SetTextColor(1, 1, 1)
@@ -326,8 +329,8 @@ function AB:MultiCastRecallSpellButton_Update(button)
 	if InCombatLockdown() then
 		AB.NeedsRecallButtonUpdate = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-	else
-		if not button then button = _G.MultiCastRecallSpellButton end -- if we call it with no button, assume it's this one
+	else -- if we call it with no button, assume it's this one
+		if not button then button = _G.MultiCastRecallSpellButton end
 		if button and button:GetID() then
 			if self.hooks.MultiCastRecallSpellButton_Update then
 				self.hooks.MultiCastRecallSpellButton_Update(button)
@@ -357,6 +360,19 @@ function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	end
 
 	bar.buttons[button] = true
+end
+
+function AB:TotemBar_SpellButtonSetPoint(point, attachTo, anchorPoint, xOffset, yOffset)
+	local db = AB.db.totemBar
+	local buttonSpacing = (db and db.spacing) or 0
+
+	if InCombatLockdown() then
+		AB.NeedsRecallButtonUpdate = true
+		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
+	elseif xOffset ~= buttonSpacing or self:GetPoint(2) then
+		self:ClearAllPoints()
+		self:SetPoint(point, attachTo, anchorPoint, buttonSpacing, yOffset)
+	end
 end
 
 function AB:CreateTotemBar()
@@ -409,15 +425,7 @@ function AB:CreateTotemBar()
 		button:HookScript('OnLeave', AB.TotemButton_OnLeave)
 	end
 
-	hooksecurefunc(spellButton, 'SetPoint', function(button, point, attachTo, anchorPoint, xOffset, yOffset)
-		if InCombatLockdown() then
-			AB.NeedsRecallButtonUpdate = true
-			AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-		elseif xOffset ~= AB.db.totemBar.spacing or button:GetPoint(2) then
-			button:ClearAllPoints()
-			button:SetPoint(point, attachTo, anchorPoint, AB.db.totemBar.spacing, yOffset)
-		end
-	end)
+	hooksecurefunc(spellButton, 'SetPoint', AB.TotemBar_SpellButtonSetPoint)
 
 	AB:UpdateTotemBindings()
 

@@ -186,9 +186,12 @@ function AB:PositionAndSizeBarPet()
 end
 
 function AB:UpdatePetBindings()
+	bar.db = AB.db.barPet
+
 	for i, button in next, bar.buttons do
 		if button.HotKey then
 			button.HotKey:SetText(GetBindingKey('BONUSACTIONBUTTON'..i))
+
 			AB:FixKeybindText(button)
 			AB:FixKeybindColor(button)
 		end

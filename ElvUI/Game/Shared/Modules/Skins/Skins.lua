@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 local LibStub = _G.LibStub
 
 local _G = _G
-local unpack, type, gsub, rad, strfind = unpack, type, gsub, rad, strfind
-local tinsert, next, ipairs, pairs = tinsert, next, ipairs, pairs
+local unpack, type, gsub, rad = unpack, type, gsub, rad
+local tinsert, next, strfind = tinsert, next, strfind
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
@@ -1058,7 +1058,7 @@ do
 	end
 
 	local function GetButton(frame, buttons)
-		for _, data in ipairs(buttons) do
+		for _, data in next, buttons do
 			if type(data) == 'string' then
 				local found = GetElement(frame, data)
 				if found then return found end
@@ -1259,7 +1259,7 @@ do --Tab Regions
 	function S:HandleTab(tab, noBackdrop, template)
 		if not tab or (tab.backdrop and not noBackdrop) then return end
 
-		for _, object in pairs(tabs) do
+		for _, object in next, tabs do
 			local textureName = tab:GetName() and _G[tab:GetName()..object]
 			if textureName then
 				textureName:SetTexture()
@@ -1340,7 +1340,7 @@ do
 
 		frame:StripTextures(true)
 
-		for name, direction in pairs(btns) do
+		for name, direction in next, btns do
 			local button = frame[name]
 			if button then
 				button:SetHitRectInsets(1, 1, 1, 1)
@@ -1388,7 +1388,7 @@ function S:HandleBlizzardRegions(frame, name, kill, zero)
 		name = frame.GetName and frame:GetName()
 	end
 
-	for _, area in pairs(S.Blizzard.Regions) do
+	for _, area in next, S.Blizzard.Regions do
 		local object = (name and _G[name..area]) or frame[area]
 		if object then
 			if kill then
@@ -2418,7 +2418,7 @@ function S:SkinWidgetContainer(widget)
 end
 
 function S:ADDON_LOADED(_, addonName)
-	if not S.allowBypass[addonName] and not E.initialized then
+	if not S.allowBypass[addonName] and not E.Initialized then
 		return
 	end
 
@@ -2429,11 +2429,15 @@ function S:ADDON_LOADED(_, addonName)
 end
 
 function S:PLAYER_LOGIN()
-	for addonName, object in pairs(S.addonsToLoad) do
+	for addonName, object in next, S.addonsToLoad do
 		local isLoaded, isFinished = IsAddOnLoaded(addonName)
 		if isLoaded and isFinished then
 			S:CallLoadedAddon(addonName, object)
 		end
+	end
+
+	for index, func in next, S.nonAddonsToLoad do
+		S:CallLoadedNonAddon(index, func)
 	end
 end
 
@@ -2487,6 +2491,12 @@ function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 	end
 end
 
+function S:CallLoadedNonAddon(index, func)
+	E:CallLoadFunc(func)
+
+	S.nonAddonsToLoad[index] = nil
+end
+
 function S:CallLoadedAddon(addonName, object)
 	for _, func in next, object do
 		E:CallLoadFunc(func)
@@ -2496,7 +2506,7 @@ function S:CallLoadedAddon(addonName, object)
 end
 
 function S:UpdateAllWidgets()
-	for _, widget in pairs(_G.UIWidgetTopCenterContainerFrame.widgetFrames) do
+	for _, widget in next, _G.UIWidgetTopCenterContainerFrame.widgetFrames do
 		S:SkinWidgetContainer(widget)
 	end
 end
@@ -2505,9 +2515,7 @@ function S:Initialize()
 	S.Initialized = true
 
 	for index, func in next, S.nonAddonsToLoad do
-		E:CallLoadFunc(func)
-
-		S.nonAddonsToLoad[index] = nil
+		S:CallLoadedNonAddon(index, func)
 	end
 
 	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)

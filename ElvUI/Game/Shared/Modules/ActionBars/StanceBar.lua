@@ -230,6 +230,8 @@ function AB:AdjustMaxStanceButtons(event)
 end
 
 function AB:UpdateStanceBindings()
+	bar.db = AB.db.stanceBar
+
 	for i = 1, NUM_STANCE_SLOTS do
 		local button = _G['ElvUI_StanceBarButton'..i]
 		if not button then break end

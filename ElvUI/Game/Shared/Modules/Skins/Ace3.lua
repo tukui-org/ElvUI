@@ -648,7 +648,7 @@ do -- Early Skin Loading
 	local LibStub = _G.LibStub
 	local numEnding = '%-[%d%.]+$'
 	function S:LibStub_NewLib(major)
-		local early = not E.initialized
+		local early = not E.Initialized
 		local n = gsub(major, numEnding, '')
 		if Libraries[n] then
 			if n == 'AceGUI' then
