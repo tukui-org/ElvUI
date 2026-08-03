@@ -463,12 +463,10 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 					end
 				elseif DT.UnitEvents[ev] then
 					pcall(dt.RegisterUnitEvent, dt, ev, 'player')
+				elseif ev == 'MODIFIER_STATE_CHANGED' then
+					dt.watchModKey = true
 				else
-					if ev == 'MODIFIER_STATE_CHANGED' then
-						dt.watchModKey = true
-					else
-						pcall(dt.RegisterEvent, dt, ev)
-					end
+					pcall(dt.RegisterEvent, dt, ev)
 				end
 			end
 		end
@@ -994,6 +992,10 @@ function DT:MenuGetItem(dt, value)
 	return index and options[index] == value
 end
 
+function DT:PLAYER_LOGIN()
+	DT:PopulateData()
+end
+
 function DT:Initialize()
 	DT.Initialized = true
 
@@ -1030,7 +1032,7 @@ function DT:Initialize()
 			hooksecurefunc('SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
 		end
 
-		DT:PopulateData()
+		DT:RegisterEvent('PLAYER_LOGIN')
 		DT:RegisterEvent('CURRENCY_DISPLAY_UPDATE')
 	end
 
