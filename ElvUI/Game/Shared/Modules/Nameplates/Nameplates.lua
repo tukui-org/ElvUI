@@ -126,16 +126,13 @@ end
 function NP:SetCVars()
 	local db = NP.db
 
-	if E.Retail then
-		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
-	elseif E.Mists or E.TBC or E.Classic then
-		NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
-		E:SetCVar('nameplateMaxDistance', db.loadDistance)
-	elseif E.Wrath then
+	-- The order of these is important !!
+
+	if not E.Retail then
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 
-	-- The order of these is important !!
+	NP:ToggleCVar('nameplateUseClassColorForFriendlyPlayerUnitNames', db.classColorNames)
 
 	local visibility = db.visibility
 	NP:ToggleCVar('nameplateShowAll', visibility.showAll)

@@ -444,6 +444,9 @@ do	-- i guess we finally need it ~Simpy
 	local funcs, callbacks = {}, {}
 	local watcher = CreateFrame('Frame')
 	function E:Coroutine_OnUpdate()
+		if InCombatLockdown() then return end
+
+		-- resume is a protected function, wait until after combat
 		for func, data in next, funcs do
 			local resumed = co_resume(data.routine)
 			if not resumed then -- cant continue
@@ -1142,6 +1145,9 @@ function E:UpdateStart(skipUpdateDB)
 	E:UpdateMoverPositions()
 	E:UpdateMedia()
 	E:UpdateMediaItems()
+	E:UpdateAuraCurves()
+	E:UpdateDispelColors()
+	E:UpdateCustomClassColors()
 	E:UpdateBlizzardFonts()
 	E:UpdateUnitFrames()
 end
@@ -1656,9 +1662,6 @@ function E:UpdateUnitFrames()
 end
 
 function E:UpdateMediaItems()
-	E:UpdateAuraCurves()
-	E:UpdateDispelColors()
-	E:UpdateCustomClassColors()
 	E:UpdateFrameTemplates()
 	E:UpdateStatusBars()
 end
@@ -1952,7 +1955,7 @@ end
 do
 	local loaded = {}
 	function E:RegisterModule(name, func)
-		if E.initialized then
+		if E.Initialized then
 			loaded.name = name
 			loaded.func = func
 
@@ -2038,7 +2041,7 @@ do
 end
 
 function E:OnEnable()
-	E.initialized = true
+	E.Initialized = true
 
 	E:RefreshDB() -- plugins add defaults, refresh them
 	E:InitializeModules() -- late modules
