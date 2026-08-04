@@ -25,6 +25,7 @@
 	<Script file='Shared\General\Core.lua'/>
 	<Script file='Shared\General\Math.lua'/>
 	<Script file='Shared\General\API.lua'/>
+	<Script file='Shared\General\Auras.lua'/>
 	<Script file='Shared\General\Fonts.lua'/>
 	<Script file='Shared\General\Install.lua'/>
 	<Script file='Shared\General\PluginInstaller.lua'/>
