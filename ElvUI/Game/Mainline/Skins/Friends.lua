@@ -106,8 +106,7 @@ function S:SocialUI_HandleTab(tab)
 	tab:Size(30, 40)
 
 	if tab.Icon then
-		tab.Icon:ClearAllPoints()
-		tab.Icon:SetPoint('CENTER')
+		S.SocialUI_PositionTabIcon(tab.Icon)
 		hooksecurefunc(tab.Icon, 'SetPoint', S.SocialUI_PositionTabIcon)
 	end
 
@@ -139,16 +138,11 @@ function S:SocialUI_RefreshTabs()
 
 	for tab in frame.socialTabPool:EnumerateActive() do
 		S:SocialUI_HandleTab(tab)
+		S.SocialUI_PositionTab(tab, tab:GetPoint())
 
 		if not tab.SocialUITabHooked then
 			hooksecurefunc(tab, 'SetPoint', S.SocialUI_PositionTab)
 			tab.SocialUITabHooked = true
-		end
-
-		local _, relativeTo, _, x, y = tab:GetPoint(1)
-		if relativeTo == frame and (x ~= 1 or y ~= 0) then
-			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 2, -1)
 		end
 	end
 end
@@ -643,6 +637,7 @@ function S:FriendsFrame()
 		end
 
 		S:HandleCloseButton(rewardsFrame.CloseButton)
+
 		hooksecurefunc(rewardsFrame, 'UpdateRewards', RAFRewards)
 		RAFRewards()
 	end
