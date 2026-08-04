@@ -178,51 +178,50 @@ function S:SocialUI_HandleScrollableHeader(header)
 end
 
 function S:SocialUI_HandleSocialCard()
-	local card = self
-	if not card or card.IsSkinned then return end
+	if self.IsSkinned then return end
 
 	-- Collapsible section headers
-	if card.ButtonText then
-		S:SocialUI_HandleScrollableHeader(card)
+	if self.ButtonText then
+		S:SocialUI_HandleScrollableHeader(self)
 		return
 	end
 
 	-- Spacers
-	if not card.Background and not card.PartyButton and not card.AcceptButton then
-		card.IsSkinned = true
+	if not self.Background and not self.PartyButton and not self.AcceptButton then
+		self.IsSkinned = true
 		return
 	end
 
-	if card.Background then
-		card.Background:SetAlpha(0)
+	if self.Background then
+		self.Background:SetAlpha(0)
 	end
 
-	card:CreateBackdrop('Transparent')
-	card.backdrop:SetInside(card, 2, 2)
+	self:CreateBackdrop('Transparent')
+	self.backdrop:SetInside(self, 2, 2)
 
-	local highlight = card.Highlight or card:GetHighlightTexture()
+	local highlight = self.Highlight or self:GetHighlightTexture()
 	if highlight then
 		highlight:SetColorTexture(0.24, 0.56, 1, 0.2)
-		highlight:SetInside(card.backdrop)
+		highlight:SetInside(self.backdrop)
 	end
 
-	if card.Selected then
-		card.Selected:SetColorTexture(1, 0.82, 0, 0.2)
-		card.Selected:SetAllPoints(card.backdrop)
+	if self.Selected then
+		self.Selected:SetColorTexture(1, 0.82, 0, 0.2)
+		self.Selected:SetAllPoints(self.backdrop)
 	end
 
-	S:SocialUI_HandleActionButton(card.PartyButton)
-	S:SocialUI_HandleActionButton(card.RAFSummonButton)
+	S:SocialUI_HandleActionButton(self.PartyButton)
+	S:SocialUI_HandleActionButton(self.RAFSummonButton)
 
-	if card.AcceptButton then
-		S:HandleButton(card.AcceptButton)
+	if self.AcceptButton then
+		S:HandleButton(self.AcceptButton)
 	end
 
-	if card.DeclineButton then
-		S:HandleButton(card.DeclineButton)
+	if self.DeclineButton then
+		S:HandleButton(self.DeclineButton)
 	end
 
-	card.IsSkinned = true
+	self.IsSkinned = true
 end
 
 function S:SocialUI_ScrollBoxUpdate()
@@ -312,12 +311,12 @@ end
 function S:SocialUI_HandleSideWindow(panel)
 	if not panel or panel.IsSkinned then return end
 
+	panel:StripTextures()
+	panel:SetTemplate('Transparent')
+
 	if panel.Border then
 		panel.Border:Hide()
 	end
-
-	panel:StripTextures()
-	panel:SetTemplate('Transparent')
 
 	if panel.ScrollBar then
 		S:HandleTrimScrollBar(panel.ScrollBar)
@@ -405,28 +404,21 @@ function S:Blizzard_SocialUI()
 	S:SocialUI_RefreshTabs()
 
 	-- Tab content views
-	local contactViews = {
-		frame.FriendsList,
-		frame.RecentAlliesList,
-		frame.QuickJoinFrame,
-		frame.FriendRequestsList,
-	}
-
-	for _, view in next, contactViews do
+	for _, view in next, { frame.FriendsList, frame.RecentAlliesList, frame.QuickJoinFrame, frame.FriendRequestsList } do
 		S:SocialUI_HandleContactsView(view)
 	end
 
-	local raf = frame.RecruitAFriendFrame
-	if raf then
-		S:SocialUI_HandleContactsView(raf)
-		S:SocialUI_HandleRewardClaiming(raf.RewardClaiming)
+	local recruitFrame = frame.RecruitAFriendFrame
+	if recruitFrame then
+		S:SocialUI_HandleContactsView(recruitFrame)
+		S:SocialUI_HandleRewardClaiming(recruitFrame.RewardClaiming)
 
-		if raf.RecruitmentButton then
-			S:HandleButton(raf.RecruitmentButton)
+		if recruitFrame.RecruitmentButton then
+			S:HandleButton(recruitFrame.RecruitmentButton)
 		end
 
-		if raf.NoRecruitsScrollBar then
-			S:HandleTrimScrollBar(raf.NoRecruitsScrollBar)
+		if recruitFrame.NoRecruitsScrollBar then
+			S:HandleTrimScrollBar(recruitFrame.NoRecruitsScrollBar)
 		end
 	end
 
@@ -545,94 +537,96 @@ function S:FriendsFrame()
 	end
 
 	-- View Friends BN popup
-	local FriendsFriendsFrame = _G.FriendsFriendsFrame
-	if FriendsFriendsFrame then
-		if FriendsFriendsFrame.ScrollFrameBorder then
-			FriendsFriendsFrame.ScrollFrameBorder:Hide()
+	local friendsFrame = _G.FriendsFriendsFrame
+	if friendsFrame then
+		if friendsFrame.ScrollFrameBorder then
+			friendsFrame.ScrollFrameBorder:Hide()
 		end
 
-		FriendsFriendsFrame:StripTextures()
-		FriendsFriendsFrame:SetTemplate('Transparent')
+		friendsFrame:StripTextures()
+		friendsFrame:SetTemplate('Transparent')
 
-		if FriendsFriendsFrame.ScrollBar then
-			S:HandleTrimScrollBar(FriendsFriendsFrame.ScrollBar)
+		if friendsFrame.ScrollBar then
+			S:HandleTrimScrollBar(friendsFrame.ScrollBar)
 		end
 
 		if _G.FriendsFriendsFrameDropdown then
 			S:HandleDropDownBox(_G.FriendsFriendsFrameDropdown, 150)
 		end
 
-		S:HandleButton(FriendsFriendsFrame.SendRequestButton)
-		S:HandleButton(FriendsFriendsFrame.CloseButton)
+		S:HandleButton(friendsFrame.SendRequestButton)
+		S:HandleButton(friendsFrame.CloseButton)
 	end
 
 	-- Quick Join role selection popup
-	local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
-	if QuickJoinRoleSelectionFrame then
-		QuickJoinRoleSelectionFrame:StripTextures()
-		QuickJoinRoleSelectionFrame:SetTemplate('Transparent')
-		S:HandleButton(QuickJoinRoleSelectionFrame.AcceptButton)
-		S:HandleButton(QuickJoinRoleSelectionFrame.CancelButton)
-		S:HandleCloseButton(QuickJoinRoleSelectionFrame.CloseButton)
-		S:HandleCheckBox(QuickJoinRoleSelectionFrame.RoleButtonTank.CheckButton)
-		S:HandleCheckBox(QuickJoinRoleSelectionFrame.RoleButtonHealer.CheckButton)
-		S:HandleCheckBox(QuickJoinRoleSelectionFrame.RoleButtonDPS.CheckButton)
+	local quickJoinSelection = _G.QuickJoinRoleSelectionFrame
+	if quickJoinSelection then
+		quickJoinSelection:StripTextures()
+		quickJoinSelection:SetTemplate('Transparent')
+
+		S:HandleButton(quickJoinSelection.AcceptButton)
+		S:HandleButton(quickJoinSelection.CancelButton)
+		S:HandleCloseButton(quickJoinSelection.CloseButton)
+		S:HandleCheckBox(quickJoinSelection.RoleButtonTank.CheckButton)
+		S:HandleCheckBox(quickJoinSelection.RoleButtonHealer.CheckButton)
+		S:HandleCheckBox(quickJoinSelection.RoleButtonDPS.CheckButton)
 	end
 
 	-- Recruit-a-Friend popups / splash (still used from Social UI RAF tab)
-	local RAF = _G.RecruitAFriendFrame
-	if RAF then
-		if RAF.RecruitmentButton then
-			S:HandleButton(RAF.RecruitmentButton)
+	local recruitFrame = _G.RecruitAFriendFrame
+	if recruitFrame then
+		if recruitFrame.RecruitmentButton then
+			S:HandleButton(recruitFrame.RecruitmentButton)
 		end
 
-		local SplashFrame = RAF.SplashFrame
-		if SplashFrame then
-			S:HandleButton(SplashFrame.OKButton)
+		local splashFrame = recruitFrame.SplashFrame
+		if splashFrame then
+			S:HandleButton(splashFrame.OKButton)
 
 			if E.private.skins.parchmentRemoverEnable then
-				SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
+				splashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
 
-				SplashFrame.PictureFrame:Hide()
-				SplashFrame.Bracket_TopLeft:Hide()
-				SplashFrame.Bracket_TopRight:Hide()
-				SplashFrame.Bracket_BottomRight:Hide()
-				SplashFrame.Bracket_BottomLeft:Hide()
-				SplashFrame.PictureFrame_Bracket_TopLeft:Hide()
-				SplashFrame.PictureFrame_Bracket_TopRight:Hide()
-				SplashFrame.PictureFrame_Bracket_BottomRight:Hide()
-				SplashFrame.PictureFrame_Bracket_BottomLeft:Hide()
+				splashFrame.PictureFrame:Hide()
+				splashFrame.Bracket_TopLeft:Hide()
+				splashFrame.Bracket_TopRight:Hide()
+				splashFrame.Bracket_BottomRight:Hide()
+				splashFrame.Bracket_BottomLeft:Hide()
+				splashFrame.PictureFrame_Bracket_TopLeft:Hide()
+				splashFrame.PictureFrame_Bracket_TopRight:Hide()
+				splashFrame.PictureFrame_Bracket_BottomRight:Hide()
+				splashFrame.PictureFrame_Bracket_BottomLeft:Hide()
 			end
 		end
 
-		if RAF.RewardClaiming then
-			S:SocialUI_HandleRewardClaiming(RAF.RewardClaiming)
+		if recruitFrame.RewardClaiming then
+			S:SocialUI_HandleRewardClaiming(recruitFrame.RewardClaiming)
 		end
 
-		local RecruitList = RAF.RecruitList
-		if RecruitList then
-			if RecruitList.Header then
-				RecruitList.Header:StripTextures()
+		local recruitList = recruitFrame.RecruitList
+		if recruitList then
+			if recruitList.Header then
+				recruitList.Header:StripTextures()
 			end
 
-			if RecruitList.ScrollFrameInset then
-				RecruitList.ScrollFrameInset:StripTextures()
-				RecruitList.ScrollFrameInset:SetTemplate('Transparent')
+			if recruitList.ScrollFrameInset then
+				recruitList.ScrollFrameInset:StripTextures()
+				recruitList.ScrollFrameInset:SetTemplate('Transparent')
 			end
 
-			if RecruitList.ScrollBar then
-				S:HandleTrimScrollBar(RecruitList.ScrollBar)
+			if recruitList.ScrollBar then
+				S:HandleTrimScrollBar(recruitList.ScrollBar)
 			end
 		end
 	end
 
-	local Recruitment = _G.RecruitAFriendRecruitmentFrame
-	if Recruitment then
-		Recruitment:StripTextures()
-		Recruitment:SetTemplate('Transparent')
-		S:HandleEditBox(Recruitment.EditBox)
-		S:HandleButton(Recruitment.GenerateOrCopyLinkButton)
-		S:HandleCloseButton(Recruitment.CloseButton)
+	local recruitment = _G.RecruitAFriendRecruitmentFrame
+	if recruitment then
+		recruitment:StripTextures()
+		recruitment:SetTemplate('Transparent')
+
+		S:HandleEditBox(recruitment.EditBox)
+		S:HandleButton(recruitment.GenerateOrCopyLinkButton)
+		S:HandleCloseButton(recruitment.CloseButton)
 	end
 
 	local rewardsFrame = _G.RecruitAFriendRewardsFrame

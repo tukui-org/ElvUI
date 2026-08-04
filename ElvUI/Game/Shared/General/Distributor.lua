@@ -481,7 +481,7 @@ function D:GetImportStringType(dataString)
 end
 
 function D:Decode(dataString)
-	if D:IsPreviousImport() then
+	if D:IsPreviousImport(dataString) then
 		E:Print('This import needs to be upgraded: https://github.com/tukui-org/ElvUI/wiki/export')
 	end
 
