@@ -287,10 +287,11 @@ function M:Initialize()
 	if E.global.general.WorldMapCoordinates.enable then
 		M:PositionCoords()
 
-		-- Blizzard WorldMapCoordsPanel (CursorCoords / PlayerCoords)
+		-- Blizzard WorldMapCoordsPanel: CursorCoords / PlayerCoords
 		-- Remove them as long as our coords are enabled to avoid double coords
-		if E.Retail then
-			for _, frame in next, WorldMapFrame.overlayFrames or {} do
+		local overlayFrames = E.Retail and WorldMapFrame.overlayFrames
+		if overlayFrames then
+			for _, frame in next, overlayFrames do
 				if frame.PlayerCoords and frame.CursorCoords then
 					frame:Kill()
 					break
