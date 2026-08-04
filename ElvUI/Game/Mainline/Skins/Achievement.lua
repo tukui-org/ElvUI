@@ -220,14 +220,14 @@ function S:Blizzard_AchievementUI()
 	AchievementFrame.Header.Title:Hide()
 	AchievementFrame.Header.Points:Point('TOP', AchievementFrame, 0, -3)
 
-	S:HandleEditBox(AchievementFrame.SearchBox)
-	AchievementFrame.SearchBox:ClearAllPoints()
-	AchievementFrame.SearchBox:Point('TOPRIGHT', AchievementFrame, 'TOPRIGHT', -25, -2)
-	AchievementFrame.SearchBox:Point('BOTTOMLEFT', AchievementFrame, 'TOPRIGHT', -130, -20)
 
-	S:HandleButton(_G.AchievementFrameFilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
-	_G.AchievementFrameFilterDropdown:ClearAllPoints()
-	_G.AchievementFrameFilterDropdown:Point('RIGHT', AchievementFrame.SearchBox, 'LEFT', -3, 0)
+	local headerDetails = AchievementFrame.HeaderDetails
+	headerDetails.TopTileStreaks:SetAlpha(0)
+	S:HandleButton(headerDetails.Back)
+	local searchBox = headerDetails.Filters.SearchBox
+	S:HandleEditBox(searchBox)
+	local filterDropdown = headerDetails.Filters.FilterDropdown
+	S:HandleButton(filterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
 	-- Bottom Tabs
 	for i = 1, 3 do
@@ -241,11 +241,9 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameTab2:Point('TOPLEFT', _G.AchievementFrameTab1, 'TOPRIGHT', -5, 0)
 	_G.AchievementFrameTab3:Point('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
 
-	local PreviewContainer = AchievementFrame.SearchPreviewContainer
+	local PreviewContainer = searchBox.SearchPreviewContainer
 	local ShowAllSearchResults = PreviewContainer.ShowAllSearchResults
 	S:HandleFrame(PreviewContainer, true, nil, -3, 3)
-	PreviewContainer:ClearAllPoints()
-	PreviewContainer:Point('TOPLEFT', AchievementFrame, 'TOPRIGHT', 7, -2)
 	PreviewContainer.backdrop:Point('BOTTOMRIGHT', ShowAllSearchResults, 3, -3)
 
 	for i = 1, 5 do

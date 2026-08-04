@@ -6,9 +6,9 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 
 function S:CooldownManager_PositionViewerTab(_, _, _, x, y)
-	if x ~= 1 or y ~= -10 then
+	if x ~= 1 or y ~= 0 then
 		self:ClearAllPoints()
-		self:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 1, -10)
+		self:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', 2, -1)
 	end
 end
 
@@ -242,7 +242,7 @@ function S:CooldownManager_HandleAbilityTabs(viewer)
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 1, -10)
+			tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 2, -1)
 
 			hooksecurefunc(tab, 'SetPoint', S.CooldownManager_PositionViewerTab)
 		end
@@ -264,11 +264,13 @@ function S:CooldownManager_HandleAbilityTabs(viewer)
 			tab.SelectedTexture:SetAllPoints()
 		end
 
-		for _, region in next, { tab:GetRegions() } do
-			if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
-				region:SetColorTexture(1, 1, 1, 0.3)
-				region:SetAllPoints()
-			end
+		if tab.HighlightTexture then
+			tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+			tab.HighlightTexture:SetAllPoints()
+		end
+
+		if tab.TabGlow then
+			tab.TabGlow:SetAlpha(0)
 		end
 	end
 end
