@@ -38,8 +38,6 @@ function S:StyleTooltips()
 			CompareHeader:SetTemplate()
 		end
 	end
-
-	TT:SetAuraButtonTooltipStyle()
 end
 
 function S:TooltipFrames()
