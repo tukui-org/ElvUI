@@ -1917,15 +1917,15 @@ function E:ResetUI(...)
 end
 
 do
-	local function Errorhandler(err)
+	function E:ErrorHandler()
 		local handler = _G.geterrorhandler()
 		if handler then
-			return handler(err)
+			return handler(self)
 		end
 	end
 
 	function E:CallLoadFunc(func, ...)
-		xpcall(func, Errorhandler, ...)
+		return xpcall(func, E.ErrorHandler, ...)
 	end
 end
 
