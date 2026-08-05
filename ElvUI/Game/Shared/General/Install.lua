@@ -263,6 +263,10 @@ function E:SetupTheme(theme, noDisplayMsg)
 
 	E:UpdateStart(true)
 
+	if UF.Initialized then
+		E:Delay(0.05, E.UpdateUnitFrames)
+	end
+
 	if _G.InstallStepComplete and not noDisplayMsg then
 		_G.InstallStepComplete.message = L["Theme Set"]
 		_G.InstallStepComplete:Show()
