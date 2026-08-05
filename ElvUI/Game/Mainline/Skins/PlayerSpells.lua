@@ -116,12 +116,18 @@ function S:Blizzard_PlayerSpells()
 	TalentsFrame.PvPTalentList.backdrop:SetFrameStrata(PlayerSpellsFrame.TalentsFrame.PvPTalentList:GetFrameStrata())
 	TalentsFrame.PvPTalentList.backdrop:SetFrameLevel(2000)
 
-	for _, tab in next, { PlayerSpellsFrame.TabSystem:GetChildren() } do
+	local TabSystem = PlayerSpellsFrame.TabSystem
+	for _, tab in next, { TabSystem:GetChildren() } do
 		S:HandleTab(tab)
 	end
 
-	PlayerSpellsFrame.TabSystem:ClearAllPoints()
-	PlayerSpellsFrame.TabSystem:Point('TOPLEFT', PlayerSpellsFrame, 'BOTTOMLEFT', -3, 2)
+	TabSystem.spacing = -5
+	if TabSystem.MarkDirty then
+		TabSystem:MarkDirty()
+	end
+
+	TabSystem:ClearAllPoints()
+	TabSystem:Point('TOPLEFT', PlayerSpellsFrame, 'BOTTOMLEFT', -3, 0)
 
 	local ImportDialog = _G.ClassTalentLoadoutImportDialog
 	if ImportDialog then
