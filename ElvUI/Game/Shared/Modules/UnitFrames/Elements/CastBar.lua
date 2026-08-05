@@ -267,6 +267,8 @@ function UF:Configure_Castbar(frame)
 	castbar.Shield:Point('BOTTOM')
 	castbar.Shield:Point('TOP')
 
+	UF:Update_StatusBar(castbar.Shield)
+
 	if db.spark then
 		castbar.Spark = castbar.Spark_
 		castbar.Spark:ClearAllPoints()

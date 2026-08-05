@@ -71,6 +71,7 @@ local Private = oUF.Private
 
 local validateEvent = Private.validateEvent
 local validateUnit = Private.validateUnit
+local isUnitEvent = Private.isUnitEvent
 
 local _G = _G
 local next, type, unpack = next, type, unpack
@@ -860,7 +861,11 @@ local function RegisterEvent(frame, event, fs)
 		if not handler.eventStrings[event] then
 			handler.eventStrings[event] = {}
 
-			handler:RegisterEvent(event)
+			if isUnitEvent(event, frame.unit) then
+				handler:RegisterUnitEvent(event, frame.unit)
+			else
+				handler:RegisterEvent(event)
+			end
 		end
 
 		handler.eventStrings[event][fs] = true
@@ -874,6 +879,17 @@ local function RegisterEvents(frame, fs, ts)
 			for event in tagevents:gmatch('%S+') do
 				RegisterEvent(frame, event, fs)
 			end
+		end
+	end
+end
+
+function oUF:UpdateTagUnits(frame)
+	local handler = eventHandlers[frame]
+	if not handler then return end
+
+	for event in next, handler.eventStrings do
+		if isUnitEvent(event, frame.unit) then
+			handler:RegisterUnitEvent(event, frame.unit)
 		end
 	end
 end

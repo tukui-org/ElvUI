@@ -69,6 +69,10 @@ function Private.UpdateUnits(frame, unit, realUnit)
 		frame.unit = validateToken(unit)
 		frame.id = unit:match('^.-(%d+)')
 
+		if frame.unit then
+			oUF:UpdateTagUnits(frame)
+		end
+
 		return true
 	end
 end

@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
+local hooksecurefunc = hooksecurefunc
 local format, ipairs, type, pcall = format, ipairs, type, pcall
 local westAndRU = LSM.LOCALE_BIT_ruRU + LSM.LOCALE_BIT_western
 
@@ -232,7 +234,52 @@ AddMedia('logo','SuperBear')
 E.Media.CombatIcons.COMBAT = E.Media.Textures.Combat
 E.Media.Arrows.ArrowUp = E.Media.Textures.ArrowUp
 
-do -- LSM Font Preloader ~Simpy
+do	-- LSM late loader ~Simpy
+	local pendingRefresh, pendingFonts, pendingBars
+	function E:LSM_Update()
+		pendingRefresh = nil
+
+		if pendingFonts then
+			pendingFonts = nil
+
+			E:UpdateBlizzardFonts()
+			E:UpdateFontTemplates()
+
+			if UF.Initialized then
+				UF:Update_FontStrings()
+			end
+		end
+
+		if pendingBars then
+			pendingBars = nil
+
+			E:UpdateStatusBars()
+
+			if UF.Initialized then
+				UF:Update_StatusBars()
+			end
+		end
+	end
+
+	-- we want to wait for all calls in the chain
+	function E:LSM_Register(mediaType, isFont, isBars)
+		if isFont and not pendingFonts then
+			pendingFonts = true
+		end
+
+		if isBars and not pendingBars then
+			pendingBars = true
+		end
+
+		if not pendingRefresh then
+			pendingRefresh = true
+
+			E:Delay(0.1, E.LSM_Update)
+		end
+	end
+end
+
+do	-- LSM Font Preloader ~Simpy
 	local preloader = CreateFrame('Frame')
 	preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -90000)
 	preloader:SetSize(100, 100)
@@ -256,11 +303,18 @@ do -- LSM Font Preloader ~Simpy
 	end
 
 	-- Now lets hook it so we can preload any other AddOns add to LSM
-	hooksecurefunc(LSM, 'Register', function(_, which, key, data)
+	hooksecurefunc(LSM, 'Register', function(_, which, key, data, langmask)
 		if not which or type(which) ~= 'string' then return end
 
-		if which:lower() == 'font' then
+		local mediaType = which:lower()
+		local isFont = mediaType == 'font'
+		if isFont then
 			cacheFont(key, data)
+		end
+
+		local isBars = mediaType == 'statusbar' or mediaType == 'background'
+		if E.Initialized then -- only need this afterwards
+			E:LSM_Register(mediaType, isFont, isBars)
 		end
 	end)
 end

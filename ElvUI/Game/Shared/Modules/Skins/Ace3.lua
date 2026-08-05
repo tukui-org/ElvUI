@@ -27,22 +27,22 @@ function S:Ace3_BackdropColor()
 end
 
 function S:Ace3_SkinDropdown()
-	if self and self.obj then
-		local pullout = self.obj.dropdown -- Don't ask questions.. Just FUCKING ACCEPT IT
-		if pullout then
-			if pullout.frame then
-				pullout.frame:SetTemplate(nil, true)
-			else
-				pullout:SetTemplate(nil, true)
-			end
+	if not self.obj then return end
 
-			if pullout.slider then
-				pullout.slider:SetTemplate()
-				pullout.slider:SetThumbTexture(E.Media.Textures.White8x8)
+	local pullout = self.obj.dropdown -- Don't ask questions.. Just FUCKING ACCEPT IT
+	if pullout then
+		if pullout.frame then
+			pullout.frame:SetTemplate(nil, true)
+		else
+			pullout:SetTemplate(nil, true)
+		end
 
-				local t = pullout.slider:GetThumbTexture()
-				t:SetVertexColor(1, .82, 0, 0.8)
-			end
+		if pullout.slider then
+			pullout.slider:SetTemplate()
+			pullout.slider:SetThumbTexture(E.Media.Textures.White8x8)
+
+			local t = pullout.slider:GetThumbTexture()
+			t:SetVertexColor(1, .82, 0, 0.8)
 		end
 	end
 end

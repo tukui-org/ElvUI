@@ -8,7 +8,7 @@ local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, ti
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, print = assert, type, pcall, xpcall, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
-local co_yield, co_resume, co_create = coroutine.yield, coroutine.resume, coroutine.create
+local co_yield, co_resume, co_create, co_status = coroutine.yield, coroutine.resume, coroutine.create, coroutine.status
 
 local Mixin = Mixin
 local ColorMixin = ColorMixin
@@ -25,6 +25,7 @@ local SaveBindings = SaveBindings
 local SetBinding = SetBinding
 local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
+local C_Timer_NewTicker = C_Timer.NewTicker
 
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
@@ -336,7 +337,7 @@ function E:ForceBorderColor(frame, r, g, b, a)
 	end
 end
 
-function E:UpdateMedia()
+function E:UpdateMedia() -- late LSM data can trigger updates to fonts and bars: LSM_Update
 	if not E.db.general or not E.private.general then return end
 
 	E.media.normFont = LSM:Fetch('font', E.db.general.font)
@@ -441,33 +442,40 @@ function E:GeneralMedia_ApplyToAll()
 end
 
 do	-- i guess we finally need it ~Simpy
-	local funcs, callbacks = {}, {}
-	local watcher = CreateFrame('Frame')
-	function E:Coroutine_OnUpdate()
+	local funcs, callbacks, ticker = {}, {}
+	function E:Coroutine_Continue(func, info)
+		local resumed, err = co_resume(info.routine)
+		if not resumed and err then -- it broke, throw the error
+			E.ErrorHandler(err)
+		end
+
+		-- cant continue
+		if co_status(info.routine) == 'dead' then
+			funcs[func] = nil
+		end
+	end
+
+	function E:Coroutine_Process()
 		if InCombatLockdown() then return end
 
 		-- resume is a protected function, wait until after combat
-		for func, data in next, funcs do
-			local resumed = co_resume(data.routine)
-			if not resumed then -- cant continue
-				funcs[func] = nil
-			end
+		for func, info in next, funcs do
+			E:Coroutine_Continue(func, info)
 		end
 
 		-- no more to process
 		if not next(funcs) then
-			watcher:Hide()
+			ticker:Cancel()
+			ticker = nil
 		end
 	end
 
-	watcher.funcs = funcs -- just for debugging
-	watcher:Hide() -- wont need this right away
-	watcher:SetScript('OnUpdate', E.Coroutine_OnUpdate)
-
-	E.CoroutineFrame = watcher
-
-	function E:GenerateCoroutineLoop(info)
+	function E:Coroutine_Generate(info)
 		return function()
+			if info.cancel then
+				return
+			end
+
 			for key, value in next, info.obj do
 				info.func(key, value, info.data)
 
@@ -489,24 +497,25 @@ do	-- i guess we finally need it ~Simpy
 		end
 	end
 
+	-- these two functions are meant to be called
 	function E:CoroutineUpdate(func, obj, data, limit)
-		local info = funcs[func]
-		if info then
-			return -- excuse me?
-		else
-			info = { count = 0, limit = limit or 100, data = data, obj = obj, func = func }
+		local exists = funcs[func]
+		if exists then
+			exists.cancel = true
+			E:Coroutine_Continue(func, exists)
 		end
 
-		local loop = E:GenerateCoroutineLoop(info)
+		local info = { count = 0, limit = limit or 100, data = data, obj = obj, func = func }
+		local loop = E:Coroutine_Generate(info)
 		info.routine = co_create(loop)
-
-		if not watcher:IsShown() then
-			watcher:Show()
-		end
-
 		funcs[func] = info
+
+		if not ticker then
+			ticker = C_Timer_NewTicker(0.1, E.Coroutine_Process)
+		end
 	end
 
+	-- this is so plugins can call after during the coroutine update
 	function E:CoroutineCallback(func, callback, remove)
 		local cbs = callbacks[func]
 		if not cbs then
@@ -541,7 +550,7 @@ do
 end
 
 function E:UpdateFrameTemplate()
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.ignoreFrameTemplates) then
 			self:SetTemplate(self.template, self.glossTex, nil, self.forcePixelMode)
 		end
@@ -551,7 +560,7 @@ function E:UpdateFrameTemplate()
 end
 
 function E:UpdateUnitframeTemplate()
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.ignoreFrameTemplates) then
 			self:SetTemplate(self.template, self.glossTex, nil, self.forcePixelMode, self.isUnitFrameElement)
 		end
@@ -562,11 +571,10 @@ end
 
 function E:UpdateFrameTemplates()
 	E:CoroutineUpdate(E.UpdateFrameTemplate, E.frames)
-	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
 end
 
 function E:UpdateBorderColor(_, data)
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
 			self:SetBackdropBorderColor(data.r, data.g, data.b)
 		end
@@ -576,7 +584,7 @@ function E:UpdateBorderColor(_, data)
 end
 
 function E:UpdateUnitframeBorderColor(_, data)
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
 			self:SetBackdropBorderColor(data.r, data.g, data.b)
 		end
@@ -597,7 +605,7 @@ do
 end
 
 function E:UpdateBackdropColor(_, data)
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not self.ignoreUpdates then
 			if self.callbackBackdropColor then
 				self:callbackBackdropColor()
@@ -613,7 +621,7 @@ function E:UpdateBackdropColor(_, data)
 end
 
 function E:UpdateUnitframeBackdropColor(_, data)
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not self.ignoreUpdates then
 			if self.callbackBackdropColor then
 				self:callbackBackdropColor()
@@ -1149,7 +1157,6 @@ function E:UpdateStart(skipUpdateDB)
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
 	E:UpdateBlizzardFonts()
-	E:UpdateUnitFrames()
 end
 
 do -- BFA Convert, deprecated..
@@ -1656,9 +1663,7 @@ function E:UpdateMoverPositions()
 end
 
 function E:UpdateUnitFrames()
-	if E.private.unitframe.enable then
-		UnitFrames:Update_AllFrames()
-	end
+	UnitFrames:Update_AllFrames()
 end
 
 function E:UpdateMediaItems()
@@ -1745,40 +1750,44 @@ end
 function E:UpdateAll()
 	E:UpdateStart()
 
-	E:Delay(0.02, E.UpdateLayout, E)
-	E:Delay(0.04, E.UpdateDataBars, E)
-	E:Delay(0.06, E.UpdateDataTexts, E)
+	E:Delay(0.02, E.UpdateLayout)
+	E:Delay(0.04, E.UpdateDataBars)
+	E:Delay(0.06, E.UpdateDataTexts)
+
+	if Auras.BuffFrame or Auras.DebuffFrame then
+		E:Delay(0.08, E.UpdateAuras)
+	end
 
 	if ActionBars.Initialized then
-		E:Delay(0.08, E.UpdateActionBars, E)
+		E:Delay(0.10, E.UpdateActionBars)
 	end
 
 	if NamePlates.Initialized then
-		E:Delay(0.10, E.UpdateNamePlates, E)
+		E:Delay(0.12, E.UpdateNamePlates)
 	end
 
 	if Bags.Initialized then
-		E:Delay(0.12, E.UpdateBags, E)
+		E:Delay(0.14, E.UpdateBags)
 	end
 
 	if Chat.Initialized then
-		E:Delay(0.14, E.UpdateChat, E)
+		E:Delay(0.16, E.UpdateChat)
 	end
 
 	if Tooltip.Initialized then
-		E:Delay(0.16, E.UpdateTooltip, E)
+		E:Delay(0.18, E.UpdateTooltip)
 	end
 
 	if Minimap.Initialized then
-		E:Delay(0.18, E.UpdateMinimap, E)
+		E:Delay(0.20, E.UpdateMinimap)
 	end
 
-	if Auras.BuffFrame or Auras.DebuffFrame then
-		E:Delay(0.20, E.UpdateAuras, E)
+	if UnitFrames.Initialized then
+		E:Delay(0.22, E.UpdateUnitFrames)
 	end
 
-	E:Delay(0.22, E.UpdateMisc, E)
-	E:Delay(0.24, E.UpdateEnd, E)
+	E:Delay(0.24, E.UpdateMisc)
+	E:Delay(0.26, E.UpdateEnd)
 end
 
 function E:CreateFonts()
@@ -1917,15 +1926,15 @@ function E:ResetUI(...)
 end
 
 do
-	local function Errorhandler(err)
+	function E:ErrorHandler()
 		local handler = _G.geterrorhandler()
 		if handler then
-			return handler(err)
+			return handler(self)
 		end
 	end
 
 	function E:CallLoadFunc(func, ...)
-		xpcall(func, Errorhandler, ...)
+		return xpcall(func, E.ErrorHandler, ...)
 	end
 end
 
