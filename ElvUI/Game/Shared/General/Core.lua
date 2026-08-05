@@ -571,7 +571,6 @@ end
 
 function E:UpdateFrameTemplates()
 	E:CoroutineUpdate(E.UpdateFrameTemplate, E.frames)
-	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
 end
 
 function E:UpdateBorderColor(_, data)
