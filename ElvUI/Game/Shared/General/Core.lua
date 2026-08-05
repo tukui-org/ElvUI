@@ -8,7 +8,7 @@ local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, ti
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, print = assert, type, pcall, xpcall, print
 local rawget, rawset, setmetatable = rawget, rawset, setmetatable
-local co_yield, co_resume, co_create = coroutine.yield, coroutine.resume, coroutine.create
+local co_yield, co_resume, co_create, co_status = coroutine.yield, coroutine.resume, coroutine.create, coroutine.status
 
 local Mixin = Mixin
 local ColorMixin = ColorMixin
@@ -25,6 +25,7 @@ local SaveBindings = SaveBindings
 local SetBinding = SetBinding
 local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
+local C_Timer_NewTicker = C_Timer.NewTicker
 
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
@@ -441,30 +442,29 @@ function E:GeneralMedia_ApplyToAll()
 end
 
 do	-- i guess we finally need it ~Simpy
-	local funcs, callbacks = {}, {}
-	local watcher = CreateFrame('Frame')
-	function E:Coroutine_OnUpdate()
+	local funcs, callbacks, ticker = {}, {}
+	function E:Coroutine_Update()
 		if InCombatLockdown() then return end
 
 		-- resume is a protected function, wait until after combat
 		for func, data in next, funcs do
-			local resumed = co_resume(data.routine)
-			if not resumed then -- cant continue
+			local resumed, err = co_resume(data.routine)
+			if not resumed and err then -- it broke, throw the error
+				E.ErrorHandler(err)
+			end
+
+			-- cant continue
+			if co_status(data.routine) == 'dead' then
 				funcs[func] = nil
 			end
 		end
 
 		-- no more to process
 		if not next(funcs) then
-			watcher:Hide()
+			ticker:Cancel()
+			ticker = nil
 		end
 	end
-
-	watcher.funcs = funcs -- just for debugging
-	watcher:Hide() -- wont need this right away
-	watcher:SetScript('OnUpdate', E.Coroutine_OnUpdate)
-
-	E.CoroutineFrame = watcher
 
 	function E:GenerateCoroutineLoop(info)
 		return function()
@@ -500,8 +500,8 @@ do	-- i guess we finally need it ~Simpy
 		local loop = E:GenerateCoroutineLoop(info)
 		info.routine = co_create(loop)
 
-		if not watcher:IsShown() then
-			watcher:Show()
+		if not ticker then
+			ticker = C_Timer_NewTicker(0.05, E.Coroutine_Update)
 		end
 
 		funcs[func] = info
