@@ -227,14 +227,14 @@ function E:Auras_Setup(container, db, unitframe)
 end
 
 function E:Auras_Create(parent, name, unit, key, filter)
-	if E.AuraContainers[name] then return end -- what?
+	if E.AuraContainers[key] then return end -- what?
 
 	local container = CreateFrame('AuraContainer', name, parent, 'CustomAuraContainerTemplate')
 	container.filters = {}
 	container.buttons = {}
 	container.layout = {}
 
-	E.AuraContainers[name] = container
+	E.AuraContainers[key] = container
 
 	E:Auras_SetUnit(container, unit)
 	E:Auras_SetContainer(container, key, filter)
