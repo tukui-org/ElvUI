@@ -3789,7 +3789,6 @@ function B:Initialize()
 	B:DisableBlizzard()
 
 	B:RegisterEvent('ADDON_LOADED')
-	B:RegisterEvent('PLAYER_LOGIN', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('PLAYER_TRADE_MONEY', 'UpdateGoldText')
 	B:RegisterEvent('TRADE_MONEY_CHANGED', 'UpdateGoldText')

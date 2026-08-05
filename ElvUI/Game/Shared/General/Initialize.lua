@@ -1,7 +1,5 @@
---[[
-	~AddOn Engine~
-	To load the AddOn engine inside another addon add this to the top of your file:
-		local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
+--[[ AddOn Engine - To load the AddOn engine inside another addon add this to the top of your file:
+	local E, L, V, P, G = unpack(ElvUI) --Import: Engine, Locales, PrivateDB, ProfileDB, GlobalDB
 ]]
 
 local _G = _G
@@ -515,9 +513,22 @@ do
 	end
 end
 
-function E:RefreshDB()
-	E.data:RegisterDefaults(E.DF)
-	E.charSettings:RegisterDefaults(E.privateVars)
+function E:InitDB()
+	wipe(E.db)
+	wipe(E.global)
+	wipe(E.private)
+
+	local data = E.Libs.AceDB:New('ElvDB', E.DF, true)
+	data.RegisterCallback(E, 'OnProfileChanged', 'UpdateAll')
+	data.RegisterCallback(E, 'OnProfileCopied', 'UpdateAll')
+	data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
+	E.data = data
+
+	local charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
+	charSettings.RegisterCallback(E, 'OnProfileChanged', ReloadUI)
+	charSettings.RegisterCallback(E, 'OnProfileCopied', ReloadUI)
+	charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
+	E.charSettings = charSettings
 
 	E:UpdateDB()
 end
@@ -531,20 +542,6 @@ function E:PrepDB()
 	ElvPrivateData = nil --Depreciated
 	ElvData = nil --Depreciated
 
-	local data = E.Libs.AceDB:New('ElvDB', E.DF, true)
-	data.RegisterCallback(E, 'OnProfileChanged', 'UpdateAll')
-	data.RegisterCallback(E, 'OnProfileCopied', 'UpdateAll')
-	data.RegisterCallback(E, 'OnProfileReset', 'OnProfileReset')
-	E.data = data
-
-	local charSettings = E.Libs.AceDB:New('ElvPrivateDB', E.privateVars)
-	charSettings.RegisterCallback(E, 'OnProfileChanged', ReloadUI)
-	charSettings.RegisterCallback(E, 'OnProfileCopied', ReloadUI)
-	charSettings.RegisterCallback(E, 'OnProfileReset', 'OnPrivateProfileReset')
-	E.charSettings = charSettings
-end
-
-function E:InitDB()
 	E.db = E:CopyTable({}, E.DF.profile)
 	E.global = E:CopyTable({}, E.DF.global)
 	E.private = E:CopyTable({}, E.privateVars.profile)
@@ -571,8 +568,7 @@ function E:InitDB()
 end
 
 function E:OnInitialize()
-	E:PrepDB() -- generate AceDB
-	E:InitDB() -- starting profile
+	E:PrepDB() --> Prep -> Setup / Init -> Update -> Setup
 
 	E.SpellBookTooltip = CreateFrame('GameTooltip', 'ElvUI_SpellBookTooltip', UIParent, 'GameTooltipTemplate')
 	E.ConfigTooltip = CreateFrame('GameTooltip', 'ElvUI_ConfigTooltip', UIParent, 'GameTooltipTemplate')
@@ -595,8 +591,6 @@ function E:OnInitialize()
 	E:CheckAddons()
 	E:UIMult()
 	E:UpdateMedia()
-	E:UpdateTexCoords()
-	E:UpdateCustomClassColors()
 	E:UpdateBlizzardSpecialFonts()
 
 	if not E.OtherAddons.Tukui then
@@ -606,6 +600,4 @@ function E:OnInitialize()
 	if E.private.general.minimap.enable then
 		E.Minimap:SetGetMinimapShape() -- this is just to support for other mods, keep below UIMult
 	end
-
-	E:Initialize()
 end
