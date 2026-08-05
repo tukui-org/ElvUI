@@ -18,9 +18,11 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
-	frame.Auras = UF:Construct_Auras(frame)
-	frame.Buffs = UF:Construct_Buffs(frame)
-	frame.Debuffs = UF:Construct_Debuffs(frame)
+
+	frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'player', 'UF_Player_Auras', 'HELPFUL|HARMFUL')
+	frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'player', 'UF_Player_Buffs', 'HELPFUL')
+	frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'player', 'UF_Player_Debuffs', 'HARMFUL')
+
 	frame.Castbar = UF:Construct_Castbar(frame, L["Player Castbar"])
 
 	-- Create a holder frame all 'classbars' can be positioned into

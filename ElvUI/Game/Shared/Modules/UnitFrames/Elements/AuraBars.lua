@@ -91,6 +91,8 @@ function UF:Construct_AuraBarHeader(frame)
 end
 
 function UF:Configure_AuraBars(frame)
+	if E.PTR then return end
+
 	local bars = frame.AuraBars
 	local db = frame.db and frame.db.aurabar
 	bars.db = db
