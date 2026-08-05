@@ -185,8 +185,6 @@ function PI:CreateStepComplete()
 		end
 	end)
 
-	imsg.firstShow = false
-
 	imsg.bg = imsg:CreateTexture(nil, 'BACKGROUND')
 	imsg.bg:SetTexture([[Interface\LevelUp\LevelUpTex]])
 	imsg.bg:Point('BOTTOM')

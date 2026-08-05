@@ -665,6 +665,10 @@ do
 	end
 end
 
+function UF:Update_Templates()
+	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
+end
+
 function UF:Construct_PrivateAuras(frame)
 	local element = CreateFrame('Frame', frame.frameName..'PrivateAuras', frame.RaisedElementParent)
 	element.owner = frame
@@ -827,15 +831,15 @@ function UF:Update_AllFrames()
 
 	UF.multiplier = UF.db.multiplier
 
+	UF:UpdateAllHeaders()
 	UF:UpdateColors()
-
-	UF:Update_FontStrings()
-	UF:Update_StatusBars()
 
 	E:CoroutineUpdate(UF.Update_UnitFrame, UF.units)
 	E:CoroutineUpdate(UF.Update_GroupFrame, UF.groupunits)
 
-	UF:UpdateAllHeaders()
+	UF:Update_FontStrings()
+	UF:Update_StatusBars()
+	UF:Update_Templates()
 end
 
 function UF:UpdateGroupHeader(_, data)

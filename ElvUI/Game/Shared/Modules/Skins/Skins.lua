@@ -2335,11 +2335,7 @@ end
 function S:SkinIconTextAndCurrenciesWidget()
 end
 
-function S:SkinTextWithStateWidget(widgetFrame)
-	local text = widgetFrame.Text
-	if not text then return end
-
-	text:SetTextColor(1, 1, 1)
+function S:SkinTextWithStateWidget()
 end
 
 function S:SkinHorizontalCurrenciesWidget()
