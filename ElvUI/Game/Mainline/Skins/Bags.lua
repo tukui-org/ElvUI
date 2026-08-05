@@ -311,6 +311,14 @@ function S:ContainerFrame()
 			for _, tab in next, tabSystem.tabs do
 				S:HandleTab(tab)
 			end
+
+			tabSystem.spacing = -5
+			if tabSystem.MarkDirty then
+				tabSystem:MarkDirty()
+			end
+
+			tabSystem:ClearAllPoints()
+			tabSystem:Point('TOPLEFT', bankFrame, 'BOTTOMLEFT', -4, -1)
 		end
 	end
 
