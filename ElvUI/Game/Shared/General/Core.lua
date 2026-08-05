@@ -336,7 +336,7 @@ function E:ForceBorderColor(frame, r, g, b, a)
 	end
 end
 
-function E:UpdateMedia()
+function E:UpdateMedia() -- late LSM data can trigger updates to fonts and bars: LSM_Update
 	if not E.db.general or not E.private.general then return end
 
 	E.media.normFont = LSM:Fetch('font', E.db.general.font)
