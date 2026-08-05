@@ -883,7 +883,7 @@ local function RegisterEvents(frame, fs, ts)
 	end
 end
 
-function Private.UpdateTagUnits(frame)
+function oUF:UpdateTagUnits(frame)
 	local handler = eventHandlers[frame]
 	if not handler then return end
 

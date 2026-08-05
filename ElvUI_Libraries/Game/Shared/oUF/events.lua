@@ -70,7 +70,7 @@ function Private.UpdateUnits(frame, unit, realUnit)
 		frame.id = unit:match('^.-(%d+)')
 
 		if frame.unit then
-			Private.UpdateTagUnits(frame)
+			oUF:UpdateTagUnits(frame)
 		end
 
 		return true
