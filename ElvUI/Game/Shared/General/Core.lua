@@ -2041,21 +2041,18 @@ do
 end
 
 function E:OnEnable()
-	E.Initialized = true
-
-	E:RefreshDB() -- plugins add defaults, refresh them
-	E:InitializeModules() -- late modules
+	E:Initialize()
 end
 
 function E:Initialize()
+	E:InitDB()
+
 	E.myspec = GetSpecialization()
 	E.TimerunningID = PlayerGetTimerunningSeasonID and PlayerGetTimerunningSeasonID()
 
 	E:CreateFonts()
 	E:UIScale()
 	E:LoadStaticPopups()
-	E:UpdateAuraCurves()
-	E:UpdateDispelColors()
 
 	if not E.Classic or (E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then
 		E.Libs.DualSpec:EnhanceDatabase(E.data, 'ElvUI')
@@ -2064,13 +2061,19 @@ function E:Initialize()
 	if E.OtherAddons.Tukui then
 		E:StaticPopup_Show('TUKUI_ELVUI_INCOMPATIBLE')
 	else
+		E:UpdateMedia()
+		E:UpdateAuraCurves()
+		E:UpdateDispelColors()
+		E:UpdateCustomClassColors()
 		E:UpdateCurves()
 		E:BuildPrefixValues()
 		E:BuildAbbreviateConfigs()
 		E:LoadAPI()
 		E:LoadCommands()
-		E:InitializeModules() -- early modules
+		E:InitializeModules()
 		E:LoadMovers()
+
+		E.Initialized = true
 
 		if E.Retail then
 			E:Tutorials()

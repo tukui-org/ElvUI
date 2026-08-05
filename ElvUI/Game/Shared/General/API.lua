@@ -3,7 +3,6 @@
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
-local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
 local _G = _G
@@ -1025,23 +1024,6 @@ do
 	end
 end
 
-function E:FIRST_FRAME_RENDERED()
-	E:UpdateMedia()
-
-	E:Delay(0.01, E.UpdateBlizzardFonts, E)
-	E:Delay(0.02, E.UpdateMediaItems, E)
-	E:Delay(0.03, E.UpdateFontTemplates, E)
-	E:Delay(0.04, E.UpdateStatusBars, E)
-
-	if UF.Initialized then
-		E:Delay(0.05, UF.Update_FontStrings, UF)
-	end
-
-	if UF.Initialized then
-		E:Delay(0.06, UF.Update_StatusBars, UF)
-	end
-end
-
 function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	E:CheckRole()
 
@@ -1460,11 +1442,11 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
 	E:RegisterEvent('PLAYER_REGEN_ENABLED')
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
-	E:RegisterEvent('FIRST_FRAME_RENDERED')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
 	E:GROUP_ROSTER_UPDATE()
 	E:SetupGameMenu()
+	E:UpdateTexCoords()
 
 	if E.Retail or E.Mists then
 		E:PopulateSpecInfo()

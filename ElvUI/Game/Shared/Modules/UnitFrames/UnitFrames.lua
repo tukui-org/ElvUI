@@ -2274,11 +2274,7 @@ function UF:Initialize()
 	if not E.private.unitframe.enable then return end
 	UF.Initialized = true
 
-	-- oUF factory waits for PLAYER_LOGIN this is not acceptable in Classic HC
-	-- so we force the loading here instead to skip `script ran too long` issue
 	ElvUF:Factory(UF.Setup)
-	ElvUF:RunFactoryQueue()
-	ElvUF:DisableFactory()
 
 	UF:UpdateColors()
 

@@ -74,4 +74,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Experience', nil, { 'PLAYER_LOGIN', 'PLAYER_XP_UPDATE', 'DISABLE_XP_GAIN', 'ENABLE_XP_GAIN', 'UPDATE_EXHAUSTION' }, OnEvent, nil, nil, OnEnter, nil, _G.COMBAT_XP_GAIN)
+DT:RegisterDatatext('Experience', nil, { 'PLAYER_XP_UPDATE', 'DISABLE_XP_GAIN', 'ENABLE_XP_GAIN', 'UPDATE_EXHAUSTION' }, OnEvent, nil, nil, OnEnter, nil, _G.COMBAT_XP_GAIN)

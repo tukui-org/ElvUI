@@ -60,4 +60,5 @@ function BL:ObjectiveTracker_Setup()
 	hooksecurefunc(Tracker, 'SetPoint', ObjectiveTracker_SetPoint)
 
 	BL:ObjectiveTracker_AutoHide() -- supported but no boss frames, only works for arena
+	BL:ObjectiveTracker_SetHeight()
 end

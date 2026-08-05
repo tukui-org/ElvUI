@@ -2428,19 +2428,6 @@ function S:ADDON_LOADED(_, addonName)
 	end
 end
 
-function S:PLAYER_LOGIN()
-	for addonName, object in next, S.addonsToLoad do
-		local isLoaded, isFinished = IsAddOnLoaded(addonName)
-		if isLoaded and isFinished then
-			S:CallLoadedAddon(addonName, object)
-		end
-	end
-
-	for index, func in next, S.nonAddonsToLoad do
-		S:CallLoadedNonAddon(index, func)
-	end
-end
-
 -- EXAMPLE:
 --- S:AddCallbackForAddon('Details', 'MyAddon_Details', MyAddon.SkinDetails)
 ---- arg1: Addon name (same as the toc): MyAddon.toc (without extension)
@@ -2518,6 +2505,13 @@ function S:Initialize()
 		S:CallLoadedNonAddon(index, func)
 	end
 
+	for addonName, object in next, S.addonsToLoad do
+		local isLoaded, isFinished = IsAddOnLoaded(addonName)
+		if isLoaded and isFinished then
+			S:CallLoadedAddon(addonName, object)
+		end
+	end
+
 	-- Early Skin Handling (populated before ElvUI is loaded from the Ace3 file)
 	if S.db.ace3Enable and S.EarlyAceWidgets then
 		for _, n in next, S.EarlyAceWidgets do
@@ -2550,6 +2544,5 @@ end
 
 -- Keep this outside, it's used for skinning addons before ElvUI load
 S:RegisterEvent('ADDON_LOADED')
-S:RegisterEvent('PLAYER_LOGIN')
 
 E:RegisterModule(S:GetName())

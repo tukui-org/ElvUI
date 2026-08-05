@@ -992,10 +992,6 @@ function DT:MenuGetItem(dt, value)
 	return index and options[index] == value
 end
 
-function DT:PLAYER_LOGIN()
-	DT:PopulateData()
-end
-
 function DT:Initialize()
 	DT.Initialized = true
 
@@ -1032,7 +1028,7 @@ function DT:Initialize()
 			hooksecurefunc('SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
 		end
 
-		DT:RegisterEvent('PLAYER_LOGIN')
+		DT:PopulateData()
 		DT:RegisterEvent('CURRENCY_DISPLAY_UPDATE')
 	end
 
