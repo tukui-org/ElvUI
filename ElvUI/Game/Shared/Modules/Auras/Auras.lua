@@ -695,7 +695,7 @@ function A:Initialize()
 	if E.private.auras.buffsHeader then
 		if E.PTR then
 			A.BuffFrame = E:Auras_Create(E.UIParent, 'ElvUIPlayerBuffs', 'player', 'BuffFrame', 'HELPFUL')
-			A.BuffFrame:SetSize(200, 200)
+			E:Auras_Setup(A.BuffFrame, A.db.buffs)
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 			A:UpdateHeader(A.BuffFrame)
@@ -710,7 +710,7 @@ function A:Initialize()
 	if E.private.auras.debuffsHeader then
 		if E.PTR then
 			A.DebuffFrame = E:Auras_Create(E.UIParent, 'ElvUIPlayerDebuffs', 'player', 'DebuffFrame', 'HARMFUL')
-			A.DebuffFrame:SetSize(200, 200)
+			E:Auras_Setup(A.DebuffFrame, A.db.debuffs)
 		else
 			A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
 			A:UpdateHeader(A.DebuffFrame)

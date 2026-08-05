@@ -17,6 +17,13 @@ local SORTMETHOD = _G.AuraContainerSortMethod
 
 E.AuraContainers = {}
 
+local IS_HORIZONTAL_GROWTH = {
+	RIGHT_DOWN = true,
+	RIGHT_UP = true,
+	LEFT_DOWN = true,
+	LEFT_UP = true,
+}
+
 do
 	local temp = {}
 	function E:Auras_AddGroup(maxCount, filters, sortMethod, sortDirection, initializeFrame, layout)
@@ -178,6 +185,20 @@ end
 function E:Auras_SetUnit(container, unit)
 	container.unit = unit
 	container:SetUnit(unit)
+end
+
+function E:Auras_Setup(container, db)
+	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
+
+	if IS_HORIZONTAL_GROWTH[db.growthDirection] then
+		local minWidth = ((db.wrapAfter == 1 and 0 or db.horizontalSpacing) + width) * db.wrapAfter
+		local minHeight = (db.verticalSpacing + height) * db.maxWraps
+		container:SetSize(minWidth, minHeight)
+	else
+		local minWidth = (db.horizontalSpacing + width) * db.maxWraps
+		local minHeight = ((db.wrapAfter == 1 and 0 or db.verticalSpacing) + height) * db.wrapAfter
+		container:SetSize(minWidth, minHeight)
+	end
 end
 
 function E:Auras_Create(parent, name, unit, key, filter)
