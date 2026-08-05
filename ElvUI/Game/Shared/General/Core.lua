@@ -541,7 +541,7 @@ do
 end
 
 function E:UpdateFrameTemplate()
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.ignoreFrameTemplates) then
 			self:SetTemplate(self.template, self.glossTex, nil, self.forcePixelMode)
 		end
@@ -551,7 +551,7 @@ function E:UpdateFrameTemplate()
 end
 
 function E:UpdateUnitframeTemplate()
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.ignoreFrameTemplates) then
 			self:SetTemplate(self.template, self.glossTex, nil, self.forcePixelMode, self.isUnitFrameElement)
 		end
@@ -566,7 +566,7 @@ function E:UpdateFrameTemplates()
 end
 
 function E:UpdateBorderColor(_, data)
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
 			self:SetBackdropBorderColor(data.r, data.g, data.b)
 		end
@@ -576,7 +576,7 @@ function E:UpdateBorderColor(_, data)
 end
 
 function E:UpdateUnitframeBorderColor(_, data)
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not (self.ignoreUpdates or self.forcedBorderColors) and (self.template == 'Default' or self.template == 'Transparent') then
 			self:SetBackdropBorderColor(data.r, data.g, data.b)
 		end
@@ -597,7 +597,7 @@ do
 end
 
 function E:UpdateBackdropColor(_, data)
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not self.ignoreUpdates then
 			if self.callbackBackdropColor then
 				self:callbackBackdropColor()
@@ -613,7 +613,7 @@ function E:UpdateBackdropColor(_, data)
 end
 
 function E:UpdateUnitframeBackdropColor(_, data)
-	if self and self.template and not self:IsForbidden() then
+	if self.template and not self:IsForbidden() then
 		if not self.ignoreUpdates then
 			if self.callbackBackdropColor then
 				self:callbackBackdropColor()
