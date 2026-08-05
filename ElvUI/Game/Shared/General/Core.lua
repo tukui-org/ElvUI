@@ -443,20 +443,24 @@ end
 
 do	-- i guess we finally need it ~Simpy
 	local funcs, callbacks, ticker = {}, {}
-	function E:Coroutine_Update()
+	function E:Coroutine_Continue(func, info)
+		local resumed, err = co_resume(info.routine)
+		if not resumed and err then -- it broke, throw the error
+			E.ErrorHandler(err)
+		end
+
+		-- cant continue
+		if co_status(info.routine) == 'dead' then
+			funcs[func] = nil
+		end
+	end
+
+	function E:Coroutine_Process()
 		if InCombatLockdown() then return end
 
 		-- resume is a protected function, wait until after combat
-		for func, data in next, funcs do
-			local resumed, err = co_resume(data.routine)
-			if not resumed and err then -- it broke, throw the error
-				E.ErrorHandler(err)
-			end
-
-			-- cant continue
-			if co_status(data.routine) == 'dead' then
-				funcs[func] = nil
-			end
+		for func, info in next, funcs do
+			E:Coroutine_Continue(func, info)
 		end
 
 		-- no more to process
@@ -466,8 +470,12 @@ do	-- i guess we finally need it ~Simpy
 		end
 	end
 
-	function E:GenerateCoroutineLoop(info)
+	function E:Coroutine_Generate(info)
 		return function()
+			if info.cancel then
+				return
+			end
+
 			for key, value in next, info.obj do
 				info.func(key, value, info.data)
 
@@ -489,24 +497,25 @@ do	-- i guess we finally need it ~Simpy
 		end
 	end
 
+	-- these two functions are meant to be called
 	function E:CoroutineUpdate(func, obj, data, limit)
-		local info = funcs[func]
-		if info then
-			return -- excuse me?
-		else
-			info = { count = 0, limit = limit or 100, data = data, obj = obj, func = func }
+		local exists = funcs[func]
+		if exists then
+			exists.cancel = true
+			E:Coroutine_Continue(func, exists)
 		end
 
-		local loop = E:GenerateCoroutineLoop(info)
+		local info = { count = 0, limit = limit or 100, data = data, obj = obj, func = func }
+		local loop = E:Coroutine_Generate(info)
 		info.routine = co_create(loop)
+		funcs[func] = info
 
 		if not ticker then
-			ticker = C_Timer_NewTicker(0.05, E.Coroutine_Update)
+			ticker = C_Timer_NewTicker(0.05, E.Coroutine_Process)
 		end
-
-		funcs[func] = info
 	end
 
+	-- this is so plugins can call after during the coroutine update
 	function E:CoroutineCallback(func, callback, remove)
 		local cbs = callbacks[func]
 		if not cbs then
