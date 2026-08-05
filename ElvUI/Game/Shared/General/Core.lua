@@ -511,7 +511,7 @@ do	-- i guess we finally need it ~Simpy
 		funcs[func] = info
 
 		if not ticker then
-			ticker = C_Timer_NewTicker(0.05, E.Coroutine_Process)
+			ticker = C_Timer_NewTicker(0.1, E.Coroutine_Process)
 		end
 	end
 
