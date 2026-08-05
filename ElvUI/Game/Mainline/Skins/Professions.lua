@@ -439,6 +439,11 @@ function S:Blizzard_Professions()
 			S:HandleTab(tab)
 		end
 
+		TabSystem.spacing = -5
+		if TabSystem.MarkDirty then
+			TabSystem:MarkDirty()
+		end
+
 		TabSystem:ClearAllPoints()
 		TabSystem:Point('TOPLEFT', ProfessionsFrame, 'BOTTOMLEFT', -3, 0)
 	end
