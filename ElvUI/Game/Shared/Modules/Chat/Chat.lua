@@ -981,10 +981,6 @@ function CH:StyleChat(frame)
 		end
 	end
 
-	if not frame.isDocked then
-		PanelTemplates_TabResize(tab, tab.sizePadding or 0)
-	end
-
 	if frame.styled then return end
 
 	frame:SetFrameLevel(4)
@@ -3991,6 +3987,13 @@ function CH:Tab_OnUpdate(elapsed)
 
 	if self.lastUpdate > 0.1 and self.Text:GetFontObject() == _G.GameFontNormalSmall then
 		self.Text:FontTemplate(CH.db.tabFont, CH.db.tabFontSize, CH.db.tabFontOutline)
+
+		local chat = CH:GetOwner(self)
+		if chat and chat.isDocked then
+			_G.FCF_DockUpdate()
+		else
+			PanelTemplates_TabResize(self, self.sizePadding or 0)
+		end
 	end
 end
 
