@@ -9,7 +9,11 @@ local type = type
 local unpack = unpack
 
 local CreateFrame = CreateFrame
-local AnchorUtil = _G.AnchorUtil
+local FLOWDIRECTION = _G.AnchorUtil.FlowDirection
+local SORTDIRECTION = _G.AuraContainerSortDirection
+local SORTMETHOD = _G.AuraContainerSortMethod
+
+E.AuraContainers = {}
 
 do
 	local temp = {}
@@ -26,8 +30,7 @@ do
 end
 
 function E:Auras_FlowDirection(growthX, growthY)
-	local flow = AnchorUtil.FlowDirection
-	return (growthX == 'LEFT' and flow.Left) or flow.Right, (growthY == 'DOWN' and flow.Down) or flow.Up
+	return (growthX == 'LEFT' and FLOWDIRECTION.Left) or FLOWDIRECTION.Right, (growthY == 'DOWN' and FLOWDIRECTION.Down) or FLOWDIRECTION.Up
 end
 
 function E:Auras_CreateElements(button)
@@ -147,8 +150,8 @@ function E:Auras_SetContainer(container, key, filter)
 	end
 
 	local maxCount = container.maxFrameCount or 32
-	local sortMethod = container.sortMethod or _G.AuraContainerSortMethod.Default
-	local sortDirection = container.sortDirection or _G.AuraContainerSortDirection.Normal
+	local sortMethod = container.sortMethod or SORTMETHOD.Default
+	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
@@ -176,12 +179,14 @@ function E:Auras_SetUnit(container, unit)
 end
 
 function E:Auras_Create(parent, name, unit, key, filter)
-	if _G[name] then return end -- excuse me?
+	if E.AuraContainers[name] then return end -- what?
 
 	local container = CreateFrame('AuraContainer', name, parent, 'CustomAuraContainerTemplate')
 	container.filters = {}
 	container.buttons = {}
 	container.layout = {}
+
+	E.AuraContainers[name] = container
 
 	E:Auras_SetUnit(container, unit)
 	E:Auras_SetContainer(container, key, filter)
