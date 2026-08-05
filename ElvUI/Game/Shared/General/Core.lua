@@ -1157,7 +1157,6 @@ function E:UpdateStart(skipUpdateDB)
 	E:UpdateDispelColors()
 	E:UpdateCustomClassColors()
 	E:UpdateBlizzardFonts()
-	E:UpdateUnitFrames()
 end
 
 do -- BFA Convert, deprecated..
@@ -1755,36 +1754,40 @@ function E:UpdateAll()
 	E:Delay(0.04, E.UpdateDataBars)
 	E:Delay(0.06, E.UpdateDataTexts)
 
+	if Auras.BuffFrame or Auras.DebuffFrame then
+		E:Delay(0.08, E.UpdateAuras)
+	end
+
 	if ActionBars.Initialized then
-		E:Delay(0.08, E.UpdateActionBars)
+		E:Delay(0.10, E.UpdateActionBars)
 	end
 
 	if NamePlates.Initialized then
-		E:Delay(0.10, E.UpdateNamePlates)
+		E:Delay(0.12, E.UpdateNamePlates)
 	end
 
 	if Bags.Initialized then
-		E:Delay(0.12, E.UpdateBags)
+		E:Delay(0.14, E.UpdateBags)
 	end
 
 	if Chat.Initialized then
-		E:Delay(0.14, E.UpdateChat)
+		E:Delay(0.16, E.UpdateChat)
 	end
 
 	if Tooltip.Initialized then
-		E:Delay(0.16, E.UpdateTooltip)
+		E:Delay(0.18, E.UpdateTooltip)
 	end
 
 	if Minimap.Initialized then
-		E:Delay(0.18, E.UpdateMinimap)
+		E:Delay(0.20, E.UpdateMinimap)
 	end
 
-	if Auras.BuffFrame or Auras.DebuffFrame then
-		E:Delay(0.20, E.UpdateAuras)
+	if UnitFrames.Initialized then
+		E:Delay(0.22, E.UpdateUnitFrames)
 	end
 
-	E:Delay(0.22, E.UpdateMisc)
-	E:Delay(0.24, E.UpdateEnd)
+	E:Delay(0.24, E.UpdateMisc)
+	E:Delay(0.26, E.UpdateEnd)
 end
 
 function E:CreateFonts()
