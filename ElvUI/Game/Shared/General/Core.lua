@@ -1664,9 +1664,7 @@ function E:UpdateMoverPositions()
 end
 
 function E:UpdateUnitFrames()
-	if E.private.unitframe.enable then
-		UnitFrames:Update_AllFrames()
-	end
+	UnitFrames:Update_AllFrames()
 end
 
 function E:UpdateMediaItems()
