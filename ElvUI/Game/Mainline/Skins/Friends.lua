@@ -84,7 +84,7 @@ local function HideEditBoxBorders(editBox)
 	end
 end
 
-function S:SocialUI_PositionTab(_, _, relativeTo, x, y)
+function S:SocialUI_PositionTab(_, relativeTo, _, x, y)
 	local frame = _G.SocialUIFrame
 	if relativeTo == frame and (x ~= 1 or y ~= 0) then
 		self:ClearAllPoints()
