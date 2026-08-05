@@ -8,8 +8,10 @@ local _G = _G
 local type = type
 local unpack = unpack
 
+local AnchorUtil = AnchorUtil
 local CreateFrame = CreateFrame
-local FLOWDIRECTION = _G.AnchorUtil.FlowDirection
+
+local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
 local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 

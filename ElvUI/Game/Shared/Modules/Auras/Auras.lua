@@ -692,9 +692,14 @@ function A:Initialize()
 	local mapOffsetY = (mapAnchor == mapCluster and 3 or 0) + E.Spacing
 	local mapOffsetX = 6 + E.Border
 
-	if not E.PTR and E.private.auras.buffsHeader then
-		A.BuffFrame = A:CreateAuraHeader('HELPFUL')
-		A:UpdateHeader(A.BuffFrame)
+	if E.private.auras.buffsHeader then
+		if E.PTR then
+			A.BuffFrame = E:Auras_Create(E.UIParent, 'ElvUIPlayerBuffs', 'player', 'BuffFrame', 'HELPFUL')
+			A.BuffFrame:SetSize(200, 200)
+		else
+			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
+			A:UpdateHeader(A.BuffFrame)
+		end
 
 		A.BuffFrame:ClearAllPoints()
 		A.BuffFrame:SetPoint('TOPRIGHT', mapAnchor, 'TOPLEFT', -mapOffsetX, -mapOffsetY)
@@ -702,9 +707,14 @@ function A:Initialize()
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 	end
 
-	if not E.PTR and E.private.auras.debuffsHeader then
-		A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
-		A:UpdateHeader(A.DebuffFrame)
+	if E.private.auras.debuffsHeader then
+		if E.PTR then
+			A.DebuffFrame = E:Auras_Create(E.UIParent, 'ElvUIPlayerDebuffs', 'player', 'DebuffFrame', 'HARMFUL')
+			A.DebuffFrame:SetSize(200, 200)
+		else
+			A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
+			A:UpdateHeader(A.DebuffFrame)
+		end
 
 		A.DebuffFrame:ClearAllPoints()
 		A.DebuffFrame:SetPoint('BOTTOMRIGHT', mapAnchor, 'BOTTOMLEFT', -mapOffsetX, -mapOffsetY)
