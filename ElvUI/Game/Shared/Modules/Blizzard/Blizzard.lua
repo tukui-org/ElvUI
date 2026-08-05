@@ -176,12 +176,6 @@ function BL:ADDON_LOADED(_, addon)
 	end
 end
 
-function BL:PLAYER_LOGIN()
-	if (E.Wrath or E.Mists) and not BL:ObjectiveTracker_HasQuestTracker() then
-		BL:ObjectiveTracker_SetHeight()
-	end
-end
-
 function BL:Initialize()
 	BL.Initialized = true
 
@@ -190,7 +184,6 @@ function BL:Initialize()
 	BL:HandleWidgets()
 	BL:PositionCaptureBar()
 
-	BL:RegisterEvent('PLAYER_LOGIN')
 	BL:RegisterEvent('ADDON_LOADED')
 	BL:RegisterEvent('CLUB_FINDER_CLUB_LIST_RETURNED')
 

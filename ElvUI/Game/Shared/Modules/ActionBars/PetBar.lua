@@ -186,8 +186,6 @@ function AB:PositionAndSizeBarPet()
 end
 
 function AB:UpdatePetBindings()
-	bar.db = AB.db.barPet
-
 	for i, button in next, bar.buttons do
 		if button.HotKey then
 			button.HotKey:SetText(GetBindingKey('BONUSACTIONBUTTON'..i))
@@ -229,14 +227,6 @@ function AB:PetBar_OnHide()
 	end
 end
 
-function AB:ShowPetButtons()
-	for _, button in next, bar.buttons do
-		if not button:IsShown() then
-			button:Show()
-		end
-	end
-end
-
 function AB:CreateBarPet()
 	bar.backdrop = CreateFrame('Frame', nil, bar)
 	bar.backdrop:SetTemplate(AB.db.transparent and 'Transparent')
@@ -245,6 +235,10 @@ function AB:CreateBarPet()
 
 	for i = 1, _G.NUM_PET_ACTION_SLOTS do
 		local button = _G['PetActionButton'..i]
+		if not button:IsShown() then
+			button:Show() -- for some reason they start hidden on DF ?
+		end
+
 		button.parentName = 'ElvUI_BarPet'
 		button.cooldown:SetAllPoints(button.icon)
 
@@ -294,4 +288,6 @@ function AB:CreateBarPet()
 	AB:RegisterEvent('UNIT_PET', 'UpdatePet')
 
 	E:CreateMover(bar, 'PetAB', L["Pet Bar"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,barPet')
+
+	AB:UpdatePetBindings()
 end

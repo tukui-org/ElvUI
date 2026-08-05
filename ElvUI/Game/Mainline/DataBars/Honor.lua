@@ -86,6 +86,8 @@ function DB:HonorBar_Toggle()
 
 		DB:RegisterEvent('HONOR_XP_UPDATE', 'HonorBar_Update')
 		DB:RegisterEvent('PLAYER_FLAGS_CHANGED', 'HonorBar_Update')
+
+		DB:HonorBar_Update()
 	else
 		E:DisableMover(bar.holder.mover.name)
 

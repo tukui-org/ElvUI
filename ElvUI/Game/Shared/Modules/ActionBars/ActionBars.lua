@@ -706,48 +706,6 @@ do
 	end
 end
 
--- normally UpdateBarConfig and UpdateBarPosition would be the same function
--- however, because of Classic HC we need to split the load on init and another
--- part to load later, so fonts will load in properly from plugins with LSM ~Simpy
-function AB:UpdateBarConfig(specific)
-	for barName, bar in next, AB.handledBars do
-		if not specific or specific == barName then
-			AB:UpdateButtonConfig(barName, bar.bindButtons)
-		end
-	end
-
-	AB:UpdatePetBindings()
-	AB:UpdateStanceBindings() -- needs to be after AdjustMaxStanceButtons in the chain
-
-	if E.Retail or E.Mists then
-		if IsInBattle() then -- handle the first set of bindings unless in a pet battle
-			AB:UpdateBinds() -- no function passed, clears bindings
-		else
-			AB:HandleBinds() -- set override binds
-		end
-
-		AB:UpdateExtraBindings()
-	else
-		AB:HandleBinds()
-	end
-end
-
-function AB:UpdateBarPosition(specific)
-	for barName, bar in next, AB.handledBars do
-		if not specific or specific == barName then
-			AB:PositionAndSizeBar(barName) -- db is set here, button style, and paging also runs here
-
-			for _, button in next, bar.buttons do
-				AB:StyleFlyout(button)
-
-				if button.ProfessionQualityOverlayFrame then
-					AB:ConfigureProfessionQuality(button)
-				end
-			end
-		end
-	end
-end
-
 function AB:UpdateButtonSettings(specific)
 	if not E.private.actionbar.enable then return end
 
@@ -758,7 +716,6 @@ function AB:UpdateButtonSettings(specific)
 	end
 
 	AB:UpdateBarPosition(specific)
-	E:Delay(0.1, AB.UpdateBarConfig, AB, specific) -- see note above function about why this is delayed
 
 	if not specific then
 		-- we can safely toggle these events when we arent using the handle overlay
@@ -774,7 +731,11 @@ function AB:UpdateButtonSettings(specific)
 		AB:PositionAndSizeBarPet()
 		AB:PositionAndSizeBarShapeShift()
 
+		AB:UpdatePetBindings()
+		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
+
 		if E.Retail or E.Mists then
+			AB:UpdateExtraBindings()
 			AB:UpdateFlyoutButtons()
 
 			-- handle LAB custom flyout button sizes again
@@ -783,6 +744,23 @@ function AB:UpdateButtonSettings(specific)
 			end
 		elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 			AB:PositionAndSizeTotemBar()
+		end
+	end
+end
+
+function AB:UpdateBarPosition(specific)
+	for barName, bar in next, AB.handledBars do
+		if not specific or specific == barName then
+			AB:UpdateButtonConfig(barName, bar.bindButtons) -- config them first
+			AB:PositionAndSizeBar(barName) -- db is set here, button style, and paging also runs here
+
+			for _, button in next, bar.buttons do
+				AB:StyleFlyout(button)
+
+				if button.ProfessionQualityOverlayFrame then
+					AB:ConfigureProfessionQuality(button)
+				end
+			end
 		end
 	end
 end
@@ -1986,11 +1964,6 @@ do
 	end
 end
 
-function AB:PLAYER_LOGIN()
-	AB:UnloadController()
-	AB:ShowPetButtons()
-end
-
 function AB:Initialize()
 	_G.BINDING_HEADER_ELVUI = E.title
 
@@ -2065,10 +2038,10 @@ function AB:Initialize()
 	AB:UpdateButtonSettings()
 	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
+	AB:UnloadController()
 
 	AB:SetTargetAuraCooldowns(E.db.cooldown.targetaura.enable)
 
-	AB:RegisterEvent('PLAYER_LOGIN')
 	AB:RegisterEvent('ADDON_LOADED')
 	AB:RegisterEvent('PLAYER_ENTERING_WORLD')
 	AB:RegisterEvent('UPDATE_BINDINGS', 'UpdateAllBinds')
@@ -2084,6 +2057,13 @@ function AB:Initialize()
 
 	if (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
 		AB:CreateTotemBar()
+	end
+
+	-- handle the first set of bindings unless in a pet battle
+	if (E.Retail or E.Mists) and IsInBattle() then
+		AB:UpdateBinds() -- no function passed, clears bindings
+	else
+		AB:HandleBinds() -- set override binds
 	end
 
 	-- We handle actionbar lock for regular bars, but the lock on PetBar needs to be handled by WoW so make some necessary updates
