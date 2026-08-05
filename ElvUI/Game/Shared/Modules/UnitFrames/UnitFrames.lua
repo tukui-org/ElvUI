@@ -827,6 +827,7 @@ function UF:Update_AllFrames()
 
 	UF.multiplier = UF.db.multiplier
 
+	UF:UpdateAllHeaders()
 	UF:UpdateColors()
 
 	UF:Update_FontStrings()
@@ -834,8 +835,7 @@ function UF:Update_AllFrames()
 
 	E:CoroutineUpdate(UF.Update_UnitFrame, UF.units)
 	E:CoroutineUpdate(UF.Update_GroupFrame, UF.groupunits)
-
-	UF:UpdateAllHeaders()
+	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
 end
 
 function UF:UpdateGroupHeader(_, data)
