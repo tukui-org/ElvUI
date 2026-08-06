@@ -3,9 +3,9 @@
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
-local UF = E:GetModule('UnitFrames')
 
 local _G = _G
+local next = next
 local type = type
 local unpack = unpack
 
@@ -30,6 +30,11 @@ E.AuraContainerSort = { -- add the new ones (?)
 	NAME = SORTMETHOD.Name,
 	PLAYER = SORTMETHOD.ImportantOnly, -- player doesnt exist (?)
 	INDEX = SORTMETHOD.AuraInstanceIDOnly
+}
+
+E.AuraContainerSortDirection = {
+	ASCENDING = SORTMETHOD.Normal,
+	DESCENDING = SORTMETHOD.Reverse
 }
 
 function E:Auras_OnEvent(event)

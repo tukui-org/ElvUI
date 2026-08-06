@@ -441,6 +441,8 @@ function UF:Configure_Auras(frame, which)
 	auras.height = not settings.keepSizeRatio and settings.height
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows
+	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
+	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
@@ -456,6 +458,7 @@ function UF:Configure_Auras(frame, which)
 			if settings.enable then
 				auras.maxFrameCount = auras.numAuras
 				auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
+				auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 
 				E:Auras_SetContainer(auras, auras.filter)
 
@@ -489,8 +492,6 @@ function UF:Configure_Auras(frame, which)
 
 		auras.forceShow = frame.forceShowAuras
 		auras.disableMouse = settings.clickThrough
-		auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
-		auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 		auras.filterList = UF:ConvertFilters(auras, settings.priority)
 
 		auras:SetFrameStrata(settings.strataAndLevel and settings.strataAndLevel.useCustomStrata and settings.strataAndLevel.frameStrata or 'LOW')
