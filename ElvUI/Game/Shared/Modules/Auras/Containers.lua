@@ -8,6 +8,7 @@ local _G = _G
 local next = next
 local type = type
 local unpack = unpack
+local strlower = strlower
 local huge = math.huge
 
 local AnchorUtil = AnchorUtil
@@ -99,6 +100,12 @@ function E:Auras_CreateElements(button)
 	statusbar:OffsetFrameLevel()
 	button.statusbar = statusbar
 
+	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
+	cooldown:SetHideCountdownNumbers(true)
+	cooldown:SetAllPoints(texture)
+	cooldown:SetDrawBling(false)
+	button.cooldown = cooldown
+
 	local textFrame = CreateFrame('Frame', nil, button)
 	if textFrame then
 		textFrame:SetAllPoints()
@@ -130,6 +137,18 @@ function E:Auras_UpdateElement(container, button)
 		button:SetIcon(button.texture)
 	end
 
+	if button.cooldown then
+		button:SetDurationCooldown(button.cooldown)
+
+		if container.unitframeType then -- unitframe
+			E:RegisterCooldown(button.cooldown, 'unitframe', container.unitframeType, container.auraType)
+		elseif container.nameplateType then -- nameplate
+			E:RegisterCooldown(button.cooldown, 'nameplates', container.nameplateType, container.auraType)
+		elseif container.auraType then -- top auras
+			E:RegisterCooldown(button.cooldown, 'auras')
+		end
+	end
+
 	if button.statusbar then
 		button:SetDurationBar(button.statusbar)
 	end
@@ -141,7 +160,8 @@ function E:Auras_UpdateElement(container, button)
 	local textFrame = button.textFrame
 	if textFrame then
 		button:SetApplicationCount(textFrame.count)
-		button:SetDurationText(textFrame.time, { formatter = nil })
+
+		-- button:SetDurationText(textFrame.time, { formatter = nil })
 	end
 
 	if container.unit == 'player' and container.filter == 'HELPFUL' then
@@ -243,6 +263,10 @@ function E:Auras_Create(parent, which, override)
 	container.filters = {}
 	container.buttons = {}
 	container.layout = {}
+
+	if which then -- top auras dont set this here
+		container.auraType = strlower(which)
+	end
 
 	return container
 end

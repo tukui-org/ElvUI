@@ -476,6 +476,7 @@ function UF:Configure_Auras(frame, which)
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
 		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
+		auras.unitframeType = frame.unitframeType
 
 		if settings.enable then
 			E:Auras_SetUnit(auras, frame.unit)
