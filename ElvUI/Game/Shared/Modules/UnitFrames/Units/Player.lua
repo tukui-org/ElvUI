@@ -18,17 +18,6 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
-
-	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'player', 'UF_Player_Auras')
-		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'player', 'UF_Player_Buffs')
-		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'player', 'UF_Player_Debuffs')
-	else
-		frame.Auras = UF:Construct_Auras(frame)
-		frame.Buffs = UF:Construct_Buffs(frame)
-		frame.Debuffs = UF:Construct_Debuffs(frame)
-	end
-
 	frame.Castbar = UF:Construct_Castbar(frame, L["Player Castbar"])
 
 	-- Create a holder frame all 'classbars' can be positioned into
@@ -61,6 +50,16 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
+
+	if E.PTR then
+		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'player', 'UF_Player_Auras')
+		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'player', 'UF_Player_Buffs')
+		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'player', 'UF_Player_Debuffs')
+	else
+		frame.Auras = UF:Construct_Auras(frame)
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
+	end
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,generalGroup')

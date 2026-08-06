@@ -14,6 +14,15 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
+	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
+	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	frame.ThreatIndicator = UF:Construct_Threat(frame)
+	frame.InfoPanel = UF:Construct_InfoPanel(frame)
+	frame.MouseGlow = UF:Construct_MouseGlow(frame)
+	frame.TargetGlow = UF:Construct_TargetGlow(frame)
+	frame.FocusGlow = UF:Construct_FocusGlow(frame)
+	frame.Fader = UF:Construct_Fader()
+	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	if E.PTR then
 		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'targettarget', 'UF_TargetTarget_Auras')
@@ -24,16 +33,6 @@ function UF:Construct_TargetTargetFrame(frame)
 		frame.Buffs = UF:Construct_Buffs(frame)
 		frame.Debuffs = UF:Construct_Debuffs(frame)
 	end
-
-	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
-	frame.HealthPrediction = UF:Construct_HealComm(frame)
-	frame.ThreatIndicator = UF:Construct_Threat(frame)
-	frame.InfoPanel = UF:Construct_InfoPanel(frame)
-	frame.MouseGlow = UF:Construct_MouseGlow(frame)
-	frame.TargetGlow = UF:Construct_TargetGlow(frame)
-	frame.FocusGlow = UF:Construct_FocusGlow(frame)
-	frame.Fader = UF:Construct_Fader()
-	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 342, 100) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTarget Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,targettarget,generalGroup')
