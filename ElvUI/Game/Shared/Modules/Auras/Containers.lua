@@ -101,9 +101,7 @@ function E:Auras_CreateElements(button)
 	button.statusbar = statusbar
 
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
-	cooldown:SetHideCountdownNumbers(true)
 	cooldown:SetAllPoints(texture)
-	cooldown:SetDrawBling(false)
 	button.cooldown = cooldown
 
 	local textFrame = CreateFrame('Frame', nil, button)
