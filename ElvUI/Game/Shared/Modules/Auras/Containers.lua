@@ -19,7 +19,6 @@ local SORTMETHOD = _G.AuraContainerSortMethod
 E.AuraContainers = {}
 E.AuraTarget = {}
 E.AuraFocus = {}
-
 E.AuraEvents = {
 	PLAYER_TARGET_CHANGED = E.AuraTarget,
 	PLAYER_FOCUS_CHANGED = E.AuraFocus
@@ -32,13 +31,6 @@ function E:Auras_OnEvent(event)
 	for _, container in next, obj do
 		container:UpdateAllAuras()
 	end
-end
-
-do
-	local eventFrame = CreateFrame('Frame')
-	eventFrame:RegisterEvent('PLAYER_TARGET_CHANGED')
-	eventFrame:RegisterEvent('PLAYER_FOCUS_CHANGED')
-	eventFrame:SetScript('OnEvent', E.Auras_OnEvent)
 end
 
 local IS_HORIZONTAL_GROWTH = {
@@ -269,4 +261,15 @@ function E:Auras_Create(parent, name, unit, key, filter)
 	E:Auras_SetContainer(container, key, filter)
 
 	return container
+end
+
+function E:Auras_WatchFrame()
+	if E.AuraEventFrame then return end
+
+	local eventFrame = CreateFrame('Frame')
+	eventFrame:RegisterEvent('PLAYER_TARGET_CHANGED')
+	eventFrame:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	eventFrame:SetScript('OnEvent', E.Auras_OnEvent)
+
+	E.AuraEventFrame = eventFrame
 end

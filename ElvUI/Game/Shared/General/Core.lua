@@ -2086,6 +2086,7 @@ function E:Initialize()
 		E.Initialized = true
 
 		if E.Retail then
+			E:Auras_WatchFrame()
 			E:Tutorials()
 		end
 
