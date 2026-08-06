@@ -2233,8 +2233,8 @@ function UF:UpdateAllElements(event)
 			UF:Configure_PrivateAuras(self)
 		end
 
-		if E.PTR and self.Auras then -- will also update buffs and debuffs
-			UF:Configure_AllAuras(self)
+		if E.PTR then
+			UF:Configure_UnitAuras(self)
 		end
 	end
 end

@@ -209,6 +209,8 @@ function E:Auras_SetContainer(container, filter)
 end
 
 function E:Auras_SetUnit(container, unit)
+	if not container then return end
+
 	if unit == 'target' then
 		E.AuraTarget[container] = unit
 	elseif unit == 'focus' then
