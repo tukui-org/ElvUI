@@ -2090,7 +2090,6 @@ function E:Initialize()
 		end
 
 		if E.Retail then
-			E:InitializeAuras()
 			E:Tutorials()
 		end
 
