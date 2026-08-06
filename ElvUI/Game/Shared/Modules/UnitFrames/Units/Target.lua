@@ -15,9 +15,15 @@ function UF:Construct_TargetFrame(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 
-	frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'target', 'UF_Target_Auras', 'HELPFUL|HARMFUL')
-	frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'target', 'UF_Target_Buffs', 'HELPFUL')
-	frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'target', 'UF_Target_Debuffs', 'HARMFUL')
+	if E.PTR then
+		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'target', 'UF_Target_Auras', 'HELPFUL|HARMFUL')
+		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'target', 'UF_Target_Buffs', 'HELPFUL')
+		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'target', 'UF_Target_Debuffs', 'HARMFUL')
+	else
+		frame.Auras = UF:Construct_Auras(frame)
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
+	end
 
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.Castbar = UF:Construct_Castbar(frame, L["Target Castbar"])
