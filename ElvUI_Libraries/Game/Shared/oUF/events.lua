@@ -65,12 +65,11 @@ function Private.UpdateUnits(frame, unit, realUnit)
 			end
 		end
 
-		local previous = frame.unit
 		frame.realUnit = realUnit
 		frame.unit = validateToken(unit)
 		frame.id = unit:match('^.-(%d+)')
 
-		if frame.unit ~= previous then
+		if frame.unit then
 			oUF:UpdateTagUnits(frame)
 		end
 
