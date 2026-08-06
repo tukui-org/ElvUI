@@ -16,9 +16,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 
 	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'target', 'UF_Target_Auras', 'HELPFUL|HARMFUL')
-		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'target', 'UF_Target_Buffs', 'HELPFUL')
-		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'target', 'UF_Target_Debuffs', 'HARMFUL')
+		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'target', 'UF_Target_Auras')
+		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'target', 'UF_Target_Buffs')
+		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'target', 'UF_Target_Debuffs')
 	else
 		frame.Auras = UF:Construct_Auras(frame)
 		frame.Buffs = UF:Construct_Buffs(frame)

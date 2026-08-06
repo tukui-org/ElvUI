@@ -20,9 +20,9 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 
 	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'player', 'UF_Player_Auras', 'HELPFUL|HARMFUL')
-		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'player', 'UF_Player_Buffs', 'HELPFUL')
-		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'player', 'UF_Player_Debuffs', 'HARMFUL')
+		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'player', 'UF_Player_Auras')
+		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'player', 'UF_Player_Buffs')
+		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'player', 'UF_Player_Debuffs')
 	else
 		frame.Auras = UF:Construct_Auras(frame)
 		frame.Buffs = UF:Construct_Buffs(frame)

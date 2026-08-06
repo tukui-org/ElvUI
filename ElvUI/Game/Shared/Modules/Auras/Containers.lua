@@ -155,7 +155,7 @@ function E:Auras_GetSize(container)
 	return container.width or container.size or 24, container.height or container.size or 24
 end
 
-function E:Auras_SetContainer(container, key, filter)
+function E:Auras_SetContainer(container, filter)
 	container.filter = filter
 
 	local layout = container.layout
@@ -174,6 +174,7 @@ function E:Auras_SetContainer(container, key, filter)
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
+	local key = container.key
 	if container.filters[key] then
 		if type(filter) == 'table' then
 			container:SetAuraGroupCandidateFilters(key, filter)
@@ -196,13 +197,14 @@ function E:Auras_SetUnit(container, unit)
 	container:SetUnit(unit)
 end
 
-function E:Auras_Create(parent, name, unit, key, filter)
+function E:Auras_Create(parent, name, unit, key)
 	if E.AuraContainers[key] then return end -- what?
 
 	local container = CreateFrame('AuraContainer', name, parent, 'CustomAuraContainerTemplate')
 	container.filters = {}
 	container.buttons = {}
 	container.layout = {}
+	container.key = key
 
 	E.AuraContainers[key] = container
 
@@ -213,7 +215,6 @@ function E:Auras_Create(parent, name, unit, key, filter)
 	end
 
 	E:Auras_SetUnit(container, unit)
-	E:Auras_SetContainer(container, key, filter)
 
 	return container
 end

@@ -15,12 +15,20 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 	frame.InfoPanel = UF:Construct_InfoPanel(frame)
-	frame.Auras = UF:Construct_Auras(frame)
-	frame.Buffs = UF:Construct_Buffs(frame)
+
+	if E.PTR then
+		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'pettarget', 'UF_PetTarget_Auras')
+		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'pettarget', 'UF_PetTarget_Buffs')
+		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'pettarget', 'UF_PetTarget_Debuffs')
+	else
+		frame.Auras = UF:Construct_Auras(frame)
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
+	end
+
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
-	frame.Debuffs = UF:Construct_Debuffs(frame)
 	frame.MouseGlow = UF:Construct_MouseGlow(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)

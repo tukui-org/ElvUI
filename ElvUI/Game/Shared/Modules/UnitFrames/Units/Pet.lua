@@ -14,9 +14,17 @@ function UF:Construct_PetFrame(frame)
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
-	frame.Auras = UF:Construct_Auras(frame)
-	frame.Buffs = UF:Construct_Buffs(frame)
-	frame.Debuffs = UF:Construct_Debuffs(frame)
+
+	if E.PTR then
+		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'pet', 'UF_Pet_Auras')
+		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'pet', 'UF_Pet_Buffs')
+		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'pet', 'UF_Pet_Debuffs')
+	else
+		frame.Auras = UF:Construct_Auras(frame)
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
+	end
+
 	frame.Castbar = UF:Construct_Castbar(frame, L["Pet Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()

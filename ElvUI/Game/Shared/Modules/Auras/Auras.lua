@@ -574,6 +574,9 @@ function A:UpdateHeader(header)
 	end
 
 	if E.PTR then
+		header.width = width
+		header.height = height
+
 		header:SetSize(minWidth, minHeight)
 	else
 		E:UpdateClassColor(db.barColor)
@@ -706,13 +709,15 @@ function A:Initialize()
 
 	if E.private.auras.buffsHeader then
 		if E.PTR then
-			A.BuffFrame = E:Auras_Create(E.UIParent, 'ElvUIPlayerBuffs', 'player', 'BuffFrame', 'HELPFUL')
+			A.BuffFrame = E:Auras_Create(E.UIParent, 'ElvUIPlayerBuffs', 'player', 'BuffFrame')
 			A.BuffFrame.auraType = 'buffs'
+
+			A:UpdateHeader(A.BuffFrame)
+			E:Auras_SetContainer(A.BuffFrame, 'HELPFUL')
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
+			A:UpdateHeader(A.BuffFrame)
 		end
-
-		A:UpdateHeader(A.BuffFrame)
 
 		A.BuffFrame:ClearAllPoints()
 		A.BuffFrame:SetPoint('TOPRIGHT', mapAnchor, 'TOPLEFT', -mapOffsetX, -mapOffsetY)
@@ -722,13 +727,14 @@ function A:Initialize()
 
 	if E.private.auras.debuffsHeader then
 		if E.PTR then
-			A.DebuffFrame = E:Auras_Create(E.UIParent, 'ElvUIPlayerDebuffs', 'player', 'DebuffFrame', 'HARMFUL')
+			A.DebuffFrame = E:Auras_Create(E.UIParent, 'ElvUIPlayerDebuffs', 'player', 'DebuffFrame')
 			A.DebuffFrame.auraType = 'debuffs'
+			A:UpdateHeader(A.DebuffFrame)
+			E:Auras_SetContainer(A.DebuffFrame, 'HARMFUL')
 		else
 			A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
+			A:UpdateHeader(A.DebuffFrame)
 		end
-
-		A:UpdateHeader(A.DebuffFrame)
 
 		A.DebuffFrame:ClearAllPoints()
 		A.DebuffFrame:SetPoint('BOTTOMRIGHT', mapAnchor, 'BOTTOMLEFT', -mapOffsetX, -mapOffsetY)

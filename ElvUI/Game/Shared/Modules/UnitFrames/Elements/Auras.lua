@@ -440,9 +440,13 @@ function UF:Configure_Auras(frame, which)
 
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
+	elseif E.PTR then
+		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
-	if not E.PTR then
+	if E.PTR then
+		E:Auras_SetContainer(auras, auras.filter)
+	else
 		if settings.sizeOverride and settings.sizeOverride > 0 then
 			auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))
 		else

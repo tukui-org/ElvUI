@@ -14,13 +14,21 @@ function UF:Construct_FocusFrame(frame)
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
-	frame.Auras = UF:Construct_Auras(frame)
-	frame.Buffs = UF:Construct_Buffs(frame)
+
+	if E.PTR then
+		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'focus', 'UF_Focus_Auras')
+		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'focus', 'UF_Focus_Buffs')
+		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'focus', 'UF_Focus_Debuffs')
+	else
+		frame.Auras = UF:Construct_Auras(frame)
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
+	end
+
 	frame.Castbar = UF:Construct_Castbar(frame, L["Focus Castbar"])
 	frame.Castbar.SafeZone = nil
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
-	frame.Debuffs = UF:Construct_Debuffs(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
 	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
