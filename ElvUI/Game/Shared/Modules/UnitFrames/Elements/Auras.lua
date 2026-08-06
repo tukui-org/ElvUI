@@ -435,10 +435,8 @@ function UF:Configure_Auras(frame, which)
 	auras.yOffset = y + settings.yOffset
 	auras.initialAnchor = UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint] or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
 
-	if settings.enable then
-		auras:ClearAllPoints()
-		auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
-	end
+	auras:ClearAllPoints()
+	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
@@ -447,8 +445,16 @@ function UF:Configure_Auras(frame, which)
 	end
 
 	if E.PTR then
-		if auras.SetFlowLayoutGrowthDirection then -- group frames not setup yet
-			E:Auras_SetContainer(auras, auras.filter)
+		if auras.SetFlowLayoutGrowthDirection then -- not all are setup yet
+			if settings.enable then
+				E:Auras_SetContainer(auras, auras.filter)
+
+				auras:SetEnabled(true)
+				auras:Show()
+			else
+				auras:SetEnabled(false)
+				auras:Hide()
+			end
 		end
 	else
 		if settings.sizeOverride and settings.sizeOverride > 0 then
