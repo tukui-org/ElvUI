@@ -166,8 +166,12 @@ function NP:Configure_Auras(nameplate, which)
 	end
 
 	if E.PTR then
+		auras.maxFrameCount = auras.numAuras
+		auras.sortMethod = E.AuraContainerSort[db.sortMethod]
+
 		E:Auras_SetUnit(auras, nameplate.unit)
 		E:Auras_SetContainer(auras, auras.filter)
+		E:Auras_SetLineSize(auras)
 	else
 		local index = 1
 		while auras[index] do

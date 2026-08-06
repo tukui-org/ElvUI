@@ -6,7 +6,7 @@ local AB = E:GetModule('ActionBars')
 local format, strlower, strfind = format, strlower, strfind
 local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, next, unpack, floor = sort, wipe, next, unpack, floor
-local utf8sub, huge = string.utf8sub, math.huge
+local utf8sub = string.utf8sub
 
 local CreateFrame = CreateFrame
 local IsAltKeyDown = IsAltKeyDown
@@ -479,9 +479,7 @@ function UF:Configure_Auras(frame, which)
 		if settings.enable then
 			E:Auras_SetUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras, auras.filter)
-
-			local rowWidth = (auras.numAuras and auras.numAuras > 0 and (auras.numAuras * (auras.size + auras.spacing))) or auras:GetWidth()
-			auras:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
+			E:Auras_SetLineSize(auras)
 		end
 	else
 		if settings.sizeOverride and settings.sizeOverride > 0 then
