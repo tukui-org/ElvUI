@@ -275,8 +275,9 @@ function UF:PostUpdateHealthColor(unit, color)
 	end
 
 	-- Charmed player should have hostile color
-	local grouped = unit and (strmatch(unit, 'raid%d+') or strmatch(unit, 'party%d+'))
-	if grouped and (not isDeadOrGhost and env.UnitIsConnected(unit)) and (UnitIsCharmed(unit) and UnitIsEnemy('player', unit)) then
+	local charmedPlayer = (unit and (strmatch(unit, 'raid%d+') or strmatch(unit, 'party%d+'))) and UnitIsCharmed(unit)
+	local enemyCharmed = E:NotSecretValue(charmedPlayer) and charmedPlayer and UnitIsEnemy('player', unit)
+	if enemyCharmed and (not isDeadOrGhost and env.UnitIsConnected(unit)) then
 		healthColor = parent.colors.reaction[HOSTILE_REACTION]
 	end
 
