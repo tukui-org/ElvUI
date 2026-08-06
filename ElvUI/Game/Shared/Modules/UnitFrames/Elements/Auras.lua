@@ -368,6 +368,12 @@ function UF:EnableDisable_Auras(frame)
 	end
 end
 
+function UF:Configure_UnitAuras(frame)
+	E:Auras_SetUnit(frame.Auras, frame.unit)
+	E:Auras_SetUnit(frame.Buffs, frame.unit)
+	E:Auras_SetUnit(frame.Debuffs, frame.unit)
+end
+
 function UF:Configure_AllAuras(frame)
 	if frame.Auras then frame.Auras:ClearAllPoints() end
 	if frame.Buffs then frame.Buffs:ClearAllPoints() end
@@ -421,7 +427,6 @@ end
 
 function UF:Configure_Auras(frame, which)
 	local db = frame.db
-	if not db then return end
 
 	local auras = frame[which]
 	local auraType = which:lower()
