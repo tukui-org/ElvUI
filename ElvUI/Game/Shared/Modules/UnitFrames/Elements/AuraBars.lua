@@ -74,7 +74,7 @@ function UF:AuraBars_UpdateBar(bar)
 end
 
 function UF:Construct_AuraBarHeader(frame)
-	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
+	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame, E.PTR and 'DisableUntrustedLayoutScriptsTemplate')
 	auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
 	auraBar:SetSize(1, 1)
 
