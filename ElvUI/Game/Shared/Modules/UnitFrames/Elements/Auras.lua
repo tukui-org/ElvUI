@@ -474,7 +474,7 @@ function UF:Configure_Auras(frame, which)
 	if E.PTR then
 		auras.keepSizeRatio = db.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
-		auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
+		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
 		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 		auras.unitframeType = frame.unitframeType
 

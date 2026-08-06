@@ -12,6 +12,8 @@ local strlower = strlower
 local huge = math.huge
 
 local AnchorUtil = AnchorUtil
+local AuraButtonBorderStyle = AuraButtonBorderStyle
+local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 
 local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
@@ -19,20 +21,28 @@ local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 
 E.AuraContainerSortDirection = {}
-E.AuraContainerSort = {}
+E.AuraContainerSortMethod = {}
+E.AuraContainerRefreshButtons = {}
+
 E.AuraTarget = {}
 E.AuraFocus = {}
+E.AuraDispel = {
+	style = AuraButtonBorderStyle.Color,
+	showWhenHarmful = true,
+	showWhenHelpful = false
+}
+
 E.AuraEvents = {
 	PLAYER_TARGET_CHANGED = E.AuraTarget,
 	PLAYER_FOCUS_CHANGED = E.AuraFocus
 }
 
 if SORTMETHOD then -- add the new ones (?)
-	E.AuraContainerSort.TIME_REMAINING = SORTMETHOD.Expiration
-	E.AuraContainerSort.DURATION = SORTMETHOD.Default
-	E.AuraContainerSort.NAME = SORTMETHOD.Name
-	E.AuraContainerSort.PLAYER = SORTMETHOD.ImportantOnly -- player doesnt exist (?)
-	E.AuraContainerSort.INDEX = SORTMETHOD.AuraInstanceIDOnly
+	E.AuraContainerSortMethod.TIME_REMAINING = SORTMETHOD.Expiration
+	E.AuraContainerSortMethod.DURATION = SORTMETHOD.Default
+	E.AuraContainerSortMethod.NAME = SORTMETHOD.Name
+	E.AuraContainerSortMethod.PLAYER = SORTMETHOD.ImportantOnly -- player doesnt exist (?)
+	E.AuraContainerSortMethod.INDEX = SORTMETHOD.AuraInstanceIDOnly
 end
 
 if SORTDIRECTION then
@@ -41,11 +51,19 @@ if SORTDIRECTION then
 end
 
 function E:Auras_OnEvent(event)
-	local obj = E.AuraEvents[event]
-	if not obj then return end
+	if event == 'PLAYER_REGEN_ENABLED' then
+		for button, container in next, E.AuraContainerRefreshButtons do
+			E:Auras_UpdateElement(container, button)
 
-	for container in next, obj do
-		container:UpdateAllAuras()
+			E.AuraContainerRefreshButtons[button] = nil
+		end
+	else
+		local obj = E.AuraEvents[event]
+		if not obj then return end
+
+		for container in next, obj do
+			container:UpdateAllAuras()
+		end
 	end
 end
 
@@ -120,9 +138,15 @@ function E:Auras_CreateElements(button)
 	end
 end
 
-function E:Auras_UpdateElement(container, button)
+function E:Auras_UpdateElement(container, button, initialize)
 	local width, height = E:Auras_GetSize(container)
-	button:SetSize(width, height)
+	if not initialize and InCombatLockdown() then
+		E.AuraContainerRefreshButtons[button] = container
+
+		return -- wait until after combat
+	else
+		button:SetSize(width, height)
+	end
 
 	if button.texture then
 		if container.keepSizeRatio or (width == height) then
@@ -138,6 +162,7 @@ function E:Auras_UpdateElement(container, button)
 	if button.cooldown then
 		button:SetDurationCooldown(button.cooldown)
 
+		-- will also update the cooldown when needed
 		if container.unitframeType then -- unitframe
 			E:RegisterCooldown(button.cooldown, 'unitframe', container.unitframeType, container.auraType)
 		elseif container.nameplateType then -- nameplate
@@ -152,7 +177,7 @@ function E:Auras_UpdateElement(container, button)
 	end
 
 	if button.dispelBorder then
-		button.dispelBorder:Hide()
+		button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
 	end
 
 	local textFrame = button.textFrame
@@ -172,8 +197,9 @@ function E:Auras_UpdateElement(container, button)
 end
 
 function E:Auras_CreateButton(container, button)
+	button.container = container
+
 	E:Auras_CreateElements(button)
-	E:Auras_UpdateElement(container, button)
 end
 
 function E:Auras_UpdateElements(container)
@@ -187,6 +213,7 @@ function E:Auras_GenerateInitialize(container)
 		container.buttons[button] = container
 
 		E:Auras_CreateButton(container, button)
+		E:Auras_UpdateElement(container, button, true)
 	end
 end
 

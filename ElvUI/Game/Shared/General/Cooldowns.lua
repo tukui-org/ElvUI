@@ -107,6 +107,10 @@ function E:CooldownUpdate(cooldown)
 	E:CooldownColors(data.chargeCooldown, colors.edgeCharge, colors.swipeCharge)
 	E:CooldownColors(data.lossOfControl, colors.edgeLOC, colors.swipeLOC)
 
+	E:CooldownTextures(cooldown, E.Media.Textures.Edge, colors.edge, colors.swipe)
+	E:CooldownTextures(data.chargeCooldown, E.Media.Textures.Edge2, colors.edgeCharge, colors.swipeCharge)
+	E:CooldownTextures(data.lossOfControl, E.Media.Textures.Edge, colors.edgeLOC, colors.swipeLOC)
+
 	local formatters = data.formatters
 	if formatters then
 		E:CooldownFormats(cooldown, false, formatters.text)
@@ -194,18 +198,13 @@ function E:CooldownRegion(cooldown)
 end
 
 function E:CooldownInitialize(cooldown)
-	local db, ob, data = E:CooldownData(cooldown)
+	local db, _, data = E:CooldownData(cooldown)
 	if not db then return end
 
 	-- extract the text region
 	E:CooldownRegion(cooldown)
 	E:CooldownRegion(data.chargeCooldown)
 	E:CooldownRegion(data.lossOfControl)
-
-	local colors = (ob and ob.colors) or db.colors
-	E:CooldownTextures(cooldown, E.Media.Textures.Edge, colors.edge, colors.swipe)
-	E:CooldownTextures(data.chargeCooldown, E.Media.Textures.Edge2, colors.edgeCharge, colors.swipeCharge)
-	E:CooldownTextures(data.lossOfControl, E.Media.Textures.Edge, colors.edgeLOC, colors.swipeLOC)
 end
 
 function E:CooldownData(cooldown)
@@ -234,9 +233,17 @@ function E:RegisterCooldown(cooldown, which, override, subgroup)
 	if not db then return end -- verify the settings exist here
 
 	-- storage by cooldown (to grab a cooldowns data)
-	if not E.RegisteredCooldowns[cooldown] then
-		E.RegisteredCooldowns[cooldown] = { which = which, override = override, subgroup = subgroup }
+	local data = E.RegisteredCooldowns[cooldown]
+	if not data then
+		data = { which = which, override = override, subgroup = subgroup }
+
+		E.RegisteredCooldowns[cooldown] = data
 	else -- this cooldown was already added
+		data.override = override
+		data.subgroup = subgroup
+
+		E:CooldownUpdate(cooldown) -- update it
+
 		return -- stop here
 	end
 
@@ -246,7 +253,6 @@ function E:RegisterCooldown(cooldown, which, override, subgroup)
 	end
 
 	-- reference the data object
-	local data = E.RegisteredCooldowns[cooldown]
 	E.CooldownByModule[which][cooldown] = data
 
 	-- reference the charge cooldown from LAB
@@ -266,9 +272,6 @@ function E:RegisterCooldown(cooldown, which, override, subgroup)
 		end
 	end
 
-	-- extract the blizzard cooldown region
-	E:CooldownInitialize(cooldown)
-
-	-- init set for the settings
-	E:CooldownUpdate(cooldown)
+	E:CooldownInitialize(cooldown) -- extract the blizzard cooldown region
+	E:CooldownUpdate(cooldown) -- init set for the settings
 end
