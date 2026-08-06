@@ -141,7 +141,7 @@ function E:Auras_UpdateElements(container, button)
 		button:SetDurationText(textFrame.time, { formatter = nil })
 	end
 
-	if container.filter == 'HELPFUL' then
+	if container.unit == 'player' and container.filter == 'HELPFUL' then
 		button:SetCancelAuraButtons('RightButtonUp')
 	end
 
