@@ -176,9 +176,7 @@ function E:Auras_GetSize(container)
 	return container.width or container.size or 24, container.height or container.size or 24
 end
 
-function E:Auras_SetContainer(container, filter)
-	container.filter = filter
-
+function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
@@ -188,10 +186,17 @@ function E:Auras_SetContainer(container, filter)
 		layout.elementHeight = height
 	end
 
+	return layout
+end
+
+function E:Auras_SetContainer(container, filter)
+	container.filter = filter
+
 	local maxCount = container.maxFrameCount or 32
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
+	local layout = E:Auras_UpdateLayout(container)
 	local anchor = container.initialAnchor or 'BOTTOMLEFT'
 	container:SetFlowLayoutAnchorPoint(anchor)
 

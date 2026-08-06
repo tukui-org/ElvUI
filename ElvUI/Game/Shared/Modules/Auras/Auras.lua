@@ -576,8 +576,16 @@ function A:UpdateHeader(header)
 	if E.PTR then
 		header.width = width
 		header.height = height
+		header.spacingX = db.horizontalSpacing
+		header.spacingY = db.verticalSpacing
+		header.keepSizeRatio = db.keepSizeRatio
+		header.sortMethod = E.AuraContainerSort[db.sortMethod]
+		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 
 		header:SetSize(minWidth, minHeight)
+
+		E:Auras_UpdateElements(header)
+		E:Auras_SetContainer(header, header.filter)
 	else
 		E:UpdateClassColor(db.barColor)
 
@@ -711,10 +719,10 @@ function A:Initialize()
 		if E.PTR then
 			A.BuffFrame = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
 			A.BuffFrame.auraType = 'buffs'
+			A.BuffFrame.filter = 'HELPFUL'
 
 			A:UpdateHeader(A.BuffFrame)
 			E:Auras_SetUnit(A.BuffFrame, 'player')
-			E:Auras_SetContainer(A.BuffFrame, 'HELPFUL')
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 			A:UpdateHeader(A.BuffFrame)
@@ -730,10 +738,10 @@ function A:Initialize()
 		if E.PTR then
 			A.DebuffFrame = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
 			A.DebuffFrame.auraType = 'debuffs'
+			A.DebuffFrame.filter = 'HARMFUL'
 
 			A:UpdateHeader(A.DebuffFrame)
 			E:Auras_SetUnit(A.DebuffFrame, 'player')
-			E:Auras_SetContainer(A.DebuffFrame, 'HARMFUL')
 		else
 			A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
 			A:UpdateHeader(A.DebuffFrame)
