@@ -183,6 +183,9 @@ function E:Auras_SetContainer(container, filter)
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
+	local anchor = container.initialAnchor or 'BOTTOMLEFT'
+	container:SetFlowLayoutAnchorPoint(anchor)
+
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 

@@ -454,25 +454,23 @@ function UF:Configure_Auras(frame, which)
 	end
 
 	if E.PTR then
-		if auras.SetFlowLayoutGrowthDirection then -- not all are setup yet
-			if settings.enable then
-				auras.maxFrameCount = auras.numAuras
-				auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
-				auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
+		if settings.enable then
+			auras.maxFrameCount = auras.numAuras
+			auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
+			auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 
-				E:Auras_SetUnit(auras, frame.unit)
-				E:Auras_SetContainer(auras, auras.filter)
+			E:Auras_SetUnit(auras, frame.unit)
+			E:Auras_SetContainer(auras, auras.filter)
 
-				auras:SetEnabled(true)
-				auras:Show()
-			else
-				auras:SetEnabled(false)
-				auras:Hide()
-			end
-
-			local rowWidth = (auras.numAuras and auras.numAuras > 0 and (auras.numAuras * (auras.size + auras.spacing))) or auras:GetWidth()
-			auras:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
+			auras:SetEnabled(true)
+			auras:Show()
+		else
+			auras:SetEnabled(false)
+			auras:Hide()
 		end
+
+		local rowWidth = (auras.numAuras and auras.numAuras > 0 and (auras.numAuras * (auras.size + auras.spacing))) or auras:GetWidth()
+		auras:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
 	else
 		if settings.sizeOverride and settings.sizeOverride > 0 then
 			auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))
