@@ -169,6 +169,7 @@ function NP:Configure_Auras(nameplate, which)
 		auras.keepSizeRatio = db.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSort[db.sortMethod]
+		auras.nameplateType = nameplate.frameType
 
 		E:Auras_SetUnit(auras, nameplate.unit)
 		E:Auras_SetContainer(auras, auras.filter)
