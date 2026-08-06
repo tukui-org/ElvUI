@@ -454,6 +454,8 @@ function UF:Configure_Auras(frame, which)
 	if E.PTR then
 		if auras.SetFlowLayoutGrowthDirection then -- not all are setup yet
 			if settings.enable then
+				auras.maxFrameCount = auras.numAuras
+
 				E:Auras_SetContainer(auras, auras.filter)
 
 				auras:SetEnabled(true)
