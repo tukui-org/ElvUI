@@ -91,8 +91,6 @@ function UF:Construct_AuraBarHeader(frame)
 end
 
 function UF:Configure_AuraBars(frame)
-	if E.PTR then return end
-
 	local bars = frame.AuraBars
 	local db = frame.db and frame.db.aurabar
 	bars.db = db
@@ -149,9 +147,9 @@ function UF:Configure_AuraBars(frame)
 		local BORDER = UF.BORDER + UF.SPACING
 		if detached then
 			attachTo = bars.Holder
-		elseif buffs then
+		elseif buffs and not E.PTR then
 			attachTo = frame.Buffs
-		elseif debuffs then
+		elseif debuffs and not E.PTR then
 			attachTo = frame.Debuffs
 		elseif db.attachTo == 'PLAYER_AURABARS' then
 			attachTo = UF.units.player.AuraBars
