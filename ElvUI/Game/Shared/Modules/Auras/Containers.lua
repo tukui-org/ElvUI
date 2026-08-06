@@ -33,13 +33,6 @@ function E:Auras_OnEvent(event)
 	end
 end
 
-local IS_HORIZONTAL_GROWTH = {
-	RIGHT_DOWN = true,
-	RIGHT_UP = true,
-	LEFT_DOWN = true,
-	LEFT_UP = true,
-}
-
 do
 	local temp = {}
 	function E:Auras_AddGroup(maxCount, filters, sortMethod, sortDirection, initializeFrame, layout)
