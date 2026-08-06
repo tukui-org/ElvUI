@@ -6,7 +6,7 @@ local AB = E:GetModule('ActionBars')
 local format, strlower, strfind = format, strlower, strfind
 local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, next, unpack, floor = sort, wipe, next, unpack, floor
-local utf8sub = string.utf8sub
+local utf8sub, huge = string.utf8sub, math.huge
 
 local CreateFrame = CreateFrame
 local IsAltKeyDown = IsAltKeyDown
@@ -472,23 +472,17 @@ function UF:Configure_Auras(frame, which)
 	end
 
 	if E.PTR then
-		if settings.enable then
-			auras.maxFrameCount = auras.numAuras
-			auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
-			auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
+		auras.maxFrameCount = auras.numAuras
+		auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
+		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 
+		if settings.enable then
 			E:Auras_SetUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras, auras.filter)
 
-			auras:SetEnabled(true)
-			auras:Show()
-		else
-			auras:SetEnabled(false)
-			auras:Hide()
+			local rowWidth = (auras.numAuras and auras.numAuras > 0 and (auras.numAuras * (auras.size + auras.spacing))) or auras:GetWidth()
+			auras:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
 		end
-
-		local rowWidth = (auras.numAuras and auras.numAuras > 0 and (auras.numAuras * (auras.size + auras.spacing))) or auras:GetWidth()
-		auras:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
 	else
 		if settings.sizeOverride and settings.sizeOverride > 0 then
 			auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))
@@ -525,12 +519,16 @@ function UF:Configure_Auras(frame, which)
 
 			index = index + 1
 		end
+	end
 
-		if settings.enable then
-			auras:Show()
-		else
-			auras:Hide()
-		end
+	if E.PTR then
+		auras:SetEnabled(settings.enable)
+	end
+
+	if settings.enable then
+		auras:Show()
+	else
+		auras:Hide()
 	end
 end
 

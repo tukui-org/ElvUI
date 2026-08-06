@@ -129,6 +129,12 @@ function NP:Construct_AuraIcon(button)
 	NP:UpdateAuraSettings(button)
 end
 
+function NP:Configure_UnitAuras(nameplate)
+	E:Auras_SetUnit(nameplate.Auras_, nameplate.unit)
+	E:Auras_SetUnit(nameplate.Buffs_, nameplate.unit)
+	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.unit)
+end
+
 function NP:Configure_Auras(nameplate, which)
 	local plateDB = NP:PlateDB(nameplate)
 	local auras = nameplate[which]
@@ -195,6 +201,12 @@ function NP:Update_Auras(nameplate)
 		nameplate.Auras_:ClearAllPoints()
 		nameplate.Buffs_:ClearAllPoints()
 		nameplate.Debuffs_:ClearAllPoints()
+
+		if E.PTR then
+			nameplate.Auras_:SetEnabled(db.auras.enable)
+			nameplate.Debuffs_:SetEnabled(db.debuffs.enable)
+			nameplate.Buffs_:SetEnabled(db.buffs.enable)
+		end
 
 		if db.auras.enable then
 			nameplate.Auras = nameplate.Auras_
