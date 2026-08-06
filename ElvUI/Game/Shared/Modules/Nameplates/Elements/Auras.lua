@@ -173,8 +173,8 @@ function NP:Configure_Auras(nameplate, which)
 
 		E:Auras_SetUnit(auras, nameplate.unit)
 		E:Auras_SetContainer(auras, auras.filter)
-		E:Auras_UpdateElements(auras)
 		E:Auras_SetLineSize(auras)
+		E:Auras_UpdateElements(auras)
 	else
 		local index = 1
 		while auras[index] do

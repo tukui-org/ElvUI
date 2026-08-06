@@ -22,7 +22,6 @@ local SORTMETHOD = _G.AuraContainerSortMethod
 
 E.AuraContainerSortDirection = {}
 E.AuraContainerSortMethod = {}
-E.AuraContainerRefreshButtons = {}
 
 E.AuraTarget = {}
 E.AuraFocus = {}
@@ -51,19 +50,11 @@ if SORTDIRECTION then
 end
 
 function E:Auras_OnEvent(event)
-	if event == 'PLAYER_REGEN_ENABLED' then
-		for button, container in next, E.AuraContainerRefreshButtons do
-			E:Auras_UpdateElement(container, button)
+	local obj = E.AuraEvents[event]
+	if not obj then return end
 
-			E.AuraContainerRefreshButtons[button] = nil
-		end
-	else
-		local obj = E.AuraEvents[event]
-		if not obj then return end
-
-		for container in next, obj do
-			container:UpdateAllAuras()
-		end
+	for container in next, obj do
+		container:UpdateAllAuras()
 	end
 end
 
@@ -138,15 +129,9 @@ function E:Auras_CreateElements(button)
 	end
 end
 
-function E:Auras_UpdateElement(container, button, initialize)
+function E:Auras_UpdateElement(container, button)
 	local width, height = E:Auras_GetSize(container)
-	if not initialize and InCombatLockdown() then
-		E.AuraContainerRefreshButtons[button] = container
-
-		return -- wait until after combat
-	else
-		button:SetSize(width, height)
-	end
+	button:SetSize(width, height)
 
 	if button.texture then
 		if container.keepSizeRatio or (width == height) then
@@ -203,6 +188,8 @@ function E:Auras_CreateButton(container, button)
 end
 
 function E:Auras_UpdateElements(container)
+	if InCombatLockdown() then return end
+
 	for button in next, container.buttons do
 		E:Auras_UpdateElement(container, button)
 	end
@@ -213,7 +200,7 @@ function E:Auras_GenerateInitialize(container)
 		container.buttons[button] = container
 
 		E:Auras_CreateButton(container, button)
-		E:Auras_UpdateElement(container, button, true)
+		E:Auras_UpdateElement(container, button)
 	end
 end
 
