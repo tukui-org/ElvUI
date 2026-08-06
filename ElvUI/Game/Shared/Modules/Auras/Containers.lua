@@ -17,6 +17,29 @@ local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 
 E.AuraContainers = {}
+E.AuraTarget = {}
+E.AuraFocus = {}
+
+E.AuraEvents = {
+	PLAYER_TARGET_CHANGED = E.AuraTarget,
+	PLAYER_FOCUS_CHANGED = E.AuraFocus
+}
+
+function E:Auras_OnEvent(event)
+	local obj = E.AuraEvents[event]
+	if not obj then return end
+
+	for _, container in next, obj do
+		container:UpdateAllAuras()
+	end
+end
+
+do
+	local eventFrame = CreateFrame('Frame')
+	eventFrame:RegisterEvent('PLAYER_TARGET_CHANGED')
+	eventFrame:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	eventFrame:SetScript('OnEvent', E.Auras_OnEvent)
+end
 
 local IS_HORIZONTAL_GROWTH = {
 	RIGHT_DOWN = true,
@@ -235,6 +258,12 @@ function E:Auras_Create(parent, name, unit, key, filter)
 	container.layout = {}
 
 	E.AuraContainers[key] = container
+
+	if unit == 'target' then
+		E.AuraTarget[key] = container
+	elseif unit == 'focus' then
+		E.AuraFocus[key] = container
+	end
 
 	E:Auras_SetUnit(container, unit)
 	E:Auras_SetContainer(container, key, filter)
