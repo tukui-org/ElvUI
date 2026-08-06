@@ -455,6 +455,7 @@ function UF:Configure_Auras(frame, which)
 		if auras.SetFlowLayoutGrowthDirection then -- not all are setup yet
 			if settings.enable then
 				auras.maxFrameCount = auras.numAuras
+				auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
 
 				E:Auras_SetContainer(auras, auras.filter)
 

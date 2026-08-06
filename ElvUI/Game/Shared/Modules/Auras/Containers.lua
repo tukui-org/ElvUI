@@ -24,6 +24,14 @@ E.AuraEvents = {
 	PLAYER_FOCUS_CHANGED = E.AuraFocus
 }
 
+E.AuraContainerSort = { -- add the new ones (?)
+	TIME_REMAINING = SORTMETHOD.Expiration,
+	DURATION = SORTMETHOD.Default,
+	NAME = SORTMETHOD.Name,
+	PLAYER = SORTMETHOD.ImportantOnly, -- player doesnt exist (?)
+	INDEX = SORTMETHOD.AuraInstanceIDOnly
+}
+
 function E:Auras_OnEvent(event)
 	local obj = E.AuraEvents[event]
 	if not obj then return end
