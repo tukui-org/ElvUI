@@ -62,20 +62,19 @@ local function Update(self, event)
 		isLeader = UnitLeadsAnyGroup(unit)
 	end
 
-	if element.combatHide and UnitAffectingCombat(unit) then
-		element:Hide()
-	elseif(isLeader) then
-		if(isInLFGInstance) then
-			element:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-PORTRAITROLES]])
-			element:SetTexCoord(0, 0.296875, 0.015625, 0.3125)
-		else
-			element:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
-			element:SetTexCoord(0, 1, 0, 1)
-		end
-
-		element:Show()
+	local combatHide = element.combatHide and UnitAffectingCombat(unit)
+	if element.SetAlphaFromBoolean then
+		element:SetAlphaFromBoolean(isLeader, not combatHide and 1 or 0, 0)
 	else
-		element:Hide()
+		element:SetAlpha(not combatHide and isLeader and 1 or 0)
+	end
+
+	if(isInLFGInstance) then
+		element:SetTexture([[Interface\LFGFrame\UI-LFG-ICON-PORTRAITROLES]])
+		element:SetTexCoord(0, 0.296875, 0.015625, 0.3125)
+	else
+		element:SetTexture([[Interface\GroupFrame\UI-Group-LeaderIcon]])
+		element:SetTexCoord(0, 1, 0, 1)
 	end
 
 	--[[ Callback: LeaderIndicator:PostUpdate(isLeader)
