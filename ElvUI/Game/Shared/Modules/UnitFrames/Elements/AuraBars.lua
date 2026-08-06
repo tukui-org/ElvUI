@@ -74,7 +74,7 @@ function UF:AuraBars_UpdateBar(bar)
 end
 
 function UF:Construct_AuraBarHeader(frame)
-	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
+	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame, E.PTR and 'DisableUntrustedLayoutScriptsTemplate')
 	auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
 	auraBar:SetSize(1, 1)
 
@@ -147,9 +147,9 @@ function UF:Configure_AuraBars(frame)
 		local BORDER = UF.BORDER + UF.SPACING
 		if detached then
 			attachTo = bars.Holder
-		elseif buffs and not E.PTR then
+		elseif buffs then
 			attachTo = frame.Buffs
-		elseif debuffs and not E.PTR then
+		elseif debuffs then
 			attachTo = frame.Debuffs
 		elseif db.attachTo == 'PLAYER_AURABARS' then
 			attachTo = UF.units.player.AuraBars

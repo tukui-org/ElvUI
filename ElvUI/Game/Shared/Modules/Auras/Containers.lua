@@ -220,7 +220,7 @@ function E:Auras_SetUnit(container, unit)
 end
 
 function E:Auras_Create(parent, which, override)
-	local container = CreateFrame('AuraContainer', override or (parent:GetName() .. which), parent, 'CustomAuraContainerTemplate')
+	local container = CreateFrame('AuraContainer', override or (parent:GetName() .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
 	container.filters = {}
 	container.buttons = {}
 	container.layout = {}

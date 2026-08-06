@@ -463,11 +463,11 @@ end
 function UF:GetAuraAnchorFrame(frame, attachTo)
 	if attachTo == 'FRAME' then
 		return frame
-	elseif attachTo == 'AURAS' and frame.Auras and not E.PTR then
+	elseif attachTo == 'AURAS' and frame.Auras then
 		return frame.Auras
-	elseif attachTo == 'BUFFS' and frame.Buffs and not E.PTR then
+	elseif attachTo == 'BUFFS' and frame.Buffs then
 		return frame.Buffs
-	elseif attachTo == 'DEBUFFS' and frame.Debuffs and not E.PTR then
+	elseif attachTo == 'DEBUFFS' and frame.Debuffs then
 		return frame.Debuffs
 	elseif attachTo == 'HEALTH' and frame.Health then
 		return frame.Health
