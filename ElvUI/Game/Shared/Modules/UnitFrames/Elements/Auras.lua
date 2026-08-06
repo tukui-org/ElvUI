@@ -76,7 +76,7 @@ UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 
 function UF:Construct_Auras(frame)
 	if E.PTR then
-		return E:Auras_Create(self, 'Auras')
+		return E:Auras_Create(frame, 'Auras')
 	else
 		local auras = CreateFrame('Frame', '$parentAuras', frame)
 		auras.PreSetPosition = UF.SortAuras
@@ -98,7 +98,7 @@ end
 
 function UF:Construct_Buffs(frame)
 	if E.PTR then
-		return E:Auras_Create(self, 'Buffs')
+		return E:Auras_Create(frame, 'Buffs')
 	else
 		local buffs = CreateFrame('Frame', '$parentBuffs', frame)
 		buffs.PreSetPosition = UF.SortAuras
@@ -120,7 +120,7 @@ end
 
 function UF:Construct_Debuffs(frame)
 	if E.PTR then
-		return E:Auras_Create(self, 'Debuffs')
+		return E:Auras_Create(frame, 'Debuffs')
 	else
 		local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
 		debuffs.PreSetPosition = UF.SortAuras
