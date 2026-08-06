@@ -235,6 +235,14 @@ function S:Blizzard_HousingDashboard()
 			previewFrame.PreviewCornerRight:Hide()
 		end
 	end
+
+	local collectionContent = dashboardFrame.CollectionContent
+	if collectionContent then
+		local blueprintCollection = collectionContent.BlueprintCollection
+		if blueprintCollection then
+			S:HandleTrimScrollBar(blueprintCollection.ScrollBar)
+		end
+	end
 end
 
 function S:Blizzard_HousingCornerstone()
