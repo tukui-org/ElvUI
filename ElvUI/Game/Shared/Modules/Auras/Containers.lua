@@ -115,7 +115,7 @@ function E:Auras_CreateElements(button)
 	end
 end
 
-function E:Auras_UpdateElements(container, button)
+function E:Auras_UpdateElement(container, button)
 	local width, height = E:Auras_GetSize(container)
 	button:SetSize(width, height)
 
@@ -155,7 +155,13 @@ end
 
 function E:Auras_CreateButton(container, button)
 	E:Auras_CreateElements(button)
-	E:Auras_UpdateElements(container, button)
+	E:Auras_UpdateElement(container, button)
+end
+
+function E:Auras_UpdateElements(container)
+	for button in next, container.buttons do
+		E:Auras_UpdateElement(container, button)
+	end
 end
 
 function E:Auras_GenerateInitialize(container)

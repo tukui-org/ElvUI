@@ -472,6 +472,7 @@ function UF:Configure_Auras(frame, which)
 	end
 
 	if E.PTR then
+		auras.keepSizeRatio = db.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
 		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
@@ -479,6 +480,7 @@ function UF:Configure_Auras(frame, which)
 		if settings.enable then
 			E:Auras_SetUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras, auras.filter)
+			E:Auras_UpdateElements(auras)
 			E:Auras_SetLineSize(auras)
 		end
 	else
