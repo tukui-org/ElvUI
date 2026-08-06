@@ -764,7 +764,7 @@ end)
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
 		local _, classToken = UnitClass(unit)
-		local cs = ElvUF.colors.class[classToken]
+		local cs = E:NotSecretValue(classToken) and ElvUF.colors.class[classToken]
 		return cs and Hex(cs) or HEX_FALLBACK
 	else
 		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
@@ -981,7 +981,9 @@ E:AddTag('class', 'UNIT_NAME_UPDATE', function(unit)
 	if not (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then return end
 
 	local _, classToken = UnitClass(unit)
-	return E:LocalizedClassName(classToken, unit)
+	if E:NotSecretValue(classToken) then
+		return E:LocalizedClassName(classToken, unit)
+	end
 end)
 
 E:AddTag('name:title', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)

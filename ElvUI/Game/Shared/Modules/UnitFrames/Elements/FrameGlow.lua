@@ -209,13 +209,11 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 		local isPlayer = unit and (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)))
 		local reaction = unit and UnitReaction(unit, 'player')
 
-		if isPlayer then
-			local _, class = UnitClass(unit)
-			if class then
-				local color = E:ClassColor(class)
-				if color then
-					r, g, b = color.r, color.g, color.b
-				end
+		local _, unitClass = UnitClass(unit)
+		if isPlayer and E:NotSecretValue(unitClass) and unitClass then
+			local color = E:ClassColor(unitClass)
+			if color then
+				r, g, b = color.r, color.g, color.b
 			end
 		elseif reaction then
 			local color = ElvUF.colors.reaction[reaction]
