@@ -26,6 +26,7 @@ oUF.isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 oUF.isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+oUF.isPTR = oUF.wowtoc >= 120100
 
 local season = C_Seasons and C_Seasons.GetActiveSeason()
 oUF.isClassicHC = season == 3 -- Hardcore
