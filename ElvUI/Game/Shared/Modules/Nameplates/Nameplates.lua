@@ -755,6 +755,10 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)
 
+	if E.PTR then
+		NP:Configure_UnitAuras(self)
+	end
+
 	self.softTargetFrame = self.blizzPlate and self.blizzPlate.SoftTargetFrame
 	if self.softTargetFrame then
 		self.softTargetFrame:SetParent(self)
