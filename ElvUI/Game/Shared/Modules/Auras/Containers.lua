@@ -16,6 +16,8 @@ local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
 local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 
+E.AuraContainerSortDirection = {}
+E.AuraContainerSort = {}
 E.AuraTarget = {}
 E.AuraFocus = {}
 E.AuraEvents = {
@@ -23,18 +25,18 @@ E.AuraEvents = {
 	PLAYER_FOCUS_CHANGED = E.AuraFocus
 }
 
-E.AuraContainerSort = { -- add the new ones (?)
-	TIME_REMAINING = SORTMETHOD.Expiration,
-	DURATION = SORTMETHOD.Default,
-	NAME = SORTMETHOD.Name,
-	PLAYER = SORTMETHOD.ImportantOnly, -- player doesnt exist (?)
-	INDEX = SORTMETHOD.AuraInstanceIDOnly
-}
+if SORTMETHOD then -- add the new ones (?)
+	E.AuraContainerSort.TIME_REMAINING = SORTMETHOD.Expiration
+	E.AuraContainerSort.DURATION = SORTMETHOD.Default
+	E.AuraContainerSort.NAME = SORTMETHOD.Name
+	E.AuraContainerSort.PLAYER = SORTMETHOD.ImportantOnly -- player doesnt exist (?)
+	E.AuraContainerSort.INDEX = SORTMETHOD.AuraInstanceIDOnly
+end
 
-E.AuraContainerSortDirection = {
-	ASCENDING = SORTMETHOD.Normal,
-	DESCENDING = SORTMETHOD.Reverse
-}
+if SORTDIRECTION then
+	E.AuraContainerSortDirection.ASCENDING = SORTDIRECTION.Normal
+	E.AuraContainerSortDirection.DESCENDING = SORTDIRECTION.Reverse
+end
 
 function E:Auras_OnEvent(event)
 	local obj = E.AuraEvents[event]
