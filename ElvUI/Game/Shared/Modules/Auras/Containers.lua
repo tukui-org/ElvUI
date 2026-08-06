@@ -16,7 +16,6 @@ local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
 local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 
-E.AuraContainers = {}
 E.AuraTarget = {}
 E.AuraFocus = {}
 E.AuraEvents = {
@@ -41,7 +40,7 @@ function E:Auras_OnEvent(event)
 	local obj = E.AuraEvents[event]
 	if not obj then return end
 
-	for _, container in next, obj do
+	for container in next, obj do
 		container:UpdateAllAuras()
 	end
 end
@@ -187,47 +186,39 @@ function E:Auras_SetContainer(container, filter)
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-	local key = container.key
-	if container.filters[key] then
+	if container.filters[filter] then
 		if type(filter) == 'table' then
-			container:SetAuraGroupCandidateFilters(key, filter)
+			container:SetAuraGroupCandidateFilters(filter, filter)
 		end
 
-		container:SetAuraGroupMaxFrameCount(key, maxCount)
-		container:SetAuraGroupSortMethod(key, sortMethod, sortDirection)
-		container:SetAuraGroupLayout(key, layout)
+		container:SetAuraGroupMaxFrameCount(filter, maxCount)
+		container:SetAuraGroupSortMethod(filter, sortMethod, sortDirection)
+		container:SetAuraGroupLayout(filter, layout)
 	else
-		container.filters[key] = filter
+		container.filters[filter] = filter
 
 		local func = E:Auras_GenerateInitialize(container)
 		local group = E:Auras_AddGroup(maxCount, filter, sortMethod, sortDirection, func, layout)
-		container:AddAuraGroup(key, filter, group)
+		container:AddAuraGroup(filter, filter, group)
 	end
 end
 
 function E:Auras_SetUnit(container, unit)
+	if unit == 'target' then
+		E.AuraTarget[container] = unit
+	elseif unit == 'focus' then
+		E.AuraFocus[container] = unit
+	end
+
 	container.unit = unit
 	container:SetUnit(unit)
 end
 
-function E:Auras_Create(parent, name, unit, key)
-	if E.AuraContainers[key] then return end -- what?
-
-	local container = CreateFrame('AuraContainer', name, parent, 'CustomAuraContainerTemplate')
+function E:Auras_Create(parent, which, override)
+	local container = CreateFrame('AuraContainer', override or (parent:GetName() .. which), parent, 'CustomAuraContainerTemplate')
 	container.filters = {}
 	container.buttons = {}
 	container.layout = {}
-	container.key = key
-
-	E.AuraContainers[key] = container
-
-	if unit == 'target' then
-		E.AuraTarget[key] = container
-	elseif unit == 'focus' then
-		E.AuraFocus[key] = container
-	end
-
-	E:Auras_SetUnit(container, unit)
 
 	return container
 end

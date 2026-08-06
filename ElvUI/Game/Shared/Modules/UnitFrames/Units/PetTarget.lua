@@ -25,9 +25,9 @@ function UF:Construct_PetTargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'pettarget', 'UF_PetTarget_Auras')
-		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'pettarget', 'UF_PetTarget_Buffs')
-		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'pettarget', 'UF_PetTarget_Debuffs')
+		frame.Auras = E:Auras_Create(frame, 'Auras')
+		frame.Buffs = E:Auras_Create(frame, 'Buffs')
+		frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
 	else
 		frame.Auras = UF:Construct_Auras(frame)
 		frame.Buffs = UF:Construct_Buffs(frame)

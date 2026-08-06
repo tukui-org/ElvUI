@@ -33,9 +33,9 @@ function UF:Construct_FocusFrame(frame)
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 
 	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'focus', 'UF_Focus_Auras')
-		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'focus', 'UF_Focus_Buffs')
-		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'focus', 'UF_Focus_Debuffs')
+		frame.Auras = E:Auras_Create(frame, 'Auras')
+		frame.Buffs = E:Auras_Create(frame, 'Buffs')
+		frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
 	else
 		frame.Auras = UF:Construct_Auras(frame)
 		frame.Buffs = UF:Construct_Buffs(frame)

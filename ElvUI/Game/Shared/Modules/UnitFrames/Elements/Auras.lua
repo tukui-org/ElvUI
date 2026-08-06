@@ -460,6 +460,7 @@ function UF:Configure_Auras(frame, which)
 				auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
 				auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 
+				E:Auras_SetUnit(auras, frame.unit)
 				E:Auras_SetContainer(auras, auras.filter)
 
 				auras:SetEnabled(true)

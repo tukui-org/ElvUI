@@ -32,9 +32,9 @@ function UF:Construct_PetFrame(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 
 	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'pet', 'UF_Pet_Auras')
-		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'pet', 'UF_Pet_Buffs')
-		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'pet', 'UF_Pet_Debuffs')
+		frame.Auras = E:Auras_Create(frame, 'Auras')
+		frame.Buffs = E:Auras_Create(frame, 'Buffs')
+		frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
 	else
 		frame.Auras = UF:Construct_Auras(frame)
 		frame.Buffs = UF:Construct_Buffs(frame)

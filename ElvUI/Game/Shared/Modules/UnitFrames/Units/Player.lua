@@ -52,9 +52,9 @@ function UF:Construct_PlayerFrame(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 
 	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'player', 'UF_Player_Auras')
-		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'player', 'UF_Player_Buffs')
-		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'player', 'UF_Player_Debuffs')
+		frame.Auras = E:Auras_Create(frame, 'Auras')
+		frame.Buffs = E:Auras_Create(frame, 'Buffs')
+		frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
 	else
 		frame.Auras = UF:Construct_Auras(frame)
 		frame.Buffs = UF:Construct_Buffs(frame)

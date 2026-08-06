@@ -19,9 +19,6 @@ function UF:Construct_BossFrames(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 	frame.InfoPanel = UF:Construct_InfoPanel(frame)
-	frame.Auras = UF:Construct_Auras(frame)
-	frame.Buffs = UF:Construct_Buffs(frame)
-	frame.Debuffs = UF:Construct_Debuffs(frame)
 	frame.AuraHighlight = UF:Construct_AuraHighlight(frame)
 	frame.Castbar = UF:Construct_Castbar(frame)
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
@@ -32,6 +29,16 @@ function UF:Construct_BossFrames(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
+
+	if E.PTR then
+		frame.Auras = E:Auras_Create(frame, 'Auras')
+		frame.Buffs = E:Auras_Create(frame, 'Buffs')
+		frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
+	else
+		frame.Auras = UF:Construct_Auras(frame)
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
+	end
 
 	BossHeader:Point('BOTTOMRIGHT', E.UIParent, 'RIGHT', -105, -165)
 	E:CreateMover(BossHeader, 'BossHeaderMover', L["Boss Frames"], nil, nil, nil, 'ALL,PARTY,RAID', nil, 'unitframe,groupUnits,boss,generalGroup')

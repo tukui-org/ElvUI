@@ -25,9 +25,9 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 
 	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, '$parent_Auras', 'focustarget', 'UF_FocusTarget_Auras')
-		frame.Buffs = E:Auras_Create(frame, '$parent_Buffs', 'focustarget', 'UF_FocusTarget_Buffs')
-		frame.Debuffs = E:Auras_Create(frame, '$parent_Debuffs', 'focustarget', 'UF_FocusTarget_Debuffs')
+		frame.Auras = E:Auras_Create(frame, 'Auras')
+		frame.Buffs = E:Auras_Create(frame, 'Buffs')
+		frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
 	else
 		frame.Auras = UF:Construct_Auras(frame)
 		frame.Buffs = UF:Construct_Buffs(frame)
