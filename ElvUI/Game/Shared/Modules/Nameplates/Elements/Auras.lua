@@ -8,53 +8,70 @@ local strfind = strfind
 local CreateFrame = CreateFrame
 
 function NP:Construct_Auras(nameplate)
-	local Auras = CreateFrame('Frame', '$parentAuras', nameplate)
-	Auras:Size(1)
-	Auras.size = 27
-	Auras.num = 4
-	Auras.spacing = E.Border * 2
-	Auras.onlyShowPlayer = false
-	Auras.disableMouse = true
-	Auras.isNameplate = true
-	Auras.initialAnchor = 'BOTTOMLEFT'
-	Auras.growthX = 'RIGHT'
-	Auras.growthY = 'UP'
-	Auras.type = 'auras'
-	Auras.forceShow = nameplate == NP.TestFrame
-	Auras.stacks = {}
-	Auras.rows = {}
+	local Auras, Buffs, Debuffs
 
-	local Buffs = CreateFrame('Frame', '$parentBuffs', nameplate)
-	Buffs:Size(1)
-	Buffs.size = 27
-	Buffs.num = 4
-	Buffs.spacing = E.Border * 2
-	Buffs.onlyShowPlayer = false
-	Buffs.disableMouse = true
-	Buffs.isNameplate = true
-	Buffs.initialAnchor = 'BOTTOMLEFT'
-	Buffs.growthX = 'RIGHT'
-	Buffs.growthY = 'UP'
-	Buffs.type = 'buffs'
-	Buffs.forceShow = nameplate == NP.TestFrame
-	Buffs.stacks = {}
-	Buffs.rows = {}
+	if E.PTR then
+		Auras = E:Auras_Create(nameplate, 'Auras')
+	else
+		Auras = CreateFrame('Frame', '$parentAuras', nameplate)
 
-	local Debuffs = CreateFrame('Frame', '$parentDebuffs', nameplate)
-	Debuffs:Size(1)
-	Debuffs.size = 27
-	Debuffs.num = 4
-	Debuffs.spacing = E.Border * 2
-	Debuffs.onlyShowPlayer = false
-	Debuffs.disableMouse = true
-	Debuffs.isNameplate = true
-	Debuffs.initialAnchor = 'BOTTOMLEFT'
-	Debuffs.growthX = 'RIGHT'
-	Debuffs.growthY = 'UP'
-	Debuffs.type = 'debuffs'
-	Debuffs.forceShow = nameplate == NP.TestFrame
-	Debuffs.stacks = {}
-	Debuffs.rows = {}
+		Auras:Size(1)
+		Auras.size = 27
+		Auras.num = 4
+		Auras.spacing = E.Border * 2
+		Auras.onlyShowPlayer = false
+		Auras.disableMouse = true
+		Auras.isNameplate = true
+		Auras.initialAnchor = 'BOTTOMLEFT'
+		Auras.growthX = 'RIGHT'
+		Auras.growthY = 'UP'
+		Auras.type = 'auras'
+		Auras.forceShow = nameplate == NP.TestFrame
+		Auras.stacks = {}
+		Auras.rows = {}
+	end
+
+	if E.PTR then
+		Buffs = E:Auras_Create(nameplate, 'Buffs')
+	else
+		Buffs = CreateFrame('Frame', '$parentBuffs', nameplate)
+
+		Buffs:Size(1)
+		Buffs.size = 27
+		Buffs.num = 4
+		Buffs.spacing = E.Border * 2
+		Buffs.onlyShowPlayer = false
+		Buffs.disableMouse = true
+		Buffs.isNameplate = true
+		Buffs.initialAnchor = 'BOTTOMLEFT'
+		Buffs.growthX = 'RIGHT'
+		Buffs.growthY = 'UP'
+		Buffs.type = 'buffs'
+		Buffs.forceShow = nameplate == NP.TestFrame
+		Buffs.stacks = {}
+		Buffs.rows = {}
+	end
+
+	if E.PTR then
+		Debuffs = E:Auras_Create(nameplate, 'Debuffs')
+	else
+		Debuffs = CreateFrame('Frame', '$parentDebuffs', nameplate)
+
+		Debuffs:Size(1)
+		Debuffs.size = 27
+		Debuffs.num = 4
+		Debuffs.spacing = E.Border * 2
+		Debuffs.onlyShowPlayer = false
+		Debuffs.disableMouse = true
+		Debuffs.isNameplate = true
+		Debuffs.initialAnchor = 'BOTTOMLEFT'
+		Debuffs.growthX = 'RIGHT'
+		Debuffs.growthY = 'UP'
+		Debuffs.type = 'debuffs'
+		Debuffs.forceShow = nameplate == NP.TestFrame
+		Debuffs.stacks = {}
+		Debuffs.rows = {}
+	end
 
 	Auras.PreUpdate = UF.PreUpdateAura
 	Auras.PreSetPosition = UF.SortAuras
@@ -138,18 +155,25 @@ function NP:Configure_Auras(nameplate, which)
 
 	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
 		auras.filter = (NP.db.useBlizzardAuras and 'HELPFUL') or db.filter or 'HARMFUL'
+	elseif E.PTR then
+		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
-	local index = 1
-	while auras[index] do
-		local button = auras[index]
-		if button then
-			button.db = db
-			NP:UpdateAuraSettings(button)
-			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
+	if E.PTR then
+		E:Auras_SetUnit(auras, nameplate.unit)
+		E:Auras_SetContainer(auras, auras.filter)
+	else
+		local index = 1
+		while auras[index] do
+			local button = auras[index]
+			if button then
+				button.db = db
+				NP:UpdateAuraSettings(button)
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			end
 
-		index = index + 1
+			index = index + 1
+		end
 	end
 
 	auras:SetFrameLevel(7)
