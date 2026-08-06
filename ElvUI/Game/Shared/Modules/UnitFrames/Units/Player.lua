@@ -18,9 +18,6 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Name = UF:Construct_NameText(frame)
 	frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
-	frame.Auras = UF:Construct_Auras(frame)
-	frame.Buffs = UF:Construct_Buffs(frame)
-	frame.Debuffs = UF:Construct_Debuffs(frame)
 	frame.Castbar = UF:Construct_Castbar(frame, L["Player Castbar"])
 
 	-- Create a holder frame all 'classbars' can be positioned into
@@ -53,6 +50,9 @@ function UF:Construct_PlayerFrame(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
+	frame.Auras = UF:Construct_Auras(frame)
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', -342, 139) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Player Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,player,generalGroup')

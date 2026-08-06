@@ -1328,7 +1328,7 @@ do
 		hooksecurefunc(_G.SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
 
 		-- remove events from talent frame
-		if (E.Retail or E.Mists or E.Wrath) and not AB.UnloadTalentFrame() then
+		if ((E.Retail and not E.PTR) or E.Mists or E.Wrath) and not AB.UnloadTalentFrame() then
 			hooksecurefunc('TalentFrame_LoadUI', AB.UnloadTalentFrame)
 		end
 	end

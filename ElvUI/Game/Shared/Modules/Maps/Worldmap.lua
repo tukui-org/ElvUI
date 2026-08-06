@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('WorldMap')
 
 local _G = _G
+local next = next
 local strfind = strfind
 
 local CreateFrame = CreateFrame
@@ -282,8 +283,21 @@ function M:Initialize()
 
 	if not E.private.general.worldMap then return end
 
+	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.WorldMapCoordinates.enable then
 		M:PositionCoords()
+
+		-- Blizzard WorldMapCoordsPanel: CursorCoords / PlayerCoords
+		-- Remove them as long as our coords are enabled to avoid double coords
+		local overlayFrames = E.PTR and WorldMapFrame.overlayFrames
+		if overlayFrames then
+			for _, frame in next, overlayFrames do
+				if frame.PlayerCoords and frame.CursorCoords then
+					frame:Kill()
+					break
+				end
+			end
+		end
 
 		E:RegisterEventForObject('LOADING_SCREEN_DISABLED', E.MapInfo, M.UpdateRestrictedArea)
 		E:RegisterEventForObject('ZONE_CHANGED_NEW_AREA', E.MapInfo, M.UpdateRestrictedArea)
@@ -291,7 +305,6 @@ function M:Initialize()
 		E:RegisterEventForObject('ZONE_CHANGED', E.MapInfo, M.UpdateRestrictedArea)
 	end
 
-	local WorldMapFrame = _G.WorldMapFrame
 	if E.global.general.smallerWorldMap then
 		smallerMapScale = E.global.general.smallerWorldMapScale
 

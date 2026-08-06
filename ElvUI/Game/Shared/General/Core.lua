@@ -2085,6 +2085,10 @@ function E:Initialize()
 
 		E.Initialized = true
 
+		if E.PTR then
+			E:InitializeAuras()
+		end
+
 		if E.Retail then
 			E:Tutorials()
 		end

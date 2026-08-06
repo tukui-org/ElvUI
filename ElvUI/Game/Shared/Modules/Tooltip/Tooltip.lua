@@ -114,6 +114,13 @@ function TT:IsModKeyDown(db)
 	return k == 'SHOW' or ((k == 'SHIFT' and IsShiftKeyDown()) or (k == 'CTRL' and IsControlKeyDown()) or (k == 'ALT' and IsAltKeyDown()))
 end
 
+function TT:UpdateAuraSpellIDCVar()
+	if not E.PTR then return end
+
+	-- Blizzard resets tooltipShowAuraSpellIDs to 0 between sessions
+	E:SetCVar('tooltipShowAuraSpellIDs', TT:IsModKeyDown())
+end
+
 function TT:SetCompareItems(tt, value)
 	if E.Retail or tt ~= GameTooltip then return end
 
@@ -912,7 +919,15 @@ function TT:SetStyle(tt, _, isEmbedded)
 	end
 end
 
+function TT:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
+	if initLogin or isReload then
+		TT:UpdateAuraSpellIDCVar()
+	end
+end
+
 function TT:MODIFIER_STATE_CHANGED()
+	TT:UpdateAuraSpellIDCVar()
+
 	if not GameTooltip:IsForbidden() and GameTooltip:IsShown() then
 		local owner = GameTooltip:GetOwner()
 		if owner == UIParent then
@@ -1195,7 +1210,9 @@ function TT:Initialize()
 		E:CreateMover(TooltipAnchor, 'TooltipMover', L["Tooltip"], nil, nil, nil, nil, nil, 'tooltip')
 	end
 
+	TT:UpdateAuraSpellIDCVar()
 	TT:RegisterEvent('MODIFIER_STATE_CHANGED')
+	TT:RegisterEvent('PLAYER_ENTERING_WORLD')
 
 	TT:SecureHook('SetItemRef')
 	TT:SecureHook('GameTooltip_SetDefaultAnchor')

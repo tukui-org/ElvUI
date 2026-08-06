@@ -74,57 +74,69 @@ UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
 function UF:Construct_Auras(frame)
-	local auras = CreateFrame('Frame', '$parentAuras', frame)
-	auras.PreSetPosition = UF.SortAuras
-	auras.PostCreateButton = UF.Construct_AuraIcon
-	auras.PostUpdateButton = UF.PostUpdateAura
-	auras.SetPosition = UF.SetPosition
-	auras.PreUpdate = UF.PreUpdateAura
-	auras.CustomFilter = UF.AuraFilter
-	auras.stacks = {}
-	auras.rows = {}
-	auras.type = 'auras'
+	if E.PTR then
+		return E:Auras_Create(frame, 'Auras')
+	else
+		local auras = CreateFrame('Frame', '$parentAuras', frame)
+		auras.PreSetPosition = UF.SortAuras
+		auras.PostCreateButton = UF.Construct_AuraIcon
+		auras.PostUpdateButton = UF.PostUpdateAura
+		auras.SetPosition = UF.SetPosition
+		auras.PreUpdate = UF.PreUpdateAura
+		auras.CustomFilter = UF.AuraFilter
+		auras.stacks = {}
+		auras.rows = {}
+		auras.type = 'auras'
 
-	auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
-	auras:SetSize(1, 1)
+		auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+		auras:SetSize(1, 1)
 
-	return auras
+		return auras
+	end
 end
 
 function UF:Construct_Buffs(frame)
-	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
-	buffs.PreSetPosition = UF.SortAuras
-	buffs.PostCreateButton = UF.Construct_AuraIcon
-	buffs.PostUpdateButton = UF.PostUpdateAura
-	buffs.SetPosition = UF.SetPosition
-	buffs.PreUpdate = UF.PreUpdateAura
-	buffs.CustomFilter = UF.AuraFilter
-	buffs.stacks = {}
-	buffs.rows = {}
-	buffs.type = 'buffs'
+	if E.PTR then
+		return E:Auras_Create(frame, 'Buffs')
+	else
+		local buffs = CreateFrame('Frame', '$parentBuffs', frame)
+		buffs.PreSetPosition = UF.SortAuras
+		buffs.PostCreateButton = UF.Construct_AuraIcon
+		buffs.PostUpdateButton = UF.PostUpdateAura
+		buffs.SetPosition = UF.SetPosition
+		buffs.PreUpdate = UF.PreUpdateAura
+		buffs.CustomFilter = UF.AuraFilter
+		buffs.stacks = {}
+		buffs.rows = {}
+		buffs.type = 'buffs'
 
-	buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
-	buffs:SetSize(1, 1)
+		buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+		buffs:SetSize(1, 1)
 
-	return buffs
+		return buffs
+	end
 end
 
 function UF:Construct_Debuffs(frame)
-	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
-	debuffs.PreSetPosition = UF.SortAuras
-	debuffs.PostCreateButton = UF.Construct_AuraIcon
-	debuffs.PostUpdateButton = UF.PostUpdateAura
-	debuffs.SetPosition = UF.SetPosition
-	debuffs.PreUpdate = UF.PreUpdateAura
-	debuffs.CustomFilter = UF.AuraFilter
-	debuffs.stacks = {}
-	debuffs.rows = {}
-	debuffs.type = 'debuffs'
+	if E.PTR then
+		return E:Auras_Create(frame, 'Debuffs')
+	else
+		local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
+		debuffs.PreSetPosition = UF.SortAuras
+		debuffs.PostCreateButton = UF.Construct_AuraIcon
+		debuffs.PostUpdateButton = UF.PostUpdateAura
+		debuffs.SetPosition = UF.SetPosition
+		debuffs.PreUpdate = UF.PreUpdateAura
+		debuffs.CustomFilter = UF.AuraFilter
+		debuffs.stacks = {}
+		debuffs.rows = {}
+		debuffs.type = 'debuffs'
 
-	debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
-	debuffs:SetSize(1, 1)
+		debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+		debuffs:SetSize(1, 1)
 
-	return debuffs
+		return debuffs
+	end
 end
 
 function UF:GetAuraRow(element, row, col, width, height, spacing, anchor, inversed, middle)
@@ -412,6 +424,7 @@ function UF:Configure_Auras(frame, which)
 	local auras = frame[which]
 	local auraType = which:lower()
 	local settings = db[auraType]
+
 	auras.db = settings
 	auras.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or settings.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
@@ -419,41 +432,7 @@ function UF:Configure_Auras(frame, which)
 	auras.tooltipAnchor = settings.tooltipAnchorType
 	auras.tooltipAnchorX = settings.tooltipAnchorX
 	auras.tooltipAnchorY = settings.tooltipAnchorY
-
-	if settings.sizeOverride and settings.sizeOverride > 0 then
-		auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))
-	else
-		local xOffset = 0
-		if frame.USE_POWERBAR_OFFSET then
-			if frame.ORIENTATION == 'MIDDLE' then
-				if settings.attachTo ~= 'POWER' then
-					xOffset = frame.POWERBAR_OFFSET * 2
-				end -- if its middle and power we dont want an offset.
-			else
-				xOffset = frame.POWERBAR_OFFSET
-			end
-		end
-
-		auras:Width((frame.UNIT_WIDTH - UF.SPACING*2) - xOffset)
-	end
-
-	auras.spacing = settings.spacing
-	auras.num = settings.perrow * settings.numrows
-	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or (((frame.UNIT_WIDTH - (settings.spacing * (auras.num / settings.numrows - 1)) - ((UF.thinBorders or E.twoPixelsPlease) and 0 or 2)) / auras.num) * settings.numrows)
-	auras.height = not settings.keepSizeRatio and settings.height
-	auras.forceShow = frame.forceShowAuras
-	auras.disableMouse = settings.clickThrough
 	auras.anchorPoint = settings.anchorPoint
-	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
-	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
-	auras.initialAnchor = UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint] or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
-	auras.filterList = UF:ConvertFilters(auras, settings.priority)
-	auras.numAuras = settings.perrow
-	auras.numRows = settings.numrows
-
-	if which == 'Auras' then -- only use this for custom
-		auras.filter = settings.filter or 'HARMFUL'
-	end
 
 	local x, y
 	if settings.attachTo == 'HEALTH' or settings.attachTo == 'POWER' then
@@ -466,29 +445,85 @@ function UF:Configure_Auras(frame, which)
 
 	auras.xOffset = x + settings.xOffset + (settings.attachTo == 'FRAME' and frame.ORIENTATION ~= 'LEFT' and frame.POWERBAR_OFFSET or 0)
 	auras.yOffset = y + settings.yOffset
+	auras.initialAnchor = UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint] or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
+	auras.spacing = settings.spacing
+	auras.num = settings.perrow * settings.numrows
+	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or (((frame.UNIT_WIDTH - (settings.spacing * (auras.num / settings.numrows - 1)) - ((UF.thinBorders or E.twoPixelsPlease) and 0 or 2)) / auras.num) * settings.numrows)
+	auras.height = not settings.keepSizeRatio and settings.height
+	auras.numAuras = settings.perrow
+	auras.numRows = settings.numrows
+	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
+	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 
-	auras:SetFrameStrata(settings.strataAndLevel and settings.strataAndLevel.useCustomStrata and settings.strataAndLevel.frameStrata or 'LOW')
-	auras:SetFrameLevel((settings.strataAndLevel and settings.strataAndLevel.useCustomLevel and settings.strataAndLevel.frameLevel) or (frame.RaisedElementParent and frame.RaisedElementParent.AuraLevel) or 1)
-
-	local index = 1
-	while auras[index] do
-		local button = auras[index]
-		if button then
-			button.db = settings
-			UF:UpdateAuraSettings(button)
-			button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
-		end
-
-		index = index + 1
+	if which == 'Auras' then -- only use this for custom
+		auras.filter = settings.filter or 'HARMFUL'
+	elseif E.PTR then
+		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
-	if settings.enable then
-		auras:Show()
+	if E.PTR then
+		if settings.enable then
+			auras.maxFrameCount = auras.numAuras
+			auras.sortMethod = E.AuraContainerSort[settings.sortMethod]
+			auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
+
+			E:Auras_SetUnit(auras, frame.unit)
+			E:Auras_SetContainer(auras, auras.filter)
+
+			auras:SetEnabled(true)
+			auras:Show()
+		else
+			auras:SetEnabled(false)
+			auras:Hide()
+		end
+
+		local rowWidth = (auras.numAuras and auras.numAuras > 0 and (auras.numAuras * (auras.size + auras.spacing))) or auras:GetWidth()
+		auras:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
 	else
-		auras:Hide()
+		if settings.sizeOverride and settings.sizeOverride > 0 then
+			auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))
+		else
+			local xOffset = 0
+			if frame.USE_POWERBAR_OFFSET then
+				if frame.ORIENTATION == 'MIDDLE' then
+					if settings.attachTo ~= 'POWER' then
+						xOffset = frame.POWERBAR_OFFSET * 2
+					end -- if its middle and power we dont want an offset.
+				else
+					xOffset = frame.POWERBAR_OFFSET
+				end
+			end
+
+			auras:Width((frame.UNIT_WIDTH - UF.SPACING*2) - xOffset)
+		end
+
+		auras.forceShow = frame.forceShowAuras
+		auras.disableMouse = settings.clickThrough
+		auras.filterList = UF:ConvertFilters(auras, settings.priority)
+
+		auras:SetFrameStrata(settings.strataAndLevel and settings.strataAndLevel.useCustomStrata and settings.strataAndLevel.frameStrata or 'LOW')
+		auras:SetFrameLevel((settings.strataAndLevel and settings.strataAndLevel.useCustomLevel and settings.strataAndLevel.frameLevel) or (frame.RaisedElementParent and frame.RaisedElementParent.AuraLevel) or 1)
+
+		local index = 1
+		while auras[index] do
+			local button = auras[index]
+			if button then
+				button.db = settings
+				UF:UpdateAuraSettings(button)
+				button:SetBackdropBorderColor(unpack(E.media.unitframeBorderColor))
+			end
+
+			index = index + 1
+		end
+
+		if settings.enable then
+			auras:Show()
+		else
+			auras:Hide()
+		end
 	end
 end
 

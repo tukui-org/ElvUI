@@ -57,10 +57,6 @@ function UF:Construct_ArenaFrames(frame)
 
 		frame.Portrait3D = UF:Construct_Portrait(frame, 'model')
 		frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
-
-		frame.Auras = UF:Construct_Auras(frame)
-		frame.Buffs = UF:Construct_Buffs(frame)
-		frame.Debuffs = UF:Construct_Debuffs(frame)
 		frame.Castbar = UF:Construct_Castbar(frame)
 		frame.HealthPrediction = UF:Construct_HealComm(frame)
 		frame.MouseGlow = UF:Construct_MouseGlow(frame)
@@ -70,6 +66,9 @@ function UF:Construct_ArenaFrames(frame)
 		frame.InfoPanel = UF:Construct_InfoPanel(frame)
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
+		frame.Auras = UF:Construct_Auras(frame)
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
 
 		if not E.Classic then
 			frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)
