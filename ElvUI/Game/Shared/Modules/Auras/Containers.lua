@@ -263,7 +263,7 @@ function E:Auras_Create(parent, name, unit, key, filter)
 	return container
 end
 
-function E:Auras_WatchFrame()
+function E:InitializeAuras()
 	if E.AuraEventFrame then return end
 
 	local eventFrame = CreateFrame('Frame')
