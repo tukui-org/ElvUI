@@ -28,16 +28,9 @@ function UF:Construct_AssistFrames()
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.AuraHighlight = UF:Construct_AuraHighlight(self)
-
-		if E.PTR then
-			self.Auras = E:Auras_Create(self, 'Auras')
-			self.Buffs = E:Auras_Create(self, 'Buffs')
-			self.Debuffs = E:Auras_Create(self, 'Debuffs')
-		else
-			self.Auras = UF:Construct_Auras(self)
-			self.Buffs = UF:Construct_Buffs(self)
-			self.Debuffs = UF:Construct_Debuffs(self)
-		end
+		self.Auras = UF:Construct_Auras(self)
+		self.Buffs = UF:Construct_Buffs(self)
+		self.Debuffs = UF:Construct_Debuffs(self)
 	end
 
 	return self

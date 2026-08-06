@@ -23,16 +23,9 @@ function UF:Construct_TargetTargetTargetFrame(frame)
 	frame.FocusGlow = UF:Construct_FocusGlow(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
-
-	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, 'Auras')
-		frame.Buffs = E:Auras_Create(frame, 'Buffs')
-		frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
-	else
-		frame.Auras = UF:Construct_Auras(frame)
-		frame.Buffs = UF:Construct_Buffs(frame)
-		frame.Debuffs = UF:Construct_Debuffs(frame)
-	end
+	frame.Auras = UF:Construct_Auras(frame)
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 0, 160) --Set to default position
 	E:CreateMover(frame, frame:GetName()..'Mover', L["TargetTargetTarget Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,targettargettarget,generalGroup')

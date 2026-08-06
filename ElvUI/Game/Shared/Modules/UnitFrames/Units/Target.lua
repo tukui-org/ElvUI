@@ -35,16 +35,9 @@ function UF:Construct_TargetFrame(frame)
 	frame.Cutaway = UF:Construct_Cutaway(frame)
 	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
-
-	if E.PTR then
-		frame.Auras = E:Auras_Create(frame, 'Auras')
-		frame.Buffs = E:Auras_Create(frame, 'Buffs')
-		frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
-	else
-		frame.Auras = UF:Construct_Auras(frame)
-		frame.Buffs = UF:Construct_Buffs(frame)
-		frame.Debuffs = UF:Construct_Debuffs(frame)
-	end
+	frame.Auras = UF:Construct_Auras(frame)
+	frame.Buffs = UF:Construct_Buffs(frame)
+	frame.Debuffs = UF:Construct_Debuffs(frame)
 
 	frame:Point('BOTTOM', E.UIParent, 'BOTTOM', 342, 139)
 	E:CreateMover(frame, frame:GetName()..'Mover', L["Target Frame"], nil, nil, nil, 'ALL,SOLO', nil, 'unitframe,individualUnits,target,generalGroup')

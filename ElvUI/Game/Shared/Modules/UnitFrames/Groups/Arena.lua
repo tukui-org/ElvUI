@@ -66,16 +66,9 @@ function UF:Construct_ArenaFrames(frame)
 		frame.InfoPanel = UF:Construct_InfoPanel(frame)
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()
-
-		if E.PTR then
-			frame.Auras = E:Auras_Create(frame, 'Auras')
-			frame.Buffs = E:Auras_Create(frame, 'Buffs')
-			frame.Debuffs = E:Auras_Create(frame, 'Debuffs')
-		else
-			frame.Auras = UF:Construct_Auras(frame)
-			frame.Buffs = UF:Construct_Buffs(frame)
-			frame.Debuffs = UF:Construct_Debuffs(frame)
-		end
+		frame.Auras = UF:Construct_Auras(frame)
+		frame.Buffs = UF:Construct_Buffs(frame)
+		frame.Debuffs = UF:Construct_Debuffs(frame)
 
 		if not E.Classic then
 			frame.PVPSpecIcon = UF:Construct_PVPSpecIcon(frame)

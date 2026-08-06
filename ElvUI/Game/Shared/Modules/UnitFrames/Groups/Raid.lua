@@ -33,16 +33,9 @@ function UF:Construct_RaidFrames()
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
 	self.PrivateAuras = UF:Construct_PrivateAuras(self)
-
-	if E.PTR then
-		self.Auras = E:Auras_Create(self, 'Auras')
-		self.Buffs = E:Auras_Create(self, 'Buffs')
-		self.Debuffs = E:Auras_Create(self, 'Debuffs')
-	else
-		self.Auras = UF:Construct_Auras(self)
-		self.Buffs = UF:Construct_Buffs(self)
-		self.Debuffs = UF:Construct_Debuffs(self)
-	end
+	self.Auras = UF:Construct_Auras(self)
+	self.Buffs = UF:Construct_Buffs(self)
+	self.Debuffs = UF:Construct_Debuffs(self)
 
 	if E.allowRoles then
 		self.GroupRoleIndicator = UF:Construct_RoleIcon(self)

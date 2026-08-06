@@ -75,57 +75,69 @@ UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
 function UF:Construct_Auras(frame)
-	local auras = CreateFrame('Frame', '$parentAuras', frame)
-	auras.PreSetPosition = UF.SortAuras
-	auras.PostCreateButton = UF.Construct_AuraIcon
-	auras.PostUpdateButton = UF.PostUpdateAura
-	auras.SetPosition = UF.SetPosition
-	auras.PreUpdate = UF.PreUpdateAura
-	auras.CustomFilter = UF.AuraFilter
-	auras.stacks = {}
-	auras.rows = {}
-	auras.type = 'auras'
+	if E.PTR then
+		return E:Auras_Create(self, 'Auras')
+	else
+		local auras = CreateFrame('Frame', '$parentAuras', frame)
+		auras.PreSetPosition = UF.SortAuras
+		auras.PostCreateButton = UF.Construct_AuraIcon
+		auras.PostUpdateButton = UF.PostUpdateAura
+		auras.SetPosition = UF.SetPosition
+		auras.PreUpdate = UF.PreUpdateAura
+		auras.CustomFilter = UF.AuraFilter
+		auras.stacks = {}
+		auras.rows = {}
+		auras.type = 'auras'
 
-	auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
-	auras:SetSize(1, 1)
+		auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+		auras:SetSize(1, 1)
 
-	return auras
+		return auras
+	end
 end
 
 function UF:Construct_Buffs(frame)
-	local buffs = CreateFrame('Frame', '$parentBuffs', frame)
-	buffs.PreSetPosition = UF.SortAuras
-	buffs.PostCreateButton = UF.Construct_AuraIcon
-	buffs.PostUpdateButton = UF.PostUpdateAura
-	buffs.SetPosition = UF.SetPosition
-	buffs.PreUpdate = UF.PreUpdateAura
-	buffs.CustomFilter = UF.AuraFilter
-	buffs.stacks = {}
-	buffs.rows = {}
-	buffs.type = 'buffs'
+	if E.PTR then
+		return E:Auras_Create(self, 'Buffs')
+	else
+		local buffs = CreateFrame('Frame', '$parentBuffs', frame)
+		buffs.PreSetPosition = UF.SortAuras
+		buffs.PostCreateButton = UF.Construct_AuraIcon
+		buffs.PostUpdateButton = UF.PostUpdateAura
+		buffs.SetPosition = UF.SetPosition
+		buffs.PreUpdate = UF.PreUpdateAura
+		buffs.CustomFilter = UF.AuraFilter
+		buffs.stacks = {}
+		buffs.rows = {}
+		buffs.type = 'buffs'
 
-	buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
-	buffs:SetSize(1, 1)
+		buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+		buffs:SetSize(1, 1)
 
-	return buffs
+		return buffs
+	end
 end
 
 function UF:Construct_Debuffs(frame)
-	local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
-	debuffs.PreSetPosition = UF.SortAuras
-	debuffs.PostCreateButton = UF.Construct_AuraIcon
-	debuffs.PostUpdateButton = UF.PostUpdateAura
-	debuffs.SetPosition = UF.SetPosition
-	debuffs.PreUpdate = UF.PreUpdateAura
-	debuffs.CustomFilter = UF.AuraFilter
-	debuffs.stacks = {}
-	debuffs.rows = {}
-	debuffs.type = 'debuffs'
+	if E.PTR then
+		return E:Auras_Create(self, 'Debuffs')
+	else
+		local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
+		debuffs.PreSetPosition = UF.SortAuras
+		debuffs.PostCreateButton = UF.Construct_AuraIcon
+		debuffs.PostUpdateButton = UF.PostUpdateAura
+		debuffs.SetPosition = UF.SetPosition
+		debuffs.PreUpdate = UF.PreUpdateAura
+		debuffs.CustomFilter = UF.AuraFilter
+		debuffs.stacks = {}
+		debuffs.rows = {}
+		debuffs.type = 'debuffs'
 
-	debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
-	debuffs:SetSize(1, 1)
+		debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+		debuffs:SetSize(1, 1)
 
-	return debuffs
+		return debuffs
+	end
 end
 
 function UF:GetAuraRow(element, row, col, width, height, spacing, anchor, inversed, middle)
