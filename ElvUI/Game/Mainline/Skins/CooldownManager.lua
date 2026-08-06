@@ -210,11 +210,7 @@ end
 do
 	local hookedItemPools = {}
 
-	function S:CooldownManager_RefreshLayout()
-		local CooldownViewer = _G.CooldownViewerSettings
-		if not CooldownViewer or not CooldownViewer.CooldownScroll then return end
-
-		local content = CooldownViewer.CooldownScroll.Content
+	local function RefreshContent(content)
 		if not content then return end
 
 		for _, child in next, { content:GetChildren() } do
@@ -231,6 +227,20 @@ do
 
 				hooksecurefunc(itemPool, 'Acquire', S.CooldownManager_HandleSettingItemPool)
 			end
+		end
+	end
+
+	function S:CooldownManager_RefreshLayout()
+		local CooldownViewer = _G.CooldownViewerSettings
+		if not CooldownViewer then return end
+
+		if CooldownViewer.CooldownScroll then
+			RefreshContent(CooldownViewer.CooldownScroll.Content)
+		end
+
+		local groupBuffFilter = CooldownViewer.GroupBuffFilter
+		if groupBuffFilter and groupBuffFilter.Scroll then
+			RefreshContent(groupBuffFilter.Scroll.Content)
 		end
 	end
 end
@@ -281,6 +291,7 @@ function S:CooldownManager_HandleSettings(viewer)
 	S:HandlePortraitFrame(viewer)
 	S:HandleEditBox(viewer.SearchBox)
 	S:HandleTrimScrollBar(viewer.CooldownScroll.ScrollBar)
+	S:HandleTrimScrollBar(viewer.GroupBuffFilter.Scroll.ScrollBar)
 	S:HandleButton(viewer.UndoButton)
 	S:HandleDropDownBox(viewer.LayoutDropdown)
 
