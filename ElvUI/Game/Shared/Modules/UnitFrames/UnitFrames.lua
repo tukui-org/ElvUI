@@ -2228,8 +2228,14 @@ do -- Clique support for registering clicks
 end
 
 function UF:UpdateAllElements(event)
-	if self.PrivateAuras and event == 'OnAttributeChanged' then
-		UF:Configure_PrivateAuras(self)
+	if event == 'OnAttributeChanged' then
+		if self.PrivateAuras then
+			UF:Configure_PrivateAuras(self)
+		end
+
+		if E.PTR and self.Auras then -- will also update buffs and debuffs
+			UF:Configure_AllAuras(self)
+		end
 	end
 end
 

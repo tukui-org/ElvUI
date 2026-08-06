@@ -421,6 +421,8 @@ end
 
 function UF:Configure_Auras(frame, which)
 	local db = frame.db
+	if not db then return end
+
 	local auras = frame[which]
 	local auraType = which:lower()
 	local settings = db[auraType]
