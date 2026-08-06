@@ -7,6 +7,7 @@ local format, strlower, strfind = format, strlower, strfind
 local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
 local sort, wipe, next, unpack, floor = sort, wipe, next, unpack, floor
 local utf8sub = string.utf8sub
+local huge = math.huge
 
 local CreateFrame = CreateFrame
 local IsAltKeyDown = IsAltKeyDown
@@ -434,6 +435,12 @@ function UF:Configure_Auras(frame, which)
 	auras.xOffset = x + settings.xOffset + (settings.attachTo == 'FRAME' and frame.ORIENTATION ~= 'LEFT' and frame.POWERBAR_OFFSET or 0)
 	auras.yOffset = y + settings.yOffset
 	auras.initialAnchor = UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint] or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
+	auras.spacing = settings.spacing
+	auras.num = settings.perrow * settings.numrows
+	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or (((frame.UNIT_WIDTH - (settings.spacing * (auras.num / settings.numrows - 1)) - ((UF.thinBorders or E.twoPixelsPlease) and 0 or 2)) / auras.num) * settings.numrows)
+	auras.height = not settings.keepSizeRatio and settings.height
+	auras.numAuras = settings.perrow
+	auras.numRows = settings.numrows
 
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
@@ -455,6 +462,9 @@ function UF:Configure_Auras(frame, which)
 				auras:SetEnabled(false)
 				auras:Hide()
 			end
+
+			local rowWidth = (auras.numAuras and auras.numAuras > 0 and (auras.numAuras * (auras.size + auras.spacing))) or auras:GetWidth()
+			auras:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
 		end
 	else
 		if settings.sizeOverride and settings.sizeOverride > 0 then
@@ -474,17 +484,11 @@ function UF:Configure_Auras(frame, which)
 			auras:Width((frame.UNIT_WIDTH - UF.SPACING*2) - xOffset)
 		end
 
-		auras.spacing = settings.spacing
-		auras.num = settings.perrow * settings.numrows
-		auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or (((frame.UNIT_WIDTH - (settings.spacing * (auras.num / settings.numrows - 1)) - ((UF.thinBorders or E.twoPixelsPlease) and 0 or 2)) / auras.num) * settings.numrows)
-		auras.height = not settings.keepSizeRatio and settings.height
 		auras.forceShow = frame.forceShowAuras
 		auras.disableMouse = settings.clickThrough
 		auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
 		auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 		auras.filterList = UF:ConvertFilters(auras, settings.priority)
-		auras.numAuras = settings.perrow
-		auras.numRows = settings.numrows
 
 		auras:SetFrameStrata(settings.strataAndLevel and settings.strataAndLevel.useCustomStrata and settings.strataAndLevel.frameStrata or 'LOW')
 		auras:SetFrameLevel((settings.strataAndLevel and settings.strataAndLevel.useCustomLevel and settings.strataAndLevel.frameLevel) or (frame.RaisedElementParent and frame.RaisedElementParent.AuraLevel) or 1)
