@@ -25,8 +25,6 @@ function S:BattleNetFrames()
 	S:HandleButton(ReportFrame.ReportButton)
 	S:HandleEditBox(ReportFrame.Comment)
 
-	-- Fill me with LOVE <3
-
 	local ReportCheatingDialog = _G.ReportCheatingDialog
 	ReportCheatingDialog:StripTextures()
 	_G.ReportCheatingDialogCommentFrame:StripTextures()
@@ -34,18 +32,6 @@ function S:BattleNetFrames()
 	S:HandleButton(_G.ReportCheatingDialogCancelButton)
 	ReportCheatingDialog:SetTemplate('Transparent')
 	S:HandleEditBox(_G.ReportCheatingDialogCommentFrameEditBox)
-
-	--[[
-	local BattleTagInviteFrame = _G.BattleTagInviteFrame
-	BattleTagInviteFrame:StripTextures()
-	BattleTagInviteFrame:SetTemplate('Transparent')
-
-	for _, child in next, { BattleTagInviteFrame:GetChildren() } do
-		if child:IsObjectType('Button') then
-			S:HandleButton(child)
-		end
-	end
-	]]
 end
 
 S:AddCallback('BattleNetFrames')
