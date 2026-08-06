@@ -368,6 +368,6 @@ local function Disable(self)
 	end
 end
 
-if oUF.wowtoc < 120100 then
+if not oUF.isPTR then
 	oUF:AddElement('AuraBars', Update, Enable, Disable)
 end
