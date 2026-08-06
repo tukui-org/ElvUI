@@ -203,44 +203,6 @@ function E:Auras_SetUnit(container, unit)
 	container:SetUnit(unit)
 end
 
-function E:Auras_Setup(container, db, unitframe)
-	local width, height = db.size or 100, (db.keepSizeRatio and db.size) or db.height or 100
-	local verticalSpacing = db.verticalSpacing or 1
-	local horizontalSpacing = db.horizontalSpacing or 1
-	local maxWraps = db.maxWraps or 1
-	local wrapAfter = db.wrapAfter or 1
-
-	if IS_HORIZONTAL_GROWTH[db.growthDirection] then
-		local minWidth = ((wrapAfter == 1 and 0 or horizontalSpacing) + width) * wrapAfter
-		local minHeight = (verticalSpacing + height) * maxWraps
-		container:SetSize(minWidth, minHeight)
-	else
-		local minWidth = (horizontalSpacing + width) * maxWraps
-		local minHeight = ((wrapAfter == 1 and 0 or verticalSpacing) + height) * wrapAfter
-		container:SetSize(minWidth, minHeight)
-	end
-
-	if unitframe then
-		local x, y
-		if db.attachTo == 'HEALTH' or db.attachTo == 'POWER' then
-			x, y = E:GetXYOffset(db.anchorPoint, -UF.BORDER, UF.BORDER)
-		elseif db.attachTo == 'FRAME' then
-			x, y = E:GetXYOffset(db.anchorPoint, UF.SPACING, 0)
-		else
-			x, y = E:GetXYOffset(db.anchorPoint, 0, UF.SPACING)
-		end
-
-		local frame = container:GetParent()
-		local xOffset = x + db.xOffset + (db.attachTo == 'FRAME' and frame.ORIENTATION ~= 'LEFT' and frame.POWERBAR_OFFSET or 0)
-		local yOffset = y + db.yOffset
-		local attachTo = UF:GetAuraAnchorFrame(frame, db.attachTo)
-
-		local initialAnchor = UF.SideAnchor[db.anchorPoint] and E.InversePoints[db.anchorPoint] or (UF.GrowthPoints[db.growthY]..UF.GrowthPoints[db.growthX])
-		container:ClearAllPoints()
-		container:Point(initialAnchor, attachTo, db.anchorPoint, xOffset, yOffset)
-	end
-end
-
 function E:Auras_Create(parent, name, unit, key, filter)
 	if E.AuraContainers[key] then return end -- what?
 
