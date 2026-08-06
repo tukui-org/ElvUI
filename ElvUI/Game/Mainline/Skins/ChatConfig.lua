@@ -85,6 +85,7 @@ function S:ChatConfig()
 		_G.CombatConfigColorsColorizeDamageSchool,
 		_G.CombatConfigColorsColorizeEntireLine,
 		_G.ChatConfigChatSettingsLeft,
+		_G.ChatConfigOtherSettingsAdditionalColors,
 		_G.ChatConfigOtherSettingsCombat,
 		_G.ChatConfigOtherSettingsPVP,
 		_G.ChatConfigOtherSettingsSystem,
