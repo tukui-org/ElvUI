@@ -302,7 +302,7 @@ function S:Blizzard_PVPUI()
 		BonusTrainingGroundList.ShadowOverlay:Hide()
 		BonusTrainingGroundList.WorldBattlesTexture:Hide()
 
-		for _, bonusButton in next, {'RandomTrainingGroundButton'} do -- Pretty sure they're adding more buttons for the live servers
+		for _, bonusButton in next, {'RandomTrainingGroundButton', 'RandomTrainingGroundArenaButton'} do
 			local bu = BonusTrainingGroundList[bonusButton]
 			local reward = bu.Reward
 			S:HandleButton(bu)
