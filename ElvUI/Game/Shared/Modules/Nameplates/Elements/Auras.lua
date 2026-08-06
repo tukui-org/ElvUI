@@ -170,6 +170,7 @@ function NP:Configure_Auras(nameplate, which)
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		auras.nameplateType = nameplate.frameType
+		auras.noMouse = true
 
 		E:Auras_SetUnit(auras, nameplate.unit)
 		E:Auras_SetContainer(auras, auras.filter)

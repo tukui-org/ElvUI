@@ -132,6 +132,7 @@ end
 function E:Auras_UpdateElement(container, button)
 	local width, height = E:Auras_GetSize(container)
 	button:SetSize(width, height)
+	button:SetMouseMotionEnabled(not container.noMouse)
 
 	if button.texture then
 		if container.keepSizeRatio or (width == height) then
