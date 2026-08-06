@@ -8,6 +8,7 @@ local _G = _G
 local next = next
 local type = type
 local unpack = unpack
+local huge = math.huge
 
 local AnchorUtil = AnchorUtil
 local CreateFrame = CreateFrame
@@ -206,6 +207,11 @@ function E:Auras_SetContainer(container, filter)
 		local group = E:Auras_AddGroup(maxCount, filter, sortMethod, sortDirection, func, layout)
 		container:AddAuraGroup(filter, filter, group)
 	end
+end
+
+function E:Auras_SetLineSize(container)
+	local rowWidth = (container.numAuras and container.numAuras > 0 and (container.numAuras * (container.size + container.spacing))) or container:GetWidth()
+	container:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
 end
 
 function E:Auras_SetUnit(container, unit)
