@@ -79,13 +79,6 @@ function E:Auras_CreateElements(button)
 	border:SetAllPoints()
 	button.border = border
 
-	-- local mask = button:CreateMaskTexture()
-	-- mask:SetTexture(E.Media.Textures.White8x8, 'CLAMPTOBLACKADDITIVE')
-	-- mask:Point('TOP')
-	-- mask:Point('BOTTOM')
-	-- mask:Point('LEFT')
-	-- button.mask = mask
-
 	local backdrop = button:CreateTexture(nil, 'BACKGROUND', nil, -3)
 	backdrop:SetTexture(E.media.blankTex)
 	backdrop:SetVertexColor(0, 0, 0)
@@ -150,9 +143,6 @@ function E:Auras_UpdateElement(container, button)
 	local bgR, bgG, bgB, bgA = unpack(E.media.backdropfadecolor)
 	if button.border then
 		if container.isAuraBar then
-			--button.border:AddMaskTexture(button.mask)
-
-			--local r, g, b = unpack(E.media.backdropcolor)
 			local color = container.barColor
 			if container.invertAurabars then
 				button.border:SetTexture(container.statusbarTexture)
@@ -218,8 +208,6 @@ function E:Auras_UpdateElement(container, button)
 				button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
 			end
 
-			--button.mask:Point('RIGHT', button.statusbar:GetStatusBarTexture(), 'LEFT')
-
 			if button.border then
 				button.border:ClearAllPoints()
 				button.border:Point('TOP')
@@ -257,8 +245,6 @@ function E:Auras_UpdateElement(container, button)
 		if container.isAuraBar then
 			button:SetSpellName(textFrame.nameText)
 		end
-
-		-- button:SetDurationText(textFrame.time, { formatter = nil })
 	end
 
 	if container.unit == 'player' and strmatch(container.filter, 'HELPFUL') then
