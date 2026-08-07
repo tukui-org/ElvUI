@@ -208,7 +208,8 @@ function UF:Configure_AuraBars(frame)
 			bars:Point(p3..p4, attachTo, p1..p4, xOffset or (right and -(BORDER * 2)) or (bars.height + UF.BORDER), yOffset)
 		end
 
-		if E.PTR then
+		local ready = false
+		if E.PTR and ready then
 			bars.filter = UF:AuraBars_GetFilter(bars, frame.unit)
 
 			UF:UpdateFilters(bars) -- attach the objects
