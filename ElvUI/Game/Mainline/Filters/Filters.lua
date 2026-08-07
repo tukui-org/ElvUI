@@ -332,7 +332,6 @@ G.unitframe.aurafilters.Whitelist = {
 		[5277]		= List(), -- Evasion
 		[31224]		= List(), -- Cloak of Shadows
 		[1966]		= List(), -- Feint
-		[199754]	= List(), -- Riposte
 		[45182]		= List(), -- Cheating Death
 		[199027]	= List(), -- Veil of Midnight
 		[121471]	= List(), -- Shadow Blades
@@ -412,7 +411,6 @@ G.unitframe.aurafilters.Whitelist = {
 		[199261]	= List(), -- Death Wish
 		[18499]		= List(), -- Berserker Rage
 		[202164]	= List(), -- Bounding Stride
-		[215572]	= List(), -- Frothing Berserker
 		[199203]	= List(), -- Thirst for Battle
 		[97462]		= List(), -- Rallying Cry
 	}
