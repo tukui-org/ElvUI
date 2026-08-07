@@ -181,7 +181,7 @@ function NP:Configure_Auras(nameplate, which)
 		auras.allowList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist')
 		auras.blockList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist')
 
-		UF:UpdateFilters(auras, db) -- attach the objects
+		UF:UpdateFilters(auras) -- attach the objects
 		UF:GroupFilters(auras, auras.filter) -- build the groups
 		E:Auras_CanidateFilters(db, auras.allowList, auras.blockList)
 
