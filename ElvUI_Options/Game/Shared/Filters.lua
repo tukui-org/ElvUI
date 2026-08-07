@@ -17,7 +17,7 @@ local GetSpellSubtext = GetSpellSubtext
 
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
 local auraBarDefaults = { enable = true, color = { r = 1, g = 1, b = 1, a = 1 } }
-local includeRetail = { Blocklist = not E.PTR, Blacklist = E.PTR }
+local includeRetail = { Blocklist = not E.PTR, Blacklist = E.PTR, Whitelist = E.PTR }
 local overrideNames = {
 	Blocklist = not E.Retail and L["Blocklist |cFF888888(Midnight)|r"] or nil,
 	Blacklist = not E.Retail and L["Blacklist |cFF888888(Legacy)|r"] or nil
