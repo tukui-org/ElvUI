@@ -237,38 +237,36 @@ function E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMetho
 	container:SetAuraGroupLayout(key, layout)
 end
 
-do
-	local active = {}
-	function E:Auras_SetContainer(container)
-		local maxCount = container.maxFrameCount or 32
-		local sortMethod = container.sortMethod or SORTMETHOD.Default
-		local sortDirection = container.sortDirection or SORTDIRECTION.Normal
-		local layout = E:Auras_UpdateLayout(container)
 
-		local anchor = container.initialAnchor or 'BOTTOMLEFT'
-		container:SetFlowLayoutAnchorPoint(anchor)
+function E:Auras_SetContainer(container)
+	local maxCount = container.maxFrameCount or 32
+	local sortMethod = container.sortMethod or SORTMETHOD.Default
+	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
+	local layout = E:Auras_UpdateLayout(container)
 
-		local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
-		container:SetFlowLayoutGrowthDirection(horizontal, vertical)
+	local anchor = container.initialAnchor or 'BOTTOMLEFT'
+	container:SetFlowLayoutAnchorPoint(anchor)
 
-		for index, filter in next, active do -- known but not active anymore
-			if container.known[filter] and not container.filters[index] then
-				container:SetAuraGroupMaxFrameCount(filter, 0)
-			end
+	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
+	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-			active[index] = nil
+	for index, filter in next, container.active do -- known but not active anymore
+		if container.known[filter] and not container.filters[index] then
+			container:SetAuraGroupMaxFrameCount(filter, 0)
 		end
 
-		for index, filter in next, container.filters do
-			active[index] = filter -- set all active
+		container.active[index] = nil
+	end
 
-			if container.known[filter] then
-				E:Auras_UpdateGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
-			else
-				E:Auras_AddGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
+	for index, filter in next, container.filters do
+		container.active[index] = filter -- set all active
 
-				container.known[filter] = filter
-			end
+		if container.known[filter] then
+			E:Auras_UpdateGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
+		else
+			E:Auras_AddGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
+
+			container.known[filter] = filter
 		end
 	end
 end
@@ -321,6 +319,7 @@ end
 function E:Auras_Create(parent, which, override)
 	local container = CreateFrame('AuraContainer', override or (parent:GetName() .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
 	container.known = {}
+	container.active = {}
 	container.buttons = {}
 	container.layout = {}
 	container.filters = {}
