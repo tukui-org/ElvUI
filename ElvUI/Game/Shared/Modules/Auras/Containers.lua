@@ -210,11 +210,11 @@ end
 
 do
 	local temp = {}
-	function E:Auras_SetupGroup(filter, initialize, layout, maxCount, sortMethod, sortDirection)
+	function E:Auras_SetupGroup(container, filter, layout, maxCount, sortMethod, sortDirection)
 		temp.maxFrameCount = maxCount
 		temp.sortMethod = sortMethod
 		temp.sortDirection = sortDirection
-		temp.initializeFrame = initialize
+		temp.initializeFrame = E:Auras_GenerateInitialize(container)
 		temp.layout = layout
 		temp.candidateFilters = type(filter) == 'table' and filter or nil
 
@@ -223,8 +223,7 @@ do
 end
 
 function E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
-	local initialize = E:Auras_GenerateInitialize(container)
-	local group = E:Auras_SetupGroup(filter, initialize, layout, maxCount, sortMethod, sortDirection)
+	local group = E:Auras_SetupGroup(container, filter, layout, maxCount, sortMethod, sortDirection)
 	container:AddAuraGroup(key, filter, group)
 end
 
