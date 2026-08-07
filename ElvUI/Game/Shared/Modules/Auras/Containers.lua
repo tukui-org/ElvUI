@@ -238,25 +238,38 @@ function E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMetho
 	container:SetAuraGroupLayout(key, layout)
 end
 
-function E:Auras_SetContainer(container, filters)
-	local maxCount = container.maxFrameCount or 32
-	local sortMethod = container.sortMethod or SORTMETHOD.Default
-	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
-	local layout = E:Auras_UpdateLayout(container)
+do
+	local active = {}
+	function E:Auras_SetContainer(container)
+		local maxCount = container.maxFrameCount or 32
+		local sortMethod = container.sortMethod or SORTMETHOD.Default
+		local sortDirection = container.sortDirection or SORTDIRECTION.Normal
+		local layout = E:Auras_UpdateLayout(container)
 
-	local anchor = container.initialAnchor or 'BOTTOMLEFT'
-	container:SetFlowLayoutAnchorPoint(anchor)
+		local anchor = container.initialAnchor or 'BOTTOMLEFT'
+		container:SetFlowLayoutAnchorPoint(anchor)
 
-	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
-	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
+		local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
+		container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-	for key, filter in next, filters do
-		if container.filters[key] then
-			E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
-		else
-			E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+		wipe(active) -- clear this
 
-			container.filters[key] = filter
+		for key, filter in next, container.filters do
+			active[key] = true -- set all active
+
+			if container.known[key] then
+				E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+			else
+				E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+
+				container.known[key] = filter
+			end
+		end
+
+		for key in next, container.known do
+			if not active[key] then -- loop to find any unused
+				container:SetAuraGroupMaxFrameCount(key, 0)
+			end
 		end
 	end
 end
@@ -308,9 +321,10 @@ end
 
 function E:Auras_Create(parent, which, override)
 	local container = CreateFrame('AuraContainer', override or (parent:GetName() .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
-	container.filters = {}
+	container.known = {}
 	container.buttons = {}
 	container.layout = {}
+	container.filters = {}
 
 	if which then -- top auras dont set this here
 		container.auraType = strlower(which)
