@@ -721,6 +721,7 @@ function A:Initialize()
 			A.BuffFrame = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
 			A.BuffFrame.auraType = 'buffs'
 			A.BuffFrame.filter = 'HELPFUL'
+			A.BuffFrame.unit = 'player'
 
 			A:UpdateHeader(A.BuffFrame)
 			E:Auras_SetEnchantments(A.BuffFrame)
@@ -741,6 +742,7 @@ function A:Initialize()
 			A.DebuffFrame = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
 			A.DebuffFrame.auraType = 'debuffs'
 			A.DebuffFrame.filter = 'HARMFUL'
+			A.DebuffFrame.unit = 'player'
 
 			A:UpdateHeader(A.DebuffFrame)
 			E:Auras_SetUnit(A.DebuffFrame, 'player')
