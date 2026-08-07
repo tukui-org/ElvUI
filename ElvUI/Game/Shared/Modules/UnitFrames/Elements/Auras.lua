@@ -307,25 +307,27 @@ do
 				UF:AddFilter(1, group, filter, true, 'PLAYER')
 			else
 				UF:AddFilter(20, group, filter, filters.isImportantPlayer, 'IMPORTANT', '|PLAYER')
-				UF:AddFilter(21, group, filter, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE', '|PLAYER')
-				UF:AddFilter(22, group, filter, filters.isCrowdControlPlayer, 'CROWD_CONTROL', '|PLAYER')
-				UF:AddFilter(23, group, filter, filters.isBigDefensivePlayer, 'BIG_DEFENSIVE', '|PLAYER')
-				UF:AddFilter(24, group, filter, filters.isRaidInCombatPlayer, 'RAID_IN_COMBAT', '|PLAYER')
-				UF:AddFilter(25, group, filter, filters.isExternalDefensivePlayer, 'EXTERNAL_DEFENSIVE', '|PLAYER')
-				UF:AddFilter(26, group, filter, filters.isCancelablePlayer, 'CANCELABLE', '|PLAYER')
-				UF:AddFilter(27, group, filter, filters.isRaidPlayer, 'RAID', '|PLAYER')
+				UF:AddFilter(21, group, filter, filters.isDispellablePlayer, 'DISPELLABLE', '|PLAYER')
+				UF:AddFilter(22, group, filter, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE', '|PLAYER')
+				UF:AddFilter(23, group, filter, filters.isCrowdControlPlayer, 'CROWD_CONTROL', '|PLAYER')
+				UF:AddFilter(24, group, filter, filters.isBigDefensivePlayer, 'BIG_DEFENSIVE', '|PLAYER')
+				UF:AddFilter(25, group, filter, filters.isRaidInCombatPlayer, 'RAID_IN_COMBAT', '|PLAYER')
+				UF:AddFilter(26, group, filter, filters.isExternalDefensivePlayer, 'EXTERNAL_DEFENSIVE', '|PLAYER')
+				UF:AddFilter(27, group, filter, filters.isCancelablePlayer, 'CANCELABLE', '|PLAYER')
+				UF:AddFilter(28, group, filter, filters.isRaidPlayer, 'RAID', '|PLAYER')
 			end
 
 			wipe(temp) -- second clear
 
 			-- others: not player
 			UF:AddFilter(50, group, filter, filters.isImportant, 'IMPORTANT', '|!PLAYER')
-			UF:AddFilter(51, group, filter, filters.isCrowdControl, 'CROWD_CONTROL', '|!PLAYER')
-			UF:AddFilter(52, group, filter, filters.isBigDefensive, 'BIG_DEFENSIVE', '|!PLAYER')
-			UF:AddFilter(53, group, filter, filters.isRaidInCombat, 'RAID_IN_COMBAT', '|!PLAYER')
-			UF:AddFilter(54, group, filter, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE', '|!PLAYER')
-			UF:AddFilter(55, group, filter, filters.isCancelable, 'CANCELABLE', '|!PLAYER')
-			UF:AddFilter(56, group, filter, filters.isRaid, 'RAID', '|!PLAYER')
+			UF:AddFilter(51, group, filter, filters.isDispellable, 'DISPELLABLE', '|!PLAYER')
+			UF:AddFilter(52, group, filter, filters.isCrowdControl, 'CROWD_CONTROL', '|!PLAYER')
+			UF:AddFilter(53, group, filter, filters.isBigDefensive, 'BIG_DEFENSIVE', '|!PLAYER')
+			UF:AddFilter(54, group, filter, filters.isRaidInCombat, 'RAID_IN_COMBAT', '|!PLAYER')
+			UF:AddFilter(55, group, filter, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE', '|!PLAYER')
+			UF:AddFilter(56, group, filter, filters.isCancelable, 'CANCELABLE', '|!PLAYER')
+			UF:AddFilter(57, group, filter, filters.isRaid, 'RAID', '|!PLAYER')
 		end
 	end
 end
@@ -339,6 +341,8 @@ function UF:UpdateFilters(frame)
 
 	local isPlayer = db and db.isAuraPlayer
 	local isRaidPlayerDispellable = db and db.isAuraRaidPlayerDispellable
+	local isDispellable = db and db.isAuraDispellable
+	local isDispellablePlayer = db and db.isAuraDispellablePlayer
 	local isImportant = db and db.isAuraImportant
 	local isImportantPlayer = db and db.isAuraImportantPlayer
 	local isCrowdControl = db and db.isAuraCrowdControl
@@ -366,6 +370,8 @@ function UF:UpdateFilters(frame)
 
 	filters.isPlayer = isPlayer
 	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
+	filters.isDispellable = isDispellable
+	filters.isDispellablePlayer = isDispellablePlayer
 	filters.isImportant = isImportant
 	filters.isImportantPlayer = isImportantPlayer
 	filters.isCrowdControl = isCrowdControl
@@ -387,7 +393,7 @@ function UF:UpdateFilters(frame)
 
 	local shared = isPlayer or isCancelable or isCancelablePlayer or notCancelable or notCancelablePlayer or isRaid or isRaidPlayer
 	if E.Retail then
-		frame.noFilter = db and not (shared or isRaidPlayerDispellable or isImportant or isImportantPlayer or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer)
+		frame.noFilter = db and not (shared or isRaidPlayerDispellable or isDispellable or isDispellablePlayer or isImportant or isImportantPlayer or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer)
 	else
 		frame.noFilter = db and not shared
 	end
