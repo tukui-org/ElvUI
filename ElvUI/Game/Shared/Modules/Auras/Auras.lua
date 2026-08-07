@@ -211,6 +211,21 @@ function A:UpdateTexture(button) -- self here can be the header from UpdateMasqu
 	end
 end
 
+function A:Configure_Statusbar(button, bar, db)
+	local pos, iconSize = db.barPosition, db.size - (E.Border * 2)
+	local onTop, onBottom, onLeft = pos == 'TOP', pos == 'BOTTOM', pos == 'LEFT'
+	local barSpacing = db.barSpacing + (E.PixelMode and 1 or 3)
+	local barSize = db.barSize + (E.PixelMode and 0 or 2)
+	local isHorizontal = onTop or onBottom
+
+	bar:ClearAllPoints()
+	bar:Size(isHorizontal and iconSize or barSize, isHorizontal and barSize or iconSize)
+	bar:Point(E.InversePoints[pos], button, pos, isHorizontal and 0 or (onLeft and -barSpacing or barSpacing), not isHorizontal and 0 or (onTop and barSpacing or -barSpacing))
+	bar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
+	bar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
+	bar:SetRotatesTexture(not isHorizontal)
+end
+
 function A:UpdateIcon(button, index)
 	local db = A.db[button.auraType]
 
@@ -242,18 +257,7 @@ function A:UpdateIcon(button, index)
 			E:SetSmoothing(button.statusBar, db.smoothbars)
 		end
 
-		local pos, iconSize = db.barPosition, db.size - (E.Border * 2)
-		local onTop, onBottom, onLeft = pos == 'TOP', pos == 'BOTTOM', pos == 'LEFT'
-		local barSpacing = db.barSpacing + (E.PixelMode and 1 or 3)
-		local barSize = db.barSize + (E.PixelMode and 0 or 2)
-		local isHorizontal = onTop or onBottom
-
-		button.statusBar:ClearAllPoints()
-		button.statusBar:Size(isHorizontal and iconSize or barSize, isHorizontal and barSize or iconSize)
-		button.statusBar:Point(E.InversePoints[pos], button, pos, isHorizontal and 0 or (onLeft and -barSpacing or barSpacing), not isHorizontal and 0 or (onTop and barSpacing or -barSpacing))
-		button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
-		button.statusBar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
-		button.statusBar:SetRotatesTexture(not isHorizontal)
+		A:Configure_Statusbar(button, button.statusBar, db)
 	end
 end
 
@@ -582,6 +586,10 @@ function A:UpdateHeader(header)
 		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 		header.filters.meow = header.filter
+		header.useStatusbar = db.barShow
+		header.barColor = db.barColor
+		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
+		header.barDB = db
 
 		header:SetSize(minWidth, minHeight)
 
@@ -718,10 +726,11 @@ function A:Initialize()
 
 	if E.private.auras.buffsHeader then
 		if E.PTR then
-			A.BuffFrame = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
-			A.BuffFrame.auraType = 'buffs'
-			A.BuffFrame.filter = 'HELPFUL'
-			A.BuffFrame.unit = 'player'
+			local buff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
+			buff.auraType = 'buffs'
+			buff.filter = 'HELPFUL'
+			buff.unit = 'player'
+			A.BuffFrame = buff
 
 			A:UpdateHeader(A.BuffFrame)
 			E:Auras_SetEnchantments(A.BuffFrame)
@@ -739,10 +748,11 @@ function A:Initialize()
 
 	if E.private.auras.debuffsHeader then
 		if E.PTR then
-			A.DebuffFrame = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
-			A.DebuffFrame.auraType = 'debuffs'
-			A.DebuffFrame.filter = 'HARMFUL'
-			A.DebuffFrame.unit = 'player'
+			local debuff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
+			debuff.auraType = 'debuffs'
+			debuff.filter = 'HARMFUL'
+			debuff.unit = 'player'
+			A.DebuffFrame = debuff
 
 			A:UpdateHeader(A.DebuffFrame)
 			E:Auras_SetUnit(A.DebuffFrame, 'player')
