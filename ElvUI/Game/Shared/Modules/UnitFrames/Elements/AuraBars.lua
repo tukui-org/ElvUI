@@ -5,6 +5,8 @@ local LSM = E.Libs.LSM
 local ipairs = ipairs
 local strfind = strfind
 
+local UnitIsEnemy = UnitIsEnemy
+local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
 local WrapString = C_StringUtil and C_StringUtil.WrapString
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
@@ -74,20 +76,29 @@ function UF:AuraBars_UpdateBar(bar)
 end
 
 function UF:Construct_AuraBarHeader(frame)
-	local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame, E.PTR and 'DisableUntrustedLayoutScriptsTemplate')
-	auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
-	auraBar:SetSize(1, 1)
+	if E.PTR then
+		return E:Auras_Create(frame, 'AuraBars')
+	else
+		local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame, E.PTR and 'DisableUntrustedLayoutScriptsTemplate')
+		auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
+		auraBar:SetSize(1, 1)
 
-	auraBar.PreSetPosition = UF.SortAuras
-	auraBar.PostCreateBar = UF.Construct_AuraBars
-	auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
-	auraBar.CustomFilter = UF.AuraFilter
+		auraBar.PreSetPosition = UF.SortAuras
+		auraBar.PostCreateBar = UF.Construct_AuraBars
+		auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
+		auraBar.CustomFilter = UF.AuraFilter
 
-	auraBar.sparkEnabled = true
-	auraBar.initialAnchor = 'BOTTOMRIGHT'
-	auraBar.type = 'aurabar'
+		auraBar.sparkEnabled = true
+		auraBar.initialAnchor = 'BOTTOMRIGHT'
+		auraBar.type = 'aurabar'
 
-	return auraBar
+		return auraBar
+	end
+end
+
+function UF:AuraBars_GetFilter(element, unit)
+	local isEnemy, reaction = UnitIsEnemy(unit, 'player'), UnitReaction(unit, 'player')
+	return (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
 end
 
 function UF:Configure_AuraBars(frame)
@@ -196,8 +207,26 @@ function UF:Configure_AuraBars(frame)
 			bars.initialAnchor = 'BOTTOM'..p4
 			bars:Point(p3..p4, attachTo, p1..p4, xOffset or (right and -(BORDER * 2)) or (bars.height + UF.BORDER), yOffset)
 		end
-	elseif frame:IsElementEnabled('AuraBars') then
-		frame:DisableElement('AuraBars')
+
+		if E.PTR then
+			bars.filter = UF:AuraBars_GetFilter(bars, frame.unit)
+
+			UF:UpdateFilters(bars) -- attach the objects
+			UF:GroupFilters(bars, bars.filter) -- build the groups
+
+			E:Auras_SetUnit(bars, frame.unit)
+
+			bars:SetEnabled(true)
+		end
+	else
+		if frame:IsElementEnabled('AuraBars') then
+			frame:DisableElement('AuraBars')
+		end
+
+		if E.PTR then
+			bars:SetEnabled(false)
+		end
+
 		bars:Hide()
 	end
 end

@@ -538,7 +538,7 @@ function UF:Configure_Auras(frame, which)
 			auras.allowList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist')
 			auras.blockList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist')
 
-			UF:UpdateFilters(auras, settings) -- attach the objects
+			UF:UpdateFilters(auras) -- attach the objects
 			UF:GroupFilters(auras, auras.filter) -- build the groups
 			E:Auras_CanidateFilters(settings, auras.allowList, auras.blockList)
 
