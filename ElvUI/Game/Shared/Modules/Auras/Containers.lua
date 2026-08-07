@@ -51,6 +51,8 @@ end
 if SORTDIRECTION then
 	E.AuraContainerSortDirection.ASCENDING = SORTDIRECTION.Normal
 	E.AuraContainerSortDirection.DESCENDING = SORTDIRECTION.Reverse
+	E.AuraContainerSortDirection['+'] = SORTDIRECTION.Normal
+	E.AuraContainerSortDirection['-'] = SORTDIRECTION.Reverse
 end
 
 function E:Auras_OnEvent(event)
@@ -299,8 +301,7 @@ function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
-		layout.elementSpacingX = container.spacingX or container.spacing or 1
-		layout.elementSpacingY = container.spacingY or container.spacing or 1
+		layout.elementSpacing = container.spacing or 1
 		layout.elementWidth = width
 		layout.elementHeight = height
 	end
