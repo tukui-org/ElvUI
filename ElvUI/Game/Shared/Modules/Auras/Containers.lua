@@ -8,6 +8,7 @@ local _G = _G
 local next = next
 local type = type
 local unpack = unpack
+local strmatch = strmatch
 local strlower = strlower
 local huge = math.huge
 
@@ -66,8 +67,6 @@ function E:Auras_FlowDirection(growthX, growthY)
 end
 
 function E:Auras_CreateElements(button)
-	local r, g, b = unpack(E.media.bordercolor)
-
 	local dispel = button:CreateTexture(nil, 'BACKGROUND', nil, -1)
 	dispel:SetTexture(E.media.blankTex)
 	dispel:SetAllPoints()
@@ -75,9 +74,15 @@ function E:Auras_CreateElements(button)
 
 	local border = button:CreateTexture(nil, 'BACKGROUND', nil, -2)
 	border:SetTexture(E.media.blankTex)
-	border:SetVertexColor(r, g, b)
 	border:SetAllPoints()
 	button.border = border
+
+	-- local mask = button:CreateMaskTexture()
+	-- mask:SetTexture(E.Media.Textures.White8x8, 'CLAMPTOBLACKADDITIVE')
+	-- mask:Point('TOP')
+	-- mask:Point('BOTTOM')
+	-- mask:Point('LEFT')
+	-- button.mask = mask
 
 	local backdrop = button:CreateTexture(nil, 'BACKGROUND', nil, -3)
 	backdrop:SetTexture(E.media.blankTex)
@@ -96,6 +101,7 @@ function E:Auras_CreateElements(button)
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
 	statusbar:OffsetFrameLevel()
+	statusbar:SetAllPoints()
 	button.statusbar = statusbar
 
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
@@ -115,6 +121,11 @@ function E:Auras_CreateElements(button)
 		timeText:FontTemplate()
 		timeText:Point('CENTER')
 		textFrame.time = timeText
+
+		local nameText = textFrame:CreateFontString(nil, 'OVERLAY')
+		nameText:FontTemplate()
+		nameText:Point('LEFT', button, 2, 0)
+		textFrame.nameText = nameText
 	end
 end
 
@@ -124,7 +135,7 @@ function E:Auras_UpdateElement(container, button)
 	button:SetMouseMotionEnabled(not container.noMouse)
 
 	if button.texture then
-		if container.keepSizeRatio or (width == height) then
+		if container.isAuraBar or container.keepSizeRatio or (width == height) then
 			button.texture:SetTexCoords()
 		else
 			local left, right, top, bottom = E:CropRatio(width, height)
@@ -134,21 +145,93 @@ function E:Auras_UpdateElement(container, button)
 		button:SetIcon(button.texture)
 	end
 
+	local r, g, b = unpack(E.media.bordercolor)
+	local bgR, bgG, bgB, bgA = unpack(E.media.backdropfadecolor)
+	if button.border then
+		if container.isAuraBar then
+			--button.border:AddMaskTexture(button.mask)
+
+			--local r, g, b = unpack(E.media.backdropcolor)
+			local color = container.barColor
+			if container.isTransparent then
+				button.border:SetTexture(container.statusbarTexture)
+				button.border:SetVertexColor(color.r, color.g, color.b)
+			else
+				button.border:SetTexture(E.media.blankTex)
+				button.border:SetVertexColor(r, g, b, bgA)
+			end
+		else
+			button.border:SetVertexColor(r, g, b)
+		end
+	end
+
 	if button.cooldown then
 		button:SetDurationCooldown(button.cooldown)
 
-		-- will also update the cooldown when needed
-		if container.unitframeType then -- unitframe
+		if container.isAuraBar then
+			E:RegisterCooldown(button.cooldown, 'aurabars')
+
+			if button.dispelBorder then
+				button.dispelBorder:Hide()
+			end
+
+			button.cooldown:SetDrawSwipe(false)
+			button.cooldown:SetDrawBling(false)
+			button.cooldown:SetEdgeTexture(E.Media.Textures.Invisible)
+
+			button.cooldown:ClearAllPoints()
+			button.cooldown:Size(height)
+			button.cooldown:Point('RIGHT', button.statusbar)
+		elseif container.unitframeType then -- unitframe
 			E:RegisterCooldown(button.cooldown, 'unitframe', container.unitframeType, container.auraType)
 		elseif container.nameplateType then -- nameplate
 			E:RegisterCooldown(button.cooldown, 'nameplates', container.nameplateType, container.auraType)
 		elseif container.auraType then -- top auras
 			E:RegisterCooldown(button.cooldown, 'auras')
-		end
+		end -- will also update the cooldown when needed
 	end
 
-	if button.statusbar then
-		button:SetDurationBar(button.statusbar)
+	if container.isAuraBar then
+		if button.statusbar then
+			button:SetDurationBar(button.statusbar)
+
+			local color = container.barColor
+			button.statusbar:SetReverseFill(container.reverseFill)
+
+			if container.isTransparent then
+				button.statusbar:SetStatusBarTexture(E.media.blankTex)
+				button.statusbar:SetStatusBarColor(bgR, bgG, bgB, bgA)
+			else
+				button.statusbar:SetStatusBarTexture(container.statusbarTexture)
+				button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
+			end
+
+			--button.mask:Point('RIGHT', button.statusbar:GetStatusBarTexture(), 'LEFT')
+
+			if button.border then
+				button.border:ClearAllPoints()
+				button.border:Point('TOP')
+				button.border:Point('BOTTOM')
+
+				if container.reverseFill then
+					button.border:Point('LEFT')
+					button.border:Point('RIGHT', button.statusbar:GetStatusBarTexture(), 'LEFT')
+				else
+					button.border:Point('RIGHT')
+					button.border:Point('LEFT', button.statusbar:GetStatusBarTexture(), 'RIGHT')
+				end
+			end
+		end
+
+		if button.backdrop then
+			button.backdrop:ClearAllPoints()
+			button.backdrop:Point('RIGHT', button, 'LEFT')
+			button.backdrop:Size(height)
+		end
+
+		if button.texture then
+			button.texture:SetInside(button.backdrop)
+		end
 	end
 
 	if button.dispelBorder then
@@ -159,10 +242,14 @@ function E:Auras_UpdateElement(container, button)
 	if textFrame then
 		button:SetApplicationCount(textFrame.count)
 
+		if container.isAuraBar then
+			button:SetSpellName(textFrame.nameText)
+		end
+
 		-- button:SetDurationText(textFrame.time, { formatter = nil })
 	end
 
-	if container.unit == 'player' and container.filter == 'HELPFUL' then
+	if container.unit == 'player' and strmatch(container.filter, 'HELPFUL') then
 		button:SetCancelAuraButtons('RightButtonUp')
 	end
 
