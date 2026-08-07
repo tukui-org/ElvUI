@@ -221,7 +221,6 @@ function A:Configure_Statusbar(button, bar, db)
 	bar:ClearAllPoints()
 	bar:Size(isHorizontal and iconSize or barSize, isHorizontal and barSize or iconSize)
 	bar:Point(E.InversePoints[pos], button, pos, isHorizontal and 0 or (onLeft and -barSpacing or barSpacing), not isHorizontal and 0 or (onTop and barSpacing or -barSpacing))
-	bar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
 	bar:SetOrientation(isHorizontal and 'HORIZONTAL' or 'VERTICAL')
 	bar:SetRotatesTexture(not isHorizontal)
 end
@@ -257,6 +256,7 @@ function A:UpdateIcon(button, index)
 			E:SetSmoothing(button.statusBar, db.smoothbars)
 		end
 
+		button.statusBar:SetStatusBarTexture(LSM:Fetch('statusbar', db.barTexture))
 		A:Configure_Statusbar(button, button.statusBar, db)
 	end
 end
