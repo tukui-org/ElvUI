@@ -172,6 +172,8 @@ function NP:Configure_Auras(nameplate, which)
 		auras.nameplateType = nameplate.frameType
 		auras.noMouse = true
 
+		UF:UpdateFilters(auras, db) -- attach the objects
+
 		E:Auras_SetUnit(auras, nameplate.unit)
 		E:Auras_SetContainer(auras, auras.filter)
 		E:Auras_SetLineSize(auras)
