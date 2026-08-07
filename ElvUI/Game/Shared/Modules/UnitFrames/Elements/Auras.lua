@@ -362,10 +362,13 @@ function UF:UpdateFilters(frame)
 	local isPermanentPlayer = db and db.isAuraPermanentPlayer
 
 	local filters = frame.auraFilters
-	local filterList = (db and db.useBlocklist) and E.global.unitframe.aurafilters
-	filters.Blocklist = filterList and filterList.Blocklist and filterList.Blocklist.spells or nil
 	filters.isPermanent = isPermanent
 	filters.isPermanentPlayer = isPermanentPlayer
+
+	if not E.PTR then
+		local filterList = (db and db.useBlocklist) and E.global.unitframe.aurafilters
+		filters.Blocklist = filterList and filterList.Blocklist and filterList.Blocklist.spells or nil
+	end
 
 	filters.isPlayer = isPlayer
 	filters.isRaidPlayerDispellable = isRaidPlayerDispellable
@@ -544,14 +547,16 @@ function UF:Configure_Auras(frame, which)
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
 		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 		auras.unitframeType = frame.unitframeType
+		auras.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration
 
 		if settings.enable then
-			auras.allowList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist')
-			auras.blockList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist')
+			auras.allowList = settings.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist') or nil
+			auras.blockList = settings.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist') or nil
 
 			UF:UpdateFilters(auras) -- attach the objects
 			UF:GroupFilters(auras, auras.filter) -- build the groups
-			E:Auras_CanidateFilters(settings, auras.allowList, auras.blockList)
+
+			auras.candidateFilters = E:Auras_CanidateFilters(auras.allowList, auras.blockList, auras.maxDuration)
 
 			E:Auras_SetUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras)
