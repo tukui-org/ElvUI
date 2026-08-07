@@ -272,17 +272,28 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraSettings(button)
 end
 
-function UF:AddFilter(obj)
-	local str
-	for _, filter in next, obj do
-		str = (not str and '' or (str..'|'))..filter
+do
+	local FILTERS = {
+		RAID_PLAYER_DISPELLABLE = true,
+		CROWD_CONTROL = true,
+		BIG_DEFENSIVE = true,
+		RAID_IN_COMBAT = true,
+		EXTERNAL_DEFENSIVE = true,
+		CANCELABLE = true,
+		RAID = true
+	}
+
+	function UF:AddFilter(group, filter, yes, big)
+		local str = filter
+		if yes ~= nil then
+			for small in next, FILTERS do
+				str = str .. '|' .. ((small == big and yes and small) or ('!'..small))
+			end
+		end
+
+		group[str] = str
 	end
 
-	return str
-end
-
-do
-	local temp = {}
 	function UF:GroupFilters(frame, filter)
 		local filters = frame.auraFilters
 		if not filters then return end
@@ -291,43 +302,27 @@ do
 		if not group then return end
 
 		wipe(frame.filters) -- start over
-		wipe(temp) -- this too
 
-		temp[1] = filter -- player: you obviously
-		temp[2] = 'PLAYER'
-
-		local player
+		local player = filter .. '|PLAYER'
 		if filters.isPlayer then
-			player = UF:AddFilter(temp)
+			UF:AddFilter(group, player, nil, 'RAID_PLAYER_DISPELLABLE')
 		else
-			temp[3] = filters.isRaidPlayerDispellable and 'RAID_PLAYER_DISPELLABLE' or nil
-			temp[4] = filters.isCrowdControlPlayer and 'CROWD_CONTROL' or nil
-			temp[5] = filters.isBigDefensivePlayer and 'BIG_DEFENSIVE' or nil
-			temp[6] = filters.isRaidInCombatPlayer and 'RAID_IN_COMBAT' or nil
-			temp[7] = filters.isExternalDefensivePlayer and 'EXTERNAL_DEFENSIVE' or nil
-			temp[8] = filters.isCancelablePlayer and 'CANCELABLE' or nil
-			temp[9] = filters.notCancelablePlayer and '!CANCELABLE' or nil
-			temp[10] = filters.isRaidPlayer and 'RAID' or nil
-
-			player = UF:AddFilter(temp)
+			UF:AddFilter(group, player, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE')
+			UF:AddFilter(group, player, filters.isCrowdControlPlayer, 'CROWD_CONTROL')
+			UF:AddFilter(group, player, filters.isBigDefensivePlayer, 'BIG_DEFENSIVE')
+			UF:AddFilter(group, player, filters.isRaidInCombatPlayer, 'RAID_IN_COMBAT')
+			UF:AddFilter(group, player, filters.isExternalDefensivePlayer, 'EXTERNAL_DEFENSIVE')
+			UF:AddFilter(group, player, filters.isCancelablePlayer, 'CANCELABLE')
+			UF:AddFilter(group, player, filters.isRaidPlayer, 'RAID')
 		end
 
-		group[player] = player
-
-		wipe(temp) -- again
-
-		temp[1] = filter -- others: not player
-		temp[2] = '!PLAYER'
-		temp[3] = filters.isCrowdControl and 'CROWD_CONTROL' or nil
-		temp[4] = filters.isBigDefensive and 'BIG_DEFENSIVE' or nil
-		temp[5] = filters.isRaidInCombat and 'RAID_IN_COMBAT' or nil
-		temp[6] = filters.isExternalDefensive and 'EXTERNAL_DEFENSIVE' or nil
-		temp[7] = filters.isCancelable and 'CANCELABLE' or nil
-		temp[8] = filters.notCancelable and '!CANCELABLE' or nil
-		temp[9] = filters.isRaid and 'RAID' or nil
-
-		local others = UF:AddFilter(temp)
-		group[others] = others
+		local other = filter .. '|!PLAYER'
+		UF:AddFilter(group, other, filters.isCrowdControl, 'CROWD_CONTROL')
+		UF:AddFilter(group, other, filters.isBigDefensive, 'BIG_DEFENSIVE')
+		UF:AddFilter(group, other, filters.isRaidInCombat, 'RAID_IN_COMBAT')
+		UF:AddFilter(group, other, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE')
+		UF:AddFilter(group, other, filters.isCancelable, 'CANCELABLE')
+		UF:AddFilter(group, other, filters.isRaid, 'RAID')
 	end
 end
 
