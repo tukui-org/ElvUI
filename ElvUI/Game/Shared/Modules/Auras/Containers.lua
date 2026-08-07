@@ -252,10 +252,16 @@ do
 		local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 		container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-		wipe(active) -- clear this
+		for index, filter in next, active do -- known but not active anymore
+			if container.known[filter] and not container.filters[index] then
+				container:SetAuraGroupMaxFrameCount(filter, 0)
+			end
 
-		for _, filter in next, container.filters do
-			active[filter] = true -- set all active
+			active[index] = nil
+		end
+
+		for index, filter in next, container.filters do
+			active[index] = filter -- set all active
 
 			if container.known[filter] then
 				E:Auras_UpdateGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
@@ -263,12 +269,6 @@ do
 				E:Auras_AddGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
 
 				container.known[filter] = filter
-			end
-		end
-
-		for key in next, container.known do
-			if not active[key] then -- loop to find any unused
-				container:SetAuraGroupMaxFrameCount(key, 0)
 			end
 		end
 	end
