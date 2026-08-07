@@ -100,8 +100,7 @@ function E:Auras_CreateElements(button)
 	button.highlight = highlight
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
-	statusbar:OffsetFrameLevel()
-	statusbar:SetAllPoints()
+	statusbar:CreateBackdrop('Transparent')
 	button.statusbar = statusbar
 
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
@@ -191,8 +190,19 @@ function E:Auras_UpdateElement(container, button)
 		end -- will also update the cooldown when needed
 	end
 
-	if container.isAuraBar then
+	if container.useStatusbar then
 		if button.statusbar then
+			button:SetDurationBar(button.statusbar)
+
+			local color = container.barColor
+			button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
+			button.statusbar:SetStatusBarTexture(container.barTexture)
+
+			A:Configure_Statusbar(button, button.statusbar, container.barDB)
+		end
+	elseif container.isAuraBar then
+		if button.statusbar then
+			button.statusbar:SetAllPoints()
 			button:SetDurationBar(button.statusbar)
 
 			local color = container.barColor
