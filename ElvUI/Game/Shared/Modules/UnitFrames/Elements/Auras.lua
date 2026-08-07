@@ -306,18 +306,20 @@ do
 			if filters.isPlayer then
 				UF:AddFilter(1, group, filter, true, 'PLAYER')
 			else
-				UF:AddFilter(20, group, filter, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE', '|PLAYER')
-				UF:AddFilter(21, group, filter, filters.isCrowdControlPlayer, 'CROWD_CONTROL', '|PLAYER')
-				UF:AddFilter(22, group, filter, filters.isBigDefensivePlayer, 'BIG_DEFENSIVE', '|PLAYER')
-				UF:AddFilter(23, group, filter, filters.isRaidInCombatPlayer, 'RAID_IN_COMBAT', '|PLAYER')
-				UF:AddFilter(24, group, filter, filters.isExternalDefensivePlayer, 'EXTERNAL_DEFENSIVE', '|PLAYER')
-				UF:AddFilter(25, group, filter, filters.isCancelablePlayer, 'CANCELABLE', '|PLAYER')
-				UF:AddFilter(26, group, filter, filters.isRaidPlayer, 'RAID', '|PLAYER')
+				UF:AddFilter(20, group, filter, filters.isImportantPlayer, 'IMPORTANT', '|PLAYER')
+				UF:AddFilter(21, group, filter, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE', '|PLAYER')
+				UF:AddFilter(22, group, filter, filters.isCrowdControlPlayer, 'CROWD_CONTROL', '|PLAYER')
+				UF:AddFilter(23, group, filter, filters.isBigDefensivePlayer, 'BIG_DEFENSIVE', '|PLAYER')
+				UF:AddFilter(24, group, filter, filters.isRaidInCombatPlayer, 'RAID_IN_COMBAT', '|PLAYER')
+				UF:AddFilter(25, group, filter, filters.isExternalDefensivePlayer, 'EXTERNAL_DEFENSIVE', '|PLAYER')
+				UF:AddFilter(26, group, filter, filters.isCancelablePlayer, 'CANCELABLE', '|PLAYER')
+				UF:AddFilter(27, group, filter, filters.isRaidPlayer, 'RAID', '|PLAYER')
 			end
 
 			wipe(temp) -- second clear
 
 			-- others: not player
+			UF:AddFilter(50, group, filter, filters.isImportant, 'IMPORTANT', '|!PLAYER')
 			UF:AddFilter(51, group, filter, filters.isCrowdControl, 'CROWD_CONTROL', '|!PLAYER')
 			UF:AddFilter(52, group, filter, filters.isBigDefensive, 'BIG_DEFENSIVE', '|!PLAYER')
 			UF:AddFilter(53, group, filter, filters.isRaidInCombat, 'RAID_IN_COMBAT', '|!PLAYER')
