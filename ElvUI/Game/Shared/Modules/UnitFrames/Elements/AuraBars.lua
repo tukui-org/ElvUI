@@ -217,7 +217,8 @@ function UF:Configure_AuraBars(frame)
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 			bars.filter = UF:AuraBars_GetFilter(bars, frame.unit)
 			bars.barColor = (bars.filter == 'HARMFUL' and UF.db.colors.auraBarDebuff) or UF.db.colors.auraBarBuff
-			bars.isTransparent = UF.db.colors.transparentAurabars
+			bars.isTransparent = UF.db.colors.transparentAurabars -- always on for now
+			bars.invertAurabars = UF.db.colors.invertAurabars
 
 			UF:UpdateFilters(bars) -- attach the objects
 			UF:GroupFilters(bars, bars.filter) -- build the groups

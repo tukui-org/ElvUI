@@ -153,7 +153,7 @@ function E:Auras_UpdateElement(container, button)
 
 			--local r, g, b = unpack(E.media.backdropcolor)
 			local color = container.barColor
-			if container.isTransparent then
+			if container.invertAurabars then
 				button.border:SetTexture(container.statusbarTexture)
 				button.border:SetVertexColor(color.r, color.g, color.b)
 			else
@@ -198,7 +198,7 @@ function E:Auras_UpdateElement(container, button)
 			local color = container.barColor
 			button.statusbar:SetReverseFill(container.reverseFill)
 
-			if container.isTransparent then
+			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
 				button.statusbar:SetStatusBarColor(bgR, bgG, bgB, bgA)
 			else
