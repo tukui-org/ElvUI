@@ -298,6 +298,17 @@ end
 
 do
 	local temp = {}
+	function E:Auras_CanidateFilters(allow, block, maxDuration)
+		temp.includeSpellIDs = allow
+		temp.excludeSpellIDs = block
+		temp.maxDuration = maxDuration
+
+		return temp
+	end
+end
+
+do
+	local temp = {}
 	function E:Auras_SetupGroup(container, filter, layout, maxCount, sortMethod, sortDirection)
 		temp.maxFrameCount = maxCount
 		temp.sortMethod = sortMethod
@@ -312,7 +323,7 @@ end
 
 function E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
 	local group = E:Auras_SetupGroup(container, filter, layout, maxCount, sortMethod, sortDirection)
-	container:AddAuraGroup(key, filter, group)
+	container:AddAuraGroup(key, key, group)
 end
 
 function E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
@@ -356,9 +367,9 @@ function E:Auras_SetContainer(container)
 		container.active[filter] = index -- set all active
 
 		if container.known[filter] then
-			E:Auras_UpdateGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
+			E:Auras_UpdateGroup(container, filter, container.candidateFilters or filter, layout, maxCount, sortMethod, sortDirection)
 		else
-			E:Auras_AddGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
+			E:Auras_AddGroup(container, filter, container.candidateFilters or filter, layout, maxCount, sortMethod, sortDirection)
 
 			container.known[filter] = index
 		end
@@ -398,16 +409,6 @@ function E:Auras_GetFilter(obj, key)
 	end
 
 	return list
-end
-
--- local blockPermanent = (player and db.isAuraPermanentPlayer) or (not player and db.isAuraPermanent)
--- or (blockPermanent and huge)
-
-function E:Auras_CanidateFilters(db, allow, block)
-	local maxDuration = (db.maxDuration and db.maxDuration > 0 and db.maxDuration) or nil
-	if not (maxDuration or allow or block) then return end
-
-	return { includeSpellIDs = allow, excludeSpellIDs = block, maxDuration = maxDuration }
 end
 
 function E:Auras_Create(parent, which, override)
