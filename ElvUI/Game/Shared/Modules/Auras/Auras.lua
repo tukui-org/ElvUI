@@ -584,7 +584,7 @@ function A:UpdateHeader(header)
 
 		header:SetSize(minWidth, minHeight)
 
-		E:Auras_SetContainer(header, header.filter)
+		E:Auras_SetContainer(header, { meow = header.filter })
 		E:Auras_UpdateElements(header)
 	else
 		E:UpdateClassColor(db.barColor)

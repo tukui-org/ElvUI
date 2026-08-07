@@ -58,20 +58,6 @@ function E:Auras_OnEvent(event)
 	end
 end
 
-do
-	local temp = {}
-	function E:Auras_AddGroup(maxCount, filters, sortMethod, sortDirection, initializeFrame, layout)
-		temp.maxFrameCount = maxCount
-		temp.sortMethod = sortMethod
-		temp.sortDirection = sortDirection
-		temp.initializeFrame = initializeFrame
-		temp.layout = layout
-		temp.candidateFilters = type(filters) == 'table' and filters or nil
-
-		return temp
-	end
-end
-
 function E:Auras_FlowDirection(growthX, growthY)
 	return (growthX == 'LEFT' and FLOWDIRECTION.Left) or FLOWDIRECTION.Right, (growthY == 'DOWN' and FLOWDIRECTION.Down) or FLOWDIRECTION.Up
 end
@@ -222,34 +208,56 @@ function E:Auras_UpdateLayout(container)
 	return layout
 end
 
-function E:Auras_SetContainer(container, filter)
-	container.filter = filter
+do
+	local temp = {}
+	function E:Auras_SetupGroup(filter, initialize, layout, maxCount, sortMethod, sortDirection)
+		temp.maxFrameCount = maxCount
+		temp.sortMethod = sortMethod
+		temp.sortDirection = sortDirection
+		temp.initializeFrame = initialize
+		temp.layout = layout
+		temp.candidateFilters = type(filter) == 'table' and filter or nil
 
+		return temp
+	end
+end
+
+function E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+	local initialize = E:Auras_GenerateInitialize(container)
+	local group = E:Auras_SetupGroup(filter, initialize, layout, maxCount, sortMethod, sortDirection)
+	container:AddAuraGroup(key, filter, group)
+end
+
+function E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+	if type(filter) == 'table' then
+		container:SetAuraGroupCandidateFilters(key, filter)
+	end
+
+	container:SetAuraGroupMaxFrameCount(key, maxCount)
+	container:SetAuraGroupSortMethod(key, sortMethod, sortDirection)
+	container:SetAuraGroupLayout(key, layout)
+end
+
+function E:Auras_SetContainer(container, filters)
 	local maxCount = container.maxFrameCount or 32
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
-
 	local layout = E:Auras_UpdateLayout(container)
+
 	local anchor = container.initialAnchor or 'BOTTOMLEFT'
 	container:SetFlowLayoutAnchorPoint(anchor)
 
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-	if container.filters[filter] then
-		if type(filter) == 'table' then
-			container:SetAuraGroupCandidateFilters(filter, filter)
+	for key, filter in next, filters do
+		if container.filters[key] then
+			E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+		else
+			E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+
+			container.filters[key] = filter
 		end
-
-		container:SetAuraGroupMaxFrameCount(filter, maxCount)
-		container:SetAuraGroupSortMethod(filter, sortMethod, sortDirection)
-		container:SetAuraGroupLayout(filter, layout)
-	else
-		container.filters[filter] = filter
-
-		local func = E:Auras_GenerateInitialize(container)
-		local group = E:Auras_AddGroup(maxCount, filter, sortMethod, sortDirection, func, layout)
-		container:AddAuraGroup(filter, filter, group)
 	end
 end
 
@@ -271,9 +279,9 @@ function E:Auras_SetUnit(container, unit)
 	container:SetUnit(unit)
 end
 
-function E:Auras_GetFilter(key)
-	local filterList = E.global.unitframe.aurafilters
-	local spells = filterList and filterList[key] and filterList[key].spells
+function E:Auras_GetFilter(obj, key)
+	local filter = obj and obj[key]
+	local spells = filter and filter.spells
 	if not spells then return end
 
 	local list
@@ -288,9 +296,11 @@ function E:Auras_GetFilter(key)
 	return list
 end
 
-function E:Auras_CanidateFilters(db, player, allow, block)
-	local blockPermanent = (player and db.isAuraPermanentPlayer) or (not player and db.isAuraPermanent)
-	local maxDuration = (db.maxDuration and db.maxDuration > 0 and db.maxDuration) or (blockPermanent and huge) or nil
+-- local blockPermanent = (player and db.isAuraPermanentPlayer) or (not player and db.isAuraPermanent)
+-- or (blockPermanent and huge)
+
+function E:Auras_CanidateFilters(db, allow, block)
+	local maxDuration = (db.maxDuration and db.maxDuration > 0 and db.maxDuration) or nil
 	if not (maxDuration or allow or block) then return end
 
 	return { includeSpellIDs = allow, excludeSpellIDs = block, maxDuration = maxDuration }

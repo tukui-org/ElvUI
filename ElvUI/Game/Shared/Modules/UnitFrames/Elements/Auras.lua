@@ -479,10 +479,14 @@ function UF:Configure_Auras(frame, which)
 		auras.unitframeType = frame.unitframeType
 
 		if settings.enable then
+			auras.allowList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist')
+			auras.blockList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist')
+
 			UF:UpdateFilters(auras, settings) -- attach the objects
+			E:Auras_CanidateFilters(auras.auraFilters, auras.allowList, auras.blockList)
 
 			E:Auras_SetUnit(auras, frame.unit)
-			E:Auras_SetContainer(auras, auras.filter)
+			E:Auras_SetContainer(auras, { meow = auras.filter })
 			E:Auras_SetLineSize(auras)
 			E:Auras_UpdateElements(auras)
 		end
