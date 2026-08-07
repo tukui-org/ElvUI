@@ -50,25 +50,28 @@ G.unitframe.aurafilters.Blacklist = {
 		[457481]	= List(nil, false), -- Tidecaller's Guard
 		[462757]	= List(nil, false), -- Thunderstrike Ward
 		[462742]	= List(nil, false), -- Thunderstrike Ward
+		-- Paladin Imbuements
+		[433568]	= List(), -- Rite of Sanctification
+		[433583]	= List(), -- Rite of Adjuration
 		-- Skyriding
 		[404464]	= List(), -- Flight Style: Skyriding
 		[404468]	= List(), -- Flight Style: Steady
 		[427490]	= List(), -- Ride Along
 		[447959]	= List(), -- Ride Along - Enabled
 		[447960]	= List(), -- Ride Along - Inactive
-		-- The rest
-		[160455]	= List(), -- Hunter Pet Fatigued
-		[26013]		= List(), -- Deserter
-		[264689]	= List(), -- Hunter Pet Fatigued
 		[377234]	= List(), -- Thrill of the Skies
-		[390435]	= List(), -- Exhaustion
-		[433568]	= List(), -- Rite of Sanctification
-		[433583]	= List(), -- Rite of Adjuration
-		[57723]		= List(), -- Exhaustion
-		[57724]		= List(), -- Sated
-		[71041]		= List(), -- Dungeon Deserter
-		[80354]		= List(), -- Temporal Displacement
-		[95809]		= List(), -- Hunter Pet Insanity
+		-- Bloodlust + Heroism
+		[160455]	= List(), -- Fatigued | Netherwinds
+		[264689]	= List(), -- Fatigued | Primal Rage
+		[390435]	= List(), -- Exhaustion | Fury of the Aspects
+		[57723]		= List(), -- Exhaustion | Heroism
+		[57724]		= List(), -- Sated | Bloodlust
+		[80354]		= List(), -- Temporal Displacement | Time Warp
+		[95809]		= List(), -- Insanity | Ancient Hysteria
+		-- Social
+		[26013]		= List(), -- Deserter | Battlegrounds
+		[71041]		= List(), -- Dungeon Deserter | Dungeon Finder or Raid Finder
+		-- General auras starting here
 	}
 }
 
@@ -92,25 +95,28 @@ G.unitframe.aurafilters.Blocklist = {
 		[457481]	= List(nil, false), -- Tidecaller's Guard
 		[462757]	= List(nil, false), -- Thunderstrike Ward
 		[462742]	= List(nil, false), -- Thunderstrike Ward
+		-- Paladin Imbuements
+		[433568]	= List(), -- Rite of Sanctification
+		[433583]	= List(), -- Rite of Adjuration
 		-- Skyriding
 		[404464]	= List(), -- Flight Style: Skyriding
 		[404468]	= List(), -- Flight Style: Steady
 		[427490]	= List(), -- Ride Along
 		[447959]	= List(), -- Ride Along - Enabled
 		[447960]	= List(), -- Ride Along - Inactive
-		-- The rest
-		[160455]	= List(), -- Hunter Pet Fatigued
-		[26013]		= List(), -- Deserter
-		[264689]	= List(), -- Hunter Pet Fatigued
 		[377234]	= List(), -- Thrill of the Skies
-		[390435]	= List(), -- Exhaustion
-		[433568]	= List(), -- Rite of Sanctification
-		[433583]	= List(), -- Rite of Adjuration
-		[57723]		= List(), -- Exhaustion
-		[57724]		= List(), -- Sated
-		[71041]		= List(), -- Dungeon Deserter
-		[80354]		= List(), -- Temporal Displacement
-		[95809]		= List(), -- Hunter Pet Insanity
+		-- Bloodlust + Heroism
+		[160455]	= List(), -- Fatigued | Netherwinds
+		[264689]	= List(), -- Fatigued | Primal Rage
+		[390435]	= List(), -- Exhaustion | Fury of the Aspects
+		[57723]		= List(), -- Exhaustion | Heroism
+		[57724]		= List(), -- Sated | Bloodlust
+		[80354]		= List(), -- Temporal Displacement | Time Warp
+		[95809]		= List(), -- Insanity | Ancient Hysteria
+		-- Social
+		[26013]		= List(), -- Deserter | Battlegrounds
+		[71041]		= List(), -- Dungeon Deserter | Dungeon Finder or Raid Finder
+		-- General auras starting here
 	}
 }
 
