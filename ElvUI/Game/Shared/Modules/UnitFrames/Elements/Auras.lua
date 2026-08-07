@@ -272,45 +272,63 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraSettings(button)
 end
 
-function UF:AddFilter(group, filter, yes, big)
-	if not yes then return end
-
-	group[big] = strjoin('', filter, '|', big)
-end
-
-function UF:GroupFilters(frame, filter)
-	local filters = frame.auraFilters
-	if not filters then return end
-
-	local group = frame.filters
-	if not group then return end
-
-	wipe(frame.filters) -- start over
-
-	-- question: who is she?
-	UF:AddFilter(group, filter, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE')
-
-	-- player: you obviously
-	if filters.isPlayer then
-		UF:AddFilter(group, filter, filters.isPlayer, 'PLAYER')
-	else
-		UF:AddFilter(group, filter, filters.isCrowdControlPlayer, 'CROWD_CONTROL|PLAYER')
-		UF:AddFilter(group, filter, filters.isBigDefensivePlayer, 'BIG_DEFENSIVE|PLAYER')
-		UF:AddFilter(group, filter, filters.isRaidInCombatPlayer, 'RAID_IN_COMBAT|PLAYER')
-		UF:AddFilter(group, filter, filters.isExternalDefensivePlayer, 'EXTERNAL_DEFENSIVE|PLAYER')
-		UF:AddFilter(group, filter, filters.isCancelablePlayer, 'CANCELABLE|PLAYER')
-		UF:AddFilter(group, filter, filters.notCancelablePlayer, '!CANCELABLE|PLAYER')
-		UF:AddFilter(group, filter, filters.isRaidPlayer, 'RAID|PLAYER')
+function UF:AddFilter(obj)
+	local str
+	for _, filter in next, obj do
+		str = (not str and '' or (str..'|'))..filter
 	end
 
-	-- others: not player
-	UF:AddFilter(group, filter, filters.isCrowdControl, 'CROWD_CONTROL|!PLAYER')
-	UF:AddFilter(group, filter, filters.isBigDefensive, 'BIG_DEFENSIVE|!PLAYER')
-	UF:AddFilter(group, filter, filters.isRaidInCombat, 'RAID_IN_COMBAT|!PLAYER')
-	UF:AddFilter(group, filter, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE|!PLAYER')
-	UF:AddFilter(group, filter, filters.isCancelable, 'CANCELABLE|!PLAYER')
-	UF:AddFilter(group, filter, filters.notCancelable, '!CANCELABLE|!PLAYER')
-	UF:AddFilter(group, filter, filters.isRaid, 'RAID|!PLAYER')
+	return str
+end
+
+do
+	local temp = {}
+	function UF:GroupFilters(frame, filter)
+		local filters = frame.auraFilters
+		if not filters then return end
+
+		local group = frame.filters
+		if not group then return end
+
+		wipe(frame.filters) -- start over
+		wipe(temp) -- this too
+
+		temp[1] = filter -- player: you obviously
+		temp[2] = 'PLAYER'
+
+		local player
+		if filters.isPlayer then
+			player = UF:AddFilter(temp)
+		else
+			temp[3] = filters.isRaidPlayerDispellable and 'RAID_PLAYER_DISPELLABLE' or nil
+			temp[4] = filters.isCrowdControlPlayer and 'CROWD_CONTROL' or nil
+			temp[5] = filters.isBigDefensivePlayer and 'BIG_DEFENSIVE' or nil
+			temp[6] = filters.isRaidInCombatPlayer and 'RAID_IN_COMBAT' or nil
+			temp[7] = filters.isExternalDefensivePlayer and 'EXTERNAL_DEFENSIVE' or nil
+			temp[8] = filters.isCancelablePlayer and 'CANCELABLE' or nil
+			temp[9] = filters.notCancelablePlayer and '!CANCELABLE' or nil
+			temp[10] = filters.isRaidPlayer and 'RAID' or nil
+
+			player = UF:AddFilter(temp)
+		end
+
+		group[player] = player
+
+		wipe(temp) -- again
+
+		temp[1] = filter -- others: not player
+		temp[2] = '!PLAYER'
+		temp[3] = filters.isCrowdControl and 'CROWD_CONTROL' or nil
+		temp[4] = filters.isBigDefensive and 'BIG_DEFENSIVE' or nil
+		temp[5] = filters.isRaidInCombat and 'RAID_IN_COMBAT' or nil
+		temp[6] = filters.isExternalDefensive and 'EXTERNAL_DEFENSIVE' or nil
+		temp[7] = filters.isCancelable and 'CANCELABLE' or nil
+		temp[8] = filters.notCancelable and '!CANCELABLE' or nil
+		temp[9] = filters.isRaid and 'RAID' or nil
+
+		local others = UF:AddFilter(temp)
+		group[others] = others
+	end
 end
 
 function UF:UpdateFilters(frame)
