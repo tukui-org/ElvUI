@@ -135,6 +135,12 @@ function NP:Configure_UnitAuras(nameplate)
 	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.unit)
 end
 
+function NP:Configure_AllAuras(nameplate)
+	E:Auras_UpdateElements(nameplate.Auras_)
+	E:Auras_UpdateElements(nameplate.Buffs_)
+	E:Auras_UpdateElements(nameplate.Debuffs_)
+end
+
 function NP:Configure_Auras(nameplate, which)
 	local plateDB = NP:PlateDB(nameplate)
 	local auras = nameplate[which]
@@ -177,12 +183,11 @@ function NP:Configure_Auras(nameplate, which)
 
 		UF:UpdateFilters(auras, db) -- attach the objects
 		UF:GroupFilters(auras, auras.filter) -- build the groups
-		E:Auras_CanidateFilters(auras.auraFilters, auras.allowList, auras.blockList)
+		E:Auras_CanidateFilters(db, auras.allowList, auras.blockList)
 
 		E:Auras_SetUnit(auras, nameplate.unit)
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
-	--	E:Auras_UpdateElements(auras)
 	else
 		local index = 1
 		while auras[index] do

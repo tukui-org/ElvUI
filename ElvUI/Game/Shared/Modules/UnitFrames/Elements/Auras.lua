@@ -540,12 +540,12 @@ function UF:Configure_Auras(frame, which)
 
 			UF:UpdateFilters(auras, settings) -- attach the objects
 			UF:GroupFilters(auras, auras.filter) -- build the groups
-			E:Auras_CanidateFilters(auras.auraFilters, auras.allowList, auras.blockList)
+			E:Auras_CanidateFilters(settings, auras.allowList, auras.blockList)
 
 			E:Auras_SetUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras)
 			E:Auras_SetLineSize(auras)
-		--	E:Auras_UpdateElements(auras)
+			E:Auras_UpdateElements(auras)
 		end
 	else
 		if settings.sizeOverride and settings.sizeOverride > 0 then

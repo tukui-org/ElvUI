@@ -601,6 +601,10 @@ function NP:ConfigurePlates(init)
 				NP.NAME_PLATE_UNIT_ADDED(nameplate, 'NAME_PLATE_UNIT_ADDED', nameplate.unit)
 			end
 
+			if E.PTR then
+				NP:Configure_AllAuras(nameplate)
+			end
+
 			nameplate:UpdateAllElements('ForceUpdate')
 		end
 	end
