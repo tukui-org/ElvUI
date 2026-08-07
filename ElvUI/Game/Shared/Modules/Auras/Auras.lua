@@ -585,11 +585,12 @@ function A:UpdateHeader(header)
 		header.keepSizeRatio = db.keepSizeRatio
 		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
-		header.filters.meow = header.filter
 		header.useStatusbar = db.barShow
 		header.barColor = db.barColor
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
 		header.barDB = db
+
+		header.filters[header.filter] = -1
 
 		header:SetSize(minWidth, minHeight)
 

@@ -357,23 +357,24 @@ function E:Auras_SetContainer(container)
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-	for index, filter in next, container.active do -- known but not active anymore
-		if container.known[filter] and not container.filters[index] then
+	for filter in next, container.active do -- known but not active anymore
+		local clear = container.known[filter] and not container.filters[filter]
+		if clear then
 			container:SetAuraGroupMaxFrameCount(filter, 0)
 		end
 
-		container.active[index] = nil
+		container.active[filter] = nil
 	end
 
-	for index, filter in next, container.filters do
-		container.active[index] = filter -- set all active
+	for filter, index in next, container.filters do
+		container.active[filter] = index -- set all active
 
 		if container.known[filter] then
 			E:Auras_UpdateGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
 		else
 			E:Auras_AddGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
 
-			container.known[filter] = filter
+			container.known[filter] = index
 		end
 	end
 end

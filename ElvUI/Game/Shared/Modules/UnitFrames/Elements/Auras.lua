@@ -283,8 +283,7 @@ do
 		end
 
 		temp[which] = true -- start excluding ones
-
-		group[index] = str .. (main or '')
+		group[str .. (main or '')] = index -- add it
 	end
 
 	function UF:GroupFilters(frame, filter)
@@ -297,14 +296,14 @@ do
 		wipe(frame.filters) -- start over
 
 		if frame.noFilter then
-			group[0] = filter -- break the rules
+			group[filter] = 0 -- break the rules
 		else
 			wipe(temp) -- first clear
 
 			-- player: you obviously
 
 			if filters.isPlayer then
-				UF:AddFilter(1, group, filter, true, 'PLAYER')
+				UF:AddFilter(10, group, filter, true, 'PLAYER')
 			else
 				UF:AddFilter(20, group, filter, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE', '|PLAYER')
 				UF:AddFilter(21, group, filter, filters.isImportantPlayer, 'IMPORTANT', '|PLAYER')
