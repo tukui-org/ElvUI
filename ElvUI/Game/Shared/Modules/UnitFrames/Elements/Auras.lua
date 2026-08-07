@@ -272,11 +272,11 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraSettings(button)
 end
 
-function UF:UpdateFilters(button)
-	local db = button.db
+function UF:UpdateFilters(frame)
+	local db = frame.db
 
-	if not button.auraFilters then
-		button.auraFilters = {}
+	if not frame.auraFilters then
+		frame.auraFilters = {}
 	end
 
 	local isPlayer = db and db.isAuraPlayer
@@ -298,7 +298,7 @@ function UF:UpdateFilters(button)
 	local isPermanent = db and db.isAuraPermanent
 	local isPermanentPlayer = db and db.isAuraPermanentPlayer
 
-	local filters = button.auraFilters
+	local filters = frame.auraFilters
 	local filterList = (db and db.useBlocklist) and E.global.unitframe.aurafilters
 	filters.Blocklist = filterList and filterList.Blocklist and filterList.Blocklist.spells or nil
 	filters.isPermanent = isPermanent
@@ -321,13 +321,13 @@ function UF:UpdateFilters(button)
 	filters.isRaid = isRaid
 	filters.isRaidPlayer = isRaidPlayer
 
-	button.useMidnight = db and db.useMidnight
+	frame.useMidnight = db and db.useMidnight
 
 	local shared = isPlayer or isCancelable or isCancelablePlayer or notCancelable or notCancelablePlayer or isRaid or isRaidPlayer
 	if E.Retail then
-		button.noFilter = db and not (shared or isRaidPlayerDispellable or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer)
+		frame.noFilter = db and not (shared or isRaidPlayerDispellable or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer)
 	else
-		button.noFilter = db and not shared
+		frame.noFilter = db and not shared
 	end
 end
 
@@ -472,13 +472,15 @@ function UF:Configure_Auras(frame, which)
 	end
 
 	if E.PTR then
-		auras.keepSizeRatio = db.keepSizeRatio
+		auras.keepSizeRatio = settings.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
 		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 		auras.unitframeType = frame.unitframeType
 
 		if settings.enable then
+			UF:UpdateFilters(auras, settings) -- attach the objects
+
 			E:Auras_SetUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras, auras.filter)
 			E:Auras_SetLineSize(auras)
