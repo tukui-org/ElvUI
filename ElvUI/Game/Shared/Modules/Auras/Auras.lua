@@ -723,6 +723,7 @@ function A:Initialize()
 			A.BuffFrame.filter = 'HELPFUL'
 
 			A:UpdateHeader(A.BuffFrame)
+			E:Auras_SetEnchantments(A.BuffFrame)
 			E:Auras_SetUnit(A.BuffFrame, 'player')
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')

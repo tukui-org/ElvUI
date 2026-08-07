@@ -16,6 +16,9 @@ local AuraButtonBorderStyle = AuraButtonBorderStyle
 local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 
+local ItemEnchantmentSlot = AuraContainerItemEnchantmentSlot
+local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
+local OFFHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.OffHand
 local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
 local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
@@ -237,6 +240,11 @@ function E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMetho
 	container:SetAuraGroupLayout(key, layout)
 end
 
+function E:Auras_SetEnchantments(container)
+	local group = E:Auras_SetupGroup(container)
+	container:AddItemEnchantment(MAINHAND, group)
+	container:AddItemEnchantment(OFFHAND, group)
+end
 
 function E:Auras_SetContainer(container)
 	local maxCount = container.maxFrameCount or 32
