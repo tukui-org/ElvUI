@@ -208,14 +208,19 @@ function UF:Configure_AuraBars(frame)
 			bars:Point(p3..p4, attachTo, p1..p4, xOffset or (right and -(BORDER * 2)) or (bars.height + UF.BORDER), yOffset)
 		end
 
-		local ready = false
-		if E.PTR and ready then
+		if E.PTR then
+			bars.size = db.height
+			bars.numAuras = db.maxBars
+			bars.maxFrameCount = db.maxBars
+			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 			bars.filter = UF:AuraBars_GetFilter(bars, frame.unit)
 
 			UF:UpdateFilters(bars) -- attach the objects
 			UF:GroupFilters(bars, bars.filter) -- build the groups
 
 			E:Auras_SetUnit(bars, frame.unit)
+			E:Auras_SetContainer(bars)
+			E:Auras_SetLineSize(bars)
 
 			bars:SetEnabled(true)
 		end
