@@ -4,7 +4,7 @@ local NP = E:GetModule('NamePlates')
 local AB = E:GetModule('ActionBars')
 
 local format, strlower, strfind = format, strlower, strfind
-local tinsert, strsplit, strmatch = tinsert, strsplit, strmatch
+local tinsert, strsplit, strmatch, strjoin = tinsert, strsplit, strmatch, strjoin
 local sort, wipe, next, unpack, floor = sort, wipe, next, unpack, floor
 local utf8sub = string.utf8sub
 
@@ -272,6 +272,47 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraSettings(button)
 end
 
+function UF:AddFilter(group, filter, yes, big)
+	if not yes then return end
+
+	group[big] = strjoin('', filter, '|', big)
+end
+
+function UF:GroupFilters(frame, filter)
+	local filters = frame.auraFilters
+	if not filters then return end
+
+	local group = frame.filters
+	if not group then return end
+
+	wipe(frame.filters) -- start over
+
+	-- question: who is she?
+	UF:AddFilter(group, filter, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE')
+
+	-- player: you obviously
+	if filters.isPlayer then
+		UF:AddFilter(group, filter, filters.isPlayer, 'PLAYER')
+	else
+		UF:AddFilter(group, filter, filters.isCrowdControlPlayer, 'CROWD_CONTROL|PLAYER')
+		UF:AddFilter(group, filter, filters.isBigDefensivePlayer, 'BIG_DEFENSIVE|PLAYER')
+		UF:AddFilter(group, filter, filters.isRaidInCombatPlayer, 'RAID_IN_COMBAT|PLAYER')
+		UF:AddFilter(group, filter, filters.isExternalDefensivePlayer, 'EXTERNAL_DEFENSIVE|PLAYER')
+		UF:AddFilter(group, filter, filters.isCancelablePlayer, 'CANCELABLE|PLAYER')
+		UF:AddFilter(group, filter, filters.notCancelablePlayer, 'NOT_CANCELABLE|PLAYER')
+		UF:AddFilter(group, filter, filters.isRaidPlayer, 'RAID|PLAYER')
+	end
+
+	-- others: not player
+	UF:AddFilter(group, filter, filters.isCrowdControl, 'CROWD_CONTROL|!PLAYER')
+	UF:AddFilter(group, filter, filters.isBigDefensive, 'BIG_DEFENSIVE|!PLAYER')
+	UF:AddFilter(group, filter, filters.isRaidInCombat, 'RAID_IN_COMBAT|!PLAYER')
+	UF:AddFilter(group, filter, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE|!PLAYER')
+	UF:AddFilter(group, filter, filters.isCancelable, 'CANCELABLE|!PLAYER')
+	UF:AddFilter(group, filter, filters.notCancelable, 'NOT_CANCELABLE|!PLAYER')
+	UF:AddFilter(group, filter, filters.isRaid, 'RAID|!PLAYER')
+end
+
 function UF:UpdateFilters(frame)
 	local db = frame.db
 
@@ -483,10 +524,11 @@ function UF:Configure_Auras(frame, which)
 			auras.blockList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist')
 
 			UF:UpdateFilters(auras, settings) -- attach the objects
+			UF:GroupFilters(auras, auras.filter) -- build the groups
 			E:Auras_CanidateFilters(auras.auraFilters, auras.allowList, auras.blockList)
 
 			E:Auras_SetUnit(auras, frame.unit)
-			E:Auras_SetContainer(auras, { meow = auras.filter })
+			E:Auras_SetContainer(auras)
 			E:Auras_SetLineSize(auras)
 			E:Auras_UpdateElements(auras)
 		end
