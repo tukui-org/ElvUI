@@ -64,7 +64,7 @@ function UF:AuraBars_UpdateBar(bar)
 		end
 	end
 
-	bar:SetReverseFill(not not bars.reverseFill)
+	bar:SetReverseFill(bars.reverseFill)
 	bar.spark:ClearAllPoints()
 	bar.spark:Point(bars.reverseFill and 'LEFT' or 'RIGHT', bar:GetStatusBarTexture())
 	bar.spark:Point('BOTTOM')
@@ -121,7 +121,7 @@ function UF:Configure_AuraBars(frame)
 		bars.growth = below and 'DOWN' or 'UP'
 		bars.barSpacing = UF.thinBorders and 1 or 5
 		bars.spacing = db.spacing - (detached and 1 or 0)
-		bars.reverseFill = bars.db.reverseFill
+		bars.reverseFill = not not bars.db.reverseFill
 		bars.friendlyAuraType = db.friendlyAuraType
 		bars.enemyAuraType = db.enemyAuraType
 		bars.disableMouse = db.clickThrough
@@ -209,11 +209,15 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		if E.PTR then
+			bars.isAuraBar = true
 			bars.size = db.height
 			bars.numAuras = db.maxBars
 			bars.maxFrameCount = db.maxBars
+			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 			bars.filter = UF:AuraBars_GetFilter(bars, frame.unit)
+			bars.barColor = (bars.filter == 'HARMFUL' and UF.db.colors.auraBarDebuff) or UF.db.colors.auraBarBuff
+			bars.isTransparent = UF.db.colors.transparentAurabars
 
 			UF:UpdateFilters(bars) -- attach the objects
 			UF:GroupFilters(bars, bars.filter) -- build the groups
