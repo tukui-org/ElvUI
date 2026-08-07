@@ -11,6 +11,8 @@ P.dbConverted = nil -- use this to let DBConversions run once per profile
 
 E.AuraDefaults = {
 	useBlocklist = false,
+	isAuraDispellable = false,
+	isAuraDispellablePlayer = false,
 	isAuraImportant = false,
 	isAuraImportantPlayer = false,
 	isAuraCrowdControl = false,
