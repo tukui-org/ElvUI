@@ -545,7 +545,7 @@ function UF:Configure_Auras(frame, which)
 			E:Auras_SetUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras)
 			E:Auras_SetLineSize(auras)
-			E:Auras_UpdateElements(auras)
+		--	E:Auras_UpdateElements(auras)
 		end
 	else
 		if settings.sizeOverride and settings.sizeOverride > 0 then
