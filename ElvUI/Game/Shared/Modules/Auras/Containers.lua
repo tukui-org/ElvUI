@@ -271,6 +271,31 @@ function E:Auras_SetUnit(container, unit)
 	container:SetUnit(unit)
 end
 
+function E:Auras_GetFilter(key)
+	local filterList = E.global.unitframe.aurafilters
+	local spells = filterList and filterList[key] and filterList[key].spells
+	if not spells then return end
+
+	local list
+	for spellID, spell in next, spells do
+		if spell.enable and type(spellID) == 'number' then
+			if not list then list = {} end
+
+			list[spellID] = true
+		end
+	end
+
+	return list
+end
+
+function E:Auras_CanidateFilters(db, player, allow, block)
+	local blockPermanent = (player and db.isAuraPermanentPlayer) or (not player and db.isAuraPermanent)
+	local maxDuration = (db.maxDuration and db.maxDuration > 0 and db.maxDuration) or (blockPermanent and huge) or nil
+	if not (maxDuration or allow or block) then return end
+
+	return { includeSpellIDs = allow, excludeSpellIDs = block, maxDuration = maxDuration }
+end
+
 function E:Auras_Create(parent, which, override)
 	local container = CreateFrame('AuraContainer', override or (parent:GetName() .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
 	container.filters = {}
