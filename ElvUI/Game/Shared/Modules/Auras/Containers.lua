@@ -254,15 +254,15 @@ do
 
 		wipe(active) -- clear this
 
-		for key, filter in next, container.filters do
-			active[key] = true -- set all active
+		for _, filter in next, container.filters do
+			active[filter] = true -- set all active
 
-			if container.known[key] then
-				E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+			if container.known[filter] then
+				E:Auras_UpdateGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
 			else
-				E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
+				E:Auras_AddGroup(container, filter, filter, layout, maxCount, sortMethod, sortDirection)
 
-				container.known[key] = filter
+				container.known[filter] = filter
 			end
 		end
 

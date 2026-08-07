@@ -180,7 +180,7 @@ function NP:Configure_Auras(nameplate, which)
 		E:Auras_CanidateFilters(auras.auraFilters, auras.allowList, auras.blockList)
 
 		E:Auras_SetUnit(auras, nameplate.unit)
-		E:Auras_SetContainer(auras, { meow = auras.filter })
+		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
 		E:Auras_UpdateElements(auras)
 	else
