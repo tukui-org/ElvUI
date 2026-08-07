@@ -298,7 +298,6 @@ function UF:GroupFilters(frame, filter)
 		UF:AddFilter(group, filter, filters.isRaidInCombatPlayer, 'PLAYER|RAID_IN_COMBAT')
 		UF:AddFilter(group, filter, filters.isExternalDefensivePlayer, 'PLAYER|EXTERNAL_DEFENSIVE')
 		UF:AddFilter(group, filter, filters.isCancelablePlayer, 'PLAYER|CANCELABLE')
-		UF:AddFilter(group, filter, filters.notCancelablePlayer, '!PLAYER|CANCELABLE')
 		UF:AddFilter(group, filter, filters.isRaidPlayer, 'PLAYER|RAID')
 	end
 
@@ -308,7 +307,6 @@ function UF:GroupFilters(frame, filter)
 	UF:AddFilter(group, filter, filters.isRaidInCombat, '!PLAYER|RAID_IN_COMBAT')
 	UF:AddFilter(group, filter, filters.isExternalDefensive, '!PLAYER|EXTERNAL_DEFENSIVE')
 	UF:AddFilter(group, filter, filters.isCancelable, '!PLAYER|CANCELABLE')
-	UF:AddFilter(group, filter, filters.notCancelable, '!!PLAYER|CANCELABLE')
 	UF:AddFilter(group, filter, filters.isRaid, '!PLAYER|RAID')
 end
 
