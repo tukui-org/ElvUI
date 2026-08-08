@@ -24,6 +24,7 @@ local Screenshot = Screenshot
 local UIParent = UIParent
 local UnitCastingInfo = UnitCastingInfo
 
+local FormatDiscordMessage = ChatFrameUtil and ChatFrameUtil.FormatDiscordMessage
 local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
 local GetChatCategory = (ChatFrameUtil and ChatFrameUtil.GetChatCategory) or Chat_GetChatCategory
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
@@ -197,7 +198,7 @@ function AFK:HandleShortChannels(msg)
 	return msg
 end
 
-function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, _, _, _, arg18)
 	local infoType = strsub(event, 10)
 	local info = _G.ChatTypeInfo[infoType]
 
@@ -208,6 +209,8 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	elseif chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER' then
 		chatTarget = (E:NotSecretValue(arg2) and strsub(arg2, 1, 2) ~= '|K') and strupper(arg2) or arg2
 	end
+
+	local discordInfo, isFromDiscord = CH:GetDiscordInfo(arg18)
 
 	local playerLink
 	local linkTarget = chatTarget and (':'..chatTarget) or ''
@@ -226,7 +229,11 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
 	local message = format('%s%s', isMobile or '', arg1)
 
-	local coloredName = (infoType == 'BN_WHISPER' and CH:GetBNFriendColor(arg2, arg13)) or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+	if isFromDiscord then
+		message = FormatDiscordMessage(discordInfo, message)
+	end
+
+	local coloredName = (infoType == 'BN_WHISPER' and CH:GetBNFriendColor(arg2, arg13)) or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg18)
 	local senderLink = format('%s[%s]|h', playerLink, coloredName)
 	local success, msg = pcall(format, _G['CHAT_'..infoType..'_GET']..'%s', senderLink, message)
 	if not success then return end
