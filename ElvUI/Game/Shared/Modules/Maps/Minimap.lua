@@ -23,7 +23,6 @@ local PlaySound = PlaySound
 local ShowUIPanel = ShowUIPanel
 local ToggleFrame = ToggleFrame
 local UIParent = UIParent
-local UIParentLoadAddOn = UIParentLoadAddOn
 
 local MainMenuMicroButton = MainMenuMicroButton
 local MainMenuMicroButton_SetNormal = MainMenuMicroButton_SetNormal
@@ -69,7 +68,7 @@ if E.Retail or E.Wrath or E.Mists then
 end
 
 if E.Retail or E.Mists then
-	tinsert(menuList, {text = _G.ENCOUNTER_JOURNAL, microOffset = 'EJMicroButton', func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then UIParentLoadAddOn('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
+	tinsert(menuList, {text = _G.ENCOUNTER_JOURNAL, microOffset = 'EJMicroButton', func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then E:LoadAddon('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 
 if E.Retail then

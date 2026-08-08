@@ -4,6 +4,7 @@ local strmatch = strmatch
 
 local SlashCmdList = SlashCmdList
 local UIParentLoadAddOn = UIParentLoadAddOn
+local LoadAddOnWithErrorHandling = LoadAddOnWithErrorHandling
 
 local GetMouseFocus = GetMouseFocus or function()
 	local frames = _G.GetMouseFoci()
@@ -11,6 +12,14 @@ local GetMouseFocus = GetMouseFocus or function()
 end
 
 -- GLOBALS: ElvUI
+
+local function LoadAddon(addon)
+	if UIParentLoadAddOn then
+		return UIParentLoadAddOn(addon)
+	elseif LoadAddOnWithErrorHandling then
+		LoadAddOnWithErrorHandling(addon)
+	end
+end
 
 local function GetName(frame, text)
 	if frame.GetDebugName then
@@ -68,7 +77,7 @@ AddCommand('FRAME', '/frame', function(arg)
 
 	if IsTrue(tinspect) then
 		if not _G.TableAttributeDisplay then
-			UIParentLoadAddOn('Blizzard_DebugTools')
+			LoadAddon('Blizzard_DebugTools')
 		end
 
 		_G.TableAttributeDisplay:InspectTable(frame)
@@ -89,7 +98,7 @@ end)
 
 AddCommand('FRAMELIST', '/framelist', function(arg)
 	if not _G.FrameStackTooltip then
-		UIParentLoadAddOn('Blizzard_DebugTools')
+		LoadAddon('Blizzard_DebugTools')
 	end
 
 	local copyChat, showHidden, showRegions, showAnchors = strmatch(arg, '^(%S+)%s*(%S*)%s*(%S*)%s*(%S*)$')
