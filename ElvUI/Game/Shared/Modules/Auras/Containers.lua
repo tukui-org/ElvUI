@@ -542,7 +542,7 @@ function E:Auras_SetContainer(container)
 			container:SetAuraGroupMaxFrameCount(key, 0)
 		end
 
-		container.active[filter] = nil
+		container.active[key] = nil
 	end
 
 	for key, filter in next, container.filters do
