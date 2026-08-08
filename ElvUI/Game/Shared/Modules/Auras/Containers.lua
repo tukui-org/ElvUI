@@ -457,14 +457,14 @@ do
 	end
 end
 
-function E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
-	local group = E:Auras_SetupGroup(container, filter, layout, maxCount, sortMethod, sortDirection)
-	container:AddAuraGroup(key, key, group)
+function E:Auras_AddGroup(container, key, filter, candidate, layout, maxCount, sortMethod, sortDirection)
+	local group = E:Auras_SetupGroup(container, candidate, layout, maxCount, sortMethod, sortDirection)
+	container:AddAuraGroup(key, filter, group)
 end
 
-function E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
-	if filter then
-		container:SetAuraGroupCandidateFilters(key, filter)
+function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount, sortMethod, sortDirection)
+	if candidate then
+		container:SetAuraGroupCandidateFilters(key, candidate)
 	end
 
 	container:SetAuraGroupMaxFrameCount(key, maxCount)
@@ -537,23 +537,23 @@ function E:Auras_SetContainer(container)
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-	for filter in next, container.active do -- known but not active anymore
-		if container.known[filter] and not container.filters[filter] then
-			container:SetAuraGroupMaxFrameCount(filter, 0)
+	for key, filter in next, container.active do -- known but not active anymore
+		if container.known[key] and (container.filters[key] ~= filter) then
+			container:SetAuraGroupMaxFrameCount(key, 0)
 		end
 
 		container.active[filter] = nil
 	end
 
-	for filter, index in next, container.filters do
-		container.active[filter] = index -- set all active
+	for key, filter in next, container.filters do
+		container.active[key] = filter -- set all active
 
-		if container.known[filter] then
-			E:Auras_UpdateGroup(container, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
+		if container.known[key] then
+			E:Auras_UpdateGroup(container, key, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
 		else
-			E:Auras_AddGroup(container, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
+			E:Auras_AddGroup(container, key, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
 
-			container.known[filter] = index
+			container.known[key] = filter
 		end
 	end
 end

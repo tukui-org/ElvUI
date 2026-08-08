@@ -294,7 +294,7 @@ do
 		wipe(frame.filters) -- start over
 
 		if frame.noFilter then
-			group[filter] = 0 -- break the rules
+			group.player = filter -- break the rules
 		else
 			local player -- you obviously
 			if filters.isPlayer then
@@ -324,8 +324,8 @@ do
 			others = UF:AddFilter(others, filters.isRaid, 'RAID')
 
 			-- actually add them
-			group[player] = 'player'
-			group[others] = 'others'
+			group.player = player
+			group.others = others
 		end
 	end
 end
