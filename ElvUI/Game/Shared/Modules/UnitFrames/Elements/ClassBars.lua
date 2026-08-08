@@ -97,11 +97,19 @@ function UF:ClassPower_UpdateColor(powerType, rune)
 		UF:SetStatusBarColor(rune, color.r, color.g, color.b, custom_backdrop)
 	elseif powerType == 'EBON_MIGHT' then
 		local color = UF:ClassPower_BarColor(self, nil, colors, powers, isRunes)
-		UF:SetStatusBarColor(self, (color and color.r) or fallback.r, (color and color.g) or fallback.g, (color and color.b) or fallback.b, custom_backdrop)
+		if not color or not color.r then
+			UF:SetStatusBarColor(self, fallback.r, fallback.g, fallback.b, custom_backdrop)
+		else
+			UF:SetStatusBarColor(self, color.r, color.g, color.b, custom_backdrop)
+		end
 	else
 		for index, bar in ipairs(self) do
 			local color = UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
-			UF:SetStatusBarColor(bar, (color and color.r) or fallback.r, (color and color.g) or fallback.g, (color and color.b) or fallback.b, custom_backdrop)
+			if not color or not color.r then
+				UF:SetStatusBarColor(bar, fallback.r, fallback.g, fallback.b, custom_backdrop)
+			else
+				UF:SetStatusBarColor(bar, color.r, color.g, color.b, custom_backdrop)
+			end
 		end
 	end
 end
