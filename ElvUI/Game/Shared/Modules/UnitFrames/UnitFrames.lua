@@ -2055,10 +2055,13 @@ function UF:SetStatusBarColor(bar, r, g, b, custom, overrideAlpha, overrideBackd
 		end
 	end
 
-	if bar.invertColors then
-		bar:GetStatusBarTexture():SetVertexColor(backR, backG, backB, backA)
-	else
-		bar:GetStatusBarTexture():SetVertexColor(mainR, mainG, mainB, mainA)
+	local barTexture = bar:GetStatusBarTexture()
+	if barTexture then
+		if bar.invertColors then
+			barTexture:SetVertexColor(backR, backG, backB, backA)
+		else
+			barTexture:SetVertexColor(mainR, mainG, mainB, mainA)
+		end
 	end
 end
 
