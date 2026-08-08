@@ -99,6 +99,7 @@ function S:Blizzard_GuildControlUI()
 		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameChannelDropdown, 180)
 		S:HandleButton(_G.GuildControlUIRankDiscordFrameChannelButton)
 	end
+
 	hooksecurefunc('GuildControlUI_Discord_Update', SkinDiscordFrame)
 
 	for i = 1, _G.NUM_RANK_FLAGS do
