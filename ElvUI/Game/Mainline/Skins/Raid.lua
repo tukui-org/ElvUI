@@ -23,7 +23,7 @@ function S:Blizzard_RaidUI()
 		if obj then
 			obj:StripTextures()
 
-			for j=1,5 do
+			for j = 1,5 do
 				local slot = _G[object..'Slot'..j]
 				if slot then
 					slot:StripTextures()
