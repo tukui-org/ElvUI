@@ -81,6 +81,8 @@ local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local IsRecentAllyByGUID = C_RecentAllies and C_RecentAllies.IsRecentAllyByGUID
 local GetClientTexture = BNet_GetClientEmbeddedAtlas or BNet_GetClientEmbeddedTexture
 
+local DiscordDisplayNameType = Enum.DiscordDisplayNameType
+local FormatDiscordMessage = ChatFrameUtil and ChatFrameUtil.FormatDiscordMessage
 local ChatEditSetLastTellTarget = (ChatFrameUtil and ChatFrameUtil.SetLastTellTarget) or ChatEdit_SetLastTellTarget
 local ChatEditSetLastActiveWindow = (ChatFrameUtil and ChatFrameUtil.SetLastActiveWindow) or ChatEdit_SetLastActiveWindow
 local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
@@ -242,6 +244,10 @@ do
 		else
 			return GetLink(_G.LinkTypes.Player, displayText, characterName)
 		end
+	end
+
+	function CH:GetDiscordLink(linkDisplayText, bnetIDAccount, discordUserID, lineID, chatGroup, chatTarget)
+		return GetLink(_G.LinkTypes.DiscordUser, linkDisplayText, bnetIDAccount, discordUserID, lineID or 0, chatGroup, chatTarget or '')
 	end
 
 	function CH:GetBNPlayerLink(name, displayText, bnetIDAccount, lineID, chatType, chatTarget)
@@ -1912,7 +1918,7 @@ function CH:AddPluginMessageFilter(func, position)
 end
 
 --Modified copy from FrameXML ChatFrame.lua to add CUSTOM_CLASS_COLORS (args were changed)
-function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
+function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12, _, _, arg18) -- arg12, arg13, arg14, arg18
 	if E:IsSecretValue(arg12) then -- guid is blocked so use uncached
 		local _, englishClass = GetPlayerInfoByGUID(arg12)
 		local classColor = C_ClassColor_GetClassColor(englishClass)
@@ -1934,6 +1940,18 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12)
 
 	-- ambiguate guild chat names
 	local name = Ambiguate(arg2, (chatType == 'GUILD' and 'guild') or 'none')
+
+	-- handle discord colors
+	local discordInfo, isFromDiscord = CH:GetDiscordInfo(arg18)
+	if isFromDiscord then
+		local shouldShowGlobalName = discordInfo.type == DiscordDisplayNameType.GlobalName
+		if discordInfo.globalName and shouldShowGlobalName then -- Names of user from Discord have a fixed color
+			return _G.ChatFrameUtil.DiscordNameColorize(discordInfo.globalName)
+		end
+
+		name = discordInfo.lastOnlineName
+		arg12 = discordInfo.lastOnlineGUID
+	end
 
 	-- handle the class color
 	local info = name and arg12 and _G.ChatTypeInfo[chatType]
@@ -2069,7 +2087,7 @@ local function FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
 	end
 end
 
-function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
+function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, isHistory, historyTime, historyName, historyBTag)
 	if chatType == 'WHISPER_INFORM' and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) then
 		return
 	end
@@ -2108,6 +2126,9 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		nameWithRealm = data.nameWithRealm
 	end
 
+	-- Discord integration
+	local discordInfo, isFromDiscord = CH:GetDiscordInfo(arg18)
+
 	local playerLink
 	local playerLinkDisplayText = coloredName
 	local relevantDefaultLanguage = frame.defaultLanguage
@@ -2135,12 +2156,18 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		end
 	elseif chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then -- arg11: lineID
 		playerLink = CH:GetBNPlayerLink(playerName, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget)
+	elseif (chatType == 'GUILD_DISCORD' or chatType == 'GUILD') and isFromDiscord then
+		playerLink = CH:GetDiscordLink(playerLinkDisplayText, arg13, discordInfo.userID, arg11, chatGroup, chatTarget);
 	else
 		playerLink = CH:GetPlayerLink(playerName, playerLinkDisplayText, arg11, chatGroup, chatTarget)
 	end
 
 	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
 	local message = format('%s%s', isMobile or '', arg1)
+
+	if isFromDiscord then
+		message = FormatDiscordMessage(discordInfo, message)
+	end
 
 	-- Player Flags
 	local pflag = CH:GetPFlag(arg6, arg7, arg12)
@@ -2190,6 +2217,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		body = format(header..'[%s] %s', pflag..sender, arg3, message) -- arg3 is language
 	elseif chatType == 'GUILD_ITEM_LOOTED' then
 		body = not isProtected and gsub(message, '$s', sender, 1) or message
+	elseif chatType == 'GUILD_DISCORD' and isFromDiscord then
+		body = format(header..message, pflag..' '..playerLink)
 	elseif chatType == 'TEXT_EMOTE' then
 		local classLink = realm and playerLink and not isProtected and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
 		body = (classLink and gsub(message, arg2..'%-'..realm, pflag..classLink, 1)) or ((E:NotSecretValue(arg2) and arg2 ~= sender) and gsub(message, arg2, sender, 1)) or message
@@ -2214,12 +2243,16 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	return body
 end
 
+function CH:GetDiscordInfo(info)
+	return info, info and info.userID and info.userID ~= 0
+end
+
 -- we dont have a good way to check: attempted to index a forbidden table
 function CH:ChatFrame_GetZoneChannel(frame, index)
 	return frame.zoneChannelList[index]
 end
 
-function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
+function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, isHistory, historyTime, historyName, historyBTag)
 	-- ElvUI Chat History Note: isHistory, historyTime, historyName, and historyBTag are passed from CH:DisplayChatHistory() and need to be on the end to prevent issues in other addons that listen on ChatFrame_MessageEventHandler.
 	-- we also send isHistory and historyTime into CH:AddMessage so that we don't have to override the timestamp.
 
@@ -2270,7 +2303,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		-- fetch the name color to use
-		local coloredName = historySavedName or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14)
+		local coloredName = historySavedName or CH:GetColoredName(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg18)
 
 		local channelLength = strlen(arg4)
 		local infoType = chatType
@@ -2501,7 +2534,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				eventArgs = _G.SafePack(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 
 				msgFormatter = function(msg) -- to translate the message on click [Show Message]
-					local body = CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, msg, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
+					local body = CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, msg, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, isHistory, historyTime, historyName, historyBTag)
 					return CH:AddMessageEdits(frame, body, isHistory, historyTime)
 				end
 			end
@@ -2517,7 +2550,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			local accessID = CH:GetAccessID(chatGroup, chatTarget)
 			local typeID = CH:GetAccessID(infoType, chatTarget, arg12 or arg13)
-			local body = isChatLineCensored and arg1 or CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, isHistory, historyTime, historyName, historyBTag)
+			local body = isChatLineCensored and arg1 or CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, isHistory, historyTime, historyName, historyBTag)
 
 			frame:AddMessage(body, info.r, info.g, info.b, info.id, accessID, typeID, event, eventArgs, msgFormatter, isHistory, historyTime)
 		end
@@ -2968,7 +3001,7 @@ function CH:DisplayChatHistory()
 						end
 						if not skip and gsub(strsub(d[50],10),'_INFORM','') == messageType then
 							if d[1] and not CH:MessageIsProtected(d[1]) then
-								CH:ChatFrame_MessageEventHandler(chat,d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],'ElvUI_ChatHistory',d[51],d[52],d[53])
+								CH:ChatFrame_MessageEventHandler(chat,d[50],d[1],d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],d[18],'ElvUI_ChatHistory',d[51],d[52],d[53])
 							end
 						end
 					end
