@@ -493,12 +493,12 @@ end
 
 function E:Auras_SetHighlight(container)
 	local filter = container.filter
-	if not container.known[filter] then
-		local dispel = E:Auras_DispelTypes()
-		local slot = E:Auras_SetupHighlight(container, dispel)
-		container:AddAuraSlot(filter, container.filter, slot)
-		container.known[filter] = 'meow'
-	end
+	if container.known[filter] then return end
+
+	local dispel = E:Auras_DispelTypes()
+	local slot = E:Auras_SetupHighlight(container, dispel)
+	container:AddAuraSlot(filter, container.filter, slot)
+	container.known[filter] = 'meow'
 end
 
 function E:Auras_SetIndicator(container)
