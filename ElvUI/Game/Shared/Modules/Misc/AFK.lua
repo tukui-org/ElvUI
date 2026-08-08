@@ -210,8 +210,6 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 		chatTarget = (E:NotSecretValue(arg2) and strsub(arg2, 1, 2) ~= '|K') and strupper(arg2) or arg2
 	end
 
-	local discordInfo, isFromDiscord = CH:GetDiscordInfo(arg18)
-
 	local playerLink
 	local linkTarget = chatTarget and (':'..chatTarget) or ''
 	if infoType ~= 'BN_WHISPER' and infoType ~= 'BN_CONVERSATION' then
@@ -229,6 +227,7 @@ function AFK:Chat_OnEvent(event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8,
 	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
 	local message = format('%s%s', isMobile or '', arg1)
 
+	local discordInfo, isFromDiscord = CH:GetDiscordInfo(arg18)
 	if isFromDiscord then
 		message = FormatDiscordMessage(discordInfo, message)
 	end
