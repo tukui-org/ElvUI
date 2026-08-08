@@ -5,10 +5,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
 
 local _G = _G
-local next = next
-local type = type
-local unpack = unpack
-local strlower = strlower
+local next, type, wipe = next, type, wipe
+local unpack, strlower = unpack, strlower
 local huge = math.huge
 
 local AnchorUtil = AnchorUtil

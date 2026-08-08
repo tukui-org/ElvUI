@@ -544,11 +544,10 @@ function UF:Configure_Auras(frame, which)
 		if settings.enable then
 			auras.allowList = settings.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist') or nil
 			auras.blockList = settings.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist') or nil
+			auras.candidateFilters = E:Auras_CanidateFilters(auras.allowList, auras.blockList, auras.maxDuration)
 
 			UF:UpdateFilters(auras) -- attach the objects
 			UF:GroupFilters(auras, auras.filter) -- build the groups
-
-			auras.candidateFilters = E:Auras_CanidateFilters(auras.allowList, auras.blockList, auras.maxDuration)
 
 			E:Auras_SetUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras)

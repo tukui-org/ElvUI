@@ -219,6 +219,11 @@ function UF:Configure_AuraBars(frame)
 			bars.barColor = (bars.filter == 'HARMFUL' and UF.db.colors.auraBarDebuff) or UF.db.colors.auraBarBuff
 			bars.isTransparent = UF.db.colors.transparentAurabars -- always on for now
 			bars.invertAurabars = UF.db.colors.invertAurabars
+			bars.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
+
+			bars.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist') or nil
+			bars.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist') or nil
+			bars.candidateFilters = E:Auras_CanidateFilters(bars.allowList, bars.blockList, bars.maxDuration)
 
 			UF:UpdateFilters(bars) -- attach the objects
 			UF:GroupFilters(bars, bars.filter) -- build the groups
