@@ -38,7 +38,7 @@ local function ExpandFromThree(r, g, b)
 end
 
 local function ExtendToSix(str)
-	for _=1, 6-strlen(str) do str=str..0 end
+	for _ = 1, 6-strlen(str) do str=str..0 end
 	return str
 end
 
