@@ -2019,6 +2019,8 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 			if CH.db.mentorshipIcon and GetMentorChannelStatus(PLAYERMENTORSHIPSTATUS_NEWCOMER, GetChannelRulesetForChannelID(zoneChannelID)) == PLAYERMENTORSHIPSTATUS_NEWCOMER then
 				flag = _G.NPEV2_CHAT_USER_TAG_NEWCOMER
 			end
+		elseif specialFlag == 'DISCORD' then -- UI-ChatIcon-Discord
+			flag = [[|A:UI-ChatIcon-Discord:0:0:0:0|a ]]
 		else
 			flag = _G['CHAT_FLAG_'..specialFlag]
 		end
