@@ -13,6 +13,7 @@ local AnchorUtil = AnchorUtil
 local AuraButtonBorderStyle = AuraButtonBorderStyle
 local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
+local CopyTable = CopyTable
 
 local ItemEnchantmentSlot = AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
@@ -20,12 +21,19 @@ local OFFHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.OffHand
 local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
 local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
+local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
 E.AuraContainerSortDirection = {}
 E.AuraContainerSortMethod = {}
 
 E.AuraTarget = {}
 E.AuraFocus = {}
+E.AuraHighlight = {
+	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
+	showWhenHarmful = true,
+	showWhenHelpful = true
+}
+
 E.AuraDispel = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
 	showWhenHarmful = true,
@@ -63,6 +71,24 @@ end
 
 function E:Auras_FlowDirection(growthX, growthY)
 	return (growthX == 'LEFT' and FLOWDIRECTION.Left) or FLOWDIRECTION.Right, (growthY == 'DOWN' and FLOWDIRECTION.Down) or FLOWDIRECTION.Up
+end
+
+function E:Auras_CreateHighlight(button)
+	button:EnableMouse(false)
+	button:SetAllPoints()
+
+	local highlight = button:CreateTexture(nil, 'OVERLAY')
+	highlight:SetTexture(E.media.blankTex)
+	highlight:SetBlendMode('ADD')
+	highlight:SetAllPoints()
+	button.highlight = highlight
+end
+
+function E:Auras_UpdateHighlight(container, button)
+	if button.highlight then
+		button:SetAuraBorder(button.highlight, E.AuraHighlight)
+		button.highlight:SetBlendMode(container.blendMode)
+	end
 end
 
 function E:Auras_CreateIndicator(button)
@@ -300,24 +326,12 @@ function E:Auras_UpdateButton(container, button)
 	end
 end
 
-function E:Auras_BuildButton(container, button)
-	button.container = container
-
-	E:Auras_CreateButton(button)
-end
-
 function E:Auras_UpdateButtons(container)
 	if InCombatLockdown() then return end
 
 	for button in next, container.buttons do
 		E:Auras_UpdateButton(container, button)
 	end
-end
-
-function E:Auras_BuildIndicator(container, button)
-	button.container = container
-
-	E:Auras_CreateIndicator(button)
 end
 
 function E:Auras_UpdateButtons(container)
@@ -331,8 +345,9 @@ end
 function E:Auras_GenerateButton(container)
 	return function(button)
 		container.buttons[button] = container
+		button.container = container
 
-		E:Auras_BuildButton(container, button)
+		E:Auras_CreateButton(button)
 		E:Auras_UpdateButton(container, button)
 	end
 end
@@ -341,9 +356,20 @@ function E:Auras_GenerateSlot(container, data)
 	return function(button)
 		container.indicators[button] = container
 		button.data = data
+		button.container = container
 
-		E:Auras_BuildIndicator(container, button)
+		E:Auras_CreateIndicator(button)
 		E:Auras_UpdateIndicator(container, button)
+	end
+end
+
+function E:Auras_GenerateHighlight(container)
+	return function(button)
+		container.indicators[button] = container
+		button.container = container
+
+		E:Auras_CreateHighlight(button)
+		E:Auras_UpdateHighlight(container, button)
 	end
 end
 
@@ -390,6 +416,15 @@ end
 
 do
 	local temp = {}
+	function E:Auras_DispelTypes()
+		temp.includeDispelTypes = CopyTable(DispelTypes)
+
+		return temp
+	end
+end
+
+do
+	local temp = {}
 	function E:Auras_SetupGroup(container, filter, layout, maxCount, sortMethod, sortDirection)
 		temp.initializeFrame = E:Auras_GenerateButton(container)
 		temp.candidateFilters = filter
@@ -409,6 +444,16 @@ do
 		temp.candidateFilters = filter
 		temp.sortDirection = sortDirection
 		temp.sortMethod = sortMethod
+
+		return temp
+	end
+end
+
+do
+	local temp = {}
+	function E:Auras_SetupHighlight(container, filter)
+		temp.initializeFrame = E:Auras_GenerateHighlight(container)
+		temp.candidateFilters = filter
 
 		return temp
 	end
@@ -446,6 +491,16 @@ end
 function E:Auras_AddSlot(container, key, filter, sortMethod, sortDirection, data)
 	local slot = E:Auras_SetupSlot(container, filter, sortMethod, sortDirection, data)
 	container:AddAuraSlot(key, container.filter, slot)
+end
+
+function E:Auras_SetHighlight(container)
+	local filter = container.filter
+	if not container.known[filter] then
+		local dispel = E:Auras_DispelTypes()
+		local slot = E:Auras_SetupHighlight(container, dispel)
+		container:AddAuraSlot(filter, container.filter, slot)
+		container.known[filter] = 'meow'
+	end
 end
 
 function E:Auras_SetIndicator(container)

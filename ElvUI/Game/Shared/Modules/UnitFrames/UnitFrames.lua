@@ -352,15 +352,16 @@ function UF:CreateRaisedElement(frame)
 	RaisedElement.__owner = frame
 
 	-- layer levels (level +1 is icons)
-	RaisedElement.AuraLevel = RaisedLevel
-	RaisedElement.PrivateAurasLevel = RaisedLevel + 5
-	RaisedElement.PVPSpecLevel = RaisedLevel + 10
-	RaisedElement.AuraBarLevel = RaisedLevel + 15
-	RaisedElement.RaidDebuffLevel = RaisedLevel + 20
-	RaisedElement.AuraWatchLevel = RaisedLevel + 25
-	RaisedElement.RestingIconLevel = RaisedLevel + 30
-	RaisedElement.RaidRoleLevel = RaisedLevel + 35
-	RaisedElement.CastBarLevel = RaisedLevel + 40
+	RaisedElement.AuraHighlightLevel = RaisedLevel
+	RaisedElement.AuraLevel = RaisedLevel + 5
+	RaisedElement.PrivateAurasLevel = RaisedLevel + 10
+	RaisedElement.PVPSpecLevel = RaisedLevel + 15
+	RaisedElement.AuraBarLevel = RaisedLevel + 20
+	RaisedElement.RaidDebuffLevel = RaisedLevel + 25
+	RaisedElement.AuraWatchLevel = RaisedLevel + 30
+	RaisedElement.RestingIconLevel = RaisedLevel + 35
+	RaisedElement.RaidRoleLevel = RaisedLevel + 40
+	RaisedElement.CastBarLevel = RaisedLevel + 45
 
 	return RaisedElement
 end
