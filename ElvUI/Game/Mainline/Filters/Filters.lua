@@ -123,7 +123,25 @@ G.unitframe.aurafilters.Blocklist = {
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	desc = L["Auras which should always be displayed."],
-	spells = {}
+	spells = {
+		-- General
+		[160029] = List(), -- Resurrecting | Pending Res
+		[225080] = List(), -- Reincarnation | Can use Reincarnate
+		[255234] = List(), -- Totemic Revival | Can accept Totem Res
+		-- Warlock
+		-- Priest
+		-- Mage
+		-- Rogue
+		-- Monk
+		-- Druid
+		-- Demon Hunter
+		-- Shaman
+		-- Hunter
+		-- Evoker
+		-- Warrior
+		-- Paladin
+		-- Death Knight
+	}
 }
 
 G.unitframe.aurafilters.RaidDebuffs = {
