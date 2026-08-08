@@ -590,7 +590,7 @@ function A:UpdateHeader(header)
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
 		header.barDB = db
 
-		header.filters[header.filter] = -1
+		header.filters[header.auraType] = header.filter
 
 		header:SetSize(minWidth, minHeight)
 
