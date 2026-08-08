@@ -176,13 +176,14 @@ function NP:Configure_Auras(nameplate, which)
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		auras.nameplateType = nameplate.frameType
+		auras.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
 		auras.noMouse = true
 
 		-- UF:UpdateFilters(auras) -- attach the objects
 		-- UF:GroupFilters(auras, auras.filter) -- build the groups
 
 		auras.filters[auras.filter] = 0
-		auras.candidateFilters = E:Auras_CanidateFilters(db.useAllowlist and NP.FilterAllow or nil, db.useBlocklist and NP.FilterBlock or nil)
+		auras.candidateFilters = E:Auras_CanidateFilters(db.useAllowlist and NP.FilterAllow or nil, db.useBlocklist and NP.FilterBlock or nil, auras.maxDuration)
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
