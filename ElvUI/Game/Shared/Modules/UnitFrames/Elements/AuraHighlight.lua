@@ -46,6 +46,7 @@ function UF:Configure_AuraHighlight(frame)
 			highlight.blendMode = UF.db.colors.debuffHighlight.blendMode
 			highlight:SetFrameLevel(frame.RaisedElementParent.AuraHighlightLevel)
 			highlight:SetAllPoints(frame.Health:GetStatusBarTexture())
+			E:Auras_GroupUnit(highlight, frame.unit)
 			E:Auras_SetHighlight(highlight)
 		else
 			highlight:SetBlendMode(UF.db.colors.debuffHighlight.blendMode)

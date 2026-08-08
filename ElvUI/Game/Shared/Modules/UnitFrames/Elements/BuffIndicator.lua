@@ -50,6 +50,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 			auras.filter = 'HELPFUL'
 
 			E:Auras_SetupIndicator(auras, auraTable)
+			E:Auras_GroupUnit(auras, frame.unit)
 			E:Auras_SetIndicator(auras)
 		elseif auras.SetNewTable then
 			auras:SetNewTable(auraTable)

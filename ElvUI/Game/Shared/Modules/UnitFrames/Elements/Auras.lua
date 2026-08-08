@@ -431,9 +431,9 @@ function UF:EnableDisable_Auras(frame)
 end
 
 function UF:Configure_UnitAuras(frame)
-	E:Auras_SetUnit(frame.Auras, frame.unit)
-	E:Auras_SetUnit(frame.Buffs, frame.unit)
-	E:Auras_SetUnit(frame.Debuffs, frame.unit)
+	E:Auras_GroupUnit(frame.Auras, frame.unit)
+	E:Auras_GroupUnit(frame.Buffs, frame.unit)
+	E:Auras_GroupUnit(frame.Debuffs, frame.unit)
 end
 
 function UF:Configure_AllAuras(frame)
@@ -549,7 +549,7 @@ function UF:Configure_Auras(frame, which)
 			UF:UpdateFilters(auras) -- attach the objects
 			UF:GroupFilters(auras, auras.filter) -- build the groups
 
-			E:Auras_SetUnit(auras, frame.unit)
+			E:Auras_GroupUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras)
 			E:Auras_SetLineSize(auras)
 			E:Auras_UpdateButtons(auras)
