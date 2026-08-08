@@ -485,8 +485,7 @@ function E:Auras_SetContainer(container)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
 	for filter in next, container.active do -- known but not active anymore
-		local clear = container.known[filter] and not container.filters[filter]
-		if clear then
+		if container.known[filter] and not container.filters[filter] then
 			container:SetAuraGroupMaxFrameCount(filter, 0)
 		end
 
