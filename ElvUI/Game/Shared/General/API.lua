@@ -1402,11 +1402,15 @@ end
 function E:GetClassificationType(unit)
 	if UnitIsPlayer(unit) then return end
 
-	local baseClass = UnitClassBase(unit)
 	local _, instanceType = IsInInstance()
 	local classification = UnitClassification(unit)
 	local unitLevel = E:UnitEffectiveLevel(unit)
 	local maxLevel = E.expansionLevelMax
+
+	local baseClass = UnitClassBase(unit)
+	if E:IsSecretValue(baseClass) then
+		baseClass = nil -- we cant use it
+	end
 
 	if instanceType == 'party' and baseClass == 'PALADIN' then
 		return 'caster' -- In dungeons, check caster first so elite casters aren't missed
