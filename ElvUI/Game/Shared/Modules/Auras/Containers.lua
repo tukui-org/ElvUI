@@ -467,6 +467,7 @@ function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount
 		container:SetAuraGroupCandidateFilters(key, candidate)
 	end
 
+	container:SetAuraGroupFilterString(key, filter)
 	container:SetAuraGroupMaxFrameCount(key, maxCount)
 	container:SetAuraGroupSortMethod(key, sortMethod, sortDirection)
 	container:SetAuraGroupLayout(key, layout)
