@@ -2128,9 +2128,6 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		nameWithRealm = data.nameWithRealm
 	end
 
-	-- Discord integration
-	local discordInfo, isFromDiscord = CH:GetDiscordInfo(arg18)
-
 	local playerLink
 	local playerLinkDisplayText = coloredName
 	local relevantDefaultLanguage = frame.defaultLanguage
@@ -2144,6 +2141,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		playerLinkDisplayText = format('[%s]', coloredName)
 	end
 
+	local discordInfo, isFromDiscord = CH:GetDiscordInfo(arg18)
 	local playerName = (nameWithRealm ~= arg2 and nameWithRealm) or arg2
 	if chatType == 'COMMUNITIES_CHANNEL' then -- isCommunityType
 		local messageInfo, clubId, streamId = C_Club_GetInfoFromLastCommunityChatLine()
