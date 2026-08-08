@@ -467,6 +467,7 @@ function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount
 		container:SetAuraGroupCandidateFilters(key, candidate)
 	end
 
+	container:SetAuraGroupFilterString(key, filter)
 	container:SetAuraGroupMaxFrameCount(key, maxCount)
 	container:SetAuraGroupSortMethod(key, sortMethod, sortDirection)
 	container:SetAuraGroupLayout(key, layout)
@@ -493,12 +494,12 @@ end
 
 function E:Auras_SetHighlight(container)
 	local filter = container.filter
-	if not container.known[filter] then
-		local dispel = E:Auras_DispelTypes()
-		local slot = E:Auras_SetupHighlight(container, dispel)
-		container:AddAuraSlot(filter, container.filter, slot)
-		container.known[filter] = 'meow'
-	end
+	if container.known[filter] then return end
+
+	local dispel = E:Auras_DispelTypes()
+	local slot = E:Auras_SetupHighlight(container, dispel)
+	container:AddAuraSlot(filter, container.filter, slot)
+	container.known[filter] = 'meow'
 end
 
 function E:Auras_SetIndicator(container)
