@@ -484,10 +484,17 @@ function E:Auras_SetContainer(container)
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
 
-	local prevActive = CopyTable(container.active)
+	for filter in next, container.active do -- known but not active anymore
+		local clear = container.known[filter] and not container.filters[filter]
+		if clear then
+			container:SetAuraGroupMaxFrameCount(filter, 0)
+		end
+
+		container.active[filter] = nil
+	end
+
 	for filter, index in next, container.filters do
 		container.active[filter] = index -- set all active
-		prevActive[filter] = nil -- remove still active
 
 		if container.known[filter] then
 			E:Auras_UpdateGroup(container, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
@@ -496,10 +503,6 @@ function E:Auras_SetContainer(container)
 
 			container.known[filter] = index
 		end
-	end
-
-	for filter in next, prevActive do
-		container:SetAuraGroupMaxFrameCount(filter, 0)
 	end
 end
 
