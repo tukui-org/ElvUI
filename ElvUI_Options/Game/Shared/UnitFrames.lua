@@ -330,7 +330,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 
 	config.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20)
 	config.args.midnightGroup.args.others.args.isAuraImportant = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not E.PTR)
-	config.args.midnightGroup.args.player.args.isAuraDispellable = ACH:Toggle(L["Dispellable"], nil, 2, nil, nil, nil, nil, nil, nil, not E.PTR)
+	config.args.midnightGroup.args.others.args.isAuraDispellable = ACH:Toggle(L["Dispellable"], nil, 2, nil, nil, nil, nil, nil, nil, not E.PTR)
 	config.args.midnightGroup.args.others.args.isAuraRaid = ACH:Toggle(L["Raid"], nil, 3)
 	config.args.midnightGroup.args.others.args.isAuraRaidInCombat = ACH:Toggle(L["Raid Frames"], L["Auras displayed on Blizzard's raid frames."], 4, nil, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.others.args.isAuraCancelable = ACH:Toggle(L["Is Cancelable"], nil, 5)
