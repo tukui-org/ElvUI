@@ -179,10 +179,8 @@ function NP:Configure_Auras(nameplate, which)
 		auras.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
 		auras.noMouse = true
 
-		-- UF:UpdateFilters(auras) -- attach the objects
-		-- UF:GroupFilters(auras, auras.filter) -- build the groups
-
-		auras.filters[auras.filter] = 0
+		UF:UpdateFilters(auras) -- attach the objects
+		UF:GroupFilters(auras, auras.filter) -- build the groups
 		auras.candidateFilters = E:Auras_CanidateFilters(db.useAllowlist and NP.FilterAllow or nil, db.useBlocklist and NP.FilterBlock or nil, auras.maxDuration)
 
 		E:Auras_SetContainer(auras)
