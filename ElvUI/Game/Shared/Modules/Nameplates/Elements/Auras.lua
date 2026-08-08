@@ -181,7 +181,9 @@ function NP:Configure_Auras(nameplate, which)
 		UF:UpdateFilters(auras) -- attach the objects
 		UF:GroupFilters(auras, auras.filter) -- build the groups
 
-		auras.candidateFilters = E:Auras_CanidateFilters(NP.FilterAllow, NP.FilterBlock)
+		auras.candidateFilters = E:Auras_CanidateFilters(db.useAllowlist and NP.FilterAllow or nil, db.useBlocklist and NP.FilterBlock or nil)
+
+		E:Auras_SetUnit(auras, nameplate.unit)
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
 	else
