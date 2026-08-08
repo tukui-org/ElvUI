@@ -273,17 +273,14 @@ function UF:Construct_AuraIcon(button)
 end
 
 do
-	local temp = {}
+	local exclude = ''
 	function UF:AddFilter(index, group, filter, yes, which, main)
 		if not yes then return end
 
-		local str = strjoin('|', filter, which)
-		for old in next, temp do
-			str = strjoin('|!', str, old)
-		end
+		local str = (filter..'|'..which)..exclude
+		exclude = exclude..'|!'..which   -- grow the exclusion list once
 
-		temp[which] = true -- start excluding ones
-		group[str .. (main or '')] = index -- add it
+		group[str..(main or '')] = index
 	end
 
 	function UF:GroupFilters(frame, filter)
@@ -298,10 +295,7 @@ do
 		if frame.noFilter then
 			group[filter] = 0 -- break the rules
 		else
-			wipe(temp) -- first clear
-
-			-- player: you obviously
-
+			exclude = '' -- player: you obviously
 			if filters.isPlayer then
 				UF:AddFilter(10, group, filter, true, 'PLAYER')
 			else
@@ -316,9 +310,7 @@ do
 				UF:AddFilter(28, group, filter, filters.isRaidPlayer, 'RAID', '|PLAYER')
 			end
 
-			wipe(temp) -- second clear
-
-			-- others: not player
+			exclude = '' -- others: not player
 			UF:AddFilter(50, group, filter, filters.isImportant, 'IMPORTANT', '|!PLAYER')
 			UF:AddFilter(51, group, filter, filters.isDispellable, 'DISPELLABLE', '|!PLAYER')
 			UF:AddFilter(52, group, filter, filters.isCrowdControl, 'CROWD_CONTROL', '|!PLAYER')
