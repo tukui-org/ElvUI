@@ -37,7 +37,6 @@ local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParent = UIParent
 local UnitExists = UnitExists
 local UnitIsVisible = UnitIsVisible
-local UIParentLoadAddOn = UIParentLoadAddOn
 local UnitClassBase = UnitClassBase
 local UnitClassification = UnitClassification
 local UnitFactionGroup = UnitFactionGroup
@@ -50,6 +49,8 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitSex = UnitSex
 local UnitThreatSituation = UnitThreatSituation
 local UnitSelectionType = UnitSelectionType
+local UIParentLoadAddOn = UIParentLoadAddOn
+local LoadAddOnWithErrorHandling = LoadAddOnWithErrorHandling
 
 local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
@@ -849,9 +850,17 @@ do
 	end
 end
 
+function E:LoadAddon(addon)
+	if UIParentLoadAddOn then
+		return UIParentLoadAddOn(addon)
+	elseif LoadAddOnWithErrorHandling then
+		LoadAddOnWithErrorHandling(addon)
+	end
+end
+
 function E:Dump(object, inspect)
 	local debugTools = IsAddOnLoaded('Blizzard_DebugTools')
-	if not debugTools then UIParentLoadAddOn('Blizzard_DebugTools') end
+	if not debugTools then E:LoadAddon('Blizzard_DebugTools') end
 
 	if inspect then
 		local tableType = type(object)

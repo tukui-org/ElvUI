@@ -8,7 +8,6 @@ local format = format
 local InCombatLockdown = InCombatLockdown
 local HasArtifactEquipped = HasArtifactEquipped
 local SocketInventoryItem = SocketInventoryItem
-local UIParentLoadAddOn = UIParentLoadAddOn
 local ToggleFrame = ToggleFrame
 local Item = Item
 
@@ -98,7 +97,7 @@ function DB:AzeriteBar_OnClick()
 	if HasArtifactEquipped() and not C_ArtifactUI_IsEquippedArtifactDisabled() then
 		SocketInventoryItem(_G.INVSLOT_MAINHAND)
 	elseif C_AzeriteItem_FindActiveAzeriteItem() then
-		UIParentLoadAddOn('Blizzard_AzeriteEssenceUI')
+		E:LoadAddon('Blizzard_AzeriteEssenceUI')
 		ToggleFrame(_G.AzeriteEssenceUI)
 	end
 end
