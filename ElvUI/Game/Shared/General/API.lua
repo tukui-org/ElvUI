@@ -37,7 +37,7 @@ local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParent = UIParent
 local UnitExists = UnitExists
 local UnitIsVisible = UnitIsVisible
-local UnitClassBase = UnitClassBase
+local UnitHasPowerType = UnitHasPowerType
 local UnitClassification = UnitClassification
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
@@ -83,6 +83,7 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
+local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local AddOnRestrictionType = Enum.AddOnRestrictionType or {}
 local LuaCurveTypeLinear = Enum.LuaCurveType and Enum.LuaCurveType.Linear
 local LuaCurveTypeStep = Enum.LuaCurveType and Enum.LuaCurveType.Step
@@ -1403,16 +1404,12 @@ function E:GetClassificationType(unit)
 	if UnitIsPlayer(unit) then return end
 
 	local _, instanceType = IsInInstance()
+	local hasMana = UnitHasPowerType(unit, POWERTYPE_MANA)
 	local classification = UnitClassification(unit)
 	local unitLevel = E:UnitEffectiveLevel(unit)
 	local maxLevel = E.expansionLevelMax
 
-	local baseClass = UnitClassBase(unit)
-	if E:IsSecretValue(baseClass) then
-		baseClass = nil -- we cant use it
-	end
-
-	if instanceType == 'party' and baseClass == 'PALADIN' then
+	if instanceType == 'party' and hasMana then
 		return 'caster' -- In dungeons, check caster first so elite casters aren't missed
 	elseif classification == 'worldboss' or classification == 'rareelite' or classification == 'rare' then
 		return classification
@@ -1420,7 +1417,7 @@ function E:GetClassificationType(unit)
 		return 'eliteBoss'
 	elseif classification == 'elite' and (unitLevel >= (maxLevel + 1)) then
 		return 'eliteMini'
-	elseif baseClass == 'PALADIN' then
+	elseif hasMana then
 		return 'caster'
 	end
 end
