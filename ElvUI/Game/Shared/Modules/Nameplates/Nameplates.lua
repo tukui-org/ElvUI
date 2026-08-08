@@ -1075,6 +1075,11 @@ function NP:GetBlizzardDebuffs(nameplate)
 	return NP:BlizzardAuras_GetAuras(nameplate, 'DebuffList')
 end
 
+function NP:SetAuraFilters()
+	NP.FilterAllow = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist')
+	NP.FilterBlock = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist')
+end
+
 function NP:Initialize()
 	if not E.private.nameplates.enable then return end
 	NP.Initialized = true
@@ -1098,6 +1103,7 @@ function NP:Initialize()
 	NP.numPlates = 0
 
 	NP:UpdateColors()
+	NP:SetAuraFilters()
 
 	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
