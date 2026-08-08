@@ -26,8 +26,8 @@ local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 E.AuraContainerSortDirection = {}
 E.AuraContainerSortMethod = {}
 
-E.AuraTarget = {}
 E.AuraFocus = {}
+E.AuraTarget = {}
 E.AuraHighlight = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
 	showWhenHarmful = true,
@@ -566,6 +566,11 @@ function E:Auras_SetLineSize(container)
 end
 
 function E:Auras_SetUnit(container, unit)
+	container.unit = unit
+	container:SetUnit(unit)
+end
+
+function E:Auras_GroupUnit(container, unit)
 	if not container then return end
 
 	if unit == 'target' then
@@ -574,8 +579,7 @@ function E:Auras_SetUnit(container, unit)
 		E.AuraFocus[container] = unit
 	end
 
-	container.unit = unit
-	container:SetUnit(unit)
+	E:Auras_SetUnit(container, unit)
 end
 
 function E:Auras_GetFilter(obj, key)

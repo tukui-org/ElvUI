@@ -228,7 +228,7 @@ function UF:Configure_AuraBars(frame)
 			UF:UpdateFilters(bars) -- attach the objects
 			UF:GroupFilters(bars, bars.filter) -- build the groups
 
-			E:Auras_SetUnit(bars, frame.unit)
+			E:Auras_GroupUnit(bars, frame.unit)
 			E:Auras_SetContainer(bars)
 			E:Auras_SetLineSize(bars)
 
