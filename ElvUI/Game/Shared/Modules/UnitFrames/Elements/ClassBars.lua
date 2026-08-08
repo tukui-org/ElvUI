@@ -79,7 +79,7 @@ function UF:ClassPower_GetColor(colors, powerType)
 	local all, power = colors.classResources, colors.power
 	local mine = all and all[E.myclass]
 
-	return all, powerType ~= 'MANA' and (all[UF.ClassPowerColors[powerType]] or (mine and mine[powerType]) or mine), power[powerType] or power.MANA
+	return all, powerType ~= 'MANA' and (all[UF.ClassPowerColors[powerType]] or (mine and mine[powerType]) or mine), power[powerType] or power.MANA or FALLBACK
 end
 
 function UF:ClassPower_BarColor(bar, index, colors, powers, isRunes)
