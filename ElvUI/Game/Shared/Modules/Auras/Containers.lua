@@ -29,9 +29,7 @@ E.AuraContainerSortMethod = {}
 E.AuraFocus = {}
 E.AuraTarget = {}
 E.AuraHighlight = {
-	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
-	showWhenHarmful = true,
-	showWhenHelpful = true
+	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
 }
 
 E.AuraDispel = {
