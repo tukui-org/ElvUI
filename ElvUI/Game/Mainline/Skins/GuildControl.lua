@@ -7,7 +7,7 @@ local GuildControlGetNumRanks = GuildControlGetNumRanks
 local GetNumGuildBankTabs = GetNumGuildBankTabs
 
 local function SkinGuildRanks()
-	for i=1, GuildControlGetNumRanks() do
+	for i = 1, GuildControlGetNumRanks() do
 		local rankFrame = _G['GuildControlUIRankOrderFrameRank'..i]
 		if rankFrame then
 			if not rankFrame.nameBox.backdrop then
@@ -31,7 +31,7 @@ local function SkinBankTabs()
 		numTabs = numTabs + 1
 	end
 
-	for i=1, numTabs do
+	for i = 1, numTabs do
 		local tab = _G['GuildControlBankTab'..i]
 		if not tab then break end
 
@@ -101,7 +101,7 @@ function S:Blizzard_GuildControlUI()
 	end
 	hooksecurefunc('GuildControlUI_Discord_Update', SkinDiscordFrame)
 
-	for i=1, _G.NUM_RANK_FLAGS do
+	for i = 1, _G.NUM_RANK_FLAGS do
 		local checkbox = _G['GuildControlUIRankSettingsFrameCheckbox'..i]
 		if checkbox then S:HandleCheckBox(checkbox) end
 	end

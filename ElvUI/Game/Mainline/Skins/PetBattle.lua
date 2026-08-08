@@ -171,7 +171,7 @@ function S:PetBattleFrame()
 		if not (holder.petOwner and holder.petIndex) then return end
 
 		local nextFrame = 1
-		for i=1, C_PetBattles_GetNumAuras(holder.petOwner, holder.petIndex) do
+		for i = 1, C_PetBattles_GetNumAuras(holder.petOwner, holder.petIndex) do
 			local _, _, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(holder.petOwner, holder.petIndex, i)
 			if (isBuff and holder.displayBuffs) or (not isBuff and holder.displayDebuffs) then
 				local frame = holder.frames[nextFrame]
@@ -389,7 +389,7 @@ function S:PetBattleFrame()
 	end)
 
 	hooksecurefunc('PetBattleFrame_UpdateActionBarLayout', function()
-		for i=1, _G.NUM_BATTLE_PET_ABILITIES do
+		for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
 			local b = bf.abilityButtons[i]
 			SkinPetButton(b, bf)
 			b:SetParent(bar)

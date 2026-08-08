@@ -46,7 +46,7 @@ function S:Blizzard_GuildBankUI()
 	_G.GuildBankInfoScrollFrame.ScrollBar:Point('TOPRIGHT', frame.BlackBG.backdrop, -8, -4)
 	_G.GuildBankInfoScrollFrame.ScrollBar:Point('BOTTOMRIGHT', frame.BlackBG.backdrop, -8, 4)
 
-	for i=1, _G.MAX_GUILDBANK_TABS do
+	for i = 1, _G.MAX_GUILDBANK_TABS do
 		local tab = _G['GuildBankTab'..i]
 		tab:StripTextures()
 
