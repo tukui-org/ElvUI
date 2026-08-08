@@ -178,12 +178,9 @@ function NP:Configure_Auras(nameplate, which)
 		auras.nameplateType = nameplate.frameType
 		auras.noMouse = true
 
-		auras.allowList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist')
-		auras.blockList = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist')
-
 		UF:UpdateFilters(auras) -- attach the objects
 		UF:GroupFilters(auras, auras.filter) -- build the groups
-		E:Auras_CanidateFilters(db, auras.allowList, auras.blockList)
+		E:Auras_CanidateFilters(db, NP.FilterAllow, NP.FilterBlock)
 
 		E:Auras_SetUnit(auras, nameplate.unit)
 		E:Auras_SetContainer(auras)
