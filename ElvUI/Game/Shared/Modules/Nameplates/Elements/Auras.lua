@@ -136,9 +136,9 @@ function NP:Configure_UnitAuras(nameplate)
 end
 
 function NP:Configure_AllAuras(nameplate)
-	E:Auras_UpdateElements(nameplate.Auras_)
-	E:Auras_UpdateElements(nameplate.Buffs_)
-	E:Auras_UpdateElements(nameplate.Debuffs_)
+	E:Auras_UpdateButtons(nameplate.Auras_)
+	E:Auras_UpdateButtons(nameplate.Buffs_)
+	E:Auras_UpdateButtons(nameplate.Debuffs_)
 end
 
 function NP:Configure_Auras(nameplate, which)

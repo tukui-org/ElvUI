@@ -595,7 +595,7 @@ function A:UpdateHeader(header)
 		header:SetSize(minWidth, minHeight)
 
 		E:Auras_SetContainer(header)
-		E:Auras_UpdateElements(header)
+		E:Auras_UpdateButtons(header)
 	else
 		E:UpdateClassColor(db.barColor)
 
