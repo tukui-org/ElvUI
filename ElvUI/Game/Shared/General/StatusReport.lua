@@ -244,7 +244,7 @@ function E:UpdateStatusFrame()
 			local width = PluginSection:GetWidth()
 			PluginSection.Content = E:CreateStatusContent(count, width, PluginSection, PluginSection.Header, PluginSection.Content)
 
-			for i=1, count do
+			for i = 1, count do
 				local data = pluginData[i]
 				local color = data.old and 'ff3333' or '33ff33'
 				PluginSection.Content['Line'..i].Text:SetFormattedText('%s |cff888888v|r|cff%s%s|r', data.title or data.name, color, data.version)

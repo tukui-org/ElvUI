@@ -33,7 +33,7 @@ function S:Blizzard_RaidUI()
 		end
 	end
 
-	for i=1, _G.MAX_RAID_GROUPS*5 do
+	for i = 1, _G.MAX_RAID_GROUPS*5 do
 		S:HandleButton(_G['RaidGroupButton'..i], true)
 	end
 end

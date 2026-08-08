@@ -427,7 +427,7 @@ function E:FormatLargeNumber(amount, seperator)
 	local trd = len % 3
 
 	if not seperator then seperator = ',' end
-	for i=4, len, 3 do num = seperator..strsub(amount, -(i - 1), -(i - 3))..num end
+	for i = 4, len, 3 do num = seperator..strsub(amount, -(i - 1), -(i - 3))..num end
 
 	return strsub(amount, 1, (trd == 0) and 3 or trd)..num
 end

@@ -625,7 +625,7 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 end
 
 function B.Compress(...)
-	for i=1, select('#', ...) do
+	for i = 1, select('#', ...) do
 		local bags = select(i, ...)
 		B.Stack(bags, bags, B.IsPartial)
 	end
@@ -820,7 +820,7 @@ function B.Fill(sourceBags, targetBags, reverse, canMove)
 end
 
 function B.SortBags(...)
-	for i=1, select('#', ...) do
+	for i = 1, select('#', ...) do
 		local bags = select(i, ...)
 		for _, slotNum in ipairs(bags) do
 			local bagType = B:IsSpecialtyBag(slotNum)
