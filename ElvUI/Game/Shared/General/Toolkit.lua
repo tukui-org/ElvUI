@@ -8,6 +8,7 @@ local strsub, type = strsub, type
 local next, pcall, unpack = next, pcall, unpack
 local hooksecurefunc = hooksecurefunc
 local getmetatable = getmetatable
+local setmetatable = setmetatable
 local tonumber = tonumber
 
 local FontStringScaleAnimationMode = Enum.FontStringScaleAnimationMode
@@ -104,14 +105,18 @@ function E:ReplaceSetupTextureCoordinates(frame) -- temp until blizzard fixes th
 	end
 end
 
+local pixelSnapDisabled = setmetatable({}, { __mode = 'k' })
+
 local function WatchPixelSnap(frame, snap)
-	if E:NotSecretTable(frame) and (frame and not frame:IsForbidden()) and frame.PixelSnapDisabled and snap then
-		frame.PixelSnapDisabled = nil
+	if E:NotSecretTable(frame) and (frame and not frame:IsForbidden()) and pixelSnapDisabled[frame] and snap then
+		pixelSnapDisabled[frame] = nil
 	end
 end
 
 local function DisablePixelSnap(frame)
-	if E:NotSecretTable(frame) and (frame and not frame:IsForbidden()) and not frame.PixelSnapDisabled then
+	if frame == _G.OverlayPlayerCastingBarFrame then return end
+
+	if E:NotSecretTable(frame) and (frame and not frame:IsForbidden()) and not pixelSnapDisabled[frame] then
 		if frame.SetSnapToPixelGrid then
 			frame:SetSnapToPixelGrid(false)
 			frame:SetTexelSnappingBias(0)
@@ -123,7 +128,7 @@ local function DisablePixelSnap(frame)
 			end
 		end
 
-		frame.PixelSnapDisabled = true
+		pixelSnapDisabled[frame] = true
 	end
 end
 
