@@ -314,8 +314,8 @@ do
 		temp.sortMethod = sortMethod
 		temp.sortDirection = sortDirection
 		temp.initializeFrame = E:Auras_GenerateInitialize(container)
+		temp.candidateFilters = filter
 		temp.layout = layout
-		temp.candidateFilters = type(filter) == 'table' and filter or nil
 
 		return temp
 	end
@@ -327,7 +327,7 @@ function E:Auras_AddGroup(container, key, filter, layout, maxCount, sortMethod, 
 end
 
 function E:Auras_UpdateGroup(container, key, filter, layout, maxCount, sortMethod, sortDirection)
-	if type(filter) == 'table' then
+	if filter then
 		container:SetAuraGroupCandidateFilters(key, filter)
 	end
 
@@ -367,9 +367,9 @@ function E:Auras_SetContainer(container)
 		container.active[filter] = index -- set all active
 
 		if container.known[filter] then
-			E:Auras_UpdateGroup(container, filter, container.candidateFilters or filter, layout, maxCount, sortMethod, sortDirection)
+			E:Auras_UpdateGroup(container, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
 		else
-			E:Auras_AddGroup(container, filter, container.candidateFilters or filter, layout, maxCount, sortMethod, sortDirection)
+			E:Auras_AddGroup(container, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
 
 			container.known[filter] = index
 		end
