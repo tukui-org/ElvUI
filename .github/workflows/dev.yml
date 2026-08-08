@@ -15,7 +15,7 @@ jobs:
     if: github.repository == 'tukui-org/ElvUI'
     name: Publish development build to CDN
     concurrency:
-      group: ${{ github.workflow }}
+      group: ${{ github.workflow }}-${{ github.ref }}
       cancel-in-progress: true
     runs-on: ubuntu-latest
     env:
