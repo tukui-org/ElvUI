@@ -178,9 +178,10 @@ function NP:Configure_Auras(nameplate, which)
 		auras.nameplateType = nameplate.frameType
 		auras.noMouse = true
 
-		UF:UpdateFilters(auras) -- attach the objects
-		UF:GroupFilters(auras, auras.filter) -- build the groups
+		-- UF:UpdateFilters(auras) -- attach the objects
+		-- UF:GroupFilters(auras, auras.filter) -- build the groups
 
+		auras.filters[auras.filter] = 0
 		auras.candidateFilters = E:Auras_CanidateFilters(db.useAllowlist and NP.FilterAllow or nil, db.useBlocklist and NP.FilterBlock or nil)
 
 		E:Auras_SetContainer(auras)
