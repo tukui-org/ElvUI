@@ -547,7 +547,7 @@ function UF:Configure_Auras(frame, which)
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
 		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 		auras.unitframeType = frame.unitframeType
-		auras.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration
+		auras.maxDuration = (settings.maxDuration and settings.maxDuration > 0) and settings.maxDuration or nil
 
 		if settings.enable then
 			auras.allowList = settings.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist') or nil

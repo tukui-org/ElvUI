@@ -107,6 +107,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.midnightGroup.args.useBlocklist = ACH:Toggle(L["Blacklist"], L["Activate the blocklist filter."], 1)
 	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 2)
 	group.args.midnightGroup.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], L["Auras you can dispel."], 3, nil, nil, nil, nil, nil, nil, not E.Retail)
+	group.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 4, { min = 0, max = 10800, step = 1 })
 
 	group.args.midnightGroup.args.player = ACH:Group(L["Player"], nil, 10)
 	group.args.midnightGroup.args.player.args.isAuraImportantPlayer = ACH:Toggle(L["Important"], nil, 1, nil, nil, nil, nil, nil, nil, not E.PTR)
