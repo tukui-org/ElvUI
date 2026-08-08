@@ -34,7 +34,8 @@ local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local GetCVarDefault = C_CVar.GetCVarDefault
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
-local Blacklist = { -- we use this to build the aura filters by the keys
+
+local Blacklist = {
 	PLAYER = { enable = true, health = { enable = true }, },
 	ENEMY_PLAYER = { enable = true, health = { enable = true }, },
 	FRIENDLY_PLAYER = { enable = true, health = { enable = true }, },
@@ -588,7 +589,6 @@ function NP:ConfigurePlates(init)
 	if init then -- since this is a fake plate, we actually need to trigger this always
 		staticFunc(NP.PlayerFrame, staticEvent, 'player')
 
-		NP:SetAuraFilters()
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
 		for nameplate in pairs(NP.Plates) do
@@ -1075,45 +1075,9 @@ function NP:GetBlizzardDebuffs(nameplate)
 	return NP:BlizzardAuras_GetAuras(nameplate, 'DebuffList')
 end
 
-do
-	local data, types = {}, {
-		auras = { which = 'Auras', filters = {} },
-		buffs = { which = 'Buffs', filters = {} },
-		debuffs = { which = 'Debuffs', filters = {} }
-	}
-
-	function NP:BuildAuraFilters()
-		for key in next, Blacklist do
-			if not data[key] then
-				data[key] = {}
-			end
-
-			local frame = data[key] -- fake frame
-			frame.db = NP.db.units[key] -- link the real db
-
-			for auraType, obj in next, types do
-				local info = CopyTable(obj)
-				if not info.db then -- fake aura frame
-					info.db = frame.db[auraType]
-				end
-
-				frame[auraType] = info -- link it to the fake frame
-
-				info.filter = NP:GetAuraFilter(info.which, info.db)
-
-				UF:UpdateFilters(info) -- attach the objects
-				UF:GroupFilters(info, info.filter) -- build the groups
-			end
-		end
-
-		return data
-	end
-end
-
 function NP:SetAuraFilters()
 	NP.FilterAllow = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Whitelist')
 	NP.FilterBlock = E:Auras_GetFilter(E.global.unitframe.aurafilters, 'Blacklist')
-	NP.FilterTypes = NP:BuildAuraFilters()
 end
 
 function NP:Initialize()
@@ -1139,6 +1103,7 @@ function NP:Initialize()
 	NP.numPlates = 0
 
 	NP:UpdateColors()
+	NP:SetAuraFilters()
 
 	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
