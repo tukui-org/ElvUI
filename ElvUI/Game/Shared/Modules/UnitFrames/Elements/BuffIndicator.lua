@@ -4,15 +4,23 @@ local UF = E:GetModule('UnitFrames')
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
-	local auras = CreateFrame('Frame', '$parentAuraWatch', frame)
-	auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
-	auras:SetInside(frame.Health)
+	if E.PTR then
+		local auras = E:Auras_Create(frame, 'AuraWatch')
+		auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
+		auras:SetInside(frame.Health)
 
-	auras.allowStacks = UF.SourceStacks -- fake stacking (same spell id)
-	auras.PostCreateIcon = UF.BuffIndicator_PostCreateIcon
-	auras.PostUpdateIcon = UF.BuffIndicator_PostUpdateIcon
+		return auras
+	else
+		local auras = CreateFrame('Frame', '$parentAuraWatch', frame)
+		auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
+		auras:SetInside(frame.Health)
 
-	return auras
+		auras.allowStacks = UF.SourceStacks -- fake stacking (same spell id)
+		auras.PostCreateIcon = UF.BuffIndicator_PostCreateIcon
+		auras.PostUpdateIcon = UF.BuffIndicator_PostUpdateIcon
+
+		return auras
+	end
 end
 
 function UF:Configure_AuraWatch(frame, isPet)
@@ -22,10 +30,11 @@ function UF:Configure_AuraWatch(frame, isPet)
 			frame:EnableElement('AuraWatch')
 		end
 
-		frame.AuraWatch.size = db.size
-		frame.AuraWatch.countFont = db.countFont
-		frame.AuraWatch.countFontSize = db.countFontSize
-		frame.AuraWatch.countFontOutline = db.countFontOutline
+		local auras = frame.AuraWatch
+		auras.size = db.size
+		auras.countFont = db.countFont
+		auras.countFontSize = db.countFontSize
+		auras.countFontOutline = db.countFontOutline
 
 		local auraTable
 		if (frame.unit == 'pet' or isPet) and db.petSpecific then
@@ -37,8 +46,13 @@ function UF:Configure_AuraWatch(frame, isPet)
 			E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 		end
 
-		if frame.AuraWatch.SetNewTable then
-			frame.AuraWatch:SetNewTable(auraTable)
+		if E.PTR then
+			auras.filter = 'HELPFUL'
+
+			E:Auras_SetupIndicator(auras, auraTable)
+			E:Auras_SetIndicator(auras)
+		elseif auras.SetNewTable then
+			auras:SetNewTable(auraTable)
 		end
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
