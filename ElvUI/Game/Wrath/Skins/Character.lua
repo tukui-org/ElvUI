@@ -327,7 +327,7 @@ function S:CharacterFrame()
 
 	-- Honor/Arena/PvP Tab
 	local PVPFrame = _G.PVPFrame
-	PVPFrame:StripTextures(true)
+	S:HandleFrame(PVPFrame, true, nil, 11, -12, -32, 76)
 
 	for i = 1, MAX_ARENA_TEAMS do
 		local pvpTeam = _G['PVPTeam'..i]
@@ -356,6 +356,10 @@ function S:CharacterFrame()
 	S:HandleNextPrevButton(PVPFrameToggleButton)
 	PVPFrameToggleButton:Point('BOTTOMRIGHT', PVPFrame, 'BOTTOMRIGHT', -48, 81)
 	PVPFrameToggleButton:Size(14)
+
+	for i = 1, 2 do
+		S:HandleTab(_G['PVPParentFrameTab'..i])
+	end
 
 	for i = 1, 5 do
 		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]

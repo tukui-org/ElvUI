@@ -8,6 +8,10 @@ function S:SkinBattlefield()
 
 	S:HandleFrame(_G.BattlefieldFrame, true, nil, 11, -12, -32, 76)
 
+	_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoDescription:SetTextColor(1, 1, 1)
+	_G.BattlefieldFrameBGTex:CreateBackdrop('Transparent')
+	_G.BattlefieldFrameBGTex:SetAlpha(0)
+
 	_G.BattlefieldFrameTypeScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.BattlefieldFrameTypeScrollFrameScrollBar)
 
