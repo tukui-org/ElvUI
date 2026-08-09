@@ -505,77 +505,6 @@ local function SkinTransmogFrames()
 	DetailsFrame.LongName:FontTemplate(nil, 16)
 	S:HandleDropDownBox(DetailsFrame.VariantSetsDropdown)
 	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
-
-	local WardrobeFrame = _G.WardrobeFrame
-	S:HandlePortraitFrame(WardrobeFrame)
-
-	local WardrobeTransmogFrame = _G.WardrobeTransmogFrame
-	WardrobeTransmogFrame:StripTextures()
-	S:HandleButton(WardrobeTransmogFrame.OutfitDropdown.SaveButton)
-	S:HandleDropDownBox(WardrobeTransmogFrame.OutfitDropdown, 200)
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:ClearAllPoints()
-	WardrobeTransmogFrame.OutfitDropdown.SaveButton:Point('LEFT', WardrobeTransmogFrame.OutfitDropdown, 'RIGHT', 2, 0)
-
-	for i = 1, #WardrobeTransmogFrame.SlotButtons do
-		local slotButton = WardrobeTransmogFrame.SlotButtons[i]
-		slotButton:OffsetFrameLevel(2)
-		slotButton:StripTextures()
-		slotButton:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
-		slotButton.Border:Kill()
-		slotButton.Icon:SetTexCoords()
-		slotButton.Icon:SetInside(slotButton.backdrop)
-
-		local undo = slotButton.UndoButton
-		if undo then undo:SetHighlightTexture(E.ClearTexture) end
-
-		local pending = slotButton.PendingFrame
-		if pending then
-			if slotButton.transmogType == 1 then
-				pending.Glow:Size(48)
-				pending.Ants:Size(30)
-			else
-				pending.Glow:Size(74)
-				pending.Ants:Size(48)
-			end
-		end
-	end
-
-	local SpecButton = WardrobeTransmogFrame.SpecDropdown
-	if SpecButton then
-		S:HandleButton(SpecButton)
-
-		SpecButton:SetPoint('RIGHT', WardrobeTransmogFrame.ApplyButton, 'LEFT', -3, 0)
-
-		if SpecButton.Arrow then
-			SpecButton.Arrow:SetAlpha(0)
-		end
-
-		if not SpecButton.customArrow then
-			local tex = SpecButton:CreateTexture(nil, 'ARTWORK')
-			tex:SetAllPoints()
-			tex:SetTexture(E.Media.Textures.ArrowUp)
-			tex:SetRotation(S.ArrowRotation.down)
-
-			SpecButton.customArrow = tex
-		end
-	end
-
-	S:HandleButton(WardrobeTransmogFrame.ApplyButton)
-	S:HandleCheckBox(WardrobeTransmogFrame.ToggleSecondaryAppearanceCheckbox)
-
-	WardrobeCollectionFrame.SetsTransmogFrame:StripTextures()
-	WardrobeCollectionFrame.SetsTransmogFrame:SetTemplate('Transparent')
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.NextPageButton)
-	S:HandleNextPrevButton(WardrobeCollectionFrame.SetsTransmogFrame.PagingFrame.PrevPageButton)
-
-	local WardrobeOutfitEditFrame = _G.WardrobeOutfitEditFrame
-	WardrobeOutfitEditFrame:StripTextures()
-	WardrobeOutfitEditFrame:SetTemplate('Transparent')
-	WardrobeOutfitEditFrame.EditBox:StripTextures()
-	S:HandleEditBox(WardrobeOutfitEditFrame.EditBox)
-	S:HandleButton(WardrobeOutfitEditFrame.AcceptButton)
-	S:HandleButton(WardrobeOutfitEditFrame.CancelButton)
-	S:HandleButton(WardrobeOutfitEditFrame.DeleteButton)
 end
 
 local function HandleTabs()
@@ -607,26 +536,6 @@ local function SkinCollectionsFrames()
 	SkinPetFrame()
 	SkinToyFrame()
 	SkinHeirloomFrame()
-end
-
-local function UpdateWarbandSceneData(frame)
-	if frame and frame.warbandSceneInfo and not frame.artBackdrop then
-		frame.artBackdrop = CreateFrame('Frame', nil, frame)
-		frame.artBackdrop:OffsetFrameLevel(-1, frame)
-		frame.artBackdrop:SetOutside(frame.Icon, -5, -5)
-		frame.artBackdrop:SetTemplate()
-
-		frame.Border:SetAlpha(0)
-		S:HandleIcon(frame.Icon)
-
-		if frame.SetHighlightTexture then
-			local highlight = frame:CreateTexture()
-			highlight:SetColorTexture(1, 1, 1, .25)
-			highlight:SetAllPoints(frame.Icon)
-
-			frame:SetHighlightTexture(highlight)
-		end
-	end
 end
 
 function S:Blizzard_Collections()
