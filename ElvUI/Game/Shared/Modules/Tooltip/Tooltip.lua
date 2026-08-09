@@ -925,6 +925,29 @@ function TT:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	end
 end
 
+do
+	local info = {}
+	local backdrop = { backdropInfo = info }
+	function TT:SetAuraButtonTooltipStyle()
+		if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
+
+		local inbound = _G.AuraContainerInbound
+		if not inbound or not inbound.SetTooltipBackdrop then return end
+
+		info.bgFile = E.media.blankTex
+		info.edgeFile = E.media.blankTex
+		info.edgeSize = E:Scale(E.twoPixelsPlease and 2 or 1) -- match SetTemplate edgeSize
+		info.borderColor = E:SetColorTable(info.borderColor, E.media.bordercolor)
+		info.centerColor = E:SetColorTable(info.centerColor, E.media.backdropfadecolor)
+		info.centerColor.a = TT.db.colorAlpha -- override the alpha channel
+
+		backdrop.borderColor = info.borderColor
+		backdrop.centerColor = info.centerColor
+
+		inbound.SetTooltipBackdrop(backdrop)
+	end
+end
+
 function TT:MODIFIER_STATE_CHANGED()
 	TT:UpdateAuraSpellIDCVar()
 
