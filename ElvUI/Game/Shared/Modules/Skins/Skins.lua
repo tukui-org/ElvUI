@@ -287,10 +287,12 @@ function S:HandlePortraitFrame(frame, createBackdrop, noStrip)
 	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
 	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
 	local portraitFrameAlt = frame.portrait -- blizzard uses the same global name on two frames
+	local borderTexture = frame.BorderTexture -- titan has a border here
 
 	if not noStrip then
 		frame:StripTextures()
 
+		if borderTexture then borderTexture:SetAlpha(0) end
 		if portraitFrame then portraitFrame:SetAlpha(0) end
 		if portraitFrameOverlay then portraitFrameOverlay:SetAlpha(0) end
 		if portraitFrameAlt then portraitFrameAlt:SetAlpha(0) end
