@@ -240,4 +240,6 @@ local function Enable(self, unit)
 	end
 end
 
-oUF:AddElement('Stagger', VisibilityPath, Enable, Disable)
+if not oUF.isPTR then
+	oUF:AddElement('Stagger', VisibilityPath, Enable, Disable)
+end
