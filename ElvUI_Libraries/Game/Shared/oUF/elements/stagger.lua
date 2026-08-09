@@ -97,17 +97,9 @@ local function verifyStagger(frame, event, unit, auraInstanceID, aura)
 	end
 end
 
-local function ShouldSkip(frame, unit)
-	if not unit or (frame.unit and frame.unit ~= unit) then
-		return true
-	end
-end
-
 local function Update(self, event, unit, updateInfo)
 	if oUF.isPTR then
-		if ShouldSkip(self, unit) then
-			return
-		end
+		if oUF:ShouldSkip(self, unit) then return end
 	elseif oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, not oUF.isRetail and verifyStagger or nil) then
 		return
 	end
