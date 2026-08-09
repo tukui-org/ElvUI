@@ -118,7 +118,6 @@ function S:Blizzard_WeeklyRewards()
 		end
 
 		frame.BorderContainer:StripTextures()
-		frame.ConcessionFrame:StripTextures()
 	end
 
 	S:HandleCloseButton(frame.CloseButton)
@@ -131,12 +130,6 @@ function S:Blizzard_WeeklyRewards()
 
 	for _, activity in pairs(frame.Activities) do
 		SkinActivityFrame(activity, true)
-	end
-
-	local rewardText = frame.ConcessionFrame.RewardsFrame.Text
-	if rewardText then
-		S.ReplaceIconString(rewardText)
-		hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
 	end
 
 	local warningDialog = _G.WeeklyRewardExpirationWarningDialog
