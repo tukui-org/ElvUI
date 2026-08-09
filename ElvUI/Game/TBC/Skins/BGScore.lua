@@ -14,7 +14,6 @@ function S:SkinWorldStateScore()
 
 	for i = 1, 3 do
 		S:HandleTab(_G['WorldStateScoreFrameTab'..i])
-		_G['WorldStateScoreFrameTab'..i..'Text']:SetPoint('CENTER', 0, 2)
 	end
 
 	-- Reposition Tabs

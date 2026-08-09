@@ -102,7 +102,6 @@ function S:BlizzardOptions()
 		S:HandleTab(_G['CombatConfigTab'..i])
 		_G['CombatConfigTab'..i].backdrop:Point('TOPLEFT', 0, -10)
 		_G['CombatConfigTab'..i].backdrop:Point('BOTTOMRIGHT', -2, 3)
-		_G['CombatConfigTab'..i..'Text']:Point('BOTTOM', 0, 10)
 	end
 
 	_G.CombatConfigTab1:ClearAllPoints()
