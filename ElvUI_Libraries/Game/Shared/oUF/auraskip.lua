@@ -230,6 +230,13 @@ function oUF:ShouldSkipAuraFilter(aura, filter)
 	end
 end
 
+-- 12.1 needs a skip might as well add this for now
+function oUF:ShouldSkip(frame, unit)
+	if not unit or (frame.unit and frame.unit ~= unit) then
+		return true
+	end
+end
+
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, showFunc)
 	if oUF.isPTR then
