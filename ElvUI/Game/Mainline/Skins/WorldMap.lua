@@ -382,14 +382,15 @@ function S:WorldMapFrame()
 	}
 
 	local function PositionQuestTab(tab, _, _, _, x, y)
-		if x ~= 1 or y ~= 0 then
+		local X, Y = 1, 0
+		if x ~= X or y ~= Y then
 			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 1, 0)
+			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', X, Y)
 		end
 	end
 
-	local function PositionTabIcons(icon, _, anchor)
-		if anchor then
+	local function PositionTabIcons(icon, point, anchor)
+		if anchor and point ~= 'CENTER' then
 			icon:SetPoint('CENTER')
 		end
 	end

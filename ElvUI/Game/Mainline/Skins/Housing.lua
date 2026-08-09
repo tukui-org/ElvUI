@@ -5,10 +5,13 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-function S:Housing_PositionDashboardTab(_, _, _, x, y)
-	if x ~= 1 or y ~= 0 then
-		self:ClearAllPoints()
-		self:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', 2, -1)
+do
+	local X, Y = 2, -1
+	function S:Housing_PositionDashboardTab(_, _, _, x, y)
+		if x ~= X or y ~= Y then
+			self:ClearAllPoints()
+			self:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', X, Y)
+		end
 	end
 end
 
