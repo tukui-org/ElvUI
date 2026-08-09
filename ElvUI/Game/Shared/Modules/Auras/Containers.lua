@@ -115,22 +115,17 @@ function E:Auras_UpdateIndicator(container, button)
 	local width, height = E:Auras_GetSize(container)
 	button:Size(width, height)
 	button:ClearAllPoints()
-	button:Point(data.point or 'BOTTOMLEFT', data.anchor or nil, data.relativePoint or nil, data.xOffset or 0, data.yOffset or 0)
+	button:Point(data.point or 'BOTTOMLEFT', data.anchor or container.anchor or nil, data.relativePoint or nil, data.xOffset or 0, data.yOffset or 0)
 	button:SetMouseMotionEnabled(not container.noMouse)
 
 	if container.isStagger then
 		button.backdrop:Hide()
-		--local color = data.color
-		--button.texture:SetTexture(E.media.blankTex)
-		--button.texture:SetVertexColor(color.r, color.g, color.b)
 
 		if button.statusbar then
-			button:SetDurationBar(button.statusbar)
-
-			local color = data.color
-			button.statusbar:SetAllPoints()
+			local color = container.barColors[1]
 			button.statusbar:SetStatusBarTexture(container.barTexture)
 			button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
+			button.statusbar:SetAllPoints()
 		end
 	else
 		if button.cooldown then

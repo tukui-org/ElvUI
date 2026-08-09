@@ -31,11 +31,8 @@ local AltManaTypes = {
 
 local StaggerFilter = {
 	[124275] = { index = 1, id = 124275, enabled = true },	-- [GREEN]  Light Stagger
-	[124274] = { index = 2, id = 124274, enabled = true },	-- [YELLOW] Moderate Stagger
-	[124273] = { index = 3, id = 124273, enabled = true },	-- [RED]    Heavy Stagger
-	--[414143] = { index = 1, id = 414143, enabled = true }, -- dragon test
-	--[450380] = { index = 2, id = 450380, enabled = true }, -- dragon test
-	--[1241059] = { index = 3, id = 1241059, enabled = true }, -- dragon test
+	-- [124274] = { index = 2, id = 124274, enabled = true },	-- [YELLOW] Moderate Stagger
+	-- [124273] = { index = 3, id = 124273, enabled = true },	-- [RED]    Heavy Stagger
 }
 
 local ManaType = { powerName = 'MANA', powerType = 0 }
@@ -205,25 +202,16 @@ function UF:Configure_ClassBar(frame)
 
 	local isVertical = frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation
 	if stagger then -- 12.1 stagger bar
-		local barWidth = CLASSBAR_WIDTH / 3
 		bars.isStagger = true
 		bars.size = barsHeight
-		bars.width = barWidth
+		bars.width = barsWidth
 		bars.barTexture = LSM:Fetch('statusbar', UF.db.statusbar)
+		bars.barColors = ElvUF.colors.power.STAGGER
+		bars.anchor = bars.bg
+		bars.smoothing = db.classbar.smoothbars
 		bars.filter = 'HARMFUL'
 
-		bars.bar1:Point('BOTTOMLEFT', frame.Health.backdrop, 'TOPLEFT')
-		bars.bar2:Point('BOTTOM', frame.Health.backdrop, 'TOP')
-		bars.bar3:Point('BOTTOMRIGHT', frame.Health.backdrop, 'TOPRIGHT')
-
-		bars.bar1:Size(barWidth, barsHeight)
-		bars.bar2:Size(barWidth, barsHeight)
-		bars.bar3:Size(barWidth, barsHeight)
-
-		for _, data in next, StaggerFilter do
-			data.anchor = bars['bar'..data.index]
-			data.color = ElvUF.colors.power.STAGGER[data.index]
-		end
+		bars.bg:Size(barsWidth, barsHeight)
 
 		E:Auras_SetupIndicator(bars, StaggerFilter)
 		E:Auras_GroupUnit(bars, frame.unit)
@@ -834,21 +822,15 @@ end
 -----------------------------------------------------------
 -- Stagger Bar
 -----------------------------------------------------------
-function UF:Create_BackdropBar(stagger, name)
-	local backdrop = stagger:CreateTexture((name and '$parent'..name) or nil, 'BACKGROUND', nil, -3)
-	backdrop:SetTexture(E.media.blankTex)
-	backdrop:SetVertexColor(0, 0, 0, 0.4)
-
-	return backdrop
-end
-
 function UF:Construct_Stagger(frame)
 	if E.PTR then
 		local stagger = E:Auras_Create(frame, 'Stagger')
 
-		stagger.bar1 = UF:Create_BackdropBar(stagger, 'Bar1')
-		stagger.bar2 = UF:Create_BackdropBar(stagger, 'Bar2')
-		stagger.bar3 = UF:Create_BackdropBar(stagger, 'Bar3')
+		local backdrop = stagger:CreateTexture(nil, 'BACKGROUND', nil, -3)
+		backdrop:SetTexture(E.media.blankTex)
+		backdrop:SetVertexColor(0, 0, 0, 0.25)
+		backdrop:Point('BOTTOM', frame.Health.backdrop, 'TOP')
+		stagger.bg = backdrop
 
 		return stagger
 	else
