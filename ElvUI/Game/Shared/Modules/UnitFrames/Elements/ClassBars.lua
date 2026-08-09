@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
+local LSM = E.Libs.LSM
 
 local max = max
 local next = next
@@ -12,6 +13,7 @@ local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
+local SPEC_MONK_BREWMASTER = SPEC_MONK_BREWMASTER or 1
 local SPEC_PRIEST_SHADOW = SPEC_PRIEST_SHADOW or 3
 local SPEC_SHAMAN_ELEMENTAL = SPEC_SHAMAN_ELEMENTAL or 1
 local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
@@ -25,6 +27,15 @@ local AltManaTypes = {
 	LunarPower = (E.Retail or E.Mists) and 8 or nil,
 	Maelstrom = E.Retail and 11 or nil,
 	Insanity = E.Retail and 13 or nil
+}
+
+local StaggerFilter = {
+	[124275] = { index = 1, id = 124275, enabled = true },	-- [GREEN]  Light Stagger
+	[124274] = { index = 2, id = 124274, enabled = true },	-- [YELLOW] Moderate Stagger
+	[124273] = { index = 3, id = 124273, enabled = true },	-- [RED]    Heavy Stagger
+	--[414143] = { index = 1, id = 414143, enabled = true }, -- dragon test
+	--[450380] = { index = 2, id = 450380, enabled = true }, -- dragon test
+	--[1241059] = { index = 3, id = 1241059, enabled = true }, -- dragon test
 }
 
 local ManaType = { powerName = 'MANA', powerType = 0 }
@@ -140,6 +151,9 @@ function UF:Configure_ClassBar(frame)
 	local db = frame.db
 	if not db then return end
 
+	local stagger = E.PTR and (E.myclass == 'MONK' and E.myspec == SPEC_MONK_BREWMASTER)
+	if stagger then frame.ClassBar = 'Stagger' end -- this is not an oUF element
+
 	local bars = frame[frame.ClassBar]
 	if not bars then return end
 
@@ -160,7 +174,7 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	local color = E.db.unitframe.colors.borderColor
-	if not bars.backdrop.forcedBorderColors then
+	if bars.backdrop and not bars.backdrop.forcedBorderColors then
 		bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 
@@ -169,14 +183,16 @@ function UF:Configure_ClassBar(frame)
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
 	local ONE_LESS_BAR = MAX_CLASS_BAR - 1
 
-	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		if MAX_CLASS_BAR == 1 or frame.ClassBar == 'EclipseBar' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
-			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * 2) / 3
-		else
-			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * ONE_LESS_BAR) / MAX_CLASS_BAR
+	if not stagger then
+		if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
+			if MAX_CLASS_BAR == 1 or frame.ClassBar == 'Stagger' or frame.ClassBar == 'EclipseBar' or frame.ClassBar == 'AlternativePower' then
+				CLASSBAR_WIDTH = (CLASSBAR_WIDTH * 2) / 3
+			else
+				CLASSBAR_WIDTH = (CLASSBAR_WIDTH * ONE_LESS_BAR) / MAX_CLASS_BAR
+			end
+		elseif frame.CLASSBAR_DETACHED then --Detached
+			CLASSBAR_WIDTH = db.classbar.detachedWidth
 		end
-	elseif frame.CLASSBAR_DETACHED then --Detached
-		CLASSBAR_WIDTH = db.classbar.detachedWidth
 	end
 
 	local DOUBLE_BORDER = UF.BORDER * 2
@@ -188,7 +204,31 @@ function UF:Configure_ClassBar(frame)
 	bars:Size(barsWidth, barsHeight)
 
 	local isVertical = frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation
-	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
+	if stagger then -- 12.1 stagger bar
+		local barWidth = CLASSBAR_WIDTH / 3
+		bars.isStagger = true
+		bars.size = barsHeight
+		bars.width = barWidth
+		bars.barTexture = LSM:Fetch('statusbar', UF.db.statusbar)
+		bars.filter = 'HARMFUL'
+
+		bars.bar1:Point('BOTTOMLEFT', frame.Health.backdrop, 'TOPLEFT')
+		bars.bar2:Point('BOTTOM', frame.Health.backdrop, 'TOP')
+		bars.bar3:Point('BOTTOMRIGHT', frame.Health.backdrop, 'TOPRIGHT')
+
+		bars.bar1:Size(barWidth, barsHeight)
+		bars.bar2:Size(barWidth, barsHeight)
+		bars.bar3:Size(barWidth, barsHeight)
+
+		for _, data in next, StaggerFilter do
+			data.anchor = bars['bar'..data.index]
+			data.color = ElvUF.colors.power.STAGGER[data.index]
+		end
+
+		E:Auras_SetupIndicator(bars, StaggerFilter)
+		E:Auras_GroupUnit(bars, frame.unit)
+		E:Auras_SetIndicator(bars)
+	elseif frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
 		if frame.ClassBar == 'Runes' then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
 			bars.colorSpec = E.Retail and UF.db.colors.runeBySpec
@@ -317,7 +357,10 @@ function UF:Configure_ClassBar(frame)
 		end
 	end
 
-	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
+	if stagger then
+		bars:ClearAllPoints()
+		bars:Point('BOTTOM', frame.Health.backdrop, 'TOP', 0, 0)
+	elseif frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
 		bars:ClearAllPoints()
 		bars:Point('CENTER', frame.Health.backdrop, 'TOP', 0, 0)
 
@@ -356,38 +399,40 @@ function UF:Configure_ClassBar(frame)
 		end
 	end
 
-	if frame.CLASSBAR_DETACHED and db.classbar.parent == 'UIPARENT' then
-		E.FrameLocks[bars] = true
-		bars:SetParent(E.UIParent)
-	else
-		E.FrameLocks[bars] = nil
-		bars:SetParent(frame)
-	end
+	if not stagger then
+		if frame.CLASSBAR_DETACHED and db.classbar.parent == 'UIPARENT' then
+			E.FrameLocks[bars] = true
+			bars:SetParent(E.UIParent)
+		else
+			E.FrameLocks[bars] = nil
+			bars:SetParent(frame)
+		end
 
-	local activeBar = frame.USE_CLASSBAR
-	local checkPriest = E.Retail and E.myclass == 'PRIEST'
-	local checkShaman = E.Retail and E.myclass == 'SHAMAN'
-	local allowPriest = checkPriest and E.myspec == SPEC_PRIEST_SHADOW
-	local allowShaman = checkShaman and E.myspec == SPEC_SHAMAN_ELEMENTAL
-	for _, powerType in pairs(UF.ClassPowerTypes) do
-		local element = frame[powerType]
-		if element then
-			local enabled = frame:IsElementEnabled(powerType)
-			local additional = powerType == 'AdditionalPower'
-			local classpower = powerType == 'ClassPower'
-			if additional or classpower then
-				local special = classpower and (allowPriest or allowShaman)
-				local normal = classpower and (not (checkPriest or checkShaman) or not special)
-				local allowed = activeBar and (normal or ((special or additional) and UF:ClassPower_ShouldShowAdditionalPower(element)))
-				if allowed and not enabled then
+		local activeBar = frame.USE_CLASSBAR
+		local checkPriest = E.Retail and E.myclass == 'PRIEST'
+		local checkShaman = E.Retail and E.myclass == 'SHAMAN'
+		local allowPriest = checkPriest and E.myspec == SPEC_PRIEST_SHADOW
+		local allowShaman = checkShaman and E.myspec == SPEC_SHAMAN_ELEMENTAL
+		for _, powerType in pairs(UF.ClassPowerTypes) do
+			local element = frame[powerType]
+			if element then
+				local enabled = frame:IsElementEnabled(powerType)
+				local additional = powerType == 'AdditionalPower'
+				local classpower = powerType == 'ClassPower'
+				if additional or classpower then
+					local special = classpower and (allowPriest or allowShaman)
+					local normal = classpower and (not (checkPriest or checkShaman) or not special)
+					local allowed = activeBar and (normal or ((special or additional) and UF:ClassPower_ShouldShowAdditionalPower(element)))
+					if allowed and not enabled then
+						frame:EnableElement(powerType)
+					elseif enabled and not allowed then
+						frame:DisableElement(powerType)
+					end
+				elseif activeBar and not enabled then
 					frame:EnableElement(powerType)
-				elseif enabled and not allowed then
+				elseif enabled and not activeBar then
 					frame:DisableElement(powerType)
 				end
-			elseif activeBar and not enabled then
-				frame:EnableElement(powerType)
-			elseif enabled and not activeBar then
-				frame:DisableElement(powerType)
 			end
 		end
 	end
@@ -789,9 +834,23 @@ end
 -----------------------------------------------------------
 -- Stagger Bar
 -----------------------------------------------------------
+function UF:Create_BackdropBar(stagger, name)
+	local backdrop = stagger:CreateTexture((name and '$parent'..name) or nil, 'BACKGROUND', nil, -3)
+	backdrop:SetTexture(E.media.blankTex)
+	backdrop:SetVertexColor(0, 0, 0, 0.4)
+
+	return backdrop
+end
+
 function UF:Construct_Stagger(frame)
 	if E.PTR then
-		return E:Auras_Create(frame, 'Stagger')
+		local stagger = E:Auras_Create(frame, 'Stagger')
+
+		stagger.bar1 = UF:Create_BackdropBar(stagger, 'Bar1')
+		stagger.bar2 = UF:Create_BackdropBar(stagger, 'Bar2')
+		stagger.bar3 = UF:Create_BackdropBar(stagger, 'Bar3')
+
+		return stagger
 	else
 		local stagger = CreateFrame('Statusbar', '$parent_Stagger', frame)
 		stagger.PostUpdate = UF.PostUpdateStagger

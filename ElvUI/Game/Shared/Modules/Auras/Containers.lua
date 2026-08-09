@@ -96,6 +96,11 @@ function E:Auras_CreateIndicator(button)
 	backdrop:SetAllPoints()
 	button.backdrop = backdrop
 
+	local statusbar = CreateFrame('StatusBar', nil, button)
+	-- statusbar:CreateBackdrop('Transparent')
+	-- statusbar.backdrop.Center:Hide()
+	button.statusbar = statusbar
+
 	local texture = button:CreateTexture(nil, 'ARTWORK')
 	texture:SetInside()
 	button.texture = texture
@@ -108,30 +113,46 @@ end
 function E:Auras_UpdateIndicator(container, button)
 	local data = button.data -- the data
 	local width, height = E:Auras_GetSize(container)
-	button:ClearAllPoints()
-	button:Point(data.point, data.xOffset, data.yOffset)
 	button:Size(width, height)
+	button:ClearAllPoints()
+	button:Point(data.point or 'BOTTOMLEFT', data.anchor or nil, data.relativePoint or nil, data.xOffset or 0, data.yOffset or 0)
 	button:SetMouseMotionEnabled(not container.noMouse)
 
-	if button.cooldown then
-		button:SetDurationCooldown(button.cooldown)
+	if container.isStagger then
+		button.backdrop:Hide()
+		--local color = data.color
+		--button.texture:SetTexture(E.media.blankTex)
+		--button.texture:SetVertexColor(color.r, color.g, color.b)
 
-		E:RegisterCooldown(button.cooldown, 'auraindicator')
-	end
+		if button.statusbar then
+			button:SetDurationBar(button.statusbar)
 
-	if button.texture then
-		button.texture:SetTexCoords()
-
-		--local textureIcon = data.style == 'texturedIcon'
-		--local onlyText = data.style == 'timerOnly'
-		local colorIcon = data.style == 'coloredIcon'
-		if colorIcon then
 			local color = data.color
-			button.texture:SetTexture(E.media.blankTex)
-			button.texture:SetVertexColor(color.r, color.g, color.b)
-		else
-			button:SetIcon(button.texture)
-			button.texture:SetVertexColor(1, 1, 1)
+			button.statusbar:SetAllPoints()
+			button.statusbar:SetStatusBarTexture(container.barTexture)
+			button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
+		end
+	else
+		if button.cooldown then
+			button:SetDurationCooldown(button.cooldown)
+
+			E:RegisterCooldown(button.cooldown, 'auraindicator')
+		end
+
+		if button.texture then
+			button.texture:SetTexCoords()
+
+			--local textureIcon = data.style == 'texturedIcon'
+			--local onlyText = data.style == 'timerOnly'
+			local colorIcon = data.style == 'coloredIcon'
+			if colorIcon then
+				local color = data.color
+				button.texture:SetTexture(E.media.blankTex)
+				button.texture:SetVertexColor(color.r, color.g, color.b)
+			else
+				button:SetIcon(button.texture)
+				button.texture:SetVertexColor(1, 1, 1)
+			end
 		end
 	end
 end
@@ -578,8 +599,9 @@ function E:Auras_SetContainer(container)
 end
 
 function E:Auras_SetLineSize(container)
-	local rowWidth = (container.numAuras and container.numAuras > 0 and (container.numAuras * (container.size + container.spacing))) or container:GetWidth()
-	container:SetFlowLayoutMaximumLineSize((rowWidth and rowWidth > 0 and rowWidth) or huge)
+	local width = E:Auras_GetSize(container)
+	local rowWidth = (container.numAuras and container.numAuras > 0 and (container.numAuras * (width + (container.spacing or 0)))) or container:GetWidth()
+	container:SetFlowLayoutMaximumLineSize((E:NotSecretValue(rowWidth) and rowWidth and rowWidth > 0 and rowWidth) or huge)
 end
 
 function E:Auras_SetUnit(container, unit)
