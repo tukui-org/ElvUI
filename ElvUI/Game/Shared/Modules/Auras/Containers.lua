@@ -157,6 +157,13 @@ function E:Auras_CreateButton(button)
 	texture:SetInside()
 	button.texture = texture
 
+	local spark = button:CreateTexture(nil, 'OVERLAY')
+	spark:SetTexture(E.media.blankTex)
+	spark:SetVertexColor(0.9, 0.9, 0.9, 0.6)
+	spark:SetBlendMode('ADD')
+	spark:Width(2)
+	button.spark = spark
+
 	local highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	highlight:SetColorTexture(1, 1, 1, .45)
 	highlight:SetAllPoints(texture)
@@ -262,11 +269,11 @@ function E:Auras_UpdateButton(container, button)
 		end
 	elseif container.isAuraBar then
 		if button.statusbar then
-			button.statusbar:SetAllPoints()
 			button:SetDurationBar(button.statusbar)
 
 			local color = container.barColor
 			button.statusbar:SetReverseFill(container.reverseFill)
+			button.statusbar:SetAllPoints()
 
 			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
@@ -281,13 +288,19 @@ function E:Auras_UpdateButton(container, button)
 				button.border:Point('TOP')
 				button.border:Point('BOTTOM')
 
+				local barTexture = button.statusbar:GetStatusBarTexture()
 				if container.reverseFill then
 					button.border:Point('LEFT')
-					button.border:Point('RIGHT', button.statusbar:GetStatusBarTexture(), 'LEFT')
+					button.border:Point('RIGHT', barTexture, 'LEFT')
 				else
 					button.border:Point('RIGHT')
-					button.border:Point('LEFT', button.statusbar:GetStatusBarTexture(), 'RIGHT')
+					button.border:Point('LEFT', barTexture, 'RIGHT')
 				end
+
+				button.spark:ClearAllPoints()
+				button.spark:SetPoint(container.reverseFill and 'RIGHT' or 'LEFT', button.border)
+				button.spark:Point('BOTTOM')
+				button.spark:Point('TOP')
 			end
 		end
 
