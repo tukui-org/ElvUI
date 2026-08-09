@@ -331,6 +331,7 @@ function S:CharacterFrame()
 
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
+	S:HandleButton(_G.TokenFrameCancelButton)
 
 	-- Try to find the close button
 	for _, child in next, { _G.TokenFrame:GetChildren() } do
@@ -434,6 +435,10 @@ function S:CharacterFrame()
 	S:HandleNextPrevButton(PVPFrameToggleButton)
 	PVPFrameToggleButton:Point('BOTTOMRIGHT', PVPFrame, 'BOTTOMRIGHT', -48, 81)
 	PVPFrameToggleButton:Size(14)
+
+	-- why two close buttons? matches BattlefieldFrameCloseButton
+	S:HandleCloseButton(_G.PVPParentFrameCloseButton)
+	_G.PVPParentFrameCloseButton:Point('TOPRIGHT', -30, -8)
 
 	for i = 1, 2 do
 		S:HandleTab(_G['PVPParentFrameTab'..i])
