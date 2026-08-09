@@ -121,7 +121,7 @@ function UF:Configure_AuraBars(frame)
 		bars.growth = below and 'DOWN' or 'UP'
 		bars.barSpacing = UF.thinBorders and 1 or 5
 		bars.spacing = db.spacing - (detached and 1 or 0)
-		bars.reverseFill = not not bars.db.reverseFill
+		bars.reverseFill = bars.db.reverseFill
 		bars.friendlyAuraType = db.friendlyAuraType
 		bars.enemyAuraType = db.enemyAuraType
 		bars.disableMouse = db.clickThrough

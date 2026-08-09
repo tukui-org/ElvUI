@@ -272,8 +272,8 @@ function E:Auras_UpdateButton(container, button)
 			button:SetDurationBar(button.statusbar)
 
 			local color = container.barColor
-			button.statusbar:SetReverseFill(container.reverseFill)
-			button.statusbar:SetAllPoints()
+			button.statusbar:SetReverseFill(not container.reverseFill)
+			button.statusbar:SetInside(button)
 
 			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
@@ -288,19 +288,19 @@ function E:Auras_UpdateButton(container, button)
 				button.border:Point('TOP')
 				button.border:Point('BOTTOM')
 
+				button.spark:ClearAllPoints()
+				button.spark:Point(not container.reverseFill and 'RIGHT' or 'LEFT', button.border)
+				button.spark:Point('BOTTOM', button.statusbar)
+				button.spark:Point('TOP', button.statusbar)
+
 				local barTexture = button.statusbar:GetStatusBarTexture()
-				if container.reverseFill then
+				if not container.reverseFill then
 					button.border:Point('LEFT')
 					button.border:Point('RIGHT', barTexture, 'LEFT')
 				else
 					button.border:Point('RIGHT')
 					button.border:Point('LEFT', barTexture, 'RIGHT')
 				end
-
-				button.spark:ClearAllPoints()
-				button.spark:SetPoint(container.reverseFill and 'RIGHT' or 'LEFT', button.border)
-				button.spark:Point('BOTTOM')
-				button.spark:Point('TOP')
 			end
 		end
 
