@@ -49,6 +49,12 @@ local function SkinActivityFrame(frame, isObject)
 
 			hooksecurefunc(frame, 'SetSelectionState', UpdateSelection)
 		end
+
+		local rewardText = frame.RewardsFrame and frame.RewardsFrame.Text
+		if rewardText then
+			S.ReplaceIconString(rewardText)
+			hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
+		end
 	else
 		if frame.Border then
 			frame.Border:SetTexCoord(.926, 1, 0, 1)
@@ -118,6 +124,11 @@ function S:Blizzard_WeeklyRewards()
 		end
 
 		frame.BorderContainer:StripTextures()
+
+		local concessions = frame.ConcessionsFrame
+		if concessions then
+			concessions:StripTextures()
+		end
 	end
 
 	S:HandleCloseButton(frame.CloseButton)
