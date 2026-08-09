@@ -275,7 +275,7 @@ function S:FriendsFrame()
 
 	-- Friends Frame
 	local FriendsFrame = _G.FriendsFrame
-	S:HandleFrame(FriendsFrame, true, nil, -5, 0, -2)
+	S:HandlePortraitFrame(FriendsFrame, true, nil, -5, 0, -2)
 	_G.FriendsFrameCloseButton:Point('TOPRIGHT', 0, 2)
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropdown, 70)
 	_G.FriendsFrameStatusDropdown:PointXY(256, -55)
