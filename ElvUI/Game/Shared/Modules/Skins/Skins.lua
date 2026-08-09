@@ -236,9 +236,11 @@ function S:HandleFrame(frame, setBackdrop, template, x1, y1, x2, y2)
 	local portraitFrameOverlay = name and _G[name..'PortraitOverlay'] or frame.PortraitOverlay
 	local artFrameOverlay = name and _G[name..'ArtOverlayFrame'] or frame.ArtOverlayFrame
 	local closeButton = frame.CloseButton or name and _G[name..'CloseButton']
+	local borderTexture = frame.BorderTexture -- titan has a border here
 
 	frame:StripTextures()
 
+	if borderTexture then borderTexture:SetAlpha(0) end
 	if portraitFrame then portraitFrame:SetAlpha(0) end
 	if portraitFrameOverlay then portraitFrameOverlay:SetAlpha(0) end
 	if artFrameOverlay then artFrameOverlay:SetAlpha(0) end
