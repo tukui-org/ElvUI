@@ -38,7 +38,6 @@ local function ReputationFrameUpdate()
 				else
 					factionHeader:SetNormalTexture(E.Media.Textures.MinusButton)
 				end
-				factionHeader:SetNormalTexture(E.Media.Textures.MinusButton)
 			end
 		end
 	end
@@ -251,7 +250,6 @@ function S:CharacterFrame()
 			factionWar.Icon:Size(32)
 			factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 		end
-		factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
 
 	hooksecurefunc('ReputationFrame_Update', ReputationFrameUpdate)
