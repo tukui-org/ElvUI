@@ -1279,6 +1279,18 @@ do --Tab Regions
 			tab:StripTextures()
 		end
 
+		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/Mainline/SharedUIPanelTemplates.lua#L523
+		tab.selectedTextX, tab.selectedTextY = 0, 0
+
+		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/Mainline/SharedUIPanelTemplates.lua#L505
+		tab.deselectedTextX, tab.deselectedTextY = 0, 0
+
+		local text = tab.Text or (tab.GetFontString and tab:GetFontString()) or (tab:GetName() and _G[tab:GetName()..'Text'])
+		if text then
+			text:ClearAllPoints()
+			text:Point('CENTER', tab)
+		end
+
 		if not noBackdrop then
 			tab:CreateBackdrop(template)
 
