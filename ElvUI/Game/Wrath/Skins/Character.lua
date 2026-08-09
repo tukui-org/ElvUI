@@ -32,9 +32,12 @@ local function ReputationFrameUpdate()
 		local factionIndex = factionOffset + i
 		if factionIndex <= numFactions then
 			local factionHeader = _G['ReputationHeader'..i]
-			if factionHeader.isCollapsed then
-				factionHeader:SetNormalTexture(E.Media.Textures.PlusButton)
-			else
+			if factionHeader then
+				if factionHeader.isCollapsed then
+					factionHeader:SetNormalTexture(E.Media.Textures.PlusButton)
+				else
+					factionHeader:SetNormalTexture(E.Media.Textures.MinusButton)
+				end
 				factionHeader:SetNormalTexture(E.Media.Textures.MinusButton)
 			end
 		end
@@ -221,7 +224,7 @@ function S:CharacterFrame()
 
 		factionBar:StripTextures()
 		factionBar:CreateBackdrop()
-		factionBar:SetStatusBarTexture(E.media.normTex)
+		--factionBar:SetStatusBarTexture(E.media.normTex)
 		factionBar:Size(108, 13)
 		E:RegisterStatusBar(factionBar)
 
@@ -233,16 +236,21 @@ function S:CharacterFrame()
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
 
-		factionHeader:GetNormalTexture():Size(14)
-		factionHeader:SetHighlightTexture(E.ClearTexture)
-		factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
+		if factionHeader then
+			factionHeader:GetNormalTexture():Size(14)
+			factionHeader:SetHighlightTexture(E.ClearTexture)
+			factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
+		end
 
-		factionWar:StripTextures()
-		factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
+		if factionWar then
+			factionWar:StripTextures()
+			factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
 
-		factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
-		factionWar.Icon:Point('LEFT', 6, -8)
-		factionWar.Icon:Size(32)
+			factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
+			factionWar.Icon:Point('LEFT', 6, -8)
+			factionWar.Icon:Size(32)
+			factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
+		end
 		factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
 
