@@ -138,7 +138,6 @@ function S:CharacterFrame()
 	S:HandleDropDownBox(_G.PlayerStatFrameRightDropdown, 110)
 
 	-- Reposition Tabs
-	hooksecurefunc('PetTab_Update', HandleTabs)
 	HandleTabs()
 
 	_G.CharacterModelFrame:CreateBackdrop('Transparent')
