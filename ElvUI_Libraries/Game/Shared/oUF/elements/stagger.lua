@@ -97,8 +97,20 @@ local function verifyStagger(frame, event, unit, auraInstanceID, aura)
 	end
 end
 
+local function ShouldSkip(frame, unit)
+	if not unit or (frame.unit and frame.unit ~= unit) then
+		return true
+	end
+end
+
 local function Update(self, event, unit, updateInfo)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, not oUF.isRetail and verifyStagger or nil) then return end
+	if oUF.isPTR then
+		if ShouldSkip(self, unit) then
+			return
+		end
+	elseif oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, not oUF.isRetail and verifyStagger or nil) then
+		return
+	end
 
 	local element = self.Stagger
 
@@ -240,6 +252,4 @@ local function Enable(self, unit)
 	end
 end
 
-if not oUF.isPTR then
-	oUF:AddElement('Stagger', VisibilityPath, Enable, Disable)
-end
+oUF:AddElement('Stagger', VisibilityPath, Enable, Disable)
