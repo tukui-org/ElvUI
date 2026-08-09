@@ -8,6 +8,10 @@ function S:SkinBattlefield()
 
 	S:HandleFrame(_G.BattlefieldFrame, true, nil, 11, -12, -32, 76)
 
+	_G.BattlefieldFrameInfoScrollFrameChildFrameRewardsInfoDescription:SetTextColor(1, 1, 1)
+	_G.BattlefieldFrameBGTex:CreateBackdrop('Transparent')
+	_G.BattlefieldFrameBGTex:SetAlpha(0)
+
 	_G.BattlefieldFrameTypeScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.BattlefieldFrameTypeScrollFrameScrollBar)
 
@@ -16,6 +20,7 @@ function S:SkinBattlefield()
 	S:HandleButton(_G.BattlefieldFrameGroupJoinButton)
 
 	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
+	_G.BattlefieldFrameCloseButton:Point('TOPRIGHT', -30, -8) -- matches PVPParentFrameCloseButton
 end
 
 S:AddCallback('SkinBattlefield')

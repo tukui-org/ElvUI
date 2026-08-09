@@ -13,6 +13,7 @@ local GetInventoryItemQuality = GetInventoryItemQuality
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
+local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 
 local ResistanceCoords = {
@@ -49,6 +50,86 @@ local function PaperDollItemSlotButtonUpdate(frame)
 	local rarity = id and GetInventoryItemQuality('player', id)
 	local r, g, b = E:GetItemQualityColor(rarity and rarity > 1 and rarity)
 	frame:SetBackdropBorderColor(r, g, b)
+end
+
+local function UpdateCurrencySkins()
+	local TokenFramePopup = _G.TokenFramePopup
+	if TokenFramePopup then
+		TokenFramePopup:ClearAllPoints()
+		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 1, 0)
+		TokenFramePopup:StripTextures()
+		TokenFramePopup:SetTemplate('Transparent')
+
+		S:HandleCheckBox(_G.TokenFramePopupInactiveCheckbox)
+		S:HandleCheckBox(_G.TokenFramePopupBackpackCheckbox)
+	end
+
+	local TokenFrameContainer = _G.TokenFrameContainer
+	if not TokenFrameContainer.buttons then return end
+
+	for _, button in next, TokenFrameContainer.buttons do
+		if button.highlight then button.highlight:Kill() end
+		if button.categoryLeft then button.categoryLeft:Kill() end
+		if button.categoryRight then button.categoryRight:Kill() end
+		if button.categoryMiddle then button.categoryMiddle:Kill() end
+
+		if not button.backdrop then
+			button:CreateBackdrop(nil, nil, nil, true)
+		end
+
+		if button.icon then
+			if button.itemID == HONOR_CURRENCY and E.myfaction then
+				button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
+			else
+				button.icon:SetTexCoords()
+			end
+
+			button.icon:Size(17)
+
+			button.backdrop:SetOutside(button.icon, 1, 1)
+			button.backdrop:Show()
+		else
+			button.backdrop:Hide()
+		end
+
+		if button.expandIcon then
+			if not button.highlightTexture then
+				button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
+				button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
+				button.highlightTexture:SetBlendMode('ADD')
+				button.highlightTexture:SetInside(button.expandIcon)
+
+				-- these two only need to be called once
+				-- adding them here will prevent additional calls
+				button.expandIcon:ClearAllPoints()
+				button.expandIcon:Point('LEFT', 4, 0)
+				button.expandIcon:Size(15)
+			end
+
+			if button.isHeader then
+				button.backdrop:Hide()
+
+				for _, region in next, { button:GetRegions() } do
+					if region:IsObjectType('FontString') and region:GetText() then
+						region:ClearAllPoints()
+						region:Point('LEFT', 25, 0)
+					end
+				end
+
+				if button.isExpanded then
+					button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
+					button.expandIcon:SetTexCoord(0,1,0,1)
+				else
+					button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
+					button.expandIcon:SetTexCoord(0,1,0,1)
+				end
+
+				button.highlightTexture:Show()
+			else
+				button.highlightTexture:Hide()
+			end
+		end
+	end
 end
 
 local function HandleTabs()
@@ -111,6 +192,8 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
+	S:HandleDropDownBox(_G.PlayerTitleDropdown, 160)
+
 	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
 
 	_G.PaperDollFrame:StripTextures()
@@ -146,7 +229,7 @@ function S:CharacterFrame()
 	S:HandleRotateButton(_G.CharacterModelFrameRotateLeftButton)
 	S:HandleRotateButton(_G.CharacterModelFrameRotateRightButton)
 
-	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
+	_G.CharacterModelFrameRotateLeftButton:Point('TOPLEFT', 0, 2)
 	_G.CharacterModelFrameRotateRightButton:Point('TOPLEFT', _G.CharacterModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
 	_G.CharacterAttributesFrame:StripTextures()
@@ -212,58 +295,57 @@ function S:CharacterFrame()
 	-- Reputation Frame
 	_G.ReputationFrame:StripTextures()
 
-	for i = 1, NUM_FACTIONS_DISPLAYED do
+	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
-		local factionHeader = _G['ReputationHeader'..i]
+		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
+		local factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
 		local factionName = _G['ReputationBar'..i..'FactionName']
-		local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
-		factionBar:CreateBackdrop()
-		--factionBar:SetStatusBarTexture(E.media.normTex)
-		factionBar:Size(108, 13)
-		E:RegisterStatusBar(factionBar)
+		factionStatusBar:StripTextures()
+		factionStatusBar:CreateBackdrop()
+		factionStatusBar:SetStatusBarTexture(E.media.normTex)
+		factionStatusBar:Size(108, 13)
 
-		if i == 1 then
-			factionBar:Point('TOPLEFT', 190, -86)
-		end
+		S:HandleCollapseTexture(factionBarButton, nil, true)
+		E:RegisterStatusBar(factionStatusBar)
 
 		factionName:Width(140)
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
-
-		if factionHeader then
-			factionHeader:GetNormalTexture():Size(14)
-			factionHeader:SetHighlightTexture(E.ClearTexture)
-			factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
-		end
-
-		if factionWar then
-			factionWar:StripTextures()
-			factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
-
-			factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
-			factionWar.Icon:Point('LEFT', 6, -8)
-			factionWar.Icon:Size(32)
-			factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
-		end
 	end
-
-	hooksecurefunc('ReputationFrame_Update', ReputationFrameUpdate)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
 
 	_G.ReputationDetailFrame:StripTextures()
 	_G.ReputationDetailFrame:SetTemplate('Transparent')
-	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', -31, -12)
-
-	S:HandleCloseButton(_G.ReputationDetailCloseButton)
-	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
+	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', 1, 0)
 
 	S:HandleCheckBox(_G.ReputationDetailAtWarCheckbox)
 	S:HandleCheckBox(_G.ReputationDetailInactiveCheckbox)
 	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckbox)
+
+	S:HandleCloseButton(_G.ReputationDetailCloseButton)
+	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
+
+	-- TokenFrame (Currency Tab)
+	_G.TokenFrame:StripTextures()
+	S:HandleButton(_G.TokenFrameCancelButton)
+
+	-- Try to find the close button
+	for _, child in next, { _G.TokenFrame:GetChildren() } do
+		if child.Hide and child:IsShown() and not child:GetName() then
+			child:Hide()
+			break
+		end
+	end
+
+	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
+	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
+
+	hooksecurefunc(_G.TokenFrameContainer, 'update', UpdateCurrencySkins)
+	hooksecurefunc('TokenFrame_Update', UpdateCurrencySkins)
 
 	-- Skill Frame
 	_G.SkillFrame:StripTextures()
@@ -321,6 +403,67 @@ function S:CharacterFrame()
 	_G.HonorFrameProgressBar:CreateBackdrop()
 	_G.HonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
 	E:RegisterStatusBar(_G.HonorFrameProgressBar)
+
+	-- Honor/Arena/PvP Tab
+	local PVPFrame = _G.PVPFrame
+	S:HandleFrame(PVPFrame, true, nil, 11, -12, -32, 76)
+
+	for i = 1, MAX_ARENA_TEAMS do
+		local pvpTeam = _G['PVPTeam'..i]
+		if not pvpTeam then break end
+
+		pvpTeam:StripTextures()
+		pvpTeam:CreateBackdrop()
+		pvpTeam.backdrop:Point('TOPLEFT', 9, -4)
+		pvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
+
+		pvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
+		pvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
+
+		local highlight = _G['PVPTeam'..i..'Highlight']
+		if highlight then
+			highlight:Kill()
+		end
+	end
+
+	local PVPTeamDetails = _G.PVPTeamDetails
+	PVPTeamDetails:StripTextures()
+	PVPTeamDetails:SetTemplate('Transparent')
+	PVPTeamDetails:Point('TOPLEFT', PVPFrame, 'TOPRIGHT', -30, -12)
+
+	local PVPFrameToggleButton = _G.PVPFrameToggleButton
+	S:HandleNextPrevButton(PVPFrameToggleButton)
+	PVPFrameToggleButton:Point('BOTTOMRIGHT', PVPFrame, 'BOTTOMRIGHT', -48, 81)
+	PVPFrameToggleButton:Size(14)
+
+	-- why two close buttons? matches BattlefieldFrameCloseButton
+	S:HandleCloseButton(_G.PVPParentFrameCloseButton)
+	_G.PVPParentFrameCloseButton:Point('TOPRIGHT', -30, -8)
+
+	for i = 1, 2 do
+		S:HandleTab(_G['PVPParentFrameTab'..i])
+	end
+
+	for i = 1, 5 do
+		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
+		if not header then break end
+
+		header:StripTextures()
+		header:StyleButton()
+	end
+
+	for i = 1, 10 do
+		local button = _G['PVPTeamDetailsButton'..i]
+		if not button then break end
+
+		button:Width(335)
+
+		S:HandleButtonHighlight(button)
+	end
+
+	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
+	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
+	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 end
 
 S:AddCallback('CharacterFrame')
