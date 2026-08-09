@@ -215,58 +215,53 @@ function S:CharacterFrame()
 	-- Reputation Frame
 	_G.ReputationFrame:StripTextures()
 
-	for i = 1, NUM_FACTIONS_DISPLAYED do
+	for i = 1, _G.NUM_FACTIONS_DISPLAYED do
 		local factionBar = _G['ReputationBar'..i]
-		local factionHeader = _G['ReputationHeader'..i]
+		local factionStatusBar = _G['ReputationBar'..i..'ReputationBar']
+		local factionBarButton = _G['ReputationBar'..i..'ExpandOrCollapseButton']
 		local factionName = _G['ReputationBar'..i..'FactionName']
-		local factionWar = _G['ReputationBar'..i..'AtWarCheck']
 
 		factionBar:StripTextures()
-		factionBar:CreateBackdrop()
-		--factionBar:SetStatusBarTexture(E.media.normTex)
-		factionBar:Size(108, 13)
-		E:RegisterStatusBar(factionBar)
+		factionStatusBar:StripTextures()
+		factionStatusBar:CreateBackdrop()
+		factionStatusBar:SetStatusBarTexture(E.media.normTex)
+		factionStatusBar:Size(108, 13)
 
-		if i == 1 then
-			factionBar:Point('TOPLEFT', 190, -86)
-		end
+		S:HandleCollapseTexture(factionBarButton, nil, true)
+		E:RegisterStatusBar(factionStatusBar)
 
 		factionName:Width(140)
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
-
-		if factionHeader then
-			factionHeader:GetNormalTexture():Size(14)
-			factionHeader:SetHighlightTexture(E.ClearTexture)
-			factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
-		end
-
-		if factionWar then
-			factionWar:StripTextures()
-			factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
-
-			factionWar.Icon = factionWar:CreateTexture(nil, 'OVERLAY')
-			factionWar.Icon:Point('LEFT', 6, -8)
-			factionWar.Icon:Size(32)
-			factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
-		end
 	end
-
-	hooksecurefunc('ReputationFrame_Update', ReputationFrameUpdate)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
 
 	_G.ReputationDetailFrame:StripTextures()
 	_G.ReputationDetailFrame:SetTemplate('Transparent')
-	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', -31, -12)
-
-	S:HandleCloseButton(_G.ReputationDetailCloseButton)
-	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
+	_G.ReputationDetailFrame:Point('TOPLEFT', _G.ReputationFrame, 'TOPRIGHT', 1, 0)
 
 	S:HandleCheckBox(_G.ReputationDetailAtWarCheckbox)
 	S:HandleCheckBox(_G.ReputationDetailInactiveCheckbox)
 	S:HandleCheckBox(_G.ReputationDetailMainScreenCheckbox)
+
+	S:HandleCloseButton(_G.ReputationDetailCloseButton)
+	_G.ReputationDetailCloseButton:Point('TOPRIGHT', 2, 2)
+
+	-- TokenFrame (Currency Tab)
+	_G.TokenFrame:StripTextures()
+
+	-- Try to find the close button
+	for _, child in next, { _G.TokenFrame:GetChildren() } do
+		if child.Hide and child:IsShown() and not child:GetName() then
+			child:Hide()
+			break
+		end
+	end
+
+	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
+	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
 
 	-- Skill Frame
 	_G.SkillFrame:StripTextures()
