@@ -1260,11 +1260,20 @@ do --Tab Regions
 		'Right'
 	}
 
+	local hooked = {}
+	function S:HandleTabText(_, _, _, _, _, forced)
+		if forced then return end
+
+		self:ClearAllPoints()
+		self:SetPoint('CENTER', hooked[self], nil, nil, nil, true)
+	end
+
 	function S:HandleTab(tab, noBackdrop, template)
 		if not tab or (tab.backdrop and not noBackdrop) then return end
 
+		local tabName = tab:GetName()
 		for _, object in next, tabs do
-			local textureName = tab:GetName() and _G[tab:GetName()..object]
+			local textureName = tabName and _G[tabName..object]
 			if textureName then
 				textureName:SetTexture()
 			elseif tab[object] then
@@ -1279,23 +1288,15 @@ do --Tab Regions
 			tab:StripTextures()
 		end
 
-		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/Mainline/SharedUIPanelTemplates.lua#L505-L535
-		tab.selectedTextX, tab.deselectedTextX = 0, 0
-		if tab.isTopTab then
-			tab.selectedTextY, tab.deselectedTextY = -7, -6
-		else
-			tab.selectedTextY, tab.deselectedTextY = 0, 0
-		end
-
-		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/Shared/TabSystem/TabSystemTemplates.lua#L30-L57
-		if tab.GetTextYOffset then
-			tab.GetTextYOffset = function() return 0 end
-		end
-
-		local text = tab.Text or (tab.GetFontString and tab:GetFontString()) or (tab:GetName() and _G[tab:GetName()..'Text'])
+		local text = tab.Text or (tabName and _G[tabName..'Text']) or (tab.GetFontString and tab:GetFontString())
 		if text then
 			text:ClearAllPoints()
 			text:Point('CENTER', tab)
+
+			if not hooked[text] then
+				hooksecurefunc(text, 'SetPoint', S.HandleTabText)
+				hooked[text] = tab
+			end
 		end
 
 		if not noBackdrop then

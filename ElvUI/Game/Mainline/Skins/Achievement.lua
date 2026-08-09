@@ -210,6 +210,17 @@ local function AchievementFrameAchievementsScrollUpdate(frame)
 	frame:ForEachFrame(AchievementFrameAchievementsScrollUpdateChild)
 end
 
+local function UpdateTabs()
+	for i = 1, 3 do
+		local tab = _G['AchievementFrameTab'..i]
+		local text = tab and tab.Text
+		if text then
+			text:ClearAllPoints()
+			text:Point('CENTER', tab)
+		end
+	end
+end
+
 function S:Blizzard_AchievementUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
@@ -242,16 +253,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameTab3:Point('TOPLEFT', _G.AchievementFrameTab2, 'TOPRIGHT', -5, 0)
 
 	-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_AchievementUI/Mainline/Blizzard_AchievementUI.lua#L337-L343
-	hooksecurefunc('AchievementFrame_UpdateTabs', function()
-		for i = 1, 3 do
-			local tab = _G['AchievementFrameTab'..i]
-			local text = tab and tab.Text
-			if text then
-				text:ClearAllPoints()
-				text:Point('CENTER', tab)
-			end
-		end
-	end)
+	hooksecurefunc('AchievementFrame_UpdateTabs', UpdateTabs)
 
 	local PreviewContainer = searchBox.SearchPreviewContainer
 	local ShowAllSearchResults = PreviewContainer.ShowAllSearchResults
