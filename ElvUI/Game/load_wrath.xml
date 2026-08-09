@@ -133,6 +133,7 @@
 	<Script file='Wrath\Skins\Trade.lua'/>
 	<Script file='Wrath\Skins\TradeSkill.lua'/>
 	<Script file='Wrath\Skins\Trainer.lua'/>
+	<Script file='Wrath\Skins\Transmog.lua'/>
 	<Script file='Wrath\Skins\Tutorial.lua'/>
 	<Script file='Wrath\Skins\WorldMap.lua'/>
 </Ui>
