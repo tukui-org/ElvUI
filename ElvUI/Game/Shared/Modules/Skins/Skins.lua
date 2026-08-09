@@ -1279,11 +1279,18 @@ do --Tab Regions
 			tab:StripTextures()
 		end
 
-		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/Mainline/SharedUIPanelTemplates.lua#L523
-		tab.selectedTextX, tab.selectedTextY = 0, 0
+		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/Mainline/SharedUIPanelTemplates.lua#L505-L535
+		tab.selectedTextX, tab.deselectedTextX = 0, 0
+		if tab.isTopTab then
+			tab.selectedTextY, tab.deselectedTextY = -7, -6
+		else
+			tab.selectedTextY, tab.deselectedTextY = 0, 0
+		end
 
-		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/Mainline/SharedUIPanelTemplates.lua#L505
-		tab.deselectedTextX, tab.deselectedTextY = 0, 0
+		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_SharedXML/Shared/TabSystem/TabSystemTemplates.lua#L30-L57
+		if tab.GetTextYOffset then
+			tab.GetTextYOffset = function() return 0 end
+		end
 
 		local text = tab.Text or (tab.GetFontString and tab:GetFontString()) or (tab:GetName() and _G[tab:GetName()..'Text'])
 		if text then
