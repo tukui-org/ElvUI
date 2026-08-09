@@ -86,7 +86,7 @@ end
 
 function S:SocialUI_PositionTab(_, relativeTo, _, x, y)
 	local frame = _G.SocialUIFrame
-	if relativeTo == frame and (x ~= 1 or y ~= 0) then
+	if relativeTo == frame and (x ~= 2 or y ~= -1) then
 		self:ClearAllPoints()
 		self:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 2, -1)
 	end
