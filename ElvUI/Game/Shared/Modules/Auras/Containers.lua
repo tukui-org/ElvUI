@@ -118,11 +118,11 @@ function E:Auras_UpdateIndicator(container, button)
 	button:Point(data.point or 'BOTTOMLEFT', data.anchor or container.anchor or nil, data.relativePoint or nil, data.xOffset or 0, data.yOffset or 0)
 	button:SetMouseMotionEnabled(not container.noMouse)
 
-	if container.isStagger then
+	if container.useStatusbar then -- not used atm
 		button.backdrop:Hide()
 
 		if button.statusbar then
-			local color = container.barColors[1]
+			local color = data.color
 			button.statusbar:SetStatusBarTexture(container.barTexture)
 			button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
 			button.statusbar:SetAllPoints()
