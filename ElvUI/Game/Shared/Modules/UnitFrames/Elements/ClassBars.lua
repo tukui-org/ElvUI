@@ -790,26 +790,30 @@ end
 -- Stagger Bar
 -----------------------------------------------------------
 function UF:Construct_Stagger(frame)
-	local stagger = CreateFrame('Statusbar', '$parent_Stagger', frame)
-	stagger.PostUpdate = UF.PostUpdateStagger
-	stagger.PostVisibility = UF.PostVisibilityStagger
-	stagger.PostUpdateColor = UF.Stagger_PostUpdateColor
+	if E.PTR then
+		return E:Auras_Create(frame, 'Stagger')
+	else
+		local stagger = CreateFrame('Statusbar', '$parent_Stagger', frame)
+		stagger.PostUpdate = UF.PostUpdateStagger
+		stagger.PostVisibility = UF.PostVisibilityStagger
+		stagger.PostUpdateColor = UF.Stagger_PostUpdateColor
 
-	stagger:CreateBackdrop(nil,nil, nil, nil, true)
-	stagger.backdrop.callbackBackdropColor = UF.StatusBarBlackBackdrop
-	stagger.backdrop:SetBackdropColor(0, 0, 0, 1)
+		stagger:CreateBackdrop(nil,nil, nil, nil, true)
+		stagger.backdrop.callbackBackdropColor = UF.StatusBarBlackBackdrop
+		stagger.backdrop:SetBackdropColor(0, 0, 0, 1)
 
-	stagger.bg = stagger:CreateTexture(nil, 'BORDER')
-	stagger.bg:SetTexture(E.media.blankTex)
-	stagger.bg:SetInside(stagger.backdrop)
+		stagger.bg = stagger:CreateTexture(nil, 'BORDER')
+		stagger.bg:SetTexture(E.media.blankTex)
+		stagger.bg:SetInside(stagger.backdrop)
 
-	stagger:SetScript('OnShow', UF.ToggleResourceBar)
-	stagger:SetScript('OnHide', UF.ToggleResourceBar)
+		stagger:SetScript('OnShow', UF.ToggleResourceBar)
+		stagger:SetScript('OnHide', UF.ToggleResourceBar)
 
-	UF.statusbars[stagger] = 'stagger'
-	UF.classbars[stagger] = true
+		UF.statusbars[stagger] = 'stagger'
+		UF.classbars[stagger] = true
 
-	return stagger
+		return stagger
+	end
 end
 
 function UF:PostUpdateStagger(stagger)
