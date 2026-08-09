@@ -7,6 +7,11 @@ local next = next
 
 function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
+	TT.isStyled = true
+
+	if E.PTR then
+		TT:SetAuraButtonTooltipStyle()
+	end
 
 	for _, tt in next, {
 		_G.ItemRefTooltip,
@@ -73,10 +78,6 @@ function S:TooltipFrames()
 	TT:SecureHook('GameTooltip_ClearProgressBars')
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
-
-	if E.PTR then
-		TT:SetAuraButtonTooltipStyle()
-	end
 end
 
 S:AddCallback('TooltipFrames')

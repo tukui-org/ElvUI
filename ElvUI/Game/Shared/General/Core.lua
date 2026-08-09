@@ -601,6 +601,10 @@ do
 
 		info.unitframes.r, info.unitframes.g, info.unitframes.b = unpack(E.media.unitframeBorderColor)
 		E:CoroutineUpdate(E.UpdateUnitframeBorderColor, E.unitFrameElements, info.unitframes)
+
+		if E.PTR and Tooltip.isStyled then
+			Tooltip:SetAuraButtonTooltipStyle()
+		end
 	end
 end
 
@@ -644,6 +648,10 @@ do
 
 		E:CoroutineUpdate(E.UpdateBackdropColor, E.frames, info)
 		E:CoroutineUpdate(E.UpdateUnitframeBackdropColor, E.unitFrameElements, info)
+
+		if E.PTR and Tooltip.isStyled then
+			Tooltip:SetAuraButtonTooltipStyle()
+		end
 	end
 end
 
