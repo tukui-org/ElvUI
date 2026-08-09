@@ -73,6 +73,10 @@ function S:TooltipFrames()
 	TT:SecureHook('GameTooltip_ClearProgressBars')
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
+
+	if E.PTR then
+		TT:SetAuraButtonTooltipStyle()
+	end
 end
 
 S:AddCallback('TooltipFrames')
