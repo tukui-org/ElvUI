@@ -186,7 +186,7 @@ function E:Auras_CreateButton(button)
 	button.highlight = highlight
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
-	statusbar:CreateBackdrop('Transparent')
+	statusbar:CreateBackdrop('Transparent', nil, true) -- these are forbidden, ignore updates
 	statusbar.backdrop.Center:Hide()
 	button.statusbar = statusbar
 
