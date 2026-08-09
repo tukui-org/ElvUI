@@ -171,6 +171,7 @@ function E:Auras_CreateButton(button)
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
 	statusbar:CreateBackdrop('Transparent')
+	statusbar.backdrop.Center:Hide()
 	button.statusbar = statusbar
 
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
@@ -200,7 +201,7 @@ end
 
 function E:Auras_UpdateButton(container, button)
 	local width, height = E:Auras_GetSize(container)
-	button:SetSize(width, height)
+	button:Size(width, height)
 	button:SetMouseMotionEnabled(not container.noMouse)
 
 	if button.texture then
@@ -221,10 +222,10 @@ function E:Auras_UpdateButton(container, button)
 			local color = container.barColor
 			if container.invertAurabars then
 				button.border:SetTexture(container.statusbarTexture)
-				button.border:SetVertexColor(color.r, color.g, color.b)
+				button.border:SetVertexColor(color.r, color.g, color.b, container.isTransparent and bgA or 1)
 			else
 				button.border:SetTexture(E.media.blankTex)
-				button.border:SetVertexColor(r, g, b, bgA)
+				button.border:SetVertexColor(r, g, b, container.isTransparent and bgA or 1)
 			end
 		else
 			button.border:SetVertexColor(r, g, b)
@@ -272,15 +273,15 @@ function E:Auras_UpdateButton(container, button)
 			button:SetDurationBar(button.statusbar)
 
 			local color = container.barColor
+			button.statusbar:SetInside()
 			button.statusbar:SetReverseFill(not container.reverseFill)
-			button.statusbar:SetInside(button)
 
 			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
-				button.statusbar:SetStatusBarColor(bgR, bgG, bgB, bgA)
+				button.statusbar:SetStatusBarColor(bgR, bgG, bgB, container.isTransparent and bgA or 1)
 			else
 				button.statusbar:SetStatusBarTexture(container.statusbarTexture)
-				button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
+				button.statusbar:SetStatusBarColor(color.r, color.g, color.b, container.isTransparent and bgA or 1)
 			end
 
 			if button.border then
@@ -288,12 +289,15 @@ function E:Auras_UpdateButton(container, button)
 				button.border:Point('TOP')
 				button.border:Point('BOTTOM')
 
-				button.spark:ClearAllPoints()
-				button.spark:Point(not container.reverseFill and 'RIGHT' or 'LEFT', button.border)
-				button.spark:Point('BOTTOM', button.statusbar)
-				button.spark:Point('TOP', button.statusbar)
+				if button.spark then
+					button.spark:ClearAllPoints()
+					button.spark:Point(not container.reverseFill and 'RIGHT' or 'LEFT', button.border)
+					button.spark:Point('BOTTOM', button.statusbar)
+					button.spark:Point('TOP', button.statusbar)
+				end
 
 				local barTexture = button.statusbar:GetStatusBarTexture()
+				barTexture:SetInside()
 				if not container.reverseFill then
 					button.border:Point('LEFT')
 					button.border:Point('RIGHT', barTexture, 'LEFT')
@@ -392,8 +396,9 @@ function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
-		layout.elementSpacing = container.spacing or 1
-		layout.groupSpacing = container.spacing or 1
+		layout.elementSpacing = E:Scale(container.spacing or 1)
+		layout.groupSpacing = E:Scale(container.spacing or 1)
+		layout.lineSpacing = E:Scale(container.spacing or 1)
 		layout.elementWidth = width
 		layout.elementHeight = height
 	end
