@@ -887,7 +887,6 @@ P.nameplates = {
 	overlapH = 0.8,
 	overlapV = 1.1,
 	classColorNames = false,
-	useBlizzardAuras = false,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
 	statusbar = 'ElvUI Norm',

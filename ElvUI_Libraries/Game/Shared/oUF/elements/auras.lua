@@ -353,7 +353,7 @@ local function filterIcons(frame, which, unit, filter, limit, offset, dontHide)
 	local element = frame[which]
 	local forceShow = element.forceShow
 
-	local unitAuraFiltered = (element.GetBlizzardAuras and element:GetBlizzardAuras(frame)) or AuraFiltered[filter][unit]
+	local unitAuraFiltered = AuraFiltered[filter][unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while (aura or forceShow) and (visible < limit) do
 		local result = updateAura(frame, which, unit, aura, index, offset, filter, visible)
@@ -387,9 +387,7 @@ local function filterIcons(frame, which, unit, filter, limit, offset, dontHide)
 end
 
 local function UpdateAuras(self, event, unit, updateInfo)
-	if self.usingBlizzardAuras then
-		if event == 'UNIT_AURA' then return end -- we send a fake event: FAKE_REFRESH_AURAS
-	elseif oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then
 		return
 	end
 

@@ -1827,15 +1827,6 @@ do
 				lockedParent[frame] = true
 			end
 		end
-
-		local lockAlpha = which == 2
-		if lockAlpha and not lockedAlpha[frame] then
-			NP:BlizzardPlate_HookAuras(frame) -- setup Blizzard Auras
-
-			hooksecurefunc(frame, 'SetAlpha', LockAlpha)
-
-			lockedAlpha[frame] = true
-		end
 	end
 
 	function ElvUF:DisableBlizzard(unit)
