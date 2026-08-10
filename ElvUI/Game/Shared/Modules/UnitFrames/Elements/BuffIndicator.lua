@@ -25,17 +25,24 @@ end
 
 function UF:Configure_AuraWatch(frame, isPet)
 	local db = frame.db and frame.db.buffIndicator
-	if db and db.enable then
+
+	local enabled = db and db.enable
+	local auras = frame.AuraWatch
+	if E.PTR then
+		auras:SetEnabled(enabled)
+	end
+
+	if enabled then
 		if not frame:IsElementEnabled('AuraWatch') then
 			frame:EnableElement('AuraWatch')
 		end
 
-		local auras = frame.AuraWatch
 		auras.size = db.size
 		auras.countFont = db.countFont
 		auras.countFontSize = db.countFontSize
 		auras.countFontOutline = db.countFontOutline
 		auras.cooldownDB = E.db.cooldown.auraindicator
+		auras.isIndicator = true
 
 		local auraTable
 		if (frame.unit == 'pet' or isPet) and db.petSpecific then

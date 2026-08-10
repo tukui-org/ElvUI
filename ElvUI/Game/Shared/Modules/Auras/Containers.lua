@@ -13,7 +13,6 @@ local huge = math.huge
 local AnchorUtil = AnchorUtil
 local AuraButtonBorderStyle = AuraButtonBorderStyle
 local InCombatLockdown = InCombatLockdown
-local UnitCanAssist = UnitCanAssist
 local CreateFrame = CreateFrame
 local CopyTable = CopyTable
 
@@ -688,12 +687,14 @@ end
 function E:Auras_GroupUnit(container, unit)
 	if not container then return end
 
-	container.canAssist = UnitCanAssist('player', unit)
-
 	if unit == 'target' then
 		E.AuraTarget[container] = unit
 	elseif unit == 'focus' then
 		E.AuraFocus[container] = unit
+	end
+
+	if container.isHighlight then
+		UF:SetEnabled_AuraHighlight(container, unit)
 	end
 
 	E:Auras_SetUnit(container, unit)

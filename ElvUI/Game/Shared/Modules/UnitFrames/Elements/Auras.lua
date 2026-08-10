@@ -545,6 +545,8 @@ function UF:Configure_Auras(frame, which)
 	end
 
 	if E.PTR then
+		auras:SetEnabled(settings.enable)
+
 		auras.keepSizeRatio = settings.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
@@ -604,10 +606,6 @@ function UF:Configure_Auras(frame, which)
 
 			index = index + 1
 		end
-	end
-
-	if E.PTR then
-		auras:SetEnabled(settings.enable)
 	end
 
 	if settings.enable then
