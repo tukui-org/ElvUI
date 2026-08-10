@@ -131,10 +131,11 @@ function E:Auras_UpdateIndicator(container, button)
 		local textureIcon = data.style == 'texturedIcon'
 		local onlyText = data.style == 'timerOnly'
 		local colorIcon = data.style == 'coloredIcon'
-		if button.cooldown then
-			button:SetDurationCooldown(button.cooldown)
+		local cooldown = button.cooldown
+		if cooldown then
+			button:SetDurationCooldown(cooldown)
 
-			E:RegisterCooldown(button.cooldown, 'auraindicator')
+			E:RegisterCooldown(cooldown, 'auraindicator')
 
 			if colorIcon or textureIcon then
 				if button.texture then
@@ -142,30 +143,34 @@ function E:Auras_UpdateIndicator(container, button)
 					button.backdrop:Show()
 				end
 
-				button.cooldown:SetDrawSwipe(true)
-				button.cooldown:SetDrawEdge(true)
+				cooldown:SetDrawSwipe(true)
+				cooldown:SetDrawEdge(true)
 			elseif onlyText then
 				if button.texture then
 					button.texture:Hide()
 					button.backdrop:Hide()
 				end
 
-				button.cooldown:SetDrawSwipe(false)
-				button.cooldown:SetDrawEdge(false)
+				cooldown:SetDrawSwipe(false)
+				cooldown:SetDrawEdge(false)
 			end
 
-			button.cooldown:SetHideCountdownNumbers(not onlyText and not data.displayText)
+			cooldown:SetHideCountdownNumbers(not onlyText and not data.displayText)
 
-			local text = button.cooldown.Text or button.cooldown:GetRegions()
+			local text = cooldown.Text or cooldown:GetRegions()
 			if text then -- CD module aquires the text to Text but without it we need to grab it
 				text:ClearAllPoints()
 				text:Point(data.cooldownAnchor or 'CENTER', data.cooldownX or 1, data.cooldownY or 1)
 
-				--local db = data.cooldownDB
-				local color = (onlyText and data.color) --[[ this is the cd text color option]] -- or (db and db.colors.text)
+				local db = data.cooldownDB
+				local color = (onlyText and data.color) or (db and db.colors.text)
 				if color then
-					button.cooldown:SetCountdownFormatter() -- turn formatter off
 					text:SetTextColor(color.r, color.g, color.b)
+
+					-- currently the entire system is PTR only but check anyways
+					if cooldown.SetCountdownFormatter then -- this overrides the coloring
+						cooldown:SetCountdownFormatter()
+					end
 				end
 			end
 		end
