@@ -226,12 +226,8 @@ function UF:Configure_AuraBars(frame)
 			bars.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
-
-			-- add settings for these later
-			bars.countPosition = 'BOTTOMLEFT'
-			bars.countFontSize = 16
-			bars.countXOffset = -12
-			bars.countYOffset = 2
+			bars.countPosition, bars.countXOffset, bars.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
+			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 
 			bars.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
 			bars.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil

@@ -1656,6 +1656,12 @@ local UF_AuraBars = {
 	reverseFill = false,
 	abbrevName = false,
 	smoothbars = false,
+	countPosition = 'BOTTOMLEFT',
+	countFont = 'PT Sans Narrow',
+	countFontOutline = 'OUTLINE',
+	countFontSize = 14,
+	countXOffset = -12,
+	countYOffset = 2,
 	allowList = 'Whitelist',
 	blockList = 'Blacklist'
 }
