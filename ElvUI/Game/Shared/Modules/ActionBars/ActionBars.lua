@@ -1840,8 +1840,6 @@ end
 
 function AB:LAB_UpdateTextElement(_, element, font, size, style, shadow)
 	E:SetFontShadow(element, style, shadow)
-	--element:SetShadowColor(0, 0, 0, shadow and (style == '' and 1 or 0.6) or 0)
-	--element:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
 end
 
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
