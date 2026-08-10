@@ -2244,7 +2244,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 end
 
 function CH:GetDiscordInfo(info)
-	if E:IsSecretValue(info) then return end -- of course
+	if E:IsSecretTable(info) then return end -- of course
 
 	return info, info and info.userID and info.userID ~= 0
 end
