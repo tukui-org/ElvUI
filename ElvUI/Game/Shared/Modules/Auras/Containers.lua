@@ -6,8 +6,8 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
+local strlower = strlower
 local next, type, wipe = next, type, wipe
-local unpack, strlower = unpack, strlower
 local huge = math.huge
 
 local AnchorUtil = AnchorUtil
@@ -36,7 +36,8 @@ E.AuraHighlight = {
 E.AuraDispel = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
 	showWhenHarmful = true,
-	showWhenHelpful = false
+	showWhenHelpful = false,
+	showWithoutDispelType = false
 }
 
 E.AuraEvents = {
@@ -291,20 +292,26 @@ function E:Auras_UpdateButton(container, button)
 		button:SetIcon(button.texture)
 	end
 
-	local r, g, b = unpack(E.media.bordercolor)
-	local bgR, bgG, bgB, bgA = unpack(E.media.backdropfadecolor)
+	local borderColor = E.media.bordercolor
+	local backdropColor = E.media.backdropcolor
+	local backdropFadeColor = E.media.backdropfadecolor
+	if button.dispelBorder then
+		button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b) -- how can we do alpha?
+		button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+	end
+
 	if button.border then
 		if container.isAuraBar then
 			local color = container.barColor
 			if container.invertAurabars then
 				button.border:SetTexture(container.statusbarTexture)
-				button.border:SetVertexColor(color.r, color.g, color.b, container.isTransparent and bgA or 1)
+				button.border:SetVertexColor(color.r, color.g, color.b, container.isTransparent and backdropFadeColor.a or 1)
 			else
 				button.border:SetTexture(E.media.blankTex)
-				button.border:SetVertexColor(r, g, b, container.isTransparent and bgA or 1)
+				button.border:SetVertexColor(borderColor.r, borderColor.g, borderColor.b, container.isTransparent and backdropFadeColor.a or 1)
 			end
 		else
-			button.border:SetVertexColor(r, g, b)
+			button.border:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
 		end
 	end
 
@@ -313,10 +320,6 @@ function E:Auras_UpdateButton(container, button)
 
 		if container.isAuraBar then
 			E:RegisterCooldown(button.cooldown, 'aurabars')
-
-			if button.dispelBorder then
-				button.dispelBorder:Hide()
-			end
 
 			button.cooldown:SetDrawSwipe(false)
 			button.cooldown:SetDrawBling(false)
@@ -354,10 +357,10 @@ function E:Auras_UpdateButton(container, button)
 
 			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
-				button.statusbar:SetStatusBarColor(bgR, bgG, bgB, container.isTransparent and bgA or 1)
+				button.statusbar:SetStatusBarColor(backdropFadeColor.r, backdropFadeColor.g, backdropFadeColor.b, backdropFadeColor.a)
 			else
 				button.statusbar:SetStatusBarTexture(container.statusbarTexture)
-				button.statusbar:SetStatusBarColor(color.r, color.g, color.b, container.isTransparent and bgA or 1)
+				button.statusbar:SetStatusBarColor(color.r, color.g, color.b, backdropFadeColor.a)
 			end
 
 			if button.border then
@@ -393,10 +396,6 @@ function E:Auras_UpdateButton(container, button)
 		if button.texture then
 			button.texture:SetInside(button.backdrop)
 		end
-	end
-
-	if button.dispelBorder then
-		button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
 	end
 
 	local textFrame = button.textFrame
