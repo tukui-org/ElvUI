@@ -6,7 +6,7 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local strlower = strlower
+local strlower, strfind = strlower, strfind
 local next, type, wipe = next, type, wipe
 local huge = math.huge
 
@@ -260,17 +260,15 @@ function E:Auras_CreateButton(button)
 		button.textFrame = textFrame
 
 		local countText = textFrame:CreateFontString(nil, 'OVERLAY')
-		countText:FontTemplate()
-		countText:Point('BOTTOMRIGHT')
 		textFrame.count = countText
 
 		local timeText = textFrame:CreateFontString(nil, 'OVERLAY')
-		timeText:FontTemplate()
+		timeText:FontTemplate(nil, 14)
 		timeText:Point('CENTER')
 		textFrame.time = timeText
 
 		local nameText = textFrame:CreateFontString(nil, 'OVERLAY')
-		nameText:FontTemplate()
+		nameText:FontTemplate(nil, 14)
 		nameText:Point('LEFT', button, 2, 0)
 		textFrame.nameText = nameText
 	end
@@ -404,7 +402,16 @@ function E:Auras_UpdateButton(container, button)
 
 	local textFrame = button.textFrame
 	if textFrame then
-		button:SetApplicationCount(textFrame.count)
+		local count = textFrame.count
+		if count then
+			local point = container.countPosition or 'CENTER'
+			count:ClearAllPoints()
+			count:Point(point, container.countXOffset or 0, container.countYOffset or 0)
+			count:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
+			count:FontTemplate(container.countFont, container.countFontSize, container.countFontOutline)
+
+			button:SetApplicationCount(count)
+		end
 
 		if container.isAuraBar then
 			button:SetSpellName(textFrame.nameText)
