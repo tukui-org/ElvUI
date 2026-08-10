@@ -130,7 +130,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.midnightGroup.args.player.args.isAuraCrowdControlPlayer = ACH:Toggle(L["Crowd Control"], nil, 7, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	group.args.midnightGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 8, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	group.args.midnightGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 9, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR)
+	group.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR, nil, nil, nil, nil, nil, E.PTR)
 	group.args.midnightGroup.args.player.inline = true
 
 	group.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20, nil, E.PTR and function(info) local value = E.db.nameplates.units[unit][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.PTR and function(info, value) E.db.nameplates.units[unit][auraType][info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end or nil)
@@ -143,7 +143,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.midnightGroup.args.others.args.isAuraCrowdControl = ACH:Toggle(L["Crowd Control"], nil, 7, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	group.args.midnightGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 8, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	group.args.midnightGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 9, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraPermanent = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR)
+	group.args.midnightGroup.args.others.args.isAuraPermanent = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR, nil, nil, nil, nil, nil, E.PTR)
 	group.args.midnightGroup.args.others.inline = true
 
 	group.args.legacyGroup = ACH:Group(L["Filters: Legacy"], nil, 50, nil, nil, nil, nil, function() return E.Retail or E.db.nameplates.units[unit][auraType].useMidnight end)

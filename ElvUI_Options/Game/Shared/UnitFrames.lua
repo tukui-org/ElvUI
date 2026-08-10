@@ -189,7 +189,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.midnightGroup.args.player.args.isAuraCrowdControlPlayer = ACH:Toggle(L["Crowd Control"], nil, 7, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 8, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 9, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
-	config.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR)
+	config.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR, nil, nil, nil, nil, nil, E.PTR)
 	config.args.midnightGroup.args.player.inline = true
 
 	config.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 30, nil, E.PTR and function(info) local value = E.db.unitframe.units[groupName].aurabar[info[#info]] if value == 1 then return nil else return value end end or nil, E.PTR and function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName) end or nil)
@@ -202,7 +202,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.midnightGroup.args.others.args.isAuraCrowdControl = ACH:Toggle(L["Crowd Control"], nil, 7, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 8, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 9, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
-	config.args.midnightGroup.args.others.args.isAuraPermanent = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR)
+	config.args.midnightGroup.args.others.args.isAuraPermanent = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR, nil, nil, nil, nil, nil, E.PTR)
 	config.args.midnightGroup.args.others.inline = true
 
 	config.args.legacyGroup = ACH:Group(L["Filters: Legacy"], nil, 60, nil, nil, nil, nil, function() return E.Retail or E.db.unitframe.units[groupName].aurabar.useMidnight end)
@@ -342,7 +342,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.midnightGroup.args.player.args.isAuraCrowdControlPlayer = ACH:Toggle(L["Crowd Control"], nil, 7, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 8, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 9, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
-	config.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR)
+	config.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR, nil, nil, nil, nil, nil, E.PTR)
 	config.args.midnightGroup.args.player.inline = true
 
 	config.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20, nil, E.PTR and function(info) local value = E.db.unitframe.units[groupName][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.PTR and function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName, numUnits) end or nil)
@@ -355,7 +355,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.midnightGroup.args.others.args.isAuraCrowdControl = ACH:Toggle(L["Crowd Control"], nil, 7, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 8, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 9, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
-	config.args.midnightGroup.args.others.args.isAuraPermanent = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR)
+	config.args.midnightGroup.args.others.args.isAuraPermanent = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR, nil, nil, nil, nil, nil, E.PTR)
 	config.args.midnightGroup.args.others.inline = true
 
 	config.args.legacyGroup = ACH:Group(L["Filters: Legacy"], nil, 50, nil, nil, nil, nil, function() return E.Retail or E.db.unitframe.units[groupName][auraType].useMidnight end)
