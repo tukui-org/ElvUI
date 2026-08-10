@@ -112,13 +112,13 @@ end
 
 function E:Auras_UpdateIndicator(container, button)
 	local data = button.data -- the data
-	local width, height = E:Auras_GetSize(container)
-	button:Size(width, height)
 	button:ClearAllPoints()
 	button:Point(data.point or 'BOTTOMLEFT', data.anchor or container.anchor or nil, data.relativePoint or nil, data.xOffset or 0, data.yOffset or 0)
 	button:SetMouseMotionEnabled(not container.noMouse)
 
 	if container.useStatusbar then -- not used atm
+		local width, height = E:Auras_GetSize(container)
+		button:Size(width, height)
 		button.backdrop:Hide()
 
 		if button.statusbar then
@@ -128,18 +128,58 @@ function E:Auras_UpdateIndicator(container, button)
 			button.statusbar:SetAllPoints()
 		end
 	else
+		local textureIcon = data.style == 'texturedIcon'
+		local onlyText = data.style == 'timerOnly'
+		local colorIcon = data.style == 'coloredIcon'
 		if button.cooldown then
 			button:SetDurationCooldown(button.cooldown)
 
 			E:RegisterCooldown(button.cooldown, 'auraindicator')
+
+			if colorIcon or textureIcon then
+				if button.texture then
+					button.texture:Show()
+					button.backdrop:Show()
+				end
+
+				button.cooldown:SetDrawSwipe(true)
+				button.cooldown:SetDrawEdge(true)
+			elseif onlyText then
+				if button.texture then
+					button.texture:Hide()
+					button.backdrop:Hide()
+				end
+
+				button.cooldown:SetDrawSwipe(false)
+				button.cooldown:SetDrawEdge(false)
+			end
+
+			button.cooldown:SetHideCountdownNumbers(not onlyText and not data.displayText)
+
+			local text = button.cooldown.Text or button.cooldown:GetRegions()
+			if text then -- CD module aquires the text to Text but without it we need to grab it
+				text:ClearAllPoints()
+				text:Point(data.cooldownAnchor or 'CENTER', data.cooldownX or 1, data.cooldownY or 1)
+
+				--local db = data.cooldownDB
+				local color = (onlyText and data.color) --[[ this is the cd text color option]] -- or (db and db.colors.text)
+				if color then
+					button.cooldown:SetCountdownFormatter() -- turn formatter off
+					text:SetTextColor(color.r, color.g, color.b)
+				end
+			end
+		end
+
+		local size = container.size
+		if not data.sizeOffset or data.sizeOffset == 0 then
+			button:Size(size, size)
+		else
+			button:Size(data.sizeOffset + size, data.sizeOffset + size)
 		end
 
 		if button.texture then
 			button.texture:SetTexCoords()
 
-			--local textureIcon = data.style == 'texturedIcon'
-			--local onlyText = data.style == 'timerOnly'
-			local colorIcon = data.style == 'coloredIcon'
 			if colorIcon then
 				local color = data.color
 				button.texture:SetTexture(E.media.blankTex)

@@ -35,6 +35,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 		auras.countFont = db.countFont
 		auras.countFontSize = db.countFontSize
 		auras.countFontOutline = db.countFontOutline
+		auras.cooldownDB = E.db.cooldown.auraindicator
 
 		local auraTable
 		if (frame.unit == 'pet' or isPet) and db.petSpecific then
