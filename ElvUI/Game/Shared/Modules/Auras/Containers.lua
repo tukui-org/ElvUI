@@ -3,6 +3,7 @@
 ------------------------------------------------------------------------
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
+local UF = E:GetModule('UnitFrames')
 
 local _G = _G
 local next, type, wipe = next, type, wipe
@@ -71,6 +72,10 @@ function E:Auras_OnEvent(event)
 	if not obj then return end
 
 	for container in next, obj do
+		if event == 'PLAYER_TARGET_CHANGED' and container.isAuraBar then
+			UF:AuraBars_UpdateFilter(container, 'target')
+		end
+
 		container:UpdateAllAuras()
 	end
 end
