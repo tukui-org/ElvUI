@@ -435,7 +435,7 @@ function E:Auras_UpdateButtons(container)
 	end
 end
 
-function E:Auras_UpdateButtons(container)
+function E:Auras_UpdateIndicators(container)
 	if InCombatLockdown() then return end
 
 	for button in next, container.indicators do

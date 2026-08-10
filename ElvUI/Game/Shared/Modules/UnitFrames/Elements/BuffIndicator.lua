@@ -53,6 +53,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 			E:Auras_SetupIndicator(auras, auraTable)
 			E:Auras_GroupUnit(auras, frame.unit)
 			E:Auras_SetIndicator(auras)
+			E:Auras_UpdateIndicators(auras)
 		elseif auras.SetNewTable then
 			auras:SetNewTable(auraTable)
 		end
