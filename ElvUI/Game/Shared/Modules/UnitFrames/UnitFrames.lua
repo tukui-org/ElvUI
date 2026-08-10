@@ -1795,19 +1795,11 @@ do
 	local disabledParty = false
 	local disabledArena = false
 	local lockedParent = {}
-	local lockedAlpha = {}
 
 	-- lock Boss, Party, and Arena
 	local function LockParent(frame, parent)
 		if parent ~= E.HiddenFrame then
 			frame:SetParent(E.HiddenFrame)
-		end
-	end
-
-	-- normally, we want to reparent but this can break Blizzard Auras on nameplates
-	local function LockAlpha(frame, alpha)
-		if not frame:IsForbidden() and alpha ~= 0 then
-			frame:SetAlpha(0)
 		end
 	end
 
@@ -1827,13 +1819,6 @@ do
 				lockedParent[frame] = true
 			end
 		end
-
-		local lockAlpha = which == 2
-		if lockAlpha and not lockedAlpha[frame] then
-			hooksecurefunc(frame, 'SetAlpha', LockAlpha)
-
-			lockedAlpha[frame] = true
-		end
 	end
 
 	function ElvUF:DisableBlizzard(unit)
@@ -1846,7 +1831,7 @@ do
 				if plate and not handledPlates[plate] then
 					handledPlates[plate] = true
 
-					HideFrame(plate, E.Retail and 2 or 1)
+					HideFrame(plate, 1)
 				end
 			end
 		elseif E.private.unitframe.enable and not handledUnits[unit] then
