@@ -289,6 +289,10 @@ function E:Auras_UpdateButton(container, button)
 			button.texture:SetTexCoord(left, right, top, bottom)
 		end
 
+		if not container.useStatusbar and not container.isAuraBar then
+			button.texture:SetDesaturated(container.useDesaturate and button.key == 'others')
+		end
+
 		button:SetIcon(button.texture)
 	end
 
@@ -432,19 +436,24 @@ function E:Auras_UpdateButtons(container)
 	end
 end
 
-function E:Auras_GenerateButton(container)
+function E:Auras_GenerateButton(container, key, filter)
 	return function(button)
 		container.buttons[button] = container
+
 		button.container = container
+		button.filter = filter
+		button.key = key
 
 		E:Auras_CreateButton(button)
 		E:Auras_UpdateButton(container, button)
 	end
 end
 
-function E:Auras_GenerateSlot(container, data)
+function E:Auras_GenerateSlot(container, key, data)
 	return function(button)
 		container.indicators[button] = container
+
+		button.key = key
 		button.data = data
 		button.container = container
 
@@ -521,9 +530,9 @@ end
 
 do
 	local temp = {}
-	function E:Auras_SetupGroup(container, filter, layout, maxCount, sortMethod, sortDirection)
-		temp.initializeFrame = E:Auras_GenerateButton(container)
-		temp.candidateFilters = filter
+	function E:Auras_SetupGroup(container, key, filter, candidate, layout, maxCount, sortMethod, sortDirection)
+		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter)
+		temp.candidateFilters = candidate
 		temp.maxFrameCount = maxCount
 		temp.sortDirection = sortDirection
 		temp.sortMethod = sortMethod
@@ -535,9 +544,9 @@ end
 
 do
 	local temp = {}
-	function E:Auras_SetupSlot(container, filter, sortMethod, sortDirection, data)
-		temp.initializeFrame = E:Auras_GenerateSlot(container, data)
-		temp.candidateFilters = filter
+	function E:Auras_SetupSlot(container, key, candidate, sortMethod, sortDirection, data)
+		temp.initializeFrame = E:Auras_GenerateSlot(container, key, data)
+		temp.candidateFilters = candidate
 		temp.sortDirection = sortDirection
 		temp.sortMethod = sortMethod
 
@@ -556,7 +565,7 @@ do
 end
 
 function E:Auras_AddGroup(container, key, filter, candidate, layout, maxCount, sortMethod, sortDirection)
-	local group = E:Auras_SetupGroup(container, candidate, layout, maxCount, sortMethod, sortDirection)
+	local group = E:Auras_SetupGroup(container, key, filter, candidate, layout, maxCount, sortMethod, sortDirection)
 	container:AddAuraGroup(key, filter, group)
 end
 
@@ -585,8 +594,8 @@ function E:Auras_UpdateSlot(container, key, filter, sortMethod, sortDirection)
 	container:SetAuraSlotSortMethod(key, sortMethod, sortDirection)
 end
 
-function E:Auras_AddSlot(container, key, filter, sortMethod, sortDirection, data)
-	local slot = E:Auras_SetupSlot(container, filter, sortMethod, sortDirection, data)
+function E:Auras_AddSlot(container, key, candidate, sortMethod, sortDirection, data)
+	local slot = E:Auras_SetupSlot(container, key, candidate, sortMethod, sortDirection, data)
 	container:AddAuraSlot(key, container.filter, slot)
 end
 
