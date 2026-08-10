@@ -578,6 +578,7 @@ function A:UpdateHeader(header)
 	end
 
 	if E.PTR then
+		header.barDB = db
 		header.width = width
 		header.height = height
 		header.spacingX = db.horizontalSpacing
@@ -588,7 +589,8 @@ function A:UpdateHeader(header)
 		header.useStatusbar = db.barShow
 		header.barColor = db.barColor
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
-		header.barDB = db
+		header.countPosition, header.countXOffset, header.countYOffset = 'BOTTOMRIGHT', db.countXOffset, db.countYOffset
+		header.countFont, header.countFontSize, header.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 
 		header.filters[header.auraType] = header.filter
 
