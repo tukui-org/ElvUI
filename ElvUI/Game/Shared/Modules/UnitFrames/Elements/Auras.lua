@@ -556,6 +556,7 @@ function UF:Configure_Auras(frame, which)
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
 		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 		auras.unitframeType = frame.unitframeType
+		auras.useDesaturate = settings.desaturate
 		auras.maxDuration = (settings.maxDuration and settings.maxDuration > 0) and settings.maxDuration or nil
 
 		if settings.enable then
