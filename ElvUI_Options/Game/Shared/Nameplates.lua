@@ -28,6 +28,12 @@ local auraKeys = {
 	auras = { name = L["Custom"], order = 3 },
 }
 
+local function ResetFilters(db, default)
+	for key in next, E.AuraDefaults do
+		db[key] = default[key]
+	end
+end
+
 local function GetTargetText(unit)
 	local group = ACH:Group(L["Target Text"], nil, 30)
 	group.args.displayTarget = ACH:Toggle(L["Enable"], L["Display the target of current cast."], 1)
@@ -107,6 +113,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.midnightGroup.args.useBlocklist = ACH:Toggle(L["Blacklist"], L["Activate the blocklist filter."], 1)
 	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 2)
 	group.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 4, { min = 0, max = 10800, step = 1 })
+	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 5, function() ResetFilters(E.db.nameplates.units[unit][auraType], P.nameplates.units[unit][auraType]) NP:ConfigureAll() end)
 
 	group.args.midnightGroup.args.player = ACH:Group(L["Player"], nil, 10, nil, E.PTR and function(info) local value = E.db.nameplates.units[unit][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.PTR and function(info, value) E.db.nameplates.units[unit][auraType][info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end or nil)
 	group.args.midnightGroup.args.player.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], L["Auras you can dispel."], 3, E.PTR, nil, nil, nil, nil, nil, not E.Retail)
