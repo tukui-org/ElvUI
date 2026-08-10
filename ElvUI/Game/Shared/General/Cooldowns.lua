@@ -112,7 +112,7 @@ function E:CooldownUpdate(cooldown)
 	E:CooldownTextures(data.lossOfControl, E.Media.Textures.Edge, colors.edgeLOC, colors.swipeLOC)
 
 	local formatters = data.formatters
-	if formatters then
+	if formatters and not target then
 		E:CooldownFormats(cooldown, false, formatters.text)
 		E:CooldownFormats(cooldown, data.chargeCooldown, formatters.charge, 'thresholdCharge')
 		E:CooldownFormats(cooldown, data.lossOfControl, formatters.loc, 'thresholdLoc')
