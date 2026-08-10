@@ -100,7 +100,7 @@ Auras.args.privateAuras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Auras.args.privateAuras.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 Auras.args.privateAuras.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
 Auras.args.privateAuras.args.clickThrough = ACH:Toggle(L["Click Through"], nil, 5)
-Auras.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -10, max = 10, step = 0.01 })
+Auras.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -20, max = 20, step = 0.01 })
 
 Auras.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.general.privateAuras.icon[info[#info]] end, function(info, value) E.db.general.privateAuras.icon[info[#info]] = value; PA:Update() end)
 Auras.args.privateAuras.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })

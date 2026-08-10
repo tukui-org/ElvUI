@@ -89,7 +89,7 @@ local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
 	config.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 	config.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
 	config.args.clickThrough = ACH:Toggle(L["Click Through"], nil, 5)
-	config.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -10, max = 10, step = 0.01 })
+	config.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -20, max = 20, step = 0.01 })
 
 	config.args.parent = ACH:Group(L["Holder"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.parent.args.invertAnchor = ACH:Toggle(L["Invert Anchor"], nil, 1)

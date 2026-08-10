@@ -304,7 +304,7 @@ local function GetUnitSettings(unit, name)
 	group.args.privateAuras.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 	group.args.privateAuras.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
 	group.args.privateAuras.args.clickThrough = ACH:Toggle(L["Click Through"], nil, 5)
-	group.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -10, max = 10, step = 0.01 })
+	group.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -20, max = 20, step = 0.01 })
 
 	group.args.privateAuras.args.parent = ACH:Group(L["Holder"], nil, 10, nil, function(info) return E.db.nameplates.units[unit].privateAuras.parent[info[#info]] end, function(info, value) E.db.nameplates.units[unit].privateAuras.parent[info[#info]] = value NP:ConfigureAll() end)
 	group.args.privateAuras.args.parent.args.invertAnchor = ACH:Toggle(L["Invert Anchor"], nil, 1)
