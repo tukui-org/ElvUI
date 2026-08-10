@@ -308,7 +308,7 @@ function E:Auras_UpdateButton(container, button)
 				button.border:SetVertexColor(color.r, color.g, color.b, container.isTransparent and backdropFadeColor.a or 1)
 			else
 				button.border:SetTexture(E.media.blankTex)
-				button.border:SetVertexColor(borderColor.r, borderColor.g, borderColor.b, container.isTransparent and backdropFadeColor.a or 1)
+				button.border:SetVertexColor(backdropColor.r, backdropColor.g, backdropColor.b, container.isTransparent and backdropFadeColor.a or 1)
 			end
 		else
 			button.border:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
