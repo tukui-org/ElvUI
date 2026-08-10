@@ -670,6 +670,8 @@ local NP_Auras = {
 	tooltipAnchorX = 5,
 	tooltipAnchorY = -5,
 	sourceText = CopyTable(NP_AuraSourceText),
+	allowList = 'Whitelist',
+	blockList = 'Blacklist',
 	priority = ''
 }
 
@@ -1616,6 +1618,8 @@ local UF_Auras = {
 	tooltipAnchorType = 'ANCHOR_BOTTOMRIGHT',
 	tooltipAnchorX = 5,
 	tooltipAnchorY = -5,
+	allowList = 'Whitelist',
+	blockList = 'Blacklist',
 	strataAndLevel = CopyTable(UF_StrataAndLevel),
 	sourceText = CopyTable(NP_AuraSourceText)
 }
@@ -1652,6 +1656,8 @@ local UF_AuraBars = {
 	reverseFill = false,
 	abbrevName = false,
 	smoothbars = false,
+	allowList = 'Whitelist',
+	blockList = 'Blacklist'
 }
 
 for key, value in next, E.AuraDefaults do
