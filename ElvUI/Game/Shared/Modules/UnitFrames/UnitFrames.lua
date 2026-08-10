@@ -1166,8 +1166,11 @@ do
 end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	UF:RegisterRaidDebuffIndicator()
 	UF:UpdateRangeSpells()
+
+	if not E.PTR then
+		UF:RegisterRaidDebuffIndicator()
+	end
 
 	local _, instanceType = IsInInstance()
 	if instanceType == 'raid' then
