@@ -581,8 +581,7 @@ function A:UpdateHeader(header)
 		header.barDB = db
 		header.width = width
 		header.height = height
-		header.spacingX = db.horizontalSpacing
-		header.spacingY = db.verticalSpacing
+		header.spacing = db.horizontalSpacing
 		header.keepSizeRatio = db.keepSizeRatio
 		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
