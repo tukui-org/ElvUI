@@ -26,7 +26,7 @@ local SharedOptions = {
 	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 25, { min = -5, max = 50, step = 1 }),
 	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }, nil, nil, nil, nil, E.Retail),
 
-	tooltip = ACH:Group(L["Tooltip"], nil, -3),
+	tooltip = ACH:Group(L["Tooltip"], nil, -3, nil, nil, nil, nil, E.PTR),
 	statusBar = ACH:Group(L["Statusbar"], nil, -2),
 	countGroup = ACH:Group(L["Count Text"], nil, -1),
 }
