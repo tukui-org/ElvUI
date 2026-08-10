@@ -181,7 +181,11 @@ function E:SetupCVars(noDisplayMsg)
 	E:SetCVar('ActionButtonUseKeyDown', 1)
 	E:SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
 
-	if E.Retail then
+	if E.PTR then
+		E:SetCVar('worldMapShowPlayerCoords', 0)
+		E:SetCVar('worldMapShowCursorCoords', 0)
+		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
+	elseif E.Retail then
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
 	else
 		E:SetCVar('alwaysShowActionBars', 1)
