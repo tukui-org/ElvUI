@@ -44,11 +44,19 @@ E.AuraEvents = {
 }
 
 if SORTMETHOD then -- add the new ones (?)
+	-- top aura conversion
+	E.AuraContainerSortMethod.TIME = SORTMETHOD.Expiration -- not in UF or NP
+	E.AuraContainerSortMethod.INDEX = SORTMETHOD.AuraInstanceIDOnly
+	E.AuraContainerSortMethod.NAME = SORTMETHOD.Name
+
+	-- unitframe and nameplates
 	E.AuraContainerSortMethod.TIME_REMAINING = SORTMETHOD.Expiration
 	E.AuraContainerSortMethod.DURATION = SORTMETHOD.Default
-	E.AuraContainerSortMethod.NAME = SORTMETHOD.Name
-	E.AuraContainerSortMethod.PLAYER = SORTMETHOD.ImportantOnly -- player doesnt exist (?)
-	E.AuraContainerSortMethod.INDEX = SORTMETHOD.AuraInstanceIDOnly
+	E.AuraContainerSortMethod.PLAYER = SORTMETHOD.UnitFrameDebuff -- player doesnt exist (?)
+
+	-- new ones for 12.1
+	E.AuraContainerSortMethod.DEFENSIVE = SORTMETHOD.BigDefensive
+	E.AuraContainerSortMethod.IMPORTANT = SORTMETHOD.ImportantOnly
 end
 
 if SORTDIRECTION then

@@ -14,7 +14,7 @@ local SharedOptions = {
 	spacer1 = ACH:Spacer(5, 'full'),
 
 	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 10, C.Values.GrowthDirection),
-	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 11, { INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
+	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 11, { IMPORTANT = E.PTR and L["Important"] or nil, DEFENSIVE = E.PTR and L["Big Defensive"] or nil, DURATION = E.PTR and L["Duration"] or nil, PLAYER = E.PTR and L["Debuffs"] or nil, INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
 	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 12, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
 	seperateOwn = ACH:Select(L["Separate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 13, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
 
