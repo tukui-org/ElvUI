@@ -107,7 +107,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
 	group.args.cooldownGroup.args.enable, group.args.cooldownGroup.args.textGroup, group.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType])
 
-	group.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit][auraType].useMidnight end)
+	group.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() if E.Retail then return false else return not E.db.nameplates.units[unit][auraType].useMidnight end end)
 	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 1)
 	group.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
 	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 3, function() ResetFilters(E.db.nameplates.units[unit][auraType], P.nameplates.units[unit][auraType]) NP:ConfigureAll() end)
