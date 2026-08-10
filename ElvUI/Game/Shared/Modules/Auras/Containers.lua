@@ -246,6 +246,7 @@ function E:Auras_CreateButton(button)
 
 		local countText = textFrame:CreateFontString(nil, 'OVERLAY')
 		countText:FontTemplate()
+		countText:Point('BOTTOMRIGHT')
 		textFrame.count = countText
 
 		local timeText = textFrame:CreateFontString(nil, 'OVERLAY')
