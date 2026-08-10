@@ -447,12 +447,6 @@ function UF:EnableDisable_Auras(frame)
 	end
 end
 
-function UF:Configure_UnitAuras(frame)
-	E:Auras_GroupUnit(frame.Auras, frame.unit)
-	E:Auras_GroupUnit(frame.Buffs, frame.unit)
-	E:Auras_GroupUnit(frame.Debuffs, frame.unit)
-end
-
 function UF:Configure_AllAuras(frame)
 	if frame.Auras then frame.Auras:ClearAllPoints() end
 	if frame.Buffs then frame.Buffs:ClearAllPoints() end

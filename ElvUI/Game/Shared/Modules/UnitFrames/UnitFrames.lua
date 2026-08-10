@@ -2231,6 +2231,23 @@ do -- Clique support for registering clicks
 	end
 end
 
+do
+	local units = {} -- track units
+	function UF:Configure_UnitAuras(frame)
+		local unit = frame.unit -- update when needed
+		if not unit or (units[frame] == unit) then return end
+
+		units[frame] = unit
+
+		E:Auras_GroupUnit(frame.Auras, unit)
+		E:Auras_GroupUnit(frame.Buffs, unit)
+		E:Auras_GroupUnit(frame.Debuffs, unit)
+		E:Auras_GroupUnit(frame.AuraBars, unit)
+		E:Auras_GroupUnit(frame.AuraWatch, unit)
+		E:Auras_GroupUnit(frame.AuraHighlight, unit)
+	end
+end
+
 function UF:UpdateAllElements(event)
 	if event == 'OnAttributeChanged' then
 		if self.PrivateAuras then
