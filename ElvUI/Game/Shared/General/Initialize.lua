@@ -429,12 +429,16 @@ do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us t
 		return z
 	end
 
-	function E:SetFontShadow(font, style, shadow)
+	function E:SetFontObjectShadow(font, style, shadow)
 		for which in next, alphabets do
 			local obj = font:GetFontObjectForAlphabet(which)
-			obj:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
-			obj:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
+			E:SetFontShadow(obj, style, shadow)
 		end
+	end
+
+	function E:SetFontShadow(font, style, shadow)
+		font:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
+		font:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
 	end
 end
 
