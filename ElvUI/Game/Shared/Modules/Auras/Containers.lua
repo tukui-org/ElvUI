@@ -74,6 +74,7 @@ function E:Auras_OnEvent(event)
 	for container in next, obj do
 		if event == 'PLAYER_TARGET_CHANGED' and container.isAuraBar then
 			UF:AuraBars_UpdateFilter(container, 'target')
+			E:Auras_SetContainer(container)
 		end
 
 		container:UpdateAllAuras()
@@ -463,8 +464,13 @@ function E:Auras_GenerateHighlight(container)
 	end
 end
 
-function E:Auras_GetSize(container)
-	return container.width or container.size or 24, container.height or container.size or 24
+function E:Auras_GetSize(container, sizeOnly)
+	local size = container.size or 24
+	if sizeOnly then
+		return size
+	end
+
+	return container.width or size, container.height or size
 end
 
 function E:Auras_UpdateLayout(container)
@@ -653,8 +659,8 @@ function E:Auras_SetContainer(container)
 end
 
 function E:Auras_SetLineSize(container)
-	local width = E:Auras_GetSize(container)
-	local rowWidth = (container.numAuras and container.numAuras > 0 and (container.numAuras * (width + (container.spacing or 0)))) or container:GetWidth()
+	local size = E:Auras_GetSize(container, true)
+	local rowWidth = (container.numAuras and container.numAuras > 0 and (container.numAuras * (size + (container.spacing or 0)))) or container:GetWidth()
 	container:SetFlowLayoutMaximumLineSize((E:NotSecretValue(rowWidth) and rowWidth and rowWidth > 0 and rowWidth) or huge)
 end
 
