@@ -299,8 +299,6 @@ function NP:StylePlate(nameplate)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
-	nameplate.blizzAuras = { BuffList = {}, DebuffList = {}, CrowdControlList = {} }
-
 	nameplate.StackingBounds = NP:Construct_StackingBounds(nameplate)
 	nameplate.RaisedElement = NP:Construct_RaisedElement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
