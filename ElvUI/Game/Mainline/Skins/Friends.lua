@@ -68,7 +68,8 @@ local function RAFRewards()
 
 		RAFRewardQuality(button)
 
-		local text = reward.Months
+		local months = reward.Months
+		local text = months and months.Text
 		if text then
 			text:SetTextColor(1, 1, 1)
 		end
