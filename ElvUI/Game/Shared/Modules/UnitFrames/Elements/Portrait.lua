@@ -167,8 +167,9 @@ function UF:PortraitUpdate(unit, hasStateChanged)
 		self:SetDesaturation(db.desaturation or 0)
 		self:SetPaused(db.paused or false)
 	elseif self.customTexture then
-		local _, className = UnitClass(unit)
-		local left, right, top, bottom = E:GetClassCoords(className, true)
+		local _, classToken = UnitClass(unit)
+		local unitClass = E:NotSecretValue(classToken) and classToken or nil
+		local left, right, top, bottom = E:GetClassCoords(unitClass, true)
 
 		if not db.keepSizeRatio then
 			local width, height = self:GetSize()

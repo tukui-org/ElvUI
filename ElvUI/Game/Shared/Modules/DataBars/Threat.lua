@@ -31,7 +31,7 @@ end
 
 function DB:ThreatBar_GetColor(unit)
 	local _, unitClass = UnitClass(unit)
-	local classColor = unitClass and UnitIsPlayer(unit) and E:ClassColor(unitClass)
+	local classColor = E:NotSecretValue(unitClass) and unitClass and UnitIsPlayer(unit) and E:ClassColor(unitClass)
 	if classColor then
 		return classColor.r*255, classColor.g*255, classColor.b*255
 	end
