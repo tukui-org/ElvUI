@@ -178,8 +178,9 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 
 	config.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.unitframe.units[groupName].aurabar.useMidnight end)
 	config.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 1)
-	config.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
-	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 3, function() ResetFilters(E.db.unitframe.units[groupName].aurabar, P.unitframe.units[groupName].aurabar) updateFunc(UF, groupName) end)
+	config.args.midnightGroup.args.allowOthers = ACH:Toggle(L["Allow Others"], nil, 2, nil, nil, nil, nil, nil, nil, not E.PTR)
+	config.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 3, { min = 0, max = 10800, step = 1 })
+	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() ResetFilters(E.db.unitframe.units[groupName].aurabar, P.unitframe.units[groupName].aurabar) updateFunc(UF, groupName) end)
 
 	config.args.midnightGroup.args.lists = ACH:Group(L["Filter Lists"], nil, 10)
 	config.args.midnightGroup.args.lists.args.allowList = ACH:Select(L["Allow List"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
@@ -202,7 +203,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR, nil, nil, nil, nil, nil, E.PTR)
 	config.args.midnightGroup.args.player.inline = true
 
-	config.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 30, nil, E.PTR and function(info) local value = E.db.unitframe.units[groupName].aurabar[info[#info]] if value == 1 then return nil else return value end end or nil, E.PTR and function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName) end or nil)
+	config.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 30, nil, E.PTR and function(info) local value = E.db.unitframe.units[groupName].aurabar[info[#info]] if value == 1 then return nil else return value end end or nil, E.PTR and function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName) end or nil, function() return not E.db.unitframe.units[groupName].aurabar.allowOthers end)
 	config.args.midnightGroup.args.others.args.isAuraImportant = ACH:Toggle(L["Important"], nil, 1, E.PTR, nil, nil, nil, nil, nil, not E.PTR)
 	config.args.midnightGroup.args.others.args.isAuraDispellable = ACH:Toggle(L["Dispellable"], nil, 2, E.PTR, nil, nil, nil, nil, nil, not E.PTR)
 	config.args.midnightGroup.args.others.args.isAuraRaid = ACH:Toggle(L["Raid"], nil, 3, E.PTR)
@@ -331,8 +332,9 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 
 	config.args.midnightGroup = ACH:Group(E.Retail and L["Filters"] or L["Filters: Midnight"], nil, 50, nil, nil, nil, nil, function() return not E.Retail and not E.db.unitframe.units[groupName][auraType].useMidnight end)
 	config.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 1)
-	config.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
-	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 3, function() ResetFilters(E.db.unitframe.units[groupName][auraType], P.unitframe.units[groupName][auraType]) updateFunc(UF, groupName, numUnits) end)
+	config.args.midnightGroup.args.allowOthers = ACH:Toggle(L["Allow Others"], nil, 2, nil, nil, nil, nil, nil, nil, not E.PTR)
+	config.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 3, { min = 0, max = 10800, step = 1 })
+	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() ResetFilters(E.db.unitframe.units[groupName][auraType], P.unitframe.units[groupName][auraType]) updateFunc(UF, groupName, numUnits) end)
 
 	config.args.midnightGroup.args.lists = ACH:Group(L["Filter Lists"], nil, 10)
 	config.args.midnightGroup.args.lists.args.allowList = ACH:Select(L["Allow List"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
@@ -355,7 +357,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.PTR, nil, nil, nil, nil, nil, E.PTR)
 	config.args.midnightGroup.args.player.inline = true
 
-	config.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20, nil, E.PTR and function(info) local value = E.db.unitframe.units[groupName][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.PTR and function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName, numUnits) end or nil)
+	config.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20, nil, E.PTR and function(info) local value = E.db.unitframe.units[groupName][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.PTR and function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName, numUnits) end or nil, function() return not E.db.unitframe.units[groupName][auraType].allowOthers end)
 	config.args.midnightGroup.args.others.args.isAuraImportant = ACH:Toggle(L["Important"], nil, 1, E.PTR, nil, nil, nil, nil, nil, not E.PTR)
 	config.args.midnightGroup.args.others.args.isAuraDispellable = ACH:Toggle(L["Dispellable"], nil, 2, E.PTR, nil, nil, nil, nil, nil, not E.PTR)
 	config.args.midnightGroup.args.others.args.isAuraRaid = ACH:Toggle(L["Raid"], nil, 3, E.PTR)

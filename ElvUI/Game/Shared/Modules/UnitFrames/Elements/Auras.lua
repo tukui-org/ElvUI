@@ -294,13 +294,10 @@ do
 		wipe(frame.filters) -- start over
 
 		if frame.noFilter then
-			group.player = filter -- break the rules
+			group.player = filter..(filters.allowOthers and '' or '|PLAYER') -- break the rules
 		else
-			local player -- you obviously
-			if filters.isPlayer then
-				player = filter..'|PLAYER'
-			else
-				player = filter..'|PLAYER'
+			local player = filter..'|PLAYER' -- you obviously
+			if not filters.isPlayer then
 				player = UF:AddFilter(player, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE')
 				player = UF:AddFilter(player, filters.isImportantPlayer, 'IMPORTANT')
 				player = UF:AddFilter(player, filters.isDispellablePlayer, 'DISPELLABLE')
@@ -311,21 +308,21 @@ do
 				player = UF:AddFilter(player, filters.isCancelablePlayer, 'CANCELABLE')
 				player = UF:AddFilter(player, filters.isRaidPlayer, 'RAID')
 			end
-
-			local others -- not player
-			others = filter..'|!PLAYER'
-			others = UF:AddFilter(others, filters.isImportant, 'IMPORTANT')
-			others = UF:AddFilter(others, filters.isDispellable, 'DISPELLABLE')
-			others = UF:AddFilter(others, filters.isCrowdControl, 'CROWD_CONTROL')
-			others = UF:AddFilter(others, filters.isBigDefensive, 'BIG_DEFENSIVE')
-			others = UF:AddFilter(others, filters.isRaidInCombat, 'RAID_IN_COMBAT')
-			others = UF:AddFilter(others, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE')
-			others = UF:AddFilter(others, filters.isCancelable, 'CANCELABLE')
-			others = UF:AddFilter(others, filters.isRaid, 'RAID')
-
-			-- actually add them
 			group.player = player
-			group.others = others
+
+			if filters.allowOthers then
+				local others -- not player
+				others = filter..'|!PLAYER'
+				others = UF:AddFilter(others, filters.isImportant, 'IMPORTANT')
+				others = UF:AddFilter(others, filters.isDispellable, 'DISPELLABLE')
+				others = UF:AddFilter(others, filters.isCrowdControl, 'CROWD_CONTROL')
+				others = UF:AddFilter(others, filters.isBigDefensive, 'BIG_DEFENSIVE')
+				others = UF:AddFilter(others, filters.isRaidInCombat, 'RAID_IN_COMBAT')
+				others = UF:AddFilter(others, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE')
+				others = UF:AddFilter(others, filters.isCancelable, 'CANCELABLE')
+				others = UF:AddFilter(others, filters.isRaid, 'RAID')
+				group.others = others
+			end
 		end
 	end
 end
@@ -374,7 +371,9 @@ function UF:UpdateFilters(frame)
 	filters.isPermanent = isPermanent
 	filters.isPermanentPlayer = isPermanentPlayer
 
-	if not E.PTR then
+	if E.PTR then
+		filters.allowOthers = db and db.allowOthers
+	else
 		local filterList = (db and db.useBlocklist) and E.global.unitframe.aurafilters
 		filters.Blocklist = filterList and filterList.Blocklist and filterList.Blocklist.spells or nil
 	end
