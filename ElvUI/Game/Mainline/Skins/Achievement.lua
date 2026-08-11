@@ -231,7 +231,6 @@ function S:Blizzard_AchievementUI()
 	AchievementFrame.Header.Title:Hide()
 	AchievementFrame.Header.Points:Point('TOP', AchievementFrame, 0, -3)
 
-
 	local headerDetails = AchievementFrame.HeaderDetails
 	headerDetails.TopTileStreaks:SetAlpha(0)
 	S:HandleButton(headerDetails.Back)

@@ -464,10 +464,10 @@ L["SP"] = "PH"		-- Spellpower
 L["DESC_MOVERCONFIG"] = [=[Fijadores desbloqueados. Muévelos ahora y haz clic en Bloquear cuando termines.
 
 Opciones:
-   Clic Izquierdo - Mostrar/Ocultar empujar marco.
-   Clic Derecho - Abrir la sección de configuración.
-   Shift + Clic Derecho - Ocultar los fijadores temporalmente.
-   Ctrl + Clic Derecho - Restablece la posición de los fijadores a los valores por defecto.
+  Clic Izquierdo - Mostrar/Ocultar empujar marco.
+  Clic Derecho - Abrir la sección de configuración.
+  Shift + Clic Derecho - Ocultar los fijadores temporalmente.
+  Ctrl + Clic Derecho - Restablece la posición de los fijadores a los valores por defecto.
 ]=]
 
 L["EHELP_COMMANDS"] = ([=[Aquí hay una lista de todos los comandos importantes de *ElvUI|r:
