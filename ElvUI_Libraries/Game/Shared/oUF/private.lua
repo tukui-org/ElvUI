@@ -84,7 +84,7 @@ do
 	function Private.unitSelectionType(unit, considerHostile)
 		if(considerHostile and UnitThreatSituation('player', unit)) then
 			return 0
-		else
+		elseif oUF.isRetail then
 			return validSelectionTypes[UnitSelectionType(unit, true)]
 		end
 	end
