@@ -7,9 +7,10 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local QuestSessionCommand = Enum.QuestSessionCommand
 local SessionCommand_ButtonAtlases = {
-	[Enum.QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
-	[Enum.QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
+	[QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
+	[QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
 }
 
 local function UpdateExecuteCommandAtlases(frame, command)

@@ -6,6 +6,7 @@ local CreateFrame = CreateFrame
 local MAX_BOSS_FRAMES = 5
 
 local BossHeader = CreateFrame('Frame', 'BossHeader', E.UIParent)
+
 function UF:Construct_BossFrames(frame)
 	UF:PrepareFrame(frame, 'boss')
 	UF:ConstructFrame(frame, 'boss')

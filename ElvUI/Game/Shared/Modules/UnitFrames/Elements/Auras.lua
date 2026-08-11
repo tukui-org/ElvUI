@@ -17,8 +17,8 @@ local UnitIsFriend = UnitIsFriend
 
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
-local UNKNOWN = UNKNOWN
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local UNKNOWN = UNKNOWN
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()

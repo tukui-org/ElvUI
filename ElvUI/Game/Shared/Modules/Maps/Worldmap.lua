@@ -13,7 +13,7 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 
 local GetCVar = C_CVar.GetCVar
 
-local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
+local MOUSE_LABEL = _G.MOUSE_LABEL:gsub('|[TA].-|[ta]','')
 
 local CoordsHolder
 local INVERTED_POINTS = {

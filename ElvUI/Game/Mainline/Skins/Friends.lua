@@ -456,21 +456,24 @@ function S:FriendsFrame()
 	if WhoFrame then
 		WhoFrame:StripTextures()
 
-		if _G.WhoFrameListInset then
-			_G.WhoFrameListInset:StripTextures()
+		local listInset = _G.WhoFrameListInset
+		if listInset then
+			listInset:StripTextures()
 
-			if _G.WhoFrameListInset.NineSlice then
-				_G.WhoFrameListInset.NineSlice:Hide()
+			if listInset.NineSlice then
+				listInset.NineSlice:Hide()
 			end
 		end
 
-		if _G.WhoFrameEditBox and _G.WhoFrameEditBox.Backdrop then
-			_G.WhoFrameEditBox.Backdrop:StripTextures()
-			_G.WhoFrameEditBox.Backdrop:CreateBackdrop()
+		local editBox = _G.WhoFrameEditBox
+		if editBox and editBox.Backdrop then
+			editBox.Backdrop:StripTextures()
+			editBox.Backdrop:CreateBackdrop()
 		end
 
-		if _G.WhoFrame.ScrollBar then
-			S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar)
+		local scrollBar = _G.WhoFrame.ScrollBar
+		if scrollBar then
+			S:HandleTrimScrollBar(scrollBar)
 		end
 
 		if _G.WhoFrameColumnHeader3 then
@@ -509,12 +512,13 @@ function S:FriendsFrame()
 	end
 
 	-- Add friend popup
-	if _G.AddFriendFrame then
-		_G.AddFriendFrame:StripTextures()
-		_G.AddFriendFrame:SetTemplate('Transparent')
+	local addFriend = _G.AddFriendFrame
+	if addFriend then
+		addFriend:StripTextures()
+		addFriend:SetTemplate('Transparent')
 
-		if _G.AddFriendFrame.CloseButton then
-			S:HandleCloseButton(_G.AddFriendFrame.CloseButton)
+		if addFriend.CloseButton then
+			S:HandleCloseButton(addFriend.CloseButton)
 		end
 	end
 
