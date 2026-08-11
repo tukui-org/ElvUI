@@ -118,7 +118,7 @@ function A:MasqueData(texture, highlight)
 end
 
 function A:SetStatusBarColor(bar, r, g, b)
-	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
+	bar:SetStatusBarColor(r, g, b)
 end
 
 function A:UpdateStatusBar(button)

@@ -985,7 +985,7 @@ function NP:UpdateColors()
 end
 
 function NP:SetStatusBarColor(bar, r, g, b, a)
-	bar:GetStatusBarTexture():SetVertexColor(r, g, b, a)
+	bar:SetStatusBarColor(r, g, b, a)
 
 	if bar.bg then
 		bar.bg:SetVertexColor(r, g, b, NP.multiplier)
