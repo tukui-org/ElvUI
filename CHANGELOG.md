@@ -5,6 +5,7 @@
 *   **Midnight**
     *   All aura systems reworked (some settings not finished).
 *   **General**
+    *   Profile: Export strings now use Blizzards encoding API.  Please check discord for how to upgrade the old strings.
     *   Auras: Top Aura offhand enchants weren't showing on login.
     *   Cooldown: Color and Low Threshold (decimals) options readded.
     *   Cooldown: Seconds threshold to display in minutes color until a given time.
