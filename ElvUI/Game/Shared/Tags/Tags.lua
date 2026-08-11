@@ -588,7 +588,7 @@ if not E.Retail then
 			if not (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then return end
 
 			local _, classToken = UnitClass(unit)
-			local icon = classIcons[classToken]
+			local icon = E:NotSecretValue(classToken) and classIcons[classToken]
 			if icon then
 				return format(classIcon, icon)
 			end
