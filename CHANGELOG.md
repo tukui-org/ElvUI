@@ -1,3 +1,6 @@
+### Version 15.20 [ August 11th 2026 ]
+*   Hotfix: Health error with oUF on Classic.
+
 ### Version 15.19 [ August 11th 2026 ]
 *   **Midnight**
     *   All aura systems reworked (some settings not finished).
