@@ -1,3 +1,13 @@
+### Version 15.19 [ August 11th 2026 ]
+*   **Midnight**
+    *   All aura systems reworked (some settings not finished).
+*   **General**
+    *   Auras: Top Aura offhand enchants weren't showing on login.
+    *   Cooldown: Color and Low Threshold (decimals) options readded.
+    *   Cooldown: Seconds threshold to display in minutes color until a given time.
+    *   Cooldown: Overrides added to Actionbars, Unitframes, and Nameplates.  This allows altered settings per-frame or bar.
+    *   Chat: History displaying wrong battlenet friend from previous session message.
+
 ### Version 15.18 [ July 7th 2026 ]
 *   Nameplate issue involving GetNamePlateForUnit.
 *   Skinned edit mode settings frame dropdowns. (Thanks Daenarys)
