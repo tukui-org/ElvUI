@@ -294,7 +294,7 @@ do
 		wipe(frame.filters) -- start over
 
 		if frame.noFilter then
-			group.player = filter..(filters.allowOthers and '' or '|PLAYER') -- break the rules
+			group.player = filter..(filters.allowOthers and '' or '|PLAYER')
 		else
 			local player = filter..'|PLAYER' -- you obviously
 			if not filters.isPlayer then
