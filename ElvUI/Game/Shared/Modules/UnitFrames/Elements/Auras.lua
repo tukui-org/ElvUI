@@ -375,7 +375,8 @@ function UF:UpdateFilters(frame)
 		filters.allowOthers = db and db.allowOthers
 	else
 		local filterList = (db and db.useBlocklist) and E.global.unitframe.aurafilters
-		filters.Blocklist = filterList and filterList.Blocklist and filterList.Blocklist.spells or nil
+		local filterExist = filterList and filterList[db.blockList or 'Blacklist']
+		filters.blockList = filterExist and filterExist.spells or nil
 	end
 
 	filters.isPlayer = isPlayer
@@ -881,7 +882,7 @@ function UF:VerifyFilter(button, aura)
 		return false -- block no duration auras
 	end
 
-	local list = filters.Blocklist
+	local list = not E.PTR and filters.blockList
 	if list and E:NotSecretValue(aura.spellId) then
 		local spell = list[aura.spellId] or list[aura.name]
 		if spell and spell.enable then

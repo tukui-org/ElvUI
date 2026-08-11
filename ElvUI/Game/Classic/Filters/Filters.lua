@@ -264,12 +264,6 @@ G.unitframe.aurafilters.Blacklist = {
 	},
 }
 
-G.unitframe.aurafilters.Blocklist = {
-	type = 'Blacklist',
-	desc = L["Used by Midnight filters.\n\nAuras you don't want to see on your frames."],
-	spells = CopyTable(G.unitframe.aurafilters.Blacklist.spells)
-}
-
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
 	desc = L["Auras which should always be displayed."],

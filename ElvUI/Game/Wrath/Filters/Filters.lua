@@ -592,12 +592,6 @@ G.unitframe.aurafilters.Blacklist = {
 	},
 }
 
-G.unitframe.aurafilters.Blocklist = {
-	type = 'Blacklist',
-	desc = L["Used by Midnight filters.\n\nAuras you don't want to see on your frames."],
-	spells = CopyTable(G.unitframe.aurafilters.Blacklist.spells)
-}
-
 -- A list of important buffs that we always want to see
 G.unitframe.aurafilters.Whitelist = {
 	type = 'Whitelist',
