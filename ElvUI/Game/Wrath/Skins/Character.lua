@@ -12,6 +12,7 @@ local GetPetHappiness = GetPetHappiness
 local GetInventoryItemQuality = GetInventoryItemQuality
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
+local HONOR_CURRENCY = HONOR_CURRENCY
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
@@ -314,6 +315,8 @@ function S:CharacterFrame()
 		factionName:Point('LEFT', factionBar, 'LEFT', -150, 0)
 		factionName.SetWidth = E.noop
 	end
+
+	hooksecurefunc('ReputationFrame_Update', ReputationFrameUpdate)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
