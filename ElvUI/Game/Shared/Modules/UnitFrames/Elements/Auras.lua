@@ -74,7 +74,7 @@ UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
 function UF:Construct_Auras(frame)
-	if E.PTR then
+	if E.Retail then
 		return E:Auras_Create(frame, 'Auras')
 	else
 		local auras = CreateFrame('Frame', '$parentAuras', frame)
@@ -96,7 +96,7 @@ function UF:Construct_Auras(frame)
 end
 
 function UF:Construct_Buffs(frame)
-	if E.PTR then
+	if E.Retail then
 		return E:Auras_Create(frame, 'Buffs')
 	else
 		local buffs = CreateFrame('Frame', '$parentBuffs', frame)
@@ -118,7 +118,7 @@ function UF:Construct_Buffs(frame)
 end
 
 function UF:Construct_Debuffs(frame)
-	if E.PTR then
+	if E.Retail then
 		return E:Auras_Create(frame, 'Debuffs')
 	else
 		local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
@@ -330,7 +330,7 @@ end
 function UF:FilterEnabled(db, which)
 	if not db then return end
 
-	if E.PTR then
+	if E.Retail then
 		return db[which]
 	else -- return it back to a boolean
 		return not not db[which]
@@ -371,7 +371,7 @@ function UF:UpdateFilters(frame)
 	filters.isPermanent = isPermanent
 	filters.isPermanentPlayer = isPermanentPlayer
 
-	if E.PTR then
+	if E.Retail then
 		filters.allowOthers = db and db.allowOthers
 	else
 		local filterList = (db and db.useBlocklist) and E.global.unitframe.aurafilters
@@ -540,11 +540,11 @@ function UF:Configure_Auras(frame, which)
 
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
-	elseif E.PTR then
+	elseif E.Retail then
 		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
-	if E.PTR then
+	if E.Retail then
 		auras:SetEnabled(settings.enable)
 
 		auras.keepSizeRatio = settings.keepSizeRatio
@@ -882,7 +882,7 @@ function UF:VerifyFilter(button, aura)
 		return false -- block no duration auras
 	end
 
-	local list = not E.PTR and filters.blockList
+	local list = not E.Retail and filters.blockList
 	if list and E:NotSecretValue(aura.spellId) then
 		local spell = list[aura.spellId] or list[aura.name]
 		if spell and spell.enable then

@@ -289,7 +289,7 @@ function M:Initialize()
 
 		-- Blizzard WorldMapCoordsPanel: CursorCoords / PlayerCoords
 		-- Remove them as long as our coords are enabled to avoid double coords
-		local overlayFrames = E.PTR and WorldMapFrame.overlayFrames
+		local overlayFrames = E.Retail and WorldMapFrame.overlayFrames
 		if overlayFrames then
 			for _, frame in next, overlayFrames do
 				if frame.PlayerCoords and frame.CursorCoords then

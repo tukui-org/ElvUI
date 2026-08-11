@@ -139,6 +139,6 @@ local function Disable(self)
 	end
 end
 
-if not oUF.isPTR then
+if not oUF.isRetail then
 	oUF:AddElement('AuraHighlight', Update, Enable, Disable)
 end

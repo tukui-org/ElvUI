@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames')
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
-	if E.PTR then
+	if E.Retail then
 		local auras = E:Auras_Create(frame, 'AuraWatch')
 		auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
 		auras:SetInside(frame.Health)
@@ -28,7 +28,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 
 	local enabled = db and db.enable
 	local auras = frame.AuraWatch
-	if E.PTR then
+	if E.Retail then
 		auras:SetEnabled(enabled)
 	end
 
@@ -55,7 +55,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 			E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 		end
 
-		if E.PTR then
+		if E.Retail then
 			auras.filter = 'HELPFUL'
 
 			E:Auras_SetupIndicator(auras, auraTable)

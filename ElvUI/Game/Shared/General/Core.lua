@@ -602,7 +602,7 @@ do
 		info.unitframes.r, info.unitframes.g, info.unitframes.b = unpack(E.media.unitframeBorderColor)
 		E:CoroutineUpdate(E.UpdateUnitframeBorderColor, E.unitFrameElements, info.unitframes)
 
-		if E.PTR and Tooltip.isStyled then
+		if E.Retail and Tooltip.isStyled then
 			Tooltip:SetAuraButtonTooltipStyle()
 		end
 	end
@@ -649,7 +649,7 @@ do
 		E:CoroutineUpdate(E.UpdateBackdropColor, E.frames, info)
 		E:CoroutineUpdate(E.UpdateUnitframeBackdropColor, E.unitFrameElements, info)
 
-		if E.PTR and Tooltip.isStyled then
+		if E.Retail and Tooltip.isStyled then
 			Tooltip:SetAuraButtonTooltipStyle()
 		end
 	end
@@ -2093,12 +2093,9 @@ function E:Initialize()
 
 		E.Initialized = true
 
-		if E.PTR then
-			E:InitializeAuras()
-		end
-
 		if E.Retail then
 			E:Tutorials()
+			E:InitializeAuras()
 		end
 
 		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then

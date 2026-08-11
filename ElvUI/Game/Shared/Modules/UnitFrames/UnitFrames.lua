@@ -1168,7 +1168,7 @@ end
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:UpdateRangeSpells()
 
-	if not E.PTR then
+	if not E.Retail then
 		UF:RegisterRaidDebuffIndicator()
 	end
 
@@ -2240,7 +2240,7 @@ function UF:UpdateAllElements(event)
 			UF:Configure_PrivateAuras(self)
 		end
 
-		if E.PTR then
+		if E.Retail then
 			UF:Configure_UnitAuras(self)
 		end
 	end

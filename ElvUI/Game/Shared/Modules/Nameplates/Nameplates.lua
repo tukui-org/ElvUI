@@ -599,7 +599,7 @@ function NP:ConfigurePlates(init)
 				NP.NAME_PLATE_UNIT_ADDED(nameplate, 'NAME_PLATE_UNIT_ADDED', nameplate.unit)
 			end
 
-			if E.PTR then
+			if E.Retail then
 				NP:Configure_AllAuras(nameplate)
 			end
 
@@ -757,7 +757,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)
 
-	if E.PTR then
+	if E.Retail then
 		NP:Configure_UnitAuras(self)
 	end
 

@@ -7,7 +7,7 @@ local UnitCanAssist = UnitCanAssist
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 
 function UF:Construct_AuraHighlight(frame)
-	if E.PTR then
+	if E.Retail then
 		return E:Auras_Create(frame, 'AuraHighlight')
 	else
 		local element = frame:CreateTexture(nil, 'OVERLAY')
@@ -44,7 +44,7 @@ function UF:Configure_AuraHighlight(frame)
 
 	local enabled = db and db.enable
 	local highlight = frame.AuraHighlight
-	if E.PTR then
+	if E.Retail then
 		highlight.enabled = enabled
 
 		UF:SetEnabled_AuraHighlight(highlight, frame.unit)
@@ -55,7 +55,7 @@ function UF:Configure_AuraHighlight(frame)
 			frame:EnableElement('AuraHighlight')
 		end
 
-		if E.PTR then
+		if E.Retail then
 			highlight.filter = 'HARMFUL|DISPELLABLE'
 			highlight.blendMode = UF.db.colors.debuffHighlight.blendMode
 			highlight:SetFrameLevel(frame.RaisedElementParent.AuraHighlightLevel)
