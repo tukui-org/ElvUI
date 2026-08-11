@@ -13,7 +13,6 @@ local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local LOOT, ITEMS = LOOT, ITEMS

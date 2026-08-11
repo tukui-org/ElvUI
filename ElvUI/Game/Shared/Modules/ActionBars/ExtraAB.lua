@@ -4,11 +4,11 @@ local AB = E:GetModule('ActionBars')
 local _G = _G
 local next = next
 local tinsert = tinsert
+local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local InCombatLockdown = InCombatLockdown
-local hooksecurefunc = hooksecurefunc
 
 local extraBtns, extraHooked = {}, {}
 

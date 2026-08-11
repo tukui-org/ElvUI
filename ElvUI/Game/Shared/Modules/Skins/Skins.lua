@@ -3,9 +3,9 @@ local S = E:GetModule('Skins')
 local LibStub = _G.LibStub
 
 local _G = _G
-local unpack, type, gsub, rad = unpack, type, gsub, rad
-local tinsert, next, strfind = tinsert, next, strfind
 local hooksecurefunc = hooksecurefunc
+local tinsert, next, strfind = tinsert, next, strfind
+local unpack, type, gsub, rad = unpack, type, gsub, rad
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded

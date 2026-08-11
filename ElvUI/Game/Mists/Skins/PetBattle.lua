@@ -2,13 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
+local _G = _G
 local pairs = pairs
 local unpack = unpack
-
-local _G = _G
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+local CreateFrame = CreateFrame
 local C_PetBattles_GetPetType = C_PetBattles.GetPetType
 local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
 local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo

@@ -3,9 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, pairs = ipairs, pairs
+local hooksecurefunc = hooksecurefunc
 
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
-local hooksecurefunc = hooksecurefunc
 
 local function UpdateCheckboxes(frame)
 	if not FCF_GetCurrentChatFrame() then return end

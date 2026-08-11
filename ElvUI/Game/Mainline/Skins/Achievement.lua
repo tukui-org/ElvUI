@@ -6,9 +6,9 @@ local next = next
 local select = select
 local unpack = unpack
 local bitband = bit.band
+local hooksecurefunc = hooksecurefunc
 
 local CreateColor = CreateColor
-local hooksecurefunc = hooksecurefunc
 local GetAchievementNumCriteria = GetAchievementNumCriteria
 local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 

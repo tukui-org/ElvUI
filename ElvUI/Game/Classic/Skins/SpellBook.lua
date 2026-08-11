@@ -3,9 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 
 local function SpellHighlightSetTexture(texture, tex)
 	if tex == [[Interface\Buttons\ButtonHilight-Square]] or tex == [[Interface\Buttons\UI-PassiveHighlight]] then

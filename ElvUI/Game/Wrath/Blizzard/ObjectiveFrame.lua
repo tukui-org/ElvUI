@@ -3,9 +3,9 @@ local BL = E:GetModule('Blizzard')
 
 local _G = _G
 local min = min
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+local CreateFrame = CreateFrame
 local Tracker_Collapse = WatchFrame_Collapse
 local Tracker_Expand = WatchFrame_Expand
 local Tracker = WatchFrame

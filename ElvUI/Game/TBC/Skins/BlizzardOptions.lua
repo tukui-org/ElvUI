@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, pairs, next = ipairs, pairs, next
-
 local hooksecurefunc = hooksecurefunc
 
 local function ChatConfigFrame_OnShow()

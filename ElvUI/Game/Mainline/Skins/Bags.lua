@@ -7,10 +7,9 @@ local _G = _G
 local next = next
 local unpack = unpack
 local select = select
-
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+local CreateFrame = CreateFrame
 local GetCVarBool = C_CVar.GetCVarBool
 local GetItemInfo = C_Item.GetItemInfo
 local GetContainerItemCooldown = C_Container.GetContainerItemCooldown

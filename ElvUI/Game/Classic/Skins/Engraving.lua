@@ -5,6 +5,7 @@ if not E.ClassicSOD then return end
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
+
 local C_Engraving_GetRuneCategories = C_Engraving.GetRuneCategories
 
 local function UpdateRuneList()
@@ -26,7 +27,7 @@ local function UpdateRuneList()
 			if icon then
 				S:HandleIcon(icon, true)
 			end
-			
+
 			S:HandleButton(button)
 			button.IsSkinned = true
 		end
