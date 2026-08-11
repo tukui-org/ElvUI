@@ -3,8 +3,95 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, pairs, next = ipairs, pairs, next
-
 local hooksecurefunc = hooksecurefunc
+
+local function ChatConfigFrame_OnShow()
+	for tab in _G.ChatConfigFrameChatTabManager.tabPool:EnumerateActive() do
+		S:HandleButton(tab, true)
+	end
+end
+
+local function UpdateWidth(frame)
+	for tab in frame.tabPool:EnumerateActive() do
+		if not tab.IsSkinned then
+			tab:StripTextures()
+
+			tab.IsSkinned = true
+		end
+	end
+end
+
+local function UpdateCheckboxes(frame)
+	if not _G.FCF_GetCurrentChatFrame() then
+		return
+	end
+	for index in ipairs(frame.checkBoxTable) do
+		local checkBoxNameString = frame:GetName()..'Checkbox'
+		local checkBoxName = checkBoxNameString..index
+		local checkBox = _G[checkBoxName]
+		local check = _G[checkBoxName..'Check']
+		if checkBox and not checkBox.IsSkinned then
+			checkBox:StripTextures()
+			S:HandleCheckBox(check)
+			if _G[checkBoxName..'ColorClasses'] then
+				S:HandleCheckBox(_G[checkBoxName..'ColorClasses'])
+			end
+			checkBox.IsSkinned = true
+		end
+	end
+end
+
+local function UpdateTieredCheckboxes(frame, index)
+	local group = frame.checkBoxTable[index]
+	local checkBox = _G[frame:GetName()..'Checkbox'..index]
+	if checkBox then
+		S:HandleCheckBox(checkBox)
+	end
+	if group.subTypes then
+		for k in ipairs(group.subTypes) do
+			S:HandleCheckBox(_G[frame:GetName()..'Checkbox'..index..'_'..k])
+		end
+	end
+end
+
+local function UpdateSwatches(frame)
+	if not _G.FCF_GetCurrentChatFrame() then
+		return
+	end
+	for index in ipairs(frame.swatchTable) do
+		_G[frame:GetName()..'Swatch'..index]:StripTextures()
+	end
+end
+
+local function CreateBoxes(frame)
+	local boxName = frame:GetName()..'Box'
+
+	if frame.boxTable then
+		for index in next, frame.boxTable do
+			local box = _G[boxName..index]
+			if box then
+				box.NineSlice:SetTemplate('Transparent')
+				if box.Button then
+					S:HandleButton(box.Button)
+				end
+			end
+		end
+	end
+end
+
+local function UpdateMessageCheckboxes(frame)
+	if not frame.checkBoxTable then return end
+
+	local nameString = frame:GetName()..'CheckBox'
+	for index in ipairs(frame.checkBoxTable) do
+		local checkBox = _G[nameString..index]
+		if checkBox and not checkBox.IsSkinned then
+			S:HandleCheckBox(checkBox)
+
+			checkBox.IsSkinned = true
+		end
+	end
+end
 
 function S:BlizzardOptions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
@@ -12,15 +99,11 @@ function S:BlizzardOptions()
 	--Chat Config
 	local ChatConfigFrame = _G.ChatConfigFrame
 
-	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(frame)
-		for tab in frame.tabPool:EnumerateActive() do
-			if not tab.IsSkinned then
-				tab:StripTextures()
-
-				tab.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', UpdateWidth)
+	hooksecurefunc('ChatConfig_UpdateCheckboxes', UpdateCheckboxes)
+	hooksecurefunc('ChatConfig_UpdateTieredCheckboxes', UpdateTieredCheckboxes)
+	hooksecurefunc('ChatConfig_UpdateSwatches', UpdateSwatches)
+	hooksecurefunc('ChatConfig_CreateBoxes', CreateBoxes)
 
 	-- Chat Config
 	local ChatFrames = {
@@ -125,69 +208,7 @@ function S:BlizzardOptions()
 	_G.ChatConfigCombatSettingsFiltersAddFilterButton:Point('RIGHT', '$parentDeleteButton', 'LEFT', -2, 0)
 	_G.ChatConfigCombatSettingsFiltersCopyFilterButton:Point('RIGHT', '$parentAddFilterButton', 'LEFT', -2, 0)
 
-	ChatConfigFrame:HookScript('OnShow', function()
-		for tab in _G.ChatConfigFrameChatTabManager.tabPool:EnumerateActive() do
-			S:HandleButton(tab, true)
-		end
-	end)
-
-	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if not _G.FCF_GetCurrentChatFrame() then
-			return
-		end
-		for index in ipairs(frame.checkBoxTable) do
-			local checkBoxNameString = frame:GetName()..'Checkbox'
-			local checkBoxName = checkBoxNameString..index
-			local checkBox = _G[checkBoxName]
-			local check = _G[checkBoxName..'Check']
-			if checkBox and not checkBox.IsSkinned then
-				checkBox:StripTextures()
-				S:HandleCheckBox(check)
-				if _G[checkBoxName..'ColorClasses'] then
-					S:HandleCheckBox(_G[checkBoxName..'ColorClasses'])
-				end
-				checkBox.IsSkinned = true
-			end
-		end
-	end)
-
-	hooksecurefunc('ChatConfig_UpdateTieredCheckboxes', function(frame, index)
-		local group = frame.checkBoxTable[index]
-		local checkBox = _G[frame:GetName()..'Checkbox'..index]
-		if checkBox then
-			S:HandleCheckBox(checkBox)
-		end
-		if group.subTypes then
-			for k in ipairs(group.subTypes) do
-				S:HandleCheckBox(_G[frame:GetName()..'Checkbox'..index..'_'..k])
-			end
-		end
-	end)
-
-	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if not _G.FCF_GetCurrentChatFrame() then
-			return
-		end
-		for index in ipairs(frame.swatchTable) do
-			_G[frame:GetName()..'Swatch'..index]:StripTextures()
-		end
-	end)
-
-	hooksecurefunc('ChatConfig_CreateBoxes', function(frame)
-		local boxName = frame:GetName()..'Box'
-
-		if frame.boxTable then
-			for index in next, frame.boxTable do
-				local box = _G[boxName..index]
-				if box then
-					box.NineSlice:SetTemplate('Transparent')
-					if box.Button then
-						S:HandleButton(box.Button)
-					end
-				end
-			end
-		end
-	end)
+	ChatConfigFrame:HookScript('OnShow', ChatConfigFrame_OnShow)
 
 	local OptionsFrames = { _G.InterfaceOptionsFrame, _G.InterfaceOptionsFrameCategories, _G.InterfaceOptionsFramePanelContainer, _G.InterfaceOptionsFrameAddOns, _G.VideoOptionsFrame, _G.VideoOptionsFrameCategoryFrame, _G.VideoOptionsFramePanelContainer, _G.Display_, _G.Graphics_, _G.RaidGraphics_ }
 	local OptionsFrameBackdrops = { _G.AudioOptionsSoundPanelHardware, _G.AudioOptionsSoundPanelVolume, _G.AudioOptionsSoundPanelPlayback, _G.AudioOptionsVoicePanelTalking, _G.AudioOptionsVoicePanelListening, _G.AudioOptionsVoicePanelBinding }
@@ -296,19 +317,7 @@ function S:BlizzardOptions()
 		S:HandleCheckBox(_G.TextToSpeechFramePanelContainer[checkbox])
 	end
 
-	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', function(frame)
-		if not frame.checkBoxTable then return end
-
-		local nameString = frame:GetName()..'CheckBox'
-		for index in ipairs(frame.checkBoxTable) do
-			local checkBox = _G[nameString..index]
-			if checkBox and not checkBox.IsSkinned then
-				S:HandleCheckBox(checkBox)
-
-				checkBox.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', UpdateMessageCheckboxes)
 end
 
 S:AddCallback('BlizzardOptions')

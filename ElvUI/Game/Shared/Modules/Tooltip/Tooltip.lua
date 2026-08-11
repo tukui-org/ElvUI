@@ -115,7 +115,7 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:UpdateAuraSpellIDCVar()
-	if not E.PTR then return end
+	if not E.Retail then return end
 
 	-- Blizzard resets tooltipShowAuraSpellIDs to 0 between sessions
 	E:SetCVar('tooltipShowAuraSpellIDs', TT:IsModKeyDown())

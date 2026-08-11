@@ -3,8 +3,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local List = E.Filters.List
 local Aura = E.Filters.Aura
 
-local CopyTable = CopyTable
-
 -- These are debuffs that are some form of CC
 G.unitframe.aurafilters.CCDebuffs = {
 	type = 'Whitelist',
@@ -590,12 +588,6 @@ G.unitframe.aurafilters.Blacklist = {
 		[377749] = List(), -- Joyous Journeys
 		[24755]  = List(), -- Tricked or Treated
 	},
-}
-
-G.unitframe.aurafilters.Blocklist = {
-	type = 'Blacklist',
-	desc = L["Used by Midnight filters.\n\nAuras you don't want to see on your frames."],
-	spells = CopyTable(G.unitframe.aurafilters.Blacklist.spells)
 }
 
 -- A list of important buffs that we always want to see

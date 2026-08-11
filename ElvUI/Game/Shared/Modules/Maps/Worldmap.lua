@@ -13,7 +13,7 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 
 local GetCVar = C_CVar.GetCVar
 
-local MOUSE_LABEL = MOUSE_LABEL:gsub('|[TA].-|[ta]','')
+local MOUSE_LABEL = _G.MOUSE_LABEL:gsub('|[TA].-|[ta]','')
 
 local CoordsHolder
 local INVERTED_POINTS = {
@@ -289,7 +289,7 @@ function M:Initialize()
 
 		-- Blizzard WorldMapCoordsPanel: CursorCoords / PlayerCoords
 		-- Remove them as long as our coords are enabled to avoid double coords
-		local overlayFrames = E.PTR and WorldMapFrame.overlayFrames
+		local overlayFrames = E.Retail and WorldMapFrame.overlayFrames
 		if overlayFrames then
 			for _, frame in next, overlayFrames do
 				if frame.PlayerCoords and frame.CursorCoords then

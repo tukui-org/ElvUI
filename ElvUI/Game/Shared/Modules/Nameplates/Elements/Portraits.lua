@@ -25,8 +25,9 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged)
 		self:SetTexture(specIcon)
 		self.backdrop:Show()
 	elseif self.customTexture then
-		local _, className = UnitClass(unit)
-		local left, right, top, bottom = E:GetClassCoords(className, true)
+		local _, classToken = UnitClass(unit)
+		local unitClass = E:NotSecretValue(classToken) and classToken or nil
+		local left, right, top, bottom = E:GetClassCoords(unitClass, true)
 
 		if not db.portrait.keepSizeRatio then
 			local width, height = db.portrait.width, db.portrait.height

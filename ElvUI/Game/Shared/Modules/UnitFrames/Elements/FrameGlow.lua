@@ -6,8 +6,8 @@ local ElvUF = E.oUF
 local _G = _G
 local next = next
 local pairs = pairs
-local tinsert = tinsert
 local strsub = strsub
+local tinsert = tinsert
 
 local CreateFrame = CreateFrame
 local UnitClass = UnitClass

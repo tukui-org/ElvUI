@@ -3,8 +3,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local List = E.Filters.List
 local Aura = E.Filters.Aura
 
-local CopyTable = CopyTable
-
 -- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
 G.unitframe.aurafilters.PlayerBuffs = nil
 
@@ -262,12 +260,6 @@ G.unitframe.aurafilters.Blacklist = {
 	-- Warrior
 	-- Racial
 	},
-}
-
-G.unitframe.aurafilters.Blocklist = {
-	type = 'Blacklist',
-	desc = L["Used by Midnight filters.\n\nAuras you don't want to see on your frames."],
-	spells = CopyTable(G.unitframe.aurafilters.Blacklist.spells)
 }
 
 G.unitframe.aurafilters.Whitelist = {

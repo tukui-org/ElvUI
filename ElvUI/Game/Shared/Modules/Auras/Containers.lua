@@ -435,7 +435,7 @@ function E:Auras_UpdateButtons(container)
 	end
 end
 
-function E:Auras_UpdateButtons(container)
+function E:Auras_UpdateIndicators(container)
 	if InCombatLockdown() then return end
 
 	for button in next, container.indicators do
@@ -691,6 +691,10 @@ function E:Auras_GroupUnit(container, unit)
 		E.AuraTarget[container] = unit
 	elseif unit == 'focus' then
 		E.AuraFocus[container] = unit
+	end
+
+	if container.isHighlight then
+		UF:SetEnabled_AuraHighlight(container, unit)
 	end
 
 	E:Auras_SetUnit(container, unit)

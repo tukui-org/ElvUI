@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local format, pairs, strmatch = format, pairs, strmatch
 local hooksecurefunc = hooksecurefunc
+local format, pairs, strmatch = format, pairs, strmatch
 
 local GetBattlefieldScore = GetBattlefieldScore
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena

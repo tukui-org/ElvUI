@@ -2244,9 +2244,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 end
 
 function CH:GetDiscordInfo(info)
-	if E:IsSecretValue(info) then return end -- of course
-
-	return info, info and info.userID and info.userID ~= 0
+	return info, info and E:NotSecretValue(info.userID) and info.userID and info.userID ~= 0
 end
 
 -- we dont have a good way to check: attempted to index a forbidden table

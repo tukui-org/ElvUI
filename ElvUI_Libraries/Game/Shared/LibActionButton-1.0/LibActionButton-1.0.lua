@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 81 -- the real minor version is 151
+local MINOR_VERSION = 82 -- the real minor version is 154
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2184,29 +2184,22 @@ function Update(self, which)
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 
-		if not WoWClassic then
-			if not self.MasqueSkinned then
-				self.SlotBackground:Hide()
-				if self.config.hideElements.border then
-					self.NormalTexture:SetTexture()
-					self.icon:RemoveMaskTexture(self.IconMask)
-					self.HighlightTexture:SetSize(52, 51)
-					self.HighlightTexture:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
-					self.CheckedTexture:SetSize(52, 51)
-					self.CheckedTexture:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
-				else
-					self:SetNormalAtlas("UI-HUD-ActionBar-IconFrame-AddRow")
-					self.icon:AddMaskTexture(self.IconMask)
-					self.HighlightTexture:SetSize(46, 45)
-					self.HighlightTexture:SetPoint("TOPLEFT")
-					self.CheckedTexture:SetSize(46, 45)
-					self.CheckedTexture:SetPoint("TOPLEFT")
-				end
-			end
-		else
-			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot2")
-			if not self.LBFSkinned and not self.MasqueSkinned then
-				self.NormalTexture:SetTexCoord(0, 0, 0, 0)
+		if not self.MasqueSkinned then
+			self.SlotBackground:Hide()
+			if self.config.hideElements.border then
+				self.NormalTexture:SetTexture()
+				self.icon:RemoveMaskTexture(self.IconMask)
+				self.HighlightTexture:SetSize(52, 51)
+				self.HighlightTexture:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
+				self.CheckedTexture:SetSize(52, 51)
+				self.CheckedTexture:SetPoint("TOPLEFT", self, "TOPLEFT", -2.5, 2.5)
+			else
+				self:SetNormalAtlas("UI-HUD-ActionBar-IconFrame-AddRow")
+				self.icon:AddMaskTexture(self.IconMask)
+				self.HighlightTexture:SetSize(46, 45)
+				self.HighlightTexture:SetPoint("TOPLEFT")
+				self.CheckedTexture:SetSize(46, 45)
+				self.CheckedTexture:SetPoint("TOPLEFT")
 			end
 		end
 	else
@@ -2219,19 +2212,12 @@ function Update(self, which)
 			self.cooldown:Hide()
 		end
 
-		if not WoWClassic then
-			if not self.MasqueSkinned then
-				self.SlotBackground:Show()
-				if self.config.hideElements.borderIfEmpty then
-					self.NormalTexture:SetTexture()
-				else
-					self:SetNormalAtlas("UI-HUD-ActionBar-IconFrame-AddRow")
-				end
-			end
-		else
-			self:SetNormalTexture("Interface\\Buttons\\UI-Quickslot")
-			if not self.LBFSkinned and not self.MasqueSkinned then
-				self.NormalTexture:SetTexCoord(-0.15, 1.15, -0.15, 1.17)
+		if not self.MasqueSkinned then
+			self.SlotBackground:Show()
+			if self.config.hideElements.borderIfEmpty then
+				self.NormalTexture:SetTexture()
+			else
+				self:SetNormalAtlas("UI-HUD-ActionBar-IconFrame-AddRow")
 			end
 		end
 	end
@@ -3107,8 +3093,10 @@ Action.GetSpellId               = function(self)
 	elseif actionType == "macro" then
 		if subType == "spell" then
 			return id
+		elseif subType == "item" then
+			return nil -- item macros seems to return bogus values we can't support
 		else
-			return (GetMacroSpell(id))
+			return (GetMacroSpell(id)) -- classic does not use the subType, so keep this as a fallback
 		end
 	end
 end

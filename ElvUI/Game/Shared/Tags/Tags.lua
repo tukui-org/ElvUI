@@ -78,9 +78,9 @@ local classSpecificAura = { MAGE = E.Retail or E.Mists, SHAMAN = E.Retail, MONK 
 local classSpecificEvents = (E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ') or (classSpecificAura[E.myclass] and 'UNIT_AURA ') or ''
 local classSpecificMonk = not E.Classic and E.myclass == 'MONK'
 local classSpecificSpells = { -- stagger IDs also in oUF stagger element
-	[124275] = classSpecificMonk or nil, -- [GREEN]  Light Stagger
-	[124274] = classSpecificMonk or nil, -- [YELLOW] Moderate Stagger
-	[124273] = classSpecificMonk or nil, -- [RED]    Heavy Stagger
+	[124275] = classSpecificMonk or nil, --	[GREEN]		Light Stagger
+	[124274] = classSpecificMonk or nil, --	[YELLOW]	Moderate Stagger
+	[124273] = classSpecificMonk or nil, --	[RED]		Heavy Stagger
 	[SPELL_ARCANE_CHARGE] = (E.Mists and E.myclass == 'MAGE') or nil,
 	[SPELL_FROST_ICICLES] = (E.Retail and E.myclass == 'MAGE') or nil,
 	[SPELL_MAELSTROM] = (E.Retail and E.myclass == 'SHAMAN') or nil
@@ -588,7 +588,7 @@ if not E.Retail then
 			if not (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then return end
 
 			local _, classToken = UnitClass(unit)
-			local icon = classIcons[classToken]
+			local icon = E:NotSecretValue(classToken) and classIcons[classToken]
 			if icon then
 				return format(classIcon, icon)
 			end

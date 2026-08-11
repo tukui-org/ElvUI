@@ -66,9 +66,12 @@ function S:Blizzard_DelvesCompanionConfiguration()
 	S:HandlePortraitFrame(CompanionConfiguration)
 	S:HandleButton(CompanionConfiguration.CompanionConfigShowAbilitiesButton)
 
-	HandleOptionSlot(CompanionConfiguration.CompanionCombatRoleSlot, true)
-	HandleOptionSlot(CompanionConfiguration.CompanionUtilityTrinketSlot)
-	HandleOptionSlot(CompanionConfiguration.CompanionCombatTrinketSlot)
+	local CompanionSlots = CompanionConfiguration.CompanionSlots
+	if CompanionSlots then
+		HandleOptionSlot(CompanionSlots.CompanionCombatRoleSlot, true)
+		HandleOptionSlot(CompanionSlots.CompanionUtilityTrinketSlot)
+		HandleOptionSlot(CompanionSlots.CompanionCombatTrinketSlot)
+	end
 
 	local CompanionAbilityListFrame = _G.DelvesCompanionAbilityListFrame
 	S:HandlePortraitFrame(CompanionAbilityListFrame)

@@ -10,6 +10,7 @@ P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
 
 E.AuraDefaults = {
+	allowOthers = false,
 	useBlocklist = false,
 	useAllowlist = false,
 	isAuraDispellable = false,
@@ -887,7 +888,6 @@ P.nameplates = {
 	overlapH = 0.8,
 	overlapV = 1.1,
 	classColorNames = false,
-	useBlizzardAuras = false,
 	showEnemyCombat = 'DISABLED',
 	showFriendlyCombat = 'DISABLED',
 	statusbar = 'ElvUI Norm',

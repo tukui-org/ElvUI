@@ -10,7 +10,7 @@ local CreateFrame = CreateFrame
 function NP:Construct_Auras(nameplate)
 	local Auras, Buffs, Debuffs
 
-	if E.PTR then
+	if E.Retail then
 		Auras = E:Auras_Create(nameplate, 'Auras')
 	else
 		Auras = CreateFrame('Frame', '$parentAuras', nameplate)
@@ -31,7 +31,7 @@ function NP:Construct_Auras(nameplate)
 		Auras.rows = {}
 	end
 
-	if E.PTR then
+	if E.Retail then
 		Buffs = E:Auras_Create(nameplate, 'Buffs')
 	else
 		Buffs = CreateFrame('Frame', '$parentBuffs', nameplate)
@@ -52,7 +52,7 @@ function NP:Construct_Auras(nameplate)
 		Buffs.rows = {}
 	end
 
-	if E.PTR then
+	if E.Retail then
 		Debuffs = E:Auras_Create(nameplate, 'Debuffs')
 	else
 		Debuffs = CreateFrame('Frame', '$parentDebuffs', nameplate)
@@ -78,7 +78,6 @@ function NP:Construct_Auras(nameplate)
 	Auras.SetPosition = UF.SetPosition
 	Auras.PostCreateButton = NP.Construct_AuraIcon
 	Auras.PostUpdateButton = UF.PostUpdateAura
-	Auras.GetBlizzardAuras = NP.GetBlizzardCrowdControl
 	Auras.CustomFilter = NP.AuraFilter
 
 	Buffs.PreUpdate = UF.PreUpdateAura
@@ -86,7 +85,6 @@ function NP:Construct_Auras(nameplate)
 	Buffs.SetPosition = UF.SetPosition
 	Buffs.PostCreateButton = NP.Construct_AuraIcon
 	Buffs.PostUpdateButton = UF.PostUpdateAura
-	Buffs.GetBlizzardAuras = NP.GetBlizzardBuffs
 	Buffs.CustomFilter = NP.AuraFilter
 
 	Debuffs.PreUpdate = UF.PreUpdateAura
@@ -94,7 +92,6 @@ function NP:Construct_Auras(nameplate)
 	Debuffs.SetPosition = UF.SetPosition
 	Debuffs.PostCreateButton = NP.Construct_AuraIcon
 	Debuffs.PostUpdateButton = UF.PostUpdateAura
-	Debuffs.GetBlizzardAuras = NP.GetBlizzardDebuffs
 	Debuffs.CustomFilter = NP.AuraFilter
 
 	nameplate.Auras_, nameplate.Buffs_, nameplate.Debuffs_ = Auras, Buffs, Debuffs
@@ -166,12 +163,12 @@ function NP:Configure_Auras(nameplate, which)
 	auras.db = db -- for auraSort
 
 	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
-		auras.filter = (NP.db.useBlizzardAuras and 'HELPFUL') or db.filter or 'HARMFUL'
-	elseif E.PTR then
+		auras.filter = db.filter or 'HARMFUL'
+	elseif E.Retail then
 		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
-	if E.PTR then
+	if E.Retail then
 		auras.noMouse = true
 		auras.keepSizeRatio = db.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
@@ -214,8 +211,6 @@ end
 function NP:Update_Auras(nameplate)
 	local db = NP:PlateDB(nameplate)
 
-	nameplate.usingBlizzardAuras = NP.db.useBlizzardAuras
-
 	if db.auras.enable or db.debuffs.enable or db.buffs.enable then
 		if not nameplate:IsElementEnabled('Auras') then
 			nameplate:EnableElement('Auras')
@@ -225,7 +220,7 @@ function NP:Update_Auras(nameplate)
 		nameplate.Buffs_:ClearAllPoints()
 		nameplate.Debuffs_:ClearAllPoints()
 
-		if E.PTR then
+		if E.Retail then
 			nameplate.Auras_:SetEnabled(db.auras.enable)
 			nameplate.Debuffs_:SetEnabled(db.debuffs.enable)
 			nameplate.Buffs_:SetEnabled(db.buffs.enable)

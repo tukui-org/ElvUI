@@ -76,7 +76,7 @@ local function SetSelectedCategory(list)
 		end
 	end
 
-	local pool = list.pools and list.pools:GetPool('CharCustomizeOptionCheckButtonTemplate')
+	local pool = list.pools and list.pools:GetPool('CustomizationOptionCheckButtonTemplate')
 	if pool then
 		for frame in pool:EnumerateActive() do
 			if not frame.IsSkinned then
@@ -87,6 +87,8 @@ local function SetSelectedCategory(list)
 				if frame.Label then
 					frame.Label:FontTemplate()
 				end
+
+				frame.IsSkinned = true
 			end
 		end
 	end

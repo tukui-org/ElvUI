@@ -2,11 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
+local UnitCanAssist = UnitCanAssist
 
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 
 function UF:Construct_AuraHighlight(frame)
-	if E.PTR then
+	if E.Retail then
 		return E:Auras_Create(frame, 'AuraHighlight')
 	else
 		local element = frame:CreateTexture(nil, 'OVERLAY')
@@ -32,20 +33,35 @@ function UF:Construct_AuraHighlight(frame)
 	end
 end
 
+function UF:SetEnabled_AuraHighlight(container, unit)
+	container.canAssist = UnitCanAssist('player', unit)
+	container:SetEnabled(container.enabled and container.canAssist)
+end
+
 function UF:Configure_AuraHighlight(frame)
 	local mode = E.db.unitframe.debuffHighlighting
 	local db = mode ~= 'NONE' and (frame.db and frame.db.debuffHighlight)
-	if db and db.enable then
+
+	local enabled = db and db.enable
+	local highlight = frame.AuraHighlight
+	if E.Retail then
+		highlight.enabled = enabled
+
+		UF:SetEnabled_AuraHighlight(highlight, frame.unit)
+	end
+
+	if enabled then
 		if not frame:IsElementEnabled('AuraHighlight') then
 			frame:EnableElement('AuraHighlight')
 		end
 
-		local highlight = frame.AuraHighlight
-		if E.PTR then
+		if E.Retail then
 			highlight.filter = 'HARMFUL|DISPELLABLE'
 			highlight.blendMode = UF.db.colors.debuffHighlight.blendMode
 			highlight:SetFrameLevel(frame.RaisedElementParent.AuraHighlightLevel)
 			highlight:SetAllPoints(frame.Health:GetStatusBarTexture())
+			highlight.isHighlight = true
+
 			E:Auras_GroupUnit(highlight, frame.unit)
 			E:Auras_SetHighlight(highlight)
 		else

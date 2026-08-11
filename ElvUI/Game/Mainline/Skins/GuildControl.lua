@@ -3,8 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local GuildControlGetNumRanks = GuildControlGetNumRanks
+
 local GetNumGuildBankTabs = GetNumGuildBankTabs
+local GuildControlGetNumRanks = GuildControlGetNumRanks
 
 local function SkinGuildRanks()
 	for i = 1, GuildControlGetNumRanks() do
@@ -57,6 +58,12 @@ local function SkinBankTabs()
 	end
 end
 
+local function SkinDiscordFrame()
+	if not _G.DiscordLinkFrame then return end
+	S:HandleButton(_G.DiscordLinkFrame.SeparateStream.Button)
+	S:HandleButton(_G.DiscordLinkFrameButton)
+end
+
 function S:Blizzard_GuildControlUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildcontrol) then return end
 
@@ -76,12 +83,6 @@ function S:Blizzard_GuildControlUI()
 	S:HandleDropDownBox(_G.GuildControlUINavigationDropdown)
 	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropdown, 180)
 
-	--[[ FIX ME 11.0
-		_G.GuildControlUINavigationDropDownButton:Width(20)
-		_G.GuildControlUIRankSettingsFrameRankDropDownButton:Width(20)
-		_G.GuildControlUIRankBankFrameRankDropDownButton:Width(20)
-	]]
-
 	_G.GuildControlUIRankBankFrame:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
@@ -91,6 +92,16 @@ function S:Blizzard_GuildControlUI()
 	end)
 
 	S:HandleCheckBox(_G.GuildControlUIRankSettingsFrameOfficerCheckbox)
+
+	-- Discord integration
+	local Discord = _G.GuildControlUIRankDiscordFrame
+	if Discord then
+		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameServerDropdown, 180)
+		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameChannelDropdown, 180)
+		S:HandleButton(_G.GuildControlUIRankDiscordFrameChannelButton)
+	end
+
+	hooksecurefunc('GuildControlUI_Discord_Update', SkinDiscordFrame)
 
 	for i = 1, _G.NUM_RANK_FLAGS do
 		local checkbox = _G['GuildControlUIRankSettingsFrameCheckbox'..i]

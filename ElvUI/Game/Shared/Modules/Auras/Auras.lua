@@ -118,7 +118,7 @@ function A:MasqueData(texture, highlight)
 end
 
 function A:SetStatusBarColor(bar, r, g, b)
-	bar:GetStatusBarTexture():SetVertexColor(r, g, b)
+	bar:SetStatusBarColor(r, g, b)
 end
 
 function A:UpdateStatusBar(button)
@@ -577,12 +577,11 @@ function A:UpdateHeader(header)
 		wrapYOffset = 0
 	end
 
-	if E.PTR then
+	if E.Retail then
 		header.barDB = db
 		header.width = width
 		header.height = height
-		header.spacingX = db.horizontalSpacing
-		header.spacingY = db.verticalSpacing
+		header.spacing = db.horizontalSpacing
 		header.keepSizeRatio = db.keepSizeRatio
 		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
@@ -728,7 +727,7 @@ function A:Initialize()
 	local mapOffsetX = 6 + E.Border
 
 	if E.private.auras.buffsHeader then
-		if E.PTR then
+		if E.Retail then
 			local buff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
 			buff.auraType = 'buffs'
 			buff.filter = 'HELPFUL'
@@ -750,7 +749,7 @@ function A:Initialize()
 	end
 
 	if E.private.auras.debuffsHeader then
-		if E.PTR then
+		if E.Retail then
 			local debuff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
 			debuff.auraType = 'debuffs'
 			debuff.filter = 'HARMFUL'

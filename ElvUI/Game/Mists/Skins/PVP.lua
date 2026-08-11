@@ -66,8 +66,8 @@ function S:Blizzard_PVPUI()
 
 	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface\icons\achievement_bg_winwsg.blp
 	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
-    PVPQueueFrame.CategoryButton3.Icon:SetTexture(132349) -- interface\icons\ability_warrior_offensivestance.blp
-    PVPQueueFrame.CategoryButton4.Icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
+	PVPQueueFrame.CategoryButton3.Icon:SetTexture(132349) -- interface\icons\ability_warrior_offensivestance.blp
+	PVPQueueFrame.CategoryButton4.Icon:SetTexture(464820) -- interface\icons\achievement_general_stayclassy.blp
 
 	-- Casual Tab
 	local HonorFrame = _G.HonorQueueFrame

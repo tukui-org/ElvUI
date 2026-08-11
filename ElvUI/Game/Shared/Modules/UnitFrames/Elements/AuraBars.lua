@@ -76,10 +76,13 @@ function UF:AuraBars_UpdateBar(bar)
 end
 
 function UF:Construct_AuraBarHeader(frame)
-	if E.PTR then
-		return E:Auras_Create(frame, 'AuraBars')
+	if E.Retail then
+		local bars = E:Auras_Create(frame, 'AuraBars')
+		bars:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
+
+		return bars
 	else
-		local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame, E.PTR and 'DisableUntrustedLayoutScriptsTemplate')
+		local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
 		auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
 		auraBar:SetSize(1, 1)
 
@@ -216,7 +219,7 @@ function UF:Configure_AuraBars(frame)
 			bars:Point(p3..p4, attachTo, p1..p4, xOffset or (right and -(BORDER * 2)) or (bars.height + UF.BORDER), yOffset)
 		end
 
-		if E.PTR then
+		if E.Retail then
 			bars.isAuraBar = true
 			bars.size = db.height
 			bars.numAuras = db.maxBars
@@ -246,7 +249,7 @@ function UF:Configure_AuraBars(frame)
 			frame:DisableElement('AuraBars')
 		end
 
-		if E.PTR then
+		if E.Retail then
 			bars:SetEnabled(false)
 		end
 

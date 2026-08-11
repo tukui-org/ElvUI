@@ -17,7 +17,7 @@ local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemLink = GetInventoryItemLink
-local GetInventorySlotInfo = C_PaperDollInfo and C_PaperDollInfo.GetInventorySlotInfo or GetInventorySlotInfo
+local GetInventorySlotInfo = (C_PaperDollInfo and C_PaperDollInfo.GetInventorySlotInfo) or GetInventorySlotInfo
 local IsInInstance = IsInInstance
 local PlaySound = PlaySound
 local RegisterStateDriver = RegisterStateDriver
@@ -352,7 +352,7 @@ function UF:CreateRaisedElement(frame)
 	RaisedElement.__owner = frame
 
 	-- layer levels (level +1 is icons)
-	RaisedElement.AuraHighlightLevel = RaisedLevel
+	RaisedElement.AuraHighlightLevel = RaisedLevel - 1
 	RaisedElement.AuraLevel = RaisedLevel + 5
 	RaisedElement.PrivateAurasLevel = RaisedLevel + 10
 	RaisedElement.PVPSpecLevel = RaisedLevel + 15
@@ -1166,8 +1166,11 @@ do
 end
 
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
-	UF:RegisterRaidDebuffIndicator()
 	UF:UpdateRangeSpells()
+
+	if not E.Retail then
+		UF:RegisterRaidDebuffIndicator()
+	end
 
 	local _, instanceType = IsInInstance()
 	if instanceType == 'raid' then
@@ -1795,19 +1798,11 @@ do
 	local disabledParty = false
 	local disabledArena = false
 	local lockedParent = {}
-	local lockedAlpha = {}
 
 	-- lock Boss, Party, and Arena
 	local function LockParent(frame, parent)
 		if parent ~= E.HiddenFrame then
 			frame:SetParent(E.HiddenFrame)
-		end
-	end
-
-	-- normally, we want to reparent but this can break Blizzard Auras on nameplates
-	local function LockAlpha(frame, alpha)
-		if not frame:IsForbidden() and alpha ~= 0 then
-			frame:SetAlpha(0)
 		end
 	end
 
@@ -1827,15 +1822,6 @@ do
 				lockedParent[frame] = true
 			end
 		end
-
-		local lockAlpha = which == 2
-		if lockAlpha and not lockedAlpha[frame] then
-			NP:BlizzardPlate_HookAuras(frame) -- setup Blizzard Auras
-
-			hooksecurefunc(frame, 'SetAlpha', LockAlpha)
-
-			lockedAlpha[frame] = true
-		end
 	end
 
 	function ElvUF:DisableBlizzard(unit)
@@ -1848,7 +1834,7 @@ do
 				if plate and not handledPlates[plate] then
 					handledPlates[plate] = true
 
-					HideFrame(plate, E.Retail and 2 or 1)
+					HideFrame(plate, 1)
 				end
 			end
 		elseif E.private.unitframe.enable and not handledUnits[unit] then
@@ -2231,13 +2217,30 @@ do -- Clique support for registering clicks
 	end
 end
 
+do
+	local units = {} -- track units
+	function UF:Configure_UnitAuras(frame)
+		local unit = frame.unit -- update when needed
+		if not unit or (units[frame] == unit) then return end
+
+		units[frame] = unit
+
+		E:Auras_GroupUnit(frame.Auras, unit)
+		E:Auras_GroupUnit(frame.Buffs, unit)
+		E:Auras_GroupUnit(frame.Debuffs, unit)
+		E:Auras_GroupUnit(frame.AuraBars, unit)
+		E:Auras_GroupUnit(frame.AuraWatch, unit)
+		E:Auras_GroupUnit(frame.AuraHighlight, unit)
+	end
+end
+
 function UF:UpdateAllElements(event)
 	if event == 'OnAttributeChanged' then
 		if self.PrivateAuras then
 			UF:Configure_PrivateAuras(self)
 		end
 
-		if E.PTR then
+		if E.Retail then
 			UF:Configure_UnitAuras(self)
 		end
 	end

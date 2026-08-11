@@ -239,7 +239,7 @@ end
 
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, showFunc)
-	if oUF.isPTR then
+	if oUF.isRetail then
 		return true -- not anymore
 	end
 

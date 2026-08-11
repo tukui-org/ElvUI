@@ -92,8 +92,6 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
-local unitSelectionType = Private.unitSelectionType
-
 local gsub = gsub
 local unpack = unpack
 
@@ -111,35 +109,49 @@ local UnitThreatSituation = UnitThreatSituation
 local GetUnitTotalModifiedMaxHealthPercent = GetUnitTotalModifiedMaxHealthPercent
 local UnitHealthPercent = UnitHealthPercent
 
+local GetSelectionType = Private.unitSelectionType
 local StatusBarInterpolation = Enum.StatusBarInterpolation
+
+local function UnitClassColor(element, unit)
+	if element.colorPetByUnitClass then
+		unit = (unit == 'pet' and 'player') or gsub(unit, 'pet', '')
+	end
+
+	local _, classToken = UnitClass(unit)
+	if oUF:NotSecretValue(classToken) then
+		return classToken
+	end
+end
 
 local function UpdateColor(self, event, unit)
 	if(not unit or self.unit ~= unit) then return end
 
 	local element = self.Health
+	local unitReaction = UnitReaction(unit, 'player')
+	local unitThreat = UnitThreatSituation('player', unit)
+	local unitControlled = UnitPlayerControlled(unit)
+	local unitHappiness = (oUF.isClassic or oUF.isTBC) and oUF.myclass == 'HUNTER' and oUF:UnitIsUnit(unit, 'pet') and GetPetHappiness()
+	local unitClassToken = UnitClassColor(element, unit) -- swaps pet to class color when needed
+	local unitSelectionType = GetSelectionType(unit, element.considerSelectionInCombatHostile) -- Private.unitSelectionType
+
 	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
+	local classColorPet = (element.colorClassPet or element.colorPetByUnitClass) and unitControlled and not isPlayer
 
 	local color
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
 		color = self.colors.disconnected
-	elseif(element.colorTapping and not UnitPlayerControlled(unit) and UnitIsTapDenied(unit)) then
+	elseif(element.colorTapping and not unitControlled and UnitIsTapDenied(unit)) then
 		color = self.colors.tapped
-	elseif(element.colorHappiness and (oUF.isClassic or oUF.isTBC) and oUF.myclass == "HUNTER" and oUF:UnitIsUnit(unit, "pet") and GetPetHappiness()) then
-		color = self.colors.happiness[GetPetHappiness()]
-	elseif(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		color =  self.colors.threat[UnitThreatSituation('player', unit)]
-	elseif(element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer)
-	or ((element.colorClassPet or element.colorPetByUnitClass) and UnitPlayerControlled(unit) and not isPlayer) then
-		if element.colorPetByUnitClass then
-			unit = (unit == 'pet' and 'player') or gsub(unit, 'pet', '')
-		end
-
-		local _, className = UnitClass(unit)
-		color = self.colors.class[className]
-	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
-	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		color = self.colors.reaction[UnitReaction(unit, 'player')]
+	elseif(element.colorHappiness and unitHappiness) then
+		color = self.colors.happiness[unitHappiness]
+	elseif(element.colorThreat and not unitControlled and unitThreat) then
+		color =  self.colors.threat[unitThreat]
+	elseif unitClassToken and (classColorPet or (element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer)) then
+		color = self.colors.class[unitClassToken]
+	elseif(element.colorSelection and unitSelectionType) then
+		color = self.colors.selection[unitSelectionType]
+	elseif(element.colorReaction and unitReaction) then
+		color = self.colors.reaction[unitReaction]
 	elseif(element.colorSmooth) then
 		if oUF.isRetail then
 			local curve = self.colors.health:GetCurve()
@@ -156,7 +168,7 @@ local function UpdateColor(self, event, unit)
 	end
 
 	if(color) then
-		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+		element:SetStatusBarColor(color:GetRGB())
 	end
 
 	--[[ Callback: Health:PostUpdateColor(unit, color)

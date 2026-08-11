@@ -3,81 +3,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local List = E.Filters.List
 local Aura = E.Filters.Aura
 
--- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
-G.unitframe.aurafilters.PlayerBuffs = nil
-
-G.unitframe.aurafilters.ClassDebuffs = {
-	type = 'Whitelist',
-	desc = L["Only important debuffs which influence your action priority. Recommended to be paired with 'Non Personal' set to 'Block'."],
-	spells = {}
-}
-
-G.unitframe.aurafilters.ImportantCC = {
-	type = 'Whitelist',
-	desc = L["Only important CC debuffs like Polymorph, Hex, Stuns. Also includes important cc-like debuffs, for example Mind Soothe and Solar Beam."],
-	spells = {}
-}
-
-G.unitframe.aurafilters.CCDebuffs = {
-	type = 'Whitelist',
-	desc = L["Debuffs that are some form of CC. This can be stuns, roots, slows, etc."],
-	spells = {}
-}
-
-G.unitframe.aurafilters.TurtleBuffs = {
-	type = 'Whitelist',
-	desc = L["Immunity buffs like Bubble and Ice Block, but also most major defensive class cooldowns."],
-	spells = {}
-}
-
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	desc = L["Auras you don't want to see on your frames."],
-	spells = {
-		-- Rogue Poisons
-		[2823]		= List(nil, false), -- Deadly Poison
-		[315584]	= List(nil, false), -- Instant Poison
-		[3408]		= List(nil, false), -- Crippling Poison
-		[381637]	= List(nil, false), -- Atrophic Poison
-		[381664]	= List(nil, false), -- Amplifying Poison
-		[8679]		= List(nil, false), -- Wound Poison
-		-- Shaman Imbuements
-		[319773]	= List(nil, false), -- Windfury Weapon
-		[319778]	= List(nil, false), -- Flametongue Weapon
-		[382021]	= List(nil, false), -- Earthliving Weapon
-		[382022]	= List(nil, false), -- Earthliving Weapon
-		[457496]	= List(nil, false), -- Tidecaller's Guard
-		[457481]	= List(nil, false), -- Tidecaller's Guard
-		[462757]	= List(nil, false), -- Thunderstrike Ward
-		[462742]	= List(nil, false), -- Thunderstrike Ward
-		-- Paladin Imbuements
-		[433568]	= List(), -- Rite of Sanctification
-		[433583]	= List(), -- Rite of Adjuration
-		-- Skyriding
-		[404464]	= List(), -- Flight Style: Skyriding
-		[404468]	= List(), -- Flight Style: Steady
-		[427490]	= List(), -- Ride Along
-		[447959]	= List(), -- Ride Along - Enabled
-		[447960]	= List(), -- Ride Along - Inactive
-		[377234]	= List(), -- Thrill of the Skies
-		-- Bloodlust + Heroism
-		[160455]	= List(), -- Fatigued | Netherwinds
-		[264689]	= List(), -- Fatigued | Primal Rage
-		[390435]	= List(), -- Exhaustion | Fury of the Aspects
-		[57723]		= List(), -- Exhaustion | Heroism
-		[57724]		= List(), -- Sated | Bloodlust
-		[80354]		= List(), -- Temporal Displacement | Time Warp
-		[95809]		= List(), -- Insanity | Ancient Hysteria
-		-- Social
-		[26013]		= List(), -- Deserter | Battlegrounds
-		[71041]		= List(), -- Dungeon Deserter | Dungeon Finder or Raid Finder
-		-- General auras starting here
-	}
-}
-
-G.unitframe.aurafilters.Blocklist = {
-	type = 'Blacklist',
-	desc = L["Non-Secret Auras you don't want to see on your frames."],
 	spells = {
 		-- Rogue Poisons
 		[2823]		= List(nil, false), -- Deadly Poison
@@ -142,19 +70,6 @@ G.unitframe.aurafilters.Whitelist = {
 		-- Paladin
 		-- Death Knight
 	}
-}
-
-G.unitframe.aurafilters.RaidDebuffs = {
-	type = 'Whitelist',
-	desc = L["List of important Dungeon and Raid debuffs. Includes affixes and utility on dead players like pending resurrection and available reincarnation."],
-	spells = {}
-}
-
--- Buffs applied by bosses, adds or trash
-G.unitframe.aurafilters.RaidBuffsElvUI = {
-	type = 'Whitelist',
-	desc = L["List of important Dungeon and Raid buffs."],
-	spells = {}
 }
 
 -- Aura indicators on UnitFrames (Hots, Shields, Externals)

@@ -66,7 +66,7 @@ local function UpdateColor(self, event, unit)
 	end
 
 	if(color) then
-		element:GetStatusBarTexture():SetVertexColor(color:GetRGB())
+		element:SetStatusBarColor(color:GetRGB())
 	end
 
 	--[[ Callback: Stagger:PostUpdateColor(color)
@@ -98,7 +98,7 @@ local function verifyStagger(frame, event, unit, auraInstanceID, aura)
 end
 
 local function Update(self, event, unit, updateInfo)
-	if oUF.isPTR then
+	if oUF.isRetail then
 		if oUF:ShouldSkip(self, unit) then return end
 	elseif oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, not oUF.isRetail and verifyStagger or nil) then
 		return

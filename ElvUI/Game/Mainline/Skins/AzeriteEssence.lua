@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
+
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
 local function EssenceListScrollUpdateChild(button)

@@ -2,12 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
 local ipairs, next, gsub = ipairs, next, gsub
 
 local CreateFrame = CreateFrame
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local hooksecurefunc = hooksecurefunc
 
 local Masque = E.Masque
 local MasqueGroup = Masque and Masque:Group('ElvUI', 'Totem Bar')

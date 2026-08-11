@@ -3,8 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local GuildControlGetNumRanks = GuildControlGetNumRanks
+
 local GetNumGuildBankTabs = GetNumGuildBankTabs
+local GuildControlGetNumRanks = GuildControlGetNumRanks
 
 local function SkinGuildRanks()
 	for i = 1, GuildControlGetNumRanks() do

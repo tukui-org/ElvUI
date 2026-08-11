@@ -17,8 +17,8 @@ local UnitIsFriend = UnitIsFriend
 
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
-local UNKNOWN = UNKNOWN
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
+local UNKNOWN = UNKNOWN
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
@@ -74,8 +74,11 @@ UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
 function UF:Construct_Auras(frame)
-	if E.PTR then
-		return E:Auras_Create(frame, 'Auras')
+	if E.Retail then
+		local auras = E:Auras_Create(frame, 'Auras')
+		auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+
+		return auras
 	else
 		local auras = CreateFrame('Frame', '$parentAuras', frame)
 		auras.PreSetPosition = UF.SortAuras
@@ -96,8 +99,11 @@ function UF:Construct_Auras(frame)
 end
 
 function UF:Construct_Buffs(frame)
-	if E.PTR then
-		return E:Auras_Create(frame, 'Buffs')
+	if E.Retail then
+		local buffs = E:Auras_Create(frame, 'Buffs')
+		buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+
+		return buffs
 	else
 		local buffs = CreateFrame('Frame', '$parentBuffs', frame)
 		buffs.PreSetPosition = UF.SortAuras
@@ -118,8 +124,11 @@ function UF:Construct_Buffs(frame)
 end
 
 function UF:Construct_Debuffs(frame)
-	if E.PTR then
-		return E:Auras_Create(frame, 'Debuffs')
+	if E.Retail then
+		local debuffs = E:Auras_Create(frame, 'Debuffs')
+		debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
+
+		return debuffs
 	else
 		local debuffs = CreateFrame('Frame', '$parentDebuffs', frame)
 		debuffs.PreSetPosition = UF.SortAuras
@@ -294,13 +303,10 @@ do
 		wipe(frame.filters) -- start over
 
 		if frame.noFilter then
-			group.player = filter -- break the rules
+			group.player = filter..(filters.allowOthers and '' or '|PLAYER')
 		else
-			local player -- you obviously
-			if filters.isPlayer then
-				player = filter..'|PLAYER'
-			else
-				player = filter..'|PLAYER'
+			local player = filter..'|PLAYER' -- you obviously
+			if not filters.isPlayer then
 				player = UF:AddFilter(player, filters.isRaidPlayerDispellable, 'RAID_PLAYER_DISPELLABLE')
 				player = UF:AddFilter(player, filters.isImportantPlayer, 'IMPORTANT')
 				player = UF:AddFilter(player, filters.isDispellablePlayer, 'DISPELLABLE')
@@ -311,21 +317,21 @@ do
 				player = UF:AddFilter(player, filters.isCancelablePlayer, 'CANCELABLE')
 				player = UF:AddFilter(player, filters.isRaidPlayer, 'RAID')
 			end
-
-			local others -- not player
-			others = filter..'|!PLAYER'
-			others = UF:AddFilter(others, filters.isImportant, 'IMPORTANT')
-			others = UF:AddFilter(others, filters.isDispellable, 'DISPELLABLE')
-			others = UF:AddFilter(others, filters.isCrowdControl, 'CROWD_CONTROL')
-			others = UF:AddFilter(others, filters.isBigDefensive, 'BIG_DEFENSIVE')
-			others = UF:AddFilter(others, filters.isRaidInCombat, 'RAID_IN_COMBAT')
-			others = UF:AddFilter(others, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE')
-			others = UF:AddFilter(others, filters.isCancelable, 'CANCELABLE')
-			others = UF:AddFilter(others, filters.isRaid, 'RAID')
-
-			-- actually add them
 			group.player = player
-			group.others = others
+
+			if filters.allowOthers then
+				local others -- not player
+				others = filter..'|!PLAYER'
+				others = UF:AddFilter(others, filters.isImportant, 'IMPORTANT')
+				others = UF:AddFilter(others, filters.isDispellable, 'DISPELLABLE')
+				others = UF:AddFilter(others, filters.isCrowdControl, 'CROWD_CONTROL')
+				others = UF:AddFilter(others, filters.isBigDefensive, 'BIG_DEFENSIVE')
+				others = UF:AddFilter(others, filters.isRaidInCombat, 'RAID_IN_COMBAT')
+				others = UF:AddFilter(others, filters.isExternalDefensive, 'EXTERNAL_DEFENSIVE')
+				others = UF:AddFilter(others, filters.isCancelable, 'CANCELABLE')
+				others = UF:AddFilter(others, filters.isRaid, 'RAID')
+				group.others = others
+			end
 		end
 	end
 end
@@ -333,7 +339,7 @@ end
 function UF:FilterEnabled(db, which)
 	if not db then return end
 
-	if E.PTR then
+	if E.Retail then
 		return db[which]
 	else -- return it back to a boolean
 		return not not db[which]
@@ -374,9 +380,12 @@ function UF:UpdateFilters(frame)
 	filters.isPermanent = isPermanent
 	filters.isPermanentPlayer = isPermanentPlayer
 
-	if not E.PTR then
+	if E.Retail then
+		filters.allowOthers = db and db.allowOthers
+	else
 		local filterList = (db and db.useBlocklist) and E.global.unitframe.aurafilters
-		filters.Blocklist = filterList and filterList.Blocklist and filterList.Blocklist.spells or nil
+		local filterExist = filterList and filterList[db.blockList or 'Blacklist']
+		filters.blockList = filterExist and filterExist.spells or nil
 	end
 
 	filters.isPlayer = isPlayer
@@ -445,12 +454,6 @@ function UF:EnableDisable_Auras(frame)
 			frame:DisableElement('Auras')
 		end
 	end
-end
-
-function UF:Configure_UnitAuras(frame)
-	E:Auras_GroupUnit(frame.Auras, frame.unit)
-	E:Auras_GroupUnit(frame.Buffs, frame.unit)
-	E:Auras_GroupUnit(frame.Debuffs, frame.unit)
 end
 
 function UF:Configure_AllAuras(frame)
@@ -546,11 +549,13 @@ function UF:Configure_Auras(frame, which)
 
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
-	elseif E.PTR then
+	elseif E.Retail then
 		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
-	if E.PTR then
+	if E.Retail then
+		auras:SetEnabled(settings.enable)
+
 		auras.keepSizeRatio = settings.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
@@ -610,10 +615,6 @@ function UF:Configure_Auras(frame, which)
 
 			index = index + 1
 		end
-	end
-
-	if E.PTR then
-		auras:SetEnabled(settings.enable)
 	end
 
 	if settings.enable then
@@ -890,7 +891,7 @@ function UF:VerifyFilter(button, aura)
 		return false -- block no duration auras
 	end
 
-	local list = filters.Blocklist
+	local list = not E.Retail and filters.blockList
 	if list and E:NotSecretValue(aura.spellId) then
 		local spell = list[aura.spellId] or list[aura.name]
 		if spell and spell.enable then

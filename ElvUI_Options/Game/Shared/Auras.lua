@@ -14,7 +14,7 @@ local SharedOptions = {
 	spacer1 = ACH:Spacer(5, 'full'),
 
 	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 10, C.Values.GrowthDirection),
-	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 11, { IMPORTANT = E.PTR and L["Important"] or nil, DEFENSIVE = E.PTR and L["Big Defensive"] or nil, DURATION = E.PTR and L["Duration"] or nil, PLAYER = E.PTR and L["Debuffs"] or nil, INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
+	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 11, { IMPORTANT = E.Retail and L["Important"] or nil, DEFENSIVE = E.Retail and L["Big Defensive"] or nil, DURATION = E.Retail and L["Duration"] or nil, PLAYER = E.Retail and L["Debuffs"] or nil, INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
 	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 12, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
 	seperateOwn = ACH:Select(L["Separate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 13, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
 
@@ -22,11 +22,11 @@ local SharedOptions = {
 	height = ACH:Range(L["Height"], L["Set the size of the individual auras."], 21, { min = 10, max = 80, step = 1 }),
 	wrapAfter = ACH:Range(L["Wrap After"], L["Begin a new row or column after this many auras."], 22, { min = 1, max = 32, step = 1 }),
 	maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 23, { min = 1, max = 32, step = 1 }),
-	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 24, { min = -5, max = 50, step = 1 }),
-	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 25, { min = -5, max = 50, step = 1 }),
+	horizontalSpacing = ACH:Range(E.Retail and L["Spacing"] or L["Horizontal Spacing"], nil, 24, { min = -5, max = 50, step = 1 }),
+	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 25, { min = -5, max = 50, step = 1 }, nil, nil, nil, nil, E.Retail),
 	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }, nil, nil, nil, nil, E.Retail),
 
-	tooltip = ACH:Group(L["Tooltip"], nil, -3),
+	tooltip = ACH:Group(L["Tooltip"], nil, -3, nil, nil, nil, nil, E.Retail),
 	statusBar = ACH:Group(L["Statusbar"], nil, -2),
 	countGroup = ACH:Group(L["Count Text"], nil, -1),
 }
@@ -100,7 +100,7 @@ Auras.args.privateAuras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Auras.args.privateAuras.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
 Auras.args.privateAuras.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
 Auras.args.privateAuras.args.clickThrough = ACH:Toggle(L["Click Through"], nil, 5)
-Auras.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -10, max = 10, step = 0.01 })
+Auras.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -20, max = 20, step = 0.01 })
 
 Auras.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.general.privateAuras.icon[info[#info]] end, function(info, value) E.db.general.privateAuras.icon[info[#info]] = value; PA:Update() end)
 Auras.args.privateAuras.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })

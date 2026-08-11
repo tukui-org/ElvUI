@@ -4,7 +4,7 @@ local UF = E:GetModule('UnitFrames')
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
-	if E.PTR then
+	if E.Retail then
 		local auras = E:Auras_Create(frame, 'AuraWatch')
 		auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
 		auras:SetInside(frame.Health)
@@ -25,17 +25,25 @@ end
 
 function UF:Configure_AuraWatch(frame, isPet)
 	local db = frame.db and frame.db.buffIndicator
-	if db and db.enable then
+
+	local enabled = db and db.enable
+	local auras = frame.AuraWatch
+	if E.Retail then
+		auras:SetEnabled(enabled)
+	end
+
+	if enabled then
 		if not frame:IsElementEnabled('AuraWatch') then
 			frame:EnableElement('AuraWatch')
 		end
 
-		local auras = frame.AuraWatch
 		auras.size = db.size
 		auras.countFont = db.countFont
 		auras.countFontSize = db.countFontSize
 		auras.countFontOutline = db.countFontOutline
 		auras.cooldownDB = E.db.cooldown.auraindicator
+		auras.isIndicator = true
+		auras.noMouse = true
 
 		local auraTable
 		if (frame.unit == 'pet' or isPet) and db.petSpecific then
@@ -47,12 +55,13 @@ function UF:Configure_AuraWatch(frame, isPet)
 			E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 		end
 
-		if E.PTR then
+		if E.Retail then
 			auras.filter = 'HELPFUL'
 
 			E:Auras_SetupIndicator(auras, auraTable)
 			E:Auras_GroupUnit(auras, frame.unit)
 			E:Auras_SetIndicator(auras)
+			E:Auras_UpdateIndicators(auras)
 		elseif auras.SetNewTable then
 			auras:SetNewTable(auraTable)
 		end

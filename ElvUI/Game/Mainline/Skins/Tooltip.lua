@@ -9,7 +9,7 @@ function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 	TT.isStyled = true
 
-	if E.PTR then
+	if E.Retail then
 		TT:SetAuraButtonTooltipStyle()
 	end
 

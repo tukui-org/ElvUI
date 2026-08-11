@@ -3,8 +3,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local List = E.Filters.List
 local Aura = E.Filters.Aura
 
-local CopyTable = CopyTable
-
 -- This used to be standalone and is now merged into G.unitframe.aurafilters.Whitelist
 G.unitframe.aurafilters.PlayerBuffs = nil
 
@@ -182,12 +180,6 @@ G.unitframe.aurafilters.Blacklist = {
 		[95809] = List(),	-- Insanity
 		[95223] = List()	-- Group Res
 	},
-}
-
-G.unitframe.aurafilters.Blocklist = {
-	type = 'Blacklist',
-	desc = L["Used by Midnight filters.\n\nAuras you don't want to see on your frames."],
-	spells = CopyTable(G.unitframe.aurafilters.Blacklist.spells)
 }
 
 G.unitframe.aurafilters.Whitelist = {
@@ -659,10 +651,10 @@ G.unitframe.ChannelTicks = {
 	[42650]		= 8, -- Army of the Dead
 	-- First Aid
 	[102695] 	= 8, -- Heavy Windwool Bandage
-    [102694] 	= 8, -- Windwool Bandage
-    [74555] 	= 8, -- Dense Embersilk Bandage
-    [74554] 	= 8, -- Heavy Embersilk Bandage
-    [74553]		= 8, -- Embersilk Bandage
+	[102694] 	= 8, -- Windwool Bandage
+	[74555] 	= 8, -- Dense Embersilk Bandage
+	[74554] 	= 8, -- Heavy Embersilk Bandage
+	[74553]		= 8, -- Embersilk Bandage
 	[45544]		= 8, -- Heavy Frostweave Bandage
 	[45543]		= 8, -- Frostweave Bandage
 	[27031]		= 8, -- Heavy Netherweave Bandage

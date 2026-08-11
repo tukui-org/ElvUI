@@ -3,9 +3,85 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local ipairs, pairs = ipairs, pairs
+local hooksecurefunc = hooksecurefunc
 
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
-local hooksecurefunc = hooksecurefunc
+
+local function UpdateCheckboxes(frame)
+	if not FCF_GetCurrentChatFrame() then return end
+
+	local nameString = frame:GetName()..'Checkbox'
+	for index in ipairs(frame.checkBoxTable) do
+		local checkboxName = nameString..index
+		local checkbox = _G[checkboxName]
+		if checkbox and not checkbox.IsSkinned then
+			checkbox:StripTextures()
+			S:HandleCheckBox(_G[checkboxName..'Check'])
+
+			checkbox.IsSkinned = true
+		end
+	end
+end
+
+local function CreateTieredCheckboxes(frame, checkBoxTable)
+	if frame.IsSkinned then return end
+
+	local nameString = frame:GetName()..'Checkbox'
+	for index, value in ipairs(checkBoxTable) do
+		local checkboxName = nameString..index
+		S:HandleCheckBox(_G[checkboxName])
+
+		if value.subTypes then
+			for i in ipairs(value.subTypes) do
+				S:HandleCheckBox(_G[checkboxName..'_'..i])
+			end
+		end
+	end
+
+	frame.IsSkinned = true
+end
+
+local function UpdateWidth(frame)
+	for tab in frame.tabPool:EnumerateActive() do
+		if not tab.IsSkinned then
+			tab:StripTextures()
+
+			tab.IsSkinned = true
+		end
+
+		tab:SetWidth(80)
+	end
+end
+
+local function UpdateSwatches(frame)
+	if not frame.swatchTable then return end
+
+	local nameString = frame:GetName()..'Swatch'
+	for index in ipairs(frame.swatchTable) do
+		local bu = _G[nameString..index]
+		if bu and not bu.backdrop then
+			bu:StripTextures()
+			bu:CreateBackdrop('Transparent')
+			bu.backdrop:SetInside()
+
+			bu.backdrop = true
+		end
+	end
+end
+
+local function UpdateMessageCheckboxes(frame)
+	if not frame.checkBoxTable then return end
+
+	local nameString = frame:GetName()..'CheckBox'
+	for index in ipairs(frame.checkBoxTable) do
+		local checkBox = _G[nameString..index]
+		if checkBox and not checkBox.IsSkinned then
+			S:HandleCheckBox(checkBox)
+
+			checkBox.IsSkinned = true
+		end
+	end
+end
 
 function S:ChatConfig()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
@@ -15,51 +91,10 @@ function S:ChatConfig()
 	ChatConfigFrame:SetTemplate('Transparent')
 	ChatConfigFrame.Header:StripTextures()
 
-	hooksecurefunc('ChatConfig_UpdateCheckboxes', function(frame)
-		if not FCF_GetCurrentChatFrame() then return end
-
-		local nameString = frame:GetName()..'Checkbox'
-		for index in ipairs(frame.checkBoxTable) do
-			local checkboxName = nameString..index
-			local checkbox = _G[checkboxName]
-			if checkbox and not checkbox.IsSkinned then
-				checkbox:StripTextures()
-				S:HandleCheckBox(_G[checkboxName..'Check'])
-
-				checkbox.IsSkinned = true
-			end
-		end
-	end)
-
-	hooksecurefunc('ChatConfig_CreateTieredCheckboxes', function(frame, checkBoxTable)
-		if frame.IsSkinned then return end
-
-		local nameString = frame:GetName()..'Checkbox'
-		for index, value in ipairs(checkBoxTable) do
-			local checkboxName = nameString..index
-			S:HandleCheckBox(_G[checkboxName])
-
-			if value.subTypes then
-				for i in ipairs(value.subTypes) do
-					S:HandleCheckBox(_G[checkboxName..'_'..i])
-				end
-			end
-		end
-
-		frame.IsSkinned = true
-	end)
-
-	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', function(frame)
-		for tab in frame.tabPool:EnumerateActive() do
-			if not tab.IsSkinned then
-				tab:StripTextures()
-
-				tab.IsSkinned = true
-			end
-
-			tab:SetWidth(80)
-		end
-	end)
+	hooksecurefunc('ChatConfig_UpdateSwatches', UpdateSwatches)
+	hooksecurefunc('ChatConfig_UpdateCheckboxes', UpdateCheckboxes)
+	hooksecurefunc('ChatConfig_CreateTieredCheckboxes', CreateTieredCheckboxes)
+	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', UpdateWidth)
 
 	do
 		local i = 1
@@ -85,6 +120,7 @@ function S:ChatConfig()
 		_G.CombatConfigColorsColorizeDamageSchool,
 		_G.CombatConfigColorsColorizeEntireLine,
 		_G.ChatConfigChatSettingsLeft,
+		_G.ChatConfigOtherSettingsAdditionalColors,
 		_G.ChatConfigOtherSettingsCombat,
 		_G.ChatConfigOtherSettingsPVP,
 		_G.ChatConfigOtherSettingsSystem,
@@ -132,22 +168,6 @@ function S:ChatConfig()
 	}) do
 		S:HandleCheckBox(box)
 	end
-
-	hooksecurefunc('ChatConfig_UpdateSwatches', function(frame)
-		if not frame.swatchTable then return end
-
-		local nameString = frame:GetName()..'Swatch'
-		for index in ipairs(frame.swatchTable) do
-			local bu = _G[nameString..index]
-			if bu and not bu.backdrop then
-				bu:StripTextures()
-				bu:CreateBackdrop('Transparent')
-				bu.backdrop:SetInside()
-
-				bu.backdrop = true
-			end
-		end
-	end)
 
 	S:HandleButton(_G.CombatLogDefaultButton)
 	S:HandleButton(_G.ChatConfigCombatSettingsFiltersCopyFilterButton)
@@ -198,19 +218,7 @@ function S:ChatConfig()
 		S:HandleCheckBox(_G.TextToSpeechFramePanelContainer[checkbox])
 	end
 
-	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', function(frame)
-		if not frame.checkBoxTable then return end
-
-		local nameString = frame:GetName()..'CheckBox'
-		for index in ipairs(frame.checkBoxTable) do
-			local checkBox = _G[nameString..index]
-			if checkBox and not checkBox.IsSkinned then
-				S:HandleCheckBox(checkBox)
-
-				checkBox.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', UpdateMessageCheckboxes)
 end
 
 S:AddCallback('ChatConfig')

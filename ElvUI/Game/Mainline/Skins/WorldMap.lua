@@ -7,9 +7,10 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local QuestSessionCommand = Enum.QuestSessionCommand
 local SessionCommand_ButtonAtlases = {
-	[Enum.QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
-	[Enum.QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
+	[QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
+	[QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
 }
 
 local function UpdateExecuteCommandAtlases(frame, command)
@@ -382,13 +383,15 @@ function S:WorldMapFrame()
 	}
 
 	local function PositionQuestTab(tab, _, _, _, x, y)
-		if x ~= 10 or y ~= -10 then
-			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 10, -10)
+		local X, Y = 1, 0
+		if x ~= X or y ~= Y then
+			tab:ClearAllPoints()
+			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', X, Y)
 		end
 	end
 
-	local function PositionTabIcons(icon, _, anchor)
-		if anchor then
+	local function PositionTabIcons(icon, point, anchor)
+		if anchor and point ~= 'CENTER' then
 			icon:SetPoint('CENTER')
 		end
 	end
@@ -399,7 +402,7 @@ function S:WorldMapFrame()
 
 		if i == 1 then
 			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 10, -10)
+			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 11, 24)
 
 			hooksecurefunc(tab, 'SetPoint', PositionQuestTab)
 		end
@@ -421,17 +424,14 @@ function S:WorldMapFrame()
 			tab.SelectedTexture:SetAllPoints()
 		end
 
-		for _, region in next, { tab:GetRegions() } do
-			if region:IsObjectType('Texture') and region:GetAtlas() == 'QuestLog-Tab-side-Glow-hover' then
-				region:SetColorTexture(1, 1, 1, 0.3)
-				region:SetAllPoints()
-			end
+		if tab.HighlightTexture then
+			tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+			tab.HighlightTexture:SetAllPoints()
 		end
-	end
 
-	if QuestMapFrame.QuestsTab then
-		QuestMapFrame.QuestsTab:ClearAllPoints()
-		QuestMapFrame.QuestsTab:Point('TOPLEFT', QuestMapFrame, 'TOPRIGHT', 1, 2)
+		if tab.TabGlow then
+			tab.TabGlow:SetAlpha(0)
+		end
 	end
 
 	local EventsFrame = QuestMapFrame.EventsFrame

@@ -5,6 +5,7 @@ local _G = _G
 local gsub = gsub
 local next = next
 
+local GameTooltip = GameTooltip
 local CreateFrame = CreateFrame
 local GetBindingKey = GetBindingKey
 local PetHasActionBar = PetHasActionBar
@@ -13,8 +14,6 @@ local IsPetAttackAction = IsPetAttackAction
 local GetPetActionSlotUsable = GetPetActionSlotUsable
 local GetPetActionCooldown = GetPetActionCooldown
 local RegisterStateDriver = RegisterStateDriver
-local GameTooltip = GameTooltip
-
 local PetActionButton_StartFlash = PetActionButton_StartFlash
 local PetActionButton_StopFlash = PetActionButton_StopFlash
 local PetActionBar_UpdateCooldowns = PetActionBar_UpdateCooldowns

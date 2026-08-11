@@ -2,13 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
+local _G = _G
 local pairs = pairs
 local unpack = unpack
-
-local _G = _G
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+local CreateFrame = CreateFrame
 local C_PetBattles_GetPetType = C_PetBattles.GetPetType
 local C_PetBattles_GetNumAuras = C_PetBattles.GetNumAuras
 local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
@@ -36,6 +35,185 @@ local function SkinPetButton(frame, bf)
 		spbc:SetColorTexture(1, 1, 1, 0.3)
 		spbc:SetInside(frame.backdrop)
 	end
+end
+
+local function UpdateSpeedIndicators()
+	local f = _G.PetBattleFrame
+	if not f.ActiveAlly.SpeedIcon:IsShown() and not f.ActiveEnemy.SpeedIcon:IsShown() then
+		f.ActiveAlly.FirstAttack:Hide()
+		f.ActiveEnemy.FirstAttack:Hide()
+		return
+	end
+
+	local infoBars = {
+		f.ActiveAlly,
+		f.ActiveEnemy
+	}
+
+	for _, infoBar in pairs(infoBars) do
+		infoBar.FirstAttack:Show()
+		if infoBar.SpeedIcon:IsShown() then
+			infoBar.FirstAttack:SetVertexColor(0,1,0,1)
+		else
+			infoBar.FirstAttack:SetVertexColor(.8,0,.3,1)
+		end
+	end
+end
+
+local function UpdatePetType(frame)
+	if frame.PetType then
+		local petType = C_PetBattles_GetPetType(frame.petOwner, frame.petIndex)
+		if frame.PetTypeFrame and petType then
+			frame.PetTypeFrame.text:SetText(_G['BATTLE_PET_NAME_'..petType])
+		end
+	end
+end
+
+local function AuraHolder_Update(holder)
+	if not (holder.petOwner and holder.petIndex) then return end
+
+	local nextFrame = 1
+	for i = 1, C_PetBattles_GetNumAuras(holder.petOwner, holder.petIndex) do
+		local _, _, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(holder.petOwner, holder.petIndex, i)
+		if (isBuff and holder.displayBuffs) or (not isBuff and holder.displayDebuffs) then
+			local frame = holder.frames[nextFrame]
+
+			-- always hide the border
+			frame.DebuffBorder:Hide()
+
+			if not frame.backdrop then
+				frame:CreateBackdrop()
+				frame.backdrop:SetOutside(frame.Icon)
+				frame.Icon:SetTexCoords()
+				frame.Icon:SetParent(frame.backdrop)
+			end
+
+			if isBuff then
+				frame.backdrop:SetBackdropBorderColor(0, 1, 0)
+			else
+				frame.backdrop:SetBackdropBorderColor(1, 0, 0)
+			end
+
+			-- move duration and change font
+			frame.Duration:FontTemplate(nil, 12, 'OUTLINE')
+			frame.Duration:ClearAllPoints()
+			frame.Duration:Point('TOP', frame.Icon, 'BOTTOM', 1, -4)
+			if turnsRemaining > 0 then
+				frame.Duration:SetText(turnsRemaining)
+			end
+			nextFrame = nextFrame + 1
+		end
+	end
+end
+
+local function WeatherFrame_Update(frame)
+	local weather = C_PetBattles_GetAuraInfo(BattlePetOwner_Weather, _G.PET_BATTLE_PAD_INDEX, 1)
+	if weather then
+		frame.Icon:Hide()
+		frame.BackgroundArt:ClearAllPoints()
+		frame.BackgroundArt:Point('TOP', frame, 'TOP', 0, 14)
+		frame.BackgroundArt:Size(200, 100)
+		frame.Name:Hide()
+		frame.DurationShadow:Hide()
+		frame.Label:Hide()
+		frame.Duration:ClearAllPoints()
+		frame.Duration:Point('TOP', frame, 'TOP', 0, 10)
+		frame:ClearAllPoints()
+		frame:Point('TOP', E.UIParent, 0, -15)
+	end
+end
+
+local function UpdateDisplay(frame)
+	frame.Icon:SetTexCoords()
+
+	if frame.petOwner and frame.petIndex and (frame.Icon.backdrop and frame.Icon.backdrop:IsShown()) then
+		local quality = C_PetBattles_GetBreedQuality(frame.petOwner, frame.petIndex)
+		local r, g, b = E:GetItemQualityColor(quality)
+		frame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+end
+
+local function PetSelectionFrame_Show()
+	local f = _G.PetBattleFrame
+	local bf = f.BottomFrame
+
+	bf.PetSelectionFrame:ClearAllPoints()
+	bf.PetSelectionFrame:Point('BOTTOM', bf.xpBar, 'TOP', 0, 8)
+end
+
+local function UpdateActionBarLayout()
+	local bar = _G.ElvUIPetBattleActionBar
+	local f = _G.PetBattleFrame
+	local bf = f.BottomFrame
+
+	for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
+		local b = bf.abilityButtons[i]
+		SkinPetButton(b, bf)
+		b:SetParent(bar)
+		b:ClearAllPoints()
+
+		if i == 1 then
+			b:Point('BOTTOMLEFT', 10, 10)
+		else
+			local previous = bf.abilityButtons[i-1]
+			b:Point('LEFT', previous, 'RIGHT', 10, 0)
+		end
+	end
+
+	bf.SwitchPetButton:ClearAllPoints()
+	bf.SwitchPetButton:Point('LEFT', bf.abilityButtons[3], 'RIGHT', 10, 0)
+	SkinPetButton(bf.SwitchPetButton, bf)
+	bf.CatchButton:SetParent(bar)
+	bf.CatchButton:ClearAllPoints()
+	bf.CatchButton:Point('LEFT', bf.SwitchPetButton, 'RIGHT', 10, 0)
+	SkinPetButton(bf.CatchButton, bf)
+	bf.ForfeitButton:SetParent(bar)
+	bf.ForfeitButton:ClearAllPoints()
+	bf.ForfeitButton:Point('LEFT', bf.CatchButton, 'RIGHT', 10, 0)
+	SkinPetButton(bf.ForfeitButton, bf)
+end
+
+local function ToolTip_Show(_, _, rarity)
+	local tt = _G.BattlePetTooltip
+	if not tt then return end
+
+	local quality = TT.db.itemQuality and rarity and rarity > 1 and E:GetQualityColor(rarity)
+	if quality then
+		tt:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+		tt.qualityChanged = true
+	elseif tt.qualityChanged then
+		tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		tt.qualityChanged = nil
+	end
+end
+
+local function AbilityTooltip_Show()
+	local t = _G.PetBattlePrimaryAbilityTooltip
+	local point, x, y = 'TOPRIGHT', -4, -4
+	--Position it at the bottom right on low resolution setups
+	--Otherwise the tooltip might overlap enemy team unit info
+	if E.lowversion then
+		point, x, y = 'BOTTOMRIGHT', -4, 4
+	end
+
+	t:ClearAllPoints()
+	t:Point(point, E.UIParent, point, x, y)
+end
+
+local function SkipButton_SetPoint(btn, _, _, _, _, _, forced)
+	if forced == true then return end
+
+	local bar = _G.ElvUIPetBattleActionBar
+	local f = _G.PetBattleFrame
+	local bf = f.BottomFrame
+	local turnTimer = bf.TurnTimer
+
+	btn:ClearAllPoints()
+	btn:SetFrameLevel(4) -- xpBar uses 3
+	btn:Point('BOTTOMLEFT', bar, 'TOPLEFT', 0, 1, true)
+	btn:Point('BOTTOMRIGHT', bar, 'TOPRIGHT', 0, 1, true)
+
+	turnTimer:SetSize(turnTimer.SkipButton:GetSize()) -- set after the skip button points
 end
 
 function S:PetBattleFrame()
@@ -138,99 +316,11 @@ function S:PetBattleFrame()
 		end
 	end
 
-	-- PETS SPEED INDICATOR UPDATE
-	hooksecurefunc('PetBattleFrame_UpdateSpeedIndicators', function()
-		if not f.ActiveAlly.SpeedIcon:IsShown() and not f.ActiveEnemy.SpeedIcon:IsShown() then
-			f.ActiveAlly.FirstAttack:Hide()
-			f.ActiveEnemy.FirstAttack:Hide()
-			return
-		end
-
-		for _, infoBar in pairs(infoBars) do
-			infoBar.FirstAttack:Show()
-			if infoBar.SpeedIcon:IsShown() then
-				infoBar.FirstAttack:SetVertexColor(0,1,0,1)
-			else
-				infoBar.FirstAttack:SetVertexColor(.8,0,.3,1)
-			end
-		end
-	end)
-
-	-- PETS UNITFRAMES PET TYPE UPDATE
-	hooksecurefunc('PetBattleUnitFrame_UpdatePetType', function(frame)
-		if frame.PetType then
-			local petType = C_PetBattles_GetPetType(frame.petOwner, frame.petIndex)
-			if frame.PetTypeFrame and petType then
-				frame.PetTypeFrame.text:SetText(_G['BATTLE_PET_NAME_'..petType])
-			end
-		end
-	end)
-
-	-- PETS UNITFRAMES AURA SKINS
-	hooksecurefunc('PetBattleAuraHolder_Update', function(holder)
-		if not (holder.petOwner and holder.petIndex) then return end
-
-		local nextFrame = 1
-		for i = 1, C_PetBattles_GetNumAuras(holder.petOwner, holder.petIndex) do
-			local _, _, turnsRemaining, isBuff = C_PetBattles_GetAuraInfo(holder.petOwner, holder.petIndex, i)
-			if (isBuff and holder.displayBuffs) or (not isBuff and holder.displayDebuffs) then
-				local frame = holder.frames[nextFrame]
-
-				-- always hide the border
-				frame.DebuffBorder:Hide()
-
-				if not frame.backdrop then
-					frame:CreateBackdrop()
-					frame.backdrop:SetOutside(frame.Icon)
-					frame.Icon:SetTexCoords()
-					frame.Icon:SetParent(frame.backdrop)
-				end
-
-				if isBuff then
-					frame.backdrop:SetBackdropBorderColor(0, 1, 0)
-				else
-					frame.backdrop:SetBackdropBorderColor(1, 0, 0)
-				end
-
-				-- move duration and change font
-				frame.Duration:FontTemplate(nil, 12, 'OUTLINE')
-				frame.Duration:ClearAllPoints()
-				frame.Duration:Point('TOP', frame.Icon, 'BOTTOM', 1, -4)
-				if turnsRemaining > 0 then
-					frame.Duration:SetText(turnsRemaining)
-				end
-				nextFrame = nextFrame + 1
-			end
-		end
-	end)
-
-	-- WEATHER
-	hooksecurefunc('PetBattleWeatherFrame_Update', function(frame)
-		local weather = C_PetBattles_GetAuraInfo(BattlePetOwner_Weather, _G.PET_BATTLE_PAD_INDEX, 1)
-		if weather then
-			frame.Icon:Hide()
-			frame.BackgroundArt:ClearAllPoints()
-			frame.BackgroundArt:Point('TOP', frame, 'TOP', 0, 14)
-			frame.BackgroundArt:Size(200, 100)
-			frame.Name:Hide()
-			frame.DurationShadow:Hide()
-			frame.Label:Hide()
-			frame.Duration:ClearAllPoints()
-			frame.Duration:Point('TOP', frame, 'TOP', 0, 10)
-			frame:ClearAllPoints()
-			frame:Point('TOP', E.UIParent, 0, -15)
-		end
-	end)
-
-	hooksecurefunc('PetBattleUnitFrame_UpdateDisplay', function(frame)
-		frame.Icon:SetTexCoords()
-
-		if frame.petOwner and frame.petIndex and (frame.Icon.backdrop and frame.Icon.backdrop:IsShown()) then
-			local quality = C_PetBattles_GetBreedQuality(frame.petOwner, frame.petIndex)
-			local r, g, b = E:GetItemQualityColor(quality)
-			frame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
-		end
-	end)
+	hooksecurefunc('PetBattleFrame_UpdateSpeedIndicators', UpdateSpeedIndicators)	-- PETS SPEED INDICATOR UPDATE
+	hooksecurefunc('PetBattleUnitFrame_UpdatePetType', UpdatePetType)		-- PETS UNITFRAMES PET TYPE UPDATE
+	hooksecurefunc('PetBattleAuraHolder_Update', AuraHolder_Update)			-- PETS UNITFRAMES AURA SKINS
+	hooksecurefunc('PetBattleWeatherFrame_Update', WeatherFrame_Update)		-- WEATHER
+	hooksecurefunc('PetBattleUnitFrame_UpdateDisplay', UpdateDisplay)
 
 	f.TopVersusText:ClearAllPoints()
 	f.TopVersusText:Point('TOP', f, 'TOP', 0, -35)
@@ -243,34 +333,8 @@ function S:PetBattleFrame()
 		TT:SetStyle(_G.FloatingBattlePetTooltip)
 		TT:SetStyle(_G.FloatingPetBattleAbilityTooltip)
 
-		-- BATTLEPET RARITY COLOR
-		hooksecurefunc('BattlePetToolTip_Show', function(_, _, rarity)
-			local tt = _G.BattlePetTooltip
-			if not tt then return end
-
-			local quality = TT.db.itemQuality and rarity and rarity > 1 and E:GetQualityColor(rarity)
-			if quality then
-				tt:SetBackdropBorderColor(quality.r, quality.g, quality.b)
-				tt.qualityChanged = true
-			elseif tt.qualityChanged then
-				tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				tt.qualityChanged = nil
-			end
-		end)
-
-		-- TOOLTIP DEFAULT POSITION
-		hooksecurefunc('PetBattleAbilityTooltip_Show', function()
-			local t = _G.PetBattlePrimaryAbilityTooltip
-			local point, x, y = 'TOPRIGHT', -4, -4
-			--Position it at the bottom right on low resolution setups
-			--Otherwise the tooltip might overlap enemy team unit info
-			if E.lowversion then
-				point, x, y = 'BOTTOMRIGHT', -4, 4
-			end
-
-			t:ClearAllPoints()
-			t:Point(point, E.UIParent, point, x, y)
-		end)
+		hooksecurefunc('BattlePetToolTip_Show', ToolTip_Show)				-- BATTLEPET RARITY COLOR
+		hooksecurefunc('PetBattleAbilityTooltip_Show', AbilityTooltip_Show)	-- TOOLTIP DEFAULT POSITION
 	end
 
 	local extraInfoBars = {
@@ -338,16 +402,7 @@ function S:PetBattleFrame()
 	turnTimer.SkipButton:SetParent(bar)
 	S:HandleButton(turnTimer.SkipButton)
 
-	hooksecurefunc(turnTimer.SkipButton, 'SetPoint', function(btn, _, _, _, _, _, forced)
-		if forced == true then return end
-
-		btn:ClearAllPoints()
-		btn:SetFrameLevel(4) -- xpBar uses 3
-		btn:Point('BOTTOMLEFT', bar, 'TOPLEFT', 0, 1, true)
-		btn:Point('BOTTOMRIGHT', bar, 'TOPRIGHT', 0, 1, true)
-
-		turnTimer:SetSize(turnTimer.SkipButton:GetSize()) -- set after the skip button points
-	end)
+	hooksecurefunc(turnTimer.SkipButton, 'SetPoint', SkipButton_SetPoint)
 
 	turnTimer:ClearAllPoints()
 	turnTimer:Point('TOP', E.UIParent, 'TOP', 0, -140)
@@ -383,38 +438,8 @@ function S:PetBattleFrame()
 	end
 
 	-- MOVE DEFAULT POSITION OF PETS SELECTION
-	hooksecurefunc('PetBattlePetSelectionFrame_Show', function()
-		bf.PetSelectionFrame:ClearAllPoints()
-		bf.PetSelectionFrame:Point('BOTTOM', bf.xpBar, 'TOP', 0, 8)
-	end)
-
-	hooksecurefunc('PetBattleFrame_UpdateActionBarLayout', function()
-		for i = 1, _G.NUM_BATTLE_PET_ABILITIES do
-			local b = bf.abilityButtons[i]
-			SkinPetButton(b, bf)
-			b:SetParent(bar)
-			b:ClearAllPoints()
-
-			if i == 1 then
-				b:Point('BOTTOMLEFT', 10, 10)
-			else
-				local previous = bf.abilityButtons[i-1]
-				b:Point('LEFT', previous, 'RIGHT', 10, 0)
-			end
-		end
-
-		bf.SwitchPetButton:ClearAllPoints()
-		bf.SwitchPetButton:Point('LEFT', bf.abilityButtons[3], 'RIGHT', 10, 0)
-		SkinPetButton(bf.SwitchPetButton, bf)
-		bf.CatchButton:SetParent(bar)
-		bf.CatchButton:ClearAllPoints()
-		bf.CatchButton:Point('LEFT', bf.SwitchPetButton, 'RIGHT', 10, 0)
-		SkinPetButton(bf.CatchButton, bf)
-		bf.ForfeitButton:SetParent(bar)
-		bf.ForfeitButton:ClearAllPoints()
-		bf.ForfeitButton:Point('LEFT', bf.CatchButton, 'RIGHT', 10, 0)
-		SkinPetButton(bf.ForfeitButton, bf)
-	end)
+	hooksecurefunc('PetBattlePetSelectionFrame_Show', PetSelectionFrame_Show)
+	hooksecurefunc('PetBattleFrame_UpdateActionBarLayout', UpdateActionBarLayout)
 
 	local PetBattleQueueReadyFrame = _G.PetBattleQueueReadyFrame
 	PetBattleQueueReadyFrame:StripTextures()

@@ -96,7 +96,7 @@ do -- Thanks ls-
 
 			wipe(short.breakpoints)
 		end
-    end
+	end
 
 	function E:AbbreviateNumbers(value, data)
 		if type(value) == 'string' then

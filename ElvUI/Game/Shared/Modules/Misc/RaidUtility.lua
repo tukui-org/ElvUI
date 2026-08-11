@@ -664,7 +664,7 @@ function RU:RoleIcons_SortNames(b) -- self is a
 end
 
 function RU:RoleIcons_AddNames(tbl, name, unitClass)
-	local color = E:ClassColor(unitClass, true) or PRIEST_COLOR
+	local color = (unitClass and E:ClassColor(unitClass, true)) or PRIEST_COLOR
 	tinsert(tbl, format('|cff%02x%02x%02x%s', color.r * 255, color.g * 255, color.b * 255, gsub(name, '%-.+', '*')))
 end
 
@@ -673,7 +673,7 @@ function RU:RoleIcons_AddPartyUnit(unit, iconRole)
 	local unitRole = name and UnitGroupRolesAssigned(unit)
 	if unitRole == iconRole then
 		local _, unitClass = UnitClass(unit)
-		RU:RoleIcons_AddNames(roleRoster[0], name, unitClass)
+		RU:RoleIcons_AddNames(roleRoster[0], name, E:NotSecretValue(unitClass) and unitClass)
 	end
 end
 
@@ -695,7 +695,7 @@ function RU:OnEnter_Role()
 		if isRaid then
 			local name, _, group, _, _, unitClass, _, _, _, _, _, unitRole = GetRaidRosterInfo(i)
 			if name and unitRole == iconRole then
-				RU:RoleIcons_AddNames(roleRoster[group], name, unitClass)
+				RU:RoleIcons_AddNames(roleRoster[group], name, E:NotSecretValue(unitClass) and unitClass)
 			end
 		else
 			RU:RoleIcons_AddPartyUnit('party'..i, iconRole)

@@ -4,6 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next, pairs, unpack = next, pairs, unpack
 local hooksecurefunc = hooksecurefunc
+
 local CreateFrame = CreateFrame
 
 -- Credits: siweia (AuroraClassic)

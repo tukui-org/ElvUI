@@ -9,7 +9,7 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local IsInInstance = IsInInstance
 local UnitAffectingCombat = UnitAffectingCombat
-local C_PvP_IsWarModeActive = C_PvP.IsWarModeActive
+local IsWarModeActive = C_PvP.IsWarModeActive
 
 local function SetStatusBarTexture(bar, texture)
 	-- used to retain the draw layers reset by SetStatusBarTexture
@@ -153,7 +153,7 @@ function DB:SetVisibility(bar)
 	elseif bar.db.enable then
 		local _, instanceType = IsInInstance()
 		local hideBar = (bar == DB.StatusBars.Threat or bar.db.hideInCombat) and UnitAffectingCombat('player')
-		or (bar.db.hideOutsidePvP and not (C_PvP_IsWarModeActive() or instanceType == 'pvp'))
+		or (bar.db.hideOutsidePvP and not (IsWarModeActive() or instanceType == 'pvp'))
 		or (bar.ShouldHide and bar:ShouldHide())
 
 		bar:SetShown(not hideBar)
