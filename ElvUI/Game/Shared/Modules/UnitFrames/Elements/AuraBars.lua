@@ -77,7 +77,10 @@ end
 
 function UF:Construct_AuraBarHeader(frame)
 	if E.Retail then
-		return E:Auras_Create(frame, 'AuraBars')
+		local bars = E:Auras_Create(frame, 'AuraBars')
+		bars:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
+
+		return bars
 	else
 		local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
 		auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
