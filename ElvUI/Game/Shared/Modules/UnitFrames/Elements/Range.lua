@@ -105,7 +105,11 @@ function UF:FriendlyInRange(unit, element)
 
 	local inRange, wasChecked = UnitInRange(unit)
 	if E:IsSecretValue(wasChecked) then
-		if element then -- its some sort of secret, oh well here we go
+		local unitRaid = UnitInRaid(unit)
+		local unitParty = UnitInParty(unit)
+		if E:IsSecretValue(unitParty) or E:IsSecretValue(unitRaid) then
+			return true
+		elseif element and (unitParty or unitRaid) then -- if its eligible
 			element.isInRange, element.checkedRange = inRange, wasChecked
 			return -- will be handled by these values so no need to proceed
 		end
