@@ -123,7 +123,7 @@ local function GetDisplayPower(_, unit)
 	local barInfo = GetUnitPowerBarInfo(unit)
 	local unitRaid, unitParty = UnitInRaid(unit), UnitInParty(unit)
 	local unitSecret = oUF:IsSecretValue(unitRaid) or oUF:IsSecretValue(unitParty) -- what do i do here?
-	local showOnRaid = barInfo and barInfo.showOnRaid and not unitSecret and (unitParty or unitRaid)
+	local showOnRaid = barInfo and barInfo.showOnRaid and not unitSecret and (unitRaid or unitParty)
 	if showOnRaid then
 		return ALTERNATE_POWER_INDEX, barInfo.minPower
 	end

@@ -565,7 +565,7 @@ function TT:AddRoleInfo(tt, unit)
 
 	local unitRaid, unitParty = UnitInRaid(unit), UnitInParty(unit)
 	local unitSecret = E:IsSecretValue(unitRaid) or E:IsSecretValue(unitParty)
-	if unitSecret or not (unitParty or unitRaid) then return end
+	if unitSecret or not (unitRaid or unitParty) then return end
 
 	local role = UnitGroupRolesAssigned(unit)
 	if E:IsSecretValue(role) or (not role or role == 'NONE') then return end
