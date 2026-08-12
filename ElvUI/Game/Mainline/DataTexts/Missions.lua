@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local next, wipe, ipairs = next, wipe, ipairs
-local format, sort, select = format, sort, select
+local format, sort = format, sort
 
 local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
@@ -211,6 +211,7 @@ local function OnEnter()
 				questNum = questNum + 1
 			end
 		end
+
 		if questNum > 0 then
 			DT.tooltip:AddLine(' ')
 			DT.tooltip:AddLine(format('%s %s', questNum, L["Calling Quest(s) available."]))
@@ -330,17 +331,16 @@ local function OnClick(self, btn)
 	end
 end
 
-local function OnEvent(self, event, ...)
-	if event == 'CURRENCY_DISPLAY_UPDATE' and select(1, ...) ~= MAIN_CURRENCY then
+local function OnEvent(self, event, arg1)
+	if event == 'CURRENCY_DISPLAY_UPDATE' and arg1 ~= MAIN_CURRENCY then
 		return
 	end
 
 	if event == 'COVENANT_CALLINGS_UPDATED' then
-		wipe(callingsData)
-		callingsData = ...
+		callingsData = arg1
 	end
 
-	if event == 'GARRISON_SHIPMENT_RECEIVED' or (event == 'SHIPMENT_UPDATE' and select(1, ...) == true) then
+	if event == 'GARRISON_SHIPMENT_RECEIVED' or (event == 'SHIPMENT_UPDATE' and arg1 == true) then
 		C_Garrison_RequestLandingPageShipmentInfo()
 	end
 
