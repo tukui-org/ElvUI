@@ -19,7 +19,6 @@ local UnitInRaid = UnitInRaid
 
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local IsSpellInRange = C_Spell.IsSpellInRange
-
 local PhaseReason = Enum.PhaseReason
 
 local list = {}

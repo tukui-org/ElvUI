@@ -16,7 +16,7 @@ local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 local CopyTable = CopyTable
 
-local ItemEnchantmentSlot = AuraContainerItemEnchantmentSlot
+local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
 local OFFHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.OffHand
 local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
