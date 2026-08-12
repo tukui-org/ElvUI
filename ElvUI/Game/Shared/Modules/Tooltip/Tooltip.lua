@@ -1255,15 +1255,7 @@ function TT:Initialize()
 	TT:SecureHook('EmbeddedItemTooltip_SetItemByID', 'EmbeddedItemTooltip_ID')
 	TT:SecureHook('EmbeddedItemTooltip_SetCurrencyByID', 'EmbeddedItemTooltip_ID')
 	TT:SecureHook('EmbeddedItemTooltip_SetItemByQuestReward', 'EmbeddedItemTooltip_QuestReward')
-	TT:SecureHook(GameTooltip, 'SetUnitAura')
-	TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
-	TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
 	TT:SecureHookScript(GameTooltip, 'OnTooltipCleared', 'GameTooltip_OnTooltipCleared')
-
-	if GameTooltip.SetUnitBuffByAuraInstanceID then -- not yet on Era or Mists
-		TT:SecureHook(GameTooltip, 'SetUnitBuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
-		TT:SecureHook(GameTooltip, 'SetUnitDebuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
-	end
 
 	if AddTooltipPostCall and not (E.TBC or E.Wrath or E.Mists) then -- exists but doesnt work atm on Cata
 		AddTooltipPostCall(TooltipDataType.Spell, TT.GameTooltip_OnTooltipSetSpell)
@@ -1301,6 +1293,15 @@ function TT:Initialize()
 		TT:SecureHook('QuestMapLogTitleButton_OnEnter', 'AddQuestID')
 		TT:SecureHook('TaskPOI_OnEnter', 'AddQuestID')
 	else
+		TT:SecureHook(GameTooltip, 'SetUnitAura')
+		TT:SecureHook(GameTooltip, 'SetUnitBuff', 'SetUnitAura')
+		TT:SecureHook(GameTooltip, 'SetUnitDebuff', 'SetUnitAura')
+
+		if GameTooltip.SetUnitBuffByAuraInstanceID then -- not yet on Era or Mists
+			TT:SecureHook(GameTooltip, 'SetUnitBuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
+			TT:SecureHook(GameTooltip, 'SetUnitDebuffByAuraInstanceID', 'SetUnitAuraByAuraInstanceID')
+		end
+
 		TT:SecureHookScript(GameTooltipStatusBar, 'OnValueChanged', 'GameTooltipStatusBar_OnValueChanged')
 	end
 end
