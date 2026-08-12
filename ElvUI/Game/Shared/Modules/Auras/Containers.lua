@@ -38,8 +38,8 @@ E.AuraDispel = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
 	showWhenHarmful = true,
 	showWhenHelpful = false,
+	showWithoutDispelType = true,
 	customDispelColorMap = {} -- updated by UpdateDispelColors
---	showWithoutDispelType is dynamically added by Auras_UpdateButton
 }
 
 E.AuraEvents = {
@@ -308,8 +308,6 @@ function E:Auras_UpdateButton(container, button)
 	local backdropFadeColor = E.media.backdropfadecolor
 	if button.dispelBorder then
 		button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b) -- how can we do alpha?
-
-		E.AuraDispel.showWithoutDispelType = container.isTopAura
 
 		button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
 	end
