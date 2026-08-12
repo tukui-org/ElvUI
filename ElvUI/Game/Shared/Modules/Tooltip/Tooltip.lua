@@ -625,7 +625,7 @@ function TT:SetUnitInfo(tt, unit, data)
 		TT:AddRoleInfo(tt, unit)
 	end
 
-	if (E.Retail or E.Mists) and not isInCombat then
+	if E.Mists and not isInCombat then
 		if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
 			TT:AddMountInfo(tt, unit)
 		end
