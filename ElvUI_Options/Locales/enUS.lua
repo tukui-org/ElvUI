@@ -1,5 +1,5 @@
--- English localization file for enUS and enGB.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'enUS', true, true)
+local E = unpack(ElvUI) -- English localization file for enUS and enGB
+local L = E.Libs.ACL:NewLocale('ElvUI', 'enUS', true, true)
 
 L["ALT"] = true
 L["CTRL"] = true

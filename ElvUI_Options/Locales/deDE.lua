@@ -1,5 +1,5 @@
--- German localization file for deDE.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'deDE')
+local E = unpack(ElvUI) -- German localization file for deDE
+local L = E.Libs.ACL:NewLocale('ElvUI', 'deDE')
 
 L["ALT"] = true --No need to translate
 L["CTRL"] = "STRG" -- with german keyboard layout

@@ -1,5 +1,5 @@
--- French localization file for frFR.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'frFR')
+local E = unpack(ElvUI) -- French localization file for frFR
+local L = E.Libs.ACL:NewLocale('ElvUI', 'frFR')
 
 L["ALT"] = true
 L["CTRL"] = true
