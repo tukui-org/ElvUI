@@ -738,7 +738,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.unitName, self.unitRealm = UnitName(unit)
 	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
 	self.className, self.classFile, self.classID = UnitClass(unit)
-	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.Colors.reactions[self.repReaction]) or nil
+	self.classColor = (self.isPlayer and E:NotSecretValue(self.classFile) and self.classFile and E:ClassColor(self.classFile)) or (self.repReaction and NP.Colors.reactions[self.repReaction]) or nil
 
 	local specID, specIcon
 	local spec = E.Retail and E:GetUnitSpecInfo(unit)

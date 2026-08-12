@@ -19,7 +19,6 @@ local UnitInRaid = UnitInRaid
 
 local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
 local IsSpellInRange = C_Spell.IsSpellInRange
-
 local PhaseReason = Enum.PhaseReason
 
 local list = {}
@@ -91,12 +90,14 @@ function UF:FriendlyInRange(unit, element)
 	if UnitIsPlayer(unit) then
 		if E.Retail then
 			local phaseReason = UnitPhaseReason(unit)
-			if phaseReason == PhaseReason.TimerunningHwt then
-				if not IsInInstance() then -- phased in open world (hero / nonhero) but not phased in dungeons
+			if not E:IsSecretValue(phaseReason) then
+				if phaseReason == PhaseReason.TimerunningHwt then
+					if not IsInInstance() then -- phased in open world (hero / nonhero) but not phased in dungeons
+						return false
+					end
+				elseif phaseReason then
 					return false
 				end
-			elseif phaseReason then
-				return false
 			end
 		elseif not UnitInPhase(unit) then
 			return false
@@ -105,7 +106,9 @@ function UF:FriendlyInRange(unit, element)
 
 	local inRange, wasChecked = UnitInRange(unit)
 	if E:IsSecretValue(wasChecked) then
-		if element and (UnitInParty(unit) or UnitInRaid(unit)) then -- if its eligible
+		local unitRaid, unitParty = UnitInRaid(unit), UnitInParty(unit)
+		local unitSecret = E:IsSecretValue(unitRaid) or E:IsSecretValue(unitParty)
+		if element and not unitSecret and (unitRaid or unitParty) then -- if its eligible
 			element.isInRange, element.checkedRange = inRange, wasChecked
 			return -- will be handled by these values so no need to proceed
 		end

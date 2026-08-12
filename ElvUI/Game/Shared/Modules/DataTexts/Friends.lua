@@ -124,7 +124,13 @@ local function InGroup(name, realmName)
 		name = name..'-'..realmName
 	end
 
-	return (UnitInParty(name) or UnitInRaid(name)) and '|cffaaaaaa*|r' or ''
+	local nameRaid = UnitInRaid(name)
+	local nameParty = UnitInParty(name)
+	if E:IsSecretValue(nameRaid) or E:IsSecretValue(nameParty) then
+		return ''
+	end
+
+	return (nameParty or nameRaid) and '|cffaaaaaa*|r' or ''
 end
 
 local function SortAlphabeticName(a, b)

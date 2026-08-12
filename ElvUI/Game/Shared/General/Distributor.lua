@@ -202,12 +202,13 @@ function D:Distribute(target, otherServer, dataKey)
 	Uploads[profileKey] = { serialString = serialString, target = target }
 
 	if otherServer then
-		if IsInRaid() and UnitInRaid('target') then
+		local targetRaid = UnitInRaid('target')
+		local targetParty = UnitInParty('target')
+		if IsInRaid() and E:NotSecretValue(targetRaid) and targetRaid then
 			D:SendCommMessage(REQUEST_PREFIX, message, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
-		elseif IsInGroup() and UnitInParty('target') then
+		elseif IsInGroup() and E:NotSecretValue(targetParty) and targetParty then
 			D:SendCommMessage(REQUEST_PREFIX, message, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
-		else
-			E:Print(L["Must be in group with the player if he isn't on the same server as you."])
+		else -- dont proceed
 			return
 		end
 	else

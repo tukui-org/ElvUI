@@ -16,7 +16,7 @@ local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 local CopyTable = CopyTable
 
-local ItemEnchantmentSlot = AuraContainerItemEnchantmentSlot
+local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
 local OFFHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.OffHand
 local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
@@ -29,7 +29,7 @@ E.AuraContainerSortMethod = {}
 
 E.AuraFocus = {}
 E.AuraTarget = {}
-E.AuraHighlight = {
+E.AuraHighlight = { -- customDispelColorCurve is added from UpdateAuraCurves
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
 }
 
@@ -133,8 +133,9 @@ end
 
 function E:Auras_UpdateIndicator(container, button)
 	local data = button.data -- the data
+	local point = data.point or 'BOTTOMLEFT'
 	button:ClearAllPoints()
-	button:Point(data.point or 'BOTTOMLEFT', data.anchor or container.anchor or nil, data.relativePoint or nil, data.xOffset or 0, data.yOffset or 0)
+	button:Point(point, data.anchor or container.anchor or nil, data.relativePoint or point or nil, data.xOffset or 0, data.yOffset or 0)
 	button:SetMouseMotionEnabled(not container.noMouse)
 
 	if container.useStatusbar then -- not used atm
@@ -449,7 +450,7 @@ function E:Auras_UpdateIndicators(container)
 	if E:Auras_IsInRestriction() then return end
 
 	for button in next, container.indicators do
-		E:Auras_UpdateButton(container, button)
+		E:Auras_UpdateIndicator(container, button)
 	end
 end
 
@@ -530,7 +531,11 @@ do
 		temp.includeSpellIDs = spell
 
 		wipe(spell)
-		spell[data.id] = true
+
+		local dataID = data.id
+		if dataID then
+			spell[dataID] = true
+		end
 
 		return temp
 	end

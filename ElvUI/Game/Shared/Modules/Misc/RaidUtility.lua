@@ -671,7 +671,7 @@ end
 function RU:RoleIcons_AddPartyUnit(unit, iconRole)
 	local name = UnitExists(unit) and UnitName(unit)
 	local unitRole = name and UnitGroupRolesAssigned(unit)
-	if unitRole == iconRole then
+	if E:NotSecretValue(unitRole) and (unitRole == iconRole) then
 		local _, unitClass = UnitClass(unit)
 		RU:RoleIcons_AddNames(roleRoster[0], name, E:NotSecretValue(unitClass) and unitClass)
 	end

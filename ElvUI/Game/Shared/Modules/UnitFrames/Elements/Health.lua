@@ -260,6 +260,7 @@ function UF:PostUpdateHealthColor(unit, color)
 	local colors = E.db.unitframe.colors
 	local env = (parent.isForced and UF.ConfigEnv) or _G
 
+	local _, classToken = UnitClass(unit)
 	local isTapped = UnitIsTapDenied(unit)
 	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
 	local healthBreak = not isTapped and colors.healthBreak
@@ -327,9 +328,8 @@ function UF:PostUpdateHealthColor(unit, color)
 			customBackdrop:SetRGB(backdrop.r, backdrop.g, backdrop.b)
 			bgc = customBackdrop
 		elseif colors.classbackdrop then
-			if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
-				local _, unitClass = UnitClass(unit)
-				local classColor = parent.colors.class[unitClass]
+			if E:NotSecretValue(classToken) and classToken and (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then
+				local classColor = parent.colors.class[classToken]
 				if classColor then
 					customBackdrop:SetRGB(classColor.r, classColor.g, classColor.b)
 					bgc = customBackdrop

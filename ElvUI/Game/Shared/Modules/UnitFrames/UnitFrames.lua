@@ -342,7 +342,7 @@ end
 
 function UF:CreateRaisedElement(frame)
 	local RaisedElement = CreateFrame('Frame', '$parent_RaisedElement', frame)
-	local RaisedLevel = frame:GetFrameLevel() + 100
+	local RaisedLevel = 100 -- why is this not always on the set level?
 
 	RaisedElement:SetAllPoints()
 	RaisedElement:SetFrameLevel(RaisedLevel)
@@ -352,16 +352,16 @@ function UF:CreateRaisedElement(frame)
 	RaisedElement.__owner = frame
 
 	-- layer levels (level +1 is icons)
-	RaisedElement.AuraHighlightLevel = RaisedLevel - 1
-	RaisedElement.AuraLevel = RaisedLevel + 5
-	RaisedElement.PrivateAurasLevel = RaisedLevel + 10
-	RaisedElement.PVPSpecLevel = RaisedLevel + 15
-	RaisedElement.AuraBarLevel = RaisedLevel + 20
-	RaisedElement.RaidDebuffLevel = RaisedLevel + 25
-	RaisedElement.AuraWatchLevel = RaisedLevel + 30
-	RaisedElement.RestingIconLevel = RaisedLevel + 35
-	RaisedElement.RaidRoleLevel = RaisedLevel + 40
-	RaisedElement.CastBarLevel = RaisedLevel + 45
+	RaisedElement.AuraHighlightLevel = RaisedLevel - 10
+	RaisedElement.AuraLevel = RaisedLevel + 10
+	RaisedElement.PrivateAurasLevel = RaisedLevel + 15
+	RaisedElement.PVPSpecLevel = RaisedLevel + 20
+	RaisedElement.AuraBarLevel = RaisedLevel + 25
+	RaisedElement.RaidDebuffLevel = RaisedLevel + 30
+	RaisedElement.AuraWatchLevel = RaisedLevel + 35
+	RaisedElement.RestingIconLevel = RaisedLevel + 40
+	RaisedElement.RaidRoleLevel = RaisedLevel + 45
+	RaisedElement.CastBarLevel = RaisedLevel + 50
 
 	return RaisedElement
 end

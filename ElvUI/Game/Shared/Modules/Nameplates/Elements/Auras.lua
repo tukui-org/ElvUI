@@ -178,8 +178,9 @@ function NP:Configure_Auras(nameplate, which)
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 
-		UF:UpdateFilters(auras) -- attach the objects
-		UF:GroupFilters(auras, auras.filter) -- build the groups
+		auras.filters.please = auras.filter..'|PLAYER'
+	--	UF:UpdateFilters(auras) -- attach the objects
+	--	UF:GroupFilters(auras, auras.filter) -- build the groups
 
 		auras.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
 		auras.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil

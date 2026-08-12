@@ -132,7 +132,7 @@ if not E.Retail then
 
 		E:AddTag(format('power:%s:healeronly', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 			local role = UnitGroupRolesAssigned(unit)
-			if role ~= 'HEALER' then return end
+			if E:IsSecretValue(role) or (role ~= 'HEALER') then return end
 
 			local powerType = UnitPowerType(unit)
 			local min = UnitPower(unit, powerType)
@@ -150,7 +150,7 @@ if not E.Retail then
 
 		E:AddTag(format('mana:%s:healeronly', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
 			local role = UnitGroupRolesAssigned(unit)
-			if role ~= 'HEALER' then return end
+			if E:IsSecretValue(role) or (role ~= 'HEALER') then return end
 
 			local min = UnitPower(unit, POWERTYPE_MANA)
 			if min ~= 0 then
@@ -191,7 +191,7 @@ if not E.Retail then
 
 			E:AddTag(format('power:%s:shortvalue:healeronly', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 				local role = UnitGroupRolesAssigned(unit)
-				if role ~= 'HEALER' then return end
+				if E:IsSecretValue(role) or (role ~= 'HEALER') then return end
 
 				local powerType = UnitPowerType(unit)
 				local min = UnitPower(unit, powerType)
@@ -206,7 +206,7 @@ if not E.Retail then
 
 			E:AddTag(format('mana:%s:shortvalue:healeronly', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 				local role = UnitGroupRolesAssigned(unit)
-				if role ~= 'HEALER' then return end
+				if E:IsSecretValue(role) or (role ~= 'HEALER') then return end
 
 				return E:GetFormattedText(textFormat, UnitPower(unit, POWERTYPE_MANA), UnitPowerMax(unit, POWERTYPE_MANA), nil, true)
 			end)
@@ -362,7 +362,7 @@ if not E.Retail then
 
 	E:AddTag('power:max:healeronly', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
 		local role = UnitGroupRolesAssigned(unit)
-		if role ~= 'HEALER' then return end
+		if E:IsSecretValue(role) or (role ~= 'HEALER') then return end
 
 		local powerType = UnitPowerType(unit)
 		local max = UnitPowerMax(unit, powerType)
@@ -379,7 +379,7 @@ if not E.Retail then
 
 	E:AddTag('power:max:shortvalue:healeronly', 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
 		local role = UnitGroupRolesAssigned(unit)
-		if role ~= 'HEALER' then return end
+		if E:IsSecretValue(role) or (role ~= 'HEALER') then return end
 
 		local pType = UnitPowerType(unit)
 		local max = UnitPowerMax(unit, pType)
@@ -395,7 +395,7 @@ if not E.Retail then
 
 	E:AddTag('mana:max:shortvalue:healeronly', 'UNIT_MAXPOWER', function(unit)
 		local role = UnitGroupRolesAssigned(unit)
-		if role ~= 'HEALER' then return end
+		if E:IsSecretValue(role) or (role ~= 'HEALER') then return end
 
 		local max = UnitPowerMax(unit, POWERTYPE_MANA)
 
@@ -891,9 +891,10 @@ E:AddTag('group:raid', 'GROUP_ROSTER_UPDATE', function(unit)
 end)
 
 E:AddTag('pvptimer', 1, function(unit)
-	if UnitIsPVPFreeForAll(unit) or UnitIsPVP(unit) then
+	local freePVP = UnitIsPVPFreeForAll(unit)
+	local unitPVP = UnitIsPVP(unit)
+	if freePVP or (E:NotSecretValue(unitPVP) and unitPVP) then
 		local timer = GetPVPTimer()
-
 		if timer ~= 301000 and timer ~= -1 then
 			local mins = floor((timer * 0.001) / 60)
 			local secs = floor((timer * 0.001) - (mins * 60))
@@ -923,45 +924,48 @@ E:AddTag('classificationcolor', 'UNIT_CLASSIFICATION_CHANGED', function(unit)
 end)
 
 E:AddTag('guild', 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE', function(unit)
-	if not UnitIsPlayer(unit) then return end
-
-	return GetGuildInfo(unit)
+	local name = UnitIsPlayer(unit) and GetGuildInfo(unit)
+	if E:NotSecretValue(name) and name then
+		return name
+	end
 end)
 
 E:AddTag('guild:brackets', 'PLAYER_GUILD_UPDATE', function(unit)
-	local guildName = GetGuildInfo(unit)
-	if guildName then
-		return format('<%s>', guildName)
+	local name = UnitIsPlayer(unit) and GetGuildInfo(unit)
+	if E:NotSecretValue(name) and name then
+		return format('<%s>', name)
 	end
 end)
 
 E:AddTag('guild:translit', 'UNIT_NAME_UPDATE PLAYER_GUILD_UPDATE', function(unit)
-	if not UnitIsPlayer(unit) then return end
+	local name = UnitIsPlayer(unit) and GetGuildInfo(unit)
+	if E:IsSecretValue(name) or not name then return end
 
-	local guildName = GetGuildInfo(unit)
-	local translitGuild = E:NotSecretValue(guildName) and Translit:Transliterate(guildName, translitMark)
+	local translitGuild = E:NotSecretValue(name) and Translit:Transliterate(name, translitMark)
 	if translitGuild and translitGuild ~= '' then
 		return translitGuild
 	end
 
-	return guildName
+	return name
 end)
 
 E:AddTag('guild:brackets:translit', 'PLAYER_GUILD_UPDATE', function(unit)
-	local guildName = GetGuildInfo(unit)
-	local translitGuild = E:NotSecretValue(guildName) and Translit:Transliterate(guildName, translitMark)
+	local name = UnitIsPlayer(unit) and GetGuildInfo(unit)
+	if E:IsSecretValue(name) or not name then return end
+
+	local translitGuild = E:NotSecretValue(name) and Translit:Transliterate(name, translitMark)
 	if translitGuild and translitGuild ~= '' then
 		return format('<%s>', translitGuild)
 	end
 
-	return guildName
+	return name
 end)
 
 E:AddTag('guild:rank', 'UNIT_NAME_UPDATE', function(unit)
 	if not UnitIsPlayer(unit) then return end
 
 	local _, rank = GetGuildInfo(unit)
-	if rank then
+	if E:NotSecretValue(rank) and rank then
 		return rank
 	end
 end)

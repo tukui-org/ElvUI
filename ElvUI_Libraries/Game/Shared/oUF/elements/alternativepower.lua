@@ -234,7 +234,10 @@ local function Visibility(self, event, unit)
 	element.__barID = barID
 	element.__barInfo = barInfo
 
-	if(barInfo and (barInfo.showOnRaid and (UnitInParty(unit) or UnitInRaid(unit)) or not barInfo.hideFromOthers or oUF:UnitIsUnit(unit, 'player'))) then
+	local unitRaid, unitParty = UnitInRaid(unit), UnitInParty(unit)
+	local unitSecret = oUF:IsSecretValue(unitRaid) or oUF:IsSecretValue(unitParty) -- what do i do here?
+	local showOnRaid = barInfo and barInfo.showOnRaid and not unitSecret and (unitRaid or unitParty)
+	if showOnRaid or (barInfo and not barInfo.hideFromOthers or oUF:UnitIsUnit(unit, 'player')) then
 		self:RegisterEvent('UNIT_POWER_UPDATE', Path)
 		self:RegisterEvent('UNIT_MAXPOWER', Path)
 

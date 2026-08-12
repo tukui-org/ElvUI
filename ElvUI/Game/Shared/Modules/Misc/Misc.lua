@@ -286,7 +286,7 @@ function M:DisbandRaidGroup()
 				end
 			end
 		end
-	elseif not myIndex and UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
+	elseif UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
 		for i = MAX_PARTY_MEMBERS, 1, -1 do
 			local name = UnitName('party'..i)
 			if name then
