@@ -121,8 +121,7 @@ type and zero for the minimum value.
 --]]
 local function GetDisplayPower(_, unit)
 	local barInfo = GetUnitPowerBarInfo(unit)
-	local unitRaid = UnitInRaid(unit)
-	local unitParty = UnitInParty(unit)
+	local unitRaid, unitParty = UnitInRaid(unit), UnitInParty(unit)
 	local unitSecret = oUF:IsSecretValue(unitRaid) or oUF:IsSecretValue(unitParty) -- what do i do here?
 	local showOnRaid = barInfo and barInfo.showOnRaid and not unitSecret and (unitParty or unitRaid)
 	if showOnRaid then

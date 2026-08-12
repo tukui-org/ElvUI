@@ -563,8 +563,7 @@ end
 function TT:AddRoleInfo(tt, unit)
 	if not IsInGroup() then return end
 
-	local unitRaid = UnitInRaid(unit)
-	local unitParty = UnitInParty(unit)
+	local unitRaid, unitParty = UnitInRaid(unit), UnitInParty(unit)
 	local unitSecret = E:IsSecretValue(unitRaid) or E:IsSecretValue(unitParty)
 	if unitSecret or not (unitParty or unitRaid) then return end
 
