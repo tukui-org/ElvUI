@@ -10,7 +10,7 @@ P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
 
 E.AuraDefaults = {
-	allowOthers = true,
+	allowOthers = false,
 	useBlocklist = false,
 	useAllowlist = false,
 	isAuraDispellable = false,
