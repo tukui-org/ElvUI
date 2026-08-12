@@ -701,6 +701,10 @@ function E:UpdateAuraCurves()
 		end
 
 		E:UpdateAuraCurve(which, data)
+
+		if which == 'highlight' then
+			E.AuraHighlight.customDispelColorCurve = data
+		end
 	end
 end
 

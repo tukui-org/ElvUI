@@ -29,7 +29,7 @@ E.AuraContainerSortMethod = {}
 
 E.AuraFocus = {}
 E.AuraTarget = {}
-E.AuraHighlight = {
+E.AuraHighlight = { -- customDispelColorCurve is added from UpdateAuraCurves
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
 }
 
