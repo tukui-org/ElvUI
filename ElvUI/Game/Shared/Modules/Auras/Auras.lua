@@ -590,6 +590,7 @@ function A:UpdateHeader(header)
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
 		header.countPosition, header.countXOffset, header.countYOffset = 'BOTTOMRIGHT', db.countXOffset, db.countYOffset
 		header.countFont, header.countFontSize, header.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
+		header.isTopAura = true
 
 		header.filters[header.auraType] = header.filter
 
