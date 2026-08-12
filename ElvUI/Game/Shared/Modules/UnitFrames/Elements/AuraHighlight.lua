@@ -61,13 +61,12 @@ do
 			container.candidateTemp = {}
 		end -- trash object for reuse
 
-		local level = frame.RaisedElementParent.AuraHighlightLevel
 		if which == 'good' then
 			E:Auras_SetupList(container, E.global.unitframe.AuraHighlightColors)
 
-			container:SetFrameLevel(level)
+			container:SetFrameLevel(12) -- HealPrediction uses 11
 		else
-			container:SetFrameLevel(level + 1)
+			container:SetFrameLevel(13)
 		end
 
 		E:Auras_GroupUnit(container, frame.unit)

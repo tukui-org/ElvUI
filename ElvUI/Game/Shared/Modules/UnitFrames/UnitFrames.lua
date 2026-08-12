@@ -352,7 +352,6 @@ function UF:CreateRaisedElement(frame)
 	RaisedElement.__owner = frame
 
 	-- layers: level +1 is icons
-	RaisedElement.AuraHighlightLevel = RaisedLevel - 10 -- +1 is bad highlight
 	RaisedElement.AuraLevel = RaisedLevel + 10
 	RaisedElement.PrivateAurasLevel = RaisedLevel + 15
 	RaisedElement.PVPSpecLevel = RaisedLevel + 20
