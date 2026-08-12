@@ -54,8 +54,6 @@ local _, ns = ...
 local oUF = ns.oUF
 local Private = oUF.Private
 
-local unitSelectionType = Private.unitSelectionType
-
 local _G = _G
 local unpack = unpack
 
@@ -79,6 +77,8 @@ local UnitPower = UnitPower
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
 local ALTERNATE_POWER_NAME = 'ALTERNATE'
+
+local GetSelectionType = Private.unitSelectionType
 
 local function updateTooltip(self)
 	if GameTooltip:IsForbidden() then return end
@@ -107,9 +107,16 @@ local function UpdateColor(self, event, unit, powerType)
 	if(self.unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
 	local element = self.AlternativePower
 
+	local isPlayerOrAI = UnitIsPlayer(unit) or UnitInPartyIsAI(unit)
+	local unitSelectionType = GetSelectionType(unit, element.considerSelectionInCombatHostile) -- Private.unitSelectionType
+	local unitThreat = UnitThreatSituation('player', unit)
+	local unitControlled = UnitPlayerControlled(unit)
+	local unitReaction = UnitReaction(unit, 'player')
+	local _, classToken = UnitClass(unit)
+
 	local color
-	if(element.colorThreat and not UnitPlayerControlled(unit) and UnitThreatSituation('player', unit)) then
-		color =  self.colors.threat[UnitThreatSituation('player', unit)]
+	if(element.colorThreat and not unitControlled and unitThreat) then
+		color =  self.colors.threat[unitThreat]
 	elseif(element.colorPower) then
 		color = self.colors.power[ALTERNATE_POWER_INDEX]
 
@@ -126,14 +133,12 @@ local function UpdateColor(self, event, unit, powerType)
 				color = self.colors.smooth
 			end
 		end
-	elseif(element.colorClass and (UnitIsPlayer(unit) or UnitInPartyIsAI(unit)))
-		or (element.colorClassNPC and not (UnitIsPlayer(unit) or UnitInPartyIsAI(unit))) then
-		local _, class = UnitClass(unit)
-		color = self.colors.class[class]
-	elseif(element.colorSelection and unitSelectionType(unit, element.considerSelectionInCombatHostile)) then
-		color = self.colors.selection[unitSelectionType(unit, element.considerSelectionInCombatHostile)]
-	elseif(element.colorReaction and UnitReaction(unit, 'player')) then
-		color = self.colors.reaction[UnitReaction(unit, 'player')]
+	elseif oUF:NotSecretValue(classToken) and classToken and ((element.colorClass and isPlayerOrAI) or (element.colorClassNPC and not isPlayerOrAI)) then
+		color = self.colors.class[classToken]
+	elseif(element.colorSelection and unitSelectionType) then
+		color = self.colors.selection[unitSelectionType]
+	elseif(element.colorReaction and unitReaction) then
+		color = self.colors.reaction[unitReaction]
 	end
 
 	if(color) then
