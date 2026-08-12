@@ -1,5 +1,4 @@
--- Traditional Chinese localization file for zhTW.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Traditional Chinese localization file for zhTW
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
 L["Line Width:"] = true

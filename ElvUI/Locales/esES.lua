@@ -1,5 +1,4 @@
--- Spanish localization file for esES.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Spanish localization file for esES
 local L = E.Libs.ACL:NewLocale('ElvUI', 'esES')
 
 L["Line Width:"] = true

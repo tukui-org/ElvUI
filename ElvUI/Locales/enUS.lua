@@ -1,5 +1,4 @@
--- English localization file for enUS and enGB.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- English localization file for enUS and enGB
 local L = E.Libs.ACL:NewLocale('ElvUI', 'enUS', true, true)
 
 L["Line Width:"] = true
