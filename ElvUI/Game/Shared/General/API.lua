@@ -1441,8 +1441,12 @@ function E:CheckRestrictionState(which)
 	return state
 end
 
+function E:IsInRestrictionState(which)
+	return E:CheckRestrictionState(which) > 1
+end
+
 function E:IsChatRestricted()
-	return GetCVarBool('addonChatRestrictionsForced') or (E:CheckRestrictionState('ChallengeMode') > 1 or E:CheckRestrictionState('Encounter') > 1)
+	return GetCVarBool('addonChatRestrictionsForced') or (E:IsInRestrictionState('ChallengeMode') or E:IsInRestrictionState('Encounter'))
 end
 
 function E:LoadAPI()
