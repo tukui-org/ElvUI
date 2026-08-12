@@ -300,13 +300,15 @@ tagFunctions.holypower = function()
 end
 
 tagFunctions.leader = function(u)
-	if(UnitIsGroupLeader(u)) then
+	local isLeader = UnitIsGroupLeader(u)
+	if(oUF:NotSecretValue(isLeader) and isLeader) then
 		return 'L'
 	end
 end
 
 tagFunctions.leaderlong = function(u)
-	if(UnitIsGroupLeader(u)) then
+	local isLeader = UnitIsGroupLeader(u)
+	if(oUF:NotSecretValue(isLeader) and isLeader) then
 		return 'Leader'
 	end
 end
