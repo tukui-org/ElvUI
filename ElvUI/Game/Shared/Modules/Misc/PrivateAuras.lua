@@ -17,36 +17,6 @@ local warningAnchor = {
 	offsetY = 0,
 }
 
-function PA:OffsetAura(index, db)
-	local size, z, x, y = db.icon.size, index - 1, 0, 0
-	local point, offset = db.icon.point, size + (db.icon.offset or 0)
-	if point == 'RIGHT' then
-		x = z * offset
-	elseif point == 'LEFT' then
-		x = -z * offset
-	elseif point == 'TOP' then
-		y = z * offset
-	else
-		y = -z * offset
-	end
-
-	return x, y
-end
-
-function PA:Update()
-	-- PA:RemoveAuras(PA.Auras)
-
-	if E.db.general.privateAuras.enable then
-		PA.Auras:Size(E.db.general.privateAuras.icon.size)
-
-		-- PA:SetupAuras(PA.Auras, 'player')
-
-		E:EnableMover(PA.Auras.mover.name)
-	else
-		E:DisableMover(PA.Auras.mover.name)
-	end
-end
-
 function PA:RaidWarning_Update()
 	PA:RaidWarning_Rescale()
 	PA.RaidWarning_Reparent(_G.PrivateRaidBossEmoteFrameAnchor)
@@ -94,14 +64,6 @@ end
 
 function PA:Initialize()
 	PA.RaidWarning = CreateFrame('Frame', 'ElvUI_PrivateRaidWarning', UIParent)
-
-	PA.Auras = CreateFrame('Frame', 'ElvUI_PrivateAuras', E.UIParent)
-	PA.Auras:Point('TOPRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMLEFT', -(9 + E.Border), -4)
-	PA.Auras:Size(32)
-	PA.Auras.db = E.db.general.privateAuras
-
-	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"], nil, nil, nil, nil, nil, 'auras,privateAuras')
-	PA:Update()
 
 	local raidWarning = _G.PrivateRaidBossEmoteFrameAnchor
 	if raidWarning then

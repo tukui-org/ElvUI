@@ -305,32 +305,6 @@ P.general = {
 	privateRaidWarning = {
 		scale = 1,
 	},
-	privateAuras = {
-		enable = true,
-		clickThrough = false,
-		countdownFrame = true,
-		countdownNumbers = false,
-		borderScale = 2,
-		icon = {
-			offset = 3,
-			point = 'LEFT',
-			amount = 2,
-			size = 32
-		},
-		duration = {
-			enable = true,
-			point = 'BOTTOM',
-			offsetX = 0,
-			offsetY = -1
-		},
-		parent = {
-			invertAnchor = true,
-			anchorPoint = 'CENTER',
-			point = 'TOP',
-			offsetX = 0,
-			offsetY = 0
-		}
-	},
 	queueStatus = {
 		enable = true,
 		scale = 0.5,
@@ -866,14 +840,6 @@ local NP_QuestIcon = {
 	fontSize = 12
 }
 
-local NP_PrivateAuras = CopyTable(P.general.privateAuras)
-NP_PrivateAuras.enable = false
-NP_PrivateAuras.borderScale = 1
-NP_PrivateAuras.icon.size = 20
-NP_PrivateAuras.clickThrough = true
-NP_PrivateAuras.parent.point = 'BOTTOM'
-NP_PrivateAuras.duration.enable = false
-
 --NamePlate
 P.nameplates = {
 	clampToScreen = false,
@@ -1211,7 +1177,6 @@ for unit, data in next, P.nameplates.units do
 		data.power = CopyTable(NP_Power)
 		data.pvpindicator = CopyTable(NP_PvPIcon)
 		data.raidTargetIndicator = CopyTable(NP_RaidTargetIndicator)
-		data.privateAuras = CopyTable(NP_PrivateAuras)
 		data.title = CopyTable(NP_Title)
 
 		local npcFriendly = unit == 'FRIENDLY_NPC'
@@ -2027,15 +1992,6 @@ local UF_ClassAdditional = {
 	frameLevel = 1,
 }
 
-local UF_PrivateAuras = CopyTable(P.general.privateAuras)
-UF_PrivateAuras.enable = false
-UF_PrivateAuras.borderScale = 1
-UF_PrivateAuras.icon.size = 24
-UF_PrivateAuras.clickThrough = true
-UF_PrivateAuras.parent.point = 'BOTTOM'
-UF_PrivateAuras.countdownNumbers = true
-UF_PrivateAuras.duration.enable = false
-
 --UnitFrame
 P.unitframe = {
 	statusbar = 'ElvUI Norm',
@@ -2278,8 +2234,7 @@ P.unitframe = {
 			raidicon = CopyTable(UF_RaidIcon),
 			raidRoleIcons = CopyTable(UF_RaidRoles),
 			resurrectIcon = CopyTable(UF_Ressurect),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(UF_PrivateAuras)
+			strataAndLevel = CopyTable(UF_StrataAndLevel)
 		},
 		target = {
 			enable = true,
@@ -2317,8 +2272,7 @@ P.unitframe = {
 			raidicon = CopyTable(UF_RaidIcon),
 			raidRoleIcons = CopyTable(UF_RaidRoles),
 			resurrectIcon = CopyTable(UF_Ressurect),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(UF_PrivateAuras)
+			strataAndLevel = CopyTable(UF_StrataAndLevel)
 		},
 		targettarget = {
 			enable = true,
@@ -2378,8 +2332,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(UF_PrivateAuras)
+			strataAndLevel = CopyTable(UF_StrataAndLevel)
 		},
 		pet = {
 			enable = true,
@@ -2410,8 +2363,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(UF_PrivateAuras)
+			strataAndLevel = CopyTable(UF_StrataAndLevel)
 		},
 		boss = {
 			enable = true,
@@ -2444,8 +2396,7 @@ P.unitframe = {
 			portrait = CopyTable(UF_Portrait),
 			power = CopyTable(UF_Power),
 			raidicon = CopyTable(UF_RaidIcon),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(UF_PrivateAuras)
+			strataAndLevel = CopyTable(UF_StrataAndLevel)
 		},
 		arena = {
 			enable = true,
@@ -2536,8 +2487,7 @@ P.unitframe = {
 			roleIcon = CopyTable(UF_RoleIcon),
 			summonIcon = CopyTable(UF_SummonIcon),
 			targetsGroup = CopyTable(UF_SubGroup),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(UF_PrivateAuras)
+			strataAndLevel = CopyTable(UF_StrataAndLevel)
 		},
 		tank = {
 			enable = true,
@@ -2566,8 +2516,7 @@ P.unitframe = {
 			raidicon = CopyTable(UF_RaidIcon),
 			rdebuffs = CopyTable(UF_RaidDebuffs),
 			targetsGroup = CopyTable(UF_SubGroup),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			privateAuras = CopyTable(UF_PrivateAuras)
+			strataAndLevel = CopyTable(UF_StrataAndLevel)
 		},
 	},
 }
@@ -2715,7 +2664,6 @@ P.unitframe.units.focustarget.infoPanel.height = 12
 P.unitframe.units.focustarget.threatStyle = 'NONE'
 P.unitframe.units.focustarget.aurabar = nil
 P.unitframe.units.focustarget.castbar = nil
-P.unitframe.units.focustarget.privateAuras = nil
 P.unitframe.units.focustarget.buffIndicator = nil
 P.unitframe.units.focustarget.debuffHighlight = nil
 P.unitframe.units.focustarget.CombatIcon = nil
@@ -2756,7 +2704,6 @@ P.unitframe.units.pettarget.height = 26
 P.unitframe.units.pettarget.threatStyle = 'NONE'
 P.unitframe.units.pettarget.aurabar = nil
 P.unitframe.units.pettarget.castbar = nil
-P.unitframe.units.pettarget.privateAuras = nil
 P.unitframe.units.pettarget.buffIndicator = nil
 P.unitframe.units.pettarget.debuffHighlight = nil
 
@@ -2770,9 +2717,6 @@ P.unitframe.units.boss.buffs.perrow = 3
 P.unitframe.units.boss.buffs.priority = 'Blacklist,Dispellable,RaidBuffsElvUI'
 P.unitframe.units.boss.buffs.sizeOverride = 22
 P.unitframe.units.boss.buffs.yOffset = 20
-P.unitframe.units.boss.privateAuras.countdownNumbers = false
-P.unitframe.units.boss.privateAuras.icon.size = 20
-P.unitframe.units.boss.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.boss.castbar.width = 215
 P.unitframe.units.boss.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0 }
 P.unitframe.units.boss.debuffs.enable = true
@@ -2837,10 +2781,6 @@ P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.party.buffs.maxDuration = 300
 P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
 P.unitframe.units.party.buffIndicator.enable = true
-P.unitframe.units.party.privateAuras.enable = true
-P.unitframe.units.party.privateAuras.countdownNumbers = false
-P.unitframe.units.party.privateAuras.icon.size = 20
-P.unitframe.units.party.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.party.castbar.enable = false
 P.unitframe.units.party.castbar.width = 256
 P.unitframe.units.party.castbar.positionsGroup = {anchorPoint = 'BOTTOM', xOffset = 0, yOffset = 0 }
@@ -2879,10 +2819,6 @@ P.unitframe.units.raid1.buffs.isAuraExternalDefensivePlayer = true
 P.unitframe.units.raid1.buffs.numrows = 1
 P.unitframe.units.raid1.buffs.perrow = 3
 P.unitframe.units.raid1.buffIndicator.enable = true
-P.unitframe.units.raid1.privateAuras.enable = true
-P.unitframe.units.raid1.privateAuras.countdownNumbers = false
-P.unitframe.units.raid1.privateAuras.icon.size = 18
-P.unitframe.units.raid1.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.raid1.castbar = nil
 P.unitframe.units.raid1.CombatIcon.enable = false
 P.unitframe.units.raid1.debuffs.enable = false
@@ -2950,10 +2886,6 @@ P.unitframe.units.tank.debuffs.yOffset = 1
 P.unitframe.units.tank.name.position = 'CENTER'
 P.unitframe.units.tank.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.tank.name.xOffset = 0
-P.unitframe.units.tank.privateAuras.enable = true
-P.unitframe.units.tank.privateAuras.countdownNumbers = false
-P.unitframe.units.tank.privateAuras.icon.size = 18
-P.unitframe.units.tank.privateAuras.parent.point = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.position = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.tank.targetsGroup.name.xOffset = 0
@@ -3454,7 +3386,6 @@ E.LayoutMoverPositions = {
 		ObjectiveFrameMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-163,-325',
 		PetAB = 'RIGHT,ElvUIParent,RIGHT,-4,0',
 		PowerBarContainerMover = 'TOP,ElvUIParent,TOP,0,-75',
-		PrivateAurasMover = 'TOPRIGHT,ElvUI_MinimapHolder,BOTTOMLEFT,-10,-4',
 		PrivateRaidWarningMover = 'TOP,RaidBossEmoteFrame,TOP,0,0',
 		QueueStatusMover = 'BOTTOMRIGHT,ElvUI_MinimapHolder,BOTTOMRIGHT,-5,25',
 		ReputationBarMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-2,-243',
@@ -3558,7 +3489,6 @@ E.LayoutMoverPositions = {
 		PlayerPortraitMover = 'BOTTOM,ElvUIParent,BOTTOM,-365,163',
 		PlayerPowerBarMover = 'BOTTOM,ElvUIParent,BOTTOM,0,209',
 		PowerBarContainerMover = 'TOP,ElvUIParent,TOP,0,-46',
-		PrivateAurasMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-4,-177',
 		PrivateRaidWarningMover = 'TOP,ElvUIParent,TOP,0,-240',
 		ProfessionsMover = 'TOPRIGHT,ElvUIParent,TOPRIGHT,-3,-184',
 		PvPMover = 'TOP,ElvUIParent,TOP,0,-28',

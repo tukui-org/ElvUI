@@ -95,28 +95,8 @@ Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.
 Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end
 
-Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateAuras[info[#info]] end, function(info, value) E.db.general.privateAuras[info[#info]] = value; PA:Update() end, nil, not E.Retail)
-Auras.args.privateAuras.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-Auras.args.privateAuras.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
-Auras.args.privateAuras.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
-Auras.args.privateAuras.args.clickThrough = ACH:Toggle(L["Click Through"], nil, 5)
-Auras.args.privateAuras.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -20, max = 20, step = 0.01 })
-
-Auras.args.privateAuras.args.icon = ACH:Group(L["Icon"], nil, 10, nil, function(info) return E.db.general.privateAuras.icon[info[#info]] end, function(info, value) E.db.general.privateAuras.icon[info[#info]] = value; PA:Update() end)
-Auras.args.privateAuras.args.icon.args.point = ACH:Select(L["Point"], nil, 1, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
-Auras.args.privateAuras.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
-Auras.args.privateAuras.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
-Auras.args.privateAuras.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 10, max = 80, step = 1 })
-Auras.args.privateAuras.args.icon.inline = true
-
-Auras.args.privateAuras.args.duration = ACH:Group(L["Duration"], nil, 20, nil, function(info) return E.db.general.privateAuras.duration[info[#info]] end, function(info, value) E.db.general.privateAuras.duration[info[#info]] = value; PA:Update() end)
-Auras.args.privateAuras.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 100)
-Auras.args.privateAuras.args.duration.args.point = ACH:Select(L["Point"], nil, 5, { TOP = L["Top"], BOTTOM = L["Bottom"], LEFT = L["Left"], RIGHT = L["Right"] })
-Auras.args.privateAuras.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, { min = -60, max = 60, step = 1 })
-Auras.args.privateAuras.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, { min = -60, max = 60, step = 1 })
-Auras.args.privateAuras.args.duration.inline = true
-
-Auras.args.privateAuras.args.raidWarning = ACH:Group(L["Raid Warning"], nil, 30, nil, function(info) return E.db.general.privateRaidWarning[info[#info]] end, function(info, value) E.db.general.privateRaidWarning[info[#info]] = value; PA:RaidWarning_Update() end)
+Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateRaidWarning[info[#info]] end, function(info, value) E.db.general.privateRaidWarning[info[#info]] = value; PA:RaidWarning_Update() end, nil, not E.Retail)
+Auras.args.privateAuras.args.raidWarning = ACH:Group(L["Raid Warning"], nil, 30)
 Auras.args.privateAuras.args.raidWarning.args.scale = ACH:Range(L["Scale"], nil, 1, { min = 0.5, max = 4, step = 0.01, bigStep = 0.1 })
 Auras.args.privateAuras.args.raidWarning.inline = true
 

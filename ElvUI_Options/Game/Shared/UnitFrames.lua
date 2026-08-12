@@ -83,40 +83,6 @@ end
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
-local function GetOptionsTable_PrivateAuras(updateFunc, groupName, numUnits)
-	local config = ACH:Group(L["Private Auras"], nil, 5, nil, function(info) return E.db.unitframe.units[groupName].privateAuras[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, not E.Retail)
-	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	config.args.countdownFrame = ACH:Toggle(L["Cooldown Spiral"], nil, 3)
-	config.args.countdownNumbers = ACH:Toggle(L["Cooldown Numbers"], nil, 4)
-	config.args.clickThrough = ACH:Toggle(L["Click Through"], nil, 5)
-	config.args.borderScale = ACH:Range(L["Border Scale"], nil, 6, { min = -20, max = 20, step = 0.01 })
-
-	config.args.parent = ACH:Group(L["Holder"], nil, 10, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.parent[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.parent.args.invertAnchor = ACH:Toggle(L["Invert Anchor"], nil, 1)
-	config.args.parent.args.anchorPoint = ACH:Select(L["Anchor Point"], nil, 2, C.Values.AllPoints, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].privateAuras.parent.invertAnchor end)
-	config.args.parent.args.spacer = ACH:Spacer(10)
-	config.args.parent.args.point = ACH:Select(L["Point"], nil, 11, C.Values.AllPoints)
-	config.args.parent.args.offsetX = ACH:Range(L["X-Offset"], nil, 12, offsetShort)
-	config.args.parent.args.offsetY = ACH:Range(L["Y-Offset"], nil, 13, offsetShort)
-	config.args.parent.inline = true
-
-	config.args.icon = ACH:Group(L["Icon"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.icon[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.icon.args.point = ACH:Select(L["Direction"], nil, 1, C.Values.EdgePositions)
-	config.args.icon.args.offset = ACH:Range(L["Offset"], nil, 2, { min = -4, max = 64, step = 1 })
-	config.args.icon.args.amount = ACH:Range(L["Amount"], nil, 3, { min = 1, max = 5, step = 1 })
-	config.args.icon.args.size = ACH:Range(L["Size"], nil, 4, { min = 6, max = 80, step = 1 })
-	config.args.icon.inline = true
-
-	config.args.duration = ACH:Group(L["Duration"], nil, 30, nil, function(info) return E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].privateAuras.duration[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
-	config.args.duration.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, 100)
-	config.args.duration.args.point = ACH:Select(L["Point"], nil, 5, C.Values.AllPoints)
-	config.args.duration.args.offsetX = ACH:Range(L["X-Offset"], nil, 6, offsetShort)
-	config.args.duration.args.offsetY = ACH:Range(L["Y-Offset"], nil, 7, offsetShort)
-	config.args.duration.inline = true
-
-	return config
-end
-
 local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUnits, subGroup)
 	local config = ACH:Group(L["Strata and Level"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].strataAndLevel[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].strataAndLevel[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.useCustomStrata = ACH:Toggle(L["Use Custom Strata"], nil, 1)
@@ -1724,8 +1690,7 @@ local unitSettingsFunc = {
 	resurrectIcon = GetOptionsTable_ResurrectIcon,
 	roleIcon = GetOptionsTable_RoleIcons,
 	strataAndLevel = GetOptionsTable_StrataAndFrameLevel,
-	summonIcon = GetOptionsTable_SummonIcon,
-	privateAuras = GetOptionsTable_PrivateAuras
+	summonIcon = GetOptionsTable_SummonIcon
 }
 
 local function GetUnitSettings(unitType, updateFunc, numUnits)
@@ -1782,7 +1747,7 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 		else
 			local func = unitSettingsFunc[element]
 			if func then
-				if element == 'aurabar' or element == 'privateAuras' or element == 'buffIndicator' or element == 'rdebuffs' then
+				if element == 'aurabar' or element == 'buffIndicator' or element == 'rdebuffs' then
 					config.auraGroup.args[element] = func(updateFunc, unitType, numUnits)
 				else
 					config[element] = func(updateFunc, unitType, numUnits)
