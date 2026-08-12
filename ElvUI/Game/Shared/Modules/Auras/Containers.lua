@@ -433,8 +433,12 @@ function E:Auras_UpdateButton(container, button)
 	end
 end
 
+function E:Auras_IsInRestriction()
+	return InCombatLockdown() or E:IsPvPMatchRestricted()
+end
+
 function E:Auras_UpdateButtons(container)
-	if InCombatLockdown() then return end
+	if E:Auras_IsInRestriction() then return end
 
 	for button in next, container.buttons do
 		E:Auras_UpdateButton(container, button)
@@ -442,7 +446,7 @@ function E:Auras_UpdateButtons(container)
 end
 
 function E:Auras_UpdateIndicators(container)
-	if InCombatLockdown() then return end
+	if E:Auras_IsInRestriction() then return end
 
 	for button in next, container.indicators do
 		E:Auras_UpdateButton(container, button)
