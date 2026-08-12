@@ -457,6 +457,10 @@ end
 
 tagFunctions.sex = function(u)
 	local s = UnitSex(u)
+	if oUF:IsSecretValue(s) then
+		return
+	end
+
 	if(s == 2) then
 		return 'Male'
 	elseif(s == 3) then

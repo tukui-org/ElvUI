@@ -290,7 +290,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 			local levelText
 			local diffColor = GetCreatureDifficultyColor(level)
-			local unitGender = TT.db.gender and genderTable[gender]
+			local unitGender = TT.db.gender and E:NotSecretValue(gender) and genderTable[gender]
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
 			if level < realLevel then
 				levelText = format('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')

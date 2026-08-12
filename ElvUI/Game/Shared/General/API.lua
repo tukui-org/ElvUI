@@ -344,7 +344,8 @@ do -- other non-english locales require this
 	end
 
 	function E:LocalizedClassName(className, unit)
-		local gender = (type(unit) == 'number' and unit) or (not unit and E.mygender) or UnitSex(unit)
+		local unitSex = UnitSex(unit)
+		local gender = (type(unit) == 'number' and unit) or (not unit and E.mygender) or (E:NotSecretValue(unitSex) and unitSex)
 		return (gender == 3 and classFemale[className]) or classMale[className]
 	end
 end
