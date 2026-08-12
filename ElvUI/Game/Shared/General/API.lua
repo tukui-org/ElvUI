@@ -734,6 +734,10 @@ function E:UpdateDispelColors()
 
 			color.r, color.g, color.b = db.r, db.g, db.b
 		end
+
+		if E.AuraEventFrame then -- basically retail check
+			E.AuraDispel.customDispelColorMap[debuffType] = color
+		end
 	end
 end
 
