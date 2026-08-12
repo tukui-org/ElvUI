@@ -251,15 +251,15 @@ function E:GetDateTime(localTime, unix)
 	end
 end
 
-function E:ClassColor(class, usePriestColor)
-	if not class then return end
+function E:ClassColor(classToken, usePriestColor)
+	if not classToken then return end
 
-	local custom = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[class]
+	local custom = _G.CUSTOM_CLASS_COLORS and _G.CUSTOM_CLASS_COLORS[classToken]
 	if custom then -- make sure the custom table is using ColorMixin
 		E:VerifyColorTable(custom, true)
 	end
 
-	local color = custom or _G.RAID_CLASS_COLORS[class]
+	local color = custom or _G.RAID_CLASS_COLORS[classToken]
 	if type(color) ~= 'table' then return end
 
 	if not color.colorStr then
@@ -268,7 +268,7 @@ function E:ClassColor(class, usePriestColor)
 		color.colorStr = 'ff'..color.colorStr
 	end
 
-	if usePriestColor and class == 'PRIEST' and tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16) then
+	if (usePriestColor and classToken == 'PRIEST') and (tonumber(color.colorStr, 16) > tonumber(E.PriestColors.colorStr, 16)) then
 		return E.PriestColors
 	else
 		return color
