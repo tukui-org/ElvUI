@@ -144,7 +144,7 @@ end
 -- Credit ls & Acidweb
 function E:CalculateAverageItemLevel(iLevelDB, unit)
 	local total, spec = 0, not E.Classic and GetInspectSpecialization(unit)
-	if not spec or spec == 0 then return end
+	if E:IsSecretValue(spec) or (not spec or spec == 0) then return end
 
 	-- Armor
 	for _, id in next, ARMOR_SLOTS do

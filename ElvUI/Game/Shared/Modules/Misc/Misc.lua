@@ -275,18 +275,20 @@ function M:DisbandRaidGroup()
 
 	local myIndex = UnitInRaid('player')
 	if myIndex then
-		local _, myRank = GetRaidRosterInfo(myIndex)
-		if myRank == 2 then -- real raid leader
-			for i = 1, GetNumGroupMembers() do
-				if i ~= myIndex then -- dont kick yourself
-					local name = GetRaidRosterInfo(i)
-					if name then
-						UninviteUnit(name)
+		if E:NotSecretValue(myIndex) then
+			local _, myRank = GetRaidRosterInfo(myIndex)
+			if myRank == 2 then -- real raid leader
+				for i = 1, GetNumGroupMembers() do
+					if i ~= myIndex then -- dont kick yourself
+						local name = GetRaidRosterInfo(i)
+						if name then
+							UninviteUnit(name)
+						end
 					end
 				end
 			end
 		end
-	elseif not myIndex and UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
+	elseif UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
 		for i = MAX_PARTY_MEMBERS, 1, -1 do
 			local name = UnitName('party'..i)
 			if name then

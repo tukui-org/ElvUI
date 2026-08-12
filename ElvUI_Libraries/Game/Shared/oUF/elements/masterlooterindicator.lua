@@ -27,8 +27,6 @@ local oUF = ns.oUF
 
 local GetLootMethod = C_PartyInfo.GetLootMethod or GetLootMethod
 local UnitAffectingCombat = UnitAffectingCombat
-local UnitInParty = UnitInParty
-local UnitInRaid = UnitInRaid
 
 local function Update(self, event)
 	local unit = self.unit
@@ -46,21 +44,21 @@ local function Update(self, event)
 	local isShown
 	if element.combatHide and UnitAffectingCombat(unit) then
 		isShown = false
-	elseif(UnitInParty(unit) or UnitInRaid(unit)) then
+	else
 		local method, partyIndex, raidIndex = GetLootMethod()
-		if(method == 'master') then
-			local mlUnit
-			if(partyIndex) then
-				if(partyIndex == 0) then
-					mlUnit = 'player'
+		if method == 'master' then
+			local lootUnit
+			if partyIndex then
+				if partyIndex == 0 then
+					lootUnit = 'player'
 				else
-					mlUnit = 'party' .. partyIndex
+					lootUnit = 'party' .. partyIndex
 				end
-			elseif(raidIndex) then
-				mlUnit = 'raid' .. raidIndex
+			elseif raidIndex then
+				lootUnit = 'raid' .. raidIndex
 			end
 
-			isShown = mlUnit and oUF:UnitIsUnit(unit, mlUnit)
+			isShown = lootUnit and oUF:UnitIsUnit(unit, lootUnit)
 		end
 	end
 

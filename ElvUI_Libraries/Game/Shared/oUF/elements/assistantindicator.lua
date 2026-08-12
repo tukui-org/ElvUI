@@ -25,7 +25,6 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 local _, ns = ...
 local oUF = ns.oUF
 
-local UnitInRaid = UnitInRaid
 local UnitIsGroupAssistant = UnitIsGroupAssistant
 local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitAffectingCombat = UnitAffectingCombat
@@ -43,13 +42,14 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local isAssistant = UnitInRaid(unit) and UnitIsGroupAssistant(unit) and not UnitIsGroupLeader(unit)
-	if element.combatHide and UnitAffectingCombat(unit) then
+	local isAssist = UnitIsGroupAssistant(unit)
+	local isLeader = UnitIsGroupLeader(unit)
+	local isSecret = oUF:IsSecretValue(isAssist) or oUF:IsSecretValue(isLeader)
+	local isAssistant = not isSecret and (isAssist and not isLeader)
+	if not isAssistant or (element.combatHide and UnitAffectingCombat(unit)) then
 		element:Hide()
-	elseif(isAssistant) then
-		element:Show()
 	else
-		element:Hide()
+		element:Show()
 	end
 
 	--[[ Callback: AssistantIndicator:PostUpdate(isAssistant)

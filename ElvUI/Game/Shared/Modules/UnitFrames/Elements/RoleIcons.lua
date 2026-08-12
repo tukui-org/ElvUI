@@ -36,12 +36,13 @@ function UF:UpdateRoleIcon()
 	if not self.db then return end
 
 	local role = UF:GetRoleIcon(self)
-	self.role = role -- set this here for only healer power
-
 	local db = self.db.roleIcon
-	if not db or not db.enable then
+	if not db or not db.enable or E:IsSecretValue(role) then
+		self.role = nil
 		lfdrole:Hide()
 		return
+	else
+		self.role = role -- set this here for only healer power
 	end
 
 	local show = self.isForced or UnitExists(self.unit)

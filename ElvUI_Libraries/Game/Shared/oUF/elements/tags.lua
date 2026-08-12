@@ -128,6 +128,7 @@ local UnitPowerMissing = UnitPowerMissing
 local UnitPowerPercent = UnitPowerPercent
 local UnitPowerType = UnitPowerType
 local UnitSex = UnitSex
+local UnitRace = UnitRace
 local UnitThreatSituation = UnitThreatSituation
 
 -- GLOBALS: Hex, _TAGS, _COLORS
@@ -162,8 +163,7 @@ local tagFunctions = {
 	maxhp = UnitHealthMax,
 	maxpp = UnitPowerMax,
 	class = UnitClass,
-	faction = UnitFactionGroup,
-	race = UnitRace,
+	faction = UnitFactionGroup
 }
 
 local tagFuncs = setmetatable(tagFunctions, {
@@ -189,6 +189,13 @@ local tagFuncs = setmetatable(tagFunctions, {
 		rawset(self, key, val)
 	end,
 })
+
+tagFunctions.race = function(u)
+	local unitRace = UnitRace(u)
+	if oUF:NotSecretValue(unitRace) then
+		return unitRace
+	end
+end
 
 tagFunctions.affix = function(u)
 	local c = UnitClassification(u)
@@ -408,9 +415,10 @@ tagFunctions.powercolor = function(u)
 end
 
 tagFunctions.pvp = function(u)
-	if(UnitIsPVP(u)) then
-		return 'PvP'
-	end
+	local unitPVP = UnitIsPVP(u)
+	if oUF:IsSecretValue(unitPVP) or not unitPVP then return end
+
+	return 'PvP'
 end
 
 tagFunctions.raidcolor = function(u)

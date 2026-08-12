@@ -572,7 +572,7 @@ end
 
 function E:GetPlayerRole()
 	local role = E.allowRoles and UnitGroupRolesAssigned('player') or 'NONE'
-	return (role ~= 'NONE' and role) or E.myspecRole or 'NONE'
+	return E:NotSecretValue(role) and (role ~= 'NONE' and role) or E.myspecRole or 'NONE'
 end
 
 function E:CheckRole()
@@ -1370,7 +1370,7 @@ function E:GROUP_ROSTER_UPDATE()
 	for i = 1, (isInRaid and GetNumGroupMembers()) or GetNumSubgroupMembers() do
 		local unit = group..i
 		local role = not E.allowRoles and (GetPartyAssignment('MAINTANK', unit) and 'TANK' or 'NONE') or UnitGroupRolesAssigned(unit)
-		if role then
+		if E:NotSecretValue(role) and role then
 			if E:UnitIsUnit(unit, 'player') then
 				unit = 'player'
 			end

@@ -171,7 +171,7 @@ local function Update(self, event, unit, updateInfo)
 		local auraInstanceID, aura = next(unitAuraFiltered)
 		while aura do
 			local debuffType = oUF:NotSecretValue(aura.dispelName) and aura.dispelName -- we coudln't dispel if the unit its charmed, or its not friendly
-			if debuffType and (not isCharmed and not canAttack) and DispelFilter[debuffType] and addon.ShowDispellableDebuff and (element.showDispellableDebuff ~= false) then
+			if debuffType and (oUF:NotSecretValue(isCharmed) and not isCharmed and not canAttack) and DispelFilter[debuffType] and addon.ShowDispellableDebuff and (element.showDispellableDebuff ~= false) then
 				if addon.FilterDispellableDebuff then
 					DispelPriority[debuffType] = (DispelPriority[debuffType] or 0) + addon.priority -- Make Dispel buffs on top of Boss Debuffs
 				end

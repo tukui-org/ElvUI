@@ -241,8 +241,12 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local localeClass, className = UnitClass(unit)
 		if not localeClass or not className then return end
 
-		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
+		if E:IsSecretValue(guildName) then
+			guildName, guildRankName, guildRealm = nil, nil, nil
+		end
+
+		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
 		local level, realLevel = E:UnitEffectiveLevel(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
@@ -283,6 +287,10 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		if levelLine then
 			local race, englishRace = UnitRace(unit)
+			if E:IsSecretValue(race) or E:IsSecretValue(englishRace) then
+				race, englishRace = nil, nil
+			end
+
 			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
 			if localizedFaction and englishRaces[englishRace] then
 				race = localizedFaction..' '..race
@@ -300,7 +308,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 			if E.Retail then
 				local specText = specLine and specLine:GetText()
-				if specText then
+				if specText then -- this might explode because of guildName
 					specLine:SetText(nameColor:WrapTextInColorCode(specText))
 				end
 			else -- put the class in classic
@@ -349,7 +357,8 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 				diffColor = GetCreatureDifficultyColor(level)
 			end
 
-			if UnitIsPVP(unit) then
+			local unitPVP = UnitIsPVP(unit)
+			if E:NotSecretValue(unitPVP) and unitPVP then
 				pvpFlag = format(' (%s)', _G.PVP)
 			end
 
@@ -552,10 +561,15 @@ function TT:AddTargetInfo(tt, unit)
 end
 
 function TT:AddRoleInfo(tt, unit)
-	if not IsInGroup() or not (UnitInParty(unit) or UnitInRaid(unit)) then return end
+	if not IsInGroup() then return end
+
+	local unitRaid = UnitInRaid(unit)
+	local unitParty = UnitInParty(unit)
+	local unitSecret = E:IsSecretValue(unitRaid) or E:IsSecretValue(unitParty)
+	if unitSecret or not (unitParty or unitRaid) then return end
 
 	local role = UnitGroupRolesAssigned(unit)
-	if not role or role == 'NONE' then return end
+	if E:IsSecretValue(role) or (not role or role == 'NONE') then return end
 
 	local r, g, b
 	if role == 'HEALER' then
