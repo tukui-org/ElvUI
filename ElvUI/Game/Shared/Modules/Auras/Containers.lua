@@ -45,6 +45,11 @@ E.AuraEvents = {
 	PLAYER_FOCUS_CHANGED = E.AuraFocus
 }
 
+E.AuraEventUnits = {
+	PLAYER_TARGET_CHANGED = 'target',
+	PLAYER_FOCUS_CHANGED = 'focus'
+}
+
 if SORTMETHOD then -- add the new ones (?)
 	-- top aura conversion
 	E.AuraContainerSortMethod.TIME = SORTMETHOD.Expiration -- not in UF or NP
@@ -73,8 +78,9 @@ function E:Auras_OnEvent(event)
 	if not obj then return end
 
 	for container in next, obj do
-		if event == 'PLAYER_TARGET_CHANGED' and container.isAuraBar then
-			UF:AuraBars_UpdateFilter(container, 'target')
+		local unit = E.AuraEventUnits[event]
+		if unit and container.isAuraBar then
+			UF:AuraBars_UpdateFilter(container, unit)
 			E:Auras_SetContainer(container)
 		end
 
