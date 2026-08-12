@@ -58,7 +58,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 		if E.Retail then
 			auras.filter = 'HELPFUL'
 
-			E:Auras_SetupIndicator(auras, auraTable)
+			E:Auras_SetupList(auras, auraTable)
 			E:Auras_GroupUnit(auras, frame.unit)
 			E:Auras_SetIndicator(auras)
 			E:Auras_UpdateIndicators(auras)

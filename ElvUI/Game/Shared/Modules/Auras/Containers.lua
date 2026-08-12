@@ -24,6 +24,8 @@ local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
+local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
+
 E.AuraContainerSortDirection = {}
 E.AuraContainerSortMethod = {}
 
@@ -107,7 +109,13 @@ end
 
 function E:Auras_UpdateHighlight(container, button)
 	if button.highlight then
-		button:SetAuraBorder(button.highlight, E.AuraHighlight)
+		if container.key == 'bad' then
+			button:SetAuraBorder(button.highlight, E.AuraHighlight)
+		else
+			local color = button.data.color or FALLBACK
+			button.highlight:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
+		end
+
 		button.highlight:SetBlendMode(container.blendMode)
 	end
 end
@@ -474,19 +482,22 @@ function E:Auras_GenerateSlot(container, key, data)
 	return function(button)
 		container.indicators[button] = container
 
-		button.key = key
-		button.data = data
 		button.container = container
+		button.data = data
+		button.key = key
 
 		E:Auras_CreateIndicator(button)
 		E:Auras_UpdateIndicator(container, button)
 	end
 end
 
-function E:Auras_GenerateHighlight(container)
+function E:Auras_GenerateHighlight(container, key, data)
 	return function(button)
 		container.indicators[button] = container
+
 		button.container = container
+		button.data = data
+		button.key = key
 
 		E:Auras_CreateHighlight(button)
 		E:Auras_UpdateHighlight(container, button)
@@ -545,9 +556,24 @@ do
 end
 
 do
-	local temp = {}
-	function E:Auras_DispelTypes()
-		temp.includeDispelTypes = CopyTable(DispelTypes)
+	local spell = {}
+	function E:Auras_DispelFilter(container, data)
+		local temp = container.candidateTemp
+		wipe(temp) -- trash object for reuse
+
+		if data then
+			temp.isFromPlayerOrPlayerPet = data.ownOnly or nil
+			temp.includeSpellIDs = spell
+
+			wipe(spell)
+
+			local dataID = data.id
+			if dataID then
+				spell[dataID] = true
+			end
+		else
+			temp.includeDispelTypes = CopyTable(DispelTypes)
+		end
 
 		return temp
 	end
@@ -581,8 +607,8 @@ end
 
 do
 	local temp = {}
-	function E:Auras_SetupHighlight(container, filter)
-		temp.initializeFrame = E:Auras_GenerateHighlight(container)
+	function E:Auras_SetupHighlight(container, filter, key, data)
+		temp.initializeFrame = E:Auras_GenerateHighlight(container, key, data)
 		temp.candidateFilters = filter
 
 		return temp
@@ -625,13 +651,31 @@ function E:Auras_AddSlot(container, key, candidate, sortMethod, sortDirection, d
 end
 
 function E:Auras_SetHighlight(container)
-	local filter = container.filter
-	if container.known[filter] then return end
+	local KEY, FILTER = container.key, container.filter
+	if KEY == 'bad' then
+		if container.known[KEY] then return end
 
-	local dispel = E:Auras_DispelTypes()
-	local slot = E:Auras_SetupHighlight(container, dispel)
-	container:AddAuraSlot(filter, container.filter, slot)
-	container.known[filter] = 'meow'
+		local candidateFilters = E:Auras_DispelFilter(container)
+		container.candidateFilters = candidateFilters
+
+		local slot = E:Auras_SetupHighlight(container, candidateFilters)
+		container:AddAuraSlot(KEY, FILTER, slot)
+
+		container.known[KEY] = 'meow'
+	else
+		for key, data in next, container.keys do
+			local candidateFilters = E:Auras_DispelFilter(container, data)
+			container.candidateFilters = candidateFilters
+
+			if container.known[key] then
+				container:SetAuraSlotCandidateFilters(key, candidateFilters)
+			else
+				local slot = E:Auras_SetupHighlight(container, candidateFilters, key, data)
+				container:AddAuraSlot(key, FILTER, slot)
+				container.known[key] = 'bark'
+			end
+		end
+	end
 end
 
 function E:Auras_SetIndicator(container)
@@ -640,6 +684,8 @@ function E:Auras_SetIndicator(container)
 
 	for key, data in next, container.keys do
 		local candidateFilters = E:Auras_FilterIndicator(data)
+		container.candidateFilters = candidateFilters
+
 		if container.known[key] then
 			E:Auras_UpdateSlot(container, key, candidateFilters, sortMethod, sortDirection)
 		else
@@ -650,9 +696,17 @@ function E:Auras_SetIndicator(container)
 	end
 end
 
-function E:Auras_SetupIndicator(container, auraTable)
+function E:Auras_SetupList(container, auraTable)
+	wipe(container.keys)
+
 	for spell, data in next, auraTable do
-		if data.enabled then
+		if container.isIndicator and data.enabled then
+			container.keys[spell..''] = data
+		elseif container.isHighlight and data.enable then
+			if not data.id then
+				data.id = spell
+			end
+
 			container.keys[spell..''] = data
 		end
 	end
@@ -711,11 +765,11 @@ function E:Auras_GroupUnit(container, unit)
 		E.AuraFocus[container] = unit
 	end
 
+	E:Auras_SetUnit(container, unit)
+
 	if container.isHighlight then
 		UF:SetEnabled_AuraHighlight(container, unit)
 	end
-
-	E:Auras_SetUnit(container, unit)
 end
 
 function E:Auras_GetFilter(obj, key)
