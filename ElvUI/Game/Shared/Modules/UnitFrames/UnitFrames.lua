@@ -342,7 +342,7 @@ end
 
 function UF:CreateRaisedElement(frame)
 	local RaisedElement = CreateFrame('Frame', '$parent_RaisedElement', frame)
-	local RaisedLevel = frame:GetFrameLevel() + 100
+	local RaisedLevel = 100
 
 	RaisedElement:SetAllPoints()
 	RaisedElement:SetFrameLevel(RaisedLevel)
