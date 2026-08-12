@@ -681,7 +681,7 @@ function UF:Configure_PrivateAuras(frame)
 	local element = E.Retail and frame.PrivateAuras
 	if not element then return end
 
-	PA:RemoveAuras(element)
+	-- PA:RemoveAuras(element)
 
 	local db = frame.db and frame.db.privateAuras
 	element.db = db or nil
@@ -692,7 +692,7 @@ function UF:Configure_PrivateAuras(frame)
 		element:Point(db.parent.invertAnchor and E.InversePoints[db.parent.point] or db.parent.anchorPoint, frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		element:Size(db.icon.size)
 
-		PA:SetupAuras(element)
+		-- PA:SetupAuras(element)
 	end
 end
 

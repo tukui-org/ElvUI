@@ -316,7 +316,7 @@ function NP:Update_PrivateAuras(nameplate, disable)
 	local element = E.Retail and nameplate.PrivateAuras
 	if not element then return end
 
-	PA:RemoveAuras(element)
+	-- PA:RemoveAuras(element)
 
 	local plateDB = not disable and NP:PlateDB(nameplate)
 	local db = plateDB and plateDB.privateAuras
@@ -328,6 +328,6 @@ function NP:Update_PrivateAuras(nameplate, disable)
 		element:Point(db.parent.invertAnchor and E.InversePoints[db.parent.point] or db.parent.anchorPoint, nameplate, db.parent.point, db.parent.offsetX, db.parent.offsetY)
 		element:Size(db.icon.size)
 
-		PA:SetupAuras(element)
+		-- PA:SetupAuras(element)
 	end
 end
