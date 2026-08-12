@@ -89,12 +89,9 @@ local function Update(self, event)
 			else
 				element:SetModel([[Interface\Buttons\TalkToMeQuestionMark.m2]])
 			end
-		elseif element.useClassBase then
-			-- BUG: UnitClassBase can't be trusted
-			--      https://github.com/Stanzilla/WoWUIBugs/issues/621
-
+		elseif element.useClassBase then -- BUG: UnitClassBase can't be trusted: https://github.com/Stanzilla/WoWUIBugs/issues/621
 			local _, className = UnitClass(unit)
-			if className then
+			if oUF:NotSecretValue(className) and className then
 				element:SetAtlas('classicon-' .. className)
 			end
 		elseif not element.customTexture then
