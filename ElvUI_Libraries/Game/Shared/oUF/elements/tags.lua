@@ -414,8 +414,8 @@ tagFunctions.pvp = function(u)
 end
 
 tagFunctions.raidcolor = function(u)
-	local _, class = UnitClass(u)
-	if(class) then
+	local _, classToken = UnitClass(u)
+	if oUF:NotSecretValue(classToken) and classToken then
 		return Hex(_COLORS.class[class])
 	else
 		local id = u:match('arena(%d)$')
