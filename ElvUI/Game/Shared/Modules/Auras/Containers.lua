@@ -449,7 +449,7 @@ function E:Auras_UpdateIndicators(container)
 	if E:Auras_IsInRestriction() then return end
 
 	for button in next, container.indicators do
-		E:Auras_UpdateButton(container, button)
+		E:Auras_UpdateIndicator(container, button)
 	end
 end
 
