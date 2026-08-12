@@ -716,7 +716,7 @@ end
 function E:UpdateDispelColor(debuffType, r, g, b, a)
 	local color = DebuffColors[debuffType]
 	if color then
-		color.r, color.g, color.b, color.a = r, g, b, a
+		color:SetRGBA(r, g, b, a)
 	end
 
 	local db = E.db.general.debuffColors[debuffType]
@@ -732,11 +732,11 @@ function E:UpdateDispelColors()
 		if color then
 			E:UpdateClassColor(db)
 
-			color.r, color.g, color.b = db.r, db.g, db.b
-		end
+			color:SetRGBA(db.r, db.g, db.b, db.a)
 
-		if E.AuraEventFrame then -- basically retail check
-			E.AuraDispel.customDispelColorMap[debuffType] = color
+			if E.Retail then
+				E.AuraDispel.customDispelColorMap[debuffType] = color
+			end
 		end
 	end
 end

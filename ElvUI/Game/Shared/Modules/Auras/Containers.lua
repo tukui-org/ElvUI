@@ -31,13 +31,14 @@ E.AuraFocus = {}
 E.AuraTarget = {}
 E.AuraHighlight = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
---	customDispelColorMap is added from UpdateDispelColors
+ -- customDispelColorCurve is added from UpdateAuraCurves
 }
 
 E.AuraDispel = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
 	showWhenHarmful = true,
-	showWhenHelpful = false
+	showWhenHelpful = false,
+	customDispelColorMap = {} -- updated by UpdateDispelColors
 --	showWithoutDispelType is dynamically added by Auras_UpdateButton
 }
 
