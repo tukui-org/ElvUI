@@ -57,6 +57,7 @@ local GetWatchedFactionInfo = GetWatchedFactionInfo
 local GetWatchedFactionData = C_Reputation.GetWatchedFactionData
 
 local IsPlayerAtEffectiveMaxLevel = IsPlayerAtEffectiveMaxLevel
+local UnregisterInternalEvent = GameEvent and GameEvent.UnregisterInternalEvent
 local GameRulesUtil_IsPlayerAtEffectiveMaxLevel = GameRulesUtil and GameRulesUtil.IsPlayerAtEffectiveMaxLevel
 local GameRulesUtil_GetEffectiveMaxLevelForPlayer = GameRulesUtil and GameRulesUtil.GetEffectiveMaxLevelForPlayer
 local GetAddOnRestrictionState = C_RestrictedActions and C_RestrictedActions.GetAddOnRestrictionState
@@ -1456,6 +1457,14 @@ end
 
 function E:IsChatRestricted()
 	return GetCVarBool('addonChatRestrictionsForced') or (E:IsInRestrictionState('ChallengeMode') or E:IsInRestrictionState('Encounter'))
+end
+
+function E:UnregisterGameEvent(event)
+	if UnregisterInternalEvent then
+		UnregisterInternalEvent(event)
+	else
+		UIParent:UnregisterEvent(event)
+	end
 end
 
 function E:LoadAPI()

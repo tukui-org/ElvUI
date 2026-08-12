@@ -16,7 +16,6 @@ local GetLootRollTimeLeft = GetLootRollTimeLeft
 local IsModifiedClick = IsModifiedClick
 local IsShiftKeyDown = IsShiftKeyDown
 local RollOnLoot = RollOnLoot
-local UIParent = UIParent
 
 local GameTooltip_Hide = GameTooltip_Hide
 local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
@@ -587,13 +586,6 @@ function M:LoadLootRoll()
 
 	M:RegisterEvent('START_LOOT_ROLL')
 
-
-	local GameEvent = _G.GameEvent
-	if GameEvent and GameEvent.UnregisterInternalEvent then
-		GameEvent.UnregisterInternalEvent('START_LOOT_ROLL')
-		GameEvent.UnregisterInternalEvent('CANCEL_LOOT_ROLL')
-	else
-		UIParent:UnregisterEvent('START_LOOT_ROLL')
-		UIParent:UnregisterEvent('CANCEL_LOOT_ROLL')
-	end
+	E:UnregisterGameEvent('START_LOOT_ROLL')
+	E:UnregisterGameEvent('CANCEL_LOOT_ROLL')
 end
