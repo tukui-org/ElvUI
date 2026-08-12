@@ -9,11 +9,11 @@ local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 
 function UF:Construct_AuraHighlight(frame)
 	if E.Retail then
-		local main = CreateFrame('Frame', '$parentAuraHighlight', frame)
-		main.good = E:Auras_Create(main, 'Good')
-		main.bad = E:Auras_Create(main, 'Bad')
+		local highlight = CreateFrame('Frame', '$parentAuraHighlight', frame)
+		highlight.good = E:Auras_Create(highlight, 'Good')
+		highlight.bad = E:Auras_Create(highlight, 'Bad')
 
-		return main
+		return highlight
 	else
 		local element = frame:CreateTexture(nil, 'OVERLAY')
 		element:SetInside(frame.Health.backdrop)
