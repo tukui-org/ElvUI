@@ -3787,6 +3787,7 @@ function B:Initialize()
 
 	B:SetupAutoToggle()
 	B:DisableBlizzard()
+	B:UpdateGoldText()
 
 	B:RegisterEvent('ADDON_LOADED')
 	B:RegisterEvent('PLAYER_MONEY', 'UpdateGoldText')
