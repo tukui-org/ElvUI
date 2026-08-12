@@ -208,6 +208,8 @@ function D:Distribute(target, otherServer, dataKey)
 			D:SendCommMessage(REQUEST_PREFIX, message, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
 		elseif IsInGroup() and E:NotSecretValue(targetParty) and targetParty then
 			D:SendCommMessage(REQUEST_PREFIX, message, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
+		else -- dont proceed
+			return
 		end
 	else
 		D:SendCommMessage(REQUEST_PREFIX, message, 'WHISPER', target)
