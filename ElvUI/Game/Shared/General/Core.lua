@@ -1,6 +1,6 @@
-local ElvUI = select(2, ...)
-ElvUI[2] = ElvUI[1].Libs.ACL:GetLocale('ElvUI', ElvUI[1]:GetLocale()) -- Locale doesn't exist yet, make it exist.
-local E, L, V, P, G = unpack(ElvUI)
+local E, _, V, P, G = unpack(ElvUI)
+local L = E.Libs.ACL:GetLocale('ElvUI', E:GetLocale())
+ElvUI[2] = L -- Locale doesn't exist yet, make it exist
 
 local _G = _G
 local tonumber, next, unpack, tostring = tonumber, next, unpack, tostring
