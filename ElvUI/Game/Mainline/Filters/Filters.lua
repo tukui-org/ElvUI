@@ -211,11 +211,7 @@ G.unitframe.TalentChannelTicks = {
 }
 
 -- Increase ticks from auras
-G.unitframe.AuraChannelTicks = {
-	-- Priest
-	[47757]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (heal)
-	[47758]		= { filter = 'HELPFUL', spells = { [373183] = 6 } }, -- Harsh Discipline: Penance (dps)
-}
+G.unitframe.AuraChannelTicks = {}
 
 -- Spells Effected By Haste, value is Base Tick Size
 G.unitframe.HastedChannelTicks = {

@@ -615,7 +615,7 @@ function UF:PostCastStart(unit)
 			end
 
 			-- Base ticks upgraded by another aura
-			local auraTicks = baseTicks and global.AuraChannelTicks[spellID]
+			local auraTicks = baseTicks and not E.Retail and global.AuraChannelTicks[spellID]
 			if auraTicks then
 				for auraID, tickCount in next, auraTicks.spells do
 					if E:GetAuraByID(unit, auraID, auraTicks.filter) then
