@@ -530,7 +530,11 @@ do
 		temp.includeSpellIDs = spell
 
 		wipe(spell)
-		spell[data.id] = true
+
+		local dataID = data.id
+		if dataID then
+			spell[dataID] = true
+		end
 
 		return temp
 	end
