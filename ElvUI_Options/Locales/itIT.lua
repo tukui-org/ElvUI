@@ -1,5 +1,5 @@
--- Italian localization file for itIT.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'itIT')
+local E = unpack(ElvUI) -- Italian localization file for itIT
+local L = E.Libs.ACL:NewLocale('ElvUI', 'itIT')
 
 L["ALT"] = true
 L["CTRL"] = true

@@ -1,5 +1,4 @@
--- Simplified Chinese localization file for zhCN.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Simplified Chinese localization file for zhCN
 local L = E.Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
 L["Line Width:"] = "每行宽度:"

@@ -1,5 +1,4 @@
--- German localization file for deDE.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- German localization file for deDE
 local L = E.Libs.ACL:NewLocale('ElvUI', 'deDE')
 
 L["Line Width:"] = true

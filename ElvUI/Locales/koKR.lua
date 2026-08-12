@@ -1,5 +1,4 @@
--- Korean localization file for koKR.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Korean localization file for koKR
 local L = E.Libs.ACL:NewLocale('ElvUI', 'koKR')
 
 L["Line Width:"] = true

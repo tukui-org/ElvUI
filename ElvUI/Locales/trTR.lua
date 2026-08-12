@@ -1,5 +1,4 @@
--- Turkish localization file for trTR.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Turkish localization file for trTR
 local L = E.Libs.ACL:NewLocale('ElvUI', 'trTR')
 
 L["Line Width:"] = true

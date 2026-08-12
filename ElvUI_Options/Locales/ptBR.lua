@@ -1,5 +1,5 @@
--- Portuguese localization file for ptBR.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'ptBR')
+local E = unpack(ElvUI) -- Portuguese localization file for ptBR
+local L = E.Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
 L["ALT"] = true
 L["CTRL"] = true

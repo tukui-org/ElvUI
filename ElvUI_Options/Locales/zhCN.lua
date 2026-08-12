@@ -1,5 +1,5 @@
--- Simplified Chinese localization file for zhCN.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhCN')
+local E = unpack(ElvUI) -- Simplified Chinese localization file for zhCN
+local L = E.Libs.ACL:NewLocale('ElvUI', 'zhCN')
 
 L["ALT"] = true
 L["CTRL"] = true

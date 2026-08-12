@@ -1,5 +1,4 @@
--- Russian localization file for ruRU.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Russian localization file for ruRU
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ruRU')
 
 L["Line Width:"] = true

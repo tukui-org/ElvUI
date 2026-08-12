@@ -1,5 +1,4 @@
--- Spanish localization file for esMX.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Spanish localization file for esMX
 local L = E.Libs.ACL:NewLocale('ElvUI', 'esMX')
 
 L["Line Width:"] = true

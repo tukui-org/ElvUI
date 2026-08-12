@@ -1,5 +1,5 @@
--- Traditional Chinese localization file for zhTW.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'zhTW')
+local E = unpack(ElvUI) -- Traditional Chinese localization file for zhTW
+local L = E.Libs.ACL:NewLocale('ElvUI', 'zhTW')
 
 L["ALT"] = true
 L["CTRL"] = true

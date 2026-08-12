@@ -1,5 +1,4 @@
--- Italian localization file for enUS and enGB.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Italian localization file for itIT
 local L = E.Libs.ACL:NewLocale('ElvUI', 'itIT')
 
 L["Line Width:"] = true

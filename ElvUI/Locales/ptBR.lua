@@ -1,5 +1,4 @@
--- Portuguese localization file for ptBR.
-local E = unpack(ElvUI)
+local E = unpack(ElvUI) -- Portuguese localization file for ptBR
 local L = E.Libs.ACL:NewLocale('ElvUI', 'ptBR')
 
 L["Line Width:"] = true

@@ -1,5 +1,5 @@
--- Turkish localization file for trTR.
-local L = ElvUI[1].Libs.ACL:NewLocale('ElvUI', 'trTR')
+local E = unpack(ElvUI) -- Turkish localization file for trTR
+local L = E.Libs.ACL:NewLocale('ElvUI', 'trTR')
 
 L["ALT"] = true
 L["CTRL"] = true
