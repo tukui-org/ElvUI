@@ -44,6 +44,12 @@ local Blacklist = {
 	FRIENDLY_NPC = { enable = true, health = { enable = true }, },
 }
 
+NP.AuraContainers = {}
+
+for key in next, Blacklist do
+	NP.AuraContainers[key] = {}
+end
+
 function NP:ResetAuraPriority()
 	for unitType, content in pairs(E.db.nameplates.units) do
 		local default = P.nameplates.units[unitType]
@@ -86,8 +92,12 @@ end
 
 do
 	local empty = {}
-	function NP:PlateDB(nameplate)
-		return (nameplate and NP.db.units[nameplate.frameType]) or empty
+	function NP:PlateDB(nameplate, frameType)
+		if not frameType then
+			frameType = nameplate and nameplate.frameType
+		end
+
+		return NP.db.units[frameType] or empty
 	end
 end
 
@@ -580,6 +590,10 @@ function NP:ConfigurePlates(init)
 		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.unit)
 	end
 
+	if E.Retail then
+		NP:Configure_AuraContainers()
+	end
+
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
 	local staticFunc = NP[staticEvent]
 	if init then -- since this is a fake plate, we actually need to trigger this always
@@ -587,6 +601,7 @@ function NP:ConfigurePlates(init)
 
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
+
 		for nameplate in pairs(NP.Plates) do
 			NP:UpdatePlateSize(nameplate)
 
@@ -598,7 +613,7 @@ function NP:ConfigurePlates(init)
 			end
 
 			if E.Retail then
-				NP:Configure_AllAuras(nameplate)
+				NP:Configure_AuraUpdate(nameplate)
 			end
 
 			nameplate:UpdateAllElements('ForceUpdate')
@@ -758,7 +773,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	NP:UpdatePlateSize(self)
 
 	if E.Retail then
-		NP:Configure_UnitAuras(self)
+		NP:Configure_AuraUnit(self)
 	end
 
 	self.softTargetFrame = self.blizzPlate and self.blizzPlate.SoftTargetFrame

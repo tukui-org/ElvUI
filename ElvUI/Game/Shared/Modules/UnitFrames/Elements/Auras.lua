@@ -346,8 +346,10 @@ function UF:FilterEnabled(db, which)
 	end
 end
 
-function UF:UpdateFilters(frame)
-	local db = frame.db
+function UF:UpdateFilters(frame, db)
+	if not db then
+		db = frame.db
+	end
 
 	if not frame.auraFilters then
 		frame.auraFilters = {}

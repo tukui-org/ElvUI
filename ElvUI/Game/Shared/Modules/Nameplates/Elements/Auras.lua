@@ -126,16 +126,60 @@ function NP:Construct_AuraIcon(button)
 	NP:UpdateAuraSettings(button)
 end
 
-function NP:Configure_UnitAuras(nameplate)
+function NP:Configure_AuraUnit(nameplate)
 	E:Auras_SetUnit(nameplate.Auras_, nameplate.unit)
 	E:Auras_SetUnit(nameplate.Buffs_, nameplate.unit)
 	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.unit)
 end
 
-function NP:Configure_AllAuras(nameplate)
+function NP:Configure_AuraUpdate(nameplate)
 	E:Auras_UpdateButtons(nameplate.Auras_)
 	E:Auras_UpdateButtons(nameplate.Buffs_)
 	E:Auras_UpdateButtons(nameplate.Debuffs_)
+end
+
+function NP:Configure_AuraContainer(data, db)
+	UF:UpdateFilters(data, db) -- attach the objects
+	UF:GroupFilters(data, data.filter) -- build the groups
+
+	data.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
+	data.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
+	data.candidateFilters = E:Auras_CanidateFilters(data.allowList, data.blockList, data.maxDuration)
+end
+
+do
+	local types = {
+		Auras = true,
+		Debuffs = true,
+		Buffs = true
+	}
+
+	function NP:Configure_AuraContainers()
+		for frameType, data in next, NP.AuraContainers do
+			local db = NP:PlateDB(nil, frameType)
+			-- data.db = db -- just link it
+
+			for which in next, types do
+				local info = { filters = {} }
+				data[which] = info
+
+				local auraDB = db[which:lower()]
+				if auraDB then
+					info.filter = NP:GetAuraFilter(which, auraDB)
+
+					NP:Configure_AuraContainer(info, auraDB)
+				end
+			end
+		end
+	end
+end
+
+function NP:GetAuraFilter(which, db)
+	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
+		return db.filter or 'HARMFUL'
+	elseif E.Retail then
+		return (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
+	end
 end
 
 function NP:Configure_Auras(nameplate, which)
@@ -162,12 +206,6 @@ function NP:Configure_Auras(nameplate, which)
 	auras.num = db.numAuras * db.numRows
 	auras.db = db -- for auraSort
 
-	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
-		auras.filter = db.filter or 'HARMFUL'
-	elseif E.Retail then
-		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
-	end
-
 	if E.Retail then
 		auras.noMouse = true
 		auras.keepSizeRatio = db.keepSizeRatio
@@ -178,13 +216,20 @@ function NP:Configure_Auras(nameplate, which)
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 
-		auras.filters.please = auras.filter..'|PLAYER'
-	--	UF:UpdateFilters(auras) -- attach the objects
-	--	UF:GroupFilters(auras, auras.filter) -- build the groups
+		local frameType = nameplate.frameType
+		if frameType then
+			local obj = NP.AuraContainers[frameType]
+			local info = obj and obj[which] or nil
 
-		auras.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
-		auras.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
-		auras.candidateFilters = E:Auras_CanidateFilters(auras.allowList, auras.blockList, auras.maxDuration)
+			auras.filter = info and info.filter or nil
+			auras.filters = info and info.filters or nil
+			auras.allowList = info and info.allowList or nil
+			auras.blockList = info and info.blockList or nil
+			auras.candidateFilters = info and info.candidateFilters or nil
+
+			--auras.filter = NP:GetAuraFilter(which, db)
+			--auras.filters.please = auras.filter..'|PLAYER'
+		end
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
