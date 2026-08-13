@@ -6,7 +6,7 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local strsplit, strlower, strfind = strsplit, strlower, strfind
+local strlower, strfind = strlower, strfind
 local next, type, wipe = next, type, wipe
 local huge = math.huge
 
