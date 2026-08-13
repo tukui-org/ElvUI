@@ -10,31 +10,35 @@ P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
 
 E.AuraDefaults = {
-	allowOthers = false,
-	useBlocklist = false,
-	useAllowlist = false,
-	isAuraDispellable = false,
-	isAuraDispellablePlayer = false,
-	isAuraImportant = false,
-	isAuraImportantPlayer = false,
-	isAuraCrowdControl = false,
-	isAuraCrowdControlPlayer = false,
-	isAuraBigDefensive = false,
-	isAuraBigDefensivePlayer = false,
-	isAuraRaidInCombat = false,
-	isAuraRaidInCombatPlayer = false,
-	isAuraRaidPlayerDispellable = false,
-	isAuraExternalDefensive = false,
-	isAuraExternalDefensivePlayer = false,
-	isAuraCancelable = false,
-	isAuraCancelablePlayer = false,
-	notAuraCancelable = false,
-	notAuraCancelablePlayer = false,
-	isAuraPlayer = false,
-	isAuraRaid = false,
-	isAuraRaidPlayer = false,
-	isAuraPermanent = false,
-	isAuraPermanentPlayer = false
+	-- General
+	isAuraPlayer = false, -- Player
+	allowOthers = false, -- Allow Others
+	useBlocklist = false, -- Filter Block
+	useAllowlist = false, -- Filter Allow
+	-- Player group
+	isAuraImportantPlayer = false, -- Important
+	isAuraDispellablePlayer = false, -- Dispellable
+	isAuraRaidPlayerDispellable = false, -- Player Dispellable
+	isAuraRaidPlayer = false, -- Raid
+	isAuraRaidInCombatPlayer = false, -- Raid Frames
+	isAuraCancelablePlayer = false, -- Is Cancelable
+	isAuraCrowdControlPlayer = false, -- Crowd Control
+	isAuraBigDefensivePlayer = false, -- Big Defensive
+	isAuraExternalDefensivePlayer = false, -- External Defensive
+	-- Others group
+	isAuraImportant = false, -- Important
+	isAuraDispellable = false, -- Dispellable
+	isAuraRaid = false, -- Raid
+	isAuraRaidInCombat = false, -- Raid Frames
+	isAuraCancelable = false, -- Is Cancelable
+	isAuraCrowdControl = false, -- Crowd Control
+	isAuraBigDefensive = false, -- Big Defensive
+	isAuraExternalDefensive = false, -- External Defensive
+	-- Unused
+	isAuraPermanent = false, -- Block Permanent
+	isAuraPermanentPlayer = false, -- Block Permanent
+	notAuraCancelable = false, -- Not Cancelable
+	notAuraCancelablePlayer = false, -- Not Cancelable
 }
 
 --Core
