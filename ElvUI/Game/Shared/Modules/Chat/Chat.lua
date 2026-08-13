@@ -825,7 +825,10 @@ function CH:ChatEdit_UpdateHeader(editbox)
 
 	--Increase inset on right side to make room for character count text
 	local insetLeft, insetRight, insetTop, insetBottom = editbox:GetTextInsets()
-	editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
+	if E:NotSecretValue(insetRight) then -- we cant always do this
+		editbox:SetTextInsets(insetLeft, insetRight + 30, insetTop, insetBottom)
+	end
+
 	editbox:SetTemplate(nil, true)
 
 	if chanIndex and (chatType == 'CHANNEL') then
