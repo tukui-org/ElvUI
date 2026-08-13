@@ -27,7 +27,10 @@ function UF:GetRoleIcon(frame)
 		local rnd = random(1, 3)
 		return (rnd == 1 and 'TANK') or (rnd == 2 and 'HEALER') or 'DAMAGER'
 	else
-		return E.allowRoles and UnitGroupRolesAssigned(frame.unit)
+		local role = E.allowRoles and UnitGroupRolesAssigned(frame.unit)
+		if E:NotSecretValue(role) then
+			return role
+		end
 	end
 end
 
@@ -36,13 +39,12 @@ function UF:UpdateRoleIcon()
 	if not self.db then return end
 
 	local role = UF:GetRoleIcon(self)
+	self.role = role -- set this here for only healer power
+
 	local db = self.db.roleIcon
-	if not db or not db.enable or E:IsSecretValue(role) then
-		self.role = nil
+	if not db or not db.enable then
 		lfdrole:Hide()
 		return
-	else
-		self.role = role -- set this here for only healer power
 	end
 
 	local show = self.isForced or UnitExists(self.unit)
