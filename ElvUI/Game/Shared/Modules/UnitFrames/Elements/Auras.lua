@@ -558,6 +558,7 @@ function UF:Configure_Auras(frame, which)
 	if E.Retail then
 		auras:SetEnabled(settings.enable)
 
+		auras.isUnitframe = true
 		auras.keepSizeRatio = settings.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]

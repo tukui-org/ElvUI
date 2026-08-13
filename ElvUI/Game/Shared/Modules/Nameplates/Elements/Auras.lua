@@ -200,6 +200,7 @@ function NP:Configure_Auras(nameplate, which)
 	local auraType = strlower(which)
 	local db = plateDB[auraType]
 
+	auras.isNameplate = true
 	auras.size = db.size
 	auras.height = not db.keepSizeRatio and db.height
 	auras.numAuras = db.numAuras
