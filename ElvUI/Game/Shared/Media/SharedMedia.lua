@@ -242,6 +242,7 @@ do	-- LSM late loader ~Simpy
 		if pendingFonts then
 			pendingFonts = nil
 
+			E:UpdateBlizzardSpecialFonts()
 			E:UpdateBlizzardFonts()
 			E:UpdateFontTemplates()
 
@@ -310,8 +311,6 @@ do	-- LSM Font Preloader ~Simpy
 		local isFont = mediaType == 'font'
 		if isFont then
 			cacheFont(key, data)
-
-			E:UpdateBlizzardSpecialFonts()
 		end
 
 		local isBars = mediaType == 'statusbar' or mediaType == 'background'
