@@ -360,20 +360,24 @@ function E:Auras_UpdateButton(container, button)
 		end -- will also update the cooldown when needed
 	end
 
-	if container.useStatusbar then
+	if container.isTopAura then
 		local statusbar = button.statusbar
-		if statusbar then
+		if container.useStatusbar then
 			button:SetDurationBar(statusbar)
 
 			local color = container.barColor
-			statusbar:SetStatusBarColor(color.r, color.g, color.b)
+			statusbar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1)
 			statusbar:SetStatusBarTexture(container.barTexture)
+			statusbar:Show()
 
 			if container.isAuraBar then
 				statusbar.backdrop.Center:Hide()
 			end
 
 			A:Configure_Statusbar(button, statusbar, container.barDB)
+		else
+			button:ClearDurationBar()
+			statusbar:Hide()
 		end
 	elseif container.isAuraBar then
 		if button.statusbar then
