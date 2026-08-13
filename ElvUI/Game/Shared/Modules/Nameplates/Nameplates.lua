@@ -740,7 +740,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
 
 	self.className, self.classFile, self.classID = UnitClass(unit)
-	self.classColor = self.isPlayer and (E:IsSecretValue(self.classFile) and C_ClassColor_GetClassColor(self.classFile)) or E:ClassColor(self.classFile)
+	self.classColor = self.isPlayer and (E:IsSecretValue(self.classFile) and C_ClassColor_GetClassColor(self.classFile) or E:ClassColor(self.classFile))
 	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
 	local specID, specIcon
