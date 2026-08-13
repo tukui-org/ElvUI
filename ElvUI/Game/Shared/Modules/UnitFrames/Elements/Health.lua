@@ -17,6 +17,7 @@ local UnitReaction = UnitReaction
 local UnitClass = UnitClass
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
+local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local customBackdrop = Mixin({}, ColorMixin)
 
 local HOSTILE_REACTION = 2
@@ -328,8 +329,8 @@ function UF:PostUpdateHealthColor(unit, color)
 			customBackdrop:SetRGB(backdrop.r, backdrop.g, backdrop.b)
 			bgc = customBackdrop
 		elseif colors.classbackdrop then
-			if E:NotSecretValue(classToken) and classToken and (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then
-				local classColor = parent.colors.class[classToken]
+			if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
+				local classColor = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or parent.colors.class[classToken]
 				if classColor then
 					customBackdrop:SetRGB(classColor.r, classColor.g, classColor.b)
 					bgc = customBackdrop

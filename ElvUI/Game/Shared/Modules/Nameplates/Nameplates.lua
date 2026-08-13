@@ -29,6 +29,7 @@ local UnitReaction = UnitReaction
 local UnitWidgetSet = UnitWidgetSet
 
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
+local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local GetCVarDefault = C_CVar.GetCVarDefault
@@ -737,8 +738,10 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
 	self.unitName, self.unitRealm = UnitName(unit)
 	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
+
 	self.className, self.classFile, self.classID = UnitClass(unit)
-	self.classColor = (self.isPlayer and E:NotSecretValue(self.classFile) and E:ClassColor(self.classFile)) or (self.repReaction and NP.Colors.reactions[self.repReaction]) or nil
+	self.classColor = self.isPlayer and (E:IsSecretValue(self.classFile) and C_ClassColor_GetClassColor(self.classFile)) or E:ClassColor(self.classFile)
+	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
 	local specID, specIcon
 	local spec = E.Retail and E:GetUnitSpecInfo(unit)
@@ -849,7 +852,7 @@ function NP:UNIT_FACTION(_, unit)
 	self.faction = UnitFactionGroup(unit)
 	self.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
-	self.classColor = (self.isPlayer and E:NotSecretValue(self.classFile) and E:ClassColor(self.classFile)) or (self.repReaction and NP.Colors.reactions[self.repReaction]) or nil
+	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)

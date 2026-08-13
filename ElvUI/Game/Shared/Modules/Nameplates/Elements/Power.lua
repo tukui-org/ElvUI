@@ -13,6 +13,7 @@ local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 
+local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
@@ -54,8 +55,8 @@ function NP:Power_UpdateColor(_, unit)
 		if element.useAtlas and color and color.atlas then
 			atlas = color.atlas
 		end
-	elseif E:NotSecretValue(classToken) and classToken and ((element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and unitControlled and not self.isPlayer)) then
-		color = self.colors.class[classToken]
+	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and unitControlled and not self.isPlayer) then
+		color = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif Selection then
 		color = NP.Colors.selection[Selection]
 	elseif element.colorReaction and unitReaction then
