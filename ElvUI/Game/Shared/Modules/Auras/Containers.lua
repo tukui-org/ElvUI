@@ -16,6 +16,7 @@ local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 local CopyTable = CopyTable
 
+local ItemEnchantmentPlacement = _G.CustomAuraContainerItemEnchantmentPlacement
 local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
 local OFFHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.OffHand
@@ -580,6 +581,17 @@ do
 end
 
 do
+	local temp, layout = {}, {}
+	function E:Auras_SetupEnchantment(container, key, filter, spacing, placement)
+		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter)
+		layout.elementSpacing = spacing
+		layout.placement = placement
+
+		return temp, layout
+	end
+end
+
+do
 	local temp = {}
 	function E:Auras_SetupGroup(container, key, filter, candidate, layout, maxCount, sortMethod, sortDirection)
 		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter)
@@ -632,7 +644,8 @@ function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount
 end
 
 function E:Auras_SetEnchantments(container)
-	local group = E:Auras_SetupGroup(container)
+	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, container.spacing, ItemEnchantmentPlacement.AfterAuraGroups)
+	container:SetItemEnchantmentLayout(layout)
 	container:AddItemEnchantment(MAINHAND, group)
 	container:AddItemEnchantment(OFFHAND, group)
 end
