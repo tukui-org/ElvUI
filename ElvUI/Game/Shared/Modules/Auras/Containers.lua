@@ -576,7 +576,7 @@ end
 
 do
 	local spell = {}
-	function E:Auras_DispelFilter(container, data)
+	function E:Auras_FilterHighlight(container, data)
 		local temp = container.candidateTemp
 		wipe(temp) -- trash object for reuse
 
@@ -685,7 +685,7 @@ function E:Auras_SetHighlight(container)
 	if groupKey == 'bad' then
 		if container.known[groupKey] then return end
 
-		local candidateFilters = E:Auras_DispelFilter(container)
+		local candidateFilters = E:Auras_FilterHighlight(container)
 		container.candidateFilters = candidateFilters
 
 		local slot = E:Auras_SetupHighlight(container, candidateFilters)
@@ -694,7 +694,7 @@ function E:Auras_SetHighlight(container)
 		container.known[groupKey] = 'meow'
 	else
 		for key, data in next, container.keys do
-			local candidateFilters = E:Auras_DispelFilter(container, data)
+			local candidateFilters = E:Auras_FilterHighlight(container, data)
 			container.candidateFilters = candidateFilters
 
 			local groupFilter = container.filter .. (data.ownOnly and '|PLAYER' or '')
