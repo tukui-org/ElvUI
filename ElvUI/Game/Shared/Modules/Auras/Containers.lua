@@ -16,6 +16,7 @@ local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 local CopyTable = CopyTable
 
+local GetCVarBool = C_CVar.GetCVarBool
 local ItemEnchantmentPlacement = _G.CustomAuraContainerItemEnchantmentPlacement
 local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
@@ -307,6 +308,7 @@ function E:Auras_UpdateButton(container, button)
 	local width, height = E:Auras_GetSize(container)
 	button:Size(width, height)
 	button:SetMouseMotionEnabled(not container.noMouse)
+	button:SetCancelAuraButtons(GetCVarBool('ActionButtonUseKeyDown') and 'RightButtonDown' or 'RightButtonUp')
 
 	if button.texture then
 		if container.isAuraBar or container.keepSizeRatio or (width == height) then
@@ -459,10 +461,6 @@ function E:Auras_UpdateButton(container, button)
 		if container.isAuraBar then
 			button:SetSpellName(textFrame.nameText)
 		end
-	end
-
-	if container.unit == 'player' then
-		button:SetCancelAuraButtons('RightButtonUp')
 	end
 
 	if container.MasqueGroup then
