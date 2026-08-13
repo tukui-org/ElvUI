@@ -239,6 +239,10 @@ do	-- LSM late loader ~Simpy
 	function E:LSM_Update()
 		pendingRefresh = nil
 
+		if not E.db or not E.private then
+			return -- way too soon
+		end
+
 		if pendingFonts then
 			pendingFonts = nil
 
