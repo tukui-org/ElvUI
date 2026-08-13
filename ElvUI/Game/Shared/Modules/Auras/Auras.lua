@@ -64,7 +64,7 @@ local DIRECTION_TO_VERTICAL_SPACING_MULTIPLIER = {
 	LEFT_UP = 1,
 }
 
-local IS_HORIZONTAL_GROWTH = {
+E.AuraHorizontalGrowth = {
 	RIGHT_DOWN = true,
 	RIGHT_UP = true,
 	LEFT_DOWN = true,
@@ -561,7 +561,7 @@ function A:UpdateHeader(header)
 	local width, height = db.size, (db.keepSizeRatio and db.size) or db.height
 
 	local minWidth, minHeight, xOffset, yOffset, wrapXOffset, wrapYOffset
-	if IS_HORIZONTAL_GROWTH[db.growthDirection] then
+	if E.AuraHorizontalGrowth[db.growthDirection] then
 		minWidth = ((db.wrapAfter == 1 and 0 or db.horizontalSpacing) + width) * db.wrapAfter
 		minHeight = (db.verticalSpacing + height) * db.maxWraps
 		xOffset = DIRECTION_TO_HORIZONTAL_SPACING_MULTIPLIER[db.growthDirection] * (db.horizontalSpacing + width)
@@ -581,12 +581,16 @@ function A:UpdateHeader(header)
 		header.barDB = db
 		header.width = width
 		header.height = height
+		header.size = db.size
 		header.spacing = db.horizontalSpacing
 		header.keepSizeRatio = db.keepSizeRatio
+		header.growthDirection = db.growthDirection
 		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 		header.useStatusbar = db.barShow
 		header.barColor = db.barColor
+		header.numAuras = db.wrapAfter
+		header.initialAnchor = DIRECTION_TO_POINT[db.growthDirection]
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
 		header.countPosition, header.countXOffset, header.countYOffset = 'BOTTOMRIGHT', db.countXOffset, db.countYOffset
 		header.countFont, header.countFontSize, header.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
@@ -597,6 +601,7 @@ function A:UpdateHeader(header)
 		header:SetSize(minWidth, minHeight)
 
 		E:Auras_SetContainer(header)
+		E:Auras_SetLineSize(header)
 		E:Auras_UpdateButtons(header)
 	else
 		E:UpdateClassColor(db.barColor)

@@ -6,7 +6,7 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local strlower, strfind = strlower, strfind
+local strsplit, strlower, strfind = strsplit, strlower, strfind
 local next, type, wipe = next, type, wipe
 local huge = math.huge
 
@@ -29,6 +29,7 @@ local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
 
 E.AuraContainerSortDirection = {}
 E.AuraContainerSortMethod = {}
+-- E.AuraHorizontalGrowth is made in Auras.lua
 
 E.AuraFocus = {}
 E.AuraTarget = {}
@@ -91,6 +92,10 @@ function E:Auras_OnEvent(event)
 
 		container:UpdateAllAuras()
 	end
+end
+
+function E:Auras_FlowConvert(growthDirection)
+	return strsplit('_', growthDirection)
 end
 
 function E:Auras_FlowDirection(growthX, growthY)
@@ -745,6 +750,15 @@ function E:Auras_SetContainer(container)
 
 	local anchor = container.initialAnchor or 'BOTTOMLEFT'
 	container:SetFlowLayoutAnchorPoint(anchor)
+
+	local direction = container.growthDirection
+	if direction then
+		if E.AuraHorizontalGrowth[direction] then
+			container.growthX, container.growthY = E:Auras_FlowConvert(direction)
+		else
+			container.growthY, container.growthX = E:Auras_FlowConvert(direction)
+		end
+	end
 
 	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
 	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
