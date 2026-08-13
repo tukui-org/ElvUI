@@ -215,6 +215,37 @@ local function UpdateFriendInviteHeaderButton(button)
 	end
 end
 
+local function HandleRecentAllies(frame)
+	local invite = InviteAtlas['friendslist-invitebutton-default-normal']
+
+	for _, button in next, { frame.ScrollTarget:GetChildren() } do
+		if button.IsSkinned then return end
+		button.IsSkinned = true
+
+		local partyButton = button.PartyButton
+		if partyButton then
+			local normal = partyButton:GetNormalTexture()
+			normal:SetTexture(invite)
+			normal:SetTexCoords()
+
+			local highlight = partyButton:GetHighlightTexture()
+			highlight:SetTexture(invite)
+			highlight:SetTexCoords()
+
+			local disabled = partyButton:GetDisabledTexture()
+			disabled:SetTexture(invite)
+			disabled:SetDesaturated(true)
+			disabled:SetTexCoords()
+
+			partyButton:ClearAllPoints()
+			partyButton:Point('RIGHT', -2, 0)
+
+			partyButton:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+			partyButton:Size(24)
+		end
+	end
+end
+
 local StripAllTextures = {
 	'WhoFrameColumnHeader1',
 	'WhoFrameColumnHeader2',
@@ -309,6 +340,12 @@ function S:FriendsFrame()
 	S:HandleEditBox(broadcastEdit)
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate('Transparent')
+
+	local alliesFrame = _G.RecentAlliesFrame
+	local recentAllies = alliesFrame and alliesFrame.List
+	if recentAllies then
+		hooksecurefunc(recentAllies.ScrollBox, 'Update', HandleRecentAllies)
+	end
 
 	hooksecurefunc('FriendsFrame_UpdateFriendButton', UpdateFriendButton)
 	hooksecurefunc('FriendsFrame_UpdateFriendInviteButton', UpdateFriendInviteButton)
