@@ -502,13 +502,16 @@ local function FontTemplate(fs, fontName, fontSize, fontStyle, skip)
 	local shadow = strsub(fontStyle, 0, 6) == 'SHADOW'
 	if shadow then fontStyle = strsub(fontStyle, 7) end -- shadow isnt a real style
 
-	if fs.SetScaleAnimationMode then
-		fs:SetScaleAnimationMode(slug and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
-	end
+	local ok = pcall(fs.GetFont, fs)
+	if ok then -- IsForbidden doesnt work
+		if fs.SetScaleAnimationMode then
+			fs:SetScaleAnimationMode(slug and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
+		end
 
-	local font = (fontName and LSM:Fetch('font', fontName)) or E.media.normFont
-	fs:SetFont(font, fontSize, fontStyle)
-	E:SetFontShadow(fs, fontStyle, shadow)
+		local font = (fontName and LSM:Fetch('font', fontName)) or E.media.normFont
+		fs:SetFont(font, fontSize, fontStyle)
+		E:SetFontShadow(fs, fontStyle, shadow)
+	end
 end
 
 local function StyleButton(button, noHover, noPushed, noChecked)
