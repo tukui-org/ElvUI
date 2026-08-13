@@ -63,14 +63,17 @@ G.unitframe.aurafilters.Whitelist = {
 		[255234] = List(), -- Totemic Revival | Can accept Totem Res
 		-- Warlock
 		-- Priest
+		[10060] = List(), -- Power Infusion
 		-- Mage
 		-- Rogue
 		-- Monk
 		-- Druid
+		[29166] = List(), -- Innervate
 		-- Demon Hunter
 		-- Shaman
 		-- Hunter
 		-- Evoker
+		[406789] = List(), -- Spatial Paradox (Others)
 		-- Warrior
 		-- Paladin
 		-- Death Knight
