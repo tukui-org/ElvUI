@@ -581,7 +581,6 @@ do
 		wipe(temp) -- trash object for reuse
 
 		if data then
-			temp.isFromPlayerOrPlayerPet = data.ownOnly or nil
 			temp.includeSpellIDs = spell
 
 			wipe(spell)
@@ -682,27 +681,29 @@ function E:Auras_AddSlot(container, key, candidate, sortMethod, sortDirection, d
 end
 
 function E:Auras_SetHighlight(container)
-	local KEY, FILTER = container.key, container.filter
-	if KEY == 'bad' then
-		if container.known[KEY] then return end
+	local groupKey = container.key
+	if groupKey == 'bad' then
+		if container.known[groupKey] then return end
 
 		local candidateFilters = E:Auras_DispelFilter(container)
 		container.candidateFilters = candidateFilters
 
 		local slot = E:Auras_SetupHighlight(container, candidateFilters)
-		container:AddAuraSlot(KEY, FILTER, slot)
+		container:AddAuraSlot(groupKey, container.filter, slot)
 
-		container.known[KEY] = 'meow'
+		container.known[groupKey] = 'meow'
 	else
 		for key, data in next, container.keys do
 			local candidateFilters = E:Auras_DispelFilter(container, data)
 			container.candidateFilters = candidateFilters
 
+			local groupFilter = container.filter .. (data.ownOnly and '|PLAYER' or '')
 			if container.known[key] then
+				container:SetAuraGroupFilterString(key, groupFilter)
 				container:SetAuraSlotCandidateFilters(key, candidateFilters)
 			else
 				local slot = E:Auras_SetupHighlight(container, candidateFilters, key, data)
-				container:AddAuraSlot(key, FILTER, slot)
+				container:AddAuraSlot(key, groupFilter, slot)
 				container.known[key] = 'bark'
 			end
 		end
