@@ -222,6 +222,7 @@ function E:Auras_UpdateIndicator(container, button)
 				local color = data.color
 				button.texture:SetTexture(E.media.blankTex)
 				button.texture:SetVertexColor(color.r, color.g, color.b)
+				button:ClearIcon()
 			else
 				button:SetIcon(button.texture)
 				button.texture:SetVertexColor(1, 1, 1)
