@@ -160,7 +160,7 @@ function NP:Configure_AuraFilters(nameplate, which)
 	local info = obj and obj[which]
 	if not info then return end
 
-	return info.filter, info.filters, info.allowList, info.blockList, info.candidateFilters
+	return info.filter, info.filters, info.allowList, info.blockList, info.candidateFilters, info.maxDuration
 end
 
 do
@@ -224,11 +224,10 @@ function NP:Configure_Auras(nameplate, which)
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		auras.nameplateType = nameplate.frameType
-		auras.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 
-		auras.filter, auras.filters, auras.allowList, auras.blockList, auras.candidateFilters = NP:Configure_AuraFilters(nameplate, which)
+		auras.filter, auras.filters, auras.allowList, auras.blockList, auras.candidateFilters, auras.maxDuration = NP:Configure_AuraFilters(nameplate, which)
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
