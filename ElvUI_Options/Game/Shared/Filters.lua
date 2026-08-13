@@ -420,7 +420,7 @@ Filters.mainOptions.args.auraIndicator.args.style = ACH:Select(L["Style"], nil, 
 Filters.mainOptions.args.auraIndicator.args.color = ACH:Color(' ', nil, 4, true, nil, nil, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'texturedIcon' end)
 Filters.mainOptions.args.auraIndicator.args.spacer = ACH:Spacer(5)
 Filters.mainOptions.args.auraIndicator.args.anyUnit = ACH:Toggle(L["Show Aura From Other Players"], nil, 6, nil, nil, 205)
-Filters.mainOptions.args.auraIndicator.args.onlyShowMissing = ACH:Toggle(L["Show When Not Active"], nil, 7)
+Filters.mainOptions.args.auraIndicator.args.onlyShowMissing = ACH:Toggle(L["Show When Not Active"], nil, 7, nil, nil, nil, nil, nil, nil, E.Retail)
 Filters.mainOptions.args.auraIndicator.args.displayText = ACH:Toggle(L["Display Text"], nil, 8, nil, nil, nil, function(info) local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return (selectedTable[spell].style == 'timerOnly') or selectedTable[spell][info[#info]] end, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'timerOnly' end)
 
 Filters.mainOptions.args.auraIndicator.args.positionGroup = ACH:Group(L["Position"], nil, 15)
