@@ -134,7 +134,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.Retail, nil, nil, nil, nil, nil, E.Retail)
 	group.args.midnightGroup.args.player.inline = true
 
-	group.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20, nil, E.Retail and function(info) local value = E.db.nameplates.units[unit][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.Retail and function(info, value) E.db.nameplates.units[unit][auraType][info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end or nil, function() return E.db.nameplates.units[unit][auraType].allowOthers end)
+	group.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20, nil, E.Retail and function(info) local value = E.db.nameplates.units[unit][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.Retail and function(info, value) E.db.nameplates.units[unit][auraType][info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end or nil, function() return not E.db.nameplates.units[unit][auraType].allowOthers end)
 	group.args.midnightGroup.args.others.args.isAuraImportant = ACH:Toggle(L["Important"], nil, 1, E.Retail, nil, nil, nil, nil, nil, E.Retail)
 	group.args.midnightGroup.args.others.args.isAuraDispellable = ACH:Toggle(L["Dispellable"], nil, 2, E.Retail, nil, nil, nil, nil, nil, E.Retail)
 	group.args.midnightGroup.args.others.args.isAuraRaid = ACH:Toggle(L["Raid"], nil, 3, E.Retail)
