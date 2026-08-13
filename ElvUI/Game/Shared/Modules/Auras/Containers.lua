@@ -129,8 +129,6 @@ function E:Auras_CreateIndicator(button)
 	button.backdrop = backdrop
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
-	-- statusbar:CreateBackdrop('Transparent')
-	-- statusbar.backdrop.Center:Hide()
 	button.statusbar = statusbar
 
 	local texture = button:CreateTexture(nil, 'ARTWORK')
@@ -266,7 +264,6 @@ function E:Auras_CreateButton(button)
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
 	statusbar:CreateBackdrop('Transparent', nil, true) -- these are forbidden, ignore updates
-	statusbar.backdrop.Center:Hide()
 	button.statusbar = statusbar
 
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
@@ -364,14 +361,19 @@ function E:Auras_UpdateButton(container, button)
 	end
 
 	if container.useStatusbar then
-		if button.statusbar then
-			button:SetDurationBar(button.statusbar)
+		local statusbar = button.statusbar
+		if statusbar then
+			button:SetDurationBar(statusbar)
 
 			local color = container.barColor
-			button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
-			button.statusbar:SetStatusBarTexture(container.barTexture)
+			statusbar:SetStatusBarColor(color.r, color.g, color.b)
+			statusbar:SetStatusBarTexture(container.barTexture)
 
-			A:Configure_Statusbar(button, button.statusbar, container.barDB)
+			if container.isAuraBar then
+				statusbar.backdrop.Center:Hide()
+			end
+
+			A:Configure_Statusbar(button, statusbar, container.barDB)
 		end
 	elseif container.isAuraBar then
 		if button.statusbar then
