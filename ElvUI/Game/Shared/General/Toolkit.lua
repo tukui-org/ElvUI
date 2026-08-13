@@ -502,8 +502,7 @@ local function FontTemplate(fs, fontName, fontSize, fontStyle, skip)
 	local shadow = strsub(fontStyle, 0, 6) == 'SHADOW'
 	if shadow then fontStyle = strsub(fontStyle, 7) end -- shadow isnt a real style
 
-	local ok = pcall(fs.GetFont, fs)
-	if ok then -- IsForbidden doesnt work
+	if not fs.CanBeAccessedInContext or fs:CanBeAccessedInContext() then
 		if fs.SetScaleAnimationMode then
 			fs:SetScaleAnimationMode(slug and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
 		end
