@@ -732,14 +732,19 @@ function E:Auras_SetupList(container, auraTable)
 	wipe(container.keys)
 
 	for spell, data in next, auraTable do
-		if container.isIndicator and data.enabled then
-			container.keys[spell..''] = data
-		elseif container.isHighlight and data.enable then
-			if not data.id then
-				data.id = spell
+		local key = spell..''
+		if container.isIndicator then
+			if data.enabled then
+				container.keys[key] = data
 			end
+		elseif container.isHighlight then
+			if data.enable then
+				if not data.id then
+					data.id = spell
+				end
 
-			container.keys[spell..''] = data
+				container.keys[key] = data
+			end
 		end
 	end
 end
