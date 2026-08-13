@@ -21,6 +21,7 @@ local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
 local OFFHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.OffHand
 local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
+local FLOWAXIS = AnchorUtil and AnchorUtil.FlowLayoutAxis
 local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
@@ -54,6 +55,17 @@ E.AuraEvents = {
 E.AuraEventUnits = {
 	PLAYER_TARGET_CHANGED = 'target',
 	PLAYER_FOCUS_CHANGED = 'focus'
+}
+
+E.AuraGrowthMap = {
+	RIGHT_DOWN	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Down,	anchor = 'TOPLEFT' },
+	RIGHT_UP	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMLEFT' },
+	LEFT_DOWN	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Down,	anchor = 'TOPRIGHT' },
+	LEFT_UP		= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMRIGHT' },
+	DOWN_RIGHT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Down,	anchor = 'TOPLEFT' },
+	DOWN_LEFT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Down,	anchor = 'TOPRIGHT' },
+	UP_RIGHT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMLEFT' },
+	UP_LEFT		= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMRIGHT' },
 }
 
 if SORTMETHOD then -- add the new ones (?)
@@ -522,13 +534,8 @@ function E:Auras_GenerateHighlight(container, key, data)
 	end
 end
 
-function E:Auras_GetSize(container, sizeOnly)
-	local size = container.size or 24
-	if sizeOnly then
-		return size
-	end
-
-	return container.width or size, container.height or size
+function E:Auras_GetSize(container)
+	return container.width or container.size or 24, container.height or container.size or 24
 end
 
 function E:Auras_UpdateLayout(container)
@@ -748,20 +755,19 @@ function E:Auras_SetContainer(container)
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 	local layout = E:Auras_UpdateLayout(container)
 
-	local anchor = container.initialAnchor or 'BOTTOMLEFT'
-	container:SetFlowLayoutAnchorPoint(anchor)
-
-	local direction = container.growthDirection
-	if direction then
-		if E.AuraHorizontalGrowth[direction] then
-			container.growthX, container.growthY = E:Auras_FlowConvert(direction)
-		else
-			container.growthY, container.growthX = E:Auras_FlowConvert(direction)
-		end
+	local growth, anchor, horiz, vert, axis = E.AuraGrowthMap[container.growthDirection]
+	if growth then
+		anchor, horiz, vert, axis = growth.anchor, growth.horiz, growth.vert, growth.axis
+	else
+		anchor, horiz, vert = container.initialAnchor or 'BOTTOMLEFT', E:Auras_FlowDirection(container.growthX, container.growthY)
 	end
 
-	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
-	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
+	container:SetFlowLayoutGrowthDirection(horiz, vert)
+	container:SetFlowLayoutAnchorPoint(anchor)
+
+	if axis then
+		container:SetFlowLayoutAxis(axis)
+	end
 
 	for key, filter in next, container.active do -- known but not active anymore
 		if container.known[key] and (container.filters[key] ~= filter) then
@@ -785,7 +791,8 @@ function E:Auras_SetContainer(container)
 end
 
 function E:Auras_SetLineSize(container)
-	local size = E:Auras_GetSize(container, true)
+	local width, height = E:Auras_GetSize(container)
+	local size = container.useWidth and width or height
 	local rowWidth = (container.numAuras and container.numAuras > 0 and (container.numAuras * (size + (container.spacing or 0)))) or container:GetWidth()
 	container:SetFlowLayoutMaximumLineSize((E:NotSecretValue(rowWidth) and rowWidth and rowWidth > 0 and rowWidth) or huge)
 end
