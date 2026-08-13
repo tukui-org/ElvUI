@@ -242,6 +242,7 @@ do	-- LSM late loader ~Simpy
 		if pendingFonts then
 			pendingFonts = nil
 
+			E:UpdateBlizzardSpecialFonts()
 			E:UpdateBlizzardFonts()
 			E:UpdateFontTemplates()
 
