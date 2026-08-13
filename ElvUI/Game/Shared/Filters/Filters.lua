@@ -64,7 +64,7 @@ E.Filters.Expand = function(output, source)
 	return output
 end
 
--- Profile specific BuffIndicator
+-- Profile specific
 P.unitframe.filters = {
 	aurawatch = {},
 }

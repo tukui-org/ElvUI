@@ -375,7 +375,7 @@ local function ApplyToAll(db, info, value)
 	end
 end
 
-local function BuffIndicator_ApplyToAll(info, value, profile, pet)
+local function AuraWatch_ApplyToAll(info, value, profile, pet)
 	if pet then
 		return ApplyToAll(E.global.unitframe.aurawatch.PET, info, value)
 	elseif profile then
@@ -408,7 +408,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
 		config.set = function(info, value) E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end
 	else
-		config.args.applyToAll = ACH:Group(L["Apply To All"], nil, 50, nil, function(info) return BuffIndicator_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) end, function(info, value) BuffIndicator_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) updateFunc(UF, groupName, numGroup) end)
+		config.args.applyToAll = ACH:Group(L["Apply To All"], nil, 50, nil, function(info) return AuraWatch_ApplyToAll(info, nil, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) end, function(info, value) AuraWatch_ApplyToAll(info, value, E.db.unitframe.units[groupName].buffIndicator.profileSpecific, petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific) updateFunc(UF, groupName, numGroup) end)
 		config.args.applyToAll.args.header = ACH:Description(L["|cffFF3333Warning:|r Changing options in this section will apply to all Aura Indicator auras. To change only one Aura, please click \"Configure Auras\" and change that specific Auras settings. If \"Profile Specific\" is selected it will apply to that filter set."], 1)
 		config.args.applyToAll.args.style = ACH:Select(L["Style"], nil, 2, { timerOnly = L["Timer Only"], coloredIcon = L["Colored Icon"], texturedIcon = L["Textured Icon"] })
 		config.args.applyToAll.args.displayText = ACH:Toggle(L["Display Text"], nil, 4)

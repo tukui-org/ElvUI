@@ -6,7 +6,7 @@
 	<Script file='UnitFrames\Elements\AuraBars.lua'/>
 	<Script file='UnitFrames\Elements\Auras.lua'/>
 	<Script file='UnitFrames\Elements\AuraHighlight.lua'/>
-	<Script file='UnitFrames\Elements\BuffIndicator.lua'/>
+	<Script file='UnitFrames\Elements\AuraWatch.lua'/>
 	<Script file='UnitFrames\Elements\CastBar.lua'/>
 	<Script file='UnitFrames\Elements\ClassBars.lua'/>
 	<Script file='UnitFrames\Elements\CombatIndicator.lua'/>

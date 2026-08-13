@@ -16,8 +16,8 @@ function UF:Construct_AuraWatch(frame)
 		auras:SetInside(frame.Health)
 
 		auras.allowStacks = UF.SourceStacks -- fake stacking (same spell id)
-		auras.PostCreateIcon = UF.BuffIndicator_PostCreateIcon
-		auras.PostUpdateIcon = UF.BuffIndicator_PostUpdateIcon
+		auras.PostCreateIcon = UF.AuraWatch_PostCreateIcon
+		auras.PostUpdateIcon = UF.AuraWatch_PostUpdateIcon
 
 		return auras
 	end
@@ -70,7 +70,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 	end
 end
 
-function UF:BuffIndicator_PostCreateIcon(button)
+function UF:AuraWatch_PostCreateIcon(button)
 	button.cd:SetAllPoints(button.icon)
 
 	E:RegisterCooldown(button.cd, 'auraindicator')
@@ -87,7 +87,7 @@ function UF:BuffIndicator_PostCreateIcon(button)
 	button.count:SetJustifyH('RIGHT')
 end
 
-function UF:BuffIndicator_PostUpdateIcon(_, button)
+function UF:AuraWatch_PostUpdateIcon(_, button)
 	local settings = self.watched[button.spellID]
 	if not settings then return end -- This should never fail
 
