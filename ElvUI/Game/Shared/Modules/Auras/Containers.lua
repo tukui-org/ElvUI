@@ -699,7 +699,7 @@ function E:Auras_SetHighlight(container)
 
 			local groupFilter = container.filter .. (data.ownOnly and '|PLAYER' or '')
 			if container.known[key] then
-				container:SetAuraGroupFilterString(key, groupFilter)
+				container:SetAuraSlotFilterString(key, groupFilter)
 				container:SetAuraSlotCandidateFilters(key, candidateFilters)
 			else
 				local slot = E:Auras_SetupHighlight(container, candidateFilters, key, data)
