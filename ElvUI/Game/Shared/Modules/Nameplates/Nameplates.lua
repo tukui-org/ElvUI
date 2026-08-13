@@ -323,7 +323,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
-	nameplate.PrivateAuras = NP:Construct_PrivateAuras(nameplate)
 
 	NP:Construct_Auras(nameplate)
 	NP:Construct_ClassPowerTwo(nameplate)
@@ -420,7 +419,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:Update_TargetIndicator(nameplate)
 		NP:Update_ThreatIndicator(nameplate)
 		NP:Update_Cutaway(nameplate)
-		NP:Update_PrivateAuras(nameplate)
 		NP:Update_ClassPowerTwo(nameplate)
 
 		if nameplate == NP.PlayerFrame then
@@ -435,7 +433,6 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised)
 	end
 
 	NP:ReparentElements(nameplate, E.HiddenFrame)
-	NP:Update_PrivateAuras(nameplate, true)
 
 	if nameOnly then
 		NP:Update_Tags(nameplate)

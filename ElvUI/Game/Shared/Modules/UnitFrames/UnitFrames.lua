@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
-local PA = E:GetModule('PrivateAuras')
 local TT = E:GetModule('Tooltip')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
@@ -353,14 +352,13 @@ function UF:CreateRaisedElement(frame)
 
 	-- layers: level +1 is icons
 	RaisedElement.AuraLevel = RaisedLevel + 10
-	RaisedElement.PrivateAurasLevel = RaisedLevel + 15
-	RaisedElement.PVPSpecLevel = RaisedLevel + 20
-	RaisedElement.AuraBarLevel = RaisedLevel + 25
-	RaisedElement.RaidDebuffLevel = RaisedLevel + 30
-	RaisedElement.AuraWatchLevel = RaisedLevel + 35
-	RaisedElement.RestingIconLevel = RaisedLevel + 40
-	RaisedElement.RaidRoleLevel = RaisedLevel + 45
-	RaisedElement.CastBarLevel = RaisedLevel + 50
+	RaisedElement.PVPSpecLevel = RaisedLevel + 15
+	RaisedElement.AuraBarLevel = RaisedLevel + 20
+	RaisedElement.RaidDebuffLevel = RaisedLevel + 25
+	RaisedElement.AuraWatchLevel = RaisedLevel + 30
+	RaisedElement.RestingIconLevel = RaisedLevel + 35
+	RaisedElement.RaidRoleLevel = RaisedLevel + 40
+	RaisedElement.CastBarLevel = RaisedLevel + 45
 
 	return RaisedElement
 end
@@ -667,32 +665,6 @@ end
 
 function UF:Update_Templates()
 	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
-end
-
-function UF:Construct_PrivateAuras(frame)
-	local element = CreateFrame('Frame', frame.frameName..'PrivateAuras', frame.RaisedElementParent)
-	element.owner = frame
-
-	return element
-end
-
-function UF:Configure_PrivateAuras(frame)
-	local element = E.Retail and frame.PrivateAuras
-	if not element then return end
-
-	-- PA:RemoveAuras(element)
-
-	local db = frame.db and frame.db.privateAuras
-	element.db = db or nil
-
-	if db and db.enable then
-		element:SetFrameLevel(frame.RaisedElementParent.PrivateAurasLevel)
-		element:ClearAllPoints()
-		element:Point(db.parent.invertAnchor and E.InversePoints[db.parent.point] or db.parent.anchorPoint, frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
-		element:Size(db.icon.size)
-
-		-- PA:SetupAuras(element)
-	end
 end
 
 function UF:Construct_Fader()
@@ -1425,10 +1397,6 @@ do
 
 		if frame.AuraWatch then
 			UF:Configure_AuraWatch(frame, isPet[which])
-		end
-
-		if frame.PrivateAuras then
-			UF:Configure_PrivateAuras(frame)
 		end
 
 		if frame.RaidDebuffs then
@@ -2239,14 +2207,8 @@ do
 end
 
 function UF:UpdateAllElements(event)
-	if event == 'OnAttributeChanged' then
-		if self.PrivateAuras then
-			UF:Configure_PrivateAuras(self)
-		end
-
-		if E.Retail then
-			UF:Configure_UnitAuras(self)
-		end
+	if event == 'OnAttributeChanged' and E.Retail then
+		UF:Configure_UnitAuras(self)
 	end
 end
 

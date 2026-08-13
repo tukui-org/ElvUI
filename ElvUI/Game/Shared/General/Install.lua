@@ -537,7 +537,6 @@ function E:LayoutAnniversary()
 	E.db.general.minimap.resetZoom.time = 5
 	E.db.general.minimap.size = 226
 	E.db.general.objectiveFrameHeight = 750
-	E.db.general.privateAuras.icon.size = 66
 	E.db.general.resurrectSound = true
 	E.db.general.talkingHeadFrameScale = 1
 	E.db.general.totems.growthDirection = 'HORIZONTAL'
