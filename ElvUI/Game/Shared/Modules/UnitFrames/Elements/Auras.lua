@@ -565,6 +565,7 @@ function UF:Configure_Auras(frame, which)
 		auras.maxDuration = (settings.maxDuration and settings.maxDuration > 0) and settings.maxDuration or nil
 		auras.countPosition, auras.countXOffset, auras.countYOffset = settings.countPosition, settings.countXOffset, settings.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = settings.countFont, settings.countFontSize, settings.countFontOutline
+		auras.noMouse = settings.clickThrough
 
 		if settings.enable then
 			auras.allowList = settings.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, settings.allowList or 'Whitelist') or nil
