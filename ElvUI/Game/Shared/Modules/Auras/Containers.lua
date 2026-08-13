@@ -502,11 +502,12 @@ function E:Auras_GenerateButton(container, key, filter, isEnchantment)
 	end
 end
 
-function E:Auras_GenerateSlot(container, key, data)
+function E:Auras_GenerateSlot(container, key, filter, data)
 	return function(button)
 		container.indicators[button] = container
 
 		button.container = container
+		button.filter = filter
 		button.data = data
 		button.key = key
 
@@ -624,8 +625,8 @@ end
 
 do
 	local temp = {}
-	function E:Auras_SetupSlot(container, key, candidate, sortMethod, sortDirection, data)
-		temp.initializeFrame = E:Auras_GenerateSlot(container, key, data)
+	function E:Auras_SetupSlot(container, key, filter, candidate, sortMethod, sortDirection, data)
+		temp.initializeFrame = E:Auras_GenerateSlot(container, key, filter, data)
 		temp.candidateFilters = candidate
 		temp.sortDirection = sortDirection
 		temp.sortMethod = sortMethod
@@ -667,17 +668,18 @@ function E:Auras_SetEnchantments(container)
 	container:AddItemEnchantment(OFFHAND, group)
 end
 
-function E:Auras_UpdateSlot(container, key, filter, sortMethod, sortDirection)
-	if filter then
-		container:SetAuraSlotCandidateFilters(key, filter)
+function E:Auras_UpdateSlot(container, key, filter, candidate, sortMethod, sortDirection)
+	if candidate then
+		container:SetAuraSlotCandidateFilters(key, candidate)
 	end
 
+	container:SetAuraSlotFilterString(key, filter)
 	container:SetAuraSlotSortMethod(key, sortMethod, sortDirection)
 end
 
-function E:Auras_AddSlot(container, key, candidate, sortMethod, sortDirection, data)
-	local slot = E:Auras_SetupSlot(container, key, candidate, sortMethod, sortDirection, data)
-	container:AddAuraSlot(key, container.filter, slot)
+function E:Auras_AddSlot(container, key, filter, candidate, sortMethod, sortDirection, data)
+	local slot = E:Auras_SetupSlot(container, key, filter, candidate, sortMethod, sortDirection, data)
+	container:AddAuraSlot(key, filter, slot)
 end
 
 function E:Auras_SetHighlight(container)
@@ -697,13 +699,13 @@ function E:Auras_SetHighlight(container)
 			local candidateFilters = E:Auras_FilterHighlight(container, data)
 			container.candidateFilters = candidateFilters
 
-			local groupFilter = container.filter .. (data.ownOnly and '|PLAYER' or '')
+			local slotFilter = container.filter .. (data.ownOnly and '|PLAYER' or '')
 			if container.known[key] then
-				container:SetAuraSlotFilterString(key, groupFilter)
+				container:SetAuraSlotFilterString(key, slotFilter)
 				container:SetAuraSlotCandidateFilters(key, candidateFilters)
 			else
 				local slot = E:Auras_SetupHighlight(container, candidateFilters, key, data)
-				container:AddAuraSlot(key, groupFilter, slot)
+				container:AddAuraSlot(key, slotFilter, slot)
 				container.known[key] = 'bark'
 			end
 		end
@@ -718,10 +720,11 @@ function E:Auras_SetIndicator(container)
 		local candidateFilters = E:Auras_FilterIndicator(data)
 		container.candidateFilters = candidateFilters
 
+		local slotFilter = container.filter .. (data.anyUnit and '' or '|PLAYER')
 		if container.known[key] then
-			E:Auras_UpdateSlot(container, key, candidateFilters, sortMethod, sortDirection)
+			E:Auras_UpdateSlot(container, key, slotFilter, candidateFilters, sortMethod, sortDirection)
 		else
-			E:Auras_AddSlot(container, key, candidateFilters, sortMethod, sortDirection, data)
+			E:Auras_AddSlot(container, key, slotFilter, candidateFilters, sortMethod, sortDirection, data)
 
 			container.known[key] = data
 		end
