@@ -58,16 +58,18 @@ E.AuraEventUnits = {
 	PLAYER_FOCUS_CHANGED = 'focus'
 }
 
-E.AuraGrowthMap = {
-	RIGHT_DOWN	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Down,	anchor = 'TOPLEFT' },
-	RIGHT_UP	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMLEFT' },
-	LEFT_DOWN	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Down,	anchor = 'TOPRIGHT' },
-	LEFT_UP		= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMRIGHT' },
-	DOWN_RIGHT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Down,	anchor = 'TOPLEFT' },
-	DOWN_LEFT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Down,	anchor = 'TOPRIGHT' },
-	UP_RIGHT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMLEFT' },
-	UP_LEFT		= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMRIGHT' },
-}
+E.AuraGrowthMap = {}
+
+if FLOWAXIS then
+	E.AuraGrowthMap.RIGHT_DOWN	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Down,	anchor = 'TOPLEFT' }
+	E.AuraGrowthMap.RIGHT_UP	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMLEFT' }
+	E.AuraGrowthMap.LEFT_DOWN	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Down,	anchor = 'TOPRIGHT' }
+	E.AuraGrowthMap.LEFT_UP		= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMRIGHT' }
+	E.AuraGrowthMap.DOWN_RIGHT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Down,	anchor = 'TOPLEFT' }
+	E.AuraGrowthMap.DOWN_LEFT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Down,	anchor = 'TOPRIGHT' }
+	E.AuraGrowthMap.UP_RIGHT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMLEFT' }
+	E.AuraGrowthMap.UP_LEFT		= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMRIGHT' }
+end
 
 if SORTMETHOD then -- add the new ones (?)
 	-- top aura conversion
