@@ -312,13 +312,17 @@ function E:Auras_UpdateButton(container, button)
 		button:SetIcon(button.texture)
 	end
 
+	local valueColor = E.media.rgbvaluecolor
 	local borderColor = E.media.bordercolor
 	local backdropColor = E.media.backdropcolor
 	local backdropFadeColor = E.media.backdropfadecolor
 	if button.dispelBorder then
-		button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b) -- how can we do alpha?
-
-		button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+		if button.isEnchantment then
+			button.dispelBorder:SetVertexColor(valueColor.r, valueColor.g, valueColor.b)
+		else
+			button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
+			button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+		end
 	end
 
 	if button.border then
@@ -466,10 +470,11 @@ function E:Auras_UpdateIndicators(container)
 	end
 end
 
-function E:Auras_GenerateButton(container, key, filter)
+function E:Auras_GenerateButton(container, key, filter, isEnchantment)
 	return function(button)
 		container.buttons[button] = container
 
+		button.isEnchantment = isEnchantment
 		button.container = container
 		button.filter = filter
 		button.key = key
@@ -583,7 +588,7 @@ end
 do
 	local temp, layout = {}, {}
 	function E:Auras_SetupEnchantment(container, key, filter, spacing, placement)
-		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter)
+		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter, true)
 		layout.elementSpacing = spacing
 		layout.placement = placement
 
