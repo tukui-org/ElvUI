@@ -746,7 +746,7 @@ function E:Auras_SetupList(container, auraTable)
 end
 
 function E:Auras_SetContainer(container)
-	local maxCount = container.maxFrameCount or 32
+	local maxCount = container.maxFrameCount or 40
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 	local layout = E:Auras_UpdateLayout(container)
@@ -788,9 +788,10 @@ end
 
 function E:Auras_SetLineSize(container)
 	local width, height = E:Auras_GetSize(container)
-	local size = container.useWidth and width or height
-	local rowWidth = (container.numAuras and container.numAuras > 0 and (container.numAuras * (size + (container.spacing or 0)))) or container:GetWidth()
-	container:SetFlowLayoutMaximumLineSize((E:NotSecretValue(rowWidth) and rowWidth and rowWidth > 0 and rowWidth) or huge)
+	local line = (container.numAuras and container.numAuras > 0) and (container.numAuras * ((container.useWidth and width or height) + (container.spacing or 0)))
+	local size = line or (container.useWidth and container:GetWidth() or container:GetHeight())
+	local maximum = E:NotSecretValue(size) and (size and size > 0 and size)
+	container:SetFlowLayoutMaximumLineSize(maximum or huge)
 end
 
 function E:Auras_SetUnit(container, unit)
