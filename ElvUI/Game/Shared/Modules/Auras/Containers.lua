@@ -106,10 +106,6 @@ function E:Auras_OnEvent(event)
 	end
 end
 
-function E:Auras_FlowConvert(growthDirection)
-	return strsplit('_', growthDirection)
-end
-
 function E:Auras_FlowDirection(growthX, growthY)
 	return (growthX == 'LEFT' and FLOWDIRECTION.Left) or FLOWDIRECTION.Right, (growthY == 'DOWN' and FLOWDIRECTION.Down) or FLOWDIRECTION.Up
 end
