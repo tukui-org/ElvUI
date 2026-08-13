@@ -2,8 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 
+local next = next
 local unpack = unpack
 local strfind = strfind
+local strlower = strlower
 
 local CreateFrame = CreateFrame
 
@@ -142,32 +144,42 @@ function NP:Configure_AuraContainer(data, db)
 	UF:UpdateFilters(data, db) -- attach the objects
 	UF:GroupFilters(data, data.filter) -- build the groups
 
-	data.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
-	data.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
-	data.candidateFilters = E:Auras_CanidateFilters(data.allowList, data.blockList, data.maxDuration)
+	local maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
+	local allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
+	local blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
+	local candidateFilters = E:Auras_CanidateFilters(allowList, blockList, maxDuration)
+
+	return allowList, blockList, candidateFilters, maxDuration
+end
+
+function NP:Configure_AuraFilters(nameplate, which)
+	local frameType = nameplate.frameType
+	if not frameType then return end
+
+	local obj = NP.AuraContainers[frameType]
+	local info = obj and obj[which]
+	if not info then return end
+
+	return info.filter, info.filters, info.allowList, info.blockList, info.candidateFilters
 end
 
 do
-	local types = {
-		Auras = true,
-		Debuffs = true,
-		Buffs = true
-	}
-
+	local types = { 'Auras', 'Debuffs', 'Buffs' }
 	function NP:Configure_AuraContainers()
 		for frameType, data in next, NP.AuraContainers do
-			local db = NP:PlateDB(nil, frameType)
-			-- data.db = db -- just link it
+			local plateDB = NP:PlateDB(nil, frameType)
+			for _, which in next, types do
+				local info = data[which]
+				if not info then
+					info = { filters = {} }
+					data[which] = info
+				end
 
-			for which in next, types do
-				local info = { filters = {} }
-				data[which] = info
-
-				local auraDB = db[which:lower()]
-				if auraDB then
-					info.filter = NP:GetAuraFilter(which, auraDB)
-
-					NP:Configure_AuraContainer(info, auraDB)
+				local auraType = strlower(which)
+				local db = plateDB[auraType]
+				if db then
+					info.filter = NP:GetAuraFilter(which, db) -- keep before Configure_AuraContainer
+					info.allowList, info.blockList, info.candidateFilters, info.maxDuration = NP:Configure_AuraContainer(info, db)
 				end
 			end
 		end
@@ -185,7 +197,7 @@ end
 function NP:Configure_Auras(nameplate, which)
 	local plateDB = NP:PlateDB(nameplate)
 	local auras = nameplate[which]
-	local auraType = which:lower()
+	local auraType = strlower(which)
 	local db = plateDB[auraType]
 
 	auras.size = db.size
@@ -216,20 +228,7 @@ function NP:Configure_Auras(nameplate, which)
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 
-		local frameType = nameplate.frameType
-		if frameType then
-			local obj = NP.AuraContainers[frameType]
-			local info = obj and obj[which] or nil
-
-			auras.filter = info and info.filter or nil
-			auras.filters = info and info.filters or nil
-			auras.allowList = info and info.allowList or nil
-			auras.blockList = info and info.blockList or nil
-			auras.candidateFilters = info and info.candidateFilters or nil
-
-			--auras.filter = NP:GetAuraFilter(which, db)
-			--auras.filters.please = auras.filter..'|PLAYER'
-		end
+		auras.filter, auras.filters, auras.allowList, auras.blockList, auras.candidateFilters = NP:Configure_AuraFilters(nameplate, which)
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
