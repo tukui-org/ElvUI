@@ -19,7 +19,7 @@ local GetBindingFromClick = GetBindingFromClick
 
 local AutoCompleteOnTextChanged = AutoCompleteEditBox_OnTextChanged
 local AutoCompleteOnEnterPressed = AutoCompleteEditBox_OnEnterPressed
-local ChatEditFocusActiveWindow = (ChatFrameUtil and ChatFrameUtil.FocusActiveWindow) or ChatEdit_FocusActiveWindow
+local ChatEditFocusActiveWindow = ChatFrameUtil.FocusActiveWindow
 
 local DisableAddOn = C_AddOns.DisableAddOn
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded

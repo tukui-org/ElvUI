@@ -212,7 +212,6 @@ function NP:Configure_Auras(nameplate, which)
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
 	auras.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
-	auras.initialAnchor = E.InversePoints[db.anchorPoint]
 	auras.filterList = UF:ConvertFilters(auras, db.priority)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
 	auras.attachTo = UF:GetAuraAnchorFrame(nameplate, db.attachTo) -- keep below SetSmartPosition
@@ -222,8 +221,11 @@ function NP:Configure_Auras(nameplate, which)
 	local growDown = auras.yOffset == 'DOWN'
 	auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and 1 or 0, growDown and 0 or 1
 
+	local initialAnchor = E.InversePoints[db.anchorPoint]
 	if E.Retail then
 		auras.noMouse = true
+		auras.maxFrameCount = auras.num
+		auras.initialAnchor = E.CenterPoint[db.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = db.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
@@ -236,6 +238,8 @@ function NP:Configure_Auras(nameplate, which)
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
 	else
+		auras.initialAnchor = initialAnchor
+
 		local index = 1
 		while auras[index] do
 			local button = auras[index]

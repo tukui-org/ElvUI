@@ -139,7 +139,9 @@ function NP:SetCVars()
 
 	-- The order of these is important !!
 
-	if not E.Retail then
+	if E.Retail then
+		E:SetCVar('nameplateShowFriendlyRealmName', 0)
+	else
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
 	end
 

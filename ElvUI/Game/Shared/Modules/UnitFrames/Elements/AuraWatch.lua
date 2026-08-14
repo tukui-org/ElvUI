@@ -7,7 +7,7 @@ function UF:Construct_AuraWatch(frame)
 	if E.Retail then
 		local auras = E:Auras_Create(frame, 'AuraWatch')
 		auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
-		auras:SetInside(frame.Health)
+		auras:SetAllPoints(frame.Health)
 
 		return auras
 	else

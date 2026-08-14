@@ -21,11 +21,7 @@ local _G = _G
 Support functions
 -------------------------------------------------------------------------------]]
 if not AceGUIEditBoxInsertLinkElvUI then
-	if ChatFrameUtil and ChatFrameUtil.InsertLink then
-		hooksecurefunc(ChatFrameUtil, "InsertLink", function(...) return _G.AceGUIEditBoxInsertLinkElvUI(...) end)
-	elseif ChatEdit_InsertLink then
-		hooksecurefunc("ChatEdit_InsertLink", function(...) return _G.AceGUIEditBoxInsertLinkElvUI(...) end)
-	end
+	hooksecurefunc(ChatFrameUtil, "InsertLink", function(...) return _G.AceGUIEditBoxInsertLinkElvUI(...) end)
 end
 
 function _G.AceGUIEditBoxInsertLinkElvUI(text)

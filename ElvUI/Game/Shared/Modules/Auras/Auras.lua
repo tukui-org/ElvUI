@@ -576,6 +576,7 @@ function A:UpdateHeader(header)
 		header.useStatusbar = db.barShow
 		header.barColor = db.barColor
 		header.numAuras = db.wrapAfter
+		header.maxFrameCount = db.wrapAfter * db.maxWraps
 		header.initialAnchor = DIRECTION_TO_POINT[db.growthDirection]
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
 		header.countPosition, header.countXOffset, header.countYOffset = 'BOTTOMRIGHT', db.countXOffset, db.countYOffset

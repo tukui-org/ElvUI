@@ -536,7 +536,6 @@ function UF:Configure_Auras(frame, which)
 
 	auras.xOffset = x + settings.xOffset + (settings.attachTo == 'FRAME' and frame.ORIENTATION ~= 'LEFT' and frame.POWERBAR_OFFSET or 0)
 	auras.yOffset = y + settings.yOffset
-	auras.initialAnchor = UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint] or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
 	auras.spacing = settings.spacing
 	auras.num = settings.perrow * settings.numrows
 	auras.size = settings.sizeOverride ~= 0 and settings.sizeOverride or (((frame.UNIT_WIDTH - (settings.spacing * (auras.num / settings.numrows - 1)) - ((UF.thinBorders or E.twoPixelsPlease) and 0 or 2)) / auras.num) * settings.numrows)
@@ -550,19 +549,19 @@ function UF:Configure_Auras(frame, which)
 	local smartFluid = smartInfo and (smartInfo.to == which or smartInfo.other == which)
 	local growDown, growOffset = auras.growthX == 'DOWN', smartInfo and 1.5 or 1
 
-	auras:ClearAllPoints()
-	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset - (smartFluid and 1 or 0))
-
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
 	elseif E.Retail then
 		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
+	local initialAnchor = (UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint]) or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
 	if E.Retail then
 		auras:SetEnabled(settings.enable)
 
 		auras.isUnitframe = true
+		auras.maxFrameCount = auras.num
+		auras.initialAnchor = E.CenterPoint[settings.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = settings.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
@@ -589,6 +588,8 @@ function UF:Configure_Auras(frame, which)
 			E:Auras_UpdateButtons(auras)
 		end
 	else
+		auras.initialAnchor = initialAnchor
+
 		if settings.sizeOverride and settings.sizeOverride > 0 then
 			auras:Width(settings.perrow * settings.sizeOverride + ((settings.perrow - 1) * settings.spacing))
 		else
@@ -625,6 +626,9 @@ function UF:Configure_Auras(frame, which)
 			index = index + 1
 		end
 	end
+
+	auras:ClearAllPoints()
+	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset - (smartFluid and 1 or 0))
 
 	if settings.enable then
 		auras:Show()

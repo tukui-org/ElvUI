@@ -3189,7 +3189,7 @@ if GetSpellLossOfControlCooldown then
 else
 	GetSpellLoCCooldownInfoFallback = function() end
 end
-local GetSpellLossOfControlCooldownInfo = C_Spell and C_Spell.GetSpellLossOfControlCooldownInfo or GetSpellLoCCooldownInfoFallback
+local GetSpellLossOfControlCooldownInfo = C_Spell.GetSpellLossOfControlCooldownInfo
 
 -----------------------------------------------------------
 --- Spell Button
@@ -3213,15 +3213,13 @@ Spell.GetSpellId               = function(self) return self._state_action end
 if C_Spell.GetSpellDisplayCount then
 	Spell.GetDisplayCount      = function(self) return C_Spell.GetSpellDisplayCount(self._state_action) end
 end
-
--- Cooldown duration objects from 12.0
-if C_Spell and C_Spell.GetSpellChargeDuration then
+if C_Spell.GetSpellChargeDuration then -- Cooldown duration objects from 12.0
 	Spell.GetChargeDuration    = function(self) return C_Spell.GetSpellChargeDuration(self._state_action) end
 end
-if C_Spell and C_Spell.GetSpellCooldownDuration then
+if C_Spell.GetSpellCooldownDuration then
 	Spell.GetCooldownDuration  = function(self) return C_Spell.GetSpellCooldownDuration(self._state_action) end
 end
-if C_Spell and C_Spell.GetSpellLossOfControlCooldownDuration then
+if C_Spell.GetSpellLossOfControlCooldownDuration then
 	Spell.GetLoCCooldownDuration = function(self) return C_Spell.GetSpellLossOfControlCooldownDuration(self._state_action) end
 end
 

@@ -10,10 +10,9 @@ local strlower, strfind = strlower, strfind
 local next, type, wipe = next, type, wipe
 local huge = math.huge
 
-local AnchorUtil = AnchorUtil
 local AuraButtonBorderStyle = AuraButtonBorderStyle
-local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
+local AnchorUtil = AnchorUtil
 local CopyTable = CopyTable
 
 local GetCVarBool = C_CVar.GetCVarBool
@@ -471,7 +470,7 @@ function E:Auras_UpdateButton(container, button)
 end
 
 function E:Auras_IsInRestriction()
-	return InCombatLockdown() or E:IsPvPMatchRestricted()
+	return E:IsCombatRestricted() or E:IsPvPMatchRestricted()
 end
 
 function E:Auras_UpdateButtons(container)
@@ -754,12 +753,7 @@ function E:Auras_SetupList(container, auraTable)
 	end
 end
 
-function E:Auras_SetContainer(container)
-	local maxCount = container.maxFrameCount or 40
-	local sortMethod = container.sortMethod or SORTMETHOD.Default
-	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
-	local layout = E:Auras_UpdateLayout(container)
-
+function E:Auras_SetupFlow(container)
 	local growth, anchor, horiz, vert, axis = E.AuraGrowthMap[container.growthDirection]
 	if growth then
 		anchor, horiz, vert, axis = growth.anchor, growth.horiz, growth.vert, growth.axis
@@ -767,13 +761,27 @@ function E:Auras_SetContainer(container)
 		anchor, horiz, vert = container.initialAnchor or 'BOTTOMLEFT', E:Auras_FlowDirection(container.growthX, container.growthY)
 	end
 
+	if anchor == 'CENTER' then
+		container:ResetFlowLayoutOptions()
+	else
+		container:SetFlowLayoutAnchorPoint(anchor)
+		container:SetFlowLayoutGrowthDirection(horiz, vert)
+	end
+
 	container:SetFlowLayoutPadding(container.paddingLeft or 0, container.paddingRight or 0, container.paddingTop or 0, container.paddingBottom or 0)
-	container:SetFlowLayoutGrowthDirection(horiz, vert)
-	container:SetFlowLayoutAnchorPoint(anchor)
 
 	if axis then
 		container:SetFlowLayoutAxis(axis)
 	end
+end
+
+function E:Auras_SetContainer(container)
+	local maxCount = container.maxFrameCount or 40
+	local sortMethod = container.sortMethod or SORTMETHOD.Default
+	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
+	local layout = E:Auras_UpdateLayout(container)
+
+	E:Auras_SetupFlow(container)
 
 	for key, filter in next, container.active do -- known but not active anymore
 		if container.known[key] and (container.filters[key] ~= filter) then
