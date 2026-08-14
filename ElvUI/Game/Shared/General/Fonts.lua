@@ -197,6 +197,9 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.UserScaledFontNumberNormalRightGray,		NUMBER, (blizz and 13) or unscale or medium, 'OUTLINE')
 		E:SetFont(_G.UserScaledFontNumberNormalRightGreen,		NUMBER, (blizz and 13) or unscale or medium, 'OUTLINE')
 
+		-- user scaled: chat
+		E:SetFont(_G.UserScaledChatFontNormal,					NORMAL, (blizz and 13) or unscale or medium)
+
 		-- user scaled: regular
 		E:SetFont(_G.UserScaledFontGameNormalSmall,				NORMAL, (blizz and 10) or unscale or small)
 		E:SetFont(_G.UserScaledFontGameDisableSmall,			NORMAL, (blizz and 10) or unscale or small)
@@ -206,11 +209,10 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.UserScaledFontGameHighlight,				NORMAL, (blizz and 12) or unscale or size)
 		E:SetFont(_G.UserScaledFontGameHighlightRight,			NORMAL, (blizz and 12) or unscale or size)
 		E:SetFont(_G.UserScaledFontGameNormalMed2,				NORMAL, (blizz and 13) or unscale or medium)
-		E:SetFont(_G.UserScaledChatFontNormal,					NORMAL, (blizz and 13) or unscale or medium)
-		E:SetFont(_G.UserScaledFontGame15Shadow,				NORMAL, (blizz and 15) or unscale or size, 'SHADOW')
+		E:SetFont(_G.UserScaledFontSystem15Shadow,				NORMAL, (blizz and 13) or unscale or medium, 'SHADOW')
+		E:SetFont(_G.UserScaledFontGame15Shadow,				NORMAL, (blizz and 15) or unscale or medium, 'SHADOW')
 		E:SetFont(_G.UserScaledFontGameNormalLarge,				NORMAL, (blizz and 16) or unscale or big)
 		E:SetFont(_G.UserScaledFontGameHighlightLarge,			NORMAL, (blizz and 16) or unscale or big)
-		E:SetFont(_G.UserScaledFontSystem15Shadow,				NORMAL, (blizz and 13) or unscale or size, 'SHADOW')
 
 		-- world map fonts
 		E:SetFont(_G.SubZoneTextFont,						NORMAL, (blizz and 26) or unscale or gigantic, outline)		-- WorldMap, SubZone
