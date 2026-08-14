@@ -1577,8 +1577,8 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 		if HasAssistedCombatActionButtons() then
 			for button in next, ButtonRegistry do
 				if button._state_type == 'action' then
-					local _, _, subType = GetActionInfo(button._state_action)
-					if subType == 'assistedcombat' then
+					local actionType, _, subType = GetActionInfo(button._state_action)
+					if actionType == 'spell' and subType == 'assistedcombat' then
 						ClearNewActionHighlight(button._state_action, true, false, button)
 						Update(button, event)
 					end
