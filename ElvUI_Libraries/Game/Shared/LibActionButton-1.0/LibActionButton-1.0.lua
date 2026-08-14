@@ -285,7 +285,7 @@ function lib:CreateButton(id, name, header, config)
 		KeyBound = LibStub("LibKeyBound-1.0", true)
 	end
 
-	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
+	local button = setmetatable(CreateFrame("CheckButton", name, header, (WoWRetail and "PingableActionButtonTemplate, " or "").."ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	button:RegisterForClicks("AnyDown", "AnyUp")
 
@@ -317,6 +317,7 @@ function lib:CreateButton(id, name, header, config)
 	button:SetScript("OnAttributeChanged", nil) -- inherited templates bring in a handler here which we don't want, so get rid of it
 
 	-- unwanted mixin functions, which we override through the metatable
+	button.GetActionButtonInfo = nil
 	button.HasAction = nil
 
 	button.id = id
@@ -2236,6 +2237,10 @@ function Update(self, which)
 
 	self:UpdateLocal()
 
+	if which == 'UpdateAction' then
+		self:UpdatePingAttributes()
+	end
+
 	UpdateAbilityInfo(self)
 
 	SetupRange(self, texture) -- we can call this on retail or not, only activates events on retail ~Simpy
@@ -3016,6 +3021,10 @@ Generic.GetLossOfControlCooldown = function(self)
 	end
 end
 
+Generic.GetActionButtonInfo = function(self)
+	return nil
+end
+
 -----------------------------------------------------------
 --- Action Button
 
@@ -3091,6 +3100,21 @@ local IsConsumableAction = C_ActionBar.IsConsumableAction or IsConsumableAction
 local IsStackableAction = C_ActionBar.IsStackableAction or IsStackableAction
 local IsItemAction = C_ActionBar.IsItemAction or IsItemAction
 local IsActionInRange = C_ActionBar.IsActionInRange or IsActionInRange
+
+Action.GetActionButtonInfo = function(self)
+	local actionType, id, subType = GetActionInfo(self._state_action)
+	local isUsable, notEnoughMana = IsUsableAction(self._state_action)
+
+	local info = {
+		id = id,
+		actionType = actionType,
+		subType = subType,
+		isUsable = isUsable,
+		notEnoughMana = notEnoughMana
+	}
+
+	return info
+end
 
 Action.HasAction                = function(self) return HasAction(self._state_action) end
 Action.GetActionText            = function(self) return GetActionText(self._state_action) end
