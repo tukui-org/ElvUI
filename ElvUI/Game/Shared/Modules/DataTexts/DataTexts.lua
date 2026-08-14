@@ -33,9 +33,9 @@ local C_PartyInfo_RequestInviteFromUnit = C_PartyInfo.RequestInviteFromUnit
 local InviteUnit = C_PartyInfo.InviteUnit
 
 local GetDisplayedInviteType = GetDisplayedInviteType
-local ChatFrame_SendBNetTell = (ChatFrameUtil and ChatFrameUtil.SendBNetTell) or ChatFrame_SendBNetTell
 local BNRequestInviteFriend = BNRequestInviteFriend
 local BNInviteFriend = C_BattleNet.InviteFriend or BNInviteFriend
+local SendBNetTell = ChatFrameUtil.SendBNetTell
 local SetItemRef = SetItemRef
 
 local MISCELLANEOUS = MISCELLANEOUS
@@ -827,7 +827,7 @@ do
 
 	function DT:SendWhisper(name, battleNet)
 		if battleNet then
-			ChatFrame_SendBNetTell(name)
+			SendBNetTell(name)
 		else
 			SetItemRef( 'player:'..name, format('|Hplayer:%1$s|h[%1$s]|h',name), 'LeftButton' )
 		end

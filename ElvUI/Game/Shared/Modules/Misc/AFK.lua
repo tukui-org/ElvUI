@@ -24,9 +24,9 @@ local Screenshot = Screenshot
 local UIParent = UIParent
 local UnitCastingInfo = UnitCastingInfo
 
-local FormatDiscordMessage = ChatFrameUtil and ChatFrameUtil.FormatDiscordMessage
-local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
-local GetChatCategory = (ChatFrameUtil and ChatFrameUtil.GetChatCategory) or Chat_GetChatCategory
+local GetChatCategory = ChatFrameUtil.GetChatCategory
+local FormatDiscordMessage = ChatFrameUtil.FormatDiscordMessage
+local GetMobileEmbeddedTexture = ChatFrameUtil.GetMobileEmbeddedTexture
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 
 local CAMERA_SPEED = 0.035
