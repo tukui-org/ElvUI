@@ -2259,7 +2259,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		notChatHistory = true
 	end
 
-	if _G.TextToSpeechFrame_MessageEventHandler and (notChatHistory and E:NotSecretValue(arg1)) then
+	local msgNotSecret = E:NotSecretValue(arg1)
+	if _G.TextToSpeechFrame_MessageEventHandler and (notChatHistory and msgNotSecret) then
 		_G.TextToSpeechFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 	end
 
@@ -2293,8 +2294,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		if chatType == 'VOICE_TEXT' and not GetCVarBool('speechToText') then
 			return
-		elseif chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((E:NotSecretValue(arg1) and arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
-			if E:NotSecretValue(arg1) and arg1 == 'WRONG_PASSWORD' then
+		elseif chatType == 'COMMUNITIES_CHANNEL' or ((strsub(chatType, 1, 7) == 'CHANNEL') and (chatType ~= 'CHANNEL_LIST') and ((msgNotSecret and arg1 ~= 'INVITE') or (chatType ~= 'CHANNEL_NOTICE_USER'))) then
+			if msgNotSecret and arg1 == 'WRONG_PASSWORD' then
 				local _, popup = _G.StaticPopup_Visible('CHAT_CHANNEL_PASSWORD')
 				if popup and strupper(popup.data) == strupper(arg9) then
 					return -- Don't display invalid password messages if we're going to prompt for a password (bug 102312)
@@ -2316,7 +2317,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 						infoType = 'CHANNEL'..arg8
 						info = _G.ChatTypeInfo[infoType]
 
-						if chatType == 'CHANNEL_NOTICE' and E:NotSecretValue(arg1) and arg1 == 'YOU_LEFT' then
+						if chatType == 'CHANNEL_NOTICE' and msgNotSecret and arg1 == 'YOU_LEFT' then
 							frame.channelList[index] = nil
 							frame.zoneChannelList[index] = nil
 						end
@@ -2354,7 +2355,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 		if frame.privateMessageList then
 			if chatGroup == 'SYSTEM' then -- HACK to put certain system messages into dedicated whisper windows
-				local msg = E:NotSecretValue(arg1) and strlower(arg1)
+				local msg = msgNotSecret and strlower(arg1)
 				local found = false
 				if msg then
 					for playerName in pairs(frame.privateMessageList) do
@@ -2410,7 +2411,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'CHANNEL_NOTICE_USER' then
-			local globalstring = E:NotSecretValue(arg1) and (_G['CHAT_'..arg1..'_NOTICE_BN'] or _G['CHAT_'..arg1..'_NOTICE'])
+			local globalstring = msgNotSecret and (_G['CHAT_'..arg1..'_NOTICE_BN'] or _G['CHAT_'..arg1..'_NOTICE'])
 			if not globalstring then return end
 
 			if arg5 ~= '' then -- TWO users in this notice (E.G. x kicked y)
@@ -2448,7 +2449,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(format(globalstring, arg8, ResolvePrefixedChannelName(arg4)), info.r, info.g, info.b, info.id, accessID, typeID, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_ALERT' then
-			local globalstring = E:NotSecretValue(arg1) and _G['BN_INLINE_TOAST_'..arg1]
+			local globalstring = msgNotSecret and _G['BN_INLINE_TOAST_'..arg1]
 			if not globalstring then return end
 
 			local msg
@@ -2497,7 +2498,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			frame:AddMessage(msg, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST' then
-			if E:NotSecretValue(arg1) and arg1 ~= '' then
+			if msgNotSecret and arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
 
 				local linkDisplayText = format('[%s]', arg2)
@@ -2505,7 +2506,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				frame:AddMessage(format(_G.BN_INLINE_TOAST_BROADCAST, playerLink, arg1), info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST_INFORM' then
-			if E:NotSecretValue(arg1) and arg1 ~= '' then
+			if msgNotSecret and arg1 ~= '' then
 				frame:AddMessage(_G.BN_INLINE_TOAST_BROADCAST_INFORM, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 			end
 		else
