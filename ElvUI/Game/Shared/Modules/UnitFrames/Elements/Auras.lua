@@ -47,7 +47,7 @@ UF.ExcludeStacks = {
 
 UF.SmartPosition = {
 	BUFFS_ON_DEBUFFS = {
-		from = 'BUFFS', to = 'Debuffs',
+		from = 'BUFFS', to = 'Debuffs', other = 'Buffs',
 		warning = format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Buffs"], L["Debuffs"], L["Frame"]),
 		func = function(db, buffs, debuffs)
 			db.buffs.attachTo = 'DEBUFFS'
@@ -58,7 +58,7 @@ UF.SmartPosition = {
 		end
 	},
 	DEBUFFS_ON_BUFFS = {
-		from = 'DEBUFFS', to = 'Buffs',
+		from = 'DEBUFFS', to = 'Buffs', other = 'Debuffs',
 		warning = format(L["This setting caused a conflicting anchor point, where '%s' would be attached to itself. Please check your anchor points. Setting '%s' to be attached to '%s'."], L["Debuffs"], L["Buffs"], L["Frame"]),
 		func = function(db, buffs, debuffs)
 			db.debuffs.attachTo = 'BUFFS'
@@ -346,8 +346,10 @@ function UF:FilterEnabled(db, which)
 	end
 end
 
-function UF:UpdateFilters(frame)
-	local db = frame.db
+function UF:UpdateFilters(frame, db)
+	if not db then
+		db = frame.db
+	end
 
 	if not frame.auraFilters then
 		frame.auraFilters = {}
@@ -544,8 +546,12 @@ function UF:Configure_Auras(frame, which)
 	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
 	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 
+	local smartInfo = E.Retail and auras.smartFluid and UF.SmartPosition[auras.smartPosition]
+	local smartFluid = smartInfo and (smartInfo.to == which or smartInfo.other == which)
+	local growDown, growOffset = auras.growthX == 'DOWN', smartInfo and 1.5 or 1
+
 	auras:ClearAllPoints()
-	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
+	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset - (smartFluid and 1 or 0))
 
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
@@ -556,6 +562,7 @@ function UF:Configure_Auras(frame, which)
 	if E.Retail then
 		auras:SetEnabled(settings.enable)
 
+		auras.isUnitframe = true
 		auras.keepSizeRatio = settings.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
@@ -565,6 +572,8 @@ function UF:Configure_Auras(frame, which)
 		auras.maxDuration = (settings.maxDuration and settings.maxDuration > 0) and settings.maxDuration or nil
 		auras.countPosition, auras.countXOffset, auras.countYOffset = settings.countPosition, settings.countXOffset, settings.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = settings.countFont, settings.countFontSize, settings.countFontOutline
+		auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and growOffset or 0, growDown and 0 or growOffset
+		auras.noMouse = settings.clickThrough
 
 		if settings.enable then
 			auras.allowList = settings.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, settings.allowList or 'Whitelist') or nil

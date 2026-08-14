@@ -2,27 +2,12 @@ local E, L, V, P, G = unpack(ElvUI)
 local PA = E:GetModule('PrivateAuras')
 
 local _G = _G
-local next = next
 local hooksecurefunc = hooksecurefunc
-local CreateFrame = CreateFrame
-local CopyTable = CopyTable
-local UIParent = UIParent
 
 local C_UnitAuras = C_UnitAuras
-local AddPrivateAuraAnchor = C_UnitAuras.AddPrivateAuraAnchor
-local RemovePrivateAuraAnchor = C_UnitAuras.RemovePrivateAuraAnchor
 local SetPrivateWarningTextAnchor = C_UnitAuras.SetPrivateWarningTextAnchor
-
--- unitframeType is used before its actually initialized
--- because they arent valid we skip them on purpose
-local exclude = {
-	raid = true,
-	raidpet = true,
-	party = true,
-	partypet = true,
-	arena = true,
-	boss = true,
-}
+local CreateFrame = CreateFrame
+local UIParent = UIParent
 
 local warningAnchor = {
 	relativeTo = nil, -- dynamically added in RaidWarning_Reposition
@@ -31,217 +16,6 @@ local warningAnchor = {
 	offsetX = 0,
 	offsetY = 0,
 }
-
-local defaults = {
-	durationAnchor = {
-		relativeTo = nil, -- dynamically added in CreateAnchor
-		point = 'BOTTOM',
-		relativePoint = 'BOTTOM',
-		offsetX = 0,
-		offsetY = 0,
-	},
-	iconAnchor = {
-		relativeTo = nil, -- dynamically added in CreateAnchor
-		point = 'CENTER',
-		relativePoint = 'CENTER',
-		offsetX = 0,
-		offsetY = 0
-	},
-	iconInfo = {
-		borderScale = 1,
-		iconWidth = 32,
-		iconHeight = 32,
-		iconAnchor = nil -- added on creation
-	},
-	anchor = {
-		unitToken = nil,
-		auraIndex = 1,
-		showCountdownFrame = true,
-		showCountdownNumbers = true,
-		isContainer = false,
-		parent = nil, -- dynamically added in CreateAnchor
-		iconInfo = nil, -- added on creation
-		durationAnchor = nil, -- added on creation
-	}
-}
-
-function PA:CreateAnchor(aura, parent, unit, index, db)
-	local previousAura = parent.auraIcons[index]
-	if previousAura then -- clear any old ones
-		PA:RemoveAura(previousAura)
-	end
-
-	if not unit then -- try to get the unit token
-		unit = (parent.owner and parent.owner.unit) or nil
-	end
-
-	-- check one last time, stop if something goes wrong
-	if not unit or exclude[unit] then return end
-
-	local borderScale = db.borderScale
-	if not borderScale then borderScale = 1 end
-
-	local iconSize = db.icon.size
-	if not iconSize then iconSize = 32 end
-
-	local durationPoint = db.duration.point
-	if not durationPoint then durationPoint = 'CENTER' end
-
-	-- update all possible entries to this as the table is dirty
-	local data = aura.data
-	if not data then
-		data = CopyTable(defaults.anchor)
-		aura.data = data
-	end
-
-	data.parent = aura
-	data.unitToken = unit
-	data.auraIndex = index
-
-	data.showCountdownFrame = db.countdownFrame
-	data.showCountdownNumbers = db.countdownNumbers
-
-	local icon = data.iconInfo
-	if not icon then
-		icon = CopyTable(defaults.iconInfo)
-		data.iconInfo = icon
-	end
-
-	icon.borderScale = borderScale
-	icon.iconWidth = iconSize
-	icon.iconHeight = iconSize
-
-	local anchor = icon.iconAnchor
-	if not anchor then
-		anchor = CopyTable(defaults.iconAnchor)
-		icon.iconAnchor = anchor
-	end
-
-	anchor.relativeTo = aura
-	anchor.point = 'CENTER'
-	anchor.relativePoint = 'CENTER'
-	anchor.offsetX = 0
-	anchor.offsetY = 0
-
-	local duration = data.durationAnchor
-	if db.duration.enable then
-		if not duration then
-			duration = CopyTable(defaults.durationAnchor)
-			data.durationAnchor = duration
-		end
-
-		duration.relativeTo = aura
-		duration.point = E.InversePoints[durationPoint]
-		duration.relativePoint = durationPoint
-		duration.offsetX = db.duration.offsetX
-		duration.offsetY = db.duration.offsetY
-	elseif duration then
-		data.durationAnchor = nil
-	end
-
-	return AddPrivateAuraAnchor(data)
-end
-
-function PA:RemoveAura(aura)
-	local piggy = aura.pig
-	if piggy then
-		piggy:SetShown(false)
-	end
-
-	if not aura.anchorID then return end
-
-	RemovePrivateAuraAnchor(aura.anchorID)
-
-	aura.anchorID = nil
-end
-
-function PA:OffsetAura(index, db)
-	local size, z, x, y = db.icon.size, index - 1, 0, 0
-	local point, offset = db.icon.point, size + (db.icon.offset or 0)
-	if point == 'RIGHT' then
-		x = z * offset
-	elseif point == 'LEFT' then
-		x = -z * offset
-	elseif point == 'TOP' then
-		y = z * offset
-	else
-		y = -z * offset
-	end
-
-	return x, y
-end
-
-function PA:RemoveAuras(parent)
-	if not parent or not parent.auraIcons then return end
-
-	for _, aura in next, parent.auraIcons do
-		PA:RemoveAura(aura)
-	end
-end
-
-function PA:CreateAura(parent, unit, index, db)
-	local aura = parent.auraIcons[index]
-	if not aura then
-		aura = CreateFrame('Frame', '$parent'..index, parent)
-
-		if index < 3 then -- only show 2 for testing
-			local piggy = aura:CreateTexture(nil, 'ARTWORK')
-			piggy:SetTexture(index == 1 and 1721030 or 1721029)
-			aura.pig = piggy
-		end
-	end
-
-	if not aura.anchorID then
-		aura.anchorID = PA:CreateAnchor(aura, parent, unit, index, db)
-	end
-
-	-- for some reason, its not obeying the frame level; Blizzard bug?
-	aura:OffsetFrameLevel(nil, parent) -- set it to something else, fixes the bug
-	aura:OffsetFrameLevel(1, parent) -- set it to the level we actually want
-
-	local iconSize = db.icon.size
-	local iconX, iconY = PA:OffsetAura(index, db)
-	aura:ClearAllPoints()
-	aura:Point('CENTER', parent, iconX, iconY)
-	aura:Size(db.clickThrough and 1 or iconSize)
-
-	local piggy = aura.pig
-	if piggy then
-		piggy:ClearAllPoints()
-		piggy:Point('CENTER', parent, iconX, iconY)
-		piggy:SetShown(parent.owner and (parent.owner.isForced or parent.owner.forceShowAuras))
-		piggy:Size(iconSize)
-	end
-
-	return aura
-end
-
-function PA:SetupAuras(parent, unit)
-	local db = parent and parent.db
-	if not db then return end
-
-	if not parent.auraIcons then
-		parent.auraIcons = {}
-	end
-
-	for i = 1, db.icon.amount do
-		parent.auraIcons[i] = PA:CreateAura(parent, unit, i, db)
-	end
-end
-
-function PA:Update()
-	PA:RemoveAuras(PA.Auras)
-
-	if E.db.general.privateAuras.enable then
-		PA.Auras:Size(E.db.general.privateAuras.icon.size)
-
-		PA:SetupAuras(PA.Auras, 'player')
-
-		E:EnableMover(PA.Auras.mover.name)
-	else
-		E:DisableMover(PA.Auras.mover.name)
-	end
-end
 
 function PA:RaidWarning_Update()
 	PA:RaidWarning_Rescale()
@@ -290,14 +64,6 @@ end
 
 function PA:Initialize()
 	PA.RaidWarning = CreateFrame('Frame', 'ElvUI_PrivateRaidWarning', UIParent)
-
-	PA.Auras = CreateFrame('Frame', 'ElvUI_PrivateAuras', E.UIParent)
-	PA.Auras:Point('TOPRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMLEFT', -(9 + E.Border), -4)
-	PA.Auras:Size(32)
-	PA.Auras.db = E.db.general.privateAuras
-
-	E:CreateMover(PA.Auras, 'PrivateAurasMover', L["Private Auras"], nil, nil, nil, nil, nil, 'auras,privateAuras')
-	PA:Update()
 
 	local raidWarning = _G.PrivateRaidBossEmoteFrameAnchor
 	if raidWarning then

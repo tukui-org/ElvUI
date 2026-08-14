@@ -808,9 +808,6 @@ do -- Module Copy
 		config.args.raidUtility.name = L["RAID_CONTROL"]
 		config.args.rotationAssist.name = L["Rotation Assist"]
 		config.args.topPanelSettings.name = L["Top Panel"]
-
-		-- these are acutally in Auras section
-		config.args.privateAuras.name = L["Private Auras"]
 		config.args.debuffColors.name = L["Debuff Colors"]
 
 		return config

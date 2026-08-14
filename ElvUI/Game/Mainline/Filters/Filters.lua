@@ -1,7 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local List = E.Filters.List
-local Aura = E.Filters.Aura
+local List = E.Filters.List -- 1:priority, 2:enable, 3:stackThreshold
+local Aura = E.Filters.Aura -- 1:auraID, 2:includeIDs, 3:enabled, 4:point, 5:color, 6:anyUnit, 7:onlyShowMissing, 8:displayText, 9:xOffset, 10:yOffset
 
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
@@ -33,6 +33,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[447959]	= List(), -- Ride Along - Enabled
 		[447960]	= List(), -- Ride Along - Inactive
 		[377234]	= List(), -- Thrill of the Skies
+		[418590]	= List(), -- Static Charge
 		-- Bloodlust + Heroism
 		[160455]	= List(), -- Fatigued | Netherwinds
 		[264689]	= List(), -- Fatigued | Primal Rage
@@ -44,7 +45,11 @@ G.unitframe.aurafilters.Blacklist = {
 		-- Social
 		[26013]		= List(), -- Deserter | Battlegrounds
 		[71041]		= List(), -- Dungeon Deserter | Dungeon Finder or Raid Finder
-		-- General auras starting here
+		-- General (Never-Secret) Auras
+		[308312]	= List(), -- Time Trial Practice
+		[369968]	= List(), -- Racing
+		-- Dungeon (Never-Secret) Auras
+		[1254550]	= List(), -- Arcane Empowerment
 	}
 }
 
@@ -58,14 +63,17 @@ G.unitframe.aurafilters.Whitelist = {
 		[255234] = List(), -- Totemic Revival | Can accept Totem Res
 		-- Warlock
 		-- Priest
+		[10060] = List(), -- Power Infusion
 		-- Mage
 		-- Rogue
 		-- Monk
 		-- Druid
+		[29166] = List(), -- Innervate
 		-- Demon Hunter
 		-- Shaman
 		-- Hunter
 		-- Evoker
+		[406789] = List(), -- Spatial Paradox (Others)
 		-- Warrior
 		-- Paladin
 		-- Death Knight

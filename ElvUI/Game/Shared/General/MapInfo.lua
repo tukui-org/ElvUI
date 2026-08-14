@@ -41,22 +41,24 @@ function E:MapInfo_Update()
 	E:MapInfo_CoordsUpdate()
 end
 
-local coordsWatcher = CreateFrame('Frame')
-function E:MapInfo_CoordsStart()
-	MapInfo.coordsWatching = true
-	MapInfo.coordsFalling = nil
-	coordsWatcher:SetScript('OnUpdate', E.MapInfo_OnUpdate)
+do
+	local coordsWatcher = CreateFrame('Frame')
+	function E:MapInfo_CoordsStart()
+		MapInfo.coordsWatching = true
+		MapInfo.coordsFalling = nil
+		coordsWatcher:SetScript('OnUpdate', E.MapInfo_OnUpdate)
 
-	if MapInfo.coordsStopTimer then
-		E:CancelTimer(MapInfo.coordsStopTimer)
-		MapInfo.coordsStopTimer = nil
+		if MapInfo.coordsStopTimer then
+			E:CancelTimer(MapInfo.coordsStopTimer)
+			MapInfo.coordsStopTimer = nil
+		end
 	end
-end
 
-function E:MapInfo_CoordsStopWatching()
-	MapInfo.coordsWatching = nil
-	MapInfo.coordsStopTimer = nil
-	coordsWatcher:SetScript('OnUpdate', nil)
+	function E:MapInfo_CoordsStopWatching()
+		MapInfo.coordsWatching = nil
+		MapInfo.coordsStopTimer = nil
+		coordsWatcher:SetScript('OnUpdate', nil)
+	end
 end
 
 function E:MapInfo_CoordsStop(event)
@@ -92,73 +94,76 @@ function E:MapInfo_OnUpdate(elapsed)
 	end
 end
 
--- This code fixes C_Map.GetPlayerMapPosition memory leak.
--- Fix stolen from NDui (and modified by Simpy). Credit: siweia.
-local mapRects, tempVec2D = {}, CreateVector2D(0, 0)
-function E:GetPlayerMapPos(mapID)
-	if not mapID then return end
+do	-- This code fixes C_Map.GetPlayerMapPosition memory leak.
+	-- Fix originally from NDui (modified by Simpy). Credit: siweia.
+	local mapRects, mapTemp = {}, CreateVector2D(0, 0)
+	local mapPos1, mapPos2 = CreateVector2D(0, 0), CreateVector2D(1, 1)
+	function E:GetPlayerMapPos(mapID)
+		if not mapID then return end
 
-	tempVec2D.x, tempVec2D.y = UnitPosition('player')
-	if not tempVec2D.x then return end
+		mapTemp.x, mapTemp.y = UnitPosition('player')
+		if not mapTemp.x then return end
 
-	local mapRect = mapRects[mapID]
-	if not mapRect then
-		local _, pos1 = C_Map_GetWorldPosFromMapPos(mapID, CreateVector2D(0, 0))
-		local _, pos2 = C_Map_GetWorldPosFromMapPos(mapID, CreateVector2D(1, 1))
-		if not pos1 or not pos2 then return end
+		local mapRect = mapRects[mapID]
+		if not mapRect then
+			local _, pos1 = C_Map_GetWorldPosFromMapPos(mapID, mapPos1)
+			local _, pos2 = C_Map_GetWorldPosFromMapPos(mapID, mapPos2)
+			if not pos1 or not pos2 then return end
 
-		mapRect = {pos1, pos2}
-		mapRect[2]:Subtract(mapRect[1])
-		mapRects[mapID] = mapRect
-	end
-
-	tempVec2D:Subtract(mapRect[1])
-
-	return (tempVec2D.y/mapRect[2].y), (tempVec2D.x/mapRect[2].x)
-end
-
--- Code taken from LibTourist-3.0 and rewritten to fit our purpose
-local localizedMapNames = {}
-local ZoneIDToContinentName = {
-	[104] = 'Outland',
-	[107] = 'Outland',
-}
-
-local MapIdLookupTable = {
-	[E.Mists and 987 or 101] = 'Outland',
-	[104] = 'Shadowmoon Valley',
-	[107] = 'Nagrand',
-}
-
-local function LocalizeZoneNames()
-	local mapInfo
-	for mapID, englishName in pairs(MapIdLookupTable) do
-		mapInfo = C_Map_GetMapInfo(mapID)
-		-- Add combination of English and localized name to lookup table
-		if mapInfo and mapInfo.name and not localizedMapNames[englishName] then
-			localizedMapNames[englishName] = mapInfo.name
+			mapRect = {pos1, pos2}
+			mapRect[2]:Subtract(mapRect[1])
+			mapRects[mapID] = mapRect
 		end
+
+		mapTemp:Subtract(mapRect[1])
+
+		return (mapTemp.y/mapRect[2].y), (mapTemp.x/mapRect[2].x)
 	end
 end
 
-LocalizeZoneNames()
+do	-- Code taken from LibTourist-3.0 and rewritten to fit our purpose
+	local localizedMapNames = {}
+	local ZoneIDToContinentName = {
+		[104] = 'Outland',
+		[107] = 'Outland',
+	}
 
---Add ' (Outland)' to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
---We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
---which adds the ' (Outland)' part unlike the GetRealZoneText() API.
-function E:GetZoneText(mapID)
-	if not (mapID and MapInfo.name) then return end
+	local MapIdLookupTable = {
+		[E.Mists and 987 or 101] = 'Outland',
+		[104] = 'Shadowmoon Valley',
+		[107] = 'Nagrand',
+	}
 
-	local continent, zoneName = ZoneIDToContinentName[mapID]
-	if continent and continent == 'Outland' then
-		if MapInfo.name == localizedMapNames.Nagrand or MapInfo.name == 'Nagrand' then
-			zoneName = localizedMapNames.Nagrand..' ('..localizedMapNames.Outland..')'
-		elseif MapInfo.name == localizedMapNames['Shadowmoon Valley'] or MapInfo.name == 'Shadowmoon Valley' then
-			zoneName = localizedMapNames['Shadowmoon Valley']..' ('..localizedMapNames.Outland..')'
+	local function LocalizeZoneNames()
+		local mapInfo
+		for mapID, englishName in pairs(MapIdLookupTable) do
+			mapInfo = C_Map_GetMapInfo(mapID)
+			-- Add combination of English and localized name to lookup table
+			if mapInfo and mapInfo.name and not localizedMapNames[englishName] then
+				localizedMapNames[englishName] = mapInfo.name
+			end
 		end
 	end
 
-	return zoneName or MapInfo.name
+	LocalizeZoneNames()
+
+	--Add ' (Outland)' to the end of zone name for Nagrand and Shadowmoon Valley, if mapID matches Outland continent.
+	--We can then use this function when we need to compare the players own zone against return values from stuff like GetFriendInfo and GetGuildRosterInfo,
+	--which adds the ' (Outland)' part unlike the GetRealZoneText() API.
+	function E:GetZoneText(mapID)
+		if not (mapID and MapInfo.name) then return end
+
+		local continent, zoneName = ZoneIDToContinentName[mapID]
+		if continent and continent == 'Outland' then
+			if MapInfo.name == localizedMapNames.Nagrand or MapInfo.name == 'Nagrand' then
+				zoneName = localizedMapNames.Nagrand..' ('..localizedMapNames.Outland..')'
+			elseif MapInfo.name == localizedMapNames['Shadowmoon Valley'] or MapInfo.name == 'Shadowmoon Valley' then
+				zoneName = localizedMapNames['Shadowmoon Valley']..' ('..localizedMapNames.Outland..')'
+			end
+		end
+
+		return zoneName or MapInfo.name
+	end
 end
 
 E:RegisterEvent('CRITERIA_UPDATE', 'MapInfo_CoordsStop') -- when the player goes into an animation (landing)

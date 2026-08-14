@@ -69,7 +69,6 @@ function UF:Construct_PartyFrames()
 
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
-	self.PrivateAuras = UF:Construct_PrivateAuras(self)
 
 	return self
 end

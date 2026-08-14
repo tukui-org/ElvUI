@@ -12,6 +12,8 @@ function UF:Construct_PlayerFrame(frame)
 	UF:PrepareFrame(frame)
 	UF:ConstructFrame(frame, 'player')
 
+	frame.GetTargetInfo = UF.Pingable_GetTargetInfo
+
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
@@ -49,7 +51,6 @@ function UF:Construct_PlayerFrame(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.Fader = UF:Construct_Fader()
 	frame.Cutaway = UF:Construct_Cutaway(frame)
-	frame.PrivateAuras = UF:Construct_PrivateAuras(frame)
 	frame.Auras = UF:Construct_Auras(frame)
 	frame.Buffs = UF:Construct_Buffs(frame)
 	frame.Debuffs = UF:Construct_Debuffs(frame)

@@ -29,6 +29,7 @@ local UnitReaction = UnitReaction
 local UnitWidgetSet = UnitWidgetSet
 
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
+local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local GetCVarDefault = C_CVar.GetCVarDefault
@@ -42,6 +43,12 @@ local Blacklist = {
 	ENEMY_NPC = { enable = true, health = { enable = true }, },
 	FRIENDLY_NPC = { enable = true, health = { enable = true }, },
 }
+
+NP.AuraContainers = {}
+
+for key in next, Blacklist do
+	NP.AuraContainers[key] = {}
+end
 
 function NP:ResetAuraPriority()
 	for unitType, content in pairs(E.db.nameplates.units) do
@@ -85,8 +92,12 @@ end
 
 do
 	local empty = {}
-	function NP:PlateDB(nameplate)
-		return (nameplate and NP.db.units[nameplate.frameType]) or empty
+	function NP:PlateDB(nameplate, frameType)
+		if not frameType then
+			frameType = nameplate and nameplate.frameType
+		end
+
+		return NP.db.units[frameType] or empty
 	end
 end
 
@@ -322,7 +333,6 @@ function NP:StylePlate(nameplate)
 	nameplate.PvPClassificationIndicator = NP:Construct_PvPClassificationIndicator(nameplate) -- Cart / Flag / Orb / Assassin Bounty
 	nameplate.PVPRole = NP:Construct_PVPRole(nameplate)
 	nameplate.Cutaway = NP:Construct_Cutaway(nameplate)
-	nameplate.PrivateAuras = NP:Construct_PrivateAuras(nameplate)
 
 	NP:Construct_Auras(nameplate)
 	NP:Construct_ClassPowerTwo(nameplate)
@@ -419,7 +429,6 @@ function NP:UpdatePlate(nameplate, updateBase)
 		NP:Update_TargetIndicator(nameplate)
 		NP:Update_ThreatIndicator(nameplate)
 		NP:Update_Cutaway(nameplate)
-		NP:Update_PrivateAuras(nameplate)
 		NP:Update_ClassPowerTwo(nameplate)
 
 		if nameplate == NP.PlayerFrame then
@@ -434,7 +443,6 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised)
 	end
 
 	NP:ReparentElements(nameplate, E.HiddenFrame)
-	NP:Update_PrivateAuras(nameplate, true)
 
 	if nameOnly then
 		NP:Update_Tags(nameplate)
@@ -582,6 +590,10 @@ function NP:ConfigurePlates(init)
 		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.unit)
 	end
 
+	if E.Retail then
+		NP:Configure_AuraContainers()
+	end
+
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
 	local staticFunc = NP[staticEvent]
 	if init then -- since this is a fake plate, we actually need to trigger this always
@@ -600,7 +612,7 @@ function NP:ConfigurePlates(init)
 			end
 
 			if E.Retail then
-				NP:Configure_AllAuras(nameplate)
+				NP:Configure_AuraUpdate(nameplate)
 			end
 
 			nameplate:UpdateAllElements('ForceUpdate')
@@ -737,8 +749,10 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
 	self.unitName, self.unitRealm = UnitName(unit)
 	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
+
 	self.className, self.classFile, self.classID = UnitClass(unit)
-	self.classColor = (self.isPlayer and E:NotSecretValue(self.classFile) and self.classFile and E:ClassColor(self.classFile)) or (self.repReaction and NP.Colors.reactions[self.repReaction]) or nil
+	self.classColor = self.isPlayer and (E:IsSecretValue(self.classFile) and C_ClassColor_GetClassColor(self.classFile) or E:ClassColor(self.classFile))
+	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
 	local specID, specIcon
 	local spec = E.Retail and E:GetUnitSpecInfo(unit)
@@ -758,7 +772,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	NP:UpdatePlateSize(self)
 
 	if E.Retail then
-		NP:Configure_UnitAuras(self)
+		NP:Configure_AuraUnit(self)
 	end
 
 	self.softTargetFrame = self.blizzPlate and self.blizzPlate.SoftTargetFrame
@@ -849,7 +863,7 @@ function NP:UNIT_FACTION(_, unit)
 	self.faction = UnitFactionGroup(unit)
 	self.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
-	self.classColor = (self.isPlayer and E:ClassColor(self.classFile)) or (self.repReaction and NP.Colors.reactions[self.repReaction]) or nil
+	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)

@@ -2,8 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 
+local next = next
 local unpack = unpack
 local strfind = strfind
+local strlower = strlower
 
 local CreateFrame = CreateFrame
 
@@ -126,24 +128,79 @@ function NP:Construct_AuraIcon(button)
 	NP:UpdateAuraSettings(button)
 end
 
-function NP:Configure_UnitAuras(nameplate)
+function NP:Configure_AuraUnit(nameplate)
 	E:Auras_SetUnit(nameplate.Auras_, nameplate.unit)
 	E:Auras_SetUnit(nameplate.Buffs_, nameplate.unit)
 	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.unit)
 end
 
-function NP:Configure_AllAuras(nameplate)
+function NP:Configure_AuraUpdate(nameplate)
 	E:Auras_UpdateButtons(nameplate.Auras_)
 	E:Auras_UpdateButtons(nameplate.Buffs_)
 	E:Auras_UpdateButtons(nameplate.Debuffs_)
 end
 
+function NP:Configure_AuraContainer(data, db)
+	UF:UpdateFilters(data, db) -- attach the objects
+	UF:GroupFilters(data, data.filter) -- build the groups
+
+	local maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
+	local allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
+	local blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
+	local candidateFilters = E:Auras_CanidateFilters(allowList, blockList, maxDuration)
+
+	return allowList, blockList, candidateFilters, maxDuration
+end
+
+function NP:Configure_AuraFilters(nameplate, which)
+	local frameType = nameplate.frameType
+	if not frameType then return end
+
+	local obj = NP.AuraContainers[frameType]
+	local info = obj and obj[which]
+	if not info then return end
+
+	return info.filter, info.filters, info.allowList, info.blockList, info.candidateFilters, info.maxDuration
+end
+
+do
+	local types = { 'Auras', 'Debuffs', 'Buffs' }
+	function NP:Configure_AuraContainers()
+		for frameType, data in next, NP.AuraContainers do
+			local plateDB = NP:PlateDB(nil, frameType)
+			for _, which in next, types do
+				local info = data[which]
+				if not info then
+					info = { filters = {} }
+					data[which] = info
+				end
+
+				local auraType = strlower(which)
+				local db = plateDB[auraType]
+				if db then
+					info.filter = NP:GetAuraFilter(which, db) -- keep before Configure_AuraContainer
+					info.allowList, info.blockList, info.candidateFilters, info.maxDuration = NP:Configure_AuraContainer(info, db)
+				end
+			end
+		end
+	end
+end
+
+function NP:GetAuraFilter(which, db)
+	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
+		return db.filter or 'HARMFUL'
+	elseif E.Retail then
+		return (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
+	end
+end
+
 function NP:Configure_Auras(nameplate, which)
 	local plateDB = NP:PlateDB(nameplate)
 	local auras = nameplate[which]
-	local auraType = which:lower()
+	local auraType = strlower(which)
 	local db = plateDB[auraType]
 
+	auras.isNameplate = true
 	auras.size = db.size
 	auras.height = not db.keepSizeRatio and db.height
 	auras.numAuras = db.numAuras
@@ -162,11 +219,8 @@ function NP:Configure_Auras(nameplate, which)
 	auras.num = db.numAuras * db.numRows
 	auras.db = db -- for auraSort
 
-	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
-		auras.filter = db.filter or 'HARMFUL'
-	elseif E.Retail then
-		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
-	end
+	local growDown = auras.yOffset == 'DOWN'
+	auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and 1 or 0, growDown and 0 or 1
 
 	if E.Retail then
 		auras.noMouse = true
@@ -174,17 +228,10 @@ function NP:Configure_Auras(nameplate, which)
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		auras.nameplateType = nameplate.frameType
-		auras.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 
-		auras.filters.please = auras.filter..'|PLAYER'
-	--	UF:UpdateFilters(auras) -- attach the objects
-	--	UF:GroupFilters(auras, auras.filter) -- build the groups
-
-		auras.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
-		auras.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
-		auras.candidateFilters = E:Auras_CanidateFilters(auras.allowList, auras.blockList, auras.maxDuration)
+		auras.filter, auras.filters, auras.allowList, auras.blockList, auras.candidateFilters, auras.maxDuration = NP:Configure_AuraFilters(nameplate, which)
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)

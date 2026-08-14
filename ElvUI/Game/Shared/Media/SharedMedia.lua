@@ -310,6 +310,10 @@ do	-- LSM Font Preloader ~Simpy
 		local isFont = mediaType == 'font'
 		if isFont then
 			cacheFont(key, data)
+
+			if E.private then
+				E:UpdateBlizzardSpecialFonts()
+			end
 		end
 
 		local isBars = mediaType == 'statusbar' or mediaType == 'background'

@@ -16,28 +16,36 @@ local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
 local CopyTable = CopyTable
 
+local GetCVarBool = C_CVar.GetCVarBool
+local ItemEnchantmentPlacement = _G.CustomAuraContainerItemEnchantmentPlacement
 local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
 local OFFHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.OffHand
 local FLOWDIRECTION = AnchorUtil and AnchorUtil.FlowDirection
+local FLOWAXIS = AnchorUtil and AnchorUtil.FlowLayoutAxis
 local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
+local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
+
 E.AuraContainerSortDirection = {}
 E.AuraContainerSortMethod = {}
+-- E.AuraHorizontalGrowth is made in Auras.lua
 
 E.AuraFocus = {}
 E.AuraTarget = {}
-E.AuraHighlight = { -- customDispelColorCurve is added from UpdateAuraCurves
+E.AuraHighlight = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
+ -- customDispelColorCurve is added from UpdateAuraCurves
 }
 
 E.AuraDispel = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
 	showWhenHarmful = true,
 	showWhenHelpful = false,
-	showWithoutDispelType = false
+	showWithoutDispelType = true,
+	customDispelColorMap = {} -- updated by UpdateDispelColors
 }
 
 E.AuraEvents = {
@@ -49,6 +57,19 @@ E.AuraEventUnits = {
 	PLAYER_TARGET_CHANGED = 'target',
 	PLAYER_FOCUS_CHANGED = 'focus'
 }
+
+E.AuraGrowthMap = {}
+
+if FLOWAXIS then
+	E.AuraGrowthMap.RIGHT_DOWN	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Down,	anchor = 'TOPLEFT' }
+	E.AuraGrowthMap.RIGHT_UP	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMLEFT' }
+	E.AuraGrowthMap.LEFT_DOWN	= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Down,	anchor = 'TOPRIGHT' }
+	E.AuraGrowthMap.LEFT_UP		= { axis = FLOWAXIS.Horizontal,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMRIGHT' }
+	E.AuraGrowthMap.DOWN_RIGHT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Down,	anchor = 'TOPLEFT' }
+	E.AuraGrowthMap.DOWN_LEFT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Down,	anchor = 'TOPRIGHT' }
+	E.AuraGrowthMap.UP_RIGHT	= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Right,	vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMLEFT' }
+	E.AuraGrowthMap.UP_LEFT		= { axis = FLOWAXIS.Vertical,	horiz = FLOWDIRECTION.Left,		vert = FLOWDIRECTION.Up,	anchor = 'BOTTOMRIGHT' }
+end
 
 if SORTMETHOD then -- add the new ones (?)
 	-- top aura conversion
@@ -105,7 +126,13 @@ end
 
 function E:Auras_UpdateHighlight(container, button)
 	if button.highlight then
-		button:SetAuraBorder(button.highlight, E.AuraHighlight)
+		if container.key == 'bad' then
+			button:SetAuraBorder(button.highlight, E.AuraHighlight)
+		else
+			local color = button.data.color or FALLBACK
+			button.highlight:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
+		end
+
 		button.highlight:SetBlendMode(container.blendMode)
 	end
 end
@@ -118,8 +145,6 @@ function E:Auras_CreateIndicator(button)
 	button.backdrop = backdrop
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
-	-- statusbar:CreateBackdrop('Transparent')
-	-- statusbar.backdrop.Center:Hide()
 	button.statusbar = statusbar
 
 	local texture = button:CreateTexture(nil, 'ARTWORK')
@@ -211,6 +236,7 @@ function E:Auras_UpdateIndicator(container, button)
 				local color = data.color
 				button.texture:SetTexture(E.media.blankTex)
 				button.texture:SetVertexColor(color.r, color.g, color.b)
+				button:ClearIcon()
 			else
 				button:SetIcon(button.texture)
 				button.texture:SetVertexColor(1, 1, 1)
@@ -254,7 +280,6 @@ function E:Auras_CreateButton(button)
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
 	statusbar:CreateBackdrop('Transparent', nil, true) -- these are forbidden, ignore updates
-	statusbar.backdrop.Center:Hide()
 	button.statusbar = statusbar
 
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
@@ -285,6 +310,7 @@ function E:Auras_UpdateButton(container, button)
 	local width, height = E:Auras_GetSize(container)
 	button:Size(width, height)
 	button:SetMouseMotionEnabled(not container.noMouse)
+	button:SetCancelAuraButtons(GetCVarBool('ActionButtonUseKeyDown') and 'RightButtonDown' or 'RightButtonUp')
 
 	if button.texture then
 		if container.isAuraBar or container.keepSizeRatio or (width == height) then
@@ -301,12 +327,17 @@ function E:Auras_UpdateButton(container, button)
 		button:SetIcon(button.texture)
 	end
 
+	local valueColor = E.media.rgbvaluecolor
 	local borderColor = E.media.bordercolor
 	local backdropColor = E.media.backdropcolor
 	local backdropFadeColor = E.media.backdropfadecolor
 	if button.dispelBorder then
-		button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b) -- how can we do alpha?
-		button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+		if button.isEnchantment then
+			button.dispelBorder:SetVertexColor(valueColor.r, valueColor.g, valueColor.b)
+		else
+			button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
+			button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+		end
 	end
 
 	if button.border then
@@ -346,15 +377,24 @@ function E:Auras_UpdateButton(container, button)
 		end -- will also update the cooldown when needed
 	end
 
-	if container.useStatusbar then
-		if button.statusbar then
-			button:SetDurationBar(button.statusbar)
+	if container.isTopAura then
+		local statusbar = button.statusbar
+		if container.useStatusbar then
+			button:SetDurationBar(statusbar)
 
 			local color = container.barColor
-			button.statusbar:SetStatusBarColor(color.r, color.g, color.b)
-			button.statusbar:SetStatusBarTexture(container.barTexture)
+			statusbar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1)
+			statusbar:SetStatusBarTexture(container.barTexture)
+			statusbar:Show()
 
-			A:Configure_Statusbar(button, button.statusbar, container.barDB)
+			if container.isAuraBar then
+				statusbar.backdrop.Center:Hide()
+			end
+
+			A:Configure_Statusbar(button, statusbar, container.barDB)
+		else
+			button:ClearDurationBar()
+			statusbar:Hide()
 		end
 	elseif container.isAuraBar then
 		if button.statusbar then
@@ -425,10 +465,6 @@ function E:Auras_UpdateButton(container, button)
 		end
 	end
 
-	if container.unit == 'player' then
-		button:SetCancelAuraButtons('RightButtonUp')
-	end
-
 	if container.MasqueGroup then
 		container.MasqueGroup:AddButton(button, A:MasqueData(button.texture, button.highlight))
 	end
@@ -454,10 +490,11 @@ function E:Auras_UpdateIndicators(container)
 	end
 end
 
-function E:Auras_GenerateButton(container, key, filter)
+function E:Auras_GenerateButton(container, key, filter, isEnchantment)
 	return function(button)
 		container.buttons[button] = container
 
+		button.isEnchantment = isEnchantment
 		button.container = container
 		button.filter = filter
 		button.key = key
@@ -467,45 +504,44 @@ function E:Auras_GenerateButton(container, key, filter)
 	end
 end
 
-function E:Auras_GenerateSlot(container, key, data)
+function E:Auras_GenerateSlot(container, key, filter, data)
 	return function(button)
 		container.indicators[button] = container
 
-		button.key = key
-		button.data = data
 		button.container = container
+		button.filter = filter
+		button.data = data
+		button.key = key
 
 		E:Auras_CreateIndicator(button)
 		E:Auras_UpdateIndicator(container, button)
 	end
 end
 
-function E:Auras_GenerateHighlight(container)
+function E:Auras_GenerateHighlight(container, key, data)
 	return function(button)
 		container.indicators[button] = container
+
 		button.container = container
+		button.data = data
+		button.key = key
 
 		E:Auras_CreateHighlight(button)
 		E:Auras_UpdateHighlight(container, button)
 	end
 end
 
-function E:Auras_GetSize(container, sizeOnly)
-	local size = container.size or 24
-	if sizeOnly then
-		return size
-	end
-
-	return container.width or size, container.height or size
+function E:Auras_GetSize(container)
+	return container.width or container.size or 24, container.height or container.size or 24
 end
 
 function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
-		layout.elementSpacing = E:Scale(container.spacing or 1)
-		layout.groupSpacing = E:Scale(container.spacing or 1)
-		layout.lineSpacing = E:Scale(container.spacing or 1)
+		layout.elementSpacing = E:Scale(container.elementSpacing or container.spacing or 1)
+		layout.groupSpacing = E:Scale(container.groupSpacing or container.spacing or 1)
+		layout.lineSpacing = E:Scale(container.lineSpacing or container.spacing or 1)
 		layout.elementWidth = width
 		layout.elementHeight = height
 	end
@@ -542,11 +578,36 @@ do
 end
 
 do
-	local temp = {}
-	function E:Auras_DispelTypes()
-		temp.includeDispelTypes = CopyTable(DispelTypes)
+	local spell = {}
+	function E:Auras_FilterHighlight(container, data)
+		local temp = container.candidateTemp
+		wipe(temp) -- trash object for reuse
+
+		if data then
+			temp.includeSpellIDs = spell
+
+			wipe(spell)
+
+			local dataID = data.id
+			if dataID then
+				spell[dataID] = true
+			end
+		else
+			temp.includeDispelTypes = CopyTable(DispelTypes)
+		end
 
 		return temp
+	end
+end
+
+do
+	local temp, layout = {}, {}
+	function E:Auras_SetupEnchantment(container, key, filter, spacing, placement)
+		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter, true)
+		layout.elementSpacing = spacing
+		layout.placement = placement
+
+		return temp, layout
 	end
 end
 
@@ -566,8 +627,8 @@ end
 
 do
 	local temp = {}
-	function E:Auras_SetupSlot(container, key, candidate, sortMethod, sortDirection, data)
-		temp.initializeFrame = E:Auras_GenerateSlot(container, key, data)
+	function E:Auras_SetupSlot(container, key, filter, candidate, sortMethod, sortDirection, data)
+		temp.initializeFrame = E:Auras_GenerateSlot(container, key, filter, data)
 		temp.candidateFilters = candidate
 		temp.sortDirection = sortDirection
 		temp.sortMethod = sortMethod
@@ -578,8 +639,8 @@ end
 
 do
 	local temp = {}
-	function E:Auras_SetupHighlight(container, filter)
-		temp.initializeFrame = E:Auras_GenerateHighlight(container)
+	function E:Auras_SetupHighlight(container, filter, key, data)
+		temp.initializeFrame = E:Auras_GenerateHighlight(container, key, data)
 		temp.candidateFilters = filter
 
 		return temp
@@ -603,32 +664,54 @@ function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount
 end
 
 function E:Auras_SetEnchantments(container)
-	local group = E:Auras_SetupGroup(container)
+	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, container.spacing, ItemEnchantmentPlacement.AfterAuraGroups)
+	container:SetItemEnchantmentLayout(layout)
 	container:AddItemEnchantment(MAINHAND, group)
 	container:AddItemEnchantment(OFFHAND, group)
 end
 
-function E:Auras_UpdateSlot(container, key, filter, sortMethod, sortDirection)
-	if filter then
-		container:SetAuraSlotCandidateFilters(key, filter)
+function E:Auras_UpdateSlot(container, key, filter, candidate, sortMethod, sortDirection)
+	if candidate then
+		container:SetAuraSlotCandidateFilters(key, candidate)
 	end
 
+	container:SetAuraSlotFilterString(key, filter)
 	container:SetAuraSlotSortMethod(key, sortMethod, sortDirection)
 end
 
-function E:Auras_AddSlot(container, key, candidate, sortMethod, sortDirection, data)
-	local slot = E:Auras_SetupSlot(container, key, candidate, sortMethod, sortDirection, data)
-	container:AddAuraSlot(key, container.filter, slot)
+function E:Auras_AddSlot(container, key, filter, candidate, sortMethod, sortDirection, data)
+	local slot = E:Auras_SetupSlot(container, key, filter, candidate, sortMethod, sortDirection, data)
+	container:AddAuraSlot(key, filter, slot)
 end
 
 function E:Auras_SetHighlight(container)
-	local filter = container.filter
-	if container.known[filter] then return end
+	local groupKey = container.key
+	if groupKey == 'bad' then
+		if container.known[groupKey] then return end
 
-	local dispel = E:Auras_DispelTypes()
-	local slot = E:Auras_SetupHighlight(container, dispel)
-	container:AddAuraSlot(filter, container.filter, slot)
-	container.known[filter] = 'meow'
+		local candidateFilters = E:Auras_FilterHighlight(container)
+		container.candidateFilters = candidateFilters
+
+		local slot = E:Auras_SetupHighlight(container, candidateFilters)
+		container:AddAuraSlot(groupKey, container.filter, slot)
+
+		container.known[groupKey] = 'meow'
+	else
+		for key, data in next, container.keys do
+			local candidateFilters = E:Auras_FilterHighlight(container, data)
+			container.candidateFilters = candidateFilters
+
+			local slotFilter = container.filter .. (data.ownOnly and '|PLAYER' or '')
+			if container.known[key] then
+				container:SetAuraSlotFilterString(key, slotFilter)
+				container:SetAuraSlotCandidateFilters(key, candidateFilters)
+			else
+				local slot = E:Auras_SetupHighlight(container, candidateFilters, key, data)
+				container:AddAuraSlot(key, slotFilter, slot)
+				container.known[key] = 'bark'
+			end
+		end
+	end
 end
 
 function E:Auras_SetIndicator(container)
@@ -637,35 +720,60 @@ function E:Auras_SetIndicator(container)
 
 	for key, data in next, container.keys do
 		local candidateFilters = E:Auras_FilterIndicator(data)
+		container.candidateFilters = candidateFilters
+
+		local slotFilter = container.filter .. (data.anyUnit and '' or '|PLAYER')
 		if container.known[key] then
-			E:Auras_UpdateSlot(container, key, candidateFilters, sortMethod, sortDirection)
+			E:Auras_UpdateSlot(container, key, slotFilter, candidateFilters, sortMethod, sortDirection)
 		else
-			E:Auras_AddSlot(container, key, candidateFilters, sortMethod, sortDirection, data)
+			E:Auras_AddSlot(container, key, slotFilter, candidateFilters, sortMethod, sortDirection, data)
 
 			container.known[key] = data
 		end
 	end
 end
 
-function E:Auras_SetupIndicator(container, auraTable)
+function E:Auras_SetupList(container, auraTable)
+	wipe(container.keys)
+
 	for spell, data in next, auraTable do
-		if data.enabled then
-			container.keys[spell..''] = data
+		local key = spell..''
+		if container.isIndicator then
+			if data.enabled then
+				container.keys[key] = data
+			end
+		elseif container.isHighlight then
+			if data.enable then
+				if not data.id then
+					data.id = spell
+				end
+
+				container.keys[key] = data
+			end
 		end
 	end
 end
 
 function E:Auras_SetContainer(container)
-	local maxCount = container.maxFrameCount or 32
+	local maxCount = container.maxFrameCount or 40
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 	local layout = E:Auras_UpdateLayout(container)
 
-	local anchor = container.initialAnchor or 'BOTTOMLEFT'
+	local growth, anchor, horiz, vert, axis = E.AuraGrowthMap[container.growthDirection]
+	if growth then
+		anchor, horiz, vert, axis = growth.anchor, growth.horiz, growth.vert, growth.axis
+	else
+		anchor, horiz, vert = container.initialAnchor or 'BOTTOMLEFT', E:Auras_FlowDirection(container.growthX, container.growthY)
+	end
+
+	container:SetFlowLayoutPadding(container.paddingLeft or 0, container.paddingRight or 0, container.paddingTop or 0, container.paddingBottom or 0)
+	container:SetFlowLayoutGrowthDirection(horiz, vert)
 	container:SetFlowLayoutAnchorPoint(anchor)
 
-	local horizontal, vertical = E:Auras_FlowDirection(container.growthX, container.growthY)
-	container:SetFlowLayoutGrowthDirection(horizontal, vertical)
+	if axis then
+		container:SetFlowLayoutAxis(axis)
+	end
 
 	for key, filter in next, container.active do -- known but not active anymore
 		if container.known[key] and (container.filters[key] ~= filter) then
@@ -689,9 +797,11 @@ function E:Auras_SetContainer(container)
 end
 
 function E:Auras_SetLineSize(container)
-	local size = E:Auras_GetSize(container, true)
-	local rowWidth = (container.numAuras and container.numAuras > 0 and (container.numAuras * (size + (container.spacing or 0)))) or container:GetWidth()
-	container:SetFlowLayoutMaximumLineSize((E:NotSecretValue(rowWidth) and rowWidth and rowWidth > 0 and rowWidth) or huge)
+	local width, height = E:Auras_GetSize(container)
+	local line = (container.numAuras and container.numAuras > 0) and (container.numAuras * ((container.useWidth and width or height) + (container.spacing or 0)))
+	local size = line or (container.useWidth and container:GetWidth() or container:GetHeight())
+	local maximum = E:NotSecretValue(size) and (size and size > 0 and size)
+	container:SetFlowLayoutMaximumLineSize(maximum or huge)
 end
 
 function E:Auras_SetUnit(container, unit)
@@ -708,11 +818,11 @@ function E:Auras_GroupUnit(container, unit)
 		E.AuraFocus[container] = unit
 	end
 
+	E:Auras_SetUnit(container, unit)
+
 	if container.isHighlight then
 		UF:SetEnabled_AuraHighlight(container, unit)
 	end
-
-	E:Auras_SetUnit(container, unit)
 end
 
 function E:Auras_GetFilter(obj, key)

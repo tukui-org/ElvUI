@@ -228,6 +228,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Shadow_Small,				NORMAL, (blizz and 10) or unscale or small, 'SHADOW')
 		E:SetFont(_G.Tooltip_Small,							NORMAL, (blizz and 10) or unscale or small)
 		E:SetFont(_G.SystemFont_Small,						NORMAL, (blizz and 10) or unscale or small)
+		E:SetFont(_G.Game11Font,							NORMAL, (blizz and 11) or unscale or small, 'SHADOW')		-- Recent Allies
 		E:SetFont(_G.SystemFont_Small2,						NORMAL, (blizz and 11) or unscale or small)					-- Quest Detail (Warband Completed)
 		E:SetFont(_G.FriendsFont_11,						NORMAL, (blizz and 11) or unscale or small, 'SHADOW')
 		E:SetFont(_G.FriendsFont_UserText,					NORMAL, (blizz and 11) or unscale or small, 'SHADOW')

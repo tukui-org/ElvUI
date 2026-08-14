@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local NP = E:GetModule('NamePlates')
-local PA = E:GetModule('PrivateAuras')
 local TT = E:GetModule('Tooltip')
 local LSM = E.Libs.LSM
 local ElvUF = E.oUF
@@ -21,7 +20,6 @@ local GetInventorySlotInfo = (C_PaperDollInfo and C_PaperDollInfo.GetInventorySl
 local IsInInstance = IsInInstance
 local PlaySound = PlaySound
 local RegisterStateDriver = RegisterStateDriver
-local UIParent = UIParent
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitIsEnemy = UnitIsEnemy
@@ -81,6 +79,15 @@ UF.classMaxResourceBar = { -- also used by Nameplates
 	PRIEST = 3,
 	HUNTER = 3
 }
+
+do
+	local info = { isPlayerResource = true }
+	UF.PingableInfo = info
+
+	function UF:Pingable_GetTargetInfo()
+		return info
+	end
+end
 
 function UF:GetAuraSortTime(which, a, b)
 	return a.noTime and huge or a[which] or -huge, b.noTime and huge or b[which] or -huge
@@ -351,17 +358,15 @@ function UF:CreateRaisedElement(frame)
 	RaisedElement.frameName = RaisedElement:GetName()
 	RaisedElement.__owner = frame
 
-	-- layer levels (level +1 is icons)
-	RaisedElement.AuraHighlightLevel = RaisedLevel - 10
+	-- layers: level +1 is icons
 	RaisedElement.AuraLevel = RaisedLevel + 10
-	RaisedElement.PrivateAurasLevel = RaisedLevel + 15
-	RaisedElement.PVPSpecLevel = RaisedLevel + 20
-	RaisedElement.AuraBarLevel = RaisedLevel + 25
-	RaisedElement.RaidDebuffLevel = RaisedLevel + 30
-	RaisedElement.AuraWatchLevel = RaisedLevel + 35
-	RaisedElement.RestingIconLevel = RaisedLevel + 40
-	RaisedElement.RaidRoleLevel = RaisedLevel + 45
-	RaisedElement.CastBarLevel = RaisedLevel + 50
+	RaisedElement.PVPSpecLevel = RaisedLevel + 15
+	RaisedElement.AuraBarLevel = RaisedLevel + 20
+	RaisedElement.RaidDebuffLevel = RaisedLevel + 25
+	RaisedElement.AuraWatchLevel = RaisedLevel + 30
+	RaisedElement.RestingIconLevel = RaisedLevel + 35
+	RaisedElement.RaidRoleLevel = RaisedLevel + 40
+	RaisedElement.CastBarLevel = RaisedLevel + 45
 
 	return RaisedElement
 end
@@ -668,32 +673,6 @@ end
 
 function UF:Update_Templates()
 	E:CoroutineUpdate(E.UpdateUnitframeTemplate, E.unitFrameElements)
-end
-
-function UF:Construct_PrivateAuras(frame)
-	local element = CreateFrame('Frame', frame.frameName..'PrivateAuras', frame.RaisedElementParent)
-	element.owner = frame
-
-	return element
-end
-
-function UF:Configure_PrivateAuras(frame)
-	local element = E.Retail and frame.PrivateAuras
-	if not element then return end
-
-	PA:RemoveAuras(element)
-
-	local db = frame.db and frame.db.privateAuras
-	element.db = db or nil
-
-	if db and db.enable then
-		element:SetFrameLevel(frame.RaisedElementParent.PrivateAurasLevel)
-		element:ClearAllPoints()
-		element:Point(db.parent.invertAnchor and E.InversePoints[db.parent.point] or db.parent.anchorPoint, frame, db.parent.point, db.parent.offsetX, db.parent.offsetY)
-		element:Size(db.icon.size)
-
-		PA:SetupAuras(element)
-	end
 end
 
 function UF:Construct_Fader()
@@ -1428,10 +1407,6 @@ do
 			UF:Configure_AuraWatch(frame, isPet[which])
 		end
 
-		if frame.PrivateAuras then
-			UF:Configure_PrivateAuras(frame)
-		end
-
 		if frame.RaidDebuffs then
 			UF:Configure_RaidDebuffs(frame)
 		end
@@ -1736,7 +1711,7 @@ do
 		if disable.party or disable.raid then
 			-- calls to UpdateRaidAndPartyFrames, which as of writing this is used to show/hide the
 			-- Raid Utility and update Party frames via PartyFrame.UpdatePartyFrames not raid frames.
-			UIParent:UnregisterEvent('GROUP_ROSTER_UPDATE')
+			E:UnregisterGameEvent('GROUP_ROSTER_UPDATE')
 		end
 
 		-- shutdown monk stagger bar background updates
@@ -2230,19 +2205,18 @@ do
 		E:Auras_GroupUnit(frame.Debuffs, unit)
 		E:Auras_GroupUnit(frame.AuraBars, unit)
 		E:Auras_GroupUnit(frame.AuraWatch, unit)
-		E:Auras_GroupUnit(frame.AuraHighlight, unit)
+
+		local highlight = frame.AuraHighlight
+		if highlight then
+			E:Auras_GroupUnit(highlight.good, unit)
+			E:Auras_GroupUnit(highlight.bad, unit)
+		end
 	end
 end
 
 function UF:UpdateAllElements(event)
-	if event == 'OnAttributeChanged' then
-		if self.PrivateAuras then
-			UF:Configure_PrivateAuras(self)
-		end
-
-		if E.Retail then
-			UF:Configure_UnitAuras(self)
-		end
+	if event == 'OnAttributeChanged' and E.Retail then
+		UF:Configure_UnitAuras(self)
 	end
 end
 
@@ -2280,6 +2254,7 @@ function UF:Setup()
 end
 
 function UF:Initialize()
+	UF.PingableInfo.guid = E.myguid
 	UF.thinBorders = UF.db.thinBorders
 	UF.multiplier = UF.db.multiplier or 0.35
 	UF.multiplierPrediction = 1.25
