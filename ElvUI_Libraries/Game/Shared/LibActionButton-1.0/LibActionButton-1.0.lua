@@ -34,6 +34,7 @@ local GetCVar = C_CVar.GetCVar
 local EnableActionRangeCheck = C_ActionBar.EnableActionRangeCheck
 local IsAssistedCombatAction = C_ActionBar.IsAssistedCombatAction
 local IsConsumableSpell = C_Spell.IsConsumableSpell or IsConsumableSpell
+local HasAssistedCombatActionButtons = C_ActionBar.HasAssistedCombatActionButtons
 local IsSpellOverlayed = (C_SpellActivationOverlay and C_SpellActivationOverlay.IsSpellOverlayed) or IsSpellOverlayed
 local GetSpellLossOfControlCooldown = C_Spell.GetSpellLossOfControlCooldown or GetSpellLossOfControlCooldown
 
@@ -1572,6 +1573,18 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
 		if UseCustomFlyout then
 			UpdateFlyoutSpells()
+		end
+
+		if HasAssistedCombatActionButtons() then
+			for button in next, ButtonRegistry do
+				if button._state_type == 'action' then
+					local _, _, subType = GetActionInfo(button._state_action)
+					if subType == 'assistedcombat' then
+						ClearNewActionHighlight(button._state_action, true, false, button)
+						Update(button, event)
+					end
+				end
+			end
 		end
 	elseif event == "UNIT_MODEL_CHANGED" then
 		for button in next, ActiveButtons do
