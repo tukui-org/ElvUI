@@ -2584,13 +2584,10 @@ P.unitframe.units.player.debuffs.allowOthers = true
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.isAuraCrowdControl = true
 P.unitframe.units.player.debuffs.isAuraCrowdControlPlayer = true
-P.unitframe.units.player.debuffs.isAuraDispellable = true
-P.unitframe.units.player.debuffs.isAuraDispellablePlayer = true
 P.unitframe.units.player.debuffs.isAuraImportant = true
 P.unitframe.units.player.debuffs.isAuraImportantPlayer = true
 P.unitframe.units.player.debuffs.isAuraRaid = true
 P.unitframe.units.player.debuffs.isAuraRaidPlayer = true
-P.unitframe.units.player.debuffs.isAuraRaidPlayerDispellable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,NonPersonal'
 P.unitframe.units.player.debuffs.useBlocklist = true
 
