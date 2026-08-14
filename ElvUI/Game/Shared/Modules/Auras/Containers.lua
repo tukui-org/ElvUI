@@ -10,10 +10,9 @@ local strlower, strfind = strlower, strfind
 local next, type, wipe = next, type, wipe
 local huge = math.huge
 
-local AnchorUtil = AnchorUtil
 local AuraButtonBorderStyle = AuraButtonBorderStyle
-local InCombatLockdown = InCombatLockdown
 local CreateFrame = CreateFrame
+local AnchorUtil = AnchorUtil
 local CopyTable = CopyTable
 
 local GetCVarBool = C_CVar.GetCVarBool
@@ -471,7 +470,7 @@ function E:Auras_UpdateButton(container, button)
 end
 
 function E:Auras_IsInRestriction()
-	return InCombatLockdown() or E:IsPvPMatchRestricted()
+	return E:IsCombatRestricted() or E:IsPvPMatchRestricted()
 end
 
 function E:Auras_UpdateButtons(container)
