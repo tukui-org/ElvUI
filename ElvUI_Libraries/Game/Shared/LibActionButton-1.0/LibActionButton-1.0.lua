@@ -417,11 +417,16 @@ function SetupSecureSnippets(button)
 		local type, action = (self:GetAttribute(format("labtype-%s", state)) or "empty"), self:GetAttribute(format("labaction-%s", state))
 
 		self:SetAttribute("type", type)
+
 		if type ~= "empty" and type ~= "custom" then
 			local action_field = (type == "pet") and "action" or type
 			self:SetAttribute(action_field, action)
 			self:SetAttribute("action_field", action_field)
 		end
+
+		local actionID, _, hasAction = self:GetAttribute("type") == "action" and self:GetAttribute("action")
+		if actionID then _, hasAction = GetActionInfo(actionID) end
+		self:SetAttribute('ping-receiver', hasAction) -- replicate UpdatePingAttributes ~Simpy
 
 		local updateReleaseCasting = self:GetAttribute("UpdateReleaseCasting")
 		if updateReleaseCasting then
@@ -2236,10 +2241,6 @@ function Update(self, which)
 	end
 
 	self:UpdateLocal()
-
-	if which == 'UpdateAction' then
-		self:UpdatePingAttributes()
-	end
 
 	UpdateAbilityInfo(self)
 
