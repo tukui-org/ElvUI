@@ -7,13 +7,13 @@ function UF:Construct_AuraWatch(frame)
 	if E.Retail then
 		local auras = E:Auras_Create(frame, 'AuraWatch')
 		auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
-		auras:SetInside(frame.Health)
+		auras:SetAllPoints(frame.Health)
 
 		return auras
 	else
 		local auras = CreateFrame('Frame', '$parentAuraWatch', frame)
 		auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
-		auras:SetInside(frame.Health)
+		auras:SetAllPoints(frame.Health)
 
 		auras.allowStacks = UF.SourceStacks -- fake stacking (same spell id)
 		auras.PostCreateIcon = UF.AuraWatch_PostCreateIcon
