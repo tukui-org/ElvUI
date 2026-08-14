@@ -3022,7 +3022,18 @@ Generic.GetLossOfControlCooldown = function(self)
 end
 
 Generic.GetActionButtonInfo = function(self)
-	return nil
+	local actionType, id, subType = GetActionInfo(self._state_action)
+	local isUsable, notEnoughMana = IsUsableAction(self._state_action)
+
+	local info = {
+		id = id,
+		actionType = actionType,
+		subType = subType,
+		isUsable = isUsable,
+		notEnoughMana = notEnoughMana
+	}
+
+	return info
 end
 
 -----------------------------------------------------------
@@ -3100,21 +3111,6 @@ local IsConsumableAction = C_ActionBar.IsConsumableAction or IsConsumableAction
 local IsStackableAction = C_ActionBar.IsStackableAction or IsStackableAction
 local IsItemAction = C_ActionBar.IsItemAction or IsItemAction
 local IsActionInRange = C_ActionBar.IsActionInRange or IsActionInRange
-
-Action.GetActionButtonInfo = function(self)
-	local actionType, id, subType = GetActionInfo(self._state_action)
-	local isUsable, notEnoughMana = IsUsableAction(self._state_action)
-
-	local info = {
-		id = id,
-		actionType = actionType,
-		subType = subType,
-		isUsable = isUsable,
-		notEnoughMana = notEnoughMana
-	}
-
-	return info
-end
 
 Action.HasAction                = function(self) return HasAction(self._state_action) end
 Action.GetActionText            = function(self) return GetActionText(self._state_action) end
