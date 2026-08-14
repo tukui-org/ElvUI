@@ -81,11 +81,10 @@ UF.classMaxResourceBar = { -- also used by Nameplates
 }
 
 do
-	local info = {}
-	function UF:Pingable_GetTargetInfo()
-		info.isPlayerResource = true
-		info.guid = E.myguid
+	local info = { isPlayerResource = true }
+	UF.PingableInfo = info
 
+	function UF:Pingable_GetTargetInfo()
 		return info
 	end
 end
@@ -2255,6 +2254,7 @@ function UF:Setup()
 end
 
 function UF:Initialize()
+	UF.PingableInfo.guid = E.myguid
 	UF.thinBorders = UF.db.thinBorders
 	UF.multiplier = UF.db.multiplier or 0.35
 	UF.multiplierPrediction = 1.25
