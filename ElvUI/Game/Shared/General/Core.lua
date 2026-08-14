@@ -108,6 +108,11 @@ E.FrameLocks = {}
 E.VehicleLocks = {}
 E.CreditsList = {}
 E.ReverseTimer = {} -- Spells that we want to show the duration backwards (oUF_RaidDebuffs, ???)
+E.CenterPoint = {
+	BOTTOM = 'CENTER',
+	TOP = 'CENTER'
+}
+
 E.InversePoints = {
 	BOTTOM = 'TOP',
 	BOTTOMLEFT = 'TOPLEFT',
