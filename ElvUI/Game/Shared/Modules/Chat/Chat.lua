@@ -266,10 +266,10 @@ local canChangeMessage = function(arg1, id)
 	if id and arg1 == '' then return id end
 end
 
-function CH:MessageIsProtected(message)
-	if E:IsSecretValue(message) then return true end
+function CH:MessageIsProtected(msg)
+	if E:IsSecretValue(msg) then return true end
 
-	return message and (message ~= gsub(message, '(:?|?)|K(.-)|k', canChangeMessage))
+	return msg and (msg ~= gsub(msg, '(:?|?)|K(.-)|k', canChangeMessage))
 end
 
 function CH:RemoveSmiley(key)
@@ -1178,18 +1178,12 @@ local copyLines = {}
 function CH:GetLines(frame)
 	local index = 1
 	for i = 1, frame:GetNumMessages() do
-		local message, r, g, b = frame:GetMessageInfo(i)
-		if message and not CH:MessageIsProtected(message) then
-			--Set fallback color values
-			r, g, b = r or 1, g or 1, b or 1
-
-			--Remove icons
-			message = removeIconFromLine(message)
-
-			--Add text color
-			message = ColorizeLine(message, r, g, b)
-
-			copyLines[index] = message
+		local msg, r, g, b = frame:GetMessageInfo(i)
+		if msg and not CH:MessageIsProtected(msg) then
+			r, g, b = r or 1, g or 1, b or 1	-- Set fallback color values
+			msg = removeIconFromLine(msg)		-- Remove icons
+			msg = ColorizeLine(msg, r, g, b)	-- Add text color
+			copyLines[index] = msg
 			index = index + 1
 		end
 	end
@@ -1708,7 +1702,7 @@ function CH:FindURL(event, msg, author, ...)
 	return false, msg, author, ...
 end
 
-function CH:SetChatEditBoxMessage(message)
+function CH:SetChatEditBoxMessage(msg)
 	local ChatFrameEditBox = ChooseBoxForSend()
 	local editBoxShown = ChatFrameEditBox:IsShown()
 	local editBoxText = ChatFrameEditBox:GetText()
@@ -1720,7 +1714,7 @@ function CH:SetChatEditBoxMessage(message)
 		ChatFrameEditBox:SetText('')
 	end
 
-	ChatFrameEditBox:Insert(message)
+	ChatFrameEditBox:Insert(msg)
 	ChatFrameEditBox:HighlightText()
 end
 
@@ -1974,14 +1968,14 @@ end
 
 --Copied from FrameXML ChatFrame.lua and modified to add CUSTOM_CLASS_COLORS
 local seenGroups = {}
-function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement, noGroupReplacement)
+function CH:ChatFrame_ReplaceIconAndGroupExpressions(msg, noIconReplacement, noGroupReplacement)
 	wipe(seenGroups)
 
 	local ICON_LIST, ICON_TAG_LIST, GROUP_TAG_LIST = _G.ICON_LIST, _G.ICON_TAG_LIST, _G.GROUP_TAG_LIST
-	for tag in gmatch(message, '%b{}') do
+	for tag in gmatch(msg, '%b{}') do
 		local term = strlower(gsub(tag, '[{}]', ''))
 		if not noIconReplacement and ICON_TAG_LIST[term] and ICON_LIST[ICON_TAG_LIST[term]] then
-			message = gsub(message, tag, ICON_LIST[ICON_TAG_LIST[term]] .. '0|t')
+			msg = gsub(msg, tag, ICON_LIST[ICON_TAG_LIST[term]] .. '0|t')
 		elseif not noGroupReplacement and GROUP_TAG_LIST[term] then
 			local groupIndex = GROUP_TAG_LIST[term]
 			if not seenGroups[groupIndex] then
@@ -2001,13 +1995,13 @@ function CH:ChatFrame_ReplaceIconAndGroupExpressions(message, noIconReplacement,
 
 				if groupList ~= '[' then
 					groupList = groupList..']'
-					message = gsub(message, tag, groupList, 1)
+					msg = gsub(msg, tag, groupList, 1)
 				end
 			end
 		end
 	end
 
-	return message
+	return msg
 end
 
 function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
@@ -2164,10 +2158,10 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
-	local message = format('%s%s', isMobile or '', arg1)
+	local msg = format('%s%s', isMobile or '', arg1)
 
 	if isFromDiscord then
-		message = FormatDiscordMessage(discordInfo, message)
+		msg = FormatDiscordMessage(discordInfo, msg)
 	end
 
 	-- Player Flags
@@ -2178,16 +2172,16 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 			local icon, prettify, var1, var2, var3 = chatIcon()
 			if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not msgProtected then
 				if not usingDifferentLanguage and (chatType == 'TEXT_EMOTE' and arg2 ~= '') then
-					var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
+					var1, var2, var3 = strmatch(msg, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
 				end
 
 				if var2 then
 					if var1 ~= '' then var1 = prettify(var1) end
 					if var3 ~= '' then var3 = prettify(var3) end
 
-					message = var1..var2..var3
+					msg = var1..var2..var3
 				else
-					message = prettify(message)
+					msg = prettify(msg)
 				end
 			end
 
@@ -2215,18 +2209,18 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	local sender = (not bossMonster and playerLink) or arg2
 	local specialType = bossMonster or (chatType == 'PET_BATTLE_INFO' or chatType == 'PET_BATTLE_COMBAT_LOG')
 	if usingDifferentLanguage then
-		body = format(header..'[%s] %s', pflag..sender, arg3, message) -- arg3 is language
+		body = format(header..'[%s] %s', pflag..sender, arg3, msg) -- arg3 is language
 	elseif chatType == 'GUILD_ITEM_LOOTED' then
-		body = not msgProtected and gsub(message, '$s', sender, 1) or message
+		body = not msgProtected and gsub(msg, '$s', sender, 1) or msg
 	elseif chatType == 'GUILD_DISCORD' and isFromDiscord then
-		body = format(header..message, pflag..' '..playerLink)
+		body = format(header..msg, pflag..' '..playerLink)
 	elseif chatType == 'TEXT_EMOTE' then
 		local classLink = realm and playerLink and not msgProtected and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
-		body = (classLink and gsub(message, arg2..'%-'..realm, pflag..classLink, 1)) or ((E:NotSecretValue(arg2) and arg2 ~= sender) and gsub(message, arg2, sender, 1)) or message
+		body = (classLink and gsub(msg, arg2..'%-'..realm, pflag..classLink, 1)) or ((E:NotSecretValue(arg2) and arg2 ~= sender) and gsub(msg, arg2, sender, 1)) or msg
 	elseif specialType then -- contains special formatting
-		body = format(header..message, pflag..sender)
+		body = format(header..msg, pflag..sender)
 	else -- ignore special characters from players
-		body = format(header..'%s', pflag..sender, message)
+		body = format(header..'%s', pflag..sender, msg)
 	end
 
 	if not specialType and (channelLength > 0) then -- Add Channel
@@ -2457,13 +2451,13 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			local globalstring = E:NotSecretValue(arg1) and _G['BN_INLINE_TOAST_'..arg1]
 			if not globalstring then return end
 
-			local message
+			local msg
 			if arg1 == 'FRIEND_REQUEST' then
-				message = globalstring
+				msg = globalstring
 			elseif arg1 == 'FRIEND_PENDING' then
-				message = format(_G.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites())
+				msg = format(_G.BN_INLINE_TOAST_FRIEND_PENDING, BNGetNumFriendInvites())
 			elseif arg1 == 'FRIEND_REMOVED' or arg1 == 'BATTLETAG_FRIEND_REMOVED' then
-				message = format(globalstring, arg2)
+				msg = format(globalstring, arg2)
 			elseif arg1 == 'FRIEND_ONLINE' or arg1 == 'FRIEND_OFFLINE' then
 				local accountInfo = C_BattleNet_GetAccountInfoByID(arg13)
 				local gameInfo = accountInfo and accountInfo.gameAccountInfo
@@ -2488,20 +2482,20 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 						local charName = _G.BNet_GetValidatedCharacterName(gameInfo.characterName, accountInfo.battleTag, gameInfo.clientProgram) or ''
 						local linkDisplayText = format('[%s] (%s%s)', arg2, clientTexture, charName)
 						local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-						message = format(globalstring, playerLink)
+						msg = format(globalstring, playerLink)
 					end
 				else
 					local linkDisplayText = format('[%s]', arg2)
 					local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-					message = format(globalstring, playerLink)
+					msg = format(globalstring, playerLink)
 				end
 			else
 				local linkDisplayText = format('[%s]', arg2)
 				local playerLink = CH:GetBNPlayerLink(arg2, linkDisplayText, arg13, arg11, chatGroup, 0)
-				message = format(globalstring, playerLink)
+				msg = format(globalstring, playerLink)
 			end
 
-			frame:AddMessage(message, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
+			frame:AddMessage(msg, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'BN_INLINE_TOAST_BROADCAST' then
 			if E:NotSecretValue(arg1) and arg1 ~= '' then
 				arg1 = RemoveNewlines(RemoveExtraSpaces(arg1))
@@ -2741,11 +2735,11 @@ function CH:SetupChat()
 	end
 end
 
-local function PrepareMessage(author, message)
-	if E:IsSecretValue(message) then return end
+local function PrepareMessage(author, msg)
+	if E:IsSecretValue(msg) then return end
 
-	if author and author ~= '' and author ~= PLAYER_NAME and message and message ~= '' then
-		return strupper(author) .. message
+	if author and author ~= '' and author ~= PLAYER_NAME and msg and msg ~= '' then
+		return strupper(author) .. msg
 	end
 end
 
@@ -2753,9 +2747,9 @@ function CH:ChatThrottleHandler(arg1, arg2, when)
 	local msg = PrepareMessage(arg1, arg2)
 	if not msg then return end
 
-	for message, object in pairs(throttle) do
+	for text, object in pairs(throttle) do
 		if difftime(when, object.time) >= CH.db.throttleInterval then
-			throttle[message] = nil
+			throttle[text] = nil
 		end
 	end
 
@@ -2766,34 +2760,34 @@ function CH:ChatThrottleHandler(arg1, arg2, when)
 	end
 end
 
-function CH:ChatThrottleBlockFlag(author, message, when)
-	local msg = CH.db.throttleInterval ~= 0 and PrepareMessage(author, message)
+function CH:ChatThrottleBlockFlag(author, text, when)
+	local msg = CH.db.throttleInterval ~= 0 and PrepareMessage(author, text)
 	local object = msg and throttle[msg]
 
 	return object and object.time and object.count and object.count > 1 and (difftime(when, object.time) <= CH.db.throttleInterval), object
 end
 
-function CH:ChatThrottleIntervalHandler(event, message, author, ...)
-	local blockFlag, blockObject = CH:ChatThrottleBlockFlag(author, message, time())
+function CH:ChatThrottleIntervalHandler(event, text, author, ...)
+	local blockFlag, blockObject = CH:ChatThrottleBlockFlag(author, text, time())
 
 	if blockFlag then
 		return true
 	else
 		if blockObject then blockObject.time = time() end
-		return CH:FindURL(event, message, author, ...)
+		return CH:FindURL(event, text, author, ...)
 	end
 end
 
-function CH:CHAT_MSG_CHANNEL(event, message, author, ...)
-	return CH:ChatThrottleIntervalHandler(event, message, author, ...)
+function CH:CHAT_MSG_CHANNEL(event, msg, author, ...)
+	return CH:ChatThrottleIntervalHandler(event, msg, author, ...)
 end
 
-function CH:CHAT_MSG_YELL(event, message, author, ...)
-	return CH:ChatThrottleIntervalHandler(event, message, author, ...)
+function CH:CHAT_MSG_YELL(event, msg, author, ...)
+	return CH:ChatThrottleIntervalHandler(event, msg, author, ...)
 end
 
-function CH:CHAT_MSG_SAY(event, message, author, ...)
-	return CH:ChatThrottleIntervalHandler(event, message, author, ...)
+function CH:CHAT_MSG_SAY(event, msg, author, ...)
+	return CH:ChatThrottleIntervalHandler(event, msg, author, ...)
 end
 
 function CH:ThrottleSound()
@@ -2801,11 +2795,11 @@ function CH:ThrottleSound()
 end
 
 local protectLinks = {}
-function CH:CheckKeyword(message, author)
+function CH:CheckKeyword(msg, author)
 	local letInCombat = not CH.db.noAlertInCombat or not InCombatLockdown()
 	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME) and letInCombat
 
-	for hyperLink in gmatch(message, '|c%x-|H.-|h.-|h|r') do
+	for hyperLink in gmatch(msg, '|c%x-|H.-|h.-|h|r') do
 		protectLinks[hyperLink] = gsub(hyperLink,'%s','|s')
 
 		if letSound then
@@ -2821,12 +2815,12 @@ function CH:CheckKeyword(message, author)
 	end
 
 	for hyperLink, tempLink in pairs(protectLinks) do
-		message = gsub(message, E:EscapeString(hyperLink), tempLink)
+		msg = gsub(msg, E:EscapeString(hyperLink), tempLink)
 	end
 
 	local rebuiltString
 	local isFirstWord = true
-	for word in gmatch(message, '%s-%S+%s*') do
+	for word in gmatch(msg, '%s-%S+%s*') do
 		if not next(protectLinks) or not protectLinks[gsub(gsub(word,'%s',''),'|s',' ')] then
 			local tempWord = gsub(word, '[%s%p]', '')
 			local lowerCaseWord = strlower(tempWord)
@@ -3040,12 +3034,12 @@ function CH:SaveChatHistory(event, ...)
 	end
 
 	if CH.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
-		local message, author = ...
+		local msg, author = ...
 		local when = time()
 
-		CH:ChatThrottleHandler(author, message, when)
+		CH:ChatThrottleHandler(author, msg, when)
 
-		if CH:ChatThrottleBlockFlag(author, message, when) then
+		if CH:ChatThrottleBlockFlag(author, msg, when) then
 			return
 		end
 	end
@@ -3154,19 +3148,19 @@ do
 		return previous
 	end
 
-	function CH:SocialQueueMessage(guid, message)
-		if E:IsSecretValue(message) or not (guid and message) then return end
+	function CH:SocialQueueMessage(guid, msg)
+		if E:IsSecretValue(msg) or not (guid and msg) then return end
 		-- `guid` is something like `Party-1147-000011202574` and appears to update each time for solo requeue, otherwise on new group creation.
-		-- `message` is something like `|cff82c5ff|Kf58|k000000000000|k|r queued for: |cff00CCFFRandom Legion Heroic|r `
+		-- `msg` is something like `|cff82c5ff|Kf58|k000000000000|k|r queued for: |cff00CCFFRandom Legion Heroic|r `
 
 		local TIME = time() -- prevent duplicate messages within 5 minutes
-		if RecentSocialQueue(TIME, message) then return end
-		queueCache[guid] = {TIME, message}
+		if RecentSocialQueue(TIME, msg) then return end
+		queueCache[guid] = {TIME, msg}
 
 		-- UI_71_SOCIAL_QUEUEING_TOAST = 79739; appears to have no sound?
 		PlaySound(SOUND_TUTORIAL_POPUP)
 
-		E:Print(format('|Hsqu:%s|h%s|h', guid, strtrim(message)))
+		E:Print(format('|Hsqu:%s|h%s|h', guid, strtrim(msg)))
 	end
 end
 
