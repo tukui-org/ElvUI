@@ -1104,8 +1104,8 @@ function CH:StyleChat(frame)
 end
 
 function CH:AddMessageEdits(frame, msg, isHistory, historyTime)
-	local isProtected = CH:MessageIsProtected(msg)
-	if not isProtected and (strmatch(msg, '^%s*$') or strmatch(msg, '^|Helvtime|h') or strmatch(msg, '^|Hcpl:')) then
+	local msgProtected = CH:MessageIsProtected(msg)
+	if not msgProtected and (strmatch(msg, '^%s*$') or strmatch(msg, '^|Helvtime|h') or strmatch(msg, '^|Hcpl:')) then
 		return msg
 	end
 
@@ -2096,13 +2096,13 @@ local function FlashTabIfNotShown(frame, info, chatType, chatGroup, chatTarget)
 end
 
 function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, channelLength, coloredName, historySavedName, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17, arg18, isHistory, historyTime, historyName, historyBTag)
-	if chatType == 'WHISPER_INFORM' and GMChatFrame_IsGM and GMChatFrame_IsGM(arg2) then
+	if chatType == 'WHISPER_INFORM' and (GMChatFrame_IsGM and GMChatFrame_IsGM(arg2)) then
 		return
 	end
 
-	local isProtected = CH:MessageIsProtected(arg1)
+	local msgProtected = CH:MessageIsProtected(arg1)
 	local bossMonster = strsub(chatType, 1, 9) == 'RAID_BOSS' or strsub(chatType, 1, 7) == 'MONSTER'
-	if not isProtected then
+	if not msgProtected then
 		if bossMonster then -- Blizzard Formatting Errors: escape any special characters when non-secret
 			arg1 = gsub(arg1, '(%d%s?%%)([^%%%a])', '%1%%%2') -- escape percentages that need it [broken since SL?]
 			arg1 = gsub(arg1, '(%d%s?%%)$', '%1%%') -- escape percentages on the end
@@ -2176,7 +2176,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
 		if type(chatIcon) == 'function' then
 			local icon, prettify, var1, var2, var3 = chatIcon()
-			if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not isProtected then
+			if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not msgProtected then
 				if not usingDifferentLanguage and (chatType == 'TEXT_EMOTE' and arg2 ~= '') then
 					var1, var2, var3 = strmatch(message, '^(.-)('..arg2..(realm and '%-'..realm or '')..')(.-)$')
 				end
@@ -2217,11 +2217,11 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	if usingDifferentLanguage then
 		body = format(header..'[%s] %s', pflag..sender, arg3, message) -- arg3 is language
 	elseif chatType == 'GUILD_ITEM_LOOTED' then
-		body = not isProtected and gsub(message, '$s', sender, 1) or message
+		body = not msgProtected and gsub(message, '$s', sender, 1) or message
 	elseif chatType == 'GUILD_DISCORD' and isFromDiscord then
 		body = format(header..message, pflag..' '..playerLink)
 	elseif chatType == 'TEXT_EMOTE' then
-		local classLink = realm and playerLink and not isProtected and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
+		local classLink = realm and playerLink and not msgProtected and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
 		body = (classLink and gsub(message, arg2..'%-'..realm, pflag..classLink, 1)) or ((E:NotSecretValue(arg2) and arg2 ~= sender) and gsub(message, arg2, sender, 1)) or message
 	elseif specialType then -- contains special formatting
 		body = format(header..message, pflag..sender)
@@ -2233,7 +2233,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		body = '|Hchannel:channel:'..arg8..'|h['..ResolvePrefixedChannelName(arg4)..']|h '..body
 	end
 
-	if not specialType and not isProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
+	if not specialType and not msgProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
 		body = CH:HandleShortChannels(body, CH.db.hideChannels)
 	end
 
@@ -2269,7 +2269,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		_G.TextToSpeechFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 	end
 
-	local isProtected = E:IsSecretValue(arg2)
+	local nameProtected = E:IsSecretValue(arg2)
 	if event == 'CAUTIONARY_CHAT_MESSAGE' then -- hyperlinkLineID, confirmNumber
 		HandleCautionaryChatMessage(arg1, arg2)
 	elseif strsub(event, 1, 8) == 'CHAT_MSG' then
@@ -2347,7 +2347,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			return true
 		end
 
-		if not isProtected and (chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER') then
+		if not nameProtected and (chatGroup == 'WHISPER' or chatGroup == 'BN_WHISPER') then
 			local nameLower = strlower(arg2)
 			if frame.privateMessageList and not frame.privateMessageList[nameLower] then
 				return true
@@ -2377,7 +2377,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				if not found then
 					return true
 				end
-			elseif not isProtected and (chatGroup == 'BN_INLINE_TOAST_ALERT' or chatGroup == 'BN_WHISPER_PLAYER_OFFLINE') then
+			elseif not nameProtected and (chatGroup == 'BN_INLINE_TOAST_ALERT' or chatGroup == 'BN_WHISPER_PLAYER_OFFLINE') then
 				local nameLower = strlower(arg2)
 				if not frame.privateMessageList[nameLower] then
 					return true -- Dedicated BN whisper windows need online/offline messages for only that player
@@ -2530,7 +2530,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- beep boops
 			local historyType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and historyTypes[event]
-			local alertAllow = isProtected or arg2 ~= PLAYER_NAME
+			local alertAllow = nameProtected or arg2 ~= PLAYER_NAME
 			local alertType = (historyType ~= 'CHANNEL' and CH.db.channelAlerts[historyType]) or (historyType == 'CHANNEL' and CH.db.channelAlerts.CHANNEL[arg9])
 			if alertType and alertType ~= 'None' and alertAllow and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
@@ -2545,7 +2545,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		if notChatHistory and (chatType == 'WHISPER' or chatType == 'BN_WHISPER') then
-			if not isProtected then
+			if not nameProtected then
 				ChatEditSetLastTellTarget(arg2, chatType)
 			end
 
