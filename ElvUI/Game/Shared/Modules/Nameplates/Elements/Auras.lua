@@ -219,6 +219,9 @@ function NP:Configure_Auras(nameplate, which)
 	auras.num = db.numAuras * db.numRows
 	auras.db = db -- for auraSort
 
+	local growDown = auras.yOffset == 'DOWN'
+	auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and 1 or 0, growDown and 0 or 1
+
 	if E.Retail then
 		auras.noMouse = true
 		auras.keepSizeRatio = db.keepSizeRatio

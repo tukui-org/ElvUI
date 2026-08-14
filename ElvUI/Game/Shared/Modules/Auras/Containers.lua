@@ -767,11 +767,7 @@ function E:Auras_SetContainer(container)
 		anchor, horiz, vert = container.initialAnchor or 'BOTTOMLEFT', E:Auras_FlowDirection(container.growthX, container.growthY)
 	end
 
-	if container.isUnitframe or container.isNameplate then
-		local down = container.growthY == 'DOWN'
-		container:SetFlowLayoutPadding(0, 0, down and 1 or 0, down and 0 or 1)
-	end
-
+	container:SetFlowLayoutPadding(container.paddingLeft or 0, container.paddingRight or 0, container.paddingTop or 0, container.paddingBottom or 0)
 	container:SetFlowLayoutGrowthDirection(horiz, vert)
 	container:SetFlowLayoutAnchorPoint(anchor)
 
