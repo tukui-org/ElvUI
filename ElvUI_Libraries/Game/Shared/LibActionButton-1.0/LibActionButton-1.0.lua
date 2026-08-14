@@ -1274,8 +1274,7 @@ function Generic:OnEnter()
 	end
 
 	if self._state_type == "action" and self.NewActionTexture then
-		ClearNewActionHighlight(self._state_action, false, false)
-		UpdateNewAction(self)
+		ClearNewActionHighlight(self._state_action, false, false, self)
 	end
 
 	if FlyoutButtonMixin and UseCustomFlyout then
@@ -1352,7 +1351,7 @@ function Generic:PostClick(button, down)
 	self._receiving_drag = nil
 
 	if self._state_type == "action" and lib.ACTION_HIGHLIGHT_MARKS[self._state_action] then
-		ClearNewActionHighlight(self._state_action, false, false)
+		ClearNewActionHighlight(self._state_action, false, false, self)
 	end
 
 	if down and IsMouseButtonDown() then
@@ -1605,7 +1604,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	elseif event == "ACTIONBAR_SLOT_CHANGED" then
 		for button in next, ButtonRegistry do
 			if button._state_type == "action" and (arg1 == 0 or arg1 == tonumber(button._state_action)) then
-				ClearNewActionHighlight(button._state_action, true, false)
+				ClearNewActionHighlight(button._state_action, true, false, button)
 				Update(button, event)
 			end
 		end
@@ -2691,12 +2690,18 @@ function SpellVFX_PlaySpellInterruptedAnim(self)
 	end
 end
 
-function ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, value)
+function ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, value, button)
 	lib.ACTION_HIGHLIGHT_MARKS[action] = value
 
-	for button in next, ButtonRegistry do
+	if button then
 		if button._state_type == "action" and action == tonumber(button._state_action) then
 			UpdateNewAction(button)
+		end
+	else
+		for btn in next, ButtonRegistry do
+			if btn._state_type == "action" and action == tonumber(btn._state_action) then
+				UpdateNewAction(btn)
+			end
 		end
 	end
 
@@ -2726,7 +2731,7 @@ hooksecurefunc("MarkNewActionHighlight", function(action)
 end)
 
 hooksecurefunc("ClearNewActionHighlight", function(action, preventIdenticalActionsFromClearing)
-	ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, nil)
+	ClearNewActionHighlight(action, preventIdenticalActionsFromClearing)
 end)
 
 function UpdateNewAction(self)
