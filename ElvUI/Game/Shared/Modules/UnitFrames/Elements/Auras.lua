@@ -560,7 +560,7 @@ function UF:Configure_Auras(frame, which)
 		auras:SetEnabled(settings.enable)
 
 		auras.isUnitframe = true
-		auras.initialAnchor = E.CenterPoint[db.anchorPoint] or initialAnchor
+		auras.initialAnchor = E.CenterPoint[settings.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = settings.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
