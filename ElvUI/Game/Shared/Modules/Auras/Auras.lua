@@ -568,6 +568,7 @@ function A:UpdateHeader(header)
 		header.height = height
 		header.size = db.size
 		header.spacing = db.horizontalSpacing
+		header.lineSpacing = db.verticalSpacing
 		header.keepSizeRatio = db.keepSizeRatio
 		header.growthDirection = db.growthDirection
 		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]

@@ -539,9 +539,9 @@ function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
-		layout.elementSpacing = E:Scale(container.spacing or 1)
-		layout.groupSpacing = E:Scale(container.spacing or 1)
-		layout.lineSpacing = E:Scale(container.spacing or 1)
+		layout.elementSpacing = E:Scale(container.elementSpacing or container.spacing or 1)
+		layout.groupSpacing = E:Scale(container.groupSpacing or container.spacing or 1)
+		layout.lineSpacing = E:Scale(container.lineSpacing or container.spacing or 1)
 		layout.elementWidth = width
 		layout.elementHeight = height
 	end
