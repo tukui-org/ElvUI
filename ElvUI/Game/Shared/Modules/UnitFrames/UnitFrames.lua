@@ -20,7 +20,6 @@ local GetInventorySlotInfo = (C_PaperDollInfo and C_PaperDollInfo.GetInventorySl
 local IsInInstance = IsInInstance
 local PlaySound = PlaySound
 local RegisterStateDriver = RegisterStateDriver
-local UIParent = UIParent
 local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitIsEnemy = UnitIsEnemy
@@ -80,6 +79,16 @@ UF.classMaxResourceBar = { -- also used by Nameplates
 	PRIEST = 3,
 	HUNTER = 3
 }
+
+do
+	local info = {}
+	function UF:Pingable_GetTargetInfo()
+		info.isPlayerResource = true
+		info.guid = E.myguid
+
+		return info
+	end
+end
 
 function UF:GetAuraSortTime(which, a, b)
 	return a.noTime and huge or a[which] or -huge, b.noTime and huge or b[which] or -huge

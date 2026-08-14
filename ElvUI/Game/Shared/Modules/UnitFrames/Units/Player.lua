@@ -8,21 +8,12 @@ local tinsert = tinsert
 local CreateFrame = CreateFrame
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
-do
-	local info = {}
-	function UF:PingablePlayer_GetTargetInfo()
-		info.guid = E.myguid
-		info.isPlayerResource = true
-
-		return info
-	end
-end
-
 function UF:Construct_PlayerFrame(frame)
 	UF:PrepareFrame(frame)
 	UF:ConstructFrame(frame, 'player')
 
-	frame.GetTargetInfo = UF.PingablePlayer_GetTargetInfo
+	frame.GetTargetInfo = UF.Pingable_GetTargetInfo
+
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.Health = UF:Construct_HealthBar(frame, true, true, 'RIGHT')
 	frame.Power = UF:Construct_PowerBar(frame, true, true, 'LEFT')
