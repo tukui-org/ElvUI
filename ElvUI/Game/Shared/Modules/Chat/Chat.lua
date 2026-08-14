@@ -81,16 +81,23 @@ local GetTitleIconTexture = C_Texture.GetTitleIconTexture
 local IsRecentAllyByGUID = C_RecentAllies and C_RecentAllies.IsRecentAllyByGUID
 local GetClientTexture = BNet_GetClientEmbeddedAtlas or BNet_GetClientEmbeddedTexture
 
+local AddMessageEventFilter = ChatFrameUtil.AddMessageEventFilter
+local CanChatGroupPerformExpressionExpansion = ChatFrameUtil.CanChatGroupPerformExpressionExpansion
+local ChatEditSetLastActiveWindow = ChatFrameUtil.SetLastActiveWindow
+local ChatEditSetLastTellTarget = ChatFrameUtil.SetLastTellTarget
+local ChooseBoxForSend = ChatFrameUtil.ChooseBoxForSend
+local DiscordNameColorize = ChatFrameUtil.DiscordNameColorize
+local FormatDiscordMessage = ChatFrameUtil.FormatDiscordMessage
+local GetChatCategory = ChatFrameUtil.GetChatCategory
+local GetMentorChannelStatus = ChatFrameUtil.GetMentorChannelStatus
+local GetMobileEmbeddedTexture = ChatFrameUtil.GetMobileEmbeddedTexture
+local HandleCautionaryChatMessage = ChatFrameUtil.HandleCautionaryChatMessage
+local ProcessMessageEventFilters = ChatFrameUtil.ProcessMessageEventFilters
+local ResolvePrefixedChannelName = ChatFrameUtil.ResolvePrefixedChannelName
+local ShouldColorChatByClass = ChatFrameUtil.ShouldColorChatByClass
+local SendTell = ChatFrameUtil.SendTell
+
 local DiscordDisplayNameType = Enum.DiscordDisplayNameType
-local FormatDiscordMessage = ChatFrameUtil and ChatFrameUtil.FormatDiscordMessage
-local ChatEditSetLastTellTarget = (ChatFrameUtil and ChatFrameUtil.SetLastTellTarget) or ChatEdit_SetLastTellTarget
-local ChatEditSetLastActiveWindow = (ChatFrameUtil and ChatFrameUtil.SetLastActiveWindow) or ChatEdit_SetLastActiveWindow
-local GetMobileEmbeddedTexture = (ChatFrameUtil and ChatFrameUtil.GetMobileEmbeddedTexture) or ChatFrame_GetMobileEmbeddedTexture
-local ResolvePrefixedChannelName = (ChatFrameUtil and ChatFrameUtil.ResolvePrefixedChannelName) or ChatFrame_ResolvePrefixedChannelName
-local ShouldColorChatByClass = (ChatFrameUtil and ChatFrameUtil.ShouldColorChatByClass) or Chat_ShouldColorChatByClass
-local GetMentorChannelStatus = (ChatFrameUtil and ChatFrameUtil.GetMentorChannelStatus) or ChatFrame_GetMentorChannelStatus
-local GetChatCategory = (ChatFrameUtil and ChatFrameUtil.GetChatCategory) or Chat_GetChatCategory
-local ChooseBoxForSend = (ChatFrameUtil and ChatFrameUtil.ChooseBoxForSend) or ChatEdit_ChooseBoxForSend
 local TitleIconVersion_Small = Enum.TitleIconVersion and Enum.TitleIconVersion.Small
 local CHATCHANNELRULESET_MENTOR = Enum.ChatChannelRuleset and Enum.ChatChannelRuleset.Mentor
 local PLAYERMENTORSHIPSTATUS_NEWCOMER = Enum.PlayerMentorshipStatus and Enum.PlayerMentorshipStatus.Newcomer
@@ -781,11 +788,7 @@ do
 					end
 
 					if Name then
-						if _G.ChatFrameUtil and _G.ChatFrameUtil.SendTell then
-							_G.ChatFrameUtil.SendTell(Name, self.chatFrame)
-						else
-							_G.ChatFrame_SendTell(Name, self.chatFrame)
-						end
+						SendTell(Name, self.chatFrame)
 					else
 						_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
 					end
@@ -1949,7 +1952,7 @@ function CH:GetColoredName(event, _, arg2, _, _, _, _, _, arg8, _, _, _, arg12, 
 	if isFromDiscord then
 		local shouldShowGlobalName = discordInfo.type == DiscordDisplayNameType.GlobalName
 		if discordInfo.globalName and shouldShowGlobalName then -- Names of user from Discord have a fixed color
-			return _G.ChatFrameUtil.DiscordNameColorize(discordInfo.globalName)
+			return DiscordNameColorize(discordInfo.globalName)
 		end
 
 		name = discordInfo.lastOnlineName
@@ -2109,13 +2112,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 		arg1 = RemoveExtraSpaces(arg1) -- Replace all instances of 5+ spaces with only 4 spaces
 
-		-- Search for icon links and replace them with texture links.
-		-- If arg17 is true, don't convert to raid icons
-		if _G.ChatFrameUtil and _G.ChatFrameUtil.CanChatGroupPerformExpressionExpansion then
-			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrameUtil.CanChatGroupPerformExpressionExpansion(chatGroup))
-		else
-			arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not _G.ChatFrame_CanChatGroupPerformExpressionExpansion(chatGroup))
-		end
+		-- Search for icon links and replace them with texture links. If arg17 is true, don't convert to raid icons
+		arg1 = CH:ChatFrame_ReplaceIconAndGroupExpressions(arg1, arg17, not CanChatGroupPerformExpressionExpansion(chatGroup))
 	end
 
 	-- ElvUI: Get class colored name for BattleNet friend
@@ -2273,7 +2271,9 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		_G.TextToSpeechFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
 	end
 
-	if strsub(event, 1, 8) == 'CHAT_MSG' then
+	if event == 'CAUTIONARY_CHAT_MESSAGE' then -- hyperlinkLineID, confirmNumber
+		HandleCautionaryChatMessage(arg1, arg2)
+	elseif strsub(event, 1, 8) == 'CHAT_MSG' then
 		if arg16 then return true end -- hiding sender in letterbox: do NOT even show in chat window (only shows in cinematic frame)
 
 		local chatType = strsub(event, 10)
@@ -2285,25 +2285,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			return
 		end
 
-		if _G.ChatFrameUtil and _G.ChatFrameUtil.ProcessMessageEventFilters then
-			local filtered, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = _G.ChatFrameUtil.ProcessMessageEventFilters(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
-			if filtered then
-				return true
-			else
-				arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17
-			end
+		local filtered, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = ProcessMessageEventFilters(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
+		if filtered then
+			return true
 		else
-			local chatFilters = _G.ChatFrame_GetMessageEventFilters(event)
-			if chatFilters then
-				for _, filterFunc in next, chatFilters do
-					local filtered, new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17 = filterFunc(frame, event, arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17)
-					if filtered then
-						return true
-					elseif new1 then
-						arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17
-					end
-				end
-			end
+			arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, arg9, arg10, arg11, arg12, arg13, arg14, arg15, arg16, arg17 = new1, new2, new3, new4, new5, new6, new7, new8, new9, new10, new11, new12, new13, new14, new15, new16, new17
 		end
 
 		-- fetch the name color to use
@@ -4100,15 +4086,9 @@ function CH:Initialize()
 
 	CH:SecureHook(_G.EditModeManagerFrame, 'UpdateLayoutInfo', 'ResnapDock')
 
-	if _G.ChatFrameUtil and _G.ChatFrameUtil.ActivateChat then
-		CH:SecureHook(_G.ChatFrameUtil, 'ActivateChat', 'ChatEdit_ActivateChat')
-		CH:SecureHook(_G.ChatFrameUtil, 'DeactivateChat', 'ChatEdit_DeactivateChat')
-		CH:SecureHook(_G.ChatFrameUtil, 'SetLastActiveWindow', 'ChatEdit_SetLastActiveWindow')
-	else
-		CH:SecureHook('ChatEdit_ActivateChat')
-		CH:SecureHook('ChatEdit_DeactivateChat')
-		CH:SecureHook('ChatEdit_SetLastActiveWindow')
-	end
+	CH:SecureHook(_G.ChatFrameUtil, 'ActivateChat', 'ChatEdit_ActivateChat')
+	CH:SecureHook(_G.ChatFrameUtil, 'DeactivateChat', 'ChatEdit_DeactivateChat')
+	CH:SecureHook(_G.ChatFrameUtil, 'SetLastActiveWindow', 'ChatEdit_SetLastActiveWindow')
 
 	CH:SecureHook('FCFTab_UpdateColors')
 	CH:SecureHook('FCFDock_SelectWindow')
@@ -4169,11 +4149,7 @@ function CH:Initialize()
 	end
 
 	for _, event in pairs(FindURL_Events) do
-		if _G.ChatFrameUtil and _G.ChatFrameUtil.AddMessageEventFilter then
-			_G.ChatFrameUtil.AddMessageEventFilter(event, CH[event] or CH.FindURL)
-		else
-			_G.ChatFrame_AddMessageEventFilter(event, CH[event] or CH.FindURL)
-		end
+		AddMessageEventFilter(event, CH[event] or CH.FindURL)
 
 		local nType = strsub(event, 10)
 		if nType ~= 'AFK' and nType ~= 'DND' and nType ~= 'COMMUNITIES_CHANNEL' then
