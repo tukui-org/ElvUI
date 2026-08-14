@@ -224,6 +224,7 @@ function NP:Configure_Auras(nameplate, which)
 	local initialAnchor = E.InversePoints[db.anchorPoint]
 	if E.Retail then
 		auras.noMouse = true
+		auras.maxFrameCount = auras.num
 		auras.initialAnchor = E.CenterPoint[db.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = db.keepSizeRatio
 		auras.maxFrameCount = auras.numAuras
