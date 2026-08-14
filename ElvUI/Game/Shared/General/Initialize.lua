@@ -44,6 +44,9 @@ E.wowpatch, E.wowbuild, E.wowdate, E.wowtoc = GetBuildInfo()
 E.locale = GetLocale()
 E.oUF = oUF
 
+-- currently Chinese client will crash from these
+E.allowCooldownDuration = E.locale ~= 'zhCN' and E.locale ~= 'zhTW'
+
 -- moved this to oUF but relink it
 E.ColorGradient = oUF.ColorGradient
 E.CanAccessValue = oUF.CanAccessValue

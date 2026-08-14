@@ -22,7 +22,9 @@ function TM:UpdateButton(button, totem)
 		button.icon:SetTexture(icon)
 
 		if E:IsSecretValue(duration) then
-			button.cooldown:SetCooldownFromDurationObject(GetTotemDuration(slot))
+			if E.allowCooldownDuration then
+				button.cooldown:SetCooldownFromDurationObject(GetTotemDuration(slot))
+			end
 		elseif duration and duration > 0 then
 			button.cooldown:SetCooldown(startTime, duration)
 		else

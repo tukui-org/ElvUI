@@ -156,8 +156,6 @@ function E:Auras_CreateIndicator(button)
 	button.cooldown = cooldown
 end
 
--- currently cooldowns are crashing people
-local allowDuration = E.locale ~= 'zhCN' and E.locale ~= 'zhTW'
 function E:Auras_UpdateIndicator(container, button)
 	local data = button.data -- the data
 	local point = data.point or 'BOTTOMLEFT'
@@ -182,7 +180,7 @@ function E:Auras_UpdateIndicator(container, button)
 		local colorIcon = data.style == 'coloredIcon'
 		local cooldown = button.cooldown
 		if cooldown then
-			if allowDuration then
+			if E.allowCooldownDuration then
 				button:SetDurationCooldown(cooldown)
 			end
 
@@ -360,7 +358,7 @@ function E:Auras_UpdateButton(container, button)
 	end
 
 	if button.cooldown then
-		if allowDuration then
+		if E.allowCooldownDuration then
 			button:SetDurationCooldown(button.cooldown)
 		end
 
