@@ -148,8 +148,8 @@ local UpdateTargetAuras -- Simpy
 local TARGETAURA_ENABLED = false
 
 local RangeFont
-local locale = GetLocale()
 do -- properly support range symbol when it's shown ~Simpy
+	local locale = GetLocale()
 	local stockFont, stockFontSize, stockFontOutline
 	if locale == 'koKR' then
 		stockFont, stockFontSize, stockFontOutline = [[Fonts\2002.TTF]], 11, 'MONOCHROME, THICKOUTLINE'
@@ -2418,10 +2418,7 @@ if WoWRetail then
 			cooldown:Clear()
 			return
 		end
-
-		if locale ~= 'zhCN' and locale ~= 'zhTW' then
-			cooldown:SetCooldownFromDurationObject(durationObject)
-		end
+		cooldown:SetCooldownFromDurationObject(durationObject)
 	end
 
 	function UpdateCooldown(self)
