@@ -547,10 +547,11 @@ function UF:Configure_Auras(frame, which)
 	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 
 	local smartInfo = E.Retail and auras.smartFluid and UF.SmartPosition[auras.smartPosition]
+	local smartFluid = smartInfo and (smartInfo.to == which or smartInfo.other == which)
 	local growDown, growOffset = auras.growthX == 'DOWN', smartInfo and 1.5 or 1
 
 	auras:ClearAllPoints()
-	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset - (smartInfo and ((smartInfo.to == which and 1) or (smartInfo.other == which and 1)) or 0))
+	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset - (smartFluid and 1 or 0))
 
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
