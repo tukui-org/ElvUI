@@ -15,7 +15,7 @@ local GetQuestLogSelection = GetQuestLogSelection
 local BreakUpLargeNumbers = BreakUpLargeNumbers
 
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
-local GetNumQuestLogEntries = (C_QuestLog and C_QuestLog.GetNumQuestLogEntries) or GetNumQuestLogEntries
+local GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries or GetNumQuestLogEntries
 
 local MAX_QUESTLOG_QUESTS = min(C_QuestLog.GetMaxNumQuestsCanAccept() + (E.Retail and 10 or 0), 35) -- 20 for ERA, 25 for WotLK, 35 for Retail
 local TRACKER_HEADER_QUESTS = TRACKER_HEADER_QUESTS

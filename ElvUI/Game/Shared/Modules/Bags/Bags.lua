@@ -1723,7 +1723,7 @@ end
 
 function B:SetBagShownTexture(icon, shown)
 	local texture = shown and (_G.READY_CHECK_READY_TEXTURE or READY_TEX) or (_G.READY_CHECK_NOT_READY_TEXTURE or NOT_READY_TEX)
-	if C_Texture_GetAtlasInfo and C_Texture_GetAtlasInfo(texture) then
+	if C_Texture_GetAtlasInfo(texture) then
 		icon:SetAtlas(texture)
 	else
 		icon:SetTexture(texture)
