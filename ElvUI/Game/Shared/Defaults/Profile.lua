@@ -619,6 +619,7 @@ local NP_Auras = {
 	sourceText = CopyTable(NP_AuraSourceText),
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
+	filterCount = 3,
 	filterLists = {}
 }
 
@@ -1538,6 +1539,7 @@ local UF_Auras = {
 	sourceText = CopyTable(NP_AuraSourceText),
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
+	filterCount = 3,
 	filterLists = {}
 }
 
@@ -1576,6 +1578,7 @@ local UF_AuraBars = {
 	countYOffset = 2,
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
+	filterCount = 3,
 	filterLists = {}
 }
 
