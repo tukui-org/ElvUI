@@ -92,17 +92,25 @@ ___
 `HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HARMFUL` + `{ isPriorityAura = true, excludeSpellIDs = Blacklist }`  
 ### TargetTarget  
-**Show all and auras enable off by default**  
-`HELPFUL` / `HARMFUL` — enable = false  
+**Buffs:**  
+`HELPFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
+**Debuffs:**  
+`HARMFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
 ### TargetTargetTarget  
-**Show all and auras enable off by default**  
-`HELPFUL` / `HARMFUL` — enable = false  
+**Buffs:**  
+`HELPFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
+**Debuffs:**  
+`HARMFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
 ### FocusTarget  
-**Show all and auras enable off by default**  
-`HELPFUL` / `HARMFUL` — enable = false  
+**Buffs:**  
+`HELPFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
+**Debuffs:**  
+`HARMFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
 ### PetTarget  
-**Show all and auras enable off by default**  
-`HELPFUL` / `HARMFUL` — enable = false  
+**Buffs:**  
+`HELPFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
+**Debuffs:**  
+`HARMFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
 
 ## Group Units  
 ___
@@ -160,11 +168,15 @@ ___
 `HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HARMFUL` + `{ isPriorityAura = true }`  
 ### Assist  
-**Show all and auras enable off by default**  
-`HELPFUL` / `HARMFUL` — enable = false  
+**Buffs:**  
+`HELPFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
+**Debuffs:**  
+`HARMFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
 ### Raid Pet  
-**Show all and auras enable off by default**  
-`HELPFUL` / `HARMFUL` — enable = false  
+**Buffs:**  
+`HELPFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
+**Debuffs:**  
+`HARMFUL` + `{ excludeSpellIDs = Blacklist }` (Disable module by default)  
 
 ## Filter strings  
 ___
