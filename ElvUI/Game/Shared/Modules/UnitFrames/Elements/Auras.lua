@@ -541,6 +541,7 @@ function UF:Configure_Auras(frame, which)
 	auras.height = not settings.keepSizeRatio and settings.height
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows
+	auras.colorByType = UF.db.colors.auraByType
 	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
 	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 

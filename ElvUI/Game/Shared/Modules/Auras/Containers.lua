@@ -342,10 +342,19 @@ function E:Auras_UpdateButton(container, button)
 	local backdropFadeColor = E.media.backdropfadecolor
 	if button.dispelBorder then
 		if button.isEnchantment then
-			button.dispelBorder:SetVertexColor(valueColor.r, valueColor.g, valueColor.b)
+			if container.colorEnchants then
+				button.dispelBorder:SetVertexColor(valueColor.r, valueColor.g, valueColor.b)
+			else
+				button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
+			end
 		else
 			button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
-			button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+
+			if container.colorByType then -- auraByDispels would be isStealable
+				button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+			else
+				button:ClearAuraBorder()
+			end
 		end
 	end
 
