@@ -287,12 +287,14 @@ function UF:GroupFilters(frame, list)
 
 	wipe(frame.filters) -- start over
 
-	local info = {}
 	for name, data in next, list do
+		local info = {}
+
 		info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
 		info.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
 		info.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
-		info.candidateFilters = E:Auras_CanidateFilters(data.allowList, data.blockList, data.maxDuration)
+		info.candidateFilters = E:Auras_CanidateFilters(info.allowList, info.blockList, info.maxDuration)
+		info.filter = data.filter
 
 		frame.filters[name] = info
 	end

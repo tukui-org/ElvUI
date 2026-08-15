@@ -917,31 +917,30 @@ function E:Auras_SetContainer(container)
 	end
 
 	local count = E:Auras_IsForced(container) and 0 or maxCount
-	for key, data in next, container.filters do
+	for key, info in next, container.filters do
 		if container.isTopAura then
 			local sortMethod = container.sortMethod or SORTMETHOD.Default
 			local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
 			if container.known[key] then
-				E:Auras_UpdateGroup(container, key, data, container.candidateFilters, layout, count, sortMethod, sortDirection)
+				E:Auras_UpdateGroup(container, key, info, container.candidateFilters, layout, count, sortMethod, sortDirection)
 			else
-				E:Auras_AddGroup(container, key, data, container.candidateFilters, layout, count, sortMethod, sortDirection)
+				E:Auras_AddGroup(container, key, info, container.candidateFilters, layout, count, sortMethod, sortDirection)
 
-				container.known[key] = data
+				container.known[key] = info
 			end
-		elseif data.filter then
-			container.active[key] = data.filter -- set all active
+		elseif info.filter then
+			container.active[key] = info.filter -- set all active
 
-			local sortMethod = data.sortMethod or SORTMETHOD.Default
-			local sortDirection = data.sortDirection or SORTDIRECTION.Normal
-			local candidateFilters = data.candidateFilters
+			local sortMethod = info.sortMethod or SORTMETHOD.Default
+			local sortDirection = info.sortDirection or SORTDIRECTION.Normal
 
 			if container.known[key] then
-				E:Auras_UpdateGroup(container, key, data.filter, candidateFilters, layout, count, sortMethod, sortDirection)
+				E:Auras_UpdateGroup(container, key, info.filter, info.candidateFilters, layout, count, sortMethod, sortDirection)
 			else
-				E:Auras_AddGroup(container, key, data.filter, candidateFilters, layout, count, sortMethod, sortDirection)
+				E:Auras_AddGroup(container, key, info.filter, info.candidateFilters, layout, count, sortMethod, sortDirection)
 
-				container.known[key] = data.filter
+				container.known[key] = info.filter
 			end
 		end
 	end
