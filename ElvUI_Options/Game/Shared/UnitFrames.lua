@@ -274,6 +274,16 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.midnightGroup.args.lists.args.useBlocklist = ACH:Toggle(L["Filter Block"], L["Activate the blocklist filter."], 4)
 	config.args.midnightGroup.args.lists.inline = true
 
+	config.args.midnightGroup.args.isFromPlayerOrPlayerPet = ACH:Toggle(L["Player or Pet"], L["From unit: player or pet"], 20)
+	config.args.midnightGroup.args.isRoleAura = ACH:Toggle(L["Role"], L["Role aura - tank/heal/dps?"], 21)
+	config.args.midnightGroup.args.isPriorityAura = ACH:Toggle(L["Priority"], L["Priority aura"], 22)
+	config.args.midnightGroup.args.isStealable = ACH:Toggle(L["Stealable"], L["Stealable"], 23)
+	config.args.midnightGroup.args.nameplateShowAll = ACH:Toggle(L["NP: All"], L["Nameplate: Show all"], 24)
+	config.args.midnightGroup.args.nameplateShowPersonal = ACH:Toggle(L["NP: Personal"], L["Nameplate: Personal"], 25)
+	config.args.midnightGroup.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["Can apply aura"], 26)
+	config.args.midnightGroup.args.isBossAura = ACH:Toggle(L["Boss"], L["Boss aura - important stuff, was used on last boss this season"], 27)
+	config.args.midnightGroup.args.isBossOrRoleAura = ACH:Toggle(L["Boss or Role"], L["the either-or between isRoleAura and isBossAura"], 28)
+
 	config.args.legacyGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, E.Retail)
 	config.args.legacyGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
 	config.args.legacyGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 2, { min = 0, max = 10800, step = 1 })
