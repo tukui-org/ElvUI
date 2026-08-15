@@ -101,20 +101,20 @@ blocklist, important, raid player dispellable, crowd control, raid:player, is pr
 
 ## Filter strings  
 ___
-`HELPFUL` include buffs 
-`HARMFUL` include debuffs 
-`PLAYER` include unit: player, pet, vehicle 
-`RAID` (buff: player can apply) (debuff: player can dispel) 
-`RAID_PLAYER_DISPELLABLE` (buff: someone can purge/steal) (debuff: someone can dispel) 
-`RAID_IN_COMBAT` (combine with helpful and player for self-cast hots, matches our AuraWatch table of IDs) 
-`CANCELABLE` (buffs to cancel, player only) 
-`INCLUDE_NAME_PLATE_ONLY` (when used include nameplate-only auras, otherwise excludes nameplate-only auras) 
-`EXTERNAL_DEFENSIVE` (buffs: pain suppression, iron bark, time dilation) 
-`CROWD CONTROL` (debuffs: stun, fear, silence, slow) 
-`BIG_DEFENSIVE` (buffs: bubble, ice block, blur, barkskin) 
-`IMPORTANT` (special helpful auras that show on enemy even if non-stealable) 
-`DISPELLABLE` (dispellable/purgeable/stealable by at least one class in the game, even if none of the raid classes can handle it) 
-## Candidate filters
+`HELPFUL` include buffs  
+`HARMFUL` include debuffs  
+`PLAYER` include unit: player, pet, vehicle  
+`RAID` (buff: player can apply) (debuff: player can dispel)  
+`RAID_PLAYER_DISPELLABLE` (buff: someone can purge/steal) (debuff: someone can dispel)  
+`RAID_IN_COMBAT` (combine with helpful and player for self-cast hots, matches our AuraWatch table of IDs)  
+`CANCELABLE` (buffs to cancel, player only)  
+`INCLUDE_NAME_PLATE_ONLY` (when used include nameplate-only auras, otherwise excludes nameplate-only auras)  
+`EXTERNAL_DEFENSIVE` (buffs: pain suppression, iron bark, time dilation)  
+`CROWD CONTROL` (debuffs: stun, fear, silence, slow)  
+`BIG_DEFENSIVE` (buffs: bubble, ice block, blur, barkskin)  
+`IMPORTANT` (special helpful auras that show on enemy even if non-stealable)  
+`DISPELLABLE` (dispellable/purgeable/stealable by at least one class in the game, even if none of the raid classes can handle it)  
+## Candidate filters  
 ___
 `isFromPlayerOrPlayerPet` (From any player or pet)  
 `isRoleAura` (Role aura - tank/heal/dps?)  
