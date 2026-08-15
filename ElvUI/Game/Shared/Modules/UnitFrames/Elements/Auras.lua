@@ -573,6 +573,7 @@ function UF:Configure_Auras(frame, which)
 		auras.countFont, auras.countFontSize, auras.countFontOutline = settings.countFont, settings.countFontSize, settings.countFontOutline
 		auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and growOffset or 0, growDown and 0 or growOffset
 		auras.noMouse = settings.clickThrough
+		auras.forceShowAuras = frame.forceShowAuras
 
 		if settings.enable then
 			auras.allowList = settings.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, settings.allowList or 'Whitelist') or nil

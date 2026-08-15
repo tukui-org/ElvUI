@@ -232,6 +232,7 @@ function NP:Configure_Auras(nameplate, which)
 		auras.nameplateType = nameplate.frameType
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
+		auras.forceShowAuras = nameplate == NP.TestFrame
 
 		auras.filter, auras.filters, auras.allowList, auras.blockList, auras.candidateFilters, auras.maxDuration = NP:Configure_AuraFilters(nameplate, which)
 
