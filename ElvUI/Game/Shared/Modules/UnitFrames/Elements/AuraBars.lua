@@ -8,7 +8,7 @@ local strfind = strfind
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
-local WrapString = C_StringUtil and C_StringUtil.WrapString
+local WrapString = C_StringUtil.WrapString
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation

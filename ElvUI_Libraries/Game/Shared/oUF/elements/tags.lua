@@ -96,9 +96,9 @@ local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecializ
 local CreateFrame = CreateFrame
 
 local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
-local GenerateTextColorCode = C_ColorUtil and C_ColorUtil.GenerateTextColorCode
-local TruncateWhenZero = C_StringUtil and C_StringUtil.TruncateWhenZero
-local WrapString = C_StringUtil and C_StringUtil.WrapString
+local GenerateTextColorCode = C_ColorUtil.GenerateTextColorCode
+local TruncateWhenZero = C_StringUtil.TruncateWhenZero
+local WrapString = C_StringUtil.WrapString
 
 local IsInRaid = IsInRaid
 local IsResting = IsResting

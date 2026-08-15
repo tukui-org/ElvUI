@@ -79,7 +79,7 @@ local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrenc
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
 local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
-local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local GetCoinTextureString = C_CurrencyInfo.GetCoinTextureString
 
 local TooltipDataLineType = Enum.TooltipDataLineType

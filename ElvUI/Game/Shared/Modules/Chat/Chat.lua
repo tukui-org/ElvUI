@@ -68,8 +68,8 @@ local GetGroupQueues = C_SocialQueue and C_SocialQueue.GetGroupQueues
 local GetCVar = C_CVar.GetCVar
 local GetCVarBool = C_CVar.GetCVarBool
 
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local GetGuildRosterMOTD = C_GuildInfo.GetMOTD or GetGuildRosterMOTD
-local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
 local IsTimerunningPlayer = C_ChatInfo.IsTimerunningPlayer
 local IsChatLineCensored = C_ChatInfo.IsChatLineCensored
 local GetChannelRuleset = C_ChatInfo.GetChannelRuleset

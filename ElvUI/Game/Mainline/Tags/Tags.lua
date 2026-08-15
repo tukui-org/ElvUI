@@ -16,7 +16,7 @@ local UnitGetTotalHealAbsorbs = UnitGetTotalHealAbsorbs
 local UnitHealthMissing = UnitHealthMissing
 local UnitPowerMissing = UnitPowerMissing
 
-local TruncateWhenZero = C_StringUtil and C_StringUtil.TruncateWhenZero
+local TruncateWhenZero = C_StringUtil.TruncateWhenZero
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 

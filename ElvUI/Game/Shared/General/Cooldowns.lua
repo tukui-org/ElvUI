@@ -4,7 +4,7 @@ local next = next
 local tremove = tremove
 
 local CreateColor = CreateColor
-local CreateNumericRuleFormatter = C_StringUtil and C_StringUtil.CreateNumericRuleFormatter
+local CreateNumericRuleFormatter = C_StringUtil.CreateNumericRuleFormatter
 
 local ROUNDING = Enum.NumericRuleFormatRounding
 local ROUNDUP = ROUNDING and ROUNDING.Up or 1
