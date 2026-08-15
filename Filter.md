@@ -73,9 +73,9 @@ blocklist, important, raid player dispellable, crowd control, raid:player, is pr
 shared `{ excludeSpellIDs = Blacklist }`  
 ### Pet  
 **Buffs:**  
-external defensive, raid:player  
+blocklist, external defensive, raid:player  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
-`HELPFUL|RAID`  
+`HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 **Debuffs:**  
 blocklist, important, raid player dispellable, crowd control, raid:player, is priority aura  
 `HARMFUL|IMPORTANT`  
@@ -100,11 +100,11 @@ blocklist, nameplate show personal
 
 ### Focus  
 **Buffs:**  
-is boss or role aura, is stealable, important, raid:player, big defensive, external defensive  
+blocklist, is boss or role aura, is stealable, important, raid:player, big defensive, external defensive  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
 `HELPFUL` + `{ isStealable = true }`  
 `HELPFUL|IMPORTANT`  
-`HELPFUL|RAID`  
+`HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 **Debuffs:**  
@@ -132,12 +132,12 @@ shared `{ excludeSpellIDs = Blacklist }`
 ___
 ### Arena  
 **Buffs:**  
-big defensive, external defensive, raid player dispellable, is stealable, raid:player  
+blocklist, big defensive, external defensive, raid player dispellable, is stealable, raid:player  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_PLAYER_DISPELLABLE`  
 `HELPFUL` + `{ isStealable = true }`  
-`HELPFUL|RAID`  
+`HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 **Debuffs:**  
 blocklist, nameplate show personal, block crowd control  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY` + `{ nameplateShowPersonal = true }`  
@@ -183,11 +183,11 @@ blocklist, important, raid player dispellable, crowd control, raid:player, is pr
 shared `{ excludeSpellIDs = Blacklist }`  
 ### Tank  
 **Buffs:**  
-is boss or role aura, is stealable, important, raid:player, big defensive, external defensive  
+blocklist, is boss or role aura, is stealable, important, raid:player, big defensive, external defensive  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
 `HELPFUL` + `{ isStealable = true }`  
 `HELPFUL|IMPORTANT`  
-`HELPFUL|RAID`  
+`HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 **Debuffs:**  
