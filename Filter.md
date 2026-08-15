@@ -2,105 +2,83 @@
 ___
 ### Player  
 **Buffs:**  
-big defensive:player, external defensive, raid in combat:player  
 `HELPFUL|BIG_DEFENSIVE|PLAYER`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_IN_COMBAT|PLAYER`  
 **Debuffs:**  
-blocklist, all  
 `HARMFUL` + `{ excludeSpellIDs = Blacklist }`  
 ### Friendly Player  
 **Buffs:**  
-big defensive, external defensive, raid in combat:player  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_IN_COMBAT|PLAYER`  
 **Debuffs:**  
-blocklist, raid:player  
 `HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 ### Friendly NPC  
 **Buffs:**  
-big defensive, external defensive, raid in combat:player  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_IN_COMBAT|PLAYER`  
 **Debuffs:**  
-blocklist, raid:player  
 `HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 
 ## Enemy Nameplates  
 ___
 ### Enemy Player  
 **Custom:**  
-blocklist, crowd control  
 `HARMFUL|CROWD_CONTROL` + `{ excludeSpellIDs = Blacklist }`  
 **Buffs:**  
-big defensive, external defensive, raid player dispellable, is stealable  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_PLAYER_DISPELLABLE`  
 `HELPFUL` + `{ isStealable = true }`  
 **Debuffs:**  
-blocklist, nameplate show personal, block crowd control  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY|!CROWD_CONTROL` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
 ### Enemy NPC  
 **Custom:**  
-blocklist, crowd control  
 `HARMFUL|CROWD_CONTROL` + `{ excludeSpellIDs = Blacklist }`  
 **Buffs:**  
-is boss or role aura, is stealable, important  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
 `HELPFUL` + `{ isStealable = true }`  
 `HELPFUL|IMPORTANT`  
 **Debuffs:**  
-blocklist, nameplate show personal, block crowd control  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY|!CROWD_CONTROL` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
 
 ## Individual Units  
 ___
 ### Player  
 **Buffs:**  
-big defensive:player, external defensive  
 `HELPFUL|BIG_DEFENSIVE|PLAYER`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 **Debuffs:**  
-blocklist, important, raid player dispellable, crowd control, raid:player, is priority aura  
 `HARMFUL|IMPORTANT`  
-`HARMFUL|RAID_PLAYER_DISPELLABLE`  
+`HARMFUL|RAID_PLAYER_DISPELLABLE` + `{ excludeSpellIDs = Blacklist }`  
 `HARMFUL|CROWD_CONTROL`  
-`HARMFUL|RAID`  
-`HARMFUL` + `{ isPriorityAura = true }`  
-shared `{ excludeSpellIDs = Blacklist }`  
+`HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
+`HARMFUL` + `{ isPriorityAura = true, excludeSpellIDs = Blacklist }`  
 ### Pet  
 **Buffs:**  
-blocklist, external defensive, raid:player  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 **Debuffs:**  
-blocklist, important, raid player dispellable, crowd control, raid:player, is priority aura  
 `HARMFUL|IMPORTANT`  
 `HARMFUL|RAID_PLAYER_DISPELLABLE`  
 `HARMFUL|CROWD_CONTROL`  
-`HARMFUL|RAID`  
-`HARMFUL` + `{ isPriorityAura = true }`  
-shared `{ excludeSpellIDs = Blacklist }`  
+`HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
+`HARMFUL` + `{ isPriorityAura = true, excludeSpellIDs = Blacklist }`  
 ### Target  
 **Custom:**  
-blocklist, crowd control  
 `HARMFUL|CROWD_CONTROL` + `{ excludeSpellIDs = Blacklist }`  
 **Buffs:**  
-is boss or role aura, is stealable, important, is from player or player pet(for mounts etc?)  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
 `HELPFUL` + `{ isStealable = true }`  
 `HELPFUL|IMPORTANT`  
 `HELPFUL` + `{ isFromPlayerOrPlayerPet = true }`  
 **Debuffs:**  
-blocklist, nameplate show personal  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
 
 ### Focus  
 **Buffs:**  
-blocklist, is boss or role aura, is stealable, important, raid:player, big defensive, external defensive  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
 `HELPFUL` + `{ isStealable = true }`  
 `HELPFUL|IMPORTANT`  
@@ -108,13 +86,11 @@ blocklist, is boss or role aura, is stealable, important, raid:player, big defen
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 **Debuffs:**  
-blocklist, important, raid player dispellable, crowd control, raid:player, is priority aura  
 `HARMFUL|IMPORTANT`  
 `HARMFUL|RAID_PLAYER_DISPELLABLE`  
 `HARMFUL|CROWD_CONTROL`  
-`HARMFUL|RAID`  
-`HARMFUL` + `{ isPriorityAura = true }`  
-shared `{ excludeSpellIDs = Blacklist }`  
+`HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
+`HARMFUL` + `{ isPriorityAura = true, excludeSpellIDs = Blacklist }`  
 ### TargetTarget  
 **Show all and auras enable off by default**  
 `HELPFUL` / `HARMFUL` — enable = false  
@@ -132,58 +108,45 @@ shared `{ excludeSpellIDs = Blacklist }`
 ___
 ### Arena  
 **Buffs:**  
-blocklist, big defensive, external defensive, raid player dispellable, is stealable, raid:player  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_PLAYER_DISPELLABLE`  
 `HELPFUL` + `{ isStealable = true }`  
 `HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 **Debuffs:**  
-blocklist, nameplate show personal, block crowd control  
-`HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY` + `{ nameplateShowPersonal = true }`  
+`HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
 `HARMFUL|CROWD_CONTROL`  
-shared `{ excludeSpellIDs = Blacklist }`  
-(`block crowd control` dropped; CC stays on this row)  
 ### Boss  
 **Buffs:**  
-is boss or role aura, is stealable, important  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
 `HELPFUL` + `{ isStealable = true }`  
 `HELPFUL|IMPORTANT`  
 **Debuffs:**  
-blocklist, nameplate show personal  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
 ### Party  
 **Buffs:**  
-big defensive, external defensive, whitelist include(can we? innervate, power infusion)  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL` + `{ includeSpellIDs = Whitelist }`  
 **Debuffs:**  
-blocklist, important, raid player dispellable, crowd control, raid:player, is priority aura  
 `HARMFUL|IMPORTANT`  
 `HARMFUL|RAID_PLAYER_DISPELLABLE`  
 `HARMFUL|CROWD_CONTROL`  
-`HARMFUL|RAID`  
+`HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HARMFUL` + `{ isPriorityAura = true }`  
-shared `{ excludeSpellIDs = Blacklist }`  
 ### Raid  
 **Buffs:**  
-big defensive, external defensive, whitelist include(can we? innervate, power infusion)  
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL` + `{ includeSpellIDs = Whitelist }`  
 **Debuffs:**  
-blocklist, important, raid player dispellable, crowd control, raid:player, is priority aura  
 `HARMFUL|IMPORTANT`  
 `HARMFUL|RAID_PLAYER_DISPELLABLE`  
 `HARMFUL|CROWD_CONTROL`  
-`HARMFUL|RAID`  
+`HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HARMFUL` + `{ isPriorityAura = true }`  
-shared `{ excludeSpellIDs = Blacklist }`  
 ### Tank  
 **Buffs:**  
-blocklist, is boss or role aura, is stealable, important, raid:player, big defensive, external defensive  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
 `HELPFUL` + `{ isStealable = true }`  
 `HELPFUL|IMPORTANT`  
@@ -191,13 +154,11 @@ blocklist, is boss or role aura, is stealable, important, raid:player, big defen
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 **Debuffs:**  
-blocklist, important, raid player dispellable, crowd control, raid:player, is priority aura  
 `HARMFUL|IMPORTANT`  
 `HARMFUL|RAID_PLAYER_DISPELLABLE`  
 `HARMFUL|CROWD_CONTROL`  
-`HARMFUL|RAID`  
+`HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HARMFUL` + `{ isPriorityAura = true }`  
-shared `{ excludeSpellIDs = Blacklist }`  
 ### Assist  
 **Show all and auras enable off by default**  
 `HELPFUL` / `HARMFUL` — enable = false  
