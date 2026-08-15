@@ -29,7 +29,14 @@ local auraKeys = {
 }
 
 local function ResetFilters(db, default)
-	-- need a new reset
+	for name, data in next, db do
+		for key in next, E.AuraDefaults do
+			local info = default[name]
+			if info then
+				data[key] = info[key]
+			end
+		end
+	end
 end
 
 local function GetTargetText(unit)

@@ -9,8 +9,7 @@ P.gridLineWidth = 1
 P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
 
-local defaultFilterList = {}
-local defaultFilter = {
+E.AuraDefaults = {
 	maxDuration = 0,
 	filter = 'HELPFUL',
 	allowList = 'Whitelist',
@@ -25,11 +24,12 @@ local defaultFilter = {
 	nameplateShowAll = false,
 	nameplateShowPersonal = false,
 	useAllowlist = false,
-	useBlocklist = false,
+	useBlocklist = false
 }
 
+local defaultFilterList = {}
 for index = 1, E.filterMax do
-	defaultFilterList['group'..index] = CopyTable(defaultFilter)
+	defaultFilterList['group'..index] = CopyTable(E.AuraDefaults)
 end
 
 --Core
