@@ -411,8 +411,6 @@ function UF:UpdateFilters(frame, db)
 	filters.isRaid = isRaid
 	filters.isRaidPlayer = isRaidPlayer
 
-	frame.useMidnight = db and db.useMidnight
-
 	local shared = isPlayer or isCancelable or isCancelablePlayer or notCancelable or notCancelablePlayer or isRaid or isRaidPlayer
 	if E.Retail then
 		frame.noFilter = db and not (shared or isRaidPlayerDispellable or isDispellable or isDispellablePlayer or isImportant or isImportantPlayer or isCrowdControl or isCrowdControlPlayer or isBigDefensive or isBigDefensivePlayer or isRaidInCombat or isRaidInCombatPlayer or isExternalDefensive or isExternalDefensivePlayer)
@@ -957,7 +955,7 @@ function UF:AuraFilter(element, unit, button, aura, name, icon, count, debuffTyp
 		button.priority = 0
 
 		return true
-	elseif E.Retail or button.useMidnight then
+	elseif E.Retail then
 		button.priority = 0
 
 		return UF:VerifyFilter(button, aura)
