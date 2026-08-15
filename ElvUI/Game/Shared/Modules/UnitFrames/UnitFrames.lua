@@ -54,7 +54,6 @@ UF.headers = {}
 UF.groupunits = {}
 UF.units = {}
 
-UF.filterMax = 5
 UF.classbars = {}
 UF.statusbars = {}
 UF.fontstrings = {}

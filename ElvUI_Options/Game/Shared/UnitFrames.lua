@@ -172,10 +172,10 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar)
 
 	config.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
-	config.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = UF.filterMax, step = 1 })
+	config.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = E.filterMax, step = 1 })
 	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() ResetFilters(E.db.unitframe.units[groupName].aurabar, P.unitframe.units[groupName].aurabar) updateFunc(UF, groupName) end)
 
-	for index = 1, UF.filterMax do
+	for index = 1, E.filterMax do
 		local name = 'group'..index
 		config.args.midnightGroup.args[name] = GetOptionsTable_AuraGroup(index, function(info) return E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end)
 	end
@@ -294,10 +294,10 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType])
 
 	config.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
-	config.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = UF.filterMax, step = 1 })
+	config.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = E.filterMax, step = 1 })
 	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() ResetFilters(E.db.unitframe.units[groupName][auraType], P.unitframe.units[groupName][auraType]) updateFunc(UF, groupName, numUnits) end)
 
-	for index = 1, UF.filterMax do
+	for index = 1, E.filterMax do
 		local name = 'group'..index
 		config.args.midnightGroup.args[name] = GetOptionsTable_AuraGroup(index, function(info) return E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	end
