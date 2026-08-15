@@ -1,0 +1,8 @@
+## Interface: 120100
+## Title: ElvUI Absorb Text
+## Notes: Instant absorb Custom Text refresh and zero-alpha hiding for Player and Target
+## Author: ChatGPT
+## Version: 4.0.0
+## Dependencies: ElvUI
+
+ElvUI_AbsorbText.lua
