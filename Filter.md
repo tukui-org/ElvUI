@@ -9,14 +9,14 @@ ___
 `HARMFUL` + `{ excludeSpellIDs = Blacklist }`  
 ### Friendly Player  
 **Buffs:**  
-`HELPFUL|BIG_DEFENSIVE`  
+`HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_IN_COMBAT|PLAYER`  
 **Debuffs:**  
 `HARMFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 ### Friendly NPC  
 **Buffs:**  
-`HELPFUL|BIG_DEFENSIVE`  
+`HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_IN_COMBAT|PLAYER`  
 **Debuffs:**  
@@ -28,7 +28,7 @@ ___
 **Custom:**  
 `HARMFUL|CROWD_CONTROL` + `{ excludeSpellIDs = Blacklist }`  
 **Buffs:**  
-`HELPFUL|BIG_DEFENSIVE`  
+`HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_PLAYER_DISPELLABLE`  
 `HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
@@ -83,7 +83,7 @@ ___
 `HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 `HELPFUL|IMPORTANT`  
 `HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
-`HELPFUL|BIG_DEFENSIVE`  
+`HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 **Debuffs:**  
 `HARMFUL|IMPORTANT`  
@@ -116,7 +116,7 @@ ___
 ___
 ### Arena  
 **Buffs:**  
-`HELPFUL|BIG_DEFENSIVE`  
+`HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_PLAYER_DISPELLABLE`  
 `HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
@@ -133,7 +133,7 @@ ___
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
 ### Party  
 **Buffs:**  
-`HELPFUL|BIG_DEFENSIVE`  
+`HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL` + `{ includeSpellIDs = Whitelist }`  
 **Debuffs:**  
@@ -144,7 +144,7 @@ ___
 `HARMFUL` + `{ isPriorityAura = true }`  
 ### Raid  
 **Buffs:**  
-`HELPFUL|BIG_DEFENSIVE`  
+`HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL` + `{ includeSpellIDs = Whitelist }`  
 **Debuffs:**  
@@ -159,7 +159,7 @@ ___
 `HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 `HELPFUL|IMPORTANT`  
 `HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
-`HELPFUL|BIG_DEFENSIVE`  
+`HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 **Debuffs:**  
 `HARMFUL|IMPORTANT`  
