@@ -222,19 +222,14 @@ function UF:Configure_AuraBars(frame)
 			bars.maxFrameCount = db.maxBars
 			bars.isTransparent = UF.db.colors.transparentAurabars -- always on for now
 			bars.invertAurabars = UF.db.colors.invertAurabars
-			bars.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 			bars.countPosition, bars.countXOffset, bars.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 			bars.forceShowAuras = frame.forceShowAuras
+
 			bars.filterList = db.filterList
 			bars.groupCount = db.filterCount
-
-			bars.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
-			bars.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
-			bars.candidateFilters = E:Auras_CanidateFilters(bars.allowList, bars.blockList, bars.maxDuration)
-
 			UF:AuraBars_UpdateFilter(bars, frame.unit)
 
 			E:Auras_GroupUnit(bars, frame.unit)

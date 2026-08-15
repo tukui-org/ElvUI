@@ -288,7 +288,12 @@ function UF:GroupFilters(frame, list)
 	wipe(frame.filters) -- start over
 
 	for name, data in next, list do
+		data.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
+		data.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
+		data.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
+		data.candidateFilters = E:Auras_CanidateFilters(data.allowList, data.blockList, data.maxDuration)
 
+		frame.filters[name] = data
 	end
 end
 
@@ -453,14 +458,10 @@ function UF:Configure_Auras(frame, which)
 		auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and growOffset or 0, growDown and 0 or growOffset
 		auras.noMouse = settings.clickThrough
 		auras.forceShowAuras = frame.forceShowAuras
-		auras.filterList = settings.filterList
 
 		if settings.enable then
-			auras.allowList = settings.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, settings.allowList or 'Whitelist') or nil
-			auras.blockList = settings.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, settings.blockList or 'Blacklist') or nil
-			auras.candidateFilters = E:Auras_CanidateFilters(auras.allowList, auras.blockList, auras.maxDuration)
+			auras.filterList = settings.filterList
 			auras.groupCount = settings.filterCount
-
 			UF:GroupFilters(auras, settings.filterList) -- build the groups
 
 			E:Auras_GroupUnit(auras, frame.unit)

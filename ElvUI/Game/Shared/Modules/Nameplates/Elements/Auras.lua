@@ -140,18 +140,6 @@ function NP:Configure_AuraUpdate(nameplate)
 	E:Auras_UpdateButtons(nameplate.Debuffs_)
 end
 
-function NP:Configure_AuraContainer(data, db)
-	UF:GroupFilters(data, data.filterList) -- build the groups
-
-	local maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
-	local allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
-	local blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
-	local candidateFilters = E:Auras_CanidateFilters(allowList, blockList, maxDuration)
-	local filterList = db.filterList
-
-	return filterList, allowList, blockList, candidateFilters, maxDuration
-end
-
 function NP:Configure_AuraFilters(nameplate, which)
 	local frameType = nameplate.frameType
 	if not frameType then return end
@@ -160,7 +148,7 @@ function NP:Configure_AuraFilters(nameplate, which)
 	local info = obj and obj[which]
 	if not info then return end
 
-	return info.filterList, info.allowList, info.blockList, info.candidateFilters, info.maxDuration
+	return info.filters
 end
 
 do
@@ -178,7 +166,7 @@ do
 				local auraType = strlower(which)
 				local db = plateDB[auraType]
 				if db then
-					info.filterList, info.allowList, info.blockList, info.candidateFilters, info.maxDuration = NP:Configure_AuraContainer(info, db)
+					UF:GroupFilters(info, info.filterList)
 				end
 			end
 		end
@@ -232,9 +220,9 @@ function NP:Configure_Auras(nameplate, which)
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 		auras.forceShowAuras = nameplate == NP.TestFrame
-		auras.groupCount = db.filterCount
 
-		auras.filterList, auras.allowList, auras.blockList, auras.candidateFilters, auras.maxDuration = NP:Configure_AuraFilters(nameplate, which)
+		auras.groupCount = db.filterCount
+		auras.filters = NP:Configure_AuraFilters(nameplate, which)
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
