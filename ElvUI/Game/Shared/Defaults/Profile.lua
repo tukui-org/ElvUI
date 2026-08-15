@@ -9,6 +9,31 @@ P.gridLineWidth = 1
 P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
 
+local defaultFilter = {
+	maxDuration = 0,
+	allowList = 'Whitelist',
+	blockList = 'Blacklist',
+	canApplyAura = false,
+	isBossAura = false,
+	isBossOrRoleAura = false,
+	isFromPlayerOrPlayerPet = false,
+	isPriorityAura = false,
+	isRoleAura = false,
+	isStealable = false,
+	nameplateShowAll = false,
+	nameplateShowPersonal = false,
+	useAllowlist = false,
+	useBlocklist = false,
+}
+
+local defaultFilterList = {
+	group1 = CopyTable(defaultFilter),
+	group2 = CopyTable(defaultFilter),
+	group3 = CopyTable(defaultFilter),
+	group4 = CopyTable(defaultFilter),
+	group5 = CopyTable(defaultFilter)
+}
+
 --Core
 P.general = {
 	messageRedirect = _G.DEFAULT_CHAT_FRAME:GetName(),
@@ -620,7 +645,7 @@ local NP_Auras = {
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
 	filterCount = 3,
-	filterLists = {}
+	filterLists = CopyTable(defaultFilterList)
 }
 
 local NP_Health = {
@@ -1540,7 +1565,7 @@ local UF_Auras = {
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
 	filterCount = 3,
-	filterLists = {}
+	filterLists = CopyTable(defaultFilterList)
 }
 
 local UF_DebuffHighlight = {
@@ -1579,7 +1604,7 @@ local UF_AuraBars = {
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
 	filterCount = 3,
-	filterLists = {}
+	filterLists = CopyTable(defaultFilterList)
 }
 
 local UF_AuraWatch = {
