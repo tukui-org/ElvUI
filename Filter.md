@@ -207,27 +207,90 @@ shared `{ excludeSpellIDs = Blacklist }`
 
 ## Filter strings  
 ___
-`HELPFUL` include buffs  
-`HARMFUL` include debuffs  
-`PLAYER` include unit: player, pet, vehicle  
-`RAID` (buff: player can apply) (debuff: player can dispel)  
-`RAID_PLAYER_DISPELLABLE` (buff: someone can purge/steal) (debuff: someone can dispel)  
-`RAID_IN_COMBAT` (combine with helpful and player for self-cast hots, matches our AuraWatch table of IDs)  
-`CANCELABLE` (buffs to cancel, player only)  
-`INCLUDE_NAME_PLATE_ONLY` (when used include nameplate-only auras, otherwise excludes nameplate-only auras)  
-`EXTERNAL_DEFENSIVE` (buffs: pain suppression, iron bark, time dilation)  
-`CROWD CONTROL` (debuffs: stun, fear, silence, slow)  
-`BIG_DEFENSIVE` (buffs: bubble, ice block, blur, barkskin)  
-`IMPORTANT` (special helpful auras that show on enemy even if non-stealable)  
-`DISPELLABLE` (dispellable/purgeable/stealable by at least one class in the game, even if none of the raid classes can handle it)  
-## Candidate filters  
+`HELPFUL`  
+Require it to be a Buff  
+
+`HARMFUL`  
+Require it to be a Debuff  
+
+`PLAYER`  
+Require unit: "Player"(You), "Pet"(Yours), "Vehicle"(Yours)  
+
+`RAID`  
+If configuring Buffs: "Player"(You) can apply this aura  
+If configuring Debuffs: "Player"(You) can dispel it  
+
+`RAID_PLAYER_DISPELLABLE`  
+If configuring Buffs: Someone in your party or raid can purge or steal it  
+If configuring Debuffs: Someone in your party or raid can dispel it  
+
+`RAID_IN_COMBAT`  
+When combined with HELPFUL and PLAYER it will show self-cast hots and shields  
+Whats being displayed matches the ElvUI Aura Indicator (Class) list in the Filters Dropdown  
+
+`CANCELABLE`  
+Works on HELPFUL|PLAYER to show Buffs "Player"(You) can click off / cancel with right-click  
+
+`INCLUDE_NAME_PLATE_ONLY`  
+When added to the string, include nameplate-only flagged auras  
+
+`EXTERNAL_DEFENSIVE`  
+You can use /dump C_Spell.IsExternalDefensive(ID) and replace ID with the numeric ID of your test aura  
+This will print either true or false in your ingame chat then you'll know if its considered a external defensive or not  
+Some examples: Pain suppression, Iron Bark, Life Cocoon  
+
+`CROWD CONTROL`  
+You can use /dump C_Spell.IsSpellCrowdControl(ID) and replace ID with the numeric ID of your test aura  
+This will print either true or false in your ingame chat then you'll know if its considered CC or not  
+Some examples: Fear, Polymorph, Entangling Roots  
+
+`BIG_DEFENSIVE`  
+You can use /dump C_UnitAuras.AuraIsBigDefensive(ID) and replace ID with the numeric ID of your test aura  
+This will print either true or false in your ingame chat then you'll know if its considered a big defensive or not  
+Some examples: Ice Block, Bubble, Blur, Barkskin  
+
+`IMPORTANT`  
+You can use /dump C_Spell.IsSpellImportant(ID) and replace ID with the numeric ID of your test aura  
+This will print either true or false in your ingame chat then you'll know if its considered important or not  
+Those are also special helpful auras that show on enemy even if non-stealable  
+
+`DISPELLABLE`  
+Displays auras which are dispellable, purgable or stealable. Regardless if ur party or raid setup can handle it  
+
+## Filter checkboxes  
 ___
-`isFromPlayerOrPlayerPet` (From any player or pet)  
-`isRoleAura` (Role aura - tank/heal/dps?)  
-`isPriorityAura` (Priority aura)  
-`isStealable` (Stealable)  
-`nameplateShowAll` (Nameplate: Show all)  
-`nameplateShowPersonal` (Nameplate: Personal)  
-`canApplyAura` (Can apply aura)  
-`isBossAura` (Boss aura - important shit, was used on last boss this season)  
-`isBossOrRoleAura` (the "either-or" between `isRoleAura` and `isBossAura`)  
+`Player or Pet`  
+From any player or pet  
+Adds `{isFromPlayerOrPlayerPet = true}`  
+
+`Role`  
+Role aura - Tank/Heal/DPS  
+Adds `{isRoleAura = true}`  
+
+`Priority`  
+Priority aura  
+Adds `{isPriorityAura = true}`  
+
+`Stealable`  
+Stealable  
+Adds `{isStealable = true}`  
+
+`NP: All`  
+Nameplate: Show all  
+Adds `{nameplateShowAll = true}`  
+
+`NP: Personal`  
+Nameplate: Personal  
+Adds `{nameplateShowPersonal = true}`  
+
+`Can Apply`  
+Can apply aura  
+Adds `{canApplyAura = true}`  
+
+`Boss`  
+Boss aura - important stuff, was used for damage increase on Alleria P1 adds  
+Adds `{isBossAura = true}`  
+
+`Boss or Role`  
+The "either-or" between `Role` and `Boss`  
+Adds `{isBossOrRoleAura= true}`  
