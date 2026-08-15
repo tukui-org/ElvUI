@@ -6,7 +6,7 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local strlower, strfind = strlower, strfind
+local ceil, strlower, strfind = ceil, strlower, strfind
 local floor, next, type, wipe = floor, next, type, wipe
 local huge = math.huge
 
@@ -544,11 +544,15 @@ function E:Auras_GetSize(container)
 	return container.width or container.size or 24, container.height or container.size or 24
 end
 
+function E:Auras_GetSpacing(container)
+	return container.elementSpacing or container.spacing or 1
+end
+
 function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
-		layout.elementSpacing = E:Scale(container.elementSpacing or container.spacing or 1)
+		layout.elementSpacing = E:Scale(E:Auras_GetSpacing(container))
 		layout.groupSpacing = E:Scale(container.groupSpacing or container.spacing or 1)
 		layout.lineSpacing = E:Scale(container.lineSpacing or container.spacing or 1)
 		layout.elementWidth = width
@@ -673,7 +677,8 @@ function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount
 end
 
 function E:Auras_SetEnchantments(container)
-	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, container.spacing, ItemEnchantmentPlacement.AfterAuraGroups)
+	local spacing = E:Auras_GetSpacing(container)
+	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, spacing, ItemEnchantmentPlacement.AfterAuraGroups)
 	container:SetItemEnchantmentLayout(layout)
 	container:AddItemEnchantment(MAINHAND, group)
 	container:AddItemEnchantment(OFFHAND, group)
@@ -838,8 +843,13 @@ function E:Auras_UpdatePreviewIcons(container)
 	local curse = E.db.general.debuffColors.Curse
 
 	local anchor, horiz, vert = E:Auras_GetFlowInfo(container)
+	local centered = container.initialAnchor == 'CENTER' and 'CENTER'
+
 	local perLine = container.numAuras or count
 	if perLine < 1 then perLine = count end
+
+	local numRows = ceil(count / perLine)
+	if numRows < 1 then numRows = count end
 
 	for i = 1, count do
 		local button = icons[i]
@@ -849,11 +859,18 @@ function E:Auras_UpdatePreviewIcons(container)
 		end
 
 		local line, wrap = (i - 1) % perLine, floor((i - 1) / perLine)
-		local x, y = line * (width + spacing) * horiz, wrap * (height + spacing) * vert
+		local x, y
+		if centered then -- BOTTOM or TOP grow from the CENTER
+			x = ((line - (perLine - 1) * 0.5) * (width + spacing)) * horiz
+			y = ((wrap - (numRows - 1) * 0.5) * (height + spacing)) * vert
+		else
+			x = line * (width + spacing) * horiz
+			y = wrap * (height + spacing) * vert
+		end
 
 		button:Show()
 		button:ClearAllPoints()
-		button:Point(anchor, container, anchor, x, y)
+		button:Point(centered or anchor, container, centered or anchor, x, y)
 		button:Size(width, height)
 
 		if container.auraType == 'debuffs' then
@@ -911,7 +928,7 @@ end
 
 function E:Auras_SetLineSize(container)
 	local width, height = E:Auras_GetSize(container)
-	local line = (container.numAuras and container.numAuras > 0) and (container.numAuras * ((container.useWidth and width or height) + (container.spacing or 0)))
+	local line = (container.numAuras and container.numAuras > 0) and (container.numAuras * ((container.useWidth and width or height) + E:Auras_GetSpacing(container)))
 	local size = line or (container.useWidth and container:GetWidth() or container:GetHeight())
 	local maximum = E:NotSecretValue(size) and (size and size > 0 and size)
 	container:SetFlowLayoutMaximumLineSize(maximum or huge)
