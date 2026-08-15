@@ -105,8 +105,6 @@ local function GetUnitAuras(unit, auraType)
 	group.args.cooldownGroup.args.enable, group.args.cooldownGroup.args.textGroup, group.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType])
 
 	group.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.isAuraPlayer = ACH:Toggle(L["Player"], L["All of your auras."], 1)
-	group.args.midnightGroup.args.allowOthers = ACH:Toggle(L["Allow Others"], nil, 2, nil, nil, nil, nil, nil, nil, not E.Retail)
 	group.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 3, { min = 0, max = 10800, step = 1 })
 	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() ResetFilters(E.db.nameplates.units[unit][auraType], P.nameplates.units[unit][auraType]) NP:ConfigureAll() end)
 
@@ -116,33 +114,6 @@ local function GetUnitAuras(unit, auraType)
 	group.args.midnightGroup.args.lists.args.useAllowlist = ACH:Toggle(L["Filter Allow"], L["Activate the allowlist filter."], 3)
 	group.args.midnightGroup.args.lists.args.useBlocklist = ACH:Toggle(L["Filter Block"], L["Activate the blocklist filter."], 4)
 	group.args.midnightGroup.args.lists.inline = true
-
-	group.args.midnightGroup.args.player = ACH:Group(L["Player"], nil, 10, nil, E.Retail and function(info) local value = E.db.nameplates.units[unit][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.Retail and function(info, value) E.db.nameplates.units[unit][auraType][info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end or nil, function() return E.db.nameplates.units[unit][auraType].isAuraPlayer end)
-	group.args.midnightGroup.args.player.args.isAuraRaidPlayerDispellable = ACH:Toggle(L["Player Dispellable"], L["Auras you can dispel."], 3, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraImportantPlayer = ACH:Toggle(L["Important"], nil, 1, E.Retail, nil, nil, nil, nil, nil, E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraDispellablePlayer = ACH:Toggle(L["Dispellable"], nil, 2, E.Retail, nil, nil, nil, nil, nil, E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraRaidPlayer = ACH:Toggle(L["Raid"], nil, 3, E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraRaidInCombatPlayer = ACH:Toggle(L["Raid Frames"], L["Auras displayed on Blizzard's raid frames."], 4, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraCancelablePlayer = ACH:Toggle(L["Is Cancelable"], nil, 5, E.Retail)
-	group.args.midnightGroup.args.player.args.notAuraCancelablePlayer = ACH:Toggle(L["Not Cancelable"], nil, 6, E.Retail, nil, nil, nil, nil, nil, E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraCrowdControlPlayer = ACH:Toggle(L["Crowd Control"], nil, 7, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraBigDefensivePlayer = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 8, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraExternalDefensivePlayer = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 9, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.player.args.isAuraPermanentPlayer = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.Retail, nil, nil, nil, nil, nil, E.Retail)
-	group.args.midnightGroup.args.player.inline = true
-
-	group.args.midnightGroup.args.others = ACH:Group(L["Others"], nil, 20, nil, E.Retail and function(info) local value = E.db.nameplates.units[unit][auraType][info[#info]] if value == 1 then return nil else return value end end or nil, E.Retail and function(info, value) E.db.nameplates.units[unit][auraType][info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end or nil, function() return not E.db.nameplates.units[unit][auraType].allowOthers end)
-	group.args.midnightGroup.args.others.args.isAuraImportant = ACH:Toggle(L["Important"], nil, 1, E.Retail, nil, nil, nil, nil, nil, E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraDispellable = ACH:Toggle(L["Dispellable"], nil, 2, E.Retail, nil, nil, nil, nil, nil, E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraRaid = ACH:Toggle(L["Raid"], nil, 3, E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraRaidInCombat = ACH:Toggle(L["Raid Frames"], L["Auras displayed on Blizzard's raid frames."], 4, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraCancelable = ACH:Toggle(L["Is Cancelable"], nil, 5, E.Retail)
-	group.args.midnightGroup.args.others.args.notAuraCancelable = ACH:Toggle(L["Not Cancelable"], nil, 6, E.Retail, nil, nil, nil, nil, nil, E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraCrowdControl = ACH:Toggle(L["Crowd Control"], nil, 7, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraBigDefensive = ACH:Toggle(L["Big Defensive"], L["Defensives that are self cast."], 8, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraExternalDefensive = ACH:Toggle(L["External Defensive"], L["Defensives that can be cast on others."], 9, E.Retail, nil, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.others.args.isAuraPermanent = ACH:Toggle(L["Block Permanent"], L["Hide any permanent auras."], 10, E.Retail, nil, nil, nil, nil, nil, E.Retail)
-	group.args.midnightGroup.args.others.inline = true
 
 	group.args.legacyGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, E.Retail)
 	group.args.legacyGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
