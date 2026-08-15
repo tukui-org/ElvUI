@@ -75,9 +75,7 @@ local spacingNormal = { min = -5, softMax = 50, max = 100, step = 1 }
 local spacingLong = { min = -5, softMax = 100, max = 500, step = 1 }
 
 local function ResetFilters(db, default)
-	for key in next, E.AuraDefaults do
-		db[key] = default[key]
-	end
+	-- need a new reset
 end
 
 -----------------------------------------------------------------------

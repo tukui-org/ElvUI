@@ -290,20 +290,6 @@ function UF:ResetAuraPriority()
 			if aurabar then
 				aurabar.priority = default.aurabar.priority
 			end
-
-			for key in next, E.AuraDefaults do
-				if buffs then
-					buffs[key] = default.buffs[key]
-				end
-
-				if debuffs then
-					debuffs[key] = default.debuffs[key]
-				end
-
-				if aurabar then
-					aurabar[key] = default.aurabar[key]
-				end
-			end
 		end
 	end
 end

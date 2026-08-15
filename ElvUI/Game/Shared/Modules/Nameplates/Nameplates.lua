@@ -63,16 +63,6 @@ function NP:ResetAuraPriority()
 			if debuffs and debuffs.filters then
 				debuffs.filters.priority = default.debuffs.filters.priority
 			end
-
-			for key in next, E.AuraDefaults do
-				if buffs then
-					buffs[key] = default.buffs[key]
-				end
-
-				if debuffs then
-					debuffs[key] = default.debuffs[key]
-				end
-			end
 		end
 	end
 end
