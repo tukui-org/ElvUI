@@ -511,7 +511,6 @@ end
 
 function UF:Configure_Auras(frame, which)
 	local db = frame.db
-
 	local auras = frame[which]
 	local auraType = which:lower()
 	local settings = db[auraType]
@@ -542,6 +541,7 @@ function UF:Configure_Auras(frame, which)
 	auras.height = not settings.keepSizeRatio and settings.height
 	auras.numAuras = settings.perrow
 	auras.numRows = settings.numrows
+	auras.colorByType = UF.db.colors.auraByType
 	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
 	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 
@@ -560,10 +560,10 @@ function UF:Configure_Auras(frame, which)
 		auras:SetEnabled(settings.enable)
 
 		auras.isUnitframe = true
+		auras.auraType = auraType
 		auras.maxFrameCount = auras.num
 		auras.initialAnchor = E.CenterPoint[settings.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = settings.keepSizeRatio
-		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[settings.sortMethod]
 		auras.sortDirection = E.AuraContainerSortDirection[settings.sortDirection]
 		auras.unitframeType = frame.unitframeType
@@ -573,6 +573,7 @@ function UF:Configure_Auras(frame, which)
 		auras.countFont, auras.countFontSize, auras.countFontOutline = settings.countFont, settings.countFontSize, settings.countFontOutline
 		auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and growOffset or 0, growDown and 0 or growOffset
 		auras.noMouse = settings.clickThrough
+		auras.forceShowAuras = frame.forceShowAuras
 
 		if settings.enable then
 			auras.allowList = settings.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, settings.allowList or 'Whitelist') or nil

@@ -190,6 +190,30 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.Number18FontWhite,						NUMBER, (blizz and 18) or unscale or big, 'SHADOW')
 		E:SetFont(_G.NumberFont_Outline_Huge,				NUMBER, (blizz and 30) or unscale or enormous, thick)
 
+		-- user scaled: numbers
+		E:SetFont(_G.UserScaledFontNumberNormalRight,			NUMBER, (blizz and 13) or unscale or medium, 'OUTLINE')
+		E:SetFont(_G.UserScaledFontNumberNormalRightRed,		NUMBER, (blizz and 13) or unscale or medium, 'OUTLINE')
+		E:SetFont(_G.UserScaledFontNumberNormalRightYellow,		NUMBER, (blizz and 13) or unscale or medium, 'OUTLINE')
+		E:SetFont(_G.UserScaledFontNumberNormalRightGray,		NUMBER, (blizz and 13) or unscale or medium, 'OUTLINE')
+		E:SetFont(_G.UserScaledFontNumberNormalRightGreen,		NUMBER, (blizz and 13) or unscale or medium, 'OUTLINE')
+
+		-- user scaled: chat
+		E:SetFont(_G.UserScaledChatFontNormal,					NORMAL, (blizz and 13) or unscale or medium)
+
+		-- user scaled: regular
+		E:SetFont(_G.UserScaledFontGameNormalSmall,				NORMAL, (blizz and 10) or unscale or small)
+		E:SetFont(_G.UserScaledFontGameDisableSmall,			NORMAL, (blizz and 10) or unscale or small)
+		E:SetFont(_G.UserScaledFontGameHighlightSmall,			NORMAL, (blizz and 10) or unscale or small)
+		E:SetFont(_G.UserScaledFontGameNormal,					NORMAL, (blizz and 12) or unscale or size)
+		E:SetFont(_G.UserScaledFontGameDisable,					NORMAL, (blizz and 12) or unscale or size)
+		E:SetFont(_G.UserScaledFontGameHighlight,				NORMAL, (blizz and 12) or unscale or size)
+		E:SetFont(_G.UserScaledFontGameHighlightRight,			NORMAL, (blizz and 12) or unscale or size)
+		E:SetFont(_G.UserScaledFontGameNormalMed2,				NORMAL, (blizz and 13) or unscale or medium)
+		E:SetFont(_G.UserScaledFontSystem15Shadow,				NORMAL, (blizz and 13) or unscale or medium, 'SHADOW')
+		E:SetFont(_G.UserScaledFontGame15Shadow,				NORMAL, (blizz and 15) or unscale or medium, 'SHADOW')
+		E:SetFont(_G.UserScaledFontGameNormalLarge,				NORMAL, (blizz and 16) or unscale or big)
+		E:SetFont(_G.UserScaledFontGameHighlightLarge,			NORMAL, (blizz and 16) or unscale or big)
+
 		-- world map fonts
 		E:SetFont(_G.SubZoneTextFont,						NORMAL, (blizz and 26) or unscale or gigantic, outline)		-- WorldMap, SubZone
 		E:SetFont(_G.WorldMapTextFont,						NORMAL, (blizz and 32) or unscale or massive, outline)		-- WorldMap, MainZone
@@ -256,6 +280,7 @@ function E:UpdateBlizzardFonts()
 		E:SetFont(_G.SystemFont_Med3,						NORMAL, (blizz and 14) or unscale or medium)
 		E:SetFont(_G.SystemFont_Shadow_Med2,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')		-- Shows Order resourses on OrderHallTalentFrame
 		E:SetFont(_G.SystemFont_Shadow_Med3,				NORMAL, (blizz and 14) or unscale or medium, 'SHADOW')
+		E:SetFont(_G.System15Font_Shadow,					NORMAL, (blizz and 15) or unscale or medium, 'SHADOW')
 		E:SetFont(_G.Game15Font_Shadow,						NORMAL, (blizz and 15) or unscale or medium, 'SHADOW')		-- House Relinquish
 		E:SetFont(_G.Game15Font_o1,							NORMAL, (blizz and 15) or unscale or medium)				-- CharacterStatsPane, ItemLevelFrame
 		E:SetFont(_G.MailFont_Large,						NORMAL, (blizz and 15) or unscale or medium)				-- Mail

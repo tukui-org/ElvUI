@@ -61,9 +61,9 @@ local UnregisterInternalEvent = GameEvent and GameEvent.UnregisterInternalEvent
 local GameRulesUtil_IsPlayerAtEffectiveMaxLevel = GameRulesUtil and GameRulesUtil.IsPlayerAtEffectiveMaxLevel
 local GameRulesUtil_GetEffectiveMaxLevelForPlayer = GameRulesUtil and GameRulesUtil.GetEffectiveMaxLevelForPlayer
 local GetAddOnRestrictionState = C_RestrictedActions and C_RestrictedActions.GetAddOnRestrictionState
-local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
-local CreateCurve = C_CurveUtil and C_CurveUtil.CreateCurve
-local CreateColorCurve = C_CurveUtil and C_CurveUtil.CreateColorCurve
+local CreateDuration = C_DurationUtil.CreateDuration
+local CreateCurve = C_CurveUtil.CreateCurve
+local CreateColorCurve = C_CurveUtil.CreateColorCurve
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 

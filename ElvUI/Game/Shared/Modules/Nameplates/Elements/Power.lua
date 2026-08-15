@@ -13,7 +13,7 @@ local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
 
-local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 

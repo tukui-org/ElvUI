@@ -505,8 +505,12 @@ function S:LookingForGroupFrames()
 		S:HandleButton(SearchPanel.FilterButton)
 		S:HandleButton(SearchPanel.RefreshButton)
 		S:HandleButton(SearchPanel.BackToGroupButton)
+
 		SearchPanel.RefreshButton:Size(24)
 		SearchPanel.RefreshButton.Icon:Point('CENTER')
+		SearchPanel.RefreshButton:ClearAllPoints()
+		SearchPanel.RefreshButton:Point('LEFT', SearchPanel.SearchBox, 'RIGHT', 5, 0)
+
 		S:HandleCloseButton(SearchPanel.FilterButton.ResetButton)
 
 		local AutoCompleteFrame = SearchPanel.AutoCompleteFrame

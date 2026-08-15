@@ -6,8 +6,8 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local strlower, strfind = strlower, strfind
-local next, type, wipe = next, type, wipe
+local ceil, strlower, strfind = ceil, strlower, strfind
+local floor, next, type, wipe = floor, next, type, wipe
 local huge = math.huge
 
 local AuraButtonBorderStyle = AuraButtonBorderStyle
@@ -27,10 +27,6 @@ local SORTMETHOD = _G.AuraContainerSortMethod
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
 local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
-
-E.AuraContainerSortDirection = {}
-E.AuraContainerSortMethod = {}
--- E.AuraHorizontalGrowth is made in Auras.lua
 
 E.AuraFocus = {}
 E.AuraTarget = {}
@@ -57,6 +53,9 @@ E.AuraEventUnits = {
 	PLAYER_FOCUS_CHANGED = 'focus'
 }
 
+E.AuraContainerSortDirection = {}
+E.AuraContainerSortMethod = {}
+E.AuraPreviewFrames = {}
 E.AuraGrowthMap = {}
 
 if FLOWAXIS then
@@ -91,6 +90,17 @@ if SORTDIRECTION then
 	E.AuraContainerSortDirection.DESCENDING = SORTDIRECTION.Reverse
 	E.AuraContainerSortDirection['+'] = SORTDIRECTION.Normal
 	E.AuraContainerSortDirection['-'] = SORTDIRECTION.Reverse
+end
+
+function E:Auras_IsForced(container)
+	if container.forceShowAuras then
+		return true -- container preview is active
+	end
+
+	local parent = container.GetParent and container:GetParent()
+	if parent and parent.forceShowAuras then
+		return true -- parent is forced so force the auras
+	end
 end
 
 function E:Auras_OnEvent(event)
@@ -332,10 +342,19 @@ function E:Auras_UpdateButton(container, button)
 	local backdropFadeColor = E.media.backdropfadecolor
 	if button.dispelBorder then
 		if button.isEnchantment then
-			button.dispelBorder:SetVertexColor(valueColor.r, valueColor.g, valueColor.b)
+			if container.colorEnchants then
+				button.dispelBorder:SetVertexColor(valueColor.r, valueColor.g, valueColor.b)
+			else
+				button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
+			end
 		else
 			button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
-			button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+
+			if container.colorByType then -- auraByDispels would be isStealable
+				button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
+			else
+				button:ClearAuraBorder()
+			end
 		end
 	end
 
@@ -534,11 +553,15 @@ function E:Auras_GetSize(container)
 	return container.width or container.size or 24, container.height or container.size or 24
 end
 
+function E:Auras_GetSpacing(container)
+	return container.elementSpacing or container.spacing or 1
+end
+
 function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
-		layout.elementSpacing = E:Scale(container.elementSpacing or container.spacing or 1)
+		layout.elementSpacing = E:Scale(E:Auras_GetSpacing(container))
 		layout.groupSpacing = E:Scale(container.groupSpacing or container.spacing or 1)
 		layout.lineSpacing = E:Scale(container.lineSpacing or container.spacing or 1)
 		layout.elementWidth = width
@@ -663,7 +686,8 @@ function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount
 end
 
 function E:Auras_SetEnchantments(container)
-	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, container.spacing, ItemEnchantmentPlacement.AfterAuraGroups)
+	local spacing = E:Auras_GetSpacing(container)
+	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, spacing, ItemEnchantmentPlacement.AfterAuraGroups)
 	container:SetItemEnchantmentLayout(layout)
 	container:AddItemEnchantment(MAINHAND, group)
 	container:AddItemEnchantment(OFFHAND, group)
@@ -753,14 +777,17 @@ function E:Auras_SetupList(container, auraTable)
 	end
 end
 
-function E:Auras_SetupFlow(container)
-	local growth, anchor, horiz, vert, axis = E.AuraGrowthMap[container.growthDirection]
+function E:Auras_GetFlowInfo(container)
+	local growth = E.AuraGrowthMap[container.growthDirection]
 	if growth then
-		anchor, horiz, vert, axis = growth.anchor, growth.horiz, growth.vert, growth.axis
-	else
-		anchor, horiz, vert = container.initialAnchor or 'BOTTOMLEFT', E:Auras_FlowDirection(container.growthX, container.growthY)
+		return growth.anchor, growth.horiz, growth.vert, growth.axis
 	end
 
+	return container.initialAnchor or 'BOTTOMLEFT', E:Auras_FlowDirection(container.growthX, container.growthY)
+end
+
+function E:Auras_SetFlowLayout(container)
+	local anchor, horiz, vert, axis = E:Auras_GetFlowInfo(container)
 	if anchor == 'CENTER' then
 		container:ResetFlowLayoutOptions()
 	else
@@ -775,13 +802,113 @@ function E:Auras_SetupFlow(container)
 	end
 end
 
+function E:Auras_HidePreviewIcons(container)
+	local icons = container.previewIcons
+	if not icons then return end
+
+	container.wasPreviewing = nil
+
+	for _, icon in next, icons do
+		icon:Hide()
+	end
+end
+
+do
+	local _, _, texture = E:GetSpellInfo(5782) -- fear, same dummy icon oUF uses
+	function E:Auras_CreatePreview(container)
+		local button = CreateFrame('Button', nil, container)
+		button:SetTemplate(nil, nil, true)
+		button:EnableMouse(false)
+
+		local icon = button:CreateTexture(nil, 'ARTWORK')
+		icon:SetInside()
+		icon:SetTexCoords()
+		icon:SetTexture(texture)
+
+		button.icon = icon
+
+		return button
+	end
+end
+
+function E:Auras_UpdatePreviewIcons(container)
+	if not E:Auras_IsForced(container) then
+		return E:Auras_HidePreviewIcons(container)
+	end
+
+	container.wasPreviewing = true
+
+	local icons = container.previewIcons
+	if not icons then
+		icons = {}
+		container.previewIcons = icons
+	end
+
+	local spacing = container.spacing or 1
+	local count = container.maxFrameCount or 40
+	local width, height = E:Auras_GetSize(container)
+	local color = (container.isUnitframe and E.media.unitframeBorderColor) or E.media.bordercolor
+	local debuff = E.db.general.debuffColors.None
+	local curse = E.db.general.debuffColors.Curse
+
+	local anchor, horiz, vert = E:Auras_GetFlowInfo(container)
+	local centered = container.initialAnchor == 'CENTER' and 'CENTER'
+
+	local perLine = container.numAuras or count
+	if perLine < 1 then perLine = count end
+
+	local numRows = ceil(count / perLine)
+	if numRows < 1 then numRows = count end
+
+	local btnWidth, btnHeight = width + spacing, height + spacing
+	for i = 1, count do
+		local button = icons[i]
+		if not button then
+			button = E:Auras_CreatePreview(container)
+			icons[i] = button
+		end
+
+		local x, y
+		local line, wrap = (i - 1) % perLine, floor((i - 1) / perLine)
+		if centered then -- BOTTOM or TOP grow from the CENTER
+			x = ((line - (perLine - 1) * 0.5) * btnWidth) * horiz
+			y = ((wrap - (numRows - 1) * 0.5) * btnHeight) * vert
+		else
+			x = line * btnWidth * horiz
+			y = wrap * btnHeight * vert
+		end
+
+		button:Show()
+		button:ClearAllPoints()
+		button:Point(centered or anchor, container, centered or anchor, x, y)
+		button:Size(width, height)
+
+		if container.auraType == 'debuffs' then
+			button:SetBackdropBorderColor(debuff.r, debuff.g, debuff.b)
+		elseif container.auraType == 'auras' then
+			button:SetBackdropBorderColor(curse.r, curse.g, curse.b)
+		else
+			button:SetBackdropBorderColor(color.r, color.g, color.b)
+		end
+	end
+
+	for _, icon in next, icons, count do
+		icon:Hide() -- hide additional icons
+	end
+end
+
 function E:Auras_SetContainer(container)
+	local allowPreview = container.isUnitframe or container.isNameplate
+	if allowPreview then -- dont add the ones we dont want to preview
+		E.AuraPreviewFrames[container] = true
+	end
+
 	local maxCount = container.maxFrameCount or 40
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 	local layout = E:Auras_UpdateLayout(container)
 
-	E:Auras_SetupFlow(container)
+	E:Auras_SetFlowLayout(container)
 
 	for key, filter in next, container.active do -- known but not active anymore
 		if container.known[key] and (container.filters[key] ~= filter) then
@@ -791,22 +918,27 @@ function E:Auras_SetContainer(container)
 		container.active[key] = nil
 	end
 
+	local count = E:Auras_IsForced(container) and 0 or maxCount
 	for key, filter in next, container.filters do
 		container.active[key] = filter -- set all active
 
 		if container.known[key] then
-			E:Auras_UpdateGroup(container, key, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
+			E:Auras_UpdateGroup(container, key, filter, container.candidateFilters, layout, count, sortMethod, sortDirection)
 		else
-			E:Auras_AddGroup(container, key, filter, container.candidateFilters, layout, maxCount, sortMethod, sortDirection)
+			E:Auras_AddGroup(container, key, filter, container.candidateFilters, layout, count, sortMethod, sortDirection)
 
 			container.known[key] = filter
 		end
+	end
+
+	if allowPreview then
+		E:Auras_UpdatePreviewIcons(container)
 	end
 end
 
 function E:Auras_SetLineSize(container)
 	local width, height = E:Auras_GetSize(container)
-	local line = (container.numAuras and container.numAuras > 0) and (container.numAuras * ((container.useWidth and width or height) + (container.spacing or 0)))
+	local line = (container.numAuras and container.numAuras > 0) and (container.numAuras * ((container.useWidth and width or height) + E:Auras_GetSpacing(container)))
 	local size = line or (container.useWidth and container:GetWidth() or container:GetHeight())
 	local maximum = E:NotSecretValue(size) and (size and size > 0 and size)
 	container:SetFlowLayoutMaximumLineSize(maximum or huge)

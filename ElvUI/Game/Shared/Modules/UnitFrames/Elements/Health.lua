@@ -17,7 +17,7 @@ local UnitReaction = UnitReaction
 local UnitClass = UnitClass
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
-local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local customBackdrop = Mixin({}, ColorMixin)
 
 local HOSTILE_REACTION = 2

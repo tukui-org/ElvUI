@@ -14,7 +14,7 @@ local UnitIsConnected = UnitIsConnected
 local CreateFrame = CreateFrame
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
-local C_ClassColor_GetClassColor = C_ClassColor and C_ClassColor.GetClassColor
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 
 function NP:Health_UpdateColor(_, unit)
 	if not unit or self.unit ~= unit then return end

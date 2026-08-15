@@ -211,6 +211,7 @@ function NP:Configure_Auras(nameplate, which)
 	auras.xOffset = db.xOffset
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
+	auras.colorByType = NP.db.colors.auraByType
 	auras.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
 	auras.filterList = UF:ConvertFilters(auras, db.priority)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
@@ -224,14 +225,15 @@ function NP:Configure_Auras(nameplate, which)
 	local initialAnchor = E.InversePoints[db.anchorPoint]
 	if E.Retail then
 		auras.noMouse = true
+		auras.auraType = auraType
 		auras.maxFrameCount = auras.num
 		auras.initialAnchor = E.CenterPoint[db.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = db.keepSizeRatio
-		auras.maxFrameCount = auras.numAuras
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		auras.nameplateType = nameplate.frameType
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
+		auras.forceShowAuras = nameplate == NP.TestFrame
 
 		auras.filter, auras.filters, auras.allowList, auras.blockList, auras.candidateFilters, auras.maxDuration = NP:Configure_AuraFilters(nameplate, which)
 

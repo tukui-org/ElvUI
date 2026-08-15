@@ -8,7 +8,7 @@ local strfind = strfind
 local UnitIsEnemy = UnitIsEnemy
 local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
-local WrapString = C_StringUtil and C_StringUtil.WrapString
+local WrapString = C_StringUtil.WrapString
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
@@ -231,6 +231,7 @@ function UF:Configure_AuraBars(frame)
 			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 			bars.countPosition, bars.countXOffset, bars.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
+			bars.forceShowAuras = frame.forceShowAuras
 
 			bars.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
 			bars.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil

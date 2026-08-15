@@ -30,6 +30,7 @@ function LO:Initialize()
 	LO.Initialized = true
 
 	LO:CreateChatPanels()
+	LO:UpdatePanelTextures()
 	LO:CreateMinimapPanels()
 	LO:SetDataPanelStyle()
 
@@ -317,6 +318,22 @@ function LO:ResaveChatPosition()
 	end
 end
 
+function LO:UpdatePanelTextures() -- Chat Panel Background Texture
+	local leftPanel, rightPanel = _G.LeftChatPanel, _G.RightChatPanel
+	local leftTexture, rightTexture = leftPanel and leftPanel.tex, rightPanel and rightPanel.tex
+	local a = E.media.backdropfadecolor.a or 0.5
+
+	if leftTexture then
+		leftTexture:SetTexture(E.db.chat.panelBackdropNameLeft)
+		leftTexture:SetAlpha(a)
+	end
+
+	if rightTexture then
+		rightTexture:SetTexture(E.db.chat.panelBackdropNameRight)
+		rightTexture:SetAlpha(a)
+	end
+end
+
 function LO:CreateChatPanels()
 	--Left Chat
 	local lchat = CreateFrame('Frame', 'LeftChatPanel', E.UIParent)
@@ -337,8 +354,6 @@ function LO:CreateChatPanels()
 	--Background Texture
 	local lchattex = lchat:CreateTexture(nil, 'OVERLAY')
 	lchattex:SetInside()
-	lchattex:SetTexture(E.db.chat.panelBackdropNameLeft)
-	lchattex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
 	lchat.tex = lchattex
 
 	--Left Chat Tab
@@ -391,8 +406,6 @@ function LO:CreateChatPanels()
 	--Background Texture
 	local rchattex = rchat:CreateTexture(nil, 'OVERLAY')
 	rchattex:SetInside()
-	rchattex:SetTexture(E.db.chat.panelBackdropNameRight)
-	rchattex:SetAlpha(E.db.general.backdropfadecolor.a - 0.7 > 0 and E.db.general.backdropfadecolor.a - 0.7 or 0.5)
 	rchat.tex = rchattex
 
 	--Right Chat Tab

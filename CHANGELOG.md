@@ -1,3 +1,38 @@
+### Version 15.22 [ August 15th 2026 ]
+*   **Auras**
+    *   Buff highlighting works again (Filters > Aura Highlight).
+    *   Aura border colors now obey the setting but might require a reload after changing currently.
+    *   Private auras seem to not really be a thing anymore or it seems, they do not want us to be able to filter them separately.  All settings for them removed except the anchor for Private Raid Warnings and scale.
+    *   Top Aura item enchantments were not spaced and were before auras instead of after. 
+    *   Unitframe Auras not obeying click-through setting.
+    *   Aura Indicators not switching from color to texture properly.
+    *   Top Aura statusbars not toggling properly.
+    *   Top Aura flow direction and wrap should be back to normal.
+    *   Aura highlight obeys only player setting again.
+    *   Aura indicators obeys their only player setting too.
+    *   Aura indicator setting for Show When Not Active hidden; may not be possible on Retail anymore.
+    *   Nameplate and Unitframe auras will grow from Center when anchored to Top or Bottom.
+    *   Aura Max Wrap and Per Row settings work again.
+    *   Display Frame and Display Auras should show auras again (or you can use edit mode) but Smart Aura doesn't show correctly.
+    *   Aura Color by Type setting is working again.  Color by Dispel maybe readded later.
+*   **Not Auras**
+    *   Blizzard Loot roll was appearing alongside ours.
+    *   Party frame for player was smaller because incorrectly detecting alternative power.
+    *   Toolkit SetScaleAnimationMode error during PvPMatch restriction.
+    *   Nameplate unit faction changing would cause an error because of secrets.
+    *   Nameplate class colors should work again.
+    *   Unitframe role causing an error because of secrets.
+    *   Fonts for Name and Combat should register properly when set from external source.
+    *   Chat editbox secret error about insetRight.
+    *   Actionbar one button rotation should be updated correctly.
+    *   Actionbar charges shouldn't overlap with normal cooldowns again.
+    *   Actionbar buttons are pingable now.
+    *   Unitframe for Player is now pingable to show resources.
+    *   Chat will show the name of who pinged.
+    *   Text to Speech is currently blocked during secret restrictions.
+    *   Fonts has several missing entries.
+    *   Chat panel texture not having the correctly alpha at login.
+
 ### Version 15.21 [ August 11th 2026 ]
 *   Aurabars for focus unitframe not updating.
 *   Removed Display Player option for Raid Frames.
