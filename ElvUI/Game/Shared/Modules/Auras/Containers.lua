@@ -851,6 +851,7 @@ function E:Auras_UpdatePreviewIcons(container)
 	local numRows = ceil(count / perLine)
 	if numRows < 1 then numRows = count end
 
+	local btnWidth, btnHeight = width + spacing, height + spacing
 	for i = 1, count do
 		local button = icons[i]
 		if not button then
@@ -858,14 +859,14 @@ function E:Auras_UpdatePreviewIcons(container)
 			icons[i] = button
 		end
 
-		local line, wrap = (i - 1) % perLine, floor((i - 1) / perLine)
 		local x, y
+		local line, wrap = (i - 1) % perLine, floor((i - 1) / perLine)
 		if centered then -- BOTTOM or TOP grow from the CENTER
-			x = ((line - (perLine - 1) * 0.5) * (width + spacing)) * horiz
-			y = ((wrap - (numRows - 1) * 0.5) * (height + spacing)) * vert
+			x = ((line - (perLine - 1) * 0.5) * btnWidth) * horiz
+			y = ((wrap - (numRows - 1) * 0.5) * btnHeight) * vert
 		else
-			x = line * (width + spacing) * horiz
-			y = wrap * (height + spacing) * vert
+			x = line * btnWidth * horiz
+			y = wrap * btnHeight * vert
 		end
 
 		button:Show()
