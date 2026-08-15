@@ -281,22 +281,42 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraSettings(button)
 end
 
-function UF:GroupFilters(frame, list)
-	local group = frame.filters
-	if not group or not list then return end
+do
+	local temp = {} -- silly little storage
+	function UF:GroupFilters(frame, list)
+		local group = frame.filters
+		if not group or not list then return end
 
-	wipe(frame.filters) -- start over
+		wipe(frame.filters) -- start over
 
-	for name, data in next, list do
-		local info = {}
+		local obj = temp[frame]
+		if not obj then
+			obj = {}
 
-		info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
-		info.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
-		info.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
-		info.candidateFilters = E:Auras_CanidateFilters(info.allowList, info.blockList, info.maxDuration)
-		info.filter = data.filter
+			for i = 1, E.filterMax do
+				obj['group'..i] = {}
+			end
 
-		frame.filters[name] = info
+			temp[frame] = obj
+		end
+
+		for index = 1, frame.groupCount do
+			local name = 'group'..index
+			local data = list[name]
+			if data then
+				local info = obj[name]
+
+				wipe(info)
+
+				info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
+				info.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
+				info.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
+				info.candidateFilters = E:Auras_CanidateFilters(info.allowList, info.blockList, info.maxDuration)
+				info.filter = data.filter
+
+				frame.filters[name] = info
+			end
+		end
 	end
 end
 
