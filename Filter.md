@@ -31,7 +31,7 @@ ___
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_PLAYER_DISPELLABLE`  
-`HELPFUL` + `{ isStealable = true }`  
+`HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 **Debuffs:**  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY|!CROWD_CONTROL` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
 ### Enemy NPC  
@@ -39,7 +39,7 @@ ___
 `HARMFUL|CROWD_CONTROL` + `{ excludeSpellIDs = Blacklist }`  
 **Buffs:**  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
-`HELPFUL` + `{ isStealable = true }`  
+`HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 `HELPFUL|IMPORTANT`  
 **Debuffs:**  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY|!CROWD_CONTROL` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
@@ -71,7 +71,7 @@ ___
 `HARMFUL|CROWD_CONTROL` + `{ excludeSpellIDs = Blacklist }`  
 **Buffs:**  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
-`HELPFUL` + `{ isStealable = true }`  
+`HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 `HELPFUL|IMPORTANT`  
 `HELPFUL` + `{ isFromPlayerOrPlayerPet = true }`  
 **Debuffs:**  
@@ -80,7 +80,7 @@ ___
 ### Focus  
 **Buffs:**  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
-`HELPFUL` + `{ isStealable = true }`  
+`HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 `HELPFUL|IMPORTANT`  
 `HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HELPFUL|BIG_DEFENSIVE`  
@@ -111,7 +111,7 @@ ___
 `HELPFUL|BIG_DEFENSIVE`  
 `HELPFUL|EXTERNAL_DEFENSIVE`  
 `HELPFUL|RAID_PLAYER_DISPELLABLE`  
-`HELPFUL` + `{ isStealable = true }`  
+`HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 `HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 **Debuffs:**  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
@@ -119,7 +119,7 @@ ___
 ### Boss  
 **Buffs:**  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
-`HELPFUL` + `{ isStealable = true }`  
+`HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 `HELPFUL|IMPORTANT`  
 **Debuffs:**  
 `HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY` + `{ nameplateShowPersonal = true, excludeSpellIDs = Blacklist }`  
@@ -148,7 +148,7 @@ ___
 ### Tank  
 **Buffs:**  
 `HELPFUL` + `{ isBossOrRoleAura = true }`  
-`HELPFUL` + `{ isStealable = true }`  
+`HELPFUL` + `{ isStealable = true, excludeSpellIDs = Blacklist }`  
 `HELPFUL|IMPORTANT`  
 `HELPFUL|RAID` + `{ excludeSpellIDs = Blacklist }`  
 `HELPFUL|BIG_DEFENSIVE`  
