@@ -106,7 +106,7 @@ function UF:AuraBars_UpdateFilter(bars, unit)
 	bars.filter = UF:AuraBars_GetFilter(bars, unit)
 	bars.barColor = (bars.filter == 'HARMFUL' and UF.db.colors.auraBarDebuff) or UF.db.colors.auraBarBuff
 
-	UF:GroupFilters(bars, bars.filterList) -- build the groups
+	UF:GroupFilters(bars, bars.filterLists) -- build the groups
 end
 
 function UF:Configure_AuraBars(frame)
@@ -228,7 +228,7 @@ function UF:Configure_AuraBars(frame)
 			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 			bars.forceShowAuras = frame.forceShowAuras
 
-			bars.filterList = db.filterList
+			bars.filterLists = db.filterLists
 			bars.groupCount = db.filterCount
 			UF:AuraBars_UpdateFilter(bars, frame.unit)
 

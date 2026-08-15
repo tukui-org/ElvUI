@@ -166,7 +166,7 @@ do
 				local auraType = strlower(which)
 				local db = plateDB[auraType]
 				if db then
-					UF:GroupFilters(info, info.filterList)
+					UF:GroupFilters(info, info.filterLists)
 				end
 			end
 		end

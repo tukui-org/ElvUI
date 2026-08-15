@@ -918,7 +918,18 @@ function E:Auras_SetContainer(container)
 
 	local count = E:Auras_IsForced(container) and 0 or maxCount
 	for key, data in next, container.filters do
-		if data.filter then
+		if container.isTopAura then
+			local sortMethod = container.sortMethod or SORTMETHOD.Default
+			local sortDirection = container.sortDirection or SORTDIRECTION.Normal
+
+			if container.known[key] then
+				E:Auras_UpdateGroup(container, key, data, container.candidateFilters, layout, count, sortMethod, sortDirection)
+			else
+				E:Auras_AddGroup(container, key, data, container.candidateFilters, layout, count, sortMethod, sortDirection)
+
+				container.known[key] = data
+			end
+		elseif data.filter then
 			container.active[key] = data.filter -- set all active
 
 			local sortMethod = data.sortMethod or SORTMETHOD.Default

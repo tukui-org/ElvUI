@@ -287,13 +287,14 @@ function UF:GroupFilters(frame, list)
 
 	wipe(frame.filters) -- start over
 
+	local info = {}
 	for name, data in next, list do
-		data.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
-		data.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
-		data.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
-		data.candidateFilters = E:Auras_CanidateFilters(data.allowList, data.blockList, data.maxDuration)
+		info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
+		info.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
+		info.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
+		info.candidateFilters = E:Auras_CanidateFilters(data.allowList, data.blockList, data.maxDuration)
 
-		frame.filters[name] = data
+		frame.filters[name] = info
 	end
 end
 
@@ -460,9 +461,9 @@ function UF:Configure_Auras(frame, which)
 		auras.forceShowAuras = frame.forceShowAuras
 
 		if settings.enable then
-			auras.filterList = settings.filterList
+			auras.filterLists = settings.filterLists
 			auras.groupCount = settings.filterCount
-			UF:GroupFilters(auras, settings.filterList) -- build the groups
+			UF:GroupFilters(auras, settings.filterLists) -- build the groups
 
 			E:Auras_GroupUnit(auras, frame.unit)
 			E:Auras_SetContainer(auras)
