@@ -511,7 +511,6 @@ end
 
 function UF:Configure_Auras(frame, which)
 	local db = frame.db
-
 	local auras = frame[which]
 	local auraType = which:lower()
 	local settings = db[auraType]
@@ -560,6 +559,7 @@ function UF:Configure_Auras(frame, which)
 		auras:SetEnabled(settings.enable)
 
 		auras.isUnitframe = true
+		auras.auraType = auraType
 		auras.maxFrameCount = auras.num
 		auras.initialAnchor = E.CenterPoint[settings.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = settings.keepSizeRatio

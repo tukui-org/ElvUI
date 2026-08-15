@@ -763,7 +763,7 @@ function E:Auras_SetupList(container, auraTable)
 	end
 end
 
-function E:Auras_GetFlowLayout(container)
+function E:Auras_GetFlowInfo(container)
 	local growth = E.AuraGrowthMap[container.growthDirection]
 	if growth then
 		return growth.anchor, growth.horiz, growth.vert, growth.axis
@@ -773,7 +773,7 @@ function E:Auras_GetFlowLayout(container)
 end
 
 function E:Auras_SetFlowLayout(container)
-	local anchor, horiz, vert, axis = E:Auras_GetFlowLayout(container)
+	local anchor, horiz, vert, axis = E:Auras_GetFlowInfo(container)
 	if anchor == 'CENTER' then
 		container:ResetFlowLayoutOptions()
 	else
@@ -834,8 +834,10 @@ function E:Auras_UpdatePreviewIcons(container)
 	local count = container.maxFrameCount or 40
 	local width, height = E:Auras_GetSize(container)
 	local color = (container.isUnitframe and E.media.unitframeBorderColor) or E.media.bordercolor
+	local debuff = E.db.general.debuffColors.None
+	local curse = E.db.general.debuffColors.Curse
 
-	local anchor, horiz, vert = E:Auras_GetFlowLayout(container)
+	local anchor, horiz, vert = E:Auras_GetFlowInfo(container)
 	local perLine = container.numAuras or count
 	if perLine < 1 then perLine = count end
 
@@ -852,8 +854,15 @@ function E:Auras_UpdatePreviewIcons(container)
 		button:Show()
 		button:ClearAllPoints()
 		button:Point(anchor, container, anchor, x, y)
-		button:SetBackdropBorderColor(color.r, color.g, color.b)
 		button:Size(width, height)
+
+		if container.auraType == 'debuffs' then
+			button:SetBackdropBorderColor(debuff.r, debuff.g, debuff.b)
+		elseif container.auraType == 'auras' then
+			button:SetBackdropBorderColor(curse.r, curse.g, curse.b)
+		else
+			button:SetBackdropBorderColor(color.r, color.g, color.b)
+		end
 	end
 
 	for _, icon in next, icons, count do
@@ -862,8 +871,8 @@ function E:Auras_UpdatePreviewIcons(container)
 end
 
 function E:Auras_SetContainer(container)
-	local ignore = container.isAuraBar or container.isIndicator or container.isHighlight
-	if not ignore then -- dont add the ones we dont want to preview
+	local allowPreview = container.isUnitframe or container.isNameplate
+	if allowPreview then -- dont add the ones we dont want to preview
 		E.AuraPreviewFrames[container] = true
 	end
 
@@ -895,7 +904,7 @@ function E:Auras_SetContainer(container)
 		end
 	end
 
-	if not ignore then
+	if allowPreview then
 		E:Auras_UpdatePreviewIcons(container)
 	end
 end
