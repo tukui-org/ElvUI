@@ -612,13 +612,14 @@ local NP_Auras = {
 	durationPosition = 'CENTER',
 	minDuration = 0,
 	maxDuration = 0,
+	priority = '',
 	tooltipAnchorType = 'ANCHOR_BOTTOMRIGHT',
 	tooltipAnchorX = 5,
 	tooltipAnchorY = -5,
 	sourceText = CopyTable(NP_AuraSourceText),
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
-	priority = ''
+	filterLists = {}
 }
 
 local NP_Health = {
@@ -1533,10 +1534,11 @@ local UF_Auras = {
 	tooltipAnchorType = 'ANCHOR_BOTTOMRIGHT',
 	tooltipAnchorX = 5,
 	tooltipAnchorY = -5,
+	strataAndLevel = CopyTable(UF_StrataAndLevel),
+	sourceText = CopyTable(NP_AuraSourceText),
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
-	strataAndLevel = CopyTable(UF_StrataAndLevel),
-	sourceText = CopyTable(NP_AuraSourceText)
+	filterLists = {}
 }
 
 local UF_DebuffHighlight = {
@@ -1573,7 +1575,8 @@ local UF_AuraBars = {
 	countXOffset = -12,
 	countYOffset = 2,
 	allowList = 'Whitelist',
-	blockList = 'Blacklist'
+	blockList = 'Blacklist',
+	filterLists = {}
 }
 
 local UF_AuraWatch = {
