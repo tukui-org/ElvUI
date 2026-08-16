@@ -962,14 +962,12 @@ end
 
 do -- shared filters
 	local filters = {}
-	local names = { 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight' }
-
 	function C:VerifyFilter(value)
 		return IsValidFilterString(value)
 	end
 
 	function C:GetOptionsTable_AuraGroup(index, enable, mainGet, mainSet, candidateGet, candidateSet)
-		local group = ACH:Group(function() return format('|cFF%s%s|r', enable() and '33ff33' or 'ff3333', names[index]) end, nil, index, nil, mainGet, mainSet, nil, not E.Retail)
+		local group = ACH:Group(function() return format('|cFF%s%s|r', enable() and '33ff33' or 'ff3333', C.Values.Roman[index]) end, nil, index, nil, mainGet, mainSet, nil, not E.Retail)
 
 		group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.filter = ACH:Input(L["Big Boy String"], nil, 2, nil, 'full', nil, nil, nil, nil, C.VerifyFilter)
