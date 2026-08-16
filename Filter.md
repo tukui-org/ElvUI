@@ -272,7 +272,19 @@ Adds `{isBossOrRoleAura= true}`
 ___
 All filter strings are combined with a `|`  
 The very first string of each input box should always be `HARMFUL` (For Debuffs) or `HELPFUL` (For Buffs)  
-Piping multiple strings together should be imagined as a "AND" statement  
+Piping multiple strings together should be imagined as an "AND" statement  
 If you randomly pipe together strings without a logic you won't see any auras at all  
 Example of a bad string: `HELPFUL|IMPORTANT|CROWD_CONTROL|BIG_DEFENSIVE`  
 That means to show something the aura has to be a buff which is important, a cc and big defensive at the same time  
+
+It is possible to add a "NOT" statement to a filter string using `!` like so `!CROWD_CONTROL`  
+
+Enabling one or more checkboxes such as `Player or Pet` or `Stealable` adds the statement as an "AND" requirement  
+For example `HELPFUL` + enabled checkbox for `Use: Allow` will display all Buffs added via ID in "Whitelist"  
+And `HARMFUL` + enabled checkbox for `Use: Block` will display all Debuffs except the IDs in "Blacklist"  
+
+The following Blizzard restrictions apply at all times:  
+Whitelisting is limited to < You can only whitelist/track Buffs on friendly units via ID >  
+Blacklisting is limited to < You can only blacklist/block Debuffs on enemy units via ID >  
+You can NOT whitelist Debuffs on friendly units  
+You can NOT blacklist Buffs on enemy units  
