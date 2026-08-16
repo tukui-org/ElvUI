@@ -166,6 +166,9 @@ do
 				local auraType = strlower(which)
 				local db = plateDB[auraType]
 				if db then
+					info.filterLists = db.filterLists
+					info.groupCount = db.filterCount
+
 					UF:GroupFilters(info, info.filterLists)
 				end
 			end
@@ -221,7 +224,6 @@ function NP:Configure_Auras(nameplate, which)
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 		auras.forceShowAuras = nameplate == NP.TestFrame
 
-		auras.groupCount = db.filterCount
 		auras.filters = NP:Configure_AuraFilters(nameplate, which)
 
 		E:Auras_SetContainer(auras)

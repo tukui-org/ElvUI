@@ -105,38 +105,6 @@ local function GetOptionsTable_StrataAndFrameLevel(updateFunc, groupName, numUni
 	return config
 end
 
-local names = {
-	'Simpy', 'Just', 'Makes', 'Better', 'Filters'
-}
-
-local function GetOptionsTable_AuraGroup(index, disable, get, set)
-	local group = ACH:Group(names[index], nil, index, nil, get, set, function() return index > disable() end, not E.Retail)
-
-	group.args.filter = ACH:Input(L["Big Boy String"], nil, 1, nil, 'full')
-
-	group.args.lists = ACH:Group(' ', nil, 10)
-	group.args.lists.args.allowList = ACH:Select(L["Allow List"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
-	group.args.lists.args.blockList = ACH:Select(L["Block List"], nil, 2, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
-	group.args.lists.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 3, { min = 0, max = 10800, step = 1 })
-	group.args.lists.inline = true
-
-	group.args.candidates = ACH:Group(' ', nil, 20)
-	group.args.candidates.args.useAllowlist = ACH:Toggle(L["Use: Allow"], L["Activate the allowlist filter."], 1)
-	group.args.candidates.args.useBlocklist = ACH:Toggle(L["Use: Block"], L["Activate the blocklist filter."], 2)
-	group.args.candidates.args.isStealable = ACH:Toggle(L["Stealable"], L["Stealable"], 3)
-	group.args.candidates.args.nameplateShowAll = ACH:Toggle(L["NP: All"], L["Nameplate: Show all"], 4)
-	group.args.candidates.args.nameplateShowPersonal = ACH:Toggle(L["NP: Personal"], L["Nameplate: Personal"], 5)
-	group.args.candidates.args.isFromPlayerOrPlayerPet = ACH:Toggle(L["Player or Pet"], L["From unit: player or pet"], 6)
-	group.args.candidates.args.isRoleAura = ACH:Toggle(L["Role"], L["Role aura - tank/heal/dps?"], 7)
-	group.args.candidates.args.isPriorityAura = ACH:Toggle(L["Priority"], L["Priority aura"], 8)
-	group.args.candidates.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["Can apply aura"], 9)
-	group.args.candidates.args.isBossAura = ACH:Toggle(L["Boss"], L["Boss aura - important stuff, was used on last boss this season"], 10)
-	group.args.candidates.args.isBossOrRoleAura = ACH:Toggle(L["Boss or Role"], L["the either-or between isRoleAura and isBossAura"], 11)
-	group.args.candidates.inline = true
-
-	return group
-end
-
 local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	local config = ACH:Group(L["Aura Bars"], nil, 4, nil, function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
@@ -184,7 +152,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
-		config.args.midnightGroup.args[name] = GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName].aurabar.filterCount end, function(info) return E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end)
+		config.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName].aurabar.filterCount end, function(info) return E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end)
 	end
 
 	config.args.legacyGroup = ACH:Group(L["Filters"], nil, 60, nil, nil, nil, nil, E.Retail)
@@ -306,7 +274,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
-		config.args.midnightGroup.args[name] = GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName][auraType].filterCount end, function(info) return E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+		config.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName][auraType].filterCount end, function(info) return E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	end
 
 	config.args.legacyGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, E.Retail)

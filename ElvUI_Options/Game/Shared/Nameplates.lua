@@ -111,16 +111,14 @@ local function GetUnitAuras(unit, auraType)
 	group.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
 	group.args.cooldownGroup.args.enable, group.args.cooldownGroup.args.textGroup, group.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType])
 
-	group.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 3, { min = 0, max = 10800, step = 1 })
+	group.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
+	group.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = E.filterMax, step = 1 })
 	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() ResetFilters(E.db.nameplates.units[unit][auraType], P.nameplates.units[unit][auraType]) NP:ConfigureAll() end)
 
-	group.args.midnightGroup.args.lists = ACH:Group(L["Filter Lists"], nil, 10)
-	group.args.midnightGroup.args.lists.args.allowList = ACH:Select(L["Allow List"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
-	group.args.midnightGroup.args.lists.args.blockList = ACH:Select(L["Block List"], nil, 2, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
-	group.args.midnightGroup.args.lists.args.useAllowlist = ACH:Toggle(L["Filter Allow"], L["Activate the allowlist filter."], 3)
-	group.args.midnightGroup.args.lists.args.useBlocklist = ACH:Toggle(L["Filter Block"], L["Activate the blocklist filter."], 4)
-	group.args.midnightGroup.args.lists.inline = true
+	for index = 1, E.filterMax do
+		local name = 'group'..index
+		group.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.nameplates.units[unit][auraType].filterCount end, function(info) return E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] = value NP:ConfigureAll() end)
+	end
 
 	group.args.legacyGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, E.Retail)
 	group.args.legacyGroup.args.minDuration = ACH:Range(L["Minimum Duration"], L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."], 1, { min = 0, max = 10800, step = 1 })
