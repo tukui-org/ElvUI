@@ -295,6 +295,11 @@ function UF:GroupFilters(frame, list)
 			local info = frame.filters[name]
 			if not info then info = {} end
 
+			local filter = data.filter
+			info.isBuff = filter and strmatch(filter, 'HELPFUL') or nil
+			info.isDebuff = filter and strmatch(filter, 'HARMFUL') or nil
+			info.filter = filter
+
 			if data.useAllowlist and not allow then allow = E:Auras_GetFilter(auras, 'Whitelist') end -- might as well
 			if data.useBlocklist and not block then block = E:Auras_GetFilter(auras, 'Blacklist') end -- save some loops
 
@@ -317,7 +322,6 @@ function UF:GroupFilters(frame, list)
 			end
 
 			info.candidateFilters = next(candidates) and candidates or nil
-			info.filter = data.filter
 
 			frame.filters[name] = info
 		end
