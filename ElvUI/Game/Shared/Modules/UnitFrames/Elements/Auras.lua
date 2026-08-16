@@ -287,10 +287,10 @@ function UF:GroupFilters(frame, list)
 
 	wipe(frame.filters) -- start over
 
-	for index = 1, frame.groupCount do
+	for index = 1, E.filterMax do
 		local name = 'group'..index
 		local data = list[name]
-		if data then
+		if data and data.enable then
 			local info = frame.filters[name]
 			if not info then info = {} end
 
@@ -486,7 +486,7 @@ function UF:Configure_Auras(frame, which)
 
 		if settings.enable then
 			auras.filterLists = settings.filterLists
-			auras.groupCount = settings.filterCount
+
 			UF:GroupFilters(auras, settings.filterLists) -- build the groups
 
 			E:Auras_GroupUnit(auras, frame.unit)

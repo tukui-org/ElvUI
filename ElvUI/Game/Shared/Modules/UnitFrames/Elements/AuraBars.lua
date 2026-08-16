@@ -229,7 +229,7 @@ function UF:Configure_AuraBars(frame)
 			bars.forceShowAuras = frame.forceShowAuras
 
 			bars.filterLists = db.filterLists
-			bars.groupCount = db.filterCount
+
 			UF:AuraBars_UpdateFilter(bars, frame.unit)
 
 			E:Auras_GroupUnit(bars, frame.unit)

@@ -167,7 +167,6 @@ do
 				local db = plateDB[auraType]
 				if db then
 					info.filterLists = db.filterLists
-					info.groupCount = db.filterCount
 
 					UF:GroupFilters(info, info.filterLists)
 				end
