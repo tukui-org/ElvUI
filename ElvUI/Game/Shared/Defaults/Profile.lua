@@ -1206,7 +1206,7 @@ for unit, data in next, P.nameplates.units do
 
 		if unit == 'PLAYER' then
 			data.buffs.filterLists.group1.enable = true
-			data.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|PLAYER'
+			data.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|PLAYER|!EXTERNAL_DEFENSIVE'
 			data.buffs.filterLists.group2.enable = true
 			data.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
 			data.buffs.filterLists.group3.enable = true
@@ -2581,7 +2581,7 @@ P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,NonPersonal'
 
 P.unitframe.units.player.buffs.filterLists.group1.enable = true
-P.unitframe.units.player.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|PLAYER'
+P.unitframe.units.player.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|PLAYER|!EXTERNAL_DEFENSIVE'
 P.unitframe.units.player.buffs.filterLists.group2.enable = true
 P.unitframe.units.player.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
 
