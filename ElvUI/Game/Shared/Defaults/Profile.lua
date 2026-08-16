@@ -2669,12 +2669,28 @@ P.unitframe.units.targettarget.infoPanel.height = 14
 P.unitframe.units.targettarget.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.targettarget.power.text_format = ''
 
+P.unitframe.units.targettarget.buffs.filterCount = 0
+P.unitframe.units.targettarget.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.targettarget.buffs.filterLists.group1.useBlocklist = true
+
+P.unitframe.units.targettarget.debuffs.filterCount = 0
+P.unitframe.units.targettarget.debuffs.filterLists.group1.filter = 'HARMFUL'
+P.unitframe.units.targettarget.debuffs.filterLists.group1.useBlocklist = true
+
 P.unitframe.units.targettargettarget = CopyTable(P.unitframe.units.targettarget)
 P.unitframe.units.targettargettarget.buffs.priority = 'Blacklist,Personal,NonPersonal'
 P.unitframe.units.targettargettarget.debuffs.attachTo = 'FRAME'
 P.unitframe.units.targettargettarget.debuffs.priority = 'Blacklist,Personal,NonPersonal'
 P.unitframe.units.targettargettarget.enable = false
 P.unitframe.units.targettargettarget.infoPanel.height = 12
+
+P.unitframe.units.targettargettarget.buffs.filterCount = 0
+P.unitframe.units.targettargettarget.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.targettargettarget.buffs.filterLists.group1.useBlocklist = true
+
+P.unitframe.units.targettargettarget.debuffs.filterCount = 0
+P.unitframe.units.targettargettarget.debuffs.filterLists.group1.filter = 'HARMFUL'
+P.unitframe.units.targettargettarget.debuffs.filterLists.group1.useBlocklist = true
 
 P.unitframe.units.focus.aurabar.detachedWidth = 190
 P.unitframe.units.focus.aurabar.enable = false
@@ -2737,6 +2753,14 @@ P.unitframe.units.focustarget.height = 26
 P.unitframe.units.focustarget.infoPanel.height = 12
 P.unitframe.units.focustarget.threatStyle = 'NONE'
 
+P.unitframe.units.focustarget.buffs.filterCount = 0
+P.unitframe.units.focustarget.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.focustarget.buffs.filterLists.group1.useBlocklist = true
+
+P.unitframe.units.focustarget.debuffs.filterCount = 0
+P.unitframe.units.focustarget.debuffs.filterLists.group1.filter = 'HARMFUL'
+P.unitframe.units.focustarget.debuffs.filterLists.group1.useBlocklist = true
+
 P.unitframe.units.pet.aurabar.attachTo = 'FRAME'
 P.unitframe.units.pet.aurabar.detachedWidth = 130
 P.unitframe.units.pet.aurabar.enable = false
@@ -2786,6 +2810,14 @@ P.unitframe.units.pettarget.debuffs.priority = 'Blacklist,Dispellable,RaidDebuff
 P.unitframe.units.pettarget.enable = false
 P.unitframe.units.pettarget.height = 26
 P.unitframe.units.pettarget.threatStyle = 'NONE'
+
+P.unitframe.units.pettarget.buffs.filterCount = 0
+P.unitframe.units.pettarget.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.pettarget.buffs.filterLists.group1.useBlocklist = true
+
+P.unitframe.units.pettarget.debuffs.filterCount = 0
+P.unitframe.units.pettarget.debuffs.filterLists.group1.filter = 'HARMFUL'
+P.unitframe.units.pettarget.debuffs.filterLists.group1.useBlocklist = true
 
 P.unitframe.units.boss.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.boss.buffs.enable = true
