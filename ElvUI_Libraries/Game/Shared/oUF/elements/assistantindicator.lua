@@ -31,7 +31,7 @@ local UnitAffectingCombat = UnitAffectingCombat
 
 local function Update(self, event)
 	local element = self.AssistantIndicator
-	local unit = self.unit
+	local unit = self.__unit
 
 	--[[ Callback: AssistantIndicator:PreUpdate()
 	Called before the element has been updated.

@@ -17,7 +17,7 @@ local TREANT_GLYPH = 114282
 local AQUATIC_FORM = 1066
 
 local function Update(self, event, unit, powerType)
-	if(self.unit ~= unit or (event == 'UNIT_POWER_FREQUENT' and powerType ~= 'BALANCE')) then return end
+	if(self.__unit ~= unit or (event == 'UNIT_POWER_FREQUENT' and powerType ~= 'BALANCE')) then return end
 
 	local element = self.EclipseBar
 	if(element.PreUpdate) then element:PreUpdate(unit) end
@@ -104,7 +104,7 @@ end
 
 local function ForceUpdate(element)
 	EclipseDirectionPath(element.__owner, 'ForceUpdate', GetEclipseDirection())
-	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit, 'ECLIPSE')
+	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.__unit, 'ECLIPSE')
 end
 
 local function Disable(self)

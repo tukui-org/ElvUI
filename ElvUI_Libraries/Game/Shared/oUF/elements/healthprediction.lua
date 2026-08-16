@@ -91,7 +91,7 @@ local function UpdateSize(self, event, unit)
 end
 
 local function Update(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(self.__unit ~= unit) then return end
 
 	local element = self.HealthPrediction
 
@@ -318,14 +318,14 @@ local function ForceUpdate(element)
 	element.isHoriz = nil
 	element.size = nil
 
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local function HealComm_Check(self, element, ...)
 	if element and self:IsVisible() then
 		for i = 1, select('#', ...) do
-			if self.unit and UnitGUID(self.unit) == select(i, ...) then
-				Path(self, nil, self.unit)
+			if self.__unit and UnitGUID(self.__unit) == select(i, ...) then
+				Path(self, nil, self.__unit)
 			end
 		end
 	end

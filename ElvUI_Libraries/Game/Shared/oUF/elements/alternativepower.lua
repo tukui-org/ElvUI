@@ -104,7 +104,7 @@ local function onLeave()
 end
 
 local function UpdateColor(self, event, unit, powerType)
-	if(self.unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
+	if(self.__unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
 	local element = self.AlternativePower
 
 	local isPlayerOrAI = UnitIsPlayer(unit) or UnitInPartyIsAI(unit)
@@ -158,7 +158,7 @@ local function UpdateColor(self, event, unit, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if(self.unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
+	if(self.__unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
 	local element = self.AlternativePower
 
 	--[[ Callback: AlternativePower:PreUpdate()
@@ -225,7 +225,7 @@ local function Path(self, ...)
 end
 
 local function Visibility(self, event, unit)
-	if(unit ~= self.unit) then return end
+	if(unit ~= self.__unit) then return end
 	local element = self.AlternativePower
 
 	local barID = UnitPowerBarID(unit)
@@ -264,7 +264,7 @@ local function VisibilityPath(self, ...)
 end
 
 local function ForceUpdate(element)
-	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local function Enable(self, unit)

@@ -29,7 +29,7 @@ local GetLootMethod = C_PartyInfo.GetLootMethod or GetLootMethod
 local UnitAffectingCombat = UnitAffectingCombat
 
 local function Update(self, event)
-	local unit = self.unit
+	local unit = self.__unit
 	local element = self.MasterLooterIndicator
 
 	--[[ Callback: MasterLooterIndicator:PreUpdate()

@@ -130,7 +130,7 @@ local function GetDisplayPower(_, unit)
 end
 
 local function UpdateColor(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(self.__unit ~= unit) then return end
 	local element = self.Power
 
 	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
@@ -239,7 +239,7 @@ local function ColorPath(self, ...)
 end
 
 local function Update(self, event, unit)
-	if(self.unit ~= unit) then return end
+	if(self.__unit ~= unit) then return end
 	local element = self.Power
 
 	--[[ Callback: Power:PreUpdate(unit)
@@ -306,7 +306,7 @@ local function Path(self, event, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 --[[ Power:SetColorDisconnected(state, isForced)

@@ -124,7 +124,7 @@ local function UnitClassColor(element, unit)
 end
 
 local function UpdateColor(self, event, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if(not unit or self.__unit ~= unit) then return end
 
 	local element = self.Health
 	local unitReaction = UnitReaction(unit, 'player')
@@ -195,7 +195,7 @@ local function ColorPath(self, ...)
 end
 
 local function Update(self, event, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if(not unit or self.__unit ~= unit) then return end
 	local element = self.Health
 
 	--[[ Callback: Health:PreUpdate(unit)
@@ -258,7 +258,7 @@ local function Path(self, event, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 --[[ Health:SetColorDisconnected(state, isForced)

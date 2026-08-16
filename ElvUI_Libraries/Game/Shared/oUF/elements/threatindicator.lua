@@ -32,7 +32,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local function Update(self, event, unit)
-	if(unit ~= self.unit) then return end
+	if(unit ~= self.__unit) then return end
 
 	local element = self.ThreatIndicator
 	--[[ Callback: ThreatIndicator:PreUpdate(unit)
@@ -43,7 +43,7 @@ local function Update(self, event, unit)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(unit) end
 
-	if not unit then unit = self.unit end
+	if not unit then unit = self.__unit end
 
 	local status = oUF:GetThreatSituation(unit, element.feedbackUnit)
 
@@ -85,7 +85,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local function Enable(self)

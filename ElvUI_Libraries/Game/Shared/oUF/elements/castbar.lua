@@ -284,7 +284,7 @@ Defaults to the object unit.
 * unit - the unit for which the update has been triggered (string)
 --]]
 local function ShouldShow(element, unit)
-	return element.__owner.unit == unit
+	return element.__owner.__unit == unit
 end
 
 local function CastStart(self, event, unit, castGUID, spellID, castTime)
@@ -779,7 +779,7 @@ local function onUpdate(self, elapsed)
 					self:Hide()
 
 					if(self.PostCastStop) then
-						self:PostCastStop(self.__owner.unit, spellID)
+						self:PostCastStop(self.__owner.__unit, spellID)
 					end
 
 					return
@@ -796,7 +796,7 @@ local function onUpdate(self, elapsed)
 					self:Hide()
 
 					if(self.PostCastStop) then
-						self:PostCastStop(self.__owner.unit, spellID)
+						self:PostCastStop(self.__owner.__unit, spellID)
 					end
 
 					return
@@ -869,7 +869,7 @@ local function Update(...)
 end
 
 local function ForceUpdate(element)
-	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Update(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local function Enable(self, unit)
