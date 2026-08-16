@@ -28,17 +28,6 @@ local auraKeys = {
 	auras = { name = L["Custom"], order = 3 },
 }
 
-local function ResetFilters(db, default)
-	for name, data in next, db do
-		for key in next, E.AuraDefaults do
-			local info = default[name]
-			if info then
-				data[key] = info[key]
-			end
-		end
-	end
-end
-
 local function GetTargetText(unit)
 	local group = ACH:Group(L["Target Text"], nil, 30)
 	group.args.displayTarget = ACH:Toggle(L["Enable"], L["Display the target of current cast."], 1)
@@ -113,7 +102,7 @@ local function GetUnitAuras(unit, auraType)
 
 	group.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
 	group.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = E.filterMax, step = 1 })
-	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() ResetFilters(E.db.nameplates.units[unit][auraType], P.nameplates.units[unit][auraType]) NP:ConfigureAll() end)
+	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() C:ResetFilters_AuraGroup(E.db.nameplates.units[unit][auraType], P.nameplates.units[unit][auraType]) NP:ConfigureAll() end)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index

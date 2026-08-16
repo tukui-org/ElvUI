@@ -9,11 +9,7 @@ P.gridLineWidth = 1
 P.hideTutorial = true
 P.dbConverted = nil -- use this to let DBConversions run once per profile
 
-E.AuraDefaults = {
-	maxDuration = 0,
-	filter = 'HELPFUL',
-	allowList = 'Whitelist',
-	blockList = 'Blacklist',
+E.AuraCandidates = {
 	canApplyAura = false,
 	isBossAura = false,
 	isBossOrRoleAura = false,
@@ -22,14 +18,25 @@ E.AuraDefaults = {
 	isRoleAura = false,
 	isStealable = false,
 	nameplateShowAll = false,
-	nameplateShowPersonal = false,
+	nameplateShowPersonal = false
+}
+
+E.AuraDefaults = {
+	maxDuration = 0,
+	filter = 'HELPFUL',
+	allowList = 'Whitelist',
+	blockList = 'Blacklist',
 	useAllowlist = false,
 	useBlocklist = false
+	-- candidates = table
 }
 
 local defaultFilterList = {}
 for index = 1, E.filterMax do
-	defaultFilterList['group'..index] = CopyTable(E.AuraDefaults)
+	local info = CopyTable(E.AuraDefaults)
+	info.candidates = CopyTable(E.AuraCandidates)
+
+	defaultFilterList['group'..index] = info
 end
 
 --Core

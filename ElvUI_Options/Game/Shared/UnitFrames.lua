@@ -74,17 +74,6 @@ local offsetLong = { softMin = -300, min = -1000, softMax = 300, max = 1000, ste
 local spacingNormal = { min = -5, softMax = 50, max = 100, step = 1 }
 local spacingLong = { min = -5, softMax = 100, max = 500, step = 1 }
 
-local function ResetFilters(db, default)
-	for name, data in next, db do
-		for key in next, E.AuraDefaults do
-			local info = default[name]
-			if info then
-				data[key] = info[key]
-			end
-		end
-	end
-end
-
 -----------------------------------------------------------------------
 -- OPTIONS TABLES
 -----------------------------------------------------------------------
@@ -148,7 +137,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 
 	config.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = E.filterMax, step = 1 })
-	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() ResetFilters(E.db.unitframe.units[groupName].aurabar.filterLists, P.unitframe.units[groupName].aurabar.filterLists) updateFunc(UF, groupName) end)
+	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() C:ResetFilters_AuraGroup(E.db.unitframe.units[groupName].aurabar.filterLists, P.unitframe.units[groupName].aurabar.filterLists) updateFunc(UF, groupName) end)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
@@ -270,7 +259,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 
 	config.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
 	config.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = E.filterMax, step = 1 })
-	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() ResetFilters(E.db.unitframe.units[groupName][auraType].filterLists, P.unitframe.units[groupName][auraType].filterLists) updateFunc(UF, groupName, numUnits) end)
+	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() C:ResetFilters_AuraGroup(E.db.unitframe.units[groupName][auraType].filterLists, P.unitframe.units[groupName][auraType].filterLists) updateFunc(UF, groupName, numUnits) end)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
