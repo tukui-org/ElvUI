@@ -563,6 +563,10 @@ function A:UpdateHeader(header)
 	local minWidth, minHeight, xOffset, yOffset, wrapXOffset, wrapYOffset
 
 	if E.Retail then
+		local group = header.filterLists.group1
+		group.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
+		group.sortDirection = E.AuraContainerSortDirection[db.sortDir]
+
 		header.barDB = db
 		header.width = width
 		header.height = height
@@ -579,13 +583,9 @@ function A:UpdateHeader(header)
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
 		header.countPosition, header.countXOffset, header.countYOffset = 'BOTTOMRIGHT', db.countXOffset, db.countYOffset
 		header.countFont, header.countFontSize, header.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
-		header.colorByType = header.filter == 'HARMFUL' and A.db.colorDebuffs
+		header.colorByType = group.filter == 'HARMFUL' and A.db.colorDebuffs
 		header.colorEnchants = A.db.colorEnchants
 		header.isTopAura = true
-
-		local group = header.filterLists.group1
-		group.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
-		group.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 
 		header.useWidth = IS_HORIZONTAL_GROWTH[db.growthDirection]
 		if header.useWidth then
