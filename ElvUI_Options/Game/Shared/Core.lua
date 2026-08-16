@@ -962,7 +962,7 @@ end
 
 do -- shared filters
 	local filters = {}
-	local names = { 'Simpy', 'Just', 'Makes', 'Better', 'Filters' }
+	local names = { 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight' }
 
 	function C:VerifyFilter(value)
 		return IsValidFilterString(value)
