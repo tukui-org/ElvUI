@@ -2872,6 +2872,22 @@ P.unitframe.units.arena.power.position = 'RIGHT'
 P.unitframe.units.arena.power.text_format = E.Retail and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
 P.unitframe.units.arena.power.xOffset = -2
 
+P.unitframe.units.arena.buffs.filterCount = 5
+P.unitframe.units.arena.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE'
+P.unitframe.units.arena.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+P.unitframe.units.arena.buffs.filterLists.group3.filter = 'HELPFUL|RAID_PLAYER_DISPELLABLE'
+P.unitframe.units.arena.buffs.filterLists.group4.filter = 'HELPFUL'
+P.unitframe.units.arena.buffs.filterLists.group4.candidates.isStealable = true
+P.unitframe.units.arena.buffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.arena.buffs.filterLists.group5.filter = 'HELPFUL|RAID'
+P.unitframe.units.arena.buffs.filterLists.group5.useBlocklist = true
+
+P.unitframe.units.arena.debuffs.filterCount = 2
+P.unitframe.units.arena.debuffs.filterLists.group1.filter = 'HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY'
+P.unitframe.units.arena.debuffs.filterLists.group1.candidates.nameplateShowPersonal = true
+P.unitframe.units.arena.debuffs.filterLists.group1.useBlocklist = true
+P.unitframe.units.arena.debuffs.filterLists.group2.filter = 'HARMFUL|CROWD_CONTROL'
+
 P.unitframe.units.party.buffIndicator.enable = true
 P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.party.buffs.maxDuration = 300
