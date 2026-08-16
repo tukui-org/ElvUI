@@ -38,7 +38,7 @@ function Private.UpdateUnits(frame, unit, realUnit)
 		realUnit = nil
 	end
 
-	if(frame.__unit ~= unit or frame.realUnit ~= realUnit) then
+	if(frame.__unit ~= unit or frame.__realUnit ~= realUnit) then
 		-- don't let invalid units in, otherwise unit events will end up being
 		-- registered as unitless
 
@@ -65,7 +65,7 @@ function Private.UpdateUnits(frame, unit, realUnit)
 			end
 		end
 
-		frame.realUnit = realUnit
+		frame.__realUnit = realUnit
 		frame.__unit = validateToken(unit)
 		frame.id = unit:match('^.-(%d+)')
 

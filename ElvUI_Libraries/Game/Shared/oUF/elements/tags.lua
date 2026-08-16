@@ -745,7 +745,7 @@ local function GetTagFunc(tagstr)
 		func = function(self)
 			local parent = self.parent
 			local unit = parent.__unit
-			local realUnit = self.overrideUnit and parent.realUnit
+			local realUnit = self.__overrideUnit and parent.__realUnit
 			local customArgs = parent.__customargs[self]
 
 			_ENV._FRAME = parent
