@@ -2848,7 +2848,7 @@ P.unitframe.units.boss.buffs.filterCount = 3
 P.unitframe.units.boss.buffs.filterLists.group1.filter = 'HELPFUL'
 P.unitframe.units.boss.buffs.filterLists.group1.candidates.isBossAura = true
 P.unitframe.units.boss.buffs.filterLists.group2.filter = 'HELPFUL'
-P.unitframe.units.boss.buffs.filterLists.group1.candidates.isStealable = true
+P.unitframe.units.boss.buffs.filterLists.group2.candidates.isStealable = true
 P.unitframe.units.boss.buffs.filterLists.group2.useBlocklist = true
 P.unitframe.units.boss.buffs.filterLists.group3.filter = 'HELPFUL|IMPORTANT'
 
