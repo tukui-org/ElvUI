@@ -3022,6 +3022,14 @@ P.unitframe.units.raidpet.pvpclassificationindicator = nil
 P.unitframe.units.raidpet.raidWideSorting = true
 P.unitframe.units.raidpet.visibility = '[@raid1,exists] show; hide'
 
+P.unitframe.units.raidpet.buffs.filterCount = 0
+P.unitframe.units.raidpet.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.raidpet.buffs.filterLists.group1.useBlocklist = true
+
+P.unitframe.units.raidpet.debuffs.filterCount = 0
+P.unitframe.units.raidpet.debuffs.filterLists.group1.filter = 'HARMFUL'
+P.unitframe.units.raidpet.debuffs.filterLists.group1.useBlocklist = true
+
 P.unitframe.units.tank.buffs.numrows = 1
 P.unitframe.units.tank.buffs.perrow = 6
 P.unitframe.units.tank.buffs.yOffset = 2
