@@ -84,8 +84,8 @@ local function EnvUnit(arg1)
 	local frame = configEnv._FRAME -- yoink
 	if not frame then return arg1, true end
 
-	local cool = frame.oldUnit
-	local unit = frame.unit or arg1
+	local cool = frame.__oldUnit
+	local unit = frame.__unit or arg1
 	if cool then -- everyone who is cool <3
 		return cool or unit
 	else -- someone that's okay, i guess
@@ -221,8 +221,8 @@ function UF:ForceShow(frame)
 		frame.isForced = true
 		frame.forceShowAuras = true
 
-		frame.unit = 'player'
-		frame.oldUnit = frame.unit
+		frame.__unit = 'player'
+		frame.__oldUnit = frame.__unit
 	end
 
 	if not next(forceShown) then
@@ -261,9 +261,9 @@ function UF:UnforceShow(frame)
 	frame.isForced = nil
 	frame.forceShowAuras = nil
 
-	if frame.oldUnit ~= nil then
-		frame.unit = frame.oldUnit
-		frame.oldUnit = nil
+	if frame.__oldUnit ~= nil then
+		frame.__unit = frame.__oldUnit
+		frame.__oldUnit = nil
 	end
 
 	frame:EnableMouse(true)

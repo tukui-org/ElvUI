@@ -27,7 +27,7 @@ function UF:GetRoleIcon(frame)
 		local rnd = random(1, 3)
 		return (rnd == 1 and 'TANK') or (rnd == 2 and 'HEALER') or 'DAMAGER'
 	else
-		local role = E.allowRoles and UnitGroupRolesAssigned(frame.unit)
+		local role = E.allowRoles and UnitGroupRolesAssigned(frame.__unit)
 		if E:NotSecretValue(role) then
 			return role
 		end
@@ -47,8 +47,8 @@ function UF:UpdateRoleIcon()
 		return
 	end
 
-	local show = self.isForced or UnitExists(self.unit)
-	if show and (not lfdrole.combatHide or not UnitAffectingCombat(self.unit)) and ((role == 'DAMAGER' and db.damager) or (role == 'HEALER' and db.healer) or (role == 'TANK' and db.tank)) then
+	local show = self.isForced or UnitExists(self.__unit)
+	if show and (not lfdrole.combatHide or not UnitAffectingCombat(self.__unit)) and ((role == 'DAMAGER' and db.damager) or (role == 'HEALER' and db.healer) or (role == 'TANK' and db.tank)) then
 		lfdrole:SetTexture(UF.RoleIconTextures[role])
 		lfdrole:Show()
 	else

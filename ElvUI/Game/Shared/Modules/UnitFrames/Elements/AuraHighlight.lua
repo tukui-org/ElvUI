@@ -69,7 +69,7 @@ do
 			container:SetFrameLevel(13)
 		end
 
-		E:Auras_GroupUnit(container, frame.unit)
+		E:Auras_GroupUnit(container, frame.__unit)
 		E:Auras_SetHighlight(container)
 	end
 end
@@ -89,8 +89,8 @@ function UF:Configure_AuraHighlight(frame)
 		bad.enabled = enabled
 		bad.key = 'bad'
 
-		UF:SetEnabled_AuraHighlight(good, frame.unit)
-		UF:SetEnabled_AuraHighlight(bad, frame.unit)
+		UF:SetEnabled_AuraHighlight(good, frame.__unit)
+		UF:SetEnabled_AuraHighlight(bad, frame.__unit)
 	end
 
 	if enabled then

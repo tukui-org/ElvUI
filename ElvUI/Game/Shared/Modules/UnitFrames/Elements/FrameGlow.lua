@@ -17,7 +17,7 @@ local UnitInPartyIsAI = UnitInPartyIsAI
 
 function UF:FrameGlow_MouseOnUnit(frame)
 	if frame and frame:IsVisible() and E:UnitExists('mouseover') then
-		local unit = (E:UnitExists(frame.unit) and frame.unit) or (frame.isForced and 'player')
+		local unit = (E:UnitExists(frame.__unit) and frame.__unit) or (frame.isForced and 'player')
 		return unit and E:UnitIsUnit('mouseover', unit)
 	end
 
@@ -27,7 +27,7 @@ end
 function UF:FrameGlow_ElementHook(frame, glow, which)
 	if not (frame and frame.__elements) then return end
 	tinsert(frame.__elements, function()
-		local unit = frame.unit or (frame.isForced and 'player')
+		local unit = frame.__unit or (frame.isForced and 'player')
 		if unit then
 			UF:FrameGlow_SetGlowColor(glow, unit, which)
 		end
@@ -245,7 +245,7 @@ function UF:FrameGlow_ConfigureGlow(frame, unit, dbTexture)
 	if not frame then return end
 
 	if not unit then
-		unit = frame.unit or (frame.isForced and 'player')
+		unit = frame.__unit or (frame.isForced and 'player')
 	end
 
 	local shouldHide
@@ -289,7 +289,7 @@ end
 function UF:FrameGlow_CheckUnit(frame, element, setting, color, glowEnabled, frameDisabled)
 	if not (element and frame:IsVisible()) then return end
 
-	local unit = frame.unit or (frame.isForced and 'player')
+	local unit = frame.__unit or (frame.isForced and 'player')
 	local source = E:NotSecretValue(unit) and unit
 	local target = source and E:UnitIsUnit(source, strsub(setting, 0, -5))
 	if E:NotSecretValue(target) and target and (glowEnabled and not frameDisabled) then
@@ -430,12 +430,12 @@ function UF:FrameGlow_CheckChildren(frame, dbTexture)
 	if frame.GetName then
 		local pet = _G[frame:GetName()..'Pet']
 		if pet then
-			UF:FrameGlow_ConfigureGlow(pet, pet.unit, dbTexture)
+			UF:FrameGlow_ConfigureGlow(pet, pet.__unit, dbTexture)
 		end
 
 		local target = _G[frame:GetName()..'Target']
 		if target then
-			UF:FrameGlow_ConfigureGlow(target, target.unit, dbTexture)
+			UF:FrameGlow_ConfigureGlow(target, target.__unit, dbTexture)
 		end
 	end
 end
@@ -459,12 +459,12 @@ function UF:FrameGlow_UpdateFrames()
 		if group and group.GetNumChildren then
 			for _, frame in next, { group:GetChildren() } do
 				if frame.Health then
-					UF:FrameGlow_ConfigureGlow(frame, frame.unit, dbTexture)
+					UF:FrameGlow_ConfigureGlow(frame, frame.__unit, dbTexture)
 					UF:FrameGlow_CheckChildren(frame, dbTexture)
 				else
 					for _, child in next, { frame:GetChildren() } do
 						if child.Health then
-							UF:FrameGlow_ConfigureGlow(child, child.unit, dbTexture)
+							UF:FrameGlow_ConfigureGlow(child, child.__unit, dbTexture)
 							UF:FrameGlow_CheckChildren(child, dbTexture)
 						end
 					end

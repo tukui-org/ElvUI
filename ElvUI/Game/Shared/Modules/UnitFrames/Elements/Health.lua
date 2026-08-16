@@ -229,7 +229,7 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true, UF.db.colors.invertHealth, db.health and db.health.reverseFill)
 
-	if not frame.unit then -- this is a unit token failure case
+	if not frame.__unit then -- this is a unit token failure case
 		local color = ElvUF.colors.health
 		UF:SetStatusBarColor(health, color.r, color.g, color.b)
 	end

@@ -46,7 +46,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 		auras.noMouse = true
 
 		local auraTable
-		if (frame.unit == 'pet' or isPet) and db.petSpecific then
+		if (frame.__unit == 'pet' or isPet) and db.petSpecific then
 			auraTable = E.global.unitframe.aurawatch.PET
 		elseif db.profileSpecific then
 			auraTable = E.db.unitframe.filters.aurawatch
@@ -59,7 +59,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 			auras.filter = 'HELPFUL'
 
 			E:Auras_SetupList(auras, auraTable)
-			E:Auras_GroupUnit(auras, frame.unit)
+			E:Auras_GroupUnit(auras, frame.__unit)
 			E:Auras_SetIndicator(auras)
 			E:Auras_UpdateIndicators(auras)
 		elseif auras.SetNewTable then

@@ -230,9 +230,9 @@ function UF:Configure_AuraBars(frame)
 
 			bars.filterLists = db.filterLists
 
-			UF:AuraBars_UpdateFilter(bars, frame.unit)
+			UF:AuraBars_UpdateFilter(bars, frame.__unit)
 
-			E:Auras_GroupUnit(bars, frame.unit)
+			E:Auras_GroupUnit(bars, frame.__unit)
 			E:Auras_SetContainer(bars)
 			E:Auras_SetLineSize(bars)
 
@@ -292,7 +292,7 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 		if E:IsSecretValue(bar.count) then
 			if bar.aura then
 				local minCount, maxCount = 2, 999
-				local count = GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount)
+				local count = GetAuraApplicationDisplayCount(bar.__unit, bar.aura.auraInstanceID, minCount, maxCount)
 				bar.nameText:SetFormattedText('%s%s', count and WrapString(count, '[', '] ') or '', text)
 			else
 				bar.nameText:SetText(text)

@@ -491,7 +491,7 @@ function UF:Configure_Auras(frame, which)
 
 			UF:GroupFilters(auras, settings.filterLists) -- build the groups
 
-			E:Auras_GroupUnit(auras, frame.unit)
+			E:Auras_GroupUnit(auras, frame.__unit)
 			E:Auras_SetContainer(auras)
 			E:Auras_SetLineSize(auras)
 			E:Auras_UpdateButtons(auras)
