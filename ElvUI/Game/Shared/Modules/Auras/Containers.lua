@@ -147,17 +147,13 @@ function E:Auras_UpdateHighlight(container, button)
 end
 
 function E:Auras_CreateIndicator(button)
-	local backdrop = button:CreateTexture(nil, 'BACKGROUND', nil, -3)
-	backdrop:SetTexture(E.media.blankTex)
-	backdrop:SetVertexColor(0, 0, 0)
-	backdrop:SetAllPoints()
-	button.backdrop = backdrop
+	button:CreateBackdrop('Transparent', nil, true) -- these are forbidden, ignore updates
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
 	button.statusbar = statusbar
 
 	local texture = button:CreateTexture(nil, 'ARTWORK')
-	texture:SetInside()
+	texture:SetAllPoints()
 	button.texture = texture
 
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
