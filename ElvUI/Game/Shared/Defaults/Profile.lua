@@ -2633,6 +2633,25 @@ P.unitframe.units.target.health.text_format = E.Retail and '||cFF29CC00[perhp<%]
 P.unitframe.units.target.name.text_format = E.Retail and '[classcolor][name] [difficultycolor][smartlevel] [shortclassification]' or '[classcolor][name:medium] [difficultycolor][smartlevel] [shortclassification]'
 P.unitframe.units.target.power.text_format = E.Retail and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
 
+P.unitframe.units.target.buffs.filterCount = 4
+P.unitframe.units.target.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.target.buffs.filterLists.group1.candidates.isBossOrRoleAura = true
+P.unitframe.units.target.buffs.filterLists.group2.filter = 'HELPFUL'
+P.unitframe.units.target.buffs.filterLists.group2.candidates.isStealable = true
+P.unitframe.units.target.buffs.filterLists.group2.useBlocklist = true
+P.unitframe.units.target.buffs.filterLists.group3.filter = 'HELPFUL|IMPORTANT'
+P.unitframe.units.target.buffs.filterLists.group4.filter = 'HELPFUL'
+P.unitframe.units.target.buffs.filterLists.group4.candidates.isFromPlayerOrPlayerPet = true
+
+P.unitframe.units.target.debuffs.filterCount = 1
+P.unitframe.units.target.debuffs.filterLists.group1.filter = 'HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY'
+P.unitframe.units.target.debuffs.filterLists.group1.candidates.nameplateShowPersonal = true
+P.unitframe.units.target.debuffs.filterLists.group1.useBlocklist = true
+
+P.unitframe.units.target.auras.filterCount = 1
+P.unitframe.units.target.auras.filterLists.group1.filter = 'HARMFUL|CROWD_CONTROL'
+P.unitframe.units.target.auras.filterLists.group1.useBlocklist = true
+
 P.unitframe.units.targettarget.buffs.anchorPoint = 'BOTTOMLEFT'
 P.unitframe.units.targettarget.buffs.maxDuration = 300
 P.unitframe.units.targettarget.buffs.numrows = 1
