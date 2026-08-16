@@ -311,7 +311,19 @@ do
 				info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
 				info.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
 				info.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
-				info.candidateFilters = E:Auras_CanidateFilters(info.allowList, info.blockList, info.maxDuration)
+
+				-- setup candidates
+				local candidates = {}
+				candidates.includeSpellIDs = info.allowList
+				candidates.excludeSpellIDs = info.blockList
+				candidates.maxDuration = info.maxDuration
+
+				for candidate in next, E.AuraCandidates do
+					candidates[candidate] = data[candidate]
+				end
+
+				-- link them
+				info.candidateFilters = candidates
 				info.filter = data.filter
 
 				frame.filters[name] = info

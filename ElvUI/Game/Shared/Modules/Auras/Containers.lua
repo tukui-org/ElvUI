@@ -573,17 +573,6 @@ end
 
 do
 	local temp = {}
-	function E:Auras_CanidateFilters(allow, block, maxDuration)
-		temp.includeSpellIDs = allow
-		temp.excludeSpellIDs = block
-		temp.maxDuration = maxDuration
-
-		return temp
-	end
-end
-
-do
-	local temp = {}
 	local spell = {}
 	function E:Auras_FilterIndicator(data)
 		temp.includeSpellIDs = spell
