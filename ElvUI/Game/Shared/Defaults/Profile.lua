@@ -2657,7 +2657,7 @@ P.unitframe.units.target.buffs.filterLists.group2.useBlocklist = true
 P.unitframe.units.target.buffs.filterLists.group3.enable = true
 P.unitframe.units.target.buffs.filterLists.group3.filter = 'HELPFUL|IMPORTANT'
 P.unitframe.units.target.buffs.filterLists.group4.enable = true
-P.unitframe.units.target.buffs.filterLists.group4.filter = 'HELPFUL'
+P.unitframe.units.target.buffs.filterLists.group4.filter = 'HELPFUL|!IMPORTANT'
 P.unitframe.units.target.buffs.filterLists.group4.candidates.isFromPlayerOrPlayerPet = true
 
 P.unitframe.units.target.debuffs.filterLists.group1.enable = true
