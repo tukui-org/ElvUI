@@ -1255,7 +1255,7 @@ for unit, data in next, P.nameplates.units do
 			data.buffs.filterLists.group2.filter = 'HELPFUL'
 			data.buffs.filterLists.group2.candidates.isStealable = true
 			data.buffs.filterLists.group2.useBlocklist = true
-			data.buffs.filterLists.group3.filter = ' HELPFUL|IMPORTANT'
+			data.buffs.filterLists.group3.filter = 'HELPFUL|IMPORTANT'
 
 			data.debuffs.filterCount = 1
 			data.debuffs.filterLists.group1.filter = 'HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY|!CROWD_CONTROL'
