@@ -33,7 +33,7 @@ local function OnEnter(self)
 	GameTooltip:SetOwner(self, (self.__owner.__restricted and 'ANCHOR_CURSOR') or self.__owner.tooltipAnchor, self.__owner.tooltipAnchorX, self.__owner.tooltipAnchorY)
 
 	-- we need compatibility here because this wasnt implemented on Era or Mists
-	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.__unit, self.auraInstanceID, self.filter)
+	oUF:SetTooltipByAuraInstanceID(GameTooltip, self.unit, self.auraInstanceID, self.filter)
 end
 
 local function OnLeave()
@@ -115,7 +115,7 @@ local function UpdateBar(element, bar)
 	if oUF:IsSecretValue(bar.count) then
 		if bar.aura then
 			local minCount, maxCount = 2, 999
-			local count = GetAuraApplicationDisplayCount(bar.__unit, bar.aura.auraInstanceID, minCount, maxCount)
+			local count = GetAuraApplicationDisplayCount(bar.unit, bar.aura.auraInstanceID, minCount, maxCount)
 			bar.nameText:SetFormattedText('%s%s', count and WrapString(count, '[', '] ') or '', bar.spell)
 		else
 			bar.nameText:SetText(bar.spell)
@@ -156,7 +156,7 @@ local function UpdateBar(element, bar)
 	bar:Show()
 
 	if element.PostUpdateBar then
-		element:PostUpdateBar(bar.__unit, bar, bar.index, bar.position, bar.duration, bar.expiration, debuffType, bar.isStealable)
+		element:PostUpdateBar(bar.unit, bar, bar.index, bar.position, bar.duration, bar.expiration, debuffType, bar.isStealable)
 	end
 end
 
@@ -175,7 +175,7 @@ local function AuraUpdate(frame, element, unit, aura, index, offset, filter, isD
 	element.active[position] = bar
 
 	bar.aura = aura
-	bar.__unit = unit
+	bar.unit = unit
 	bar.count = count
 	bar.index = index
 	bar.filter = filter

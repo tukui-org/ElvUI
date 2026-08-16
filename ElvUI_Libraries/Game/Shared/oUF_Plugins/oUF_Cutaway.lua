@@ -47,7 +47,7 @@ local function FadeClosure(element)
 end
 
 local function Shared_PreUpdate(self, element, unit)
-	element.__unit = unit
+	element.unit = unit
 
 	local oldGUID, newGUID = element.guid, UnitGUID(unit)
 	element.guid = newGUID
@@ -83,7 +83,7 @@ local function Shared_UpdateCheckReturn(self, element, updateType, curV, maxV, u
 	if updateType == PRE then
 		return (not element.enabled or not self.cur) or element.ready or not maxV or maxV == 0
 	elseif updateType == POST then
-		return (not element.enabled or not element.cur) or (not element.ready or not curV or not maxV or maxV == 0) or element.__unit ~= unit
+		return (not element.enabled or not element.cur) or (not element.ready or not curV or not maxV or maxV == 0) or element.unit ~= unit
 	end
 end
 
