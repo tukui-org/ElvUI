@@ -7,6 +7,36 @@ G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	desc = L["Auras you don't want to see on your frames."],
 	spells = {
+		-- Class Buffs
+		[1126]		= List(nil, false), -- Mark of the Wild
+		[1459]		= List(nil, false), -- Arcane Intellect
+		[21562]		= List(nil, false), -- Power Word: Fortitude
+		[369459]	= List(nil, false), -- Source of Magic
+		[381732]	= List(nil, false), -- Blessing of the Bronze
+		[381741]	= List(nil, false), -- Blessing of the Bronze
+		[381746]	= List(nil, false), -- Blessing of the Bronze
+		[381748]	= List(nil, false), -- Blessing of the Bronze
+		[381749]	= List(nil, false), -- Blessing of the Bronze
+		[381750]	= List(nil, false), -- Blessing of the Bronze
+		[381751]	= List(nil, false), -- Blessing of the Bronze
+		[381752]	= List(nil, false), -- Blessing of the Bronze
+		[381753]	= List(nil, false), -- Blessing of the Bronze
+		[381754]	= List(nil, false), -- Blessing of the Bronze
+		[381756]	= List(nil, false), -- Blessing of the Bronze
+		[381757]	= List(nil, false), -- Blessing of the Bronze
+		[381758]	= List(nil, false), -- Blessing of the Bronze
+		[462854]	= List(nil, false), -- Skyfury
+		[474754]	= List(nil, false), -- Symbiotic Relationship
+		[6673]		= List(nil, false), -- Battle Shout
+		-- Classes, mostly to fake resources
+		[1217607]	= List(nil, false), -- Void Metamorphosis
+		[1225789]	= List(nil, false), -- Void Metamorphosis
+		[1227702]	= List(nil, false), -- Collapsing Star
+		[124255]	= List(nil, false), -- Stagger
+		[205473]	= List(nil, false), -- Icicles
+		[260286]	= List(nil, false), -- Tip of the Spear
+		[344179]	= List(nil, false), -- Maelstrom Weapon
+		[405189]	= List(nil, false), -- Overflowing Power | Berserk
 		-- Rogue Poisons
 		[2823]		= List(nil, false), -- Deadly Poison
 		[315584]	= List(nil, false), -- Instant Poison
@@ -14,6 +44,7 @@ G.unitframe.aurafilters.Blacklist = {
 		[381637]	= List(nil, false), -- Atrophic Poison
 		[381664]	= List(nil, false), -- Amplifying Poison
 		[8679]		= List(nil, false), -- Wound Poison
+		[5761]		= List(nil, false), -- Numbing Poison
 		-- Shaman Imbuements
 		[319773]	= List(nil, false), -- Windfury Weapon
 		[319778]	= List(nil, false), -- Flametongue Weapon
@@ -43,13 +74,17 @@ G.unitframe.aurafilters.Blacklist = {
 		[80354]		= List(), -- Temporal Displacement | Time Warp
 		[95809]		= List(), -- Insanity | Ancient Hysteria
 		-- Social
+		[1313593]	= List(), -- Deserter
 		[26013]		= List(), -- Deserter | Battlegrounds
 		[71041]		= List(), -- Dungeon Deserter | Dungeon Finder or Raid Finder
-		-- General (Never-Secret) Auras
+		-- General Auras
 		[308312]	= List(), -- Time Trial Practice
 		[369968]	= List(), -- Racing
-		-- Dungeon (Never-Secret) Auras
+		[388367]	= List(), -- Ohn'ahra's Gusts
+		[1283888]	= List(nil, false), -- [DNT] Aura Never Secret Test Spell
+		-- Dungeon Auras
 		[1254550]	= List(), -- Arcane Empowerment
+		[206151]	= List(), -- Challenger's Burden
 	}
 }
 
