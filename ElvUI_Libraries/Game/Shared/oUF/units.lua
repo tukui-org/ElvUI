@@ -138,7 +138,7 @@ local function updateArenaPreparation(self, event)
 			self:PreUpdate(event)
 		end
 
-		local id = tonumber(self.id)
+		local id = tonumber(self.__id)
 		if(not self:IsEnabled() and GetNumArenaOpponentSpecs() < id) then
 			-- hide the object if the opponent leaves
 			self:Hide()
