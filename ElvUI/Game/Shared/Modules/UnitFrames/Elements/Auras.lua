@@ -287,6 +287,7 @@ function UF:GroupFilters(frame, list)
 
 	wipe(frame.filters) -- start over
 
+	local auras, allow, block = E.global.unitframe.aurafilters
 	for index = 1, E.filterMax do
 		local name = 'group'..index
 		local data = list[name]
@@ -294,12 +295,14 @@ function UF:GroupFilters(frame, list)
 			local info = frame.filters[name]
 			if not info then info = {} end
 
-			info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
-			info.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
-			info.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
+			if data.useAllowlist and not allow then allow = E:Auras_GetFilter(auras, 'Whitelist') end -- might as well
+			if data.useBlocklist and not block then block = E:Auras_GetFilter(auras, 'Blacklist') end -- save some loops
 
-			-- setup candidates
-			local candidates = {}
+			info.allowList = data.useAllowlist and ((data.allowList == 'Whitelist' and allow) or E:Auras_GetFilter(auras, data.allowList)) or nil
+			info.blockList = data.useBlocklist and ((data.blockList == 'Blacklist' and block) or E:Auras_GetFilter(auras, data.blockList)) or nil
+			info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
+
+			local candidates = {} -- setup candidates
 			candidates.includeSpellIDs = info.allowList
 			candidates.excludeSpellIDs = info.blockList
 			candidates.maxDuration = info.maxDuration
@@ -313,7 +316,6 @@ function UF:GroupFilters(frame, list)
 				end
 			end
 
-			-- link them
 			info.candidateFilters = next(candidates) and candidates or nil
 			info.filter = data.filter
 
