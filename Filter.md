@@ -267,3 +267,12 @@ Adds `{isBossAura = true}`
 `Boss or Role`  
 The "either-or" between `Role` and `Boss`  
 Adds `{isBossOrRoleAura= true}`  
+
+## Filter process description
+___
+All filter strings are combined with a `|`  
+The very first string of each input box should always be `HARMFUL` (For Debuffs) or `HELPFUL` (For Buffs)  
+Piping multiple strings together should be imagined as a "AND" statement  
+If you randomly pipe together strings without a logic you won't see any auras at all  
+Example of a bad string: `HELPFUL|IMPORTANT|CROWD_CONTROL|BIG_DEFENSIVE`  
+That means to show something the aura has to be a buff which is important, a cc and big defensive at the same time  
