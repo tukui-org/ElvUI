@@ -2979,6 +2979,21 @@ P.unitframe.units.raid1.targetsGroup = nil
 P.unitframe.units.raid1.visibility = E.Retail and '[@raid6,noexists][@raid21,exists] hide;show' or '[@raid6,noexists][@raid11,exists] hide;show'
 P.unitframe.units.raid1.width = 80
 
+P.unitframe.units.raid1.buffs.filterCount = 3
+P.unitframe.units.raid1.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE'
+P.unitframe.units.raid1.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+P.unitframe.units.raid1.buffs.filterLists.group3.filter = 'HELPFUL'
+P.unitframe.units.raid1.buffs.filterLists.group3.useAllowlist = true
+
+P.unitframe.units.raid1.debuffs.filterCount = 5
+P.unitframe.units.raid1.debuffs.filterLists.group1.filter = 'HARMFUL|IMPORTANT'
+P.unitframe.units.raid1.debuffs.filterLists.group2.filter = 'HARMFUL|RAID_PLAYER_DISPELLABLE'
+P.unitframe.units.raid1.debuffs.filterLists.group3.filter = 'HARMFUL|CROWD_CONTROL'
+P.unitframe.units.raid1.debuffs.filterLists.group4.filter = 'HARMFUL|RAID'
+P.unitframe.units.raid1.debuffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.raid1.debuffs.filterLists.group5.filter = 'HARMFUL'
+P.unitframe.units.raid1.debuffs.filterLists.group5.candidates.isPriorityAura = true
+
 P.unitframe.units.raid2 = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raid2.debuffs.anchorPoint = 'RIGHT'
 P.unitframe.units.raid2.height = 27
