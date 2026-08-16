@@ -2571,6 +2571,21 @@ P.unitframe.units.player.castbar.latency = true
 P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,NonPersonal'
 
+P.unitframe.units.player.buffs.filterCount = 2
+P.unitframe.units.player.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|PLAYER'
+P.unitframe.units.player.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+
+P.unitframe.units.player.debuffs.filterCount = 5
+P.unitframe.units.player.debuffs.filterLists.group1.filter = 'HARMFUL|IMPORTANT'
+P.unitframe.units.player.debuffs.filterLists.group2.filter = 'HARMFUL|RAID_PLAYER_DISPELLABLE'
+P.unitframe.units.player.debuffs.filterLists.group2.useBlocklist = true
+P.unitframe.units.player.debuffs.filterLists.group3.filter = 'HARMFUL|CROWD_CONTROL'
+P.unitframe.units.player.debuffs.filterLists.group4.filter = 'HARMFUL|RAID'
+P.unitframe.units.player.debuffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.player.debuffs.filterLists.group5.filter = 'HARMFUL'
+P.unitframe.units.player.debuffs.filterLists.group5.candidates.isPriorityAura = true
+P.unitframe.units.player.debuffs.filterLists.group5.useBlocklist = true
+
 P.unitframe.units.player.fader.casting = true
 P.unitframe.units.player.fader.combat = true
 P.unitframe.units.player.fader.enable = false
@@ -2702,6 +2717,21 @@ P.unitframe.units.pet.healPrediction.enable = true
 P.unitframe.units.pet.health.colorHappiness = true
 P.unitframe.units.pet.infoPanel.height = 12
 P.unitframe.units.pet.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
+
+P.unitframe.units.pet.buffs.filterCount = 2
+P.unitframe.units.pet.buffs.filterLists.group1.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+P.unitframe.units.pet.buffs.filterLists.group2.filter = 'HELPFUL|RAID'
+P.unitframe.units.pet.buffs.filterLists.group2.useBlocklist = true
+
+P.unitframe.units.pet.debuffs.filterCount = 5
+P.unitframe.units.pet.debuffs.filterLists.group1.filter = 'HARMFUL|IMPORTANT'
+P.unitframe.units.pet.debuffs.filterLists.group2.filter = 'HARMFUL|RAID_PLAYER_DISPELLABLE'
+P.unitframe.units.pet.debuffs.filterLists.group3.filter = 'HARMFUL|CROWD_CONTROL'
+P.unitframe.units.pet.debuffs.filterLists.group4.filter = 'HARMFUL|RAID'
+P.unitframe.units.pet.debuffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.pet.debuffs.filterLists.group5.filter = 'HARMFUL'
+P.unitframe.units.pet.debuffs.filterLists.group5.candidates.isPriorityAura = true
+P.unitframe.units.pet.debuffs.filterLists.group5.useBlocklist = true
 
 P.unitframe.units.pettarget = CopyTable(P.unitframe.units.pet)
 P.unitframe.units.pettarget.aurabar = nil
