@@ -3043,6 +3043,35 @@ P.unitframe.units.tank.targetsGroup.name.xOffset = 0
 
 P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
 
+P.unitframe.units.tank.buffs.filterCount = 6 -- keep these under the copy
+P.unitframe.units.tank.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.tank.buffs.filterLists.group1.candidates.isBossOrRoleAura = true
+P.unitframe.units.tank.buffs.filterLists.group2.filter = 'HELPFUL'
+P.unitframe.units.tank.buffs.filterLists.group2.candidates.isStealable = true
+P.unitframe.units.tank.buffs.filterLists.group2.useBlocklist = true
+P.unitframe.units.tank.buffs.filterLists.group3.filter = 'HELPFUL|IMPORTANT'
+P.unitframe.units.tank.buffs.filterLists.group4.filter = 'HELPFUL|RAID'
+P.unitframe.units.tank.buffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.tank.buffs.filterLists.group5.filter = 'HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE'
+P.unitframe.units.tank.buffs.filterLists.group6.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+
+P.unitframe.units.tank.debuffs.filterCount = 5
+P.unitframe.units.tank.debuffs.filterLists.group1.filter = 'HARMFUL|IMPORTANT'
+P.unitframe.units.tank.debuffs.filterLists.group2.filter = 'HARMFUL|RAID_PLAYER_DISPELLABLE'
+P.unitframe.units.tank.debuffs.filterLists.group3.filter = 'HARMFUL|CROWD_CONTROL'
+P.unitframe.units.tank.debuffs.filterLists.group4.filter = 'HARMFUL|RAID'
+P.unitframe.units.tank.debuffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.tank.debuffs.filterLists.group5.filter = 'HARMFUL'
+P.unitframe.units.tank.debuffs.filterLists.group5.candidates.isPriorityAura = true
+
+P.unitframe.units.assist.buffs.filterCount = 0
+P.unitframe.units.assist.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.assist.buffs.filterLists.group1.useBlocklist = true
+
+P.unitframe.units.assist.debuffs.filterCount = 0
+P.unitframe.units.assist.debuffs.filterLists.group1.filter = 'HARMFUL'
+P.unitframe.units.assist.debuffs.filterLists.group1.useBlocklist = true
+
 for i, classTag in next, { 'DRUID', 'HUNTER', 'MAGE', 'PALADIN', 'PRIEST', 'ROGUE', 'SHAMAN', 'WARLOCK', 'WARRIOR', 'DEATHKNIGHT', 'MONK', 'DEMONHUNTER', 'EVOKER' } do
 	P.unitframe.units.party['CLASS'..i] = classTag
 	for k = 1, 3 do
