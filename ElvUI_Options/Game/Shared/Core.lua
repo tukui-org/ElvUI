@@ -966,14 +966,18 @@ do -- shared filters
 	function C:ResetFilters_AuraGroup(db, default)
 		for name, data in next, db do
 			for key in next, E.AuraDefaults do
-				if key == 'candidates' then
-					for candidate in next, E.AuraCandidates do
-						data[key][candidate] = default[name][key][candidate]
-					end
-				else
+				local info = default[name]
+				if info then
+					data[key] = info[key]
+				end
+			end
+
+			local candidates = data.candidates
+			if candidates then
+				for candidate in next, E.AuraCandidates do
 					local info = default[name]
-					if info then
-						data[key] = info[key]
+					if info and info.candidates then
+						candidates[candidate] = info.candidates[candidate]
 					end
 				end
 			end
