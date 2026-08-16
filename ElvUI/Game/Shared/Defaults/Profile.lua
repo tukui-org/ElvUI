@@ -649,8 +649,8 @@ local NP_Auras = {
 	sourceText = CopyTable(NP_AuraSourceText),
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
-	filterCount = 2,
-	filterLists = CopyTable(defaultFilterList)
+	filterLists = CopyTable(defaultFilterList),
+	filterCount = 0
 }
 
 local NP_Health = {
@@ -1569,8 +1569,8 @@ local UF_Auras = {
 	sourceText = CopyTable(NP_AuraSourceText),
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
-	filterCount = 2,
-	filterLists = CopyTable(defaultFilterList)
+	filterLists = CopyTable(defaultFilterList),
+	filterCount = 0
 }
 
 local UF_DebuffHighlight = {
@@ -1608,8 +1608,8 @@ local UF_AuraBars = {
 	countYOffset = 2,
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
-	filterCount = 2,
-	filterLists = CopyTable(defaultFilterList)
+	filterLists = CopyTable(defaultFilterList),
+	filterCount = 0
 }
 
 local UF_AuraWatch = {
