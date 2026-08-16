@@ -266,7 +266,7 @@ Adds `{isBossAura = true}`
 
 `Boss or Role`  
 The "either-or" between `Role` and `Boss`  
-Adds `{isBossOrRoleAura= true}`  
+Adds `{isBossOrRoleAura = true}`  
 
 ## Filter process description
 ___
@@ -284,7 +284,7 @@ For example `HELPFUL` + enabled checkbox for `Use: Allow` will display all Buffs
 And `HARMFUL` + enabled checkbox for `Use: Block` will display all Debuffs except the IDs in "Blacklist"  
 
 The following Blizzard restrictions apply at all times:  
-Whitelisting is limited to < You can only whitelist/track Buffs on friendly units via ID >  
-Blacklisting is limited to < You can only blacklist/block Debuffs on enemy units via ID >  
+Whitelisting is limited to "You can only whitelist/track Buffs on friendly units via ID"  
+Blacklisting is limited to "You can only blacklist/block Debuffs on enemy units via ID"  
 You can NOT whitelist Debuffs on friendly units  
 You can NOT blacklist Buffs on enemy units  
