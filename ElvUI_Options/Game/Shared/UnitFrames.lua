@@ -141,7 +141,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
-		config.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName].aurabar.filterCount end, function(info) return E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end)
+		config.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName].aurabar.filterCount end, function(info) return E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end, function(info) return E.db.unitframe.units[groupName].aurabar.filterLists[name].candidates[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.filterLists[name].candidates[info[#info]] = value updateFunc(UF, groupName) end)
 	end
 
 	config.args.legacyGroup = ACH:Group(L["Filters"], nil, 60, nil, nil, nil, nil, E.Retail)
@@ -263,7 +263,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
-		config.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName][auraType].filterCount end, function(info) return E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+		config.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName][auraType].filterCount end, function(info) return E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].filterLists[name][info[#info]] = value updateFunc(UF, groupName, numUnits) end, function(info) return E.db.unitframe.units[groupName][auraType].filterLists[name].candidates[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].filterLists[name].candidates[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	end
 
 	config.args.legacyGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, E.Retail)

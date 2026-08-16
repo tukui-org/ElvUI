@@ -984,8 +984,8 @@ do -- shared filters
 		end
 	end
 
-	function C:GetOptionsTable_AuraGroup(index, disable, get, set)
-		local group = ACH:Group(names[index], nil, index, nil, get, set, function() return index > disable() end, not E.Retail)
+	function C:GetOptionsTable_AuraGroup(index, disable, mainGet, mainSet, candidateGet, candidateSet)
+		local group = ACH:Group(names[index], nil, index, nil, mainGet, mainSet, function() return index > disable() end, not E.Retail)
 
 		group.args.filter = ACH:Input(L["Big Boy String"], nil, 1, nil, 'full')
 
@@ -995,9 +995,9 @@ do -- shared filters
 		group.args.lists.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 3, { min = 0, max = 10800, step = 1 })
 		group.args.lists.inline = true
 
-		group.args.candidates = ACH:Group(' ', nil, 20)
-		group.args.candidates.args.useAllowlist = ACH:Toggle(L["Use: Allow"], L["Activate the allowlist filter."], 1)
-		group.args.candidates.args.useBlocklist = ACH:Toggle(L["Use: Block"], L["Activate the blocklist filter."], 2)
+		group.args.candidates = ACH:Group(' ', nil, 20, nil, candidateGet, candidateSet)
+		group.args.candidates.args.useAllowlist = ACH:Toggle(L["Use: Allow"], L["Activate the allowlist filter."], 1, nil, nil, nil, mainGet, mainSet)
+		group.args.candidates.args.useBlocklist = ACH:Toggle(L["Use: Block"], L["Activate the blocklist filter."], 2, nil, nil, nil, mainGet, mainSet)
 		group.args.candidates.args.isStealable = ACH:Toggle(L["Stealable"], L["Stealable"], 3)
 		group.args.candidates.args.nameplateShowAll = ACH:Toggle(L["NP: All"], L["Nameplate: Show all"], 4)
 		group.args.candidates.args.nameplateShowPersonal = ACH:Toggle(L["NP: Personal"], L["Nameplate: Personal"], 5)
