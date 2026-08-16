@@ -28,6 +28,7 @@ local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
+local IsValidFilterString = AuraUtil and AuraUtil.IsValidFilterString
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local NUM_CLASSES = #CLASS_SORT_ORDER
@@ -963,10 +964,14 @@ do -- shared filters
 	local filters = {}
 	local names = { 'Simpy', 'Just', 'Makes', 'Better', 'Filters' }
 
+	function C:VerifyFilter(value)
+		return IsValidFilterString(value)
+	end
+
 	function C:GetOptionsTable_AuraGroup(index, disable, mainGet, mainSet, candidateGet, candidateSet)
 		local group = ACH:Group(names[index], nil, index, nil, mainGet, mainSet, function() return index > disable() end, not E.Retail)
 
-		group.args.filter = ACH:Input(L["Big Boy String"], nil, 1, nil, 'full')
+		group.args.filter = ACH:Input(L["Big Boy String"], nil, 1, nil, 'full', nil, nil, nil, nil, C.VerifyFilter)
 
 		group.args.lists = ACH:Group(' ', nil, 10)
 		group.args.lists.args.allowList = ACH:Select(L["Allow List"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)

@@ -664,10 +664,7 @@ function E:Auras_AddGroup(container, key, filter, candidate, layout, maxCount, s
 end
 
 function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount, sortMethod, sortDirection)
-	if candidate then
-		container:SetAuraGroupCandidateFilters(key, candidate)
-	end
-
+	container:SetAuraGroupCandidateFilters(key, candidate)
 	container:SetAuraGroupFilterString(key, filter)
 	container:SetAuraGroupMaxFrameCount(key, maxCount)
 	container:SetAuraGroupSortMethod(key, sortMethod, sortDirection)
