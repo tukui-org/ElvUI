@@ -266,8 +266,13 @@ function NP:Update_Auras(nameplate)
 
 		if E.Retail then
 			nameplate.Auras_:SetEnabled(db.auras.enable)
+			nameplate.Auras_:SetShown(db.auras.enable)
+
 			nameplate.Debuffs_:SetEnabled(db.debuffs.enable)
+			nameplate.Debuffs_:SetShown(db.debuffs.enable)
+
 			nameplate.Buffs_:SetEnabled(db.buffs.enable)
+			nameplate.Buffs_:SetShown(db.buffs.enable)
 		end
 
 		if db.auras.enable then
