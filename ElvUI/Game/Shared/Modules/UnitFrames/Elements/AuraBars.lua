@@ -70,8 +70,6 @@ function UF:AuraBars_UpdateBar(bar)
 	bar.spark:Point('BOTTOM')
 	bar.spark:Point('TOP')
 
-	UF:UpdateFilters(bar)
-
 	UF:Update_FontString(bar.nameText)
 end
 
@@ -108,8 +106,7 @@ function UF:AuraBars_UpdateFilter(bars, unit)
 	bars.filter = UF:AuraBars_GetFilter(bars, unit)
 	bars.barColor = (bars.filter == 'HARMFUL' and UF.db.colors.auraBarDebuff) or UF.db.colors.auraBarBuff
 
-	UF:UpdateFilters(bars) -- attach the objects
-	UF:GroupFilters(bars, bars.filter) -- build the groups
+	UF:GroupFilters(bars, bars.filterLists) -- build the groups
 end
 
 function UF:Configure_AuraBars(frame)
@@ -136,7 +133,6 @@ function UF:Configure_AuraBars(frame)
 		bars.friendlyAuraType = db.friendlyAuraType
 		bars.enemyAuraType = db.enemyAuraType
 		bars.disableMouse = db.clickThrough
-		bars.filterList = UF:ConvertFilters(bars, db.priority)
 		bars.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
 		bars.tooltipAnchor = db.tooltipAnchorType
 		bars.tooltipAnchorX = db.tooltipAnchorX
@@ -226,16 +222,13 @@ function UF:Configure_AuraBars(frame)
 			bars.maxFrameCount = db.maxBars
 			bars.isTransparent = UF.db.colors.transparentAurabars -- always on for now
 			bars.invertAurabars = UF.db.colors.invertAurabars
-			bars.maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 			bars.countPosition, bars.countXOffset, bars.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 			bars.forceShowAuras = frame.forceShowAuras
 
-			bars.allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
-			bars.blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
-			bars.candidateFilters = E:Auras_CanidateFilters(bars.allowList, bars.blockList, bars.maxDuration)
+			bars.filterLists = db.filterLists
 
 			UF:AuraBars_UpdateFilter(bars, frame.unit)
 
@@ -244,6 +237,8 @@ function UF:Configure_AuraBars(frame)
 			E:Auras_SetLineSize(bars)
 
 			bars:SetEnabled(true)
+		else
+			bars.filterList = UF:ConvertFilters(bars, db.priority)
 		end
 	else
 		if frame:IsElementEnabled('AuraBars') then

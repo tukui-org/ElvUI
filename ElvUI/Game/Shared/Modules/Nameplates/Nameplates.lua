@@ -64,14 +64,17 @@ function NP:ResetAuraPriority()
 				debuffs.filters.priority = default.debuffs.filters.priority
 			end
 
-			for key in next, E.AuraDefaults do
-				if buffs then
-					buffs[key] = default.buffs[key]
-				end
+			local auras = content.auras
+			if auras then
+				UF:ResetFilters_AuraGroup(auras.filterLists, default.auras.filterLists)
+			end
 
-				if debuffs then
-					debuffs[key] = default.debuffs[key]
-				end
+			if buffs then
+				UF:ResetFilters_AuraGroup(buffs.filterLists, default.buffs.filterLists)
+			end
+
+			if debuffs then
+				UF:ResetFilters_AuraGroup(debuffs.filterLists, default.debuffs.filterLists)
 			end
 		end
 	end

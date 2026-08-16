@@ -28,6 +28,7 @@ local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
+local IsValidFilterString = AuraUtil and AuraUtil.IsValidFilterString
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local NUM_CLASSES = #CLASS_SORT_ORDER
@@ -957,6 +958,43 @@ do -- Module Copy
 	E.Options.args.profiles.args.modulereset.args.nameplates = ACH:Execute(L["Nameplates"], nil, 11, nil, nil, L["Are you sure you want to reset NamePlates settings?"])
 	E.Options.args.profiles.args.modulereset.args.tooltip = ACH:Execute(L["Tooltip"], nil, 12, nil, nil, L["Are you sure you want to reset Tooltip settings?"])
 	E.Options.args.profiles.args.modulereset.args.uniframes = ACH:Execute(L["UnitFrames"], nil, 13, function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end, nil, L["Are you sure you want to reset UnitFrames settings?"])
+end
+
+do -- shared filters
+	local filters = {}
+	function C:VerifyFilter(value)
+		return IsValidFilterString(value)
+	end
+
+	function C:GetOptionsTable_AuraGroup(index, enable, mainGet, mainSet, candidateGet, candidateSet)
+		local group = ACH:Group(function() return format('|cFF%s%s|r', enable() and '33ff33' or 'ff3333', C.Values.Roman[index]) end, nil, index, nil, mainGet, mainSet, nil, not E.Retail)
+
+		group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+		group.args.filter = ACH:Input(L["Big Boy String"], nil, 2, nil, 'full', nil, nil, nil, nil, C.VerifyFilter)
+
+		group.args.lists = ACH:Group(' ', nil, 10)
+		group.args.lists.args.allowList = ACH:Select(L["Allow List"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
+		group.args.lists.args.blockList = ACH:Select(L["Block List"], nil, 2, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
+		group.args.lists.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 3, { min = 0, max = 10800, step = 1 })
+		group.args.lists.inline = true
+
+		group.args.candidates = ACH:Group(' ', nil, 20, nil, candidateGet, candidateSet)
+		group.args.candidates.args.useAllowlist = ACH:Toggle(L["Use: Allow"], L["Activate the allowlist filter."], 1, nil, nil, nil, mainGet, mainSet)
+		group.args.candidates.args.useBlocklist = ACH:Toggle(L["Use: Block"], L["Activate the blocklist filter."], 2, nil, nil, nil, mainGet, mainSet)
+		group.args.candidates.args.isStealable = ACH:Toggle(L["Stealable"], L["Stealable"], 3, true)
+		group.args.candidates.args.nameplateShowAll = ACH:Toggle(L["NP: All"], L["Nameplate: Show all"], 4, true)
+		group.args.candidates.args.nameplateShowPersonal = ACH:Toggle(L["NP: Personal"], L["Nameplate: Personal"], 5, true)
+		group.args.candidates.args.isFromPlayerOrPlayerPet = ACH:Toggle(L["Player or Pet"], L["From unit: player or pet"], 6, true)
+		group.args.candidates.args.isRoleAura = ACH:Toggle(L["Role"], L["Role aura - tank/heal/dps?"], 7, true)
+		group.args.candidates.args.isPriorityAura = ACH:Toggle(L["Priority"], L["Priority aura"], 8, true)
+		group.args.candidates.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["Can apply aura"], 9, true)
+		group.args.candidates.args.isBossAura = ACH:Toggle(L["Boss"], L["Boss aura - important stuff, was used on last boss this season"], 10, true)
+		group.args.candidates.args.isBossOrRoleAura = ACH:Toggle(L["Boss or Role"], L["the either-or between isRoleAura and isBossAura"], 11, true)
+		group.args.candidates.inline = true
+
+		return group
+	end
+
 end
 
 do -- shared cooldown

@@ -571,8 +571,6 @@ function A:UpdateHeader(header)
 		header.lineSpacing = db.verticalSpacing
 		header.keepSizeRatio = db.keepSizeRatio
 		header.growthDirection = db.growthDirection
-		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
-		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 		header.useStatusbar = db.barShow
 		header.barColor = db.barColor
 		header.numAuras = db.wrapAfter
@@ -583,8 +581,11 @@ function A:UpdateHeader(header)
 		header.countFont, header.countFontSize, header.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 		header.colorByType = header.filter == 'HARMFUL' and A.db.colorDebuffs
 		header.colorEnchants = A.db.colorEnchants
-		header.filters[header.auraType] = header.filter
 		header.isTopAura = true
+
+		local group = header.filterLists.group1
+		group.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
+		group.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 
 		header.useWidth = IS_HORIZONTAL_GROWTH[db.growthDirection]
 		if header.useWidth then
@@ -746,9 +747,11 @@ function A:Initialize()
 	if E.private.auras.buffsHeader then
 		if E.Retail then
 			local buff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
+			buff.filterLists = { group1 = { filter = 'HELPFUL' } }
+			buff.filters = { group1 = buff.filterLists.group1 }
 			buff.auraType = 'buffs'
-			buff.filter = 'HELPFUL'
 			buff.unit = 'player'
+
 			A.BuffFrame = buff
 
 			A:UpdateHeader(A.BuffFrame)
@@ -768,9 +771,11 @@ function A:Initialize()
 	if E.private.auras.debuffsHeader then
 		if E.Retail then
 			local debuff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
+			debuff.filterLists = { group1 = { filter = 'HARMFUL' } }
+			debuff.filters = { group1 = debuff.filterLists.group1 }
 			debuff.auraType = 'debuffs'
-			debuff.filter = 'HARMFUL'
 			debuff.unit = 'player'
+
 			A.DebuffFrame = debuff
 
 			A:UpdateHeader(A.DebuffFrame)

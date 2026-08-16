@@ -272,6 +272,27 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+function UF:ResetFilters_AuraGroup(db, default)
+	for name, data in next, db do
+		for key in next, E.AuraDefaults do
+			local info = default[name]
+			if info then
+				data[key] = info[key]
+			end
+		end
+
+		local candidates = data.candidates
+		if candidates then
+			for candidate in next, E.AuraCandidates do
+				local info = default[name]
+				if info and info.candidates then
+					candidates[candidate] = info.candidates[candidate]
+				end
+			end
+		end
+	end
+end
+
 function UF:ResetAuraPriority()
 	for unitName, content in pairs(E.db.unitframe.units) do
 		local default = P.unitframe.units[unitName]
@@ -291,18 +312,21 @@ function UF:ResetAuraPriority()
 				aurabar.priority = default.aurabar.priority
 			end
 
-			for key in next, E.AuraDefaults do
-				if buffs then
-					buffs[key] = default.buffs[key]
-				end
+			local auras = content.auras
+			if auras then
+				UF:ResetFilters_AuraGroup(auras.filterLists, default.auras.filterLists)
+			end
 
-				if debuffs then
-					debuffs[key] = default.debuffs[key]
-				end
+			if buffs then
+				UF:ResetFilters_AuraGroup(buffs.filterLists, default.buffs.filterLists)
+			end
 
-				if aurabar then
-					aurabar[key] = default.aurabar[key]
-				end
+			if debuffs then
+				UF:ResetFilters_AuraGroup(debuffs.filterLists, default.debuffs.filterLists)
+			end
+
+			if aurabar then
+				UF:ResetFilters_AuraGroup(aurabar.filterLists, default.aurabar.filterLists)
 			end
 		end
 	end

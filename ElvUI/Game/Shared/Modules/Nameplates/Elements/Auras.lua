@@ -140,18 +140,6 @@ function NP:Configure_AuraUpdate(nameplate)
 	E:Auras_UpdateButtons(nameplate.Debuffs_)
 end
 
-function NP:Configure_AuraContainer(data, db)
-	UF:UpdateFilters(data, db) -- attach the objects
-	UF:GroupFilters(data, data.filter) -- build the groups
-
-	local maxDuration = (db.maxDuration and db.maxDuration > 0) and db.maxDuration or nil
-	local allowList = db.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.allowList or 'Whitelist') or nil
-	local blockList = db.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, db.blockList or 'Blacklist') or nil
-	local candidateFilters = E:Auras_CanidateFilters(allowList, blockList, maxDuration)
-
-	return allowList, blockList, candidateFilters, maxDuration
-end
-
 function NP:Configure_AuraFilters(nameplate, which)
 	local frameType = nameplate.frameType
 	if not frameType then return end
@@ -160,7 +148,7 @@ function NP:Configure_AuraFilters(nameplate, which)
 	local info = obj and obj[which]
 	if not info then return end
 
-	return info.filter, info.filters, info.allowList, info.blockList, info.candidateFilters, info.maxDuration
+	return info.filters
 end
 
 do
@@ -178,8 +166,9 @@ do
 				local auraType = strlower(which)
 				local db = plateDB[auraType]
 				if db then
-					info.filter = NP:GetAuraFilter(which, db) -- keep before Configure_AuraContainer
-					info.allowList, info.blockList, info.candidateFilters, info.maxDuration = NP:Configure_AuraContainer(info, db)
+					info.filterLists = db.filterLists
+
+					UF:GroupFilters(info, info.filterLists)
 				end
 			end
 		end
@@ -213,7 +202,6 @@ function NP:Configure_Auras(nameplate, which)
 	auras.anchorPoint = db.anchorPoint
 	auras.colorByType = NP.db.colors.auraByType
 	auras.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
-	auras.filterList = UF:ConvertFilters(auras, db.priority)
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
 	auras.attachTo = UF:GetAuraAnchorFrame(nameplate, db.attachTo) -- keep below SetSmartPosition
 	auras.num = db.numAuras * db.numRows
@@ -235,11 +223,12 @@ function NP:Configure_Auras(nameplate, which)
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 		auras.forceShowAuras = nameplate == NP.TestFrame
 
-		auras.filter, auras.filters, auras.allowList, auras.blockList, auras.candidateFilters, auras.maxDuration = NP:Configure_AuraFilters(nameplate, which)
+		auras.filters = NP:Configure_AuraFilters(nameplate, which)
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
 	else
+		auras.filterList = UF:ConvertFilters(auras, db.priority)
 		auras.initialAnchor = initialAnchor
 
 		local index = 1
@@ -276,8 +265,13 @@ function NP:Update_Auras(nameplate)
 
 		if E.Retail then
 			nameplate.Auras_:SetEnabled(db.auras.enable)
+			nameplate.Auras_:SetShown(db.auras.enable)
+
 			nameplate.Debuffs_:SetEnabled(db.debuffs.enable)
+			nameplate.Debuffs_:SetShown(db.debuffs.enable)
+
 			nameplate.Buffs_:SetEnabled(db.buffs.enable)
+			nameplate.Buffs_:SetShown(db.buffs.enable)
 		end
 
 		if db.auras.enable then
@@ -332,6 +326,4 @@ function NP:UpdateAuraSettings(button)
 	end
 
 	button.needsButtonTrim = true
-
-	UF:UpdateFilters(button)
 end

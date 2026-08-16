@@ -573,17 +573,6 @@ end
 
 do
 	local temp = {}
-	function E:Auras_CanidateFilters(allow, block, maxDuration)
-		temp.includeSpellIDs = allow
-		temp.excludeSpellIDs = block
-		temp.maxDuration = maxDuration
-
-		return temp
-	end
-end
-
-do
-	local temp = {}
 	local spell = {}
 	function E:Auras_FilterIndicator(data)
 		temp.includeSpellIDs = spell
@@ -675,10 +664,7 @@ function E:Auras_AddGroup(container, key, filter, candidate, layout, maxCount, s
 end
 
 function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount, sortMethod, sortDirection)
-	if candidate then
-		container:SetAuraGroupCandidateFilters(key, candidate)
-	end
-
+	container:SetAuraGroupCandidateFilters(key, candidate)
 	container:SetAuraGroupFilterString(key, filter)
 	container:SetAuraGroupMaxFrameCount(key, maxCount)
 	container:SetAuraGroupSortMethod(key, sortMethod, sortDirection)
@@ -904,8 +890,6 @@ function E:Auras_SetContainer(container)
 	end
 
 	local maxCount = container.maxFrameCount or 40
-	local sortMethod = container.sortMethod or SORTMETHOD.Default
-	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 	local layout = E:Auras_UpdateLayout(container)
 
 	E:Auras_SetFlowLayout(container)
@@ -919,15 +903,20 @@ function E:Auras_SetContainer(container)
 	end
 
 	local count = E:Auras_IsForced(container) and 0 or maxCount
-	for key, filter in next, container.filters do
-		container.active[key] = filter -- set all active
+	for key, info in next, container.filters do
+		if info.filter then
+			container.active[key] = info.filter -- set all active
 
-		if container.known[key] then
-			E:Auras_UpdateGroup(container, key, filter, container.candidateFilters, layout, count, sortMethod, sortDirection)
-		else
-			E:Auras_AddGroup(container, key, filter, container.candidateFilters, layout, count, sortMethod, sortDirection)
+			local sortMethod = info.sortMethod or SORTMETHOD.Default
+			local sortDirection = info.sortDirection or SORTDIRECTION.Normal
 
-			container.known[key] = filter
+			if container.known[key] then
+				E:Auras_UpdateGroup(container, key, info.filter, info.candidateFilters, layout, count, sortMethod, sortDirection)
+			else
+				E:Auras_AddGroup(container, key, info.filter, info.candidateFilters, layout, count, sortMethod, sortDirection)
+
+				container.known[key] = info.filter
+			end
 		end
 	end
 
