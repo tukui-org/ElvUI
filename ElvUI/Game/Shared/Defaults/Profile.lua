@@ -2699,6 +2699,28 @@ P.unitframe.units.focus.healPrediction.enable = true
 P.unitframe.units.focus.infoPanel.height = 14
 P.unitframe.units.focus.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
 
+P.unitframe.units.focus.buffs.filterCount = 6
+P.unitframe.units.focus.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.focus.buffs.filterLists.group1.candidates.isBossOrRoleAura = true
+P.unitframe.units.focus.buffs.filterLists.group2.filter = 'HELPFUL'
+P.unitframe.units.focus.buffs.filterLists.group2.candidates.isStealable = true
+P.unitframe.units.focus.buffs.filterLists.group2.useBlocklist = true
+P.unitframe.units.focus.buffs.filterLists.group3.filter = 'HELPFUL|IMPORTANT'
+P.unitframe.units.focus.buffs.filterLists.group4.filter = 'HELPFUL|RAID'
+P.unitframe.units.focus.buffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.focus.buffs.filterLists.group5.filter = 'HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE'
+P.unitframe.units.focus.buffs.filterLists.group6.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+
+P.unitframe.units.focus.debuffs.filterCount = 5
+P.unitframe.units.focus.debuffs.filterLists.group1.filter = 'HARMFUL|IMPORTANT'
+P.unitframe.units.focus.debuffs.filterLists.group2.filter = 'HARMFUL|RAID_PLAYER_DISPELLABLE'
+P.unitframe.units.focus.debuffs.filterLists.group3.filter = 'HARMFUL|CROWD_CONTROL'
+P.unitframe.units.focus.debuffs.filterLists.group4.filter = 'HARMFUL|RAID'
+P.unitframe.units.focus.debuffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.focus.debuffs.filterLists.group5.filter = 'HARMFUL'
+P.unitframe.units.focus.debuffs.filterLists.group5.candidates.isPriorityAura = true
+P.unitframe.units.focus.debuffs.filterLists.group5.useBlocklist = true
+
 P.unitframe.units.focustarget = CopyTable(P.unitframe.units.focus)
 P.unitframe.units.focustarget.aurabar = nil
 P.unitframe.units.focustarget.buffIndicator = nil
