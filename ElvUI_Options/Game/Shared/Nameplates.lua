@@ -102,12 +102,11 @@ local function GetUnitAuras(unit, auraType)
 	group.args.cooldownGroup.args.enable, group.args.cooldownGroup.args.textGroup, group.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType])
 
 	group.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
-	group.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = E.filterMax, step = 1 })
 	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() UF:ResetFilters_AuraGroup(E.db.nameplates.units[unit][auraType].filterLists, P.nameplates.units[unit][auraType].filterLists) NP:ConfigureAll() end)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
-		group.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.nameplates.units[unit][auraType].filterCount end, function(info) return E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] = value NP:ConfigureAll() end, function(info) local value = E.db.nameplates.units[unit][auraType].filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name].candidates[info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end)
+		group.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.nameplates.units[unit][auraType].filterLists[name].enable end, function(info) return E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] = value NP:ConfigureAll() end, function(info) local value = E.db.nameplates.units[unit][auraType].filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name].candidates[info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end)
 	end
 
 	group.args.legacyGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, E.Retail)
