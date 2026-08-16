@@ -281,53 +281,43 @@ function UF:Construct_AuraIcon(button)
 	UF:UpdateAuraSettings(button)
 end
 
-do
-	local temp = {} -- silly little storage
-	function UF:GroupFilters(frame, list)
-		local group = frame.filters
-		if not group or not list then return end
+function UF:GroupFilters(frame, list)
+	local group = frame.filters
+	if not group or not list then return end
 
-		wipe(frame.filters) -- start over
+	wipe(frame.filters) -- start over
 
-		local obj = temp[frame]
-		if not obj then
-			obj = {}
+	for index = 1, frame.groupCount do
+		local name = 'group'..index
+		local data = list[name]
+		if data then
+			local info = frame.filters[name]
+			if not info then info = {} end
 
-			for i = 1, E.filterMax do
-				obj['group'..i] = {}
-			end
+			info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
+			info.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
+			info.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
 
-			temp[frame] = obj
-		end
+			-- setup candidates
+			local candidates = {}
+			candidates.includeSpellIDs = info.allowList
+			candidates.excludeSpellIDs = info.blockList
+			candidates.maxDuration = info.maxDuration
 
-		for index = 1, frame.groupCount do
-			local name = 'group'..index
-			local data = list[name]
-			if data then
-				local info = obj[name]
-
-				wipe(info)
-
-				info.maxDuration = (data.maxDuration and data.maxDuration > 0) and data.maxDuration or nil
-				info.allowList = data.useAllowlist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.allowList or 'Whitelist') or nil
-				info.blockList = data.useBlocklist and E:Auras_GetFilter(E.global.unitframe.aurafilters, data.blockList or 'Blacklist') or nil
-
-				-- setup candidates
-				local candidates = {}
-				candidates.includeSpellIDs = info.allowList
-				candidates.excludeSpellIDs = info.blockList
-				candidates.maxDuration = info.maxDuration
-
-				for candidate in next, E.AuraCandidates do
-					candidates[candidate] = data[candidate]
+			for candidate in next, E.AuraCandidates do
+				local value = data.candidates[candidate]
+				if value == 1 then -- grey is exclude
+					candidates[candidate] = false
+				else
+					candidates[candidate] = value or nil
 				end
-
-				-- link them
-				info.candidateFilters = candidates
-				info.filter = data.filter
-
-				frame.filters[name] = info
 			end
+
+			-- link them
+			info.candidateFilters = next(candidates) and candidates or nil
+			info.filter = data.filter
+
+			frame.filters[name] = info
 		end
 	end
 end

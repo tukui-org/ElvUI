@@ -107,7 +107,7 @@ local function GetUnitAuras(unit, auraType)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
-		group.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.nameplates.units[unit][auraType].filterCount end, function(info) return E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] = value NP:ConfigureAll() end, function(info) return E.db.nameplates.units[unit][auraType].filterLists[name].candidates[info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name].candidates[info[#info]] = value NP:ConfigureAll() end)
+		group.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.nameplates.units[unit][auraType].filterCount end, function(info) return E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name][info[#info]] = value NP:ConfigureAll() end, function(info) local value = E.db.nameplates.units[unit][auraType].filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.nameplates.units[unit][auraType].filterLists[name].candidates[info[#info]] = (value == nil and 1 or value) NP:ConfigureAll() end)
 	end
 
 	group.args.legacyGroup = ACH:Group(L["Filters"], nil, 50, nil, nil, nil, nil, E.Retail)
