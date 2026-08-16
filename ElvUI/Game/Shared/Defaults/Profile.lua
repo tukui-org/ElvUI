@@ -2931,6 +2931,21 @@ P.unitframe.units.party.targetsGroup.enable = false
 P.unitframe.units.party.targetsGroup.healPrediction = nil
 P.unitframe.units.party.targetsGroup.name.text_format = E.Retail and '[classcolor][name] [difficultycolor][smartlevel]' or '[classcolor][name:medium] [difficultycolor][smartlevel]'
 
+P.unitframe.units.party.buffs.filterCount = 3
+P.unitframe.units.party.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE'
+P.unitframe.units.party.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+P.unitframe.units.party.buffs.filterLists.group3.filter = 'HELPFUL'
+P.unitframe.units.party.buffs.filterLists.group3.useAllowlist = true
+
+P.unitframe.units.party.debuffs.filterCount = 5
+P.unitframe.units.party.debuffs.filterLists.group1.filter = 'HARMFUL|IMPORTANT'
+P.unitframe.units.party.debuffs.filterLists.group2.filter = 'HARMFUL|RAID_PLAYER_DISPELLABLE'
+P.unitframe.units.party.debuffs.filterLists.group3.filter = 'HARMFUL|CROWD_CONTROL'
+P.unitframe.units.party.debuffs.filterLists.group4.filter = 'HARMFUL|RAID'
+P.unitframe.units.party.debuffs.filterLists.group4.useBlocklist = true
+P.unitframe.units.party.debuffs.filterLists.group5.filter = 'HARMFUL'
+P.unitframe.units.party.debuffs.filterLists.group5.candidates.isPriorityAura = true
+
 P.unitframe.units.raid1 = CopyTable(P.unitframe.units.party)
 P.unitframe.units.raid1.buffIndicator.enable = true
 P.unitframe.units.raid1.buffs.numrows = 1
