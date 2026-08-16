@@ -48,7 +48,7 @@ end
 do
 	local filters = {
 		good = 'HELPFUL',
-		bad = 'HARMFUL|DISPELLABLE'
+		bad = 'HARMFUL|RAID'
 	}
 
 	function UF:AuraHighlight_SetupContainer(frame, container, which)
