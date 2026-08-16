@@ -81,10 +81,19 @@ UF.classMaxResourceBar = { -- also used by Nameplates
 }
 
 do
-	local info = { isPlayerResource = true }
-	UF.PingableInfo = info
-
+	local info = {}
 	function UF:Pingable_GetTargetInfo()
+		wipe(info)
+
+		local unit = self.unit
+		if E:IsSecretUnit(unit) then return info end
+
+		local guid = unit and UnitGUID(unit) or nil
+		if E:IsSecretValue(guid) or not guid then return info end
+
+		info.guid = guid
+		info.isPlayerResource = (self.unitframeType == 'player') or nil
+
 		return info
 	end
 end
@@ -2259,6 +2268,10 @@ function UF:AfterStyleCallback()
 		UF:Update_FontStrings()
 	end
 
+	if self.GetTargetInfo then -- this only replaces single units
+		self.GetTargetInfo = UF.Pingable_GetTargetInfo
+	end
+
 	if self.UpdateAllElements then
 		hooksecurefunc(self, 'UpdateAllElements', UF.UpdateAllElements)
 	end
@@ -2278,7 +2291,6 @@ function UF:Setup()
 end
 
 function UF:Initialize()
-	UF.PingableInfo.guid = E.myguid
 	UF.thinBorders = UF.db.thinBorders
 	UF.multiplier = UF.db.multiplier or 0.35
 	UF.multiplierPrediction = 1.25
