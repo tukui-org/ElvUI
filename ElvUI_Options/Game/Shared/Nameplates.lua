@@ -1,6 +1,7 @@
 local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local NP = E:GetModule('NamePlates')
+local UF = E:GetModule('UnitFrames')
 local ACD = E.Libs.AceConfigDialog
 local ACH = E.Libs.ACH
 
@@ -102,7 +103,7 @@ local function GetUnitAuras(unit, auraType)
 
 	group.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
 	group.args.midnightGroup.args.filterCount = ACH:Range(L["Group Count"], nil, 1, { min = 0, max = E.filterMax, step = 1 })
-	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() C:ResetFilters_AuraGroup(E.db.nameplates.units[unit][auraType], P.nameplates.units[unit][auraType]) NP:ConfigureAll() end)
+	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() UF:ResetFilters_AuraGroup(E.db.nameplates.units[unit][auraType].filterLists, P.nameplates.units[unit][auraType].filterLists) NP:ConfigureAll() end)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index

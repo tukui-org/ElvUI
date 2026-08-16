@@ -963,27 +963,6 @@ do -- shared filters
 	local filters = {}
 	local names = { 'Simpy', 'Just', 'Makes', 'Better', 'Filters' }
 
-	function C:ResetFilters_AuraGroup(db, default)
-		for name, data in next, db do
-			for key in next, E.AuraDefaults do
-				local info = default[name]
-				if info then
-					data[key] = info[key]
-				end
-			end
-
-			local candidates = data.candidates
-			if candidates then
-				for candidate in next, E.AuraCandidates do
-					local info = default[name]
-					if info and info.candidates then
-						candidates[candidate] = info.candidates[candidate]
-					end
-				end
-			end
-		end
-	end
-
 	function C:GetOptionsTable_AuraGroup(index, disable, mainGet, mainSet, candidateGet, candidateSet)
 		local group = ACH:Group(names[index], nil, index, nil, mainGet, mainSet, function() return index > disable() end, not E.Retail)
 
