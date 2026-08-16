@@ -1203,6 +1203,69 @@ for unit, data in next, P.nameplates.units do
 		else
 			data.pvpclassificationindicator = CopyTable(NP_PvPClassificationIndicator)
 		end
+
+		if unit == 'PLAYER' then
+			data.buffs.filterCount = 3
+			data.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|PLAYER'
+			data.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+			data.buffs.filterLists.group3.filter = 'HELPFUL|RAID_IN_COMBAT|PLAYER'
+
+			data.debuffs.filterCount = 1
+			data.debuffs.filterLists.group1.filter = 'HARMFUL'
+			data.debuffs.filterLists.group1.useBlocklist = true
+		elseif unit == 'FRIENDLY_PLAYER' then
+			data.buffs.filterCount = 3
+			data.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE'
+			data.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+			data.buffs.filterLists.group3.filter = 'HELPFUL|RAID_IN_COMBAT|PLAYER'
+
+			data.debuffs.filterCount = 1
+			data.debuffs.filterLists.group1.filter = 'HARMFUL|RAID'
+			data.debuffs.filterLists.group1.useBlocklist = true
+		elseif unit == 'FRIENDLY_NPC' then
+			data.buffs.filterCount = 3
+			data.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE'
+			data.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+			data.buffs.filterLists.group3.filter = 'HELPFUL|RAID_IN_COMBAT|PLAYER'
+
+			data.debuffs.filterCount = 1
+			data.debuffs.filterLists.group1.filter = 'HARMFUL|RAID'
+			data.debuffs.filterLists.group1.useBlocklist = true
+		elseif unit == 'ENEMY_PLAYER' then
+			data.buffs.filterCount = 4
+			data.buffs.filterLists.group1.filter = 'HELPFUL|BIG_DEFENSIVE|!EXTERNAL_DEFENSIVE'
+			data.buffs.filterLists.group2.filter = 'HELPFUL|EXTERNAL_DEFENSIVE'
+			data.buffs.filterLists.group3.filter = 'HELPFUL|RAID_PLAYER_DISPELLABLE'
+			data.buffs.filterLists.group4.filter = 'HELPFUL'
+			data.buffs.filterLists.group4.candidates.isStealable = true
+			data.buffs.filterLists.group4.useBlocklist = true
+
+			data.debuffs.filterCount = 1
+			data.debuffs.filterLists.group1.filter = 'HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY|!CROWD_CONTROL'
+			data.debuffs.filterLists.group1.candidates.nameplateShowPersonal = true
+			data.debuffs.filterLists.group1.useBlocklist = true
+
+			data.auras.filterCount = 1
+			data.auras.filterLists.group1.filter = 'HARMFUL|CROWD_CONTROL'
+			data.auras.filterLists.group1.useBlocklist = true
+		elseif unit == 'ENEMY_NPC' then
+			data.buffs.filterCount = 3
+			data.buffs.filterLists.group1.filter = 'HELPFUL'
+			data.buffs.filterLists.group1.candidates.isBossOrRoleAura = true
+			data.buffs.filterLists.group2.filter = 'HELPFUL'
+			data.buffs.filterLists.group2.candidates.isStealable = true
+			data.buffs.filterLists.group2.useBlocklist = true
+			data.buffs.filterLists.group3.filter = ' HELPFUL|IMPORTANT'
+
+			data.debuffs.filterCount = 1
+			data.debuffs.filterLists.group1.filter = 'HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY|!CROWD_CONTROL'
+			data.debuffs.filterLists.group1.candidates.nameplateShowPersonal = true
+			data.debuffs.filterLists.group1.useBlocklist = true
+
+			data.auras.filterCount = 1
+			data.auras.filterLists.group1.filter = 'HARMFUL|CROWD_CONTROL'
+			data.auras.filterLists.group1.useBlocklist = true
+		end
 	end
 end
 
