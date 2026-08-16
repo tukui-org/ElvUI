@@ -192,6 +192,7 @@ L["Automatically hide the objective frame during boss or arena fights."] = true
 L["Automatically repair using the following method when visiting a merchant."] = true
 L["Automatically vendor gray items when visiting a vendor."] = true
 L["Automation"] = true
+L["Available Filters"] = true
 L["Available Tags"] = true
 L["Azerite"] = true
 L["Azerite Essence"] = true
@@ -695,7 +696,10 @@ L["Filter Modifiers"] = true
 L["Filter Priority"] = true
 L["Filter Search"] = true
 L["Filter Type"] = true
+L["Filter checkboxes"] = true
+L["Filter examples"] = true
 L["Filters"] = true
+L["Filters Guide"] = true
 L["Filters Page"] = true
 L["Filters: Midnight"] = true
 L["Flash"] = true
@@ -860,6 +864,7 @@ L["How long the cutaway power will take to fade out."] = true
 L["How many seconds the castbar should stay visible after the cast failed or was interrupted."] = true
 L["How much time before the cutaway health starts to fade."] = true
 L["How much time before the cutaway power starts to fade."] = true
+L["How to filter"] = true
 L["Hyperlink Hover"] = true
 L["Icon"] = true
 L["Icon Height"] = true
@@ -2157,6 +2162,100 @@ Ctrl + Left Click: Toggle between Allow, Block, or normal state.
 - Friendly state is for friendly units only and enemy state is for enemy units.
 - Block state will be treated as an override block list and allow as allow list.
 ]]
+
+L["HOW_TO_FILTER"] = ([=[
+*How filtering works in ElvUI for Midnight|r
+
+All filter strings are combined with a *|| |r
+The very first string of each input box should always be *HARMFUL|r (For Debuffs) or *HELPFUL|r (For Buffs)
+Piping multiple strings together should be imagined as an *AND|r statement
+Example *HARMFUL|r||*RAID|r||*PLAYER|r means that it displays Debuffs which your current spec/talent setup can dispel
+
+If you randomly pipe together strings without a logic you won't see any auras at all
+Example of a bad string: *HELPFUL|r||*IMPORTANT|r||*CROWD_CONTROL|r||*BIG_DEFENSIVE|r
+That translates into "The aura is a buff which is important, a cc and big defensive" at the same time ^Impossible|r
+
+It is possible to add a *NOT|r statement to a filter string using *!|r like so *!CROWD_CONTROL|r
+
+Enabling one or more checkboxes such as *Player or Pet|r or *Stealable|r adds the statement as an *AND|r requirement
+For example *HELPFUL|r + enabled checkbox for *Use: Allow|r will display all Buffs added via ID in *Whitelist|r
+And *HARMFUL|r + enabled checkbox for *Use: Block|r will display all Debuffs except the IDs in *Blacklist|r
+
+The following Blizzard restrictions apply at all times:
+1) Whitelisting is limited to "You can only whitelist/track Buffs on friendly units via ID"
+2) Blacklisting is limited to "You can only blacklist/block Debuffs on enemy units via ID"
+3) You can NOT whitelist Debuffs on friendly units
+4) You can NOT blacklist Buffs on enemy units
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
+
+L["FILTER_EXAMPLES"] = ("*Filter setup examples|r"):gsub('*', E.InfoColor)
+L["FILTER_EXAMPLE_1"] = "Show all Buffs you can apply except if their duration is longer than 5 minutes:\nMaximum Duration 300 + Player or Pet enabled (colored checkbox)"
+L["FILTER_EXAMPLE_2"] = "Show only Buffs which are tracked on the Whitelist filter:\nAllow List: Whitelist + Use: Allow enabled (colored checkbox)"
+L["FILTER_EXAMPLE_3"] = "Show only Debuffs applied by yourself except CC:\nMaximum Duration 0 + Player or Pet enabled (colored checkbox)"
+L["FILTER_EXAMPLE_4"] = "Show all your important hots and shields:\nMaximum Duration 300"
+L["FILTER_EXAMPLE_5"] = "Show only Debuffs which your current talent setup can dispel:\nMaximum Duration 0"
+L["FILTER_EXAMPLE_6"] = "Show Debuffs which anyone in your party or raid can dispel:\nMaximum Duration 0"
+
+L["AVAILABLE_FILTERS"] = ("*Valid filter strings|r"):gsub('*', E.InfoColor)
+L["FILTER_STRING_HELPFUL"] = "Require it to be a Buff"
+L["FILTER_STRING_HARMFUL"] = "Require it to be a Debuff"
+L["FILTER_STRING_PLAYER"] = "Require unit: \"Player\"(You), \"Pet\"(Yours), \"Vehicle\"(Yours)"
+L["FILTER_STRING_RAID"] = "If configuring Buffs: \"Player\"(You) can apply this aura.\nIf configuring Debuffs: \"Player\"(You) can dispel it."
+L["FILTER_STRING_RAID_PLAYER_DISPELLABLE"] = "If configuring Buffs: Someone in your party or raid can purge or steal it.\nIf configuring Debuffs: Someone in your party or raid can dispel it."
+L["FILTER_STRING_RAID_IN_COMBAT"] = "When combined with HELPFUL and PLAYER it will show self-cast hots and shields.\nWhats being displayed matches the ElvUI Aura Indicator (Class) list in the Filters Dropdown."
+L["FILTER_STRING_CANCELABLE"] = "Works on HELPFUL||PLAYER to show Buffs \"Player\"(You) can click off / cancel with right-click."
+L["FILTER_STRING_INCLUDE_NAME_PLATE_ONLY"] = "When added to the string, include nameplate-only flagged auras."
+L["FILTER_STRING_EXTERNAL_DEFENSIVE"] = "Replace ID with the numeric ID of your test aura. This will print true or false.\nSome examples: Pain suppression, Iron Bark, Life Cocoon"
+L["FILTER_STRING_CROWD_CONTROL"] = "Replace ID with the numeric ID of your test aura. This will print true or false.\nSome examples: Fear, Polymorph, Entangling Roots"
+L["FILTER_STRING_BIG_DEFENSIVE"] = "Replace ID with the numeric ID of your test aura. This will print true or false.\nSome examples: Ice Block, Bubble, Blur, Barkskin"
+L["FILTER_STRING_IMPORTANT"] = "Replace ID with the numeric ID of your test aura. This will print true or false.\nThose are also special helpful auras that show on enemy even if non-stealable."
+L["FILTER_STRING_DISPELLABLE"] = "Displays auras which are dispellable, purgable or stealable. Regardless if your party or raid setup can handle it."
+L["FILTER_TEST_COMMAND"] = "Test command"
+
+L["FILTER_CHECKBOXES"] = ([=[
+*Filter checkboxes|r
+
+*Those candidate checkboxes have multiple states:|r
+1) *Include|r (*colored checkbox|r)
+2) ^Exclude|r (^grey checkbox|r)
+3) Not used (empty checkbox)
+
+*Player or Pet|r
+From any player or pet
+Adds ^{isFromPlayerOrPlayerPet = true}|r
+
+*Role|r
+Role aura - Tank/Heal/DPS
+Adds ^{isRoleAura = true}|r
+
+*Priority|r
+Priority aura
+Adds ^{isPriorityAura = true}|r
+
+*Stealable|r
+Stealable
+Adds ^{isStealable = true}|r
+
+*NP: All|r
+Nameplate: Show all
+Adds ^{nameplateShowAll = true}|r
+
+*NP: Personal|r
+Nameplate: Personal
+Adds ^{nameplateShowPersonal = true}|r
+
+*Can Apply|r
+Can apply aura
+Adds ^{canApplyAura = true}|r
+
+*Boss|r
+Boss aura - important stuff, was used for damage increase on Alleria P1 adds
+Adds ^{isBossAura = true}|r
+
+*Boss or Role|r
+The "either-or" between *Role|r and *Boss|r
+Adds ^{isBossOrRoleAura = true}|r
+]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 ----------------------------------
 
 L["ACTIONBARS_DESC"] = "Modify the actionbar settings."

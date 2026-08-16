@@ -157,6 +157,7 @@ local function GetUnitSettings(unit, name)
 	group.args.aurasGroup.args.auras = GetUnitAuras(unit, 'auras')
 	group.args.aurasGroup.args.buffs = GetUnitAuras(unit, 'buffs')
 	group.args.aurasGroup.args.debuffs = GetUnitAuras(unit, 'debuffs')
+	group.args.aurasGroup.args.filtersGuide = C:GetOptionsTable_FiltersGuide()
 
 	group.args.healthGroup = ACH:Group(L["Health"], nil, 10, nil, function(info) return E.db.nameplates.units[unit].health[info[#info]] end, function(info, value) E.db.nameplates.units[unit].health[info[#info]] = value NP:ConfigureAll() end)
 	group.args.healthGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, nil, nil, nil, function() return unit == 'PLAYER' end)
