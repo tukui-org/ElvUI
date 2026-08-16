@@ -6,7 +6,7 @@ local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
 function NP:RaidTargetIndicator_Override()
 	local element = self.RaidTargetIndicator
-	local index = self.unit and GetRaidTargetIndex(self.unit)
+	local index = self.__unit and GetRaidTargetIndex(self.__unit)
 
 	if index then
 		SetRaidTargetIconTexture(element, index)

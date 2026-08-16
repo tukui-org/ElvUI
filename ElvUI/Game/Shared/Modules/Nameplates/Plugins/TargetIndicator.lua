@@ -62,12 +62,12 @@ local function Update(self)
 	HideIndicators(element)
 
 	if element.style ~= 'none' then
-		local isTarget = E:UnitIsUnit(self.unit, 'target')
+		local isTarget = E:UnitIsUnit(self.__unit, 'target')
 		local lowHealth = not E.Retail and (element.lowHealthThreshold > 0)
 		if isTarget and (element.preferGlowColor or not lowHealth) then
 			ShowIndicators(element, isTarget, NP.db.colors.glowColor)
 		elseif lowHealth then
-			local health, maxHealth = UnitHealth(self.unit), UnitHealthMax(self.unit)
+			local health, maxHealth = UnitHealth(self.__unit), UnitHealthMax(self.__unit)
 			local perc = (maxHealth > 0 and health/maxHealth) or 0
 
 			-- color tables are class updated in UpdateMedia
@@ -82,7 +82,7 @@ local function Update(self)
 	end
 
 	if element.PostUpdate then
-		return element:PostUpdate(self.unit)
+		return element:PostUpdate(self.__unit)
 	end
 end
 
@@ -91,7 +91,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local function Enable(self)

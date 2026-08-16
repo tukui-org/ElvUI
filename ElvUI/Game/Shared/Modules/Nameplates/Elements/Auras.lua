@@ -129,9 +129,9 @@ function NP:Construct_AuraIcon(button)
 end
 
 function NP:Configure_AuraUnit(nameplate)
-	E:Auras_SetUnit(nameplate.Auras_, nameplate.unit)
-	E:Auras_SetUnit(nameplate.Buffs_, nameplate.unit)
-	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.unit)
+	E:Auras_SetUnit(nameplate.Auras_, nameplate.__unit)
+	E:Auras_SetUnit(nameplate.Buffs_, nameplate.__unit)
+	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.__unit)
 end
 
 function NP:Configure_AuraUpdate(nameplate)

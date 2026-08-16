@@ -17,7 +17,7 @@ local StatusBarInterpolation = Enum.StatusBarInterpolation
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 
 function NP:Health_UpdateColor(_, unit)
-	if not unit or self.unit ~= unit then return end
+	if not unit or self.__unit ~= unit then return end
 
 	local element, color = self.Health
 	local controlled = UnitPlayerControlled(unit)
