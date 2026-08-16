@@ -334,7 +334,7 @@ function M:GetLocTextColor()
 end
 
 function M:Update_ZoneText()
-	if not Minimap.location:IsShown() or M.db.locationText == 'HIDE' then return end
+	if M.db.locationText == 'HIDE' then return end
 
 	local r, g, b = M:GetLocTextColor()
 	local zone = GetMinimapZoneText()
