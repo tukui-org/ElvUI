@@ -2844,6 +2844,19 @@ P.unitframe.units.boss.power.position = 'RIGHT'
 P.unitframe.units.boss.power.text_format = E.Retail and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
 P.unitframe.units.boss.power.xOffset = -2
 
+P.unitframe.units.boss.buffs.filterCount = 3
+P.unitframe.units.boss.buffs.filterLists.group1.filter = 'HELPFUL'
+P.unitframe.units.boss.buffs.filterLists.group1.candidates.isBossAura = true
+P.unitframe.units.boss.buffs.filterLists.group2.filter = 'HELPFUL'
+P.unitframe.units.boss.buffs.filterLists.group1.candidates.isStealable = true
+P.unitframe.units.boss.buffs.filterLists.group2.useBlocklist = true
+P.unitframe.units.boss.buffs.filterLists.group3.filter = 'HELPFUL|IMPORTANT'
+
+P.unitframe.units.boss.debuffs.filterCount = 1
+P.unitframe.units.boss.debuffs.filterLists.group1.filter = 'HARMFUL|PLAYER|INCLUDE_NAME_PLATE_ONLY'
+P.unitframe.units.boss.debuffs.filterLists.group1.candidates.nameplateShowPersonal = true
+P.unitframe.units.boss.debuffs.filterLists.group1.useBlocklist = true
+
 P.unitframe.units.arena.buffs.anchorPoint = 'LEFT'
 P.unitframe.units.arena.buffs.enable = true
 P.unitframe.units.arena.buffs.numrows = 1
