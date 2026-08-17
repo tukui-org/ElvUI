@@ -218,19 +218,13 @@ function M:UpdateClockButton()
 
 	local clock = _G.TimeManagerClockButton
 	if clock then
-		if M.db.clusterDisable then -- noCluster
-			clock:Kill()
-		else
-			clock.Show = nil
-			clock:SetParent(MinimapCluster)
-			clock:Show()
+		M:HandleClusterElement(clock)
 
-			if not E.Retail then
-				clock:ClearAllPoints()
-				clock:Point('TOPRIGHT')
+		if not E.Retail then
+			clock:ClearAllPoints()
+			clock:Point('TOPRIGHT')
 
-				M:ClearClockTextures()
-			end
+			M:ClearClockTextures()
 		end
 	end
 end
@@ -530,6 +524,16 @@ function M:UpdateIcons()
 	end
 end
 
+function M:HandleClusterElement(element)
+	if not element then return end
+
+	local current = element:GetParent()
+	local parent = M.db.clusterDisable and E.HiddenFrame or MinimapCluster
+	if current ~= parent then
+		element:SetParent(parent)
+	end
+end
+
 function M:UpdateSettings()
 	if not M.Initialized then return end
 
@@ -636,14 +640,7 @@ function M:UpdateSettings()
 	end
 
 	MinimapCluster:SetScale(mmScale)
-
-	if MinimapCluster.ZoneTextButton then
-		local current = MinimapCluster.ZoneTextButton:GetParent()
-		local parent = noCluster and E.HiddenFrame or MinimapCluster
-		if current ~= parent then
-			MinimapCluster.ZoneTextButton:SetParent(parent)
-		end
-	end
+	M:HandleClusterElement(MinimapCluster.ZoneTextButton)
 
 	local clusterWidth = MinimapCluster:GetWidth()
 	local definedWidth = E.Retail and 30 or 0
