@@ -143,7 +143,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 		config.args.friendlyGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name].enable end, function(info) return E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end, function(info) local value = E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name].candidates[info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName) end)
 	end
 
-	config.args.enemyGroup = ACH:Group(L["Filters: Enemy"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
+	config.args.enemyGroup = ACH:Group(L["Filters: Enemy"], nil, 55, 'tab', nil, nil, nil, not E.Retail)
 	config.args.enemyGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName].aurabar.enemyFilter.filterLists, P.unitframe.units[groupName].aurabar.enemyFilter.filterLists) updateFunc(UF, groupName) end)
 
 	for index = 1, E.filterMax do

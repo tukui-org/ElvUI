@@ -5,8 +5,6 @@ local LSM = E.Libs.LSM
 local ipairs = ipairs
 local strfind = strfind
 
-local UnitIsEnemy = UnitIsEnemy
-local UnitReaction = UnitReaction
 local CreateFrame = CreateFrame
 local WrapString = C_StringUtil.WrapString
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
@@ -97,14 +95,11 @@ function UF:Construct_AuraBarHeader(frame)
 	end
 end
 
-function UF:AuraBars_GetFilter(element, unit)
-	local isEnemy, reaction = UnitIsEnemy(unit, 'player'), UnitReaction(unit, 'player')
-	return (not isEnemy and (not reaction or reaction > 4)) and element.friendlyFilter or element.enemyFilter
-end
-
 function UF:AuraBars_UpdateFilter(bars, unit)
-	bars.filterLists = UF:AuraBars_GetFilter(bars, unit)
-	bars.barColor = (bars.filter == 'HARMFUL' and UF.db.colors.auraBarDebuff) or UF.db.colors.auraBarBuff
+	local friendly = UF:UnitIsFriendly(unit)
+	bars.filterLists = friendly and bars.friendlyFilter or bars.enemyFilter
+	bars.barColor = friendly and bars.colorBuff or bars.colorDebuff
+	bars.colorByType = not friendly
 
 	UF:GroupFilters(bars, bars.filterLists) -- build the groups
 end
@@ -229,6 +224,8 @@ function UF:Configure_AuraBars(frame)
 			bars.friendlyFilter = db.friendlyFilter.filterLists
 			bars.enemyFilter = db.enemyFilter.filterLists
 			bars.forceShowAuras = frame.forceShowAuras
+			bars.colorDebuff = UF.db.colors.auraBarDebuff
+			bars.colorBuff = UF.db.colors.auraBarBuff
 
 			UF:AuraBars_UpdateFilter(bars, frame.__unit)
 

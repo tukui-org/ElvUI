@@ -1688,6 +1688,11 @@ local UF_AuraBars = {
 	},
 }
 
+UF_AuraBars.friendlyFilter.filterLists.group1.filter = 'HELPFUL||PLAYER'
+UF_AuraBars.friendlyFilter.filterLists.group1.maxDuration = 300
+UF_AuraBars.enemyFilter.filterLists.group1.filter = 'HARMFUL||PLAYER'
+UF_AuraBars.enemyFilter.filterLists.group1.maxDuration = 300
+
 local UF_AuraWatch = {
 	enable = false,
 	petSpecific = E.Retail,

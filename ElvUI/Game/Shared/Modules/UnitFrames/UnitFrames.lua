@@ -24,6 +24,7 @@ local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
+local UnitReaction = UnitReaction
 local UnregisterStateDriver = UnregisterStateDriver
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
@@ -87,6 +88,11 @@ do
 	function UF:Pingable_GetTargetInfo()
 		return info
 	end
+end
+
+function UF:UnitIsFriendly(unit)
+	local isEnemy, reaction = UnitIsEnemy(unit, 'player'), UnitReaction(unit, 'player')
+	return not isEnemy and (not reaction or reaction > 4)
 end
 
 function UF:GetAuraSortTime(which, a, b)

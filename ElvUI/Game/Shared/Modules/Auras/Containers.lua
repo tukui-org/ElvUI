@@ -113,9 +113,9 @@ function E:Auras_OnEvent(event, arg1)
 				if container.isAuraBar then
 					UF:AuraBars_UpdateFilter(container, unit)
 					E:Auras_SetContainer(container)
+				else -- for target frame
+					container:UpdateAllAuras()
 				end
-
-				container:UpdateAllAuras() -- for target frame
 			end
 		end
 	elseif event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
