@@ -2941,6 +2941,7 @@ P.unitframe.units.arena.debuffs.filterLists.group2.filter = 'HARMFUL||CROWD_CONT
 
 P.unitframe.units.party.buffIndicator.enable = true
 P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
+P.unitframe.units.party.buffs.enable = not E.Retail
 P.unitframe.units.party.buffs.maxDuration = 300
 P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
 P.unitframe.units.party.castbar.enable = false
