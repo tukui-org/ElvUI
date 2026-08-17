@@ -51,9 +51,14 @@ do
 		bad = 'HARMFUL|RAID'
 	}
 
-	function UF:AuraHighlight_SetupContainer(frame, container, which)
+	function UF:AuraHighlight_SetupContainer(frame, highlight, which)
+		local container = highlight[which]
+		if not container then return end
+
 		container:SetAllPoints(frame.Health:GetStatusBarTexture())
 		container.blendMode = UF.db.colors.debuffHighlight.blendMode
+		container.highlightMode = E.db.unitframe.debuffHighlighting
+		container.glowAnchor = highlight.glowAnchor
 		container.filter = filters[which]
 		container.isHighlight = true
 
@@ -98,9 +103,11 @@ function UF:Configure_AuraHighlight(frame)
 			frame:EnableElement('AuraHighlight')
 		end
 
+		highlight.glowAnchor = (frame.ThreatIndicator and frame.ThreatIndicator.MainGlow) or frame.TargetGlow
+
 		if E.Retail then
-			UF:AuraHighlight_SetupContainer(frame, highlight.good, 'good')
-			UF:AuraHighlight_SetupContainer(frame, highlight.bad, 'bad')
+			UF:AuraHighlight_SetupContainer(frame, highlight, 'good')
+			UF:AuraHighlight_SetupContainer(frame, highlight, 'bad')
 		else
 			highlight:SetBlendMode(UF.db.colors.debuffHighlight.blendMode)
 			highlight:SetAllPoints(frame.Health:GetStatusBarTexture())
@@ -109,10 +116,8 @@ function UF:Configure_AuraHighlight(frame)
 			if mode == 'GLOW' then
 				frame.AuraHighlightBackdrop = true
 
-				if frame.ThreatIndicator then
-					frame.AuraHightlightGlow:SetAllPoints(frame.ThreatIndicator.MainGlow)
-				elseif frame.TargetGlow then
-					frame.AuraHightlightGlow:SetAllPoints(frame.TargetGlow)
+				if highlight.glowAnchor then
+					frame.AuraHightlightGlow:SetAllPoints(highlight.glowAnchor)
 				end
 			else
 				frame.AuraHighlightBackdrop = false
