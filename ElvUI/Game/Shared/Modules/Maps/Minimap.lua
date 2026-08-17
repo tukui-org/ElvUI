@@ -637,6 +637,14 @@ function M:UpdateSettings()
 
 	MinimapCluster:SetScale(mmScale)
 
+	if MinimapCluster.ZoneTextButton then
+		local current = MinimapCluster.ZoneTextButton:GetParent()
+		local parent = noCluster and E.HiddenFrame or MinimapCluster
+		if current ~= parent then
+			MinimapCluster.ZoneTextButton:SetParent(parent)
+		end
+	end
+
 	local clusterWidth = MinimapCluster:GetWidth()
 	local definedWidth = E.Retail and 30 or 0
 	local definedHeight = E.Retail and 20 or 26
@@ -646,15 +654,6 @@ function M:UpdateSettings()
 	M.ClusterBackdrop:SetShown(M.db.clusterBackdrop and not noCluster)
 
 	_G.MinimapZoneText:FontTemplate(locationFont, locaitonSize, locationOutline)
-
-	if noCluster then
-		MinimapCluster.ZoneTextButton:Kill()
-	else
-		MinimapCluster.ZoneTextButton.Show = nil
-		MinimapCluster.ZoneTextButton:SetParent(MinimapCluster)
-		MinimapCluster.ZoneTextButton:RegisterEvent('UPDATE_BINDINGS')
-		MinimapCluster.ZoneTextButton:Show()
-	end
 end
 
 function M:Minimap_PostDrag()
