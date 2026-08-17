@@ -98,8 +98,6 @@ end
 function UF:AuraBars_UpdateFilter(bars, unit)
 	local friendly = UF:UnitIsFriendly(unit)
 	bars.filterLists = friendly and bars.friendlyFilter or bars.enemyFilter
-	bars.barColor = friendly and bars.colorBuff or bars.colorDebuff
-	bars.colorByType = not friendly
 
 	UF:GroupFilters(bars, bars.filterLists) -- build the groups
 end
