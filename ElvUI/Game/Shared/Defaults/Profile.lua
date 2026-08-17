@@ -2889,7 +2889,7 @@ P.unitframe.units.boss.power.xOffset = -2
 
 P.unitframe.units.boss.buffs.filterLists.group1.enable = true
 P.unitframe.units.boss.buffs.filterLists.group1.filter = 'HELPFUL'
-P.unitframe.units.boss.buffs.filterLists.group1.candidates.isBossAura = true
+P.unitframe.units.boss.buffs.filterLists.group1.candidates.isBossOrRoleAura = true
 P.unitframe.units.boss.buffs.filterLists.group2.enable = true
 P.unitframe.units.boss.buffs.filterLists.group2.filter = 'HELPFUL'
 P.unitframe.units.boss.buffs.filterLists.group2.candidates.isStealable = true
