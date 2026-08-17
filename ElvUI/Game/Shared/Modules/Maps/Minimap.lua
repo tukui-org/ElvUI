@@ -591,6 +591,7 @@ function M:UpdateSettings()
 		Minimap.location:Width(E.MinimapSize)
 		Minimap.location:FontTemplate(locationFont, locaitonSize, locationOutline)
 		Minimap.location:SetShown(M.db.locationText == 'SHOW' and noCluster)
+		M:SetScale(Minimap.location, 1)
 	end
 
 	local classicBorder = _G.MinimapBorder
@@ -841,7 +842,6 @@ function M:Initialize()
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
 
-	M:SetScale(Minimap.location, 1)
 	M:SetMinimapMask(not M.db.circle)
 
 	M:RegisterEvent('ADDON_LOADED')
