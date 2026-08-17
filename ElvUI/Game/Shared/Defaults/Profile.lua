@@ -2581,9 +2581,9 @@ P.unitframe.units.player.debuffs.enable = true
 P.unitframe.units.player.debuffs.priority = 'Blacklist,Personal,NonPersonal'
 
 P.unitframe.units.player.buffs.filterLists.group1.enable = true
-P.unitframe.units.player.buffs.filterLists.group1.filter = 'HELPFUL||BIG_DEFENSIVE||PLAYER||!EXTERNAL_DEFENSIVE'
+P.unitframe.units.player.buffs.filterLists.group1.filter = 'HELPFUL||EXTERNAL_DEFENSIVE'
 P.unitframe.units.player.buffs.filterLists.group2.enable = true
-P.unitframe.units.player.buffs.filterLists.group2.filter = 'HELPFUL||EXTERNAL_DEFENSIVE'
+P.unitframe.units.player.buffs.filterLists.group2.filter = 'HELPFUL||BIG_DEFENSIVE||PLAYER||!EXTERNAL_DEFENSIVE'
 
 P.unitframe.units.player.debuffs.filterLists.group1.enable = true
 P.unitframe.units.player.debuffs.filterLists.group1.filter = 'HARMFUL||IMPORTANT'
