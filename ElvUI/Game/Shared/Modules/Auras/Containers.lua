@@ -107,11 +107,13 @@ end
 function E:Auras_OnEvent(event, arg1)
 	local obj = E.AuraEvents[event]
 	if obj then
-		for container in next, obj do
-			local unit = E.AuraEventUnits[event]
-			if unit and container.isAuraBar then
-				UF:AuraBars_UpdateFilter(container, unit)
-				E:Auras_SetContainer(container)
+		local unit = E.AuraEventUnits[event]
+		if unit then
+			for container in next, obj do
+				if container.isAuraBar then
+					UF:AuraBars_UpdateFilter(container, unit)
+					E:Auras_SetContainer(container)
+				end
 			end
 		end
 	elseif event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then

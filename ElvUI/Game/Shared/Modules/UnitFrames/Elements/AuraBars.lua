@@ -103,7 +103,7 @@ function UF:AuraBars_GetFilter(element, unit)
 end
 
 function UF:AuraBars_UpdateFilter(bars, unit)
-	bars.filter = UF:AuraBars_GetFilter(bars, unit)
+	-- bars.filter = UF:AuraBars_GetFilter(bars, unit)
 	bars.barColor = (bars.filter == 'HARMFUL' and UF.db.colors.auraBarDebuff) or UF.db.colors.auraBarBuff
 
 	UF:GroupFilters(bars, bars.filterLists) -- build the groups
