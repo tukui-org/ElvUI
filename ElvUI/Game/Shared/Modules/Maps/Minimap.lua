@@ -840,7 +840,7 @@ function M:Initialize()
 	Minimap.location:Point('TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
-	Minimap.location:Hide()
+	Minimap.location:Hide() -- strange font rendering issue; incorrectly scales without this
 
 	M:SetScale(Minimap.location, 1)
 
