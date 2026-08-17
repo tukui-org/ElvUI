@@ -840,11 +840,9 @@ function M:Initialize()
 	end
 
 	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
-	Minimap.location:Point('TOP', Minimap, 0, -2)
+	Minimap.location:Point('TOP', 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
-	Minimap.location:Hide() -- Fixes blizzard's font rendering issue, keep after M:SetScale
-	Minimap.location:SetParent(MinimapCluster)
 
 	M:SetScale(Minimap.location, 1)
 	M:SetMinimapMask(not M.db.circle)
