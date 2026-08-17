@@ -113,8 +113,6 @@ function E:Auras_OnEvent(event, arg1)
 				UF:AuraBars_UpdateFilter(container, unit)
 				E:Auras_SetContainer(container)
 			end
-
-			container:UpdateAllAuras()
 		end
 	elseif event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
 		for container, unit in next, E.AuraUnits do
