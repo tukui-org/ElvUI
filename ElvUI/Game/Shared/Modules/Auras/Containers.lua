@@ -28,6 +28,7 @@ local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
 local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
 
+E.AuraUnits = {}
 E.AuraFocus = {}
 E.AuraTarget = {}
 E.AuraHighlight = {
@@ -103,18 +104,24 @@ function E:Auras_IsForced(container)
 	end
 end
 
-function E:Auras_OnEvent(event)
+function E:Auras_OnEvent(event, arg1)
 	local obj = E.AuraEvents[event]
-	if not obj then return end
+	if obj then
+		for container in next, obj do
+			local unit = E.AuraEventUnits[event]
+			if unit and container.isAuraBar then
+				UF:AuraBars_UpdateFilter(container, unit)
+				E:Auras_SetContainer(container)
+			end
 
-	for container in next, obj do
-		local unit = E.AuraEventUnits[event]
-		if unit and container.isAuraBar then
-			UF:AuraBars_UpdateFilter(container, unit)
-			E:Auras_SetContainer(container)
+			container:UpdateAllAuras()
 		end
-
-		container:UpdateAllAuras()
+	elseif event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
+		for container, unit in next, E.AuraUnits do
+			if arg1 == unit then
+				container:UpdateAllAuras()
+			end
+		end
 	end
 end
 
@@ -930,7 +937,8 @@ function E:Auras_SetLineSize(container)
 end
 
 function E:Auras_SetUnit(container, unit)
-	container.unit = unit
+	E.AuraUnits[container] = unit
+
 	container:SetUnit(unit)
 end
 
@@ -993,6 +1001,8 @@ function E:InitializeAuras()
 	if E.AuraEventFrame then return end
 
 	local eventFrame = CreateFrame('Frame')
+	eventFrame:RegisterEvent('UNIT_FACTION')
+	eventFrame:RegisterEvent('UNIT_TARGETABLE_CHANGED')
 	eventFrame:RegisterEvent('PLAYER_TARGET_CHANGED')
 	eventFrame:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	eventFrame:SetScript('OnEvent', E.Auras_OnEvent)
