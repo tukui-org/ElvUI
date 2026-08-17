@@ -1127,15 +1127,15 @@ do
 			local num = GetNumGroupMembers()
 			if num ~= SendRecieveGroupSize then
 				if num > 1 and num > SendRecieveGroupSize then
-					if not SendMessageWaiting then
-						SendMessageWaiting = E:Delay(10, E.SendMessage)
+					if not SendMessageWaiting then -- read UpdateAll about why E is packed
+						SendMessageWaiting = E:Delay(10, E.SendMessage, E)
 					end
 				end
 				SendRecieveGroupSize = num
 			end
 		elseif event == 'PLAYER_ENTERING_WORLD' then
-			if not SendMessageWaiting then
-				SendMessageWaiting = E:Delay(10, E.SendMessage)
+			if not SendMessageWaiting then -- read UpdateAll about why E is packed
+				SendMessageWaiting = E:Delay(10, E.SendMessage, E)
 			end
 		end
 	end
@@ -1751,63 +1751,51 @@ function E:UpdateEnd()
 	end
 end
 
-do	-- protection for SecureHook failure on plugins
-	local function UpdateLayout() E:UpdateLayout() end
-	local function UpdateDataBars() E:UpdateDataBars() end
-	local function UpdateDataTexts() E:UpdateDataTexts() end
-	local function UpdateAuras() E:UpdateAuras() end
-	local function UpdateActionBars() E:UpdateActionBars() end
-	local function UpdateNamePlates() E:UpdateNamePlates() end
-	local function UpdateBags() E:UpdateBags() end
-	local function UpdateChat() E:UpdateChat() end
-	local function UpdateTooltip() E:UpdateTooltip() end
-	local function UpdateMinimap() E:UpdateMinimap() end
-	local function UpdateUnitFrames() E:UpdateUnitFrames() end
-	local function UpdateMisc() E:UpdateMisc() end
-	local function UpdateEnd() E:UpdateEnd() end
+function E:UpdateAll()
+	E:UpdateStart()
 
-	function E:UpdateAll()
-		E:UpdateStart()
+	-- pack E for two reasons:
+	-- 1) incase self needs to be E
+	-- 2) SecureHook can cause failure (for plugins)
 
-		E:Delay(0.02, UpdateLayout)
-		E:Delay(0.04, UpdateDataBars)
-		E:Delay(0.06, UpdateDataTexts)
+	E:Delay(0.02, E.UpdateLayout, E)
+	E:Delay(0.04, E.UpdateDataBars, E)
+	E:Delay(0.06, E.UpdateDataTexts, E)
 
-		if Auras.BuffFrame or Auras.DebuffFrame then
-			E:Delay(0.08, UpdateAuras)
-		end
-
-		if ActionBars.Initialized then
-			E:Delay(0.10, UpdateActionBars)
-		end
-
-		if NamePlates.Initialized then
-			E:Delay(0.12, UpdateNamePlates)
-		end
-
-		if Bags.Initialized then
-			E:Delay(0.14, UpdateBags)
-		end
-
-		if Chat.Initialized then
-			E:Delay(0.16, UpdateChat)
-		end
-
-		if Tooltip.Initialized then
-			E:Delay(0.18, UpdateTooltip)
-		end
-
-		if Minimap.Initialized then
-			E:Delay(0.20, UpdateMinimap)
-		end
-
-		if UnitFrames.Initialized then
-			E:Delay(0.22, UpdateUnitFrames)
-		end
-
-		E:Delay(0.24, UpdateMisc)
-		E:Delay(0.26, UpdateEnd)
+	if Auras.BuffFrame or Auras.DebuffFrame then
+		E:Delay(0.08, E.UpdateAuras, E)
 	end
+
+	if ActionBars.Initialized then
+		E:Delay(0.10, E.UpdateActionBars, E)
+	end
+
+	if NamePlates.Initialized then
+		E:Delay(0.12, E.UpdateNamePlates, E)
+	end
+
+	if Bags.Initialized then
+		E:Delay(0.14, E.UpdateBags, E)
+	end
+
+	if Chat.Initialized then
+		E:Delay(0.16, E.UpdateChat, E)
+	end
+
+	if Tooltip.Initialized then
+		E:Delay(0.18, E.UpdateTooltip, E)
+	end
+
+	if Minimap.Initialized then
+		E:Delay(0.20, E.UpdateMinimap, E)
+	end
+
+	if UnitFrames.Initialized then
+		E:Delay(0.22, E.UpdateUnitFrames, E)
+	end
+
+	E:Delay(0.24, E.UpdateMisc, E)
+	E:Delay(0.26, E.UpdateEnd, E)
 end
 
 function E:CreateFonts()

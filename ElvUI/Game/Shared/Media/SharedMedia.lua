@@ -274,7 +274,8 @@ do	-- LSM late loader ~Simpy
 		if not pendingRefresh then
 			pendingRefresh = true
 
-			E:Delay(0.1, E.LSM_Update)
+			-- read UpdateAll about why E is packed
+			E:Delay(0.1, E.LSM_Update, E)
 		end
 	end
 end
