@@ -135,9 +135,6 @@ function UF:Configure_AuraBars(frame)
 			UF:AuraBars_UpdateBar(bar)
 		end
 
-		E:UpdateClassColor(UF.db.colors.auraBarBuff)
-		E:UpdateClassColor(UF.db.colors.auraBarDebuff)
-
 		if not bars.Holder then
 			local holder = CreateFrame('Frame', nil, bars)
 			holder:Point('BOTTOM', frame, 'TOP', 0, 0)
@@ -222,8 +219,7 @@ function UF:Configure_AuraBars(frame)
 			bars.friendlyFilter = db.friendlyFilter.filterLists
 			bars.enemyFilter = db.enemyFilter.filterLists
 			bars.forceShowAuras = frame.forceShowAuras
-			bars.colorDebuff = UF.db.colors.auraBarDebuff
-			bars.colorBuff = UF.db.colors.auraBarBuff
+			bars.customBackdropColor = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop or nil
 
 			UF:AuraBars_UpdateFilter(bars, frame.__unit)
 
@@ -233,6 +229,9 @@ function UF:Configure_AuraBars(frame)
 
 			bars:SetEnabled(true)
 		else
+			E:UpdateClassColor(UF.db.colors.auraBarBuff)
+			E:UpdateClassColor(UF.db.colors.auraBarDebuff)
+
 			bars.filterList = UF:ConvertFilters(bars, db.priority)
 		end
 	else

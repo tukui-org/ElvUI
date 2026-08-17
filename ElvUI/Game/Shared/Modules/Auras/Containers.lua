@@ -371,7 +371,8 @@ function E:Auras_UpdateButton(container, button)
 				button.border:SetTexture(E.media.blankTex)
 			end
 
-			button.border:SetVertexColor(backdropColor.r, backdropColor.g, backdropColor.b, container.isTransparent and backdropFadeColor.a or 1)
+			local color = container.customBackdropColor or backdropColor
+			button.border:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, container.isTransparent and backdropFadeColor.a or 1)
 		else
 			button.border:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
 		end
@@ -404,8 +405,9 @@ function E:Auras_UpdateButton(container, button)
 		if container.useStatusbar then
 			button:SetDurationBar(statusbar)
 
-			statusbar:SetStatusBarColor(backdropColor.r, backdropColor.g, backdropColor.b)
+			local color = container.customBackdropColor or backdropColor
 			statusbar:SetStatusBarTexture(container.barTexture)
+			statusbar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, container.isTransparent and backdropFadeColor.a or 1)
 			statusbar:Show()
 
 			if container.isAuraBar then
@@ -427,9 +429,10 @@ function E:Auras_UpdateButton(container, button)
 				button.statusbar:SetStatusBarTexture(container.statusbarTexture)
 			end
 
+			local color = container.customBackdropColor or backdropColor
 			button.statusbar:SetInside()
 			button.statusbar:SetReverseFill(not container.reverseFill)
-			button.statusbar:SetStatusBarColor(backdropFadeColor.r, backdropFadeColor.g, backdropFadeColor.b, backdropFadeColor.a)
+			button.statusbar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, container.isTransparent and backdropFadeColor.a or 1)
 
 			if button.border then
 				button.border:ClearAllPoints()
@@ -562,11 +565,11 @@ function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
-		layout.elementSpacing = E:Scale(E:Auras_GetSpacing(container))
 		layout.groupSpacing = E:Scale(container.groupSpacing or container.spacing or 1)
 		layout.lineSpacing = E:Scale(container.lineSpacing or container.spacing or 1)
-		layout.elementWidth = width
+		layout.elementSpacing = E:Scale(E:Auras_GetSpacing(container))
 		layout.elementHeight = height
+		layout.elementWidth = width
 	end
 
 	return layout
