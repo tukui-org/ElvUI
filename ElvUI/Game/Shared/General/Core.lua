@@ -1751,47 +1751,63 @@ function E:UpdateEnd()
 	end
 end
 
-function E:UpdateAll()
-	E:UpdateStart()
+do	-- protection for SecureHook failure on plugins
+	local function UpdateLayout() E:UpdateLayout() end
+	local function UpdateDataBars() E:UpdateDataBars() end
+	local function UpdateDataTexts() E:UpdateDataTexts() end
+	local function UpdateAuras() E:UpdateAuras() end
+	local function UpdateActionBars() E:UpdateActionBars() end
+	local function UpdateNamePlates() E:UpdateNamePlates() end
+	local function UpdateBags() E:UpdateBags() end
+	local function UpdateChat() E:UpdateChat() end
+	local function UpdateTooltip() E:UpdateTooltip() end
+	local function UpdateMinimap() E:UpdateMinimap() end
+	local function UpdateUnitFrames() E:UpdateUnitFrames() end
+	local function UpdateMisc() E:UpdateMisc() end
+	local function UpdateEnd() E:UpdateEnd() end
 
-	E:Delay(0.02, E.UpdateLayout)
-	E:Delay(0.04, E.UpdateDataBars)
-	E:Delay(0.06, E.UpdateDataTexts)
+	function E:UpdateAll()
+		E:UpdateStart()
 
-	if Auras.BuffFrame or Auras.DebuffFrame then
-		E:Delay(0.08, E.UpdateAuras)
+		E:Delay(0.02, UpdateLayout)
+		E:Delay(0.04, UpdateDataBars)
+		E:Delay(0.06, UpdateDataTexts)
+
+		if Auras.BuffFrame or Auras.DebuffFrame then
+			E:Delay(0.08, UpdateAuras)
+		end
+
+		if ActionBars.Initialized then
+			E:Delay(0.10, UpdateActionBars)
+		end
+
+		if NamePlates.Initialized then
+			E:Delay(0.12, UpdateNamePlates)
+		end
+
+		if Bags.Initialized then
+			E:Delay(0.14, UpdateBags)
+		end
+
+		if Chat.Initialized then
+			E:Delay(0.16, UpdateChat)
+		end
+
+		if Tooltip.Initialized then
+			E:Delay(0.18, UpdateTooltip)
+		end
+
+		if Minimap.Initialized then
+			E:Delay(0.20, UpdateMinimap)
+		end
+
+		if UnitFrames.Initialized then
+			E:Delay(0.22, UpdateUnitFrames)
+		end
+
+		E:Delay(0.24, UpdateMisc)
+		E:Delay(0.26, UpdateEnd)
 	end
-
-	if ActionBars.Initialized then
-		E:Delay(0.10, E.UpdateActionBars)
-	end
-
-	if NamePlates.Initialized then
-		E:Delay(0.12, E.UpdateNamePlates)
-	end
-
-	if Bags.Initialized then
-		E:Delay(0.14, E.UpdateBags)
-	end
-
-	if Chat.Initialized then
-		E:Delay(0.16, E.UpdateChat)
-	end
-
-	if Tooltip.Initialized then
-		E:Delay(0.18, E.UpdateTooltip)
-	end
-
-	if Minimap.Initialized then
-		E:Delay(0.20, E.UpdateMinimap)
-	end
-
-	if UnitFrames.Initialized then
-		E:Delay(0.22, E.UpdateUnitFrames)
-	end
-
-	E:Delay(0.24, E.UpdateMisc)
-	E:Delay(0.26, E.UpdateEnd)
 end
 
 function E:CreateFonts()
