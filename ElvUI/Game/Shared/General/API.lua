@@ -1455,15 +1455,19 @@ function E:IsInRestrictionState(which)
 	return E:CheckRestrictionState(which) > 1
 end
 
-function E:IsPvPMatchRestricted()
+function E:IsRestrictedPvPMatch()
 	return GetCVarBool('addonPvPMatchRestrictionsForced') or E:IsInRestrictionState('PvPMatch')
 end
 
-function E:IsCombatRestricted()
+function E:IsRestrictedCombat()
 	return GetCVarBool('addonCombatRestrictionsForced') or E:IsInRestrictionState('Combat')
 end
 
-function E:IsChatRestricted()
+function E:IsRestrictedEncounter()
+	return GetCVarBool('addonEncounterRestrictionsForced') or E:IsInRestrictionState('Encounter')
+end
+
+function E:IsRestrictedChat()
 	return GetCVarBool('addonChatRestrictionsForced') or (E:IsInRestrictionState('ChallengeMode') or E:IsInRestrictionState('Encounter'))
 end
 
