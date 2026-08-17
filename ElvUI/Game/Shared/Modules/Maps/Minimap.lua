@@ -658,7 +658,19 @@ function M:Minimap_PostDrag()
 	_G.MinimapBackdrop:SetAllPoints(Minimap)
 end
 
+function M:ClusterLayout()
+	M.ClusterSize(MinimapCluster, 100, 20)
+	M.ClusterPoint(MinimapCluster)
+
+	M:UnregisterEvent('PLAYER_REGEN_ENABLED')
+end
+
 function M:ClusterSize(width, height)
+	if InCombatLockdown() then
+		M:RegisterEvent('PLAYER_REGEN_ENABLED', 'ClusterLayout')
+		return
+	end
+
 	local holder = M.ClusterHolder
 	if holder and (width ~= holder.savedWidth or height ~= holder.savedHeight) then
 		self:SetSize(holder.savedWidth, holder.savedHeight)
@@ -666,6 +678,11 @@ function M:ClusterSize(width, height)
 end
 
 function M:ClusterPoint(_, anchor)
+	if InCombatLockdown() then
+		M:RegisterEvent('PLAYER_REGEN_ENABLED', 'ClusterLayout')
+		return
+	end
+
 	local noCluster = M.db.clusterDisable
 	local frame = (noCluster and UIParent) or M.ClusterHolder
 
@@ -815,7 +832,7 @@ function M:Initialize()
 	clickHandler:SetScript('OnMouseDown', M.Minimap_OnMouseDown)
 	M.MinimapClickHandler = clickHandler
 
-	M:ClusterPoint()
+	M:ClusterLayout()
 	MinimapCluster:EnableMouse(false)
 	MinimapCluster:SetFrameLevel(20) -- set before minimap itself
 	hooksecurefunc(MinimapCluster, 'SetPoint', M.ClusterPoint)
