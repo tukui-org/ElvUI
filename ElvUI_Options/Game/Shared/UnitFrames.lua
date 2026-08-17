@@ -111,8 +111,8 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.generalGroup.args.maxBars = ACH:Range(L["Max Bars"], nil, 10, { min = 1, max = 40, step = 1 })
 	config.args.generalGroup.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 11, { IMPORTANT = E.Retail and L["Important"] or nil, DEFENSIVE = E.Retail and L["Big Defensive"] or nil, TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = E.Retail and L["Debuffs"] or L["Player"] })
 	config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 12, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
-	config.args.generalGroup.args.friendlyAuraType = ACH:Select(L["Friendly Aura Type"], L["Set the type of auras to show when a unit is friendly."], 13, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] })
-	config.args.generalGroup.args.enemyAuraType = ACH:Select(L["Enemy Aura Type"], L["Set the type of auras to show when a unit is a foe."], 14, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] }, nil, nil, nil, nil, nil, groupName == 'player')
+	config.args.generalGroup.args.friendlyAuraType = ACH:Select(L["Friendly Aura Type"], L["Set the type of auras to show when a unit is friendly."], 13, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] }, nil, nil, nil, nil, nil, E.Retail)
+	config.args.generalGroup.args.enemyAuraType = ACH:Select(L["Enemy Aura Type"], L["Set the type of auras to show when a unit is a foe."], 14, { HARMFUL = L["Debuffs"], HELPFUL = L["Buffs"] }, nil, nil, nil, nil, nil, E.Retail or groupName == 'player')
 	config.args.generalGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 15, { min = 0, max = 100, step = 1 }, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].aurabar.attachTo == 'DETACHED' end)
 	config.args.generalGroup.args.spacing = ACH:Range(L["Spacing"], nil, 16, spacingNormal)
 	config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 17)
@@ -135,12 +135,20 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
 	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar)
 
-	config.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
-	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName].aurabar.filterLists, P.unitframe.units[groupName].aurabar.filterLists) updateFunc(UF, groupName) end)
+	config.args.friendlyGroup = ACH:Group(L["Filters: Friendly"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
+	config.args.friendlyGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists, P.unitframe.units[groupName].aurabar.friendlyFilter.filterLists) updateFunc(UF, groupName) end)
 
 	for index = 1, E.filterMax do
 		local name = 'group'..index
-		config.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName].aurabar.filterLists[name].enable end, function(info) return E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end, function(info) local value = E.db.unitframe.units[groupName].aurabar.filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.unitframe.units[groupName].aurabar.filterLists[name].candidates[info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName) end)
+		config.args.friendlyGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name].enable end, function(info) return E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end, function(info) local value = E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists[name].candidates[info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName) end)
+	end
+
+	config.args.enemyGroup = ACH:Group(L["Filters: Enemy"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
+	config.args.enemyGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName].aurabar.enemyFilter.filterLists, P.unitframe.units[groupName].aurabar.enemyFilter.filterLists) updateFunc(UF, groupName) end)
+
+	for index = 1, E.filterMax do
+		local name = 'group'..index
+		config.args.enemyGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.unitframe.units[groupName].aurabar.enemyFilter.filterLists[name].enable end, function(info) return E.db.unitframe.units[groupName].aurabar.enemyFilter.filterLists[name][info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar.enemyFilter.filterLists[name][info[#info]] = value updateFunc(UF, groupName) end, function(info) local value = E.db.unitframe.units[groupName].aurabar.enemyFilter.filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.unitframe.units[groupName].aurabar.enemyFilter.filterLists[name].candidates[info[#info]] = (value == nil and 1 or value) updateFunc(UF, groupName) end)
 	end
 
 	config.args.legacyGroup = ACH:Group(L["Filters"], nil, 60, nil, nil, nil, nil, E.Retail)

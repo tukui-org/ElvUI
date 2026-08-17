@@ -99,11 +99,11 @@ end
 
 function UF:AuraBars_GetFilter(element, unit)
 	local isEnemy, reaction = UnitIsEnemy(unit, 'player'), UnitReaction(unit, 'player')
-	return (not isEnemy and (not reaction or reaction > 4) and (element.friendlyAuraType or 'HELPFUL')) or element.enemyAuraType or 'HARMFUL'
+	return (not isEnemy and (not reaction or reaction > 4)) and element.friendlyFilter or element.enemyFilter
 end
 
 function UF:AuraBars_UpdateFilter(bars, unit)
-	-- bars.filter = UF:AuraBars_GetFilter(bars, unit)
+	bars.filterLists = UF:AuraBars_GetFilter(bars, unit)
 	bars.barColor = (bars.filter == 'HARMFUL' and UF.db.colors.auraBarDebuff) or UF.db.colors.auraBarBuff
 
 	UF:GroupFilters(bars, bars.filterLists) -- build the groups
@@ -226,9 +226,9 @@ function UF:Configure_AuraBars(frame)
 			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 			bars.countPosition, bars.countXOffset, bars.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
+			bars.friendlyFilter = db.friendlyFilter.filterLists
+			bars.enemyFilter = db.enemyFilter.filterLists
 			bars.forceShowAuras = frame.forceShowAuras
-
-			bars.filterLists = db.filterLists
 
 			UF:AuraBars_UpdateFilter(bars, frame.__unit)
 

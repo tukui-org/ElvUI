@@ -1652,8 +1652,6 @@ local UF_AuraBars = {
 	anchorPoint = 'ABOVE',
 	attachTo = 'DEBUFFS',
 	detachedWidth = 270,
-	enemyAuraType = 'HARMFUL',
-	friendlyAuraType = 'HELPFUL',
 	height = 20,
 	maxBars = 6,
 	maxDuration = 0,
@@ -1676,9 +1674,18 @@ local UF_AuraBars = {
 	countFontSize = 14,
 	countXOffset = -12,
 	countYOffset = 2,
-	allowList = 'Whitelist',
-	blockList = 'Blacklist',
-	filterLists = CopyTable(defaultFilterList)
+	friendlyAuraType = 'HELPFUL',
+	friendlyFilter = {
+		allowList = 'Whitelist',
+		blockList = 'Blacklist',
+		filterLists = CopyTable(defaultFilterList)
+	},
+	enemyAuraType = 'HARMFUL',
+	enemyFilter = {
+		allowList = 'Whitelist',
+		blockList = 'Blacklist',
+		filterLists = CopyTable(defaultFilterList)
+	},
 }
 
 local UF_AuraWatch = {
