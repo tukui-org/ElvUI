@@ -1692,7 +1692,7 @@ local function GetUnitSettings(unitType, updateFunc, numUnits)
 		end
 	end
 
-	config.auraGroup.args.filtersGuide = C:GetOptionsTable_FiltersGuide()
+	config.auraGroup.args.filtersGuide = C:GetOptionsTable_FiltersGuide(10)
 
 	return config
 end

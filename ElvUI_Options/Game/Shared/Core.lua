@@ -997,28 +997,28 @@ do -- shared filters
 
 	-- filters: help section
 	local listExamples = {
-		buffsPlayer			= { order = 1,	text = L["FILTER_EXAMPLE_1"], value = 'HELPFUL|PLAYER' },
-		buffsWhitelist		= { order = 2,	text = L["FILTER_EXAMPLE_2"], value = 'HELPFUL' },
-		debuffsPlayer		= { order = 3,	text = L["FILTER_EXAMPLE_3"], value = 'HARMFUL|PLAYER|!CROWD_CONTROL' },
-		hotsShields			= { order = 4,	text = L["FILTER_EXAMPLE_4"], value = 'HELPFUL|RAID_IN_COMBAT|PLAYER' },
-		debuffsDispel		= { order = 5,	text = L["FILTER_EXAMPLE_5"], value = 'HARMFUL|RAID|PLAYER' },
-		debuffsRaidDispel	= { order = 6,	text = L["FILTER_EXAMPLE_6"], value = 'HARMFUL|RAID_PLAYER_DISPELLABLE' },
+		buffsPlayer			= { order = 1, desc = L["FILTER_EXAMPLE_1_DESC"], text = L["FILTER_EXAMPLE_1_TEXT"], value = 'HELPFUL|PLAYER' },
+		buffsWhitelist		= { order = 2, desc = L["FILTER_EXAMPLE_2_DESC"], text = L["FILTER_EXAMPLE_2_TEXT"], value = 'HELPFUL' },
+		debuffsPlayer		= { order = 3, desc = L["FILTER_EXAMPLE_3_DESC"], text = L["FILTER_EXAMPLE_3_TEXT"], value = 'HARMFUL|PLAYER|!CROWD_CONTROL' },
+		hotsShields			= { order = 4, desc = L["FILTER_EXAMPLE_4_DESC"], text = L["FILTER_EXAMPLE_4_TEXT"], value = 'HELPFUL|RAID_IN_COMBAT|PLAYER' },
+		debuffsDispel		= { order = 5, desc = L["FILTER_EXAMPLE_5_DESC"], text = L["FILTER_EXAMPLE_5_TEXT"], value = 'HARMFUL|RAID|PLAYER' },
+		debuffsRaidDispel	= { order = 6, desc = L["FILTER_EXAMPLE_6_DESC"], text = L["FILTER_EXAMPLE_6_TEXT"], value = 'HARMFUL|RAID_PLAYER_DISPELLABLE' },
 	}
 
 	local listFilters = {
-		HELPFUL					= { order = 1,	text = L["FILTER_STRING_HELPFUL"] },
-		HARMFUL					= { order = 2,	text = L["FILTER_STRING_HARMFUL"] },
-		PLAYER					= { order = 3,	text = L["FILTER_STRING_PLAYER"] },
-		RAID					= { order = 4,	text = L["FILTER_STRING_RAID"] },
-		RAID_PLAYER_DISPELLABLE = { order = 5,	text = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE"] },
-		RAID_IN_COMBAT			= { order = 6,	text = L["FILTER_STRING_RAID_IN_COMBAT"] },
-		CANCELABLE				= { order = 7,	text = L["FILTER_STRING_CANCELABLE"] },
-		INCLUDE_NAME_PLATE_ONLY = { order = 8,	text = L["FILTER_STRING_INCLUDE_NAME_PLATE_ONLY"] },
-		EXTERNAL_DEFENSIVE		= { order = 9,	text = L["FILTER_STRING_EXTERNAL_DEFENSIVE"],	testCommand = '/dump C_Spell.IsExternalDefensive(ID)' },
-		CROWD_CONTROL			= { order = 10,	text = L["FILTER_STRING_CROWD_CONTROL"],		testCommand = '/dump C_Spell.IsSpellCrowdControl(ID)' },
-		BIG_DEFENSIVE			= { order = 11,	text = L["FILTER_STRING_BIG_DEFENSIVE"],		testCommand = '/dump C_UnitAuras.AuraIsBigDefensive(ID)' },
-		IMPORTANT				= { order = 12,	text = L["FILTER_STRING_IMPORTANT"],			testCommand = '/dump C_Spell.IsSpellImportant(ID)' },
-		DISPELLABLE				= { order = 13,	text = L["FILTER_STRING_DISPELLABLE"] },
+		HELPFUL					= { order = 1,	desc = L["FILTER_STRING_HELPFUL_DESC"],					text = nil },
+		HARMFUL					= { order = 2,	desc = L["FILTER_STRING_HARMFUL_DESC"],					text = nil },
+		PLAYER					= { order = 3,	desc = L["FILTER_STRING_PLAYER_DESC"],					text = nil },
+		RAID					= { order = 4,	desc = L["FILTER_STRING_RAID_DESC"],					text = L["FILTER_STRING_RAID_TEXT"] },
+		RAID_PLAYER_DISPELLABLE = { order = 5,	desc = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_DESC"],	text = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_TEXT"] },
+		RAID_IN_COMBAT			= { order = 6,	desc = L["FILTER_STRING_RAID_IN_COMBAT_DESC"],			text = L["FILTER_STRING_RAID_IN_COMBAT_TEXT"] },
+		CANCELABLE				= { order = 7,	desc = L["FILTER_STRING_CANCELABLE_DESC"],				text = nil },
+		INCLUDE_NAME_PLATE_ONLY = { order = 8,	desc = L["FILTER_STRING_INCLUDE_NAME_PLATE_ONLY_DESC"],	text = nil },
+		EXTERNAL_DEFENSIVE		= { order = 9,	desc = L["FILTER_STRING_EXTERNAL_DEFENSIVE_DESC"],		text = L["FILTER_STRING_EXTERNAL_DEFENSIVE_TEXT"],	testCommand = '/dump C_Spell.IsExternalDefensive(ID)' },
+		CROWD_CONTROL			= { order = 10,	desc = L["FILTER_STRING_CROWD_CONTROL_DESC"],			text = L["FILTER_STRING_CROWD_CONTROL_TEXT"],		testCommand = '/dump C_Spell.IsSpellCrowdControl(ID)' },
+		BIG_DEFENSIVE			= { order = 11,	desc = L["FILTER_STRING_BIG_DEFENSIVE_DESC"],			text = L["FILTER_STRING_BIG_DEFENSIVE_TEXT"],		testCommand = '/dump C_UnitAuras.AuraIsBigDefensive(ID)' },
+		IMPORTANT				= { order = 12,	desc = L["FILTER_STRING_IMPORTANT_DESC"],				text = L["FILTER_STRING_IMPORTANT_TEXT"],			testCommand = '/dump C_Spell.IsSpellImportant(ID)' },
+		DISPELLABLE				= { order = 13,	desc = L["FILTER_STRING_DISPELLABLE_DESC"],				text = nil },
 	}
 
 	local function AddGuideInput(group, key, order, name, value)
@@ -1027,12 +1027,12 @@ do -- shared filters
 		group.args[key] = input
 	end
 
-	local function AddGuideRow(parent, key, order, text, value, testCommand)
-		local pair = ACH:Group(' ', nil, order)
-		pair.args.desc = ACH:Description(text, 1, 'medium', nil, nil, nil, nil, 'full')
+	local function AddGuideRow(parent, key, order, text, desc, value, testCommand)
+		local pair = ACH:Group(desc or ' ', nil, order)
+		pair.args.desc = ACH:Description(text or '', 1, 'medium', nil, nil, nil, nil, 'full')
 		pair.inline = true
 
-		AddGuideInput(pair, 'input', 2, ' ', value)
+		AddGuideInput(pair, 'input', 2, '', value)
 
 		if testCommand then
 			AddGuideInput(pair, 'testCommand', 3, L["FILTER_TEST_COMMAND"], testCommand)
@@ -1041,8 +1041,8 @@ do -- shared filters
 		parent.args[key] = pair
 	end
 
-	function C:GetOptionsTable_FiltersGuide()
-		local config = ACH:Group(L["Filters Guide"], nil, 10, 'tab')
+	function C:GetOptionsTable_FiltersGuide(order)
+		local config = ACH:Group(L["Filters Guide"], nil, order or 100, 'tab')
 		config.args.howToFilter = ACH:Group(L["How to filter"], nil, 1)
 		config.args.howToFilter.args.desc = ACH:Description(L["HOW_TO_FILTER"], 1, 'medium', nil, nil, nil, nil, 'full')
 
@@ -1051,7 +1051,7 @@ do -- shared filters
 		config.args.filterExamples = examples
 
 		for key, data in next, listExamples do
-			AddGuideRow(examples, key, data.order, data.text, data.value)
+			AddGuideRow(examples, key, data.order, data.text, data.desc, data.value)
 		end
 
 		local available = ACH:Group(L["Available Filters"], nil, 3)
@@ -1059,7 +1059,7 @@ do -- shared filters
 		config.args.availableFilter = available
 
 		for key, data in next, listFilters do
-			AddGuideRow(available, key, data.order, data.text, key, data.testCommand)
+			AddGuideRow(available, key, data.order, data.text, data.desc, key, data.testCommand)
 		end
 
 		config.args.filterCheckboxes = ACH:Group(L["Filter checkboxes"], nil, 4)
