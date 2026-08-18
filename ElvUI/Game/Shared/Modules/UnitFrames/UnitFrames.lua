@@ -2256,11 +2256,11 @@ function UF:AfterStyleCallback()
 	-- that would cause the auras to be shown when a new frame is spawned (tank2, assist2)
 	-- even when they are disabled. this makes sure the update happens after so its proper.
 
-	local unit = self.unitframeType
-	if unit == 'tank' or unit == 'tanktarget' then
+	local frameType = self.unitframeType
+	if frameType == 'tank' or frameType == 'tanktarget' then
 		UF:Update_TankFrames(self, UF.db.units.tank)
 		UF:Update_FontStrings()
-	elseif unit == 'assist' or unit == 'assisttarget' then
+	elseif frameType == 'assist' or frameType == 'assisttarget' then
 		UF:Update_AssistFrames(self, UF.db.units.assist)
 		UF:Update_FontStrings()
 	end
