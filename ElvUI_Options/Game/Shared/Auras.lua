@@ -2,6 +2,7 @@ local E, _, V, P, G = unpack(ElvUI)
 local C, L = unpack(E.Config)
 local A = E:GetModule('Auras')
 local PA = E:GetModule('PrivateAuras')
+local UF = E:GetModule('UnitFrames')
 local ACH = E.Libs.ACH
 
 local CopyTable = CopyTable
@@ -87,6 +88,14 @@ Auras.args.buffs.args.statusBar.args.barColor.get = function() local t = E.db.au
 Auras.args.buffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.buffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.buffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.buffs.barShow or (E.db.auras.buffs.barColorGradient or not E.db.auras.buffs.barShow) end
 
+Auras.args.buffs.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
+Auras.args.buffs.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() UF:ResetFilters_AuraGroup(E.db.auras.buffs.filterLists, P.auras.buffs.filterLists); A:UpdateHeader(A.BuffFrame) end)
+
+for index = 1, E.filterMax do
+	local name = 'group'..index
+	Auras.args.buffs.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.auras.buffs.filterLists[name].enable end, function(info) return E.db.auras.buffs.filterLists[name][info[#info]] end, function(info, value) E.db.auras.buffs.filterLists[name][info[#info]] = value; A:UpdateHeader(A.BuffFrame) end, function(info) local value = E.db.auras.buffs.filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.auras.buffs.filterLists[name].candidates[info[#info]] = (value == nil and 1 or value); A:UpdateHeader(A.BuffFrame) end)
+end
+
 Auras.args.debuffs = ACH:Group(L["Debuffs"], nil, 11, nil, function(info) return E.db.auras.debuffs[info[#info]] end, function(info, value) E.db.auras.debuffs[info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function() return not E.private.auras.debuffsHeader end)
 Auras.args.debuffs.args = CopyTable(SharedOptions)
 Auras.args.debuffs.args.size.name = function() return E.db.auras.debuffs.keepSizeRatio and L["Size"] or L["Width"] end
@@ -94,6 +103,14 @@ Auras.args.debuffs.args.height.hidden = function() return E.db.auras.debuffs.kee
 Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.auras.debuffs.barColor local d = P.auras.debuffs.barColor return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end
 Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end
+
+Auras.args.debuffs.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
+Auras.args.debuffs.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() UF:ResetFilters_AuraGroup(E.db.auras.debuffs.filterLists, P.auras.debuffs.filterLists); A:UpdateHeader(A.DebuffFrame) end)
+
+for index = 1, E.filterMax do
+	local name = 'group'..index
+	Auras.args.debuffs.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.auras.debuffs.filterLists[name].enable end, function(info) return E.db.auras.debuffs.filterLists[name][info[#info]] end, function(info, value) E.db.auras.debuffs.filterLists[name][info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function(info) local value = E.db.auras.debuffs.filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.auras.debuffs.filterLists[name].candidates[info[#info]] = (value == nil and 1 or value); A:UpdateHeader(A.DebuffFrame) end)
+end
 
 Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateRaidWarning[info[#info]] end, function(info, value) E.db.general.privateRaidWarning[info[#info]] = value; PA:RaidWarning_Update() end, nil, not E.Retail)
 Auras.args.privateAuras.args.raidWarning = ACH:Group(L["Raid Warning"], nil, 30)

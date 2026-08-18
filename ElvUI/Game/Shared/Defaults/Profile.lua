@@ -1370,7 +1370,10 @@ local TopAuras = {
 	smoothbars = false,
 	tooltipAnchorType = 'ANCHOR_BOTTOMLEFT',
 	tooltipAnchorX = -5,
-	tooltipAnchorY = -5
+	tooltipAnchorY = -5,
+	allowList = 'Whitelist',
+	blockList = 'Blacklist',
+	filterLists = CopyTable(defaultFilterList)
 }
 
 --Auras
@@ -1381,6 +1384,9 @@ P.auras = {
 	colorDebuffs = true,
 }
 
+P.auras.buffs.filterLists.group1.enable = true
+P.auras.debuffs.filterLists.group1.enable = true
+P.auras.debuffs.filterLists.group1.filter = 'HARMFUL'
 P.auras.debuffs.maxWraps = 1
 
 --Chat

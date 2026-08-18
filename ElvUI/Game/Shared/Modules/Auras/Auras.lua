@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -563,10 +564,6 @@ function A:UpdateHeader(header)
 	local minWidth, minHeight, xOffset, yOffset, wrapXOffset, wrapYOffset
 
 	if E.Retail then
-		local group = header.filterLists.group1
-		group.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
-		group.sortDirection = E.AuraContainerSortDirection[db.sortDir]
-
 		header.barDB = db
 		header.width = width
 		header.height = height
@@ -579,12 +576,14 @@ function A:UpdateHeader(header)
 		header.barColor = db.barColor
 		header.numAuras = db.wrapAfter
 		header.maxFrameCount = db.wrapAfter * db.maxWraps
+		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
+		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 		header.initialAnchor = DIRECTION_TO_POINT[db.growthDirection]
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
 		header.countPosition, header.countXOffset, header.countYOffset = 'BOTTOMRIGHT', db.countXOffset, db.countYOffset
 		header.countFont, header.countFontSize, header.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
-		header.colorByType = group.filter == 'HARMFUL' and A.db.colorDebuffs
 		header.colorEnchants = A.db.colorEnchants
+		header.colorByType = header.auraType == 'debuffs' and A.db.colorDebuffs
 		header.isTopAura = true
 
 		header.useWidth = IS_HORIZONTAL_GROWTH[db.growthDirection]
@@ -595,6 +594,9 @@ function A:UpdateHeader(header)
 		end
 
 		header:SetSize(minWidth, minHeight)
+
+		header.filterLists = db.filterLists
+		UF:GroupFilters(header, db.filterLists) -- build the groups
 
 		E:Auras_SetContainer(header)
 		E:Auras_SetLineSize(header)
@@ -747,10 +749,9 @@ function A:Initialize()
 	if E.private.auras.buffsHeader then
 		if E.Retail then
 			local buff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
-			buff.filterLists = { group1 = { filter = 'HELPFUL' } }
-			buff.filters = { group1 = buff.filterLists.group1 }
 			buff.auraType = 'buffs'
 			buff.unit = 'player'
+			buff.filters = {}
 
 			A.BuffFrame = buff
 
@@ -771,10 +772,9 @@ function A:Initialize()
 	if E.private.auras.debuffsHeader then
 		if E.Retail then
 			local debuff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
-			debuff.filterLists = { group1 = { filter = 'HARMFUL' } }
-			debuff.filters = { group1 = debuff.filterLists.group1 }
 			debuff.auraType = 'debuffs'
 			debuff.unit = 'player'
+			debuff.filters = {}
 
 			A.DebuffFrame = debuff
 
