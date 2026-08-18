@@ -94,25 +94,14 @@ local function NewSealStyle()
 	return theme and theme.background
 end
 
-function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
-	local material = GetQuestBackgroundMaterial()
-	if (material and material ~= 'Parchment') or NewSealStyle() then
-		scrollFrame.Center:Hide()
-	else
-		scrollFrame.Center:Show()
-	end
+function S:QuestInfo_StyleScrollFrame(scrollFrame)
+	scrollFrame.Center:SetShown(GetQuestBackgroundMaterial() == 'Parchment' or not NewSealStyle())
 end
 
 S.QuestInfo_StyleScrollFrames = {
-	[_G.QuestDetailScrollChildFrame] = { frame = _G.QuestDetailScrollFrame, width = 509, height = 618, inset = true },
-	[_G.QuestRewardScrollChildFrame] = { frame = _G.QuestRewardScrollFrame, width = 509, height = 616, inset = true },
-	[_G.QuestLogPopupDetailFrame.ScrollFrame.ScrollChild] = {
-		frame = _G.QuestLogPopupDetailFrameScrollFrame,
-		width = 509, height = 630, inset = false,
-		custom = function(self)
-			self:Height(self:GetHeight() - 2)
-		end
-	}
+	[_G.QuestDetailScrollChildFrame] = _G.QuestDetailScrollFrame,
+	[_G.QuestRewardScrollChildFrame] = _G.QuestRewardScrollFrame,
+	[_G.QuestLogPopupDetailFrame.ScrollFrame.ScrollChild] = _G.QuestLogPopupDetailFrameScrollFrame
 }
 
 -- Quest objective text color
@@ -270,13 +259,9 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetShadowColor(0, 0, 0, 0)
 
-		local style = S.QuestInfo_StyleScrollFrames[parentFrame]
-		if style then
-			S:QuestInfo_StyleScrollFrame(style.frame, style.width, style.height, style.inset)
-
-			if style.custom then
-				style.custom(style.frame)
-			end
+		local scrollFrame = S.QuestInfo_StyleScrollFrames[parentFrame]
+		if scrollFrame then
+			S:QuestInfo_StyleScrollFrame(scrollFrame)
 		end
 	end
 end
@@ -403,8 +388,8 @@ function S:BlizzardQuestFrames()
 		_G.QuestRewardScrollFrame:SetTemplate('Transparent')
 		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('Transparent')
 
-		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, nil, nil, true)
-		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, nil, nil, true)
+		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame)
+		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame)
 
 		_G.QuestFrameDetailPanel.SealMaterialBG:SetInside(_G.QuestDetailScrollFrame)
 		_G.QuestFrameRewardPanel.SealMaterialBG:SetInside(_G.QuestRewardScrollFrame)
