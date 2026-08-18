@@ -3053,7 +3053,11 @@ P.unitframe.units.party.debuffs.filterLists.group4.useBlocklist = true
 P.unitframe.units.party.debuffs.filterLists.group5.enable = true
 P.unitframe.units.party.debuffs.filterLists.group5.filter = 'HARMFUL||!CROWD_CONTROL||!IMPORTANT||!RAID_PLAYER_DISPELLABLE||!RAID'
 P.unitframe.units.party.debuffs.filterLists.group5.candidates.isPriorityAura = true
+P.unitframe.units.party.debuffs.filterLists.group5.candidates.isBossOrRoleAura = 1
 P.unitframe.units.party.debuffs.filterLists.group5.useBlocklist = true
+P.unitframe.units.party.debuffs.filterLists.group6.enable = true
+P.unitframe.units.party.debuffs.filterLists.group6.filter = 'HARMFUL||!CROWD_CONTROL||!IMPORTANT||!RAID_PLAYER_DISPELLABLE||!RAID'
+P.unitframe.units.party.debuffs.filterLists.group6.candidates.isBossOrRoleAura = true
 
 P.unitframe.units.raid1 = CopyTable(P.unitframe.units.party)
 P.unitframe.units.raid1.buffIndicator.enable = true
@@ -3106,7 +3110,11 @@ P.unitframe.units.raid1.debuffs.filterLists.group4.useBlocklist = true
 P.unitframe.units.raid1.debuffs.filterLists.group5.enable = true
 P.unitframe.units.raid1.debuffs.filterLists.group5.filter = 'HARMFUL||!CROWD_CONTROL||!IMPORTANT||!RAID_PLAYER_DISPELLABLE||!RAID'
 P.unitframe.units.raid1.debuffs.filterLists.group5.candidates.isPriorityAura = true
+P.unitframe.units.raid1.debuffs.filterLists.group5.candidates.isBossOrRoleAura = 1
 P.unitframe.units.raid1.debuffs.filterLists.group5.useBlocklist = true
+P.unitframe.units.raid1.debuffs.filterLists.group6.enable = true
+P.unitframe.units.raid1.debuffs.filterLists.group6.filter = 'HARMFUL||!CROWD_CONTROL||!IMPORTANT||!RAID_PLAYER_DISPELLABLE||!RAID'
+P.unitframe.units.raid1.debuffs.filterLists.group6.candidates.isBossOrRoleAura = true
 
 P.unitframe.units.raid2 = CopyTable(P.unitframe.units.raid1)
 P.unitframe.units.raid2.debuffs.anchorPoint = 'RIGHT'
