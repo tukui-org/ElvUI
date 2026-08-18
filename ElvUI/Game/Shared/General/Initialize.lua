@@ -436,9 +436,9 @@ do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us t
 		end
 	end
 
-	function E:SetFontShadow(font, style, shadow)
-		font:SetShadowColor(0, 0, 0, (shadow and (style == '' and 1 or 0.6)) or 0)
-		font:SetShadowOffset((shadow and 1) or 0, (shadow and -1) or 0)
+	function E:SetFontShadow(font, style, shadow, sR, sG, sB, sA, sX, sY)
+		font:SetShadowColor(sR or 0, sG or 0, sB or 0, sA or (shadow and (style == '' and 1 or 0.6)) or 0)
+		font:SetShadowOffset(sX or (shadow and 1) or 0, sY or (shadow and -1) or 0)
 	end
 end
 

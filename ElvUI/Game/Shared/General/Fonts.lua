@@ -79,9 +79,8 @@ function E:SetFont(obj, font, size, style, sR, sG, sB, sA, sX, sY, r, g, b, a)
 		obj:SetScaleAnimationMode(slug and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
 	end
 
-	obj:SetFont(font, size, style) -- replicate whats in SetFontShadow mostly
-	obj:SetShadowColor(sR or 0, sG or 0, sB or 0, sA or (shadow and (style == '' and 1 or 0.6)) or 0)
-	obj:SetShadowOffset(sX or (shadow and 1) or 0, sY or (shadow and -1) or 0)
+	obj:SetFont(font, size, style)
+	E:SetFontShadow(obj, style, shadow, sR, sG, sB, sA, sX, sY)
 
 	if r and g and b then
 		obj:SetTextColor(r, g, b)
