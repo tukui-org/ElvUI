@@ -2166,9 +2166,9 @@ Ctrl + Left Click: Toggle between Allow, Block, or normal state.
 L["HOW_TO_FILTER"] = ([=[
 *How filtering works in ElvUI for Midnight|r
 
-All filter strings are combined with a *|| |r
+All filter strings are combined with a *|||r (a Separator, also called Pipe or Vertical bar)
+Joining multiple strings together with *|||r should be imagined as an *AND|r statement
 The very first string of each input box should always be *HARMFUL|r (For Debuffs) or *HELPFUL|r (For Buffs)
-Piping multiple strings together should be imagined as an *AND|r statement
 Example *HARMFUL|r||*RAID|r||*PLAYER|r means that it displays Debuffs which your current spec/talent setup can dispel
 
 If you randomly pipe together strings without a logic you won't see any auras at all
@@ -2178,7 +2178,7 @@ That translates into "The aura is a buff which is important, a cc and big defens
 It is possible to add a *NOT|r statement to a filter string using *!|r like so *!CROWD_CONTROL|r
 
 ElvUI offers up to 8 tabs of filter sets (Named *I -> VIII|r)
-All active(*green|r) tabs combined is what will show up on the main container
+All active (*green|r) tabs combined is what will show up on the main container
 That's because you can't display everything you want with just one single filter string
 It also means that, without fully understanding this new Blizzard system, you might see duplicate icons when a spell would return true in multiple of your filter set tabs.
 For 99% of cases we recommend to stick to our optimized default setups (also available via the *Reset Filters|r button).
@@ -2211,14 +2211,14 @@ L["FILTER_EXAMPLE_6_TEXT"] = "Maximum Duration 0"
 L["AVAILABLE_FILTERS"] = ("*Valid filter strings|r"):gsub('*', E.InfoColor)
 L["FILTER_STRING_HELPFUL_DESC"] = "Require it to be a Buff"
 L["FILTER_STRING_HARMFUL_DESC"] = "Require it to be a Debuff"
-L["FILTER_STRING_PLAYER_DESC"] = "Require unit: \"Player\"(You), \"Pet\"(Yours), \"Vehicle\"(Yours)"
-L["FILTER_STRING_RAID_DESC"] = "If configuring Buffs: \"Player\"(You) can apply this aura."
-L["FILTER_STRING_RAID_TEXT"] = "If configuring Debuffs: \"Player\" (you) can dispel it."
+L["FILTER_STRING_PLAYER_DESC"] = ("Require unit: \"Player\" ^(you)|r, \"Pet\" ^(yours)|r, \"Vehicle\" ^(yours)|r"):gsub('%^', E.InfoColor2)
+L["FILTER_STRING_RAID_DESC"] = ("If configuring Buffs: \"Player\" ^(you)|r can apply this aura."):gsub('%^', E.InfoColor2)
+L["FILTER_STRING_RAID_TEXT"] = ("If configuring Debuffs: \"Player\"  ^(you)|r can dispel it."):gsub('%^', E.InfoColor2)
 L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_DESC"] = "If configuring Buffs: Someone in your party or raid can purge or steal it."
 L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_TEXT"] = "If configuring Debuffs: Someone in your party or raid can dispel it."
-L["FILTER_STRING_RAID_IN_COMBAT_DESC"] = "When combined with HELPFUL and PLAYER it will show self-cast hots and shields."
+L["FILTER_STRING_RAID_IN_COMBAT_DESC"] = ("When combined with *HELPFUL|r and *PLAYER|r it will show self-cast hots and shields."):gsub('*', E.InfoColor)
 L["FILTER_STRING_RAID_IN_COMBAT_TEXT"] = "Whats being displayed matches the ElvUI Aura Indicator (Class) list in the Filters Dropdown."
-L["FILTER_STRING_CANCELABLE_DESC"] = "Works on HELPFUL||PLAYER to show Buffs \"Player\"(You) can click off / cancel with right-click."
+L["FILTER_STRING_CANCELABLE_DESC"] = ("Works on *HELPFUL|r||*PLAYER|r to show Buffs \"Player\" ^(you)|r can click off / cancel with right-click."):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
 L["FILTER_STRING_INCLUDE_NAME_PLATE_ONLY_DESC"] = "When added to the string, include nameplate-only flagged auras."
 L["FILTER_STRING_EXTERNAL_DEFENSIVE_DESC"] = "Replace ID with the numeric ID of your test aura. This will print true or false."
 L["FILTER_STRING_EXTERNAL_DEFENSIVE_TEXT"] = "Some examples: Pain suppression, Iron Bark, Life Cocoon"
