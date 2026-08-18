@@ -969,14 +969,7 @@ end
 function E:Auras_UpdateGate(container, unit)
 	if not E.AuraGates[container.unitframeType] then return end
 
-	local inRange, wasChecked = true
-	if UnitIsConnected(unit) then
-		inRange, wasChecked = UnitInRange(unit)
-
-		if E:NotSecretValue(wasChecked) and not wasChecked then
-			inRange = true -- range is unknown
-		end
-	end
+	local inRange = UnitIsConnected(unit) and UnitInRange(unit)
 
 	E:Auras_UpdateRange(container, inRange)
 end
