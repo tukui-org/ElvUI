@@ -969,7 +969,7 @@ end
 function E:Auras_UpdateGate(container, unit)
 	if not E.AuraGates[container.unitframeType] then return end
 
-	local inRange, wasChecked = false
+	local inRange, wasChecked = true
 	if UnitIsConnected(unit) then
 		inRange, wasChecked = UnitInRange(unit)
 
