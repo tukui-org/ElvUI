@@ -134,7 +134,7 @@ function E:Auras_OnEvent(event, arg1, arg2)
 	elseif event == 'UNIT_IN_RANGE_UPDATE' then
 		for container, unit in next, E.AuraGated do
 			if arg1 == unit then
-				E:Auras_UpdateRange(container, arg2)
+				E:Auras_UpdateRange(container, UnitIsConnected(unit) and arg2)
 			end
 		end
 	elseif event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
