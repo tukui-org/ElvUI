@@ -2177,6 +2177,11 @@ That translates into "The aura is a buff which is important, a cc and big defens
 
 It is possible to add a *NOT|r statement to a filter string using *!|r like so *!CROWD_CONTROL|r
 
+ElvUI offers up to 8 tabs of filter sets (Named *I -> VIII|r)
+All active(*green|r) tabs combined is what will show up on the main container
+That's because you can't display everything you want with just one single filter string
+It also means that, without fully understanding this new Blizzard system, you might see duplicate icons when a spell would return true in multiple of your filter set tabs. For 99% of cases we recommend to stick to our optimized default setups (also available via the *Reset Filters|r button).
+
 Enabling one or more checkboxes such as *Player or Pet|r or *Stealable|r adds the statement as an *AND|r requirement
 For example *HELPFUL|r + enabled checkbox for *Use: Allow|r will display all Buffs added via ID in *Whitelist|r
 And *HARMFUL|r + enabled checkbox for *Use: Block|r will display all Debuffs except the IDs in *Blacklist|r
