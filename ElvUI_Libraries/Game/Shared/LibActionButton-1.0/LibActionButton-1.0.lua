@@ -2429,7 +2429,7 @@ if WoWRetail then
 		local locShouldReplaceCooldown = locInfo.shouldReplaceNormalCooldown and self.config.lossOfControlCooldown
 		local showLoC = locInfo.isActive and self.config.lossOfControlCooldown
 		local showCharge = not locShouldReplaceCooldown and chargeInfo.isActive
-		local showNormal = not showCharge and not locShouldReplaceCooldown and cooldownInfo.isActive
+		local showNormal = not locShouldReplaceCooldown and cooldownInfo.isActive
 
 		SetOrClearCooldown(self.cooldown, showNormal, self:GetCooldownDuration())
 		SetOrClearCooldown(self.chargeCooldown, showCharge, self:GetChargeDuration())
