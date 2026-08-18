@@ -95,21 +95,11 @@ local function NewSealStyle()
 end
 
 function S:QuestInfo_StyleScrollFrame(scrollFrame, widthOverride, heightOverride, inset)
-	if not scrollFrame.spellTex then
-		scrollFrame.spellTex = scrollFrame:CreateTexture(nil, 'BACKGROUND', nil, 1)
-	end
-
 	local material = GetQuestBackgroundMaterial()
 	if (material and material ~= 'Parchment') or NewSealStyle() then
 		scrollFrame.Center:Hide()
-		scrollFrame.spellTex:Hide()
 	else
 		scrollFrame.Center:Show()
-		scrollFrame.spellTex:Show()
-		scrollFrame.spellTex:SetTexture([[Interface\QuestFrame\QuestBG]])
-		scrollFrame.spellTex:Point('TOPLEFT', inset and 1 or 0, inset and -1 or 0)
-		scrollFrame.spellTex:Size(widthOverride or 509, heightOverride or 618)
-		scrollFrame.spellTex:SetTexCoord(0, 1, 0.02, 1)
 	end
 end
 
@@ -121,10 +111,6 @@ S.QuestInfo_StyleScrollFrames = {
 		width = 509, height = 630, inset = false,
 		custom = function(self)
 			self:Height(self:GetHeight() - 2)
-
-			if not E.private.skins.parchmentRemoverEnable then
-				self.spellTex:Height(self:GetHeight() + 217)
-			end
 		end
 	}
 }
@@ -375,10 +361,10 @@ function S:BlizzardQuestFrames()
 	_G.QuestRewardScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 
-	_G.QuestDetailScrollChildFrame:StripTextures(true)
-	_G.QuestRewardScrollChildFrame:StripTextures(true)
-	_G.QuestFrameProgressPanel:StripTextures(true)
-	_G.QuestFrameRewardPanel:StripTextures(true)
+	_G.QuestDetailScrollChildFrame:StripTextures(nil, true)
+	_G.QuestRewardScrollChildFrame:StripTextures(nil, true)
+	_G.QuestFrameProgressPanel:StripTextures(nil, true)
+	_G.QuestFrameRewardPanel:StripTextures(nil, true)
 
 	_G.QuestRewardScrollFrame:Height(_G.QuestRewardScrollFrame:GetHeight() - 2)
 
@@ -403,6 +389,11 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameProgressPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameGreetingPanel.SealMaterialBG:SetAlpha(0)
 
+		_G.QuestFrameDetailPanel.Bg:SetAlpha(0)
+		_G.QuestFrameRewardPanel.Bg:SetAlpha(0)
+		_G.QuestFrameProgressPanel.Bg:SetAlpha(0)
+		_G.QuestFrameGreetingPanel.Bg:SetAlpha(0)
+
 		_G.QuestModelScene.ModelTextFrame:StripTextures()
 		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
@@ -412,11 +403,6 @@ function S:BlizzardQuestFrames()
 		_G.QuestRewardScrollFrame:SetTemplate('Transparent')
 		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('Transparent')
 
-		_G.QuestFrameDetailPanel.Bg:SetAlpha(0)
-		_G.QuestFrameRewardPanel.Bg:SetAlpha(0)
-		_G.QuestFrameProgressPanel.Bg:SetAlpha(0)
-		_G.QuestFrameGreetingPanel.Bg:SetAlpha(0)
-
 		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame, nil, nil, true)
 		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame, nil, nil, true)
 
@@ -424,6 +410,16 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameRewardPanel.SealMaterialBG:SetInside(_G.QuestRewardScrollFrame)
 		_G.QuestFrameProgressPanel.SealMaterialBG:SetInside(_G.QuestProgressScrollFrame)
 		_G.QuestFrameGreetingPanel.SealMaterialBG:SetInside(_G.QuestGreetingScrollFrame)
+
+		_G.QuestFrameDetailPanel.Bg:SetInside(_G.QuestDetailScrollFrame)
+		_G.QuestFrameRewardPanel.Bg:SetInside(_G.QuestRewardScrollFrame)
+		_G.QuestFrameProgressPanel.Bg:SetInside(_G.QuestProgressScrollFrame)
+		_G.QuestFrameGreetingPanel.Bg:SetInside(_G.QuestGreetingScrollFrame)
+
+		_G.QuestDetailScrollFrame.Center:SetAlpha(0)
+		_G.QuestRewardScrollFrame.Center:SetAlpha(0)
+		_G.QuestProgressScrollFrame.Center:SetAlpha(0)
+		_G.QuestGreetingScrollFrame.Center:SetAlpha(0)
 
 		S:HandleBlizzardRegions(_G.QuestModelScene.ModelTextFrame)
 	end
