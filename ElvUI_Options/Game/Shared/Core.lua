@@ -970,7 +970,7 @@ do -- shared filters
 		local group = ACH:Group(function() return format('|cFF%s%s|r', enable() and '33ff33' or 'ff3333', C.Values.Roman[index]) end, nil, index, nil, mainGet, mainSet, nil, not E.Retail)
 
 		group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-		group.args.filter = ACH:Input(L["Big Boy String"], nil, 2, nil, 'full', nil, nil, nil, nil, C.VerifyFilter)
+		group.args.filter = ACH:Input(L["Filter String"], nil, 2, nil, 'full', nil, nil, nil, nil, C.VerifyFilter)
 
 		group.args.lists = ACH:Group(' ', nil, 10)
 		group.args.lists.args.allowList = ACH:Select(L["Allow List"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
