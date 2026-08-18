@@ -452,6 +452,7 @@ Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.stackThreshold 
 Filters.mainOptions.args.spellGroup.args.ownOnly = ACH:Toggle(L["Casted by Player Only"], L["Only highlight the aura that originated from you and not others."], 5, nil, nil, nil, nil, nil, nil, function() return selectedFilter ~= 'Aura Highlight' end)
 
 Filters.help = ACH:Group(L["Help"], nil, 2, nil, nil, nil, nil, E.Retail)
+Filters.filtersGuide = C:GetOptionsTable_FiltersGuide(10) -- Retail only
 
 local FilterHelp = {
 	L["*Boss:|r ^Auras (debuffs only?) cast by a boss unit.|r"],

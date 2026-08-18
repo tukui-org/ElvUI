@@ -2211,7 +2211,7 @@ L["FILTER_EXAMPLE_6_TEXT"] = "Maximum Duration 0"
 L["AVAILABLE_FILTERS"] = ("*Valid filter strings|r"):gsub('*', E.InfoColor)
 L["FILTER_STRING_HELPFUL_DESC"] = "Restricts to buffs"
 L["FILTER_STRING_HARMFUL_DESC"] = "Restricts to debuffs"
-L["FILTER_STRING_PLAYER_DESC"] = "Restricts to those from the current: \"Player\" or their \"Pets\"/\"Vehicles\"|r"
+L["FILTER_STRING_PLAYER_DESC"] = ("Restricts to those from the current *Player|r, their *Pets|r, or *Vehicle|r"):gsub('*', E.InfoColor)
 L["FILTER_STRING_RAID_DESC"] = ("Restricts to those you could apply ^(buffs only)|r or those you can dispel ^(debuffs only)|r"):gsub('%^', E.InfoColor2)
 L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_DESC"] = "Restricts to those you, your party or your raid can dispell/purge/steal"
 L["FILTER_STRING_RAID_IN_COMBAT_DESC"] = "Restricts to HoTs and shields"
@@ -2225,7 +2225,7 @@ L["FILTER_STRING_BIG_DEFENSIVE_DESC"] = "Restricts to buffs deemed important per
 L["FILTER_STRING_BIG_DEFENSIVE_TEXT"] = "Some examples: Ice Block, Bubble, Blur, Barkskin"
 L["FILTER_STRING_IMPORTANT_DESC"] = "Restricts to debuffs/buffs deemed very important by Blizzard"
 L["FILTER_STRING_IMPORTANT_TEXT"] = "Those are also special helpful auras that show on enemy even if non-stealable."
-L["FILTER_STRING_DISPELLABLE_DESC"] = "Restricts to buffs/debuffs that are dispellable/purgable/stealable by any class"
+L["FILTER_STRING_DISPELLABLE_DESC"] = ("Restricts to buffs/debuffs that are *dispellable|r, *purgable|r, or *stealable|r by ANY class"):gsub('*', E.InfoColor)
 
 L["FILTER_TEST_COMMAND_DESC"] = ("*Test Command|r"):gsub('*', E.InfoColor)
 L["FILTER_TEST_COMMAND_TEXT"] = ("Replace ID with the numeric ID of your test aura. This will print *true|r or *false|r."):gsub('*', E.InfoColor)

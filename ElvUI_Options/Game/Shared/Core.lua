@@ -1042,7 +1042,7 @@ do -- shared filters
 	end
 
 	function C:GetOptionsTable_FiltersGuide(order)
-		local config = ACH:Group(L["Filters Guide"], nil, order or 100, 'tab')
+		local config = ACH:Group(L["Filters Guide"], nil, order or 100, 'tab', nil, nil, nil, not E.Retail)
 		config.args.howToFilter = ACH:Group(L["How to filter"], nil, 1)
 		config.args.howToFilter.args.desc = ACH:Description(L["HOW_TO_FILTER"], 1, 'medium', nil, nil, nil, nil, 'full')
 
@@ -1051,7 +1051,7 @@ do -- shared filters
 		config.args.filterExamples = examples
 
 		for key, data in next, listExamples do
-			AddGuideRow(examples, key, data.order, data.text, data.desc, data.value, nil, 400)
+			AddGuideRow(examples, key, data.order, data.text, data.desc, data.value, nil, 300)
 		end
 
 		local available = ACH:Group(L["Available Filters"], nil, 3)
@@ -1059,7 +1059,7 @@ do -- shared filters
 		config.args.availableFilter = available
 
 		for key, data in next, listFilters do
-			AddGuideRow(available, key, data.order, data.text, data.desc, key, data.testCommand, 400)
+			AddGuideRow(available, key, data.order, data.text, data.desc, key, data.testCommand, 300)
 		end
 
 		config.args.filterCheckboxes = ACH:Group(L["Filter checkboxes"], nil, 4)
@@ -1067,7 +1067,6 @@ do -- shared filters
 
 		return config
 	end
-
 end
 
 do -- shared cooldown
