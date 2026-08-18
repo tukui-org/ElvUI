@@ -55,26 +55,30 @@ function NP:ResetAuraPriority()
 		local default = P.nameplates.units[unitType]
 		if default then
 			local buffs = content.buffs
-			if buffs and buffs.filters then
-				buffs.filters.priority = default.buffs.filters.priority
+			if buffs then
+				if buffs.filters then
+					buffs.filters.priority = default.buffs.filters.priority
+				end
+
+				if buffs.filterLists then
+					UF:ResetFilters_AuraGroup(buffs.filterLists, default.buffs.filterLists)
+				end
 			end
 
 			local debuffs = content.debuffs
-			if debuffs and debuffs.filters then
-				debuffs.filters.priority = default.debuffs.filters.priority
+			if debuffs then
+				if debuffs.filters then
+					debuffs.filters.priority = default.debuffs.filters.priority
+				end
+
+				if debuffs.filterLists then
+					UF:ResetFilters_AuraGroup(debuffs.filterLists, default.debuffs.filterLists)
+				end
 			end
 
 			local auras = content.auras
-			if auras then
+			if auras and auras.filterLists then
 				UF:ResetFilters_AuraGroup(auras.filterLists, default.auras.filterLists)
-			end
-
-			if buffs then
-				UF:ResetFilters_AuraGroup(buffs.filterLists, default.buffs.filterLists)
-			end
-
-			if debuffs then
-				UF:ResetFilters_AuraGroup(debuffs.filterLists, default.debuffs.filterLists)
 			end
 		end
 	end

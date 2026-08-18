@@ -304,18 +304,25 @@ function UF:ResetAuraPriority()
 		local default = P.unitframe.units[unitName]
 		if default then
 			local buffs = content.buffs
-			if buffs and buffs.filters then
-				buffs.filters.priority = default.buffs.filters.priority
+			if buffs then
+				if buffs.filters then
+					buffs.filters.priority = default.buffs.filters.priority
+				end
+
+				if buffs.filterLists then
+					UF:ResetFilters_AuraGroup(buffs.filterLists, default.buffs.filterLists)
+				end
 			end
 
 			local debuffs = content.debuffs
-			if debuffs and debuffs.filters then
-				debuffs.filters.priority = default.debuffs.filters.priority
-			end
+			if debuffs then
+				if debuffs.filters then
+					debuffs.filters.priority = default.debuffs.filters.priority
+				end
 
-			local aurabar = content.aurabar
-			if aurabar then
-				aurabar.priority = default.aurabar.priority
+				if debuffs.filterLists then
+					UF:ResetFilters_AuraGroup(debuffs.filterLists, default.debuffs.filterLists)
+				end
 			end
 
 			local auras = content.auras
@@ -323,16 +330,17 @@ function UF:ResetAuraPriority()
 				UF:ResetFilters_AuraGroup(auras.filterLists, default.auras.filterLists)
 			end
 
-			if buffs then
-				UF:ResetFilters_AuraGroup(buffs.filterLists, default.buffs.filterLists)
-			end
-
-			if debuffs then
-				UF:ResetFilters_AuraGroup(debuffs.filterLists, default.debuffs.filterLists)
-			end
-
+			local aurabar = content.aurabar
 			if aurabar then
-				UF:ResetFilters_AuraGroup(aurabar.filterLists, default.aurabar.filterLists)
+				aurabar.priority = default.aurabar.priority
+
+				if aurabar.friendlyFilter and aurabar.friendlyFilter.filterLists then
+					UF:ResetFilters_AuraGroup(aurabar.friendlyFilter.filterLists, default.aurabar.friendlyFilter.filterLists)
+				end
+
+				if aurabar.enemyFilter and aurabar.enemyFilter.filterLists then
+					UF:ResetFilters_AuraGroup(aurabar.enemyFilter.filterLists, default.aurabar.enemyFilter.filterLists)
+				end
 			end
 		end
 	end
