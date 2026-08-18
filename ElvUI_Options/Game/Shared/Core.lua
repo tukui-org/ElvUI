@@ -1021,21 +1021,21 @@ do -- shared filters
 		DISPELLABLE				= { order = 13,	desc = L["FILTER_STRING_DISPELLABLE_DESC"],				text = nil },
 	}
 
-	local function AddGuideInput(group, key, order, name, value)
-		local input = ACH:Input(name or ' ', nil, order, nil, 'full', function() return (value:gsub('|', '||')) end)
+	local function AddGuideInput(group, key, order, text, desc, value, width)
+		local input = ACH:Input(desc or '', text or ' ', order, nil, width or 'full', function() return (value:gsub('|', '||')) end)
 		input.focusSelect = true
 		group.args[key] = input
 	end
 
-	local function AddGuideRow(parent, key, order, text, desc, value, testCommand)
+	local function AddGuideRow(parent, key, order, text, desc, value, cmd, width)
 		local pair = ACH:Group(desc or ' ', nil, order)
-		pair.args.desc = ACH:Description(text or '', 1, 'medium', nil, nil, nil, nil, 'full')
+		pair.args.desc = ACH:Description(text or '', 1, 'medium', nil, nil, nil, nil, width or 'full')
 		pair.inline = true
 
-		AddGuideInput(pair, 'input', 2, '', value)
+		AddGuideInput(pair, 'input', 2, '', nil, value, width)
 
-		if testCommand then
-			AddGuideInput(pair, 'testCommand', 3, L["FILTER_TEST_COMMAND"], testCommand)
+		if cmd then
+			AddGuideInput(pair, 'testCommand', 3, L["FILTER_TEST_COMMAND_TEXT"], L["FILTER_TEST_COMMAND_DESC"], cmd, width)
 		end
 
 		parent.args[key] = pair
@@ -1051,7 +1051,7 @@ do -- shared filters
 		config.args.filterExamples = examples
 
 		for key, data in next, listExamples do
-			AddGuideRow(examples, key, data.order, data.text, data.desc, data.value)
+			AddGuideRow(examples, key, data.order, data.text, data.desc, data.value, nil, 400)
 		end
 
 		local available = ACH:Group(L["Available Filters"], nil, 3)
@@ -1059,7 +1059,7 @@ do -- shared filters
 		config.args.availableFilter = available
 
 		for key, data in next, listFilters do
-			AddGuideRow(available, key, data.order, data.text, data.desc, key, data.testCommand)
+			AddGuideRow(available, key, data.order, data.text, data.desc, key, data.testCommand, 400)
 		end
 
 		config.args.filterCheckboxes = ACH:Group(L["Filter checkboxes"], nil, 4)
