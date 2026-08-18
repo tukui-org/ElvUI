@@ -593,7 +593,9 @@ function A:UpdateHeader(header)
 			minWidth, minHeight  = width, (header.spacing + height) * db.wrapAfter
 		end
 
-		header:SetSize(minWidth, minHeight)
+		header:Size(minWidth, minHeight)
+		header:ClearAllPoints()
+		header:Point(header.initialAnchor, header.mover)
 
 		header.filterLists = db.filterLists
 		UF:GroupFilters(header, db.filterLists) -- build the groups
@@ -755,18 +757,18 @@ function A:Initialize()
 
 			A.BuffFrame = buff
 
-			A:UpdateHeader(A.BuffFrame)
 			E:Auras_SetEnchantments(A.BuffFrame)
 			E:Auras_GroupUnit(A.BuffFrame, 'player')
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
-			A:UpdateHeader(A.BuffFrame)
 		end
 
 		A.BuffFrame:ClearAllPoints()
 		A.BuffFrame:SetPoint('TOPRIGHT', mapAnchor, 'TOPLEFT', -mapOffsetX, -mapOffsetY)
 
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
+
+		A:UpdateHeader(A.BuffFrame)
 	end
 
 	if E.private.auras.debuffsHeader then
@@ -778,17 +780,17 @@ function A:Initialize()
 
 			A.DebuffFrame = debuff
 
-			A:UpdateHeader(A.DebuffFrame)
 			E:Auras_GroupUnit(A.DebuffFrame, 'player')
 		else
 			A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
-			A:UpdateHeader(A.DebuffFrame)
 		end
 
 		A.DebuffFrame:ClearAllPoints()
 		A.DebuffFrame:SetPoint('BOTTOMRIGHT', mapAnchor, 'BOTTOMLEFT', -mapOffsetX, -mapOffsetY)
 
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
+
+		A:UpdateHeader(A.DebuffFrame)
 	end
 end
 
