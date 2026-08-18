@@ -131,23 +131,16 @@ function E:Auras_OnEvent(event, arg1, arg2)
 				end
 			end
 		end
+	elseif event == 'UNIT_IN_RANGE_UPDATE' then
+		for container, unit in next, E.AuraGated do
+			if arg1 == unit then
+				E:Auras_UpdateRange(container, arg2)
+			end
+		end
 	elseif event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
 		for container, unit in next, E.AuraUnits do
 			if arg1 == unit then
 				container:UpdateAllAuras()
-			end
-		end
-	else
-		local range, distance = event == 'UNIT_IN_RANGE_UPDATE', event == 'UNIT_DISTANCE_CHECK_UPDATE'
-		if range or distance then
-			for container, unit in next, E.AuraGated do
-				if arg1 == unit then
-					if range then
-						E:Auras_UpdateRange(container, arg2)
-					else
-						E:Auras_UpdateGate(container, unit)
-					end
-				end
 			end
 		end
 	end
@@ -1049,7 +1042,6 @@ function E:InitializeAuras()
 	local eventFrame = CreateFrame('Frame')
 	eventFrame:RegisterEvent('UNIT_FACTION')
 	eventFrame:RegisterEvent('UNIT_IN_RANGE_UPDATE')
-	eventFrame:RegisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
 	eventFrame:RegisterEvent('UNIT_TARGETABLE_CHANGED')
 	eventFrame:RegisterEvent('PLAYER_TARGET_CHANGED')
 	eventFrame:RegisterEvent('PLAYER_FOCUS_CHANGED')
