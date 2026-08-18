@@ -512,7 +512,7 @@ function E:Auras_UpdateButton(container, button)
 end
 
 function E:Auras_IsInRestriction()
-	return E:IsRestrictedEncounter() or E:IsRestrictedCombat() or E:IsRestrictedPvPMatch()
+	return E:IsRestrictedCombat() or E:IsRestrictedEncounter() or E:IsRestrictedChallengeMode() or E:IsRestrictedPvPMatch()
 end
 
 function E:Auras_UpdateButtons(container)

@@ -1467,8 +1467,12 @@ function E:IsRestrictedEncounter()
 	return GetCVarBool('addonEncounterRestrictionsForced') or E:IsInRestrictionState('Encounter')
 end
 
+function E:IsRestrictedChallengeMode()
+	return GetCVarBool('addonChallengeModeRestrictionsForced') or E:IsInRestrictionState('ChallengeMode')
+end
+
 function E:IsRestrictedChat()
-	return GetCVarBool('addonChatRestrictionsForced') or (E:IsInRestrictionState('ChallengeMode') or E:IsInRestrictionState('Encounter'))
+	return GetCVarBool('addonChatRestrictionsForced') or (E:IsRestrictedChallengeMode() or E:IsRestrictedEncounter())
 end
 
 function E:UnregisterGameEvent(event)
