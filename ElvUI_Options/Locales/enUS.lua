@@ -2188,8 +2188,8 @@ For example *HELPFUL|r + enabled checkbox for *Use: Allow|r will display all Buf
 And *HARMFUL|r + enabled checkbox for *Use: Block|r will display all Debuffs except the IDs in *Block List|r (default:* Blacklist|r)
 
 The following *Blizzard restrictions|r apply at all times:
-1. *Allow List is limited|r to "You can only allow/track Buffs on friendly units via ID"
-2. *Block List is limited|r to "You can only block/block Debuffs on enemy units via ID"
+1. *Allow List is limited|r to "You can only allow Buffs on friendly units via ID"
+2. *Block List is limited|r to "You can only block Debuffs on enemy units via ID"
 3. You can NOT allow Debuffs on friendly units
 4. You can NOT block Buffs on enemy units
 ]=]):gsub('*', E.InfoColor):gsub('%^', E.InfoColor2)
