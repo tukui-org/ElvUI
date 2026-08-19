@@ -216,6 +216,7 @@ function UF:Configure_AuraBars(frame)
 			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 			bars.countPosition, bars.countXOffset, bars.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
+			bars.textFont, bars.textFontSize, bars.textFontOutline = UF.db.font, UF.db.fontSize, UF.db.fontOutline
 			bars.friendlyFilter = db.friendlyFilter.filterLists
 			bars.enemyFilter = db.enemyFilter.filterLists
 			bars.forceShowAuras = frame.forceShowAuras
@@ -226,6 +227,7 @@ function UF:Configure_AuraBars(frame)
 			E:Auras_GroupUnit(bars, frame.__unit)
 			E:Auras_SetContainer(bars)
 			E:Auras_SetLineSize(bars)
+			E:Auras_UpdateButtons(bars)
 
 			bars:SetEnabled(true)
 		else

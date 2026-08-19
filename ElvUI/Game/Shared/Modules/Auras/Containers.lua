@@ -333,7 +333,6 @@ function E:Auras_CreateButton(button)
 		textFrame.time = timeText
 
 		local nameText = textFrame:CreateFontString(nil, 'OVERLAY')
-		nameText:FontTemplate(nil, 14)
 		nameText:Point('LEFT', button, 2, 0)
 		textFrame.nameText = nameText
 	end
@@ -501,8 +500,10 @@ function E:Auras_UpdateButton(container, button)
 			button:SetApplicationCount(count)
 		end
 
-		if container.isAuraBar then
-			button:SetSpellName(textFrame.nameText)
+		local name = container.isAuraBar and textFrame.nameText
+		if name then
+			name:FontTemplate(container.textFont, container.textFontSize, container.textFontOutline)
+			button:SetSpellName(name)
 		end
 	end
 
