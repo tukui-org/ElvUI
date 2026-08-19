@@ -67,7 +67,7 @@ function S:MerchantFrame()
 	_G.MerchantPageText:Point('BOTTOM', -2, 10)
 
 	S:HandleNextPrevButton(_G.MerchantNextPageButton, nil, nil, nil, true)
-	_G.MerchantNextPageButton:Point('BOTTOMRIGHT', _G.MerchantFrame, 'BOTTOMRIGHT', -11, 10)
+	_G.MerchantNextPageButton:Point('BOTTOMRIGHT', _G.MerchantFrame, 'BOTTOMRIGHT', -10, 4)
 	_G.MerchantNextPageButton:Size(24)
 
 	S:HandleNextPrevButton(_G.MerchantPrevPageButton, nil, nil, nil, true)
@@ -97,7 +97,7 @@ function S:MerchantFrame()
 
 	S:HandleFrame(_G.MerchantBuyBackItem, true, nil, -1, 3, 2, -2)
 	_G.MerchantBuyBackItem:Height(46)
-	_G.MerchantBuyBackItem:PointXY(0, -16)
+	_G.MerchantBuyBackItem:PointXY(0, -38)
 
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
@@ -167,8 +167,6 @@ function S:MerchantFrame()
 				_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
 			end
 		end
-
-		_G.MerchantRepairText:Point('BOTTOMLEFT', 14, 69)
 
 		MerchantItemPoint()
 	end)
