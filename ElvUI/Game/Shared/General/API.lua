@@ -1475,6 +1475,10 @@ function E:IsRestrictedChat()
 	return GetCVarBool('addonChatRestrictionsForced') or (E:IsRestrictedChallengeMode() or E:IsRestrictedEncounter())
 end
 
+function E:IsRestrictedAuras()
+	return E:IsRestrictedCombat() or E:IsRestrictedEncounter() or E:IsRestrictedChallengeMode() or E:IsRestrictedPvPMatch()
+end
+
 function E:UnregisterGameEvent(event)
 	if UnregisterInternalEvent then
 		UnregisterInternalEvent(event)
