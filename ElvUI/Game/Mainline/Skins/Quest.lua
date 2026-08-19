@@ -9,7 +9,6 @@ local GetMoney = GetMoney
 local GetQuestID = GetQuestID
 local CreateFrame = CreateFrame
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
-local GetQuestBackgroundMaterial = GetQuestBackgroundMaterial
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
 local hooksecurefunc = hooksecurefunc
 
