@@ -345,33 +345,33 @@ local function OnAttributeChanged(self, attr)
 end
 
 function UF:HeaderForceShow(header, group, configMode)
-	if group:IsShown() then
-		group.forceShow = header.forceShow
-		group.forceShowAuras = header.forceShowAuras
+	if not group:IsShown() then return end
 
-		if not group.hasOnAttributeChanged then
-			group:HookScript('OnAttributeChanged', OnAttributeChanged)
-			group.hasOnAttributeChanged = true
+	group.forceShow = header.forceShow
+	group.forceShowAuras = header.forceShowAuras
+
+	if not group.hasOnAttributeChanged then
+		group:HookScript('OnAttributeChanged', OnAttributeChanged)
+		group.hasOnAttributeChanged = true
+	end
+
+	if configMode then
+		for key in pairs(attributeBlacklist) do
+			group:SetAttribute(key, nil)
 		end
 
-		if configMode then
-			for key in pairs(attributeBlacklist) do
-				group:SetAttribute(key, nil)
-			end
+		OnAttributeChanged(group)
 
-			OnAttributeChanged(group)
-
-			group:Update()
-		else
-			for key in pairs(attributeBlacklist) do
-				group:SetAttribute(key, true)
-			end
-
-			UF:UnshowChildUnits(group)
-			group:SetAttribute('startingIndex', 1)
-
-			group:Update()
+		group:Update()
+	else
+		for key in pairs(attributeBlacklist) do
+			group:SetAttribute(key, true)
 		end
+
+		UF:UnshowChildUnits(group)
+		group:SetAttribute('startingIndex', 1)
+
+		group:Update()
 	end
 end
 
