@@ -852,7 +852,7 @@ function CH:EditBoxOnKeyDown(key)
 
 	-- Override to allow using default editbox history for secure commands
 	-- Require holding alt when restricted: will use default editbox history
-	if IsAltKeyDown() or E:IsRestrictedChat() then return end
+	if IsAltKeyDown() or E:IsRestrictedInstance() then return end
 
 	local maxLines = #lines
 	if maxLines == 0 then return end
