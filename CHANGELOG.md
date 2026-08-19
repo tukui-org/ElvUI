@@ -1,3 +1,11 @@
+### Version 15.24 [ August 19th 2026 ]
+*   **Major Filter Changes**
+    *   Please read 15.23 log entry.
+*   Quest parchment wasn't appearing properly.
+*   Party buffs weren't displaying properly for player.
+*   Unitframe additional power was throwing an error.
+*   Unitframe auras obey their strata and level settings.
+
 ### Version 15.23 [ August 19th 2026 ]
 *   **Major Filter Changes** with in-game Guide in filter section (also a Filter Guide tab in aura sections).
 *   **Cancel Auras**  Player auras can be right-click canceled off on unitframes (when click-through is disabled).
