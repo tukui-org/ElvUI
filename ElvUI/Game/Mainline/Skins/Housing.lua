@@ -309,6 +309,19 @@ function S:Blizzard_HousingBulletinBoard()
 	end
 end
 
+function S:Blizzard_HousingCharter()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
+
+	local signatureDialog = _G.HousingCharterRequestSignatureDialog
+	if signatureDialog then
+		signatureDialog:StripTextures()
+		signatureDialog:CreateBackdrop('Transparent')
+
+		S:HandleButton(signatureDialog.ConfirmButton)
+		S:HandleButton(signatureDialog.CancelButton)
+	end
+end
+
 function S:Blizzard_HouseList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
@@ -664,6 +677,7 @@ function S:Blizzard_HousingBlueprint()
 end
 
 S:AddCallbackForAddon('Blizzard_HouseList')
+S:AddCallbackForAddon('Blizzard_HousingCharter')
 S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
 S:AddCallbackForAddon('Blizzard_HousingCornerstone')
 S:AddCallbackForAddon('Blizzard_HousingCreateNeighborhood')
