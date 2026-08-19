@@ -26,6 +26,7 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local UnitHasIncomingResurrection = UnitHasIncomingResurrection
+
 local RESURRECT_ICON = [[Interface\RaidFrame\Raid-Icon-Rez]]
 local RESURRECT_ATLAS = 'RaidFrame-Icon-Rez'
 
