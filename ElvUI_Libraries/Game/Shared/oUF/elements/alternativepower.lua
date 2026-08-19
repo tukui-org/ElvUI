@@ -62,6 +62,7 @@ local UnitThreatSituation = UnitThreatSituation
 local UnitPlayerControlled = UnitPlayerControlled
 local GetUnitPowerBarInfoByID = GetUnitPowerBarInfoByID
 local GetUnitPowerBarStringsByID = GetUnitPowerBarStringsByID
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local UnitPowerPercent = UnitPowerPercent
 local UnitInPartyIsAI = UnitInPartyIsAI
 local UnitPowerBarID = UnitPowerBarID
@@ -133,8 +134,8 @@ local function UpdateColor(self, event, unit, powerType)
 				color = self.colors.smooth
 			end
 		end
-	elseif oUF:NotSecretValue(classToken) and classToken and ((element.colorClass and isPlayerOrAI) or (element.colorClassNPC and not isPlayerOrAI)) then
-		color = self.colors.class[classToken]
+	elseif (element.colorClass and isPlayerOrAI) or (element.colorClassNPC and not isPlayerOrAI) then
+		color = (oUF:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif(element.colorSelection and unitSelectionType) then
 		color = self.colors.selection[unitSelectionType]
 	elseif(element.colorReaction and unitReaction) then

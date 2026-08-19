@@ -101,6 +101,7 @@ local UnitPowerType = UnitPowerType
 local UnitReaction = UnitReaction
 local UnitThreatSituation = UnitThreatSituation
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 
 -- sourced from Blizzard_UnitFrame/UnitPowerBarAlt.lua
 local ALTERNATE_POWER_INDEX = Enum.PowerType.Alternate or 10
@@ -188,8 +189,8 @@ local function UpdateColor(self, event, unit)
 				color = self.colors.smooth
 			end
 		end
-	elseif oUF:NotSecretValue(classToken) and classToken and ((element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer) or (element.colorClassPet and unitControlled and not isPlayer)) then
-		color = self.colors.class[classToken]
+	elseif (element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer) or (element.colorClassPet and unitControlled and not isPlayer) then
+		color = (oUF:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif(element.colorSelection and unitSelectionType) then
 		color = self.colors.selection[unitSelectionType]
 	elseif(element.colorReaction and unitReaction) then
