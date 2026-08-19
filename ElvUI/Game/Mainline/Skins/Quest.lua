@@ -95,7 +95,8 @@ local function NewSealStyle()
 end
 
 function S:QuestInfo_StyleScrollFrame(scrollFrame)
-	scrollFrame.Center:SetShown(GetQuestBackgroundMaterial() == 'Parchment' or not NewSealStyle())
+	local material = GetQuestBackgroundMaterial()
+	scrollFrame.Center:SetShown((not material or material == 'Parchment') and not NewSealStyle())
 end
 
 S.QuestInfo_StyleScrollFrames = {
