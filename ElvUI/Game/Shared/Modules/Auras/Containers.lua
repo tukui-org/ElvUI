@@ -970,8 +970,7 @@ end
 function E:Auras_UpdateGate(container, unit)
 	if not E.AuraGates[container.unitframeType] then return end
 
-	local owner = container.owner
-	if owner.forceShowAuras then
+	if container.forceShowAuras then
 		E:Auras_UpdateRange(container, true)
 	else
 		local inRange = UnitIsConnected(unit) and UnitInRange(unit)
@@ -1017,7 +1016,6 @@ end
 
 function E:Auras_Create(parent, which, override)
 	local container = CreateFrame('AuraContainer', override or (parent:GetName() .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
-	container.owner = parent
 	container.known = {} -- both
 
 	container.keys = {} -- indicators
