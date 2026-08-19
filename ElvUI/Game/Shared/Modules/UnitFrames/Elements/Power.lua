@@ -250,7 +250,7 @@ function UF:Configure_Power(frame, healthUpdate)
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentPower, frame.Power, frame.Power.bg, nil, UF.db.colors.invertPower, db.power.reverseFill)
 
-	if not frame.unit then -- this is a unit token failure case
+	if not frame.__unit then -- this is a unit token failure case
 		local color = ElvUF.colors.power.MANA
 		UF:SetStatusBarColor(power, color.r, color.g, color.b)
 	end
@@ -301,7 +301,7 @@ do
 				end
 
 				if r then
-					UF:SetStatusBarColor(predictionBar, r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
+					UF:SetStatusBarColor(predictionBar, r, g, b, nil, UF.multiplierPrediction)
 				end
 			end
 		end

@@ -148,7 +148,7 @@ function UF:UpdateThreat(unit, status, color)
 	local db = parent.db
 	if not db then return end
 
-	if (unit and parent.unit == unit) and status and status > (db.threatPrimary and 1 or 0) then
+	if (unit and parent.__unit == unit) and status and status > (db.threatPrimary and 1 or 0) then
 		local r, g, b = color:GetRGB()
 		UF:ThreatHandler(self, parent, db.threatStyle, status, r, g, b)
 	else

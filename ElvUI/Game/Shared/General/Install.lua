@@ -265,8 +265,8 @@ function E:SetupTheme(theme, noDisplayMsg)
 
 	E:UpdateStart(true)
 
-	if UF.Initialized then
-		E:Delay(0.05, E.UpdateUnitFrames)
+	if UF.Initialized then -- read UpdateAll about why E is packed
+		E:Delay(0.05, E.UpdateUnitFrames, E)
 	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then

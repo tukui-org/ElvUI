@@ -92,7 +92,7 @@ local function Update(frame, event, unit)
 
 	-- try to get the unit from the parent
 	if not unit or type(unit) ~= 'string' then
-		unit = frame.realUnit or frame.unit
+		unit = frame.realUnit or frame.__unit
 	end
 
 	-- range fader
@@ -150,7 +150,7 @@ local function Update(frame, event, unit)
 end
 
 local function ForceUpdate(element, event)
-	return Update(element.__owner, event or 'ForceUpdate', element.__owner.unit)
+	return Update(element.__owner, event or 'ForceUpdate', element.__owner.__unit)
 end
 
 local function OnRangeUpdate(frame, elapsed)

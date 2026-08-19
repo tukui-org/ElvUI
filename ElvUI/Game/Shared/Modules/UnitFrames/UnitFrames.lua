@@ -24,6 +24,7 @@ local UnitExists = UnitExists
 local UnitGUID = UnitGUID
 local UnitIsEnemy = UnitIsEnemy
 local UnitIsFriend = UnitIsFriend
+local UnitReaction = UnitReaction
 local UnregisterStateDriver = UnregisterStateDriver
 
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
@@ -87,6 +88,11 @@ do
 	function UF:Pingable_GetTargetInfo()
 		return info
 	end
+end
+
+function UF:UnitIsFriendly(unit)
+	local isEnemy, reaction = UnitIsEnemy(unit, 'player'), UnitReaction(unit, 'player')
+	return not isEnemy and (not reaction or reaction > 4)
 end
 
 function UF:GetAuraSortTime(which, a, b)
@@ -272,36 +278,68 @@ function UF:ConvertGroupDB(group)
 	end
 end
 
+function UF:ResetFilters_AuraGroup(db, default)
+	for name, data in next, db do
+		for key in next, E.AuraDefaults do
+			local info = default[name]
+			if info then
+				data[key] = info[key]
+			end
+		end
+
+		local candidates = data.candidates
+		if candidates then
+			for candidate in next, E.AuraCandidates do
+				local info = default[name]
+				if info and info.candidates then
+					candidates[candidate] = info.candidates[candidate]
+				end
+			end
+		end
+	end
+end
+
 function UF:ResetAuraPriority()
 	for unitName, content in pairs(E.db.unitframe.units) do
 		local default = P.unitframe.units[unitName]
 		if default then
 			local buffs = content.buffs
-			if buffs and buffs.filters then
-				buffs.filters.priority = default.buffs.filters.priority
+			if buffs then
+				if buffs.filters then
+					buffs.filters.priority = default.buffs.filters.priority
+				end
+
+				if buffs.filterLists then
+					UF:ResetFilters_AuraGroup(buffs.filterLists, default.buffs.filterLists)
+				end
 			end
 
 			local debuffs = content.debuffs
-			if debuffs and debuffs.filters then
-				debuffs.filters.priority = default.debuffs.filters.priority
+			if debuffs then
+				if debuffs.filters then
+					debuffs.filters.priority = default.debuffs.filters.priority
+				end
+
+				if debuffs.filterLists then
+					UF:ResetFilters_AuraGroup(debuffs.filterLists, default.debuffs.filterLists)
+				end
+			end
+
+			local auras = content.auras
+			if auras then
+				UF:ResetFilters_AuraGroup(auras.filterLists, default.auras.filterLists)
 			end
 
 			local aurabar = content.aurabar
 			if aurabar then
 				aurabar.priority = default.aurabar.priority
-			end
 
-			for key in next, E.AuraDefaults do
-				if buffs then
-					buffs[key] = default.buffs[key]
+				if aurabar.friendlyFilter and aurabar.friendlyFilter.filterLists then
+					UF:ResetFilters_AuraGroup(aurabar.friendlyFilter.filterLists, default.aurabar.friendlyFilter.filterLists)
 				end
 
-				if debuffs then
-					debuffs[key] = default.debuffs[key]
-				end
-
-				if aurabar then
-					aurabar[key] = default.aurabar[key]
+				if aurabar.enemyFilter and aurabar.enemyFilter.filterLists then
+					UF:ResetFilters_AuraGroup(aurabar.enemyFilter.filterLists, default.aurabar.enemyFilter.filterLists)
 				end
 			end
 		end
@@ -384,7 +422,7 @@ function UF:UnitFrame_OnEnter()
 	else
 		_G.GameTooltip_SetDefaultAnchor(GameTooltip, self)
 
-		self.UpdateTooltip = (E:NotSecretValue(self.unit) and self.unit and GameTooltip:SetUnit(self.unit) and UF.UnitFrame_OnEnter) or nil
+		self.UpdateTooltip = (E:NotSecretValue(self.__unit) and self.__unit and GameTooltip:SetUnit(self.__unit) and UF.UnitFrame_OnEnter) or nil
 	end
 
 	UF:SetAlpha_MouseTags(self.__mousetags, 1)
@@ -1554,7 +1592,7 @@ end
 
 do
 	local function EventlessUpdate(frame, elapsed)
-		local unit = frame.__eventless and frame.unit
+		local unit = frame.__eventless and frame.__unit
 		local guid = UnitGUID(unit)
 		if not guid then return end
 
@@ -2195,7 +2233,7 @@ end
 do
 	local units = {} -- track units
 	function UF:Configure_UnitAuras(frame)
-		local unit = frame.unit -- update when needed
+		local unit = frame.__unit -- update when needed
 		if not unit or (units[frame] == unit) then return end
 
 		units[frame] = unit
@@ -2226,11 +2264,11 @@ function UF:AfterStyleCallback()
 	-- that would cause the auras to be shown when a new frame is spawned (tank2, assist2)
 	-- even when they are disabled. this makes sure the update happens after so its proper.
 
-	local unit = self.unitframeType
-	if unit == 'tank' or unit == 'tanktarget' then
+	local frameType = self.unitframeType
+	if frameType == 'tank' or frameType == 'tanktarget' then
 		UF:Update_TankFrames(self, UF.db.units.tank)
 		UF:Update_FontStrings()
-	elseif unit == 'assist' or unit == 'assisttarget' then
+	elseif frameType == 'assist' or frameType == 'assisttarget' then
 		UF:Update_AssistFrames(self, UF.db.units.assist)
 		UF:Update_FontStrings()
 	end
@@ -2257,7 +2295,7 @@ function UF:Initialize()
 	UF.PingableInfo.guid = E.myguid
 	UF.thinBorders = UF.db.thinBorders
 	UF.multiplier = UF.db.multiplier or 0.35
-	UF.multiplierPrediction = 1.25
+	UF.multiplierPrediction = 0.8
 	UF.maxAllowedGroups = 8
 
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1

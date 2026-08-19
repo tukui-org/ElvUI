@@ -28,9 +28,8 @@ local FontMap = {
 }
 
 local IgnoreSlug = {
-	-- this will break the `instantQuestText` and prevent the text from rendering correctly
 	[_G.QuestFont] = E.Mists or E.TBC or E.Classic
-}
+} -- this will break the `instantQuestText` and prevent the text from rendering correctly
 
 FontMap.questtext		= { object = _G.QuestFont }
 FontMap.questtitle		= { object = _G.QuestTitleFont }
@@ -39,7 +38,7 @@ FontMap.questsmall		= { object = _G.QuestFontNormalSmall }
 if E.Retail then
 	FontMap.talkingtitle	= { object = _G.TalkingHeadFrame.NameFrame.Name }
 	FontMap.talkingtext		= { object = _G.TalkingHeadFrame.TextFrame.Text }
-	FontMap.objective = { objects = { _G.ObjectiveFont, _G.ObjectiveTrackerLineFont, _G.ObjectiveTrackerHeaderFont } }
+	FontMap.objective		= { objects = { _G.ObjectiveFont, _G.ObjectiveTrackerLineFont, _G.ObjectiveTrackerHeaderFont } }
 
 	for i = 12, 22 do
 		tinsert(FontMap.objective.objects, _G['ObjectiveTrackerFont'..i])
@@ -79,9 +78,8 @@ function E:SetFont(obj, font, size, style, sR, sG, sB, sA, sX, sY, r, g, b, a)
 		obj:SetScaleAnimationMode(slug and FontStringScaleAnimationMode.Vertex or FontStringScaleAnimationMode.FontSize)
 	end
 
-	obj:SetFont(font, size, style) -- replicate whats in SetFontShadow mostly
-	obj:SetShadowColor(sR or 0, sG or 0, sB or 0, sA or (shadow and (style == '' and 1 or 0.6)) or 0)
-	obj:SetShadowOffset(sX or (shadow and 1) or 0, sY or (shadow and -1) or 0)
+	obj:SetFont(font, size, style)
+	E:SetFontShadow(obj, style, shadow, sR, sG, sB, sA, sX, sY)
 
 	if r and g and b then
 		obj:SetTextColor(r, g, b)
@@ -342,6 +340,7 @@ function E:UpdateBlizzardFonts()
 		E:MapFont(FontMap.worldsubzone,			NORMAL, (blizz and 24) or unscale or huge, outline)
 		E:MapFont(FontMap.worldzone,			NORMAL, (blizz and 25) or unscale or mega, outline)
 
+		-- S.QuestInfo_Display will hijack the shadows here when needed
 		E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')

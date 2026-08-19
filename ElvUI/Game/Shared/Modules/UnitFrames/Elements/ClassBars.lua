@@ -657,7 +657,7 @@ function UF:PostColorAdditionalPower(unit, color)
 		if pred and pred.enable then
 			UF:SetStatusBarColor(bar, pred.additional.r, pred.additional.g, pred.additional.b)
 		else
-			UF:SetStatusBarColor(bar, r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
+			UF:SetStatusBarColor(bar, r, g, b, nil, UF.multiplierPrediction)
 		end
 	end
 end

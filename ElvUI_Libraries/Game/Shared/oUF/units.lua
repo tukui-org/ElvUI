@@ -122,7 +122,7 @@ local function updateArenaPreparation(self, event)
 		if(self.Portrait and self:IsElementEnabled('Portrait')) then
 			self.Portrait:Show()
 		end
-	elseif(event == 'PLAYER_ENTERING_WORLD' and not UnitExists(self.unit)) then
+	elseif(event == 'PLAYER_ENTERING_WORLD' and not UnitExists(self.__unit)) then
 		-- semi-recursive call for when the player zones into an arena
 		if not (oUF.isClassic or oUF.isWrath) then
 			updateArenaPreparation(self, 'ARENA_PREP_OPPONENT_SPECIALIZATIONS')
@@ -138,7 +138,7 @@ local function updateArenaPreparation(self, event)
 			self:PreUpdate(event)
 		end
 
-		local id = tonumber(self.id)
+		local id = tonumber(self.__id)
 		if(not self:IsEnabled() and GetNumArenaOpponentSpecs() < id) then
 			-- hide the object if the opponent leaves
 			self:Hide()
@@ -183,7 +183,7 @@ end
 
 -- Handles unit specific actions.
 function oUF:HandleUnit(object, unit)
-	unit = object.unit or unit
+	unit = object.__unit or unit
 	if(unit == 'target') then
 		object:RegisterEvent('PLAYER_TARGET_CHANGED', object.UpdateAllElements, true)
 	elseif(unit == 'mouseover') then
@@ -218,7 +218,7 @@ local function createOnUpdate(timer)
 
 			if self.elapsed > timer then
 				for _, object in next, objects do
-					if object:IsVisible() and object.unit and oUF:UnitExists(object.unit) then
+					if object:IsVisible() and object.__unit and oUF:UnitExists(object.__unit) then
 						object:UpdateAllElements('OnUpdate')
 					end
 				end

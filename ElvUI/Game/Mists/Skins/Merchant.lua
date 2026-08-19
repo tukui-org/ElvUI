@@ -5,6 +5,7 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local CanGuildBankRepair = CanGuildBankRepair
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
 local GetMerchantNumItems = GetMerchantNumItems
@@ -19,6 +20,91 @@ local function MerchantItemPoint()
 		else
 			_G['MerchantItem'..i]:PointXY(0, -16)
 		end
+	end
+end
+
+local function UpdateBuybackInfo()
+	local numBuybackItems = GetNumBuybackItems()
+
+	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
+		if i <= numBuybackItems then
+			local itemName = GetBuybackItemInfo(i)
+			if itemName then
+				local button = _G['MerchantItem'..i..'ItemButton']
+				local name = _G['MerchantItem'..i..'Name']
+				local quality = GetItemQualityByID(itemName)
+
+				if quality and quality > 1 then
+					local r, g, b = E:GetItemQualityColor(quality)
+					button:SetBackdropBorderColor(r, g, b)
+					name:SetTextColor(r, g, b)
+				else
+					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					name:SetTextColor(1, 1, 1)
+				end
+			end
+		end
+	end
+
+	MerchantItemPoint()
+end
+
+local function UpdateMerchantInfo()
+	local numMerchantItems = GetMerchantNumItems()
+	local index = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
+
+	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
+		index = index + 1
+
+		if index <= numMerchantItems then
+			local button = _G['MerchantItem'..i..'ItemButton']
+			local name = _G['MerchantItem'..i..'Name']
+
+			if button.link then
+				local quality = GetItemQualityByID(button.link)
+				if quality and quality > 1 then
+					local r, g, b = E:GetItemQualityColor(quality)
+					button:SetBackdropBorderColor(r, g, b)
+					name:SetTextColor(r, g, b)
+				else
+					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+					name:SetTextColor(1, 1, 1)
+				end
+			else
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				name:SetTextColor(1, 1, 1)
+			end
+		end
+
+		local itemName = GetBuybackItemInfo(GetNumBuybackItems())
+		if itemName then
+			local quality = GetItemQualityByID(itemName)
+			if quality and quality > 1 then
+				local r, g, b = E:GetItemQualityColor(quality)
+				_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
+				_G.MerchantBuyBackItemName:SetTextColor(r, g, b)
+			else
+				_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				_G.MerchantBuyBackItemName:SetTextColor(1, 1, 1)
+			end
+		else
+			_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+	end
+
+	MerchantItemPoint()
+end
+
+local function UpdateRepairButtons()
+	_G.MerchantRepairText:ClearAllPoints()
+	_G.MerchantRepairAllButton:ClearAllPoints()
+
+	if CanGuildBankRepair() then
+		_G.MerchantRepairText:SetPoint('CENTER', _G.MerchantFrame, 'BOTTOMLEFT', 80, 90)
+		_G.MerchantRepairAllButton:Point('BOTTOMLEFT', 60, 40)
+	else
+		_G.MerchantRepairText:Point('BOTTOMLEFT', 14, 69)
+		_G.MerchantRepairAllButton:Point('BOTTOMLEFT', 124, 57)
 	end
 end
 
@@ -125,79 +211,10 @@ function S:MerchantFrame()
 	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', -15, -1)
 	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', -19, 0)
 
-	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', function()
-		local numMerchantItems = GetMerchantNumItems()
-		local index = (MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
-
-		for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
-			index = index + 1
-
-			if index <= numMerchantItems then
-				local button = _G['MerchantItem'..i..'ItemButton']
-				local name = _G['MerchantItem'..i..'Name']
-
-				if button.link then
-					local quality = GetItemQualityByID(button.link)
-					if quality and quality > 1 then
-						local r, g, b = E:GetItemQualityColor(quality)
-						button:SetBackdropBorderColor(r, g, b)
-						name:SetTextColor(r, g, b)
-					else
-						button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						name:SetTextColor(1, 1, 1)
-					end
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					name:SetTextColor(1, 1, 1)
-				end
-			end
-
-			local itemName = GetBuybackItemInfo(GetNumBuybackItems())
-			if itemName then
-				local quality = GetItemQualityByID(itemName)
-				if quality and quality > 1 then
-					local r, g, b = E:GetItemQualityColor(quality)
-					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
-					_G.MerchantBuyBackItemName:SetTextColor(r, g, b)
-				else
-					_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					_G.MerchantBuyBackItemName:SetTextColor(1, 1, 1)
-				end
-			else
-				_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end
-
-		_G.MerchantRepairText:Point('BOTTOMLEFT', 14, 69)
-
-		MerchantItemPoint()
-	end)
-
-	hooksecurefunc('MerchantFrame_UpdateBuybackInfo', function()
-		local numBuybackItems = GetNumBuybackItems()
-
-		for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
-			if i <= numBuybackItems then
-				local itemName = GetBuybackItemInfo(i)
-				if itemName then
-					local button = _G['MerchantItem'..i..'ItemButton']
-					local name = _G['MerchantItem'..i..'Name']
-					local quality = GetItemQualityByID(itemName)
-
-					if quality and quality > 1 then
-						local r, g, b = E:GetItemQualityColor(quality)
-						button:SetBackdropBorderColor(r, g, b)
-						name:SetTextColor(r, g, b)
-					else
-						button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-						name:SetTextColor(1, 1, 1)
-					end
-				end
-			end
-		end
-
-		MerchantItemPoint()
-	end)
+	UpdateRepairButtons()
+	hooksecurefunc('MerchantFrame_UpdateRepairButtons', UpdateRepairButtons)
+	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', UpdateMerchantInfo)
+	hooksecurefunc('MerchantFrame_UpdateBuybackInfo', UpdateBuybackInfo)
 end
 
 S:AddCallback('MerchantFrame')

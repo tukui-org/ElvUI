@@ -10,11 +10,11 @@ local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
 local CRESTS_EARNED = strsplit('%', _G.CURRENCY_SEASON_TOTAL_MAXIMUM)
 
 local crests = {
-	{ id = 3383, color = 'ffffffff' },									-- Adventurer
-	{ id = 3341, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },	 -- Veteran
-	{ id = 3343, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },		 -- Champion
-	{ id = 3345, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },		 -- Hero
-	{ id = 3347, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() }	 -- Myth
+	{ id = 3442, color = 'ffffffff' },									-- Adventurer
+	{ id = 3443, color = _G.UNCOMMON_GREEN_COLOR:GenerateHexColor() },	 -- Veteran
+	{ id = 3444, color = _G.RARE_BLUE_COLOR:GenerateHexColor() },		 -- Champion
+	{ id = 3445, color = _G.EPIC_PURPLE_COLOR:GenerateHexColor() },		 -- Hero
+	{ id = 3446, color = _G.LEGENDARY_ORANGE_COLOR:GenerateHexColor() }	 -- Myth
 }
 
 local crestIcon = '|T%s:16:16:0:0:64:64:4:60:4:60|t'

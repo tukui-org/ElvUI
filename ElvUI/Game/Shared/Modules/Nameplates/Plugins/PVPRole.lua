@@ -104,7 +104,7 @@ local function Update(self)
 
 	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' or instanceType == 'arena' then
-		local name, realm = UnitName(self.unit)
+		local name, realm = UnitName(self.__unit)
 		if E:NotSecretValue(name) then
 			local shortRealm = (realm and realm ~= '') and E:ShortenRealm(realm)
 			if shortRealm then
@@ -133,7 +133,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local function Enable(self)

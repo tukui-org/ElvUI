@@ -55,23 +55,30 @@ function NP:ResetAuraPriority()
 		local default = P.nameplates.units[unitType]
 		if default then
 			local buffs = content.buffs
-			if buffs and buffs.filters then
-				buffs.filters.priority = default.buffs.filters.priority
+			if buffs then
+				if buffs.filters then
+					buffs.filters.priority = default.buffs.filters.priority
+				end
+
+				if buffs.filterLists then
+					UF:ResetFilters_AuraGroup(buffs.filterLists, default.buffs.filterLists)
+				end
 			end
 
 			local debuffs = content.debuffs
-			if debuffs and debuffs.filters then
-				debuffs.filters.priority = default.debuffs.filters.priority
+			if debuffs then
+				if debuffs.filters then
+					debuffs.filters.priority = default.debuffs.filters.priority
+				end
+
+				if debuffs.filterLists then
+					UF:ResetFilters_AuraGroup(debuffs.filterLists, default.debuffs.filterLists)
+				end
 			end
 
-			for key in next, E.AuraDefaults do
-				if buffs then
-					buffs[key] = default.buffs[key]
-				end
-
-				if debuffs then
-					debuffs[key] = default.debuffs[key]
-				end
+			local auras = content.auras
+			if auras and auras.filterLists then
+				UF:ResetFilters_AuraGroup(auras.filterLists, default.auras.filterLists)
 			end
 		end
 	end
@@ -589,7 +596,7 @@ function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
 	if NP.TestFrame:IsEnabled() then
-		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.unit)
+		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.__unit)
 	end
 
 	if E.Retail then
@@ -610,7 +617,7 @@ function NP:ConfigurePlates(init)
 				staticFunc(NP.PlayerFrame, staticEvent, 'player')
 			else
 				nameplate.previousType = nil -- keep over the callback, we still need a full update
-				NP.NAME_PLATE_UNIT_ADDED(nameplate, 'NAME_PLATE_UNIT_ADDED', nameplate.unit)
+				NP.NAME_PLATE_UNIT_ADDED(nameplate, 'NAME_PLATE_UNIT_ADDED', nameplate.__unit)
 			end
 
 			if E.Retail then
@@ -731,7 +738,7 @@ function NP:PLAYER_TARGET_CHANGED(_, unit)
 end
 
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
-	if not unit then unit = self.unit end
+	if not unit then unit = self.__unit end
 
 	self.widgetsOnly = E.Retail and self.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
 	self.widgetSet = E.Retail and UnitWidgetSet(unit)
@@ -855,7 +862,7 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 end
 
 function NP:UNIT_FACTION(_, unit)
-	if not unit or self.unit ~= unit then return end
+	if not unit or self.__unit ~= unit then return end
 
 	self.isMe = E:UnitIsUnit(unit, 'player')
 	self.reaction = UnitReaction('player', unit) -- Player Reaction
@@ -1056,13 +1063,13 @@ function NP:Initialize()
 	staticSecure:SetAttribute('*type2', 'togglemenu')
 	staticSecure:SetAttribute('toggleForVehicle', true)
 	staticSecure:RegisterForClicks('LeftButtonDown', 'RightButtonDown')
-	staticSecure:SetScript('OnEnter', _G.UnitFrame_OnEnter)
-	staticSecure:SetScript('OnLeave', _G.UnitFrame_OnLeave)
+	staticSecure:SetScript('OnEnter', UF.UnitFrame_OnEnter)
+	staticSecure:SetScript('OnLeave', UF.UnitFrame_OnLeave)
 	staticSecure:ClearAllPoints()
 	staticSecure:Point('TOPLEFT', NP.PlayerMover)
 	staticSecure:Point('BOTTOMRIGHT', NP.PlayerMover)
 	staticSecure:Hide()
-	staticSecure.unit = 'player' -- Needed for OnEnter, OnLeave
+	staticSecure.__unit = 'player' -- Needed for OnEnter, OnLeave
 	NP.StaticSecure = staticSecure
 
 	local testFrame = ElvUF:Spawn('player', 'ElvNP_TestFrame')

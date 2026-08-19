@@ -84,8 +84,8 @@ local function EnvUnit(arg1)
 	local frame = configEnv._FRAME -- yoink
 	if not frame then return arg1, true end
 
-	local cool = frame.oldUnit
-	local unit = frame.unit or arg1
+	local cool = frame.__oldUnit
+	local unit = frame.__unit or arg1
 	if cool then -- everyone who is cool <3
 		return cool or unit
 	else -- someone that's okay, i guess
@@ -221,8 +221,8 @@ function UF:ForceShow(frame)
 		frame.isForced = true
 		frame.forceShowAuras = true
 
-		frame.unit = 'player'
-		frame.oldUnit = frame.unit
+		frame.__unit = 'player'
+		frame.__oldUnit = frame.__unit
 	end
 
 	if not next(forceShown) then
@@ -261,9 +261,9 @@ function UF:UnforceShow(frame)
 	frame.isForced = nil
 	frame.forceShowAuras = nil
 
-	if frame.oldUnit ~= nil then
-		frame.unit = frame.oldUnit
-		frame.oldUnit = nil
+	if frame.__oldUnit ~= nil then
+		frame.__unit = frame.__oldUnit
+		frame.__oldUnit = nil
 	end
 
 	frame:EnableMouse(true)
@@ -345,33 +345,33 @@ local function OnAttributeChanged(self, attr)
 end
 
 function UF:HeaderForceShow(header, group, configMode)
-	if group:IsShown() then
-		group.forceShow = header.forceShow
-		group.forceShowAuras = header.forceShowAuras
+	if not group:IsShown() then return end
 
-		if not group.hasOnAttributeChanged then
-			group:HookScript('OnAttributeChanged', OnAttributeChanged)
-			group.hasOnAttributeChanged = true
+	group.forceShow = header.forceShow
+	group.forceShowAuras = header.forceShowAuras
+
+	if not group.hasOnAttributeChanged then
+		group:HookScript('OnAttributeChanged', OnAttributeChanged)
+		group.hasOnAttributeChanged = true
+	end
+
+	if configMode then
+		for key in pairs(attributeBlacklist) do
+			group:SetAttribute(key, nil)
 		end
 
-		if configMode then
-			for key in pairs(attributeBlacklist) do
-				group:SetAttribute(key, nil)
-			end
+		OnAttributeChanged(group)
 
-			OnAttributeChanged(group)
-
-			group:Update()
-		else
-			for key in pairs(attributeBlacklist) do
-				group:SetAttribute(key, true)
-			end
-
-			UF:UnshowChildUnits(group)
-			group:SetAttribute('startingIndex', 1)
-
-			group:Update()
+		group:Update()
+	else
+		for key in pairs(attributeBlacklist) do
+			group:SetAttribute(key, true)
 		end
+
+		UF:UnshowChildUnits(group)
+		group:SetAttribute('startingIndex', 1)
+
+		group:Update()
 	end
 end
 

@@ -5,7 +5,7 @@ local UnitExists = UnitExists
 
 local function MouseOnUnit(frame)
 	if frame and frame:IsVisible() and UnitExists('mouseover') then
-		return frame.unit and E:UnitIsUnit('mouseover', frame.unit)
+		return frame.__unit and E:UnitIsUnit('mouseover', frame.__unit)
 	end
 
 	return false
@@ -47,7 +47,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local function Enable(self)

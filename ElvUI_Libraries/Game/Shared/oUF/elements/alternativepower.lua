@@ -62,6 +62,7 @@ local UnitThreatSituation = UnitThreatSituation
 local UnitPlayerControlled = UnitPlayerControlled
 local GetUnitPowerBarInfoByID = GetUnitPowerBarInfoByID
 local GetUnitPowerBarStringsByID = GetUnitPowerBarStringsByID
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local UnitPowerPercent = UnitPowerPercent
 local UnitInPartyIsAI = UnitInPartyIsAI
 local UnitPowerBarID = UnitPowerBarID
@@ -104,7 +105,7 @@ local function onLeave()
 end
 
 local function UpdateColor(self, event, unit, powerType)
-	if(self.unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
+	if(self.__unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
 	local element = self.AlternativePower
 
 	local isPlayerOrAI = UnitIsPlayer(unit) or UnitInPartyIsAI(unit)
@@ -133,8 +134,8 @@ local function UpdateColor(self, event, unit, powerType)
 				color = self.colors.smooth
 			end
 		end
-	elseif oUF:NotSecretValue(classToken) and classToken and ((element.colorClass and isPlayerOrAI) or (element.colorClassNPC and not isPlayerOrAI)) then
-		color = self.colors.class[classToken]
+	elseif (element.colorClass and isPlayerOrAI) or (element.colorClassNPC and not isPlayerOrAI) then
+		color = (oUF:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif(element.colorSelection and unitSelectionType) then
 		color = self.colors.selection[unitSelectionType]
 	elseif(element.colorReaction and unitReaction) then
@@ -158,7 +159,7 @@ local function UpdateColor(self, event, unit, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if(self.unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
+	if(self.__unit ~= unit or powerType ~= ALTERNATE_POWER_NAME) then return end
 	local element = self.AlternativePower
 
 	--[[ Callback: AlternativePower:PreUpdate()
@@ -225,7 +226,7 @@ local function Path(self, ...)
 end
 
 local function Visibility(self, event, unit)
-	if(unit ~= self.unit) then return end
+	if(unit ~= self.__unit) then return end
 	local element = self.AlternativePower
 
 	local barID = UnitPowerBarID(unit)
@@ -264,7 +265,7 @@ local function VisibilityPath(self, ...)
 end
 
 local function ForceUpdate(element)
-	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return VisibilityPath(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local function Enable(self, unit)

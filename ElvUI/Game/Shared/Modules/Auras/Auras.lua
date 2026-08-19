@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local A = E:GetModule('Auras')
+local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local _G = _G
@@ -571,19 +572,18 @@ function A:UpdateHeader(header)
 		header.lineSpacing = db.verticalSpacing
 		header.keepSizeRatio = db.keepSizeRatio
 		header.growthDirection = db.growthDirection
-		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
-		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 		header.useStatusbar = db.barShow
 		header.barColor = db.barColor
 		header.numAuras = db.wrapAfter
 		header.maxFrameCount = db.wrapAfter * db.maxWraps
+		header.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
+		header.sortDirection = E.AuraContainerSortDirection[db.sortDir]
 		header.initialAnchor = DIRECTION_TO_POINT[db.growthDirection]
 		header.barTexture = LSM:Fetch('statusbar', db.barTexture)
 		header.countPosition, header.countXOffset, header.countYOffset = 'BOTTOMRIGHT', db.countXOffset, db.countYOffset
 		header.countFont, header.countFontSize, header.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
-		header.colorByType = header.filter == 'HARMFUL' and A.db.colorDebuffs
 		header.colorEnchants = A.db.colorEnchants
-		header.filters[header.auraType] = header.filter
+		header.colorByType = header.auraType == 'debuffs' and A.db.colorDebuffs
 		header.isTopAura = true
 
 		header.useWidth = IS_HORIZONTAL_GROWTH[db.growthDirection]
@@ -593,7 +593,12 @@ function A:UpdateHeader(header)
 			minWidth, minHeight  = width, (header.spacing + height) * db.wrapAfter
 		end
 
-		header:SetSize(minWidth, minHeight)
+		header:Size(minWidth, minHeight)
+		header:ClearAllPoints()
+		header:Point(header.initialAnchor, header.mover)
+
+		header.filterLists = db.filterLists
+		UF:GroupFilters(header, db.filterLists) -- build the groups
 
 		E:Auras_SetContainer(header)
 		E:Auras_SetLineSize(header)
@@ -747,43 +752,45 @@ function A:Initialize()
 		if E.Retail then
 			local buff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
 			buff.auraType = 'buffs'
-			buff.filter = 'HELPFUL'
 			buff.unit = 'player'
+			buff.filters = {}
+
 			A.BuffFrame = buff
 
-			A:UpdateHeader(A.BuffFrame)
 			E:Auras_SetEnchantments(A.BuffFrame)
 			E:Auras_GroupUnit(A.BuffFrame, 'player')
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
-			A:UpdateHeader(A.BuffFrame)
 		end
 
 		A.BuffFrame:ClearAllPoints()
 		A.BuffFrame:SetPoint('TOPRIGHT', mapAnchor, 'TOPLEFT', -mapOffsetX, -mapOffsetY)
 
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
+
+		A:UpdateHeader(A.BuffFrame)
 	end
 
 	if E.private.auras.debuffsHeader then
 		if E.Retail then
 			local debuff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
 			debuff.auraType = 'debuffs'
-			debuff.filter = 'HARMFUL'
 			debuff.unit = 'player'
+			debuff.filters = {}
+
 			A.DebuffFrame = debuff
 
-			A:UpdateHeader(A.DebuffFrame)
 			E:Auras_GroupUnit(A.DebuffFrame, 'player')
 		else
 			A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
-			A:UpdateHeader(A.DebuffFrame)
 		end
 
 		A.DebuffFrame:ClearAllPoints()
 		A.DebuffFrame:SetPoint('BOTTOMRIGHT', mapAnchor, 'BOTTOMLEFT', -mapOffsetX, -mapOffsetY)
 
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
+
+		A:UpdateHeader(A.DebuffFrame)
 	end
 end
 

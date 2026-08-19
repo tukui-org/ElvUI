@@ -28,7 +28,7 @@ local oUF = ns.oUF
 local UnitAffectingCombat = UnitAffectingCombat
 
 local function Update(self, event, unit)
-	if not unit or self.unit ~= unit then return end
+	if not unit or self.__unit ~= unit then return end
 	local element = self.CombatIndicator
 
 	--[[ Callback: CombatIndicator:PreUpdate()

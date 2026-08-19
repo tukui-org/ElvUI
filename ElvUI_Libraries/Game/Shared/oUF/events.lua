@@ -38,7 +38,7 @@ function Private.UpdateUnits(frame, unit, realUnit)
 		realUnit = nil
 	end
 
-	if(frame.unit ~= unit or frame.realUnit ~= realUnit) then
+	if(frame.__unit ~= unit or frame.__realUnit ~= realUnit) then
 		-- don't let invalid units in, otherwise unit events will end up being
 		-- registered as unitless
 
@@ -65,11 +65,11 @@ function Private.UpdateUnits(frame, unit, realUnit)
 			end
 		end
 
-		frame.realUnit = realUnit
-		frame.unit = validateToken(unit)
-		frame.id = unit:match('^.-(%d+)')
+		frame.__realUnit = realUnit
+		frame.__unit = validateToken(unit)
+		frame.__id = unit:match('^.-(%d+)')
 
-		if frame.unit then
+		if frame.__unit then
 			oUF:UpdateTagUnits(frame)
 		end
 
@@ -147,7 +147,7 @@ function frame_metatable.__index:RegisterEvent(event, func, unitless)
 
 			-- UpdateUnits will take care of unit event registration for header
 			-- units in case we don't have a valid unit yet
-			local unit1, unit2 = self.unit
+			local unit1, unit2 = self.__unit
 			if(unit1 and validateUnit(unit1)) then
 				if(secondaryUnits[event]) then
 					unit2 = secondaryUnits[event][unit1]

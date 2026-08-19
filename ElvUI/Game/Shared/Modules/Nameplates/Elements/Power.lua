@@ -18,7 +18,7 @@ local StatusBarInterpolation = Enum.StatusBarInterpolation
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
 function NP:Power_UpdateColor(_, unit)
-	if self.unit ~= unit then return end
+	if self.__unit ~= unit then return end
 
 	local element = self.Power
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)

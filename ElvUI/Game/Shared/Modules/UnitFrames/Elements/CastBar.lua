@@ -526,7 +526,7 @@ function UF:GetInterruptColor(db, unit)
 		end
 	elseif ((custom and custom.useClassColor) or (not custom and UF.db.colors.castClassColor)) and UnitIsPlayer(unit) then
 		local _, classToken = UnitClass(unit)
-		local t = E:NotSecretValue(classToken) and classToken and colors.class[classToken]
+		local t = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or colors.class[classToken]
 		if t then return t.r, t.g, t.b end
 	elseif (custom and custom.useReactionColor) or (not custom and UF.db.colors.castReactionColor) then
 		local Reaction = UnitReaction(unit, 'player')

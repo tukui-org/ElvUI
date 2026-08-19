@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 83 -- the real minor version is 155
+local MINOR_VERSION = 84 -- the real minor version is 155
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -2429,7 +2429,7 @@ if WoWRetail then
 		local locShouldReplaceCooldown = locInfo.shouldReplaceNormalCooldown and self.config.lossOfControlCooldown
 		local showLoC = locInfo.isActive and self.config.lossOfControlCooldown
 		local showCharge = not locShouldReplaceCooldown and chargeInfo.isActive
-		local showNormal = not showCharge and not locShouldReplaceCooldown and cooldownInfo.isActive
+		local showNormal = not locShouldReplaceCooldown and cooldownInfo.isActive
 
 		SetOrClearCooldown(self.cooldown, showNormal, self:GetCooldownDuration())
 		SetOrClearCooldown(self.chargeCooldown, showCharge, self:GetChargeDuration())

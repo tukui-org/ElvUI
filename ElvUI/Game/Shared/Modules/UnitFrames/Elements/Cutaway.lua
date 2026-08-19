@@ -67,7 +67,7 @@ function UF:Configure_Cutaway(frame)
 			health:Point(point1[1], barTexture, point1[2])
 			health:Point(point2[1], barTexture, point2[2])
 
-			frame.Health:PostUpdateColor(frame.unit)
+			frame.Health:PostUpdateColor(frame.__unit)
 		end
 
 		local power = frame.Cutaway.Power

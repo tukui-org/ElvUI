@@ -20,7 +20,7 @@ local function GetSpecIconByFaction(unit)
 end
 
 local Update = function(frame, event, unit)
-	if (frame.isForced and event ~= 'ElvUI_UpdateAllElements') or (unit and unit ~= frame.unit) then return end
+	if (frame.isForced and event ~= 'ElvUI_UpdateAllElements') or (unit and unit ~= frame.__unit) then return end
 
 	local element = frame.PVPSpecIcon
 	local _, instanceType = IsInInstance()
@@ -28,7 +28,7 @@ local Update = function(frame, event, unit)
 
 	if(element.PreUpdate) then element:PreUpdate(event, instanceType) end
 
-	local arenaIndex = frame.unit and frame.unit:match('arena(%d)')
+	local arenaIndex = frame.__unit and frame.__unit:match('arena(%d)')
 	if instanceType == 'arena' then
 		local unitID = tonumber(arenaIndex or frame:GetID() or 0)
 		local specID, icon, _ = unitID and GetArenaOpponentSpec(unitID)
@@ -47,7 +47,7 @@ local Update = function(frame, event, unit)
 end
 
 local function ForceUpdate(element)
-	return Update(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Update(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 local Enable = function(frame)

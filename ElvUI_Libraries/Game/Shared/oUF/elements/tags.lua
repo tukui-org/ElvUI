@@ -643,7 +643,7 @@ local function UpdateTimer(frame, elapsed)
 	local total = frame.total
 	if total >= frame.timer then
 		for fs, parent in next, frame.strings do -- isForced prevents spam in ElvUI
-			if not parent.isForced and parent:IsShown() and oUF:UnitExists(parent.unit) then
+			if not parent.isForced and parent:IsShown() and oUF:UnitExists(parent.__unit) then
 				fs:UpdateTag()
 			end
 		end
@@ -744,8 +744,8 @@ local function GetTagFunc(tagstr)
 
 		func = function(self)
 			local parent = self.parent
-			local unit = parent.unit
-			local realUnit = self.overrideUnit and parent.realUnit
+			local unit = parent.__unit
+			local realUnit = self.__overrideUnit and parent.__realUnit
 			local customArgs = parent.__customargs[self]
 
 			_ENV._FRAME = parent
@@ -787,7 +787,7 @@ local function ShouldUpdateTag(frame, event, unit)
 	if unitlessEvents[event] then
 		return true
 	elseif validateUnit(unit) and oUF:UnitExists(unit) then
-		if frame.unit == unit then
+		if frame.__unit == unit then
 			return true
 		else
 			local allowExtra = eventExtraUnits[frame]
@@ -875,8 +875,8 @@ local function RegisterEvent(frame, event, fs)
 		if not handler.eventStrings[event] then
 			handler.eventStrings[event] = {}
 
-			if isUnitEvent(event, frame.unit) then
-				handler:RegisterUnitEvent(event, frame.unit)
+			if isUnitEvent(event, frame.__unit) then
+				handler:RegisterUnitEvent(event, frame.__unit)
 			else
 				handler:RegisterEvent(event)
 			end
@@ -902,8 +902,8 @@ function oUF:UpdateTagUnits(frame)
 	if not handler then return end
 
 	for event in next, handler.eventStrings do
-		if isUnitEvent(event, frame.unit) then
-			handler:RegisterUnitEvent(event, frame.unit)
+		if isUnitEvent(event, frame.__unit) then
+			handler:RegisterUnitEvent(event, frame.__unit)
 		end
 	end
 end

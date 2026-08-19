@@ -40,7 +40,7 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local index = GetRaidTargetIndex(self.unit)
+	local index = GetRaidTargetIndex(self.__unit)
 	if(index) then
 		SetRaidTargetIconTexture(element, index)
 		element:Show()
@@ -70,7 +70,7 @@ local function Path(self, ...)
 end
 
 local function ForceUpdate(element)
-	if(not element.__owner.unit) then return end
+	if(not element.__owner.__unit) then return end
 	return Path(element.__owner, 'ForceUpdate')
 end
 

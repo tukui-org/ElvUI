@@ -111,6 +111,7 @@ local UnitHealthPercent = UnitHealthPercent
 
 local GetSelectionType = Private.unitSelectionType
 local StatusBarInterpolation = Enum.StatusBarInterpolation
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 
 local function UnitClassColor(element, unit)
 	if element.colorPetByUnitClass then
@@ -118,13 +119,12 @@ local function UnitClassColor(element, unit)
 	end
 
 	local _, classToken = UnitClass(unit)
-	if oUF:NotSecretValue(classToken) then
-		return classToken
-	end
+
+	return classToken
 end
 
 local function UpdateColor(self, event, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if(not unit or self.__unit ~= unit) then return end
 
 	local element = self.Health
 	local unitReaction = UnitReaction(unit, 'player')
@@ -146,8 +146,8 @@ local function UpdateColor(self, event, unit)
 		color = self.colors.happiness[unitHappiness]
 	elseif(element.colorThreat and not unitControlled and unitThreat) then
 		color =  self.colors.threat[unitThreat]
-	elseif unitClassToken and (classColorPet or (element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer)) then
-		color = self.colors.class[unitClassToken]
+	elseif classColorPet or (element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer) then
+		color = (oUF:IsSecretValue(unitClassToken) and C_ClassColor_GetClassColor(unitClassToken)) or self.colors.class[unitClassToken]
 	elseif(element.colorSelection and unitSelectionType) then
 		color = self.colors.selection[unitSelectionType]
 	elseif(element.colorReaction and unitReaction) then
@@ -195,7 +195,7 @@ local function ColorPath(self, ...)
 end
 
 local function Update(self, event, unit)
-	if(not unit or self.unit ~= unit) then return end
+	if(not unit or self.__unit ~= unit) then return end
 	local element = self.Health
 
 	--[[ Callback: Health:PreUpdate(unit)
@@ -258,7 +258,7 @@ local function Path(self, event, ...)
 end
 
 local function ForceUpdate(element)
-	return Path(element.__owner, 'ForceUpdate', element.__owner.unit)
+	return Path(element.__owner, 'ForceUpdate', element.__owner.__unit)
 end
 
 --[[ Health:SetColorDisconnected(state, isForced)

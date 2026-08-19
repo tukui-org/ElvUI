@@ -232,7 +232,7 @@ end
 
 -- 12.1 needs a skip might as well add this for now
 function oUF:ShouldSkip(frame, unit)
-	if not unit or (frame.unit and frame.unit ~= unit) then
+	if not unit or (frame.__unit and frame.__unit ~= unit) then
 		return true
 	end
 end
@@ -243,7 +243,7 @@ function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, showFunc)
 		return true -- not anymore
 	end
 
-	if not unit or (frame.unit and frame.unit ~= unit) then
+	if not unit or (frame.__unit and frame.__unit ~= unit) then
 		return true
 	end
 

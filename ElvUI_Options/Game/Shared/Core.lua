@@ -28,6 +28,7 @@ local UnitName = UnitName
 local UnitExists = UnitExists
 local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
+local IsValidFilterString = AuraUtil and AuraUtil.IsValidFilterString
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local NUM_CLASSES = #CLASS_SORT_ORDER
@@ -957,6 +958,115 @@ do -- Module Copy
 	E.Options.args.profiles.args.modulereset.args.nameplates = ACH:Execute(L["Nameplates"], nil, 11, nil, nil, L["Are you sure you want to reset NamePlates settings?"])
 	E.Options.args.profiles.args.modulereset.args.tooltip = ACH:Execute(L["Tooltip"], nil, 12, nil, nil, L["Are you sure you want to reset Tooltip settings?"])
 	E.Options.args.profiles.args.modulereset.args.uniframes = ACH:Execute(L["UnitFrames"], nil, 13, function() E:CopyTable(E.db.unitframe, P.unitframe); UF:Update_AllFrames() end, nil, L["Are you sure you want to reset UnitFrames settings?"])
+end
+
+do -- shared filters
+	local filters = {}
+	function C:VerifyFilter(value)
+		return IsValidFilterString(value)
+	end
+
+	function C:GetOptionsTable_AuraGroup(index, enable, mainGet, mainSet, candidateGet, candidateSet)
+		local group = ACH:Group(function() return format('|cFF%s%s|r', enable() and '33ff33' or 'ff3333', C.Values.Roman[index]) end, nil, index, nil, mainGet, mainSet, nil, not E.Retail)
+
+		group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
+		group.args.filter = ACH:Input(L["Filter String"], nil, 2, nil, 'full', nil, nil, nil, nil, C.VerifyFilter)
+
+		group.args.lists = ACH:Group(' ', nil, 10)
+		group.args.lists.args.allowList = ACH:Select(L["Allow List"], nil, 1, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
+		group.args.lists.args.blockList = ACH:Select(L["Block List"], nil, 2, function() wipe(filters) local list = E.global.unitframe.aurafilters if not list then return end for filter in pairs(list) do filters[filter] = filter end return filters end)
+		group.args.lists.args.maxDuration = ACH:Range(L["Maximum Duration"], L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."], 3, { min = 0, max = 10800, step = 1 })
+		group.args.lists.inline = true
+
+		group.args.candidates = ACH:Group(' ', nil, 20, nil, candidateGet, candidateSet)
+		group.args.candidates.args.useAllowlist = ACH:Toggle(L["Use: Allow"], L["Activate the allowlist filter."], 1, nil, nil, nil, mainGet, mainSet)
+		group.args.candidates.args.useBlocklist = ACH:Toggle(L["Use: Block"], L["Activate the blocklist filter."], 2, nil, nil, nil, mainGet, mainSet)
+		group.args.candidates.args.isStealable = ACH:Toggle(L["Stealable"], L["Stealable"], 3, true)
+		group.args.candidates.args.nameplateShowAll = ACH:Toggle(L["NP: All"], L["Nameplate: Show all"], 4, true)
+		group.args.candidates.args.nameplateShowPersonal = ACH:Toggle(L["NP: Personal"], L["Nameplate: Personal"], 5, true)
+		group.args.candidates.args.isFromPlayerOrPlayerPet = ACH:Toggle(L["Player or Pet"], L["From unit: player or pet"], 6, true)
+		group.args.candidates.args.isRoleAura = ACH:Toggle(L["Role"], L["Role aura - tank/heal/dps?"], 7, true)
+		group.args.candidates.args.isPriorityAura = ACH:Toggle(L["Priority"], L["Priority aura"], 8, true)
+		group.args.candidates.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["Can apply aura"], 9, true)
+		group.args.candidates.args.isBossAura = ACH:Toggle(L["Boss"], L["Boss aura - important stuff, was used on last boss this season"], 10, true)
+		group.args.candidates.args.isBossOrRoleAura = ACH:Toggle(L["Boss or Role"], L["the either-or between isRoleAura and isBossAura"], 11, true)
+		group.args.candidates.inline = true
+
+		return group
+	end
+
+	-- filters: help section
+	local listExamples = {
+		buffsPlayer			= { order = 1, desc = L["FILTER_EXAMPLE_1_DESC"], text = L["FILTER_EXAMPLE_1_TEXT"], value = 'HELPFUL|PLAYER' },
+		buffsWhitelist		= { order = 2, desc = L["FILTER_EXAMPLE_2_DESC"], text = L["FILTER_EXAMPLE_2_TEXT"], value = 'HELPFUL' },
+		debuffsPlayer		= { order = 3, desc = L["FILTER_EXAMPLE_3_DESC"], text = L["FILTER_EXAMPLE_3_TEXT"], value = 'HARMFUL|PLAYER|!CROWD_CONTROL' },
+		hotsShields			= { order = 4, desc = L["FILTER_EXAMPLE_4_DESC"], text = L["FILTER_EXAMPLE_4_TEXT"], value = 'HELPFUL|RAID_IN_COMBAT|PLAYER' },
+		debuffsDispel		= { order = 5, desc = L["FILTER_EXAMPLE_5_DESC"], text = L["FILTER_EXAMPLE_5_TEXT"], value = 'HARMFUL|RAID|PLAYER' },
+		debuffsRaidDispel	= { order = 6, desc = L["FILTER_EXAMPLE_6_DESC"], text = L["FILTER_EXAMPLE_6_TEXT"], value = 'HARMFUL|RAID_PLAYER_DISPELLABLE' },
+	}
+
+	local listFilters = {
+		HELPFUL					= { order = 1,	desc = L["FILTER_STRING_HELPFUL_DESC"],					text = nil },
+		HARMFUL					= { order = 2,	desc = L["FILTER_STRING_HARMFUL_DESC"],					text = nil },
+		PLAYER					= { order = 3,	desc = L["FILTER_STRING_PLAYER_DESC"],					text = nil },
+		RAID					= { order = 4,	desc = L["FILTER_STRING_RAID_DESC"],					text = L["FILTER_STRING_RAID_TEXT"] },
+		RAID_PLAYER_DISPELLABLE = { order = 5,	desc = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_DESC"],	text = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_TEXT"] },
+		RAID_IN_COMBAT			= { order = 6,	desc = L["FILTER_STRING_RAID_IN_COMBAT_DESC"],			text = L["FILTER_STRING_RAID_IN_COMBAT_TEXT"] },
+		CANCELABLE				= { order = 7,	desc = L["FILTER_STRING_CANCELABLE_DESC"],				text = nil },
+		INCLUDE_NAME_PLATE_ONLY = { order = 8,	desc = L["FILTER_STRING_INCLUDE_NAME_PLATE_ONLY_DESC"],	text = nil },
+		EXTERNAL_DEFENSIVE		= { order = 9,	desc = L["FILTER_STRING_EXTERNAL_DEFENSIVE_DESC"],		text = L["FILTER_STRING_EXTERNAL_DEFENSIVE_TEXT"],	testCommand = '/dump C_Spell.IsExternalDefensive(ID)' },
+		CROWD_CONTROL			= { order = 10,	desc = L["FILTER_STRING_CROWD_CONTROL_DESC"],			text = L["FILTER_STRING_CROWD_CONTROL_TEXT"],		testCommand = '/dump C_Spell.IsSpellCrowdControl(ID)' },
+		BIG_DEFENSIVE			= { order = 11,	desc = L["FILTER_STRING_BIG_DEFENSIVE_DESC"],			text = L["FILTER_STRING_BIG_DEFENSIVE_TEXT"],		testCommand = '/dump C_UnitAuras.AuraIsBigDefensive(ID)' },
+		IMPORTANT				= { order = 12,	desc = L["FILTER_STRING_IMPORTANT_DESC"],				text = L["FILTER_STRING_IMPORTANT_TEXT"],			testCommand = '/dump C_Spell.IsSpellImportant(ID)' },
+		DISPELLABLE				= { order = 13,	desc = L["FILTER_STRING_DISPELLABLE_DESC"],				text = nil },
+	}
+
+	local function AddGuideInput(group, key, order, text, desc, value, width)
+		local input = ACH:Input(desc or '', text or ' ', order, nil, width or 'full', function() return (value:gsub('|', '||')) end)
+		input.focusSelect = true
+		group.args[key] = input
+	end
+
+	local function AddGuideRow(parent, key, order, text, desc, value, cmd, width)
+		local pair = ACH:Group(desc or ' ', nil, order)
+		pair.args.desc = ACH:Description(text or '', 1, 'medium', nil, nil, nil, nil, width or 'full')
+		pair.inline = true
+
+		AddGuideInput(pair, 'input', 2, '', nil, value, width)
+
+		if cmd then
+			AddGuideInput(pair, 'testCommand', 3, L["FILTER_TEST_COMMAND_TEXT"], L["FILTER_TEST_COMMAND_DESC"], cmd, width)
+		end
+
+		parent.args[key] = pair
+	end
+
+	function C:GetOptionsTable_FiltersGuide(order)
+		local config = ACH:Group(L["Filters Guide"], nil, order or 100, 'tab', nil, nil, nil, not E.Retail)
+		config.args.howToFilter = ACH:Group(L["How to filter"], nil, 1)
+		config.args.howToFilter.args.desc = ACH:Description(L["HOW_TO_FILTER"], 1, 'medium', nil, nil, nil, nil, 'full')
+
+		local examples = ACH:Group(L["Filter examples"], nil, 2)
+		examples.args.header = ACH:Description(L["FILTER_EXAMPLES"], 0, 'medium', nil, nil, nil, nil, 'full')
+		config.args.filterExamples = examples
+
+		for key, data in next, listExamples do
+			AddGuideRow(examples, key, data.order, data.text, data.desc, data.value, nil, 300)
+		end
+
+		local available = ACH:Group(L["Available Filters"], nil, 3)
+		available.args.header = ACH:Description(L["AVAILABLE_FILTERS"], 0, 'medium', nil, nil, nil, nil, 'full')
+		config.args.availableFilter = available
+
+		for key, data in next, listFilters do
+			AddGuideRow(available, key, data.order, data.text, data.desc, key, data.testCommand, 300)
+		end
+
+		config.args.filterCheckboxes = ACH:Group(L["Filter checkboxes"], nil, 4)
+		config.args.filterCheckboxes.args.desc = ACH:Description(L["FILTER_CHECKBOXES"], 1, 'medium', nil, nil, nil, nil, 'full')
+
+		return config
+	end
 end
 
 do -- shared cooldown
