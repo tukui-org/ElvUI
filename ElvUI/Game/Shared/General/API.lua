@@ -1455,18 +1455,6 @@ function E:IsInRestrictionState(which)
 	return E:CheckRestrictionState(which) > 1
 end
 
-function E:IsRestrictedMap() -- enum 4
-	return GetCVarBool('addonMapRestrictionsForced') or E:IsInRestrictionState('Map')
-end
-
-function E:IsRestrictedChat() -- enum 5
-	return GetCVarBool('addonChatRestrictionsForced') or E:IsInRestrictionState('Chat')
-end
-
-function E:IsRestrictedPvPMatch() -- enum 3
-	return GetCVarBool('addonPvPMatchRestrictionsForced') or E:IsInRestrictionState('PvPMatch')
-end
-
 function E:IsRestrictedCombat() -- enum 0
 	return GetCVarBool('addonCombatRestrictionsForced') or E:IsInRestrictionState('Combat')
 end
@@ -1479,12 +1467,24 @@ function E:IsRestrictedChallengeMode() -- enum 2
 	return GetCVarBool('addonChallengeModeRestrictionsForced') or E:IsInRestrictionState('ChallengeMode')
 end
 
-function E:IsRestrictedInstance()
+function E:IsRestrictedPvPMatch() -- enum 3
+	return GetCVarBool('addonPvPMatchRestrictionsForced') or E:IsInRestrictionState('PvPMatch')
+end
+
+function E:IsRestrictedMap() -- enum 4
+	return GetCVarBool('addonMapRestrictionsForced') or E:IsInRestrictionState('Map')
+end
+
+function E:IsRestrictedChat() -- enum 5
+	return GetCVarBool('addonChatRestrictionsForced') or E:IsInRestrictionState('Chat')
+end
+
+function E:IsRestrictedInstance() -- restrictions during mythic+
 	return E:IsRestrictedChallengeMode() or E:IsRestrictedEncounter()
 end
 
-function E:IsRestrictedAuras()
-	return E:IsRestrictedCombat() or E:IsRestrictedEncounter() or E:IsRestrictedChallengeMode() or E:IsRestrictedPvPMatch()
+function E:IsRestrictedAuras() -- restrictions that block aura container updates
+	return E:IsRestrictedChallengeMode() or E:IsRestrictedEncounter() or E:IsRestrictedCombat() or E:IsRestrictedPvPMatch()
 end
 
 function E:UnregisterGameEvent(event)
