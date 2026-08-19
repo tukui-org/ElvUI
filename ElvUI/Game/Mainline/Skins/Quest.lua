@@ -349,16 +349,6 @@ function S:BlizzardQuestFrames()
 		_G.QuestRewardScrollFrame:SetTemplate('NoBackdrop')
 		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('NoBackdrop')
 
-		_G.QuestFrameDetailPanel.SealMaterialBG:SetAlpha(0)
-		_G.QuestFrameRewardPanel.SealMaterialBG:SetAlpha(0)
-		_G.QuestFrameProgressPanel.SealMaterialBG:SetAlpha(0)
-		_G.QuestFrameGreetingPanel.SealMaterialBG:SetAlpha(0)
-
-		_G.QuestFrameDetailPanel.Bg:SetAlpha(0)
-		_G.QuestFrameRewardPanel.Bg:SetAlpha(0)
-		_G.QuestFrameProgressPanel.Bg:SetAlpha(0)
-		_G.QuestFrameGreetingPanel.Bg:SetAlpha(0)
-
 		_G.QuestModelScene.ModelTextFrame:StripTextures()
 		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
@@ -377,6 +367,11 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameRewardPanel.Bg:SetInside(_G.QuestRewardScrollFrame)
 		_G.QuestFrameProgressPanel.Bg:SetInside(_G.QuestProgressScrollFrame)
 		_G.QuestFrameGreetingPanel.Bg:SetInside(_G.QuestGreetingScrollFrame)
+
+		_G.QuestFrameDetailPanel.Bg:SetAlpha(1)
+		_G.QuestFrameRewardPanel.Bg:SetAlpha(1)
+		_G.QuestFrameProgressPanel.Bg:SetAlpha(1)
+		_G.QuestFrameGreetingPanel.Bg:SetAlpha(1)
 
 		_G.QuestDetailScrollFrame.Center:SetAlpha(0)
 		_G.QuestRewardScrollFrame.Center:SetAlpha(0)
