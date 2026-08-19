@@ -1,3 +1,19 @@
+### Version 15.23 [ August 19th 2026 ]
+*   **Major Filter Changes** with in-game Guide in filter section (also a Filter Guide tab in aura sections).
+*   **Cancel Auras**  Player auras can be right-click canceled off on unitframes (when click-through is disabled).
+*   **Filter Defaults**  All filter defaults were updated; past configurations are no longer used with the new system.
+    *   Entirely new configuration for midnight aura filtering.
+    *   Top auras can be filtered the same as unitframes and nameplates.
+    *   Top auras anchor to its mover properly again.
+    *   Top auras have the correct border colors again.
+*   **Other Changes**
+    *   Crest datatext updated.
+    *   Enemy unit pings won't explode with errors.
+    *   Aura indicator size adjusted to be like previous versions.
+    *   Minimap location text not setting properly with mouseover enabled.
+    *   Quest pages should use the Blizzard art correctly when parchment is enabled.
+    *   Reverted a change to charge cooldowns.
+
 ### Version 15.22 [ August 15th 2026 ]
 *   **Auras**
     *   Buff highlighting works again (Filters > Aura Highlight).
