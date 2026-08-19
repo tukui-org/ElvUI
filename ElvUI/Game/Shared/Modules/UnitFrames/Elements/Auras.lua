@@ -520,9 +520,6 @@ function UF:Configure_Auras(frame, which)
 		auras.disableMouse = settings.clickThrough
 		auras.filterList = UF:ConvertFilters(auras, settings.priority)
 
-		auras:SetFrameStrata(settings.strataAndLevel and settings.strataAndLevel.useCustomStrata and settings.strataAndLevel.frameStrata or 'LOW')
-		auras:SetFrameLevel((settings.strataAndLevel and settings.strataAndLevel.useCustomLevel and settings.strataAndLevel.frameLevel) or (frame.RaisedElementParent and frame.RaisedElementParent.AuraLevel) or 1)
-
 		local index = 1
 		while auras[index] do
 			local button = auras[index]
@@ -538,6 +535,8 @@ function UF:Configure_Auras(frame, which)
 
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset - (smartFluid and 1 or 0))
+	auras:SetFrameStrata((settings.strataAndLevel and settings.strataAndLevel.useCustomStrata and settings.strataAndLevel.frameStrata) or 'LOW')
+	auras:SetFrameLevel((settings.strataAndLevel and settings.strataAndLevel.useCustomLevel and settings.strataAndLevel.frameLevel) or frame.RaisedElementParent.AuraLevel)
 
 	if settings.enable then
 		auras:Show()
