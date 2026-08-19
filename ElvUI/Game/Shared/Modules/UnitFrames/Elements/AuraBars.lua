@@ -125,7 +125,6 @@ function UF:Configure_AuraBars(frame)
 		bars.reverseFill = bars.db.reverseFill
 		bars.friendlyAuraType = db.friendlyAuraType
 		bars.enemyAuraType = db.enemyAuraType
-		bars.disableMouse = db.clickThrough
 		bars.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
 		bars.tooltipAnchor = db.tooltipAnchorType
 		bars.tooltipAnchorX = db.tooltipAnchorX
@@ -219,6 +218,7 @@ function UF:Configure_AuraBars(frame)
 			bars.textFont, bars.textFontSize, bars.textFontOutline = UF.db.font, UF.db.fontSize, UF.db.fontOutline
 			bars.friendlyFilter = db.friendlyFilter.filterLists
 			bars.enemyFilter = db.enemyFilter.filterLists
+			bars.noMouse = db.clickThrough
 			bars.forceShowAuras = frame.forceShowAuras
 			bars.customBackdropColor = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop or nil
 
@@ -231,6 +231,8 @@ function UF:Configure_AuraBars(frame)
 
 			bars:SetEnabled(true)
 		else
+			bars.disableMouse = db.clickThrough
+
 			E:UpdateClassColor(UF.db.colors.auraBarBuff)
 			E:UpdateClassColor(UF.db.colors.auraBarDebuff)
 
