@@ -374,6 +374,11 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameProgressPanel.SealMaterialBG:SetAlpha(0)
 		_G.QuestFrameGreetingPanel.SealMaterialBG:SetAlpha(0)
 
+		_G.QuestFrameDetailPanel.Bg:SetAlpha(0)
+		_G.QuestFrameRewardPanel.Bg:SetAlpha(0)
+		_G.QuestFrameProgressPanel.Bg:SetAlpha(0)
+		_G.QuestFrameGreetingPanel.Bg:SetAlpha(0)
+
 		_G.QuestModelScene.ModelTextFrame:StripTextures()
 		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
