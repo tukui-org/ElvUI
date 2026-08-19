@@ -2295,7 +2295,7 @@ function UF:Initialize()
 	UF.PingableInfo.guid = E.myguid
 	UF.thinBorders = UF.db.thinBorders
 	UF.multiplier = UF.db.multiplier or 0.35
-	UF.multiplierPrediction = 1.25
+	UF.multiplierPrediction = 0.8
 	UF.maxAllowedGroups = 8
 
 	UF.SPACING = (UF.thinBorders or E.twoPixelsPlease) and 0 or 1

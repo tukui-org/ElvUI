@@ -301,7 +301,7 @@ do
 				end
 
 				if r then
-					UF:SetStatusBarColor(predictionBar, r * UF.multiplierPrediction, g * UF.multiplierPrediction, b * UF.multiplierPrediction)
+					UF:SetStatusBarColor(predictionBar, r, g, b, nil, UF.multiplierPrediction)
 				end
 			end
 		end
