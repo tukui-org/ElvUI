@@ -101,10 +101,10 @@ local function UpdateRepairButtons()
 
 	if CanGuildBankRepair() then
 		_G.MerchantRepairText:SetPoint('CENTER', _G.MerchantFrame, 'BOTTOMLEFT', 80, 90)
-		_G.MerchantRepairAllButton:Point('BOTTOMLEFT', _G.MerchantFrame, 'BOTTOMLEFT', 60, 40)
+		_G.MerchantRepairAllButton:Point('BOTTOMLEFT', 60, 40)
 	else
 		_G.MerchantRepairText:Point('BOTTOMLEFT', 14, 69)
-		_G.MerchantRepairAllButton:Point('BOTTOMLEFT', _G.MerchantFrame, 'BOTTOMLEFT', 124, 57)
+		_G.MerchantRepairAllButton:Point('BOTTOMLEFT', 124, 57)
 	end
 end
 
