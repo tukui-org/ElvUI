@@ -89,22 +89,6 @@ local function HandleReward(frame)
 	end
 end
 
-local function NewSealStyle()
-	local theme = _G.QuestInfoSealFrame.theme
-	return theme and theme.background
-end
-
-function S:QuestInfo_StyleScrollFrame(scrollFrame)
-	local material = GetQuestBackgroundMaterial()
-	scrollFrame.Center:SetShown((not material or material == 'Parchment') and not NewSealStyle())
-end
-
-S.QuestInfo_StyleScrollFrames = {
-	[_G.QuestDetailScrollChildFrame] = _G.QuestDetailScrollFrame,
-	[_G.QuestRewardScrollChildFrame] = _G.QuestRewardScrollFrame,
-	[_G.QuestLogPopupDetailFrame.ScrollFrame.ScrollChild] = _G.QuestLogPopupDetailFrameScrollFrame
-}
-
 -- Quest objective text color
 local function Quest_GetQuestID()
 	if _G.QuestInfoFrame.questLog then
@@ -259,11 +243,6 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		_G.QuestInfoQuestType:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetShadowColor(0, 0, 0, 0)
-
-		local scrollFrame = S.QuestInfo_StyleScrollFrames[parentFrame]
-		if scrollFrame then
-			S:QuestInfo_StyleScrollFrame(scrollFrame)
-		end
 	end
 end
 
@@ -388,9 +367,6 @@ function S:BlizzardQuestFrames()
 		_G.QuestGreetingScrollFrame:SetTemplate('Transparent')
 		_G.QuestRewardScrollFrame:SetTemplate('Transparent')
 		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('Transparent')
-
-		S:QuestInfo_StyleScrollFrame(_G.QuestProgressScrollFrame)
-		S:QuestInfo_StyleScrollFrame(_G.QuestGreetingScrollFrame)
 
 		_G.QuestFrameDetailPanel.SealMaterialBG:SetInside(_G.QuestDetailScrollFrame)
 		_G.QuestFrameRewardPanel.SealMaterialBG:SetInside(_G.QuestRewardScrollFrame)
