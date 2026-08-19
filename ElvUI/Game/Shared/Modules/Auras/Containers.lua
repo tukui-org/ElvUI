@@ -106,17 +106,6 @@ if SORTDIRECTION then
 	E.AuraContainerSortDirection['-'] = SORTDIRECTION.Reverse
 end
 
-function E:Auras_IsForced(container)
-	if container.forceShowAuras then
-		return true -- container preview is active
-	end
-
-	local parent = container.GetParent and container:GetParent()
-	if parent and parent.forceShowAuras then
-		return true -- parent is forced so force the auras
-	end
-end
-
 function E:Auras_OnEvent(event, arg1, arg2)
 	local obj = E.AuraEvents[event]
 	if obj then
@@ -842,7 +831,7 @@ do
 end
 
 function E:Auras_UpdatePreviewIcons(container)
-	if not E:Auras_IsForced(container) then
+	if not container.forceShowAuras then
 		return E:Auras_HidePreviewIcons(container)
 	end
 
@@ -926,7 +915,7 @@ function E:Auras_SetContainer(container)
 		container.active[key] = nil
 	end
 
-	local count = E:Auras_IsForced(container) and 0 or maxCount
+	local count = container.forceShowAuras and 0 or maxCount
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
@@ -970,7 +959,7 @@ end
 function E:Auras_UpdateGate(container, unit)
 	if not E.AuraGates[container.unitframeType] then return end
 
-	if container.forceShowAuras then
+	if container.forceShowAuras or unit == 'player' then
 		E:Auras_UpdateRange(container, true)
 	else
 		local inRange = UnitIsConnected(unit) and UnitInRange(unit)
@@ -1015,12 +1004,15 @@ function E:Auras_GetFilter(obj, key)
 end
 
 function E:Auras_Create(parent, which, override)
-	local container = CreateFrame('AuraContainer', override or (parent:GetName() .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
-	container.known = {} -- both
+	local parentName = parent:GetName()
+	local container = CreateFrame('AuraContainer', override or (parentName .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
 
+	container.parent = parent
+	container.parentName = parentName
+
+	container.known = {} -- both
 	container.keys = {} -- indicators
 	container.indicators = {}
-
 	container.active = {} -- groups
 	container.buttons = {}
 	container.layout = {}
