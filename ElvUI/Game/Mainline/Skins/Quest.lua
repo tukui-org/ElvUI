@@ -383,7 +383,6 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameProgressPanel.Bg:SetInside(_G.QuestProgressScrollFrame)
 		_G.QuestFrameGreetingPanel.Bg:SetInside(_G.QuestGreetingScrollFrame)
 
-		_G.QuestFrameGreetingPanel.Bg:SetAlpha(1)
 		_G.QuestFrameDetailPanel.Bg:SetAlpha(1)
 		_G.QuestFrameRewardPanel.Bg:SetAlpha(1)
 		_G.QuestFrameProgressPanel.Bg:SetAlpha(1)
