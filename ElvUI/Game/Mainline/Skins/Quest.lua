@@ -2,15 +2,16 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local gsub, next, strmatch, strfind = gsub, next, strmatch, strfind
-local pairs, ipairs, unpack = pairs, ipairs, unpack
+local unpack, gsub = unpack, gsub
+local pairs, next, strmatch = pairs, next, strmatch
+local ipairs, strfind = ipairs, strfind
+local hooksecurefunc = hooksecurefunc
 
 local GetMoney = GetMoney
 local GetQuestID = GetQuestID
 local CreateFrame = CreateFrame
 local GetNumQuestLeaderBoards = GetNumQuestLeaderBoards
 local GetQuestLogLeaderBoard = GetQuestLogLeaderBoard
-local hooksecurefunc = hooksecurefunc
 
 local C_QuestLog_GetRequiredMoney = C_QuestLog.GetRequiredMoney
 local C_QuestLog_GetNextWaypointText = C_QuestLog.GetNextWaypointText

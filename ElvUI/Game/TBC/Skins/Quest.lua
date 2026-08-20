@@ -398,8 +398,8 @@ function S:BlizzardQuestFrames()
 		end
 	end
 
+	_G.QuestLogTimerText:SetTextColor(1, 1, 1)
 	_G.QuestLogCount:SetTemplate('Transparent')
-
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameItems_Update', ItemsUpdate)
@@ -420,8 +420,6 @@ function S:BlizzardQuestFrames()
 		end
 	end
 
-	_G.QuestLogTimerText:SetTextColor(1, 1, 1)
-
 	S:HandleFrame(_G.QuestFrame)
 	S:HandleFrame(_G.QuestLogFrame, true, nil, 8, -10, -28, 42)
 	S:HandleFrame(_G.QuestLogListScrollFrame, true, nil, -2, 2)
@@ -430,6 +428,8 @@ function S:BlizzardQuestFrames()
 	S:HandleFrame(_G.QuestRewardScrollFrame, true, nil, 2, -2)
 	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, 2, -2)
 	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, 2, -2)
+
+	_G.QuestGreetingFrameHorizontalBreak:Kill()
 
 	_G.QuestLogFrameAbandonButton:PointXY(15, 49)
 	_G.QuestFramePushQuestButton:PointXY(-2)
@@ -442,8 +442,6 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGoodbyeButton:PointXY(-32, 4)
 	_G.QuestFrameGreetingGoodbyeButton:PointXY(-32, 4)
 	_G.QuestFrameNpcNameText:PointXY(-1, 0)
-
-	_G.QuestGreetingFrameHorizontalBreak:Kill()
 
 	_G.QuestLogListScrollFrame:Width(303)
 	_G.QuestLogDetailScrollFrame:Width(303)

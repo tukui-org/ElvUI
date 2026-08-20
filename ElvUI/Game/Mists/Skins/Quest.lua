@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, pairs = next, pairs
-local gsub, strmatch, unpack = gsub, strmatch, unpack
+local unpack, gsub = unpack, gsub
+local pairs, next, strmatch = pairs, next, strmatch
 local hooksecurefunc = hooksecurefunc
 
 local GetMoney = GetMoney
@@ -16,6 +16,7 @@ local GetQuestLogRequiredMoney = GetQuestLogRequiredMoney
 local GetQuestLogTitle = GetQuestLogTitle
 local GetQuestMoneyToGet = GetQuestMoneyToGet
 local IsQuestComplete = IsQuestComplete
+
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local MAX_NUM_ITEMS = MAX_NUM_ITEMS
@@ -25,53 +26,6 @@ local MAX_REQUIRED_ITEMS = MAX_REQUIRED_ITEMS
 local LASTINDEX = 1
 local TEXTR, TEXTG, TEXTB = 1, 1, 1
 local TITLER, TITLEG, TITLEB = 1, 0.80, 0.10
-
-local function ShowQuestPortrait(frame, _, _, _, _, _, x, y)
-	local mapFrame = _G.QuestMapFrame:GetParent()
-
-	_G.QuestModelScene:ClearAllPoints()
-	_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + (frame == mapFrame and 11 or 6), y or 0)
-end
-
-local function UpdateGreetingFrame()
-	local i = 1
-	local title = _G['QuestTitleButton'..i]
-	while (title and title:IsVisible()) do
-		_G.GreetingText:SetTextColor(1, 1, 1)
-		_G.CurrentQuestsText:SetTextColor(1, 0.80, 0.10)
-		_G.AvailableQuestsText:SetTextColor(1, 0.80, 0.10)
-
-		local text = title:GetFontString()
-		local textString = gsub(title:GetText(), '|c[Ff][Ff]%x%x%x%x%x%x(.+)|r', '%1')
-		title:SetText(textString)
-
-		local icon = _G['QuestTitleButton'..i..'QuestIcon']
-		if title.isActive == 1 then
-			icon:SetTexture(132048)
-			icon:SetDesaturation(1)
-			text:SetTextColor(.6, .6, .6)
-		else
-			icon:SetTexture(132049)
-			icon:SetDesaturation(0)
-			text:SetTextColor(1, .8, .1)
-		end
-
-		local numEntries = GetNumQuestLogEntries()
-		for y = 1, numEntries do
-			local titleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
-			if not titleText then
-				break
-			elseif strmatch(titleText, textString) and (isComplete == 1 or IsQuestComplete(questId)) then
-				icon:SetDesaturation(0)
-				text:SetTextColor(1, .8, .1)
-				break
-			end
-		end
-
-		i = i + 1
-		title = _G['QuestTitleButton'..i]
-	end
-end
 
 local function HandleItemButton(item)
 	if not item then return end
@@ -124,13 +78,6 @@ local function HandleItemButton(item)
 	end
 end
 
-local function GetRewardButton(rewardsFrame, index)
-	local button = rewardsFrame.RewardButtons[index]
-	if not button and button.template then return end
-
-	HandleItemButton(button)
-end
-
 local function HandleQualityColors(frame, text, link)
 	if not frame.template then
 		HandleItemButton(frame)
@@ -146,6 +93,60 @@ local function HandleQualityColors(frame, text, link)
 		text:SetTextColor(1, 1, 1)
 		frame:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
+end
+
+local function ShowQuestPortrait(frame, _, _, _, _, _, x, y)
+	local mapFrame = _G.QuestMapFrame:GetParent()
+
+	_G.QuestModelScene:ClearAllPoints()
+	_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + (frame == mapFrame and 11 or 6), y or 0)
+end
+
+local function UpdateGreetingFrame()
+	local i = 1
+	local title = _G['QuestTitleButton'..i]
+	while (title and title:IsVisible()) do
+		_G.GreetingText:SetTextColor(1, 1, 1)
+		_G.CurrentQuestsText:SetTextColor(1, 0.80, 0.10)
+		_G.AvailableQuestsText:SetTextColor(1, 0.80, 0.10)
+
+		local text = title:GetFontString()
+		local textString = gsub(title:GetText(), '|c[Ff][Ff]%x%x%x%x%x%x(.+)|r', '%1')
+		title:SetText(textString)
+
+		local icon = _G['QuestTitleButton'..i..'QuestIcon']
+		if title.isActive == 1 then
+			icon:SetTexture(132048)
+			icon:SetDesaturation(1)
+			text:SetTextColor(.6, .6, .6)
+		else
+			icon:SetTexture(132049)
+			icon:SetDesaturation(0)
+			text:SetTextColor(1, .8, .1)
+		end
+
+		local numEntries = GetNumQuestLogEntries()
+		for y = 1, numEntries do
+			local titleText, _, _, _, _, isComplete, _, questId = GetQuestLogTitle(y)
+			if not titleText then
+				break
+			elseif strmatch(titleText, textString) and (isComplete == 1 or IsQuestComplete(questId)) then
+				icon:SetDesaturation(0)
+				text:SetTextColor(1, .8, .1)
+				break
+			end
+		end
+
+		i = i + 1
+		title = _G['QuestTitleButton'..i]
+	end
+end
+
+local function GetRewardButton(rewardsFrame, index)
+	local button = rewardsFrame.RewardButtons[index]
+	if not button and button.template then return end
+
+	HandleItemButton(button)
 end
 
 local function ItemOnClick(frame)
@@ -486,6 +487,8 @@ function S:BlizzardQuestFrames()
 	S:HandleFrame(_G.QuestProgressScrollFrame, true, nil, 2, -2)
 	S:HandleFrame(_G.QuestGreetingScrollFrame, true, nil, 2, -2)
 
+	_G.QuestGreetingFrameHorizontalBreak:Kill()
+
 	_G.QuestLogFrameCancelButton:PointXY(-4, 4)
 	_G.QuestFramePushQuestButton:PointXY(1)
 	_G.QuestFrameAcceptButton:PointXY(7, 4)
@@ -496,8 +499,6 @@ function S:BlizzardQuestFrames()
 	_G.QuestFrameGoodbyeButton:PointXY(-10, 4)
 	_G.QuestFrameGreetingGoodbyeButton:PointXY(-10, 4)
 	_G.QuestFrameNpcNameText:PointXY(-1, 0)
-
-	_G.QuestGreetingFrameHorizontalBreak:Kill()
 
 	_G.QuestLogListScrollFrame:Width(303)
 	_G.QuestLogDetailScrollFrame:Width(303)
