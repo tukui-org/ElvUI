@@ -2095,7 +2095,6 @@ function E:Initialize()
 
 		if E.Retail then
 			E:Tutorials()
-			E:InitializeAuras()
 		end
 
 		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then

@@ -15,6 +15,7 @@ local CreateFrame = CreateFrame
 local AnchorUtil = AnchorUtil
 local CopyTable = CopyTable
 local UnitInRange = UnitInRange
+local UnitCanAssist = UnitCanAssist
 local UnitIsConnected = UnitIsConnected
 
 local GetCVarBool = C_CVar.GetCVarBool
@@ -30,10 +31,6 @@ local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
 local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
 
-E.AuraUnits = {}
-E.AuraGated = {}
-E.AuraFocus = {}
-E.AuraTarget = {}
 E.AuraHighlight = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
  -- customDispelColorCurve is added from UpdateAuraCurves
@@ -49,22 +46,17 @@ E.AuraGates = {
 	assist = true
 }
 
+E.AuraEventUnits = {
+	PLAYER_TARGET_CHANGED = 'target',
+	PLAYER_FOCUS_CHANGED = 'focus'
+}
+
 E.AuraDispel = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
 	showWhenHarmful = true,
 	showWhenHelpful = false,
 	showWithoutDispelType = true,
 	customDispelColorMap = {} -- updated by UpdateDispelColors
-}
-
-E.AuraEvents = {
-	PLAYER_TARGET_CHANGED = E.AuraTarget,
-	PLAYER_FOCUS_CHANGED = E.AuraFocus
-}
-
-E.AuraEventUnits = {
-	PLAYER_TARGET_CHANGED = 'target',
-	PLAYER_FOCUS_CHANGED = 'focus'
 }
 
 E.AuraContainerSortDirection = {}
@@ -107,30 +99,24 @@ if SORTDIRECTION then
 end
 
 function E:Auras_OnEvent(event, arg1, arg2)
-	local obj = E.AuraEvents[event]
-	if obj then
-		local unit = E.AuraEventUnits[event]
-		if unit then
-			for container in next, obj do
-				if container.isAuraBar then
-					UF:AuraBars_UpdateFilter(container, unit)
-					E:Auras_SetContainer(container)
-				else -- for target frame
-					container:UpdateAllAuras()
-				end
-			end
-		end
-	elseif event == 'UNIT_IN_RANGE_UPDATE' then
-		for container, unit in next, E.AuraGated do
-			if arg1 == unit then
-				E:Auras_UpdateRange(container, UnitIsConnected(unit) and arg2)
-			end
-		end
-	elseif event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
-		for container, unit in next, E.AuraUnits do
-			if arg1 == unit then
+	local container = self.owner
+	if event == 'PLAYER_FOCUS_CHANGED' or event == 'PLAYER_TARGET_CHANGED' then
+		local eventUnit = E.AuraEventUnits[event]
+		if eventUnit == container.unit then
+			if container.isAuraBar then
+				UF:AuraBars_UpdateFilter(container, eventUnit)
+				E:Auras_SetContainer(container)
+			else -- for target frame
 				container:UpdateAllAuras()
 			end
+		end
+	elseif arg1 and (arg1 == container.unit) then -- about to do something
+		if event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
+			container:UpdateAllAuras()
+		elseif event == 'UNIT_FLAGS' or event == 'UNIT_PHASE' then
+			E:Auras_UpdateGate(container, arg1)
+		elseif event == 'UNIT_IN_RANGE_UPDATE' then
+			E:Auras_UpdateRange(container, UnitIsConnected(arg1) and arg2)
 		end
 	end
 end
@@ -943,9 +929,14 @@ function E:Auras_SetLineSize(container)
 end
 
 function E:Auras_SetUnit(container, unit)
-	E.AuraUnits[container] = unit
-
 	container:SetUnit(unit)
+
+	container.unit = unit
+	container.canAssist = UnitCanAssist('player', unit)
+end
+
+function E:Auras_SetEnabled(container)
+	container:SetEnabled(container.enabled and container.canAssist)
 end
 
 function E:Auras_UpdateRange(container, isInRange)
@@ -966,19 +957,11 @@ end
 function E:Auras_GroupUnit(container, unit)
 	if not container then return end
 
-	if unit == 'target' then
-		E.AuraTarget[container] = unit
-	elseif unit == 'focus' then
-		E.AuraFocus[container] = unit
-	end
-
-	E.AuraGated[container] = E.AuraGates[container.unitframeType] and unit or nil
-
 	E:Auras_SetUnit(container, unit)
 	E:Auras_UpdateGate(container, unit)
 
 	if container.isHighlight then
-		UF:SetEnabled_AuraHighlight(container, unit)
+		E:Auras_SetEnabled(container)
 	end
 end
 
@@ -1018,19 +1001,23 @@ function E:Auras_Create(parent, which, override)
 		container.auraType = strlower(which)
 	end
 
+	local events = CreateFrame('Frame', nil, container)
+	events.owner = container
+	container.events = events
+
+	-- bugged: range
+	events:RegisterEvent('UNIT_FLAGS')
+	events:RegisterEvent('UNIT_PHASE')
+	events:RegisterEvent('UNIT_IN_RANGE_UPDATE')
+
+	-- bugged: vehicle
+	events:RegisterEvent('UNIT_FACTION')
+	events:RegisterEvent('UNIT_TARGETABLE_CHANGED')
+
+	-- aurabar to switch to friendship
+	events:RegisterEvent('PLAYER_TARGET_CHANGED')
+	events:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	events:SetScript('OnEvent', E.Auras_OnEvent)
+
 	return container
-end
-
-function E:InitializeAuras()
-	if E.AuraEventFrame then return end
-
-	local eventFrame = CreateFrame('Frame')
-	eventFrame:RegisterEvent('UNIT_FACTION')
-	eventFrame:RegisterEvent('UNIT_IN_RANGE_UPDATE')
-	eventFrame:RegisterEvent('UNIT_TARGETABLE_CHANGED')
-	eventFrame:RegisterEvent('PLAYER_TARGET_CHANGED')
-	eventFrame:RegisterEvent('PLAYER_FOCUS_CHANGED')
-	eventFrame:SetScript('OnEvent', E.Auras_OnEvent)
-
-	E.AuraEventFrame = eventFrame
 end
