@@ -206,8 +206,7 @@ end
 
 function NP:AuraContainer_ConstructContainers()
 	for i = 1, PLATETOKENS do
-		local name = 'ElvNP_NamePlate'..i
-		NP.AuraContainers[name] = NP:AuraContainer_CreateFrameType(name)
+		NP.AuraContainers['nameplate'..i] = NP:AuraContainer_CreateFrameType('ElvNP_NamePlate'..i)
 	end
 end
 
