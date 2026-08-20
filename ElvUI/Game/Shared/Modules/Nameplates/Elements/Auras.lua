@@ -151,7 +151,7 @@ function NP:Configure_AuraFilters(nameplate, which)
 	local frameType = nameplate.frameType
 	if not frameType then return end
 
-	local obj = NP.AuraContainers[frameType]
+	local obj = NP.AuraContainerFilterTypes[frameType]
 	local info = obj and obj[which]
 	if not info then return end
 
@@ -159,7 +159,7 @@ function NP:Configure_AuraFilters(nameplate, which)
 end
 
 function NP:AuraContainer_ConstructFilters()
-	for frameType, data in next, NP.AuraContainers do
+	for frameType, data in next, NP.AuraContainerFilterTypes do
 		local plateDB = NP:PlateDB(nil, frameType)
 		for which, auraType in next, AURA_TYPES do
 			local info = data[which]
@@ -197,26 +197,23 @@ end
 
 function NP:AuraContainer_CreateFrameType(name)
 	local object = {}
-	for frameType in next, NP.AuraContainers do
+	for frameType in next, NP.AuraContainerFilterTypes do
 		object[frameType] = NP:AuraContainer_ConstructAuraTypes(frameType, name)
 	end
 
 	return object
 end
 
-do
-	local containers = {}
-	function NP:AuraContainer_ConstructContainers()
-		for i = 1, PLATETOKENS do
-			local name = 'ElvNP_NamePlate'..i
-			containers[name] = NP:AuraContainer_CreateFrameType(name)
-		end
+function NP:AuraContainer_ConstructContainers()
+	for i = 1, PLATETOKENS do
+		local name = 'ElvNP_NamePlate'..i
+		NP.AuraContainers[name] = NP:AuraContainer_CreateFrameType(name)
 	end
+end
 
-	function NP:GetAuraContainer(unitToken, frameType)
-		local object = containers[unitToken]
-		return object and object[frameType] or nil
-	end
+function NP:GetAuraContainer(unitToken, frameType)
+	local object = NP.AuraContainers[unitToken]
+	return object and object[frameType] or nil
 end
 
 function NP:GetAuraFilter(which, db)
@@ -230,7 +227,7 @@ end
 function NP:Configure_AuraContainers(nameplate, which, enable)
 	local container
 	local plateUnit, plateType = nameplate.__unit, nameplate.frameType
-	for frameType in next, NP.AuraContainers do
+	for frameType in next, NP.AuraContainerFilterTypes do
 		local other = NP:GetAuraContainer(plateUnit, frameType)
 		local auras = other and other[which]
 		if auras then

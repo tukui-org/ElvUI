@@ -45,9 +45,10 @@ local Blacklist = {
 }
 
 NP.AuraContainers = {}
+NP.AuraContainerFilterTypes = {}
 
 for key in next, Blacklist do
-	NP.AuraContainers[key] = {}
+	NP.AuraContainerFilterTypes[key] = {}
 end
 
 function NP:ResetAuraPriority()
