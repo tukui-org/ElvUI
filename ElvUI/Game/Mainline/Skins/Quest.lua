@@ -324,6 +324,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestGreetingScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestRewardScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
+	_G.QuestFrameGreetingPanel:StripTextures(nil, E.private.skins.parchmentRemoverEnable)
 
 	_G.QuestDetailScrollChildFrame:StripTextures(nil, true)
 	_G.QuestRewardScrollChildFrame:StripTextures(nil, true)
@@ -367,6 +368,7 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameProgressPanel.Bg:SetInside(_G.QuestProgressScrollFrame)
 		_G.QuestFrameGreetingPanel.Bg:SetInside(_G.QuestGreetingScrollFrame)
 
+		_G.QuestFrameGreetingPanel.Bg:SetAlpha(1)
 		_G.QuestFrameDetailPanel.Bg:SetAlpha(1)
 		_G.QuestFrameRewardPanel.Bg:SetAlpha(1)
 		_G.QuestFrameProgressPanel.Bg:SetAlpha(1)
@@ -380,7 +382,6 @@ function S:BlizzardQuestFrames()
 		S:HandleBlizzardRegions(_G.QuestModelScene.ModelTextFrame)
 	end
 
-	_G.QuestFrameGreetingPanel:StripTextures(true)
 	S:HandleButton(_G.QuestFrameGreetingGoodbyeButton)
 	_G.QuestGreetingFrameHorizontalBreak:Kill()
 
