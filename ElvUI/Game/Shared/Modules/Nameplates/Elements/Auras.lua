@@ -5,10 +5,15 @@ local UF = E:GetModule('UnitFrames')
 local next = next
 local unpack = unpack
 local strfind = strfind
-local strlower = strlower
 
 local CreateFrame = CreateFrame
+
 local PLATETOKENS = 40 -- this is stupid
+local AURA_TYPES = {
+	Auras = 'auras',
+	Buffs = 'buffs',
+	Debuffs = 'debuffs'
+}
 
 function NP:Construct_Auras(nameplate)
 	local Auras, Buffs, Debuffs
@@ -147,34 +152,34 @@ function NP:Configure_AuraFilters(nameplate, which)
 	return info.filters
 end
 
-do
-	local auraTypes = { Auras = 'auras', Buffs = 'buffs', Debuffs = 'debuffs' }
-	function NP:Construct_AuraContainers()
-		for frameType, data in next, NP.AuraContainers do
-			local plateDB = NP:PlateDB(nil, frameType)
-			for which, auraType in next, auraTypes do
-				local info = data[which]
-				if not info then
-					info = { filters = {} }
-					data[which] = info
-				end
+function NP:Construct_AuraContainers()
+	for frameType, data in next, NP.AuraContainers do
+		local plateDB = NP:PlateDB(nil, frameType)
+		for which, auraType in next, AURA_TYPES do
+			local info = data[which]
+			if not info then
+				info = { filters = {} }
+				data[which] = info
+			end
 
-				local db = plateDB[auraType]
-				if db then
-					info.filterLists = db.filterLists
+			local db = plateDB[auraType]
+			if db then
+				info.filterLists = db.filterLists
 
-					UF:GroupFilters(info, info.filterLists)
-				end
+				UF:GroupFilters(info, info.filterLists)
 			end
 		end
 	end
+end
 
-	local containers = { frameType = 'PLAYER' }
+do
+	local containers = { frameType = 'ENEMY_NPC' }
 	function NP:Create_AuraContainer()
 		local container = {}
-		for which, auraType in next, auraTypes do
+		for which, auraType in next, AURA_TYPES do
 			local auras = E:Auras_Create(nil, which)
 			auras.filters = NP:Configure_AuraFilters(containers, which)
+			auras.nameplateType = containers.frameType
 			auras.auraType = auraType
 
 			E:Auras_SetContainer(auras)
@@ -206,10 +211,10 @@ end
 
 function NP:Configure_Auras(nameplate, which)
 	local plateDB = NP:PlateDB(nameplate)
-	local auras = nameplate[which]
-	local auraType = strlower(which)
+	local auraType = AURA_TYPES[which]
 	local db = plateDB[auraType]
 
+	local auras = nameplate[which]
 	auras.isNameplate = true
 	auras.size = db.size
 	auras.height = not db.keepSizeRatio and db.height
@@ -236,13 +241,13 @@ function NP:Configure_Auras(nameplate, which)
 		auras.noMouse = true
 		auras.auraType = auraType
 		auras.maxFrameCount = auras.num
+		auras.nameplateType = nameplate.frameType
 		auras.initialAnchor = E.CenterPoint[db.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = db.keepSizeRatio
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 		auras.forceShowAuras = nameplate == NP.TestFrame
-		auras.nameplateType = nameplate.frameType
 
 		auras.filters = NP:Configure_AuraFilters(nameplate, which)
 

@@ -241,6 +241,7 @@ function E:RegisterCooldown(cooldown, which, override, subgroup)
 	else -- this cooldown was already added
 		data.override = override
 		data.subgroup = subgroup
+		data.which = which -- pls dont
 
 		E:CooldownUpdate(cooldown) -- update it
 
