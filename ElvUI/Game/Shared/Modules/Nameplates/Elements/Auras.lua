@@ -136,12 +136,6 @@ function NP:Configure_AuraUnit(nameplate)
 	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.__unit)
 end
 
-function NP:Configure_AuraUpdate(nameplate)
-	E:Auras_UpdateButtons(nameplate.Auras_)
-	E:Auras_UpdateButtons(nameplate.Buffs_)
-	E:Auras_UpdateButtons(nameplate.Debuffs_)
-end
-
 function NP:Configure_AuraFilters(nameplate, which)
 	local frameType = nameplate.frameType
 	if not frameType then return end
@@ -247,13 +241,14 @@ function NP:Configure_Auras(nameplate, which)
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
-		auras.nameplateType = nameplate.frameType
 		auras.forceShowAuras = nameplate == NP.TestFrame
+		auras.nameplateType = nameplate.frameType
 
 		auras.filters = NP:Configure_AuraFilters(nameplate, which)
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
+		E:Auras_UpdateButtons(auras)
 	else
 		auras.filterList = UF:ConvertFilters(auras, db.priority)
 		auras.initialAnchor = initialAnchor
