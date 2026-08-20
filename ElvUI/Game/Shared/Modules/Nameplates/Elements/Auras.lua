@@ -158,7 +158,7 @@ function NP:Configure_AuraFilters(nameplate, which)
 	return info.filters
 end
 
-function NP:Construct_AuraContainers()
+function NP:AuraContainer_ConstructFilters()
 	for frameType, data in next, NP.AuraContainers do
 		local plateDB = NP:PlateDB(nil, frameType)
 		for which, auraType in next, AURA_TYPES do
@@ -178,38 +178,38 @@ function NP:Construct_AuraContainers()
 	end
 end
 
+function NP:AuraContainer_ConstructAuraTypes(frameType, name)
+	local object = {}
+	for which, auraType in next, AURA_TYPES do
+		local auras = E:Auras_Create(nil, which, name..which)
+		auras.frameType = frameType
+		auras.auraType = auraType
+
+		auras.filters = NP:Configure_AuraFilters(auras, which)
+
+		E:Auras_SetContainer(auras)
+
+		object[which] = auras
+	end
+
+	return object
+end
+
+function NP:AuraContainer_CreateFrameType(name)
+	local object = {}
+	for frameType in next, NP.AuraContainers do
+		object[frameType] = NP:AuraContainer_ConstructAuraTypes(frameType, name)
+	end
+
+	return object
+end
+
 do
 	local containers = {}
-	function NP:Create_AuraContainer(frameType, name)
-		local object = {}
-		for which, auraType in next, AURA_TYPES do
-			local auras = E:Auras_Create(nil, which, name..which)
-			auras.frameType = frameType
-			auras.auraType = auraType
-
-			auras.filters = NP:Configure_AuraFilters(auras, which)
-
-			E:Auras_SetContainer(auras)
-
-			object[which] = auras
-		end
-
-		return object
-	end
-
-	function NP:Create_AuraContainers(name)
-		local object = {}
-		for frameType in next, NP.AuraContainers do
-			object[frameType] = NP:Create_AuraContainer(frameType, name)
-		end
-
-		return object
-	end
-
-	function NP:Configure_AuraContainers()
+	function NP:AuraContainer_ConstructContainers()
 		for i = 1, PLATETOKENS do
 			local name = 'ElvNP_NamePlate'..i
-			containers[name] = NP:Create_AuraContainers(name)
+			containers[name] = NP:AuraContainer_CreateFrameType(name)
 		end
 	end
 
@@ -227,7 +227,7 @@ function NP:GetAuraFilter(which, db)
 	end
 end
 
-function NP:Setup_AuraContainers(nameplate, which, enable)
+function NP:Configure_AuraContainers(nameplate, which, enable)
 	local container
 	local plateUnit, plateType = nameplate.__unit, nameplate.frameType
 	for frameType in next, NP.AuraContainers do
@@ -252,7 +252,7 @@ function NP:Configure_Auras(nameplate, which)
 	local auraType = AURA_TYPES[which]
 	local db = plateDB[auraType]
 
-	local container = E.Retail and NP:Setup_AuraContainers(nameplate, which, true)
+	local container = E.Retail and NP:Configure_AuraContainers(nameplate, which, true)
 	local auras = container or nameplate[which]
 	auras.isNameplate = true
 	auras.size = db.size
@@ -337,7 +337,7 @@ function NP:Update_Auras(nameplate)
 			nameplate.Auras = nil
 
 			if E.Retail then
-				NP:Setup_AuraContainers(nameplate, 'Auras', false)
+				NP:Configure_AuraContainers(nameplate, 'Auras', false)
 			end
 		end
 
@@ -350,7 +350,7 @@ function NP:Update_Auras(nameplate)
 			nameplate.Debuffs = nil
 
 			if E.Retail then
-				NP:Setup_AuraContainers(nameplate, 'Debuffs', false)
+				NP:Configure_AuraContainers(nameplate, 'Debuffs', false)
 			end
 		end
 
@@ -363,7 +363,7 @@ function NP:Update_Auras(nameplate)
 			nameplate.Buffs = nil
 
 			if E.Retail then
-				NP:Setup_AuraContainers(nameplate, 'Buffs', false)
+				NP:Configure_AuraContainers(nameplate, 'Buffs', false)
 			end
 		end
 	elseif nameplate:IsElementEnabled('Auras') then
