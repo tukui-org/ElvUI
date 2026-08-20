@@ -18,7 +18,7 @@ local AURA_TYPES = {
 function NP:Construct_Auras(nameplate)
 	local Auras, Buffs, Debuffs
 
-	local container = E.Retail and NP:GetAuraContainer(nameplate.__unit)
+	local container = E.Retail and NP:GetAuraContainer(nameplate.__unit, nameplate.frameType)
 	if E.Retail then
 		Auras = (container and container.Auras) or E:Auras_Create(nameplate, 'Auras')
 	else
@@ -141,6 +141,12 @@ function NP:Configure_AuraUnit(nameplate)
 	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.__unit)
 end
 
+function NP:Configure_AuraUpdate(nameplate)
+	E:Auras_UpdateButtons(nameplate.Auras_)
+	E:Auras_UpdateButtons(nameplate.Buffs_)
+	E:Auras_UpdateButtons(nameplate.Debuffs_)
+end
+
 function NP:Configure_AuraFilters(nameplate, which)
 	local frameType = nameplate.frameType
 	if not frameType then return end
@@ -173,31 +179,43 @@ function NP:Construct_AuraContainers()
 end
 
 do
-	local containers = { frameType = 'ENEMY_NPC' }
-	function NP:Create_AuraContainer()
-		local container = {}
+	local containers = {}
+	function NP:Create_AuraContainer(frameType, name)
+		local object = {}
 		for which, auraType in next, AURA_TYPES do
-			local auras = E:Auras_Create(nil, which)
-			auras.filters = NP:Configure_AuraFilters(containers, which)
-			auras.nameplateType = containers.frameType
+			local auras = E:Auras_Create(nil, which, name..which)
+			auras.frameType = frameType
 			auras.auraType = auraType
+
+			auras.filters = NP:Configure_AuraFilters(auras, which)
 
 			E:Auras_SetContainer(auras)
 
-			container[which] = auras
+			object[which] = auras
 		end
 
-		return container
+		return object
+	end
+
+	function NP:Create_AuraContainers(name)
+		local object = {}
+		for frameType in next, NP.AuraContainers do
+			object[frameType] = NP:Create_AuraContainer(frameType, name)
+		end
+
+		return object
 	end
 
 	function NP:Configure_AuraContainers()
 		for i = 1, PLATETOKENS do
-			containers['nameplate'..i] = NP:Create_AuraContainer()
+			local name = 'ElvNP_NamePlate'..i
+			containers[name] = NP:Create_AuraContainers(name)
 		end
 	end
 
-	function NP:GetAuraContainer(unitToken)
-		return containers[unitToken]
+	function NP:GetAuraContainer(unitToken, frameType)
+		local object = containers[unitToken]
+		return object and object[frameType] or nil
 	end
 end
 
@@ -209,12 +227,33 @@ function NP:GetAuraFilter(which, db)
 	end
 end
 
+function NP:Setup_AuraContainers(nameplate, which, enable)
+	local container
+	local plateUnit, plateType = nameplate.__unit, nameplate.frameType
+	for frameType in next, NP.AuraContainers do
+		local other = NP:GetAuraContainer(plateUnit, frameType)
+		local auras = other and other[which]
+		if auras then
+			local active = enable and frameType == plateType
+			if active then
+				container = auras
+			end
+
+			auras:SetEnabled(active)
+			auras:SetShown(active)
+		end
+	end
+
+	return container
+end
+
 function NP:Configure_Auras(nameplate, which)
 	local plateDB = NP:PlateDB(nameplate)
 	local auraType = AURA_TYPES[which]
 	local db = plateDB[auraType]
 
-	local auras = nameplate[which]
+	local container = E.Retail and NP:Setup_AuraContainers(nameplate, which, true)
+	local auras = container or nameplate[which]
 	auras.isNameplate = true
 	auras.size = db.size
 	auras.height = not db.keepSizeRatio and db.height
@@ -253,7 +292,6 @@ function NP:Configure_Auras(nameplate, which)
 
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
-		E:Auras_UpdateButtons(auras)
 	else
 		auras.filterList = UF:ConvertFilters(auras, db.priority)
 		auras.initialAnchor = initialAnchor
@@ -290,17 +328,6 @@ function NP:Update_Auras(nameplate)
 		nameplate.Buffs_:ClearAllPoints()
 		nameplate.Debuffs_:ClearAllPoints()
 
-		if E.Retail then
-			nameplate.Auras_:SetEnabled(db.auras.enable)
-			nameplate.Auras_:SetShown(db.auras.enable)
-
-			nameplate.Debuffs_:SetEnabled(db.debuffs.enable)
-			nameplate.Debuffs_:SetShown(db.debuffs.enable)
-
-			nameplate.Buffs_:SetEnabled(db.buffs.enable)
-			nameplate.Buffs_:SetShown(db.buffs.enable)
-		end
-
 		if db.auras.enable then
 			nameplate.Auras = nameplate.Auras_
 			NP:Configure_Auras(nameplate, 'Auras')
@@ -308,6 +335,10 @@ function NP:Update_Auras(nameplate)
 		elseif nameplate.Auras then
 			nameplate.Auras:Hide()
 			nameplate.Auras = nil
+
+			if E.Retail then
+				NP:Setup_AuraContainers(nameplate, 'Auras', false)
+			end
 		end
 
 		if db.debuffs.enable then
@@ -317,6 +348,10 @@ function NP:Update_Auras(nameplate)
 		elseif nameplate.Debuffs then
 			nameplate.Debuffs:Hide()
 			nameplate.Debuffs = nil
+
+			if E.Retail then
+				NP:Setup_AuraContainers(nameplate, 'Debuffs', false)
+			end
 		end
 
 		if db.buffs.enable then
@@ -326,6 +361,10 @@ function NP:Update_Auras(nameplate)
 		elseif nameplate.Buffs then
 			nameplate.Buffs:Hide()
 			nameplate.Buffs = nil
+
+			if E.Retail then
+				NP:Setup_AuraContainers(nameplate, 'Buffs', false)
+			end
 		end
 	elseif nameplate:IsElementEnabled('Auras') then
 		nameplate:DisableElement('Auras')
