@@ -600,7 +600,8 @@ function NP:ConfigurePlates(init)
 	end
 
 	if E.Retail then
-		NP:Configure_AuraContainers()
+		NP:Construct_AuraContainers() -- this builds the filters
+		NP:Configure_AuraContainers() -- this spawns the containers
 	end
 
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
