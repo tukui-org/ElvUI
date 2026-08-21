@@ -960,7 +960,7 @@ function E:Auras_GroupUnit(container, unit)
 	if not container then return end
 
 	E:Auras_SetUnit(container, unit)
-	E:Auras_UpdateGate(container, unit)
+	--E:Auras_UpdateGate(container, unit)
 
 	if container.isHighlight then
 		E:Auras_SetEnabled(container)
@@ -1008,9 +1008,9 @@ function E:Auras_Create(parent, which, override)
 	container.events = events
 
 	-- bugged: range
-	events:RegisterEvent('UNIT_FLAGS')
-	events:RegisterEvent('UNIT_PHASE')
-	events:RegisterEvent('UNIT_IN_RANGE_UPDATE')
+	--events:RegisterEvent('UNIT_FLAGS')
+	--events:RegisterEvent('UNIT_PHASE')
+	--events:RegisterEvent('UNIT_IN_RANGE_UPDATE')
 
 	-- bugged: vehicle
 	events:RegisterEvent('UNIT_FACTION')
