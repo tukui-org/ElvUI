@@ -754,6 +754,9 @@ function A:Initialize()
 			buff.auraType = 'buffs'
 			buff.unit = 'player'
 			buff.filters = {}
+			if MasqueGroupBuffs and E.private.auras.masque.buffs then
+				buff.MasqueGroup = MasqueGroupBuffs
+			end
 
 			A.BuffFrame = buff
 
@@ -777,6 +780,9 @@ function A:Initialize()
 			debuff.auraType = 'debuffs'
 			debuff.unit = 'player'
 			debuff.filters = {}
+			if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+				debuff.MasqueGroup = MasqueGroupDebuffs
+			end
 
 			A.DebuffFrame = debuff
 
