@@ -197,8 +197,8 @@ end
 
 function NP:AuraContainer_CreateFrameType(name)
 	local object = {}
-	for frameType in next, NP.AuraContainerFilterTypes do
-		object[frameType] = NP:AuraContainer_ConstructAuraTypes(frameType, name)
+	for frameType, nameKey in next, NP.AuraContainerFilterKeys do
+		object[frameType] = NP:AuraContainer_ConstructAuraTypes(frameType, name..nameKey)
 	end
 
 	return object
@@ -224,15 +224,14 @@ function NP:GetAuraFilter(which, db)
 end
 
 function NP:Configure_AuraContainers(nameplate, which, enable)
-	local container
-	local plateUnit, plateType = nameplate.__unit, nameplate.frameType
-	for frameType in next, NP.AuraContainerFilterTypes do
-		local other = NP:GetAuraContainer(plateUnit, frameType)
-		local auras = other and other[which]
+	local plateUnit, plateType, current = nameplate.__unit, nameplate.frameType
+	for frameType in next, NP.AuraContainerFilterKeys do
+		local container = NP:GetAuraContainer(plateUnit, frameType)
+		local auras = container and container[which]
 		if auras then
 			local active = enable and frameType == plateType
 			if active then
-				container = auras
+				current = auras
 			end
 
 			auras:SetEnabled(active)
@@ -240,7 +239,7 @@ function NP:Configure_AuraContainers(nameplate, which, enable)
 		end
 	end
 
-	return container
+	return current
 end
 
 function NP:Configure_Auras(nameplate, which)
@@ -319,10 +318,6 @@ function NP:Update_Auras(nameplate)
 		if not nameplate:IsElementEnabled('Auras') then
 			nameplate:EnableElement('Auras')
 		end
-
-		nameplate.Auras_:ClearAllPoints()
-		nameplate.Buffs_:ClearAllPoints()
-		nameplate.Debuffs_:ClearAllPoints()
 
 		if db.auras.enable then
 			nameplate.Auras = nameplate.Auras_

@@ -46,6 +46,13 @@ local Blacklist = {
 
 NP.AuraContainers = {}
 NP.AuraContainerFilterTypes = {}
+NP.AuraContainerFilterKeys = {
+	PLAYER = 'Player',
+	ENEMY_PLAYER = 'EnemyPlayer',
+	FRIENDLY_PLAYER = 'FriendlyPlayer',
+	ENEMY_NPC = 'EnemyNPC',
+	FRIENDLY_NPC = 'FriendlyNPC'
+}
 
 for key in next, Blacklist do
 	NP.AuraContainerFilterTypes[key] = {}
