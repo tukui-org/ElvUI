@@ -116,7 +116,9 @@ function E:Auras_OnEvent(event, arg1, arg2)
 		elseif event == 'UNIT_FLAGS' or event == 'UNIT_PHASE' then
 			E:Auras_UpdateGate(container, arg1)
 		elseif event == 'UNIT_IN_RANGE_UPDATE' then
-			E:Auras_UpdateRange(container, UnitIsConnected(arg1) and arg2)
+			if E.AuraGates[container.unitframeType] then
+				E:Auras_UpdateRange(container, UnitIsConnected(arg1) and arg2)
+			end
 		end
 	end
 end
