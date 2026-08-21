@@ -116,9 +116,7 @@ function E:Auras_OnEvent(event, arg1, arg2)
 		elseif event == 'UNIT_FLAGS' or event == 'UNIT_PHASE' then
 			E:Auras_UpdateGate(container, arg1)
 		elseif event == 'UNIT_IN_RANGE_UPDATE' then
-			if E.AuraGates[container.unitframeType] then
-				E:Auras_UpdateRange(container, UnitIsConnected(arg1) and arg2)
-			end
+			E:Auras_UpdateRange(container, UnitIsConnected(arg1) and arg2)
 		end
 	end
 end
@@ -985,11 +983,11 @@ function E:Auras_GetFilter(obj, key)
 end
 
 function E:Auras_Create(parent, which, override)
-	local parentName = parent and parent:GetName()
-	local container = CreateFrame('AuraContainer', override or (parentName and (parentName..which)) or nil, parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
+	local parentName = parent:GetName()
+	local container = CreateFrame('AuraContainer', override or (parentName .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
 
-	container.parentName = parentName
 	container.parent = parent
+	container.parentName = parentName
 
 	container.known = {} -- both
 	container.keys = {} -- indicators
@@ -998,6 +996,10 @@ function E:Auras_Create(parent, which, override)
 	container.buttons = {}
 	container.layout = {}
 	container.filters = {}
+
+	if which then -- top auras dont set this here
+		container.auraType = strlower(which)
+	end
 
 	local events = CreateFrame('Frame', nil, container)
 	events.owner = container

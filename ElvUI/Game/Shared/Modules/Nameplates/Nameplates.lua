@@ -45,17 +45,9 @@ local Blacklist = {
 }
 
 NP.AuraContainers = {}
-NP.AuraContainerFilterTypes = {}
-NP.AuraContainerFilterKeys = {
-	PLAYER = 'Player',
-	ENEMY_PLAYER = 'EnemyPlayer',
-	FRIENDLY_PLAYER = 'FriendlyPlayer',
-	ENEMY_NPC = 'EnemyNPC',
-	FRIENDLY_NPC = 'FriendlyNPC'
-}
 
 for key in next, Blacklist do
-	NP.AuraContainerFilterTypes[key] = {}
+	NP.AuraContainers[key] = {}
 end
 
 function NP:ResetAuraPriority()
@@ -608,7 +600,7 @@ function NP:ConfigurePlates(init)
 	end
 
 	if E.Retail then
-		NP:AuraContainer_ConstructFilters() -- rebuilds the filters
+		NP:Configure_AuraContainers()
 	end
 
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
@@ -616,13 +608,8 @@ function NP:ConfigurePlates(init)
 	if init then -- since this is a fake plate, we actually need to trigger this always
 		staticFunc(NP.PlayerFrame, staticEvent, 'player')
 
-		if E.Retail then
-			NP:AuraContainer_ConstructContainers() -- this spawns the containers
-		end
-
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
-
 		for nameplate in pairs(NP.Plates) do
 			NP:UpdatePlateSize(nameplate)
 
