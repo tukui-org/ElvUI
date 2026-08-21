@@ -508,7 +508,7 @@ function UF:GetAuraAnchorFrame(frame, attachTo, container)
 	local auras, buffs, debuffs
 	if container then
 		auras, buffs, debuffs = container.Auras, container.Buffs, container.Debuffs
-	elseif frame.isNamePlate then
+	elseif frame.isNameplate then
 		auras, buffs, debuffs = frame.Auras_, frame.Buffs_, frame.Debuffs_
 	else
 		auras, buffs, debuffs = frame.Auras, frame.Buffs, frame.Debuffs

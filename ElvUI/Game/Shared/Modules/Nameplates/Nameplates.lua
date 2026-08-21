@@ -214,7 +214,7 @@ function NP:Style(unit)
 	local frameName = self:GetName()
 	self.frameName = frameName
 	self.blizzPlate = plate.UnitFrame
-	self.isNamePlate = true -- used in auraskip
+	self.isNameplate = true -- used in auraskip
 
 	if frameName == 'ElvNP_Player' then
 		NP.PlayerFrame = self

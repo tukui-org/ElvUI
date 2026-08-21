@@ -30,7 +30,6 @@ function NP:Construct_Auras(nameplate)
 		Auras.spacing = E.Border * 2
 		Auras.onlyShowPlayer = false
 		Auras.disableMouse = true
-		Auras.isNameplate = true
 		Auras.initialAnchor = 'BOTTOMLEFT'
 		Auras.growthX = 'RIGHT'
 		Auras.growthY = 'UP'
@@ -51,7 +50,6 @@ function NP:Construct_Auras(nameplate)
 		Buffs.spacing = E.Border * 2
 		Buffs.onlyShowPlayer = false
 		Buffs.disableMouse = true
-		Buffs.isNameplate = true
 		Buffs.initialAnchor = 'BOTTOMLEFT'
 		Buffs.growthX = 'RIGHT'
 		Buffs.growthY = 'UP'
@@ -72,7 +70,6 @@ function NP:Construct_Auras(nameplate)
 		Debuffs.spacing = E.Border * 2
 		Debuffs.onlyShowPlayer = false
 		Debuffs.disableMouse = true
-		Debuffs.isNameplate = true
 		Debuffs.initialAnchor = 'BOTTOMLEFT'
 		Debuffs.growthX = 'RIGHT'
 		Debuffs.growthY = 'UP'
@@ -256,7 +253,7 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 
 	local auras = (preallocated and nameplate) or (nameplate.AuraContainer and nameplate.AuraContainer[which]) or nameplate[which]
 	auras.isNameplate = true
-	auras.useWidth = true
+	auras.useWidth = true -- this helps keeps row count proper when using keepSizeRatio
 	auras.size = db.size
 	auras.height = not db.keepSizeRatio and db.height
 	auras.numAuras = db.numAuras
