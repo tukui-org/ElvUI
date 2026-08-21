@@ -226,8 +226,12 @@ function NP:Configure_AuraContainers(nameplate, which, enable)
 			if frameType == nameplate.frameType then
 				current = auras
 
-				auras:SetEnabled(enable)
-				auras:SetShown(enable)
+				if auras:IsEnabled() ~= enable then
+					auras:SetEnabled(enable)
+					auras:SetShown(enable)
+
+					auras:UpdateAllAuras()
+				end
 			else
 				auras:SetEnabled(false)
 				auras:SetShown(false)
