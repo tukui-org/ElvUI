@@ -109,11 +109,14 @@ A.AttributeInitialConfig = [[
 	self:SetHeight(header:GetAttribute('config-height'))
 ]]
 
-function A:MasqueData(texture, highlight)
+function A:MasqueData(texture, highlight, backdrop, normal, border)
 	local data = E:CopyTable({}, MasqueButtonData)
 
 	data.Icon = texture
 	data.Highlight = highlight
+	data.Backdrop = backdrop
+	data.Normal = normal
+	data.Border = border
 
 	return data
 end
@@ -801,3 +804,4 @@ function A:Initialize()
 end
 
 E:RegisterModule(A:GetName())
+
