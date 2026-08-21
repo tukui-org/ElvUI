@@ -141,6 +141,12 @@ function NP:Configure_AuraUpdate(nameplate)
 	E:Auras_UpdateButtons(nameplate.Debuffs_)
 end
 
+function NP:Configure_AuraUnit(nameplate)
+	E:Auras_SetUnit(nameplate.Auras_, nameplate.__unit)
+	E:Auras_SetUnit(nameplate.Buffs_, nameplate.__unit)
+	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.__unit)
+end
+
 function NP:Configure_AuraFilters(nameplate, which)
 	local frameType = nameplate.frameType
 	if not frameType then return end
@@ -200,7 +206,7 @@ end
 
 function NP:AuraContainer_ConstructContainers()
 	for i = 1, PLATETOKENS do
-		NP.AuraContainers['nameplate'..i] = NP:AuraContainer_CreateFrameType('ElvNP_NamePlate'..i)
+		NP.AuraContainers['nameplate'..i] = NP:AuraContainer_CreateFrameType('ElvNP_AuraContainer'..i)
 	end
 end
 
