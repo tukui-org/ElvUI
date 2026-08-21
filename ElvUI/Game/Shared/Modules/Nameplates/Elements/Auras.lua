@@ -366,6 +366,8 @@ function NP:Update_Auras(nameplate)
 			nameplate.Buffs:Hide()
 			nameplate.Buffs = nil
 		end
+	elseif E.Retail then
+		NP:Configure_AuraContainers(nameplate, false)
 	elseif nameplate:IsElementEnabled('Auras') then
 		nameplate:DisableElement('Auras')
 	end
