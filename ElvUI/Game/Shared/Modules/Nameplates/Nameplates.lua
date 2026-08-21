@@ -607,21 +607,21 @@ function NP:ConfigurePlates(init)
 		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.__unit)
 	end
 
+	if E.Retail then
+		NP:AuraContainer_ConstructFilters() -- rebuilds the filters
+	end
+
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
 	local staticFunc = NP[staticEvent]
 	if init then -- since this is a fake plate, we actually need to trigger this always
 		staticFunc(NP.PlayerFrame, staticEvent, 'player')
 
 		if E.Retail then
-			NP:AuraContainer_ConstructFilters() -- this builds the filters
 			NP:AuraContainer_ConstructContainers() -- this spawns the containers
 		end
 
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
-		if E.Retail then
-			NP:AuraContainer_ConstructFilters() -- rebuilds the filters
-		end
 
 		for nameplate in pairs(NP.Plates) do
 			NP:UpdatePlateSize(nameplate)
