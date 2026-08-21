@@ -135,16 +135,23 @@ function NP:Construct_AuraIcon(button)
 	NP:UpdateAuraSettings(button)
 end
 
-function NP:Configure_AuraUpdate(nameplate)
-	E:Auras_UpdateButtons(nameplate.Auras_)
-	E:Auras_UpdateButtons(nameplate.Buffs_)
-	E:Auras_UpdateButtons(nameplate.Debuffs_)
-end
+do
+	local elements = { Auras = 'Auras_', Buffs = 'Buffs_', Debuffs = 'Debuffs_' }
+	function NP:Configure_AuraUpdate(nameplate)
+		for _, real in next, elements do
+			E:Auras_UpdateButtons(nameplate[real])
+		end
+	end
 
-function NP:Configure_AuraUnit(nameplate)
-	E:Auras_SetUnit(nameplate.Auras_, nameplate.__unit)
-	E:Auras_SetUnit(nameplate.Buffs_, nameplate.__unit)
-	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.__unit)
+	function NP:Configure_AuraUnit(nameplate)
+		for which in next, elements do
+			for frameType in next, NP.AuraContainerFilterKeys do
+				local container = NP:GetAuraContainer(nameplate.__unit, frameType)
+				local auras = container and container[which]
+				E:Auras_UpdateButtons(auras, nameplate.__unit)
+			end
+		end
+	end
 end
 
 function NP:Configure_AuraFilters(nameplate, which)
@@ -358,6 +365,10 @@ function NP:Update_Auras(nameplate)
 				NP:Configure_AuraContainers(nameplate, 'Buffs', false)
 			end
 		end
+	elseif E.Retail then
+		NP:Configure_AuraContainers(nameplate, 'Auras', false)
+		NP:Configure_AuraContainers(nameplate, 'Debuffs', false)
+		NP:Configure_AuraContainers(nameplate, 'Buffs', false)
 	elseif nameplate:IsElementEnabled('Auras') then
 		nameplate:DisableElement('Auras')
 	end
