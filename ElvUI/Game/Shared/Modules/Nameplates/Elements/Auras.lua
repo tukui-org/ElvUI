@@ -286,7 +286,6 @@ function NP:Configure_Auras(nameplate, which)
 
 		auras.filters = NP:Configure_AuraFilters(nameplate, which)
 
-		E:Auras_SetUnit(auras, nameplate.__unit)
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
 	else
