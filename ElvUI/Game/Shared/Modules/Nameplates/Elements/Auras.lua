@@ -135,12 +135,6 @@ function NP:Construct_AuraIcon(button)
 	NP:UpdateAuraSettings(button)
 end
 
-function NP:Configure_AuraUnit(nameplate)
-	E:Auras_SetUnit(nameplate.Auras_, nameplate.__unit)
-	E:Auras_SetUnit(nameplate.Buffs_, nameplate.__unit)
-	E:Auras_SetUnit(nameplate.Debuffs_, nameplate.__unit)
-end
-
 function NP:Configure_AuraUpdate(nameplate)
 	E:Auras_UpdateButtons(nameplate.Auras_)
 	E:Auras_UpdateButtons(nameplate.Buffs_)
@@ -224,18 +218,20 @@ function NP:GetAuraFilter(which, db)
 end
 
 function NP:Configure_AuraContainers(nameplate, which, enable)
-	local plateUnit, plateType, current = nameplate.__unit, nameplate.frameType
+	local current
 	for frameType in next, NP.AuraContainerFilterKeys do
-		local container = NP:GetAuraContainer(plateUnit, frameType)
+		local container = NP:GetAuraContainer(nameplate.__unit, frameType)
 		local auras = container and container[which]
 		if auras then
-			local active = enable and frameType == plateType
-			if active then
+			if frameType == nameplate.frameType then
 				current = auras
-			end
 
-			auras:SetEnabled(active)
-			auras:SetShown(active)
+				auras:SetEnabled(enable)
+				auras:SetShown(enable)
+			else
+				auras:SetEnabled(false)
+				auras:SetShown(false)
+			end
 		end
 	end
 
@@ -247,8 +243,7 @@ function NP:Configure_Auras(nameplate, which)
 	local auraType = AURA_TYPES[which]
 	local db = plateDB[auraType]
 
-	local container = E.Retail and NP:Configure_AuraContainers(nameplate, which, true)
-	local auras = container or nameplate[which]
+	local auras = (E.Retail and NP:Configure_AuraContainers(nameplate, which, true)) or nameplate[which]
 	auras.isNameplate = true
 	auras.size = db.size
 	auras.height = not db.keepSizeRatio and db.height
@@ -285,6 +280,7 @@ function NP:Configure_Auras(nameplate, which)
 
 		auras.filters = NP:Configure_AuraFilters(nameplate, which)
 
+		E:Auras_SetUnit(auras, nameplate.__unit)
 		E:Auras_SetContainer(auras)
 		E:Auras_SetLineSize(auras)
 	else
