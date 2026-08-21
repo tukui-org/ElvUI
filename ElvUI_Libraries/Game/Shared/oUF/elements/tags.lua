@@ -978,7 +978,7 @@ local function Tag(self, fs, ts, arg1, ...)
 		self.__customargs[fs] = nil
 	end
 
-	if not self.isNamePlate then
+	if not self.isNameplate then
 		if ts:find('%[mouseover%]') then
 			self.__mousetags[fs] = true
 			fs:SetAlpha(0)

@@ -985,11 +985,11 @@ function E:Auras_GetFilter(obj, key)
 end
 
 function E:Auras_Create(parent, which, override)
-	local parentName = parent:GetName()
-	local container = CreateFrame('AuraContainer', override or (parentName .. which), parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
+	local parentName = parent and parent:GetName()
+	local container = CreateFrame('AuraContainer', override or (parentName and (parentName..which)) or nil, parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
 
-	container.parent = parent
 	container.parentName = parentName
+	container.parent = parent
 
 	container.known = {} -- both
 	container.keys = {} -- indicators
@@ -998,10 +998,6 @@ function E:Auras_Create(parent, which, override)
 	container.buttons = {}
 	container.layout = {}
 	container.filters = {}
-
-	if which then -- top auras dont set this here
-		container.auraType = strlower(which)
-	end
 
 	local events = CreateFrame('Frame', nil, container)
 	events.owner = container

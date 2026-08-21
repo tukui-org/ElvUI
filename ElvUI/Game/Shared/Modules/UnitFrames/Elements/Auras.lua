@@ -380,7 +380,7 @@ function UF:Configure_AllAuras(frame)
 end
 
 function UF:GetAuraElements(frame)
-	if frame.isNamePlate then
+	if frame.isNameplate then
 		return frame.Buffs_, frame.Debuffs_
 	else
 		return frame.Buffs, frame.Debuffs
@@ -388,10 +388,13 @@ function UF:GetAuraElements(frame)
 end
 
 function UF:SetSmartPosition(frame, db)
-	if frame.isNamePlate then db = NP:PlateDB(frame) end
+	if frame.isNameplate then db = NP:PlateDB(frame) end
+	if not db then return end
+
+	local buffs, debuffs = UF:GetAuraElements(frame)
+	if not buffs or not debuffs then return end
 
 	local position = db.smartAuraPosition
-	local buffs, debuffs = UF:GetAuraElements(frame)
 	local info = UF.SmartPosition[position]
 	if info then
 		local TO = db[strlower(info.to)]
