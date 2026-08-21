@@ -619,6 +619,10 @@ function NP:ConfigurePlates(init)
 
 		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
 	else -- however, these only need to happen when changing options
+		if E.Retail then
+			NP:AuraContainer_ConstructFilters() -- rebuilds the filters
+		end
+
 		for nameplate in pairs(NP.Plates) do
 			NP:UpdatePlateSize(nameplate)
 
