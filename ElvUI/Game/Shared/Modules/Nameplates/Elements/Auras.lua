@@ -143,20 +143,6 @@ do
 		end
 	end
 
-	function NP:FindAllActive()
-		for which in next, elements do
-			for frameType in next, NP.AuraContainerFilterKeys do
-				for i = 1, PLATETOKENS do
-					local container = NP:GetAuraContainer('ElvNP_NamePlate'..i, frameType)
-					local auras = container and container[which]
-					if auras and auras:IsEnabled() then
-						print(auras:GetName())
-					end
-				end
-			end
-		end
-	end
-
 	function NP:Configure_AuraContainers(nameplate, added)
 		local plateDB = NP:PlateDB(nameplate)
 		local current
