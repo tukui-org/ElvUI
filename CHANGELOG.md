@@ -1,3 +1,20 @@
+### Version 15.25 [ August 22nd 2026 ]
+*   **Auras**
+    *   Filter defaults adjusted further.
+    *   Aura container eventing handled slightly differently.
+    *   Aura container range event removed, as it was causing auras to not appear on frames.
+    *   Nameplate Aura containers are now pre-allocated to reduce lag when a new plate first appears.
+    *   Aura container spacing adjusted.
+    *   Aurabars should stay on a single line now.
+    *   Aurabars custom backdrop color will update when its set to a class color.
+    *   Top aura enchantments should update when changing settings and use the correct spacing.
+    *   Aura desaturate icon will work when a group contains a !PLAYER (reload required atm).
+    *   Top aura Masque groups readded. (Thanks miklas206)
+    *   Arena preparation frames were breaking auras on arena frames.
+*   **Other**
+    *   Quest parchment still had a few bugs.
+    *   Raid marker keybind error prevented; however on Retail, it won't function in combat currently.
+
 ### Version 15.24 [ August 19th 2026 ]
 *   **Major Filter Changes**
     *   Please read 15.23 log entry.
