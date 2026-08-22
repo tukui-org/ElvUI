@@ -774,7 +774,7 @@ function A:Initialize()
 		A:UpdateHeader(A.BuffFrame)
 
 		if E.Retail then -- keep below UpdateHeader
-			E:Auras_SetEnchantments(A.BuffFrame)
+			E:Auras_AddEnchantments(A.BuffFrame)
 			A.BuffFrame.hasEnchantments = true
 		end
 	end

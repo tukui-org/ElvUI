@@ -661,7 +661,7 @@ function E:Auras_UpdateEnchantments(container)
 	container:SetItemEnchantmentLayout(layout)
 end
 
-function E:Auras_SetEnchantments(container)
+function E:Auras_AddEnchantments(container)
 	local group = E:Auras_SetupEnchantment(container, container.auraType, container.filter)
 	container:AddItemEnchantment(MAINHAND, group)
 	container:AddItemEnchantment(OFFHAND, group)
