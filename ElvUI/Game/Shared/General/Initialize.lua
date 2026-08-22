@@ -442,7 +442,7 @@ do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us t
 	end
 end
 
-function E:CopyTable(current, default, merge)
+function E:CopyTable(current, default, merge, shallow)
 	if type(current) ~= 'table' then
 		current = {}
 	end
@@ -450,8 +450,8 @@ function E:CopyTable(current, default, merge)
 	if type(default) == 'table' then
 		for option, value in next, default do
 			local isTable = type(value) == 'table'
-			if not merge or (isTable or current[option] == nil) then
-				current[option] = (isTable and E:CopyTable(current[option], value, merge)) or value
+			if isTable or (not merge or current[option] == nil) then
+				current[option] = (isTable and not shallow) and E:CopyTable(current[option], value, merge) or value
 			end
 		end
 	end
