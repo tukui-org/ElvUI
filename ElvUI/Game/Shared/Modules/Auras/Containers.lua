@@ -540,9 +540,9 @@ function E:Auras_UpdateLayout(container)
 	local layout = container.layout
 	if layout then
 		local width, height = E:Auras_GetSize(container)
-		layout.groupSpacing = E:Scale(container.groupSpacing or 0)
-		layout.lineSpacing = E:Scale(container.lineSpacing or 0)
-		layout.elementSpacing = E:Scale(E:Auras_GetSpacing(container))
+		layout.lineSpacing = container.lineSpacing
+		layout.groupSpacing = container.groupSpacing
+		layout.elementSpacing = E:Auras_GetSpacing(container)
 		layout.elementHeight = height
 		layout.elementWidth = width
 	end
@@ -591,13 +591,19 @@ do
 end
 
 do
-	local temp, layout = {}, {}
-	function E:Auras_SetupEnchantment(container, key, filter, placement)
-		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter, true)
-		layout.elementSpacing = E:Scale(E:Auras_GetSpacing(container))
+	local layout = {}
+	function E:Auras_LayoutEnchantment(container, placement)
+		layout.elementSpacing = E:Auras_GetSpacing(container)
 		layout.placement = placement
 
-		return temp, layout
+		return layout
+	end
+
+	local temp = {}
+	function E:Auras_SetupEnchantment(container, key, filter)
+		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter, true)
+
+		return temp
 	end
 end
 
@@ -650,11 +656,17 @@ function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount
 	container:SetAuraGroupLayout(key, layout)
 end
 
-function E:Auras_SetEnchantments(container)
-	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, ItemEnchantmentPlacement.BeforeAuraGroups)
+function E:Auras_UpdateEnchantments(container)
+	local layout = E:Auras_LayoutEnchantment(container, ItemEnchantmentPlacement.BeforeAuraGroups)
 	container:SetItemEnchantmentLayout(layout)
+end
+
+function E:Auras_SetEnchantments(container)
+	local group = E:Auras_SetupEnchantment(container, container.auraType, container.filter)
 	container:AddItemEnchantment(MAINHAND, group)
 	container:AddItemEnchantment(OFFHAND, group)
+
+	E:Auras_UpdateEnchantments(container)
 end
 
 function E:Auras_UpdateSlot(container, key, filter, candidate, sortMethod, sortDirection)

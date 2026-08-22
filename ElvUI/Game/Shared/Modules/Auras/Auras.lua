@@ -603,6 +603,10 @@ function A:UpdateHeader(header)
 		E:Auras_SetContainer(header)
 		E:Auras_SetLineSize(header)
 		E:Auras_UpdateButtons(header)
+
+		if header.hasEnchantments then
+			E:Auras_UpdateEnchantments(header)
+		end
 	else
 		E:UpdateClassColor(db.barColor)
 
@@ -771,6 +775,7 @@ function A:Initialize()
 
 		if E.Retail then -- keep below UpdateHeader
 			E:Auras_SetEnchantments(A.BuffFrame)
+			A.BuffFrame.hasEnchantments = true
 		end
 	end
 

@@ -209,6 +209,7 @@ function UF:Configure_AuraBars(frame)
 			bars.size = db.height
 			bars.numAuras = db.maxBars
 			bars.maxFrameCount = db.maxBars
+			bars.lineSpacing = bars.spacing
 			bars.isTransparent = UF.db.colors.transparentAurabars -- always on for now
 			bars.invertAurabars = UF.db.colors.invertAurabars
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
