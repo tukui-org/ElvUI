@@ -109,10 +109,10 @@ A.AttributeInitialConfig = [[
 	self:SetHeight(header:GetAttribute('config-height'))
 ]]
 
-function A:MasqueData(texture, highlight)
+function A:MasqueData(icon, highlight)
 	local data = E:CopyTable({}, MasqueButtonData)
 
-	data.Icon = texture
+	data.Icon = icon
 	data.Highlight = highlight
 
 	return data
