@@ -311,8 +311,8 @@ function E:Auras_UpdateButton(container, button)
 			button.texture:SetTexCoord(left, right, top, bottom)
 		end
 
-		if not container.useStatusbar and not container.isAuraBar then
-			button.texture:SetDesaturated(container.useDesaturate and button.key == 'others')
+		if container.isUnitframe or container.isNameplate then
+			button.texture:SetDesaturated(container.useDesaturate and strfind(button.filter, '!PLAYER'))
 		end
 
 		button:SetIcon(button.texture)
