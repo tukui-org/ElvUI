@@ -312,7 +312,7 @@ function E:Auras_UpdateButton(container, button)
 		end
 
 		if container.isUnitframe or container.isNameplate then
-			button.texture:SetDesaturated(container.useDesaturate and strfind(button.filter, '!PLAYER'))
+			button.texture:SetDesaturated(container.useDesaturate and not not strfind(button.filter, '!PLAYER'))
 		end
 
 		button:SetIcon(button.texture)
