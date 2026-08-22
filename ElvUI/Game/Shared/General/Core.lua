@@ -804,23 +804,6 @@ do
 	end
 end
 
-function E:CopyTable(current, default, merge)
-	if type(current) ~= 'table' then
-		current = {}
-	end
-
-	if type(default) == 'table' then
-		for option, value in next, default do
-			local isTable = type(value) == 'table'
-			if not merge or (isTable or current[option] == nil) then
-				current[option] = (isTable and E:CopyTable(current[option], value, merge)) or value
-			end
-		end
-	end
-
-	return current
-end
-
 function E:RemoveEmptySubTables(tbl)
 	if type(tbl) ~= 'table' then
 		E:Print('Bad argument #1 to \'RemoveEmptySubTables\' (table expected)')
