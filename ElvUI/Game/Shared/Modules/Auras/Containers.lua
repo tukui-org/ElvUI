@@ -467,7 +467,8 @@ function E:Auras_UpdateButton(container, button)
 	end
 
 	if container.MasqueGroup then
-		container.MasqueGroup:AddButton(button, A:MasqueData(button.texture, button.highlight))
+		local data = A:MasqueData(button.texture, button.highlight, button.backdrop, button.border, button.dispelBorder)
+		container.MasqueGroup:AddButton(button, data)
 	end
 end
 

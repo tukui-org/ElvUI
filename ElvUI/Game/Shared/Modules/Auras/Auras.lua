@@ -109,11 +109,14 @@ A.AttributeInitialConfig = [[
 	self:SetHeight(header:GetAttribute('config-height'))
 ]]
 
-function A:MasqueData(texture, highlight)
+function A:MasqueData(texture, highlight, backdrop, normal, border)
 	local data = E:CopyTable({}, MasqueButtonData)
 
 	data.Icon = texture
 	data.Highlight = highlight
+	data.Backdrop = backdrop
+	data.Normal = normal
+	data.Border = border
 
 	return data
 end
@@ -758,6 +761,9 @@ function A:Initialize()
 			buff.auraType = 'buffs'
 			buff.unit = 'player'
 			buff.filters = {}
+			if MasqueGroupBuffs and E.private.auras.masque.buffs then
+				buff.MasqueGroup = MasqueGroupBuffs
+			end
 
 			A.BuffFrame = buff
 
@@ -785,6 +791,9 @@ function A:Initialize()
 			debuff.auraType = 'debuffs'
 			debuff.unit = 'player'
 			debuff.filters = {}
+			if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+				debuff.MasqueGroup = MasqueGroupDebuffs
+			end
 
 			A.DebuffFrame = debuff
 
@@ -803,3 +812,4 @@ function A:Initialize()
 end
 
 E:RegisterModule(A:GetName())
+
