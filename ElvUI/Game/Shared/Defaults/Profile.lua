@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local CopyTable = CopyTable -- Our function doesn't exist yet.
 local next = next
 local type = type
 
@@ -34,8 +33,8 @@ E.AuraDefaults = {
 
 local defaultFilterList = {}
 for index = 1, E.filterMax do
-	local info = CopyTable(E.AuraDefaults)
-	info.candidates = CopyTable(E.AuraCandidates)
+	local info = E:CopyTable({}, E.AuraDefaults)
+	info.candidates = E:CopyTable({}, E.AuraCandidates)
 
 	defaultFilterList['group'..index] = info
 end
@@ -647,10 +646,10 @@ local NP_Auras = {
 	tooltipAnchorType = 'ANCHOR_BOTTOMRIGHT',
 	tooltipAnchorX = 5,
 	tooltipAnchorY = -5,
-	sourceText = CopyTable(NP_AuraSourceText),
+	sourceText = E:CopyTable({}, NP_AuraSourceText),
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
-	filterLists = CopyTable(defaultFilterList)
+	filterLists = E:CopyTable({}, defaultFilterList)
 }
 
 local NP_Health = {
@@ -1165,18 +1164,18 @@ for unit, data in next, P.nameplates.units do
 	data.enable = unit ~= 'PLAYER'
 
 	if unit ~= 'TARGET' then
-		data.auras = CopyTable(NP_Auras)
-		data.buffs = CopyTable(NP_Auras)
-		data.debuffs = CopyTable(NP_Auras)
-		data.castbar = CopyTable(NP_Castbar)
-		data.health = CopyTable(NP_Health)
-		data.level = CopyTable(NP_Level)
-		data.name = CopyTable(NP_Name)
-		data.portrait = CopyTable(NP_Portrait)
-		data.power = CopyTable(NP_Power)
-		data.pvpindicator = CopyTable(NP_PvPIcon)
-		data.raidTargetIndicator = CopyTable(NP_RaidTargetIndicator)
-		data.title = CopyTable(NP_Title)
+		data.auras = E:CopyTable({}, NP_Auras)
+		data.buffs = E:CopyTable({}, NP_Auras)
+		data.debuffs = E:CopyTable({}, NP_Auras)
+		data.castbar = E:CopyTable({}, NP_Castbar)
+		data.health = E:CopyTable({}, NP_Health)
+		data.level = E:CopyTable({}, NP_Level)
+		data.name = E:CopyTable({}, NP_Name)
+		data.portrait = E:CopyTable({}, NP_Portrait)
+		data.power = E:CopyTable({}, NP_Power)
+		data.pvpindicator = E:CopyTable({}, NP_PvPIcon)
+		data.raidTargetIndicator = E:CopyTable({}, NP_RaidTargetIndicator)
+		data.title = E:CopyTable({}, NP_Title)
 
 		local npcFriendly = unit == 'FRIENDLY_NPC'
 		local npcEnemy = unit == 'ENEMY_NPC'
@@ -1198,10 +1197,10 @@ for unit, data in next, P.nameplates.units do
 		end
 
 		if npcFriendly or npcEnemy then -- npcs
-			data.eliteIcon = CopyTable(NP_EliteIcon)
-			data.questIcon = CopyTable(NP_QuestIcon)
+			data.eliteIcon = E:CopyTable({}, NP_EliteIcon)
+			data.questIcon = E:CopyTable({}, NP_QuestIcon)
 		else
-			data.pvpclassificationindicator = CopyTable(NP_PvPClassificationIndicator)
+			data.pvpclassificationindicator = E:CopyTable({}, NP_PvPClassificationIndicator)
 		end
 
 		if unit == 'PLAYER' then
@@ -1379,13 +1378,13 @@ local TopAuras = {
 	tooltipAnchorY = -5,
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
-	filterLists = CopyTable(defaultFilterList)
+	filterLists = E:CopyTable({}, defaultFilterList)
 }
 
 --Auras
 P.auras = {
-	buffs = CopyTable(TopAuras),
-	debuffs = CopyTable(TopAuras),
+	buffs = E:CopyTable({}, TopAuras),
+	debuffs = E:CopyTable({}, TopAuras),
 	colorEnchants = true,
 	colorDebuffs = true,
 }
@@ -1659,11 +1658,11 @@ local UF_Auras = {
 	tooltipAnchorType = 'ANCHOR_BOTTOMRIGHT',
 	tooltipAnchorX = 5,
 	tooltipAnchorY = -5,
-	strataAndLevel = CopyTable(UF_StrataAndLevel),
-	sourceText = CopyTable(NP_AuraSourceText),
+	strataAndLevel = E:CopyTable({}, UF_StrataAndLevel),
+	sourceText = E:CopyTable({}, NP_AuraSourceText),
 	allowList = 'Whitelist',
 	blockList = 'Blacklist',
-	filterLists = CopyTable(defaultFilterList)
+	filterLists = E:CopyTable({}, defaultFilterList)
 }
 
 local UF_DebuffHighlight = {
@@ -1701,13 +1700,13 @@ local UF_AuraBars = {
 	friendlyFilter = {
 		allowList = 'Whitelist',
 		blockList = 'Blacklist',
-		filterLists = CopyTable(defaultFilterList)
+		filterLists = E:CopyTable({}, defaultFilterList)
 	},
 	enemyAuraType = 'HARMFUL',
 	enemyFilter = {
 		allowList = 'Whitelist',
 		blockList = 'Blacklist',
-		filterLists = CopyTable(defaultFilterList)
+		filterLists = E:CopyTable({}, defaultFilterList)
 	},
 }
 
@@ -1781,7 +1780,7 @@ local UF_Castbar = {
 	xOffsetTime = -4,
 	yOffsetText = 0,
 	yOffsetTime = 0,
-	strataAndLevel = CopyTable(UF_StrataAndLevel),
+	strataAndLevel = E:CopyTable({}, UF_StrataAndLevel),
 }
 
 local UF_CombatIcon = {
@@ -1925,7 +1924,7 @@ local UF_Power = {
 	yOffset = 0,
 	smoothbars = false,
 	displayAltPower = false,
-	strataAndLevel = CopyTable(UF_StrataAndLevel),
+	strataAndLevel = E:CopyTable({}, UF_StrataAndLevel),
 	useAtlas = false,
 }
 
@@ -2040,10 +2039,10 @@ local UF_SubGroup = {
 	disableMouseoverGlow = false,
 	disableTargetGlow = true,
 	disableFocusGlow = true,
-	name = CopyTable(UF_Name),
-	raidicon = CopyTable(UF_RaidIcon),
-	buffIndicator = CopyTable(UF_AuraWatch),
-	healPrediction = CopyTable(UF_HealthPrediction),
+	name = E:CopyTable({}, UF_Name),
+	raidicon = E:CopyTable({}, UF_RaidIcon),
+	buffIndicator = E:CopyTable({}, UF_AuraWatch),
+	healPrediction = E:CopyTable({}, UF_HealthPrediction),
 }
 
 local UF_ClassBar = {
@@ -2061,7 +2060,7 @@ local UF_ClassBar = {
 	verticalOrientation = false,
 	orientation = 'HORIZONTAL',
 	spacing = 5,
-	strataAndLevel = CopyTable(UF_StrataAndLevel),
+	strataAndLevel = E:CopyTable({}, UF_StrataAndLevel),
 }
 
 local UF_ClassAdditional = {
@@ -2287,35 +2286,35 @@ P.unitframe = {
 				size = 22,
 				hideAtMaxLevel = false,
 			},
-			CombatIcon = CopyTable(UF_CombatIcon),
-			classbar = CopyTable(UF_ClassBar),
-			classAdditional = CopyTable(UF_ClassAdditional),
+			CombatIcon = E:CopyTable({}, UF_CombatIcon),
+			classbar = E:CopyTable({}, UF_ClassBar),
+			classAdditional = E:CopyTable({}, UF_ClassAdditional),
 			stagger = {
 				enable = true,
 				width = 10,
 			},
-			aurabar = CopyTable(UF_AuraBars),
-			debuffHighlight = CopyTable(UF_DebuffHighlight),
-			buffIndicator = CopyTable(UF_AuraWatch),
-			buffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			castbar = CopyTable(UF_Castbar),
+			aurabar = E:CopyTable({}, UF_AuraBars),
+			debuffHighlight = E:CopyTable({}, UF_DebuffHighlight),
+			buffIndicator = E:CopyTable({}, UF_AuraWatch),
+			buffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			castbar = E:CopyTable({}, UF_Castbar),
 			customTexts = {},
-			cutaway = CopyTable(UF_Cutaway),
-			debuffs = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			health = CopyTable(UF_Health),
-			infoPanel = CopyTable(UF_InfoPanel),
-			name = CopyTable(UF_Name),
-			partyIndicator = CopyTable(UF_PartyIndicator),
-			portrait = CopyTable(UF_Portrait),
-			power = CopyTable(UF_Power),
-			pvpIcon = CopyTable(UF_PVPIcon),
-			raidicon = CopyTable(UF_RaidIcon),
-			raidRoleIcons = CopyTable(UF_RaidRoles),
-			resurrectIcon = CopyTable(UF_Ressurect),
-			strataAndLevel = CopyTable(UF_StrataAndLevel)
+			cutaway = E:CopyTable({}, UF_Cutaway),
+			debuffs = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			health = E:CopyTable({}, UF_Health),
+			infoPanel = E:CopyTable({}, UF_InfoPanel),
+			name = E:CopyTable({}, UF_Name),
+			partyIndicator = E:CopyTable({}, UF_PartyIndicator),
+			portrait = E:CopyTable({}, UF_Portrait),
+			power = E:CopyTable({}, UF_Power),
+			pvpIcon = E:CopyTable({}, UF_PVPIcon),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
+			raidRoleIcons = E:CopyTable({}, UF_RaidRoles),
+			resurrectIcon = E:CopyTable({}, UF_Ressurect),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		target = {
 			enable = true,
@@ -2331,29 +2330,29 @@ P.unitframe = {
 			disableMouseoverGlow = false,
 			disableTargetGlow = true,
 			disableFocusGlow = true,
-			CombatIcon = CopyTable(UF_CombatIcon),
-			aurabar = CopyTable(UF_AuraBars),
-			debuffHighlight = CopyTable(UF_DebuffHighlight),
-			buffIndicator = CopyTable(UF_AuraWatch),
-			buffs = CopyTable(UF_Auras),
-			castbar = CopyTable(UF_Castbar),
+			CombatIcon = E:CopyTable({}, UF_CombatIcon),
+			aurabar = E:CopyTable({}, UF_AuraBars),
+			debuffHighlight = E:CopyTable({}, UF_DebuffHighlight),
+			buffIndicator = E:CopyTable({}, UF_AuraWatch),
+			buffs = E:CopyTable({}, UF_Auras),
+			castbar = E:CopyTable({}, UF_Castbar),
 			customTexts = {},
-			cutaway = CopyTable(UF_Cutaway),
-			debuffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			health = CopyTable(UF_Health),
-			infoPanel = CopyTable(UF_InfoPanel),
-			name = CopyTable(UF_Name),
-			phaseIndicator = CopyTable(UF_PhaseIndicator),
-			portrait = CopyTable(UF_Portrait),
-			power = CopyTable(UF_Power),
-			pvpIcon = CopyTable(UF_PVPIcon),
-			raidicon = CopyTable(UF_RaidIcon),
-			raidRoleIcons = CopyTable(UF_RaidRoles),
-			resurrectIcon = CopyTable(UF_Ressurect),
-			strataAndLevel = CopyTable(UF_StrataAndLevel)
+			cutaway = E:CopyTable({}, UF_Cutaway),
+			debuffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			health = E:CopyTable({}, UF_Health),
+			infoPanel = E:CopyTable({}, UF_InfoPanel),
+			name = E:CopyTable({}, UF_Name),
+			phaseIndicator = E:CopyTable({}, UF_PhaseIndicator),
+			portrait = E:CopyTable({}, UF_Portrait),
+			power = E:CopyTable({}, UF_Power),
+			pvpIcon = E:CopyTable({}, UF_PVPIcon),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
+			raidRoleIcons = E:CopyTable({}, UF_RaidRoles),
+			resurrectIcon = E:CopyTable({}, UF_Ressurect),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		targettarget = {
 			enable = true,
@@ -2367,20 +2366,20 @@ P.unitframe = {
 			disableMouseoverGlow = false,
 			disableTargetGlow = true,
 			disableFocusGlow = true,
-			buffs = CopyTable(UF_Auras),
-			cutaway = CopyTable(UF_Cutaway),
+			buffs = E:CopyTable({}, UF_Auras),
+			cutaway = E:CopyTable({}, UF_Cutaway),
 			customTexts = {},
-			debuffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			health = CopyTable(UF_Health),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			infoPanel = CopyTable(UF_InfoPanel),
-			name = CopyTable(UF_Name),
-			portrait = CopyTable(UF_Portrait),
-			power = CopyTable(UF_Power),
-			raidicon = CopyTable(UF_RaidIcon),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
+			debuffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			health = E:CopyTable({}, UF_Health),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			infoPanel = E:CopyTable({}, UF_InfoPanel),
+			name = E:CopyTable({}, UF_Name),
+			portrait = E:CopyTable({}, UF_Portrait),
+			power = E:CopyTable({}, UF_Power),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel),
 		},
 		focus = {
 			enable = true,
@@ -2395,25 +2394,25 @@ P.unitframe = {
 			disableMouseoverGlow = false,
 			disableTargetGlow = false,
 			disableFocusGlow = true,
-			aurabar = CopyTable(UF_AuraBars),
-			debuffHighlight = CopyTable(UF_DebuffHighlight),
-			buffIndicator = CopyTable(UF_AuraWatch),
-			buffs = CopyTable(UF_Auras),
-			castbar = CopyTable(UF_Castbar),
+			aurabar = E:CopyTable({}, UF_AuraBars),
+			debuffHighlight = E:CopyTable({}, UF_DebuffHighlight),
+			buffIndicator = E:CopyTable({}, UF_AuraWatch),
+			buffs = E:CopyTable({}, UF_Auras),
+			castbar = E:CopyTable({}, UF_Castbar),
 			customTexts = {},
-			cutaway = CopyTable(UF_Cutaway),
-			CombatIcon = CopyTable(UF_CombatIcon),
-			debuffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			health = CopyTable(UF_Health),
-			infoPanel = CopyTable(UF_InfoPanel),
-			name = CopyTable(UF_Name),
-			portrait = CopyTable(UF_Portrait),
-			power = CopyTable(UF_Power),
-			raidicon = CopyTable(UF_RaidIcon),
-			strataAndLevel = CopyTable(UF_StrataAndLevel)
+			cutaway = E:CopyTable({}, UF_Cutaway),
+			CombatIcon = E:CopyTable({}, UF_CombatIcon),
+			debuffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			health = E:CopyTable({}, UF_Health),
+			infoPanel = E:CopyTable({}, UF_InfoPanel),
+			name = E:CopyTable({}, UF_Name),
+			portrait = E:CopyTable({}, UF_Portrait),
+			power = E:CopyTable({}, UF_Power),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		pet = {
 			enable = true,
@@ -2427,24 +2426,24 @@ P.unitframe = {
 			disableMouseoverGlow = false,
 			disableTargetGlow = true,
 			disableFocusGlow = true,
-			aurabar = CopyTable(UF_AuraBars),
-			debuffHighlight = CopyTable(UF_DebuffHighlight),
-			buffIndicator = CopyTable(UF_AuraWatch),
-			buffs = CopyTable(UF_Auras),
-			castbar = CopyTable(UF_Castbar),
+			aurabar = E:CopyTable({}, UF_AuraBars),
+			debuffHighlight = E:CopyTable({}, UF_DebuffHighlight),
+			buffIndicator = E:CopyTable({}, UF_AuraWatch),
+			buffs = E:CopyTable({}, UF_Auras),
+			castbar = E:CopyTable({}, UF_Castbar),
 			customTexts = {},
-			cutaway = CopyTable(UF_Cutaway),
-			debuffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			health = CopyTable(UF_Health),
-			infoPanel = CopyTable(UF_InfoPanel),
-			name = CopyTable(UF_Name),
-			portrait = CopyTable(UF_Portrait),
-			power = CopyTable(UF_Power),
-			raidicon = CopyTable(UF_RaidIcon),
-			strataAndLevel = CopyTable(UF_StrataAndLevel)
+			cutaway = E:CopyTable({}, UF_Cutaway),
+			debuffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			health = E:CopyTable({}, UF_Health),
+			infoPanel = E:CopyTable({}, UF_InfoPanel),
+			name = E:CopyTable({}, UF_Name),
+			portrait = E:CopyTable({}, UF_Portrait),
+			power = E:CopyTable({}, UF_Power),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		boss = {
 			enable = true,
@@ -2461,23 +2460,23 @@ P.unitframe = {
 			disableMouseoverGlow = false,
 			disableTargetGlow = false,
 			disableFocusGlow = false,
-			debuffHighlight = CopyTable(UF_DebuffHighlight),
-			buffIndicator = CopyTable(UF_AuraWatch),
-			buffs = CopyTable(UF_Auras),
-			castbar = CopyTable(UF_Castbar),
+			debuffHighlight = E:CopyTable({}, UF_DebuffHighlight),
+			buffIndicator = E:CopyTable({}, UF_AuraWatch),
+			buffs = E:CopyTable({}, UF_Auras),
+			castbar = E:CopyTable({}, UF_Castbar),
 			customTexts = {},
-			cutaway = CopyTable(UF_Cutaway),
-			debuffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			health = CopyTable(UF_Health),
-			infoPanel = CopyTable(UF_InfoPanel),
-			name = CopyTable(UF_Name),
-			portrait = CopyTable(UF_Portrait),
-			power = CopyTable(UF_Power),
-			raidicon = CopyTable(UF_RaidIcon),
-			strataAndLevel = CopyTable(UF_StrataAndLevel)
+			cutaway = E:CopyTable({}, UF_Cutaway),
+			debuffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			health = E:CopyTable({}, UF_Health),
+			infoPanel = E:CopyTable({}, UF_InfoPanel),
+			name = E:CopyTable({}, UF_Name),
+			portrait = E:CopyTable({}, UF_Portrait),
+			power = E:CopyTable({}, UF_Power),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		arena = {
 			enable = true,
@@ -2500,22 +2499,22 @@ P.unitframe = {
 				xOffset = 1,
 				yOffset = 0,
 			},
-			buffs = CopyTable(UF_Auras),
-			castbar = CopyTable(UF_Castbar),
+			buffs = E:CopyTable({}, UF_Auras),
+			castbar = E:CopyTable({}, UF_Castbar),
 			customTexts = {},
-			cutaway = CopyTable(UF_Cutaway),
-			debuffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			health = CopyTable(UF_Health),
-			infoPanel = CopyTable(UF_InfoPanel),
-			name = CopyTable(UF_Name),
-			portrait = CopyTable(UF_Portrait),
-			power = CopyTable(UF_Power),
-			pvpclassificationindicator = CopyTable(UF_PvPClassificationIndicator),
-			strataAndLevel = CopyTable(UF_StrataAndLevel),
-			raidicon = CopyTable(UF_RaidIcon),
+			cutaway = E:CopyTable({}, UF_Cutaway),
+			debuffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			health = E:CopyTable({}, UF_Health),
+			infoPanel = E:CopyTable({}, UF_InfoPanel),
+			name = E:CopyTable({}, UF_Name),
+			portrait = E:CopyTable({}, UF_Portrait),
+			power = E:CopyTable({}, UF_Power),
+			pvpclassificationindicator = E:CopyTable({}, UF_PvPClassificationIndicator),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
 		},
 		party = {
 			enable = true,
@@ -2540,35 +2539,35 @@ P.unitframe = {
 			disableMouseoverGlow = false,
 			disableTargetGlow = false,
 			disableFocusGlow = false,
-			debuffHighlight = CopyTable(UF_DebuffHighlight),
-			buffIndicator = CopyTable(UF_AuraWatch),
-			buffs = CopyTable(UF_Auras),
-			castbar = CopyTable(UF_Castbar),
-			classbar = CopyTable(UF_ClassBar),
-			CombatIcon = CopyTable(UF_CombatIcon),
+			debuffHighlight = E:CopyTable({}, UF_DebuffHighlight),
+			buffIndicator = E:CopyTable({}, UF_AuraWatch),
+			buffs = E:CopyTable({}, UF_Auras),
+			castbar = E:CopyTable({}, UF_Castbar),
+			classbar = E:CopyTable({}, UF_ClassBar),
+			CombatIcon = E:CopyTable({}, UF_CombatIcon),
 			customTexts = {},
-			cutaway = CopyTable(UF_Cutaway),
-			debuffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			health = CopyTable(UF_Health),
-			infoPanel = CopyTable(UF_InfoPanel),
-			name = CopyTable(UF_Name),
-			petsGroup = CopyTable(UF_SubGroup),
-			phaseIndicator = CopyTable(UF_PhaseIndicator),
-			portrait = CopyTable(UF_Portrait),
-			power = CopyTable(UF_Power),
-			pvpclassificationindicator = CopyTable(UF_PvPClassificationIndicator),
-			raidicon = CopyTable(UF_RaidIcon),
-			raidRoleIcons = CopyTable(UF_RaidRoles),
-			rdebuffs = CopyTable(UF_RaidDebuffs),
-			readycheckIcon = CopyTable(UF_ReadyCheckIcon),
-			resurrectIcon = CopyTable(UF_Ressurect),
-			roleIcon = CopyTable(UF_RoleIcon),
-			summonIcon = CopyTable(UF_SummonIcon),
-			targetsGroup = CopyTable(UF_SubGroup),
-			strataAndLevel = CopyTable(UF_StrataAndLevel)
+			cutaway = E:CopyTable({}, UF_Cutaway),
+			debuffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			health = E:CopyTable({}, UF_Health),
+			infoPanel = E:CopyTable({}, UF_InfoPanel),
+			name = E:CopyTable({}, UF_Name),
+			petsGroup = E:CopyTable({}, UF_SubGroup),
+			phaseIndicator = E:CopyTable({}, UF_PhaseIndicator),
+			portrait = E:CopyTable({}, UF_Portrait),
+			power = E:CopyTable({}, UF_Power),
+			pvpclassificationindicator = E:CopyTable({}, UF_PvPClassificationIndicator),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
+			raidRoleIcons = E:CopyTable({}, UF_RaidRoles),
+			rdebuffs = E:CopyTable({}, UF_RaidDebuffs),
+			readycheckIcon = E:CopyTable({}, UF_ReadyCheckIcon),
+			resurrectIcon = E:CopyTable({}, UF_Ressurect),
+			roleIcon = E:CopyTable({}, UF_RoleIcon),
+			summonIcon = E:CopyTable({}, UF_SummonIcon),
+			targetsGroup = E:CopyTable({}, UF_SubGroup),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		tank = {
 			enable = true,
@@ -2583,27 +2582,27 @@ P.unitframe = {
 			disableTargetGlow = false,
 			disableFocusGlow = false,
 			verticalSpacing = 7,
-			debuffHighlight = CopyTable(UF_DebuffHighlight),
-			buffIndicator = CopyTable(UF_AuraWatch),
-			buffs = CopyTable(UF_Auras),
+			debuffHighlight = E:CopyTable({}, UF_DebuffHighlight),
+			buffIndicator = E:CopyTable({}, UF_AuraWatch),
+			buffs = E:CopyTable({}, UF_Auras),
 			customTexts = {},
-			cutaway = CopyTable(UF_Cutaway),
-			debuffs = CopyTable(UF_Auras),
-			auras = CopyTable(UF_Auras),
-			fader = CopyTable(UF_Fader),
-			healPrediction = CopyTable(UF_HealthPrediction),
-			health = CopyTable(UF_Health),
-			name = CopyTable(UF_Name),
-			raidicon = CopyTable(UF_RaidIcon),
-			rdebuffs = CopyTable(UF_RaidDebuffs),
-			targetsGroup = CopyTable(UF_SubGroup),
-			strataAndLevel = CopyTable(UF_StrataAndLevel)
+			cutaway = E:CopyTable({}, UF_Cutaway),
+			debuffs = E:CopyTable({}, UF_Auras),
+			auras = E:CopyTable({}, UF_Auras),
+			fader = E:CopyTable({}, UF_Fader),
+			healPrediction = E:CopyTable({}, UF_HealthPrediction),
+			health = E:CopyTable({}, UF_Health),
+			name = E:CopyTable({}, UF_Name),
+			raidicon = E:CopyTable({}, UF_RaidIcon),
+			rdebuffs = E:CopyTable({}, UF_RaidDebuffs),
+			targetsGroup = E:CopyTable({}, UF_SubGroup),
+			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 	},
 }
 
-P.unitframe.colors.classResources = CopyTable(P.nameplates.colors.classResources)
-P.unitframe.colors.empoweredCast = CopyTable(P.nameplates.colors.empoweredCast)
+P.unitframe.colors.classResources = E:CopyTable({}, P.nameplates.colors.classResources)
+P.unitframe.colors.empoweredCast = E:CopyTable({}, P.nameplates.colors.empoweredCast)
 
 P.unitframe.units.player.aurabar.enemyAuraType = 'HARMFUL'
 P.unitframe.units.player.aurabar.friendlyAuraType = 'HELPFUL'
@@ -2749,7 +2748,7 @@ P.unitframe.units.targettarget.debuffs.filterLists.group1.enable = false
 P.unitframe.units.targettarget.debuffs.filterLists.group1.filter = 'HARMFUL'
 P.unitframe.units.targettarget.debuffs.filterLists.group1.useBlocklist = true
 
-P.unitframe.units.targettargettarget = CopyTable(P.unitframe.units.targettarget)
+P.unitframe.units.targettargettarget = E:CopyTable({}, P.unitframe.units.targettarget)
 P.unitframe.units.targettargettarget.buffs.priority = 'Blacklist,Personal,NonPersonal'
 P.unitframe.units.targettargettarget.debuffs.attachTo = 'FRAME'
 P.unitframe.units.targettargettarget.debuffs.priority = 'Blacklist,Personal,NonPersonal'
@@ -2823,7 +2822,7 @@ P.unitframe.units.focus.debuffs.filterLists.group5.filter = 'HARMFUL||!CROWD_CON
 P.unitframe.units.focus.debuffs.filterLists.group5.candidates.isPriorityAura = true
 P.unitframe.units.focus.debuffs.filterLists.group5.useBlocklist = true
 
-P.unitframe.units.focustarget = CopyTable(P.unitframe.units.focus)
+P.unitframe.units.focustarget = E:CopyTable({}, P.unitframe.units.focus)
 P.unitframe.units.focustarget.aurabar = nil
 P.unitframe.units.focustarget.buffIndicator = nil
 P.unitframe.units.focustarget.buffs.priority = 'Blacklist,Personal,NonPersonal'
@@ -2839,10 +2838,10 @@ P.unitframe.units.focustarget.height = 26
 P.unitframe.units.focustarget.infoPanel.height = 12
 P.unitframe.units.focustarget.threatStyle = 'NONE'
 
-P.unitframe.units.focustarget.buffs.filterLists = CopyTable(defaultFilterList)
+P.unitframe.units.focustarget.buffs.filterLists = E:CopyTable({}, defaultFilterList)
 P.unitframe.units.focustarget.buffs.filterLists.group1.useBlocklist = true
 
-P.unitframe.units.focustarget.debuffs.filterLists = CopyTable(defaultFilterList)
+P.unitframe.units.focustarget.debuffs.filterLists = E:CopyTable({}, defaultFilterList)
 P.unitframe.units.focustarget.debuffs.filterLists.group1.filter = 'HARMFUL'
 P.unitframe.units.focustarget.debuffs.filterLists.group1.useBlocklist = true
 
@@ -2889,7 +2888,7 @@ P.unitframe.units.pet.debuffs.filterLists.group5.filter = 'HARMFUL||!CROWD_CONTR
 P.unitframe.units.pet.debuffs.filterLists.group5.candidates.isPriorityAura = true
 P.unitframe.units.pet.debuffs.filterLists.group5.useBlocklist = true
 
-P.unitframe.units.pettarget = CopyTable(P.unitframe.units.pet)
+P.unitframe.units.pettarget = E:CopyTable({}, P.unitframe.units.pet)
 P.unitframe.units.pettarget.aurabar = nil
 P.unitframe.units.pettarget.buffIndicator = nil
 P.unitframe.units.pettarget.buffs.maxDuration = 300
@@ -2902,10 +2901,10 @@ P.unitframe.units.pettarget.enable = false
 P.unitframe.units.pettarget.height = 26
 P.unitframe.units.pettarget.threatStyle = 'NONE'
 
-P.unitframe.units.pettarget.buffs.filterLists = CopyTable(defaultFilterList)
+P.unitframe.units.pettarget.buffs.filterLists = E:CopyTable({}, defaultFilterList)
 P.unitframe.units.pettarget.buffs.filterLists.group1.useBlocklist = true
 
-P.unitframe.units.pettarget.debuffs.filterLists = CopyTable(defaultFilterList)
+P.unitframe.units.pettarget.debuffs.filterLists = E:CopyTable({}, defaultFilterList)
 P.unitframe.units.pettarget.debuffs.filterLists.group1.filter = 'HARMFUL'
 P.unitframe.units.pettarget.debuffs.filterLists.group1.useBlocklist = true
 
@@ -3077,7 +3076,7 @@ P.unitframe.units.party.debuffs.filterLists.group5.candidates.isPriorityAura = 1
 P.unitframe.units.party.debuffs.filterLists.group5.candidates.isFromPlayerOrPlayerPet = 1
 P.unitframe.units.party.debuffs.filterLists.group5.useBlocklist = true
 
-P.unitframe.units.raid1 = CopyTable(P.unitframe.units.party)
+P.unitframe.units.raid1 = E:CopyTable({}, P.unitframe.units.party)
 P.unitframe.units.raid1.buffIndicator.enable = true
 P.unitframe.units.raid1.buffs.numrows = 1
 P.unitframe.units.raid1.buffs.perrow = 3
@@ -3141,7 +3140,7 @@ P.unitframe.units.raid1.debuffs.filterLists.group5.candidates.isPriorityAura = 1
 P.unitframe.units.raid1.debuffs.filterLists.group5.candidates.isFromPlayerOrPlayerPet = 1
 P.unitframe.units.raid1.debuffs.filterLists.group5.useBlocklist = true
 
-P.unitframe.units.raid2 = CopyTable(P.unitframe.units.raid1)
+P.unitframe.units.raid2 = E:CopyTable({}, P.unitframe.units.raid1)
 P.unitframe.units.raid2.debuffs.anchorPoint = 'RIGHT'
 P.unitframe.units.raid2.height = 27
 P.unitframe.units.raid2.numGroups = 5
@@ -3150,11 +3149,11 @@ P.unitframe.units.raid2.rdebuffs.enable = false
 P.unitframe.units.raid2.roleIcon.enable = false
 P.unitframe.units.raid2.visibility = E.Retail and '[@raid21,noexists][@raid31,exists] hide;show' or '[@raid11,noexists][@raid26,exists] hide;show'
 
-P.unitframe.units.raid3 = CopyTable(P.unitframe.units.raid2)
+P.unitframe.units.raid3 = E:CopyTable({}, P.unitframe.units.raid2)
 P.unitframe.units.raid3.numGroups = 8
 P.unitframe.units.raid3.visibility = E.Retail and '[@raid31,noexists] hide;show' or '[@raid26,noexists] hide;show'
 
-P.unitframe.units.raidpet = CopyTable(P.unitframe.units.raid1)
+P.unitframe.units.raidpet = E:CopyTable({}, P.unitframe.units.raid1)
 P.unitframe.units.raidpet.buffs.numrows = 1
 P.unitframe.units.raidpet.buffs.perrow = 3
 P.unitframe.units.raidpet.buffs.priority = 'Blacklist,Whitelist'
@@ -3169,10 +3168,10 @@ P.unitframe.units.raidpet.pvpclassificationindicator = nil
 P.unitframe.units.raidpet.raidWideSorting = true
 P.unitframe.units.raidpet.visibility = '[@raid1,exists] show; hide'
 
-P.unitframe.units.raidpet.buffs.filterLists = CopyTable(defaultFilterList)
+P.unitframe.units.raidpet.buffs.filterLists = E:CopyTable({}, defaultFilterList)
 P.unitframe.units.raidpet.buffs.filterLists.group1.useBlocklist = true
 
-P.unitframe.units.raidpet.debuffs.filterLists = CopyTable(defaultFilterList)
+P.unitframe.units.raidpet.debuffs.filterLists = E:CopyTable({}, defaultFilterList)
 P.unitframe.units.raidpet.debuffs.filterLists.group1.filter = 'HARMFUL'
 P.unitframe.units.raidpet.debuffs.filterLists.group1.useBlocklist = true
 
@@ -3195,7 +3194,7 @@ P.unitframe.units.tank.targetsGroup.name.position = 'CENTER'
 P.unitframe.units.tank.targetsGroup.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.tank.targetsGroup.name.xOffset = 0
 
-P.unitframe.units.assist = CopyTable(P.unitframe.units.tank)
+P.unitframe.units.assist = E:CopyTable({}, P.unitframe.units.tank)
 
 -- keep these under the copy
 P.unitframe.units.tank.buffs.filterLists.group1.enable = true
@@ -3459,7 +3458,7 @@ local AB_Bar = {
 for i = 1, 15 do -- if this indexing changes
 	if i ~= 11 and i ~= 12 then -- also update in distributor
 		local barN = 'bar'..i
-		P.actionbar[barN] = CopyTable(AB_Bar)
+		P.actionbar[barN] = E:CopyTable({}, AB_Bar)
 
 		if E.Retail or E.Mists then
 			P.actionbar[barN].visibility = '[vehicleui][petbattle][overridebar] hide; show'
@@ -3550,7 +3549,7 @@ do
 		override = false,
 		expireThreshold = 4,
 		secondsThreshold = 11,
-		colors = CopyTable(colors)
+		colors = E:CopyTable({}, colors)
 	}
 
 	local defaults = {
@@ -3567,7 +3566,7 @@ do
 		rotation = 0,
 		threshold = 0, -- seconds, different than thresholds
 		minDuration = 1500, -- ms
-		thresholdText = CopyTable(thresholds),
+		thresholdText = E:CopyTable({}, thresholds),
 
 		colors = {
 			text = { r = 0.8, g = 0.8, b = 0.8, a = 1 },
@@ -3607,7 +3606,7 @@ do
 							data[key] = opt
 						end
 
-						opt = CopyTable(defaults)
+						opt = E:CopyTable({}, defaults)
 						opt.enable = false
 
 						data[key] = opt
@@ -3623,10 +3622,10 @@ do
 		local override = {}
 		for key, data in next, db do
 			if type(data) == 'table' and data.buttons then
-				local opt = CopyTable(defaults)
+				local opt = E:CopyTable({}, defaults)
 				opt.enable = false
-				opt.thresholdLoc = CopyTable(thresholds)
-				opt.thresholdCharge = CopyTable(thresholds)
+				opt.thresholdLoc = E:CopyTable({}, thresholds)
+				opt.thresholdCharge = E:CopyTable({}, thresholds)
 
 				override[key] = opt
 			end
@@ -3637,7 +3636,7 @@ do
 
 	local useAltBling = not E.Classic and not E.TBC and not E.Wrath
 	for _, key in next, { 'global', 'actionbar', 'auras', 'bags', 'nameplates', 'unitframe', 'aurabars', 'auraindicator', 'cdmanager', 'totemtracker', 'bossbutton', 'zonebutton', 'targetaura' } do
-		local object = CopyTable(defaults)
+		local object = E:CopyTable({}, defaults)
 
 		if key == 'global' then
 			object.fontSize = 18
@@ -3662,8 +3661,8 @@ do
 			object.threshold = 300
 			object.altBling = useAltBling
 			object.override = OverrideBars(P.actionbar)
-			object.thresholdLoc = CopyTable(thresholds)
-			object.thresholdCharge = CopyTable(thresholds)
+			object.thresholdLoc = E:CopyTable({}, thresholds)
+			object.thresholdCharge = E:CopyTable({}, thresholds)
 		elseif key == 'targetaura' then
 			object.threshold = 300
 

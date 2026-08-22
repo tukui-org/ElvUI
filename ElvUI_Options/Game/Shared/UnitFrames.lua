@@ -12,7 +12,6 @@ local strfind, tinsert, tonumber, tostring = strfind, tinsert, tonumber, tostrin
 local IsShiftKeyDown = IsShiftKeyDown
 local IsControlKeyDown = IsControlKeyDown
 local GetSpellTexture = C_Spell.GetSpellTexture
-local CopyTable = CopyTable
 
 local TEXT_FORMAT_WIDTH = 330
 
@@ -633,7 +632,7 @@ local function GetOptionsTable_CustomText(updateFunc, groupName, numUnits)
 			return
 		end
 
-		E.db.unitframe.units[groupName].customTexts[textName] = CopyTable(G.unitframe.newCustomText)
+		E.db.unitframe.units[groupName].customTexts[textName] = E:CopyTable({}, G.unitframe.newCustomText)
 		E.db.unitframe.units[groupName].customTexts[textName].text_format = strmatch(textName, '^%[') and textName or ''
 		E.db.unitframe.units[groupName].customTexts[textName].size = E.db.unitframe.fontSize
 		E.db.unitframe.units[groupName].customTexts[textName].font = E.db.unitframe.font
@@ -701,10 +700,10 @@ local function UpdateRangeList(list, db, value, add)
 end
 
 local function ResetRangeList(list)
-	E.global.unitframe.rangeCheck.ENEMY[E.myclass] = CopyTable(G.unitframe.rangeCheck.ENEMY[E.myclass])
-	E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] = CopyTable(G.unitframe.rangeCheck.FRIENDLY[E.myclass])
-	E.global.unitframe.rangeCheck.RESURRECT[E.myclass] = CopyTable(G.unitframe.rangeCheck.RESURRECT[E.myclass])
-	E.global.unitframe.rangeCheck.PET[E.myclass] = CopyTable(G.unitframe.rangeCheck.PET[E.myclass])
+	E.global.unitframe.rangeCheck.ENEMY[E.myclass] = E:CopyTable({}, G.unitframe.rangeCheck.ENEMY[E.myclass])
+	E.global.unitframe.rangeCheck.FRIENDLY[E.myclass] = E:CopyTable({}, G.unitframe.rangeCheck.FRIENDLY[E.myclass])
+	E.global.unitframe.rangeCheck.RESURRECT[E.myclass] = E:CopyTable({}, G.unitframe.rangeCheck.RESURRECT[E.myclass])
+	E.global.unitframe.rangeCheck.PET[E.myclass] = E:CopyTable({}, G.unitframe.rangeCheck.PET[E.myclass])
 
 	UpdateRangeList(list.rangeEnemy, E.global.unitframe.rangeCheck.ENEMY[E.myclass], nil, true)
 	UpdateRangeList(list.rangeFriendly, E.global.unitframe.rangeCheck.FRIENDLY[E.myclass], nil, true)

@@ -12,7 +12,6 @@ local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
 local pcall, strlen, tonumber, tostring = pcall, strlen, tonumber, tostring
 
-local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetGameTime = GetGameTime
@@ -778,7 +777,7 @@ do
 	}
 
 	function E:SetupCustomClassColors()
-		local object = CopyTable(_G.RAID_CLASS_COLORS)
+		local object = E:CopyTable({}, _G.RAID_CLASS_COLORS)
 
 		_G.CUSTOM_CLASS_COLORS = setmetatable(object, meta)
 

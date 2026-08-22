@@ -11,7 +11,6 @@ local strfind, wipe = strfind, wipe
 local floor, next, type = floor, next, type
 
 local AnchorUtil = AnchorUtil
-local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 local UnitCanAssist = UnitCanAssist
 
@@ -584,7 +583,7 @@ do
 				spell[dataID] = true
 			end
 		else
-			temp.includeDispelTypes = CopyTable(DispelTypes)
+			temp.includeDispelTypes = E:CopyTable({}, DispelTypes)
 		end
 
 		return temp
