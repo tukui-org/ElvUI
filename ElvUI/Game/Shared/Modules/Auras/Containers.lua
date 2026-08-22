@@ -6,19 +6,17 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local ceil, strlower, strfind = ceil, strlower, strfind
-local floor, next, type, wipe = floor, next, type, wipe
-local huge = math.huge
+local ceil, huge = ceil, math.huge
+local strfind, wipe = strfind, wipe
+local floor, next, type = floor, next, type
 
-local AuraButtonBorderStyle = AuraButtonBorderStyle
-local CreateFrame = CreateFrame
 local AnchorUtil = AnchorUtil
 local CopyTable = CopyTable
-local UnitInRange = UnitInRange
+local CreateFrame = CreateFrame
 local UnitCanAssist = UnitCanAssist
-local UnitIsConnected = UnitIsConnected
 
 local GetCVarBool = C_CVar.GetCVarBool
+local AuraButtonBorderStyle = AuraButtonBorderStyle
 local ItemEnchantmentPlacement = _G.CustomAuraContainerItemEnchantmentPlacement
 local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
@@ -34,16 +32,6 @@ local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
 E.AuraHighlight = {
 	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
  -- customDispelColorCurve is added from UpdateAuraCurves
-}
-
-E.AuraGates = {
-	party = true,
-	raid1 = true,
-	raid2 = true,
-	raid3 = true,
-	raidpet = true,
-	tank = true,
-	assist = true
 }
 
 E.AuraEventUnits = {
@@ -113,12 +101,6 @@ function E:Auras_OnEvent(event, arg1, arg2)
 	elseif arg1 and (arg1 == container.unit) then -- about to do something
 		if event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
 			container:UpdateAllAuras()
-		elseif event == 'UNIT_FLAGS' or event == 'UNIT_PHASE' then
-			E:Auras_UpdateGate(container, arg1)
-		elseif event == 'UNIT_IN_RANGE_UPDATE' then
-			if E.AuraGates[container.unitframeType] then
-				E:Auras_UpdateRange(container, UnitIsConnected(arg1) and arg2)
-			end
 		end
 	end
 end
@@ -941,26 +923,10 @@ function E:Auras_SetEnabled(container)
 	container:SetEnabled(container.enabled and container.canAssist)
 end
 
-function E:Auras_UpdateRange(container, isInRange)
-	container:SetAlphaFromBoolean(isInRange, 1, 0)
-end
-
-function E:Auras_UpdateGate(container, unit)
-	if not E.AuraGates[container.unitframeType] then return end
-
-	if container.forceShowAuras or unit == 'player' then
-		E:Auras_UpdateRange(container, true)
-	else
-		local inRange = UnitIsConnected(unit) and UnitInRange(unit)
-		E:Auras_UpdateRange(container, inRange)
-	end
-end
-
 function E:Auras_GroupUnit(container, unit)
 	if not container then return end
 
 	E:Auras_SetUnit(container, unit)
-	--E:Auras_UpdateGate(container, unit)
 
 	if container.isHighlight then
 		E:Auras_SetEnabled(container)
@@ -1002,11 +968,6 @@ function E:Auras_Create(parent, which, override)
 	local events = CreateFrame('Frame', nil, container)
 	events.owner = container
 	container.events = events
-
-	-- bugged: range
-	--events:RegisterEvent('UNIT_FLAGS')
-	--events:RegisterEvent('UNIT_PHASE')
-	--events:RegisterEvent('UNIT_IN_RANGE_UPDATE')
 
 	-- bugged: vehicle
 	events:RegisterEvent('UNIT_FACTION')
