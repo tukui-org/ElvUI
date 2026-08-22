@@ -137,8 +137,8 @@ do
 	function NP:Configure_AuraUpdate(nameplate)
 		for _, real in next, elements do
 			E:Auras_UpdateButtons(nameplate[real])
-		end
-	end
+		end -- this is so we can keep Auras_UpdateButtons outside of
+	end -- the normal configure that happens when a plate type changes
 
 	function NP:Configure_AuraContainers(nameplate, added)
 		local plateDB = NP:PlateDB(nameplate)
