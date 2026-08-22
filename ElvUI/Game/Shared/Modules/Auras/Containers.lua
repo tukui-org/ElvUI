@@ -905,11 +905,20 @@ function E:Auras_SetContainer(container)
 end
 
 function E:Auras_SetLineSize(container)
-	local width, height = E:Auras_GetSize(container)
-	local line = (container.numAuras and container.numAuras > 0) and (container.numAuras * ((container.useWidth and width or height) + E:Auras_GetSpacing(container)))
-	local size = line or (container.useWidth and container:GetWidth() or container:GetHeight())
-	local maximum = E:NotSecretValue(size) and (size and size > 0 and size)
-	container:SetFlowLayoutMaximumLineSize(maximum or huge)
+	local lineSize
+	if container.isAuraBar then
+		lineSize = 1
+	elseif container.numAuras and container.numAuras > 0 then
+		local spacing = E:Auras_GetSpacing(container)
+		local width, height = E:Auras_GetSize(container)
+		local size = (container.useWidth and width) or height
+		lineSize = (size + spacing) * container.numAuras
+	else
+		local size = container.useWidth and container:GetWidth() or container:GetHeight()
+		lineSize = E:NotSecretValue(size) and (size and size > 0 and size)
+	end
+
+	container:SetFlowLayoutMaximumLineSize(lineSize or huge)
 end
 
 function E:Auras_SetUnit(container, unit)
