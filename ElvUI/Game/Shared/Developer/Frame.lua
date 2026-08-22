@@ -23,7 +23,7 @@ E:AddSlashCommand('GETPOINT', '/getpoint', function(arg)
 	if not frame then return end
 
 	local point, relativeTo, relativePoint, xOffset, yOffset = frame:GetPoint()
-	print(E:GetFrameName(frame), point, E:GetFrameName(relativeTo), relativePoint, xOffset, yOffset)
+	print(E:GetFrameName(frame, 'nil'), point, E:GetFrameName(relativeTo, 'nil'), relativePoint, xOffset, yOffset)
 end)
 
 E:AddSlashCommand('FRAME', '/frame', function(arg)

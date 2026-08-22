@@ -521,14 +521,14 @@ function E:LoadAddon(addon)
 	end
 end
 
-function E:GetFrameName(frame, text)
-	if frame.GetDebugName then
+function E:GetFrameName(frame, text, nodebug)
+	if not nodebug and frame.GetDebugName then
 		return frame:GetDebugName()
 	elseif frame.GetName then
 		return frame:GetName()
-	else
-		return text or 'nil'
 	end
+
+	return text
 end
 
 function E:AddSlashCommand(name, keys, func)
