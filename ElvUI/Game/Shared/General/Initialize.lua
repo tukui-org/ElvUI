@@ -459,6 +459,36 @@ function E:CopyTable(current, default, merge, shallow)
 	return current
 end
 
+-- Stripped down variant based on AceDB-3.0 by Simpy
+function E:CopyDefaults(dest, src)
+	for k, v in next, src do
+		if type(v) == 'table' then
+			if not rawget(dest, k) then rawset(dest, k, {}) end
+			if type(dest[k]) == 'table' then E:CopyDefaults(dest[k], v) end
+		elseif rawget(dest, k) == nil then
+			rawset(dest, k, v)
+		end
+	end
+
+	return dest
+end
+
+-- Stripped down variant based on AceDB-3.0 by Simpy
+function E:RemoveDefaults(db, defaults)
+	setmetatable(db, nil)
+
+	for k, v in next, defaults do
+		if type(v) == 'table' and type(db[k]) == 'table' then
+			E:RemoveDefaults(db[k], v)
+			if next(db[k]) == nil then db[k] = nil end
+		elseif db[k] == defaults[k] then
+			db[k] = nil
+		end
+	end
+
+	return db
+end
+
 function E:CanFlagSlug(outline)
 	if not E.global.general.fontSlug then return end
 
