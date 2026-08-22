@@ -221,7 +221,7 @@ function UF:Configure_AuraBars(frame)
 			bars.enemyFilter = db.enemyFilter.filterLists
 			bars.noMouse = db.clickThrough
 			bars.forceShowAuras = frame.forceShowAuras
-			bars.customBackdropColor = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop or nil
+			bars.customBackdropColor = UF.db.colors.customaurabarbackdrop and E:UpdateClassColor(UF.db.colors.aurabar_backdrop)
 
 			UF:AuraBars_UpdateFilter(bars, frame.__unit)
 
@@ -316,7 +316,7 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 		end
 	end
 
-	bar.custom_backdrop = colors.customaurabarbackdrop and colors.aurabar_backdrop
+	bar.custom_backdrop = colors.customaurabarbackdrop and E:UpdateClassColor(colors.aurabar_backdrop)
 
 	if color then
 		UF:SetStatusBarColor(bar, color.r, color.g, color.b)
