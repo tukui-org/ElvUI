@@ -763,9 +763,9 @@ function A:Initialize()
 				buff.MasqueGroup = MasqueGroupBuffs
 			end
 
-			A.BuffFrame = buff
+			E:Auras_GroupUnit(buff, 'player')
 
-			E:Auras_GroupUnit(A.BuffFrame, 'player')
+			A.BuffFrame = buff
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 		end
@@ -794,9 +794,9 @@ function A:Initialize()
 				debuff.MasqueGroup = MasqueGroupDebuffs
 			end
 
-			A.DebuffFrame = debuff
+			E:Auras_GroupUnit(debuff, 'player')
 
-			E:Auras_GroupUnit(A.DebuffFrame, 'player')
+			A.DebuffFrame = debuff
 		else
 			A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
 		end
