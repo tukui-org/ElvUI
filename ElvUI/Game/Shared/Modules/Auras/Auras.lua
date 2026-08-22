@@ -757,7 +757,6 @@ function A:Initialize()
 
 			A.BuffFrame = buff
 
-			E:Auras_SetEnchantments(A.BuffFrame)
 			E:Auras_GroupUnit(A.BuffFrame, 'player')
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
@@ -769,6 +768,10 @@ function A:Initialize()
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 
 		A:UpdateHeader(A.BuffFrame)
+
+		if E.Retail then -- keep below UpdateHeader
+			E:Auras_SetEnchantments(A.BuffFrame)
+		end
 	end
 
 	if E.private.auras.debuffsHeader then

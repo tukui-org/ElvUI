@@ -592,9 +592,9 @@ end
 
 do
 	local temp, layout = {}, {}
-	function E:Auras_SetupEnchantment(container, key, filter, spacing, placement)
+	function E:Auras_SetupEnchantment(container, key, filter, placement)
 		temp.initializeFrame = E:Auras_GenerateButton(container, key, filter, true)
-		layout.elementSpacing = spacing
+		layout.elementSpacing = E:Scale(E:Auras_GetSpacing(container))
 		layout.placement = placement
 
 		return temp, layout
@@ -651,8 +651,7 @@ function E:Auras_UpdateGroup(container, key, filter, candidate, layout, maxCount
 end
 
 function E:Auras_SetEnchantments(container)
-	local spacing = E:Auras_GetSpacing(container)
-	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, spacing, ItemEnchantmentPlacement.BeforeAuraGroups)
+	local group, layout = E:Auras_SetupEnchantment(container, container.auraType, container.filter, ItemEnchantmentPlacement.BeforeAuraGroups)
 	container:SetItemEnchantmentLayout(layout)
 	container:AddItemEnchantment(MAINHAND, group)
 	container:AddItemEnchantment(OFFHAND, group)
