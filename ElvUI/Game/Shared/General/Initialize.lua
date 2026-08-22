@@ -3,8 +3,10 @@
 ]]
 
 local _G = _G
-local strsplit, gsub, tinsert, next, type, wipe = strsplit, gsub, tinsert, next, type, wipe
-local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
+local setmetatable, rawget, rawset = setmetatable, rawget, rawset
+local gsub, tinsert, next, type, wipe = gsub, tinsert, next, type, wipe
+local strsplit, tostring, tonumber = strsplit, tostring, tonumber
+local strjoin, strfind, strmatch = strjoin, strfind, strmatch
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -15,8 +17,11 @@ local WorldFrame = WorldFrame
 local UIParent = UIParent
 local UnitGUID = UnitGUID
 
+local SlashCmdList = SlashCmdList
 local CreateFontFamily = CreateFontFamily
+local UIParentLoadAddOn = UIParentLoadAddOn
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
+local LoadAddOnWithErrorHandling = LoadAddOnWithErrorHandling
 
 local DisableAddOn = C_AddOns.DisableAddOn
 local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
@@ -487,6 +492,57 @@ function E:RemoveDefaults(db, defaults)
 	end
 
 	return db
+end
+
+do -- backwards compatibility for GetMouseFocus
+	local GetMouseFocus = GetMouseFocus
+	local GetMouseFoci = GetMouseFoci
+	function E:GetMouseFocus()
+		if GetMouseFoci then
+			local frames = GetMouseFoci()
+			return frames and frames[1]
+		else
+			return GetMouseFocus()
+		end
+	end
+end
+
+function E:Print(...)
+	local frame = E.db and _G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME
+	local msg = strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)
+	frame:AddMessage(msg)
+end
+
+function E:LoadAddon(addon)
+	if UIParentLoadAddOn then
+		return UIParentLoadAddOn(addon)
+	elseif LoadAddOnWithErrorHandling then
+		LoadAddOnWithErrorHandling(addon)
+	end
+end
+
+function E:GetFrameName(frame, text)
+	if frame.GetDebugName then
+		return frame:GetDebugName()
+	elseif frame.GetName then
+		return frame:GetName()
+	else
+		return text or 'nil'
+	end
+end
+
+function E:AddSlashCommand(name, keys, func)
+	if SlashCmdList[name] then return end
+
+	SlashCmdList[name] = func
+
+	if type(keys) == 'table' then
+		for i, key in next, keys do
+			_G['SLASH_'..name..i] = key
+		end
+	else
+		_G['SLASH_'..name..'1'] = keys
+	end
 end
 
 function E:CanFlagSlug(outline)

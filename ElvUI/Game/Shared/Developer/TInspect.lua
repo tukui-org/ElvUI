@@ -1,3 +1,6 @@
+local E, L, V, P, G = unpack(ElvUI)
+local CH = E:GetModule('Chat')
+
 local _G = _G
 local next = next
 
@@ -6,20 +9,18 @@ local CreateFrame = CreateFrame
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
--- GLOBALS: ElvUI
-
 local function OnMouseDown(self, button)
 	local text = self.Text:GetText()
 	if button == 'RightButton' then
-		ElvUI[1]:GetModule('Chat'):SetChatEditBoxMessage(text)
+		CH:SetChatEditBoxMessage(text)
 	elseif button == 'MiddleButton' then
 		local rawData = self:GetParent():GetAttributeData().rawValue
 		if rawData.IsObjectType and rawData:IsObjectType('Texture') then
 			_G.TEX = rawData
-			ElvUI[1]:Print('_G.TEX set to: ', text)
+			E:Print('_G.TEX set to: ', text)
 		else
 			_G.FRAME = rawData
-			ElvUI[1]:Print('_G.FRAME set to: ', text)
+			E:Print('_G.FRAME set to: ', text)
 		end
 	else
 		_G.TableAttributeDisplayValueButton_OnMouseDown(self)

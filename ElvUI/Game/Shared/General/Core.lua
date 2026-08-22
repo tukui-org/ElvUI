@@ -3,11 +3,11 @@ local L = E.Libs.ACL:GetLocale('ElvUI', E:GetLocale())
 ElvUI[2] = L -- Locale doesn't exist yet, make it exist
 
 local _G = _G
+local rawset, setmetatable = rawset, setmetatable
 local tonumber, next, unpack, tostring = tonumber, next, unpack, tostring
-local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
+local wipe, sort, tinsert, tremove, tContains = wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, print = assert, type, pcall, xpcall, print
-local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 local co_yield, co_resume, co_create, co_status = coroutine.yield, coroutine.resume, coroutine.create, coroutine.status
 
 local Mixin = Mixin
@@ -215,12 +215,6 @@ do
 	function E:StripMyRealm(name)
 		return gsub(name, a3, a1)
 	end
-end
-
-function E:Print(...)
-	local frame = E.db and _G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME
-	local msg = strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)
-	frame:AddMessage(msg)
 end
 
 function E:GrabColorPickerValues(r, g, b)

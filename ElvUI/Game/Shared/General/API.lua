@@ -48,8 +48,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitSex = UnitSex
 local UnitThreatSituation = UnitThreatSituation
 local UnitSelectionType = UnitSelectionType
-local UIParentLoadAddOn = UIParentLoadAddOn
-local LoadAddOnWithErrorHandling = LoadAddOnWithErrorHandling
 
 local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
@@ -480,19 +478,6 @@ do
 	end
 end
 
-do -- backwards compatibility for GetMouseFocus
-	local GetMouseFocus = GetMouseFocus
-	local GetMouseFoci = GetMouseFoci
-	function E:GetMouseFocus()
-		if GetMouseFoci then
-			local frames = GetMouseFoci()
-			return frames and frames[1]
-		else
-			return GetMouseFocus()
-		end
-	end
-end
-
 do
 	function E:GetSpellInfo(spellID)
 		local info = spellID and C_Spell_GetSpellInfo(spellID)
@@ -857,14 +842,6 @@ do
 
 	if Masque then
 		Masque:Register('ElvUI', E.MasqueCallback)
-	end
-end
-
-function E:LoadAddon(addon)
-	if UIParentLoadAddOn then
-		return UIParentLoadAddOn(addon)
-	elseif LoadAddOnWithErrorHandling then
-		LoadAddOnWithErrorHandling(addon)
 	end
 end
 
