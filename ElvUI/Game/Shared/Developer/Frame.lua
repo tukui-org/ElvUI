@@ -23,7 +23,7 @@ E:AddSlashCommand('GETPOINT', '/getpoint', function(arg)
 	if not frame then return end
 
 	local point, relativeTo, relativePoint, xOffset, yOffset = frame:GetPoint()
-	print(E:GetFrameName(frame, 'nil'), point, E:GetFrameName(relativeTo, 'nil'), relativePoint, xOffset, yOffset)
+	print(E:GetFrameName(frame, 'nil', true), point, E:GetFrameName(relativeTo, 'nil', true), relativePoint, xOffset, yOffset)
 end)
 
 E:AddSlashCommand('FRAME', '/frame', function(arg)
@@ -32,7 +32,7 @@ E:AddSlashCommand('FRAME', '/frame', function(arg)
 	if not frame then return end
 
 	_G.FRAME = frame -- Set the global variable FRAME to = whatever we are mousing over to simplify messing with frames that have no name.
-	E:Print('_G.FRAME set to: ', E:GetFrameName(frame, UNKNOWN))
+	E:Print('_G.FRAME set to: ', E:GetFrameName(frame, UNKNOWN, true))
 
 	if IsTrue(tinspect) then
 		if not _G.TableAttributeDisplay then

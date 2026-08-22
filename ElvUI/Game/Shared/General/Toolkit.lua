@@ -153,8 +153,8 @@ local function GetTemplate(template, isUnitFrameElement)
 	end
 end
 
-local function GetChild(frame, child, index, debugName)
-	local name = frame and child and E:GetFrameName(frame, nil, not debugName)
+local function GetChild(frame, child, index, allowDebug)
+	local name = frame and child and E:GetFrameName(frame, nil, allowDebug)
 	if not name then return nil end
 	if not index then index = '' end
 

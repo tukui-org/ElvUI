@@ -521,8 +521,8 @@ function E:LoadAddon(addon)
 	end
 end
 
-function E:GetFrameName(frame, text, nodebug)
-	if not nodebug and frame.GetDebugName then
+function E:GetFrameName(frame, text, allowDebug)
+	if allowDebug and frame.GetDebugName then
 		return frame:GetDebugName()
 	elseif frame.GetName then
 		return frame:GetName()
