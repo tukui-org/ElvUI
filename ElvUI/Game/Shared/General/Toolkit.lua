@@ -408,11 +408,15 @@ local function CreateShadow(frame, size, pass)
 	E:ReplaceSetupTextureCoordinates(shadow)
 
 	shadow:SetFrameLevel(1)
-	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, offset, offset, nil, true)
 	shadow:SetBackdrop({ edgeFile = E.Media.Textures.GlowTex, edgeSize = size })
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
+
+	local strata = frame:GetFrameStrata()
+	if E:NotSecretValue(strata) then
+		shadow:SetFrameStrata(strata)
+	end
 
 	if pass then
 		return shadow
