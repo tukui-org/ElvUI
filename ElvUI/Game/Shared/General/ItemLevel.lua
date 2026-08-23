@@ -53,9 +53,11 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
 		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
-		local text = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
-		local r, g, b = line:GetTextColor()
+		local clean = gsub(gsub(enchant, '%s?|A.-|a', ''), '|cn.-:(.-)|r', '%1')
+		local first, second = E:SplitString(clean, ' - ')
+		local text = second or first
 
+		local r, g, b = line:GetTextColor()
 		local shortStrip = gsub(text, '[&+] ?', '')
 		local shortAbbrev = E.db.general.itemLevel.enchantAbbrev and gsub(shortStrip, '(%w%w%w)%w+', '%1')
 		slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
