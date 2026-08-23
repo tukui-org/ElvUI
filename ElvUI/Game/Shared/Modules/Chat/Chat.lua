@@ -973,9 +973,7 @@ function CH:StyleChat(frame)
 	frame:SetMaxLines(CH.db.maxLines)
 	frame:SetFading(CH.db.fade)
 
-	if tab.Text then
-		tab:SetScript('OnUpdate', CH.Tab_OnUpdate)
-	end
+	tab.Text:FontTemplate(CH.db.tabFont, CH.db.tabFontSize, CH.db.tabFontOutline)
 
 	if not IsCombatLog(frame) then -- setting this script to log is problematic on retail
 		tab:SetScript('OnClick', CH.Tab_OnClick)
@@ -991,6 +989,10 @@ function CH:StyleChat(frame)
 		if communities then
 			communities:FontTemplate(font, size, outline)
 		end
+	end
+
+	if not frame.isDocked then
+		PanelTemplates_TabResize(tab, tab.sizePadding or 0)
 	end
 
 	if frame.styled then return end
@@ -3997,21 +3999,6 @@ end
 function CH:Tab_OnClick(button)
 	CH.FCF_Tab_OnClick(self, button)
 	PlaySound(SOUND_U_CHAT_SCROLL_BUTTON)
-end
-
-function CH:Tab_OnUpdate(elapsed)
-	self.lastUpdate = (self.lastUpdate or 0) + elapsed
-
-	if self.lastUpdate > 0.1 and self.Text:GetFontObject() == _G.GameFontNormalSmall then
-		self.Text:FontTemplate(CH.db.tabFont, CH.db.tabFontSize, CH.db.tabFontOutline)
-
-		local chat = CH:GetOwner(self)
-		if chat and chat.isDocked then
-			_G.FCF_DockUpdate()
-		else
-			PanelTemplates_TabResize(self, self.sizePadding or 0)
-		end
-	end
 end
 
 do
