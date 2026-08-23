@@ -146,6 +146,7 @@ do
 		for which in next, elements do
 			local auraType = AURA_TYPES[which]
 			local db = plateDB[auraType]
+			local active = added and (not db or db.enable)
 
 			for frameType in next, NP.AuraContainerFilterKeys do
 				local container = NP:GetAuraContainer(nameplate.frameName, frameType)
@@ -156,8 +157,8 @@ do
 
 						E:Auras_SetUnit(auras, nameplate.__unit)
 
-						auras:SetEnabled(added and db.enable)
-						auras:SetShown(added and db.enable)
+						auras:SetEnabled(active)
+						auras:SetShown(active)
 					else
 						auras:SetEnabled(false)
 						auras:SetShown(false)

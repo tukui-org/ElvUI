@@ -112,7 +112,7 @@ do
 			frameType = nameplate and nameplate.frameType
 		end
 
-		return NP.db.units[frameType] or empty
+		return (NP.db.units and NP.db.units[frameType]) or empty
 	end
 end
 
