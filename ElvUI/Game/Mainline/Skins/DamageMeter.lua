@@ -213,9 +213,9 @@ do
 		updating = true
 
 		if point == 'TOPLEFT' then
-			self:NudgePoint(-2, 0, nil, point)
+			self:NudgePoint(-5, 0, nil, point)
 		elseif point == 'BOTTOMRIGHT' then
-			self:NudgePoint(-6, 0, nil, point)
+			self:NudgePoint(-8, 0, nil, point)
 		end
 
 		updating = false
