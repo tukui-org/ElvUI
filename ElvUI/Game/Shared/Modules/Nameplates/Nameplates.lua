@@ -327,6 +327,7 @@ function NP:StylePlate(nameplate)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
+	nameplate.ActiveContainers = {} -- aura containers
 	nameplate.StackingBounds = NP:Construct_StackingBounds(nameplate)
 	nameplate.RaisedElement = NP:Construct_RaisedElement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
@@ -793,7 +794,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	NP:UpdatePlateSize(self)
 
 	if E.Retail then
-		self.AuraContainer = NP:Configure_AuraContainers(self, true)
+		self.AuraContainer = NP:AuraContainer_SetActive(self)
 	end
 
 	self.softTargetFrame = self.blizzPlate and self.blizzPlate.SoftTargetFrame
@@ -849,7 +850,7 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	NP:UpdateNumPlates()
 
 	if E.Retail then
-		NP:Configure_AuraContainers(self, false)
+		NP:AuraContainer_RemoveActive(self)
 	end
 
 	if self.softTargetFrame then

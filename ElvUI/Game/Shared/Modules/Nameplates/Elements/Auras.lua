@@ -140,30 +140,33 @@ do
 		end -- this is so we can keep Auras_UpdateButtons outside of
 	end -- the normal configure that happens when a plate type changes
 
-	function NP:Configure_AuraContainers(nameplate, added)
-		local plateDB = NP:PlateDB(nameplate)
+	function NP:AuraContainer_RemoveActive(nameplate)
+		for container in next, nameplate.ActiveContainers do
+			container:SetEnabled(false)
+			container:SetShown(false)
+
+			nameplate.ActiveContainers[container] = nil
+		end
+	end
+
+	function NP:AuraContainer_SetActive(nameplate)
 		local current
+		local plateDB = NP:PlateDB(nameplate)
+		local container = NP:GetAuraContainer(nameplate.frameName, nameplate.frameType)
 		for which in next, elements do
 			local auraType = AURA_TYPES[which]
 			local db = plateDB[auraType]
-			local active = added and (not db or db.enable)
+			local auras = container and container[which]
+			local active = auras and (not db or db.enable)
+			if active then
+				current = container
 
-			for frameType in next, NP.AuraContainerFilterKeys do
-				local container = NP:GetAuraContainer(nameplate.frameName, frameType)
-				local auras = container and container[which]
-				if auras then
-					if frameType == nameplate.frameType then
-						current = container
+				nameplate.ActiveContainers[auras] = true
 
-						E:Auras_SetUnit(auras, nameplate.__unit)
+				E:Auras_SetUnit(auras, nameplate.__unit)
 
-						auras:SetEnabled(active)
-						auras:SetShown(active)
-					else
-						auras:SetEnabled(false)
-						auras:SetShown(false)
-					end
-				end
+				auras:SetEnabled(true)
+				auras:SetShown(true)
 			end
 		end
 
@@ -351,7 +354,7 @@ function NP:Update_Auras(nameplate)
 			nameplate.Buffs = nil
 		end
 	elseif E.Retail then
-		NP:Configure_AuraContainers(nameplate, false)
+		NP:AuraContainer_RemoveActive(nameplate)
 	elseif nameplate:IsElementEnabled('Auras') then
 		nameplate:DisableElement('Auras')
 	end
