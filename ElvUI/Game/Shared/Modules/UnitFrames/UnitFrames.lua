@@ -691,7 +691,7 @@ function UF:Update_StatusBar(bar, texture)
 		texture = LSM:Fetch('statusbar', UF.db.statusbar)
 	end
 
-	local parent = bar.parent or bar:GetParent() -- prediction or bg parent
+	local parent = bar.parent or bar:GetParent() -- (parent is only used in prediction on UF but its not called here) or bg parent
 	local useBlank = (parent and parent.isTransparent) or bar.isTransparent
 	local newTexture = (not useBlank and texture) or E.media.blankTex
 
