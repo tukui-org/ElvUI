@@ -97,10 +97,7 @@ function E:Auras_OnEvent(event, arg1, arg2)
 				container:UpdateAllAuras()
 			end
 		end
-	elseif arg1 and (arg1 == container.unit) then -- about to do something
-		if event == 'UNIT_FACTION' or event == 'UNIT_TARGETABLE_CHANGED' then
-			container:UpdateAllAuras()
-		end
+	--elseif arg1 and (arg1 == container.unit) then -- about to do something
 	end
 end
 
@@ -990,10 +987,6 @@ function E:Auras_Create(parent, which, override)
 	local events = CreateFrame('Frame', nil, container)
 	events.owner = container
 	container.events = events
-
-	-- bugged: vehicle
-	events:RegisterEvent('UNIT_FACTION')
-	events:RegisterEvent('UNIT_TARGETABLE_CHANGED')
 
 	-- aurabar to switch to friendship
 	events:RegisterEvent('PLAYER_TARGET_CHANGED')
