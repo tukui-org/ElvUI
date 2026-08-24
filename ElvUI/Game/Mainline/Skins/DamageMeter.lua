@@ -85,9 +85,8 @@ end
 function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
-	S:HandleButton(dropdown, nil, nil, nil, true)
-
 	dropdown:Size(20)
+	dropdown:StripTextures(nil, true)
 	dropdown:ClearAllPoints() -- point is a secret
 	dropdown:Point('TOPLEFT', window.SessionTimer, 'TOPRIGHT', 0, 4)
 
@@ -119,13 +118,11 @@ end
 function S:DamageMeter_HandleSessionDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
-	S:HandleButton(dropdown, nil, nil, nil, true)
-
-	dropdown:NudgePoint(nil, -3)
-	dropdown:Height(20)
-
 	local newWidth = dropdown:GetWidth() + DROPDOWN_WIDTH_OFFSET
+	dropdown:StripTextures(nil, true)
 	dropdown:Width(newWidth, true)
+	dropdown:NudgePoint(8, -2)
+	dropdown:Height(20)
 
 	-- Blizzard's dynamic width is actually bugged now, but add some horizontal padding for styling anyway
 	hooksecurefunc(dropdown, 'SetWidth', S.DamageMeter_DropdownSetWidth)
@@ -144,10 +141,8 @@ end
 function S:DamageMeter_HandleSettingsDropdown(window, dropdown)
 	if not dropdown or dropdown.IsSkinned then return end
 
-	S:HandleButton(dropdown, nil, nil, nil, true)
-
 	dropdown:Size(20)
-	dropdown:NudgePoint(2, 0)
+	dropdown:NudgePoint(2, 1)
 
 	if dropdown.Icon then
 		dropdown.Icon:SetAlpha(0)
@@ -155,9 +150,9 @@ function S:DamageMeter_HandleSettingsDropdown(window, dropdown)
 
 	local customIcon = not dropdown.customIcon and dropdown:CreateTexture(nil, 'BACKGROUND')
 	if customIcon then
+		customIcon:SetAtlas('GM-icon-settings')
 		customIcon:Point('CENTER')
 		customIcon:Size(26)
-		customIcon:SetAtlas('GM-icon-settings')
 
 		dropdown.customIcon = customIcon
 	end
@@ -177,20 +172,31 @@ function S:DamageMeter_HandleHeader(window, header)
 end
 
 function S:DamageMeter_HandleStatusBar()
+	local Icon = self.Icon
+	if Icon then
+		Icon:Size(18)
+		Icon:ClearAllPoints()
+		Icon:Point('LEFT', 1, 0)
+	end
+
 	local StatusBar = self.StatusBar
-	if not StatusBar then return end
+	if StatusBar then
+		local bg = StatusBar.Background
+		if bg then
+			local r, g, b, a = unpack(E.media.backdropfadecolor)
+			bg:SetTexture(E.media.blankTex)
+			bg:SetVertexColor(r, g, b, a)
+			bg:ClearAllPoints()
+			bg:Point('TOPLEFT', -19, 1)
+			bg:Point('BOTTOMRIGHT', 1, -1)
+		end
 
-	if StatusBar.Background then
-		local r, g, b, a = unpack(E.media.backdropfadecolor)
-		StatusBar.Background:SetTexture(E.media.blankTex)
-		StatusBar.Background:SetVertexColor(r, g, b, a)
+		if StatusBar.BackgroundEdge then
+			StatusBar.BackgroundEdge:Hide()
+		end
+
+		StatusBar:GetStatusBarTexture():SetTexture(E.media.normTex)
 	end
-
-	if StatusBar.BackgroundEdge then
-		StatusBar.BackgroundEdge:Hide()
-	end
-
-	StatusBar:GetStatusBarTexture():SetTexture(E.media.normTex)
 end
 
 function S:DamageMeter_ScrollBoxUpdate()
@@ -207,9 +213,9 @@ do
 		updating = true
 
 		if point == 'TOPLEFT' then
-			self:NudgePoint(-5, 0, nil, point)
+			self:NudgePoint(-2, 0, nil, point)
 		elseif point == 'BOTTOMRIGHT' then
-			self:NudgePoint(-9, 0, nil, point)
+			self:NudgePoint(-6, 0, nil, point)
 		end
 
 		updating = false
@@ -267,19 +273,19 @@ function S:DamageMeter_HandleScrollBoxes(window)
 	end
 end
 
-function S:DamageMeter_RepositionResizeButton(container)
+function S:DamageMeter_RepositionResizeButton(container, x, y)
 	local ResizeButton = container.ResizeButton
 	if not ResizeButton then return end
 
 	S:DamageMeter_HandleResizeButton(ResizeButton)
 
-	ResizeButton:Size(14)
-	ResizeButton:ClearAllPoints()
-
 	local rotation = pi * 1.25
 	ResizeButton:GetNormalTexture():SetRotation(rotation)
 	ResizeButton:GetPushedTexture():SetRotation(rotation)
-	ResizeButton:Point('BOTTOMRIGHT', container.Background, -12, 2)
+
+	ResizeButton:ClearAllPoints()
+	ResizeButton:Point('BOTTOMRIGHT', container.Background, x, y)
+	ResizeButton:Size(14)
 end
 
 function S:DamageMeter_HandleSourceWindow(window, sourceWindow)
@@ -290,17 +296,30 @@ function S:DamageMeter_HandleSourceWindow(window, sourceWindow)
 	sourceWindow.IsSkinned = true
 end
 
+function S:DamageMeter_AnchorToSessionWindow() -- we could also handle source position here
+	S:DamageMeter_RepositionResizeButton(self, -24, 11)
+end
+
 function S:DamageMeter_HandleMinimizeContainer(window, container)
 	if not container or container.IsSkinned then return end
 
 	S:DamageMeter_HandleBackground(window, container.Background, 4, nil, -10)
-	S:DamageMeter_RepositionResizeButton(container)
+	S:DamageMeter_RepositionResizeButton(container, -6, -4)
+
+	local sourceWindow = container.SourceWindow
+	if sourceWindow then
+		S:DamageMeter_HandleBackground(window, sourceWindow.Background, 16, -13, -28, 15)
+		S:DamageMeter_HandleSourceWindow(window, sourceWindow)
+
+		hooksecurefunc(sourceWindow, 'AnchorToSessionWindow', S.DamageMeter_AnchorToSessionWindow)
+	end
 
 	container.IsSkinned = true
 end
 
 function S:DamageMeter_HandleLocalPlayerEntry()
-	local entry = self.LocalPlayerEntry
+	local minimize = self.MinimizeContainer
+	local entry = minimize and minimize.LocalPlayerEntry
 	if not entry then return end
 
 	S.DamageMeter_HandleStatusBar(entry)
