@@ -487,7 +487,7 @@ function D:Decode(dataString)
 	end
 
 	local stringType = D:GetImportStringType(dataString)
-	local profileInfo, profileType, profileKey, profileData
+	local profileType, profileKey, profileData
 
 	if stringType == 'Deflate' then
 		local data = gsub(dataString, '^'..EXPORT_PREFIX, '')
@@ -500,7 +500,7 @@ function D:Decode(dataString)
 		end
 
 		local serializedData
-		serializedData, profileType, profileKey = E:SplitString(decompressed, '::')
+		serializedData, profileType, profileKey = strmatch(decompressed, '(.+)::([^:]-)::([^:]-)$')
 
 		profileData = DeserializeCBOR(serializedData)
 
@@ -510,12 +510,7 @@ function D:Decode(dataString)
 		end
 	elseif stringType == 'Table' then
 		local profileDataAsString
-		profileDataAsString, profileInfo = E:SplitString(dataString, '}::') -- '}::' indicates the end of the table
-
-		if not profileInfo then
-			E:Print('Error extracting profile info. Invalid import string!')
-			return
-		end
+		profileDataAsString, profileType, profileKey = strmatch(dataString, '(.+)}::([^:]-)::([^:]-)$')
 
 		if not profileDataAsString then
 			E:Print('Error extracting profile data. Invalid import string!')
@@ -524,7 +519,6 @@ function D:Decode(dataString)
 
 		profileDataAsString = format('%s%s', profileDataAsString, '}') --Add back the missing '}'
 		profileDataAsString = gsub(profileDataAsString, '\124\124', '\124') --Remove escape pipe characters
-		profileType, profileKey = E:SplitString(profileInfo, '::')
 
 		local profileMessage
 		local profileToTable = loadstring(format('%s %s', 'return', profileDataAsString))
