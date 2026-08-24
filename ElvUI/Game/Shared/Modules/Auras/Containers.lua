@@ -543,8 +543,8 @@ function E:Auras_UpdateLayout(container)
 		layout.lineSpacing = container.lineSpacing
 		layout.groupSpacing = container.groupSpacing
 		layout.elementSpacing = E:Auras_GetSpacing(container)
-		layout.elementHeight = height
-		layout.elementWidth = width
+		layout.elementHeight = (height <= 0) and 0 or height
+		layout.elementWidth = (width <= 0) and 0 or width
 	end
 
 	return layout
