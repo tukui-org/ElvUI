@@ -3,8 +3,10 @@
 ]]
 
 local _G = _G
-local strsplit, gsub, tinsert, next, type, wipe = strsplit, gsub, tinsert, next, type, wipe
-local tostring, tonumber, strfind, strmatch = tostring, tonumber, strfind, strmatch
+local setmetatable, rawget, rawset = setmetatable, rawget, rawset
+local gsub, tinsert, next, type, wipe = gsub, tinsert, next, type, wipe
+local strsplit, tostring, tonumber = strsplit, tostring, tonumber
+local strjoin, strfind, strmatch = strjoin, strfind, strmatch
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -15,8 +17,11 @@ local WorldFrame = WorldFrame
 local UIParent = UIParent
 local UnitGUID = UnitGUID
 
+local SlashCmdList = SlashCmdList
 local CreateFontFamily = CreateFontFamily
+local UIParentLoadAddOn = UIParentLoadAddOn
 local UIDropDownMenu_SetAnchor = UIDropDownMenu_SetAnchor
+local LoadAddOnWithErrorHandling = LoadAddOnWithErrorHandling
 
 local DisableAddOn = C_AddOns.DisableAddOn
 local GetAddOnMetadata = C_AddOns.GetAddOnMetadata
@@ -143,7 +148,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.24, '15.24-git', nil, true
+		return 15.25, '15.25-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -439,6 +444,104 @@ do -- Blizzard broke font Shadows in 12.0.7 this helps fix that by allowing us t
 	function E:SetFontShadow(font, style, shadow, sR, sG, sB, sA, sX, sY)
 		font:SetShadowColor(sR or 0, sG or 0, sB or 0, sA or (shadow and (style == '' and 1 or 0.6)) or 0)
 		font:SetShadowOffset(sX or (shadow and 1) or 0, sY or (shadow and -1) or 0)
+	end
+end
+
+function E:CopyTable(current, default, merge, shallow)
+	if type(current) ~= 'table' then
+		current = {}
+	end
+
+	if type(default) == 'table' then
+		for option, value in next, default do
+			local isTable = type(value) == 'table'
+			if isTable or (not merge or current[option] == nil) then
+				current[option] = (isTable and not shallow) and E:CopyTable(current[option], value, merge) or value
+			end
+		end
+	end
+
+	return current
+end
+
+-- Stripped down variant based on AceDB-3.0 by Simpy
+function E:CopyDefaults(dest, src)
+	for k, v in next, src do
+		if type(v) == 'table' then
+			if not rawget(dest, k) then rawset(dest, k, {}) end
+			if type(dest[k]) == 'table' then E:CopyDefaults(dest[k], v) end
+		elseif rawget(dest, k) == nil then
+			rawset(dest, k, v)
+		end
+	end
+
+	return dest
+end
+
+-- Stripped down variant based on AceDB-3.0 by Simpy
+function E:RemoveDefaults(db, defaults)
+	setmetatable(db, nil)
+
+	for k, v in next, defaults do
+		if type(v) == 'table' and type(db[k]) == 'table' then
+			E:RemoveDefaults(db[k], v)
+			if next(db[k]) == nil then db[k] = nil end
+		elseif db[k] == defaults[k] then
+			db[k] = nil
+		end
+	end
+
+	return db
+end
+
+do -- backwards compatibility for GetMouseFocus
+	local GetMouseFocus = GetMouseFocus
+	local GetMouseFoci = GetMouseFoci
+	function E:GetMouseFocus()
+		if GetMouseFoci then
+			local frames = GetMouseFoci()
+			return frames and frames[1]
+		else
+			return GetMouseFocus()
+		end
+	end
+end
+
+function E:Print(...)
+	local frame = E.db and _G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME
+	local msg = strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)
+	frame:AddMessage(msg)
+end
+
+function E:LoadAddon(addon)
+	if UIParentLoadAddOn then
+		return UIParentLoadAddOn(addon)
+	elseif LoadAddOnWithErrorHandling then
+		LoadAddOnWithErrorHandling(addon)
+	end
+end
+
+function E:GetFrameName(frame, text, allowDebug)
+	if allowDebug and frame.GetDebugName then
+		return frame:GetDebugName()
+	elseif frame.GetName then
+		return frame:GetName()
+	end
+
+	return text
+end
+
+function E:AddSlashCommand(name, keys, func)
+	if SlashCmdList[name] then return end
+
+	SlashCmdList[name] = func
+
+	if type(keys) == 'table' then
+		for i, key in next, keys do
+			_G['SLASH_'..name..i] = key
+		end
+	else
+		_G['SLASH_'..name..'1'] = keys
 	end
 end
 

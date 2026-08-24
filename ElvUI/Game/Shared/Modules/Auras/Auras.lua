@@ -109,10 +109,10 @@ A.AttributeInitialConfig = [[
 	self:SetHeight(header:GetAttribute('config-height'))
 ]]
 
-function A:MasqueData(texture, highlight)
+function A:MasqueData(icon, highlight)
 	local data = E:CopyTable({}, MasqueButtonData)
 
-	data.Icon = texture
+	data.Icon = icon
 	data.Highlight = highlight
 
 	return data
@@ -603,6 +603,10 @@ function A:UpdateHeader(header)
 		E:Auras_SetContainer(header)
 		E:Auras_SetLineSize(header)
 		E:Auras_UpdateButtons(header)
+
+		if header.hasEnchantments then
+			E:Auras_UpdateEnchantments(header)
+		end
 	else
 		E:UpdateClassColor(db.barColor)
 
@@ -755,10 +759,13 @@ function A:Initialize()
 			buff.unit = 'player'
 			buff.filters = {}
 
-			A.BuffFrame = buff
+			if MasqueGroupBuffs and E.private.auras.masque.buffs then
+				buff.MasqueGroup = MasqueGroupBuffs
+			end
 
-			E:Auras_SetEnchantments(A.BuffFrame)
-			E:Auras_GroupUnit(A.BuffFrame, 'player')
+			E:Auras_GroupUnit(buff, 'player')
+
+			A.BuffFrame = buff
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
 		end
@@ -769,6 +776,11 @@ function A:Initialize()
 		E:CreateMover(A.BuffFrame, 'BuffsMover', L["Player Buffs"], nil, nil, nil, nil, nil, 'auras,buffs')
 
 		A:UpdateHeader(A.BuffFrame)
+
+		if E.Retail then -- keep below UpdateHeader
+			E:Auras_AddEnchantments(A.BuffFrame)
+			A.BuffFrame.hasEnchantments = true
+		end
 	end
 
 	if E.private.auras.debuffsHeader then
@@ -778,9 +790,13 @@ function A:Initialize()
 			debuff.unit = 'player'
 			debuff.filters = {}
 
-			A.DebuffFrame = debuff
+			if MasqueGroupDebuffs and E.private.auras.masque.debuffs then
+				debuff.MasqueGroup = MasqueGroupDebuffs
+			end
 
-			E:Auras_GroupUnit(A.DebuffFrame, 'player')
+			E:Auras_GroupUnit(debuff, 'player')
+
+			A.DebuffFrame = debuff
 		else
 			A.DebuffFrame = A:CreateAuraHeader('HARMFUL')
 		end

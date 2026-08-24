@@ -153,8 +153,8 @@ local function GetTemplate(template, isUnitFrameElement)
 	end
 end
 
-local function GetChild(frame, child, index, debug)
-	local name = frame and child and ((debug and frame.GetDebugName and frame:GetDebugName()) or (frame.GetName and frame:GetName()))
+local function GetChild(frame, child, index, allowDebug)
+	local name = frame and child and E:GetFrameName(frame, nil, allowDebug)
 	if not name then return nil end
 	if not index then index = '' end
 
@@ -408,11 +408,15 @@ local function CreateShadow(frame, size, pass)
 	E:ReplaceSetupTextureCoordinates(shadow)
 
 	shadow:SetFrameLevel(1)
-	shadow:SetFrameStrata(frame:GetFrameStrata())
 	shadow:SetOutside(frame, offset, offset, nil, true)
 	shadow:SetBackdrop({ edgeFile = E.Media.Textures.GlowTex, edgeSize = size })
 	shadow:SetBackdropColor(backdropr, backdropg, backdropb, 0)
 	shadow:SetBackdropBorderColor(borderr, borderg, borderb, 0.9)
+
+	local strata = frame:GetFrameStrata()
+	if E:NotSecretValue(strata) then
+		shadow:SetFrameStrata(strata)
+	end
 
 	if pass then
 		return shadow

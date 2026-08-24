@@ -54,7 +54,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
 	group.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
-	group.args.desaturate = ACH:Toggle(L["Desaturate Icon"], L["Set auras that are not from you to desaturated."], 4)
+	group.args.desaturate = ACH:Toggle(L["Desaturate Icon"], E.Retail and L["Requres the filter string to contain !PLAYER (requires a reload)."] or L["Set auras that are not from you to desaturated."], 4)
 
 	group.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	group.args.generalGroup.args.size = ACH:Range(function() return E.db.nameplates.units[unit][auraType].keepSizeRatio and L["Size"] or L["Width"] end, nil, 5, { min = 6, max = 60, step = 1 })

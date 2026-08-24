@@ -39,7 +39,7 @@ end)
 
 local function AllowAura(frame, aura)
 	if oUF:NotSecretValue(aura.isNameplateOnly) and aura.isNameplateOnly then
-		return frame.isNamePlate
+		return frame.isNameplate
 	end
 
 	return true

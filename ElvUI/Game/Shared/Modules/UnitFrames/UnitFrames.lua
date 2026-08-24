@@ -504,15 +504,24 @@ function UF:GetAuraOffset(p1, p2)
 	return x, y
 end
 
-function UF:GetAuraAnchorFrame(frame, attachTo)
+function UF:GetAuraAnchorFrame(frame, attachTo, container)
+	local auras, buffs, debuffs
+	if container then
+		auras, buffs, debuffs = container.Auras, container.Buffs, container.Debuffs
+	elseif frame.isNameplate then
+		auras, buffs, debuffs = frame.Auras_, frame.Buffs_, frame.Debuffs_
+	else
+		auras, buffs, debuffs = frame.Auras, frame.Buffs, frame.Debuffs
+	end
+
 	if attachTo == 'FRAME' then
 		return frame
-	elseif attachTo == 'AURAS' and frame.Auras then
-		return frame.Auras
-	elseif attachTo == 'BUFFS' and frame.Buffs then
-		return frame.Buffs
-	elseif attachTo == 'DEBUFFS' and frame.Debuffs then
-		return frame.Debuffs
+	elseif attachTo == 'AURAS' and auras then
+		return auras
+	elseif attachTo == 'BUFFS' and buffs then
+		return buffs
+	elseif attachTo == 'DEBUFFS' and debuffs then
+		return debuffs
 	elseif attachTo == 'HEALTH' and frame.Health then
 		return frame.Health
 	elseif attachTo == 'POWER' and frame.Power then

@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
-local UnitCanAssist = UnitCanAssist
 local CreateFrame = CreateFrame
 
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
@@ -36,13 +35,6 @@ function UF:Construct_AuraHighlight(frame)
 
 		return element
 	end
-end
-
-function UF:SetEnabled_AuraHighlight(container, unit)
-	local canAssist = UnitCanAssist('player', unit)
-
-	container.canAssist = canAssist
-	container:SetEnabled(container.enabled and canAssist)
 end
 
 do
@@ -93,9 +85,6 @@ function UF:Configure_AuraHighlight(frame)
 		local bad = highlight.bad
 		bad.enabled = enabled
 		bad.key = 'bad'
-
-		UF:SetEnabled_AuraHighlight(good, frame.__unit)
-		UF:SetEnabled_AuraHighlight(bad, frame.__unit)
 	end
 
 	if enabled then
@@ -105,7 +94,7 @@ function UF:Configure_AuraHighlight(frame)
 
 		highlight.glowAnchor = (frame.ThreatIndicator and frame.ThreatIndicator.MainGlow) or frame.TargetGlow
 
-		if E.Retail then
+		if E.Retail then -- this will lead to call on `Auras_SetEnabled`
 			UF:AuraHighlight_SetupContainer(frame, highlight, 'good')
 			UF:AuraHighlight_SetupContainer(frame, highlight, 'bad')
 		else
@@ -123,6 +112,9 @@ function UF:Configure_AuraHighlight(frame)
 				frame.AuraHighlightBackdrop = false
 			end
 		end
+	elseif E.Retail then -- this will lead to call on `Auras_SetEnabled`
+		E:Auras_GroupUnit(highlight.good, frame.__unit)
+		E:Auras_GroupUnit(highlight.bad, frame.__unit)
 	elseif frame:IsElementEnabled('AuraHighlight') then
 		frame:DisableElement('AuraHighlight')
 	end

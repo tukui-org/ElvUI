@@ -12,7 +12,6 @@ local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
 local pcall, strlen, tonumber, tostring = pcall, strlen, tonumber, tostring
 
-local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
 local GetGameTime = GetGameTime
@@ -49,8 +48,6 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitSex = UnitSex
 local UnitThreatSituation = UnitThreatSituation
 local UnitSelectionType = UnitSelectionType
-local UIParentLoadAddOn = UIParentLoadAddOn
-local LoadAddOnWithErrorHandling = LoadAddOnWithErrorHandling
 
 local WorldFrame = WorldFrame
 local GetWatchedFactionInfo = GetWatchedFactionInfo
@@ -481,19 +478,6 @@ do
 	end
 end
 
-do -- backwards compatibility for GetMouseFocus
-	local GetMouseFocus = GetMouseFocus
-	local GetMouseFoci = GetMouseFoci
-	function E:GetMouseFocus()
-		if GetMouseFoci then
-			local frames = GetMouseFoci()
-			return frames and frames[1]
-		else
-			return GetMouseFocus()
-		end
-	end
-end
-
 do
 	function E:GetSpellInfo(spellID)
 		local info = spellID and C_Spell_GetSpellInfo(spellID)
@@ -778,7 +762,7 @@ do
 	}
 
 	function E:SetupCustomClassColors()
-		local object = CopyTable(_G.RAID_CLASS_COLORS)
+		local object = E:CopyTable({}, _G.RAID_CLASS_COLORS)
 
 		_G.CUSTOM_CLASS_COLORS = setmetatable(object, meta)
 
@@ -858,14 +842,6 @@ do
 
 	if Masque then
 		Masque:Register('ElvUI', E.MasqueCallback)
-	end
-end
-
-function E:LoadAddon(addon)
-	if UIParentLoadAddOn then
-		return UIParentLoadAddOn(addon)
-	elseif LoadAddOnWithErrorHandling then
-		LoadAddOnWithErrorHandling(addon)
 	end
 end
 

@@ -3,11 +3,11 @@ local L = E.Libs.ACL:GetLocale('ElvUI', E:GetLocale())
 ElvUI[2] = L -- Locale doesn't exist yet, make it exist
 
 local _G = _G
+local rawset, setmetatable = rawset, setmetatable
 local tonumber, next, unpack, tostring = tonumber, next, unpack, tostring
-local strjoin, wipe, sort, tinsert, tremove, tContains = strjoin, wipe, sort, tinsert, tremove, tContains
+local wipe, sort, tinsert, tremove, tContains = wipe, sort, tinsert, tremove, tContains
 local format, strfind, strrep, strlen, sub, gsub = format, strfind, strrep, strlen, strsub, gsub
 local assert, type, pcall, xpcall, print = assert, type, pcall, xpcall, print
-local rawget, rawset, setmetatable = rawget, rawset, setmetatable
 local co_yield, co_resume, co_create, co_status = coroutine.yield, coroutine.resume, coroutine.create, coroutine.status
 
 local Mixin = Mixin
@@ -217,12 +217,6 @@ do
 	end
 end
 
-function E:Print(...)
-	local frame = E.db and _G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME
-	local msg = strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)
-	frame:AddMessage(msg)
-end
-
 function E:GrabColorPickerValues(r, g, b)
 	-- we must block the execution path to `ColorCallback` in `AceGUIWidget-ColorPicker-ElvUI`
 	-- in order to prevent an infinite loop from `OnValueChanged` when passing into `E.UpdateMedia` which eventually leads here again.
@@ -259,9 +253,9 @@ end
 function E:CheckClassColor(r, g, b)
 	r, g, b = E:GrabColorPickerValues(r, g, b)
 
-	for class in next, _G.RAID_CLASS_COLORS do
-		if class ~= E.myclass then
-			local color = E:ClassColor(class, true)
+	for classToken in next, _G.RAID_CLASS_COLORS do
+		if classToken ~= E.myclass then
+			local color = E:ClassColor(classToken, true)
 			local red, green, blue = E:GrabColorPickerValues(color.r, color.g, color.b)
 			if red == r and green == g and blue == b then
 				return true
@@ -802,23 +796,6 @@ do
 			end
 		end
 	end
-end
-
-function E:CopyTable(current, default, merge)
-	if type(current) ~= 'table' then
-		current = {}
-	end
-
-	if type(default) == 'table' then
-		for option, value in next, default do
-			local isTable = type(value) == 'table'
-			if not merge or (isTable or current[option] == nil) then
-				current[option] = (isTable and E:CopyTable(current[option], value, merge)) or value
-			end
-		end
-	end
-
-	return current
 end
 
 function E:RemoveEmptySubTables(tbl)
@@ -2026,37 +2003,6 @@ function E:ConvertActionBarKeybinds()
 	end
 end
 
-do
-	-- Shamelessly taken from AceDB-3.0 and stripped down by Simpy
-	function E:CopyDefaults(dest, src)
-		for k, v in next, src do
-			if type(v) == 'table' then
-				if not rawget(dest, k) then rawset(dest, k, {}) end
-				if type(dest[k]) == 'table' then E:CopyDefaults(dest[k], v) end
-			elseif rawget(dest, k) == nil then
-				rawset(dest, k, v)
-			end
-		end
-
-		return dest
-	end
-
-	function E:RemoveDefaults(db, defaults)
-		setmetatable(db, nil)
-
-		for k, v in next, defaults do
-			if type(v) == 'table' and type(db[k]) == 'table' then
-				E:RemoveDefaults(db[k], v)
-				if next(db[k]) == nil then db[k] = nil end
-			elseif db[k] == defaults[k] then
-				db[k] = nil
-			end
-		end
-
-		return db
-	end
-end
-
 function E:OnEnable()
 	E:Initialize()
 end
@@ -2095,7 +2041,6 @@ function E:Initialize()
 
 		if E.Retail then
 			E:Tutorials()
-			E:InitializeAuras()
 		end
 
 		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then

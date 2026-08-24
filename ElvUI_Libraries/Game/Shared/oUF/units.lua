@@ -157,14 +157,20 @@ local function updateArenaPreparation(self, event)
 			updateArenaPreparationElements(self, event, 'Power', specID)
 
 			-- hide all other (relevant) elements (they have no effect during arena prep)
-			if(self.Auras) then self.Auras:Hide() end
-			if(self.Buffs) then self.Buffs:Hide() end
-			if(self.Debuffs) then self.Debuffs:Hide() end
+			if(self:IsElementEnabled('Auras')) then
+				if(self.Auras) then self.Auras:Hide() end
+				if(self.Buffs) then self.Buffs:Hide() end
+				if(self.Debuffs) then self.Debuffs:Hide() end
+			end
+
+			if(self.Portrait and self:IsElementEnabled('Portrait')) then
+				self.Portrait:Hide()
+			end
+
 			if(self.Castbar) then self.Castbar:Hide() end
 			if(self.CombatIndicator) then self.CombatIndicator:Hide() end
 			if(self.PartyIndicator) then self.PartyIndicator:Hide() end
 			if(self.GroupRoleIndicator) then self.GroupRoleIndicator:Hide() end
-			if(self.Portrait) then self.Portrait:Hide() end
 			if(self.PvPIndicator) then self.PvPIndicator:Hide() end
 			if(self.RaidTargetIndicator) then self.RaidTargetIndicator:Hide() end
 

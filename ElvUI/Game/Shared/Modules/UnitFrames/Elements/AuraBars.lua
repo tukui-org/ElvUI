@@ -129,6 +129,7 @@ function UF:Configure_AuraBars(frame)
 		bars.tooltipAnchor = db.tooltipAnchorType
 		bars.tooltipAnchorX = db.tooltipAnchorX
 		bars.tooltipAnchorY = db.tooltipAnchorY
+		bars.customBackdropColor = UF.db.colors.customaurabarbackdrop and E:UpdateClassColor(UF.db.colors.aurabar_backdrop)
 
 		for _, bar in ipairs(bars) do
 			UF:AuraBars_UpdateBar(bar)
@@ -209,6 +210,7 @@ function UF:Configure_AuraBars(frame)
 			bars.size = db.height
 			bars.numAuras = db.maxBars
 			bars.maxFrameCount = db.maxBars
+			bars.lineSpacing = bars.spacing
 			bars.isTransparent = UF.db.colors.transparentAurabars -- always on for now
 			bars.invertAurabars = UF.db.colors.invertAurabars
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
@@ -220,7 +222,6 @@ function UF:Configure_AuraBars(frame)
 			bars.enemyFilter = db.enemyFilter.filterLists
 			bars.noMouse = db.clickThrough
 			bars.forceShowAuras = frame.forceShowAuras
-			bars.customBackdropColor = UF.db.colors.customaurabarbackdrop and UF.db.colors.aurabar_backdrop or nil
 
 			UF:AuraBars_UpdateFilter(bars, frame.__unit)
 
@@ -285,6 +286,8 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 		color = (isDebuff and colors.auraBarDebuff) or colors.auraBarBuff
 	end
 
+	bar.custom_backdrop = self.customBackdropColor
+
 	local text = self.db and self.db.abbrevName and spellName and E.TagFunctions.Abbrev(spellName)
 	if text then -- this is a copy from oUF we just change the text
 		if E:IsSecretValue(bar.count) then
@@ -314,8 +317,6 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 			UF:SetStatusBarBackdropPoints(bar, bar:GetStatusBarTexture(), bar.bg, orientation)
 		end
 	end
-
-	bar.custom_backdrop = colors.customaurabarbackdrop and colors.aurabar_backdrop
 
 	if color then
 		UF:SetStatusBarColor(bar, color.r, color.g, color.b)

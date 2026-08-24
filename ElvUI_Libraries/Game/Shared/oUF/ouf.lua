@@ -365,7 +365,7 @@ local function initObject(unit, style, styleFunc, header, ...)
 
 		-- NAME_PLATE_UNIT_ADDED fires after the frame is shown, so there's no
 		-- need to call UAE multiple times
-		if(not object.isNamePlate) then
+		if(not object.isNameplate) then
 			object:SetScript('OnShow', onShow)
 
 			-- Make Clique kinda happy
@@ -968,7 +968,7 @@ do
 				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, oUF.isRetail and 'PingableUnitFrameTemplate' or '')
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame:SetAllPoints()
-				nameplate.unitFrame.isNamePlate = true
+				nameplate.unitFrame.isNameplate = true
 
 				Private.UpdateUnits(nameplate.unitFrame, unit)
 

@@ -8,7 +8,6 @@ local pairs = pairs
 local ipairs = ipairs
 local unpack = unpack
 
-local CopyTable = CopyTable
 local CreateFrame = CreateFrame
 
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
@@ -28,10 +27,10 @@ local AltManaTypes = {
 }
 
 local ManaType = { powerName = 'MANA', powerType = 0 }
-UF.ALT_POWER_INFO = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO and CopyTable(_G.ALT_POWER_BAR_PAIR_DISPLAY_INFO) or {
-	DRUID = { [8] = CopyTable(ManaType) },		-- LunarPower
-	SHAMAN = { [11] = CopyTable(ManaType) },	-- Maelstrom
-	PRIEST = { [13] = CopyTable(ManaType) }		-- Insanity
+UF.ALT_POWER_INFO = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO and E:CopyTable({}, _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO) or {
+	DRUID = { [8] = E:CopyTable({}, ManaType) },		-- LunarPower
+	SHAMAN = { [11] = E:CopyTable({}, ManaType) },	-- Maelstrom
+	PRIEST = { [13] = E:CopyTable({}, ManaType) }		-- Insanity
 }
 
 UF.ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
