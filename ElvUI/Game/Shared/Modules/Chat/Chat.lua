@@ -2875,7 +2875,7 @@ end
 
 function CH:AddLines(lines, ...)
 	for i = select('#', ...), 1, -1 do
-	local x = select(i, ...)
+		local x = select(i, ...)
 		if x:IsObjectType('FontString') and not x:GetName() then
 			tinsert(lines, x:GetText())
 		end

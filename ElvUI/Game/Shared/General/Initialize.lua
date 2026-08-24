@@ -6,7 +6,7 @@ local _G = _G
 local setmetatable, rawget, rawset = setmetatable, rawget, rawset
 local gsub, tinsert, next, type, wipe = gsub, tinsert, next, type, wipe
 local strsplit, tostring, tonumber = strsplit, tostring, tonumber
-local strjoin, strfind, strmatch = strjoin, strfind, strmatch
+local tconcat, strfind, strmatch = table.concat, strfind, strmatch
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -507,9 +507,22 @@ do -- backwards compatibility for GetMouseFocus
 	end
 end
 
+do
+	local text = {}
+	function E:StringJoin(sep, ...)
+		wipe(text)
+
+		for _, value in next, { ... } do
+			text[#text+1] = tostring(value)
+		end
+
+		return tconcat(text, sep)
+	end
+end
+
 function E:Print(...)
 	local frame = E.db and _G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME
-	local msg = strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)
+	local msg = E:StringJoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)
 	frame:AddMessage(msg)
 end
 
