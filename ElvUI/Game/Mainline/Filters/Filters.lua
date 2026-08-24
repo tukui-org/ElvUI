@@ -115,6 +115,28 @@ G.unitframe.aurafilters.Whitelist = {
 	}
 }
 
+G.unitframe.aurafilters.RaidCDs = {
+	type = 'Whitelist',
+	desc = L["Defensive raid-wide cooldowns."],
+	spells = {
+		-- Priest
+		[64843]		= List(), -- Divine Hymn
+		[81782]		= List(), -- Power Word: Barrier
+		-- Druid
+		[740]		= List(), -- Tranquility (HoT)
+		-- Shaman
+		[325174]	= List(), -- Spirit Link Totem
+		-- Evoker
+		[363534]	= List(), -- Rewind (HoT)
+		-- Warrior
+		[97463]		= List(), -- Rallying Cry
+		-- Paladin
+		[31821]		= List(), -- Aura Mastery
+		-- Death Knight
+		[145629]	= List(), -- Anti-Magic Zone
+	}
+}
+
 -- Aura indicators on UnitFrames (Hots, Shields, Externals)
 G.unitframe.aurawatch = {
 	EVOKER = {
