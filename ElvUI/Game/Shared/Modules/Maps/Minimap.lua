@@ -853,8 +853,8 @@ function M:Initialize()
 		M:SetScale(Minimap.backdrop, 1)
 	end
 
-	Minimap.location = Minimap:CreateFontString(nil, 'OVERLAY')
-	Minimap.location:Point('TOP', 0, -2)
+	Minimap.location = MinimapCluster:CreateFontString(nil, 'OVERLAY')
+	Minimap.location:Point('TOP', Minimap, 0, -2)
 	Minimap.location:SetJustifyH('CENTER')
 	Minimap.location:SetJustifyV('MIDDLE')
 	Minimap.location:Hide() -- strange font rendering issue; incorrectly scales without this
@@ -885,9 +885,7 @@ function M:Initialize()
 		else
 			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
 		end
-	end
-
-	if E.Classic then
+	elseif E.Classic then
 		hooksecurefunc('SetLookingForGroupUIAvailable', M.HandleTrackingButton)
 	end
 
