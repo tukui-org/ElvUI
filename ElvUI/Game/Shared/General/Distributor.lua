@@ -512,24 +512,26 @@ function D:Decode(dataString)
 		local data = gsub(dataString, '^'..EXPORT_PREFIX, '')
 		local decodedData = DecodeBase64(data)
 		local decompressed = DecompressString(decodedData, COMPRESS)
-
 		if not decompressed then
 			E:Print('Error decompressing data.')
 			return
 		end
 
 		profileData, profileType, profileKey = D:GetExportInfo(decompressed)
-		profileData = profileData and DeserializeCBOR(profileData)
+		if not profileData then
+			E:Print('Error extracting data to deserialize.')
+			return
+		end
 
+		profileData = DeserializeCBOR(profileData)
 		if not profileData then
 			E:Print('Error deserializing data.')
 			return
 		end
 	elseif stringType == 'Table' then
 		profileData, profileType, profileKey = D:GetExportInfo(dataString)
-
 		if not profileData then
-			E:Print('Error extracting export data.')
+			E:Print('Error extracting data to table.')
 			return
 		end
 
@@ -543,7 +545,7 @@ function D:Decode(dataString)
 		end
 
 		if not success or (type(profileData) ~= 'table') then
-			E:Print('Error converting export to table.')
+			E:Print('Error converting data to table.')
 			return
 		end
 	end
