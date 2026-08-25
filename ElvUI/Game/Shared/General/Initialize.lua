@@ -507,7 +507,7 @@ do -- backwards compatibility for GetMouseFocus
 	end
 end
 
-do
+do	-- this is so we can join nil values too
 	local text = {}
 	function E:StringJoin(sep, ...)
 		wipe(text)
