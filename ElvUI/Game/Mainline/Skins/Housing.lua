@@ -304,6 +304,19 @@ function S:Blizzard_HousingBulletinBoard()
 	local bulletinBoard = _G.HousingBulletinBoardFrame
 	if bulletinBoard then
 		bulletinBoard:StripTextures()
+		bulletinBoard:CreateBackdrop('Transparent')
+
+		local bulletinBG = bulletinBoard.Background
+		if bulletinBG then
+			bulletinBoard.backdrop:SetOutside(bulletinBG)
+
+			if E.private.skins.parchmentRemoverEnable then
+				bulletinBG:SetAlpha(0)
+			else
+				bulletinBG:SetTexCoord(0.01, 0.99, 0.01, 0.99)
+			end
+		end
+
 		S:HandleCloseButton(bulletinBoard.CloseButton)
 
 		local residentsTab = bulletinBoard.ResidentsTab
