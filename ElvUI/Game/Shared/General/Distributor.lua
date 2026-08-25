@@ -30,6 +30,13 @@ local REPLY_PREFIX = 'ELVUI_REPLY'
 local TRANSFER_PREFIX = 'ELVUI_TRANSFER'
 local TRANSFER_COMPLETE_PREFIX = 'ELVUI_COMPLETE'
 
+local profileTypes = {
+	profile = true,
+	private = true,
+	global = true,
+	filters = true
+}
+
 -- The active downloads
 local Downloads = {}
 local Uploads = {}
@@ -481,13 +488,25 @@ function D:GetImportStringType(dataString)
 	return (strmatch(dataString, '^'..EXPORT_PREFIX) and 'Deflate') or (strmatch(dataString, '^{') and 'Table') or ''
 end
 
+function D:GetProfileInfo(str)
+	local profileData, profileType, profileKey = strmatch(str, '(.+)::([^:]-)::(.-)$')
+	if profileTypes[profileType] then
+		return profileData, profileType, profileKey
+	end
+
+	local exportData, exportType = strmatch(str, '(.+)::([^:]-)$')
+	if profileTypes[exportType] then
+		return exportData, exportType
+	end
+end
+
 function D:Decode(dataString)
 	if D:IsPreviousImport(dataString) then
 		E:Print('This import needs to be upgraded: https://github.com/tukui-org/ElvUI/wiki/export')
 	end
 
 	local stringType = D:GetImportStringType(dataString)
-	local profileType, profileKey, profileData
+	local profileData, profileType, profileKey
 
 	if stringType == 'Deflate' then
 		local data = gsub(dataString, '^'..EXPORT_PREFIX, '')
@@ -499,29 +518,33 @@ function D:Decode(dataString)
 			return
 		end
 
-		local serializedData
-		serializedData, profileType, profileKey = strmatch(decompressed, '(.+)::([^:]-)::([^:]-)$')
+		profileData, profileType, profileKey = D:GetProfileInfo(decompressed)
 
-		profileData = DeserializeCBOR(serializedData)
+		if profileTypes[profileType] then
+			profileData = DeserializeCBOR(profileData)
+		end
 
 		if not profileData then
-			E:Print('Error deserializing:', profileData)
+			E:Print('Error deserializing data.')
 			return
 		end
 	elseif stringType == 'Table' then
-		local profileDataAsString
-		profileDataAsString, profileType, profileKey = strmatch(dataString, '(.+)}::([^:]-)::([^:]-)$')
+		profileData, profileType, profileKey = D:GetProfileInfo(dataString)
 
-		if not profileDataAsString then
+		if not profileTypes[profileType] then
+			profileData = nil
+		end
+
+		if not profileData then
 			E:Print('Error extracting profile data. Invalid import string!')
 			return
 		end
 
-		profileDataAsString = format('%s%s', profileDataAsString, '}') --Add back the missing '}'
-		profileDataAsString = gsub(profileDataAsString, '\124\124', '\124') --Remove escape pipe characters
+		profileData = format('%s%s', profileData, '}') --Add back the missing '}'
+		profileData = gsub(profileData, '\124\124', '\124') --Remove escape pipe characters
 
 		local profileMessage
-		local profileToTable = loadstring(format('%s %s', 'return', profileDataAsString))
+		local profileToTable = loadstring(format('%s %s', 'return', profileData))
 		if profileToTable then profileMessage, profileData = pcall(profileToTable) end
 
 		if profileMessage and (not profileData or type(profileData) ~= 'table') then
