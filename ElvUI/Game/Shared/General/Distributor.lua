@@ -529,7 +529,7 @@ function D:Decode(dataString)
 		profileData, profileType, profileKey = D:GetExportInfo(dataString)
 
 		if not profileData then
-			E:Print('Error extracting profile data.')
+			E:Print('Error extracting export data.')
 			return
 		end
 
@@ -543,7 +543,7 @@ function D:Decode(dataString)
 		end
 
 		if not success or (type(profileData) ~= 'table') then
-			E:Print('Error converting lua string to table.')
+			E:Print('Error converting export to table.')
 			return
 		end
 	end
