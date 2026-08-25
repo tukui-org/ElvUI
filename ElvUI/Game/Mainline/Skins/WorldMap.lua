@@ -226,31 +226,42 @@ function S:WorldMapFrame()
 	QuestMapFrame.VerticalSeparator:Hide()
 	QuestMapFrame:SetScript('OnHide', S.WorldMap_QuestMapHide)
 
+	local QuestsFrame = QuestMapFrame.QuestsFrame
 	local DetailsFrame = QuestMapFrame.DetailsFrame
+	local RewardsContainer = DetailsFrame.RewardsFrameContainer
 
-	S:HandleButton(DetailsFrame.BackFrame.BackButton, true)
 	S:HandleButton(DetailsFrame.AbandonButton, true)
 	DetailsFrame.ShareButton:StripTextures() -- strip the Blizz Art around from it
 	S:HandleButton(DetailsFrame.ShareButton, true)
 	S:HandleButton(DetailsFrame.TrackButton, true)
 
 	DetailsFrame.BorderFrame:SetAlpha(0)
-	DetailsFrame.BackFrame:StripTextures()
-	DetailsFrame.BackFrame.BackButton:SetFrameLevel(5)
 	DetailsFrame.AbandonButton:SetFrameLevel(5)
 	DetailsFrame.ShareButton:SetFrameLevel(5)
 	DetailsFrame.TrackButton:SetFrameLevel(5)
 	DetailsFrame.TrackButton:Width(95)
 
-	local RewardsFrameContainer = DetailsFrame.RewardsFrameContainer
+	local BackFrame = DetailsFrame.BackFrame
+	if BackFrame then
+		BackFrame:StripTextures()
+		BackFrame.BackButton:SetFrameLevel(5)
+		S:HandleButton(BackFrame.BackButton, true)
+	end
+
+	local DetailsBg = DetailsFrame.Bg
+	if DetailsBg then
+		DetailsBg:ClearAllPoints()
+		DetailsBg:Point('TOPLEFT', 0, -41)
+		DetailsBg:Point('BOTTOMRIGHT', RewardsContainer.RewardsFrame)
+	end
+
 	if E.private.skins.parchmentRemoverEnable then
 		DetailsFrame:StripTextures(true)
-		DetailsFrame.BackFrame:StripTextures()
-		DetailsFrame:CreateBackdrop()
-		DetailsFrame.backdrop:Point('TOPLEFT', -3, 5)
-		DetailsFrame.backdrop:Point('BOTTOMRIGHT', DetailsFrame.RewardsFrame, 'TOPRIGHT', -1, -12)
 
-		RewardsFrameContainer.RewardsFrame:StripTextures()
+		DetailsFrame:CreateBackdrop('Transparent')
+		DetailsFrame.backdrop:SetAllPoints(DetailsBg)
+
+		RewardsContainer.RewardsFrame:StripTextures()
 
 		if QuestMapFrame.Background then
 			QuestMapFrame.Background:SetAlpha(0)
@@ -259,9 +270,11 @@ function S:WorldMapFrame()
 		if DetailsFrame.SealMaterialBG then
 			DetailsFrame.SealMaterialBG:SetAlpha(0)
 		end
+	elseif DetailsFrame.SealMaterialBG then
+		DetailsFrame.SealMaterialBG:SetAllPoints(DetailsBg)
 	end
 
-	local CampaignOverview = QuestMapFrame.QuestsFrame and QuestMapFrame.QuestsFrame.CampaignOverview
+	local CampaignOverview = QuestsFrame.CampaignOverview
 	if CampaignOverview then
 		S:HandleTrimScrollBar(CampaignOverview.ScrollFrame.ScrollBar)
 		CampaignOverview.BorderFrame:SetAlpha(0)
@@ -296,7 +309,7 @@ function S:WorldMapFrame()
 	S:HandleTrimScrollBar(QuestScrollBar)
 
 	if E.private.skins.blizzard.tooltip then
-		TT:SetStyle(QuestMapFrame.QuestsFrame.StoryTooltip)
+		TT:SetStyle(QuestsFrame.StoryTooltip)
 	end
 
 	S:HandleTrimScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)
