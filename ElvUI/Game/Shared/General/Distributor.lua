@@ -529,19 +529,21 @@ function D:Decode(dataString)
 		profileData, profileType, profileKey = D:GetExportInfo(dataString)
 
 		if not profileData then
-			E:Print('Error extracting profile data. Invalid import string!')
+			E:Print('Error extracting profile data.')
 			return
 		end
 
 		profileData = format('%s%s', profileData, '}') --Add back the missing '}'
 		profileData = gsub(profileData, '\124\124', '\124') --Remove escape pipe characters
 
-		local profileMessage
-		local profileToTable = loadstring(format('%s %s', 'return', profileData))
-		if profileToTable then profileMessage, profileData = pcall(profileToTable) end
+		local success
+		local profileTable = loadstring(format('%s %s', 'return', profileData))
+		if profileTable then
+			success, profileData = pcall(profileTable)
+		end
 
-		if profileMessage and (not profileData or type(profileData) ~= 'table') then
-			E:Print('Error converting lua string to table:', profileMessage)
+		if not success or (type(profileData) ~= 'table') then
+			E:Print('Error converting lua string to table.')
 			return
 		end
 	end
