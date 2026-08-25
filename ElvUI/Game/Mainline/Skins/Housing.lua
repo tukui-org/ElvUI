@@ -106,6 +106,12 @@ function S:Blizzard_HousingHouseFinder()
 		S:HandleFrame(finderFrame, true)
 		finderFrame.WoodBorderFrame:Hide()
 
+		local plotInfo = finderFrame.PlotInfoFrame
+		local visitButton = plotInfo and plotInfo.VisitHouseButton
+		if visitButton then
+			S:HandleButton(visitButton)
+		end
+
 		local neighborList = finderFrame.NeighborhoodListFrame
 		if neighborList then
 			neighborList:StripTextures()
@@ -281,6 +287,14 @@ function S:Blizzard_HousingCornerstone()
 		moveHouseConfirmation:CreateBackdrop('Transparent')
 		S:HandleButton(moveHouseConfirmation.ConfirmButton)
 		S:HandleButton(moveHouseConfirmation.CancelButton)
+	end
+
+	local buyHouseConfirmation = _G.BuyHouseConfirmationDialog
+	if buyHouseConfirmation then
+		buyHouseConfirmation:StripTextures()
+		buyHouseConfirmation:CreateBackdrop('Transparent')
+		S:HandleButton(buyHouseConfirmation.AcceptButton)
+		S:HandleButton(buyHouseConfirmation.CancelButton)
 	end
 end
 
