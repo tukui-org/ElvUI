@@ -519,10 +519,7 @@ function D:Decode(dataString)
 		end
 
 		profileData, profileType, profileKey = D:GetExportInfo(decompressed)
-
-		if profileTypes[profileType] then
-			profileData = DeserializeCBOR(profileData)
-		end
+		profileData = profileData and DeserializeCBOR(profileData)
 
 		if not profileData then
 			E:Print('Error deserializing data.')
@@ -530,10 +527,6 @@ function D:Decode(dataString)
 		end
 	elseif stringType == 'Table' then
 		profileData, profileType, profileKey = D:GetExportInfo(dataString)
-
-		if not profileTypes[profileType] then
-			profileData = nil
-		end
 
 		if not profileData then
 			E:Print('Error extracting profile data. Invalid import string!')
