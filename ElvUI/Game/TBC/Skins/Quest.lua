@@ -356,7 +356,6 @@ function S:BlizzardQuestFrames()
 		_G.QuestLogQuestCount,
 		_G.QuestProgressScrollFrame,
 		_G.QuestRewardScrollChildFrame,
-		_G.QuestRewardScrollFrame,
 		_G.QuestRewardScrollFrame
 	}
 	for _, object in pairs(QuestStrip) do
