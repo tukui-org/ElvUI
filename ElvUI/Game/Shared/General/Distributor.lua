@@ -488,7 +488,7 @@ function D:GetImportStringType(dataString)
 	return (strmatch(dataString, '^'..EXPORT_PREFIX) and 'Deflate') or (strmatch(dataString, '^{') and 'Table') or ''
 end
 
-function D:GetProfileInfo(str)
+function D:GetExportInfo(str)
 	local profileData, profileType, profileKey = strmatch(str, '(.+)::([^:]-)::(.-)$')
 	if profileTypes[profileType] then
 		return profileData, profileType, profileKey
@@ -518,7 +518,7 @@ function D:Decode(dataString)
 			return
 		end
 
-		profileData, profileType, profileKey = D:GetProfileInfo(decompressed)
+		profileData, profileType, profileKey = D:GetExportInfo(decompressed)
 
 		if profileTypes[profileType] then
 			profileData = DeserializeCBOR(profileData)
@@ -529,7 +529,7 @@ function D:Decode(dataString)
 			return
 		end
 	elseif stringType == 'Table' then
-		profileData, profileType, profileKey = D:GetProfileInfo(dataString)
+		profileData, profileType, profileKey = D:GetExportInfo(dataString)
 
 		if not profileTypes[profileType] then
 			profileData = nil
