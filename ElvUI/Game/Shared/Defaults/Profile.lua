@@ -2529,7 +2529,6 @@ P.unitframe = {
 			pvpclassificationindicator = E:CopyTable({}, UF_PvPClassificationIndicator),
 			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel),
 			raidicon = E:CopyTable({}, UF_RaidIcon),
-			pingIcon = E:CopyTable({}, UF_PingIcon),
 		},
 		party = {
 			enable = true,

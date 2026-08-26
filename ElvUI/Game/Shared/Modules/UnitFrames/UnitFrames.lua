@@ -89,19 +89,15 @@ do
 		return playerPingInfo
 	end
 
-	-- PingableType_UnitFrameMixin uses self.unit or GetAttribute('unit'). oUF stores
-	-- __unit and party/raid pet children use useparent-unit, so both of those are nil.
-	-- UnitGUID(nil) errors; securecallfunction then returns nil and PingManager blows up.
+	-- PingableType_UnitFrameMixin calls UnitGUID(self.unit or GetAttribute('unit')).
+	-- useparent-unit children have neither, so the mixin passes nil. Use __unit;
+	-- omit secret GUIDs so PingManager can fall through to SendHitTestPing.
 	local emptyPingInfo = {}
-	local unitPingInfo = {}
+	local childPingInfo = {}
 
-	local function GetPingableFrameUnit(frame)
-		return frame.unit or frame.__unit or frame:GetAttribute('unit')
-	end
-
-	function UF:Pingable_GetUnitFrameTargetInfo()
-		local unit = GetPingableFrameUnit(self)
-		if not unit or E:IsSecretUnit(unit) then
+	function UF:Pingable_GetChildFrameTargetInfo()
+		local unit = self.__unit or self.unit
+		if not unit then
 			return emptyPingInfo
 		end
 
@@ -110,18 +106,8 @@ do
 			return emptyPingInfo
 		end
 
-		unitPingInfo.guid = guid
-		return unitPingInfo
-	end
-
-	function UF:Pingable_GetUnitFrameIsPingable()
-		local unit = GetPingableFrameUnit(self)
-		if not unit or E:IsSecretUnit(unit) then
-			return false
-		end
-
-		local guid = UnitGUID(unit)
-		return guid and not E:IsSecretValue(guid)
+		childPingInfo.guid = guid
+		return childPingInfo
 	end
 end
 
@@ -1423,9 +1409,8 @@ do
 		frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
 		frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
 
-		if E.Retail then
-			frame.GetTargetInfo = UF.Pingable_GetUnitFrameTargetInfo
-			frame.GetIsPingable = UF.Pingable_GetUnitFrameIsPingable
+		if E.Retail and frame.isChild then
+			frame.GetTargetInfo = UF.Pingable_GetChildFrameTargetInfo
 		end
 	end
 

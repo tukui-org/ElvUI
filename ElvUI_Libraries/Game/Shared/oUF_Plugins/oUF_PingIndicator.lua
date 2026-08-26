@@ -15,7 +15,8 @@ PingIndicator - A `Frame` used to display the unit ping type.
 ## Notes
 
 There is no public getter for the current ping. ForceUpdate only hides a confirmed recycle.
-Party/raid GUIDs are matched directly. Target/focus use Blizzard PingIconFrame ShowPing/ClearPing (that mixin already compared the secret GUID).
+Each frame is compared against its own unit only. Party/raid/player GUIDs are matched directly.
+Target/focus (including secret enemy GUIDs) use Blizzard PingIconFrame ShowPing/ClearPing.
 UNIT_PING_PIN_ADDED / UNIT_PING_PIN_REMOVED are C_PingSecure events: addons cannot Frame:RegisterEvent them.
 UnitPingIconFrameMixin is not exported. TargetFrame/FocusFrame PingIconFrame already registered those events in Blizzard OnLoad.
 
@@ -39,18 +40,8 @@ UnitPingIconFrameMixin is not exported. TargetFrame/FocusFrame PingIconFrame alr
 local _, ns = ...
 local oUF = ns.oUF
 
+local strfind = strfind
 local UnitGUID = UnitGUID
-local UnitTokenFromGUID = UnitTokenFromGUID
-
--- Boss/arena identity is secret. Target, focus, and nameplate tokens are often still readable.
-local guidProbeUnits = { 'player', 'pet', 'target', 'focus', 'mouseover', 'targettarget', 'targettargettarget', 'focustarget', 'pettarget', 'softenemy', 'softfriend', 'softinteract' }
-for index = 1, 5 do
-	guidProbeUnits[#guidProbeUnits + 1] = 'arena'..index
-	guidProbeUnits[#guidProbeUnits + 1] = 'party'..index
-end
-for index = 1, 8 do
-	guidProbeUnits[#guidProbeUnits + 1] = 'boss'..index
-end
 
 local function CreateTextures(element)
 	if not element.Background then
@@ -83,64 +74,19 @@ local function UnitGUIDEquals(unit, guid)
 	return guid == unitGUID
 end
 
--- Resolve a ping GUID to an accessible unit token. Direct UnitGUID(boss/arena) is often secret.
--- UnitTokenFromGUID can return a secret token; CanCompareUnitTokens cannot take that from addon code.
-local function GetAccessibleUnitForGUID(guid)
-	if not guid then
-		return
-	end
-
-	local pingedUnit = UnitTokenFromGUID(guid)
-	if pingedUnit and oUF:CanAccessValue(pingedUnit) then
-		return pingedUnit
-	end
-
-	if oUF:CanNotAccessValue(guid) then
-		return
-	end
-
-	for index = 1, #guidProbeUnits do
-		local probeUnit = guidProbeUnits[index]
-		if UnitGUIDEquals(probeUnit, guid) then
-			return probeUnit
-		end
-	end
-
-	for index = 1, 40 do
-		local probeUnit = 'nameplate'..index
-		if UnitGUIDEquals(probeUnit, guid) then
-			return probeUnit
-		end
-	end
-end
-
--- true = this frame's unit, false = a different unit, nil = cannot compare (secret identity).
+-- true = this frame's unit, false = a different unit, nil = cannot compare.
 local function GetGUIDMatch(frame, guid, pingedUnit)
 	local unit = GetFrameUnit(frame)
 	if not unit then
 		return false
 	end
 
-	if pingedUnit and oUF:CanNotAccessValue(pingedUnit) then
-		pingedUnit = nil
-	end
-
-	pingedUnit = pingedUnit or (guid and GetAccessibleUnitForGUID(guid))
-	if pingedUnit then
-		local isUnit = oUF:UnitIsUnit(unit, pingedUnit)
-		if isUnit then
-			return true
-		elseif isUnit == false then
-			return false
-		end
-	end
-
-	if guid and UnitGUIDEquals(unit, guid) then
-		return true
+	if pingedUnit and oUF:CanAccessValue(pingedUnit) then
+		return oUF:UnitIsUnit(unit, pingedUnit)
 	end
 
 	if guid then
-		return nil
+		return UnitGUIDEquals(unit, guid)
 	end
 
 	return false
@@ -178,7 +124,7 @@ local function Update(self, event, arg1, arg2, pingedUnit)
 		if GetGUIDMatch(self, arg1, pingedUnit) then
 			ClearPing(element)
 		end
-	elseif event == 'PLAYER_TARGET_CHANGED' or event == 'PLAYER_FOCUS_CHANGED' then
+	elseif event == 'PLAYER_TARGET_CHANGED' or event == 'PLAYER_FOCUS_CHANGED' or event == 'UNIT_PET' then
 		if GetGUIDMatch(self, element.guid, element.pingedUnit) ~= true then
 			ClearPing(element)
 		end
@@ -214,6 +160,27 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate')
 end
 
+local function RegisterRecycleEvents(frame)
+	local unit = GetFrameUnit(frame)
+	if not unit or oUF:CanNotAccessValue(unit) then
+		return
+	end
+
+	if strfind(unit, '^target') then
+		frame:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
+	elseif strfind(unit, '^focus') then
+		frame:RegisterEvent('PLAYER_FOCUS_CHANGED', Path, true)
+	elseif strfind(unit, 'pet') then
+		frame:RegisterEvent('UNIT_PET', Path)
+	end
+end
+
+local function UnregisterRecycleEvents(frame)
+	frame:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
+	frame:UnregisterEvent('PLAYER_FOCUS_CHANGED', Path)
+	frame:UnregisterEvent('UNIT_PET', Path)
+end
+
 -- Addons cannot register UNIT_PING_PIN_* (C_PingSecure). UnitPingIconFrameMixin is
 -- not in the addon environment. TargetFrame/FocusFrame PingIconFrame already
 -- registered the events from Blizzard OnLoad. ShowPing only runs after that
@@ -223,7 +190,6 @@ local pingEventsRegistered
 local lastEvent, lastGuid, lastTextureKit
 
 local function Dispatch(event, guid, uiTextureKit, pingedUnit)
-	pingedUnit = pingedUnit or GetAccessibleUnitForGUID(guid)
 	for frame in next, watched do
 		Path(frame, event, guid, uiTextureKit, pingedUnit)
 	end
@@ -276,11 +242,7 @@ local function Enable(self)
 		CreateTextures(element)
 		RegisterPingEvents()
 		watched[self] = true
-
-		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
-		self:RegisterEvent('PLAYER_FOCUS_CHANGED', Path, true)
-		self:RegisterEvent('UNIT_PET', Path)
-		self:RegisterEvent('UNIT_TARGET', Path, true)
+		RegisterRecycleEvents(self)
 
 		return true
 	end
@@ -290,10 +252,7 @@ local function Disable(self)
 	local element = self.PingIndicator
 	if element then
 		watched[self] = nil
-		self:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
-		self:UnregisterEvent('PLAYER_FOCUS_CHANGED', Path)
-		self:UnregisterEvent('UNIT_PET', Path)
-		self:UnregisterEvent('UNIT_TARGET', Path)
+		UnregisterRecycleEvents(self)
 		ClearPing(element)
 	end
 end
