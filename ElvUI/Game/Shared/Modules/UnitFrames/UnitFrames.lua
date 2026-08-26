@@ -90,13 +90,13 @@ do
 	end
 
 	-- PingableType_UnitFrameMixin calls UnitGUID(self.unit or GetAttribute('unit')).
-	-- useparent-unit children have neither, so the mixin passes nil. Use __unit;
-	-- omit secret GUIDs so PingManager can fall through to SendHitTestPing.
+	-- oUF stores __unit; header/force-shown buttons often have no unit attribute.
+	-- Omit secret GUIDs so PingManager can fall through to SendHitTestPing.
 	local emptyPingInfo = {}
-	local childPingInfo = {}
+	local unitPingInfo = {}
 
-	function UF:Pingable_GetChildFrameTargetInfo()
-		local unit = self.__unit or self.unit
+	function UF:Pingable_GetUnitFrameTargetInfo()
+		local unit = self.unit or self.__unit or self:GetAttribute('unit')
 		if not unit then
 			return emptyPingInfo
 		end
@@ -106,8 +106,8 @@ do
 			return emptyPingInfo
 		end
 
-		childPingInfo.guid = guid
-		return childPingInfo
+		unitPingInfo.guid = guid
+		return unitPingInfo
 	end
 end
 
@@ -1409,8 +1409,8 @@ do
 		frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
 		frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
 
-		if E.Retail and frame.isChild then
-			frame.GetTargetInfo = UF.Pingable_GetChildFrameTargetInfo
+		if E.Retail then
+			frame.GetTargetInfo = UF.Pingable_GetUnitFrameTargetInfo
 		end
 	end
 

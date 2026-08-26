@@ -76,6 +76,10 @@ end
 
 -- true = this frame's unit, false = a different unit, nil = cannot compare.
 local function GetGUIDMatch(frame, guid, pingedUnit)
+	if frame.isForced then
+		return false
+	end
+
 	local unit = GetFrameUnit(frame)
 	if not unit then
 		return false
@@ -116,7 +120,9 @@ local function Update(self, event, arg1, arg2, pingedUnit)
 		element:PreUpdate()
 	end
 
-	if event == 'UNIT_PING_PIN_ADDED' then
+	if self.isForced then
+		ClearPing(element)
+	elseif event == 'UNIT_PING_PIN_ADDED' then
 		if GetGUIDMatch(self, arg1, pingedUnit) then
 			ShowPing(element, arg1, arg2, pingedUnit)
 		end
