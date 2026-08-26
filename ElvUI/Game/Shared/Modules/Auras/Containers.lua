@@ -94,10 +94,15 @@ function E:Auras_OnEvent(event, arg1, arg2)
 				UF:AuraBars_UpdateFilter(container, eventUnit)
 				E:Auras_SetContainer(container)
 			else -- for target frame
+				E:Auras_CanAssist(container, eventUnit)
+
+				if container.isHighlight then
+					E:Auras_SetEnabled(container)
+				end
+
 				container:UpdateAllAuras()
 			end
 		end
-	--elseif arg1 and (arg1 == container.unit) then -- about to do something
 	end
 end
 
@@ -935,19 +940,22 @@ end
 
 function E:Auras_SetUnit(container, unit)
 	container:SetUnit(unit)
-
 	container.unit = unit
-	container.canAssist = UnitCanAssist('player', unit)
 end
 
 function E:Auras_SetEnabled(container)
 	container:SetEnabled(container.enabled and container.canAssist)
 end
 
+function E:Auras_CanAssist(container, unit)
+	container.canAssist = UnitCanAssist('player', unit)
+end
+
 function E:Auras_GroupUnit(container, unit)
 	if not container then return end
 
 	E:Auras_SetUnit(container, unit)
+	E:Auras_CanAssist(container, unit)
 
 	if container.isHighlight then
 		E:Auras_SetEnabled(container)
