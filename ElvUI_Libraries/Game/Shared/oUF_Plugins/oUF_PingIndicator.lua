@@ -19,6 +19,8 @@ Each frame is compared against its own unit only. Party/raid/player GUIDs are ma
 Target/focus (including secret enemy GUIDs) use Blizzard PingIconFrame ShowPing/ClearPing.
 UNIT_PING_PIN_ADDED / UNIT_PING_PIN_REMOVED are C_PingSecure events: addons cannot Frame:RegisterEvent them.
 UnitPingIconFrameMixin is not exported. TargetFrame/FocusFrame PingIconFrame already registered those events in Blizzard OnLoad.
+REMOVED clears by the stored guid/token. Chained units (targettarget, focustarget, pettarget) are eventless;
+a plugin listener revalidates shown icons on target/focus/pet/unit-target changes.
 
 ## Examples
 
@@ -40,7 +42,7 @@ UnitPingIconFrameMixin is not exported. TargetFrame/FocusFrame PingIconFrame alr
 local _, ns = ...
 local oUF = ns.oUF
 
-local strfind = strfind
+local CreateFrame = CreateFrame
 local UnitGUID = UnitGUID
 
 local function CreateTextures(element)
@@ -96,6 +98,22 @@ local function GetGUIDMatch(frame, guid, pingedUnit)
 	return false
 end
 
+local function StoredPingMatches(element, guid, pingedUnit)
+	if pingedUnit and element.pingedUnit and oUF:CanAccessValue(pingedUnit) and oUF:CanAccessValue(element.pingedUnit) then
+		if pingedUnit == element.pingedUnit then
+			return true
+		end
+
+		return oUF:UnitIsUnit(element.pingedUnit, pingedUnit)
+	end
+
+	if guid and element.guid and oUF:CanAccessValue(guid) and oUF:CanAccessValue(element.guid) then
+		return guid == element.guid
+	end
+
+	return false
+end
+
 local function ShowPing(element, guid, uiTextureKit, pingedUnit)
 	if oUF:CanNotAccessValue(uiTextureKit) then
 		return
@@ -127,14 +145,10 @@ local function Update(self, event, arg1, arg2, pingedUnit)
 			ShowPing(element, arg1, arg2, pingedUnit)
 		end
 	elseif event == 'UNIT_PING_PIN_REMOVED' then
-		if GetGUIDMatch(self, arg1, pingedUnit) then
+		if StoredPingMatches(element, arg1, pingedUnit) then
 			ClearPing(element)
 		end
-	elseif event == 'PLAYER_TARGET_CHANGED' or event == 'PLAYER_FOCUS_CHANGED' or event == 'UNIT_PET' then
-		if GetGUIDMatch(self, element.guid, element.pingedUnit) ~= true then
-			ClearPing(element)
-		end
-	elseif GetGUIDMatch(self, element.guid, element.pingedUnit) == false then
+	elseif element:IsShown() and GetGUIDMatch(self, element.guid, element.pingedUnit) ~= true then
 		ClearPing(element)
 	elseif not element.guid and not element.pingedUnit then
 		ClearPing(element)
@@ -166,27 +180,6 @@ local function ForceUpdate(element)
 	return Path(element.__owner, 'ForceUpdate')
 end
 
-local function RegisterRecycleEvents(frame)
-	local unit = GetFrameUnit(frame)
-	if not unit or oUF:CanNotAccessValue(unit) then
-		return
-	end
-
-	if strfind(unit, '^target') then
-		frame:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
-	elseif strfind(unit, '^focus') then
-		frame:RegisterEvent('PLAYER_FOCUS_CHANGED', Path, true)
-	elseif strfind(unit, 'pet') then
-		frame:RegisterEvent('UNIT_PET', Path)
-	end
-end
-
-local function UnregisterRecycleEvents(frame)
-	frame:UnregisterEvent('PLAYER_TARGET_CHANGED', Path)
-	frame:UnregisterEvent('PLAYER_FOCUS_CHANGED', Path)
-	frame:UnregisterEvent('UNIT_PET', Path)
-end
-
 -- Addons cannot register UNIT_PING_PIN_* (C_PingSecure). UnitPingIconFrameMixin is
 -- not in the addon environment. TargetFrame/FocusFrame PingIconFrame already
 -- registered the events from Blizzard OnLoad. ShowPing only runs after that
@@ -198,6 +191,15 @@ local lastEvent, lastGuid, lastTextureKit
 local function Dispatch(event, guid, uiTextureKit, pingedUnit)
 	for frame in next, watched do
 		Path(frame, event, guid, uiTextureKit, pingedUnit)
+	end
+end
+
+local function RevalidateShownPings()
+	for frame in next, watched do
+		local element = frame.PingIndicator
+		if element:IsShown() and GetGUIDMatch(frame, element.guid, element.pingedUnit) ~= true then
+			ClearPing(element)
+		end
 	end
 end
 
@@ -236,6 +238,14 @@ local function RegisterPingEvents()
 	targetPingIconFrame:HookScript('OnEvent', OnBlizzardPingEvent)
 	RegisterBlizzardPingIcon(targetPingIconFrame, 'target')
 	RegisterBlizzardPingIcon(_G.FocusFrame.TargetFrameContent.TargetFrameContentContextual.PingIconFrame, 'focus')
+
+	local chainListener = CreateFrame('Frame')
+	chainListener:RegisterEvent('PLAYER_TARGET_CHANGED')
+	chainListener:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	chainListener:RegisterEvent('UNIT_PET')
+	chainListener:RegisterEvent('UNIT_TARGET')
+	chainListener:SetScript('OnEvent', RevalidateShownPings)
+
 	pingEventsRegistered = true
 end
 
@@ -248,7 +258,6 @@ local function Enable(self)
 		CreateTextures(element)
 		RegisterPingEvents()
 		watched[self] = true
-		RegisterRecycleEvents(self)
 
 		return true
 	end
@@ -258,7 +267,6 @@ local function Disable(self)
 	local element = self.PingIndicator
 	if element then
 		watched[self] = nil
-		UnregisterRecycleEvents(self)
 		ClearPing(element)
 	end
 end
