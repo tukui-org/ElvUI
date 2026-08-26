@@ -672,7 +672,7 @@ function E:Auras_AddSlot(container, key, filter, candidate, sortMethod, sortDire
 	container:AddAuraSlot(key, filter, slot)
 end
 
-function E:Auras_GetSlotFilter(container, data)
+function E:Auras_HighlightFilter(container, data)
 	if data and data.enable then
 		return container.filter .. (data.ownOnly and '|PLAYER' or '')
 	end
@@ -695,7 +695,7 @@ function E:Auras_SetHighlight(container)
 	else
 		for key, data in next, container.active do
 			if not container.keys[key] then -- only handle previous keys
-				local filter = E:Auras_GetSlotFilter(container, data)
+				local filter = E:Auras_HighlightFilter(container, data)
 				if filter ~= '' then -- it was something else so lets turn it off
 					container:SetAuraSlotFilterString(key, '')
 				end
@@ -707,7 +707,7 @@ function E:Auras_SetHighlight(container)
 		for key, data in next, container.keys do
 			container.active[key] = data
 
-			local filter = E:Auras_GetSlotFilter(container, data)
+			local filter = E:Auras_HighlightFilter(container, data)
 			local candidate = E:Auras_FilterSlot(container, data)
 			E:Auras_CleanCandidates(container, candidate)
 
