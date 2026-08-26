@@ -489,6 +489,14 @@ function E:Auras_UpdateIndicators(container)
 	end
 end
 
+function E:Auras_UpdateHighlights(container)
+	if E:IsRestrictedAuras() then return end
+
+	for button in next, container.indicators do
+		E:Auras_UpdateHighlight(container, button)
+	end
+end
+
 function E:Auras_GenerateButton(container, key, filter, data)
 	return function(button)
 		container.buttons[button] = container
@@ -553,19 +561,18 @@ function E:Auras_UpdateLayout(container)
 end
 
 do
-	local spell = {}
+	local temp, spell = {}, {}
 	function E:Auras_FilterSlot(container, data)
 		wipe(spell)
 
-		local temp = {}
 		if data then
-			temp.includeSpellIDs = spell
-			temp.includeDispelTypes = nil
-
 			local dataID = data.id
 			if dataID then
 				spell[dataID] = true
 			end
+
+			temp.includeSpellIDs = spell
+			temp.includeDispelTypes = nil
 		else
 			temp.includeSpellIDs = nil
 			temp.includeDispelTypes = E:CopyTable(spell, DispelTypes)
@@ -681,7 +688,7 @@ function E:Auras_SetHighlight(container)
 		if container.known[groupKey] then return end
 
 		local candidate = E:Auras_FilterSlot(container)
-		container.candidateFilters = candidate
+		E:Auras_CleanCandidates(container, candidate)
 
 		local slot = E:Auras_SetupHighlight(container, candidate)
 		container:AddAuraSlot(groupKey, container.filter, slot)
@@ -691,8 +698,8 @@ function E:Auras_SetHighlight(container)
 		for key, data in next, container.active do
 			local old = E:Auras_GetSlotFilter(container, data)
 			local new = E:Auras_GetSlotFilter(container, container.keys[key])
-			if new ~= old then
-				container:SetAuraSlotFilterString(key, new)
+			if new ~= old then -- set the filter empty to turn it off
+				container:SetAuraSlotFilterString(key, '')
 			end
 
 			container.active[key] = nil
@@ -703,7 +710,7 @@ function E:Auras_SetHighlight(container)
 
 			local filter = E:Auras_GetSlotFilter(container, data)
 			local candidate = E:Auras_FilterSlot(container, data)
-			container.candidateFilters = candidate
+			E:Auras_CleanCandidates(container, candidate)
 
 			if container.known[key] then
 				container:SetAuraSlotFilterString(key, filter)
@@ -723,7 +730,7 @@ function E:Auras_SetIndicator(container)
 
 	for key, data in next, container.keys do
 		local candidate = E:Auras_FilterSlot(container, data)
-		container.candidateFilters = candidate
+		E:Auras_CleanCandidates(container, candidate)
 
 		local slotFilter = container.filter .. (data.anyUnit and '' or '|PLAYER')
 		if container.known[key] then
@@ -736,6 +743,24 @@ function E:Auras_SetIndicator(container)
 	end
 end
 
+function E:Auras_CleanClone(container, key, data)
+	local clone = container.clones[key]
+	if not clone then
+		clone = {}
+		container.clones[key] = clone
+	else
+		wipe(clone)
+	end
+
+	return E:CopyTable(clone, data)
+end
+
+function E:Auras_CleanCandidates(container, data)
+	wipe(container.candidates)
+
+	return E:CopyTable(container.candidates, data)
+end
+
 function E:Auras_SetupList(container, auraTable)
 	wipe(container.keys)
 
@@ -743,12 +768,11 @@ function E:Auras_SetupList(container, auraTable)
 		local key = spell..''
 		if container.isIndicator then
 			if data.enabled then
-				local clone = E:CopyTable({}, data)
-				container.keys[key] = clone
+				container.keys[key] = E:Auras_CleanClone(container, key, data)
 			end
 		elseif container.isHighlight then
 			if data.enable then
-				local clone = E:CopyTable({}, data)
+				local clone = E:Auras_CleanClone(container, key, data)
 				if not clone.id then
 					clone.id = spell
 				end
@@ -989,6 +1013,8 @@ function E:Auras_Create(parent, which, override)
 	container.known = {} -- both
 	container.keys = {} -- indicators
 	container.indicators = {}
+	container.clones = {}
+	container.candidates = {} -- only for debug
 	container.active = {} -- groups
 	container.buttons = {}
 	container.layout = {}

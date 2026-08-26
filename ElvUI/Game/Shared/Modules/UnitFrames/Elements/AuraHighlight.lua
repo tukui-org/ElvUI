@@ -64,6 +64,7 @@ do
 
 		E:Auras_GroupUnit(container, frame.__unit)
 		E:Auras_SetHighlight(container)
+		E:Auras_UpdateHighlights(container)
 	end
 end
 
