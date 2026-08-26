@@ -94,15 +94,13 @@ function E:Auras_OnEvent(event, arg1, arg2)
 				UF:AuraBars_UpdateFilter(container, eventUnit)
 				E:Auras_SetContainer(container)
 			else -- for target frame
-				E:Auras_CanAssist(container, eventUnit)
-
-				if container.isHighlight then
-					E:Auras_SetEnabled(container)
-				end
+				E:Auras_AssistUnit(container, eventUnit)
 
 				container:UpdateAllAuras()
 			end
 		end
+	elseif arg1 and (arg1 == container.unit) then
+		E:Auras_AssistUnit(container, arg1)
 	end
 end
 
@@ -973,19 +971,19 @@ function E:Auras_SetEnabled(container)
 	container:SetEnabled(container.enabled and container.canAssist)
 end
 
-function E:Auras_CanAssist(container, unit)
+function E:Auras_AssistUnit(container, unit)
 	container.canAssist = UnitCanAssist('player', unit)
+
+	if container.isHighlight then
+		E:Auras_SetEnabled(container)
+	end
 end
 
 function E:Auras_GroupUnit(container, unit)
 	if not container then return end
 
 	E:Auras_SetUnit(container, unit)
-	E:Auras_CanAssist(container, unit)
-
-	if container.isHighlight then
-		E:Auras_SetEnabled(container)
-	end
+	E:Auras_AssistUnit(container, unit)
 end
 
 function E:Auras_GetFilter(obj, key)
@@ -1027,6 +1025,8 @@ function E:Auras_Create(parent, which, override)
 	container.events = events
 
 	-- aurabar to switch to friendship
+	events:RegisterEvent('UNIT_PHASE') -- highlight: assist check required if they phase
+	events:RegisterEvent('UNIT_FACTION') -- highlight: assist check when faction changes
 	events:RegisterEvent('PLAYER_TARGET_CHANGED')
 	events:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	events:SetScript('OnEvent', E.Auras_OnEvent)
