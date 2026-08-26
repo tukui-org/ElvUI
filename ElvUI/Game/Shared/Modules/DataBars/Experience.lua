@@ -22,7 +22,7 @@ local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 
 local CurrentXP, XPToLevel, PercentXP, RemainXP, RemainTotal, RemainBars
-local RestedXP, QuestLogXP, PercentRested = 0, 0
+local QuestLogXP, RestedXP, PercentRested = 0, 0
 
 local HouseInfo, HouseXP, HousePercent = {}
 
@@ -228,7 +228,7 @@ function DB:ExperienceBar_OnEnter()
 	end
 
 	if RestedXP > 0 then
-		GameTooltip:AddDoubleLine(L["Rested:"], format('+%s (%.2f%%)', E:ShortValue(RestedXP), PercentRested), 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Rested:"], format('+%s (%.2f%%)', E:ShortValue(RestedXP), PercentRested or 0), 1, 1, 1)
 	end
 
 	if HouseXP and HouseXP > 0 then
