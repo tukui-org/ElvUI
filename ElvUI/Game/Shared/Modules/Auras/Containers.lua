@@ -548,39 +548,22 @@ function E:Auras_UpdateLayout(container)
 end
 
 do
-	local temp = {}
 	local spell = {}
-	function E:Auras_FilterIndicator(data)
-		temp.includeSpellIDs = spell
-
+	function E:Auras_FilterSlot(container, data)
 		wipe(spell)
 
-		local dataID = data.id
-		if dataID then
-			spell[dataID] = true
-		end
-
-		return temp
-	end
-end
-
-do
-	local spell = {}
-	function E:Auras_FilterHighlight(container, data)
-		local temp = container.candidateTemp
-		wipe(temp) -- trash object for reuse
-
+		local temp = {}
 		if data then
 			temp.includeSpellIDs = spell
-
-			wipe(spell)
+			temp.includeDispelTypes = nil
 
 			local dataID = data.id
 			if dataID then
 				spell[dataID] = true
 			end
 		else
-			temp.includeDispelTypes = E:CopyTable({}, DispelTypes)
+			temp.includeSpellIDs = nil
+			temp.includeDispelTypes = E:CopyTable(spell, DispelTypes)
 		end
 
 		return temp
@@ -669,11 +652,8 @@ function E:Auras_AddEnchantments(container)
 end
 
 function E:Auras_UpdateSlot(container, key, filter, candidate, sortMethod, sortDirection)
-	if candidate then
-		container:SetAuraSlotCandidateFilters(key, candidate)
-	end
-
 	container:SetAuraSlotFilterString(key, filter)
+	container:SetAuraSlotCandidateFilters(key, candidate)
 	container:SetAuraSlotSortMethod(key, sortMethod, sortDirection)
 end
 
@@ -682,12 +662,20 @@ function E:Auras_AddSlot(container, key, filter, candidate, sortMethod, sortDire
 	container:AddAuraSlot(key, filter, slot)
 end
 
+function E:Auras_GetSlotFilter(container, data)
+	if data and data.enable then
+		return container.filter .. (data.ownOnly and '|PLAYER' or '')
+	end
+
+	return ''
+end
+
 function E:Auras_SetHighlight(container)
 	local groupKey = container.key
 	if groupKey == 'bad' then
 		if container.known[groupKey] then return end
 
-		local candidate = E:Auras_FilterHighlight(container)
+		local candidate = E:Auras_FilterSlot(container)
 		container.candidateFilters = candidate
 
 		local slot = E:Auras_SetupHighlight(container, candidate)
@@ -695,17 +683,29 @@ function E:Auras_SetHighlight(container)
 
 		container.known[groupKey] = 'meow'
 	else
+		for key, data in next, container.active do
+			local old = E:Auras_GetSlotFilter(container, data)
+			local new = E:Auras_GetSlotFilter(container, container.keys[key])
+			if new ~= old then
+				container:SetAuraSlotFilterString(key, new)
+			end
+
+			container.active[key] = nil
+		end
+
 		for key, data in next, container.keys do
-			local candidate = E:Auras_FilterHighlight(container, data)
+			container.active[key] = data
+
+			local filter = E:Auras_GetSlotFilter(container, data)
+			local candidate = E:Auras_FilterSlot(container, data)
 			container.candidateFilters = candidate
 
-			local slotFilter = container.filter .. (data.ownOnly and '|PLAYER' or '')
 			if container.known[key] then
-				container:SetAuraSlotFilterString(key, slotFilter)
+				container:SetAuraSlotFilterString(key, filter)
 				container:SetAuraSlotCandidateFilters(key, candidate)
 			else
 				local slot = E:Auras_SetupHighlight(container, candidate, key, data)
-				container:AddAuraSlot(key, slotFilter, slot)
+				container:AddAuraSlot(key, filter, slot)
 				container.known[key] = 'bark'
 			end
 		end
@@ -717,7 +717,7 @@ function E:Auras_SetIndicator(container)
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
 	for key, data in next, container.keys do
-		local candidate = E:Auras_FilterIndicator(data)
+		local candidate = E:Auras_FilterSlot(container, data)
 		container.candidateFilters = candidate
 
 		local slotFilter = container.filter .. (data.anyUnit and '' or '|PLAYER')
@@ -738,15 +738,17 @@ function E:Auras_SetupList(container, auraTable)
 		local key = spell..''
 		if container.isIndicator then
 			if data.enabled then
-				container.keys[key] = data
+				local clone = E:CopyTable({}, data)
+				container.keys[key] = clone
 			end
 		elseif container.isHighlight then
 			if data.enable then
-				if not data.id then
-					data.id = spell
+				local clone = E:CopyTable({}, data)
+				if not clone.id then
+					clone.id = spell
 				end
 
-				container.keys[key] = data
+				container.keys[key] = clone
 			end
 		end
 	end
