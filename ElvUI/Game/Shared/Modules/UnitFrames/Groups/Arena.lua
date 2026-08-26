@@ -63,6 +63,9 @@ function UF:Construct_ArenaFrames(frame)
 		frame.TargetGlow = UF:Construct_TargetGlow(frame)
 		frame.FocusGlow = UF:Construct_FocusGlow(frame)
 		frame.Trinket = UF:Construct_Trinket(frame)
+		if E.Retail then
+			frame.PingIndicator = UF:Construct_PingIndicator(frame)
+		end
 		frame.InfoPanel = UF:Construct_InfoPanel(frame)
 		frame.PvPClassificationIndicator = UF:Construct_PvPClassificationIndicator(frame) -- Cart / Flag / Orb / Assassin Bounty
 		frame.Fader = UF:Construct_Fader()

@@ -1302,6 +1302,7 @@ L["Pets"] = "Питомцы"
 L["PetTarget"] = "Цель питомца"
 L["Phase Indicator"] = "Индикатор фазы"
 L["Pin Voice Buttons"] = "Закрепить голосовой чат"
+L["Ping Icon"] = "Иконка метки"
 L["Pixel Glow"] = true
 L["Player Auras"] = true
 L["Player Bars"] = "Панели игрока"

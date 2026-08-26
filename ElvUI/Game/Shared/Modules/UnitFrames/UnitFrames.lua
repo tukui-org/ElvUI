@@ -82,11 +82,46 @@ UF.classMaxResourceBar = { -- also used by Nameplates
 }
 
 do
-	local info = { isPlayerResource = true }
-	UF.PingableInfo = info
+	local playerPingInfo = { isPlayerResource = true }
+	UF.PingableInfo = playerPingInfo
 
 	function UF:Pingable_GetTargetInfo()
-		return info
+		return playerPingInfo
+	end
+
+	-- PingableType_UnitFrameMixin uses self.unit or GetAttribute('unit'). oUF stores
+	-- __unit and party/raid pet children use useparent-unit, so both of those are nil.
+	-- UnitGUID(nil) errors; securecallfunction then returns nil and PingManager blows up.
+	local emptyPingInfo = {}
+	local unitPingInfo = {}
+
+	local function GetPingableFrameUnit(frame)
+		return frame.unit or frame.__unit or frame:GetAttribute('unit')
+	end
+
+	function UF:Pingable_GetUnitFrameTargetInfo()
+		local unit = GetPingableFrameUnit(self)
+		if not unit or E:IsSecretUnit(unit) then
+			return emptyPingInfo
+		end
+
+		local guid = UnitGUID(unit)
+		if not guid or E:IsSecretValue(guid) then
+			return emptyPingInfo
+		end
+
+		unitPingInfo.guid = guid
+		return unitPingInfo
+	end
+
+	function UF:Pingable_GetUnitFrameIsPingable()
+		local unit = GetPingableFrameUnit(self)
+		if not unit or E:IsSecretUnit(unit) then
+			return false
+		end
+
+		local guid = UnitGUID(unit)
+		return guid and not E:IsSecretValue(guid)
 	end
 end
 
@@ -1387,6 +1422,11 @@ do
 		-- handle the enter / leave scripts
 		frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
 		frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+
+		if E.Retail then
+			frame.GetTargetInfo = UF.Pingable_GetUnitFrameTargetInfo
+			frame.GetIsPingable = UF.Pingable_GetUnitFrameIsPingable
+		end
 	end
 
 	-- 2) after that we need to setup additional things
@@ -1501,6 +1541,10 @@ do
 
 		if frame.SummonIndicator then
 			UF:Configure_SummonIcon(frame)
+		end
+
+		if frame.PingIndicator then
+			UF:Configure_PingIndicator(frame)
 		end
 
 		if frame.AlternativePower then
