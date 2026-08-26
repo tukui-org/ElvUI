@@ -696,10 +696,11 @@ function E:Auras_SetHighlight(container)
 		container.known[groupKey] = 'meow'
 	else
 		for key, data in next, container.active do
-			local old = E:Auras_GetSlotFilter(container, data)
-			local new = E:Auras_GetSlotFilter(container, container.keys[key])
-			if new ~= old then -- set the filter empty to turn it off
-				container:SetAuraSlotFilterString(key, '')
+			if not container.keys[key] then -- only handle previous keys
+				local filter = E:Auras_GetSlotFilter(container, data)
+				if filter ~= '' then -- it was something else so lets turn it off
+					container:SetAuraSlotFilterString(key, '')
+				end
 			end
 
 			container.active[key] = nil
@@ -718,6 +719,7 @@ function E:Auras_SetHighlight(container)
 			else
 				local slot = E:Auras_SetupHighlight(container, candidate, key, data)
 				container:AddAuraSlot(key, filter, slot)
+
 				container.known[key] = 'bark'
 			end
 		end
@@ -915,7 +917,7 @@ function E:Auras_SetContainer(container)
 	E:Auras_SetFlowLayout(container)
 
 	for key, filter in next, container.active do -- known but not active anymore
-		if container.known[key] and (container.filters[key] ~= filter) then
+		if container.filters[key] ~= filter then
 			container:SetAuraGroupMaxFrameCount(key, 0)
 		end
 
