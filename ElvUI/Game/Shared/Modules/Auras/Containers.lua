@@ -94,10 +94,13 @@ function E:Auras_OnEvent(event, arg1, arg2)
 				UF:AuraBars_UpdateFilter(container, eventUnit)
 				E:Auras_SetContainer(container)
 			else -- for target frame
+				E:Auras_AssistUnit(container, eventUnit)
+
 				container:UpdateAllAuras()
 			end
 		end
-	--elseif arg1 and (arg1 == container.unit) then -- about to do something
+	elseif arg1 and (arg1 == container.unit) then
+		E:Auras_AssistUnit(container, arg1)
 	end
 end
 
@@ -484,6 +487,14 @@ function E:Auras_UpdateIndicators(container)
 	end
 end
 
+function E:Auras_UpdateHighlights(container)
+	if E:IsRestrictedAuras() then return end
+
+	for button in next, container.indicators do
+		E:Auras_UpdateHighlight(container, button)
+	end
+end
+
 function E:Auras_GenerateButton(container, key, filter, data)
 	return function(button)
 		container.buttons[button] = container
@@ -548,39 +559,21 @@ function E:Auras_UpdateLayout(container)
 end
 
 do
-	local temp = {}
-	local spell = {}
-	function E:Auras_FilterIndicator(data)
-		temp.includeSpellIDs = spell
-
+	local temp, spell = {}, {}
+	function E:Auras_FilterSlot(container, data)
 		wipe(spell)
 
-		local dataID = data.id
-		if dataID then
-			spell[dataID] = true
-		end
-
-		return temp
-	end
-end
-
-do
-	local spell = {}
-	function E:Auras_FilterHighlight(container, data)
-		local temp = container.candidateTemp
-		wipe(temp) -- trash object for reuse
-
 		if data then
-			temp.includeSpellIDs = spell
-
-			wipe(spell)
-
 			local dataID = data.id
 			if dataID then
 				spell[dataID] = true
 			end
+
+			temp.includeSpellIDs = spell
+			temp.includeDispelTypes = nil
 		else
-			temp.includeDispelTypes = E:CopyTable({}, DispelTypes)
+			temp.includeSpellIDs = nil
+			temp.includeDispelTypes = E:CopyTable(spell, DispelTypes)
 		end
 
 		return temp
@@ -669,11 +662,8 @@ function E:Auras_AddEnchantments(container)
 end
 
 function E:Auras_UpdateSlot(container, key, filter, candidate, sortMethod, sortDirection)
-	if candidate then
-		container:SetAuraSlotCandidateFilters(key, candidate)
-	end
-
 	container:SetAuraSlotFilterString(key, filter)
+	container:SetAuraSlotCandidateFilters(key, candidate)
 	container:SetAuraSlotSortMethod(key, sortMethod, sortDirection)
 end
 
@@ -682,30 +672,52 @@ function E:Auras_AddSlot(container, key, filter, candidate, sortMethod, sortDire
 	container:AddAuraSlot(key, filter, slot)
 end
 
+function E:Auras_HighlightFilter(container, data)
+	if data and data.enable then
+		return container.filter .. (data.ownOnly and '|PLAYER' or '')
+	end
+
+	return ''
+end
+
 function E:Auras_SetHighlight(container)
 	local groupKey = container.key
 	if groupKey == 'bad' then
 		if container.known[groupKey] then return end
 
-		local candidate = E:Auras_FilterHighlight(container)
-		container.candidateFilters = candidate
+		local candidate = E:Auras_FilterSlot(container)
+		E:Auras_CleanCandidates(container, candidate)
 
 		local slot = E:Auras_SetupHighlight(container, candidate)
 		container:AddAuraSlot(groupKey, container.filter, slot)
 
 		container.known[groupKey] = 'meow'
 	else
-		for key, data in next, container.keys do
-			local candidate = E:Auras_FilterHighlight(container, data)
-			container.candidateFilters = candidate
+		for key, data in next, container.active do
+			if not container.keys[key] then -- only handle previous keys
+				local filter = E:Auras_HighlightFilter(container, data)
+				if filter ~= '' then -- it was something else so lets turn it off
+					container:SetAuraSlotFilterString(key, '')
+				end
+			end
 
-			local slotFilter = container.filter .. (data.ownOnly and '|PLAYER' or '')
+			container.active[key] = nil
+		end
+
+		for key, data in next, container.keys do
+			container.active[key] = data
+
+			local filter = E:Auras_HighlightFilter(container, data)
+			local candidate = E:Auras_FilterSlot(container, data)
+			E:Auras_CleanCandidates(container, candidate)
+
 			if container.known[key] then
-				container:SetAuraSlotFilterString(key, slotFilter)
+				container:SetAuraSlotFilterString(key, filter)
 				container:SetAuraSlotCandidateFilters(key, candidate)
 			else
 				local slot = E:Auras_SetupHighlight(container, candidate, key, data)
-				container:AddAuraSlot(key, slotFilter, slot)
+				container:AddAuraSlot(key, filter, slot)
+
 				container.known[key] = 'bark'
 			end
 		end
@@ -717,8 +729,8 @@ function E:Auras_SetIndicator(container)
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
 	for key, data in next, container.keys do
-		local candidate = E:Auras_FilterIndicator(data)
-		container.candidateFilters = candidate
+		local candidate = E:Auras_FilterSlot(container, data)
+		E:Auras_CleanCandidates(container, candidate)
 
 		local slotFilter = container.filter .. (data.anyUnit and '' or '|PLAYER')
 		if container.known[key] then
@@ -731,6 +743,24 @@ function E:Auras_SetIndicator(container)
 	end
 end
 
+function E:Auras_CleanClone(container, key, data)
+	local clone = container.clones[key]
+	if not clone then
+		clone = {}
+		container.clones[key] = clone
+	else
+		wipe(clone)
+	end
+
+	return E:CopyTable(clone, data)
+end
+
+function E:Auras_CleanCandidates(container, data)
+	wipe(container.candidates)
+
+	return E:CopyTable(container.candidates, data)
+end
+
 function E:Auras_SetupList(container, auraTable)
 	wipe(container.keys)
 
@@ -738,15 +768,16 @@ function E:Auras_SetupList(container, auraTable)
 		local key = spell..''
 		if container.isIndicator then
 			if data.enabled then
-				container.keys[key] = data
+				container.keys[key] = E:Auras_CleanClone(container, key, data)
 			end
 		elseif container.isHighlight then
 			if data.enable then
-				if not data.id then
-					data.id = spell
+				local clone = E:Auras_CleanClone(container, key, data)
+				if not clone.id then
+					clone.id = spell
 				end
 
-				container.keys[key] = data
+				container.keys[key] = clone
 			end
 		end
 	end
@@ -884,7 +915,7 @@ function E:Auras_SetContainer(container)
 	E:Auras_SetFlowLayout(container)
 
 	for key, filter in next, container.active do -- known but not active anymore
-		if container.known[key] and (container.filters[key] ~= filter) then
+		if container.filters[key] ~= filter then
 			container:SetAuraGroupMaxFrameCount(key, 0)
 		end
 
@@ -933,23 +964,26 @@ end
 
 function E:Auras_SetUnit(container, unit)
 	container:SetUnit(unit)
-
 	container.unit = unit
-	container.canAssist = UnitCanAssist('player', unit)
 end
 
 function E:Auras_SetEnabled(container)
 	container:SetEnabled(container.enabled and container.canAssist)
 end
 
-function E:Auras_GroupUnit(container, unit)
-	if not container then return end
-
-	E:Auras_SetUnit(container, unit)
+function E:Auras_AssistUnit(container, unit)
+	container.canAssist = UnitCanAssist('player', unit)
 
 	if container.isHighlight then
 		E:Auras_SetEnabled(container)
 	end
+end
+
+function E:Auras_GroupUnit(container, unit)
+	if not container then return end
+
+	E:Auras_SetUnit(container, unit)
+	E:Auras_AssistUnit(container, unit)
 end
 
 function E:Auras_GetFilter(obj, key)
@@ -979,6 +1013,8 @@ function E:Auras_Create(parent, which, override)
 	container.known = {} -- both
 	container.keys = {} -- indicators
 	container.indicators = {}
+	container.clones = {}
+	container.candidates = {} -- only for debug
 	container.active = {} -- groups
 	container.buttons = {}
 	container.layout = {}
@@ -989,6 +1025,8 @@ function E:Auras_Create(parent, which, override)
 	container.events = events
 
 	-- aurabar to switch to friendship
+	events:RegisterEvent('UNIT_PHASE') -- highlight: assist check required if they phase
+	events:RegisterEvent('UNIT_FACTION') -- highlight: assist check when faction changes
 	events:RegisterEvent('PLAYER_TARGET_CHANGED')
 	events:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	events:SetScript('OnEvent', E.Auras_OnEvent)
