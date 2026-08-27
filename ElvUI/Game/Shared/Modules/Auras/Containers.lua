@@ -381,7 +381,7 @@ function E:Auras_UpdateButton(container, button)
 		if container.useStatusbar then
 			button:SetDurationBar(statusbar)
 
-			local color = container.customBackdropColor or backdropColor
+			local color = container.barColor or backdropColor
 			statusbar:SetStatusBarTexture(container.barTexture)
 			statusbar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, container.isTransparent and backdropFadeColor.a or 1)
 			statusbar:Show()
