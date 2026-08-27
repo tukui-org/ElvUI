@@ -3191,17 +3191,20 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 
 	local firstData = firstQueue.queueData
 	if firstQueue.eligible and (firstData and firstData.queueType == 'lfglist') then
-		local activityID, activityInfo, name, leaderName, isLeader
-		if firstData.lfgListID then
-			local searchInfo = C_LFGList_GetSearchResultInfo(firstData.lfgListID)
-			if searchInfo then
-				activityID, name, leaderName = searchInfo.activityID, searchInfo.name, searchInfo.leaderName
-				isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
-			end
+		local listID, activityID, activityInfo, name, leaderName, isLeader = firstData.lfgListID
+		local searchInfo = listID and C_LFGList_GetSearchResultInfo(listID)
+		if searchInfo then
+			activityID = searchInfo.activityIDs and searchInfo.activityIDs[1]
+			name, leaderName = searchInfo.name, searchInfo.leaderName
+			isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
 		end
 
-		if activityID or firstData.activityID then
-			activityInfo = C_LFGList_GetActivityInfoTable(activityID or firstData.activityID)
+		if not activityID then
+			activityID = firstData.activityID
+		end
+
+		if activityID then
+			activityInfo = C_LFGList_GetActivityInfoTable(activityID)
 		end
 
 		CH:SocialQueueMessage(guid, format(name and '%s %s: [%s] |cff00CCFF%s|r' or '%s %s: |cff00CCFF%s|r', coloredName, (isLeader and L["is looking for members"]) or L["joined a group"], activityInfo and activityInfo.fullName or UNKNOWN, name))

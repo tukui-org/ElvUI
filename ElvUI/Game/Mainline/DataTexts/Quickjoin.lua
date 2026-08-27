@@ -47,28 +47,24 @@ local function Update(self)
 
 			local queues = C_SocialQueue_GetGroupQueues(guid)
 			local firstQueue, numQueues = queues and queues[1], queues and #queues or 0
-			local isLFGList = firstQueue and firstQueue.queueData and firstQueue.queueData.queueType == 'lfglist'
+			local firstData = firstQueue and firstQueue.queueData
+			local isLFGList = firstData and firstData.queueType == 'lfglist'
 			local coloredName = (playerName and playerName ~= '' and format('%s%s|r%s', nameColor, playerName, extraCount)) or format('{%s%s}', UNKNOWN, extraCount)
 
 			local activity
 			if isLFGList and firstQueue and firstQueue.eligible then
-				local activityName, isLeader, leaderName
-				if firstQueue.queueData.lfgListID then
-					local searchResultInfo = C_LFGList_GetSearchResultInfo(firstQueue.queueData.lfgListID)
-					if searchResultInfo then
-						activityName, leaderName = searchResultInfo.name, searchResultInfo.leaderName
-						isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
-					end
+				local listID, name, leaderName, isLeader = firstData.lfgListID
+				local searchInfo = listID and C_LFGList_GetSearchResultInfo(listID)
+				if searchInfo then
+					name, leaderName = searchInfo.name, searchInfo.leaderName
+					isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
 				end
 
 				if isLeader then
 					coloredName = format(icon, coloredName)
 				end
 
-				activity = activityName or UNKNOWN
-				if numQueues > 1 then
-					activity = format('[+%s]%s', numQueues - 1, activity)
-				end
+				activity = numQueues > 1 and format('[+%s]%s', numQueues - 1, name or UNKNOWN) or (name or UNKNOWN)
 			elseif firstQueue then
 				local output, queueCount = '', 0
 				for _, queue in pairs(queues) do
@@ -84,12 +80,9 @@ local function Update(self)
 						end
 					end
 				end
+
 				if output ~= '' then
-					if queueCount > 0 then
-						activity = format('%s[+%s]', output, queueCount)
-					else
-						activity = output
-					end
+					activity = queueCount > 0 and format('%s[+%s]', output, queueCount) or output
 				end
 			end
 
