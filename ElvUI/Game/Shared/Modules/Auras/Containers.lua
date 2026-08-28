@@ -1060,8 +1060,9 @@ function E:Auras_Create(parent, which, override)
 	container.events = events
 
 	-- aurabar to switch to friendship
-	events:RegisterEvent('UNIT_PHASE') -- highlight: assist check required if they phase
-	events:RegisterEvent('UNIT_FACTION') -- highlight: assist check when faction changes
+	events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
+	events:RegisterEvent('UNIT_FLAGS') -- highlight: flags changes
+	events:RegisterEvent('UNIT_PHASE') -- highlight: phase changes
 	events:RegisterEvent('GROUP_ROSTER_UPDATE')
 	events:RegisterEvent('PLAYER_TARGET_CHANGED')
 	events:RegisterEvent('PLAYER_FOCUS_CHANGED')
