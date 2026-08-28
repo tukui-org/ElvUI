@@ -148,6 +148,51 @@ function E:Auras_UpdateHighlight(container, button)
 	end
 end
 
+function E:Auras_CreateText(button)
+	local textFrame = CreateFrame('Frame', nil, button)
+	textFrame:SetAllPoints()
+
+	local countText = textFrame:CreateFontString(nil, 'OVERLAY')
+	textFrame.count = countText
+
+	local timeText = textFrame:CreateFontString(nil, 'OVERLAY')
+	timeText:FontTemplate(nil, 14)
+	timeText:Point('CENTER')
+	textFrame.time = timeText
+
+	local nameText = textFrame:CreateFontString(nil, 'OVERLAY')
+	nameText:Point('LEFT', button, 2, 0)
+	textFrame.nameText = nameText
+
+	return textFrame
+end
+
+function E:Auras_UpdateText(container, button)
+	local text = button.textFrame
+	if not text then return end
+
+	local count = text.count
+	if count then
+		local data = button.data -- indicators
+		local point = (data and data.countAnchor) or container.countPosition or (data and 'TOPRIGHT' or 'CENTER')
+		local x = (data and data.countX) or container.countXOffset or (data and 1 or 0)
+		local y = (data and data.countY) or container.countYOffset or (data and 1 or 0)
+
+		count:ClearAllPoints()
+		count:Point(point, x, y)
+		count:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
+		count:FontTemplate(container.countFont, container.countFontSize or (data and 12 or nil), container.countFontOutline or (data and 'OUTLINE' or nil))
+
+		button:SetApplicationCount(count)
+	end
+
+	local name = container.isAuraBar and text.nameText
+	if name then
+		name:FontTemplate(container.textFont, container.textFontSize, container.textFontOutline)
+		button:SetSpellName(name)
+	end
+end
+
 function E:Auras_CreateIndicator(button)
 	button:CreateBackdrop('Transparent', nil, true) -- these are forbidden, ignore updates
 
@@ -161,6 +206,8 @@ function E:Auras_CreateIndicator(button)
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
 	cooldown:SetAllPoints(texture)
 	button.cooldown = cooldown
+
+	button.textFrame = E:Auras_CreateText(button)
 end
 
 function E:Auras_UpdateIndicator(container, button)
@@ -250,6 +297,10 @@ function E:Auras_UpdateIndicator(container, button)
 			end
 		end
 	end
+
+	if button.textFrame then
+		E:Auras_UpdateText(container, button)
+	end
 end
 
 function E:Auras_CreateButton(button)
@@ -293,23 +344,7 @@ function E:Auras_CreateButton(button)
 	cooldown:SetAllPoints(texture)
 	button.cooldown = cooldown
 
-	local textFrame = CreateFrame('Frame', nil, button)
-	if textFrame then
-		textFrame:SetAllPoints()
-		button.textFrame = textFrame
-
-		local countText = textFrame:CreateFontString(nil, 'OVERLAY')
-		textFrame.count = countText
-
-		local timeText = textFrame:CreateFontString(nil, 'OVERLAY')
-		timeText:FontTemplate(nil, 14)
-		timeText:Point('CENTER')
-		textFrame.time = timeText
-
-		local nameText = textFrame:CreateFontString(nil, 'OVERLAY')
-		nameText:Point('LEFT', button, 2, 0)
-		textFrame.nameText = nameText
-	end
+	button.textFrame = E:Auras_CreateText(button)
 end
 
 function E:Auras_UpdateButton(container, button)
@@ -461,24 +496,8 @@ function E:Auras_UpdateButton(container, button)
 		end
 	end
 
-	local textFrame = button.textFrame
-	if textFrame then
-		local count = textFrame.count
-		if count then
-			local point = container.countPosition or 'CENTER'
-			count:ClearAllPoints()
-			count:Point(point, container.countXOffset or 0, container.countYOffset or 0)
-			count:SetJustifyH(strfind(point, 'RIGHT') and 'RIGHT' or 'LEFT')
-			count:FontTemplate(container.countFont, container.countFontSize, container.countFontOutline)
-
-			button:SetApplicationCount(count)
-		end
-
-		local name = container.isAuraBar and textFrame.nameText
-		if name then
-			name:FontTemplate(container.textFont, container.textFontSize, container.textFontOutline)
-			button:SetSpellName(name)
-		end
+	if button.textFrame then
+		E:Auras_UpdateText(container, button)
 	end
 
 	if container.MasqueGroup then
