@@ -309,7 +309,7 @@ function UF:GroupFilters(frame, list)
 			candidates.maxDuration = info.maxDuration
 
 			for candidate in next, E.AuraCandidates do
-				local value = data.candidates[candidate]
+				local value = data.candidates and data.candidates[candidate]
 				if value == 1 then -- grey is exclude
 					candidates[candidate] = false
 				else
