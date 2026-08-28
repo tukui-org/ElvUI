@@ -241,7 +241,7 @@ G.unitframe.ChannelTicks = {
 	[400171]	= 3, -- Penance (Dark Reprimand, heal)
 	[64902]		= 5, -- Symbol of Hope (Mana Hymn)
 	-- Mage
-	[5143]		= 4, -- Arcane Missiles
+	[5143]		= 5, -- Arcane Missiles
 	[12051]		= 6, -- Evocation
 	[205021]	= 5, -- Ray of Frost
 	-- Druid
@@ -273,6 +273,7 @@ G.unitframe.ChainChannelTime = {
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {
 	[356995]	= { [1219723] = 4 }, -- Disintegrate (Azure Celerity)
+	[5143]		= { [236628] = 7 }, -- Amplification
 }
 
 -- Increase ticks from auras
