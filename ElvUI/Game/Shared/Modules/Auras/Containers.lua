@@ -33,6 +33,16 @@ E.AuraHighlight = {
  -- customDispelColorCurve is added from UpdateAuraCurves
 }
 
+E.AuraGroupHeaders = {
+	party = true,
+	raid1 = true,
+	raid2 = true,
+	raid3 = true,
+	raidpet = true,
+	assist = true,
+	tank = true,
+}
+
 E.AuraEventUnits = {
 	PLAYER_TARGET_CHANGED = 'target',
 	PLAYER_FOCUS_CHANGED = 'focus'
@@ -85,7 +95,7 @@ if SORTDIRECTION then
 	E.AuraContainerSortDirection['-'] = SORTDIRECTION.Reverse
 end
 
-function E:Auras_OnEvent(event, arg1, arg2)
+function E:Auras_OnEvent(event, arg1)
 	local container = self.owner
 	if event == 'PLAYER_FOCUS_CHANGED' or event == 'PLAYER_TARGET_CHANGED' then
 		local eventUnit = E.AuraEventUnits[event]
@@ -98,6 +108,12 @@ function E:Auras_OnEvent(event, arg1, arg2)
 
 				container:UpdateAllAuras()
 			end
+		end
+	elseif event == 'GROUP_ROSTER_UPDATE' then
+		if container.unit and E.AuraGroupHeaders[container.unitframeType] then
+			E:Auras_AssistUnit(container, container.unit)
+
+			container:UpdateAllAuras()
 		end
 	elseif arg1 and (arg1 == container.unit) then
 		E:Auras_AssistUnit(container, arg1)
@@ -1027,6 +1043,7 @@ function E:Auras_Create(parent, which, override)
 	-- aurabar to switch to friendship
 	events:RegisterEvent('UNIT_PHASE') -- highlight: assist check required if they phase
 	events:RegisterEvent('UNIT_FACTION') -- highlight: assist check when faction changes
+	events:RegisterEvent('GROUP_ROSTER_UPDATE')
 	events:RegisterEvent('PLAYER_TARGET_CHANGED')
 	events:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	events:SetScript('OnEvent', E.Auras_OnEvent)
