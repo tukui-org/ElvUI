@@ -170,7 +170,11 @@ do
 			end
 		end
 
-		return current
+		if current then
+			container:SetParent(nameplate)
+
+			return current
+		end
 	end
 end
 
@@ -206,20 +210,18 @@ function NP:AuraContainer_ConstructFilters()
 end
 
 function NP:AuraContainer_ConstructAuraTypes(frameType, name)
-	local object = {}
-	local scale = E.global.general.UIScale
+	local frame = CreateFrame('Frame', name)
 	for which in next, AURA_TYPES do
-		local auras = E:Auras_Create(nil, which, name..which)
+		local auras = E:Auras_Create(frame, which)
 		auras:SetEnabled(false)
-		auras:SetScale(scale)
 
 		auras.frameType = frameType
 		NP:Configure_Auras(auras, which, true)
 
-		object[which] = auras
+		frame[which] = auras
 	end
 
-	return object
+	return frame
 end
 
 function NP:AuraContainer_CreateFrameType(name)
