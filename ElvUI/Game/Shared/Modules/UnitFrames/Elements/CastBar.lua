@@ -230,7 +230,7 @@ function UF:Configure_Castbar(frame)
 	end
 
 	--Latency
-	if frame.unit == 'player' and db.latency then
+	if frame.__unit == 'player' and db.latency then
 		castbar.SafeZone = castbar.LatencyTexture
 		castbar.LatencyTexture:Show()
 	else
@@ -569,7 +569,7 @@ function UF:PostCastStart(unit)
 
 	if unit == 'vehicle' then unit = 'player' end
 
-	self.unit = unit
+	self.__unit = unit
 
 	if E:IsSecretValue(self.spellID) then
 		UF:SetCastText(self, db.castbar, true, self.spellName, db.castbar.displayTarget and self.targetCurrent, self.targetClass)

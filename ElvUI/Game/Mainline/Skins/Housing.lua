@@ -106,6 +106,12 @@ function S:Blizzard_HousingHouseFinder()
 		S:HandleFrame(finderFrame, true)
 		finderFrame.WoodBorderFrame:Hide()
 
+		local plotInfo = finderFrame.PlotInfoFrame
+		local visitButton = plotInfo and plotInfo.VisitHouseButton
+		if visitButton then
+			S:HandleButton(visitButton)
+		end
+
 		local neighborList = finderFrame.NeighborhoodListFrame
 		if neighborList then
 			neighborList:StripTextures()
@@ -282,6 +288,14 @@ function S:Blizzard_HousingCornerstone()
 		S:HandleButton(moveHouseConfirmation.ConfirmButton)
 		S:HandleButton(moveHouseConfirmation.CancelButton)
 	end
+
+	local buyHouseConfirmation = _G.BuyHouseConfirmationDialog
+	if buyHouseConfirmation then
+		buyHouseConfirmation:StripTextures()
+		buyHouseConfirmation:CreateBackdrop('Transparent')
+		S:HandleButton(buyHouseConfirmation.AcceptButton)
+		S:HandleButton(buyHouseConfirmation.CancelButton)
+	end
 end
 
 function S:Blizzard_HousingBulletinBoard()
@@ -290,6 +304,19 @@ function S:Blizzard_HousingBulletinBoard()
 	local bulletinBoard = _G.HousingBulletinBoardFrame
 	if bulletinBoard then
 		bulletinBoard:StripTextures()
+		bulletinBoard:CreateBackdrop('Transparent')
+
+		local bulletinBG = bulletinBoard.Background
+		if bulletinBG then
+			bulletinBoard.backdrop:SetOutside(bulletinBG)
+
+			if E.private.skins.parchmentRemoverEnable then
+				bulletinBG:SetAlpha(0)
+			else
+				bulletinBG:SetTexCoord(0.01, 0.99, 0.01, 0.99)
+			end
+		end
+
 		S:HandleCloseButton(bulletinBoard.CloseButton)
 
 		local residentsTab = bulletinBoard.ResidentsTab

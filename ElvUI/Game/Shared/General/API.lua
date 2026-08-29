@@ -10,7 +10,7 @@ local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
 local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
 local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
-local pcall, strlen, tonumber, tostring = pcall, strlen, tonumber, tostring
+local pcall, strlen, tonumber = pcall, strlen, tonumber
 
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
@@ -63,6 +63,10 @@ local CreateCurve = C_CurveUtil.CreateCurve
 local CreateColorCurve = C_CurveUtil.CreateColorCurve
 local GetColorDataForItemQuality = ColorManager and ColorManager.GetColorDataForItemQuality
 local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
+
+local GetTrackedHouseGuid = C_Housing and C_Housing.GetTrackedHouseGuid
+local GetCurrentHouseLevelFavor = C_Housing and C_Housing.GetCurrentHouseLevelFavor
+local GetHouseLevelFavorForLevel = C_Housing and C_Housing.GetHouseLevelFavorForLevel
 
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
@@ -845,22 +849,6 @@ do
 	end
 end
 
-function E:Dump(object, inspect)
-	local debugTools = IsAddOnLoaded('Blizzard_DebugTools')
-	if not debugTools then E:LoadAddon('Blizzard_DebugTools') end
-
-	if inspect then
-		local tableType = type(object)
-		if tableType == 'table' then
-			_G.DisplayTableInspectorWindow(object)
-		else
-			E:Print('Failed: ', tostring(object), ' is type: ', tableType,'. Requires table object.')
-		end
-	else
-		_G.DevTools_Dump(object)
-	end
-end
-
 function E:AddNonPetBattleFrames()
 	if InCombatLockdown() then
 		E:UnregisterEventForObject('PLAYER_REGEN_DISABLED', E.AddNonPetBattleFrames, E.AddNonPetBattleFrames)
@@ -1260,6 +1248,44 @@ function E:CropRatio(width, height, mult, left, right, top, bottom, factor)
 	end
 
 	return left, right, top, bottom
+end
+
+function E:UpdateHouseFavor(data, event, info)
+	if event == 'TRACKED_HOUSE_CHANGED' or event == 'ELVUI_FORCE_UPDATE' then
+		local houseGUID = GetTrackedHouseGuid()
+		if houseGUID then
+			data.houseGUID = houseGUID
+			GetCurrentHouseLevelFavor(houseGUID) -- trigger HOUSE_LEVEL_FAVOR_UPDATED
+		else
+			wipe(data) -- clear when we stop tracking
+		end
+	elseif event == 'HOUSE_LEVEL_FAVOR_UPDATED' then
+		if data.houseGUID == info.houseGUID then
+			local actualLevel = info.houseLevel
+			local displayLevel = actualLevel + 1
+
+			data.actualLevel = actualLevel
+			data.displayLevel = displayLevel
+
+			local minXP = GetHouseLevelFavorForLevel(actualLevel)
+			local maxXP = GetHouseLevelFavorForLevel(displayLevel)
+
+			local houseXP = info.houseFavor
+			local sectionCurrent = houseXP - minXP
+			local sectionLevel = maxXP - minXP
+			local sectionPercent = (sectionCurrent / sectionLevel) * 100
+
+			data.houseFavor = houseXP
+			data.minBar = minXP
+			data.maxBar = maxXP
+			data.remainLevel = maxXP - houseXP
+			data.sectionCurrent = sectionCurrent
+			data.sectionLevel = sectionLevel
+			data.sectionPercent = sectionPercent
+		end
+	end
+
+	return data.houseFavor, data.sectionPercent
 end
 
 function E:ScanTooltip_UnitInfo(unit)

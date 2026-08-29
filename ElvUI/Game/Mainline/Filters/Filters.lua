@@ -115,6 +115,28 @@ G.unitframe.aurafilters.Whitelist = {
 	}
 }
 
+G.unitframe.aurafilters.RaidCDs = {
+	type = 'Whitelist',
+	desc = L["Defensive raid-wide cooldowns."],
+	spells = {
+		-- Priest
+		[64843]		= List(), -- Divine Hymn
+		[81782]		= List(), -- Power Word: Barrier
+		-- Druid
+		[740]		= List(), -- Tranquility (HoT)
+		-- Shaman
+		[325174]	= List(), -- Spirit Link Totem
+		-- Evoker
+		[363534]	= List(), -- Rewind (HoT)
+		-- Warrior
+		[97463]		= List(), -- Rallying Cry
+		-- Paladin
+		[31821]		= List(), -- Aura Mastery
+		-- Death Knight
+		[145629]	= List(), -- Anti-Magic Zone
+	}
+}
+
 -- Aura indicators on UnitFrames (Hots, Shields, Externals)
 G.unitframe.aurawatch = {
 	EVOKER = {
@@ -219,7 +241,7 @@ G.unitframe.ChannelTicks = {
 	[400171]	= 3, -- Penance (Dark Reprimand, heal)
 	[64902]		= 5, -- Symbol of Hope (Mana Hymn)
 	-- Mage
-	[5143]		= 4, -- Arcane Missiles
+	[5143]		= 5, -- Arcane Missiles
 	[12051]		= 6, -- Evocation
 	[205021]	= 5, -- Ray of Frost
 	-- Druid
@@ -251,6 +273,7 @@ G.unitframe.ChainChannelTime = {
 -- Spells Effected By Talents
 G.unitframe.TalentChannelTicks = {
 	[356995]	= { [1219723] = 4 }, -- Disintegrate (Azure Celerity)
+	[5143]		= { [236628] = 7 }, -- Amplification
 }
 
 -- Increase ticks from auras

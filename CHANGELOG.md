@@ -1,3 +1,19 @@
+### Version 15.26 [ August 29th 2026 ]
+*   Item level display for enchants will appear cleaner (regardless of abbreviate setting).
+*   Chat tabs had an unneeded workaround that was causing trouble, removed it.
+*   CreateShadow sometimes causing a secret error (plugin related).
+*   Nameplate reload would sometimes cause an error if a nameplate was removed while profile was switching.
+*   Aura containers protected from failure when a unitframe is tiny: elementWidth can't be a negative value.
+*   Experience Datatext can show housing level in the tooltip when tracked (same with Databar).
+*   Experience Databar will swap to tracked housing at max level (when shown at max level).
+*   Aura highlight has several fixes and updating spells without a reload works again.
+*   Aura highlight should work again for totems on shamans (or others classes were it wasn't).
+*   Top Aura status bars were not using the color set in config (color by value does not work still).
+*   Quick join Datatext and Chat message should work again (rather than saying Unknown; Thanks Dack).
+*   Aura containers on nameplates reanchored (fixes leveling issue; Thanks Plusmouse).
+*   Mage Arcane Missile ticks on castbar for Amplification (still need to do 2 set bonus).
+*   Aura indicator count text works again.
+
 ### Version 15.25 [ August 22nd 2026 ]
 *   **Auras**
     *   Filter defaults adjusted further.

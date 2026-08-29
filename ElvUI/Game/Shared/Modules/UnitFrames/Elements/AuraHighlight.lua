@@ -40,7 +40,7 @@ end
 do
 	local filters = {
 		good = 'HELPFUL',
-		bad = 'HARMFUL|RAID'
+		bad = 'HARMFUL|DISPELLABLE'
 	}
 
 	function UF:AuraHighlight_SetupContainer(frame, highlight, which)
@@ -54,10 +54,6 @@ do
 		container.filter = filters[which]
 		container.isHighlight = true
 
-		if not container.candidateTemp then
-			container.candidateTemp = {}
-		end -- trash object for reuse
-
 		if which == 'good' then
 			E:Auras_SetupList(container, E.global.unitframe.AuraHighlightColors)
 
@@ -68,6 +64,7 @@ do
 
 		E:Auras_GroupUnit(container, frame.__unit)
 		E:Auras_SetHighlight(container)
+		E:Auras_UpdateHighlights(container)
 	end
 end
 

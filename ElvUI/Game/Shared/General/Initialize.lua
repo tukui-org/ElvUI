@@ -6,7 +6,7 @@ local _G = _G
 local setmetatable, rawget, rawset = setmetatable, rawget, rawset
 local gsub, tinsert, next, type, wipe = gsub, tinsert, next, type, wipe
 local strsplit, tostring, tonumber = strsplit, tostring, tonumber
-local strjoin, strfind, strmatch = strjoin, strfind, strmatch
+local tconcat, strfind, strmatch = table.concat, strfind, strmatch
 
 local CreateFrame = CreateFrame
 local GetBuildInfo = GetBuildInfo
@@ -148,7 +148,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.25, '15.25-git', nil, true
+		return 15.26, '15.26-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -507,10 +507,39 @@ do -- backwards compatibility for GetMouseFocus
 	end
 end
 
+do	-- this is so we can join nil values too
+	local text = {}
+	function E:StringJoin(sep, ...)
+		wipe(text)
+
+		for _, value in next, { ... } do
+			text[#text+1] = tostring(value)
+		end
+
+		return tconcat(text, sep)
+	end
+end
+
 function E:Print(...)
 	local frame = E.db and _G[E.db.general.messageRedirect] or _G.DEFAULT_CHAT_FRAME
-	local msg = strjoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)
+	local msg = E:StringJoin('', E.media.hexvaluecolor or '|cff00b3ff', 'ElvUI:|r ', ...)
 	frame:AddMessage(msg)
+end
+
+function E:Dump(object, inspect)
+	local debugTools = IsAddOnLoaded('Blizzard_DebugTools')
+	if not debugTools then E:LoadAddon('Blizzard_DebugTools') end
+
+	if inspect then
+		local tableType = type(object)
+		if tableType == 'table' then
+			_G.DisplayTableInspectorWindow(object)
+		else
+			E:Print('Failed: ', object, ' is type: ', tableType,'. Requires table object.')
+		end
+	else
+		_G.DevTools_Dump(object)
+	end
 end
 
 function E:LoadAddon(addon)

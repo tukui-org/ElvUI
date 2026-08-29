@@ -684,20 +684,21 @@ do
 	end
 end
 
-function UF:Update_StatusBar(statusBar, texture)
-	if not statusBar then return end
+function UF:Update_StatusBar(bar, texture)
+	if not bar then return end
 
 	if not texture then
 		texture = LSM:Fetch('statusbar', UF.db.statusbar)
 	end
 
-	local useBlank = (statusBar.parent and statusBar.parent.isTransparent) or statusBar.isTransparent
+	local parent = bar.parent or bar:GetParent() -- (parent is only used in prediction on UF but its not called here) or bg parent
+	local useBlank = (parent and parent.isTransparent) or bar.isTransparent
 	local newTexture = (not useBlank and texture) or E.media.blankTex
 
-	if statusBar:IsObjectType('StatusBar') then
-		statusBar:SetStatusBarTexture(newTexture)
-	elseif statusBar:IsObjectType('Texture') then
-		statusBar:SetTexture(newTexture)
+	if bar:IsObjectType('StatusBar') then
+		bar:SetStatusBarTexture(newTexture)
+	elseif bar:IsObjectType('Texture') then
+		bar:SetTexture(newTexture)
 	end
 end
 
@@ -2135,11 +2136,12 @@ function UF:ToggleTransparentStatusBar(isTransparent, statusBar, backdropTex, ad
 	statusBar.invertColors = invertColors
 	statusBar.backdropTex = backdropTex
 
+	local parent = statusBar:GetParent()
 	local orientation = statusBar:GetOrientation()
 	local barTexture = statusBar:GetStatusBarTexture() -- This fixes Center Pixel offset problem (normally this has > 2 points)
 	barTexture:SetInside(nil, 0, 0) -- This also unsnaps the texture
 
-	UF:HandleStatusBarTemplate(statusBar, statusBar:GetParent(), isTransparent)
+	UF:HandleStatusBarTemplate(statusBar, parent, isTransparent)
 
 	if isTransparent then
 		statusBar:SetStatusBarTexture(E.media.blankTex)

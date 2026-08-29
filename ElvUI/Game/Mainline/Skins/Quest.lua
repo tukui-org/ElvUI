@@ -335,17 +335,19 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestGreetingFrameHorizontalBreak:Kill()
 
-	_G.QuestDetailScrollChildFrame:StripTextures(nil, true)
-	_G.QuestDetailScrollFrame:StripTextures(nil, true)
 	_G.QuestFrameDetailPanel:StripTextures(nil, true)
 	_G.QuestFrameGreetingPanel:StripTextures(nil, true)
 	_G.QuestFrameProgressPanel:StripTextures(nil, true)
 	_G.QuestFrameRewardPanel:StripTextures(nil, true)
+
+	_G.QuestDetailScrollFrame:StripTextures(nil, true)
 	_G.QuestGreetingScrollFrame:StripTextures(nil, true)
 	_G.QuestLogPopupDetailFrameScrollFrame:StripTextures(nil, true)
 	_G.QuestProgressScrollFrame:StripTextures(nil, true)
-	_G.QuestRewardScrollChildFrame:StripTextures(nil, true)
 	_G.QuestRewardScrollFrame:StripTextures(nil, true)
+
+	_G.QuestDetailScrollChildFrame:StripTextures(nil, true)
+	_G.QuestRewardScrollChildFrame:StripTextures(nil, true)
 
 	_G.QuestFrameGreetingPanel:HookScript('OnShow', GreetingPanel_OnShow) -- called when actually shown
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', GreetingPanel_OnShow) -- called through QUEST_LOG_UPDATE
@@ -388,10 +390,10 @@ function S:BlizzardQuestFrames()
 		_G.QuestFrameProgressPanel.Bg:SetAlpha(1)
 		_G.QuestFrameGreetingPanel.Bg:SetAlpha(1)
 
-		_G.QuestDetailScrollFrame.Center:SetAlpha(0)
-		_G.QuestRewardScrollFrame.Center:SetAlpha(0)
-		_G.QuestProgressScrollFrame.Center:SetAlpha(0)
-		_G.QuestGreetingScrollFrame.Center:SetAlpha(0)
+		_G.QuestDetailScrollFrame.Center:Hide()
+		_G.QuestRewardScrollFrame.Center:Hide()
+		_G.QuestProgressScrollFrame.Center:Hide()
+		_G.QuestGreetingScrollFrame.Center:Hide()
 
 		S:HandleBlizzardRegions(_G.QuestModelScene.ModelTextFrame)
 	end

@@ -21,8 +21,10 @@ local C_QuestLog_GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries
 local C_QuestLog_ReadyForTurnIn = C_QuestLog.ReadyForTurnIn
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 
-local CurrentXP, XPToLevel, PercentRested, PercentXP, RemainXP, RemainTotal, RemainBars
-local RestedXP, QuestLogXP = 0, 0
+local CurrentXP, XPToLevel, PercentXP, RemainXP, RemainTotal, RemainBars
+local QuestLogXP, RestedXP, PercentRested = 0, 0
+
+local HouseInfo, HouseXP, HousePercent = {}
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
 	if E.Retail and questID then
@@ -60,11 +62,32 @@ local function RestedQuestLayering()
 	bar.Rested.barTexture:SetDrawLayer('ARTWORK', (QuestLogXP <= RestedXP) and 2 or 3)
 end
 
-function DB:ExperienceBar_Update()
+function DB:ExperienceBar_GetDisplayText(textFormat, current, percent, remain, toLevel)
+	if textFormat == 'PERCENT' then
+		return format('%.2f%%', percent)
+	elseif textFormat == 'CURMAX' then
+		return format('%s - %s', E:ShortValue(current), E:ShortValue(toLevel))
+	elseif textFormat == 'CURPERC' then
+		return format('%s - %.2f%%', E:ShortValue(current), percent)
+	elseif textFormat == 'CUR' then
+		return format('%s', E:ShortValue(current))
+	elseif textFormat == 'REM' then
+		return format('%s', remain)
+	elseif textFormat == 'CURREM' then
+		return format('%s - %s', E:ShortValue(current), remain)
+	elseif textFormat == 'CURPERCREM' then
+		return format('%s - %.2f%% (%s)', E:ShortValue(current), percent, remain)
+	end
+end
+
+function DB:ExperienceBar_Update(event, info)
 	local bar = DB.StatusBars.Experience
 	DB:SetVisibility(bar)
 
 	if not bar.db.enable or bar:ShouldHide() then return end
+
+	HouseXP, HousePercent = E:UpdateHouseFavor(HouseInfo, event or 'ELVUI_FORCE_UPDATE', info)
+	if event == 'TRACKED_HOUSE_CHANGED' and HouseXP then return end -- only used to trigger house favor event or let it go back to exp
 
 	CurrentXP, XPToLevel, RestedXP = UnitXP('player'), UnitXPMax('player'), (GetXPExhaustion() or 0)
 	if XPToLevel <= 0 then XPToLevel = 1 end
@@ -73,6 +96,7 @@ function DB:ExperienceBar_Update()
 	local remainPercent = remainXP / XPToLevel
 	RemainTotal, RemainBars = remainPercent * 100, remainPercent * 20
 	PercentXP, RemainXP = (CurrentXP / XPToLevel) * 100, E:ShortValue(remainXP)
+	PercentRested = RestedXP > 0 and ((RestedXP / XPToLevel) * 100)
 
 	local expColor, restedColor = DB.db.colors.experience, DB.db.colors.rested
 	bar:SetStatusBarColor(expColor.r, expColor.g, expColor.b, expColor.a)
@@ -80,7 +104,15 @@ function DB:ExperienceBar_Update()
 
 	local displayString, textFormat = '', DB.db.experience.textFormat
 
-	if E:XPIsLevelMax() then
+	local levelMax = E:XPIsLevelMax()
+	if HouseXP and levelMax then
+		bar:SetMinMaxValues(HouseInfo.minBar, HouseInfo.maxBar)
+		bar:SetValue(HouseXP)
+
+		if textFormat ~= 'NONE' then
+			displayString = DB:ExperienceBar_GetDisplayText(textFormat, HouseXP, HousePercent, HouseInfo.remainLevel, HouseInfo.maxBar)
+		end
+	elseif levelMax then
 		bar:SetMinMaxValues(0, 1)
 		bar:SetValue(1)
 
@@ -91,28 +123,11 @@ function DB:ExperienceBar_Update()
 		bar:SetMinMaxValues(0, XPToLevel)
 		bar:SetValue(CurrentXP)
 
-		if textFormat == 'PERCENT' then
-			displayString = format('%.2f%%', PercentXP)
-		elseif textFormat == 'CURMAX' then
-			displayString = format('%s - %s', E:ShortValue(CurrentXP), E:ShortValue(XPToLevel))
-		elseif textFormat == 'CURPERC' then
-			displayString = format('%s - %.2f%%', E:ShortValue(CurrentXP), PercentXP)
-		elseif textFormat == 'CUR' then
-			displayString = format('%s', E:ShortValue(CurrentXP))
-		elseif textFormat == 'REM' then
-			displayString = format('%s', RemainXP)
-		elseif textFormat == 'CURREM' then
-			displayString = format('%s - %s', E:ShortValue(CurrentXP), RemainXP)
-		elseif textFormat == 'CURPERCREM' then
-			displayString = format('%s - %.2f%% (%s)', E:ShortValue(CurrentXP), PercentXP, RemainXP)
-		end
+		displayString = DB:ExperienceBar_GetDisplayText(textFormat, CurrentXP, PercentXP, RemainXP, XPToLevel)
 
-		local isRested = RestedXP > 0
-		if isRested then
+		if PercentRested then
 			bar.Rested:SetMinMaxValues(0, XPToLevel)
 			bar.Rested:SetValue(min(CurrentXP + RestedXP, XPToLevel))
-
-			PercentRested = (RestedXP / XPToLevel) * 100
 
 			if textFormat == 'PERCENT' then
 				displayString = format('%s R:%.2f%%', displayString, PercentRested)
@@ -128,9 +143,9 @@ function DB:ExperienceBar_Update()
 		end
 
 		RestedQuestLayering()
-		bar.Rested:SetShown(isRested)
 	end
 
+	bar.Rested:SetShown(PercentRested and not levelMax)
 	bar.text:SetText(displayString)
 end
 
@@ -203,14 +218,21 @@ function DB:ExperienceBar_OnEnter()
 		GameTooltip:AddLine(' ')
 		GameTooltip:AddDoubleLine(L["XP:"], format(' %s / %s (%.2f%%)', E:ShortValue(CurrentXP), E:ShortValue(XPToLevel), PercentXP), 1, 1, 1)
 	end
+
 	if RemainXP then
 		GameTooltip:AddDoubleLine(L["Remaining:"], format(' %s (%.2f%% - %.2f '..L["Bars"]..')', RemainXP, RemainTotal, RemainBars), 1, 1, 1)
 	end
+
 	if QuestLogXP > 0 then
 		GameTooltip:AddDoubleLine(L["Quest Log XP:"], format(' %d (%.2f%%)', QuestLogXP, (QuestLogXP / XPToLevel) * 100), 1, 1, 1)
 	end
+
 	if RestedXP > 0 then
-		GameTooltip:AddDoubleLine(L["Rested:"], format('+%s (%.2f%%)', E:ShortValue(RestedXP), PercentRested), 1, 1, 1)
+		GameTooltip:AddDoubleLine(L["Rested:"], format('+%s (%.2f%%)', E:ShortValue(RestedXP), PercentRested or 0), 1, 1, 1)
+	end
+
+	if HouseXP and HouseXP > 0 then
+		GameTooltip:AddDoubleLine(HouseInfo.address or L["House:"], format('+%s (%.2f%%)', E:ShortValue(HouseXP), HousePercent), 1, 1, 1)
 	end
 
 	GameTooltip:Show()
@@ -241,6 +263,8 @@ function DB:ExperienceBar_Toggle()
 		DB:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'ExperienceBar_QuestXP')
 
 		if E.Retail then
+			DB:RegisterEvent('TRACKED_HOUSE_CHANGED', 'ExperienceBar_Update')
+			DB:RegisterEvent('HOUSE_LEVEL_FAVOR_UPDATED', 'ExperienceBar_Update')
 			DB:RegisterEvent('SUPER_TRACKING_CHANGED', 'ExperienceBar_QuestXP')
 		end
 

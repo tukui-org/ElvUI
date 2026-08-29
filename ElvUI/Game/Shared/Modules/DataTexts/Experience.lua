@@ -11,7 +11,12 @@ local displayString = ''
 local CurrentXP, XPToLevel, RestedXP, PercentRested
 local PercentXP, RemainXP, RemainTotal, RemainBars
 
-local function OnEvent(panel)
+local HouseInfo, HouseXP, HousePercent = {}
+
+local function OnEvent(panel, event, info)
+	HouseXP, HousePercent = E:UpdateHouseFavor(HouseInfo, event, info)
+	if event == 'TRACKED_HOUSE_CHANGED' and HouseXP then return end -- only used to trigger house favor event or let it go back to exp
+
 	if E:XPIsLevelMax() then
 		displayString = L["Max Level"]
 	else
@@ -71,7 +76,11 @@ local function OnEnter()
 		DT.tooltip:AddDoubleLine(L["Rested:"], format('+%s (%.2f%%)', E:ShortValue(RestedXP), PercentRested), 1, 1, 1)
 	end
 
+	if HouseXP and HouseXP > 0 then
+		DT.tooltip:AddDoubleLine(HouseInfo.address or L["House:"], format('+%s (%.2f%%)', E:ShortValue(HouseXP), HousePercent), 1, 1, 1)
+	end
+
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Experience', nil, { 'PLAYER_XP_UPDATE', 'DISABLE_XP_GAIN', 'ENABLE_XP_GAIN', 'UPDATE_EXHAUSTION' }, OnEvent, nil, nil, OnEnter, nil, _G.COMBAT_XP_GAIN)
+DT:RegisterDatatext('Experience', nil, { E.Retail and 'TRACKED_HOUSE_CHANGED' or nil, E.Retail and 'HOUSE_LEVEL_FAVOR_UPDATED' or nil, 'PLAYER_XP_UPDATE', 'DISABLE_XP_GAIN', 'ENABLE_XP_GAIN', 'UPDATE_EXHAUSTION' }, OnEvent, nil, nil, OnEnter, nil, _G.COMBAT_XP_GAIN)
