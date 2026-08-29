@@ -25,8 +25,6 @@ local FLOWAXIS = AnchorUtil and AnchorUtil.FlowLayoutAxis
 local SORTDIRECTION = _G.AuraContainerSortDirection
 local SORTMETHOD = _G.AuraContainerSortMethod
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
-local StatusBarInterpolation = Enum.StatusBarInterpolation
-local StatusBarTimerDirection = Enum.StatusBarTimerDirection
 
 local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
 
@@ -272,7 +270,6 @@ function E:Auras_CreateButton(button)
 	button.highlight = highlight
 
 	local statusbar = CreateFrame('StatusBar', nil, button)
-	statusbar:SetStatusBarTexture(E.media.normTex)
 	statusbar:CreateBackdrop('Transparent', nil, true) -- these are forbidden, ignore updates
 	button.statusbar = statusbar
 
@@ -297,22 +294,6 @@ function E:Auras_CreateButton(button)
 		nameText:Point('LEFT', button, 2, 0)
 		textFrame.nameText = nameText
 	end
-end
-
-function E:Auras_GetDurationBarOptions(container)
-	local options = container.durationBarOptions
-	if not options then
-		options = {
-			direction = StatusBarTimerDirection.RemainingTime
-		}
-
-		container.durationBarOptions = options
-	end
-
-	local db = container.barDB or container.db
-	options.interpolation = (db and db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate
-
-	return options
 end
 
 function E:Auras_UpdateButton(container, button)
@@ -398,25 +379,26 @@ function E:Auras_UpdateButton(container, button)
 	if container.isTopAura then
 		local statusbar = button.statusbar
 		if container.useStatusbar then
-			local color = container.barColor
-			statusbar:SetStatusBarTexture(container.barTexture)
-			if color then
-				statusbar:SetStatusBarColor(color.r, color.g, color.b, color.a or 1)
-			end
+			button:SetDurationBar(statusbar)
 
-			A:Configure_Statusbar(button, statusbar, container.barDB)
-			button:SetDurationBar(statusbar, E:Auras_GetDurationBarOptions(container))
+			local color = container.customBackdropColor or backdropColor
+			statusbar:SetStatusBarTexture(container.barTexture)
+			statusbar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, container.isTransparent and backdropFadeColor.a or 1)
 			statusbar:Show()
 
 			if container.isAuraBar then
 				statusbar.backdrop.Center:Hide()
 			end
+
+			A:Configure_Statusbar(button, statusbar, container.barDB)
 		else
 			button:ClearDurationBar()
 			statusbar:Hide()
 		end
 	elseif container.isAuraBar then
 		if button.statusbar then
+			button:SetDurationBar(button.statusbar)
+
 			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
 			else
@@ -427,7 +409,6 @@ function E:Auras_UpdateButton(container, button)
 			button.statusbar:SetInside()
 			button.statusbar:SetReverseFill(not container.reverseFill)
 			button.statusbar:SetStatusBarColor(color.r or 1, color.g or 1, color.b or 1, container.isTransparent and backdropFadeColor.a or 1)
-			button:SetDurationBar(button.statusbar, E:Auras_GetDurationBarOptions(container))
 
 			if button.border then
 				button.border:ClearAllPoints()
