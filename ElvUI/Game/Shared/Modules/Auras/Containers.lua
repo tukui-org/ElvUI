@@ -9,6 +9,7 @@ local _G = _G
 local ceil, huge = ceil, math.huge
 local strfind, wipe = strfind, wipe
 local floor, next, type = floor, next, type
+local hooksecurefunc = hooksecurefunc
 
 local AnchorUtil = AnchorUtil
 local CreateFrame = CreateFrame
@@ -1038,16 +1039,29 @@ function E:Auras_GetFilter(obj, key)
 	return list
 end
 
-function E:Auras_OnEnable(enabled)
+function E:Auras_WatchEnabled(enabled)
 	if not self.events then return end
 
 	self.events:SetScript('OnEvent', enabled and E.Auras_OnEvent or nil)
 end
 
+function E:Auras_CreateEventer(container)
+	local events = CreateFrame('Frame', nil, container)
+	events.owner = container
+
+	events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
+	events:RegisterEvent('UNIT_FLAGS') -- highlight: flags changes
+	events:RegisterEvent('UNIT_PHASE') -- highlight: phase changes
+	events:RegisterEvent('PLAYER_TARGET_CHANGED') -- aurabar: switch friendship
+	events:RegisterEvent('PLAYER_FOCUS_CHANGED') -- aurabar: switch friendship
+	events:RegisterEvent('GROUP_ROSTER_UPDATE') -- raid: when people move between groups
+
+	return events
+end
+
 function E:Auras_Create(parent, which, override)
 	local parentName = parent and parent:GetName()
 	local container = CreateFrame('AuraContainer', override or (parentName and (parentName..which)) or nil, parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
-	container:SetScript('OnEnable', E.Auras_OnEnable)
 
 	container.parentName = parentName
 	container.parent = parent
@@ -1061,18 +1075,9 @@ function E:Auras_Create(parent, which, override)
 	container.buttons = {}
 	container.layout = {}
 	container.filters = {}
+	container.events = E:Auras_CreateEventer(container)
 
-	local events = CreateFrame('Frame', nil, container)
-	events.owner = container
-	container.events = events
-
-	-- aurabar to switch to friendship
-	events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
-	events:RegisterEvent('UNIT_FLAGS') -- highlight: flags changes
-	events:RegisterEvent('UNIT_PHASE') -- highlight: phase changes
-	events:RegisterEvent('GROUP_ROSTER_UPDATE')
-	events:RegisterEvent('PLAYER_TARGET_CHANGED')
-	events:RegisterEvent('PLAYER_FOCUS_CHANGED')
+	hooksecurefunc(container, 'SetEnabled', E.Auras_WatchEnabled)
 
 	return container
 end
