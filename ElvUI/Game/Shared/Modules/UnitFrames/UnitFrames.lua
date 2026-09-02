@@ -2269,6 +2269,36 @@ function UF:UpdateAllElements(event)
 	end
 end
 
+function UF:Auras_ToggleContainer(frame, shown)
+	E:Auras_ToggleEnable(frame.Auras, shown)
+	E:Auras_ToggleEnable(frame.Buffs, shown)
+	E:Auras_ToggleEnable(frame.Debuffs, shown)
+	E:Auras_ToggleEnable(frame.AuraBars, shown)
+	E:Auras_ToggleEnable(frame.AuraWatch, shown)
+
+	local highlight = frame.AuraHighlight
+	if highlight then
+		E:Auras_ToggleEnable(highlight.good, shown)
+		E:Auras_ToggleEnable(highlight.bad, shown)
+	end
+end
+
+function UF:Show()
+	if self.hasAurasShown then return end
+
+	self.hasAurasShown = true
+
+	UF:Auras_ToggleContainer(self, true)
+end
+
+function UF:Hide()
+	if not self.hasAurasShown then return end
+
+	self.hasAurasShown = false
+
+	UF:Auras_ToggleContainer(self, false)
+end
+
 function UF:AfterStyleCallback()
 	-- this will wait until after ouf pushes `EnableElement` onto the newly spawned frames
 	-- calling an update onto assist or tank in the styleFunc is before the `EnableElement`
@@ -2282,6 +2312,16 @@ function UF:AfterStyleCallback()
 	elseif frameType == 'assist' or frameType == 'assisttarget' then
 		UF:Update_AssistFrames(self, UF.db.units.assist)
 		UF:Update_FontStrings()
+	end
+
+	if E.Retail then
+		if self.Show then
+			hooksecurefunc(self, 'Show', UF.Show)
+		end
+
+		if self.Hide then
+			hooksecurefunc(self, 'Hide', UF.Hide)
+		end
 	end
 
 	if self.UpdateAllElements then

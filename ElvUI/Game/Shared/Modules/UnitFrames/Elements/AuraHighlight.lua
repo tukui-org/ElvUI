@@ -76,11 +76,11 @@ function UF:Configure_AuraHighlight(frame)
 	local highlight = frame.AuraHighlight
 	if E.Retail then
 		local good = highlight.good
-		good.enabled = enabled
+		good.allowEnable = enabled
 		good.key = 'good'
 
 		local bad = highlight.bad
-		bad.enabled = enabled
+		bad.allowEnable = enabled
 		bad.key = 'bad'
 	end
 
@@ -91,7 +91,7 @@ function UF:Configure_AuraHighlight(frame)
 
 		highlight.glowAnchor = (frame.ThreatIndicator and frame.ThreatIndicator.MainGlow) or frame.TargetGlow
 
-		if E.Retail then -- this will lead to call on `Auras_SetEnabled`
+		if E.Retail then
 			UF:AuraHighlight_SetupContainer(frame, highlight, 'good')
 			UF:AuraHighlight_SetupContainer(frame, highlight, 'bad')
 		else
@@ -109,7 +109,7 @@ function UF:Configure_AuraHighlight(frame)
 				frame.AuraHighlightBackdrop = false
 			end
 		end
-	elseif E.Retail then -- this will lead to call on `Auras_SetEnabled`
+	elseif E.Retail then
 		E:Auras_GroupUnit(highlight.good, frame.__unit)
 		E:Auras_GroupUnit(highlight.bad, frame.__unit)
 	elseif frame:IsElementEnabled('AuraHighlight') then

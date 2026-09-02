@@ -471,7 +471,7 @@ function UF:Configure_Auras(frame, which)
 
 	local initialAnchor = (UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint]) or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
 	if E.Retail then
-		auras:SetEnabled(settings.enable)
+		auras.allowEnable = settings.enable
 
 		auras.isUnitframe = true
 		auras.auraType = auraType

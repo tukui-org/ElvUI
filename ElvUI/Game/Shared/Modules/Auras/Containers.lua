@@ -806,15 +806,13 @@ function E:Auras_SetupList(container, auraTable)
 			if data.enabled then
 				container.keys[key] = E:Auras_CleanClone(container, key, data)
 			end
-		elseif container.isHighlight then
-			if data.enable then
-				local clone = E:Auras_CleanClone(container, key, data)
-				if not clone.id then
-					clone.id = spell
-				end
-
-				container.keys[key] = clone
+		elseif data.enable then -- isHighlight db check
+			local clone = E:Auras_CleanClone(container, key, data)
+			if not clone.id then
+				clone.id = spell
 			end
+
+			container.keys[key] = clone
 		end
 	end
 end
@@ -1003,16 +1001,28 @@ function E:Auras_SetUnit(container, unit)
 	container.unit = unit
 end
 
-function E:Auras_SetEnabled(container)
-	container:SetEnabled(container.enabled and container.canAssist)
+function E:Auras_ToggleEnable(container, shown)
+	if not container then return end
+
+	local allowed = container.allowEnable and (not container.isHighlight or container.canAssist)
+	if not allowed then
+		container:SetEnabled(false)
+	elseif shown ~= nil then
+		container:SetEnabled(shown)
+	else
+		local parent = container:GetParent()
+		if container.isHighlight then
+			parent = parent:GetParent()
+		end
+
+		container:SetEnabled(not parent or parent:IsShown())
+	end
 end
 
 function E:Auras_AssistUnit(container, unit)
-	container.canAssist = UnitCanAssist('player', unit)
+	container.canAssist = UnitCanAssist('player', unit, true, true)
 
-	if container.isHighlight then
-		E:Auras_SetEnabled(container)
-	end
+	E:Auras_ToggleEnable(container)
 end
 
 function E:Auras_GroupUnit(container, unit)
@@ -1039,13 +1049,13 @@ function E:Auras_GetFilter(obj, key)
 	return list
 end
 
-function E:Auras_WatchEnabled(enabled)
+function E:Auras_SetEnabled(enabled)
 	if not self.events then return end
 
 	self.events:SetScript('OnEvent', enabled and E.Auras_OnEvent or nil)
 end
 
-function E:Auras_CreateEventer(container)
+function E:Auras_CreateEventFrame(container)
 	local events = CreateFrame('Frame', nil, container)
 
 	events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
@@ -1074,9 +1084,9 @@ function E:Auras_Create(parent, which, override)
 	container.buttons = {}
 	container.layout = {}
 	container.filters = {}
-	container.events = E:Auras_CreateEventer(container)
+	container.events = E:Auras_CreateEventFrame(container)
 
-	hooksecurefunc(container, 'SetEnabled', E.Auras_WatchEnabled)
+	hooksecurefunc(container, 'SetEnabled', E.Auras_SetEnabled)
 
 	return container
 end

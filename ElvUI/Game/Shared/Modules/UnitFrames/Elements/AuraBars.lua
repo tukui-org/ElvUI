@@ -230,7 +230,7 @@ function UF:Configure_AuraBars(frame)
 			E:Auras_SetLineSize(bars)
 			E:Auras_UpdateButtons(bars)
 
-			bars:SetEnabled(true)
+			bars.allowEnable = true
 		else
 			bars.disableMouse = db.clickThrough
 
@@ -245,7 +245,7 @@ function UF:Configure_AuraBars(frame)
 		end
 
 		if E.Retail then
-			bars:SetEnabled(false)
+			bars.allowEnable = false
 		end
 
 		bars:Hide()
