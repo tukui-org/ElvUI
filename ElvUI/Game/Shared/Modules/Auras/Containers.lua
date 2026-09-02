@@ -1038,9 +1038,16 @@ function E:Auras_GetFilter(obj, key)
 	return list
 end
 
+function E:Auras_OnEnable(enabled)
+	if not self.events then return end
+
+	self.events:SetScript('OnEvent', enabled and E.Auras_OnEvent or nil)
+end
+
 function E:Auras_Create(parent, which, override)
 	local parentName = parent and parent:GetName()
 	local container = CreateFrame('AuraContainer', override or (parentName and (parentName..which)) or nil, parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
+	container:SetScript('OnEnable', E.Auras_OnEnable)
 
 	container.parentName = parentName
 	container.parent = parent
@@ -1066,7 +1073,6 @@ function E:Auras_Create(parent, which, override)
 	events:RegisterEvent('GROUP_ROSTER_UPDATE')
 	events:RegisterEvent('PLAYER_TARGET_CHANGED')
 	events:RegisterEvent('PLAYER_FOCUS_CHANGED')
-	events:SetScript('OnEvent', E.Auras_OnEvent)
 
 	return container
 end

@@ -3194,7 +3194,8 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		local listID, activityID, activityInfo, name, leaderName, isLeader = firstData.lfgListID
 		local searchInfo = listID and C_LFGList_GetSearchResultInfo(listID)
 		if searchInfo then
-			activityID = searchInfo.activityIDs and searchInfo.activityIDs[1]
+			local activities = searchInfo.activityIDs
+			activityID = E:NotSecretTable(activities) and activities and activities[1]
 			name, leaderName = searchInfo.name, searchInfo.leaderName
 			isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
 		end
