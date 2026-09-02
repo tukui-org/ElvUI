@@ -97,7 +97,7 @@ if SORTDIRECTION then
 end
 
 function E:Auras_OnEvent(event, arg1)
-	local container = self.owner
+	local container = self:GetParent()
 	if event == 'PLAYER_FOCUS_CHANGED' or event == 'PLAYER_TARGET_CHANGED' then
 		local eventUnit = E.AuraEventUnits[event]
 		if eventUnit == container.unit then
@@ -1047,7 +1047,6 @@ end
 
 function E:Auras_CreateEventer(container)
 	local events = CreateFrame('Frame', nil, container)
-	events.owner = container
 
 	events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
 	events:RegisterEvent('UNIT_FLAGS') -- highlight: flags changes
