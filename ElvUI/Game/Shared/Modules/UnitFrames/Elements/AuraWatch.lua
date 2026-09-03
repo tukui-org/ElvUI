@@ -29,7 +29,7 @@ function UF:Configure_AuraWatch(frame, isPet)
 	local enabled = db and db.enable
 	local auras = frame.AuraWatch
 	if E.Retail then
-		auras:SetEnabled(enabled)
+		auras.allowEnable = enabled
 	end
 
 	if enabled then

@@ -755,6 +755,7 @@ function A:Initialize()
 	if E.private.auras.buffsHeader then
 		if E.Retail then
 			local buff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
+			buff.allowEnable = true
 			buff.auraType = 'buffs'
 			buff.unit = 'player'
 			buff.filters = {}
@@ -786,6 +787,7 @@ function A:Initialize()
 	if E.private.auras.debuffsHeader then
 		if E.Retail then
 			local debuff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
+			debuff.allowEnable = true
 			debuff.auraType = 'debuffs'
 			debuff.unit = 'player'
 			debuff.filters = {}

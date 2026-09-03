@@ -134,6 +134,8 @@ G.unitframe.aurafilters.RaidCDs = {
 		[31821]		= List(), -- Aura Mastery
 		-- Death Knight
 		[145629]	= List(), -- Anti-Magic Zone
+		-- Demon Hunter
+		[196718]	= List(), -- Darkness
 	}
 }
 
