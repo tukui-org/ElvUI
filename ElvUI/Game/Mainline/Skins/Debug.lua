@@ -30,8 +30,6 @@ local function SkinOnShow()
 	ScriptErrorsFrame.ScrollFrame:OffsetFrameLevel(2)
 
 	S:HandleTrimScrollBar(_G.ScriptErrorsFrame.ScrollFrame.ScrollBar)
-	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('TOPLEFT', ScriptErrorsFrame.ScrollFrame, 'TOPRIGHT', 4, 2)
-	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('BOTTOMLEFT', ScriptErrorsFrame.ScrollFrame, 'BOTTOMRIGHT', 4, 2)
 
 	for i = 1, #FrameTexs do
 		_G['ScriptErrorsFrame'..FrameTexs[i]]:SetTexture()
