@@ -9,6 +9,8 @@ local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 function UF:Construct_AuraHighlight(frame)
 	if E.Retail then
 		local highlight = CreateFrame('Frame', '$parentAuraHighlight', frame)
+		highlight.unitframeType = frame.unitframeType
+
 		highlight.good = E:Auras_Create(highlight, 'Good')
 		highlight.bad = E:Auras_Create(highlight, 'Bad')
 

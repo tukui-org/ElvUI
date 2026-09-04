@@ -111,7 +111,7 @@ function E:Auras_OnEvent(event, arg1)
 			end
 		end
 	elseif event == 'GROUP_ROSTER_UPDATE' then
-		if container.unit and E.AuraGroupHeaders[container.unitframeType] then
+		if container.unit then
 			E:Auras_AssistUnit(container, container.unit)
 
 			container:UpdateAllAuras()
@@ -1055,7 +1055,7 @@ function E:Auras_SetEnabled(enabled)
 	self.events:SetScript('OnEvent', enabled and E.Auras_OnEvent or nil)
 end
 
-function E:Auras_CreateEventFrame(container)
+function E:Auras_CreateEventFrame(container, frameType)
 	local events = CreateFrame('Frame', nil, container)
 
 	events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
@@ -1063,7 +1063,10 @@ function E:Auras_CreateEventFrame(container)
 	events:RegisterEvent('UNIT_PHASE') -- highlight: phase changes
 	events:RegisterEvent('PLAYER_TARGET_CHANGED') -- aurabar: switch friendship
 	events:RegisterEvent('PLAYER_FOCUS_CHANGED') -- aurabar: switch friendship
-	events:RegisterEvent('GROUP_ROSTER_UPDATE') -- raid: when people move between groups
+
+	if E.AuraGroupHeaders[frameType] then
+		events:RegisterEvent('GROUP_ROSTER_UPDATE') -- raid: when people move between groups
+	end
 
 	return events
 end
@@ -1085,8 +1088,9 @@ function E:Auras_Create(parent, which, override)
 	container.layout = {}
 	container.filters = {}
 
-	if not parent or not parent.nameplateAuraContainer then
-		container.events = E:Auras_CreateEventFrame(container)
+	local frameType = parent and parent.unitframeType
+	if frameType then -- we only need events for unitframes
+		container.events = E:Auras_CreateEventFrame(container, frameType)
 
 		hooksecurefunc(container, 'SetEnabled', E.Auras_SetEnabled)
 	end
