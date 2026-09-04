@@ -148,6 +148,7 @@ P.general = {
 		enchantAbbrev = true,
 		showItemLevel = true,
 		showEnchants = true,
+		showMissing = true,
 		showOnItem = not E.Retail,
 		showGems = true,
 		itemLevelRarity = true,

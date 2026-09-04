@@ -303,9 +303,10 @@ blizz.itemLevelInfo.args.displayCharacterInfo = ACH:Toggle(L["Display Character 
 blizz.itemLevelInfo.args.enchantAbbrev = ACH:Toggle(L["Abbreviate Enchants"], nil, 3)
 blizz.itemLevelInfo.args.itemLevelRarity = ACH:Toggle(L["Rarity Color"], nil, 4)
 blizz.itemLevelInfo.args.showEnchants = ACH:Toggle(L["Show Enchants"], nil, 10)
-blizz.itemLevelInfo.args.showItemLevel = ACH:Toggle(L["Show ItemLevel"], nil, 11)
-blizz.itemLevelInfo.args.showOnItem = ACH:Toggle(L["Show On Item"], nil, 12)
-blizz.itemLevelInfo.args.showGems = ACH:Toggle(L["Show Gems"], nil, 13)
+blizz.itemLevelInfo.args.showMissing = ACH:Toggle(L["Missing Enchants"], nil, 11)
+blizz.itemLevelInfo.args.showItemLevel = ACH:Toggle(L["Show ItemLevel"], nil, 12)
+blizz.itemLevelInfo.args.showOnItem = ACH:Toggle(L["Show On Item"], nil, 13)
+blizz.itemLevelInfo.args.showGems = ACH:Toggle(L["Show Gems"], nil, 14)
 
 blizz.itemLevelInfo.args.fontGroup = ACH:Group(L["Item Score"], nil, 70, nil, nil, function(info, value) E.db.general.itemLevel[info[#info]] = value M:UpdateInspectPageFonts('Character') M:UpdateInspectPageFonts('Inspect') end, function() return not E.db.general.itemLevel.displayCharacterInfo and not E.db.general.itemLevel.displayInspectInfo end)
 blizz.itemLevelInfo.args.fontGroup.args.itemLevelFont = ACH:SharedMediaFont(L["Font"], nil, 4)

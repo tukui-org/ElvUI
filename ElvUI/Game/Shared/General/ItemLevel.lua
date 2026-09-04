@@ -27,15 +27,36 @@ local MATCH_MIN_LEVEL = ITEM_MIN_LEVEL:gsub('%%d', '(%%d+)')
 local MATCH_ITEM_LEVEL_ALT = ITEM_LEVEL_ALT:gsub('%%d(%s?)%(%%d%)', '%%d+%1%%((%%d+)%%)')
 local MATCH_ENCHANT = ENCHANTED_TOOLTIP_LINE:gsub('%%s', '(.+)')
 
-local X2_INVTYPES, X2_EXCEPTIONS, ARMOR_SLOTS = {
+local ARMOR_SLOTS = { 1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 }
+local X2_EXCEPTIONS = { [2] = 19 } -- wands: use INVTYPE_RANGEDRIGHT but are 1H
+local X2_INVTYPES = {
 	INVTYPE_2HWEAPON = true,
 	INVTYPE_RANGEDRIGHT = true,
-	INVTYPE_RANGED = true,
-}, {
-	[2] = 19, -- wands, use INVTYPE_RANGEDRIGHT, but are 1H
-}, {1, 2, 3, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15}
+	INVTYPE_RANGED = true
+}
 
-function E:InspectGearSlot(line, lineText, slotInfo)
+local MISSING_RED = format('|cFFFF3333%s|r', _G.ADDON_MISSING)
+local MISSING_ENCHANTS = {
+	E.Retail,	-- 1: Head
+	false,		-- 2: Neck
+	E.Retail,	-- 3: Shoulders
+	false,		-- 4: Shirt
+	E.Retail,	-- 5: Chest
+	false,		-- 6: Waist
+	E.Retail,	-- 7: Legs
+	E.Retail,	-- 8: Feet
+	false,		-- 9: Wrist
+	false,		-- 10: Hands
+	E.Retail,	-- 11: Ring 1
+	E.Retail,	-- 12: Ring 2
+	false,		-- 13: Trinket 1
+	false,		-- 14: Trinket 2
+	false,		-- 15: Back
+	E.Retail,	-- 16: Main Hand
+	false		-- 17: Off Hand
+}
+
+function E:InspectGearSlot(line, lineText, slotInfo, slot, lastLine)
 	if not lineText then return end
 
 	-- handle item level
@@ -50,6 +71,7 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 	end
 
 	-- handle encahants, current this check limits it to retail only
+	local db = E.db.general.itemLevel
 	local enchant = strmatch(lineText, MATCH_ENCHANT)
 	if enchant then
 		local color1, color2 = strmatch(enchant, '(|cn.-:).-(|r)')
@@ -59,7 +81,7 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 
 		local r, g, b = line:GetTextColor()
 		local shortStrip = gsub(text, '[&+] ?', '')
-		local shortAbbrev = E.db.general.itemLevel.enchantAbbrev and gsub(shortStrip, '(%w%w%w%w%w)%w+', '%1')
+		local shortAbbrev = db.enchantAbbrev and gsub(shortStrip, '(%w%w%w%w%w)%w+', '%1')
 		slotInfo.enchantText = format('%s%s%s', color1 or '', text, color2 or '')
 		slotInfo.enchantTextShort = format('%s%s%s', color1 or '', utf8sub(shortAbbrev or shortStrip, 1, 20), color2 or '')
 		slotInfo.enchantTextReal = enchant -- unchanged, contains Atlas and color
@@ -67,6 +89,14 @@ function E:InspectGearSlot(line, lineText, slotInfo)
 		slotInfo.enchantColors[1] = r
 		slotInfo.enchantColors[2] = g
 		slotInfo.enchantColors[3] = b
+	elseif lastLine and not slotInfo.enchantText and (db.showMissing and MISSING_ENCHANTS[slot]) then
+		slotInfo.enchantText = MISSING_RED
+		slotInfo.enchantTextShort = MISSING_RED
+		slotInfo.enchantTextReal = nil
+
+		slotInfo.enchantColors[1] = 1
+		slotInfo.enchantColors[2] = 0.3
+		slotInfo.enchantColors[3] = 0.3
 	end
 end
 
@@ -95,11 +125,12 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 	local tt = E.ScanTooltip
 	tt:SetOwner(WorldFrame, 'ANCHOR_NONE')
 
-	local hasItem = tt:SetInventoryItem(unit, slot)
-	local info = hasItem and tt:GetTooltipData()
 	if not tt.slotInfo then tt.slotInfo = {} else wipe(tt.slotInfo) end
 	local slotInfo = tt.slotInfo
 
+	local hasItem = tt:SetInventoryItem(unit, slot)
+	local info = hasItem and tt:GetTooltipData()
+	local lines = info and info.lines
 	if deepScan then
 		slotInfo.gems, slotInfo.essences = E:ScanTooltipTextures()
 
@@ -108,19 +139,20 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 		slotInfo.enchantColors = tt.enchantColors
 		slotInfo.itemLevelColors = tt.itemLevelColors
 
-		if info then
-			for i, line in next, info.lines do
+		if lines then
+			local total = #lines
+			for i, line in next, lines do
 				local text = line and line.leftText
 				if i == 1 and text == RETRIEVING_ITEM_INFO then
 					return 'tooSoon'
 				else
-					E:InspectGearSlot(_G['ElvUI_ScanTooltipTextLeft'..i], text, slotInfo)
+					E:InspectGearSlot(_G['ElvUI_ScanTooltipTextLeft'..i], text, slotInfo, slot, i == total)
 					E:CollectEssenceInfo(i, text, slotInfo)
 				end
 			end
 		end
-	elseif info then
-		local firstLine = info.lines[1]
+	elseif lines then
+		local firstLine = lines[1]
 		local firstText = firstLine and firstLine.leftText
 		if firstText == RETRIEVING_ITEM_INFO then
 			return 'tooSoon'
@@ -129,7 +161,7 @@ function E:GetGearSlotInfo(unit, slot, deepScan)
 		local colorblind = GetCVarBool('colorblindmode')
 		local numLines = E.Mists and (colorblind and 21 or 20) or (colorblind and 4 or 3)
 		for x = 2, numLines do
-			local line = info.lines[x]
+			local line = lines[x]
 			if line then
 				local text = line.leftText
 				local itemLevel = (text and text ~= '') and (strmatch(text, MATCH_ITEM_LEVEL_ALT) or strmatch(text, MATCH_ITEM_LEVEL))
