@@ -150,17 +150,13 @@ do
 	end
 
 	local units = {} -- similar to UF.Configure_UnitAuras
-	function NP:Auras_UpdateUnit(nameplate, auras)
+	function NP:AuraContainer_UpdateUnit(nameplate, auras)
 		local unit = nameplate.__unit
-		if not unit then return end
+		if not unit or (units[auras] == unit) then return end
 
-		if units[auras] == unit then
-			auras:UpdateAllAuras()
-		else
-			units[auras] = unit
+		units[auras] = unit
 
-			E:Auras_SetUnit(auras, unit)
-		end
+		E:Auras_SetUnit(auras, unit)
 	end
 
 	function NP:AuraContainer_SetActive(nameplate)
@@ -177,7 +173,7 @@ do
 
 				nameplate.ActiveContainers[auras] = true
 
-				NP:Auras_UpdateUnit(nameplate, auras)
+				NP:AuraContainer_UpdateUnit(nameplate, auras)
 
 				auras:SetEnabled(true)
 				auras:SetShown(true)
