@@ -1084,9 +1084,12 @@ function E:Auras_Create(parent, which, override)
 	container.buttons = {}
 	container.layout = {}
 	container.filters = {}
-	container.events = E:Auras_CreateEventFrame(container)
 
-	hooksecurefunc(container, 'SetEnabled', E.Auras_SetEnabled)
+	if not parent or not parent.nameplateAuraContainer then
+		container.events = E:Auras_CreateEventFrame(container)
+
+		hooksecurefunc(container, 'SetEnabled', E.Auras_SetEnabled)
+	end
 
 	return container
 end

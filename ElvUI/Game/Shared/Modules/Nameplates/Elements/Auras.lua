@@ -221,6 +221,8 @@ end
 
 function NP:AuraContainer_ConstructAuraTypes(frameType, name)
 	local frame = CreateFrame('Frame', name)
+	frame.nameplateAuraContainer = true
+
 	for which in next, AURA_TYPES do
 		local auras = E:Auras_Create(frame, which)
 		auras:SetEnabled(false)
