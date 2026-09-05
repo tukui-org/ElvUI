@@ -29,8 +29,8 @@ local function GetValues(currentStanding, currentReactionThreshold, nextReaction
 		maximum = current -- account for negative maximum
 	end
 
-	if current == maximum then
-		return 1, 1, 100, true
+	if current >= maximum then
+		return maximum, maximum, 100, true
 	else
 		local diff = (maximum ~= 0 and maximum) or 1 -- prevent a division by zero
 		return current, maximum, current / diff * 100
@@ -40,7 +40,7 @@ end
 local function OnEvent(panel)
 	local data = E:GetWatchedFactionInfo()
 	if not (data and data.name) then
-		return 	panel.text:SetText(NOT_APPLICABLE)
+		return panel.text:SetText(NOT_APPLICABLE)
 	end
 
 	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
@@ -67,6 +67,8 @@ local function OnEvent(panel)
 	local color = ElvUF.colors.reaction[reaction]
 	if not standing and factionID and E.Retail and C_Reputation_IsMajorFaction(factionID) then
 		local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
+		if not majorFactionData then return end
+
 		color = E.DataBars.db.colors.factionColors[10]
 
 		currentReactionThreshold, nextReactionThreshold = 0, majorFactionData.renownLevelThreshold
@@ -80,9 +82,10 @@ local function OnEvent(panel)
 	end
 
 	if name then
-		local total = nextReactionThreshold == huge and 1 or nextReactionThreshold -- we need to correct the min/max of friendship factions to display the bar at 100%
+		local total = nextReactionThreshold == huge and 1 or nextReactionThreshold -- correct friendship factions to display the bar at 100%
 		local current, maximum, percent, capped = GetValues(currentStanding, currentReactionThreshold, total)
-		if capped then -- show only name and standing on exalted
+
+		if capped then
 			displayString = format('%s: [%s]', name, standing)
 		elseif textFormat == 'PERCENT' then
 			displayString = format('%s: %d%% [%s]', name, percent, standing)
@@ -107,6 +110,7 @@ end
 local function OnEnter()
 	local data = E:GetWatchedFactionInfo()
 	if not data then return end
+
 	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
 
 	local isParagon = E.Retail and factionID and C_Reputation_IsFactionParagonForCurrentPlayer(factionID)
@@ -140,11 +144,22 @@ local function OnEnter()
 
 		if not isParagon and isMajorFaction then
 			local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
+			if not majorFactionData then return end
+
 			currentStanding = (C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold) or majorFactionData.renownReputationEarned or 0
 			nextReactionThreshold = majorFactionData.renownLevelThreshold
-			DT.tooltip:AddDoubleLine(format(RENOWN_LEVEL_LABEL, majorFactionData.renownLevel), format('%d / %d (%d%%)', GetValues(currentStanding, 0, nextReactionThreshold)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
-		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and nextReactionThreshold ~= huge then
-			DT.tooltip:AddDoubleLine(REPUTATION..':', format('%d / %d (%d%%)', GetValues(currentStanding, currentReactionThreshold, nextReactionThreshold)), 1, 1, 1)
+			DT.tooltip:AddDoubleLine(
+				format(RENOWN_LEVEL_LABEL, majorFactionData.renownLevel),
+				format('%d / %d (%d%%)', GetValues(currentStanding, 0, nextReactionThreshold)),
+				BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b,
+				1, 1, 1
+			)
+		elseif (isParagon or reaction ~= _G.MAX_REPUTATION_REACTION) and nextReactionThreshold ~= huge then
+			DT.tooltip:AddDoubleLine(
+				REPUTATION..':',
+				format('%d / %d (%d%%)', GetValues(currentStanding, currentReactionThreshold, nextReactionThreshold)),
+				1, 1, 1
+			)
 		end
 
 		DT.tooltip:Show()
@@ -155,4 +170,11 @@ local function OnClick()
 	ToggleCharacter('ReputationFrame')
 end
 
-DT:RegisterDatatext('Reputation', nil, { 'UPDATE_FACTION', 'COMBAT_TEXT_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, REPUTATION)
+local events = { 'UPDATE_FACTION', 'COMBAT_TEXT_UPDATE' }
+if E.Retail then
+	events[#events + 1] = 'MAJOR_FACTION_RENOWN_LEVEL_CHANGED'
+	events[#events + 1] = 'MAJOR_FACTION_UNLOCKED'
+	events[#events + 1] = 'MAJOR_FACTION_RENOWN_CATCH_UP_STATE_UPDATE'
+end
+
+DT:RegisterDatatext('Reputation', nil, events, OnEvent, nil, OnClick, OnEnter, nil, REPUTATION)
