@@ -1001,7 +1001,8 @@ function E:Auras_ToggleEnable(container, shown)
 	if not container then return end
 
 	local state
-	local allowed = container.allowEnable and (not container.isHighlight or container.canAssist)
+	local gated = E.AuraGroupHeaders[container.unitframeType] and not container.forceShowAuras
+	local allowed = container.allowEnable and (not container.isHighlight or container.canAssist) and (not gated or container.canReach)
 	if not allowed then
 		state = false
 	elseif shown ~= nil then
@@ -1024,6 +1025,7 @@ end
 
 function E:Auras_AssistUnit(container, unit, update)
 	container.canAssist = UnitCanAssist('player', unit, true, true)
+	container.canReach = UnitCanAssist('player', unit)
 
 	local changed = E:Auras_ToggleEnable(container)
 	if not changed and update then -- only update when the
