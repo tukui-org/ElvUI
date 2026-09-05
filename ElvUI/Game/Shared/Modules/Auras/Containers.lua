@@ -6,8 +6,8 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local ceil, huge = ceil, math.huge
-local strfind, wipe = strfind, wipe
+local wipe, ceil, huge = wipe, ceil, math.huge
+local strfind, strmatch = strfind, strmatch
 local floor, next, type = floor, next, type
 local hooksecurefunc = hooksecurefunc
 
@@ -105,19 +105,15 @@ function E:Auras_OnEvent(event, arg1)
 				UF:AuraBars_UpdateFilter(container, eventUnit)
 				E:Auras_SetContainer(container)
 			else -- for target frame
-				E:Auras_AssistUnit(container, eventUnit)
-
-				container:UpdateAllAuras()
+				E:Auras_AssistUnit(container, eventUnit, true)
 			end
 		end
 	elseif event == 'GROUP_ROSTER_UPDATE' then
 		if container.unit then
-			E:Auras_AssistUnit(container, container.unit)
-
-			container:UpdateAllAuras()
+			E:Auras_AssistUnit(container, container.unit, true)
 		end
 	elseif arg1 and (arg1 == container.unit) then
-		E:Auras_AssistUnit(container, arg1)
+		E:Auras_AssistUnit(container, arg1, true)
 	end
 end
 
@@ -1004,25 +1000,35 @@ end
 function E:Auras_ToggleEnable(container, shown)
 	if not container then return end
 
+	local state
 	local allowed = container.allowEnable and (not container.isHighlight or container.canAssist)
 	if not allowed then
-		container:SetEnabled(false)
+		state = false
 	elseif shown ~= nil then
-		container:SetEnabled(shown)
+		state = shown
 	else
 		local parent = container:GetParent()
 		if container.isHighlight then
 			parent = parent:GetParent()
 		end
 
-		container:SetEnabled(not parent or parent:IsShown())
+		state = not parent or parent:IsShown()
+	end
+
+	if state ~= container:IsEnabled() then
+		container:SetEnabled(state)
+
+		return true
 	end
 end
 
-function E:Auras_AssistUnit(container, unit)
+function E:Auras_AssistUnit(container, unit, update)
 	container.canAssist = UnitCanAssist('player', unit, true, true)
 
-	E:Auras_ToggleEnable(container)
+	local changed = E:Auras_ToggleEnable(container)
+	if not changed and update then -- only update when the
+		container:UpdateAllAuras() -- state doesnt change
+	end
 end
 
 function E:Auras_GroupUnit(container, unit)
@@ -1061,11 +1067,13 @@ function E:Auras_CreateEventFrame(container, frameType)
 	events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
 	events:RegisterEvent('UNIT_FLAGS') -- highlight: flags changes
 	events:RegisterEvent('UNIT_PHASE') -- highlight: phase changes
-	events:RegisterEvent('PLAYER_TARGET_CHANGED') -- aurabar: switch friendship
-	events:RegisterEvent('PLAYER_FOCUS_CHANGED') -- aurabar: switch friendship
 
 	if E.AuraGroupHeaders[frameType] then
 		events:RegisterEvent('GROUP_ROSTER_UPDATE') -- raid: when people move between groups
+	elseif strmatch(frameType, '^focus') then
+		events:RegisterEvent('PLAYER_FOCUS_CHANGED') -- aurabar: switch friendship
+	elseif strmatch(frameType, '^target') then
+		events:RegisterEvent('PLAYER_TARGET_CHANGED') -- aurabar: switch friendship
 	end
 
 	return events
