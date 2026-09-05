@@ -1601,23 +1601,27 @@ function UF:RegisterRaidDebuffIndicator()
 end
 
 do
+	local EVENTLESS_UPDATE_INTERVAL = 0.1
+	local EventlessFrames = {}
+	local EventlessUpdater = CreateFrame('Frame')
+
 	local function EventlessUpdate(frame, elapsed)
 		local unit = frame.__eventless and frame.__unit
 		local guid = UnitGUID(unit)
 		if not guid then return end
 
 		if E:IsSecretValue(guid) then
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateSecrets then
+			local frequency = (frame.elapsed or 0) + elapsed
+			if frequency >= frame.onUpdateSecrets then
 				frame:UpdateAllElements('OnUpdate')
 
 				frame.elapsed = 0
 			else
-				frame.elapsed = frequency + elapsed
+				frame.elapsed = frequency
 			end
 		else
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateElements then
+			local frequency = (frame.elapsed or 0) + elapsed
+			if frequency >= frame.onUpdateElements then
 				if frame.lastGUID ~= guid then
 					frame:UpdateAllElements('OnUpdate')
 					frame.lastGUID = guid
@@ -1628,32 +1632,46 @@ do
 
 				frame.elapsed = 0
 			else
-				frame.elapsed = frequency + elapsed
+				frame.elapsed = frequency
 			end
 
-			local prediction = frame.elapsedPrediction or 0
-			if prediction > frame.onUpdatePrediction then
+			local prediction = (frame.elapsedPrediction or 0) + elapsed
+			if prediction >= frame.onUpdatePrediction then
 				if frame:IsElementEnabled('HealthPrediction') then frame.HealthPrediction:ForceUpdate() end
 				if frame:IsElementEnabled('PowerPrediction') then frame.PowerPrediction:ForceUpdate() end
 				if frame:IsElementEnabled('RaidTargetIndicator') then frame.RaidTargetIndicator:ForceUpdate() end
 
 				frame.elapsedPrediction = 0
 			else
-				frame.elapsedPrediction = prediction + elapsed
+				frame.elapsedPrediction = prediction
 			end
 
-			local auras = frame.elapsedAuras or 0
-			if auras > frame.onUpdateAuras and frame:IsElementEnabled('Auras') then
+			local auras = (frame.elapsedAuras or 0) + elapsed
+			if auras >= frame.onUpdateAuras and frame:IsElementEnabled('Auras') then
 				if frame.Auras then frame.Auras:ForceUpdate() end
 				if frame.Buffs then frame.Buffs:ForceUpdate() end
 				if frame.Debuffs then frame.Debuffs:ForceUpdate() end
 
 				frame.elapsedAuras = 0
 			else
-				frame.elapsedAuras = auras + elapsed
+				frame.elapsedAuras = auras
 			end
 		end
 	end
+
+	EventlessUpdater:SetScript('OnUpdate', function(self, elapsed)
+		self.elapsed = (self.elapsed or 0) + elapsed
+		if self.elapsed < EVENTLESS_UPDATE_INTERVAL then return end
+
+		local updateElapsed = self.elapsed
+		self.elapsed = 0
+
+		for frame in next, EventlessFrames do
+			if frame:IsVisible() then
+				EventlessUpdate(frame, updateElapsed)
+			end
+		end
+	end)
 
 	function ElvUF:HandleEventlessUnit(frame)
 		if not frame.onUpdateSecrets then frame.onUpdateSecrets = 0.5 end -- same as oUF
@@ -1662,7 +1680,8 @@ do
 		if not frame.onUpdateAuras then frame.onUpdateAuras = 0.6 end
 
 		frame.__eventless = true
-		frame:SetScript('OnUpdate', EventlessUpdate)
+		frame:SetScript('OnUpdate', nil)
+		EventlessFrames[frame] = true
 	end
 end
 
