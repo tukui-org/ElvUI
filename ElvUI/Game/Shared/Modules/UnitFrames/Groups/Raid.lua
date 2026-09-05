@@ -28,6 +28,9 @@ function UF:Construct_RaidFrames()
 	self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 	self.ResurrectIndicator = UF:Construct_ResurrectionIcon(self)
 	self.SummonIndicator = UF:Construct_SummonIcon(self)
+	if E.Retail then
+		self.PingIndicator = UF:Construct_PingIndicator(self)
+	end
 	self.CombatIndicator = UF:Construct_CombatIndicator(self)
 	self.HealthPrediction = UF:Construct_HealComm(self)
 	self.Fader = UF:Construct_Fader()

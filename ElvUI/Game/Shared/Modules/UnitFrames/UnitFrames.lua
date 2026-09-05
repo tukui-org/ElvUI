@@ -82,11 +82,32 @@ UF.classMaxResourceBar = { -- also used by Nameplates
 }
 
 do
-	local info = { isPlayerResource = true }
-	UF.PingableInfo = info
+	local playerPingInfo = { isPlayerResource = true }
+	UF.PingableInfo = playerPingInfo
 
 	function UF:Pingable_GetTargetInfo()
-		return info
+		return playerPingInfo
+	end
+
+	-- PingableType_UnitFrameMixin calls UnitGUID(self.unit or GetAttribute('unit')).
+	-- oUF stores __unit; header/force-shown buttons often have no unit attribute.
+	-- Omit secret GUIDs so PingManager can fall through to SendHitTestPing.
+	local emptyPingInfo = {}
+	local unitPingInfo = {}
+
+	function UF:Pingable_GetUnitFrameTargetInfo()
+		local unit = self.unit or self.__unit or self:GetAttribute('unit')
+		if not unit then
+			return emptyPingInfo
+		end
+
+		local guid = UnitGUID(unit)
+		if not guid or E:IsSecretValue(guid) then
+			return emptyPingInfo
+		end
+
+		unitPingInfo.guid = guid
+		return unitPingInfo
 	end
 end
 
@@ -1387,6 +1408,10 @@ do
 		-- handle the enter / leave scripts
 		frame:SetScript('OnEnter', UF.UnitFrame_OnEnter)
 		frame:SetScript('OnLeave', UF.UnitFrame_OnLeave)
+
+		if E.Retail then
+			frame.GetTargetInfo = UF.Pingable_GetUnitFrameTargetInfo
+		end
 	end
 
 	-- 2) after that we need to setup additional things
@@ -1501,6 +1526,10 @@ do
 
 		if frame.SummonIndicator then
 			UF:Configure_SummonIcon(frame)
+		end
+
+		if frame.PingIndicator then
+			UF:Configure_PingIndicator(frame)
 		end
 
 		if frame.AlternativePower then
