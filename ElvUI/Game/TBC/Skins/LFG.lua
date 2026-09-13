@@ -43,6 +43,33 @@ local function InitActivityGroupButton(button, _, isCollapsed)
 	end
 end
 
+local function CategorySelectionAddButton(btn, btnIndex, categoryID, filters)
+	local button = btn.CategoryButtons[btnIndex]
+	if not button then return end
+
+	if not button.IsSkinned then
+		button:SetTemplate()
+		button.Icon:SetDrawLayer('BACKGROUND', 2)
+		button.Icon:SetTexCoords()
+		button.Icon:SetInside()
+		button.Cover:Hide()
+		button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
+		button.HighlightTexture:SetInside()
+
+		-- Fix issue with labels not following changes to GameFontNormal as they should
+		button.Label:SetFontObject('GameFontNormal')
+		button.IsSkinned = true
+	end
+
+	button.SelectedTexture:Hide()
+	local selected = btn.selectedCategory == categoryID and btn.selectedFilters == filters
+	if selected then
+		button:SetBackdropBorderColor(1, 1, 0)
+	else
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
 function S:Blizzard_GroupFinder_VanillaStyle()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
@@ -152,6 +179,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 		end
 	end
 
+	hooksecurefunc('LFGListingCategorySelection_AddButton', CategorySelectionAddButton)
 	hooksecurefunc('LFGListingActivityView_InitActivityButton', InitActivityButton)
 	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', InitActivityGroupButton)
 end
