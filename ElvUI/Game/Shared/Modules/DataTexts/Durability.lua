@@ -112,4 +112,4 @@ local function ApplySettings(panel)
 	end
 end
 
-DT:RegisterDatatext('Durability', nil, { 'UPDATE_INVENTORY_DURABILITY', 'MERCHANT_SHOW' }, OnEvent, nil, Click, OnEnter, nil, DURABILITY, nil, ApplySettings)
+DT:RegisterDatatext('Durability', nil, { 'UPDATE_INVENTORY_DURABILITY' }, OnEvent, nil, Click, OnEnter, nil, DURABILITY, nil, ApplySettings)
