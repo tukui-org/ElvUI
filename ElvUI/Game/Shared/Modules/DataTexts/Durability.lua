@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local _G = _G
-local format, pairs, wipe = format, pairs, wipe
+local format, next, wipe = format, next, wipe
 
 local ToggleCharacter = ToggleCharacter
 local GetInventoryItemDurability = GetInventoryItemDurability
@@ -11,10 +11,12 @@ local GetInventoryItemLink = GetInventoryItemLink
 
 local DURABILITY = DURABILITY
 local REPAIR_COST = REPAIR_COST
+
 local tooltipString = '%d%%'
-local totalDurability = 0
-local invDurability = {}
-local totalRepairCost
+local tempDurabilities = {}
+local totalDurabilities = {}
+local totalDurability = 100
+local totalRepairCost = 0
 local db
 
 local slots = {
@@ -32,19 +34,19 @@ local slots = {
 }
 
 local function OnEvent(panel)
-	totalDurability = 100
-	totalRepairCost = 0
+	local tempDurability = 100
+	local tempRepairCost = 0
 
-	wipe(invDurability)
+	wipe(tempDurabilities)
 
-	for index in pairs(slots) do
+	for index in next, slots do
 		local currentDura, maxDura = GetInventoryItemDurability(index)
 		if currentDura and maxDura > 0 then
 			local perc, repairCost, _ = (currentDura/maxDura)*100
-			invDurability[index] = perc
+			tempDurabilities[index] = perc
 
-			if perc < totalDurability then
-				totalDurability = perc
+			if perc < tempDurability then
+				tempDurability = perc
 			end
 
 			if E.Retail then
@@ -54,8 +56,17 @@ local function OnEvent(panel)
 				_, _, repairCost = E.ScanTooltip:SetInventoryItem('player', index)
 			end
 
-			totalRepairCost = totalRepairCost + (repairCost or 0)
+			tempRepairCost = tempRepairCost + (repairCost or 0)
 		end
+	end
+
+	-- require data to update display
+	if next(tempDurabilities) then
+		totalDurability = tempDurability
+		totalRepairCost = tempRepairCost
+
+		wipe(totalDurabilities) -- clear it before the copy
+		E:CopyTable(totalDurabilities, tempDurabilities)
 	end
 
 	local r, g, b = E:ColorGradient(totalDurability * .01, 1, .1, .1, 1, 1, .1, .1, 1, .1)
@@ -83,7 +94,7 @@ end
 local function OnEnter()
 	DT.tooltip:ClearLines()
 
-	for slot, durability in pairs(invDurability) do
+	for slot, durability in next, totalDurabilities do
 		DT.tooltip:AddDoubleLine(format('|T%s:14:14:0:0:64:64:4:60:4:60|t %s', GetInventoryItemTexture('player', slot), GetInventoryItemLink('player', slot)), format(tooltipString, durability), 1, 1, 1, E:ColorGradient(durability * 0.01, 1, .1, .1, 1, 1, .1, .1, 1, .1))
 	end
 
