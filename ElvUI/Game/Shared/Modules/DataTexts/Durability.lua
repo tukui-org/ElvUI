@@ -19,18 +19,18 @@ local totalDurability = 100
 local totalRepairCost = 0
 local db
 
-local slots = {
-	[1] = _G.INVTYPE_HEAD,
-	[3] = _G.INVTYPE_SHOULDER,
-	[5] = _G.INVTYPE_CHEST,
-	[6] = _G.INVTYPE_WAIST,
-	[7] = _G.INVTYPE_LEGS,
-	[8] = _G.INVTYPE_FEET,
-	[9] = _G.INVTYPE_WRIST,
-	[10] = _G.INVTYPE_HAND,
-	[16] = _G.INVTYPE_WEAPONMAINHAND,
-	[17] = _G.INVTYPE_WEAPONOFFHAND,
-	[18] = _G.INVTYPE_RANGED,
+local inventorySlots = {
+	INVTYPE_HEAD = 1,
+	INVTYPE_SHOULDER = 3,
+	INVTYPE_CHEST = 5,
+	INVTYPE_WAIST = 6,
+	INVTYPE_LEGS = 7,
+	INVTYPE_FEET = 8,
+	INVTYPE_WRIST = 9,
+	INVTYPE_HAND = 10,
+	INVTYPE_WEAPONMAINHAND = 16,
+	INVTYPE_WEAPONOFFHAND = 17,
+	INVTYPE_RANGED = 18
 }
 
 local function OnEvent(panel)
@@ -39,7 +39,7 @@ local function OnEvent(panel)
 
 	wipe(tempDurabilities)
 
-	for index in next, slots do
+	for _, index in next, inventorySlots do
 		local currentDura, maxDura = GetInventoryItemDurability(index)
 		if currentDura and maxDura > 0 then
 			local perc, repairCost, _ = (currentDura/maxDura)*100
