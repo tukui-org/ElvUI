@@ -1077,19 +1077,28 @@ end
 function E:Auras_CreateEventFrame(container, parent)
 	local events = CreateFrame('Frame', nil, container)
 
-	if parent.isHighlight then
-		events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
-		events:RegisterEvent('UNIT_FLAGS') -- highlight: flags changes
-		events:RegisterEvent('UNIT_PHASE') -- highlight: phase changes
+	local frameType = parent.unitframeType
+	local group = E.AuraGroupHeaders[frameType]
+	if group then
+		events:RegisterEvent('GROUP_ROSTER_UPDATE')		-- raid: when people move between groups
+	elseif strmatch(frameType, '^focus') then
+		events:RegisterEvent('PLAYER_FOCUS_CHANGED')	-- aurabar: switch friendship
+	elseif strmatch(frameType, '^target') then
+		events:RegisterEvent('PLAYER_TARGET_CHANGED')	-- aurabar: switch friendship
 	end
 
-	local frameType = parent.unitframeType
-	if E.AuraGroupHeaders[frameType] then
-		events:RegisterEvent('GROUP_ROSTER_UPDATE') -- raid: when people move between groups
-	elseif strmatch(frameType, '^focus') then
-		events:RegisterEvent('PLAYER_FOCUS_CHANGED') -- aurabar: switch friendship
-	elseif strmatch(frameType, '^target') then
-		events:RegisterEvent('PLAYER_TARGET_CHANGED') -- aurabar: switch friendship
+	-- technically we might need this on group too
+	-- however blizzard plans to fix us needing this
+	-- so for now we only add it to highlight
+	local highlight = parent.isHighlight
+	if highlight then
+		events:RegisterEvent('UNIT_FACTION')
+		events:RegisterEvent('UNIT_FLAGS')
+	end
+
+	-- keeps opposite faction correct when zoning into content
+	if highlight or group then
+		events:RegisterEvent('UNIT_PHASE')
 	end
 
 	return events
