@@ -1093,7 +1093,6 @@ function E:Auras_CreateEventFrame(container, parent)
 	local highlight = parent.isHighlight
 	if highlight then
 		events:RegisterEvent('UNIT_FACTION')
-		events:RegisterEvent('UNIT_FLAGS')
 	end
 
 	-- keeps opposite faction correct when zoning into content
