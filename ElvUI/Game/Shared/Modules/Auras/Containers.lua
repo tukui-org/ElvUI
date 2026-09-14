@@ -1002,7 +1002,7 @@ function E:Auras_SetLineSize(container)
 end
 
 function E:Auras_SetUnit(container, unit)
-	container:SetUnit(unit)
+	container:SetUnit(unit or '')
 	container.unit = unit
 end
 
@@ -1035,8 +1035,8 @@ function E:Auras_ToggleEnable(container, shown)
 end
 
 function E:Auras_AssistUnit(container, unit, update)
-	container.canReach = UnitCanAssist('player', unit, true, true)
-	container.canAssist = UnitCanAssist('player', unit)
+	container.canReach = unit and UnitCanAssist('player', unit, true, true)
+	container.canAssist = unit and UnitCanAssist('player', unit)
 
 	local changed = E:Auras_ToggleEnable(container)
 	if not changed and update then -- only update when the

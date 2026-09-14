@@ -2241,31 +2241,23 @@ do -- Clique support for registering clicks
 	end
 end
 
-do
-	local units = {} -- track units
-	function UF:Configure_UnitAuras(frame)
-		local unit = frame.__unit -- update when needed
-		if not unit or (units[frame] == unit) then return end
+function UF:Configure_UnitAuras(frame, unit)
+	E:Auras_GroupUnit(frame.Auras, unit)
+	E:Auras_GroupUnit(frame.Buffs, unit)
+	E:Auras_GroupUnit(frame.Debuffs, unit)
+	E:Auras_GroupUnit(frame.AuraBars, unit)
+	E:Auras_GroupUnit(frame.AuraWatch, unit)
 
-		units[frame] = unit
-
-		E:Auras_GroupUnit(frame.Auras, unit)
-		E:Auras_GroupUnit(frame.Buffs, unit)
-		E:Auras_GroupUnit(frame.Debuffs, unit)
-		E:Auras_GroupUnit(frame.AuraBars, unit)
-		E:Auras_GroupUnit(frame.AuraWatch, unit)
-
-		local highlight = frame.AuraHighlight
-		if highlight then
-			E:Auras_GroupUnit(highlight.good, unit)
-			E:Auras_GroupUnit(highlight.bad, unit)
-		end
+	local highlight = frame.AuraHighlight
+	if highlight then
+		E:Auras_GroupUnit(highlight.good, unit)
+		E:Auras_GroupUnit(highlight.bad, unit)
 	end
 end
 
 function UF:UpdateAllElements(event)
 	if event == 'OnAttributeChanged' then
-		UF:Configure_UnitAuras(self)
+		UF:Configure_UnitAuras(self, self.__unit)
 	end
 end
 
