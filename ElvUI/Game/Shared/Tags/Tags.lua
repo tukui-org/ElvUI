@@ -8,7 +8,7 @@ local _G = _G
 local next, gsub, format = next, gsub, format
 local abs, ipairs, pairs, floor, ceil = abs, ipairs, pairs, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
-local utf8sub, utf8len = string.utf8sub, string.utf8len
+local utf8sub, utf8len = string.utf8sub, strlenutf8
 
 local AbbreviateNumbers = AbbreviateNumbers
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
