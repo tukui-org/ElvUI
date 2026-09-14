@@ -1091,6 +1091,7 @@ function E:Auras_CreateEventFrame(container, parent)
 	if group or parent.isHighlight then
 		events:RegisterEvent('UNIT_FACTION')
 		events:RegisterEvent('UNIT_PHASE')
+		events:RegisterEvent('UNIT_FLAGS')
 	end
 
 	return events
