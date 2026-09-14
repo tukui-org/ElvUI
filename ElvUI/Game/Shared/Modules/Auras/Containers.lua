@@ -1087,16 +1087,9 @@ function E:Auras_CreateEventFrame(container, parent)
 		events:RegisterEvent('PLAYER_TARGET_CHANGED')	-- aurabar: switch friendship
 	end
 
-	-- technically we might need this on group too
-	-- however blizzard plans to fix us needing this
-	-- so for now we only add it to highlight
-	local highlight = parent.isHighlight
-	if highlight then
-		events:RegisterEvent('UNIT_FACTION')
-	end
-
 	-- keeps opposite faction correct when zoning into content
-	if highlight or group then
+	if group or parent.isHighlight then
+		events:RegisterEvent('UNIT_FACTION')
 		events:RegisterEvent('UNIT_PHASE')
 	end
 
