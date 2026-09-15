@@ -54,4 +54,4 @@ local function ApplySettings(panel, hex)
 	displayString = strjoin('', '%s', db.NoLabel and '' or ': ', hex, (db.TimeFull and '%02d|cFFFFFFFF:|r%02d|cFFFFFFFF:|r%02d' or '%02d|cFFFFFFFF:|r%02d')..'|r')
 end
 
-DT:RegisterDatatext('Combat', nil, {'START_TIMER', 'ENCOUNTER_START', 'ENCOUNTER_END', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED'}, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"], nil, ApplySettings)
+DT:RegisterDatatext('Combat', nil, { 'START_TIMER', 'ENCOUNTER_START', 'ENCOUNTER_END', 'PLAYER_REGEN_DISABLED', 'PLAYER_REGEN_ENABLED' }, OnEvent, nil, nil, nil, nil, L["Combat/Arena Time"], nil, ApplySettings)

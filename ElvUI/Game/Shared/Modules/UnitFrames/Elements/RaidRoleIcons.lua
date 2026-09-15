@@ -65,8 +65,8 @@ function UF:RaidRoleUpdate()
 	if db then
 		local leader = frame.LeaderIndicator
 		local assistant = frame.AssistantIndicator
-		local masterlooter = frame.MasterLooterIndicator
-		local mamt = frame.RaidRoleIndicator
+		local masterLooter = frame.MasterLooterIndicator
+		local raidRole = frame.RaidRoleIndicator
 
 		local pos, x, y = db.position or 'TOPLEFT', db.xOffset or 0, db.yOffset or 4
 		local size = 12 * (db.scale or 1)
@@ -75,46 +75,29 @@ function UF:RaidRoleUpdate()
 		local pos1 = right and 'RIGHT' or 'LEFT'
 		local pos2 = right and 'LEFT' or 'RIGHT'
 
-		local isLeader = leader:IsShown()
-		local isAssist = assistant:IsShown()
-		local isMAMT = mamt:IsShown()
-		local isML = masterlooter:IsShown()
-
-		leader:ClearAllPoints()
-		assistant:ClearAllPoints()
-		masterlooter:ClearAllPoints()
-		mamt:ClearAllPoints()
-
 		leader:Size(size)
+		leader:ClearAllPoints()
+		leader:Point(pos, anchor, x, y)
+
 		assistant:Size(size)
-		masterlooter:Size(size)
-		mamt:Size(size)
+		assistant:ClearAllPoints()
+		assistant:Point(pos, anchor, x, y)
 
-		if isLeader then
-			leader:Point(pos, anchor, x, y)
-		elseif isAssist then
-			assistant:Point(pos, anchor, x, y)
+		local isMAMT = raidRole:IsShown()
+		if isMAMT then -- assist / tank
+			raidRole:Size(size)
+			raidRole:ClearAllPoints()
+			raidRole:Point(pos1, leader, pos2)
 		end
 
-		if isMAMT then
-			if isLeader then
-				mamt:Point(pos1, leader, pos2)
-			elseif isAssist then
-				mamt:Point(pos1, assistant, pos2)
-			else
-				mamt:Point(pos, anchor, x, y)
-			end
-		end
+		if masterLooter:IsShown() then
+			masterLooter:Size(size)
+			masterLooter:ClearAllPoints()
 
-		if isML then
 			if isMAMT then
-				masterlooter:Point(pos1, mamt, pos2)
-			elseif isLeader then
-				masterlooter:Point(pos1, leader, pos2)
-			elseif isAssist then
-				masterlooter:Point(pos1, assistant, pos2)
+				masterLooter:Point(pos1, raidRole, pos2)
 			else
-				masterlooter:Point(pos, anchor, x, y)
+				masterLooter:Point(pos1, leader, pos2)
 			end
 		end
 	end

@@ -174,6 +174,7 @@ do
 		if not E.Retail then return end
 
 		E:UpdateDispelCurves()
+		E:Auras_DispelUpdated()
 	end
 
 	E:AddLib('AceAddon', AceAddon, AceAddonMinor)

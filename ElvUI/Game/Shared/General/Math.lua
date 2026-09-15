@@ -4,7 +4,7 @@ local next, wipe, ipairs = next, wipe, ipairs
 local modf, atan2, floor, abs, sqrt, mod = math.modf, atan2, floor, abs, sqrt, mod
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
 local format, strsub, strupper, strlen, gsub, gmatch = format, strsub, strupper, strlen, gsub, gmatch
-local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, string.utf8len
+local tostring, pairs, utf8sub, utf8len = tostring, pairs, string.utf8sub, strlenutf8
 
 local CreateAbbreviateConfig = CreateAbbreviateConfig
 local AbbreviateNumbers = AbbreviateNumbers
