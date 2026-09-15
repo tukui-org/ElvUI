@@ -1025,12 +1025,14 @@ function E:Auras_ToggleEnable(container, shown)
 		state = not parent or parent:IsShown()
 	end
 
-	if state ~= container:IsEnabled() then
+	if state == container:IsEnabled() then
+		return state
+	else
 		container:SetEnabled(state)
 
 		E.AuraHighlightActive[container] = (container.isHighlight and state) or nil
 
-		return true
+		return state, true
 	end
 end
 
@@ -1038,9 +1040,9 @@ function E:Auras_AssistUnit(container, unit, update)
 	container.canReach = unit and UnitCanAssist('player', unit, true, true)
 	container.canAssist = unit and UnitCanAssist('player', unit)
 
-	local changed = E:Auras_ToggleEnable(container)
-	if not changed and update then -- only update when the
-		container:UpdateAllAuras() -- state doesnt change
+	local state, changed = E:Auras_ToggleEnable(container)
+	if update and state and not changed then -- update when the state doesnt change but its active
+		container:UpdateAllAuras()
 	end
 end
 
@@ -1068,10 +1070,14 @@ function E:Auras_GetFilter(obj, key)
 	return list
 end
 
-function E:Auras_SetEnabled(enabled)
-	if not self.events then return end
+function E:Auras_ToggleActive(container, shown)
+	if not container then return end
 
-	self.events:SetScript('OnEvent', enabled and E.Auras_OnEvent or nil)
+	E:Auras_ToggleEnable(container, shown)
+
+	if container.events then
+		container.events:SetScript('OnEvent', shown and E.Auras_OnEvent or nil)
+	end
 end
 
 function E:Auras_CreateEventFrame(container, parent)
@@ -1122,8 +1128,6 @@ function E:Auras_Create(parent, which, override)
 
 	if parent and parent.unitframeType then -- we only need events for unitframes
 		container.events = E:Auras_CreateEventFrame(container, parent)
-
-		hooksecurefunc(container, 'SetEnabled', E.Auras_SetEnabled)
 	end
 
 	return container

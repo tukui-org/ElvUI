@@ -2262,16 +2262,16 @@ function UF:UpdateAllElements(event)
 end
 
 function UF:Auras_ToggleContainer(frame, shown)
-	E:Auras_ToggleEnable(frame.Auras, shown)
-	E:Auras_ToggleEnable(frame.Buffs, shown)
-	E:Auras_ToggleEnable(frame.Debuffs, shown)
-	E:Auras_ToggleEnable(frame.AuraBars, shown)
-	E:Auras_ToggleEnable(frame.AuraWatch, shown)
+	E:Auras_ToggleActive(frame.Auras, shown)
+	E:Auras_ToggleActive(frame.Buffs, shown)
+	E:Auras_ToggleActive(frame.Debuffs, shown)
+	E:Auras_ToggleActive(frame.AuraBars, shown)
+	E:Auras_ToggleActive(frame.AuraWatch, shown)
 
 	local highlight = frame.AuraHighlight
 	if highlight then
-		E:Auras_ToggleEnable(highlight.good, shown)
-		E:Auras_ToggleEnable(highlight.bad, shown)
+		E:Auras_ToggleActive(highlight.good, shown)
+		E:Auras_ToggleActive(highlight.bad, shown)
 	end
 end
 
