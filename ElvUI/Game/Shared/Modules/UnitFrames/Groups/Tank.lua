@@ -30,6 +30,10 @@ function UF:Construct_TankFrames()
 		self.Auras = UF:Construct_Auras(self)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
+
+		if E.Retail then
+			self.PingIndicator = UF:Construct_PingIndicator(self)
+		end
 	end
 
 	return self

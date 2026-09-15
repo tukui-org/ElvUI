@@ -1301,6 +1301,7 @@ L["Pets"] = "Mascotes"
 L["PetTarget"] = "Alvo do Pet"
 L["Phase Indicator"] = "Indicador de Phase"
 L["Pin Voice Buttons"] = "Pinar Botões de Voz"
+L["Ping Icon"] = true
 L["Pixel Glow"] = true
 L["Player Auras"] = true
 L["Player Bars"] = "Barras de Jogador"

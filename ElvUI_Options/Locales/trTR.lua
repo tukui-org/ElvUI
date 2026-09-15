@@ -1301,6 +1301,7 @@ L["Pets"] = "Evcil Hayvanlar"
 L["PetTarget"] = "Hayvan Hedefi"
 L["Phase Indicator"] = "Faz Gostergesi"
 L["Pin Voice Buttons"] = "Ses Dugmelerini Sabitle"
+L["Ping Icon"] = true
 L["Pixel Glow"] = true
 L["Player Auras"] = true
 L["Player Bars"] = "Oyuncu Cubuklari"
