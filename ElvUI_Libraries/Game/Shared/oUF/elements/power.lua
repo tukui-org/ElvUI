@@ -87,10 +87,8 @@ local Private = oUF.Private
 local unpack = unpack
 
 local UnitClass = UnitClass
-local UnitInParty = UnitInParty
 local UnitPowerPercent = UnitPowerPercent
 local UnitInPartyIsAI = UnitInPartyIsAI
-local UnitInRaid = UnitInRaid
 local UnitIsConnected = UnitIsConnected
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsTapDenied = UnitIsTapDenied
@@ -122,10 +120,7 @@ type and zero for the minimum value.
 --]]
 local function GetDisplayPower(_, unit)
 	local barInfo = GetUnitPowerBarInfo(unit)
-	local unitRaid, unitParty = UnitInRaid(unit), UnitInParty(unit)
-	local unitSecret = oUF:IsSecretValue(unitRaid) or oUF:IsSecretValue(unitParty) -- what do i do here?
-	local showOnRaid = barInfo and barInfo.showOnRaid and not unitSecret and (unitRaid or unitParty)
-	if showOnRaid then
+	if barInfo and barInfo.showOnRaid then
 		return ALTERNATE_POWER_INDEX, barInfo.minPower
 	end
 end
