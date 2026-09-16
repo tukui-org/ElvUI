@@ -2261,17 +2261,17 @@ function UF:UpdateAllElements(event)
 	end
 end
 
-function UF:Auras_ToggleContainer(frame, shown)
-	E:Auras_ToggleActive(frame.Auras, shown)
-	E:Auras_ToggleActive(frame.Buffs, shown)
-	E:Auras_ToggleActive(frame.Debuffs, shown)
-	E:Auras_ToggleActive(frame.AuraBars, shown)
-	E:Auras_ToggleActive(frame.AuraWatch, shown)
+function UF:Auras_ToggleContainer(frame, unit, shown)
+	E:Auras_ToggleActive(frame.Auras, unit, shown)
+	E:Auras_ToggleActive(frame.Buffs, unit, shown)
+	E:Auras_ToggleActive(frame.Debuffs, unit, shown)
+	E:Auras_ToggleActive(frame.AuraBars, unit, shown)
+	E:Auras_ToggleActive(frame.AuraWatch, unit, shown)
 
 	local highlight = frame.AuraHighlight
 	if highlight then
-		E:Auras_ToggleActive(highlight.good, shown)
-		E:Auras_ToggleActive(highlight.bad, shown)
+		E:Auras_ToggleActive(highlight.good, unit, shown)
+		E:Auras_ToggleActive(highlight.bad, unit, shown)
 	end
 end
 
@@ -2280,7 +2280,7 @@ function UF:Show()
 
 	self.hasAurasShown = true
 
-	UF:Auras_ToggleContainer(self, true)
+	UF:Auras_ToggleContainer(self, self.__unit, true)
 end
 
 function UF:Hide()
@@ -2288,7 +2288,7 @@ function UF:Hide()
 
 	self.hasAurasShown = false
 
-	UF:Auras_ToggleContainer(self, false)
+	UF:Auras_ToggleContainer(self, self.__unit, false)
 end
 
 function UF:AfterStyleCallback()
