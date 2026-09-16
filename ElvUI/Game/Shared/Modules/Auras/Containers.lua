@@ -1103,6 +1103,7 @@ function E:Auras_CreateEventFrame(container, parent)
 	-- keeps opposite faction correct when zoning into content
 	if highlight or group then
 		events:RegisterEvent('UNIT_PHASE')
+		events:RegisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
 	end
 
 	return events
