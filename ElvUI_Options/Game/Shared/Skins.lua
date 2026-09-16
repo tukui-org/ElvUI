@@ -38,7 +38,6 @@ local toggles = {
 	quest = L["Quest Frames"],
 	questChoice = L["Quest Choice"],
 	raid = L["Raid Frame"],
-	socket = L["Socket Frame"],
 	spellbook = L["SPELLBOOK"],
 	stable = L["Stable"],
 	tabard = L["Tabard Frame"],
@@ -55,25 +54,31 @@ local toggles = {
 
 if E.Retail or E.Forever or E.Mists then
 	toggles.alertframes = L["Alert Frames"]
-	toggles.archaeology = L["Archaeology Frame"]
 	toggles.barber = L["BARBERSHOP"]
-	toggles.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
 	toggles.calendar = L["Calendar Frame"]
 	toggles.collections = L["COLLECTIONS"]
-	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	toggles.gbank = L["Guild Bank"]
-	toggles.itemUpgrade = L["Item Upgrade"]
 	toggles.pvp = L["PvP Frames"]
-	toggles.petbattleui = L["Pet Battle"]
 	toggles.guild = L["Guild"]
+end
+
+if E.Retail or E.Mists then
+	toggles.archaeology = L["Archaeology Frame"]
+	toggles.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
+	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
+	toggles.itemUpgrade = L["Item Upgrade"]
+	toggles.petbattleui = L["Pet Battle"]
 end
 
 if E.Retail or E.Forever or E.Mists or E.TBC then
 	toggles.catalogShop = L["BLIZZARD_STORE"]
 end
 
-if E.Retail or E.Forever or E.Mists or E.Wrath then
+if E.Retail or E.Mists or E.Wrath then
 	toggles.achievement = L["ACHIEVEMENTS"]
+end
+
+if E.Retail or E.Forever or E.Mists or E.Wrath then
 	toggles.transmogrify = L["TRANSMOGRIFY"]
 end
 
@@ -89,11 +94,31 @@ if E.Classic or E.TBC then
 	toggles.craft = L["Craft"]
 end
 
+if not (E.Classic or E.Forever) then
+	toggles.socket = L["Socket Frame"]
+end
+
 if not (E.Retail or E.Forever) then
 	toggles.questTimers = L["Quest Timers"]
 end
 
 if E.Retail or E.Forever then
+	toggles.campsites = L["Campsite"]
+	toggles.cooldownManager = L["Cooldown Manager"]
+	toggles.contribution = L["Contribution"]
+	toggles.damageMeter = L["Damage Meter"]
+	toggles.deathRecap = L["DEATH_RECAP_TITLE"]
+	toggles.gmChat = L["GM Chat"]
+	toggles.guide = L["Guide Frame"]
+	toggles.itemInteraction = L["Item Interaction"]
+	toggles.lfguild = L["LF Guild Frame"]
+	toggles.losscontrol = L["LOSS_OF_CONTROL"]
+	toggles.nonraid = L["Non-Raid Frame"]
+	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
+	toggles.playerChoice = L["Player Choice Frame"]
+end
+
+if E.Retail then
 	toggles.housing = L["Housing"]
 	toggles.adventureMap = L["ADVENTURE_MAP_TITLE"]
 	toggles.alliedRaces = L["Allied Races"]
@@ -103,32 +128,19 @@ if E.Retail or E.Forever then
 	toggles.azerite = L["Azerite"]
 	toggles.azeriteEssence = L["Azerite Essence"]
 	toggles.azeriteRespec = L["AZERITE_RESPEC_TITLE"]
-	toggles.campsites = L["Campsite"]
 	toggles.chromieTime = L["Chromie Time Frame"]
-	toggles.cooldownManager = L["Cooldown Manager"]
-	toggles.contribution = L["Contribution"]
 	toggles.covenantPreview = L["Covenant Preview"]
 	toggles.covenantRenown = L["Covenant Renown"]
 	toggles.covenantSanctum = L["Covenant Sanctum"]
-	toggles.damageMeter = L["Damage Meter"]
-	toggles.deathRecap = L["DEATH_RECAP_TITLE"]
 	toggles.expansionLanding = L["Expansion Landing Page"]
 	toggles.garrison = L["GARRISON_LOCATION_TOOLTIP"]
 	toggles.genericTrait = L["Generic Trait"]
-	toggles.gmChat = L["GM Chat"]
-	toggles.guide = L["Guide Frame"]
 	toggles.islandQueue = L["ISLANDS_HEADER"]
 	toggles.islandsPartyPose = L["Island Party Pose"]
-	toggles.itemInteraction = L["Item Interaction"]
-	toggles.lfguild = L["LF Guild Frame"]
-	toggles.losscontrol = L["LOSS_OF_CONTROL"]
 	toggles.majorFactions = L["Major Factions"]
-	toggles.nonraid = L["Non-Raid Frame"]
-	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	toggles.obliterum = L["OBLITERUM_FORGE_TITLE"]
 	toggles.orderhall = L["Orderhall"]
 	toggles.perks = L["Trading Post"]
-	toggles.playerChoice = L["Player Choice Frame"]
 	toggles.runeforge = L["Runeforge"]
 	toggles.scrapping = L["SCRAP_BUTTON"]
 	toggles.soulbinds = L["Soulbinds"]
