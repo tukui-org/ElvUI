@@ -1045,11 +1045,21 @@ function E:Auras_AssistUnit(container, unit, shown, skip)
 	end
 end
 
-function E:Auras_GroupUnit(container, unit)
+function E:Auras_GroupUnit(container, unit, shown)
 	if not container then return end
 
 	E:Auras_SetUnit(container, unit)
-	E:Auras_AssistUnit(container, unit, nil, true)
+	E:Auras_AssistUnit(container, unit, shown, true)
+end
+
+function E:Auras_ToggleActive(container, unit, shown)
+	if not container then return end
+
+	E:Auras_GroupUnit(container, unit, shown)
+
+	if container.events then
+		container.events:SetScript('OnEvent', shown and E.Auras_OnEvent or nil)
+	end
 end
 
 function E:Auras_GetFilter(obj, key)
@@ -1067,17 +1077,6 @@ function E:Auras_GetFilter(obj, key)
 	end
 
 	return list
-end
-
-function E:Auras_ToggleActive(container, unit, shown)
-	if not container then return end
-
-	E:Auras_SetUnit(container, unit)
-	E:Auras_AssistUnit(container, unit, shown, true)
-
-	if container.events then
-		container.events:SetScript('OnEvent', shown and E.Auras_OnEvent or nil)
-	end
 end
 
 function E:Auras_CreateEventFrame(container, parent)
