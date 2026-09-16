@@ -108,6 +108,7 @@ do -- Expansions
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+	-- TBD: (E.Retail or E.Forever) to become E.Modern
 	E.Forever = E.wowtoc == 16001 -- ToDo: classic_beta
 
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
