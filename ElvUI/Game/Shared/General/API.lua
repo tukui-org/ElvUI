@@ -896,7 +896,7 @@ function E:RegisterPetBattleHideFrames(object, originalParent, originalStrata)
 	object = _G[object] or object
 
 	--If already doing pokemon
-	if (E.Retail or E.Forever or E.Mists) and C_PetBattles_IsInBattle() then
+	if (E.Retail or E.Mists) and C_PetBattles_IsInBattle() then
 		object:SetParent(E.HiddenFrame)
 	end
 

@@ -645,7 +645,7 @@ function TT:SetUnitInfo(tt, unit, data)
 		end
 	end
 
-	if not isPlayerUnit and TT:IsModKeyDown() and not ((E.Retail or E.Forever or E.Mists) and C_PetBattles_IsInBattle()) then
+	if not isPlayerUnit and TT:IsModKeyDown() and not ((E.Retail or E.Mists) and C_PetBattles_IsInBattle()) then
 		local guid = (data and data.guid) or UnitGUID(unit) or ''
 		local id = E:NotSecretValue(guid) and tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
 		if id then -- NPC ID's

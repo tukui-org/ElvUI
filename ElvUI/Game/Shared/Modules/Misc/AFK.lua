@@ -168,7 +168,7 @@ function AFK:OnEvent(event, arg1)
 		return -- Don't activate afk if player is crafting stuff, check back in 30 seconds
 	end
 
-	AFK:SetAFK(E:UnitIsAFK('player') and not ((E.Retail or E.Forever or E.Mists) and C_PetBattles_IsInBattle()))
+	AFK:SetAFK(E:UnitIsAFK('player') and not ((E.Retail or E.Mists) and C_PetBattles_IsInBattle()))
 end
 
 function AFK:Chat_OnMouseWheel(delta)

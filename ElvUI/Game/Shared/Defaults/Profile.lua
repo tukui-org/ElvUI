@@ -575,7 +575,7 @@ P.bags = {
 		mouseover = false,
 		showCount = true,
 		justBackpack = false,
-		visibility = (E.Retail or E.Forever or E.Mists) and '[petbattle] hide; show' or 'show',
+		visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show',
 		font = 'PT Sans Narrow',
 		fontOutline = 'OUTLINE',
 		fontSize = 12,
@@ -3352,7 +3352,7 @@ P.actionbar = {
 		buttonHeight = 28,
 		buttonSpacing = 2,
 		alpha = 1,
-		visibility = (E.Retail or E.Forever or E.Mists) and '[petbattle] hide; show' or 'show',
+		visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show',
 		backdrop = false,
 		backdropSpacing = 2,
 		heightMult = 1,
@@ -3381,10 +3381,10 @@ P.actionbar = {
 }
 
 -- Visibility
-if E.Retail or E.Forever or E.Mists then
+if E.Retail or E.Mists then
 	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui][petbattle] hide; show'
-elseif E.Wrath then
+elseif E.Wrath or E.Forever then
 	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
 elseif E.TBC then
@@ -3461,9 +3461,9 @@ for i = 1, 15 do -- if this indexing changes
 		local barN = 'bar'..i
 		P.actionbar[barN] = E:CopyTable({}, AB_Bar)
 
-		if E.Retail or E.Forever or E.Mists then
+		if E.Retail or E.Mists then
 			P.actionbar[barN].visibility = '[vehicleui][petbattle][overridebar] hide; show'
-		elseif E.Wrath then
+		elseif E.Wrath or E.Forever then
 			P.actionbar[barN].visibility = '[vehicleui][overridebar] hide; show'
 		else
 			P.actionbar[barN].visibility = '[overridebar] hide; show'
@@ -3502,7 +3502,7 @@ for _, bar in next, { 'barPet', 'stanceBar', 'vehicleExitButton', 'extraActionBu
 end
 
 P.actionbar.bar1.enabled = true
-P.actionbar.bar1.visibility = (E.Retail or E.Forever or E.Mists) and '[petbattle] hide; show' or 'show'
+P.actionbar.bar1.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 
 P.actionbar.bar1.paging.ROGUE = (E.TBC and '[possessbar] 16; ' or '') .. '[bonusbar:1] 7;' .. ((E.Wrath or E.Mists) and ' [bonusbar:2] 8;' or '')
 P.actionbar.bar1.paging.WARLOCK = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Wrath or E.Mists) and '[form:1] 7;' or '')
