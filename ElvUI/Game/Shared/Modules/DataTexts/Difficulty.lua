@@ -7,13 +7,13 @@ local pairs, format, tinsert = pairs, format, tinsert
 local GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID = GetDungeonDifficultyID, GetRaidDifficultyID, GetLegacyRaidDifficultyID
 local SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID = SetDungeonDifficultyID, SetRaidDifficultyID, SetLegacyRaidDifficultyID
 local GetInstanceInfo, GetDifficultyInfo, ResetInstances = GetInstanceInfo, GetDifficultyInfo, ResetInstances
-local C_ChallengeMode_GetActiveChallengeMapID = E.Retail and C_ChallengeMode.GetActiveChallengeMapID
-local C_ChallengeMode_GetActiveKeystoneInfo = E.Retail and C_ChallengeMode.GetActiveKeystoneInfo
-local C_ChallengeMode_IsChallengeModeActive = E.Retail and C_ChallengeMode.IsChallengeModeActive
-local C_MythicPlus_IsMythicPlusActive = E.Retail and C_MythicPlus.IsMythicPlusActive
+local C_ChallengeMode_GetActiveChallengeMapID = (E.Retail or E.Forever) and C_ChallengeMode.GetActiveChallengeMapID
+local C_ChallengeMode_GetActiveKeystoneInfo = (E.Retail or E.Forever) and C_ChallengeMode.GetActiveKeystoneInfo
+local C_ChallengeMode_IsChallengeModeActive = (E.Retail or E.Forever) and C_ChallengeMode.IsChallengeModeActive
+local C_MythicPlus_IsMythicPlusActive = (E.Retail or E.Forever) and C_MythicPlus.IsMythicPlusActive
 
 local DungeonTexture, RaidTexture, LegacyTexture = CreateAtlasMarkup('Dungeon', 20, 20), CreateAtlasMarkup('Raid', 20, 20), CreateAtlasMarkup('worldquest-icon-raid', 20, 20)
-local DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), E.Retail and GetLegacyRaidDifficultyID()
+local DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), (E.Retail or E.Forever) and GetLegacyRaidDifficultyID()
 
 local RightClickMenu, DiffLabel = {
 	{ text = _G.DUNGEON_DIFFICULTY, isTitle = true, notCheckable = true },
@@ -27,7 +27,7 @@ local RightClickMenu, DiffLabel = {
 	{ text = _G.RESET_INSTANCES, notCheckable = true, func = function() ResetInstances() end},
 }, {}
 
-if E.Retail then
+if E.Retail or E.Forever then
 	tinsert(RightClickMenu, 4, { text = _G.PLAYER_DIFFICULTY6, checked = function() return GetDungeonDifficultyID() == 23 end, func = function() SetDungeonDifficultyID(23) end })
 	tinsert(RightClickMenu, 9, { text = _G.PLAYER_DIFFICULTY6, checked = function() return GetRaidDifficultyID() == 16 end, func = function() SetRaidDifficultyID(16) end })
 	tinsert(RightClickMenu, 10, { text = '', isTitle = true, notCheckable = true })
@@ -111,16 +111,16 @@ end
 
 local function OnEvent(panel)
 	local name, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
-	local keyStoneLevel = E.Retail and C_MythicPlus_IsMythicPlusActive() and C_ChallengeMode_GetActiveChallengeMapID() and C_ChallengeMode_IsChallengeModeActive() and C_ChallengeMode_GetActiveKeystoneInfo()
+	local keyStoneLevel = (E.Retail or E.Forever) and C_MythicPlus_IsMythicPlusActive() and C_ChallengeMode_GetActiveChallengeMapID() and C_ChallengeMode_IsChallengeModeActive() and C_ChallengeMode_GetActiveKeystoneInfo()
 
 	if keyStoneLevel then
 		panel.text:SetFormattedText('%s %s +%s', GetLabelTexture(difficultyID), name, keyStoneLevel)
 	elseif instanceType ~= 'none' and difficultyID and not Garrison[instanceID] then
 		panel.text:SetFormattedText('%s %s %s', GetLabelTexture(difficultyID), name, GetDiffIDLabel(difficultyID))
 	else
-		DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), E.Retail and GetLegacyRaidDifficultyID()
-		local displayString = E.Retail and '%s %s %s %s %s %s' or '%s %s %s %s'
-		panel.text:SetFormattedText(displayString, DungeonTexture, GetDiffIDLabel(DungeonDifficultyID), RaidTexture, GetDiffIDLabel(RaidDifficultyID), E.Retail and LegacyTexture, E.Retail and GetDiffIDLabel(LegacyRaidDifficultyID))
+		DungeonDifficultyID, RaidDifficultyID, LegacyRaidDifficultyID = GetDungeonDifficultyID(), GetRaidDifficultyID(), (E.Retail or E.Forever) and GetLegacyRaidDifficultyID()
+		local displayString = (E.Retail or E.Forever) and '%s %s %s %s %s %s' or '%s %s %s %s'
+		panel.text:SetFormattedText(displayString, DungeonTexture, GetDiffIDLabel(DungeonDifficultyID), RaidTexture, GetDiffIDLabel(RaidDifficultyID), (E.Retail or E.Forever) and LegacyTexture, (E.Retail or E.Forever) and GetDiffIDLabel(LegacyRaidDifficultyID))
 	end
 end
 

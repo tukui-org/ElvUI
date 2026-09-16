@@ -182,7 +182,7 @@ function M:LootRoll_Create(index)
 	bar:RegisterEvent('CANCEL_LOOT_ROLL')
 	bar:Hide()
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		bar:RegisterEvent('CANCEL_ALL_LOOT_ROLLS')
 	end
 
@@ -230,8 +230,8 @@ function M:LootRoll_Create(index)
 	button.questIcon:Hide()
 
 	bar.pass = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Pass-Up]], 0, PASS)
-	bar.disenchant = E.Retail and CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-DE-Up]], 3, ROLL_DISENCHANT) or nil
-	bar.transmog = E.Retail and CreateRollButton(bar, [[Interface\MINIMAP\TRACKING\Transmogrifier]], 4, TRANSMOGRIFY) or nil
+	bar.disenchant = (E.Retail or E.Forever) and CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-DE-Up]], 3, ROLL_DISENCHANT) or nil
+	bar.transmog = (E.Retail or E.Forever) and CreateRollButton(bar, [[Interface\MINIMAP\TRACKING\Transmogrifier]], 4, TRANSMOGRIFY) or nil
 	bar.greed = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Coin-Up]], 2, GREED)
 	bar.need = CreateRollButton(bar, [[Interface\Buttons\UI-GroupLoot-Dice-Up]], 1, NEED)
 
@@ -304,7 +304,7 @@ function M:START_LOOT_ROLL(event, rollID, rollTime)
 
 	local bar = M:LootRoll_GetFrame()
 	if not bar then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			tinsert(waitingRolls, { rollID = rollID, rollTime = rollTime })
 		end
 
@@ -466,7 +466,7 @@ function M:UpdateLootRollFrames()
 
 	local db = E.db.general.lootRoll
 	local texture = LSM:Fetch('statusbar', db.statusBarTexture)
-	local maxBars = E.Retail and db.maxBars or _G.NUM_GROUP_LOOT_FRAMES or 4
+	local maxBars = (E.Retail or E.Forever) and db.maxBars or _G.NUM_GROUP_LOOT_FRAMES or 4
 
 	for i = 1, maxBars do
 		local bar = M:LootRoll_GetFrame(i)
@@ -578,7 +578,7 @@ function M:LoadLootRoll()
 
 	M:UpdateLootRollFrames()
 
-	if not E.Retail then
+	if not (E.Retail or E.Forever) then
 		M:RegisterEvent('LOOT_HISTORY_ROLL_CHANGED')
 		M:RegisterEvent('LOOT_HISTORY_ROLL_COMPLETE', 'ClearLootRollCache')
 		M:RegisterEvent('LOOT_ROLLS_COMPLETE', 'ClearLootRollCache')

@@ -192,7 +192,7 @@ function AB:BindUpdate(button, spellmacro)
 			button.bindstring = 'SPELL '..bind.name
 		end
 	elseif spellmacro == 'SPELL' then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			local slotIndex = button.slotIndex or button:GetParent().slotIndex
 			if slotIndex then
 				bind.name = GetSpellBookItemName(slotIndex, BOOKTYPE_SPELL) or nil
@@ -318,7 +318,7 @@ function AB:LoadKeyBinder()
 
 	AB:SecureHook(GameTooltip, 'Hide', AB.ShowBinds) -- helper for BindTooltip
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		AB:SecureHook(_G.SettingsPanel, 'DisplayCategory', AB.SettingsDisplayCategory)
 	end
 

@@ -27,12 +27,12 @@ local QuestLogXP, RestedXP, PercentRested = 0, 0
 local HouseInfo, HouseXP, HousePercent = {}
 
 function DB:ExperienceBar_CheckQuests(questID, completedOnly)
-	if E.Retail and questID then
+	if (E.Retail or E.Forever) and questID then
 		local isCompleted = C_QuestLog_ReadyForTurnIn(questID)
 		if not completedOnly or isCompleted then
 			QuestLogXP = QuestLogXP + GetQuestLogRewardXP(questID)
 		end
-	elseif not E.Retail then
+	elseif not (E.Retail or E.Forever) then
 		local currentZone = E.MapInfo.name
 		if not currentZone then return end
 
@@ -157,7 +157,7 @@ function DB:ExperienceBar_QuestXP()
 
 	QuestLogXP = 0
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		for i = 1, C_QuestLog_GetNumQuestLogEntries() do
 			local info = C_QuestLog_GetInfo(i)
 			if info and not info.isHidden then
@@ -262,7 +262,7 @@ function DB:ExperienceBar_Toggle()
 		DB:RegisterEvent('ZONE_CHANGED', 'ExperienceBar_QuestXP')
 		DB:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'ExperienceBar_QuestXP')
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			DB:RegisterEvent('TRACKED_HOUSE_CHANGED', 'ExperienceBar_Update')
 			DB:RegisterEvent('HOUSE_LEVEL_FAVOR_UPDATED', 'ExperienceBar_Update')
 			DB:RegisterEvent('SUPER_TRACKING_CHANGED', 'ExperienceBar_QuestXP')
@@ -276,7 +276,7 @@ function DB:ExperienceBar_Toggle()
 		DB:UnregisterEvent('ZONE_CHANGED')
 		DB:UnregisterEvent('ZONE_CHANGED_NEW_AREA')
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			DB:UnregisterEvent('SUPER_TRACKING_CHANGED')
 		end
 	end

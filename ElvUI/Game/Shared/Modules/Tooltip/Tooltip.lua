@@ -115,14 +115,14 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:UpdateAuraSpellIDCVar()
-	if not E.Retail then return end
+	if not (E.Retail or E.Forever) then return end
 
 	-- Blizzard resets tooltipShowAuraSpellIDs to 0 between sessions
 	E:SetCVar('tooltipShowAuraSpellIDs', TT:IsModKeyDown())
 end
 
 function TT:SetCompareItems(tt, value)
-	if E.Retail or tt ~= GameTooltip then return end
+	if E.Retail or E.Forever or tt ~= GameTooltip then return end
 
 	tt.supportsItemComparison = value
 end
@@ -306,7 +306,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 				levelText = format('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
 			end
 
-			if E.Retail then
+			if E.Retail or E.Forever then
 				local specText = specLine and specLine:GetText()
 				if specText then -- this might explode because of guildName
 					specLine:SetText(nameColor:WrapTextInColorCode(specText))
@@ -514,7 +514,7 @@ function TT:AddTargetInfo(tt, unit)
 		if E:IsSecretUnit(unitTarget) then
 			local _, className = UnitClass(unitTarget)
 			targetColor = C_ClassColor_GetClassColor(className) or PRIEST_COLOR
-		elseif UnitIsPlayer(unitTarget) and (not E.Retail or not UnitHasVehicleUI(unitTarget)) then
+		elseif UnitIsPlayer(unitTarget) and (not (E.Retail or E.Forever) or not UnitHasVehicleUI(unitTarget)) then
 			local _, className = UnitClass(unitTarget)
 			targetColor = E:ClassColor(className) or PRIEST_COLOR
 		else
@@ -533,7 +533,7 @@ function TT:AddTargetInfo(tt, unit)
 
 	-- even though technically this would work on retail it
 	-- we stop it because unitFound is always secret when we need it
-	if E.Retail or not IsInGroup() then return end
+	if E.Retail or E.Forever or not IsInGroup() then return end
 
 	local text, count = '', 0
 	local isInRaid = IsInRaid()
@@ -631,13 +631,13 @@ function TT:SetUnitInfo(tt, unit, data)
 		end
 	end
 
-	if E.Retail and not isInCombat then
+	if (E.Retail or E.Forever) and not isInCombat then
 		if TT.db.mythicDataEnable then
 			TT:AddMythicInfo(tt, unit)
 		end
 	end
 
-	if (E.Retail or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not tt.ItemLevelShown then
+	if (E.Retail or E.Forever or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not tt.ItemLevelShown then
 		if color then
 			TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 		else
@@ -645,7 +645,7 @@ function TT:SetUnitInfo(tt, unit, data)
 		end
 	end
 
-	if not isPlayerUnit and TT:IsModKeyDown() and not ((E.Retail or E.Mists) and C_PetBattles_IsInBattle()) then
+	if not isPlayerUnit and TT:IsModKeyDown() and not ((E.Retail or E.Forever or E.Mists) and C_PetBattles_IsInBattle()) then
 		local guid = (data and data.guid) or UnitGUID(unit) or ''
 		local id = E:NotSecretValue(guid) and tonumber(strmatch(guid, '%-(%d-)%-%x-$'), 10)
 		if id then -- NPC ID's
@@ -817,7 +817,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 	if GetItem then
 		local name, link = GetItem(self)
 
-		if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
+		if not (E.Retail or E.Forever) and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
 			local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
 			if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
 		end
@@ -968,7 +968,7 @@ function TT:MODIFIER_STATE_CHANGED()
 		local owner = GameTooltip:GetOwner()
 		if owner == UIParent then
 			if E:UnitExists('mouseover') then
-				if E.Retail then
+				if E.Retail or E.Forever then
 					GameTooltip:RefreshData()
 				else
 					GameTooltip:SetUnit('mouseover')
@@ -1044,7 +1044,7 @@ function TT:GameTooltip_OnTooltipSetSpell(data)
 	if (self ~= GameTooltip and self ~= E.SpellBookTooltip) or self:IsForbidden() or not TT:IsModKeyDown() then return end
 
 	local spellID, _
-	if E.Retail then
+	if E.Retail or E.Forever then
 		if data and data.type then
 			if data.type == TooltipDataType.Spell then
 				spellID = data.id
@@ -1263,7 +1263,7 @@ function TT:Initialize()
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
 		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
 
-		if E.Retail then -- MoneyFrame will error otherwise
+		if E.Retail or E.Forever then -- MoneyFrame will error otherwise
 			AddLinePreCall(LINETYPE_SELLPRICE, TT.AddMoneyInfo)
 		end
 
@@ -1275,11 +1275,11 @@ function TT:Initialize()
 		TT:SecureHookScript(E.SpellBookTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
 	end
 
-	if E.Retail or E.Mists then
+	if E.Retail or E.Forever or E.Mists then
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')

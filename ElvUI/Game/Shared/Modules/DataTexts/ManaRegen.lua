@@ -25,7 +25,7 @@ local function OnEvent(panel)
 	local baseMR, castingMR = GetManaRegen()
 	local regen = InCombatLockdown() and castingMR or baseMR
 
-	local manaRegen = E.Retail and AbbreviateNumbers(regen, breakpoint) or (regen * 5)
+	local manaRegen = (E.Retail or E.Forever) and AbbreviateNumbers(regen, breakpoint) or (regen * 5)
 	if db.NoLabel then
 		panel.text:SetFormattedText(displayString, manaRegen)
 	else
@@ -38,7 +38,7 @@ local function ApplySettings(panel, hex)
 		db = E.global.datatexts.settings[panel.name]
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		data.fractionDivisor = 10 ^ (db.decimalLength or 0)
 		data.significandDivisor = 0.2 / data.fractionDivisor
 

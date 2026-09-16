@@ -17,7 +17,7 @@ local BreakUpLargeNumbers = BreakUpLargeNumbers
 local C_QuestLog_GetInfo = C_QuestLog.GetInfo
 local GetNumQuestLogEntries = C_QuestLog.GetNumQuestLogEntries or GetNumQuestLogEntries
 
-local MAX_QUESTLOG_QUESTS = min(C_QuestLog.GetMaxNumQuestsCanAccept() + (E.Retail and 10 or 0), 35) -- 20 for ERA, 25 for WotLK, 35 for Retail
+local MAX_QUESTLOG_QUESTS = min(C_QuestLog.GetMaxNumQuestsCanAccept() + ((E.Retail or E.Forever) and 10 or 0), 35) -- 20 for ERA, 25 for WotLK, 35 for Retail
 local TRACKER_HEADER_QUESTS = TRACKER_HEADER_QUESTS
 local COMPLETE = COMPLETE
 local INCOMPLETE = INCOMPLETE
@@ -26,7 +26,7 @@ local displayString = ''
 local numEntries, numQuests, xpToLevel = 0, 0, 0
 
 local function GetQuestInfo(questIndex)
-	if E.Retail then
+	if E.Retail or E.Forever then
 		return C_QuestLog_GetInfo(questIndex)
 	else
 		local info, _ = {}
@@ -46,14 +46,14 @@ local function OnEnter()
 	DT.tooltip:AddLine(TRACKER_HEADER_QUESTS)
 	DT.tooltip:AddLine(' ')
 
-	local previousQuest = not E.Retail and GetQuestLogSelection() -- save previous quest
+	local previousQuest = not (E.Retail or E.Forever) and GetQuestLogSelection() -- save previous quest
 
 	for questIndex = 1, numEntries do
 		local info = GetQuestInfo(questIndex)
 		if info and not info.isHidden and not info.isHeader then
 			local xp = GetQuestLogRewardXP(info.questID)
 			local money = GetQuestLogRewardMoney(info.questID)
-			local isComplete = info.isComplete or E.Retail and _G.C_QuestLog.ReadyForTurnIn(info.questID)
+			local isComplete = info.isComplete or (E.Retail or E.Forever) and _G.C_QuestLog.ReadyForTurnIn(info.questID)
 
 			totalMoney = totalMoney + money
 			totalXP = totalXP + xp

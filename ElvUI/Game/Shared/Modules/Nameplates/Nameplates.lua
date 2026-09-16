@@ -154,7 +154,7 @@ function NP:SetCVars()
 
 	-- The order of these is important !!
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		E:SetCVar('nameplateShowFriendlyRealmName', 0)
 	else
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
@@ -264,7 +264,7 @@ function NP:Construct_ClassPowerTwo(nameplate)
 	if nameplate ~= NP.TestFrame then
 		if E.myclass == 'DEATHKNIGHT' then
 			nameplate.Runes = NP:Construct_Runes(nameplate)
-		elseif E.myclass == 'MONK' and E.Retail then
+		elseif E.myclass == 'MONK' and (E.Retail or E.Forever) then
 			nameplate.Stagger = NP:Construct_Stagger(nameplate)
 		end
 	end
@@ -274,7 +274,7 @@ function NP:Update_ClassPowerTwo(nameplate)
 	if nameplate ~= NP.TestFrame then
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)
-		elseif E.myclass == 'MONK' and E.Retail then
+		elseif E.myclass == 'MONK' and (E.Retail or E.Forever) then
 			NP:Update_Stagger(nameplate)
 		end
 	end
@@ -530,7 +530,7 @@ function NP:SetupTarget(nameplate, removed)
 end
 
 function NP:SetNamePlateClickThrough()
-	if E.Retail then
+	if E.Retail or E.Forever then
 		NP.PlateDriver:SetEnemyInteractible(not NP.db.clickThrough.enemy)
 		NP.PlateDriver:SetFriendlyInteractible(not NP.db.clickThrough.friendly)
 	end
@@ -608,7 +608,7 @@ function NP:ConfigurePlates(init)
 		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.__unit)
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		NP:AuraContainer_ConstructFilters() -- rebuilds the filters
 	end
 
@@ -617,7 +617,7 @@ function NP:ConfigurePlates(init)
 	if init then -- since this is a fake plate, we actually need to trigger this always
 		staticFunc(NP.PlayerFrame, staticEvent, 'player')
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			NP:AuraContainer_ConstructContainers() -- this spawns the containers
 		end
 
@@ -633,7 +633,7 @@ function NP:ConfigurePlates(init)
 				NP.NAME_PLATE_UNIT_ADDED(nameplate, 'NAME_PLATE_UNIT_ADDED', nameplate.__unit)
 			end
 
-			if E.Retail then
+			if E.Retail or E.Forever then
 				NP:Configure_AuraUpdate(nameplate)
 			end
 
@@ -753,8 +753,8 @@ end
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	if not unit then unit = self.__unit end
 
-	self.widgetsOnly = E.Retail and self.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
-	self.widgetSet = E.Retail and UnitWidgetSet(unit)
+	self.widgetsOnly = (E.Retail or E.Forever) and self.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
+	self.widgetSet = (E.Retail or E.Forever) and UnitWidgetSet(unit)
 	self.classification = UnitClassification(unit)
 	self.creatureType = UnitCreatureType(unit)
 	self.isMe = E:UnitIsUnit(unit, 'player')
@@ -777,7 +777,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
 	local specID, specIcon
-	local spec = E.Retail and E:GetUnitSpecInfo(unit)
+	local spec = (E.Retail or E.Forever) and E:GetUnitSpecInfo(unit)
 	if spec then
 		specID, specIcon = spec.id, spec.icon
 	end
@@ -793,7 +793,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		self.AuraContainer = NP:AuraContainer_SetActive(self)
 	end
 
@@ -849,7 +849,7 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 
 	NP:UpdateNumPlates()
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		NP:AuraContainer_RemoveActive(self)
 	end
 
@@ -1059,7 +1059,7 @@ function NP:Initialize()
 	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		NP.SetupClassNameplateBars(_G.NamePlateDriverFrame)
 
 		hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', NP.SetupClassNameplateBars)
@@ -1130,7 +1130,7 @@ function NP:Initialize()
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')
 
-	if not E.Retail then
+	if not (E.Retail or E.Forever) then
 		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
 	end
 

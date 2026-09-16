@@ -1334,7 +1334,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		if not search and (info.var == 'Search') then
 			search = element
 
-			if not E.Retail then
+			if not (E.Retail or E.Forever) then
 				search:RegisterEvent('GLOBAL_MOUSE_DOWN')
 				search:SetScript('OnEvent', info.event)
 			end

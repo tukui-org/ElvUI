@@ -48,9 +48,9 @@ local IconParents = {}
 local menuFrame = CreateFrame('Frame', 'MinimapRightClickMenu', E.UIParent, 'UIDropDownMenuTemplate')
 local menuList = {
 	{text = _G.CHARACTER_BUTTON, microOffset = 'CharacterMicroButton', func = function() _G.ToggleCharacter('PaperDollFrame') end },
-	{text = E.Retail and _G.SPELLBOOK or _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() if PlayerSpellsUtil then PlayerSpellsUtil.ToggleSpellBookFrame() else ToggleFrame(_G.SpellBookFrame) end end },
-	{text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end, icon = 134376, cropIcon = E.Retail and 5 or 1 }, -- Interface\ICONS\INV_Misc_PocketWatch_01
-	{text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011, cropIcon = E.Retail and 5 or 1 }, -- Interface\ICONS\UI_Chat
+	{text = (E.Retail or E.Forever) and _G.SPELLBOOK or _G.SPELLBOOK_ABILITIES_BUTTON, microOffset = 'SpellbookMicroButton', func = function() if PlayerSpellsUtil then PlayerSpellsUtil.ToggleSpellBookFrame() else ToggleFrame(_G.SpellBookFrame) end end },
+	{text = _G.TIMEMANAGER_TITLE, func = function() ToggleFrame(_G.TimeManagerFrame) end, icon = 134376, cropIcon = (E.Retail or E.Forever) and 5 or 1 }, -- Interface\ICONS\INV_Misc_PocketWatch_01
+	{text = _G.CHAT_CHANNELS, func = function() _G.ToggleChannelFrame() end, icon = 2056011, cropIcon = (E.Retail or E.Forever) and 5 or 1 }, -- Interface\ICONS\UI_Chat
 	{text = _G.SOCIAL_BUTTON, func = function() _G.ToggleFriendsFrame() end, icon = 796351, cropIcon = 10 }, -- Interface\FriendsFrame\Battlenet-BattlenetIcon
 	{text = _G.TALENTS_BUTTON, microOffset = 'TalentMicroButton', func = function() if PlayerSpellsUtil then PlayerSpellsUtil.ToggleClassTalentFrame() else _G.ToggleTalentFrame() end end },
 	{text = _G.GUILD, microOffset = 'GuildMicroButton', func = function() _G.ToggleGuildFrame() end },
@@ -60,18 +60,18 @@ if (E.Wrath or E.Mists) and E.mylevel >= _G.SHOW_PVP_LEVEL then
 	tinsert(menuList, {text = _G.PLAYER_V_PLAYER, microOffset = 'PVPMicroButton', func = function() _G.TogglePVPFrame() end, })
 end
 
-if E.Retail or E.Wrath or E.Mists then
+if E.Retail or E.Forever or E.Wrath or E.Mists then
 	tinsert(menuList, {text = _G.COLLECTIONS, microOffset = 'CollectionsMicroButton', func = function() _G.ToggleCollectionsJournal() end, icon = E.Media.Textures.GoldCoins }) -- Interface\ICONS\INV_Misc_Coin_01
 	tinsert(menuList, {text = _G.ACHIEVEMENT_BUTTON, microOffset = 'AchievementMicroButton', func = function() _G.ToggleAchievementFrame() end })
-	tinsert(menuList, {text = _G.LFG_TITLE, microOffset = E.Retail and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
-	tinsert(menuList, {text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end, icon = 235486, cropIcon = E.Retail and 5 or 1 }) -- Interface\Calendar\MeetingIcon
+	tinsert(menuList, {text = _G.LFG_TITLE, microOffset = (E.Retail or E.Forever) and 'LFDMicroButton' or 'LFGMicroButton', func = function() if E.Retail or E.Forever then _G.ToggleLFDParentFrame() else _G.PVEFrame_ToggleFrame() end end })
+	tinsert(menuList, {text = L["Calendar"], func = function() _G.GameTimeFrame:Click() end, icon = 235486, cropIcon = (E.Retail or E.Forever) and 5 or 1 }) -- Interface\Calendar\MeetingIcon
 end
 
-if E.Retail or E.Mists then
+if E.Retail or E.Forever or E.Mists then
 	tinsert(menuList, {text = _G.ENCOUNTER_JOURNAL, microOffset = 'EJMicroButton', func = function() if not IsAddOnLoaded('Blizzard_EncounterJournal') then E:LoadAddon('Blizzard_EncounterJournal') end ToggleFrame(_G.EncounterJournal) end })
 end
 
-if E.Retail then
+if E.Retail or E.Forever then
 	if StoreEnabled and StoreEnabled() then
 		tinsert(menuList, {text = _G.BLIZZARD_STORE, microOffset = 'StoreMicroButton', func = function() _G.StoreMicroButton:Click() end })
 	end
@@ -103,7 +103,7 @@ tinsert(menuList, {
 			PlaySound(854) --IG_MAINMENU_QUIT
 			HideUIPanel(_G.GameMenuFrame)
 
-			if E.Retail then
+			if E.Retail or E.Forever then
 				MainMenuMicroButton:SetButtonState('NORMAL')
 			else
 				MainMenuMicroButton_SetNormal()
@@ -112,7 +112,7 @@ tinsert(menuList, {
 	end
 })
 
-tinsert(menuList, {text = _G.HELP_BUTTON, microOffset = not E.Retail and 'HelpMicroButton' or nil, bottom = true, func = function() _G.ToggleHelpFrame() end, icon = 132088, cropIcon = 8 })
+tinsert(menuList, {text = _G.HELP_BUTTON, microOffset = not (E.Retail or E.Forever) and 'HelpMicroButton' or nil, bottom = true, func = function() _G.ToggleHelpFrame() end, icon = 132088, cropIcon = 8 })
 
 M.RightClickMenu = menuFrame
 M.RightClickMenuList = menuList
@@ -220,7 +220,7 @@ function M:UpdateClockButton()
 	if clock then
 		M:HandleClusterElement(clock)
 
-		if not E.Retail then
+		if not (E.Retail or E.Forever) then
 			clock:ClearAllPoints()
 			clock:Point('TOPRIGHT')
 
@@ -234,7 +234,7 @@ function M:ADDON_LOADED(_, addon)
 		M:UpdateClockButton()
 	elseif addon == 'Blizzard_HybridMinimap' then
 		M:SetupHybridMinimap()
-	elseif addon == 'Blizzard_EncounterJournal' and E.Retail then
+	elseif addon == 'Blizzard_EncounterJournal' and (E.Retail or E.Forever) then
 		-- Since the default non-quest map is full screen, it overrides the showing of the encounter journal
 		hooksecurefunc('EJ_HideNonInstancePanels', M.HideNonInstancePanels)
 	end
@@ -272,7 +272,7 @@ function M:Minimap_OnMouseDown(btn)
 			menuFrame:Show()
 		end
 	elseif btn == 'RightButton' then
-		local button = (E.Retail and _G.MinimapCluster.Tracking.Button) or _G.MiniMapTrackingButton
+		local button = ((E.Retail or E.Forever) and _G.MinimapCluster.Tracking.Button) or _G.MiniMapTrackingButton
 		if button then
 			button:OpenMenu()
 
@@ -298,8 +298,8 @@ function M:MapCanvas_OnMouseDown(btn)
 end
 
 function M:Minimap_OnMouseWheel(d)
-	local zoomIn = E.Retail and Minimap.ZoomIn or _G.MinimapZoomIn
-	local zoomOut = E.Retail and Minimap.ZoomOut or _G.MinimapZoomOut
+	local zoomIn = (E.Retail or E.Forever) and Minimap.ZoomIn or _G.MinimapZoomIn
+	local zoomOut = (E.Retail or E.Forever) and Minimap.ZoomOut or _G.MinimapZoomOut
 
 	if d > 0 then
 		zoomIn:Click()
@@ -342,8 +342,8 @@ do
 	local function ResetZoom()
 		Minimap:SetZoom(0)
 
-		local zoomIn = E.Retail and Minimap.ZoomIn or _G.MinimapZoomIn
-		local zoomOut = E.Retail and Minimap.ZoomOut or _G.MinimapZoomOut
+		local zoomIn = (E.Retail or E.Forever) and Minimap.ZoomIn or _G.MinimapZoomIn
+		local zoomOut = (E.Retail or E.Forever) and Minimap.ZoomOut or _G.MinimapZoomOut
 
 		zoomIn:Enable() -- Reset enabled state of buttons
 		zoomOut:Disable()
@@ -423,7 +423,7 @@ function M:UpdateIcons()
 		if difficulty then M:SaveIconParent(difficulty) end
 	end
 
-	if difficulty and E.Retail then
+	if difficulty and (E.Retail or E.Forever) then
 		local r, g, b = unpack(E.media.backdropcolor)
 		local r2, g2, b2, a2 = unpack(E.media.backdropfadecolor)
 		for _, name in next, DifficultyIcons do
@@ -643,8 +643,8 @@ function M:UpdateSettings()
 	M:HandleClusterElement(MinimapCluster.ZoneTextButton)
 
 	local clusterWidth = MinimapCluster:GetWidth()
-	local definedWidth = E.Retail and 30 or 0
-	local definedHeight = E.Retail and 20 or 26
+	local definedWidth = (E.Retail or E.Forever) and 30 or 0
+	local definedHeight = (E.Retail or E.Forever) and 20 or 26
 	local height, width = definedHeight * mmScale, (clusterWidth - definedWidth) * mmScale
 	M.ClusterHolder:SetSize(width, height)
 	M.ClusterBackdrop:SetSize(width, height)
@@ -700,9 +700,9 @@ end
 
 function M:SetMinimapMask(square)
 	if square then
-		Minimap:SetMaskTexture(E.Retail and 130937 or [[interface\chatframe\chatframebackground]])
+		Minimap:SetMaskTexture((E.Retail or E.Forever) and 130937 or [[interface\chatframe\chatframebackground]])
 	else
-		Minimap:SetMaskTexture(E.Retail and 186178 or [[textures\minimapmask]])
+		Minimap:SetMaskTexture((E.Retail or E.Forever) and 186178 or [[textures\minimapmask]])
 	end
 end
 
@@ -744,9 +744,9 @@ do
 		_G.MinimapZoneTextButton
 	}
 
-	tinsert(killFrames, E.Retail and Minimap.ZoomIn or _G.MinimapZoomIn)
-	tinsert(killFrames, E.Retail and Minimap.ZoomOut or _G.MinimapZoomOut)
-	tinsert(killFrames, E.Retail and _G.MiniMapTracking or _G.MinimapToggleButton)
+	tinsert(killFrames, (E.Retail or E.Forever) and Minimap.ZoomIn or _G.MinimapZoomIn)
+	tinsert(killFrames, (E.Retail or E.Forever) and Minimap.ZoomOut or _G.MinimapZoomOut)
+	tinsert(killFrames, (E.Retail or E.Forever) and _G.MiniMapTracking or _G.MinimapToggleButton)
 
 	function M:HideElements()
 		for _, frame in next, killFrames do
@@ -773,7 +773,7 @@ function M:Initialize()
 	for _, menu in ipairs(menuList) do
 		menu.notCheckable = true
 
-		if E.Retail then -- new menu 11.0 don't support icons? lets use t strings
+		if E.Retail or E.Forever then -- new menu 11.0 don't support icons? lets use t strings
 			local icon = menu.microOffset == 'PVPMicroButton' and ((E.myfaction == 'Horde' and E.Media.Textures.PVPHorde) or E.Media.Textures.PVPAlliance)
 			if icon then
 				menu.text = format('|T%s:18:18:0:0:64:64:5:59:5:59|t %s', menu.icon, menu.text)
@@ -871,7 +871,7 @@ function M:Initialize()
 
 	MinimapCluster.BorderTop:StripTextures()
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		-- hide the BlopRing on Minimap
 		Minimap:SetArchBlobRingAlpha(0)
 		Minimap:SetArchBlobRingScalar(0)

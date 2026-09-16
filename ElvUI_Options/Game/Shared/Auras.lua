@@ -13,7 +13,7 @@ local SharedOptions = {
 	spacer1 = ACH:Spacer(5, 'full'),
 
 	growthDirection = ACH:Select(L["Growth Direction"], L["The direction the auras will grow and then the direction they will grow after they reach the wrap after limit."], 10, C.Values.GrowthDirection),
-	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 11, { IMPORTANT = E.Retail and L["Important"] or nil, DEFENSIVE = E.Retail and L["Big Defensive"] or nil, DURATION = E.Retail and L["Duration"] or nil, PLAYER = E.Retail and L["Debuffs"] or nil, INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
+	sortMethod = ACH:Select(L["Sort Method"], L["Defines how the group is sorted."], 11, { IMPORTANT = (E.Retail or E.Forever) and L["Important"] or nil, DEFENSIVE = (E.Retail or E.Forever) and L["Big Defensive"] or nil, DURATION = (E.Retail or E.Forever) and L["Duration"] or nil, PLAYER = (E.Retail or E.Forever) and L["Debuffs"] or nil, INDEX = L["Index"], TIME = L["Time"], NAME = L["Name"] }),
 	sortDir = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 12, { ['+'] = L["Ascending"], ['-'] = L["Descending"] }),
 	seperateOwn = ACH:Select(L["Separate"], L["Indicate whether buffs you cast yourself should be separated before or after."], 13, { [-1] = L["Other's First"], [0] = L["No Sorting"], [1] = L["Your Auras First"] }),
 
@@ -23,9 +23,9 @@ local SharedOptions = {
 	maxWraps = ACH:Range(L["Max Wraps"], L["Limit the number of rows or columns."], 23, { min = 1, max = 32, step = 1 }),
 	horizontalSpacing = ACH:Range(L["Horizontal Spacing"], nil, 24, { min = -5, max = 50, step = 1 }),
 	verticalSpacing = ACH:Range(L["Vertical Spacing"], nil, 25, { min = -5, max = 50, step = 1 }),
-	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }, nil, nil, nil, nil, E.Retail),
+	fadeThreshold = ACH:Range(L["Fade Threshold"], L["Threshold before the icon will fade out and back in. Set to -1 to disable."], 26, { min = -1, max = 30, step = 1 }, nil, nil, nil, nil, E.Retail or E.Forever),
 
-	tooltip = ACH:Group(L["Tooltip"], nil, -3, nil, nil, nil, nil, E.Retail),
+	tooltip = ACH:Group(L["Tooltip"], nil, -3, nil, nil, nil, nil, E.Retail or E.Forever),
 	statusBar = ACH:Group(L["Statusbar"], nil, -2),
 	countGroup = ACH:Group(L["Count Text"], nil, -1),
 }
@@ -72,7 +72,7 @@ do
 	local order = { None = 0, Magic = 1, Curse = 2, Disease = 3, Poison = 4, BadDispel = 12, Bleed = 13, Stealable = 14 }
 	local names = { None = L["None"], Magic = L["Magic"], Curse = L["Curse"], Disease = L["Disease"], Poison = L["Poison"], BadDispel = L["Bad Dispel"], Bleed = L["Bleed"], Stealable = L["Stealable"], Enrage = L["Enrage"] }
 	for key in next, DebuffColors do
-		if (key ~= '' and key ~= 'none') and (not E.Retail or key ~= 'BadDispel') then -- this is a reference to none
+		if (key ~= '' and key ~= 'none') and (not (E.Retail or E.Forever) or key ~= 'BadDispel') then -- this is a reference to none
 			Auras.args.debuffColors.args[key] = ACH:Color(names[key] or key, nil, order[key] or -1, nil, 120)
 		end
 	end
@@ -86,7 +86,7 @@ Auras.args.buffs.args.statusBar.args.barColor.get = function() local t = E.db.au
 Auras.args.buffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.buffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.buffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.buffs.barShow or (E.db.auras.buffs.barColorGradient or not E.db.auras.buffs.barShow) end
 
-Auras.args.buffs.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
+Auras.args.buffs.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not (E.Retail or E.Forever))
 Auras.args.buffs.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() UF:ResetFilters_AuraGroup(E.db.auras.buffs.filterLists, P.auras.buffs.filterLists); A:UpdateHeader(A.BuffFrame) end)
 
 for index = 1, E.filterMax do
@@ -102,7 +102,7 @@ Auras.args.debuffs.args.statusBar.args.barColor.get = function() local t = E.db.
 Auras.args.debuffs.args.statusBar.args.barColor.set = function(_, r, g, b) local t = E.db.auras.debuffs.barColor t.r, t.g, t.b = r, g, b end
 Auras.args.debuffs.args.statusBar.args.barColor.disabled = function() return not E.db.auras.debuffs.barShow or (E.db.auras.debuffs.barColorGradient or not E.db.auras.debuffs.barShow) end
 
-Auras.args.debuffs.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Retail)
+Auras.args.debuffs.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not (E.Retail or E.Forever))
 Auras.args.debuffs.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() UF:ResetFilters_AuraGroup(E.db.auras.debuffs.filterLists, P.auras.debuffs.filterLists); A:UpdateHeader(A.DebuffFrame) end)
 
 for index = 1, E.filterMax do
@@ -110,7 +110,7 @@ for index = 1, E.filterMax do
 	Auras.args.debuffs.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.auras.debuffs.filterLists[name].enable end, function(info) return E.db.auras.debuffs.filterLists[name][info[#info]] end, function(info, value) E.db.auras.debuffs.filterLists[name][info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function(info) local value = E.db.auras.debuffs.filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.auras.debuffs.filterLists[name].candidates[info[#info]] = (value == nil and 1 or value); A:UpdateHeader(A.DebuffFrame) end)
 end
 
-Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateRaidWarning[info[#info]] end, function(info, value) E.db.general.privateRaidWarning[info[#info]] = value; PA:RaidWarning_Update() end, nil, not E.Retail)
+Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateRaidWarning[info[#info]] end, function(info, value) E.db.general.privateRaidWarning[info[#info]] = value; PA:RaidWarning_Update() end, nil, not (E.Retail or E.Forever))
 Auras.args.privateAuras.args.raidWarning = ACH:Group(L["Raid Warning"], nil, 30)
 Auras.args.privateAuras.args.raidWarning.args.scale = ACH:Range(L["Scale"], nil, 1, { min = 0.5, max = 4, step = 0.01, bigStep = 0.1 })
 Auras.args.privateAuras.args.raidWarning.inline = true

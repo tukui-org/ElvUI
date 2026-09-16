@@ -203,7 +203,7 @@ function UF:Configure_Castbar(frame)
 	local SPACING1 = UF.BORDER + UF.SPACING
 	local SPACING2 = SPACING1 * 2
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		castbar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 	else
 		E:SetSmoothing(castbar, db.smoothbars)
@@ -364,7 +364,7 @@ function UF:Configure_Castbar(frame)
 		E:UpdateClassColor(customColor.colorNoInterrupt)
 		E:UpdateClassColor(customColor.colorInterrupted)
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			castbar.Shield:SetVertexColor(customColor.colorNoInterrupt.r, customColor.colorNoInterrupt.g, customColor.colorNoInterrupt.b, customColor.colorNoInterrupt.a)
 			castbar.Shield.alphaValue = customColor.colorNoInterrupt.a
 		end
@@ -375,7 +375,7 @@ function UF:Configure_Castbar(frame)
 		castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and E:UpdateClassColor(UF.db.colors.castbar_backdrop)
 		UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar, db.reverse)
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			castbar.Shield:SetVertexColor(UF.db.colors.castNoInterrupt.r, UF.db.colors.castNoInterrupt.g, UF.db.colors.castNoInterrupt.b, UF.db.colors.castNoInterrupt.a)
 			castbar.Shield.alphaValue = UF.db.colors.castNoInterrupt.a
 		end
@@ -586,7 +586,7 @@ function UF:PostCastStart(unit)
 		if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
 			if self.targetCurrent then
 				UF:SetCastText(self, db.castbar, changed, name, self.targetCurrent, self.targetClass)
-			elseif not E.Retail and (parent.unitframeType == 'pet' or parent.unitframeType == 'boss') then
+			elseif not (E.Retail or E.Forever) and (parent.unitframeType == 'pet' or parent.unitframeType == 'boss') then
 				local unitName = UnitName(unit)
 				local targetName = UnitName(unit..'target')
 				local _, targetClass = UnitClass(unit..'target')
@@ -615,7 +615,7 @@ function UF:PostCastStart(unit)
 			end
 
 			-- Base ticks upgraded by another aura
-			local auraTicks = baseTicks and not E.Retail and global.AuraChannelTicks[spellID]
+			local auraTicks = baseTicks and not (E.Retail or E.Forever) and global.AuraChannelTicks[spellID]
 			if auraTicks then
 				for auraID, tickCount in next, auraTicks.spells do
 					if E:GetAuraByID(unit, auraID, auraTicks.filter) then

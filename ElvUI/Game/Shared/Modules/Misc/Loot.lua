@@ -193,7 +193,7 @@ local function CreateSlot(id)
 	questTexture:SetTexCoords()
 	slot.questTexture = questTexture
 
-	local profQuality = E.Retail and iconFrame:CreateTexture(nil, 'OVERLAY')
+	local profQuality = (E.Retail or E.Forever) and iconFrame:CreateTexture(nil, 'OVERLAY')
 	if profQuality then
 		profQuality:SetPoint('TOPLEFT', -3, 2)
 		slot.ProfessionQualityOverlayFrame = profQuality

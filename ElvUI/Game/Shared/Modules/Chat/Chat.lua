@@ -369,7 +369,7 @@ do --this can save some main file locals
 			z['Player-4385-05E5F601']	= itsSimpy -- [Horde] Shaman:	Yube
 			-- Repooc
 			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
-		elseif E.Retail then
+		elseif E.Retail or E.Forever then
 			-- Elv
 			z['Player-127-0AB2F946']	= itsElv -- Paladin
 			z['Player-5-0E83B943']		= itsElv -- Druid
@@ -569,7 +569,7 @@ do --this can save some main file locals
 			z['Player-4454-060E3657']	= ElvGreen -- [Horde] Druid
 			z['Player-4454-060E364E']	= ElvGreen -- [Horde] Priest
 			z['Player-4454-060E361A']	= ElvGreen -- [Horde] Shaman
-		elseif E.Retail then
+		elseif E.Retail or E.Forever then
 			-- Blazeflack
 			z['Blazii-Silvermoon']		= ElvBlue -- Priest
 			z['Chazii-Silvermoon']		= ElvBlue -- Shaman
@@ -1024,7 +1024,7 @@ function CH:StyleChat(frame)
 		tab.conversationIcon:Point('RIGHT', tab.Text, 'LEFT', -1, 0)
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		editbox.focusLeft:SetAlpha(0)
 		editbox.focusRight:SetAlpha(0)
 		editbox.focusMid:SetAlpha(0)
@@ -2028,7 +2028,7 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		end
 	end
 
-	if E.Retail and E:NotSecretValue(unitGUID) and unitGUID then
+	if (E.Retail or E.Forever) and E:NotSecretValue(unitGUID) and unitGUID then
 		if CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
 			flag = flag .. TIMERUNNING_SMALL
 		end
@@ -2430,7 +2430,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		elseif chatType == 'CHANNEL_NOTICE' then
 			if E:IsSecretValue(arg1) then
 				return -- we cant get the globalstring because arg1 is secret
-			elseif E.Retail and arg1 == 'YOU_CHANGED' and (GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR) then
+			elseif (E.Retail or E.Forever) and arg1 == 'YOU_CHANGED' and (GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR) then
 				if frame.UpdateDefaultChatTarget then
 					frame:UpdateDefaultChatTarget()
 				else
@@ -2439,7 +2439,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 				frame.editBox:UpdateNewcomerEditBoxHint()
 			else
-				if E.Retail and arg1 == 'YOU_LEFT' then
+				if (E.Retail or E.Forever) and arg1 == 'YOU_LEFT' then
 					frame.editBox:UpdateNewcomerEditBoxHint(arg8)
 				end
 
@@ -2728,7 +2728,7 @@ function CH:SetupChat()
 
 	_G.TextToSpeechButtonFrame:Hide()
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		_G.QuickJoinToastButton:Hide()
 	end
 
@@ -3367,7 +3367,7 @@ local channelButtons = {
 	_G.ChatFrameChannelButton -- main voice button
 }
 
-if E.Retail then
+if E.Retail or E.Forever then
 	tinsert(channelButtons, _G.ChatFrameToggleVoiceDeafenButton)
 	tinsert(channelButtons, _G.ChatFrameToggleVoiceMuteButton)
 end
@@ -3400,7 +3400,7 @@ function CH:RepositionOverflowButton()
 
 	-- handle the overflow placement
 	if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(E.Retail and channelButtons[4]:IsShown() and 4) or 2], 'LEFT', -4, 0)
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[((E.Retail or E.Forever) and channelButtons[4]:IsShown() and 4) or 2], 'LEFT', -4, 0)
 	else
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
 	end
@@ -3485,7 +3485,7 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			channelButtons[3]:HookScript('OnShow', CH.RepositionOverflowButton)
 			channelButtons[3]:HookScript('OnHide', CH.RepositionOverflowButton)
 		end
@@ -3544,7 +3544,7 @@ function CH:CreateChatVoicePanel()
 		button:HookScript('OnLeave', CH.LeaveVoicePanel)
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		CH:SetupQuickJoin(Holder)
 	end
 end
@@ -4105,7 +4105,7 @@ function CH:Initialize()
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 	CH:RegisterEvent('CVAR_UPDATE')
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
 
 		if E.private.general.voiceOverlay then

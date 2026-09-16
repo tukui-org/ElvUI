@@ -257,7 +257,7 @@ G.unitframe = {
 				['2008'] = 'Ancestral Spirit'
 			},
 			WARLOCK = {
-				['20707'] = not E.Classic and 'Soulstone' or nil
+				['20707'] = not (E.Classic or E.Forever) and 'Soulstone' or nil
 			},
 			WARRIOR = {}
 		},

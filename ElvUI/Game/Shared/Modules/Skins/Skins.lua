@@ -1302,7 +1302,7 @@ do --Tab Regions
 		if not noBackdrop then
 			tab:CreateBackdrop(template)
 
-			local spacing = E.Retail and 3 or 10
+			local spacing = (E.Retail or E.Forever) and 3 or 10
 			tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -1 or -3)
 			tab.backdrop:Point('BOTTOMRIGHT', -spacing, 3)
 		end
@@ -1441,7 +1441,7 @@ function S:HandleEditBox(frame, template)
 		local name = frame:GetDebugName()
 		local gold, silver, copper = strfind(name, 'Gold'), strfind(name, 'Silver'), strfind(name, 'Copper')
 		if gold or silver or copper then
-			if E.Retail then
+			if E.Retail or E.Forever then
 				frame.backdrop:Point('TOPLEFT', -4, 0)
 				frame.backdrop:Point('BOTTOMRIGHT')
 			elseif frame.label then -- send mail, popups, and others
@@ -1980,7 +1980,7 @@ do
 	S.FollowerListUpdateDataFrames = {}
 
 	local function UpdateFollower(button)
-		if not E.Retail then
+		if not (E.Retail or E.Forever) then
 			button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
 		end
 
@@ -2420,7 +2420,7 @@ do
 		[W.ScenarioHeaderCurrenciesAndBackground] = 'SkinScenarioHeaderCurrenciesAndBackgroundWidget',
 	}
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		S.WidgetSkinningFuncs[W.SpellDisplay] = 'SkinSpellDisplay'
 		S.WidgetSkinningFuncs[W.TextureAndText] = 'SkinTextureAndTextWidget'
 		S.WidgetSkinningFuncs[W.DoubleStateIconRow] = 'SkinDoubleStateIconRow'
@@ -2556,7 +2556,7 @@ function S:Initialize()
 		end
 	end
 
-	if E.Retail and S.db.blizzard.enable and S.db.blizzard.misc then
+	if (E.Retail or E.Forever) and S.db.blizzard.enable and S.db.blizzard.misc then
 		S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
 		S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
 	end

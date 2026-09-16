@@ -7,14 +7,14 @@ local THRESHOLD = { min = 0, softMax = 3600, max = 86400, step = 1 }
 local MIN_DURATION = { min = 0, softMax = 60, max = 3600, step = 0.001, bigStep = 1 }
 
 local function Group(order, db, label)
-	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not E.Retail) end)
+	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not (E.Retail or E.Forever)) end)
 	E.Options.args.cooldown.args[db] = main
 
 	local charges = db ~= 'actionbar' and db ~= 'bossbutton' and db ~= 'zonebutton'
 	local lossOfControl = db ~= 'actionbar' and db ~= 'bossbutton'
 
 	local mainArgs = main.args
-	local targetAura = ACH:Group(L["Target Aura"], nil, 10, nil, function(info) return E.db.cooldown.targetaura[info[#info]] end, function(info, value) E.db.cooldown.targetaura[info[#info]] = value; E:CooldownSettings('targetaura'); end, nil, E.Retail or db ~= 'actionbar')
+	local targetAura = ACH:Group(L["Target Aura"], nil, 10, nil, function(info) return E.db.cooldown.targetaura[info[#info]] end, function(info, value) E.db.cooldown.targetaura[info[#info]] = value; E:CooldownSettings('targetaura'); end, nil, E.Retail or E.Forever or db ~= 'actionbar')
 	targetAura.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function(info) return E.db.cooldown.targetaura[info[#info]] end, function(info, value) E.db.cooldown.targetaura[info[#info]] = value; AB:SetTargetAuraCooldowns(value) end)
 	targetAura.args.text = ACH:Color(L["Text Color"], nil, 2, nil, nil, function(info) local t = E.db.cooldown.targetaura.colors[info[#info]] local d = P.cooldown.targetaura.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.cooldown.targetaura.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings('targetaura'); end)
 	targetAura.args.threshold = ACH:Range(L["Threshold"], L["Abbreviation threshold (in seconds)."], 3, THRESHOLD, nil, function(info) return E.db.cooldown.targetaura[info[#info]] end, function(info, value) E.db.cooldown.targetaura[info[#info]] = value; E:CooldownSettings('targetaura'); end)

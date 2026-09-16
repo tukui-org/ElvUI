@@ -243,7 +243,7 @@ function AB:CreateBarPet()
 
 		bar.buttons[i] = button
 
-		if not E.Retail then
+		if not (E.Retail or E.Forever) then
 			button.commandName = 'BONUSACTIONBUTTON'..i -- to support KB like retail
 		end
 

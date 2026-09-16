@@ -70,7 +70,7 @@ elseif E.Mists then
 	classPowers[14] = PowerType.BurningEmbers or 14
 	classPowers[15] = PowerType.DemonicFury or 15
 	classPowers[28] = PowerType.ShadowOrbs or 28
-elseif E.Retail then
+elseif E.Retail or E.Forever then
 	classPowers[4] = PowerType.RunicPower
 	classPowers[5] = PowerType.PAIN
 	classPowers[6] = PowerType.FURY

@@ -49,7 +49,7 @@ local function OnEvent(panel)
 				tempDurability = perc
 			end
 
-			if E.Retail then
+			if E.Retail or E.Forever then
 				local data = E.ScanTooltip:GetInventoryInfo('player', index)
 				repairCost = data and data.repairCost
 			else

@@ -30,7 +30,7 @@ end
 
 function UF:Configure_RaidDebuffs(frame)
 	local db = frame.db and frame.db.rdebuffs
-	if db and db.enable and not E.Retail then
+	if db and db.enable and not (E.Retail or E.Forever) then
 		if not frame:IsElementEnabled('RaidDebuffs') then
 			frame:EnableElement('RaidDebuffs')
 		end

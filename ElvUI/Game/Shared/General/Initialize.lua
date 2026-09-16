@@ -172,7 +172,7 @@ do
 	end
 
 	function E:DispelListUpdated()
-		if not E.Retail then return end
+		if not (E.Retail or E.Forever) then return end
 
 		E:UpdateDispelCurves()
 		E:Auras_DispelUpdated()
@@ -199,7 +199,7 @@ do
 	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
-	if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+	if E.Retail or E.Forever or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 

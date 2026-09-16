@@ -21,9 +21,9 @@ local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 local AltManaTypes = {
 	Rage = 1,
 	Energy = 3,
-	LunarPower = (E.Retail or E.Mists) and 8 or nil,
-	Maelstrom = E.Retail and 11 or nil,
-	Insanity = E.Retail and 13 or nil
+	LunarPower = (E.Retail or E.Forever or E.Mists) and 8 or nil,
+	Maelstrom = (E.Retail or E.Forever) and 11 or nil,
+	Insanity = (E.Retail or E.Forever) and 13 or nil
 }
 
 local ManaType = { powerName = 'MANA', powerType = 0 }
@@ -46,7 +46,7 @@ function UF:GetClassPower_Construct(frame)
 		if E.Mists then
 			frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 		end
-	elseif E.Retail and E.myclass == 'EVOKER' then
+	elseif (E.Retail or E.Forever) and E.myclass == 'EVOKER' then
 		frame.ThirdPower = UF:Construct_ThirdPower(frame)
 	elseif E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame) -- Retail: Classbar, Mists: AdditionalPower
@@ -57,7 +57,7 @@ function UF:GetClassPower_Construct(frame)
 	elseif E.myclass == 'DEATHKNIGHT' then
 		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
-	elseif not E.Retail and E.myclass == 'SHAMAN' then
+	elseif not (E.Retail or E.Forever) and E.myclass == 'SHAMAN' then
 		frame.Totems = UF:Construct_Totems(frame)
 	end
 
@@ -190,7 +190,7 @@ function UF:Configure_ClassBar(frame)
 	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
 		if frame.ClassBar == 'Runes' then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
-			bars.colorSpec = E.Retail and UF.db.colors.runeBySpec
+			bars.colorSpec = (E.Retail or E.Forever) and UF.db.colors.runeBySpec
 		end
 
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
@@ -364,8 +364,8 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	local activeBar = frame.USE_CLASSBAR
-	local checkPriest = E.Retail and E.myclass == 'PRIEST'
-	local checkShaman = E.Retail and E.myclass == 'SHAMAN'
+	local checkPriest = (E.Retail or E.Forever) and E.myclass == 'PRIEST'
+	local checkShaman = (E.Retail or E.Forever) and E.myclass == 'SHAMAN'
 	local allowPriest = checkPriest and E.myspec == SPEC_PRIEST_SHADOW
 	local allowShaman = checkShaman and E.myspec == SPEC_SHAMAN_ELEMENTAL
 	for _, powerType in pairs(UF.ClassPowerTypes) do
@@ -817,7 +817,7 @@ function UF:PostUpdateStagger(stagger)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		local autohide = stagger == 0 and db.classbar.autoHide
 		self:SetShown(frame.USE_CLASSBAR and not autohide)
 	else
@@ -828,7 +828,7 @@ function UF:PostUpdateStagger(stagger)
 end
 
 function UF:PostVisibilityStagger(_, _, isShown, stateChanged)
-	if not E.Retail then return end
+	if not (E.Retail or E.Forever) then return end
 
 	self.ClassBar = (isShown and 'Stagger') or 'ClassPower'
 

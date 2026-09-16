@@ -22,7 +22,7 @@ local function GetBattleStats(name)
 	elseif name == 'PvP: Honorable Kills' then
 		return _G.HONORABLE_KILLS, data.honorableKills
 	elseif name == 'PvP: Heals' then
-		return (E.Retail and _G.SHOW_COMBAT_HEALING) or _G.HEALS, data.healingDone
+		return ((E.Retail or E.Forever) and _G.SHOW_COMBAT_HEALING) or _G.HEALS, data.healingDone
 	elseif name == 'PvP: Deaths' then
 		return _G.DEATHS, data.deaths
 	elseif name == 'PvP: Damage Done' then
@@ -125,6 +125,6 @@ DT:RegisterDatatext('PvP: Deaths', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE'
 DT:RegisterDatatext('PvP: Damage Done', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
 DT:RegisterDatatext('PvP: Honor Gained', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats)
 
-if E.Retail then
+if E.Retail or E.Forever then
 	DT:RegisterDatatext('PvP: Objectives', 'Battlegrounds', { 'UPDATE_BATTLEFIELD_SCORE' }, OnEvent, OnUpdate, DT.ToggleBattleStats, DT.HoverBattleStats)
 end

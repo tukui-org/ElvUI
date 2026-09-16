@@ -141,7 +141,7 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 ------------------------------------------------------------------------
 
 Tags.Env.UnitEffectiveLevel = function(unit)
-	if E.Retail or E.TBC or E.Wrath or E.Mists then
+	if E.Retail or E.Forever or E.TBC or E.Wrath or E.Mists then
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return _G.UnitLevel(unit)
@@ -201,16 +201,16 @@ Tags.Env.GetQuestData = function(unit, which, Hex)
 		if E:NotSecretValue(text) then -- skip any secret lines
 			if not text or text == '' then return end
 
-			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
+			if line.type == 18 or (not (E.Retail or E.Forever) and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				if line.type == 17 or (not E.Retail and not lastTitle) then
+				if line.type == 17 or (not (E.Retail or E.Forever) and not lastTitle) then
 					lastTitle = NP.QuestIcons.activeQuests[text]
 				end -- this line comes from one line up in the tooltip
 
-				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
+				local objectives = (line.type == 8 or not (E.Retail or E.Forever)) and lastTitle and lastTitle.objectives
 				if objectives then
-					local quest = objectives[text] or (not E.Retail and objectives[strsub(text, 4)])
+					local quest = objectives[text] or (not (E.Retail or E.Forever) and objectives[strsub(text, 4)])
 					if quest then
 						if not which then
 							return text
@@ -278,7 +278,7 @@ do
 		if isme then
 			spec = E.myspec
 			unitClass = E.myclass
-		elseif E.Retail then
+		elseif E.Retail or E.Forever then
 			local info = E:GetUnitSpecInfo(unit)
 			if info then
 				spec = info.index
@@ -289,9 +289,9 @@ do
 		-- handle the fake powers (these use UNIT_AURA)
 		if E.Mists and unitClass == 'MAGE' and spec == SPEC_MAGE_ARCANE then
 			return ClassPowerSpecial(unit, SPELL_ARCANE_CHARGE, POWERTYPE_ARCANE_CHARGES, ElvUF.colors.ClassBars.MAGE.ARCANE_CHARGES, 'HARMFUL')
-		elseif E.Retail and unitClass == 'MAGE' and spec == SPEC_MAGE_FROST then
+		elseif (E.Retail or E.Forever) and unitClass == 'MAGE' and spec == SPEC_MAGE_FROST then
 			return ClassPowerSpecial(unit, SPELL_FROST_ICICLES, POWERTYPE_ICICLES, ElvUF.colors.ClassBars.MAGE.FROST_ICICLES, 'HELPFUL')
-		elseif E.Retail and unitClass == 'SHAMAN' and spec == SPEC_SHAMAN_ENHANCEMENT then
+		elseif (E.Retail or E.Forever) and unitClass == 'SHAMAN' and spec == SPEC_SHAMAN_ENHANCEMENT then
 			return ClassPowerSpecial(unit, SPELL_MAELSTROM, POWERTYPE_MAELSTROM, ElvUF.colors.ClassBars.SHAMAN.MAELSTROM, 'HELPFUL')
 		end
 
@@ -350,7 +350,7 @@ do
 		end
 
 		-- try additional mana
-		local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
+		local altIndex = not r and (E.Retail or E.Forever) and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
 		if altIndex and altIndex[UnitPowerType(unit)] then
 			Min = UnitPower(unit, POWERTYPE_MANA)
 			Max = UnitPowerMax(unit, POWERTYPE_MANA)
@@ -414,9 +414,9 @@ info.soulshards				= { hidden = E.Classic, category = "Classpower", description 
 info.status					= { category = "Status", description = "Displays zzz, dead, ghost, offline" }
 info.threat					= { category = "Threat", description = "Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)" }
 info.threatcolor			= { category = "Colors", description = "Changes the text color, depending on the unit's threat situation" }
-info.spec					= { hidden = not E.Retail, category = "Class", description = "Displays the specialization icon of the unit as text" }
-info.arcanecharges			= { hidden = not E.Retail, category = "Classpower", description = "Displays the arcane charges (Mage)" }
-info.chi					= { hidden = not E.Retail, category = "Classpower", description = "Displays the chi points (Monk)" }
+info.spec					= { hidden = not (E.Retail or E.Forever), category = "Class", description = "Displays the specialization icon of the unit as text" }
+info.arcanecharges			= { hidden = not (E.Retail or E.Forever), category = "Classpower", description = "Displays the arcane charges (Mage)" }
+info.chi					= { hidden = not (E.Retail or E.Forever), category = "Classpower", description = "Displays the chi points (Monk)" }
 
 -- Allow Refreshing
 RefreshNewTags = true

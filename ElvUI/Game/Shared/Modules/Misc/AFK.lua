@@ -75,7 +75,7 @@ end
 
 function AFK:GetAnimation(key)
 	if not key then key = E.db.general.afkAnimation end -- check selected animation
-	if key == 'lean' and not E.Retail then key = nil end -- lean dont exist outside of retail
+	if key == 'lean' and not (E.Retail or E.Forever) then key = nil end -- lean dont exist outside of retail
 
 	local animation = key or DEFAULT_ANIMATION
 	return animations[animation], animation
@@ -139,7 +139,7 @@ function AFK:SetAFK(status)
 		chat:UnregisterAllEvents()
 		chat:Clear()
 
-		if E.Retail and _G.PVEFrame:IsShown() then --odd bug, frame is blank
+		if (E.Retail or E.Forever) and _G.PVEFrame:IsShown() then --odd bug, frame is blank
 			PVEFrame_ToggleFrame()
 			PVEFrame_ToggleFrame()
 		end
@@ -168,7 +168,7 @@ function AFK:OnEvent(event, arg1)
 		return -- Don't activate afk if player is crafting stuff, check back in 30 seconds
 	end
 
-	AFK:SetAFK(E:UnitIsAFK('player') and not ((E.Retail or E.Mists) and C_PetBattles_IsInBattle()))
+	AFK:SetAFK(E:UnitIsAFK('player') and not ((E.Retail or E.Forever or E.Mists) and C_PetBattles_IsInBattle()))
 end
 
 function AFK:Chat_OnMouseWheel(delta)

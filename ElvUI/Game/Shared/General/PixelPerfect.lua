@@ -79,7 +79,7 @@ function E:UIScale()
 		E.UIParent:SetSize(width, height)
 		E.UIParent.origHeight = E.UIParent:GetHeight()
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			E:RefreshGlobalFX()
 		end
 

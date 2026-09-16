@@ -88,7 +88,7 @@ end
 
 function UF:FriendlyInRange(unit)
 	if UnitIsPlayer(unit) then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			local phaseReason = UnitPhaseReason(unit)
 			if not E:IsSecretValue(phaseReason) then
 				if phaseReason == PhaseReason.TimerunningHwt then

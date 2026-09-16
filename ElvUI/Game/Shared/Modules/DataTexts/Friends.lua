@@ -400,7 +400,7 @@ local function Click(panel, btn)
 		E:SetEasyMenuAnchor(E.EasyMenu, panel)
 		E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif not E:AlertCombat() then
-		ToggleFriendsFrame(not E.Retail and 1 or nil)
+		ToggleFriendsFrame(not (E.Retail or E.Forever) and 1 or nil)
 	end
 end
 

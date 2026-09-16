@@ -124,7 +124,7 @@ end
 
 function A:UpdateStatusBar(button)
 	local db = A.db[button.auraType]
-	if E.Retail and not button.enchantIndex then
+	if (E.Retail or E.Forever) and not button.enchantIndex then
 		local color = db.barColorGradient and button.auraDuration and button.auraDuration:EvaluateRemainingPercent(E.Curves.Color.Default)
 		if color then
 			A:SetStatusBarColor(button.statusBar, color.r, color.g, color.b)
@@ -251,7 +251,7 @@ function A:UpdateIcon(button, index)
 	end
 
 	if button.statusBar then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			button.statusBar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(button.statusBar, db.smoothbars)
@@ -307,7 +307,7 @@ function A:UpdateAura(button, index)
 	local colorDebuffs, color = button.filter == 'HARMFUL' and A.db.colorDebuffs
 	if not colorDebuffs then -- quick exit
 		color = E.db.general.bordercolor
-	elseif E.Retail then
+	elseif E.Retail or E.Forever then
 		local curve = GetAuraDispelTypeColor and E.Curves.Color.Auras.debuffs
 		color = (curve and GetAuraDispelTypeColor(unitToken, data.auraInstanceID, curve)) or E.db.general.bordercolor
 	else
@@ -317,7 +317,7 @@ function A:UpdateAura(button, index)
 	button:SetBackdropBorderColor(color.r, color.g, color.b)
 	button.statusBar.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		A:UpdateButton(button, duration, expiration, modRate)
 	elseif duration and expiration then
 		A:SetAuraTime(button, expiration, duration, modRate)
@@ -384,7 +384,7 @@ function A:UpdateButton(button, duration, expiration, modRate)
 
 	A:UpdateTime(button, duration, expiration, modRate)
 
-	if E.Retail and not button.enchantIndex then -- midnight auras
+	if (E.Retail or E.Forever) and not button.enchantIndex then -- midnight auras
 		local auraDuration = button.unit and GetAuraDuration(button.unit, button.auraInstanceID)
 		button.auraDuration = auraDuration or nil
 
@@ -406,7 +406,7 @@ function A:UpdateButton(button, duration, expiration, modRate)
 		end
 
 		button.statusBar:SetAlpha(showBar or 0)
-	elseif not E.Retail or button.enchantIndex then
+	elseif not (E.Retail or E.Forever) or button.enchantIndex then
 		local hasCooldown = duration > 0
 		local barShown = db.barShow and (hasCooldown or (db.barNoDuration and duration == 0))
 		button.statusBar:SetAlpha(barShown and 1 or 0)
@@ -437,7 +437,7 @@ function A:UpdateTime(button, duration, expiration, modRate)
 
 	if button.timeLeft < 0.1 then
 		A:ClearAuraTime(button)
-	elseif not E.Retail and duration > 0 then
+	elseif not (E.Retail or E.Forever) and duration > 0 then
 		A:UpdateFlash(button)
 	end
 end
@@ -563,7 +563,7 @@ function A:UpdateHeader(header)
 
 	local minWidth, minHeight, xOffset, yOffset, wrapXOffset, wrapYOffset
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		header.barDB = db
 		header.width = width
 		header.height = height
@@ -707,7 +707,7 @@ function A:CreateAuraHeader(filter)
 	header.visibility:SetScript('OnEvent', A.Visibility_OnEvent) -- dont put this on the main frame
 	header.visibility.frame = header
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
 	end
 
@@ -734,7 +734,7 @@ function A:Initialize()
 	if E.private.auras.disableBlizzard then
 		_G.BuffFrame:Kill()
 
-		if E.Retail then -- edit mode error
+		if E.Retail or E.Forever then -- edit mode error
 			_G.BuffFrame.numHideableBuffs = 0
 		end
 
@@ -753,7 +753,7 @@ function A:Initialize()
 	local mapOffsetX = 6 + E.Border
 
 	if E.private.auras.buffsHeader then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			local buff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerBuffs')
 			buff.allowEnable = true
 			buff.auraType = 'buffs'
@@ -778,14 +778,14 @@ function A:Initialize()
 
 		A:UpdateHeader(A.BuffFrame)
 
-		if E.Retail then -- keep below UpdateHeader
+		if E.Retail or E.Forever then -- keep below UpdateHeader
 			E:Auras_AddEnchantments(A.BuffFrame)
 			A.BuffFrame.hasEnchantments = true
 		end
 	end
 
 	if E.private.auras.debuffsHeader then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			local debuff = E:Auras_Create(E.UIParent, nil, 'ElvUIPlayerDebuffs')
 			debuff.allowEnable = true
 			debuff.auraType = 'debuffs'

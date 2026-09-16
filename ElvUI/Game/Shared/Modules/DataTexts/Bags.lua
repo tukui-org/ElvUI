@@ -15,9 +15,9 @@ local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
 
 local CURRENCY = CURRENCY
 local MAX_WATCHED_TOKENS = MAX_WATCHED_TOKENS or 3
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0)
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + ((E.Retail or E.Forever) and 1 or 0)
 
-local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
+local REAGENT_CONTAINER = (E.Retail or E.Forever) and Enum.BagIndex.ReagentBag or math.huge
 
 local displayString, db = ''
 local iconString = '|T%s:14:14:0:0:64:64:4:60:4:60|t  %s'
@@ -87,7 +87,7 @@ local function OnEnter()
 		end
 	end
 
-	if E.Retail or E.Mists or E.Wrath then
+	if E.Retail or E.Forever or E.Mists or E.Wrath then
 		for i = 1, MAX_WATCHED_TOKENS do
 			local info, name = DT:BackpackCurrencyInfo(i)
 			if not name then break end

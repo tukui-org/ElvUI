@@ -217,7 +217,7 @@ do	-- credit: oUF/private.lua
 	function E:UnitSelectionType(unit, considerHostile)
 		if considerHostile and UnitThreatSituation('player', unit) then
 			return 0
-		elseif E.Retail then
+		elseif E.Retail or E.Forever then
 			return selectionTypes[UnitSelectionType(unit, true)]
 		end
 	end
@@ -568,7 +568,7 @@ function E:CheckRole()
 	E.myspec = GetSpecialization()
 
 	if E.myspec then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecRole = GetSpecializationInfo(E.myspec)
 		else -- they add background
 			E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecBackground, E.myspecRole = GetSpecializationInfo(E.myspec)
@@ -597,7 +597,7 @@ do
 	local YELLOW = { r = 1, g = 1, b = 0.3, a = 1 }
 	local GREEN = { r = 0.3, g = 1, b = 0, a = 1 }
 	function E:UpdateCurves() -- this is for the standard curves
-		if not E.Retail then return end -- it does not include all the curves
+		if not (E.Retail or E.Forever) then return end -- it does not include all the curves
 
 		local color = E.Curves.Color
 		if color then
@@ -677,7 +677,7 @@ do
 end
 
 function E:UpdateAuraCurves()
-	if not E.Retail then return end
+	if not (E.Retail or E.Forever) then return end
 
 	local curves = E.Curves.Color.Auras
 	for which, data in next, curves do
@@ -722,7 +722,7 @@ function E:UpdateDispelColors()
 
 			color:SetRGBA(db.r, db.g, db.b, db.a)
 
-			if E.Retail then
+			if E.Retail or E.Forever then
 				E.AuraDispel.customDispelColorMap[debuffType] = color
 			end
 		end
@@ -896,7 +896,7 @@ function E:RegisterPetBattleHideFrames(object, originalParent, originalStrata)
 	object = _G[object] or object
 
 	--If already doing pokemon
-	if (E.Retail or E.Mists) and C_PetBattles_IsInBattle() then
+	if (E.Retail or E.Forever or E.Mists) and C_PetBattles_IsInBattle() then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -948,7 +948,7 @@ function E:RegisterObjectForVehicleLock(object, originalParent)
 	end
 
 	--Check if we are already in a vehicles
-	if (E.Retail or E.Mists or E.Wrath) and UnitHasVehicleUI('player') then
+	if (E.Retail or E.Forever or E.Mists or E.Wrath) and UnitHasVehicleUI('player') then
 		object:SetParent(E.HiddenFrame)
 	end
 
@@ -1019,7 +1019,7 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 		E:CheckIncompatible()
 
 		-- Blizzard will set this value to int(60/CVar cameraDistanceMax)+1 at logout if it is manually set higher than that
-		if not E.Retail and E.db.general.lockCameraDistanceMax then
+		if not (E.Retail or E.Forever) and E.db.general.lockCameraDistanceMax then
 			E:SetCVar('cameraDistanceMaxZoomFactor', E.db.general.cameraDistanceMax)
 		end
 	end
@@ -1102,7 +1102,7 @@ function E:GetUnitBattlefieldFaction(unit)
 
 	-- this might be a rated BG or wargame and if so the player's faction might be altered
 	-- should also apply if `player` is a mercenary.
-	if unit == 'player' and E.Retail then
+	if unit == 'player' and (E.Retail or E.Forever) then
 		if C_PvP_IsRatedBattleground() or IsWargame() then
 			englishFaction = PLAYER_FACTION_GROUP[GetBattlefieldArenaFaction()]
 			localizedFaction = (englishFaction == 'Alliance' and FACTION_ALLIANCE) or FACTION_HORDE
@@ -1137,13 +1137,13 @@ function E:PositionGameMenuButton()
 		local text = button:GetText()
 
 		if text and (text == _G.LOGOUT or text == _G.LOG_OUT or text == _G.EXIT_GAME or text == _G.RETURN_TO_GAME) then
-			button:NudgePoint(nil, E.Retail and -25 or -20)
+			button:NudgePoint(nil, (E.Retail or E.Forever) and -25 or -20)
 		else
 			if text == _G.MACROS then
 				GameMenuFrame.ElvUI:Point('TOPLEFT', button, 'BOTTOMLEFT')
 			end
 
-			if E.Retail then
+			if E.Retail or E.Forever then
 				button:NudgePoint(nil, 10)
 			end
 		end
@@ -1172,7 +1172,7 @@ function E:SetupGameMenu()
 	local button = CreateFrame('Button', 'ElvUI_GameMenuButton', GameMenuFrame, 'MainMenuFrameButtonTemplate')
 	button:SetScript('OnClick', E.ClickGameMenu)
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		button:Size(200, 35)
 	else
 		button:Size(144, 21)
@@ -1181,7 +1181,7 @@ function E:SetupGameMenu()
 	GameMenuFrame.ElvUI = button
 	GameMenuFrame.MenuButtons = {}
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		E:ScaleGameMenu()
 	end
 
@@ -1405,7 +1405,7 @@ function E:UnitExists(unit)
 end
 
 function E:UnitEffectiveLevel(unit)
-	if E.Retail or E.TBC or E.Wrath or E.Mists then
+	if E.Retail or E.Forever or E.TBC or E.Wrath or E.Mists then
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return _G.UnitLevel(unit)
@@ -1510,11 +1510,11 @@ function E:LoadAPI()
 	E:SetupGameMenu()
 	E:UpdateTexCoords()
 
-	if E.Retail or E.Mists then
+	if E.Retail or E.Forever or E.Mists then
 		E:PopulateSpecInfo()
 	end
 
-	if not E.Retail then
+	if not (E.Retail or E.Forever) then
 		E:CompatibleTooltip(E.ScanTooltip)
 		E:CompatibleTooltip(E.ConfigTooltip)
 		E:CompatibleTooltip(E.SpellBookTooltip)
@@ -1534,7 +1534,7 @@ function E:LoadAPI()
 		end
 	end
 
-	if E.Retail or E.Mists then
+	if E.Retail or E.Forever or E.Mists then
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')

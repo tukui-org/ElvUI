@@ -111,7 +111,7 @@ function M:ZoneTextToggle()
 end
 
 function M:IsRandomGroup()
-	return IsPartyLFG() or (E.Retail and IsPartyWalkIn()) -- This is the API for Delves
+	return IsPartyLFG() or ((E.Retail or E.Forever) and IsPartyWalkIn()) -- This is the API for Delves
 end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED()
@@ -162,7 +162,7 @@ end
 do
 	local twwBW = 2673	-- 11.1.0, both factions, account wide
 	local cataBW = 1133	-- 4.0.3, horde only, not account wide
-	local bilgewater = E.Retail and GetFactionDataByID(twwBW)
+	local bilgewater = (E.Retail or E.Forever) and GetFactionDataByID(twwBW)
 	function M:COMBAT_TEXT_UPDATE(_, messagetype)
 		if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
@@ -174,7 +174,7 @@ do
 
 				local khazAlgar = E.MapInfo.continentMapID == 2274
 				for i = 1, GetNumFactions() do
-					if E.Retail then
+					if E.Retail or E.Forever then
 						local info = GetFactionInfo(i)
 						if info then
 							local name, factionID = info.name, info.factionID
@@ -422,7 +422,7 @@ function M:Initialize()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
 
-	if not E.Retail then
+	if not (E.Retail or E.Forever) then
 		M:ToggleInterrupt()
 	end
 
@@ -444,7 +444,7 @@ function M:Initialize()
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
 
-	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.Retail and 'Blizzard_HousingControls' or nil, vanillaStyle and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
+	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', (E.Retail or E.Forever) and 'Blizzard_HousingControls' or nil, vanillaStyle and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
 		if IsAddOnLoaded(addon) then
 			M:ADDON_LOADED(nil, addon)
 		end
@@ -475,7 +475,7 @@ function M:Initialize()
 		end)
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		M:Hook('BossBanner_ConfigureLootFrame', nil, true) -- fix blizz thing x.x
 	end
 end

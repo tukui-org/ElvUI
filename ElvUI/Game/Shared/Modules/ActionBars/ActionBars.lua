@@ -102,7 +102,7 @@ AB.barDefaults = {
 
 do
 	-- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Retail or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	local fullConditions = (E.Retail or E.Forever or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
 end
 
@@ -151,7 +151,7 @@ function AB:HandleButtonAutoCast(bar, button)
 	local autoCast = button.AutoCastOverlay or button.AutoCastable
 	if not autoCast then return end
 
-	local offset = E.Retail and 3 or -3
+	local offset = (E.Retail or E.Forever) and 3 or -3
 	autoCast:SetOutside(button, offset, offset)
 
 	local corners = autoCast.Corners
@@ -161,8 +161,8 @@ function AB:HandleButtonAutoCast(bar, button)
 	local size = db and db.buttonSize or 32
 	local height = (db and db.keepSizeRatio and size) or (db and db.buttonHeight or 32)
 
-	local cornerWidth = E.Retail and 0 or ((size * 0.5) - (size / 7.5))
-	local cornerHeight = E.Retail and 0 or ((height * 0.5) - (height / 7.5))
+	local cornerWidth = (E.Retail or E.Forever) and 0 or ((size * 0.5) - (size / 7.5))
+	local cornerHeight = (E.Retail or E.Forever) and 0 or ((height * 0.5) - (height / 7.5))
 	corners:SetOutside(button, cornerWidth, cornerHeight)
 end
 
@@ -322,7 +322,7 @@ function AB:PositionAndSizeBar(barName)
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
-	local vehicleIndex = (E.Retail or E.Mists or E.Wrath) and GetVehicleBarIndex()
+	local vehicleIndex = (E.Retail or E.Forever or E.Mists or E.Wrath) and GetVehicleBarIndex()
 
 	-- paging needs to be updated even if the bar is disabled
 	local defaults = AB.barDefaults[barName]
@@ -412,7 +412,7 @@ end
 function AB:CreateBar(id)
 	local barName = 'ElvUI_Bar'..id
 	local bar = CreateFrame('Frame', barName, E.UIParent, 'SecureHandlerStateTemplate')
-	if not E.Retail then
+	if not (E.Retail or E.Forever) then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 	end
 
@@ -436,7 +436,7 @@ function AB:CreateBar(id)
 	for i = 1, 12 do
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonTextureOverlayTemplate')
 		end
 
@@ -653,7 +653,7 @@ function AB:UpdateAllBinds(event)
 	AB:UpdatePetBindings()
 	AB:UpdateStanceBindings()
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		AB:UpdateExtraBindings()
 	elseif E.Wrath and E.myclass == 'SHAMAN' then
 		AB:UpdateTotemBindings()
@@ -734,7 +734,7 @@ function AB:UpdateButtonSettings(specific)
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
 
-		if E.Retail or E.Mists then
+		if E.Retail or E.Forever or E.Mists then
 			AB:UpdateExtraBindings()
 			AB:UpdateFlyoutButtons()
 
@@ -991,9 +991,9 @@ do
 			canGlide = arg
 		end
 
-		if (E.Retail and (canGlide or CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
+		if ((E.Retail or E.Forever) and (canGlide or CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
 		or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-		or UnitExists('vehicle') or UnitAffectingCombat('player') or (not E.Retail and (UnitHealth('player') ~= UnitHealthMax('player'))) then
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (not (E.Retail or E.Forever) and (UnitHealth('player') ~= UnitHealthMax('player'))) then
 			self.mouseLock = true
 			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
 			AB:FadeBlings(1)
@@ -1012,7 +1012,7 @@ do
 	end
 
 	local function FixButton(button)
-		if E.Retail then
+		if E.Retail or E.Forever then
 			if button.OnIconEnter == AB.SpellButtonOnEnter then
 				return -- don't do this twice, ever
 			end
@@ -1056,7 +1056,7 @@ do
 	end
 
 	function AB:FixSpellBookTaint() -- let spell book buttons work without tainting by replacing this function
-		if E.Retail then -- same deal with profession buttons, this will fix the tainting
+		if E.Retail or E.Forever then -- same deal with profession buttons, this will fix the tainting
 			hooksecurefunc(_G.PlayerSpellsFrame.SpellBookFrame, 'SetTab', SetTab)
 		else
 			for i = 1, SPELLS_PER_PAGE do
@@ -1085,7 +1085,7 @@ function AB:SpellButtonOnEnter(_, tt)
 	if tt:IsForbidden() then return end
 	tt:SetOwner(self, self.Button and 'ANCHOR_CURSOR' or 'ANCHOR_RIGHT') -- 11.0 fix this more
 
-	if E.Retail and InClickBindingMode() and not self.canClickBind then
+	if (E.Retail or E.Forever) and InClickBindingMode() and not self.canClickBind then
 		tt:AddLine(CLICK_BINDING_NOT_AVAILABLE, 1, .3, .3)
 		tt:Show()
 		return
@@ -1107,7 +1107,7 @@ function AB:SpellButtonOnEnter(_, tt)
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		ClearOnBarHighlightMarks()
 		ClearPetActionHighlightMarks()
 
@@ -1305,7 +1305,7 @@ do
 			end
 		end
 
-		if not E.Retail then
+		if not (E.Retail or E.Forever) then
 			AB:FixSpellBookTaint()
 		end
 
@@ -1363,7 +1363,7 @@ end
 
 do
 	local fixBars = {}
-	if not E.Retail then -- retail has these bars as a fallback
+	if not (E.Retail or E.Forever) then -- retail has these bars as a fallback
 		fixBars.MULTIACTIONBAR5BUTTON = 'ELVUIBAR13BUTTON'
 		fixBars.MULTIACTIONBAR6BUTTON = 'ELVUIBAR14BUTTON'
 		fixBars.MULTIACTIONBAR7BUTTON = 'ELVUIBAR15BUTTON'
@@ -1619,7 +1619,7 @@ function AB:UpdateFlyoutButtons()
 
 	-- spellbook flyouts
 	local isShown, i = _G.SpellFlyout:IsShown(), 1
-	local flyoutName = E.Retail and 'SpellFlyoutPopupButton' or 'SpellFlyoutButton'
+	local flyoutName = (E.Retail or E.Forever) and 'SpellFlyoutPopupButton' or 'SpellFlyoutButton'
 	local btn = _G[flyoutName..i]
 	while btn do
 		if isShown then
@@ -1832,7 +1832,7 @@ function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	if button.cooldown then
 		E:CooldownBling(button.cooldown, button.cooldown:GetEffectiveAlpha())
 
-		if not E.Retail then -- Loss of Control Swipe
+		if not (E.Retail or E.Forever) then -- Loss of Control Swipe
 			E:CooldownSwipe(button.cooldown)
 		end
 	end
@@ -2002,7 +2002,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
@@ -2010,7 +2010,7 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
 	end
 
-	if E.Retail or E.Mists or E.Wrath then
+	if E.Retail or E.Forever or E.Mists or E.Wrath then
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
@@ -2049,7 +2049,7 @@ function AB:Initialize()
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
 	end
 
-	if E.Retail or E.Mists then
+	if E.Retail or E.Forever or E.Mists then
 		AB:SetupExtraButtons()
 	end
 
@@ -2058,7 +2058,7 @@ function AB:Initialize()
 	end
 
 	-- handle the first set of bindings unless in a pet battle
-	if (E.Retail or E.Mists) and IsInBattle() then
+	if (E.Retail or E.Forever or E.Mists) and IsInBattle() then
 		AB:UpdateBinds() -- no function passed, clears bindings
 	else
 		AB:HandleBinds() -- set override binds
@@ -2068,7 +2068,7 @@ function AB:Initialize()
 	E:SetCVar('lockActionBars', AB.db.lockActionBars and 1 or 0)
 	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars and '1' or '0') -- Keep an eye on this, in case it taints
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		AB:RegisterEvent('HOUSE_EDITOR_MODE_CHANGED', 'HandleBinds')
 
 		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)

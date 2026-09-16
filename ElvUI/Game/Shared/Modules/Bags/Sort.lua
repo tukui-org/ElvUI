@@ -19,9 +19,9 @@ local QueryGuildBankTab = QueryGuildBankTab
 local SplitGuildBankItem = SplitGuildBankItem
 
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + ((E.Retail or E.Forever) and 1 or 0) -- add the profession bag
 local BANK_CONTAINER = Enum.BagIndex.Bank
-local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
+local REAGENT_CONTAINER = (E.Retail or E.Forever) and Enum.BagIndex.ReagentBag or math.huge
 
 local BagSlotFlags = Enum.BagSlotFlags
 local FILTER_FLAG_TRADE_GOODS = LE_BAG_FILTER_FLAG_TRADE_GOODS or BagSlotFlags.PriorityTradeGoods or BagSlotFlags.ClassProfessionGoods
@@ -50,7 +50,7 @@ local bankBags = {}
 
 local MAX_MOVE_TIME = 1.25
 
-if not E.Retail then
+if not (E.Retail or E.Forever) then
 	tinsert(bankBags, BANK_CONTAINER)
 end
 
@@ -134,7 +134,7 @@ local inventorySlots = {
 	INVTYPE_TABARD = 25,
 }
 
-local conjured_items = E.Retail and {
+local conjured_items = (E.Retail or E.Forever) and {
 	[5512] = true, -- Healthstone
 	[162518] = true, -- Mystical Flask
 	[113509] = true, -- Conjured Mana Bun
@@ -213,7 +213,7 @@ local safe = {
 	[0] = true
 }
 
-if not E.Retail then
+if not (E.Retail or E.Forever) then
 	safe[BANK_CONTAINER] = true
 end
 
@@ -289,7 +289,7 @@ local function DefaultSort(a, b)
 
 	if not aID or not bID then return aID end
 
-	if E.Retail and bagPetIDs[a] and bagPetIDs[b] then
+	if (E.Retail or E.Forever) and bagPetIDs[a] and bagPetIDs[b] then
 		local aName, _, aType = GetPetInfoBySpeciesID(aID)
 		local bName, _, bType = GetPetInfoBySpeciesID(bID)
 
@@ -712,7 +712,7 @@ function B.Sort(bags, sorter, invertDirection)
 	B:BuildBlacklist(E.global.bags.ignoredItems)
 
 	for i, bag, slot in B:IterateBags(bags, nil, 'both') do
-		if not E.Retail or not B:IsSortIgnored(bag) then
+		if not (E.Retail or E.Forever) or not B:IsSortIgnored(bag) then
 			local link = B:GetItemLink(bag, slot)
 			local itemID = B:GetItemID(bag, slot)
 			local bagSlot = B:Encode_BagSlot(bag, slot)
@@ -736,7 +736,7 @@ function B.Sort(bags, sorter, invertDirection)
 		local i = 1
 		for _, bag, slot in B:IterateBags(bags, nil, 'both') do
 			local destination = B:Encode_BagSlot(bag, slot)
-			if not blackListedSlots[destination] and (not E.Retail or not B:IsSortIgnored(bag)) then
+			if not blackListedSlots[destination] and (not (E.Retail or E.Forever) or not B:IsSortIgnored(bag)) then
 				local source = bagSorted[i]
 				if ShouldMove(source, destination) then
 					if not (bagLocked[source] or bagLocked[destination]) then

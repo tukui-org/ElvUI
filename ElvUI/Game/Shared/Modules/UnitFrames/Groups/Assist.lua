@@ -113,4 +113,4 @@ function UF:Update_AssistFrames(frame, db)
 	UF:ConfigureFrame(frame, frame.isChild and 'assisttarget' or 'assist')
 end
 
-UF.headerstoload.assist = {'MAINASSIST', E.Retail and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}
+UF.headerstoload.assist = {'MAINASSIST', (E.Retail or E.Forever) and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}

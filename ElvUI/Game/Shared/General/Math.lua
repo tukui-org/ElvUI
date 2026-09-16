@@ -64,7 +64,7 @@ do -- Thanks ls-
 	E.Abbreviate.long = long
 
 	function E:BuildAbbreviateConfigs()
-		if not E.Retail then return end
+		if not (E.Retail or E.Forever) then return end
 
 		local style = E.db.general.numberPrefixStyle
 		local asian = asianUnits[style]

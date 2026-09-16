@@ -51,7 +51,7 @@ DataBars.args.colorGroup.args.petExperience = ACH:Color(L["Pet Experience"], nil
 DataBars.args.colorGroup.args.rested = ACH:Color(L["Rested Experience"], nil, 2, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_Update() end)
 DataBars.args.colorGroup.args.quest = ACH:Color(L["Quest Experience"], nil, 3, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:ExperienceBar_QuestXP() end)
 DataBars.args.colorGroup.args.honor = ACH:Color(L["Honor"], nil, 4, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:HonorBar_Update() end)
-DataBars.args.colorGroup.args.azerite = ACH:Color(L["Azerite"], nil, 5, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:AzeriteBar_Update() end, nil, not E.Retail)
+DataBars.args.colorGroup.args.azerite = ACH:Color(L["Azerite"], nil, 5, true, nil, nil, function(info, r, g, b, a) local t = E.db.databars.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a DB:AzeriteBar_Update() end, nil, not (E.Retail or E.Forever))
 DataBars.args.colorGroup.args.useCustomFactionColors = ACH:Toggle(L["Custom Faction Colors"], L["Reputation"], 6, nil, nil, nil, function() return E.db.databars.colors.useCustomFactionColors end, function(_, value) E.db.databars.colors.useCustomFactionColors = value; DB:ReputationBar_Update() end)
 DataBars.args.colorGroup.args.reputationAlpha = ACH:Range(L["Reputation Alpha"], nil, 7, {min = 0, max = 1, step = 0.05, isPercent = true}, nil, function() return E.db.databars.colors.reputationAlpha end, function(_, value) E.db.databars.colors.reputationAlpha = value; DB:ReputationBar_Update() end, nil, function() return E.db.databars.colors.useCustomFactionColors end)
 
@@ -81,7 +81,7 @@ DataBars.args.experience.args.questGroup.inline = true
 DataBars.args.experience.args.questGroup.args.showQuestXP = ACH:Toggle(L["Show QuestXP"], nil, 1)
 DataBars.args.experience.args.questGroup.args.questCompletedOnly = ACH:Toggle(L["Completed Quests Only"], nil, 2, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
 DataBars.args.experience.args.questGroup.args.questCurrentZoneOnly = ACH:Toggle(L["Quests in Current Zone Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end)
-DataBars.args.experience.args.questGroup.args.questTrackedOnly = ACH:Toggle(L["Tracked Quests Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end, not E.Retail)
+DataBars.args.experience.args.questGroup.args.questTrackedOnly = ACH:Toggle(L["Tracked Quests Only"], nil, 3, nil, nil, nil, nil, nil, function() return not DB.db.experience.showQuestXP end, not (E.Retail or E.Forever))
 
 E.Options.args.databars.args.petExperience = ACH:Group(L["Pet Experience"], nil, 2, nil, function(info) return DB.db.petExperience[info[#info]] end, function(info, value) DB.db.petExperience[info[#info]] = value DB:PetExperienceBar_Update() DB:UpdateAll() end, nil, function() return not (E.Classic or E.TBC or E.Wrath) or E.myclass ~= 'HUNTER' end)
 E.Options.args.databars.args.petExperience.args = E:CopyTable({}, SharedOptions)
@@ -109,7 +109,7 @@ DataBars.args.reputation.args.conditionGroup.values = {
 	hideInCombat = L["Hide In Combat"],
 }
 
-DataBars.args.honor = ACH:Group(L["Honor"], nil, 3, nil, function(info) return DB.db.honor[info[#info]] end, function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() DB:UpdateAll() end, nil, not E.Retail)
+DataBars.args.honor = ACH:Group(L["Honor"], nil, 3, nil, function(info) return DB.db.honor[info[#info]] end, function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() DB:UpdateAll() end, nil, not (E.Retail or E.Forever))
 DataBars.args.honor.args = E:CopyTable({}, SharedOptions)
 DataBars.args.honor.args.enable.set = function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Toggle() DB:UpdateAll() end
 DataBars.args.honor.args.textFormat.set = function(info, value) DB.db.honor[info[#info]] = value DB:HonorBar_Update() end
@@ -132,7 +132,7 @@ DataBars.args.threat.args.textFormat = nil
 DataBars.args.threat.args.conditionGroup = nil
 DataBars.args.threat.args.showBubbles = nil
 
-DataBars.args.azerite = ACH:Group(L["Azerite"], nil, 5, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() DB:UpdateAll() end, nil, not E.Retail)
+DataBars.args.azerite = ACH:Group(L["Azerite"], nil, 5, nil, function(info) return DB.db.azerite[info[#info]] end, function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() DB:UpdateAll() end, nil, not (E.Retail or E.Forever))
 DataBars.args.azerite.args = E:CopyTable({}, SharedOptions)
 DataBars.args.azerite.args.enable.set = function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Toggle() DB:UpdateAll() end
 DataBars.args.azerite.args.textFormat.set = function(info, value) DB.db.azerite[info[#info]] = value DB:AzeriteBar_Update() end

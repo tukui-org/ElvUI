@@ -62,7 +62,7 @@ function NP:Power_UpdateColor(_, unit)
 	elseif element.colorReaction and unitReaction then
 		color = NP.Colors.reactions[unitReaction]
 	elseif element.colorSmooth then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			local curve = self.colors.power.MANA:GetCurve()
 			if curve then
 				color = curve:Evaluate(1)
@@ -135,7 +135,7 @@ function NP:Update_Power(nameplate)
 		nameplate.Power:Point(E.InversePoints[db.power.anchorPoint], nameplate, db.power.anchorPoint, db.power.xOffset, db.power.yOffset)
 		nameplate.Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			nameplate.Power.smoothing = (db.power.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(nameplate.Power, db.power.smoothbars)

@@ -55,7 +55,7 @@ function UF:AuraBars_UpdateBar(bar)
 	bar.db = bars.db
 
 	if bars.db then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			bar.smoothing = (bar.db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(bar, bars.db.smoothbars)
@@ -72,7 +72,7 @@ function UF:AuraBars_UpdateBar(bar)
 end
 
 function UF:Construct_AuraBarHeader(frame)
-	if E.Retail then
+	if E.Retail or E.Forever then
 		local bars = E:Auras_Create(frame, 'AuraBars')
 		bars:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
 
@@ -125,7 +125,7 @@ function UF:Configure_AuraBars(frame)
 		bars.reverseFill = bars.db.reverseFill
 		bars.friendlyAuraType = db.friendlyAuraType
 		bars.enemyAuraType = db.enemyAuraType
-		bars.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
+		bars.auraSort = UF.SortAuraFuncs[(E.Retail or E.Forever) and 'PLAYER' or db.sortMethod]
 		bars.tooltipAnchor = db.tooltipAnchorType
 		bars.tooltipAnchorX = db.tooltipAnchorX
 		bars.tooltipAnchorY = db.tooltipAnchorY
@@ -205,7 +205,7 @@ function UF:Configure_AuraBars(frame)
 			bars:Point(p3..p4, attachTo, p1..p4, xOffset or (right and -(BORDER * 2)) or (bars.height + UF.BORDER), yOffset)
 		end
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			bars.isAuraBar = true
 			bars.size = db.height
 			bars.numAuras = db.maxBars
@@ -244,7 +244,7 @@ function UF:Configure_AuraBars(frame)
 			frame:DisableElement('AuraBars')
 		end
 
-		if E.Retail then
+		if E.Retail or E.Forever then
 			bars.allowEnable = false
 		end
 
@@ -257,7 +257,7 @@ local GOTAK = E:GetSpellInfo(GOTAK_ID)
 function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
 	local spellName, color = E:NotSecretValue(bar.spell) and bar.spell or nil
 
-	if not E.Retail then
+	if not (E.Retail or E.Forever) then
 		local spellID = E:NotSecretValue(bar.spellID) and bar.spellID or nil
 		local auraColor = E.global.unitframe.AuraBarColors[spellID]
 		color = auraColor and auraColor.enable and auraColor.color
@@ -273,7 +273,7 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 
 	local isDebuff, colors = bar.filter == 'HARMFUL', UF.db.colors
 	if not color and colors.auraBarByType and isDebuff then
-		if E.Retail then
+		if E.Retail or E.Forever then
 			color = UF:GetAuraCurve(unit, bar, bar.aura)
 		elseif not debuffType or (debuffType == '' or debuffType == 'None') then
 			color = colors.auraBarDebuff -- debuffType is None here when secret

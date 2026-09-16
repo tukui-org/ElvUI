@@ -121,7 +121,7 @@ function BL:AlertMovers()
 		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
 	end)
 
-	if E.Retail then -- alerts on the Perks Program Frame (Trading Post)
+	if E.Retail or E.Forever then -- alerts on the Perks Program Frame (Trading Post)
 		hooksecurefunc(_G.AlertFrame, 'SetBaseAnchorFrame', E.PostAlertMove)
 		hooksecurefunc(_G.AlertFrame, 'ResetBaseAnchorFrame', E.PostAlertMove)
 	end

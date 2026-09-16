@@ -189,12 +189,12 @@ function BL:Initialize()
 
 	BL:SkinBlizzTimers()
 
-	if (E.Retail or E.Mists) and not E.OtherAddons.SimplePowerBar then
+	if (E.Retail or E.Forever or E.Mists) and not E.OtherAddons.SimplePowerBar then
 		BL:PositionAltPowerBar()
 		BL:SkinAltPowerBar()
 	end
 
-	if E.Retail then
+	if E.Retail or E.Forever then
 		BL:DisableHelpTip()
 		BL:DisableTutorials()
 		BL:HandleTalkingHead()
