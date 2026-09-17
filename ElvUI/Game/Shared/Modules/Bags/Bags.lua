@@ -53,6 +53,7 @@ local FetchNumPurchasedBankTabs = C_Bank and C_Bank.FetchNumPurchasedBankTabs
 local FetchDepositedMoney = C_Bank and C_Bank.FetchDepositedMoney
 local CanPurchaseBankTab = C_Bank and C_Bank.CanPurchaseBankTab
 local CanViewBank = C_Bank and C_Bank.CanViewBank
+local ShouldShowKeyring = C_ActionBar and C_ActionBar.ShouldShowKeyring
 local FlagsUtil_IsSet = FlagsUtil and FlagsUtil.IsSet
 
 local EditBox_HighlightText = EditBox_HighlightText
@@ -280,6 +281,7 @@ end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
 local bankOffset, maxBankSlots = E.Modern and 5 or 4, E.Classic and 10 or 11
+local hasKeyring = E.Classic or E.TBC or E.Wrath or (E.Forever and ShouldShowKeyring and ShouldShowKeyring())
 local bankEvents = {'BAG_CONTAINER_UPDATE', 'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
 local bagEvents = {'BAG_CONTAINER_UPDATE', 'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
@@ -301,7 +303,7 @@ else
 	presistentEvents.PLAYERBANKSLOTS_CHANGED = true
 end
 
-if E.Classic or E.TBC or E.Wrath then
+if hasKeyring then
 	tinsert(bagIDs, KEYRING_CONTAINER)
 end
 
@@ -1711,7 +1713,7 @@ end
 function B:BagItemAction(button, holder, func, id)
 	local bagID = E.Modern and holder.BagID
 	if bagID and button == 'RightButton' then
-		if bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
+		if bagID ~= BANK_CONTAINER and bagID ~= KEYRING_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
 			B:OpenBagFlagsMenu(holder)
 		end
 	elseif CursorHasItem() then
@@ -2557,7 +2559,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.sortButton:SetScript('OnClick', B.Container_ClickSortBag)
 
 		--Keyring Button
-		if E.Classic or E.TBC or E.Wrath then
+		if hasKeyring then
 			f.keyButton = CreateFrame('Button', name..'KeyButton', f)
 			f.keyButton:Size(20)
 			f.keyButton:SetTemplate()

@@ -777,7 +777,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
 	local specID, specIcon
-	local spec = E.Modern and E:GetUnitSpecInfo(unit)
+	local spec = E.Retail and E:GetUnitSpecInfo(unit) -- forever has one spec per class
 	if spec then
 		specID, specIcon = spec.id, spec.icon
 	end

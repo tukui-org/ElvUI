@@ -175,10 +175,10 @@ function DB:ToggleAll()
 	DB:ReputationBar_Toggle()
 	DB:ThreatBar_Toggle()
 
-	if E.Modern then
+	if E.Retail then
 		DB:HonorBar_Toggle()
 		DB:AzeriteBar_Toggle()
-	elseif (E.Classic or E.TBC or E.Wrath) and E.myclass == 'HUNTER' then
+	elseif (E.Classic or E.TBC or E.Wrath or E.Forever) and E.myclass == 'HUNTER' then
 		DB:PetExperienceBar_Toggle()
 	end
 end
@@ -188,10 +188,10 @@ function DB:CreateAll()
 	DB:ReputationBar()
 	DB:ThreatBar()
 
-	if E.Modern then
+	if E.Retail then
 		DB:HonorBar()
 		DB:AzeriteBar()
-	elseif (E.Classic or E.TBC or E.Wrath) and E.myclass == 'HUNTER' then
+	elseif (E.Classic or E.TBC or E.Wrath or E.Forever) and E.myclass == 'HUNTER' then
 		DB:PetExperienceBar()
 	end
 end

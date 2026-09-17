@@ -95,7 +95,7 @@ local Private = oUF.Private
 local gsub = gsub
 local unpack = unpack
 
-local GetPetHappiness = GetPetHappiness
+local GetPetHappiness = (C_PetInfo and C_PetInfo.GetPetHappiness) or GetPetHappiness
 local UnitClass = UnitClass
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -130,7 +130,7 @@ local function UpdateColor(self, event, unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local unitThreat = UnitThreatSituation('player', unit)
 	local unitControlled = UnitPlayerControlled(unit)
-	local unitHappiness = (oUF.isClassic or oUF.isTBC) and oUF.myclass == 'HUNTER' and oUF:UnitIsUnit(unit, 'pet') and GetPetHappiness()
+	local unitHappiness = (oUF.isClassic or oUF.isTBC or oUF.isForever) and oUF.myclass == 'HUNTER' and oUF:UnitIsUnit(unit, 'pet') and GetPetHappiness()
 	local unitClassToken = UnitClassColor(element, unit) -- swaps pet to class color when needed
 	local unitSelectionType = GetSelectionType(unit, element.considerSelectionInCombatHostile) -- Private.unitSelectionType
 

@@ -69,8 +69,11 @@ C.Values = {
 do
 	C.ClassTable = {}
 
-	for _, info in next, E.ClassInfoByID do
-		C.ClassTable[info.classFile] = info.className
+	for _, classFile in next, CLASS_SORT_ORDER do -- only the classes this client can play
+		local info = E.ClassInfoByFile[classFile]
+		if info then
+			C.ClassTable[classFile] = info.className
+		end
 	end
 end
 

@@ -132,7 +132,7 @@ UF.SortAuraFuncs = {
 UF.headerGroupBy = {
 	CLASS = function(header)
 		local groupingOrder = header.db and strjoin(',', header.db.CLASS1, header.db.CLASS2, header.db.CLASS3, header.db.CLASS4, header.db.CLASS5, header.db.CLASS6, header.db.CLASS7, header.db.CLASS8, header.db.CLASS9)
-		if E.Modern and groupingOrder then
+		if E.Retail and groupingOrder then -- forever only has the original nine classes
 			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12, header.db.CLASS13)
 		end
 

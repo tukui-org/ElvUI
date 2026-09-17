@@ -9,13 +9,14 @@ local next, gsub, format = next, gsub, format
 local abs, ipairs, pairs, floor, ceil = abs, ipairs, pairs, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8sub, utf8len = string.utf8sub, strlenutf8
+local tconcat = table.concat
 
 local AbbreviateNumbers = AbbreviateNumbers
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetCurrentTitle = GetCurrentTitle
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
-local GetPetLoyalty = GetPetLoyalty
+local GetPetLoyalty = (C_PetInfo and C_PetInfo.GetPetLoyalty) or GetPetLoyalty
 local GetPVPRankInfo = GetPVPRankInfo
 local GetPVPTimer = GetPVPTimer
 local GetRaidRosterInfo = GetRaidRosterInfo
@@ -603,8 +604,8 @@ if not E.Modern then
 			return E.myspecName
 		end
 
-		-- try to get spec from tooltip
-		local info = E.Modern and E:GetUnitSpecInfo(unit)
+		-- try to get spec from tooltip (forever has one spec per class)
+		local info = E.Retail and E:GetUnitSpecInfo(unit)
 		if info then
 			return info.name
 		end
@@ -1231,11 +1232,11 @@ E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
 		return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
 	end
-end, not (E.Classic or E.TBC or E.Wrath))
+end, not (E.Classic or E.TBC or E.Wrath or E.Forever))
 
-if E.Classic or E.TBC or E.Wrath then
-	local GetPetHappiness = GetPetHappiness
-	local GetPetFoodTypes = GetPetFoodTypes
+if E.Classic or E.TBC or E.Wrath or E.Forever then
+	local GetPetHappiness = (C_PetInfo and C_PetInfo.GetPetHappiness) or GetPetHappiness
+	local GetPetFoodTypes = (C_PetInfo and C_PetInfo.GetPetFoodTypes) or GetPetFoodTypes
 
 	local emotionsIcons = {
 		[[|TInterface\PetPaperDollFrame\UI-PetHappiness:16:16:0:0:128:64:48:72:0:23|t]],
@@ -1280,7 +1281,8 @@ if E.Classic or E.TBC or E.Wrath then
 	E:AddTag('diet', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
 		if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
-			return GetPetFoodTypes()
+			local foodTypes = GetPetFoodTypes()
+			return E.Forever and tconcat(foodTypes, _G.PET_FOOD_DELIMIT) or foodTypes
 		end
 	end)
 end

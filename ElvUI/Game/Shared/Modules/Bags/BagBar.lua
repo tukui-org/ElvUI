@@ -11,7 +11,7 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetKeyRingSize = GetKeyRingSize
-local IsKeyRingEnabled = IsKeyRingEnabled
+local IsKeyRingEnabled = (C_ActionBar and C_ActionBar.ShouldShowKeyring) or IsKeyRingEnabled
 local IsModifiedClick = IsModifiedClick
 local PutItemInBackpack = PutItemInBackpack
 local InCombatLockdown = InCombatLockdown
@@ -88,6 +88,18 @@ function B:KeyRing_OnLeave()
 	end
 
 	B:BagBar_OnEnter()
+end
+
+-- Normal texture back to the slot atlas on bag updates (See KeyRingMixin:OnBagUpdate())
+function B:KeyRing_UpdateTextures()
+	B:SetButtonTexture(self, 134237) -- Interface\ICONS\INV_Misc_Key_03
+
+	local highlight = self:GetHighlightTexture()
+	if highlight then
+		highlight:SetAlpha(0)
+	end
+
+	self.icon = self:GetNormalTexture()
 end
 
 function B:SkinBag(bag)
@@ -375,6 +387,12 @@ function B:LoadBagBar()
 		end
 
 		KeyRing.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
+
+		if E.Forever then
+			B.KeyRing_UpdateTextures(KeyRing)
+
+			hooksecurefunc(KeyRing, 'UpdateTextures', B.KeyRing_UpdateTextures)
+		end
 
 		tinsert(B.BagBar.buttons, KeyRing)
 	end

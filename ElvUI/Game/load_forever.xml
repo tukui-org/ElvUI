@@ -54,15 +54,14 @@
 	<Script file='Mainline\Tags\Tags.lua'/>
 	<Script file='Shared\Modules\Nameplates\Plugins\PVPRole.lua'/>
 	<Script file='Shared\Modules\DataTexts\Currencies.lua'/>
+	<Script file='Shared\Modules\DataTexts\Defense.lua'/>
 	<Script file='Shared\Modules\DataTexts\Difficulty.lua'/>
 	<Script file='Shared\Modules\DataTexts\EquipmentSets.lua'/>
 	<Script file='Shared\Modules\DataTexts\Mastery.lua'/>
 	<Script file='Shared\Modules\DataTexts\PrimaryStat.lua'/>
 	<Script file='Shared\Modules\DataTexts\Speed.lua'/>
-	<Script file='Mainline\DataTexts\CallToArms.lua'/>
 	<Script file='Mainline\DataTexts\Quickjoin.lua'/>
-	<Script file='Mainline\DataTexts\SpecSwitch.lua'/>
-	<Script file='Mainline\DataBars\Honor.lua'/>
+	<Script file='Shared\Modules\DataBars\PetExperience.lua'/>
 	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
 	<Script file='Shared\Modules\Misc\PrivateAuras.lua'/>
 
