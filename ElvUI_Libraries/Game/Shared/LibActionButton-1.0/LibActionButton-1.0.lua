@@ -1511,23 +1511,20 @@ function InitializeEventHandler()
 
 	lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 
-	if not WoWClassic and not WoWBCC then
-		if WoWModern then
-			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
-			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
-			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
-			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
-		end
-
+	if WoWRetail or WoWWrath or WoWMists then
 		lib.eventFrame:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
 	end
 
 	if WoWModern then
-		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
-		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
 		lib.eventFrame:RegisterEvent("ACTION_RANGE_CHECK_UPDATE")
+		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
+		lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
+		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
+		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
+		lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 	else
 		lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
 		lib.eventFrame:RegisterUnitEvent("UNIT_FACTION", "target")
