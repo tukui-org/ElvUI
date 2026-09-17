@@ -281,7 +281,7 @@ end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
 local bankOffset, maxBankSlots = E.Modern and 5 or 4, E.Classic and 10 or 11
-local hasKeyring = E.Classic or E.TBC or E.Wrath or (E.Forever and ShouldShowKeyring and ShouldShowKeyring())
+local hasKeyring = E.Classic or E.TBC or E.Wrath or (ShouldShowKeyring and ShouldShowKeyring())
 local bankEvents = {'BAG_CONTAINER_UPDATE', 'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
 local bagEvents = {'BAG_CONTAINER_UPDATE', 'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
