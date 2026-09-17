@@ -22,6 +22,9 @@ local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
+local WoWForever = wowtoc == 16001 -- ToDo: classic_beta
+
+local WoWModern = WoWRetail or WoWForever
 
 local DisableOverlayGlow = WoWClassic or WoWBCC or WoWWrath
 
@@ -285,7 +288,7 @@ function lib:CreateButton(id, name, header, config)
 		KeyBound = LibStub("LibKeyBound-1.0", true)
 	end
 
-	local button = setmetatable(CreateFrame("CheckButton", name, header, (WoWRetail and "PingableActionButtonTemplate, " or "").."ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
+	local button = setmetatable(CreateFrame("CheckButton", name, header, (WoWModern and "PingableActionButtonTemplate, " or "").."ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	button:RegisterForClicks("AnyDown", "AnyUp")
 
@@ -659,7 +662,7 @@ local function WatchRange(button, slot)
 	lib.buttonsBySlot[slot][button] = true
 	lib.slotByButton[button] = slot
 
-	if WoWRetail then -- activate the event for slot
+	if WoWModern then -- activate the event for slot
 		EnableActionRangeCheck(slot, true)
 	end
 end
@@ -670,7 +673,7 @@ local function ClearRange(button, slot)
 		buttons[button] = nil
 
 		if not next(buttons) then -- deactivate event for slot (unused)
-			if WoWRetail then
+			if WoWModern then
 				EnableActionRangeCheck(slot, false)
 			end
 
@@ -1509,7 +1512,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 
 	if not WoWClassic and not WoWBCC then
-		if WoWRetail then
+		if WoWModern then
 			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
 			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
@@ -1521,7 +1524,7 @@ function InitializeEventHandler()
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
 	end
 
-	if WoWRetail then
+	if WoWModern then
 		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
 		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
 		lib.eventFrame:RegisterEvent("ACTION_RANGE_CHECK_UPDATE")
@@ -1541,7 +1544,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
 
-	if WoWRetail then
+	if WoWModern then
 		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
@@ -1631,7 +1634,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			UpdateTargetAuras(event)
 		end
 
-		if not WoWRetail then
+		if not WoWModern then
 			for button in next, ActiveButtons do
 				UpdateRangeTimer(button)
 			end
@@ -1838,7 +1841,7 @@ function Generic:OnUpdate(elapsed)
 		end
 	end
 
-	if not WoWRetail then
+	if not WoWModern then
 		self.rangeTimer = (self.rangeTimer or 0) - elapsed
 
 		if self.rangeTimer <= 0 then
@@ -2020,7 +2023,7 @@ do
 end
 
 function lib:SetTargetAuraCooldowns(enabled)
-	local activate = not WoWRetail and enabled
+	local activate = not WoWModern and enabled
 
 	TARGETAURA_ENABLED = activate
 
@@ -2411,7 +2414,7 @@ local defaultCooldownInfo = { startTime = 0; duration = 0; isEnabled = false; is
 local defaultChargeInfo = { currentCharges = 0; maxCharges = 0; cooldownStartTime = 0; cooldownDuration = 0; chargeModRate = 0; isActive = false }
 local defaultLossOfControlInfo = { startTime = 0; duration = 0; modRate = 0; isActive = false; shouldReplaceNormalCooldown = false; }
 
-if WoWRetail then
+if WoWModern then
 	local function SetOrClearCooldown(cooldown, shouldShow, durationObject)
 		if not cooldown then return end
 		if not shouldShow or not durationObject then
@@ -3042,7 +3045,7 @@ end
 local GetActionCount = C_ActionBar.GetActionUseCount or GetActionCount
 
 -- the remaining uses of GetActionCount can't deal with secrets, so disable on Midnight
-if WoWRetail then
+if WoWModern then
 	GetActionCount = function() return 0 end
 end
 
@@ -3170,7 +3173,7 @@ if WoWClassic then
 	end
 end
 
-if not WoWRetail then
+if not WoWModern then
 	-- disable loss of control cooldown on classic
 	Action.GetLoCCooldownInfo = function(self) return nil end
 end
