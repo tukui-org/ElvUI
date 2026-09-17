@@ -142,7 +142,8 @@ end
 function E:Auras_UpdateHighlight(container, button)
 	if button.highlight then
 		if container.key == 'bad' then
-			button:SetAuraBorder(button.highlight, E.AuraHighlight)
+			button:ClearDispelTypeTextures()
+			button:AddDispelTypeTexture(button.highlight, E.AuraHighlight)
 		else
 			local color = button.data.color or FALLBACK
 			button.highlight:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
@@ -385,11 +386,10 @@ function E:Auras_UpdateButton(container, button)
 			end
 		else
 			button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
+			button:ClearDispelTypeTextures()
 
 			if container.isAuraBar or container.colorByType then -- auraByDispels would be isStealable
-				button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
-			else
-				button:ClearAuraBorder()
+				button:AddDispelTypeTexture(button.dispelBorder, E.AuraDispel)
 			end
 		end
 	end
