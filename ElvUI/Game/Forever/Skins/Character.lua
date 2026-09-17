@@ -240,20 +240,14 @@ function S:Blizzard_UIPanels_Game()
 
 	for _, Slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
-			S:HandleIcon(Slot.icon)
 			Slot:StripTextures()
 			Slot:SetTemplate()
-			Slot:StyleButton(Slot)
+			Slot:StyleButton()
+
+			S:HandleIcon(Slot.icon)
 			Slot.icon:SetInside()
-			Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
 
 			S:HandleIconBorder(Slot.IconBorder)
-
-			if Slot.popoutButton:GetPoint() == 'TOP' then
-				Slot.popoutButton:Point('TOP', Slot, 'BOTTOM', 0, 2)
-			else
-				Slot.popoutButton:Point('LEFT', Slot, 'RIGHT', -2, 0)
-			end
 
 			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
 		end
