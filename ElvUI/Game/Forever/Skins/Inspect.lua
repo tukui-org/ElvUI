@@ -5,60 +5,18 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local function SkinPvpTalents(slot)
-	local icon = slot.Texture
-	slot:StripTextures()
-	slot.Border:Hide()
-
-	S:HandleIcon(icon, true)
-	icon.backdrop:SetFrameLevel(2)
-end
-
-local function HandleTabs()
-	local tab = _G.InspectFrameTab1
-	local index, lastTab = 1, tab
-	while tab do
-		S:HandleTab(tab)
-
-		tab:ClearAllPoints()
-
-		if index == 1 then
-			tab:Point('TOPLEFT', _G.InspectFrame, 'BOTTOMLEFT', -3, 0)
-		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
-			lastTab = tab
-		end
-
-		index = index + 1
-		tab = _G['InspectFrameTab'..index]
-	end
-end
-
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
 	local InspectFrame = _G.InspectFrame
 	S:HandlePortraitFrame(InspectFrame)
 	S:HandleButton(_G.InspectPaperDollFrame.ViewButton)
-	S:HandleButton(_G.InspectPaperDollItemsFrame.InspectTalents)
-
-	-- Create portrait element for the PvP Frame so we can see prestige
-	local InspectPVPFrame = _G.InspectPVPFrame
-	local portrait = InspectPVPFrame:CreateTexture(nil, 'OVERLAY')
-	portrait:Size(55)
-	InspectPVPFrame.SmallWreath:ClearAllPoints()
-	InspectPVPFrame.SmallWreath:Point('TOPLEFT', -2, -25)
-
-	-- PvP Talents
-	for i = 1, 3 do
-		SkinPvpTalents(InspectPVPFrame['TalentSlot'..i])
-	end
+	S:HandleButton(_G.InspectPaperDollFrame.InspectTalents)
 
 	-- Tabs
-	HandleTabs()
-
-	_G.InspectPaperDollItemsFrame.InspectTalents:ClearAllPoints()
-	_G.InspectPaperDollItemsFrame.InspectTalents:Point('TOPRIGHT', _G.InspectFrame, 'BOTTOMRIGHT', 0, -1)
+	for _, tab in next, InspectFrame.ModeTabs.Tabs do
+		S:HandleLargeSideTab(tab)
+	end
 
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
@@ -69,7 +27,6 @@ function S:Blizzard_InspectUI()
 	-- Background Artwork
 	if E.private.skins.parchmentRemoverEnable then
 		_G.InspectGuildFrameBG:Kill()
-		_G.InspectPVPFrame.BG:Kill()
 	end
 
 	_G.InspectModelFrameBorderTopLeft:Kill()

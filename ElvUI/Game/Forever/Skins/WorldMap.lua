@@ -305,11 +305,17 @@ function S:WorldMapFrame()
 	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
 	S:HandleEditBox(QuestScrollFrame.SearchBox)
 
+	local QuestLogCount = _G.QuestLogCount
+	if QuestLogCount then
+		QuestLogCount:StripTextures()
+		QuestLogCount:SetTemplate('Transparent')
+	end
+
 	local QuestScrollBar = _G.QuestScrollFrame.ScrollBar
 	S:HandleTrimScrollBar(QuestScrollBar)
 
 	if E.private.skins.blizzard.tooltip then
-		TT:SetStyle(QuestsFrame.StoryTooltip)
+		TT:SetStyle(QuestScrollFrame.StoryTooltip)
 	end
 
 	S:HandleTrimScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)
@@ -332,25 +338,34 @@ function S:WorldMapFrame()
 	do -- Add a hook to adjust the OverlayFrames
 		hooksecurefunc(WorldMapFrame, 'AddOverlayFrame', S.WorldMapMixin_AddOverlayFrame)
 
-		local Dropdown, Tracking, Pin = unpack(WorldMapFrame.overlayFrames)
-		S:HandleDropDownBox(Dropdown) -- NavBar handled in ElvUI/modules/skins/misc
+		S:HandleDropDownBox(WorldMapFrame.overlayFrames[1]) -- NavBar handled in ElvUI\Modules\Skins\Misc
 
-		Tracking:StripTextures()
-		Tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking/None
-		Tracking:SetHighlightTexture(136460, 'ADD')
+		local Tracking = WorldMapFrame.WorldMapTrackingOptionsButton
+		if Tracking then
+			Tracking:StripTextures()
+			Tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking\None
+			Tracking:SetHighlightTexture(136460, 'ADD')
 
-		local TrackingHighlight = Tracking:GetHighlightTexture()
-		TrackingHighlight:SetAllPoints(Tracking.Icon)
+			local TrackingHighlight = Tracking:GetHighlightTexture()
+			TrackingHighlight:SetAllPoints(Tracking.Icon)
 
-		Pin:StripTextures()
-		Pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
-		Pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
-		Pin.ActiveTexture:SetAllPoints(Pin.Icon)
-		Pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
+			if Tracking.ResetButton then
+				S:HandleCloseButton(Tracking.ResetButton)
+			end
+		end
 
-		local PinHighlight = Pin:GetHighlightTexture()
-		PinHighlight:SetAllPoints(Pin.Icon)
-		PinHighlight:SetTexCoord(0.3203125, 0.5546875, 0.015625, 0.484375)
+		local Pin = WorldMapFrame.WorldMapTrackingPinButton
+		if Pin then
+			Pin:StripTextures()
+			Pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
+			Pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
+			Pin.ActiveTexture:SetAllPoints(Pin.Icon)
+			Pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
+
+			local PinHighlight = Pin:GetHighlightTexture()
+			PinHighlight:SetAllPoints(Pin.Icon)
+			PinHighlight:SetTexCoord(0.3203125, 0.5546875, 0.015625, 0.484375)
+		end
 	end
 
 	-- 8.2.5 Party Sync | Credits Aurora/Shestak
@@ -388,7 +403,7 @@ function S:WorldMapFrame()
 
 	S:HandleTrimScrollBar(MapLegendScroll.ScrollBar)
 
-	-- 11.1 New Side Tabs
+	-- Side Tabs
 	local tabs = {
 		QuestMapFrame.QuestsTab,
 		QuestMapFrame.EventsTab,
