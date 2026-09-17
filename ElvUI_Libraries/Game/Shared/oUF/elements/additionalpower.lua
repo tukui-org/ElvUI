@@ -180,7 +180,7 @@ local function Visibility(self, event, unit)
 	local element = self.AdditionalPower
 	local shouldEnable
 
-	local display = element.displayPairs and ((oUF.isClassic or oUF.isTBC) or not UnitHasVehicleUI('player'))
+	local display = element.displayPairs and (not (oUF.isRetail or oUF.isWrath or oUF.isMists) or not UnitHasVehicleUI('player'))
 	local allowed = display and element.displayPairs[oUF.myclass]
 	if allowed then
 		local maxPower = UnitPowerMax(unit, POWER_INDEX)

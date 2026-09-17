@@ -514,7 +514,7 @@ function TT:AddTargetInfo(tt, unit)
 		if E:IsSecretUnit(unitTarget) then
 			local _, className = UnitClass(unitTarget)
 			targetColor = C_ClassColor_GetClassColor(className) or PRIEST_COLOR
-		elseif UnitIsPlayer(unitTarget) and (not E.Modern or not UnitHasVehicleUI(unitTarget)) then
+		elseif UnitIsPlayer(unitTarget) and (not (E.Retail or E.Wrath or E.Mists) or not UnitHasVehicleUI(unitTarget)) then
 			local _, className = UnitClass(unitTarget)
 			targetColor = E:ClassColor(className) or PRIEST_COLOR
 		else
