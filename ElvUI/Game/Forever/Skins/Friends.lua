@@ -8,7 +8,6 @@ local unpack = unpack
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
-local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 
 local INVITE_RESTRICTION_NONE = 9
@@ -157,22 +156,22 @@ local function ReskinFriendButton(button)
 end
 
 local function HandleTabs()
-	local tab = _G.FriendsFrameTab1
-	local index, lastTab = 1, tab
-	while tab do
-		S:HandleTab(tab)
+	local lastTab
+	for index = 1, 4 do
+		local tab = _G['FriendsFrameTab'..index]
+		if tab then
+			S:HandleTab(tab)
 
-		tab:ClearAllPoints()
+			tab:ClearAllPoints()
 
-		if index == 1 then
-			tab:Point('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
-		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+			if lastTab then
+				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+			else
+				tab:Point('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
+			end
+
 			lastTab = tab
 		end
-
-		index = index + 1
-		tab = _G['FriendsFrameTab'..index]
 	end
 end
 
@@ -247,19 +246,12 @@ local function HandleRecentAllies(frame)
 end
 
 local StripAllTextures = {
-	'WhoFrameColumnHeader1',
-	'WhoFrameColumnHeader2',
-	'WhoFrameColumnHeader3',
-	'WhoFrameColumnHeader4',
 	'AddFriendFrame',
 }
 
 local ButtonsToHandle = {
 	'FriendsFrameAddFriendButton',
 	'FriendsFrameSendMessageButton',
-	'WhoFrameWhoButton',
-	'WhoFrameAddFriendButton',
-	'WhoFrameGroupInviteButton',
 	'AddFriendEntryFrameAcceptButton',
 	'AddFriendEntryFrameCancelButton'
 }
@@ -281,7 +273,6 @@ function S:FriendsFrame()
 
 	S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.RecentAlliesFrame.List.ScrollBar)
-	S:HandleTrimScrollBar(_G.WhoFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.FriendsFriendsFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.QuickJoinFrame.ScrollBar)
 
@@ -360,25 +351,6 @@ function S:FriendsFrame()
 		S:HandleButton(IgnoreWindow.UnignorePlayerButton)
 		S:HandleCloseButton(IgnoreWindow.CloseButton)
 	end
-
-	--Who Frame
-	_G.WhoFrame:StripTextures()
-	_G.WhoFrameListInset:StripTextures()
-	_G.WhoFrameListInset.NineSlice:Hide()
-	_G.WhoFrameEditBox.Backdrop:StripTextures()
-	_G.WhoFrameEditBox.Backdrop:CreateBackdrop()
-
-	--Increase width of Level column slightly
-	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) -- Default is 32
-
-	for i = 1, 17 do
-		local level = _G['WhoFrameButton'..i..'Level']
-		if level then
-			level:Width(level:GetWidth() + 5)
-		end
-	end
-
-	S:HandleDropDownBox(_G.WhoFrameDropdown, 90)
 
 	-- Bottom Tabs
 	HandleTabs()

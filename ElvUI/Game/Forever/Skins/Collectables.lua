@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local next, unpack = next, unpack
@@ -19,12 +18,6 @@ local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
 
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
-end
-
-local function CheckAndDisplayHeirloomsTab()
-	if not _G.CollectionsJournalTab5 then return end
-
-	_G.CollectionsJournalTab5:Point('TOPLEFT', E.TimerunningID and _G.CollectionsJournalTab3 or _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
 end
 
 local function ToyTextColor(text, r, g, b)
@@ -142,8 +135,10 @@ local function SkinJournalScrollButton(bu)
 				bu.dragButton.ActiveTexture:SetTexture(E.Media.Textures.White8x8)
 				bu.dragButton.ActiveTexture:SetVertexColor(0.9, 0.8, 0.1, 0.3)
 
-				bu.dragButton.levelBG:SetTexture()
-				bu.dragButton.level:FontTemplate(nil, 12)
+				if bu.dragButton.levelBG then
+					bu.dragButton.levelBG:SetTexture()
+					bu.dragButton.level:FontTemplate(nil, 12)
+				end
 
 				local hl = bu.dragButton:GetHighlightTexture()
 				hl:SetTexture(E.media.blankTex)
@@ -352,17 +347,11 @@ local function SkinPetFrame()
 	local PetJournal = _G.PetJournal
 
 	_G.PetJournalSummonButton:StripTextures()
-	_G.PetJournalFindBattle:StripTextures()
 	S:HandleButton(_G.PetJournalSummonButton)
-	S:HandleButton(_G.PetJournalFindBattle)
 	_G.PetJournalRightInset:StripTextures()
 	_G.PetJournalLeftInset:StripTextures()
 	S:HandleItemButton(PetJournal.SummonRandomPetSpellFrame.Button, true)
 	E:RegisterCooldown(PetJournal.SummonRandomPetSpellFrame.Button.Cooldown)
-
-	if E.global.general.disableTutorialButtons then
-		_G.PetJournalTutorialButton:Kill()
-	end
 
 	PetJournal.PetCount:StripTextures()
 	S:HandleEditBox(_G.PetJournalSearchBox)
@@ -380,104 +369,14 @@ local function SkinPetFrame()
 	S:HandleTrimScrollBar(PetJournal.ScrollBar)
 	hooksecurefunc(PetJournal.ScrollBox, 'Update', JournalScrollButtons)
 
-	_G.PetJournalAchievementStatus:DisableDrawLayer('BACKGROUND')
-
-	S:HandleItemButton(PetJournal.HealPetSpellFrame.Button, true)
-	E:RegisterCooldown(PetJournal.HealPetSpellFrame.Button.Cooldown)
-	PetJournal.HealPetSpellFrame.Button.Icon:SetTexture([[Interface\Icons\spell_magic_polymorphrabbit]])
-	_G.PetJournalLoadoutBorder:StripTextures()
-	_G.PetJournalSpellSelect:StripTextures()
-
-	for i = 1, 3 do
-		local petButton = _G['PetJournalLoadoutPet'..i]
-		local petButtonHighlight = _G['PetJournalLoadoutPet'..i..'Highlight']
-		local petButtonHealthFrame = _G['PetJournalLoadoutPet'..i..'HealthFrame']
-		local petButtonXPBar = _G['PetJournalLoadoutPet'..i..'XPBar']
-		petButton:StripTextures()
-		petButton:SetTemplate()
-		petButton.petTypeIcon:Point('BOTTOMLEFT', 2, 2)
-
-		petButtonHighlight:SetTexture(E.media.blankTex)
-		petButtonHighlight:SetVertexColor(1, 1, 1, .25)
-		petButtonHighlight:SetAllPoints(petButton.icon)
-
-		local helpFrame = _G['PetJournalLoadoutPet'..i..'HelpFrame']
-		helpFrame:StripTextures()
-
-		petButton.dragButton:SetOutside(_G['PetJournalLoadoutPet'..i..'Icon'])
-		petButton.dragButton:OffsetFrameLevel(1, _G['PetJournalLoadoutPet'..i].dragButton)
-
-		petButton.hover = true
-		petButton.pushed = true
-		petButton.checked = true
-		S:HandleItemButton(petButton)
-		S:HandleIconBorder(petButton.qualityBorder, petButton.backdrop)
-
-		petButton.levelBG:SetTexture()
-		petButton.level:FontTemplate(nil, 12)
-
-		petButton.setButton:StripTextures()
-		petButtonHealthFrame.healthBar:StripTextures()
-		petButtonHealthFrame.healthBar:CreateBackdrop()
-		petButtonHealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(petButtonHealthFrame.healthBar)
-		petButtonXPBar:StripTextures()
-		petButtonXPBar:CreateBackdrop()
-		petButtonXPBar:SetStatusBarTexture(E.media.normTex)
-		E:RegisterStatusBar(petButtonXPBar)
-		petButtonXPBar:OffsetFrameLevel(2)
-
-		for index = 1, 3 do
-			local f = _G['PetJournalLoadoutPet'..i..'Spell'..index]
-			S:HandleItemButton(f)
-			f.FlyoutArrow:SetTexture([[Interface\Buttons\ActionBarFlyoutButton]])
-			_G['PetJournalLoadoutPet'..i..'Spell'..index..'Icon']:SetInside(f)
-		end
-	end
-
-	for i = 1, 2 do
-		local btn = _G['PetJournalSpellSelectSpell'..i]
-		S:HandleItemButton(btn)
-
-		local icon = _G['PetJournalSpellSelectSpell'..i..'Icon']
-		icon:SetInside(btn)
-		icon:SetDrawLayer('BORDER')
-	end
-
 	local Card = _G.PetJournalPetCard
-
 	Card:StripTextures()
 	Card:SetTemplate('Transparent')
-	_G.PetJournalPetCardInset:StripTextures()
 
+	Card.ShadowOverlay:Hide()
 	Card.PetInfo:OffsetFrameLevel(2, Card)
-	Card.PetInfo.level:FontTemplate(nil, 12)
-	Card.PetInfo.levelBG:SetTexture()
+
 	S:HandleIcon(Card.PetInfo.icon, true)
-	S:HandleIconBorder(Card.PetInfo.qualityBorder, Card.PetInfo.icon.backdrop)
-	Card.PetInfo.qualityBorder:SetAlpha(0)
-
-	if E.private.skins.blizzard.tooltip then
-		TT:SetStyle(_G.PetJournalPrimaryAbilityTooltip)
-	end
-
-	for i = 1, 6 do
-		local frame = _G['PetJournalPetCardSpell'..i]
-		frame:OffsetFrameLevel(2)
-		frame:DisableDrawLayer('BACKGROUND')
-		frame:SetTemplate()
-		frame.icon:SetTexCoords()
-	end
-
-	Card.HealthFrame.healthBar:StripTextures()
-	Card.HealthFrame.healthBar:CreateBackdrop()
-	Card.HealthFrame.healthBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(Card.HealthFrame.healthBar)
-
-	Card.xpBar:StripTextures()
-	Card.xpBar:CreateBackdrop()
-	Card.xpBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(Card.xpBar)
 end
 
 local function SkinToyFrame()
@@ -494,11 +393,7 @@ local function SkinToyFrame()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
 
-	ToyBox.progressBar.border:Hide()
-	ToyBox.progressBar:DisableDrawLayer('BACKGROUND')
-	ToyBox.progressBar:SetStatusBarTexture(E.media.normTex)
-	ToyBox.progressBar:CreateBackdrop()
-	E:RegisterStatusBar(ToyBox.progressBar)
+	ToyBox.ProgressTracker:StripTextures()
 
 	for i = 1, 18 do
 		local button = ToyBox.iconsFrame['spellButton'..i]
@@ -542,29 +437,6 @@ local function SkinHeirloomFrame()
 
 	hooksecurefunc(HeirloomsJournal, 'UpdateButton', HeirloomsJournalUpdateButton)
 	hooksecurefunc(HeirloomsJournal, 'LayoutCurrentPage', HeirloomsJournalLayoutCurrentPage)
-end
-
-local function HandleTabs()
-	local tab = _G.CollectionsJournalTab1
-	local index, lastTab = 1, tab
-	while tab do
-		S:HandleTab(tab)
-
-		tab:ClearAllPoints()
-
-		if index == 1 then
-			tab:Point('TOPLEFT', _G.CollectionsJournal, 'BOTTOMLEFT', -3, 0)
-		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
-			lastTab = tab
-		end
-
-		index = index + 1
-		tab = _G['CollectionsJournalTab'..index]
-	end
-
-	-- Blizzard clears points on the wardrobe tab
-	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 end
 
 local function SkinWardrobeFrame()
@@ -669,7 +541,8 @@ local function SkinCollectionsFrames()
 	S:HandlePortraitFrame(_G.CollectionsJournal, true)
 	SkinWardrobeFrame()
 
-	HandleTabs()
+	-- HandleTabs()
+	-- ToDo: classic_beta
 
 	SkinMountFrame()
 	SkinPetFrame()

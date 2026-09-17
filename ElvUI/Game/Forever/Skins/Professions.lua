@@ -431,8 +431,7 @@ function S:Blizzard_Professions()
 		GuildFrame.Container:CreateBackdrop('Transparent')
 	end
 
-	S:HandleMaxMinFrame(ProfessionsFrame.MaximizeMinimize)
-
+	-- ToDo: classic_beta
 	local TabSystem = ProfessionsFrame.TabSystem
 	if TabSystem then
 		for _, tab in next, { TabSystem:GetChildren() } do

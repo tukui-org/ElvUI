@@ -126,7 +126,6 @@
 	<Script file='Forever\Skins\QuestTimers.lua'/>
 	<Script file='Forever\Skins\Raid.lua'/>
 	<Script file='Forever\Skins\SettingsPanel.lua'/>
-	<Script file='Forever\Skins\SpellBook.lua'/>
 	<Script file='Forever\Skins\Stable.lua'/>
 	<Script file='Forever\Skins\SubscriptionInterstitial.lua'/>
 	<Script file='Forever\Skins\SwingTimer.lua'/>
