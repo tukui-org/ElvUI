@@ -98,7 +98,7 @@ if not (E.Classic or E.Forever) then
 	toggles.socket = L["Socket Frame"]
 end
 
-if not E.Modern then
+if not E.Retail then
 	toggles.questTimers = L["Quest Timers"]
 end
 
@@ -147,6 +147,9 @@ if E.Retail then
 	toggles.talkinghead = L["Talking Head"]
 	toggles.torghastLevelPicker = L["Torghast Level Picker"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
+elseif E.Forever then
+	toggles.legacySystem = L["Legacy System"]
+	toggles.swingTimer = L["Swing Timer"]
 elseif E.Mists then
 	toggles.reforge = L["Reforge"]
 elseif E.Classic then

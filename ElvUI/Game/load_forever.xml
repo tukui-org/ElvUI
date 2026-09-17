@@ -102,6 +102,7 @@
 	<Script file='Forever\Skins\Help.lua'/>
 	<Script file='Forever\Skins\Inspect.lua'/>
 	<Script file='Forever\Skins\ItemInteraction.lua'/>
+	<Script file='Forever\Skins\LegacySystem.lua'/>
 	<Script file='Forever\Skins\LFG.lua'/>
 	<Script file='Forever\Skins\LFGuild.lua'/>
 	<Script file='Forever\Skins\Loot.lua'/>
@@ -122,11 +123,13 @@
 	<Script file='Forever\Skins\PVPMatch.lua'/>
 	<Script file='Forever\Skins\Quest.lua'/>
 	<Script file='Forever\Skins\QuestChoice.lua'/>
+	<Script file='Forever\Skins\QuestTimers.lua'/>
 	<Script file='Forever\Skins\Raid.lua'/>
 	<Script file='Forever\Skins\SettingsPanel.lua'/>
 	<Script file='Forever\Skins\SpellBook.lua'/>
 	<Script file='Forever\Skins\Stable.lua'/>
 	<Script file='Forever\Skins\SubscriptionInterstitial.lua'/>
+	<Script file='Forever\Skins\SwingTimer.lua'/>
 	<Script file='Forever\Skins\Tabard.lua'/>
 	<Script file='Forever\Skins\Taxi.lua'/>
 	<Script file='Forever\Skins\TimeManager.lua'/>
