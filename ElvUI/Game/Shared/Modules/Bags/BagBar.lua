@@ -94,7 +94,7 @@ function B:SkinBag(bag)
 	local icon = bag.icon or _G[bag:GetName()..'IconTexture']
 	bag.oldTex = icon and icon:GetTexture()
 
-	bag:StripTexturesE.Modern
+	bag:StripTextures(E.Modern)
 	bag:SetTemplate()
 	bag:StyleButton(true)
 
