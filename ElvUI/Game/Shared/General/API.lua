@@ -93,6 +93,7 @@ local ERR_NOT_IN_COMBAT = ERR_NOT_IN_COMBAT
 local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_HORDE = FACTION_HORDE
 local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 
 local GameMenuFrame = GameMenuFrame
 
@@ -313,15 +314,22 @@ end
 do
 	local classByID = {}
 	local classByFile = {}
+	local classExists = {}
+
+	-- use this to verify the class is on the client
+	local classMax = #CLASS_SORT_ORDER
+	for index, name in next, CLASS_SORT_ORDER do
+		classExists[name] = index
+	end
 
 	E.ClassInfoByID = classByID
 	E.ClassInfoByFile = classByFile
 
-	for index = 1, 13 do -- really blizzard, whats up with this?
+	for index = 1, classMax do -- really blizzard, whats up with this?
 		-- 1) _G.GetClassInfo gives SHAMAN for 6 and 7 on anniversary
 		-- 2) 14 is Adventurer on Retail ?
 		local info = GetClassInfo(index)
-		if info then
+		if info and classExists[info.classFile] then
 			classByID[info.classID] = info
 			classByFile[info.classFile] = info
 		end
