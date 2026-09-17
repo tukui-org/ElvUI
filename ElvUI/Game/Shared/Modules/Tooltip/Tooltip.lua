@@ -631,7 +631,7 @@ function TT:SetUnitInfo(tt, unit, data)
 		end
 	end
 
-	if E.Modern and not isInCombat then
+	if E.Retail and not isInCombat then
 		if TT.db.mythicDataEnable then
 			TT:AddMythicInfo(tt, unit)
 		end
@@ -1275,7 +1275,7 @@ function TT:Initialize()
 		TT:SecureHookScript(E.SpellBookTooltip, 'OnTooltipSetSpell', TT.GameTooltip_OnTooltipSetSpell)
 	end
 
-	if E.Modern or E.Mists then
+	if E.Retail or E.Mists then
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 	end
 

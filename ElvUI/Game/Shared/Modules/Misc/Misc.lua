@@ -162,7 +162,7 @@ end
 do
 	local twwBW = 2673	-- 11.1.0, both factions, account wide
 	local cataBW = 1133	-- 4.0.3, horde only, not account wide
-	local bilgewater = E.Modern and GetFactionDataByID(twwBW)
+	local bilgewater = E.Retail and GetFactionDataByID(twwBW)
 	function M:COMBAT_TEXT_UPDATE(_, messagetype)
 		if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
@@ -444,7 +444,7 @@ function M:Initialize()
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
 
-	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.Modern and 'Blizzard_HousingControls' or nil, vanillaStyle and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
+	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.Retail and 'Blizzard_HousingControls' or nil, vanillaStyle and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
 		if IsAddOnLoaded(addon) then
 			M:ADDON_LOADED(nil, addon)
 		end
