@@ -541,8 +541,9 @@ local function SkinCollectionsFrames()
 	S:HandlePortraitFrame(_G.CollectionsJournal, true)
 	SkinWardrobeFrame()
 
-	-- HandleTabs()
-	-- ToDo: classic_beta
+	for _, tab in next, _G.CollectionsJournal.TabContainer.Tabs do
+		S:HandleLargeSideTab(tab)
+	end
 
 	SkinMountFrame()
 	SkinPetFrame()

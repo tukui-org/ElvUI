@@ -5,8 +5,6 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local GetSpellTexture = C_Spell.GetSpellTexture
-
 local function HandleTalentFrameDialog(dialog)
 	if not dialog then return end
 
@@ -24,39 +22,6 @@ local function HandleTalentFrameDialog(dialog)
 
 		nameControlEditbox.backdrop:Point('TOPLEFT', -5, -10)
 		nameControlEditbox.backdrop:Point('BOTTOMRIGHT', 5, 10)
-	end
-end
-
-local function UpdateSpecFrame(frame)
-	if not frame.SpecContentFramePool then return end
-
-	for specContentFrame in frame.SpecContentFramePool:EnumerateActive() do
-		if not specContentFrame.IsSkinned then
-			S:HandleButton(specContentFrame.ActivateButton)
-
-			if specContentFrame.SpellButtonPool then
-				for button in specContentFrame.SpellButtonPool:EnumerateActive() do
-					if button.Ring then
-						button.Ring:Hide()
-					end
-
-					if button.CircleMask then
-						button.CircleMask:Hide()
-					end
-
-					if button.spellID then
-						local texture = GetSpellTexture(button.spellID)
-						if texture then
-							button.Icon:SetTexture(texture)
-						end
-					end
-
-					S:HandleIcon(button.Icon, true)
-				end
-			end
-
-			specContentFrame.IsSkinned = true
-		end
 	end
 end
 
@@ -86,35 +51,19 @@ function S:Blizzard_PlayerSpells()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
 	S:HandlePortraitFrame(PlayerSpellsFrame)
 
-	-- Specialisation
-	hooksecurefunc(PlayerSpellsFrame.SpecFrame, 'UpdateSpecFrame', UpdateSpecFrame)
-
-	-- TalentsFrame
+	-- ToDo: classic_beta
+	-- TabSystem (ClassTalentsFrameTabTemplate), Left, Middle, Right, ActiveSpec, ResetButton, UndoButton, ClassCurrencyDisplay (UnspentLabel)
 	local TalentsFrame = PlayerSpellsFrame.TalentsFrame
-	TalentsFrame.BlackBG:SetAlpha(0)
-	TalentsFrame.BottomBar:SetAlpha(0)
-
 	S:HandleButton(TalentsFrame.ApplyButton)
 	S:HandleDropDownBox(TalentsFrame.LoadSystem.Dropdown)
 
 	S:HandleButton(TalentsFrame.InspectCopyButton)
-
-	TalentsFrame.ClassCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
-	TalentsFrame.ClassCurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
-
-	TalentsFrame.SpecCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
-	TalentsFrame.SpecCurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
 
 	S:HandleEditBox(TalentsFrame.SearchBox)
 	TalentsFrame.SearchBox.backdrop:Point('TOPLEFT', -4, -5)
 	TalentsFrame.SearchBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 	TalentsFrame.SearchPreviewContainer:StripTextures()
 	TalentsFrame.SearchPreviewContainer:CreateBackdrop('Transparent')
-
-	TalentsFrame.PvPTalentList:StripTextures()
-	TalentsFrame.PvPTalentList:CreateBackdrop()
-	TalentsFrame.PvPTalentList.backdrop:SetFrameStrata(PlayerSpellsFrame.TalentsFrame.PvPTalentList:GetFrameStrata())
-	TalentsFrame.PvPTalentList.backdrop:SetFrameLevel(2000)
 
 	local TabSystem = PlayerSpellsFrame.TabSystem
 	for _, tab in next, { TabSystem:GetChildren() } do

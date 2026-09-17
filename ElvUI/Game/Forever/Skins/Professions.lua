@@ -431,20 +431,10 @@ function S:Blizzard_Professions()
 		GuildFrame.Container:CreateBackdrop('Transparent')
 	end
 
-	-- ToDo: classic_beta
-	local TabSystem = ProfessionsFrame.TabSystem
-	if TabSystem then
-		for _, tab in next, { TabSystem:GetChildren() } do
-			S:HandleTab(tab)
-		end
-
-		TabSystem.spacing = -5
-		if TabSystem.MarkDirty then
-			TabSystem:MarkDirty()
-		end
-
-		TabSystem:ClearAllPoints()
-		TabSystem:Point('TOPLEFT', ProfessionsFrame, 'BOTTOMLEFT', -3, 0)
+	-- ToDo: classic_beta (BookPage)
+	S:HandleLargeSideTab(ProfessionsFrame.ProfessionsOverviewTab)
+	for _, tab in next, ProfessionsFrame.rightProfessionTabs do
+		S:HandleLargeSideTab(tab)
 	end
 
 	for _, name in pairs({'Prof0ToolSlot', 'Prof0Gear0Slot', 'Prof0Gear1Slot', 'Prof1ToolSlot', 'Prof1Gear0Slot', 'Prof1Gear1Slot', 'CookingToolSlot', 'CookingGear0Slot', 'FishingToolSlot', 'FishingGear0Slot', 'FishingGear1Slot'}) do

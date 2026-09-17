@@ -1250,7 +1250,7 @@ do
 	end
 end
 
-do --Tab Regions
+do -- Tab Regions
 	local tabs = {
 		'LeftDisabled',
 		'MiddleDisabled',
@@ -1306,6 +1306,48 @@ do --Tab Regions
 			tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -1 or -3)
 			tab.backdrop:Point('BOTTOMRIGHT', -spacing, 3)
 		end
+	end
+end
+
+-- ToDo: classic_beta WIP
+do -- Large Side Tabs
+	local function SelectedTextureSetShown(texture, shown)
+		local tab = texture:GetParent()
+		if shown then
+			tab.backdrop:SetBackdropBorderColor(1, .8, .1)
+		else
+			tab.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+	end
+
+	local function UpdateIconInterior(tab)
+		tab.Icon:SetTexCoords()
+	end
+
+	function S:HandleLargeSideTab(tab)
+		if not tab or tab.backdrop then return end
+
+		local icon = tab.Icon
+		if tab.Mask then
+			icon:RemoveMaskTexture(tab.Mask)
+		end
+
+		icon:SetTexCoords()
+		hooksecurefunc(tab, 'UpdateIconInterior', UpdateIconInterior)
+
+		tab:CreateBackdrop()
+		tab.backdrop:SetOutside(icon)
+
+		tab.Background:SetTexture()
+		tab.HighlightTexture:SetColorTexture(1, 1, 1, .25)
+		tab.HighlightTexture:SetAllPoints(icon)
+
+		tab.TabGlow:SetColorTexture(1, .8, .1, .5)
+		tab.TabGlow:SetAllPoints(icon)
+
+		tab.SelectedTexture:SetTexture()
+		SelectedTextureSetShown(tab.SelectedTexture, tab.SelectedTexture:IsShown())
+		hooksecurefunc(tab.SelectedTexture, 'SetShown', SelectedTextureSetShown)
 	end
 end
 
