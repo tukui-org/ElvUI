@@ -113,7 +113,7 @@ function NP:Update_Health(nameplate)
 		end
 
 		nameplate.Health:SetColorTapping(true)
-		nameplate.Health:SetColorSelectionE.Modern
+		nameplate.Health:SetColorSelection(E.Modern)
 		nameplate.Health:SetColorThreat(NP.db.threat.enable)
 		nameplate.Health.colorClassification = db.health and db.health.useClassificationColor
 		nameplate.Health.colorClassificationInInstance = db.health and db.health.useClassificationColorInInstance
