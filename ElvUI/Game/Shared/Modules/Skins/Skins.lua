@@ -1313,10 +1313,13 @@ end
 do -- Large Side Tabs
 	local function SelectedTextureSetShown(texture, shown)
 		local tab = texture:GetParent()
+		if not tab or not tab.backdrop then return end
+
 		if shown then
 			tab.backdrop:SetBackdropBorderColor(1, .8, .1)
 		else
-			tab.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			local br, bg, bb = unpack(E.media.bordercolor)
+			tab.backdrop:SetBackdropBorderColor(br, bg, bb)
 		end
 	end
 
@@ -1328,26 +1331,42 @@ do -- Large Side Tabs
 		if not tab or tab.backdrop then return end
 
 		local icon = tab.Icon
-		if tab.Mask then
-			icon:RemoveMaskTexture(tab.Mask)
-		end
-
 		icon:SetTexCoords()
-		hooksecurefunc(tab, 'UpdateIconInterior', UpdateIconInterior)
 
 		tab:CreateBackdrop()
 		tab.backdrop:SetOutside(icon)
 
-		tab.Background:SetTexture()
-		tab.HighlightTexture:SetColorTexture(1, 1, 1, .25)
-		tab.HighlightTexture:SetAllPoints(icon)
+		if tab.UpdateIconInterior then
+			hooksecurefunc(tab, 'UpdateIconInterior', UpdateIconInterior)
+		end
 
-		tab.TabGlow:SetColorTexture(1, .8, .1, .5)
-		tab.TabGlow:SetAllPoints(icon)
+		if tab.Mask then
+			icon:RemoveMaskTexture(tab.Mask)
+		end
 
-		tab.SelectedTexture:SetTexture()
-		SelectedTextureSetShown(tab.SelectedTexture, tab.SelectedTexture:IsShown())
-		hooksecurefunc(tab.SelectedTexture, 'SetShown', SelectedTextureSetShown)
+		local background = tab.Background
+		if background then
+			background:SetTexture()
+		end
+
+		local highlight = tab.HighlightTexture
+		if highlight then
+			highlight:SetColorTexture(1, 1, 1, .25)
+			highlight:SetAllPoints(icon)
+		end
+
+		local glow = tab.TabGlow
+		if glow then
+			glow:SetColorTexture(1, .8, .1, .5)
+			glow:SetAllPoints(icon)
+		end
+
+		local selected = tab.SelectedTexture
+		if selected then
+			selected:SetTexture()
+			SelectedTextureSetShown(selected, selected:IsShown())
+			hooksecurefunc(selected, 'SetShown', SelectedTextureSetShown)
+		end
 	end
 end
 
