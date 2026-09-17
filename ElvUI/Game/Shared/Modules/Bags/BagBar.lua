@@ -94,7 +94,7 @@ function B:SkinBag(bag)
 	local icon = bag.icon or _G[bag:GetName()..'IconTexture']
 	bag.oldTex = icon and icon:GetTexture()
 
-	bag:StripTextures(E.Retail or E.Forever)
+	bag:StripTexturesE.Modern
 	bag:SetTemplate()
 	bag:StyleButton(true)
 
@@ -102,7 +102,7 @@ function B:SkinBag(bag)
 		bag.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
 	end
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		bag:GetNormalTexture():SetAlpha(0)
 		bag:GetHighlightTexture():SetAlpha(0)
 		bag.CircleMask:Hide()
@@ -154,7 +154,7 @@ function B:SizeAndPositionBagBar()
 
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
-		if E.Retail or E.Forever then
+		if E.Modern then
 			button.filterIcon.FilterBackdrop:Size(bagBarSize * 0.5)
 		end
 
@@ -243,7 +243,7 @@ function B:BackpackButton_OnClick()
 end
 
 function B:BagButton_OnClick(key)
-	if (E.Retail or E.Forever) and key == 'RightButton' then
+	if E.Modern and key == 'RightButton' then
 		B:OpenBagFlagsMenu(self)
 	end
 end
@@ -328,7 +328,7 @@ function B:LoadBagBar()
 		b:SetParent(B.BagBar)
 		B:SkinBag(b)
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			hooksecurefunc(b, 'UpdateTextures', B.BagButton_UpdateTextures)
 		else
 			B.BagButton_UpdateTextures(b)
@@ -386,14 +386,14 @@ function B:LoadBagBar()
 			local bagID = i - 1
 			button.BagID = bagID
 
-			if not (E.Retail or E.Forever) and button.BagID == BACKPACK_CONTAINER then
+			if not E.Modern and button.BagID == BACKPACK_CONTAINER then
 				button:SetScript('OnClick', B.BackpackButton_OnClick)
 			end
 
 			button:HookScript('OnClick', B.BagButton_OnClick)
 		end
 
-		if E.Retail or E.Forever then -- Item Assignment
+		if E.Modern then -- Item Assignment
 			B:CreateFilterIcon(button)
 		end
 	end

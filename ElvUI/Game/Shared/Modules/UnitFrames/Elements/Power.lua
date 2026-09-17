@@ -103,7 +103,7 @@ function UF:Configure_Power(frame, healthUpdate)
 			frame:EnableElement('Power')
 		end
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			power.smoothing = (db.power.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(power, db.power.smoothbars)
@@ -134,7 +134,7 @@ function UF:Configure_Power(frame, healthUpdate)
 		power.colorSelection = nil
 		power.displayAltPower = db.power.displayAltPower
 
-		if (E.Retail or E.Forever) and UF.db.colors.powerselection then
+		if E.Modern and UF.db.colors.powerselection then
 			power.colorSelection = true
 		elseif UF.db.colors.powerclass then
 			power.colorClass = true
@@ -268,7 +268,7 @@ do
 
 	if E.Mists or E.Wrath then -- also handled in ConfigEnvironment
 		classPowers[4] = 'RUNIC_POWER'
-	elseif E.Retail or E.Forever then
+	elseif E.Modern then
 		classPowers[4] = 'RUNIC_POWER'
 		classPowers[5] = 'PAIN'
 		classPowers[6] = 'FURY'

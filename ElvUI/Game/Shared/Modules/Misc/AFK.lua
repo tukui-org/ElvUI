@@ -75,7 +75,7 @@ end
 
 function AFK:GetAnimation(key)
 	if not key then key = E.db.general.afkAnimation end -- check selected animation
-	if key == 'lean' and not (E.Retail or E.Forever) then key = nil end -- lean dont exist outside of retail
+	if key == 'lean' and not E.Modern then key = nil end -- lean dont exist outside of retail
 
 	local animation = key or DEFAULT_ANIMATION
 	return animations[animation], animation
@@ -139,7 +139,7 @@ function AFK:SetAFK(status)
 		chat:UnregisterAllEvents()
 		chat:Clear()
 
-		if (E.Retail or E.Forever) and _G.PVEFrame:IsShown() then --odd bug, frame is blank
+		if E.Modern and _G.PVEFrame:IsShown() then --odd bug, frame is blank
 			PVEFrame_ToggleFrame()
 			PVEFrame_ToggleFrame()
 		end

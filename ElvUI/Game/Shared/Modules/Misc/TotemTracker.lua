@@ -15,7 +15,7 @@ local classic = { 2, 1, 3, 4 } -- we need to swap 1/2 on era
 function TM:UpdateButton(button, totem)
 	if not (button and totem) then return end
 
-	local slot = ((E.Retail or E.Forever) and totem.slot) or totem
+	local slot = (E.Modern and totem.slot) or totem
 	local _, _, startTime, duration, icon = GetTotemInfo(slot)
 
 	if startTime then
@@ -29,7 +29,7 @@ function TM:UpdateButton(button, totem)
 			button.cooldown:Clear()
 		end
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			if totem:GetParent() ~= button.holder then
 				totem:SetParent(button.holder)
 			end
@@ -45,7 +45,7 @@ end
 
 function TM:Update()
 	local priority = _G.STANDARD_TOTEM_PRIORITIES
-	if E.Retail or E.Forever then
+	if E.Modern then
 		for _, button in ipairs(TM.bar) do
 			if button:IsShown() then
 				button:SetShown(false)
@@ -152,7 +152,7 @@ function TM:Initialize()
 	TM:RegisterEvent('PLAYER_TOTEM_UPDATE', 'Update')
 	TM:RegisterEvent('PLAYER_ENTERING_WORLD', 'Update')
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		TM:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'Update')
 	else
 		TM:RegisterEvent('ACTIVE_TALENT_GROUP_CHANGED', 'Update')

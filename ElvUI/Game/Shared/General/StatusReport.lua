@@ -179,14 +179,14 @@ function E:CreateStatusFrame()
 	--Sections
 	StatusFrame.Section1 = E:CreateStatusSection(300, 125, nil, 30, StatusFrame, 'TOP', StatusFrame, 'TOP', -30)
 	StatusFrame.Section2 = E:CreateStatusSection(300, 130, nil, 30, StatusFrame, 'TOP', StatusFrame.Section1, 'BOTTOM', 0)
-	StatusFrame.Section3 = E:CreateStatusSection(300, (E.Retail or E.Forever) and 215 or 185, nil, 30, StatusFrame, 'TOP', StatusFrame.Section2, 'BOTTOM', 0)
+	StatusFrame.Section3 = E:CreateStatusSection(300, E.Modern and 215 or 185, nil, 30, StatusFrame, 'TOP', StatusFrame.Section2, 'BOTTOM', 0)
 
 	PluginFrame.SectionP = E:CreateStatusSection(280, nil, nil, 30, PluginFrame, 'TOP', PluginFrame, 'TOP', -10)
 
 	--Section content
 	StatusFrame.Section1.Content = E:CreateStatusContent(4, 260, StatusFrame.Section1, StatusFrame.Section1.Header)
 	StatusFrame.Section2.Content = E:CreateStatusContent(5, 260, StatusFrame.Section2, StatusFrame.Section2.Header)
-	StatusFrame.Section3.Content = E:CreateStatusContent((E.Retail or E.Forever) and 7 or 6, 260, StatusFrame.Section3, StatusFrame.Section3.Header)
+	StatusFrame.Section3.Content = E:CreateStatusContent(E.Modern and 7 or 6, 260, StatusFrame.Section3, StatusFrame.Section3.Header)
 
 	--Content lines
 	StatusFrame.Section1.Content.Line3.Text:SetFormattedText('Recommended Scale: |cff4beb2c%s|r', E:PixelBestSize())
@@ -268,11 +268,11 @@ function E:UpdateStatusFrame()
 	Section3.Content.Line4.Text:SetFormattedText('Level: |cff4beb2c%s|r', E.mylevel)
 	Section3.Content.Line5.Text:SetFormattedText('Zone: |cff4beb2c%s|r', GetRealZoneText() or UNKNOWN)
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		Section3.Content.Line6.Text:SetFormattedText('Specialization: |cff4beb2c%s|r', GetSpecName() or UNKNOWN)
 	end
 
-	Section3.Content[(E.Retail or E.Forever) and 'Line7' or 'Line6'].Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', RemixMode[E.TimerunningID] or (E.ClassicHC and 'Hardcore') or (E.ClassicSOD and 'Seasonal') or (not (E.Retail or E.Forever) and 'Classic') or 'Retail')
+	Section3.Content[E.Modern and 'Line7' or 'Line6'].Text:SetFormattedText('Game Mode: |cff4beb2c%s|r', RemixMode[E.TimerunningID] or (E.ClassicHC and 'Hardcore') or (E.ClassicSOD and 'Seasonal') or (not E.Modern and 'Classic') or 'Retail')
 
 	StatusFrame.TitleLogoFrame.LogoTop:SetVertexColor(unpack(E.media.rgbvaluecolor))
 end

@@ -70,7 +70,7 @@ function UF:SetSize_HealComm(frame)
 	if not height or height <= 0 then height = health.HEIGHT end
 
 	-- keep the clip frame at the health size for reversed style, so prediction cant overflow the frame
-	local overflow = ((E.Retail or E.Forever) and db.absorbStyle == 'REVERSED' and 1) or pred.maxOverflow or 0
+	local overflow = (E.Modern and db.absorbStyle == 'REVERSED' and 1) or pred.maxOverflow or 0
 
 	if orientation == 'HORIZONTAL' then
 		local barHeight = db.height or height
@@ -106,7 +106,7 @@ function UF:Configure_HealComm(frame)
 		local colors = UF.db.colors.healPrediction
 		pred.maxOverflow = 1 + (colors.maxOverflow or 0)
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			local canOverflow = db.absorbStyle == 'REVERSED' or db.absorbStyle == 'OVERFLOW'
 			local clampMode = (canOverflow and (pred.maxOverflow > 1) and 'MaximumHealth') or 'MissingHealth'
 			pred.damageAbsorbClampMode = UnitDamageAbsorbClampMode[clampMode]
@@ -260,7 +260,7 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 	end
 
 	-- no need to proceed for retail here, we cant use these modes anymore
-	if E.Retail or E.Forever then return end
+	if E.Modern then return end
 
 	-- if we are in normal mode and overflowing happens we should let a bit show, like blizzard does
 	if db.absorbStyle == 'NORMAL' then

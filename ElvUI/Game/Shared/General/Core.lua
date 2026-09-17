@@ -75,7 +75,7 @@ E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
-E.allowRoles = E.Retail or E.Forever or E.TBC or E.Wrath or E.Mists or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
+E.allowRoles = E.Modern or E.TBC or E.Wrath or E.Mists or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
@@ -226,7 +226,7 @@ function E:GrabColorPickerValues(r, g, b)
 	local oldR, oldG, oldB = _G.ColorPickerFrame:GetColorRGB()
 
 	-- set and define the new values
-	if E.Retail or E.Forever then
+	if E.Modern then
 		_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(r or 1, g or 1, b or 1)
 	else
 		_G.ColorPickerFrame:SetColorRGB(r or 1, g or 1, b or 1)
@@ -236,7 +236,7 @@ function E:GrabColorPickerValues(r, g, b)
 
 	-- swap back to the old values
 	if oldR then
-		if E.Retail or E.Forever then
+		if E.Modern then
 			_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(oldR, oldG, oldB)
 		else
 			_G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB)
@@ -592,7 +592,7 @@ do
 		info.unitframes.r, info.unitframes.g, info.unitframes.b = unpack(E.media.unitframeBorderColor)
 		E:CoroutineUpdate(E.UpdateUnitframeBorderColor, E.unitFrameElements, info.unitframes)
 
-		if (E.Retail or E.Forever) and Tooltip.isStyled then
+		if E.Modern and Tooltip.isStyled then
 			Tooltip:SetAuraButtonTooltipStyle()
 		end
 	end
@@ -639,7 +639,7 @@ do
 		E:CoroutineUpdate(E.UpdateBackdropColor, E.frames, info)
 		E:CoroutineUpdate(E.UpdateUnitframeBackdropColor, E.unitFrameElements, info)
 
-		if (E.Retail or E.Forever) and Tooltip.isStyled then
+		if E.Modern and Tooltip.isStyled then
 			Tooltip:SetAuraButtonTooltipStyle()
 		end
 	end
@@ -1664,7 +1664,7 @@ function E:UpdateActionBars()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroButtons()
 
-	if E.Retail or E.Forever or E.Mists then
+	if E.Modern or E.Mists then
 		ActionBars:UpdateExtraButtons()
 	end
 end
@@ -1709,7 +1709,7 @@ end
 function E:UpdateMisc()
 	AFK:Toggle()
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		TotemTracker:PositionAndSize()
 	elseif E.Wrath then
 		ActionBars:PositionAndSizeTotemBar()
@@ -2039,7 +2039,7 @@ function E:Initialize()
 
 		E.Initialized = true
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			E:Tutorials()
 		end
 

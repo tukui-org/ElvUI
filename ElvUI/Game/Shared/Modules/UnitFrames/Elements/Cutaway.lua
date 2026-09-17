@@ -51,7 +51,7 @@ function UF:Configure_Cutaway(frame)
 	local db = frame.db.cutaway
 	local healthEnabled = db and db.health and db.health.enabled
 	local powerEnabled = db and db.power and db.power.enabled
-	if not (E.Retail or E.Forever) and (healthEnabled or powerEnabled) then
+	if not E.Modern and (healthEnabled or powerEnabled) then
 		if not frame:IsElementEnabled('Cutaway') then
 			frame:EnableElement('Cutaway')
 		end

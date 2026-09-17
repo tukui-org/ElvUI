@@ -128,7 +128,7 @@ function BL:UpdateAltPowerBarSettings()
 	bar.text:FontTemplate(db.font, db.fontSize or 12, db.fontOutline or 'OUTLINE')
 	BL.AltPowerBarHolder:Size(bar.backdrop:GetSize())
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		bar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 	else
 		E:SetSmoothing(bar, db.smoothbars)

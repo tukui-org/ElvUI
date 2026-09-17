@@ -100,7 +100,7 @@ do
 		for i = 1, 8 do
 			local tm = format('%s %d', TM, i)
 			local name = 'RaidMarkIconButton'..i
-			local button = CreateFrame('Button', name, marker, (E.Retail or E.Forever) and 'InsecureActionButtonTemplate' or 'SecureActionButtonTemplate')
+			local button = CreateFrame('Button', name, marker, E.Modern and 'InsecureActionButtonTemplate' or 'SecureActionButtonTemplate')
 			button:SetScript('OnEnter', M.RaidMarkButton_OnEnter)
 			button:SetScript('OnLeave', M.RaidMarkButton_OnLeave)
 			button:SetScript('OnMouseUp', M.RaidMarkButton_MouseUp)

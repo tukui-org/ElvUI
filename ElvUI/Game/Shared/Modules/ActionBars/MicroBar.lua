@@ -113,7 +113,7 @@ function AB:GetMicroCoords(name, icons, character)
 
 	if name == 'PVPMicroButton' or (character and name == 'CharacterMicroButton') then
 		l, r, t, b = 0, 1, 0, 1
-	elseif E.Retail or E.Forever or icons then
+	elseif E.Modern or icons then
 		local offset = AB.MICRO_OFFSETS[name]
 		if offset then
 			l, r = offset, offset + 0.065
@@ -125,7 +125,7 @@ function AB:GetMicroCoords(name, icons, character)
 end
 
 function AB:HandleMicroCoords(button, name)
-	local l, r, t, b = AB:GetMicroCoords(name, AB.db.microbar.useIcons, not (E.Retail or E.Forever))
+	local l, r, t, b = AB:GetMicroCoords(name, AB.db.microbar.useIcons, not E.Modern)
 
 	local normal = button.GetNormalTexture and button:GetNormalTexture()
 	if normal then
@@ -169,10 +169,10 @@ function AB:HandleMicroTextures(button, name)
 		end
 	else
 		local icons = AB.db.microbar.useIcons
-		local character = not (E.Retail or E.Forever) and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
+		local character = not E.Modern and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
 		local faction = name == 'PVPMicroButton' and ((E.myfaction == 'Horde' and E.Media.Textures.PVPHorde) or E.Media.Textures.PVPAlliance)
 		local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
-		local stock = not (E.Retail or E.Forever) and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
+		local stock = not E.Modern and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
 		local pushed = button.GetPushedTexture and button:GetPushedTexture()
 		if stock then
 			normal:SetTexture(faction or stock.normal)
@@ -239,7 +239,7 @@ function AB:HandleMicroButton(button, name)
 	button:HookScript('OnLeave', OnLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
-	if not (E.Retail or E.Forever) then
+	if not E.Modern then
 		local pushed = button.GetPushedTexture and button:GetPushedTexture()
 		local normal = button.GetNormalTexture and button:GetNormalTexture()
 		local disabled = button.GetDisabledTexture and button:GetDisabledTexture()
@@ -292,11 +292,11 @@ do
 	local unsorted = {}
 	local sorted = {}
 	local sorting = {
-		MainMenuMicroButton = (E.Retail or E.Forever) and 12 or 13,
-		StoreMicroButton = (E.Retail or E.Forever) and 11 or 12,
-		HousingMicroButton = (E.Retail or E.Forever) and 10 or 11,
-		EJMicroButton = (E.Retail or E.Forever) and 9 or 10,
-		CollectionsMicroButton = (E.Retail or E.Forever) and 8 or 9,
+		MainMenuMicroButton = E.Modern and 12 or 13,
+		StoreMicroButton = E.Modern and 11 or 12,
+		HousingMicroButton = E.Modern and 10 or 11,
+		EJMicroButton = E.Modern and 9 or 10,
+		CollectionsMicroButton = E.Modern and 8 or 9,
 		PVPMicroButton = 7
 	}
 
@@ -368,7 +368,7 @@ do
 			local columnName = btns[columnIndex]
 			local columnButton = _G[columnName]
 
-			if not (E.Retail or E.Forever) then
+			if not E.Modern then
 				button.commandName = commandKeys[name] -- to support KB like retail
 			end
 
@@ -454,8 +454,8 @@ function AB:SetupMicroBar()
 		if button then
 			AB:HandleMicroButton(button, name)
 
-			if E.Retail or E.Forever or (name == 'MainMenuMicroButton' or name == 'GuildMicroButton') then
-				hooksecurefunc(button, ((E.Retail or E.Forever) and 'SetHighlightAtlas') or (E.Classic and 'SetPushedTexture') or 'SetHighlightTexture', function()
+			if E.Modern or (name == 'MainMenuMicroButton' or name == 'GuildMicroButton') then
+				hooksecurefunc(button, (E.Modern and 'SetHighlightAtlas') or (E.Classic and 'SetPushedTexture') or 'SetHighlightTexture', function()
 					AB:UpdateMicroButtonTexture(name)
 				end)
 
@@ -491,7 +491,7 @@ function AB:SetupMicroBar()
 		AB:SecureHook('UpdateMicroButtonsParent')
 	end
 
-	if not (E.Retail or E.Forever) then
+	if not E.Modern then
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
 	end
 

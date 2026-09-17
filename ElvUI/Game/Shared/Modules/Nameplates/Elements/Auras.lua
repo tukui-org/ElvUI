@@ -18,8 +18,8 @@ local AURA_TYPES = {
 function NP:Construct_Auras(nameplate)
 	local Auras, Buffs, Debuffs
 
-	local container = (E.Retail or E.Forever) and NP:GetAuraContainer(nameplate.frameName, nameplate.frameType)
-	if E.Retail or E.Forever then
+	local container = E.Modern and NP:GetAuraContainer(nameplate.frameName, nameplate.frameType)
+	if E.Modern then
 		Auras = (container and container.Auras) or E:Auras_Create(nameplate, 'Auras')
 	else
 		Auras = CreateFrame('Frame', '$parentAuras', nameplate)
@@ -39,7 +39,7 @@ function NP:Construct_Auras(nameplate)
 		Auras.rows = {}
 	end
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		Buffs = (container and container.Buffs) or E:Auras_Create(nameplate, 'Buffs')
 	else
 		Buffs = CreateFrame('Frame', '$parentBuffs', nameplate)
@@ -59,7 +59,7 @@ function NP:Construct_Auras(nameplate)
 		Buffs.rows = {}
 	end
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		Debuffs = (container and container.Debuffs) or E:Auras_Create(nameplate, 'Debuffs')
 	else
 		Debuffs = CreateFrame('Frame', '$parentDebuffs', nameplate)
@@ -249,7 +249,7 @@ end
 function NP:GetAuraFilter(which, db)
 	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
 		return db.filter or 'HARMFUL'
-	elseif E.Retail or E.Forever then
+	elseif E.Modern then
 		return (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 end
@@ -273,7 +273,7 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
 	auras.colorByType = NP.db.colors.auraByType
-	auras.auraSort = UF.SortAuraFuncs[(E.Retail or E.Forever) and 'PLAYER' or db.sortMethod]
+	auras.auraSort = UF.SortAuraFuncs[E.Modern and 'PLAYER' or db.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
 	auras.attachTo = not preallocated and UF:GetAuraAnchorFrame(nameplate, db.attachTo, nameplate.AuraContainer) or nil -- keep below SetSmartPosition
 	auras.num = db.numAuras * db.numRows
@@ -283,7 +283,7 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 	auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and 1 or 0, growDown and 0 or 1
 
 	local initialAnchor = E.InversePoints[db.anchorPoint]
-	if E.Retail or E.Forever then
+	if E.Modern then
 		auras.noMouse = true
 		auras.auraType = auraType
 		auras.maxFrameCount = auras.num
@@ -357,7 +357,7 @@ function NP:Update_Auras(nameplate)
 			nameplate.Buffs:Hide()
 			nameplate.Buffs = nil
 		end
-	elseif E.Retail or E.Forever then
+	elseif E.Modern then
 		NP:AuraContainer_RemoveActive(nameplate)
 	elseif nameplate:IsElementEnabled('Auras') then
 		nameplate:DisableElement('Auras')

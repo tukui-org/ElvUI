@@ -67,7 +67,7 @@ function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScri
 	-- check for Additional Power to hook scripts on
 	local useBonusPower, bonus
 	if powerName == 'ClassPower' then
-		local bonusName = ((E.Retail or E.Forever) and frame.Stagger and 'Stagger') or (frame.Runes and 'Runes') or (frame.EclipseBar and 'EclipseBar')
+		local bonusName = (E.Modern and frame.Stagger and 'Stagger') or (frame.Runes and 'Runes') or (frame.EclipseBar and 'EclipseBar')
 		bonus = bonusName and frame[bonusName]
 
 		if bonus then
@@ -206,7 +206,7 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 	end
 
 	if option.class then
-		local isPlayer = unit and (UnitIsPlayer(unit) or ((E.Retail or E.Forever) and UnitInPartyIsAI(unit)))
+		local isPlayer = unit and (UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit)))
 		local reaction = unit and UnitReaction(unit, 'player')
 
 		local _, unitClass = UnitClass(unit)

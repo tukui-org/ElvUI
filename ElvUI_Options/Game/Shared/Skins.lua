@@ -21,7 +21,7 @@ local toggles = {
 	dressingroom = L["DRESSUP_FRAME"],
 	editor = L["Editor Manager"],
 	eventLog = L["Event Log"],
-	friends = format((E.Retail or E.Forever) and '%s' or '%s & %s', L["Friends"], L["Guild"]),
+	friends = format(E.Modern and '%s' or '%s & %s', L["Friends"], L["Guild"]),
 	gossip = L["Gossip Frame"],
 	guildcontrol = L["Guild Control Frame"],
 	guildregistrar = L["Guild Registrar"],
@@ -52,7 +52,7 @@ local toggles = {
 	worldmap = L["WORLD_MAP"]
 }
 
-if E.Retail or E.Forever or E.Mists then
+if E.Modern or E.Mists then
 	toggles.alertframes = L["Alert Frames"]
 	toggles.barber = L["BARBERSHOP"]
 	toggles.calendar = L["Calendar Frame"]
@@ -70,7 +70,7 @@ if E.Retail or E.Mists then
 	toggles.petbattleui = L["Pet Battle"]
 end
 
-if E.Retail or E.Forever or E.Mists or E.TBC then
+if E.Modern or E.Mists or E.TBC then
 	toggles.catalogShop = L["BLIZZARD_STORE"]
 end
 
@@ -78,7 +78,7 @@ if E.Retail or E.Mists or E.Wrath then
 	toggles.achievement = L["ACHIEVEMENTS"]
 end
 
-if E.Retail or E.Forever or E.Mists or E.Wrath then
+if E.Modern or E.Mists or E.Wrath then
 	toggles.transmogrify = L["TRANSMOGRIFY"]
 end
 
@@ -98,11 +98,11 @@ if not (E.Classic or E.Forever) then
 	toggles.socket = L["Socket Frame"]
 end
 
-if not (E.Retail or E.Forever) then
+if not E.Modern then
 	toggles.questTimers = L["Quest Timers"]
 end
 
-if E.Retail or E.Forever then
+if E.Modern then
 	toggles.campsites = L["Campsite"]
 	toggles.cooldownManager = L["Cooldown Manager"]
 	toggles.contribution = L["Contribution"]
@@ -170,7 +170,7 @@ E.Options.args.skins = Skins
 Skins.args.intro = ACH:Description(L["SKINS_DESC"], 0)
 Skins.args.general = ACH:MultiSelect(L["General"], nil, 1, { ace3Enable = 'Ace3', libDropdown = L["Library Dropdown"], blizzardEnable = L["Blizzard"], checkBoxSkin = L["CheckBox Skin"], parchmentRemoverEnable = L["Parchment Remover"] }, nil, 140, function(_, key) if key == 'blizzardEnable' then return E.private.skins.blizzard.enable else return E.private.skins[key] end end, function(_, key, value) if key == 'blizzardEnable' then E.private.skins.blizzard.enable = value else E.private.skins[key] = value end E.ShowPopup = true end, nil, nil, true)
 
-Skins.args.talkingHead = ACH:Group(L["Talking Head"], nil, 2, nil, function(info) return E.db.general[info[#info]] end, nil, nil, not (E.Retail or E.Forever))
+Skins.args.talkingHead = ACH:Group(L["Talking Head"], nil, 2, nil, function(info) return E.db.general[info[#info]] end, nil, nil, not E.Modern)
 Skins.args.talkingHead.args.talkingHeadFrameScale = ACH:Range(L["Talking Head Scale"], nil, 1, { min = .5, max = 2, step = .01, isPercent = true }, nil, nil, function(_, value) E.db.general.talkingHeadFrameScale = value; BL:ScaleTalkingHeadFrame() end)
 Skins.args.talkingHead.args.talkingHeadFrameBackdrop = ACH:Toggle(L["Talking Head Backdrop"], nil, 2, nil, nil, nil, nil, function(_, value) E.db.general.talkingHeadFrameBackdrop = value; E.ShowPopup = true end)
 Skins.args.talkingHead.inline = true

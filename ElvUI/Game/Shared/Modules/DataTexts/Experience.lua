@@ -83,4 +83,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Experience', nil, { (E.Retail or E.Forever) and 'TRACKED_HOUSE_CHANGED' or nil, (E.Retail or E.Forever) and 'HOUSE_LEVEL_FAVOR_UPDATED' or nil, 'PLAYER_XP_UPDATE', 'DISABLE_XP_GAIN', 'ENABLE_XP_GAIN', 'UPDATE_EXHAUSTION' }, OnEvent, nil, nil, OnEnter, nil, _G.COMBAT_XP_GAIN)
+DT:RegisterDatatext('Experience', nil, { E.Modern and 'TRACKED_HOUSE_CHANGED' or nil, E.Modern and 'HOUSE_LEVEL_FAVOR_UPDATED' or nil, 'PLAYER_XP_UPDATE', 'DISABLE_XP_GAIN', 'ENABLE_XP_GAIN', 'UPDATE_EXHAUSTION' }, OnEvent, nil, nil, OnEnter, nil, _G.COMBAT_XP_GAIN)

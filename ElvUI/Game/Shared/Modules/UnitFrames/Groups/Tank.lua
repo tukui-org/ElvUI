@@ -113,4 +113,4 @@ function UF:Update_TankFrames(frame, db)
 	UF:ConfigureFrame(frame, frame.isChild and 'tanktarget' or 'tank')
 end
 
-UF.headerstoload.tank = {'MAINTANK', (E.Retail or E.Forever) and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}
+UF.headerstoload.tank = {'MAINTANK', E.Modern and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}

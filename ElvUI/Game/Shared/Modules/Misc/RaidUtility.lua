@@ -43,7 +43,7 @@ local IG_MAINMENU_OPTION_CHECKBOX_ON = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local NUM_RAID_GROUPS = NUM_RAID_GROUPS or 8
 local NUM_RAID_ICONS = NUM_RAID_ICONS or 8
-local PANEL_HEIGHT = (E.Retail or E.Forever) and 180 or 124
+local PANEL_HEIGHT = E.Modern and 180 or 124
 local PANEL_WIDTH = 250
 local BUTTON_HEIGHT = 20
 local TARGET_SIZE = 22
@@ -83,7 +83,7 @@ ShowButton:SetClampRectInsets(0, 0, -1, 1)
 ShowButton:Hide()
 
 function RU:InLockdown()
-	return (E.Retail or E.Forever) and InCombatLockdown()
+	return E.Modern and InCombatLockdown()
 end
 
 function RU:SetEnabled(button, enabled, isLeader)
@@ -353,7 +353,7 @@ do
 			local modifier = keys[E.db.general.raidUtility.modifier] or 'shift-'
 			local world = modType == 'world'
 
-			if (E.Retail or E.Forever) and i == 0 then
+			if E.Modern and i == 0 then
 				button:SetAttribute(modifier .. 'type*', world and 'worldmarker' or 'raidtarget')
 				button:SetAttribute(modifier .. 'action*', world and 'clear' or 'clear-all')
 				button:SetAttribute('type1', world and 'raidtarget' or 'worldmarker')
@@ -550,7 +550,7 @@ function RU:OnClick_RaidCountdownButton()
 end
 
 function RU:OnClick_RaidControlButton()
-	ToggleFriendsFrame(not (E.Retail or E.Forever) and 3 or nil)
+	ToggleFriendsFrame(not E.Modern and 3 or nil)
 end
 
 function RU:OnEvent_MainTankButton()
@@ -862,7 +862,7 @@ function RU:Initialize()
 
 	local RaidCountdownButton
 	if hasCountdown then
-		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * ((E.Retail or E.Forever) and 0.5 or 1)) + ((E.Retail or E.Forever) and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
+		RaidCountdownButton = RU:CreateUtilButton('RaidUtility_RaidCountdownButton', RaidUtilityPanel, nil, (BUTTON_WIDTH * (E.Modern and 0.5 or 1)) + (E.Modern and 0 or 5), BUTTON_HEIGHT, 'TOPLEFT', MainTankButton, 'BOTTOMLEFT', 0, -5, L["Countdown"], nil, nil, nil, RU.OnClick_RaidCountdownButton)
 	end
 
 	if E.allowRoles then
@@ -870,7 +870,7 @@ function RU:Initialize()
 		RU:CreateRoleIcons()
 	end
 
-	if E.Retail or E.Forever then -- these use the new dropdown stuff
+	if E.Modern then -- these use the new dropdown stuff
 		RU:CreateDropdown('RaidUtility_RestrictPings', RaidUtilityPanel, 'WowStyle1DropdownTemplate', 85, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', 5, -5, L["Restrict Pings"], { 'PLAYER_ROLES_ASSIGNED' }, RU.OnEvent_RestrictPings, RU.OnDropdown_RestrictPings)
 		RU:CreateDropdown('RaidUtility_DungeonDifficulty', RaidUtilityPanel, 'WowStyle1DropdownTemplate', 85, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'BOTTOMLEFT', 5, -(BUTTON_HEIGHT + 10), _G.CRF_DIFFICULTY, { 'PLAYER_DIFFICULTY_CHANGED' }, RU.OnEvent_DungeonDifficulty, RU.OnDropdown_DungeonDifficulty)
 		RU:CreateDropdown('RaidUtility_ModeControl', RaidUtilityPanel, 'WowStyle1DropdownTemplate', BUTTON_WIDTH * 0.5, 'TOPLEFT', RaidCountdownButton or MainTankButton, 'TOPRIGHT', 5, 2, nil, { 'PLAYER_ROLES_ASSIGNED' }, RU.OnEvent_ModeControl, RU.OnDropdown_ModeControl)

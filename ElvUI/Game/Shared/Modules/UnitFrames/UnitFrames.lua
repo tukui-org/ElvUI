@@ -69,7 +69,7 @@ UF.headerFunctions = {}
 UF.classMaxResourceBar = { -- also used by Nameplates
 	DEATHKNIGHT = 6,
 	DEMONHUNTER = 6,
-	SHAMAN = (E.Retail or E.Forever) and 10 or nil,
+	SHAMAN = E.Modern and 10 or nil,
 	PALADIN = 5,
 	WARLOCK = 5,
 	EVOKER = 6,
@@ -132,7 +132,7 @@ UF.SortAuraFuncs = {
 UF.headerGroupBy = {
 	CLASS = function(header)
 		local groupingOrder = header.db and strjoin(',', header.db.CLASS1, header.db.CLASS2, header.db.CLASS3, header.db.CLASS4, header.db.CLASS5, header.db.CLASS6, header.db.CLASS7, header.db.CLASS8, header.db.CLASS9)
-		if (E.Retail or E.Forever) and groupingOrder then
+		if E.Modern and groupingOrder then
 			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12, header.db.CLASS13)
 		end
 
@@ -891,7 +891,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF.groupunits[unit] = group -- keep above spawn, it's required
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, (E.Retail or E.Forever) and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, E.Modern and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
 			frame:SetID(i)
 			frame.index = i
 
@@ -1156,7 +1156,7 @@ end
 function UF:ZONE_CHANGED_NEW_AREA(event)
 	local previous = UF.maxAllowedGroups
 
-	if (E.Retail or E.Forever) and UF.db.maxAllowedGroups then
+	if E.Modern and UF.db.maxAllowedGroups then
 		local _, instanceType, difficultyID = GetInstanceInfo()
 		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
 	else
@@ -1195,7 +1195,7 @@ end
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:UpdateRangeSpells()
 
-	if not (E.Retail or E.Forever) then
+	if not E.Modern then
 		UF:RegisterRaidDebuffIndicator()
 	end
 
@@ -1340,7 +1340,7 @@ function UF:CreateAndUpdateUF(unit)
 	local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 	local frame = UF[unit]
 	if not frame then
-		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, (E.Retail or E.Forever) and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
+		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, E.Modern and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
 
 		UF.units[unit] = frame
 		UF[unit] = frame
@@ -1793,7 +1793,7 @@ do
 				UF:SecureHook('UnitFrameThreatIndicator_Initialize')
 			end
 
-			if E.Retail or E.Forever then
+			if E.Modern then
 				ElvUF:DisableBlizzard('arena')
 			else
 				Arena_LoadUI = E.noop
@@ -1869,7 +1869,7 @@ do
 					local frame = _G.PlayerFrame
 					HideFrame(frame)
 
-					if not (E.Retail or E.Forever) then
+					if not E.Modern then
 						-- For the damn vehicle support:
 						frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 						frame:RegisterUnitEvent('UNIT_ENTERING_VEHICLE', unit)
@@ -2308,7 +2308,7 @@ function UF:AfterStyleCallback()
 
 	-- these hooks below are used for aura container setup
 	-- only needed on retail and we dont need on nameplates
-	if not (E.Retail or E.Forever) or self.isNameplate then return end
+	if not E.Modern or self.isNameplate then return end
 
 	if self.Show then
 		hooksecurefunc(self, 'Show', UF.Show)
@@ -2362,7 +2362,7 @@ function UF:Initialize()
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
 	UF:RegisterEvent('LEARNED_SPELL_IN_SKILL_LINE', 'UpdateRangeSpells')
 
-	if E.Retail or E.Forever or E.Wrath or E.Mists then
+	if E.Modern or E.Wrath or E.Mists then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')
 	elseif E.ClassicSOD and E.myclass == 'MAGE' then
 		UF:RegisterEvent('UNIT_INVENTORY_CHANGED')

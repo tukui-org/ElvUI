@@ -154,16 +154,16 @@ local function GetQuests(unitID)
 			if E:NotSecretValue(text) then -- are only some lines secret?
 				if not text or text == '' then return end
 
-				if line.type == 18 or (not (E.Retail or E.Forever) and UnitIsPlayer(text)) then -- 18 is QuestPlayer
+				if line.type == 18 or (not E.Modern and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 					notMyQuest = text ~= E.myname
 				elseif text and not notMyQuest then
-					if line.type == 17 or (not (E.Retail or E.Forever) and not lastTitle) then
+					if line.type == 17 or (not E.Modern and not lastTitle) then
 						lastTitle = activeQuests[text]
 					end -- this line comes from one line up in the tooltip
 
-					local objectives = (line.type == 8 or not (E.Retail or E.Forever)) and lastTitle and lastTitle.objectives
+					local objectives = (line.type == 8 or not E.Modern) and lastTitle and lastTitle.objectives
 					if objectives then
-						local quest = objectives[text] or (not (E.Retail or E.Forever) and objectives[strsub(text, 4)])
+						local quest = objectives[text] or (not E.Modern and objectives[strsub(text, 4)])
 						if quest then
 							if not QuestList then QuestList = {} end
 
@@ -324,7 +324,7 @@ local function UpdateQuest(id, index)
 	if not title then return end
 
 	if not index then -- get the index now
-		if E.Retail or E.Forever then
+		if E.Modern then
 			index = C_QuestLog_GetLogIndexForQuestID(id)
 		else
 			for i = 1, GetNumQuestLogEntries() do
@@ -339,7 +339,7 @@ local function UpdateQuest(id, index)
 
 	if not index then return end
 	local _, texture = GetQuestLogSpecialItemInfo(index)
-	local level = (E.Retail or E.Forever) and C_QuestLog_GetQuestDifficultyLevel(id) or nil
+	local level = E.Modern and C_QuestLog_GetQuestDifficultyLevel(id) or nil
 
 	activeTitles[id] = title
 	activeQuests[title] = {
@@ -379,7 +379,7 @@ frame:SetScript('OnEvent', function(self, event, questID)
 		wipe(activeTitles)
 
 		for index = 1, GetNumQuestLogEntries() do
-			if E.Retail or E.Forever then
+			if E.Modern then
 				local id = C_QuestLog_GetQuestIDForLogIndex(index)
 				if id and id > 0 then
 					UpdateQuest(id, index)

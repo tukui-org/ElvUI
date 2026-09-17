@@ -238,9 +238,9 @@ function NP:Update_Runes(nameplate)
 		nameplate.Runes:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.Runes:Show()
 
-		nameplate.Runes.classColor = (E.Retail or E.Forever) and db.classpower.classColor and E.myClassColor
+		nameplate.Runes.classColor = E.Modern and db.classpower.classColor and E.myClassColor
 		nameplate.Runes.sortOrder = (db.classpower.sortDirection ~= 'NONE') and db.classpower.sortDirection
-		nameplate.Runes.colorSpec = (E.Retail or E.Forever) and NP.db.colors.runeBySpec
+		nameplate.Runes.colorSpec = E.Modern and NP.db.colors.runeBySpec
 
 		local width = db.classpower.width / 6
 		nameplate.Runes:Size(db.classpower.width, db.classpower.height)

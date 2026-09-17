@@ -27,7 +27,7 @@ local INVERTED_POINTS = {
 
 -- this will be updated later
 local smallerMapScale = 0.8
-local worldMapStrata = (E.Retail or E.Forever) and 'MEDIUM' or 'HIGH'
+local worldMapStrata = E.Modern and 'MEDIUM' or 'HIGH'
 function M:SetLargeWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
@@ -46,7 +46,7 @@ function M:SetSmallWorldMap()
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:SetFrameStrata(worldMapStrata)
 
-	if not (E.Retail or E.Forever) then
+	if not E.Modern then
 		WorldMapFrame:EnableMouse(false)
 		WorldMapFrame:EnableKeyboard(false)
 		WorldMapFrame:SetScale(smallerMapScale)
@@ -222,7 +222,7 @@ end
 
 function M:WorldMap_FirstShow()
 	local frame = _G.WorldMapFrame
-	local maxed = (E.Retail or E.Forever) and frame:IsMaximized()
+	local maxed = E.Modern and frame:IsMaximized()
 	if maxed then -- this needs to be called outside of smallerWorldMap
 		frame:UpdateMaximizedSize()
 	end
@@ -239,7 +239,7 @@ function M:WorldMap_FirstShow()
 end
 
 function M:WorldMap_OnShow()
-	if not (E.Retail or E.Forever) and E.global.general.fadeMapWhenMoving then
+	if not E.Modern and E.global.general.fadeMapWhenMoving then
 		M:EnableMapFading(_G.WorldMapFrame)
 	end
 
@@ -259,7 +259,7 @@ end
 function M:CreateCoordsHolder()
 	if not CoordsHolder then
 		CoordsHolder = CreateFrame('Frame', 'ElvUI_CoordsHolder', _G.WorldMapFrame)
-		CoordsHolder:SetFrameStrata(not (E.Retail or E.Forever) and not E.global.general.smallerWorldMap and 'FULLSCREEN' or 'MEDIUM')
+		CoordsHolder:SetFrameStrata(not E.Modern and not E.global.general.smallerWorldMap and 'FULLSCREEN' or 'MEDIUM')
 		CoordsHolder:SetFrameLevel(10)
 	end
 
@@ -289,7 +289,7 @@ function M:Initialize()
 
 		-- Blizzard WorldMapCoordsPanel: CursorCoords / PlayerCoords
 		-- Remove them as long as our coords are enabled to avoid double coords
-		local overlayFrames = (E.Retail or E.Forever) and WorldMapFrame.overlayFrames
+		local overlayFrames = E.Modern and WorldMapFrame.overlayFrames
 		if overlayFrames then
 			for _, frame in next, overlayFrames do
 				if frame.PlayerCoords and frame.CursorCoords then
@@ -311,7 +311,7 @@ function M:Initialize()
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture()
 		WorldMapFrame.BlackoutFrame:EnableMouse(false)
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
 			self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
 			self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
@@ -329,7 +329,7 @@ function M:Initialize()
 	WorldMapFrame:HookScript('OnHide', M.WorldMap_OnHide)
 	self:SecureHookScript(WorldMapFrame, 'OnShow', M.WorldMap_FirstShow)
 
-	if E.Retail or E.Forever then -- This lets us control the maps fading function
+	if E.Modern then -- This lets us control the maps fading function
 		hooksecurefunc(PlayerMovementFrameFader, 'AddDeferredFrame', M.UpdateMapFade)
 	else -- This is to keep cursor correct on non-retail smaller world map
 		self:RawHook(WorldMapFrame.ScrollContainer, 'GetCursorPosition', 'GetCursorPosition', true)

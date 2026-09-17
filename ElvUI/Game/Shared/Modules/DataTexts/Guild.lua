@@ -105,7 +105,7 @@ local function BuildGuildTable()
 	wipe(guildTable)
 	wipe(clubTable)
 
-	local clubs = (E.Retail or E.Forever) and GetSubscribedClubs()
+	local clubs = E.Modern and GetSubscribedClubs()
 	if E:NotSecretValue(clubs) and clubs then -- use this to get the timerunning flag (and other info?)
 		local guildClubID
 		for _, data in next, clubs do
@@ -269,7 +269,7 @@ local function OnEnter(_, _, noUpdate)
 		DT.tooltip:AddLine(format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1)
 	end
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		local info = GetGuildFactionData()
 		if info and info.reaction ~= 8 then -- Not Max Rep
 			local nextReactionThreshold = info.nextReactionThreshold - info.currentReactionThreshold

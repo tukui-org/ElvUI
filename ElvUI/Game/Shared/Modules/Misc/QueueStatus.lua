@@ -104,12 +104,12 @@ function M:QueueStatusReparent(parent)
 end
 
 function M:QueueStatusRescale(eyesize)
-	local scale = E.db.general.queueStatus.scale * ((E.Retail or E.Forever) and 1 or 2)
+	local scale = E.db.general.queueStatus.scale * (E.Modern and 1 or 2)
 	if eyesize ~= scale then
 		self:SetScale(scale)
 
 		local width, height = self:GetSize()
-		local status = scale * ((E.Retail or E.Forever) and 1.3 or 1) -- account for the border on retail
+		local status = scale * (E.Modern and 1.3 or 1) -- account for the border on retail
 		M.QueueStatus:SetSize(width * status, height * status)
 	end
 end
@@ -149,7 +149,7 @@ function M:GetQueueStatusButton()
 end
 
 function M:LoadQueueStatus()
-	if ((E.Retail or E.Forever) and not E.private.actionbar.enable) or (not (E.Retail or E.Forever) and not E.private.general.minimap.enable) then return end
+	if (E.Modern and not E.private.actionbar.enable) or (not E.Modern and not E.private.general.minimap.enable) then return end
 
 	M.QueueStatus = CreateFrame('Frame', 'ElvUIQueueStatus', E.UIParent)
 	M.QueueStatus:Point('BOTTOMRIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, 'BOTTOMRIGHT', -5, 25)

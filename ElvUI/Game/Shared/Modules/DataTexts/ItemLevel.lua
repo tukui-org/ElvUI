@@ -24,10 +24,10 @@ local r, g, b, avg, avgEquipped, avgPvp = 1, 1, 1, 0, 0, 0
 local displayString, db = ''
 
 local function OnEvent(panel)
-	if E.Retail or E.Forever or E.Mists or E.Wrath then
+	if E.Modern or E.Mists or E.Wrath then
 		avg, avgEquipped, avgPvp = GetAverageItemLevel()
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			r, g, b = GetItemLevelColor()
 		else
 			r, g, b = E:ColorizeItemLevel(avg)
@@ -44,7 +44,7 @@ local function OnEvent(panel)
 end
 
 local function OnEnter()
-	if not (E.Retail or E.Forever or E.Mists or E.Wrath) then return end
+	if not (E.Modern or E.Mists or E.Wrath) then return end
 
 	DT.tooltip:ClearLines()
 

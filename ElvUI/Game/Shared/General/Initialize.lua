@@ -108,8 +108,9 @@ do -- Expansions
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-	-- TBD: (E.Retail or E.Forever) to become E.Modern
 	E.Forever = E.wowtoc == 16001 -- ToDo: classic_beta
+
+	E.Modern = E.Retail or E.Forever
 
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
@@ -173,7 +174,7 @@ do
 	end
 
 	function E:DispelListUpdated()
-		if not (E.Retail or E.Forever) then return end
+		if not E.Modern then return end
 
 		E:UpdateDispelCurves()
 		E:Auras_DispelUpdated()
@@ -200,7 +201,7 @@ do
 	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
-	if E.Retail or E.Forever or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+	if E.Modern or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 

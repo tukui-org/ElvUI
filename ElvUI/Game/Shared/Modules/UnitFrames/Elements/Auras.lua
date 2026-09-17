@@ -74,7 +74,7 @@ UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
 function UF:Construct_Auras(frame)
-	if E.Retail or E.Forever then
+	if E.Modern then
 		local auras = E:Auras_Create(frame, 'Auras')
 		auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 
@@ -99,7 +99,7 @@ function UF:Construct_Auras(frame)
 end
 
 function UF:Construct_Buffs(frame)
-	if E.Retail or E.Forever then
+	if E.Modern then
 		local buffs = E:Auras_Create(frame, 'Buffs')
 		buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 
@@ -124,7 +124,7 @@ function UF:Construct_Buffs(frame)
 end
 
 function UF:Construct_Debuffs(frame)
-	if E.Retail or E.Forever then
+	if E.Modern then
 		local debuffs = E:Auras_Create(frame, 'Debuffs')
 		debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 
@@ -327,7 +327,7 @@ end
 function UF:FilterEnabled(db, which)
 	if not db then return end
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		return db[which]
 	else -- return it back to a boolean
 		return not not db[which]
@@ -430,7 +430,7 @@ function UF:Configure_Auras(frame, which)
 	local settings = db[auraType]
 
 	auras.db = settings
-	auras.auraSort = UF.SortAuraFuncs[(E.Retail or E.Forever) and 'PLAYER' or settings.sortMethod]
+	auras.auraSort = UF.SortAuraFuncs[E.Modern and 'PLAYER' or settings.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo) -- keep below SetSmartPosition
 	auras.tooltipAnchor = settings.tooltipAnchorType
@@ -459,18 +459,18 @@ function UF:Configure_Auras(frame, which)
 	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
 	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 
-	local smartInfo = (E.Retail or E.Forever) and auras.smartFluid and UF.SmartPosition[auras.smartPosition]
+	local smartInfo = E.Modern and auras.smartFluid and UF.SmartPosition[auras.smartPosition]
 	local smartFluid = smartInfo and (smartInfo.to == which or smartInfo.other == which)
 	local growDown, growOffset = auras.growthX == 'DOWN', smartInfo and 1.5 or 1
 
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
-	elseif E.Retail or E.Forever then
+	elseif E.Modern then
 		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
 	local initialAnchor = (UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint]) or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
-	if E.Retail or E.Forever then
+	if E.Modern then
 		auras.allowEnable = settings.enable
 
 		auras.isUnitframe = true
@@ -582,7 +582,7 @@ function UF:PostUpdateAura(unit, button)
 	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local steal = DebuffColors.Stealable
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		local color = not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
 		if color then
 			r, g, b = color:GetRGB()

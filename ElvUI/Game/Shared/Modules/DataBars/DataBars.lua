@@ -175,7 +175,7 @@ function DB:ToggleAll()
 	DB:ReputationBar_Toggle()
 	DB:ThreatBar_Toggle()
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		DB:HonorBar_Toggle()
 		DB:AzeriteBar_Toggle()
 	elseif (E.Classic or E.TBC or E.Wrath) and E.myclass == 'HUNTER' then
@@ -188,7 +188,7 @@ function DB:CreateAll()
 	DB:ReputationBar()
 	DB:ThreatBar()
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		DB:HonorBar()
 		DB:AzeriteBar()
 	elseif (E.Classic or E.TBC or E.Wrath) and E.myclass == 'HUNTER' then

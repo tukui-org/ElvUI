@@ -46,7 +46,7 @@ function NP:Health_UpdateColor(_, unit)
 
 	if not color then
 		local _, classToken = UnitClass(unit)
-		local useSelection = (E.Retail or E.Forever) and element.colorSelection and E:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
+		local useSelection = E.Modern and element.colorSelection and E:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 		local useReaction = element.colorReaction and UnitReaction(unit, 'player')
 		if useClassification then
 			color = NP.Colors.classification[useClassification]
@@ -61,7 +61,7 @@ function NP:Health_UpdateColor(_, unit)
 		elseif useReaction then
 			color = NP.Colors.reactions[useReaction]
 		elseif element.colorSmooth then
-			if E.Retail or E.Forever then
+			if E.Modern then
 				local curve = self.colors.health:GetCurve()
 				if curve then
 					color = curve:Evaluate(1)
@@ -94,7 +94,7 @@ function NP:Construct_Health(nameplate)
 	Health:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 	Health.UpdateColor = NP.Health_UpdateColor
 
-	Health.colorReaction = not (E.Retail or E.Forever)
+	Health.colorReaction = not E.Modern
 	Health.considerSelectionInCombatHostile = true
 
 	NP.StatusBars[Health] = 'health'
@@ -113,7 +113,7 @@ function NP:Update_Health(nameplate)
 		end
 
 		nameplate.Health:SetColorTapping(true)
-		nameplate.Health:SetColorSelection(E.Retail or E.Forever)
+		nameplate.Health:SetColorSelectionE.Modern
 		nameplate.Health:SetColorThreat(NP.db.threat.enable)
 		nameplate.Health.colorClassification = db.health and db.health.useClassificationColor
 		nameplate.Health.colorClassificationInInstance = db.health and db.health.useClassificationColorInInstance
@@ -123,7 +123,7 @@ function NP:Update_Health(nameplate)
 		nameplate.Health:Point('CENTER')
 		nameplate.Health:Size(db.health.width, db.health.height)
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			nameplate.Health.smoothing = (db.health.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(nameplate.Health, db.health.smoothbars)

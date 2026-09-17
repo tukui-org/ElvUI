@@ -165,4 +165,4 @@ function UF:Update_PartyFrames(frame, db)
 	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 end
 
-UF.headerstoload.party = {nil, (E.Retail or E.Forever) and 'ELVUI_UNITPET_PINGABLE, ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITPET, ELVUI_UNITTARGET'}
+UF.headerstoload.party = {nil, E.Modern and 'ELVUI_UNITPET_PINGABLE, ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITPET, ELVUI_UNITTARGET'}

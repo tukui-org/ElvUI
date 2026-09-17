@@ -142,7 +142,7 @@ end
 function AB:ExtraButtons_UpdateScale()
 	if not E.private.actionbar.enable then return end
 
-	if not (E.Retail or E.Forever) and InCombatLockdown() then
+	if not E.Modern and InCombatLockdown() then
 		AB.NeedsExtraButtonsRescale = true
 
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')

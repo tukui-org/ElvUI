@@ -166,11 +166,11 @@ local function OnEvent(self, event)
 		db = E.global.datatexts.settings[self.name]
 	end
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		UpdateWarbandGold()
 	end
 
-	if (E.Retail or E.Forever or E.Mists) and not Ticker then
+	if (E.Modern or E.Mists) and not Ticker then
 		C_WowTokenPublic_UpdateMarketPrice()
 		Ticker = C_Timer_NewTicker(60, UpdateMarketPrice)
 	end
@@ -263,11 +263,11 @@ local function OnEnter()
 	end
 	DT.tooltip:AddDoubleLine(L["Total: "], E:FormatMoney(totalGold, style, textOnly), 1, 1, 1, 1, 1, 1)
 
-	if E.Retail or E.Forever then
+	if E.Modern then
 		DT.tooltip:AddDoubleLine(L["Warband:"], E:FormatMoney(warbandGold or 0, style, textOnly), 1, 1, 1, 1, 1, 1)
 	end
 
-	if E.Retail or E.Forever or E.Mists then
+	if E.Modern or E.Mists then
 		DT.tooltip:AddLine(' ')
 		DT.tooltip:AddDoubleLine(L["WoW Token:"], E:FormatMoney(C_WowTokenPublic_GetCurrentMarketPrice() or 0, style, textOnly), 0, .8, 1, 1, 1, 1)
 
@@ -286,4 +286,4 @@ local function OnEnter()
 	DT.tooltip:Show()
 end
 
-DT:RegisterDatatext('Gold', nil, {(E.Retail or E.Forever) and 'ACCOUNT_MONEY' or nil, 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CURRENCY_DISPLAY_UPDATE', 'PERKS_PROGRAM_CURRENCY_REFRESH'}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])
+DT:RegisterDatatext('Gold', nil, {E.Modern and 'ACCOUNT_MONEY' or nil, 'PLAYER_MONEY', 'SEND_MAIL_MONEY_CHANGED', 'SEND_MAIL_COD_CHANGED', 'PLAYER_TRADE_MONEY', 'TRADE_MONEY_CHANGED', 'CURRENCY_DISPLAY_UPDATE', 'PERKS_PROGRAM_CURRENCY_REFRESH'}, OnEvent, nil, Click, OnEnter, nil, L["Gold"])

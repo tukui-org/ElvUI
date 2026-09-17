@@ -292,7 +292,7 @@ local function OnClick(_, btn)
 
 	if btn == 'RightButton' then
 		ToggleFrame(_G.TimeManagerFrame)
-	elseif E.Retail or E.Forever or E.Mists or E.Wrath then
+	elseif E.Modern or E.Mists or E.Wrath then
 		_G.GameTimeFrame:Click()
 	end
 end
@@ -329,7 +329,7 @@ local function GetInstanceImages(index, raid)
 			collectedIDs[instanceID] = name
 		end
 
-		local overrideImage = not (E.Retail or E.Forever) and ICON_EJ[buttonImage]
+		local overrideImage = not E.Modern and ICON_EJ[buttonImage]
 		local overrideName = InstanceNameByID[instanceID] or name
 		instanceIconByName[overrideName] = overrideImage and format(OVERRIDE_ICON, overrideImage) or buttonImage
 
@@ -459,7 +459,7 @@ local function OnEnter()
 		local addedLine = false
 		local worldbossLockoutList = {}
 
-		if E.Retail or E.Forever then
+		if E.Modern then
 			for i = 1, GetNumSavedWorldBosses() do
 				local name, _, reset = GetSavedWorldBossInfo(i)
 				tinsert(worldbossLockoutList, { format(BOSSNAME_TWW, name), reset })

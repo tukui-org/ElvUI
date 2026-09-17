@@ -117,10 +117,10 @@ function DT:SetupPanelOptions(name, data)
 		options.args.dts.args[idx] = hasPoint and ACH:Select('', nil, i, CopyList, nil, 'double') or nil
 
 		if data and data.battleground ~= nil then
-			options.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail or E.Forever)
+			options.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1, nil, nil, nil, nil, nil, nil, E.Modern)
 
 			if not options.args.battledts then
-				options.args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end, nil, function() return E.Retail or E.Forever or not data.battleground end)
+				options.args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end, nil, function() return E.Modern or not data.battleground end)
 				options.args.battledts.inline = true
 			end
 
@@ -240,7 +240,7 @@ local function CreateDTOptions(name, data)
 		elseif name == 'Reputation' or name == 'Experience' then
 			optionTable.args.textFormat.values = { PERCENT = L["Percent"], CUR = L["Current"], REM = L["Remaining"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }
 		elseif name == 'Talent/Loot Specialization' then
-			optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] }, nil, nil, nil, nil, nil, not (E.Retail or E.Forever))
+			optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] }, nil, nil, nil, nil, nil, not E.Modern)
 			optionTable.args.iconOnly = ACH:Toggle(L["Icons Only"], L["Only show icons instead of specialization names"], 2)
 			optionTable.args.showBoth = ACH:Toggle(L["Show Both"], L["Always show Loot Specialization."], 3)
 			optionTable.args.iconSize = ACH:Range(L["Icon Size"], nil, 4, { min = 10, softMax = 24, step = 1})
