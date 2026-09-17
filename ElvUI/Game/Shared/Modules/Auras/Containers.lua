@@ -13,6 +13,7 @@ local floor, next, type = floor, next, type
 local AnchorUtil = AnchorUtil
 local CreateFrame = CreateFrame
 local UnitCanAssist = UnitCanAssist
+local UnitIsVisible = UnitIsVisible
 
 local GetCVarBool = C_CVar.GetCVarBool
 local AuraButtonBorderStyle = AuraButtonBorderStyle
@@ -102,7 +103,7 @@ function E:Auras_DispelUpdated()
 	end
 end
 
-function E:Auras_OnEvent(event, arg1)
+function E:Auras_OnEvent(event, arg1, arg2)
 	local container = self:GetParent()
 	if event == 'PLAYER_FOCUS_CHANGED' or event == 'PLAYER_TARGET_CHANGED' then
 		local eventUnit = E.AuraEventUnits[event]
@@ -119,7 +120,7 @@ function E:Auras_OnEvent(event, arg1)
 			E:Auras_AssistUnit(container, container.unit)
 		end
 	elseif arg1 and (arg1 == container.unit) then
-		E:Auras_AssistUnit(container, arg1)
+		E:Auras_AssistUnit(container, arg1, event == 'UNIT_DISTANCE_CHECK_UPDATE' and arg2 or nil)
 	end
 end
 
@@ -1036,8 +1037,9 @@ function E:Auras_ToggleEnable(container, shown)
 end
 
 function E:Auras_AssistUnit(container, unit, shown, skip)
-	container.canReach = unit and UnitCanAssist('player', unit, true, true)
-	container.canAssist = unit and UnitCanAssist('player', unit)
+	local isVisible = unit and UnitIsVisible(unit)
+	container.canReach = isVisible and UnitCanAssist('player', unit, true, true)
+	container.canAssist = isVisible and UnitCanAssist('player', unit)
 
 	local state, changed = E:Auras_ToggleEnable(container, shown)
 	if state and not skip and not changed then -- update when the state doesnt change but its active
