@@ -109,7 +109,7 @@ do
 		if not UnitIsPlayer(unit) then return end
 
 		-- try to get spec from tooltip
-		local info = E.Retail and E:GetUnitSpecInfo(unit)
+		local info = E.Modern and E:GetUnitSpecInfo(unit)
 		if info then
 			return info.icon and format(specIcon, info.icon)
 		end
