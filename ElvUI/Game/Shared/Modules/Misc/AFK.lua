@@ -3,10 +3,9 @@ local AFK = E:GetModule('AFK')
 local CH = E:GetModule('Chat')
 
 local _G = _G
-local floor = floor
-local tostring, pcall = tostring, pcall
-local unpack, strupper = unpack, strupper
+local tostring, pcall, floor = tostring, pcall, floor
 local format, strsub, gsub = format, strsub, gsub
+local unpack, strupper = unpack, strupper
 
 local CloseAllWindows = CloseAllWindows
 local CreateFrame = CreateFrame
