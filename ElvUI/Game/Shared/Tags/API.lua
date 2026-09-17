@@ -278,7 +278,7 @@ do
 		if isme then
 			spec = E.myspec
 			unitClass = E.myclass
-		elseif E.Modern then
+		elseif E.Retail then
 			local info = E:GetUnitSpecInfo(unit)
 			if info then
 				spec = info.index
