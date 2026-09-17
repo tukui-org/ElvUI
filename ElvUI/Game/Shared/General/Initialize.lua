@@ -106,9 +106,9 @@ do -- Expansions
 	E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
-	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
 	E.Forever = E.wowtoc == 16001 -- ToDo: classic_beta
+	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and not E.Forever
 
 	E.Modern = E.Retail or E.Forever
 
