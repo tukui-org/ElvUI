@@ -6,7 +6,20 @@ local Aura = E.Filters.Aura -- 1:auraID, 2:includeIDs, 3:enabled, 4:point, 5:col
 G.unitframe.aurafilters.Blacklist = {
 	type = 'Blacklist',
 	desc = L["Auras you don't want to see on your frames."],
-	spells = {}
+	spells = {
+	-- General
+		[446720] = List(), -- Stinky: Perma roleplay text after eating Sunken Temple food.
+	-- Druid
+	-- Hunter
+	-- Mage
+	-- Paladin
+	-- Priest
+	-- Rogue
+	-- Shaman
+	-- Warlock
+	-- Warrior
+	-- Racial
+	}
 }
 
 G.unitframe.aurafilters.Whitelist = {
@@ -121,7 +134,92 @@ G.unitframe.aurawatch = {
 }
 
 -- List of spells to display ticks
-G.unitframe.ChannelTicks = {}
+G.unitframe.ChannelTicks = {
+	-- Druid
+	[740]	= 5, -- Tranquility (Rank 1)
+	[8918]	= 5, -- Tranquility (Rank 2)
+	[9862]	= 5, -- Tranquility (Rank 3)
+	[9863]	= 5, -- Tranquility (Rank 4)
+	[16914]	= 10, -- Hurricane (Rank 1)
+	[17401]	= 10, -- Hurricane (Rank 2)
+	[17402]	= 10, -- Hurricane (Rank 3)
+	-- Hunter
+	[1510]	= 6, -- Volley (Rank 1)
+	[14294]	= 6, -- Volley (Rank 2)
+	[14295]	= 6, -- Volley (Rank 3)
+	[136]	= 5, -- Mend Pet (Rank 1)
+	[3111]	= 5, -- Mend Pet (Rank 2)
+	[3661]	= 5, -- Mend Pet (Rank 3)
+	[3662]	= 5, -- Mend Pet (Rank 4)
+	[13542]	= 5, -- Mend Pet (Rank 5)
+	[13543]	= 5, -- Mend Pet (Rank 6)
+	[13544]	= 5, -- Mend Pet (Rank 7)
+	-- Mage
+	[10]	= 8, -- Blizzard (Rank 1)
+	[6141]	= 8, -- Blizzard (Rank 2)
+	[8427]	= 8, -- Blizzard (Rank 3)
+	[10185]	= 8, -- Blizzard (Rank 4)
+	[10186]	= 8, -- Blizzard (Rank 5)
+	[10187]	= 8, -- Blizzard (Rank 6)
+	[5143]	= 3, -- Arcane Missiles (Rank 1)
+	[5144]	= 4, -- Arcane Missiles (Rank 2)
+	[5145]	= 5, -- Arcane Missiles (Rank 3)
+	[8416]	= 5, -- Arcane Missiles (Rank 4)
+	[8417]	= 5, -- Arcane Missiles (Rank 5)
+	[10211]	= 5, -- Arcane Missiles (Rank 6)
+	[10212]	= 5, -- Arcane Missiles (Rank 7)
+	[12051]	= 4, -- Evocation
+	-- Priest
+	[15407]	= 3, -- Mind Flay (Rank 1)
+	[17311]	= 3, -- Mind Flay (Rank 2)
+	[17312]	= 3, -- Mind Flay (Rank 3)
+	[17313]	= 3, -- Mind Flay (Rank 4)
+	[17314]	= 3, -- Mind Flay (Rank 5)
+	[18807]	= 3, -- Mind Flay (Rank 6)
+	-- Warlock
+	[1120]	= 5, -- Drain Soul (Rank 1)
+	[8288]	= 5, -- Drain Soul (Rank 2)
+	[8289]	= 5, -- Drain Soul (Rank 3)
+	[11675]	= 5, -- Drain Soul (Rank 4)
+	[755]	= 10, -- Health Funnel (Rank 1)
+	[3698]	= 10, -- Health Funnel (Rank 2)
+	[3699]	= 10, -- Health Funnel (Rank 3)
+	[3700]	= 10, -- Health Funnel (Rank 4)
+	[11693]	= 10, -- Health Funnel (Rank 5)
+	[11694]	= 10, -- Health Funnel (Rank 6)
+	[11695]	= 10, -- Health Funnel (Rank 7)
+	[689]	= 5, -- Drain Life (Rank 1)
+	[699]	= 5, -- Drain Life (Rank 2)
+	[709]	= 5, -- Drain Life (Rank 3)
+	[7651]	= 5, -- Drain Life (Rank 4)
+	[11699]	= 5, -- Drain Life (Rank 5)
+	[11700]	= 5, -- Drain Life (Rank 6)
+	[5740]	= 4, -- Rain of Fire (Rank 1)
+	[6219]	= 4, -- Rain of Fire (Rank 2)
+	[11677]	= 4, -- Rain of Fire (Rank 3)
+	[11678]	= 4, -- Rain of Fire (Rank 4)
+	[1949]	= 15, -- Hellfire (Rank 1)
+	[11683]	= 15, -- Hellfire (Rank 2)
+	[11684]	= 15, -- Hellfire (Rank 3)
+	[5138]	= 5, -- Drain Mana (Rank 1)
+	[6226]	= 5, -- Drain Mana (Rank 2)
+	[11703]	= 5, -- Drain Mana (Rank 3)
+	[11704]	= 5, -- Drain Mana (Rank 4)
+	-- First Aid
+	[23567]	= 8, -- Warsong Gulch Runecloth Bandage
+	[23696]	= 8, -- Alterac Heavy Runecloth Bandage
+	[24414]	= 8, -- Arathi Basin Runecloth Bandage
+	[18610]	= 8, -- Heavy Runecloth Bandage
+	[18608]	= 8, -- Runecloth Bandage
+	[10839]	= 8, -- Heavy Mageweave Bandage
+	[10838]	= 8, -- Mageweave Bandage
+	[7927]	= 8, -- Heavy Silk Bandage
+	[7926]	= 8, -- Silk Bandage
+	[3268]	= 7, -- Heavy Wool Bandage
+	[3267]	= 7, -- Wool Bandage
+	[1159]	= 6, -- Heavy Linen Bandage
+	[746]	= 6, -- Linen Bandage
+}
 
 -- Spells that chain, ticks to add
 G.unitframe.ChainChannelTicks = {}
