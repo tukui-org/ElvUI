@@ -2002,19 +2002,24 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('PLAYER_FOCUS_CHANGED')
 	end
 
-	if E.Modern then
+	if E.Retail then
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
+	end
+
+	if E.Modern then
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
 		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
 	end
 
-	if E.Modern or E.Mists or E.Wrath then
+	if E.Retail or E.Mists or E.Wrath then
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
+	end
 
+	if E.Retail or E.Mists then
 		AB:RegisterEvent('PET_BATTLE_CLOSE', 'HandleBinds') -- set override binds
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'UpdateBinds') -- no function passed, clears bindings
 	end

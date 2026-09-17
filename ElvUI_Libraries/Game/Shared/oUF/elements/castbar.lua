@@ -889,7 +889,7 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 		self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
-		if oUF.isModern then
+		if oUF.isRetail then
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
@@ -949,7 +949,7 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 		self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
-		if oUF.isModern then
+		if oUF.isRetail then
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)

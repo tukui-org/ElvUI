@@ -1534,16 +1534,16 @@ function E:LoadAPI()
 		end
 	end
 
+	if E.Retail or E.Wrath or E.Mists then
+		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
+		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
+	end
+
 	if E.Modern or E.Mists then
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
-		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
-		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
-	elseif E.Wrath then
-		E:RegisterEvent('UNIT_ENTERED_VEHICLE', 'EnterVehicleHideFrames')
-		E:RegisterEvent('UNIT_EXITED_VEHICLE', 'ExitVehicleShowFrames')
 	else
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
 	end
