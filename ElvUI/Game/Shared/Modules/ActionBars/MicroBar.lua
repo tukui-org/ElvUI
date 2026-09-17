@@ -20,6 +20,7 @@ AB.MICRO_BUTTONS = {
 	'TalentMicroButton',
 	'PlayerSpellsMicroButton',
 	'AchievementMicroButton',
+	'LegacyMicroButton',
 	'QuestLogMicroButton',
 	'GuildMicroButton',
 	'SocialsMicroButton',
@@ -44,6 +45,7 @@ do
 		TalentMicroButton		= 2.04 / meep,
 		PlayerSpellsMicroButton = 2.04 / meep,
 		AchievementMicroButton	= 3.03 / meep,
+		LegacyMicroButton		= 3.03 / meep, -- Forever, use achievement icon
 		QuestLogMicroButton		= 4.02 / meep,
 		GuildMicroButton		= 5.01 / meep, -- Retail
 		SocialsMicroButton		= 5.01 / meep, -- Classic, use Guild button
@@ -292,11 +294,11 @@ do
 	local unsorted = {}
 	local sorted = {}
 	local sorting = {
-		MainMenuMicroButton = E.Modern and 12 or 13,
-		StoreMicroButton = E.Modern and 11 or 12,
-		HousingMicroButton = E.Modern and 10 or 11,
-		EJMicroButton = E.Modern and 9 or 10,
-		CollectionsMicroButton = E.Modern and 8 or 9,
+		MainMenuMicroButton = E.Retail and 12 or 13,
+		StoreMicroButton = E.Retail and 11 or 12,
+		HousingMicroButton = E.Retail and 10 or 11,
+		EJMicroButton = E.Retail and 9 or 10,
+		CollectionsMicroButton = E.Retail and 8 or 9,
 		PVPMicroButton = 7
 	}
 
@@ -449,6 +451,11 @@ function AB:SetupMicroBar()
 	microBar.visibility:SetScript('OnShow', function() microBar:Show() end)
 	microBar.visibility:SetScript('OnHide', function() microBar:Hide() end)
 
+	if E.Forever then -- Sharex xml defined, but not part of the actual micro menu
+		_G.AchievementMicroButton:Kill()
+		_G.PlayerSpellsMicroButton:Kill()
+	end
+
 	for _, name in next, AB.MICRO_BUTTONS do
 		local button = _G[name]
 		if button then
@@ -491,7 +498,7 @@ function AB:SetupMicroBar()
 		AB:SecureHook('UpdateMicroButtonsParent')
 	end
 
-	if not E.Modern then
+	if not E.Retail then
 		hooksecurefunc('SetLookingForGroupUIAvailable', AB.UpdateMicroButtons)
 	end
 
