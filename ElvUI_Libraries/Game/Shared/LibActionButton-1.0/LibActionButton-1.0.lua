@@ -21,7 +21,7 @@ local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
-local WoWForever = wowtoc == 16001 -- ToDo: classic_beta
+local WoWForever = wowtoc >= 16000 and wowtoc < 20000 -- ToDo: classic_beta
 local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and not WoWForever
 
 local WoWModern = WoWRetail or WoWForever

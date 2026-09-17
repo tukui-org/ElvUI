@@ -25,7 +25,7 @@ oUF.isMists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 oUF.isCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 oUF.isWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 oUF.isClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-oUF.isForever = wowtoc == 16001 -- ToDo: classic_beta
+oUF.isForever = wowtoc >= 16000 and wowtoc < 20000 -- ToDo: classic_beta
 oUF.isRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and not oUF.isForever
 
 oUF.isModern = oUF.isRetail or oUF.isForever
