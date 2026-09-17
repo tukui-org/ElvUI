@@ -109,7 +109,7 @@ local function Update(self, event, unit)
 	local health = UnitHealth(unit)
 
 	-- Retail API
-	if(oUF.isRetail and element.values) then
+	if(oUF.isModern and element.values) then
 		UnitGetDetailedHealPrediction(unit, 'player', element.values)
 
 		local allHeal, playerHeal, otherHeal, healClamped = element.values:GetIncomingHeals()
@@ -166,15 +166,15 @@ local function Update(self, event, unit)
 		local GUID = UnitGUID(unit)
 		local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
 		local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
-		local overTimeHeals = not oUF.isRetail and HealComm and ((HealComm:GetHealAmount(GUID, HealComm.OVERTIME_AND_BOMB_HEALS) or 0) * (HealComm:GetHealModifier(GUID) or 1)) or 0
-		local absorb = (oUF.isRetail or oUF.isMists) and UnitGetTotalAbsorbs(unit) or 0
-		local healAbsorb = (oUF.isRetail or oUF.isMists) and UnitGetTotalHealAbsorbs(unit) or 0
+		local overTimeHeals = not oUF.isModern and HealComm and ((HealComm:GetHealAmount(GUID, HealComm.OVERTIME_AND_BOMB_HEALS) or 0) * (HealComm:GetHealModifier(GUID) or 1)) or 0
+		local absorb = (oUF.isModern or oUF.isMists) and UnitGetTotalAbsorbs(unit) or 0
+		local healAbsorb = (oUF.isModern or oUF.isMists) and UnitGetTotalHealAbsorbs(unit) or 0
 		local otherIncomingHeal = 0
 		local hasOverHealAbsorb = false
 
 		-- Kludge to override value for heals not reported by WoW client (ref: https://github.com/Stanzilla/WoWUIBugs/issues/163)
 		-- There may be other bugs that this workaround does not catch, but this does fix Priest PoH
-		if(HealComm and not oUF.isRetail) then
+		if(HealComm and not oUF.isModern) then
 			local healAmount = HealComm:GetHealAmount(GUID, HealComm.CASTED_HEALS) or 0
 			if(healAmount > 0) then
 				if(myIncomingHeal == 0 and unit == 'player') then
@@ -417,7 +417,7 @@ local function Enable(self)
 			element.maxOverflow = 1.05
 		end
 
-		if(oUF.isRetail) then
+		if(oUF.isModern) then
 			SetupPredictionValues(element)
 		end
 
@@ -429,7 +429,7 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		if oUF.isRetail or oUF.isMists then
+		if oUF.isModern or oUF.isMists then
 			self:RegisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:RegisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 			self:RegisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
@@ -559,7 +559,7 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		if oUF.isRetail or oUF.isMists then
+		if oUF.isModern or oUF.isMists then
 			self:UnregisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:UnregisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 			self:UnregisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)

@@ -30,7 +30,7 @@ local SUMMON_STATUS_NONE = Enum.SummonStatus.None or 0
 local SUMMON_STATUS_PENDING = Enum.SummonStatus.Pending or 1
 local SUMMON_STATUS_ACCEPTED = Enum.SummonStatus.Accepted or 2
 local SUMMON_STATUS_DECLINED = Enum.SummonStatus.Declined or 3
-local SUMMON_ICON_PREFIX = oUF.isRetail and 'RaidFrame-Icon-' or 'Raid-Icon-'
+local SUMMON_ICON_PREFIX = oUF.isModern and 'RaidFrame-Icon-' or 'Raid-Icon-'
 
 local C_IncomingSummon_IncomingSummonStatus = C_IncomingSummon.IncomingSummonStatus
 

@@ -313,7 +313,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			endTime = startTime + castTime
 		end
 	else
-		if oUF.isRetail then
+		if oUF.isModern then
 			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
 
 			castID = barID -- because of secrets
@@ -341,7 +341,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.empowering = empowering
 
 	local isPlayer = oUF:UnitIsUnit(unit, 'player')
-	if not isPlayer or (oUF.isRetail or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START')) then
+	if not isPlayer or (oUF.isModern or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START')) then
 		UpdateCurrentTarget(element, unit) -- we want to ignore the start events on player unit because sent adds the target info
 	end
 
@@ -361,7 +361,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	-- end block
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	if oUF.isRetail then
+	if oUF.isModern then
 		if oUF:NotSecretValue(startTime) then
 			element.startTime = startTime / 1000
 
@@ -420,7 +420,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 	end
 
-	if(element.Shield and oUF.isRetail) then
+	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
 			element.Shield:SetAlphaFromBoolean(notInterruptible, element.Shield.alphaValue or 1, 0)
 		else
@@ -500,7 +500,7 @@ local function CastUpdate(self, event, unit)
 	if(not name) then return end
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	if oUF.isRetail then
+	if oUF.isModern then
 		if oUF:NotSecretValue(startTime) then
 			if(element.empowering) then
 				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
@@ -579,7 +579,7 @@ local function CastStop(self, event, unit, ...)
 	end
 
 	local spellID, interruptedBy, empowerComplete, _
-	if oUF.isRetail then
+	if oUF.isModern then
 		if(event == 'UNIT_SPELLCAST_EMPOWER_STOP') then
 			_, _, empowerComplete, interruptedBy = ...
 		elseif(event == 'UNIT_SPELLCAST_CHANNEL_STOP') then
@@ -640,7 +640,7 @@ local function CastFail(self, event, unit, ...)
 	end
 
 	local castID, interruptedBy, _
-	if oUF.isRetail then
+	if oUF.isModern then
 		if(event == 'UNIT_SPELLCAST_INTERRUPTED') then
 			_, _, interruptedBy, castID = ...
 		elseif(event == 'UNIT_SPELLCAST_FAILED') then
@@ -700,7 +700,7 @@ local function CastInterruptible(self, event, unit)
 
 	element.notInterruptible = event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE'
 
-	if(element.Shield and oUF.isRetail) then
+	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
 			element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
 		else
@@ -721,7 +721,7 @@ end
 
 -- ElvUI block
 local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
-	if not oUF.isRetail then
+	if not oUF.isModern then
 		UpdateCurrentTarget(self.Castbar, unit, target)
 	end
 
@@ -757,7 +757,7 @@ local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
 		local duration, durationObject
 
-		if oUF.isRetail then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
+		if oUF.isModern then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
 			if durationObject then
@@ -841,7 +841,7 @@ local function onUpdate(self, elapsed)
 		end
 		]]
 
-		if not oUF.isRetail then
+		if not oUF.isModern then
 			if self.SetValue_ then
 				self:SetValue_(duration)
 			else
@@ -889,7 +889,7 @@ local function Enable(self, unit)
 		self:RegisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 		self:RegisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
@@ -949,7 +949,7 @@ local function Disable(self)
 		self:UnregisterEvent('UNIT_SPELLCAST_INTERRUPTIBLE', CastInterruptible)
 		self:UnregisterEvent('UNIT_SPELLCAST_NOT_INTERRUPTIBLE', CastInterruptible)
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
@@ -963,7 +963,7 @@ local function Disable(self)
 	end
 end
 
-if oUF.isRetail then -- ElvUI
+if oUF.isModern then -- ElvUI
 	hooksecurefunc(C_TradeSkillUI, 'CraftRecipe', function(_, num)
 		tradeskillCurrent = 0
 		tradeskillTotal = num or 1

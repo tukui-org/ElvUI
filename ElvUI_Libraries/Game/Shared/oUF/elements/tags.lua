@@ -141,7 +141,7 @@ local _ENV = {
 		if not r or type(r) == 'string' then -- wtf?
 			return '|cffFFFFFF'
 		elseif type(r) == 'table' then
-			if oUF.isRetail then
+			if oUF.isModern then
 				return '|c' .. GenerateTextColorCode(r)
 			elseif(r.r) then
 				r, g, b = r.r, r.g, r.b
@@ -331,7 +331,7 @@ tagFunctions.maxmana = function(unit)
 end
 
 tagFunctions.missinghp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		return TruncateWhenZero(UnitHealthMissing(u))
 	else
 		local current = UnitHealthMax(u) - UnitHealth(u)
@@ -342,7 +342,7 @@ tagFunctions.missinghp = function(u)
 end
 
 tagFunctions.missingpp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		return TruncateWhenZero(UnitPowerMissing(u))
 	else
 		local current = UnitPowerMax(u) - UnitPower(u)
@@ -363,7 +363,7 @@ tagFunctions.offline = function(u)
 end
 
 tagFunctions.perhp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		local precent = UnitHealthPercent(u, true, ScaleTo100)
 		return format('%d', precent)
 	else
@@ -377,7 +377,7 @@ tagFunctions.perhp = function(u)
 end
 
 tagFunctions.perpp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		local precent = UnitPowerPercent(u, nil, true, ScaleTo100)
 		return format('%d', precent)
 	else
@@ -624,7 +624,7 @@ local unitlessEvents = {
 	RUNE_POWER_UPDATE = true,
 }
 
-if oUF.isRetail then
+if oUF.isModern then
 	tagEvents.arcanecharges       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents.chi                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents.holypower           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'

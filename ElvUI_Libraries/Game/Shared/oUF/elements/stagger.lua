@@ -98,9 +98,9 @@ local function verifyStagger(frame, event, unit, auraInstanceID, aura)
 end
 
 local function Update(self, event, unit, updateInfo)
-	if oUF.isRetail then
+	if oUF.isModern then
 		if oUF:ShouldSkip(self, unit) then return end
-	elseif oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, not oUF.isRetail and verifyStagger or nil) then
+	elseif oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, not oUF.isModern and verifyStagger or nil) then
 		return
 	end
 

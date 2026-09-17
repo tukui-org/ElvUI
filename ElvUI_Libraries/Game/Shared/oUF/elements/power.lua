@@ -129,7 +129,7 @@ local function UpdateColor(self, event, unit)
 	if(self.__unit ~= unit) then return end
 	local element = self.Power
 
-	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
+	local isPlayer = UnitIsPlayer(unit) or (oUF.isModern and UnitInPartyIsAI(unit))
 	local unitSelectionType = GetSelectionType(unit, element.considerSelectionInCombatHostile) -- Private.unitSelectionType
 	local unitThreat = UnitThreatSituation('player', unit)
 	local unitControlled = UnitPlayerControlled(unit)
@@ -172,7 +172,7 @@ local function UpdateColor(self, event, unit)
 		end
 
 		if(element.colorPowerSmooth) then
-			if oUF.isRetail then
+			if oUF.isModern then
 				local curve = color and color:GetCurve()
 				color = UnitPowerPercent(unit, nil, true, curve)
 			else
@@ -249,7 +249,7 @@ local function Update(self, event, unit)
 	end
 
 	local displayType, min
-	if(oUF.isRetail and element.displayAltPower) then
+	if(oUF.isModern and element.displayAltPower) then
 		displayType, min = element:GetDisplayPower(unit)
 	end
 
@@ -444,7 +444,7 @@ local function Enable(self)
 			element.__texture = element.__texture or element:GetStatusBarTexture():GetTexture()
 		end
 
-		if(oUF.isRetail and not element.GetDisplayPower) then
+		if(oUF.isModern and not element.GetDisplayPower) then
 			element.GetDisplayPower = GetDisplayPower
 		end
 
