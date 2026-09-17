@@ -490,60 +490,31 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.overviewScroll:Height(360)
 
 	-- Tabs
-	if E.Retail then
-		for _, name in next, { 'overviewTab', 'modelTab', 'bossTab', 'lootTab' } do
-			local tab = EncounterInfo[name]
-			tab:CreateBackdrop('Transparent')
-			tab.backdrop:SetInside(nil, 2, 2)
+	for _, name in next, { 'overviewTab', 'modelTab', 'bossTab', 'lootTab' } do
+		local tab = EncounterInfo[name]
+		tab:CreateBackdrop('Transparent')
+		tab.backdrop:SetInside(nil, 2, 2)
 
-			tab:SetNormalTexture(E.ClearTexture)
-			tab:SetPushedTexture(E.ClearTexture)
-			tab:SetDisabledTexture(E.ClearTexture)
+		tab:SetNormalTexture(E.ClearTexture)
+		tab:SetPushedTexture(E.ClearTexture)
+		tab:SetDisabledTexture(E.ClearTexture)
 
-			local hl = tab:GetHighlightTexture()
-			local r, g, b = unpack(E.media.rgbvaluecolor)
-			hl:SetColorTexture(r, g, b, .2)
-			hl:SetInside(tab.backdrop)
+		local hl = tab:GetHighlightTexture()
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		hl:SetColorTexture(r, g, b, .2)
+		hl:SetInside(tab.backdrop)
 
-			tab:ClearAllPoints()
-			if name == 'overviewTab' then
-				tab:Point('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, 0)
-			elseif name == 'lootTab' then
-				tab:Point('TOPLEFT', EncounterInfo.overviewTab, 'BOTTOMLEFT', 0, -1)
-			elseif name == 'bossTab' then
-				tab:Point('TOPLEFT', EncounterInfo.lootTab, 'BOTTOMLEFT', 0, -1)
-			elseif name == 'modelTab' then
-				tab:Point('TOPLEFT', EncounterInfo.bossTab, 'BOTTOMLEFT', 0, -1)
+		tab:ClearAllPoints()
+		if name == 'overviewTab' then
+			tab:Point('TOPLEFT', _G.EncounterJournalEncounterFrameInfo, 'TOPRIGHT', 9, 0)
+		elseif name == 'lootTab' then
+			tab:Point('TOPLEFT', EncounterInfo.overviewTab, 'BOTTOMLEFT', 0, -1)
+		elseif name == 'bossTab' then
+			tab:Point('TOPLEFT', EncounterInfo.lootTab, 'BOTTOMLEFT', 0, -1)
+		elseif name == 'modelTab' then
+			tab:Point('TOPLEFT', EncounterInfo.bossTab, 'BOTTOMLEFT', 0, -1)
 
-			end
 		end
-	else
-		local tabs = {
-			EncounterInfo.overviewTab,
-			EncounterInfo.lootTab,
-			EncounterInfo.bossTab,
-			EncounterInfo.modelTab
-		}
-
-		for index, tab in next, tabs do
-			tab:ClearAllPoints()
-
-			if index == 4 then
-				tab:Point('TOPRIGHT', EJ, 'BOTTOMRIGHT', -10, E.PixelMode and 0 or 2)
-			else
-				tab:Point('RIGHT', tabs[index+1], 'LEFT', -4, 0)
-			end
-
-			HandleTabs(tab)
-		end
-
-		hooksecurefunc('EncounterJournal_SetTabEnabled', function(tab, enabled)
-			if enabled then
-				tab:GetFontString():SetTextColor(1, 1, 1)
-			else
-				tab:GetFontString():SetTextColor(0.6, 0.6, 0.6)
-			end
-		end)
 	end
 
 	-- Search
