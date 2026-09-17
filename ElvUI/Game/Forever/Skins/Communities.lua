@@ -132,6 +132,14 @@ function S:Blizzard_Communities()
 	S:HandleItemButton(CommunitiesFrame.RosterTab)
 	S:HandleItemButton(CommunitiesFrame.GuildBenefitsTab)
 	S:HandleItemButton(CommunitiesFrame.GuildInfoTab)
+	S:HandleItemButton(CommunitiesFrame.GuildPreferredPlaySettingsTab)
+
+	-- Preferred Play Settings
+	local PreferredPlay = CommunitiesFrame.GuildPreferredPlaySettingsFrame
+	S:HandleDropDownBox(PreferredPlay.LocaleDropdown, 200, nil, true)
+	S:HandleDropDownBox(PreferredPlay.DatacenterDropdown, 200, nil, true)
+	S:HandleButton(PreferredPlay.LocaleApplyButton)
+	S:HandleButton(PreferredPlay.DatacenterApplyButton)
 
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)

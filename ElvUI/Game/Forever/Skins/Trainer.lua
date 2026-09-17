@@ -5,7 +5,11 @@ local _G = _G
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
+-- ToDo: classic_beta
+-- category headers: TrainerUICategoryTemplate (Label, LeftPiece, CenterPiece, RightPiece, CollapseIcon, CollapseIconAlphaAdd)
 local function ClassTrainerScrollUpdateChild(button)
+	if not button.icon then return end -- category header
+
 	if not button.IsSkinned then
 		S:HandleIcon(button.icon, true)
 		button:CreateBackdrop('Transparent')

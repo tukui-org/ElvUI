@@ -115,6 +115,7 @@ function S:Blizzard_BarbershopUI()
 	S:HandleButton(frame.ResetButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleButton(frame.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleButton(frame.AcceptButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleCheckBox(frame.SDToggleButton) -- HD models toggle, shown by C_GameRules.IsSDHDToggleEnabled
 end
 
 S:AddCallbackForAddon('Blizzard_BarbershopUI')

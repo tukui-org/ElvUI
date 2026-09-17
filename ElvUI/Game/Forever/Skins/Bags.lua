@@ -240,6 +240,12 @@ local function HandleItem(button)
 		button.Background:Hide()
 	end
 
+	-- CamelotBankPanelItemButtonMixin:Refresh sets the slot frame atlas again on every refresh
+	local normal = button:GetNormalTexture()
+	if normal then
+		normal:SetAlpha(0)
+	end
+
 	S:HandleIconBorder(button.IconBorder)
 end
 
@@ -260,6 +266,12 @@ local function RefreshTabs(frame)
 				tab.IsSkinned = true
 			end
 		end
+	end
+end
+
+local function RefreshPageTabs(frame)
+	for tab in frame.bankPageTabPool:EnumerateActive() do
+		S:HandleLargeSideTab(tab)
 	end
 end
 
@@ -305,20 +317,11 @@ function S:ContainerFrame()
 
 		S:HandleCloseButton(bankFrame.CloseButton)
 
-		local tabSystem = bankFrame.TabSystem
-		if tabSystem then
-			for _, tab in next, tabSystem.tabs do
-				S:HandleTab(tab)
-			end
+		-- The page tabs are LargeSideTabButtonTemplate
+		hooksecurefunc(bankFrame, 'RefreshPageTabs', RefreshPageTabs)
 
-			tabSystem.spacing = -5
-			if tabSystem.MarkDirty then
-				tabSystem:MarkDirty()
-			end
-
-			tabSystem:ClearAllPoints()
-			tabSystem:Point('TOPLEFT', bankFrame, 'BOTTOMLEFT', -4, -1)
-		end
+		-- ToDo: classic_beta
+		-- bankFrame.itemButtonBagPool (BankItemButtonBagTemplate: NormalTexture, Background, HighlightTexture, DisabledOverlay), refreshed by RefreshBagButtons
 	end
 
 	S:HandleEditBox(_G.BagItemSearchBox)
@@ -328,8 +331,7 @@ function S:ContainerFrame()
 	if panel then
 		S:HandleButton(panel.MoneyFrame.DepositButton)
 		S:HandleButton(panel.MoneyFrame.WithdrawButton)
-		S:HandleButton(panel.AutoDepositFrame.DepositButton)
-		S:HandleCheckBox(panel.AutoDepositFrame.IncludeReagentsCheckbox)
+		S:HandleButton(panel.PurchaseButton)
 
 		HandleAutoSortButton(panel.AutoSortButton)
 
