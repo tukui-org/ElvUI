@@ -53,7 +53,7 @@ local FetchNumPurchasedBankTabs = C_Bank and C_Bank.FetchNumPurchasedBankTabs
 local FetchDepositedMoney = C_Bank and C_Bank.FetchDepositedMoney
 local CanPurchaseBankTab = C_Bank and C_Bank.CanPurchaseBankTab
 local CanViewBank = C_Bank and C_Bank.CanViewBank
-local ShouldShowKeyring = C_ActionBar and C_ActionBar.ShouldShowKeyring
+local ShouldShowKeyring = C_ActionBar.ShouldShowKeyring
 local FlagsUtil_IsSet = FlagsUtil and FlagsUtil.IsSet
 
 local EditBox_HighlightText = EditBox_HighlightText
