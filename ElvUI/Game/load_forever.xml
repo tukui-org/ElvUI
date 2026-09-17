@@ -63,7 +63,6 @@
 	<Script file='Mainline\DataTexts\Quickjoin.lua'/>
 	<Script file='Mainline\DataTexts\SpecSwitch.lua'/>
 	<Script file='Mainline\DataBars\Honor.lua'/>
-	<Script file='Mainline\DataBars\Azerite.lua'/>
 	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
 	<Script file='Shared\Modules\Misc\PrivateAuras.lua'/>
 
