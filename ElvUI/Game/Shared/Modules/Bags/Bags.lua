@@ -716,7 +716,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 			slot.isQuestItem, slot.QuestID, slot.isActiveQuest = questInfo.isQuestItem, questInfo.questID, questInfo.isActive
 		end
 
-		local WuE = E.Modern and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and WARBAND_UNTIL_EQUIPPED
+		local WuE = E.Retail and bindType == 2 and C_Item_IsBoundToAccountUntilEquip(slot.itemLocation) and WARBAND_UNTIL_EQUIPPED
 		local bindTo = (not slot.isBound and bindType ~= 1) and db.showBindType and B.BindText[WuE or bindType]
 		if bindTo then slot.bindType:SetText(bindTo) end
 

@@ -111,7 +111,7 @@ function M:ZoneTextToggle()
 end
 
 function M:IsRandomGroup()
-	return IsPartyLFG() or (E.Modern and IsPartyWalkIn()) -- This is the API for Delves
+	return IsPartyLFG() or (E.Retail and IsPartyWalkIn()) -- This is the API for Delves
 end
 
 function M:COMBAT_LOG_EVENT_UNFILTERED()

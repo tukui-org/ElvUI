@@ -369,7 +369,7 @@ do --this can save some main file locals
 			z['Player-4385-05E5F601']	= itsSimpy -- [Horde] Shaman:	Yube
 			-- Repooc
 			z['Repooc-Atiesh']			= itsPooc -- [Alliance] Paladin
-		elseif E.Modern then
+		elseif E.Retail then
 			-- Elv
 			z['Player-127-0AB2F946']	= itsElv -- Paladin
 			z['Player-5-0E83B943']		= itsElv -- Druid
@@ -569,7 +569,7 @@ do --this can save some main file locals
 			z['Player-4454-060E3657']	= ElvGreen -- [Horde] Druid
 			z['Player-4454-060E364E']	= ElvGreen -- [Horde] Priest
 			z['Player-4454-060E361A']	= ElvGreen -- [Horde] Shaman
-		elseif E.Modern then
+		elseif E.Retail then
 			-- Blazeflack
 			z['Blazii-Silvermoon']		= ElvBlue -- Priest
 			z['Chazii-Silvermoon']		= ElvBlue -- Shaman
@@ -2028,7 +2028,7 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		end
 	end
 
-	if E.Modern and E:NotSecretValue(unitGUID) and unitGUID then
+	if E.Retail and E:NotSecretValue(unitGUID) and unitGUID then
 		if CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
 			flag = flag .. TIMERUNNING_SMALL
 		end
