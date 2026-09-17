@@ -120,11 +120,7 @@ function E:Auras_OnEvent(event, arg1, arg2)
 			E:Auras_AssistUnit(container, container.unit)
 		end
 	elseif arg1 and (arg1 == container.unit) then
-		if event == 'UNIT_DISTANCE_CHECK_UPDATE' then
-			E:Auras_AssistUnit(container, arg1, arg2)
-		else
-			E:Auras_AssistUnit(container, arg1)
-		end
+		E:Auras_AssistUnit(container, arg1, event == 'UNIT_DISTANCE_CHECK_UPDATE' and arg2 or nil)
 	end
 end
 
