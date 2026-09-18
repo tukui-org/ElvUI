@@ -1,21 +1,29 @@
+## Interface: 120100, 16001, 50504, 38002, 20506, 11509
+
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bMists|r [AllowLoadGameType mists]
 ## Title: |cff1784d1ElvUI|r [AllowLoadGameType standard]
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bForever|r [AllowLoadGameType camelot][ExcludeLoadGameType standard, classic]
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bWrath|r [AllowLoadGameType wrath]
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bTBC|r [AllowLoadGameType tbc]
 ## Title: |cff1784d1ElvUI|r |cfd9b9b9bClassic|r [AllowLoadGameType vanilla]
+
 ## Notes: User Interface Replacement
-## Author: Elv, Simpy
-## Version: @project-version@
+
+## RequiredDeps: ElvUI_Libraries
+## OptionalDeps: SharedMedia, Tukui, Masque, BigWigs
+
 ## SavedVariables: ElvDB, ElvPrivateDB
 ## SavedVariablesPerCharacter: ElvCharacterDB
-## OptionalDeps: SharedMedia, Tukui, Masque, BigWigs
-## RequiredDeps: ElvUI_Libraries
-## Interface: 120100, 16001, 50504, 38002, 20506, 11509
+
+## Author: Elv, Simpy
+## Version: @project-version@
+
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
+
 ## AddonCompartmentFunc: ElvUI_AddonCompartmentFunc
 ## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
+
 ## Category-enUS: UI Overhaul
 ## Category-deDE: UI-Überholung
 ## Category-esES: Renovación de la UI
@@ -27,6 +35,7 @@
 ## Category-koKR: UI 개편
 ## Category-zhCN: UI重构
 ## Category-zhTW: UI重構
+
 ## Group: ElvUI
 
 Game\load_mists.xml [AllowLoadGameType mists]
