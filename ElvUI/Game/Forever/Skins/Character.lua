@@ -2,13 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, next = unpack, next
+local unpack, next, strlower = unpack, next, strlower
 local hooksecurefunc = hooksecurefunc
 local CreateColor = CreateColor
-
--- ToDo: classic_beta
--- PaperDollSidebarTab1-3 (CheckButton with Icon only), SkillsFrame, PVPRankFrame, StatisticsFrame
--- ReputationBar is a ColoredProgressBarTemplate frame (Fill, Mask, Text), not a StatusBar
 
 local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFF] = 'PLACEINBAGS',
@@ -16,54 +12,171 @@ local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFD] = 'UNIGNORESLOT'
 }
 
-local function UpdateToggleCollapseButton(button)
-	local header = button.GetHeader and button:GetHeader()
-	if not header then return end
-
-	local tex = header:IsCollapsed() and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
-	button:SetNormalTexture(tex)
-	button:SetPushedTexture(tex)
+local function SetArrow(texture, rotation)
+	texture:SetTexture(E.Media.Textures.ArrowUp)
+	texture:SetTexCoord(0, 1, 0, 1)
+	texture:SetRotation(rotation)
 end
 
-local function UpdateTokenSkinsChild(child)
-	if not child.IsSkinned then
-		if child.Right then
-			child:StripTextures()
-			child:CreateBackdrop('Transparent')
-			child.backdrop:SetInside(child)
-		end
+local function HandleHighlight(button)
+	local highlight = button:GetHighlightTexture()
+	highlight:SetTexture(E.media.blankTex)
+	highlight:SetVertexColor(1, 1, 1, .25)
+	highlight:SetRotation(0)
+	highlight:SetInside()
+end
 
-		local icon = child.Content and child.Content.CurrencyIcon
-		if icon then
-			S:HandleIcon(icon)
-		end
+-- Replace title artwork on category rows
+local function HandleCategory(frame)
+	frame.Background:SetAlpha(0)
+	frame:CreateBackdrop('Transparent')
+	frame.backdrop:ClearAllPoints()
+	frame.backdrop:Point('CENTER')
+	frame.backdrop:Size(150, 18)
+end
 
-		local ToggleCollapseButton = child.ToggleCollapseButton
-		if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
-			hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
-
-			UpdateToggleCollapseButton(ToggleCollapseButton)
-		end
-
-		child.IsSkinned = true
+-- ColoredProgressBarTemplate: unnamed background, a masked Fill and Text
+local function HandleColoredProgressBar(bar)
+	local background = bar:GetRegions()
+	if background and background:IsObjectType('Texture') then
+		background:SetTexture(E.ClearTexture)
 	end
-end
 
-local function UpdateTokenSkins(frame)
-	frame:ForEachFrame(UpdateTokenSkinsChild)
+	bar.Fill:RemoveMaskTexture(bar.Mask)
+	bar.Text:FontTemplate()
+
+	bar:CreateBackdrop('Transparent')
+	bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
+	bar.backdrop:Point('BOTTOMRIGHT', bar, 'RIGHT', 1, -8)
 end
 
 local function UpdateTabLayout(frame)
 	S:LayoutLargeSideTabs(frame, frame.ModeTabs.Tabs)
 end
 
+local function UpdateRightPaneToggleButton(frame)
+	local button = frame.RightPaneToggleButton
+	local rotation = S.ArrowRotation[frame:IsRightPaneCollapsed() and 'right' or 'left']
+	SetArrow(button:GetNormalTexture(), rotation)
+	SetArrow(button:GetPushedTexture(), rotation)
+end
+
+local function PaperDollItemSlotButtonUpdate(slot)
+	HandleHighlight(slot)
+end
+
+-- Blizzard re-applies atlas, size and rotation on every state change (show, hover, click)
+local function PopoutButton_RefreshVisualState(button)
+	local parent = button:GetParent()
+	local direction = (parent and parent.flyoutDirection) or button.flyoutDirection or (parent and parent.verticalFlyout and 'UP') or 'RIGHT'
+	if button.flyoutLocked then -- points back at the slot while the flyout is kept open
+		direction = (direction == 'RIGHT' and 'LEFT') or (direction == 'LEFT' and 'RIGHT') or (direction == 'UP' and 'DOWN') or 'UP'
+	end
+
+	if not button.backdrop then
+		button:CreateBackdrop()
+		button.backdrop:SetInside(button, 1, 1)
+	end
+
+	local rotation = S.ArrowRotation[strlower(direction)]
+	for _, texture in next, { button:GetNormalTexture(), button:GetPushedTexture() } do
+		SetArrow(texture, rotation)
+		texture:ClearAllPoints()
+		texture:Point('CENTER')
+		texture:Size(12)
+	end
+
+	HandleHighlight(button)
+	button:GetHighlightTexture():SetInside(button.backdrop)
+end
+
+local function HandleSidebarTab(tab)
+	for _, region in next, { tab:GetRegions() } do
+		if region ~= tab.Icon and region:IsObjectType('Texture') then
+			region:SetTexture(E.ClearTexture)
+		end
+	end
+
+	-- the stats class art sits on the same level as a lowered backdrop
+	tab:OffsetFrameLevel(5)
+
+	tab.Icon:Size(32)
+	tab:CreateBackdrop()
+	tab.backdrop:SetOutside(tab.Icon, 1, 1)
+	tab:StyleButton()
+
+	-- the tab is 42px, fit the state textures to the icon
+	for _, texture in next, { tab.hover, tab.pushed, tab.checked } do
+		texture:SetAllPoints(tab.Icon)
+	end
+end
+
+local function BackdropDesaturated(background, value)
+	if value and background.ignoreDesaturated then
+		background:SetDesaturated(false)
+	end
+end
+
+local function UpdateStatsChild(child)
+	if child.Title then
+		if not child.IsSkinned then
+			HandleCategory(child)
+			child.IsSkinned = true
+		end
+	else
+		if not child.leftGrad then
+			child.Background:SetAlpha(0)
+
+			local gradientFrom, gradientTo = CreateColor(0.8, 0.8, 0.8, 0.25), CreateColor(0.8, 0.8, 0.8, 0)
+
+			child.leftGrad = child:CreateTexture(nil, 'BORDER')
+			child.leftGrad:Size(80, child:GetHeight())
+			child.leftGrad:Point('LEFT', child, 'CENTER')
+			child.leftGrad:SetTexture(E.Media.Textures.White8x8)
+			child.leftGrad:SetGradient('Horizontal', gradientFrom, gradientTo)
+
+			child.rightGrad = child:CreateTexture(nil, 'BORDER')
+			child.rightGrad:Size(80, child:GetHeight())
+			child.rightGrad:Point('RIGHT', child, 'CENTER')
+			child.rightGrad:SetTexture(E.Media.Textures.White8x8)
+			child.rightGrad:SetGradient('Horizontal', gradientTo, gradientFrom)
+		end
+
+		local shown = child.Background:IsShown()
+		child.leftGrad:SetShown(shown)
+		child.rightGrad:SetShown(shown)
+	end
+end
+
+local function UpdateStats(frame)
+	frame:ForEachFrame(UpdateStatsChild)
+end
+
+local function HandleStatsPane(pane)
+	pane:StripTextures()
+
+	if pane.ClassBackground then -- set again through SetAtlas on spec changes
+		pane.ClassBackground:SetAlpha(0)
+	end
+
+	S:HandleTrimScrollBar(pane.ScrollBar)
+	hooksecurefunc(pane.ScrollBox, 'Update', UpdateStats)
+end
+
+local function TitleManagerPane_UpdateChild(child)
+	if not child.IsSkinned then
+		child:DisableDrawLayer('BACKGROUND')
+		child.IsSkinned = true
+	end
+end
+
+local function TitleManagerPane_Update(frame)
+	frame:ForEachFrame(TitleManagerPane_UpdateChild)
+end
+
 local function EquipmentManagerPane_UpdateChild(child)
 	if child.icon and not child.IsSkinned then
 		S:HandleIcon(child.icon)
-
-		child.BgTop:SetTexture(E.ClearTexture)
-		child.BgMiddle:SetTexture(E.ClearTexture)
-		child.BgBottom:SetTexture(E.ClearTexture)
 
 		child.HighlightBar:SetColorTexture(1, 1, 1, .25)
 		child.HighlightBar:SetDrawLayer('BACKGROUND')
@@ -79,52 +192,13 @@ local function EquipmentManagerPane_Update(frame)
 	frame:ForEachFrame(EquipmentManagerPane_UpdateChild)
 end
 
-local function TitleManagerPane_UpdateChild(child)
-	if not child.IsSkinned then
-		child:DisableDrawLayer('BACKGROUND')
-		child.IsSkinned = true
+local function GearManagerPopupFrame_OnShow(frame)
+	if not frame.IsSkinned then -- set by HandleIconSelectionFrame
+		S:HandleIconSelectionFrame(frame, nil, nil, 'GearManagerPopupFrame')
 	end
 end
 
-local function TitleManagerPane_Update(frame)
-	frame:ForEachFrame(TitleManagerPane_UpdateChild)
-end
-
-local function PaperDollItemSlotButtonUpdate(slot)
-	local highlight = slot:GetHighlightTexture()
-	highlight:SetTexture(E.Media.Textures.White8x8)
-	highlight:SetVertexColor(1, 1, 1, .25)
-	highlight:SetInside()
-end
-
-local function ColorizeStatPane(frame)
-	frame.Background:SetAlpha(0)
-
-	local r, g, b = 0.8, 0.8, 0.8
-	local gradientFrom, gradientTo = CreateColor(r, g, b, 0.25), CreateColor(r, g, b, 0)
-
-	frame.leftGrad = frame:CreateTexture(nil, 'BORDER')
-	frame.leftGrad:Size(80, frame:GetHeight())
-	frame.leftGrad:Point('LEFT', frame, 'CENTER')
-	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.leftGrad:SetGradient('Horizontal', gradientFrom, gradientTo)
-
-	frame.rightGrad = frame:CreateTexture(nil, 'BORDER')
-	frame.rightGrad:Size(80, frame:GetHeight())
-	frame.rightGrad:Point('RIGHT', frame, 'CENTER')
-	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.rightGrad:SetGradient('Horizontal', gradientTo, gradientFrom)
-end
-
-local function StatsPane(which)
-	local CharacterStatsPane = _G.CharacterStatsPane
-	CharacterStatsPane[which]:StripTextures()
-	CharacterStatsPane[which]:CreateBackdrop('Transparent')
-	CharacterStatsPane[which].backdrop:ClearAllPoints()
-	CharacterStatsPane[which].backdrop:Point('CENTER')
-	CharacterStatsPane[which].backdrop:Size(150, 18)
-end
-
+-- Equipment Flyout
 local function EquipmentDisplayButton(button)
 	if not button.isHooked then
 		button:SetNormalTexture(E.ClearTexture)
@@ -172,79 +246,141 @@ local function EquipmentUpdateNavigation()
 	navi:SetTemplate('Transparent')
 end
 
-local function UpdateFactionSkinsChild(child)
-	if not child.IsSkinned then
-		if child.Right then
-			child:StripTextures()
-			child:CreateBackdrop('Transparent')
-			child.backdrop:SetInside(child)
+-- Reputation, Currency, Skills and Statistics lists share the same header / sub header / entry layout
+local function UpdateToggleCollapseButton(button)
+	local header = button.GetHeader and button:GetHeader()
+	if not header then return end
+
+	local collapsed
+	if header.IsCollapsed then
+		collapsed = header:IsCollapsed()
+	else
+		collapsed = header.treeNode and header.treeNode:IsCollapsed()
+	end
+
+	local tex = collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
+	button:SetNormalTexture(tex)
+	button:SetPushedTexture(tex)
+end
+
+local function HandleListHeader(header)
+	for _, region in next, { header:GetRegions() } do
+		if region ~= header.StateIcon and region:IsObjectType('Texture') then -- keep the Blizzard plus / minus
+			region:SetTexture(E.ClearTexture)
 		end
+	end
 
-		local ToggleCollapseButton = child.ToggleCollapseButton
-		if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
-			hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
+	header:CreateBackdrop('Transparent')
+	header.backdrop:SetInside(header, 0, 1)
+end
 
-			UpdateToggleCollapseButton(ToggleCollapseButton)
+local function HandleListEntry(child)
+	local content = child.Content
+	local highlight = content and content.BackgroundHighlight
+	if highlight then
+		for _, region in next, highlight.TextureRegions do
+			region:SetTexture(E.media.blankTex)
 		end
+	end
 
-		child.IsSkinned = true
+	local bar = content and (content.ReputationBar or content.SkillsBar)
+	if bar then
+		HandleColoredProgressBar(bar)
+	end
+
+	local icon = content and content.CurrencyIcon
+	if icon then
+		S:HandleIcon(icon)
+	end
+
+	local ToggleCollapseButton = child.ToggleCollapseButton
+	if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
+		hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
+		UpdateToggleCollapseButton(ToggleCollapseButton)
 	end
 end
 
-local function UpdateFactionSkins(frame)
-	frame:ForEachFrame(UpdateFactionSkinsChild)
+local function UpdateListChild(child)
+	if child.IsSkinned then return end
+
+	if child.StateIcon then
+		HandleListHeader(child)
+	else
+		HandleListEntry(child)
+	end
+
+	child.IsSkinned = true
 end
 
-local function PaperDollUpdateStats()
-	for frame in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
-		if not frame.leftGrad then
-			ColorizeStatPane(frame)
+local function UpdateList(frame)
+	frame:ForEachFrame(UpdateListChild)
+end
+
+local function HandleListFrame(frame)
+	for _, child in next, { frame.ScrollBox:GetChildren() } do
+		child:StripTextures()
+	end
+
+	S:HandleTrimScrollBar(frame.ScrollBar)
+	hooksecurefunc(frame.ScrollBox, 'Update', UpdateList)
+end
+
+-- CharacterFrameSidePaneTemplate: on the right side
+local function SidePane_AcquireRow(pane)
+	for row in pane.rowPools:EnumerateActive() do
+		if not row.IsSkinned then
+			if row.Background then
+				HandleCategory(row)
+			elseif row.IconSlot then
+				row.IconSlot:SetAlpha(0)
+				S:HandleIcon(row.Icon, true)
+			end
+
+			row.IsSkinned = true
 		end
-
-		local shown = frame.Background:IsShown()
-		frame.leftGrad:SetShown(shown)
-		frame.rightGrad:SetShown(shown)
 	end
 end
 
-local function BackdropDesaturated(background, value)
-	if value and background.ignoreDesaturated then
-		background:SetDesaturated(false)
-	end
-end
+local function HandleSidePane(pane)
+	pane:StripTextures()
+	pane.Divider:SetAlpha(0)
+	pane.Title:FontTemplate(nil, 14)
 
-local function UpdateCurrencyTransferLogLine(frame)
-	if frame.IsSkinned then return end
-
-	local CurrencyIcon = frame.CurrencyIcon
-	if CurrencyIcon then
-		S:HandleIcon(CurrencyIcon)
-		CurrencyIcon:Size(16)
-	end
-
-	frame.IsSkinned = true
-end
-
-local function UpdateCurrencyTransferLogLines(frame)
-	frame:ForEachFrame(UpdateCurrencyTransferLogLine)
-end
-
-local function GearManagerPopupFrame_OnShow(frame)
-	if not frame.IsSkinned then -- set by HandleIconSelectionFrame
-		S:HandleIconSelectionFrame(frame, nil, nil, 'GearManagerPopupFrame')
-	end
+	S:HandleTrimScrollBar(pane.DescriptionScrollBar)
+	hooksecurefunc(pane, 'AcquireRow', SidePane_AcquireRow)
 end
 
 function S:Blizzard_UIPanels_Game()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
 
-	-- General
 	local CharacterFrame = _G.CharacterFrame
 	S:HandlePortraitFrame(CharacterFrame)
 
-	S:HandleTrimScrollBar(_G.ReputationFrame.ScrollBar)
-	S:HandleTrimScrollBar(_G.TokenFrame.ScrollBar, true) -- updates to this can taint transferring currencies
+	CharacterFrame.LeftPaneHost:StripTextures()
+	CharacterFrame.LeftPaneHost:SetTemplate()
 
+	local RightPaneHost = CharacterFrame.RightPaneHost
+	RightPaneHost:StripTextures()
+	RightPaneHost:SetTemplate('Transparent')
+	RightPaneHost.StoneBg:SetAlpha(0)
+
+	local divider = RightPaneHost:GetChildren()
+	if divider then
+		divider:StripTextures()
+	end
+
+	S:HandleNextPrevButton(CharacterFrame.RightPaneToggleButton, 'left', nil, true)
+	hooksecurefunc(CharacterFrame, 'UpdateRightPaneToggleButton', UpdateRightPaneToggleButton)
+	UpdateRightPaneToggleButton(CharacterFrame)
+
+	for _, tab in next, CharacterFrame.ModeTabs.Tabs do
+		S:HandleLargeSideTab(tab)
+	end
+
+	hooksecurefunc(CharacterFrame, 'UpdateTabLayout', UpdateTabLayout)
+	UpdateTabLayout(CharacterFrame)
+
+	-- Paper Doll
 	for _, Slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
 		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
 			Slot:StripTextures()
@@ -256,9 +392,33 @@ function S:Blizzard_UIPanels_Game()
 
 			S:HandleIconBorder(Slot.IconBorder)
 
-			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown'])
+			E:RegisterCooldown(_G[Slot:GetName()..'Cooldown']) -- the ammo slot only has the named cooldown
 		end
 	end
+
+	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
+	hooksecurefunc('EquipmentFlyoutPopoutButton_RefreshVisualState', PopoutButton_RefreshVisualState)
+
+	_G.CharacterFramePortrait:Kill()
+	_G.CharacterLevelText:FontTemplate()
+	_G.CharacterLevelTextBackground:SetAlpha(0)
+
+	for i = 1, 3 do
+		HandleSidebarTab(_G['PaperDollSidebarTab'..i])
+	end
+
+	_G.PaperDollSidebarTabs:StripTextures()
+
+	-- Model
+	local CharacterModelScene = _G.CharacterModelScene
+	CharacterModelScene:StripTextures()
+	CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5) -- re-add the overlay which was just stripped
+
+	CharacterModelScene:CreateBackdrop()
+	CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
+	CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+
+	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
 
 	-- Give character frame model backdrop it's color back
 	for _, corner in next, { 'TopLeft', 'TopRight', 'BotLeft', 'BotRight' } do
@@ -271,27 +431,30 @@ function S:Blizzard_UIPanels_Game()
 		end
 	end
 
-	_G.CharacterLevelText:FontTemplate()
-	_G.CharacterStatsPane.ItemLevelFrame.Value:FontTemplate(nil, 20)
-	ColorizeStatPane(_G.CharacterStatsPane.ItemLevelFrame)
+	-- Stats
+	HandleStatsPane(_G.CharacterStatsPaneScrollBox)
+	HandleStatsPane(_G.CharacterStatsPanePetScrollBox)
 
-	if not E.OtherAddons.DejaCharacterStats then
-		hooksecurefunc('PaperDollFrame_UpdateStats', PaperDollUpdateStats)
+	-- Titles
+	local TitleManagerPane = _G.PaperDollFrame.TitleManagerPane
+	S:HandleTrimScrollBar(TitleManagerPane.ScrollBar)
+	hooksecurefunc(TitleManagerPane.ScrollBox, 'Update', TitleManagerPane_Update)
 
-		StatsPane('EnhancementsCategory')
-		StatsPane('ItemLevelCategory')
-		StatsPane('AttributesCategory')
+	-- Equipment Manager
+	local EquipmentManagerPane = _G.PaperDollFrame.EquipmentManagerPane
+	EquipmentManagerPane.Border:Hide()
+	S:HandleTrimScrollBar(EquipmentManagerPane.ScrollBar)
+	hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
+	S:HandleButton(EquipmentManagerPane.EquipSet, nil, nil, nil, true)
+	S:HandleButton(EquipmentManagerPane.SaveSet, nil, nil, nil, true)
+	S:HandleButton(EquipmentManagerPane.NewSet, nil, nil, nil, true)
+	EquipmentManagerPane.NewSet.StateTexture:SetAlpha(0)
+
+	if _G.GearManagerPopupFrame then -- New icon selection
+		_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
 	end
 
-	-- Strip Textures
-	local charframe = {
-		'CharacterModelScene',
-		'CharacterStatsPane',
-		'CharacterFrameLeftPaneHost',
-		'CharacterFrameRightPaneHost',
-		'PaperDollSidebarTabs',
-	}
-
+	-- Equipment Flyout
 	_G.EquipmentFlyoutFrameHighlight:StripTextures()
 	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
 	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
@@ -302,99 +465,48 @@ function S:Blizzard_UIPanels_Game()
 	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
 	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
 
-	-- Icon in upper right corner of character frame
-	_G.CharacterFramePortrait:Kill()
-
-	for _, scrollbar in next, { _G.PaperDollFrame.EquipmentManagerPane.ScrollBar, _G.PaperDollFrame.TitleManagerPane.ScrollBar } do
-		S:HandleTrimScrollBar(scrollbar)
-	end
-
-	for _, object in next, charframe do
-		_G[object]:StripTextures()
-	end
-
-	-- Re-add the overlay texture which was removed right above via StripTextures
-	_G.CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5)
-
-	_G.CharacterModelScene:CreateBackdrop()
-	_G.CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-	_G.CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
-
-	S:HandleModelSceneControlButtons(_G.CharacterModelScene.ControlFrame)
-
-	-- Titles
-	hooksecurefunc(_G.PaperDollFrame.TitleManagerPane.ScrollBox, 'Update', TitleManagerPane_Update)
-
-	-- Equipement Manager
-	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
-	S:HandleButton(_G.PaperDollFrameEquipSet, nil, nil, nil, true)
-	S:HandleButton(_G.PaperDollFrameSaveSet, nil, nil, nil, true)
-	S:HandleButton(_G.PaperDollFrameNewSet, nil, nil, nil, true)
-	_G.PaperDollFrameNewSet.StateTexture:SetAlpha(0)
-
-	if _G.GearManagerPopupFrame then -- New icon selection
-		_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
-	end
-
-	for _, tab in next, CharacterFrame.ModeTabs.Tabs do
-		S:HandleLargeSideTab(tab)
-	end
-
-	hooksecurefunc(CharacterFrame, 'UpdateTabLayout', UpdateTabLayout)
-	UpdateTabLayout(CharacterFrame)
-
-	-- Reputation Frame
+	-- Reputation
 	local ReputationFrame = _G.ReputationFrame
-	ReputationFrame:StripTextures()
+	HandleListFrame(ReputationFrame)
 	S:HandleDropDownBox(ReputationFrame.filterDropdown)
 
-	local DetailFrame = ReputationFrame.ReputationDetailFrame
-	DetailFrame:StripTextures()
-	DetailFrame:SetTemplate('Transparent')
-	S:HandleCheckBox(DetailFrame.AtWarCheckbox)
-	S:HandleCheckBox(DetailFrame.MakeInactiveCheckbox)
-	S:HandleCheckBox(DetailFrame.WatchFactionCheckbox)
-	S:HandleButton(DetailFrame.ViewRenownButton, nil, nil, nil, true)
-	S:HandleTrimScrollBar(DetailFrame.DescriptionScrollBar)
+	local ReputationDetailFrame = ReputationFrame.ReputationDetailFrame
+	HandleSidePane(ReputationDetailFrame)
+	HandleColoredProgressBar(ReputationDetailFrame.StandingBar)
+	S:HandleCheckBox(ReputationDetailFrame.AtWarCheckbox)
+	S:HandleCheckBox(ReputationDetailFrame.MakeInactiveCheckbox)
+	S:HandleCheckBox(ReputationDetailFrame.WatchFactionCheckbox)
+	S:HandleButton(ReputationDetailFrame.ViewRenownButton, nil, nil, nil, true)
 
-	-- Currency Frame
-	local TokenDetailFrame = _G.TokenFrame.DetailFrame
-	TokenDetailFrame:StripTextures()
-	TokenDetailFrame:SetTemplate('Transparent')
+	-- Skills
+	local SkillsFrame = _G.SkillsFrame
+	HandleListFrame(SkillsFrame)
+
+	local SkillDetailFrame = SkillsFrame.SkillDetailFrame
+	HandleSidePane(SkillDetailFrame)
+	HandleColoredProgressBar(SkillDetailFrame.RankBar)
+
+	-- PvP
+	local PVPRankFrame = _G.PVPRankFrame
+	PVPRankFrame.MainInfoFrame.Line:SetAlpha(0)
+	HandleSidePane(PVPRankFrame.DetailFrame)
+
+	-- Currency
+	local TokenFrame = _G.TokenFrame
+	HandleListFrame(TokenFrame)
+
+	local TokenDetailFrame = TokenFrame.DetailFrame
+	HandleSidePane(TokenDetailFrame)
 	S:HandleCheckBox(TokenDetailFrame.InactiveCheckbox)
 	S:HandleCheckBox(TokenDetailFrame.BackpackCheckbox)
-	S:HandleButton(TokenDetailFrame.CurrencyTransferToggleButton)
-
-	S:HandlePortraitFrame(_G.CurrencyTransferLog)
-	S:HandleTrimScrollBar(_G.CurrencyTransferLog.ScrollBar)
-	hooksecurefunc(_G.CurrencyTransferLog.ScrollBox, 'Update', UpdateCurrencyTransferLogLines)
-
-	-- Currency Transfer (new in 11.0)
-	local currencyTransfer = _G.CurrencyTransferMenu
-	if currencyTransfer then
-		currencyTransfer:StripTextures()
-		currencyTransfer:SetTemplate('Transparent')
-
-		S:HandleCloseButton(currencyTransfer.CloseButton)
-		S:HandleDropDownBox(currencyTransfer.Content.SourceSelector.Dropdown)
-		S:HandleButton(currencyTransfer.Content.AmountSelector.MaxQuantityButton)
-		S:HandleButton(currencyTransfer.Content.ConfirmButton)
-		S:HandleButton(currencyTransfer.Content.CancelButton)
-		S:HandleIcon(currencyTransfer.Content.SourceBalancePreview.BalanceInfo.CurrencyIcon)
-		S:HandleIcon(currencyTransfer.Content.PlayerBalancePreview.BalanceInfo.CurrencyIcon)
-
-		local transferInputBox = currencyTransfer.Content.AmountSelector.InputBox
-		if transferInputBox then
-			S:HandleEditBox(transferInputBox)
-			transferInputBox.backdrop:ClearAllPoints()
-			transferInputBox.backdrop:Point('TOPLEFT', 0, -3)
-			transferInputBox.backdrop:Point('BOTTOMRIGHT', -1, 8)
-		end
-	end
-
-	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
-	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', UpdateTokenSkins)
-	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
 end
 
 S:AddCallbackForAddon('Blizzard_UIPanels_Game')
+
+function S:Blizzard_Statistics()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
+
+	HandleListFrame(_G.StatisticsFrame)
+end
+
+S:AddCallbackForAddon('Blizzard_Statistics')
