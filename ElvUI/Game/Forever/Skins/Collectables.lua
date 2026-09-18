@@ -539,13 +539,7 @@ end
 
 local function CheckAndDisplayTabs()
 	local CollectionsJournal = _G.CollectionsJournal
-	for _, tab in next, CollectionsJournal.TabContainer.Tabs do
-		local _, relativeTo = tab:GetPoint()
-		if relativeTo == CollectionsJournal.TabContainer then -- first shown tab, the others chain below it
-			tab:ClearAllPoints()
-			tab:Point('TOPLEFT', CollectionsJournal, 'TOPRIGHT', 3 + E.Border, -E.Border)
-		end
-	end
+	S:LayoutLargeSideTabs(CollectionsJournal, CollectionsJournal.TabContainer.Tabs)
 end
 
 local function SkinCollectionsFrames()

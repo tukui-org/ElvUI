@@ -5,6 +5,10 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local function UpdateTabLayout(frame)
+	S:LayoutLargeSideTabs(frame, frame.ModeTabs.Tabs)
+end
+
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
@@ -18,8 +22,8 @@ function S:Blizzard_InspectUI()
 		S:HandleLargeSideTab(tab)
 	end
 
-	InspectFrame.ModeTabs:ClearAllPoints()
-	InspectFrame.ModeTabs:Point('TOPLEFT', InspectFrame, 'TOPRIGHT', 3 + E.Border, -E.Border)
+	hooksecurefunc(InspectFrame, 'UpdateTabLayout', UpdateTabLayout)
+	UpdateTabLayout(InspectFrame)
 
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()

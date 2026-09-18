@@ -4,7 +4,7 @@ local LibStub = _G.LibStub
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local tinsert, next, strfind = tinsert, next, strfind
+local tinsert, next, ipairs, strfind = tinsert, next, ipairs, strfind
 local unpack, type, gsub, rad = unpack, type, gsub, rad
 
 local CreateFrame = CreateFrame
@@ -1311,35 +1311,22 @@ end
 
 -- ToDo: classic_beta WIP
 do -- Large Side Tabs
-	local function SelectedTextureSetShown(texture, shown)
-		local tab = texture:GetParent()
-		if not tab or not tab.backdrop then return end
-
-		if shown then
-			tab.backdrop:SetBackdropBorderColor(1, .8, .1)
-		else
-			local br, bg, bb = unpack(E.media.bordercolor)
-			tab.backdrop:SetBackdropBorderColor(br, bg, bb)
-		end
-	end
-
 	local function UpdateIconInterior(tab)
 		tab.Icon:SetTexCoords()
+		tab.Icon:Size(30) -- Resets on SetChecked
 	end
 
+	-- Size will now match other side tabs (Like Communitiesframe)
 	function S:HandleLargeSideTab(tab)
 		if not tab or tab.backdrop then return end
 
 		local icon = tab.Icon
 		icon:SetTexCoords()
+		icon:Size(30)
 
-		tab:CreateBackdrop()
-		tab.backdrop:SetOutside(icon)
-
-		local extent = tab.fillToInterior and (tab.interiorExtent or 50)
-		if extent then
-			tab:Size(extent + 6, extent)
-		end
+		tab:CreateBackdrop(nil, true)
+		tab.backdrop:SetOutside(icon, 1, 1)
+		tab:Size(36, 30)
 
 		if tab.UpdateIconInterior then
 			hooksecurefunc(tab, 'UpdateIconInterior', UpdateIconInterior)
@@ -1356,7 +1343,7 @@ do -- Large Side Tabs
 
 		local highlight = tab.HighlightTexture
 		if highlight then
-			highlight:SetColorTexture(1, 1, 1, .25)
+			highlight:SetColorTexture(1, 1, 1, .3)
 			highlight:SetAllPoints(icon)
 		end
 
@@ -1368,9 +1355,27 @@ do -- Large Side Tabs
 
 		local selected = tab.SelectedTexture
 		if selected then
-			selected:SetTexture()
-			SelectedTextureSetShown(selected, selected:IsShown())
-			hooksecurefunc(selected, 'SetShown', SelectedTextureSetShown)
+			selected:SetColorTexture(1, 1, 1, .3)
+			selected:SetBlendMode('ADD')
+			selected:SetAllPoints(icon)
+		end
+	end
+
+	-- Pixel spacing fix, Blizzard is stacking them unscaled -> tab:SetPoint('TOPLEFT', last, 'BOTTOMLEFT', 0, -2)
+	function S:LayoutLargeSideTabs(frame, tabs)
+		local last
+		for _, tab in ipairs(tabs) do
+			if tab:IsShown() then
+				tab:ClearAllPoints()
+
+				if last then
+					tab:Point('TOPLEFT', last, 'BOTTOMLEFT', 0, -3)
+				else
+					tab:Point('TOPLEFT', frame, 'TOPRIGHT', 4, -1)
+				end
+
+				last = tab
+			end
 		end
 	end
 end

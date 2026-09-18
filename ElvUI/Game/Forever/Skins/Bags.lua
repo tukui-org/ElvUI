@@ -7,6 +7,7 @@ local _G = _G
 local next = next
 local unpack = unpack
 local select = select
+local tinsert, sort = tinsert, sort
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
@@ -269,16 +270,23 @@ local function RefreshTabs(frame)
 	end
 end
 
+local function SortPageTabs(a, b)
+	if a.bankType ~= b.bankType then
+		return a.bankType < b.bankType
+	end
+
+	return a.pageNumber < b.pageNumber
+end
+
 local function RefreshPageTabs(frame)
+	local tabs = {}
 	for tab in frame.bankPageTabPool:EnumerateActive() do
 		S:HandleLargeSideTab(tab)
-
-		local _, relativeTo = tab:GetPoint()
-		if relativeTo == frame then -- first tab, the others chain below it
-			tab:ClearAllPoints()
-			tab:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', 3 + E.Border, -E.Border)
-		end
+		tinsert(tabs, tab)
 	end
+
+	sort(tabs, SortPageTabs)
+	S:LayoutLargeSideTabs(frame.backdrop, tabs)
 end
 
 local function HandleSlots(frame)

@@ -53,6 +53,10 @@ local function UpdateTokenSkins(frame)
 	frame:ForEachFrame(UpdateTokenSkinsChild)
 end
 
+local function UpdateTabLayout(frame)
+	S:LayoutLargeSideTabs(frame, frame.ModeTabs.Tabs)
+end
+
 local function EquipmentManagerPane_UpdateChild(child)
 	if child.icon and not child.IsSkinned then
 		S:HandleIcon(child.icon)
@@ -336,8 +340,8 @@ function S:Blizzard_UIPanels_Game()
 		S:HandleLargeSideTab(tab)
 	end
 
-	CharacterFrame.ModeTabs:ClearAllPoints()
-	CharacterFrame.ModeTabs:Point('TOPLEFT', CharacterFrame, 'TOPRIGHT', 3 + E.Border, -E.Border)
+	hooksecurefunc(CharacterFrame, 'UpdateTabLayout', UpdateTabLayout)
+	UpdateTabLayout(CharacterFrame)
 
 	-- Reputation Frame
 	local ReputationFrame = _G.ReputationFrame
