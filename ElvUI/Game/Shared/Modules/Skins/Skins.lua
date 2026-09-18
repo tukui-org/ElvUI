@@ -1336,6 +1336,11 @@ do -- Large Side Tabs
 		tab:CreateBackdrop()
 		tab.backdrop:SetOutside(icon)
 
+		local extent = tab.fillToInterior and (tab.interiorExtent or 50)
+		if extent then
+			tab:Size(extent + 6, extent)
+		end
+
 		if tab.UpdateIconInterior then
 			hooksecurefunc(tab, 'UpdateIconInterior', UpdateIconInterior)
 		end

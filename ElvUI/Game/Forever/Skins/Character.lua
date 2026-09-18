@@ -336,6 +336,9 @@ function S:Blizzard_UIPanels_Game()
 		S:HandleLargeSideTab(tab)
 	end
 
+	CharacterFrame.ModeTabs:ClearAllPoints()
+	CharacterFrame.ModeTabs:Point('TOPLEFT', CharacterFrame, 'TOPRIGHT', 3 + E.Border, -E.Border)
+
 	-- Reputation Frame
 	local ReputationFrame = _G.ReputationFrame
 	ReputationFrame:StripTextures()

@@ -272,6 +272,12 @@ end
 local function RefreshPageTabs(frame)
 	for tab in frame.bankPageTabPool:EnumerateActive() do
 		S:HandleLargeSideTab(tab)
+
+		local _, relativeTo = tab:GetPoint()
+		if relativeTo == frame then -- first tab, the others chain below it
+			tab:ClearAllPoints()
+			tab:Point('TOPLEFT', frame.backdrop, 'TOPRIGHT', 3 + E.Border, -E.Border)
+		end
 	end
 end
 

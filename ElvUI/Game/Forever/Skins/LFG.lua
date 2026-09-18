@@ -52,6 +52,9 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	S:HandleLargeSideTab(LFGParentFrame.BrowsingTab)
 	S:HandleLargeSideTab(LFGParentFrame.WhoListingTab)
 
+	LFGParentFrame.ListingTab:ClearAllPoints()
+	LFGParentFrame.ListingTab:Point('TOPLEFT', LFGParentFrame, 'TOPRIGHT', 3 + E.Border, -E.Border)
+
 	-- "Old" bottom tabs are hidden by LFGVANILLA_SETTING_MODERN_STYLE
 
 	-- Listing

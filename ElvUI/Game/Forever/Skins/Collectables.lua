@@ -537,6 +537,17 @@ local function SkinWardrobeFrame()
 	hooksecurefunc(SetsCollectionFrame, 'SetItemFrameQuality', SetsFrame_SetItemFrameQuality)
 end
 
+local function CheckAndDisplayTabs()
+	local CollectionsJournal = _G.CollectionsJournal
+	for _, tab in next, CollectionsJournal.TabContainer.Tabs do
+		local _, relativeTo = tab:GetPoint()
+		if relativeTo == CollectionsJournal.TabContainer then -- first shown tab, the others chain below it
+			tab:ClearAllPoints()
+			tab:Point('TOPLEFT', CollectionsJournal, 'TOPRIGHT', 3 + E.Border, -E.Border)
+		end
+	end
+end
+
 local function SkinCollectionsFrames()
 	S:HandlePortraitFrame(_G.CollectionsJournal, true)
 	SkinWardrobeFrame()
@@ -544,6 +555,9 @@ local function SkinCollectionsFrames()
 	for _, tab in next, _G.CollectionsJournal.TabContainer.Tabs do
 		S:HandleLargeSideTab(tab)
 	end
+
+	hooksecurefunc('CollectionsJournal_CheckAndDisplayTabs', CheckAndDisplayTabs)
+	CheckAndDisplayTabs()
 
 	SkinMountFrame()
 	SkinPetFrame()

@@ -18,6 +18,9 @@ function S:Blizzard_InspectUI()
 		S:HandleLargeSideTab(tab)
 	end
 
+	InspectFrame.ModeTabs:ClearAllPoints()
+	InspectFrame.ModeTabs:Point('TOPLEFT', InspectFrame, 'TOPRIGHT', 3 + E.Border, -E.Border)
+
 	local InspectModelFrame = _G.InspectModelFrame
 	InspectModelFrame:StripTextures()
 	InspectModelFrame:CreateBackdrop()
