@@ -756,6 +756,11 @@ do
 	tinsert(killFrames, E.Modern and Minimap.ZoomOut or _G.MinimapZoomOut)
 	tinsert(killFrames, E.Modern and _G.MiniMapTracking or _G.MinimapToggleButton)
 
+	if E.Forever then
+		tinsert(killFrames, MinimapCluster.DielFrame)
+		tinsert(killFrames, _G.MinimapCompassTextureUnderlay)
+	end
+
 	function M:HideElements()
 		for _, frame in next, killFrames do
 			frame:Kill()
