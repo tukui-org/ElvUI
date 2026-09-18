@@ -35,6 +35,10 @@ local function HandleCategory(frame)
 	frame.backdrop:Size(150, 18)
 end
 
+local function ColoredProgressBar_SetFillWidth(bar, width)
+	bar.Fill:SetShown(width > 0)
+end
+
 -- ColoredProgressBarTemplate: unnamed background, a masked Fill and Text
 local function HandleColoredProgressBar(bar)
 	local background = bar:GetRegions()
@@ -42,16 +46,30 @@ local function HandleColoredProgressBar(bar)
 		background:SetTexture(E.ClearTexture)
 	end
 
-	bar.Fill:RemoveMaskTexture(bar.Mask)
 	bar.Text:FontTemplate()
 
 	bar:CreateBackdrop('Transparent')
 	bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
 	bar.backdrop:Point('BOTTOMRIGHT', bar, 'RIGHT', 1, -8)
+
+	bar.Fill:RemoveMaskTexture(bar.Mask)
+	bar.Fill:ClearAllPoints()
+	bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
+	bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
+
+	hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
 end
 
 local function UpdateTabLayout(frame)
 	S:LayoutLargeSideTabs(frame, frame.ModeTabs.Tabs)
+
+	for _, tab in next, frame.ModeTabs.Tabs do
+		if tab:IsShown() then
+			tab:ClearAllPoints()
+			tab:Point('TOPLEFT', frame, 'TOPRIGHT', 3, -1)
+			break
+		end
+	end
 end
 
 local function UpdateRightPaneToggleButton(frame)
@@ -59,10 +77,6 @@ local function UpdateRightPaneToggleButton(frame)
 	local rotation = S.ArrowRotation[frame:IsRightPaneCollapsed() and 'right' or 'left']
 	SetArrow(button:GetNormalTexture(), rotation)
 	SetArrow(button:GetPushedTexture(), rotation)
-end
-
-local function PaperDollItemSlotButtonUpdate(slot)
-	HandleHighlight(slot)
 end
 
 -- Blizzard re-applies atlas, size and rotation on every state change (show, hover, click)
@@ -75,7 +89,15 @@ local function PopoutButton_RefreshVisualState(button)
 
 	if not button.backdrop then
 		button:CreateBackdrop()
-		button.backdrop:SetInside(button, 1, 1)
+		button.backdrop:SetAllPoints()
+	end
+
+	if parent then
+		if direction == 'UP' or direction == 'DOWN' then
+			button:SetWidth(parent:GetWidth())
+		else
+			button:SetHeight(parent:GetHeight())
+		end
 	end
 
 	local rotation = S.ArrowRotation[strlower(direction)]
@@ -177,16 +199,38 @@ end
 
 local function EquipmentManagerPane_UpdateChild(child)
 	if child.icon and not child.IsSkinned then
-		S:HandleIcon(child.icon)
+		for _, region in next, { child:GetRegions() } do -- the card background and the icon frame are unnamed
+			local atlas = region:IsObjectType('Texture') and region:GetAtlas()
+			if atlas == 'UI-Character-Info-OutfitCard' or atlas == 'UI-Character-Info-OutfitIcon-Frame' then
+				region:SetTexture(E.ClearTexture)
+			end
+		end
+
+		child:CreateBackdrop('Transparent')
+		child.backdrop:Point('TOPLEFT')
+		child.backdrop:Point('BOTTOMRIGHT', -7, 0) -- the scroll bar overlaps the scroll box
+
+		S:HandleIcon(child.icon, true) -- after the row backdrop, so its border draws on top
+
+		for _, bar in next, { child.HighlightBar, child.SelectedBar } do
+			bar:ClearAllPoints()
+			bar:Point('TOPLEFT', child.icon.backdrop, 'TOPRIGHT', 0, -E.Border)
+			bar:Point('BOTTOMRIGHT', child.backdrop, 'BOTTOMRIGHT', -E.Border, E.Border)
+		end
 
 		child.HighlightBar:SetColorTexture(1, 1, 1, .25)
-		child.HighlightBar:SetDrawLayer('BACKGROUND')
-
 		child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
-		child.SelectedBar:SetDrawLayer('BACKGROUND')
 
 		child.IsSkinned = true
 	end
+end
+
+-- Blizzard sets the icon back to 36px on every init
+local function EquipmentManagerPane_InitButton(button)
+	button.icon:ClearAllPoints()
+	button.icon:Point('TOPLEFT', E.Border, -E.Border)
+	button.icon:Point('BOTTOMLEFT', E.Border, E.Border)
+	button.icon:Width(button:GetHeight() - (E.Border * 2))
 end
 
 local function EquipmentManagerPane_Update(frame)
@@ -199,8 +243,8 @@ local function GearManagerPopupFrame_OnShow(frame)
 	end
 end
 
--- Equipment Flyout
-local function EquipmentDisplayButton(button)
+-- Equipment Flyout: frame gets rebuilt on every update
+local function EquipmentDisplayButton(button, index)
 	if not button.isHooked then
 		button:SetNormalTexture(E.ClearTexture)
 		button:SetPushedTexture(E.ClearTexture)
@@ -212,6 +256,12 @@ local function EquipmentDisplayButton(button)
 
 		S:HandleIconBorder(button.IconBorder)
 
+		if (index - 1) % 5 == 0 then -- first button of a row, the others chain to it (37px rows with a 5px gap)
+			local spacing = E.Border + E.Spacing
+			button:ClearAllPoints()
+			button:Point('TOPLEFT', _G.EquipmentFlyoutFrame.buttonFrame, 'TOPLEFT', spacing, -spacing - (42 * ((index - 1) / 5)))
+		end
+
 		button.isHooked = true
 	end
 
@@ -221,27 +271,48 @@ local function EquipmentDisplayButton(button)
 end
 
 local function EquipmentUpdateItems()
-	local frame = _G.EquipmentFlyoutFrame.buttonFrame
+	local flyout = _G.EquipmentFlyoutFrame
+	local frame = flyout.buttonFrame
 	if not frame.template then
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 	end
 
-	local width, height = frame:GetSize()
-	frame:Size(width+3, height)
+	for i = 1, frame.numBGs do -- larger layouts add more slices of the flyout art
+		frame['bg'..i]:SetAlpha(0)
+	end
 
-	for _, button in next, _G.EquipmentFlyoutFrame.buttons do
-		EquipmentDisplayButton(button)
+	for i, button in next, flyout.buttons do
+		EquipmentDisplayButton(button, i)
+	end
+
+	-- 3px on the top and left, 3px on the bottom, none on the right
+	local spacing = E.Border + E.Spacing
+	local width, height = frame:GetSize()
+	frame:Size(width - 3 + (spacing * 2), height - 6 + (spacing * 2))
+
+	-- Blizzard anchors it 3px below the popout button, which is the height of the slot now
+	local slot = flyout.button
+	local anchor = slot.popoutButton or slot
+	local direction = slot.flyoutDirection
+	frame:ClearAllPoints()
+	if direction == 'LEFT' then
+		frame:Point('TOPRIGHT', anchor, 'TOPLEFT', -spacing, spacing)
+	elseif direction == 'UP' then
+		frame:Point('BOTTOMLEFT', anchor, 'TOPLEFT', -spacing, spacing)
+	elseif direction == 'DOWN' then
+		frame:Point('TOPLEFT', anchor, 'BOTTOMLEFT', -spacing, -spacing)
+	else
+		frame:Point('TOPLEFT', anchor, 'TOPRIGHT', spacing, spacing)
 	end
 end
 
 local function EquipmentUpdateNavigation()
-	local navi = _G.EquipmentFlyoutFrame.NavigationFrame
-	if not navi then return end
-
+	local flyout = _G.EquipmentFlyoutFrame
+	local navi = flyout.NavigationFrame
 	navi:ClearAllPoints()
-	navi:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
-	navi:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
+	navi:Point('TOPLEFT', flyout.buttonFrame, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
+	navi:Point('TOPRIGHT', flyout.buttonFrame, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
 
 	navi:StripTextures()
 	navi:SetTemplate('Transparent')
@@ -360,12 +431,7 @@ function S:Blizzard_UIPanels_Game()
 	CharacterFrame.LeftPaneHost:StripTextures()
 	CharacterFrame.LeftPaneHost:SetTemplate()
 
-	local RightPaneHost = CharacterFrame.RightPaneHost
-	RightPaneHost:StripTextures()
-	RightPaneHost:SetTemplate()
-	RightPaneHost.StoneBg:SetAlpha(0)
-
-	local divider = RightPaneHost:GetChildren()
+	local divider = CharacterFrame.RightPaneHost:GetChildren() -- unnamed frame on the left edge (The ugly divider strip)
 	if divider then
 		divider:StripTextures()
 	end
@@ -397,7 +463,7 @@ function S:Blizzard_UIPanels_Game()
 		end
 	end
 
-	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
+	hooksecurefunc('PaperDollItemSlotButton_Update', HandleHighlight)
 	hooksecurefunc('EquipmentFlyoutPopoutButton_RefreshVisualState', PopoutButton_RefreshVisualState)
 
 	_G.CharacterFramePortrait:Kill()
@@ -446,6 +512,7 @@ function S:Blizzard_UIPanels_Game()
 	EquipmentManagerPane.Border:Hide()
 	S:HandleTrimScrollBar(EquipmentManagerPane.ScrollBar)
 	hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
+	hooksecurefunc('PaperDollEquipmentManagerPane_InitButton', EquipmentManagerPane_InitButton)
 	S:HandleButton(EquipmentManagerPane.EquipSet, nil, nil, nil, true)
 	S:HandleButton(EquipmentManagerPane.SaveSet, nil, nil, nil, true)
 	S:HandleButton(EquipmentManagerPane.NewSet, nil, nil, nil, true, nil, nil, nil, true)
@@ -456,12 +523,12 @@ function S:Blizzard_UIPanels_Game()
 	end
 
 	-- Equipment Flyout
-	_G.EquipmentFlyoutFrameHighlight:StripTextures()
-	_G.EquipmentFlyoutFrameButtons.bg1:SetAlpha(0)
-	_G.EquipmentFlyoutFrameButtons:DisableDrawLayer('ARTWORK')
+	local EquipmentFlyoutFrame = _G.EquipmentFlyoutFrame
+	EquipmentFlyoutFrame.Highlight:StripTextures()
+	EquipmentFlyoutFrame.buttonFrame:DisableDrawLayer('ARTWORK')
 
-	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.PrevButton)
-	S:HandleNextPrevButton(_G.EquipmentFlyoutFrame.NavigationFrame.NextButton)
+	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton)
+	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
 	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
 	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
