@@ -8,12 +8,12 @@ local hooksecurefunc = hooksecurefunc
 local function HandleButton(button)
 	if button.IsSkinned then return end
 
-	if button.Border then
-		button.Border:SetAlpha(0)
-	end
-
 	if button.Icon then
-		S:HandleIcon(button.Icon)
+		S:HandleIcon(button.Icon, true)
+
+		if button.Border then
+			S:HandleIconBorder(button.Border, button.Icon.backdrop)
+		end
 	end
 
 	button.IsSkinned = true
@@ -69,6 +69,7 @@ function S:Blizzard_DelvesCompanionConfiguration()
 	local CompanionSlots = CompanionConfiguration.CompanionSlots
 	if CompanionSlots then
 		HandleOptionSlot(CompanionSlots.CompanionCombatRoleSlot, true)
+		HandleOptionSlot(CompanionSlots.CompanionFlavorSlot)
 		HandleOptionSlot(CompanionSlots.CompanionUtilityTrinketSlot)
 		HandleOptionSlot(CompanionSlots.CompanionCombatTrinketSlot)
 	end

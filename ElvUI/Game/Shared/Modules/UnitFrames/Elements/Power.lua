@@ -258,7 +258,7 @@ end
 
 function UF:GetDisplayPower(unit)
 	local barInfo = GetUnitPowerBarInfo(unit)
-	if barInfo then
+	if barInfo and barInfo.showOnRaid then
 		return POWERTYPE_ALTERNATE, barInfo.minPower
 	end
 end

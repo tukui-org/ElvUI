@@ -2241,45 +2241,37 @@ do -- Clique support for registering clicks
 	end
 end
 
-do
-	local units = {} -- track units
-	function UF:Configure_UnitAuras(frame)
-		local unit = frame.__unit -- update when needed
-		if not unit or (units[frame] == unit) then return end
+function UF:Configure_UnitAuras(frame, unit)
+	E:Auras_GroupUnit(frame.Auras, unit)
+	E:Auras_GroupUnit(frame.Buffs, unit)
+	E:Auras_GroupUnit(frame.Debuffs, unit)
+	E:Auras_GroupUnit(frame.AuraBars, unit)
+	E:Auras_GroupUnit(frame.AuraWatch, unit)
 
-		units[frame] = unit
-
-		E:Auras_GroupUnit(frame.Auras, unit)
-		E:Auras_GroupUnit(frame.Buffs, unit)
-		E:Auras_GroupUnit(frame.Debuffs, unit)
-		E:Auras_GroupUnit(frame.AuraBars, unit)
-		E:Auras_GroupUnit(frame.AuraWatch, unit)
-
-		local highlight = frame.AuraHighlight
-		if highlight then
-			E:Auras_GroupUnit(highlight.good, unit)
-			E:Auras_GroupUnit(highlight.bad, unit)
-		end
+	local highlight = frame.AuraHighlight
+	if highlight then
+		E:Auras_GroupUnit(highlight.good, unit)
+		E:Auras_GroupUnit(highlight.bad, unit)
 	end
 end
 
 function UF:UpdateAllElements(event)
 	if event == 'OnAttributeChanged' then
-		UF:Configure_UnitAuras(self)
+		UF:Configure_UnitAuras(self, self.__unit)
 	end
 end
 
-function UF:Auras_ToggleContainer(frame, shown)
-	E:Auras_ToggleEnable(frame.Auras, shown)
-	E:Auras_ToggleEnable(frame.Buffs, shown)
-	E:Auras_ToggleEnable(frame.Debuffs, shown)
-	E:Auras_ToggleEnable(frame.AuraBars, shown)
-	E:Auras_ToggleEnable(frame.AuraWatch, shown)
+function UF:Auras_ToggleContainer(frame, unit, shown)
+	E:Auras_ToggleActive(frame.Auras, unit, shown)
+	E:Auras_ToggleActive(frame.Buffs, unit, shown)
+	E:Auras_ToggleActive(frame.Debuffs, unit, shown)
+	E:Auras_ToggleActive(frame.AuraBars, unit, shown)
+	E:Auras_ToggleActive(frame.AuraWatch, unit, shown)
 
 	local highlight = frame.AuraHighlight
 	if highlight then
-		E:Auras_ToggleEnable(highlight.good, shown)
-		E:Auras_ToggleEnable(highlight.bad, shown)
+		E:Auras_ToggleActive(highlight.good, unit, shown)
+		E:Auras_ToggleActive(highlight.bad, unit, shown)
 	end
 end
 
@@ -2288,7 +2280,7 @@ function UF:Show()
 
 	self.hasAurasShown = true
 
-	UF:Auras_ToggleContainer(self, true)
+	UF:Auras_ToggleContainer(self, self.__unit, true)
 end
 
 function UF:Hide()
@@ -2296,7 +2288,7 @@ function UF:Hide()
 
 	self.hasAurasShown = false
 
-	UF:Auras_ToggleContainer(self, false)
+	UF:Auras_ToggleContainer(self, self.__unit, false)
 end
 
 function UF:AfterStyleCallback()

@@ -252,7 +252,7 @@ function S:WorldMapFrame()
 	if DetailsBg then
 		DetailsBg:ClearAllPoints()
 		DetailsBg:Point('TOPLEFT', 0, -41)
-		DetailsBg:Point('BOTTOMRIGHT', RewardsContainer.RewardsFrame)
+		DetailsBg:Point('BOTTOMRIGHT', RewardsContainer)
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
