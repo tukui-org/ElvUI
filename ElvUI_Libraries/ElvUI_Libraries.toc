@@ -19,9 +19,9 @@
 ## Category-zhTW: UI重構
 ## Group: ElvUI_Libraries
 
+Game\load_mists.xml [AllowLoadGameType mists]
 Game\load_mainline.xml [AllowLoadGameType standard]
 Game\load_forever.xml [AllowLoadGameType camelot][ExcludeLoadGameType standard, classic]
-Game\load_mists.xml [AllowLoadGameType mists]
 Game\load_wrath.xml [AllowLoadGameType wrath]
 Game\load_tbc.xml [AllowLoadGameType tbc]
 Game\load_classic.xml [AllowLoadGameType vanilla]
