@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local next = next
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
 -- /run GroupFinderVanillaStyle_LoadUI() _G.LFGParentFrame:Show()
@@ -40,6 +40,29 @@ local function CategorySelectionAddButton(frame, btnIndex)
 	button.HighlightTexture:SetInside()
 
 	button.IsSkinned = true
+end
+
+-- Who List rows (LFGWhoListButtonTemplate)
+local function HandleWhoButton(button)
+	if button.IsSkinned then return end
+
+	button.Background:SetAlpha(0)
+	button:CreateBackdrop('Transparent')
+	button.backdrop:SetInside(button, 0, 1)
+
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	button.Selected:SetColorTexture(r, g, b, .25)
+	button.Selected:SetInside(button.backdrop)
+
+	local highlight = button:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, .25)
+	highlight:SetInside(button.backdrop)
+
+	button.IsSkinned = true
+end
+
+local function WhoList_Update(frame)
+	frame:ForEachFrame(HandleWhoButton)
 end
 
 function S:Blizzard_GroupFinder_VanillaStyle()
@@ -95,15 +118,21 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	end
 
 	-- Who List
-	-- ToDo: classic_beta
-	-- LFGWhoListButtonTemplate rows: Background, Selected, HighlightTexture (common-button-list-large atlases)
 	local LFGWhoListFrame = _G.LFGWhoListFrame
 	S:HandlePortraitFrame(LFGWhoListFrame)
 	S:HandleTrimScrollBar(LFGWhoListFrame.ScrollBar)
-	S:HandleButton(LFGWhoListFrame.WhoSearch)
+	hooksecurefunc(LFGWhoListFrame.ScrollBox, 'Update', WhoList_Update)
 
-	LFGWhoListFrame.EditBox.Backdrop:StripTextures()
-	LFGWhoListFrame.EditBox.Backdrop:CreateBackdrop()
+	local EditBox = LFGWhoListFrame.EditBox
+	EditBox.Backdrop:StripTextures()
+	EditBox.Backdrop:CreateBackdrop()
+
+	local WhoSearch = LFGWhoListFrame.WhoSearch
+	S:HandleButton(WhoSearch)
+	WhoSearch:ClearAllPoints()
+	WhoSearch:Point('TOPLEFT', EditBox.Backdrop.backdrop, 'TOPRIGHT', 3, 0)
+	WhoSearch:Point('BOTTOMLEFT', EditBox.Backdrop.backdrop, 'BOTTOMRIGHT', 3, 0)
+	WhoSearch.Icon:Size(16)
 end
 
 function S:RolePollPopup()
