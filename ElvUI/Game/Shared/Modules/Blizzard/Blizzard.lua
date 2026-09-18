@@ -237,8 +237,8 @@ function BL:Initialize()
 		BL:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
 	end
 
-	if E.Forever then -- Shard Transfer Frame
-		local ShardFrame = _G.ShardTransferImminentFrame
+	local ShardFrame = _G.ShardTransferImminentFrame
+	if ShardFrame then
 		ShardFrame:ClearAllPoints()
 		ShardFrame:Point('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 30, 10) -- x offset for the minimize button anchored to its left
 		E:CreateMover(ShardFrame, 'ShardTransferMover', L["Shard Transfer Frame"], nil, nil, PostMove)
