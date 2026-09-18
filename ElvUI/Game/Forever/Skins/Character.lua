@@ -55,12 +55,15 @@ end
 
 local function EquipmentManagerPane_UpdateChild(child)
 	if child.icon and not child.IsSkinned then
+		S:HandleIcon(child.icon)
+
 		child.BgTop:SetTexture(E.ClearTexture)
 		child.BgMiddle:SetTexture(E.ClearTexture)
 		child.BgBottom:SetTexture(E.ClearTexture)
-		S:HandleIcon(child.icon)
+
 		child.HighlightBar:SetColorTexture(1, 1, 1, .25)
 		child.HighlightBar:SetDrawLayer('BACKGROUND')
+
 		child.SelectedBar:SetColorTexture(0.8, 0.8, 0.8, .25)
 		child.SelectedBar:SetDrawLayer('BACKGROUND')
 
@@ -320,8 +323,10 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Equipement Manager
 	hooksecurefunc(_G.PaperDollFrame.EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
-	S:HandleButton(_G.PaperDollFrameEquipSet)
-	S:HandleButton(_G.PaperDollFrameSaveSet)
+	S:HandleButton(_G.PaperDollFrameEquipSet, nil, nil, nil, true)
+	S:HandleButton(_G.PaperDollFrameSaveSet, nil, nil, nil, true)
+	S:HandleButton(_G.PaperDollFrameNewSet, nil, nil, nil, true)
+	_G.PaperDollFrameNewSet.StateTexture:SetAlpha(0)
 
 	if _G.GearManagerPopupFrame then -- New icon selection
 		_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
