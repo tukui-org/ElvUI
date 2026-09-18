@@ -1,18 +1,17 @@
-## Interface: 120100, 16001, 50504, 38002, 20506, 11509
-
-## Title: |cff1784d1ElvUI|r |cfd9b9b9bLibraries|r
-
-## Notes: Libraries that power ElvUI
+## Interface: 11509, 16001, 20506, 38002, 50504, 120100
+## Version: @project-version@
+## Author: Elv, Simpy
 
 ## OptionalDeps: LibHealComm-4.0 [AllowLoadGameType classic]
 
-## Author: Elv, Simpy
-## Version: @project-version@
+## Notes: Libraries that power ElvUI
+## Title: |cff1784d1ElvUI|r |cfd9b9b9bLibraries|r
 
 ## X-oUF: ElvUF
 
 ## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 
+## Group: ElvUI_Libraries
 ## Category-enUS: UI Overhaul
 ## Category-deDE: UI-Überholung
 ## Category-esES: Renovación de la UI
@@ -24,8 +23,6 @@
 ## Category-koKR: UI 개편
 ## Category-zhCN: UI重构
 ## Category-zhTW: UI重構
-
-## Group: ElvUI_Libraries
 
 Game\load_mists.xml [AllowLoadGameType mists]
 Game\load_mainline.xml [AllowLoadGameType standard]
