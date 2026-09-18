@@ -77,8 +77,10 @@ local function HandleSchematicForm(form)
 	form.backdrop:SetInside()
 
 	-- Blizzard re-applies the atlas and shows these on profession change
-	form.Background:SetAlpha(0)
-	form.MinimalBackground:SetAlpha(0)
+	form.Background:SetInside(form.backdrop)
+	form.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
+	form.Background:SetAlpha(0.6)
+	form.MinimalBackground:SetAlpha(0.6)
 
 	S:HandleCheckBox(form.TrackRecipeCheckbox)
 	form.TrackRecipeCheckbox:Size(24)
@@ -173,6 +175,11 @@ end
 local function HandleRankBar(bar)
 	bar.Border:Hide()
 	bar.Background:Hide()
+
+	if bar.overrideWidth then -- the book cards size the bar but leave the Fill at 441
+		bar.Fill:SetWidth(bar.overrideWidth)
+	end
+
 	bar.Fill:CreateBackdrop()
 	bar.Rank.Text:FontTemplate()
 
@@ -240,6 +247,7 @@ end
 
 -- BookPage profession spell buttons (ProfessionButtonTemplate)
 local function HandleProfessionButton(button)
+	button:OffsetFrameLevel(1) -- backdrops sit a level below, the card art would cover them
 	button.IconTexture:RemoveMaskTexture(button.OutlineMask)
 	button.IconTextureOverlay:SetAlpha(0)
 	button.IconTexture:SetInside()
@@ -254,15 +262,12 @@ local function HandleProfessionButton(button)
 end
 
 local function HandleBookProfession(frame)
-	frame:CreateBackdrop('Transparent')
-	frame.backdrop:SetInside(frame, 4, 3) -- Blizzard overlaps the cards by 4-6px
-	frame.Background:SetAlpha(0)
-
 	HandleRankBar(frame.StatusBar)
 
 	local unlearn = frame.UnlearnButton
 	if unlearn then
 		S:HandleCloseButton(unlearn)
+		unlearn:OffsetFrameLevel(1)
 		unlearn:CreateBackdrop()
 		unlearn:SetHitRectInsets(0, 0, 0, 0)
 
@@ -381,8 +386,6 @@ function S:Blizzard_Professions()
 	for _, frame in next, { BookContent.PrimaryProfession1, BookContent.PrimaryProfession2, BookContent.SecondaryProfession1, BookContent.SecondaryProfession2, BookContent.SecondaryProfession3 } do
 		HandleBookProfession(frame)
 	end
-
-	BookContent.PrimaryProfession1.backdrop:Point('BOTTOMRIGHT', BookContent.PrimaryProfession1, 'BOTTOMRIGHT', -4, 4)
 end
 
 S:AddCallbackForAddon('Blizzard_Professions')
