@@ -207,12 +207,7 @@ end
 
 -- RecipeList category rows (ProfessionsRecipeListCategoryTemplate)
 local function HandleRecipeCategory(button)
-	for _, region in next, { button:GetRegions() } do
-		if region:IsObjectType('Texture') then
-			region:SetTexture(E.ClearTexture)
-		end
-	end
-
+	button:StripTextures()
 	button:CreateBackdrop('Transparent')
 	button.backdrop:SetInside(button, 0, 1)
 
