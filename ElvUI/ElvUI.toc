@@ -14,7 +14,7 @@
 ## Interface: 120100, 16001, 50504, 38002, 20506, 11509
 ## X-Tukui-ProjectID: -2
 ## X-Tukui-ProjectFolders: ElvUI, ElvUI_Libraries, ElvUI_Options
-## AddonCompartmentFunc: ElvUI_AddonCompartmentFunc [AllowLoadGameType standard, camelot][ExcludeLoadGameType classic]
+## AddonCompartmentFunc: ElvUI_AddonCompartmentFunc
 ## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 ## Category-enUS: UI Overhaul
 ## Category-deDE: UI-Überholung
