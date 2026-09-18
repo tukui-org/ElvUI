@@ -160,6 +160,7 @@ local function HandleStatsPane(pane)
 	end
 
 	S:HandleTrimScrollBar(pane.ScrollBar)
+	pane.ScrollBox:ClearEdgeFade()
 	hooksecurefunc(pane.ScrollBox, 'Update', UpdateStats)
 end
 
@@ -361,7 +362,7 @@ function S:Blizzard_UIPanels_Game()
 
 	local RightPaneHost = CharacterFrame.RightPaneHost
 	RightPaneHost:StripTextures()
-	RightPaneHost:SetTemplate('Transparent')
+	RightPaneHost:SetTemplate()
 	RightPaneHost.StoneBg:SetAlpha(0)
 
 	local divider = RightPaneHost:GetChildren()
@@ -415,8 +416,8 @@ function S:Blizzard_UIPanels_Game()
 	CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5) -- re-add the overlay which was just stripped
 
 	CharacterModelScene:CreateBackdrop()
-	CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-	CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+	CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and 1 or 0, E.PixelMode and 0 or 1)
+	CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and 0 or -1)
 
 	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
 
@@ -447,7 +448,7 @@ function S:Blizzard_UIPanels_Game()
 	hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
 	S:HandleButton(EquipmentManagerPane.EquipSet, nil, nil, nil, true)
 	S:HandleButton(EquipmentManagerPane.SaveSet, nil, nil, nil, true)
-	S:HandleButton(EquipmentManagerPane.NewSet, nil, nil, nil, true)
+	S:HandleButton(EquipmentManagerPane.NewSet, nil, nil, nil, true, nil, nil, nil, true)
 	EquipmentManagerPane.NewSet.StateTexture:SetAlpha(0)
 
 	if _G.GearManagerPopupFrame then -- New icon selection
