@@ -189,6 +189,51 @@ local function HandleSchematicInit(form)
 	end
 end
 
+local function HandleRankBar(bar)
+	bar.Border:Hide()
+	bar.Background:Hide()
+	bar.Fill:CreateBackdrop()
+	bar.Rank.Text:FontTemplate()
+end
+
+local function ProfessionButton_UpdateButton(button)
+	button.highlightTexture:SetColorTexture(1, 1, 1, .25)
+
+	if E.private.skins.parchmentRemoverEnable then
+		button.spellString:SetTextColor(1, 1, 1)
+	end
+end
+
+-- BookPage profession spell buttons (ProfessionButtonTemplate)
+local function HandleProfessionButton(button)
+	button.IconTexture:RemoveMaskTexture(button.OutlineMask)
+	button.IconTextureOverlay:SetAlpha(0)
+	button.IconTexture:SetInside()
+	S:HandleIcon(button.IconTexture, true)
+	button.highlightTexture:SetInside(button.IconTexture.backdrop)
+
+	if button.cooldown then
+		E:RegisterCooldown(button.cooldown)
+	end
+
+	hooksecurefunc(button, 'UpdateButton', ProfessionButton_UpdateButton)
+end
+
+local function HandleBookProfession(frame)
+	frame:CreateBackdrop('Transparent')
+
+	-- FormatProfession resets on update, alpha works, hide won't
+	if E.private.skins.parchmentRemoverEnable then
+		frame.Background:SetAlpha(0)
+	end
+
+	HandleRankBar(frame.StatusBar)
+
+	for _, button in next, frame.spellButtons do
+		HandleProfessionButton(button)
+	end
+end
+
 local function HandleSchematicForm(form, noParchment)
 	if professionFlyoutSchematics[form] == nil then
 		professionFlyoutSchematics[form] = not not noParchment
@@ -389,9 +434,6 @@ function S:Blizzard_Professions()
 		HandleSchematicForm(InspectRecipe.SchematicForm, true)
 	end
 
-	-- ToDo: No longer a function
-	-- hooksecurefunc('ToggleProfessionsItemFlyout', HandleProfessionsItemFlyout)
-
 	if E.global.general.disableTutorialButtons then
 		CraftingPage.TutorialButton:Kill()
 	else
@@ -399,10 +441,7 @@ function S:Blizzard_Professions()
 	end
 
 	local CraftingRankBar = CraftingPage.RankBar
-	CraftingRankBar.Border:Hide()
-	CraftingRankBar.Background:Hide()
-	CraftingRankBar.Fill:CreateBackdrop()
-	CraftingRankBar.Rank.Text:FontTemplate()
+	HandleRankBar(CraftingRankBar)
 
 	if CraftingRankBar.ExpansionDropdownButton then
 		local arrow = CraftingRankBar.ExpansionDropdownButton:CreateTexture(nil, 'ARTWORK')
@@ -443,7 +482,12 @@ function S:Blizzard_Professions()
 		GuildFrame.Container:CreateBackdrop('Transparent')
 	end
 
-	-- ToDo: classic_beta (BookPage)
+	-- BookPage (ProfessionsBookFrameTemplate)
+	local BookContent = ProfessionsFrame.BookPage.ProfessionsContentFrame
+	for _, frame in next, { BookContent.PrimaryProfession1, BookContent.PrimaryProfession2, BookContent.SecondaryProfession1, BookContent.SecondaryProfession2, BookContent.SecondaryProfession3 } do
+		HandleBookProfession(frame)
+	end
+
 	S:HandleLargeSideTab(ProfessionsFrame.ProfessionsOverviewTab)
 	for _, tab in next, ProfessionsFrame.rightProfessionTabs do
 		S:HandleLargeSideTab(tab)
