@@ -771,6 +771,10 @@ function M:Initialize()
 		if container then
 			container:SetScale(1) -- Setting that could get set in Blizzard Edit Mode
 
+			if container.PlayerCoords then
+				container.PlayerCoords:Kill()
+			end
+
 			hooksecurefunc(container, 'SetScale', M.ContainerScale)
 		end
 	end
