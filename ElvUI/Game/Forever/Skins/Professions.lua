@@ -416,9 +416,21 @@ function S:Blizzard_Professions()
 
 	local LinkButton = CraftingPage.LinkButton
 	if LinkButton then
-		LinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
-		LinkButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
-		LinkButton:GetHighlightTexture():Kill()
+		local normalTexture = LinkButton:GetNormalTexture()
+		if normalTexture then
+			normalTexture:SetTexCoord(0.25, 0.7, 0.37, 0.75)
+		end
+
+		local pushedTexture = LinkButton:GetPushedTexture()
+		if pushedTexture then
+			pushedTexture:SetTexCoord(0.25, 0.7, 0.45, 0.8)
+		end
+
+		local highlightTexture = LinkButton:GetHighlightTexture()
+		if highlightTexture then
+			highlightTexture:Kill()
+		end
+
 		LinkButton:SetTemplate()
 		LinkButton:Size(17, 14)
 	end
