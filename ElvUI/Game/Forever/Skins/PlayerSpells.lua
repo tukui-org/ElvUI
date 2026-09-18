@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function HandleTalentFrameDialog(dialog)
@@ -22,6 +23,54 @@ local function HandleTalentFrameDialog(dialog)
 
 		nameControlEditbox.backdrop:Point('TOPLEFT', -5, -10)
 		nameControlEditbox.backdrop:Point('BOTTOMRIGHT', 5, 10)
+	end
+end
+
+local function HandleTreeHeaders(frame)
+	for _, header in next, frame.treeHeaders do
+		if not header.IsSkinned then
+			header.Divider:SetAlpha(0)
+			header.Name:FontTemplate(nil, 16)
+			header.Text:FontTemplate()
+
+			header.IsSkinned = true
+		end
+	end
+end
+
+local function CategoryTabSelected(tab, selected)
+	if selected then
+		tab.backdrop:SetBackdropBorderColor(1, .8, .1)
+	else
+		local r, g, b = unpack(E.media.bordercolor)
+		tab.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+end
+
+-- Uses square icon tabs (TabSystemButtonArtMixin:SetSquareMode)
+local function HandleCategoryTabs(tabSystem)
+	for _, tab in next, { tabSystem:GetChildren() } do
+		if not tab.backdrop then
+			local icon = tab.Icon
+			icon:SetTexCoords()
+			icon:RemoveMaskTexture(tab.IconMask)
+
+			tab.SquareBackground:SetAlpha(0)
+			tab.SquareBackgroundActive:SetAlpha(0)
+			tab.SquareBackgroundActiveGlow:SetAlpha(0)
+
+			tab:CreateBackdrop()
+			tab.backdrop:SetOutside(icon)
+
+			tab:SetHighlightTexture(E.media.blankTex)
+
+			local highlight = tab:GetHighlightTexture()
+			highlight:SetVertexColor(1, 1, 1, .25)
+			highlight:SetAllPoints(icon)
+
+			hooksecurefunc(tab, 'SetTabSelected', CategoryTabSelected)
+			CategoryTabSelected(tab, tab.isSelected)
+		end
 	end
 end
 
@@ -51,13 +100,31 @@ function S:Blizzard_PlayerSpells()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
 	S:HandlePortraitFrame(PlayerSpellsFrame)
 
-	-- ToDo: classic_beta
-	-- TabSystem (ClassTalentsFrameTabTemplate), Left, Middle, Right, ActiveSpec, ResetButton, UndoButton, ClassCurrencyDisplay (UnspentLabel)
+	-- TalentsFrame
 	local TalentsFrame = PlayerSpellsFrame.TalentsFrame
+	TalentsFrame.Background:SetAlpha(0)
+	TalentsFrame.BackgroundBorder:SetAlpha(0)
+
 	S:HandleButton(TalentsFrame.ApplyButton)
 	S:HandleDropDownBox(TalentsFrame.LoadSystem.Dropdown)
 
 	S:HandleButton(TalentsFrame.InspectCopyButton)
+	S:HandleButton(TalentsFrame.ActiveSpec.ActivateButton)
+
+	local CurrencyDisplay = TalentsFrame.ClassCurrencyDisplay
+	CurrencyDisplay.Border:SetAlpha(0)
+	CurrencyDisplay.CurrentAmountContainer:CreateBackdrop('Transparent')
+	CurrencyDisplay.UnspentLabel:FontTemplate(nil, 14)
+	CurrencyDisplay.UnspentLabel:ClearAllPoints()
+	CurrencyDisplay.UnspentLabel:Point('RIGHT', CurrencyDisplay.CurrentAmountContainer, 'LEFT', -6, 0)
+	CurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
+
+	-- Primary / Secondary spec tabs
+	for _, tab in next, { TalentsFrame.TabSystem:GetChildren() } do
+		S:HandleTab(tab)
+	end
+
+	hooksecurefunc(TalentsFrame, 'RefreshTreeHeaders', HandleTreeHeaders)
 
 	S:HandleEditBox(TalentsFrame.SearchBox)
 	TalentsFrame.SearchBox.backdrop:Point('TOPLEFT', -4, -5)
@@ -128,6 +195,13 @@ function S:Blizzard_PlayerSpells()
 	if SpellBookFrame then
 		S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
 		S:HandleEditBox(SpellBookFrame.SearchBox)
+		SpellBookFrame.SearchBox:Height(20)
+		S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
+		SpellBookFrame.SettingsDropdown:SetTemplate()
+		SpellBookFrame.SettingsDropdown:ClearAllPoints()
+		SpellBookFrame.SettingsDropdown:Point('TOPRIGHT', SpellBookFrame, 'TOPRIGHT', -30, -23)
+		SpellBookFrame.SearchBox:ClearAllPoints()
+		SpellBookFrame.SearchBox:Point('RIGHT', SpellBookFrame.SettingsDropdown, 'LEFT', -5, 0)
 
 		if SpellBookFrame.TopBar then
 			SpellBookFrame.TopBar:Hide()
@@ -143,9 +217,8 @@ function S:Blizzard_PlayerSpells()
 			SpellBookFrame.HelpPlateButton.Ring:Hide()
 		end
 
-		for _, tab in next, { SpellBookFrame.CategoryTabSystem:GetChildren() } do
-			S:HandleTab(tab)
-		end
+		HandleCategoryTabs(SpellBookFrame.CategoryTabSystem)
+		hooksecurefunc(SpellBookFrame.CategoryTabSystem, 'AddTab', HandleCategoryTabs)
 
 		local PagedSpellsFrame = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame
 		if PagedSpellsFrame then
