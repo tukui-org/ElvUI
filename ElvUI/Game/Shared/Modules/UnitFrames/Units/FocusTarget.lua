@@ -16,6 +16,9 @@ function UF:Construct_FocusTargetFrame(frame)
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	if E.Retail then
+		frame.PingIndicator = UF:Construct_PingIndicator(frame)
+	end
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.MouseGlow = UF:Construct_MouseGlow(frame)
 	frame.TargetGlow = UF:Construct_TargetGlow(frame)
