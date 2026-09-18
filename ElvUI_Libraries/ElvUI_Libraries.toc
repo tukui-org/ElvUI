@@ -2,7 +2,8 @@
 ## Notes: Libraries that power ElvUI
 ## Author: Elv, Simpy
 ## Version: @project-version@
-## Interface: 120100
+## Interface: 120100, 16001, 50504, 38002, 20506, 11509
+## OptionalDeps: LibHealComm-4.0 [AllowLoadGameType classic]
 ## X-oUF: ElvUF
 ## IconTexture: Interface\AddOns\ElvUI\Game\Shared\Media\Textures\LogoAddon
 ## Category-enUS: UI Overhaul
@@ -18,4 +19,9 @@
 ## Category-zhTW: UI重構
 ## Group: ElvUI_Libraries
 
-Game\load_mainline.xml
+Game\load_mainline.xml [AllowLoadGameType standard]
+Game\load_forever.xml [AllowLoadGameType camelot][ExcludeLoadGameType standard, classic]
+Game\load_mists.xml [AllowLoadGameType mists]
+Game\load_wrath.xml [AllowLoadGameType wrath]
+Game\load_tbc.xml [AllowLoadGameType tbc]
+Game\load_classic.xml [AllowLoadGameType vanilla]
