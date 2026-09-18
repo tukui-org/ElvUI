@@ -17,6 +17,7 @@ local function InitActivityCheckButton(button)
 	local disabled = checkButton:GetDisabledCheckedTexture():GetTexture()
 
 	S:HandleCheckBox(checkButton, nil, true)
+	checkButton:Size(28)
 
 	checkButton:SetCheckedTexture(checked)
 	checkButton:SetDisabledCheckedTexture(disabled)
@@ -108,10 +109,22 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 
 	S:HandleButton(LFGBrowseFrame.SendMessageButton)
 	S:HandleButton(LFGBrowseFrame.GroupInviteButton)
-	S:HandleButton(LFGBrowseFrame.RefreshButton)
 	S:HandleDropDownBox(LFGBrowseFrame.CategoryDropdown, 140)
-	S:HandleDropDownBox(LFGBrowseFrame.ActivityDropdown, 180)
-	S:HandleCloseButton(LFGBrowseFrame.ActivityDropdown.ResetButton)
+
+	local ActivityDropdown = LFGBrowseFrame.ActivityDropdown
+	S:HandleDropDownBox(ActivityDropdown, 180)
+	S:HandleCloseButton(ActivityDropdown.ResetButton)
+
+	local RefreshButton = LFGBrowseFrame.RefreshButton
+	S:HandleButton(RefreshButton)
+	RefreshButton:Size(21) -- dropdown height minus the backdrop insets
+	RefreshButton:ClearAllPoints()
+	RefreshButton:Point('LEFT', ActivityDropdown.backdrop, 'RIGHT', 3, 0)
+	RefreshButton.Icon:Point('CENTER')
+
+	local OptionsButton = LFGBrowseFrame.OptionsButton
+	OptionsButton:ClearAllPoints()
+	OptionsButton:Point('LEFT', RefreshButton, 'RIGHT', 4, 0)
 
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.LFGBrowseSearchEntryTooltip)
