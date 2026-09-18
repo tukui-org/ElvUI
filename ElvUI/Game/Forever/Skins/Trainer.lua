@@ -5,12 +5,20 @@ local _G = _G
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
--- ToDo: classic_beta
--- category headers: TrainerUICategoryTemplate (Label, LeftPiece, CenterPiece, RightPiece, CollapseIcon, CollapseIconAlphaAdd)
-local function ClassTrainerScrollUpdateChild(button)
-	if not button.icon then return end -- category header
+-- TrainerUICategoryTemplate, keep the Blizzard plus / minus
+local function HandleCategory(button)
+	button.LeftPiece:SetAlpha(0)
+	button.CenterPiece:SetAlpha(0)
+	button.RightPiece:SetAlpha(0)
 
-	if not button.IsSkinned then
+	button:CreateBackdrop('Transparent')
+	button.backdrop:SetInside(button, 0, 1)
+end
+
+local function ClassTrainerScrollUpdateChild(button)
+	if button.IsSkinned then return end
+
+	if button.icon then
 		S:HandleIcon(button.icon, true)
 		button:CreateBackdrop('Transparent')
 		button.backdrop:Point('TOPLEFT', button.icon, 'TOPRIGHT', 1, 0)
@@ -28,9 +36,11 @@ local function ClassTrainerScrollUpdateChild(button)
 		button.selectedTex:SetInside(button.backdrop)
 		local r, g, b = unpack(E.media.rgbvaluecolor)
 		button.selectedTex:SetColorTexture(r, g, b, .25)
-
-		button.IsSkinned = true
+	else
+		HandleCategory(button)
 	end
+
+	button.IsSkinned = true
 end
 
 local function ClassTrainerScrollUpdate(frame)
