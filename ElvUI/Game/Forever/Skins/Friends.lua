@@ -331,6 +331,8 @@ function S:FriendsFrame()
 	S:HandleEditBox(broadcastEdit)
 	S:HandleEditBox(_G.AddFriendNameEditBox)
 	_G.AddFriendFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(_G.AddFriendFrame.CloseButton)
+	S:HandleButton(_G.AddFriendInfoFrame.OkayButton)
 
 	local alliesFrame = _G.RecentAlliesFrame
 	local recentAllies = alliesFrame and alliesFrame.List
