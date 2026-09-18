@@ -81,11 +81,11 @@ if E.Modern then
 		tinsert(menuList, {text = _G.BLIZZARD_STORE, microOffset = 'StoreMicroButton', func = function() _G.StoreMicroButton:Click() end })
 	end
 
-	if IsHousingServiceEnabled and IsHousingServiceEnabled() then
-		tinsert(menuList, {text = _G.HOUSING_MICRO_BUTTON, microOffset = 'HousingMicroButton', func = function() _G.HousingFramesUtil.ToggleHousingDashboard() end, icon = 7252953, cropIcon = 5 }) -- TEMP ICON
-	end
-
 	if E.Retail then
+		if IsHousingServiceEnabled and IsHousingServiceEnabled() then
+			tinsert(menuList, {text = _G.HOUSING_MICRO_BUTTON, microOffset = 'HousingMicroButton', func = function() _G.HousingFramesUtil.ToggleHousingDashboard() end, icon = 7252953, cropIcon = 5 }) -- TEMP ICON
+		end
+
 		tinsert(menuList, {text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, microOffset = 'QuestLogMicroButton', func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
 	end
 
