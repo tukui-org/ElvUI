@@ -27,13 +27,20 @@ local function HandleCriteria(criteria)
 end
 
 local function Challenge_DisplayObjectives(button)
-	for criteria in button:GetObjectiveFrame().criteriaPool:EnumerateActive() do
-		HandleCriteria(criteria)
+	local frame = button:GetObjectiveFrame()
+	local pool = frame and frame.criteriaPool
+	if pool then
+		for criteria in pool:EnumerateActive() do
+			HandleCriteria(criteria)
+		end
 	end
 end
 
 local function SelectedOverlay_SetShown(overlay, shown)
-	local backdrop = overlay:GetParent().backdrop
+	local parent = overlay:GetParent()
+	local backdrop = parent and parent.backdrop
+	if not backdrop then return end
+
 	if shown then
 		backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
@@ -107,8 +114,6 @@ function S:Blizzard_LegacySystem()
 
 	S:LayoutLargeSideTabs(LegacySystemFrame, LegacySystemFrame.Tabs)
 
-	local parchment = E.private.skins.parchmentRemoverEnable
-
 	-- Reward Track
 	local RewardTrackPage = LegacySystemFrame.RewardTrackPage
 	HandleProgressBar(RewardTrackPage.LegacyRewardProgressBar, RewardTrackPage.ProgressBarBackground)
@@ -121,13 +126,17 @@ function S:Blizzard_LegacySystem()
 	S:HandleNextPrevButton(RewardProgressFrame.JumpLeftButton, 'left', nil, true)
 	S:HandleNextPrevButton(RewardProgressFrame.JumpRightButton, 'right', nil, true)
 
+	local parchment = E.private.skins.parchmentRemoverEnable
 	if parchment then
 		RewardTrackPage.Background:SetAlpha(0)
 	end
 
 	-- Challenges
 	local ChallengesPage = LegacySystemFrame.ChallengesPage
-	HandleProgressBar(ChallengesPage.LegacyChallengePointSummary.PointsBar, ChallengesPage.LegacyChallengePointSummary.ProgressBarBackground)
+	local ChallengePointSummary = ChallengesPage.LegacyChallengePointSummary
+	if ChallengePointSummary then
+		HandleProgressBar(ChallengePointSummary.PointsBar, ChallengePointSummary.ProgressBarBackground)
+	end
 
 	local CategoryList = ChallengesPage.CategoryList
 	S:HandleEditBox(CategoryList.SearchBox)
@@ -146,7 +155,10 @@ function S:Blizzard_LegacySystem()
 
 	-- Tree
 	local TreePage = LegacySystemFrame.TreePage
-	TreePage.LegacyTreePointSummary.AvailablePointsLabel:FontTemplate(nil, 16)
+	local LegacyPointSummary = TreePage.LegacyTreePointSummary
+	if LegacyPointSummary then
+		LegacyPointSummary.AvailablePointsLabel:FontTemplate(nil, 16)
+	end
 
 	local TraitPanel = TreePage.LegacyTreeTraitPanel
 	S:HandleButton(TraitPanel.ApplyButton)
@@ -159,11 +171,16 @@ function S:Blizzard_LegacySystem()
 	if parchment then
 		TreePage.Background:SetAlpha(0)
 		TreePage.VerticalDivider:Hide()
-		TreePage.LegacyTreePointSummary.Border:SetAlpha(0)
+
+		if LegacyPointSummary then
+			LegacyPointSummary.Border:SetAlpha(0)
+		end
 
 		local SelectionPanel = TreePage.LegacyTreeSelectionPanel
-		RefreshTreeButtons(SelectionPanel)
-		hooksecurefunc(SelectionPanel, 'RefreshTreeButtons', RefreshTreeButtons)
+		if SelectionPanel then
+			RefreshTreeButtons(SelectionPanel)
+			hooksecurefunc(SelectionPanel, 'RefreshTreeButtons', RefreshTreeButtons)
+		end
 	end
 end
 

@@ -36,6 +36,8 @@ local function HandleCategory(frame)
 end
 
 local function ColoredProgressBar_SetFillWidth(bar, width)
+	if not bar.Fill then return end
+
 	bar.Fill:SetShown(width > 0)
 end
 
@@ -52,12 +54,14 @@ local function HandleColoredProgressBar(bar)
 	bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
 	bar.backdrop:Point('BOTTOMRIGHT', bar, 'RIGHT', 1, -8)
 
-	bar.Fill:RemoveMaskTexture(bar.Mask)
-	bar.Fill:ClearAllPoints()
-	bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
-	bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
+	if bar.Fill then
+		bar.Fill:RemoveMaskTexture(bar.Mask)
+		bar.Fill:ClearAllPoints()
+		bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
+		bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
 
-	hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
+		hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
+	end
 end
 
 local function UpdateTabLayout(frame)
@@ -279,7 +283,10 @@ local function EquipmentUpdateItems()
 	end
 
 	for i = 1, frame.numBGs do -- larger layouts add more slices of the flyout art
-		frame['bg'..i]:SetAlpha(0)
+		local bg = frame['bg'..i]
+		if bg then
+			bg:SetAlpha(0)
+		end
 	end
 
 	for i, button in next, flyout.buttons do
@@ -326,8 +333,8 @@ local function UpdateToggleCollapseButton(button)
 	local collapsed
 	if header.IsCollapsed then
 		collapsed = header:IsCollapsed()
-	else
-		collapsed = header.treeNode and header.treeNode:IsCollapsed()
+	elseif header.treeNode then
+		collapsed = header.treeNode:IsCollapsed()
 	end
 
 	local tex = collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
@@ -348,27 +355,29 @@ end
 
 local function HandleListEntry(child)
 	local content = child.Content
-	local highlight = content and content.BackgroundHighlight
-	if highlight then
-		for _, region in next, highlight.TextureRegions do
-			region:SetTexture(E.media.blankTex)
+	if content then
+		local highlight = content.BackgroundHighlight
+		if highlight then
+			for _, region in next, highlight.TextureRegions do
+				region:SetTexture(E.media.blankTex)
+			end
+		end
+
+		local bar = content.ReputationBar or content.SkillsBar
+		if bar then
+			HandleColoredProgressBar(bar)
+		end
+
+		local icon = content.CurrencyIcon
+		if icon then
+			S:HandleIcon(icon)
 		end
 	end
 
-	local bar = content and (content.ReputationBar or content.SkillsBar)
-	if bar then
-		HandleColoredProgressBar(bar)
-	end
-
-	local icon = content and content.CurrencyIcon
-	if icon then
-		S:HandleIcon(icon)
-	end
-
-	local ToggleCollapseButton = child.ToggleCollapseButton
-	if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
-		hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
-		UpdateToggleCollapseButton(ToggleCollapseButton)
+	local collapseButton = child.ToggleCollapseButton
+	if collapseButton and collapseButton.RefreshIcon then
+		hooksecurefunc(collapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
+		UpdateToggleCollapseButton(collapseButton)
 	end
 end
 
@@ -399,6 +408,8 @@ end
 
 -- CharacterFrameSidePaneTemplate: on the right side
 local function SidePane_AcquireRow(pane)
+	if not pane.rowPools then return end
+
 	for row in pane.rowPools:EnumerateActive() do
 		if not row.IsSkinned then
 			if row.Background then
@@ -478,14 +489,16 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Model
 	local CharacterModelScene = _G.CharacterModelScene
-	CharacterModelScene:StripTextures()
-	CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5) -- re-add the overlay which was just stripped
+	if CharacterModelScene then
+		CharacterModelScene:StripTextures()
+		CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5) -- re-add the overlay which was just stripped
 
-	CharacterModelScene:CreateBackdrop()
-	CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and 1 or 0, E.PixelMode and 0 or 1)
-	CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and 0 or -1)
+		CharacterModelScene:CreateBackdrop()
+		CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and 1 or 0, E.PixelMode and 0 or 1)
+		CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and 0 or -1)
 
-	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
+		S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
+	end
 
 	-- Give character frame model backdrop it's color back
 	for _, corner in next, { 'TopLeft', 'TopRight', 'BotLeft', 'BotRight' } do
@@ -509,14 +522,18 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Equipment Manager
 	local EquipmentManagerPane = _G.PaperDollFrame.EquipmentManagerPane
-	EquipmentManagerPane.Border:Hide()
-	S:HandleTrimScrollBar(EquipmentManagerPane.ScrollBar)
-	hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
-	hooksecurefunc('PaperDollEquipmentManagerPane_InitButton', EquipmentManagerPane_InitButton)
-	S:HandleButton(EquipmentManagerPane.EquipSet, nil, nil, nil, true)
-	S:HandleButton(EquipmentManagerPane.SaveSet, nil, nil, nil, true)
-	S:HandleButton(EquipmentManagerPane.NewSet, nil, nil, nil, true, nil, nil, nil, true)
-	EquipmentManagerPane.NewSet.StateTexture:SetAlpha(0)
+	if EquipmentManagerPane then
+		EquipmentManagerPane.Border:Hide()
+		S:HandleTrimScrollBar(EquipmentManagerPane.ScrollBar)
+
+		hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
+		hooksecurefunc('PaperDollEquipmentManagerPane_InitButton', EquipmentManagerPane_InitButton)
+
+		S:HandleButton(EquipmentManagerPane.EquipSet, nil, nil, nil, true)
+		S:HandleButton(EquipmentManagerPane.SaveSet, nil, nil, nil, true)
+		S:HandleButton(EquipmentManagerPane.NewSet, nil, nil, nil, true, nil, nil, nil, true)
+		EquipmentManagerPane.NewSet.StateTexture:SetAlpha(0)
+	end
 
 	if _G.GearManagerPopupFrame then -- New icon selection
 		_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
@@ -524,49 +541,65 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Equipment Flyout
 	local EquipmentFlyoutFrame = _G.EquipmentFlyoutFrame
-	EquipmentFlyoutFrame.Highlight:StripTextures()
-	EquipmentFlyoutFrame.buttonFrame:DisableDrawLayer('ARTWORK')
+	if EquipmentFlyoutFrame then
+		EquipmentFlyoutFrame.Highlight:StripTextures()
+		EquipmentFlyoutFrame.buttonFrame:DisableDrawLayer('ARTWORK')
 
-	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton)
-	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
+		S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton)
+		S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
-	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
-	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
+		hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
+		hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
+	end
 
 	-- Reputation
 	local ReputationFrame = _G.ReputationFrame
-	HandleListFrame(ReputationFrame)
-	S:HandleDropDownBox(ReputationFrame.filterDropdown)
+	if ReputationFrame then
+		HandleListFrame(ReputationFrame)
+		S:HandleDropDownBox(ReputationFrame.filterDropdown)
 
-	local ReputationDetailFrame = ReputationFrame.ReputationDetailFrame
-	HandleSidePane(ReputationDetailFrame)
-	HandleColoredProgressBar(ReputationDetailFrame.StandingBar)
-	S:HandleCheckBox(ReputationDetailFrame.AtWarCheckbox)
-	S:HandleCheckBox(ReputationDetailFrame.MakeInactiveCheckbox)
-	S:HandleCheckBox(ReputationDetailFrame.WatchFactionCheckbox)
-	S:HandleButton(ReputationDetailFrame.ViewRenownButton, nil, nil, nil, true)
+		local ReputationDetailFrame = ReputationFrame.ReputationDetailFrame
+		if ReputationDetailFrame then
+			HandleSidePane(ReputationDetailFrame)
+			HandleColoredProgressBar(ReputationDetailFrame.StandingBar)
+			S:HandleCheckBox(ReputationDetailFrame.AtWarCheckbox)
+			S:HandleCheckBox(ReputationDetailFrame.MakeInactiveCheckbox)
+			S:HandleCheckBox(ReputationDetailFrame.WatchFactionCheckbox)
+			S:HandleButton(ReputationDetailFrame.ViewRenownButton, nil, nil, nil, true)
+		end
+	end
 
 	-- Skills
 	local SkillsFrame = _G.SkillsFrame
-	HandleListFrame(SkillsFrame)
+	if SkillsFrame then
+		HandleListFrame(SkillsFrame)
 
-	local SkillDetailFrame = SkillsFrame.SkillDetailFrame
-	HandleSidePane(SkillDetailFrame)
-	HandleColoredProgressBar(SkillDetailFrame.RankBar)
+		local SkillDetailFrame = SkillsFrame.SkillDetailFrame
+		if SkillDetailFrame then
+			HandleSidePane(SkillDetailFrame)
+			HandleColoredProgressBar(SkillDetailFrame.RankBar)
+		end
+	end
 
 	-- PvP
 	local PVPRankFrame = _G.PVPRankFrame
-	PVPRankFrame.MainInfoFrame.Line:SetAlpha(0)
-	HandleSidePane(PVPRankFrame.DetailFrame)
+	if PVPRankFrame then
+		PVPRankFrame.MainInfoFrame.Line:SetAlpha(0)
+		HandleSidePane(PVPRankFrame.DetailFrame)
+	end
 
 	-- Currency
 	local TokenFrame = _G.TokenFrame
-	HandleListFrame(TokenFrame)
+	if TokenFrame then
+		HandleListFrame(TokenFrame)
 
-	local TokenDetailFrame = TokenFrame.DetailFrame
-	HandleSidePane(TokenDetailFrame)
-	S:HandleCheckBox(TokenDetailFrame.InactiveCheckbox)
-	S:HandleCheckBox(TokenDetailFrame.BackpackCheckbox)
+		local TokenDetailFrame = TokenFrame.DetailFrame
+		if TokenDetailFrame then
+			HandleSidePane(TokenDetailFrame)
+			S:HandleCheckBox(TokenDetailFrame.InactiveCheckbox)
+			S:HandleCheckBox(TokenDetailFrame.BackpackCheckbox)
+		end
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_UIPanels_Game')

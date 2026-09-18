@@ -6,7 +6,10 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function UpdateTabLayout(frame)
-	S:LayoutLargeSideTabs(frame, frame.ModeTabs.Tabs)
+	local tabs = frame.ModeTabs and frame.ModeTabs.Tabs
+	if tabs then
+		S:LayoutLargeSideTabs(frame, tabs)
+	end
 end
 
 function S:Blizzard_InspectUI()

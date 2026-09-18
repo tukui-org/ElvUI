@@ -39,6 +39,8 @@ local function HandleTreeHeaders(frame)
 end
 
 local function CategoryTabSelected(tab, selected)
+	if not tab or not tab.backdrop then return end
+
 	if selected then
 		tab.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else

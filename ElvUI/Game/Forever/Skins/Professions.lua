@@ -88,23 +88,28 @@ local function HandleSchematicForm(form)
 	form.AllocateBestQualityCheckbox:Size(24)
 
 	local QualityDialog = form.QualityDialog
-	QualityDialog:StripTextures()
-	QualityDialog:CreateBackdrop('Transparent')
-	QualityDialog.Bg:SetAlpha(0)
+	if QualityDialog then
+		QualityDialog:StripTextures()
+		QualityDialog:CreateBackdrop('Transparent')
+		QualityDialog.Bg:SetAlpha(0)
 
-	S:HandleCloseButton(QualityDialog.ClosePanelButton)
-	S:HandleButton(QualityDialog.AcceptButton)
-	S:HandleButton(QualityDialog.CancelButton)
+		S:HandleCloseButton(QualityDialog.ClosePanelButton)
+		S:HandleButton(QualityDialog.AcceptButton)
+		S:HandleButton(QualityDialog.CancelButton)
 
-	ReskinQualityContainer(QualityDialog.Container1)
-	ReskinQualityContainer(QualityDialog.Container2)
-	ReskinQualityContainer(QualityDialog.Container3)
+		ReskinQualityContainer(QualityDialog.Container1)
+		ReskinQualityContainer(QualityDialog.Container2)
+		ReskinQualityContainer(QualityDialog.Container3)
+	end
 
 	local OutputIcon = form.OutputIcon
-	S:HandleIcon(OutputIcon.Icon, true)
-	S:HandleIconBorder(OutputIcon.IconBorder, OutputIcon.Icon.backdrop)
-	OutputIcon:GetHighlightTexture():Hide()
-	OutputIcon.CircleMask:Hide()
+	if OutputIcon then
+		S:HandleIcon(OutputIcon.Icon, true)
+		S:HandleIconBorder(OutputIcon.IconBorder, OutputIcon.Icon.backdrop)
+
+		OutputIcon:GetHighlightTexture():Hide()
+		OutputIcon.CircleMask:Hide()
+	end
 
 	hooksecurefunc(form, 'Init', HandleSchematicInit)
 end
@@ -176,20 +181,28 @@ local function HandleRankBar(bar)
 	bar.Border:Hide()
 	bar.Background:Hide()
 
-	if bar.overrideWidth then -- the book cards size the bar but leave the Fill at 441
-		bar.Fill:SetWidth(bar.overrideWidth)
+	if bar.Fill then
+		bar.Fill:CreateBackdrop()
+
+		if bar.overrideWidth then -- the book cards size the bar but leave the Fill at 441
+			bar.Fill:SetWidth(bar.overrideWidth)
+		end
 	end
 
-	bar.Fill:CreateBackdrop()
-	bar.Rank.Text:FontTemplate()
+	if bar.Rank then
+		bar.Rank.Text:FontTemplate()
+	end
 
-	local arrow = bar.ExpansionDropdownButton:CreateTexture(nil, 'ARTWORK')
-	arrow:SetTexture(E.Media.Textures.ArrowUp)
-	arrow:Size(11)
-	arrow:Point('CENTER')
-	S:SetupArrow(arrow, 'down')
+	local expansionDropdown = bar.ExpansionDropdownButton
+	if expansionDropdown then
+		local arrow = expansionDropdown:CreateTexture(nil, 'ARTWORK')
+		arrow:SetTexture(E.Media.Textures.ArrowUp)
+		arrow:Size(11)
+		arrow:Point('CENTER')
+		S:SetupArrow(arrow, 'down')
 
-	S:HandleButton(bar.ExpansionDropdownButton)
+		S:HandleButton(expansionDropdown)
+	end
 end
 
 -- RecipeList category rows (ProfessionsRecipeListCategoryTemplate)
@@ -203,15 +216,20 @@ local function HandleRecipeCategory(button)
 	button:CreateBackdrop('Transparent')
 	button.backdrop:SetInside(button, 0, 1)
 
-	local bar = button.RankBar
-	bar.BorderLeft:SetAlpha(0)
-	bar.BorderMid:SetAlpha(0)
-	bar.BorderRight:SetAlpha(0)
-	bar:SetStatusBarTexture(E.media.normTex)
-	bar:CreateBackdrop('Transparent')
-	bar.Rank:FontTemplate()
+	local rankBar = button.RankBar
+	if rankBar then
+		rankBar.BorderLeft:SetAlpha(0)
+		rankBar.BorderMid:SetAlpha(0)
+		rankBar.BorderRight:SetAlpha(0)
+		rankBar:SetStatusBarTexture(E.media.normTex)
+		rankBar:CreateBackdrop('Transparent')
 
-	E:RegisterStatusBar(bar)
+		if rankBar.Rank then
+			rankBar.Rank:FontTemplate()
+		end
+
+		E:RegisterStatusBar(rankBar)
+	end
 end
 
 -- RecipeList recipe rows (ProfessionsRecipeListRecipeTemplate)

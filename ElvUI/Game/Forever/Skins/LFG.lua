@@ -62,12 +62,16 @@ local function HandleWhoButton(button)
 	button.IsSkinned = true
 end
 
-local function WhoList_Update(frame)
+local function LFGWhoList_Update(frame)
 	frame:ForEachFrame(HandleWhoButton)
 end
 
 function S:Blizzard_GroupFinder_VanillaStyle()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
+
+	if E.private.skins.blizzard.tooltip then
+		TT:SetStyle(_G.LFGBrowseSearchEntryTooltip)
+	end
 
 	local LFGParentFrame = _G.LFGParentFrame
 	S:HandleCloseButton(_G.LFGParentFrameCloseButton)
@@ -116,36 +120,41 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	S:HandleCloseButton(ActivityDropdown.ResetButton)
 
 	local RefreshButton = LFGBrowseFrame.RefreshButton
-	S:HandleButton(RefreshButton)
-	RefreshButton:Size(21) -- dropdown height minus the backdrop insets
-	RefreshButton:ClearAllPoints()
-	RefreshButton:Point('LEFT', ActivityDropdown.backdrop, 'RIGHT', 3, 0)
-	RefreshButton.Icon:Point('CENTER')
+	if RefreshButton then
+		S:HandleButton(RefreshButton)
+		RefreshButton:Size(21) -- dropdown height minus the backdrop insets
+		RefreshButton:ClearAllPoints()
+		RefreshButton:Point('LEFT', ActivityDropdown.backdrop, 'RIGHT', 3, 0)
+		RefreshButton.Icon:Point('CENTER')
 
-	local OptionsButton = LFGBrowseFrame.OptionsButton
-	OptionsButton:ClearAllPoints()
-	OptionsButton:Point('LEFT', RefreshButton, 'RIGHT', 4, 0)
-
-	if E.private.skins.blizzard.tooltip then
-		TT:SetStyle(_G.LFGBrowseSearchEntryTooltip)
+		local OptionsButton = LFGBrowseFrame.OptionsButton
+		if OptionsButton then
+			OptionsButton:ClearAllPoints()
+			OptionsButton:Point('LEFT', RefreshButton, 'RIGHT', 4, 0)
+		end
 	end
 
 	-- Who List
 	local LFGWhoListFrame = _G.LFGWhoListFrame
-	S:HandlePortraitFrame(LFGWhoListFrame)
-	S:HandleTrimScrollBar(LFGWhoListFrame.ScrollBar)
-	hooksecurefunc(LFGWhoListFrame.ScrollBox, 'Update', WhoList_Update)
+	if LFGWhoListFrame then
+		S:HandlePortraitFrame(LFGWhoListFrame)
+		S:HandleTrimScrollBar(LFGWhoListFrame.ScrollBar)
+		hooksecurefunc(LFGWhoListFrame.ScrollBox, 'Update', LFGWhoList_Update)
 
-	local EditBox = LFGWhoListFrame.EditBox
-	EditBox.Backdrop:StripTextures()
-	EditBox.Backdrop:CreateBackdrop()
+		local EditBox = LFGWhoListFrame.EditBox
+		EditBox.Backdrop:StripTextures()
+		EditBox.Backdrop:CreateBackdrop()
 
-	local WhoSearch = LFGWhoListFrame.WhoSearch
-	S:HandleButton(WhoSearch)
-	WhoSearch:ClearAllPoints()
-	WhoSearch:Point('TOPLEFT', EditBox.Backdrop.backdrop, 'TOPRIGHT', 3, 0)
-	WhoSearch:Point('BOTTOMLEFT', EditBox.Backdrop.backdrop, 'BOTTOMRIGHT', 3, 0)
-	WhoSearch.Icon:Size(16)
+		local WhoSearch = LFGWhoListFrame.WhoSearch
+		if WhoSearch then
+			S:HandleButton(WhoSearch)
+
+			WhoSearch:ClearAllPoints()
+			WhoSearch:Point('TOPLEFT', EditBox.Backdrop.backdrop, 'TOPRIGHT', 3, 0)
+			WhoSearch:Point('BOTTOMLEFT', EditBox.Backdrop.backdrop, 'BOTTOMRIGHT', 3, 0)
+			WhoSearch.Icon:Size(16)
+		end
+	end
 end
 
 function S:RolePollPopup()
