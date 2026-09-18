@@ -74,22 +74,13 @@ local function DetailPane_Update(frame)
 	frame:ForEachFrame(HandleChallenge)
 end
 
-local function CollapseButton_UpdateCollapsedState(button, collapsed)
-	button.Icon:SetTexture(collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton)
-end
-
--- LegacyChallengeCategoryTemplate (ListHeaderVisualTemplate)
+-- LegacyChallengeCategoryTemplate (ListHeaderVisualTemplate), keep the Blizzard plus / minus
 local function HandleCategory(button)
 	if button.IsSkinned then return end
 
 	S:HandleButton(button)
 	button:GetNormalTexture():SetAlpha(0)
 	button:GetHighlightTexture():SetAlpha(0)
-
-	local collapse = button.CollapseButton
-	collapse:GetHighlightTexture():SetAlpha(0)
-	hooksecurefunc(collapse, 'UpdateCollapsedState', CollapseButton_UpdateCollapsedState)
-	CollapseButton_UpdateCollapsedState(collapse, collapse.collapsed)
 
 	button.IsSkinned = true
 end
