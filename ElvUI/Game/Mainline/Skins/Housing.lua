@@ -85,14 +85,16 @@ function S:Blizzard_HousingHouseFinder()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
 
 	local finderFrame = _G.HouseFinderFrame
-	S:HandleFrame(finderFrame, true)
 	finderFrame.WoodBorderFrame:Hide()
+
+	S:HandleFrame(finderFrame, true)
 	S:HandleButton(finderFrame.PlotInfoFrame.VisitHouseButton)
 	S:HandleDropDownBox(finderFrame.GuildSubdivisionDropdown)
 
 	local neighborList = finderFrame.NeighborhoodListFrame
 	neighborList:StripTextures()
 	neighborList.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
+
 	S:HandleEditBox(neighborList.BNetFriendSearchBox)
 	S:HandleButton(neighborList.RefreshButton)
 	S:HandleTrimScrollBar(neighborList.ScrollFrame.ScrollBar)
@@ -157,11 +159,12 @@ function S:Blizzard_HousingDashboard()
 	local catalogContent = dashboardFrame.CatalogContent
 	catalogContent.Divider:Hide()
 	catalogContent.Background:Hide()
-	S:HandleEditBox(catalogContent.SearchBox)
-	catalogContent.SearchBox:Size(150, 17)
-	S:HandleDropDownBox(catalogContent.Filters.FilterDropdown)
 	catalogContent.Categories.TopBorder:Hide()
 	catalogContent.Categories.Background:Hide()
+	catalogContent.SearchBox:Size(150, 17)
+
+	S:HandleEditBox(catalogContent.SearchBox)
+	S:HandleDropDownBox(catalogContent.Filters.FilterDropdown)
 	S:HandleTrimScrollBar(catalogContent.OptionsContainer.ScrollBar)
 
 	local previewFrame = catalogContent.PreviewFrame

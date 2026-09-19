@@ -208,17 +208,18 @@ function S:Blizzard_PerksProgram() -- Trading Post
 
 	S:HandleButton(shoppingCart.PurchaseCartButton, nil, nil, nil, true, nil, nil, nil, true)
 
-	S:HandleButton(shoppingCart.ClearCartButton, nil, nil, nil, true, nil, nil, nil, true)
+	local clearCartButton = shoppingCart.ClearCartButton
+	S:HandleButton(clearCartButton, nil, nil, nil, true, nil, nil, nil, true)
 
-	shoppingCart.ClearCartButton.texture = shoppingCart.ClearCartButton:CreateTexture(nil, 'ARTWORK')
-	shoppingCart.ClearCartButton.texture:SetAtlas('Perks-ShoppingCart')
-	shoppingCart.ClearCartButton.texture:SetInside(nil, 8, 8)
+	clearCartButton.texture = clearCartButton:CreateTexture(nil, 'ARTWORK')
+	clearCartButton.texture:SetAtlas('Perks-ShoppingCart')
+	clearCartButton.texture:SetInside(nil, 8, 8)
 
-	shoppingCart.ClearCartButton.text = shoppingCart.ClearCartButton:CreateFontString(nil, 'ARTWORK')
-	shoppingCart.ClearCartButton.text:FontTemplate(nil, 40, 'OUTLINE')
-	shoppingCart.ClearCartButton.text:Point('CENTER')
-	shoppingCart.ClearCartButton.text:SetTextColor(1, 0.3, 0.3)
-	shoppingCart.ClearCartButton.text:SetText('/')
+	clearCartButton.text = clearCartButton:CreateFontString(nil, 'ARTWORK')
+	clearCartButton.text:FontTemplate(nil, 40, 'OUTLINE')
+	clearCartButton.text:Point('CENTER')
+	clearCartButton.text:SetTextColor(1, 0.3, 0.3)
+	clearCartButton.text:SetText('/')
 
 	S:HandleTrimScrollBar(shoppingCart.ItemList.ScrollBar)
 	hooksecurefunc(shoppingCart.ItemList.ScrollBox, 'Update', ShoppingCartScrollBoxUpdate)

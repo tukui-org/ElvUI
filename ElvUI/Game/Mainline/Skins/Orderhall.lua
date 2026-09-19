@@ -28,7 +28,8 @@ local function RefreshAllData(frame)
 		elseif bu.talent.researched or bu.talent.selected then
 			bu:SetBackdropBorderColor(1, 0.8, 0)
 		else
-			bu:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			local r, g, b = unpack(E.media.bordercolor)
+			bu:SetBackdropBorderColor(r, g, b)
 		end
 	end
 end

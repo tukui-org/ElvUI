@@ -21,7 +21,8 @@ local function HandleButton(entry, treeNode)
 		entry.IsSkinned = true
 	end
 
-	local addonIndex = treeNode:GetData().addonIndex
+	local nodeData = treeNode:GetData()
+	local addonIndex = nodeData.addonIndex
 	local checkstate = E:GetAddOnEnableState(addonIndex)
 	if checkstate == 2 then
 		entry.Status:SetTextColor(0.7, 0.7, 0.7)

@@ -216,14 +216,11 @@ function S:Blizzard_GarrisonUI()
 
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.garrison) then return end
 
-	--These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
+	-- These hooks affect both Garrison and OrderHall, so make sure they are set even if Garrison skin is disabled
 	hooksecurefunc('GarrisonMissionButton_SetRewards', function(frame)
-		--Set border color according to rarity of item
-		local firstRegion, r, g, b
-		local index = 0
+		local index, r, g, b = 0 -- Set border color according to rarity of item
 		for _, reward in pairs(frame.Rewards) do
-			firstRegion = reward:GetRegions()
-			firstRegion:Hide()
+			reward:GetRegions():Hide()
 
 			reward.IconBorder:SetTexture()
 
@@ -235,10 +232,12 @@ function S:Blizzard_GarrisonUI()
 
 			if not reward.Icon.backdrop then
 				S:HandleIcon(reward.Icon, true)
+
 				reward.Icon.backdrop:OffsetFrameLevel(nil, reward)
 			end
 
 			reward.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+
 			index = index + 1
 		end
 	end)

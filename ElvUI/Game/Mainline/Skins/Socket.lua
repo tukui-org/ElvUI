@@ -39,6 +39,7 @@ function S:Blizzard_ItemSocketingUI()
 		button:StripTextures()
 		button:StyleButton()
 		button:SetTemplate(nil, true)
+
 		button.Shine:Kill()
 		button.BracketFrame:Kill()
 		button.Background:Kill()

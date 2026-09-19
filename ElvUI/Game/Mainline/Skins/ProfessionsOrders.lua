@@ -78,7 +78,6 @@ end
 local function FormInit(form)
 	for slot in form.reagentSlotPool:EnumerateActive() do
 		local button = slot.Button
-		local icon = button.Icon
 		button.CropFrame:SetAlpha(0)
 		button.SlotBackground:SetAlpha(0)
 		button.HighlightTexture:SetAlpha(0)
@@ -93,6 +92,7 @@ local function FormInit(form)
 		ps:SetOutside(button)
 
 		if not button.IsSkinned then
+			local icon = button.Icon
 			S:HandleIcon(icon, true)
 			S:HandleIconBorder(button.IconBorder, icon.backdrop)
 			icon:SetOutside(button)

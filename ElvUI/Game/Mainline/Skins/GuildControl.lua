@@ -10,17 +10,19 @@ local GuildControlGetNumRanks = GuildControlGetNumRanks
 local function SkinGuildRanks()
 	for i = 1, GuildControlGetNumRanks() do
 		local rankFrame = _G['GuildControlUIRankOrderFrameRank'..i]
-		if not rankFrame.nameBox.backdrop then
-			S:HandleEditBox(rankFrame.nameBox)
 
-			S:HandleButton(rankFrame.downButton)
-			S:HandleButton(rankFrame.upButton)
-			S:HandleButton(rankFrame.deleteButton)
+		S:HandleButton(rankFrame.downButton)
+		S:HandleButton(rankFrame.upButton)
+		S:HandleButton(rankFrame.deleteButton)
+
+		local rankName = rankFrame.nameBox
+		if not rankName.backdrop then
+			S:HandleEditBox(rankName)
 		end
 
-		rankFrame.nameBox.backdrop:ClearAllPoints()
-		rankFrame.nameBox.backdrop:Point('TOPLEFT', -2, -4)
-		rankFrame.nameBox.backdrop:Point('BOTTOMRIGHT', -4, 4)
+		rankName.backdrop:ClearAllPoints()
+		rankName.backdrop:Point('TOPLEFT', -2, -4)
+		rankName.backdrop:Point('BOTTOMRIGHT', -4, 4)
 	end
 end
 

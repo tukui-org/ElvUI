@@ -15,7 +15,7 @@ local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom
+local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom -- 7
 
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
@@ -273,7 +273,8 @@ local function HandleDynamicFlightButton(button, index)
 	button:SetPushedTexture(0)
 	button:SetNormalTexture(0)
 
-	S:HandleIcon(select(index, button:GetRegions()), true) -- the icon texture has no key
+	local region = select(index, button:GetRegions())
+	S:HandleIcon(region, true) -- the icon texture has no key
 end
 
 local function SkinMountFrame()

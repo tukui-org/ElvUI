@@ -18,6 +18,7 @@ end
 local function PageControlsPositionUpdate(frame)
 	frame.PrevPageButton:ClearAllPoints()
 	frame.PrevPageButton:Point('TOPLEFT', frame, 'TOPLEFT', 64, -6)
+
 	frame.NextPageButton:ClearAllPoints()
 	frame.NextPageButton:Point('LEFT', frame.PrevPageButton, 'RIGHT', 14, -1)
 end

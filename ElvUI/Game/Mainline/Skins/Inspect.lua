@@ -34,6 +34,12 @@ local function HandleTabs()
 	end
 end
 
+local function BackgroundDesaturation(bckgnd, value)
+	if value and bckgnd.ignoreDesaturated then
+		bckgnd:SetDesaturated(false)
+	end
+end
+
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
@@ -91,11 +97,7 @@ function S:Blizzard_InspectUI()
 		bg:SetDesaturated(false)
 		bg.ignoreDesaturated = true -- so plugins can prevent this if they want
 
-		hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
-			if value and bckgnd.ignoreDesaturated then
-				bckgnd:SetDesaturated(false)
-			end
-		end)
+		hooksecurefunc(bg, 'SetDesaturated', BackgroundDesaturation)
 	end
 
 	for _, Slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do

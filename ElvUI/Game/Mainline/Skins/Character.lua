@@ -34,7 +34,8 @@ local function UpdateCollapse(texture, atlas)
 end
 
 local function UpdateToggleCollapseButton(button)
-	local tex = button:GetHeader():IsCollapsed() and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
+	local header = button:GetHeader()
+	local tex = header:IsCollapsed() and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
 	button:SetNormalTexture(tex)
 	button:SetPushedTexture(tex)
 end

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs, next = pairs, next
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function HandleInputBox(box)
@@ -64,7 +64,6 @@ local function HandleItemFlyout(_, owner)
 end
 
 local function ReskinSlotButton(button)
-	local icon = button.Icon
 	button.CropFrame:SetAlpha(0)
 	button.SlotBackground:SetAlpha(0)
 
@@ -82,6 +81,7 @@ local function ReskinSlotButton(button)
 	ps:SetOutside(button)
 
 	if not button.IsSkinned then
+		local icon = button.Icon
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)
@@ -157,10 +157,10 @@ local function HandleSchematicInit(form)
 	end
 end
 
-local hookedForms = {}
+local hookedSchematicForm = {}
 local function HandleSchematicForm(form, noParchment)
-	if not hookedForms[form] then
-		hookedForms[form] = true
+	if not hookedSchematicForm[form] then
+		hookedSchematicForm[form] = true
 
 		hooksecurefunc(form, 'Init', HandleSchematicInit)
 	end
@@ -347,7 +347,8 @@ function S:Blizzard_Professions()
 	TabSystem:ClearAllPoints()
 	TabSystem:Point('TOPLEFT', ProfessionsFrame, 'BOTTOMLEFT', -3, 0)
 
-	for _, name in pairs({'Prof0ToolSlot', 'Prof0Gear0Slot', 'Prof0Gear1Slot', 'Prof1ToolSlot', 'Prof1Gear0Slot', 'Prof1Gear1Slot', 'CookingToolSlot', 'CookingGear0Slot', 'FishingToolSlot'}) do -- the fishing gear slots are commented out in the XML
+	-- the fishing gear slots are commented out in the XML
+	for _, name in next, { 'Prof0ToolSlot', 'Prof0Gear0Slot', 'Prof0Gear1Slot', 'Prof1ToolSlot', 'Prof1Gear0Slot', 'Prof1Gear1Slot', 'CookingToolSlot', 'CookingGear0Slot', 'FishingToolSlot' } do
 		local button = CraftingPage[name]
 		button:StripTextures()
 

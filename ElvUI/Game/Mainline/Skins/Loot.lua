@@ -15,8 +15,7 @@ local function LootHistoryElements(button) -- headers and padding rows share the
 	local item = button.Item
 	if not item then return end
 
-	-- SetItemButtonOverlay puts a wooden frame on housing items
-	local atlas = item.IconOverlay:GetAtlas()
+	local atlas = item.IconOverlay:GetAtlas() -- SetItemButtonOverlay puts a wooden frame on housing items
 	item.IconOverlay:SetAlpha((atlas and strfind(atlas, 'housing-item-wood-frame', 1, true)) and 0 or 1)
 
 	if button.IsSkinned then return end
@@ -102,10 +101,8 @@ local function StartBonusRoll()
 	local frame = _G.BonusRollFrame
 
 	-- keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer
-	local BonusRollFrameLevel = frame:GetFrameLevel()
-	frame.PromptFrame.Timer:SetFrameLevel(BonusRollFrameLevel+2)
-
-	frame.BlackBackgroundHoist.backdrop:SetFrameLevel(BonusRollFrameLevel+1)
+	frame.PromptFrame.Timer:OffsetFrameLevel(2, frame)
+	frame.BlackBackgroundHoist.backdrop:OffsetFrameLevel(1, frame)
 
 	-- set currency icons position at bottom right (or left of the spec icon, on the bottom right)
 	frame.CurrentCountFrame:ClearAllPoints()

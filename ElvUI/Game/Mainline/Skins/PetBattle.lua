@@ -63,9 +63,10 @@ end
 
 local function UpdatePetType(frame)
 	local typeFrame = frame.PetTypeFrame -- only the two active unit frames get one, the unit tooltip has a PetType too
-	if typeFrame then
-		typeFrame.text:SetText(_G['BATTLE_PET_NAME_'..C_PetBattles_GetPetType(frame.petOwner, frame.petIndex)])
-	end
+	if not typeFrame then return end
+
+	local petType = C_PetBattles_GetPetType(frame.petOwner, frame.petIndex)
+	typeFrame.text:SetText(_G['BATTLE_PET_NAME_'..petType])
 end
 
 local function AuraHolder_Update(holder)

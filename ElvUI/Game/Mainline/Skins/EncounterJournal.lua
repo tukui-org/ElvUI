@@ -109,7 +109,9 @@ end
 
 local function ItemSetsItemBorder(border, atlas)
 	local r, g, b = E:GetItemQualityColor(lootQuality[atlas])
-	border:GetParent().Icon.backdrop:SetBackdropBorderColor(r, g, b)
+
+	local parent = border:GetParent()
+	parent.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
 local function ItemSetElements(set)
@@ -288,6 +290,7 @@ local function CreateCollapseButton(frame, button, collapse)
 	btn:SetFrameLevel(4)
 	btn:Size(17)
 	btn:Hide()
+
 	btn.button = button
 	btn.collapse = collapse
 
@@ -469,6 +472,7 @@ function S:Blizzard_EncounterJournal()
 		if i == 1 then
 			HandleButton(suggestion.button)
 			suggestion.button:SetFrameLevel(4)
+
 			S:HandleNextPrevButton(suggestion.prevButton, nil, nil, true)
 			S:HandleNextPrevButton(suggestion.nextButton, nil, nil, true)
 		else
@@ -572,6 +576,7 @@ function S:Blizzard_EncounterJournal()
 	if E.private.skins.parchmentRemoverEnable then
 		LJ:StripTextures()
 		LJ:SetTemplate('Transparent')
+		LJ:GetRegions():Kill() -- loottab-background
 
 		_G.EncounterJournalJourneysFrame.BorderFrame:StripTextures()
 		_G.EncounterJournalInstanceSelect.evergreenBg:StripTextures()
@@ -602,8 +607,8 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 
-		_G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollingFont:GetFontString():SetTextColor(1, 1, 1)
-		LJ:GetRegions():Kill() -- loottab-background
+		local LoreScrollingText = _G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollingFont:GetFontString()
+		LoreScrollingText:SetTextColor(1, 1, 1)
 	end
 
 	do -- Item Sets

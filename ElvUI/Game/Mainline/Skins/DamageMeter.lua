@@ -47,8 +47,8 @@ function S:DamageMeter_BackdropSetAlpha(alpha)
 	end
 end
 
-function S:DamageMeter_HandleBackground(background, x1, y1, x2, y2)
-	if background.backdrop then return end
+function S:DamageMeter_HandleBackground(window, background, x1, y1, x2, y2)
+	if not window or background.backdrop then return end
 
 	background:SetTexture()
 	background:CreateBackdrop('Transparent')
@@ -75,12 +75,14 @@ function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 	dropdown:Point('TOPLEFT', window.SessionTimer, 'TOPRIGHT', 0, 4)
 	dropdown.Arrow:SetAlpha(0)
 
-	local customArrow = dropdown:CreateTexture(nil, 'BACKGROUND')
-	customArrow:Point('CENTER')
-	customArrow:Size(14)
-	customArrow:SetTexture(E.Media.Textures.ArrowUp)
-	customArrow:SetRotation(S.ArrowRotation.down)
-	dropdown.customArrow = customArrow
+	if not dropdown.customArrow then
+		local customArrow = dropdown:CreateTexture(nil, 'BACKGROUND')
+		customArrow:Point('CENTER')
+		customArrow:Size(14)
+		customArrow:SetTexture(E.Media.Textures.ArrowUp)
+		customArrow:SetRotation(S.ArrowRotation.down)
+		dropdown.customArrow = customArrow
+	end
 
 	local typeName = dropdown.TypeName
 	typeName:ClearAllPoints() -- point is a secret
@@ -90,8 +92,8 @@ function S:DamageMeter_HandleTypeDropdown(window, dropdown)
 	dropdown.IsSkinned = true
 end
 
-function S:DamageMeter_HandleSessionDropdown(dropdown)
-	if dropdown.IsSkinned then return end
+function S:DamageMeter_HandleSessionDropdown(window, dropdown)
+	if not window or dropdown.IsSkinned then return end
 
 	local newWidth = dropdown:GetWidth() + DROPDOWN_WIDTH_OFFSET
 	dropdown:StripTextures(nil, true)
@@ -108,18 +110,20 @@ function S:DamageMeter_HandleSessionDropdown(dropdown)
 	dropdown.IsSkinned = true
 end
 
-function S:DamageMeter_HandleSettingsDropdown(dropdown)
-	if dropdown.IsSkinned then return end
+function S:DamageMeter_HandleSettingsDropdown(window, dropdown)
+	if not window or dropdown.IsSkinned then return end
 
 	dropdown:Size(20)
 	dropdown:NudgePoint(2, 1)
 	dropdown.Icon:SetAlpha(0)
 
-	local customIcon = dropdown:CreateTexture(nil, 'BACKGROUND')
-	customIcon:SetAtlas('GM-icon-settings')
-	customIcon:Point('CENTER')
-	customIcon:Size(26)
-	dropdown.customIcon = customIcon
+	if not dropdown.customIcon then
+		local customIcon = dropdown:CreateTexture(nil, 'BACKGROUND')
+		customIcon:SetAtlas('GM-icon-settings')
+		customIcon:Point('CENTER')
+		customIcon:Size(26)
+		dropdown.customIcon = customIcon
+	end
 
 	dropdown.IsSkinned = true
 end
@@ -184,11 +188,15 @@ end
 function S:DamageMeter_ReskinScrollBarArrow(btn, arrowDir)
 	if btn.IsSkinned then return end
 
-	btn.customArrow = btn:CreateTexture(nil, 'ARTWORK')
-	btn.customArrow:SetTexture(E.Media.Textures.ArrowUp)
-	btn.customArrow:SetRotation(S.ArrowRotation[arrowDir])
-	btn.customArrow:Point('CENTER')
-	btn.customArrow:Size(15)
+	if not btn.customArrow then
+		local customArrow = btn:CreateTexture(nil, 'ARTWORK')
+		customArrow:SetTexture(E.Media.Textures.ArrowUp)
+		customArrow:SetRotation(S.ArrowRotation[arrowDir])
+		customArrow:Point('CENTER')
+		customArrow:Size(15)
+
+		btn.customArrow = customArrow
+	end
 
 	btn:HookScript('OnDisable', S.DamageMeter_ScrollBarArrowButtonOnDisable)
 	btn:HookScript('OnEnable', S.DamageMeter_ScrollBarArrowButtonOnEnable)
@@ -233,14 +241,14 @@ function S:DamageMeter_AnchorToSessionWindow() -- we could also handle source po
 	S:DamageMeter_RepositionResizeButton(self, -24, 11)
 end
 
-function S:DamageMeter_HandleMinimizeContainer(container)
-	if container.IsSkinned then return end
+function S:DamageMeter_HandleMinimizeContainer(window, container)
+	if not window or container.IsSkinned then return end
 
-	S:DamageMeter_HandleBackground(container.Background, 4, nil, -10)
+	S:DamageMeter_HandleBackground(window, container.Background, 4, nil, -10)
 	S:DamageMeter_RepositionResizeButton(container, -6, -4)
 
 	local sourceWindow = container.SourceWindow
-	S:DamageMeter_HandleBackground(sourceWindow.Background, 16, -13, -28, 15)
+	S:DamageMeter_HandleBackground(window, sourceWindow.Background, 16, -13, -28, 15)
 	S:DamageMeter_HandleScrollBoxes(sourceWindow)
 	hooksecurefunc(sourceWindow, 'AnchorToSessionWindow', S.DamageMeter_AnchorToSessionWindow)
 
@@ -283,10 +291,10 @@ function S:DamageMeter_HandleSessionWindow()
 
 	S:DamageMeter_HandleHeader(self, self.Header)
 	S:DamageMeter_HandleMinimizeButton(self, self.MinimizeButton)
-	S:DamageMeter_HandleMinimizeContainer(self.MinimizeContainer)
+	S:DamageMeter_HandleMinimizeContainer(self, self.MinimizeContainer)
 	S:DamageMeter_HandleTypeDropdown(self, self.DamageMeterTypeDropdown)
-	S:DamageMeter_HandleSessionDropdown(self.SessionDropdown)
-	S:DamageMeter_HandleSettingsDropdown(self.SettingsDropdown)
+	S:DamageMeter_HandleSessionDropdown(self, self.SessionDropdown)
+	S:DamageMeter_HandleSettingsDropdown(self, self.SettingsDropdown)
 	S:DamageMeter_HandleScrollBoxes(self)
 
 	self.SessionTimer:ClearAllPoints() -- point is a secret

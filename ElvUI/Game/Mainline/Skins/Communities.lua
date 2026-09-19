@@ -200,9 +200,11 @@ function S:Blizzard_Communities()
 	for _, name in next, { 'InvitationFrame', 'TicketFrame', 'ClubFinderInvitationFrame' } do
 		local frame = CommunitiesFrame[name]
 		frame:StripTextures()
+
 		frame.InsetFrame:Hide()
 		frame.CircleMask:Hide()
 		frame.IconRing:Hide()
+
 		S:HandleIcon(frame.Icon)
 		S:HandleButton(frame.AcceptButton)
 		S:HandleButton(frame.DeclineButton)
