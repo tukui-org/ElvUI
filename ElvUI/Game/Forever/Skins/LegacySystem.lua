@@ -29,6 +29,11 @@ local function Challenge_DisplayObjectives(button)
 	end
 end
 
+-- Blizzard swaps the red plus / minus atlas on every state change, follow it with the ElvUI textures
+local function Challenge_UpdatePlusMinusArt(button)
+	button.PlusMinus:SetTexture(button.collapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton)
+end
+
 local function SelectedOverlay_SetShown(overlay, shown)
 	local backdrop = overlay:GetParent().backdrop
 	if shown then
@@ -63,6 +68,8 @@ local function HandleChallenge(button)
 
 	hooksecurefunc(button.SelectedOverlay, 'SetShown', SelectedOverlay_SetShown)
 	hooksecurefunc(button, 'DisplayObjectives', Challenge_DisplayObjectives)
+	hooksecurefunc(button, 'UpdatePlusMinusArt', Challenge_UpdatePlusMinusArt)
+	Challenge_UpdatePlusMinusArt(button)
 
 	button.IsSkinned = true
 end
