@@ -10,11 +10,12 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 
+local BNET_NAME_COLOR = FRIENDS_BNET_NAME_COLOR
+local BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
 local INVITE_RESTRICTION_NONE = 9
 
 local function BattleNetFrame_OnEnter(button)
-	local bnetColor = _G.FRIENDS_BNET_NAME_COLOR
-	button.backdrop:SetBackdropBorderColor(bnetColor.r, bnetColor.g, bnetColor.b)
+	button.backdrop:SetBackdropBorderColor(BNET_NAME_COLOR.r, BNET_NAME_COLOR.g, BNET_NAME_COLOR.b)
 end
 
 local function BattleNetFrame_OnLeave(button)
@@ -194,8 +195,8 @@ local function HandleRecentAllies(frame)
 	local invite = InviteAtlas['friendslist-invitebutton-default-normal']
 
 	for _, button in next, { frame.ScrollTarget:GetChildren() } do
-		if not button.IsSkinned then
-			local partyButton = button.PartyButton
+		local partyButton = not button.IsSkinned and button.PartyButton
+		if partyButton then
 			local normal = partyButton:GetNormalTexture()
 			normal:SetTexture(invite)
 			normal:SetTexCoords()
@@ -264,13 +265,12 @@ function S:FriendsFrame()
 	S:HandleButton(FriendsFrameBattlenetFrame.ContactsMenuButton)
 	FriendsFrameBattlenetFrame.ContactsMenuButton:Size(31) -- Default is 32, 32
 
-	local bnetColor = _G.FRIENDS_BNET_BACKGROUND_COLOR
 	local BattlenetFrame = CreateFrame('Button', nil, FriendsFrameBattlenetFrame)
 	BattlenetFrame:Point('TOPLEFT', FriendsFrameBattlenetFrame, 'TOPLEFT')
 	BattlenetFrame:Point('BOTTOMRIGHT', FriendsFrameBattlenetFrame, 'BOTTOMRIGHT')
 	BattlenetFrame:Size(FriendsFrameBattlenetFrame:GetSize())
 	BattlenetFrame:CreateBackdrop('Transparent')
-	BattlenetFrame.backdrop:SetBackdropColor(bnetColor.r, bnetColor.g, bnetColor.b, bnetColor.a)
+	BattlenetFrame.backdrop:SetBackdropColor(BNET_BACKGROUND_COLOR.r, BNET_BACKGROUND_COLOR.g, BNET_BACKGROUND_COLOR.b, BNET_BACKGROUND_COLOR.a)
 	BattlenetFrame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 
 	BattlenetFrame:SetScript('OnClick', BattleNetFrame_OnClick)

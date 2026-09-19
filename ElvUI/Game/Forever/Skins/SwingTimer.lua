@@ -10,6 +10,7 @@ local function HandleSwingTimer(frame)
 
 	local bar = frame.StatusBar
 	S:HandleStatusBar(bar)
+
 	bar.TypeLabel:FontTemplate()
 	bar.TimeLabel:FontTemplate()
 end

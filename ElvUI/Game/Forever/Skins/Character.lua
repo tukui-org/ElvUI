@@ -42,11 +42,12 @@ end
 -- ColoredProgressBarTemplate: unnamed background, a masked Fill and Text
 local function HandleColoredProgressBar(bar)
 	bar:GetRegions():SetTexture(E.ClearTexture)
-	bar.Text:FontTemplate()
 
 	bar:CreateBackdrop('Transparent')
 	bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
 	bar.backdrop:Point('BOTTOMRIGHT', bar, 'RIGHT', 1, -8)
+
+	bar.Text:FontTemplate()
 
 	bar.Fill:RemoveMaskTexture(bar.Mask)
 	bar.Fill:ClearAllPoints()

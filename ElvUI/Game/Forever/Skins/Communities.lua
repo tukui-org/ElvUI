@@ -102,6 +102,14 @@ local function RequestToJoin_Initialize(frame)
 	end
 end
 
+local function NotificationSettingsStreamFilter(frame)
+	frame.ShowNotificationsButton:Size(20, 20)
+	frame.HideNotificationsButton:Size(20, 20)
+
+	S:HandleCheckBox(frame.ShowNotificationsButton)
+	S:HandleCheckBox(frame.HideNotificationsButton)
+end
+
 function S:Blizzard_Communities()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
@@ -152,12 +160,7 @@ function S:Blizzard_Communities()
 
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropdown)
 
-	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(frame)
-		frame.ShowNotificationsButton:Size(20, 20)
-		frame.HideNotificationsButton:Size(20, 20)
-		S:HandleCheckBox(frame.ShowNotificationsButton)
-		S:HandleCheckBox(frame.HideNotificationsButton)
-	end)
+	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', NotificationSettingsStreamFilter)
 
 	-- Chat Tab
 	CommunitiesFrame.MemberList:StripTextures()
@@ -204,6 +207,7 @@ function S:Blizzard_Communities()
 		frame.InsetFrame:Hide()
 		frame.CircleMask:Hide()
 		frame.IconRing:Hide()
+
 		S:HandleIcon(frame.Icon)
 		S:HandleButton(frame.AcceptButton)
 		S:HandleButton(frame.DeclineButton)

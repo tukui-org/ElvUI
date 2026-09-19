@@ -43,8 +43,8 @@ local function ReskinSlotButton(button)
 	ps:SetAlpha(greenPlus and 1 or 0)
 	ps:SetOutside(button)
 
-	if not button.IsSkinned then
-		local icon = button.Icon
+	local icon = not button.IsSkinned and button.Icon
+	if icon then
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)

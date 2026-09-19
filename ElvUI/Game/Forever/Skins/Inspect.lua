@@ -63,10 +63,12 @@ function S:Blizzard_InspectUI()
 	end
 
 	for _, Slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
-		if (Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton')) and Slot.icon then
+		if Slot.icon and (Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton')) then
 			S:HandleIcon(Slot.icon, true)
+
 			Slot.icon.backdrop:OffsetFrameLevel(nil, Slot)
 			Slot.icon:SetInside()
+
 			Slot:StripTextures()
 			Slot:StyleButton()
 

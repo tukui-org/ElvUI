@@ -23,7 +23,8 @@ local function SetSelectedCategory(list)
 		end
 	end
 
-	for frame in list.pools:GetPool('CustomizationOptionCheckButtonTemplate'):EnumerateActive() do
+	local options = list.pools:GetPool('CustomizationOptionCheckButtonTemplate')
+	for frame in options:EnumerateActive() do
 		if not frame.IsSkinned then
 			S:HandleCheckBox(frame.Button)
 			frame.Label:FontTemplate()

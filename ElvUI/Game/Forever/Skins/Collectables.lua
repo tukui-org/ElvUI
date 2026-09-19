@@ -14,7 +14,7 @@ local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom
+local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
 
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)

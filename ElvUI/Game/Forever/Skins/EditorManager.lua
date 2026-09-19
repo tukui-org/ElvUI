@@ -29,7 +29,9 @@ end
 local function HandleDialogs()
 	local dialog = _G.EditModeSystemSettingsDialog
 	for _, button in next, { dialog.Buttons:GetChildren() } do -- revert button plus the pooled system buttons
-		S:HandleButton(button)
+		if not button.IsSkinned then
+			S:HandleButton(button)
+		end
 	end
 
 	for _, frame in next, { dialog.Settings:GetChildren() } do

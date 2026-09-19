@@ -73,7 +73,7 @@ local function UpdateButtonFrameLevel(_, button)
 		button.IsSkinned = true
 	end
 
-	button.Icon.backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
+	button.Icon.backdrop:OffsetFrameLevel(-1, button)
 end
 
 local function CategoryTabSelected(tab, selected)
@@ -172,9 +172,9 @@ function S:Blizzard_PlayerSpells()
 	local SearchOptions = TalentsFrame.SearchOptionsDropdown
 	S:HandleNextPrevButton(SearchOptions, 'down', nil, true)
 	SearchOptions:SetTemplate()
-	SearchOptions.Arrow:SetAlpha(0)
 	SearchOptions:ClearAllPoints()
 	SearchOptions:Point('LEFT', TalentsFrame.SearchBox, 'RIGHT', 3, 0)
+	SearchOptions.Arrow:SetAlpha(0)
 
 	TalentsFrame.SearchPreviewContainer:StripTextures()
 	TalentsFrame.SearchPreviewContainer:CreateBackdrop('Transparent')

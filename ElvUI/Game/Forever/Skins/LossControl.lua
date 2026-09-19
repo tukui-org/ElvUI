@@ -14,15 +14,16 @@ local function SetupDisplay(frame)
 	frame.AbilityName:FontTemplate(nil, 20, 'OUTLINE')
 	frame.AbilityName.scrollTime = nil -- huh?
 
-	frame.TimeLeft.NumberText:ClearAllPoints()
-	frame.TimeLeft.NumberText:Point('BOTTOM', frame, 4, -58)
-	frame.TimeLeft.NumberText:FontTemplate(nil, 20, 'OUTLINE')
-	frame.TimeLeft.NumberText.scrollTime = nil -- huh?
+	local TimeLeft = frame.TimeLeft
+	TimeLeft.NumberText:ClearAllPoints()
+	TimeLeft.NumberText:Point('BOTTOM', frame, 4, -58)
+	TimeLeft.NumberText:FontTemplate(nil, 20, 'OUTLINE')
+	TimeLeft.NumberText.scrollTime = nil -- huh?
 
-	frame.TimeLeft.SecondsText:ClearAllPoints()
-	frame.TimeLeft.SecondsText:Point('BOTTOM', frame, 0, -80)
-	frame.TimeLeft.SecondsText:FontTemplate(nil, 20, 'OUTLINE')
-	frame.TimeLeft.SecondsText.scrollTime = nil -- huh?
+	TimeLeft.SecondsText:ClearAllPoints()
+	TimeLeft.SecondsText:Point('BOTTOM', frame, 0, -80)
+	TimeLeft.SecondsText:FontTemplate(nil, 20, 'OUTLINE')
+	TimeLeft.SecondsText.scrollTime = nil -- huh?
 
 	-- always stop shake animation on start
 	if frame.Anim:IsPlaying() then

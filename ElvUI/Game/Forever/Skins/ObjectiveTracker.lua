@@ -41,7 +41,10 @@ local function ReskinBarTemplate(bar)
 end
 
 local function HandleProgressBar(tracker, key)
-	local bar = tracker.usedProgressBars[key].Bar
+	local progress = tracker.usedProgressBars[key]
+	if not progress then return end
+
+	local bar = progress.Bar
 	ReskinBarTemplate(bar)
 
 	local _, maxValue = bar:GetMinMaxValues()
@@ -63,7 +66,10 @@ local function HandleProgressBar(tracker, key)
 end
 
 local function HandleTimers(tracker, key)
-	ReskinBarTemplate(tracker.usedTimerBars[key].Bar)
+	local progress = tracker.usedTimerBars[key]
+	if not progress then return end
+
+	ReskinBarTemplate(progress.Bar)
 end
 
 local function SetCollapsed(header, collapsed)
