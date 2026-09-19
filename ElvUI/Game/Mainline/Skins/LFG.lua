@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
-local min, next, select = min, next, select
+local next, select = next, select
 local unpack, ipairs, pairs = unpack, ipairs, pairs
 local hooksecurefunc = hooksecurefunc
 
@@ -13,7 +13,6 @@ local GetItemInfo = C_Item.GetItemInfo
 local C_ChallengeMode_GetAffixInfo = C_ChallengeMode.GetAffixInfo
 local C_ChallengeMode_GetMapUIInfo = C_ChallengeMode.GetMapUIInfo
 local C_ChallengeMode_GetSlottedKeystoneInfo = C_ChallengeMode.GetSlottedKeystoneInfo
-local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 local C_MythicPlus_GetCurrentAffixes = C_MythicPlus.GetCurrentAffixes
 
@@ -493,14 +492,16 @@ function S:LookingForGroupFrames()
 		end
 
 		local autoComplete = panel.AutoCompleteFrame
-		local results = autoComplete.Results
-		local text = panel.SearchBox:GetText() or ''
-		local matching = C_LFGList_GetAvailableActivities(panel.categoryID, nil, panel.filters, text)
-		local numResults = min(#matching, _G.MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
+		if not autoComplete:IsShown() then return end
 
-		for i = 2, numResults do
-			local button = results[i]
-			if not button.moved then
+		local results = autoComplete.Results
+		local numResults = 0
+		for i, button in next, results do
+			if button:IsShown() then
+				numResults = i
+			end
+
+			if i > 1 and not button.moved then
 				button:Point('TOPLEFT', results[i-1], 'BOTTOMLEFT', 0, -2)
 				button:Point('TOPRIGHT', results[i-1], 'BOTTOMRIGHT', 0, -2)
 				button.moved = true
