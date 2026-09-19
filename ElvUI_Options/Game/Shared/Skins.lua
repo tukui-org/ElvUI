@@ -130,6 +130,7 @@ if E.Retail then
 	toggles.runeforge = L["Runeforge"]
 	toggles.scrapping = L["SCRAP_BUTTON"]
 	toggles.soulbinds = L["Soulbinds"]
+	toggles.subscriptionInterstitial = L["Subscription Interstitial"]
 	toggles.talkinghead = L["Talking Head"]
 	toggles.torghastLevelPicker = L["Torghast Level Picker"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
