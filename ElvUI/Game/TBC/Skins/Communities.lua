@@ -102,7 +102,8 @@ local function CommunitiesListScrollUpdate(frame)
 end
 
 local function ChatEditBoxMinimized(frame)
-	local editBox = frame:GetParent().ChatEditBox
+	local parent = frame:GetParent()
+	local editBox = parent.ChatEditBox
 	editBox:Point('BOTTOMLEFT', 10, 6)
 	editBox:Point('BOTTOMRIGHT', -12, 6)
 end
