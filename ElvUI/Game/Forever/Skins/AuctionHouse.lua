@@ -105,10 +105,18 @@ local function HandleAuctionButtons(button)
 	button:Size(22)
 end
 
-local function HandleBidAmount(frame)
-	S:HandleEditBox(frame.gold)
-	S:HandleEditBox(frame.silver)
-	S:HandleEditBox(frame.copper)
+local function HandleBidFrame(frame)
+	local BidAmount = frame.BidAmount
+	S:HandleEditBox(BidAmount.gold)
+	S:HandleEditBox(BidAmount.silver)
+	S:HandleEditBox(BidAmount.copper)
+
+	BidAmount.gold:ClearAllPoints()
+	BidAmount.gold:Point('LEFT')
+
+	S:HandleButton(frame.BidButton)
+	frame.BidButton:ClearAllPoints()
+	frame.BidButton:Point('LEFT', BidAmount.copper, 'RIGHT', 2, 0)
 end
 
 local function HandleSellFrame(frame)
@@ -271,10 +279,7 @@ local function LoadSkin()
 	S:HandleButton(ItemBuyList.RefreshFrame.RefreshButton)
 	hooksecurefunc(ItemBuyList, 'RefreshScrollFrame', HandleHeaders)
 
-	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
-	ItemBuyFrame.BidFrame.BidButton:ClearAllPoints()
-	ItemBuyFrame.BidFrame.BidButton:Point('LEFT', ItemBuyFrame.BidFrame.BidAmount, 'RIGHT', 2, -2)
-	HandleBidAmount(ItemBuyFrame.BidFrame.BidAmount)
+	HandleBidFrame(ItemBuyFrame.BidFrame)
 
 	--[[ Item Sell Frame | TAB 2 ]]--
 	local SellFrame = Frame.ItemSellFrame
@@ -318,8 +323,7 @@ local function LoadSkin()
 	AuctionsFrame.CancelAuctionButton:Point('TOPRIGHT', AllAuctionsList, 'BOTTOMRIGHT', -6, 1)
 
 	HandleSellList(AuctionsFrame.BidsList, true, true)
-	S:HandleButton(AuctionsFrame.BidFrame.BidButton)
-	HandleBidAmount(AuctionsFrame.BidFrame.BidAmount)
+	HandleBidFrame(AuctionsFrame.BidFrame)
 
 	--[[ Dialogs ]]--
 	Frame.BuyDialog:StripTextures()
