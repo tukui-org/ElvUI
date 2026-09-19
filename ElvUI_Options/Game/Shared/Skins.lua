@@ -37,7 +37,6 @@ local toggles = {
 	petition = L["Petition Frame"],
 	quest = L["Quest Frames"],
 	raid = L["Raid Frame"],
-	spellbook = L["SPELLBOOK"],
 	stable = L["Stable"],
 	tabard = L["Tabard Frame"],
 	talent = L["TALENTS"],
@@ -101,19 +100,20 @@ if not E.Retail then
 	toggles.questTimers = L["Quest Timers"]
 end
 
+if not E.Forever then
+	toggles.spellbook = L["SPELLBOOK"]
+end
+
 if E.Modern then
-	toggles.campsites = L["Campsite"]
 	toggles.cooldownManager = L["Cooldown Manager"]
-	toggles.contribution = L["Contribution"]
 	toggles.damageMeter = L["Damage Meter"]
 	toggles.deathRecap = L["DEATH_RECAP_TITLE"]
 	toggles.gmChat = L["GM Chat"]
-	toggles.guide = L["Guide Frame"]
 	toggles.itemInteraction = L["Item Interaction"]
 	toggles.losscontrol = L["LOSS_OF_CONTROL"]
 	toggles.nonraid = L["Non-Raid Frame"]
 	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
-	toggles.playerChoice = L["Player Choice Frame"]
+	toggles.subscriptionInterstitial = L["Subscription Interstitial"]
 end
 
 if E.Retail then
@@ -126,13 +126,16 @@ if E.Retail then
 	toggles.azerite = L["Azerite"]
 	toggles.azeriteEssence = L["Azerite Essence"]
 	toggles.azeriteRespec = L["AZERITE_RESPEC_TITLE"]
+	toggles.campsites = L["Campsite"]
 	toggles.chromieTime = L["Chromie Time Frame"]
+	toggles.contribution = L["Contribution"]
 	toggles.covenantPreview = L["Covenant Preview"]
 	toggles.covenantRenown = L["Covenant Renown"]
 	toggles.covenantSanctum = L["Covenant Sanctum"]
 	toggles.expansionLanding = L["Expansion Landing Page"]
 	toggles.garrison = L["GARRISON_LOCATION_TOOLTIP"]
 	toggles.genericTrait = L["Generic Trait"]
+	toggles.guide = L["Guide Frame"]
 	toggles.islandQueue = L["ISLANDS_HEADER"]
 	toggles.islandsPartyPose = L["Island Party Pose"]
 	toggles.lfguild = L["LF Guild Frame"]
@@ -140,6 +143,7 @@ if E.Retail then
 	toggles.obliterum = L["OBLITERUM_FORGE_TITLE"]
 	toggles.orderhall = L["Orderhall"]
 	toggles.perks = L["Trading Post"]
+	toggles.playerChoice = L["Player Choice Frame"]
 	toggles.questChoice = L["Quest Choice"]
 	toggles.runeforge = L["Runeforge"]
 	toggles.scrapping = L["SCRAP_BUTTON"]

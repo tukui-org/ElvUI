@@ -1665,6 +1665,7 @@ L["Sticky Chat"] = true
 L["Strata and Level"] = true
 L["Style"] = true
 L["Style Filter"] = true
+L["Subscription Interstitial"] = true
 L["Subzone Name"] = true
 L["Summon Icon"] = true
 L["Support"] = true
