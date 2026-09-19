@@ -15,15 +15,6 @@ function S:RaidInfoFrame()
 		frame:StripTextures()
 	end
 
-	for _, texture in next, {
-		_G.RaidInfoScrollFrameScrollBarBG,
-		_G.RaidInfoScrollFrameScrollBarTop,
-		_G.RaidInfoScrollFrameScrollBarBottom,
-		_G.RaidInfoScrollFrameScrollBarMiddle,
-	} do
-		texture:Kill()
-	end
-
 	for _, button in next, {
 		_G.RaidFrameConvertToRaidButton,
 		_G.RaidFrameRaidInfoButton,

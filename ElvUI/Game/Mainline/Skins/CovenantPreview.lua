@@ -18,8 +18,8 @@ function S:Blizzard_CovenantPreviewUI()
 		frame.InfoPanel.CovenantFeatureFrame.Label:SetTextColor(1, .8, 0)
 	end
 
-	hooksecurefunc(frame, 'TryShow', function(covenantInfo)
-		if covenantInfo and not frame.IsSkinned then
+	hooksecurefunc(frame, 'TryShow', function(_, covenantInfo)
+		if covenantInfo and not frame.IsSkinned then -- Blizzard bails on nil too
 			frame:SetTemplate('Transparent')
 
 			frame.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)

@@ -8,13 +8,8 @@ local hooksecurefunc = hooksecurefunc
 local function HandleButton(button)
 	if button.IsSkinned then return end
 
-	if button.Icon then
-		S:HandleIcon(button.Icon, true)
-
-		if button.Border then
-			S:HandleIconBorder(button.Border, button.Icon.backdrop)
-		end
-	end
+	S:HandleIcon(button.Icon, true)
+	S:HandleIconBorder(button.Border, button.Icon.backdrop)
 
 	button.IsSkinned = true
 end
@@ -47,12 +42,9 @@ local function DifficultyPickerFrame_Update(frame)
 end
 
 local function UpdatePaginatedButtonDisplay(frame)
-	if not frame.buttons then return end
-
 	for _, button in next, frame.buttons do
-		local icon = button.Icon
-		if icon and not icon.backdrop then
-			S:HandleIcon(icon, true)
+		if not button.Icon.backdrop then
+			S:HandleIcon(button.Icon, true)
 		end
 	end
 end
@@ -67,12 +59,10 @@ function S:Blizzard_DelvesCompanionConfiguration()
 	S:HandleButton(CompanionConfiguration.CompanionConfigShowAbilitiesButton)
 
 	local CompanionSlots = CompanionConfiguration.CompanionSlots
-	if CompanionSlots then
-		HandleOptionSlot(CompanionSlots.CompanionCombatRoleSlot, true)
-		HandleOptionSlot(CompanionSlots.CompanionFlavorSlot)
-		HandleOptionSlot(CompanionSlots.CompanionUtilityTrinketSlot)
-		HandleOptionSlot(CompanionSlots.CompanionCombatTrinketSlot)
-	end
+	HandleOptionSlot(CompanionSlots.CompanionCombatRoleSlot, true)
+	HandleOptionSlot(CompanionSlots.CompanionFlavorSlot)
+	HandleOptionSlot(CompanionSlots.CompanionUtilityTrinketSlot)
+	HandleOptionSlot(CompanionSlots.CompanionCombatTrinketSlot)
 
 	local CompanionAbilityListFrame = _G.DelvesCompanionAbilityListFrame
 	S:HandlePortraitFrame(CompanionAbilityListFrame)
@@ -102,13 +92,3 @@ function S:Blizzard_DelvesDifficultyPicker()
 end
 
 S:AddCallbackForAddon('Blizzard_DelvesDifficultyPicker')
-
-function S:Blizzard_DelvesDashboardUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
-	local Dashboard = _G.DelvesDashboardFrame
-	Dashboard.DashboardBackground:SetAlpha(0)
-	S:HandleButton(Dashboard.ButtonPanelLayoutFrame.CompanionConfigButtonPanel.CompanionConfigButton)
-end
-
-S:AddCallbackForAddon('Blizzard_DelvesDashboardUI')

@@ -15,8 +15,6 @@ local GetAchievementCriteriaInfo = GetAchievementCriteriaInfo
 local FLAG_PROGRESS_BAR = EVALUATION_TREE_FLAG_PROGRESS_BAR
 
 local function SetupButtonHighlight(button, backdrop)
-	if not button then return end
-
 	button:SetHighlightTexture(E.media.normTex)
 
 	local hl = button:GetHighlightTexture()
@@ -25,10 +23,9 @@ local function SetupButtonHighlight(button, backdrop)
 end
 
 local function StyleSearchButton(button)
-	if not button then return end
-
 	S:HandleFrame(button, true)
-	local icon = button.icon or button.Icon
+
+	local icon = button.Icon
 	if icon then
 		S:HandleIcon(icon)
 	end
@@ -41,12 +38,10 @@ end
 
 local function UpdateDisplayObjectives(frame)
 	local objectives = frame:GetObjectiveFrame()
-	if objectives and objectives.progressBars then
-		for _, bar in next, objectives.progressBars do
-			if not bar.IsSkinned then
-				S:HandleStatusBar(bar)
-				bar.IsSkinned = true
-			end
+	for _, bar in next, objectives.progressBars do
+		if not bar.IsSkinned then
+			S:HandleStatusBar(bar)
+			bar.IsSkinned = true
 		end
 	end
 end
@@ -65,25 +60,13 @@ local function UpdateAccountString(button)
 	end
 end
 
-local function HideBackdrop(frame)
-	if frame.NineSlice then frame.NineSlice:SetAlpha(0) end
-	if frame.SetBackdrop then frame:SetBackdrop(nil) end
-end
-
 local function SkinStatusBar(bar)
 	S:HandleStatusBar(bar)
 	bar:GetStatusBarTexture():SetGradient('VERTICAL', CreateColor(0, .4, 0, 1), CreateColor(0, .6, 0, 1))
 
-	local StatusBarName = bar:GetName()
-
-	local title = _G[StatusBarName..'Title']
-	if title then title:Point('LEFT', 4, 0) end
-
-	local label = _G[StatusBarName..'Label']
-	if label then label:Point('LEFT', 4, 0) end
-
-	local text = _G[StatusBarName..'Text']
-	if text then text:Point('RIGHT', -4, 0) end
+	local name = bar:GetName()
+	_G[name..'Title']:Point('LEFT', 4, 0)
+	_G[name..'Text']:Point('RIGHT', -4, 0)
 end
 
 local function HandleSummaryBar(frame)
@@ -98,7 +81,7 @@ end
 
 local function HandleCompareCategory(button)
 	button:DisableDrawLayer('BORDER')
-	HideBackdrop(button)
+	button.NineSlice:SetAlpha(0)
 	button.Background:Hide()
 	button:CreateBackdrop('Transparent')
 	button.backdrop:SetInside(button, 2, 2)
@@ -127,7 +110,7 @@ end
 
 local function AchievementFrameCategoriesScrollUpdateChild(child)
 	local button = child.Button
-	if button and not button.IsSkinned then
+	if not button.IsSkinned then
 		S:HandleFrame(button, true, nil, 0, -1)
 		button.Background:Hide()
 		SetupButtonHighlight(button, button.backdrop)
@@ -213,11 +196,8 @@ end
 local function UpdateTabs()
 	for i = 1, 3 do
 		local tab = _G['AchievementFrameTab'..i]
-		local text = tab and tab.Text
-		if text then
-			text:ClearAllPoints()
-			text:Point('CENTER', tab)
-		end
+		tab.Text:ClearAllPoints()
+		tab.Text:Point('CENTER', tab)
 	end
 end
 
@@ -290,7 +270,7 @@ function S:Blizzard_AchievementUI()
 			if not bu.IsSkinned then
 				bu:StripTextures(true)
 				bu:DisableDrawLayer('BORDER')
-				HideBackdrop(bu)
+				bu.NineSlice:SetAlpha(0)
 
 				local bd = bu.Background
 				bd:SetTexture(E.media.normTex)
@@ -413,22 +393,6 @@ function S:Blizzard_AchievementUI()
 	HandleSummaryBar(Comparison.Summary.Friend)
 
 	S:HandleTrimScrollBar(Comparison.StatContainer.ScrollBar)
-
-	-- The section below is usually handled in our hook but another addon
-	-- may have loaded the AchievementUI before we were ready. <Categories>
-	local index = 1
-	local button = _G['AchievementFrameCategoriesContainerButton'..index]
-	while button do
-		if not button.IsSkinned then
-			button:StripTextures(true)
-			button:StyleButton()
-
-			button.IsSkinned = true
-		end
-
-		index = 1
-		button = _G['AchievementFrameCategoriesContainerButton'..index]
-	end
 end
 
 S:AddCallbackForAddon('Blizzard_AchievementUI')

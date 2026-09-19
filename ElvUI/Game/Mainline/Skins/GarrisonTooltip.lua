@@ -6,15 +6,7 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function StyleTooltip(frame)
-	if not frame then return end
-
-	TT:SetStyle(frame)
-end
-
 local function AbilityTooltip(frame)
-	if not frame then return end
-
 	frame.Icon:SetTexCoords()
 	S:HandleIcon(frame.Icon, true)
 	TT:SetStyle(frame)
@@ -79,36 +71,25 @@ function S:GarrisonShipyardTooltip()
 	local tt = _G.GarrisonShipyardMapMissionTooltip
 	TT:SetStyle(tt)
 
-	local reward = tt.ItemTooltip
-	local icon = reward and reward.Icon
-	if icon then
-		S:HandleIcon(icon)
-
-		if reward.IconBorder then
-			reward.IconBorder:SetAlpha(0)
-		end
-	end
-
-	local bonusIcon = tt.BonusReward and tt.BonusReward.Icon
-	if bonusIcon then
-		S:HandleIcon(bonusIcon)
-	end
+	S:HandleIcon(tt.ItemTooltip.Icon)
+	tt.ItemTooltip.IconBorder:SetAlpha(0)
+	S:HandleIcon(tt.BonusReward.Icon)
 
 	-- other tooltips
-	StyleTooltip(_G.GarrisonBuildingFrame and _G.GarrisonBuildingFrame.BuildingLevelTooltip)
-	StyleTooltip(_G.GarrisonMissionMechanicFollowerCounterTooltip)
-	StyleTooltip(_G.GarrisonMissionMechanicTooltip)
-	StyleTooltip(_G.GarrisonBonusAreaTooltip)
+	TT:SetStyle(_G.GarrisonBuildingFrame.BuildingLevelTooltip)
+	TT:SetStyle(_G.GarrisonMissionMechanicFollowerCounterTooltip)
+	TT:SetStyle(_G.GarrisonMissionMechanicTooltip)
+	TT:SetStyle(_G.GarrisonBonusAreaTooltip)
 end
 
 function S:GarrisonTooltip()
 	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.tooltip then return end
 
-	StyleTooltip(_G.FloatingGarrisonFollowerTooltip)
-	StyleTooltip(_G.FloatingGarrisonMissionTooltip)
-	StyleTooltip(_G.FloatingGarrisonShipyardFollowerTooltip)
-	StyleTooltip(_G.GarrisonShipyardFollowerTooltip)
-	StyleTooltip(_G.GarrisonFollowerTooltip)
+	TT:SetStyle(_G.FloatingGarrisonFollowerTooltip)
+	TT:SetStyle(_G.FloatingGarrisonMissionTooltip)
+	TT:SetStyle(_G.FloatingGarrisonShipyardFollowerTooltip)
+	TT:SetStyle(_G.GarrisonShipyardFollowerTooltip)
+	TT:SetStyle(_G.GarrisonFollowerTooltip)
 
 	AbilityTooltip(_G.GarrisonFollowerAbilityTooltip)
 	AbilityTooltip(_G.FloatingGarrisonFollowerAbilityTooltip)

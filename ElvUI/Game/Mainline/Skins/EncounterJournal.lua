@@ -70,12 +70,7 @@ do -- this prevents a taint trying to force a color lock by setting it to E.noop
 	SkinOverviewInfo = function(frame, _, index)
 		local header = frame.overviews[index]
 		if not header.IsSkinned then
-			for i = 4, 18 do
-				select(i, header.button:GetRegions()):SetTexture()
-			end
-
 			ReskinHeader(header)
-			HandleButton(header.button)
 
 			LockColor(header.button.title, true)
 			LockColor(header.button.expandedIcon)
@@ -98,18 +93,6 @@ local function SkinOverviewInfoBullets(object)
 	end
 end
 
-local function HandleTabs(tab)
-	local str = tab:GetFontString()
-	tab:StripTextures()
-	tab:SetText(tab.tooltip)
-	str:FontTemplate(nil, nil, 'SHADOW')
-	tab:SetTemplate()
-	tab:SetScript('OnEnter', E.noop)
-	tab:SetScript('OnLeave', E.noop)
-	tab:Size(str:GetStringWidth() * 1.5, 20)
-	tab.SetPoint = E.noop
-end
-
 local function SkinAbilitiesInfo()
 	local index = 1
 	local header = _G['EncounterJournalInfoHeader'..index]
@@ -125,40 +108,34 @@ local function SkinAbilitiesInfo()
 end
 
 local function ItemSetsItemBorder(border, atlas)
+	local r, g, b = E:GetItemQualityColor(lootQuality[atlas])
+
 	local parent = border:GetParent()
-	local backdrop = parent and parent.Icon and parent.Icon.backdrop
-	if backdrop then
-		local r, g, b = E:GetItemQualityColor(lootQuality[atlas])
-		backdrop:SetBackdropBorderColor(r, g, b)
-	end
+	parent.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
 local function ItemSetElements(set)
-	local parchment = E.private.skins.parchmentRemoverEnable
-	if parchment and not set.backdrop then
-		set:CreateBackdrop()
-	end
+	if E.private.skins.parchmentRemoverEnable then
+		if not set.backdrop then
+			set:CreateBackdrop()
+		end
 
-	if parchment and set.Background then
 		set.Background:Hide()
 	end
 
-	if set.ItemButtons then
-		for _, button in next, set.ItemButtons do
-			local icon = button.Icon
-			if icon and not icon.backdrop then
-				S:HandleIcon(icon, true)
-			end
+	for _, button in next, set.ItemButtons do
+		if not button.Icon.backdrop then
+			S:HandleIcon(button.Icon, true)
+		end
 
-			local border = button.Border
-			if border and not border.IsSkinned then
-				border:SetAlpha(0)
+		local border = button.Border
+		if not border.IsSkinned then
+			border:SetAlpha(0)
 
-				ItemSetsItemBorder(border, border:GetAtlas()) -- handle first one
-				hooksecurefunc(border, 'SetAtlas', ItemSetsItemBorder)
+			ItemSetsItemBorder(border, border:GetAtlas()) -- handle first one
+			hooksecurefunc(border, 'SetAtlas', ItemSetsItemBorder)
 
-				border.IsSkinned = true
-			end
+			border.IsSkinned = true
 		end
 	end
 end
@@ -176,12 +153,9 @@ local function InstanceSelectScrollUpdateChild(child)
 		hl:SetVertexColor(0.8, 0.8, 0.8, .25)
 		hl:SetInside(child, 3, 3)
 
-		local bgImage = child.bgImage
-		if bgImage then
-			bgImage:CreateBackdrop()
-			bgImage.backdrop:Point('TOPLEFT', 3, -3)
-			bgImage.backdrop:Point('BOTTOMRIGHT', -4, 2)
-		end
+		child.bgImage:CreateBackdrop()
+		child.bgImage.backdrop:Point('TOPLEFT', 3, -3)
+		child.bgImage.backdrop:Point('BOTTOMRIGHT', -4, 2)
 
 		child.IsSkinned = true
 	end
@@ -280,12 +254,6 @@ local function JourneysListUpdate(frame)
 	frame:ForEachFrame(JourneysListUpdateChild)
 end
 
-local function LoreScrollingFontChild(child)
-	if child.FontString then
-		child.FontString:SetTextColor(1, 1, 1)
-	end
-end
-
 local function RepositionTabs()
 	local previousTab
 	for _, tab in next, journalBottomTabs do
@@ -303,23 +271,15 @@ local function RepositionTabs()
 end
 
 local function CollapseSetShown(collapse, shown)
-	local btn = collapse.collapseIndicator
-	if not btn then return end
-
-	btn:SetShown(shown)
+	collapse.collapseIndicator:SetShown(shown)
 end
 
 local function CollapseSetAtlas(collapse, atlas)
-	local btn = collapse.collapseIndicator
-	if not (btn and btn.plus) then return end
-
-	btn.plus:SetShown(atlas == 'campaign_headericon_closed')
+	collapse.collapseIndicator.plus:SetShown(atlas == 'campaign_headericon_closed')
 end
 
 local function CollapseMouseUp(btn)
-	if btn.button then -- is this safe?
-		btn.button:OnClick()
-	end
+	btn.button:OnClick()
 end
 
 local function CreateCollapseButton(frame, button, collapse)
@@ -331,27 +291,18 @@ local function CreateCollapseButton(frame, button, collapse)
 	btn:Size(17)
 	btn:Hide()
 
-	if not btn.button then
-		btn.button = button
-	end
+	btn.button = button
+	btn.collapse = collapse
 
-	if not btn.collapse then
-		btn.collapse = collapse
-	end
+	btn.minus = btn:CreateTexture(nil, 'OVERLAY', nil, 1)
+	btn.minus:Size(7, 1) -- this size is different then the plus texture?
+	btn.minus:Point('CENTER')
+	btn.minus:SetTexture(E.media.blankTex) -- is this supposed to be `E.Media.Textures.MinusButton`
 
-	if not btn.minus then
-		btn.minus = btn:CreateTexture(nil, 'OVERLAY', nil, 1)
-		btn.minus:Size(7, 1) -- this size is different then the plus texture?
-		btn.minus:Point('CENTER')
-		btn.minus:SetTexture(E.media.blankTex) -- is this supposed to be `E.Media.Textures.MinusButton`
-	end
-
-	if not btn.plus then
-		btn.plus = btn:CreateTexture(nil, 'OVERLAY', nil, 2)
-		btn.plus:Size(1, 7)  -- this size is different then the minus texture?
-		btn.plus:Point('CENTER')
-		btn.plus:SetTexture(E.media.blankTex) -- is this supposed to be `E.Media.Textures.PlusButton`
-	end
+	btn.plus = btn:CreateTexture(nil, 'OVERLAY', nil, 2)
+	btn.plus:Size(1, 7)  -- this size is different then the minus texture?
+	btn.plus:Point('CENTER')
+	btn.plus:SetTexture(E.media.blankTex) -- is this supposed to be `E.Media.Textures.PlusButton`
 
 	btn:HookScript('OnEnter', S.SetModifiedBackdrop)
 	btn:HookScript('OnLeave', S.SetOriginalBackdrop)
@@ -422,17 +373,8 @@ function S:Blizzard_EncounterJournal()
 	hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', RepositionTabs)
 	hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', RepositionTabs)
 
-	-- JourneysList
-	local JourneysList = _G.EncounterJournalJourneysFrame.JourneysList
-	if JourneysList then
-		hooksecurefunc(JourneysList, 'Update', JourneysListUpdate)
-	end
-
-	-- Monthly Activities
-	local MonthlyActivities = _G.EncounterJournalMonthlyActivitiesFrame
-	if MonthlyActivities then
-		hooksecurefunc(MonthlyActivities.ScrollBox, 'Update', HandleCollapseButtons)
-	end
+	hooksecurefunc(_G.EncounterJournalJourneysFrame.JourneysList, 'Update', JourneysListUpdate)
+	hooksecurefunc(_G.EncounterJournalMonthlyActivitiesFrame.ScrollBox, 'Update', HandleCollapseButtons)
 
 	-- Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
@@ -513,7 +455,6 @@ function S:Blizzard_EncounterJournal()
 			tab:Point('TOPLEFT', EncounterInfo.lootTab, 'BOTTOMLEFT', 0, -1)
 		elseif name == 'modelTab' then
 			tab:Point('TOPLEFT', EncounterInfo.bossTab, 'BOTTOMLEFT', 0, -1)
-
 		end
 	end
 
@@ -531,6 +472,7 @@ function S:Blizzard_EncounterJournal()
 		if i == 1 then
 			HandleButton(suggestion.button)
 			suggestion.button:SetFrameLevel(4)
+
 			S:HandleNextPrevButton(suggestion.prevButton, nil, nil, true)
 			S:HandleNextPrevButton(suggestion.nextButton, nil, nil, true)
 		else
@@ -629,15 +571,12 @@ function S:Blizzard_EncounterJournal()
 	local LJ = EJ.LootJournal
 	S:HandleTrimScrollBar(LJ.ScrollBar)
 
-	for _, button in next, { _G.EncounterJournalEncounterFrameInfoFilterToggle, _G.EncounterJournalEncounterFrameInfoSlotFilterToggle } do
-		HandleButton(button, true)
-	end
-
 	hooksecurefunc(EJ.instanceSelect.ScrollBox, 'Update', InstanceSelectScrollUpdate)
 
 	if E.private.skins.parchmentRemoverEnable then
 		LJ:StripTextures()
 		LJ:SetTemplate('Transparent')
+		LJ:GetRegions():Kill() -- loottab-background
 
 		_G.EncounterJournalJourneysFrame.BorderFrame:StripTextures()
 		_G.EncounterJournalInstanceSelect.evergreenBg:StripTextures()
@@ -668,14 +607,8 @@ function S:Blizzard_EncounterJournal()
 		_G.EncounterJournalEncounterFrameInstanceFrame.titleBG:SetAlpha(0)
 		_G.EncounterJournalEncounterFrameInstanceFrameTitle:FontTemplate(nil, 25)
 
-		for _, child in next, { _G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollingFont.ScrollBox.ScrollTarget:GetChildren() } do
-			LoreScrollingFontChild(child)
-		end
-
-		local parchment = LJ:GetRegions()
-		if parchment then
-			parchment:Kill()
-		end
+		local LoreScrollingText = _G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollingFont:GetFontString()
+		LoreScrollingText:SetTextColor(1, 1, 1)
 	end
 
 	do -- Item Sets
@@ -691,42 +624,26 @@ function S:Blizzard_EncounterJournal()
 		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 	end
 
-	local TutorialsFrame = EJ.TutorialsFrame
-	local Contents = TutorialsFrame and TutorialsFrame.Contents
-	if Contents then
-		if E.private.skins.parchmentRemoverEnable then
-			if not Contents.backdrop then
-				Contents:CreateBackdrop()
-			end
-
-			Contents:DisableDrawLayer('BACKGROUND')
-			Contents.Header:SetTextColor(1, 1, 1)
-			Contents.Description:SetTextColor(1, 1, 1)
-		end
-
-		S:HandleButton(Contents.StartButton, nil, nil, nil, true)
-
-		if Contents.StartButton.backdrop then
-			Contents.StartButton.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
-		end
+	local Contents = EJ.TutorialsFrame.Contents
+	if E.private.skins.parchmentRemoverEnable then
+		Contents:CreateBackdrop()
+		Contents:DisableDrawLayer('BACKGROUND')
+		Contents.Header:SetTextColor(1, 1, 1)
+		Contents.Description:SetTextColor(1, 1, 1)
 	end
+
+	S:HandleButton(Contents.StartButton, nil, nil, nil, true)
+	Contents.StartButton.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
 
 	local JourneysFrame = _G.EncounterJournalJourneysFrame
-	if JourneysFrame then
-		local LevelSkipButton = JourneysFrame.JourneyProgress and JourneysFrame.JourneyProgress.LevelSkipButton
-		if LevelSkipButton then
-			S:HandleButton(LevelSkipButton, nil, nil, nil, true)
-			LevelSkipButton:SetNormalFontObject('ElvUIFontSmall')
-			LevelSkipButton:SetHighlightFontObject('ElvUIFontSmall')
-			LevelSkipButton:SetDisabledFontObject('ElvUIFontSmall')
-		end
+	local LevelSkipButton = JourneysFrame.JourneyProgress.LevelSkipButton
+	S:HandleButton(LevelSkipButton, nil, nil, nil, true)
+	LevelSkipButton:SetNormalFontObject('ElvUIFontSmall')
+	LevelSkipButton:SetHighlightFontObject('ElvUIFontSmall')
+	LevelSkipButton:SetDisabledFontObject('ElvUIFontSmall')
 
-		local OverviewButton = JourneysFrame.JourneyProgress and JourneysFrame.JourneyProgress.OverviewBtn
-		if OverviewButton then S:HandleButton(OverviewButton) end
-
-		OverviewButton = JourneysFrame.JourneyOverview and JourneysFrame.JourneyOverview.OverviewBtn
-		if OverviewButton then S:HandleButton(OverviewButton) end
-	end
+	S:HandleButton(JourneysFrame.JourneyProgress.OverviewBtn)
+	S:HandleButton(JourneysFrame.JourneyOverview.OverviewBtn)
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal')

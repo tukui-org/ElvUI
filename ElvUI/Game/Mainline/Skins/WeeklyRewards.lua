@@ -33,9 +33,7 @@ local function UpdateSelection(frame)
 end
 
 local function SkinActivityFrame(frame, isObject)
-	if not frame then return end
-
-	if isObject then
+	if isObject then -- activity rows and the concession buttons share the list
 		if frame.Border then
 			frame.Border:SetAlpha(0)
 		end
@@ -56,19 +54,15 @@ local function SkinActivityFrame(frame, isObject)
 			hooksecurefunc(rewardText, 'SetText', S.ReplaceIconString)
 		end
 	else
-		if frame.Border then
-			frame.Border:SetTexCoord(.926, 1, 0, 1)
-			frame.Border:Point('LEFT', frame, 'RIGHT', 3, 0)
-			frame.Border:Size(25, 137)
-		end
+		frame.Border:SetTexCoord(.926, 1, 0, 1)
+		frame.Border:Point('LEFT', frame, 'RIGHT', 3, 0)
+		frame.Border:Size(25, 137)
 
-		if frame.Background and frame.Name then
-			frame.Background:Size(390, 140) -- manually adjust it, so it don't looks ugly af
-			frame.Background:SetDrawLayer('ARTWORK', 2)
+		frame.Background:Size(390, 140) -- manually adjust it, so it don't looks ugly af
+		frame.Background:SetDrawLayer('ARTWORK', 2)
 
-			frame.Background:CreateBackdrop('Transparent')
-			frame.Background.backdrop.Center:SetDrawLayer('ARTWORK', 1)
-		end
+		frame.Background:CreateBackdrop('Transparent')
+		frame.Background.backdrop.Center:SetDrawLayer('ARTWORK', 1)
 	end
 end
 
@@ -116,19 +110,13 @@ function S:Blizzard_WeeklyRewards()
 		frame:SetTemplate('Transparent')
 
 		local header = frame.HeaderFrame
-		if header then
-			header:ClearAllPoints()
-			header:Point('TOP', 1, -42)
-			header:StripTextures()
-			header:SetTemplate('Transparent')
-		end
+		header:ClearAllPoints()
+		header:Point('TOP', 1, -42)
+		header:StripTextures()
+		header:SetTemplate('Transparent')
 
 		frame.BorderContainer:StripTextures()
-
-		local concessions = frame.ConcessionsFrame
-		if concessions then
-			concessions:StripTextures()
-		end
+		frame.ConcessionsFrame:StripTextures()
 	end
 
 	S:HandleCloseButton(frame.CloseButton)
@@ -144,10 +132,8 @@ function S:Blizzard_WeeklyRewards()
 	end
 
 	local warningDialog = _G.WeeklyRewardExpirationWarningDialog
-	if warningDialog then -- doesn't always exist
-		warningDialog:Point('TOP', frame, 'BOTTOM', 0, -1)
-		warningDialog.NineSlice:HookScript('OnShow', HandleWarning)
-	end
+	warningDialog:Point('TOP', frame, 'BOTTOM', 0, -1)
+	warningDialog.NineSlice:HookScript('OnShow', HandleWarning)
 
 	hooksecurefunc(frame, 'SelectReward', SelectReward)
 	hooksecurefunc(frame, 'UpdateOverlay', UpdateOverlay)

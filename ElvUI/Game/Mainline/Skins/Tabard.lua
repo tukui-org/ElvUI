@@ -41,16 +41,8 @@ function S:TabardFrame()
 		local button, previous = _G['TabardFrameCustomization'..i]
 		while button do
 			button:StripTextures()
-
-			local left = _G['TabardFrameCustomization'..i..'LeftButton']
-			if left then
-				S:HandleNextPrevButton(left)
-			end
-
-			local right = _G['TabardFrameCustomization'..i..'RightButton']
-			if right then
-				S:HandleNextPrevButton(right)
-			end
+			S:HandleNextPrevButton(_G['TabardFrameCustomization'..i..'LeftButton'])
+			S:HandleNextPrevButton(_G['TabardFrameCustomization'..i..'RightButton'])
 
 			if previous then
 				button:ClearAllPoints()

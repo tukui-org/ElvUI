@@ -20,7 +20,7 @@ local function HandleScrollUpdateChild(child)
 
 		S:HandleButton(child.DeleteButton)
 		child.DeleteButton:Size(20)
-		child.FrameHighlight:SetInside(child.bg)
+		child.FrameHighlight:SetInside(child.backdrop)
 		child.FrameHighlight:SetColorTexture(1, 1, 1, .20)
 
 		child.NewOutline:SetTexture(E.ClearTexture)
@@ -75,18 +75,13 @@ function S:Blizzard_ClickBindingUI()
 	tutorial.NineSlice:StripTextures()
 	S:HandlePortraitFrame(tutorial, nil, true)
 
-	local titleBG = tutorial.TitleBg or tutorial.Bg
-	if titleBG then
-		titleBG:Hide()
-	end
+	tutorial.Bg:Hide()
 
 	HandlePortraitIcon(frame.PlayerSpellsPortrait, 136830)
 	HandlePortraitIcon(frame.MacrosPortrait, 136377)
 
-	if frame.EnableMouseoverCastCheckbox then
-		S:HandleCheckBox(frame.EnableMouseoverCastCheckbox)
-		S:HandleDropDownBox(frame.MouseoverCastKeyDropdown)
-	end
+	S:HandleCheckBox(frame.EnableMouseoverCastCheckbox)
+	S:HandleDropDownBox(frame.MouseoverCastKeyDropdown)
 end
 
 S:AddCallbackForAddon('Blizzard_ClickBindingUI')

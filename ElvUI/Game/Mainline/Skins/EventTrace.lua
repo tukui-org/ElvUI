@@ -2,14 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local next = next
 local hooksecurefunc = hooksecurefunc
-
-local function ReskinEventTraceButton(button)
-	S:HandleButton(button)
-	button.NormalTexture:SetAlpha(0)
-	button.MouseoverOverlay:SetAlpha(0)
-end
 
 local function ReskinScrollUpdateChild(child)
 	local button = child.HideButton
@@ -56,45 +50,18 @@ function S:Blizzard_EventTrace()
 
 	_G.EventTraceTooltip:SetFrameLevel(10)
 
-	-- Top Buttons
-	local SubtitleBar = EventTrace.SubtitleBar
-	EventTrace.SubtitleBar.ViewLog:StripTextures()
-	EventTrace.SubtitleBar.ViewFilter:StripTextures()
-	S:HandleButton(EventTrace.SubtitleBar.ViewLog)
-	S:HandleButton(EventTrace.SubtitleBar.ViewFilter)
-
 	-- Options Dropdown
-	S:HandleButton(EventTrace.SubtitleBar.OptionsDropdown)
+	local SubtitleBar = EventTrace.SubtitleBar
+	S:HandleButton(SubtitleBar.OptionsDropdown)
 
 	-- Log Bar
 	local LogBar = EventTrace.Log.Bar
 	S:HandleEditBox(LogBar.SearchBox)
 	LogBar.SearchBox:SetHeight(18)
-	LogBar.DiscardAllButton:StripTextures()
-	LogBar.PlaybackButton:StripTextures()
-	LogBar.MarkButton:StripTextures()
-	S:HandleButton(LogBar.DiscardAllButton)
-	S:HandleButton(LogBar.PlaybackButton)
-	S:HandleButton(LogBar.MarkButton)
 
-	-- Filter Bar
+	-- Menu Buttons
 	local FilterBar = EventTrace.Filter.Bar
-	FilterBar.DiscardAllButton:StripTextures()
-	FilterBar.UncheckAllButton:StripTextures()
-	FilterBar.CheckAllButton:StripTextures()
-	S:HandleButton(FilterBar.DiscardAllButton)
-	S:HandleButton(FilterBar.UncheckAllButton)
-	S:HandleButton(FilterBar.CheckAllButton)
-
-	-- Resize Button
-	EventTrace.ResizeButton:ClearAllPoints()
-	EventTrace.ResizeButton:Point('BOTTOMRIGHT', 1, -1)
-
-	ReskinEventTraceFrame(EventTrace.Log.Events)
-	ReskinEventTraceFrame(EventTrace.Log.Search)
-	ReskinEventTraceFrame(EventTrace.Filter)
-
-	local buttons = {
+	for _, button in next, {
 		SubtitleBar.ViewLog,
 		SubtitleBar.ViewFilter,
 		LogBar.DiscardAllButton,
@@ -103,11 +70,18 @@ function S:Blizzard_EventTrace()
 		FilterBar.DiscardAllButton,
 		FilterBar.UncheckAllButton,
 		FilterBar.CheckAllButton,
-	}
-
-	for _, button in pairs(buttons) do
-		ReskinEventTraceButton(button)
+	} do
+		button:StripTextures()
+		S:HandleButton(button)
 	end
+
+	-- Resize Button
+	EventTrace.ResizeButton:ClearAllPoints()
+	EventTrace.ResizeButton:Point('BOTTOMRIGHT', 1, -1)
+
+	ReskinEventTraceFrame(EventTrace.Log.Events)
+	ReskinEventTraceFrame(EventTrace.Log.Search)
+	ReskinEventTraceFrame(EventTrace.Filter)
 end
 
 S:AddCallbackForAddon('Blizzard_EventTrace')

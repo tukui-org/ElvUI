@@ -12,22 +12,17 @@ function S:Blizzard_WarfrontsPartyPoseUI()
 
 	S:HandleButton(WarfrontsPartyPoseFrame.LeaveButton)
 
-	local ModelScene = WarfrontsPartyPoseFrame.ModelScene
-	if ModelScene then
-		ModelScene:StripTextures()
-		ModelScene:SetTemplate('Transparent')
-	end
+	WarfrontsPartyPoseFrame.ModelScene:StripTextures()
+	WarfrontsPartyPoseFrame.ModelScene:SetTemplate('Transparent')
 
 	local RewardFrame = WarfrontsPartyPoseFrame.RewardAnimations.RewardFrame
-	if RewardFrame then
-		RewardFrame:CreateBackdrop('Transparent')
-		RewardFrame.backdrop:Point('TOPLEFT', -5, 5)
-		RewardFrame.backdrop:Point('BOTTOMRIGHT', RewardFrame.NameFrame, 0, -5)
+	RewardFrame:CreateBackdrop('Transparent')
+	RewardFrame.backdrop:Point('TOPLEFT', -5, 5)
+	RewardFrame.backdrop:Point('BOTTOMRIGHT', RewardFrame.NameFrame, 0, -5)
 
-		RewardFrame.NameFrame:SetAlpha(0)
-		RewardFrame.IconBorder:Kill()
-		RewardFrame.Icon:SetTexCoords()
-	end
+	RewardFrame.NameFrame:SetAlpha(0)
+	RewardFrame.IconBorder:Kill()
+	RewardFrame.Icon:SetTexCoords()
 end
 
 S:AddCallbackForAddon('Blizzard_WarfrontsPartyPoseUI')

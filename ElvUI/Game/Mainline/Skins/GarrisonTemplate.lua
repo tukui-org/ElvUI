@@ -20,10 +20,7 @@ function S:Blizzard_GarrisonTemplates()
 		local r, g, b = E:GetItemQualityColor(followerInfo.quality or 1)
 
 		s.Name:SetVertexColor(r, g, b)
-
-		if s.PortraitFrame.backdrop then
-			s.PortraitFrame.backdrop:SetBackdropBorderColor(r, g, b)
-		end
+		s.PortraitFrame.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
 
 		s.XPBar:ClearAllPoints()
 		s.XPBar:Point('BOTTOMLEFT', s.PortraitFrame, 'BOTTOMRIGHT', 7, -15)

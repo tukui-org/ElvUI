@@ -46,9 +46,7 @@ local function GreetingPanel_OnShow(frame)
 	end
 end
 
-local function HandleReward(frame)
-	if not frame then return end
-
+local function HandleReward(frame) -- reward frames are a mix of Large/Small item buttons and plain frames
 	for _, Region in next, { frame:GetRegions() } do
 		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
 			Region:SetTexture(E.ClearTexture)
@@ -228,11 +226,6 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		_G.QuestInfoQuestType:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
-
-		if _G.QuestInfoRewardsFrame.SpellLearnText then
-			_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
-		end
-
 		_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
 
@@ -309,7 +302,7 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
 	hooksecurefunc('QuestInfoItem_OnClick', S.QuestInfoItem_OnClick)
 
-	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
+	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
 	end
@@ -429,7 +422,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestModelScene.ModelTextFrame:CreateBackdrop('Transparent')
 
 	_G.QuestNPCModelNameText:ClearAllPoints()
-	_G.QuestNPCModelNameText:Point('TOP', G.QuestModelScene, 0, -10)
+	_G.QuestNPCModelNameText:Point('TOP', _G.QuestModelScene, 0, -10)
 	_G.QuestNPCModelNameText:FontTemplate(nil, 13, 'OUTLINE')
 
 	_G.QuestNPCModelText:SetJustifyH('CENTER')
@@ -447,15 +440,13 @@ function S:BlizzardQuestFrames()
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
 
 	local showMapButton = QuestLogPopupDetailFrame.ShowMapButton
-	if showMapButton then
-		S:HandleButton(showMapButton)
+	S:HandleButton(showMapButton)
 
-		local width, height = showMapButton:GetSize()
-		showMapButton:StripTextures()
-		showMapButton:Size(width - 30, height)
-		showMapButton.Text:ClearAllPoints()
-		showMapButton.Text:Point('CENTER')
-	end
+	local width, height = showMapButton:GetSize()
+	showMapButton:StripTextures()
+	showMapButton:Size(width - 30, height)
+	showMapButton.Text:ClearAllPoints()
+	showMapButton.Text:Point('CENTER')
 end
 
 S:AddCallback('BlizzardQuestFrames')

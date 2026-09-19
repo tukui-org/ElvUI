@@ -14,7 +14,7 @@ local function UpdateCheckboxes(frame)
 	for index in ipairs(frame.checkBoxTable) do
 		local checkboxName = nameString..index
 		local checkbox = _G[checkboxName]
-		if checkbox and not checkbox.IsSkinned then
+		if not checkbox.IsSkinned then
 			checkbox:StripTextures()
 			S:HandleCheckBox(_G[checkboxName..'Check'])
 
@@ -59,12 +59,12 @@ local function UpdateSwatches(frame)
 	local nameString = frame:GetName()..'Swatch'
 	for index in ipairs(frame.swatchTable) do
 		local bu = _G[nameString..index]
-		if bu and not bu.backdrop then
+		if not bu.IsSkinned then
 			bu:StripTextures()
 			bu:CreateBackdrop('Transparent')
 			bu.backdrop:SetInside()
 
-			bu.backdrop = true
+			bu.IsSkinned = true
 		end
 	end
 end
@@ -72,10 +72,10 @@ end
 local function UpdateMessageCheckboxes(frame)
 	if not frame.checkBoxTable then return end
 
-	local nameString = frame:GetName()..'CheckBox'
+	local nameString = frame:GetName()..'Checkbox'
 	for index in ipairs(frame.checkBoxTable) do
 		local checkBox = _G[nameString..index]
-		if checkBox and not checkBox.IsSkinned then
+		if not checkBox.IsSkinned then
 			S:HandleCheckBox(checkBox)
 
 			checkBox.IsSkinned = true
@@ -195,18 +195,16 @@ function S:ChatConfig()
 
 	-- TextToSpeech
 	_G.TextToSpeechButton:StripTextures()
+	S:HandleButton(_G.TextToSpeechDefaultButton)
+	S:HandleCheckBox(_G.TextToSpeechCharacterSpecificButton)
 
-	if _G.TextToSpeechFramePlaySampleButton then
-		S:HandleButton(_G.TextToSpeechFramePlaySampleButton)
-		S:HandleButton(_G.TextToSpeechFramePlaySampleAlternateButton)
-		S:HandleButton(_G.TextToSpeechDefaultButton)
-		S:HandleCheckBox(_G.TextToSpeechCharacterSpecificButton)
-
-		S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceDropdown)
-		S:HandleDropDownBox(_G.TextToSpeechFrameTtsVoiceAlternateDropdown)
-		S:HandleSliderFrame(_G.TextToSpeechFrameAdjustRateSlider)
-		S:HandleSliderFrame(_G.TextToSpeechFrameAdjustVolumeSlider)
-	end
+	local container = _G.TextToSpeechFramePanelContainer
+	S:HandleButton(container.PlaySampleButton)
+	S:HandleButton(container.PlaySampleAlternateButton)
+	S:HandleDropDownBox(container.TtsVoiceDropdown)
+	S:HandleDropDownBox(container.TtsVoiceAlternateDropdown)
+	S:HandleSliderFrame(container.AdjustRateSlider.Slider)
+	S:HandleSliderFrame(container.AdjustVolumeSlider.Slider)
 
 	for _, checkbox in pairs({ -- check boxes
 		'PlayActivitySoundWhenNotFocusedCheckButton',
@@ -215,7 +213,7 @@ function S:ChatConfig()
 		'NarrateMyMessagesCheckButton',
 		'UseAlternateVoiceForSystemMessagesCheckButton',
 	}) do
-		S:HandleCheckBox(_G.TextToSpeechFramePanelContainer[checkbox])
+		S:HandleCheckBox(container[checkbox])
 	end
 
 	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', UpdateMessageCheckboxes)
