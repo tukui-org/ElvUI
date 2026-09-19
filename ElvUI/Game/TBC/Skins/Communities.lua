@@ -369,6 +369,7 @@ function S:Blizzard_Communities()
 
 	-- Filters Frame
 	local FiltersFrame = _G.CommunitiesGuildNewsFiltersFrame
+	FiltersFrame:StripTextures()
 	FiltersFrame:SetTemplate('Transparent')
 	S:HandleCheckBox(FiltersFrame.GuildAchievement)
 	S:HandleCheckBox(FiltersFrame.Achievement)
@@ -392,13 +393,8 @@ function S:Blizzard_Communities()
 	end)
 
 	if E.private.skins.parchmentRemoverEnable then
-		for _, frame in pairs({
-			GuildDetailsFrameInfo,
-			GuildDetailsFrameNews,
-			FiltersFrame,
-		}) do
-			frame:StripTextures()
-		end
+		GuildDetailsFrameInfo:StripTextures()
+		GuildDetailsFrameNews:StripTextures()
 
 		-- Guild Challenges Background
 		local backdrop1 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
