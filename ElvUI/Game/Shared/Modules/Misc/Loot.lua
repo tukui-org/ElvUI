@@ -184,7 +184,7 @@ local function CreateSlot(id)
 	drop:Point('LEFT', icon, 'RIGHT', 0, 0)
 	drop:Point('RIGHT', slot)
 	drop:SetAllPoints(slot)
-	drop:SetAlpha(.3)
+	drop:SetAlpha(0.3)
 	slot.drop = drop
 
 	local questTexture = iconFrame:CreateTexture(nil, 'OVERLAY')

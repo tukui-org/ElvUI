@@ -2190,7 +2190,7 @@ function S:HandleGarrisonPortrait(portrait, updateAtlas)
 		level:FontTemplate(nil, 14, 'OUTLINE')
 
 		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
-		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
+		if portrait.LevelBorder then portrait.LevelBorder:SetScale(0.0001) end
 	end
 
 	if portrait.PortraitRing then

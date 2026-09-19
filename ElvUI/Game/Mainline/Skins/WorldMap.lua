@@ -51,7 +51,7 @@ end
 local function SkinHeaders(header, isCalling)
 	if header.IsSkinned then return end
 
-	if header.Background then header.Background:SetAlpha(.7) end
+	if header.Background then header.Background:SetAlpha(0.7) end
 	if header.TopFiligree then header.TopFiligree:Hide() end
 	if header.Divider then header.Divider:Hide() end
 
