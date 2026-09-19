@@ -65,7 +65,7 @@
 	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
 	<Script file='Shared\Modules\Misc\PrivateAuras.lua'/>
 
-	<Script file='Forever\Skins\Addonmanager.lua'/>
+	<Script file='Forever\Skins\AddonManager.lua'/>
 	<Script file='Forever\Skins\Alerts.lua'/>
 	<Script file='Forever\Skins\AuctionHouse.lua'/>
 	<Script file='Forever\Skins\Bags.lua'/>
@@ -81,7 +81,6 @@
 	<Script file='Forever\Skins\Collectables.lua'/>
 	<Script file='Forever\Skins\CombatLog.lua' />
 	<Script file='Forever\Skins\Communities.lua'/>
-	<Script file='Forever\Skins\Contribution.lua'/>
 	<Script file='Forever\Skins\CooldownManager.lua'/>
 	<Script file='Forever\Skins\DamageMeter.lua'/>
 	<Script file='Forever\Skins\DeathRecap.lua'/>
@@ -93,7 +92,6 @@
 	<Script file='Forever\Skins\Friends.lua'/>
 	<Script file='Forever\Skins\GMChat.lua'/>
 	<Script file='Forever\Skins\Gossip.lua'/>
-	<Script file='Forever\Skins\Guide.lua'/>
 	<Script file='Forever\Skins\Guild.lua'/>
 	<Script file='Forever\Skins\GuildBank.lua'/>
 	<Script file='Forever\Skins\GuildControl.lua'/>
@@ -114,7 +112,6 @@
 	<Script file='Forever\Skins\NonRaid.lua'/>
 	<Script file='Forever\Skins\ObjectiveTracker.lua'/>
 	<Script file='Forever\Skins\Petition.lua'/>
-	<Script file='Forever\Skins\PlayerChoice.lua'/>
 	<Script file='Forever\Skins\PlayerSpells.lua'/>
 	<Script file='Forever\Skins\Professions.lua'/>
 	<Script file='Forever\Skins\PVP.lua'/>
