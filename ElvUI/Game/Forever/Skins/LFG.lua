@@ -93,8 +93,12 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	S:HandleButton(LFGListingFrame.PostButton)
 	S:HandleButton(LFGListingFrame.GroupRoleButtons.RolePollButton)
 	S:HandleDropDownBox(LFGListingFrame.GroupRoleButtons.RoleDropdown, 180)
-	S:HandleEditBox(_G.LFGListingComment)
+	local ListingComment = _G.LFGListingComment
+	S:HandleEditBox(ListingComment)
+	ListingComment.backdrop:Point('TOPLEFT', -6, 2)
+	ListingComment.backdrop:Point('BOTTOMRIGHT', 6, -2)
 	S:HandleTrimScrollBar(LFGListingFrame.ActivityView.ScrollBar)
+	LFGListingFrame.ActivityView.BarMiddle:SetAlpha(0)
 
 	for _, roleButton in next, LFGListingFrame.SoloRoleButtons.RoleButtons do
 		S:HandleCheckBox(roleButton.CheckButton, nil, nil, true)
@@ -138,6 +142,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	local EditBox = LFGWhoListFrame.EditBox
 	EditBox.Backdrop:StripTextures()
 	EditBox.Backdrop:CreateBackdrop()
+	EditBox.Backdrop.backdrop:SetOutside(EditBox.Backdrop, E.Border + 2, E.Border + 2)
 
 	local WhoSearch = LFGWhoListFrame.WhoSearch
 	S:HandleButton(WhoSearch)
