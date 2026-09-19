@@ -9,37 +9,28 @@ local hooksecurefunc = hooksecurefunc
 local DROPDOWN_WIDTH_OFFSET = 8
 
 function S:DamageMeter_ButtonOnEnter()
-	local normalTex = self:GetNormalTexture()
-	if not normalTex then return end
-
 	local r, g, b = unpack(E.media.rgbvaluecolor)
-	normalTex:SetVertexColor(r, g, b)
+	self:GetNormalTexture():SetVertexColor(r, g, b)
 end
 
 function S:DamageMeter_ButtonOnLeave()
-	local normalTex = self:GetNormalTexture()
-	if not normalTex then return end
-
-	normalTex:SetVertexColor(1, 1, 1)
+	self:GetNormalTexture():SetVertexColor(1, 1, 1)
 end
 
 function S:DamageMeter_HandleResizeButton(button)
-	if not button or button.IsSkinned then return end
+	if button.IsSkinned then return end
 
 	button:SetNormalTexture(E.Media.Textures.ArrowUp)
 	button:SetPushedTexture(E.Media.Textures.ArrowUp)
 	button:GetHighlightTexture():SetTexture('')
 
 	local normalTex = button:GetNormalTexture()
-	local pushedTex = button:GetPushedTexture()
-
-	if not normalTex or not pushedTex then return end
-
 	normalTex:SetVertexColor(1, 1, 1)
 	normalTex:SetTexCoord(0, 1, 0, 1)
 	normalTex:SetAllPoints()
 
 	local r, g, b = unpack(E.media.rgbvaluecolor)
+	local pushedTex = button:GetPushedTexture()
 	pushedTex:SetVertexColor(r, g, b)
 	pushedTex:SetTexCoord(0, 1, 0, 1)
 	pushedTex:SetAllPoints()
@@ -56,8 +47,8 @@ function S:DamageMeter_BackdropSetAlpha(alpha)
 	end
 end
 
-function S:DamageMeter_HandleBackground(window, background, x1, y1, x2, y2)
-	if not window or not background or background.backdrop then return end
+function S:DamageMeter_HandleBackground(background, x1, y1, x2, y2)
+	if background.backdrop then return end
 
 	background:SetTexture()
 	background:CreateBackdrop('Transparent')
@@ -75,94 +66,65 @@ function S:DamageMeter_DropdownSetWidth(width, overrideFlag)
 	self:SetWidth(width + DROPDOWN_WIDTH_OFFSET, true)
 end
 
-function S:DamageMeter_HandleSessionTimer(window, sessionTimer)
-	if not sessionTimer then return end
-
-	sessionTimer:ClearAllPoints() -- point is a secret
-	sessionTimer:Point('TOPLEFT', window.Header, 3, -9)
-end
-
 function S:DamageMeter_HandleTypeDropdown(window, dropdown)
-	if not dropdown or dropdown.IsSkinned then return end
+	if dropdown.IsSkinned then return end
 
 	dropdown:Size(20)
 	dropdown:StripTextures(nil, true)
 	dropdown:ClearAllPoints() -- point is a secret
 	dropdown:Point('TOPLEFT', window.SessionTimer, 'TOPRIGHT', 0, 4)
+	dropdown.Arrow:SetAlpha(0)
 
-	local customArrow = not dropdown.customArrow and dropdown:CreateTexture(nil, 'BACKGROUND')
-	if customArrow then
-		customArrow:Point('CENTER')
-		customArrow:Size(14)
-		customArrow:SetTexture(E.Media.Textures.ArrowUp)
-		customArrow:SetRotation(S.ArrowRotation.down)
-
-		dropdown.customArrow = customArrow
-	end
-
-	local arrow = dropdown.Arrow
-	if arrow then
-		arrow:SetAlpha(0)
-	end
+	local customArrow = dropdown:CreateTexture(nil, 'BACKGROUND')
+	customArrow:Point('CENTER')
+	customArrow:Size(14)
+	customArrow:SetTexture(E.Media.Textures.ArrowUp)
+	customArrow:SetRotation(S.ArrowRotation.down)
+	dropdown.customArrow = customArrow
 
 	local typeName = dropdown.TypeName
-	if typeName then
-		typeName:ClearAllPoints() -- point is a secret
-		typeName:Point('LEFT', dropdown, 'RIGHT', 3, 0)
-		typeName:Point('RIGHT', window.SessionDropdown, 'LEFT', -3, 0)
-	end
+	typeName:ClearAllPoints() -- point is a secret
+	typeName:Point('LEFT', dropdown, 'RIGHT', 3, 0)
+	typeName:Point('RIGHT', window.SessionDropdown, 'LEFT', -3, 0)
 
 	dropdown.IsSkinned = true
 end
 
-function S:DamageMeter_HandleSessionDropdown(window, dropdown)
-	if not dropdown or dropdown.IsSkinned then return end
+function S:DamageMeter_HandleSessionDropdown(dropdown)
+	if dropdown.IsSkinned then return end
 
 	local newWidth = dropdown:GetWidth() + DROPDOWN_WIDTH_OFFSET
 	dropdown:StripTextures(nil, true)
 	dropdown:Width(newWidth, true)
 	dropdown:NudgePoint(8, -2)
 	dropdown:Height(20)
+	dropdown.Arrow:SetAlpha(0)
 
 	-- Blizzard's dynamic width is actually bugged now, but add some horizontal padding for styling anyway
 	hooksecurefunc(dropdown, 'SetWidth', S.DamageMeter_DropdownSetWidth)
 
-	if dropdown.Arrow then
-		dropdown.Arrow:SetAlpha(0)
-	end
-
-	if dropdown.ResetButton then
-		S:HandleCloseButton(dropdown.ResetButton)
-	end
+	S:HandleCloseButton(dropdown.ResetButton)
 
 	dropdown.IsSkinned = true
 end
 
-function S:DamageMeter_HandleSettingsDropdown(window, dropdown)
-	if not dropdown or dropdown.IsSkinned then return end
+function S:DamageMeter_HandleSettingsDropdown(dropdown)
+	if dropdown.IsSkinned then return end
 
 	dropdown:Size(20)
 	dropdown:NudgePoint(2, 1)
+	dropdown.Icon:SetAlpha(0)
 
-	if dropdown.Icon then
-		dropdown.Icon:SetAlpha(0)
-	end
-
-	local customIcon = not dropdown.customIcon and dropdown:CreateTexture(nil, 'BACKGROUND')
-	if customIcon then
-		customIcon:SetAtlas('GM-icon-settings')
-		customIcon:Point('CENTER')
-		customIcon:Size(26)
-
-		dropdown.customIcon = customIcon
-	end
+	local customIcon = dropdown:CreateTexture(nil, 'BACKGROUND')
+	customIcon:SetAtlas('GM-icon-settings')
+	customIcon:Point('CENTER')
+	customIcon:Size(26)
+	dropdown.customIcon = customIcon
 
 	dropdown.IsSkinned = true
 end
 
 function S:DamageMeter_HandleHeader(window, header)
-	if not window or not header then return end
-
 	local r, g, b, a = unpack(E.media.backdropfadecolor)
 	header:SetTexture(E.media.blankTex)
 	header:SetVertexColor(r, g, b, a)
@@ -173,35 +135,24 @@ end
 
 function S:DamageMeter_HandleStatusBar()
 	local Icon = self.Icon
-	if Icon then
-		Icon:Size(18)
-		Icon:ClearAllPoints()
-		Icon:Point('LEFT', 1, 0)
-	end
+	Icon:Size(18)
+	Icon:ClearAllPoints()
+	Icon:Point('LEFT', 1, 0)
 
 	local StatusBar = self.StatusBar
-	if StatusBar then
-		local bg = StatusBar.Background
-		if bg then
-			local r, g, b, a = unpack(E.media.backdropfadecolor)
-			bg:SetTexture(E.media.blankTex)
-			bg:SetVertexColor(r, g, b, a)
-			bg:ClearAllPoints()
-			bg:Point('TOPLEFT', -19, 1)
-			bg:Point('BOTTOMRIGHT', 1, -1)
-		end
+	local r, g, b, a = unpack(E.media.backdropfadecolor)
+	local bg = StatusBar.Background
+	bg:SetTexture(E.media.blankTex)
+	bg:SetVertexColor(r, g, b, a)
+	bg:ClearAllPoints()
+	bg:Point('TOPLEFT', -19, 1)
+	bg:Point('BOTTOMRIGHT', 1, -1)
 
-		if StatusBar.BackgroundEdge then
-			StatusBar.BackgroundEdge:Hide()
-		end
-
-		StatusBar:GetStatusBarTexture():SetTexture(E.media.normTex)
-	end
+	StatusBar.BackgroundEdge:Hide()
+	StatusBar:GetStatusBarTexture():SetTexture(E.media.normTex)
 end
 
 function S:DamageMeter_ScrollBoxUpdate()
-	if not self.ForEachFrame then return end
-
 	self:ForEachFrame(S.DamageMeter_HandleStatusBar)
 end
 
@@ -223,27 +174,21 @@ do
 end
 
 function S:DamageMeter_ScrollBarArrowButtonOnDisable()
-	if not self.customArrow then return end
-
 	self.customArrow:SetVertexColor(0.5, 0.5, 0.5)
 end
 
 function S:DamageMeter_ScrollBarArrowButtonOnEnable()
-	if not self.customArrow then return end
-
 	self.customArrow:SetVertexColor(1, 1, 1)
 end
 
 function S:DamageMeter_ReskinScrollBarArrow(btn, arrowDir)
-	if not btn or btn.IsSkinned then return end
+	if btn.IsSkinned then return end
 
-	if not btn.customArrow then
-		btn.customArrow = btn:CreateTexture(nil, 'ARTWORK')
-		btn.customArrow:SetTexture(E.Media.Textures.ArrowUp)
-		btn.customArrow:SetRotation(S.ArrowRotation[arrowDir])
-		btn.customArrow:Point('CENTER')
-		btn.customArrow:Size(15)
-	end
+	btn.customArrow = btn:CreateTexture(nil, 'ARTWORK')
+	btn.customArrow:SetTexture(E.Media.Textures.ArrowUp)
+	btn.customArrow:SetRotation(S.ArrowRotation[arrowDir])
+	btn.customArrow:Point('CENTER')
+	btn.customArrow:Size(15)
 
 	btn:HookScript('OnDisable', S.DamageMeter_ScrollBarArrowButtonOnDisable)
 	btn:HookScript('OnEnable', S.DamageMeter_ScrollBarArrowButtonOnEnable)
@@ -252,16 +197,14 @@ function S:DamageMeter_ReskinScrollBarArrow(btn, arrowDir)
 end
 
 function S:DamageMeter_HandleScrollBoxes(window)
-	local ScrollBar = window.GetScrollBar and window:GetScrollBar()
-	if ScrollBar then -- To avoid tainting the scroll bar, we apply minimal styling and leave the rest to HandleTrimScrollBar
-		S:DamageMeter_ReskinScrollBarArrow(ScrollBar.Back, 'up')
-		S:DamageMeter_ReskinScrollBarArrow(ScrollBar.Forward, 'down')
+	-- To avoid tainting the scroll bar, we apply minimal styling and leave the rest to HandleTrimScrollBar
+	local ScrollBar = window:GetScrollBar()
+	S:DamageMeter_ReskinScrollBarArrow(ScrollBar.Back, 'up')
+	S:DamageMeter_ReskinScrollBarArrow(ScrollBar.Forward, 'down')
+	S:HandleTrimScrollBar(ScrollBar)
 
-		S:HandleTrimScrollBar(ScrollBar)
-	end
-
-	local ScrollBox = window.GetScrollBox and window:GetScrollBox()
-	if ScrollBox and not ScrollBox.IsSkinned then
+	local ScrollBox = window:GetScrollBox()
+	if not ScrollBox.IsSkinned then
 		hooksecurefunc(ScrollBox, 'Update', S.DamageMeter_ScrollBoxUpdate)
 		hooksecurefunc(ScrollBox, 'SetPoint', S.DamageMeter_ScrollBoxSetPoint)
 
@@ -275,8 +218,6 @@ end
 
 function S:DamageMeter_RepositionResizeButton(container, x, y)
 	local ResizeButton = container.ResizeButton
-	if not ResizeButton then return end
-
 	S:DamageMeter_HandleResizeButton(ResizeButton)
 
 	local rotation = pi * 1.25
@@ -288,50 +229,32 @@ function S:DamageMeter_RepositionResizeButton(container, x, y)
 	ResizeButton:Size(14)
 end
 
-function S:DamageMeter_HandleSourceWindow(window, sourceWindow)
-	if not sourceWindow or sourceWindow.IsSkinned then return end
-
-	S:DamageMeter_HandleScrollBoxes(sourceWindow)
-
-	sourceWindow.IsSkinned = true
-end
-
 function S:DamageMeter_AnchorToSessionWindow() -- we could also handle source position here
 	S:DamageMeter_RepositionResizeButton(self, -24, 11)
 end
 
-function S:DamageMeter_HandleMinimizeContainer(window, container)
-	if not container or container.IsSkinned then return end
+function S:DamageMeter_HandleMinimizeContainer(container)
+	if container.IsSkinned then return end
 
-	S:DamageMeter_HandleBackground(window, container.Background, 4, nil, -10)
+	S:DamageMeter_HandleBackground(container.Background, 4, nil, -10)
 	S:DamageMeter_RepositionResizeButton(container, -6, -4)
 
 	local sourceWindow = container.SourceWindow
-	if sourceWindow then
-		S:DamageMeter_HandleBackground(window, sourceWindow.Background, 16, -13, -28, 15)
-		S:DamageMeter_HandleSourceWindow(window, sourceWindow)
-
-		hooksecurefunc(sourceWindow, 'AnchorToSessionWindow', S.DamageMeter_AnchorToSessionWindow)
-	end
+	S:DamageMeter_HandleBackground(sourceWindow.Background, 16, -13, -28, 15)
+	S:DamageMeter_HandleScrollBoxes(sourceWindow)
+	hooksecurefunc(sourceWindow, 'AnchorToSessionWindow', S.DamageMeter_AnchorToSessionWindow)
 
 	container.IsSkinned = true
 end
 
 function S:DamageMeter_HandleLocalPlayerEntry()
-	local minimize = self.MinimizeContainer
-	local entry = minimize and minimize.LocalPlayerEntry
-	if not entry then return end
-
+	local entry = self.MinimizeContainer.LocalPlayerEntry
 	S.DamageMeter_HandleStatusBar(entry)
-
-	local StatusBarBackground = entry.StatusBar and entry.StatusBar.Background
-	if StatusBarBackground then -- Local player entry is floating above the other entries
-		StatusBarBackground:SetAlpha(1)
-	end
+	entry.StatusBar.Background:SetAlpha(1) -- Local player entry is floating above the other entries
 end
 
 function S:DamageMeter_HandleMinimizeButton(window, button)
-	if not button or button.IsSkinned then return end
+	if button.IsSkinned then return end
 
 	button:Size(16)
 	button:SetHighlightAtlas('UI-QuestTrackerButton-Yellow-Highlight', 'ADD')
@@ -343,11 +266,8 @@ function S:DamageMeter_HandleMinimizeButton(window, button)
 end
 
 function S:DamageMeter_SetMinimized(collapsed)
-	local MinimizeButton = self.MinimizeButton
-	if not MinimizeButton then return end
-
-	local normalTexture = MinimizeButton:GetNormalTexture()
-	local pushedTexture = MinimizeButton:GetPushedTexture()
+	local normalTexture = self.MinimizeButton:GetNormalTexture()
+	local pushedTexture = self.MinimizeButton:GetPushedTexture()
 
 	if collapsed then
 		normalTexture:SetAtlas('UI-QuestTrackerButton-Secondary-Expand', true)
@@ -363,17 +283,16 @@ function S:DamageMeter_HandleSessionWindow()
 
 	S:DamageMeter_HandleHeader(self, self.Header)
 	S:DamageMeter_HandleMinimizeButton(self, self.MinimizeButton)
-	S:DamageMeter_HandleMinimizeContainer(self, self.MinimizeContainer)
+	S:DamageMeter_HandleMinimizeContainer(self.MinimizeContainer)
 	S:DamageMeter_HandleTypeDropdown(self, self.DamageMeterTypeDropdown)
-	S:DamageMeter_HandleSessionDropdown(self, self.SessionDropdown)
-	S:DamageMeter_HandleSettingsDropdown(self, self.SettingsDropdown)
-	S:DamageMeter_HandleSourceWindow(self, self.SourceWindow)
-	S:DamageMeter_HandleSessionTimer(self, self.SessionTimer)
+	S:DamageMeter_HandleSessionDropdown(self.SessionDropdown)
+	S:DamageMeter_HandleSettingsDropdown(self.SettingsDropdown)
 	S:DamageMeter_HandleScrollBoxes(self)
 
-	if self.ShowLocalPlayerEntry then
-		hooksecurefunc(self, 'ShowLocalPlayerEntry', S.DamageMeter_HandleLocalPlayerEntry)
-	end
+	self.SessionTimer:ClearAllPoints() -- point is a secret
+	self.SessionTimer:Point('TOPLEFT', self.Header, 3, -9)
+
+	hooksecurefunc(self, 'ShowLocalPlayerEntry', S.DamageMeter_HandleLocalPlayerEntry)
 
 	self.IsSkinned = true
 end

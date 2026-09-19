@@ -7,23 +7,20 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function HandleTalentFrameDialog(dialog)
-	if not dialog then return end
-
 	dialog:StripTextures()
 	dialog:CreateBackdrop('Transparent')
 
-	if dialog.AcceptButton then S:HandleButton(dialog.AcceptButton) end
-	if dialog.CancelButton then S:HandleButton(dialog.CancelButton) end
-	if dialog.DeleteButton then S:HandleButton(dialog.DeleteButton) end
+	S:HandleButton(dialog.AcceptButton)
+	S:HandleButton(dialog.CancelButton)
 
-	local nameControl = dialog.NameControl
-	local nameControlEditbox = nameControl and nameControl.EditBox
-	if nameControlEditbox then
-		S:HandleEditBox(nameControlEditbox)
-
-		nameControlEditbox.backdrop:Point('TOPLEFT', -5, -10)
-		nameControlEditbox.backdrop:Point('BOTTOMRIGHT', 5, 10)
+	if dialog.DeleteButton then -- edit dialog only
+		S:HandleButton(dialog.DeleteButton)
 	end
+
+	local editbox = dialog.NameControl.EditBox
+	S:HandleEditBox(editbox)
+	editbox.backdrop:Point('TOPLEFT', -5, -10)
+	editbox.backdrop:Point('BOTTOMRIGHT', 5, 10)
 end
 
 local function HandleTreeHeaders(frame)
@@ -39,8 +36,6 @@ local function HandleTreeHeaders(frame)
 end
 
 local function CategoryTabSelected(tab, selected)
-	if not tab or not tab.backdrop then return end
-
 	if selected then
 		tab.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
@@ -77,16 +72,12 @@ local function HandleCategoryTabs(tabSystem)
 end
 
 local function HandleHeroTalents(frame)
-	if not frame then return end
-
 	for specFrame in frame.SpecContentFramePool:EnumerateActive() do
-		if specFrame and not specFrame.IsSkinned then
-			if specFrame.SpecName then specFrame.SpecName:FontTemplate(nil, 18) end
-			if specFrame.Description then specFrame.Description:FontTemplate(nil, 14) end
-			if specFrame.CurrencyFrame then
-				specFrame.CurrencyFrame.LabelText:FontTemplate()
-				specFrame.CurrencyFrame.AmountText:FontTemplate(nil, 18)
-			end
+		if not specFrame.IsSkinned then
+			specFrame.SpecName:FontTemplate(nil, 18)
+			specFrame.Description:FontTemplate(nil, 14)
+			specFrame.CurrencyFrame.LabelText:FontTemplate()
+			specFrame.CurrencyFrame.AmountText:FontTemplate(nil, 18)
 
 			S:HandleButton(specFrame.ActivateButton)
 			S:HandleButton(specFrame.ApplyChangesButton)
@@ -140,118 +131,72 @@ function S:Blizzard_PlayerSpells()
 	end
 
 	TabSystem.spacing = -5
-	if TabSystem.MarkDirty then
-		TabSystem:MarkDirty()
-	end
-
+	TabSystem:MarkDirty()
 	TabSystem:ClearAllPoints()
 	TabSystem:Point('TOPLEFT', PlayerSpellsFrame, 'BOTTOMLEFT', -3, 0)
 
 	local ImportDialog = _G.ClassTalentLoadoutImportDialog
-	if ImportDialog then
-		HandleTalentFrameDialog(ImportDialog)
-		ImportDialog.ImportControl.InputContainer:StripTextures()
-		ImportDialog.ImportControl.InputContainer:CreateBackdrop('Transparent')
-	end
+	HandleTalentFrameDialog(ImportDialog)
+	ImportDialog.ImportControl.InputContainer:StripTextures()
+	ImportDialog.ImportControl.InputContainer:CreateBackdrop('Transparent')
 
-	local CreateDialog = _G.ClassTalentLoadoutCreateDialog
-	if CreateDialog then
-		HandleTalentFrameDialog(CreateDialog)
-	end
+	HandleTalentFrameDialog(_G.ClassTalentLoadoutCreateDialog)
 
 	local EditDialog = _G.ClassTalentLoadoutEditDialog
-	if EditDialog then
-		HandleTalentFrameDialog(EditDialog)
+	HandleTalentFrameDialog(EditDialog)
 
-		local editbox = EditDialog.LoadoutName
-		if editbox then
-			S:HandleEditBox(editbox)
-			editbox.backdrop:Point('TOPLEFT', -5, -5)
-			editbox.backdrop:Point('BOTTOMRIGHT', 5, 5)
-		end
-
-		local check = EditDialog.UsesSharedActionBars
-		if check then
-			S:HandleCheckBox(check.CheckButton)
-			check.CheckButton:Size(20)
-			check.CheckButton.backdrop:SetInside()
-		end
-	end
+	local check = EditDialog.UsesSharedActionBars.CheckButton
+	S:HandleCheckBox(check)
+	check:Size(20)
+	check.backdrop:SetInside()
 
 	-- Hero Talents
-	local HeroTalentContainer = TalentsFrame.HeroTalentsContainer
-	HeroTalentContainer.HeroSpecLabel:FontTemplate(nil, 16)
+	TalentsFrame.HeroTalentsContainer.HeroSpecLabel:FontTemplate(nil, 16)
 
 	local TalentsSelect = _G.HeroTalentsSelectionDialog
-	if TalentsSelect then
-		TalentsSelect:StripTextures()
-		TalentsSelect:SetTemplate()
-
-		S:HandleCloseButton(TalentsSelect.CloseButton)
-
-		hooksecurefunc(TalentsSelect, 'ShowDialog', HandleHeroTalents)
-	end
+	TalentsSelect:StripTextures()
+	TalentsSelect:SetTemplate()
+	S:HandleCloseButton(TalentsSelect.CloseButton)
+	hooksecurefunc(TalentsSelect, 'ShowDialog', HandleHeroTalents)
 
 	-- SpellBook
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
-	if SpellBookFrame then
-		S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
-		S:HandleEditBox(SpellBookFrame.SearchBox)
-		SpellBookFrame.SearchBox:Height(20)
-		S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
-		SpellBookFrame.SettingsDropdown:SetTemplate()
-		SpellBookFrame.SettingsDropdown:ClearAllPoints()
-		SpellBookFrame.SettingsDropdown:Point('TOPRIGHT', SpellBookFrame, 'TOPRIGHT', -30, -23)
-		SpellBookFrame.SearchBox:ClearAllPoints()
-		SpellBookFrame.SearchBox:Point('RIGHT', SpellBookFrame.SettingsDropdown, 'LEFT', -5, 0)
+	S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
+	S:HandleEditBox(SpellBookFrame.SearchBox)
+	SpellBookFrame.SearchBox:Height(20)
+	S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
+	SpellBookFrame.SettingsDropdown:SetTemplate()
+	SpellBookFrame.SettingsDropdown:ClearAllPoints()
+	SpellBookFrame.SettingsDropdown:Point('TOPRIGHT', SpellBookFrame, 'TOPRIGHT', -30, -23)
+	SpellBookFrame.SearchBox:ClearAllPoints()
+	SpellBookFrame.SearchBox:Point('RIGHT', SpellBookFrame.SettingsDropdown, 'LEFT', -5, 0)
+	SpellBookFrame.TopBar:Hide()
+	SpellBookFrame.BookCornerFlipbook:Hide()
 
-		if SpellBookFrame.TopBar then
-			SpellBookFrame.TopBar:Hide()
-		end
-
-		if SpellBookFrame.BookCornerFlipbook then
-			SpellBookFrame.BookCornerFlipbook:Hide()
-		end
-
-		if E.global.general.disableTutorialButtons then
-			SpellBookFrame.HelpPlateButton:Kill()
-		else
-			SpellBookFrame.HelpPlateButton.Ring:Hide()
-		end
-
-		HandleCategoryTabs(SpellBookFrame.CategoryTabSystem)
-		hooksecurefunc(SpellBookFrame.CategoryTabSystem, 'AddTab', HandleCategoryTabs)
-
-		local PagedSpellsFrame = PlayerSpellsFrame.SpellBookFrame.PagedSpellsFrame
-		if PagedSpellsFrame then
-			if PagedSpellsFrame.View1 then
-				PagedSpellsFrame.View1:DisableDrawLayer('OVERLAY')
-			end
-
-			local PagingControls = PagedSpellsFrame.PagingControls
-			if PagingControls then
-				PagingControls.PageText:SetTextColor(1, 1, 1)
-
-				S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
-				S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
-			end
-		end
-
-		local RotationSpellFrame = SpellBookFrame and SpellBookFrame.AssistedCombatRotationSpellFrame
-		local RotationButton = RotationSpellFrame and RotationSpellFrame.Button
-		if RotationButton then
-			S:HandleIcon(RotationButton.Icon, true)
-
-			if RotationButton.Border then
-				RotationButton.Border:Hide()
-			end
-
-			RotationButton:SetHighlightTexture(E.media.blankTex)
-			RotationButton:GetHighlightTexture():SetVertexColor(1, 1, 1, 0.25)
-			RotationButton:SetPushedTexture(E.media.blankTex)
-			RotationButton:GetPushedTexture():SetVertexColor(1, 0.82, 0, 0.4)
-		end
+	if E.global.general.disableTutorialButtons then
+		SpellBookFrame.HelpPlateButton:Kill()
+	else
+		SpellBookFrame.HelpPlateButton.Ring:Hide()
 	end
+
+	HandleCategoryTabs(SpellBookFrame.CategoryTabSystem)
+	hooksecurefunc(SpellBookFrame.CategoryTabSystem, 'AddTab', HandleCategoryTabs)
+
+	local PagedSpellsFrame = SpellBookFrame.PagedSpellsFrame
+	PagedSpellsFrame.View1:DisableDrawLayer('OVERLAY')
+
+	local PagingControls = PagedSpellsFrame.PagingControls
+	PagingControls.PageText:SetTextColor(1, 1, 1)
+	S:HandleNextPrevButton(PagingControls.PrevPageButton, nil, nil, true)
+	S:HandleNextPrevButton(PagingControls.NextPageButton, nil, nil, true)
+
+	local RotationButton = SpellBookFrame.AssistedCombatRotationSpellFrame.Button
+	S:HandleIcon(RotationButton.Icon, true)
+	RotationButton.Border:Hide()
+	RotationButton:SetHighlightTexture(E.media.blankTex)
+	RotationButton:GetHighlightTexture():SetVertexColor(1, 1, 1, 0.25)
+	RotationButton:SetPushedTexture(E.media.blankTex)
+	RotationButton:GetPushedTexture():SetVertexColor(1, 0.82, 0, 0.4)
 end
 
 S:AddCallbackForAddon('Blizzard_PlayerSpells')

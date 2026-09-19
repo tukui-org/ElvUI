@@ -27,11 +27,8 @@ local function ReskinQualityContainer(container)
 end
 
 local function ReskinSlotButton(button)
-	local icon = button and button.Icon
-	if not icon then return end
-
-	if button.CropFrame then button.CropFrame:SetAlpha(0) end
-	if button.SlotBackground then button.SlotBackground:SetAlpha(0) end
+	button.CropFrame:SetAlpha(0)
+	button.SlotBackground:SetAlpha(0)
 
 	local hl = button:GetHighlightTexture()
 	hl:SetColorTexture(1, 1, 1, .25)
@@ -47,6 +44,7 @@ local function ReskinSlotButton(button)
 	ps:SetOutside(button)
 
 	if not button.IsSkinned then
+		local icon = button.Icon
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)
@@ -56,10 +54,8 @@ local function ReskinSlotButton(button)
 end
 
 local function HandleSchematicInit(form)
-	if form.reagentSlotPool then
-		for slot in form.reagentSlotPool:EnumerateActive() do
-			ReskinSlotButton(slot.Button)
-		end
+	for slot in form.reagentSlotPool:EnumerateActive() do
+		ReskinSlotButton(slot.Button)
 	end
 
 	if form.salvageSlot then
@@ -88,77 +84,51 @@ local function HandleSchematicForm(form)
 	form.AllocateBestQualityCheckbox:Size(24)
 
 	local QualityDialog = form.QualityDialog
-	if QualityDialog then
-		QualityDialog:StripTextures()
-		QualityDialog:CreateBackdrop('Transparent')
-		QualityDialog.Bg:SetAlpha(0)
+	QualityDialog:StripTextures()
+	QualityDialog:CreateBackdrop('Transparent')
+	QualityDialog.Bg:SetAlpha(0)
 
-		S:HandleCloseButton(QualityDialog.ClosePanelButton)
-		S:HandleButton(QualityDialog.AcceptButton)
-		S:HandleButton(QualityDialog.CancelButton)
+	S:HandleCloseButton(QualityDialog.ClosePanelButton)
+	S:HandleButton(QualityDialog.AcceptButton)
+	S:HandleButton(QualityDialog.CancelButton)
 
-		ReskinQualityContainer(QualityDialog.Container1)
-		ReskinQualityContainer(QualityDialog.Container2)
-		ReskinQualityContainer(QualityDialog.Container3)
-	end
+	ReskinQualityContainer(QualityDialog.Container1)
+	ReskinQualityContainer(QualityDialog.Container2)
+	ReskinQualityContainer(QualityDialog.Container3)
 
 	local OutputIcon = form.OutputIcon
-	if OutputIcon then
-		S:HandleIcon(OutputIcon.Icon, true)
-		S:HandleIconBorder(OutputIcon.IconBorder, OutputIcon.Icon.backdrop)
+	S:HandleIcon(OutputIcon.Icon, true)
+	S:HandleIconBorder(OutputIcon.IconBorder, OutputIcon.Icon.backdrop)
 
-		OutputIcon:GetHighlightTexture():Hide()
-		OutputIcon.CircleMask:Hide()
-	end
+	OutputIcon:GetHighlightTexture():Hide()
+	OutputIcon.CircleMask:Hide()
 
 	hooksecurefunc(form, 'Init', HandleSchematicInit)
 end
 
 local function HandleOutputButton(child)
+	local itemContainer = child.ItemContainer
 	if not child.IsSkinned then
-		local itemContainer = child.ItemContainer
-		if itemContainer then
-			local item = itemContainer.Item
-			item:SetNormalTexture(E.ClearTexture)
-			item:SetPushedTexture(E.ClearTexture)
-			item:SetHighlightTexture(E.ClearTexture)
+		local item = itemContainer.Item
+		item:SetNormalTexture(E.ClearTexture)
+		item:SetPushedTexture(E.ClearTexture)
+		item:SetHighlightTexture(E.ClearTexture)
 
-			local icon = item:GetRegions()
-			S:HandleIcon(icon, true)
-			S:HandleIconBorder(item.IconBorder, icon.backdrop)
+		local icon = item:GetRegions()
+		S:HandleIcon(icon, true)
+		S:HandleIconBorder(item.IconBorder, icon.backdrop)
 
-			itemContainer.CritFrame:SetAlpha(0)
-			itemContainer.NameFrame:Hide()
-			itemContainer.BorderFrame:Hide()
-			itemContainer.HighlightNameFrame:SetAlpha(0)
-			itemContainer.PushedNameFrame:SetAlpha(0)
-			itemContainer.HighlightNameFrame:CreateBackdrop('Transparent')
-		end
-
-		local bonus = child.CreationBonus
-		if bonus then
-			local item = bonus.Item
-			item:StripTextures()
-			local icon = item:GetRegions()
-			S:HandleIcon(icon)
-		end
+		itemContainer.CritFrame:SetAlpha(0)
+		itemContainer.NameFrame:Hide()
+		itemContainer.BorderFrame:Hide()
+		itemContainer.HighlightNameFrame:SetAlpha(0)
+		itemContainer.PushedNameFrame:SetAlpha(0)
+		itemContainer.HighlightNameFrame:CreateBackdrop('Transparent')
 
 		child.IsSkinned = true
 	end
 
-	local itemContainer = child.ItemContainer
-	if itemContainer then
-		itemContainer.Item.IconBorder:SetAlpha(0)
-
-		local itemBG = itemContainer.backdrop
-		if itemBG then
-			if itemContainer.CritFrame:IsShown() then
-				itemBG:SetBackdropBorderColor(1, .8, 0)
-			else
-				itemBG:SetBackdropBorderColor(0, 0, 0)
-			end
-		end
-	end
+	itemContainer.Item.IconBorder:SetAlpha(0)
 end
 
 local function HandleOutputButtons(frame)
@@ -181,28 +151,22 @@ local function HandleRankBar(bar)
 	bar.Border:Hide()
 	bar.Background:Hide()
 
-	if bar.Fill then
-		bar.Fill:CreateBackdrop()
+	bar.Fill:CreateBackdrop()
 
-		if bar.overrideWidth then -- the book cards size the bar but leave the Fill at 441
-			bar.Fill:SetWidth(bar.overrideWidth)
-		end
+	if bar.overrideWidth then -- the book cards size the bar but leave the Fill at 441
+		bar.Fill:SetWidth(bar.overrideWidth)
 	end
 
-	if bar.Rank then
-		bar.Rank.Text:FontTemplate()
-	end
+	bar.Rank.Text:FontTemplate()
 
 	local expansionDropdown = bar.ExpansionDropdownButton
-	if expansionDropdown then
-		local arrow = expansionDropdown:CreateTexture(nil, 'ARTWORK')
-		arrow:SetTexture(E.Media.Textures.ArrowUp)
-		arrow:Size(11)
-		arrow:Point('CENTER')
-		S:SetupArrow(arrow, 'down')
+	local arrow = expansionDropdown:CreateTexture(nil, 'ARTWORK')
+	arrow:SetTexture(E.Media.Textures.ArrowUp)
+	arrow:Size(11)
+	arrow:Point('CENTER')
+	S:SetupArrow(arrow, 'down')
 
-		S:HandleButton(expansionDropdown)
-	end
+	S:HandleButton(expansionDropdown)
 end
 
 -- RecipeList category rows (ProfessionsRecipeListCategoryTemplate)
@@ -212,19 +176,14 @@ local function HandleRecipeCategory(button)
 	button.backdrop:SetInside(button, 0, 1)
 
 	local rankBar = button.RankBar
-	if rankBar then
-		rankBar.BorderLeft:SetAlpha(0)
-		rankBar.BorderMid:SetAlpha(0)
-		rankBar.BorderRight:SetAlpha(0)
-		rankBar:SetStatusBarTexture(E.media.normTex)
-		rankBar:CreateBackdrop('Transparent')
+	rankBar.BorderLeft:SetAlpha(0)
+	rankBar.BorderMid:SetAlpha(0)
+	rankBar.BorderRight:SetAlpha(0)
+	rankBar:SetStatusBarTexture(E.media.normTex)
+	rankBar:CreateBackdrop('Transparent')
+	rankBar.Rank:FontTemplate()
 
-		if rankBar.Rank then
-			rankBar.Rank:FontTemplate()
-		end
-
-		E:RegisterStatusBar(rankBar)
-	end
+	E:RegisterStatusBar(rankBar)
 end
 
 -- RecipeList recipe rows (ProfessionsRecipeListRecipeTemplate)
@@ -267,9 +226,7 @@ local function HandleProfessionButton(button)
 	S:HandleIcon(button.IconTexture, true)
 	button.highlightTexture:SetInside(button.IconTexture.backdrop)
 
-	if button.cooldown then
-		E:RegisterCooldown(button.cooldown)
-	end
+	E:RegisterCooldown(button.cooldown)
 
 	hooksecurefunc(button, 'UpdateButton', ProfessionButton_UpdateButton)
 end
@@ -324,7 +281,6 @@ function S:Blizzard_Professions()
 	S:HandleButton(CraftingPage.CreateButton, nil, nil, nil, true) -- SharedButtonSmallTemplate, doesn't have a backdrop
 	S:HandleButton(CraftingPage.CreateAllButton, nil, nil, nil, true)
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
-	S:HandleIcon(CraftingPage.ConcentrationDisplay.Icon)
 	S:HandleEditBox(CraftingPage.MinimizedSearchBox)
 	HandleInputBox(CraftingPage.CreateMultipleInputBox)
 	HandleRankBar(CraftingPage.RankBar)
@@ -342,21 +298,6 @@ function S:Blizzard_Professions()
 	end
 
 	local LinkButton = CraftingPage.LinkButton
-	local normalTexture = LinkButton:GetNormalTexture()
-	if normalTexture then
-		normalTexture:SetTexCoord(0.25, 0.7, 0.37, 0.75)
-	end
-
-	local pushedTexture = LinkButton:GetPushedTexture()
-	if pushedTexture then
-		pushedTexture:SetTexCoord(0.25, 0.7, 0.45, 0.8)
-	end
-
-	local highlightTexture = LinkButton:GetHighlightTexture()
-	if highlightTexture then
-		highlightTexture:Kill()
-	end
-
 	LinkButton:SetTemplate()
 	LinkButton:Size(17, 14)
 
@@ -379,7 +320,6 @@ function S:Blizzard_Professions()
 
 	local CraftList = CraftingPage.RecipeList
 	CraftList:StripTextures()
-	CraftList.BackgroundNineSlice:Hide()
 	CraftList:CreateBackdrop('Transparent')
 	CraftList.backdrop:SetInside()
 

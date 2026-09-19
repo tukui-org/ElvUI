@@ -2,27 +2,18 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local next = next
 local hooksecurefunc = hooksecurefunc
 
-local trackers = {
-	_G.ScenarioObjectiveTracker,
+local trackers = { -- the other modules load but never get content on Forever
 	_G.UIWidgetObjectiveTracker,
-	_G.CampaignQuestObjectiveTracker,
 	_G.QuestObjectiveTracker,
-	_G.AdventureObjectiveTracker,
 	_G.AchievementObjectiveTracker,
-	_G.MonthlyActivitiesObjectiveTracker,
 	_G.ProfessionsRecipeTracker,
-	_G.BonusObjectiveTracker,
-	_G.WorldQuestObjectiveTracker,
-	_G.InitiativeTasksObjectiveTracker
 }
 
 local function SkinOjectiveTrackerHeaders(header)
-	if header and header.Background then
-		header.Background:SetAtlas(nil)
-	end
+	header.Background:SetAtlas(nil)
 end
 
 local function ReskinQuestIcon(button)
@@ -58,7 +49,7 @@ local function HandleQuestIcons(_, block)
 		check:SetDesaturated(true)
 		check:SetVertexColor(0, 1, 0)
 
-		check.styled = true
+		check.IsSkinned = true
 	end
 end
 
@@ -72,40 +63,29 @@ local function ReskinBarTemplate(bar)
 end
 
 local function HandleProgressBar(tracker, key)
-	local progressBar = tracker.usedProgressBars[key]
-	local bar = progressBar and progressBar.Bar
+	local bar = tracker.usedProgressBars[key].Bar
+	ReskinBarTemplate(bar)
 
-	if bar then
-		ReskinBarTemplate(bar)
+	local _, maxValue = bar:GetMinMaxValues()
+	S:StatusBarColorGradient(bar, bar:GetValue(), maxValue)
 
-		local _, maxValue = bar:GetMinMaxValues()
-		S:StatusBarColorGradient(bar, bar:GetValue(), maxValue)
+	local icon = bar.Icon
+	if icon:IsShown() and not icon.backdrop then
+		icon:SetMask('') -- This needs to be before S:HandleIcon
+		S:HandleIcon(icon, true)
 
-		local icon = bar.Icon
-		if icon and icon:IsShown() and not icon.backdrop then
-			icon:SetMask('') -- This needs to be before S:HandleIcon
-			S:HandleIcon(icon, true)
-
-			icon:ClearAllPoints()
-			icon:Point('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
-		end
-
-		local label = bar.Label
-		if label then
-			label:ClearAllPoints()
-			label:Point('CENTER', bar)
-			label:FontTemplate(nil, E.db.general.fontSize, E.db.general.fontStyle)
-		end
+		icon:ClearAllPoints()
+		icon:Point('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
 	end
+
+	local label = bar.Label
+	label:ClearAllPoints()
+	label:Point('CENTER', bar)
+	label:FontTemplate(nil, E.db.general.fontSize, E.db.general.fontStyle)
 end
 
 local function HandleTimers(tracker, key)
-	local timerBar = tracker.usedTimerBars[key]
-	local bar = timerBar and timerBar.Bar
-
-	if bar then
-		ReskinBarTemplate(bar)
-	end
+	ReskinBarTemplate(tracker.usedTimerBars[key].Bar)
 end
 
 local function SetCollapsed(header, collapsed)
@@ -126,37 +106,23 @@ function S:Blizzard_ObjectiveTracker()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
 
 	local TrackerFrame = _G.ObjectiveTrackerFrame
-	local TrackerHeader = TrackerFrame and TrackerFrame.Header
-	if TrackerHeader then
-		SkinOjectiveTrackerHeaders(TrackerHeader)
+	local TrackerHeader = TrackerFrame.Header
+	SkinOjectiveTrackerHeaders(TrackerHeader)
+	TrackerHeader.MinimizeButton:Size(15)
+	SetCollapsed(TrackerHeader, TrackerFrame.isCollapsed)
+	hooksecurefunc(TrackerHeader, 'SetCollapsed', SetCollapsed)
 
-		local MinimizeButton = TrackerHeader.MinimizeButton
-		if MinimizeButton then
-			MinimizeButton:Size(15)
-
-			SetCollapsed(TrackerHeader, TrackerFrame.isCollapsed)
-			hooksecurefunc(TrackerHeader, 'SetCollapsed', SetCollapsed)
-		end
-	end
-
-	for _, tracker in pairs(trackers) do
+	for _, tracker in next, trackers do
 		hooksecurefunc(tracker, 'AddBlock', HandleQuestIcons)
 		hooksecurefunc(tracker, 'GetProgressBar', HandleProgressBar)
 		hooksecurefunc(tracker, 'GetTimerBar', HandleTimers)
 
 		local header = tracker.Header
-		if header then
-			SkinOjectiveTrackerHeaders(header)
-
-			local MinimizeButton = header.MinimizeButton
-			if MinimizeButton then
-				MinimizeButton:Size(15)
-				MinimizeButton:SetHighlightAtlas('UI-QuestTrackerButton-Red-Highlight', 'ADD')
-
-				SetCollapsed(header, header.isCollapsed)
-				hooksecurefunc(header, 'SetCollapsed', SetCollapsed)
-			end
-		end
+		SkinOjectiveTrackerHeaders(header)
+		header.MinimizeButton:Size(15)
+		header.MinimizeButton:SetHighlightAtlas('UI-QuestTrackerButton-Red-Highlight', 'ADD')
+		SetCollapsed(header, header.isCollapsed)
+		hooksecurefunc(header, 'SetCollapsed', SetCollapsed)
 	end
 end
 

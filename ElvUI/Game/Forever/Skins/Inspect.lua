@@ -6,10 +6,7 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function UpdateTabLayout(frame)
-	local tabs = frame.ModeTabs and frame.ModeTabs.Tabs
-	if tabs then
-		S:LayoutLargeSideTabs(frame, tabs)
-	end
+	S:LayoutLargeSideTabs(frame, frame.ModeTabs.Tabs)
 end
 
 function S:Blizzard_InspectUI()
@@ -55,22 +52,18 @@ function S:Blizzard_InspectUI()
 	-- Give inspect frame model backdrop it's color back
 	for _, corner in next, { 'TopLeft','TopRight','BotLeft','BotRight' } do
 		local bg = _G['InspectModelFrameBackground'..corner]
-		if bg then
-			bg:SetDesaturated(false)
-			bg.ignoreDesaturated = true -- so plugins can prevent this if they want
+		bg:SetDesaturated(false)
+		bg.ignoreDesaturated = true -- so plugins can prevent this if they want
 
-			hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
-				if value and bckgnd.ignoreDesaturated then
-					bckgnd:SetDesaturated(false)
-				end
-			end)
-		end
+		hooksecurefunc(bg, 'SetDesaturated', function(bckgnd, value)
+			if value and bckgnd.ignoreDesaturated then
+				bckgnd:SetDesaturated(false)
+			end
+		end)
 	end
 
 	for _, Slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
-		if Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton') then
-			if not Slot.icon then return end
-
+		if (Slot:IsObjectType('Button') or Slot:IsObjectType('ItemButton')) and Slot.icon then
 			S:HandleIcon(Slot.icon, true)
 			Slot.icon.backdrop:OffsetFrameLevel(nil, Slot)
 			Slot.icon:SetInside()

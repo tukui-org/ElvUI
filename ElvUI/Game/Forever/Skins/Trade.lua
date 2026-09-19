@@ -28,48 +28,42 @@ function S:TradeFrame()
 		local player = _G['TradePlayerItem'..i..'ItemButton']
 		local recipient = _G['TradeRecipientItem'..i..'ItemButton']
 
-		if player and recipient then
-			player:StripTextures()
-			recipient:StripTextures()
+		player:StripTextures()
+		recipient:StripTextures()
 
-			_G['TradePlayerItem'..i]:StripTextures()
-			_G['TradeRecipientItem'..i]:StripTextures()
+		_G['TradePlayerItem'..i]:StripTextures()
+		_G['TradeRecipientItem'..i]:StripTextures()
 
-			local playerIcon = _G['TradePlayerItem'..i..'ItemButtonIconTexture']
-			if playerIcon then
-				playerIcon:SetInside(player)
-				playerIcon:SetTexCoords()
-			end
+		local playerIcon = _G['TradePlayerItem'..i..'ItemButtonIconTexture']
+		playerIcon:SetInside(player)
+		playerIcon:SetTexCoords()
 
-			local recipientIcon = _G['TradeRecipientItem'..i..'ItemButtonIconTexture']
-			if recipientIcon then
-				recipientIcon:SetInside(recipient)
-				recipientIcon:SetTexCoords()
-			end
+		local recipientIcon = _G['TradeRecipientItem'..i..'ItemButtonIconTexture']
+		recipientIcon:SetInside(recipient)
+		recipientIcon:SetTexCoords()
 
-			player:OffsetFrameLevel(-1)
-			player:SetTemplate(nil, true)
-			player:StyleButton()
+		player:OffsetFrameLevel(-1)
+		player:SetTemplate(nil, true)
+		player:StyleButton()
 
-			player.bg = CreateFrame('Frame', nil, player)
-			player.bg:Point('TOPLEFT', player, 'TOPRIGHT', 4, 0)
-			player.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
-			player.bg:OffsetFrameLevel(-3, player)
-			player.bg:SetTemplate('Transparent')
+		player.bg = CreateFrame('Frame', nil, player)
+		player.bg:Point('TOPLEFT', player, 'TOPRIGHT', 4, 0)
+		player.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
+		player.bg:OffsetFrameLevel(-3, player)
+		player.bg:SetTemplate('Transparent')
 
-			recipient:OffsetFrameLevel(-1)
-			recipient:SetTemplate(nil, true)
-			recipient:StyleButton()
+		recipient:OffsetFrameLevel(-1)
+		recipient:SetTemplate(nil, true)
+		recipient:StyleButton()
 
-			recipient.bg = CreateFrame('Frame', nil, recipient)
-			recipient.bg:Point('TOPLEFT', recipient, 'TOPRIGHT', 4, 0)
-			recipient.bg:Point('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
-			recipient.bg:OffsetFrameLevel(-3, recipient)
-			recipient.bg:SetTemplate('Transparent')
+		recipient.bg = CreateFrame('Frame', nil, recipient)
+		recipient.bg:Point('TOPLEFT', recipient, 'TOPRIGHT', 4, 0)
+		recipient.bg:Point('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
+		recipient.bg:OffsetFrameLevel(-3, recipient)
+		recipient.bg:SetTemplate('Transparent')
 
-			S:HandleIconBorder(player.IconBorder)
-			S:HandleIconBorder(recipient.IconBorder)
-		end
+		S:HandleIconBorder(player.IconBorder)
+		S:HandleIconBorder(recipient.IconBorder)
 	end
 
 	_G.TradeHighlightPlayerTop:SetColorTexture(0, 1, 0, 0.2)

@@ -47,8 +47,6 @@ local function GreetingPanel_OnShow(frame)
 end
 
 local function HandleReward(frame)
-	if not frame then return end
-
 	for _, Region in next, { frame:GetRegions() } do
 		if Region:IsObjectType('Texture') and Region:GetTexture() == [[Interface\Spellbook\Spellbook-Parts]] then
 			Region:SetTexture(E.ClearTexture)
@@ -175,45 +173,6 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		for spellIcon in rewardsFrame.spellRewardPool:EnumerateActive() do
 			HandleReward(spellIcon)
 		end
-
-		for followerReward in rewardsFrame.followerRewardPool:EnumerateActive() do
-			if not followerReward.IsSkinned then
-				followerReward:CreateBackdrop()
-				followerReward.backdrop:SetAllPoints(followerReward.BG)
-				followerReward.backdrop:Point('TOPLEFT', 40, -5)
-				followerReward.backdrop:Point('BOTTOMRIGHT', 2, 5)
-				followerReward.BG:Hide()
-
-				followerReward.PortraitFrame:ClearAllPoints()
-				followerReward.PortraitFrame:Point('RIGHT', followerReward.backdrop, 'LEFT', -2, 0)
-
-				followerReward.PortraitFrame.PortraitRing:Hide()
-				followerReward.PortraitFrame.PortraitRingQuality:SetTexture()
-				followerReward.PortraitFrame.LevelBorder:SetAlpha(0)
-				followerReward.PortraitFrame.Portrait:SetTexCoord(0.2, 0.85, 0.2, 0.85)
-
-				local level = followerReward.PortraitFrame.Level
-				level:ClearAllPoints()
-				level:Point('BOTTOM', followerReward.PortraitFrame, 0, 3)
-
-				local squareBG = CreateFrame('Frame', nil, followerReward.PortraitFrame)
-				squareBG:OffsetFrameLevel(-1, followerReward.PortraitFrame)
-				squareBG:Point('TOPLEFT', 2, -2)
-				squareBG:Point('BOTTOMRIGHT', -2, 2)
-				squareBG:SetTemplate()
-				followerReward.PortraitFrame.squareBG = squareBG
-
-				followerReward.IsSkinned = true
-			end
-
-			local r, g, b = followerReward.PortraitFrame.PortraitRingQuality:GetVertexColor()
-			followerReward.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
-		end
-	end
-
-	-- MajorFaction Rewards thing
-	for spellIcon in rewardsFrame.reputationRewardPool:EnumerateActive() do
-		HandleReward(spellIcon)
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
@@ -228,11 +187,6 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 		_G.QuestInfoQuestType:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
-
-		if _G.QuestInfoRewardsFrame.SpellLearnText then
-			_G.QuestInfoRewardsFrame.SpellLearnText:SetTextColor(1, 1, 1)
-		end
-
 		_G.QuestInfoRewardsFrame.PlayerTitleText:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.XPFrame.ReceiveText:SetTextColor(1, 1, 1)
 
@@ -309,7 +263,7 @@ function S:BlizzardQuestFrames()
 	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
 	hooksecurefunc('QuestInfoItem_OnClick', S.QuestInfoItem_OnClick)
 
-	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SpellFrame', 'SkillPointFrame', 'ArtifactXPFrame', 'TitleFrame', 'WarModeBonusFrame'}) do
+	for _, frame in pairs({'HonorFrame', 'XPFrame', 'SkillPointFrame', 'TitleFrame'}) do
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
 	end
@@ -429,7 +383,7 @@ function S:BlizzardQuestFrames()
 	_G.QuestModelScene.ModelTextFrame:CreateBackdrop('Transparent')
 
 	_G.QuestNPCModelNameText:ClearAllPoints()
-	_G.QuestNPCModelNameText:Point('TOP', G.QuestModelScene, 0, -10)
+	_G.QuestNPCModelNameText:Point('TOP', _G.QuestModelScene, 0, -10)
 	_G.QuestNPCModelNameText:FontTemplate(nil, 13, 'OUTLINE')
 
 	_G.QuestNPCModelText:SetJustifyH('CENTER')
@@ -447,15 +401,13 @@ function S:BlizzardQuestFrames()
 	S:HandlePortraitFrame(QuestLogPopupDetailFrame)
 
 	local showMapButton = QuestLogPopupDetailFrame.ShowMapButton
-	if showMapButton then
-		S:HandleButton(showMapButton)
+	S:HandleButton(showMapButton)
 
-		local width, height = showMapButton:GetSize()
-		showMapButton:StripTextures()
-		showMapButton:Size(width - 30, height)
-		showMapButton.Text:ClearAllPoints()
-		showMapButton.Text:Point('CENTER')
-	end
+	local width, height = showMapButton:GetSize()
+	showMapButton:StripTextures()
+	showMapButton:Size(width - 30, height)
+	showMapButton.Text:ClearAllPoints()
+	showMapButton.Text:Point('CENTER')
 end
 
 S:AddCallback('BlizzardQuestFrames')

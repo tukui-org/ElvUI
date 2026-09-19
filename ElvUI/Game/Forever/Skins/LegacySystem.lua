@@ -11,10 +11,7 @@ local hooksecurefunc = hooksecurefunc
 local function HandleProgressBar(bar, background)
 	S:HandleStatusBar(bar)
 	bar.Text:FontTemplate()
-
-	if background then
-		background:SetAlpha(0)
-	end
+	background:SetAlpha(0)
 end
 
 local function HandleCriteria(criteria)
@@ -27,20 +24,13 @@ local function HandleCriteria(criteria)
 end
 
 local function Challenge_DisplayObjectives(button)
-	local frame = button:GetObjectiveFrame()
-	local pool = frame and frame.criteriaPool
-	if pool then
-		for criteria in pool:EnumerateActive() do
-			HandleCriteria(criteria)
-		end
+	for criteria in button:GetObjectiveFrame().criteriaPool:EnumerateActive() do
+		HandleCriteria(criteria)
 	end
 end
 
 local function SelectedOverlay_SetShown(overlay, shown)
-	local parent = overlay:GetParent()
-	local backdrop = parent and parent.backdrop
-	if not backdrop then return end
-
+	local backdrop = overlay:GetParent().backdrop
 	if shown then
 		backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
@@ -134,9 +124,7 @@ function S:Blizzard_LegacySystem()
 	-- Challenges
 	local ChallengesPage = LegacySystemFrame.ChallengesPage
 	local ChallengePointSummary = ChallengesPage.LegacyChallengePointSummary
-	if ChallengePointSummary then
-		HandleProgressBar(ChallengePointSummary.PointsBar, ChallengePointSummary.ProgressBarBackground)
-	end
+	HandleProgressBar(ChallengePointSummary.PointsBar, ChallengePointSummary.ProgressBarBackground)
 
 	local CategoryList = ChallengesPage.CategoryList
 	S:HandleEditBox(CategoryList.SearchBox)
@@ -156,9 +144,7 @@ function S:Blizzard_LegacySystem()
 	-- Tree
 	local TreePage = LegacySystemFrame.TreePage
 	local LegacyPointSummary = TreePage.LegacyTreePointSummary
-	if LegacyPointSummary then
-		LegacyPointSummary.AvailablePointsLabel:FontTemplate(nil, 16)
-	end
+	LegacyPointSummary.AvailablePointsLabel:FontTemplate(nil, 16)
 
 	local TraitPanel = TreePage.LegacyTreeTraitPanel
 	S:HandleButton(TraitPanel.ApplyButton)
@@ -171,16 +157,11 @@ function S:Blizzard_LegacySystem()
 	if parchment then
 		TreePage.Background:SetAlpha(0)
 		TreePage.VerticalDivider:Hide()
-
-		if LegacyPointSummary then
-			LegacyPointSummary.Border:SetAlpha(0)
-		end
+		LegacyPointSummary.Border:SetAlpha(0)
 
 		local SelectionPanel = TreePage.LegacyTreeSelectionPanel
-		if SelectionPanel then
-			RefreshTreeButtons(SelectionPanel)
-			hooksecurefunc(SelectionPanel, 'RefreshTreeButtons', RefreshTreeButtons)
-		end
+		RefreshTreeButtons(SelectionPanel)
+		hooksecurefunc(SelectionPanel, 'RefreshTreeButtons', RefreshTreeButtons)
 	end
 end
 

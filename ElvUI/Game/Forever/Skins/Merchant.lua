@@ -29,11 +29,8 @@ local function UpdateRepairButtons()
 	_G.MerchantRepairAllButton:Point('BOTTOMRIGHT', _G.MerchantFrame, 'BOTTOMLEFT', 90, 32)
 	_G.MerchantRepairItemButton:ClearAllPoints()
 	_G.MerchantRepairItemButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', -5, 0)
-
-	if _G.MerchantSellAllJunkButton then
-		_G.MerchantSellAllJunkButton:ClearAllPoints()
-		_G.MerchantSellAllJunkButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', 117, 0)
-	end
+	_G.MerchantSellAllJunkButton:ClearAllPoints()
+	_G.MerchantSellAllJunkButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', 117, 0)
 end
 
 local function UpdateMerchantInfo()
@@ -56,13 +53,13 @@ local function UpdateMerchantInfo()
 end
 
 local function SetItemButtonScale(button, scale)
-	if button.Count and scale ~= 1 then
+	if scale ~= 1 then
 		button.Count:SetScale(1)
 	end
 end
 
 local function SetItemButtonAnchorPoint(button, point, x, y)
-	if button.Count and (point ~= 'BOTTOMRIGHT' or x ~= 0 or y ~= 1) then
+	if point ~= 'BOTTOMRIGHT' or x ~= 0 or y ~= 1 then
 		button.Count:ClearAllPoints()
 		button.Count:Point('BOTTOMRIGHT', 0, 1)
 	end
@@ -125,11 +122,7 @@ function S:MerchantFrame()
 		questIcon:SetTexCoord(0, 1, 0, 1)
 		questIcon:SetInside()
 
-		-- Decor items
-		local iconOverlay = button.IconOverlay
-		if iconOverlay then
-			iconOverlay:SetInside(button, 1, 1)
-		end
+		button.IconOverlay:SetInside(button, 1, 1) -- Decor items
 
 		hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
 
@@ -146,12 +139,6 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButton:StripTextures()
 	_G.MerchantBuyBackItemItemButton:StyleButton()
 	_G.MerchantBuyBackItemItemButton:SetTemplate(nil, true)
-
-	local UndoFrame = _G.UndoFrame
-	if UndoFrame then -- Since we move the MerchantBuyBackItemItemButton we also have to move this thingi
-		UndoFrame.Arrow:Point('CENTER', _G.MerchantBuyBackItemItemButton)
-	end
-
 	S:HandleIconBorder(_G.MerchantBuyBackItemItemButton.IconBorder)
 
 	_G.MerchantBuyBackItemItemButtonIconTexture:SetTexCoords()
@@ -162,10 +149,7 @@ function S:MerchantFrame()
 	HandleIconButton(_G.MerchantRepairItemButton, 0.04, 0.24, 0.06, 0.5)
 	HandleIconButton(_G.MerchantRepairAllButton, 0.61, 0.82, 0.1, 0.52)
 	HandleIconButton(_G.MerchantGuildBankRepairButton, 0.61, 0.82, 0.1, 0.52)
-
-	if _G.MerchantSellAllJunkButton then
-		HandleIconButton(_G.MerchantSellAllJunkButton, 0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
-	end
+	HandleIconButton(_G.MerchantSellAllJunkButton, 0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 
 	_G.MerchantGuildBankRepairButton:SetPoint('LEFT', _G.MerchantRepairAllButton, 'RIGHT', 5, 0)
 

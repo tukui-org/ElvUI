@@ -10,7 +10,6 @@ local select = select
 local tinsert, sort = tinsert, sort
 local hooksecurefunc = hooksecurefunc
 
-local CreateFrame = CreateFrame
 local GetCVarBool = C_CVar.GetCVarBool
 local GetItemInfo = C_Item.GetItemInfo
 local GetContainerItemCooldown = C_Container.GetContainerItemCooldown
@@ -54,15 +53,6 @@ local function BackpackToken_Update(container)
 	end
 end
 
-local function GetSlotAndBagID(button)
-	if button.GetSlotAndBagID then -- bags
-		return button:GetSlotAndBagID()
-	elseif button.GetBagID then -- bank
-		local slotID, bagID = button:GetID(), button:GetBagID()
-		return slotID, bagID
-	end
-end
-
 local function SkinButton(button)
 	if button.template then return end
 
@@ -75,21 +65,14 @@ local function SkinButton(button)
 	button.icon:SetInside()
 	button.icon:SetTexCoords()
 	button.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
+	button.IconQuestTexture:SetTexCoords()
+	button.IconQuestTexture:SetInside(button)
 
-	if button.IconQuestTexture then
-		button.IconQuestTexture:SetTexCoords()
-		button.IconQuestTexture:SetInside(button)
-	end
+	E:RegisterCooldown(button.Cooldown, 'bags')
 
-	if button.Cooldown then
-		E:RegisterCooldown(button.Cooldown, 'bags')
-
-		local slotID, bagID = GetSlotAndBagID(button)
-		if slotID and bagID then -- initialize any cooldown
-			local start, duration = GetContainerItemCooldown(bagID, slotID)
-			button.Cooldown:SetCooldown(start, duration)
-		end
-	end
+	local slotID, bagID = button:GetSlotAndBagID()
+	local start, duration = GetContainerItemCooldown(bagID, slotID)
+	button.Cooldown:SetCooldown(start, duration)
 
 	-- bag keybind support from actionbar module
 	if E.private.actionbar.enable then
@@ -120,16 +103,13 @@ local function SkinItemButton(button, bagID)
 		button.name, button.quality, button.type = nil, nil, nil
 	end
 
-	if button.JunkIcon then
-		button.JunkIcon:SetShown(button.isJunk)
-	end
+	button.JunkIcon:SetShown(button.isJunk)
 
 	if quest and (quest.questID or quest.isQuestItem) then
 		button.type = QUESTS_LABEL
 
 		local questIcon = button.IconQuestTexture
-		local texture = questIcon and questIcon:GetTexture()
-		if texture ~= E.Media.Textures.BagQuestIcon then
+		if questIcon:GetTexture() ~= E.Media.Textures.BagQuestIcon then
 			questIcon:ClearAllPoints()
 			questIcon:Point('TOPLEFT', button, 3, -3)
 			questIcon:Point('BOTTOMRIGHT', button, -3, 3)
@@ -153,23 +133,21 @@ end
 local bagIconCache = {}
 local function UpdateContainerButton(frame)
 	local box = frame.TitleContainer
-	local title = box and box.TitleText
-	if title and title.GetText then
-		title:ClearAllPoints()
-		title:Point('TOP', box, 0, -5)
-		title:Point('LEFT', box, 45, 0)
-		title:Point('RIGHT', box, -20, 0)
+	local title = box.TitleText
+	title:ClearAllPoints()
+	title:Point('TOP', box, 0, -5)
+	title:Point('LEFT', box, 45, 0)
+	title:Point('RIGHT', box, -20, 0)
 
-		local name = title:GetText()
-		local icon = bagIconCache[name]
-		if icon then
-			BagIcon(frame, icon)
-		elseif name then
-			icon = (name ~= BACKPACK_TOOLTIP and select(10, GetItemInfo(name))) or E.Media.Textures.Backpack
+	local name = title:GetText()
+	local icon = bagIconCache[name]
+	if icon then
+		BagIcon(frame, icon)
+	elseif name then
+		icon = (name ~= BACKPACK_TOOLTIP and select(10, GetItemInfo(name))) or E.Media.Textures.Backpack
 
-			BagIcon(frame, icon)
-			bagIconCache[name] = icon
-		end
+		BagIcon(frame, icon)
+		bagIconCache[name] = icon
 	end
 
 	local portrait = frame.PortraitButton
@@ -236,36 +214,32 @@ local function HandleItem(button)
 
 	button.icon:SetInside()
 	button.icon:SetTexCoords()
-
-	if button.Background then
-		button.Background:Hide()
-	end
+	button.Background:Hide()
 
 	-- CamelotBankPanelItemButtonMixin:Refresh sets the slot frame atlas again on every refresh
-	local normal = button:GetNormalTexture()
-	if normal then
-		normal:SetAlpha(0)
-	end
+	button:GetNormalTexture():SetAlpha(0)
 
 	S:HandleIconBorder(button.IconBorder)
 end
 
-local function HandleTab(tab)
-	S:HandleIcon(tab.Icon, true)
-	S:HandleTab(tab)
+local function HandleBagSlot(button)
+	button:StyleButton()
+	button:SetTemplate()
+	button:GetNormalTexture():SetAlpha(0)
+	button.Background:Hide()
 
-	tab.SelectedTexture:SetColorTexture(1, 1, 1, .25)
-	tab.Border:SetAlpha(0)
+	button.icon:SetInside()
+	button.icon:SetTexCoords()
+
+	S:HandleIconBorder(button.IconBorder)
 end
 
-local function RefreshTabs(frame)
-	if frame.bankTabPool then
-		for tab in frame.bankTabPool:EnumerateActive() do
-			if not tab.IsSkinned then
-				HandleTab(tab)
+local function RefreshBagButtons(frame)
+	for button in frame.itemButtonBagPool:EnumerateActive() do
+		if not button.IsSkinned then
+			HandleBagSlot(button)
 
-				tab.IsSkinned = true
-			end
+			button.IsSkinned = true
 		end
 	end
 end
@@ -290,8 +264,6 @@ local function RefreshPageTabs(frame)
 end
 
 local function HandleSlots(frame)
-	if not frame.itemButtonPool then return end
-
 	for item in frame.itemButtonPool:EnumerateActive() do
 		if not item.IsSkinned then
 			HandleItem(item)
@@ -312,65 +284,39 @@ local function HandleAutoSortButton(button)
 	button.Icon:SetInside()
 end
 
-local function HandleTabMenu(menu)
-	B:BankTabs_MenuSkin(menu)
-end
-
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
 	local bankFrame = _G.BankFrame
-	if bankFrame then
-		bankFrame:CreateBackdrop('Transparent')
+	bankFrame:CreateBackdrop('Transparent')
 
-		bankFrame.NineSlice:StripTextures()
-		bankFrame.PortraitContainer:Hide()
-		bankFrame.TopTileStreaks:Hide()
-		bankFrame.Background:Hide()
-		bankFrame.Bg:Hide()
+	bankFrame.NineSlice:StripTextures()
+	bankFrame.PortraitContainer:Hide()
+	bankFrame.TopTileStreaks:Hide()
+	bankFrame.Background:Hide()
+	bankFrame.Bg:Hide()
 
-		S:HandleCloseButton(bankFrame.CloseButton)
+	S:HandleCloseButton(bankFrame.CloseButton)
 
-		-- The page tabs are LargeSideTabButtonTemplate
-		hooksecurefunc(bankFrame, 'RefreshPageTabs', RefreshPageTabs)
-
-		-- ToDo: classic_beta
-		-- bankFrame.itemButtonBagPool (BankItemButtonBagTemplate: NormalTexture, Background, HighlightTexture, DisabledOverlay), refreshed by RefreshBagButtons
-	end
+	-- The page tabs are LargeSideTabButtonTemplate
+	hooksecurefunc(bankFrame, 'RefreshPageTabs', RefreshPageTabs)
+	hooksecurefunc(bankFrame, 'RefreshBagButtons', RefreshBagButtons)
 
 	S:HandleEditBox(_G.BagItemSearchBox)
 	S:HandleEditBox(_G.BankItemSearchBox)
 
 	local panel = _G.BankPanel
-	if panel then
-		S:HandleButton(panel.MoneyFrame.DepositButton)
-		S:HandleButton(panel.MoneyFrame.WithdrawButton)
-		S:HandleButton(panel.PurchaseButton)
+	S:HandleButton(panel.MoneyFrame.DepositButton)
+	S:HandleButton(panel.MoneyFrame.WithdrawButton)
+	S:HandleButton(panel.PurchaseButton)
 
-		HandleAutoSortButton(panel.AutoSortButton)
+	HandleAutoSortButton(panel.AutoSortButton)
 
-		panel:StripTextures()
-		panel.EdgeShadows:Hide()
-		panel.MoneyFrame.Border:Hide()
+	panel:StripTextures()
+	panel.EdgeShadows:Hide()
+	panel.MoneyFrame.Border:Hide()
 
-		panel.PurchasePrompt:StripTextures()
-		S:HandleButton(panel.PurchasePrompt.TabCostFrame.PurchaseButton)
-
-		local tabMenu = panel.TabSettingsMenu
-		if tabMenu then -- skin the tab settings
-			tabMenu:HookScript('OnShow', HandleTabMenu)
-		end
-
-		panel.backdrop2 = CreateFrame('Frame', nil, panel)
-		panel.backdrop2:SetTemplate('Transparent')
-		panel.backdrop2:Point('TOPLEFT', panel.PurchasePrompt, 'TOPLEFT', 8, 2)
-		panel.backdrop2:Point('BOTTOMRIGHT', panel.PurchasePrompt, 'BOTTOMRIGHT', -6, 2)
-
-		HandleTab(panel.PurchaseTab)
-
-		hooksecurefunc(panel, 'RefreshBankTabs', RefreshTabs)
-		hooksecurefunc(panel, 'GenerateItemSlotsForSelectedTab', HandleSlots)
-	end
+	hooksecurefunc(panel, 'GenerateItemSlotsForSelectedTab', HandleSlots)
 
 	HandleAutoSortButton(_G.BagItemAutoSortButton)
 

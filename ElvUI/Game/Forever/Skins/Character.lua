@@ -36,32 +36,24 @@ local function HandleCategory(frame)
 end
 
 local function ColoredProgressBar_SetFillWidth(bar, width)
-	if not bar.Fill then return end
-
 	bar.Fill:SetShown(width > 0)
 end
 
 -- ColoredProgressBarTemplate: unnamed background, a masked Fill and Text
 local function HandleColoredProgressBar(bar)
-	local background = bar:GetRegions()
-	if background and background:IsObjectType('Texture') then
-		background:SetTexture(E.ClearTexture)
-	end
-
+	bar:GetRegions():SetTexture(E.ClearTexture)
 	bar.Text:FontTemplate()
 
 	bar:CreateBackdrop('Transparent')
 	bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
 	bar.backdrop:Point('BOTTOMRIGHT', bar, 'RIGHT', 1, -8)
 
-	if bar.Fill then
-		bar.Fill:RemoveMaskTexture(bar.Mask)
-		bar.Fill:ClearAllPoints()
-		bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
-		bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
+	bar.Fill:RemoveMaskTexture(bar.Mask)
+	bar.Fill:ClearAllPoints()
+	bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
+	bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
 
-		hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
-	end
+	hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
 end
 
 local function UpdateTabLayout(frame)
@@ -181,7 +173,7 @@ end
 local function HandleStatsPane(pane)
 	pane:StripTextures()
 
-	if pane.ClassBackground then -- set again through SetAtlas on spec changes
+	if pane.ClassBackground then -- only the player pane has it, set again through SetAtlas on spec changes
 		pane.ClassBackground:SetAlpha(0)
 	end
 
@@ -202,7 +194,7 @@ local function TitleManagerPane_Update(frame)
 end
 
 local function EquipmentManagerPane_UpdateChild(child)
-	if child.icon and not child.IsSkinned then
+	if not child.IsSkinned then
 		for _, region in next, { child:GetRegions() } do -- the card background and the icon frame are unnamed
 			local atlas = region:IsObjectType('Texture') and region:GetAtlas()
 			if atlas == 'UI-Character-Info-OutfitCard' or atlas == 'UI-Character-Info-OutfitIcon-Frame' then
@@ -283,10 +275,7 @@ local function EquipmentUpdateItems()
 	end
 
 	for i = 1, frame.numBGs do -- larger layouts add more slices of the flyout art
-		local bg = frame['bg'..i]
-		if bg then
-			bg:SetAlpha(0)
-		end
+		frame['bg'..i]:SetAlpha(0)
 	end
 
 	for i, button in next, flyout.buttons do
@@ -327,8 +316,7 @@ end
 
 -- Reputation, Currency, Skills and Statistics lists share the same header / sub header / entry layout
 local function UpdateToggleCollapseButton(button)
-	local header = button.GetHeader and button:GetHeader()
-	if not header then return end
+	local header = button:GetHeader()
 
 	local collapsed
 	if header.IsCollapsed then
@@ -374,8 +362,8 @@ local function HandleListEntry(child)
 		end
 	end
 
-	local collapseButton = child.ToggleCollapseButton
-	if collapseButton and collapseButton.RefreshIcon then
+	local collapseButton = child.ToggleCollapseButton -- sub headers only
+	if collapseButton then
 		hooksecurefunc(collapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
 		UpdateToggleCollapseButton(collapseButton)
 	end
@@ -408,8 +396,6 @@ end
 
 -- CharacterFrameSidePaneTemplate: on the right side
 local function SidePane_AcquireRow(pane)
-	if not pane.rowPools then return end
-
 	for row in pane.rowPools:EnumerateActive() do
 		if not row.IsSkinned then
 			if row.Background then
@@ -443,9 +429,7 @@ function S:Blizzard_UIPanels_Game()
 	CharacterFrame.LeftPaneHost:SetTemplate()
 
 	local divider = CharacterFrame.RightPaneHost:GetChildren() -- unnamed frame on the left edge (The ugly divider strip)
-	if divider then
-		divider:StripTextures()
-	end
+	divider:StripTextures()
 
 	S:HandleNextPrevButton(CharacterFrame.RightPaneToggleButton, 'left', nil, true)
 	hooksecurefunc(CharacterFrame, 'UpdateRightPaneToggleButton', UpdateRightPaneToggleButton)
@@ -489,26 +473,22 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Model
 	local CharacterModelScene = _G.CharacterModelScene
-	if CharacterModelScene then
-		CharacterModelScene:StripTextures()
-		CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5) -- re-add the overlay which was just stripped
+	CharacterModelScene:StripTextures()
+	CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5) -- re-add the overlay which was just stripped
 
-		CharacterModelScene:CreateBackdrop()
-		CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and 1 or 0, E.PixelMode and 0 or 1)
-		CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and 0 or -1)
+	CharacterModelScene:CreateBackdrop()
+	CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and 1 or 0, E.PixelMode and 0 or 1)
+	CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and 0 or -1)
 
-		S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
-	end
+	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
 
 	-- Give character frame model backdrop it's color back
 	for _, corner in next, { 'TopLeft', 'TopRight', 'BotLeft', 'BotRight' } do
 		local bg = _G['CharacterModelFrameBackground'..corner]
-		if bg then
-			bg:SetDesaturated(false)
-			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
+		bg:SetDesaturated(false)
+		bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
 
-			hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
-		end
+		hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
 	end
 
 	-- Stats
@@ -522,84 +502,60 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Equipment Manager
 	local EquipmentManagerPane = _G.PaperDollFrame.EquipmentManagerPane
-	if EquipmentManagerPane then
-		EquipmentManagerPane.Border:Hide()
-		S:HandleTrimScrollBar(EquipmentManagerPane.ScrollBar)
+	EquipmentManagerPane.Border:Hide()
+	S:HandleTrimScrollBar(EquipmentManagerPane.ScrollBar)
 
-		hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
-		hooksecurefunc('PaperDollEquipmentManagerPane_InitButton', EquipmentManagerPane_InitButton)
+	hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
+	hooksecurefunc('PaperDollEquipmentManagerPane_InitButton', EquipmentManagerPane_InitButton)
 
-		S:HandleButton(EquipmentManagerPane.EquipSet, nil, nil, nil, true)
-		S:HandleButton(EquipmentManagerPane.SaveSet, nil, nil, nil, true)
-		S:HandleButton(EquipmentManagerPane.NewSet, nil, nil, nil, true, nil, nil, nil, true)
-		EquipmentManagerPane.NewSet.StateTexture:SetAlpha(0)
-	end
+	S:HandleButton(EquipmentManagerPane.EquipSet, nil, nil, nil, true)
+	S:HandleButton(EquipmentManagerPane.SaveSet, nil, nil, nil, true)
+	S:HandleButton(EquipmentManagerPane.NewSet, nil, nil, nil, true, nil, nil, nil, true)
+	EquipmentManagerPane.NewSet.StateTexture:SetAlpha(0)
 
-	if _G.GearManagerPopupFrame then -- New icon selection
-		_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
-	end
+	_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow) -- New icon selection
 
 	-- Equipment Flyout
 	local EquipmentFlyoutFrame = _G.EquipmentFlyoutFrame
-	if EquipmentFlyoutFrame then
-		EquipmentFlyoutFrame.Highlight:StripTextures()
-		EquipmentFlyoutFrame.buttonFrame:DisableDrawLayer('ARTWORK')
+	EquipmentFlyoutFrame.Highlight:StripTextures()
+	EquipmentFlyoutFrame.buttonFrame:DisableDrawLayer('ARTWORK')
 
-		S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton)
-		S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
+	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.PrevButton)
+	S:HandleNextPrevButton(EquipmentFlyoutFrame.NavigationFrame.NextButton)
 
-		hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
-		hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
-	end
+	hooksecurefunc('EquipmentFlyout_SetBackgroundTexture', EquipmentUpdateNavigation)
+	hooksecurefunc('EquipmentFlyout_UpdateItems', EquipmentUpdateItems) -- Swap item flyout frame (shown when holding alt over a slot)
 
 	-- Reputation
 	local ReputationFrame = _G.ReputationFrame
-	if ReputationFrame then
-		HandleListFrame(ReputationFrame)
-		S:HandleDropDownBox(ReputationFrame.filterDropdown)
+	HandleListFrame(ReputationFrame)
+	S:HandleDropDownBox(ReputationFrame.filterDropdown)
 
-		local ReputationDetailFrame = ReputationFrame.ReputationDetailFrame
-		if ReputationDetailFrame then
-			HandleSidePane(ReputationDetailFrame)
-			HandleColoredProgressBar(ReputationDetailFrame.StandingBar)
-			S:HandleCheckBox(ReputationDetailFrame.AtWarCheckbox)
-			S:HandleCheckBox(ReputationDetailFrame.MakeInactiveCheckbox)
-			S:HandleCheckBox(ReputationDetailFrame.WatchFactionCheckbox)
-			S:HandleButton(ReputationDetailFrame.ViewRenownButton, nil, nil, nil, true)
-		end
-	end
+	local ReputationDetailFrame = ReputationFrame.ReputationDetailFrame
+	HandleSidePane(ReputationDetailFrame)
+	HandleColoredProgressBar(ReputationDetailFrame.StandingBar)
+	S:HandleCheckBox(ReputationDetailFrame.AtWarCheckbox)
+	S:HandleCheckBox(ReputationDetailFrame.MakeInactiveCheckbox)
+	S:HandleCheckBox(ReputationDetailFrame.WatchFactionCheckbox)
+	S:HandleButton(ReputationDetailFrame.ViewRenownButton, nil, nil, nil, true)
 
 	-- Skills
 	local SkillsFrame = _G.SkillsFrame
-	if SkillsFrame then
-		HandleListFrame(SkillsFrame)
-
-		local SkillDetailFrame = SkillsFrame.SkillDetailFrame
-		if SkillDetailFrame then
-			HandleSidePane(SkillDetailFrame)
-			HandleColoredProgressBar(SkillDetailFrame.RankBar)
-		end
-	end
+	HandleListFrame(SkillsFrame)
+	HandleSidePane(SkillsFrame.SkillDetailFrame)
+	HandleColoredProgressBar(SkillsFrame.SkillDetailFrame.RankBar)
 
 	-- PvP
 	local PVPRankFrame = _G.PVPRankFrame
-	if PVPRankFrame then
-		PVPRankFrame.MainInfoFrame.Line:SetAlpha(0)
-		HandleSidePane(PVPRankFrame.DetailFrame)
-	end
+	PVPRankFrame.MainInfoFrame.Line:SetAlpha(0)
+	HandleSidePane(PVPRankFrame.DetailFrame)
 
 	-- Currency
 	local TokenFrame = _G.TokenFrame
-	if TokenFrame then
-		HandleListFrame(TokenFrame)
-
-		local TokenDetailFrame = TokenFrame.DetailFrame
-		if TokenDetailFrame then
-			HandleSidePane(TokenDetailFrame)
-			S:HandleCheckBox(TokenDetailFrame.InactiveCheckbox)
-			S:HandleCheckBox(TokenDetailFrame.BackpackCheckbox)
-		end
-	end
+	HandleListFrame(TokenFrame)
+	HandleSidePane(TokenFrame.DetailFrame)
+	S:HandleCheckBox(TokenFrame.DetailFrame.InactiveCheckbox)
+	S:HandleCheckBox(TokenFrame.DetailFrame.BackpackCheckbox)
 end
 
 S:AddCallbackForAddon('Blizzard_UIPanels_Game')

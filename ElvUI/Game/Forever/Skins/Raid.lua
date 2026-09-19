@@ -19,17 +19,12 @@ function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
 	for _, object in pairs(StripAllTextures) do
-		local obj = _G[object]
-		if obj then
-			obj:StripTextures()
+		_G[object]:StripTextures()
 
-			for j = 1,5 do
-				local slot = _G[object..'Slot'..j]
-				if slot then
-					slot:StripTextures()
-					slot:SetTemplate('Transparent')
-				end
-			end
+		for j = 1, 5 do
+			local slot = _G[object..'Slot'..j]
+			slot:StripTextures()
+			slot:SetTemplate('Transparent')
 		end
 	end
 

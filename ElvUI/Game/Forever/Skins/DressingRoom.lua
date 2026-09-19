@@ -23,8 +23,6 @@ local function SetItemQuality(slot)
 end
 
 local function DetailsPanelRefresh(panel)
-	if not panel.slotPool then return end
-
 	for slot in panel.slotPool:EnumerateActive() do
 		if not slot.backdrop then
 			slot:CreateBackdrop()
@@ -37,19 +35,9 @@ local function DetailsPanelRefresh(panel)
 	end
 end
 
-local function DressUpConfigureSize(frame, isMinimized)
-	local CustomSetDetailsPanel = frame.CustomSetDetailsPanel
-	if CustomSetDetailsPanel then
-		CustomSetDetailsPanel:ClearAllPoints()
-		CustomSetDetailsPanel:Point('TOPLEFT', frame, 'TOPRIGHT', 4, 0)
-	end
-
-	local OutfitDropdown = frame.OutfitDropdown
-	if OutfitDropdown then
-		OutfitDropdown:ClearAllPoints()
-		OutfitDropdown:Point('TOP', -(isMinimized and 42 or 28), -32)
-		OutfitDropdown:Width(isMinimized and 140 or 190)
-	end
+local function DressUpConfigureSize(frame)
+	frame.CustomSetDetailsPanel:ClearAllPoints()
+	frame.CustomSetDetailsPanel:Point('TOPLEFT', frame, 'TOPRIGHT', 4, 0)
 end
 
 local function HandleSetButtons(button)
@@ -83,13 +71,10 @@ function S:DressUpFrame()
 	SetToggleIcon(DressUpFrame.ToggleCustomSetDetailsButton, 1392954)
 
 	local SetSelection = DressUpFrame.SetSelectionPanel
-	if SetSelection then
-		SetSelection:StripTextures()
-		SetSelection:SetTemplate('Transparent')
-		S:HandleTrimScrollBar(SetSelection.ScrollBar)
-
-		hooksecurefunc(SetSelection.ScrollBox, 'Update', SetSelection_Update)
-	end
+	SetSelection:StripTextures()
+	SetSelection:SetTemplate('Transparent')
+	S:HandleTrimScrollBar(SetSelection.ScrollBar)
+	hooksecurefunc(SetSelection.ScrollBox, 'Update', SetSelection_Update)
 
 	DressUpFrame.ModelBackground:SetDrawLayer('BACKGROUND', 1)
 	DressUpFrame.LinkButton:Size(110, 22)
@@ -99,22 +84,16 @@ function S:DressUpFrame()
 	_G.DressUpFrameCancelButton:Point('BOTTOMRIGHT', -4, 4)
 	_G.DressUpFrameResetButton:Point('RIGHT', _G.DressUpFrameCancelButton, 'LEFT', -3, 0)
 
-	local CustomSetDropdown = DressUpFrame.CustomSetDropdown
-	if CustomSetDropdown then
-		S:HandleDropDownBox(CustomSetDropdown)
-		S:HandleButton(CustomSetDropdown.SaveButton)
-	end
+	S:HandleDropDownBox(DressUpFrame.CustomSetDropdown)
+	S:HandleButton(DressUpFrame.CustomSetDropdown.SaveButton)
 
 	-- Dont use StripTextures on the DetailsPanel, plx
 	local CustomSetDetailsPanel = DressUpFrame.CustomSetDetailsPanel
-	if CustomSetDetailsPanel then
-		CustomSetDetailsPanel:DisableDrawLayer('BACKGROUND')
-		CustomSetDetailsPanel:DisableDrawLayer('OVERLAY') -- to keep Artwork on the frame
-		CustomSetDetailsPanel:CreateBackdrop('Transparent')
-		CustomSetDetailsPanel.ClassBackground:SetAllPoints()
-
-		hooksecurefunc(CustomSetDetailsPanel, 'Refresh', DetailsPanelRefresh)
-	end
+	CustomSetDetailsPanel:DisableDrawLayer('BACKGROUND')
+	CustomSetDetailsPanel:DisableDrawLayer('OVERLAY') -- to keep Artwork on the frame
+	CustomSetDetailsPanel:CreateBackdrop('Transparent')
+	CustomSetDetailsPanel.ClassBackground:SetAllPoints()
+	hooksecurefunc(CustomSetDetailsPanel, 'Refresh', DetailsPanelRefresh)
 
 	hooksecurefunc(DressUpFrame, 'ConfigureSize', DressUpConfigureSize)
 end

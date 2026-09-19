@@ -9,17 +9,9 @@ local function HandleSwingTimer(frame)
 	frame:StripTextures()
 
 	local bar = frame.StatusBar
-	if bar then
-		S:HandleStatusBar(bar)
-
-		if bar.TypeLabel then
-			bar.TypeLabel:FontTemplate()
-		end
-
-		if bar.TimeLabel then
-			bar.TimeLabel:FontTemplate()
-		end
-	end
+	S:HandleStatusBar(bar)
+	bar.TypeLabel:FontTemplate()
+	bar.TimeLabel:FontTemplate()
 end
 
 function S:Blizzard_SwingTimer()

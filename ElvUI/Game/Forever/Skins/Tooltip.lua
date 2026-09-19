@@ -16,9 +16,7 @@ function S:StyleTooltips()
 		_G.ItemRefShoppingTooltip1,
 		_G.ItemRefShoppingTooltip2,
 		_G.FriendsTooltip,
-		_G.WarCampaignTooltip,
 		_G.EmbeddedItemTooltip,
-		_G.ReputationParagonTooltip,
 		_G.GameTooltip,
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
@@ -57,7 +55,6 @@ function S:TooltipFrames()
 	ItemTT.Count:ClearAllPoints()
 	ItemTT.Count:Point('BOTTOMRIGHT', ItemTT.Icon, 'BOTTOMRIGHT', 1, 0)
 
-	-- EmbeddedItemTooltip (also Paragon Reputation)
 	local EmbeddedTT = _G.EmbeddedItemTooltip.ItemTooltip
 	S:HandleIcon(EmbeddedTT.Icon, true)
 	S:HandleIconBorder(EmbeddedTT.IconBorder, EmbeddedTT.Icon.backdrop)

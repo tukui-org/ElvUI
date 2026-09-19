@@ -5,42 +5,10 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local function HandleDropDownArrow(button, direction)
-	button.NormalTexture:SetAlpha(0)
-	button.PushedTexture:SetAlpha(0)
-	button:GetHighlightTexture():SetAlpha(0)
-
-	local dis = button:GetDisabledTexture()
-	S:SetupArrow(dis, direction)
-	dis:SetVertexColor(0, 0, 0, .7)
-	dis:SetDrawLayer('OVERLAY')
-	dis:SetInside(button, 4, 4)
-
-	local tex = button:CreateTexture(nil, 'ARTWORK')
-	tex:SetInside(button, 4, 4)
-	S:SetupArrow(tex, direction)
-end
-
-local function HandleOptionDropDown(option)
-	local button = option.Button
-	S:HandleButton(button)
-	button.NormalTexture:SetAlpha(0)
-	button.HighlightTexture:SetAlpha(0)
-
-	HandleDropDownArrow(option.DecrementButton, 'left')
-	HandleDropDownArrow(option.IncrementButton, 'right')
-end
-
 local function HandleDropdown(option)
 	S:HandleButton(option.Dropdown)
 	S:HandleButton(option.DecrementButton)
 	S:HandleButton(option.IncrementButton)
-end
-
-local function HandleTabs(tab)
-	if tab then
-		tab:StripTextures(true)
-	end
 end
 
 local function UpdateKeybindButtons(self)
@@ -121,13 +89,11 @@ local function CategoryListScrollUpdateChild(child)
 	end
 
 	local toggle = child.Toggle
-	if toggle and not toggle.IsSkinned then
+	if toggle then
 		S:HandleCollapseTexture(toggle, true)
 
 		toggle:Size(18)
 		toggle:NudgePoint(4, 2)
-
-		toggle.IsSkinned = true
 	end
 end
 
@@ -151,16 +117,8 @@ local function SettingsListScrollUpdateChild(child)
 		HandleCheckbox(child.Checkbox)
 	end
 
-	if child.Dropdown then
-		HandleOptionDropDown(child.Dropdown)
-	end
-
 	if child.Control then
 		HandleDropdown(child.Control)
-	end
-
-	if child.ColorBlindFilterDropDown then
-		HandleOptionDropDown(child.ColorBlindFilterDropDown)
 	end
 
 	local button = child.Button
@@ -237,15 +195,6 @@ local function SettingsListScrollUpdateChild(child)
 		S:HandleButton(child.Button2)
 	end
 
-	if child.Controls then
-		for i = 1, #child.Controls do
-			local control = child.Controls[i]
-			if control.SliderWithSteppers then
-				S:HandleStepSlider(control.SliderWithSteppers)
-			end
-		end
-	end
-
 	if child.BaseTab then
 		HandleControlTab(child.BaseTab)
 	end
@@ -280,8 +229,8 @@ function S:SettingsPanel()
 	S:HandleButton(SettingsPanel.ApplyButton)
 	S:HandleButton(SettingsPanel.CloseButton)
 
-	HandleTabs(SettingsPanel.GameTab)
-	HandleTabs(SettingsPanel.AddOnsTab)
+	SettingsPanel.GameTab:StripTextures(true)
+	SettingsPanel.AddOnsTab:StripTextures(true)
 
 	SettingsPanel.CategoryList:CreateBackdrop('Transparent')
 	SettingsPanel.CategoryList.backdrop:SetInside()
@@ -296,27 +245,6 @@ function S:SettingsPanel()
 	S:HandleTrimScrollBar(SettingsPanel.Container.SettingsList.ScrollBar)
 
 	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
-
-	for _, frame in next, { _G.CompactUnitFrameProfiles, _G.CompactUnitFrameProfilesGeneralOptionsFrame } do
-		for _, child in next, { frame:GetChildren() } do
-			if child:IsObjectType('CheckButton') then
-				S:HandleCheckBox(child)
-			elseif child:IsObjectType('Button') then
-				S:HandleButton(child)
-			elseif child:IsObjectType('Frame') and (child.Left and child.Middle and child.Right) then
-				S:HandleDropDownBox(child)
-			end
-		end
-	end
-
-	if _G.CompactUnitFrameProfilesSeparator then
-		_G.CompactUnitFrameProfilesSeparator:SetAtlas('Options_HorizontalDivider')
-	end
-
-	if _G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG then
-		_G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:Hide()
-		_G.CompactUnitFrameProfilesGeneralOptionsFrameAutoActivateBG:CreateBackdrop('Transparent')
-	end
 end
 
 S:AddCallback('SettingsPanel')

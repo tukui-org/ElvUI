@@ -13,15 +13,11 @@ local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 local INVITE_RESTRICTION_NONE = 9
 
 local function BattleNetFrame_OnEnter(button)
-	if not button.backdrop then return end
 	local bnetColor = _G.FRIENDS_BNET_NAME_COLOR
-
 	button.backdrop:SetBackdropBorderColor(bnetColor.r, bnetColor.g, bnetColor.b)
 end
 
 local function BattleNetFrame_OnLeave(button)
-	if not button.backdrop then return end
-
 	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
@@ -30,7 +26,7 @@ local function BattleNetFrame_OnClick()
 end
 
 local function RAFRewardQuality(button)
-	if not button.Icon or not button.item then return end
+	if not button.item then return end
 
 	local quality = button.item:GetItemQuality()
 	local r, g, b = E:GetItemQualityColor(quality)
@@ -38,20 +34,14 @@ local function RAFRewardQuality(button)
 end
 
 local function RAFRewards()
-	local claiming = _G.RecruitAFriendFrame.RewardClaiming
-	if claiming and claiming.NextRewardButton then
-		claiming.NextRewardButton.Icon:SetDesaturation(0)
-	end
+	_G.RecruitAFriendFrame.RewardClaiming.NextRewardButton.Icon:SetDesaturation(0)
 
 	local rewardsFrame = _G.RecruitAFriendRewardsFrame
 	for tab in rewardsFrame.rewardTabPool:EnumerateActive() do
 		if not tab.IsSkinned then
 			tab:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, true)
 			tab:StyleButton()
-
-			if tab.Tab then
-				tab.Tab:Hide()
-			end
+			tab.Tab:Hide()
 
 			local _, relativeTo = tab:GetPoint()
 			if relativeTo and relativeTo == rewardsFrame then
@@ -74,12 +64,7 @@ local function RAFRewards()
 		S:HandleIcon(icon, true)
 
 		RAFRewardQuality(button)
-
-		local months = reward.Months
-		local text = months and months.Text
-		if text then
-			text:SetTextColor(1, 1, 1)
-		end
+		reward.Months.Text:SetTextColor(1, 1, 1)
 	end
 end
 
@@ -101,29 +86,27 @@ local function ReskinFriendButton(button)
 	button.IsSkinned = true
 
 	local summon = button.summonButton
-	if summon then
-		summon:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
-		summon:Size(24)
+	summon:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
+	summon:Size(24)
 
-		summon.highlightTexture = summon:GetHighlightTexture() -- the other one is different (HighlightTexture)
-		summon.highlightTexture:SetTexture(136222)
+	summon.highlightTexture = summon:GetHighlightTexture() -- the other one is different (HighlightTexture)
+	summon.highlightTexture:SetTexture(136222)
 
-		summon.PushedTexture:SetTexture(136222)
-		summon.NormalTexture:SetTexture(136222)
-		summon.PushedTexture:SetBlendMode('ADD')
-		summon.PushedTexture:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+	summon.PushedTexture:SetTexture(136222)
+	summon.NormalTexture:SetTexture(136222)
+	summon.PushedTexture:SetBlendMode('ADD')
+	summon.PushedTexture:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 
-		summon.highlightTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
-		summon.PushedTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
-		summon.NormalTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+	summon.highlightTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+	summon.PushedTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
+	summon.NormalTexture:SetTexCoord(0.12, 0.88, 0.12, 0.88)
 
-		summon.highlightTexture:SetInside(summon.backdrop)
-		summon.PushedTexture:SetInside(summon.backdrop)
-		summon.NormalTexture:SetInside(summon.backdrop)
+	summon.highlightTexture:SetInside(summon.backdrop)
+	summon.PushedTexture:SetInside(summon.backdrop)
+	summon.NormalTexture:SetInside(summon.backdrop)
 
-		summon.SlotBackground:SetAlpha(0)
-		summon.SlotArt:SetAlpha(0)
-	end
+	summon.SlotBackground:SetAlpha(0)
+	summon.SlotArt:SetAlpha(0)
 
 	local invite = button.travelPassButton
 	invite:Size(24)
@@ -136,12 +119,10 @@ local function ReskinFriendButton(button)
 	invite.HighlightTexture:SetAllPoints()
 
 	local gameIcon = button.gameIcon
-	if gameIcon then
-		gameIcon:Size(26)
-		gameIcon:SetTexCoord(0, 1, 0, 1)
-		gameIcon:ClearAllPoints()
-		gameIcon:Point('RIGHT', invite, 'LEFT', -6, 0)
-	end
+	gameIcon:Size(26)
+	gameIcon:SetTexCoord(0, 1, 0, 1)
+	gameIcon:ClearAllPoints()
+	gameIcon:Point('RIGHT', invite, 'LEFT', -6, 0)
 
 	local icon = invite:CreateTexture(nil, 'ARTWORK')
 	icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
@@ -157,30 +138,25 @@ end
 
 local function HandleTabs()
 	local lastTab
-	for index = 1, 4 do
-		local tab = _G['FriendsFrameTab'..index]
-		if tab then
-			S:HandleTab(tab)
+	for _, tab in next, { _G.FriendsFrameTab1, _G.FriendsFrameTab3, _G.FriendsFrameTab4 } do -- no Who tab, it lives in the group finder
+		S:HandleTab(tab)
 
-			tab:ClearAllPoints()
+		tab:ClearAllPoints()
 
-			if lastTab then
-				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
-			else
-				tab:Point('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
-			end
-
-			lastTab = tab
+		if lastTab then
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+		else
+			tab:Point('BOTTOMLEFT', _G.FriendsFrame, 'BOTTOMLEFT', -3, -32)
 		end
+
+		lastTab = tab
 	end
 end
 
 local function UpdateFriendButton(button)
-	if button.gameIcon then
-		ReskinFriendButton(button)
-	end
+	ReskinFriendButton(button)
 
-	if button.newIcon and button.buttonType == _G.FRIENDS_BUTTON_TYPE_BNET then
+	if button.buttonType == _G.FRIENDS_BUTTON_TYPE_BNET then
 		if FriendsFrame_GetInviteRestriction(button.id) == INVITE_RESTRICTION_NONE then
 			button.newIcon:SetVertexColor(1, 1, 1)
 		else
@@ -218,11 +194,8 @@ local function HandleRecentAllies(frame)
 	local invite = InviteAtlas['friendslist-invitebutton-default-normal']
 
 	for _, button in next, { frame.ScrollTarget:GetChildren() } do
-		if button.IsSkinned then return end
-		button.IsSkinned = true
-
-		local partyButton = button.PartyButton
-		if partyButton then
+		if not button.IsSkinned then
+			local partyButton = button.PartyButton
 			local normal = partyButton:GetNormalTexture()
 			normal:SetTexture(invite)
 			normal:SetTexCoords()
@@ -241,13 +214,11 @@ local function HandleRecentAllies(frame)
 
 			partyButton:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 			partyButton:Size(24)
+
+			button.IsSkinned = true
 		end
 	end
 end
-
-local StripAllTextures = {
-	'AddFriendFrame',
-}
 
 local ButtonsToHandle = {
 	'FriendsFrameAddFriendButton',
@@ -278,10 +249,6 @@ function S:FriendsFrame()
 
 	for _, button in pairs(ButtonsToHandle) do
 		S:HandleButton(_G[button])
-	end
-
-	for _, object in pairs(StripAllTextures) do
-		_G[object]:StripTextures()
 	end
 
 	local FriendsFrame = _G.FriendsFrame
@@ -324,21 +291,17 @@ function S:FriendsFrame()
 
 	local broadcastEdit = FriendsFrameBattlenetFrame.BroadcastFrame.EditBox
 	for _, name in next, EditBoxBorders do
-		local region = broadcastEdit[name]
-		if region then region:Hide() end
+		broadcastEdit[name]:Hide()
 	end
 
 	S:HandleEditBox(broadcastEdit)
 	S:HandleEditBox(_G.AddFriendNameEditBox)
+	_G.AddFriendFrame:StripTextures()
 	_G.AddFriendFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(_G.AddFriendFrame.CloseButton)
 	S:HandleButton(_G.AddFriendInfoFrame.OkayButton)
 
-	local alliesFrame = _G.RecentAlliesFrame
-	local recentAllies = alliesFrame and alliesFrame.List
-	if recentAllies then
-		hooksecurefunc(recentAllies.ScrollBox, 'Update', HandleRecentAllies)
-	end
+	hooksecurefunc(_G.RecentAlliesFrame.List.ScrollBox, 'Update', HandleRecentAllies)
 
 	hooksecurefunc('FriendsFrame_UpdateFriendButton', UpdateFriendButton)
 	hooksecurefunc('FriendsFrame_UpdateFriendInviteButton', UpdateFriendInviteButton)
@@ -346,13 +309,11 @@ function S:FriendsFrame()
 
 	-- IgnoreListWindow
 	local IgnoreWindow = FriendsFrame.IgnoreListWindow
-	if IgnoreWindow then
-		IgnoreWindow:StripTextures()
-		IgnoreWindow:SetTemplate('Transparent')
-		S:HandleTrimScrollBar(IgnoreWindow.ScrollBar)
-		S:HandleButton(IgnoreWindow.UnignorePlayerButton)
-		S:HandleCloseButton(IgnoreWindow.CloseButton)
-	end
+	IgnoreWindow:StripTextures()
+	IgnoreWindow:SetTemplate('Transparent')
+	S:HandleTrimScrollBar(IgnoreWindow.ScrollBar)
+	S:HandleButton(IgnoreWindow.UnignorePlayerButton)
+	S:HandleCloseButton(IgnoreWindow.CloseButton)
 
 	-- Bottom Tabs
 	HandleTabs()
@@ -361,7 +322,7 @@ function S:FriendsFrame()
 		S:HandleTab(tab)
 	end
 
-	--View Friends BN Frame
+	-- View Friends BN Frame
 	local FriendsFriendsFrame = _G.FriendsFriendsFrame
 	FriendsFriendsFrame.ScrollFrameBorder:Hide()
 	FriendsFriendsFrame:StripTextures()
@@ -370,11 +331,11 @@ function S:FriendsFrame()
 	S:HandleButton(FriendsFriendsFrame.SendRequestButton)
 	S:HandleButton(FriendsFriendsFrame.CloseButton)
 
-	--Quick join
+	-- Quick join
 	local QuickJoinFrame = _G.QuickJoinFrame
 	local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
 	S:HandleButton(_G.QuickJoinFrame.JoinQueueButton)
-	QuickJoinFrame.JoinQueueButton:Size(131, 21) --Match button on other tab
+	QuickJoinFrame.JoinQueueButton:Size(131, 21) -- Match button on other tab
 	QuickJoinFrame.JoinQueueButton:ClearAllPoints()
 	QuickJoinFrame.JoinQueueButton:Point('BOTTOMRIGHT', QuickJoinFrame, 'BOTTOMRIGHT', -6, 4)
 	QuickJoinRoleSelectionFrame:StripTextures()

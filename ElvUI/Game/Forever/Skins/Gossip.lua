@@ -96,10 +96,8 @@ function S:GossipFrame()
 
 	for i = 1, 4 do
 		local notch = GossipFrame.FriendshipStatusBar['Notch'..i]
-		if notch then
-			notch:SetColorTexture(0, 0, 0)
-			notch:SetSize(E.mult, 16)
-		end
+		notch:SetColorTexture(0, 0, 0)
+		notch:SetSize(E.mult, 16)
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
@@ -113,10 +111,7 @@ function S:GossipFrame()
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
 		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
-
-		if GossipFrame.Background then
-			GossipFrame.Background:Hide()
-		end
+		GossipFrame.Background:Hide()
 	else
 		local pageBG = _G.ItemTextFramePageBg:GetTexture()
 		_G.ItemTextFrame:StripTextures()
@@ -128,11 +123,8 @@ function S:GossipFrame()
 		_G.ItemTextFramePageBg:SetDrawLayer('BACKGROUND', 1)
 		_G.ItemTextFramePageBg:SetInside(_G.ItemTextScrollFrame.backdrop)
 
-		if GossipFrame.Background then
-			GossipFrame.Background:CreateBackdrop('Transparent')
-
-			hooksecurefunc(GossipFrame.Background, 'SetAtlas', GossipFrame_SetAtlas)
-		end
+		GossipFrame.Background:CreateBackdrop('Transparent')
+		hooksecurefunc(GossipFrame.Background, 'SetAtlas', GossipFrame_SetAtlas)
 	end
 end
 
