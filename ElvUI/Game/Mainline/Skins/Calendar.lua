@@ -53,7 +53,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarCreateEventRaidInviteButtonBorder:Hide()
 	_G.CalendarMonthBackground:SetAlpha(0)
 	_G.CalendarYearBackground:SetAlpha(0)
-	_G.CalendarFrameModalOverlay:SetAlpha(.25)
+	_G.CalendarFrameModalOverlay:SetAlpha(0.25)
 	_G.CalendarTexturePickerFrameButtonBackground:Hide()
 	_G.CalendarTexturePickerAcceptButtonBorder:Hide()
 	_G.CalendarTexturePickerCancelButtonBorder:Hide()
@@ -68,7 +68,7 @@ function S:Blizzard_Calendar()
 
 	-- Boost frame levels
 	for i = 1, 42 do
-		_G['CalendarDayButton'..i..'DarkFrame']:SetAlpha(.5)
+		_G['CalendarDayButton'..i..'DarkFrame']:SetAlpha(0.5)
 		local bu = _G['CalendarDayButton'..i]
 
 		if E.private.skins.parchmentRemoverEnable then

@@ -258,7 +258,7 @@ function S:WorldMapFrame()
 	end
 
 	local StoryHeader = QuestScrollFrame.Contents.StoryHeader
-	StoryHeader.Background:SetAlpha(.7)
+	StoryHeader.Background:SetAlpha(0.7)
 	StoryHeader.Divider:Hide()
 	StoryHeader.HighlightTexture:SetAllPoints(StoryHeader.Background)
 	StoryHeader.HighlightTexture:SetAlpha(0)

@@ -103,7 +103,7 @@ local function HandleControlTab(tab)
 	tab:StripTextures(nil, true)
 	tab:CreateBackdrop()
 
-	local spacing = E.Retail and 3 or 10
+	local spacing = 10
 	tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -12 or -14)
 	tab.backdrop:Point('BOTTOMRIGHT', -spacing, -2)
 end

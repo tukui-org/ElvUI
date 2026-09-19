@@ -108,7 +108,7 @@ do
 	E:AddTag('spec:icon', 'PLAYER_TALENT_UPDATE UNIT_NAME_UPDATE', function(unit)
 		if not UnitIsPlayer(unit) then return end
 
-		-- try to get spec from tooltip
+		-- try to get spec from tooltip (forever has one spec per class)
 		local info = E.Retail and E:GetUnitSpecInfo(unit)
 		if info then
 			return info.icon and format(specIcon, info.icon)

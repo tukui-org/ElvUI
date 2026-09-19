@@ -274,7 +274,7 @@ local function HandleOrderView(frame)
 	OrderDetails:CreateBackdrop('Transparent')
 	OrderDetails.Background:ClearAllPoints()
 	OrderDetails.Background:SetInside(OrderDetails.backdrop)
-	OrderDetails.Background:SetAlpha(.5)
+	OrderDetails.Background:SetAlpha(0.5)
 
 	HandleSchematicForm(OrderDetails.SchematicForm)
 
