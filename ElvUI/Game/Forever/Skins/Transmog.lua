@@ -29,7 +29,7 @@ local function OutfitPopup_OnShow(frame)
 end
 
 function S:Blizzard_Transmog()
-	if not E.private.skins.blizzard.transmogrify then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.transmogrify) then return end
 
 	local TransmogFrame = _G.TransmogFrame
 	S:HandlePortraitFrame(TransmogFrame)

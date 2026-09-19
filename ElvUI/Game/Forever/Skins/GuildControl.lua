@@ -46,9 +46,14 @@ local function SkinBankTabs()
 	end
 end
 
-local function SkinDiscordFrame() -- the link frame is created on the first update
-	S:HandleButton(_G.DiscordLinkFrame.SeparateStream.Button)
+local function SkinDiscordFrame() -- the link frame is only created once the guild channel is linked
+	local linkFrame = _G.DiscordLinkFrame
+	if not linkFrame or linkFrame.IsSkinned then return end
+
+	S:HandleCheckBox(linkFrame.SeparateStream.Button) -- UICheckButtonTemplate
 	S:HandleButton(_G.DiscordLinkFrameButton)
+
+	linkFrame.IsSkinned = true
 end
 
 function S:Blizzard_GuildControlUI()

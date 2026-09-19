@@ -16,41 +16,19 @@ local function SkinOjectiveTrackerHeaders(header)
 	header.Background:SetAtlas(nil)
 end
 
-local function ReskinQuestIcon(button)
-	if not button then return end
-
-	if not button.IsSkinned then
-		button:SetSize(24, 24)
-		button:SetNormalTexture(E.ClearTexture)
-		button:SetPushedTexture(E.ClearTexture)
-		button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
-
-		local icon = button.icon or button.Icon
-		if icon then
-			S:HandleIcon(icon, true)
-			icon:SetInside()
-		end
-
-		button.IsSkinned = true
-	end
-
-	if button.backdrop then
-		button.backdrop:SetFrameLevel(0)
-	end
-end
-
 local function HandleQuestIcons(_, block)
-	ReskinQuestIcon(block.ItemButton)
-	ReskinQuestIcon(block.itemButton)
+	local button = block.ItemButton -- only quests with a usable item get one
+	if not button or button.IsSkinned then return end
 
-	local check = block.currentLine and block.currentLine.Check
-	if check and not check.IsSkinned then
-		check:SetAtlas('checkmark-minimal')
-		check:SetDesaturated(true)
-		check:SetVertexColor(0, 1, 0)
+	button:SetSize(24, 24)
+	button:SetNormalTexture(E.ClearTexture)
+	button:SetPushedTexture(E.ClearTexture)
+	button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 
-		check.IsSkinned = true
-	end
+	S:HandleIcon(button.icon, true)
+	button.icon:SetInside()
+
+	button.IsSkinned = true
 end
 
 local function ReskinBarTemplate(bar)
@@ -69,8 +47,8 @@ local function HandleProgressBar(tracker, key)
 	local _, maxValue = bar:GetMinMaxValues()
 	S:StatusBarColorGradient(bar, bar:GetValue(), maxValue)
 
-	local icon = bar.Icon
-	if icon:IsShown() and not icon.backdrop then
+	local icon = bar.Icon -- only the scenario and bonus bar templates have one
+	if icon and icon:IsShown() and not icon.backdrop then
 		icon:SetMask('') -- This needs to be before S:HandleIcon
 		S:HandleIcon(icon, true)
 

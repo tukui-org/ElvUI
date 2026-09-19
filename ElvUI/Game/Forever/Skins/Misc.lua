@@ -120,29 +120,6 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	do
-		local menuBackdrop = function(frame)
-			frame:SetTemplate('Transparent')
-		end
-
-		local chatMenuBackdrop = function(frame)
-			frame:SetTemplate('Transparent')
-
-			frame:ClearAllPoints()
-			frame:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
-		end
-
-		for index, menu in next, { _G.ChatMenu, _G.EmoteMenu, _G.LanguageMenu, _G.VoiceMacroMenu } do
-			menu:StripTextures()
-
-			if index == 1 then -- ChatMenu
-				menu:HookScript('OnShow', chatMenuBackdrop)
-			else
-				menu:HookScript('OnShow', menuBackdrop)
-			end
-		end
-	end
-
 	-- reskin popup buttons
 	for i = 1, E.MAX_STATIC_POPUPS do
 		S:HandleStaticPopup(_G['StaticPopup'..i])
