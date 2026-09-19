@@ -168,15 +168,18 @@ local function HandleSchematicForm(form, noParchment)
 	form:StripTextures()
 	form:CreateBackdrop('Transparent')
 	form.backdrop:SetInside()
-	form.Background:SetInside(form.backdrop)
 
-	if noParchment or E.private.skins.parchmentRemoverEnable then
-		form.Background:SetAlpha(0)
-		form.MinimalBackground:SetAlpha(0)
-	else
-		form.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
-		form.Background:SetAlpha(0.6)
-		form.MinimalBackground:SetAlpha(0.6)
+	if form.Background then -- crafting page and inspect recipe only, the order view form has no parchment
+		form.Background:SetInside(form.backdrop)
+
+		if noParchment or E.private.skins.parchmentRemoverEnable then
+			form.Background:SetAlpha(0)
+			form.MinimalBackground:SetAlpha(0)
+		else
+			form.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
+			form.Background:SetAlpha(0.6)
+			form.MinimalBackground:SetAlpha(0.6)
+		end
 	end
 
 	S:HandleCheckBox(form.TrackRecipeCheckbox)
