@@ -29,10 +29,51 @@ local function HandleTreeHeaders(frame)
 			header.Divider:SetAlpha(0)
 			header.Name:FontTemplate(nil, 16)
 			header.Text:FontTemplate()
+			header.TextBackground:SetAlpha(0)
+			header.TextBackground:NudgePoint(4, -6) -- away from the spec icon
+			header.TextBackground:CreateBackdrop()
+			header.TextBackground.backdrop:OffsetFrameLevel(1, header) -- above the spec icon and ring
+			header.Text:SetParent(header.TextBackground.backdrop)
 
 			header.IsSkinned = true
 		end
 	end
+end
+
+local function TalentButtonStateBorder(button, visualState)
+	button.BorderSheen:Hide() -- Blizzard reshows it on every state update
+
+	local color = _G.TalentButtonUtil.GetColorForBaseVisualState(visualState)
+	button.Icon.backdrop:SetBackdropBorderColor(color:GetRGB())
+end
+
+local function HandleTalentButton(button)
+	button.Shadow:SetAlpha(0)
+	button.StateBorder:SetAlpha(0)
+	button.StateBorderHover:Kill()
+	button.Icon:RemoveMaskTexture(button.IconMask)
+	button.DisabledOverlay:RemoveMaskTexture(button.DisabledOverlayMask)
+
+	S:HandleIcon(button.Icon, true)
+
+	hooksecurefunc(button, 'UpdateStateBorder', TalentButtonStateBorder)
+
+	local visualState = button:GetVisualState()
+	if visualState then -- state was applied before the hook existed
+		TalentButtonStateBorder(button, visualState)
+	end
+end
+
+-- Talent buttons are pooled and get a per row frame level
+-- so skin them here and keep the backdrop under them
+local function UpdateButtonFrameLevel(_, button)
+	if not button.IsSkinned then
+		HandleTalentButton(button)
+
+		button.IsSkinned = true
+	end
+
+	button.Icon.backdrop:SetFrameLevel(button:GetFrameLevel() - 1)
 end
 
 local function CategoryTabSelected(tab, selected)
@@ -97,6 +138,10 @@ function S:Blizzard_PlayerSpells()
 	local TalentsFrame = PlayerSpellsFrame.TalentsFrame
 	TalentsFrame.Background:SetAlpha(0)
 	TalentsFrame.BackgroundBorder:SetAlpha(0)
+	TalentsFrame.DividerHorizontalLeft:SetAlpha(0)
+	TalentsFrame.DividerHorizontalRight:SetAlpha(0)
+	TalentsFrame.DividerVerticalLeft:SetAlpha(0)
+	TalentsFrame.DividerVerticalRight:SetAlpha(0)
 
 	S:HandleButton(TalentsFrame.ApplyButton)
 	S:HandleDropDownBox(TalentsFrame.LoadSystem.Dropdown)
@@ -106,7 +151,7 @@ function S:Blizzard_PlayerSpells()
 
 	local CurrencyDisplay = TalentsFrame.ClassCurrencyDisplay
 	CurrencyDisplay.Border:SetAlpha(0)
-	CurrencyDisplay.CurrentAmountContainer:CreateBackdrop('Transparent')
+	CurrencyDisplay.CurrentAmountContainer:CreateBackdrop()
 	CurrencyDisplay.UnspentLabel:FontTemplate(nil, 14)
 	CurrencyDisplay.UnspentLabel:ClearAllPoints()
 	CurrencyDisplay.UnspentLabel:Point('RIGHT', CurrencyDisplay.CurrentAmountContainer, 'LEFT', -6, 0)
@@ -118,10 +163,19 @@ function S:Blizzard_PlayerSpells()
 	end
 
 	hooksecurefunc(TalentsFrame, 'RefreshTreeHeaders', HandleTreeHeaders)
+	hooksecurefunc(TalentsFrame, 'UpdateButtonFrameLevel', UpdateButtonFrameLevel)
 
 	S:HandleEditBox(TalentsFrame.SearchBox)
 	TalentsFrame.SearchBox.backdrop:Point('TOPLEFT', -4, -5)
 	TalentsFrame.SearchBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
+
+	local SearchOptions = TalentsFrame.SearchOptionsDropdown
+	S:HandleNextPrevButton(SearchOptions, 'down', nil, true)
+	SearchOptions:SetTemplate()
+	SearchOptions.Arrow:SetAlpha(0)
+	SearchOptions:ClearAllPoints()
+	SearchOptions:Point('LEFT', TalentsFrame.SearchBox, 'RIGHT', 3, 0)
+
 	TalentsFrame.SearchPreviewContainer:StripTextures()
 	TalentsFrame.SearchPreviewContainer:CreateBackdrop('Transparent')
 
