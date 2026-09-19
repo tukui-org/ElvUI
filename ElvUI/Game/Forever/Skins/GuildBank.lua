@@ -78,8 +78,20 @@ function S:Blizzard_GuildBankUI()
 		end
 	end
 
+	local lastTab
 	for i = 1, 4 do
-		S:HandleTab(_G['GuildBankFrameTab'..i])
+		local tab = _G['GuildBankFrameTab'..i]
+		S:HandleTab(tab)
+
+		tab:ClearAllPoints()
+
+		if lastTab then
+			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -5, 0)
+		else
+			tab:Point('TOPLEFT', frame, 'BOTTOMLEFT', -3, 0)
+		end
+
+		lastTab = tab
 	end
 
 	local GuildItemSearchBox = _G.GuildItemSearchBox
