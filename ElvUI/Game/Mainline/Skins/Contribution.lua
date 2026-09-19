@@ -29,7 +29,7 @@ function S:Blizzard_Contribution()
 
 		-- Skin the StatusBar
 		local statusBar = frame.Status
-		if statusBar and not statusBar.backdrop then
+		if not statusBar.backdrop then
 			E:RegisterStatusBar(statusBar)
 			statusBar:StripTextures()
 			statusBar:CreateBackdrop()
@@ -39,7 +39,7 @@ function S:Blizzard_Contribution()
 	-- Skin the reward icons
 	hooksecurefunc(_G.ContributionMixin, 'AddReward', function(frame, _, rewardID)
 		local reward = frame:FindOrAcquireReward(rewardID)
-		if reward and not reward.backdrop then
+		if not reward.backdrop then
 			reward:SetFrameLevel(5)
 			reward:CreateBackdrop()
 

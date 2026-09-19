@@ -10,19 +10,17 @@ local GuildControlGetNumRanks = GuildControlGetNumRanks
 local function SkinGuildRanks()
 	for i = 1, GuildControlGetNumRanks() do
 		local rankFrame = _G['GuildControlUIRankOrderFrameRank'..i]
-		if rankFrame then
-			if not rankFrame.nameBox.backdrop then
-				S:HandleEditBox(rankFrame.nameBox)
+		if not rankFrame.nameBox.backdrop then
+			S:HandleEditBox(rankFrame.nameBox)
 
-				S:HandleButton(rankFrame.downButton)
-				S:HandleButton(rankFrame.upButton)
-				S:HandleButton(rankFrame.deleteButton)
-			end
-
-			rankFrame.nameBox.backdrop:ClearAllPoints()
-			rankFrame.nameBox.backdrop:Point('TOPLEFT', -2, -4)
-			rankFrame.nameBox.backdrop:Point('BOTTOMRIGHT', -4, 4)
+			S:HandleButton(rankFrame.downButton)
+			S:HandleButton(rankFrame.upButton)
+			S:HandleButton(rankFrame.deleteButton)
 		end
+
+		rankFrame.nameBox.backdrop:ClearAllPoints()
+		rankFrame.nameBox.backdrop:Point('TOPLEFT', -2, -4)
+		rankFrame.nameBox.backdrop:Point('BOTTOMRIGHT', -4, 4)
 	end
 end
 
@@ -34,34 +32,28 @@ local function SkinBankTabs()
 
 	for i = 1, numTabs do
 		local tab = _G['GuildControlBankTab'..i]
-		if not tab then break end
-
-		local buy = tab.buy
-		if buy and buy.button and not buy.button.IsSkinned then
-			S:HandleButton(buy.button)
-		end
+		S:HandleButton(tab.buy.button)
 
 		local owned = tab.owned
-		if owned then
-			owned.tabIcon:SetTexCoords()
+		owned.tabIcon:SetTexCoords()
 
-			if owned.editBox and not owned.editBox.backdrop then
-				S:HandleEditBox(owned.editBox)
-			end
-			if owned.viewCB and not owned.viewCB.IsSkinned then
-				S:HandleCheckBox(owned.viewCB)
-			end
-			if owned.depositCB and not owned.depositCB.IsSkinned then
-				S:HandleCheckBox(owned.depositCB)
-			end
+		if not owned.editBox.backdrop then
+			S:HandleEditBox(owned.editBox)
 		end
+
+		S:HandleCheckBox(owned.viewCB)
+		S:HandleCheckBox(owned.depositCB)
 	end
 end
 
-local function SkinDiscordFrame()
-	if not _G.DiscordLinkFrame then return end
-	S:HandleButton(_G.DiscordLinkFrame.SeparateStream.Button)
+local function SkinDiscordFrame() -- the link frame is only created once the guild channel is linked
+	local linkFrame = _G.DiscordLinkFrame
+	if not linkFrame or linkFrame.IsSkinned then return end
+
+	S:HandleCheckBox(linkFrame.SeparateStream.Button) -- UICheckButtonTemplate
 	S:HandleButton(_G.DiscordLinkFrameButton)
+
+	linkFrame.IsSkinned = true
 end
 
 function S:Blizzard_GuildControlUI()
@@ -94,17 +86,13 @@ function S:Blizzard_GuildControlUI()
 	S:HandleCheckBox(_G.GuildControlUIRankSettingsFrameOfficerCheckbox)
 
 	-- Discord integration
-	local Discord = _G.GuildControlUIRankDiscordFrame
-	if Discord then
-		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameServerDropdown, 180)
-		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameChannelDropdown, 180)
-		S:HandleButton(_G.GuildControlUIRankDiscordFrameChannelButton)
-	end
-
+	S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameServerDropdown, 180)
+	S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameChannelDropdown, 180)
+	S:HandleButton(_G.GuildControlUIRankDiscordFrameChannelButton)
 	hooksecurefunc('GuildControlUI_Discord_Update', SkinDiscordFrame)
 
 	for i = 1, _G.NUM_RANK_FLAGS do
-		local checkbox = _G['GuildControlUIRankSettingsFrameCheckbox'..i]
+		local checkbox = _G['GuildControlUIRankSettingsFrameCheckbox'..i] -- not every flag has one
 		if checkbox then S:HandleCheckBox(checkbox) end
 	end
 

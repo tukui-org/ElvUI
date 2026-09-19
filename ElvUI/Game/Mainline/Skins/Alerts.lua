@@ -45,20 +45,16 @@ local function SkinAchievementAlert(frame)
 	frame.Name:FontTemplate(nil, 12)
 
 	local icon = frame.Icon
-	if icon then
-		icon.Overlay:Kill()
+	icon.Overlay:Kill()
 
-		local texture = frame.Icon.Texture
-		if texture then
-			texture:SetTexCoords()
-			texture:ClearAllPoints()
-			texture:Point('LEFT', frame, 7, 0)
+	local texture = icon.Texture
+	texture:SetTexCoords()
+	texture:ClearAllPoints()
+	texture:Point('LEFT', frame, 7, 0)
 
-			if not icon.backdrop then
-				icon:CreateBackdrop()
-				icon.backdrop:SetOutside(texture)
-			end
-		end
+	if not icon.backdrop then
+		icon:CreateBackdrop()
+		icon.backdrop:SetOutside(texture)
 	end
 end
 
@@ -110,22 +106,12 @@ local function SkinDungeonCompletionAlert(frame)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
 	end
 
-	if frame.glowFrame then
-		frame.glowFrame:Kill()
-
-		if frame.glowFrame.glow then
-			frame.glowFrame.glow:Kill()
-		end
-	end
-
-	if frame.shine then frame.shine:Kill() end
-	if frame.raidArt then frame.raidArt:Kill() end
-	if frame.heroicIcon then frame.heroicIcon:Kill() end
-	if frame.dungeonArt then frame.dungeonArt:Kill() end
-	if frame.dungeonArt1 then frame.dungeonArt1:Kill() end
-	if frame.dungeonArt2 then frame.dungeonArt2:Kill() end
-	if frame.dungeonArt3 then frame.dungeonArt3:Kill() end
-	if frame.dungeonArt4 then frame.dungeonArt4:Kill() end
+	frame.glowFrame:Kill()
+	frame.glowFrame.glow:Kill()
+	frame.shine:Kill()
+	frame.raidArt:Kill()
+	frame.heroicIcon:Kill()
+	frame.dungeonArt:Kill()
 
 	-- Icon
 	frame.dungeonTexture:SetTexCoords()
@@ -212,25 +198,19 @@ local function SkinInvasionAlert(frame)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -7, 6)
 
 		--Background contains the item border too, so have to remove it
-		if frame.GetRegions then
-			local region, icon = frame:GetRegions()
-			if region and region:IsObjectType('Texture') then
-				if region:GetAtlas() == 'legioninvasion-Toast-Frame' then
-					region:Kill()
-				end
-			end
+		local region, icon = frame:GetRegions()
+		if region:GetAtlas() == 'legioninvasion-Toast-Frame' then
+			region:Kill()
+		end
 
-			-- Icon border
-			if icon and icon:IsObjectType('Texture') then
-				if icon:GetTexture() == 236293 then -- interface\icons\ability_warlock_demonicpower
-					icon.b = CreateFrame('Frame', nil, frame)
-					icon.b:SetTemplate()
-					icon.b:SetOutside(icon)
-					icon:SetParent(icon.b)
-					icon:SetDrawLayer('OVERLAY')
-					icon:SetTexCoords()
-				end
-			end
+		-- Icon border
+		if icon:GetTexture() == 236293 then -- interface\icons\ability_warlock_demonicpower
+			icon.b = CreateFrame('Frame', nil, frame)
+			icon.b:SetTemplate()
+			icon.b:SetOutside(icon)
+			icon:SetParent(icon.b)
+			icon:SetDrawLayer('OVERLAY')
+			icon:SetTexCoords()
 		end
 
 		frame.IsSkinned = true
@@ -311,13 +291,9 @@ local function SkinGarrisonFollowerAlert(frame, _, _, _, quality)
 		frame.DieIcon:SetAlpha(0)
 
 		--Background
-		if frame.GetNumRegions then
-			for _, region in next, { frame:GetRegions() } do
-				if region:IsObjectType('Texture') then
-					if region:GetAtlas() == 'Garr_MissionToast' then
-						region:Kill()
-					end
-				end
+		for _, region in next, { frame:GetRegions() } do
+			if region:IsObjectType('Texture') and region:GetAtlas() == 'Garr_MissionToast' then
+				region:Kill()
 			end
 		end
 
@@ -466,7 +442,7 @@ local function SkinGarrisonShipMissionAlert(frame)
 	end
 end
 
-local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
+local function SkinGarrisonRandomMissionAlert(frame)
 	if not frame.IsSkinned then
 		frame.Background:Kill()
 		frame.Blank:Kill()
@@ -488,11 +464,6 @@ local function SkinGarrisonRandomMissionAlert(frame, _, _, _, _, _, quality)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -6, 2)
 
 		frame.IsSkinned = true
-	end
-
-	if frame.PortraitFrame and frame.PortraitFrame.squareBG then
-		local r, g, b = E:GetItemQualityColor(quality)
-		frame.PortraitFrame.squareBG:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -539,7 +510,7 @@ local function SkinLootWonAlert(frame)
 	frame:SetAlpha(1)
 	frame.Background:Kill()
 
-	local lootItem = frame.lootItem or frame
+	local lootItem = frame.lootItem
 	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	lootItem.Icon:SetDrawLayer('BORDER')
 	lootItem.IconBorder:Kill()
@@ -721,10 +692,7 @@ local function SkinHousingItemEarnedAlert(frame)
 	end
 
 	for _, regionName in next, HousingItemEarnedAlertRemoveRegions do
-		local region = frame[regionName]
-		if region then
-			region:Kill()
-		end
+		frame[regionName]:Kill()
 	end
 
 	local Icon = frame.Icon
@@ -902,7 +870,7 @@ function S:AlertSystem()
 	frame.glow:Kill()
 	frame.shine:Kill()
 
-	local lootItem = frame.lootItem or frame
+	local lootItem = frame.lootItem
 	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	lootItem.IconBorder:Kill()
 

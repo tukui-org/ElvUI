@@ -20,11 +20,11 @@ function S:Blizzard_RuneforgeUI()
 	S:HandleNextPrevButton(pageControl.ForwardButton)
 
 	hooksecurefunc(powerFrame.PowerList, 'RefreshListDisplay', function(list)
-		if not list.elements then return end
+		if not list.elements then return end -- Blizzard bails while hidden, before the list is initialized
 
 		for i = 1, list:GetNumElementFrames() do
 			local button = list.elements[i]
-			if button and not button.IsSkinned then
+			if not button.IsSkinned then
 				button.Border:SetAlpha(0)
 				button.CircleMask:Hide()
 				S:HandleIcon(button.Icon, true)

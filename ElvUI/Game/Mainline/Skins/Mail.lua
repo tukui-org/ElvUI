@@ -34,11 +34,8 @@ local function Skin_OpenMail()
 			S:HandleIconBorder(btn.IconBorder)
 		end
 
-		local icon = btn.icon or btn.Icon
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
+		btn.icon:SetTexCoords()
+		btn.icon:SetInside()
 	end
 end
 
@@ -56,11 +53,8 @@ local function Skin_InboxItems()
 			S:HandleIconBorder(btn.IconBorder)
 		end
 
-		local icon = btn.icon or btn.Icon
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
+		btn.Icon:SetTexCoords()
+		btn.Icon:SetInside()
 	end
 end
 

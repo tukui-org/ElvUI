@@ -24,8 +24,6 @@ local function ClearedHooks(button, script)
 end
 
 local function GameMenuInitButtons(menu)
-	if not menu.buttonPool then return end
-
 	for button in menu.buttonPool:EnumerateActive() do
 		if not button.IsSkinned then
 			S:HandleButton(button, nil, nil, nil, true)
@@ -43,13 +41,7 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
-	local compartment = _G.AddonCompartmentFrame
-	if compartment then
-		compartment:StripTextures()
-		compartment:SetTemplate('Transparent')
-	end
-
-	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame } do
+	for _, frame in next, { _G.AddonCompartmentFrame, _G.AutoCompleteBox, _G.QueueStatusFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 	end
@@ -89,11 +81,9 @@ function S:BlizzardMiscFrames()
 		GameMenuFrame:CreateBackdrop('Transparent')
 
 		local header = GameMenuFrame.Header
-		if header then
-			header:StripTextures()
-			header:ClearAllPoints()
-			header:Point('TOP', GameMenuFrame, 0, 7)
-		end
+		header:StripTextures()
+		header:ClearAllPoints()
+		header:Point('TOP', GameMenuFrame, 0, 7)
 
 		hooksecurefunc(GameMenuFrame, 'InitButtons', GameMenuInitButtons)
 	end
@@ -105,20 +95,13 @@ function S:BlizzardMiscFrames()
 		frame:SetScale(E.uiscale)
 
 		local closeDialog = frame.closeDialog
-		if closeDialog and not closeDialog.template then
+		if not closeDialog.template then
 			closeDialog:StripTextures()
 			closeDialog:SetTemplate('Transparent')
 
-			local dialogName = closeDialog.GetName and closeDialog:GetName()
-			local closeButton = dialogName and _G[dialogName..'ConfirmButton']
-			if closeButton then
-				S:HandleButton(closeButton, nil, nil, nil, true)
-			end
-
-			local resumeButton = dialogName and _G[dialogName..'ResumeButton']
-			if resumeButton then
-				S:HandleButton(resumeButton, nil, nil, nil, true)
-			end
+			local dialogName = closeDialog:GetName()
+			S:HandleButton(_G[dialogName..'ConfirmButton'], nil, nil, nil, true)
+			S:HandleButton(_G[dialogName..'ResumeButton'], nil, nil, nil, true)
 		end
 	end)
 
@@ -127,40 +110,13 @@ function S:BlizzardMiscFrames()
 		frame:SetScale(E.uiscale)
 
 		local closeDialog = frame.CloseDialog
-		if closeDialog and not closeDialog.template then
+		if not closeDialog.template then
 			closeDialog:StripTextures()
 			closeDialog:SetTemplate('Transparent')
-
-			local buttons = closeDialog.Buttons
-			if buttons then
-				S:HandleButton(buttons.ConfirmButton, nil, nil, nil, true)
-				S:HandleButton(buttons.ResumeButton, nil, nil, nil, true)
-			end
+			S:HandleButton(closeDialog.Buttons.ConfirmButton, nil, nil, nil, true)
+			S:HandleButton(closeDialog.Buttons.ResumeButton, nil, nil, nil, true)
 		end
 	end)
-
-	do
-		local menuBackdrop = function(frame)
-			frame:SetTemplate('Transparent')
-		end
-
-		local chatMenuBackdrop = function(frame)
-			frame:SetTemplate('Transparent')
-
-			frame:ClearAllPoints()
-			frame:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
-		end
-
-		for index, menu in next, { _G.ChatMenu, _G.EmoteMenu, _G.LanguageMenu, _G.VoiceMacroMenu } do
-			menu:StripTextures()
-
-			if index == 1 then -- ChatMenu
-				menu:HookScript('OnShow', chatMenuBackdrop)
-			else
-				menu:HookScript('OnShow', menuBackdrop)
-			end
-		end
-	end
 
 	--LFD Role Picker frame
 	_G.LFDRoleCheckPopup:StripTextures()
@@ -173,7 +129,7 @@ function S:BlizzardMiscFrames()
 		_G.LFDRoleCheckPopupRoleButtonDPS,
 		_G.LFDRoleCheckPopupRoleButtonHealer
 	} do
-		S:HandleCheckBox(roleButton.checkButton or roleButton.CheckButton, nil, nil, true)
+		S:HandleCheckBox(roleButton.checkButton, nil, nil, true)
 		roleButton:DisableDrawLayer('OVERLAY')
 	end
 
@@ -207,7 +163,7 @@ function S:BlizzardMiscFrames()
 	_G.OpacityFrame:StripTextures()
 	_G.OpacityFrame:SetTemplate('Transparent')
 
-	--DropDownMenu
+	-- DropDownMenu
 	S:SkinDropDownMenu('DropDownList')
 
 	local SideDressUpFrame = _G.SideDressUpFrame
@@ -250,11 +206,8 @@ function S:BlizzardMiscFrames()
 	hooksecurefunc('NavBar_AddButton', S.HandleNavBarButtons)
 
 	-- Basic Message Dialog
-	local MessageDialog = _G.BasicMessageDialog
-	if MessageDialog then
-		S:HandleFrame(MessageDialog)
-		S:HandleButton(_G.BasicMessageDialogButton)
-	end
+	S:HandleFrame(_G.BasicMessageDialog)
+	S:HandleButton(_G.BasicMessageDialogButton)
 
 	-- SplashFrame (Whats New)
 	local SplashFrame = _G.SplashFrame

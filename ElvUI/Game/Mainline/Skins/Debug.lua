@@ -109,7 +109,7 @@ function S:Blizzard_DebugTools()
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
 	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(frame)
-		if frame.ScrollFrameArt and not frame.IsSkinned then
+		if not frame.IsSkinned then
 			SkinTableAttributeDisplay(frame)
 		end
 	end)

@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
-local TT = E:GetModule('Tooltip')
 
 local _G = _G
 local next = next
@@ -48,31 +47,11 @@ local function NotifyDialogShow(_, dialog)
 	dialog.IsSkinned = true
 end
 
-local function SkinHeaders(header, isCalling)
-	if header.IsSkinned then return end
-
-	if header.Background then header.Background:SetAlpha(.7) end
-	if header.TopFiligree then header.TopFiligree:Hide() end
-	if header.Divider then header.Divider:Hide() end
-
-	header.HighlightTexture:SetAllPoints(header.Background)
-	header.HighlightTexture:SetAlpha(0)
-
-	local collapseButton = isCalling and header or header.CollapseButton
-	if collapseButton then
-		collapseButton:GetPushedTexture():SetAlpha(0)
-		collapseButton:GetHighlightTexture():SetAlpha(0)
-		S:HandleCollapseTexture(collapseButton, true)
-	end
-
-	header.IsSkinned = true
-end
-
 local function QuestLogQuests()
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 
 	for button in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
-		if button.ButtonText and not button.IsSkinned then
+		if not button.IsSkinned then
 			button:StripTextures()
 			button:CreateBackdrop('Transparent')
 			button:GetHighlightTexture():SetColorTexture(r, g, b, .25)
@@ -83,26 +62,22 @@ local function QuestLogQuests()
 
 	for button in _G.QuestScrollFrame.titleFramePool:EnumerateActive() do
 		if not button.IsSkinned then
-			if button.Checkbox then
-				button.Checkbox:StripTextures(true)
-				button.Checkbox:CreateBackdrop()
-			end
-
+			button.Checkbox:StripTextures(true)
+			button.Checkbox:CreateBackdrop()
 			button.IsSkinned = true
 		end
 	end
 
 	for header in _G.QuestScrollFrame.campaignHeaderFramePool:EnumerateActive() do
-		if header.Text and not header.IsSkinned then
+		if not header.IsSkinned then
 			header.Text:FontTemplate(nil, 16)
 			header.Progress:FontTemplate(nil, 12)
-
 			header.IsSkinned = true
 		end
 	end
 
 	for header in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
-		if header.CollapseButton and not header.IsSkinned then
+		if not header.IsSkinned then
 			header:StripTextures()
 			header.Background:CreateBackdrop('Transparent')
 			header.Highlight:SetColorTexture(r, g, b, 0.75)
@@ -192,33 +167,26 @@ function S:WorldMapFrame()
 	WorldMapFrame.backdrop:Point('BOTTOMRIGHT', WorldMapFrame, 'BOTTOMRIGHT', 6, -8)
 
 	local MapNavBar = WorldMapFrame.NavBar
-	if MapNavBar then
-		MapNavBar:StripTextures()
-		MapNavBar.overlay:StripTextures()
-		MapNavBar:Point('TOPLEFT', 1, -40)
+	MapNavBar:StripTextures()
+	MapNavBar.overlay:StripTextures()
+	MapNavBar:Point('TOPLEFT', 1, -40)
 
-		S.HandleNavBarButtons(MapNavBar)
+	S.HandleNavBarButtons(MapNavBar)
 
-		local HomeButton = MapNavBar.homeButton
-		if HomeButton then
-			S:HandleButton(HomeButton)
+	local HomeButton = MapNavBar.homeButton
+	S:HandleButton(HomeButton)
+	HomeButton.text:FontTemplate()
 
-			HomeButton.text:FontTemplate()
-		end
+	local OverflowButton = MapNavBar.overflowButton
+	S:HandleButton(OverflowButton)
 
-		local OverflowButton = MapNavBar.overflowButton
-		if OverflowButton then
-			S:HandleButton(OverflowButton)
+	for _, tex in next, { OverflowButton:GetNormalTexture(), OverflowButton:GetPushedTexture() } do
+		S:SetupArrow(tex, 'left')
 
-			for _, tex in next, { OverflowButton:GetNormalTexture(), OverflowButton:GetPushedTexture() } do
-				S:SetupArrow(tex, 'left')
-
-				tex:SetTexCoord(0, 1, 0, 1)
-				tex:ClearAllPoints()
-				tex:Point('CENTER')
-				tex:Size(14)
-			end
-		end
+		tex:SetTexCoord(0, 1, 0, 1)
+		tex:ClearAllPoints()
+		tex:Point('CENTER')
+		tex:Size(14)
 	end
 
 	-- Quest Frames
@@ -242,18 +210,14 @@ function S:WorldMapFrame()
 	DetailsFrame.TrackButton:Width(95)
 
 	local BackFrame = DetailsFrame.BackFrame
-	if BackFrame then
-		BackFrame:StripTextures()
-		BackFrame.BackButton:SetFrameLevel(5)
-		S:HandleButton(BackFrame.BackButton, true)
-	end
+	BackFrame:StripTextures()
+	BackFrame.BackButton:SetFrameLevel(5)
+	S:HandleButton(BackFrame.BackButton, true)
 
 	local DetailsBg = DetailsFrame.Bg
-	if DetailsBg then
-		DetailsBg:ClearAllPoints()
-		DetailsBg:Point('TOPLEFT', 0, -41)
-		DetailsBg:Point('BOTTOMRIGHT', RewardsContainer)
-	end
+	DetailsBg:ClearAllPoints()
+	DetailsBg:Point('TOPLEFT', 0, -41)
+	DetailsBg:Point('BOTTOMRIGHT', RewardsContainer)
 
 	if E.private.skins.parchmentRemoverEnable then
 		DetailsFrame:StripTextures(true)
@@ -262,27 +226,18 @@ function S:WorldMapFrame()
 		DetailsFrame.backdrop:SetAllPoints(DetailsBg)
 
 		RewardsContainer.RewardsFrame:StripTextures()
-
-		if QuestMapFrame.Background then
-			QuestMapFrame.Background:SetAlpha(0)
-		end
-
-		if DetailsFrame.SealMaterialBG then
-			DetailsFrame.SealMaterialBG:SetAlpha(0)
-		end
-	elseif DetailsFrame.SealMaterialBG then
+		DetailsFrame.SealMaterialBG:SetAlpha(0)
+	else
 		DetailsFrame.SealMaterialBG:SetAllPoints(DetailsBg)
 	end
 
 	local CampaignOverview = QuestsFrame.CampaignOverview
-	if CampaignOverview then
-		S:HandleTrimScrollBar(CampaignOverview.ScrollFrame.ScrollBar)
-		CampaignOverview.BorderFrame:SetAlpha(0)
+	S:HandleTrimScrollBar(CampaignOverview.ScrollFrame.ScrollBar)
+	CampaignOverview.BorderFrame:SetAlpha(0)
 
-		if E.private.skins.parchmentRemoverEnable then
-			CampaignOverview:StripTextures()
-			CampaignOverview:SetTemplate('Transparent')
-		end
+	if E.private.skins.parchmentRemoverEnable then
+		CampaignOverview:StripTextures()
+		CampaignOverview:SetTemplate('Transparent')
 	end
 
 	local QuestScrollFrame = _G.QuestScrollFrame
@@ -302,16 +257,14 @@ function S:WorldMapFrame()
 		QuestScrollFrame.Center:Hide()
 	end
 
-	SkinHeaders(QuestScrollFrame.Contents.StoryHeader)
+	local StoryHeader = QuestScrollFrame.Contents.StoryHeader
+	StoryHeader.Background:SetAlpha(.7)
+	StoryHeader.Divider:Hide()
+	StoryHeader.HighlightTexture:SetAllPoints(StoryHeader.Background)
+	StoryHeader.HighlightTexture:SetAlpha(0)
+
 	S:HandleEditBox(QuestScrollFrame.SearchBox)
-
-	local QuestScrollBar = _G.QuestScrollFrame.ScrollBar
-	S:HandleTrimScrollBar(QuestScrollBar)
-
-	if E.private.skins.blizzard.tooltip then
-		TT:SetStyle(QuestsFrame.StoryTooltip)
-	end
-
+	S:HandleTrimScrollBar(QuestScrollFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)
 
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
@@ -420,64 +373,50 @@ function S:WorldMapFrame()
 			hooksecurefunc(tab, 'SetPoint', PositionQuestTab)
 		end
 
-		if tab.Icon then
-			tab.Icon:ClearAllPoints()
-			tab.Icon:SetPoint('CENTER')
+		tab.Icon:ClearAllPoints()
+		tab.Icon:SetPoint('CENTER')
+		hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
 
-			hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
-		end
+		tab.Background:SetAlpha(0)
+		tab.TabGlow:SetAlpha(0)
 
-		if tab.Background then
-			tab.Background:SetAlpha(0)
-		end
+		tab.SelectedTexture:SetDrawLayer('ARTWORK')
+		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+		tab.SelectedTexture:SetAllPoints()
 
-		if tab.SelectedTexture then
-			tab.SelectedTexture:SetDrawLayer('ARTWORK')
-			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
-			tab.SelectedTexture:SetAllPoints()
-		end
-
-		if tab.HighlightTexture then
-			tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
-			tab.HighlightTexture:SetAllPoints()
-		end
-
-		if tab.TabGlow then
-			tab.TabGlow:SetAlpha(0)
-		end
+		tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+		tab.HighlightTexture:SetAllPoints()
 	end
 
 	local EventsFrame = QuestMapFrame.EventsFrame
-	if EventsFrame then
-		EventsFrame.TitleText:FontTemplate(nil, 16)
+	EventsFrame.TitleText:FontTemplate(nil, 16)
 
-		local EventsFrameScrollBox = EventsFrame.ScrollBox
-		EventsFrame.BorderFrame:SetAlpha(0)
-		EventsFrameScrollBox.Background:SetDrawLayer('BACKGROUND', -1)
-		EventsFrameScrollBox.Background:SetVertexColor(1, 0, 1)
-		EventsFrameScrollBox.Background:SetAlpha(0.9)
+	local EventsFrameScrollBox = EventsFrame.ScrollBox
+	EventsFrame.BorderFrame:SetAlpha(0)
+	EventsFrameScrollBox.Background:SetDrawLayer('BACKGROUND', -1)
+	EventsFrameScrollBox.Background:SetVertexColor(1, 0, 1)
+	EventsFrameScrollBox.Background:SetAlpha(0.9)
 
-		if E.private.skins.parchmentRemoverEnable then
-			EventsFrameScrollBox:StripTextures()
-			EventsFrameScrollBox:SetTemplate('Transparent')
-		else
-			EventsFrameScrollBox:SetTemplate()
-			EventsFrameScrollBox.Center:Hide()
-		end
-
-		for _, region in next, { EventsFrame:GetRegions() } do
-			if region:IsObjectType('Texture') then
-				region:Hide() -- some weird yellow box ?
-
-				break
-			end
-		end
-
-		S:HandleTrimScrollBar(EventsFrame.ScrollBar)
-
-		-- Blizz new function for AddOns to access items on a ScrollBox. See Interface\AddOns\Blizzard_SharedXML\Shared\Scroll\ScrollUtil.lua
-		_G.ScrollUtil.AddAcquiredFrameCallback(EventsFrameScrollBox, EventsFrameCallback, EventsFrame, true)
+	if E.private.skins.parchmentRemoverEnable then
+		EventsFrameScrollBox:StripTextures()
+		EventsFrameScrollBox:SetTemplate('Transparent')
+	else
+		EventsFrameScrollBox:SetTemplate()
+		EventsFrameScrollBox.Center:Hide()
 	end
+
+	for _, region in next, { EventsFrame:GetRegions() } do
+		if region:IsObjectType('Texture') then
+			region:Hide() -- some weird yellow box ?
+
+			break
+		end
+	end
+
+	S:HandleTrimScrollBar(EventsFrame.ScrollBar)
+
+	-- Blizz new function for AddOns to access items on a ScrollBox. See Interface\AddOns\Blizzard_SharedXML\Shared\Scroll\ScrollUtil.lua
+	_G.ScrollUtil.AddAcquiredFrameCallback(EventsFrameScrollBox, EventsFrameCallback, EventsFrame, true)
 end
 
 S:AddCallback('WorldMapFrame')

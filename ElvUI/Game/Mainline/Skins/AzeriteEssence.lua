@@ -12,7 +12,7 @@ local function EssenceListScrollUpdateChild(button)
 		button:StyleButton()
 
 		local icon = button.Icon
-		if icon and not icon.backdrop then
+		if icon then
 			S:HandleIcon(icon, true)
 
 			icon:ClearAllPoints()
@@ -20,14 +20,9 @@ local function EssenceListScrollUpdateChild(button)
 			icon:Size(33)
 		end
 
-		if not button.backdrop then
-			button:CreateBackdrop('Transparent')
-			button.backdrop:SetInside(button, 1, 1)
-
-			if button.hover then
-				button.hover:SetInside(button.backdrop)
-			end
-		end
+		button:CreateBackdrop('Transparent')
+		button.backdrop:SetInside(button, 1, 1)
+		button.hover:SetInside(button.backdrop)
 
 		if button.PendingGlow then
 			button.PendingGlow:SetColorTexture(0.9, 0.8, 0.1, 0.3)

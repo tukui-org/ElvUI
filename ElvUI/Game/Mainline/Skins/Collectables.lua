@@ -15,15 +15,13 @@ local C_Heirloom_PlayerHasHeirloom = C_Heirloom.PlayerHasHeirloom
 local C_TransmogCollection_GetSourceInfo = C_TransmogCollection.GetSourceInfo
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
+local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom
 
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
 local function CheckAndDisplayHeirloomsTab()
-	if not _G.CollectionsJournalTab5 then return end
-
 	_G.CollectionsJournalTab5:Point('TOPLEFT', E.TimerunningID and _G.CollectionsJournalTab3 or _G.CollectionsJournalTab4, 'TOPRIGHT', -5, 0)
 end
 
@@ -42,15 +40,12 @@ local function MountNameColor(object)
 	if name:GetFontObject() == _G.GameFontDisable then
 		name:SetTextColor(0.4, 0.4, 0.4)
 	else
-		if button.background then
-			local _, g, b = button.background:GetVertexColor()
-			if g == 0 and b == 0 then
-				name:SetTextColor(0.9, 0.3, 0.3)
-				return
-			end
+		local _, g, b = button.background:GetVertexColor()
+		if g == 0 and b == 0 then
+			name:SetTextColor(0.9, 0.3, 0.3)
+		else
+			name:SetTextColor(0.9, 0.9, 0.9)
 		end
-
-		name:SetTextColor(0.9, 0.9, 0.9)
 	end
 end
 
@@ -228,13 +223,10 @@ local function HeirloomsJournalUpdateButton(_, button)
 end
 
 local function HeirloomsJournalLayoutCurrentPage()
-	local headers = _G.HeirloomsJournal.heirloomHeaderFrames
-	if headers and next(headers) then
-		for _, header in next, headers do
-			header:StripTextures()
-			header.text:FontTemplate(nil, 15, 'SHADOW')
-			header.text:SetTextColor(0.9, 0.9, 0.9)
-		end
+	for _, header in next, _G.HeirloomsJournal.heirloomHeaderFrames do
+		header:StripTextures()
+		header.text:FontTemplate(nil, 15, 'SHADOW')
+		header.text:SetTextColor(0.9, 0.9, 0.9)
 	end
 end
 
@@ -273,13 +265,6 @@ local function SetsFrame_SetItemFrameQuality(_, itemFrame)
 	icon.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
-local function HandleDynamicFlightTexture(button, index)
-	local icon = index and select(index, button:GetRegions())
-	if icon then
-		S:HandleIcon(icon, true)
-	end
-end
-
 local function HandleDynamicFlightButton(button, index)
 	if button.BorderShadow then button.BorderShadow:SetAlpha(0) end
 	if button.Border then button.Border:SetAlpha(0) end
@@ -288,7 +273,7 @@ local function HandleDynamicFlightButton(button, index)
 	button:SetPushedTexture(0)
 	button:SetNormalTexture(0)
 
-	HandleDynamicFlightTexture(button, index)
+	S:HandleIcon(select(index, button:GetRegions()), true) -- the icon texture has no key
 end
 
 local function SkinMountFrame()
@@ -297,20 +282,10 @@ local function SkinMountFrame()
 
 	HandleDynamicFlightButton(_G.MountJournal.ToggleDynamicFlightFlyoutButton, 3)
 
-	local Flyout = _G.MountJournal.ToggleDynamicFlightFlyoutButton.popup
-	if Flyout then
-		Flyout.Background:Hide()
-
-		local DynamicFlight = Flyout.DynamicFlightModeButton
-		if DynamicFlight then
-			HandleDynamicFlightButton(DynamicFlight, 4)
-		end
-
-		local OpenFlight = Flyout.OpenDynamicFlightSkillTreeButton
-		if OpenFlight then
-			HandleDynamicFlightButton(OpenFlight, 4)
-		end
-	end
+	local Flyout = _G.MountJournal.DynamicFlightFlyoutPopup
+	Flyout.Background:Hide()
+	HandleDynamicFlightButton(Flyout.DynamicFlightModeButton, 4)
+	HandleDynamicFlightButton(Flyout.OpenDynamicFlightSkillTreeButton, 4)
 
 	_G.MountJournal.FilterDropdown:ClearAllPoints()
 	_G.MountJournal.FilterDropdown:Point('LEFT', _G.MountJournalSearchBox, 'RIGHT', 5, 0)
@@ -324,15 +299,13 @@ local function SkinMountFrame()
 	MountJournal.MountCount:StripTextures()
 
 	local MountDisplay = MountJournal.MountDisplay
-	if MountDisplay then
-		MountJournal.MountDisplay:StripTextures()
-		MountJournal.MountDisplay.ShadowOverlay:StripTextures()
-		MountJournal.MountDisplay.ModelScene.TogglePlayer:Size(22)
+	MountDisplay:StripTextures()
+	MountDisplay.ShadowOverlay:StripTextures()
+	MountDisplay.ModelScene.TogglePlayer:Size(22)
 
-		S:HandleIcon(MountJournal.MountDisplay.InfoButton.Icon, true)
-		S:HandleCheckBox(MountJournal.MountDisplay.ModelScene.TogglePlayer)
-		S:HandleModelSceneControlButtons(_G.MountJournal.MountDisplay.ModelScene.ControlFrame)
-	end
+	S:HandleIcon(MountDisplay.InfoButton.Icon, true)
+	S:HandleCheckBox(MountDisplay.ModelScene.TogglePlayer)
+	S:HandleModelSceneControlButtons(MountDisplay.ModelScene.ControlFrame)
 
 	S:HandleButton(_G.MountJournalMountButton)
 	_G.MountJournalMountButton:NudgePoint(0, -3)
@@ -573,14 +546,11 @@ local function SkinWardrobeFrame()
 	S:HandleTab(_G.WardrobeCollectionFrameTab2)
 
 	local ProgressBar = WardrobeCollectionFrame.progressBar
-	if ProgressBar then
-		ProgressBar.border:Hide()
-		ProgressBar:DisableDrawLayer('BACKGROUND')
-		ProgressBar:SetStatusBarTexture(E.media.normTex)
-		ProgressBar:CreateBackdrop()
-
-		E:RegisterStatusBar(ProgressBar)
-	end
+	ProgressBar.border:Hide()
+	ProgressBar:DisableDrawLayer('BACKGROUND')
+	ProgressBar:SetStatusBarTexture(E.media.normTex)
+	ProgressBar:CreateBackdrop()
+	E:RegisterStatusBar(ProgressBar)
 
 	if E.global.general.disableTutorialButtons then
 		WardrobeCollectionFrame.InfoButton:Kill()
@@ -614,8 +584,8 @@ local function SkinWardrobeFrame()
 				border:SetBackdropColor(0, 0, 0, 0)
 				border.callbackBackdropColor = ClearBackdrop
 
-				if Model.NewGlow then Model.NewGlow:SetParent(border) end
-				if Model.NewString then Model.NewString:SetParent(border) end
+				Model.NewGlow:SetParent(border)
+				Model.NewString:SetParent(border)
 
 				for _, region in next, { Model:GetRegions() } do
 					if region:IsObjectType('Texture') then -- check for hover glow
@@ -678,7 +648,7 @@ local function SkinCollectionsFrames()
 end
 
 local function UpdateWarbandSceneData(frame)
-	if frame and frame.warbandSceneInfo and not frame.artBackdrop then
+	if frame.warbandSceneInfo and not frame.artBackdrop then
 		frame.artBackdrop = CreateFrame('Frame', nil, frame)
 		frame.artBackdrop:OffsetFrameLevel(-1, frame)
 		frame.artBackdrop:SetOutside(frame.Icon, -5, -5)
@@ -687,38 +657,23 @@ local function UpdateWarbandSceneData(frame)
 		frame.Border:SetAlpha(0)
 		S:HandleIcon(frame.Icon)
 
-		if frame.SetHighlightTexture then
-			local highlight = frame:CreateTexture()
-			highlight:SetColorTexture(1, 1, 1, .25)
-			highlight:SetAllPoints(frame.Icon)
-
-			frame:SetHighlightTexture(highlight)
-		end
+		local highlight = frame:CreateTexture()
+		highlight:SetColorTexture(1, 1, 1, .25)
+		highlight:SetAllPoints(frame.Icon)
+		frame:SetHighlightTexture(highlight)
 	end
 end
 
 local function SkinCampsitesFrame()
-	local Frame = _G.WarbandSceneJournal
+	local IconsFrame = _G.WarbandSceneJournal.IconsFrame
+	IconsFrame:StripTextures()
+	IconsFrame.NineSlice:SetTemplate('Transparent')
 
-	local IconsFrame = Frame.IconsFrame
-	if IconsFrame then
-		IconsFrame:StripTextures()
-		IconsFrame.NineSlice:SetTemplate('Transparent')
-
-		local Controls = IconsFrame.Icons and IconsFrame.Icons.Controls
-		if Controls then
-			local CheckBox = Controls and Controls.ShowOwned and Controls.ShowOwned.Checkbox
-			if CheckBox then
-				CheckBox:Size(28)
-				S:HandleCheckBox(CheckBox)
-			end
-
-			if Controls.PagingControls then
-				S:HandleNextPrevButton(Controls.PagingControls.PrevPageButton, nil, nil, true)
-				S:HandleNextPrevButton(Controls.PagingControls.NextPageButton, nil, nil, true)
-			end
-		end
-	end
+	local Controls = IconsFrame.Icons.Controls
+	Controls.ShowOwned.Checkbox:Size(28)
+	S:HandleCheckBox(Controls.ShowOwned.Checkbox)
+	S:HandleNextPrevButton(Controls.PagingControls.PrevPageButton, nil, nil, true)
+	S:HandleNextPrevButton(Controls.PagingControls.NextPageButton, nil, nil, true)
 
 	hooksecurefunc(_G.WarbandSceneEntryMixin, 'UpdateWarbandSceneData', UpdateWarbandSceneData)
 end

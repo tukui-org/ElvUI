@@ -17,21 +17,17 @@ function S:BattleNetFrames()
 	end
 
 	local ReportFrame = _G.ReportFrame
-	if ReportFrame then
-		ReportFrame:StripTextures()
-		ReportFrame:SetTemplate('Transparent')
+	ReportFrame:StripTextures()
+	ReportFrame:SetTemplate('Transparent')
 
-		S:HandleCloseButton(ReportFrame.CloseButton)
-		S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
-		S:HandleButton(ReportFrame.ReportButton)
-		S:HandleEditBox(ReportFrame.Comment)
-	end
+	S:HandleCloseButton(ReportFrame.CloseButton)
+	S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
+	S:HandleButton(ReportFrame.ReportButton)
+	S:HandleEditBox(ReportFrame.Comment)
 
 	local ReportCheatingDialog = _G.ReportCheatingDialog
-	if ReportCheatingDialog then
-		ReportCheatingDialog:StripTextures()
-		ReportCheatingDialog:SetTemplate('Transparent')
-	end
+	ReportCheatingDialog:StripTextures()
+	ReportCheatingDialog:SetTemplate('Transparent')
 
 	_G.ReportCheatingDialogCommentFrame:StripTextures()
 	S:HandleButton(_G.ReportCheatingDialogReportButton)

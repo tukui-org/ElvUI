@@ -9,32 +9,26 @@ local function RefreshAllData(frame)
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
 
-	if frame.CloseButton.Border then
+	if frame.CloseButton.Border then -- only the themed (war effort) frames get one
 		frame.CloseButton.Border:SetAlpha(0)
 	end
 
-	if frame.CurrencyBG then
-		frame.CurrencyBG:SetAlpha(0)
-	end
+	frame.CurrencyBG:SetAlpha(0)
 
-	if frame.buttonPool then
-		for bu in frame.buttonPool:EnumerateActive() do
-			if bu.talent then
-				bu:SetTemplate()
+	for bu in frame.buttonPool:EnumerateActive() do
+		bu:SetTemplate()
 
-				bu.Border:SetAlpha(0)
-				bu.Highlight:SetColorTexture(1, 1, 1, .25)
-				bu.Icon:SetTexCoords()
-				bu.Icon:SetInside()
+		bu.Border:SetAlpha(0)
+		bu.Highlight:SetColorTexture(1, 1, 1, .25)
+		bu.Icon:SetTexCoords()
+		bu.Icon:SetInside()
 
-				if bu.talent.isBeingResearched then
-					bu:SetBackdropBorderColor(0, 1, 0)
-				elseif bu.talent.researched or bu.talent.selected then
-					bu:SetBackdropBorderColor(1, 0.8, 0)
-				else
-					bu:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				end
-			end
+		if bu.talent.isBeingResearched then
+			bu:SetBackdropBorderColor(0, 1, 0)
+		elseif bu.talent.researched or bu.talent.selected then
+			bu:SetBackdropBorderColor(1, 0.8, 0)
+		else
+			bu:SetBackdropBorderColor(unpack(E.media.bordercolor))
 		end
 	end
 end

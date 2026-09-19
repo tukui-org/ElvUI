@@ -62,11 +62,9 @@ local function UpdateSpeedIndicators()
 end
 
 local function UpdatePetType(frame)
-	if frame.PetType then
-		local petType = C_PetBattles_GetPetType(frame.petOwner, frame.petIndex)
-		if frame.PetTypeFrame and petType then
-			frame.PetTypeFrame.text:SetText(_G['BATTLE_PET_NAME_'..petType])
-		end
+	local typeFrame = frame.PetTypeFrame -- only the two active unit frames get one, the unit tooltip has a PetType too
+	if typeFrame then
+		typeFrame.text:SetText(_G['BATTLE_PET_NAME_'..C_PetBattles_GetPetType(frame.petOwner, frame.petIndex)])
 	end
 end
 
@@ -175,18 +173,16 @@ local function UpdateActionBarLayout()
 end
 
 local function ToolTip_Show(_, _, rarity)
-		local tt = _G.BattlePetTooltip
-		if not tt then return end
-
-		local quality = TT.db.itemQuality and rarity and rarity > 1 and E:GetQualityColor(rarity)
-		if quality then
-			tt:SetBackdropBorderColor(quality.r, quality.g, quality.b)
-			tt.qualityChanged = true
-		elseif tt.qualityChanged then
-			tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			tt.qualityChanged = nil
-		end
+	local tt = _G.BattlePetTooltip
+	local quality = TT.db.itemQuality and rarity and rarity > 1 and E:GetQualityColor(rarity)
+	if quality then
+		tt:SetBackdropBorderColor(quality.r, quality.g, quality.b)
+		tt.qualityChanged = true
+	elseif tt.qualityChanged then
+		tt:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		tt.qualityChanged = nil
 	end
+end
 
 local function AbilityTooltip_Show()
 	local t = _G.PetBattlePrimaryAbilityTooltip
@@ -309,12 +305,10 @@ function S:PetBattleFrame()
 		infoBar.Level:ClearAllPoints()
 		infoBar.Level:Point('BOTTOMLEFT', infoBar.Icon, 'BOTTOMLEFT', 2, 2)
 
-		if infoBar.SpeedIcon then
-			infoBar.SpeedIcon:ClearAllPoints()
-			infoBar.SpeedIcon:Point('CENTER') -- to set
-			infoBar.SpeedIcon:SetAlpha(0)
-			infoBar.SpeedUnderlay:SetAlpha(0)
-		end
+		infoBar.SpeedIcon:ClearAllPoints()
+		infoBar.SpeedIcon:Point('CENTER') -- to set
+		infoBar.SpeedIcon:SetAlpha(0)
+		infoBar.SpeedUnderlay:SetAlpha(0)
 	end
 
 	hooksecurefunc('PetBattleFrame_UpdateSpeedIndicators', UpdateSpeedIndicators)	-- PETS SPEED INDICATOR UPDATE

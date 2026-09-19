@@ -34,10 +34,7 @@ local function UpdateCollapse(texture, atlas)
 end
 
 local function UpdateToggleCollapseButton(button)
-	local header = button.GetHeader and button:GetHeader()
-	if not header then return end
-
-	local tex = header:IsCollapsed() and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
+	local tex = button:GetHeader():IsCollapsed() and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton
 	button:SetNormalTexture(tex)
 	button:SetPushedTexture(tex)
 end
@@ -62,7 +59,7 @@ local function UpdateTokenSkinsChild(child)
 		end
 
 		local ToggleCollapseButton = child.ToggleCollapseButton
-		if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
+		if ToggleCollapseButton then
 			hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
 
 			UpdateToggleCollapseButton(ToggleCollapseButton)
@@ -70,7 +67,6 @@ local function UpdateTokenSkinsChild(child)
 
 		child.IsSkinned = true
 	end
-
 end
 
 local function UpdateTokenSkins(frame)
@@ -78,7 +74,7 @@ local function UpdateTokenSkins(frame)
 end
 
 local function EquipmentManagerPane_UpdateChild(child)
-	if child.icon and not child.IsSkinned then
+	if not child.IsSkinned then
 		child.BgTop:SetTexture(E.ClearTexture)
 		child.BgMiddle:SetTexture(E.ClearTexture)
 		child.BgBottom:SetTexture(E.ClearTexture)
@@ -200,8 +196,6 @@ end
 
 local function EquipmentUpdateNavigation()
 	local navi = _G.EquipmentFlyoutFrame.NavigationFrame
-	if not navi then return end
-
 	navi:ClearAllPoints()
 	navi:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
 	navi:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
@@ -270,15 +264,12 @@ local function UpdateFactionSkinsChild(child)
 		if ReputationBar then
 			ReputationBar:StripTextures()
 			ReputationBar:SetStatusBarTexture(E.media.normTex)
-
-			if not ReputationBar.backdrop then
-				ReputationBar:CreateBackdrop()
-				E:RegisterStatusBar(ReputationBar)
-			end
+			ReputationBar:CreateBackdrop()
+			E:RegisterStatusBar(ReputationBar)
 		end
 
 		local ToggleCollapseButton = child.ToggleCollapseButton
-		if ToggleCollapseButton and ToggleCollapseButton.RefreshIcon then
+		if ToggleCollapseButton then
 			hooksecurefunc(ToggleCollapseButton, 'RefreshIcon', UpdateToggleCollapseButton)
 
 			UpdateToggleCollapseButton(ToggleCollapseButton)
@@ -313,11 +304,8 @@ end
 local function UpdateCurrencyTransferLogLine(frame)
 	if frame.IsSkinned then return end
 
-	local CurrencyIcon = frame.CurrencyIcon
-	if CurrencyIcon then
-		S:HandleIcon(CurrencyIcon)
-		CurrencyIcon:Size(16)
-	end
+	S:HandleIcon(frame.CurrencyIcon)
+	frame.CurrencyIcon:Size(16)
 
 	frame.IsSkinned = true
 end
@@ -368,12 +356,10 @@ function S:Blizzard_UIPanels_Game()
 	--Give character frame model backdrop it's color back
 	for _, corner in next, { 'TopLeft', 'TopRight', 'BotLeft', 'BotRight' } do
 		local bg = _G['CharacterModelFrameBackground'..corner]
-		if bg then
-			bg:SetDesaturated(false)
-			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
+		bg:SetDesaturated(false)
+		bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
 
-			hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
-		end
+		hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
 	end
 
 	_G.CharacterLevelText:FontTemplate()
@@ -434,9 +420,7 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleButton(_G.PaperDollFrameEquipSet)
 	S:HandleButton(_G.PaperDollFrameSaveSet)
 
-	if _G.GearManagerPopupFrame then -- New icon selection
-		_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
-	end
+	_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
 
 	do --Handle Tabs at bottom of character frame
 		local i = 1
@@ -495,33 +479,26 @@ function S:Blizzard_UIPanels_Game()
 	S:HandleCheckBox(_G.TokenFramePopup.BackpackCheckbox)
 	S:HandleButton(_G.TokenFramePopup.CurrencyTransferToggleButton)
 
-	local TokenPopupClose = _G.TokenFramePopup['$parent.CloseButton']
-	if TokenPopupClose then
-		S:HandleCloseButton(TokenPopupClose)
-	end
+	S:HandleCloseButton(_G.TokenFramePopup['$parent.CloseButton']) -- yes, that is the parentKey
 
-	-- Currency Transfer (new in 11.0)
+	-- Currency Transfer
 	local currencyTransfer = _G.CurrencyTransferMenu
-	if currencyTransfer then
-		currencyTransfer:StripTextures()
-		currencyTransfer:SetTemplate('Transparent')
+	currencyTransfer:StripTextures()
+	currencyTransfer:SetTemplate('Transparent')
 
-		S:HandleCloseButton(currencyTransfer.CloseButton)
-		S:HandleDropDownBox(currencyTransfer.Content.SourceSelector.Dropdown)
-		S:HandleButton(currencyTransfer.Content.AmountSelector.MaxQuantityButton)
-		S:HandleButton(currencyTransfer.Content.ConfirmButton)
-		S:HandleButton(currencyTransfer.Content.CancelButton)
-		S:HandleIcon(currencyTransfer.Content.SourceBalancePreview.BalanceInfo.CurrencyIcon)
-		S:HandleIcon(currencyTransfer.Content.PlayerBalancePreview.BalanceInfo.CurrencyIcon)
+	S:HandleCloseButton(currencyTransfer.CloseButton)
+	S:HandleDropDownBox(currencyTransfer.Content.SourceSelector.Dropdown)
+	S:HandleButton(currencyTransfer.Content.AmountSelector.MaxQuantityButton)
+	S:HandleButton(currencyTransfer.Content.ConfirmButton)
+	S:HandleButton(currencyTransfer.Content.CancelButton)
+	S:HandleIcon(currencyTransfer.Content.SourceBalancePreview.BalanceInfo.CurrencyIcon)
+	S:HandleIcon(currencyTransfer.Content.PlayerBalancePreview.BalanceInfo.CurrencyIcon)
 
-		local transferInputBox = currencyTransfer.Content.AmountSelector.InputBox
-		if transferInputBox then
-			S:HandleEditBox(transferInputBox)
-			transferInputBox.backdrop:ClearAllPoints()
-			transferInputBox.backdrop:Point('TOPLEFT', 0, -3)
-			transferInputBox.backdrop:Point('BOTTOMRIGHT', -1, 8)
-		end
-	end
+	local transferInputBox = currencyTransfer.Content.AmountSelector.InputBox
+	S:HandleEditBox(transferInputBox)
+	transferInputBox.backdrop:ClearAllPoints()
+	transferInputBox.backdrop:Point('TOPLEFT', 0, -3)
+	transferInputBox.backdrop:Point('BOTTOMRIGHT', -1, 8)
 
 	hooksecurefunc(_G.ReputationFrame.ScrollBox, 'Update', UpdateFactionSkins)
 	hooksecurefunc(_G.TokenFrame.ScrollBox, 'Update', UpdateTokenSkins)

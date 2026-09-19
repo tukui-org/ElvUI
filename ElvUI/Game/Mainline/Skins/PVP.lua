@@ -24,10 +24,9 @@ local function HandleRoleButton(button)
 	S:HandleCheckBox(checkbox)
 
 	button:Size(40)
-
-	if button.IconPulse then button.IconPulse:Size(40) end
-	if button.EdgePulse then button.EdgePulse:Size(40) end
-	if button.shortageBorder then button.shortageBorder:Size(40) end
+	button.IconPulse:Size(40)
+	button.EdgePulse:Size(40)
+	button.shortageBorder:Size(40)
 end
 
 local function SpecificScrollUpdateChild(bu)
@@ -55,33 +54,23 @@ local function HandleCategoryButtons(name, icons)
 	local index = 1
 	local button = _G.PVPQueueFrame[name..index]
 	while button do
-		if button.Ring then
-			button.Ring:Hide()
-		end
-
-		if button.CircleMask then
-			button.CircleMask:Hide()
-		end
-
-		if button.Background then
-			button.Background:Kill()
-		end
+		button.Ring:Hide()
+		button.CircleMask:Hide()
+		button.Background:Kill()
 
 		S:HandleButton(button)
 
 		local icon = button.Icon
-		if icon then
-			local texture = icons[index]
-			if texture then
-				icon:SetTexture(texture)
-			end
-
-			icon:Size(45)
-			icon:ClearAllPoints()
-			icon:Point('LEFT', 10, 0)
-
-			S:HandleIcon(icon, true)
+		local texture = icons[index]
+		if texture then
+			icon:SetTexture(texture)
 		end
+
+		icon:Size(45)
+		icon:ClearAllPoints()
+		icon:Point('LEFT', 10, 0)
+
+		S:HandleIcon(icon, true)
 
 		index = index + 1
 		button = _G.PVPQueueFrame[name..index]
@@ -93,30 +82,6 @@ function S:Blizzard_PVPUI()
 
 	_G.PVPUIFrame:StripTextures()
 
-	for i = 1, 2 do
-		S:HandleTab(_G['PVPUIFrameTab'..i])
-	end
-
-	for i = 1, 4 do
-		local bu = _G['PVPQueueFrameCategoryButton'..i]
-		if bu then
-			if bu.Ring then
-				bu.Ring:Kill()
-			end
-
-			if bu.Background then
-				bu.Background:Kill()
-			end
-
-			S:HandleButton(bu)
-
-			bu.Icon:Size(45)
-			bu.Icon:ClearAllPoints()
-			bu.Icon:Point('LEFT', 10, 0)
-			S:HandleIcon(bu.Icon, true)
-		end
-	end
-
 	local PVPQueueFrame = _G.PVPQueueFrame
 	local HonorInset = PVPQueueFrame.HonorInset
 	HonorInset:SetTemplate('Transparent')
@@ -124,16 +89,9 @@ function S:Blizzard_PVPUI()
 	HonorInset.NineSlice:Hide()
 
 	-- Plunderstorm
-	local PlunderstormFrame = _G.PlunderstormFrame
-	if PlunderstormFrame then
-		PlunderstormFrame.Inset:StripTextures()
-		S:HandleButton(PlunderstormFrame.StartQueue)
-	end
-
-	local PlunderstormPanel = HonorInset.PlunderstormPanel
-	if PlunderstormPanel then
-		S:HandleButton(PlunderstormPanel.PlunderstoreButton)
-	end
+	_G.PlunderstormFrame.Inset:StripTextures()
+	S:HandleButton(_G.PlunderstormFrame.StartQueue)
+	S:HandleButton(HonorInset.PlunderstormPanel.PlunderstoreButton)
 
 	HandleCategoryButtons('CategoryButton', categoryButtonIcons)
 
@@ -153,41 +111,35 @@ function S:Blizzard_PVPUI()
 	S:HandleButton(_G.HonorFrameQueueButton)
 
 	local BonusFrame = HonorFrame.BonusFrame
-	if BonusFrame then
-		BonusFrame:StripTextures()
-		BonusFrame.ShadowOverlay:Hide()
-		BonusFrame.WorldBattlesTexture:Hide()
+	BonusFrame:StripTextures()
+	BonusFrame.ShadowOverlay:Hide()
+	BonusFrame.WorldBattlesTexture:Hide()
 
-		for _, bonusButton in next, {'RandomBGButton', 'Arena1Button', 'RandomEpicBGButton', 'BrawlButton', 'BrawlButton2'} do
-			local bu = BonusFrame[bonusButton]
-			local reward = bu.Reward
-			S:HandleButton(bu)
-			bu.SelectedTexture:SetInside()
-			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+	for _, bonusButton in next, {'RandomBGButton', 'Arena1Button', 'RandomEpicBGButton', 'BrawlButton', 'BrawlButton2'} do
+		local bu = BonusFrame[bonusButton]
+		local reward = bu.Reward
+		S:HandleButton(bu)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-			reward.Border:Hide()
-			reward.CircleMask:Hide()
-			S:HandleIcon(reward.Icon, true)
+		reward.Border:Hide()
+		reward.CircleMask:Hide()
+		S:HandleIcon(reward.Icon, true)
 
-			reward.EnlistmentBonus:StripTextures()
-			reward.EnlistmentBonus:SetTemplate()
-			reward.EnlistmentBonus:Size(20)
-			reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
+		reward.EnlistmentBonus:StripTextures()
+		reward.EnlistmentBonus:SetTemplate()
+		reward.EnlistmentBonus:Size(20)
+		reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
 
-			local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
-			EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
-			EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
-			EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
-			EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		end
+		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
+		EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
+		EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
+		EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
+		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
 	-- Honor Frame Specific Buttons
 	hooksecurefunc(HonorFrame.SpecificScrollBox, 'Update', SpecificScrollUpdate)
-
-	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(button)
-		if button.bg then button.bg:SetDesaturated(true) end
-	end)
 
 	HandleRoleButton(HonorFrame.RoleList.TankIcon)
 	HandleRoleButton(HonorFrame.RoleList.HealerIcon)
@@ -265,27 +217,17 @@ function S:Blizzard_PVPUI()
 	RewardFrame.Icon:SetTexCoords()
 	RewardFrame.backdrop:SetOutside(RewardFrame.Icon)
 
-	if NewSeasonPopup.NewSeason then
-		NewSeasonPopup.NewSeason:SetTextColor(1, .8, 0)
-		NewSeasonPopup.NewSeason:SetShadowOffset(1, -1)
-	end
-
-	if NewSeasonPopup.SeasonRewardText then
-		NewSeasonPopup.SeasonRewardText:SetTextColor(1, .8, 0)
-		NewSeasonPopup.SeasonRewardText:SetShadowOffset(1, -1)
-	end
-
-	if NewSeasonPopup.SeasonDescriptionHeader then
-		NewSeasonPopup.SeasonDescriptionHeader:SetTextColor(1, 1, 1)
-		NewSeasonPopup.SeasonDescriptionHeader:SetShadowOffset(1, -1)
-	end
+	NewSeasonPopup.NewSeason:SetTextColor(1, .8, 0)
+	NewSeasonPopup.NewSeason:SetShadowOffset(1, -1)
+	NewSeasonPopup.SeasonRewardText:SetTextColor(1, .8, 0)
+	NewSeasonPopup.SeasonRewardText:SetShadowOffset(1, -1)
+	NewSeasonPopup.SeasonDescriptionHeader:SetTextColor(1, 1, 1)
+	NewSeasonPopup.SeasonDescriptionHeader:SetShadowOffset(1, -1)
 
 	NewSeasonPopup:HookScript('OnShow', function(popup)
-		if popup.SeasonDescriptions then
-			for _, text in next, popup.SeasonDescriptions do
-				text:SetTextColor(1, 1, 1)
-				text:SetShadowOffset(1, -1)
-			end
+		for _, text in next, popup.SeasonDescriptions do -- created in the popup's own OnShow
+			text:SetTextColor(1, 1, 1)
+			text:SetShadowOffset(1, -1)
 		end
 	end)
 
@@ -297,33 +239,31 @@ function S:Blizzard_PVPUI()
 	S:HandleButton(TrainingGroundsFrame.QueueButton)
 
 	local BonusTrainingGroundList = TrainingGroundsFrame.BonusTrainingGroundList
-	if BonusTrainingGroundList then
-		BonusTrainingGroundList:StripTextures()
-		BonusTrainingGroundList.ShadowOverlay:Hide()
-		BonusTrainingGroundList.WorldBattlesTexture:Hide()
+	BonusTrainingGroundList:StripTextures()
+	BonusTrainingGroundList.ShadowOverlay:Hide()
+	BonusTrainingGroundList.WorldBattlesTexture:Hide()
 
-		for _, bonusButton in next, {'RandomTrainingGroundButton', 'RandomTrainingGroundArenaButton'} do
-			local bu = BonusTrainingGroundList[bonusButton]
-			local reward = bu.Reward
-			S:HandleButton(bu)
-			bu.SelectedTexture:SetInside()
-			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
+	for _, bonusButton in next, {'RandomTrainingGroundButton', 'RandomTrainingGroundArenaButton'} do
+		local bu = BonusTrainingGroundList[bonusButton]
+		local reward = bu.Reward
+		S:HandleButton(bu)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
-			reward.Border:Hide()
-			reward.CircleMask:Hide()
-			S:HandleIcon(reward.Icon, true)
+		reward.Border:Hide()
+		reward.CircleMask:Hide()
+		S:HandleIcon(reward.Icon, true)
 
-			reward.EnlistmentBonus:StripTextures()
-			reward.EnlistmentBonus:SetTemplate()
-			reward.EnlistmentBonus:Size(20)
-			reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
+		reward.EnlistmentBonus:StripTextures()
+		reward.EnlistmentBonus:SetTemplate()
+		reward.EnlistmentBonus:Size(20)
+		reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
 
-			local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
-			EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
-			EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
-			EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
-			EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		end
+		local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
+		EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
+		EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
+		EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
+		EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	end
 
 	HandleRoleButton(TrainingGroundsFrame.RoleList.TankIcon)

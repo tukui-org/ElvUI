@@ -36,7 +36,6 @@ local toggles = {
 	misc = L["Misc Frames"],
 	petition = L["Petition Frame"],
 	quest = L["Quest Frames"],
-	questChoice = L["Quest Choice"],
 	raid = L["Raid Frame"],
 	socket = L["Socket Frame"],
 	spellbook = L["SPELLBOOK"],
@@ -120,7 +119,6 @@ if E.Retail then
 	toggles.islandQueue = L["ISLANDS_HEADER"]
 	toggles.islandsPartyPose = L["Island Party Pose"]
 	toggles.itemInteraction = L["Item Interaction"]
-	toggles.lfguild = L["LF Guild Frame"]
 	toggles.losscontrol = L["LOSS_OF_CONTROL"]
 	toggles.majorFactions = L["Major Factions"]
 	toggles.nonraid = L["Non-Raid Frame"]

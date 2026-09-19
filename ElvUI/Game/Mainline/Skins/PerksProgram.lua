@@ -5,58 +5,41 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 local function HandleSetButtons(button)
-	if not button then return end
-
 	if not button.Icon.backdrop then
 		S:HandleIcon(button.Icon, true)
 		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
 	end
 
-	if button.BackgroundTexture then
-		button.BackgroundTexture:SetAlpha(0)
-	end
-
-	if button.HighlightTexture then
-		button.HighlightTexture:SetColorTexture(1, 1, 1, .25)
-		button.HighlightTexture:SetInside()
-	end
+	button.BackgroundTexture:SetAlpha(0)
+	button.HighlightTexture:SetColorTexture(1, 1, 1, .25)
+	button.HighlightTexture:SetInside()
 end
 
 local function HandleCartToggleButton(button)
-	if button.text then
-		button:StripTextures()
+	button:StripTextures()
 
-		--button.texture:SetAtlas('Perks-ShoppingCart')
-		--button.texture:SetOutside()
+	--button.texture:SetAtlas('Perks-ShoppingCart')
+	--button.texture:SetOutside()
 
-		button.text:SetText(button.itemInCart and '-' or '+')
+	button.text:SetText(button.itemInCart and '-' or '+')
 
-		if button.itemInCart then
-			button.text:SetTextColor(1, 0.3, 0.3)
-		else
-			button.text:SetTextColor(0.3, 1, 0.3)
-		end
+	if button.itemInCart then
+		button.text:SetTextColor(1, 0.3, 0.3)
+	else
+		button.text:SetTextColor(0.3, 1, 0.3)
 	end
 end
 
 local function HandleRewardButton(child)
-	local container = child.ContentsContainer
+	local container = child.ContentsContainer -- the divider rows have none
 	if not container then return end
 
-	local icon = container.Icon
-	if icon then
-		S:HandleIcon(container.Icon)
-
-		container.IconMask:Hide()
-	end
-
-	local priceIcon = container.PriceIcon
-	if priceIcon then
-		S:HandleIcon(priceIcon)
-	end
+	S:HandleIcon(container.Icon)
+	container.IconMask:Hide()
+	S:HandleIcon(container.PriceIcon)
 
 	local cartButton = container.CartToggleButton
-	if cartButton and not cartButton.text then
+	if not cartButton.text then
 		S:HandleButton(cartButton, nil, nil, nil, true, nil, nil, nil, true)
 
 		cartButton.text = cartButton:CreateFontString(nil, 'ARTWORK')
@@ -77,23 +60,8 @@ local function HandleRewards(frame)
 	frame:ForEachFrame(HandleRewardButton)
 end
 
-local function HandleSortLabel(button)
-	if button and button.Label then
-		button.Label:FontTemplate()
-	end
-end
-
-local function HandleNextPrev(button)
-	S:HandleNextPrevButton(button)
-
-	button:SetScript('OnMouseUp', nil)
-	button:SetScript('OnMouseDown', nil)
-end
-
 local function PurchaseButton_EnterLeave(button, enter)
-	local perks = _G.PerksProgramFrame
-	local footer = perks and perks.FooterFrame
-	local enabled = footer and footer.purchaseButtonEnabled
+	local enabled = button:IsEnabled()
 	local label = button:GetFontString()
 
 	if enter then
@@ -118,10 +86,7 @@ local function PurchaseButton_OnLeave(button)
 end
 
 local function GlowEmitterFactory_Toggle(frame, target, show)
-	local perks = _G.PerksProgramFrame
-	local footer = perks and perks.FooterFrame
-	local button = footer and footer.PurchaseButton
-	if not button or target ~= button then return end
+	if target ~= _G.PerksProgramFrame.FooterFrame.PurchaseButton then return end
 
 	if show then
 		frame:Hide(target) -- turn the glow off
@@ -142,9 +107,7 @@ local function DetailsScrollBoxUpdate(frame)
 	frame:ForEachFrame(HandleSetButtons)
 end
 
-local function HandleShoppingCardButtons(button)
-	if not button then return end
-
+local function HandleShoppingCardButtons(button) -- set headers, cart items and set items share the list
 	if button.RemoveFromCartItemButton then
 		S:HandleCloseButton(button.RemoveFromCartItemButton.RemoveFromListButton)
 	end
@@ -161,8 +124,8 @@ local function HandleShoppingCardButtons(button)
 			button.BackgroundTexture:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, true)
 		end
 
-		local r, g, b = E:GetItemQualityColor(button.elementData and button.elementData.itemQuality)
-		button.bgSetTexture:SetVertexColor(r, g, b, button.elementData and button.elementData.isSetItem and 0.2 or 0)
+		local r, g, b = E:GetItemQualityColor(button.elementData.itemQuality)
+		button.bgSetTexture:SetVertexColor(r, g, b, button.elementData.isSetItem and 0.2 or 0)
 	else
 		button.bgSetTexture:SetVertexColor(0, 0, 0, 0.25)
 	end
@@ -191,11 +154,7 @@ end
 
 local function HandleCheckbox(box)
 	S:HandleCheckBox(box)
-
-	local text = box.Text
-	if text then
-		text:FontTemplate()
-	end
+	box.Text:FontTemplate()
 end
 
 function S:Blizzard_PerksProgram() -- Trading Post
@@ -208,135 +167,93 @@ function S:Blizzard_PerksProgram() -- Trading Post
 		frame.ThemeContainer:SetAlpha(0)
 	end
 
-	if products then
-		S:HandleButton(products.PerksProgramFilter)
+	S:HandleButton(products.PerksProgramFilter)
+	S:HandleCloseButton(products.PerksProgramFilter.ResetButton)
 
-		if products.PerksProgramFilter.ResetButton then
-			S:HandleCloseButton(products.PerksProgramFilter.ResetButton)
-		end
+	local currency = products.PerksProgramCurrencyFrame
+	S:HandleIcon(currency.Icon, true)
+	currency.Icon:Size(30)
+	currency.Text:FontTemplate(nil, 30)
 
-		local currency = products.PerksProgramCurrencyFrame
-		if currency then
-			S:HandleIcon(currency.Icon, true)
-			currency.Icon:Size(30)
-			currency.Text:FontTemplate(nil, 30)
-		end
+	local details = products.PerksProgramProductDetailsContainerFrame
+	details.Border:Hide()
+	details:CreateBackdrop('Transparent')
+	details.backdrop:OffsetFrameLevel(-10, details.Border)
 
-		local details = products.PerksProgramProductDetailsContainerFrame
-		if details then
-			details.Border:Hide()
-			details:CreateBackdrop('Transparent')
-			details.backdrop:OffsetFrameLevel(-10, details.Border)
+	S:HandleTrimScrollBar(details.SetDetailsScrollBoxContainer.ScrollBar)
+	hooksecurefunc(details.SetDetailsScrollBoxContainer.ScrollBox, 'Update', DetailsScrollBoxUpdate)
 
-			local container = details.SetDetailsScrollBoxContainer
-			if container then
-				S:HandleTrimScrollBar(container.ScrollBar)
+	local container = products.ProductsScrollBoxContainer
+	container:StripTextures()
+	container:CreateBackdrop('Transparent')
+	container.backdrop:OffsetFrameLevel(-10, container.Border)
 
-				hooksecurefunc(container.ScrollBox, 'Update', DetailsScrollBoxUpdate)
-			end
+	S:HandleTrimScrollBar(container.ScrollBar)
 
-			local carousel = details.CarouselFrame
-			if carousel and carousel.IncrementButton then
-				HandleNextPrev(carousel.IncrementButton)
-				HandleNextPrev(carousel.DecrementButton)
-			end
-		end
+	local hold = container.PerksProgramHoldFrame
+	hold:StripTextures()
+	hold:CreateBackdrop('Transparent')
+	hold.backdrop:SetInside(hold, 3, 3)
 
-		local container = products.ProductsScrollBoxContainer
-		if container then
-			container:StripTextures()
-			container:CreateBackdrop('Transparent')
-			container.backdrop:OffsetFrameLevel(-10, container.Border)
+	container.NameSortButton.Label:FontTemplate()
+	container.PriceSortButton.Label:FontTemplate()
 
-			S:HandleTrimScrollBar(container.ScrollBar)
+	hooksecurefunc(container.ScrollBox, 'Update', HandleRewards)
 
-			local hold = container.PerksProgramHoldFrame
-			if hold then
-				hold:StripTextures()
-				hold:CreateBackdrop('Transparent')
-				hold.backdrop:SetInside(hold, 3, 3)
-			end
+	local shoppingCart = products.PerksProgramShoppingCartFrame
+	shoppingCart:StripTextures()
+	shoppingCart:CreateBackdrop('Transparent')
+	S:HandleCloseButton(shoppingCart.CloseButton)
+	shoppingCart.CloseButton:OffsetFrameLevel(1, shoppingCart.backdrop)
 
-			HandleSortLabel(container.NameSortButton)
-			HandleSortLabel(container.PriceSortButton)
+	S:HandleButton(shoppingCart.PurchaseCartButton, nil, nil, nil, true, nil, nil, nil, true)
 
-			hooksecurefunc(container.ScrollBox, 'Update', HandleRewards)
-		end
+	S:HandleButton(shoppingCart.ClearCartButton, nil, nil, nil, true, nil, nil, nil, true)
 
-		local shoppingCart = products.PerksProgramShoppingCartFrame
-		if shoppingCart then
-			shoppingCart:StripTextures()
-			shoppingCart:CreateBackdrop('Transparent')
-			S:HandleCloseButton(shoppingCart.CloseButton)
-			shoppingCart.CloseButton:OffsetFrameLevel(1, shoppingCart.backdrop)
+	shoppingCart.ClearCartButton.texture = shoppingCart.ClearCartButton:CreateTexture(nil, 'ARTWORK')
+	shoppingCart.ClearCartButton.texture:SetAtlas('Perks-ShoppingCart')
+	shoppingCart.ClearCartButton.texture:SetInside(nil, 8, 8)
 
-			S:HandleButton(shoppingCart.PurchaseCartButton, nil, nil, nil, true, nil, nil, nil, true)
+	shoppingCart.ClearCartButton.text = shoppingCart.ClearCartButton:CreateFontString(nil, 'ARTWORK')
+	shoppingCart.ClearCartButton.text:FontTemplate(nil, 40, 'OUTLINE')
+	shoppingCart.ClearCartButton.text:Point('CENTER')
+	shoppingCart.ClearCartButton.text:SetTextColor(1, 0.3, 0.3)
+	shoppingCart.ClearCartButton.text:SetText('/')
 
-			S:HandleButton(shoppingCart.ClearCartButton, nil, nil, nil, true, nil, nil, nil, true)
-
-			shoppingCart.ClearCartButton.texture = shoppingCart.ClearCartButton:CreateTexture(nil, 'ARTWORK')
-			shoppingCart.ClearCartButton.texture:SetAtlas('Perks-ShoppingCart')
-			shoppingCart.ClearCartButton.texture:SetInside(nil, 8, 8)
-
-			shoppingCart.ClearCartButton.text = shoppingCart.ClearCartButton:CreateFontString(nil, 'ARTWORK')
-			shoppingCart.ClearCartButton.text:FontTemplate(nil, 40, 'OUTLINE')
-			shoppingCart.ClearCartButton.text:Point('CENTER')
-			shoppingCart.ClearCartButton.text:SetTextColor(1, 0.3, 0.3)
-			shoppingCart.ClearCartButton.text:SetText('/')
-
-			local itemList = shoppingCart.ItemList
-			S:HandleTrimScrollBar(itemList.ScrollBar)
-
-			hooksecurefunc(itemList.ScrollBox, 'Update', ShoppingCartScrollBoxUpdate)
-		end
-	end
+	S:HandleTrimScrollBar(shoppingCart.ItemList.ScrollBar)
+	hooksecurefunc(shoppingCart.ItemList.ScrollBox, 'Update', ShoppingCartScrollBoxUpdate)
 
 	local footer = frame.FooterFrame
-	if footer then
-		HandleCheckbox(footer.ToggleAttackAnimation)
-		HandleCheckbox(footer.TogglePlayerPreview)
-		HandleCheckbox(footer.ToggleMountSpecial)
-		HandleCheckbox(footer.ToggleHideArmor)
+	HandleCheckbox(footer.ToggleAttackAnimation)
+	HandleCheckbox(footer.TogglePlayerPreview)
+	HandleCheckbox(footer.ToggleMountSpecial)
+	HandleCheckbox(footer.ToggleHideArmor)
 
-		local purchase = footer.PurchaseButton
-		if purchase then
-			S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
-			S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
-			S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
-			S:HandleButton(footer.ViewCartButton, nil, nil, nil, true, nil, nil, nil, true)
-			S:HandleButton(footer.AddToCartButton, nil, nil, nil, true, nil, nil, nil, true)
-			S:HandleButton(footer.RemoveFromCartButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(footer.LeaveButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(footer.RefundButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(footer.PurchaseButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(footer.ViewCartButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(footer.AddToCartButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(footer.RemoveFromCartButton, nil, nil, nil, true, nil, nil, nil, true)
 
-			local viewCart = footer.ViewCartButton
-			if viewCart then
-				if viewCart.ItemCountBG then
-					viewCart.ItemCountBG:StripTextures()
-				end
+	local viewCart = footer.ViewCartButton
+	viewCart.ItemCountBG:StripTextures()
+	viewCart.ItemCountText:ClearAllPoints()
+	viewCart.ItemCountText:Point('BOTTOMLEFT', 4, 2)
 
-				if viewCart.ItemCountText then
-					viewCart.ItemCountText:ClearAllPoints()
-					viewCart.ItemCountText:Point('BOTTOMLEFT', 4, 2)
-				end
+	viewCart.texture = viewCart:CreateTexture(nil, 'ARTWORK')
+	viewCart.texture:SetAtlas('Perks-ShoppingCart')
+	viewCart.texture:SetInside(nil, 8, 8)
 
-				viewCart.texture = viewCart:CreateTexture(nil, 'ARTWORK')
-				viewCart.texture:SetAtlas('Perks-ShoppingCart')
-				viewCart.texture:SetInside(nil, 8, 8)
-			end
+	footer.PurchaseButton:HookScript('OnEnter', PurchaseButton_OnEnter)
+	footer.PurchaseButton:HookScript('OnLeave', PurchaseButton_OnLeave)
 
-			purchase:HookScript('OnEnter', PurchaseButton_OnEnter)
-			purchase:HookScript('OnLeave', PurchaseButton_OnLeave)
+	-- handle the glow
+	hooksecurefunc(_G.GlowEmitterFactory, 'Show', GlowEmitterFactory_Show)
+	hooksecurefunc(_G.GlowEmitterFactory, 'Hide', GlowEmitterFactory_Hide)
 
-			-- handle the glow
-			hooksecurefunc(_G.GlowEmitterFactory, 'Show', GlowEmitterFactory_Show)
-			hooksecurefunc(_G.GlowEmitterFactory, 'Hide', GlowEmitterFactory_Hide)
-		end
-
-		local rotate = footer.RotateButtonContainer
-		if rotate and rotate.RotateLeftButton then
-			S:HandleButton(rotate.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
-			S:HandleButton(rotate.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
-		end
-	end
+	S:HandleButton(footer.RotateButtonContainer.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleButton(footer.RotateButtonContainer.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
 end
 
 S:AddCallbackForAddon('Blizzard_PerksProgram')

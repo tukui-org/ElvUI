@@ -12,16 +12,12 @@ local function ShowFollower(frame)
 end
 
 local function UpdateFollowerColorOnBoard(self, _, info)
-	if self.Portrait.backdrop then
-		local r, g, b = E:GetItemQualityColor(info.quality)
-		self.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
-	end
+	local r, g, b = E:GetItemQualityColor(info.quality)
+	self.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
 end
 
 local function ResetFollowerColorOnBoard(self)
-	if self.Portrait.backdrop then
-		self.Portrait.backdrop:SetBackdropBorderColor(0, 0, 0)
-	end
+	self.Portrait.backdrop:SetBackdropBorderColor(0, 0, 0)
 end
 
 local function SkinFollowerBoard(self, group)
@@ -34,6 +30,7 @@ local function SkinFollowerBoard(self, group)
 			S:HandleGarrisonPortrait(frame)
 			frame.PuckShadow:SetAlpha(0)
 
+			-- enemy pucks have neither, mission page follower pucks have both
 			if frame.SetFollowerGUID then
 				hooksecurefunc(frame, 'SetFollowerGUID', UpdateFollowerColorOnBoard)
 			end
@@ -56,14 +53,8 @@ local function UpdateSpellAbilities(spell, followerInfo)
 		local abilityFrame = spell.autoSpellPool:Acquire()
 		if not abilityFrame.IsSkinned then
 			S:HandleIcon(abilityFrame.Icon, true)
-
-			if abilityFrame.IconMask then
-				abilityFrame.IconMask:Hide()
-			end
-
-			if abilityFrame.SpellBorder then
-				abilityFrame.SpellBorder:Hide()
-			end
+			abilityFrame.IconMask:Hide()
+			abilityFrame.SpellBorder:Hide()
 
 			abilityFrame.IsSkinned = true
 		end
@@ -95,9 +86,7 @@ local function ReskinMissionButton(button)
 			rareOverlay:SetAllPoints()
 			rareOverlay:SetVertexColor(.098, .537, .969, .2)
 		end
-		if button.Overlay and button.Overlay.Overlay then
-			button.Overlay.Overlay:SetAllPoints()
-		end
+		button.Overlay.Overlay:SetAllPoints()
 
 		button.IsSkinned = true
 	end
@@ -168,12 +157,10 @@ local function SkinMissionFrame(frame, strip)
 		frame:CreateBackdrop('Transparent')
 	end
 
-	if frame.CloseButton then
-		frame.CloseButton:StripTextures()
-		S:HandleCloseButton(frame.CloseButton)
-	end
+	frame.CloseButton:StripTextures()
+	S:HandleCloseButton(frame.CloseButton)
+	frame.GarrCorners:Hide()
 
-	if frame.GarrCorners then frame.GarrCorners:Hide() end
 	if frame.OverlayElements then frame.OverlayElements:SetAlpha(0) end
 	if frame.TitleScroll then
 		frame.TitleScroll:StripTextures()
@@ -193,8 +180,6 @@ local function SkinMissionFrame(frame, strip)
 	missionList:StripTextures()
 
 	S:HandleTrimScrollBar(missionList.ScrollBar)
-
-	hooksecurefunc(missionList.ScrollBox, 'Update', ReskinMissionList)
 
 	ReskinMissionComplete(frame)
 	SkinMissionItems(frame.FollowerTab)
@@ -237,14 +222,12 @@ function S:Blizzard_GarrisonUI()
 		local firstRegion, r, g, b
 		local index = 0
 		for _, reward in pairs(frame.Rewards) do
-			firstRegion = reward.GetRegions and reward:GetRegions()
-			if firstRegion then firstRegion:Hide() end
+			firstRegion = reward:GetRegions()
+			firstRegion:Hide()
 
-			if reward.IconBorder then
-				reward.IconBorder:SetTexture()
-			end
+			reward.IconBorder:SetTexture()
 
-			if reward.IconBorder and reward.IconBorder:IsShown() then
+			if reward.IconBorder:IsShown() then
 				r, g, b = reward.IconBorder:GetVertexColor()
 			else
 				r, g, b = unpack(E.media.bordercolor)
@@ -265,10 +248,8 @@ function S:Blizzard_GarrisonUI()
 		if not frame.backdrop then
 			S:HandleIcon(frame.Icon)
 		end
-		if frame.IconBorder then
-			frame.IconBorder:SetTexture()
-		end
 
+		frame.IconBorder:SetTexture()
 		frame.Icon:SetDrawLayer('BORDER', 0)
 	end)
 
@@ -641,10 +622,7 @@ function S:Blizzard_GarrisonUI()
 	SkinMissionFrame(CovenantMissionFrame, E.private.skins.parchmentRemoverEnable)
 	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
 	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
-
-	if CovenantMissionFrame.RaisedBorder then
-		CovenantMissionFrame.RaisedBorder:SetAlpha(0)
-	end
+	CovenantMissionFrame.RaisedBorder:SetAlpha(0)
 
 	-- This is needed if we use StripTextures on the Covenant Frames
 	hooksecurefunc(CovenantMissionFrame, 'SetupTabs', function(frame)
@@ -669,13 +647,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleIcon(FollowerTab.HealFollowerFrame.CostFrame.CostIcon)
 
 	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
-
-	if Follower.HealAllButton then
-		S:HandleButton(Follower.HealAllButton)
-	end
-	if _G.HealFollowerButtonTemplate then
-		S:HandleButton(_G.HealFollowerButtonTemplate)
-	end
+	S:HandleButton(Follower.HealAllButton)
 
 	-- Mission Tab
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)

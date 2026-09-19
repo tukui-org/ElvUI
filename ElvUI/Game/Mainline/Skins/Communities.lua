@@ -15,10 +15,6 @@ local function HandleCommunitiesButton(button)
 	button.CircleMask:Hide()
 	button.IconRing:Hide()
 
-	if button.IconBorder then
-		button.IconBorder:Hide()
-	end
-
 	if not button.backdrop then
 		button:CreateBackdrop('Transparent')
 	end
@@ -99,6 +95,13 @@ local function CommunitiesListScrollUpdate(frame)
 	frame:ForEachFrame(HandleCommunitiesButton)
 end
 
+local function RequestToJoin_Initialize(frame)
+	for button in frame.SpecsPool:EnumerateActive() do
+		S:HandleCheckBox(button.Checkbox)
+		button.Checkbox:Size(26)
+	end
+end
+
 function S:Blizzard_Communities()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
@@ -160,56 +163,42 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
 
-	for _, name in next, {'GuildFinderFrame', 'InvitationFrame', 'TicketFrame', 'CommunityFinderFrame', 'ClubFinderInvitationFrame'} do
+	-- Guild and Community Finder
+	for _, name in next, { 'GuildFinderFrame', 'CommunityFinderFrame' } do
 		local frame = CommunitiesFrame[name]
-		if frame then
-			frame:StripTextures()
-			frame.InsetFrame:Hide()
+		frame:StripTextures()
+		frame.InsetFrame:Hide()
 
-			if frame.CircleMask then
-				frame.CircleMask:Hide()
-				frame.IconRing:Hide()
-				S:HandleIcon(frame.Icon)
-			end
+		local requestFrame = frame.RequestToJoinFrame
+		requestFrame:StripTextures()
+		requestFrame:SetTemplate('Transparent')
+		hooksecurefunc(requestFrame, 'Initialize', RequestToJoin_Initialize)
 
-			if frame.FindAGuildButton then S:HandleButton(frame.FindAGuildButton) end
-			if frame.AcceptButton then S:HandleButton(frame.AcceptButton) end
-			if frame.DeclineButton then S:HandleButton(frame.DeclineButton) end
-			if frame.ApplyButton then S:HandleButton(frame.ApplyButton) end
+		requestFrame.MessageFrame:StripTextures(true)
+		requestFrame.MessageFrame.MessageScroll:StripTextures(true)
 
-			local requestFrame = frame.RequestToJoinFrame
-			if requestFrame then
-				requestFrame:StripTextures()
-				requestFrame:SetTemplate('Transparent')
+		S:HandleEditBox(requestFrame.MessageFrame.MessageScroll)
+		S:HandleButton(requestFrame.Apply)
+		S:HandleButton(requestFrame.Cancel)
 
-				hooksecurefunc(requestFrame, 'Initialize', function(frame)
-					for button in frame.SpecsPool:EnumerateActive() do
-						if button.Checkbox then
-							S:HandleCheckBox(button.Checkbox)
-							button.Checkbox:Size(26)
-						end
-					end
-				end)
+		HandleGuildCards(frame.GuildCards)
+		HandleGuildCards(frame.PendingGuildCards)
+		S:HandleTrimScrollBar(frame.CommunityCards.ScrollBar)
+		hooksecurefunc(frame.CommunityCards.ScrollBox, 'Update', HandleCommunityCards)
+		S:HandleTrimScrollBar(frame.PendingCommunityCards.ScrollBar)
+		hooksecurefunc(frame.PendingCommunityCards.ScrollBox, 'Update', HandleCommunityCards)
+	end
 
-				requestFrame.MessageFrame:StripTextures(true)
-				requestFrame.MessageFrame.MessageScroll:StripTextures(true)
-
-				S:HandleEditBox(requestFrame.MessageFrame.MessageScroll)
-				S:HandleButton(requestFrame.Apply)
-				S:HandleButton(requestFrame.Cancel)
-			end
-
-			if frame.GuildCards then HandleGuildCards(frame.GuildCards) end
-			if frame.PendingGuildCards then HandleGuildCards(frame.PendingGuildCards) end
-			if frame.CommunityCards then
-				S:HandleTrimScrollBar(frame.CommunityCards.ScrollBar)
-				hooksecurefunc(frame.CommunityCards.ScrollBox, 'Update', HandleCommunityCards)
-			end
-			if frame.PendingCommunityCards then
-				S:HandleTrimScrollBar(frame.PendingCommunityCards.ScrollBar)
-				hooksecurefunc(frame.PendingCommunityCards.ScrollBox, 'Update', HandleCommunityCards)
-			end
-		end
+	-- Invitations
+	for _, name in next, { 'InvitationFrame', 'TicketFrame', 'ClubFinderInvitationFrame' } do
+		local frame = CommunitiesFrame[name]
+		frame:StripTextures()
+		frame.InsetFrame:Hide()
+		frame.CircleMask:Hide()
+		frame.IconRing:Hide()
+		S:HandleIcon(frame.Icon)
+		S:HandleButton(frame.AcceptButton)
+		S:HandleButton(frame.DeclineButton)
 	end
 
 	-- Guild finder Frame
@@ -388,7 +377,7 @@ function S:Blizzard_Communities()
 
 	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
 		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
-		if newsInfo and button.header and button.header:IsShown() then
+		if newsInfo and button.header:IsShown() then
 			button.header:SetAlpha(0)
 		end
 	end)
@@ -564,10 +553,7 @@ function S:Blizzard_Communities()
 
 	-- InvitationsFrames
 	local ClubFinderInvitationFrame = CommunitiesFrame.ClubFinderInvitationFrame
-	ClubFinderInvitationFrame.InsetFrame:StripTextures()
 	ClubFinderInvitationFrame:SetTemplate()
-	S:HandleButton(ClubFinderInvitationFrame.AcceptButton)
-	S:HandleButton(ClubFinderInvitationFrame.DeclineButton)
 	S:HandleButton(ClubFinderInvitationFrame.ApplyButton)
 
 	ClubFinderInvitationFrame.WarningDialog:StripTextures()
@@ -575,11 +561,7 @@ function S:Blizzard_Communities()
 	S:HandleButton(ClubFinderInvitationFrame.WarningDialog.Accept)
 	S:HandleButton(ClubFinderInvitationFrame.WarningDialog.Cancel)
 
-	local InvitationFrame = CommunitiesFrame.InvitationFrame
-	InvitationFrame.InsetFrame:StripTextures()
-	InvitationFrame:SetTemplate()
-	S:HandleButton(InvitationFrame.AcceptButton)
-	S:HandleButton(InvitationFrame.DeclineButton)
+	CommunitiesFrame.InvitationFrame:SetTemplate()
 
 	-- ApplicationList
 	local ApplicantList = CommunitiesFrame.ApplicantList

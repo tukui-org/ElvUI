@@ -23,12 +23,12 @@ function S:CooldownManager_PositionTabIcons(point)
 end
 
 function S:CooldownManager_HandleHeaders(header)
-	if header.HighlightMiddle then header.HighlightMiddle:SetAlpha(0) end
-	if header.HighlightLeft then header.HighlightLeft:SetAlpha(0) end
-	if header.HighlightRight then header.HighlightRight:SetAlpha(0) end
-	if header.Middle then header.Middle:Hide() end
-	if header.Left then header.Left:Hide() end
-	if header.Right then header.Right:Hide() end
+	header.HighlightMiddle:SetAlpha(0)
+	header.HighlightLeft:SetAlpha(0)
+	header.HighlightRight:SetAlpha(0)
+	header.Middle:Hide()
+	header.Left:Hide()
+	header.Right:Hide()
 
 	S:HandleButton(header)
 
@@ -38,16 +38,9 @@ end
 function S:CooldownManager_HandleSettingItem(item)
 	if item.IsSkinned then return end
 
-	local icon = item.Icon
-	if icon then
-		local highlight = item.Highlight
-		if highlight then
-			highlight:SetColorTexture(1, 1, 1, .25)
-			highlight:SetAllPoints(icon)
-		end
-
-		S:HandleIcon(icon, true)
-	end
+	item.Highlight:SetColorTexture(1, 1, 1, .25)
+	item.Highlight:SetAllPoints(item.Icon)
+	S:HandleIcon(item.Icon, true)
 
 	item.IsSkinned = true
 end
@@ -60,8 +53,6 @@ end
 
 function S:CooldownManager_CountText(text)
 	local db = E.db.general.cooldownManager
-	if not db then return end
-
 	text:SetIgnoreParentScale(true)
 	text:ClearAllPoints()
 	text:Point(db.countPosition, db.countxOffset, db.countyOffset)
@@ -74,14 +65,9 @@ function S:CooldownManager_CountText(text)
 end
 
 function S:CooldownManager_UpdateTextContainer(container)
-	local applicationText = container.Applications and container.Applications.Applications
-	if applicationText then
-		S:CooldownManager_CountText(applicationText)
-	end
-
-	local countText = container.Count
-	if countText then
-		S:CooldownManager_CountText(countText)
+	local applications = container.Applications -- a frame holding the text on icon items, the text itself on bar items
+	if applications then
+		S:CooldownManager_CountText(applications.Applications or applications)
 	end
 
 	local chargeText = container.ChargeCount and container.ChargeCount.Current
@@ -92,28 +78,22 @@ end
 
 function S:CooldownManager_UpdateTextBar(bar)
 	local db = E.db.general.cooldownManager
-	if not db then return end
+	bar.Name:ClearAllPoints()
+	bar.Name:Point(db.namePosition, db.namexOffset, db.nameyOffset)
+	bar.Name:FontTemplate(db.nameFont, db.nameFontSize, db.nameFontOutline)
 
-	if bar.Name then
-		bar.Name:ClearAllPoints()
-		bar.Name:Point(db.namePosition, db.namexOffset, db.nameyOffset)
-		bar.Name:FontTemplate(db.nameFont, db.nameFontSize, db.nameFontOutline)
-
-		local color = db.nameFontColor
-		if color then
-			bar.Name:SetTextColor(color.r, color.g, color.b)
-		end
+	local color = db.nameFontColor
+	if color then
+		bar.Name:SetTextColor(color.r, color.g, color.b)
 	end
 
-	if bar.Duration then
-		bar.Duration:ClearAllPoints()
-		bar.Duration:Point(db.durationPosition, db.durationxOffset, db.durationyOffset)
-		bar.Duration:FontTemplate(db.durationFont, db.durationFontSize, db.durationFontOutline)
+	bar.Duration:ClearAllPoints()
+	bar.Duration:Point(db.durationPosition, db.durationxOffset, db.durationyOffset)
+	bar.Duration:FontTemplate(db.durationFont, db.durationFontSize, db.durationFontOutline)
 
-		local color = db.durationFontColor
-		if color then
-			bar.Duration:SetTextColor(color.r, color.g, color.b)
-		end
+	color = db.durationFontColor
+	if color then
+		bar.Duration:SetTextColor(color.r, color.g, color.b)
 	end
 end
 
@@ -139,18 +119,13 @@ function S:CooldownManager_SkinBar(frame, bar)
 	S:CooldownManager_UpdateTextBar(bar)
 
 	local icon = frame.Icon
-	if icon then
-		bar:Point('LEFT', icon, 'RIGHT', 3, 0)
-
-		S:CooldownManager_SkinIcon(icon, icon.Icon)
-	end
+	bar:Point('LEFT', icon, 'RIGHT', 3, 0)
+	S:CooldownManager_SkinIcon(icon, icon.Icon)
 
 	local statusBarTex = bar:GetStatusBarTexture()
-	if statusBarTex then
-		statusBarTex:SetTexture(E.media.normTex)
-		statusBarTex:ClearTextureSlice()
-		statusBarTex:SetTextureSliceMode(0)
-	end
+	statusBarTex:SetTexture(E.media.normTex)
+	statusBarTex:ClearTextureSlice()
+	statusBarTex:SetTextureSliceMode(0)
 
 	for _, region in next, { bar:GetRegions() } do
 		if region:IsObjectType('Texture') then
@@ -169,9 +144,7 @@ function S:CooldownManager_SkinBar(frame, bar)
 end
 
 function S:CooldownManager_SkinItemFrame(frame)
-	if frame.Cooldown then
-		E:RegisterCooldown(frame.Cooldown, 'cdmanager')
-	end
+	E:RegisterCooldown(frame.Cooldown, 'cdmanager')
 
 	if frame.Bar then
 		S:CooldownManager_SkinBar(frame, frame.Bar)
@@ -214,8 +187,6 @@ do
 	local hookedItemPools = {}
 
 	local function RefreshContent(content)
-		if not content then return end
-
 		for _, child in next, { content:GetChildren() } do
 			local header = child.Header
 			if header and not header.IsSkinned then
@@ -235,16 +206,8 @@ do
 
 	function S:CooldownManager_RefreshLayout()
 		local CooldownViewer = _G.CooldownViewerSettings
-		if not CooldownViewer then return end
-
-		if CooldownViewer.CooldownScroll then
-			RefreshContent(CooldownViewer.CooldownScroll.Content)
-		end
-
-		local groupBuffFilter = CooldownViewer.GroupBuffFilter
-		if groupBuffFilter and groupBuffFilter.Scroll then
-			RefreshContent(groupBuffFilter.Scroll.Content)
-		end
+		RefreshContent(CooldownViewer.CooldownScroll.Content)
+		RefreshContent(CooldownViewer.GroupBuffFilter.Scroll.Content)
 	end
 end
 
@@ -260,37 +223,23 @@ function S:CooldownManager_HandleAbilityTabs(viewer)
 			hooksecurefunc(tab, 'SetPoint', S.CooldownManager_PositionViewerTab)
 		end
 
-		if tab.Icon then
-			tab.Icon:ClearAllPoints()
-			tab.Icon:SetPoint('CENTER')
+		tab.Icon:ClearAllPoints()
+		tab.Icon:SetPoint('CENTER')
+		hooksecurefunc(tab.Icon, 'SetPoint', S.CooldownManager_PositionTabIcons)
 
-			hooksecurefunc(tab.Icon, 'SetPoint', S.CooldownManager_PositionTabIcons)
-		end
+		tab.Background:SetAlpha(0)
+		tab.TabGlow:SetAlpha(0)
 
-		if tab.Background then
-			tab.Background:SetAlpha(0)
-		end
+		tab.SelectedTexture:SetDrawLayer('ARTWORK')
+		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+		tab.SelectedTexture:SetAllPoints()
 
-		if tab.SelectedTexture then
-			tab.SelectedTexture:SetDrawLayer('ARTWORK')
-			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
-			tab.SelectedTexture:SetAllPoints()
-		end
-
-		if tab.HighlightTexture then
-			tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
-			tab.HighlightTexture:SetAllPoints()
-		end
-
-		if tab.TabGlow then
-			tab.TabGlow:SetAlpha(0)
-		end
+		tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+		tab.HighlightTexture:SetAllPoints()
 	end
 end
 
 function S:CooldownManager_HandleSettings(viewer)
-	if not viewer then return end
-
 	S:HandlePortraitFrame(viewer)
 	S:HandleEditBox(viewer.SearchBox)
 	S:HandleTrimScrollBar(viewer.CooldownScroll.ScrollBar)
@@ -319,29 +268,25 @@ function S:Blizzard_CooldownViewer()
 	S:CooldownManager_HandleSettings(_G.CooldownViewerSettings)
 
 	local ImportLayoutDialog = _G.CooldownViewerImportLayoutDialog
-	if ImportLayoutDialog then
-		ImportLayoutDialog.Border:Hide()
-		ImportLayoutDialog:SetTemplate('Transparent')
+	ImportLayoutDialog.Border:Hide()
+	ImportLayoutDialog:SetTemplate('Transparent')
 
-		S:HandleButton(ImportLayoutDialog.AcceptButton)
-		S:HandleButton(ImportLayoutDialog.CancelButton)
-		S:HandleEditBox(ImportLayoutDialog.ImportBox)
-		S:HandleEditBox(ImportLayoutDialog.LayoutNameEditBox)
-		ImportLayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, -3, nil, 'TOPLEFT')
-		ImportLayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(10, 3, nil, 'BOTTOMRIGHT')
-	end
+	S:HandleButton(ImportLayoutDialog.AcceptButton)
+	S:HandleButton(ImportLayoutDialog.CancelButton)
+	S:HandleEditBox(ImportLayoutDialog.ImportBox)
+	S:HandleEditBox(ImportLayoutDialog.LayoutNameEditBox)
+	ImportLayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, -3, nil, 'TOPLEFT')
+	ImportLayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(10, 3, nil, 'BOTTOMRIGHT')
 
 	local LayoutDialog = _G.CooldownViewerLayoutDialog
-	if LayoutDialog then
-		LayoutDialog.Border:Hide()
-		LayoutDialog:SetTemplate('Transparent')
+	LayoutDialog.Border:Hide()
+	LayoutDialog:SetTemplate('Transparent')
 
-		S:HandleButton(LayoutDialog.AcceptButton)
-		S:HandleButton(LayoutDialog.CancelButton)
-		S:HandleEditBox(LayoutDialog.LayoutNameEditBox)
-		LayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, -3, nil, 'TOPLEFT')
-		LayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, 3, nil, 'BOTTOMRIGHT')
-	end
+	S:HandleButton(LayoutDialog.AcceptButton)
+	S:HandleButton(LayoutDialog.CancelButton)
+	S:HandleEditBox(LayoutDialog.LayoutNameEditBox)
+	LayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, -3, nil, 'TOPLEFT')
+	LayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, 3, nil, 'BOTTOMRIGHT')
 end
 
 S:AddCallbackForAddon('Blizzard_CooldownViewer')

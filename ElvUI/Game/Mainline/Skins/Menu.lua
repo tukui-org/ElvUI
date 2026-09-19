@@ -18,14 +18,10 @@ local function SkinFrame(frame)
 
 		backdrops[frame] = frame.backdrop -- keep below CreateBackdrop
 
-		if frame.ScrollBar then
-			S:HandleTrimScrollBar(frame.ScrollBar)
-		end
+		S:HandleTrimScrollBar(frame.ScrollBar)
 	end
 
-	if frame.backdrop then
-		frame.backdrop:OffsetFrameLevel(nil, frame)
-	end
+	frame.backdrop:OffsetFrameLevel(nil, frame)
 end
 
 local widgets = {}
@@ -70,11 +66,8 @@ function S:Blizzard_Menu()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
 	local manager = _G.Menu.GetManager()
-	if manager then
-		hooksecurefunc(manager, 'OpenMenu', S.OpenMenu)
-		hooksecurefunc(manager, 'OpenContextMenu', S.OpenContextMenu)
-	end
-
+	hooksecurefunc(manager, 'OpenMenu', S.OpenMenu)
+	hooksecurefunc(manager, 'OpenContextMenu', S.OpenContextMenu)
 	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', SkinFrameAttachments)
 end
 
