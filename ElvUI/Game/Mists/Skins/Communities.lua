@@ -99,6 +99,12 @@ local function CommunitiesListScrollUpdate(frame)
 	frame:ForEachFrame(HandleCommunitiesButton)
 end
 
+local function ChatEditBoxMinimized(frame)
+	local editBox = frame:GetParent().ChatEditBox
+	editBox:Point('BOTTOMLEFT', 10, 6)
+	editBox:Point('BOTTOMRIGHT', -12, 6)
+end
+
 function S:Blizzard_Communities()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
@@ -155,6 +161,7 @@ function S:Blizzard_Communities()
 
 	S:HandleEditBox(CommunitiesFrame.ChatEditBox)
 	CommunitiesFrame.ChatEditBox:Size(120, 20)
+	hooksecurefunc(CommunitiesFrame.MaximizeMinimizeFrame, 'Minimize', ChatEditBoxMinimized)
 
 	for _, name in next, {'GuildFinderFrame', 'InvitationFrame', 'TicketFrame', 'CommunityFinderFrame', 'ClubFinderInvitationFrame'} do
 		local frame = CommunitiesFrame[name]
