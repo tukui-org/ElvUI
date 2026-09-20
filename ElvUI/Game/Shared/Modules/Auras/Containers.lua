@@ -1108,17 +1108,17 @@ function E:Auras_RegisterUnitEvents(container, unit)
 	if not events then return end
 
 	if unit then
-		-- keeps opposite faction correct when zoning into content
-		local highlight = events.isHighlight
-		if highlight or events.isGroup then
-			events:RegisterUnitEvent('UNIT_PHASE', unit)
-		end
-
 		-- technically we might need this on group too
 		-- however blizzard plans to fix us needing this
 		-- so for now we only add it to highlight
+		local highlight = events.isHighlight
 		if highlight then
 			events:RegisterUnitEvent('UNIT_FACTION', unit)
+		end
+
+		-- keeps opposite faction correct when zoning into content
+		if highlight or events.isGroup then
+			events:RegisterUnitEvent('UNIT_PHASE', unit)
 		end
 	else
 		events:UnregisterEvent('UNIT_FACTION')
