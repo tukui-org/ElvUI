@@ -581,9 +581,9 @@ function S:LookingForGroupFrames()
 	AutoCompleteFrame:Point('TOPLEFT', SearchPanel.SearchBox, 'BOTTOMLEFT', -2, -8)
 	AutoCompleteFrame:Point('TOPRIGHT', SearchPanel.SearchBox, 'BOTTOMRIGHT', -4, -8)
 
+	hooksecurefunc('LFGListSearchEntry_Update', ListSearchEntryUpdate)
 	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', ListSearchUpdateAutoComplete)
 	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', ListApplicationUpdateApplicant)
-	hooksecurefunc('LFGListSearchEntry_Update', ListSearchEntryUpdate)
 
 	-- ApplicationViewer (Custom Groups)
 	local ApplicationViewer = LFGListFrame.ApplicationViewer

@@ -549,9 +549,9 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
 	S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetButton)
 
-	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', ListApplicationUpdateApplicant)
 	hooksecurefunc('LFGListSearchEntry_Update', ListSearchEntryUpdate)
 	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', ListSearchUpdateAutoComplete)
+	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', ListApplicationUpdateApplicant)
 
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:CreateBackdrop('Transparent')
