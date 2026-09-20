@@ -12,7 +12,7 @@ local function MacroSelectorScrollUpdateChild(button)
 end
 
 local function MacroSelectorScrollUpdate(frame)
-	if frame:HasView() then -- the selector creates its view on first show, Update can fire before that
+	if frame.view then -- the selector creates its view on first show, Update can fire before that
 		frame:ForEachFrame(MacroSelectorScrollUpdateChild)
 	end
 end
