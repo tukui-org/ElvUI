@@ -591,6 +591,8 @@ function S:LookingForGroupFrames()
 
 	hooksecurefunc('LFGListCategorySelection_AddButton', function(btn, btnIndex, categoryID, filters)
 		local button = btn.CategoryButtons[btnIndex]
+		if not button then return end
+
 		if not button.IsSkinned then
 			button:SetTemplate()
 			button.Icon:SetDrawLayer('BACKGROUND', 2)
@@ -606,6 +608,7 @@ function S:LookingForGroupFrames()
 		end
 
 		button.SelectedTexture:Hide()
+
 		if btn.selectedCategory == categoryID and btn.selectedFilters == filters then
 			button:SetBackdropBorderColor(1, 1, 0)
 		else
