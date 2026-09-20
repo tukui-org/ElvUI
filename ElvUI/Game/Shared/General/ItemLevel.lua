@@ -35,13 +35,13 @@ local X2_INVTYPES = {
 	INVTYPE_RANGED = true
 }
 
-local WEAPON_OFFHANDS = {
+local MISSING_RED = format('|cFFFF3333%s|r', _G.ADDON_MISSING)
+local MISSING_OFFHANDS = {
 	[_G.INVTYPE_WEAPON] = true,
 	[_G.INVTYPE_2HWEAPON] = true,
 	[_G.INVTYPE_WEAPONOFFHAND] = not E.Retail
 }
 
-local MISSING_RED = format('|cFFFF3333%s|r', _G.ADDON_MISSING)
 local MISSING_ENCHANTS = {
 	E.Retail,	-- 1: Head
 	false,		-- 2: Neck
@@ -77,7 +77,7 @@ function E:InspectGearSlot(line, lineText, slotInfo, slot, lastLine)
 	end
 
 	-- if its an offhand weapon for missing display
-	if slot == 17 and WEAPON_OFFHANDS[lineText] then
+	if slot == 17 and MISSING_OFFHANDS[lineText] then
 		slotInfo.offhandWeapon = true
 	end
 
