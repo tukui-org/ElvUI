@@ -491,9 +491,9 @@ function S:Blizzard_UIPanels_Game()
 		end
 	end
 
-	-- pull the slot columns to the pane edge, the model scene takes the space
-	_G.CharacterHeadSlot:Point('TOPLEFT', CharacterFrame.LeftPaneHost, 6, -30)
-	_G.CharacterHandsSlot:Point('TOPRIGHT', CharacterFrame.LeftPaneHost, -6, -30)
+	-- pull the slot columns to the pane edge and center them on the model scene
+	_G.CharacterHeadSlot:Point('TOPLEFT', CharacterFrame.LeftPaneHost, 6, -55)
+	_G.CharacterHandsSlot:Point('TOPRIGHT', CharacterFrame.LeftPaneHost, -6, -55)
 
 	local MainHandSlot = _G.CharacterMainHandSlot -- weapon row, x depends on the ranged slot being shown
 	local point, relativeTo, relativePoint, x = MainHandSlot:GetPoint()
