@@ -1213,7 +1213,7 @@ do
 		end
 	end
 
-	function S:HandleTrimScrollBar(frame, ignoreUpdates)
+	function S:HandleTrimScrollBar(frame, ignoreUpdates, trackBackdrop)
 		frame:StripTextures()
 
 		ReskinScrollBarArrow(frame.Back, 'up')
@@ -1227,6 +1227,10 @@ do
 		local track = frame.Track
 		if track then
 			track:DisableDrawLayer('ARTWORK')
+
+			if trackBackdrop and not track.backdrop then
+				track:CreateBackdrop('Transparent', nil, ignoreUpdates)
+			end
 		end
 
 		local thumb = frame.GetThumb and frame:GetThumb()

@@ -56,11 +56,6 @@ local function HandleColoredProgressBar(bar)
 	hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
 end
 
-local function HandleScrollBar(scrollBar)
-	S:HandleTrimScrollBar(scrollBar)
-	scrollBar.Track:CreateBackdrop('Transparent')
-end
-
 local function HappinessInfo_UpdateHappiness(info)
 	if not _G.CharacterStatsPanePetScrollBox:IsShown() then
 		info:Hide() -- blizzard shows it on every tab
@@ -204,7 +199,7 @@ local function HandleStatsPane(pane)
 		pane.ClassBackground:SetAlpha(0)
 	end
 
-	HandleScrollBar(pane.ScrollBar)
+	S:HandleTrimScrollBar(pane.ScrollBar, nil, true)
 	pane.ScrollBox:ClearEdgeFade()
 	hooksecurefunc(pane.ScrollBox, 'Update', UpdateStats)
 end
@@ -417,7 +412,7 @@ local function HandleListFrame(frame)
 		child:StripTextures()
 	end
 
-	HandleScrollBar(frame.ScrollBar)
+	S:HandleTrimScrollBar(frame.ScrollBar, nil, true)
 	hooksecurefunc(frame.ScrollBox, 'Update', UpdateList)
 end
 
@@ -442,7 +437,7 @@ local function HandleSidePane(pane)
 	pane.Divider:SetAlpha(0)
 	pane.Title:FontTemplate(nil, 14)
 
-	HandleScrollBar(pane.DescriptionScrollBar)
+	S:HandleTrimScrollBar(pane.DescriptionScrollBar, nil, true)
 	hooksecurefunc(pane, 'AcquireRow', SidePane_AcquireRow)
 end
 
@@ -494,10 +489,7 @@ function S:Blizzard_UIPanels_Game()
 	-- pull the slot columns to the pane edge and center them on the model scene
 	_G.CharacterHeadSlot:Point('TOPLEFT', CharacterFrame.LeftPaneHost, 6, -55)
 	_G.CharacterHandsSlot:Point('TOPRIGHT', CharacterFrame.LeftPaneHost, -6, -55)
-
-	local MainHandSlot = _G.CharacterMainHandSlot -- weapon row, x depends on the ranged slot being shown
-	local point, relativeTo, relativePoint, x = MainHandSlot:GetPoint()
-	MainHandSlot:Point(point, relativeTo, relativePoint, x, 6)
+	_G.CharacterMainHandSlot:NudgePoint(nil, -24) -- (30-24: 6): weapon row, x depends on the ranged slot being shown
 
 	hooksecurefunc('PaperDollItemSlotButton_Update', HandleHighlight)
 	hooksecurefunc('EquipmentFlyoutPopoutButton_RefreshVisualState', PopoutButton_RefreshVisualState)
@@ -534,13 +526,13 @@ function S:Blizzard_UIPanels_Game()
 	hooksecurefunc('PaperDollFrame_ShowSidebar', ShowSidebar)
 
 	-- race art is a 212x246 piece plus 19px right and 40px bottom strips, keep that ratio instead of blizzards 80x130 strips
-	local TopLeft, TopRight, BotLeft, BotRight = CharacterModelScene.BackgroundTopLeft, CharacterModelScene.BackgroundTopRight, CharacterModelScene.BackgroundBotLeft, CharacterModelScene.BackgroundBotRight
-	TopLeft:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', -25, 54)
-	TopRight:Width(25)
-	TopRight:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', 0, 54)
-	BotLeft:Height(54)
-	BotLeft:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', -25, 0)
-	BotRight:Size(25, 54)
+	local BackgroundTopLeft, BackgroundTopRight, BackgroundBotLeft, BackgroundBotRight = CharacterModelScene.BackgroundTopLeft, CharacterModelScene.BackgroundTopRight, CharacterModelScene.BackgroundBotLeft, CharacterModelScene.BackgroundBotRight
+	BackgroundTopLeft:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', -25, 54)
+	BackgroundTopRight:Width(25)
+	BackgroundTopRight:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', 0, 54)
+	BackgroundBotLeft:Height(54)
+	BackgroundBotLeft:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', -25, 0)
+	BackgroundBotRight:Size(25, 54)
 
 	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
 	HandleColoredProgressBar(_G.PetPaperDollFrameExpBar) -- lives in the model scene
@@ -560,13 +552,13 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Titles
 	local TitleManagerPane = _G.PaperDollFrame.TitleManagerPane
-	HandleScrollBar(TitleManagerPane.ScrollBar)
+	S:HandleTrimScrollBar(TitleManagerPane.ScrollBar, nil, true)
 	hooksecurefunc(TitleManagerPane.ScrollBox, 'Update', TitleManagerPane_Update)
 
 	-- Equipment Manager
 	local EquipmentManagerPane = _G.PaperDollFrame.EquipmentManagerPane
 	EquipmentManagerPane:StripTextures() -- Border and the unnamed scroll line under the list
-	HandleScrollBar(EquipmentManagerPane.ScrollBar)
+	S:HandleTrimScrollBar(EquipmentManagerPane.ScrollBar, nil, true)
 
 	hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
 	hooksecurefunc('PaperDollEquipmentManagerPane_InitButton', EquipmentManagerPane_InitButton)
