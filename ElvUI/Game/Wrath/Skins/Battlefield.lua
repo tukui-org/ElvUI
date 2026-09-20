@@ -19,7 +19,6 @@ function S:SkinBattlefield()
 	S:HandleButton(_G.BattlefieldFrameJoinButton)
 	S:HandleButton(_G.BattlefieldFrameGroupJoinButton)
 
-	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
 	_G.BattlefieldFrameCloseButton:Point('TOPRIGHT', -30, -8) -- matches PVPParentFrameCloseButton
 end
 

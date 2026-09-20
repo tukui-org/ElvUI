@@ -122,6 +122,5 @@ function S:Blizzard_RaidUI()
 		end
 	end)
 end
-end
 
 S:AddCallbackForAddon('Blizzard_RaidUI')

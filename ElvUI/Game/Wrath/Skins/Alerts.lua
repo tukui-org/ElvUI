@@ -40,20 +40,16 @@ local function SkinAchievementAlert(frame)
 	frame.Name:FontTemplate(nil, 12)
 
 	local icon = frame.Icon
-	if icon then
-		icon.Overlay:Kill()
+	icon.Overlay:Kill()
 
-		local texture = frame.Icon.Texture
-		if texture then
-			texture:SetTexCoords()
-			texture:ClearAllPoints()
-			texture:Point('LEFT', frame, 7, 0)
+	local texture = icon.Texture
+	texture:SetTexCoords()
+	texture:ClearAllPoints()
+	texture:Point('LEFT', frame, 7, 0)
 
-			if not icon.backdrop then
-				icon:CreateBackdrop()
-				icon.backdrop:SetOutside(texture)
-			end
-		end
+	if not icon.backdrop then
+		icon:CreateBackdrop()
+		icon.backdrop:SetOutside(texture)
 	end
 end
 
@@ -105,22 +101,15 @@ local function SkinDungeonCompletionAlert(frame)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
 	end
 
-	if frame.glowFrame then
-		frame.glowFrame:Kill()
-
-		if frame.glowFrame.glow then
-			frame.glowFrame.glow:Kill()
-		end
-	end
-
-	if frame.shine then frame.shine:Kill() end
-	if frame.raidArt then frame.raidArt:Kill() end
-	if frame.heroicIcon then frame.heroicIcon:Kill() end
-	if frame.dungeonArt then frame.dungeonArt:Kill() end
-	if frame.dungeonArt1 then frame.dungeonArt1:Kill() end
-	if frame.dungeonArt2 then frame.dungeonArt2:Kill() end
-	if frame.dungeonArt3 then frame.dungeonArt3:Kill() end
-	if frame.dungeonArt4 then frame.dungeonArt4:Kill() end
+	frame.glowFrame:Kill()
+	frame.glowFrame.glow:Kill()
+	frame.shine:Kill()
+	frame.raidArt:Kill()
+	frame.heroicIcon:Kill()
+	frame.dungeonArt1:Kill()
+	frame.dungeonArt2:Kill()
+	frame.dungeonArt3:Kill()
+	frame.dungeonArt4:Kill()
 
 	-- Icon
 	frame.dungeonTexture:SetTexCoords()
@@ -133,6 +122,38 @@ local function SkinDungeonCompletionAlert(frame)
 		frame.dungeonTexture.b:SetTemplate()
 		frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
 		frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
+	end
+end
+
+local function SkinStorePurchaseAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -2, -6)
+		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
+	end
+
+	local _, ring = frame:GetRegions() -- the CheckButtonGlow ring is only named Border
+	frame.Background:Kill()
+	ring:Kill()
+	frame.glow:Kill()
+	frame.shine:Kill()
+
+	frame.Icon:SetTexCoords()
+	frame.Icon:SetDrawLayer('BORDER', 5)
+
+	-- Icon border
+	if not frame.Icon.b then
+		frame.Icon.b = CreateFrame('Frame', nil, frame)
+		frame.Icon.b:SetTemplate()
+		frame.Icon.b:SetOutside(frame.Icon)
+		frame.Icon:SetParent(frame.Icon.b)
 	end
 end
 
@@ -200,12 +221,10 @@ local function SkinLootWonAlert(frame)
 
 	frame:SetAlpha(1)
 	frame.Background:Kill()
-
-	local lootItem = frame.lootItem or frame
-	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	lootItem.Icon:SetDrawLayer('BORDER')
-	lootItem.IconBorder:Kill()
-	lootItem.SpecRing:SetTexture(E.ClearTexture)
+	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	frame.Icon:SetDrawLayer('BORDER')
+	frame.IconBorder:Kill()
+	frame.SpecRing:SetTexture(E.ClearTexture)
 
 	frame.glow:Kill()
 	frame.shine:Kill()
@@ -213,17 +232,17 @@ local function SkinLootWonAlert(frame)
 	frame.PvPBackground:Kill()
 
 	-- Icon border
-	if not lootItem.Icon.b then
-		lootItem.Icon.b = CreateFrame('Frame', nil, frame)
-		lootItem.Icon.b:SetTemplate()
-		lootItem.Icon.b:SetOutside(lootItem.Icon)
-		lootItem.Icon:SetParent(lootItem.Icon.b)
+	if not frame.Icon.b then
+		frame.Icon.b = CreateFrame('Frame', nil, frame)
+		frame.Icon.b:SetTemplate()
+		frame.Icon.b:SetOutside(frame.Icon)
+		frame.Icon:SetParent(frame.Icon.b)
 	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', lootItem.Icon.b, 'TOPLEFT', -4, 4)
-		frame.backdrop:Point('BOTTOMRIGHT', lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
+		frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+		frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 	end
 end
 
@@ -285,40 +304,6 @@ local function SkinMoneyWonAlert(frame)
 	end
 end
 
-local function SkinNewRecipeLearnedAlert(frame)
-	frame:SetAlpha(1)
-
-	if not frame.hooked then
-		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
-		frame.hooked = true
-	end
-
-	if not frame.backdrop then
-		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', 19, -6)
-		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -23, 6)
-	end
-
-	frame.glow:Kill()
-	frame.shine:Kill()
-	frame:GetRegions():Hide()
-
-	frame.Icon:SetMask('')
-	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	frame.Icon:SetDrawLayer('BORDER', 5)
-	frame.Icon:ClearAllPoints()
-	frame.Icon:Point('LEFT', frame.backdrop, 9, 0)
-
-	-- Icon border
-	if not frame.Icon.b then
-		frame.Icon.b = CreateFrame('Frame', nil, frame)
-		frame.Icon.b:SetTemplate()
-		frame.Icon.b:Point('TOPLEFT', frame.Icon, 'TOPLEFT', -2, 2)
-		frame.Icon.b:Point('BOTTOMRIGHT', frame.Icon, 'BOTTOMRIGHT', 2, -2)
-		frame.Icon:SetParent(frame.Icon.b)
-	end
-end
-
 local function SkinNewPetAlert(frame)
 	frame:SetAlpha(1)
 
@@ -360,6 +345,9 @@ function S:AlertSystem()
 	-- Encounters
 	hooksecurefunc(_G.DungeonCompletionAlertSystem, 'setUpFunction', SkinDungeonCompletionAlert)
 
+	-- Store
+	hooksecurefunc(_G.StorePurchaseAlertSystem, 'setUpFunction', SkinStorePurchaseAlert)
+
 	-- Honor
 	hooksecurefunc(_G.HonorAwardedAlertSystem, 'setUpFunction', SkinHonorAwardedAlert)
 
@@ -368,9 +356,6 @@ function S:AlertSystem()
 	hooksecurefunc(_G.LootAlertSystem, 'setUpFunction', SkinLootWonAlert)
 	hooksecurefunc(_G.LootUpgradeAlertSystem, 'setUpFunction', SkinLootUpgradeAlert)
 	hooksecurefunc(_G.MoneyWonAlertSystem, 'setUpFunction', SkinMoneyWonAlert)
-
-	-- Professions
-	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
 
 	-- Pets/Mounts
 	hooksecurefunc(_G.NewPetAlertSystem, 'setUpFunction', SkinNewPetAlert)

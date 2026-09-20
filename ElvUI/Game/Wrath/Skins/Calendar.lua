@@ -7,13 +7,9 @@ local next = next
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local hooksecurefunc = hooksecurefunc
 
-local function SkinContainer(frame, container)
+local function SkinContainer(frame)
 	frame.NineSlice:Kill()
-
-	local child = container or frame.scrollFrame
-	if child and not child.backdrop then
-		child:CreateBackdrop('Transparent')
-	end
+	frame:CreateBackdrop('Transparent')
 end
 
 local function StripClassTextures(button, classFile)
@@ -46,8 +42,8 @@ function S:Blizzard_Calendar()
 
 	SkinContainer(_G.CalendarViewEventInviteList)
 	SkinContainer(_G.CalendarCreateEventInviteList)
-	SkinContainer(_G.CalendarViewEventDescriptionContainer, _G.CalendarViewEventDescriptionScrollFrame)
-	SkinContainer(_G.CalendarCreateEventDescriptionContainer, _G.CalendarCreateEventDescriptionScrollFrame)
+	SkinContainer(_G.CalendarViewEventDescriptionContainer)
+	SkinContainer(_G.CalendarCreateEventDescriptionContainer)
 
 	_G.CalendarCreateEventFrameButtonBackground:Hide()
 	_G.CalendarCreateEventMassInviteButtonBorder:Hide()
@@ -137,6 +133,7 @@ function S:Blizzard_Calendar()
 	S:HandleDropDownBox(_G.CalendarCreateEventFrame.MinuteDropdown, 52)
 	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 57)
 	S:HandleDropDownBox(_G.CalendarCreateEventFrame.EventTypeDropdown, 120)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.DifficultyOptionDropdown, 80)
 
 	_G.CalendarClassButton1:Point('TOPLEFT', _G.CalendarClassButtonContainer, 'TOPLEFT', E.PixelMode and 3 or 5, 0)
 
@@ -173,7 +170,6 @@ function S:Blizzard_Calendar()
 
 	S:HandleButton(_G.CalendarTexturePickerAcceptButton, true)
 	S:HandleButton(_G.CalendarTexturePickerCancelButton, true)
-	S:HandleButton(_G.CalendarCreateEventInviteButton, true)
 	S:HandleButton(_G.CalendarCreateEventRaidInviteButton, true)
 
 	-- Mass Invite Frame
@@ -184,6 +180,8 @@ function S:Blizzard_Calendar()
 	S:HandleEditBox(_G.CalendarMassInviteMaxLevelEdit)
 	S:HandleCloseButton(_G.CalendarMassInviteCloseButton)
 	S:HandleButton(_G.CalendarMassInviteAcceptButton)
+	S:HandleDropDownBox(_G.CalendarMassInviteFrame.CommunityDropdown, 200)
+	S:HandleDropDownBox(_G.CalendarMassInviteFrame.RankDropdown, 140)
 
 	-- Raid View
 	_G.CalendarViewRaidFrame:StripTextures()

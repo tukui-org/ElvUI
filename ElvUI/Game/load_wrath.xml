@@ -120,6 +120,7 @@
 	<Script file='Wrath\Skins\Petition.lua'/>
 	<Script file='Wrath\Skins\PVP.lua'/>
 	<Script file='Wrath\Skins\Quest.lua'/>
+	<Script file='Wrath\Skins\QuestTimers.lua'/>
 	<Script file='Wrath\Skins\Raid.lua'/>
 	<Script file='Wrath\Skins\SettingsPanel.lua'/>
 	<Script file='Wrath\Skins\Socket.lua'/>
