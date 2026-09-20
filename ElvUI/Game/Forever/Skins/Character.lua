@@ -2,13 +2,23 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, next, strlower, strmatch = unpack, next, strlower, strmatch
+local unpack, next, strlower = unpack, next, strlower
 local hooksecurefunc = hooksecurefunc
 
 local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFF] = 'PLACEINBAGS',
 	[0xFFFFFFFE] = 'IGNORESLOT',
 	[0xFFFFFFFD] = 'UNIGNORESLOT'
+}
+
+local RESISTANCE_TEX = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
+local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
+	['UI-Character-Info-Resistance-Holy'] = RESISTANCE_TEX..2,
+	['UI-Character-Info-Resistance-Fire'] = RESISTANCE_TEX..3,
+	['UI-Character-Info-Resistance-Nature'] = RESISTANCE_TEX..4,
+	['UI-Character-Info-Resistance-Frost'] = RESISTANCE_TEX..5,
+	['UI-Character-Info-Resistance-Shadow'] = RESISTANCE_TEX..6,
+	['UI-Character-Info-Resistance-Arcane'] = RESISTANCE_TEX..7,
 }
 
 local function SetArrow(texture, rotation)
@@ -149,15 +159,6 @@ local function BackdropDesaturated(background, value)
 	end
 end
 
-local resistanceIcons = { -- atlas suffix to the plain SpellSchoolIcon index
-	Holy = 2,
-	Fire = 3,
-	Nature = 4,
-	Frost = 5,
-	Shadow = 6,
-	Arcane = 7
-}
-
 local function UpdateStatsChild(child)
 	if child.Title then
 		if not child.IsSkinned then
@@ -176,14 +177,12 @@ local function UpdateStatsChild(child)
 		child.shade:SetShown(child.Background:IsShown()) -- blizzard alternates it per row
 
 		local icon = child.Icon
-		local atlas = icon and icon:GetAtlas()
-		if atlas then -- resistances, the bordered atlas and its size come back on every init
-			local school = resistanceIcons[strmatch(atlas, 'Resistance%-(%a+)$')]
-			if school then
-				icon:SetTexture([[Interface\PaperDollInfoFrame\SpellSchoolIcon]]..school)
-				icon:Size(18)
-				S:HandleIcon(icon, true)
-			end
+		local texture = icon and RESISTANCE_ICONS[icon:GetAtlas()]
+		if texture then -- resistances, the bordered atlas and its size come back on every init
+			icon:SetTexture(texture)
+			icon:Size(18)
+
+			S:HandleIcon(icon, true)
 		end
 	end
 end
