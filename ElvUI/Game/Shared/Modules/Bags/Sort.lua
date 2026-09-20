@@ -134,7 +134,7 @@ local inventorySlots = {
 	INVTYPE_TABARD = 25,
 }
 
-local conjured_items = E.Modern and {
+local conjured_items = E.Retail and {
 	[5512] = true, -- Healthstone
 	[162518] = true, -- Mystical Flask
 	[113509] = true, -- Conjured Mana Bun
