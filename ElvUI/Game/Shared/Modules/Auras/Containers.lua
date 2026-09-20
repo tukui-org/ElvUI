@@ -1057,6 +1057,7 @@ function E:Auras_GroupUnit(container, unit, shown)
 	if not container then return end
 
 	E:Auras_SetUnit(container, unit)
+	E:Auras_RegisterUnitEvents(container, unit)
 	E:Auras_AssistUnit(container, unit, shown, true)
 end
 
@@ -1091,8 +1092,13 @@ function E:Auras_CreateEventFrame(container, parent)
 	local events = CreateFrame('Frame', nil, container)
 
 	local frameType = parent.unitframeType
-	local group = E.AuraGroupHeaders[frameType]
-	if group then
+	local isGroup = E.AuraGroupHeaders[frameType]
+
+	events.isHighlight = parent.isHighlight
+	events.frameType = frameType
+	events.isGroup = isGroup
+
+	if isGroup then
 		events:RegisterEvent('GROUP_ROSTER_UPDATE')		-- raid: when people move between groups
 	elseif strmatch(frameType, '^focus') then
 		events:RegisterEvent('PLAYER_FOCUS_CHANGED')	-- aurabar: switch friendship
@@ -1100,21 +1106,32 @@ function E:Auras_CreateEventFrame(container, parent)
 		events:RegisterEvent('PLAYER_TARGET_CHANGED')	-- aurabar: switch friendship
 	end
 
-	-- technically we might need this on group too
-	-- however blizzard plans to fix us needing this
-	-- so for now we only add it to highlight
-	local highlight = parent.isHighlight
-	if highlight then
-		events:RegisterEvent('UNIT_FACTION')
-	end
-
-	-- keeps opposite faction correct when zoning into content
-	if highlight or group then
-		events:RegisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
-		events:RegisterEvent('UNIT_PHASE')
-	end
-
 	return events
+end
+
+function E:Auras_RegisterUnitEvents(container, unit)
+	local events = container.events
+	if not events then return end
+
+	if unit then
+		-- keeps opposite faction correct when zoning into content
+		local highlight = events.isHighlight
+		if highlight or events.isGroup then
+			events:RegisterUnitEvent('UNIT_DISTANCE_CHECK_UPDATE', unit)
+			events:RegisterUnitEvent('UNIT_PHASE', unit)
+		end
+
+		-- technically we might need this on group too
+		-- however blizzard plans to fix us needing this
+		-- so for now we only add it to highlight
+		if highlight then
+			events:RegisterUnitEvent('UNIT_FACTION', unit)
+		end
+	else
+		events:UnregisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
+		events:UnregisterEvent('UNIT_FACTION')
+		events:UnregisterEvent('UNIT_PHASE')
+	end
 end
 
 function E:Auras_Create(parent, which, override)
