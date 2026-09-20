@@ -48,8 +48,8 @@ function S:WorldMapFrame()
 		S:HandleButton(_G.Questie_Toggle)
 	end
 
-	S:HandleMaxMinFrame(WorldMapFrame.MaxMinButtonFrame)
-	S:HandleCloseButton(_G.WorldMapFrameCloseButton, WorldMapFrame.backdrop)
+	S:HandleMaxMinFrame(WorldMapFrame.MaximizeMinimizeFrame)
+	S:HandleCloseButton(_G.WorldMapFrameCloseButton)
 	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
 end
 

@@ -5,6 +5,7 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
+local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local function ForceAlpha(frame, alpha, forced)
@@ -40,20 +41,16 @@ local function SkinAchievementAlert(frame)
 	frame.Name:FontTemplate(nil, 12)
 
 	local icon = frame.Icon
-	if icon then
-		icon.Overlay:Kill()
+	icon.Overlay:Kill()
 
-		local texture = frame.Icon.Texture
-		if texture then
-			texture:SetTexCoords()
-			texture:ClearAllPoints()
-			texture:Point('LEFT', frame, 7, 0)
+	local texture = icon.Texture
+	texture:SetTexCoords()
+	texture:ClearAllPoints()
+	texture:Point('LEFT', frame, 7, 0)
 
-			if not icon.backdrop then
-				icon:CreateBackdrop()
-				icon.backdrop:SetOutside(texture)
-			end
-		end
+	if not icon.backdrop then
+		icon:CreateBackdrop()
+		icon.backdrop:SetOutside(texture)
 	end
 end
 
@@ -105,22 +102,15 @@ local function SkinDungeonCompletionAlert(frame)
 		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
 	end
 
-	if frame.glowFrame then
-		frame.glowFrame:Kill()
-
-		if frame.glowFrame.glow then
-			frame.glowFrame.glow:Kill()
-		end
-	end
-
-	if frame.shine then frame.shine:Kill() end
-	if frame.raidArt then frame.raidArt:Kill() end
-	if frame.heroicIcon then frame.heroicIcon:Kill() end
-	if frame.dungeonArt then frame.dungeonArt:Kill() end
-	if frame.dungeonArt1 then frame.dungeonArt1:Kill() end
-	if frame.dungeonArt2 then frame.dungeonArt2:Kill() end
-	if frame.dungeonArt3 then frame.dungeonArt3:Kill() end
-	if frame.dungeonArt4 then frame.dungeonArt4:Kill() end
+	frame.glowFrame:Kill()
+	frame.glowFrame.glow:Kill()
+	frame.shine:Kill()
+	frame.raidArt:Kill()
+	frame.heroicIcon:Kill()
+	frame.dungeonArt1:Kill()
+	frame.dungeonArt2:Kill()
+	frame.dungeonArt3:Kill()
+	frame.dungeonArt4:Kill()
 
 	-- Icon
 	frame.dungeonTexture:SetTexCoords()
@@ -133,6 +123,127 @@ local function SkinDungeonCompletionAlert(frame)
 		frame.dungeonTexture.b:SetTemplate()
 		frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
 		frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
+	end
+end
+
+local function SkinChallengeModeAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -2, -6)
+		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
+	end
+
+	frame.glowFrame:Kill()
+	frame.glowFrame.glow:Kill()
+	frame.shine:Kill()
+
+	-- the $parentBorder ring are only reachable by region order
+	local background, _, border = frame:GetRegions()
+	background:Hide()
+	border:Kill()
+
+	-- Icon
+	frame.dungeonTexture:SetTexCoords()
+	frame.dungeonTexture:SetDrawLayer('OVERLAY')
+
+	if not frame.dungeonTexture.b then
+		frame.dungeonTexture.b = CreateFrame('Frame', nil, frame)
+		frame.dungeonTexture.b:SetTemplate()
+		frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
+		frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
+	end
+end
+
+local function SkinGuildChallengeAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -2, -6)
+		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
+	end
+
+	local _, background = frame:GetRegions() -- unnamed GuildChallenges art, the emblem background stays
+	background:Kill()
+	frame.glow:Kill()
+	frame.shine:Kill()
+	frame.EmblemBorder:Kill()
+
+	-- Icon border
+	local EmblemIcon = frame.EmblemIcon
+	if not EmblemIcon.b then
+		EmblemIcon.b = CreateFrame('Frame', nil, frame)
+		EmblemIcon.b:SetTemplate()
+		EmblemIcon.b:Point('TOPLEFT', EmblemIcon, 'TOPLEFT', -3, 3)
+		EmblemIcon.b:Point('BOTTOMRIGHT', EmblemIcon, 'BOTTOMRIGHT', 3, -2)
+		EmblemIcon:SetParent(EmblemIcon.b)
+	end
+
+	SetLargeGuildTabardTextures('player', EmblemIcon)
+end
+
+local function SkinDigsiteCompleteAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -16, -6)
+		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 13, 6)
+	end
+
+	local background = frame:GetRegions()
+	background:Hide()
+	frame.glow:Kill()
+	frame.shine:Kill()
+	frame.DigsiteTypeTexture:Point('LEFT', -10, -14)
+end
+
+local function SkinStorePurchaseAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -2, -6)
+		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
+	end
+
+	local _, ring = frame:GetRegions() -- the CheckButtonGlow ring is only named Border
+	frame.Background:Kill()
+	ring:Kill()
+	frame.glow:Kill()
+	frame.shine:Kill()
+
+	frame.Icon:SetTexCoords()
+	frame.Icon:SetDrawLayer('BORDER', 5)
+
+	-- Icon border
+	if not frame.Icon.b then
+		frame.Icon.b = CreateFrame('Frame', nil, frame)
+		frame.Icon.b:SetTemplate()
+		frame.Icon.b:SetOutside(frame.Icon)
+		frame.Icon:SetParent(frame.Icon.b)
 	end
 end
 
@@ -200,12 +311,10 @@ local function SkinLootWonAlert(frame)
 
 	frame:SetAlpha(1)
 	frame.Background:Kill()
-
-	local lootItem = frame.lootItem or frame
-	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-	lootItem.Icon:SetDrawLayer('BORDER')
-	lootItem.IconBorder:Kill()
-	lootItem.SpecRing:SetTexture(E.ClearTexture)
+	frame.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
+	frame.Icon:SetDrawLayer('BORDER')
+	frame.IconBorder:Kill()
+	frame.SpecRing:SetTexture(E.ClearTexture)
 
 	frame.glow:Kill()
 	frame.shine:Kill()
@@ -213,17 +322,17 @@ local function SkinLootWonAlert(frame)
 	frame.PvPBackground:Kill()
 
 	-- Icon border
-	if not lootItem.Icon.b then
-		lootItem.Icon.b = CreateFrame('Frame', nil, frame)
-		lootItem.Icon.b:SetTemplate()
-		lootItem.Icon.b:SetOutside(lootItem.Icon)
-		lootItem.Icon:SetParent(lootItem.Icon.b)
+	if not frame.Icon.b then
+		frame.Icon.b = CreateFrame('Frame', nil, frame)
+		frame.Icon.b:SetTemplate()
+		frame.Icon.b:SetOutside(frame.Icon)
+		frame.Icon:SetParent(frame.Icon.b)
 	end
 
 	if not frame.backdrop then
 		frame:CreateBackdrop('Transparent')
-		frame.backdrop:Point('TOPLEFT', lootItem.Icon.b, 'TOPLEFT', -4, 4)
-		frame.backdrop:Point('BOTTOMRIGHT', lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
+		frame.backdrop:Point('TOPLEFT', frame.Icon.b, 'TOPLEFT', -4, 4)
+		frame.backdrop:Point('BOTTOMRIGHT', frame.Icon.b, 'BOTTOMRIGHT', 180, -4)
 	end
 end
 
@@ -359,6 +468,14 @@ function S:AlertSystem()
 
 	-- Encounters
 	hooksecurefunc(_G.DungeonCompletionAlertSystem, 'setUpFunction', SkinDungeonCompletionAlert)
+	hooksecurefunc(_G.ChallengeModeAlertSystem, 'setUpFunction', SkinChallengeModeAlert)
+	hooksecurefunc(_G.GuildChallengeAlertSystem, 'setUpFunction', SkinGuildChallengeAlert)
+
+	-- Archaeology
+	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
+
+	-- Store
+	hooksecurefunc(_G.StorePurchaseAlertSystem, 'setUpFunction', SkinStorePurchaseAlert)
 
 	-- Honor
 	hooksecurefunc(_G.HonorAwardedAlertSystem, 'setUpFunction', SkinHonorAwardedAlert)
@@ -372,9 +489,10 @@ function S:AlertSystem()
 	-- Professions
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
 
-	-- Pets/Mounts
+	-- Pets/Mounts/Toys
 	hooksecurefunc(_G.NewPetAlertSystem, 'setUpFunction', SkinNewPetAlert)
 	hooksecurefunc(_G.NewMountAlertSystem, 'setUpFunction', SkinNewPetAlert)
+	hooksecurefunc(_G.NewToyAlertSystem, 'setUpFunction', SkinNewPetAlert)
 end
 
 S:AddCallback('AlertSystem')

@@ -25,7 +25,6 @@ function S:BattleNetFrames()
 	S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
 
 	S:HandleButton(ReportFrame.ReportButton)
-	S:HandleButton(ReportFrame.CloseButton)
 
 	S:HandleFrame(_G.ReportCheatingDialog, true)
 

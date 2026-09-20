@@ -37,12 +37,10 @@ function S:Blizzard_ReforgingUI()
 	_G.ReforgingFrameReforgeButton:Point('BOTTOMRIGHT', -3, 3)
 
 	local ItemButton = _G.ReforgingFrameItemButton
-	if ItemButton then
-		ItemButton.missingText:SetTextColor(1, 0.80, 0.10)
-		ItemButton:StripTextures()
-		ItemButton:SetTemplate(nil, true)
-		ItemButton:StyleButton()
-	end
+	ItemButton.missingText:SetTextColor(1, 0.80, 0.10)
+	ItemButton:StripTextures()
+	ItemButton:SetTemplate(nil, true)
+	ItemButton:StyleButton()
 
 	hooksecurefunc('ReforgingFrame_Update', ReforgingFrameUpdate)
 end

@@ -3,12 +3,11 @@ local S = E:GetModule('Skins')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
-local next, min = next, min
+local next = next
 local unpack, pairs = unpack, pairs
 local hooksecurefunc = hooksecurefunc
 
 local UnitIsGroupLeader = UnitIsGroupLeader
-local C_LFGList_GetAvailableActivities = C_LFGList.GetAvailableActivities
 local C_LFGList_GetAvailableRoles = C_LFGList.GetAvailableRoles
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
@@ -22,15 +21,11 @@ local groupButtonIcons = {
 
 local function LFDQueueFrameRoleButtonIconOnShow(frame)
 	local parent = frame:GetParent()
-	if not parent then return end
-
 	LCG.ShowOverlayGlow(parent.checkButton)
 end
 
 local function LFDQueueFrameRoleButtonIconOnHide(frame)
 	local parent = frame:GetParent()
-	if not parent then return end
-
 	LCG.HideOverlayGlow(parent.checkButton)
 end
 
@@ -62,7 +57,7 @@ end
 local function SkinItemButton(parentFrame, _, index)
 	local parentName = parentFrame:GetName()
 	local item = _G[parentName..'Item'..index]
-	if item and not item.backdrop then
+	if not item.backdrop then
 		item:CreateBackdrop()
 		item.backdrop:ClearAllPoints()
 		item.backdrop:Point('LEFT', 1, 0)
@@ -181,7 +176,7 @@ local function PermanentlyDisableRoleButton(button)
 end
 
 local function DungeonListSetDungeon(button)
-	if button and button.expandOrCollapseButton:IsShown() then
+	if button.expandOrCollapseButton:IsShown() then
 		if button.isCollapsed then
 			button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
 		else
@@ -209,27 +204,31 @@ local function ListSearchEntryUpdate(button)
 end
 
 local function ListSearchUpdateAutoComplete(panel)
-	for _, child in next, { panel.AutoCompleteFrame:GetChildren() } do
+	local autoComplete = panel.AutoCompleteFrame
+	for _, child in next, { autoComplete:GetChildren() } do
 		if not child.IsSkinned and child:IsObjectType('Button') then
 			S:HandleButton(child)
 			child.IsSkinned = true
 		end
 	end
 
-	local text = panel.SearchBox:GetText()
-	local matchingActivities = C_LFGList_GetAvailableActivities(panel.categoryID, nil, panel.filters, text)
-	local numResults = min(#matchingActivities, _G.MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
+	if not autoComplete:IsShown() then return end
 
-	for i = 2, numResults do
-		local button = panel.AutoCompleteFrame.Results[i]
-		if button and not button.moved then
-			button:Point('TOPLEFT', panel.AutoCompleteFrame.Results[i-1], 'BOTTOMLEFT', 0, -2)
-			button:Point('TOPRIGHT', panel.AutoCompleteFrame.Results[i-1], 'BOTTOMRIGHT', 0, -2)
+	local results = autoComplete.Results
+	local numResults = 0
+	for i, button in next, results do
+		if button:IsShown() then
+			numResults = i
+		end
+
+		if i > 1 and not button.moved then
+			button:Point('TOPLEFT', results[i-1], 'BOTTOMLEFT', 0, -2)
+			button:Point('TOPRIGHT', results[i-1], 'BOTTOMRIGHT', 0, -2)
 			button.moved = true
 		end
 	end
 
-	panel.AutoCompleteFrame:Height(numResults * (panel.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
+	autoComplete:Height(numResults * (results[1]:GetHeight() + 3.5) + 8)
 end
 
 local function ListApplicationUpdateInfo(frame)
@@ -358,18 +357,9 @@ function S:LookingForGroupFrames()
 		local index = 1
 		local button = _G.GroupFinderFrame['groupButton'..index]
 		while button do
-			if button.ring then
-				button.ring:Hide()
-			end
-
-			if button.CircleMask then
-				button.CircleMask:Hide()
-			end
-
-			if button.bg then
-				button.bg:Kill()
-			end
-
+			button.ring:Hide()
+			button.CircleMask:Hide()
+			button.bg:Kill()
 			S:HandleButton(button)
 
 			local texture = groupButtonIcons[index]
@@ -400,26 +390,18 @@ function S:LookingForGroupFrames()
 	_G.PVEFrameTab3:Point('TOPLEFT', _G.PVEFrameTab2, 'TOPRIGHT', -19, 0)
 
 	-- Scenario Tab
-	local ScenarioQueueFrame = _G.ScenarioQueueFrame
-	if ScenarioQueueFrame then
-		ScenarioQueueFrame:StripTextures()
-		_G.ScenarioFinderFrameInset:StripTextures()
-		_G.ScenarioQueueFrameBackground:SetAlpha(0)
-		S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropdown, 190)
-		S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
-		S:HandleTrimScrollBar(_G.ScenarioQueueFrameSpecific.ScrollBar)
-		S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
+	_G.ScenarioQueueFrame:StripTextures()
+	_G.ScenarioFinderFrameInset:StripTextures()
+	_G.ScenarioQueueFrameBackground:SetAlpha(0)
+	S:HandleDropDownBox(_G.ScenarioQueueFrameTypeDropdown, 190)
+	S:HandleTrimScrollBar(_G.ScenarioQueueFrameRandomScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(_G.ScenarioQueueFrameSpecific.ScrollBar)
+	S:HandleButton(_G.ScenarioQueueFrameFindGroupButton)
 
-		_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
+	_G.ScenarioQueueFrameSpecificScrollFrame:StripTextures()
+	_G.ScenarioQueueFrameRandomScrollFrameChildFrameMoneyRewardNameFrame:StripTextures()
 
-		_G.ScenarioQueueFrameRandomScrollFrameChildFrameMoneyRewardNameFrame:StripTextures()
-
-		hooksecurefunc(_G.ScenarioQueueFrameSpecificScrollFrame, 'Update', LFDQueueFrameSpecificUpdate)
-
-		if _G.ScenarioQueueFrameRandomScrollFrameScrollBar then
-			_G.ScenarioQueueFrameRandomScrollFrameScrollBar:SetAlpha(0)
-		end
-	end
+	hooksecurefunc(_G.ScenarioQueueFrameSpecificScrollFrame, 'Update', LFDQueueFrameSpecificUpdate)
 
 	-- Dungeon finder
 	S:HandleButton(_G.LFDQueueFrameFindGroupButton)
@@ -455,10 +437,8 @@ function S:LookingForGroupFrames()
 	S:HandleButton(_G.LFGInvitePopupAcceptButton)
 	S:HandleButton(_G.LFGInvitePopupDeclineButton)
 
-	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
-	S:HandleButton(_G[_G.LFDQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
-	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'BackfillButton'])
-	S:HandleButton(_G[_G.RaidFinderQueueFrame.PartyBackfill:GetName()..'NoBackfillButton'])
+	S:HandleButton(_G.RaidFinderQueueFramePartyBackfillBackfillButton)
+	S:HandleButton(_G.RaidFinderQueueFramePartyBackfillNoBackfillButton)
 	S:HandleTrimScrollBar(_G.LFDQueueFrameSpecific.ScrollBar)
 
 	hooksecurefunc(_G.LFDQueueFrameSpecific.ScrollBox, 'Update', LFDQueueFrameSpecificUpdate)
@@ -646,8 +626,8 @@ function S:Blizzard_ChallengesUI()
 		end
 	end
 
-	for i = 1, 3 do
-		local rewardsRow = _G.ChallengesFrame['RewardRow'..i]
+	for i = 1, 5 do -- bronze, silver, gold, platinum, diamond
+		local rewardsRow = ChallengesFrame['RewardRow'..i]
 
 		rewardsRow.Bg:SetTexture(E.Media.Textures.Highlight)
 
@@ -655,8 +635,19 @@ function S:Blizzard_ChallengesUI()
 			rewardsRow.Bg:SetVertexColor(0.859, 0.545, 0.204, 0.3)
 		elseif i == 2 then
 			rewardsRow.Bg:SetVertexColor(0.780, 0.722, 0.741, 0.3)
-		else
+		elseif i == 3 then
 			rewardsRow.Bg:SetVertexColor(0.945, 0.882, 0.337, 0.3)
+		elseif i == 4 then
+			local r, g, b = _G.CHALLENGE_PLATINUM_MEDAL_COLOR:GetRGB()
+			rewardsRow.Bg:SetVertexColor(r, g, b, 0.3)
+		else
+			local diamond = _G.CHALLENGE_DIAMOND_MEDAL_COLOR -- Blizzard guards this one in ChallengesFrame_OnLoad
+			if diamond then
+				local r, g, b = diamond:GetRGB()
+				rewardsRow.Bg:SetVertexColor(r, g, b, 0.3)
+			else
+				rewardsRow.Bg:SetVertexColor(0.224, 1, 0.988, 0.3)
+			end
 		end
 
 		for j = 1, 2 do

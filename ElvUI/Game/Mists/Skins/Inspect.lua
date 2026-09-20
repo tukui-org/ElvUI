@@ -11,15 +11,24 @@ local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInspectSpecialization = GetInspectSpecialization
 
 local function FrameBackdrop_OnEnter(frame)
-	if not frame.backdrop then return end
-
 	frame.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 end
 
 local function FrameBackdrop_OnLeave(frame)
-	if not frame.backdrop then return end
-
 	frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+end
+
+local function TalentBorderSetShown(border, shown) -- TalentFrame_Update shows the border on the inspected unit's chosen talents
+	local button = border:GetParent()
+	if shown then
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
+	else
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
+local function TalentBorderHide(border)
+	TalentBorderSetShown(border, false)
 end
 
 local function Update_InspectPaperDollItemSlotButton(button)
@@ -32,9 +41,7 @@ end
 
 local function InspectTalentIconDesaturated(icon, desaturate)
 	local parent = icon:GetParent()
-	if parent.ShadowedTexture then
-		parent.ShadowedTexture:SetShown(desaturate)
-	end
+	parent.ShadowedTexture:SetShown(desaturate)
 end
 
 local function HandleTabs()
@@ -60,9 +67,7 @@ end
 local function UpdateGlyph(frame)
 	local talentGroup = _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup;
 	local _, glyphType, _, _, iconFilename = GetGlyphSocketInfo(frame:GetID(), talentGroup, true, _G.INSPECTED_UNIT)
-	if frame.texture then
-		frame.texture:SetTexture(glyphType and iconFilename or [[Interface\Spellbook\UI-Glyph-Rune1]])
-	end
+	frame.texture:SetTexture(glyphType and iconFilename or [[Interface\Spellbook\UI-Glyph-Rune1]])
 end
 
 local function BackgroundDesaturation(bckgnd, value)
@@ -81,10 +86,6 @@ function S:Blizzard_InspectUI()
 	-- Tabs
 	HandleTabs()
 
-	for i = 1, #_G.INSPECTFRAME_SUBFRAMES do
-		S:HandleTab(_G['InspectFrameTab'..i])
-	end
-
 	_G.InspectPaperDollFrame:StripTextures()
 	_G.InspectModelFrameBackgroundOverlay:SetTexture(E.media.blankTex)
 	_G.InspectModelFrameBackgroundOverlay:SetVertexColor(0, 0, 0, 0.6)
@@ -93,12 +94,10 @@ function S:Blizzard_InspectUI()
 	-- Give inspect frame model backdrop it's color back
 	for _, corner in next, { 'TopLeft','TopRight','BotLeft','BotRight' } do
 		local bg = _G['InspectModelFrameBackground'..corner]
-		if bg then
-			bg:SetDesaturated(false)
-			bg.ignoreDesaturated = true -- so plugins can prevent this if they want
+		bg:SetDesaturated(false)
+		bg.ignoreDesaturated = true -- so plugins can prevent this if they want
 
-			hooksecurefunc(bg, 'SetDesaturated', BackgroundDesaturation)
-		end
+		hooksecurefunc(bg, 'SetDesaturated', BackgroundDesaturation)
 	end
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
@@ -117,17 +116,9 @@ function S:Blizzard_InspectUI()
 		slot:OffsetFrameLevel(2)
 		slot:StyleButton()
 
-		local name = slot:GetName()
-		local icon = _G[name..'IconTexture']
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
-
-		local cooldown = _G[name..'Cooldown']
-		if cooldown then
-			E:RegisterCooldown(cooldown)
-		end
+		local icon = slot.icon
+		icon:SetTexCoords()
+		icon:SetInside()
 	end
 
 	hooksecurefunc('InspectPaperDollItemSlotButton_Update', Update_InspectPaperDollItemSlotButton)
@@ -143,15 +134,13 @@ function S:Blizzard_InspectUI()
 
 	for _, name in next, { 'RatedBG', 'Arena2v2', 'Arena3v3', 'Arena5v5' } do
 		local section = _G.InspectPVPFrame[name]
-		if section then
-			section:CreateBackdrop('Transparent')
-			section.backdrop:Point('TOPLEFT', 0, -1)
-			section.backdrop:Point('BOTTOMRIGHT', 0, 1)
-			section:EnableMouse(true)
+		section:CreateBackdrop('Transparent')
+		section.backdrop:Point('TOPLEFT', 0, -1)
+		section.backdrop:Point('BOTTOMRIGHT', 0, 1)
+		section:EnableMouse(true)
 
-			section:HookScript('OnEnter', FrameBackdrop_OnEnter)
-			section:HookScript('OnLeave', FrameBackdrop_OnLeave)
-		end
+		section:HookScript('OnEnter', FrameBackdrop_OnEnter)
+		section:HookScript('OnLeave', FrameBackdrop_OnLeave)
 	end
 
 	-- Talent Tab
@@ -200,29 +189,25 @@ function S:Blizzard_InspectUI()
 	for i = 1, 6 do
 		for j = 1, 3 do
 			local button = _G['InspectTalentFrameTalentRow'..i..'Talent'..j]
-			if button then
-				button:StripTextures()
-				button:CreateBackdrop()
-				button:Size(30)
-				button:StyleButton(nil, true)
-				button:GetHighlightTexture():SetInside(button.backdrop)
+			button:StripTextures()
+			button:CreateBackdrop()
+			button:Size(30)
+			button:StyleButton(nil, true)
 
-				if button.icon then
-					button.icon:SetTexCoords()
-					button.icon:SetInside(button.backdrop)
+			local highlight = button:GetHighlightTexture()
+			highlight:SetInside(button.backdrop)
 
-					button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, -2)
-					button.ShadowedTexture:SetAllPoints(button.icon)
-					button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
+			local icon = button.icon
+			icon:SetTexCoords()
+			icon:SetInside(button.backdrop)
 
-					hooksecurefunc(button.icon, 'SetDesaturated', InspectTalentIconDesaturated)
-				end
+			button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, -2)
+			button.ShadowedTexture:SetAllPoints(icon)
+			button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 
-				if button.border then
-					hooksecurefunc(button.border, 'Show', FrameBackdrop_OnEnter)
-					hooksecurefunc(button.border, 'Hide', FrameBackdrop_OnLeave)
-				end
-			end
+			hooksecurefunc(icon, 'SetDesaturated', InspectTalentIconDesaturated)
+			hooksecurefunc(button.border, 'SetShown', TalentBorderSetShown)
+			hooksecurefunc(button.border, 'Hide', TalentBorderHide)
 		end
 	end
 

@@ -288,9 +288,7 @@ function S:Blizzard_AchievementUI()
 	}
 
 	for _, scrollbar in pairs(scrollBars) do
-		if scrollbar then
-			S:HandleScrollBar(scrollbar)
-		end
+		S:HandleScrollBar(scrollbar)
 	end
 
 	-- Tabs

@@ -127,10 +127,6 @@ function S:GossipFrame()
 
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
 		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
-
-		if GossipFrame.Background then
-			GossipFrame.Background:Hide()
-		end
 	else
 		_G.ItemTextMaterialBotLeft:SetDrawLayer('ARTWORK', 1)
 		_G.ItemTextMaterialBotRight:SetDrawLayer('ARTWORK', 1)

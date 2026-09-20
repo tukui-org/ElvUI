@@ -8,29 +8,23 @@ local CreateFrame = CreateFrame
 local function PetButtons(btn, p)
 	local button = _G[btn]
 	local icon = _G[btn..'IconTexture']
-	local highlight = button:GetHighlightTexture()
 	button:StripTextures()
 
-	if button.Checked then
-		button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
-		button.Checked:SetAllPoints(icon)
-		button.Checked:SetAlpha(0.3)
-	end
+	button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
+	button.Checked:SetAllPoints(icon)
+	button.Checked:SetAlpha(0.3)
 
-	if highlight then
-		highlight:SetColorTexture(1, 1, 1, 0.3)
-		highlight:SetAllPoints(icon)
-	end
+	local highlight = button:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, 0.3)
+	highlight:SetAllPoints(icon)
 
-	if icon then
-		icon:SetTexCoords()
-		icon:ClearAllPoints()
-		icon:Point('TOPLEFT', p, -p)
-		icon:Point('BOTTOMRIGHT', -p, p)
+	icon:SetTexCoords()
+	icon:ClearAllPoints()
+	icon:Point('TOPLEFT', p, -p)
+	icon:Point('BOTTOMRIGHT', -p, p)
 
-		button:OffsetFrameLevel(2)
-		button:SetTemplate(nil, true)
-	end
+	button:OffsetFrameLevel(2)
+	button:SetTemplate(nil, true)
 end
 
 function S:PetStableFrame()
@@ -52,16 +46,14 @@ function S:PetStableFrame()
 
 	local p = E.PixelMode and 1 or 2
 	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
-	if PetStableSelectedPetIcon then
-		PetStableSelectedPetIcon:SetTexCoords()
+	PetStableSelectedPetIcon:SetTexCoords()
 
-		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent())
-		b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)
-		b:Point('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
-		PetStableSelectedPetIcon:Size(37)
-		PetStableSelectedPetIcon:SetParent(b)
-		b:SetTemplate()
-	end
+	local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent())
+	b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)
+	b:Point('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
+	PetStableSelectedPetIcon:Size(37)
+	PetStableSelectedPetIcon:SetParent(b)
+	b:SetTemplate()
 
 	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
 		PetButtons('PetStableActivePet' .. i, p)

@@ -12,7 +12,6 @@ local toggles = {
 	bags = L["Bags"],
 	bgmap = L["BG Map"],
 	bgscore = L["BG Score"],
-	binding = L["KEY_BINDINGS"],
 	blizzardOptions = L["INTERFACE_OPTIONS"],
 	channels = L["CHANNELS"],
 	character = L["Character Frame"],
@@ -34,6 +33,7 @@ local toggles = {
 	merchant = L["Merchant Frame"],
 	mirrorTimers = L["Mirror Timers"],
 	misc = L["Misc Frames"],
+	nonraid = L["Non-Raid Frame"],
 	petition = L["Petition Frame"],
 	quest = L["Quest Frames"],
 	raid = L["Raid Frame"],
@@ -74,6 +74,10 @@ end
 if E.Retail or E.Mists or E.Wrath then
 	toggles.achievement = L["ACHIEVEMENTS"]
 	toggles.transmogrify = L["TRANSMOGRIFY"]
+end
+
+if E.Retail or E.Wrath or E.TBC then
+	toggles.binding = L["KEY_BINDINGS"]
 end
 
 if E.Wrath or E.TBC then
@@ -121,7 +125,6 @@ if E.Retail then
 	toggles.itemInteraction = L["Item Interaction"]
 	toggles.losscontrol = L["LOSS_OF_CONTROL"]
 	toggles.majorFactions = L["Major Factions"]
-	toggles.nonraid = L["Non-Raid Frame"]
 	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	toggles.obliterum = L["OBLITERUM_FORGE_TITLE"]
 	toggles.orderhall = L["Orderhall"]

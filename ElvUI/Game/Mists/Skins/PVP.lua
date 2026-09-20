@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local next, pairs = next, pairs
-local hooksecurefunc = hooksecurefunc
+local next = next
 
 local function HandleRoleButton(button)
 	local checkbox = button.checkButton
@@ -12,10 +11,6 @@ local function HandleRoleButton(button)
 	S:HandleCheckBox(checkbox)
 
 	button:Size(40)
-
-	if button.IconPulse then button.IconPulse:Size(40) end
-	if button.EdgePulse then button.EdgePulse:Size(40) end
-	if button.shortageBorder then button.shortageBorder:Size(40) end
 end
 
 local function HandleHonorDropdown(dropdown)
@@ -38,31 +33,19 @@ end
 function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
-	for i = 1, 4 do
-		local bu = _G['PVPQueueFrameCategoryButton'..i]
-		if bu then
-			if bu.Ring then
-				bu.Ring:Kill()
-			end
-
-			if bu.Background then
-				bu.Background:Kill()
-			end
-
-			if bu.CircleMask then
-				bu.CircleMask:Hide()
-			end
-
-			S:HandleButton(bu)
-
-			bu.Icon:Size(45)
-			bu.Icon:ClearAllPoints()
-			bu.Icon:Point('LEFT', 10, 0)
-			S:HandleIcon(bu.Icon, true)
-		end
-	end
-
 	local PVPQueueFrame = _G.PVPQueueFrame
+	for i = 1, 4 do
+		local bu = PVPQueueFrame['CategoryButton'..i]
+		bu.Ring:Kill()
+		bu.Background:Kill()
+		bu.CircleMask:Hide()
+		S:HandleButton(bu)
+
+		bu.Icon:Size(45)
+		bu.Icon:ClearAllPoints()
+		bu.Icon:Point('LEFT', 10, 0)
+		S:HandleIcon(bu.Icon, true)
+	end
 
 	PVPQueueFrame.CategoryButton1.Icon:SetTexture(236396) -- interface\icons\achievement_bg_winwsg.blp
 	PVPQueueFrame.CategoryButton2.Icon:SetTexture(236368) -- interface\icons\achievement_bg_killxenemies_generalsroom.blp
@@ -86,45 +69,14 @@ function S:Blizzard_PVPUI()
 	-- TODO: This is a fake dropdown
 	HandleHonorDropdown(_G.HonorQueueFrameTypeDropDown)
 
-	for _, bonusButton in pairs({'RandomBGButton', 'CallToArmsButton', 'WorldPVP1Button', 'WorldPVP2Button'}) do
-		local bu = BonusFrame[bonusButton]
-		local reward = bu.Reward
-
-		if bu then
-			S:HandleButton(bu)
-			bu.SelectedTexture:SetInside()
-			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-		end
-
-		if reward then
-			reward.Border:Hide()
-			reward.CircleMask:Hide()
-			S:HandleIcon(reward.Icon, true)
-
-			reward.EnlistmentBonus:StripTextures()
-			reward.EnlistmentBonus:SetTemplate()
-			reward.EnlistmentBonus:Size(20)
-			reward.EnlistmentBonus:Point('TOPRIGHT', 2, 2)
-
-			local EnlistmentBonusIcon = reward.EnlistmentBonus:CreateTexture()
-			EnlistmentBonusIcon:Point('TOPLEFT', reward.EnlistmentBonus, 'TOPLEFT', 2, -2)
-			EnlistmentBonusIcon:Point('BOTTOMRIGHT', reward.EnlistmentBonus, 'BOTTOMRIGHT', -2, 2)
-			EnlistmentBonusIcon:SetTexture([[Interface\Icons\achievement_guildperk_honorablemention_rank2]])
-			EnlistmentBonusIcon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
-		end
+	for _, bu in next, { BonusFrame.RandomBGButton, BonusFrame.CallToArmsButton, BonusFrame.WorldPVP1Button, BonusFrame.WorldPVP2Button } do
+		S:HandleButton(bu)
+		bu.SelectedTexture:SetInside()
+		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 	end
 
-	S:HandleButton(_G.HonorQueueFrameSoloQueueButton)
-	_G.HonorQueueFrameSoloQueueButton_RightSeparator:StripTextures()
-
-	S:HandleButton(_G.HonorQueueFrameGroupQueueButton)
-	_G.HonorQueueFrameGroupQueueButton_LeftSeparator:StripTextures()
-
-	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(button)
-		if button.bg then
-			button.bg:SetDesaturated(true)
-		end
-	end)
+	S:HandleButton(HonorFrame.SoloQueueButton)
+	S:HandleButton(HonorFrame.GroupQueueButton)
 
 	HandleRoleButton(HonorFrame.RoleInset.TankIcon)
 	HandleRoleButton(HonorFrame.RoleInset.HealerIcon)
@@ -137,17 +89,10 @@ function S:Blizzard_PVPUI()
 
 	S:HandleButton(_G.ConquestJoinButton)
 
-	for _, bu in pairs({ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.Arena5v5, ConquestFrame.RatedBG}) do
-		local reward = bu.Reward
+	for _, bu in next, { ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.Arena5v5, ConquestFrame.RatedBG } do
 		S:HandleButton(bu)
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
-
-		if reward then
-			reward.Border:Hide()
-			reward.CircleMask:Hide()
-			S:HandleIcon(reward.Icon, true)
-		end
 	end
 
 	ConquestFrame.Arena3v3:Point('TOP', ConquestFrame.Arena2v2, 'BOTTOM', 0, -2)
@@ -163,28 +108,8 @@ function S:Blizzard_PVPUI()
 	S:HandleScrollBar(_G.WarGamesQueueFrameScrollFrameScrollBar)
 	S:HandleScrollBar(_G.WarGamesQueueFrameInfoScrollFrameScrollBar)
 	_G.WarGamesQueueFrameDescription:SetTextColor(1, 1, 1)
-
-	local textures = {
-		WarGamesQueueFrame.HorizontalBar,
-		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar,
-		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Back.Texture,
-		_G.WarGamesQueueFrameInfoScrollFrame.ScrollBar.Forward.Texture
-	}
-
-	for _, name in next, textures do
-		name:Kill()
-	end
-
-	for _, child in next, { WarGamesQueueFrame:GetChildren() } do
-		if child:GetName() == 'WarGameStartButton' then
-			S:HandleButton(child)
-
-			child.LeftSeparator:Kill()
-			child.RightSeparator:Kill()
-
-			break -- no need to continue
-		end
-	end
+	WarGamesQueueFrame.HorizontalBar:Kill()
+	S:HandleButton(_G.WarGameStartButton)
 end
 
 function S:PVPReadyDialog()

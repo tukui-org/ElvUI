@@ -8,9 +8,9 @@ local hooksecurefunc = hooksecurefunc
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local function SkinTab(tab)
-	if tab.Left then tab.Left:SetAlpha(0) end
-	if tab.Middle then tab.Middle:SetAlpha(0) end
-	if tab.Right then tab.Right:SetAlpha(0) end
+	tab.Left:SetAlpha(0)
+	tab.Middle:SetAlpha(0)
+	tab.Right:SetAlpha(0)
 end
 
 local function BlackMarketScrollUpdateChild(button)
@@ -76,7 +76,7 @@ function S:Blizzard_BlackMarketUI()
 
 	hooksecurefunc('BlackMarketFrame_UpdateHotItem', function(item)
 		local deal = item.HotDeal
-		local link = deal and deal.Name and deal:IsShown() and deal.itemLink
+		local link = deal:IsShown() and deal.itemLink
 		if not link then return end
 
 		local quality = GetItemQualityByID(link)
