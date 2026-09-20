@@ -2,9 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, next, strlower = unpack, next, strlower
+local unpack, next, strlower, strmatch = unpack, next, strlower, strmatch
 local hooksecurefunc = hooksecurefunc
-local CreateColor = CreateColor
 
 local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFF] = 'PLACEINBAGS',
@@ -29,7 +28,7 @@ end
 -- Replace title artwork on category rows
 local function HandleCategory(frame)
 	frame.Background:SetAlpha(0)
-	frame:CreateBackdrop('Transparent')
+	frame:CreateBackdrop()
 	frame.backdrop:ClearAllPoints()
 	frame.backdrop:Point('CENTER')
 	frame.backdrop:Size(150, 18)
@@ -57,6 +56,21 @@ local function HandleColoredProgressBar(bar)
 	hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
 end
 
+local function HandleScrollBar(scrollBar)
+	S:HandleTrimScrollBar(scrollBar)
+	scrollBar.Track:CreateBackdrop('Transparent')
+end
+
+local function HappinessInfo_UpdateHappiness(info)
+	if not _G.CharacterStatsPanePetScrollBox:IsShown() then
+		info:Hide() -- blizzard shows it on every tab
+	end
+end
+
+local function ShowSidebar()
+	_G.PetPaperDollPetHappinessInfo:UpdateHappiness() -- reshow on the pet tab, the hook above hides it elsewhere
+end
+
 local function UpdateTabLayout(frame)
 	S:LayoutLargeSideTabs(frame, frame.ModeTabs.Tabs)
 
@@ -67,6 +81,10 @@ local function UpdateTabLayout(frame)
 			break
 		end
 	end
+end
+
+local function SetLevel() -- blizzard grows PaperDollLevelInfo to 40 for the pet loyalty line but never shrinks it back for the player
+	_G.PaperDollLevelInfo:SetHeight(20)
 end
 
 local function UpdateRightPaneToggleButton(frame)
@@ -136,6 +154,15 @@ local function BackdropDesaturated(background, value)
 	end
 end
 
+local resistanceIcons = { -- atlas suffix to the plain SpellSchoolIcon index
+	Holy = 2,
+	Fire = 3,
+	Nature = 4,
+	Frost = 5,
+	Shadow = 6,
+	Arcane = 7
+}
+
 local function UpdateStatsChild(child)
 	if child.Title then
 		if not child.IsSkinned then
@@ -143,27 +170,26 @@ local function UpdateStatsChild(child)
 			child.IsSkinned = true
 		end
 	else
-		if not child.leftGrad then
+		if not child.shade then
 			child.Background:SetAlpha(0)
 
-			local gradientFrom, gradientTo = CreateColor(0.8, 0.8, 0.8, 0.25), CreateColor(0.8, 0.8, 0.8, 0)
-
-			child.leftGrad = child:CreateTexture(nil, 'BORDER')
-			child.leftGrad:Size(80, child:GetHeight())
-			child.leftGrad:Point('LEFT', child, 'CENTER')
-			child.leftGrad:SetTexture(E.Media.Textures.White8x8)
-			child.leftGrad:SetGradient('Horizontal', gradientFrom, gradientTo)
-
-			child.rightGrad = child:CreateTexture(nil, 'BORDER')
-			child.rightGrad:Size(80, child:GetHeight())
-			child.rightGrad:Point('RIGHT', child, 'CENTER')
-			child.rightGrad:SetTexture(E.Media.Textures.White8x8)
-			child.rightGrad:SetGradient('Horizontal', gradientTo, gradientFrom)
+			child.shade = child:CreateTexture(nil, 'BORDER')
+			child.shade:SetAllPoints()
+			child.shade:SetColorTexture(1, 1, 1, 0.1)
 		end
 
-		local shown = child.Background:IsShown()
-		child.leftGrad:SetShown(shown)
-		child.rightGrad:SetShown(shown)
+		child.shade:SetShown(child.Background:IsShown()) -- blizzard alternates it per row
+
+		local icon = child.Icon
+		local atlas = icon and icon:GetAtlas()
+		if atlas then -- resistances, the bordered atlas and its size come back on every init
+			local school = resistanceIcons[strmatch(atlas, 'Resistance%-(%a+)$')]
+			if school then
+				icon:SetTexture([[Interface\PaperDollInfoFrame\SpellSchoolIcon]]..school)
+				icon:Size(18)
+				S:HandleIcon(icon, true)
+			end
+		end
 	end
 end
 
@@ -178,7 +204,7 @@ local function HandleStatsPane(pane)
 		pane.ClassBackground:SetAlpha(0)
 	end
 
-	S:HandleTrimScrollBar(pane.ScrollBar)
+	HandleScrollBar(pane.ScrollBar)
 	pane.ScrollBox:ClearEdgeFade()
 	hooksecurefunc(pane.ScrollBox, 'Update', UpdateStats)
 end
@@ -203,7 +229,7 @@ local function EquipmentManagerPane_UpdateChild(child)
 			end
 		end
 
-		child:CreateBackdrop('Transparent')
+		child:CreateBackdrop()
 		child.backdrop:Point('TOPLEFT')
 		child.backdrop:Point('BOTTOMRIGHT', -7, 0) -- the scroll bar overlaps the scroll box
 
@@ -391,7 +417,7 @@ local function HandleListFrame(frame)
 		child:StripTextures()
 	end
 
-	S:HandleTrimScrollBar(frame.ScrollBar)
+	HandleScrollBar(frame.ScrollBar)
 	hooksecurefunc(frame.ScrollBox, 'Update', UpdateList)
 end
 
@@ -416,7 +442,7 @@ local function HandleSidePane(pane)
 	pane.Divider:SetAlpha(0)
 	pane.Title:FontTemplate(nil, 14)
 
-	S:HandleTrimScrollBar(pane.DescriptionScrollBar)
+	HandleScrollBar(pane.DescriptionScrollBar)
 	hooksecurefunc(pane, 'AcquireRow', SidePane_AcquireRow)
 end
 
@@ -427,12 +453,18 @@ function S:Blizzard_UIPanels_Game()
 	S:HandlePortraitFrame(CharacterFrame)
 
 	CharacterFrame.LeftPaneHost:StripTextures()
-	CharacterFrame.LeftPaneHost:SetTemplate()
 
-	local divider = CharacterFrame.RightPaneHost:GetChildren() -- unnamed frame on the left edge (The ugly divider strip)
+	local RightPaneHost = CharacterFrame.RightPaneHost
+	RightPaneHost:StripTextures()
+	RightPaneHost:CreateBackdrop('Transparent')
+	RightPaneHost.backdrop:SetInside(RightPaneHost, 6, 6)
+	RightPaneHost.StoneBg:SetAlpha(0) -- set again through SetAtlas and SetShown on tab changes
+
+	local divider = RightPaneHost:GetChildren() -- unnamed frame on the left edge (The ugly divider strip)
 	divider:StripTextures()
 
 	S:HandleNextPrevButton(CharacterFrame.RightPaneToggleButton, 'left', nil, true)
+	CharacterFrame.RightPaneToggleButton:SetTemplate()
 	hooksecurefunc(CharacterFrame, 'UpdateRightPaneToggleButton', UpdateRightPaneToggleButton)
 	UpdateRightPaneToggleButton(CharacterFrame)
 
@@ -459,12 +491,24 @@ function S:Blizzard_UIPanels_Game()
 		end
 	end
 
+	-- pull the slot columns to the pane edge, the model scene takes the space
+	_G.CharacterHeadSlot:Point('TOPLEFT', CharacterFrame.LeftPaneHost, 6, -30)
+	_G.CharacterHandsSlot:Point('TOPRIGHT', CharacterFrame.LeftPaneHost, -6, -30)
+
+	local MainHandSlot = _G.CharacterMainHandSlot -- weapon row, x depends on the ranged slot being shown
+	local point, relativeTo, relativePoint, x = MainHandSlot:GetPoint()
+	MainHandSlot:Point(point, relativeTo, relativePoint, x, 6)
+
 	hooksecurefunc('PaperDollItemSlotButton_Update', HandleHighlight)
 	hooksecurefunc('EquipmentFlyoutPopoutButton_RefreshVisualState', PopoutButton_RefreshVisualState)
 
 	_G.CharacterFramePortrait:Kill()
 	_G.CharacterLevelText:FontTemplate()
-	_G.CharacterLevelTextBackground:SetAlpha(0)
+
+	local LevelTextBackground = _G.CharacterLevelTextBackground
+	LevelTextBackground:SetAlpha(0)
+	LevelTextBackground:CreateBackdrop()
+	hooksecurefunc('PaperDollFrame_SetLevel', SetLevel)
 
 	for i = 1, 3 do
 		HandleSidebarTab(_G['PaperDollSidebarTab'..i])
@@ -477,11 +521,29 @@ function S:Blizzard_UIPanels_Game()
 	CharacterModelScene:StripTextures()
 	CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5) -- re-add the overlay which was just stripped
 
+	-- blizzard fills the whole pane behind the slots, box it in between the slot columns like retail
+	CharacterModelScene:ClearAllPoints()
+	CharacterModelScene:Point('TOPLEFT', CharacterFrame.LeftPaneHost, 46, -31)
+	CharacterModelScene:Point('BOTTOMRIGHT', CharacterFrame.LeftPaneHost, -46, 46)
 	CharacterModelScene:CreateBackdrop()
-	CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and 1 or 0, E.PixelMode and 0 or 1)
-	CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and 0 or -1)
+
+	local HappinessInfo = _G.PetPaperDollPetHappinessInfo
+	HappinessInfo:ClearAllPoints()
+	HappinessInfo:Point('TOPLEFT', CharacterModelScene, 6, -6)
+	hooksecurefunc(HappinessInfo, 'UpdateHappiness', HappinessInfo_UpdateHappiness)
+	hooksecurefunc('PaperDollFrame_ShowSidebar', ShowSidebar)
+
+	-- race art is a 212x246 piece plus 19px right and 40px bottom strips, keep that ratio instead of blizzards 80x130 strips
+	local TopLeft, TopRight, BotLeft, BotRight = CharacterModelScene.BackgroundTopLeft, CharacterModelScene.BackgroundTopRight, CharacterModelScene.BackgroundBotLeft, CharacterModelScene.BackgroundBotRight
+	TopLeft:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', -25, 54)
+	TopRight:Width(25)
+	TopRight:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', 0, 54)
+	BotLeft:Height(54)
+	BotLeft:Point('BOTTOMRIGHT', CharacterModelScene, 'BOTTOMRIGHT', -25, 0)
+	BotRight:Size(25, 54)
 
 	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
+	HandleColoredProgressBar(_G.PetPaperDollFrameExpBar) -- lives in the model scene
 
 	-- Give character frame model backdrop it's color back
 	for _, corner in next, { 'TopLeft', 'TopRight', 'BotLeft', 'BotRight' } do
@@ -498,13 +560,13 @@ function S:Blizzard_UIPanels_Game()
 
 	-- Titles
 	local TitleManagerPane = _G.PaperDollFrame.TitleManagerPane
-	S:HandleTrimScrollBar(TitleManagerPane.ScrollBar)
+	HandleScrollBar(TitleManagerPane.ScrollBar)
 	hooksecurefunc(TitleManagerPane.ScrollBox, 'Update', TitleManagerPane_Update)
 
 	-- Equipment Manager
 	local EquipmentManagerPane = _G.PaperDollFrame.EquipmentManagerPane
-	EquipmentManagerPane.Border:Hide()
-	S:HandleTrimScrollBar(EquipmentManagerPane.ScrollBar)
+	EquipmentManagerPane:StripTextures() -- Border and the unnamed scroll line under the list
+	HandleScrollBar(EquipmentManagerPane.ScrollBar)
 
 	hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
 	hooksecurefunc('PaperDollEquipmentManagerPane_InitButton', EquipmentManagerPane_InitButton)
