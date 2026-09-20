@@ -474,6 +474,7 @@ function UF:Configure_Auras(frame, which)
 		auras.allowEnable = settings.enable
 
 		auras.isUnitframe = true
+		auras.useWidth = true -- this helps keeps row count proper when using keepSizeRatio
 		auras.auraType = auraType
 		auras.maxFrameCount = auras.num
 		auras.initialAnchor = E.CenterPoint[settings.anchorPoint] or initialAnchor
