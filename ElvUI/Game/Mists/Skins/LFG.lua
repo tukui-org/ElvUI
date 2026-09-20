@@ -122,6 +122,153 @@ local function LFDQueueFrameSpecificUpdate(frame)
 	frame:ForEachFrame(LFDQueueFrameSpecificUpdateChild)
 end
 
+local function HandleCheckButtonIsRadio(button)
+	if button.IsSkinned then return end
+
+	S:HandleCheckBox(button)
+end
+
+local function ApplicationDialogUpdateRoles(dialog) -- Copy from Blizzard, we just fix position
+	local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
+
+	local avail1, avail2
+	if availTank then
+		avail1 = dialog.TankButton
+	end
+	if availHealer then
+		if avail1 then
+			avail2 = dialog.HealerButton
+		else
+			avail1 = dialog.HealerButton
+		end
+	end
+	if availDPS then
+		if avail1 then
+			avail2 = dialog.DamagerButton
+		else
+			avail1 = dialog.DamagerButton
+		end
+	end
+
+	if avail2 then
+		avail1:ClearAllPoints()
+		avail1:Point('TOPRIGHT', dialog, 'TOP', -40, -35)
+		avail2:ClearAllPoints()
+		avail2:Point('TOPLEFT', dialog, 'TOP', 40, -35)
+	elseif avail1 then
+		avail1:ClearAllPoints()
+		avail1:Point('TOP', dialog, 'TOP', 0, -35)
+	end
+end
+
+local function DisableRoleButton(button)
+	button.checkButton:SetAlpha(button.checkButton:GetChecked() and 1 or 0)
+
+	if button.background then
+		button.background:Show()
+	end
+end
+
+local function EnableRoleButton(button)
+	button.checkButton:SetAlpha(1)
+end
+
+local function PermanentlyDisableRoleButton(button)
+	if button.background then
+		button.background:Show()
+		button.background:SetDesaturated(true)
+	end
+end
+
+local function DungeonListSetDungeon(button)
+	if button and button.expandOrCollapseButton:IsShown() then
+		if button.isCollapsed then
+			button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
+		else
+			button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
+		end
+	end
+end
+
+local function ListApplicationUpdateApplicant(button)
+	if not button.DeclineButton.template then
+		S:HandleButton(button.DeclineButton, nil, true)
+	end
+	if not button.InviteButton.template then
+		S:HandleButton(button.InviteButton)
+	end
+	if not button.InviteButtonSmall.template then
+		S:HandleButton(button.InviteButtonSmall)
+	end
+end
+
+local function ListSearchEntryUpdate(button)
+	if not button.CancelButton.template then
+		S:HandleButton(button.CancelButton, nil, true)
+	end
+end
+
+local function ListSearchUpdateAutoComplete(panel)
+	for _, child in next, { panel.AutoCompleteFrame:GetChildren() } do
+		if not child.IsSkinned and child:IsObjectType('Button') then
+			S:HandleButton(child)
+			child.IsSkinned = true
+		end
+	end
+
+	local text = panel.SearchBox:GetText()
+	local matchingActivities = C_LFGList_GetAvailableActivities(panel.categoryID, nil, panel.filters, text)
+	local numResults = min(#matchingActivities, _G.MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
+
+	for i = 2, numResults do
+		local button = panel.AutoCompleteFrame.Results[i]
+		if button and not button.moved then
+			button:Point('TOPLEFT', panel.AutoCompleteFrame.Results[i-1], 'BOTTOMLEFT', 0, -2)
+			button:Point('TOPRIGHT', panel.AutoCompleteFrame.Results[i-1], 'BOTTOMRIGHT', 0, -2)
+			button.moved = true
+		end
+	end
+
+	panel.AutoCompleteFrame:Height(numResults * (panel.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
+end
+
+local function ListApplicationUpdateInfo(frame)
+	frame.RemoveEntryButton:ClearAllPoints()
+
+	if UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
+		frame.RemoveEntryButton:Point('RIGHT', frame.EditButton, 'LEFT', -2, 0)
+	else
+		frame.RemoveEntryButton:Point('BOTTOMLEFT', -1, 3)
+	end
+end
+
+local function ListCategoryAddButton(btn, btnIndex, categoryID, filters)
+	local button = btn.CategoryButtons[btnIndex]
+	if button then
+		if not button.IsSkinned then
+			button:SetTemplate()
+			button.Icon:SetDrawLayer('BACKGROUND', 2)
+			button.Icon:SetTexCoords()
+			button.Icon:SetInside()
+			button.Cover:Hide()
+			button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
+			button.HighlightTexture:SetInside()
+
+			-- Fix issue with labels not following changes to GameFontNormal as they should
+			button.Label:SetFontObject('GameFontNormal')
+			button.IsSkinned = true
+		end
+
+		button.SelectedTexture:Hide()
+		local selected = btn.selectedCategory == categoryID and btn.selectedFilters == filters
+		if selected then
+			button:SetBackdropBorderColor(1, 1, 0)
+		else
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		end
+	end
+end
+
 function S:LookingForGroupFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
@@ -191,11 +338,7 @@ function S:LookingForGroupFrames()
 		checkButton:Size(18)
 	end
 
-	hooksecurefunc('SetCheckButtonIsRadio', function(button)
-		if not button.IsSkinned then
-			S:HandleCheckBox(button)
-		end
-	end)
+	hooksecurefunc('SetCheckButtonIsRadio', HandleCheckButtonIsRadio)
 
 	for _, checkButton in pairs({ -- Fix issue with role buttons overlapping each other (Blizzard bug)
 		_G.LFGListApplicationDialog.TankButton.CheckButton,
@@ -206,57 +349,10 @@ function S:LookingForGroupFrames()
 		checkButton:Point('BOTTOMLEFT', 0, 0)
 	end
 
-	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', function(dialog) -- Copy from Blizzard, we just fix position
-		local availTank, availHealer, availDPS = C_LFGList_GetAvailableRoles()
-
-		local avail1, avail2
-		if availTank then
-			avail1 = dialog.TankButton
-		end
-		if availHealer then
-			if avail1 then
-				avail2 = dialog.HealerButton
-			else
-				avail1 = dialog.HealerButton
-			end
-		end
-		if availDPS then
-			if avail1 then
-				avail2 = dialog.DamagerButton
-			else
-				avail1 = dialog.DamagerButton
-			end
-		end
-
-		if avail2 then
-			avail1:ClearAllPoints()
-			avail1:Point('TOPRIGHT', dialog, 'TOP', -40, -35)
-			avail2:ClearAllPoints()
-			avail2:Point('TOPLEFT', dialog, 'TOP', 40, -35)
-		elseif avail1 then
-			avail1:ClearAllPoints()
-			avail1:Point('TOP', dialog, 'TOP', 0, -35)
-		end
-	end)
-
-	hooksecurefunc('LFG_DisableRoleButton', function(button)
-		button.checkButton:SetAlpha(button.checkButton:GetChecked() and 1 or 0)
-
-		if button.background then
-			button.background:Show()
-		end
-	end)
-
-	hooksecurefunc('LFG_EnableRoleButton', function(button)
-		button.checkButton:SetAlpha(1)
-	end)
-
-	hooksecurefunc('LFG_PermanentlyDisableRoleButton', function(button)
-		if button.background then
-			button.background:Show()
-			button.background:SetDesaturated(true)
-		end
-	end)
+	hooksecurefunc('LFG_EnableRoleButton', EnableRoleButton)
+	hooksecurefunc('LFG_DisableRoleButton', DisableRoleButton)
+	hooksecurefunc('LFG_PermanentlyDisableRoleButton', PermanentlyDisableRoleButton)
+	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', ApplicationDialogUpdateRoles)
 
 	do
 		local index = 1
@@ -334,15 +430,7 @@ function S:LookingForGroupFrames()
 
 	HandleGoldIcon('LFDQueueFrameRandomScrollFrameChildFrameMoneyReward')
 
-	hooksecurefunc('LFGDungeonListButton_SetDungeon', function(button)
-		if button and button.expandOrCollapseButton:IsShown() then
-			if button.isCollapsed then
-				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
-			else
-				button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
-			end
-		end
-	end)
+	hooksecurefunc('LFGDungeonListButton_SetDungeon', DungeonListSetDungeon)
 
 	S:HandleDropDownBox(_G.LFDQueueFrameTypeDropdown, 200)
 
@@ -461,47 +549,9 @@ function S:LookingForGroupFrames()
 	LFGListFrame.SearchPanel.RefreshButton.Icon:Point('CENTER')
 	S:HandleCloseButton(LFGListFrame.SearchPanel.FilterButton.ResetButton)
 
-	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', function(button)
-		if not button.DeclineButton.template then
-			S:HandleButton(button.DeclineButton, nil, true)
-		end
-		if not button.InviteButton.template then
-			S:HandleButton(button.InviteButton)
-		end
-		if not button.InviteButtonSmall.template then
-			S:HandleButton(button.InviteButtonSmall)
-		end
-	end)
-
-	hooksecurefunc('LFGListSearchEntry_Update', function(button)
-		if not button.CancelButton.template then
-			S:HandleButton(button.CancelButton, nil, true)
-		end
-	end)
-
-	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', function(panel)
-		for _, child in next, { LFGListFrame.SearchPanel.AutoCompleteFrame:GetChildren() } do
-			if not child.IsSkinned and child:IsObjectType('Button') then
-				S:HandleButton(child)
-				child.IsSkinned = true
-			end
-		end
-
-		local text = panel.SearchBox:GetText()
-		local matchingActivities = C_LFGList_GetAvailableActivities(panel.categoryID, nil, panel.filters, text)
-		local numResults = min(#matchingActivities, _G.MAX_LFG_LIST_SEARCH_AUTOCOMPLETE_ENTRIES)
-
-		for i = 2, numResults do
-			local button = panel.AutoCompleteFrame.Results[i]
-			if button and not button.moved then
-				button:Point('TOPLEFT', panel.AutoCompleteFrame.Results[i-1], 'BOTTOMLEFT', 0, -2)
-				button:Point('TOPRIGHT', panel.AutoCompleteFrame.Results[i-1], 'BOTTOMRIGHT', 0, -2)
-				button.moved = true
-			end
-		end
-
-		panel.AutoCompleteFrame:Height(numResults * (panel.AutoCompleteFrame.Results[1]:GetHeight() + 3.5) + 8)
-	end)
+	hooksecurefunc('LFGListSearchEntry_Update', ListSearchEntryUpdate)
+	hooksecurefunc('LFGListSearchPanel_UpdateAutoComplete', ListSearchUpdateAutoComplete)
+	hooksecurefunc('LFGListApplicationViewer_UpdateApplicant', ListApplicationUpdateApplicant)
 
 	LFGListFrame.SearchPanel.AutoCompleteFrame:StripTextures()
 	LFGListFrame.SearchPanel.AutoCompleteFrame:CreateBackdrop('Transparent')
@@ -554,42 +604,8 @@ function S:LookingForGroupFrames()
 
 	S:HandleTrimScrollBar(LFGListFrame.ApplicationViewer.ScrollBar)
 
-	hooksecurefunc('LFGListApplicationViewer_UpdateInfo', function(frame)
-		frame.RemoveEntryButton:ClearAllPoints()
-
-		if UnitIsGroupLeader('player', LE_PARTY_CATEGORY_HOME) then
-			frame.RemoveEntryButton:Point('RIGHT', frame.EditButton, 'LEFT', -2, 0)
-		else
-			frame.RemoveEntryButton:Point('BOTTOMLEFT', -1, 3)
-		end
-	end)
-
-	hooksecurefunc('LFGListCategorySelection_AddButton', function(btn, btnIndex, categoryID, filters)
-		local button = btn.CategoryButtons[btnIndex]
-		if button then
-			if not button.IsSkinned then
-				button:SetTemplate()
-				button.Icon:SetDrawLayer('BACKGROUND', 2)
-				button.Icon:SetTexCoords()
-				button.Icon:SetInside()
-				button.Cover:Hide()
-				button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
-				button.HighlightTexture:SetInside()
-
-				-- Fix issue with labels not following changes to GameFontNormal as they should
-				button.Label:SetFontObject('GameFontNormal')
-				button.IsSkinned = true
-			end
-
-			button.SelectedTexture:Hide()
-			local selected = btn.selectedCategory == categoryID and btn.selectedFilters == filters
-			if selected then
-				button:SetBackdropBorderColor(1, 1, 0)
-			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-			end
-		end
-	end)
+	hooksecurefunc('LFGListApplicationViewer_UpdateInfo', ListApplicationUpdateInfo)
+	hooksecurefunc('LFGListCategorySelection_AddButton', ListCategoryAddButton)
 end
 
 function S:Blizzard_ChallengesUI()
