@@ -35,6 +35,12 @@ local X2_INVTYPES = {
 	INVTYPE_RANGED = true
 }
 
+local WEAPON_OFFHANDS = {
+	[_G.INVTYPE_WEAPON] = true,
+	[_G.INVTYPE_2HWEAPON] = true,
+	[_G.INVTYPE_WEAPONOFFHAND] = true
+}
+
 local MISSING_RED = format('|cFFFF3333%s|r', _G.ADDON_MISSING)
 local MISSING_ENCHANTS = {
 	E.Retail,	-- 1: Head
@@ -53,7 +59,7 @@ local MISSING_ENCHANTS = {
 	false,		-- 14: Trinket 2
 	false,		-- 15: Back
 	E.Retail,	-- 16: Main Hand
-	false		-- 17: Off Hand
+	E.Retail,	-- 17: Off Hand (only weapons)
 }
 
 function E:InspectGearSlot(line, lineText, slotInfo, slot, lastLine)
@@ -68,6 +74,11 @@ function E:InspectGearSlot(line, lineText, slotInfo, slot, lastLine)
 		slotInfo.itemLevelColors[1] = r1
 		slotInfo.itemLevelColors[2] = g1
 		slotInfo.itemLevelColors[3] = b1
+	end
+
+	-- if its an offhand weapon for missing display
+	if slot == 17 and WEAPON_OFFHANDS[lineText] then
+		slotInfo.offhandWeapon = true
 	end
 
 	-- handle encahants, current this check limits it to retail only
@@ -89,7 +100,7 @@ function E:InspectGearSlot(line, lineText, slotInfo, slot, lastLine)
 		slotInfo.enchantColors[1] = r
 		slotInfo.enchantColors[2] = g
 		slotInfo.enchantColors[3] = b
-	elseif lastLine and not slotInfo.enchantText and (db.showMissing and MISSING_ENCHANTS[slot]) then
+	elseif lastLine and (not slotInfo.enchantText and db.showMissing) and (slot ~= 17 or slotInfo.offhandWeapon) and MISSING_ENCHANTS[slot] then
 		slotInfo.enchantText = MISSING_RED
 		slotInfo.enchantTextShort = MISSING_RED
 		slotInfo.enchantTextReal = nil
