@@ -103,7 +103,7 @@ function E:Auras_DispelUpdated()
 	end
 end
 
-function E:Auras_OnEvent(event, arg1, arg2)
+function E:Auras_OnEvent(event, arg1)
 	local container = self:GetParent()
 	if event == 'PLAYER_FOCUS_CHANGED' or event == 'PLAYER_TARGET_CHANGED' then
 		local eventUnit = E.AuraEventUnits[event]
@@ -120,11 +120,7 @@ function E:Auras_OnEvent(event, arg1, arg2)
 			E:Auras_AssistUnit(container, container.unit)
 		end
 	elseif arg1 and (arg1 == container.unit) then
-		if event == 'UNIT_DISTANCE_CHECK_UPDATE' then
-			container.isInDistance = arg2
-		end
-
-		E:Auras_AssistUnit(container, arg1, container.isInDistance)
+		E:Auras_AssistUnit(container, arg1)
 	end
 end
 
@@ -1008,8 +1004,6 @@ end
 function E:Auras_SetUnit(container, unit)
 	container:SetUnit(unit or '')
 	container.unit = unit
-
-	container.isInDistance = nil -- we dont want a stale value, clear it when unit is set (changed or not)
 end
 
 function E:Auras_ToggleEnable(container, shown)
@@ -1117,7 +1111,6 @@ function E:Auras_RegisterUnitEvents(container, unit)
 		-- keeps opposite faction correct when zoning into content
 		local highlight = events.isHighlight
 		if highlight or events.isGroup then
-			events:RegisterUnitEvent('UNIT_DISTANCE_CHECK_UPDATE', unit)
 			events:RegisterUnitEvent('UNIT_PHASE', unit)
 		end
 
@@ -1128,7 +1121,6 @@ function E:Auras_RegisterUnitEvents(container, unit)
 			events:RegisterUnitEvent('UNIT_FACTION', unit)
 		end
 	else
-		events:UnregisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
 		events:UnregisterEvent('UNIT_FACTION')
 		events:UnregisterEvent('UNIT_PHASE')
 	end
