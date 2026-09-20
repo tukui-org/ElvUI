@@ -64,6 +64,11 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
 	_G.ReadyCheckFrameText:Width(300)
 
+	_G.PVPReadyDialog:StripTextures()
+	_G.PVPReadyDialog:SetTemplate('Transparent')
+	S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
+	S:HandleButton(_G.PVPReadyDialogHideButton)
+
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
 	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
 

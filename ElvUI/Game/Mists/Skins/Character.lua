@@ -62,6 +62,8 @@ local function HandleItemButtonQuality(button, rarity)
 end
 
 local function PaperDollItemButtonQuality(button)
+	if not button.SetBackdropBorderColor then return end -- bag bar slots run this too, no backdrop when the bag bar is off
+
 	local id = button.id or button:GetID()
 	local rarity = id and GetInventoryItemQuality('player', id)
 

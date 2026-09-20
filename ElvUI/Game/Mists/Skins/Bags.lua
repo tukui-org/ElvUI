@@ -48,12 +48,9 @@ function S:ContainerFrame()
 	-- ContainerFrame
 	for i = 1, _G.NUM_CONTAINER_FRAMES do
 		local frame = _G['ContainerFrame'..i]
-		local closeButton = _G['ContainerFrame'..i..'CloseButton']
 
 		frame:StripTextures(true)
 		S:HandleFrame(frame, true, nil, 9, -4, -4, 2)
-
-		S:HandleCloseButton(closeButton, frame.backdrop)
 
 		for j = 1, _G.MAX_CONTAINER_ITEMS do
 			local item = _G['ContainerFrame'..i..'Item'..j]
@@ -137,7 +134,6 @@ function S:ContainerFrame()
 	BankFrame:StripTextures(true)
 	S:HandleFrame(BankFrame, true, nil, 12, 0, 10, 80)
 	S:HandleEditBox(_G.BankItemSearchBox)
-	S:HandleCloseButton(_G.BankFrameCloseButton, BankFrame.backdrop)
 
 	_G.BankSlotsFrame:StripTextures()
 

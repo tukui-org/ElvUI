@@ -76,7 +76,7 @@ if E.Retail or E.Mists or E.Wrath then
 	toggles.transmogrify = L["TRANSMOGRIFY"]
 end
 
-if E.Retail or E.Wrath or E.TBC then
+if E.Retail or E.TBC then
 	toggles.binding = L["KEY_BINDINGS"]
 end
 

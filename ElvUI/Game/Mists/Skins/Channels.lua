@@ -44,7 +44,6 @@ function S:Blizzard_Channels()
 	local voiceChatPrompt = _G.VoiceChatPromptActivateChannel
 	S:HandleFrame(voiceChatPrompt, true)
 	S:HandleButton(voiceChatPrompt.AcceptButton)
-	S:HandleCloseButton(voiceChatPrompt.CloseButton)
 
 	-- Hide the Channel Header Textures
 	hooksecurefunc(_G.ChannelButtonHeaderMixin, 'Update', ButtonHeader_Update)

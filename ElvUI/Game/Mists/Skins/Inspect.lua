@@ -81,7 +81,6 @@ function S:Blizzard_InspectUI()
 
 	local InspectFrame = _G.InspectFrame
 	S:HandleFrame(InspectFrame)
-	S:HandleCloseButton(_G.InspectFrameCloseButton, InspectFrame.backdrop)
 
 	-- Tabs
 	HandleTabs()

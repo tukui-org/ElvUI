@@ -100,10 +100,8 @@ function S:BlizzardMiscFrames()
 		end
 	end)
 
-	-- Same as above except 'MovieFrame_OnEvent' and 'MovieFrame_OnShow'
-	-- Cant be hooked directly so we can just use this
-	-- This is called through 'MovieFrame_OnEvent' on the event 'PLAY_MOVIE'
-	hooksecurefunc('MovieFrame_PlayMovie', function(frame)
+	local MovieFrame = _G.MovieFrame
+	hooksecurefunc(MovieFrame, 'ShowCloseDialog', function(frame)
 		frame:SetScale(E.uiscale)
 
 		local closeDialog = frame.CloseDialog
@@ -111,8 +109,8 @@ function S:BlizzardMiscFrames()
 			closeDialog:StripTextures()
 			closeDialog:SetTemplate('Transparent')
 
-			S:HandleButton(closeDialog.ConfirmButton)
-			S:HandleButton(closeDialog.ResumeButton)
+			S:HandleButton(closeDialog.Buttons.ConfirmButton, nil, nil, nil, true)
+			S:HandleButton(closeDialog.Buttons.ResumeButton, nil, nil, nil, true)
 		end
 	end)
 

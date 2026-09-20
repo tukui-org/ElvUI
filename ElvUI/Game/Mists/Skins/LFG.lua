@@ -304,7 +304,6 @@ function S:LookingForGroupFrames()
 	-- Role check popup
 	S:HandleFrame(_G.RolePollPopup)
 	S:HandleButton(_G.RolePollPopupAcceptButton)
-	S:HandleCloseButton(_G.RolePollPopupCloseButton)
 
 	for _, roleButton in pairs({
 		_G.LFDQueueFrameRoleButtonHealer,

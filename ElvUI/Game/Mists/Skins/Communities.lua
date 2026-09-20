@@ -133,9 +133,6 @@ function S:Blizzard_Communities()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
 	local CommunitiesFrame = _G.CommunitiesFrame
-	CommunitiesFrame:StripTextures()
-	_G.CommunitiesFrameInset.Bg:Hide()
-
 	S:HandlePortraitFrame(CommunitiesFrame)
 
 	local CommunitiesFrameCommunitiesList = _G.CommunitiesFrameCommunitiesList
@@ -159,7 +156,6 @@ function S:Blizzard_Communities()
 	S:HandleItemButton(CommunitiesFrame.GuildBenefitsTab)
 	S:HandleItemButton(CommunitiesFrame.GuildInfoTab)
 
-	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
 
 	S:HandleButton(CommunitiesFrame.InviteButton)

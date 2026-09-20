@@ -41,12 +41,9 @@ function S:Blizzard_RaidUI()
 		end
 	end
 
-	_G.RaidClassButton1:ClearAllPoints()
-	_G.RaidClassButton1:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -50, -50)
-
 	do -- Classes on the right side of the Raid Control
 		local prevButton
-		for index = 1, 13 do
+		for index = 1, 14 do -- 11 classes, pets, main tank, main assist
 			local button = _G['RaidClassButton'..index]
 			local icon = _G['RaidClassButton'..index..'IconTexture']
 			local count = _G['RaidClassButton'..index..'Count']
@@ -58,7 +55,7 @@ function S:Blizzard_RaidUI()
 			button:ClearAllPoints()
 			if index == 1 then
 				button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -3, -48)
-			elseif index == 11 then
+			elseif index == 12 then
 				button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
 			else
 				button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
@@ -67,13 +64,13 @@ function S:Blizzard_RaidUI()
 
 			icon:SetInside()
 
-			if index == 11 then
+			if index == 12 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
 				icon:SetTexCoords()
-			elseif index == 12 then
+			elseif index == 13 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
 				icon:SetTexCoords()
-			elseif index == 13 then
+			elseif index == 14 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
 				icon:SetTexCoords()
 			else

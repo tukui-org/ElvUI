@@ -387,10 +387,6 @@ function S:BlizzardQuestFrames()
 
 	_G.QuestLogSkillHighlight:SetTexture(E.Media.Textures.Highlight)
 	_G.QuestLogSkillHighlight:SetAlpha(0.3)
-
-	S:HandleCloseButton(_G.QuestFrameCloseButton, _G.QuestFrame.backdrop)
-	S:HandleCloseButton(_G.QuestLogFrameCloseButton, _G.QuestLogFrame.backdrop)
-	S:HandleCloseButton(_G.QuestLogDetailFrameCloseButton, _G.QuestLogDetailFrame.backdrop)
 end
 
 S:AddCallback('BlizzardQuestFrames')

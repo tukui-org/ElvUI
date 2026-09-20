@@ -42,8 +42,6 @@ function S:Blizzard_TrainerUI()
 	S:HandleButton(_G.ClassTrainerTrainButton)
 	_G.ClassTrainerTrainButton:Point('BOTTOMRIGHT', -36, 80)
 
-	S:HandleCloseButton(_G.ClassTrainerFrameCloseButton, ClassTrainerFrame.backdrop)
-
 	hooksecurefunc('ClassTrainer_SetSelection', SetSelection)
 
 	for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do

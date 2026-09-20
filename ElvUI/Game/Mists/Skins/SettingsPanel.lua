@@ -191,15 +191,6 @@ local function SettingsListScrollUpdateChild(child)
 		S:HandleButton(child.Button2)
 	end
 
-	if child.Controls then
-		for i = 1, #child.Controls do
-			local control = child.Controls[i]
-			if control.SliderWithSteppers then
-				S:HandleStepSlider(control.SliderWithSteppers)
-			end
-		end
-	end
-
 	if child.BaseTab then
 		HandleControlTab(child.BaseTab)
 	end

@@ -51,7 +51,7 @@ local function UpdateMerchantInfo()
 	local numMerchantItems = GetMerchantNumItems()
 	local index = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
 
-	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
+	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
 		index = index + 1
 
 		if index <= numMerchantItems then
@@ -143,7 +143,7 @@ function S:MerchantFrame()
 	_G.MerchantGuildBankRepairButtonIcon:SetInside()
 
 	S:HandleButton(_G.MerchantRepairAllButton)
-	_G.MerchantRepairAllIcon:StyleButton(false)
+	_G.MerchantRepairAllButton:StyleButton(false)
 	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	_G.MerchantRepairAllIcon:SetInside()
 

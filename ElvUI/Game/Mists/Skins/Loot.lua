@@ -106,7 +106,7 @@ function S:LootFrame()
 	item.NameBorderLeft:StripTextures()
 	item.NameBorderRight:StripTextures()
 
-	local _, _, closeButton = MasterLooterFrame:GetChildren() -- UIPanelCloseButton without a key, the player buttons are created later
+	local _, _, _, closeButton = MasterLooterFrame:GetChildren() -- NineSlice, Item, player1, unnamed UIPanelCloseButton; the other player buttons are created on demand
 	S:HandleCloseButton(closeButton)
 
 	hooksecurefunc('MasterLooterFrame_Show', MasterLooterShow)

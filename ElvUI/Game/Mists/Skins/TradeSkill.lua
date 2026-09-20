@@ -160,8 +160,6 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleEditBox(_G.TradeSkillInputBox)
 	S:HandleNextPrevButton(_G.TradeSkillIncrementButton)
 
-	S:HandleCloseButton(_G.TradeSkillFrameCloseButton, TradeSkillFrame.backdrop)
-
 	_G.TradeSkillSkillIcon:CreateBackdrop()
 	hooksecurefunc('TradeSkillFrame_SetSelection', SetSelection)
 end
