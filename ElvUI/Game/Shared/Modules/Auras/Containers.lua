@@ -120,7 +120,11 @@ function E:Auras_OnEvent(event, arg1, arg2)
 			E:Auras_AssistUnit(container, container.unit)
 		end
 	elseif arg1 and (arg1 == container.unit) then
-		E:Auras_AssistUnit(container, arg1, event == 'UNIT_DISTANCE_CHECK_UPDATE' and arg2 or nil)
+		if event == 'UNIT_DISTANCE_CHECK_UPDATE' then
+			container.isInDistance = arg2
+		end
+
+		E:Auras_AssistUnit(container, arg1, container.isInDistance)
 	end
 end
 
@@ -1004,6 +1008,8 @@ end
 function E:Auras_SetUnit(container, unit)
 	container:SetUnit(unit or '')
 	container.unit = unit
+
+	container.isInDistance = nil -- we dont want a stale value, clear it when unit is set (changed or not)
 end
 
 function E:Auras_ToggleEnable(container, shown)
@@ -1104,8 +1110,8 @@ function E:Auras_CreateEventFrame(container, parent)
 
 	-- keeps opposite faction correct when zoning into content
 	if highlight or group then
-		events:RegisterEvent('UNIT_PHASE')
 		events:RegisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
+		events:RegisterEvent('UNIT_PHASE')
 	end
 
 	return events
