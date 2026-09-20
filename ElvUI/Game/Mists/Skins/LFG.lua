@@ -123,9 +123,9 @@ local function LFDQueueFrameSpecificUpdate(frame)
 end
 
 local function HandleCheckButtonIsRadio(button)
-	if not button.IsSkinned then
-		S:HandleCheckBox(button)
-	end
+	if button.IsSkinned then return end
+
+	S:HandleCheckBox(button)
 end
 
 local function ApplicationDialogUpdateRoles(dialog) -- Copy from Blizzard, we just fix position
