@@ -38,7 +38,7 @@ local X2_INVTYPES = {
 local WEAPON_OFFHANDS = {
 	[_G.INVTYPE_WEAPON] = true,
 	[_G.INVTYPE_2HWEAPON] = true,
-	[_G.INVTYPE_WEAPONOFFHAND] = true
+	[_G.INVTYPE_WEAPONOFFHAND] = not E.Retail
 }
 
 local MISSING_RED = format('|cFFFF3333%s|r', _G.ADDON_MISSING)
