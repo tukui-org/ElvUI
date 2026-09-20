@@ -1107,20 +1107,17 @@ function E:Auras_RegisterUnitEvents(container, unit)
 	local events = container.events
 	if not events then return end
 
-	if unit then
-		-- technically we might need this on group too
-		-- however blizzard plans to fix us needing this
-		-- so for now we only add it to highlight
-		local highlight = events.isHighlight
-		if highlight then
-			events:RegisterUnitEvent('UNIT_FACTION', unit)
-		end
-
-		-- keeps opposite faction correct when zoning into content
-		if highlight or events.isGroup then
-			events:RegisterUnitEvent('UNIT_PHASE', unit)
-		end
+	-- keeps opposite faction correct when zoning into content
+	if unit and (events.isHighlight or events.isGroup) then
+		events:RegisterUnitEvent('UNIT_DISTANCE_CHECK_UPDATE', unit)
+		events:RegisterUnitEvent('UNIT_IN_RANGE_UPDATE', unit)
+		events:RegisterUnitEvent('UNIT_CONNECTION', unit)
+		events:RegisterUnitEvent('UNIT_FACTION', unit)
+		events:RegisterUnitEvent('UNIT_PHASE', unit)
 	else
+		events:UnregisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
+		events:UnregisterEvent('UNIT_IN_RANGE_UPDATE')
+		events:UnregisterEvent('UNIT_CONNECTION')
 		events:UnregisterEvent('UNIT_FACTION')
 		events:UnregisterEvent('UNIT_PHASE')
 	end
