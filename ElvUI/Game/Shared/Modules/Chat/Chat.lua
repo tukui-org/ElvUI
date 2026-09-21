@@ -358,8 +358,9 @@ do --this can save some main file locals
 		if E.Classic then
 			-- Simpy Seasonal (5813: Wild Growth)
 			z['Player-5813-0301DEC1']	= itsSimpy -- Warlock: Yubi
-			-- Simpy Era (5149: Mankrik)
+			-- Simpy Era (5149: Mankrik, 5066: Whitemane)
 			z['Player-5149-04172B76']	= itsSimpy -- Warlock: Simpy
+			z['Player-5066-0659581C']	= itsSimpy -- Priest: Cutepriest
 		elseif E.TBC then
 			-- Simpy TBC Anniversary (6064: Dreamscythe)
 			z['Player-6064-02A886D5']	= itsSimpy -- Warlock: Simpy
