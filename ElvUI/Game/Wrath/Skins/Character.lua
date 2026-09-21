@@ -143,7 +143,7 @@ local function HandleResistanceFrame(name)
 
 		if i ~= 1 then
 			frame:ClearAllPoints()
-			frame:Point('TOP', _G[frameName - 1], 'BOTTOM', 0, -1)
+			frame:Point('TOP', _G[frameName..(i - 1)], 'BOTTOM', 0, -1)
 		end
 
 		icon:SetInside()
