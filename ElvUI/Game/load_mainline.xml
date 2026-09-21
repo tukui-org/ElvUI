@@ -73,7 +73,7 @@
 	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
 	<Script file='Shared\Modules\Misc\PrivateAuras.lua'/>
 	<Script file='Mainline\Skins\Achievement.lua'/>
-	<Script file='Mainline\Skins\Addonmanager.lua'/>
+	<Script file='Mainline\Skins\AddonManager.lua'/>
 	<Script file='Mainline\Skins\AdventureMap.lua'/>
 	<Script file='Mainline\Skins\Alerts.lua'/>
 	<Script file='Mainline\Skins\AlliedRaces.lua'/>

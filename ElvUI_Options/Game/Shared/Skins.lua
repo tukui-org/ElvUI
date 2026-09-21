@@ -51,21 +51,27 @@ local toggles = {
 }
 
 if E.Modern or E.Mists then
+	toggles.pvp = L["PvP Frames"]
+	toggles.guild = L["Guild"]
+end
+
+if E.Retail or E.Mists then
 	toggles.archaeology = L["Archaeology Frame"]
 	toggles.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
 	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	toggles.itemUpgrade = L["Item Upgrade"]
 	toggles.petbattleui = L["Pet Battle"]
-	toggles.pvp = L["PvP Frames"]
-	toggles.guild = L["Guild"]
 end
 
 if E.Modern or E.Mists or E.TBC then
 	toggles.catalogShop = L["BLIZZARD_STORE"]
 end
 
-if E.Modern or E.Mists or E.Wrath then
+if E.Retail or E.Mists or E.Wrath then
 	toggles.achievement = L["ACHIEVEMENTS"]
+end
+
+if E.Modern or E.Mists or E.Wrath then
 	toggles.alertframes = L["Alert Frames"]
 	toggles.barber = L["BARBERSHOP"]
 	toggles.calendar = L["Calendar Frame"]
@@ -75,14 +81,9 @@ end
 
 if not E.Classic then
 	toggles.gbank = L["Guild Bank"]
-	toggles.socket = L["Socket Frame"]
 end
 
-if E.Retail then
-	toggles.binding = L["KEY_BINDINGS"]
-end
-
-if E.Retail or E.TBC or E.Classic then
+if E.Modern or E.TBC or E.Classic then
 	toggles.gmChat = L["GM Chat"]
 end
 
@@ -115,13 +116,12 @@ if not E.Forever then
 end
 
 if E.Modern then
+	toggles.binding = L["KEY_BINDINGS"]
 	toggles.cooldownManager = L["Cooldown Manager"]
 	toggles.damageMeter = L["Damage Meter"]
 	toggles.deathRecap = L["DEATH_RECAP_TITLE"]
-	toggles.gmChat = L["GM Chat"]
 	toggles.itemInteraction = L["Item Interaction"]
 	toggles.losscontrol = L["LOSS_OF_CONTROL"]
-	toggles.nonraid = L["Non-Raid Frame"]
 	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	toggles.subscriptionInterstitial = L["Subscription Interstitial"]
 end
