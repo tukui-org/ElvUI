@@ -151,10 +151,6 @@ function S:SpellBookFrame()
 	local SpellBookFrame = _G.SpellBookFrame
 	S:HandlePortraitFrame(SpellBookFrame)
 
-	for _, frame in next, { _G.SpellBookSpellIconsFrame, _G.SpellBookSideTabsFrame, _G.SpellBookPageNavigationFrame } do
-		frame:StripTextures()
-	end
-
 	if E.private.skins.parchmentRemoverEnable then
 		_G.SpellBookPage1:SetAlpha(0)
 		_G.SpellBookPage2:SetAlpha(0)

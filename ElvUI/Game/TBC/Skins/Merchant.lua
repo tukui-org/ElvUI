@@ -5,7 +5,6 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local CreateFrame = CreateFrame
 local CanGuildBankRepair = CanGuildBankRepair
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
@@ -121,15 +120,8 @@ function S:MerchantFrame()
 		money:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 3, 0)
 
 		for j = 1, _G.MAX_ITEM_COST do
-			local currencyItem = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j]
 			local currencyIcon = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j..'Texture']
-
-			currencyIcon.backdrop = CreateFrame('Frame', nil, currencyItem)
-			currencyIcon.backdrop:SetTemplate()
-			currencyIcon.backdrop:OffsetFrameLevel(nil, currencyItem)
-
 			currencyIcon:SetTexCoords()
-			currencyIcon:SetParent(currencyIcon.backdrop)
 		end
 	end
 

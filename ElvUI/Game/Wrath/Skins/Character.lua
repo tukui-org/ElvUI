@@ -135,15 +135,14 @@ end
 
 local function HandleResistanceFrame(name)
 	for i = 1, 5 do
-		local frameName = name..i
-		local frame = _G[frameName]
+		local frame = _G[name..i]
 		local icon, text = frame:GetRegions()
 		frame:Size(24)
 		frame:SetTemplate()
 
 		if i ~= 1 then
 			frame:ClearAllPoints()
-			frame:Point('TOP', _G[frameName - 1], 'BOTTOM', 0, -1)
+			frame:Point('TOP', _G[name..(i - 1)], 'BOTTOM', 0, -1)
 		end
 
 		icon:SetInside()

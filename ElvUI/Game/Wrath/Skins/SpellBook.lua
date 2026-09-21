@@ -44,10 +44,6 @@ function S:SpellBookFrame()
 	_G.SpellBookTitleText:Point('TOP', -10, -17)
 	_G.SpellBookTitleText:SetTextColor(1, 1, 1)
 
-	_G.SpellBookSpellIconsFrame:StripTextures(true)
-	_G.SpellBookSideTabsFrame:StripTextures(true)
-	_G.SpellBookPageNavigationFrame:StripTextures(true)
-
 	_G.SpellBookPageText:SetTextColor(1, 1, 1)
 	_G.SpellBookPageText:Point('BOTTOM', -10, 87)
 

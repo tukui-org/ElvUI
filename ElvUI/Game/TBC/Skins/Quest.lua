@@ -110,6 +110,11 @@ local function UpdateGreetingFrame()
 	end
 end
 
+local function ShowQuestPortrait(frame, _, _, _, _, _, x, y)
+	_G.QuestModelScene:ClearAllPoints()
+	_G.QuestModelScene:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + 6, y or 0)
+end
+
 local function GetRewardButton(rewardsFrame, index)
 	local button = rewardsFrame.RewardButtons[index]
 	if not button.template then
@@ -319,8 +324,30 @@ function S:BlizzardQuestFrames()
 	end
 
 	_G.QuestLogTimerText:SetTextColor(1, 1, 1)
+
+	_G.QuestModelScene:StripTextures()
+	_G.QuestModelScene:SetTemplate('Transparent')
+
+	_G.QuestNPCModelTextFrame:StripTextures()
+	_G.QuestNPCModelTextFrame:SetTemplate('Transparent')
+	_G.QuestNPCModelTextFrame:ClearAllPoints()
+	_G.QuestNPCModelTextFrame:Point('BOTTOM', _G.QuestModelScene, 0, -66)
+
+	_G.QuestNPCModelNameText:ClearAllPoints()
+	_G.QuestNPCModelNameText:Point('TOP', _G.QuestModelScene, 0, -10)
+	_G.QuestNPCModelNameText:FontTemplate(nil, 13, 'OUTLINE')
+
+	_G.QuestNPCModelText:SetJustifyH('CENTER')
+	_G.QuestNPCModelTextScrollFrame:ClearAllPoints()
+	_G.QuestNPCModelTextScrollFrame:Point('TOPLEFT', _G.QuestNPCModelTextFrame, 2, -2)
+	_G.QuestNPCModelTextScrollFrame:Point('BOTTOMRIGHT', _G.QuestNPCModelTextFrame, -10, 6)
+	_G.QuestNPCModelTextScrollChildFrame:SetInside(_G.QuestNPCModelTextScrollFrame)
+
+	S:HandleScrollBar(_G.QuestNPCModelTextScrollFrame.ScrollBar)
+
 	_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
 	hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
+	hooksecurefunc('QuestFrame_ShowQuestPortrait', ShowQuestPortrait)
 	hooksecurefunc('QuestFrameProgressItems_Update', ProgressItemsUpdate)
 	hooksecurefunc('QuestInfo_Display', QuestInfoDisplay)
 	hooksecurefunc('QuestInfo_GetRewardButton', GetRewardButton)

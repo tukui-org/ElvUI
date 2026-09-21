@@ -2,19 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local hooksecurefunc = hooksecurefunc
-
-local function UpdateStatusPosition() -- Blizzard anchors it top right, keep it at the GM Ticket mover
-	local status = _G.GMChatStatusFrame
-	local ticket = _G.TicketStatusFrame
-
-	status:ClearAllPoints()
-	if ticket:IsShown() then
-		status:Point('TOPLEFT', ticket, 'BOTTOMLEFT', 0, 1)
-	else
-		status:SetAllPoints(ticket)
-	end
-end
 
 function S:Blizzard_GMChatUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gmChat) then return end
@@ -56,8 +43,6 @@ function S:Blizzard_GMChatUI()
 	close:ClearAllPoints()
 	close:Point('RIGHT', tab, -5, 0)
 	S:HandleCloseButton(close)
-
-	hooksecurefunc('UIParent_UpdateTopFramePositions', UpdateStatusPosition)
 end
 
 S:AddCallbackForAddon('Blizzard_GMChatUI')

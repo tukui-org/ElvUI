@@ -13,7 +13,7 @@ function S:Blizzard_TalentUI()
 	S:HandleFrame(PlayerTalentFrame, true, nil, 11, -12, -32, 76)
 
 	-- Not a "cancel button", just a duplicate Closebutton
-	_G.PlayerTalentFrameCancelButton:SetAlpha(0)
+	_G.PlayerTalentFrameCancelButton:Kill()
 
 	for i = 1, MAX_TALENT_TABS do
 		S:HandleTab(_G['PlayerTalentFrameTab'..i])

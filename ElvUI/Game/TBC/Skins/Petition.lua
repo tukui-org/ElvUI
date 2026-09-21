@@ -8,7 +8,7 @@ function S:PetitionFrame()
 
 	local PetitionFrame = _G.PetitionFrame
 	S:HandleFrame(PetitionFrame)
-	S:HandleScrollBar(PetitionFrame.ScrollBar)
+	S:HandleTrimScrollBar(PetitionFrame.ScrollBar)
 
 	S:HandleButton(_G.PetitionFrameSignButton)
 	S:HandleButton(_G.PetitionFrameRequestButton)
