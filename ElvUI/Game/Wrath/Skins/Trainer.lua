@@ -5,13 +5,13 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 local function SetSelection()
-	local ClassTrainerSkillIcon = _G.ClassTrainerSkillIcon
-	local skillIcon = ClassTrainerSkillIcon:GetNormalTexture()
-	if skillIcon then -- nothing selected yet
-		skillIcon:SetInside()
-		skillIcon:SetTexCoords()
+	local skillIcon = _G.ClassTrainerSkillIcon
+	local skillTexture = skillIcon:GetNormalTexture()
+	if skillTexture then -- nothing selected yet
+		skillTexture:SetInside()
+		skillTexture:SetTexCoords()
 
-		ClassTrainerSkillIcon:SetTemplate()
+		skillIcon:SetTemplate()
 	end
 end
 

@@ -3,12 +3,11 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local function SpellHighlightSetTexture(texture, tex)
-	if tex == [[Interface\Buttons\ButtonHilight-Square]] or tex == [[Interface\Buttons\UI-PassiveHighlight]] then
+local function SpellHighlightSetTexture(texture, path)
+	if path == [[Interface\Buttons\ButtonHilight-Square]] or path == [[Interface\Buttons\UI-PassiveHighlight]] then
 		texture:SetColorTexture(1, 1, 1, 0.3)
 	end
 end
@@ -102,7 +101,7 @@ function S:SpellBookFrame()
 		local highlight = _G['SpellButton'..i..'Highlight']
 
 		for _, region in next, { button:GetRegions() } do
-			if region:IsObjectType('Texture') and region:GetTexture() ~= [[Interface\Buttons\ActionBarFlyoutButton]] then
+			if region:IsObjectType('Texture') and region ~= button.Arrow then
 				region:SetTexture(nil)
 			end
 		end

@@ -84,7 +84,7 @@ if E.Wrath or E.TBC then
 	toggles.arena = L["Arena"]
 end
 
-if E.Wrath or E.Classic then
+if E.Wrath or E.TBC or E.Classic then
 	toggles.battlefield = L["Battlefield"]
 end
 

@@ -69,6 +69,7 @@ local function MasterLooterUpdatePlayers()
 		if not child.IsSkinned and child:IsObjectType('Button') then -- player buttons are created on demand
 			child:SetTemplate()
 			child:StyleButton()
+
 			child.IsSkinned = true
 		end
 	end
@@ -107,8 +108,8 @@ function S:LootFrame()
 	item.NameBorderLeft:StripTextures()
 	item.NameBorderRight:StripTextures()
 
-	local _, _, _, closeButton = MasterLooterFrame:GetChildren() -- NineSlice, Item, player1, unnamed UIPanelCloseButton; the other player buttons are created on demand
-	S:HandleCloseButton(closeButton)
+	local _, _, _, closeFrameButton = MasterLooterFrame:GetChildren() -- NineSlice, Item, player1, unnamed UIPanelCloseButton; the other player buttons are created on demand
+	S:HandleCloseButton(closeFrameButton)
 
 	hooksecurefunc('MasterLooterFrame_Show', MasterLooterShow)
 	hooksecurefunc('MasterLooterFrame_UpdatePlayers', MasterLooterUpdatePlayers)

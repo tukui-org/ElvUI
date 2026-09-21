@@ -208,6 +208,7 @@ local function ListSearchUpdateAutoComplete(panel)
 	for _, child in next, { autoComplete:GetChildren() } do
 		if not child.IsSkinned and child:IsObjectType('Button') then
 			S:HandleButton(child)
+
 			child.IsSkinned = true
 		end
 	end
@@ -222,8 +223,9 @@ local function ListSearchUpdateAutoComplete(panel)
 		end
 
 		if i > 1 and not button.moved then
-			button:Point('TOPLEFT', results[i-1], 'BOTTOMLEFT', 0, -2)
-			button:Point('TOPRIGHT', results[i-1], 'BOTTOMRIGHT', 0, -2)
+			local previous = results[i-1]
+			button:Point('TOPLEFT', previous, 'BOTTOMLEFT', 0, -2)
+			button:Point('TOPRIGHT', previous, 'BOTTOMRIGHT', 0, -2)
 			button.moved = true
 		end
 	end

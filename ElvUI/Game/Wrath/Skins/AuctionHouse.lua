@@ -242,33 +242,29 @@ function S:Blizzard_AuctionUI()
 	AuctionProgressFrameCancelButton:Size(28)
 	AuctionProgressFrameCancelButton:Point('LEFT', _G.AuctionProgressBar, 'RIGHT', 8, 0)
 
-	for Frame, NumButtons in next, {
-		Browse = _G.NUM_BROWSE_TO_DISPLAY,
-		Auctions = _G.NUM_AUCTIONS_TO_DISPLAY,
-		Bid = _G.NUM_BIDS_TO_DISPLAY
-	} do
-		for i = 1, NumButtons do
-			local Button = _G[Frame..'Button'..i]
-			local ItemButton = _G[Frame..'Button'..i..'Item']
-			local Texture = _G[Frame..'Button'..i..'ItemIconTexture']
+	for frame, numButtons in next, { Browse = _G.NUM_BROWSE_TO_DISPLAY, Auctions = _G.NUM_AUCTIONS_TO_DISPLAY, Bid = _G.NUM_BIDS_TO_DISPLAY } do
+		for i = 1, numButtons do
+			local button = _G[frame..'Button'..i]
+			local itemButton = _G[frame..'Button'..i..'Item']
+			local texture = _G[frame..'Button'..i..'ItemIconTexture']
 
-			ItemButton:SetTemplate()
-			ItemButton:StyleButton()
-			ItemButton.IconBorder:SetAlpha(0)
+			itemButton:SetTemplate()
+			itemButton:StyleButton()
+			itemButton.IconBorder:SetAlpha(0)
 
-			Button:StripTextures()
-			Button:SetHighlightTexture(E.media.blankTex)
+			button:StripTextures()
+			button:SetHighlightTexture(E.media.blankTex)
 
-			local normal = ItemButton:GetNormalTexture()
+			local normal = itemButton:GetNormalTexture()
 			normal:SetTexture()
 
-			local highlight = Button:GetHighlightTexture()
+			local highlight = button:GetHighlightTexture()
 			highlight:SetVertexColor(1, 1, 1, .2)
-			highlight:Point('TOPLEFT', ItemButton, 'TOPRIGHT', 2, 0)
-			highlight:Point('BOTTOMRIGHT', Button, 'BOTTOMRIGHT', -2, 5)
+			highlight:Point('TOPLEFT', itemButton, 'TOPRIGHT', 2, 0)
+			highlight:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -2, 5)
 
-			S:HandleIcon(Texture)
-			Texture:SetInside()
+			S:HandleIcon(texture)
+			texture:SetInside()
 		end
 	end
 

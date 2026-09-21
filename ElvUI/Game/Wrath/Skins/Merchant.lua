@@ -40,7 +40,8 @@ local function UpdateBuybackInfo()
 
 	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 		if i <= numBuybackItems then
-			SetQualityColor(_G['MerchantItem'..i..'ItemButton'], _G['MerchantItem'..i..'Name'], (GetBuybackItemInfo(i)))
+			local link = GetBuybackItemInfo(i)
+			SetQualityColor(_G['MerchantItem'..i..'ItemButton'], _G['MerchantItem'..i..'Name'], link)
 		end
 	end
 
@@ -48,6 +49,7 @@ local function UpdateBuybackInfo()
 end
 
 local function UpdateMerchantInfo()
+	local numBuybackItems = GetNumBuybackItems()
 	local numMerchantItems = GetMerchantNumItems()
 	local index = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
 
@@ -60,7 +62,8 @@ local function UpdateMerchantInfo()
 		end
 	end
 
-	SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, (GetBuybackItemInfo(GetNumBuybackItems())))
+	local link = GetBuybackItemInfo(numBuybackItems)
+	SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
 
 	MerchantItemPoint()
 end

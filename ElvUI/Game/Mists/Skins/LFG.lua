@@ -208,6 +208,7 @@ local function ListSearchUpdateAutoComplete(panel)
 	for _, child in next, { autoComplete:GetChildren() } do
 		if not child.IsSkinned and child:IsObjectType('Button') then
 			S:HandleButton(child)
+
 			child.IsSkinned = true
 		end
 	end
@@ -222,8 +223,9 @@ local function ListSearchUpdateAutoComplete(panel)
 		end
 
 		if i > 1 and not button.moved then
-			button:Point('TOPLEFT', results[i-1], 'BOTTOMLEFT', 0, -2)
-			button:Point('TOPRIGHT', results[i-1], 'BOTTOMRIGHT', 0, -2)
+			local previous = results[i-1]
+			button:Point('TOPLEFT', previous, 'BOTTOMLEFT', 0, -2)
+			button:Point('TOPRIGHT', previous, 'BOTTOMRIGHT', 0, -2)
 			button.moved = true
 		end
 	end
@@ -587,18 +589,25 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGListCategorySelection_AddButton', ListCategoryAddButton)
 end
 
+local function HandleChallengeDetails(frame)
+	local _, region2, _, _, _, _, _, _, region9, region10, region11 = frame:GetRegions()
+	region2:Hide()
+	region9:Hide()
+	region10:Hide()
+	region11:Hide()
+
+	frame.bg:Hide()
+
+	frame.MapName:ClearAllPoints()
+	frame.MapName:Point('TOP', 0, -20)
+end
+
 function S:Blizzard_ChallengesUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	_G.ChallengesFrameInset:StripTextures(true)
 
-	local DetailsFrame = _G.ChallengesFrameDetails
-	local _, a, _, _, _, _, _, _, b, c, d = DetailsFrame:GetRegions()
-	a:Hide() b:Hide() c:Hide() d:Hide()
-	DetailsFrame.bg:Hide()
-
-	DetailsFrame.MapName:ClearAllPoints()
-	DetailsFrame.MapName:Point('TOP', 0, -20)
+	HandleChallengeDetails(_G.ChallengesFrameDetails)
 
 	local ChallengesFrame = _G.ChallengesFrame
 	for i = 1, 9 do

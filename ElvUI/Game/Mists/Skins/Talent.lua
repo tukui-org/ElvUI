@@ -22,7 +22,7 @@ local function PositionTabs()
 	_G.PlayerTalentFrameTab4:Point('TOPLEFT', _G.PlayerTalentFrameTab3, 'TOPRIGHT', -19, 0)
 end
 
-local function GlyphFrame_Update(frame)
+local function GlyphFrameUpdate(frame)
 	frame.levelOverlayText1:SetTextColor(1, 1, 1)
 	frame.levelOverlayText2:SetTextColor(1, 1, 1)
 
@@ -71,7 +71,7 @@ local function GlyphFrameGlyph_OnUpdate(updater)
 	end
 end
 
-local function TalentFrame_Update()
+local function TalentFrameUpdate()
 	for i = 1, 6 do -- talent tiers
 		for j = 1, 3 do -- talents per tier
 			local button = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
@@ -98,16 +98,16 @@ local function TalentFrame_Update()
 	end
 end
 
-local function PlayerTalentFrame_UpdateSpecFrame(frame)
-	for i = 1, GetNumSpecializations(nil, frame.isPet) do
+local function PlayerTalentFrameUpdateSpecFrame(frame)
+	local numButtons = GetNumSpecializations(nil, frame.isPet)
+	for i = 1, numButtons do
 		local button = frame['specButton'..i]
 		button.SelectedTexture:SetShown(button.selected)
 	end
 
 	-- Blizzard creates the ability buttons it needs before this hook runs
 	local scrollChild = frame.spellsScroll.child
-	local index = 1
-	local ability = scrollChild.abilityButton1
+	local index, ability = 1, scrollChild.abilityButton1
 	while ability do
 		if not ability.backdrop then
 			ability.ring:Hide()
@@ -169,54 +169,54 @@ function S:Blizzard_TalentUI()
 	PositionTabs()
 	hooksecurefunc('PlayerTalentFrame_UpdateTabs', PositionTabs)
 
-	for _, Frame in next, { _G.PlayerTalentFrameSpecialization, _G.PlayerTalentFramePetSpecialization } do
-		Frame:StripTextures()
+	for _, frame in next, { _G.PlayerTalentFrameSpecialization, _G.PlayerTalentFramePetSpecialization } do
+		frame:StripTextures()
 
 		if disableTutorialButtons then
-			Frame.MainHelpButton:Kill()
+			frame.MainHelpButton:Kill()
 		end
 
-		for _, Child in next, { Frame:GetChildren() } do
-			if not Child:GetName() then -- the border art frame has no name or key
-				Child:StripTextures()
+		for _, child in next, { frame:GetChildren() } do
+			if not child:GetName() then -- the border art frame has no name or key
+				child:StripTextures()
 			end
 		end
 
 		for i = 1, 4 do
-			local Button = Frame['specButton'..i]
-			local _, _, _, icon = C_SpecializationInfo_GetSpecializationInfo(i, false, Frame.isPet)
+			local button = frame['specButton'..i]
+			local _, _, _, icon = C_SpecializationInfo_GetSpecializationInfo(i, false, frame.isPet)
 
-			local glow = _G[Button:GetName()..'Glow']
+			local glow = _G[button:GetName()..'Glow']
 			glow:Kill()
 
-			Button:CreateBackdrop()
-			Button.backdrop:Point('TOPLEFT', 8, 2)
-			Button.backdrop:Point('BOTTOMRIGHT', 10, -2)
+			button:CreateBackdrop()
+			button.backdrop:Point('TOPLEFT', 8, 2)
+			button.backdrop:Point('BOTTOMRIGHT', 10, -2)
 
-			Button.specIcon:Size(50, 50)
-			Button.specIcon:Point('LEFT', Button, 'LEFT', 15, 0)
-			Button.specIcon:SetDrawLayer('ARTWORK', 2)
-			Button.roleIcon:SetDrawLayer('ARTWORK', 2)
+			button.specIcon:Size(50, 50)
+			button.specIcon:Point('LEFT', button, 'LEFT', 15, 0)
+			button.specIcon:SetDrawLayer('ARTWORK', 2)
+			button.roleIcon:SetDrawLayer('ARTWORK', 2)
 
-			Button.bg:SetAlpha(0)
-			Button.ring:SetAlpha(0)
-			Button.learnedTex:SetAlpha(0)
-			Button.selectedTex:SetAlpha(0)
-			Button.CircleMask:Hide()
-			Button.specIcon:SetTexture(icon)
-			S:HandleIcon(Button.specIcon, true, nil, nil, nil, nil, nil, nil, Button:GetFrameLevel() + 1)
-			Button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
-			Button.specIcon.backdrop.callbackBackdropColor = ClearBackdrop
-			Button:SetHighlightTexture(E.ClearTexture)
+			button.bg:SetAlpha(0)
+			button.ring:SetAlpha(0)
+			button.learnedTex:SetAlpha(0)
+			button.selectedTex:SetAlpha(0)
+			button.CircleMask:Hide()
+			button.specIcon:SetTexture(icon)
+			S:HandleIcon(button.specIcon, true, nil, nil, nil, nil, nil, nil, button:GetFrameLevel() + 1)
+			button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
+			button.specIcon.backdrop.callbackBackdropColor = ClearBackdrop
+			button:SetHighlightTexture(E.ClearTexture)
 
-			Button.SelectedTexture = Button:CreateTexture(nil, 'ARTWORK')
-			Button.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
-			Button.SelectedTexture:SetInside(Button.backdrop)
+			button.SelectedTexture = button:CreateTexture(nil, 'ARTWORK')
+			button.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
+			button.SelectedTexture:SetInside(button.backdrop)
 		end
 
-		S:HandleScrollBar(Frame.spellsScroll.ScrollBar)
+		S:HandleScrollBar(frame.spellsScroll.ScrollBar)
 
-		local child = Frame.spellsScroll.child
+		local child = frame.spellsScroll.child
 		child:SetScale(0.99) -- the scrollbar showed on simpy's when it shouldn't, this fixes it by reducing the scale by .01 lol
 		child.gradient:Kill()
 		child.scrollwork_topleft:SetAlpha(0)
@@ -237,14 +237,16 @@ function S:Blizzard_TalentUI()
 		row.TopLine:Point('TOP', 0, 4)
 		row.BottomLine:Point('BOTTOM', 0, -4)
 
-		row.transition = _G.CreateAnimationGroup(row)
-		row.transition:SetLooping(true)
+		local transition = _G.CreateAnimationGroup(row)
+		transition:SetLooping(true)
+		row.transition = transition
 
-		row.transition.color = row.transition:CreateAnimation('Color')
-		row.transition.color:SetDuration(0.7)
-		row.transition.color:SetColorType('border')
-		row.transition.color:SetChange(unpack(E.media.rgbvaluecolor))
-		row.transition.color:SetScript('OnFinished', Transition_OnFinished)
+		local colorAnimation = transition:CreateAnimation('Color')
+		colorAnimation:SetDuration(0.7)
+		colorAnimation:SetColorType('border')
+		colorAnimation:SetChange(unpack(E.media.rgbvaluecolor))
+		colorAnimation:SetScript('OnFinished', Transition_OnFinished)
+		transition.color = colorAnimation
 
 		for j = 1, 3 do -- talents per tier
 			local button = _G['PlayerTalentFrameTalentsTalentRow'..i..'Talent'..j]
@@ -260,7 +262,7 @@ function S:Blizzard_TalentUI()
 			button.bg:Point('TOPLEFT', 15, 2)
 			button.bg:Point('BOTTOMRIGHT', -10, -2)
 
-			row.transition.color:AddChild(button.bg)
+			colorAnimation:AddChild(button.bg)
 
 			button:SetHighlightTexture(E.media.blankTex)
 			local highlight = button:GetHighlightTexture()
@@ -290,8 +292,8 @@ function S:Blizzard_TalentUI()
 		normal:SetTexCoords()
 	end
 
-	hooksecurefunc('TalentFrame_Update', TalentFrame_Update)
-	hooksecurefunc('PlayerTalentFrame_UpdateSpecFrame', PlayerTalentFrame_UpdateSpecFrame)
+	hooksecurefunc('TalentFrame_Update', TalentFrameUpdate)
+	hooksecurefunc('PlayerTalentFrame_UpdateSpecFrame', PlayerTalentFrameUpdateSpecFrame)
 end
 
 function S:Blizzard_GlyphUI()
@@ -328,12 +330,7 @@ function S:Blizzard_GlyphUI()
 		frame:SetTemplate('Transparent')
 		frame:OffsetFrameLevel(5)
 		frame:StyleButton(nil, true)
-
-		if i % 2 == 0 then -- Major Glyphs
-			frame:Size(42)
-		else -- Minor Glyphs
-			frame:Size(28)
-		end
+		frame:Size((i % 2 == 0) and 42 or 28) -- Major or Minor Glyphs
 
 		frame.highlight:SetTexture(nil)
 		frame.ring:Hide()
@@ -348,7 +345,7 @@ function S:Blizzard_GlyphUI()
 		frame.onUpdate.owner = frame
 	end
 
-	hooksecurefunc('GlyphFrame_Update', GlyphFrame_Update)
+	hooksecurefunc('GlyphFrame_Update', GlyphFrameUpdate)
 
 	-- Scroll Frame
 	local scrollFrame = GlyphFrame.scrollFrame

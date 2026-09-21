@@ -2,12 +2,46 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local format, pairs, strmatch = format, pairs, strmatch
 local hooksecurefunc = hooksecurefunc
+local format, next, strmatch = format, next, strmatch
 
 local GetBattlefieldScore = GetBattlefieldScore
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+
+local myName = format('> %s <', E.myname)
+
+local function UpdateScore()
+	local inArena = IsActiveBattlefieldArena()
+	local offset = FauxScrollFrame_GetOffset(_G.WorldStateScoreScrollFrame)
+
+	for i = 1, 20 do -- score rows
+		local fullName, _, _, _, _, faction, _, _, _, classToken = GetBattlefieldScore(offset + i)
+		if fullName then
+			local name, realm = strmatch(fullName, '([^%-]+)(.*)')
+			if name == E.myname then
+				name = myName
+			end
+
+			if realm and realm ~= '' then
+				local color
+
+				if inArena then
+					color = faction == 1 and '|cffffd100' or '|cff19ff19'
+				else
+					color = faction == 1 and '|cff00adf0' or '|cffff1919'
+				end
+
+				name = format('%s|cffffffff - |r%s%s|r', name, color, realm)
+			end
+
+			local classTextColor = E:ClassColor(classToken)
+			local nameText = _G['WorldStateScoreButton'..i..'NameText']
+			nameText:SetText(name)
+			nameText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
+		end
+	end
+end
 
 function S:SkinWorldStateScore()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgscore) then return end
@@ -17,14 +51,13 @@ function S:SkinWorldStateScore()
 
 	S:HandleFrame(WorldStateScoreFrame, true, nil, 0, -12, -102, 25)
 
-	S:HandleCloseButton(_G.WorldStateScoreFrameCloseButton, WorldStateScoreFrame.backdrop)
-
 	_G.WorldStateScoreScrollFrame:StripTextures()
-	S:HandleScrollBar(_G.WorldStateScoreScrollFrameScrollBar)
 
-	_G.WorldStateScoreScrollFrameScrollBar:Point('RIGHT', _G.WorldStateScoreFrame, 'RIGHT', -44, 38)
+	local scrollBar = _G.WorldStateScoreScrollFrameScrollBar
+	S:HandleScrollBar(scrollBar)
+	scrollBar:Point('RIGHT', WorldStateScoreFrame, 'RIGHT', -44, 38)
 
-	local buttons = {
+	for _, button in next, {
 		_G.WorldStateScoreFrameKB,
 		_G.WorldStateScoreFrameDeaths,
 		_G.WorldStateScoreFrameHK,
@@ -34,9 +67,7 @@ function S:SkinWorldStateScore()
 		_G.WorldStateScoreFrameName,
 		_G.WorldStateScoreFrameClass,
 		_G.WorldStateScoreFrameTeam
-	}
-
-	for _, button in pairs(buttons) do
+	} do
 		button:StyleButton()
 	end
 
@@ -56,49 +87,7 @@ function S:SkinWorldStateScore()
 		_G['WorldStateScoreColumn'..i]:StyleButton()
 	end
 
-	local myName = format('> %s <', E.myname)
-
-	hooksecurefunc('WorldStateScoreFrame_Update', function()
-		local inArena = IsActiveBattlefieldArena()
-		local offset = FauxScrollFrame_GetOffset(_G.WorldStateScoreScrollFrame)
-
-		for i = 1, 20 do
-			local fullName, _, _, _, _, faction, _, _, _, classToken = GetBattlefieldScore(offset + i)
-
-			if fullName then
-				local name, realm = strmatch(fullName, '([^%-]+)(.*)')
-
-				if name == E.myname then
-					name = myName
-				end
-
-				if realm and realm ~= '' then
-					local color
-
-					if inArena then
-						if faction == 1 then
-							color = '|cffffd100'
-						else
-							color = '|cff19ff19'
-						end
-					else
-						if faction == 1 then
-							color = '|cff00adf0'
-						else
-							color = '|cffff1919'
-						end
-					end
-
-					name = format('%s|cffffffff - |r%s%s|r', name, color, realm)
-				end
-
-				local classTextColor = E:ClassColor(classToken)
-				local nameText = _G['WorldStateScoreButton'..i..'NameText']
-				nameText:SetText(name)
-				nameText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
-			end
-		end
-	end)
+	hooksecurefunc('WorldStateScoreFrame_Update', UpdateScore)
 end
 
 S:AddCallback('SkinWorldStateScore')

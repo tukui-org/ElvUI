@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local format, strmatch = format, strmatch
+local format, next, strmatch = format, next, strmatch
 
 local GetBattlefieldScore = GetBattlefieldScore
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena
@@ -17,10 +17,8 @@ local function UpdateScore()
 
 	for i = 1, 20 do -- score rows
 		local fullName, _, _, _, _, faction, _, _, _, classToken = GetBattlefieldScore(offset + i)
-
 		if fullName then
 			local name, realm = strmatch(fullName, '([^%-]+)(.*)')
-
 			if name == E.myname then
 				name = myName
 			end
@@ -29,17 +27,9 @@ local function UpdateScore()
 				local color
 
 				if inArena then
-					if faction == 1 then
-						color = '|cffffd100'
-					else
-						color = '|cff19ff19'
-					end
+					color = faction == 1 and '|cffffd100' or '|cff19ff19'
 				else
-					if faction == 1 then
-						color = '|cff00adf0'
-					else
-						color = '|cffff1919'
-					end
+					color = faction == 1 and '|cff00adf0' or '|cffff1919'
 				end
 
 				name = format('%s|cffffffff - |r%s%s|r', name, color, realm)

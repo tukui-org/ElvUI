@@ -9,6 +9,20 @@ local unpack = unpack
 local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 
+local function AuctionsItemButton_OnEvent(button, event)
+	local normal = event == 'NEW_AUCTION_UPDATE' and button:GetNormalTexture()
+	if normal then
+		normal:SetTexCoords()
+		normal:SetInside()
+
+		local _, _, _, quality = GetAuctionSellItemInfo()
+		local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
+		button:SetBackdropBorderColor(r, g, b)
+	else
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
 function S:Blizzard_AuctionUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
@@ -209,19 +223,7 @@ function S:Blizzard_AuctionUI()
 	_G.AuctionsItemButton:SetTemplate(nil, true)
 	_G.AuctionsItemButton:StyleButton()
 
-	_G.AuctionsItemButton:HookScript('OnEvent', function(button, event)
-		local normal = event == 'NEW_AUCTION_UPDATE' and button:GetNormalTexture()
-		if normal then
-			normal:SetTexCoords()
-			normal:SetInside()
-
-			local _, _, _, quality = GetAuctionSellItemInfo()
-			local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
-			button:SetBackdropBorderColor(r, g, b)
-		else
-			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-		end
-	end)
+	_G.AuctionsItemButton:HookScript('OnEvent', AuctionsItemButton_OnEvent)
 
 	S:HandleRadioButton(_G.AuctionsShortAuctionButton)
 	S:HandleRadioButton(_G.AuctionsMediumAuctionButton)

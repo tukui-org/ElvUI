@@ -36,10 +36,9 @@ local function SetSelection(id)
 		end
 	end
 
-	for i = 1, GetTradeSkillNumReagents(id) do
-		local _, _, reagentCount, playerReagentCount = GetTradeSkillReagentInfo(id, i)
+	local numReagents = GetTradeSkillNumReagents(id)
+	for i = 1, numReagents do
 		local reagentLink = GetTradeSkillReagentItemLink(id, i)
-
 		if reagentLink then
 			local reagent = _G['TradeSkillReagent'..i]
 			local quality = GetItemQualityByID(reagentLink)
@@ -48,6 +47,7 @@ local function SetSelection(id)
 				local r, g, b = E:GetItemQualityColor(quality)
 				reagent.Icon.backdrop:SetBackdropBorderColor(r, g, b)
 
+				local _, _, reagentCount, playerReagentCount = GetTradeSkillReagentInfo(id, i)
 				if playerReagentCount < reagentCount then
 					reagent.Name:SetTextColor(0.5, 0.5, 0.5)
 				else
@@ -161,6 +161,7 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleNextPrevButton(_G.TradeSkillIncrementButton)
 
 	_G.TradeSkillSkillIcon:CreateBackdrop()
+
 	hooksecurefunc('TradeSkillFrame_SetSelection', SetSelection)
 end
 

@@ -90,6 +90,7 @@ local function HandleRequestToJoinFrame(frame)
 
 	frame.MessageFrame:StripTextures(true)
 	frame.MessageFrame.MessageScroll:StripTextures(true)
+
 	S:HandleEditBox(frame.MessageFrame.MessageScroll)
 	S:HandleButton(frame.Apply)
 	S:HandleButton(frame.Cancel)
@@ -199,6 +200,7 @@ function S:Blizzard_Communities()
 		frame.InsetFrame:Hide()
 		frame.CircleMask:Hide()
 		frame.IconRing:Hide()
+
 		S:HandleIcon(frame.Icon)
 		S:HandleButton(frame.AcceptButton)
 		S:HandleButton(frame.DeclineButton)
@@ -429,9 +431,9 @@ function S:Blizzard_Communities()
 	S:HandleButton(_G.CommunitiesGuildTextEditFrameAcceptButton)
 
 	-- both close buttons are named $parentCloseButton, so the global is the text button and the X can only be reached by child order
-	local editClose, _, _, editCloseText = EditFrame:GetChildren()
-	S:HandleCloseButton(editClose)
-	S:HandleButton(editCloseText)
+	local editFrameClose, _, _, editFrameCloseText = EditFrame:GetChildren()
+	S:HandleCloseButton(editFrameClose)
+	S:HandleButton(editFrameCloseText)
 
 	-- Guild Log
 	local GuildLogFrame = _G.CommunitiesGuildLogFrame
@@ -440,9 +442,9 @@ function S:Blizzard_Communities()
 	GuildLogFrame.Container.NineSlice:SetTemplate('Transparent')
 	S:HandleTrimScrollBar(GuildLogFrame.Container.ScrollFrame.ScrollBar)
 
-	local logClose, _, logCloseText = GuildLogFrame:GetChildren()
-	S:HandleCloseButton(logClose)
-	S:HandleButton(logCloseText)
+	local logFrameClose, _, logFrameCloseText = GuildLogFrame:GetChildren()
+	S:HandleCloseButton(logFrameClose)
+	S:HandleButton(logFrameCloseText)
 
 	-- Recruitment Dialog
 	local RecruitmentDialog = _G.CommunitiesFrame.RecruitmentDialog

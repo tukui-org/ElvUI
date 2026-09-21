@@ -210,6 +210,7 @@ local function SkinDigsiteCompleteAlert(frame)
 
 	local background = frame:GetRegions()
 	background:Hide()
+
 	frame.glow:Kill()
 	frame.shine:Kill()
 	frame.DigsiteTypeTexture:Point('LEFT', -10, -14)
@@ -230,8 +231,9 @@ local function SkinStorePurchaseAlert(frame)
 	end
 
 	local _, ring = frame:GetRegions() -- the CheckButtonGlow ring is only named Border
-	frame.Background:Kill()
 	ring:Kill()
+
+	frame.Background:Kill()
 	frame.glow:Kill()
 	frame.shine:Kill()
 

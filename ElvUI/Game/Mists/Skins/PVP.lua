@@ -71,6 +71,7 @@ function S:Blizzard_PVPUI()
 
 	for _, bu in next, { BonusFrame.RandomBGButton, BonusFrame.CallToArmsButton, BonusFrame.WorldPVP1Button, BonusFrame.WorldPVP2Button } do
 		S:HandleButton(bu)
+
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 	end
@@ -91,6 +92,7 @@ function S:Blizzard_PVPUI()
 
 	for _, bu in next, { ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.Arena5v5, ConquestFrame.RatedBG } do
 		S:HandleButton(bu)
+
 		bu.SelectedTexture:SetInside()
 		bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 	end

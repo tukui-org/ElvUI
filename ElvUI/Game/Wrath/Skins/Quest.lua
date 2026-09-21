@@ -123,10 +123,10 @@ local function GetRewardButton(rewardsFrame, index)
 end
 
 local function UpdateRewardButtons(selected)
-	local getLink = _G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink
+	local GetItemLink = _G.QuestInfoFrame.questLog and GetQuestLogItemLink or GetQuestItemLink
 	for _, item in next, _G.QuestInfoRewardsFrame.RewardButtons do
 		if item ~= selected then
-			local link = item.type and getLink(item.type, item:GetID())
+			local link = item.type and GetItemLink(item.type, item:GetID())
 			HandleQualityColors(item, item.Name, link)
 		end
 	end

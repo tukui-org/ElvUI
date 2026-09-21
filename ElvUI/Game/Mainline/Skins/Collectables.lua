@@ -130,6 +130,7 @@ local function SkinJournalScrollButton(bu)
 
 			if parent == _G.PetJournal then
 				bu.petList = true
+
 				bu.petTypeIcon:SetTexture(savedPetTypeTexture)
 				bu.petTypeIcon:Point('TOPRIGHT', -1, -1)
 				bu.petTypeIcon:Point('BOTTOMRIGHT', -1, 1)
@@ -146,6 +147,7 @@ local function SkinJournalScrollButton(bu)
 				hl:SetAllPoints(bu.icon)
 			elseif parent == _G.MountJournal then
 				bu.mountList = true
+
 				bu.factionIcon:SetAtlas(savedFactionAtlas)
 				bu.factionIcon:SetDrawLayer('OVERLAY')
 				bu.factionIcon:Point('TOPRIGHT', -1, -1)
@@ -541,6 +543,19 @@ local function HandleTabs()
 	hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 end
 
+local function ModelBorderSetAtlas(frame, texture)
+	local model = frame:GetParent()
+	if texture == 'transmog-wardrobe-border-uncollected' then
+		frame.border:SetBackdropBorderColor(0.9, 0.9, 0.3)
+	elseif texture == 'transmog-wardrobe-border-unusable' then
+		frame.border:SetBackdropBorderColor(0.9, 0.3, 0.3)
+	elseif model.TransmogStateTexture:IsShown() then
+		frame.border:SetBackdropBorderColor(1, 0.7, 1)
+	else
+		frame.border:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+end
+
 local function SkinWardrobeFrame()
 	local WardrobeCollectionFrame = _G.WardrobeCollectionFrame
 	S:HandleTab(_G.WardrobeCollectionFrameTab1)
@@ -574,9 +589,6 @@ local function SkinWardrobeFrame()
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
 		if Frame.Models then
 			for _, Model in pairs(Frame.Models) do
-				Model.Border:SetAlpha(0)
-				Model.TransmogStateTexture:SetAlpha(0)
-
 				local border = CreateFrame('Frame', nil, Model)
 				border:SetTemplate()
 				border:ClearAllPoints()
@@ -584,6 +596,10 @@ local function SkinWardrobeFrame()
 				border:Point('BOTTOMRIGHT', Model, 'BOTTOMRIGHT', 1, -1)
 				border:SetBackdropColor(0, 0, 0, 0)
 				border.callbackBackdropColor = ClearBackdrop
+				Model.Border.border = border
+
+				Model.Border:SetAlpha(0)
+				Model.TransmogStateTexture:SetAlpha(0)
 
 				Model.NewGlow:SetParent(border)
 				Model.NewString:SetParent(border)
@@ -599,17 +615,7 @@ local function SkinWardrobeFrame()
 					end
 				end
 
-				hooksecurefunc(Model.Border, 'SetAtlas', function(_, texture)
-					if texture == 'transmog-wardrobe-border-uncollected' then
-						border:SetBackdropBorderColor(0.9, 0.9, 0.3)
-					elseif texture == 'transmog-wardrobe-border-unusable' then
-						border:SetBackdropBorderColor(0.9, 0.3, 0.3)
-					elseif Model.TransmogStateTexture:IsShown() then
-						border:SetBackdropBorderColor(1, 0.7, 1)
-					else
-						border:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					end
-				end)
+				hooksecurefunc(Model.Border, 'SetAtlas', ModelBorderSetAtlas)
 			end
 		end
 

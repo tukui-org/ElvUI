@@ -297,6 +297,7 @@ function S:FriendsFrame()
 		summonButton.icon:SetTexCoords()
 		summonButton.NormalTexture:SetAlpha(0)
 		summonButton:StyleButton()
+
 		button.highlight:SetTexture(E.Media.Textures.Highlight)
 		button.highlight:SetAlpha(0.3)
 	end

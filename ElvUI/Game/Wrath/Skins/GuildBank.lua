@@ -50,8 +50,8 @@ function S:Blizzard_GuildBankUI()
 
 	S:HandleEditBox(_G.GuildItemSearchBox)
 
-	local _, _, _, _, _, _, _, _, _, _, closeButton = GuildBankFrame:GetChildren() -- Emblem, Column1-7, MoneyFrame, WithdrawMoneyFrame, unnamed UIPanelCloseButton
-	S:HandleCloseButton(closeButton)
+	local _, _, _, _, _, _, _, _, _, _, closeFrameButton = GuildBankFrame:GetChildren() -- Emblem, Column1-7, MoneyFrame, WithdrawMoneyFrame, unnamed UIPanelCloseButton
+	S:HandleCloseButton(closeFrameButton)
 
 	for i = 1, _G.MAX_GUILDBANK_TABS do
 		local tab = _G['GuildBankTab'..i]
@@ -126,10 +126,14 @@ function S:Blizzard_GuildBankUI()
 	HandleTabs()
 
 	-- Right Side Tabs
-	_G.GuildBankTab1:Point('TOPLEFT', GuildBankFrame, 'TOPRIGHT', E.PixelMode and -1 or 2, -36)
+	local PreviousBankTab = _G.GuildBankTab1
+	PreviousBankTab:Point('TOPLEFT', GuildBankFrame, 'TOPRIGHT', E.PixelMode and -1 or 2, -36)
 
 	for i = 2, _G.MAX_GUILDBANK_TABS do
-		_G['GuildBankTab'..i]:Point('TOPLEFT', _G['GuildBankTab'..(i - 1)], 'BOTTOMLEFT', 0, 7)
+		local BankTab = _G['GuildBankTab'..i]
+		BankTab:Point('TOPLEFT', PreviousBankTab, 'BOTTOMLEFT', 0, 7)
+
+		PreviousBankTab = BankTab
 	end
 
 	if not E.OtherAddons.ArkInventory then

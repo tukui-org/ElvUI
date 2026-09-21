@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, select = next, select
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
@@ -65,11 +65,7 @@ local function ProfessionButtonUpdate(button)
 
 	local spellIndex = button:GetID() + parent.spellOffset
 	local isPassive = IsPassiveSpell(spellIndex, _G.SpellBookFrame.bookType)
-	if isPassive then
-		button.highlightTexture:SetColorTexture(1, 1, 1, 0)
-	else
-		button.highlightTexture:SetColorTexture(1, 1, 1, .25)
-	end
+	button.highlightTexture:SetColorTexture(1, 1, 1, isPassive and 0 or 0.25)
 
 	if E.private.skins.parchmentRemoverEnable then
 		button.spellString:SetTextColor(1, 1, 1)
@@ -138,7 +134,7 @@ end
 
 local function UpdateWhatHasChangedTab()
 	for _, frame in next, _G.SpellBookWhatHasChanged.ChangedItems do
-		local mainText = select(5, frame:GetRegions())
+		local _, _, _, _, mainText = frame:GetRegions()
 		if mainText and mainText.SetVertexColor then
 			if E.private.skins.parchmentRemoverEnable then
 				mainText:SetVertexColor(1, 1, 1)
@@ -293,6 +289,7 @@ function S:SpellBookFrame()
 	end
 
 	-- Bottom Tabs
+	local LastSpellTab = _G.SpellBookFrameTabButton1
 	for i = 1, 5 do
 		local tab = _G['SpellBookFrameTabButton'..i]
 		S:HandleTab(tab)
@@ -302,8 +299,10 @@ function S:SpellBookFrame()
 		if i == 1 then
 			tab:Point('TOPLEFT', SpellBookFrame, 'BOTTOMLEFT', -10, 0)
 		else
-			tab:Point('TOPLEFT', _G['SpellBookFrameTabButton'..(i - 1)], 'TOPRIGHT', -19, 0)
+			tab:Point('TOPLEFT', LastSpellTab, 'TOPRIGHT', -19, 0)
 		end
+
+		LastSpellTab = tab
 	end
 end
 
