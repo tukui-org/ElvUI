@@ -7,10 +7,8 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local HasPetUI = HasPetUI
-local GetNumFactions = GetNumFactions
 local GetPetHappiness = GetPetHappiness
 local GetInventoryItemQuality = GetInventoryItemQuality
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
@@ -24,25 +22,8 @@ local ResistanceCoords = {
 	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 }
 
-local function ReputationFrameUpdate()
-	local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
-	local numFactions = GetNumFactions()
-
-	for i = 1, NUM_FACTIONS_DISPLAYED do
-		local factionIndex = factionOffset + i
-		if factionIndex <= numFactions then
-			local factionHeader = _G['ReputationHeader'..i]
-			if factionHeader.isCollapsed then
-				factionHeader:SetNormalTexture(E.Media.Textures.PlusButton)
-			else
-				factionHeader:SetNormalTexture(E.Media.Textures.MinusButton)
-			end
-		end
-	end
-end
-
 local function PaperDollItemSlotButtonUpdate(frame)
-	if not frame.SetBackdropBorderColor then return end
+	if not frame.SetBackdropBorderColor then return end -- bag bar slots run this too, no backdrop when the bag bar is off
 
 	local id = frame:GetID()
 	local rarity = id and GetInventoryItemQuality('player', id)
@@ -52,16 +33,19 @@ end
 
 local function HandleTabs()
 	local lastTab
-	for index, tab in next, { _G.CharacterFrameTab1, HasPetUI() and _G.CharacterFrameTab2 or nil, _G.CharacterFrameTab3, _G.CharacterFrameTab4, _G.CharacterFrameTab5 } do
-		tab:ClearAllPoints()
+	for index = 1, #CHARACTERFRAME_SUBFRAMES do
+		local tab = _G['CharacterFrameTab'..index]
+		if index ~= 2 or HasPetUI() then -- pet tab is hidden without a pet
+			tab:ClearAllPoints()
 
-		if index == 1 then
-			tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
-		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			if lastTab then
+				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			else
+				tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
+			end
+
+			lastTab = tab
 		end
-
-		lastTab = tab
 	end
 end
 
@@ -82,15 +66,14 @@ end
 
 local function HandleResistanceFrame(name)
 	for i = 1, 5 do
-		local frameName = name..i
-		local frame = _G[frameName]
+		local frame = _G[name..i]
 		local icon, text = frame:GetRegions()
 		frame:Size(24)
 		frame:SetTemplate()
 
 		if i ~= 1 then
 			frame:ClearAllPoints()
-			frame:Point('TOP', _G[frameName - 1], 'BOTTOM', 0, -1)
+			frame:Point('TOP', _G[name..(i - 1)], 'BOTTOM', 0, -1)
 		end
 
 		icon:SetInside()
@@ -110,25 +93,10 @@ function S:CharacterFrame()
 
 	S:HandleDropDownBox(_G.PlayerTitleDropdown, 160)
 
-	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
-
 	_G.PaperDollFrame:StripTextures()
 
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
 		S:HandleTab(_G['CharacterFrameTab'..i])
-	end
-
-	-- Seasonal
-	local runeButton = E.ClassicSOD and _G.RuneFrameControlButton
-	if runeButton then
-		S:HandleButton(runeButton, true)
-
-		if not runeButton.runeIcon then -- make then icon
-			runeButton.runeIcon = runeButton:CreateTexture(nil, 'ARTWORK')
-			runeButton.runeIcon:SetTexture(134419) -- Interface\Icons\INV_Misc_Rune_06
-			runeButton.runeIcon:SetTexCoords()
-			runeButton.runeIcon:SetInside(runeButton)
-		end
 	end
 
 	-- stat dropdowns
@@ -154,22 +122,17 @@ function S:CharacterFrame()
 	HandleResistanceFrame('MagicResFrame')
 
 	for _, slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
-		if slot:IsObjectType('Button') and slot.Count then
-			local name = slot:GetName()
-			local icon = _G[name..'IconTexture']
-			local cooldown = _G[name..'Cooldown']
+		local name = slot:GetName()
+		local icon = _G[name..'IconTexture']
 
-			slot:StripTextures()
-			slot:SetTemplate(nil, true, true)
-			slot:StyleButton()
+		slot:StripTextures()
+		slot:SetTemplate(nil, true, true)
+		slot:StyleButton()
 
-			S:HandleIcon(icon)
-			icon:SetInside()
+		S:HandleIcon(icon)
+		icon:SetInside()
 
-			if cooldown then
-				E:RegisterCooldown(cooldown)
-			end
-		end
+		E:RegisterCooldown(_G[name..'Cooldown'])
 	end
 
 	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)
@@ -235,6 +198,7 @@ function S:CharacterFrame()
 		factionHeader:GetNormalTexture():Size(14)
 		factionHeader:SetHighlightTexture(E.ClearTexture)
 		factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
+		S:HandleCollapseTexture(factionHeader, nil, true)
 
 		factionWar:StripTextures()
 		factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
@@ -244,8 +208,6 @@ function S:CharacterFrame()
 		factionWar.Icon:Size(32)
 		factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
-
-	hooksecurefunc('ReputationFrame_Update', ReputationFrameUpdate)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)
@@ -308,24 +270,12 @@ function S:CharacterFrame()
 	_G.SkillDetailStatusBarUnlearnButton:Point('LEFT', _G.SkillDetailStatusBarBorder, 'RIGHT', 5, 0)
 	_G.SkillDetailStatusBarUnlearnButton:SetHitRectInsets(0, 0, 0, 0)
 
-	-- Honor Tab
-	_G.HonorFrame:StripTextures()
-
-	_G.HonorFrameProgressBar:StripTextures()
-	_G.HonorFrameProgressBar:Height(22)
-	_G.HonorFrameProgressBar:SetParent(_G.HonorFrame)
-	_G.HonorFrameProgressBar:CreateBackdrop()
-	_G.HonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
-	E:RegisterStatusBar(_G.HonorFrameProgressBar)
-
 	-- Honor/Arena/PvP Tab
 	local PVPFrame = _G.PVPFrame
 	PVPFrame:StripTextures(true)
 
 	for i = 1, MAX_ARENA_TEAMS do
 		local pvpTeam = _G['PVPTeam'..i]
-		if not pvpTeam then break end
-
 		pvpTeam:StripTextures()
 		pvpTeam:CreateBackdrop()
 		pvpTeam.backdrop:Point('TOPLEFT', 9, -4)
@@ -334,10 +284,7 @@ function S:CharacterFrame()
 		pvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
 		pvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
 
-		local highlight = _G['PVPTeam'..i..'Highlight']
-		if highlight then
-			highlight:Kill()
-		end
+		_G['PVPTeam'..i..'Highlight']:Kill()
 	end
 
 	local PVPTeamDetails = _G.PVPTeamDetails
@@ -350,18 +297,14 @@ function S:CharacterFrame()
 	PVPFrameToggleButton:Point('BOTTOMRIGHT', PVPFrame, 'BOTTOMRIGHT', -48, 81)
 	PVPFrameToggleButton:Size(14)
 
-	for i = 1, 5 do
+	for i = 1, 5 do -- column headers
 		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
-		if not header then break end
-
 		header:StripTextures()
 		header:StyleButton()
 	end
 
-	for i = 1, 10 do
+	for i = 1, 10 do -- team member rows
 		local button = _G['PVPTeamDetailsButton'..i]
-		if not button then break end
-
 		button:Width(335)
 
 		S:HandleButtonHighlight(button)

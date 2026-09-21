@@ -16,8 +16,6 @@ function S:SkinBattlefield()
 	S:HandleButton(_G.BattlefieldFrameCancelButton)
 	S:HandleButton(_G.BattlefieldFrameJoinButton)
 	S:HandleButton(_G.BattlefieldFrameGroupJoinButton)
-
-	S:HandleCloseButton(_G.BattlefieldFrameCloseButton)
 end
 
 S:AddCallback('SkinBattlefield')

@@ -12,35 +12,23 @@ local function SpellHighlightSetTexture(texture, path)
 	end
 end
 
-local function UpdateButton()
-	if _G.SpellBookFrame.bookType == _G.BOOKTYPE_PROFESSION then
-		return
+local function UpdateButton(button)
+	button.backdrop:SetShown(button.SpellName:IsShown())
+
+	local highlight = button:GetHighlightTexture()
+	if highlight:IsShown() then
+		E:Flash(highlight, 1, true)
+	else
+		E:StopFlash(highlight, 1)
 	end
 
-	for i = 1, _G.SPELLS_PER_PAGE do
-		local button = _G['SpellButton'..i]
-		local highlight = _G['SpellButton'..i..'Highlight']
+	button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
 
-		if button.backdrop then
-			button.backdrop:SetShown(button.SpellName:IsShown())
-		end
-
-		if highlight then
-			if highlight:IsShown() then
-				E:Flash(highlight, 1, true)
-			else
-				E:StopFlash(highlight, 1)
-			end
-		end
-
-		button.SpellSubName:SetTextColor(0.6, 0.6, 0.6)
-
-		local r = button.SpellName:GetTextColor()
-		if r < 0.8 then
-			button.SpellName:SetTextColor(0.8, 0.8, 0.8)
-		elseif r ~= 1 then
-			button.SpellName:SetTextColor(1, 1, 1)
-		end
+	local r = button.SpellName:GetTextColor()
+	if r < 0.8 then
+		button.SpellName:SetTextColor(0.8, 0.8, 0.8)
+	elseif r ~= 1 then
+		button.SpellName:SetTextColor(1, 1, 1)
 	end
 end
 
@@ -50,17 +38,11 @@ function S:SpellBookFrame()
 	S:HandleFrame(_G.SpellBookFrame, true, nil, 11, -12, -32, 76)
 
 	local showAllRanks = _G.ShowAllSpellRanksCheckbox
-	if showAllRanks then
-		S:HandleCheckBox(showAllRanks)
-		showAllRanks:Point('TOPLEFT', 20, -20)
-	end
+	S:HandleCheckBox(showAllRanks)
+	showAllRanks:Point('TOPLEFT', 20, -20)
 
 	_G.SpellBookTitleText:Point('TOP', -10, -17)
 	_G.SpellBookTitleText:SetTextColor(1, 1, 1)
-
-	_G.SpellBookSpellIconsFrame:StripTextures(true)
-	_G.SpellBookSideTabsFrame:StripTextures(true)
-	_G.SpellBookPageNavigationFrame:StripTextures(true)
 
 	_G.SpellBookPageText:SetTextColor(1, 1, 1)
 	_G.SpellBookPageText:Point('BOTTOM', -10, 87)
@@ -75,7 +57,7 @@ function S:SpellBookFrame()
 
 	S:HandleCloseButton(_G.SpellBookCloseButton, _G.SpellBookFrame.backdrop)
 
-	for i = 1, 3 do
+	for i = 1, 3 do -- frame tabs, only spell and pet are ever shown
 		local tab = _G['SpellBookFrameTabButton'..i]
 
 		tab:GetNormalTexture():SetTexture(nil)
@@ -137,27 +119,18 @@ function S:SpellBookFrame()
 
 	for i = 1, _G.MAX_SKILLLINE_TABS do
 		local tab = _G['SpellBookSkillLineTab'..i]
-		if tab then
-			tab:StripTextures()
-			tab:SetTemplate(nil, true)
-			tab:StyleButton(nil, true)
+		tab:StripTextures()
+		tab:SetTemplate(nil, true)
+		tab:StyleButton(nil, true)
 
-			local normalTexture = tab:GetNormalTexture()
-			if normalTexture then
-				normalTexture:SetInside()
-				normalTexture:SetTexCoords()
-			end
+		local normalTexture = tab:GetNormalTexture()
+		normalTexture:SetInside()
+		normalTexture:SetTexCoords()
 
-			if i == 1 then
-				tab:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
-			end
-		end
-
-		local flash = _G['SpellBookSkillLineTab'..i..'Flash']
-		if flash then
-			flash:Kill()
-		end
+		_G['SpellBookSkillLineTab'..i..'Flash']:Kill()
 	end
+
+	_G.SpellBookSkillLineTab1:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
 end
 
 S:AddCallback('SpellBookFrame')

@@ -3,10 +3,13 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetInventoryItemQuality = GetInventoryItemQuality
+
+local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
+local MAX_TALENT_TABS = MAX_TALENT_TABS
+local MAX_NUM_TALENTS = MAX_NUM_TALENTS
 
 local function Update_InspectPaperDollItemSlotButton(button)
 	local unit = button.hasItem and _G.InspectFrame.unit
@@ -39,16 +42,10 @@ end
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
-	local InspectFrame = _G.InspectFrame
-	S:HandleFrame(InspectFrame)
-	S:HandleCloseButton(_G.InspectFrameCloseButton, InspectFrame.backdrop)
+	S:HandleFrame(_G.InspectFrame)
 
 	-- Tabs
 	HandleTabs()
-
-	for i = 1, #_G.INSPECTFRAME_SUBFRAMES do
-		S:HandleTab(_G['InspectFrameTab'..i])
-	end
 
 	_G.InspectPaperDollFrame:StripTextures()
 	_G.InspectModelFrameBackgroundOverlay:SetTexture(E.Media.Textures.Invisible)
@@ -70,17 +67,9 @@ function S:Blizzard_InspectUI()
 		slot:OffsetFrameLevel(2)
 		slot:StyleButton()
 
-		local name = slot:GetName()
-		local icon = _G[name..'IconTexture']
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
-
-		local cooldown = _G[name..'Cooldown']
-		if cooldown then
-			E:RegisterCooldown(cooldown)
-		end
+		local icon = slot.icon
+		icon:SetTexCoords()
+		icon:SetInside()
 	end
 
 	hooksecurefunc('InspectPaperDollItemSlotButton_Update', Update_InspectPaperDollItemSlotButton)
@@ -91,102 +80,60 @@ function S:Blizzard_InspectUI()
 	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	_G.InspectModelFrameRotateRightButton:Point('TOPLEFT', _G.InspectModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
-	-- Talents
-	local InspectTalentFrame = _G.InspectTalentFrame
-	S:HandleFrame(InspectTalentFrame, true, nil, 15, -14, -32, 78)
+	-- PvP Tab
+	_G.InspectPVPFrame:StripTextures(true)
 
-	for i = 1, 3 do
-		local tab = _G['InspectTalentFrameTab'..i]
-		if tab then
-			S:HandleTab(tab, true)
-		end
+	for i = 1, MAX_ARENA_TEAMS do
+		local team = _G['InspectPVPTeam'..i]
+		team:StripTextures()
+		team:CreateBackdrop()
+		team.backdrop:Point('TOPLEFT', 9, -4)
+		team.backdrop:Point('BOTTOMRIGHT', -24, 3)
+
+		team:HookScript('OnEnter', S.SetModifiedBackdrop)
+		team:HookScript('OnLeave', S.SetOriginalBackdrop)
+
+		_G['InspectPVPTeam'..i..'Highlight']:Kill()
 	end
+
+	-- Talent Tab
+	_G.InspectTalentFrame:StripTextures()
+
+	for i = 1, MAX_TALENT_TABS do -- HandleTab looks weird on these
+		local tab = _G['InspectTalentFrameTab'..i]
+		tab:StripTextures()
+		tab:Height(24)
+		S:HandleButton(tab)
+	end
+
+	local pointsBar = _G.InspectTalentFramePointsBar
+	pointsBar:StripTextures()
+
+	_G.InspectTalentFrameSpentPointsText:Point('LEFT', pointsBar, 'LEFT', 12, -1)
+	_G.InspectTalentFrameTalentPointsText:Point('RIGHT', pointsBar, 'RIGHT', -12, -1)
 
 	local scrollFrame = _G.InspectTalentFrameScrollFrame
-	if scrollFrame then
-		scrollFrame:StripTextures()
-		scrollFrame:CreateBackdrop()
+	scrollFrame:StripTextures()
+	scrollFrame:CreateBackdrop()
 
-		local scrollBar = _G.InspectTalentFrameScrollFrameScrollBar
-		if scrollBar then
-			S:HandleScrollBar(scrollBar)
-			scrollBar:Point('TOPLEFT', scrollFrame, 'TOPRIGHT', 10, -16)
-		end
-	end
+	local scrollBar = _G.InspectTalentFrameScrollFrameScrollBar
+	S:HandleScrollBar(scrollBar)
+	scrollBar:Point('TOPLEFT', scrollFrame, 'TOPRIGHT', 10, -16)
 
-	for i = 1, _G.MAX_NUM_TALENTS do
+	for i = 1, MAX_NUM_TALENTS do
 		local talent = _G['InspectTalentFrameTalent'..i]
-		if talent then
-			talent:StripTextures()
-			talent:SetTemplate()
-			talent:StyleButton()
+		talent:StripTextures()
+		talent:SetTemplate()
+		talent:StyleButton()
 
-			local icon = _G['InspectTalentFrameTalent'..i..'IconTexture']
-			if icon then
-				icon:SetInside()
-				icon:SetTexCoord(unpack(E.TexCoords))
-				icon:SetDrawLayer('ARTWORK')
-			end
+		local icon = talent.icon
+		icon:SetInside()
+		icon:SetTexCoords()
+		icon:SetDrawLayer('ARTWORK')
 
-			local rank = _G['InspectTalentFrameTalent'..i..'Rank']
-			if rank then
-				rank:FontTemplate(nil, 12, 'OUTLINE')
-			end
-		end
+		local rank = _G['InspectTalentFrameTalent'..i..'Rank']
+		rank:FontTemplate(nil, 12, 'OUTLINE')
 	end
-
-	local PointsBar = _G.InspectTalentFramePointsBar
-	if PointsBar then
-		PointsBar:StripTextures()
-		PointsBar:SetTemplate('Transparent')
-	end
-
-	-- Honor/Arena/PvP Tab
-	local InspectPVPFrame = _G.InspectPVPFrame
-	InspectPVPFrame:StripTextures(true)
-
-	for i = 1, _G.MAX_ARENA_TEAMS do
-		local inspectpvpTeam = _G['InspectPVPTeam'..i]
-		if inspectpvpTeam then
-			inspectpvpTeam:StripTextures()
-			inspectpvpTeam:CreateBackdrop()
-			inspectpvpTeam.backdrop:Point('TOPLEFT', 9, -4)
-			inspectpvpTeam.backdrop:Point('BOTTOMRIGHT', -24, 3)
-
-			inspectpvpTeam:HookScript('OnEnter', S.SetModifiedBackdrop)
-			inspectpvpTeam:HookScript('OnLeave', S.SetOriginalBackdrop)
-
-			local highlight = _G['InspectPVPTeam'..i..'Highlight']
-			if highlight then
-				highlight:Kill()
-			end
-		end
-	end
-
-	local PVPTeamDetails = _G.PVPTeamDetails
-	PVPTeamDetails:StripTextures()
-	PVPTeamDetails:SetTemplate('Transparent')
-	PVPTeamDetails:Point('TOPLEFT', InspectPVPFrame, 'TOPRIGHT', -30, -12)
-
-	for i = 1, 5 do
-		local header = _G['PVPTeamDetailsFrameColumnHeader'..i]
-		if header then
-			header:StripTextures()
-			header:StyleButton()
-		end
-	end
-
-	for i = 1, 10 do
-		local button = _G['PVPTeamDetailsButton'..i]
-		if button then
-			button:Width(335)
-			S:HandleButtonHighlight(button)
-		end
-	end
-
-	S:HandleButton(_G.PVPTeamDetailsAddTeamMember)
-	S:HandleNextPrevButton(_G.PVPTeamDetailsToggleButton)
-	S:HandleCloseButton(_G.PVPTeamDetailsCloseButton)
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')

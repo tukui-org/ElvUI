@@ -72,12 +72,19 @@ if E.Retail or E.Mists or E.Wrath then
 	toggles.barber = L["BARBERSHOP"]
 	toggles.calendar = L["Calendar Frame"]
 	toggles.collections = L["COLLECTIONS"]
-	toggles.gbank = L["Guild Bank"]
 	toggles.transmogrify = L["TRANSMOGRIFY"]
 end
 
-if E.Retail or E.TBC then
+if not E.Classic then
+	toggles.gbank = L["Guild Bank"]
+end
+
+if E.Retail then
 	toggles.binding = L["KEY_BINDINGS"]
+end
+
+if E.Retail or E.TBC or E.Classic then
+	toggles.gmChat = L["GM Chat"]
 end
 
 if E.Wrath or E.TBC then
@@ -122,7 +129,6 @@ if E.Retail then
 	toggles.expansionLanding = L["Expansion Landing Page"]
 	toggles.garrison = L["GARRISON_LOCATION_TOOLTIP"]
 	toggles.genericTrait = L["Generic Trait"]
-	toggles.gmChat = L["GM Chat"]
 	toggles.guide = L["Guide Frame"]
 	toggles.islandQueue = L["ISLANDS_HEADER"]
 	toggles.islandsPartyPose = L["Island Party Pose"]

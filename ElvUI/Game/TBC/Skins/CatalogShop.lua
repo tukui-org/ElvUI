@@ -8,76 +8,41 @@ local next = next
 function S:Blizzard_CatalogShop()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.catalogShop) then return end
 
-	if E.private.skins.blizzard.tooltip and _G.CatalogShopTooltip then
+	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.CatalogShopTooltip)
 	end
 
 	local CatalogShopFrame = _G.CatalogShopFrame
-	if CatalogShopFrame then
-		CatalogShopFrame:StripTextures()
-		CatalogShopFrame:SetTemplate('Transparent')
+	CatalogShopFrame:StripTextures()
+	CatalogShopFrame:SetTemplate('Transparent')
 
-		local CloseButton = CatalogShopFrame.CloseButton
-		if CloseButton then
-			S:HandleCloseButton(CatalogShopFrame.CloseButton)
-			CloseButton:SetFrameLevel(510)
-		end
+	local CloseButton = CatalogShopFrame.CloseButton
+	S:HandleCloseButton(CloseButton)
+	CloseButton:SetFrameLevel(510) -- classic UIPanelCloseButton has no frame level, keep it above the title backdrop
 
-		local TitleContainer = CatalogShopFrame.TitleContainer
-		if TitleContainer then
-			TitleContainer:CreateBackdrop()
-			TitleContainer.backdrop:ClearAllPoints()
-			TitleContainer.backdrop:Point('TOPLEFT', CatalogShopFrame, 'TOPLEFT')
-			TitleContainer.backdrop:Point('TOPRIGHT', CatalogShopFrame, 'TOPRIGHT', 0, -30)
-			TitleContainer.backdrop:Height(TitleContainer:GetHeight() + 3)
-		end
+	local TitleContainer = CatalogShopFrame.TitleContainer
+	TitleContainer:CreateBackdrop()
+	TitleContainer.backdrop:ClearAllPoints()
+	TitleContainer.backdrop:Point('TOPLEFT', CatalogShopFrame, 'TOPLEFT')
+	TitleContainer.backdrop:Point('TOPRIGHT', CatalogShopFrame, 'TOPRIGHT', 0, -30)
+	TitleContainer.backdrop:Height(TitleContainer:GetHeight() + 3)
 
-		local HeaderFrame = CatalogShopFrame.HeaderFrame
-		if HeaderFrame then
-			local SearchBox = HeaderFrame.SearchBox
-			if SearchBox then
-				S:HandleEditBox(SearchBox)
-			end
-		end
+	S:HandleEditBox(CatalogShopFrame.HeaderFrame.SearchBox)
+	S:HandleTrimScrollBar(CatalogShopFrame.ProductContainerFrame.ProductsScrollBoxContainer.ScrollBar)
 
-		local ProductContainerFrame = CatalogShopFrame.ProductContainerFrame
-		if ProductContainerFrame and ProductContainerFrame.ProductsScrollBoxContainer then
-			local ScrollBar = ProductContainerFrame.ProductsScrollBoxContainer.ScrollBar
-			if ScrollBar then
-				S:HandleTrimScrollBar(ScrollBar)
-			end
-		end
+	local DetailsFrame = CatalogShopFrame.CatalogShopDetailsFrame
+	DetailsFrame.Border:Hide()
+	DetailsFrame:SetTemplate('Transparent')
 
-		local CatalogShopDetailsFrame = CatalogShopFrame.CatalogShopDetailsFrame
-		if CatalogShopDetailsFrame then
-			CatalogShopDetailsFrame.Border:Hide()
-			CatalogShopDetailsFrame:SetTemplate('Transparent')
-
-			local ButtonContainer = CatalogShopDetailsFrame.ButtonContainer
-			if ButtonContainer then
-				for _, button in next, { ButtonContainer:GetChildren() } do
-					if button and button.IsObjectType and button:IsObjectType('Button') then
-						S:HandleButton(button, nil, nil, nil, true)
-					end
-				end
-			end
-		end
-
-		local ProductDetails = CatalogShopFrame.ProductDetailsContainerFrame
-		if ProductDetails then
-			local BackButton = ProductDetails.BackButton
-			if BackButton then
-				S:HandleButton(BackButton, nil, nil, nil, true)
-			end
-
-			local ProductContainer = ProductDetails.DetailsProductContainerFrame
-			local ProductScrollContainer = ProductContainer.ProductsScrollBoxContainer
-			local ProductScrollBar = ProductScrollContainer and ProductScrollContainer.ScrollBar
-			if ProductScrollBar then
-				S:HandleTrimScrollBar(ProductScrollBar)
-			end
+	for _, button in next, { DetailsFrame.ButtonContainer:GetChildren() } do
+		if button:IsObjectType('Button') then
+			S:HandleButton(button, nil, nil, nil, true)
 		end
 	end
+
+	local ProductDetails = CatalogShopFrame.ProductDetailsContainerFrame
+	S:HandleButton(ProductDetails.BackButton, nil, nil, nil, true)
+	S:HandleTrimScrollBar(ProductDetails.DetailsProductContainerFrame.ProductsScrollBoxContainer.ScrollBar)
 end
 
 S:AddCallback('Blizzard_CatalogShop')

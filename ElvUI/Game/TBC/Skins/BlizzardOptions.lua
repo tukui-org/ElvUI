@@ -2,8 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs, next = ipairs, pairs, next
 local hooksecurefunc = hooksecurefunc
+local ipairs, pairs, next = ipairs, pairs, next
 
 local function ChatConfigFrame_OnShow()
 	for tab in _G.ChatConfigFrameChatTabManager.tabPool:EnumerateActive() do
@@ -71,27 +71,20 @@ end
 
 local function CreateBoxes(frame)
 	local boxName = frame:GetName()..'Box'
-
-	if frame.boxTable then
-		for index in next, frame.boxTable do
-			local box = _G[boxName..index]
-			if box then
-				box.NineSlice:SetTemplate('Transparent')
-				if box.Button then
-					S:HandleButton(box.Button)
-				end
-			end
-		end
+	for index in next, frame.boxTable do
+		local box = _G[boxName..index]
+		box.NineSlice:SetTemplate('Transparent')
+		S:HandleButton(box.Button)
 	end
 end
 
 local function UpdateMessageCheckboxes(frame)
 	if not frame.checkBoxTable then return end
 
-	local nameString = frame:GetName()..'CheckBox'
+	local nameString = frame:GetName()..'Checkbox'
 	for index in ipairs(frame.checkBoxTable) do
 		local checkBox = _G[nameString..index]
-		if checkBox and not checkBox.IsSkinned then
+		if not checkBox.IsSkinned then
 			S:HandleCheckBox(checkBox)
 
 			checkBox.IsSkinned = true
@@ -130,7 +123,6 @@ function S:BlizzardOptions()
 		_G.ChatConfigOtherSettingsSystem,
 		_G.ChatConfigOtherSettingsCreature,
 		_G.ChatConfigChannelSettingsAvailable,
-		_G.ChatConfigChannelSettingsAvailableBox,
 		_G.ChatConfigChannelSettingsLeft,
 		_G.CombatConfigMessageSourcesDoneBy,
 		_G.CombatConfigColorsUnitColors,
@@ -200,6 +192,9 @@ function S:BlizzardOptions()
 	_G.ChatConfigChannelSettingsClassColorLegend.NineSlice:SetTemplate('Transparent')
 
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
+	S:HandleRadioButton(_G.CombatConfigColorsColorizeEntireLineBySource)
+	S:HandleRadioButton(_G.CombatConfigColorsColorizeEntireLineByTarget)
+	S:HandleScrollBar(_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton)
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton)
 	_G.ChatConfigMoveFilterUpButton:Size(19)
@@ -215,102 +210,19 @@ function S:BlizzardOptions()
 
 	ChatConfigFrame:HookScript('OnShow', ChatConfigFrame_OnShow)
 
-	local OptionsFrames = { _G.InterfaceOptionsFrame, _G.InterfaceOptionsFrameCategories, _G.InterfaceOptionsFramePanelContainer, _G.InterfaceOptionsFrameAddOns, _G.VideoOptionsFrame, _G.VideoOptionsFrameCategoryFrame, _G.VideoOptionsFramePanelContainer, _G.Display_, _G.Graphics_, _G.RaidGraphics_ }
-	local OptionsFrameBackdrops = { _G.AudioOptionsSoundPanelHardware, _G.AudioOptionsSoundPanelVolume, _G.AudioOptionsSoundPanelPlayback, _G.AudioOptionsVoicePanelTalking, _G.AudioOptionsVoicePanelListening, _G.AudioOptionsVoicePanelBinding }
-	local OptionsButtons = { _G.GraphicsButton, _G.RaidButton }
-
-	local InterfaceOptions = {
-		_G.InterfaceOptionsFrame,
-		_G.InterfaceOptionsControlsPanel,
-		_G.InterfaceOptionsCombatPanel,
-		_G.InterfaceOptionsDisplayPanel,
-		_G.InterfaceOptionsSocialPanel,
-		_G.InterfaceOptionsActionBarsPanel,
-		_G.InterfaceOptionsNamesPanel,
-		_G.InterfaceOptionsNamesPanelFriendly,
-		_G.InterfaceOptionsNamesPanelEnemy,
-		_G.InterfaceOptionsNamesPanelUnitNameplates,
-		_G.InterfaceOptionsCameraPanel,
-		_G.InterfaceOptionsMousePanel,
-		_G.InterfaceOptionsAccessibilityPanel,
-		_G.VideoOptionsFrame,
-		_G.Display_,
-		_G.Graphics_,
-		_G.RaidGraphics_,
-		_G.Advanced_,
-		_G.NetworkOptionsPanel,
-		_G.InterfaceOptionsLanguagesPanel,
-		_G.AudioOptionsSoundPanel,
-		_G.AudioOptionsSoundPanelHardware,
-		_G.AudioOptionsSoundPanelVolume,
-		_G.AudioOptionsSoundPanelPlayback,
-		_G.AudioOptionsVoicePanel,
-		_G.CompactUnitFrameProfiles,
-		_G.CompactUnitFrameProfilesGeneralOptionsFrame,
-	}
-
-	for _, Frame in pairs(OptionsFrames) do
-		Frame:StripTextures()
-		Frame:SetTemplate('Transparent')
-	end
-
-	for _, Frame in pairs(OptionsFrameBackdrops) do
-		Frame:StripTextures()
-		Frame:CreateBackdrop('Transparent')
-	end
-
-	for _, Tab in pairs(OptionsButtons) do
-		S:HandleButton(Tab, true)
-	end
-
-	for _, Panel in pairs(InterfaceOptions) do
-		if Panel then
-			for _, Child in next, { Panel:GetChildren() } do
-				if Child:IsObjectType('CheckButton') then
-					S:HandleCheckBox(Child)
-				elseif Child:IsObjectType('Button') then
-					S:HandleButton(Child, true)
-				elseif Child:IsObjectType('Slider') then
-					S:HandleSliderFrame(Child)
-				elseif Child:IsObjectType('Tab') then
-					S:HandleTab(Child)
-				elseif Child:IsObjectType('Frame') and (Child.Left and Child.Middle and Child.Right) then
-					S:HandleDropDownBox(Child)
-				end
-			end
-		end
-	end
-
-	-- Create New Raid Profle
-	local newProfileDialog = _G.CompactUnitFrameProfilesNewProfileDialog
-	if newProfileDialog then
-		newProfileDialog:StripTextures()
-		newProfileDialog:CreateBackdrop('Transparent')
-
-		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCreateButton)
-		S:HandleButton(_G.CompactUnitFrameProfilesNewProfileDialogCancelButton)
-
-		if newProfileDialog.editBox then
-			S:HandleEditBox(newProfileDialog.editBox)
-			newProfileDialog.editBox:Size(210, 25)
-		end
-	end
-
-	-- Delete Raid Profile
-	local deleteProfileDialog = _G.CompactUnitFrameProfilesDeleteProfileDialog
-	if deleteProfileDialog then
-		deleteProfileDialog:StripTextures()
-		deleteProfileDialog:CreateBackdrop('Transparent')
-
-		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogDeleteButton)
-		S:HandleButton(_G.CompactUnitFrameProfilesDeleteProfileDialogCancelButton)
-	end
-
 	-- TextToSpeech
 	_G.TextToSpeechButton:StripTextures()
 
 	S:HandleButton(_G.TextToSpeechDefaultButton)
 	S:HandleCheckBox(_G.TextToSpeechCharacterSpecificButton)
+
+	local container = _G.TextToSpeechFramePanelContainer
+	S:HandleButton(container.PlaySampleButton)
+	S:HandleButton(container.PlaySampleAlternateButton)
+	S:HandleDropDownBox(container.TtsVoiceDropdown)
+	S:HandleDropDownBox(container.TtsVoiceAlternateDropdown)
+	S:HandleSliderFrame(container.AdjustRateSlider.Slider)
+	S:HandleSliderFrame(container.AdjustVolumeSlider.Slider)
 
 	for _, checkbox in pairs({ -- check boxes
 		'PlayActivitySoundWhenNotFocusedCheckButton',
@@ -319,7 +231,7 @@ function S:BlizzardOptions()
 		'NarrateMyMessagesCheckButton',
 		'UseAlternateVoiceForSystemMessagesCheckButton',
 	}) do
-		S:HandleCheckBox(_G.TextToSpeechFramePanelContainer[checkbox])
+		S:HandleCheckBox(container[checkbox])
 	end
 
 	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', UpdateMessageCheckboxes)
