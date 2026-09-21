@@ -293,9 +293,9 @@ local presistentEvents = {
 	BAG_CLOSED = true
 }
 
-if E.Modern then
+if E.Retail then
 	tinsert(bagIDs, REAGENT_CONTAINER)
-else
+elseif not E.Forever then
 	tinsert(bankIDs, -1)
 	tinsert(bankEvents, 'PLAYERBANKBAGSLOTS_CHANGED')
 	tinsert(bankEvents, 'PLAYERBANKSLOTS_CHANGED')
