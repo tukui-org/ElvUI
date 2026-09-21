@@ -55,16 +55,9 @@ if E.Modern or E.Mists then
 	toggles.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
 	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
 	toggles.itemUpgrade = L["Item Upgrade"]
+	toggles.petbattleui = L["Pet Battle"]
 	toggles.pvp = L["PvP Frames"]
 	toggles.guild = L["Guild"]
-end
-
-if E.Retail or E.Mists then
-	toggles.archaeology = L["Archaeology Frame"]
-	toggles.bmah = L["BLACK_MARKET_AUCTION_HOUSE"]
-	toggles.encounterjournal = L["ENCOUNTER_JOURNAL"]
-	toggles.itemUpgrade = L["Item Upgrade"]
-	toggles.petbattleui = L["Pet Battle"]
 end
 
 if E.Modern or E.Mists or E.TBC then
@@ -147,19 +140,14 @@ if E.Retail then
 	toggles.guide = L["Guide Frame"]
 	toggles.islandQueue = L["ISLANDS_HEADER"]
 	toggles.islandsPartyPose = L["Island Party Pose"]
-	toggles.itemInteraction = L["Item Interaction"]
-	toggles.losscontrol = L["LOSS_OF_CONTROL"]
 	toggles.majorFactions = L["Major Factions"]
-	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	toggles.obliterum = L["OBLITERUM_FORGE_TITLE"]
 	toggles.orderhall = L["Orderhall"]
 	toggles.perks = L["Trading Post"]
 	toggles.playerChoice = L["Player Choice Frame"]
-	toggles.questChoice = L["Quest Choice"]
 	toggles.runeforge = L["Runeforge"]
 	toggles.scrapping = L["SCRAP_BUTTON"]
 	toggles.soulbinds = L["Soulbinds"]
-	toggles.subscriptionInterstitial = L["Subscription Interstitial"]
 	toggles.talkinghead = L["Talking Head"]
 	toggles.torghastLevelPicker = L["Torghast Level Picker"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
