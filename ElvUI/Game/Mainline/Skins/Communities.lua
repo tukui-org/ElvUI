@@ -109,6 +109,24 @@ local function ChatEditBoxMinimized(frame)
 	editBox:Point('BOTTOMRIGHT', -12, 6)
 end
 
+-- Blizzard moves GuildInfoTab under RosterTab when perks are disabled
+local function UpdateCommunitiesTabs(frame)
+	local last
+	for _, tab in next, { frame.ChatTab, frame.RosterTab, frame.GuildBenefitsTab, frame.GuildInfoTab } do
+		if tab:IsShown() then
+			tab:ClearAllPoints()
+
+			if last then
+				tab:Point('TOPLEFT', last, 'BOTTOMLEFT', 0, -1)
+			else
+				tab:Point('TOPLEFT', frame, 'TOPRIGHT', 1, 0)
+			end
+
+			last = tab
+		end
+	end
+end
+
 function S:Blizzard_Communities()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
@@ -137,10 +155,10 @@ function S:Blizzard_Communities()
 	hooksecurefunc(_G.CommunitiesListEntryMixin, 'SetGuildFinder', HandleCommunitiesButton)
 
 	S:HandleItemButton(CommunitiesFrame.ChatTab)
-	CommunitiesFrame.ChatTab:Point('TOPLEFT', nil, 'TOPRIGHT', E.PixelMode and 0 or E.Border + E.Spacing, -36)
 	S:HandleItemButton(CommunitiesFrame.RosterTab)
 	S:HandleItemButton(CommunitiesFrame.GuildBenefitsTab)
 	S:HandleItemButton(CommunitiesFrame.GuildInfoTab)
+	hooksecurefunc(CommunitiesFrame, 'UpdateCommunitiesTabs', UpdateCommunitiesTabs)
 
 	S:HandleInsetFrame(CommunitiesFrame.CommunitiesList)
 	S:HandleMaxMinFrame(CommunitiesFrame.MaximizeMinimizeFrame)
@@ -194,6 +212,14 @@ function S:Blizzard_Communities()
 		hooksecurefunc(frame.CommunityCards.ScrollBox, 'Update', HandleCommunityCards)
 		S:HandleTrimScrollBar(frame.PendingCommunityCards.ScrollBar)
 		hooksecurefunc(frame.PendingCommunityCards.ScrollBox, 'Update', HandleCommunityCards)
+
+		local searchTab, pendingTab = frame.ClubFinderSearchTab, frame.ClubFinderPendingTab
+		S:HandleItemButton(searchTab)
+		S:HandleItemButton(pendingTab)
+		searchTab:ClearAllPoints()
+		searchTab:Point('TOPLEFT', CommunitiesFrame, 'TOPRIGHT', 1, 0)
+		pendingTab:ClearAllPoints()
+		pendingTab:Point('TOPLEFT', searchTab, 'BOTTOMLEFT', 0, -1)
 	end
 
 	-- Invitations
@@ -227,9 +253,6 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(ClubFinderGuildOptionsList.SearchBox)
 	S:HandleButton(ClubFinderGuildOptionsList.Search)
 
-	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderSearchTab)
-	S:HandleItemButton(ClubFinderGuildFinderFrame.ClubFinderPendingTab)
-
 	-- Community and Guild finder Tab
 	local ClubFinderCommunityAndGuildFinderFrame = _G.ClubFinderCommunityAndGuildFinderFrame
 	local ClubFinderCommunityOptionsList = ClubFinderCommunityAndGuildFinderFrame.OptionsList
@@ -259,9 +282,6 @@ function S:Blizzard_Communities()
 	ClubFinderCommunityOptionsList.Search:Size(118, 20)
 	ClubFinderCommunityOptionsList.SearchBox:Size(118, 20)
 	S:HandleEditBox(ClubFinderCommunityOptionsList.SearchBox)
-
-	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderSearchTab)
-	S:HandleItemButton(ClubFinderCommunityAndGuildFinderFrame.ClubFinderPendingTab)
 
 	-- Member Details
 	CommunitiesFrame.GuildMemberDetailFrame:StripTextures()
