@@ -25,31 +25,37 @@ local function UpdateCheckboxes(frame)
 	if not _G.FCF_GetCurrentChatFrame() then
 		return
 	end
+
 	for index in ipairs(frame.checkBoxTable) do
-		local checkBoxNameString = frame:GetName()..'Checkbox'
-		local checkBoxName = checkBoxNameString..index
-		local checkBox = _G[checkBoxName]
-		local check = _G[checkBoxName..'Check']
+		local frameName = frame:GetName()
+		local checkName = frameName..'Checkbox'..index
+		local checkBox = _G[checkName]
 		if checkBox and not checkBox.IsSkinned then
 			checkBox:StripTextures()
-			S:HandleCheckBox(check)
-			if _G[checkBoxName..'ColorClasses'] then
-				S:HandleCheckBox(_G[checkBoxName..'ColorClasses'])
+			S:HandleCheckBox(_G[checkName..'Check'])
+
+			local colorClasses = _G[checkName..'ColorClasses']
+			if colorClasses then
+				S:HandleCheckBox(colorClasses)
 			end
+
 			checkBox.IsSkinned = true
 		end
 	end
 end
 
 local function UpdateTieredCheckboxes(frame, index)
-	local group = frame.checkBoxTable[index]
-	local checkBox = _G[frame:GetName()..'Checkbox'..index]
+	local frameName = frame:GetName()
+	local checkName = frameName..'Checkbox'..index
+	local checkBox = _G[checkName]
 	if checkBox then
 		S:HandleCheckBox(checkBox)
 	end
+
+	local group = frame.checkBoxTable[index]
 	if group.subTypes then
 		for k in ipairs(group.subTypes) do
-			S:HandleCheckBox(_G[frame:GetName()..'Checkbox'..index..'_'..k])
+			S:HandleCheckBox(_G[checkName..'_'..k])
 		end
 	end
 end

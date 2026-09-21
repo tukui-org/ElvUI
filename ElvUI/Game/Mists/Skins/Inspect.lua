@@ -2,10 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local CreateFrame = CreateFrame
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
+local CreateFrame = CreateFrame
 local GetGlyphSocketInfo = GetGlyphSocketInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInspectSpecialization = GetInspectSpecialization

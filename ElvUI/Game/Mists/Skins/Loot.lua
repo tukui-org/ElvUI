@@ -4,9 +4,9 @@ local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
+local hooksecurefunc = hooksecurefunc
 
 local GetLootSlotInfo = GetLootSlotInfo
-local hooksecurefunc = hooksecurefunc
 local IsFishingLoot = IsFishingLoot
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend

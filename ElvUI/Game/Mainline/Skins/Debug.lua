@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
+local next = next
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
@@ -33,8 +34,8 @@ local function SkinOnShow()
 	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('TOPLEFT', ScriptErrorsFrame.ScrollFrame, 'TOPRIGHT', 4, 2)
 	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('BOTTOMLEFT', ScriptErrorsFrame.ScrollFrame, 'BOTTOMRIGHT', 4, 2)
 
-	for i = 1, #FrameTexs do
-		_G['ScriptErrorsFrame'..FrameTexs[i]]:SetTexture()
+	for _, name in next, FrameTexs do
+		_G['ScriptErrorsFrame'..name]:SetTexture()
 	end
 
 	-- Our Buttons
