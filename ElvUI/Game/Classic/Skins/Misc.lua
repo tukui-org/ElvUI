@@ -98,8 +98,9 @@ function S:BlizzardMiscFrames()
 		hooksecurefunc(GameMenuFrame, 'InitButtons', GameMenuInitButtons)
 	end
 
-	if E.OtherAddons.OptionHouse then
-		S:HandleButton(_G.GameMenuButtonOptionHouse)
+	local optionHouse = E.OtherAddons.OptionHouse and _G.GameMenuButtonOptionHouse
+	if optionHouse then
+		S:HandleButton(optionHouse)
 	end
 
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly

@@ -6,10 +6,12 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local GetCraftInfo = GetCraftInfo
+local GetNumCrafts = GetNumCrafts
 local GetCraftNumReagents = GetCraftNumReagents
 local GetCraftItemLink = GetCraftItemLink
 local GetCraftReagentInfo = GetCraftReagentInfo
 local GetCraftReagentItemLink = GetCraftReagentItemLink
+local GetCraftSelectionIndex = GetCraftSelectionIndex
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
@@ -17,7 +19,7 @@ local function SetSelection(id)
 	if not id then return end
 
 	local _, _, craftType = GetCraftInfo(id)
-	if craftType == 'header' then return end
+	if craftType == 'header' or GetCraftSelectionIndex() > GetNumCrafts() then return end -- same bails as CraftFrame_SetSelection
 
 	_G.CraftReagentLabel:Point('TOPLEFT', _G.CraftDescription, 'BOTTOMLEFT', 0, -10)
 

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, pairs, select = next, pairs, select
+local next, pairs = next, pairs
 
 local C_GuildInfo_GetGuildNewsInfo = C_GuildInfo.GetGuildNewsInfo
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
@@ -125,7 +125,6 @@ function S:Blizzard_Communities()
 	CommunitiesFrameCommunitiesList.Bg:Hide()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
-	CommunitiesFrameCommunitiesList.ScrollBar:GetChildren():Hide()
 	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar)
 	_G.ChannelFrame.ChannelRoster.ScrollBar:StripTextures()
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropdown)
@@ -299,7 +298,6 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton:Size(129, 19)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25)
-	CommunitiesFrame.MemberList.ScrollBar:GetChildren():Hide()
 	S:HandleTrimScrollBar(MemberList.ScrollBar)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
@@ -429,7 +427,6 @@ function S:Blizzard_Communities()
 	GuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	GuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
-	GuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	local BossModel = GuildDetailsFrameNews.BossModel
@@ -446,9 +443,10 @@ function S:Blizzard_Communities()
 	S:HandleTrimScrollBar(EditFrame.Container.ScrollFrame.ScrollBar)
 	S:HandleButton(_G.CommunitiesGuildTextEditFrameAcceptButton)
 
-	local closeButton = select(4, _G.CommunitiesGuildTextEditFrame:GetChildren())
-	S:HandleButton(closeButton)
-	S:HandleCloseButton(_G.CommunitiesGuildTextEditFrameCloseButton)
+	-- both close buttons are named $parentCloseButton, so the global is the text button and the X can only be reached by child order
+	local editFrameClose, _, _, editFrameCloseText = EditFrame:GetChildren()
+	S:HandleCloseButton(editFrameClose)
+	S:HandleButton(editFrameCloseText)
 
 	-- Guild Log
 	local GuildLogFrame = _G.CommunitiesGuildLogFrame
@@ -457,9 +455,10 @@ function S:Blizzard_Communities()
 	GuildLogFrame.Container.NineSlice:SetTemplate('Transparent')
 
 	S:HandleTrimScrollBar(GuildLogFrame.Container.ScrollFrame.ScrollBar)
-	S:HandleCloseButton(_G.CommunitiesGuildLogFrameCloseButton)
-	closeButton = select(3, _G.CommunitiesGuildLogFrame:GetChildren()) -- swap local variable
-	S:HandleButton(closeButton)
+
+	local logFrameClose, _, logFrameCloseText = GuildLogFrame:GetChildren()
+	S:HandleCloseButton(logFrameClose)
+	S:HandleButton(logFrameCloseText)
 
 	-- Recruitment Dialog
 	local RecruitmentDialog = _G.CommunitiesFrame.RecruitmentDialog
@@ -476,7 +475,7 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(RecruitmentDialog.MinIlvlOnly.EditBox)
 	S:HandleButton(RecruitmentDialog.Accept)
 	S:HandleButton(RecruitmentDialog.Cancel)
-	S:HandleScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
+	S:HandleTrimScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
 
 	-- Notification Settings Dialog
 	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
@@ -486,7 +485,7 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(NotificationSettings.ScrollFrame.Child.QuickJoinButton)
 	S:HandleButton(NotificationSettings.ScrollFrame.Child.AllButton)
 	S:HandleButton(NotificationSettings.ScrollFrame.Child.NoneButton)
-	S:HandleScrollBar(NotificationSettings.ScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(NotificationSettings.ScrollFrame.ScrollBar)
 	S:HandleButton(NotificationSettings.Selector.OkayButton)
 	S:HandleButton(NotificationSettings.Selector.CancelButton)
 

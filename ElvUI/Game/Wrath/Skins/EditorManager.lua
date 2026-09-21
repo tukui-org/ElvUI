@@ -133,7 +133,7 @@ function S:EditorManagerFrame()
 	importBackdrop:Point('BOTTOMRIGHT', importBox, 0, -4)
 
 	local scrollbar = importBox.ScrollBar
-	S:HandleScrollBar(scrollbar)
+	S:HandleTrimScrollBar(scrollbar)
 	scrollbar:ClearAllPoints()
 	scrollbar:Point('TOPLEFT', importBox, 'TOPRIGHT', 4, 4)
 	scrollbar:Point('BOTTOMLEFT', importBox, 'BOTTOMRIGHT', 0, -4)

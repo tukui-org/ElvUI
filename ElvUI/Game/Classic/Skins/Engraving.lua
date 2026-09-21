@@ -20,7 +20,9 @@ function S:SkinEngravings()
 
 	for i = 1, 15 do -- rune headers
 		local header = _G['EngravingFrameHeader'..i]
-		header:StripTextures()
+		header.middle:SetTexture() -- keep the plus / minus and category icons
+		header.leftEdge:SetTexture()
+		header.rightEdge:SetTexture()
 		header:SetTemplate('Transparent')
 	end
 

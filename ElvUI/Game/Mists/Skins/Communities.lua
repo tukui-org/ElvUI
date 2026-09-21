@@ -144,7 +144,6 @@ function S:Blizzard_Communities()
 	CommunitiesFrameCommunitiesList.Bg:Hide()
 	CommunitiesFrameCommunitiesList.TopFiligree:Hide()
 	CommunitiesFrameCommunitiesList.BottomFiligree:Hide()
-	CommunitiesFrameCommunitiesList.ScrollBar:GetChildren():Hide()
 	S:HandleTrimScrollBar(CommunitiesFrameCommunitiesList.ScrollBar)
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropdown)
 
@@ -291,7 +290,6 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.CommunitiesControlFrame.CommunitiesSettingsButton:Size(129, 19)
 	S:HandleCheckBox(CommunitiesFrame.MemberList.ShowOfflineButton)
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25)
-	CommunitiesFrame.MemberList.ScrollBar:GetChildren():Hide()
 	S:HandleTrimScrollBar(MemberList.ScrollBar)
 
 	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
@@ -416,7 +414,6 @@ function S:Blizzard_Communities()
 	GuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
 	GuildDetailsFrameNews.TitleText:FontTemplate(nil, 14)
 
-	GuildDetailsFrameNews.ScrollBar:GetChildren():Hide()
 	S:HandleButton(CommunitiesFrame.GuildLogButton)
 
 	local BossModel = GuildDetailsFrameNews.BossModel
@@ -464,7 +461,7 @@ function S:Blizzard_Communities()
 	S:HandleEditBox(RecruitmentDialog.MinIlvlOnly.EditBox)
 	S:HandleButton(RecruitmentDialog.Accept)
 	S:HandleButton(RecruitmentDialog.Cancel)
-	S:HandleScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
+	S:HandleTrimScrollBar(RecruitmentDialog.RecruitmentMessageFrame.RecruitmentMessageInput.ScrollBar)
 
 	-- Notification Settings Dialog
 	local NotificationSettings = _G.CommunitiesFrame.NotificationSettingsDialog
@@ -474,7 +471,7 @@ function S:Blizzard_Communities()
 	S:HandleCheckBox(NotificationSettings.ScrollFrame.Child.QuickJoinButton)
 	S:HandleButton(NotificationSettings.ScrollFrame.Child.AllButton)
 	S:HandleButton(NotificationSettings.ScrollFrame.Child.NoneButton)
-	S:HandleScrollBar(NotificationSettings.ScrollFrame.ScrollBar)
+	S:HandleTrimScrollBar(NotificationSettings.ScrollFrame.ScrollBar)
 	S:HandleButton(NotificationSettings.Selector.OkayButton)
 	S:HandleButton(NotificationSettings.Selector.CancelButton)
 

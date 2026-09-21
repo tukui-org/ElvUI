@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function RotateLeftButtonSetPoint(button, _, _, _, _, _, forced)
@@ -33,18 +32,6 @@ function S:TabardFrame()
 
 	_G.TabardFrameCostFrame:StripTextures()
 	_G.TabardFrameCustomizationFrame:StripTextures()
-
-	-- Add Tabard Emblem back
-	for _, frame in next, {
-		_G.TabardFrameEmblemTopRight,
-		_G.TabardFrameEmblemBottomRight,
-		_G.TabardFrameEmblemTopLeft,
-		_G.TabardFrameEmblemBottomLeft,
-	} do
-		frame:SetParent(TabardFrame)
-		frame.Show = nil
-		frame:Show()
-	end
 
 	for i = 1, 5 do -- customization rows
 		local button = _G['TabardFrameCustomization'..i]
