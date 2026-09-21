@@ -79,6 +79,7 @@
 	<Script file='Classic\Skins\BlizzardOptions.lua'/>
 	<Script file='Classic\Skins\Channels.lua'/>
 	<Script file='Classic\Skins\Character.lua'/>
+	<Script file='Classic\Skins\CombatLog.lua'/>
 	<Script file='Classic\Skins\Communities.lua'/>
 	<Script file='Classic\Skins\Craft.lua'/>
 	<Script file='Classic\Skins\Debug.lua'/>

@@ -4,36 +4,16 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local function SetBackdropAlpha()
-	local frame = _G.BattlefieldMapFrame
-	if frame and frame.backdrop then
-		local options = _G.BattlefieldMapOptions
-		local opacity = 1 - (options and options.opacity or 1)
-		frame.backdrop:SetBackdropColor(0, 0, 0, opacity)
-	end
-end
-
-local function GetCloseButton(frame)
-	if not frame then
-		frame = _G.BattlefieldMapFrame
-	end
-
-	local border = frame and frame.BorderFrame
-	return border and border.CloseButton
+local function SetBackdropAlpha(frame)
+	frame.backdrop:SetBackdropColor(0, 0, 0, 1 - _G.BattlefieldMapOptions.opacity)
 end
 
 local function OnLeave()
-	local close = GetCloseButton()
-	if close then
-		close:SetAlpha(0.1)
-	end
+	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(0.1)
 end
 
 local function OnEnter()
-	local close = GetCloseButton()
-	if close then
-		close:SetAlpha(1)
-	end
+	_G.BattlefieldMapFrame.BorderFrame.CloseButton:SetAlpha(1)
 end
 
 function S:Blizzard_BattlefieldMap()
@@ -42,43 +22,29 @@ function S:Blizzard_BattlefieldMap()
 	local frame = _G.BattlefieldMapFrame
 	frame:StripTextures()
 	frame:CreateBackdrop()
+	frame.backdrop:SetOutside(frame.ScrollContainer)
 	frame:SetFrameStrata('LOW')
 	frame:HookScript('OnShow', SetBackdropAlpha)
 	hooksecurefunc(frame, 'SetGlobalAlpha', SetBackdropAlpha)
 
-	local scroll = frame.ScrollContainer
-	if scroll then
-		if frame.backdrop then
-			frame.backdrop:SetOutside(scroll)
-		end
-
-		scroll:HookScript('OnLeave', OnLeave)
-		scroll:HookScript('OnEnter', OnEnter)
-	end
+	frame.ScrollContainer:HookScript('OnLeave', OnLeave)
+	frame.ScrollContainer:HookScript('OnEnter', OnEnter)
 
 	local tab = _G.BattlefieldMapTab
-	if tab then
-		tab:SetHeight(24)
-		tab:StripTextures()
-		tab:CreateBackdrop()
+	tab:SetHeight(24)
+	tab:StripTextures()
+	tab:CreateBackdrop()
+	tab.Text:SetInside(tab)
 
-		if tab.Text then
-			tab.Text:SetInside(tab)
-		end
-	end
-
-	local close = GetCloseButton(frame)
-	if close then
-		S:HandleCloseButton(close)
-
-		close:SetAlpha(0.25)
-		close:SetIgnoreParentAlpha(1)
-		close:OffsetFrameLevel(1)
-		close:ClearAllPoints()
-		close:Point('TOPRIGHT', 3, 5)
-		close:HookScript('OnLeave', OnLeave)
-		close:HookScript('OnEnter', OnEnter)
-	end
+	local close = frame.BorderFrame.CloseButton
+	S:HandleCloseButton(close)
+	close:SetAlpha(0.25)
+	close:SetIgnoreParentAlpha(1)
+	close:OffsetFrameLevel(1)
+	close:ClearAllPoints()
+	close:Point('TOPRIGHT', 3, 5)
+	close:HookScript('OnLeave', OnLeave)
+	close:HookScript('OnEnter', OnEnter)
 end
 
 S:AddCallbackForAddon('Blizzard_BattlefieldMap')

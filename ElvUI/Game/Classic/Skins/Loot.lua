@@ -22,13 +22,13 @@ local function UpdateLoots()
 	local numItems = C_LootHistory_GetNumItems()
 	for i = 1, numItems do
 		local frame = _G.LootHistoryFrame.itemFrames[i]
-		if frame and not frame.IsSkinned then
+		if not frame.IsSkinned then
 			local Icon = frame.Icon:GetTexture()
 			frame:StripTextures()
 			frame.Icon:SetTexture(Icon)
 			frame.Icon:SetTexCoords()
 
-			-- create a backdrop around the icon
+			-- Create a backdrop around the icon
 			frame:CreateBackdrop()
 			frame.backdrop:SetOutside(frame.Icon)
 			frame.Icon:SetParent(frame.backdrop)
@@ -45,15 +45,44 @@ local function UpdateLoots()
 	end
 end
 
+local function MasterLooterShow()
+	local item = _G.MasterLooterFrame.Item
+	local icon = item.Icon
+	local texture = icon:GetTexture()
+
+	item.IconBorder:SetAlpha(0)
+	item:StripTextures()
+	icon:SetTexture(texture)
+	icon:SetTexCoords()
+
+	if not item.backdrop then
+		item:CreateBackdrop()
+		item.backdrop:SetOutside(icon)
+	end
+
+	local r, g, b = E:GetItemQualityColor(_G.LootFrame.selectedQuality)
+	item.backdrop:SetBackdropBorderColor(r, g, b)
+end
+
+local function MasterLooterUpdatePlayers()
+	for _, child in next, { _G.MasterLooterFrame:GetChildren() } do
+		if not child.IsSkinned and child:IsObjectType('Button') then -- player buttons are created on demand
+			child:SetTemplate()
+			child:StyleButton()
+
+			child.IsSkinned = true
+		end
+	end
+end
+
 function S:LootFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.loot) then return end
 
 	-- Loot history frame
 	local LootHistoryFrame = _G.LootHistoryFrame
 	LootHistoryFrame:StripTextures()
-	S:HandleCloseButton(LootHistoryFrame.CloseButton)
-	LootHistoryFrame:StripTextures()
 	LootHistoryFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(LootHistoryFrame.CloseButton)
 	LootHistoryFrame.ResizeButton:StripTextures()
 	LootHistoryFrame.ResizeButton.text = LootHistoryFrame.ResizeButton:CreateFontString(nil, 'OVERLAY')
 	LootHistoryFrame.ResizeButton.text:FontTemplate(nil, 16, 'OUTLINE')
@@ -73,47 +102,17 @@ function S:LootFrame()
 	-- Master Looter Frame
 	local MasterLooterFrame = _G.MasterLooterFrame
 	MasterLooterFrame.NineSlice:SetTemplate('Transparent')
-	MasterLooterFrame.Item.NameBorderMid:StripTextures()
-	MasterLooterFrame.Item.NameBorderLeft:StripTextures()
-	MasterLooterFrame.Item.NameBorderRight:StripTextures()
 
-	hooksecurefunc('MasterLooterFrame_Show', function()
-		local item = MasterLooterFrame.Item
-		if item then
-			local icon = item.Icon
-			local texture = icon:GetTexture()
+	local item = MasterLooterFrame.Item
+	item.NameBorderMid:StripTextures()
+	item.NameBorderLeft:StripTextures()
+	item.NameBorderRight:StripTextures()
 
-			if item.IconBorder then
-				item.IconBorder:SetAlpha(0)
-			end
+	local _, _, _, closeFrameButton = MasterLooterFrame:GetChildren() -- NineSlice, Item, player1, unnamed UIPanelCloseButton - the other player buttons are created on demand
+	S:HandleCloseButton(closeFrameButton)
 
-			item:StripTextures()
-			icon:SetTexture(texture)
-			icon:SetTexCoords()
-
-			if not item.backdrop then
-				item:CreateBackdrop()
-				item.backdrop:SetOutside(icon)
-			end
-
-			local r, g, b = E:GetItemQualityColor(_G.LootFrame.selectedQuality)
-			item.backdrop:SetBackdropBorderColor(r, g, b)
-		end
-	end)
-
-	hooksecurefunc('MasterLooterFrame_UpdatePlayers', function()
-		for _, child in next, { MasterLooterFrame:GetChildren() } do
-			if not child.IsSkinned and not child:GetName() and child:IsObjectType('Button') then
-				if child:GetPushedTexture() then
-					S:HandleCloseButton(child)
-				else
-					child:SetTemplate()
-					child:StyleButton()
-				end
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc('MasterLooterFrame_Show', MasterLooterShow)
+	hooksecurefunc('MasterLooterFrame_UpdatePlayers', MasterLooterUpdatePlayers)
 
 	local LootFrame = _G.LootFrame
 	S:HandleFrame(LootFrame, true)
@@ -153,7 +152,7 @@ function S:LootFrame()
 
 		local button = _G['LootButton'..index]
 		local slot = (numLootToShow * (LootFrame.page - 1)) + index
-		if button and button:IsShown() then
+		if button:IsShown() then
 			local texture, _, isQuestItem, questId, isActive
 			if LootFrame.AutoLootTable then
 				local entry = LootFrame.AutoLootTable[slot]

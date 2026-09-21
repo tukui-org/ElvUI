@@ -37,7 +37,6 @@ local toggles = {
 	petition = L["Petition Frame"],
 	quest = L["Quest Frames"],
 	raid = L["Raid Frame"],
-	socket = L["Socket Frame"],
 	spellbook = L["SPELLBOOK"],
 	stable = L["Stable"],
 	tabard = L["Tabard Frame"],
@@ -77,6 +76,7 @@ end
 
 if not E.Classic then
 	toggles.gbank = L["Guild Bank"]
+	toggles.socket = L["Socket Frame"]
 end
 
 if E.Retail then

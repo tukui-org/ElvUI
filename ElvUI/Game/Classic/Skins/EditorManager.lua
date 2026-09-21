@@ -28,10 +28,8 @@ end
 
 local function HandleDialogs()
 	local dialog = _G.EditModeSystemSettingsDialog
-	for _, button in next, { dialog.Buttons:GetChildren() } do
-		if button.Controller and not button.IsSkinned then
-			S:HandleButton(button)
-		end
+	for _, button in next, { dialog.Buttons:GetChildren() } do -- revert button plus the pooled system buttons
+		S:HandleButton(button)
 	end
 
 	for _, frame in next, { dialog.Settings:GetChildren() } do
@@ -44,14 +42,8 @@ local function HandleDialogs()
 		local slider = frame.Slider
 		if slider and not slider.backdrop then
 			S:HandleStepSlider(slider)
-
-			if slider.Back then
-				S:HandleNextPrevButton(slider.Back)
-			end
-
-			if slider.Forward then
-				S:HandleNextPrevButton(slider.Forward)
-			end
+			S:HandleNextPrevButton(slider.Back)
+			S:HandleNextPrevButton(slider.Forward)
 		end
 
 		local checkbox = frame.Button
@@ -107,71 +99,61 @@ function S:EditorManagerFrame()
 
 	-- Layout Creator
 	local layout = _G.EditModeLayoutDialog
-	if layout then
-		layout:StripTextures()
-		layout:CreateBackdrop('Transparent')
+	layout:StripTextures()
+	layout:CreateBackdrop('Transparent')
 
-		S:HandleButton(layout.AcceptButton)
-		S:HandleButton(layout.CancelButton)
-		S:HandleEditBox(layout.LayoutNameEditBox)
-
-		HandleCheckBox(layout.CharacterSpecificLayoutCheckButton.Button)
-	end
+	S:HandleButton(layout.AcceptButton)
+	S:HandleButton(layout.CancelButton)
+	S:HandleEditBox(layout.LayoutNameEditBox)
+	HandleCheckBox(layout.CharacterSpecificLayoutCheckButton.Button)
 
 	-- Layout Unsaved
 	local unsaved = _G.EditModeUnsavedChangesDialog
-	if unsaved then
-		unsaved:StripTextures()
-		unsaved:CreateBackdrop('Transparent')
+	unsaved:StripTextures()
+	unsaved:CreateBackdrop('Transparent')
 
-		S:HandleButton(unsaved.CancelButton)
-		S:HandleButton(unsaved.ProceedButton)
-		S:HandleButton(unsaved.SaveAndProceedButton)
-	end
+	S:HandleButton(unsaved.CancelButton)
+	S:HandleButton(unsaved.ProceedButton)
+	S:HandleButton(unsaved.SaveAndProceedButton)
 
 	-- Layout Importer
 	local import = _G.EditModeImportLayoutDialog
-	if import then
-		import:StripTextures()
-		import:CreateBackdrop('Transparent')
-		S:HandleButton(import.AcceptButton)
-		S:HandleButton(import.CancelButton)
-		HandleCheckBox(import.CharacterSpecificLayoutCheckButton.Button)
+	import:StripTextures()
+	import:CreateBackdrop('Transparent')
+	S:HandleButton(import.AcceptButton)
+	S:HandleButton(import.CancelButton)
+	HandleCheckBox(import.CharacterSpecificLayoutCheckButton.Button)
 
-		local importBox = import.ImportBox
-		S:HandleEditBox(importBox)
+	local importBox = import.ImportBox
+	S:HandleEditBox(importBox)
 
-		local importBackdrop = importBox.backdrop
-		importBackdrop:ClearAllPoints()
-		importBackdrop:Point('TOPLEFT', importBox, -4, 4)
-		importBackdrop:Point('BOTTOMRIGHT', importBox, 0, -4)
+	local importBackdrop = importBox.backdrop
+	importBackdrop:ClearAllPoints()
+	importBackdrop:Point('TOPLEFT', importBox, -4, 4)
+	importBackdrop:Point('BOTTOMRIGHT', importBox, 0, -4)
 
-		local scrollbar = importBox.ScrollBar
-		S:HandleScrollBar(scrollbar)
-		scrollbar:ClearAllPoints()
-		scrollbar:Point('TOPLEFT', importBox, 'TOPRIGHT', 4, 4)
-		scrollbar:Point('BOTTOMLEFT', importBox, 'BOTTOMRIGHT', 0, -4)
+	local scrollbar = importBox.ScrollBar
+	S:HandleTrimScrollBar(scrollbar)
+	scrollbar:ClearAllPoints()
+	scrollbar:Point('TOPLEFT', importBox, 'TOPRIGHT', 4, 4)
+	scrollbar:Point('BOTTOMLEFT', importBox, 'BOTTOMRIGHT', 0, -4)
 
-		local editbox = import.LayoutNameEditBox
-		S:HandleEditBox(editbox)
+	local editbox = import.LayoutNameEditBox
+	S:HandleEditBox(editbox)
 
-		local editbackdrop = editbox.backdrop
-		editbackdrop:ClearAllPoints()
-		editbackdrop:Point('TOPLEFT', editbox, -2, -4)
-		editbackdrop:Point('BOTTOMRIGHT', editbox, 2, 4)
-	end
+	local editbackdrop = editbox.backdrop
+	editbackdrop:ClearAllPoints()
+	editbackdrop:Point('TOPLEFT', editbox, -2, -4)
+	editbackdrop:Point('BOTTOMRIGHT', editbox, 2, 4)
 
 	-- Dialog (Mover Settings)
 	local dialog = _G.EditModeSystemSettingsDialog
-	if dialog then
-		dialog:StripTextures()
-		dialog:CreateBackdrop('Transparent')
-		S:HandleCloseButton(dialog.CloseButton)
+	dialog:StripTextures()
+	dialog:CreateBackdrop('Transparent')
+	S:HandleCloseButton(dialog.CloseButton)
 
-		hooksecurefunc(dialog.Buttons, 'AddLayoutChildren', HandleDialogs)
-
-		HandleDialogs()
-	end
+	hooksecurefunc(dialog.Buttons, 'AddLayoutChildren', HandleDialogs)
+	HandleDialogs()
 end
 
 S:AddCallback('EditorManagerFrame')
