@@ -15,13 +15,6 @@ function S:RaidInfoFrame()
 		frame:StripTextures()
 	end
 
-	for _, texture in next, {
-		_G.RaidInfoScrollFrameBottom,
-		_G.RaidInfoScrollFrameTop,
-	} do
-		texture:Kill()
-	end
-
 	for _, button in next, {
 		_G.RaidFrameConvertToRaidButton,
 		_G.RaidFrameRaidInfoButton,
@@ -34,8 +27,8 @@ function S:RaidInfoFrame()
 	local RaidInfoFrame = _G.RaidInfoFrame
 	RaidInfoFrame:SetTemplate('Transparent')
 
-	S:HandleCloseButton(_G.RaidInfoCloseButton,RaidInfoFrame)
-	S:HandleScrollBar(_G.RaidInfoFrame.ScrollBar)
+	S:HandleCloseButton(_G.RaidInfoCloseButton, RaidInfoFrame)
+	S:HandleScrollBar(RaidInfoFrame.ScrollBar)
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 end
 

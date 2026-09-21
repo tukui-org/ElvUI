@@ -2,25 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local CreateFrame = CreateFrame
-local next, unpack = next, unpack
+local next = next
 local hooksecurefunc = hooksecurefunc
 
-local GetGlyphSocketInfo = GetGlyphSocketInfo
 local GetInventoryItemQuality = GetInventoryItemQuality
-local GetInspectSpecialization = GetInspectSpecialization
 
-local function FrameBackdrop_OnEnter(frame)
-	if not frame.backdrop then return end
-
-	frame.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-end
-
-local function FrameBackdrop_OnLeave(frame)
-	if not frame.backdrop then return end
-
-	frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-end
+local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
+local MAX_TALENT_TABS = MAX_TALENT_TABS
+local MAX_NUM_TALENTS = MAX_NUM_TALENTS
 
 local function Update_InspectPaperDollItemSlotButton(button)
 	local unit = button.hasItem and _G.InspectFrame.unit
@@ -28,13 +17,6 @@ local function Update_InspectPaperDollItemSlotButton(button)
 
 	local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
 	button.backdrop:SetBackdropBorderColor(r, g, b)
-end
-
-local function InspectTalentIconDesaturated(icon, desaturate)
-	local parent = icon:GetParent()
-	if parent.ShadowedTexture then
-		parent.ShadowedTexture:SetShown(desaturate)
-	end
 end
 
 local function HandleTabs()
@@ -57,49 +39,18 @@ local function HandleTabs()
 	end
 end
 
-local function UpdateGlyph(frame)
-	local talentGroup = _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup;
-	local _, glyphType, _, _, iconFilename = GetGlyphSocketInfo(frame:GetID(), talentGroup, true, _G.INSPECTED_UNIT)
-	if frame.texture then
-		frame.texture:SetTexture(glyphType and iconFilename or [[Interface\Spellbook\UI-Glyph-Rune1]])
-	end
-end
-
-local function BackgroundDesaturation(bckgnd, value)
-	if value and bckgnd.ignoreDesaturated then
-		bckgnd:SetDesaturated(false)
-	end
-end
-
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
-	local InspectFrame = _G.InspectFrame
-	S:HandleFrame(InspectFrame)
-	S:HandleCloseButton(_G.InspectFrameCloseButton, InspectFrame.backdrop)
+	S:HandleFrame(_G.InspectFrame)
 
 	-- Tabs
 	HandleTabs()
-
-	for i = 1, #_G.INSPECTFRAME_SUBFRAMES do
-		S:HandleTab(_G['InspectFrameTab'..i])
-	end
 
 	_G.InspectPaperDollFrame:StripTextures()
 	_G.InspectModelFrameBackgroundOverlay:SetTexture(E.media.blankTex)
 	_G.InspectModelFrameBackgroundOverlay:SetVertexColor(0, 0, 0, 0.6)
 	_G.InspectModelFrameBackgroundOverlay:CreateBackdrop('Transparent')
-
-	-- Give inspect frame model backdrop it's color back
-	for _, corner in next, { 'TopLeft','TopRight','BotLeft','BotRight' } do
-		local bg = _G['InspectModelFrameBackground'..corner]
-		if bg then
-			bg:SetDesaturated(false)
-			bg.ignoreDesaturated = true -- so plugins can prevent this if they want
-
-			hooksecurefunc(bg, 'SetDesaturated', BackgroundDesaturation)
-		end
-	end
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
 	_G.InspectModelFrameBorderTopRight:Kill()
@@ -117,17 +68,9 @@ function S:Blizzard_InspectUI()
 		slot:OffsetFrameLevel(2)
 		slot:StyleButton()
 
-		local name = slot:GetName()
-		local icon = _G[name..'IconTexture']
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
-
-		local cooldown = _G[name..'Cooldown']
-		if cooldown then
-			E:RegisterCooldown(cooldown)
-		end
+		local icon = slot.icon
+		icon:SetTexCoords()
+		icon:SetInside()
 	end
 
 	hooksecurefunc('InspectPaperDollItemSlotButton_Update', Update_InspectPaperDollItemSlotButton)
@@ -141,146 +84,57 @@ function S:Blizzard_InspectUI()
 	-- PvP Tab
 	_G.InspectPVPFrame:StripTextures()
 
-	for _, name in next, { 'RatedBG', 'Arena2v2', 'Arena3v3', 'Arena5v5' } do
-		local section = _G.InspectPVPFrame[name]
-		if section then
-			section:CreateBackdrop('Transparent')
-			section.backdrop:Point('TOPLEFT', 0, -1)
-			section.backdrop:Point('BOTTOMRIGHT', 0, 1)
-			section:EnableMouse(true)
+	for i = 1, MAX_ARENA_TEAMS do
+		local team = _G['InspectPVPTeam'..i]
+		team:StripTextures()
+		team:CreateBackdrop()
+		team.backdrop:Point('TOPLEFT', 9, -4)
+		team.backdrop:Point('BOTTOMRIGHT', -24, 3)
 
-			section:HookScript('OnEnter', FrameBackdrop_OnEnter)
-			section:HookScript('OnLeave', FrameBackdrop_OnLeave)
-		end
+		team:HookScript('OnEnter', S.SetModifiedBackdrop)
+		team:HookScript('OnLeave', S.SetOriginalBackdrop)
+
+		_G['InspectPVPTeam'..i..'Highlight']:Kill()
 	end
 
 	-- Talent Tab
 	_G.InspectTalentFrame:StripTextures()
 
-	local InspectTalents = _G.InspectTalentFrame.InspectTalents
-	InspectTalents.tier1:Point('TOPLEFT', 20, -142)
-
-	local InspectSpec = _G.InspectTalentFrame.InspectSpec
-	InspectSpec:CreateBackdrop('Transparent')
-	InspectSpec.backdrop:Point('TOPLEFT', 18, -16)
-	InspectSpec.backdrop:Point('BOTTOMRIGHT', 20, 12)
-	InspectSpec:SetHitRectInsets(18, -20, 16, 12)
-
-	InspectSpec.ring:SetTexture()
-
-	InspectSpec.specIcon:SetTexCoords()
-	InspectSpec.specIcon.backdrop = CreateFrame('Frame', nil, InspectSpec)
-	InspectSpec.specIcon.backdrop:SetTemplate()
-	InspectSpec.specIcon.backdrop:SetOutside(InspectSpec.specIcon)
-	InspectSpec.specIcon:SetParent(InspectSpec.specIcon.backdrop)
-
-	InspectSpec:HookScript('OnShow', function(frame)
-		frame.tooltip = nil
-
-		local spec = _G.INSPECTED_UNIT and GetInspectSpecialization(_G.INSPECTED_UNIT)
-		local data = spec and E.SpecInfoBySpecID[spec]
-		if data and data.role then
-			if data.role == 'DAMAGER' then
-				frame.roleIcon:SetTexture(E.Media.Textures.DPS)
-			elseif data.role == 'TANK' then
-				frame.roleIcon:SetTexture(E.Media.Textures.Tank)
-			elseif data.role == 'HEALER' then
-				frame.roleIcon:SetTexture(E.Media.Textures.Healer)
-			end
-
-			frame.tooltip = data.desc
-
-			frame.roleIcon:Size(20)
-			frame.roleIcon:SetTexCoords()
-			frame.roleName:SetTextColor(1, 1, 1)
-			frame.specIcon:SetTexture(data.icon)
-		end
-	end)
-
-	for i = 1, 6 do
-		for j = 1, 3 do
-			local button = _G['InspectTalentFrameTalentRow'..i..'Talent'..j]
-			if button then
-				button:StripTextures()
-				button:CreateBackdrop()
-				button:Size(30)
-				button:StyleButton(nil, true)
-				button:GetHighlightTexture():SetInside(button.backdrop)
-
-				if button.icon then
-					button.icon:SetTexCoords()
-					button.icon:SetInside(button.backdrop)
-
-					button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, -2)
-					button.ShadowedTexture:SetAllPoints(button.icon)
-					button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
-
-					hooksecurefunc(button.icon, 'SetDesaturated', InspectTalentIconDesaturated)
-				end
-
-				if button.border then
-					hooksecurefunc(button.border, 'Show', FrameBackdrop_OnEnter)
-					hooksecurefunc(button.border, 'Hide', FrameBackdrop_OnLeave)
-				end
-			end
-		end
+	for i = 1, MAX_TALENT_TABS do -- HandleTab looks weird on these
+		local tab = _G['InspectTalentFrameTab'..i]
+		tab:StripTextures()
+		tab:Height(24)
+		S:HandleButton(tab)
 	end
 
-	_G.InspectTalentFrame:HookScript('OnShow', function(frame)
-		if frame.IsSkinned then return end
+	local pointsBar = _G.InspectTalentFramePointsBar
+	pointsBar:StripTextures()
 
-		frame.IsSkinned = true
+	_G.InspectTalentFrameSpentPointsText:Point('LEFT', pointsBar, 'LEFT', 12, -1)
+	_G.InspectTalentFrameTalentPointsText:Point('RIGHT', pointsBar, 'RIGHT', -12, -1)
 
-		local InspectGlyphs = frame.InspectGlyphs
-		for i = 1, 6 do
-			local glyph = InspectGlyphs['Glyph'..i]
+	local scrollFrame = _G.InspectTalentFrameScrollFrame
+	scrollFrame:StripTextures()
+	scrollFrame:CreateBackdrop()
 
-			glyph:SetTemplate('Transparent')
-			glyph:StyleButton(nil, true)
-			glyph:OffsetFrameLevel(5)
+	local scrollBar = _G.InspectTalentFrameScrollFrameScrollBar
+	S:HandleScrollBar(scrollBar)
+	scrollBar:Point('TOPLEFT', scrollFrame, 'TOPRIGHT', 10, -16)
 
-			glyph.highlight:SetTexture(nil)
-			glyph.glyph:Kill()
-			glyph.ring:Kill()
+	for i = 1, MAX_NUM_TALENTS do
+		local talent = _G['InspectTalentFrameTalent'..i]
+		talent:StripTextures()
+		talent:SetTemplate()
+		talent:StyleButton()
 
-			glyph:Size(i % 2 == 1 and 40 or 60)
+		local icon = talent.icon
+		icon:SetInside()
+		icon:SetTexCoords()
+		icon:SetDrawLayer('ARTWORK')
 
-			if not glyph.texture then
-				glyph.texture = glyph:CreateTexture(nil, 'OVERLAY')
-				glyph.texture:SetTexCoords()
-				glyph.texture:SetInside()
-
-				UpdateGlyph(glyph)
-				hooksecurefunc(glyph, 'UpdateSlot', UpdateGlyph)
-			end
-		end
-
-		InspectGlyphs.Glyph1:Point('TOPLEFT', 90, -7)
-		InspectGlyphs.Glyph2:Point('TOPLEFT', 15, 0)
-		InspectGlyphs.Glyph3:Point('TOPLEFT', 90, -97)
-		InspectGlyphs.Glyph4:Point('TOPLEFT', 15, -90)
-		InspectGlyphs.Glyph5:Point('TOPLEFT', 90, -187)
-		InspectGlyphs.Glyph6:Point('TOPLEFT', 15, -180)
-	end)
-
-	-- Guild Tabard
-	_G.InspectGuildFrame.bg = CreateFrame('Frame', nil, _G.InspectGuildFrame)
-	_G.InspectGuildFrame.bg:SetTemplate()
-	_G.InspectGuildFrame.bg:Point('TOPLEFT', 7, -63)
-	_G.InspectGuildFrame.bg:Point('BOTTOMRIGHT', -9, 27)
-	_G.InspectGuildFrame.bg:SetBackdropColor(0, 0, 0, 0)
-
-	_G.InspectGuildFrameBG:SetInside(_G.InspectGuildFrame.bg)
-	_G.InspectGuildFrameBG:SetParent(_G.InspectGuildFrame.bg)
-	_G.InspectGuildFrameBG:SetDesaturated(true)
-
-	_G.InspectGuildFrameBanner:SetParent(_G.InspectGuildFrame.bg)
-	_G.InspectGuildFrameBannerBorder:SetParent(_G.InspectGuildFrame.bg)
-	_G.InspectGuildFrameTabardLeftIcon:SetParent(_G.InspectGuildFrame.bg)
-	_G.InspectGuildFrameTabardRightIcon:SetParent(_G.InspectGuildFrame.bg)
-	_G.InspectGuildFrameGuildName:SetParent(_G.InspectGuildFrame.bg)
-	_G.InspectGuildFrameGuildLevel:SetParent(_G.InspectGuildFrame.bg)
-	_G.InspectGuildFrameGuildNumMembers:SetParent(_G.InspectGuildFrame.bg)
+		local rank = _G['InspectTalentFrameTalent'..i..'Rank']
+		rank:FontTemplate(nil, 12, 'OUTLINE')
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')

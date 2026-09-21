@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, pairs, unpack = next, pairs, unpack
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
@@ -28,7 +28,7 @@ local function HandleListIcon(frame)
 		local row = frame.tableBuilder.rows[i]
 		if row then
 			for j = 1, 4 do
-				local cell = row.cells and row.cells[j]
+				local cell = row.cells[j]
 				if cell and cell.Icon then
 					if not cell.IsSkinned then
 						S:HandleIcon(cell.Icon)
@@ -46,16 +46,11 @@ local function HandleListIcon(frame)
 end
 
 local function HandleSummaryIcon(child)
-	if child.Icon then
-		if not child.IsSkinned then
-			S:HandleIcon(child.Icon)
+	if not child.IsSkinned then
+		S:HandleIcon(child.Icon)
+		child.IconBorder:Kill()
 
-			if child.IconBorder then
-				child.IconBorder:Kill()
-			end
-
-			child.IsSkinned = true
-		end
+		child.IsSkinned = true
 	end
 end
 
@@ -82,17 +77,12 @@ local function HandleHeaders(frame)
 	for i, header in next, { frame.HeaderContainer:GetChildren() } do
 		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
-
-			if not header.backdrop then
-				header:CreateBackdrop('Transparent')
-			end
+			header:CreateBackdrop('Transparent')
 
 			header.IsSkinned = true
 		end
 
-		if header.backdrop then
-			header.backdrop:Point('BOTTOMRIGHT', i < maxHeaders and -5 or 0, -2)
-		end
+		header.backdrop:Point('BOTTOMRIGHT', i < maxHeaders and -5 or 0, -2)
 	end
 
 	HandleListIcon(frame)
@@ -103,6 +93,12 @@ local function HandleAuctionButtons(button)
 	button:Size(22)
 end
 
+local function HandleBidAmount(frame)
+	S:HandleEditBox(frame.gold)
+	S:HandleEditBox(frame.silver)
+	S:HandleEditBox(frame.copper)
+end
+
 local function HandleSellFrame(frame)
 	frame:StripTextures()
 
@@ -111,23 +107,18 @@ local function HandleSellFrame(frame)
 	ItemDisplay:SetTemplate('Transparent')
 
 	local ItemButton = ItemDisplay.ItemButton
-	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
-
 	ItemButton.EmptyBackground:Hide()
 	ItemButton:SetPushedTexture(E.ClearTexture)
 	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
+	S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
 	S:HandleEditBox(frame.QuantityInput.InputBox)
 	S:HandleButton(frame.QuantityInput.MaxButton)
 	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.GoldBox)
 	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.SilverBox)
 	S:HandleEditBox(frame.PriceInput.MoneyInputFrame.CopperBox)
-
-	if ItemButton.IconBorder then
-		S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
-	end
 
 	if frame.SecondaryPriceInput then
 		S:HandleEditBox(frame.SecondaryPriceInput.MoneyInputFrame.GoldBox)
@@ -152,18 +143,13 @@ local function HandleTokenSellFrame(frame)
 	ItemDisplay:SetTemplate('Transparent')
 
 	local ItemButton = ItemDisplay.ItemButton
-	if ItemButton.IconMask then ItemButton.IconMask:Hide() end
-
 	ItemButton.EmptyBackground:Hide()
 	ItemButton:SetPushedTexture(E.ClearTexture)
 	ItemButton.Highlight:SetColorTexture(1, 1, 1, .25)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
-
-	if ItemButton.IconBorder then
-		S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
-	end
+	S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
 
 	S:HandleButton(frame.PostButton)
 	HandleAuctionButtons(frame.DummyRefreshButton)
@@ -270,13 +256,13 @@ local function LoadSkin()
 	CommoditiesBuyFrame.BuyDisplay:StripTextures()
 	S:HandleButton(CommoditiesBuyFrame.BackButton)
 
-	local CommoditiesBuyList = Frame.CommoditiesBuyFrame.ItemList
+	local CommoditiesBuyList = CommoditiesBuyFrame.ItemList
 	CommoditiesBuyList:StripTextures()
 	CommoditiesBuyList:SetTemplate('Transparent')
 	S:HandleButton(CommoditiesBuyList.RefreshFrame.RefreshButton)
 	S:HandleTrimScrollBar(CommoditiesBuyList.ScrollBar)
 
-	local BuyDisplay = Frame.CommoditiesBuyFrame.BuyDisplay
+	local BuyDisplay = CommoditiesBuyFrame.BuyDisplay
 	S:HandleEditBox(BuyDisplay.QuantityInput.InputBox)
 	S:HandleButton(BuyDisplay.BuyButton)
 
@@ -296,23 +282,15 @@ local function LoadSkin()
 	S:HandleButton(ItemBuyList.RefreshFrame.RefreshButton)
 	hooksecurefunc(ItemBuyList, 'RefreshScrollFrame', HandleHeaders)
 
-	local EditBoxes = {
-		_G.AuctionHouseFrameGold,
-		_G.AuctionHouseFrameSilver,
-	}
-
-	for _, EditBox in pairs(EditBoxes) do
-		S:HandleEditBox(EditBox)
-	end
-
 	S:HandleButton(ItemBuyFrame.BidFrame.BidButton)
 	ItemBuyFrame.BidFrame.BidButton:ClearAllPoints()
 	ItemBuyFrame.BidFrame.BidButton:Point('LEFT', ItemBuyFrame.BidFrame.BidAmount, 'RIGHT', 2, -2)
+	HandleBidAmount(ItemBuyFrame.BidFrame.BidAmount)
 
 	--[[ Item Sell Frame | TAB 2 ]]--
 	local SellFrame = Frame.ItemSellFrame
 	HandleSellFrame(SellFrame)
-	Frame.ItemSellFrame:SetTemplate('Transparent')
+	SellFrame:SetTemplate('Transparent')
 
 	local ItemSellList = Frame.ItemSellList
 	HandleSellList(ItemSellList, true, true)
@@ -332,24 +310,10 @@ local function LoadSkin()
 	SkinItemDisplay(AuctionsFrame)
 	S:HandleButton(AuctionsFrame.BuyoutFrame.BuyoutButton)
 
-	local CommoditiesList = AuctionsFrame.CommoditiesList
-	HandleSellList(CommoditiesList, true)
-	S:HandleButton(CommoditiesList.RefreshFrame.RefreshButton)
-
-	local AuctionsList = AuctionsFrame.ItemList
-	HandleSellList(AuctionsList, true)
-	S:HandleButton(AuctionsList.RefreshFrame.RefreshButton)
-
-	local AuctionsFrameTabs = {
-		_G.AuctionHouseFrameAuctionsFrameAuctionsTab,
-		_G.AuctionHouseFrameAuctionsFrameBidsTab,
-	}
-
-	for _, tab in pairs(AuctionsFrameTabs) do
-		if tab then
-			S:HandleTab(tab)
-		end
-	end
+	HandleSellList(AuctionsFrame.CommoditiesList, true)
+	HandleSellList(AuctionsFrame.ItemList, true)
+	S:HandleTab(AuctionsFrame.AuctionsTab)
+	S:HandleTab(AuctionsFrame.BidsTab)
 
 	local SummaryList = AuctionsFrame.SummaryList
 	HandleSellList(SummaryList)
@@ -362,20 +326,14 @@ local function LoadSkin()
 
 	local AllAuctionsList = AuctionsFrame.AllAuctionsList
 	HandleSellList(AllAuctionsList, true, true)
-	S:HandleButton(AllAuctionsList.RefreshFrame.RefreshButton)
-	AllAuctionsList.ResultsText:SetParent(AllAuctionsList.ScrollFrame)
 
 	SummaryList:Point('BOTTOM', AuctionsFrame, 0, 0) -- normally this is anchored to the cancel button.. ? lol
 	AuctionsFrame.CancelAuctionButton:ClearAllPoints()
 	AuctionsFrame.CancelAuctionButton:Point('TOPRIGHT', AllAuctionsList, 'BOTTOMRIGHT', -6, 1)
 
-	local BidsList = AuctionsFrame.BidsList
-	HandleSellList(BidsList, true, true)
-	BidsList.ResultsText:SetParent(BidsList.ScrollFrame)
-	S:HandleButton(BidsList.RefreshFrame.RefreshButton)
+	HandleSellList(AuctionsFrame.BidsList, true, true)
 	S:HandleButton(AuctionsFrame.BidFrame.BidButton)
-
-	--[[ ProgressBars ]]--
+	HandleBidAmount(AuctionsFrame.BidFrame.BidAmount)
 
 	--[[ WoW Token Category ]]--
 	local TokenFrame = Frame.WoWTokenResults

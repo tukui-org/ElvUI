@@ -124,6 +124,7 @@
 	<Script file='Mists\Skins\Petition.lua'/>
 	<Script file='Mists\Skins\PVP.lua'/>
 	<Script file='Mists\Skins\Quest.lua'/>
+	<Script file='Mists\Skins\QuestTimers.lua'/>
 	<Script file='Mists\Skins\Raid.lua'/>
 	<Script file='Mists\Skins\Reforge.lua'/>
 	<Script file='Mists\Skins\SettingsPanel.lua'/>

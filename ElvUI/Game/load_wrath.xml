@@ -89,7 +89,6 @@
 	<Script file='Wrath\Skins\Battlenet.lua'/>
 	<Script file='Wrath\Skins\BGMap.lua'/>
 	<Script file='Wrath\Skins\BGScore.lua'/>
-	<Script file='Wrath\Skins\Binding.lua'/>
 	<Script file='Wrath\Skins\BlizzardOptions.lua'/>
 	<Script file='Wrath\Skins\Calendar.lua'/>
 	<Script file='Wrath\Skins\Channels.lua'/>
@@ -118,8 +117,8 @@
 	<Script file='Wrath\Skins\Misc.lua'/>
 	<Script file='Wrath\Skins\NonRaid.lua'/>
 	<Script file='Wrath\Skins\Petition.lua'/>
-	<Script file='Wrath\Skins\PVP.lua'/>
 	<Script file='Wrath\Skins\Quest.lua'/>
+	<Script file='Wrath\Skins\QuestTimers.lua'/>
 	<Script file='Wrath\Skins\Raid.lua'/>
 	<Script file='Wrath\Skins\SettingsPanel.lua'/>
 	<Script file='Wrath\Skins\Socket.lua'/>

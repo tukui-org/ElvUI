@@ -5,32 +5,26 @@ local _G = _G
 local unpack = unpack
 local CreateFrame = CreateFrame
 
-local function PetButtons(btn, p)
+local function PetButtons(btn, offset)
 	local button = _G[btn]
 	local icon = _G[btn..'IconTexture']
-	local highlight = button:GetHighlightTexture()
 	button:StripTextures()
 
-	if button.Checked then
-		button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
-		button.Checked:SetAllPoints(icon)
-		button.Checked:SetAlpha(0.3)
-	end
+	button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
+	button.Checked:SetAllPoints(icon)
+	button.Checked:SetAlpha(0.3)
 
-	if highlight then
-		highlight:SetColorTexture(1, 1, 1, 0.3)
-		highlight:SetAllPoints(icon)
-	end
+	local highlight = button:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, 0.3)
+	highlight:SetAllPoints(icon)
 
-	if icon then
-		icon:SetTexCoords()
-		icon:ClearAllPoints()
-		icon:Point('TOPLEFT', p, -p)
-		icon:Point('BOTTOMRIGHT', -p, p)
+	icon:SetTexCoords()
+	icon:ClearAllPoints()
+	icon:Point('TOPLEFT', offset, -offset)
+	icon:Point('BOTTOMRIGHT', -offset, offset)
 
-		button:OffsetFrameLevel(2)
-		button:SetTemplate(nil, true)
-	end
+	button:OffsetFrameLevel(2)
+	button:SetTemplate(nil, true)
 end
 
 function S:PetStableFrame()
@@ -50,24 +44,23 @@ function S:PetStableFrame()
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
 
-	local p = E.PixelMode and 1 or 2
-	local PetStableSelectedPetIcon = _G.PetStableSelectedPetIcon
-	if PetStableSelectedPetIcon then
-		PetStableSelectedPetIcon:SetTexCoords()
+	local offset = E.PixelMode and 1 or 2
+	local SelectedIcon = _G.PetStableSelectedPetIcon
+	SelectedIcon:SetTexCoords()
 
-		local b = CreateFrame('Frame', nil, PetStableSelectedPetIcon:GetParent())
-		b:Point('TOPLEFT', PetStableSelectedPetIcon, -p, p)
-		b:Point('BOTTOMRIGHT', PetStableSelectedPetIcon, p, -p)
-		PetStableSelectedPetIcon:Size(37)
-		PetStableSelectedPetIcon:SetParent(b)
-		b:SetTemplate()
-	end
+	local SelectedBackground = CreateFrame('Frame', nil, SelectedIcon:GetParent())
+	SelectedBackground:Point('TOPLEFT', SelectedIcon, -offset, offset)
+	SelectedBackground:Point('BOTTOMRIGHT', SelectedIcon, offset, -offset)
+	SelectedBackground:SetTemplate()
+	SelectedIcon:Size(37)
+	SelectedIcon:SetParent(SelectedBackground)
 
 	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
-		PetButtons('PetStableActivePet' .. i, p)
+		PetButtons('PetStableActivePet' .. i, offset)
 	end
+
 	for i = 1, _G.NUM_PET_STABLE_SLOTS do
-		PetButtons('PetStableStabledPet' .. i, p)
+		PetButtons('PetStableStabledPet' .. i, offset)
 	end
 end
 

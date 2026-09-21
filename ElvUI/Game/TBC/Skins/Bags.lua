@@ -40,6 +40,65 @@ local function SetBagIcon(frame, texture)
 	frame.BagIcon:SetTexture(texture)
 end
 
+local function BankFrameItemUpdate(button)
+	local id = button:GetID()
+
+	if button.isBag then
+		button:SetNormalTexture(E.ClearTexture)
+		button:SetTemplate(nil, true)
+		button:StyleButton()
+
+		button.icon:SetInside()
+		button.icon:SetTexCoords()
+
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		local highlight = button.HighlightFrame.HighlightTexture
+		highlight:SetColorTexture(r, g, b, .3)
+		highlight:SetInside()
+
+		local slot = button:GetInventorySlot()
+		local link = GetInventoryItemLink('player', slot)
+		if link then
+			local quality = GetItemQualityByID(link)
+			if quality and quality > 1 then
+				local itemR, itemG, itemB = E:GetItemQualityColor(quality)
+				button:SetBackdropBorderColor(itemR, itemG, itemB)
+				button.ignoreBorderColors = true
+			else
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button.ignoreBorderColors = nil
+			end
+		else
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			button.ignoreBorderColors = nil
+		end
+	else
+		local questIcon = button.IconQuestTexture
+		questIcon:Hide()
+
+		local link = GetContainerItemLink(BANK_CONTAINER, id)
+		if link then
+			local _, _, quality, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
+			local questItem = B:GetItemQuestInfo(link, bindType, itemClassID)
+			if questItem then
+				button:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
+				button.ignoreBorderColors = true
+				questIcon:Show()
+			elseif quality and quality > 1 then
+				local r, g, b = E:GetItemQualityColor(quality)
+				button:SetBackdropBorderColor(r, g, b)
+				button.ignoreBorderColors = true
+			else
+				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				button.ignoreBorderColors = nil
+			end
+		else
+			button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			button.ignoreBorderColors = nil
+		end
+	end
+end
+
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
@@ -175,67 +234,7 @@ function S:ContainerFrame()
 
 	S:HandleButton(_G.BankFramePurchaseButton)
 
-	hooksecurefunc('BankFrameItemButton_Update', function(button)
-		local id = button:GetID()
-
-		if button.isBag then
-			button:SetNormalTexture(E.ClearTexture)
-			button:SetTemplate(nil, true)
-			button:StyleButton()
-
-			button.icon:SetInside()
-			button.icon:SetTexCoords()
-
-			button.HighlightFrame.HighlightTexture:SetInside()
-			button.HighlightFrame.HighlightTexture:SetTexture(unpack(E.media.rgbvaluecolor), 0.3)
-
-			local link = GetInventoryItemLink('player', ContainerIDToInventoryID(id))
-			if link then
-				local quality = GetItemQualityByID(link)
-				if quality and quality > 1 then
-					local r, g, b = E:GetItemQualityColor(quality)
-					button:SetBackdropBorderColor(r, g, b)
-					button.ignoreBorderColors = true
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					button.ignoreBorderColors = nil
-				end
-			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				button.ignoreBorderColors = nil
-			end
-		else
-			local questIcon = button.IconQuestTexture
-			if questIcon then
-				questIcon:Hide()
-			end
-
-			local link = GetContainerItemLink(BANK_CONTAINER, id)
-			if link then
-				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
-
-				local questItem = B:GetItemQuestInfo(link, bindType, itemClassID)
-				if questItem then
-					button:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
-					button.ignoreBorderColors = true
-
-					if questIcon then
-						questIcon:Show()
-					end
-				elseif quality and quality > 1 then
-					local r, g, b = E:GetItemQualityColor(quality)
-					button:SetBackdropBorderColor(r, g, b)
-					button.ignoreBorderColors = true
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					button.ignoreBorderColors = nil
-				end
-			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				button.ignoreBorderColors = nil
-			end
-		end
-	end)
+	hooksecurefunc('BankFrameItemButton_Update', BankFrameItemUpdate)
 end
 
 S:AddCallback('ContainerFrame')

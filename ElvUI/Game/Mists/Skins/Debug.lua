@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
+local next = next
 local hooksecurefunc = hooksecurefunc
-
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 local FrameTexs = {
@@ -34,8 +34,8 @@ local function SkinOnShow()
 	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('TOPLEFT', ScriptErrorsFrame.ScrollFrame, 'TOPRIGHT', 4, 2)
 	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('BOTTOMLEFT', ScriptErrorsFrame.ScrollFrame, 'BOTTOMRIGHT', 4, 2)
 
-	for i = 1, #FrameTexs do
-		_G['ScriptErrorsFrame'..FrameTexs[i]]:SetTexture()
+	for _, name in next, FrameTexs do
+		_G['ScriptErrorsFrame'..name]:SetTexture()
 	end
 
 	-- Our Buttons
@@ -56,6 +56,8 @@ local function SkinOnShow()
 end
 
 local function SkinTableAttributeDisplay(frame)
+	if frame.IsSkinned then return end
+
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
 	frame.ScrollFrameArt.NineSlice:SetTemplate('Transparent')
@@ -71,8 +73,6 @@ local function SkinTableAttributeDisplay(frame)
 	frame.OpenParentButton:Point('TOPLEFT', frame, 'TOPLEFT', 2, -2)
 	S:HandleNextPrevButton(frame.OpenParentButton, 'up')
 	frame.OpenParentButton:Size(17)
-	frame.DuplicateButton:ClearAllPoints()
-	frame.DuplicateButton:Point('LEFT', frame.NavigateForwardButton, 'RIGHT')
 	S:HandleCheckBox(frame.VisibilityButton)
 	frame.VisibilityButton:Size(28)
 	S:HandleCheckBox(frame.HighlightButton)
@@ -110,11 +110,7 @@ function S:Blizzard_DebugTools()
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
-	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(frame)
-		if frame.ScrollFrameArt and not frame.IsSkinned then
-			SkinTableAttributeDisplay(frame)
-		end
-	end)
+	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', SkinTableAttributeDisplay)
 end
 
 -- ScriptErrorsFrame Skin

@@ -4,6 +4,17 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local function SetSelection()
+	local skillIcon = _G.ClassTrainerSkillIcon
+	local skillTexture = skillIcon:GetNormalTexture()
+	if skillTexture then -- nothing selected yet
+		skillTexture:SetInside()
+		skillTexture:SetTexCoords()
+
+		skillIcon:SetTemplate()
+	end
+end
+
 function S:Blizzard_TrainerUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
 
@@ -31,33 +42,19 @@ function S:Blizzard_TrainerUI()
 	S:HandleButton(_G.ClassTrainerTrainButton)
 	_G.ClassTrainerTrainButton:Point('BOTTOMRIGHT', -36, 80)
 
-	S:HandleCloseButton(_G.ClassTrainerFrameCloseButton, ClassTrainerFrame.backdrop)
-
-	hooksecurefunc('ClassTrainer_SetSelection', function()
-		local skillIcon = _G.ClassTrainerSkillIcon:GetNormalTexture()
-		if skillIcon then
-			skillIcon:SetInside()
-			skillIcon:SetTexCoords()
-
-			_G.ClassTrainerSkillIcon:SetTemplate()
-		end
-	end)
+	hooksecurefunc('ClassTrainer_SetSelection', SetSelection)
 
 	for i = 1, _G.CLASS_TRAINER_SKILLS_DISPLAYED do
 		local button = _G['ClassTrainerSkill'..i]
 		S:HandleCollapseTexture(button, nil, true)
 
 		local normal = button:GetNormalTexture()
-		if normal then
-			normal:Size(16)
-			normal:Point('LEFT', 5, 0)
-		end
+		normal:Size(16)
+		normal:Point('LEFT', 5, 0)
 
-		local highlight = _G['ClassTrainerSkill'..i..'Highlight']
-		if highlight then
-			highlight:SetTexture(E.ClearTexture)
-			highlight.SetTexture = E.noop
-		end
+		local highlight = button:GetHighlightTexture()
+		highlight:SetTexture(E.ClearTexture)
+		highlight.SetTexture = E.noop
 	end
 
 	local ClassTrainerCollapseAllButton = _G.ClassTrainerCollapseAllButton

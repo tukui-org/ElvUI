@@ -44,10 +44,8 @@ local function UpdateFriendsFrame()
 end
 
 local function AcquireInvitePool(pool)
-	if pool.activeObjects then
-		for object in next, pool.activeObjects do
-			SkinFriendRequest(object)
-		end
+	for object in pool:EnumerateActive() do
+		SkinFriendRequest(object)
 	end
 end
 
@@ -86,7 +84,7 @@ local function UpdateGuildStatus()
 		local playerZone = E.MapInfo.realZoneText
 		for i = 1, GUILDMEMBERS_TO_DISPLAY do
 			local button = _G['GuildFrameButton'..i]
-			if button and button.guildIndex then
+			if button.guildIndex then
 				local _, _, _, level, className, zone, _, _, online = GetGuildRosterInfo(button.guildIndex)
 				local classFilename = E:UnlocalizedClassName(className)
 				if classFilename then
@@ -110,7 +108,7 @@ local function UpdateGuildStatus()
 	else
 		for i = 1, GUILDMEMBERS_TO_DISPLAY do
 			local button = _G['GuildFrameGuildStatusButton'..i]
-			if button and button.guildIndex then
+			if button.guildIndex then
 				local _, _, _, _, className, _, _, _, online = GetGuildRosterInfo(button.guildIndex)
 				local classFilename = online and E:UnlocalizedClassName(className)
 				if classFilename then
@@ -182,10 +180,7 @@ local function HandleGuild() -- /groster
 	_G.GuildFrameGuildInformationButton:Point('BOTTOMLEFT', -1, 4)
 	S:HandleButton(_G.GuildFrameAddMemberButton)
 	S:HandleButton(_G.GuildFrameControlButton)
-
-	if _G.GuildFrameImpeachButton then
-		S:HandleButton(_G.GuildFrameImpeachButton)
-	end
+	S:HandleButton(_G.GuildFrameImpeachButton)
 
 	-- Member Detail Frame
 	_G.GuildMemberDetailFrame:StripTextures()
@@ -252,10 +247,8 @@ local function HandleGuild() -- /groster
 	_G.GuildControlPopupFrameEditBox.backdrop:Point('TOPLEFT', 0, -5)
 	_G.GuildControlPopupFrameEditBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 
-	for _, checkBox in next, { _G.GuildControlPopupFrameCheckboxes:GetChildren() } do
-		if checkBox:IsObjectType('CheckButton') then
-			S:HandleCheckBox(checkBox)
-		end
+	for _, checkBox in next, _G.GuildControlPopupFrameCheckboxes.PermissionCheckboxes do
+		S:HandleCheckBox(checkBox)
 	end
 
 	S:HandleButton(_G.GuildControlPopupAcceptButton)
@@ -280,17 +273,12 @@ function S:FriendsFrame()
 	S:HandleDropDownBox(_G.FriendsFrameStatusDropdown, 70)
 	_G.FriendsFrameStatusDropdown:PointXY(256, -55)
 
-	for i = 1, #_G.FRIENDSFRAME_SUBFRAMES do
+	for i = 1, 4 do -- friends, who, guild, raid
 		S:HandleTab(_G['FriendsFrameTab'..i])
 	end
 
 	-- Reposition Tabs
 	hooksecurefunc('FriendsFrame_UpdateGuildTabVisibility', RepositionTabs)
-
-	if _G.FriendsFrameTab5 then
-		_G.FriendsFrameTab5:ClearAllPoints()
-		_G.FriendsFrameTab5:Point('TOPLEFT', _G.FriendsFrameTab3, 'TOPRIGHT', -19, 0)
-	end
 
 	-- Friends List Frame
 	for i = 1, _G.FRIEND_HEADER_TAB_IGNORE do
@@ -301,15 +289,15 @@ function S:FriendsFrame()
 		tab:HookScript('OnLeave', S.SetOriginalBackdrop)
 	end
 
-	for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
-		local button = 'FriendsFrameFriendsScrollFrameButton'..i
-		local btn = _G[button]
+	local FriendsScrollFrame = _G.FriendsFrameFriendsScrollFrame
+	for _, button in next, FriendsScrollFrame.buttons do
+		local summonButton = button.summonButton
+		summonButton.icon:SetTexCoords()
+		summonButton.NormalTexture:SetAlpha(0)
+		summonButton:StyleButton()
 
-		_G[button..'SummonButtonIcon']:SetTexCoords()
-		_G[button..'SummonButtonNormalTexture']:SetAlpha(0)
-		_G[button..'SummonButton']:StyleButton()
-		btn.highlight:SetTexture(E.Media.Textures.Highlight)
-		btn.highlight:SetAlpha(0.3)
+		button.highlight:SetTexture(E.Media.Textures.Highlight)
+		button.highlight:SetAlpha(0.3)
 	end
 
 	for i = 1, _G.FRIENDS_FRIENDS_TO_DISPLAY do
@@ -351,23 +339,23 @@ function S:FriendsFrame()
 	_G.AddFriendFrame:SetTemplate('Transparent')
 
 	-- Pending invites
-	_G.FriendsFrameFriendsScrollFrame:StripTextures()
-	S:HandleButton(_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton, true)
+	FriendsScrollFrame:StripTextures()
 
-	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton:SetScript('OnMouseUp', nil)
-	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton:SetScript('OnMouseDown', nil)
-	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.RightArrow:SetTexture(E.Media.Textures.ArrowUp)
-	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.RightArrow:SetRotation(S.ArrowRotation['right'])
-	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.DownArrow:SetTexture(E.Media.Textures.ArrowUp)
-	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.DownArrow:SetRotation(S.ArrowRotation['down'])
-	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.RightArrow:SetPoint('LEFT', 11, 0)
-	_G.FriendsFrameFriendsScrollFrame.PendingInvitesHeaderButton.DownArrow:SetPoint('TOPLEFT', 8, -10)
+	local PendingInvitesHeaderButton = FriendsScrollFrame.PendingInvitesHeaderButton
+	S:HandleButton(PendingInvitesHeaderButton, true)
+	PendingInvitesHeaderButton:SetScript('OnMouseUp', nil)
+	PendingInvitesHeaderButton:SetScript('OnMouseDown', nil)
+	PendingInvitesHeaderButton.RightArrow:SetTexture(E.Media.Textures.ArrowUp)
+	PendingInvitesHeaderButton.RightArrow:SetRotation(S.ArrowRotation['right'])
+	PendingInvitesHeaderButton.RightArrow:SetPoint('LEFT', 11, 0)
+	PendingInvitesHeaderButton.DownArrow:SetTexture(E.Media.Textures.ArrowUp)
+	PendingInvitesHeaderButton.DownArrow:SetRotation(S.ArrowRotation['down'])
+	PendingInvitesHeaderButton.DownArrow:SetPoint('TOPLEFT', 8, -10)
 
-	hooksecurefunc(_G.FriendsFrameFriendsScrollFrame.invitePool, 'Acquire', AcquireInvitePool)
+	hooksecurefunc(FriendsScrollFrame.invitePool, 'Acquire', AcquireInvitePool)
 
 	S:HandleFrame(_G.FriendsFriendsFrame, true)
 	_G.FriendsFriendsList:StripTextures()
-	_G.IgnoreListFrame:StripTextures()
 
 	S:HandleButton(_G.FriendsFriendsCloseButton)
 	S:HandleButton(_G.FriendsFriendsSendRequestButton)
@@ -378,7 +366,6 @@ function S:FriendsFrame()
 	-- Ignore List Frame
 	_G.IgnoreListFrame:StripTextures()
 	S:HandleButton(_G.FriendsFrameIgnorePlayerButton, true)
-	S:HandleButton(_G.FriendsFrameUnsquelchButton, true)
 	S:HandleScrollBar(_G.FriendsFrameIgnoreScrollFrameScrollBar)
 
 	--Who Frame
@@ -394,11 +381,9 @@ function S:FriendsFrame()
 	--Increase width of Level column slightly
 	WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) -- Default is 32
 
-	for i = 1, 17 do
+	for i = 1, _G.WHOS_TO_DISPLAY do
 		local level = _G['WhoFrameButton'..i..'Level']
-		if level then
-			level:Width(level:GetWidth() + 5)
-		end
+		level:Width(level:GetWidth() + 5)
 	end
 
 	S:HandleDropDownBox(_G.WhoFrameDropdown, 90)

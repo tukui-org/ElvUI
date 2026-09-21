@@ -26,10 +26,7 @@ function S:Blizzard_RaidUI()
 	_G.RaidFrameConvertToRaidButton:Point('BOTTOMRIGHT', -6, 4)
 
 	for _, object in ipairs(StripAllTextures) do
-		local obj = _G[object]
-		if obj then
-			obj:StripTextures()
-		end
+		_G[object]:StripTextures()
 	end
 
 	for i = 1, _G.MAX_RAID_GROUPS * 5 do
@@ -44,12 +41,9 @@ function S:Blizzard_RaidUI()
 		end
 	end
 
-	_G.RaidClassButton1:ClearAllPoints()
-	_G.RaidClassButton1:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -50, -50)
-
 	do -- Classes on the right side of the Raid Control
 		local prevButton
-		for index = 1, 13 do
+		for index = 1, 14 do -- 11 classes, pets, main tank, main assist
 			local button = _G['RaidClassButton'..index]
 			local icon = _G['RaidClassButton'..index..'IconTexture']
 			local count = _G['RaidClassButton'..index..'Count']
@@ -61,7 +55,7 @@ function S:Blizzard_RaidUI()
 			button:ClearAllPoints()
 			if index == 1 then
 				button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -3, -48)
-			elseif index == 11 then
+			elseif index == 12 then
 				button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
 			else
 				button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
@@ -70,13 +64,13 @@ function S:Blizzard_RaidUI()
 
 			icon:SetInside()
 
-			if index == 11 then
+			if index == 12 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
 				icon:SetTexCoords()
-			elseif index == 12 then
+			elseif index == 13 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
 				icon:SetTexCoords()
-			elseif index == 13 then
+			elseif index == 14 then
 				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
 				icon:SetTexCoords()
 			else
@@ -92,9 +86,7 @@ function S:Blizzard_RaidUI()
 	hooksecurefunc('RaidPullout_GetFrame', function()
 		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
 			local backdrop = _G['RaidPullout'..i..'MenuBackdrop']
-			if backdrop and backdrop.NineSlice then
-				backdrop.NineSlice:SetTemplate('Transparent')
-			end
+			backdrop.NineSlice:SetTemplate('Transparent')
 		end
 	end)
 
@@ -104,37 +96,26 @@ function S:Blizzard_RaidUI()
 		for i = 1, pullOutFrame.numPulloutButtons do
 			local name = frameName..'Button'..i
 			local object = _G[name]
-			if object then
-				if not object.backdrop then
-					for _, v in ipairs(bars) do
-						local bar = _G[name..v]
-						if bar then
-							bar:StripTextures()
-							bar:SetStatusBarTexture(E.media.normTex)
-						end
-					end
-
-					local manabar = object.manabar
-					if manabar then
-						manabar:Point('TOP', object.healthbar, 'BOTTOM', 0, 0)
-					end
-
-					local target = _G[name..'Target']
-					if target and manabar then
-						target:Point('TOP', manabar, 'BOTTOM', 0, -1)
-					end
-
-					object:CreateBackdrop('Transparent')
-
-					object.backdrop:NudgePoint(nil, -10)
-					object.backdrop:NudgePoint(nil, 1, nil, 2)
+			if not object.backdrop then
+				for _, v in ipairs(bars) do
+					local bar = _G[name..v]
+					bar:StripTextures()
+					bar:SetStatusBarTexture(E.media.normTex)
 				end
 
-				local targettarget = _G[name..'TargetTargetFrame']
-				if targettarget and targettarget.NineSlice then
-					targettarget.NineSlice:SetTemplate('Transparent')
-				end
+				local manabar = object.manabar
+				manabar:Point('TOP', object.healthbar, 'BOTTOM', 0, 0)
+
+				local target = _G[name..'Target']
+				target:Point('TOP', manabar, 'BOTTOM', 0, -1)
+
+				object:CreateBackdrop('Transparent')
+				object.backdrop:NudgePoint(nil, -10)
+				object.backdrop:NudgePoint(nil, 1, nil, 2)
 			end
+
+			local targettarget = _G[name..'TargetTargetFrame']
+			targettarget.NineSlice:SetTemplate('Transparent')
 		end
 	end)
 end

@@ -12,8 +12,8 @@ local GetPetHappiness = GetPetHappiness
 local GetInventoryItemQuality = GetInventoryItemQuality
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
-local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
+local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 
 local ResistanceCoords = {
 	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
@@ -79,26 +79,24 @@ local function HandleHappiness(frame)
 	end
 end
 
-local function HandleResistanceFrame(frameName)
+local function HandleResistanceFrame(name)
 	for i = 1, 5 do
-		local frame, icon, text = _G[frameName..i], _G[frameName..i]:GetRegions()
+		local frameName = name..i
+		local frame = _G[frameName]
+		local icon, text = frame:GetRegions()
 		frame:Size(24)
 		frame:SetTemplate()
 
 		if i ~= 1 then
 			frame:ClearAllPoints()
-			frame:Point('TOP', _G[frameName..i - 1], 'BOTTOM', 0, -1)
+			frame:Point('TOP', _G[frameName - 1], 'BOTTOM', 0, -1)
 		end
 
-		if icon then
-			icon:SetInside()
-			icon:SetTexCoord(unpack(ResistanceCoords[i]))
-			icon:SetDrawLayer('ARTWORK')
-		end
+		icon:SetInside()
+		icon:SetTexCoord(unpack(ResistanceCoords[i]))
+		icon:SetDrawLayer('ARTWORK')
 
-		if text then
-			text:SetDrawLayer('OVERLAY')
-		end
+		text:SetDrawLayer('OVERLAY')
 	end
 end
 

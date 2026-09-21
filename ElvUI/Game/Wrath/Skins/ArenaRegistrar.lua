@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
 
 local MAX_TEAM_BORDERS = MAX_TEAM_BORDERS
 
@@ -35,10 +34,8 @@ function S:SkinArenaRegistrar()
 
 		S:HandleButtonHighlight(button)
 
-		local obj = select(3, button:GetRegions())
-		if obj then
-			obj:SetTextColor(1, 1, 1)
-		end
+		local text = button:GetFontString()
+		text:SetTextColor(1, 1, 1)
 	end
 
 	_G.ArenaRegistrarPurchaseText:SetTextColor(1, 1, 1)
@@ -82,7 +79,6 @@ function S:SkinArenaRegistrar()
 
 	S:HandleButton(_G.PVPBannerFrameAcceptButton)
 	S:HandleButton(_G.PVPBannerFrameCancelButton)
-	S:HandleButton(select(4, PVPBannerFrame:GetChildren()))
 	S:HandleCloseButton(_G.PVPBannerFrameCloseButton)
 end
 

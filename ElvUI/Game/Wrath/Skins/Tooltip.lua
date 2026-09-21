@@ -15,7 +15,6 @@ function S:StyleTooltips()
 		_G.ItemRefShoppingTooltip2,
 		_G.FriendsTooltip,
 		_G.EmbeddedItemTooltip,
-		_G.ReputationParagonTooltip,
 		_G.GameTooltip,
 		_G.WorldMapTooltip,
 		_G.ShoppingTooltip1,

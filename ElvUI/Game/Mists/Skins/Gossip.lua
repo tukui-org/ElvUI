@@ -89,7 +89,6 @@ function S:GossipFrame()
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame, true)
 	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
-	S:HandleCloseButton(_G.GossipFrame.CloseButton)
 
 	local GreetingPanel = _G.GossipFrame.GreetingPanel
 	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
@@ -127,10 +126,6 @@ function S:GossipFrame()
 
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
 		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
-
-		if GossipFrame.Background then
-			GossipFrame.Background:Hide()
-		end
 	else
 		_G.ItemTextMaterialBotLeft:SetDrawLayer('ARTWORK', 1)
 		_G.ItemTextMaterialBotRight:SetDrawLayer('ARTWORK', 1)
