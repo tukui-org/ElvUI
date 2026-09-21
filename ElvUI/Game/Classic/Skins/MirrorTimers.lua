@@ -39,7 +39,7 @@ function S:MirrorTimers()
 		text:Hide()
 
 		local timerText = mirrorTimer:CreateFontString(nil, 'OVERLAY')
-		timerText:FontTemplate()
+		timerText:FontTemplate(nil, nil, 'OUTLINE')
 		timerText:Point('CENTER', statusBar, 'CENTER', 0, 0)
 		mirrorTimer.TimerText = timerText
 

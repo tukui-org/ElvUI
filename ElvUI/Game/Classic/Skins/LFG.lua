@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
-local pairs, next = pairs, next
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function LFGTabs()
@@ -14,60 +14,40 @@ local function LFGTabs()
 	_G.LFGParentFrameTab2:Point('LEFT', _G.LFGParentFrameTab1, 'RIGHT', -19, 0)
 end
 
-local function InitActivityButton(button, data)
+local function InitActivityCheckButton(button)
 	local checkButton = button.CheckButton
-	if checkButton then
-		if not checkButton.IsSkinned then
-			S:HandleCheckBox(checkButton, nil, true)
-		end
+	if checkButton.IsSkinned then return end
 
-		if data and data.activityID then
-			checkButton:SetChecked(_G.LFGListingFrame:IsActivitySelected(data.activityID))
-			checkButton:SetCheckedTexture([[Interface\Buttons\UI-CheckBox-Check]])
-		end
-	end
+	-- Blizzard sets them again on refresh
+	local checked = checkButton:GetCheckedTexture():GetTexture()
+	local disabled = checkButton:GetDisabledCheckedTexture():GetTexture()
+
+	S:HandleCheckBox(checkButton, nil, true)
+
+	checkButton:SetCheckedTexture(checked)
+	checkButton:SetDisabledCheckedTexture(disabled)
 end
 
-local function InitActivityGroupButton(button, _, isCollapsed)
-	if button.ExpandOrCollapseButton then
-		if isCollapsed then
-			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		else
-			button.ExpandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		end
-	end
-
-	local checkButton = button.CheckButton
-	if checkButton and not checkButton.IsSkinned then
-		S:HandleCheckBox(button.CheckButton, nil, true)
-	end
+local function InitActivityGroupButton(button)
+	S:HandleCollapseTexture(button.ExpandOrCollapseButton)
+	InitActivityCheckButton(button)
 end
 
-local function CategorySelectionAddButton(btn, btnIndex, categoryID, filters)
-	local button = btn.CategoryButtons[btnIndex]
-	if not button then return end
+local function CategorySelectionAddButton(frame, btnIndex)
+	local button = frame.CategoryButtons[btnIndex] -- nil when the category has no activities
+	if not button or button.IsSkinned then return end
 
-	if not button.IsSkinned then
-		button:SetTemplate()
-		button.Icon:SetDrawLayer('BACKGROUND', 2)
-		button.Icon:SetTexCoords()
-		button.Icon:SetInside()
-		button.Cover:Hide()
-		button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
-		button.HighlightTexture:SetInside()
+	button:SetTemplate()
+	button.Icon:SetDrawLayer('BACKGROUND', 2)
+	button.Icon:SetTexCoords()
+	button.Icon:SetInside()
+	button.Cover:Hide()
+	button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
+	button.HighlightTexture:SetInside()
 
-		-- Fix issue with labels not following changes to GameFontNormal as they should
-		button.Label:SetFontObject('GameFontNormal')
-		button.IsSkinned = true
-	end
-
-	button.SelectedTexture:Hide()
-	local selected = btn.selectedCategory == categoryID and btn.selectedFilters == filters
-	if selected then
-		button:SetBackdropBorderColor(1, 1, 0)
-	else
-		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
+	-- Fix issue with labels not following changes to GameFontNormal as they should
+	button.Label:SetFontObject('GameFontNormal')
+	button.IsSkinned = true
 end
 
 function S:Blizzard_GroupFinder_VanillaStyle()
@@ -95,14 +75,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	end
 
 	-- Buttons
-	local buttons = {
-		_G.LFGListingFrameBackButton,
-		_G.LFGListingFramePostButton,
-		_G.LFGBrowseFrameSendMessageButton,
-		_G.LFGBrowseFrameGroupInviteButton
-	}
-
-	for _, button in pairs(buttons) do
+	for _, button in next, { _G.LFGListingFrameBackButton, _G.LFGListingFramePostButton, _G.LFGBrowseFrameSendMessageButton, _G.LFGBrowseFrameGroupInviteButton } do
 		S:HandleButton(button)
 	end
 
@@ -118,17 +91,11 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	_G.LFGBrowseFrameActivityDropdown.ResetButton:Point('TOPRIGHT', _G.LFGBrowseFrameActivityDropdown, 'TOPRIGHT', 0, 16)
 
 	-- CheckBoxes
-	local checkBoxes = {
-		_G.LFGListingFrameSoloRoleButtonsRoleButtonTank.CheckButton,
-		_G.LFGListingFrameSoloRoleButtonsRoleButtonHealer.CheckButton,
-		_G.LFGListingFrameSoloRoleButtonsRoleButtonDPS.CheckButton,
-		_G.LFGListingFrameNewPlayerFriendlyButton.CheckButton,
-	}
-
-	for _, checkbox in pairs(checkBoxes) do
-		S:HandleCheckBox(checkbox, nil, nil, true)
+	for _, roleButton in next, LFGListingFrame.SoloRoleButtons.RoleButtons do
+		S:HandleCheckBox(roleButton.CheckButton, nil, nil, true)
 	end
 
+	S:HandleCheckBox(_G.LFGListingFrameNewPlayerFriendlyButton.CheckButton, nil, nil, true)
 	S:HandleButton(_G.LFGListingFrameGroupRoleButtonsInitiateRolePoll)
 	S:HandleEditBox(_G.LFGListingComment)
 
@@ -148,40 +115,32 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	_G.LFGBrowseFrameRefreshButton:ClearAllPoints()
 	_G.LFGBrowseFrameRefreshButton:Point('BOTTOM', _G.LFGBrowseFrame.backdrop.Center, 'BOTTOM', 0, 4)
 
-	-- Role check popup
-	S:HandleFrame(_G.RolePollPopup)
-	S:HandleButton(_G.RolePollPopupAcceptButton)
-	S:HandleCloseButton(_G.RolePollPopupCloseButton)
+	S:HandleTab(_G.LFGParentFrameTab1)
+	S:HandleTab(_G.LFGParentFrameTab2)
 
-	S:HandleCheckBox(_G.RolePollPopupRoleButtonTank.checkButton)
-	S:HandleCheckBox(_G.RolePollPopupRoleButtonHealer.checkButton)
-	S:HandleCheckBox(_G.RolePollPopupRoleButtonDPS.checkButton)
-
-	do
-		local i = 1
-		local tab = _G['LFGParentFrameTab'..i]
-		while tab do
-			S:HandleTab(tab)
-			tab.IsSkinned = true
-
-			i = i + 1
-			tab = _G['LFGParentFrameTab'..i]
-		end
-	end
-
-	for _, child in next, { _G.LFGParentFrame:GetChildren() } do
-		if child:IsObjectType('Button') and not child.IsSkinned then
-			S:HandleCloseButton(child)
-
-			child:ClearAllPoints()
-			child:Point('TOPRIGHT', -26, -6)
-			child.IsSkinned = true
-		end
-	end
+	local closeButton = _G.LFGParentFrame:GetChildren() -- unnamed UIPanelCloseButton
+	S:HandleCloseButton(closeButton)
+	closeButton:ClearAllPoints()
+	closeButton:Point('TOPRIGHT', -26, -6)
 
 	hooksecurefunc('LFGListingCategorySelection_AddButton', CategorySelectionAddButton)
-	hooksecurefunc('LFGListingActivityView_InitActivityButton', InitActivityButton)
+	hooksecurefunc('LFGListingActivityView_InitActivityButton', InitActivityCheckButton)
 	hooksecurefunc('LFGListingActivityView_InitActivityGroupButton', InitActivityGroupButton)
 end
 
+function S:RolePollPopup()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
+
+	S:HandleFrame(_G.RolePollPopup)
+	S:HandleButton(_G.RolePollPopupAcceptButton)
+
+	for _, roleButton in next, { _G.RolePollPopupRoleButtonTank, _G.RolePollPopupRoleButtonHealer, _G.RolePollPopupRoleButtonDPS } do
+		local checkButton = roleButton.checkButton
+		S:HandleCheckBox(checkButton, nil, nil, true)
+		checkButton.backdrop:SetInside()
+		checkButton:Size(18)
+	end
+end
+
 S:AddCallbackForAddon('Blizzard_GroupFinder_VanillaStyle')
+S:AddCallback('RolePollPopup')

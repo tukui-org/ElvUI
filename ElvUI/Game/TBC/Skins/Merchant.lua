@@ -5,7 +5,6 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local CreateFrame = CreateFrame
 local CanGuildBankRepair = CanGuildBankRepair
 local GetBuybackItemInfo = GetBuybackItemInfo
 local GetNumBuybackItems = GetNumBuybackItems
@@ -24,26 +23,25 @@ local function MerchantItemPoint()
 	end
 end
 
+local function SetQualityColor(button, name, link)
+	local quality = link and GetItemQualityByID(link)
+	if quality and quality > 1 then
+		local r, g, b = E:GetItemQualityColor(quality)
+		button:SetBackdropBorderColor(r, g, b)
+		name:SetTextColor(r, g, b)
+	else
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		name:SetTextColor(1, 1, 1)
+	end
+end
+
 local function UpdateBuybackInfo()
 	local numBuybackItems = GetNumBuybackItems()
 
 	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 		if i <= numBuybackItems then
-			local itemName = GetBuybackItemInfo(i)
-			if itemName then
-				local button = _G['MerchantItem'..i..'ItemButton']
-				local name = _G['MerchantItem'..i..'Name']
-				local quality = GetItemQualityByID(itemName)
-
-				if quality and quality > 1 then
-					local r, g, b = E:GetItemQualityColor(quality)
-					button:SetBackdropBorderColor(r, g, b)
-					name:SetTextColor(r, g, b)
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					name:SetTextColor(1, 1, 1)
-				end
-			end
+			local link = GetBuybackItemInfo(i)
+			SetQualityColor(_G['MerchantItem'..i..'ItemButton'], _G['MerchantItem'..i..'Name'], link)
 		end
 	end
 
@@ -51,47 +49,21 @@ local function UpdateBuybackInfo()
 end
 
 local function UpdateMerchantInfo()
+	local numBuybackItems = GetNumBuybackItems()
 	local numMerchantItems = GetMerchantNumItems()
 	local index = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
 
-	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
+	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
 		index = index + 1
 
 		if index <= numMerchantItems then
 			local button = _G['MerchantItem'..i..'ItemButton']
-			local name = _G['MerchantItem'..i..'Name']
-
-			if button.link then
-				local quality = GetItemQualityByID(button.link)
-				if quality and quality > 1 then
-					local r, g, b = E:GetItemQualityColor(quality)
-					button:SetBackdropBorderColor(r, g, b)
-					name:SetTextColor(r, g, b)
-				else
-					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					name:SetTextColor(1, 1, 1)
-				end
-			else
-				button:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				name:SetTextColor(1, 1, 1)
-			end
-		end
-
-		local itemName = GetBuybackItemInfo(GetNumBuybackItems())
-		if itemName then
-			local quality = GetItemQualityByID(itemName)
-			if quality and quality > 1 then
-				local r, g, b = E:GetItemQualityColor(quality)
-				_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(r, g, b)
-				_G.MerchantBuyBackItemName:SetTextColor(r, g, b)
-			else
-				_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				_G.MerchantBuyBackItemName:SetTextColor(1, 1, 1)
-			end
-		else
-			_G.MerchantBuyBackItemItemButton:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			SetQualityColor(button, _G['MerchantItem'..i..'Name'], button.link)
 		end
 	end
+
+	local link = GetBuybackItemInfo(numBuybackItems)
+	SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
 
 	MerchantItemPoint()
 end
@@ -117,7 +89,6 @@ function S:MerchantFrame()
 
 	_G.MerchantFrameCloseButton:Point('TOPRIGHT', 2, 2)
 
-	-- skin icons / merchant slots
 	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 		local item = _G['MerchantItem'..i]
 		local button = _G['MerchantItem'..i..'ItemButton']
@@ -148,16 +119,9 @@ function S:MerchantFrame()
 		money:ClearAllPoints()
 		money:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 3, 0)
 
-		for j = 1, 2 do
-			local currencyItem = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j]
+		for j = 1, _G.MAX_ITEM_COST do
 			local currencyIcon = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j..'Texture']
-
-			currencyIcon.backdrop = CreateFrame('Frame', nil, currencyItem)
-			currencyIcon.backdrop:SetTemplate()
-			currencyIcon.backdrop:OffsetFrameLevel(nil, currencyItem)
-
 			currencyIcon:SetTexCoords()
-			currencyIcon:SetParent(currencyIcon.backdrop)
 		end
 	end
 
@@ -176,8 +140,10 @@ function S:MerchantFrame()
 
 	S:HandleButton(_G.MerchantRepairItemButton)
 	_G.MerchantRepairItemButton:StyleButton(false)
-	_G.MerchantRepairItemButton:GetRegions():SetTexCoord(0.04, 0.24, 0.06, 0.5)
-	_G.MerchantRepairItemButton:GetRegions():SetInside()
+
+	local repairIcon = _G.MerchantRepairItemButton:GetRegions()
+	repairIcon:SetTexCoord(0.04, 0.24, 0.06, 0.5)
+	repairIcon:SetInside()
 
 	S:HandleButton(_G.MerchantGuildBankRepairButton)
 	_G.MerchantGuildBankRepairButton:StyleButton()
@@ -185,7 +151,7 @@ function S:MerchantFrame()
 	_G.MerchantGuildBankRepairButtonIcon:SetInside()
 
 	S:HandleButton(_G.MerchantRepairAllButton)
-	_G.MerchantRepairAllIcon:StyleButton(false)
+	_G.MerchantRepairAllButton:StyleButton(false)
 	_G.MerchantRepairAllIcon:SetTexCoord(0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
 	_G.MerchantRepairAllIcon:SetInside()
 

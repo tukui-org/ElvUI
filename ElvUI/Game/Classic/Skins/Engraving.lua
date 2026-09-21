@@ -4,48 +4,32 @@ local S = E:GetModule('Skins')
 if not E.ClassicSOD then return end
 
 local _G = _G
-local hooksecurefunc = hooksecurefunc
-
-local C_Engraving_GetRuneCategories = C_Engraving.GetRuneCategories
-
-local function UpdateRuneList()
-	local categories = C_Engraving_GetRuneCategories(true, true)
-	for i = 1, (categories and #categories or 0) do
-		local header = _G['EngravingFrameHeader'..i]
-		if header and not header.template then
-			header:StripTextures()
-			header:SetTemplate('Transparent')
-		end
-	end
-
-	local frame = _G.EngravingFrame
-	local buttons = frame and frame.scrollFrame and frame.scrollFrame.buttons
-	for i = 1, (buttons and #buttons or 0) do
-		local button = _G['EngravingFrameScrollFrameButton'..i]
-		if button and not button.IsSkinned then
-			local icon = _G['EngravingFrameScrollFrameButton'..i..'Icon']
-			if icon then
-				S:HandleIcon(icon, true)
-			end
-
-			S:HandleButton(button)
-			button.IsSkinned = true
-		end
-	end
-end
+local next = next
 
 function S:SkinEngravings()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.engraving) then return end
 
-	S:HandleFrame(_G.EngravingFrame, true, nil, -7, 58, 8, -18)
-	_G.EngravingFrame.Border.NineSlice:Kill()
+	local frame = _G.EngravingFrame
+	S:HandleFrame(frame, true, nil, -7, 58, 8, -18)
+	frame.Border.NineSlice:Kill()
 	_G.EngravingFrameSideInset:Kill()
 
 	S:HandleEditBox(_G.EngravingFrameSearchBox)
-	S:HandleDropDownBox(_G.EngravingFrame.FilterDropdown, 176)
+	S:HandleDropDownBox(frame.FilterDropdown, 176)
 	S:HandleScrollBar(_G.EngravingFrameScrollFrameScrollBar)
 
-	hooksecurefunc('EngravingFrame_UpdateRuneList', UpdateRuneList)
+	for i = 1, 15 do -- rune headers
+		local header = _G['EngravingFrameHeader'..i]
+		header.middle:SetTexture() -- keep the plus / minus and category icons
+		header.leftEdge:SetTexture()
+		header.rightEdge:SetTexture()
+		header:SetTemplate('Transparent')
+	end
+
+	for _, button in next, frame.scrollFrame.buttons do
+		S:HandleIcon(button.icon, true)
+		S:HandleButton(button)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_EngravingUI', 'SkinEngravings')

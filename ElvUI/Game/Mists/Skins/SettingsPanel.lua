@@ -20,6 +20,10 @@ local function UpdateKeybindButtons(self)
 			S:HandleButton(panel.Button2)
 			panel.IsSkinned = true
 		end
+
+		if panel.CustomButton then -- push to talk row, the pool frame gets it when reused for that binding
+			S:HandleButton(panel.CustomButton)
+		end
 	end
 end
 

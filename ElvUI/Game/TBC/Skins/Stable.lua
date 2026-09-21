@@ -30,7 +30,6 @@ function S:PetStableFrame()
 	S:HandleFrame(PetStableFrame, true, nil, 10, -11, -32, 71)
 
 	S:HandleButton(_G.PetStablePurchaseButton)
-	S:HandleCloseButton(_G.PetStableFrameCloseButton)
 	S:HandleRotateButton(_G.PetStableModelRotateRightButton)
 	S:HandleRotateButton(_G.PetStableModelRotateLeftButton)
 
@@ -43,14 +42,13 @@ function S:PetStableFrame()
 	end
 
 	local PetStablePetInfo = _G.PetStablePetInfo
-	if PetStablePetInfo then
-		PetStablePetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
-		PetStablePetInfo:OffsetFrameLevel(2, _G.PetModelFrame)
-		PetStablePetInfo:CreateBackdrop()
-		PetStablePetInfo:Size(24)
+	local texture = PetStablePetInfo:GetRegions()
+	texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
+	PetStablePetInfo:OffsetFrameLevel(2, _G.PetStableModel)
+	PetStablePetInfo:CreateBackdrop()
+	PetStablePetInfo:Size(24)
 
-		hooksecurefunc('PetStable_Update', UpdatePetStable)
-	end
+	hooksecurefunc('PetStable_Update', UpdatePetStable)
 end
 
 S:AddCallback('PetStableFrame')

@@ -43,7 +43,7 @@ function S:WorldMapFrame()
 		S:HandleButton(_G.Questie_Toggle)
 	end
 
-	S:HandleCloseButton(_G.WorldMapFrameCloseButton, WorldMapFrame.backdrop)
+	S:HandleCloseButton(_G.WorldMapFrameCloseButton)
 	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
 end
 

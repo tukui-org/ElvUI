@@ -24,15 +24,6 @@ function S:BattleNetFrames()
 	S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
 	S:HandleButton(ReportFrame.ReportButton)
 	S:HandleEditBox(ReportFrame.Comment)
-
-	local ReportCheatingDialog = _G.ReportCheatingDialog
-	ReportCheatingDialog:StripTextures()
-	ReportCheatingDialog:SetTemplate('Transparent')
-
-	_G.ReportCheatingDialogCommentFrame:StripTextures()
-	S:HandleButton(_G.ReportCheatingDialogReportButton)
-	S:HandleButton(_G.ReportCheatingDialogCancelButton)
-	S:HandleEditBox(_G.ReportCheatingDialogCommentFrameEditBox)
 end
 
 S:AddCallback('BattleNetFrames')

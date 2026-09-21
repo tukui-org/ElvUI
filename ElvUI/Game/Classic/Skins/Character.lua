@@ -7,10 +7,8 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local HasPetUI = HasPetUI
-local GetNumFactions = GetNumFactions
 local GetPetHappiness = GetPetHappiness
 local GetInventoryItemQuality = GetInventoryItemQuality
-local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
@@ -23,25 +21,8 @@ local ResistanceCoords = {
 	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 }
 
-local function ReputationFrameUpdate()
-	local factionOffset = FauxScrollFrame_GetOffset(_G.ReputationListScrollFrame)
-	local numFactions = GetNumFactions()
-
-	for i = 1, NUM_FACTIONS_DISPLAYED do
-		local factionIndex = factionOffset + i
-		if factionIndex <= numFactions then
-			local factionHeader = _G['ReputationHeader'..i]
-			if factionHeader.isCollapsed then
-				factionHeader:SetNormalTexture(E.Media.Textures.PlusButton)
-			else
-				factionHeader:SetNormalTexture(E.Media.Textures.MinusButton)
-			end
-		end
-	end
-end
-
 local function PaperDollItemSlotButtonUpdate(frame)
-	if not frame.SetBackdropBorderColor then return end
+	if not frame.SetBackdropBorderColor then return end -- bag bar slots run this too, no backdrop when the bag bar is off
 
 	local id = frame:GetID()
 	local rarity = id and GetInventoryItemQuality('player', id)
@@ -51,16 +32,19 @@ end
 
 local function HandleTabs()
 	local lastTab
-	for index, tab in next, { _G.CharacterFrameTab1, HasPetUI() and _G.CharacterFrameTab2 or nil, _G.CharacterFrameTab3, _G.CharacterFrameTab4, _G.CharacterFrameTab5 } do
-		tab:ClearAllPoints()
+	for index = 1, #CHARACTERFRAME_SUBFRAMES do
+		local tab = _G['CharacterFrameTab'..index]
+		if index ~= 2 or HasPetUI() then -- pet tab is hidden without a pet
+			tab:ClearAllPoints()
 
-		if index == 1 then
-			tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
-		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			if lastTab then
+				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			else
+				tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', 1, 76)
+			end
+
+			lastTab = tab
 		end
-
-		lastTab = tab
 	end
 end
 
@@ -106,8 +90,6 @@ function S:CharacterFrame()
 	local CharacterFrame = _G.CharacterFrame
 	S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 
-	S:HandleCloseButton(_G.CharacterFrameCloseButton, CharacterFrame.backdrop)
-
 	_G.PaperDollFrame:StripTextures()
 
 	for i = 1, #CHARACTERFRAME_SUBFRAMES do
@@ -115,16 +97,14 @@ function S:CharacterFrame()
 	end
 
 	-- Seasonal
-	local runeButton = E.ClassicSOD and _G.RuneFrameControlButton
-	if runeButton then
+	if E.ClassicSOD then
+		local runeButton = _G.RuneFrameControlButton
 		S:HandleButton(runeButton, true)
 
-		if not runeButton.runeIcon then -- make then icon
-			runeButton.runeIcon = runeButton:CreateTexture(nil, 'ARTWORK')
-			runeButton.runeIcon:SetTexture(134419) -- Interface\Icons\INV_Misc_Rune_06
-			runeButton.runeIcon:SetTexCoords()
-			runeButton.runeIcon:SetInside(runeButton)
-		end
+		local runeIcon = runeButton:CreateTexture(nil, 'ARTWORK')
+		runeIcon:SetTexture(134419) -- Interface\Icons\INV_Misc_Rune_06
+		runeIcon:SetTexCoords()
+		runeIcon:SetInside()
 	end
 
 	-- Reposition Tabs
@@ -146,10 +126,9 @@ function S:CharacterFrame()
 	HandleResistanceFrame('MagicResFrame')
 
 	for _, slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
-		if slot:IsObjectType('Button') and slot.Count then
+		if slot:IsObjectType('Button') and slot.Count then -- skips RuneFrameControlButton
 			local name = slot:GetName()
 			local icon = _G[name..'IconTexture']
-			local cooldown = _G[name..'Cooldown']
 
 			slot:StripTextures()
 			slot:SetTemplate(nil, true, true)
@@ -158,9 +137,7 @@ function S:CharacterFrame()
 			S:HandleIcon(icon)
 			icon:SetInside()
 
-			if cooldown then
-				E:RegisterCooldown(cooldown)
-			end
+			E:RegisterCooldown(_G[name..'Cooldown'])
 		end
 	end
 
@@ -227,6 +204,7 @@ function S:CharacterFrame()
 		factionHeader:GetNormalTexture():Size(14)
 		factionHeader:SetHighlightTexture(E.ClearTexture)
 		factionHeader:Point('TOPLEFT', factionBar, 'TOPLEFT', -175, 0)
+		S:HandleCollapseTexture(factionHeader, nil, true)
 
 		factionWar:StripTextures()
 		factionWar:Point('LEFT', factionBar, 'RIGHT', 0, 0)
@@ -236,8 +214,6 @@ function S:CharacterFrame()
 		factionWar.Icon:Size(32)
 		factionWar.Icon:SetTexture([[Interface\Buttons\UI-CheckBox-SwordCheck]])
 	end
-
-	hooksecurefunc('ReputationFrame_Update', ReputationFrameUpdate)
 
 	_G.ReputationListScrollFrame:StripTextures()
 	S:HandleScrollBar(_G.ReputationListScrollFrameScrollBar)

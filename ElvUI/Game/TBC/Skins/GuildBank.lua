@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
 local CreateFrame = CreateFrame
 
 local NUM_SLOTS_PER_GUILDBANK_GROUP = 14
@@ -31,6 +30,12 @@ local function HandleTabs()
 	end
 end
 
+local function GuildBankPopupOnShow(frame)
+	if not frame.IsSkinned then -- set by HandleIconSelectionFrame
+		S:HandleIconSelectionFrame(frame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
+	end
+end
+
 function S:Blizzard_GuildBankUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
 
@@ -45,11 +50,8 @@ function S:Blizzard_GuildBankUI()
 
 	S:HandleEditBox(_G.GuildItemSearchBox)
 
-	for _, child in next, { GuildBankFrame:GetChildren() } do
-		if child.GetPushedTexture and child:GetPushedTexture() and not child:GetName() then
-			S:HandleCloseButton(child)
-		end
-	end
+	local _, _, _, _, _, _, _, _, _, _, closeFrameButton = GuildBankFrame:GetChildren() -- Emblem, Column1-7, MoneyFrame, WithdrawMoneyFrame, unnamed UIPanelCloseButton
+	S:HandleCloseButton(closeFrameButton)
 
 	for i = 1, _G.MAX_GUILDBANK_TABS do
 		local tab = _G['GuildBankTab'..i]
@@ -124,15 +126,18 @@ function S:Blizzard_GuildBankUI()
 	HandleTabs()
 
 	-- Right Side Tabs
-	_G.GuildBankTab1:Point('TOPLEFT', GuildBankFrame, 'TOPRIGHT', E.PixelMode and -1 or 2, -36)
-	_G.GuildBankTab2:Point('TOPLEFT', _G.GuildBankTab1, 'BOTTOMLEFT', 0, 7)
-	_G.GuildBankTab3:Point('TOPLEFT', _G.GuildBankTab2, 'BOTTOMLEFT', 0, 7)
-	_G.GuildBankTab4:Point('TOPLEFT', _G.GuildBankTab3, 'BOTTOMLEFT', 0, 7)
-	_G.GuildBankTab5:Point('TOPLEFT', _G.GuildBankTab4, 'BOTTOMLEFT', 0, 7)
-	_G.GuildBankTab6:Point('TOPLEFT', _G.GuildBankTab5, 'BOTTOMLEFT', 0, 7)
+	local PreviousBankTab = _G.GuildBankTab1
+	PreviousBankTab:Point('TOPLEFT', GuildBankFrame, 'TOPRIGHT', E.PixelMode and -1 or 2, -36)
+
+	for i = 2, _G.MAX_GUILDBANK_TABS do
+		local BankTab = _G['GuildBankTab'..i]
+		BankTab:Point('TOPLEFT', PreviousBankTab, 'BOTTOMLEFT', 0, 7)
+
+		PreviousBankTab = BankTab
+	end
 
 	if not E.OtherAddons.ArkInventory then
-		S:HandleIconSelectionFrame(_G.GuildBankPopupFrame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
+		_G.GuildBankPopupFrame:HookScript('OnShow', GuildBankPopupOnShow) -- BuildIconArray creates the icon buttons on first show
 	end
 end
 

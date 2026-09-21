@@ -4,6 +4,26 @@ local S = E:GetModule('Skins')
 local _G = _G
 local CreateFrame = CreateFrame
 
+local function HandleTradeItem(item, button, icon, name)
+	button:StripTextures()
+	button:OffsetFrameLevel(-1)
+	button:SetTemplate(nil, true)
+	button:StyleButton()
+
+	button.bg = CreateFrame('Frame', nil, button)
+	button.bg:Point('TOPLEFT', button, 'TOPRIGHT', 4, 0)
+	button.bg:Point('BOTTOMRIGHT', name, 'BOTTOMRIGHT', 0, 14)
+	button.bg:OffsetFrameLevel(-3, button)
+	button.bg:SetTemplate('Transparent')
+
+	S:HandleIconBorder(button.IconBorder)
+
+	item:StripTextures()
+
+	icon:SetInside(button)
+	icon:SetTexCoords()
+end
+
 function S:TradeFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trade) then return end
 
@@ -25,72 +45,29 @@ function S:TradeFrame()
 	_G.TradeRecipientMoneyBg:Kill()
 
 	for i = 1, _G.MAX_TRADE_ITEMS do
-		local player = _G['TradePlayerItem'..i..'ItemButton']
-		local recipient = _G['TradeRecipientItem'..i..'ItemButton']
-
-		if player and recipient then
-			player:StripTextures()
-			recipient:StripTextures()
-
-			_G['TradePlayerItem'..i]:StripTextures()
-			_G['TradeRecipientItem'..i]:StripTextures()
-
-			local playerIcon = _G['TradePlayerItem'..i..'ItemButtonIconTexture']
-			if playerIcon then
-				playerIcon:SetInside(player)
-				playerIcon:SetTexCoords()
-			end
-
-			local recipientIcon = _G['TradeRecipientItem'..i..'ItemButtonIconTexture']
-			if recipientIcon then
-				recipientIcon:SetInside(recipient)
-				recipientIcon:SetTexCoords()
-			end
-
-			player:OffsetFrameLevel(-1)
-			player:SetTemplate(nil, true)
-			player:StyleButton()
-
-			player.bg = CreateFrame('Frame', nil, player)
-			player.bg:Point('TOPLEFT', player, 'TOPRIGHT', 4, 0)
-			player.bg:Point('BOTTOMRIGHT', _G['TradePlayerItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
-			player.bg:OffsetFrameLevel(-3, player)
-			player.bg:SetTemplate('Transparent')
-
-			recipient:OffsetFrameLevel(-1)
-			recipient:SetTemplate(nil, true)
-			recipient:StyleButton()
-
-			recipient.bg = CreateFrame('Frame', nil, recipient)
-			recipient.bg:Point('TOPLEFT', recipient, 'TOPRIGHT', 4, 0)
-			recipient.bg:Point('BOTTOMRIGHT', _G['TradeRecipientItem'..i..'NameFrame'], 'BOTTOMRIGHT', 0, 14)
-			recipient.bg:OffsetFrameLevel(-3, recipient)
-			recipient.bg:SetTemplate('Transparent')
-
-			S:HandleIconBorder(player.IconBorder)
-			S:HandleIconBorder(recipient.IconBorder)
-		end
+		HandleTradeItem(_G['TradePlayerItem'..i], _G['TradePlayerItem'..i..'ItemButton'], _G['TradePlayerItem'..i..'ItemButtonIconTexture'], _G['TradePlayerItem'..i..'NameFrame'])
+		HandleTradeItem(_G['TradeRecipientItem'..i], _G['TradeRecipientItem'..i..'ItemButton'], _G['TradeRecipientItem'..i..'ItemButtonIconTexture'], _G['TradeRecipientItem'..i..'NameFrame'])
 	end
 
+	_G.TradeHighlightPlayer:SetFrameStrata('HIGH')
 	_G.TradeHighlightPlayerTop:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightPlayerBottom:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightPlayerMiddle:SetColorTexture(0, 1, 0, 0.2)
-	_G.TradeHighlightPlayer:SetFrameStrata('HIGH')
 
+	_G.TradeHighlightPlayerEnchant:SetFrameStrata('HIGH')
 	_G.TradeHighlightPlayerEnchantTop:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightPlayerEnchantBottom:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightPlayerEnchantMiddle:SetColorTexture(0, 1, 0, 0.2)
-	_G.TradeHighlightPlayerEnchant:SetFrameStrata('HIGH')
 
+	_G.TradeHighlightRecipient:SetFrameStrata('HIGH')
 	_G.TradeHighlightRecipientTop:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightRecipientBottom:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightRecipientMiddle:SetColorTexture(0, 1, 0, 0.2)
-	_G.TradeHighlightRecipient:SetFrameStrata('HIGH')
 
+	_G.TradeHighlightRecipientEnchant:SetFrameStrata('HIGH')
 	_G.TradeHighlightRecipientEnchantTop:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightRecipientEnchantBottom:SetColorTexture(0, 1, 0, 0.2)
 	_G.TradeHighlightRecipientEnchantMiddle:SetColorTexture(0, 1, 0, 0.2)
-	_G.TradeHighlightRecipientEnchant:SetFrameStrata('HIGH')
 end
 
 S:AddCallback('TradeFrame')

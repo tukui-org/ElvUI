@@ -15,7 +15,10 @@ function S:Blizzard_CatalogShop()
 	local CatalogShopFrame = _G.CatalogShopFrame
 	CatalogShopFrame:StripTextures()
 	CatalogShopFrame:SetTemplate('Transparent')
-	S:HandleCloseButton(CatalogShopFrame.CloseButton)
+
+	local CloseButton = CatalogShopFrame.CloseButton
+	S:HandleCloseButton(CloseButton)
+	CloseButton:SetFrameLevel(510) -- classic UIPanelCloseButton has no frame level, keep it above the title backdrop
 
 	local TitleContainer = CatalogShopFrame.TitleContainer
 	TitleContainer:CreateBackdrop()

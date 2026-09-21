@@ -9,7 +9,7 @@ local hooksecurefunc = hooksecurefunc
 
 local function FixReadyCheckFrame(frame)
 	if frame.initiator and E:UnitIsUnit('player', frame.initiator) then
-		frame:Hide()
+		frame:Hide() -- bug fix, don't show it if player is initiator
 	end
 end
 
@@ -32,13 +32,10 @@ local function ClearedHooks(button, script)
 end
 
 local function GameMenuInitButtons(menu)
-	if not menu.buttonPool then return end
-
 	for button in menu.buttonPool:EnumerateActive() do
 		if not button.IsSkinned then
 			S:HandleButton(button, nil, nil, nil, true)
 			button.backdrop:SetInside(nil, 1, 1)
-
 			hooksecurefunc(button, 'SetScript', ClearedHooks)
 		end
 	end
@@ -52,12 +49,14 @@ end
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
-	for _, frame in next, { _G.AutoCompleteBox, _G.ReadyCheckFrame } do
+	-- Blizzard frame we want to reskin
+	for _, frame in next, { _G.AutoCompleteBox, _G.QueueStatusFrame, _G.ReadyCheckFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
 	end
 
-	-- here we reskin all 'normal' buttons
+	-- ReadyCheckFrame
+	-- Here we reskin all 'normal' buttons
 	S:HandleButton(_G.ReadyCheckFrameYesButton)
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 
@@ -71,6 +70,7 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, -15)
+	_G.ReadyCheckFrameText:Width(300)
 
 	_G.PVPReadyDialog:StripTextures()
 	_G.PVPReadyDialog:SetTemplate('Transparent')
@@ -78,7 +78,7 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.PVPReadyDialogHideButton)
 
 	_G.ReadyCheckListenerFrame:SetAlpha(0)
-	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame) -- bug fix, don't show it if player is initiator
+	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
 
 	_G.AutoCompleteBox:SetScript('OnShow', FixAutoCompleteLevel) -- bug fix, swap to AutoCompleteBoxMixin.OnShow instead of AutoComplete_OnShow
 
@@ -91,9 +91,9 @@ function S:BlizzardMiscFrames()
 		GameMenuFrame:CreateBackdrop('Transparent')
 
 		local header = GameMenuFrame.Header
-		if header then
-			header:StripTextures()
-		end
+		header:StripTextures()
+		header:ClearAllPoints()
+		header:Point('TOP', GameMenuFrame, 0, -7)
 
 		hooksecurefunc(GameMenuFrame, 'InitButtons', GameMenuInitButtons)
 	end
@@ -105,61 +105,29 @@ function S:BlizzardMiscFrames()
 		frame:SetScale(E.uiscale)
 
 		local closeDialog = frame.closeDialog
-		if closeDialog and not closeDialog.template then
+		if not closeDialog.template then
 			closeDialog:StripTextures()
 			closeDialog:SetTemplate('Transparent')
 
-			local dialogName = closeDialog.GetName and closeDialog:GetName()
-			local closeButton = closeDialog.ConfirmButton or (dialogName and _G[dialogName..'ConfirmButton'])
-			if closeButton then
-				S:HandleButton(closeButton, nil, nil, nil, true)
-			end
-
-			local resumeButton = closeDialog.ResumeButton or (dialogName and _G[dialogName..'ResumeButton'])
-			if resumeButton then
-				S:HandleButton(resumeButton, nil, nil, nil, true)
-			end
+			local dialogName = closeDialog:GetName()
+			S:HandleButton(_G[dialogName..'ConfirmButton'], nil, nil, nil, true)
+			S:HandleButton(_G[dialogName..'ResumeButton'], nil, nil, nil, true)
 		end
 	end)
 
-	-- same as above except `MovieFrame_OnEvent` and `MovieFrame_OnShow`
-	-- cant be hooked directly so we can just use this
-	-- this is called through `MovieFrame_OnEvent` on the event `PLAY_MOVIE`
-	hooksecurefunc('MovieFrame_PlayMovie', function(frame)
+	local MovieFrame = _G.MovieFrame
+	hooksecurefunc(MovieFrame, 'ShowCloseDialog', function(frame)
 		frame:SetScale(E.uiscale)
 
 		local closeDialog = frame.CloseDialog
-		if closeDialog and not closeDialog.template then
+		if not closeDialog.template then
 			closeDialog:StripTextures()
 			closeDialog:SetTemplate('Transparent')
 
-			S:HandleButton(closeDialog.ConfirmButton)
-			S:HandleButton(closeDialog.ResumeButton)
+			S:HandleButton(closeDialog.Buttons.ConfirmButton, nil, nil, nil, true)
+			S:HandleButton(closeDialog.Buttons.ResumeButton, nil, nil, nil, true)
 		end
 	end)
-
-	do
-		local menuBackdrop = function(frame)
-			frame:SetTemplate('Transparent')
-		end
-
-		local chatMenuBackdrop = function(frame)
-			frame:SetTemplate('Transparent')
-
-			frame:ClearAllPoints()
-			frame:Point('BOTTOMLEFT', _G.ChatFrame1, 'TOPLEFT', 0, 30)
-		end
-
-		for index, menu in next, { _G.ChatMenu, _G.EmoteMenu, _G.LanguageMenu, _G.VoiceMacroMenu } do
-			menu:StripTextures()
-
-			if index == 1 then -- ChatMenu
-				menu:HookScript('OnShow', chatMenuBackdrop)
-			else
-				menu:HookScript('OnShow', menuBackdrop)
-			end
-		end
-	end
 
 	-- reskin popup buttons
 	for i = 1, E.MAX_STATIC_POPUPS do
@@ -169,7 +137,7 @@ function S:BlizzardMiscFrames()
 	_G.OpacityFrame:StripTextures()
 	_G.OpacityFrame:SetTemplate('Transparent')
 
-	--DropDownMenu
+	-- DropDownMenu
 	S:SkinDropDownMenu('DropDownList')
 
 	local SideDressUpFrame = _G.SideDressUpFrame
@@ -183,7 +151,7 @@ function S:BlizzardMiscFrames()
 	-- StackSplit
 	local StackSplitFrame = _G.StackSplitFrame
 	StackSplitFrame:StripTextures()
-	StackSplitFrame:CreateBackdrop('Transparent')
+	StackSplitFrame:SetTemplate('Transparent')
 
 	StackSplitFrame.bg1 = CreateFrame('Frame', nil, StackSplitFrame)
 	StackSplitFrame.bg1:SetTemplate('Transparent')
@@ -194,22 +162,18 @@ function S:BlizzardMiscFrames()
 	S:HandleButton(_G.StackSplitOkayButton)
 	S:HandleButton(_G.StackSplitCancelButton)
 
-	for _, btn in next, { StackSplitFrame.LeftButton, StackSplitFrame.RightButton } do
+	for _, btn in next, { _G.StackSplitLeftButton, _G.StackSplitRightButton } do
 		btn:Size(14, 18)
-
 		btn:ClearAllPoints()
 
-		if btn == StackSplitFrame.LeftButton then
+		if btn == _G.StackSplitLeftButton then
 			btn:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
 		else
 			btn:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
 		end
 
 		S:HandleNextPrevButton(btn)
-
-		if btn.SetTemplate then
-			btn:SetTemplate('NoBackdrop')
-		end
+		btn:SetTemplate('NoBackdrop')
 	end
 
 	-- NavBar Buttons (Used in WorldMapFrame, EncounterJournal and HelpFrame)

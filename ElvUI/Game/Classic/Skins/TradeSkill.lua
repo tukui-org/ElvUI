@@ -67,6 +67,9 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleFrame(TradeSkillFrame, true, nil, 11, -12, -32, 76)
 
 	_G.TradeSkillRankFrameBorder:StripTextures()
+	_G.TradeSkillDetailScrollFrame:StripTextures()
+	_G.TradeSkillListScrollFrame:StripTextures()
+	_G.TradeSkillDetailScrollChildFrame:StripTextures()
 
 	local TradeSkillRankFrame = _G.TradeSkillRankFrame
 	TradeSkillRankFrame:Size(322, 16)
@@ -95,13 +98,15 @@ function S:Blizzard_TradeSkillUI()
 	collapseDisabled:Size(15)
 	collapseDisabled:SetDesaturated(true)
 
-	S:HandleDropDownBox(_G.TradeSkillInvSlotDropdown, 110)
-	_G.TradeSkillInvSlotDropdown:ClearAllPoints()
-	_G.TradeSkillInvSlotDropdown:Point('TOPRIGHT', TradeSkillFrame, 'TOPRIGHT', -32, -68)
+	local InvSlotDropdown = TradeSkillFrame.InvSlotDropdown
+	S:HandleDropDownBox(InvSlotDropdown, 110)
+	InvSlotDropdown:ClearAllPoints()
+	InvSlotDropdown:Point('TOPRIGHT', TradeSkillFrame, 'TOPRIGHT', -32, -68)
 
-	S:HandleDropDownBox(_G.TradeSkillSubClassDropdown, 110)
-	_G.TradeSkillSubClassDropdown:ClearAllPoints()
-	_G.TradeSkillSubClassDropdown:Point('RIGHT', _G.TradeSkillInvSlotDropdown, 'RIGHT', -120, 0)
+	local SubClassDropdown = TradeSkillFrame.SubClassDropdown
+	S:HandleDropDownBox(SubClassDropdown, 110)
+	SubClassDropdown:ClearAllPoints()
+	SubClassDropdown:Point('RIGHT', InvSlotDropdown, 'RIGHT', -120, 0)
 
 	_G.TradeSkillFrameTitleText:ClearAllPoints()
 	_G.TradeSkillFrameTitleText:Point('TOP', TradeSkillFrame, 'TOP', 0, -18)
@@ -111,28 +116,22 @@ function S:Blizzard_TradeSkillUI()
 		S:HandleCollapseTexture(button, nil, true)
 
 		local normal = button:GetNormalTexture()
-		if normal then
-			normal:Size(14)
-			normal:SetPoint('LEFT', 2, 1)
-		end
+		normal:Size(14)
+		normal:SetPoint('LEFT', 2, 1)
 
-		local highlight = _G['TradeSkillSkill'..i..'Highlight']
-		if highlight then
-			highlight:SetTexture(E.ClearTexture)
-			highlight.SetTexture = E.noop
-		end
+		local highlight = button:GetHighlightTexture()
+		highlight:SetTexture(E.ClearTexture)
+		highlight.SetTexture = E.noop
 	end
-
-	_G.TradeSkillDetailScrollFrame:StripTextures()
-	_G.TradeSkillListScrollFrame:StripTextures()
-	_G.TradeSkillDetailScrollChildFrame:StripTextures()
 
 	S:HandleCollapseTexture(TradeSkillCollapseAllButton, nil, true)
 	S:HandleScrollBar(_G.TradeSkillListScrollFrameScrollBar)
 	S:HandleScrollBar(_G.TradeSkillDetailScrollFrameScrollBar)
 
-	_G.TradeSkillSkillIcon:Size(40)
-	_G.TradeSkillSkillIcon:Point('TOPLEFT', 2, -3)
+	local TradeSkillSkillIcon = _G.TradeSkillSkillIcon
+	TradeSkillSkillIcon:Size(40)
+	TradeSkillSkillIcon:Point('TOPLEFT', 2, -3)
+	TradeSkillSkillIcon:CreateBackdrop()
 
 	for i = 1, _G.MAX_TRADE_SKILL_REAGENTS do
 		local reagent = _G['TradeSkillReagent'..i]
@@ -153,8 +152,6 @@ function S:Blizzard_TradeSkillUI()
 	_G.TradeSkillInputBox:Size(36, 16)
 	S:HandleEditBox(_G.TradeSkillInputBox)
 	S:HandleNextPrevButton(_G.TradeSkillIncrementButton)
-
-	_G.TradeSkillSkillIcon:CreateBackdrop()
 
 	hooksecurefunc('TradeSkillFrame_SetSelection', SetSelection)
 end

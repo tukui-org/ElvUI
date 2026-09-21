@@ -7,21 +7,22 @@ function S:PetitionFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petition) then return end
 
 	local PetitionFrame = _G.PetitionFrame
-	S:HandleFrame(PetitionFrame, true, nil, 12, -17, -28, 65)
+	S:HandleFrame(PetitionFrame)
+	S:HandleTrimScrollBar(PetitionFrame.ScrollBar)
 
 	S:HandleButton(_G.PetitionFrameSignButton)
 	S:HandleButton(_G.PetitionFrameRequestButton)
 	S:HandleButton(_G.PetitionFrameRenameButton)
 	S:HandleButton(_G.PetitionFrameCancelButton)
-	S:HandleCloseButton(_G.PetitionFrameCloseButton)
 
+	-- Text Colors
 	_G.PetitionFrameCharterTitle:SetTextColor(1, 1, 0)
 	_G.PetitionFrameCharterName:SetTextColor(1, 1, 1)
 	_G.PetitionFrameMasterTitle:SetTextColor(1, 1, 0)
 	_G.PetitionFrameMasterName:SetTextColor(1, 1, 1)
 	_G.PetitionFrameMemberTitle:SetTextColor(1, 1, 0)
 
-	for i = 1, 9 do
+	for i = 1, 9 do -- member names
 		_G['PetitionFrameMemberName'..i]:SetTextColor(1, 1, 1)
 	end
 

@@ -16,8 +16,6 @@ function S:DressUpFrame()
 
 	_G.DressUpFrameDescriptionText:Point('CENTER', _G.DressUpFrameTitleText, 'BOTTOM', -5, -22)
 
-	S:HandleCloseButton(_G.DressUpFrameCloseButton, DressUpFrame.backdrop)
-
 	-- Rotate Buttons
 	S:HandleRotateButton(_G.DressUpModelFrameRotateLeftButton)
 	_G.DressUpModelFrameRotateLeftButton:Point('TOPLEFT', DressUpFrame, 25, -79)

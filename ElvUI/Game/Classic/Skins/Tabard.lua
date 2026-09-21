@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
 local function RotateLeftButtonSetPoint(button, _, _, _, _, _, forced)
@@ -21,9 +20,10 @@ function S:TabardFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tabard) then return end
 
 	local TabardFrame = _G.TabardFrame
-	S:HandleFrame(TabardFrame, true, nil, 10, -12, -32, 74)
+	S:HandleFrame(TabardFrame)
 
-	S:HandleCloseButton(_G.TabardFrameCloseButton)
+	_G.TabardFrameMoneyInset:StripTextures()
+	_G.TabardFrameMoneyBg:StripTextures()
 
 	S:HandleButton(_G.TabardFrameCancelButton)
 	S:HandleButton(_G.TabardFrameAcceptButton)
@@ -33,45 +33,18 @@ function S:TabardFrame()
 	_G.TabardFrameCostFrame:StripTextures()
 	_G.TabardFrameCustomizationFrame:StripTextures()
 
-	-- Add Tabard Emblem back
-	local emblemFrames = {
-		_G.TabardFrameEmblemTopRight,
-		_G.TabardFrameEmblemBottomRight,
-		_G.TabardFrameEmblemTopLeft,
-		_G.TabardFrameEmblemBottomLeft,
-	}
-	for _, frame in pairs(emblemFrames) do
-		frame:SetParent(TabardFrame)
-		frame.Show = nil
-		frame:Show()
-	end
+	for i = 1, 5 do -- customization rows
+		local button = _G['TabardFrameCustomization'..i]
+		button:StripTextures()
 
-	do
-		local i = 1
-		local button, previous = _G['TabardFrameCustomization'..i]
-		while button do
-			button:StripTextures()
+		S:HandleNextPrevButton(_G['TabardFrameCustomization'..i..'LeftButton'])
+		S:HandleNextPrevButton(_G['TabardFrameCustomization'..i..'RightButton'])
 
-			local left = _G['TabardFrameCustomization'..i..'LeftButton']
-			if left then
-				S:HandleNextPrevButton(left)
-			end
-
-			local right = _G['TabardFrameCustomization'..i..'RightButton']
-			if right then
-				S:HandleNextPrevButton(right)
-			end
-
-			if previous then
-				button:ClearAllPoints()
-				button:Point('TOP', previous, 'BOTTOM', 0, -6)
-			else
-				button:NudgePoint(0, 4)
-			end
-
-			i = i + 1
-			previous = button
-			button = _G['TabardFrameCustomization'..i]
+		if i == 1 then
+			button:NudgePoint(0, 4)
+		else
+			button:ClearAllPoints()
+			button:Point('TOP', _G['TabardFrameCustomization'..(i - 1)], 'BOTTOM', 0, -6)
 		end
 	end
 

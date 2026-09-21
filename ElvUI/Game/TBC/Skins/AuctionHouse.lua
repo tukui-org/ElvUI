@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local pairs = pairs
 local unpack = unpack
 
 local CreateFrame = CreateFrame
@@ -30,7 +29,7 @@ function S:Blizzard_AuctionUI()
 	AuctionFrame:StripTextures(true)
 	S:HandleFrame(AuctionFrame, true, nil, 10)
 
-	local Buttons = {
+	for _, Button in next, {
 		_G.BrowseSearchButton,
 		_G.BrowseBidButton,
 		_G.BrowseBuyoutButton,
@@ -44,18 +43,29 @@ function S:Blizzard_AuctionUI()
 		_G.AuctionsStackSizeMaxButton,
 		_G.AuctionsNumStacksMaxButton,
 		_G.AuctionsCloseButton
-	}
+	} do
+		S:HandleButton(Button, true)
+	end
 
-	local CheckBoxes = {
+	for i, CheckBox in next, {
 		_G.SortByBidPriceButton,
 		_G.SortByBuyoutPriceButton,
 		_G.SortByTotalPriceButton,
 		_G.SortByUnitPriceButton,
 		_G.IsUsableCheckButton,
 		_G.ShowOnPlayerCheckButton
-	}
+	} do
+		S:HandleCheckBox(CheckBox)
 
-	local EditBoxes = {
+		if i <= 4 then
+			CheckBox:Size(24)
+			CheckBox:PointXY(nil, (i == 1 and -40) or (i == 3 and -5) or 3)
+		else
+			CheckBox.Text:Point('LEFT', CheckBox, 'Right', 2, 0)
+		end
+	end
+
+	for _, EditBox in next, {
 		_G.BrowseName,
 		_G.BrowseMinLevel,
 		_G.BrowseMaxLevel,
@@ -73,42 +83,7 @@ function S:Blizzard_AuctionUI()
 		_G.BuyoutPriceGold,
 		_G.BuyoutPriceCopper,
 		_G.BuyoutPriceSilver
-	}
-
-	local SortTabs = {
-		_G.BrowseQualitySort,
-		_G.BrowseLevelSort,
-		_G.BrowseDurationSort,
-		_G.BrowseHighBidderSort,
-		_G.BrowseCurrentBidSort,
-		_G.BidQualitySort,
-		_G.BidLevelSort,
-		_G.BidDurationSort,
-		_G.BidBuyoutSort,
-		_G.BidStatusSort,
-		_G.BidBidSort,
-		_G.AuctionsQualitySort,
-		_G.AuctionsDurationSort,
-		_G.AuctionsHighBidderSort,
-		_G.AuctionsBidSort,
-	}
-
-	for _, Button in pairs(Buttons) do
-		S:HandleButton(Button, true)
-	end
-
-	for i, CheckBox in pairs(CheckBoxes) do
-		S:HandleCheckBox(CheckBox)
-
-		if i <= 4 then
-			CheckBox:Size(24)
-			CheckBox:PointXY(nil, (i == 1 and -40) or (i == 3 and -5) or 3)
-		elseif CheckBox.Text then
-			CheckBox.Text:Point('LEFT', CheckBox, 'Right', 2, 0)
-		end
-	end
-
-	for _, EditBox in pairs(EditBoxes) do
+	} do
 		S:HandleEditBox(EditBox)
 		EditBox:SetTextInsets(1, 1, -1, 1)
 	end
@@ -129,36 +104,55 @@ function S:Blizzard_AuctionUI()
 	_G.AuctionFrameTab2:Point('TOPLEFT', _G.AuctionFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.AuctionFrameTab3:Point('TOPLEFT', _G.AuctionFrameTab2, 'TOPRIGHT', -19, 0)
 
-	for _, Tab in pairs(SortTabs) do
+	for _, Tab in next, {
+		_G.BrowseQualitySort,
+		_G.BrowseLevelSort,
+		_G.BrowseDurationSort,
+		_G.BrowseHighBidderSort,
+		_G.BrowseCurrentBidSort,
+		_G.BidQualitySort,
+		_G.BidLevelSort,
+		_G.BidDurationSort,
+		_G.BidBuyoutSort,
+		_G.BidStatusSort,
+		_G.BidBidSort,
+		_G.AuctionsQualitySort,
+		_G.AuctionsDurationSort,
+		_G.AuctionsHighBidderSort,
+		_G.AuctionsBidSort,
+	} do
 		Tab:StripTextures()
 		Tab:SetNormalTexture([[Interface\Buttons\UI-SortArrow]])
 		Tab:StyleButton()
 	end
 
-	for _, Filter in pairs(_G.AuctionFrameBrowse.FilterButtons) do
+	local AuctionFrameBrowse = _G.AuctionFrameBrowse
+	for _, Filter in next, AuctionFrameBrowse.FilterButtons do
 		Filter:StripTextures()
 		Filter:StyleButton()
 
-		Filter = Filter:GetName()
-		_G[Filter..'Lines']:SetAlpha(0)
-		_G[Filter..'Lines'].SetAlpha = E.noop
-		_G[Filter..'NormalTexture']:SetAlpha(0)
-		_G[Filter..'NormalTexture'].SetAlpha = E.noop
+		local name = Filter:GetName()
+		local lines = _G[name..'Lines']
+		lines:SetAlpha(0)
+		lines.SetAlpha = E.noop
+
+		local normal = Filter:GetNormalTexture()
+		normal:SetAlpha(0)
+		normal.SetAlpha = E.noop
 	end
 
-	_G.BrowsePriceOptionsFrame:StripTextures()
-	_G.BrowsePriceOptionsFrame:SetTemplate('Transparent')
+	local BrowsePriceOptionsFrame = _G.BrowsePriceOptionsFrame
+	BrowsePriceOptionsFrame:StripTextures()
+	BrowsePriceOptionsFrame:SetTemplate('Transparent')
 
-	for _, child in next, { _G.BrowsePriceOptionsFrame:GetChildren() } do
-		if child:IsObjectType('Button') then
-			S:HandleButton(child)
-		end
-	end
+	local _, _, _, _, doneButton = BrowsePriceOptionsFrame:GetChildren() -- SortByBidPrice, SortByBuyoutPrice, SortByTotalPrice, SortByUnitPrice, Done
+	S:HandleButton(doneButton)
 
-	_G.BrowsePriceOptionsButtonFrame:ClearAllPoints()
-	_G.BrowsePriceOptionsButtonFrame:Point('TOPRIGHT', _G.BrowseCurrentBidSort, 'TOPRIGHT', 6, 10)
-	S:HandleButton(_G.BrowsePriceOptionsButtonFrame.Button, nil, nil, true)
-	_G.BrowsePriceOptionsButtonFrame.Button.Icon:Size(24)
+	local BrowsePriceOptionsButtonFrame = _G.BrowsePriceOptionsButtonFrame
+	BrowsePriceOptionsButtonFrame:ClearAllPoints()
+	BrowsePriceOptionsButtonFrame:Point('TOPRIGHT', _G.BrowseCurrentBidSort, 'TOPRIGHT', 6, 10)
+	S:HandleButton(BrowsePriceOptionsButtonFrame.Button, nil, nil, true)
+	BrowsePriceOptionsButtonFrame.Button.Icon:Size(24)
 
 	_G.BrowseLevelHyphen:Point('RIGHT', 13, 0)
 
@@ -184,9 +178,10 @@ function S:Blizzard_AuctionUI()
 
 	-- Bid Frame
 	_G.BidTitle:ClearAllPoints()
-	_G.BidTitle:Point('TOP', _G.AuctionFrame, 'TOP', 0, -5)
+	_G.BidTitle:Point('TOP', AuctionFrame, 'TOP', 0, -5)
 
-	_G.BidScrollFrame:StripTextures()
+	local BidScrollFrame = _G.BidScrollFrame
+	BidScrollFrame:StripTextures()
 
 	_G.BidBidText:ClearAllPoints()
 	_G.BidBidText:Point('RIGHT', _G.BidBidButton, 'LEFT', -270, 2)
@@ -197,21 +192,24 @@ function S:Blizzard_AuctionUI()
 
 	_G.BidBidPrice:Point('BOTTOM', 25, 10)
 
-	S:HandleScrollBar(_G.BidScrollFrameScrollBar)
-	_G.BidScrollFrameScrollBar:ClearAllPoints()
-	_G.BidScrollFrameScrollBar:Point('TOPRIGHT', _G.BidScrollFrame, 'TOPRIGHT', 23, -18)
-	_G.BidScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.BidScrollFrame, 'BOTTOMRIGHT', 0, 16)
+	local BidScrollFrameScrollBar = _G.BidScrollFrameScrollBar
+	S:HandleScrollBar(BidScrollFrameScrollBar)
+	BidScrollFrameScrollBar:ClearAllPoints()
+	BidScrollFrameScrollBar:Point('TOPRIGHT', BidScrollFrame, 'TOPRIGHT', 23, -18)
+	BidScrollFrameScrollBar:Point('BOTTOMRIGHT', BidScrollFrame, 'BOTTOMRIGHT', 0, 16)
 
 	-- Auctions Frame
 	_G.AuctionsTitle:ClearAllPoints()
 	_G.AuctionsTitle:Point('TOP', AuctionFrame, 'TOP', 0, -5)
 
-	_G.AuctionsScrollFrame:StripTextures()
+	local AuctionsScrollFrame = _G.AuctionsScrollFrame
+	AuctionsScrollFrame:StripTextures()
 
-	S:HandleScrollBar(_G.AuctionsScrollFrameScrollBar)
-	_G.AuctionsScrollFrameScrollBar:ClearAllPoints()
-	_G.AuctionsScrollFrameScrollBar:Point('TOPRIGHT', _G.AuctionsScrollFrame, 'TOPRIGHT', 23, -20)
-	_G.AuctionsScrollFrameScrollBar:Point('BOTTOMRIGHT', _G.AuctionsScrollFrame, 'BOTTOMRIGHT', 0, 18)
+	local AuctionsScrollFrameScrollBar = _G.AuctionsScrollFrameScrollBar
+	S:HandleScrollBar(AuctionsScrollFrameScrollBar)
+	AuctionsScrollFrameScrollBar:ClearAllPoints()
+	AuctionsScrollFrameScrollBar:Point('TOPRIGHT', AuctionsScrollFrame, 'TOPRIGHT', 23, -20)
+	AuctionsScrollFrameScrollBar:Point('BOTTOMRIGHT', AuctionsScrollFrame, 'BOTTOMRIGHT', 0, 18)
 
 	_G.AuctionsCloseButton:Point('BOTTOMRIGHT', 66, 6)
 	_G.AuctionsCancelAuctionButton:Point('RIGHT', _G.AuctionsCloseButton, 'LEFT', -4, 0)
@@ -219,11 +217,11 @@ function S:Blizzard_AuctionUI()
 	_G.AuctionsStackSizeEntry.backdrop:SetAllPoints()
 	_G.AuctionsNumStacksEntry.backdrop:SetAllPoints()
 
-	_G.AuctionsItemButton:StripTextures()
-	_G.AuctionsItemButton:SetTemplate(nil, true)
-	_G.AuctionsItemButton:StyleButton()
-
-	_G.AuctionsItemButton:HookScript('OnEvent', AuctionsItemButton_OnEvent)
+	local AuctionsItemButton = _G.AuctionsItemButton
+	AuctionsItemButton:StripTextures()
+	AuctionsItemButton:SetTemplate(nil, true)
+	AuctionsItemButton:StyleButton()
+	AuctionsItemButton:HookScript('OnEvent', AuctionsItemButton_OnEvent)
 
 	S:HandleRadioButton(_G.AuctionsShortAuctionButton)
 	S:HandleRadioButton(_G.AuctionsMediumAuctionButton)
@@ -238,42 +236,41 @@ function S:Blizzard_AuctionUI()
 	local AuctionProgressFrameCancelButton = _G.AuctionProgressFrameCancelButton
 	S:HandleButton(AuctionProgressFrameCancelButton)
 	AuctionProgressFrameCancelButton:SetHitRectInsets(0, 0, 0, 0)
-	AuctionProgressFrameCancelButton:GetNormalTexture():SetTexture(E.Media.Textures.Close)
-	AuctionProgressFrameCancelButton:GetNormalTexture():SetInside()
+	local cancelNormal = AuctionProgressFrameCancelButton:GetNormalTexture()
+	cancelNormal:SetTexture(E.Media.Textures.Close)
+	cancelNormal:SetInside()
 	AuctionProgressFrameCancelButton:Size(28)
 	AuctionProgressFrameCancelButton:Point('LEFT', _G.AuctionProgressBar, 'RIGHT', 8, 0)
 
-	for Frame, NumButtons in pairs({
-		Browse = _G.NUM_BROWSE_TO_DISPLAY,
-		Auctions = _G.NUM_AUCTIONS_TO_DISPLAY,
-		Bid = _G.NUM_BIDS_TO_DISPLAY
-	}) do
-		for i = 1, NumButtons do
-			local Button = _G[Frame..'Button'..i]
-			local ItemButton = _G[Frame..'Button'..i..'Item']
-			local Texture = _G[Frame..'Button'..i..'ItemIconTexture']
-			local Name = _G[Frame..'Button'..i..'Name']
+	for frame, numButtons in next, { Browse = _G.NUM_BROWSE_TO_DISPLAY, Auctions = _G.NUM_AUCTIONS_TO_DISPLAY, Bid = _G.NUM_BIDS_TO_DISPLAY } do
+		for i = 1, numButtons do
+			local button = _G[frame..'Button'..i]
+			local itemButton = _G[frame..'Button'..i..'Item']
+			local texture = _G[frame..'Button'..i..'ItemIconTexture']
 
-			ItemButton:SetTemplate()
-			ItemButton:StyleButton()
-			ItemButton.IconBorder:SetAlpha(0)
+			itemButton:SetTemplate()
+			itemButton:StyleButton()
+			itemButton.IconBorder:SetAlpha(0)
 
-			Button:StripTextures()
-			Button:SetHighlightTexture(E.media.blankTex)
-			ItemButton:GetNormalTexture():SetTexture()
+			button:StripTextures()
+			button:SetHighlightTexture(E.media.blankTex)
 
-			local highlight = Button:GetHighlightTexture()
+			local normal = itemButton:GetNormalTexture()
+			normal:SetTexture()
+
+			local highlight = button:GetHighlightTexture()
 			highlight:SetVertexColor(1, 1, 1, .2)
-			highlight:Point('TOPLEFT', ItemButton, 'TOPRIGHT', 2, 0)
-			highlight:Point('BOTTOMRIGHT', Button, 'BOTTOMRIGHT', -2, 5)
+			highlight:Point('TOPLEFT', itemButton, 'TOPRIGHT', 2, 0)
+			highlight:Point('BOTTOMRIGHT', button, 'BOTTOMRIGHT', -2, 5)
 
-			S:HandleIcon(Texture)
-			Texture:SetInside()
+			S:HandleIcon(texture)
+			texture:SetInside()
 		end
 	end
 
 	-- Custom Backdrops
-	for _, Frame in pairs({_G.AuctionFrameBrowse, _G.AuctionFrameAuctions}) do
+	local AuctionFrameAuctions = _G.AuctionFrameAuctions
+	for _, Frame in next, { AuctionFrameBrowse, AuctionFrameAuctions } do
 		Frame.LeftBackground = CreateFrame('Frame', nil, Frame)
 		Frame.LeftBackground:SetTemplate('Transparent')
 		Frame.LeftBackground:OffsetFrameLevel(-1, Frame)
@@ -283,14 +280,12 @@ function S:Blizzard_AuctionUI()
 		Frame.RightBackground:OffsetFrameLevel(-1, Frame)
 	end
 
-	local AuctionFrameAuctions = _G.AuctionFrameAuctions
 	AuctionFrameAuctions.LeftBackground:Point('TOPLEFT', 15, -72)
 	AuctionFrameAuctions.LeftBackground:Point('BOTTOMRIGHT', -545, 34)
 
 	AuctionFrameAuctions.RightBackground:Point('TOPLEFT', AuctionFrameAuctions.LeftBackground, 'TOPRIGHT', 3, 0)
 	AuctionFrameAuctions.RightBackground:Point('BOTTOMRIGHT', AuctionFrame, -8, 34)
 
-	local AuctionFrameBrowse = _G.AuctionFrameBrowse
 	AuctionFrameBrowse.LeftBackground:Point('TOPLEFT', 20, -103)
 	AuctionFrameBrowse.LeftBackground:Point('BOTTOMRIGHT', -575, 34)
 
