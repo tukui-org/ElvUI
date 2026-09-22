@@ -270,7 +270,7 @@ local function ListCategoryAddButton(btn, btnIndex, categoryID, filters)
 	end
 end
 
-function S:LookingForGroupFrames()
+function S:Blizzard_GroupFinder()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
 
 	local PVEFrame = _G.PVEFrame
@@ -589,4 +589,4 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGListCategorySelection_AddButton', ListCategoryAddButton)
 end
 
-S:AddCallback('LookingForGroupFrames')
+S:AddCallbackForAddon('Blizzard_GroupFinder')

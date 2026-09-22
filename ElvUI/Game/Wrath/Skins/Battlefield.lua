@@ -22,4 +22,4 @@ function S:SkinBattlefield()
 	_G.BattlefieldFrameCloseButton:Point('TOPRIGHT', -30, -8) -- matches PVPParentFrameCloseButton
 end
 
-S:AddCallback('SkinBattlefield')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinBattlefield')

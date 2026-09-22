@@ -32,4 +32,4 @@ function S:PetitionFrame()
 	_G.PetitionFrameRenameButton:Point('RIGHT', _G.PetitionFrameCancelButton, 'LEFT', -3, 0)
 end
 
-S:AddCallback('PetitionFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetitionFrame')

@@ -23,4 +23,4 @@ function S:GuildInviteFrame()
 	_G.GuildInviteFrameWarningText:Kill()
 end
 
-S:AddCallback('GuildInviteFrame')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'GuildInviteFrame')

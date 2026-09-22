@@ -16,4 +16,4 @@ function S:TaxiFrame()
 	S:HandleCloseButton(_G.TaxiCloseButton, TaxiFrame.backdrop)
 end
 
-S:AddCallback('TaxiFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TaxiFrame')

@@ -405,4 +405,4 @@ function S:BlizzardQuestFrames()
 	normal:Size(16)
 end
 
-S:AddCallback('BlizzardQuestFrames')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames')

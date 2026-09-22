@@ -93,4 +93,4 @@ function S:AlertSystem()
 	hooksecurefunc(_G.StorePurchaseAlertSystem, 'setUpFunction', SkinStorePurchaseAlert)
 end
 
-S:AddCallback('AlertSystem')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'AlertSystem')

@@ -398,4 +398,4 @@ function S:FriendsFrame()
 	HandleGuild()
 end
 
-S:AddCallback('FriendsFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'FriendsFrame')

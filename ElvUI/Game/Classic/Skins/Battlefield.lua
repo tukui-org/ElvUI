@@ -18,4 +18,4 @@ function S:SkinBattlefield()
 	S:HandleButton(_G.BattlefieldFrameGroupJoinButton)
 end
 
-S:AddCallback('SkinBattlefield')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinBattlefield')

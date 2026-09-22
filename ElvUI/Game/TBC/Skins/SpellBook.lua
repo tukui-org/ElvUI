@@ -133,4 +133,4 @@ function S:SpellBookFrame()
 	_G.SpellBookSkillLineTab1:Point('TOPLEFT', _G.SpellBookSideTabsFrame, 'TOPRIGHT', -31, -70)
 end
 
-S:AddCallback('SpellBookFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SpellBookFrame')

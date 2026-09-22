@@ -387,4 +387,4 @@ function S:BlizzardQuestFrames()
 	_G.QuestLogSkillHighlight:SetAlpha(0.3)
 end
 
-S:AddCallback('BlizzardQuestFrames')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames')

@@ -889,4 +889,4 @@ function S:AlertSystem()
 	frame.backdrop:Point('BOTTOMRIGHT', lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
 end
 
-S:AddCallback('AlertSystem')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'AlertSystem')

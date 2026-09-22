@@ -449,4 +449,4 @@ function S:BlizzardQuestFrames()
 	showMapButton.Text:Point('CENTER')
 end
 
-S:AddCallback('BlizzardQuestFrames')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames')

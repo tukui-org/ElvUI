@@ -240,4 +240,4 @@ function S:LootFrame()
 	hooksecurefunc(BonusSpecIcon, 'Show', SpecIconShow)
 end
 
-S:AddCallback('LootFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame')

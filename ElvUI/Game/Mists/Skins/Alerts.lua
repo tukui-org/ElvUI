@@ -497,4 +497,4 @@ function S:AlertSystem()
 	hooksecurefunc(_G.NewToyAlertSystem, 'setUpFunction', SkinNewPetAlert)
 end
 
-S:AddCallback('AlertSystem')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'AlertSystem')

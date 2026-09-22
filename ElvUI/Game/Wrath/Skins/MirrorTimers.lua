@@ -48,4 +48,4 @@ function S:MirrorTimers()
 	end
 end
 
-S:AddCallback('MirrorTimers')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'MirrorTimers')

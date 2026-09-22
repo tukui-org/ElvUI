@@ -25,4 +25,4 @@ function S:SkinTutorial()
 	S:HandleButton(_G.TutorialFrameOkayButton)
 end
 
-S:AddCallback('SkinTutorial')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinTutorial')

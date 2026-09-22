@@ -98,4 +98,4 @@ function S:DressUpFrame()
 	hooksecurefunc(DressUpFrame, 'ConfigureSize', DressUpConfigureSize)
 end
 
-S:AddCallback('DressUpFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'DressUpFrame')

@@ -55,4 +55,4 @@ function S:TabardFrame()
 	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, 'SetPoint', RotateRightButtonSetPoint)
 end
 
-S:AddCallback('TabardFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TabardFrame')

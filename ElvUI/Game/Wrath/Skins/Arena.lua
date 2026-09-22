@@ -47,4 +47,4 @@ function S:SkinArena()
 	end
 end
 
-S:AddCallback('SkinArena')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArena')
