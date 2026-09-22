@@ -76,11 +76,9 @@ function S:MailFrame()
 
 	S:HandleNextPrevButton(_G.InboxFrame.PrevPageButton, nil, nil, true)
 	_G.InboxFrame.PrevPageButton:StripTexts()
-	_G.InboxFrame.PrevPageButton:Point('BOTTOMLEFT', 30, 100)
 
 	S:HandleNextPrevButton(_G.InboxFrame.NextPageButton, nil, nil, true)
 	_G.InboxFrame.NextPageButton:StripTexts()
-	_G.InboxFrame.NextPageButton:Point('BOTTOMRIGHT', -80, 100)
 
 	_G.MailFrameTab1:StripTextures()
 	_G.MailFrameTab2:StripTextures()
