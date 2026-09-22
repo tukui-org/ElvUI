@@ -642,7 +642,7 @@ function TT:SetUnitInfo(tt, unit, data)
 	end
 
 	if not isInCombat and not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
-		if E.Modern then
+		if E.Retail then
 			TT:AddMountModernInfo(tt, unit)
 		else
 			TT:AddMountLegacyInfo(tt, unit)
