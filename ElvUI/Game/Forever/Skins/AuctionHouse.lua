@@ -111,6 +111,11 @@ local function HandleBidFrame(frame)
 	S:HandleEditBox(BidAmount.silver)
 	S:HandleEditBox(BidAmount.copper)
 
+	-- both bid frames name their money boxes BidAmountGold and so on, so HandleEditBox only strips whichever one holds the global
+	BidAmount.gold:DisableDrawLayer('BACKGROUND')
+	BidAmount.silver:DisableDrawLayer('BACKGROUND')
+	BidAmount.copper:DisableDrawLayer('BACKGROUND')
+
 	BidAmount.gold:ClearAllPoints()
 	BidAmount.gold:Point('LEFT')
 
