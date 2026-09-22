@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-function S:PVPReadyDialog()
+function S:Blizzard_LFGUtil()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
 	S:HandleCloseButton(_G.PVPReadyDialogCloseButton)
@@ -28,4 +28,4 @@ function S:PVPReadyDialog()
 	end)
 end
 
-S:AddCallback('PVPReadyDialog')
+S:AddCallbackForAddon('Blizzard_LFGUtil')

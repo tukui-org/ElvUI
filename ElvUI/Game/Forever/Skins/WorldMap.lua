@@ -218,4 +218,4 @@ function S:WorldMapFrame()
 	hooksecurefunc('QuestLogQuests_Update', QuestLogQuests)
 end
 
-S:AddCallback('WorldMapFrame')
+S:AddCallbackForAddon('Blizzard_WorldMap', 'WorldMapFrame')

@@ -17,4 +17,4 @@ function S:TutorialFrame()
 	S:HandleNextPrevButton(_G.TutorialFrameNextButton, 'right')
 end
 
-S:AddCallback('TutorialFrame')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'TutorialFrame')

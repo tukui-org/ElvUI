@@ -48,4 +48,4 @@ function S:LossOfControlFrame()
 	hooksecurefunc(LossOfControlFrame, 'SetUpDisplay', SetupDisplay)
 end
 
-S:AddCallback('LossOfControlFrame')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'LossOfControlFrame')

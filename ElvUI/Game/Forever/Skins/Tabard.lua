@@ -72,4 +72,4 @@ function S:TabardFrame()
 	end)
 end
 
-S:AddCallback('TabardFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TabardFrame')

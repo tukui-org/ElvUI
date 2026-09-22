@@ -166,4 +166,4 @@ function S:LootFrame()
 	hooksecurefunc('MasterLooterFrame_Show', MasterLooterShow)
 end
 
-S:AddCallback('LootFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame')

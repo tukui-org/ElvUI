@@ -70,4 +70,4 @@ function S:TradeFrame()
 	_G.TradeHighlightRecipientEnchantMiddle:SetColorTexture(0, 1, 0, 0.2)
 end
 
-S:AddCallback('TradeFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TradeFrame')

@@ -64,7 +64,7 @@ local function Skin_InboxItems()
 	end
 end
 
-function S:MailFrame()
+function S:Blizzard_MailFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mail) then return end
 
 	local MailFrame = _G.MailFrame
@@ -176,4 +176,4 @@ function S:MailFrame()
 	_G.SendMailMailButton:Point('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
 end
 
-S:AddCallback('MailFrame')
+S:AddCallbackForAddon('Blizzard_MailFrame')

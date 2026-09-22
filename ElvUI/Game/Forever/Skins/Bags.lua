@@ -326,4 +326,4 @@ function S:ContainerFrame()
 	SkinAllBags()
 end
 
-S:AddCallback('ContainerFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'ContainerFrame')

@@ -171,4 +171,4 @@ function S:MerchantFrame()
 	hooksecurefunc(_G.MerchantBuyBackItemItemButton, 'SetItemButtonAnchorPoint', SetItemButtonAnchorPoint)
 end
 
-S:AddCallback('MerchantFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MerchantFrame')

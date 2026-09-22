@@ -55,7 +55,7 @@ local function HandleDialogs()
 	end
 end
 
-function S:EditorManagerFrame()
+function S:Blizzard_EditMode()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.editor) then return end
 
 	-- Main Window
@@ -158,4 +158,4 @@ function S:EditorManagerFrame()
 	HandleDialogs()
 end
 
-S:AddCallback('EditorManagerFrame')
+S:AddCallbackForAddon('Blizzard_EditMode')
