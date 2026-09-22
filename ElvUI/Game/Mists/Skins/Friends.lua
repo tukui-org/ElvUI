@@ -377,6 +377,9 @@ function S:FriendsFrame()
 	_G.WhoFrameListInset:StripTextures()
 	_G.WhoFrameListInset.NineSlice:Hide()
 
+	_G.WhoListScrollFrame:StripTextures()
+	S:HandleScrollBar(_G.WhoListScrollFrameScrollBar)
+
 	S:HandleBlizzardRegions(_G.WhoFrameEditBox)
 	_G.WhoFrameEditBox:CreateBackdrop()
 	_G.WhoFrameEditBox.backdrop:Point('TOPLEFT', _G.WhoFrameEditBox.Left)
