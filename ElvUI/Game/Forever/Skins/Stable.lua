@@ -45,6 +45,11 @@ function S:Blizzard_StableUI()
 	S:HandleStatusBar(expBar.StatusBar)
 	expBar.overlay:StripTextures()
 
+	local loyaltyLevel = PetStableFrame.loyaltyLevel
+	loyaltyLevel:StripTextures()
+	loyaltyLevel:CreateBackdrop()
+	loyaltyLevel:Size(24)
+
 	_G.PetStableMoneyFrame.Border:StripTextures()
 end
 
