@@ -17,6 +17,84 @@ local StripAllTextures = {
 	'RaidGroup8'
 }
 
+local function RaidPulloutGetFrame()
+	for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
+		local backdrop = _G['RaidPullout'..i..'MenuBackdrop']
+		backdrop.NineSlice:SetTemplate('Transparent')
+	end
+end
+
+local bars = { 'HealthBar', 'ManaBar', 'Target', 'TargetTarget' }
+local function RaidPulloutUpdate(pullOutFrame)
+	local frameName = pullOutFrame:GetName()
+	for i = 1, pullOutFrame.numPulloutButtons do
+		local name = frameName..'Button'..i
+		local object = _G[name]
+		if not object.backdrop then
+			for _, v in ipairs(bars) do
+				local bar = _G[name..v]
+				bar:StripTextures()
+				bar:SetStatusBarTexture(E.media.normTex)
+			end
+
+			local manabar = object.manabar
+			manabar:Point('TOP', object.healthbar, 'BOTTOM', 0, 0)
+
+			local target = _G[name..'Target']
+			target:Point('TOP', manabar, 'BOTTOM', 0, -1)
+
+			object:CreateBackdrop('Transparent')
+			object.backdrop:NudgePoint(nil, -10)
+			object.backdrop:NudgePoint(nil, 1, nil, 2)
+		end
+
+		local targettarget = _G[name..'TargetTargetFrame']
+		targettarget.NineSlice:SetTemplate('Transparent')
+	end
+end
+
+local function HandleClassButtons()
+	local prevButton
+	for index = 1, 13 do -- 10 classes, pets, main tank, main assist
+		local button = _G['RaidClassButton'..index]
+		local icon = _G['RaidClassButton'..index..'IconTexture']
+		local count = _G['RaidClassButton'..index..'Count']
+
+		button:StripTextures()
+		button:SetTemplate()
+		button:Size(22)
+
+		button:ClearAllPoints()
+		if index == 1 then
+			button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -3, -48)
+		elseif index == 11 then
+			button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
+		else
+			button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
+		end
+		prevButton = button
+
+		icon:SetInside()
+
+		if index == 11 then
+			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
+			icon:SetTexCoords()
+		elseif index == 12 then
+			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
+			icon:SetTexCoords()
+		elseif index == 13 then
+			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
+			icon:SetTexCoords()
+		else
+			icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
+			icon:SetTexCoord(E:GetClassCoords(CLASS_SORT_ORDER[index], 0.02))
+		end
+
+		count:FontTemplate(nil, 12, 'OUTLINE')
+		count:SetTextHeight(12) -- fixes blur
+	end
+end
+
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
@@ -41,83 +119,10 @@ function S:Blizzard_RaidUI()
 		end
 	end
 
-	do -- Classes on the right side of the Raid Control
-		local prevButton
-		for index = 1, 13 do -- 10 classes, pets, main tank, main assist
-			local button = _G['RaidClassButton'..index]
-			local icon = _G['RaidClassButton'..index..'IconTexture']
-			local count = _G['RaidClassButton'..index..'Count']
+	HandleClassButtons() -- Classes on the right side of the Raid Control
 
-			button:StripTextures()
-			button:SetTemplate()
-			button:Size(22)
-
-			button:ClearAllPoints()
-			if index == 1 then
-				button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -3, -48)
-			elseif index == 11 then
-				button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
-			else
-				button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
-			end
-			prevButton = button
-
-			icon:SetInside()
-
-			if index == 11 then
-				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
-				icon:SetTexCoords()
-			elseif index == 12 then
-				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
-				icon:SetTexCoords()
-			elseif index == 13 then
-				icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
-				icon:SetTexCoords()
-			else
-				icon:SetTexture([[Interface\WorldStateFrame\Icons-Classes]])
-				icon:SetTexCoord(E:GetClassCoords(CLASS_SORT_ORDER[index], 0.02))
-			end
-
-			count:FontTemplate(nil, 12, 'OUTLINE')
-			count:SetTextHeight(12) -- fixes blur
-		end
-	end
-
-	hooksecurefunc('RaidPullout_GetFrame', function()
-		for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
-			local backdrop = _G['RaidPullout'..i..'MenuBackdrop']
-			backdrop.NineSlice:SetTemplate('Transparent')
-		end
-	end)
-
-	local bars = { 'HealthBar', 'ManaBar', 'Target', 'TargetTarget' }
-	hooksecurefunc('RaidPullout_Update', function(pullOutFrame)
-		local frameName = pullOutFrame:GetName()
-		for i = 1, pullOutFrame.numPulloutButtons do
-			local name = frameName..'Button'..i
-			local object = _G[name]
-			if not object.backdrop then
-				for _, v in ipairs(bars) do
-					local bar = _G[name..v]
-					bar:StripTextures()
-					bar:SetStatusBarTexture(E.media.normTex)
-				end
-
-				local manabar = object.manabar
-				manabar:Point('TOP', object.healthbar, 'BOTTOM', 0, 0)
-
-				local target = _G[name..'Target']
-				target:Point('TOP', manabar, 'BOTTOM', 0, -1)
-
-				object:CreateBackdrop('Transparent')
-				object.backdrop:NudgePoint(nil, -10)
-				object.backdrop:NudgePoint(nil, 1, nil, 2)
-			end
-
-			local targettarget = _G[name..'TargetTargetFrame']
-			targettarget.NineSlice:SetTemplate('Transparent')
-		end
-	end)
+	hooksecurefunc('RaidPullout_GetFrame', RaidPulloutGetFrame)
+	hooksecurefunc('RaidPullout_Update', RaidPulloutUpdate)
 end
 
 S:AddCallbackForAddon('Blizzard_RaidUI')

@@ -38,6 +38,33 @@ local function GameMenuInitButtons(menu)
 	end
 end
 
+local function UpdateLettboxForAspectRatio(frame)
+	frame:SetScale(E.uiscale)
+
+	local closeDialog = frame.closeDialog
+	if not closeDialog.template then
+		closeDialog:StripTextures()
+		closeDialog:SetTemplate('Transparent')
+
+		local dialogName = closeDialog:GetName()
+		S:HandleButton(_G[dialogName..'ConfirmButton'], nil, nil, nil, true)
+		S:HandleButton(_G[dialogName..'ResumeButton'], nil, nil, nil, true)
+	end
+end
+
+local function ShowCloseDialog(frame)
+	frame:SetScale(E.uiscale)
+
+	local closeDialog = frame.CloseDialog
+	if not closeDialog.template then
+		closeDialog:StripTextures()
+		closeDialog:SetTemplate('Transparent')
+
+		S:HandleButton(closeDialog.Buttons.ConfirmButton, nil, nil, nil, true)
+		S:HandleButton(closeDialog.Buttons.ResumeButton, nil, nil, nil, true)
+	end
+end
+
 function S:BlizzardMiscFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
 
@@ -48,7 +75,6 @@ function S:BlizzardMiscFrames()
 	end
 
 	-- ReadyCheckFrame
-	-- Here we reskin all 'normal' buttons
 	S:HandleButton(_G.ReadyCheckFrameYesButton)
 	S:HandleButton(_G.ReadyCheckFrameNoButton)
 
@@ -91,33 +117,8 @@ function S:BlizzardMiscFrames()
 	-- since we cant hook `CinematicFrame_OnShow` or `CinematicFrame_OnEvent` directly
 	-- we can just hook onto this function so that we can get the correct `self`
 	-- this is called through `CinematicFrame_OnShow` so the result would still happen where we want
-	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', function(frame)
-		frame:SetScale(E.uiscale)
-
-		local closeDialog = frame.closeDialog
-		if not closeDialog.template then
-			closeDialog:StripTextures()
-			closeDialog:SetTemplate('Transparent')
-
-			local dialogName = closeDialog:GetName()
-			S:HandleButton(_G[dialogName..'ConfirmButton'], nil, nil, nil, true)
-			S:HandleButton(_G[dialogName..'ResumeButton'], nil, nil, nil, true)
-		end
-	end)
-
-	local MovieFrame = _G.MovieFrame
-	hooksecurefunc(MovieFrame, 'ShowCloseDialog', function(frame)
-		frame:SetScale(E.uiscale)
-
-		local closeDialog = frame.CloseDialog
-		if not closeDialog.template then
-			closeDialog:StripTextures()
-			closeDialog:SetTemplate('Transparent')
-
-			S:HandleButton(closeDialog.Buttons.ConfirmButton, nil, nil, nil, true)
-			S:HandleButton(closeDialog.Buttons.ResumeButton, nil, nil, nil, true)
-		end
-	end)
+	hooksecurefunc('CinematicFrame_UpdateLettboxForAspectRatio', UpdateLettboxForAspectRatio)
+	hooksecurefunc(_G.MovieFrame, 'ShowCloseDialog', ShowCloseDialog)
 
 	-- LFD Role Picker frame
 	_G.LFDRoleCheckPopup:StripTextures()

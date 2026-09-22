@@ -23,12 +23,12 @@ function S:Blizzard_GMChatUI()
 	_G.GMChatFrameEditBoxLeft:SetAlpha(0)
 	_G.GMChatFrameEditBoxMid:SetAlpha(0)
 
-	local lang = _G.GMChatFrameEditBoxLanguage
-	local langTexture = lang:GetNormalTexture()
+	local langEditbox = _G.GMChatFrameEditBoxLanguage
+	local langTexture = langEditbox:GetNormalTexture()
 	langTexture:SetAlpha(0)
-	lang:ClearAllPoints()
-	lang:Point('TOPLEFT', editbox, 'TOPRIGHT', 3, 0)
-	lang:Point('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', 28, 0)
+	langEditbox:ClearAllPoints()
+	langEditbox:Point('TOPLEFT', editbox, 'TOPRIGHT', 3, 0)
+	langEditbox:Point('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', 28, 0)
 
 	local tab = _G.GMChatTab
 	tab:StripTextures()
