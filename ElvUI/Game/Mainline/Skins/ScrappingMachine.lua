@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
 local unpack = unpack
 
 function S:Blizzard_ScrappingMachineUI()
@@ -17,8 +16,9 @@ function S:Blizzard_ScrappingMachineUI()
 	ItemSlots:CreateBackdrop('Transparent')
 	ItemSlots.backdrop:SetOutside(nil, 30, 10)
 
-	for _, button in next, { ItemSlots:GetChildren() } do -- the nine slots are pooled in OnLoad
+	for button in ItemSlots.scrapButtons:EnumerateActive() do
 		button:StripTextures()
+
 		S:HandleIcon(button.Icon, true)
 		S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
 
