@@ -81,6 +81,7 @@ local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local GetCoinTextureString = C_CurrencyInfo.GetCoinTextureString
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 
 local TooltipDataLineType = Enum.TooltipDataLineType
 local LINETYPE_SELLPRICE = TooltipDataLineType.SellPrice
@@ -472,35 +473,50 @@ function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
 	end
 end
 
-function TT:AddMountInfo(tt, unit)
+function TT:CheckMountInfo(tt, aura)
+	local mountID = E.MountIDs[aura.spellId]
+	if not mountID then return end
+
+	tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
+
+	local sourceText = E.MountText[mountID]
+	local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
+	if mountText then
+		local sourceModified = gsub(mountText, '|n', '\10')
+		for x in gmatch(sourceModified, '[^\10]+\10?') do
+			local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
+			if left and right then
+				tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+			else
+				tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+			end
+		end
+	end
+
+	return true
+end
+
+function TT:AddMountModernInfo(tt, unit)
+	local index = 1
+	local aura = GetAuraDataByIndex(unit, index, 'HELPFUL')
+	while aura do
+		if E:IsSecretValue(aura.spellId) or TT:CheckMountInfo(tt, aura) then
+			break
+		end
+
+		index = index + 1
+		aura = GetAuraDataByIndex(unit, index, 'HELPFUL')
+	end
+end
+
+function TT:AddMountLegacyInfo(tt, unit)
 	if ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit) then return end
 
 	local unitAuraFiltered = AuraFiltered.HELPFUL[unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		if E:IsSecretValue(aura.spellId) then
+		if E:IsSecretValue(aura.spellId) or TT:CheckMountInfo(tt, aura) then
 			break
-		else
-			local mountID = E.MountIDs[aura.spellId]
-			if mountID then
-				tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
-
-				local sourceText = E.MountText[mountID]
-				local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
-				if mountText then
-					local sourceModified = gsub(mountText, '|n', '\10')
-					for x in gmatch(sourceModified, '[^\10]+\10?') do
-						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
-						if left and right then
-							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
-						else
-							tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
-						end
-					end
-				end
-
-				break
-			end
 		end
 
 		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
@@ -625,9 +641,11 @@ function TT:SetUnitInfo(tt, unit, data)
 		TT:AddRoleInfo(tt, unit)
 	end
 
-	if E.Mists and not isInCombat then
-		if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
-			TT:AddMountInfo(tt, unit)
+	if not isInCombat and not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
+		if E.Modern then
+			TT:AddMountModernInfo(tt, unit)
+		else
+			TT:AddMountLegacyInfo(tt, unit)
 		end
 	end
 
