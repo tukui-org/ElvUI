@@ -207,7 +207,7 @@ local function HandleTabs(arg1)
 	end
 end
 
-local function LoadSkin()
+function S:Blizzard_AuctionHouseUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
 	--[[ Main Frame | TAB 1]]--
@@ -392,4 +392,4 @@ local function LoadSkin()
 	progressBar.IconBackdrop:SetTemplate()
 end
 
-S:AddCallbackForAddon('Blizzard_AuctionHouseUI', 'AuctionHouse', LoadSkin)
+S:AddCallbackForAddon('Blizzard_AuctionHouseUI')
