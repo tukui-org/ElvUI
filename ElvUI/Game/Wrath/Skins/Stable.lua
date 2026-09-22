@@ -18,7 +18,7 @@ local function UpdatePetStable()
 		texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
 	elseif happiness == 2 then
 		texture:SetTexCoord(0.22, 0.345, 0.06, 0.30)
-	elseif happiness == 3 then
+	else
 		texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
 	end
 end
@@ -42,11 +42,11 @@ function S:PetStableFrame()
 	end
 
 	local PetStablePetInfo = _G.PetStablePetInfo
-	local texture = PetStablePetInfo:GetRegions()
-	texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
 	PetStablePetInfo:OffsetFrameLevel(2, _G.PetStableModel)
 	PetStablePetInfo:CreateBackdrop()
 	PetStablePetInfo:Size(24)
+
+	UpdatePetStable()
 
 	hooksecurefunc('PetStable_Update', UpdatePetStable)
 end
