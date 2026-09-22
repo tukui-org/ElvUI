@@ -6,7 +6,7 @@ if not E.ClassicSOD then return end
 local _G = _G
 local next = next
 
-function S:SkinEngravings()
+function S:Blizzard_EngravingUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.engraving) then return end
 
 	local frame = _G.EngravingFrame
@@ -32,4 +32,4 @@ function S:SkinEngravings()
 	end
 end
 
-S:AddCallbackForAddon('Blizzard_EngravingUI', 'SkinEngravings')
+S:AddCallbackForAddon('Blizzard_EngravingUI')

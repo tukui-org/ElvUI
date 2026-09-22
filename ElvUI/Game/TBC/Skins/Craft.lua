@@ -68,7 +68,7 @@ local function SetSelection(id)
 	_G.CraftDetailScrollFrameScrollBar:SetShown(numReagents >= 5) -- Blizzard always shows it, its IsEnabled() == 0 check never matches
 end
 
-function S:SkinCraft()
+function S:Blizzard_CraftUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.craft) then return end
 
 	local CraftFrame = _G.CraftFrame
@@ -149,4 +149,4 @@ function S:SkinCraft()
 	hooksecurefunc('CraftFrame_SetSelection', SetSelection)
 end
 
-S:AddCallbackForAddon('Blizzard_CraftUI', 'SkinCraft')
+S:AddCallbackForAddon('Blizzard_CraftUI')
