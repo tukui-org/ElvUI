@@ -81,6 +81,14 @@ function S:Blizzard_TrainerUI()
 	ClassTrainerStatusBar.rankText:ClearAllPoints()
 	ClassTrainerStatusBar.rankText:Point('CENTER', ClassTrainerStatusBar, 'CENTER')
 	E:RegisterStatusBar(ClassTrainerStatusBar)
+
+	local money = ClassTrainerFrame.money
+	money:CreateBackdrop('Transparent')
+	money.backdrop:SetOutside(money, 4, 4)
+
+	local trainingPoints = ClassTrainerFrame.trainingPoints
+	trainingPoints:CreateBackdrop('Transparent')
+	trainingPoints.backdrop:SetOutside(trainingPoints, 4, 4)
 end
 
 S:AddCallbackForAddon('Blizzard_TrainerUI')
