@@ -92,7 +92,7 @@ local function UpdateMessageCheckboxes(frame)
 	end
 end
 
-function S:BlizzardOptions()
+function S:Blizzard_ChatFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
 
 	--Chat Config
@@ -237,4 +237,4 @@ function S:BlizzardOptions()
 	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', UpdateMessageCheckboxes)
 end
 
-S:AddCallback('BlizzardOptions')
+S:AddCallbackForAddon('Blizzard_ChatFrame')

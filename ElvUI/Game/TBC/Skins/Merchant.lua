@@ -197,4 +197,4 @@ function S:MerchantFrame()
 	hooksecurefunc('MerchantFrame_UpdateBuybackInfo', UpdateBuybackInfo)
 end
 
-S:AddCallback('MerchantFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MerchantFrame')

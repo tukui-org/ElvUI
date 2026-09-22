@@ -82,4 +82,4 @@ function S:SkinArenaRegistrar()
 	S:HandleCloseButton(_G.PVPBannerFrameCloseButton)
 end
 
-S:AddCallback('SkinArenaRegistrar')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArenaRegistrar')

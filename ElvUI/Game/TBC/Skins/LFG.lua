@@ -143,4 +143,4 @@ function S:RolePollPopup()
 end
 
 S:AddCallbackForAddon('Blizzard_GroupFinder_VanillaStyle')
-S:AddCallback('RolePollPopup')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'RolePollPopup')

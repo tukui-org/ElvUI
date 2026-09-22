@@ -668,5 +668,5 @@ function S:Blizzard_ChallengesUI()
 	end
 end
 
-S:AddCallback('LookingForGroupFrames')
+S:AddCallbackForAddon('Blizzard_GroupFinder', 'LookingForGroupFrames')
 S:AddCallbackForAddon('Blizzard_ChallengesUI')

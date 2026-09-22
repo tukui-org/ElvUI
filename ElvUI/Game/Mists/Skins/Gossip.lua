@@ -142,4 +142,4 @@ function S:GossipFrame()
 	end
 end
 
-S:AddCallback('GossipFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GossipFrame')

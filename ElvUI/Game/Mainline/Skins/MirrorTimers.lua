@@ -31,10 +31,10 @@ local function SetupTimer(container, timer)
 	bar:SetTemplate('Transparent')
 end
 
-function S:MirrorTimers() -- Mirror Timers (Underwater Breath, etc.)
+function S:Blizzard_MirrorTimer() -- Mirror Timers (Underwater Breath, etc.)
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mirrorTimers) then return end
 
 	hooksecurefunc(_G.MirrorTimerContainer, 'SetupTimer', SetupTimer)
 end
 
-S:AddCallback('MirrorTimers')
+S:AddCallbackForAddon('Blizzard_MirrorTimer')

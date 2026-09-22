@@ -223,4 +223,4 @@ function S:ContainerFrame()
 	hooksecurefunc('BankFrameItemButton_Update', BankFrameItemUpdate)
 end
 
-S:AddCallback('ContainerFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'ContainerFrame')

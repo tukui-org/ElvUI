@@ -313,5 +313,5 @@ function S:PVPReadyDialog()
 	end)
 end
 
-S:AddCallback('PVPReadyDialog')
+S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog')
 S:AddCallbackForAddon('Blizzard_PVPUI')

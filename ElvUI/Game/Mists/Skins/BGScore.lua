@@ -90,4 +90,4 @@ function S:SkinWorldStateScore()
 	hooksecurefunc('WorldStateScoreFrame_Update', UpdateScore)
 end
 
-S:AddCallback('SkinWorldStateScore')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore')

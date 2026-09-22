@@ -64,4 +64,4 @@ function S:PetStableFrame()
 	end
 end
 
-S:AddCallback('PetStableFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetStableFrame')

@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:HelpFrame()
+function S:Blizzard_HelpFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.help) then return end
 
 	local main = _G.HelpFrame
@@ -20,4 +20,4 @@ function S:HelpFrame()
 	browser.backdrop:Point('BOTTOMRIGHT', browser, 'BOTTOMRIGHT', 1, -2)
 end
 
-S:AddCallback('HelpFrame')
+S:AddCallbackForAddon('Blizzard_HelpFrame')

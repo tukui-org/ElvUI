@@ -45,4 +45,4 @@ function S:Blizzard_CatalogShop()
 	S:HandleTrimScrollBar(ProductDetails.DetailsProductContainerFrame.ProductsScrollBoxContainer.ScrollBar)
 end
 
-S:AddCallback('Blizzard_CatalogShop')
+S:AddCallbackForAddon('Blizzard_CatalogShop', 'Blizzard_CatalogShop')

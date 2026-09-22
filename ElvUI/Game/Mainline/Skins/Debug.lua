@@ -95,7 +95,7 @@ local function SkinTableAttributeDisplay(frame)
 	frame.IsSkinned = true
 end
 
-function S:ScriptErrorsFrame()
+function S:Blizzard_ScriptErrorsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.debug) then return end
 
 	S:SecureHookScript(_G.ScriptErrorsFrame, 'OnShow', SkinOnShow)
@@ -115,7 +115,7 @@ function S:Blizzard_DebugTools()
 end
 
 -- ScriptErrorsFrame Skin
-S:AddCallback('ScriptErrorsFrame')
+S:AddCallbackForAddon('Blizzard_ScriptErrorsFrame')
 
 -- FrameStack, TableInspect Skins
 if IsAddOnLoaded('Blizzard_DebugTools') then

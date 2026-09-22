@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
-function S:RaidInfoFrame()
+function S:Blizzard_RaidFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.nonraid) then return end
 
 	for _, button in next, {
@@ -23,4 +23,4 @@ function S:RaidInfoFrame()
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 end
 
-S:AddCallback('RaidInfoFrame')
+S:AddCallbackForAddon('Blizzard_RaidFrame')

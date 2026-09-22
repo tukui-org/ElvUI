@@ -185,4 +185,4 @@ function S:MailFrame()
 	_G.SendMailMailButton:Point('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
 end
 
-S:AddCallback('MailFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MailFrame')

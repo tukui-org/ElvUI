@@ -35,4 +35,4 @@ function S:GuildRegistrarFrame()
 	_G.AvailableServicesText:SetTextColor(1, 1, 0)
 end
 
-S:AddCallback('GuildRegistrarFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GuildRegistrarFrame')

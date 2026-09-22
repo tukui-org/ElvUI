@@ -195,4 +195,4 @@ function S:LootFrame()
 	S:HandleNextPrevButton(_G.LootFrameUpButton)
 end
 
-S:AddCallback('LootFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame')

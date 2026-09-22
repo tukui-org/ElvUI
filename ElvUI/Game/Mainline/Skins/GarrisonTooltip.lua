@@ -82,7 +82,7 @@ function S:GarrisonShipyardTooltip()
 	TT:SetStyle(_G.GarrisonBonusAreaTooltip)
 end
 
-function S:GarrisonTooltip()
+function S:Blizzard_GarrisonBase()
 	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.tooltip then return end
 
 	TT:SetStyle(_G.FloatingGarrisonFollowerTooltip)
@@ -105,4 +105,4 @@ function S:GarrisonTooltip()
 	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetShipyardFollower', SetShipyardFollower)
 end
 
-S:AddCallback('GarrisonTooltip')
+S:AddCallbackForAddon('Blizzard_GarrisonBase')

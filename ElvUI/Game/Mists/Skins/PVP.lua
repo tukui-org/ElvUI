@@ -123,5 +123,5 @@ function S:PVPReadyDialog()
 	S:HandleButton(_G.PVPReadyDialogHideButton)
 end
 
-S:AddCallback('PVPReadyDialog')
+S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog')
 S:AddCallbackForAddon('Blizzard_PVPUI')

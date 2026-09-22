@@ -44,7 +44,7 @@ local function HandleButton(entry, treeNode)
 	end
 end
 
-function S:AddonList()
+function S:Blizzard_AddOnList()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.addonManager) then return end
 
 	local AddonList = _G.AddonList
@@ -62,4 +62,4 @@ function S:AddonList()
 	hooksecurefunc('AddonList_InitAddon', HandleButton)
 end
 
-S:AddCallback('AddonList')
+S:AddCallbackForAddon('Blizzard_AddOnList')

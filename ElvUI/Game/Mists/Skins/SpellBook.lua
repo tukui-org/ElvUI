@@ -302,4 +302,4 @@ function S:SpellBookFrame()
 	end
 end
 
-S:AddCallback('SpellBookFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SpellBookFrame')

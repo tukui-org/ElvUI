@@ -726,5 +726,5 @@ function S:Blizzard_ChallengesUI()
 	hooksecurefunc(affix, 'SetUp', NoticeAffixSetup)
 end
 
-S:AddCallback('LookingForGroupFrames')
+S:AddCallbackForAddon('Blizzard_GroupFinder', 'LookingForGroupFrames')
 S:AddCallbackForAddon('Blizzard_ChallengesUI')

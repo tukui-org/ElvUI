@@ -51,4 +51,4 @@ function S:PetStableFrame()
 	hooksecurefunc('PetStable_Update', UpdatePetStable)
 end
 
-S:AddCallback('PetStableFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetStableFrame')
