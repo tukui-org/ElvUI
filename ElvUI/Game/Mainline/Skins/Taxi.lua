@@ -3,8 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local function TaxiRouteMapColor(self)
-	self:SetBackdropColor(0, 0, 0, 0)
+local function ClearBackdrop(backdrop)
+	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
 function S:TaxiFrame()
@@ -17,7 +17,7 @@ function S:TaxiFrame()
 	local TaxiRouteMap = _G.TaxiRouteMap -- the map is drawn onto TaxiFrame.InsetBg, which sits below this frame
 	TaxiRouteMap:SetTemplate()
 	TaxiRouteMap:SetBackdropColor(0, 0, 0, 0)
-	TaxiRouteMap.callbackBackdropColor = TaxiRouteMapColor
+	TaxiRouteMap.callbackBackdropColor = ClearBackdrop
 
 	S:HandleCloseButton(TaxiFrame.CloseButton)
 end
