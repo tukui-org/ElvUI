@@ -14,10 +14,10 @@ function S:TaxiFrame()
 	TaxiFrame:StripTextures()
 	TaxiFrame:SetTemplate('Transparent')
 
-	local RouteMap = _G.TaxiRouteMap -- the map itself is drawn onto TaxiFrame.InsetBg, which sits below this frame
-	RouteMap:SetTemplate()
-	RouteMap:SetBackdropColor(0, 0, 0, 0)
-	RouteMap.callbackBackdropColor = ClearBackdrop
+	local TaxiRouteMap = _G.TaxiRouteMap -- the map is drawn onto TaxiFrame.InsetBg, which sits below this frame
+	TaxiRouteMap:SetTemplate()
+	TaxiRouteMap:SetBackdropColor(0, 0, 0, 0)
+	TaxiRouteMap.callbackBackdropColor = ClearBackdrop
 
 	S:HandleCloseButton(TaxiFrame.CloseButton)
 end
