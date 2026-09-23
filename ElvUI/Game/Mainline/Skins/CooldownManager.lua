@@ -171,7 +171,7 @@ function S:CooldownManager_UpdateViewer(element)
 	for frame in element.itemFramePool:EnumerateActive() do
 		if frame.Bar then
 			S:CooldownManager_UpdateTextBar(frame.Bar)
-			S:CooldownManager_UpdateTextContainer(frame)
+			S:CooldownManager_UpdateTextContainer(frame.Icon)
 		elseif frame.Icon then
 			S:CooldownManager_UpdateTextContainer(frame)
 		end

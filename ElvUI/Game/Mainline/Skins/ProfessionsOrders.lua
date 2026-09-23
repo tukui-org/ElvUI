@@ -9,13 +9,16 @@ local CreateFrame = CreateFrame
 -- Custom Orders (Credits: siweia - NDUI)
 
 local function RefreshFlyoutButton(button)
+	button.NormalTexture:SetAlpha(0)
+	button.PushedTexture:SetAlpha(0)
+
 	if not button.IsSkinned then
 		S:HandleIcon(button.icon, true)
 		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
 
-		button:SetNormalTexture(0)
-		button:SetPushedTexture(0)
-		button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+		local hl = button:GetHighlightTexture()
+		hl:SetColorTexture(1, 1, 1, .25)
+		hl:SetOutside(button)
 
 		button.IsSkinned = true
 	end
@@ -86,9 +89,13 @@ local function FormInit(form)
 		hl:SetColorTexture(1, 1, 1, .25)
 		hl:SetOutside(button)
 
+		local nt = button:GetNormalTexture()
+		local greenPlus = nt:GetAtlas() == 'ItemUpgrade_GreenPlusIcon'
+		nt:SetAlpha(greenPlus and 1 or 0)
+		nt:SetOutside(button)
+
 		local ps = button:GetPushedTexture()
-		ps:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-		ps:SetBlendMode('ADD')
+		ps:SetAlpha(greenPlus and 1 or 0)
 		ps:SetOutside(button)
 
 		if not button.IsSkinned then
@@ -105,14 +112,14 @@ local function FormInit(form)
 end
 
 -- the reagent flyout is a single frame that gets reparented to whichever form opened it
--- Professions.lua hooks the same function, whichever runs first skins it
+-- Professions.lua hooks the same function with the same skin, whichever runs first skins it
 local function OpenItemFlyout(_, owner)
 	for _, child in next, { owner:GetChildren() } do
-		if child.HideUnownedCheckbox and not child.IsSkinned then
-			child:StripTextures()
-			child:SetTemplate('Transparent')
-
+		if child.InitializeContents and not child.IsSkinned then
+			child.NineSlice:SetTemplate('Transparent')
+			S:HandleTrimScrollBar(child.ScrollBar)
 			S:HandleCheckBox(child.HideUnownedCheckbox)
+			child.HideUnownedCheckbox:Size(24)
 
 			RefreshFlyoutButtons(child.ScrollBox)
 			hooksecurefunc(child.ScrollBox, 'Update', RefreshFlyoutButtons)
