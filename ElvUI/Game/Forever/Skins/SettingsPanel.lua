@@ -18,8 +18,11 @@ local function UpdateKeybindButtons(self)
 		if not panel.IsSkinned then
 			S:HandleButton(panel.Button1)
 			S:HandleButton(panel.Button2)
-			if panel.CustomButton then S:HandleButton(panel.CustomButton) end
 			panel.IsSkinned = true
+		end
+
+		if panel.CustomButton then -- push to talk
+			S:HandleButton(panel.CustomButton)
 		end
 	end
 end

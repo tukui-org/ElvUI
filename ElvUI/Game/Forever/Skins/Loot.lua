@@ -42,7 +42,7 @@ end
 local function LootFrameUpdateChild(button)
 	local item = button.Item
 	if item then
-		if not item.backdrop then
+		if not item.icon.backdrop then
 			item:StyleButton()
 			item.icon:SetInside(item)
 

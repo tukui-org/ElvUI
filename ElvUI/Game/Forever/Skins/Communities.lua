@@ -102,6 +102,19 @@ local function RequestToJoin_Initialize(frame)
 	end
 end
 
+local function HandleRequestToJoinFrame(requestFrame)
+	requestFrame:StripTextures()
+	requestFrame:SetTemplate('Transparent')
+	hooksecurefunc(requestFrame, 'Initialize', RequestToJoin_Initialize)
+
+	requestFrame.MessageFrame:StripTextures(true)
+	requestFrame.MessageFrame.MessageScroll:StripTextures(true)
+
+	S:HandleEditBox(requestFrame.MessageFrame.MessageScroll)
+	S:HandleButton(requestFrame.Apply)
+	S:HandleButton(requestFrame.Cancel)
+end
+
 local function NotificationSettingsStreamFilter(frame)
 	frame.ShowNotificationsButton:Size(20, 20)
 	frame.HideNotificationsButton:Size(20, 20)
@@ -206,17 +219,7 @@ function S:Blizzard_Communities()
 		frame:StripTextures()
 		frame.InsetFrame:Hide()
 
-		local requestFrame = frame.RequestToJoinFrame
-		requestFrame:StripTextures()
-		requestFrame:SetTemplate('Transparent')
-		hooksecurefunc(requestFrame, 'Initialize', RequestToJoin_Initialize)
-
-		requestFrame.MessageFrame:StripTextures(true)
-		requestFrame.MessageFrame.MessageScroll:StripTextures(true)
-
-		S:HandleEditBox(requestFrame.MessageFrame.MessageScroll)
-		S:HandleButton(requestFrame.Apply)
-		S:HandleButton(requestFrame.Cancel)
+		HandleRequestToJoinFrame(frame.RequestToJoinFrame)
 
 		HandleGuildCards(frame.GuildCards)
 		HandleGuildCards(frame.PendingGuildCards)
@@ -591,6 +594,7 @@ function S:Blizzard_Communities()
 	local ClubFinderInvitationFrame = CommunitiesFrame.ClubFinderInvitationFrame
 	ClubFinderInvitationFrame:SetTemplate()
 	S:HandleButton(ClubFinderInvitationFrame.ApplyButton)
+	HandleRequestToJoinFrame(ClubFinderInvitationFrame.RequestToJoinFrame) -- linked posting
 
 	ClubFinderInvitationFrame.WarningDialog:StripTextures()
 	ClubFinderInvitationFrame.WarningDialog:SetTemplate('Transparent')
