@@ -93,7 +93,7 @@ end
 local function HandleAffixIcons(child)
 	local MapID, _, PowerLevel = C_ChallengeMode_GetSlottedKeystoneInfo()
 
-	if MapID then
+	if MapID and child.DungeonName then -- WeeklyInfo.Child has no DungeonName or PowerLevel
 		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
 
 		if Name and PowerLevel then

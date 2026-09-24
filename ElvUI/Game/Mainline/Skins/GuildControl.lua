@@ -10,6 +10,7 @@ local GuildControlGetNumRanks = GuildControlGetNumRanks
 local function SkinGuildRanks()
 	for i = 1, GuildControlGetNumRanks() do
 		local rankFrame = _G['GuildControlUIRankOrderFrameRank'..i]
+		if not rankFrame then break end -- created lazily by RankOrder_Update
 
 		S:HandleButton(rankFrame.downButton)
 		S:HandleButton(rankFrame.upButton)

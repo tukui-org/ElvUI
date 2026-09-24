@@ -23,6 +23,8 @@ local function HandleSearchBarFrame(Frame)
 end
 
 local function HandleListIcon(frame)
+	if not frame.tableBuilder then return end -- RefreshScrollFrame runs before Init on hidden lists
+
 	for i = 1, 22 do
 		local row = frame.tableBuilder.rows[i]
 		if row then

@@ -48,9 +48,8 @@ local function SkinMissionBoards(board)
 	SkinFollowerBoard(board, 'follower')
 end
 
-local function UpdateSpellAbilities(spell, followerInfo)
-	for _ in ipairs(followerInfo.autoSpellAbilities) do
-		local abilityFrame = spell.autoSpellPool:Acquire()
+local function UpdateSpellAbilities(followerTab)
+	for abilityFrame in followerTab.autoSpellPool:EnumerateActive() do
 		if not abilityFrame.IsSkinned then
 			S:HandleIcon(abilityFrame.Icon, true)
 			abilityFrame.IconMask:Hide()
@@ -185,7 +184,7 @@ local function SkinMissionFrame(frame, strip)
 	SkinMissionItems(frame.FollowerTab)
 
 	hooksecurefunc(missionList.ScrollBox, 'Update', ReskinMissionList)
-	hooksecurefunc(frame.FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
+	hooksecurefunc(frame.FollowerTab, 'UpdateAutoSpellAbilities', UpdateSpellAbilities)
 end
 
 local function ReportListScrollUpdateChild(button)
@@ -461,7 +460,7 @@ function S:Blizzard_GarrisonUI()
 	-- Garrison Portraits
 	S:HandleFollowerListOnUpdateData('GarrisonMissionFrameFollowers')
 	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to orderhall landing page
-	hooksecurefunc(GarrisonLandingPage.FollowerTab, 'UpdateCombatantStats', UpdateSpellAbilities)
+	hooksecurefunc(GarrisonLandingPage.FollowerTab, 'UpdateAutoSpellAbilities', UpdateSpellAbilities)
 
 	-- Landing page: Fleet
 	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
@@ -643,7 +642,9 @@ function S:Blizzard_GarrisonUI()
 	FollowerTab:StripTextures()
 	FollowerTab:SetTemplate('Transparent')
 	FollowerTab.RaisedFrameEdges:SetAlpha(0)
-	S:HandleIcon(FollowerTab.HealFollowerFrame.CostFrame.CostIcon)
+	local HealFollowerFrame = FollowerTab.HealFollowerFrame
+	S:HandleIcon(HealFollowerFrame.CostFrame.CostIcon)
+	S:HandleButton(HealFollowerFrame.HealFollowerButton)
 
 	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
 	S:HandleButton(Follower.HealAllButton)

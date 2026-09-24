@@ -101,7 +101,7 @@ function S:Blizzard_Transmog()
 	hooksecurefunc(ItemsFrame.PagedContent.PagingControls, 'ShouldClearOnUpdateAfterClean', PageControlsPositionUpdate)
 
 	local SetsFrame = WardrobeCollection.TabContent.SetsFrame
-	S:HandleButton(SetsFrame.SearchBox)
+	S:HandleEditBox(SetsFrame.SearchBox)
 	S:HandleButton(SetsFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 
 	S:HandleNextPrevButton(SetsFrame.PagedContent.PagingControls.PrevPageButton)

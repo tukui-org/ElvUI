@@ -13,6 +13,8 @@ function S:Blizzard_NewPlayerExperience()
 	container.STRAFERIGHT.KeyBind:SetTextColor(1, .8, 0)
 	container.MOVEFORWARD.KeyBind:SetTextColor(1, .8, 0)
 	container.MOVEBACKWARD.KeyBind:SetTextColor(1, .8, 0)
+
+	_G.TutorialSingleKey_Frame.ContainerFrame.KeyBind.KeyBind:SetTextColor(1, .8, 0)
 end
 
 function S:Blizzard_NewPlayerExperienceGuide()
