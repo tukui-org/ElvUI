@@ -66,7 +66,7 @@ function E:InspectGearSlot(line, lineText, slotInfo, slot, lastLine)
 	if not lineText then return end
 
 	-- handle item level
-	local itemLevel = strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or (not strmatch(lineText, MATCH_MIN_LEVEL) and strmatch(lineText, MATCH_ITEM_LEVEL))
+	local itemLevel = not slotInfo.iLvl and (strmatch(lineText, MATCH_ITEM_LEVEL_ALT) or (not strmatch(lineText, MATCH_MIN_LEVEL) and strmatch(lineText, MATCH_ITEM_LEVEL)))
 	if itemLevel then
 		slotInfo.iLvl = tonumber(itemLevel)
 
