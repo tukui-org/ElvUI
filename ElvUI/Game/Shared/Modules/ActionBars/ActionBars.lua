@@ -746,6 +746,10 @@ function AB:UpdateButtonSettings(specific)
 			AB:PositionAndSizeTotemBar()
 		end
 	end
+
+	if AB.fadeParent then -- allow new update
+		AB.fadeParent.mouseLock = nil
+	end
 end
 
 function AB:UpdateBarPosition(specific)
@@ -994,10 +998,12 @@ do
 		if (E.Modern and (canGlide or CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
 		or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
 		or UnitExists('vehicle') or UnitAffectingCombat('player') or (not E.Modern and (UnitHealth('player') ~= UnitHealthMax('player'))) then
-			self.mouseLock = true
-			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-			AB:FadeBlings(1)
-		else
+			if not self.mouseLock then
+				self.mouseLock = true
+				E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+				AB:FadeBlings(1)
+			end
+		elseif self.mouseLock ~= false then -- nil is settings change
 			self.mouseLock = false
 			local a = 1 - (AB.db.globalFadeAlpha or 0)
 			E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
