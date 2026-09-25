@@ -296,7 +296,7 @@ local function Enable(self)
 		end
 
 		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
-		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
+		self:RegisterEvent('UNIT_NAME_UPDATE', Path)
 
 		return true
 	end
