@@ -6,8 +6,8 @@ local AB = E:GetModule('ActionBars')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
+local type, ipairs, unpack = type, ipairs, unpack
 local tinsert, tremove, wipe = tinsert, tremove, wipe
-local type, ipairs, unpack, select = type, ipairs, unpack, select
 local next, max, floor, format, strsub, strfind = next, max, floor, format, strsub, strfind
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -1392,12 +1392,13 @@ function B:SetBagAssignments(holder, skip)
 	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
+	local _, bagType = GetContainerNumFreeSlots(holder.BagID)
 	if holder.BagID == KEYRING_CONTAINER then
 		bag.type = B.BagIndice.keyring
 	elseif holder.BagID == REAGENT_CONTAINER then
-		bag.type = B.BagIndice.reagent
+		bag.type = (bagType ~= 0 and bagType) or  B.BagIndice.reagent
 	else
-		bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
+		bag.type = bagType
 		bag.assigned = B:GetBagAssignedInfo(holder, frame.isBank)
 	end
 
@@ -3215,7 +3216,8 @@ function B:ShowBankTab(f, bankTab)
 				purchaseTab:SetAttribute('overrideBankType', CHARACTERBANK_TYPE)
 			end
 		else
-			f.fullBank = select(2, GetNumBankSlots())
+			local _, isFullBank = GetNumBankSlots()
+			f.fullBank = isFullBank
 			f.purchaseBagButton:SetShown(not f.fullBank)
 		end
 
@@ -3625,14 +3627,14 @@ function B:SetupAutoToggle()
 	end
 end
 
-function B:UpdateBagColors(table, indice, r, g, b)
+function B:UpdateBagColors(obj, indice, r, g, b)
 	local colorTable
-	if table == 'items' then
+	if obj == 'items' then
 		colorTable = B.QuestColors[B.QuestKeys[indice]]
 	else
-		if table == 'profession' then table = 'ProfessionColors' end
-		if table == 'assignment' then table = 'AssignmentColors' end
-		colorTable = B[table][B.BagIndice[indice]]
+		if obj == 'profession' then obj = 'ProfessionColors' end
+		if obj == 'assignment' then obj = 'AssignmentColors' end
+		colorTable = B[obj][B.BagIndice[indice]]
 	end
 
 	colorTable.r, colorTable.g, colorTable.b = r, g, b
