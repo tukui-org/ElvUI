@@ -261,10 +261,7 @@ function UF:PostUpdateHealthColor(unit, color)
 	local colors = E.db.unitframe.colors
 	local env = (parent.isForced and UF.ConfigEnv) or _G
 
-	local _, classToken = UnitClass(unit)
-	local isTapped = UnitIsTapDenied(unit)
 	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
-	local healthBreak = not isTapped and colors.healthBreak
 
 	local r, g, b, healthColor
 	if color and color.r then
@@ -286,6 +283,9 @@ function UF:PostUpdateHealthColor(unit, color)
 	local minValue, maxValue = self.cur, self.max
 	local healthR, healthG, healthB, healthbreakBackdrop
 	if (not healthColor and not E.Modern) and (not parent.db or parent.db.colorOverride ~= 'ALWAYS') then
+		local isTapped = UnitIsTapDenied(unit)
+		local healthBreak = not isTapped and colors.healthBreak
+
 		if r and not isTapped and ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) then
 			healthR, healthG, healthB = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r or 1, g or 1, b or 1)
 		elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
@@ -330,6 +330,7 @@ function UF:PostUpdateHealthColor(unit, color)
 			bgc = customBackdrop
 		elseif colors.classbackdrop then
 			if UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit)) then
+				local _, classToken = UnitClass(unit)
 				local classColor = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or parent.colors.class[classToken]
 				if classColor then
 					customBackdrop:SetRGB(classColor.r, classColor.g, classColor.b)
