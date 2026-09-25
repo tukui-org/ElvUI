@@ -12,6 +12,8 @@ local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
+local GetAtlasInfo = C_Texture.GetAtlasInfo
+
 AB.MICRO_CLASSIC = {}
 AB.MICRO_BUTTONS = {
 	'CharacterMicroButton',
@@ -115,6 +117,14 @@ function AB:GetMicroCoords(name, icons, character)
 
 	if name == 'PVPMicroButton' or (character and name == 'CharacterMicroButton') then
 		l, r, t, b = 0, 1, 0, 1
+	elseif E.Forever and name == 'ProfessionMicroButton' then
+		local atlas = not icons and GetAtlasInfo('UI-HUD-MicroMenu-Professions-Up')
+		if atlas then -- trim off ~13%, tons of empty space around the actual icon
+			local x, y = (atlas.rightTexCoord - atlas.leftTexCoord) * 0.125, (atlas.bottomTexCoord - atlas.topTexCoord) * 0.125
+			l, r, t, b = atlas.leftTexCoord + x, atlas.rightTexCoord - x, atlas.topTexCoord + y, atlas.bottomTexCoord - y
+		else
+			l, r, t, b = 0.15, 0.85, 0.08, 0.92
+		end
 	elseif E.Modern or icons then
 		local offset = AB.MICRO_OFFSETS[name]
 		if offset then
@@ -173,7 +183,13 @@ function AB:HandleMicroTextures(button, name)
 		local icons = AB.db.microbar.useIcons
 		local character = not E.Modern and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
 		local faction = name == 'PVPMicroButton' and ((E.myfaction == 'Horde' and E.Media.Textures.PVPHorde) or E.Media.Textures.PVPAlliance)
-		local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
+		local profession -- Forever, the book is used by Spellbook so take Blizzard's art
+		if E.Forever and name == 'ProfessionMicroButton' then
+			local atlas = not icons and GetAtlasInfo('UI-HUD-MicroMenu-Professions-Up')
+			profession = atlas and atlas.file or [[Interface\ICONS\INV_SideTab_Professions_c60]]
+		end
+
+		local texture = faction or profession or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
 		local stock = not E.Modern and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
 		local pushed = button.GetPushedTexture and button:GetPushedTexture()
 		if stock then
@@ -454,6 +470,7 @@ function AB:SetupMicroBar()
 	if E.Forever then -- Sharex xml defined, but not part of the actual micro menu
 		_G.AchievementMicroButton:Kill()
 		_G.PlayerSpellsMicroButton:Kill()
+		_G.HousingMicroButton:Kill()
 
 		-- bar art stays behind on the empty Blizzard menu
 		_G.MicroMenu.BorderArt:Kill()

@@ -89,7 +89,7 @@ if E.Modern then
 		tinsert(menuList, {text = _G.GARRISON_TYPE_8_0_LANDING_PAGE_TITLE, microOffset = 'QuestLogMicroButton', func = function() _G.ExpansionLandingPageMinimapButton:ToggleLandingPage() end })
 	end
 
-	tinsert(menuList, {text = _G.PROFESSIONS_BUTTON, microOffset = 'ProfessionMicroButton', func = function() _G.ToggleProfessionsBook() end })
+	tinsert(menuList, {text = _G.PROFESSIONS_BUTTON, func = function() _G.ToggleProfessionsBook() end, icon = E.Forever and [[Interface\ICONS\INV_SideTab_Professions_c60]] or 136241, cropIcon = 5 }) -- Retail: Interface\ICONS\Trade_BlackSmithing
 	tinsert(menuList, {text = _G.QUESTLOG_BUTTON, microOffset = 'QuestLogMicroButton', func = function() _G.ToggleQuestLog() end })
 else
 	tinsert(menuList, {text = _G.QUEST_LOG, microOffset = 'QuestLogMicroButton', func = function() ToggleFrame(_G.QuestLogFrame) end })
