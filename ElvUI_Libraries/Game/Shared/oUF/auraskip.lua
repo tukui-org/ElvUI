@@ -46,10 +46,8 @@ local function AllowAura(frame, aura)
 end
 
 local function InstanceFiltered(unit, aura, helpful, harmful)
-	local isHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, helpful)
-	local isHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, harmful)
-
-	return isHelpful or isHarmful
+	-- an aura can only pass the filter of its own kind, auraIsHelpful is computed before this is called
+	return not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, aura.auraIsHelpful and helpful or harmful)
 end
 
 -- These flags are per-aura and do NOT depend on the filter, so compute them
