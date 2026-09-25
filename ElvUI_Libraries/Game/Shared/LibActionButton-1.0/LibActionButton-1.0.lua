@@ -1193,8 +1193,8 @@ if UseCustomFlyout then
 		-- 300 is a safe upper limit in 10.0.2, the highest known spell is 229
 		for flyoutID = 1, 300 do
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
-			if success then
-				lib.FlyoutInfo[flyoutID] = { numSlots = numSlots, isKnown = isKnown, slots = {} }
+			if success and numSlots then
+				local data = { numSlots = numSlots, isKnown = isKnown, slots = {} }
 				for slotID = 1, numSlots do
 					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
@@ -1204,8 +1204,10 @@ if UseCustomFlyout then
 						isKnownSlot = false
 					end
 
-					lib.FlyoutInfo[flyoutID].slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
+					data.slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
 				end
+
+				lib.FlyoutInfo[flyoutID] = data
 			end
 		end
 
@@ -1223,19 +1225,22 @@ if UseCustomFlyout then
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
 			if success then
 				data.isKnown = isKnown
-				for slotID = 1, numSlots do
-					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
-					-- hide empty pet slots from the flyout
-					local petIndex, petName = GetCallPetSpellInfo(spellID)
-					if petIndex and (not petName or petName == "") then
-						isKnownSlot = false
+				if numSlots then
+					for slotID = 1, numSlots do
+						local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
+
+						-- hide empty pet slots from the flyout
+						local petIndex, petName = GetCallPetSpellInfo(spellID)
+						if petIndex and (not petName or petName == "") then
+							isKnownSlot = false
+						end
+
+						data.slots[slotID].spellID = spellID
+						data.slots[slotID].spellName = spellName
+						data.slots[slotID].overrideSpellID = overrideSpellID
+						data.slots[slotID].isKnown = isKnownSlot
 					end
-
-					data.slots[slotID].spellID = spellID
-					data.slots[slotID].spellName = spellName
-					data.slots[slotID].overrideSpellID = overrideSpellID
-					data.slots[slotID].isKnown = isKnownSlot
 				end
 			end
 		end
