@@ -1396,7 +1396,7 @@ function B:SetBagAssignments(holder, skip)
 	if holder.BagID == KEYRING_CONTAINER then
 		bag.type = B.BagIndice.keyring
 	elseif holder.BagID == REAGENT_CONTAINER then
-		bag.type = (bagType ~= 0 and bagType) or  B.BagIndice.reagent
+		bag.type = (bagType ~= 0 and bagType) or B.BagIndice.reagent
 	else
 		bag.type = bagType
 		bag.assigned = B:GetBagAssignedInfo(holder, frame.isBank)
