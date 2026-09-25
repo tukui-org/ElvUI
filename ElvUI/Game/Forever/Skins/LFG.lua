@@ -140,16 +140,13 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	hooksecurefunc(LFGWhoListFrame.ScrollBox, 'Update', LFGWhoList_Update)
 
 	local EditBox = LFGWhoListFrame.EditBox
-	EditBox.Backdrop:StripTextures()
-	EditBox.Backdrop:CreateBackdrop()
-	EditBox.Backdrop.backdrop:SetOutside(EditBox.Backdrop, E.Border + 2, E.Border + 2)
+	EditBox:CreateBackdrop()
+	EditBox.Left:SetAlpha(0)
+	EditBox.Middle:SetAlpha(0)
+	EditBox.Right:SetAlpha(0)
 
-	local WhoSearch = LFGWhoListFrame.WhoSearch
-	S:HandleButton(WhoSearch)
-	WhoSearch:ClearAllPoints()
-	WhoSearch:Point('TOPLEFT', EditBox.Backdrop.backdrop, 'TOPRIGHT', 3, 0)
-	WhoSearch:Point('BOTTOMLEFT', EditBox.Backdrop.backdrop, 'BOTTOMRIGHT', 3, 0)
-	WhoSearch.Icon:Size(16)
+	S:HandleButton(LFGWhoListFrame.FilterDropdown)
+	S:HandleButton(LFGWhoListFrame.WhoSearch)
 end
 
 function S:RolePollPopup()

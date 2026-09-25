@@ -7,6 +7,8 @@ local hooksecurefunc = hooksecurefunc
 
 local function UpdateHappiness(diet)
 	local texture = diet.texture
+	if not texture then return end
+
 	local left = texture:GetTexCoord()
 
 	if left == 0.375 then
