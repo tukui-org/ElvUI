@@ -485,7 +485,16 @@ end
 
 local function FontTemplate(fs, fontName, fontSize, fontStyle, skip)
 	if not skip then -- ignore updates from UpdateFontTemplates
-		E.texts[fs] = { fontName = fontName, fontSize = fontSize, fontStyle = fontStyle }
+		local data = E.texts[fs]
+		if not data then
+			data = {}
+
+			E.texts[fs] = data
+		end
+
+		data.fontName = fontName
+		data.fontSize = fontSize
+		data.fontStyle = fontStyle
 	end
 
 	-- grab values from profile before conversion
