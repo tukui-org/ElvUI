@@ -138,8 +138,8 @@ local function ChatBubble_OnUpdate(eventFrame, elapsed)
 	eventFrame.lastupdate = 0
 
 	for _, frame in pairs(C_ChatBubbles_GetAllChatBubbles()) do
-		local holder = frame:GetChildren()
-		if holder and not holder:IsForbidden() and not frame.IsSkinnedElvUI then
+		local holder = not frame.IsSkinnedElvUI and frame:GetChildren()
+		if holder and not holder:IsForbidden() then
 			M:SkinBubble(frame, holder)
 		end
 	end
