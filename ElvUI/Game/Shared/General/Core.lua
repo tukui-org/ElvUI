@@ -322,9 +322,13 @@ function E:UpdateColorTable(color, data)
 end
 
 function E:ForceBorderColor(frame, r, g, b, a)
-	local colors = frame.forcedBorderColors or {}
+	local colors = frame.forcedBorderColors
 
 	if r then
+		if not colors then
+			colors = {}
+		end
+
 		colors[1], colors[2], colors[3], colors[4] = r, g, b, a
 	else
 		colors = nil
