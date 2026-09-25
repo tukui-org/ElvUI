@@ -45,12 +45,12 @@ function NP:Health_UpdateColor(_, unit)
 	end
 
 	if not color then
-		local _, classToken = UnitClass(unit)
 		local useSelection = E.Modern and element.colorSelection and E:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
 		local useReaction = element.colorReaction and UnitReaction(unit, 'player')
 		if useClassification then
 			color = NP.Colors.classification[useClassification]
 		elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and controlled and not self.isPlayer) then
+			local _, classToken = UnitClass(unit)
 			color = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 		elseif useSelection then
 			if useSelection == 3 then

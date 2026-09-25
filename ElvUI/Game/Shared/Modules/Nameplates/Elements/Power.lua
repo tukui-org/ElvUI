@@ -24,7 +24,6 @@ function NP:Power_UpdateColor(_, unit)
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 	local unitControlled = UnitPlayerControlled(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	local _, classToken = UnitClass(unit)
 	element.token = ptoken
 
 	local Selection = element.colorSelection and E:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
@@ -56,6 +55,7 @@ function NP:Power_UpdateColor(_, unit)
 			atlas = color.atlas
 		end
 	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and unitControlled and not self.isPlayer) then
+		local _, classToken = UnitClass(unit)
 		color = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif Selection then
 		color = NP.Colors.selection[Selection]
