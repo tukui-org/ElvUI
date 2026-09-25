@@ -106,7 +106,6 @@ local function Update(self, event, unit)
 	end
 
 	local maxHealth = UnitHealthMax(unit)
-	local health = UnitHealth(unit)
 
 	-- Retail API
 	if(oUF.isModern and element.values) then
@@ -164,6 +163,7 @@ local function Update(self, event, unit)
 	else
 		-- Classic API & LibHealComm implementation
 		local GUID = UnitGUID(unit)
+		local health = UnitHealth(unit)
 		local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
 		local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
 		local overTimeHeals = not oUF.isModern and HealComm and ((HealComm:GetHealAmount(GUID, HealComm.OVERTIME_AND_BOMB_HEALS) or 0) * (HealComm:GetHealModifier(GUID) or 1)) or 0
@@ -232,13 +232,14 @@ local function Update(self, event, unit)
 			element.healingOther:Show()
 		end
 
-		if(element.damageAbsorb) then
+		-- dont refresh and show an empty bar on every health event, absorbs are always 0 below Mists
+		if(element.damageAbsorb and (absorb > 0 or element.damageAbsorb:GetValue() > 0)) then
 			element.damageAbsorb:SetMinMaxValues(0, maxHealth)
 			element.damageAbsorb:SetValue(absorb)
 			element.damageAbsorb:Show()
 		end
 
-		if(element.healAbsorb) then
+		if(element.healAbsorb and (healAbsorb > 0 or element.healAbsorb:GetValue() > 0)) then
 			element.healAbsorb:SetMinMaxValues(0, maxHealth)
 			element.healAbsorb:SetValue(healAbsorb)
 			element.healAbsorb:Show()
@@ -323,8 +324,9 @@ end
 
 local function HealComm_Check(self, element, ...)
 	if element and self:IsVisible() then
+		local guid = self.__unit and UnitGUID(self.__unit)
 		for i = 1, select('#', ...) do
-			if self.__unit and UnitGUID(self.__unit) == select(i, ...) then
+			if guid and guid == select(i, ...) then
 				Path(self, nil, self.__unit)
 			end
 		end
