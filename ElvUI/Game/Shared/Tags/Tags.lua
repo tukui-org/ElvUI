@@ -626,6 +626,8 @@ if not E.Modern then
 end
 
 for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long = 20 }) do
+	local nameTag = format('name:%s', textFormat)
+
 	E:AddTag(format('health:current:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 		local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -649,7 +651,7 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		if deficit > 0 and cur > 0 then
 			return _TAGS['health:deficit-percent:nostatus'](unit)
 		else
-			return _TAGS[format('name:%s', textFormat)](unit)
+			return _TAGS[nameTag](unit)
 		end
 	end)
 
@@ -773,7 +775,7 @@ E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_
 	end
 end)
 
-E:AddTag('namecolor', 'UNIT_TARGET', function(unit)
+E:AddTag('namecolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	return _TAGS.classcolor(unit)
 end)
 
