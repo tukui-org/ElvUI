@@ -19,8 +19,8 @@ local QueryGuildBankTab = QueryGuildBankTab
 local SplitGuildBankItem = SplitGuildBankItem
 
 local BANK_CONTAINER = Enum.BagIndex.Bank
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Modern and 1 or 0) -- add the profession bag
 local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Modern and 1 or 0) -- add the profession bag
 local REAGENT_CONTAINER = E.Modern and Enum.BagIndex.ReagentBag or math.huge
 
 local BagSlotFlags = Enum.BagSlotFlags
