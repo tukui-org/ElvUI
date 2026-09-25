@@ -115,7 +115,7 @@ local BagIndex = Enum.BagIndex
 local BANK_CONTAINER = BagIndex.Bank
 local BACKPACK_CONTAINER = BagIndex.Backpack
 local KEYRING_CONTAINER = BagIndex.Keyring
-local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
+local REAGENT_CONTAINER = E.Modern and BagIndex.ReagentBag or math.huge
 local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
@@ -293,9 +293,9 @@ local presistentEvents = {
 	BAG_CLOSED = true
 }
 
-if E.Retail then
+if E.Modern then
 	tinsert(bagIDs, REAGENT_CONTAINER)
-elseif not E.Forever then
+else
 	tinsert(bankIDs, -1)
 	tinsert(bankEvents, 'PLAYERBANKBAGSLOTS_CHANGED')
 	tinsert(bankEvents, 'PLAYERBANKSLOTS_CHANGED')

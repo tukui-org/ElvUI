@@ -117,7 +117,9 @@ function B:SkinBag(bag)
 	if E.Modern then
 		bag:GetNormalTexture():SetAlpha(0)
 		bag:GetHighlightTexture():SetAlpha(0)
-		bag.CircleMask:Hide()
+
+		local mask = bag.CircleMask or bag.SquareMask -- Forever: SquareBagSlotButtonTemplate
+		mask:Hide()
 
 		if icon then -- needed for retail
 			icon.Show = nil
