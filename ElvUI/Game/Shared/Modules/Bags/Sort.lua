@@ -18,9 +18,10 @@ local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
 local SplitGuildBankItem = SplitGuildBankItem
 
-local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Modern and 1 or 0) -- add the profession bag
 local BANK_CONTAINER = Enum.BagIndex.Bank
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Modern and 1 or 0) -- add the profession bag
+local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
+local REAGENT_CONTAINER = E.Modern and Enum.BagIndex.ReagentBag or math.huge
 
 local BagSlotFlags = Enum.BagSlotFlags
 local FILTER_FLAG_TRADE_GOODS = LE_BAG_FILTER_FLAG_TRADE_GOODS or BagSlotFlags.PriorityTradeGoods or BagSlotFlags.ClassProfessionGoods
@@ -609,7 +610,7 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 
 	local _, bagType = GetContainerNumFreeSlots(targetBag)
 	if bagType == 0 then
-		return true -- target bag is normal
+		return targetBag ~= REAGENT_CONTAINER or isReagent
 	elseif bagType and classID ~= 11 then -- prevent quiverception
 		local itemFamily = GetItemFamily(item)
 		if itemFamily then
