@@ -1047,6 +1047,18 @@ local function GetOptionsTable_SummonIcon(updateFunc, groupName, numUnits)
 	return config
 end
 
+local function GetOptionsTable_PingIcon(updateFunc, groupName, numUnits)
+	local config = ACH:Group(L["Ping Icon"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].pingIcon[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].pingIcon[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, not E.Retail)
+	config.args.enable = ACH:Toggle(L["Enable"], nil, 0)
+	config.args.attachTo = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
+	config.args.attachToObject = ACH:Select(L["Attach To"], L["The object you want to attach to."], 4, attachToValues)
+	config.args.size = ACH:Range(L["Size"], nil, 5, { min = 8, max = 60, step = 1 })
+	config.args.xOffset = ACH:Range(L["X-Offset"], nil, 6, offsetLong)
+	config.args.yOffset = ACH:Range(L["Y-Offset"], nil, 7, offsetLong)
+
+	return config
+end
+
 local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 	local altPower = groupName ~= 'player'
 	local config = ACH:Group(altPower and L["Alternative Power"] or L["Class Bar"], nil, nil, 'tab', function(info) return E.db.unitframe.units[groupName].classbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return altPower and not (E.Retail or E.Mists) end)
@@ -1625,7 +1637,8 @@ local unitSettingsFunc = {
 	resurrectIcon = GetOptionsTable_ResurrectIcon,
 	roleIcon = GetOptionsTable_RoleIcons,
 	strataAndLevel = GetOptionsTable_StrataAndFrameLevel,
-	summonIcon = GetOptionsTable_SummonIcon
+	summonIcon = GetOptionsTable_SummonIcon,
+	pingIcon = GetOptionsTable_PingIcon
 }
 
 local function GetUnitSettings(unitType, updateFunc, numUnits)

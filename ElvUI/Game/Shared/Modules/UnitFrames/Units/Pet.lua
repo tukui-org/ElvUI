@@ -20,6 +20,9 @@ function UF:Construct_PetFrame(frame)
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	if E.Retail then
+		frame.PingIndicator = UF:Construct_PingIndicator(frame)
+	end
 	frame.AuraHighlight = UF:Construct_AuraHighlight(frame)
 	frame.AuraWatch = UF:Construct_AuraWatch(frame)
 	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
