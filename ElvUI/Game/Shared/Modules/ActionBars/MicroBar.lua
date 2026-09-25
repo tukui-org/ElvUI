@@ -454,6 +454,10 @@ function AB:SetupMicroBar()
 	if E.Forever then -- Sharex xml defined, but not part of the actual micro menu
 		_G.AchievementMicroButton:Kill()
 		_G.PlayerSpellsMicroButton:Kill()
+
+		-- bar art stays behind on the empty Blizzard menu
+		_G.MicroMenu.BorderArt:Kill()
+		_G.MicroMenu.BackgroundArt:Kill()
 	end
 
 	for _, name in next, AB.MICRO_BUTTONS do
