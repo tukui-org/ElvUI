@@ -1753,17 +1753,19 @@ function AB:SetButtonDesaturation(button, start, duration)
 	end
 
 	local allow
-	if E:IsSecretValue(duration) then
-		local action = button._state_type == 'action' and button._state_action
-		local info = action and button:GetCooldownInfo()
-		local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
-		allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
-	else
-		local GCD = AB:GetGlobalCooldown()
-		allow = (duration and duration > GCD) and 1 or 0
+	if AB.db.desaturateOnCooldown then
+		if E:IsSecretValue(duration) then
+			local action = button._state_type == 'action' and button._state_action
+			local info = action and button:GetCooldownInfo()
+			local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
+			allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
+		else
+			local GCD = AB:GetGlobalCooldown()
+			allow = (duration and duration > GCD) and 1 or 0
+		end
 	end
 
-	if AB.db.desaturateOnCooldown and allow then
+	if allow then
 		button.icon:SetDesaturation(allow)
 		button.saturationLocked = true
 	else
