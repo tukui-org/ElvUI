@@ -20,8 +20,9 @@ local tinsert, tremove, strlower = tinsert, tremove, strlower
 -- Update all current animations
 local AnimationOnUpdate = function(self, elapsed)
 	for i = 1, #self do
-		if self[i] then -- Double check that the index still exists, due to pauses/stops removing them on the fly
-			self[i]:Update(elapsed, i)
+		local anim = self[i]
+		if anim then -- Double check that the index still exists, due to pauses/stops removing them on the fly
+			anim:Update(elapsed, i)
 		end
 	end
 
@@ -727,8 +728,9 @@ local AnimMethods = {
 local GroupMethods = {
 	Play = function(self)
 		for i = 1, #self.Animations do
-			if self.Animations[i].Order == self.Order then
-				self.Animations[i]:Play()
+			local anim = self.Animations[i]
+			if anim.Order == self.Order then
+				anim:Play()
 			end
 		end
 
@@ -745,8 +747,9 @@ local GroupMethods = {
 
 	Pause = function(self)
 		for i = 1, #self.Animations do
-			if self.Animations[i].Order == self.Order then
-				self.Animations[i]:Pause()
+			local anim = self.Animations[i]
+			if anim.Order == self.Order then
+				anim:Pause()
 			end
 		end
 
@@ -820,10 +823,11 @@ local GroupMethods = {
 		local NumDoneAtOrder = 0
 
 		for i = 1, #self.Animations do
-			if self.Animations[i].Order == self.Order then
+			local anim = self.Animations[i]
+			if anim.Order == self.Order then
 				NumAtOrder = NumAtOrder + 1
 
-				if not self.Animations[i].Playing then
+				if not anim.Playing then
 					NumDoneAtOrder = NumDoneAtOrder + 1
 				end
 			end
@@ -848,8 +852,9 @@ local GroupMethods = {
 
 			-- Play!
 			for i = 1, #self.Animations do
-				if self.Animations[i].Order == self.Order then
-					self.Animations[i]:Play()
+				local anim = self.Animations[i]
+				if anim.Order == self.Order then
+					anim:Play()
 				end
 			end
 		end
@@ -1113,7 +1118,10 @@ Initialize.progress = function(self)
 	self.EndValue = self.EndValueSetting or 0
 	self.ProgressChange = self.EndValue - self.StartValue
 
-	StartUpdating(self)
+	-- a Play while running only retargets, dont queue the animation twice
+	if not self.Playing then
+		StartUpdating(self)
+	end
 end
 
 Update.progress = function(self, elapsed, i)
