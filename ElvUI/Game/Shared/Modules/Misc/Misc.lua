@@ -119,7 +119,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	if not inGroup then return end
 
 	local _, event, _, sourceGUID, _, _, _, destGUID, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
-	local announce = spellName and (destGUID ~= E.myguid) and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet')) and strmatch(event, '_INTERRUPT')
+	local announce = (spellName and event == 'SPELL_INTERRUPT') and (destGUID ~= E.myguid) and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))
 	if not announce then return end -- No announce-able interrupt from player or pet, exit.
 
 	local inRaid, inPartyLFG = IsInRaid(), M:IsRandomGroup()
