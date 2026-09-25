@@ -8,13 +8,14 @@ function S:Blizzard_NewPlayerExperience()
 
 	S:HandleButton(_G.KeyboardMouseConfirmButton)
 
-	local container = _G.TutorialWalk_Frame.ContainerFrame
-	container.STRAFELEFT.KeyBind:SetTextColor(1, .8, 0)
-	container.STRAFERIGHT.KeyBind:SetTextColor(1, .8, 0)
-	container.MOVEFORWARD.KeyBind:SetTextColor(1, .8, 0)
-	container.MOVEBACKWARD.KeyBind:SetTextColor(1, .8, 0)
+	local walk = _G.TutorialWalk_Frame.ContainerFrame
+	walk.STRAFELEFT.KeyBind:SetTextColor(1, .8, 0)
+	walk.STRAFERIGHT.KeyBind:SetTextColor(1, .8, 0)
+	walk.MOVEFORWARD.KeyBind:SetTextColor(1, .8, 0)
+	walk.MOVEBACKWARD.KeyBind:SetTextColor(1, .8, 0)
 
-	_G.TutorialSingleKey_Frame.ContainerFrame.KeyBind.KeyBind:SetTextColor(1, .8, 0)
+	local singleKey = _G.TutorialSingleKey_Frame.ContainerFrame
+	singleKey.KeyBind.KeyBind:SetTextColor(1, .8, 0)
 end
 
 function S:Blizzard_NewPlayerExperienceGuide()
