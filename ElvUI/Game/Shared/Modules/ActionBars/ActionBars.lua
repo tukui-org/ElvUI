@@ -1158,7 +1158,8 @@ function AB:ButtonEventsRegisterFrame(added)
 		local frame = frames[index]
 		local wasAdded = frame == added
 		if not added or wasAdded then
-			if not strmatch(frame:GetName(), 'ExtraActionButton%d') then
+			local name = frame:GetName()
+			if not name or (not strmatch(name, 'ExtraActionButton%d') and name ~= 'GamepadMainActionBarFramePageUnitLeftClassAction') then
 				frames[index] = nil
 			end
 
@@ -1207,6 +1208,13 @@ function AB:UnloadController()
 	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
+
+	if E.Forever then
+		-- this is needed for the gamepad pet action button to set its flyout popup on init
+		-- without it, everytime ToggleFlash on it is called, it reads self.popup.AttackButton and errors
+		-- even if the gamepad feature is entirely disabled in the game settings
+		_G.ActionBarButtonEventsFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+	end
 end
 
 do
@@ -1320,7 +1328,7 @@ do
 		-- dont reopen game menu and fix settings panel not being able to close during combat
 		_G.SettingsPanel.TransitionBackOpeningPanel = AB.SettingsPanel_TransitionBackOpeningPanel
 
-		-- lets only keep ExtraActionButtons in here
+		-- lets only keep ExtraActionButtons (and the Forever gamepad LeftClassAction) in here
 		hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
 		AB.ButtonEventsRegisterFrame()
 
