@@ -580,7 +580,9 @@ function B:IsSpecialtyBag(bagID)
 	if not bag then return 'Normal' end
 
 	local family = GetItemFamily(bag)
-	if family == 0 or family == nil then return 'Normal' end
+	if family == 0 or not family then
+		return (bagID == REAGENT_CONTAINER and 'Reagent') or 'Normal'
+	end
 
 	return family
 end
