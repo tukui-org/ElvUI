@@ -1425,19 +1425,24 @@ function E:GetClassificationType(unit)
 
 	local _, instanceType = IsInInstance()
 	local hasMana = UnitHasPowerType(unit, POWERTYPE_MANA)
-	local classification = UnitClassification(unit)
-	local unitLevel = E:UnitEffectiveLevel(unit)
-	local maxLevel = E.expansionLevelMax
-
 	if instanceType == 'party' and hasMana then
 		return 'caster' -- In dungeons, check caster first so elite casters aren't missed
-	elseif classification == 'worldboss' or classification == 'rareelite' or classification == 'rare' then
+	end
+
+	local classification = UnitClassification(unit)
+	if classification == 'worldboss' or classification == 'rareelite' or classification == 'rare' then
 		return classification
-	elseif classification == 'elite' and (unitLevel >= (maxLevel + 2)) then
-		return 'eliteBoss'
-	elseif classification == 'elite' and (unitLevel >= (maxLevel + 1)) then
-		return 'eliteMini'
-	elseif hasMana then
+	elseif classification == 'elite' then
+		local maxLevel = E.expansionLevelMax
+		local unitLevel = E:UnitEffectiveLevel(unit)
+		if unitLevel >= (maxLevel + 2) then
+			return 'eliteBoss'
+		elseif unitLevel >= (maxLevel + 1) then
+			return 'eliteMini'
+		end
+	end
+
+	if hasMana then
 		return 'caster'
 	end
 end
