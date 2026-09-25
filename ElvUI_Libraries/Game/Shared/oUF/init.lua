@@ -12,8 +12,8 @@ local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
 local UnitThreatSituation = UnitThreatSituation
-local ShouldUnitIdentityBeSecret = C_Secrets and C_Secrets.ShouldUnitIdentityBeSecret
-local CanCompareUnitTokens = C_Secrets and C_Secrets.CanCompareUnitTokens
+local ShouldUnitIdentityBeSecret = C_Secrets.ShouldUnitIdentityBeSecret
+local CanCompareUnitTokens = C_Secrets.CanCompareUnitTokens
 
 local _, _, _, wowtoc = GetBuildInfo()
 oUF.wowtoc = wowtoc
@@ -59,49 +59,20 @@ do -- Time function by Simpy
 end
 
 do -- API for secrets by Simpy
-	function oUF:IsSecretUnit(unit)
-		return ShouldUnitIdentityBeSecret and ShouldUnitIdentityBeSecret(unit)
-	end
-
-	function oUF:NotSecretUnit(unit)
-		return not oUF:IsSecretUnit(unit)
-	end
-
-	function oUF:IsSecretValue(value)
-		return issecretvalue and issecretvalue(value)
-	end
-
-	function oUF:NotSecretValue(value)
-		return not oUF:IsSecretValue(value)
-	end
-
-	function oUF:IsSecretTable(object)
-		return issecrettable and issecrettable(object)
-	end
-
-	function oUF:NotSecretTable(object)
-		return not oUF:IsSecretTable(object)
-	end
-
-	function oUF:CanAccessValue(value)
-		return not canaccessvalue or canaccessvalue(value)
-	end
-
-	function oUF:CanNotAccessValue(value)
-		return not oUF:CanAccessValue(value)
-	end
-
-	function oUF:HasSecretValues(object)
-		return object.HasSecretValues and object:HasSecretValues()
-	end
-
-	function oUF:NoSecretValues(object)
-		return not oUF:HasSecretValues(object)
-	end
+	function oUF:IsSecretUnit(unit) return ShouldUnitIdentityBeSecret(unit) end
+	function oUF:NotSecretUnit(unit) return not ShouldUnitIdentityBeSecret(unit) end
+	function oUF:IsSecretValue(value) return issecretvalue(value) end
+	function oUF:NotSecretValue(value) return not issecretvalue(value) end
+	function oUF:IsSecretTable(object) return issecrettable(object) end
+	function oUF:NotSecretTable(object) return not issecrettable(object) end
+	function oUF:CanAccessValue(value) return canaccessvalue(value) end
+	function oUF:CanNotAccessValue(value) return not canaccessvalue(value) end
+	function oUF:HasSecretValues(object) return object:HasSecretValues() end
+	function oUF:NoSecretValues(object) return not object:HasSecretValues() end
 end
 
 function oUF:UnitIsUnit(unit1, unit2)
-	if CanCompareUnitTokens and not CanCompareUnitTokens(unit1, unit2) then
+	if not CanCompareUnitTokens(unit1, unit2) then
 		return
 	end
 
