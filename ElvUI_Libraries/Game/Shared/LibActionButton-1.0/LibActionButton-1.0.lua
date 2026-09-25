@@ -1681,23 +1681,26 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			UpdateUsable(button)
 		end
 	elseif event == "ACTIONBAR_UPDATE_COOLDOWN" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, ActionButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
 	elseif event == "SPELL_UPDATE_COOLDOWN" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, NonActionButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
 	elseif event == "LOSS_OF_CONTROL_ADDED" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, ActiveButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
@@ -1748,12 +1751,10 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			if not lib.activeAssist[spellId] then
 				if spellId and spellId == arg1 then
 					ShowOverlayGlow(button)
-				else
-					if button._state_type == "action" then
-						local actionType, id = GetActionInfo(button._state_action)
-						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-							ShowOverlayGlow(button)
-						end
+				elseif button.isFlyoutButton then
+					local actionType, id = GetActionInfo(button._state_action)
+					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+						ShowOverlayGlow(button)
 					end
 				end
 			end
@@ -1766,12 +1767,10 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			if not lib.activeAssist[spellId] then
 				if spellId and spellId == arg1 then
 					HideOverlayGlow(button)
-				else
-					if button._state_type == "action" then
-						local actionType, id = GetActionInfo(button._state_action)
-						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-							HideOverlayGlow(button)
-						end
+				elseif button.isFlyoutButton then
+					local actionType, id = GetActionInfo(button._state_action)
+					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+						HideOverlayGlow(button)
 					end
 				end
 			end
@@ -1833,7 +1832,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 end
 
 function Generic:OnUpdate(elapsed)
-	if self.flashing then
+	if self.flashing then -- on modern the handler only drives the attack flash
 		self.flashTime = (self.flashTime or 0) - elapsed
 
 		if self.flashTime <= 0 then
@@ -2203,7 +2202,7 @@ function Update(self, which)
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 	if texture then
-		self:SetScript("OnUpdate", Generic.OnUpdate)
+		self:SetScript("OnUpdate", (not WoWModern or self.flashing) and Generic.OnUpdate or nil) -- see note in Generic.OnUpdate
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 
@@ -2436,9 +2435,10 @@ if WoWModern then
 		local showCharge = not locShouldReplaceCooldown and chargeInfo.isActive
 		local showNormal = not locShouldReplaceCooldown and cooldownInfo.isActive
 
-		SetOrClearCooldown(self.cooldown, showNormal, self:GetCooldownDuration())
-		SetOrClearCooldown(self.chargeCooldown, showCharge, self:GetChargeDuration())
-		SetOrClearCooldown(self.lossOfControlCooldown, showLoC, self:GetLoCCooldownDuration())
+		-- the duration gets return a new object each call, only fetch the ones that will be shown
+		SetOrClearCooldown(self.cooldown, showNormal, showNormal and self:GetCooldownDuration())
+		SetOrClearCooldown(self.chargeCooldown, showCharge, showCharge and self:GetChargeDuration())
+		SetOrClearCooldown(self.lossOfControlCooldown, showLoC, showLoC and self:GetLoCCooldownDuration())
 
 		lib.callbacks:Fire("OnCooldownUpdate", self, nil, nil, nil, cooldownInfo, chargeInfo, locInfo)
 	end
@@ -2503,6 +2503,10 @@ function StartFlash(self)
 
 	self.flashing = true
 
+	if WoWModern then
+		self:SetScript("OnUpdate", Generic.OnUpdate)
+	end
+
 	if prevFlash ~= self.flashing then
 		UpdateButtonState(self)
 	end
@@ -2513,6 +2517,10 @@ function StopFlash(self)
 
 	self.flashing = false
 	self.flashTime = nil
+
+	if WoWModern then
+		self:SetScript("OnUpdate", nil)
+	end
 
 	if self.Flash:IsShown() then
 		self.Flash:Hide()
