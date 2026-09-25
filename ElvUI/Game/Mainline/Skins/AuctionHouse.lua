@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
-
 local CreateFrame = CreateFrame
 
 -- Credits: siweia (AuroraClassic)
@@ -23,10 +22,11 @@ local function HandleSearchBarFrame(Frame)
 end
 
 local function HandleListIcon(frame)
-	if not frame.tableBuilder then return end -- RefreshScrollFrame runs before Init on hidden lists
+	local builder = frame.tableBuilder
+	if not builder then return end -- RefreshScrollFrame runs before Init on hidden lists
 
 	for i = 1, 22 do
-		local row = frame.tableBuilder.rows[i]
+		local row = builder.rows[i]
 		if row then
 			for j = 1, 4 do
 				local cell = row.cells[j]

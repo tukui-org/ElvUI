@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs = ipairs
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function HandleButton(button)
@@ -42,8 +42,8 @@ local function DifficultyPickerFrame_Update(frame)
 end
 
 local function UpdatePaginatedButtonDisplay(frame)
-	for _, button in ipairs(frame.buttons) do -- also holds a nodeIDs lookup table
-		if not button.Icon.backdrop then
+	for _, button in next, frame.buttons do -- also holds a nodeIDs lookup table
+		if button.Icon and not button.Icon.backdrop then
 			S:HandleIcon(button.Icon, true)
 		end
 	end

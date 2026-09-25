@@ -36,7 +36,10 @@ local function HideCategoryButton(button)
 end
 
 local function HandleListIcon(frame)
-	for _, row in next, frame.tableBuilder.rows do
+	local builder = frame.tableBuilder
+	if not builder then return end
+
+	for _, row in next, builder.rows do
 		local cell = row.cells[1] -- the item name column
 		if not cell.IsSkinned then
 			S:HandleIcon(cell.Icon, true)

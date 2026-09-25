@@ -37,11 +37,12 @@ end
 local function LootFrameUpdateChild(button)
 	local item = button.Item
 	if item then
-		if not item.icon.backdrop then
+		local icon = item.icon
+		if not icon.backdrop then
 			item:StyleButton()
-			item.icon:SetInside(item)
+			icon:SetInside(item)
 
-			S:HandleIcon(item.icon, true)
+			S:HandleIcon(icon, true)
 		end
 
 		item.NormalTexture:SetAlpha(0)
@@ -49,7 +50,7 @@ local function LootFrameUpdateChild(button)
 
 		-- icon border isn't updated for white/grey so pull color from the name
 		local r, g, b = button.Text:GetVertexColor()
-		item.icon.backdrop:SetBackdropBorderColor(r, g, b)
+		icon.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 
 	if button.NameFrame and not button.NameFrame.backdrop then
