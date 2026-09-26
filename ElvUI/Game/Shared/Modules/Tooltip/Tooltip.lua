@@ -728,6 +728,10 @@ function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	local statusText = bar.Text
 	if not statusText or not TT.db.healthBar.text then return end
 
+	local now = GetTime() -- blizzard calls this from the bars OnUpdate every frame
+	if bar.textNeedsUpdate and (now - bar.textNeedsUpdate) < 0.1 then return end
+	bar.textNeedsUpdate = now
+
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
 
@@ -941,6 +945,9 @@ function TT:SetStyle(tt, _, isEmbedded)
 	if tt.Delimiter1 then tt.Delimiter1:SetTexture() end
 	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
 	if tt.NineSlice then tt.NineSlice:SetAlpha(0) end
+
+	-- blizzard calls this from GameTooltip_OnHide on every hide, which is not required
+	if tt.template == 'Transparent' and tt.customBackdropAlpha == TT.db.colorAlpha then return end
 
 	-- Blizzard_MoneyFrame/Mainline/MoneyFrame.lua: secrets cause `MoneyFrame_Update` to crash out via `GameTooltip:SetLootItem(id)`
 	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use `alwaysCompareItems 0`
