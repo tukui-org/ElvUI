@@ -57,7 +57,7 @@ local POWER_NAME = _G.ADDITIONAL_POWER_BAR_NAME or 'MANA'
 local POWER_INDEX = _G.ADDITIONAL_POWER_BAR_INDEX or 0
 
 local function UpdateColor(self, event, unit, powerType)
-	if(not (unit and oUF:UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
+	if(not (unit and powerType == POWER_NAME and oUF:UnitIsUnit(unit, 'player'))) then return end
 	local element = self.AdditionalPower
 
 	local color
@@ -96,7 +96,7 @@ local function UpdateColor(self, event, unit, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if(not (unit and oUF:UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
+	if(not (unit and powerType == POWER_NAME and oUF:UnitIsUnit(unit, 'player'))) then return end
 	local element = self.AdditionalPower
 
 	--[[ Callback: AdditionalPower:PreUpdate(unit)
