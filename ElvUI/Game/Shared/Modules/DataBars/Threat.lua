@@ -111,7 +111,7 @@ function DB:ThreatBar_Toggle()
 		bar:RegisterEvent('PLAYER_TARGET_CHANGED')
 		bar:RegisterUnitEvent('UNIT_THREAT_LIST_UPDATE', 'pet', 'player', 'target')
 		bar:RegisterUnitEvent('UNIT_FLAGS', 'player', 'target')
-		bar:RegisterUnitEvent('UNIT_PET', 'pet')
+		bar:RegisterUnitEvent('UNIT_PET', 'player') -- fires with the owner unit
 
 		DB:ThreatBar_Update()
 	else
