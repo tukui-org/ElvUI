@@ -166,13 +166,15 @@ function S:Blizzard_MailFrame()
 
 	S:HandleTrimScrollBar(_G.OpenMailScrollFrame.ScrollBar)
 
-	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
-	_G.MailTextFontNormal:FontTemplate(nil, 13)
+	-- no outline on Blizzard's dark letter text
+	local letterFontStyle = not parchment and 'NONE' or nil
+	_G.InvoiceTextFontNormal:FontTemplate(nil, 13, letterFontStyle)
+	_G.MailTextFontNormal:FontTemplate(nil, 13, letterFontStyle)
+	_G.OpenMailArithmeticLine:Kill()
 
 	if parchment then
 		_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
 		_G.MailTextFontNormal:SetTextColor(1, 1, 1)
-		_G.OpenMailArithmeticLine:Kill()
 	end
 
 	_G.OpenMailLetterButton:StripTextures()

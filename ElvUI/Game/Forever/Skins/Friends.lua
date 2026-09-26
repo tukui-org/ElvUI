@@ -69,6 +69,15 @@ local function RAFRewards()
 	end
 end
 
+-- parchment remover off: the pane art above the ElvUI backdrop, its brackets and watermark above the parchment
+local function RAFPaneParchment(pane)
+	pane.Background:SetDrawLayer('BACKGROUND', 1)
+
+	for _, region in next, { pane.Bracket_TopLeft, pane.Bracket_TopRight, pane.Bracket_BottomRight, pane.Bracket_BottomLeft, pane.Watermark } do
+		region:SetDrawLayer('BACKGROUND', 2)
+	end
+end
+
 local function RAFShowSplashScreen(frame)
 	frame.SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
 end
@@ -383,7 +392,7 @@ function S:FriendsFrame()
 		Claiming.Watermark:SetAlpha(0)
 	else
 		Claiming.Inset:StripTextures()
-		Claiming.Background:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+		RAFPaneParchment(Claiming)
 	end
 
 	Claiming:SetTemplate('Transparent')
@@ -420,7 +429,7 @@ function S:FriendsFrame()
 		rewardsFrame.Watermark:SetAlpha(0)
 	else
 		rewardsFrame.Border:StripTextures()
-		rewardsFrame.Background:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+		RAFPaneParchment(rewardsFrame)
 	end
 
 	rewardsFrame:SetTemplate('Transparent')
