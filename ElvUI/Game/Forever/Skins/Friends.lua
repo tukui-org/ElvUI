@@ -79,7 +79,8 @@ local function RAFPaneParchment(pane)
 end
 
 local function RAFShowSplashScreen(frame)
-	frame.SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
+	local r, g, b = unpack(E.media.bordercolor)
+	frame.SplashFrame.Background:SetColorTexture(r, g, b)
 end
 
 local InviteAtlas = {

@@ -230,8 +230,7 @@ function S:QuestInfo_ShowRequiredMoney() -- self is not S
 	end
 end
 
--- parchment remover off:
--- fit the page art of a QuestFramePanelTemplate frame into its scroll frame
+-- parchment remover off: fit the page art of a QuestFramePanelTemplate frame into its scroll frame
 local function QuestPanelParchment(panel, scrollFrame)
 	panel.Bg:SetInside(scrollFrame)
 	panel.Bg:SetAlpha(1)

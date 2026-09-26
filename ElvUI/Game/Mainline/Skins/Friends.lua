@@ -385,7 +385,8 @@ function S:FriendsFrame()
 	S:HandleButton(SplashFrame.OKButton)
 
 	if E.private.skins.parchmentRemoverEnable then
-		SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
+		local r, g, b = unpack(E.media.bordercolor)
+		SplashFrame.Background:SetColorTexture(r, g, b)
 
 		SplashFrame.PictureFrame:Hide()
 		SplashFrame.Bracket_TopLeft:Hide()

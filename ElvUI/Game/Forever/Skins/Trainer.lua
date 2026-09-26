@@ -60,7 +60,7 @@ function S:Blizzard_TrainerUI()
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	local skillsBG = ClassTrainerFrame.BG -- TrainerTextures behind the skill list
 	local skillsTexture, skillsCoords = skillsBG:GetTexture(), { skillsBG:GetTexCoord() }
-	S:HandlePortraitFrame(ClassTrainerFrame)
+	S:HandlePortraitFrame(ClassTrainerFrame) -- this clears stuff, skillsTexture will be set again later
 
 	if not E.private.skins.parchmentRemoverEnable then
 		skillsBG:SetTexture(skillsTexture)
