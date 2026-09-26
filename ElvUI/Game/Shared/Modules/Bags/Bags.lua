@@ -586,6 +586,8 @@ function B:HideSlotItemGlow()
 end
 
 function B:CheckSlotNewItem(slot, bagID, slotID)
+	slot.newItemPending = nil
+
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
@@ -772,7 +774,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and db.junkIcon) end
 	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end -- Check if item is an upgrade and show/hide upgrade icon accordingly
 
-	if db.newItemGlow then
+	if db.newItemGlow and not slot.newItemPending then
+		slot.newItemPending = true
+
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 
