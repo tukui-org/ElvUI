@@ -269,7 +269,7 @@ end
 function CH:MessageIsProtected(msg)
 	if E:IsSecretValue(msg) then return true end
 
-	return msg and (msg ~= gsub(msg, '(:?|?)|K(.-)|k', canChangeMessage))
+	return msg and strfind(msg, '|K', 1, true) and (msg ~= gsub(msg, '(:?|?)|K(.-)|k', canChangeMessage))
 end
 
 function CH:RemoveSmiley(key)
@@ -668,8 +668,7 @@ function CH:GetGroupDistribution()
 end
 
 function CH:InsertEmotions(msg)
-	for word in gmatch(msg, '%s-%S+%s*') do
-		word = strtrim(word)
+	for word in gmatch(msg, '%S+') do
 		local pattern = E:EscapeString(word)
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
@@ -1686,7 +1685,9 @@ function CH:FindURL(event, msg, author, ...)
 		text = gsub(gsub(text, '(%S)({.-})', '%1 %2'), '({.-})(%S)', '%1 %2')
 	end
 
-	text = gsub(gsub(text, '(%S)(|c.-|H.-|h.-|h|r)', '%1 %2'), '(|c.-|H.-|h.-|h|r)(%S)', '%1 %2')
+	if strfind(text, '|H', 1, true) then -- both patterns need a hyperlink
+		text = gsub(gsub(text, '(%S)(|c.-|H.-|h.-|h|r)', '%1 %2'), '(|c.-|H.-|h.-|h|r)(%S)', '%1 %2')
+	end
 
 	-- http://example.com
 	local newMsg, found = gsub(text, '(%a+)://(%S+)(%s?)', CH.ReplaceProtocol)
