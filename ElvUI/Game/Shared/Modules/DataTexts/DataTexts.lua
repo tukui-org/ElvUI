@@ -64,13 +64,16 @@ DT.PanelPool = {
 DT.FontStrings = {}
 DT.AssignedDatatexts = {}
 DT.UnitEvents = {
-	UNIT_AURA = true,
-	UNIT_RESISTANCES = true,
-	UNIT_STATS = true,
-	UNIT_ATTACK_POWER = true,
-	UNIT_RANGED_ATTACK_POWER = true,
-	UNIT_TARGET = true,
-	UNIT_SPELL_HASTE = true
+	UNIT_PET = true,	-- DPS and HPS
+	UNIT_AURA = true,	-- multiple
+	UNIT_STATS = true,	-- multiple
+	UNIT_RESISTANCES = 'Armor',
+	UNIT_ATTACK_POWER = 'AttackPower',
+	UNIT_RANGED_ATTACK_POWER = 'AttackPower',
+	UNIT_TARGET = 'Avoidance',
+	UNIT_SPELL_HASTE = 'MovementSpeed',
+	UNIT_ATTACK_SPEED = 'Haste',
+	UNIT_INVENTORY_CHANGED = 'Ammo'
 }
 
 DT.SPECIALIZATION_CACHE = {}
