@@ -134,7 +134,6 @@ local function UpdateColor(self, event, unit)
 	local unitThreat = UnitThreatSituation('player', unit)
 	local unitControlled = UnitPlayerControlled(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	local _, classToken = UnitClass(unit)
 
 	local r, g, b, color, atlas
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
@@ -185,6 +184,7 @@ local function UpdateColor(self, event, unit)
 			end
 		end
 	elseif (element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer) or (element.colorClassPet and unitControlled and not isPlayer) then
+		local _, classToken = UnitClass(unit)
 		color = (oUF:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif(element.colorSelection and unitSelectionType) then
 		color = self.colors.selection[unitSelectionType]
