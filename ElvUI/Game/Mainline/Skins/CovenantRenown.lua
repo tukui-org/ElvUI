@@ -4,6 +4,15 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local function Covenant_SetupData(frame)
+	frame.CloseButton.Border:Hide()
+
+	if E.private.skins.parchmentRemoverEnable then
+		frame:StripTextures()
+		frame:SetTemplate('Transparent')
+	end
+end
+
 function S:Blizzard_CovenantRenown()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantRenown) then return end
 
@@ -16,14 +25,7 @@ function S:Blizzard_CovenantRenown()
 	skipButton:SetHighlightFontObject('ElvUIFontSmall')
 	skipButton:SetDisabledFontObject('ElvUIFontSmall')
 
-	hooksecurefunc(frame, 'SetUpCovenantData', function(Frame)
-		Frame.CloseButton.Border:Hide()
-
-		if E.private.skins.parchmentRemoverEnable then
-			Frame:StripTextures()
-			Frame:SetTemplate('Transparent')
-		end
-	end)
+	hooksecurefunc(frame, 'SetUpCovenantData', Covenant_SetupData)
 
 	if E.private.skins.parchmentRemoverEnable then
 		frame.TrackFrame:SetTemplate('Transparent')

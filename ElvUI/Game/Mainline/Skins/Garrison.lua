@@ -208,6 +208,10 @@ local function ReportListScrollUpdate(frame)
 	frame:ForEachFrame(ReportListScrollUpdateChild)
 end
 
+local function Covenant_SetupTabs(frame)
+	frame.MapTab:SetShown(not frame.Tab2:IsShown())
+end
+
 function S:Blizzard_GarrisonUI()
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
 		S:GarrisonShipyardTooltip() -- requires Garrison UI unlike the others
@@ -623,9 +627,7 @@ function S:Blizzard_GarrisonUI()
 	CovenantMissionFrame.RaisedBorder:SetAlpha(0)
 
 	-- This is needed if we use StripTextures on the Covenant Frames
-	hooksecurefunc(CovenantMissionFrame, 'SetupTabs', function(frame)
-		frame.MapTab:SetShown(not frame.Tab2:IsShown())
-	end)
+	hooksecurefunc(CovenantMissionFrame, 'SetupTabs', Covenant_SetupTabs)
 
 	-- Complete Missions
 	_G.CombatLog.ElevatedFrame:SetAlpha(0)
