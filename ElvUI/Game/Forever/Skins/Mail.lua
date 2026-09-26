@@ -91,8 +91,16 @@ function S:Blizzard_MailFrame()
 	_G.MailFrameTab1:Point('TOPLEFT', _G.MailFrame, 'BOTTOMLEFT', -3, 0)
 	_G.MailFrameTab2:Point('TOPLEFT', _G.MailFrameTab1, 'TOPRIGHT', -5, 0)
 
+	local parchment = E.private.skins.parchmentRemoverEnable
+
 	-- send mail
-	_G.SendMailScrollFrame:StripTextures(true)
+	if parchment then
+		_G.SendMailScrollFrame:StripTextures(true)
+	else
+		_G.SendStationeryBackgroundLeft:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+		_G.SendStationeryBackgroundRight:SetDrawLayer('BACKGROUND', 1)
+	end
+
 	_G.SendMailScrollFrame:SetTemplate()
 
 	S:HandleTrimScrollBar(_G.SendMailScrollFrame.ScrollBar)
@@ -145,19 +153,27 @@ function S:Blizzard_MailFrame()
 	S:HandleButton(_G.OpenMailCancelButton, true)
 	S:HandleButton(_G.OpenAllMail, true)
 
-	_G.InboxFrame:StripTextures()
-	_G.MailFrameInset:Kill()
+	if parchment then
+		_G.InboxFrame:StripTextures()
+		_G.OpenMailScrollFrame:StripTextures(true)
+	else
+		_G.OpenStationeryBackgroundLeft:SetDrawLayer('BACKGROUND', 1)
+		_G.OpenStationeryBackgroundRight:SetDrawLayer('BACKGROUND', 1)
+	end
 
-	_G.OpenMailScrollFrame:StripTextures(true)
+	_G.MailFrameInset:Kill()
 	_G.OpenMailScrollFrame:SetTemplate()
 
 	S:HandleTrimScrollBar(_G.OpenMailScrollFrame.ScrollBar)
 
 	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
 	_G.MailTextFontNormal:FontTemplate(nil, 13)
-	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
-	_G.MailTextFontNormal:SetTextColor(1, 1, 1)
-	_G.OpenMailArithmeticLine:Kill()
+
+	if parchment then
+		_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
+		_G.MailTextFontNormal:SetTextColor(1, 1, 1)
+		_G.OpenMailArithmeticLine:Kill()
+	end
 
 	_G.OpenMailLetterButton:StripTextures()
 	_G.OpenMailLetterButton:SetTemplate(nil, true)

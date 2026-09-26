@@ -230,6 +230,26 @@ function S:QuestInfo_ShowRequiredMoney() -- self is not S
 	end
 end
 
+-- parchment remover off:
+-- fit the page art of a QuestFramePanelTemplate frame into its scroll frame
+local function QuestPanelParchment(panel, scrollFrame)
+	panel.Bg:SetInside(scrollFrame)
+	panel.Bg:SetAlpha(1)
+	panel.Bg:SetDrawLayer('BACKGROUND', 1) -- the popup frame carries its own ElvUI backdrop
+
+	panel.SealMaterialBG:SetInside(scrollFrame)
+	panel.SealMaterialBG:SetAlpha(1)
+
+	-- stone, marble and bronze letters, same origin as the parchment
+	panel.MaterialTopLeft:Point('TOPLEFT', panel.Bg)
+	panel.MaterialTopLeft:SetAlpha(1)
+	panel.MaterialTopRight:SetAlpha(1)
+	panel.MaterialBotLeft:SetAlpha(1)
+	panel.MaterialBotRight:SetAlpha(1)
+
+	scrollFrame.Center:Hide()
+end
+
 function S:BlizzardQuestFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
 
@@ -320,6 +340,9 @@ function S:BlizzardQuestFrames()
 		_G.QuestRewardScrollFrame:SetTemplate('NoBackdrop')
 		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('NoBackdrop')
 
+		_G.QuestLogPopupDetailFrame.Bg:SetAlpha(0) -- Blizzard sets the atlas again on every ShowQuest
+		_G.QuestLogPopupDetailFrame.SealMaterialBG:SetAlpha(0)
+
 		_G.QuestModelScene.ModelTextFrame:StripTextures()
 		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
@@ -329,25 +352,11 @@ function S:BlizzardQuestFrames()
 		_G.QuestRewardScrollFrame:SetTemplate('Transparent')
 		_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('Transparent')
 
-		_G.QuestFrameDetailPanel.SealMaterialBG:SetInside(_G.QuestDetailScrollFrame)
-		_G.QuestFrameRewardPanel.SealMaterialBG:SetInside(_G.QuestRewardScrollFrame)
-		_G.QuestFrameProgressPanel.SealMaterialBG:SetInside(_G.QuestProgressScrollFrame)
-		_G.QuestFrameGreetingPanel.SealMaterialBG:SetInside(_G.QuestGreetingScrollFrame)
-
-		_G.QuestFrameDetailPanel.Bg:SetInside(_G.QuestDetailScrollFrame)
-		_G.QuestFrameRewardPanel.Bg:SetInside(_G.QuestRewardScrollFrame)
-		_G.QuestFrameProgressPanel.Bg:SetInside(_G.QuestProgressScrollFrame)
-		_G.QuestFrameGreetingPanel.Bg:SetInside(_G.QuestGreetingScrollFrame)
-
-		_G.QuestFrameDetailPanel.Bg:SetAlpha(1)
-		_G.QuestFrameRewardPanel.Bg:SetAlpha(1)
-		_G.QuestFrameProgressPanel.Bg:SetAlpha(1)
-		_G.QuestFrameGreetingPanel.Bg:SetAlpha(1)
-
-		_G.QuestDetailScrollFrame.Center:Hide()
-		_G.QuestRewardScrollFrame.Center:Hide()
-		_G.QuestProgressScrollFrame.Center:Hide()
-		_G.QuestGreetingScrollFrame.Center:Hide()
+		QuestPanelParchment(_G.QuestFrameDetailPanel, _G.QuestDetailScrollFrame)
+		QuestPanelParchment(_G.QuestFrameRewardPanel, _G.QuestRewardScrollFrame)
+		QuestPanelParchment(_G.QuestFrameProgressPanel, _G.QuestProgressScrollFrame)
+		QuestPanelParchment(_G.QuestFrameGreetingPanel, _G.QuestGreetingScrollFrame)
+		QuestPanelParchment(_G.QuestLogPopupDetailFrame, _G.QuestLogPopupDetailFrameScrollFrame)
 
 		S:HandleBlizzardRegions(_G.QuestModelScene.ModelTextFrame)
 	end

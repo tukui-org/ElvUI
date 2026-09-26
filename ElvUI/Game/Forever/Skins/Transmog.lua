@@ -41,14 +41,13 @@ function S:Blizzard_Transmog()
 	if E.private.skins.parchmentRemoverEnable then
 		OutfitCollection.Background:Hide()
 		OutfitCollection.DividerBar:Hide()
+		OutfitCollection.GradientTop:Hide()
+		OutfitCollection.GradientBottom:Hide()
 
 		if not OutfitCollection.backdrop then
 			OutfitCollection:CreateBackdrop('Transparent')
 		end
 	end
-
-	OutfitCollection.GradientTop:Hide()
-	OutfitCollection.GradientBottom:Hide()
 
 	S:HandleTrimScrollBar(OutfitCollection.OutfitList.ScrollBar)
 	S:HandleButton(OutfitCollection.SaveOutfitButton, nil, nil, nil, true, nil, nil, nil, true)

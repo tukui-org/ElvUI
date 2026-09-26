@@ -69,6 +69,10 @@ local function RAFRewards()
 	end
 end
 
+local function RAFShowSplashScreen(frame)
+	frame.SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
+end
+
 local InviteAtlas = {
 	['friendslist-invitebutton-horde-normal'] = [[Interface\FriendsFrame\PlusManz-Horde]],
 	['friendslist-invitebutton-alliance-normal'] = [[Interface\FriendsFrame\PlusManz-Alliance]],
@@ -355,8 +359,11 @@ function S:FriendsFrame()
 	S:HandleButton(SplashFrame.OKButton)
 
 	if E.private.skins.parchmentRemoverEnable then
-		SplashFrame.Background:SetColorTexture(unpack(E.media.bordercolor))
+		RAFShowSplashScreen(RAF)
+		-- Blizzard sets the parchment atlas again on every show
+		hooksecurefunc(RAF, 'ShowSplashScreen', RAFShowSplashScreen)
 
+		SplashFrame.Description:SetTextColor(1, 1, 1)
 		SplashFrame.PictureFrame:Hide()
 		SplashFrame.Bracket_TopLeft:Hide()
 		SplashFrame.Bracket_TopRight:Hide()
@@ -369,11 +376,18 @@ function S:FriendsFrame()
 	end
 
 	local Claiming = RAF.RewardClaiming
-	Claiming:StripTextures()
+	if E.private.skins.parchmentRemoverEnable then
+		Claiming:StripTextures()
+		-- Blizzard sets the atlas again on every reward update
+		Claiming.Background:SetAlpha(0)
+		Claiming.Watermark:SetAlpha(0)
+	else
+		Claiming.Inset:StripTextures()
+		Claiming.Background:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+	end
+
 	Claiming:SetTemplate('Transparent')
 	Claiming:Point('TOPLEFT', 4, -84)
-	Claiming.Background:SetAlpha(0)
-	Claiming.Watermark:SetAlpha(0)
 	S:HandleButton(Claiming.ClaimOrViewRewardButton)
 
 	local NextReward = Claiming.NextRewardButton
@@ -399,10 +413,17 @@ function S:FriendsFrame()
 
 	-- Rewards
 	local rewardsFrame = _G.RecruitAFriendRewardsFrame
-	rewardsFrame:StripTextures()
+	if E.private.skins.parchmentRemoverEnable then
+		rewardsFrame:StripTextures()
+		-- Blizzard sets the atlas again on every refresh
+		rewardsFrame.Background:SetAlpha(0)
+		rewardsFrame.Watermark:SetAlpha(0)
+	else
+		rewardsFrame.Border:StripTextures()
+		rewardsFrame.Background:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+	end
+
 	rewardsFrame:SetTemplate('Transparent')
-	rewardsFrame.Background:SetAlpha(0)
-	rewardsFrame.Watermark:SetAlpha(0)
 	S:HandleCloseButton(rewardsFrame.CloseButton)
 
 	hooksecurefunc(rewardsFrame, 'UpdateRewards', RAFRewards)

@@ -8,6 +8,7 @@ function S:GuildRegistrarFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildregistrar) then return end
 
 	local GuildRegistrarFrame = _G.GuildRegistrarFrame
+	local pageBG = GuildRegistrarFrame.Bg:GetAtlas()
 	S:HandlePortraitFrame(GuildRegistrarFrame)
 
 	S:HandleTrimScrollBar(GuildRegistrarFrame.ScrollBar)
@@ -27,12 +28,18 @@ function S:GuildRegistrarFrame()
 
 	_G.GuildRegistrarFrameEditBox:Height(20)
 
-	for i = 1, 2 do
-		_G['GuildRegistrarButton'..i]:GetFontString():SetTextColor(1, 1, 1)
-	end
+	if E.private.skins.parchmentRemoverEnable then
+		for i = 1, 2 do
+			local text = _G['GuildRegistrarButton'..i]:GetFontString()
+			text:SetTextColor(1, 1, 1)
+		end
 
-	_G.GuildRegistrarPurchaseText:SetTextColor(1, 1, 1)
-	_G.AvailableServicesText:SetTextColor(1, 1, 0)
+		_G.GuildRegistrarPurchaseText:SetTextColor(1, 1, 1)
+		_G.AvailableServicesText:SetTextColor(1, 1, 0)
+	else
+		GuildRegistrarFrame.Bg:SetAtlas(pageBG)
+		GuildRegistrarFrame.Bg:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GuildRegistrarFrame')

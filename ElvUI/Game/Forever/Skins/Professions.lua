@@ -67,16 +67,22 @@ local function HandleSchematicInit(form)
 	end
 end
 
-local function HandleSchematicForm(form)
+local function HandleSchematicForm(form, noParchment)
 	form:StripTextures()
 	form:CreateBackdrop('Transparent')
 	form.backdrop:SetInside()
 
 	-- Blizzard re-applies the atlas and shows these on profession change
 	form.Background:SetInside(form.backdrop)
-	form.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
-	form.Background:SetAlpha(0.6)
-	form.MinimalBackground:SetAlpha(0.6)
+
+	if noParchment or E.private.skins.parchmentRemoverEnable then
+		form.Background:SetAlpha(0)
+		form.MinimalBackground:SetAlpha(0)
+	else
+		form.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
+		form.Background:SetAlpha(0.6)
+		form.MinimalBackground:SetAlpha(0.6)
+	end
 
 	S:HandleCheckBox(form.TrackRecipeCheckbox)
 	form.TrackRecipeCheckbox:Size(24)
@@ -265,7 +271,13 @@ function S:Blizzard_Professions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
 	local ProfessionsFrame = _G.ProfessionsFrame
+	local pageBG = ProfessionsFrame.Bg:GetAtlas()
 	S:HandlePortraitFrame(ProfessionsFrame)
+
+	if not E.private.skins.parchmentRemoverEnable then
+		ProfessionsFrame.Bg:SetAtlas(pageBG)
+		ProfessionsFrame.Bg:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+	end
 
 	S:HandleLargeSideTab(ProfessionsFrame.ProfessionsOverviewTab)
 	for _, tab in next, ProfessionsFrame.rightProfessionTabs do
@@ -277,7 +289,10 @@ function S:Blizzard_Professions()
 
 	-- CraftingPage (ProfessionsCraftingPageTemplate)
 	local CraftingPage = ProfessionsFrame.CraftingPage
-	CraftingPage:StripTextures() -- Profession-Background-Template2 artwork
+	if E.private.skins.parchmentRemoverEnable then
+		CraftingPage:StripTextures() -- Profession-Background-Template2 artwork
+	end
+
 	S:HandleButton(CraftingPage.CreateButton, nil, nil, nil, true) -- SharedButtonSmallTemplate, doesn't have a backdrop
 	S:HandleButton(CraftingPage.CreateAllButton, nil, nil, nil, true)
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
@@ -332,7 +347,7 @@ function S:Blizzard_Professions()
 
 	local InspectRecipe = _G.InspectRecipeFrame
 	S:HandleFrame(InspectRecipe)
-	HandleSchematicForm(InspectRecipe.SchematicForm)
+	HandleSchematicForm(InspectRecipe.SchematicForm, true)
 
 	-- BookPage (ProfessionsBookFrameTemplate)
 	local BookContent = ProfessionsFrame.BookPage.ProfessionsContentFrame

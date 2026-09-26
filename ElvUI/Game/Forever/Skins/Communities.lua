@@ -493,6 +493,13 @@ function S:Blizzard_Communities()
 		newsBackdrop:Point('TOPLEFT', GuildDetailsFrameNews, 7, -22)
 		newsBackdrop:Point('BOTTOMRIGHT', GuildDetailsFrameNews, -13, 1)
 		GuildDetailsFrameInfo.newsBackdrop = newsBackdrop
+	else
+		-- the horizontal dividers are the only ARTWORK textures, the page art is BACKGROUND
+		for _, region in next, { GuildDetailsFrameInfo:GetRegions() } do
+			if region:IsObjectType('Texture') and region:GetDrawLayer() == 'ARTWORK' then
+				region:SetAlpha(0)
+			end
+		end
 	end
 
 	GuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)

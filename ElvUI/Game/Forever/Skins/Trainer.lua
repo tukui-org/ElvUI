@@ -58,7 +58,15 @@ function S:Blizzard_TrainerUI()
 	S:HandleButton(_G.ClassTrainerTrainButton)
 
 	local ClassTrainerFrame = _G.ClassTrainerFrame
+	local skillsBG = ClassTrainerFrame.BG -- TrainerTextures behind the skill list
+	local skillsTexture, skillsCoords = skillsBG:GetTexture(), { skillsBG:GetTexCoord() }
 	S:HandlePortraitFrame(ClassTrainerFrame)
+
+	if not E.private.skins.parchmentRemoverEnable then
+		skillsBG:SetTexture(skillsTexture)
+		skillsBG:SetTexCoord(unpack(skillsCoords))
+		skillsBG:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+	end
 
 	hooksecurefunc(ClassTrainerFrame.ScrollBox, 'Update', ClassTrainerScrollUpdate)
 

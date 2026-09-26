@@ -19,6 +19,16 @@ local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
+local function HandleCollectionsBackground(frame)
+	if E.private.skins.parchmentRemoverEnable then
+		frame:StripTextures()
+	else
+		frame.Bg:Hide()
+		frame.NineSlice:StripTextures()
+		frame.BackgroundTile:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
+	end
+end
+
 local function ToyTextColor(text, r, g, b)
 	if r == 0.33 and g == 0.27 and b == 0.2 then
 		text:SetTextColor(0.4, 0.4, 0.4)
@@ -202,17 +212,25 @@ local function HeirloomsJournalUpdateButton(_, button)
 	button.name:Point('LEFT', button, 'RIGHT', 4, 8)
 	button.level:Point('TOPLEFT', button.levelBackground,'TOPLEFT', 25, 2)
 
-	if C_Heirloom_PlayerHasHeirloom(button.itemID) then
+	local collected = C_Heirloom_PlayerHasHeirloom(button.itemID)
+	if collected then
 		local r, g, b = E:GetItemQualityColor(ITEMQUALITY_HEIRLOOM)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
+	else
+		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
+	end
+
+	-- Blizzard's text colours are made for the collections tile
+	if not E.private.skins.parchmentRemoverEnable then return end
+
+	if collected then
 		button.name:SetTextColor(0.9, 0.9, 0.9)
 		button.level:SetTextColor(0.9, 0.9, 0.9)
 		button.special:SetTextColor(1, .82, 0)
-		button.backdrop:SetBackdropBorderColor(r, g, b)
 	else
 		button.name:SetTextColor(0.4, 0.4, 0.4)
 		button.level:SetTextColor(0.4, 0.4, 0.4)
 		button.special:SetTextColor(0.4, 0.4, 0.4)
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 	end
 end
 
@@ -220,9 +238,12 @@ local function HeirloomsJournalLayoutCurrentPage()
 	local headers = _G.HeirloomsJournal.heirloomHeaderFrames
 	if headers and next(headers) then
 		for _, header in next, headers do
-			header:StripTextures()
 			header.text:FontTemplate(nil, 15, 'SHADOW')
-			header.text:SetTextColor(0.9, 0.9, 0.9)
+
+			if E.private.skins.parchmentRemoverEnable then
+				header:StripTextures()
+				header.text:SetTextColor(0.9, 0.9, 0.9)
+			end
 		end
 	end
 end
@@ -339,7 +360,7 @@ local function SkinToyFrame()
 	_G.ToyBox.FilterDropdown.ResetButton:ClearAllPoints()
 	_G.ToyBox.FilterDropdown.ResetButton:Point('CENTER', _G.ToyBox.FilterDropdown, 'TOPRIGHT', 0, 0)
 
-	ToyBox.iconsFrame:StripTextures()
+	HandleCollectionsBackground(ToyBox.iconsFrame)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
 
@@ -358,8 +379,10 @@ local function SkinToyFrame()
 
 		E:RegisterCooldown(button.cooldown)
 
-		hooksecurefunc(button.name, 'SetTextColor', ToyTextColor)
-		hooksecurefunc(button.new, 'SetTextColor', ToyTextColor)
+		if E.private.skins.parchmentRemoverEnable then
+			hooksecurefunc(button.name, 'SetTextColor', ToyTextColor)
+			hooksecurefunc(button.new, 'SetTextColor', ToyTextColor)
+		end
 	end
 
 	hooksecurefunc('ToySpellButton_UpdateButton', ToySpellButtonUpdateButton)
@@ -368,7 +391,7 @@ end
 local function SkinHeirloomFrame()
 	local HeirloomsJournal = _G.HeirloomsJournal
 	S:HandleEditBox(HeirloomsJournal.SearchBox)
-	HeirloomsJournal.iconsFrame:StripTextures()
+	HandleCollectionsBackground(HeirloomsJournal.iconsFrame)
 
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(HeirloomsJournal.PagingFrame.PrevPageButton, nil, nil, true)
@@ -416,7 +439,7 @@ local function SkinWardrobeFrame()
 	WardrobeCollectionFrame.FilterButton.ResetButton:Point('CENTER', WardrobeCollectionFrame.FilterButton, 'TOPRIGHT', 0, 0)
 
 	S:HandleDropDownBox(_G.WardrobeCollectionFrame.ItemsCollectionFrame.WeaponDropdown)
-	WardrobeCollectionFrame.ItemsCollectionFrame:StripTextures()
+	HandleCollectionsBackground(WardrobeCollectionFrame.ItemsCollectionFrame)
 	WardrobeCollectionFrame.ItemsCollectionFrame:SetTemplate('Transparent')
 
 	for _, Frame in ipairs(WardrobeCollectionFrame.ContentFrames) do
@@ -470,7 +493,7 @@ local function SkinWardrobeFrame()
 
 	local SetsCollectionFrame = WardrobeCollectionFrame.SetsCollectionFrame
 	SetsCollectionFrame:SetTemplate('Transparent')
-	SetsCollectionFrame.RightInset:StripTextures()
+	HandleCollectionsBackground(SetsCollectionFrame.RightInset)
 	SetsCollectionFrame.LeftInset:StripTextures()
 	S:HandleTrimScrollBar(SetsCollectionFrame.ListContainer.ScrollBar)
 	hooksecurefunc(SetsCollectionFrame.ListContainer.ScrollBox, 'Update', SetsFrame_ScrollBoxUpdate)

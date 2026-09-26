@@ -36,8 +36,10 @@ function S:Blizzard_Calendar()
 	S:HandleCloseButton(_G.CalendarCloseButton)
 	_G.CalendarCloseButton:Point('TOPRIGHT', CalendarFrame, 'TOPRIGHT', -4, -4)
 
-	for i = 1, 7 do
-		_G['CalendarWeekday'..i..'Background']:SetAlpha(0)
+	if E.private.skins.parchmentRemoverEnable then
+		for i = 1, 7 do
+			_G['CalendarWeekday'..i..'Background']:SetAlpha(0)
+		end
 	end
 
 	SkinContainer(_G.CalendarViewEventInviteList)
