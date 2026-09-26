@@ -110,6 +110,10 @@ function B:SkinBag(bag)
 	bag:SetTemplate()
 	bag:StyleButton(true)
 
+	if bag.SlotHighlightTexture then
+		bag.SlotHighlightTexture:SetInside()
+	end
+
 	if bag.searchOverlay then
 		bag.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
 	end
@@ -268,8 +272,7 @@ function B:BagButton_UpdateTextures()
 	pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 
 	if self.SlotHighlightTexture then
-		self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3)
-		self.SlotHighlightTexture:SetInside()
+		self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3) -- blizzard never re-anchors this one, SetInside is done once in SkinBag
 	end
 end
 
@@ -301,7 +304,7 @@ function B:LoadBagBar()
 	--_G.EventRegistry:UnregisterCallback('MainMenuBarManager.OnExpandChanged', _G.BagsBar.Layout, _G.BagsBar)
 
 	if _G.MainMenuBarBagManager.OnCursorChanged then
-		_G.EventRegistry:UnregisterFrameEventAndCallback('CURSOR_CHANGED', _G.MainMenuBarBagManager.OnCursorChanged, _G.MainMenuBarBagManager)
+		_G.EventRegistry:UnregisterFrameEventAndCallback('CURSOR_CHANGED', _G.MainMenuBarBagManager)
 	end
 
 	if not E.private.bags.bagBar then return end
