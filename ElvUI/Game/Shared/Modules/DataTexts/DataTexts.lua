@@ -995,10 +995,20 @@ function DT:MenuGetItem(dt, value)
 	return index and options[index] == value
 end
 
+function DT:UpdateTooltipFonts()
+	if not DT.tooltip then return end
+
+	-- Ignore header font size here
+	local font, fontSize, fontOutline = TT.db.font, TT.db.textFontSize, TT.db.fontOutline
+	_G.DataTextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
+	_G.DataTextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
+end
+
 function DT:Initialize()
 	DT.Initialized = true
 
 	DT:BuildTables()
+	DT:UpdateTooltipFonts()
 
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)
@@ -1006,13 +1016,6 @@ function DT:Initialize()
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip then
 		TT:SetStyle(DT.tooltip)
 	end
-
-	-- Ignore header font size on DatatextTooltip
-	local font = E.db.tooltip.font
-	local fontOutline = E.db.tooltip.fontOutline
-	local textSize = E.db.tooltip.textFontSize
-	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
-	_G.DataTextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
 
 	if E.Modern or E.Mists or E.Wrath then
 		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
