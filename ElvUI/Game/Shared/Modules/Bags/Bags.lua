@@ -1432,6 +1432,8 @@ function B:SetBagAssignments(holder, skip)
 end
 
 function B:UpdateDelayedContainer(frame)
+	if not frame:IsShown() then return end -- pending bags are drained by Container_OnShow, no full refresh for a hidden frame
+
 	for bagID, container in next, frame.DelayedContainers do
 		if bagID ~= BACKPACK_CONTAINER then
 			B:SetBagAssignments(container)
@@ -2922,6 +2924,7 @@ end
 function B:Container_OnShow()
 	if not self.sortingSlots then
 		B:SetListeners(self)
+		B:UpdateDelayedContainer(self)
 	end
 end
 
