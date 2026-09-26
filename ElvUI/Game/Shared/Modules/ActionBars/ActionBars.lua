@@ -564,6 +564,21 @@ function AB:PLAYER_REGEN_ENABLED()
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
+function AB:VehicleButton_SetHighlightTexture(texture)
+	if texture == self.hover then return end
+
+	self:SetHighlightTexture(self.hover)
+end
+
+function AB:VehicleButton_SetPoint(_, parent)
+	local holder = self.holder
+	if not holder or parent == holder then return end
+
+	self:ClearAllPoints()
+	self:SetParent(UIParent)
+	self:Point('CENTER', holder)
+end
+
 function AB:CreateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
 	if not db.enable then return end
@@ -572,6 +587,8 @@ function AB:CreateVehicleLeave()
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 0, 300)
 	holder:Size(button:GetSize())
+	button.holder = holder
+
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,vehicleExitButton')
 
 	button:ClearAllPoints()
@@ -591,20 +608,10 @@ function AB:CreateVehicleLeave()
 		button:GetPushedTexture():SetTexCoord(0.140625, 0.859375, 0.140625, 0.859375)
 		button:StyleButton(nil, true, true)
 
-		hooksecurefunc(button, 'SetHighlightTexture', function(btn, tex)
-			if tex ~= btn.hover then
-				button:SetHighlightTexture(btn.hover)
-			end
-		end)
+		hooksecurefunc(button, 'SetHighlightTexture', AB.VehicleButton_SetHighlightTexture)
 	end
 
-	hooksecurefunc(button, 'SetPoint', function(_, _, parent)
-		if parent ~= holder then
-			button:ClearAllPoints()
-			button:SetParent(UIParent)
-			button:Point('CENTER', holder)
-		end
-	end)
+	hooksecurefunc(button, 'SetPoint', AB.VehicleButton_SetPoint)
 
 	AB:UpdateVehicleLeave()
 end
