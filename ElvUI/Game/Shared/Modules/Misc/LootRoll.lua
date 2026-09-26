@@ -48,7 +48,7 @@ local function SetTip(button)
 	GameTooltip:AddLine(button.tiptext)
 
 	local lineAdded
-	if button:IsEnabled() == 0 then
+	if not button:IsEnabled() then
 		GameTooltip:AddLine('|cffff3333'..L["Can't Roll"])
 	end
 
