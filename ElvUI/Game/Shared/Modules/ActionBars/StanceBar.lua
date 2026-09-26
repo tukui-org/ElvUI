@@ -28,8 +28,9 @@ bar.buttons = {}
 function AB:UPDATE_SHAPESHIFT_COOLDOWN()
 	local numForms = GetNumShapeshiftForms()
 	for i = 1, NUM_STANCE_SLOTS do
-		if i <= numForms then
-			local cooldown = _G['ElvUI_StanceBarButton'..i..'Cooldown']
+		local button = i <= numForms and bar.buttons[i]
+		local cooldown = button and button.cooldown
+		if cooldown then
 			local start, duration, active = GetShapeshiftFormCooldown(i)
 			if (active and active ~= 0) and start > 0 and duration > 0 then
 				cooldown:SetCooldown(start, duration)
