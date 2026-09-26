@@ -31,7 +31,6 @@ local UnitWidgetSet = UnitWidgetSet
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local GetCVarDefault = C_CVar.GetCVarDefault
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
@@ -692,11 +691,6 @@ function NP:UnitNPCID(unit) -- also used by Bags.lua
 	end
 end
 
-function NP:UpdateNumPlates()
-	-- wish there was another way to get just the amount
-	NP.numPlates = #C_NamePlate_GetNamePlates()
-end
-
 function NP:UpdatePlateGUID(nameplate, guid)
 	NP.PlateGUID[nameplate.unitGUID] = (guid and nameplate) or nil
 end
@@ -789,7 +783,6 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		NP:UpdatePlateGUID(self, self.unitGUID)
 	end
 
-	NP:UpdateNumPlates()
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)
 
@@ -846,8 +839,6 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	if self.unitGUID then
 		NP:UpdatePlateGUID(self)
 	end
-
-	NP:UpdateNumPlates()
 
 	if E.Modern then
 		NP:AuraContainer_RemoveActive(self)
@@ -1052,7 +1043,6 @@ function NP:Initialize()
 	}
 
 	NP.multiplier = NP.db.multiplier or 0.35
-	NP.numPlates = 0
 
 	NP:UpdateColors()
 
