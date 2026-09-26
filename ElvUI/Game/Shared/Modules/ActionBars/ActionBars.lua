@@ -565,9 +565,10 @@ function AB:PLAYER_REGEN_ENABLED()
 end
 
 function AB:VehicleButton_SetHighlightTexture(texture)
-	if texture == self.hover then return end
+	local hover = self.hover
+	if not hover or texture == hover then return end
 
-	self:SetHighlightTexture(self.hover)
+	self:SetHighlightTexture(hover)
 end
 
 function AB:VehicleButton_SetPoint(_, parent)
