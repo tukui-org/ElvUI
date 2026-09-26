@@ -13,7 +13,7 @@ local UnitPowerPercent = UnitPowerPercent
 local GetUnitPowerBarInfo = GetUnitPowerBarInfo
 local GetUnitPowerBarStrings = GetUnitPowerBarStrings
 
-local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
+local ScaleTo100 = CurveConstants.ScaleTo100
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local function UpdateTooltip(self)

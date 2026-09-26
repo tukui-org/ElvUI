@@ -95,7 +95,7 @@ local C_Timer_NewTimer = C_Timer.NewTimer
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local CreateFrame = CreateFrame
 
-local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
+local ScaleTo100 = CurveConstants.ScaleTo100
 local GenerateTextColorCode = C_ColorUtil.GenerateTextColorCode
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
 local WrapString = C_StringUtil.WrapString

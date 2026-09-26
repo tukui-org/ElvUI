@@ -62,7 +62,7 @@ local UnitTokenFromGUID = UnitTokenFromGUID
 local UnitSex = UnitSex
 
 local TooltipDataType = Enum.TooltipDataType
-local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
+local ScaleTo100 = CurveConstants.ScaleTo100
 local AddLinePreCall = TooltipDataProcessor and TooltipDataProcessor.AddLinePreCall
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
