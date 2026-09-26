@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('WorldMap')
 
 local _G = _G
+local abs = abs
 local next = next
 local strfind = strfind
 
@@ -152,6 +153,8 @@ function M:MapFadeOnUpdate(elapsed)
 		local fadeOut = IsPlayerMoving() and (not settings.fadePredicate or settings.fadePredicate())
 		local endAlpha = (fadeOut and (settings.minAlpha or 0.5)) or settings.maxAlpha or 1
 		local startAlpha = _G.WorldMapFrame:GetAlpha()
+
+		if abs(endAlpha - startAlpha) < 0.001 then return end -- dont restart the fade ten times a second while the map is open
 
 		object.timeToFade = settings.durationSec or 0.5
 		object.startAlpha = startAlpha
