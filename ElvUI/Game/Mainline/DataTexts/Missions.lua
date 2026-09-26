@@ -364,7 +364,7 @@ local function OnEvent(self, event, arg1)
 		self.text:SetText(AddInfo(MAIN_CURRENCY))
 	end
 
-	if event == 'MODIFIER_STATE_CHANGED' and not IsAltKeyDown() and E:GetMouseFocus() == self then
+	if event == 'MODIFIER_STATE_CHANGED' and not IsAltKeyDown() and self:IsMouseOver() then
 		OnEnter(self)
 	end
 end

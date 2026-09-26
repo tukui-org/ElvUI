@@ -1236,7 +1236,7 @@ function CH:TabOnEnter(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and E:GetMouseFocus() ~= chat.copyButton then
+		if chat and chat.copyButton and not chat.copyButton:IsMouseOver() then
 			chat.copyButton:SetAlpha(0.35)
 		end
 	end
@@ -1251,7 +1251,7 @@ function CH:TabOnLeave(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and E:GetMouseFocus() ~= chat.copyButton then
+		if chat and chat.copyButton and not chat.copyButton:IsMouseOver() then
 			chat.copyButton:SetAlpha(0)
 		end
 	end
@@ -1290,10 +1290,9 @@ function CH:HandleFadeTabs(chat, hook)
 		end
 	end
 
-	local focus = E:GetMouseFocus()
 	if not hook then
 		CH:TabOnEnter(tab)
-	elseif focus ~= tab and focus ~= chat then
+	elseif not tab:IsMouseOver() and not chat:IsMouseOver() then
 		CH:TabOnLeave(tab)
 	end
 end

@@ -498,16 +498,11 @@ function E:RemoveDefaults(db, defaults)
 	return db
 end
 
-do -- backwards compatibility for GetMouseFocus
-	local GetMouseFocus = GetMouseFocus
+do
 	local GetMouseFoci = GetMouseFoci
 	function E:GetMouseFocus()
-		if GetMouseFoci then
-			local frames = GetMouseFoci()
-			return frames and frames[1]
-		else
-			return GetMouseFocus()
-		end
+		local frames = GetMouseFoci()
+		return frames and frames[1]
 	end
 end
 
