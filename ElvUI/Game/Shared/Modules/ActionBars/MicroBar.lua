@@ -471,6 +471,7 @@ function AB:SetupMicroBar()
 		_G.AchievementMicroButton:Kill()
 		_G.PlayerSpellsMicroButton:Kill()
 		_G.HousingMicroButton:Kill()
+		_G.EJMicroButton:Kill()
 
 		-- bar art stays behind on the empty Blizzard menu
 		_G.MicroMenu.BorderArt:Kill()
