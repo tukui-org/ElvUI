@@ -26,17 +26,24 @@ end
 
 function UF:FrameGlow_ElementHook(frame, glow, which)
 	if not (frame and frame.__elements) then return end
-	tinsert(frame.__elements, function()
+
+	tinsert(frame.__elements, function(_, event)
 		local unit = frame.__unit or (frame.isForced and 'player')
 		if unit then
 			UF:FrameGlow_SetGlowColor(glow, unit, which)
 		end
 
-		if which == 'mouseoverGlow' then
-			UF:FrameGlow_PositionTexture(frame)
+		local isMouseGlow = which == 'mouseoverGlow'
+		if event ~= 'OnUpdate' then
+			if isMouseGlow then
+				UF:FrameGlow_PositionTexture(frame)
+			else
+				UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
+			end
+		end
+
+		if isMouseGlow then
 			UF:FrameGlow_CheckMouseover(frame)
-		else
-			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
 		end
 
 		if which == 'targetGlow' then
@@ -52,6 +59,7 @@ end
 function UF:FrameGlow_HookPowerBar(frame, power, powerName, glow, offset)
 	if (frame and power and powerName and glow and offset) and not glow[powerName..'Hooked'] then
 		glow[powerName..'Hooked'] = true
+
 		local func = function() UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, true) end
 		power:HookScript('OnShow', func)
 		power:HookScript('OnHide', func)
