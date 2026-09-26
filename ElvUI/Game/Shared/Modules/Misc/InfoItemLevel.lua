@@ -12,6 +12,7 @@ local unpack = unpack
 local UnitGUID = UnitGUID
 local UnitExists = UnitExists
 local CreateFrame = CreateFrame
+local InCombatLockdown = InCombatLockdown
 
 local InspectItems = {
 	'HeadSlot',
@@ -87,6 +88,7 @@ end
 
 function M:UpdateCharacterInfo(event)
 	if not (E.db.general.itemLevel.displayCharacterInfo and _G.CharacterFrame:IsShown()) then return end
+	if event == 'UPDATE_INVENTORY_DURABILITY' and InCombatLockdown() then return end -- nothing on the page can change in combat
 
 	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
 end
