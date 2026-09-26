@@ -25,6 +25,10 @@ local function HandleEventIcon(icon)
 	icon.SetTexCoord = E.noop
 end
 
+local function CalendarSetToday()
+	_G.CalendarTodayFrame:SetAllPoints()
+end
+
 function S:Blizzard_Calendar()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.calendar) then return end
 
@@ -98,9 +102,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarTodayFrame:SetBackdropColor(0,0,0,0)
 	_G.CalendarTodayFrame:SetScript('OnUpdate', nil)
 
-	hooksecurefunc('CalendarFrame_SetToday', function()
-		_G.CalendarTodayFrame:SetAllPoints()
-	end)
+	hooksecurefunc('CalendarFrame_SetToday', CalendarSetToday)
 
 	-- CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
