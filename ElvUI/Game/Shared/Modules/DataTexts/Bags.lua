@@ -120,4 +120,4 @@ local function ApplySettings(panel, hex)
 	end
 end
 
-DT:RegisterDatatext('Bags', nil, { 'BAG_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ApplySettings)
+DT:RegisterDatatext('Bags', nil, { 'BAG_UPDATE_DELAYED', 'BAG_CONTAINER_UPDATE' }, OnEvent, nil, OnClick, OnEnter, nil, L["Bags"], nil, ApplySettings)
