@@ -130,13 +130,11 @@ local function ChatEditBoxMinimized(frame)
 	editBox:Point('BOTTOMRIGHT', -12, 6)
 end
 
-local challengesBackdrop, motdBackdrop -- parchment remover only
-
 -- MOTD moves up into the challenges area when the guild has none
 local function GuildInfoHideChallenges(frame)
-	if motdBackdrop then -- one box down to the Guild Information header
-		motdBackdrop:Hide()
-		challengesBackdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 0, 118)
+	if frame.motdBackdrop then -- one box down to the Guild Information header
+		frame.motdBackdrop:Hide()
+		frame.challengesBackdrop:Point('BOTTOMRIGHT', frame, 0, 118)
 		frame.MOTDScrollFrame:Height(188)
 	else
 		frame.MOTDScrollFrame:Height(106)
@@ -447,32 +445,36 @@ function S:Blizzard_Communities()
 		GuildDetailsFrameNews:StripTextures()
 
 		-- Guild Challenges Background
-		challengesBackdrop = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
+		local challengesBackdrop = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
 		challengesBackdrop:SetTemplate('Transparent')
 		challengesBackdrop:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
-		challengesBackdrop:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -22)
-		challengesBackdrop:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 200)
+		challengesBackdrop:Point('TOPLEFT', GuildDetailsFrameInfo, 14, -22)
+		challengesBackdrop:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 0, 200)
+		GuildDetailsFrameInfo.challengesBackdrop = challengesBackdrop
 
 		-- Guild MOTD Background
-		motdBackdrop = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
+		local motdBackdrop = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
 		motdBackdrop:SetTemplate('Transparent')
 		motdBackdrop:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
-		motdBackdrop:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -158)
-		motdBackdrop:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', 0, 118)
+		motdBackdrop:Point('TOPLEFT', GuildDetailsFrameInfo, 14, -158)
+		motdBackdrop:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 0, 118)
+		GuildDetailsFrameInfo.motdBackdrop = motdBackdrop
 
 		-- Guild Information Background
-		local backdrop3 = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
-		backdrop3:SetTemplate('Transparent')
-		backdrop3:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
-		backdrop3:Point('TOPLEFT', GuildDetailsFrameInfo, 'TOPLEFT', 14, -236)
-		backdrop3:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, 'BOTTOMRIGHT', -7, 1)
+		local infoBackdrop = CreateFrame('Frame', nil, GuildDetailsFrameInfo)
+		infoBackdrop:SetTemplate('Transparent')
+		infoBackdrop:OffsetFrameLevel(-1, GuildDetailsFrameInfo)
+		infoBackdrop:Point('TOPLEFT', GuildDetailsFrameInfo, 14, -236)
+		infoBackdrop:Point('BOTTOMRIGHT', GuildDetailsFrameInfo, -7, 1)
+		GuildDetailsFrameInfo.infoBackdrop = infoBackdrop
 
 		-- Guild News Background
-		local backdrop4 = CreateFrame('Frame', nil, GuildDetailsFrameNews)
-		backdrop4:SetTemplate('Transparent')
-		backdrop4:OffsetFrameLevel(-1, GuildDetailsFrameNews)
-		backdrop4:Point('TOPLEFT', GuildDetailsFrameNews, 'TOPLEFT', 7, -22)
-		backdrop4:Point('BOTTOMRIGHT', GuildDetailsFrameNews, 'BOTTOMRIGHT', -13, 1)
+		local newsBackdrop = CreateFrame('Frame', nil, GuildDetailsFrameNews)
+		newsBackdrop:SetTemplate('Transparent')
+		newsBackdrop:OffsetFrameLevel(-1, GuildDetailsFrameNews)
+		newsBackdrop:Point('TOPLEFT', GuildDetailsFrameNews, 7, -22)
+		newsBackdrop:Point('BOTTOMRIGHT', GuildDetailsFrameNews, -13, 1)
+		GuildDetailsFrameInfo.newsBackdrop = newsBackdrop
 	end
 
 	GuildDetailsFrameInfo.TitleText:FontTemplate(nil, 14)
