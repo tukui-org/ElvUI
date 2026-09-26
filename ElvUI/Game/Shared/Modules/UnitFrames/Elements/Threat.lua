@@ -33,6 +33,8 @@ function UF:Configure_Threat(frame)
 	local threat = frame.ThreatIndicator
 	if not threat then return end
 
+	threat.lastStatus = nil -- let UpdateThreat reapply the style
+
 	local db = frame.db
 	local threatStyle = db and db.threatStyle
 	if threatStyle and threatStyle ~= 'NONE' then
@@ -148,9 +150,13 @@ function UF:UpdateThreat(unit, status, color)
 	local db = parent.db
 	if not db then return end
 
-	if (unit and parent.__unit == unit) and status and status > (db.threatPrimary and 1 or 0) then
+	local active = (unit and parent.__unit == unit) and (status and status > (db.threatPrimary and 1 or 0))
+	if active == self.lastStatus then return end -- threat events fire a lot, only touch the widgets when changed
+	self.lastStatus = active
+
+	if active then
 		local r, g, b = color:GetRGB()
-		UF:ThreatHandler(self, parent, db.threatStyle, status, r, g, b)
+		UF:ThreatHandler(self, parent, db.threatStyle, active, r, g, b)
 	else
 		UF:ThreatHandler(self, parent, db.threatStyle, nil, unpack(E.media.unitframeBorderColor))
 	end
