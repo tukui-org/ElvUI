@@ -553,7 +553,7 @@ function UF.SortAuraFunc(a, b)
 	if not a or not b or not a:IsShown() then return end
 	if not b:IsShown() then return true end
 
-	local frame = a:GetParent()
+	local frame = a.__owner
 	if frame and frame.db then
 		return frame.auraSort(a, b, frame.db.sortDirection)
 	end

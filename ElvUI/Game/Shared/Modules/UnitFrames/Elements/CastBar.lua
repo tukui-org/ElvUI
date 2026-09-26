@@ -465,7 +465,7 @@ function UF:CustomCastDelayText(duration, durationObject)
 	local remain, maximum = UF:GetCastDurations(self, duration, durationObject)
 	if not remain then return end
 
-	local db = self:GetParent().db
+	local db = self.__owner.db
 	if not (db and db.castbar) then return end
 
 	UF:SetCastDisplayDelay(self, db.castbar.format, duration, maximum, remain, self.delay)
@@ -475,7 +475,7 @@ function UF:CustomTimeText(duration, durationObject)
 	local remain, maximum = UF:GetCastDurations(self, duration, durationObject)
 	if not remain then return end
 
-	local db = self:GetParent().db
+	local db = self.__owner.db
 	if not (db and db.castbar) then return end
 
 	UF:SetCastDisplayCustom(self, db.castbar.format, duration, maximum, remain)
@@ -685,6 +685,7 @@ end
 function UF:PostCastStop(unit)
 	if self.hadTicks and unit == 'player' then
 		UF:HideTicks(self)
+
 		self.hadTicks = false
 		self.chainTick = nil -- reset the chain
 		self.chainTime = nil -- spell cast vars
@@ -692,7 +693,7 @@ function UF:PostCastStop(unit)
 end
 
 function UF:PostCastFail()
-	local db = self:GetParent().db
+	local db = self.__owner.db
 	local customColor = db and db.castbar and db.castbar.customColor
 	local color = (customColor and customColor.enable and customColor.colorInterrupted) or UF.db.colors.castInterruptedColor
 
@@ -710,7 +711,7 @@ end
 function UF:PostCastInterruptible(unit)
 	if unit == 'vehicle' or unit == 'player' then return end
 
-	local db = self:GetParent().db
+	local db = self.__owner.db
 	if not db or not db.castbar then return end
 
 	local r, g, b = UF.GetInterruptColor(self, db, unit)
