@@ -77,6 +77,42 @@ local function HandleCategoryButtons(name, icons)
 	end
 end
 
+local function ConfigureRewardFrame(rewardFrame, _, _, itemRewards, currencyRewards)
+	local rewardTexture, rewardQuaility, _ = nil, 1
+
+	if currencyRewards then
+		for _, reward in next, currencyRewards do
+			local info = C_CurrencyInfo_GetCurrencyInfo(reward.id)
+			if info and info.quality == ITEMQUALITY_ARTIFACT then
+				_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, info.name, info.iconFileID, info.quality)
+			end
+		end
+	end
+
+	if not rewardTexture and itemRewards then
+		local reward = itemRewards[1]
+		if reward then
+			_, _, rewardQuaility, _, _, _, _, _, _, rewardTexture = GetItemInfo(reward.id)
+		end
+	end
+
+	if rewardTexture then
+		rewardFrame.Icon:SetTexture(rewardTexture)
+
+		if rewardFrame.Icon.backdrop then
+			local r, g, b = E:GetItemQualityColor(rewardQuaility)
+			rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+		end
+	end
+end
+
+local function NewSeasonOnShow(popup)
+	for _, text in next, popup.SeasonDescriptions do -- created in the popup's own OnShow
+		text:SetTextColor(1, 1, 1)
+		text:SetShadowOffset(1, -1)
+	end
+end
+
 function S:Blizzard_PVPUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
 
@@ -170,34 +206,7 @@ function S:Blizzard_PVPUI()
 	ConquestFrame.Arena3v3:Point('TOP', ConquestFrame.Arena2v2, 'BOTTOM', 0, -2)
 
 	-- Item Borders for HonorFrame & ConquestFrame
-	hooksecurefunc('PVPUIFrame_ConfigureRewardFrame', function(rewardFrame, _, _, itemRewards, currencyRewards)
-		local rewardTexture, rewardQuaility, _ = nil, 1
-
-		if currencyRewards then
-			for _, reward in next, currencyRewards do
-				local info = C_CurrencyInfo_GetCurrencyInfo(reward.id)
-				if info and info.quality == ITEMQUALITY_ARTIFACT then
-					_, rewardTexture, _, rewardQuaility = CurrencyContainerUtil_GetCurrencyContainerInfo(reward.id, reward.quantity, info.name, info.iconFileID, info.quality)
-				end
-			end
-		end
-
-		if not rewardTexture and itemRewards then
-			local reward = itemRewards[1]
-			if reward then
-				_, _, rewardQuaility, _, _, _, _, _, _, rewardTexture = GetItemInfo(reward.id)
-			end
-		end
-
-		if rewardTexture then
-			rewardFrame.Icon:SetTexture(rewardTexture)
-
-			if rewardFrame.Icon.backdrop then
-				local r, g, b = E:GetItemQualityColor(rewardQuaility)
-				rewardFrame.Icon.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-		end
-	end)
+	hooksecurefunc('PVPUIFrame_ConfigureRewardFrame', ConfigureRewardFrame)
 
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.ConquestTooltip)
@@ -224,12 +233,7 @@ function S:Blizzard_PVPUI()
 	NewSeasonPopup.SeasonDescriptionHeader:SetTextColor(1, 1, 1)
 	NewSeasonPopup.SeasonDescriptionHeader:SetShadowOffset(1, -1)
 
-	NewSeasonPopup:HookScript('OnShow', function(popup)
-		for _, text in next, popup.SeasonDescriptions do -- created in the popup's own OnShow
-			text:SetTextColor(1, 1, 1)
-			text:SetShadowOffset(1, -1)
-		end
-	end)
+	NewSeasonPopup:HookScript('OnShow', NewSeasonOnShow)
 
 	-- Training Grounds Frame
 	local TrainingGroundsFrame = _G.TrainingGroundsFrame
