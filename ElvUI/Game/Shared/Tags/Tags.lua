@@ -1142,7 +1142,7 @@ do
 
 		E:AddTag('speed:percent-moving', 0.1, function(unit)
 			local speed = GetUnitSpeed(unit)
-			return speed > 0 and format('%s: %d%%', (speed / baseSpeed) * 100) or nil
+			return speed > 0 and format('%s: %d%%', speedText, (speed / baseSpeed) * 100) or nil
 		end)
 
 		E:AddTag('speed:percent-moving-raw', 0.1, function(unit)
