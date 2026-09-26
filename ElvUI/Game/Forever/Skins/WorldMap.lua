@@ -200,9 +200,9 @@ function S:WorldMapFrame()
 		if Tracking then
 			S:HandleNextPrevButton(Tracking, 'down', nil, true)
 			Tracking:SetTemplate()
-			Tracking.Icon:SetAlpha(0) -- OnMouseDown and OnMouseUp set the atlas again
 			Tracking:ClearAllPoints()
 			Tracking:Point('LEFT', MapNavBar, 'RIGHT', 10, 0)
+			Tracking.Icon:SetAlpha(0) -- OnMouseDown and OnMouseUp set the atlas again
 
 			local ResetButton = Tracking.ResetButton
 			S:HandleCloseButton(ResetButton)

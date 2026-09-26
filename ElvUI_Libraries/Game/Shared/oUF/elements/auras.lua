@@ -555,6 +555,6 @@ local function Disable(self)
 	end
 end
 
-if not oUF.isModern then -- Modern uses the aura containers
+if not oUF.isModern then
 	oUF:AddElement('Auras', Update, Enable, Disable)
 end
