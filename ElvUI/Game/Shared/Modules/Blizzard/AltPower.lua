@@ -137,7 +137,9 @@ function BL:UpdateAltPowerBarSettings()
 	BL:SetAltPowerBarText(bar.text, bar.powerName or '', bar.powerValue or 0, bar.powerMaxValue or 0, bar.powerPercent or 0)
 end
 
-function BL:UpdateAltPowerBar()
+function BL:UpdateAltPowerBar(event, _, powerType)
+	if event == 'UNIT_POWER_UPDATE' and powerType ~= 'ALTERNATE' then return end
+
 	local bar = _G.PlayerPowerBarAlt
 	if bar then
 		bar:UnregisterAllEvents()
@@ -210,9 +212,9 @@ function BL:SkinAltPowerBar()
 	BL:UpdateAltPowerBarSettings()
 	BL:UpdateAltPowerBarColors()
 
-	bar:RegisterEvent('UNIT_POWER_UPDATE')
-	bar:RegisterEvent('UNIT_POWER_BAR_SHOW')
-	bar:RegisterEvent('UNIT_POWER_BAR_HIDE')
+	bar:RegisterUnitEvent('UNIT_POWER_UPDATE', 'player')
+	bar:RegisterUnitEvent('UNIT_POWER_BAR_SHOW', 'player')
+	bar:RegisterUnitEvent('UNIT_POWER_BAR_HIDE', 'player')
 	bar:RegisterEvent('PLAYER_ENTERING_WORLD')
 	bar:SetScript('OnEvent', BL.UpdateAltPowerBar)
 end
