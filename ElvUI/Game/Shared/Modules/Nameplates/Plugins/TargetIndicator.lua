@@ -131,8 +131,11 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		self:RegisterEvent('UNIT_HEALTH', Path)
-		self:RegisterEvent('UNIT_MAXHEALTH', Path)
+		if not E.Modern then -- the low health glow is classic only, on modern the indicator only depends on the target
+			self:RegisterEvent('UNIT_HEALTH', Path)
+			self:RegisterEvent('UNIT_MAXHEALTH', Path)
+		end
+
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
 
 		return true
