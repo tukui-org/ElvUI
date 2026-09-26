@@ -308,13 +308,9 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 	if bar.bg then
 		if (bar.invertColors ~= colors.invertAurabars) or ((colors.transparentAurabars and not bar.isTransparent) or (bar.isTransparent and not colors.transparentAurabars)) then
 			UF:ToggleTransparentStatusBar(colors.transparentAurabars, bar, bar.bg, true, colors.invertAurabars)
-		else
-			if not bar.bg:GetTexture() then
-				UF:Update_StatusBar(bar.bg, colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
-			end
-
-			local orientation = bar:GetOrientation()
-			UF:SetStatusBarBackdropPoints(bar, bar:GetStatusBarTexture(), bar.bg, orientation)
+		elseif not bar.bg:GetTexture() then -- first bar update, ToggleTransparentStatusBar handles the anchors after that
+			UF:Update_StatusBar(bar.bg, colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
+			UF:SetStatusBarBackdropPoints(bar, bar:GetStatusBarTexture(), bar.bg, bar:GetOrientation())
 		end
 	end
 
