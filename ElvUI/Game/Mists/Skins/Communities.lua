@@ -98,10 +98,6 @@ local function HandleRequestToJoinFrame(frame)
 	S:HandleButton(frame.Cancel)
 end
 
-local function GuildNewsSetNews(button)
-	button.header:SetAlpha(0)
-end
-
 local function HandleRewardButton(child)
 	if not child.IsSkinned then
 		S:HandleIcon(child.Icon, true)
@@ -148,6 +144,30 @@ local function UpdateCommunitiesTabs(frame)
 			last = tab
 		end
 	end
+end
+
+local function ApplicantList_BuildList(list)
+	local columnDisplay = list.ColumnDisplay
+	for _, child in next, { columnDisplay:GetChildren() } do
+		if not child.IsSkinned then
+			child:StripTextures()
+
+			child:CreateBackdrop()
+			child.backdrop:Point('TOPLEFT', 4, -2)
+			child.backdrop:Point('BOTTOMRIGHT', 0, 2)
+
+			child:SetHighlightTexture(E.media.normTex)
+			local hl = child:GetHighlightTexture()
+			hl:SetVertexColor(1, 1, 1, .25)
+			hl:SetInside(child.backdrop)
+
+			child.IsSkinned = true
+		end
+	end
+end
+
+local function GuildNewsSetNews(button)
+	button.header:SetAlpha(0)
 end
 
 function S:Blizzard_Communities()
@@ -582,25 +602,7 @@ function S:Blizzard_Communities()
 	ApplicantList.backdrop:Point('TOPLEFT', 0, 0)
 	ApplicantList.backdrop:Point('BOTTOMRIGHT', -15, 0)
 
-	hooksecurefunc(ApplicantList, 'BuildList', function(list)
-		local columnDisplay = list.ColumnDisplay
-		for _, child in next, { columnDisplay:GetChildren() } do
-			if not child.IsSkinned then
-				child:StripTextures()
-
-				child:CreateBackdrop()
-				child.backdrop:Point('TOPLEFT', 4, -2)
-				child.backdrop:Point('BOTTOMRIGHT', 0, 2)
-
-				child:SetHighlightTexture(E.media.normTex)
-				local hl = child:GetHighlightTexture()
-				hl:SetVertexColor(1, 1, 1, .25)
-				hl:SetInside(child.backdrop)
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(ApplicantList, 'BuildList', ApplicantList_BuildList)
 end
 
 S:AddCallbackForAddon('Blizzard_Communities')

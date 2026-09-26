@@ -140,6 +140,30 @@ local function UpdateCommunitiesTabs(frame)
 	end
 end
 
+local function ApplicantList_BuildList(list)
+	local columnDisplay = list.ColumnDisplay
+	for _, child in next, { columnDisplay:GetChildren() } do
+		if not child.IsSkinned then
+			child:StripTextures()
+
+			child:CreateBackdrop()
+			child.backdrop:Point('TOPLEFT', 4, -2)
+			child.backdrop:Point('BOTTOMRIGHT', 0, 2)
+
+			child:SetHighlightTexture(E.media.normTex)
+			local hl = child:GetHighlightTexture()
+			hl:SetVertexColor(1, 1, 1, .25)
+			hl:SetInside(child.backdrop)
+
+			child.IsSkinned = true
+		end
+	end
+end
+
+local function GuildNewsSetNews(button)
+	button.header:SetAlpha(0)
+end
+
 function S:Blizzard_Communities()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
@@ -407,12 +431,7 @@ function S:Blizzard_Communities()
 	S:HandleTrimScrollBar(GuildDetailsFrameInfo.DetailsFrame.ScrollBar)
 	S:HandleTrimScrollBar(GuildDetailsFrameNews.ScrollBar)
 
-	hooksecurefunc('GuildNewsButton_SetNews', function(button, news_id)
-		local newsInfo = C_GuildInfo_GetGuildNewsInfo(news_id)
-		if newsInfo and button.header:IsShown() then
-			button.header:SetAlpha(0)
-		end
-	end)
+	hooksecurefunc('GuildNewsButton_SetNews', GuildNewsSetNews)
 
 	if E.private.skins.parchmentRemoverEnable then
 		GuildDetailsFrameInfo:StripTextures()
@@ -602,25 +621,7 @@ function S:Blizzard_Communities()
 	ApplicantList.backdrop:Point('BOTTOMRIGHT', -15, 0)
 	S:HandleTrimScrollBar(ApplicantList.ScrollBar)
 
-	hooksecurefunc(ApplicantList, 'BuildList', function(list)
-		local columnDisplay = list.ColumnDisplay
-		for _, child in next, { columnDisplay:GetChildren() } do
-			if not child.IsSkinned then
-				child:StripTextures()
-
-				child:CreateBackdrop()
-				child.backdrop:Point('TOPLEFT', 4, -2)
-				child.backdrop:Point('BOTTOMRIGHT', 0, 2)
-
-				child:SetHighlightTexture(E.media.normTex)
-				local hl = child:GetHighlightTexture()
-				hl:SetVertexColor(1, 1, 1, .25)
-				hl:SetInside(child.backdrop)
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(ApplicantList, 'BuildList', ApplicantList_BuildList)
 end
 
 S:AddCallbackForAddon('Blizzard_Communities')
