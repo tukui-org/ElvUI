@@ -37,7 +37,9 @@ local function GetValues(currentStanding, currentReactionThreshold, nextReaction
 	end
 end
 
-local function OnEvent(panel)
+local function OnEvent(panel, event, messageType)
+	if event == 'COMBAT_TEXT_UPDATE' and messageType ~= 'FACTION' then return end
+
 	local data = E:GetWatchedFactionInfo()
 	if not (data and data.name) then
 		return 	panel.text:SetText(NOT_APPLICABLE)
