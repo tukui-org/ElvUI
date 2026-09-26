@@ -108,6 +108,9 @@ local SOUND_U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
 local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
 
+local QUICKJOIN_FRIENDTEX = [[Interface\HELPFRAME\ReportLagIcon-Chat]]
+local QUICKJOIN_QUEUETEX = [[Interface\HELPFRAME\HelpIcon-ItemRestoration]]
+
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a '
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
 
@@ -3555,6 +3558,37 @@ function CH:CreateChatVoicePanel()
 	end
 end
 
+function CH:QuickJoin_ShowToast()
+	self.Toast.backdrop:Show()
+end
+
+function CH:QuickJoin_HideToast()
+	self.Toast.backdrop:Hide()
+end
+
+function CH:QuickJoin_ToastToFriendFinished()
+	self.FriendsButton:SetShown(not self.displayedToast)
+	self.FriendCount:SetShown(not self.displayedToast)
+end
+
+function CH:QuickJoin_UpdateQueueIcon()
+	if not self.displayedToast then return end
+
+	self.FriendsButton:SetTexture(QUICKJOIN_FRIENDTEX)
+	self.QueueButton:SetTexture(QUICKJOIN_QUEUETEX)
+	self.FlashingLayer:SetTexture(QUICKJOIN_QUEUETEX)
+	self.FriendsButton:SetShown(false)
+	self.FriendCount:SetShown(false)
+end
+
+function CH:QuickJoin_OnMouseUp()
+	self.FriendsButton:SetTexture(QUICKJOIN_FRIENDTEX)
+end
+
+function CH:QuickJoin_OnMouseDown()
+	self.FriendsButton:SetTexture(QUICKJOIN_FRIENDTEX)
+end
+
 function CH:SetupQuickJoin(holder)
 	local Button = _G.QuickJoinToastButton
 	Button:CreateBackdrop()
@@ -3565,28 +3599,9 @@ function CH:SetupQuickJoin(holder)
 	-- Button:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
 
 	-- Change the QuickJoin Textures. Looks better =)
-	local friendTex = [[Interface\HELPFRAME\ReportLagIcon-Chat]]
-	local queueTex = [[Interface\HELPFRAME\HelpIcon-ItemRestoration]]
+	Button.FriendsButton:SetTexture(QUICKJOIN_FRIENDTEX)
+	Button.QueueButton:SetTexture(QUICKJOIN_QUEUETEX)
 
-	Button.FriendsButton:SetTexture(friendTex)
-	Button.QueueButton:SetTexture(queueTex)
-
-	hooksecurefunc(Button, 'ToastToFriendFinished', function(t)
-		t.FriendsButton:SetShown(not t.displayedToast)
-		t.FriendCount:SetShown(not t.displayedToast)
-	end)
-
-	hooksecurefunc(Button, 'UpdateQueueIcon', function(t)
-		if not t.displayedToast then return end
-		t.FriendsButton:SetTexture(friendTex)
-		t.QueueButton:SetTexture(queueTex)
-		t.FlashingLayer:SetTexture(queueTex)
-		t.FriendsButton:SetShown(false)
-		t.FriendCount:SetShown(false)
-	end)
-
-	Button:HookScript('OnMouseDown', function(t) t.FriendsButton:SetTexture(friendTex) end)
-	Button:HookScript('OnMouseUp', function(t) t.FriendsButton:SetTexture(friendTex) end)
 	-- Skin the `QuickJoinToastButton.Toast`
 	Button.Toast:ClearAllPoints()
 	Button.Toast:Point('LEFT', Button, 'RIGHT', -6, 0)
@@ -3594,8 +3609,13 @@ function CH:SetupQuickJoin(holder)
 	Button.Toast:CreateBackdrop('Transparent')
 	Button.Toast.backdrop:Hide()
 
-	hooksecurefunc(Button, 'ShowToast', function() Button.Toast.backdrop:Show() end)
-	hooksecurefunc(Button, 'HideToast', function() Button.Toast.backdrop:Hide() end)
+	Button:HookScript('OnMouseUp', CH.QuickJoin_OnMouseUp)
+	Button:HookScript('OnMouseDown', CH.QuickJoin_OnMouseDown)
+
+	hooksecurefunc(Button, 'ToastToFriendFinished', CH.QuickJoin_ToastToFriendFinished)
+	hooksecurefunc(Button, 'UpdateQueueIcon', CH.QuickJoin_UpdateQueueIcon)
+	hooksecurefunc(Button, 'ShowToast', CH.QuickJoin_ShowToast)
+	hooksecurefunc(Button, 'HideToast', CH.QuickJoin_HideToast)
 end
 
 function CH:CopyChat_OnMouseDown(button)
