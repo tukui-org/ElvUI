@@ -107,26 +107,27 @@ function DB:ThreatBar_Toggle()
 	if bar.db.enable then
 		E:EnableMover(bar.holder.mover.name)
 
-		DB:RegisterEvent('PLAYER_TARGET_CHANGED', 'ThreatBar_Update')
-		DB:RegisterEvent('UNIT_THREAT_LIST_UPDATE', 'ThreatBar_Update')
-		DB:RegisterEvent('GROUP_ROSTER_UPDATE', 'ThreatBar_Update')
-		DB:RegisterEvent('UNIT_FLAGS', 'ThreatBar_Update')
-		DB:RegisterEvent('UNIT_PET', 'ThreatBar_Update')
+		bar:RegisterEvent('GROUP_ROSTER_UPDATE')
+		bar:RegisterEvent('PLAYER_TARGET_CHANGED')
+		bar:RegisterUnitEvent('UNIT_THREAT_LIST_UPDATE', 'pet', 'player', 'target')
+		bar:RegisterUnitEvent('UNIT_FLAGS', 'player', 'target')
+		bar:RegisterUnitEvent('UNIT_PET', 'pet')
 
 		DB:ThreatBar_Update()
 	else
 		E:DisableMover(bar.holder.mover.name)
 
-		DB:UnregisterEvent('PLAYER_TARGET_CHANGED')
-		DB:UnregisterEvent('UNIT_THREAT_LIST_UPDATE')
-		DB:UnregisterEvent('GROUP_ROSTER_UPDATE')
-		DB:UnregisterEvent('UNIT_FLAGS')
-		DB:UnregisterEvent('UNIT_PET')
+		bar:UnregisterEvent('PLAYER_TARGET_CHANGED')
+		bar:UnregisterEvent('UNIT_THREAT_LIST_UPDATE')
+		bar:UnregisterEvent('GROUP_ROSTER_UPDATE')
+		bar:UnregisterEvent('UNIT_FLAGS')
+		bar:UnregisterEvent('UNIT_PET')
 	end
 end
 
 function DB:ThreatBar()
 	local Threat = DB:CreateBar('ElvUI_ThreatBar', 'Threat', DB.ThreatBar_Update, nil, nil, {'TOPRIGHT', E.UIParent, 'TOPRIGHT', -3, -245})
+	Threat:SetScript('OnEvent', DB.ThreatBar_Update) -- bar.Update set by CreateBar
 	Threat:SetMinMaxValues(0, 100)
 	Threat.list = {}
 
