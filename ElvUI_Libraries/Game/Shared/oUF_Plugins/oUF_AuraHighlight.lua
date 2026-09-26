@@ -139,6 +139,6 @@ local function Disable(self)
 	end
 end
 
-if not oUF.isRetail then
+if not oUF.isModern then -- Modern uses the aura containers, the element would only register UNIT_AURA on every frame to return at ShouldSkipAuraUpdate
 	oUF:AddElement('AuraHighlight', Update, Enable, Disable)
 end
