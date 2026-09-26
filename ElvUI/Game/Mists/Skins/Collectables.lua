@@ -515,7 +515,7 @@ local function SkinWardrobeFrame()
 		border:SetBackdropColor(0, 0, 0, 0)
 		border.callbackBackdropColor = ClearBackdrop
 
-		Model.Border.border = border
+		Model.Border.border = border -- used by ModelBorderSetAtlas
 
 		Model.Border:SetAlpha(0)
 		Model.TransmogStateTexture:SetAlpha(0)
