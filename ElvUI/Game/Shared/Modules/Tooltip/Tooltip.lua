@@ -1186,10 +1186,10 @@ function TT:SetTooltipFonts()
 	-- Header has its own font settings
 	_G.GameTooltipHeaderText:FontTemplate(TT.db.headerFont, TT.db.headerFontSize, TT.db.headerFontOutline)
 
-	-- Ignore header font size on DatatextTooltip
-	if _G.DatatextTooltip then
-		_G.DatatextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
-		_G.DatatextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
+	-- Ignore header font size on DataTextTooltip
+	if _G.DataTextTooltip then
+		_G.DataTextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
+		_G.DataTextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
 	end
 
 	-- Comparison Tooltips has its own size setting
