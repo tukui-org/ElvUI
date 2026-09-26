@@ -555,6 +555,6 @@ local function Disable(self)
 	end
 end
 
-if oUF.wowtoc < 120100 then
+if not oUF.isModern then -- Modern uses the aura containers
 	oUF:AddElement('Auras', Update, Enable, Disable)
 end
