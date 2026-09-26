@@ -222,7 +222,7 @@ function B:SizeAndPositionBagBar()
 			end
 		end
 
-		if button.bagID ~= KEYRING_CONTAINER then
+		if button.BagID ~= KEYRING_CONTAINER then
 			B:GetBagAssignedInfo(button)
 		end
 	end
