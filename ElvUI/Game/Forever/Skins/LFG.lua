@@ -30,15 +30,15 @@ end
 
 local function CategorySelectionAddButton(frame, btnIndex)
 	local button = frame.CategoryButtons[btnIndex]
-	if button.IsSkinned then return end
+	if not button or button.IsSkinned then return end -- nil when the category has no activities
 
 	button:SetTemplate()
+	button:SetPushedTexture(E.ClearTexture)
 	button.Icon:SetDrawLayer('BACKGROUND', 2)
 	button.Icon:SetTexCoords()
 	button.Icon:SetInside()
-	button.Cover:Hide()
-	button.HighlightTexture:SetColorTexture(1, 1, 1, 0.1)
-	button.HighlightTexture:SetInside()
+	button.Cover:SetAlpha(0)
+	button.HighlightTexture:SetColorTexture(1, 1, 1, .1)
 
 	button.IsSkinned = true
 end
@@ -59,11 +59,43 @@ local function HandleWhoButton(button)
 	highlight:SetColorTexture(1, 1, 1, .25)
 	highlight:SetInside(button.backdrop)
 
+	S:HandleButton(button.InviteButton)
+
 	button.IsSkinned = true
 end
 
 local function LFGWhoList_Update(frame)
 	frame:ForEachFrame(HandleWhoButton)
+end
+
+-- Browse rows (LFGBrowseSearchEntryTemplate, LFGBrowseNestedSearchEntryTemplate, LFGBrowseSearchEntryGroupingTemplate)
+local function HandleBrowseButton(button)
+	if button.IsSkinned then return end
+
+	local background = button.ResultBG
+	background:SetAlpha(0)
+
+	button:CreateBackdrop('Transparent')
+	button.backdrop:SetAllPoints(background)
+
+	local highlight = button.Highlight
+	highlight:SetColorTexture(1, 1, 1, .25)
+	highlight:SetInside(button.backdrop)
+
+	local selected = button.Selected -- grouping headers have no Selected or DataDisplay
+	if selected then
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		selected:SetColorTexture(r, g, b, .25)
+		selected:SetInside(button.backdrop)
+
+		S:HandleButton(button.DataDisplay.DelistButton)
+	end
+
+	button.IsSkinned = true
+end
+
+local function LFGBrowse_Update(frame)
+	frame:ForEachFrame(HandleBrowseButton)
 end
 
 function S:Blizzard_GroupFinder_VanillaStyle()
@@ -75,6 +107,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 
 	local LFGParentFrame = _G.LFGParentFrame
 	S:HandleCloseButton(_G.LFGParentFrameCloseButton)
+	_G.LFGParentFramePortrait:Kill() -- Top left eye button, shows on every OnShow
 
 	S:HandleLargeSideTab(LFGParentFrame.ListingTab)
 	S:HandleLargeSideTab(LFGParentFrame.BrowsingTab)
@@ -88,6 +121,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	local LFGListingFrame = _G.LFGListingFrame
 	S:HandlePortraitFrame(LFGListingFrame)
 	LFGListingFrame.RolesSection:StripTextures()
+	LFGListingFrame.DividerFrame:Hide()
 
 	S:HandleButton(LFGListingFrame.BackButton)
 	S:HandleButton(LFGListingFrame.PostButton)
@@ -97,8 +131,12 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	S:HandleEditBox(ListingComment)
 	ListingComment.backdrop:Point('TOPLEFT', -6, 2)
 	ListingComment.backdrop:Point('BOTTOMRIGHT', 6, -2)
-	S:HandleTrimScrollBar(LFGListingFrame.ActivityView.ScrollBar)
-	LFGListingFrame.ActivityView.BarMiddle:SetAlpha(0)
+
+	local ActivityView = LFGListingFrame.ActivityView
+	S:HandleTrimScrollBar(ActivityView.ScrollBar)
+	S:HandleCheckBox(ActivityView.LevelRangesCheckbox.Checkbox)
+	ActivityView.BarTop:SetAlpha(0)
+	ActivityView.BarMiddle:SetAlpha(0)
 
 	for _, roleButton in next, LFGListingFrame.SoloRoleButtons.RoleButtons do
 		S:HandleCheckBox(roleButton.CheckButton, nil, nil, true)
@@ -114,6 +152,7 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	local LFGBrowseFrame = _G.LFGBrowseFrame
 	S:HandlePortraitFrame(LFGBrowseFrame)
 	S:HandleTrimScrollBar(LFGBrowseFrame.ScrollBar)
+	hooksecurefunc(LFGBrowseFrame.ScrollBox, 'Update', LFGBrowse_Update)
 
 	S:HandleButton(LFGBrowseFrame.SendMessageButton)
 	S:HandleButton(LFGBrowseFrame.GroupInviteButton)
@@ -145,8 +184,20 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 	EditBox.Middle:SetAlpha(0)
 	EditBox.Right:SetAlpha(0)
 
-	S:HandleButton(LFGWhoListFrame.FilterDropdown)
-	S:HandleButton(LFGWhoListFrame.WhoSearch)
+	local WhoSearch = LFGWhoListFrame.WhoSearch
+	S:HandleButton(WhoSearch)
+	WhoSearch:ClearAllPoints()
+	WhoSearch:Point('TOPLEFT', EditBox.backdrop, 'TOPRIGHT', 1, 0)
+	WhoSearch:Point('BOTTOMLEFT', EditBox.backdrop, 'BOTTOMRIGHT', 1, 0)
+	WhoSearch:Width(36)
+
+	local FilterDropdown = LFGWhoListFrame.FilterDropdown
+	S:HandleButton(FilterDropdown)
+
+	local ResetButton = FilterDropdown.ResetButton
+	S:HandleCloseButton(ResetButton)
+	ResetButton:ClearAllPoints()
+	ResetButton:Point('CENTER', FilterDropdown, 'TOPRIGHT', 0, 0)
 end
 
 function S:RolePollPopup()
