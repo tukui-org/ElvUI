@@ -99,6 +99,61 @@ local function BankFrameItemUpdate(button)
 	end
 end
 
+local function Container_GenerateFrame(frame)
+	local id = frame:GetID()
+
+	if id > 0 then
+		local itemID = GetInventoryItemID('player', ContainerIDToInventoryID(id))
+
+		if not bagIconCache[itemID] then
+			bagIconCache[itemID] = select(10, GetItemInfo(itemID))
+		end
+
+		SetBagIcon(frame, bagIconCache[itemID])
+	else
+		SetBagIcon(frame, bagIconCache[id])
+	end
+end
+
+local function Container_Update(frame)
+	local id = frame:GetID()
+	local frameName = frame:GetName()
+	local _, bagType = GetContainerNumFreeSlots(id)
+
+	for i = 1, frame.size do
+		local item = _G[frameName..'Item'..i]
+		local link = GetContainerItemLink(id, item:GetID())
+
+		local questIcon = _G[frameName..'Item'..i..'IconQuestTexture']
+		questIcon:Hide()
+
+		local profession = B.ProfessionColors[bagType]
+		if profession then
+			item:SetBackdropBorderColor(profession.r, profession.g, profession.b, profession.a)
+			item.ignoreBorderColors = true
+		elseif link then
+			local _, _, quality, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
+
+			local questItem = B:GetItemQuestInfo(link, bindType, itemClassID)
+			if questItem then
+				item:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
+				item.ignoreBorderColors = true
+				questIcon:Show()
+			elseif quality and quality > 1 then
+				local r, g, b = E:GetItemQualityColor(quality)
+				item:SetBackdropBorderColor(r, g, b)
+				item.ignoreBorderColors = true
+			else
+				item:SetBackdropBorderColor(unpack(E.media.bordercolor))
+				item.ignoreBorderColors = nil
+			end
+		else
+			item:SetBackdropBorderColor(unpack(E.media.bordercolor))
+			item.ignoreBorderColors = nil
+		end
+	end
+end
+
 function S:ContainerFrame()
 	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
 
@@ -131,60 +186,8 @@ function S:ContainerFrame()
 		end
 	end
 
-	hooksecurefunc('ContainerFrame_GenerateFrame', function(frame)
-		local id = frame:GetID()
-
-		if id > 0 then
-			local itemID = GetInventoryItemID('player', ContainerIDToInventoryID(id))
-
-			if not bagIconCache[itemID] then
-				bagIconCache[itemID] = select(10, GetItemInfo(itemID))
-			end
-
-			SetBagIcon(frame, bagIconCache[itemID])
-		else
-			SetBagIcon(frame, bagIconCache[id])
-		end
-	end)
-
-	hooksecurefunc('ContainerFrame_Update', function(frame)
-		local id = frame:GetID()
-		local frameName = frame:GetName()
-		local _, bagType = GetContainerNumFreeSlots(id)
-
-		for i = 1, frame.size do
-			local item = _G[frameName..'Item'..i]
-			local link = GetContainerItemLink(id, item:GetID())
-
-			local questIcon = _G[frameName..'Item'..i..'IconQuestTexture']
-			questIcon:Hide()
-
-			local profession = B.ProfessionColors[bagType]
-			if profession then
-				item:SetBackdropBorderColor(profession.r, profession.g, profession.b, profession.a)
-				item.ignoreBorderColors = true
-			elseif link then
-				local _, _, quality, _, _, _, _, _, _, _, _, itemClassID, _, bindType = GetItemInfo(link)
-
-				local questItem = B:GetItemQuestInfo(link, bindType, itemClassID)
-				if questItem then
-					item:SetBackdropBorderColor(unpack(B.QuestColors.questItem))
-					item.ignoreBorderColors = true
-					questIcon:Show()
-				elseif quality and quality > 1 then
-					local r, g, b = E:GetItemQualityColor(quality)
-					item:SetBackdropBorderColor(r, g, b)
-					item.ignoreBorderColors = true
-				else
-					item:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					item.ignoreBorderColors = nil
-				end
-			else
-				item:SetBackdropBorderColor(unpack(E.media.bordercolor))
-				item.ignoreBorderColors = nil
-			end
-		end
-	end)
+	hooksecurefunc('ContainerFrame_GenerateFrame', Container_GenerateFrame)
+	hooksecurefunc('ContainerFrame_Update', Container_Update)
 
 	_G.BackpackTokenFrame:StripTextures()
 
