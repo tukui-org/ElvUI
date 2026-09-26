@@ -786,14 +786,15 @@ local function ShouldUpdateTag(frame, event, unit)
 
 	if unitlessEvents[event] then
 		return true
-	elseif validateUnit(unit) and oUF:UnitExists(unit) then
-		if frame.__unit == unit then
-			return true
-		else
-			local allowExtra = eventExtraUnits[frame]
-			return allowExtra and allowExtra[unit]
-		end
 	end
+
+	-- own unit events come through RegisterUnitEvent, skip the validateUnit
+	if oUF:NotSecretValue(unit) and frame.__unit == unit then
+		return oUF:UnitExists(unit)
+	end
+
+	local allowExtra = validateUnit(unit) and oUF:UnitExists(unit) and eventExtraUnits[frame]
+	return allowExtra and allowExtra[unit]
 end
 
 local function ProcessStrings(strs)
