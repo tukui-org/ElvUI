@@ -7,7 +7,6 @@ local next = next
 local wipe = wipe
 local select = select
 local format = format
-local strmatch = strmatch
 local hooksecurefunc = hooksecurefunc
 
 local AcceptGroup = AcceptGroup

@@ -6,9 +6,8 @@ local oUF = ns.oUF
 -------------
 
 local _G = _G
-local pairs, ipairs, type = pairs, ipairs, type
+local pairs, ipairs, type, abs = pairs, ipairs, type, abs
 local next, tinsert, tremove = next, tinsert, tremove
-local abs = abs
 
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo

@@ -66,10 +66,10 @@ local numMissions = 0
 local MAIN_CURRENCY = 2003 -- Dragon Isles Supplies
 local callingsData = {}
 local covenantTreeIDs = {
-	[1] = {308, 312, 316, 320, 327},
-	[2] = {309, 314, 317, 324, 326},
-	[3] = {307, 311, 315, 319, 328},
-	[4] = {310, 313, 318, 321, 329}
+	{308, 312, 316, 320, 327},	-- 1
+	{309, 314, 317, 324, 326},	-- 2
+	{307, 311, 315, 319, 328},	-- 3
+	{310, 313, 318, 321, 329}	-- 4
 }
 
 local garrisonPages = {
