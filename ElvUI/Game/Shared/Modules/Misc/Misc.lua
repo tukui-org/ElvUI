@@ -411,6 +411,12 @@ function M:ToggleInterrupt()
 	end
 end
 
+function M:QuestRewardPanel_Hide()
+	if M.QuestRewardGoldIconFrame then
+		M.QuestRewardGoldIconFrame:Hide()
+	end
+end
+
 function M:Initialize()
 	M.Initialized = true
 
@@ -467,11 +473,7 @@ function M:Initialize()
 
 		M.QuestRewardGoldIconFrame = MostValue
 
-		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', function()
-			if M.QuestRewardGoldIconFrame then
-				M.QuestRewardGoldIconFrame:Hide()
-			end
-		end)
+		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', M.QuestRewardPanel_Hide)
 	end
 
 	if E.Modern then
