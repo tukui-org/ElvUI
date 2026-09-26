@@ -6,11 +6,11 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function SkinSituationsDropdowns(frame)
-	for _, child in next, { frame.Situations:GetChildren() } do
-		if not child.Dropdown.IsSkinned then
-			S:HandleDropDownBox(child.Dropdown, 300)
+	for situation in frame.SituationFramePool:EnumerateActive() do
+		if not situation.Dropdown.IsSkinned then
+			S:HandleDropDownBox(situation.Dropdown, 300)
 
-			child.Dropdown.IsSkinned = true
+			situation.Dropdown.IsSkinned = true
 		end
 	end
 end
