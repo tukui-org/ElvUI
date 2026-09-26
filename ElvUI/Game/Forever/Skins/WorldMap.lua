@@ -198,7 +198,16 @@ function S:WorldMapFrame()
 
 		local Tracking = WorldMapFrame.WorldMapTrackingOptionsButton
 		if Tracking then
-			S:HandleCloseButton(Tracking.ResetButton)
+			S:HandleNextPrevButton(Tracking, 'down', nil, true)
+			Tracking:SetTemplate()
+			Tracking.Icon:SetAlpha(0) -- OnMouseDown and OnMouseUp set the atlas again
+			Tracking:ClearAllPoints()
+			Tracking:Point('LEFT', MapNavBar, 'RIGHT', 10, 0)
+
+			local ResetButton = Tracking.ResetButton
+			S:HandleCloseButton(ResetButton)
+			ResetButton:ClearAllPoints()
+			ResetButton:Point('CENTER', Tracking, 'TOPRIGHT', 0, 0)
 		end
 
 		local Pin = WorldMapFrame.WorldMapTrackingPinButton
