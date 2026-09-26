@@ -125,6 +125,7 @@ function UF:Configure_HealComm(frame)
 		local reverseFill = health:GetReverseFill()
 		local healthBarTexture = health:GetStatusBarTexture() -- :GetTexture() from here sometimes messes up? so use LSM
 
+		pred.overState = nil -- let UpdateHealComm reapply the absorb anchors
 		pred.reverseFill = reverseFill
 		pred.healthBarTexture = healthBarTexture
 		pred.healingPlayerTexture = healingPlayer:GetStatusBarTexture()
@@ -236,6 +237,11 @@ function UF:UpdateHealComm(_, _, _, absorb, _, hasOverAbsorb, hasOverHealAbsorb,
 
 		return -- dont proceed
 	end
+
+	-- the anchors and colors below only depend on the over states, dont redo them on every health event
+	local overState = (hasOverAbsorb and 1 or 0) + (hasOverHealAbsorb and 2 or 0)
+	if pred.overState == overState and (E.Modern or overState == 0) then return end
+	pred.overState = overState
 
 	-- handle over heal absorbs
 	healAbsorb:ClearAllPoints()
