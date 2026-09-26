@@ -312,7 +312,7 @@ local function Update(self, element, event, unit, powerType)
 			maximum = (classPowerID == POWERTYPE_MANA and 1) or powerMax or 0
 		end
 
-		chargedPoints = oUF.isModern and GetUnitChargedPowerPoints(unit)
+		chargedPoints = oUF.isModern and powerID == POWERTYPE_COMBO_POINTS and GetUnitChargedPowerPoints(unit)
 
 		for i = 1, maximum do
 			local bar = element[i]
