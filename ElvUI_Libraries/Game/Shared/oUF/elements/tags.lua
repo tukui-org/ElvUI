@@ -793,8 +793,8 @@ local function ShouldUpdateTag(frame, event, unit)
 		return oUF:UnitExists(unit)
 	end
 
-	local allowExtra = validateUnit(unit) and oUF:UnitExists(unit) and eventExtraUnits[frame]
-	return allowExtra and allowExtra[unit]
+	local extra = validateUnit(unit) and oUF:UnitExists(unit) and eventExtraUnits[frame]
+	return extra and extra[unit]
 end
 
 local function ProcessStrings(strs)
