@@ -8,6 +8,7 @@ local oUF = ns.oUF
 local _G = _G
 local pairs, ipairs, type = pairs, ipairs, type
 local next, tinsert, tremove = next, tinsert, tremove
+local abs = abs
 
 local CreateFrame = CreateFrame
 local GetInstanceInfo = GetInstanceInfo
@@ -54,8 +55,10 @@ local function ToggleAlpha(frame, element, endAlpha)
 	else
 		local alpha = frame:GetAlpha()
 		if element.Smooth and oUF:NotSecretValue(alpha) then
-			E:UIFrameFadeOut(frame, element.Smooth, alpha, endAlpha)
-		else
+			if (frame.FadeObject and frame.FadeObject.endAlpha ~= endAlpha) or abs(alpha - endAlpha) > 0.01 then
+				E:UIFrameFadeOut(frame, element.Smooth, alpha, endAlpha)
+			end
+		elseif oUF:IsSecretValue(alpha) or abs(alpha - endAlpha) > 0.01 then
 			frame:SetAlpha(endAlpha)
 		end
 	end
