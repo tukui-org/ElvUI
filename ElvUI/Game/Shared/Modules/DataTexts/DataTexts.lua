@@ -1004,6 +1004,17 @@ function DT:UpdateTooltipFonts()
 	_G.DataTextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
 end
 
+function DT:UpdateLastSelectedSavedConfigID(newConfigID)
+	if not newConfigID or (DT.ClassTalentsID and newConfigID == C_ClassTalents_GetActiveConfigID()) then return end
+	DT.ClassTalentsID = newConfigID
+
+	DT:ForceUpdate_DataText('Talent/Loot Specialization')
+end
+
+function DT:SetCurrencyBackpack()
+	DT:ForceUpdate_DataText('Currencies')
+end
+
 function DT:Initialize()
 	DT.Initialized = true
 
@@ -1021,17 +1032,10 @@ function DT:Initialize()
 		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
 
 		if E.Modern then
-			hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
-
-			hooksecurefunc(_G.C_ClassTalents, 'UpdateLastSelectedSavedConfigID', function(_, newConfigID)
-				if not newConfigID then return end
-				if DT.ClassTalentsID and newConfigID == C_ClassTalents_GetActiveConfigID() then return end
-				DT.ClassTalentsID = newConfigID
-
-				DT:ForceUpdate_DataText('Talent/Loot Specialization')
-			end)
+			hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', DT.SetCurrencyBackpack)
+			hooksecurefunc(_G.C_ClassTalents, 'UpdateLastSelectedSavedConfigID', DT.UpdateLastSelectedSavedConfigID)
 		else
-			hooksecurefunc('SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
+			hooksecurefunc('SetCurrencyBackpack', DT.SetCurrencyBackpack)
 		end
 
 		DT:PopulateData()
