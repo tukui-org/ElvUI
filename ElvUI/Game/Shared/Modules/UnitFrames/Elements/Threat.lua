@@ -156,7 +156,7 @@ function UF:UpdateThreat(unit, status, color)
 
 	if active then
 		local r, g, b = color:GetRGB()
-		UF:ThreatHandler(self, parent, db.threatStyle, active, r, g, b)
+		UF:ThreatHandler(self, parent, db.threatStyle, status, r, g, b)
 	else
 		UF:ThreatHandler(self, parent, db.threatStyle, nil, unpack(E.media.unitframeBorderColor))
 	end
