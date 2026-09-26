@@ -150,13 +150,13 @@ function UF:UpdateThreat(unit, status, color)
 	local db = parent.db
 	if not db then return end
 
-	local active = (unit and parent.__unit == unit) and (status and status > (db.threatPrimary and 1 or 0)) and (status or false)
-	if active == self.lastStatus then return end -- threat events fire a lot, only touch the widgets when changed
-	self.lastStatus = active
+	local newStatus = (unit and parent.__unit == unit) and (status and status > (db.threatPrimary and 1 or 0)) and (status or false)
+	if newStatus == self.lastStatus then return end -- threat events fire a lot, only touch the widgets when changed
+	self.lastStatus = newStatus
 
-	if active then
+	if newStatus then
 		local r, g, b = color:GetRGB()
-		UF:ThreatHandler(self, parent, db.threatStyle, active, r, g, b)
+		UF:ThreatHandler(self, parent, db.threatStyle, newStatus, r, g, b)
 	else
 		UF:ThreatHandler(self, parent, db.threatStyle, nil, unpack(E.media.unitframeBorderColor))
 	end
