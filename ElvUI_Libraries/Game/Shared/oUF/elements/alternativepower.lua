@@ -111,7 +111,6 @@ local function UpdateColor(self, event, unit, powerType)
 	local unitThreat = UnitThreatSituation('player', unit)
 	local unitControlled = UnitPlayerControlled(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	local _, classToken = UnitClass(unit)
 
 	local color
 	if(element.colorThreat and not unitControlled and unitThreat) then
@@ -133,6 +132,7 @@ local function UpdateColor(self, event, unit, powerType)
 			end
 		end
 	elseif (element.colorClass and isPlayerOrAI) or (element.colorClassNPC and not isPlayerOrAI) then
+		local _, classToken = UnitClass(unit)
 		color = (oUF:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif(element.colorSelection and unitSelectionType) then
 		color = self.colors.selection[unitSelectionType]
