@@ -233,16 +233,24 @@ local function Update(self, event, unit)
 		end
 
 		-- dont refresh and show an empty bar on every health event, absorbs are always 0 below Mists
-		if(element.damageAbsorb and (absorb > 0 or element.damageAbsorb:GetValue() > 0)) then
-			element.damageAbsorb:SetMinMaxValues(0, maxHealth)
-			element.damageAbsorb:SetValue(absorb)
-			element.damageAbsorb:Show()
+		if element.damageAbsorb then
+			if (absorb > 0 or element.damageAbsorb:GetValue() > 0) then
+				element.damageAbsorb:SetMinMaxValues(0, maxHealth)
+				element.damageAbsorb:SetValue(absorb)
+				element.damageAbsorb:Show()
+			else
+				element.damageAbsorb:Hide()
+			end
 		end
 
-		if(element.healAbsorb and (healAbsorb > 0 or element.healAbsorb:GetValue() > 0)) then
-			element.healAbsorb:SetMinMaxValues(0, maxHealth)
-			element.healAbsorb:SetValue(healAbsorb)
-			element.healAbsorb:Show()
+		if element.healAbsorb then
+			if (healAbsorb > 0 or element.healAbsorb:GetValue() > 0) then
+				element.healAbsorb:SetMinMaxValues(0, maxHealth)
+				element.healAbsorb:SetValue(healAbsorb)
+				element.healAbsorb:Show()
+			else
+				element.healAbsorb:Hide()
+			end
 		end
 
 		if(element.overAbsorb) then
