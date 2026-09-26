@@ -45,8 +45,8 @@ local function AllowAura(frame, aura)
 	return true
 end
 
+-- an aura can only pass the filter of its own kind, auraIsHelpful is computed before this is called
 local function InstanceFiltered(unit, aura, helpful, harmful)
-	-- an aura can only pass the filter of its own kind, auraIsHelpful is computed before this is called
 	return not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, aura.auraIsHelpful and helpful or harmful)
 end
 
