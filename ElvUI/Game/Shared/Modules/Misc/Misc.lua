@@ -350,7 +350,7 @@ function M:ADDON_LOADED(_, addon)
 	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' then
 		M:LoadQueueStatus()
 	elseif addon == 'Blizzard_HousingControls' then
-		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, 'ALL,SOLO')
+		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, nil, 'ALL,SOLO')
 	end
 end
 
