@@ -324,8 +324,9 @@ do
 		end
 	end
 
+	local empty = {} -- callers should only read from this
 	function B:GetContainerItemInfo(containerIndex, slotIndex)
-		return GetContainerItemInfo(containerIndex, slotIndex) or {}
+		return GetContainerItemInfo(containerIndex, slotIndex) or empty
 	end
 
 	function B:GetContainerItemQuestInfo(containerIndex, slotIndex)
