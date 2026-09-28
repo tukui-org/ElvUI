@@ -789,10 +789,12 @@ do
 					local name, realm = UnitName('target')
 
 					if name then
-						if E.Forever then
-							name = format(realm and '%s %s' or '%s', name, realm)
-						elseif realm and realm ~= '' then
-							name = format('%s-%s', name, E:ShortenRealm(realm))
+						if realm then
+							if E.Forever then
+								name = format('%s %s', name, realm)
+							elseif realm ~= '' then
+								name = format('%s-%s', name, E:ShortenRealm(realm))
+							end
 						end
 
 						SendTell(name, self.chatFrame)
