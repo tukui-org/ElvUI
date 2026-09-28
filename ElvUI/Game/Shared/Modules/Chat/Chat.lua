@@ -786,17 +786,16 @@ do
 
 			if len == 4 then
 				if text == '/tt ' then
-					local Name, Realm = UnitName('target')
-					if Name then
-						Name = gsub(Name,'%s','')
+					local name, realm = UnitName('target')
 
-						if Realm and Realm ~= '' then
-							Name = format('%s-%s', Name, E:ShortenRealm(Realm))
+					if name then
+						if E.Forever then
+							name = format(realm and '%s %s' or '%s', name, realm)
+						elseif realm and realm ~= '' then
+							name = format('%s-%s', name, E:ShortenRealm(realm))
 						end
-					end
 
-					if Name then
-						SendTell(Name, self.chatFrame)
+						SendTell(name, self.chatFrame)
 					else
 						_G.UIErrorsFrame:AddMessage(L["Invalid Target"], 1.0, 0.2, 0.2, 1.0)
 					end
@@ -2129,9 +2128,9 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	-- ElvUI: data from populated guid info
 	local nameWithRealm, realm
 	local data = CH:GetPlayerInfoByGUID(arg12)
-	if data then
+	if data and not E.Forever then
 		realm = data.realm
-		nameWithRealm = not E.Forever and data.nameWithRealm or nil
+		nameWithRealm = data.nameWithRealm
 	end
 
 	local playerLink
