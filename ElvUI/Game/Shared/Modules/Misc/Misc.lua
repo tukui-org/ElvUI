@@ -431,7 +431,7 @@ function M:Initialize()
 		M:ToggleInterrupt()
 	end
 
-	local vanillaStyle = E.ClassicAnniv or E.TBC
+	local vanillaStyle = E.Classic or E.TBC
 	if not vanillaStyle then -- it uses Blizzard_GroupFinder_VanillaStyle
 		M:LoadQueueStatus()
 	end
