@@ -1086,7 +1086,7 @@ do
 end
 
 function E:XPIsTrialMax()
-	return (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.myLevel == 20)
+	return (IsRestrictedAccount() or IsTrialAccount() or IsVeteranTrialAccount()) and (E.mylevel == 20)
 end
 
 function E:IsLevelAtEffectiveMaxLevel(level)
