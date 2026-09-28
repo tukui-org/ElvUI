@@ -2131,7 +2131,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	local data = CH:GetPlayerInfoByGUID(arg12)
 	if data then
 		realm = data.realm
-		nameWithRealm = data.nameWithRealm
+		nameWithRealm = not E.Forever and data.nameWithRealm or nil
 	end
 
 	local playerLink
