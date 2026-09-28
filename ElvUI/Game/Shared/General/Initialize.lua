@@ -106,8 +106,11 @@ do -- Expansions
 	E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
-	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+	E.Forever = E.wowtoc >= 16000 and E.wowtoc < 20000 -- ToDo: classic_beta
+	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and not E.Forever
+
+	E.Modern = E.Retail or E.Forever
 
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
@@ -171,7 +174,7 @@ do
 	end
 
 	function E:DispelListUpdated()
-		if not E.Retail then return end
+		if not E.Modern then return end
 
 		E:UpdateDispelCurves()
 		E:Auras_DispelUpdated()
@@ -198,7 +201,7 @@ do
 	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
-	if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+	if E.Modern or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 
@@ -495,16 +498,11 @@ function E:RemoveDefaults(db, defaults)
 	return db
 end
 
-do -- backwards compatibility for GetMouseFocus
-	local GetMouseFocus = GetMouseFocus
+do
 	local GetMouseFoci = GetMouseFoci
 	function E:GetMouseFocus()
-		if GetMouseFoci then
-			local frames = GetMouseFoci()
-			return frames and frames[1]
-		else
-			return GetMouseFocus()
-		end
+		local frames = GetMouseFoci()
+		return frames and frames[1]
 	end
 end
 

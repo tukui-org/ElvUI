@@ -324,6 +324,41 @@ local function HandleCollapseButtons(frame)
 	end
 end
 
+local function SuggestFrameRefreshDisplay()
+	local suggestFrame = _G.EncounterJournal.suggestFrame
+	for i, data in ipairs(suggestFrame.suggestions) do
+		local sugg = next(data) and suggestFrame['Suggestion'..i]
+		if sugg then
+			if not sugg.icon.backdrop then
+				sugg.icon:CreateBackdrop()
+			end
+
+			sugg.icon:SetMask('')
+			sugg.icon:SetTexture(data.iconPath)
+			sugg.icon:SetTexCoords()
+			sugg.iconRing:Hide()
+		end
+	end
+end
+
+local function SuggestFrameUpdateRewards(sugg)
+	local rewardData = sugg.reward.data
+	if rewardData then
+		if not sugg.reward.icon.backdrop then
+			sugg.reward.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, 3)
+		end
+
+		sugg.reward.icon:SetMask('')
+		sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
+		sugg.reward.icon:SetTexCoords()
+
+		local quality = rewardData.itemID and GetItemQualityByID(rewardData.itemID)
+		local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
+
+		sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+end
+
 function S:Blizzard_EncounterJournal()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
 
@@ -521,39 +556,8 @@ function S:Blizzard_EncounterJournal()
 			reward.iconRingHighlight:SetTexture()
 		end
 
-		hooksecurefunc('EJSuggestFrame_RefreshDisplay', function()
-			for i, data in ipairs(suggestFrame.suggestions) do
-				local sugg = next(data) and suggestFrame['Suggestion'..i]
-				if sugg then
-					if not sugg.icon.backdrop then
-						sugg.icon:CreateBackdrop()
-					end
-
-					sugg.icon:SetMask('')
-					sugg.icon:SetTexture(data.iconPath)
-					sugg.icon:SetTexCoords()
-					sugg.iconRing:Hide()
-				end
-			end
-		end)
-
-		hooksecurefunc('EJSuggestFrame_UpdateRewards', function(sugg)
-			local rewardData = sugg.reward.data
-			if rewardData then
-				if not sugg.reward.icon.backdrop then
-					sugg.reward.icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, 3)
-				end
-
-				sugg.reward.icon:SetMask('')
-				sugg.reward.icon:SetTexture(rewardData.itemIcon or rewardData.currencyIcon or [[Interface\Icons\achievement_guildperk_mobilebanking]])
-				sugg.reward.icon:SetTexCoords()
-
-				local quality = rewardData.itemID and GetItemQualityByID(rewardData.itemID)
-				local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
-
-				sugg.reward.icon.backdrop:SetBackdropBorderColor(r, g, b)
-			end
-		end)
+		hooksecurefunc('EJSuggestFrame_RefreshDisplay', SuggestFrameRefreshDisplay)
+		hooksecurefunc('EJSuggestFrame_UpdateRewards', SuggestFrameUpdateRewards)
 	end
 
 	-- Suggestion Reward Tooltips

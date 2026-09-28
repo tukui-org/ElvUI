@@ -14,7 +14,7 @@ local NOT_APPLICABLE = NOT_APPLICABLE
 local displayString = ''
 
 local function OnEvent(panel)
-	local current = E.Retail and GetSpecialization() or nil
+	local current = E.Modern and GetSpecialization() or nil
 	local spec = DT.SPECIALIZATION_CACHE[current]
 	local stat = spec and spec.statID
 

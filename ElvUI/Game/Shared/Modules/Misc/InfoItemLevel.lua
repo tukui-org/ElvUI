@@ -12,6 +12,7 @@ local unpack = unpack
 local UnitGUID = UnitGUID
 local UnitExists = UnitExists
 local CreateFrame = CreateFrame
+local InCombatLockdown = InCombatLockdown
 
 local InspectItems = {
 	'HeadSlot',
@@ -87,6 +88,7 @@ end
 
 function M:UpdateCharacterInfo(event)
 	if not (E.db.general.itemLevel.displayCharacterInfo and _G.CharacterFrame:IsShown()) then return end
+	if event == 'UPDATE_INVENTORY_DURABILITY' and InCombatLockdown() then return end -- nothing on the page can change in combat
 
 	M:UpdatePageInfo(_G.CharacterFrame, 'Character', nil, event)
 end
@@ -121,7 +123,7 @@ function M:ClearPageInfo(frame, which)
 end
 
 function M:CheckStatsItemLevel()
-	return E.Retail and not E.OtherAddons.DejaCharacterStats
+	return E.Modern and not E.OtherAddons.DejaCharacterStats
 end
 
 function M:ToggleItemLevelInfo(setupCharacterPage, config)
@@ -417,7 +419,7 @@ function M:UpdateSlotPoints(which, config)
 			slot.enchantText:FontTemplate(itemLevelFont, itemLevelFontSize, itemLevelFontOutline)
 			slot.enchantText:ClearAllPoints()
 
-			local itemLeft, itemRight = i == 16, (E.Retail and i == 17) or ((E.Wrath or E.Mists) and i == 18)
+			local itemLeft, itemRight = i == 16, (E.Modern and i == 17) or ((E.Wrath or E.Mists) and i == 18)
 			if itemLeft or itemRight then
 				slot.enchantText:Point(itemLeft and 'BOTTOMRIGHT' or 'BOTTOMLEFT', slot, itemLeft and -40 or 40, 3)
 			elseif (E.Wrath or E.Mists) and i == 17 then -- cata secondary (not ranged)

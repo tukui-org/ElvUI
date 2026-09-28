@@ -213,6 +213,13 @@ local function HandleTabs(arg1)
 	end
 end
 
+local function FilterButtonSetup(button)
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	button.NormalTexture:SetAlpha(0)
+	button.SelectedTexture:SetColorTexture(r, g, b, .25)
+	button.HighlightTexture:SetColorTexture(1, 1, 1, .1)
+end
+
 function S:Blizzard_AuctionHouseUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
 
@@ -237,12 +244,7 @@ function S:Blizzard_AuctionHouseUI()
 	Categories.NineSlice:SetInside(Categories)
 	S:HandleTrimScrollBar(Categories.ScrollBar)
 
-	hooksecurefunc('AuctionHouseFilterButton_SetUp', function(button)
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		button.NormalTexture:SetAlpha(0)
-		button.SelectedTexture:SetColorTexture(r, g, b, .25)
-		button.HighlightTexture:SetColorTexture(1, 1, 1, .1)
-	end)
+	hooksecurefunc('AuctionHouseFilterButton_SetUp', FilterButtonSetup)
 
 	--[[ Browse Frame ]]--
 	local Browse = Frame.BrowseResultsFrame

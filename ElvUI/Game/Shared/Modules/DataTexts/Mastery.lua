@@ -35,7 +35,7 @@ local function OnEnter()
 	local bonus = GetCombatRatingBonus(CR_MASTERY)
 	local text
 
-	if E.Retail then
+	if E.Modern then
 		if E:NotSecretValue(coeffect) then
 			data.significandDivisor = (coeffect == 0 and 1) or ((1 / coeffect) / data.fractionDivisor)
 		end
@@ -65,7 +65,7 @@ local function OnEnter()
 				hasSpell = true
 			end
 
-			if E.Retail then
+			if E.Modern then
 				local tooltipInfo = CreateBaseTooltipInfo('GetSpellByID', spell)
 				tooltipInfo.append = true
 				DT.tooltip:ProcessInfo(tooltipInfo)
@@ -92,7 +92,7 @@ local function ApplySettings(panel, hex)
 		db = E.global.datatexts.settings[panel.name]
 	end
 
-	if E.Retail then
+	if E.Modern then
 		data.fractionDivisor = 10 ^ (db.decimalLength or 0)
 	end
 

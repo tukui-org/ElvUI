@@ -92,7 +92,7 @@ function E:SetupTextureCoordinates()
 end
 
 function E:ReplaceSetupTextureCoordinates(frame) -- temp until blizzard fixes the backdrop mixin from this error
-	if E.Retail and (frame.SetupTextureCoordinates ~= E.SetupTextureCoordinates) then
+	if E.Modern and (frame.SetupTextureCoordinates ~= E.SetupTextureCoordinates) then
 		frame.SetupTextureCoordinates = E.SetupTextureCoordinates
 	end
 end
@@ -485,7 +485,16 @@ end
 
 local function FontTemplate(fs, fontName, fontSize, fontStyle, skip)
 	if not skip then -- ignore updates from UpdateFontTemplates
-		E.texts[fs] = { fontName = fontName, fontSize = fontSize, fontStyle = fontStyle }
+		local data = E.texts[fs]
+		if not data then
+			data = {}
+
+			E.texts[fs] = data
+		end
+
+		data.fontName = fontName
+		data.fontSize = fontSize
+		data.fontStyle = fontStyle
 	end
 
 	-- grab values from profile before conversion

@@ -76,7 +76,7 @@ end
 local function TotemOnUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 
-	if (self.elapsed >= .01) then
+	if (self.elapsed >= .05) then -- 20 Hz is under a pixel per step on any sane bar width, no need to poll GetTotemInfo every frame
 		self.elapsed = 0
 
 		local _, _, startTime, expiration = GetTotemInfo(self:GetID())

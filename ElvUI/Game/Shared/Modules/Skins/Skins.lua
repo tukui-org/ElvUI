@@ -4,7 +4,7 @@ local LibStub = _G.LibStub
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local tinsert, next, strfind = tinsert, next, strfind
+local tinsert, next, ipairs, strfind = tinsert, next, ipairs, strfind
 local unpack, type, gsub, rad = unpack, type, gsub, rad
 
 local CreateFrame = CreateFrame
@@ -1213,7 +1213,7 @@ do
 		end
 	end
 
-	function S:HandleTrimScrollBar(frame, ignoreUpdates)
+	function S:HandleTrimScrollBar(frame, ignoreUpdates, trackBackdrop)
 		frame:StripTextures()
 
 		ReskinScrollBarArrow(frame.Back, 'up')
@@ -1227,6 +1227,10 @@ do
 		local track = frame.Track
 		if track then
 			track:DisableDrawLayer('ARTWORK')
+
+			if trackBackdrop and not track.backdrop then
+				track:CreateBackdrop('Transparent', nil, ignoreUpdates)
+			end
 		end
 
 		local thumb = frame.GetThumb and frame:GetThumb()
@@ -1250,7 +1254,7 @@ do
 	end
 end
 
-do --Tab Regions
+do -- Tab Regions
 	local tabs = {
 		'LeftDisabled',
 		'MiddleDisabled',
@@ -1302,9 +1306,80 @@ do --Tab Regions
 		if not noBackdrop then
 			tab:CreateBackdrop(template)
 
-			local spacing = E.Retail and 3 or 10
+			local spacing = E.Modern and 3 or 10
 			tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -1 or -3)
 			tab.backdrop:Point('BOTTOMRIGHT', -spacing, 3)
+		end
+	end
+end
+
+-- ToDo: classic_beta WIP
+do -- Large Side Tabs
+	local function UpdateIconInterior(tab)
+		tab.Icon:SetTexCoords()
+		tab.Icon:Size(30) -- Resets on SetChecked
+	end
+
+	-- Size will now match other side tabs (Like Communitiesframe)
+	function S:HandleLargeSideTab(tab)
+		if not tab or tab.backdrop then return end
+
+		local icon = tab.Icon
+		icon:SetTexCoords()
+		icon:Size(30)
+
+		tab:CreateBackdrop(nil, true)
+		tab.backdrop:SetOutside(icon, 1, 1)
+		tab:Size(36, 30)
+
+		if tab.UpdateIconInterior then
+			hooksecurefunc(tab, 'UpdateIconInterior', UpdateIconInterior)
+		end
+
+		if tab.Mask then
+			icon:RemoveMaskTexture(tab.Mask)
+		end
+
+		local background = tab.Background
+		if background then
+			background:SetTexture()
+		end
+
+		local highlight = tab.HighlightTexture
+		if highlight then
+			highlight:SetColorTexture(1, 1, 1, .3)
+			highlight:SetAllPoints(icon)
+		end
+
+		local glow = tab.TabGlow
+		if glow then
+			glow:SetColorTexture(1, .8, .1, .5)
+			glow:SetAllPoints(icon)
+		end
+
+		local selected = tab.SelectedTexture
+		if selected then
+			selected:SetColorTexture(1, 1, 1, .3)
+			selected:SetBlendMode('ADD')
+			selected:SetAllPoints(icon)
+		end
+	end
+
+	-- Pixel spacing fix, Blizzard is stacking them unscaled -> tab:SetPoint('TOPLEFT', last, 'BOTTOMLEFT', 0, -2)
+	function S:LayoutLargeSideTabs(frame, tabs)
+		local last
+		for _, tab in ipairs(tabs) do
+			if tab:IsShown() then
+				tab:ClearAllPoints()
+
+				if last then
+					tab:Point('TOPLEFT', last, 'BOTTOMLEFT', 0, -3)
+				else
+					tab:Point('TOPLEFT', frame, 'TOPRIGHT', 4, -1)
+				end
+
+				last = tab
+			end
 		end
 	end
 end
@@ -1441,7 +1516,7 @@ function S:HandleEditBox(frame, template)
 		local name = frame:GetDebugName()
 		local gold, silver, copper = strfind(name, 'Gold'), strfind(name, 'Silver'), strfind(name, 'Copper')
 		if gold or silver or copper then
-			if E.Retail then
+			if E.Modern then
 				frame.backdrop:Point('TOPLEFT', -4, 0)
 				frame.backdrop:Point('BOTTOMRIGHT')
 			elseif frame.label then -- send mail, popups, and others
@@ -1980,7 +2055,7 @@ do
 	S.FollowerListUpdateDataFrames = {}
 
 	local function UpdateFollower(button)
-		if not E.Retail then
+		if not E.Modern then
 			button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
 		end
 
@@ -2119,7 +2194,7 @@ function S:HandleGarrisonPortrait(portrait, updateAtlas)
 		level:FontTemplate(nil, 14, 'OUTLINE')
 
 		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
-		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
+		if portrait.LevelBorder then portrait.LevelBorder:SetScale(0.0001) end
 	end
 
 	if portrait.PortraitRing then
@@ -2420,7 +2495,7 @@ do
 		[W.ScenarioHeaderCurrenciesAndBackground] = 'SkinScenarioHeaderCurrenciesAndBackgroundWidget',
 	}
 
-	if E.Retail then
+	if E.Modern then
 		S.WidgetSkinningFuncs[W.SpellDisplay] = 'SkinSpellDisplay'
 		S.WidgetSkinningFuncs[W.TextureAndText] = 'SkinTextureAndTextWidget'
 		S.WidgetSkinningFuncs[W.DoubleStateIconRow] = 'SkinDoubleStateIconRow'
@@ -2556,7 +2631,7 @@ function S:Initialize()
 		end
 	end
 
-	if E.Retail and S.db.blizzard.enable and S.db.blizzard.misc then
+	if E.Modern and S.db.blizzard.enable and S.db.blizzard.misc then
 		S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
 		S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
 	end

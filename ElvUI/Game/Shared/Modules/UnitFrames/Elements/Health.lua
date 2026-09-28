@@ -64,7 +64,7 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	health:SetColorTapping(true)
 	health:SetColorDisconnected(true)
 
-	if E.Retail then
+	if E.Modern then
 		health.smoothing = (db.health and db.health.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 	else
 		E:SetSmoothing(health, db.health and db.health.smoothbars)
@@ -95,7 +95,7 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 			health.colorHealth = true
 		end
 	else
-		if E.Retail and UF.db.colors.healthselection then
+		if E.Modern and UF.db.colors.healthselection then
 			colorSelection = true
 		elseif UF.db.colors.healthclass ~= true then
 			if UF.db.colors.colorhealthbyvalue then
@@ -261,10 +261,7 @@ function UF:PostUpdateHealthColor(unit, color)
 	local colors = E.db.unitframe.colors
 	local env = (parent.isForced and UF.ConfigEnv) or _G
 
-	local _, classToken = UnitClass(unit)
-	local isTapped = UnitIsTapDenied(unit)
 	local isDeadOrGhost = env.UnitIsDeadOrGhost(unit)
-	local healthBreak = not isTapped and colors.healthBreak
 
 	local r, g, b, healthColor
 	if color and color.r then
@@ -285,7 +282,10 @@ function UF:PostUpdateHealthColor(unit, color)
 
 	local minValue, maxValue = self.cur, self.max
 	local healthR, healthG, healthB, healthbreakBackdrop
-	if (not healthColor and not E.Retail) and (not parent.db or parent.db.colorOverride ~= 'ALWAYS') then
+	if (not healthColor and not E.Modern) and (not parent.db or parent.db.colorOverride ~= 'ALWAYS') then
+		local isTapped = UnitIsTapDenied(unit)
+		local healthBreak = not isTapped and colors.healthBreak
+
 		if r and not isTapped and ((colors.healthclass and colors.colorhealthbyvalue) or (colors.colorhealthbyvalue and parent.isForced)) then
 			healthR, healthG, healthB = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1, 0, 0, 1, 1, 0, r or 1, g or 1, b or 1)
 		elseif healthBreak and healthBreak.enabled and (not healthBreak.onlyFriendly or UnitIsFriend('player', unit)) then
@@ -313,7 +313,7 @@ function UF:PostUpdateHealthColor(unit, color)
 		elseif healthbreakBackdrop then
 			customBackdrop:SetRGB(healthColor.r, healthColor.g, healthColor.b)
 			bgc = customBackdrop
-		elseif colors.healthbackdropbyvalue and not E.Retail then
+		elseif colors.healthbackdropbyvalue and not E.Modern then
 			if colors.customhealthbackdrop then
 				local backdrop = colors.health_backdrop
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1,0,0, 1,1,0, backdrop.r or 1, backdrop.g or 1, backdrop.b or 1)
@@ -329,7 +329,8 @@ function UF:PostUpdateHealthColor(unit, color)
 			customBackdrop:SetRGB(backdrop.r, backdrop.g, backdrop.b)
 			bgc = customBackdrop
 		elseif colors.classbackdrop then
-			if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
+			if UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit)) then
+				local _, classToken = UnitClass(unit)
 				local classColor = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or parent.colors.class[classToken]
 				if classColor then
 					customBackdrop:SetRGB(classColor.r, classColor.g, classColor.b)

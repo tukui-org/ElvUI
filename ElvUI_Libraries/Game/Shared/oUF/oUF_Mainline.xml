@@ -44,47 +44,4 @@
 	<Script file="elements\totems.lua"/>
 
 	<Script file="finalize.lua"/>
-
-	<!--
-		Sub-object as a child of the parent unit frame:
-	<Button name="oUF_HeaderTargetTemplate" inherits="SecureUnitButtonTemplate" virtual="true">
-		<Frames>
-			<Button name="$parentTarget" inherits="SecureUnitButtonTemplate">
-				<Attributes>
-					<Attribute name="unitsuffix" type="string" value="target"/>
-					<Attribute name="useparent-unit" type="boolean" value="true"/>
-				</Attributes>
-			</Button>
-		</Frames>
-	</Button>
-
-		Separate unit template example:
-	<Button name="oUF_HeaderSeparateSubOjectsTemplate" inherits="SecureUnitButtonTemplate" virtual="true">
-		<Attributes>
-			<Attribute name="oUF-onlyProcessChildren" type="boolean" value="true"/>
-		</Attributes>
-
-		<Frames>
-			<Button name="$parentUnit" inherits="SecureUnitButtonTemplate">
-				<Attributes>
-					<Attribute name="useparent-unit" type="boolean" value="true"/>
-				</Attributes>
-			</Button>
-
-			<Button name="$parentPet" inherits="SecureUnitButtonTemplate">
-				<Attributes>
-					<Attribute name="unitsuffix" type="string" value="pet"/>
-					<Attribute name="useparent-unit" type="boolean" value="true"/>
-				</Attributes>
-			</Button>
-
-			<Button name="$parentTarget" inherits="SecureUnitButtonTemplate">
-				<Attributes>
-					<Attribute name="unitsuffix" type="string" value="target"/>
-					<Attribute name="useparent-unit" type="boolean" value="true"/>
-				</Attributes>
-			</Button>
-		</Frames>
-	</Button>
-	-->
 </Ui>

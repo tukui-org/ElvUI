@@ -117,7 +117,7 @@ function E:SetupChat(noDisplayMsg)
 	end
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1 but keeping CHANNEL
-	chatGroup = { E.Retail and 'PING' or nil, 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
+	chatGroup = { E.Modern and 'PING' or nil, 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
 	local RightChat_RemoveAllMessageGroups = rightChat.RemoveAllMessageGroups or _G.ChatFrame_RemoveAllMessageGroups
 	local RightChat_AddMessageGroup = rightChat.AddMessageGroup or _G.ChatFrame_AddMessageGroup
 
@@ -182,7 +182,7 @@ function E:SetupCVars(noDisplayMsg)
 	E:SetCVar('ActionButtonUseKeyDown', 1)
 	E:SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
 
-	if E.Retail then
+	if E.Modern then
 		E:SetCVar('worldMapShowPlayerCoords', 0)
 		E:SetCVar('worldMapShowCursorCoords', 0)
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
@@ -452,7 +452,7 @@ function E:LayoutAnniversary()
 	E.db.datatexts.panels.LeftChatDataPanel[2] = 'Guild'
 	E.db.datatexts.panels.LeftChatDataPanel[3] = 'System'
 
-	if E.Retail then
+	if E.Modern then
 		if not E.global.datatexts.customPanels.QuickJoin then
 			E.global.datatexts.customPanels.QuickJoin = E:CopyTable({}, G.datatexts.newPanelInfo)
 		end
@@ -1119,7 +1119,7 @@ function E:LayoutNormal()
 	E.db.unitframe.units.raid1.roleIcon.xOffset = 0
 	E.db.unitframe.units.raid1.width = 92
 	--DataTexts
-	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Coords'
+	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Modern and 'QuickJoin' or 'Coords'
 
 	if E.db.datatexts.panels.Coords then
 		E.db.datatexts.panels.Coords.enable = false

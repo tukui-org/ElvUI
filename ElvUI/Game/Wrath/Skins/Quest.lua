@@ -213,6 +213,7 @@ local function QuestInfoDisplay()
 	_G.QuestInfoObjectivesText:SetTextColor(TEXTR, TEXTG, TEXTB)
 	_G.QuestInfoGroupSize:SetTextColor(TEXTR, TEXTG, TEXTB)
 	_G.QuestInfoRewardText:SetTextColor(TEXTR, TEXTG, TEXTB)
+	_G.QuestInfoTimerText:SetTextColor(TEXTR, TEXTG, TEXTB)
 	_G.QuestInfoQuestType:SetTextColor(TEXTR, TEXTG, TEXTB)
 
 	local numObjectives = GetNumQuestLeaderBoards()

@@ -74,6 +74,59 @@ local function MasterLooterUpdatePlayers()
 	end
 end
 
+local function LootUpdateButton(index)
+	local LootFrame = _G.LootFrame
+	local numLootItems = LootFrame.numLootItems
+	--Logic to determine how many items to show per page
+	local numLootToShow = _G.LOOTFRAME_NUMBUTTONS
+	if LootFrame.AutoLootTable then
+		numLootItems = #LootFrame.AutoLootTable
+	end
+	if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
+		numLootToShow = numLootToShow - 1 -- Make space for the page buttons
+	end
+
+	local button = _G['LootButton'..index]
+	local slot = (numLootToShow * (LootFrame.page - 1)) + index
+	if button:IsShown() then
+		local texture, _, isQuestItem, questId, isActive
+		if LootFrame.AutoLootTable then
+			local entry = LootFrame.AutoLootTable[slot]
+			if entry.hide then
+				button:Hide()
+				return
+			else
+				texture = entry.texture
+				isQuestItem = entry.isQuestItem
+				questId = entry.questId
+				isActive = entry.isActive
+			end
+		else
+			texture, _, _, _, _, _, isQuestItem, questId, isActive = GetLootSlotInfo(slot)
+		end
+
+		if texture then
+			if questId and not isActive then
+				LCG.ShowOverlayGlow(button)
+			elseif questId or isQuestItem then
+				LCG.ShowOverlayGlow(button)
+			else
+				LCG.HideOverlayGlow(button)
+			end
+		end
+	end
+end
+
+local function LootFrameOnShow(frame)
+	if IsFishingLoot() then
+		frame.Title:SetText(L["Fishy Loot"])
+	elseif not UnitIsFriend('player', 'target') and UnitIsDead('target') then
+		frame.Title:SetText(UnitName('target'))
+	else
+		frame.Title:SetText(LOOT)
+	end
+end
+
 function S:LootFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.loot) then return end
 
@@ -138,57 +191,8 @@ function S:LootFrame()
 		button:NudgePoint(nil, 30, nil, nil, true)
 	end
 
-	hooksecurefunc('LootFrame_UpdateButton', function(index)
-		local numLootItems = LootFrame.numLootItems
-		--Logic to determine how many items to show per page
-		local numLootToShow = _G.LOOTFRAME_NUMBUTTONS
-		if LootFrame.AutoLootTable then
-			numLootItems = #LootFrame.AutoLootTable
-		end
-		if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
-			numLootToShow = numLootToShow - 1 -- Make space for the page buttons
-		end
-
-		local button = _G['LootButton'..index]
-		local slot = (numLootToShow * (LootFrame.page - 1)) + index
-		if button:IsShown() then
-			local texture, _, isQuestItem, questId, isActive
-			if LootFrame.AutoLootTable then
-				local entry = LootFrame.AutoLootTable[slot]
-				if entry.hide then
-					button:Hide()
-					return
-				else
-					texture = entry.texture
-					isQuestItem = entry.isQuestItem
-					questId = entry.questId
-					isActive = entry.isActive
-				end
-			else
-				texture, _, _, _, _, _, isQuestItem, questId, isActive = GetLootSlotInfo(slot)
-			end
-
-			if texture then
-				if questId and not isActive then
-					LCG.ShowOverlayGlow(button)
-				elseif questId or isQuestItem then
-					LCG.ShowOverlayGlow(button)
-				else
-					LCG.HideOverlayGlow(button)
-				end
-			end
-		end
-	end)
-
-	LootFrame:HookScript('OnShow', function(frame)
-		if IsFishingLoot() then
-			frame.Title:SetText(L["Fishy Loot"])
-		elseif not UnitIsFriend('player', 'target') and UnitIsDead('target') then
-			frame.Title:SetText(UnitName('target'))
-		else
-			frame.Title:SetText(LOOT)
-		end
-	end)
+	hooksecurefunc('LootFrame_UpdateButton', LootUpdateButton)
+	LootFrame:HookScript('OnShow', LootFrameOnShow)
 
 	S:HandleNextPrevButton(_G.LootFrameDownButton)
 	S:HandleNextPrevButton(_G.LootFrameUpButton)

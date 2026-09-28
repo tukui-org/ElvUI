@@ -139,6 +139,6 @@ local function Disable(self)
 	end
 end
 
-if not oUF.isRetail then
+if not oUF.isModern then
 	oUF:AddElement('AuraHighlight', Update, Enable, Disable)
 end

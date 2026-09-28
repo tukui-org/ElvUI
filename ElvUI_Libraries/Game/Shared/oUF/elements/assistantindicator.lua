@@ -32,6 +32,8 @@ local function Update(self, event)
 	local element = self.AssistantIndicator
 	local unit = self.__unit
 
+	if not element.combatHide and (event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_REGEN_ENABLED') then return end
+
 	--[[ Callback: AssistantIndicator:PreUpdate()
 	Called before the element has been updated.
 

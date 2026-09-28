@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
-local UnitDefense = UnitDefense
+local UnitDefense = UnitDefense or UnitDefenseSkill -- forever
 
 local DEFENSE = DEFENSE
 local STAT_CATEGORY_DEFENSE = STAT_CATEGORY_DEFENSE

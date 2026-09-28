@@ -122,17 +122,19 @@ function S:CharacterFrame()
 	HandleResistanceFrame('MagicResFrame')
 
 	for _, slot in next, { _G.PaperDollItemsFrame:GetChildren() } do
-		local name = slot:GetName()
-		local icon = _G[name..'IconTexture']
+		if slot:IsObjectType('Button') and slot.Count then -- skips RuneFrameControlButton
+			local name = slot:GetName()
+			local icon = _G[name..'IconTexture']
 
-		slot:StripTextures()
-		slot:SetTemplate(nil, true, true)
-		slot:StyleButton()
+			slot:StripTextures()
+			slot:SetTemplate(nil, true, true)
+			slot:StyleButton()
 
-		S:HandleIcon(icon)
-		icon:SetInside()
+			S:HandleIcon(icon)
+			icon:SetInside()
 
-		E:RegisterCooldown(_G[name..'Cooldown'])
+			E:RegisterCooldown(_G[name..'Cooldown'])
+		end
 	end
 
 	hooksecurefunc('PaperDollItemSlotButton_Update', PaperDollItemSlotButtonUpdate)

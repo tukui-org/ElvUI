@@ -31,6 +31,16 @@ local function BlackMarketScrollUpdate()
 	_G.BlackMarketFrame.ScrollBox:ForEachFrame(BlackMarketScrollUpdateChild)
 end
 
+local function UpdateHotItem(item)
+	local deal = item.HotDeal
+	local link = deal:IsShown() and deal.itemLink
+	if not link then return end
+
+	local quality = GetItemQualityByID(link)
+	local r, g, b = E:GetItemQualityColor(quality)
+	deal.Name:SetTextColor(r, g, b)
+end
+
 function S:Blizzard_BlackMarketUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bmah) then return end
 
@@ -74,15 +84,7 @@ function S:Blizzard_BlackMarketUI()
 	S:HandleItemButton(BlackMarketFrame.HotDeal.Item, true)
 	S:HandleIconBorder(BlackMarketFrame.HotDeal.Item.IconBorder)
 
-	hooksecurefunc('BlackMarketFrame_UpdateHotItem', function(item)
-		local deal = item.HotDeal
-		local link = deal:IsShown() and deal.itemLink
-		if not link then return end
-
-		local quality = GetItemQualityByID(link)
-		local r, g, b = E:GetItemQualityColor(quality)
-		deal.Name:SetTextColor(r, g, b)
-	end)
+	hooksecurefunc('BlackMarketFrame_UpdateHotItem', UpdateHotItem)
 end
 
 S:AddCallbackForAddon('Blizzard_BlackMarketUI')

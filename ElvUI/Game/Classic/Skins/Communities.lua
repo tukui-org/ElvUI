@@ -97,10 +97,6 @@ local function HandleRequestToJoinFrame(frame)
 	S:HandleButton(frame.Cancel)
 end
 
-local function GuildNewsSetNews(button)
-	button.header:SetAlpha(0)
-end
-
 local function HandleRewardButton(child)
 	if not child.IsSkinned then
 		S:HandleIcon(child.Icon, true)
@@ -150,6 +146,47 @@ local function UpdateCommunitiesTabs(frame)
 	end
 end
 
+local function ApplicantList_BuildList(list)
+	local columnDisplay = list.ColumnDisplay
+	for _, child in next, { columnDisplay:GetChildren() } do
+		if not child.IsSkinned then
+			child:StripTextures()
+
+			child:CreateBackdrop()
+			child.backdrop:Point('TOPLEFT', 4, -2)
+			child.backdrop:Point('BOTTOMRIGHT', 0, 2)
+
+			child:SetHighlightTexture(E.media.normTex)
+			local hl = child:GetHighlightTexture()
+			hl:SetVertexColor(1, 1, 1, .25)
+			hl:SetInside(child.backdrop)
+
+			child.IsSkinned = true
+		end
+	end
+end
+
+local function GuildNewsSetNews(button)
+	button.header:SetAlpha(0)
+end
+
+local function StreamEntry_SetFilter(frame)
+	frame.ShowNotificationsButton:Size(20, 20)
+	frame.HideNotificationsButton:Size(20, 20)
+
+	S:HandleCheckBox(frame.ShowNotificationsButton)
+	S:HandleCheckBox(frame.HideNotificationsButton)
+end
+
+local function MemberList_RefreshListDisplay(frame)
+	for _, child in next, { frame.ColumnDisplay:GetChildren() } do
+		if not child.template then
+			child:StripTextures()
+			child:SetTemplate('Transparent')
+		end
+	end
+end
+
 function S:Blizzard_Communities()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
 
@@ -183,12 +220,7 @@ function S:Blizzard_Communities()
 
 	S:HandleDropDownBox(CommunitiesFrame.CommunitiesListDropdown)
 
-	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', function(frame)
-		frame.ShowNotificationsButton:Size(20, 20)
-		frame.HideNotificationsButton:Size(20, 20)
-		S:HandleCheckBox(frame.ShowNotificationsButton)
-		S:HandleCheckBox(frame.HideNotificationsButton)
-	end)
+	hooksecurefunc(_G.CommunitiesNotificationSettingsStreamEntryMixin, 'SetFilter', StreamEntry_SetFilter)
 
 	-- Chat Tab
 	CommunitiesFrame.MemberList:StripTextures()
@@ -317,14 +349,7 @@ function S:Blizzard_Communities()
 	CommunitiesFrame.MemberList.ShowOfflineButton:Size(25)
 	S:HandleTrimScrollBar(MemberList.ScrollBar)
 
-	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', function(frame)
-		for _, child in next, { frame.ColumnDisplay:GetChildren() } do
-			if not child.template then
-				child:StripTextures()
-				child:SetTemplate('Transparent')
-			end
-		end
-	end)
+	hooksecurefunc(CommunitiesFrame.MemberList, 'RefreshListDisplay', MemberList_RefreshListDisplay)
 
 	-- Perks Tab
 	local GuildBenefitsFrame = CommunitiesFrame.GuildBenefitsFrame
@@ -589,25 +614,7 @@ function S:Blizzard_Communities()
 	ApplicantList.backdrop:Point('TOPLEFT', 0, 0)
 	ApplicantList.backdrop:Point('BOTTOMRIGHT', -15, 0)
 
-	hooksecurefunc(ApplicantList, 'BuildList', function(list)
-		local columnDisplay = list.ColumnDisplay
-		for _, child in next, { columnDisplay:GetChildren() } do
-			if not child.IsSkinned then
-				child:StripTextures()
-
-				child:CreateBackdrop()
-				child.backdrop:Point('TOPLEFT', 4, -2)
-				child.backdrop:Point('BOTTOMRIGHT', 0, 2)
-
-				child:SetHighlightTexture(E.media.normTex)
-				local hl = child:GetHighlightTexture()
-				hl:SetVertexColor(1, 1, 1, .25)
-				hl:SetInside(child.backdrop)
-
-				child.IsSkinned = true
-			end
-		end
-	end)
+	hooksecurefunc(ApplicantList, 'BuildList', ApplicantList_BuildList)
 end
 
 S:AddCallbackForAddon('Blizzard_Communities')

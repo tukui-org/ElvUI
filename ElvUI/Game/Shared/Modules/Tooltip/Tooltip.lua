@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
+local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 local B = E:GetModule('Bags')
@@ -62,7 +63,7 @@ local UnitTokenFromGUID = UnitTokenFromGUID
 local UnitSex = UnitSex
 
 local TooltipDataType = Enum.TooltipDataType
-local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
+local ScaleTo100 = CurveConstants.ScaleTo100
 local AddLinePreCall = TooltipDataProcessor and TooltipDataProcessor.AddLinePreCall
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
@@ -116,14 +117,14 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:UpdateAuraSpellIDCVar()
-	if not E.Retail then return end
+	if not E.Modern then return end
 
 	-- Blizzard resets tooltipShowAuraSpellIDs to 0 between sessions
 	E:SetCVar('tooltipShowAuraSpellIDs', TT:IsModKeyDown())
 end
 
 function TT:SetCompareItems(tt, value)
-	if E.Retail or tt ~= GameTooltip then return end
+	if E.Modern or tt ~= GameTooltip then return end
 
 	tt.supportsItemComparison = value
 end
@@ -307,7 +308,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 				levelText = format('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
 			end
 
-			if E.Retail then
+			if E.Modern then
 				local specText = specLine and specLine:GetText()
 				if specText then -- this might explode because of guildName
 					specLine:SetText(nameColor:WrapTextInColorCode(specText))
@@ -530,7 +531,7 @@ function TT:AddTargetInfo(tt, unit)
 		if E:IsSecretUnit(unitTarget) then
 			local _, className = UnitClass(unitTarget)
 			targetColor = C_ClassColor_GetClassColor(className) or PRIEST_COLOR
-		elseif UnitIsPlayer(unitTarget) and (not E.Retail or not UnitHasVehicleUI(unitTarget)) then
+		elseif UnitIsPlayer(unitTarget) and (not (E.Retail or E.Wrath or E.Mists) or not UnitHasVehicleUI(unitTarget)) then
 			local _, className = UnitClass(unitTarget)
 			targetColor = E:ClassColor(className) or PRIEST_COLOR
 		else
@@ -549,7 +550,7 @@ function TT:AddTargetInfo(tt, unit)
 
 	-- even though technically this would work on retail it
 	-- we stop it because unitFound is always secret when we need it
-	if E.Retail or not IsInGroup() then return end
+	if E.Modern or not IsInGroup() then return end
 
 	local text, count = '', 0
 	local isInRaid = IsInRaid()
@@ -642,7 +643,7 @@ function TT:SetUnitInfo(tt, unit, data)
 	end
 
 	if not isInCombat and not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
-		if not E.Retail then
+		if not E.Modern then
 			TT:AddMountLegacyInfo(tt, unit)
 		elseif not E:IsRestrictedInstance() then
 			TT:AddMountModernInfo(tt, unit)
@@ -655,7 +656,7 @@ function TT:SetUnitInfo(tt, unit, data)
 		end
 	end
 
-	if (E.Retail or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not tt.ItemLevelShown then
+	if (E.Modern or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not tt.ItemLevelShown then
 		if color then
 			TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 		else
@@ -727,6 +728,10 @@ end
 function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	local statusText = bar.Text
 	if not statusText or not TT.db.healthBar.text then return end
+
+	local now = GetTime() -- blizzard calls this from the bars OnUpdate every frame
+	if bar.textNeedsUpdate and (now - bar.textNeedsUpdate) < 0.1 then return end
+	bar.textNeedsUpdate = now
 
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
@@ -835,7 +840,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 	if GetItem then
 		local name, link = GetItem(self)
 
-		if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
+		if not E.Modern and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
 			local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
 			if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
 		end
@@ -942,6 +947,9 @@ function TT:SetStyle(tt, _, isEmbedded)
 	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
 	if tt.NineSlice then tt.NineSlice:SetAlpha(0) end
 
+	-- blizzard calls this from GameTooltip_OnHide on every hide, which is not required
+	if tt.template == 'Transparent' and tt.customBackdropAlpha == TT.db.colorAlpha then return end
+
 	-- Blizzard_MoneyFrame/Mainline/MoneyFrame.lua: secrets cause `MoneyFrame_Update` to crash out via `GameTooltip:SetLootItem(id)`
 	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use `alwaysCompareItems 0`
 	if E:NotSecretValue(tt:GetWidth()) then
@@ -986,7 +994,7 @@ function TT:MODIFIER_STATE_CHANGED()
 		local owner = GameTooltip:GetOwner()
 		if owner == UIParent then
 			if E:UnitExists('mouseover') then
-				if E.Retail then
+				if E.Modern then
 					GameTooltip:RefreshData()
 				else
 					GameTooltip:SetUnit('mouseover')
@@ -1062,7 +1070,7 @@ function TT:GameTooltip_OnTooltipSetSpell(data)
 	if (self ~= GameTooltip and self ~= E.SpellBookTooltip) or self:IsForbidden() or not TT:IsModKeyDown() then return end
 
 	local spellID, _
-	if E.Retail then
+	if E.Modern then
 		if data and data.type then
 			if data.type == TooltipDataType.Spell then
 				spellID = data.id
@@ -1176,14 +1184,10 @@ function TT:SetTooltipFonts()
 		end
 	end
 
+	DT:UpdateTooltipFonts()
+
 	-- Header has its own font settings
 	_G.GameTooltipHeaderText:FontTemplate(TT.db.headerFont, TT.db.headerFontSize, TT.db.headerFontOutline)
-
-	-- Ignore header font size on DatatextTooltip
-	if _G.DatatextTooltip then
-		_G.DatatextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
-		_G.DatatextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
-	end
 
 	-- Comparison Tooltips has its own size setting
 	local smallSize = TT.db.smallTextFontSize
@@ -1281,7 +1285,7 @@ function TT:Initialize()
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
 		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
 
-		if E.Retail then -- MoneyFrame will error otherwise
+		if E.Modern then -- MoneyFrame will error otherwise
 			AddLinePreCall(LINETYPE_SELLPRICE, TT.AddMoneyInfo)
 		end
 
@@ -1297,7 +1301,7 @@ function TT:Initialize()
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 	end
 
-	if E.Retail then
+	if E.Modern then
 		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')

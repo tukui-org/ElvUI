@@ -32,6 +32,8 @@ local function Update(self, event)
 	local unit = self.__unit
 	local element = self.MasterLooterIndicator
 
+	if not element.combatHide and (event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_REGEN_ENABLED') then return end
+
 	--[[ Callback: MasterLooterIndicator:PreUpdate()
 	Called before the element has been updated.
 

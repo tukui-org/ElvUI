@@ -108,6 +108,9 @@ local SOUND_U_CHAT_SCROLL_BUTTON = SOUNDKIT.U_CHAT_SCROLL_BUTTON
 local NPEV2_CHAT_USER_TAG_GUIDE = gsub(NPEV2_CHAT_USER_TAG_GUIDE or '', '(|A.-|a).+', '%1') -- we only want the icon
 local SOCIAL_QUEUE_QUEUED_FOR = gsub(SOCIAL_QUEUE_QUEUED_FOR or '', ':%s?$', '') -- some language have `:` on end
 
+local QUICKJOIN_FRIENDTEX = [[Interface\HELPFRAME\ReportLagIcon-Chat]]
+local QUICKJOIN_QUEUETEX = [[Interface\HELPFRAME\HelpIcon-ItemRestoration]]
+
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a '
 local TIMERUNNING_SMALL = format(TIMERUNNING_ATLAS, 12, 10)
 
@@ -269,7 +272,7 @@ end
 function CH:MessageIsProtected(msg)
 	if E:IsSecretValue(msg) then return true end
 
-	return msg and (msg ~= gsub(msg, '(:?|?)|K(.-)|k', canChangeMessage))
+	return msg and strfind(msg, '|K', 1, true) and (msg ~= gsub(msg, '(:?|?)|K(.-)|k', canChangeMessage))
 end
 
 function CH:RemoveSmiley(key)
@@ -350,12 +353,18 @@ do --this can save some main file locals
 	specialChatIcons = z
 
 	local portal = GetCVar('portal')
-	if portal == 'US' then
+	if portal == 'test' then
+		if E.Forever then
+			z['Player-4618-007349AE'] = itsSimpy
+		end
+	elseif portal == 'US' then
 		if E.Classic then
 			-- Simpy Seasonal (5813: Wild Growth)
 			z['Player-5813-0301DEC1']	= itsSimpy -- Warlock: Yubi
-			-- Simpy Era (5149: Mankrik)
+			-- Simpy Era (5149: Mankrik, 5066: Whitemane)
 			z['Player-5149-04172B76']	= itsSimpy -- Warlock: Simpy
+			z['Player-5149-04C878ED']	= itsSimpy -- Warrior: Feldia
+			z['Player-5066-0659581C']	= itsSimpy -- Priest: Cutepriest
 		elseif E.TBC then
 			-- Simpy TBC Anniversary (6064: Dreamscythe)
 			z['Player-6064-02A886D5']	= itsSimpy -- Warlock: Simpy
@@ -662,8 +671,7 @@ function CH:GetGroupDistribution()
 end
 
 function CH:InsertEmotions(msg)
-	for word in gmatch(msg, '%s-%S+%s*') do
-		word = strtrim(word)
+	for word in gmatch(msg, '%S+') do
 		local pattern = E:EscapeString(word)
 		local emoji = CH.Smileys[pattern]
 		if emoji and strmatch(msg, '[%s%p]-'..pattern..'[%s%p]*') then
@@ -1024,7 +1032,7 @@ function CH:StyleChat(frame)
 		tab.conversationIcon:Point('RIGHT', tab.Text, 'LEFT', -1, 0)
 	end
 
-	if E.Retail then
+	if E.Modern then
 		editbox.focusLeft:SetAlpha(0)
 		editbox.focusRight:SetAlpha(0)
 		editbox.focusMid:SetAlpha(0)
@@ -1231,7 +1239,7 @@ function CH:TabOnEnter(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and E:GetMouseFocus() ~= chat.copyButton then
+		if chat and chat.copyButton and not chat.copyButton:IsMouseOver() then
 			chat.copyButton:SetAlpha(0.35)
 		end
 	end
@@ -1246,7 +1254,7 @@ function CH:TabOnLeave(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and E:GetMouseFocus() ~= chat.copyButton then
+		if chat and chat.copyButton and not chat.copyButton:IsMouseOver() then
 			chat.copyButton:SetAlpha(0)
 		end
 	end
@@ -1285,10 +1293,9 @@ function CH:HandleFadeTabs(chat, hook)
 		end
 	end
 
-	local focus = E:GetMouseFocus()
 	if not hook then
 		CH:TabOnEnter(tab)
-	elseif focus ~= tab and focus ~= chat then
+	elseif not tab:IsMouseOver() and not chat:IsMouseOver() then
 		CH:TabOnLeave(tab)
 	end
 end
@@ -1680,7 +1687,9 @@ function CH:FindURL(event, msg, author, ...)
 		text = gsub(gsub(text, '(%S)({.-})', '%1 %2'), '({.-})(%S)', '%1 %2')
 	end
 
-	text = gsub(gsub(text, '(%S)(|c.-|H.-|h.-|h|r)', '%1 %2'), '(|c.-|H.-|h.-|h|r)(%S)', '%1 %2')
+	if strfind(text, '|H', 1, true) then -- both patterns need a hyperlink
+		text = gsub(gsub(text, '(%S)(|c.-|H.-|h.-|h|r)', '%1 %2'), '(|c.-|H.-|h.-|h|r)(%S)', '%1 %2')
+	end
 
 	-- http://example.com
 	local newMsg, found = gsub(text, '(%a+)://(%S+)(%s?)', CH.ReplaceProtocol)
@@ -2430,7 +2439,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		elseif chatType == 'CHANNEL_NOTICE' then
 			if E:IsSecretValue(arg1) then
 				return -- we cant get the globalstring because arg1 is secret
-			elseif E.Retail and arg1 == 'YOU_CHANGED' and (GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR) then
+			elseif E.Modern and arg1 == 'YOU_CHANGED' and (GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR) then
 				if frame.UpdateDefaultChatTarget then
 					frame:UpdateDefaultChatTarget()
 				else
@@ -2439,7 +2448,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 				frame.editBox:UpdateNewcomerEditBoxHint()
 			else
-				if E.Retail and arg1 == 'YOU_LEFT' then
+				if E.Modern and arg1 == 'YOU_LEFT' then
 					frame.editBox:UpdateNewcomerEditBoxHint(arg8)
 				end
 
@@ -2728,7 +2737,7 @@ function CH:SetupChat()
 
 	_G.TextToSpeechButtonFrame:Hide()
 
-	if E.Retail then
+	if E.Modern then
 		_G.QuickJoinToastButton:Hide()
 	end
 
@@ -3367,7 +3376,7 @@ local channelButtons = {
 	_G.ChatFrameChannelButton -- main voice button
 }
 
-if E.Retail then
+if E.Modern then
 	tinsert(channelButtons, _G.ChatFrameToggleVoiceDeafenButton)
 	tinsert(channelButtons, _G.ChatFrameToggleVoiceMuteButton)
 end
@@ -3400,7 +3409,7 @@ function CH:RepositionOverflowButton()
 
 	-- handle the overflow placement
 	if CH.db.pinVoiceButtons and not CH.db.hideVoiceButtons then
-		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(E.Retail and channelButtons[4]:IsShown() and 4) or 2], 'LEFT', -4, 0)
+		_G.GeneralDockManagerOverflowButton:Point('RIGHT', channelButtons[(E.Modern and channelButtons[4]:IsShown() and 4) or 2], 'LEFT', -4, 0)
 	else
 		_G.GeneralDockManagerOverflowButton:Point('RIGHT', _G.GeneralDockManager, 'RIGHT', -4, 0)
 	end
@@ -3485,7 +3494,7 @@ function CH:HandleChatVoiceIcons()
 			end
 		end
 
-		if E.Retail then
+		if E.Modern then
 			channelButtons[3]:HookScript('OnShow', CH.RepositionOverflowButton)
 			channelButtons[3]:HookScript('OnHide', CH.RepositionOverflowButton)
 		end
@@ -3544,9 +3553,40 @@ function CH:CreateChatVoicePanel()
 		button:HookScript('OnLeave', CH.LeaveVoicePanel)
 	end
 
-	if E.Retail then
+	if E.Modern then
 		CH:SetupQuickJoin(Holder)
 	end
+end
+
+function CH:QuickJoin_ShowToast()
+	self.Toast.backdrop:Show()
+end
+
+function CH:QuickJoin_HideToast()
+	self.Toast.backdrop:Hide()
+end
+
+function CH:QuickJoin_ToastToFriendFinished()
+	self.FriendsButton:SetShown(not self.displayedToast)
+	self.FriendCount:SetShown(not self.displayedToast)
+end
+
+function CH:QuickJoin_UpdateQueueIcon()
+	if not self.displayedToast then return end
+
+	self.FriendsButton:SetTexture(QUICKJOIN_FRIENDTEX)
+	self.QueueButton:SetTexture(QUICKJOIN_QUEUETEX)
+	self.FlashingLayer:SetTexture(QUICKJOIN_QUEUETEX)
+	self.FriendsButton:SetShown(false)
+	self.FriendCount:SetShown(false)
+end
+
+function CH:QuickJoin_OnMouseUp()
+	self.FriendsButton:SetTexture(QUICKJOIN_FRIENDTEX)
+end
+
+function CH:QuickJoin_OnMouseDown()
+	self.FriendsButton:SetTexture(QUICKJOIN_FRIENDTEX)
 end
 
 function CH:SetupQuickJoin(holder)
@@ -3559,28 +3599,9 @@ function CH:SetupQuickJoin(holder)
 	-- Button:Hide() -- DONT KILL IT! If we use hide we also hide the Toasts, which are used in other Plugins.
 
 	-- Change the QuickJoin Textures. Looks better =)
-	local friendTex = [[Interface\HELPFRAME\ReportLagIcon-Chat]]
-	local queueTex = [[Interface\HELPFRAME\HelpIcon-ItemRestoration]]
+	Button.FriendsButton:SetTexture(QUICKJOIN_FRIENDTEX)
+	Button.QueueButton:SetTexture(QUICKJOIN_QUEUETEX)
 
-	Button.FriendsButton:SetTexture(friendTex)
-	Button.QueueButton:SetTexture(queueTex)
-
-	hooksecurefunc(Button, 'ToastToFriendFinished', function(t)
-		t.FriendsButton:SetShown(not t.displayedToast)
-		t.FriendCount:SetShown(not t.displayedToast)
-	end)
-
-	hooksecurefunc(Button, 'UpdateQueueIcon', function(t)
-		if not t.displayedToast then return end
-		t.FriendsButton:SetTexture(friendTex)
-		t.QueueButton:SetTexture(queueTex)
-		t.FlashingLayer:SetTexture(queueTex)
-		t.FriendsButton:SetShown(false)
-		t.FriendCount:SetShown(false)
-	end)
-
-	Button:HookScript('OnMouseDown', function(t) t.FriendsButton:SetTexture(friendTex) end)
-	Button:HookScript('OnMouseUp', function(t) t.FriendsButton:SetTexture(friendTex) end)
 	-- Skin the `QuickJoinToastButton.Toast`
 	Button.Toast:ClearAllPoints()
 	Button.Toast:Point('LEFT', Button, 'RIGHT', -6, 0)
@@ -3588,8 +3609,13 @@ function CH:SetupQuickJoin(holder)
 	Button.Toast:CreateBackdrop('Transparent')
 	Button.Toast.backdrop:Hide()
 
-	hooksecurefunc(Button, 'ShowToast', function() Button.Toast.backdrop:Show() end)
-	hooksecurefunc(Button, 'HideToast', function() Button.Toast.backdrop:Hide() end)
+	Button:HookScript('OnMouseUp', CH.QuickJoin_OnMouseUp)
+	Button:HookScript('OnMouseDown', CH.QuickJoin_OnMouseDown)
+
+	hooksecurefunc(Button, 'ToastToFriendFinished', CH.QuickJoin_ToastToFriendFinished)
+	hooksecurefunc(Button, 'UpdateQueueIcon', CH.QuickJoin_UpdateQueueIcon)
+	hooksecurefunc(Button, 'ShowToast', CH.QuickJoin_ShowToast)
+	hooksecurefunc(Button, 'HideToast', CH.QuickJoin_HideToast)
 end
 
 function CH:CopyChat_OnMouseDown(button)
@@ -4105,7 +4131,7 @@ function CH:Initialize()
 	CH:RegisterEvent('PET_BATTLE_CLOSE')
 	CH:RegisterEvent('CVAR_UPDATE')
 
-	if E.Retail then
+	if E.Modern then
 		CH:RegisterEvent('SOCIAL_QUEUE_UPDATE', 'SocialQueueEvent')
 
 		if E.private.general.voiceOverlay then
@@ -4182,7 +4208,7 @@ function CH:Initialize()
 		chatHead.StatusBar.anim = _G.CreateAnimationGroup(chatHead.StatusBar)
 		chatHead.StatusBar.anim.progress = chatHead.StatusBar.anim:CreateAnimation('Progress')
 		chatHead.StatusBar.anim.progress:SetEasing('Out')
-		chatHead.StatusBar.anim.progress:SetDuration(.3)
+		chatHead.StatusBar.anim.progress:SetDuration(0.3)
 
 		chatHead:Hide()
 		CH.ChatHeadFrame[i] = chatHead

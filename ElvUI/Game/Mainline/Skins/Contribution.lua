@@ -5,6 +5,33 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local function SetupContributeButton(frame)
+	if not frame.IsSkinned then
+		S:HandleButton(frame.ContributeButton)
+		frame.IsSkinned = true
+	end
+
+	local statusBar = frame.Status
+	if not statusBar.backdrop then
+		E:RegisterStatusBar(statusBar)
+		statusBar:StripTextures()
+		statusBar:CreateBackdrop()
+	end
+end
+
+local function AddReward(frame, _, rewardID)
+	local reward = frame:FindOrAcquireReward(rewardID)
+	if not reward.backdrop then
+		reward:SetFrameLevel(5)
+		reward:CreateBackdrop()
+
+		reward.Border:SetAlpha(0)
+		reward.Icon:SetTexCoords()
+		reward.Icon:SetDrawLayer('ARTWORK', -1)
+		reward.backdrop:SetOutside(reward.Icon)
+	end
+end
+
 function S:Blizzard_Contribution()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.contribution) then return end
 
@@ -20,35 +47,8 @@ function S:Blizzard_Contribution()
 		TT:SetStyle(tt)
 	end
 
-	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', function(frame)
-		-- Skin the Contribute Buttons
-		if not frame.IsSkinned then
-			S:HandleButton(frame.ContributeButton)
-			frame.IsSkinned = true
-		end
-
-		-- Skin the StatusBar
-		local statusBar = frame.Status
-		if not statusBar.backdrop then
-			E:RegisterStatusBar(statusBar)
-			statusBar:StripTextures()
-			statusBar:CreateBackdrop()
-		end
-	end)
-
-	-- Skin the reward icons
-	hooksecurefunc(_G.ContributionMixin, 'AddReward', function(frame, _, rewardID)
-		local reward = frame:FindOrAcquireReward(rewardID)
-		if not reward.backdrop then
-			reward:SetFrameLevel(5)
-			reward:CreateBackdrop()
-
-			reward.Border:SetAlpha(0)
-			reward.Icon:SetTexCoords()
-			reward.Icon:SetDrawLayer('ARTWORK', -1)
-			reward.backdrop:SetOutside(reward.Icon)
-		end
-	end)
+	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', SetupContributeButton)
+	hooksecurefunc(_G.ContributionMixin, 'AddReward', AddReward)
 end
 
 S:AddCallbackForAddon('Blizzard_Contribution')

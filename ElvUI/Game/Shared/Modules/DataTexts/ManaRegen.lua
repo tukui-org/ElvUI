@@ -25,7 +25,7 @@ local function OnEvent(panel)
 	local baseMR, castingMR = GetManaRegen()
 	local regen = InCombatLockdown() and castingMR or baseMR
 
-	local manaRegen = E.Retail and AbbreviateNumbers(regen, breakpoint) or (regen * 5)
+	local manaRegen = E.Retail and AbbreviateNumbers(regen, breakpoint) or (regen * 5) -- forever shows mp5
 	if db.NoLabel then
 		panel.text:SetFormattedText(displayString, manaRegen)
 	else

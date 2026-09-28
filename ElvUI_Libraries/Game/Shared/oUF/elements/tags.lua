@@ -95,7 +95,7 @@ local C_Timer_NewTimer = C_Timer.NewTimer
 local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
 local CreateFrame = CreateFrame
 
-local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
+local ScaleTo100 = CurveConstants.ScaleTo100
 local GenerateTextColorCode = C_ColorUtil.GenerateTextColorCode
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
 local WrapString = C_StringUtil.WrapString
@@ -141,7 +141,7 @@ local _ENV = {
 		if not r or type(r) == 'string' then -- wtf?
 			return '|cffFFFFFF'
 		elseif type(r) == 'table' then
-			if oUF.isRetail then
+			if oUF.isModern then
 				return '|c' .. GenerateTextColorCode(r)
 			elseif(r.r) then
 				r, g, b = r.r, r.g, r.b
@@ -331,7 +331,7 @@ tagFunctions.maxmana = function(unit)
 end
 
 tagFunctions.missinghp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		return TruncateWhenZero(UnitHealthMissing(u))
 	else
 		local current = UnitHealthMax(u) - UnitHealth(u)
@@ -342,7 +342,7 @@ tagFunctions.missinghp = function(u)
 end
 
 tagFunctions.missingpp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		return TruncateWhenZero(UnitPowerMissing(u))
 	else
 		local current = UnitPowerMax(u) - UnitPower(u)
@@ -363,7 +363,7 @@ tagFunctions.offline = function(u)
 end
 
 tagFunctions.perhp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		local precent = UnitHealthPercent(u, true, ScaleTo100)
 		return format('%d', precent)
 	else
@@ -377,7 +377,7 @@ tagFunctions.perhp = function(u)
 end
 
 tagFunctions.perpp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		local precent = UnitPowerPercent(u, nil, true, ScaleTo100)
 		return format('%d', precent)
 	else
@@ -624,7 +624,7 @@ local unitlessEvents = {
 	RUNE_POWER_UPDATE = true,
 }
 
-if oUF.isRetail then
+if oUF.isModern then
 	tagEvents.arcanecharges       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents.chi                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents.holypower           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
@@ -786,14 +786,15 @@ local function ShouldUpdateTag(frame, event, unit)
 
 	if unitlessEvents[event] then
 		return true
-	elseif validateUnit(unit) and oUF:UnitExists(unit) then
-		if frame.__unit == unit then
-			return true
-		else
-			local allowExtra = eventExtraUnits[frame]
-			return allowExtra and allowExtra[unit]
-		end
 	end
+
+	-- own unit events come through RegisterUnitEvent, skip the validateUnit
+	if oUF:NotSecretValue(unit) and frame.__unit == unit then
+		return oUF:UnitExists(unit)
+	end
+
+	local extra = validateUnit(unit) and oUF:UnitExists(unit) and eventExtraUnits[frame]
+	return extra and extra[unit]
 end
 
 local function ProcessStrings(strs)

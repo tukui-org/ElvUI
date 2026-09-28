@@ -749,7 +749,7 @@ do
 		local name = overrideName or createName(nil, attributes)
 		local header = Mixin(CreateFrame('Frame', name, UFParentHider, template), headerMixin)
 
-		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
+		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isModern and ', PingableUnitFrameTemplate' or ''))
 
 		for att, val in next, attributes do
 			header:SetAttribute(att, val)
@@ -826,7 +826,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 	unit = unit:lower()
 
 	local name = overrideName or createName(unit)
-	local object = CreateFrame('Button', name, UFParentHider, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, UFParentHider, overrideTemplate or (oUF.isModern and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -965,7 +965,7 @@ do
 			if(not nameplate.unitFrame) then
 				nameplate.style = self.style
 
-				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, oUF.isRetail and 'PingableUnitFrameTemplate' or '')
+				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, oUF.isModern and 'PingableUnitFrameTemplate' or '')
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame:SetAllPoints()
 				nameplate.unitFrame.isNameplate = true

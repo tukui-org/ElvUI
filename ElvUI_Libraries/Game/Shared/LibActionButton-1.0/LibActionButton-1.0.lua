@@ -17,11 +17,14 @@ local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strma
 local _, _, _, wowtoc = GetBuildInfo()
 
 local WoWBCC = wowtoc >= 20000 and wowtoc < 30000
-local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
 local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
 local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
 local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
 local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
+local WoWForever = wowtoc >= 16000 and wowtoc < 20000 -- ToDo: classic_beta
+local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE) and not WoWForever
+
+local WoWModern = WoWRetail or WoWForever
 
 local DisableOverlayGlow = WoWClassic or WoWBCC or WoWWrath
 
@@ -285,7 +288,7 @@ function lib:CreateButton(id, name, header, config)
 		KeyBound = LibStub("LibKeyBound-1.0", true)
 	end
 
-	local button = setmetatable(CreateFrame("CheckButton", name, header, (WoWRetail and "PingableActionButtonTemplate, " or "").."ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
+	local button = setmetatable(CreateFrame("CheckButton", name, header, (WoWModern and "PingableActionButtonTemplate, " or "").."ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	button:RegisterForClicks("AnyDown", "AnyUp")
 
@@ -659,7 +662,7 @@ local function WatchRange(button, slot)
 	lib.buttonsBySlot[slot][button] = true
 	lib.slotByButton[button] = slot
 
-	if WoWRetail then -- activate the event for slot
+	if WoWModern then -- activate the event for slot
 		EnableActionRangeCheck(slot, true)
 	end
 end
@@ -670,7 +673,7 @@ local function ClearRange(button, slot)
 		buttons[button] = nil
 
 		if not next(buttons) then -- deactivate event for slot (unused)
-			if WoWRetail then
+			if WoWModern then
 				EnableActionRangeCheck(slot, false)
 			end
 
@@ -1190,8 +1193,8 @@ if UseCustomFlyout then
 		-- 300 is a safe upper limit in 10.0.2, the highest known spell is 229
 		for flyoutID = 1, 300 do
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
-			if success then
-				lib.FlyoutInfo[flyoutID] = { numSlots = numSlots, isKnown = isKnown, slots = {} }
+			if success and numSlots then
+				local data = { numSlots = numSlots, isKnown = isKnown, slots = {} }
 				for slotID = 1, numSlots do
 					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
@@ -1201,8 +1204,10 @@ if UseCustomFlyout then
 						isKnownSlot = false
 					end
 
-					lib.FlyoutInfo[flyoutID].slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
+					data.slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
 				end
+
+				lib.FlyoutInfo[flyoutID] = data
 			end
 		end
 
@@ -1220,19 +1225,22 @@ if UseCustomFlyout then
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
 			if success then
 				data.isKnown = isKnown
-				for slotID = 1, numSlots do
-					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
-					-- hide empty pet slots from the flyout
-					local petIndex, petName = GetCallPetSpellInfo(spellID)
-					if petIndex and (not petName or petName == "") then
-						isKnownSlot = false
+				if numSlots then
+					for slotID = 1, numSlots do
+						local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
+
+						-- hide empty pet slots from the flyout
+						local petIndex, petName = GetCallPetSpellInfo(spellID)
+						if petIndex and (not petName or petName == "") then
+							isKnownSlot = false
+						end
+
+						data.slots[slotID].spellID = spellID
+						data.slots[slotID].spellName = spellName
+						data.slots[slotID].overrideSpellID = overrideSpellID
+						data.slots[slotID].isKnown = isKnownSlot
 					end
-
-					data.slots[slotID].spellID = spellID
-					data.slots[slotID].spellName = spellName
-					data.slots[slotID].overrideSpellID = overrideSpellID
-					data.slots[slotID].isKnown = isKnownSlot
 				end
 			end
 		end
@@ -1508,23 +1516,20 @@ function InitializeEventHandler()
 
 	lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 
-	if not WoWClassic and not WoWBCC then
-		if WoWRetail then
-			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
-			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
-			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
-			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
-		end
-
+	if WoWRetail or WoWWrath or WoWMists then
 		lib.eventFrame:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
 	end
 
-	if WoWRetail then
-		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
-		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
+	if WoWModern then
 		lib.eventFrame:RegisterEvent("ACTION_RANGE_CHECK_UPDATE")
+		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
+		lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
+		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
+		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
+		lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 	else
 		lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
 		lib.eventFrame:RegisterUnitEvent("UNIT_FACTION", "target")
@@ -1541,7 +1546,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
 	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
 
-	if WoWRetail then
+	if WoWModern then
 		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
@@ -1631,7 +1636,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			UpdateTargetAuras(event)
 		end
 
-		if not WoWRetail then
+		if not WoWModern then
 			for button in next, ActiveButtons do
 				UpdateRangeTimer(button)
 			end
@@ -1676,23 +1681,26 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			UpdateUsable(button)
 		end
 	elseif event == "ACTIONBAR_UPDATE_COOLDOWN" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, ActionButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
 	elseif event == "SPELL_UPDATE_COOLDOWN" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, NonActionButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
 	elseif event == "LOSS_OF_CONTROL_ADDED" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, ActiveButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
@@ -1743,12 +1751,10 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			if not lib.activeAssist[spellId] then
 				if spellId and spellId == arg1 then
 					ShowOverlayGlow(button)
-				else
-					if button._state_type == "action" then
-						local actionType, id = GetActionInfo(button._state_action)
-						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-							ShowOverlayGlow(button)
-						end
+				elseif button.isFlyoutButton then
+					local actionType, id = GetActionInfo(button._state_action)
+					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+						ShowOverlayGlow(button)
 					end
 				end
 			end
@@ -1761,12 +1767,10 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			if not lib.activeAssist[spellId] then
 				if spellId and spellId == arg1 then
 					HideOverlayGlow(button)
-				else
-					if button._state_type == "action" then
-						local actionType, id = GetActionInfo(button._state_action)
-						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-							HideOverlayGlow(button)
-						end
+				elseif button.isFlyoutButton then
+					local actionType, id = GetActionInfo(button._state_action)
+					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+						HideOverlayGlow(button)
 					end
 				end
 			end
@@ -1828,7 +1832,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 end
 
 function Generic:OnUpdate(elapsed)
-	if self.flashing then
+	if self.flashing then -- on modern the handler only drives the attack flash
 		self.flashTime = (self.flashTime or 0) - elapsed
 
 		if self.flashTime <= 0 then
@@ -1838,7 +1842,7 @@ function Generic:OnUpdate(elapsed)
 		end
 	end
 
-	if not WoWRetail then
+	if not WoWModern then
 		self.rangeTimer = (self.rangeTimer or 0) - elapsed
 
 		if self.rangeTimer <= 0 then
@@ -2020,7 +2024,7 @@ do
 end
 
 function lib:SetTargetAuraCooldowns(enabled)
-	local activate = not WoWRetail and enabled
+	local activate = not WoWModern and enabled
 
 	TARGETAURA_ENABLED = activate
 
@@ -2198,7 +2202,7 @@ function Update(self, which)
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 	if texture then
-		self:SetScript("OnUpdate", Generic.OnUpdate)
+		self:SetScript("OnUpdate", (not WoWModern or self.flashing) and Generic.OnUpdate or nil) -- see note in Generic.OnUpdate
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 
@@ -2411,7 +2415,7 @@ local defaultCooldownInfo = { startTime = 0; duration = 0; isEnabled = false; is
 local defaultChargeInfo = { currentCharges = 0; maxCharges = 0; cooldownStartTime = 0; cooldownDuration = 0; chargeModRate = 0; isActive = false }
 local defaultLossOfControlInfo = { startTime = 0; duration = 0; modRate = 0; isActive = false; shouldReplaceNormalCooldown = false; }
 
-if WoWRetail then
+if WoWModern then
 	local function SetOrClearCooldown(cooldown, shouldShow, durationObject)
 		if not cooldown then return end
 		if not shouldShow or not durationObject then
@@ -2431,9 +2435,10 @@ if WoWRetail then
 		local showCharge = not locShouldReplaceCooldown and chargeInfo.isActive
 		local showNormal = not locShouldReplaceCooldown and cooldownInfo.isActive
 
-		SetOrClearCooldown(self.cooldown, showNormal, self:GetCooldownDuration())
-		SetOrClearCooldown(self.chargeCooldown, showCharge, self:GetChargeDuration())
-		SetOrClearCooldown(self.lossOfControlCooldown, showLoC, self:GetLoCCooldownDuration())
+		-- the duration gets return a new object each call, only fetch the ones that will be shown
+		SetOrClearCooldown(self.cooldown, showNormal, showNormal and self:GetCooldownDuration())
+		SetOrClearCooldown(self.chargeCooldown, showCharge, showCharge and self:GetChargeDuration())
+		SetOrClearCooldown(self.lossOfControlCooldown, showLoC, showLoC and self:GetLoCCooldownDuration())
 
 		lib.callbacks:Fire("OnCooldownUpdate", self, nil, nil, nil, cooldownInfo, chargeInfo, locInfo)
 	end
@@ -2498,6 +2503,10 @@ function StartFlash(self)
 
 	self.flashing = true
 
+	if WoWModern then
+		self:SetScript("OnUpdate", Generic.OnUpdate)
+	end
+
 	if prevFlash ~= self.flashing then
 		UpdateButtonState(self)
 	end
@@ -2508,6 +2517,10 @@ function StopFlash(self)
 
 	self.flashing = false
 	self.flashTime = nil
+
+	if WoWModern then
+		self:SetScript("OnUpdate", nil)
+	end
 
 	if self.Flash:IsShown() then
 		self.Flash:Hide()
@@ -3042,7 +3055,7 @@ end
 local GetActionCount = C_ActionBar.GetActionUseCount or GetActionCount
 
 -- the remaining uses of GetActionCount can't deal with secrets, so disable on Midnight
-if WoWRetail then
+if WoWModern then
 	GetActionCount = function() return 0 end
 end
 
@@ -3170,7 +3183,7 @@ if WoWClassic then
 	end
 end
 
-if not WoWRetail then
+if not WoWModern then
 	-- disable loss of control cooldown on classic
 	Action.GetLoCCooldownInfo = function(self) return nil end
 end

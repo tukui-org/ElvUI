@@ -201,6 +201,75 @@ local function UpdateTabs()
 	end
 end
 
+local function UpdateAchievements()
+	for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
+		local bu = _G['AchievementFrameSummaryAchievement'..i]
+		if bu.accountWide then
+			bu.Label:SetTextColor(0, .6, 1)
+		else
+			bu.Label:SetTextColor(.9, .9, .9)
+		end
+
+		if not bu.IsSkinned then
+			bu:StripTextures(true)
+			bu:DisableDrawLayer('BORDER')
+			bu.NineSlice:SetAlpha(0)
+
+			local bd = bu.Background
+			bd:SetTexture(E.media.normTex)
+			bd:SetVertexColor(0, 0, 0, .25)
+
+			bu.TitleBar:Hide()
+			bu.Glow:Hide()
+			bu.Highlight:SetAlpha(0)
+			bu.Icon.frame:Hide()
+			S:HandleIcon(bu.Icon.texture, true)
+
+			bu:CreateBackdrop('Transparent')
+			bu.backdrop:Point('TOPLEFT', 2, -2)
+			bu.backdrop:Point('BOTTOMRIGHT', -2, 2)
+
+			bu.IsSkinned = true
+		end
+
+		bu.Description:SetTextColor(.9, .9, .9)
+	end
+end
+
+local function DisplayCriteria(objectivesFrame, id)
+	local numCriteria = GetAchievementNumCriteria(id)
+	local textStrings, metas, criteria, object = 0, 0
+	for i = 1, numCriteria do
+		local _, criteriaType, completed, _, _, _, flags, assetID = GetAchievementCriteriaInfo(id, i)
+		if assetID and criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT then
+			metas = metas + 1
+			criteria, object = objectivesFrame:GetMeta(metas), 'Label'
+		elseif bitband(flags, FLAG_PROGRESS_BAR) == FLAG_PROGRESS_BAR then
+			criteria, object = nil, nil
+		else
+			textStrings = textStrings + 1
+			criteria, object = objectivesFrame:GetCriteria(textStrings), 'Name'
+		end
+
+		local text = criteria and criteria[object]
+		if text then
+			local r, g, b, x, y
+			if completed then
+				if objectivesFrame.completed then
+					r, g, b, x, y = 1, 1, 1, 0, 0
+				else
+					r, g, b, x, y = 0, 1, 0, 1, -1
+				end
+			else
+				r, g, b, x, y = .6, .6, .6, 1, -1
+			end
+
+			text:SetTextColor(r, g, b)
+			text:SetShadowOffset(x, y)
+		end
+	end
+end
+
 function S:Blizzard_AchievementUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
 
@@ -258,40 +327,7 @@ function S:Blizzard_AchievementUI()
 	_G.AchievementFrameSummaryCategoriesHeaderTexture:SetVertexColor(1, 1, 1, .25)
 	_G.AchievementFrameWaterMark:SetAlpha(0)
 
-	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', function()
-		for i = 1, _G.ACHIEVEMENTUI_MAX_SUMMARY_ACHIEVEMENTS do
-			local bu = _G['AchievementFrameSummaryAchievement'..i]
-			if bu.accountWide then
-				bu.Label:SetTextColor(0, .6, 1)
-			else
-				bu.Label:SetTextColor(.9, .9, .9)
-			end
-
-			if not bu.IsSkinned then
-				bu:StripTextures(true)
-				bu:DisableDrawLayer('BORDER')
-				bu.NineSlice:SetAlpha(0)
-
-				local bd = bu.Background
-				bd:SetTexture(E.media.normTex)
-				bd:SetVertexColor(0, 0, 0, .25)
-
-				bu.TitleBar:Hide()
-				bu.Glow:Hide()
-				bu.Highlight:SetAlpha(0)
-				bu.Icon.frame:Hide()
-				S:HandleIcon(bu.Icon.texture, true)
-
-				bu:CreateBackdrop('Transparent')
-				bu.backdrop:Point('TOPLEFT', 2, -2)
-				bu.backdrop:Point('BOTTOMRIGHT', -2, 2)
-
-				bu.IsSkinned = true
-			end
-
-			bu.Description:SetTextColor(.9, .9, .9)
-		end
-	end)
+	hooksecurefunc('AchievementFrameSummary_UpdateAchievements', UpdateAchievements)
 
 	if not E.private.skins.parchmentRemoverEnable then
 		local r, g, b, a = unpack(E.media.backdropfadecolor)
@@ -337,40 +373,7 @@ function S:Blizzard_AchievementUI()
 	end
 
 	hooksecurefunc(_G.AchievementFrameAchievements.ScrollBox, 'Update', AchievementFrameAchievementsScrollUpdate)
-
-	hooksecurefunc('AchievementObjectives_DisplayCriteria', function(objectivesFrame, id)
-		local numCriteria = GetAchievementNumCriteria(id)
-		local textStrings, metas, criteria, object = 0, 0
-		for i = 1, numCriteria do
-			local _, criteriaType, completed, _, _, _, flags, assetID = GetAchievementCriteriaInfo(id, i)
-			if assetID and criteriaType == _G.CRITERIA_TYPE_ACHIEVEMENT then
-				metas = metas + 1
-				criteria, object = objectivesFrame:GetMeta(metas), 'Label'
-			elseif bitband(flags, FLAG_PROGRESS_BAR) == FLAG_PROGRESS_BAR then
-				criteria, object = nil, nil
-			else
-				textStrings = textStrings + 1
-				criteria, object = objectivesFrame:GetCriteria(textStrings), 'Name'
-			end
-
-			local text = criteria and criteria[object]
-			if text then
-				local r, g, b, x, y
-				if completed then
-					if objectivesFrame.completed then
-						r, g, b, x, y = 1, 1, 1, 0, 0
-					else
-						r, g, b, x, y = 0, 1, 0, 1, -1
-					end
-				else
-					r, g, b, x, y = .6, .6, .6, 1, -1
-				end
-
-				text:SetTextColor(r, g, b)
-				text:SetShadowOffset(x, y)
-			end
-		end
-	end)
+	hooksecurefunc('AchievementObjectives_DisplayCriteria', DisplayCriteria)
 
 	SkinStatusBar(_G.AchievementFrameSummaryCategoriesStatusBar)
 	_G.AchievementFrameSummaryAchievementsEmptyText:SetText('')

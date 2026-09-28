@@ -26,17 +26,24 @@ end
 
 function UF:FrameGlow_ElementHook(frame, glow, which)
 	if not (frame and frame.__elements) then return end
-	tinsert(frame.__elements, function()
+
+	tinsert(frame.__elements, function(_, event)
 		local unit = frame.__unit or (frame.isForced and 'player')
 		if unit then
 			UF:FrameGlow_SetGlowColor(glow, unit, which)
 		end
 
-		if which == 'mouseoverGlow' then
-			UF:FrameGlow_PositionTexture(frame)
+		local isMouseGlow = which == 'mouseoverGlow'
+		if event ~= 'OnUpdate' then
+			if isMouseGlow then
+				UF:FrameGlow_PositionTexture(frame)
+			else
+				UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
+			end
+		end
+
+		if isMouseGlow then
 			UF:FrameGlow_CheckMouseover(frame)
-		else
-			UF:FrameGlow_PositionGlow(frame, glow, glow.powerGlow)
 		end
 
 		if which == 'targetGlow' then
@@ -52,6 +59,7 @@ end
 function UF:FrameGlow_HookPowerBar(frame, power, powerName, glow, offset)
 	if (frame and power and powerName and glow and offset) and not glow[powerName..'Hooked'] then
 		glow[powerName..'Hooked'] = true
+
 		local func = function() UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, true) end
 		power:HookScript('OnShow', func)
 		power:HookScript('OnHide', func)
@@ -67,7 +75,7 @@ function UF:FrameGlow_ClassGlowPosition(frame, powerName, glow, offset, fromScri
 	-- check for Additional Power to hook scripts on
 	local useBonusPower, bonus
 	if powerName == 'ClassPower' then
-		local bonusName = (E.Retail and frame.Stagger and 'Stagger') or (frame.Runes and 'Runes') or (frame.EclipseBar and 'EclipseBar')
+		local bonusName = (E.Modern and frame.Stagger and 'Stagger') or (frame.Runes and 'Runes') or (frame.EclipseBar and 'EclipseBar')
 		bonus = bonusName and frame[bonusName]
 
 		if bonus then
@@ -206,7 +214,7 @@ function UF:FrameGlow_SetGlowColor(glow, unit, which)
 	end
 
 	if option.class then
-		local isPlayer = unit and (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)))
+		local isPlayer = unit and (UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit)))
 		local reaction = unit and UnitReaction(unit, 'player')
 
 		local _, unitClass = UnitClass(unit)

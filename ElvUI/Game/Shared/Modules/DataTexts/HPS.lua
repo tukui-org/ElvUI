@@ -32,15 +32,17 @@ local function OnEvent(panel, event)
 		end
 		lastSegment = now
 	elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
-		local timestamp, Event, _, sourceGUID, _, _, _, _, _, _, _, _, _, _, lastHealAmount, overHeal = CombatLogGetCurrentEventInfo()
-		if not events[Event] then return end
+		local timestamp, subEvent, _, sourceGUID, _, _, _, _, _, _, _, _, _, _, lastHealAmount, overHeal = CombatLogGetCurrentEventInfo()
+		if not events[subEvent] or (sourceGUID ~= E.myguid and sourceGUID ~= petGUID) then return end
 
-		if sourceGUID == E.myguid or sourceGUID == petGUID then
-			if timeStamp == 0 then timeStamp = timestamp end
-			lastSegment = timeStamp
-			combatTime = timestamp - timeStamp
-			healTotal = healTotal + max(0, lastHealAmount - overHeal)
+		if timeStamp == 0 then
+			timeStamp = timestamp
 		end
+
+		lastSegment = timeStamp
+		combatTime = timestamp - timeStamp
+
+		healTotal = healTotal + max(0, lastHealAmount - overHeal)
 	end
 
 	GetHPS(panel)
@@ -55,4 +57,4 @@ local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%s')
 end
 
-DT:RegisterDatatext('HPS', nil, { 'UNIT_PET', not E.Retail and 'COMBAT_LOG_EVENT_UNFILTERED' or nil, 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED' }, OnEvent, nil, OnClick, nil, nil, L["HPS"], nil, ApplySettings)
+DT:RegisterDatatext('HPS', nil, { 'UNIT_PET', not E.Modern and 'COMBAT_LOG_EVENT_UNFILTERED' or nil, 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED' }, OnEvent, nil, OnClick, nil, nil, L["HPS"], nil, ApplySettings)
