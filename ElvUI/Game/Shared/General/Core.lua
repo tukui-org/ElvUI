@@ -27,7 +27,7 @@ local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
 local C_Timer_NewTicker = C_Timer.NewTicker
 
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
 
 local DisableAddOn = C_AddOns.DisableAddOn

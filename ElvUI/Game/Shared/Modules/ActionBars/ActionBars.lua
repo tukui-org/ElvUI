@@ -49,7 +49,7 @@ local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBa
 local GetActionCooldownDuration = C_ActionBar.GetActionCooldownDuration
 
 local GetProfessionQualityInfo = C_ActionBar.GetProfessionQualityInfo
-local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local IsInBattle = C_PetBattles.IsInBattle
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 local FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell or SpellBook_GetSpellBookSlot
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights

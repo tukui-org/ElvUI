@@ -36,8 +36,8 @@ local ConvertToParty = C_PartyInfo.ConvertToParty
 local SetRestrictPings = C_PartyInfo.SetRestrictPings
 local GetRestrictPings = C_PartyInfo.GetRestrictPings
 local RestrictPingsTo = Enum.RestrictPingsTo
-local SetEveryoneIsAssistant = C_PartyInfo.SetEveryoneIsAssistant or SetEveryoneIsAssistant
-local DoReadyCheck = C_PartyInfo.DoReadyCheck or DoReadyCheck
+local SetEveryoneIsAssistant = C_PartyInfo.SetEveryoneIsAssistant
+local DoReadyCheck = C_PartyInfo.DoReadyCheck
 
 local IG_MAINMENU_OPTION_CHECKBOX_ON = SOUNDKIT.IG_MAINMENU_OPTION_CHECKBOX_ON
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST

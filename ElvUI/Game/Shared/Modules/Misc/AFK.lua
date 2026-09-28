@@ -26,7 +26,7 @@ local UnitCastingInfo = UnitCastingInfo
 local GetChatCategory = ChatFrameUtil.GetChatCategory
 local FormatDiscordMessage = ChatFrameUtil.FormatDiscordMessage
 local GetMobileEmbeddedTexture = ChatFrameUtil.GetMobileEmbeddedTexture
-local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
 local CAMERA_SPEED = 0.035
 local DEFAULT_ANIMATION = 'dance'

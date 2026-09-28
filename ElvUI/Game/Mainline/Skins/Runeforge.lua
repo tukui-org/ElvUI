@@ -5,10 +5,11 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 local function RefreshListDisplay(list)
-	if not list.elements then return end -- Blizzard bails while hidden, before the list is initialized
+	local lists = list.elements
+	if not lists then return end -- Blizzard bails while hidden, before the list is initialized
 
-	for i = 1, list:GetNumElementFrames() do
-		local button = list.elements[i]
+	for i = 1, #lists do -- GetNumElementFrames
+		local button = lists[i]
 		if not button.IsSkinned then
 			button.Border:SetAlpha(0)
 			button.CircleMask:Hide()

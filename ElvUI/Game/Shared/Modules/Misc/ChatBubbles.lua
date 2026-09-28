@@ -8,8 +8,9 @@ local strmatch, strlower, gmatch, gsub = strmatch, strlower, gmatch, gsub
 local Ambiguate = Ambiguate
 local CreateFrame = CreateFrame
 local RemoveExtraSpaces = RemoveExtraSpaces
-local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 local C_ChatBubbles_GetAllChatBubbles = C_ChatBubbles.GetAllChatBubbles
+
+local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 --Message caches
 local messageToGUID = {}

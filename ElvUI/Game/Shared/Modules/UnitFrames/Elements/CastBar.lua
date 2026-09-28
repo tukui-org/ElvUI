@@ -15,8 +15,8 @@ local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
 
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
-local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
-local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook
+local IsSpellKnown = C_SpellBook.IsSpellKnown
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 do

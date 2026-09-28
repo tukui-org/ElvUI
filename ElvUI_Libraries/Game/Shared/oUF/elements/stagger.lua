@@ -28,7 +28,7 @@ A default texture will be applied if the widget is a StatusBar and doesn't have 
 local _, ns = ...
 local oUF = ns.oUF
 
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local UnitHasVehiclePlayerFrameUI = UnitHasVehiclePlayerFrameUI
 local UnitHealthMax = UnitHealthMax
 local UnitStagger = UnitStagger

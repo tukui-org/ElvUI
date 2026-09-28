@@ -2,13 +2,14 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local time, max, strjoin = time, max, strjoin
+
 local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
 local UnitGUID = UnitGUID
 
 local lastSegment, petGUID = 0
 local timeStamp, combatTime, healTotal = 0, 0, 0
 local displayString = ''
-local events = {
+local subEvents = {
 	SPELL_HEAL = true,
 	SPELL_PERIODIC_HEAL = true
 }
@@ -33,7 +34,7 @@ local function OnEvent(panel, event)
 		lastSegment = now
 	elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
 		local timestamp, subEvent, _, sourceGUID, _, _, _, _, _, _, _, _, _, _, lastHealAmount, overHeal = CombatLogGetCurrentEventInfo()
-		if not events[subEvent] or (sourceGUID ~= E.myguid and sourceGUID ~= petGUID) then return end
+		if not subEvents[subEvent] or (sourceGUID ~= E.myguid and sourceGUID ~= petGUID) then return end
 
 		if timeStamp == 0 then
 			timeStamp = timestamp

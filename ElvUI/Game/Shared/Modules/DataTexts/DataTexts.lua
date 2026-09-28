@@ -21,7 +21,7 @@ local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 
-local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
 local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
 local ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList or ExpandCurrencyList
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo

@@ -17,7 +17,7 @@ local IsInInstance = IsInInstance
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 
-local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook
 local IsSpellInRange = C_Spell.IsSpellInRange
 local PhaseReason = Enum.PhaseReason
 

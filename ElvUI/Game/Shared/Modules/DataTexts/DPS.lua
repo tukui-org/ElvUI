@@ -8,7 +8,7 @@ local UnitGUID = UnitGUID
 local lastSegment, petGUID = 0
 local timeStamp, combatTime, DMGTotal, lastDMGAmount = 0, 0, 0, 0
 local displayString = ''
-local events = {
+local subEvents = {
 	SWING_DAMAGE = true,
 	RANGE_DAMAGE = true,
 	SPELL_DAMAGE = true,
@@ -39,7 +39,7 @@ local function OnEvent(panel, event)
 		lastSegment = now
 	elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
 		local timestamp, subEvent, _, sourceGUID, _, _, _, _, _, _, _, arg12, _, _, arg15, overkill = CombatLogGetCurrentEventInfo()
-		if not events[subEvent] or (sourceGUID ~= E.myguid and sourceGUID ~= petGUID) then return end
+		if not subEvents[subEvent] or (sourceGUID ~= E.myguid and sourceGUID ~= petGUID) then return end
 
 		if timeStamp == 0 then
 			timeStamp = timestamp

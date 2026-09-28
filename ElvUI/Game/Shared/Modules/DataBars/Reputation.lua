@@ -10,7 +10,7 @@ local huge = math.huge
 local GameTooltip = GameTooltip
 local ToggleCharacter = ToggleCharacter
 
-local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
+local GetFriendshipReputation = C_GossipInfo.GetFriendshipReputation
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagonForCurrentPlayer = C_Reputation.IsFactionParagonForCurrentPlayer
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction

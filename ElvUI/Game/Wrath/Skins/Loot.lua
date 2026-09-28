@@ -4,18 +4,18 @@ local LCG = E.Libs.CustomGlow
 
 local _G = _G
 local next = next
+local hooksecurefunc = hooksecurefunc
 
 local GetLootSlotInfo = GetLootSlotInfo
-local hooksecurefunc = hooksecurefunc
 local IsFishingLoot = IsFishingLoot
 local UnitIsDead = UnitIsDead
 local UnitIsFriend = UnitIsFriend
 local UnitName = UnitName
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
-
 local C_LootHistory_GetNumItems = C_LootHistory.GetNumItems
 local C_LootHistory_GetItem = C_LootHistory.GetItem
+
 local LOOT, ITEMS = LOOT, ITEMS
 
 local function UpdateLoots()

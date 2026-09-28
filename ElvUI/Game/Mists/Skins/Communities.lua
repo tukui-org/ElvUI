@@ -3,11 +3,11 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next, pairs = next, pairs
+local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
-local CreateFrame = CreateFrame
-local hooksecurefunc = hooksecurefunc
 
 local function HandleCommunitiesButton(button)
 	button.Background:Hide()

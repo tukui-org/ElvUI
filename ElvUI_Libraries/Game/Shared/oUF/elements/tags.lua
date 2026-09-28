@@ -92,7 +92,7 @@ local POWERTYPE_CHI = Enum.PowerType.Chi or 12
 local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 
 local C_Timer_NewTimer = C_Timer.NewTimer
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local CreateFrame = CreateFrame
 
 local ScaleTo100 = CurveConstants.ScaleTo100

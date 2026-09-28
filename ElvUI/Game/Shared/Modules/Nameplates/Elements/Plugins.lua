@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local ipairs = ipairs
 local CreateFrame = CreateFrame
 
-local targetIndicators = {'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}
+local targetIndicators = { 'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator' }
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate.frameName..'QuestIcons', nameplate.RaisedElement)

@@ -3,9 +3,11 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local format = format
+
 local UnitXP = UnitXP
 local UnitXPMax = UnitXPMax
 local GetXPExhaustion = GetXPExhaustion
+
 local displayString = ''
 
 local CurrentXP, XPToLevel, RestedXP, PercentRested

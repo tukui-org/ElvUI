@@ -18,10 +18,10 @@ local UnregisterUnitWatch = UnregisterUnitWatch
 local RegisterUnitWatch = RegisterUnitWatch
 local RegisterStateDriver = RegisterStateDriver
 
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
-local NUM_CLASS_ORDER = #CLASS_SORT_ORDER
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local NUM_CLASS_ORDER = #CLASS_SORT_ORDER
 
 local configEnv
 local originalEnvs = {}

@@ -108,8 +108,8 @@ local GetSpellCharges = C_Spell.GetSpellCharges
 local GetSpellCastCount = C_Spell.GetSpellCastCount
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpellMaxCumulativeAuraApplications = C_Spell.GetSpellMaxCumulativeAuraApplications
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
-local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
+local IsSpellKnown = C_SpellBook.IsSpellKnown
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local ClassPowerType = {
@@ -413,7 +413,7 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'DEMONHUNTER' then
 		classPowerID = oUF.isRetail and ((currentSpec == SPEC_DEMONHUNTER_DEVOURER and POWERTYPE_SOUL_FRAGMENTS) or (currentSpec == SPEC_DEMONHUNTER_VENGEANCE and POWERTYPE_SOUL_CLEAVE)) or nil
 	elseif myClass == 'WARLOCK' then
-		classPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
+		classPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsSpellKnown(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
 	elseif myClass == 'MAGE' then
 		classPowerID = oUF.isModern and ((currentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (currentSpec == SPEC_MAGE_FIRE and POWERTYPE_FIREBLAST)) or (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
 	elseif myClass == 'PRIEST' then
@@ -425,7 +425,7 @@ local function Visibility(self, element, event, unit)
 		unit = 'vehicle'
 	elseif classPowerID then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 		if not requirePower or requirePower == UnitPowerType('player') then
-			if not requireSpell or IsPlayerSpell(requireSpell) then
+			if not requireSpell or IsSpellKnown(requireSpell) then
 				shouldEnable = true
 				unit = 'player'
 			end

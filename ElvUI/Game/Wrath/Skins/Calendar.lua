@@ -3,9 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
+local hooksecurefunc = hooksecurefunc
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
-local hooksecurefunc = hooksecurefunc
 
 local function SkinContainer(frame)
 	frame.NineSlice:Kill()

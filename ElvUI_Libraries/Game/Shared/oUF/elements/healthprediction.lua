@@ -69,24 +69,25 @@ local UnitHealAbsorbClampMode = Enum.UnitHealAbsorbClampMode
 local function UpdateSize(self, event, unit)
 	local element = self.HealthPrediction
 
+	local func = element.isHoriz and 'SetWidth' or 'SetHeight'
 	if(element.healingAll) then
-		element.healingAll[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healingAll, element.size)
+		element.healingAll[func](element.healingAll, element.size)
 	end
 
 	if(element.healingPlayer) then
-		element.healingPlayer[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healingPlayer, element.size)
+		element.healingPlayer[func](element.healingPlayer, element.size)
 	end
 
 	if(element.healingOther) then
-		element.healingOther[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healingOther, element.size)
+		element.healingOther[func](element.healingOther, element.size)
 	end
 
 	if(element.damageAbsorb) then
-		element.damageAbsorb[element.isHoriz and 'SetWidth' or 'SetHeight'](element.damageAbsorb, element.size)
+		element.damageAbsorb[func](element.damageAbsorb, element.size)
 	end
 
 	if(element.healAbsorb) then
-		element.healAbsorb[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healAbsorb, element.size)
+		element.healAbsorb[func](element.healAbsorb, element.size)
 	end
 end
 

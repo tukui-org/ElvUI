@@ -41,8 +41,8 @@ local UnitInRaid = UnitInRaid
 local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitName = UnitName
 
-local UninviteUnit = C_PartyInfo.UninviteUnit or UninviteUnit
-local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
+local UninviteUnit = C_PartyInfo.UninviteUnit
+local SendChatMessage = C_ChatInfo.SendChatMessage
 local GetNumFactions = C_Reputation.GetNumFactions or GetNumFactions
 local GetFactionInfo = C_Reputation.GetFactionDataByIndex or GetFactionInfo
 local GetFactionDataByID = C_Reputation.GetFactionDataByID or GetFactionDataByID

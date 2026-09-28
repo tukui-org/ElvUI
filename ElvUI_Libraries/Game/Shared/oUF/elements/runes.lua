@@ -41,7 +41,7 @@ local sort = sort
 local ipairs = ipairs
 
 local UnitHasVehicleUI = UnitHasVehicleUI
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local GetRuneCooldown = GetRuneCooldown
 local GetRuneType = GetRuneType
 local GetTime = GetTime

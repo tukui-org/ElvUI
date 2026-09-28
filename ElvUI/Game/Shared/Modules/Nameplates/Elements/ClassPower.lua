@@ -7,6 +7,7 @@ local max, next, ipairs = max, next, ipairs
 
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
+
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 function NP:ClassPower_UpdateColor(powerType, rune)

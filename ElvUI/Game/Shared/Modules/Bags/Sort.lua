@@ -36,7 +36,7 @@ local ItemClass_Weapon = Enum.ItemClass.Weapon
 
 local GetItemInfo = C_Item.GetItemInfo
 local GetItemFamily = C_Item.GetItemFamily
-local GetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
+local GetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
 local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
 local GetContainerItemID = C_Container.GetContainerItemID
 local GetContainerItemLink = C_Container.GetContainerItemLink

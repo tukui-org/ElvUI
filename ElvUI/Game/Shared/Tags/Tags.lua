@@ -56,7 +56,7 @@ local UnitReaction = UnitReaction
 local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
-local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
 local POWERTYPE_MANA = Enum.PowerType.Mana

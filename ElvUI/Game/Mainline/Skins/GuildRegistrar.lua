@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
+local CHATINPUT_BORDERLEFT = [[Interface\ChatFrame\UI-ChatInputBorder-Left]]
+local CHATINPUT_BORDERRIGHT = [[Interface\ChatFrame\UI-ChatInputBorder-Right]]
+
 function S:GuildRegistrarFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildregistrar) then return end
 
@@ -20,7 +23,8 @@ function S:GuildRegistrarFrame()
 	S:HandleEditBox(_G.GuildRegistrarFrameEditBox)
 
 	for _, region in next, { _G.GuildRegistrarFrameEditBox:GetRegions() } do
-		if region:IsObjectType('Texture') and (region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Left]] or region:GetTexture() == [[Interface\ChatFrame\UI-ChatInputBorder-Right]]) then
+		local texture = region:IsObjectType('Texture') and region:GetTexture()
+		if texture == CHATINPUT_BORDERLEFT or texture == CHATINPUT_BORDERRIGHT then
 			region:Kill()
 		end
 	end

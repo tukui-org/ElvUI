@@ -25,7 +25,7 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 local _, ns = ...
 local oUF = ns.oUF
 
-local GetLootMethod = C_PartyInfo.GetLootMethod or GetLootMethod
+local GetLootMethod = C_PartyInfo.GetLootMethod
 local UnitAffectingCombat = UnitAffectingCombat
 
 local function Update(self, event)

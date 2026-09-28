@@ -30,7 +30,7 @@ local UnregisterStateDriver = UnregisterStateDriver
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
+local IsReplacingUnit = C_PlayerInteractionManager.IsReplacingUnit
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT

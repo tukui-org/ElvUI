@@ -12,7 +12,7 @@ local C_Reputation_IsFactionParagonForCurrentPlayer = C_Reputation.IsFactionPara
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
 local C_MajorFactions_GetMajorFactionData = C_MajorFactions and C_MajorFactions.GetMajorFactionData
 local C_MajorFactions_HasMaximumRenown = C_MajorFactions and C_MajorFactions.HasMaximumRenown
-local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
+local GetFriendshipReputation = C_GossipInfo.GetFriendshipReputation
 
 local BLUE_FONT_COLOR = BLUE_FONT_COLOR
 local NOT_APPLICABLE = NOT_APPLICABLE

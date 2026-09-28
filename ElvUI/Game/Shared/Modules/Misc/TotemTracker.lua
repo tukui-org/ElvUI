@@ -8,6 +8,7 @@ local ipairs = ipairs
 local CreateFrame = CreateFrame
 local GetTotemInfo = GetTotemInfo
 local GetTotemDuration = GetTotemDuration
+
 local MAX_TOTEMS = MAX_TOTEMS
 
 local classic = { 2, 1, 3, 4 } -- we need to swap 1/2 on era

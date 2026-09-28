@@ -29,7 +29,7 @@ local Mixin = Mixin
 local SecureButton_GetUnit = SecureButton_GetUnit
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
-local SetNamePlateHitTestInsets = C_NamePlateManager and C_NamePlateManager.SetNamePlateHitTestInsets
+local SetNamePlateHitTestInsets = C_NamePlateManager.SetNamePlateHitTestInsets
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateSize = C_NamePlate.SetNamePlateSize
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
@@ -844,13 +844,11 @@ do
 		if(SetNamePlateSize and IsLoggedIn()) then
 			SetNamePlateSize(driver.plateWidth or 200, driver.plateHeight or 30)
 
-			if SetNamePlateHitTestInsets then
-				local enemyInset = driver.enemyNonInteractible and hitInset or -hitInset
-				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Enemy, enemyInset, enemyInset, enemyInset, enemyInset)
+			local enemyInset = driver.enemyNonInteractible and hitInset or -hitInset
+			SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Enemy, enemyInset, enemyInset, enemyInset, enemyInset)
 
-				local friendlyInset = driver.friendlyNonInteractible and hitInset or -hitInset
-				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Friendly, friendlyInset, friendlyInset, friendlyInset, friendlyInset)
-			end
+			local friendlyInset = driver.friendlyNonInteractible and hitInset or -hitInset
+			SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Friendly, friendlyInset, friendlyInset, friendlyInset, friendlyInset)
 
 			if(driver.cvars) then
 				for name, value in next, driver.cvars do
