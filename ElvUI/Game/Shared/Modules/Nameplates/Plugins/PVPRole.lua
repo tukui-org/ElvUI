@@ -77,17 +77,17 @@ local function Event(_, event, initLogin, isReload)
 				if E:IsSecretValue(name) or E:IsSecretValue(specName) then
 					break -- bail out
 				elseif name and name ~= UNKNOWN then
-					local playerName = E:StripMyRealm(name)
+					local unitName = E:StripMyRealm(name)
 					if HealerSpecs[specName] then
-						Healers[playerName] = specName
+						Healers[unitName] = specName
 					elseif Healers[name] then
-						Healers[playerName] = nil
+						Healers[unitName] = nil
 					end
 
 					if TankSpecs[specName] then
-						Tanks[playerName] = specName
-					elseif Tanks[playerName] then
-						Tanks[playerName] = nil
+						Tanks[unitName] = specName
+					elseif Tanks[unitName] then
+						Tanks[unitName] = nil
 					end
 				end
 			end

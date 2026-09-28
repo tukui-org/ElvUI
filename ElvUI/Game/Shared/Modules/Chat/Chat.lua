@@ -2148,24 +2148,24 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	end
 
 	local discordInfo, isFromDiscord = CH:GetDiscordInfo(arg18)
-	local playerName = (nameWithRealm ~= arg2 and nameWithRealm) or arg2
+	local unitName = (nameWithRealm ~= arg2 and nameWithRealm) or arg2
 	if chatType == 'COMMUNITIES_CHANNEL' then -- isCommunityType
 		local messageInfo, clubId, streamId = C_Club_GetInfoFromLastCommunityChatLine()
 		if messageInfo and E:NotSecretValue(arg13) then
 			if arg13 and arg13 ~= 0 then -- isBattleNetCommunity: arg13 is bnetIDAccount
-				playerLink = GetBNPlayerCommunityLink(playerName, playerLinkDisplayText, arg13, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position)
+				playerLink = GetBNPlayerCommunityLink(unitName, playerLinkDisplayText, arg13, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position)
 			else
-				playerLink = GetPlayerCommunityLink(playerName, playerLinkDisplayText, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position)
+				playerLink = GetPlayerCommunityLink(unitName, playerLinkDisplayText, clubId, streamId, messageInfo.messageId.epoch, messageInfo.messageId.position)
 			end
 		else
 			playerLink = playerLinkDisplayText
 		end
 	elseif chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then -- arg11: lineID
-		playerLink = CH:GetBNPlayerLink(playerName, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget)
+		playerLink = CH:GetBNPlayerLink(unitName, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget)
 	elseif (chatType == 'GUILD_DISCORD' or chatType == 'GUILD') and isFromDiscord then
 		playerLink = CH:GetDiscordLink(playerLinkDisplayText, arg13, discordInfo.userID, arg11, chatGroup, chatTarget);
 	else
-		playerLink = CH:GetPlayerLink(playerName, playerLinkDisplayText, arg11, chatGroup, chatTarget)
+		playerLink = CH:GetPlayerLink(unitName, playerLinkDisplayText, arg11, chatGroup, chatTarget)
 	end
 
 	local isMobile = arg14 and GetMobileEmbeddedTexture(info.r, info.g, info.b)
@@ -2177,8 +2177,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	-- Player Flags
 	local pflag = CH:GetPFlag(arg6, arg7, arg12)
-	if not bossMonster and (E:NotSecretValue(arg12) and E:NotSecretValue(playerName)) then
-		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[playerName], CH:GetPluginIcon(arg12, playerName)
+	if not bossMonster and (E:NotSecretValue(arg12) and E:NotSecretValue(unitName)) then
+		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[unitName], CH:GetPluginIcon(arg12, unitName)
 		if type(chatIcon) == 'function' then
 			local icon, prettify, var1, var2, var3 = chatIcon()
 			if prettify and chatType ~= 'GUILD_ITEM_LOOTED' and not msgProtected then
@@ -2200,7 +2200,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		end
 
 		-- LFG Role Flags
-		local lfgRole = (chatType == 'PARTY_LEADER' or chatType == 'PARTY' or chatType == 'RAID' or chatType == 'RAID_LEADER' or chatType == 'INSTANCE_CHAT' or chatType == 'INSTANCE_CHAT_LEADER') and lfgRoles[playerName]
+		local lfgRole = (chatType == 'PARTY_LEADER' or chatType == 'PARTY' or chatType == 'RAID' or chatType == 'RAID_LEADER' or chatType == 'INSTANCE_CHAT' or chatType == 'INSTANCE_CHAT_LEADER') and lfgRoles[unitName]
 		if lfgRole then
 			pflag = pflag..lfgRole
 		end
@@ -2369,10 +2369,10 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 				local msg = msgNotSecret and strlower(arg1)
 				local found = false
 				if msg then
-					for playerName in pairs(frame.privateMessageList) do
-						local notFound = strlower(format(_G.ERR_CHAT_PLAYER_NOT_FOUND_S, playerName))
-						local charOnline = strlower(format(_G.ERR_FRIEND_ONLINE_SS, playerName, playerName))
-						local charOffline = strlower(format(_G.ERR_FRIEND_OFFLINE_S, playerName))
+					for unitName in pairs(frame.privateMessageList) do
+						local notFound = strlower(format(_G.ERR_CHAT_PLAYER_NOT_FOUND_S, unitName))
+						local charOnline = strlower(format(_G.ERR_FRIEND_ONLINE_SS, unitName, unitName))
+						local charOffline = strlower(format(_G.ERR_FRIEND_OFFLINE_S, unitName))
 						if msg == notFound or msg == charOnline or msg == charOffline then
 							found = true
 							break
@@ -3117,10 +3117,10 @@ function CH:CheckLFGRoles()
 	end
 end
 
-function CH:SocialQueueIsLeader(playerName, leaderName)
+function CH:SocialQueueIsLeader(unitName, leaderName)
 	if E:IsSecretValue(leaderName) then return end
 
-	if leaderName == playerName then
+	if leaderName == unitName then
 		return true
 	end
 
@@ -3129,14 +3129,14 @@ function CH:SocialQueueIsLeader(playerName, leaderName)
 		if info and info.accountName then
 			for y = 1, C_BattleNet_GetFriendNumGameAccounts(i) do
 				local gameInfo = C_BattleNet_GetFriendGameAccountInfo(i, y)
-				if gameInfo.clientProgram == BNET_CLIENT_WOW and info.accountName == playerName then
-					playerName = gameInfo.characterName
+				if gameInfo.clientProgram == BNET_CLIENT_WOW and info.accountName == unitName then
+					unitName = gameInfo.characterName
 
 					if gameInfo.realmName and gameInfo.realmName ~= E.myrealm then
-						playerName = format('%s-%s', playerName, E:ShortenRealm(gameInfo.realmName))
+						unitName = format('%s-%s', unitName, E:ShortenRealm(gameInfo.realmName))
 					end
 
-					if leaderName == playerName then
+					if leaderName == unitName then
 						return true
 					end
 				end
@@ -3187,9 +3187,9 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 		extraCount = format(' +%s', numMembers - 1)
 	end
 
-	local playerName, nameColor = _G.SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
-	if playerName and playerName ~= '' then
-		coloredName = format('%s%s|r%s', nameColor, playerName, extraCount)
+	local unitName, nameColor = _G.SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
+	if unitName and unitName ~= '' then
+		coloredName = format('%s%s|r%s', nameColor, unitName, extraCount)
 	else
 		coloredName = format('{%s%s}', UNKNOWN, extraCount)
 	end
@@ -3206,7 +3206,7 @@ function CH:SocialQueueEvent(_, guid, numAddedItems) -- event, guid, numAddedIte
 			local activities = searchInfo.activityIDs
 			activityID = E:NotSecretTable(activities) and activities and activities[1]
 			name, leaderName = searchInfo.name, searchInfo.leaderName
-			isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
+			isLeader = CH:SocialQueueIsLeader(unitName, leaderName)
 		end
 
 		if not activityID then

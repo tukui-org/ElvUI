@@ -55,14 +55,14 @@ local function SetTip(button)
 	local rolls = button.parent.rolls[button.rolltype]
 	if rolls then
 		for _, infoTable in next, rolls do
-			local playerName, className = unpack(infoTable)
+			local unitName, className = unpack(infoTable)
 			if not lineAdded then
 				GameTooltip:AddLine(' ')
 				lineAdded = true
 			end
 
 			local classColor = E:ClassColor(className) or PRIEST_COLOR
-			GameTooltip:AddLine(playerName, classColor.r, classColor.g, classColor.b)
+			GameTooltip:AddLine(unitName, classColor.r, classColor.g, classColor.b)
 		end
 	end
 
