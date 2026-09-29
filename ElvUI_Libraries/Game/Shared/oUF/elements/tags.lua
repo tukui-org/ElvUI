@@ -723,7 +723,7 @@ end
 local function GetTagFunc(tagstr)
 	local func = tagStringFuncs[tagstr]
 	if not func then
-		local frmt, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
+		local frmt, numTags = gsub(gsub(tagstr, '%%', '%%%%'), _PATTERN, '%%s')
 		local data = {}
 
 		for bracket in tagstr:gmatch(_PATTERN) do
@@ -969,12 +969,12 @@ local function Tag(self, fs, ts, arg1, ...)
 		self:Untag(fs)
 	end
 
-	ts = ts:gsub('||([TCRAtncra])', EscapeSequence)
+	ts = gsub(ts, '||([TCRAtncra])', EscapeSequence)
 
 	local customArgs = strmatch(ts, '{(.-)}%]')
 	if customArgs then
 		self.__customargs[fs] = customArgs
-		ts = ts:gsub('{.-}%]', ']')
+		ts = gsub(ts, '{.-}%]', ']')
 	else
 		self.__customargs[fs] = nil
 	end
@@ -984,7 +984,7 @@ local function Tag(self, fs, ts, arg1, ...)
 			self.__mousetags[fs] = true
 			fs:SetAlpha(0)
 
-			ts = ts:gsub('%[mouseover%]', '')
+			ts = gsub(ts, '%[mouseover%]', '')
 		else
 			for fontString in next, self.__mousetags do
 				if fontString == fs then
@@ -1057,7 +1057,7 @@ local function Untag(self, fs)
 end
 
 local function StripTag(tag) -- remove prefix, custom args, and suffix
-	return tag:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]") -- ElvUI uses old tag format
+	return gsub(gsub(tag, "%[[^%[%]]*>", "["), "<[^%[%]]*%]", "]") -- ElvUI uses old tag format
 end
 
 oUF.Tags = {
@@ -1072,7 +1072,7 @@ oUF.Tags = {
 		if not tag then return end
 
 		-- if a tag's name contains magic chars, there's a chance that string.match will fail to find the match
-		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
+		tag = '%[' .. gsub(tag, '[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 
 		for bracket in next, bracketFuncs do
 			if strmatch(StripTag(bracket), tag) then
@@ -1100,7 +1100,7 @@ oUF.Tags = {
 		if not tag then return end
 
 		-- if a tag's name contains magic chars, there's a chance that string.match will fail to find the match
-		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
+		tag = '%[' .. gsub(tag, '[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 
 		for tagstr in next, tagStringFuncs do
 			if strmatch(StripTag(tagstr), tag) then
