@@ -353,7 +353,7 @@ local function SkinAuctionHouseFrame()
 	S:HandleButton(AuctionsFrame.BidFrame.BidButton)
 	HandleBidAmount(AuctionsFrame.BidFrame.BidAmount)
 
-	if E.Forever then -- camelot shows the copper box, which sticks out of BidAmount
+	if E.Forever then -- Forever shows the copper box, which sticks out of BidAmount
 		for _, bidFrame in next, { ItemBuyFrame.BidFrame, AuctionsFrame.BidFrame } do
 			local BidAmount = bidFrame.BidAmount
 			BidAmount.gold:ClearAllPoints()

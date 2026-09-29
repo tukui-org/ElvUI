@@ -286,7 +286,7 @@ local function SkinMainline()
 		if E.Forever then -- ToDo: Forever
 			Tracking, Pin = WorldMapFrame.WorldMapTrackingOptionsButton, WorldMapFrame.WorldMapTrackingPinButton
 
-			-- camelot tracking button is an arrow dropdown next to the NavBar
+			-- Forever tracking button is an arrow dropdown next to the NavBar
 			if Tracking then
 				S:HandleNextPrevButton(Tracking, 'down', nil, true)
 				Tracking:SetTemplate()

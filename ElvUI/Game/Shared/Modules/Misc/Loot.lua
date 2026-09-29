@@ -95,6 +95,7 @@ local function SlotClick(slot)
 	frame.selectedItemName = slot.name:GetText()
 	frame.selectedTexture = slot.icon:GetTexture()
 	frame.selectedLootButton = slot:GetName()
+	frame.selectedLootFrame = slot -- Mainline anchors the master looter list here
 	frame.selectedSlot = slot:GetID()
 
 	if IsModifiedClick() then
@@ -372,8 +373,11 @@ function M:LoadLoot()
 	M:RegisterEvent('LOOT_OPENED')
 	M:RegisterEvent('LOOT_SLOT_CLEARED')
 	M:RegisterEvent('LOOT_CLOSED')
-	M:RegisterEvent('OPEN_MASTER_LOOT_LIST')
 	M:RegisterEvent('UPDATE_MASTER_LOOT_LIST')
+
+	if not E.Modern then -- Mainline answers it with its own assign loot menu
+		M:RegisterEvent('OPEN_MASTER_LOOT_LIST')
+	end
 
 	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,blizzardImprovements')
 
@@ -381,6 +385,12 @@ function M:LoadLoot()
 
 	tinsert(_G.UISpecialFrames, 'ElvLootFrame')
 
+	-- Forever parents the master looter list to the Blizzard LootFrame, which never shows once ours replaces it
+	local MasterLooterFrame = _G.MasterLooterFrame
+	if MasterLooterFrame:GetParent() == _G.LootFrame then
+		MasterLooterFrame:SetParent(_G.UIParent)
+	end
+
 	-- fix blizzard setpoint connection bs
-	hooksecurefunc(_G.MasterLooterFrame, 'Hide', _G.MasterLooterFrame.ClearAllPoints)
+	hooksecurefunc(MasterLooterFrame, 'Hide', MasterLooterFrame.ClearAllPoints)
 end

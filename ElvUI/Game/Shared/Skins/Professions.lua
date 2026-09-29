@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
 local function HandleInputBox(box)
@@ -172,6 +172,7 @@ local function HandleSchematicForm(form, noParchment)
 	if form.Background then -- crafting page and inspect recipe only, the order view form has no parchment
 		form.Background:SetInside(form.backdrop)
 
+		-- Blizzard re-applies the atlas and shows these on profession change
 		if noParchment or E.private.skins.parchmentRemoverEnable then
 			form.Background:SetAlpha(0)
 			form.MinimalBackground:SetAlpha(0)
@@ -220,6 +221,11 @@ local function HandleRankBar(bar)
 	bar.Border:Hide()
 	bar.Background:Hide()
 	bar.Fill:CreateBackdrop()
+
+	if bar.overrideWidth then -- the book cards size the bar but leave the Fill at 441
+		bar.Fill:SetWidth(bar.overrideWidth)
+	end
+
 	bar.Rank.Text:FontTemplate()
 
 	local arrow = bar.ExpansionDropdownButton:CreateTexture(nil, 'ARTWORK')
@@ -288,6 +294,98 @@ local function HandleOrderView(frame)
 	OrderItemIcon.CircleMask:Hide()
 end
 
+-- RecipeList category rows (ProfessionsRecipeListCategoryTemplate)
+local function HandleRecipeCategory(button)
+	button:StripTextures()
+	button:CreateBackdrop('Transparent')
+	button.backdrop:SetInside(button, 0, 1)
+
+	local rankBar = button.RankBar
+	rankBar.BorderLeft:SetAlpha(0)
+	rankBar.BorderMid:SetAlpha(0)
+	rankBar.BorderRight:SetAlpha(0)
+	rankBar:SetStatusBarTexture(E.media.normTex)
+	rankBar:CreateBackdrop('Transparent')
+	rankBar.Rank:FontTemplate()
+
+	E:RegisterStatusBar(rankBar)
+end
+
+-- RecipeList recipe rows (ProfessionsRecipeListRecipeTemplate)
+local function HandleRecipe(button)
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	button.SelectedOverlay:SetColorTexture(r, g, b, .25)
+	button.SelectedOverlay:SetInside(button)
+
+	button.HighlightOverlay:SetColorTexture(1, 1, 1, .5)
+	button.HighlightOverlay:SetInside(button)
+end
+
+local function HandleRecipeListChild(child)
+	if child.IsSkinned then return end
+
+	if E.Forever and child.CollapseButton then -- ToDo: Forever
+		HandleRecipeCategory(child)
+	elseif child.SkillUps then
+		HandleRecipe(child)
+	end
+
+	child.IsSkinned = true
+end
+
+local function HandleRecipeList(frame)
+	frame:ForEachFrame(HandleRecipeListChild)
+end
+
+local function ProfessionButton_UpdateButton(button)
+	button.highlightTexture:SetColorTexture(1, 1, 1, .25)
+	button.spellString:SetTextColor(1, 1, 1) -- passives get a dark color meant for the card art
+end
+
+-- BookPage profession spell buttons (ProfessionButtonTemplate)
+local function HandleProfessionButton(button)
+	button:OffsetFrameLevel(1) -- backdrops sit a level below, the card art would cover them
+	button.IconTexture:RemoveMaskTexture(button.OutlineMask)
+	button.IconTextureOverlay:SetAlpha(0)
+	button.IconTexture:SetInside()
+	S:HandleIcon(button.IconTexture, true)
+	button.highlightTexture:SetInside(button.IconTexture.backdrop)
+
+	E:RegisterCooldown(button.cooldown)
+
+	hooksecurefunc(button, 'UpdateButton', ProfessionButton_UpdateButton)
+end
+
+local function HandleBookProfession(frame)
+	HandleRankBar(frame.StatusBar)
+
+	local unlearn = frame.UnlearnButton
+	if unlearn then
+		S:HandleCloseButton(unlearn)
+		unlearn:OffsetFrameLevel(1)
+		unlearn:CreateBackdrop()
+		unlearn:SetHitRectInsets(0, 0, 0, 0)
+
+		-- line up with the skinned bar, the Fill sticks out past the StatusBar frame
+		unlearn:Size(18)
+		unlearn:ClearAllPoints()
+		unlearn:Point('LEFT', frame.StatusBar.Fill.backdrop, 'RIGHT', 2, 0)
+	end
+
+	for _, button in next, frame.spellButtons do
+		HandleProfessionButton(button)
+	end
+end
+
+local function RefreshRightTabs(frame)
+	local tabs = { frame.ProfessionsOverviewTab }
+	for _, tab in next, frame.rightProfessionTabs do
+		tabs[#tabs + 1] = tab
+	end
+
+	S:LayoutLargeSideTabs(frame, tabs)
+end
+
 function S:Blizzard_Professions()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
 
@@ -295,8 +393,9 @@ function S:Blizzard_Professions()
 	S:HandlePortraitFrame(ProfessionsFrame)
 
 	local CraftingPage = ProfessionsFrame.CraftingPage
-	S:HandleButton(CraftingPage.CreateButton)
-	S:HandleButton(CraftingPage.CreateAllButton)
+	CraftingPage:StripTextures() -- Profession-Background-Template2 artwork on Forever
+	S:HandleButton(CraftingPage.CreateButton, nil, nil, nil, E.Forever) -- Forever builds it from SharedButtonSmallTemplate, doesn't have a backdrop
+	S:HandleButton(CraftingPage.CreateAllButton, nil, nil, nil, E.Forever)
 	S:HandleButton(CraftingPage.ViewGuildCraftersButton)
 	S:HandleIcon(CraftingPage.ConcentrationDisplay.Icon)
 	S:HandleEditBox(CraftingPage.MinimizedSearchBox)
@@ -323,9 +422,12 @@ function S:Blizzard_Professions()
 	HandleRankBar(CraftingPage.RankBar)
 
 	local LinkButton = CraftingPage.LinkButton
-	LinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
-	LinkButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
-	LinkButton:GetHighlightTexture():Kill()
+	if not E.Forever then -- ToDo: Forever
+		LinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
+		LinkButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
+		LinkButton:GetHighlightTexture():Kill()
+	end
+
 	LinkButton:SetTemplate()
 	LinkButton:Size(17, 14)
 
@@ -335,17 +437,27 @@ function S:Blizzard_Professions()
 	GuildFrame.Container:StripTextures()
 	GuildFrame.Container:CreateBackdrop('Transparent')
 
-	S:HandleMaxMinFrame(ProfessionsFrame.MaximizeMinimize)
+	if E.Forever then -- Forever side tabs, no TabSystem or maximize button
+		S:HandleLargeSideTab(ProfessionsFrame.ProfessionsOverviewTab)
+		for _, tab in next, ProfessionsFrame.rightProfessionTabs do
+			S:HandleLargeSideTab(tab)
+		end
 
-	local TabSystem = ProfessionsFrame.TabSystem
-	for _, tab in next, { TabSystem:GetChildren() } do
-		S:HandleTab(tab)
+		hooksecurefunc(ProfessionsFrame, 'RefreshRightTabs', RefreshRightTabs)
+		RefreshRightTabs(ProfessionsFrame)
+	else
+		S:HandleMaxMinFrame(ProfessionsFrame.MaximizeMinimize)
+
+		local TabSystem = ProfessionsFrame.TabSystem
+		for _, tab in next, { TabSystem:GetChildren() } do
+			S:HandleTab(tab)
+		end
+
+		TabSystem.spacing = -5
+		TabSystem:MarkDirty()
+		TabSystem:ClearAllPoints()
+		TabSystem:Point('TOPLEFT', ProfessionsFrame, 'BOTTOMLEFT', -3, 0)
 	end
-
-	TabSystem.spacing = -5
-	TabSystem:MarkDirty()
-	TabSystem:ClearAllPoints()
-	TabSystem:Point('TOPLEFT', ProfessionsFrame, 'BOTTOMLEFT', -3, 0)
 
 	-- the fishing gear slots are commented out in the XML
 	for _, name in next, { 'Prof0ToolSlot', 'Prof0Gear0Slot', 'Prof0Gear1Slot', 'Prof1ToolSlot', 'Prof1Gear0Slot', 'Prof1Gear1Slot', 'CookingToolSlot', 'CookingGear0Slot', 'FishingToolSlot' } do
@@ -370,75 +482,88 @@ function S:Blizzard_Professions()
 	S:HandleButton(CraftList.FilterDropdown, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
 	S:HandleCloseButton(CraftList.FilterDropdown.ResetButton)
 
-	local SpecPage = ProfessionsFrame.SpecPage
-	S:HandleButton(SpecPage.ViewTreeButton)
-	S:HandleButton(SpecPage.UnlockTabButton)
-	S:HandleButton(SpecPage.ApplyButton)
-	S:HandleButton(SpecPage.ViewPreviewButton)
-	S:HandleButton(SpecPage.BackToFullTreeButton)
-	S:HandleButton(SpecPage.BackToPreviewButton)
+	hooksecurefunc(CraftList.ScrollBox, 'Update', HandleRecipeList)
 
-	SpecPage.PanelFooter:StripTextures()
-	SpecPage.TreeView:StripTextures()
-	SpecPage.TreeView:CreateBackdrop('Transparent')
-	SpecPage.TreeView.Background:SetInside(SpecPage.TreeView.backdrop)
-	SpecPage.TreeView.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
+	if E.Retail then -- no specializations page on Forever
+		local SpecPage = ProfessionsFrame.SpecPage
+		S:HandleButton(SpecPage.ViewTreeButton)
+		S:HandleButton(SpecPage.UnlockTabButton)
+		S:HandleButton(SpecPage.ApplyButton)
+		S:HandleButton(SpecPage.ViewPreviewButton)
+		S:HandleButton(SpecPage.BackToFullTreeButton)
+		S:HandleButton(SpecPage.BackToPreviewButton)
 
-	SpecPage.TreeView.backdrop:ClearAllPoints()
-	SpecPage.TreeView.backdrop:Point('TOPLEFT', -1, -1)
-	SpecPage.TreeView.backdrop:Point('BOTTOMRIGHT', -41, 1)
+		SpecPage.PanelFooter:StripTextures()
+		SpecPage.TreeView:StripTextures()
+		SpecPage.TreeView:CreateBackdrop('Transparent')
+		SpecPage.TreeView.Background:SetInside(SpecPage.TreeView.backdrop)
+		SpecPage.TreeView.Background:SetTexCoord(0.02, 0.98, 0.02, 0.98)
 
-	if E.private.skins.parchmentRemoverEnable then
-		SpecPage.TreeView.Background:SetAlpha(0)
-	else
-		SpecPage.TreeView.Background:SetAlpha(0.6)
+		SpecPage.TreeView.backdrop:ClearAllPoints()
+		SpecPage.TreeView.backdrop:Point('TOPLEFT', -1, -1)
+		SpecPage.TreeView.backdrop:Point('BOTTOMRIGHT', -41, 1)
+
+		if E.private.skins.parchmentRemoverEnable then
+			SpecPage.TreeView.Background:SetAlpha(0)
+		else
+			SpecPage.TreeView.Background:SetAlpha(0.6)
+		end
+
+		hooksecurefunc(SpecPage, 'UpdateTabs', SpecPage_UpdateTabs)
+
+		local DetailedView = SpecPage.DetailedView
+		DetailedView:StripTextures()
+		DetailedView:CreateBackdrop('Transparent')
+		DetailedView.backdrop:ClearAllPoints()
+		DetailedView.backdrop:Point('TOPLEFT', -1, -1)
+		DetailedView.backdrop:Point('BOTTOMRIGHT', -1, 1)
+
+		S:HandleButton(DetailedView.UnlockPathButton)
+		S:HandleButton(DetailedView.SpendPointsButton)
+		S:HandleIcon(DetailedView.UnspentPoints.Icon)
 	end
-
-	hooksecurefunc(SpecPage, 'UpdateTabs', SpecPage_UpdateTabs)
-
-	local DetailedView = SpecPage.DetailedView
-	DetailedView:StripTextures()
-	DetailedView:CreateBackdrop('Transparent')
-	DetailedView.backdrop:ClearAllPoints()
-	DetailedView.backdrop:Point('TOPLEFT', -1, -1)
-	DetailedView.backdrop:Point('BOTTOMRIGHT', -1, 1)
-
-	S:HandleButton(DetailedView.UnlockPathButton)
-	S:HandleButton(DetailedView.SpendPointsButton)
-	S:HandleIcon(DetailedView.UnspentPoints.Icon)
 
 	ReskinOutputLog(CraftingPage.CraftingOutputLog)
 
-	local OrdersPage = ProfessionsFrame.OrdersPage
-	HandleOrderView(OrdersPage.OrderView)
+	if E.Retail then -- no crafting orders page on Forever
+		local OrdersPage = ProfessionsFrame.OrdersPage
+		HandleOrderView(OrdersPage.OrderView)
 
-	local BrowseFrame = OrdersPage.BrowseFrame
-	S:HandleTab(BrowseFrame.PublicOrdersButton)
-	S:HandleTab(BrowseFrame.NpcOrdersButton)
-	S:HandleTab(BrowseFrame.GuildOrdersButton)
-	S:HandleTab(BrowseFrame.PersonalOrdersButton)
+		local BrowseFrame = OrdersPage.BrowseFrame
+		S:HandleTab(BrowseFrame.PublicOrdersButton)
+		S:HandleTab(BrowseFrame.NpcOrdersButton)
+		S:HandleTab(BrowseFrame.GuildOrdersButton)
+		S:HandleTab(BrowseFrame.PersonalOrdersButton)
 
-	BrowseFrame.OrdersRemainingDisplay:StripTextures()
-	BrowseFrame.OrdersRemainingDisplay:CreateBackdrop('Transparent')
-	BrowseFrame.FavoritesSearchButton:Size(22)
+		BrowseFrame.OrdersRemainingDisplay:StripTextures()
+		BrowseFrame.OrdersRemainingDisplay:CreateBackdrop('Transparent')
+		BrowseFrame.FavoritesSearchButton:Size(22)
 
-	S:HandleButton(BrowseFrame.SearchButton)
-	S:HandleButton(BrowseFrame.FavoritesSearchButton)
+		S:HandleButton(BrowseFrame.SearchButton)
+		S:HandleButton(BrowseFrame.FavoritesSearchButton)
 
-	S:HandleNextPrevButton(BrowseFrame.BackButton, 'left', nil, true)
-	S:HandleBlizzardRegions(BrowseFrame.BackButton)
-	BrowseFrame.BackButton:SetTemplate()
+		S:HandleNextPrevButton(BrowseFrame.BackButton, 'left', nil, true)
+		S:HandleBlizzardRegions(BrowseFrame.BackButton)
+		BrowseFrame.BackButton:SetTemplate()
 
-	local BrowseList = BrowseFrame.RecipeList
-	BrowseList:StripTextures()
-	BrowseList.BackgroundNineSlice:SetTemplate('Transparent')
+		local BrowseList = BrowseFrame.RecipeList
+		BrowseList:StripTextures()
+		BrowseList.BackgroundNineSlice:SetTemplate('Transparent')
 
-	S:HandleTrimScrollBar(BrowseList.ScrollBar)
-	S:HandleEditBox(BrowseList.SearchBox)
-	S:HandleButton(BrowseList.FilterDropdown)
+		S:HandleTrimScrollBar(BrowseList.ScrollBar)
+		S:HandleEditBox(BrowseList.SearchBox)
+		S:HandleButton(BrowseList.FilterDropdown)
 
-	BrowseFrame.OrderList:StripTextures()
-	S:HandleTrimScrollBar(BrowseFrame.OrderList.ScrollBar)
+		BrowseFrame.OrderList:StripTextures()
+		S:HandleTrimScrollBar(BrowseFrame.OrderList.ScrollBar)
+	end
+
+	if E.Forever then -- Forever BookPage (ProfessionsBookFrameTemplate)
+		local BookContent = ProfessionsFrame.BookPage.ProfessionsContentFrame
+		for _, frame in next, { BookContent.PrimaryProfession1, BookContent.PrimaryProfession2, BookContent.SecondaryProfession1, BookContent.SecondaryProfession2, BookContent.SecondaryProfession3 } do
+			HandleBookProfession(frame)
+		end
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_Professions')

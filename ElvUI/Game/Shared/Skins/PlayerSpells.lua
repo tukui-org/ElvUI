@@ -159,13 +159,13 @@ function S:Blizzard_PlayerSpells()
 	S:HandlePortraitFrame(PlayerSpellsFrame)
 
 	-- Specialisation
-	if E.Retail then -- empty stub on camelot
+	if E.Retail then -- empty stub on Forever
 		hooksecurefunc(PlayerSpellsFrame.SpecFrame, 'UpdateSpecFrame', UpdateSpecFrame)
 	end
 
 	-- TalentsFrame
 	local TalentsFrame = PlayerSpellsFrame.TalentsFrame
-	if E.Forever then -- camelot loads its own talent frame template
+	if E.Forever then -- Forever loads its own talent frame template
 		TalentsFrame.Background:SetAlpha(0)
 		TalentsFrame.BackgroundBorder:SetAlpha(0)
 		TalentsFrame.DividerHorizontalLeft:SetAlpha(0)
@@ -182,7 +182,7 @@ function S:Blizzard_PlayerSpells()
 
 	S:HandleButton(TalentsFrame.InspectCopyButton)
 
-	if E.Forever then -- camelot talent frame
+	if E.Forever then -- Forever talent frame
 		S:HandleButton(TalentsFrame.ActiveSpec.ActivateButton)
 
 		local CurrencyDisplay = TalentsFrame.ClassCurrencyDisplay
@@ -212,7 +212,7 @@ function S:Blizzard_PlayerSpells()
 	TalentsFrame.SearchBox.backdrop:Point('TOPLEFT', -4, -5)
 	TalentsFrame.SearchBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 
-	if E.Forever then -- camelot talent frame
+	if E.Forever then -- Forever talent frame
 		local SearchOptions = TalentsFrame.SearchOptionsDropdown
 		S:HandleNextPrevButton(SearchOptions, 'down', nil, true)
 		SearchOptions:SetTemplate()
@@ -224,7 +224,7 @@ function S:Blizzard_PlayerSpells()
 	TalentsFrame.SearchPreviewContainer:StripTextures()
 	TalentsFrame.SearchPreviewContainer:CreateBackdrop('Transparent')
 
-	if E.Retail then -- no PvP talents on camelot
+	if E.Retail then -- no PvP talents on Forever
 		TalentsFrame.PvPTalentList:StripTextures()
 		TalentsFrame.PvPTalentList:CreateBackdrop()
 		TalentsFrame.PvPTalentList.backdrop:SetFrameStrata(PlayerSpellsFrame.TalentsFrame.PvPTalentList:GetFrameStrata())
@@ -270,7 +270,7 @@ function S:Blizzard_PlayerSpells()
 	S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
 	S:HandleEditBox(SpellBookFrame.SearchBox)
 
-	if E.Forever then -- arrow dropdown on camelot, gear icon on Retail
+	if E.Forever then -- arrow dropdown on Forever, gear icon on Retail
 		SpellBookFrame.SearchBox:Height(20)
 		S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
 		SpellBookFrame.SettingsDropdown:SetTemplate()
@@ -289,7 +289,7 @@ function S:Blizzard_PlayerSpells()
 		SpellBookFrame.HelpPlateButton.Ring:Hide()
 	end
 
-	if E.Forever then -- icon tab per skill line on camelot
+	if E.Forever then -- icon tab per skill line on Forever
 		HandleCategoryTabs(SpellBookFrame.CategoryTabSystem)
 		hooksecurefunc(SpellBookFrame.CategoryTabSystem, 'AddTab', HandleCategoryTabs)
 	else

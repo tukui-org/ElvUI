@@ -468,7 +468,7 @@ function S:ContainerFrame()
 
 		S:HandleCloseButton(bankFrame.CloseButton)
 
-		if E.Forever then -- camelot bank: page side tabs and bag slots, no TabSystem
+		if E.Forever then -- Forever bank: page side tabs and bag slots, no TabSystem
 			-- The page tabs are LargeSideTabButtonTemplate
 			hooksecurefunc(bankFrame, 'RefreshPageTabs', RefreshPageTabs)
 			hooksecurefunc(bankFrame, 'RefreshBagButtons', RefreshBagButtons)
@@ -491,7 +491,7 @@ function S:ContainerFrame()
 		S:HandleButton(panel.MoneyFrame.DepositButton)
 		S:HandleButton(panel.MoneyFrame.WithdrawButton)
 
-		if E.Forever then -- camelot bank: bag slot purchase, no AutoDepositFrame
+		if E.Forever then -- Forever bank: bag slot purchase, no AutoDepositFrame
 			S:HandleButton(panel.PurchaseButton)
 		else
 			S:HandleButton(panel.AutoDepositFrame.DepositButton)
@@ -508,7 +508,7 @@ function S:ContainerFrame()
 		S:HandleButton(panel.PurchasePrompt.TabCostFrame.PurchaseButton)
 		panel.TabSettingsMenu:HookScript('OnShow', HandleTabMenu)
 
-		if not E.Forever then -- camelot bank: this box would wrap the item grid and bag slots
+		if not E.Forever then -- Forever bank: this box would wrap the item grid and bag slots
 			panel.backdrop2 = CreateFrame('Frame', nil, panel)
 			panel.backdrop2:SetTemplate('Transparent')
 			panel.backdrop2:Point('TOPLEFT', panel.PurchasePrompt, 'TOPLEFT', 8, 2)
@@ -517,7 +517,7 @@ function S:ContainerFrame()
 
 		HandleTab(panel.PurchaseTab)
 
-		if not E.Forever then -- camelot has no bankTabPool
+		if not E.Forever then -- Forever has no bankTabPool
 			hooksecurefunc(panel, 'RefreshBankTabs', RefreshTabs)
 		end
 

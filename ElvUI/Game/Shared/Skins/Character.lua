@@ -72,7 +72,7 @@ local function UpdateToggleCollapseButton(button)
 	local collapsed
 	if header.IsCollapsed then
 		collapsed = header:IsCollapsed()
-	elseif header.treeNode then -- camelot statistics sub headers
+	elseif header.treeNode then -- Forever statistics sub headers
 		collapsed = header.treeNode:IsCollapsed()
 	end
 
@@ -117,7 +117,7 @@ end
 
 local function EquipmentManagerPane_UpdateChild(child)
 	if not child.IsSkinned then
-		if E.Forever then -- camelot outfit cards
+		if E.Forever then -- Forever outfit cards
 			for _, region in next, { child:GetRegions() } do -- the card background and the icon frame are unnamed
 				local atlas = region:IsObjectType('Texture') and region:GetAtlas()
 				if atlas == 'UI-Character-Info-OutfitCard' or atlas == 'UI-Character-Info-OutfitIcon-Frame' then
@@ -255,7 +255,7 @@ local function EquipmentUpdateItems()
 		frame:SetTemplate('Transparent')
 	end
 
-	if E.Forever then -- camelot flyouts open in four directions from slot sized popout buttons
+	if E.Forever then -- Forever flyouts open in four directions from slot sized popout buttons
 		for i = 1, frame.numBGs do -- larger layouts add more slices of the flyout art
 			frame['bg'..i]:SetAlpha(0)
 		end
@@ -419,7 +419,7 @@ local function GearManagerPopupFrame_OnShow(frame)
 	end
 end
 
--- Forever: camelot character frame
+-- Forever character frame
 local function SetArrow(texture, rotation)
 	texture:SetTexture(E.Media.Textures.ArrowUp)
 	texture:SetTexCoord(0, 1, 0, 1)
@@ -870,7 +870,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 			S:HandleIcon(Slot.icon)
 			Slot.icon:SetInside()
 
-			if Slot.ignoreTexture then -- the camelot ammo slot has none
+			if Slot.ignoreTexture then -- the Forever ammo slot has none
 				Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
 			end
 
@@ -878,7 +878,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 				S:HandleIconBorder(Slot.IconBorder)
 			end
 
-			if not E.Forever then -- camelot anchors them per flyout direction, PopoutButton_RefreshVisualState sizes them
+			if not E.Forever then -- Forever anchors them per flyout direction, PopoutButton_RefreshVisualState sizes them
 				if Slot.popoutButton:GetPoint() == 'TOP' then
 					Slot.popoutButton:Point('TOP', Slot, 'BOTTOM', 0, 2)
 				else
@@ -918,7 +918,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 	_G.CharacterLevelText:FontTemplate()
 
-	if E.Forever then -- camelot level info
+	if E.Forever then -- Forever level info
 		local LevelTextBackground = _G.CharacterLevelTextBackground
 		LevelTextBackground:SetAlpha(0)
 		LevelTextBackground:CreateBackdrop()
@@ -984,7 +984,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 		hooksecurefunc('PaperDollFrame_SetResistance', PaperDollFrameSetResistance)
 	end
 
-	if E.Forever then -- camelot lists the stats in scroll boxes, the pane above only feeds them
+	if E.Forever then -- Forever lists the stats in scroll boxes, the pane above only feeds them
 		HandleStatsPane(_G.CharacterStatsPaneScrollBox)
 		HandleStatsPane(_G.CharacterStatsPanePetScrollBox)
 	end
@@ -1013,13 +1013,13 @@ local function SkinPaperDollFrame(CharacterFrame)
 	end
 
 	--Strip Textures
-	for _, object in next, { _G.CharacterModelScene, _G.CharacterStatsPane, _G.CharacterFrameInset, _G.CharacterFrameInsetRight, _G.PaperDollSidebarTabs } do -- camelot has no insets
+	for _, object in next, { _G.CharacterModelScene, _G.CharacterStatsPane, _G.CharacterFrameInset, _G.CharacterFrameInsetRight, _G.PaperDollSidebarTabs } do -- Forever has no insets
 		object:StripTextures()
 	end
 
 	--Re-add the overlay texture which was removed right above via StripTextures
 	local CharacterModelScene = _G.CharacterModelScene
-	if E.Forever then -- camelot overlay is an unnamed atlas without the per race alpha
+	if E.Forever then -- Forever overlay is an unnamed atlas without the per race alpha
 		CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5)
 
 		-- blizzard fills the whole pane behind the slots, box it in between the slot columns like retail
@@ -1061,7 +1061,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 	--Equipement Manager
 	hooksecurefunc(EquipmentManagerPane.ScrollBox, 'Update', EquipmentManagerPane_Update)
 
-	if E.Forever then -- camelot outfit cards with three slice buttons
+	if E.Forever then -- Forever outfit cards with three slice buttons
 		EquipmentManagerPane:StripTextures() -- Border and the unnamed scroll line under the list
 		hooksecurefunc('PaperDollEquipmentManagerPane_InitButton', EquipmentManagerPane_InitButton)
 
@@ -1076,7 +1076,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 	_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
 
-	if E.Forever then -- camelot sidebar tabs are plain check buttons with an icon
+	if E.Forever then -- Forever sidebar tabs are plain check buttons with an icon
 		for i = 1, 3 do
 			HandleSidebarTab(_G['PaperDollSidebarTab'..i])
 		end
@@ -1209,7 +1209,7 @@ local function SkinReputationFrame()
 		S:HandleDropDownBox(ReputationFrame.filterDropdown)
 
 		local DetailFrame = ReputationFrame.ReputationDetailFrame
-		if E.Forever then -- camelot side pane with a standing bar
+		if E.Forever then -- Forever side pane with a standing bar
 			HandleSidePane(DetailFrame)
 			HandleColoredProgressBar(DetailFrame.StandingBar)
 		else
@@ -1519,7 +1519,7 @@ function S:Blizzard_UIPanels_Game()
 		S:HandleFrame(CharacterFrame, true, nil, 11, -12, -32, 76)
 	end
 
-	if E.Forever then -- camelot splits the frame into two panes with side tabs
+	if E.Forever then -- Forever splits the frame into two panes with side tabs
 		CharacterFrame.LeftPaneHost:StripTextures()
 
 		local RightPaneHost = CharacterFrame.RightPaneHost
@@ -1578,7 +1578,7 @@ function S:Blizzard_UIPanels_Game()
 		SkinClassicPaperDollFrame()
 	end
 
-	if not E.Modern then -- retail has no pet tab, camelot shows the pet in the model scene
+	if not E.Modern then -- Retail has no pet tab, Forever shows the pet in the model scene
 		SkinPetPaperDollFrame()
 	end
 
@@ -1604,6 +1604,6 @@ else
 	S:AddCallback('Blizzard_UIPanels_Game')
 end
 
-if E.Forever then -- camelot only addon
+if E.Forever then -- Forever only addon
 	S:AddCallbackForAddon('Blizzard_Statistics')
 end

@@ -2,7 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
+
+local GetBuybackItemInfo = GetBuybackItemInfo
+local GetNumBuybackItems = GetNumBuybackItems
+local GetMerchantNumItems = GetMerchantNumItems
+local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local QUEST_ICON = [[Interface\ContainerFrame\UI-Icon-QuestBang]]
 
@@ -10,8 +16,10 @@ local function HandleIconButton(button, ...)
 	S:HandleButton(button)
 	button:StyleButton()
 
-	S:HandleIcon(button.Icon)
-	button.Icon:SetInside()
+	if E.Modern then
+		S:HandleIcon(button.Icon)
+		button.Icon:SetInside()
+	end
 
 	local region = button:GetRegions()
 	region:SetTexCoord(...)
@@ -33,6 +41,29 @@ local function UpdateRepairButtons()
 	_G.MerchantSellAllJunkButton:Point('RIGHT', _G.MerchantRepairAllButton, 'LEFT', 117, 0)
 end
 
+local function SetQualityColor(button, name, link)
+	local quality = link and GetItemQualityByID(link)
+	if quality and quality > 1 then
+		local r, g, b = E:GetItemQualityColor(quality)
+		button:SetBackdropBorderColor(r, g, b)
+		name:SetTextColor(r, g, b)
+	else
+		button:SetBackdropBorderColor(unpack(E.media.bordercolor))
+		name:SetTextColor(1, 1, 1)
+	end
+end
+
+local function UpdateBuybackInfo()
+	local numBuybackItems = GetNumBuybackItems()
+
+	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
+		if i <= numBuybackItems then
+			local link = GetBuybackItemInfo(i)
+			SetQualityColor(_G['MerchantItem'..i..'ItemButton'], _G['MerchantItem'..i..'Name'], link)
+		end
+	end
+end
+
 local function UpdateMerchantInfo()
 	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
 		local button = _G['MerchantItem'..i..'ItemButton']
@@ -49,6 +80,25 @@ local function UpdateMerchantInfo()
 		else
 			currency:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
 		end
+	end
+
+	-- classic merchant has no quality borders
+	if not E.Modern then
+		local numBuybackItems = GetNumBuybackItems()
+		local numMerchantItems = GetMerchantNumItems()
+		local index = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
+
+		for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
+			index = index + 1
+
+			if index <= numMerchantItems then
+				local button = _G['MerchantItem'..i..'ItemButton']
+				SetQualityColor(button, _G['MerchantItem'..i..'Name'], button.link)
+			end
+		end
+
+		local link = GetBuybackItemInfo(numBuybackItems)
+		SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
 	end
 end
 
@@ -71,13 +121,15 @@ function S:MerchantFrame()
 	S:HandlePortraitFrame(_G.MerchantFrame)
 	_G.MerchantFrame:Width(360)
 
-	_G.MerchantExtraCurrencyInset:StripTextures()
-	_G.MerchantExtraCurrencyBg:StripTextures()
-
 	_G.MerchantMoneyBg:StripTextures()
 	_G.MerchantMoneyInset:StripTextures()
 
-	S:HandleDropDownBox(_G.MerchantFrame.FilterDropdown)
+	if E.Modern then
+		_G.MerchantExtraCurrencyInset:StripTextures()
+		_G.MerchantExtraCurrencyBg:StripTextures()
+
+		S:HandleDropDownBox(_G.MerchantFrame.FilterDropdown)
+	end
 
 	-- Center the columns on the frame
 	_G.MerchantItem1:Point('TOPLEFT', _G.MerchantFrame, 'TOPLEFT', 22, -65)
@@ -90,8 +142,8 @@ function S:MerchantFrame()
 	-- Reposition tabs
 	_G.MerchantFrameTab1:ClearAllPoints()
 	_G.MerchantFrameTab2:ClearAllPoints()
-	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', -3, 0)
-	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', -5, 0)
+	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', E.Modern and -3 or -10, 0)
+	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', E.Modern and -5 or -19, 0)
 
 	-- Skin icons / merchant slots
 	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
@@ -118,15 +170,22 @@ function S:MerchantFrame()
 		icon:Point('TOPLEFT', 1, -1)
 		icon:Point('BOTTOMRIGHT', -1, 1)
 
-		local questIcon = button.IconQuestTexture
-		questIcon:SetTexCoord(0, 1, 0, 1)
-		questIcon:SetInside()
+		if E.Modern then
+			local questIcon = button.IconQuestTexture
+			questIcon:SetTexCoord(0, 1, 0, 1)
+			questIcon:SetInside()
+
+			hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
+		end
 
 		button.IconOverlay:SetInside(button, 1, 1) -- Decor items
 
-		hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
-
 		S:HandleIconBorder(button.IconBorder)
+
+		for j = 1, _G.MAX_ITEM_COST do
+			local currencyIcon = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j..'Texture']
+			currencyIcon:SetTexCoords()
+		end
 	end
 
 	-- Skin buyback item frame + icon
@@ -147,9 +206,14 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)
 
 	HandleIconButton(_G.MerchantRepairItemButton, 0.04, 0.24, 0.06, 0.5)
-	HandleIconButton(_G.MerchantRepairAllButton, 0.61, 0.82, 0.1, 0.52)
 	HandleIconButton(_G.MerchantGuildBankRepairButton, 0.61, 0.82, 0.1, 0.52)
-	HandleIconButton(_G.MerchantSellAllJunkButton, 0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
+
+	if E.Modern then
+		HandleIconButton(_G.MerchantRepairAllButton, 0.61, 0.82, 0.1, 0.52)
+		HandleIconButton(_G.MerchantSellAllJunkButton, 0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
+	else
+		HandleIconButton(_G.MerchantRepairAllButton, 0.34, 0.1, 0.34, 0.535, 0.535, 0.1, 0.535, 0.535)
+	end
 
 	_G.MerchantGuildBankRepairButton:SetPoint('LEFT', _G.MerchantRepairAllButton, 'RIGHT', 5, 0)
 
@@ -159,7 +223,13 @@ function S:MerchantFrame()
 	_G.MerchantNextPageButton:Point('LEFT', _G.MerchantPageText, 'RIGHT', 100, 4)
 
 	-- setup some hooks to fix placement
-	hooksecurefunc('MerchantFrame_UpdateRepairButtons', UpdateRepairButtons)
+	if E.Modern then
+		hooksecurefunc('MerchantFrame_UpdateRepairButtons', UpdateRepairButtons)
+	else
+		-- classic merchant has no quality borders
+		hooksecurefunc('MerchantFrame_UpdateBuybackInfo', UpdateBuybackInfo)
+	end
+
 	hooksecurefunc('MerchantFrame_UpdateMerchantInfo', UpdateMerchantInfo)
 
 	-- handle buyback count by the item button hooks
@@ -167,8 +237,10 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButton.Count:ClearAllPoints()
 	_G.MerchantBuyBackItemItemButton.Count:Point('BOTTOMRIGHT', 0, 1)
 
-	hooksecurefunc(_G.MerchantBuyBackItemItemButton, 'SetItemButtonScale', SetItemButtonScale)
-	hooksecurefunc(_G.MerchantBuyBackItemItemButton, 'SetItemButtonAnchorPoint', SetItemButtonAnchorPoint)
+	if E.Modern then
+		hooksecurefunc(_G.MerchantBuyBackItemItemButton, 'SetItemButtonScale', SetItemButtonScale)
+		hooksecurefunc(_G.MerchantBuyBackItemItemButton, 'SetItemButtonAnchorPoint', SetItemButtonAnchorPoint)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MerchantFrame')
