@@ -75,9 +75,9 @@ local isUnitEvent = Private.isUnitEvent
 
 local _G = _G
 local next, wipe, type, unpack = next, wipe, type, unpack
-local strmatch, rawset, tonumber = strmatch, rawset, tonumber
+local strmatch, rawset, tonumber, max = strmatch, rawset, tonumber, max
+local setfenv, getfenv, gsub, gmatch = setfenv, getfenv, gsub, gmatch
 local pcall, format, tinsert, floor = pcall, format, tinsert, floor
-local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local error, assert, loadstring = error, assert, loadstring
 
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
@@ -726,7 +726,7 @@ local function GetTagFunc(tagstr)
 		local frmt, numTags = gsub(gsub(tagstr, '%%', '%%%%'), _PATTERN, '%%s')
 		local data = {}
 
-		for bracket in tagstr:gmatch(_PATTERN) do
+		for bracket in gmatch(tagstr, _PATTERN) do
 			local tagFunc = bracketFuncs[bracket] or tagFuncs[bracket:sub(2, -2)]
 			if not tagFunc then
 				local tagName, tagStart, tagEnd = GetTagName(bracket)
@@ -888,10 +888,10 @@ local function RegisterEvent(frame, event, fs)
 end
 
 local function RegisterEvents(frame, fs, ts)
-	for tag in ts:gmatch(_PATTERN) do
+	for tag in gmatch(ts, _PATTERN) do
 		local tagevents = tagEvents[GetTagName(tag)]
 		if tagevents then
-			for event in tagevents:gmatch('%S+') do
+			for event in gmatch(tagevents, '%S+') do
 				RegisterEvent(frame, event, fs)
 			end
 		end
@@ -996,7 +996,7 @@ local function Tag(self, fs, ts, arg1, ...)
 	end
 
 	local containsOnUpdate
-	for tag in ts:gmatch(_PATTERN) do
+	for tag in gmatch(ts, _PATTERN) do
 		tag = GetTagName(tag)
 
 		local delay = not tagEvents[tag] and onUpdateDelay[tag]
