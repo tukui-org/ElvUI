@@ -495,10 +495,15 @@ function UF:Configure_Auras(frame, which)
 
 			UF:GroupFilters(auras, settings.filterLists) -- build the groups
 
+			local known = next(auras.known) -- new groups update their buttons in initializeFrame
+
 			E:Auras_GroupUnit(auras, frame.__unit)
 			E:Auras_SetContainer(auras)
 			E:Auras_SetLineSize(auras)
-			E:Auras_UpdateButtons(auras)
+
+			if known then
+				E:Auras_UpdateButtons(auras)
+			end
 		end
 	else
 		auras.initialAnchor = initialAnchor

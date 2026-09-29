@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
+local next = next
+
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
@@ -58,10 +60,15 @@ function UF:Configure_AuraWatch(frame, isPet)
 		if E.Modern then
 			auras.filter = 'HELPFUL'
 
+			local known = next(auras.known) -- new slots update their buttons in initializeFrame
+
 			E:Auras_SetupList(auras, auraTable)
 			E:Auras_GroupUnit(auras, frame.__unit)
 			E:Auras_SetIndicator(auras)
-			E:Auras_UpdateIndicators(auras)
+
+			if known then
+				E:Auras_UpdateIndicators(auras)
+			end
 		elseif auras.SetNewTable then
 			auras:SetNewTable(auraTable)
 		end

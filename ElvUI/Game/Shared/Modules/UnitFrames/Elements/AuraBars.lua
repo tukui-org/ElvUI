@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
+local next = next
 local ipairs = ipairs
 local strfind = strfind
 
@@ -225,10 +226,15 @@ function UF:Configure_AuraBars(frame)
 
 			UF:AuraBars_UpdateFilter(bars, frame.__unit)
 
+			local known = next(bars.known) -- new groups update their buttons in initializeFrame
+
 			E:Auras_GroupUnit(bars, frame.__unit)
 			E:Auras_SetContainer(bars)
 			E:Auras_SetLineSize(bars)
-			E:Auras_UpdateButtons(bars)
+
+			if known then
+				E:Auras_UpdateButtons(bars)
+			end
 
 			bars.allowEnable = true
 		else
