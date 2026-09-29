@@ -167,6 +167,7 @@ do
 				E:Auras_SetUnit(auras, nameplate.__unit)
 
 				auras:SetEnabled(true)
+				E:Auras_ShowList(auras)
 			end
 		end
 
