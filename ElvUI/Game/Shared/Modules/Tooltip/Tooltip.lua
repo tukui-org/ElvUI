@@ -265,11 +265,11 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			end
 		elseif realm and realm ~= '' then
 			if isShiftKeyDown or TT.db.alwaysShowRealm then
-				name = name..'-'..realm
+				name = format('%s-%s', name, realm)
 			elseif relationship == _G.LE_REALM_RELATION_COALESCED then
-				name = name.._G.FOREIGN_SERVER_LABEL
+				name = format('%s%s', name, _G.FOREIGN_SERVER_LABEL)
 			elseif relationship == _G.LE_REALM_RELATION_VIRTUAL then
-				name = name.._G.INTERACTIVE_SERVER_LABEL
+				name = format('%s%s', name, _G.INTERACTIVE_SERVER_LABEL)
 			end
 		end
 
