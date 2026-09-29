@@ -817,7 +817,8 @@ end
 
 function UF:Configure_FontString(obj)
 	UF.fontstrings[obj] = true
-	obj:FontTemplate() --This is temporary.
+
+	obj:FontTemplate(UF.db.font, UF.db.fontSize, UF.db.fontOutline)
 end
 
 function UF:Update_UnitFrame(frame)
@@ -986,15 +987,6 @@ function UF.groupPrototype:Configure_Groups(Header)
 				group:SetAttribute('columnSpacing', horizontalSpacing)
 			end
 
-			if not group.isForced then
-				if not group.initialized then
-					group:SetAttribute('startingIndex', raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
-					group:Show()
-					group.initialized = true
-				end
-				group:SetAttribute('startingIndex', 1)
-			end
-
 			if raidWideSorting and invertGroupingOrder then
 				group:SetAttribute('columnAnchorPoint', INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			else
@@ -1006,6 +998,15 @@ function UF.groupPrototype:Configure_Groups(Header)
 				group:SetAttribute('unitsPerColumn', raidWideSorting and (groupsPerRowCol * 5) or 5)
 				group:SetAttribute('sortDir', sortDir)
 				group:SetAttribute('showPlayer', showPlayer)
+
+				if not group.initialized then -- keep below maxColumns and unitsPerColumn, otherwise it spawns more buttons than it can show
+					group:SetAttribute('startingIndex', raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
+					group:Show()
+					group.initialized = true
+				end
+
+				group:SetAttribute('startingIndex', 1)
+
 				UF:SetHeaderSortGroup(group, groupBy)
 			end
 
@@ -1164,7 +1165,7 @@ function UF:ZONE_CHANGED_NEW_AREA(event)
 	end
 
 	if previous ~= UF.maxAllowedGroups then
-		UF:Update_AllFrames()
+		UF:UpdateAllHeaders(true) -- only the group count depends on it
 	end
 
 	if event then
@@ -1209,7 +1210,7 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	elseif UF.maxAllowedGroups ~= 8 then
 		UF.maxAllowedGroups = 8
 
-		UF:Update_AllFrames()
+		UF:UpdateAllHeaders(true)
 	end
 end
 
@@ -1224,6 +1225,7 @@ do
 		attributes['oUF-initialConfigFunction'] = format('self:SetWidth(%d); self:SetHeight(%d);', db.width, db.height)
 		attributes.template = template or nil
 		attributes.groupFilter = groupFilter
+		attributes.showPlayer = db.showPlayer
 		attributes.showRaid = group ~= 'party'
 		attributes.showParty = true
 		attributes.showSolo = true
@@ -1286,6 +1288,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	local groupFunctions = UF.headerFunctions[group]
 	local groupsChanged = (Header.numGroups ~= numGroups)
 	local stateChanged = (Header.enableState ~= enable)
+	local stateCreated -- new groups need their children configured, even when skipping
 	Header.enableState = enable
 	Header.numGroups = numGroups
 	Header.db = db
@@ -1294,11 +1297,13 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if db.raidWideSorting then
 			if not Header.groups[1] then
 				Header.groups[1] = UF:CreateHeader(Header, nil, 'ElvUF_'..name..'Group1', template or Header.template, nil, headerTemplate or Header.headerTemplate)
+				stateCreated = true
 			end
 		else
 			while numGroups > #Header.groups do
 				local index = tostring(#Header.groups + 1)
 				tinsert(Header.groups, UF:CreateHeader(Header, index, 'ElvUF_'..name..'Group'..index, template or Header.template, nil, headerTemplate or Header.headerTemplate))
+				stateCreated = true
 			end
 		end
 
@@ -1314,7 +1319,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		end
 	end
 
-	if stateChanged or not skip then
+	if (stateCreated or stateChanged) or not skip then
 		groupFunctions:Update(Header)
 	end
 
@@ -2299,11 +2304,13 @@ function UF:AfterStyleCallback()
 
 	local frameType = self.unitframeType
 	if frameType == 'tank' or frameType == 'tanktarget' then
-		UF:Update_TankFrames(self, UF.db.units.tank)
-		UF:Update_FontStrings()
+		if UF.tank then -- the header configures its first buttons itself
+			UF:Update_TankFrames(self, UF.db.units.tank)
+		end
 	elseif frameType == 'assist' or frameType == 'assisttarget' then
-		UF:Update_AssistFrames(self, UF.db.units.assist)
-		UF:Update_FontStrings()
+		if UF.assist then
+			UF:Update_AssistFrames(self, UF.db.units.assist)
+		end
 	end
 
 	-- these hooks below are used for aura container setup
@@ -2333,7 +2340,6 @@ function UF:Setup()
 	ElvUF:SetActiveStyle('ElvUF')
 
 	UF:LoadUnits()
-	UF:Update_FontStrings()
 end
 
 function UF:Initialize()
