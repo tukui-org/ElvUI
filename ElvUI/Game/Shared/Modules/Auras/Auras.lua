@@ -626,6 +626,7 @@ function A:UpdateHeader(header)
 			wrapYOffset = 0
 		end
 
+		header:SetAttribute('_ignore', true) -- hold the header update, the last attribute below runs it once
 		header:SetAttribute('config-width', width)
 		header:SetAttribute('config-height', height)
 		header:SetAttribute('template', 'ElvUIAuraTemplate')
@@ -637,12 +638,12 @@ function A:UpdateHeader(header)
 		header:SetAttribute('wrapAfter', db.wrapAfter)
 		header:SetAttribute('point', DIRECTION_TO_POINT[db.growthDirection])
 		header:SetAttribute('initialConfigFunction', A.AttributeInitialConfig)
-
 		header:SetAttribute('minWidth', minWidth)
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('xOffset', xOffset)
 		header:SetAttribute('yOffset', yOffset)
 		header:SetAttribute('wrapXOffset', wrapXOffset)
+		header:SetAttribute('_ignore', nil)
 		header:SetAttribute('wrapYOffset', wrapYOffset)
 
 		header:ForEachChild(A.UpdateChild, db)
