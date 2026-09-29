@@ -2989,14 +2989,15 @@ function CH:DisplayChatHistory()
 		local chat = _G[frameName]
 		if chat then
 			for _, d in ipairs(data) do
-				if type(d) == 'table' then
-					local historyType = historyTypes[d[50]]
+				local event = type(d) == 'table' and d[50]
+				if event then
+					local historyType = historyTypes[event]
 					if not historyType or CH.db.showHistory[historyType] then -- let others go by, but kill ignored ones
-						local chatType = gsub(strsub(d[50],10),'_INFORM','') -- once per entry, not per message group
+						local chatType = gsub(strsub(event,10),'_INFORM','') -- once per entry, not per message group
 						for _, messageType in pairs(chat.messageTypeList) do
 							local msg = chatType == messageType and d[1]
 							if msg and not CH:MessageIsProtected(msg) then
-								CH:ChatFrame_MessageEventHandler(chat,d[50],msg,d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],d[18],'ElvUI_ChatHistory',d[51],d[52],d[53])
+								CH:ChatFrame_MessageEventHandler(chat,event,msg,d[2],d[3],d[4],d[5],d[6],d[7],d[8],d[9],d[10],d[11],d[12],d[13],d[14],d[15],d[16],d[17],d[18],'ElvUI_ChatHistory',d[51],d[52],d[53])
 							end
 						end
 					end
