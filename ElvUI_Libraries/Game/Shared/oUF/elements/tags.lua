@@ -74,8 +74,8 @@ local validateUnit = Private.validateUnit
 local isUnitEvent = Private.isUnitEvent
 
 local _G = _G
-local next, type, unpack = next, type, unpack
-local wipe, rawset, tonumber = wipe, rawset, tonumber
+local next, wipe, type, unpack = next, wipe, type, unpack
+local strmatch, rawset, tonumber = strmatch, rawset, tonumber
 local pcall, format, tinsert, floor = pcall, format, tinsert, floor
 local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local error, assert, loadstring = error, assert, loadstring
@@ -214,7 +214,7 @@ tagFunctions.arcanecharges = function()
 end
 
 tagFunctions.arenaspec = function(u)
-	local id = u:match('arena(%d)$')
+	local id = strmatch(u, 'arena(%d)$')
 	if(id) then
 		local specID = GetArenaOpponentSpec(tonumber(id))
 		if(specID and specID > 0) then
@@ -428,7 +428,7 @@ tagFunctions.raidcolor = function(u)
 	if oUF:NotSecretValue(classToken) and classToken then
 		return Hex(_COLORS.class[classToken])
 	else
-		local id = u:match('arena(%d)$')
+		local id = strmatch(u, 'arena(%d)$')
 		local specID = id and GetArenaOpponentSpec(tonumber(id))
 		if specID and specID > 0 then
 			local _, _, _, _, _, classSpec = GetSpecializationInfoByID(specID)
@@ -714,8 +714,8 @@ local bracketFuncs = {}
 local tagBuffer = {}
 
 local function GetTagName(tag)
-	local tagStart = tag:match('.*>()') or 2
-	local tagEnd = (tag:match('.-()<') or -1) - 1
+	local tagStart = strmatch(tag, '^.*>()') or 2
+	local tagEnd = (strmatch(tag, '^.-()<') or -1) - 1
 
 	return tag:sub(tagStart, tagEnd), tagStart, tagEnd
 end
@@ -971,7 +971,7 @@ local function Tag(self, fs, ts, arg1, ...)
 
 	ts = ts:gsub('||([TCRAtncra])', EscapeSequence)
 
-	local customArgs = ts:match('{(.-)}%]')
+	local customArgs = strmatch(ts, '{(.-)}%]')
 	if customArgs then
 		self.__customargs[fs] = customArgs
 		ts = ts:gsub('{.-}%]', ']')
@@ -1075,13 +1075,13 @@ oUF.Tags = {
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 
 		for bracket in next, bracketFuncs do
-			if StripTag(bracket):match(tag) then
+			if strmatch(StripTag(bracket), tag) then
 				bracketFuncs[bracket] = nil
 			end
 		end
 
 		for tagstr, func in next, tagStringFuncs do
-			if StripTag(tagstr):match(tag) then
+			if strmatch(StripTag(tagstr), tag) then
 				tagStringFuncs[tagstr] = nil
 
 				for fs in next, taggedFontStrings do
@@ -1103,7 +1103,7 @@ oUF.Tags = {
 		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 
 		for tagstr in next, tagStringFuncs do
-			if StripTag(tagstr):match(tag) then
+			if strmatch(StripTag(tagstr), tag) then
 				for fs, ts in next, taggedFontStrings do
 					if ts == tagstr then
 						UnregisterEvents(fs.parent, fs)
