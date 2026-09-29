@@ -1226,7 +1226,7 @@ if UseCustomFlyout then
 			if success then
 				data.isKnown = isKnown
 
-				if numSlots then
+				if numSlots and isKnown then
 					for slotID = 1, numSlots do
 						local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
