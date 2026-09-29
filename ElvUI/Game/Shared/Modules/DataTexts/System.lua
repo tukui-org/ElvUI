@@ -260,16 +260,11 @@ end
 local function OnEvent(panel, event)
 	if event == 'MODIFIER_STATE_CHANGED' then
 		OnEnter(panel)
-	else
-		local addOnCount = GetNumAddOns()
-		if addOnCount == #infoTable then return end
-
-		wipe(infoTable)
-
-		for i = 1, addOnCount do
+	elseif not infoTable[1] then
+		for i = 1, GetNumAddOns() do
 			local name, title, _, loadable, reason = GetAddOnInfo(i)
-			if loadable or reason == 'DEMAND_LOADED' then
-				tinsert(infoTable, {name = name, index = i, title = title})
+			if loadable or (reason == 'DEMAND_LOADED' or reason == 'DEP_DEMAND_LOADED') then -- the tooltip only lists the loaded ones
+				tinsert(infoTable, { name = name, index = i, title = title })
 			end
 		end
 	end
