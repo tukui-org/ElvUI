@@ -1683,5 +1683,4 @@ function E:Install()
 
 	E.InstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	E.InstallFrame:Show()
-	E:NextPage()
 end
