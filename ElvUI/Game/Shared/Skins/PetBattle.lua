@@ -15,6 +15,9 @@ local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
 local C_PetBattles_GetBreedQuality = C_PetBattles.GetBreedQuality
 local BattlePetOwner_Weather = Enum.BattlePetOwner.Weather
 
+local data = S:AddCallback('PetBattleFrame')
+data.toggle = 'petbattleui'
+
 local function SkinPetButton(frame, bf)
 	if not frame.backdrop then
 		frame:CreateBackdrop()
@@ -215,8 +218,6 @@ local function SkipButton_SetPoint(btn, _, _, _, _, _, forced)
 end
 
 function S:PetBattleFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petbattleui) then return end
-
 	local f = _G.PetBattleFrame
 	local bf = f.BottomFrame
 	local infoBars = {
@@ -444,5 +445,3 @@ function S:PetBattleFrame()
 	S:HandleButton(PetBattleQueueReadyFrame.AcceptButton)
 	S:HandleButton(PetBattleQueueReadyFrame.DeclineButton)
 end
-
-S:AddCallback('PetBattleFrame')

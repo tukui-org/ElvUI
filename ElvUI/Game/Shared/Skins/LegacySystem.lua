@@ -8,6 +8,9 @@ local hooksecurefunc = hooksecurefunc
 
 -- /run ToggleLegacySystemUI()
 
+local data = S:AddCallbackForAddon('Blizzard_LegacySystem')
+data.toggle = 'legacySystem'
+
 local function HandleProgressBar(bar, background)
 	S:HandleStatusBar(bar)
 	bar.Text:FontTemplate()
@@ -100,8 +103,6 @@ local function RefreshTreeButtons(panel)
 end
 
 function S:Blizzard_LegacySystem()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.legacySystem) then return end
-
 	local LegacySystemFrame = _G.LegacySystemFrame
 	S:HandlePortraitFrame(LegacySystemFrame)
 
@@ -171,5 +172,3 @@ function S:Blizzard_LegacySystem()
 		hooksecurefunc(SelectionPanel, 'RefreshTreeButtons', RefreshTreeButtons)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_LegacySystem')

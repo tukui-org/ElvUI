@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:PetitionFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.petition) then return end
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetitionFrame')
+data.toggle = 'petition'
 
+function S:PetitionFrame()
 	local PetitionFrame = _G.PetitionFrame
 	PetitionFrame:StripTextures(true)
 	PetitionFrame:SetTemplate('Transparent')
@@ -38,5 +39,3 @@ function S:PetitionFrame()
 	_G.PetitionFrameRenameButton:Point('LEFT', _G.PetitionFrameRequestButton, 'RIGHT', 3, 0)
 	_G.PetitionFrameRenameButton:Point('RIGHT', _G.PetitionFrameCancelButton, 'LEFT', -3, 0)
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetitionFrame')

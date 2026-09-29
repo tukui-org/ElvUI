@@ -7,6 +7,9 @@ local hooksecurefunc = hooksecurefunc
 
 local C_ItemSocketInfo_GetSocketTypes = C_ItemSocketInfo.GetSocketTypes
 
+local data = S:AddCallbackForAddon('Blizzard_ItemSocketingUI')
+data.toggle = 'socket'
+
 local function UpdateItemSocketing()
 	for i, socket in next, _G.ItemSocketingFrame.SocketingContainer.SocketFrames do
 		local gemColor = C_ItemSocketInfo_GetSocketTypes(i)
@@ -21,8 +24,6 @@ local function UpdateItemSocketing()
 end
 
 function S:Blizzard_ItemSocketingUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.socket) then return end
-
 	local ItemSocketingFrame = _G.ItemSocketingFrame
 	S:HandlePortraitFrame(ItemSocketingFrame)
 
@@ -55,5 +56,3 @@ function S:Blizzard_ItemSocketingUI()
 
 	hooksecurefunc('ItemSocketingFrame_Update', UpdateItemSocketing)
 end
-
-S:AddCallbackForAddon('Blizzard_ItemSocketingUI')

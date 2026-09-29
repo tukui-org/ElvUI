@@ -5,6 +5,9 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local next = next
 
+local data = S:AddCallback('TooltipFrames')
+data.toggle = 'tooltip'
+
 function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 	TT.isStyled = true
@@ -43,8 +46,6 @@ function S:StyleTooltips()
 end
 
 function S:TooltipFrames()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
-
 	S:StyleTooltips()
 	S:HandleCloseButton(E.Modern and _G.ItemRefTooltip.CloseButton or _G.ItemRefCloseButton)
 
@@ -78,5 +79,3 @@ function S:TooltipFrames()
 	TT:SecureHook('GameTooltip_AddQuestRewardsToTooltip') -- Color Progress Bars
 	TT:SecureHook('SharedTooltip_SetBackdropStyle', 'SetStyle') -- This also deals with other tooltip borders like AzeriteEssence Tooltip
 end
-
-S:AddCallback('TooltipFrames')

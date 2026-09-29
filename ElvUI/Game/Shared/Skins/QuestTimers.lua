@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_QuestTimer()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.questTimers) then return end
+local data = S:AddCallbackForAddon('Blizzard_QuestTimer')
+data.toggle = 'questTimers'
 
+function S:Blizzard_QuestTimer()
 	local QuestTimerFrame = _G.QuestTimerFrame
 	S:HandleFrame(QuestTimerFrame, true)
 
@@ -15,5 +16,3 @@ function S:Blizzard_QuestTimer()
 		_G.QuestTimerHeader:Point('TOP', 1, 8)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_QuestTimer')

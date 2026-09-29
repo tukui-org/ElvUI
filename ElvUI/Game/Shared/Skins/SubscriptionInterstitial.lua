@@ -5,9 +5,10 @@ local _G = _G
 
 -- /run SubscriptionInterstitial_LoadUI(); _G.SubscriptionInterstitialFrame:Show()
 
-function S:Blizzard_SubscriptionInterstitialUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.subscriptionInterstitial) then return end
+local data = S:AddCallbackForAddon('Blizzard_SubscriptionInterstitialUI')
+data.toggle = 'subscriptionInterstitial'
 
+function S:Blizzard_SubscriptionInterstitialUI()
 	local SubscriptionInterstitial = _G.SubscriptionInterstitialFrame
 
 	SubscriptionInterstitial:StripTextures()
@@ -17,5 +18,3 @@ function S:Blizzard_SubscriptionInterstitialUI()
 	S:HandleCloseButton(SubscriptionInterstitial.CloseButton)
 	S:HandleButton(SubscriptionInterstitial.ClosePanelButton)
 end
-
-S:AddCallbackForAddon('Blizzard_SubscriptionInterstitialUI')

@@ -6,6 +6,11 @@ local _G = _G
 local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_CombatLog')
+function data.check() -- this is always on with the chat module, it's only handle the top bar in combat log chat frame
+	return E.private.chat.enable
+end
+
 local function StyleButtons()
 	for index in ipairs(_G.Blizzard_CombatLog_Filters.filters) do
 		local button = _G['CombatLogQuickButtonFrameButton'..index]
@@ -18,9 +23,6 @@ end
 
 -- credit: Aftermathh, edited by Simpy
 function S:Blizzard_CombatLog()
-	if not E.private.chat.enable then return end
-	-- this is always on with the chat module, it's only handle the top bar in combat log chat frame
-
 	hooksecurefunc('Blizzard_CombatLog_Update_QuickButtons', StyleButtons)
 	StyleButtons()
 
@@ -44,5 +46,3 @@ function S:Blizzard_CombatLog()
 	_G.CombatLogQuickButtonFrame_CustomAdditionalFilterButton:Size(20)
 	_G.CombatLogQuickButtonFrame_CustomTexture:Hide()
 end
-
-S:AddCallbackForAddon('Blizzard_CombatLog')

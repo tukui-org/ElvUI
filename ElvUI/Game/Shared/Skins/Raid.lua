@@ -18,6 +18,9 @@ local StripAllTextures = {
 	'RaidGroup8',
 }
 
+local data = S:AddCallbackForAddon('Blizzard_RaidUI')
+data.toggle = 'raid'
+
 local function RaidPulloutGetFrame()
 	for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
 		local backdrop = _G['RaidPullout'..i..'MenuBackdrop']
@@ -98,8 +101,6 @@ local function HandleClassButtons()
 end
 
 function S:Blizzard_RaidUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
-
 	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
 
@@ -124,5 +125,3 @@ function S:Blizzard_RaidUI()
 		hooksecurefunc('RaidPullout_Update', RaidPulloutUpdate)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_RaidUI')

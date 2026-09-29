@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:GuildInviteFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guild) then return end
+local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'GuildInviteFrame')
+data.toggle = 'guild'
 
+function S:GuildInviteFrame()
 	local GuildInviteFrame = _G.GuildInviteFrame
 	GuildInviteFrame:StripTextures()
 	GuildInviteFrame:SetTemplate('Transparent')
@@ -22,5 +23,3 @@ function S:GuildInviteFrame()
 
 	_G.GuildInviteFrameWarningText:Kill()
 end
-
-S:AddCallbackForAddon('Blizzard_FrameXML', 'GuildInviteFrame')

@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_RuneforgeUI')
+data.toggle = 'runeforge'
+
 local function RefreshListDisplay(list)
 	local lists = list.elements
 	if not lists then return end -- Blizzard bails while hidden, before the list is initialized
@@ -21,8 +24,6 @@ local function RefreshListDisplay(list)
 end
 
 function S:Blizzard_RuneforgeUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.runeforge) then return end
-
 	local frame = _G.RuneforgeFrame
 	frame.Title:FontTemplate(nil, 22)
 	S:HandleCloseButton(frame.CloseButton)
@@ -35,5 +36,3 @@ function S:Blizzard_RuneforgeUI()
 
 	hooksecurefunc(powerFrame.PowerList, 'RefreshListDisplay', RefreshListDisplay)
 end
-
-S:AddCallbackForAddon('Blizzard_RuneforgeUI')

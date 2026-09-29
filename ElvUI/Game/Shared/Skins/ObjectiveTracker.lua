@@ -19,6 +19,9 @@ local trackers = {
 	_G.InitiativeTasksObjectiveTracker
 }
 
+local data = S:AddCallbackForAddon('Blizzard_ObjectiveTracker')
+data.toggle = 'objectiveTracker'
+
 local function SkinOjectiveTrackerHeaders(header)
 	header.Background:SetAtlas(nil)
 end
@@ -94,8 +97,6 @@ local function SetCollapsed(header, collapsed)
 end
 
 function S:Blizzard_ObjectiveTracker()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.objectiveTracker) then return end
-
 	local TrackerFrame = _G.ObjectiveTrackerFrame
 	local TrackerHeader = TrackerFrame.Header
 	SkinOjectiveTrackerHeaders(TrackerHeader)
@@ -116,5 +117,3 @@ function S:Blizzard_ObjectiveTracker()
 		hooksecurefunc(header, 'SetCollapsed', SetCollapsed)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_ObjectiveTracker')

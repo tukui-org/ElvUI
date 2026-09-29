@@ -5,6 +5,9 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_Channels')
+data.toggle = 'channels'
+
 local function ButtonHeader_Update(header)
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	header.HighlightTexture:SetColorTexture(r, g, b, 0.25)
@@ -14,8 +17,6 @@ local function ButtonHeader_Update(header)
 end
 
 function S:Blizzard_Channels()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.channels) then return end
-
 	local channelFrame = _G.ChannelFrame
 	S:HandlePortraitFrame(channelFrame)
 	S:HandleButton(channelFrame.SettingsButton) -- using -4, 4
@@ -71,5 +72,3 @@ function S:Blizzard_Channels()
 	-- Hide the Channel Header Textures
 	hooksecurefunc(_G.ChannelButtonHeaderMixin, 'Update', ButtonHeader_Update)
 end
-
-S:AddCallbackForAddon('Blizzard_Channels')

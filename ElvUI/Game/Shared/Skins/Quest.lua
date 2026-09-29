@@ -37,6 +37,9 @@ local sealFrameTextColor = {
 	['042c54'] = '1c86ee',
 }
 
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames')
+data.toggle = 'quest'
+
 function S:QuestInfoSealFrameText(text)
 	if text and text ~= '' then
 		local colorStr, rawText = strmatch(text, '|c[fF][fF](%x%x%x%x%x%x)(.-)|r')
@@ -592,8 +595,6 @@ local function SkinQuestLogFrame()
 end
 
 function S:BlizzardQuestFrames()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.quest) then return end
-
 	if E.Modern then
 		S:HandleTrimScrollBar(_G.QuestProgressScrollFrame.ScrollBar)
 		S:HandleTrimScrollBar(_G.QuestRewardScrollFrame.ScrollBar)
@@ -837,5 +838,3 @@ function S:BlizzardQuestFrames()
 		SkinQuestLogFrame()
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames')

@@ -12,6 +12,9 @@ local SessionCommand_ButtonAtlases = QuestSessionCommand and { -- only read by t
 	[QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
 }
 
+local data = S:AddCallback('WorldMapFrame')
+data.toggle = 'worldmap'
+
 local function UpdateExecuteCommandAtlases(frame, command)
 	frame.ExecuteSessionCommand:SetNormalTexture(E.ClearTexture)
 	frame.ExecuteSessionCommand:SetPushedTexture(E.ClearTexture)
@@ -499,13 +502,9 @@ function S:WorldMap_QuestMapHide()
 end
 
 function S:WorldMapFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.worldmap) then return end
-
 	if E.Modern then
 		SkinMainline()
 	else
 		SkinClassic()
 	end
 end
-
-S:AddCallback('WorldMapFrame')

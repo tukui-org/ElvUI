@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_ItemInteractionUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemInteraction) then return end
+local data = S:AddCallbackForAddon('Blizzard_ItemInteractionUI')
+data.toggle = 'itemInteraction'
 
+function S:Blizzard_ItemInteractionUI()
 	local mainFrame = _G.ItemInteractionFrame
 	S:HandlePortraitFrame(mainFrame)
 
@@ -34,5 +35,3 @@ function S:Blizzard_ItemInteractionUI()
 
 	S:HandleButton(buttonFrame.ActionButton)
 end
-
-S:AddCallbackForAddon('Blizzard_ItemInteractionUI')

@@ -4,9 +4,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 local CreateFrame = CreateFrame
 
-function S:SkinArena()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.arena) then return end
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArena')
+data.toggle = 'arena'
 
+function S:SkinArena()
 	local ArenaFrame = _G.ArenaFrame
 	ArenaFrame:StripTextures(true)
 	ArenaFrame:CreateBackdrop('Transparent')
@@ -46,5 +47,3 @@ function S:SkinArena()
 		ArenaFrame.BottomBackdrop = bottomBackdrop
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArena')

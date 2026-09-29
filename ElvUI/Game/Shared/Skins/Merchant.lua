@@ -12,6 +12,9 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local QUEST_ICON = [[Interface\ContainerFrame\UI-Icon-QuestBang]]
 
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MerchantFrame')
+data.toggle = 'merchant'
+
 local function HandleIconButton(button, ...)
 	S:HandleButton(button)
 	button:StyleButton()
@@ -116,8 +119,6 @@ local function SetItemButtonAnchorPoint(button, point, x, y)
 end
 
 function S:MerchantFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.merchant) then return end
-
 	S:HandlePortraitFrame(_G.MerchantFrame)
 	_G.MerchantFrame:Width(360)
 
@@ -242,5 +243,3 @@ function S:MerchantFrame()
 		hooksecurefunc(_G.MerchantBuyBackItemItemButton, 'SetItemButtonAnchorPoint', SetItemButtonAnchorPoint)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MerchantFrame')

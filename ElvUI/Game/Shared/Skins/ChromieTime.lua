@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_ChromieTimeUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.chromieTime) then return end
+local data = S:AddCallbackForAddon('Blizzard_ChromieTimeUI')
+data.toggle = 'chromieTime'
 
+function S:Blizzard_ChromieTimeUI()
 	local frame = _G.ChromieTimeFrame
 	S:HandleCloseButton(frame.CloseButton)
 	S:HandleButton(frame.SelectButton)
@@ -26,5 +27,3 @@ function S:Blizzard_ChromieTimeUI()
 		InfoFrame.Description:SetTextColor(1, 1, 1)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_ChromieTimeUI')

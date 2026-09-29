@@ -3,6 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
+local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'TalkingHead')
+data.toggle = 'talkinghead'
+
 --Just some test code
 --[[
 local talkingHeadTextureKitRegionFormatStrings = {
@@ -108,8 +111,6 @@ function TestTalkingHead()
 end]]
 
 function S:TalkingHead()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talkinghead) then return end
-
 	local TalkingHeadFrame = _G.TalkingHeadFrame
 
 	TalkingHeadFrame.BackgroundFrame.TextBackground:SetAtlas(nil)
@@ -149,5 +150,3 @@ function S:TalkingHead()
 	TalkingHeadFrame.TextFrame.Text:SetShadowColor(0, 0, 0, 1)
 	TalkingHeadFrame.TextFrame.Text:SetShadowOffset(2, -2)
 end
-
-S:AddCallbackForAddon('Blizzard_FrameXML', 'TalkingHead')

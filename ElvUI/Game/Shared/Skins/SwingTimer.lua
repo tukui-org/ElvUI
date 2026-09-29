@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
+local data = S:AddCallbackForAddon('Blizzard_SwingTimer')
+data.toggle = 'swingTimer'
+
 -- SwingTimerFrameTemplate
 local function HandleSwingTimer(frame)
 	frame:StripTextures()
@@ -16,11 +19,7 @@ local function HandleSwingTimer(frame)
 end
 
 function S:Blizzard_SwingTimer()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.swingTimer) then return end
-
 	for _, frame in next, { _G.SwingTimerMainHandFrame, _G.SwingTimerOffHandFrame, _G.SwingTimerRangedFrame } do
 		HandleSwingTimer(frame)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_SwingTimer')

@@ -5,6 +5,25 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local dashboard = S:AddCallbackForAddon('Blizzard_HousingDashboard')
+dashboard.toggle = 'housing'
+
+for _, addonName in next, {
+	'Blizzard_HouseList',
+	'Blizzard_HousingCharter',
+	'Blizzard_HousingBulletinBoard',
+	'Blizzard_HousingCornerstone',
+	'Blizzard_HousingCreateNeighborhood',
+	'Blizzard_HousingHouseFinder',
+	'Blizzard_HousingHouseSettings',
+	'Blizzard_HouseEditor',
+	'Blizzard_HousingModelPreview',
+	'Blizzard_HousingBlueprint',
+} do
+	local data = S:AddCallbackForAddon(addonName)
+	data.toggle = 'housing'
+end
+
 do
 	local X, Y = 2, -1
 	function S:Housing_PositionDashboardTab(_, _, _, x, y)
@@ -82,8 +101,6 @@ local function HandleContentFrameTabs(frame)
 end
 
 function S:Blizzard_HousingHouseFinder()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local finderFrame = _G.HouseFinderFrame
 	finderFrame.WoodBorderFrame:Hide()
 
@@ -101,8 +118,6 @@ function S:Blizzard_HousingHouseFinder()
 end
 
 function S:Blizzard_HousingDashboard()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local dashboardFrame = _G.HousingDashboardFrame
 	S:HandleFrame(dashboardFrame, true)
 	S:Housing_HandleDashboardTabs(dashboardFrame)
@@ -176,8 +191,6 @@ function S:Blizzard_HousingDashboard()
 end
 
 function S:Blizzard_HousingCornerstone()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local cornerVisitor = _G.HousingCornerstoneVisitorFrame
 	cornerVisitor:StripTextures()
 	cornerVisitor:CreateBackdrop('Transparent')
@@ -210,8 +223,6 @@ function S:Blizzard_HousingCornerstone()
 end
 
 function S:Blizzard_HousingBulletinBoard()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local bulletinBoard = _G.HousingBulletinBoardFrame
 	bulletinBoard:StripTextures()
 	bulletinBoard:CreateBackdrop('Transparent')
@@ -236,8 +247,6 @@ function S:Blizzard_HousingBulletinBoard()
 end
 
 function S:Blizzard_HousingCharter()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local signatureDialog = _G.HousingCharterRequestSignatureDialog
 	signatureDialog:StripTextures()
 	signatureDialog:CreateBackdrop('Transparent')
@@ -247,8 +256,6 @@ function S:Blizzard_HousingCharter()
 end
 
 function S:Blizzard_HouseList()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local listFrame = _G.HouseListFrame
 	listFrame:StripTextures()
 	listFrame:CreateBackdrop('Transparent')
@@ -260,8 +267,6 @@ function S:Blizzard_HouseList()
 end
 
 function S:Blizzard_HousingCreateNeighborhood()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local createGuildNeighborhood = _G.HousingCreateGuildNeighborhoodFrame
 	createGuildNeighborhood:StripTextures()
 	createGuildNeighborhood:CreateBackdrop('Transparent')
@@ -287,8 +292,6 @@ local function SkinHouseSettingOptions(panel)
 end
 
 function S:Blizzard_HousingHouseSettings()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local settingsFrame = _G.HousingHouseSettingsFrame
 	local plotAccess = settingsFrame.PlotAccess
 	local houseAccess = settingsFrame.HouseAccess
@@ -324,8 +327,6 @@ function S:Blizzard_HousingHouseSettings()
 end
 
 function S:Blizzard_HouseEditor()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local editorFrame = _G.HouseEditorFrame
 	local storageButton = editorFrame.StorageButton
 	S:HandleButton(storageButton, true, nil, nil, nil, 'Transparent')
@@ -437,8 +438,6 @@ function S:Blizzard_HouseEditor()
 end
 
 function S:Blizzard_HousingModelPreview()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local previewFrame = _G.HousingModelPreviewFrame
 	previewFrame:StripTextures()
 	previewFrame:CreateBackdrop('Transparent')
@@ -466,8 +465,6 @@ local function SkinHousingBlueprintShareCodeBox(shareCodeBox)
 end
 
 function S:Blizzard_HousingBlueprint()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.housing) then return end
-
 	local importFrame = _G.HousingBlueprintImportFrame
 	SkinHousingBlueprintBaseFrame(importFrame)
 	SkinHousingBlueprintShareCodeBox(importFrame.InputContent.ShareCodeBox)
@@ -493,15 +490,3 @@ function S:Blizzard_HousingBlueprint()
 	S:HandleButton(successContent.ClipboardButton)
 	SkinHousingBlueprintShareCodeBox(successContent.ShareCodeBox)
 end
-
-S:AddCallbackForAddon('Blizzard_HouseList')
-S:AddCallbackForAddon('Blizzard_HousingCharter')
-S:AddCallbackForAddon('Blizzard_HousingBulletinBoard')
-S:AddCallbackForAddon('Blizzard_HousingCornerstone')
-S:AddCallbackForAddon('Blizzard_HousingCreateNeighborhood')
-S:AddCallbackForAddon('Blizzard_HousingDashboard')
-S:AddCallbackForAddon('Blizzard_HousingHouseFinder')
-S:AddCallbackForAddon('Blizzard_HousingHouseSettings')
-S:AddCallbackForAddon('Blizzard_HouseEditor')
-S:AddCallbackForAddon('Blizzard_HousingModelPreview')
-S:AddCallbackForAddon('Blizzard_HousingBlueprint')

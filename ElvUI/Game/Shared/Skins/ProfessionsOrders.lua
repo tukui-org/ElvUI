@@ -6,6 +6,9 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
+local data = S:AddCallbackForAddon('Blizzard_ProfessionsCustomerOrders')
+data.toggle = 'tradeskill'
+
 -- Custom Orders (Credits: siweia - NDUI)
 
 local function RefreshFlyoutButton(button)
@@ -182,8 +185,6 @@ local function HandleTabs(frame)
 end
 
 function S:Blizzard_ProfessionsCustomerOrders()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
-
 	local frame = _G.ProfessionsCustomerOrdersFrame
 	S:HandleFrame(frame)
 	HandleTabs(frame)
@@ -317,5 +318,3 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	frame.MyOrdersPage.OrderList.backdrop:Point('TOPLEFT', frame.MyOrdersPage.OrderList.ScrollBox, 4, -4)
 	frame.MyOrdersPage.OrderList.backdrop:Point('BOTTOMRIGHT', frame.MyOrdersPage.OrderList.ScrollBox, -4, 0)
 end
-
-S:AddCallbackForAddon('Blizzard_ProfessionsCustomerOrders')

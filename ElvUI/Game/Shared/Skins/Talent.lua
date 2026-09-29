@@ -12,6 +12,14 @@ local C_SpecializationInfo_GetSpecializationInfo = C_SpecializationInfo.GetSpeci
 
 local MAX_NUM_TALENTS = MAX_NUM_TALENTS
 
+local data = S:AddCallbackForAddon('Blizzard_TalentUI')
+data.toggle = 'talent'
+
+if E.Mists or E.Wrath then
+	local data = S:AddCallbackForAddon('Blizzard_GlyphUI')
+	data.toggle = 'talent'
+end
+
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
@@ -508,8 +516,6 @@ local function SkinWrathGlyphFrame()
 end
 
 function S:Blizzard_TalentUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
-
 	if E.Mists then
 		SkinMistsTalentFrame()
 	else
@@ -518,17 +524,9 @@ function S:Blizzard_TalentUI()
 end
 
 function S:Blizzard_GlyphUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
-
 	if E.Mists then
 		SkinMistsGlyphFrame()
 	else
 		SkinWrathGlyphFrame()
 	end
-end
-
-S:AddCallbackForAddon('Blizzard_TalentUI')
-
-if E.Mists or E.Wrath then
-	S:AddCallbackForAddon('Blizzard_GlyphUI')
 end

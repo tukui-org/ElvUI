@@ -7,6 +7,9 @@ local hooksecurefunc = hooksecurefunc
 
 local ITEMQUALITY_EPIC = Enum.ItemQuality.Epic or 4
 
+local data = S:AddCallbackForAddon('Blizzard_WeeklyRewards')
+data.toggle = 'weeklyRewards'
+
 -- Credits Siweia | AuroraClassic
 
 local function SkinRewardIcon(itemFrame)
@@ -100,8 +103,6 @@ local function HandleWarning(frame)
 end
 
 function S:Blizzard_WeeklyRewards()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.weeklyRewards) then return end
-
 	-- /run UIParent_OnEvent({}, 'WEEKLY_REWARDS_SHOW')
 	local frame = _G.WeeklyRewardsFrame
 
@@ -138,5 +139,3 @@ function S:Blizzard_WeeklyRewards()
 	hooksecurefunc(frame, 'SelectReward', SelectReward)
 	hooksecurefunc(frame, 'UpdateOverlay', UpdateOverlay)
 end
-
-S:AddCallbackForAddon('Blizzard_WeeklyRewards')

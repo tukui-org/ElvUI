@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_MajorFactionRenown')
+data.toggle = 'majorFactions'
+
 local function SetupMajorFaction(frame)
 	if frame.Divider then frame.Divider:Hide() end
 	if frame.NineSlice then frame.NineSlice:Hide() end
@@ -16,8 +19,6 @@ local function SetupMajorFaction(frame)
 end
 
 function S:Blizzard_MajorFactionRenown()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.majorFactions) then return end
-
 	local RenownFrame = _G.MajorFactionRenownFrame
 	RenownFrame:SetTemplate('Transparent')
 	S:HandleCloseButton(RenownFrame.CloseButton)
@@ -30,5 +31,3 @@ function S:Blizzard_MajorFactionRenown()
 		hooksecurefunc(RenownFrame, 'SetUpMajorFactionData', SetupMajorFaction)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_MajorFactionRenown')

@@ -27,6 +27,11 @@ local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local BACKPACK_TOOLTIP = BACKPACK_TOOLTIP
 local QUESTS_LABEL = QUESTS_LABEL
 
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'ContainerFrame')
+function data.check() -- the bags module replaces these frames
+	return not E.private.bags.enable and E.private.skins.blizzard.enable and E.private.skins.blizzard.bags
+end
+
 local function UpdateBorderColors(button)
 	if button.type and button.type == QUESTS_LABEL then
 		local r, g, b = unpack(B.QuestColors.questItem)
@@ -454,8 +459,6 @@ local function Container_Update(frame)
 end
 
 function S:ContainerFrame()
-	if E.private.bags.enable or not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bags) then return end
-
 	if E.Modern then
 		local bankFrame = _G.BankFrame
 		bankFrame:CreateBackdrop('Transparent')
@@ -609,5 +612,3 @@ function S:ContainerFrame()
 		hooksecurefunc('BankFrameItemButton_Update', BankFrameItemUpdate)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'ContainerFrame')

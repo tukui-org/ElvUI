@@ -5,6 +5,9 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_MacroUI')
+data.toggle = 'macro'
+
 local function MacroSelectorScrollUpdateChild(button)
 	if not button.IsSkinned then
 		S:HandleItemButton(button, true, true)
@@ -24,8 +27,6 @@ local function MacroPopup_OnShow(frame)
 end
 
 function S:Blizzard_MacroUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.macro) then return end
-
 	local MacroFrame = _G.MacroFrame
 	S:HandlePortraitFrame(MacroFrame)
 	MacroFrame:Width(360)
@@ -86,5 +87,3 @@ function S:Blizzard_MacroUI()
 
 	_G.MacroPopupFrame:HookScript('OnShow', MacroPopup_OnShow) -- New icon selection
 end
-
-S:AddCallbackForAddon('Blizzard_MacroUI')

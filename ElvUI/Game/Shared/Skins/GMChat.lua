@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_GMChatUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gmChat) then return end
+local data = S:AddCallbackForAddon('Blizzard_GMChatUI')
+data.toggle = 'gmChat'
 
+function S:Blizzard_GMChatUI()
 	local frame = _G.GMChatFrame
 	frame:SetClampRectInsets(0, 0, 0, 0)
 	frame:StripTextures()
@@ -50,5 +51,3 @@ function S:Blizzard_GMChatUI()
 	close:Point('RIGHT', tab, -5, 0)
 	S:HandleCloseButton(close)
 end
-
-S:AddCallbackForAddon('Blizzard_GMChatUI')

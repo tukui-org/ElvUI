@@ -4,9 +4,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-function S:Blizzard_GenericTraitUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.genericTrait) then return end
+local data = S:AddCallbackForAddon('Blizzard_GenericTraitUI')
+data.toggle = 'genericTrait'
 
+function S:Blizzard_GenericTraitUI()
 	local GenericTrait = _G.GenericTraitFrame
 	if E.private.skins.parchmentRemoverEnable then
 		GenericTrait.Background:SetAlpha(0)
@@ -26,5 +27,3 @@ function S:Blizzard_GenericTraitUI()
 	S.ReplaceIconString(unspentCount)
 	hooksecurefunc(unspentCount, 'SetText', S.ReplaceIconString)
 end
-
-S:AddCallbackForAddon('Blizzard_GenericTraitUI')

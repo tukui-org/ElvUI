@@ -20,6 +20,19 @@ local FrameTexs = {
 	'DialogBG',
 }
 
+-- ScriptErrorsFrame Skin
+local data = S:AddCallbackForAddon('Blizzard_ScriptErrorsFrame')
+data.toggle = 'debug'
+
+-- FrameStack, TableInspect Skins
+if IsAddOnLoaded('Blizzard_DebugTools') then
+	local data = S:AddCallback('Blizzard_DebugTools')
+	data.toggle = 'debug'
+else
+	local data = S:AddCallbackForAddon('Blizzard_DebugTools')
+	data.toggle = 'debug'
+end
+
 local function SkinOnShow()
 	local ScriptErrorsFrame = _G.ScriptErrorsFrame
 	ScriptErrorsFrame:SetParent(E.UIParent)
@@ -99,14 +112,10 @@ local function SkinTableAttributeDisplay(frame)
 end
 
 function S:Blizzard_ScriptErrorsFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.debug) then return end
-
 	S:SecureHookScript(_G.ScriptErrorsFrame, 'OnShow', SkinOnShow)
 end
 
 function S:Blizzard_DebugTools()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.debug) then return end
-
 	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.FrameStackTooltip)
@@ -115,14 +124,4 @@ function S:Blizzard_DebugTools()
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
 	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', SkinTableAttributeDisplay)
-end
-
--- ScriptErrorsFrame Skin
-S:AddCallbackForAddon('Blizzard_ScriptErrorsFrame')
-
--- FrameStack, TableInspect Skins
-if IsAddOnLoaded('Blizzard_DebugTools') then
-	S:AddCallback('Blizzard_DebugTools')
-else
-	S:AddCallbackForAddon('Blizzard_DebugTools')
 end

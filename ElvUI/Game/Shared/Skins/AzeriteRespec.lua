@@ -3,14 +3,15 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
+local data = S:AddCallbackForAddon('Blizzard_AzeriteRespecUI')
+data.toggle = 'azeriteRespec'
+
 local slotColor = { r = .6, g = 0, b = .6, a = .5 }
 local function ItemSlotColor(self)
 	self:SetBackdropColor(slotColor.r, slotColor.g, slotColor.b, slotColor.a)
 end
 
 function S:Blizzard_AzeriteRespecUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.azeriteRespec) then return end
-
 	local AzeriteRespecFrame = _G.AzeriteRespecFrame
 	AzeriteRespecFrame:SetClipsChildren(true)
 	AzeriteRespecFrame.Background:Hide()
@@ -49,5 +50,3 @@ function S:Blizzard_AzeriteRespecUI()
 	S:HandleButton(ButtonFrame.AzeriteRespecButton, true)
 	S:HandleCloseButton(AzeriteRespecFrame.CloseButton)
 end
-
-S:AddCallbackForAddon('Blizzard_AzeriteRespecUI')

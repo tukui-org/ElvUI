@@ -7,6 +7,9 @@ local next = next
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallback('BlizzardMiscFrames')
+data.toggle = 'misc'
+
 local function FixReadyCheckFrame(frame)
 	if frame.initiator and E:UnitIsUnit('player', frame.initiator) then
 		frame:Hide() -- bug fix, don't show it if player is initiator
@@ -74,8 +77,6 @@ local function ShowCloseDialog(frame)
 end
 
 function S:BlizzardMiscFrames()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
-
 	for _, frame in next, { _G.AddonCompartmentFrame, _G.AutoCompleteBox, _G.QueueStatusFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
@@ -266,5 +267,3 @@ function S:BlizzardMiscFrames()
 		S:HandleButton(SplashFrame.BottomCloseButton)
 	end
 end
-
-S:AddCallback('BlizzardMiscFrames')

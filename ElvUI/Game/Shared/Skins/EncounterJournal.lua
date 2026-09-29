@@ -19,6 +19,9 @@ local lootQuality = {
 	['loottab-set-itemborder-artifact'] = 6,
 }
 
+local data = S:AddCallbackForAddon('Blizzard_EncounterJournal')
+data.toggle = 'encounterjournal'
+
 local function HandleButton(btn, strip, ...)
 	S:HandleButton(btn, strip, ...)
 
@@ -370,8 +373,6 @@ local function SuggestFrameUpdateRewards(sugg)
 end
 
 function S:Blizzard_EncounterJournal()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.encounterjournal) then return end
-
 	local EJ = _G.EncounterJournal
 	S:HandlePortraitFrame(EJ)
 
@@ -697,5 +698,3 @@ function S:Blizzard_EncounterJournal()
 		S:HandleButton(JourneysFrame.JourneyOverview.OverviewBtn)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_EncounterJournal')

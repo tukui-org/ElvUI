@@ -5,6 +5,9 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_CooldownViewer')
+data.toggle = 'cooldownManager'
+
 do
 	local X, Y = 2, -1
 	function S:CooldownManager_PositionViewerTab(_, _, _, x, y)
@@ -264,8 +267,6 @@ function S:CooldownManager_HandleSettings(viewer)
 end
 
 function S:Blizzard_CooldownViewer()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) then return end
-
 	local db = E.db.general.cooldownManager
 	E:UpdateClassColor(db.nameFontColor)
 	E:UpdateClassColor(db.durationFontColor)
@@ -298,5 +299,3 @@ function S:Blizzard_CooldownViewer()
 	LayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, -3, nil, 'TOPLEFT')
 	LayoutDialog.LayoutNameEditBox.backdrop:NudgePoint(0, 3, nil, 'BOTTOMRIGHT')
 end
-
-S:AddCallbackForAddon('Blizzard_CooldownViewer')

@@ -5,9 +5,10 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local next = next
 
-function S:Blizzard_CatalogShop()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.catalogShop) then return end
+local data = S:AddCallbackForAddon('Blizzard_CatalogShop')
+data.toggle = 'catalogShop'
 
+function S:Blizzard_CatalogShop()
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.CatalogShopTooltip)
 	end
@@ -48,5 +49,3 @@ function S:Blizzard_CatalogShop()
 	S:HandleButton(ProductDetails.BackButton, nil, nil, nil, true)
 	S:HandleTrimScrollBar(ProductDetails.DetailsProductContainerFrame.ProductsScrollBoxContainer.ScrollBar)
 end
-
-S:AddCallbackForAddon('Blizzard_CatalogShop')

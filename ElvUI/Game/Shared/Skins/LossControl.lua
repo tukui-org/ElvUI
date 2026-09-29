@@ -5,6 +5,9 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'LossOfControlFrame')
+data.toggle = 'losscontrol'
+
 local function SetupDisplay(frame)
 	frame.Icon:ClearAllPoints()
 	frame.Icon:Point('CENTER', frame, 'CENTER', 0, 0)
@@ -31,8 +34,6 @@ local function SetupDisplay(frame)
 	end
 end
 function S:LossOfControlFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.losscontrol) then return end
-
 	-- /run LossOfControlFrame.fadeTime = 2000; LossOfControlFrame_SetUpDisplay(LossOfControlFrame, true, 'CONFUSE', 2094, 'Disoriented', [[Interface\Icons\Spell_Shadow_MindSteal]], 72101.9765625, 7.9950003623962, 8, 0, 5, 2)
 	local LossOfControlFrame = _G.LossOfControlFrame
 	local IconBackdrop = CreateFrame('Frame', nil, LossOfControlFrame)
@@ -47,5 +48,3 @@ function S:LossOfControlFrame()
 
 	hooksecurefunc(LossOfControlFrame, 'SetUpDisplay', SetupDisplay)
 end
-
-S:AddCallbackForAddon('Blizzard_FrameXML', 'LossOfControlFrame')

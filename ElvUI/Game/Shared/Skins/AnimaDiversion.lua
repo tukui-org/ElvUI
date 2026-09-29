@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_AnimaDiversionUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.animaDiversion) then return end
+local data = S:AddCallbackForAddon('Blizzard_AnimaDiversionUI')
+data.toggle = 'animaDiversion'
 
+function S:Blizzard_AnimaDiversionUI()
 	local frame = _G.AnimaDiversionFrame
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
@@ -17,5 +18,3 @@ function S:Blizzard_AnimaDiversionUI()
 
 	S:HandleButton(frame.ReinforceInfoFrame.AnimaNodeReinforceButton)
 end
-
-S:AddCallbackForAddon('Blizzard_AnimaDiversionUI')

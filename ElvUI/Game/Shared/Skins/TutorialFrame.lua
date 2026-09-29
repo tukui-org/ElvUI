@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:TutorialFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tutorials) then return end
+local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'TutorialFrame')
+data.toggle = 'tutorials'
 
+function S:TutorialFrame()
 	if E.Modern then
 		_G.TutorialFrame:DisableDrawLayer('BORDER')
 		_G.TutorialFrame:CreateBackdrop('Transparent')
@@ -35,5 +36,3 @@ function S:TutorialFrame()
 
 	S:HandleButton(_G.TutorialFrameOkayButton)
 end
-
-S:AddCallbackForAddon('Blizzard_FrameXML', 'TutorialFrame')

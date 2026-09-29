@@ -5,6 +5,9 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_EditMode')
+data.toggle = 'editor'
+
 local function HandleCheckBoxMini(checkbox, region)
 	if region:GetTexture() == 130751 then
 		if E.private.skins.checkBoxSkin then
@@ -54,8 +57,6 @@ local function HandleDialogs()
 end
 
 function S:Blizzard_EditMode()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.editor) then return end
-
 	-- Main Window
 	local editMode = _G.EditModeManagerFrame
 	editMode:StripTextures()
@@ -155,5 +156,3 @@ function S:Blizzard_EditMode()
 	hooksecurefunc(dialog.Buttons, 'AddLayoutChildren', HandleDialogs)
 	HandleDialogs()
 end
-
-S:AddCallbackForAddon('Blizzard_EditMode')

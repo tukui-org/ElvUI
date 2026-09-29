@@ -4,9 +4,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
-function S:Blizzard_RaidFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.nonraid) then return end
+local data = S:AddCallbackForAddon('Blizzard_RaidFrame')
+data.toggle = 'nonraid'
 
+function S:Blizzard_RaidFrame()
 	for _, frame in next, {
 		_G.RaidInfoFrame,
 		_G.RaidInfoInstanceLabel,
@@ -35,5 +36,3 @@ function S:Blizzard_RaidFrame()
 	S:HandleTrimScrollBar(RaidInfoFrame.ScrollBar)
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 end
-
-S:AddCallbackForAddon('Blizzard_RaidFrame')

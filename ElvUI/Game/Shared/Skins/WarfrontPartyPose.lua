@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_WarfrontsPartyPoseUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.islandsPartyPose) then return end
+local data = S:AddCallbackForAddon('Blizzard_WarfrontsPartyPoseUI')
+data.toggle = 'islandsPartyPose'
 
+function S:Blizzard_WarfrontsPartyPoseUI()
 	local WarfrontsPartyPoseFrame = _G.WarfrontsPartyPoseFrame
 	WarfrontsPartyPoseFrame:StripTextures()
 	WarfrontsPartyPoseFrame:SetTemplate('Transparent')
@@ -24,5 +25,3 @@ function S:Blizzard_WarfrontsPartyPoseUI()
 	RewardFrame.IconBorder:Kill()
 	RewardFrame.Icon:SetTexCoords()
 end
-
-S:AddCallbackForAddon('Blizzard_WarfrontsPartyPoseUI')

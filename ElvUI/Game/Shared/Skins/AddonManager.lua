@@ -7,6 +7,9 @@ local hooksecurefunc = hooksecurefunc
 
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
+local data = S:AddCallbackForAddon('Blizzard_AddOnList')
+data.toggle = 'addonManager'
+
 local function HandleButton(entry, treeNode)
 	if not entry.IsSkinned then
 		S:HandleCheckBox(entry.Enabled)
@@ -45,8 +48,6 @@ local function HandleButton(entry, treeNode)
 end
 
 function S:Blizzard_AddOnList()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.addonManager) then return end
-
 	local AddonList = _G.AddonList
 	S:HandlePortraitFrame(AddonList)
 	S:HandleButton(AddonList.EnableAllButton, nil, nil, nil, true, nil, nil, nil, true)
@@ -61,5 +62,3 @@ function S:Blizzard_AddOnList()
 
 	hooksecurefunc('AddonList_InitAddon', HandleButton)
 end
-
-S:AddCallbackForAddon('Blizzard_AddOnList')

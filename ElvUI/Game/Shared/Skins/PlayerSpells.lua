@@ -8,6 +8,9 @@ local hooksecurefunc = hooksecurefunc
 
 local GetSpellTexture = C_Spell.GetSpellTexture
 
+local data = S:AddCallbackForAddon('Blizzard_PlayerSpells')
+data.toggle = 'talent'
+
 local function HandleTalentFrameDialog(dialog)
 	dialog:StripTextures()
 	dialog:CreateBackdrop('Transparent')
@@ -153,8 +156,6 @@ local function HandleHeroTalents(frame)
 end
 
 function S:Blizzard_PlayerSpells()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.talent) then return end
-
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
 	S:HandlePortraitFrame(PlayerSpellsFrame)
 
@@ -314,5 +315,3 @@ function S:Blizzard_PlayerSpells()
 	RotationButton:SetPushedTexture(E.media.blankTex)
 	RotationButton:GetPushedTexture():SetVertexColor(1, 0.82, 0, 0.4)
 end
-
-S:AddCallbackForAddon('Blizzard_PlayerSpells')

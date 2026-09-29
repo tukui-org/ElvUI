@@ -5,6 +5,9 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_OrderHallUI')
+data.toggle = 'orderhall'
+
 local function RefreshAllData(frame)
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
@@ -35,8 +38,6 @@ local function RefreshAllData(frame)
 end
 
 function S:Blizzard_OrderHallUI()
-	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.orderhall then return end
-
 	local OrderHallTalentFrame = _G.OrderHallTalentFrame
 	S:HandlePortraitFrame(OrderHallTalentFrame)
 	S:HandleButton(OrderHallTalentFrame.BackButton)
@@ -45,5 +46,3 @@ function S:Blizzard_OrderHallUI()
 
 	hooksecurefunc(OrderHallTalentFrame, 'RefreshAllData', RefreshAllData)
 end
-
-S:AddCallbackForAddon('Blizzard_OrderHallUI')

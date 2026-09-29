@@ -4,9 +4,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, next = pairs, next
 
-function S:Blizzard_ArchaeologyUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.archaeology) then return end
+local data = S:AddCallbackForAddon('Blizzard_ArchaeologyUI')
+data.toggle = 'archaeology'
 
+function S:Blizzard_ArchaeologyUI()
 	local ArchaeologyFrame = _G.ArchaeologyFrame
 	S:HandlePortraitFrame(ArchaeologyFrame)
 	S:HandleButton(ArchaeologyFrame.artifactPage.solveFrame.solveButton, true)
@@ -79,5 +80,3 @@ function S:Blizzard_ArchaeologyUI()
 		S:HandleStatusBar(_G.ArcheologyDigsiteProgressBar.FillBar, {0.7, 0.2, 0})
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_ArchaeologyUI')

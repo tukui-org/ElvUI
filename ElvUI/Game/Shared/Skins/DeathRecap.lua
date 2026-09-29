@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_DeathRecap')
+data.toggle = 'deathRecap'
+
 local function DeathRecapScrollUpdateChild(child)
 	local spellInfo = child.SpellInfo
 	if spellInfo.IsSkinned then return end
@@ -22,8 +25,6 @@ local function DeathRecapScrollUpdate(frame)
 end
 
 function S:Blizzard_DeathRecap()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.deathRecap) then return end
-
 	local DeathRecapFrame = _G.DeathRecapFrame
 	DeathRecapFrame:StripTextures()
 	DeathRecapFrame:SetTemplate('Transparent')
@@ -35,5 +36,3 @@ function S:Blizzard_DeathRecap()
 	S:HandleTrimScrollBar(DeathRecapFrame.ScrollBar)
 	hooksecurefunc(DeathRecapFrame.ScrollBox, 'Update', DeathRecapScrollUpdate)
 end
-
-S:AddCallbackForAddon('Blizzard_DeathRecap')

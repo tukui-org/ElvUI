@@ -4,6 +4,14 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+if E.Modern then
+	local data = S:AddCallbackForAddon('Blizzard_MailFrame')
+	data.toggle = 'mail'
+else
+	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'Blizzard_MailFrame')
+	data.toggle = 'mail'
+end
+
 local function Skin_SendMail()
 	for i = 1, _G.ATTACHMENTS_MAX_SEND do
 		local btn = _G['SendMailAttachment'..i]
@@ -64,8 +72,6 @@ local function Skin_InboxItems()
 end
 
 function S:Blizzard_MailFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mail) then return end
-
 	local MailFrame = _G.MailFrame
 	S:HandlePortraitFrame(MailFrame)
 
@@ -212,10 +218,4 @@ function S:Blizzard_MailFrame()
 	_G.OpenMailReplyButton:Point('RIGHT', _G.OpenMailDeleteButton, 'LEFT', -2, 0)
 	_G.OpenMailDeleteButton:Point('RIGHT', _G.OpenMailCancelButton, 'LEFT', -2, 0)
 	_G.SendMailMailButton:Point('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
-end
-
-if E.Modern then
-	S:AddCallbackForAddon('Blizzard_MailFrame')
-else
-	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'Blizzard_MailFrame')
 end

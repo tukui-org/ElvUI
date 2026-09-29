@@ -5,6 +5,9 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_EventTrace')
+data.toggle = 'eventLog'
+
 local function ReskinScrollUpdateChild(child)
 	local button = child.HideButton
 	if button and not button.IsSkinned then
@@ -40,8 +43,6 @@ local function ReskinEventTraceFrame(frame)
 end
 
 function S:Blizzard_EventTrace()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.eventLog) then return end
-
 	-- Frame
 	local EventTrace = _G.EventTrace
 	EventTrace:StripTextures()
@@ -83,5 +84,3 @@ function S:Blizzard_EventTrace()
 	ReskinEventTraceFrame(EventTrace.Log.Search)
 	ReskinEventTraceFrame(EventTrace.Filter)
 end
-
-S:AddCallbackForAddon('Blizzard_EventTrace')

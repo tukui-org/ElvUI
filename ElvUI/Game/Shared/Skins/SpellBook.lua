@@ -14,6 +14,15 @@ local SpellBook_GetWhatChangedItem = SpellBook_GetWhatChangedItem
 
 local barColor = { 0, .86, 0 }
 
+-- the Retail spellbook is skinned in PlayerSpells.lua
+if E.Retail then
+	local data = S:AddCallbackForAddon('Blizzard_ProfessionsBook')
+	data.toggle = 'spellbook'
+else
+	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SpellBookFrame')
+	data.toggle = 'spellbook'
+end
+
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 1)
 end
@@ -458,8 +467,6 @@ local function SkinClassicSpellBook()
 end
 
 function S:Blizzard_ProfessionsBook()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
-
 	local ProfessionsBookFrame = _G.ProfessionsBookFrame
 	S:HandleFrame(ProfessionsBookFrame)
 
@@ -474,18 +481,9 @@ function S:Blizzard_ProfessionsBook()
 end
 
 function S:SpellBookFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.spellbook) then return end
-
 	if E.Mists then
 		SkinMistsSpellBook()
 	else
 		SkinClassicSpellBook()
 	end
-end
-
--- the Retail spellbook is skinned in PlayerSpells.lua
-if E.Retail then
-	S:AddCallbackForAddon('Blizzard_ProfessionsBook')
-else
-	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SpellBookFrame')
 end

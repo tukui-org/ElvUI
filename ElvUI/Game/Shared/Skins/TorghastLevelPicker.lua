@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_TorghastLevelPicker')
+data.toggle = 'torghastLevelPicker'
+
 local function UpdateHighestAvailableLayer(page)
 	for layer in page.gossipOptionsPool:EnumerateActive() do
 		if not layer.IsSkinned then
@@ -16,8 +19,6 @@ local function UpdateHighestAvailableLayer(page)
 end
 
 function S:Blizzard_TorghastLevelPicker()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.torghastLevelPicker) then return end
-
 	local frame = _G.TorghastLevelPickerFrame
 	frame.Title:FontTemplate(nil, 24)
 
@@ -28,5 +29,3 @@ function S:Blizzard_TorghastLevelPicker()
 
 	hooksecurefunc(frame, 'ScrollAndSelectHighestAvailableLayer', UpdateHighestAvailableLayer)
 end
-
-S:AddCallbackForAddon('Blizzard_TorghastLevelPicker')

@@ -6,6 +6,9 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_Menu')
+data.toggle = 'misc'
+
 local backdrops = {}
 local function SkinFrame(frame)
 	frame:StripTextures()
@@ -63,12 +66,8 @@ function S:OpenContextMenu(ownerRegion, menuDescription)
 end
 
 function S:Blizzard_Menu()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
-
 	local manager = _G.Menu.GetManager()
 	hooksecurefunc(manager, 'OpenMenu', S.OpenMenu)
 	hooksecurefunc(manager, 'OpenContextMenu', S.OpenContextMenu)
 	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', SkinFrameAttachments)
 end
-
-S:AddCallbackForAddon('Blizzard_Menu')

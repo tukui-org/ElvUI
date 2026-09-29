@@ -5,6 +5,9 @@ local _G = _G
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_Professions')
+data.toggle = 'tradeskill'
+
 local function HandleInputBox(box)
 	box:DisableDrawLayer('BACKGROUND')
 
@@ -387,8 +390,6 @@ local function RefreshRightTabs(frame)
 end
 
 function S:Blizzard_Professions()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
-
 	local ProfessionsFrame = _G.ProfessionsFrame
 	S:HandlePortraitFrame(ProfessionsFrame)
 
@@ -565,5 +566,3 @@ function S:Blizzard_Professions()
 		end
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_Professions')

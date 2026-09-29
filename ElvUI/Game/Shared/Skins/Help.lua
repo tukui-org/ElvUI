@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_HelpFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.help) then return end
+local data = S:AddCallbackForAddon('Blizzard_HelpFrame')
+data.toggle = 'help'
 
+function S:Blizzard_HelpFrame()
 	local main = _G.HelpFrame
 	main:StripTextures()
 	main:CreateBackdrop('Transparent')
@@ -23,5 +24,3 @@ function S:Blizzard_HelpFrame()
 	browser.backdrop:Point('TOPLEFT', browser, 'TOPLEFT', -1, 1)
 	browser.backdrop:Point('BOTTOMRIGHT', browser, 'BOTTOMRIGHT', 1, -2)
 end
-
-S:AddCallbackForAddon('Blizzard_HelpFrame')

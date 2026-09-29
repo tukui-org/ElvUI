@@ -7,6 +7,9 @@ local hooksecurefunc = hooksecurefunc
 
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
 
+local data = S:AddCallbackForAddon('Blizzard_ChatFrame')
+data.toggle = 'blizzardOptions'
+
 local function UpdateCheckboxes(frame)
 	if not FCF_GetCurrentChatFrame() then return end
 
@@ -101,8 +104,6 @@ local function UpdateMessageCheckboxes(frame)
 end
 
 function S:Blizzard_ChatFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
-
 	local ChatConfigFrame = _G.ChatConfigFrame
 	ChatConfigFrame:StripTextures()
 	ChatConfigFrame:SetTemplate('Transparent')
@@ -264,5 +265,3 @@ function S:Blizzard_ChatFrame()
 
 	hooksecurefunc('TextToSpeechFrame_UpdateMessageCheckboxes', UpdateMessageCheckboxes)
 end
-
-S:AddCallbackForAddon('Blizzard_ChatFrame')

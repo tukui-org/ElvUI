@@ -8,6 +8,9 @@ local hooksecurefunc = hooksecurefunc
 
 local DROPDOWN_WIDTH_OFFSET = 8
 
+local data = S:AddCallbackForAddon('Blizzard_DamageMeter')
+data.toggle = 'damageMeter'
+
 function S:DamageMeter_ButtonOnEnter()
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	self:GetNormalTexture():SetVertexColor(r, g, b)
@@ -310,10 +313,6 @@ function S:DamageMeter_SetupSessionWindow()
 end
 
 function S:Blizzard_DamageMeter()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.damageMeter) then return end
-
 	hooksecurefunc(_G.DamageMeter, 'SetupSessionWindow', S.DamageMeter_SetupSessionWindow)
 	S.DamageMeter_SetupSessionWindow()
 end
-
-S:AddCallbackForAddon('Blizzard_DamageMeter')

@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_PerksProgram')
+data.toggle = 'perks'
+
 local function HandleSetButtons(button)
 	if not button.Icon.backdrop then
 		S:HandleIcon(button.Icon, true)
@@ -158,8 +161,6 @@ local function HandleCheckbox(box)
 end
 
 function S:Blizzard_PerksProgram() -- Trading Post
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.perks) then return end
-
 	local frame = _G.PerksProgramFrame
 	local products = frame.ProductsFrame
 
@@ -256,5 +257,3 @@ function S:Blizzard_PerksProgram() -- Trading Post
 	S:HandleButton(footer.RotateButtonContainer.RotateLeftButton, nil, nil, nil, true, nil, nil, nil, true)
 	S:HandleButton(footer.RotateButtonContainer.RotateRightButton, nil, nil, nil, true, nil, nil, nil, true)
 end
-
-S:AddCallbackForAddon('Blizzard_PerksProgram')

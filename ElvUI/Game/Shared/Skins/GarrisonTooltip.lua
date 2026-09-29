@@ -6,6 +6,12 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+local garrisonBase = S:AddCallbackForAddon('Blizzard_GarrisonBase')
+garrisonBase.toggle = 'tooltip'
+
+local shipyard = S:AddCallbackForAddon('Blizzard_GarrisonUI', 'GarrisonShipyardTooltip') -- requires Garrison UI unlike the others
+shipyard.toggle = 'tooltip'
+
 local function AbilityTooltip(frame)
 	frame.Icon:SetTexCoords()
 	S:HandleIcon(frame.Icon, true)
@@ -83,8 +89,6 @@ function S:GarrisonShipyardTooltip()
 end
 
 function S:Blizzard_GarrisonBase()
-	if not E.private.skins.blizzard.enable or not E.private.skins.blizzard.tooltip then return end
-
 	TT:SetStyle(_G.FloatingGarrisonFollowerTooltip)
 	TT:SetStyle(_G.FloatingGarrisonMissionTooltip)
 	TT:SetStyle(_G.FloatingGarrisonShipyardFollowerTooltip)
@@ -104,5 +108,3 @@ function S:Blizzard_GarrisonBase()
 	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetGarrisonFollower', SetGarrisonFollower)
 	hooksecurefunc('GarrisonFollowerTooltipTemplate_SetShipyardFollower', SetShipyardFollower)
 end
-
-S:AddCallbackForAddon('Blizzard_GarrisonBase')

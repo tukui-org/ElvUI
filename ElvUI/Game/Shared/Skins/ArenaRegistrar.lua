@@ -5,9 +5,10 @@ local _G = _G
 
 local MAX_TEAM_BORDERS = MAX_TEAM_BORDERS
 
-function S:SkinArenaRegistrar()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.arenaRegistrar) then return end
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArenaRegistrar')
+data.toggle = 'arenaRegistrar'
 
+function S:SkinArenaRegistrar()
 	local ArenaRegistrarFrame = _G.ArenaRegistrarFrame
 	ArenaRegistrarFrame:CreateBackdrop('Transparent')
 	ArenaRegistrarFrame.backdrop:Point('TOPLEFT', 14, -18)
@@ -81,5 +82,3 @@ function S:SkinArenaRegistrar()
 	S:HandleButton(_G.PVPBannerFrameCancelButton)
 	S:HandleCloseButton(_G.PVPBannerFrameCloseButton)
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArenaRegistrar')

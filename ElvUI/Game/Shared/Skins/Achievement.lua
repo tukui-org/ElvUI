@@ -16,6 +16,9 @@ local FLAG_PROGRESS_BAR = EVALUATION_TREE_FLAG_PROGRESS_BAR
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3, a = 1 }
 
+local data = S:AddCallbackForAddon('Blizzard_AchievementUI')
+data.toggle = 'achievement'
+
 local function SetupButtonHighlight(button, backdrop)
 	button:SetHighlightTexture(E.media.normTex)
 
@@ -499,8 +502,6 @@ local function DisplayCriteria(objectivesFrame, id)
 end
 
 function S:Blizzard_AchievementUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.achievement) then return end
-
 	local AchievementFrame = _G.AchievementFrame
 	if E.Modern then
 		S:HandleFrame(AchievementFrame)
@@ -710,5 +711,3 @@ end
 if not E.Modern then
 	E:Delay(0.1, HookHybridScrollButtons)
 end
-
-S:AddCallbackForAddon('Blizzard_AchievementUI')

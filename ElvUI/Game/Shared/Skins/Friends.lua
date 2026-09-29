@@ -23,6 +23,14 @@ local GUILDMEMBERS_TO_DISPLAY = GUILDMEMBERS_TO_DISPLAY
 
 local INVITE_RESTRICTION_NONE = 9
 
+if E.Modern then
+	local data = S:AddCallback('FriendsFrame')
+	data.toggle = 'friends'
+else
+	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'FriendsFrame')
+	data.toggle = 'friends'
+end
+
 local function BattleNetFrame_OnEnter(button)
 	button.backdrop:SetBackdropBorderColor(BNET_NAME_COLOR.r, BNET_NAME_COLOR.g, BNET_NAME_COLOR.b)
 end
@@ -484,8 +492,6 @@ local function HandleGuild() -- /groster
 end
 
 function S:FriendsFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.friends) then return end
-
 	if E.Modern then
 		S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar)
 		S:HandleTrimScrollBar(_G.RecentAlliesFrame.List.ScrollBar)
@@ -816,10 +822,4 @@ function S:FriendsFrame()
 
 		HandleGuild()
 	end
-end
-
-if E.Modern then
-	S:AddCallback('FriendsFrame')
-else
-	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'FriendsFrame')
 end

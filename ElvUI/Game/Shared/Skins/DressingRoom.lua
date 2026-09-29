@@ -5,6 +5,14 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+if E.Modern then
+	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'DressUpFrame')
+	data.toggle = 'dressingroom'
+else
+	local data = S:AddCallbackForAddon('Blizzard_CharacterFrame', 'DressUpFrame')
+	data.toggle = 'dressingroom'
+end
+
 local function SetToggleIcon(button, texture)
 	local icon = button:CreateTexture()
 	icon:SetTexCoords()
@@ -57,8 +65,6 @@ local function SetSelection_Update(box)
 end
 
 function S:DressUpFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.dressingroom) then return end
-
 	local DressUpFrame = _G.DressUpFrame
 	if E.Modern then
 		S:HandlePortraitFrame(DressUpFrame)
@@ -121,10 +127,4 @@ function S:DressUpFrame()
 
 		S:HandleFrame(_G.DressUpModelFrame, true, nil, -2, -19, 0, -1)
 	end
-end
-
-if E.Modern then
-	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'DressUpFrame')
-else
-	S:AddCallbackForAddon('Blizzard_CharacterFrame', 'DressUpFrame')
 end

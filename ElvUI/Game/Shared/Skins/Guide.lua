@@ -3,9 +3,13 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_NewPlayerExperience()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guide) then return end
+local playerExperience = S:AddCallbackForAddon('Blizzard_NewPlayerExperience')
+playerExperience.toggle = 'guide'
 
+local playerExperienceGuide = S:AddCallbackForAddon('Blizzard_NewPlayerExperienceGuide')
+playerExperienceGuide.toggle = 'guide'
+
+function S:Blizzard_NewPlayerExperience()
 	S:HandleButton(_G.KeyboardMouseConfirmButton)
 
 	local walk = _G.TutorialWalk_Frame.ContainerFrame
@@ -19,8 +23,6 @@ function S:Blizzard_NewPlayerExperience()
 end
 
 function S:Blizzard_NewPlayerExperienceGuide()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guide) then return end
-
 	local frame = _G.GuideFrame
 	S:HandlePortraitFrame(frame)
 	frame.Title:SetTextColor(1, 1, 1)
@@ -34,6 +36,3 @@ function S:Blizzard_NewPlayerExperienceGuide()
 	scrollChild.ObjectivesFrame:SetTemplate('Transparent')
 	scrollChild.Text:SetTextColor(1, 1, 1)
 end
-
-S:AddCallbackForAddon('Blizzard_NewPlayerExperience')
-S:AddCallbackForAddon('Blizzard_NewPlayerExperienceGuide')

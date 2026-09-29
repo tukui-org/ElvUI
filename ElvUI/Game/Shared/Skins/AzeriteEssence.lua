@@ -6,6 +6,9 @@ local hooksecurefunc = hooksecurefunc
 
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
+local data = S:AddCallbackForAddon('Blizzard_AzeriteEssenceUI')
+data.toggle = 'azeriteEssence'
+
 local function EssenceListScrollUpdateChild(button)
 	if not button.IsSkinned then
 		button:DisableDrawLayer('ARTWORK')
@@ -38,7 +41,6 @@ local function EssenceListScrollUpdate(frame)
 end
 
 function S:Blizzard_AzeriteEssenceUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.azeriteEssence) then return end
 	if not C_AzeriteEssence_CanOpenUI() then return end
 
 	local AzeriteEssenceUI = _G.AzeriteEssenceUI
@@ -58,5 +60,3 @@ function S:Blizzard_AzeriteEssenceUI()
 	-- Essence List on the right
 	hooksecurefunc(AzeriteEssenceUI.EssenceList.ScrollBox, 'Update', EssenceListScrollUpdate)
 end
-
-S:AddCallbackForAddon('Blizzard_AzeriteEssenceUI')

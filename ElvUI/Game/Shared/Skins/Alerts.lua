@@ -11,6 +11,9 @@ local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 
 local HOUSING_REWARD_COLOR = _G.HOUSING_REWARD_TOAST_LABEL_FONT_COLOR
 
+local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'AlertSystem')
+data.toggle = 'alertframes'
+
 local function ForceAlpha(frame, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		frame:SetAlpha(1, true)
@@ -865,8 +868,6 @@ local function SkinMiscAlerts(frame)
 end
 
 function S:AlertSystem()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.alertframes) then return end
-
 	-- Achievements
 	hooksecurefunc(_G.AchievementAlertSystem, 'setUpFunction', SkinAchievementAlert)
 	hooksecurefunc(_G.CriteriaAlertSystem, 'setUpFunction', SkinCriteriaAlert)
@@ -977,5 +978,3 @@ function S:AlertSystem()
 	frame.backdrop:Point('TOPLEFT', lootItem.Icon.b, 'TOPLEFT', -4, 4)
 	frame.backdrop:Point('BOTTOMRIGHT', lootItem.Icon.b, 'BOTTOMRIGHT', 180, -4)
 end
-
-S:AddCallbackForAddon('Blizzard_FrameXML', 'AlertSystem')

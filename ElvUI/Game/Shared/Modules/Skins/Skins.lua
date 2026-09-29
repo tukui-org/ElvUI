@@ -2530,33 +2530,70 @@ end
 ---- arg3: load function (preferably not-local)
 -- this is used for loading skins that should be executed when the addon loads (including blizzard addons that load later).
 -- please add a given name, non-given-name is specific for elvui core addon.
+-- both return the skin's storage, which the load function gets after self (S) - without a load function the given name is looked up when the skin loads.
+--- storage.toggle: key in E.private.skins.blizzard, the skin only loads when it and blizzard.enable are on
+--- storage.check: function, the skin only loads when it returns true (used instead of toggle)
+--- storage.allow: the result, filled when the skin loads (forceLoad skins load right away, before a toggle or check is set)
 function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position) -- arg2: name is 'given name'; see example above.
-	local load = (type(name) == 'function' and name) or (not func and (S[name] or S[addonName]))
-	S:RegisterSkin(addonName, load or func, forceLoad, bypass, position)
+	if type(name) == 'function' then
+		return S:RegisterSkin(addonName, name, forceLoad, bypass, position)
+	else
+		return S:RegisterSkin(addonName, func, forceLoad, bypass, position, name or addonName)
+	end
 end
 
 -- nonAddonsToLoad:
 --- this is used for loading skins when our skin init function executes.
 --- please add a given name, non-given-name is specific for elvui core addon.
 function S:AddCallback(name, func, position) -- arg1: name is 'given name'
-	local load = (type(name) == 'function' and name) or (not func and S[name])
-	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
+	if type(name) == 'function' then
+		return S:RegisterSkin('ElvUI', name, nil, nil, position)
+	else
+		return S:RegisterSkin('ElvUI', func, nil, nil, position, name)
+	end
 end
 
-function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
+local function LoadSkin(skin)
+	local data = skin.data
+	if data.check then
+		local ok, allow = E:CallLoadFunc(data.check)
+		data.allow = ok and allow
+	elseif data.toggle then
+		local blizzard = E.private.skins.blizzard
+		data.allow = blizzard.enable and blizzard[data.toggle]
+	else
+		data.allow = true
+	end
+
+	if not data.allow then return end
+
+	local func = skin.func
+	if not func and skin.name then
+		func = S[skin.name] or S[skin.addonName]
+	end
+
+	if func then
+		E:CallLoadFunc(func, S, data)
+	end
+end
+
+function S:RegisterSkin(addonName, func, forceLoad, bypass, position, name)
+	local data = {}
+	local skin = { addonName = addonName, name = name, func = func, data = data }
+
 	if bypass then
 		S.allowBypass[addonName] = true
 	end
 
 	if forceLoad then
-		E:CallLoadFunc(func)
+		LoadSkin(skin)
 
 		S.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
 		if position then
-			tinsert(S.nonAddonsToLoad, position, func)
+			tinsert(S.nonAddonsToLoad, position, skin)
 		else
-			tinsert(S.nonAddonsToLoad, func)
+			tinsert(S.nonAddonsToLoad, skin)
 		end
 	else
 		local addon = S.addonsToLoad[addonName]
@@ -2566,22 +2603,24 @@ function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 		end
 
 		if position then
-			tinsert(addon, position, func)
+			tinsert(addon, position, skin)
 		else
-			tinsert(addon, func)
+			tinsert(addon, skin)
 		end
 	end
+
+	return data
 end
 
-function S:CallLoadedNonAddon(index, func)
-	E:CallLoadFunc(func)
+function S:CallLoadedNonAddon(index, skin)
+	LoadSkin(skin)
 
 	S.nonAddonsToLoad[index] = nil
 end
 
 function S:CallLoadedAddon(addonName, object)
-	for _, func in next, object do
-		E:CallLoadFunc(func)
+	for _, skin in next, object do
+		LoadSkin(skin)
 	end
 
 	S.addonsToLoad[addonName] = nil
@@ -2596,8 +2635,8 @@ end
 function S:Initialize()
 	S.Initialized = true
 
-	for index, func in next, S.nonAddonsToLoad do
-		S:CallLoadedNonAddon(index, func)
+	for index, skin in next, S.nonAddonsToLoad do
+		S:CallLoadedNonAddon(index, skin)
 	end
 
 	for addonName, object in next, S.addonsToLoad do

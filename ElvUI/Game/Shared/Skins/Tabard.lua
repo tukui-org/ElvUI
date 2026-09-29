@@ -5,6 +5,9 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TabardFrame')
+data.toggle = 'tabard'
+
 local function TabardRotateLeft_SetPoint(button, _, _, _, _, _, forced)
 	if forced then return end
 
@@ -18,8 +21,6 @@ local function TabardRotateRight_SetPoint(button, _, _, _, _, _, forced)
 end
 
 function S:TabardFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tabard) then return end
-
 	local TabardFrame = _G.TabardFrame
 	S:HandlePortraitFrame(TabardFrame)
 
@@ -75,5 +76,3 @@ function S:TabardFrame()
 	hooksecurefunc(_G.TabardCharacterModelRotateLeftButton, 'SetPoint', TabardRotateLeft_SetPoint)
 	hooksecurefunc(_G.TabardCharacterModelRotateRightButton, 'SetPoint', TabardRotateRight_SetPoint)
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TabardFrame')

@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:SkinBattlefield()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.battlefield) then return end
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinBattlefield')
+data.toggle = 'battlefield'
 
+function S:SkinBattlefield()
 	S:HandleFrame(_G.BattlefieldFrame, true, nil, 11, -12, -32, 76)
 
 	if E.Wrath then
@@ -28,5 +29,3 @@ function S:SkinBattlefield()
 		_G.BattlefieldFrameCloseButton:Point('TOPRIGHT', -30, -8) -- matches PVPParentFrameCloseButton
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinBattlefield')

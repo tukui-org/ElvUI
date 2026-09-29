@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_ItemUpgradeUI')
+data.toggle = 'itemUpgrade'
+
 local function Update(frame)
 	if frame.upgradeInfo then
 		frame.UpgradeItemButton:GetPushedTexture():SetColorTexture(0.9, 0.8, 0.1, 0.3)
@@ -77,8 +80,6 @@ local function SkinMists(frame)
 end
 
 function S:Blizzard_ItemUpgradeUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
-
 	local frame = _G.ItemUpgradeFrame
 	if E.Modern then
 		SkinMainline(frame)
@@ -88,5 +89,3 @@ function S:Blizzard_ItemUpgradeUI()
 
 	S:HandleCloseButton(_G.ItemUpgradeFrameCloseButton)
 end
-
-S:AddCallbackForAddon('Blizzard_ItemUpgradeUI')

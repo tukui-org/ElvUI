@@ -11,6 +11,9 @@ local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
 local myName = format('> %s <', E.myname)
 
+local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore')
+data.toggle = 'bgscore'
+
 local function UpdateScore()
 	local inArena = IsActiveBattlefieldArena()
 	local offset = FauxScrollFrame_GetOffset(_G.WorldStateScoreScrollFrame)
@@ -44,8 +47,6 @@ local function UpdateScore()
 end
 
 function S:SkinWorldStateScore()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgscore) then return end
-
 	local WorldStateScoreFrame = _G.WorldStateScoreFrame
 	WorldStateScoreFrame:EnableMouse(true)
 
@@ -90,5 +91,3 @@ function S:SkinWorldStateScore()
 
 	hooksecurefunc('WorldStateScoreFrame_Update', UpdateScore)
 end
-
-S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore')

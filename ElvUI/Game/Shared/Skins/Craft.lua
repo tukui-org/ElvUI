@@ -15,6 +15,9 @@ local GetCraftSelectionIndex = GetCraftSelectionIndex
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
+local data = S:AddCallbackForAddon('Blizzard_CraftUI')
+data.toggle = 'craft'
+
 local function SetSelection(id)
 	if not id then return end
 
@@ -74,8 +77,6 @@ local function CraftFrameUpdate()
 end
 
 function S:Blizzard_CraftUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.craft) then return end
-
 	local CraftFrame = _G.CraftFrame
 	S:HandleFrame(CraftFrame, true, nil, 11, -12, -32, 76)
 
@@ -156,5 +157,3 @@ function S:Blizzard_CraftUI()
 	hooksecurefunc('CraftFrame_SetSelection', SetSelection)
 	hooksecurefunc('CraftFrame_Update', CraftFrameUpdate)
 end
-
-S:AddCallbackForAddon('Blizzard_CraftUI')

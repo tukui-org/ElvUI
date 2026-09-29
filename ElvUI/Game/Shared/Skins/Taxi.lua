@@ -3,13 +3,14 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TaxiFrame')
+data.toggle = 'taxi'
+
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
 
 function S:TaxiFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.taxi) then return end
-
 	local TaxiFrame = _G.TaxiFrame
 
 	-- Wrath, TBC and Vanilla load the older TaxiFrame without BasicFrameTemplateWithInset
@@ -33,5 +34,3 @@ function S:TaxiFrame()
 		S:HandleCloseButton(_G.TaxiCloseButton, TaxiFrame.backdrop)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TaxiFrame')

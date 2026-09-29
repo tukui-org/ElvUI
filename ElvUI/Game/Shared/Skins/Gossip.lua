@@ -10,6 +10,9 @@ local GossipTextColors = {
 	['414141'] = '7b8489',
 }
 
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GossipFrame')
+data.toggle = 'gossip'
+
 local function Gossip_SetTextColor(text, r, g, b)
 	if r ~= 1 or g ~= 1 or b ~= 1 then
 		text:SetTextColor(1, 1, 1)
@@ -88,8 +91,6 @@ local function CreateParchment(frame)
 end
 
 function S:GossipFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gossip) then return end
-
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame, true)
 
@@ -168,5 +169,3 @@ function S:GossipFrame()
 		end
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GossipFrame')

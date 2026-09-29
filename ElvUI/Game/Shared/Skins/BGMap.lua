@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_BattlefieldMap')
+data.toggle = 'bgmap'
+
 local function SetBackdropAlpha(frame)
 	frame.backdrop:SetBackdropColor(0, 0, 0, 1 - _G.BattlefieldMapOptions.opacity)
 end
@@ -17,8 +20,6 @@ local function OnEnter()
 end
 
 function S:Blizzard_BattlefieldMap()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bgmap) then return end
-
 	local frame = _G.BattlefieldMapFrame
 	frame:StripTextures()
 	frame:CreateBackdrop()
@@ -46,5 +47,3 @@ function S:Blizzard_BattlefieldMap()
 	close:HookScript('OnLeave', OnLeave)
 	close:HookScript('OnEnter', OnEnter)
 end
-
-S:AddCallbackForAddon('Blizzard_BattlefieldMap')

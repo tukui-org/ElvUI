@@ -7,6 +7,14 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 
+if E.Modern or E.Mists then
+	local data = S:AddCallbackForAddon('Blizzard_AuctionHouseUI')
+	data.toggle = 'auctionhouse'
+else
+	local data = S:AddCallbackForAddon('Blizzard_AuctionUI', 'Blizzard_AuctionHouseUI')
+	data.toggle = 'auctionhouse'
+end
+
 -- Credits: siweia (AuroraClassic)
 local function SkinFilterButton(Button)
 	S:HandleCloseButton(Button.ClearFiltersButton)
@@ -716,17 +724,9 @@ local function SkinAuctionFrame()
 end
 
 function S:Blizzard_AuctionHouseUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.auctionhouse) then return end
-
 	if E.Modern or E.Mists then
 		SkinAuctionHouseFrame()
 	else
 		SkinAuctionFrame()
 	end
-end
-
-if E.Modern or E.Mists then
-	S:AddCallbackForAddon('Blizzard_AuctionHouseUI')
-else
-	S:AddCallbackForAddon('Blizzard_AuctionUI', 'Blizzard_AuctionHouseUI')
 end

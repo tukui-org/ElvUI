@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_CovenantPreviewUI')
+data.toggle = 'covenantPreview'
+
 local function Covenant_TryShow(frame, covenantInfo)
 	if covenantInfo and not frame.IsSkinned then -- Blizzard bails on nil too
 		frame:SetTemplate('Transparent')
@@ -29,8 +32,6 @@ local function Covenant_TryShow(frame, covenantInfo)
 end
 
 function S:Blizzard_CovenantPreviewUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantPreview) then return end
-
 	local frame = _G.CovenantPreviewFrame
 	if E.private.skins.parchmentRemoverEnable then
 		frame.InfoPanel.Name:SetTextColor(1, 1, 1)
@@ -47,5 +48,3 @@ function S:Blizzard_CovenantPreviewUI()
 
 	S:HandleCheckBox(_G.TransmogAndMountDressupFrame.ShowMountCheckButton)
 end
-
-S:AddCallbackForAddon('Blizzard_CovenantPreviewUI')

@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:Blizzard_IslandsQueueUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.islandQueue) then return end
+local data = S:AddCallbackForAddon('Blizzard_IslandsQueueUI')
+data.toggle = 'islandQueue'
 
+function S:Blizzard_IslandsQueueUI()
 	local IslandsFrame = _G.IslandsQueueFrame
 	S:HandlePortraitFrame(IslandsFrame)
 
@@ -28,5 +29,3 @@ function S:Blizzard_IslandsQueueUI()
 	S:HandleButton(TutorialFrame.Leave)
 	S:HandleCloseButton(TutorialFrame.CloseButton)
 end
-
-S:AddCallbackForAddon('Blizzard_IslandsQueueUI')

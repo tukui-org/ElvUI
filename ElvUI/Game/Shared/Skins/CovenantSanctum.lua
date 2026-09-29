@@ -5,6 +5,9 @@ local _G = _G
 local gsub, ipairs = gsub, ipairs
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_CovenantSanctum')
+data.toggle = 'covenantSanctum'
+
 local function HandleIconString(self, text)
 	if not text then text = self:GetText() end
 	if not text or text == '' then return end
@@ -48,8 +51,6 @@ local function ReplaceCurrencies(displayGroup)
 end
 
 function S:Blizzard_CovenantSanctum()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.covenantSanctum) then return end
-
 	local frame = _G.CovenantSanctumFrame
 	frame.LevelFrame.Level:FontTemplate()
 
@@ -100,5 +101,3 @@ function S:Blizzard_CovenantSanctum()
 		end
 	end)
 end
-
-S:AddCallbackForAddon('Blizzard_CovenantSanctum')

@@ -6,6 +6,9 @@ local _G = _G
 local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_PlayerChoice')
+data.toggle = 'playerChoice'
+
 function S:PlayerChoice_SetupButtons(buttons)
 	if not buttons then return end -- the grid layout template has no button container
 
@@ -139,12 +142,8 @@ local function SetupTorghastMover()
 end
 
 function S:Blizzard_PlayerChoice()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.playerChoice) then return end
-
 	SetupTorghastMover()
 	S:HandleButton(_G.GenericPlayerChoiceToggleButton)
 
 	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', S.PlayerChoice_SetupOptions)
 end
-
-S:AddCallbackForAddon('Blizzard_PlayerChoice')

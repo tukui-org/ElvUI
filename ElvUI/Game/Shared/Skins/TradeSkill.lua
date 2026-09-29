@@ -12,6 +12,9 @@ local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
+local data = S:AddCallbackForAddon('Blizzard_TradeSkillUI')
+data.toggle = 'tradeskill'
+
 local function SetSelection(id)
 	local _, skillType = GetTradeSkillInfo(id)
 	if skillType == 'header' then return end
@@ -64,8 +67,6 @@ local function SetSelection(id)
 end
 
 function S:Blizzard_TradeSkillUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tradeskill) then return end
-
 	local TradeSkillFrame = _G.TradeSkillFrame
 	S:HandleFrame(TradeSkillFrame, true, nil, 11, -12, -32, 76)
 
@@ -218,5 +219,3 @@ function S:Blizzard_TradeSkillUI()
 
 	hooksecurefunc('TradeSkillFrame_SetSelection', SetSelection)
 end
-
-S:AddCallbackForAddon('Blizzard_TradeSkillUI')

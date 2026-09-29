@@ -10,6 +10,9 @@ local NUM_GUILDBANK_ICONS_PER_ROW = 10
 local NUM_GUILDBANK_ICON_ROWS = 9
 local NUM_GUILDBANK_ICONS_SHOWN = NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_ICON_ROWS
 
+local data = S:AddCallbackForAddon('Blizzard_GuildBankUI')
+data.toggle = 'gbank'
+
 local function GuildBankOnShow(frame)
 	if not frame.IsSkinned then
 		if E.Modern then
@@ -22,8 +25,6 @@ local function GuildBankOnShow(frame)
 end
 
 function S:Blizzard_GuildBankUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.gbank) then return end
-
 	local frame = _G.GuildBankFrame
 	frame:StripTextures()
 
@@ -173,5 +174,3 @@ function S:Blizzard_GuildBankUI()
 		_G.GuildBankPopupFrame:HookScript('OnShow', GuildBankOnShow)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_GuildBankUI')

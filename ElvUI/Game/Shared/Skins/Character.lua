@@ -55,6 +55,19 @@ local ResistanceCoords = {
 	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
 }
 
+if E.Modern then
+	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game')
+	data.toggle = 'character'
+else
+	local data = S:AddCallback('Blizzard_UIPanels_Game')
+	data.toggle = 'character'
+end
+
+if E.Forever then -- Forever only addon
+	local data = S:AddCallbackForAddon('Blizzard_Statistics')
+	data.toggle = 'character'
+end
+
 local function UpdateCollapse(texture, atlas)
 	if not atlas or oldAtlas[atlas] then
 		local parent = texture:GetParent()
@@ -1509,8 +1522,6 @@ local function SkinPVPFrame()
 end
 
 function S:Blizzard_UIPanels_Game()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
-
 	-- General
 	local CharacterFrame = _G.CharacterFrame
 	if E.Modern or E.Mists then
@@ -1593,17 +1604,5 @@ function S:Blizzard_UIPanels_Game()
 end
 
 function S:Blizzard_Statistics()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.character) then return end
-
 	HandleListFrame(_G.StatisticsFrame)
-end
-
-if E.Modern then
-	S:AddCallbackForAddon('Blizzard_UIPanels_Game')
-else
-	S:AddCallback('Blizzard_UIPanels_Game')
-end
-
-if E.Forever then -- Forever only addon
-	S:AddCallbackForAddon('Blizzard_Statistics')
 end

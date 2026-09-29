@@ -7,6 +7,9 @@ local hooksecurefunc = hooksecurefunc
 local GetNumGuildBankTabs = GetNumGuildBankTabs
 local GuildControlGetNumRanks = GuildControlGetNumRanks
 
+local data = S:AddCallbackForAddon('Blizzard_GuildControlUI')
+data.toggle = 'guildcontrol'
+
 local function SkinGuildRanks()
 	for i = 1, GuildControlGetNumRanks() do
 		local rankFrame = _G['GuildControlUIRankOrderFrameRank'..i]
@@ -60,8 +63,6 @@ local function SkinDiscordFrame() -- the link frame is only created once the gui
 end
 
 function S:Blizzard_GuildControlUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildcontrol) then return end
-
 	_G.GuildControlUI:StripTextures()
 	_G.GuildControlUI:SetTemplate('Transparent')
 
@@ -104,5 +105,3 @@ function S:Blizzard_GuildControlUI()
 	hooksecurefunc('GuildControlUI_BankTabPermissions_Update', SkinBankTabs)
 	hooksecurefunc('GuildControlUI_RankOrder_Update', SkinGuildRanks)
 end
-
-S:AddCallbackForAddon('Blizzard_GuildControlUI')

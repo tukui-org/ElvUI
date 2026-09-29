@@ -5,6 +5,9 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_Transmog')
+data.toggle = 'transmogrify'
+
 local function SkinSituationsDropdowns(frame)
 	for situation in frame.SituationFramePool:EnumerateActive() do
 		if not situation.Dropdown.IsSkinned then
@@ -30,8 +33,6 @@ local function OutfitPopup_OnShow(frame)
 end
 
 function S:Blizzard_Transmog()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.transmogrify) then return end
-
 	local TransmogFrame = _G.TransmogFrame
 	S:HandlePortraitFrame(TransmogFrame)
 
@@ -134,5 +135,3 @@ function S:Blizzard_Transmog()
 
 	TransmogFrame.OutfitPopup:HookScript('OnShow', OutfitPopup_OnShow)
 end
-
-S:AddCallbackForAddon('Blizzard_Transmog')

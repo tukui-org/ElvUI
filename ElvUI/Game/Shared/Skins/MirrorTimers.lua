@@ -5,6 +5,14 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
+if E.Modern then
+	local data = S:AddCallbackForAddon('Blizzard_MirrorTimer')
+	data.toggle = 'mirrorTimers'
+else
+	local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'Blizzard_MirrorTimer')
+	data.toggle = 'mirrorTimers'
+end
+
 local function SetupTimer(container, timer)
 	local bar = container:GetAvailableTimer(timer)
 	if not bar then return end
@@ -50,8 +58,6 @@ local function MirrorTimer_OnUpdate(frame, elapsed)
 end
 
 function S:Blizzard_MirrorTimer() -- Mirror Timers (Underwater Breath, etc.)
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.mirrorTimers) then return end
-
 	if E.Modern then
 		hooksecurefunc(_G.MirrorTimerContainer, 'SetupTimer', SetupTimer)
 	else
@@ -78,10 +84,4 @@ function S:Blizzard_MirrorTimer() -- Mirror Timers (Underwater Breath, etc.)
 			mirrorTimer:HookScript('OnUpdate', MirrorTimer_OnUpdate)
 		end
 	end
-end
-
-if E.Modern then
-	S:AddCallbackForAddon('Blizzard_MirrorTimer')
-else
-	S:AddCallbackForAddon('Blizzard_FrameXML', 'Blizzard_MirrorTimer')
 end

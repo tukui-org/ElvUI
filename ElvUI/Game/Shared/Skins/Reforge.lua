@@ -7,6 +7,9 @@ local hooksecurefunc = hooksecurefunc
 local GetItemIconByID = C_Item.GetItemIconByID
 local GetReforgeItemInfo = C_Reforge.GetReforgeItemInfo
 
+local data = S:AddCallbackForAddon('Blizzard_ReforgingUI')
+data.toggle = 'reforge'
+
 local function ReforgingFrameUpdate()
 	local _, itemID, _, quality = GetReforgeItemInfo()
 	local texture = itemID and GetItemIconByID(itemID) or nil
@@ -18,8 +21,6 @@ local function ReforgingFrameUpdate()
 end
 
 function S:Blizzard_ReforgingUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.reforge) then return end
-
 	local ReforgingFrame = _G.ReforgingFrame
 	ReforgingFrame:StripTextures()
 	ReforgingFrame:SetTemplate('Transparent')
@@ -44,5 +45,3 @@ function S:Blizzard_ReforgingUI()
 
 	hooksecurefunc('ReforgingFrame_Update', ReforgingFrameUpdate)
 end
-
-S:AddCallbackForAddon('Blizzard_ReforgingUI')

@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:GuildRegistrarFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildregistrar) then return end
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GuildRegistrarFrame')
+data.toggle = 'guildregistrar'
 
+function S:GuildRegistrarFrame()
 	local GuildRegistrarFrame = _G.GuildRegistrarFrame
 	S:HandlePortraitFrame(GuildRegistrarFrame)
 
@@ -28,5 +29,3 @@ function S:GuildRegistrarFrame()
 	local servicesText = E.Modern and _G.AvailableServicesText or _G.GuildAvailableServicesText
 	servicesText:SetTextColor(1, 1, 0)
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GuildRegistrarFrame')

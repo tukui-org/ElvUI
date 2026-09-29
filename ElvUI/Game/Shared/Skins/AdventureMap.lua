@@ -4,6 +4,9 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_AdventureMap')
+data.toggle = 'adventureMap'
+
 local function SkinRewards(frame)
 	for reward in frame.rewardPool:EnumerateActive() do
 		if not reward.IsSkinned then
@@ -16,8 +19,6 @@ local function SkinRewards(frame)
 end
 
 function S:Blizzard_AdventureMap()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.adventureMap) then return end
-
 	-- Quest Choice
 	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog
 	AdventureMapQuestChoiceDialog:StripTextures()
@@ -44,5 +45,3 @@ function S:Blizzard_AdventureMap()
 	S:HandleButton(AdventureMapQuestChoiceDialog.AcceptButton)
 	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
 end
-
-S:AddCallbackForAddon('Blizzard_AdventureMap')

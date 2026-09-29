@@ -6,9 +6,10 @@ if not E.ClassicSOD then return end
 local _G = _G
 local next = next
 
-function S:Blizzard_EngravingUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.engraving) then return end
+local data = S:AddCallbackForAddon('Blizzard_EngravingUI')
+data.toggle = 'engraving'
 
+function S:Blizzard_EngravingUI()
 	local frame = _G.EngravingFrame
 	S:HandleFrame(frame, true, nil, -7, 58, 8, -18)
 	frame.Border.NineSlice:Kill()
@@ -31,5 +32,3 @@ function S:Blizzard_EngravingUI()
 		S:HandleButton(button)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_EngravingUI')

@@ -5,6 +5,9 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_Settings_Shared')
+data.toggle = 'blizzardOptions'
+
 local function HandleDropdown(option)
 	S:HandleButton(option.Dropdown)
 	S:HandleButton(option.DecrementButton)
@@ -229,8 +232,6 @@ local function SettingsListScrollUpdate(frame)
 end
 
 function S:Blizzard_Settings_Shared()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.blizzardOptions) then return end
-
 	local SettingsPanel = _G.SettingsPanel
 	SettingsPanel:StripTextures()
 	SettingsPanel.Bg:Hide()
@@ -258,5 +259,3 @@ function S:Blizzard_Settings_Shared()
 
 	hooksecurefunc(SettingsPanel.Container.SettingsList.ScrollBox, 'Update', SettingsListScrollUpdate)
 end
-
-S:AddCallbackForAddon('Blizzard_Settings_Shared')

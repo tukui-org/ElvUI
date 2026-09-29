@@ -26,6 +26,27 @@ local groupButtonIcons = {
 	464820	-- interface\icons\achievement_general_stayclassy.blp
 }
 
+if E.Retail or E.Mists or E.Wrath then -- tbc and vanilla load a Blizzard_GroupFinder without PVEFrame
+	local data = S:AddCallbackForAddon('Blizzard_GroupFinder', 'LookingForGroupFrames')
+	data.toggle = 'lfg'
+else -- LookingForGroupFrames skins the role poll popup on the flavors above
+	local vanillaStyle = S:AddCallbackForAddon('Blizzard_GroupFinder_VanillaStyle')
+	vanillaStyle.toggle = 'lfg'
+
+	local rolePoll = S:AddCallbackForAddon('Blizzard_FrameXML', 'RolePollPopup')
+	rolePoll.toggle = 'lfg'
+end
+
+if E.Forever then -- ToDo: Forever
+	local data = S:AddCallbackForAddon('Blizzard_LFGUtil')
+	data.toggle = 'lfg'
+end
+
+if E.Retail or E.Mists then
+	local data = S:AddCallbackForAddon('Blizzard_ChallengesUI')
+	data.toggle = 'lfg'
+end
+
 local function LFDQueueFrameRoleButtonIconOnShow(frame)
 	local parent = frame:GetParent()
 	if parent then
@@ -314,8 +335,6 @@ local function ListCategoryAddButton(btn, btnIndex, categoryID, filters)
 end
 
 function S:LookingForGroupFrames()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
 	local PVEFrame = _G.PVEFrame
 	S:HandlePortraitFrame(PVEFrame)
 
@@ -709,8 +728,6 @@ local function HandleChallengeDetails(frame)
 end
 
 function S:Blizzard_ChallengesUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
 	local ChallengesFrame = _G.ChallengesFrame
 	if E.Modern then -- Mythic+ frame, Mists loads its own challenge mode frame
 		ChallengesFrame:DisableDrawLayer('BACKGROUND')
@@ -939,8 +956,6 @@ local function LFGBrowse_Update(frame)
 end
 
 function S:Blizzard_GroupFinder_VanillaStyle()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.LFGBrowseSearchEntryTooltip)
 	end
@@ -1101,8 +1116,6 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 end
 
 function S:RolePollPopup()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
 	S:HandleFrame(_G.RolePollPopup)
 	S:HandleButton(_G.RolePollPopupAcceptButton)
 
@@ -1116,8 +1129,6 @@ end
 
 -- Forever loads these from Blizzard_LFGUtil, without the PVEFrame group finder that skins them on Retail
 function S:Blizzard_LFGUtil()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
 	local LFGInvitePopup = _G.LFGInvitePopup
 	LFGInvitePopup:StripTextures()
 	LFGInvitePopup:SetTemplate('Transparent')
@@ -1144,19 +1155,4 @@ function S:Blizzard_LFGUtil()
 	ReadyStatus:StripTextures()
 	ReadyStatus:SetTemplate('Transparent')
 	S:HandleCloseButton(ReadyStatus.CloseButton)
-end
-
-if E.Retail or E.Mists or E.Wrath then -- tbc and vanilla load a Blizzard_GroupFinder without PVEFrame
-	S:AddCallbackForAddon('Blizzard_GroupFinder', 'LookingForGroupFrames')
-else -- LookingForGroupFrames skins the role poll popup on the flavors above
-	S:AddCallbackForAddon('Blizzard_GroupFinder_VanillaStyle')
-	S:AddCallbackForAddon('Blizzard_FrameXML', 'RolePollPopup')
-end
-
-if E.Forever then -- ToDo: Forever
-	S:AddCallbackForAddon('Blizzard_LFGUtil')
-end
-
-if E.Retail or E.Mists then
-	S:AddCallbackForAddon('Blizzard_ChallengesUI')
 end

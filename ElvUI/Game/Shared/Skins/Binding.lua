@@ -5,6 +5,9 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_ClickBindingUI')
+data.toggle = 'binding'
+
 local function UpdateNewGlow(self)
 	self.backdrop:SetBackdropBorderColor(0, self.NewOutline:IsShown() and 0.8 or 0, 0)
 end
@@ -54,8 +57,6 @@ local function HandlePortraitIcon(button, texture)
 end
 
 function S:Blizzard_ClickBindingUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.binding) then return end
-
 	local frame = _G.ClickBindingFrame
 	S:HandlePortraitFrame(frame)
 
@@ -83,5 +84,3 @@ function S:Blizzard_ClickBindingUI()
 	S:HandleCheckBox(frame.EnableMouseoverCastCheckbox)
 	S:HandleDropDownBox(frame.MouseoverCastKeyDropdown)
 end
-
-S:AddCallbackForAddon('Blizzard_ClickBindingUI')

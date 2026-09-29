@@ -3,10 +3,11 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
+local data = S:AddCallbackForAddon('Blizzard_Soulbinds')
+data.toggle = 'soulbinds'
+
 -- Credits: siweia - Aurora Classic
 function S:Blizzard_Soulbinds()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.soulbinds) then return end
-
 	local frame = _G.SoulbindViewer
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
@@ -17,5 +18,3 @@ function S:Blizzard_Soulbinds()
 	S:HandleButton(frame.ActivateSoulbindButton)
 	frame.ActivateSoulbindButton:SetFrameLevel(10)
 end
-
-S:AddCallbackForAddon('Blizzard_Soulbinds')

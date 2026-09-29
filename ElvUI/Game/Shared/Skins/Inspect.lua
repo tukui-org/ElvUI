@@ -14,6 +14,9 @@ local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local MAX_TALENT_TABS = MAX_TALENT_TABS
 local MAX_NUM_TALENTS = MAX_NUM_TALENTS
 
+local data = S:AddCallbackForAddon('Blizzard_InspectUI')
+data.toggle = 'inspect'
+
 local function HandleTabs()
 	local tab = _G.InspectFrameTab1
 	local index, lastTab = 1, tab
@@ -98,8 +101,6 @@ local function UpdateGlyph(frame)
 end
 
 function S:Blizzard_InspectUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
-
 	local InspectFrame = _G.InspectFrame
 	S:HandlePortraitFrame(InspectFrame)
 
@@ -424,5 +425,3 @@ function S:Blizzard_InspectUI()
 		E:RegisterStatusBar(progressBar)
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_InspectUI')

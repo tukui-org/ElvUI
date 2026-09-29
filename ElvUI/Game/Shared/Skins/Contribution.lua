@@ -5,6 +5,9 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_Contribution')
+data.toggle = 'contribution'
+
 local function SetupContributeButton(frame)
 	if not frame.IsSkinned then
 		S:HandleButton(frame.ContributeButton)
@@ -33,8 +36,6 @@ local function AddReward(frame, _, rewardID)
 end
 
 function S:Blizzard_Contribution()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.contribution) then return end
-
 	local MainFrame = _G.ContributionCollectionFrame
 	S:HandleCloseButton(MainFrame.CloseButton)
 	MainFrame.CloseButton.CloseButtonBackground:SetAlpha(0)
@@ -50,5 +51,3 @@ function S:Blizzard_Contribution()
 	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', SetupContributeButton)
 	hooksecurefunc(_G.ContributionMixin, 'AddReward', AddReward)
 end
-
-S:AddCallbackForAddon('Blizzard_Contribution')

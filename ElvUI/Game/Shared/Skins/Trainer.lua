@@ -5,6 +5,9 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_TrainerUI')
+data.toggle = 'trainer'
+
 -- TrainerUICategoryTemplate, keep the Blizzard plus / minus
 local function HandleCategory(button)
 	button.LeftPiece:SetAlpha(0)
@@ -148,13 +151,9 @@ local function SkinClassic()
 end
 
 function S:Blizzard_TrainerUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
-
 	if E.Modern then
 		SkinMainline()
 	else
 		SkinClassic()
 	end
 end
-
-S:AddCallbackForAddon('Blizzard_TrainerUI')

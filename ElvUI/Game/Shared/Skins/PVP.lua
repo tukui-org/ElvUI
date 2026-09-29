@@ -25,6 +25,17 @@ local classicCategoryButtonIcons = {
 	464820, -- interface\icons\achievement_general_stayclassy
 }
 
+if E.Forever then -- ToDo: Forever
+	local data = S:AddCallbackForAddon('Blizzard_LFGUtil', 'PVPReadyDialog')
+	data.toggle = 'pvp'
+else
+	local data = S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog')
+	data.toggle = 'pvp'
+end
+
+local data = S:AddCallbackForAddon('Blizzard_PVPUI')
+data.toggle = 'pvp'
+
 local function HandleRoleButton(button)
 	local checkbox = button.checkButton
 	checkbox:OffsetFrameLevel(1)
@@ -141,8 +152,6 @@ local function NewSeasonOnShow(popup)
 end
 
 function S:Blizzard_PVPUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
-
 	if E.Modern then
 		_G.PVPUIFrame:StripTextures()
 
@@ -403,8 +412,6 @@ local function DialogDisplay(dialog, _, _, isRated, queueType)
 end
 
 function S:PVPReadyDialog()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.pvp) then return end
-
 	if E.Modern then
 		S:HandleCloseButton(_G.PVPReadyDialogCloseButton)
 		S:SkinReadyDialog(_G.PVPReadyDialog, 54)
@@ -417,11 +424,3 @@ function S:PVPReadyDialog()
 		S:HandleButton(_G.PVPReadyDialogHideButton)
 	end
 end
-
-if E.Forever then -- ToDo: Forever
-	S:AddCallbackForAddon('Blizzard_LFGUtil', 'PVPReadyDialog')
-else
-	S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog')
-end
-
-S:AddCallbackForAddon('Blizzard_PVPUI')

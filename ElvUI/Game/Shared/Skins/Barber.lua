@@ -5,6 +5,15 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local barbershop = S:AddCallbackForAddon('Blizzard_BarbershopUI')
+barbershop.toggle = 'barber'
+
+-- classic has this addon too, but without CharCustomizeFrame
+if E.Modern then
+	local customize = S:AddCallbackForAddon('Blizzard_CharacterCustomize')
+	customize.toggle = 'barber' -- yes, it belongs also to the BarberUI
+end
+
 local function SetSelectedCategory(list)
 	for option in list.dropdownPool:EnumerateActive() do
 		if not option.IsSkinned then
@@ -36,8 +45,6 @@ local function SetSelectedCategory(list)
 end
 
 function S:Blizzard_CharacterCustomize()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end -- yes, it belongs also to the BarberUI
-
 	-- backdrop is ugly, so dont use a style
 	local frame = _G.CharCustomizeFrame
 	S:HandleButton(frame.SmallButtons.ResetCameraButton, nil, nil, true)
@@ -50,8 +57,6 @@ function S:Blizzard_CharacterCustomize()
 end
 
 function S:Blizzard_BarbershopUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
-
 	local frame = _G.BarberShopFrame
 	if E.Modern then
 		S:HandleButton(frame.ResetButton, nil, nil, nil, true, nil, nil, nil, true)
@@ -73,11 +78,4 @@ function S:Blizzard_BarbershopUI()
 		S:HandleButton(_G.BarberShopFrameCancelButton, nil, nil, nil, true, nil, nil, nil, true)
 		S:HandleButton(_G.BarberShopFrameOkayButton, nil, nil, nil, true, nil, nil, nil, true)
 	end
-end
-
-S:AddCallbackForAddon('Blizzard_BarbershopUI')
-
--- classic has this addon too, but without CharCustomizeFrame
-if E.Modern then
-	S:AddCallbackForAddon('Blizzard_CharacterCustomize')
 end

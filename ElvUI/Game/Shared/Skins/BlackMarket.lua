@@ -7,6 +7,9 @@ local hooksecurefunc = hooksecurefunc
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
+local data = S:AddCallbackForAddon('Blizzard_BlackMarketUI')
+data.toggle = 'bmah'
+
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)
 	tab.Middle:SetAlpha(0)
@@ -42,8 +45,6 @@ local function UpdateHotItem(item)
 end
 
 function S:Blizzard_BlackMarketUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.bmah) then return end
-
 	local BlackMarketFrame = _G.BlackMarketFrame
 	BlackMarketFrame:StripTextures()
 	BlackMarketFrame:SetTemplate('Transparent')
@@ -86,5 +87,3 @@ function S:Blizzard_BlackMarketUI()
 
 	hooksecurefunc('BlackMarketFrame_UpdateHotItem', UpdateHotItem)
 end
-
-S:AddCallbackForAddon('Blizzard_BlackMarketUI')

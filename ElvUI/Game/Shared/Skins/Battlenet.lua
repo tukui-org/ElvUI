@@ -4,13 +4,14 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
+local data = S:AddCallback('BattleNetFrames')
+data.toggle = 'misc'
+
 local function ShardTransferToggle(frame)
 	_G.ShardTransferImminentMinimizeButton:SetNormalTexture(frame:IsShown() and E.Media.Textures.MinusButton or E.Media.Textures.PlusButton, true)
 end
 
 function S:BattleNetFrames()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.misc) then return end
-
 	local skins = {
 		_G.BNToastFrame,
 		_G.TimeAlertFrame,
@@ -55,5 +56,3 @@ function S:BattleNetFrames()
 		end
 	end
 end
-
-S:AddCallback('BattleNetFrames')

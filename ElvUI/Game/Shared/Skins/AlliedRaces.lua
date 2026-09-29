@@ -4,9 +4,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 
-function S:Blizzard_AlliedRacesUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.alliedRaces) then return end
+local data = S:AddCallbackForAddon('Blizzard_AlliedRacesUI')
+data.toggle = 'alliedRaces'
 
+function S:Blizzard_AlliedRacesUI()
 	local AlliedRacesFrame = _G.AlliedRacesFrame
 	local AlliedScrollFrame = AlliedRacesFrame.RaceInfoFrame.ScrollFrame
 
@@ -44,5 +45,3 @@ function S:Blizzard_AlliedRacesUI()
 		end
 	end)
 end
-
-S:AddCallbackForAddon('Blizzard_AlliedRacesUI')

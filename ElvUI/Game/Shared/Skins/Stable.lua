@@ -10,6 +10,14 @@ local GetPetHappiness = GetPetHappiness
 local UnitExists = UnitExists
 local HasPetUI = HasPetUI
 
+if E.Modern then
+	local data = S:AddCallbackForAddon('Blizzard_StableUI')
+	data.toggle = 'stable'
+else
+	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetStableFrame')
+	data.toggle = 'stable'
+end
+
 local function AbilitiesList_Layout(list)
 	for frame in list.abilityPool:EnumerateActive() do
 		if not frame.IsSkinned then
@@ -181,8 +189,6 @@ local function SkinClassicPetStableFrame()
 end
 
 function S:Blizzard_StableUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
-
 	if E.Forever then -- Forever loads its own PetStableFrame instead of StableFrame
 		SkinForeverPetStableFrame()
 	else
@@ -191,17 +197,9 @@ function S:Blizzard_StableUI()
 end
 
 function S:PetStableFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.stable) then return end
-
 	if E.Mists then
 		SkinMistsPetStableFrame()
 	else
 		SkinClassicPetStableFrame()
 	end
-end
-
-if E.Modern then
-	S:AddCallbackForAddon('Blizzard_StableUI')
-else
-	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetStableFrame')
 end

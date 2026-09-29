@@ -23,6 +23,9 @@ local LOOT, ITEMS = LOOT, ITEMS
 local fullFillWidth = 234 -- picked by Blizzard in LootHistory.lua
 local fullDropWidth = fullFillWidth + 30 -- some padding to let it match (via the skinning)
 
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame')
+data.toggle = 'loot'
+
 local function LootHistoryElements(button) -- headers and padding rows share the scroll box
 	local item = button.Item
 	if not item then return end
@@ -255,8 +258,6 @@ local function LootFrameOnShow(frame)
 end
 
 function S:LootFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.loot) then return end
-
 	if E.Modern then
 		local LootFrame = _G.LootFrame
 		LootFrame:StripTextures()
@@ -415,5 +416,3 @@ function S:LootFrame()
 	hooksecurefunc(BonusSpecIcon, 'Hide', SpecIconHide)
 	hooksecurefunc(BonusSpecIcon, 'Show', SpecIconShow)
 end
-
-S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame')

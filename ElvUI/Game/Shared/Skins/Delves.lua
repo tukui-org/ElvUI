@@ -5,6 +5,12 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
+local companionConfiguration = S:AddCallbackForAddon('Blizzard_DelvesCompanionConfiguration')
+companionConfiguration.toggle = 'lfg'
+
+local difficultyPicker = S:AddCallbackForAddon('Blizzard_DelvesDifficultyPicker')
+difficultyPicker.toggle = 'lfg'
+
 local function HandleButton(button)
 	if button.IsSkinned then return end
 
@@ -50,8 +56,6 @@ local function UpdatePaginatedButtonDisplay(frame)
 end
 
 function S:Blizzard_DelvesCompanionConfiguration()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
 	local CompanionConfiguration = _G.DelvesCompanionConfigurationFrame
 	CompanionConfiguration.CloseButton:ClearAllPoints()
 	CompanionConfiguration.CloseButton:Point('TOPRIGHT', CompanionConfiguration, 'TOPRIGHT', -3, -3)
@@ -73,11 +77,7 @@ function S:Blizzard_DelvesCompanionConfiguration()
 	hooksecurefunc(CompanionAbilityListFrame, 'UpdatePaginatedButtonDisplay', UpdatePaginatedButtonDisplay)
 end
 
-S:AddCallbackForAddon('Blizzard_DelvesCompanionConfiguration')
-
 function S:Blizzard_DelvesDifficultyPicker()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.lfg) then return end
-
 	local DifficultyPickerFrame = _G.DelvesDifficultyPickerFrame
 	DifficultyPickerFrame:StripTextures()
 	DifficultyPickerFrame:SetTemplate('Transparent')
@@ -90,5 +90,3 @@ function S:Blizzard_DelvesDifficultyPicker()
 
 	hooksecurefunc(DifficultyPickerFrame.DelveRewardsContainerFrame.ScrollBox, 'Update', DifficultyPickerFrame_Update)
 end
-
-S:AddCallbackForAddon('Blizzard_DelvesDifficultyPicker')

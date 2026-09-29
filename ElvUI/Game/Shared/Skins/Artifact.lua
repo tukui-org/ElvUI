@@ -6,6 +6,12 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local artifact = S:AddCallbackForAddon('Blizzard_ArtifactUI')
+artifact.toggle = 'artifact'
+
+local remixArtifact = S:AddCallbackForAddon('Blizzard_RemixArtifactUI')
+remixArtifact.toggle = 'remixArtifact'
+
 local function Selected_SetShown(selected, isActive)
 	local r, g, b
 	if not isActive then
@@ -17,8 +23,6 @@ local function Selected_SetShown(selected, isActive)
 end
 
 function S:Blizzard_ArtifactUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.artifact) then return end
-
 	local ArtifactFrame = _G.ArtifactFrame
 	ArtifactFrame:StripTextures()
 	ArtifactFrame:SetTemplate('Transparent')
@@ -61,14 +65,8 @@ function S:Blizzard_ArtifactUI()
 	end)
 end
 
-S:AddCallbackForAddon('Blizzard_ArtifactUI')
-
 function S:Blizzard_RemixArtifactUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.remixArtifact) then return end
-
 	local ArtifactFrame = _G.RemixArtifactFrame
 	S:HandleCloseButton(ArtifactFrame.CloseButton)
 	S:HandleButton(ArtifactFrame.CommitConfigControls.CommitButton)
 end
-
-S:AddCallbackForAddon('Blizzard_RemixArtifactUI')

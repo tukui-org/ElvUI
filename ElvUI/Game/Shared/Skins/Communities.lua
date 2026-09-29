@@ -9,6 +9,9 @@ local CreateFrame = CreateFrame
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 
+local data = S:AddCallbackForAddon('Blizzard_Communities')
+data.toggle = 'communities'
+
 local function HandleCommunitiesButton(button)
 	button.Background:Hide()
 	button.CircleMask:Hide()
@@ -192,8 +195,6 @@ local function MemberList_RefreshListDisplay(frame)
 end
 
 function S:Blizzard_Communities()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.communities) then return end
-
 	local CommunitiesFrame = _G.CommunitiesFrame
 	CommunitiesFrame:StripTextures()
 	CommunitiesFrame.NineSlice:Hide()
@@ -665,5 +666,3 @@ function S:Blizzard_Communities()
 
 	hooksecurefunc(ApplicantList, 'BuildList', ApplicantList_BuildList)
 end
-
-S:AddCallbackForAddon('Blizzard_Communities')

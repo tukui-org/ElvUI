@@ -17,6 +17,11 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
 
+local data = S:AddCallbackForAddon('Blizzard_Collections')
+function data.check() -- every section checks its own toggle
+	return E.private.skins.blizzard.enable
+end
+
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
 end
@@ -716,9 +721,6 @@ local function SkinCampsitesFrame()
 end
 
 function S:Blizzard_Collections()
-	if not E.private.skins.blizzard.enable then return end
 	if E.private.skins.blizzard.collections then SkinCollectionsFrames() end
 	if E.Retail and E.private.skins.blizzard.campsites then SkinCampsitesFrame() end
 end
-
-S:AddCallbackForAddon('Blizzard_Collections')

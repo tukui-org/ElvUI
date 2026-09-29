@@ -4,9 +4,10 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
-function S:Blizzard_ScrappingMachineUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.scrapping) then return end
+local data = S:AddCallbackForAddon('Blizzard_ScrappingMachineUI')
+data.toggle = 'scrapping'
 
+function S:Blizzard_ScrappingMachineUI()
 	local MachineFrame = _G.ScrappingMachineFrame
 	S:HandlePortraitFrame(MachineFrame)
 	S:HandleButton(MachineFrame.ScrapButton)
@@ -32,5 +33,3 @@ function S:Blizzard_ScrappingMachineUI()
 	MachineFrame:SetScript('OnDragStart', function(frame) frame:StartMoving() end)
 	MachineFrame:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
 end
-
-S:AddCallbackForAddon('Blizzard_ScrappingMachineUI')

@@ -7,6 +7,9 @@ local next = next
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local hooksecurefunc = hooksecurefunc
 
+local data = S:AddCallbackForAddon('Blizzard_Calendar')
+data.toggle = 'calendar'
+
 local function SkinContainer(frame)
 	frame.NineSlice:Kill()
 	frame:CreateBackdrop('Transparent')
@@ -30,8 +33,6 @@ local function CalendarSetToday()
 end
 
 function S:Blizzard_Calendar()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.calendar) then return end
-
 	local CalendarFrame = _G.CalendarFrame
 	CalendarFrame:DisableDrawLayer('BORDER')
 	CalendarFrame:CreateBackdrop('Transparent')
@@ -229,5 +230,3 @@ function S:Blizzard_Calendar()
 	S:HandleTrimScrollBar(_G.CalendarEventPickerFrame.ScrollBar)
 	S:HandleButton(_G.CalendarEventPickerCloseButton, true)
 end
-
-S:AddCallbackForAddon('Blizzard_Calendar')
