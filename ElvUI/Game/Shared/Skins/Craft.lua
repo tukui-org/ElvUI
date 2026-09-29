@@ -136,6 +136,18 @@ function S:Blizzard_CraftUI()
 	CraftIcon:Point('TOPLEFT', 2, -3)
 	CraftIcon:CreateBackdrop()
 
+	if E.TBC then
+		local AvailableCheckButton = _G.CraftFrameAvailableFilterCheckButton
+		S:HandleCheckBox(AvailableCheckButton)
+		AvailableCheckButton:ClearAllPoints()
+		AvailableCheckButton:Point('TOPLEFT', CraftRankFrame, 'BOTTOMLEFT')
+
+		local Dropdown = CraftFrame.Dropdown
+		S:HandleDropDownBox(Dropdown, 120)
+		Dropdown:ClearAllPoints()
+		Dropdown:Point('TOPRIGHT', CraftRankFrame, 'BOTTOMRIGHT')
+	end
+
 	hooksecurefunc('CraftFrame_SetSelection', SetSelection)
 end
 

@@ -48,7 +48,7 @@ local function SkinOnShow()
 
 	-- Default Buttons
 	S:HandleButton(ScriptErrorsFrame.Reload)
-	S:HandleButton(ScriptErrorsFrame.Close)
+	S:HandleButton(E.Forever and ScriptErrorsFrame.CloseButton or ScriptErrorsFrame.Close) -- ToDo: Forever
 	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError)
 	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
 
@@ -65,7 +65,11 @@ local function SkinTableAttributeDisplay(frame)
 	frame.ScrollFrameArt.NineSlice:Point('BOTTOMRIGHT', -8, 0)
 
 	S:HandleTrimScrollBar(frame.LinesScrollFrame.ScrollBar)
-	frame.LinesScrollFrame.ScrollBar.Track:Point('TOPLEFT', 12, -20)
+
+	if not E.Modern then
+		frame.LinesScrollFrame.ScrollBar.Track:Point('TOPLEFT', 12, -20)
+	end
+
 	frame.LinesScrollFrame.ScrollBar.Track.Thumb:Width(8)
 
 	S:HandleCloseButton(frame.CloseButton)

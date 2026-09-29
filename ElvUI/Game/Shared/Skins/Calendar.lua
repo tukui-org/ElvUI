@@ -3,9 +3,9 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local hooksecurefunc = hooksecurefunc
 
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local hooksecurefunc = hooksecurefunc
 
 local function SkinContainer(frame)
 	frame.NineSlice:Kill()
@@ -119,9 +119,23 @@ function S:Blizzard_Calendar()
 
 	S:HandleEditBox(_G.CalendarCreateEventInviteEdit)
 	S:HandleEditBox(_G.CalendarCreateEventTitleEdit)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.EventTypeDropdown, 120)
 
 	S:HandleCloseButton(_G.CalendarCreateEventCloseButton)
 	S:HandleCheckBox(_G.CalendarCreateEventLockEventCheck)
+
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.HourDropdown, 52)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.MinuteDropdown, 52)
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 57)
+
+	-- Difficulty Dropdown
+	S:HandleDropDownBox(_G.CalendarCreateEventFrame.DifficultyOptionDropdown, 80)
+
+	-- classic already anchors it there
+	if E.Modern then
+		_G.CalendarCreateEventFrame.DifficultyOptionDropdown:ClearAllPoints()
+		_G.CalendarCreateEventFrame.DifficultyOptionDropdown:Point('TOPLEFT', _G.CalendarCreateEventFrame, 'TOPLEFT', 220, -114)
+	end
 
 	_G.CalendarViewEventTitle:ClearAllPoints()
 	_G.CalendarViewEventTitle:Point('TOPLEFT', _G.CalendarViewEventIcon, 'TOPRIGHT', 5, 0)
@@ -130,12 +144,6 @@ function S:Blizzard_Calendar()
 	_G.CalendarCreateEventDateLabel:ClearAllPoints()
 	_G.CalendarCreateEventDateLabel:Point('TOPLEFT', _G.CalendarCreateEventIcon, 'TOPRIGHT', 5, 0)
 	HandleEventIcon(_G.CalendarCreateEventIcon)
-
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.HourDropdown, 52)
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.MinuteDropdown, 52)
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.AMPMDropdown, 57)
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.EventTypeDropdown, 120)
-	S:HandleDropDownBox(_G.CalendarCreateEventFrame.DifficultyOptionDropdown, 80)
 
 	_G.CalendarClassButton1:Point('TOPLEFT', _G.CalendarClassButtonContainer, 'TOPLEFT', E.PixelMode and 3 or 5, 0)
 
@@ -178,12 +186,12 @@ function S:Blizzard_Calendar()
 	_G.CalendarMassInviteFrame:StripTextures()
 	_G.CalendarMassInviteFrame:SetTemplate('Transparent')
 	_G.CalendarMassInviteFrame.Header:StripTextures()
+	S:HandleDropDownBox(_G.CalendarMassInviteFrame.CommunityDropdown, 200)
+	S:HandleDropDownBox(_G.CalendarMassInviteFrame.RankDropdown, 140)
 	S:HandleEditBox(_G.CalendarMassInviteMinLevelEdit)
 	S:HandleEditBox(_G.CalendarMassInviteMaxLevelEdit)
 	S:HandleCloseButton(_G.CalendarMassInviteCloseButton)
 	S:HandleButton(_G.CalendarMassInviteAcceptButton)
-	S:HandleDropDownBox(_G.CalendarMassInviteFrame.CommunityDropdown, 200)
-	S:HandleDropDownBox(_G.CalendarMassInviteFrame.RankDropdown, 140)
 
 	-- Raid View
 	_G.CalendarViewRaidFrame:StripTextures()

@@ -18,7 +18,11 @@ function S:Blizzard_CatalogShop()
 
 	local CloseButton = CatalogShopFrame.CloseButton
 	S:HandleCloseButton(CloseButton)
-	CloseButton:SetFrameLevel(510) -- classic UIPanelCloseButton has no frame level, keep it above the title backdrop
+
+	-- classic UIPanelCloseButton has no frame level, keep it above the title backdrop
+	if not E.Modern then
+		CloseButton:SetFrameLevel(510)
+	end
 
 	local TitleContainer = CatalogShopFrame.TitleContainer
 	TitleContainer:CreateBackdrop()
@@ -45,4 +49,4 @@ function S:Blizzard_CatalogShop()
 	S:HandleTrimScrollBar(ProductDetails.DetailsProductContainerFrame.ProductsScrollBoxContainer.ScrollBar)
 end
 
-S:AddCallbackForAddon('Blizzard_CatalogShop', 'Blizzard_CatalogShop')
+S:AddCallbackForAddon('Blizzard_CatalogShop')

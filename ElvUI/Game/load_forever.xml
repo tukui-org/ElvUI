@@ -65,7 +65,7 @@
 	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
 	<Script file='Shared\Modules\Misc\PrivateAuras.lua'/>
 
-	<Script file='Forever\Skins\AddonManager.lua'/>
+	<Script file='Shared\Skins\AddonManager.lua'/>
 	<Script file='Forever\Skins\Alerts.lua'/>
 	<Script file='Forever\Skins\AuctionHouse.lua'/>
 	<Script file='Forever\Skins\Bags.lua'/>
@@ -73,20 +73,20 @@
 	<Script file='Forever\Skins\Battlenet.lua'/>
 	<Script file='Shared\Skins\BGMap.lua'/>
 	<Script file='Shared\Skins\Binding.lua'/>
-	<Script file='Forever\Skins\Calendar.lua'/>
-	<Script file='Forever\Skins\CatalogShop.lua'/>
+	<Script file='Shared\Skins\Calendar.lua'/>
+	<Script file='Shared\Skins\CatalogShop.lua'/>
 	<Script file='Forever\Skins\Channels.lua'/>
 	<Script file='Forever\Skins\Character.lua'/>
 	<Script file='Forever\Skins\ChatConfig.lua'/>
 	<Script file='Forever\Skins\Collectables.lua'/>
 	<Script file='Forever\Skins\CombatLog.lua' />
 	<Script file='Forever\Skins\Communities.lua'/>
-	<Script file='Forever\Skins\CooldownManager.lua'/>
-	<Script file='Forever\Skins\DamageMeter.lua'/>
+	<Script file='Shared\Skins\CooldownManager.lua'/>
+	<Script file='Shared\Skins\DamageMeter.lua'/>
 	<Script file='Shared\Skins\DeathRecap.lua'/>
-	<Script file='Forever\Skins\Debug.lua'/>
+	<Script file='Shared\Skins\Debug.lua'/>
 	<Script file='Forever\Skins\DressingRoom.lua'/>
-	<Script file='Forever\Skins\EditorManager.lua'/>
+	<Script file='Shared\Skins\EditorManager.lua'/>
 	<Script file='Forever\Skins\EventTrace.lua'/>
 	<Script file='Shared\Skins\FlightMap.lua'/>
 	<Script file='Forever\Skins\Friends.lua'/>

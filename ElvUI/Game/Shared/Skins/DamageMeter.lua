@@ -262,7 +262,7 @@ function S:DamageMeter_HandleLocalPlayerEntry()
 end
 
 function S:DamageMeter_HandleMinimizeButton(window, button)
-	if button.IsSkinned then return end
+	if not window or button.IsSkinned then return end
 
 	button:Size(16)
 	button:SetHighlightAtlas('UI-QuestTrackerButton-Yellow-Highlight', 'ADD')

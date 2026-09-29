@@ -214,30 +214,38 @@ do
 end
 
 function S:CooldownManager_HandleAbilityTabs(viewer)
-	for i, tab in next, { viewer.SpellsTab, viewer.AurasTab, viewer.GroupBuffsTab } do
-		tab:CreateBackdrop()
-		tab:Size(30, 40)
-
-		if i == 1 then
-			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 2, -1)
-
-			hooksecurefunc(tab, 'SetPoint', S.CooldownManager_PositionViewerTab)
+	if E.Forever then -- ToDo: Forever
+		for _, tab in next, viewer.TabButtons do
+			S:HandleLargeSideTab(tab)
 		end
 
-		tab.Icon:ClearAllPoints()
-		tab.Icon:SetPoint('CENTER')
-		hooksecurefunc(tab.Icon, 'SetPoint', S.CooldownManager_PositionTabIcons)
+		S:LayoutLargeSideTabs(viewer, viewer.TabButtons)
+	else
+		for i, tab in next, { viewer.SpellsTab, viewer.AurasTab, viewer.GroupBuffsTab } do
+			tab:CreateBackdrop()
+			tab:Size(30, 40)
 
-		tab.Background:SetAlpha(0)
-		tab.TabGlow:SetAlpha(0)
+			if i == 1 then
+				tab:ClearAllPoints()
+				tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 2, -1)
 
-		tab.SelectedTexture:SetDrawLayer('ARTWORK')
-		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
-		tab.SelectedTexture:SetAllPoints()
+				hooksecurefunc(tab, 'SetPoint', S.CooldownManager_PositionViewerTab)
+			end
 
-		tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
-		tab.HighlightTexture:SetAllPoints()
+			tab.Icon:ClearAllPoints()
+			tab.Icon:SetPoint('CENTER')
+			hooksecurefunc(tab.Icon, 'SetPoint', S.CooldownManager_PositionTabIcons)
+
+			tab.Background:SetAlpha(0)
+			tab.TabGlow:SetAlpha(0)
+
+			tab.SelectedTexture:SetDrawLayer('ARTWORK')
+			tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+			tab.SelectedTexture:SetAllPoints()
+
+			tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+			tab.HighlightTexture:SetAllPoints()
+		end
 	end
 end
 

@@ -15,7 +15,7 @@ local function UpdateScore()
 	local inArena = IsActiveBattlefieldArena()
 	local offset = FauxScrollFrame_GetOffset(_G.WorldStateScoreScrollFrame)
 
-	for i = 1, 20 do -- score rows
+	for i = 1, E.Classic and 22 or 20 do -- score rows
 		local fullName, _, _, _, _, faction, _, _, _, classToken = GetBattlefieldScore(offset + i)
 		if fullName then
 			local name, realm = strmatch(fullName, '([^%-]+)(.*)')
@@ -65,8 +65,9 @@ function S:SkinWorldStateScore()
 		_G.WorldStateScoreFrameHealingDone,
 		_G.WorldStateScoreFrameHonorGained,
 		_G.WorldStateScoreFrameName,
-		_G.WorldStateScoreFrameClass,
-		_G.WorldStateScoreFrameTeam
+		not E.Classic and _G.WorldStateScoreFrameClass or nil,
+		not E.Classic and _G.WorldStateScoreFrameTeam or nil,
+		not E.Mists and _G.WorldStateScoreFrameMatchmakingRating or nil
 	} do
 		button:StyleButton()
 	end
@@ -79,11 +80,11 @@ function S:SkinWorldStateScore()
 
 	-- Reposition Tabs
 	_G.WorldStateScoreFrameTab1:ClearAllPoints()
-	_G.WorldStateScoreFrameTab1:Point('TOPLEFT', _G.WorldStateScoreFrame, 'BOTTOMLEFT', -10, 25)
+	_G.WorldStateScoreFrameTab1:Point('TOPLEFT', WorldStateScoreFrame, 'BOTTOMLEFT', -10, 25)
 	_G.WorldStateScoreFrameTab2:Point('TOPLEFT', _G.WorldStateScoreFrameTab1, 'TOPRIGHT', -19, 0)
 	_G.WorldStateScoreFrameTab3:Point('TOPLEFT', _G.WorldStateScoreFrameTab2, 'TOPRIGHT', -19, 0)
 
-	for i = 1, 5 do
+	for i = 1, 7 do -- stat columns
 		_G['WorldStateScoreColumn'..i]:StyleButton()
 	end
 
