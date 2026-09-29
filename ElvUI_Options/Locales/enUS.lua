@@ -1535,6 +1535,7 @@ L["Sends your current profile to your target."] = true
 L["Sends your filter settings to your target."] = true
 L["Separate"] = true
 L["Separate Panel Sizes"] = true
+L["Separator"] = true
 L["Set auras that are not from you to desaturated."] = true
 L["Set Settings to Default"] = true
 L["Set the alpha level of portrait when frame is overlayed."] = true
