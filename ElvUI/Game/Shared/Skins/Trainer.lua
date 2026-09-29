@@ -74,11 +74,10 @@ local function SkinMainline()
 
 	hooksecurefunc(ClassTrainerFrame.ScrollBox, 'Update', ClassTrainerScrollUpdate)
 
-	S:HandleTrimScrollBar(_G.ClassTrainerFrame.ScrollBar)
-	S:HandleButton(_G.ClassTrainerFrame.FilterDropdown)
+	S:HandleTrimScrollBar(ClassTrainerFrame.ScrollBar)
+	S:HandleButton(ClassTrainerFrame.FilterDropdown)
 
 	ClassTrainerFrame:Height(ClassTrainerFrame:GetHeight() + 5)
-	ClassTrainerFrame:SetTemplate('Transparent')
 
 	local stepButton = _G.ClassTrainerFrameSkillStepButton
 	stepButton:SetTemplate()

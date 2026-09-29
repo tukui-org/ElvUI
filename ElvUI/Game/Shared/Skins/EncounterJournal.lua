@@ -339,15 +339,15 @@ end
 
 local function SuggestFrameRefreshDisplay()
 	local suggestFrame = _G.EncounterJournal.suggestFrame
-	for i, data in ipairs(suggestFrame.suggestions) do
-		local sugg = next(data) and suggestFrame['Suggestion'..i]
+	for i, suggestion in ipairs(suggestFrame.suggestions) do
+		local sugg = next(suggestion) and suggestFrame['Suggestion'..i]
 		if sugg then
 			if not sugg.icon.backdrop then
 				sugg.icon:CreateBackdrop()
 			end
 
 			sugg.icon:SetMask('')
-			sugg.icon:SetTexture(data.iconPath)
+			sugg.icon:SetTexture(suggestion.iconPath)
 			sugg.icon:SetTexCoords()
 			sugg.iconRing:Hide()
 		end

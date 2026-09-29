@@ -196,9 +196,7 @@ end
 
 function S:Blizzard_Communities()
 	local CommunitiesFrame = _G.CommunitiesFrame
-	CommunitiesFrame:StripTextures()
 	CommunitiesFrame.NineSlice:Hide()
-	_G.CommunitiesFrameInset.Bg:Hide()
 
 	S:HandlePortraitFrame(CommunitiesFrame)
 

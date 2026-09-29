@@ -257,22 +257,22 @@ function S:Blizzard_InspectUI()
 			frame.tooltip = nil
 
 			local spec = _G.INSPECTED_UNIT and GetInspectSpecialization(_G.INSPECTED_UNIT)
-			local data = spec and E.SpecInfoBySpecID[spec]
-			if data and data.role then
-				if data.role == 'DAMAGER' then
+			local info = spec and E.SpecInfoBySpecID[spec]
+			if info and info.role then
+				if info.role == 'DAMAGER' then
 					frame.roleIcon:SetTexture(E.Media.Textures.DPS)
-				elseif data.role == 'TANK' then
+				elseif info.role == 'TANK' then
 					frame.roleIcon:SetTexture(E.Media.Textures.Tank)
-				elseif data.role == 'HEALER' then
+				elseif info.role == 'HEALER' then
 					frame.roleIcon:SetTexture(E.Media.Textures.Healer)
 				end
 
-				frame.tooltip = data.desc
+				frame.tooltip = info.desc
 
 				frame.roleIcon:Size(20)
 				frame.roleIcon:SetTexCoords()
 				frame.roleName:SetTextColor(1, 1, 1)
-				frame.specIcon:SetTexture(data.icon)
+				frame.specIcon:SetTexture(info.icon)
 			end
 		end)
 
