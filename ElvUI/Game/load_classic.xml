@@ -70,16 +70,16 @@
 	<Script file='Shared\Modules\DataTexts\Spirit.lua'/>
 	<Script file='Shared\Modules\DataBars\PetExperience.lua'/>
 	<Script file='Shared\Skins\AddonManager.lua'/>
-	<Script file='Classic\Skins\AuctionHouse.lua'/>
-	<Script file='Classic\Skins\Bags.lua'/>
+	<Script file='Shared\Skins\AuctionHouse.lua'/>
+	<Script file='Shared\Skins\Bags.lua'/>
 	<Script file='Shared\Skins\Battlefield.lua'/>
 	<Script file='Shared\Skins\Battlenet.lua'/>
 	<Script file='Shared\Skins\BGMap.lua'/>
 	<Script file='Shared\Skins\BGScore.lua'/>
-	<Script file='Classic\Skins\BlizzardOptions.lua'/>
 	<Script file='Shared\Skins\Channels.lua'/>
-	<Script file='Classic\Skins\Character.lua'/>
-	<Script file='Classic\Skins\CombatLog.lua'/>
+	<Script file='Shared\Skins\Character.lua'/>
+	<Script file='Shared\Skins\ChatConfig.lua'/>
+	<Script file='Shared\Skins\CombatLog.lua'/>
 	<Script file='Shared\Skins\Communities.lua'/>
 	<Script file='Shared\Skins\Craft.lua'/>
 	<Script file='Shared\Skins\Debug.lua'/>
@@ -87,7 +87,7 @@
 	<Script file='Shared\Skins\EditorManager.lua'/>
 	<Script file='Shared\Skins\Engraving.lua'/>
 	<Script file='Shared\Skins\EventTrace.lua'/>
-	<Script file='Classic\Skins\Friends.lua'/>
+	<Script file='Shared\Skins\Friends.lua'/>
 	<Script file='Shared\Skins\GMChat.lua'/>
 	<Script file='Shared\Skins\Gossip.lua'/>
 	<Script file='Shared\Skins\GuildControl.lua'/>
@@ -116,8 +116,8 @@
 	<Script file='Shared\Skins\TimeManager.lua'/>
 	<Script file='Shared\Skins\Tooltip.lua'/>
 	<Script file='Shared\Skins\Trade.lua'/>
-	<Script file='Classic\Skins\TradeSkill.lua'/>
+	<Script file='Shared\Skins\TradeSkill.lua'/>
 	<Script file='Classic\Skins\Trainer.lua'/>
 	<Script file='Classic\Skins\Tutorial.lua'/>
-	<Script file='Classic\Skins\WorldMap.lua'/>
+	<Script file='Shared\Skins\WorldMap.lua'/>
 </Ui>

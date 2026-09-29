@@ -7,7 +7,7 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local QuestSessionCommand = Enum.QuestSessionCommand
-local SessionCommand_ButtonAtlases = {
+local SessionCommand_ButtonAtlases = QuestSessionCommand and { -- only read by the Mainline quest session skin
 	[QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
 	[QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
 }
@@ -147,18 +147,7 @@ local function EventsFrameCallback(_, frame, elementData)
 	end
 end
 
--- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
-function S:WorldMap_QuestMapHide()
-	local QuestModelScene = _G.QuestModelScene
-	if self:GetParent() == QuestModelScene:GetParent() then -- variant of QuestFrame_HideQuestPortrait
-		QuestModelScene:SetParent(nil)
-		QuestModelScene:Hide()
-	end
-end
-
-function S:WorldMapFrame()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.worldmap) then return end
-
+local function SkinMainline()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:StripTextures()
 	WorldMapFrame.ScrollContainer:SetTemplate()
@@ -267,6 +256,12 @@ function S:WorldMapFrame()
 	S:HandleTrimScrollBar(QuestScrollFrame.ScrollBar)
 	S:HandleTrimScrollBar(_G.QuestMapDetailsScrollFrame.ScrollBar)
 
+	local QuestLogCount = _G.QuestLogCount
+	if QuestLogCount then
+		QuestLogCount:StripTextures()
+		QuestLogCount:SetTemplate('Transparent')
+	end
+
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.CloseButton, 'left')
 	S:HandleNextPrevButton(WorldMapFrame.SidePanelToggle.OpenButton, 'right')
 
@@ -288,22 +283,42 @@ function S:WorldMapFrame()
 		local Dropdown, Tracking, Pin = unpack(WorldMapFrame.overlayFrames)
 		S:HandleDropDownBox(Dropdown) -- NavBar handled in ElvUI/modules/skins/misc
 
-		Tracking:StripTextures()
-		Tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking/None
-		Tracking:SetHighlightTexture(136460, 'ADD')
+		if E.Forever then -- ToDo: Forever
+			Tracking, Pin = WorldMapFrame.WorldMapTrackingOptionsButton, WorldMapFrame.WorldMapTrackingPinButton
 
-		local TrackingHighlight = Tracking:GetHighlightTexture()
-		TrackingHighlight:SetAllPoints(Tracking.Icon)
+			-- camelot tracking button is an arrow dropdown next to the NavBar
+			if Tracking then
+				S:HandleNextPrevButton(Tracking, 'down', nil, true)
+				Tracking:SetTemplate()
+				Tracking:ClearAllPoints()
+				Tracking:Point('LEFT', MapNavBar, 'RIGHT', 10, 0)
+				Tracking.Icon:SetAlpha(0) -- OnMouseDown and OnMouseUp set the atlas again
 
-		Pin:StripTextures()
-		Pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
-		Pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
-		Pin.ActiveTexture:SetAllPoints(Pin.Icon)
-		Pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
+				local ResetButton = Tracking.ResetButton
+				S:HandleCloseButton(ResetButton)
+				ResetButton:ClearAllPoints()
+				ResetButton:Point('CENTER', Tracking, 'TOPRIGHT', 0, 0)
+			end
+		else
+			Tracking:StripTextures()
+			Tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking/None
+			Tracking:SetHighlightTexture(136460, 'ADD')
 
-		local PinHighlight = Pin:GetHighlightTexture()
-		PinHighlight:SetAllPoints(Pin.Icon)
-		PinHighlight:SetTexCoord(0.3203125, 0.5546875, 0.015625, 0.484375)
+			local TrackingHighlight = Tracking:GetHighlightTexture()
+			TrackingHighlight:SetAllPoints(Tracking.Icon)
+		end
+
+		if Pin then
+			Pin:StripTextures()
+			Pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
+			Pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
+			Pin.ActiveTexture:SetAllPoints(Pin.Icon)
+			Pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
+
+			local PinHighlight = Pin:GetHighlightTexture()
+			PinHighlight:SetAllPoints(Pin.Icon)
+			PinHighlight:SetTexCoord(0.3203125, 0.5546875, 0.015625, 0.484375)
+		end
 	end
 
 	-- 8.2.5 Party Sync | Credits Aurora/Shestak
@@ -417,6 +432,80 @@ function S:WorldMapFrame()
 
 	-- Blizz new function for AddOns to access items on a ScrollBox. See Interface\AddOns\Blizzard_SharedXML\Shared\Scroll\ScrollUtil.lua
 	_G.ScrollUtil.AddAcquiredFrameCallback(EventsFrameScrollBox, EventsFrameCallback, EventsFrame, true)
+end
+
+local function SkinClassic()
+	local WorldMapFrame = _G.WorldMapFrame
+	WorldMapFrame:StripTextures()
+
+	WorldMapFrame.BorderFrame:StripTextures()
+	WorldMapFrame.BorderFrame:CreateBackdrop('Transparent')
+	WorldMapFrame.BorderFrame.backdrop:Point('TOPLEFT', 0, -0.5)
+
+	WorldMapFrame.MiniBorderFrame:StripTextures()
+	WorldMapFrame.MiniBorderFrame:CreateBackdrop('Transparent')
+	WorldMapFrame.MiniBorderFrame.backdrop:Point('TOPLEFT', 6, -2)
+
+	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropdown, 160)
+	S:HandleDropDownBox(_G.WorldMapContinentDropdown, 160)
+	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
+	S:HandleMaxMinFrame(WorldMapFrame.MaximizeMinimizeFrame)
+
+	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
+	_G.WorldMapContinentDropdown:Height(26)
+
+	_G.WorldMapZoneDropdown:Point('LEFT', _G.WorldMapContinentDropdown, 'RIGHT', 10, 0)
+	_G.WorldMapZoneDropdown:Height(26)
+
+	_G.WorldMapZoneMinimapDropdown:Point('RIGHT', _G.WorldMapContinentDropdown, 'LEFT', -10, 0)
+	_G.WorldMapZoneMinimapDropdown:Height(26)
+
+	_G.WorldMapZoomOutButton:Point('LEFT', _G.WorldMapZoneDropdown, 'RIGHT', 10, 1)
+	_G.WorldMapZoomOutButton:Height(23)
+	_G.WorldMapZoomOutButton:Width(100)
+	_G.WorldMapZoomOutButton:OffsetFrameLevel(2, WorldMapFrame.BlackoutFrame)
+
+	S:HandleButton(_G.WorldMapZoomOutButton)
+	S:HandleSliderFrame(_G.OpacityFrameSlider)
+
+	if E.Mists or E.Wrath then
+		S:HandleDropDownBox(WorldMapFrame.WorldMapLevelDropDown, 160)
+		S:HandleCheckBox(_G.WorldMapTrackQuest)
+		S:HandleScrollBar(_G.QuestMapDetailsScrollFrameScrollBar)
+		S:HandleTrimScrollBar(_G.QuestScrollFrame.ScrollBar)
+	end
+
+	if E.Mists then
+		S:HandleDropDownBox(WorldMapFrame.WorldMapOptionsDropDown, 160)
+	elseif E.Wrath then
+		S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
+	end
+
+	if E.OtherAddons.Questie and _G.Questie_Toggle then
+		S:HandleButton(_G.Questie_Toggle)
+	end
+
+	S:HandleCloseButton(_G.WorldMapFrameCloseButton)
+	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
+end
+
+-- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
+function S:WorldMap_QuestMapHide()
+	local QuestModelScene = _G.QuestModelScene
+	if self:GetParent() == QuestModelScene:GetParent() then -- variant of QuestFrame_HideQuestPortrait
+		QuestModelScene:SetParent(nil)
+		QuestModelScene:Hide()
+	end
+end
+
+function S:WorldMapFrame()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.worldmap) then return end
+
+	if E.Modern then
+		SkinMainline()
+	else
+		SkinClassic()
+	end
 end
 
 S:AddCallback('WorldMapFrame')

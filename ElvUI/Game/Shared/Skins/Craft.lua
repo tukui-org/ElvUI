@@ -68,6 +68,11 @@ local function SetSelection(id)
 	_G.CraftDetailScrollFrameScrollBar:SetShown(numReagents >= 5) -- Blizzard always shows it, its IsEnabled() == 0 check never matches
 end
 
+-- Blizzard resets the bar color on every update
+local function CraftFrameUpdate()
+	_G.CraftRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
+end
+
 function S:Blizzard_CraftUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.craft) then return end
 
@@ -149,6 +154,7 @@ function S:Blizzard_CraftUI()
 	end
 
 	hooksecurefunc('CraftFrame_SetSelection', SetSelection)
+	hooksecurefunc('CraftFrame_Update', CraftFrameUpdate)
 end
 
 S:AddCallbackForAddon('Blizzard_CraftUI')

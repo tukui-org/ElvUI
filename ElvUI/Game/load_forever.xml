@@ -67,8 +67,8 @@
 
 	<Script file='Shared\Skins\AddonManager.lua'/>
 	<Script file='Shared\Skins\Alerts.lua'/>
-	<Script file='Forever\Skins\AuctionHouse.lua'/>
-	<Script file='Forever\Skins\Bags.lua'/>
+	<Script file='Shared\Skins\AuctionHouse.lua'/>
+	<Script file='Shared\Skins\Bags.lua'/>
 	<Script file='Shared\Skins\Barber.lua'/>
 	<Script file='Shared\Skins\Battlenet.lua'/>
 	<Script file='Shared\Skins\BGMap.lua'/>
@@ -76,10 +76,10 @@
 	<Script file='Shared\Skins\Calendar.lua'/>
 	<Script file='Shared\Skins\CatalogShop.lua'/>
 	<Script file='Shared\Skins\Channels.lua'/>
-	<Script file='Forever\Skins\Character.lua'/>
-	<Script file='Forever\Skins\ChatConfig.lua'/>
+	<Script file='Shared\Skins\Character.lua'/>
+	<Script file='Shared\Skins\ChatConfig.lua'/>
 	<Script file='Shared\Skins\Collectables.lua'/>
-	<Script file='Forever\Skins\CombatLog.lua' />
+	<Script file='Shared\Skins\CombatLog.lua' />
 	<Script file='Shared\Skins\Communities.lua'/>
 	<Script file='Shared\Skins\CooldownManager.lua'/>
 	<Script file='Shared\Skins\DamageMeter.lua'/>
@@ -89,11 +89,11 @@
 	<Script file='Shared\Skins\EditorManager.lua'/>
 	<Script file='Shared\Skins\EventTrace.lua'/>
 	<Script file='Shared\Skins\FlightMap.lua'/>
-	<Script file='Forever\Skins\Friends.lua'/>
+	<Script file='Shared\Skins\Friends.lua'/>
 	<Script file='Shared\Skins\GMChat.lua'/>
 	<Script file='Shared\Skins\Gossip.lua'/>
 	<Script file='Shared\Skins\Guild.lua'/>
-	<Script file='Forever\Skins\GuildBank.lua'/>
+	<Script file='Shared\Skins\GuildBank.lua'/>
 	<Script file='Shared\Skins\GuildControl.lua'/>
 	<Script file='Shared\Skins\GuildRegistrar.lua'/>
 	<Script file='Shared\Skins\Help.lua'/>
@@ -131,7 +131,7 @@
 	<Script file='Forever\Skins\Trainer.lua'/>
 	<Script file='Shared\Skins\Transmog.lua'/>
 	<Script file='Forever\Skins\TutorialFrame.lua'/>
-	<Script file='Forever\Skins\WorldMap.lua'/>
+	<Script file='Shared\Skins\WorldMap.lua'/>
 
 	<Script file='Shared\Modules\Blizzard\AltPower.lua'/>
 	<Script file='Mainline\Blizzard\ColorPicker.lua'/>

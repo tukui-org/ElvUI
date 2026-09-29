@@ -16,6 +16,9 @@ local function SetSelection(id)
 	local _, skillType = GetTradeSkillInfo(id)
 	if skillType == 'header' then return end
 
+	-- Blizzard resets the bar color on every selection
+	_G.TradeSkillRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
+
 	local TradeSkillSkillIcon = _G.TradeSkillSkillIcon
 	local normal = TradeSkillSkillIcon:GetNormalTexture()
 	if normal then -- cleared when the recipe has no icon
@@ -71,14 +74,57 @@ function S:Blizzard_TradeSkillUI()
 	_G.TradeSkillListScrollFrame:StripTextures()
 	_G.TradeSkillDetailScrollChildFrame:StripTextures()
 
+	-- named only on Mists and Wrath, where SetSelection sets them again
+	if E.Mists or E.Wrath then
+		_G.TradeSkillFrameBottomLeftTexture:Kill()
+		_G.TradeSkillFrameBottomRightTexture:Kill()
+	end
+
 	local TradeSkillRankFrame = _G.TradeSkillRankFrame
-	TradeSkillRankFrame:Size(322, 14)
-	TradeSkillRankFrame:ClearAllPoints()
-	TradeSkillRankFrame:Point('TOP', -10, -35)
+	if E.Mists or E.Wrath then
+		TradeSkillRankFrame:Size(314, E.Wrath and 14 or 16)
+		TradeSkillRankFrame:Point('TOPLEFT', 25, E.Wrath and -36 or -44)
+	else
+		TradeSkillRankFrame:Size(322, E.TBC and 14 or 16)
+		TradeSkillRankFrame:ClearAllPoints()
+		TradeSkillRankFrame:Point('TOP', -10, E.TBC and -35 or -45)
+	end
+
 	TradeSkillRankFrame:CreateBackdrop()
 	TradeSkillRankFrame:SetStatusBarTexture(E.media.normTex)
 	TradeSkillRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
 	E:RegisterStatusBar(TradeSkillRankFrame)
+
+	if E.Mists then
+		local TradeSkillFrameSearchBox = _G.TradeSkillFrameSearchBox
+		S:HandleEditBox(TradeSkillFrameSearchBox)
+		TradeSkillFrameSearchBox:ClearAllPoints()
+		TradeSkillFrameSearchBox:Point('TOPLEFT', TradeSkillRankFrame, 'TOPLEFT', 60, -28)
+		TradeSkillFrameSearchBox:Size(122, 18)
+	elseif E.Wrath then
+		local TradeSkillFrameEditBox = _G.TradeSkillFrameEditBox
+		S:HandleEditBox(TradeSkillFrameEditBox)
+		TradeSkillFrameEditBox:ClearAllPoints()
+		TradeSkillFrameEditBox:Point('TOPLEFT', TradeSkillFrame, 'TOPLEFT', 28, -16)
+		TradeSkillFrameEditBox:Size(122, 18)
+	elseif E.TBC then
+		local TradeSearchInputBox = _G.TradeSearchInputBox
+		S:HandleEditBox(TradeSearchInputBox)
+		TradeSearchInputBox:ClearAllPoints()
+		TradeSearchInputBox:Point('TOPRIGHT', TradeSkillRankFrame, 'BOTTOMRIGHT')
+	end
+
+	if E.Wrath or E.TBC then
+		local AvailableCheckButton = _G.TradeSkillFrameAvailableFilterCheckButton
+		S:HandleCheckBox(AvailableCheckButton)
+		AvailableCheckButton:ClearAllPoints()
+
+		if E.Wrath then
+			AvailableCheckButton:Point('TOPLEFT', 20, -49)
+		else
+			AvailableCheckButton:Point('TOPLEFT', TradeSkillRankFrame, 'BOTTOMLEFT')
+		end
+	end
 
 	_G.TradeSkillExpandButtonFrame:StripTextures()
 
@@ -98,25 +144,22 @@ function S:Blizzard_TradeSkillUI()
 	collapseDisabled:Size(15)
 	collapseDisabled:SetDesaturated(true)
 
-	local TradeSearchInputBox = _G.TradeSearchInputBox
-	S:HandleEditBox(TradeSearchInputBox)
-	TradeSearchInputBox:ClearAllPoints()
-	TradeSearchInputBox:Point('TOPRIGHT', TradeSkillRankFrame, 'BOTTOMRIGHT')
+	if E.Mists then
+		S:HandleDropDownBox(TradeSkillFrame.FilterDropdown)
+	elseif E.Wrath then
+		S:HandleDropDownBox(TradeSkillFrame.InvSlotDropdown, 120)
+		S:HandleDropDownBox(TradeSkillFrame.SubClassDropdown, 120)
+	else
+		local InvSlotDropdown = TradeSkillFrame.InvSlotDropdown
+		S:HandleDropDownBox(InvSlotDropdown, 110)
+		InvSlotDropdown:ClearAllPoints()
+		InvSlotDropdown:Point('TOPRIGHT', TradeSkillFrame, 'TOPRIGHT', -32, -68)
 
-	local AvailableCheckButton = _G.TradeSkillFrameAvailableFilterCheckButton
-	S:HandleCheckBox(AvailableCheckButton)
-	AvailableCheckButton:ClearAllPoints()
-	AvailableCheckButton:Point('TOPLEFT', TradeSkillRankFrame, 'BOTTOMLEFT')
-
-	local InvSlotDropdown = TradeSkillFrame.InvSlotDropdown
-	S:HandleDropDownBox(InvSlotDropdown, 110)
-	InvSlotDropdown:ClearAllPoints()
-	InvSlotDropdown:Point('TOPRIGHT', TradeSkillFrame, 'TOPRIGHT', -32, -68)
-
-	local SubClassDropdown = TradeSkillFrame.SubClassDropdown
-	S:HandleDropDownBox(SubClassDropdown, 110)
-	SubClassDropdown:ClearAllPoints()
-	SubClassDropdown:Point('RIGHT', InvSlotDropdown, 'RIGHT', -120, 0)
+		local SubClassDropdown = TradeSkillFrame.SubClassDropdown
+		S:HandleDropDownBox(SubClassDropdown, 110)
+		SubClassDropdown:ClearAllPoints()
+		SubClassDropdown:Point('RIGHT', InvSlotDropdown, 'RIGHT', -120, 0)
+	end
 
 	_G.TradeSkillFrameTitleText:ClearAllPoints()
 	_G.TradeSkillFrameTitleText:Point('TOP', TradeSkillFrame, 'TOP', 0, -18)
@@ -132,6 +175,16 @@ function S:Blizzard_TradeSkillUI()
 		local highlight = button:GetHighlightTexture()
 		highlight:SetTexture(E.ClearTexture)
 		highlight.SetTexture = E.noop
+
+		if E.Mists then
+			local subSkillRankBar = button.SubSkillRankBar
+			subSkillRankBar:StripTextures()
+			subSkillRankBar:CreateBackdrop()
+			subSkillRankBar:SetStatusBarTexture(E.media.normTex)
+			subSkillRankBar:SetStatusBarColor(0.13, 0.35, 0.80)
+
+			E:RegisterStatusBar(subSkillRankBar)
+		end
 	end
 
 	S:HandleCollapseTexture(TradeSkillCollapseAllButton, nil, true)

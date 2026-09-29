@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, pairs = ipairs, pairs
+local ipairs, pairs, next = ipairs, pairs, next
 local hooksecurefunc = hooksecurefunc
 
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
@@ -17,6 +17,14 @@ local function UpdateCheckboxes(frame)
 		if not checkbox.IsSkinned then
 			checkbox:StripTextures()
 			S:HandleCheckBox(_G[checkboxName..'Check'])
+
+			if not E.Modern then
+				-- only the chat and channel list templates have one
+				local colorClasses = _G[checkboxName..'ColorClasses']
+				if colorClasses then
+					S:HandleCheckBox(colorClasses)
+				end
+			end
 
 			checkbox.IsSkinned = true
 		end
@@ -69,6 +77,15 @@ local function UpdateSwatches(frame)
 	end
 end
 
+local function CreateBoxes(frame)
+	local boxName = frame:GetName()..'Box'
+	for index in next, frame.boxTable do
+		local box = _G[boxName..index]
+		box.NineSlice:SetTemplate('Transparent')
+		S:HandleButton(box.Button)
+	end
+end
+
 local function UpdateMessageCheckboxes(frame)
 	if not frame.checkBoxTable then return end
 
@@ -89,12 +106,19 @@ function S:Blizzard_ChatFrame()
 	local ChatConfigFrame = _G.ChatConfigFrame
 	ChatConfigFrame:StripTextures()
 	ChatConfigFrame:SetTemplate('Transparent')
-	ChatConfigFrame.Header:StripTextures()
+
+	if E.Modern then
+		ChatConfigFrame.Header:StripTextures()
+	end
 
 	hooksecurefunc('ChatConfig_UpdateSwatches', UpdateSwatches)
 	hooksecurefunc('ChatConfig_UpdateCheckboxes', UpdateCheckboxes)
 	hooksecurefunc('ChatConfig_CreateTieredCheckboxes', CreateTieredCheckboxes)
 	hooksecurefunc(_G.ChatConfigFrameChatTabManager, 'UpdateWidth', UpdateWidth)
+
+	if not E.Modern then
+		hooksecurefunc('ChatConfig_CreateBoxes', CreateBoxes)
+	end
 
 	do
 		local i = 1
@@ -109,7 +133,7 @@ function S:Blizzard_ChatFrame()
 		end
 	end
 
-	for _, frame in pairs({ -- backdrops
+	for _, frame in next, { -- backdrops
 		_G.ChatConfigCategoryFrame,
 		_G.ChatConfigBackgroundFrame,
 		_G.ChatConfigCombatSettingsFilters,
@@ -120,7 +144,7 @@ function S:Blizzard_ChatFrame()
 		_G.CombatConfigColorsColorizeDamageSchool,
 		_G.CombatConfigColorsColorizeEntireLine,
 		_G.ChatConfigChatSettingsLeft,
-		_G.ChatConfigOtherSettingsAdditionalColors,
+		E.Modern and _G.ChatConfigOtherSettingsAdditionalColors or nil,
 		_G.ChatConfigOtherSettingsCombat,
 		_G.ChatConfigOtherSettingsPVP,
 		_G.ChatConfigOtherSettingsSystem,
@@ -130,7 +154,7 @@ function S:Blizzard_ChatFrame()
 		_G.CombatConfigColorsUnitColors,
 		_G.CombatConfigMessageSourcesDoneTo,
 		_G.ChatConfigTextToSpeechChannelSettingsLeft
-	}) do
+	} do
 		frame:StripTextures()
 	end
 
@@ -142,6 +166,19 @@ function S:Blizzard_ChatFrame()
 
 	_G.ChatConfigCombatSettingsFilters:CreateBackdrop('Transparent')
 	_G.ChatConfigCombatSettingsFilters.backdrop:SetInside()
+
+	if not E.Modern then
+		for _, frame in next, {
+			_G.ChatConfigCombatSettingsFiltersScrollFrame,
+			_G.ChatConfigChannelSettingsAvailable
+		} do
+			frame:StripTextures()
+			frame:SetTemplate('Transparent')
+		end
+
+		_G.ChatConfigChatSettingsClassColorLegend.NineSlice:SetTemplate('Transparent')
+		_G.ChatConfigChannelSettingsClassColorLegend.NineSlice:SetTemplate('Transparent')
+	end
 
 	for _, box in pairs({ -- combat boxes
 		_G.CombatConfigColorsHighlightingLine,
@@ -178,6 +215,10 @@ function S:Blizzard_ChatFrame()
 	S:HandleButton(_G.ChatConfigFrameDefaultButton)
 	S:HandleButton(_G.ChatConfigFrameRedockButton)
 
+	if not E.Modern then
+		S:HandleButton(ChatConfigFrame.ToggleChatButton)
+	end
+
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterUpButton, 'up')
 	S:HandleNextPrevButton(_G.ChatConfigMoveFilterDownButton, 'down')
 
@@ -191,7 +232,12 @@ function S:Blizzard_ChatFrame()
 	S:HandleEditBox(_G.CombatConfigSettingsNameEditBox)
 	S:HandleRadioButton(_G.CombatConfigColorsColorizeEntireLineBySource)
 	S:HandleRadioButton(_G.CombatConfigColorsColorizeEntireLineByTarget)
-	S:HandleTrimScrollBar(_G.ChatConfigCombatSettingsFilters.ScrollBar)
+
+	if E.Modern then
+		S:HandleTrimScrollBar(_G.ChatConfigCombatSettingsFilters.ScrollBar)
+	else
+		S:HandleScrollBar(_G.ChatConfigCombatSettingsFiltersScrollFrameScrollBar)
+	end
 
 	-- TextToSpeech
 	_G.TextToSpeechButton:StripTextures()
