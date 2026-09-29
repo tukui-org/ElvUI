@@ -620,7 +620,9 @@ function NP:ConfigurePlates(init)
 			NP:AuraContainer_ConstructContainers() -- this spawns the containers
 		end
 
-		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
+		if staticEvent == 'NAME_PLATE_UNIT_ADDED' then
+			NP.PlayerFrame:UpdateAllElements('ForceUpdate')
+		end
 	else -- however, these only need to happen when changing options
 		for nameplate in pairs(NP.Plates) do
 			NP:UpdatePlateSize(nameplate)
