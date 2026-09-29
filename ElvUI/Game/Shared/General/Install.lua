@@ -39,7 +39,7 @@ local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 
 -- GLOBALS: ElvUIInstallFrame
 
-local CURRENT_PAGE = 0
+local CURRENT_PAGE = 1
 local MAX_PAGE = 9
 
 local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
