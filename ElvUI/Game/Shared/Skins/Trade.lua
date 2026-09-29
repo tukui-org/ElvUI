@@ -30,8 +30,13 @@ function S:TradeFrame()
 	local TradeFrame = _G.TradeFrame
 	S:HandlePortraitFrame(TradeFrame)
 
-	TradeFrame.RecipientOverlay.portrait:SetAlpha(0)
-	TradeFrame.RecipientOverlay.portraitFrame:SetAlpha(0)
+	if E.Modern then
+		TradeFrame.RecipientOverlay.portrait:SetAlpha(0)
+		TradeFrame.RecipientOverlay.portraitFrame:SetAlpha(0)
+	else
+		_G.TradeFramePlayerPortrait:SetAlpha(0)
+		_G.TradeFrameRecipientPortrait:SetAlpha(0)
+	end
 
 	S:HandleButton(_G.TradeFrameTradeButton, true)
 	S:HandleButton(_G.TradeFrameCancelButton, true)

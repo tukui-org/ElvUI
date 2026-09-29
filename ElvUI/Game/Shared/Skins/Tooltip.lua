@@ -9,6 +9,8 @@ function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 	TT.isStyled = true
 
+	TT:SetAuraButtonTooltipStyle()
+
 	for _, tt in next, {
 		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
@@ -16,10 +18,13 @@ function S:StyleTooltips()
 		_G.FriendsTooltip,
 		_G.EmbeddedItemTooltip,
 		_G.GameTooltip,
-		_G.WorldMapTooltip,
+		not E.Modern and _G.WorldMapTooltip or nil,
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,
 		_G.QuickKeybindTooltip,
+		E.Modern and _G.GameSmallHeaderTooltip or nil,
+		E.Modern and _G.QuestScrollFrame.StoryTooltip or nil,
+		E.Modern and _G.QuestScrollFrame.CampaignTooltip or nil,
 		-- ours
 		E.ConfigTooltip,
 		E.SpellBookTooltip,
@@ -28,6 +33,12 @@ function S:StyleTooltips()
 		_G.SettingsTooltip,
 	} do
 		TT:SetStyle(tt)
+
+		local CompareHeader = tt.CompareHeader
+		if CompareHeader and not CompareHeader.template then
+			CompareHeader:StripTextures()
+			CompareHeader:SetTemplate()
+		end
 	end
 end
 
@@ -35,7 +46,17 @@ function S:TooltipFrames()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 
 	S:StyleTooltips()
-	S:HandleCloseButton(_G.ItemRefCloseButton)
+	S:HandleCloseButton(E.Modern and _G.ItemRefTooltip.CloseButton or _G.ItemRefCloseButton)
+
+	if E.Modern then
+		_G.QuestScrollFrame.StoryTooltip:SetFrameLevel(4)
+
+		local ItemTT = _G.GameTooltip.ItemTooltip
+		S:HandleIcon(ItemTT.Icon, true)
+		S:HandleIconBorder(ItemTT.IconBorder, ItemTT.Icon.backdrop)
+		ItemTT.Count:ClearAllPoints()
+		ItemTT.Count:Point('BOTTOMRIGHT', ItemTT.Icon, 'BOTTOMRIGHT', 1, 0)
+	end
 
 	-- EmbeddedItemTooltip (also Paragon Reputation)
 	local EmbeddedTT = _G.EmbeddedItemTooltip.ItemTooltip
