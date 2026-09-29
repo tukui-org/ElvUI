@@ -228,11 +228,14 @@ function E:GetNameRealm(name, realm)
 	end
 end
 
-function E:SetColorPickerValues(r, g, b)
-	if E.Modern then
-		_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(r, g, b)
+function E:SetColorPickerRGB(r, g, b)
+	local frame = _G.ColorPickerFrame
+	local content = frame.Content
+	local picker = content and content.ColorPicker
+	if picker then
+		picker:SetColorRGB(r, g, b)
 	else
-		_G.ColorPickerFrame:SetColorRGB(r, g, b)
+		frame:SetColorRGB(r, g, b)
 	end
 end
 
@@ -242,10 +245,10 @@ function E:GrabColorPickerValues(r, g, b)
 	_G.ColorPickerFrame.noColorCallback = true
 
 	local cr, cg, cb = _G.ColorPickerFrame:GetColorRGB() -- grab old values
-	E:SetColorPickerValues(r or 1, g or 1, b or 1) -- set and define the new values
+	E:SetColorPickerRGB(r or 1, g or 1, b or 1) -- set and define the new values
 
 	local sr, sg, sb = _G.ColorPickerFrame:GetColorRGB() -- grab new values
-	if cr then E:SetColorPickerValues(cr, cg, cb) end -- swap back to the old values
+	if cr then E:SetColorPickerRGB(cr, cg, cb) end -- swap back to the old values
 
 	_G.ColorPickerFrame.noColorCallback = nil -- free it up
 
