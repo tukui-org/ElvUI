@@ -350,12 +350,8 @@ function lib:CreateButton(id, name, header, config)
 	-- Store the button in the registry, needed for event and OnUpdate handling
 	ButtonRegistry[button] = true
 
-	-- setup button configuration
+	-- setup button configuration, this runs the initial update and hotkeys too
 	button:UpdateConfig(config)
-
-	-- run an initial update
-	button:UpdateAction()
-	UpdateHotkeys(button)
 
 	button:SetAttribute("LABUseCustomFlyout", UseCustomFlyout)
 
