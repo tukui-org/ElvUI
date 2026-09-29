@@ -144,7 +144,7 @@ do
 	function NP:AuraContainer_RemoveActive(nameplate)
 		for auras in next, nameplate.ActiveContainers do
 			auras:SetEnabled(false)
-			auras:SetShown(false)
+			auras:Hide()
 
 			nameplate.ActiveContainers[auras] = nil
 		end
@@ -167,7 +167,7 @@ do
 				E:Auras_SetUnit(auras, nameplate.__unit)
 
 				auras:SetEnabled(true)
-				auras:SetShown(true)
+				auras:Show()
 			end
 		end
 
@@ -220,6 +220,7 @@ function NP:AuraContainer_ConstructAuraTypes(frameType, name)
 	for which in next, AURA_TYPES do
 		local auras = E:Auras_Create(frame, which)
 		auras:SetEnabled(false)
+		auras:Hide()
 
 		auras.frameType = frameType
 		NP:Configure_Auras(auras, which, true)
