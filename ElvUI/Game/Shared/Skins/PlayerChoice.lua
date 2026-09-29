@@ -9,7 +9,7 @@ local hooksecurefunc = hooksecurefunc
 local data = S:AddCallbackForAddon('Blizzard_PlayerChoice')
 data.toggle = 'playerChoice'
 
-function S:PlayerChoice_SetupButtons(buttons)
+function data:SetupButtons(buttons)
 	if not buttons then return end -- the grid layout template has no button container
 
 	for buttonFrame in buttons.buttonFramePool:EnumerateActive() do
@@ -21,7 +21,7 @@ function S:PlayerChoice_SetupButtons(buttons)
 	end
 end
 
-function S:PlayerChoice_SetupRewards(rewards)
+function data:SetupRewards(rewards)
 	if not rewards then return end -- only the normal option template has a reward list
 
 	local parchmentRemover = E.private.skins.parchmentRemoverEnable
@@ -51,13 +51,13 @@ local function ReskinSpellWidget(spell)
 	end
 end
 
-S.PlayerChoice_TextureKits = {
+data.TextureKits = {
 	jailerstower = true,
 	cypherchoice = true,
 	genericplayerchoice = true,
 }
 
-function S:PlayerChoice_SetupOptions()
+function data:SetupOptions()
 	if not self.IsSkinned then
 		self.BlackBackground:SetAlpha(0)
 		self.Background:SetAlpha(0)
@@ -76,7 +76,7 @@ function S:PlayerChoice_SetupOptions()
 		self.CloseButton.Border:SetAlpha(0)
 	end
 
-	local kit = S.PlayerChoice_TextureKits[self.uiTextureKit]
+	local kit = data.TextureKits[self.uiTextureKit]
 	self:SetTemplate(kit and 'NoBackdrop' or 'Transparent')
 
 	local parchmentRemover = E.private.skins.parchmentRemoverEnable
@@ -100,8 +100,8 @@ function S:PlayerChoice_SetupOptions()
 
 		if option.Artwork and kit then option.Artwork:Size(64) end -- fix size from icon replacements in tower
 
-		S:PlayerChoice_SetupRewards(option.Rewards)
-		S:PlayerChoice_SetupButtons(option.OptionButtonsContainer)
+		data:SetupRewards(option.Rewards)
+		data:SetupButtons(option.OptionButtonsContainer)
 
 		local container = option.WidgetContainer
 		if container and container.widgetFrames then -- only set once a widget set is registered
@@ -122,7 +122,7 @@ function S:PlayerChoice_SetupOptions()
 	end
 end
 
-function S:TorghastButton_StartEffect(effectID)
+function data:TorghastButton_StartEffect(effectID)
 	local controller = self.effectController
 	if not controller then return end
 
@@ -138,12 +138,12 @@ local function SetupTorghastMover()
 	_G.TorghastPlayerChoiceToggleButton:SetHitRectInsets(70, 70, 40, 40)
 
 	-- this fixes the trajectory of the anima orb to stay in correct place
-	hooksecurefunc(_G.TorghastPlayerChoiceToggleButton, 'StartEffect', S.TorghastButton_StartEffect)
+	hooksecurefunc(_G.TorghastPlayerChoiceToggleButton, 'StartEffect', data.TorghastButton_StartEffect)
 end
 
 function S:Blizzard_PlayerChoice()
 	SetupTorghastMover()
 	S:HandleButton(_G.GenericPlayerChoiceToggleButton)
 
-	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', S.PlayerChoice_SetupOptions)
+	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', data.SetupOptions)
 end

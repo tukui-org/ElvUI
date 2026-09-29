@@ -184,7 +184,7 @@ local function SkinMainline()
 	-- Quest Frames
 	local QuestMapFrame = _G.QuestMapFrame
 	QuestMapFrame.VerticalSeparator:Hide()
-	QuestMapFrame:SetScript('OnHide', S.WorldMap_QuestMapHide)
+	QuestMapFrame:SetScript('OnHide', data.QuestMapHide)
 
 	local QuestsFrame = QuestMapFrame.QuestsFrame
 	local DetailsFrame = QuestMapFrame.DetailsFrame
@@ -493,7 +493,7 @@ local function SkinClassic()
 end
 
 -- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
-function S:WorldMap_QuestMapHide()
+function data:QuestMapHide()
 	local QuestModelScene = _G.QuestModelScene
 	if self:GetParent() == QuestModelScene:GetParent() then -- variant of QuestFrame_HideQuestPortrait
 		QuestModelScene:SetParent(nil)

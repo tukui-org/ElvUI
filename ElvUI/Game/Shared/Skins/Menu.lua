@@ -49,7 +49,7 @@ local function SkinFrameAttachments(frame)
 	end
 end
 
-function S:SkinMenu(manager, ownerRegion, menuDescription, anchor)
+function data:SkinMenu(manager, ownerRegion, menuDescription, anchor)
 	local menu = manager:GetOpenMenu()
 	if not menu then return end
 
@@ -57,17 +57,17 @@ function S:SkinMenu(manager, ownerRegion, menuDescription, anchor)
 	menuDescription:AddMenuAcquiredCallback(SkinFrame) -- SubMenus
 end
 
-function S:OpenMenu(ownerRegion, menuDescription, anchor)
-	S:SkinMenu(self, ownerRegion, menuDescription, anchor) -- self is manager (Menu.GetManager)
+function data:OpenMenu(ownerRegion, menuDescription, anchor)
+	data:SkinMenu(self, ownerRegion, menuDescription, anchor) -- self is manager (Menu.GetManager)
 end
 
-function S:OpenContextMenu(ownerRegion, menuDescription)
-	S:SkinMenu(self, ownerRegion, menuDescription) -- self is manager (Menu.GetManager)
+function data:OpenContextMenu(ownerRegion, menuDescription)
+	data:SkinMenu(self, ownerRegion, menuDescription) -- self is manager (Menu.GetManager)
 end
 
 function S:Blizzard_Menu()
 	local manager = _G.Menu.GetManager()
-	hooksecurefunc(manager, 'OpenMenu', S.OpenMenu)
-	hooksecurefunc(manager, 'OpenContextMenu', S.OpenContextMenu)
+	hooksecurefunc(manager, 'OpenMenu', data.OpenMenu)
+	hooksecurefunc(manager, 'OpenContextMenu', data.OpenContextMenu)
 	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', SkinFrameAttachments)
 end

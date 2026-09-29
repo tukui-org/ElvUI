@@ -40,7 +40,7 @@ local sealFrameTextColor = {
 local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames')
 data.toggle = 'quest'
 
-function S:QuestInfoSealFrameText(text)
+function data:QuestInfoSealFrameText(text)
 	if text and text ~= '' then
 		local colorStr, rawText = strmatch(text, '|c[fF][fF](%x%x%x%x%x%x)(.-)|r')
 		if colorStr and rawText then
@@ -120,7 +120,7 @@ local function Quest_GetQuestID()
 	end
 end
 
-function S:QuestInfo_ShowObjectives()
+function data:QuestInfo_ShowObjectives()
 	local objectives = _G.QuestInfoObjectivesFrame.Objectives
 	local index = 0
 
@@ -159,7 +159,7 @@ local function ShowQuestNPCModel(frame, _, _, _, _, x, y) -- vanilla passes no m
 	_G.QuestNPCModel:Point('TOPLEFT', frame, 'TOPRIGHT', (x or 0) + 6, y or 0)
 end
 
-function S:QuestInfoItem_OnClick() -- self is not S
+function data:QuestInfoItem_OnClick() -- self is not data
 	if self.type ~= 'choice' then return end -- Blizzard only highlights choices
 
 	_G.QuestInfoItemHighlight:ClearAllPoints()
@@ -172,7 +172,7 @@ function S:QuestInfoItem_OnClick() -- self is not S
 	self.Name:SetTextColor(1, .8, .1)
 end
 
-function S:QuestInfo_Display(parentFrame) -- self is template, not S
+function data:QuestInfo_Display(parentFrame) -- self is template, not data
 	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
 	for i, questItem in ipairs(rewardsFrame.RewardButtons) do
 		local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
@@ -289,8 +289,8 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 			_G.QuestInfoRewardsFrameHonorReceiveText:SetTextColor(1, 1, 1)
 		end
 
-		S:QuestInfo_ShowObjectives()
-		S:QuestInfo_ShowRequiredMoney()
+		data:QuestInfo_ShowObjectives()
+		data:QuestInfo_ShowRequiredMoney()
 	else
 		_G.QuestInfoTitleHeader:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoDescriptionHeader:SetShadowColor(0, 0, 0, 0)
@@ -307,20 +307,20 @@ function S:QuestInfo_Display(parentFrame) -- self is template, not S
 	end
 end
 
-function S:QuestFrameProgressItems_Update() -- self is not S
+function data:QuestFrameProgressItems_Update() -- self is not data
 	_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
 	_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
 end
 
-function S:QuestFrame_SetTitleTextColor() -- self is fontString
+function data:QuestFrame_SetTitleTextColor() -- self is fontString
 	self:SetTextColor(1, .8, .1)
 end
 
-function S:QuestFrame_SetTextColor() -- self is fontString
+function data:QuestFrame_SetTextColor() -- self is fontString
 	self:SetTextColor(1, 1, 1)
 end
 
-function S:QuestInfo_ShowRequiredMoney()
+function data:QuestInfo_ShowRequiredMoney()
 	local requiredMoney = C_QuestLog_GetRequiredMoney()
 	if requiredMoney > 0 then
 		local moneyText = _G.QuestInfoRequiredMoneyFrame:GetRegions() -- the QuestInfoRequiredMoneyText global is a later, unanchored copy
@@ -629,8 +629,8 @@ function S:BlizzardQuestFrames()
 	QuestInfoItemHighlight:SetBackdropColor(0, 0, 0, 0)
 	QuestInfoItemHighlight:Size(142, 40)
 
-	hooksecurefunc('QuestInfo_Display', S.QuestInfo_Display)
-	hooksecurefunc('QuestInfoItem_OnClick', S.QuestInfoItem_OnClick)
+	hooksecurefunc('QuestInfo_Display', data.QuestInfo_Display)
+	hooksecurefunc('QuestInfoItem_OnClick', data.QuestInfoItem_OnClick)
 
 	if not E.Modern then -- QUEST_ITEM_UPDATE refreshes the rewards without QuestInfo_Display
 		hooksecurefunc('QuestInfo_ShowRewards', UpdateRewardQuality)
@@ -724,10 +724,10 @@ function S:BlizzardQuestFrames()
 
 	local modelTextFrame = E.Modern and _G.QuestModelScene.ModelTextFrame or _G.QuestNPCModelTextFrame
 	if E.private.skins.parchmentRemoverEnable then
-		hooksecurefunc('QuestFrameProgressItems_Update', S.QuestFrameProgressItems_Update)
-		hooksecurefunc('QuestFrame_SetTitleTextColor', S.QuestFrame_SetTitleTextColor)
-		hooksecurefunc('QuestFrame_SetTextColor', S.QuestFrame_SetTextColor)
-		hooksecurefunc(_G.QuestInfoSealFrame.Text, 'SetText', S.QuestInfoSealFrameText)
+		hooksecurefunc('QuestFrameProgressItems_Update', data.QuestFrameProgressItems_Update)
+		hooksecurefunc('QuestFrame_SetTitleTextColor', data.QuestFrame_SetTitleTextColor)
+		hooksecurefunc('QuestFrame_SetTextColor', data.QuestFrame_SetTextColor)
+		hooksecurefunc(_G.QuestInfoSealFrame.Text, 'SetText', data.QuestInfoSealFrameText)
 
 		_G.QuestDetailScrollFrame:SetTemplate('NoBackdrop')
 		_G.QuestProgressScrollFrame:SetTemplate('NoBackdrop')

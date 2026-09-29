@@ -26,7 +26,7 @@ end
 
 do
 	local X, Y = 2, -1
-	function S:Housing_PositionDashboardTab(_, _, _, x, y)
+	function dashboard:PositionDashboardTab(_, _, _, x, y)
 		if x ~= X or y ~= Y then
 			self:ClearAllPoints()
 			self:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', X, Y)
@@ -34,14 +34,14 @@ do
 	end
 end
 
-function S:Housing_PositionTabIcons(point)
+function dashboard:PositionTabIcons(point)
 	if point == 'CENTER' then return end
 
 	self:ClearAllPoints()
 	self:SetPoint('CENTER')
 end
 
-function S:Housing_HandleDashboardTabs(frame)
+function dashboard:HandleDashboardTabs(frame)
 	local tabs = {
 		frame.HouseInfoTabButton,
 		frame.CatalogTabButton,
@@ -57,7 +57,7 @@ function S:Housing_HandleDashboardTabs(frame)
 			tab:ClearAllPoints()
 			tab:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 2, -1)
 
-			hooksecurefunc(tab, 'SetPoint', S.Housing_PositionDashboardTab)
+			hooksecurefunc(tab, 'SetPoint', dashboard.PositionDashboardTab)
 		elseif previous then
 			tab:ClearAllPoints()
 			tab:SetPoint('TOPLEFT', previous, 'BOTTOMLEFT', 0, -3)
@@ -65,7 +65,7 @@ function S:Housing_HandleDashboardTabs(frame)
 
 		tab.Icon:ClearAllPoints()
 		tab.Icon:SetPoint('CENTER')
-		hooksecurefunc(tab.Icon, 'SetPoint', S.Housing_PositionTabIcons)
+		hooksecurefunc(tab.Icon, 'SetPoint', dashboard.PositionTabIcons)
 
 		tab.Background:SetAlpha(0)
 		tab.TabGlow:SetAlpha(0)
@@ -120,7 +120,7 @@ end
 function S:Blizzard_HousingDashboard()
 	local dashboardFrame = _G.HousingDashboardFrame
 	S:HandleFrame(dashboardFrame, true)
-	S:Housing_HandleDashboardTabs(dashboardFrame)
+	dashboard:HandleDashboardTabs(dashboardFrame)
 	S:HandleDropDownBox(dashboardFrame.HouseDropdown.Dropdown)
 
 	local infoContent = dashboardFrame.HouseInfoContent

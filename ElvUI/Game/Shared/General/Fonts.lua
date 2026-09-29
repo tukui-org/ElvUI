@@ -340,7 +340,7 @@ function E:UpdateBlizzardFonts()
 		E:MapFont(FontMap.worldsubzone,			NORMAL, (blizz and 24) or unscale or huge, outline)
 		E:MapFont(FontMap.worldzone,			NORMAL, (blizz and 25) or unscale or mega, outline)
 
-		-- S.QuestInfo_Display will hijack the shadows here when needed
+		-- the Quest skin's QuestInfo_Display hook will hijack the shadows here when needed
 		E:MapFont(FontMap.questsmall,			NORMAL, (blizz and 12) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.questtext,			NORMAL, (blizz and 13) or unscale or medium, 'NONE')
 		E:MapFont(FontMap.questtitle,			NORMAL, (blizz and 18) or unscale or big, 'NONE')

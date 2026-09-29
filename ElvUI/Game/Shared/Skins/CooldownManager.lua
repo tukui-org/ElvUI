@@ -10,7 +10,7 @@ data.toggle = 'cooldownManager'
 
 do
 	local X, Y = 2, -1
-	function S:CooldownManager_PositionViewerTab(_, _, _, x, y)
+	function data:PositionViewerTab(_, _, _, x, y)
 		if x ~= X or y ~= Y then
 			self:ClearAllPoints()
 			self:SetPoint('TOPLEFT', _G.CooldownViewerSettings, 'TOPRIGHT', X, Y)
@@ -18,14 +18,14 @@ do
 	end
 end
 
-function S:CooldownManager_PositionTabIcons(point)
+function data:PositionTabIcons(point)
 	if point == 'CENTER' then return end
 
 	self:ClearAllPoints()
 	self:SetPoint('CENTER')
 end
 
-function S:CooldownManager_HandleHeaders(header)
+function data:HandleHeaders(header)
 	header.HighlightMiddle:SetAlpha(0)
 	header.HighlightLeft:SetAlpha(0)
 	header.HighlightRight:SetAlpha(0)
@@ -38,7 +38,7 @@ function S:CooldownManager_HandleHeaders(header)
 	header.IsSkinned = true
 end
 
-function S:CooldownManager_HandleSettingItem(item)
+function data:HandleSettingItem(item)
 	if item.IsSkinned then return end
 
 	item.Highlight:SetColorTexture(1, 1, 1, .25)
@@ -48,13 +48,13 @@ function S:CooldownManager_HandleSettingItem(item)
 	item.IsSkinned = true
 end
 
-function S:CooldownManager_HandleSettingItemPool()
+function data:HandleSettingItemPool()
 	for frame in self:EnumerateActive() do
-		S:CooldownManager_HandleSettingItem(frame)
+		data:HandleSettingItem(frame)
 	end
 end
 
-function S:CooldownManager_CountText(text)
+function data:CountText(text)
 	local db = E.db.general.cooldownManager
 	text:SetIgnoreParentScale(true)
 	text:ClearAllPoints()
@@ -67,19 +67,19 @@ function S:CooldownManager_CountText(text)
 	end
 end
 
-function S:CooldownManager_UpdateTextContainer(container)
+function data:UpdateTextContainer(container)
 	local applications = container.Applications -- a frame holding the text on icon items, the text itself on bar items
 	if applications then
-		S:CooldownManager_CountText(applications.Applications or applications)
+		data:CountText(applications.Applications or applications)
 	end
 
 	local chargeText = container.ChargeCount and container.ChargeCount.Current
 	if chargeText then
-		S:CooldownManager_CountText(chargeText)
+		data:CountText(chargeText)
 	end
 end
 
-function S:CooldownManager_UpdateTextBar(bar)
+function data:UpdateTextBar(bar)
 	local db = E.db.general.cooldownManager
 	bar.Name:ClearAllPoints()
 	bar.Name:Point(db.namePosition, db.namexOffset, db.nameyOffset)
@@ -100,8 +100,8 @@ function S:CooldownManager_UpdateTextBar(bar)
 	end
 end
 
-function S:CooldownManager_SkinIcon(container, icon)
-	S:CooldownManager_UpdateTextContainer(container)
+function data:SkinIcon(container, icon)
+	data:UpdateTextContainer(container)
 	S:HandleIcon(icon, true)
 
 	for _, region in next, { container:GetRegions() } do
@@ -118,12 +118,12 @@ function S:CooldownManager_SkinIcon(container, icon)
 	end
 end
 
-function S:CooldownManager_SkinBar(frame, bar)
-	S:CooldownManager_UpdateTextBar(bar)
+function data:SkinBar(frame, bar)
+	data:UpdateTextBar(bar)
 
 	local icon = frame.Icon
 	bar:Point('LEFT', icon, 'RIGHT', 3, 0)
-	S:CooldownManager_SkinIcon(icon, icon.Icon)
+	data:SkinIcon(icon, icon.Icon)
 
 	local statusBarTex = bar:GetStatusBarTexture()
 	statusBarTex:SetTexture(E.media.normTex)
@@ -146,46 +146,46 @@ function S:CooldownManager_SkinBar(frame, bar)
 	end
 end
 
-function S:CooldownManager_SkinItemFrame(frame)
+function data:SkinItemFrame(frame)
 	if frame.Cooldown then
 		E:RegisterCooldown(frame.Cooldown, 'cdmanager')
 	end
 
 	if frame.Bar then
-		S:CooldownManager_SkinBar(frame, frame.Bar)
+		data:SkinBar(frame, frame.Bar)
 	elseif frame.Icon then
-		S:CooldownManager_SkinIcon(frame, frame.Icon)
+		data:SkinIcon(frame, frame.Icon)
 	end
 end
 
-function S:CooldownManager_AcquireItemFrame(frame)
-	S:CooldownManager_SkinItemFrame(frame)
+function data:AcquireItemFrame(frame)
+	data:SkinItemFrame(frame)
 end
 
-function S:CooldownManager_HandleViewer(element)
-	hooksecurefunc(element, 'OnAcquireItemFrame', S.CooldownManager_AcquireItemFrame)
+function data:HandleViewer(element)
+	hooksecurefunc(element, 'OnAcquireItemFrame', data.AcquireItemFrame)
 
 	for frame in element.itemFramePool:EnumerateActive() do
-		S:CooldownManager_SkinItemFrame(frame)
+		data:SkinItemFrame(frame)
 	end
 end
 
-function S:CooldownManager_UpdateViewer(element)
+function data:UpdateViewer(element)
 	for frame in element.itemFramePool:EnumerateActive() do
 		if frame.Bar then
-			S:CooldownManager_UpdateTextBar(frame.Bar)
-			S:CooldownManager_UpdateTextContainer(frame.Icon)
+			data:UpdateTextBar(frame.Bar)
+			data:UpdateTextContainer(frame.Icon)
 		elseif frame.Icon then
-			S:CooldownManager_UpdateTextContainer(frame)
+			data:UpdateTextContainer(frame)
 		end
 	end
 end
 
 function S:CooldownManager_UpdateViewers()
-	S:CooldownManager_UpdateViewer(_G.UtilityCooldownViewer)
-	S:CooldownManager_UpdateViewer(_G.BuffBarCooldownViewer)
-	S:CooldownManager_UpdateViewer(_G.BuffIconCooldownViewer)
-	S:CooldownManager_UpdateViewer(_G.EssentialCooldownViewer)
+	data:UpdateViewer(_G.UtilityCooldownViewer)
+	data:UpdateViewer(_G.BuffBarCooldownViewer)
+	data:UpdateViewer(_G.BuffIconCooldownViewer)
+	data:UpdateViewer(_G.EssentialCooldownViewer)
 end
 
 do
@@ -195,28 +195,28 @@ do
 		for _, child in next, { content:GetChildren() } do
 			local header = child.Header
 			if header and not header.IsSkinned then
-				S:CooldownManager_HandleHeaders(child.Header)
+				data:HandleHeaders(child.Header)
 			end
 
 			local itemPool = child.itemPool
 			if itemPool and not hookedItemPools[itemPool] then
 				hookedItemPools[itemPool] = true
 
-				S.CooldownManager_HandleSettingItemPool(itemPool)
+				data.HandleSettingItemPool(itemPool)
 
-				hooksecurefunc(itemPool, 'Acquire', S.CooldownManager_HandleSettingItemPool)
+				hooksecurefunc(itemPool, 'Acquire', data.HandleSettingItemPool)
 			end
 		end
 	end
 
-	function S:CooldownManager_RefreshLayout()
+	function data:RefreshLayout()
 		local CooldownViewer = _G.CooldownViewerSettings
 		RefreshContent(CooldownViewer.CooldownScroll.Content)
 		RefreshContent(CooldownViewer.GroupBuffFilter.Scroll.Content)
 	end
 end
 
-function S:CooldownManager_HandleAbilityTabs(viewer)
+function data:HandleAbilityTabs(viewer)
 	if E.Forever then -- ToDo: Forever
 		for _, tab in next, viewer.TabButtons do
 			S:HandleLargeSideTab(tab)
@@ -232,12 +232,12 @@ function S:CooldownManager_HandleAbilityTabs(viewer)
 				tab:ClearAllPoints()
 				tab:SetPoint('TOPLEFT', viewer, 'TOPRIGHT', 2, -1)
 
-				hooksecurefunc(tab, 'SetPoint', S.CooldownManager_PositionViewerTab)
+				hooksecurefunc(tab, 'SetPoint', data.PositionViewerTab)
 			end
 
 			tab.Icon:ClearAllPoints()
 			tab.Icon:SetPoint('CENTER')
-			hooksecurefunc(tab.Icon, 'SetPoint', S.CooldownManager_PositionTabIcons)
+			hooksecurefunc(tab.Icon, 'SetPoint', data.PositionTabIcons)
 
 			tab.Background:SetAlpha(0)
 			tab.TabGlow:SetAlpha(0)
@@ -260,10 +260,10 @@ function S:CooldownManager_HandleSettings(viewer)
 	S:HandleButton(viewer.UndoButton)
 	S:HandleDropDownBox(viewer.LayoutDropdown)
 
-	S:CooldownManager_HandleAbilityTabs(viewer)
-	S:CooldownManager_RefreshLayout()
+	data:HandleAbilityTabs(viewer)
+	data:RefreshLayout()
 
-	hooksecurefunc(viewer, 'RefreshLayout', S.CooldownManager_RefreshLayout)
+	hooksecurefunc(viewer, 'RefreshLayout', data.RefreshLayout)
 end
 
 function S:Blizzard_CooldownViewer()
@@ -272,10 +272,10 @@ function S:Blizzard_CooldownViewer()
 	E:UpdateClassColor(db.durationFontColor)
 	E:UpdateClassColor(db.countFontColor)
 
-	S:CooldownManager_HandleViewer(_G.UtilityCooldownViewer)
-	S:CooldownManager_HandleViewer(_G.BuffBarCooldownViewer)
-	S:CooldownManager_HandleViewer(_G.BuffIconCooldownViewer)
-	S:CooldownManager_HandleViewer(_G.EssentialCooldownViewer)
+	data:HandleViewer(_G.UtilityCooldownViewer)
+	data:HandleViewer(_G.BuffBarCooldownViewer)
+	data:HandleViewer(_G.BuffIconCooldownViewer)
+	data:HandleViewer(_G.EssentialCooldownViewer)
 	S:CooldownManager_HandleSettings(_G.CooldownViewerSettings)
 
 	local ImportLayoutDialog = _G.CooldownViewerImportLayoutDialog
