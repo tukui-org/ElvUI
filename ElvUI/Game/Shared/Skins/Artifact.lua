@@ -6,11 +6,8 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local artifact = S:AddCallbackForAddon('Blizzard_ArtifactUI')
-artifact.toggle = 'artifact'
-
-local remixArtifact = S:AddCallbackForAddon('Blizzard_RemixArtifactUI')
-remixArtifact.toggle = 'remixArtifact'
+S:AddCallbackForAddon('Blizzard_ArtifactUI', nil, nil, nil, nil, nil, 'artifact')
+S:AddCallbackForAddon('Blizzard_RemixArtifactUI', nil, nil, nil, nil, nil, 'remixArtifact')
 
 local function Selected_SetShown(selected, isActive)
 	local r, g, b

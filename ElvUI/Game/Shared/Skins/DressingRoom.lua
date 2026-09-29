@@ -6,11 +6,9 @@ local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 if E.Modern then
-	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'DressUpFrame')
-	data.toggle = 'dressingroom'
+	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'DressUpFrame', nil, nil, nil, nil, 'dressingroom')
 else
-	local data = S:AddCallbackForAddon('Blizzard_CharacterFrame', 'DressUpFrame')
-	data.toggle = 'dressingroom'
+	S:AddCallbackForAddon('Blizzard_CharacterFrame', 'DressUpFrame', nil, nil, nil, nil, 'dressingroom')
 end
 
 local function SetToggleIcon(button, texture)

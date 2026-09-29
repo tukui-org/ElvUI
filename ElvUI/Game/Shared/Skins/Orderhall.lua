@@ -5,8 +5,7 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_OrderHallUI')
-data.toggle = 'orderhall'
+S:AddCallbackForAddon('Blizzard_OrderHallUI', nil, nil, nil, nil, nil, 'orderhall')
 
 local function RefreshAllData(frame)
 	frame:StripTextures()

@@ -6,8 +6,7 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_Menu')
-data.toggle = 'misc'
+local data = S:AddCallbackForAddon('Blizzard_Menu', nil, nil, nil, nil, nil, 'misc')
 
 local backdrops = {}
 local function SkinFrame(frame)

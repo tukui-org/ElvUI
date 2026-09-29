@@ -5,8 +5,7 @@ local _G = _G
 local gsub, ipairs = gsub, ipairs
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_CovenantSanctum')
-data.toggle = 'covenantSanctum'
+S:AddCallbackForAddon('Blizzard_CovenantSanctum', nil, nil, nil, nil, nil, 'covenantSanctum')
 
 local function HandleIconString(self, text)
 	if not text then text = self:GetText() end

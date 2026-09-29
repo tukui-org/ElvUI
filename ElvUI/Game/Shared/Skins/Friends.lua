@@ -24,11 +24,9 @@ local GUILDMEMBERS_TO_DISPLAY = GUILDMEMBERS_TO_DISPLAY
 local INVITE_RESTRICTION_NONE = 9
 
 if E.Modern then
-	local data = S:AddCallback('FriendsFrame')
-	data.toggle = 'friends'
+	S:AddCallback('FriendsFrame', nil, nil, 'friends')
 else
-	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'FriendsFrame')
-	data.toggle = 'friends'
+	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'FriendsFrame', nil, nil, nil, nil, 'friends')
 end
 
 local function BattleNetFrame_OnEnter(button)

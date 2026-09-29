@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_CooldownViewer')
-data.toggle = 'cooldownManager'
+local data = S:AddCallbackForAddon('Blizzard_CooldownViewer', nil, nil, nil, nil, nil, 'cooldownManager')
 
 do
 	local X, Y = 2, -1

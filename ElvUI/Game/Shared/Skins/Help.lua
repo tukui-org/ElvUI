@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_HelpFrame')
-data.toggle = 'help'
+S:AddCallbackForAddon('Blizzard_HelpFrame', nil, nil, nil, nil, nil, 'help')
 
 function S:Blizzard_HelpFrame()
 	local main = _G.HelpFrame

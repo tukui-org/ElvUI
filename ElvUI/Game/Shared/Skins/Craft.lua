@@ -15,8 +15,7 @@ local GetCraftSelectionIndex = GetCraftSelectionIndex
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local data = S:AddCallbackForAddon('Blizzard_CraftUI')
-data.toggle = 'craft'
+S:AddCallbackForAddon('Blizzard_CraftUI', nil, nil, nil, nil, nil, 'craft')
 
 local function SetSelection(id)
 	if not id then return end

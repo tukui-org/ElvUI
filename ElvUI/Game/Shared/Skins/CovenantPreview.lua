@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_CovenantPreviewUI')
-data.toggle = 'covenantPreview'
+S:AddCallbackForAddon('Blizzard_CovenantPreviewUI', nil, nil, nil, nil, nil, 'covenantPreview')
 
 local function Covenant_TryShow(frame, covenantInfo)
 	if covenantInfo and not frame.IsSkinned then -- Blizzard bails on nil too

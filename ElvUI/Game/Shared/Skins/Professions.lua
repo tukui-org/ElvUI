@@ -5,8 +5,7 @@ local _G = _G
 local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_Professions')
-data.toggle = 'tradeskill'
+S:AddCallbackForAddon('Blizzard_Professions', nil, nil, nil, nil, nil, 'tradeskill')
 
 local function HandleInputBox(box)
 	box:DisableDrawLayer('BACKGROUND')

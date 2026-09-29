@@ -7,8 +7,7 @@ local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_GarrisonUI')
-data.toggle = 'garrison'
+S:AddCallbackForAddon('Blizzard_GarrisonUI', nil, nil, nil, nil, nil, 'garrison')
 
 local function ShowFollower(frame)
 	S:HandleFollowerAbilities(frame)

@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_Settings_Shared')
-data.toggle = 'blizzardOptions'
+S:AddCallbackForAddon('Blizzard_Settings_Shared', nil, nil, nil, nil, nil, 'blizzardOptions')
 
 local function HandleDropdown(option)
 	S:HandleButton(option.Dropdown)

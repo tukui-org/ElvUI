@@ -5,8 +5,7 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local next = next
 
-local data = S:AddCallbackForAddon('Blizzard_CatalogShop')
-data.toggle = 'catalogShop'
+S:AddCallbackForAddon('Blizzard_CatalogShop', nil, nil, nil, nil, nil, 'catalogShop')
 
 function S:Blizzard_CatalogShop()
 	if E.private.skins.blizzard.tooltip then

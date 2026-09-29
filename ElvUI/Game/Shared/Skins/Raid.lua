@@ -18,8 +18,7 @@ local StripAllTextures = {
 	'RaidGroup8',
 }
 
-local data = S:AddCallbackForAddon('Blizzard_RaidUI')
-data.toggle = 'raid'
+S:AddCallbackForAddon('Blizzard_RaidUI', nil, nil, nil, nil, nil, 'raid')
 
 local function RaidPulloutGetFrame()
 	for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do

@@ -16,8 +16,7 @@ local FLAG_PROGRESS_BAR = EVALUATION_TREE_FLAG_PROGRESS_BAR
 
 local blueAchievement = { r = 0.1, g = 0.2, b = 0.3, a = 1 }
 
-local data = S:AddCallbackForAddon('Blizzard_AchievementUI')
-data.toggle = 'achievement'
+S:AddCallbackForAddon('Blizzard_AchievementUI', nil, nil, nil, nil, nil, 'achievement')
 
 local function SetupButtonHighlight(button, backdrop)
 	button:SetHighlightTexture(E.media.normTex)

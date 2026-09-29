@@ -5,8 +5,7 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_Channels')
-data.toggle = 'channels'
+S:AddCallbackForAddon('Blizzard_Channels', nil, nil, nil, nil, nil, 'channels')
 
 local function ButtonHeader_Update(header)
 	local r, g, b = unpack(E.media.rgbvaluecolor)

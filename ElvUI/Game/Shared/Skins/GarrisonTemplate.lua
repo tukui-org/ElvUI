@@ -6,10 +6,9 @@ local hooksecurefunc = hooksecurefunc
 
 local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
 
-local data = S:AddCallbackForAddon('Blizzard_GarrisonTemplates')
-function data.check()
+S:AddCallbackForAddon('Blizzard_GarrisonTemplates', nil, nil, nil, nil, nil, function()
 	return E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall and E.private.skins.blizzard.garrison
-end
+end)
 
 local function ShowFollower(s, followerID)
 	local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)

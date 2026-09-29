@@ -3,11 +3,8 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local playerExperience = S:AddCallbackForAddon('Blizzard_NewPlayerExperience')
-playerExperience.toggle = 'guide'
-
-local playerExperienceGuide = S:AddCallbackForAddon('Blizzard_NewPlayerExperienceGuide')
-playerExperienceGuide.toggle = 'guide'
+S:AddCallbackForAddon('Blizzard_NewPlayerExperience', nil, nil, nil, nil, nil, 'guide')
+S:AddCallbackForAddon('Blizzard_NewPlayerExperienceGuide', nil, nil, nil, nil, nil, 'guide')
 
 function S:Blizzard_NewPlayerExperience()
 	S:HandleButton(_G.KeyboardMouseConfirmButton)

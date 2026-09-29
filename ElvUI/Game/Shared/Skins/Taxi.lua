@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TaxiFrame')
-data.toggle = 'taxi'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TaxiFrame', nil, nil, nil, nil, 'taxi')
 
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)

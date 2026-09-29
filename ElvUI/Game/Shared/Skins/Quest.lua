@@ -37,8 +37,7 @@ local sealFrameTextColor = {
 	['042c54'] = '1c86ee',
 }
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames')
-data.toggle = 'quest'
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames', nil, nil, nil, nil, 'quest')
 
 function data:QuestInfoSealFrameText(text)
 	if text and text ~= '' then

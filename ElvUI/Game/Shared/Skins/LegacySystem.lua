@@ -8,8 +8,7 @@ local hooksecurefunc = hooksecurefunc
 
 -- /run ToggleLegacySystemUI()
 
-local data = S:AddCallbackForAddon('Blizzard_LegacySystem')
-data.toggle = 'legacySystem'
+S:AddCallbackForAddon('Blizzard_LegacySystem', nil, nil, nil, nil, nil, 'legacySystem')
 
 local function HandleProgressBar(bar, background)
 	S:HandleStatusBar(bar)

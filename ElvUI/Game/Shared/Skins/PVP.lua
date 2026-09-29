@@ -26,15 +26,12 @@ local classicCategoryButtonIcons = {
 }
 
 if E.Forever then -- ToDo: Forever
-	local data = S:AddCallbackForAddon('Blizzard_LFGUtil', 'PVPReadyDialog')
-	data.toggle = 'pvp'
+	S:AddCallbackForAddon('Blizzard_LFGUtil', 'PVPReadyDialog', nil, nil, nil, nil, 'pvp')
 else
-	local data = S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog')
-	data.toggle = 'pvp'
+	S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog', nil, nil, nil, nil, 'pvp')
 end
 
-local data = S:AddCallbackForAddon('Blizzard_PVPUI')
-data.toggle = 'pvp'
+S:AddCallbackForAddon('Blizzard_PVPUI', nil, nil, nil, nil, nil, 'pvp')
 
 local function HandleRoleButton(button)
 	local checkbox = button.checkButton

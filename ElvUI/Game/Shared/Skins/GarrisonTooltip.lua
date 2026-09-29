@@ -6,11 +6,8 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local garrisonBase = S:AddCallbackForAddon('Blizzard_GarrisonBase')
-garrisonBase.toggle = 'tooltip'
-
-local shipyard = S:AddCallbackForAddon('Blizzard_GarrisonUI', 'GarrisonShipyardTooltip') -- requires Garrison UI unlike the others
-shipyard.toggle = 'tooltip'
+S:AddCallbackForAddon('Blizzard_GarrisonBase', nil, nil, nil, nil, nil, 'tooltip')
+S:AddCallbackForAddon('Blizzard_GarrisonUI', 'GarrisonShipyardTooltip', nil, nil, nil, nil, 'tooltip') -- requires Garrison UI unlike the others
 
 local function AbilityTooltip(frame)
 	frame.Icon:SetTexCoords()

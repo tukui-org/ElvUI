@@ -2532,22 +2532,22 @@ end
 -- this is used for loading skins that should be executed when the addon loads (including blizzard addons that load later).
 -- please add a given name, non-given-name is specific for elvui core addon.
 -- without a load function the given name is looked up when the skin loads.
-function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position)
+function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position, toggle)
 	if type(name) == 'function' then -- arg2: name is 'given name'; see example above.
-		return S:RegisterSkin(addonName, name, forceLoad, bypass, position)
+		return S:RegisterSkin(addonName, name, forceLoad, bypass, position, nil, toggle)
 	else
-		return S:RegisterSkin(addonName, func, forceLoad, bypass, position, name)
+		return S:RegisterSkin(addonName, func, forceLoad, bypass, position, name, toggle)
 	end
 end
 
 -- nonAddonsToLoad:
 --- this is used for loading skins when our skin init function executes.
 --- please add a given name, non-given-name is specific for elvui core addon.
-function S:AddCallback(name, func, position)
+function S:AddCallback(name, func, position, toggle)
 	if type(name) == 'function' then -- arg1: name is 'given name'
-		return S:RegisterSkin('ElvUI', name, nil, nil, position)
+		return S:RegisterSkin('ElvUI', name, nil, nil, position, nil, toggle)
 	else
-		return S:RegisterSkin('ElvUI', func, nil, nil, position, name)
+		return S:RegisterSkin('ElvUI', func, nil, nil, position, name, toggle)
 	end
 end
 
@@ -2555,35 +2555,33 @@ function S:LoadSkin(info)
 	local func = info.func or S[info.name] or S[info.addonName]
 	if not func then return end -- we need this
 
-	local data = info.data
-	if data then -- while ideally it exists it is not required
-		if data.check then -- custom override to specifically allow
-			local ok, allow = E:CallLoadFunc(data.check)
-			if not (ok and allow) then return end
-		elseif data.toggle then -- regular check which is used for almost all blizzard skins
-			local blizzard = E.private.skins.blizzard
-			if not (blizzard.enable and blizzard[data.toggle]) then return end
-		end
+	if info.check then -- custom override to specifically allow
+		local ok, allow = E:CallLoadFunc(info.check)
+		if not (ok and allow) then return end
+	elseif info.toggle then -- regular check which is used for almost all blizzard skins
+		local blizzard = E.private.skins.blizzard
+		if not (blizzard.enable and blizzard[info.toggle]) then return end
 	end
 
-	E:CallLoadFunc(func, S, data) -- only allowed when checks above pass
+	E:CallLoadFunc(func, S, info.data) -- only allowed when checks above pass
 end
 
-function S:RegisterSkin(addonName, func, forceLoad, bypass, position, name)
-	local key, data = name or addonName, {}
+function S:RegisterSkin(addonName, func, forceLoad, bypass, position, name, toggle)
+	local key, info = name or addonName, {}
 	if key and not S.addonStorage[key] then
-		S.addonStorage[key] = data -- for plugins
+		S.addonStorage[key] = info -- for plugins
 	end
 
-	local info = {
-		addonName = addonName,
-		forceLoad = forceLoad,
-		position = position,
-		bypass = bypass,
-		func = func,
-		name = name, -- can be the load func
-		data = data -- this is a storage object
-	}
+	local data = {} -- for specific skin function exports
+	info.addonName = addonName
+	info.forceLoad = forceLoad
+	info.position = position
+	info.bypass = bypass
+	info.func = func
+	info.name = name -- can be the load func
+	info.check = type(toggle) == 'function' and toggle or nil
+	info.toggle = not info.check and toggle or nil
+	info.data = data
 
 	if bypass then
 		S.allowBypass[addonName] = true

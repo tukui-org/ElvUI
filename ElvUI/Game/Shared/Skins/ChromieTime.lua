@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_ChromieTimeUI')
-data.toggle = 'chromieTime'
+S:AddCallbackForAddon('Blizzard_ChromieTimeUI', nil, nil, nil, nil, nil, 'chromieTime')
 
 function S:Blizzard_ChromieTimeUI()
 	local frame = _G.ChromieTimeFrame

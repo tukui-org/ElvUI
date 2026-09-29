@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_EditMode')
-data.toggle = 'editor'
+S:AddCallbackForAddon('Blizzard_EditMode', nil, nil, nil, nil, nil, 'editor')
 
 local function HandleCheckBoxMini(checkbox, region)
 	if region:GetTexture() == 130751 then

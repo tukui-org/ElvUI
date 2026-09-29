@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_GenericTraitUI')
-data.toggle = 'genericTrait'
+S:AddCallbackForAddon('Blizzard_GenericTraitUI', nil, nil, nil, nil, nil, 'genericTrait')
 
 function S:Blizzard_GenericTraitUI()
 	local GenericTrait = _G.GenericTraitFrame

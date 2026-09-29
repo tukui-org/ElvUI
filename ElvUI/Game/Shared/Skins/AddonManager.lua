@@ -7,8 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local GetAddOnInfo = C_AddOns.GetAddOnInfo
 
-local data = S:AddCallbackForAddon('Blizzard_AddOnList')
-data.toggle = 'addonManager'
+S:AddCallbackForAddon('Blizzard_AddOnList', nil, nil, nil, nil, nil, 'addonManager')
 
 local function HandleButton(entry, treeNode)
 	if not entry.IsSkinned then

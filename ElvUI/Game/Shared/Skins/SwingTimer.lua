@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
-local data = S:AddCallbackForAddon('Blizzard_SwingTimer')
-data.toggle = 'swingTimer'
+S:AddCallbackForAddon('Blizzard_SwingTimer', nil, nil, nil, nil, nil, 'swingTimer')
 
 -- SwingTimerFrameTemplate
 local function HandleSwingTimer(frame)

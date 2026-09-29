@@ -5,8 +5,7 @@ local _G = _G
 
 local MAX_TEAM_BORDERS = MAX_TEAM_BORDERS
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArenaRegistrar')
-data.toggle = 'arenaRegistrar'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArenaRegistrar', nil, nil, nil, nil, 'arenaRegistrar')
 
 function S:SkinArenaRegistrar()
 	local ArenaRegistrarFrame = _G.ArenaRegistrarFrame

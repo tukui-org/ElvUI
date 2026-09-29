@@ -7,8 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
 
-local data = S:AddCallbackForAddon('Blizzard_ChatFrame')
-data.toggle = 'blizzardOptions'
+S:AddCallbackForAddon('Blizzard_ChatFrame', nil, nil, nil, nil, nil, 'blizzardOptions')
 
 local function UpdateCheckboxes(frame)
 	if not FCF_GetCurrentChatFrame() then return end

@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local select = select
 
-local data = S:AddCallbackForAddon('Blizzard_AlliedRacesUI')
-data.toggle = 'alliedRaces'
+S:AddCallbackForAddon('Blizzard_AlliedRacesUI', nil, nil, nil, nil, nil, 'alliedRaces')
 
 function S:Blizzard_AlliedRacesUI()
 	local AlliedRacesFrame = _G.AlliedRacesFrame

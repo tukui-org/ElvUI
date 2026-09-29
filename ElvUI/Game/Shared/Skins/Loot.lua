@@ -23,8 +23,7 @@ local LOOT, ITEMS = LOOT, ITEMS
 local fullFillWidth = 234 -- picked by Blizzard in LootHistory.lua
 local fullDropWidth = fullFillWidth + 30 -- some padding to let it match (via the skinning)
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame')
-data.toggle = 'loot'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame', nil, nil, nil, nil, 'loot')
 
 local function LootHistoryElements(button) -- headers and padding rows share the scroll box
 	local item = button.Item

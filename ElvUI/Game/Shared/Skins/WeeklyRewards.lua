@@ -7,8 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local ITEMQUALITY_EPIC = Enum.ItemQuality.Epic or 4
 
-local data = S:AddCallbackForAddon('Blizzard_WeeklyRewards')
-data.toggle = 'weeklyRewards'
+S:AddCallbackForAddon('Blizzard_WeeklyRewards', nil, nil, nil, nil, nil, 'weeklyRewards')
 
 -- Credits Siweia | AuroraClassic
 

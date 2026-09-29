@@ -15,8 +15,7 @@ local C_PetBattles_GetAuraInfo = C_PetBattles.GetAuraInfo
 local C_PetBattles_GetBreedQuality = C_PetBattles.GetBreedQuality
 local BattlePetOwner_Weather = Enum.BattlePetOwner.Weather
 
-local data = S:AddCallback('PetBattleFrame')
-data.toggle = 'petbattleui'
+S:AddCallback('PetBattleFrame', nil, nil, 'petbattleui')
 
 local function SkinPetButton(frame, bf)
 	if not frame.backdrop then

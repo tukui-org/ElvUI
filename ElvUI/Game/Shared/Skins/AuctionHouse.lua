@@ -8,11 +8,9 @@ local CreateFrame = CreateFrame
 local GetAuctionSellItemInfo = GetAuctionSellItemInfo
 
 if E.Modern or E.Mists then
-	local data = S:AddCallbackForAddon('Blizzard_AuctionHouseUI')
-	data.toggle = 'auctionhouse'
+	S:AddCallbackForAddon('Blizzard_AuctionHouseUI', nil, nil, nil, nil, nil, 'auctionhouse')
 else
-	local data = S:AddCallbackForAddon('Blizzard_AuctionUI', 'Blizzard_AuctionHouseUI')
-	data.toggle = 'auctionhouse'
+	S:AddCallbackForAddon('Blizzard_AuctionUI', 'Blizzard_AuctionHouseUI', nil, nil, nil, nil, 'auctionhouse')
 end
 
 -- Credits: siweia (AuroraClassic)

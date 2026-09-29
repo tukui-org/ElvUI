@@ -6,8 +6,7 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 
-local data = S:AddCallbackForAddon('Blizzard_ProfessionsCustomerOrders')
-data.toggle = 'tradeskill'
+S:AddCallbackForAddon('Blizzard_ProfessionsCustomerOrders', nil, nil, nil, nil, nil, 'tradeskill')
 
 -- Custom Orders (Credits: siweia - NDUI)
 

@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs = pairs
 
-local data = S:AddCallbackForAddon('Blizzard_PVPMatch')
-data.toggle = 'bgscore'
+S:AddCallbackForAddon('Blizzard_PVPMatch', nil, nil, nil, nil, nil, 'bgscore')
 
 function S:Blizzard_PVPMatch()
 	-- Macro to show the PVPMatchScoreboard: /run PVPMatchScoreboard:Show()

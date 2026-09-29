@@ -9,11 +9,9 @@ local GetBattlefieldScore = GetBattlefieldScore
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
 
+S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore', nil, nil, nil, nil, 'bgscore')
+
 local myName = format('> %s <', E.myname)
-
-local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore')
-data.toggle = 'bgscore'
-
 local function UpdateScore()
 	local inArena = IsActiveBattlefieldArena()
 	local offset = FauxScrollFrame_GetOffset(_G.WorldStateScoreScrollFrame)

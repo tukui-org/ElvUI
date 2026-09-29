@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TabardFrame')
-data.toggle = 'tabard'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TabardFrame', nil, nil, nil, nil, 'tabard')
 
 local function TabardRotateLeft_SetPoint(button, _, _, _, _, _, forced)
 	if forced then return end

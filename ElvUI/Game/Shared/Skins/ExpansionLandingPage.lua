@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_ExpansionLandingPage')
-data.toggle = 'expansionLanding'
+S:AddCallbackForAddon('Blizzard_ExpansionLandingPage', nil, nil, nil, nil, nil, 'expansionLanding')
 
 -- the expansion overlay (MidnightLandingOverlayTemplate) is created on the first QUEST_LOG_UPDATE
 local function RefreshExpansionOverlay(frame)

@@ -6,8 +6,7 @@ if not E.ClassicSOD then return end
 local _G = _G
 local next = next
 
-local data = S:AddCallbackForAddon('Blizzard_EngravingUI')
-data.toggle = 'engraving'
+S:AddCallbackForAddon('Blizzard_EngravingUI', nil, nil, nil, nil, nil, 'engraving')
 
 function S:Blizzard_EngravingUI()
 	local frame = _G.EngravingFrame

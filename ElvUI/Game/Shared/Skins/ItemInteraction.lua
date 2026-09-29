@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_ItemInteractionUI')
-data.toggle = 'itemInteraction'
+S:AddCallbackForAddon('Blizzard_ItemInteractionUI', nil, nil, nil, nil, nil, 'itemInteraction')
 
 function S:Blizzard_ItemInteractionUI()
 	local mainFrame = _G.ItemInteractionFrame

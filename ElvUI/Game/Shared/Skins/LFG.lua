@@ -27,24 +27,18 @@ local groupButtonIcons = {
 }
 
 if E.Retail or E.Mists or E.Wrath then -- tbc and vanilla load a Blizzard_GroupFinder without PVEFrame
-	local data = S:AddCallbackForAddon('Blizzard_GroupFinder', 'LookingForGroupFrames')
-	data.toggle = 'lfg'
+	S:AddCallbackForAddon('Blizzard_GroupFinder', 'LookingForGroupFrames', nil, nil, nil, nil, 'lfg')
 else -- LookingForGroupFrames skins the role poll popup on the flavors above
-	local vanillaStyle = S:AddCallbackForAddon('Blizzard_GroupFinder_VanillaStyle')
-	vanillaStyle.toggle = 'lfg'
-
-	local rolePoll = S:AddCallbackForAddon('Blizzard_FrameXML', 'RolePollPopup')
-	rolePoll.toggle = 'lfg'
+	S:AddCallbackForAddon('Blizzard_GroupFinder_VanillaStyle', nil, nil, nil, nil, nil, 'lfg')
+	S:AddCallbackForAddon('Blizzard_FrameXML', 'RolePollPopup', nil, nil, nil, nil, 'lfg')
 end
 
 if E.Forever then -- ToDo: Forever
-	local data = S:AddCallbackForAddon('Blizzard_LFGUtil')
-	data.toggle = 'lfg'
+	S:AddCallbackForAddon('Blizzard_LFGUtil', nil, nil, nil, nil, nil, 'lfg')
 end
 
 if E.Retail or E.Mists then
-	local data = S:AddCallbackForAddon('Blizzard_ChallengesUI')
-	data.toggle = 'lfg'
+	S:AddCallbackForAddon('Blizzard_ChallengesUI', nil, nil, nil, nil, nil, 'lfg')
 end
 
 local function LFDQueueFrameRoleButtonIconOnShow(frame)

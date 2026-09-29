@@ -12,8 +12,7 @@ local SessionCommand_ButtonAtlases = QuestSessionCommand and { -- only read by t
 	[QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
 }
 
-local data = S:AddCallback('WorldMapFrame')
-data.toggle = 'worldmap'
+local data = S:AddCallback('WorldMapFrame', nil, nil, 'worldmap')
 
 local function UpdateExecuteCommandAtlases(frame, command)
 	frame.ExecuteSessionCommand:SetNormalTexture(E.ClearTexture)

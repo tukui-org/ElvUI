@@ -6,8 +6,7 @@ local _G = _G
 local pairs = pairs
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_PlayerChoice')
-data.toggle = 'playerChoice'
+local data = S:AddCallbackForAddon('Blizzard_PlayerChoice', nil, nil, nil, nil, nil, 'playerChoice')
 
 function data:SetupButtons(buttons)
 	if not buttons then return end -- the grid layout template has no button container

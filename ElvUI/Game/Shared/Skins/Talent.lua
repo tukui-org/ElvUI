@@ -12,12 +12,10 @@ local C_SpecializationInfo_GetSpecializationInfo = C_SpecializationInfo.GetSpeci
 
 local MAX_NUM_TALENTS = MAX_NUM_TALENTS
 
-local data = S:AddCallbackForAddon('Blizzard_TalentUI')
-data.toggle = 'talent'
+S:AddCallbackForAddon('Blizzard_TalentUI', nil, nil, nil, nil, nil, 'talent')
 
 if E.Mists or E.Wrath then
-	local data = S:AddCallbackForAddon('Blizzard_GlyphUI')
-	data.toggle = 'talent'
+	S:AddCallbackForAddon('Blizzard_GlyphUI', nil, nil, nil, nil, nil, 'talent')
 end
 
 local function ClearBackdrop(backdrop)

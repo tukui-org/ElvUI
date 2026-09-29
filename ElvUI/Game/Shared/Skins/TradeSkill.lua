@@ -12,8 +12,7 @@ local GetTradeSkillReagentInfo = GetTradeSkillReagentInfo
 local GetTradeSkillReagentItemLink = GetTradeSkillReagentItemLink
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local data = S:AddCallbackForAddon('Blizzard_TradeSkillUI')
-data.toggle = 'tradeskill'
+S:AddCallbackForAddon('Blizzard_TradeSkillUI', nil, nil, nil, nil, nil, 'tradeskill')
 
 local function SetSelection(id)
 	local _, skillType = GetTradeSkillInfo(id)

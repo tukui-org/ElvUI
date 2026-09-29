@@ -19,8 +19,7 @@ local trackers = {
 	_G.InitiativeTasksObjectiveTracker
 }
 
-local data = S:AddCallbackForAddon('Blizzard_ObjectiveTracker')
-data.toggle = 'objectiveTracker'
+S:AddCallbackForAddon('Blizzard_ObjectiveTracker', nil, nil, nil, nil, nil, 'objectiveTracker')
 
 local function SkinOjectiveTrackerHeaders(header)
 	header.Background:SetAtlas(nil)

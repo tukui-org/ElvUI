@@ -5,8 +5,7 @@ local _G = _G
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_TrainerUI')
-data.toggle = 'trainer'
+S:AddCallbackForAddon('Blizzard_TrainerUI', nil, nil, nil, nil, nil, 'trainer')
 
 -- TrainerUICategoryTemplate, keep the Blizzard plus / minus
 local function HandleCategory(button)

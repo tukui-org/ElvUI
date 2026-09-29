@@ -11,11 +11,9 @@ local UnitExists = UnitExists
 local HasPetUI = HasPetUI
 
 if E.Modern then
-	local data = S:AddCallbackForAddon('Blizzard_StableUI')
-	data.toggle = 'stable'
+	S:AddCallbackForAddon('Blizzard_StableUI', nil, nil, nil, nil, nil, 'stable')
 else
-	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetStableFrame')
-	data.toggle = 'stable'
+	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetStableFrame', nil, nil, nil, nil, 'stable')
 end
 
 local function AbilitiesList_Layout(list)

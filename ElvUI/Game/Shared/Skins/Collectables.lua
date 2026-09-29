@@ -17,10 +17,9 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
 
-local data = S:AddCallbackForAddon('Blizzard_Collections')
-function data.check() -- every section checks its own toggle
-	return E.private.skins.blizzard.enable
-end
+S:AddCallbackForAddon('Blizzard_Collections', nil, nil, nil, nil, nil, function()
+	return E.private.skins.blizzard.enable -- every section checks its own toggle
+end)
 
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)

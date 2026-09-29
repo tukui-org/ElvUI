@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'TalkingHead')
-data.toggle = 'talkinghead'
+S:AddCallbackForAddon('Blizzard_FrameXML', 'TalkingHead', nil, nil, nil, nil, 'talkinghead')
 
 --Just some test code
 --[[

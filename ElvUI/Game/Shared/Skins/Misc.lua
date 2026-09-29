@@ -7,8 +7,7 @@ local next = next
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallback('BlizzardMiscFrames')
-data.toggle = 'misc'
+S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')
 
 local function FixReadyCheckFrame(frame)
 	if frame.initiator and E:UnitIsUnit('player', frame.initiator) then

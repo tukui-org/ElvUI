@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_MajorFactionRenown')
-data.toggle = 'majorFactions'
+S:AddCallbackForAddon('Blizzard_MajorFactionRenown', nil, nil, nil, nil, nil, 'majorFactions')
 
 local function SetupMajorFaction(frame)
 	if frame.Divider then frame.Divider:Hide() end

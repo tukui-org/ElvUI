@@ -56,16 +56,13 @@ local ResistanceCoords = {
 }
 
 if E.Modern then
-	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game')
-	data.toggle = 'character'
+	S:AddCallbackForAddon('Blizzard_UIPanels_Game', nil, nil, nil, nil, nil, 'character')
 else
-	local data = S:AddCallback('Blizzard_UIPanels_Game')
-	data.toggle = 'character'
+	S:AddCallback('Blizzard_UIPanels_Game', nil, nil, 'character')
 end
 
 if E.Forever then -- Forever only addon
-	local data = S:AddCallbackForAddon('Blizzard_Statistics')
-	data.toggle = 'character'
+	S:AddCallbackForAddon('Blizzard_Statistics', nil, nil, nil, nil, nil, 'character')
 end
 
 local function UpdateCollapse(texture, atlas)

@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_ObliterumUI')
-data.toggle = 'obliterum'
+S:AddCallbackForAddon('Blizzard_ObliterumUI', nil, nil, nil, nil, nil, 'obliterum')
 
 function S:Blizzard_ObliterumUI()
 	local ObliterumForgeFrame = _G.ObliterumForgeFrame

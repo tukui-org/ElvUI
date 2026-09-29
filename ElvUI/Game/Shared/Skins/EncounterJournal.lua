@@ -19,8 +19,7 @@ local lootQuality = {
 	['loottab-set-itemborder-artifact'] = 6,
 }
 
-local data = S:AddCallbackForAddon('Blizzard_EncounterJournal')
-data.toggle = 'encounterjournal'
+S:AddCallbackForAddon('Blizzard_EncounterJournal', nil, nil, nil, nil, nil, 'encounterjournal')
 
 local function HandleButton(btn, strip, ...)
 	S:HandleButton(btn, strip, ...)

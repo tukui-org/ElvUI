@@ -7,8 +7,7 @@ local hooksecurefunc = hooksecurefunc
 local GetItemIconByID = C_Item.GetItemIconByID
 local GetReforgeItemInfo = C_Reforge.GetReforgeItemInfo
 
-local data = S:AddCallbackForAddon('Blizzard_ReforgingUI')
-data.toggle = 'reforge'
+S:AddCallbackForAddon('Blizzard_ReforgingUI', nil, nil, nil, nil, nil, 'reforge')
 
 local function ReforgingFrameUpdate()
 	local _, itemID, _, quality = GetReforgeItemInfo()

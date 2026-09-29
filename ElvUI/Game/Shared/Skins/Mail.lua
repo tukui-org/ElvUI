@@ -5,11 +5,9 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 if E.Modern then
-	local data = S:AddCallbackForAddon('Blizzard_MailFrame')
-	data.toggle = 'mail'
+	S:AddCallbackForAddon('Blizzard_MailFrame', nil, nil, nil, nil, nil, 'mail')
 else
-	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'Blizzard_MailFrame')
-	data.toggle = 'mail'
+	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'Blizzard_MailFrame', nil, nil, nil, nil, 'mail')
 end
 
 local function Skin_SendMail()

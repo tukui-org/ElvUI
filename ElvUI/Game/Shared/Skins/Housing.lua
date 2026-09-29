@@ -5,8 +5,6 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local dashboard = S:AddCallbackForAddon('Blizzard_HousingDashboard')
-dashboard.toggle = 'housing'
 
 for _, addonName in next, {
 	'Blizzard_HouseList',
@@ -20,9 +18,10 @@ for _, addonName in next, {
 	'Blizzard_HousingModelPreview',
 	'Blizzard_HousingBlueprint',
 } do
-	local data = S:AddCallbackForAddon(addonName)
-	data.toggle = 'housing'
+	S:AddCallbackForAddon(addonName, nil, nil, nil, nil, nil, 'housing')
 end
+
+local dashboard = S:AddCallbackForAddon('Blizzard_HousingDashboard', nil, nil, nil, nil, nil, 'housing')
 
 do
 	local X, Y = 2, -1

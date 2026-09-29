@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinBattlefield')
-data.toggle = 'battlefield'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinBattlefield', nil, nil, nil, nil, 'battlefield')
 
 function S:SkinBattlefield()
 	S:HandleFrame(_G.BattlefieldFrame, true, nil, 11, -12, -32, 76)

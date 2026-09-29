@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local barbershop = S:AddCallbackForAddon('Blizzard_BarbershopUI')
-barbershop.toggle = 'barber'
+S:AddCallbackForAddon('Blizzard_BarbershopUI', nil, nil, nil, nil, nil, 'barber')
 
 -- classic has this addon too, but without CharCustomizeFrame
 if E.Modern then

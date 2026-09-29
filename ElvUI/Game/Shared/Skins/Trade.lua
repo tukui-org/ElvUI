@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local CreateFrame = CreateFrame
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TradeFrame')
-data.toggle = 'trade'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TradeFrame', nil, nil, nil, nil, 'trade')
 
 local function HandleTradeItem(item, button, icon, name)
 	button:StripTextures()

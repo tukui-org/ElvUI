@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local CreateFrame = CreateFrame
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArena')
-data.toggle = 'arena'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SkinArena', nil, nil, nil, nil, 'arena')
 
 function S:SkinArena()
 	local ArenaFrame = _G.ArenaFrame
