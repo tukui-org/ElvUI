@@ -8,7 +8,12 @@ function S:Blizzard_QuestTimer()
 
 	local QuestTimerFrame = _G.QuestTimerFrame
 	S:HandleFrame(QuestTimerFrame, true)
-	QuestTimerFrame.Header:StripTextures()
+
+	if E.Modern then
+		QuestTimerFrame.Header:StripTextures()
+	else
+		_G.QuestTimerHeader:Point('TOP', 1, 8)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_QuestTimer')

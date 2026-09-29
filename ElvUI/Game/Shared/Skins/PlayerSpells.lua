@@ -6,6 +6,8 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local GetSpellTexture = C_Spell.GetSpellTexture
+
 local function HandleTalentFrameDialog(dialog)
 	dialog:StripTextures()
 	dialog:CreateBackdrop('Transparent')
@@ -21,6 +23,28 @@ local function HandleTalentFrameDialog(dialog)
 	S:HandleEditBox(editbox)
 	editbox.backdrop:Point('TOPLEFT', -5, -10)
 	editbox.backdrop:Point('BOTTOMRIGHT', 5, 10)
+end
+
+local function UpdateSpecFrame(frame)
+	for specContentFrame in frame.SpecContentFramePool:EnumerateActive() do
+		if not specContentFrame.IsSkinned then
+			S:HandleButton(specContentFrame.ActivateButton)
+
+			for button in specContentFrame.SpellButtonPool:EnumerateActive() do
+				button.Ring:Hide()
+				button.CircleMask:Hide()
+
+				local texture = GetSpellTexture(button.spellID)
+				if texture then
+					button.Icon:SetTexture(texture)
+				end
+
+				S:HandleIcon(button.Icon, true)
+			end
+
+			specContentFrame.IsSkinned = true
+		end
+	end
 end
 
 local function HandleTreeHeaders(frame)
@@ -134,50 +158,78 @@ function S:Blizzard_PlayerSpells()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
 	S:HandlePortraitFrame(PlayerSpellsFrame)
 
+	-- Specialisation
+	if E.Retail then -- empty stub on camelot
+		hooksecurefunc(PlayerSpellsFrame.SpecFrame, 'UpdateSpecFrame', UpdateSpecFrame)
+	end
+
 	-- TalentsFrame
 	local TalentsFrame = PlayerSpellsFrame.TalentsFrame
-	TalentsFrame.Background:SetAlpha(0)
-	TalentsFrame.BackgroundBorder:SetAlpha(0)
-	TalentsFrame.DividerHorizontalLeft:SetAlpha(0)
-	TalentsFrame.DividerHorizontalRight:SetAlpha(0)
-	TalentsFrame.DividerVerticalLeft:SetAlpha(0)
-	TalentsFrame.DividerVerticalRight:SetAlpha(0)
+	if E.Forever then -- camelot loads its own talent frame template
+		TalentsFrame.Background:SetAlpha(0)
+		TalentsFrame.BackgroundBorder:SetAlpha(0)
+		TalentsFrame.DividerHorizontalLeft:SetAlpha(0)
+		TalentsFrame.DividerHorizontalRight:SetAlpha(0)
+		TalentsFrame.DividerVerticalLeft:SetAlpha(0)
+		TalentsFrame.DividerVerticalRight:SetAlpha(0)
+	else
+		TalentsFrame.BlackBG:SetAlpha(0)
+		TalentsFrame.BottomBar:SetAlpha(0)
+	end
 
 	S:HandleButton(TalentsFrame.ApplyButton)
 	S:HandleDropDownBox(TalentsFrame.LoadSystem.Dropdown)
 
 	S:HandleButton(TalentsFrame.InspectCopyButton)
-	S:HandleButton(TalentsFrame.ActiveSpec.ActivateButton)
 
-	local CurrencyDisplay = TalentsFrame.ClassCurrencyDisplay
-	CurrencyDisplay.Border:SetAlpha(0)
-	CurrencyDisplay.CurrentAmountContainer:CreateBackdrop()
-	CurrencyDisplay.UnspentLabel:FontTemplate(nil, 14)
-	CurrencyDisplay.UnspentLabel:ClearAllPoints()
-	CurrencyDisplay.UnspentLabel:Point('RIGHT', CurrencyDisplay.CurrentAmountContainer, 'LEFT', -6, 0)
-	CurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
+	if E.Forever then -- camelot talent frame
+		S:HandleButton(TalentsFrame.ActiveSpec.ActivateButton)
 
-	-- Primary / Secondary spec tabs
-	for _, tab in next, { TalentsFrame.TabSystem:GetChildren() } do
-		S:HandleTab(tab)
+		local CurrencyDisplay = TalentsFrame.ClassCurrencyDisplay
+		CurrencyDisplay.Border:SetAlpha(0)
+		CurrencyDisplay.CurrentAmountContainer:CreateBackdrop()
+		CurrencyDisplay.UnspentLabel:FontTemplate(nil, 14)
+		CurrencyDisplay.UnspentLabel:ClearAllPoints()
+		CurrencyDisplay.UnspentLabel:Point('RIGHT', CurrencyDisplay.CurrentAmountContainer, 'LEFT', -6, 0)
+		CurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
+
+		-- Primary / Secondary spec tabs
+		for _, tab in next, { TalentsFrame.TabSystem:GetChildren() } do
+			S:HandleTab(tab)
+		end
+
+		hooksecurefunc(TalentsFrame, 'RefreshTreeHeaders', HandleTreeHeaders)
+		hooksecurefunc(TalentsFrame, 'UpdateButtonFrameLevel', UpdateButtonFrameLevel)
+	else
+		TalentsFrame.ClassCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
+		TalentsFrame.ClassCurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
+
+		TalentsFrame.SpecCurrencyDisplay.CurrencyLabel:FontTemplate(nil, 18)
+		TalentsFrame.SpecCurrencyDisplay.CurrentAmountContainer.CurrencyAmount:FontTemplate(nil, 26)
 	end
-
-	hooksecurefunc(TalentsFrame, 'RefreshTreeHeaders', HandleTreeHeaders)
-	hooksecurefunc(TalentsFrame, 'UpdateButtonFrameLevel', UpdateButtonFrameLevel)
 
 	S:HandleEditBox(TalentsFrame.SearchBox)
 	TalentsFrame.SearchBox.backdrop:Point('TOPLEFT', -4, -5)
 	TalentsFrame.SearchBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 
-	local SearchOptions = TalentsFrame.SearchOptionsDropdown
-	S:HandleNextPrevButton(SearchOptions, 'down', nil, true)
-	SearchOptions:SetTemplate()
-	SearchOptions:ClearAllPoints()
-	SearchOptions:Point('LEFT', TalentsFrame.SearchBox, 'RIGHT', 3, 0)
-	SearchOptions.Arrow:SetAlpha(0)
+	if E.Forever then -- camelot talent frame
+		local SearchOptions = TalentsFrame.SearchOptionsDropdown
+		S:HandleNextPrevButton(SearchOptions, 'down', nil, true)
+		SearchOptions:SetTemplate()
+		SearchOptions:ClearAllPoints()
+		SearchOptions:Point('LEFT', TalentsFrame.SearchBox, 'RIGHT', 3, 0)
+		SearchOptions.Arrow:SetAlpha(0)
+	end
 
 	TalentsFrame.SearchPreviewContainer:StripTextures()
 	TalentsFrame.SearchPreviewContainer:CreateBackdrop('Transparent')
+
+	if E.Retail then -- no PvP talents on camelot
+		TalentsFrame.PvPTalentList:StripTextures()
+		TalentsFrame.PvPTalentList:CreateBackdrop()
+		TalentsFrame.PvPTalentList.backdrop:SetFrameStrata(PlayerSpellsFrame.TalentsFrame.PvPTalentList:GetFrameStrata())
+		TalentsFrame.PvPTalentList.backdrop:SetFrameLevel(2000)
+	end
 
 	local TabSystem = PlayerSpellsFrame.TabSystem
 	for _, tab in next, { TabSystem:GetChildren() } do
@@ -217,13 +269,17 @@ function S:Blizzard_PlayerSpells()
 	local SpellBookFrame = PlayerSpellsFrame.SpellBookFrame
 	S:HandleMaxMinFrame(PlayerSpellsFrame.MaxMinButtonFrame)
 	S:HandleEditBox(SpellBookFrame.SearchBox)
-	SpellBookFrame.SearchBox:Height(20)
-	S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
-	SpellBookFrame.SettingsDropdown:SetTemplate()
-	SpellBookFrame.SettingsDropdown:ClearAllPoints()
-	SpellBookFrame.SettingsDropdown:Point('TOPRIGHT', SpellBookFrame, 'TOPRIGHT', -30, -23)
-	SpellBookFrame.SearchBox:ClearAllPoints()
-	SpellBookFrame.SearchBox:Point('RIGHT', SpellBookFrame.SettingsDropdown, 'LEFT', -5, 0)
+
+	if E.Forever then -- arrow dropdown on camelot, gear icon on Retail
+		SpellBookFrame.SearchBox:Height(20)
+		S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
+		SpellBookFrame.SettingsDropdown:SetTemplate()
+		SpellBookFrame.SettingsDropdown:ClearAllPoints()
+		SpellBookFrame.SettingsDropdown:Point('TOPRIGHT', SpellBookFrame, 'TOPRIGHT', -30, -23)
+		SpellBookFrame.SearchBox:ClearAllPoints()
+		SpellBookFrame.SearchBox:Point('RIGHT', SpellBookFrame.SettingsDropdown, 'LEFT', -5, 0)
+	end
+
 	SpellBookFrame.TopBar:Hide()
 	SpellBookFrame.BookCornerFlipbook:Hide()
 
@@ -233,8 +289,14 @@ function S:Blizzard_PlayerSpells()
 		SpellBookFrame.HelpPlateButton.Ring:Hide()
 	end
 
-	HandleCategoryTabs(SpellBookFrame.CategoryTabSystem)
-	hooksecurefunc(SpellBookFrame.CategoryTabSystem, 'AddTab', HandleCategoryTabs)
+	if E.Forever then -- icon tab per skill line on camelot
+		HandleCategoryTabs(SpellBookFrame.CategoryTabSystem)
+		hooksecurefunc(SpellBookFrame.CategoryTabSystem, 'AddTab', HandleCategoryTabs)
+	else
+		for _, tab in next, { SpellBookFrame.CategoryTabSystem:GetChildren() } do
+			S:HandleTab(tab)
+		end
+	end
 
 	local PagedSpellsFrame = SpellBookFrame.PagedSpellsFrame
 	PagedSpellsFrame.View1:DisableDrawLayer('OVERLAY')

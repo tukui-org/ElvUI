@@ -12,10 +12,7 @@ local function Update(frame)
 	end
 end
 
-function S:Blizzard_ItemUpgradeUI()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
-
-	local frame = _G.ItemUpgradeFrame
+local function SkinMainline(frame)
 	_G.ItemUpgradeFrameBg:Hide()
 	_G.ItemUpgradeFramePortrait:Hide()
 	_G.ItemUpgradeFramePlayerCurrenciesBorder:StripTextures()
@@ -56,6 +53,39 @@ function S:Blizzard_ItemUpgradeUI()
 	S:HandleIconBorder(button.IconBorder)
 	S:HandleButton(frame.UpgradeButton, true)
 	S:HandleDropDownBox(frame.ItemInfo.Dropdown, 130)
+end
+
+local function SkinMists(frame)
+	-- Main Frame
+	frame:StripTextures()
+	frame:SetTemplate('Transparent')
+
+	local ItemButton = frame.ItemButton
+	ItemButton:StripTextures()
+	ItemButton:SetTemplate(nil, true)
+	ItemButton:StyleButton()
+
+	frame.ButtonFrame:StripTextures()
+
+	-- Upgrade Button
+	S:HandleButton(_G.ItemUpgradeFrameUpgradeButton)
+
+	-- Remaining Artwork
+	local MoneyFrame = _G.ItemUpgradeFrameMoneyFrame
+	MoneyFrame:StripTextures()
+	MoneyFrame:SetTemplate('Default')
+end
+
+function S:Blizzard_ItemUpgradeUI()
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.itemUpgrade) then return end
+
+	local frame = _G.ItemUpgradeFrame
+	if E.Modern then
+		SkinMainline(frame)
+	else
+		SkinMists(frame)
+	end
+
 	S:HandleCloseButton(_G.ItemUpgradeFrameCloseButton)
 end
 

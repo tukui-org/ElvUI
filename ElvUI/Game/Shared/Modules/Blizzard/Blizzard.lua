@@ -168,7 +168,7 @@ function BL:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_GuildBankUI' then
 		BL:ImproveGuildBank()
 	elseif addon == 'Blizzard_QuestTimer' then
-		if E.Classic then
+		if E.Classic or E.TBC then
 			BL:QuestWatch_CreateMover(_G.QuestTimerFrame, 'QuestTimerFrameMover')
 		end
 	elseif BL.TryDisableTutorials then
@@ -203,10 +203,12 @@ function BL:Initialize()
 		BL:HandleTalkingHead()
 		BL:HandleAddonCompartment()
 
-		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
-
 		--Add (+X%) to quest rewards experience text
 		BL:SecureHook('QuestInfo_Display', 'QuestXPPercent')
+	end
+
+	if E.Modern or E.Mists then
+		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 	end
 
 	if E.Classic or E.TBC then

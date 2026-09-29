@@ -21,6 +21,11 @@ local function Skin_SendMail()
 			icon:SetInside()
 		end
 	end
+
+	if not E.Modern then
+		_G.MailEditBox.ScrollBox.EditBox:SetTextColor(1, 1, 1)
+		_G.MailEditBox:Size(285, _G.SendStationeryBackgroundLeft:GetHeight())
+	end
 end
 
 local function Skin_OpenMail()
@@ -34,11 +39,8 @@ local function Skin_OpenMail()
 			S:HandleIconBorder(btn.IconBorder)
 		end
 
-		local icon = btn.icon or btn.Icon
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
+		btn.icon:SetTexCoords()
+		btn.icon:SetInside()
 	end
 end
 
@@ -56,11 +58,8 @@ local function Skin_InboxItems()
 			S:HandleIconBorder(btn.IconBorder)
 		end
 
-		local icon = btn.icon or btn.Icon
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
+		btn.Icon:SetTexCoords()
+		btn.Icon:SetInside()
 	end
 end
 
@@ -74,11 +73,18 @@ function S:Blizzard_MailFrame()
 	_G.InboxFrame.backdrop:Point('TOPLEFT', _G.MailItem1, 'TOPLEFT')
 	_G.InboxFrame.backdrop:Point('BOTTOMRIGHT', _G.MailItem7, 'BOTTOMRIGHT')
 
-	S:HandleNextPrevButton(_G.InboxFrame.PrevPageButton, nil, nil, true)
-	_G.InboxFrame.PrevPageButton:StripTexts()
+	local prevButton = E.Forever and _G.InboxFrame.PrevPageButton or _G.InboxPrevPageButton -- ToDo: Forever
+	S:HandleNextPrevButton(prevButton, nil, nil, true)
+	prevButton:StripTexts()
 
-	S:HandleNextPrevButton(_G.InboxFrame.NextPageButton, nil, nil, true)
-	_G.InboxFrame.NextPageButton:StripTexts()
+	local nextButton = E.Forever and _G.InboxFrame.NextPageButton or _G.InboxNextPageButton -- ToDo: Forever
+	S:HandleNextPrevButton(nextButton, nil, nil, true)
+	nextButton:StripTexts()
+
+	if not E.Forever then -- ToDo: Forever
+		prevButton:Point('BOTTOMLEFT', 30, 100)
+		nextButton:Point('BOTTOMRIGHT', -80, 100)
+	end
 
 	_G.MailFrameTab1:StripTextures()
 	_G.MailFrameTab2:StripTextures()
@@ -88,22 +94,33 @@ function S:Blizzard_MailFrame()
 	-- Reposition Tabs
 	_G.MailFrameTab1:ClearAllPoints()
 	_G.MailFrameTab2:ClearAllPoints()
-	_G.MailFrameTab1:Point('TOPLEFT', _G.MailFrame, 'BOTTOMLEFT', -3, 0)
-	_G.MailFrameTab2:Point('TOPLEFT', _G.MailFrameTab1, 'TOPRIGHT', -5, 0)
-
-	local parchmentRemover = E.private.skins.parchmentRemoverEnable
+	_G.MailFrameTab1:Point('TOPLEFT', _G.MailFrame, 'BOTTOMLEFT', E.Modern and -3 or -10, 0)
+	_G.MailFrameTab2:Point('TOPLEFT', _G.MailFrameTab1, 'TOPRIGHT', E.Modern and -5 or -19, 0)
 
 	-- send mail
-	if parchmentRemover then
+	if E.Modern then
 		_G.SendMailScrollFrame:StripTextures(true)
+		_G.SendMailScrollFrame:SetTemplate()
+
+		S:HandleTrimScrollBar(_G.SendMailScrollFrame.ScrollBar)
 	else
-		_G.SendStationeryBackgroundLeft:SetDrawLayer('BACKGROUND', 1) -- above the ElvUI backdrop
-		_G.SendStationeryBackgroundRight:SetDrawLayer('BACKGROUND', 1)
+		_G.SendStationeryBackgroundLeft:Hide()
+		_G.SendStationeryBackgroundRight:Hide()
+
+		_G.MailEditBox:ClearAllPoints()
+		_G.MailEditBox:Point('TOPLEFT', _G.SendMailFrame, 20, -80)
+
+		_G.MailEditBox.ScrollBox:StripTextures(true)
+		_G.MailEditBox.ScrollBox:SetTemplate()
+
+		_G.SendMailTitleText:Point('CENTER', _G.SendMailFrame, 'TOP', -10, -17)
+		_G.InboxTitleText:Point('CENTER', _G.InboxFrame, 'TOP', -10, -17)
+
+		S:HandleTrimScrollBar(_G.MailEditBoxScrollBar)
+		_G.MailEditBoxScrollBar:ClearAllPoints()
+		_G.MailEditBoxScrollBar:Point('TOPLEFT', _G.MailEditBox.ScrollBox, 'TOPRIGHT', 0, 8)
+		_G.MailEditBoxScrollBar:Point('BOTTOMLEFT', _G.MailEditBox.ScrollBox, 'BOTTOMRIGHT', 0, 0)
 	end
-
-	_G.SendMailScrollFrame:SetTemplate()
-
-	S:HandleTrimScrollBar(_G.SendMailScrollFrame.ScrollBar)
 
 	S:HandleEditBox(_G.SendMailNameEditBox)
 	S:HandleEditBox(_G.SendMailSubjectEditBox)
@@ -127,8 +144,14 @@ function S:Blizzard_MailFrame()
 	Skin_InboxItems() -- send and open mail get skinned by the hooks below before they show
 
 	hooksecurefunc('SendMailFrame_Update', Skin_SendMail)
-	hooksecurefunc(_G.OpenMailFrame, 'Update', Skin_OpenMail)
-	hooksecurefunc(_G.InboxFrame, 'Update', Skin_InboxItems)
+
+	if E.Forever then -- ToDo: Forever
+		hooksecurefunc(_G.OpenMailFrame, 'Update', Skin_OpenMail)
+		hooksecurefunc(_G.InboxFrame, 'Update', Skin_InboxItems)
+	else
+		hooksecurefunc('OpenMail_Update', Skin_OpenMail)
+		hooksecurefunc('InboxFrame_Update', Skin_InboxItems)
+	end
 
 	S:HandleButton(_G.SendMailMailButton, true)
 	S:HandleButton(_G.SendMailCancelButton, true)
@@ -137,12 +160,17 @@ function S:Blizzard_MailFrame()
 	S:HandleRadioButton(_G.SendMailCODButton)
 
 	_G.SendMailSendMoneyButton:ClearAllPoints()
-	_G.SendMailSendMoneyButton:Point('TOPRIGHT', _G.SendMailMoney, 'TOPRIGHT', 30, 8)
+	_G.SendMailSendMoneyButton:Point('TOPRIGHT', _G.SendMailMoney, 'TOPRIGHT', E.Modern and 30 or 20, 8)
 
 	-- open mail (cod)
 	_G.OpenMailFrame:StripTextures(true)
 	_G.OpenMailFrame:SetTemplate('Transparent')
 	_G.OpenMailFrameInset:Kill()
+
+	-- titan keeps the frame border in a child frame
+	if E.Wrath then
+		_G.OpenMailFrame.BorderTexture:SetAlpha(0)
+	end
 
 	S:HandleCloseButton(_G.OpenMailFrameCloseButton)
 	S:HandleButton(_G.OpenMailReportSpamButton, true)
@@ -151,29 +179,23 @@ function S:Blizzard_MailFrame()
 	S:HandleButton(_G.OpenMailCancelButton, true)
 	S:HandleButton(_G.OpenAllMail, true)
 
-	if parchmentRemover then
-		_G.InboxFrame:StripTextures()
-		_G.OpenMailScrollFrame:StripTextures(true)
-	else
-		_G.OpenStationeryBackgroundLeft:SetDrawLayer('BACKGROUND', 1)
-		_G.OpenStationeryBackgroundRight:SetDrawLayer('BACKGROUND', 1)
-	end
-
+	_G.InboxFrame:StripTextures()
 	_G.MailFrameInset:Kill()
+
+	_G.OpenMailScrollFrame:StripTextures(true)
 	_G.OpenMailScrollFrame:SetTemplate()
 
-	S:HandleTrimScrollBar(_G.OpenMailScrollFrame.ScrollBar)
-
-	-- no outline on Blizzard's dark letter text
-	local letterFontStyle = not parchmentRemover and 'NONE' or nil
-	_G.InvoiceTextFontNormal:FontTemplate(nil, 13, letterFontStyle)
-	_G.MailTextFontNormal:FontTemplate(nil, 13, letterFontStyle)
-	_G.OpenMailArithmeticLine:Kill()
-
-	if parchmentRemover then
-		_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
-		_G.MailTextFontNormal:SetTextColor(1, 1, 1)
+	if E.Modern then
+		S:HandleTrimScrollBar(_G.OpenMailScrollFrame.ScrollBar)
+	else
+		S:HandleScrollBar(_G.OpenMailScrollFrameScrollBar)
 	end
+
+	_G.InvoiceTextFontNormal:FontTemplate(nil, 13)
+	_G.MailTextFontNormal:FontTemplate(nil, 13)
+	_G.InvoiceTextFontNormal:SetTextColor(1, 1, 1)
+	_G.MailTextFontNormal:SetTextColor(1, 1, 1)
+	_G.OpenMailArithmeticLine:Kill()
 
 	_G.OpenMailLetterButton:StripTextures()
 	_G.OpenMailLetterButton:SetTemplate(nil, true)
@@ -192,4 +214,8 @@ function S:Blizzard_MailFrame()
 	_G.SendMailMailButton:Point('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
 end
 
-S:AddCallbackForAddon('Blizzard_MailFrame')
+if E.Modern then
+	S:AddCallbackForAddon('Blizzard_MailFrame')
+else
+	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'Blizzard_MailFrame')
+end

@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local pairs = pairs
 local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
@@ -14,7 +15,7 @@ local StripAllTextures = {
 	'RaidGroup5',
 	'RaidGroup6',
 	'RaidGroup7',
-	'RaidGroup8'
+	'RaidGroup8',
 }
 
 local function RaidPulloutGetFrame()
@@ -54,8 +55,9 @@ local function RaidPulloutUpdate(pullOutFrame)
 end
 
 local function HandleClassButtons()
+	local numClasses = _G.MAX_CLASSES
 	local prevButton
-	for index = 1, 12 do -- 9 classes, pets, main tank, main assist
+	for index = 1, _G.MAX_RAID_CLASS_BUTTONS do -- classes, pets, main tank, main assist
 		local button = _G['RaidClassButton'..index]
 		local icon = _G['RaidClassButton'..index..'IconTexture']
 		local count = _G['RaidClassButton'..index..'Count']
@@ -67,7 +69,7 @@ local function HandleClassButtons()
 		button:ClearAllPoints()
 		if index == 1 then
 			button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -3, -48)
-		elseif index == 10 then
+		elseif index == numClasses + 1 then
 			button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
 		else
 			button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
@@ -76,13 +78,13 @@ local function HandleClassButtons()
 
 		icon:SetInside()
 
-		if index == 10 then
+		if index == numClasses + 1 then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
 			icon:SetTexCoords()
-		elseif index == 11 then
+		elseif index == numClasses + 2 then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
 			icon:SetTexCoords()
-		elseif index == 12 then
+		elseif index == numClasses + 3 then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
 			icon:SetTexCoords()
 		else
@@ -98,31 +100,29 @@ end
 function S:Blizzard_RaidUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.raid) then return end
 
-	-- Raid Frame Tab
-	S:HandleButton(_G.RaidFrameReadyCheckButton)
-
-	_G.RaidFrameConvertToRaidButton:Point('BOTTOMRIGHT', -6, 4)
-
-	for _, object in ipairs(StripAllTextures) do
+	for _, object in pairs(StripAllTextures) do
 		_G[object]:StripTextures()
-	end
 
-	for i = 1, _G.MAX_RAID_GROUPS * 5 do
-		S:HandleButton(_G['RaidGroupButton'..i], true)
-	end
-
-	for i = 1, 8 do
 		for j = 1, 5 do
-			local slot = _G['RaidGroup'..i..'Slot'..j]
+			local slot = _G[object..'Slot'..j]
 			slot:StripTextures()
 			slot:SetTemplate('Transparent')
 		end
 	end
 
-	HandleClassButtons() -- Classes on the right side of the Raid Control
+	for i = 1, _G.MAX_RAID_GROUPS*5 do
+		S:HandleButton(_G['RaidGroupButton'..i], true)
+	end
 
-	hooksecurefunc('RaidPullout_GetFrame', RaidPulloutGetFrame)
-	hooksecurefunc('RaidPullout_Update', RaidPulloutUpdate)
+	-- Mainline has no ready check button, never shows the class buttons and cannot drag out pullouts
+	if not E.Modern then
+		S:HandleButton(_G.RaidFrameReadyCheckButton)
+
+		HandleClassButtons() -- Classes on the right side of the Raid Control
+
+		hooksecurefunc('RaidPullout_GetFrame', RaidPulloutGetFrame)
+		hooksecurefunc('RaidPullout_Update', RaidPulloutUpdate)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_RaidUI')
