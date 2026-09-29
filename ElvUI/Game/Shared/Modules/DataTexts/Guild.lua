@@ -28,7 +28,6 @@ local GetGuildRosterMOTD = C_GuildInfo.GetMOTD or GetGuildRosterMOTD
 local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
 local GetGuildFactionData = C_Reputation.GetGuildFactionData
 local GetMemberIdsSortedByName = CommunitiesUtil.GetMemberIdsSortedByName
-local SortMemberInfo = CommunitiesUtil.SortMemberInfo
 local GetMemberInfo = CommunitiesUtil.GetMemberInfo
 local GetSubscribedClubs = C_Club.GetSubscribedClubs
 local CLUBTYPE_GUILD = Enum.ClubType.Guild
@@ -118,9 +117,8 @@ local function BuildGuildTable()
 		-- replicate GetAndSortMemberInfo while protecting secret failure during chat restrictions
 		local members = GetMemberIdsSortedByName(guildClubID)
 		local memberInfo = E:NotSecretValue(members) and GetMemberInfo(guildClubID, members)
-		local membersSorted = memberInfo and SortMemberInfo(guildClubID, memberInfo)
-		if membersSorted then
-			for _, data in next, membersSorted do
+		if memberInfo then
+			for _, data in next, memberInfo do
 				if data.guid then
 					clubTable[data.guid] = data
 				end
