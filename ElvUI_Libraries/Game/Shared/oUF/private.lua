@@ -47,8 +47,8 @@ end
 do
 	local validator = CreateFrame('Frame')
 	function Private.validateUnit(unit)
-		local ok = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
-		if not ok then return end
+		local success = pcall(validator.RegisterUnitEvent, validator, 'UNIT_HEALTH', unit)
+		if not success then return end
 
 		local _, unit1 = validator:IsEventRegistered('UNIT_HEALTH')
 		validator:UnregisterEvent('UNIT_HEALTH')
@@ -56,36 +56,22 @@ do
 		return not not unit1
 	end
 
-	local validEvent = {}
 	function Private.validateEvent(event)
-		local ok = validEvent[event]
-		if ok == nil then
-			ok = xpcall(validator.RegisterEvent, Private.nierror, validator, event)
-
-			if ok then
-				validator:UnregisterEvent(event)
-			end
-
-			validEvent[event] = ok
+		local isOK = xpcall(validator.RegisterEvent, Private.nierror, validator, event)
+		if(isOK) then
+			validator:UnregisterEvent(event)
 		end
 
-		return ok
+		return isOK
 	end
 
-	local validUnitEvent = {}
 	function Private.isUnitEvent(event, unit)
-		local ok = validUnitEvent[event]
-		if not ok then -- only a pass is kept, a failure is asked again
-			ok = pcall(validator.RegisterUnitEvent, validator, event, unit)
-
-			if ok then
-				validator:UnregisterEvent(event)
-
-				validUnitEvent[event] = true
-			end
+		local isOK = pcall(validator.RegisterUnitEvent, validator, event, unit)
+		if(isOK) then
+			validator:UnregisterEvent(event)
 		end
 
-		return ok
+		return isOK
 	end
 end
 
