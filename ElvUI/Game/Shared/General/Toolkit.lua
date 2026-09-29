@@ -634,7 +634,7 @@ AddAPI(object:CreateMaskTexture())
 object = EnumerateFrames()
 while object do
 	local objType = object:GetObjectType()
-	if not object:IsForbidden() and not handled[objType] then
+	if not handled[objType] and not object:IsForbidden() then
 		AddAPI(object)
 		handled[objType] = true
 	end
