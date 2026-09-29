@@ -39,7 +39,7 @@ local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 
 -- GLOBALS: ElvUIInstallFrame
 
-local CURRENT_PAGE = 1
+local CURRENT_PAGE = 0
 local MAX_PAGE = 9
 
 local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
@@ -1683,4 +1683,8 @@ function E:Install()
 
 	E.InstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	E.InstallFrame:Show()
+
+	if CURRENT_PAGE == 0 then
+		E:NextPage()
+	end
 end
