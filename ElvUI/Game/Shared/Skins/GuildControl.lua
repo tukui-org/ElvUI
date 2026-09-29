@@ -49,6 +49,16 @@ local function SkinBankTabs()
 	end
 end
 
+local function SkinDiscordFrame() -- the link frame is only created once the guild channel is linked
+	local linkFrame = _G.DiscordLinkFrame
+	if not linkFrame or linkFrame.IsSkinned then return end
+
+	S:HandleCheckBox(linkFrame.SeparateStream.Button) -- UICheckButtonTemplate
+	S:HandleButton(_G.DiscordLinkFrameButton)
+
+	linkFrame.IsSkinned = true
+end
+
 function S:Blizzard_GuildControlUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.guildcontrol) then return end
 
@@ -77,6 +87,14 @@ function S:Blizzard_GuildControlUI()
 	end)
 
 	S:HandleCheckBox(_G.GuildControlUIRankSettingsFrameOfficerCheckbox)
+
+	-- Discord integration
+	if E.Modern then
+		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameServerDropdown, 180)
+		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameChannelDropdown, 180)
+		S:HandleButton(_G.GuildControlUIRankDiscordFrameChannelButton)
+		hooksecurefunc('GuildControlUI_Discord_Update', SkinDiscordFrame)
+	end
 
 	for i = 1, _G.NUM_RANK_FLAGS do
 		local checkbox = _G['GuildControlUIRankSettingsFrameCheckbox'..i] -- not every flag has one

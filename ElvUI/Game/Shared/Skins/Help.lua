@@ -12,7 +12,9 @@ function S:Blizzard_HelpFrame()
 	main.backdrop:SetOutside(main, 8, 8)
 	S:HandleCloseButton(main.CloseButton, main.backdrop)
 
-	_G.HelpFrameTitleBg:StripTextures()
+	if not E.Modern then
+		_G.HelpFrameTitleBg:StripTextures()
+	end
 
 	local browser = _G.HelpBrowser
 	browser.BrowserInset:StripTextures()

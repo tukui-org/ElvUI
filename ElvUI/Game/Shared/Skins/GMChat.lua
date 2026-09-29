@@ -23,6 +23,12 @@ function S:Blizzard_GMChatUI()
 	_G.GMChatFrameEditBoxLeft:SetAlpha(0)
 	_G.GMChatFrameEditBoxMid:SetAlpha(0)
 
+	if E.Modern then
+		_G.GMChatFrameEditBoxFocusRight:SetAlpha(0)
+		_G.GMChatFrameEditBoxFocusLeft:SetAlpha(0)
+		_G.GMChatFrameEditBoxFocusMid:SetAlpha(0)
+	end
+
 	local langEditbox = _G.GMChatFrameEditBoxLanguage
 	local langTexture = langEditbox:GetNormalTexture()
 	langTexture:SetAlpha(0)

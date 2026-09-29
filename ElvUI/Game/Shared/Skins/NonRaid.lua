@@ -18,16 +18,20 @@ function S:Blizzard_RaidFrame()
 	for _, button in next, {
 		_G.RaidFrameConvertToRaidButton,
 		_G.RaidFrameRaidInfoButton,
-		_G.RaidInfoExtendButton,
-		_G.RaidInfoCancelButton,
+		not (E.TBC or E.Classic) and _G.RaidInfoExtendButton or nil,
+		not (E.TBC or E.Classic) and _G.RaidInfoCancelButton or nil,
 	} do
 		S:HandleButton(button)
 	end
 
 	local RaidInfoFrame = _G.RaidInfoFrame
 	RaidInfoFrame:SetTemplate('Transparent')
-	RaidInfoFrame.Header:StripTextures()
-	S:HandleCloseButton(_G.RaidInfoCloseButton,RaidInfoFrame)
+
+	if E.Modern then
+		RaidInfoFrame.Header:StripTextures()
+	end
+
+	S:HandleCloseButton(_G.RaidInfoCloseButton, RaidInfoFrame)
 	S:HandleTrimScrollBar(RaidInfoFrame.ScrollBar)
 	S:HandleCheckBox(_G.RaidFrameAllAssistCheckButton)
 end
