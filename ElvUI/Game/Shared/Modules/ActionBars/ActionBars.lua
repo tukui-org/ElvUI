@@ -735,9 +735,8 @@ function AB:UpdateButtonSettings(specific)
 			LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
 		end
 
-		AB:AdjustMaxStanceButtons()
+		AB:AdjustMaxStanceButtons() -- this calls PositionAndSizeBarShapeShift
 		AB:PositionAndSizeBarPet()
-		AB:PositionAndSizeBarShapeShift()
 
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
@@ -2064,7 +2063,6 @@ function AB:Initialize()
 	AB:CreateBarShapeShift()
 	AB:CreateVehicleLeave()
 	AB:UpdateButtonSettings()
-	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 	AB:UnloadController()
 
