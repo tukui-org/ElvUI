@@ -248,7 +248,6 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			guildName, guildRankName, guildRealm = nil, nil, nil
 		end
 
-		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
 		local level, realLevel = E:UnitEffectiveLevel(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
@@ -275,7 +274,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 2) or 1)
 		if guildName then
-			if guildRealm and isShiftKeyDown then
+			if not E.Forever and (guildRealm and isShiftKeyDown) then
 				guildName = guildName..'-'..guildRealm
 			end
 
@@ -321,10 +320,11 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		if TT.db.showElvUIUsers then
-			local addonUser = E.UserList[nameRealm]
-			if addonUser then
-				local same = addonUser == E.version
-				tt:AddDoubleLine(L["ElvUI Version:"], format('%.2f', addonUser), nil, nil, nil, same and 0.2 or 1, same and 1 or 0.2, 0.2)
+			local nameRealm = E:GetNameRealm(name, realm)
+			local userVersion = E.UserList[nameRealm]
+			if userVersion then
+				local same = userVersion == E.version
+				tt:AddDoubleLine(L["ElvUI Version:"], format('%.2f', userVersion), nil, nil, nil, same and 0.2 or 1, same and 1 or 0.2, 0.2)
 			end
 		end
 

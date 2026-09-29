@@ -884,7 +884,7 @@ E:AddTag('group:raid', 'GROUP_ROSTER_UPDATE', function(unit)
 	local name, realm = UnitName(unit)
 	if E:IsSecretValue(name) or E:IsSecretValue(realm) or not name then return end
 
-	local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
+	local nameRealm = E:GetNameRealm(name, realm)
 	for i = 1, GetNumGroupMembers() do
 		local raidName, _, group = GetRaidRosterInfo(i)
 		if raidName == nameRealm then
@@ -1300,8 +1300,8 @@ do
 		local name, realm = UnitName(unit)
 		if E:IsSecretValue(name) or E:IsSecretValue(realm) or not name then return end
 
-		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
-		local userVersion = nameRealm and E.UserList[nameRealm]
+		local nameRealm = E:GetNameRealm(name, realm)
+		local userVersion = E.UserList[nameRealm]
 		if userVersion then
 			if highestVersion < userVersion then
 				highestVersion = userVersion

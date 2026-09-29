@@ -218,6 +218,16 @@ do
 	end
 end
 
+function E:GetNameRealm(name, realm)
+	if E.Forever then
+		return format(realm and '%s %s' or '%s', name, realm)
+	elseif realm and realm ~= '' then
+		return format('%s-%s', name, realm)
+	else
+		return name
+	end
+end
+
 function E:GrabColorPickerValues(r, g, b)
 	-- we must block the execution path to `ColorCallback` in `AceGUIWidget-ColorPicker-ElvUI`
 	-- in order to prevent an infinite loop from `OnValueChanged` when passing into `E.UpdateMedia` which eventually leads here again.
