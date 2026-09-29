@@ -6,6 +6,16 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local function Selected_SetShown(selected, isActive)
+	local r, g, b
+	if not isActive then
+		r, g, b = unpack(E.media.bordercolor)
+	end
+
+	local child = selected:GetParent()
+	child.backdrop:SetBackdropBorderColor(r or 1, g or 1, b or 1)
+end
+
 function S:Blizzard_ArtifactUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.artifact) then return end
 
@@ -45,13 +55,7 @@ function S:Blizzard_ArtifactUI()
 				child.Selected:SetAlpha(0)
 				child.Selected.SetAlpha = E.noop
 
-				hooksecurefunc(child.Selected, 'SetShown', function(_, isActive)
-					if isActive then
-						child.backdrop:SetBackdropBorderColor(1,1,1)
-					else
-						child.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-					end
-				end)
+				hooksecurefunc(child.Selected, 'SetShown', Selected_SetShown)
 			end
 		end
 	end)

@@ -37,11 +37,8 @@ local function Skin_OpenMail()
 			S:HandleIconBorder(btn.IconBorder)
 		end
 
-		local icon = btn.icon or btn.Icon
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
+		btn.icon:SetTexCoords()
+		btn.icon:SetInside()
 	end
 end
 
@@ -59,11 +56,8 @@ local function Skin_InboxItems()
 			S:HandleIconBorder(btn.IconBorder)
 		end
 
-		local icon = btn.icon or btn.Icon
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
+		btn.Icon:SetTexCoords()
+		btn.Icon:SetInside()
 	end
 end
 
@@ -132,9 +126,7 @@ function S:MailFrame()
 	_G.SendMailSubjectEditBox:Width(214)
 	_G.SendMailSubjectEditBox:Height(18)
 
-	Skin_SendMail()
-	Skin_OpenMail()
-	Skin_InboxItems()
+	Skin_InboxItems() -- send and open mail get skinned by the hooks below before they show
 
 	hooksecurefunc('SendMailFrame_Update', Skin_SendMail)
 	hooksecurefunc('OpenMail_Update', Skin_OpenMail)
@@ -191,4 +183,4 @@ function S:MailFrame()
 	_G.SendMailMailButton:Point('RIGHT', _G.SendMailCancelButton, 'LEFT', -2, 0)
 end
 
-S:AddCallback('MailFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MailFrame')

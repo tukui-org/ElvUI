@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:WorldMapFrame()
+function S:Blizzard_WorldMap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.worldmap) then return end
 
 	local WorldMapFrame = _G.WorldMapFrame
@@ -20,6 +20,7 @@ function S:WorldMapFrame()
 	S:HandleDropDownBox(_G.WorldMapZoneMinimapDropdown, 160)
 	S:HandleDropDownBox(_G.WorldMapContinentDropdown, 160)
 	S:HandleDropDownBox(_G.WorldMapZoneDropdown, 160)
+	S:HandleDropDownBox(WorldMapFrame.WorldMapLevelDropDown, 160)
 	S:HandleMaxMinFrame(_G.WorldMapFrame.MaximizeMinimizeFrame)
 
 	_G.WorldMapContinentDropdown:Point('TOPLEFT', WorldMapFrame, 'TOPLEFT', 330, -35)
@@ -39,13 +40,14 @@ function S:WorldMapFrame()
 	S:HandleButton(_G.WorldMapZoomOutButton)
 	S:HandleSliderFrame(_G.OpacityFrameSlider)
 	S:HandleCheckBox(_G.WorldMapQuestShowObjectives)
+	S:HandleCheckBox(_G.WorldMapTrackQuest)
 
 	if E.OtherAddons.Questie and _G.Questie_Toggle then
 		S:HandleButton(_G.Questie_Toggle)
 	end
 
-	S:HandleCloseButton(_G.WorldMapFrameCloseButton, WorldMapFrame.backdrop)
+	S:HandleCloseButton(_G.WorldMapFrameCloseButton)
 	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
 end
 
-S:AddCallback('WorldMapFrame')
+S:AddCallbackForAddon('Blizzard_WorldMap')

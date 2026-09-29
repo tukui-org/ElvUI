@@ -30,9 +30,7 @@ function S:Blizzard_ItemInteractionUI()
 	buttonFrame.MoneyFrameEdge:SetAlpha(0)
 	buttonFrame.BlackBorder:SetAlpha(0)
 
-	if buttonFrame.Currency then
-		S:HandleIcon(buttonFrame.Currency.Icon)
-	end
+	S:HandleIcon(buttonFrame.Currency.Icon)
 
 	S:HandleButton(buttonFrame.ActionButton)
 end

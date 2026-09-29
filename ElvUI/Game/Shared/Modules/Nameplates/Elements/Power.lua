@@ -24,7 +24,6 @@ function NP:Power_UpdateColor(_, unit)
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 	local unitControlled = UnitPlayerControlled(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	local _, classToken = UnitClass(unit)
 	element.token = ptoken
 
 	local Selection = element.colorSelection and E:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
@@ -56,13 +55,14 @@ function NP:Power_UpdateColor(_, unit)
 			atlas = color.atlas
 		end
 	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and unitControlled and not self.isPlayer) then
+		local _, classToken = UnitClass(unit)
 		color = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif Selection then
 		color = NP.Colors.selection[Selection]
 	elseif element.colorReaction and unitReaction then
 		color = NP.Colors.reactions[unitReaction]
 	elseif element.colorSmooth then
-		if E.Retail then
+		if E.Modern then
 			local curve = self.colors.power.MANA:GetCurve()
 			if curve then
 				color = curve:Evaluate(1)
@@ -135,7 +135,7 @@ function NP:Update_Power(nameplate)
 		nameplate.Power:Point(E.InversePoints[db.power.anchorPoint], nameplate, db.power.anchorPoint, db.power.xOffset, db.power.yOffset)
 		nameplate.Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
-		if E.Retail then
+		if E.Modern then
 			nameplate.Power.smoothing = (db.power.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(nameplate.Power, db.power.smoothbars)

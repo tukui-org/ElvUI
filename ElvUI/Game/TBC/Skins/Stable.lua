@@ -18,7 +18,7 @@ local function UpdatePetStable()
 		texture:SetTexCoord(0.41, 0.53, 0.06, 0.30)
 	elseif happiness == 2 then
 		texture:SetTexCoord(0.22, 0.345, 0.06, 0.30)
-	elseif happiness == 3 then
+	else
 		texture:SetTexCoord(0.04, 0.15, 0.06, 0.30)
 	end
 end
@@ -30,7 +30,6 @@ function S:PetStableFrame()
 	S:HandleFrame(PetStableFrame, true, nil, 10, -11, -32, 71)
 
 	S:HandleButton(_G.PetStablePurchaseButton)
-	S:HandleCloseButton(_G.PetStableFrameCloseButton)
 	S:HandleRotateButton(_G.PetStableModelRotateRightButton)
 	S:HandleRotateButton(_G.PetStableModelRotateLeftButton)
 
@@ -43,14 +42,13 @@ function S:PetStableFrame()
 	end
 
 	local PetStablePetInfo = _G.PetStablePetInfo
-	if PetStablePetInfo then
-		PetStablePetInfo:GetRegions():SetTexCoord(0.04, 0.15, 0.06, 0.30)
-		PetStablePetInfo:OffsetFrameLevel(2, _G.PetModelFrame)
-		PetStablePetInfo:CreateBackdrop()
-		PetStablePetInfo:Size(24)
+	PetStablePetInfo:OffsetFrameLevel(2, _G.PetStableModel)
+	PetStablePetInfo:CreateBackdrop()
+	PetStablePetInfo:Size(24)
 
-		hooksecurefunc('PetStable_Update', UpdatePetStable)
-	end
+	UpdatePetStable()
+
+	hooksecurefunc('PetStable_Update', UpdatePetStable)
 end
 
-S:AddCallback('PetStableFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetStableFrame')

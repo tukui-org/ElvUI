@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next, unpack = next, unpack
+local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
 local function ClassTrainerScrollUpdateChild(button)
@@ -36,28 +36,12 @@ end
 function S:Blizzard_TrainerUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.trainer) then return end
 
-	for _, object in next, {
-		_G.ClassTrainerScrollFrameScrollChild,
-		_G.ClassTrainerFrameSkillStepButton,
-		_G.ClassTrainerFrameBottomInset,
-	} do
-		object:StripTextures()
-	end
+	_G.ClassTrainerFrameSkillStepButton:StripTextures()
+	_G.ClassTrainerFrameBottomInset:StripTextures()
+	_G.ClassTrainerFramePortrait:Kill()
 
-	for _, texture in next, {
-		_G.ClassTrainerFramePortrait,
-		_G.ClassTrainerScrollFrameScrollBarBG,
-		_G.ClassTrainerScrollFrameScrollBarTop,
-		_G.ClassTrainerScrollFrameScrollBarBottom,
-		_G.ClassTrainerScrollFrameScrollBarMiddle,
-	} do
-		texture:Kill()
-	end
-
-	for _, button in next, { _G.ClassTrainerTrainButton } do
-		button:StripTextures()
-		S:HandleButton(button)
-	end
+	_G.ClassTrainerTrainButton:StripTextures()
+	S:HandleButton(_G.ClassTrainerTrainButton)
 
 	local ClassTrainerFrame = _G.ClassTrainerFrame
 	S:HandlePortraitFrame(ClassTrainerFrame)

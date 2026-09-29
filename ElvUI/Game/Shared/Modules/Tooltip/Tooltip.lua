@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local TT = E:GetModule('Tooltip')
+local DT = E:GetModule('DataTexts')
 local AB = E:GetModule('ActionBars')
 local S = E:GetModule('Skins')
 local B = E:GetModule('Bags')
@@ -62,7 +63,7 @@ local UnitTokenFromGUID = UnitTokenFromGUID
 local UnitSex = UnitSex
 
 local TooltipDataType = Enum.TooltipDataType
-local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
+local ScaleTo100 = CurveConstants.ScaleTo100
 local AddLinePreCall = TooltipDataProcessor and TooltipDataProcessor.AddLinePreCall
 local AddTooltipPostCall = TooltipDataProcessor and TooltipDataProcessor.AddTooltipPostCall
 local GetDisplayedItem = TooltipUtil and TooltipUtil.GetDisplayedItem
@@ -76,11 +77,12 @@ local C_QuestLog_GetQuestIDForLogIndex = C_QuestLog.GetQuestIDForLogIndex
 local C_ChallengeMode_GetDungeonScoreRarityColor = C_ChallengeMode and C_ChallengeMode.GetDungeonScoreRarityColor
 local C_CurrencyInfo_GetCurrencyListLink = C_CurrencyInfo.GetCurrencyListLink
 local C_CurrencyInfo_GetBackpackCurrencyInfo = C_CurrencyInfo.GetBackpackCurrencyInfo
-local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
-local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PlayerInfo_GetPlayerMythicPlusRatingSummary = C_PlayerInfo.GetPlayerMythicPlusRatingSummary
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local GetCoinTextureString = C_CurrencyInfo.GetCoinTextureString
+local GetAuraDataByIndex = C_UnitAuras.GetAuraDataByIndex
 
 local TooltipDataLineType = Enum.TooltipDataLineType
 local LINETYPE_SELLPRICE = TooltipDataLineType.SellPrice
@@ -115,14 +117,14 @@ function TT:IsModKeyDown(db)
 end
 
 function TT:UpdateAuraSpellIDCVar()
-	if not E.Retail then return end
+	if not E.Modern then return end
 
 	-- Blizzard resets tooltipShowAuraSpellIDs to 0 between sessions
 	E:SetCVar('tooltipShowAuraSpellIDs', TT:IsModKeyDown())
 end
 
 function TT:SetCompareItems(tt, value)
-	if E.Retail or tt ~= GameTooltip then return end
+	if E.Modern or tt ~= GameTooltip then return end
 
 	tt.supportsItemComparison = value
 end
@@ -241,30 +243,32 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local localeClass, className = UnitClass(unit)
 		if not localeClass or not className then return end
 
+		local nameColor = E:ClassColor(className) or PRIEST_COLOR
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		if E:IsSecretValue(guildName) then
 			guildName, guildRankName, guildRealm = nil, nil, nil
 		end
 
-		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
 		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
-		local level, realLevel = E:UnitEffectiveLevel(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
 
-		local nameColor = E:ClassColor(className) or PRIEST_COLOR
-
-		if TT.db.playerTitles and pvpName and pvpName ~= '' then
+		local useTitle = TT.db.playerTitles and (pvpName and pvpName ~= '')
+		if useTitle then
 			name = pvpName
 		end
 
-		if realm and realm ~= '' then
+		if E.Forever then
+			if realm and not useTitle then -- title adds LastName
+				name = format('%s %s', name, realm)
+			end
+		elseif realm and realm ~= '' then
 			if isShiftKeyDown or TT.db.alwaysShowRealm then
-				name = name..'-'..realm
+				name = format('%s-%s', name, realm)
 			elseif relationship == _G.LE_REALM_RELATION_COALESCED then
-				name = name.._G.FOREIGN_SERVER_LABEL
+				name = format('%s%s', name, _G.FOREIGN_SERVER_LABEL)
 			elseif relationship == _G.LE_REALM_RELATION_VIRTUAL then
-				name = name.._G.INTERACTIVE_SERVER_LABEL
+				name = format('%s%s', name, _G.INTERACTIVE_SERVER_LABEL)
 			end
 		end
 
@@ -273,7 +277,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 2) or 1)
 		if guildName then
-			if guildRealm and isShiftKeyDown then
+			if not E.Forever and (guildRealm and isShiftKeyDown) then
 				guildName = guildName..'-'..guildRealm
 			end
 
@@ -293,20 +297,23 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
 			if localizedFaction and englishRaces[englishRace] then
-				race = localizedFaction..' '..race
+				race = format('%s %s', localizedFaction, race)
 			end
 
 			local levelText
-			local diffColor = GetCreatureDifficultyColor(level)
-			local unitGender = TT.db.gender and E:NotSecretValue(gender) and genderTable[gender]
+			local realLevel = UnitLevel(unit)
+			local effectiveLevel = E:UnitEffectiveLevel(unit)
+			local diffColor = GetCreatureDifficultyColor(effectiveLevel)
+			local shownLevel = effectiveLevel > 0 and effectiveLevel or '??'
+			local unitGender = TT.db.gender and (E:NotSecretValue(gender) and genderTable[gender]) or ''
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
-			if level < realLevel then
-				levelText = format('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')
+			if effectiveLevel < realLevel then
+				levelText = format('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, shownLevel, realLevel, unitGender, race or '')
 			else
-				levelText = format('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
+				levelText = format('%s%s|r %s%s', hexColor, shownLevel, unitGender, race or '')
 			end
 
-			if E.Retail then
+			if E.Modern then
 				local specText = specLine and specLine:GetText()
 				if specText then -- this might explode because of guildName
 					specLine:SetText(nameColor:WrapTextInColorCode(specText))
@@ -319,10 +326,11 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		if TT.db.showElvUIUsers then
-			local addonUser = E.UserList[nameRealm]
-			if addonUser then
-				local same = addonUser == E.version
-				tt:AddDoubleLine(L["ElvUI Version:"], format('%.2f', addonUser), nil, nil, nil, same and 0.2 or 1, same and 1 or 0.2, 0.2)
+			local nameRealm = E:GetNameRealm(name, realm)
+			local userVersion = E.UserList[nameRealm]
+			if userVersion then
+				local same = userVersion == E.version
+				tt:AddDoubleLine(L["ElvUI Version:"], format('%.2f', userVersion), nil, nil, nil, same and 0.2 or 1, same and 1 or 0.2, 0.2)
 			end
 		end
 
@@ -472,35 +480,50 @@ function TT:AddInspectInfo(tt, unit, numTries, r, g, b)
 	end
 end
 
-function TT:AddMountInfo(tt, unit)
+function TT:CheckMountInfo(tt, aura)
+	local mountID = E.MountIDs[aura.spellId]
+	if not mountID then return end
+
+	tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
+
+	local sourceText = E.MountText[mountID]
+	local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
+	if mountText then
+		local sourceModified = gsub(mountText, '|n', '\10')
+		for x in gmatch(sourceModified, '[^\10]+\10?') do
+			local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
+			if left and right then
+				tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
+			else
+				tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
+			end
+		end
+	end
+
+	return true
+end
+
+function TT:AddMountModernInfo(tt, unit)
+	local index = 1
+	local aura = GetAuraDataByIndex(unit, index, 'HELPFUL')
+	while aura do
+		if E:IsSecretValue(aura.spellId) or TT:CheckMountInfo(tt, aura) then
+			break
+		end
+
+		index = index + 1
+		aura = GetAuraDataByIndex(unit, index, 'HELPFUL')
+	end
+end
+
+function TT:AddMountLegacyInfo(tt, unit)
 	if ElvUF:ShouldSkipAuraUpdate(tt, 'ADD_MOUNT_INFO', unit) then return end
 
 	local unitAuraFiltered = AuraFiltered.HELPFUL[unit]
 	local auraInstanceID, aura = next(unitAuraFiltered)
 	while aura do
-		if E:IsSecretValue(aura.spellId) then
+		if E:IsSecretValue(aura.spellId) or TT:CheckMountInfo(tt, aura) then
 			break
-		else
-			local mountID = E.MountIDs[aura.spellId]
-			if mountID then
-				tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
-
-				local sourceText = E.MountText[mountID]
-				local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
-				if mountText then
-					local sourceModified = gsub(mountText, '|n', '\10')
-					for x in gmatch(sourceModified, '[^\10]+\10?') do
-						local left, right = strmatch(x, '(.-|r)%s?([^\10]+)\10?')
-						if left and right then
-							tt:AddDoubleLine(left, right, nil, nil, nil, 1, 1, 1)
-						else
-							tt:AddDoubleLine(_G.FROM, gsub(mountText, '|c%x%x%x%x%x%x%x%x',''), nil, nil, nil, 1, 1, 1)
-						end
-					end
-				end
-
-				break
-			end
 		end
 
 		auraInstanceID, aura = next(unitAuraFiltered, auraInstanceID)
@@ -514,7 +537,7 @@ function TT:AddTargetInfo(tt, unit)
 		if E:IsSecretUnit(unitTarget) then
 			local _, className = UnitClass(unitTarget)
 			targetColor = C_ClassColor_GetClassColor(className) or PRIEST_COLOR
-		elseif UnitIsPlayer(unitTarget) and (not E.Retail or not UnitHasVehicleUI(unitTarget)) then
+		elseif UnitIsPlayer(unitTarget) and (not (E.Retail or E.Wrath or E.Mists) or not UnitHasVehicleUI(unitTarget)) then
 			local _, className = UnitClass(unitTarget)
 			targetColor = E:ClassColor(className) or PRIEST_COLOR
 		else
@@ -533,7 +556,7 @@ function TT:AddTargetInfo(tt, unit)
 
 	-- even though technically this would work on retail it
 	-- we stop it because unitFound is always secret when we need it
-	if E.Retail or not IsInGroup() then return end
+	if E.Modern or not IsInGroup() then return end
 
 	local text, count = '', 0
 	local isInRaid = IsInRaid()
@@ -625,9 +648,11 @@ function TT:SetUnitInfo(tt, unit, data)
 		TT:AddRoleInfo(tt, unit)
 	end
 
-	if E.Mists and not isInCombat then
-		if not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
-			TT:AddMountInfo(tt, unit)
+	if not isInCombat and not isShiftKeyDown and (isPlayerUnit and unit ~= 'player') and TT.db.showMount then
+		if not E.Modern then
+			TT:AddMountLegacyInfo(tt, unit)
+		elseif not E:IsRestrictedInstance() then
+			TT:AddMountModernInfo(tt, unit)
 		end
 	end
 
@@ -637,7 +662,7 @@ function TT:SetUnitInfo(tt, unit, data)
 		end
 	end
 
-	if (E.Retail or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not tt.ItemLevelShown then
+	if (E.Modern or E.Wrath or E.Mists) and not isInCombat and isShiftKeyDown and isPlayerUnit and TT.db.inspectDataEnable and not tt.ItemLevelShown then
 		if color then
 			TT:AddInspectInfo(tt, unit, 0, color.r, color.g, color.b)
 		else
@@ -709,6 +734,10 @@ end
 function TT:GameTooltipStatusBar_UpdateUnitHealth(bar)
 	local statusText = bar.Text
 	if not statusText or not TT.db.healthBar.text then return end
+
+	local now = GetTime() -- blizzard calls this from the bars OnUpdate every frame
+	if bar.textNeedsUpdate and (now - bar.textNeedsUpdate) < 0.1 then return end
+	bar.textNeedsUpdate = now
 
 	local tt = bar:GetParent()
 	local unit = TT:GetUnitToken(tt)
@@ -817,7 +846,7 @@ function TT:GameTooltip_OnTooltipSetItem(data)
 	if GetItem then
 		local name, link = GetItem(self)
 
-		if not E.Retail and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
+		if not E.Modern and name == '' and _G.CraftFrame and _G.CraftFrame:IsShown() then
 			local reagentIndex = ownerName and tonumber(strmatch(ownerName, 'Reagent(%d+)'))
 			if reagentIndex then link = GetCraftReagentItemLink(GetCraftSelectionIndex(), reagentIndex) end
 		end
@@ -924,6 +953,9 @@ function TT:SetStyle(tt, _, isEmbedded)
 	if tt.Delimiter2 then tt.Delimiter2:SetTexture() end
 	if tt.NineSlice then tt.NineSlice:SetAlpha(0) end
 
+	-- blizzard calls this from GameTooltip_OnHide on every hide, which is not required
+	if tt.template == 'Transparent' and tt.customBackdropAlpha == TT.db.colorAlpha then return end
+
 	-- Blizzard_MoneyFrame/Mainline/MoneyFrame.lua: secrets cause `MoneyFrame_Update` to crash out via `GameTooltip:SetLootItem(id)`
 	-- Blizzard_SharedXML/Tooltip/TooltipComparisonManager.lua: secrets cause comparison system to crash out.  use `alwaysCompareItems 0`
 	if E:NotSecretValue(tt:GetWidth()) then
@@ -968,7 +1000,7 @@ function TT:MODIFIER_STATE_CHANGED()
 		local owner = GameTooltip:GetOwner()
 		if owner == UIParent then
 			if E:UnitExists('mouseover') then
-				if E.Retail then
+				if E.Modern then
 					GameTooltip:RefreshData()
 				else
 					GameTooltip:SetUnit('mouseover')
@@ -1044,7 +1076,7 @@ function TT:GameTooltip_OnTooltipSetSpell(data)
 	if (self ~= GameTooltip and self ~= E.SpellBookTooltip) or self:IsForbidden() or not TT:IsModKeyDown() then return end
 
 	local spellID, _
-	if E.Retail then
+	if E.Modern then
 		if data and data.type then
 			if data.type == TooltipDataType.Spell then
 				spellID = data.id
@@ -1158,14 +1190,10 @@ function TT:SetTooltipFonts()
 		end
 	end
 
+	DT:UpdateTooltipFonts()
+
 	-- Header has its own font settings
 	_G.GameTooltipHeaderText:FontTemplate(TT.db.headerFont, TT.db.headerFontSize, TT.db.headerFontOutline)
-
-	-- Ignore header font size on DatatextTooltip
-	if _G.DatatextTooltip then
-		_G.DatatextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
-		_G.DatatextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
-	end
 
 	-- Comparison Tooltips has its own size setting
 	local smallSize = TT.db.smallTextFontSize
@@ -1263,7 +1291,7 @@ function TT:Initialize()
 		AddTooltipPostCall(TooltipDataType.Item, TT.GameTooltip_OnTooltipSetItem)
 		AddTooltipPostCall(TooltipDataType.Unit, TT.GameTooltip_OnTooltipSetUnit)
 
-		if E.Retail then -- MoneyFrame will error otherwise
+		if E.Modern then -- MoneyFrame will error otherwise
 			AddLinePreCall(LINETYPE_SELLPRICE, TT.AddMoneyInfo)
 		end
 
@@ -1279,7 +1307,7 @@ function TT:Initialize()
 		TT:SecureHook('BattlePetToolTip_Show', 'AddBattlePetID')
 	end
 
-	if E.Retail then
+	if E.Modern then
 		TT:RegisterEvent('WORLD_CURSOR_TOOLTIP_UPDATE', 'WorldCursorTooltipUpdate')
 
 		TT:SecureHook('EmbeddedItemTooltip_SetSpellWithTextureByID', 'EmbeddedItemTooltip_ID')

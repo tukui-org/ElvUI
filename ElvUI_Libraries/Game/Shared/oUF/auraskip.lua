@@ -45,11 +45,9 @@ local function AllowAura(frame, aura)
 	return true
 end
 
+-- an aura can only pass the filter of its own kind, auraIsHelpful is computed before this is called
 local function InstanceFiltered(unit, aura, helpful, harmful)
-	local isHelpful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, helpful)
-	local isHarmful = not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, harmful)
-
-	return isHelpful or isHarmful
+	return not IsAuraFilteredOutByInstanceID(unit, aura.auraInstanceID, aura.auraIsHelpful and helpful or harmful)
 end
 
 -- These flags are per-aura and do NOT depend on the filter, so compute them
@@ -239,7 +237,7 @@ end
 
 -- ShouldSkipAuraUpdate by Blizzard (implemented and heavily modified by Simpy)
 function oUF:ShouldSkipAuraUpdate(frame, event, unit, updateInfo, showFunc)
-	if oUF.isRetail then
+	if oUF.isModern then
 		return true -- not anymore
 	end
 

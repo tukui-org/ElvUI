@@ -6,7 +6,7 @@ local oUF = ns.oUF
 -------------
 
 local _G = _G
-local pairs, ipairs, type = pairs, ipairs, type
+local pairs, ipairs, type, abs = pairs, ipairs, type, abs
 local next, tinsert, tremove = next, tinsert, tremove
 
 local CreateFrame = CreateFrame
@@ -22,11 +22,6 @@ local UnitPower = UnitPower
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
-
-local GetMouseFocus = GetMouseFocus or function()
-	local frames = _G.GetMouseFoci()
-	return frames and frames[1]
-end
 
 -- These variables will be left-over when disabled if they were used (for reuse later if they become re-enabled):
 ---- Fader.HoverHooked, Fader.TargetHooked
@@ -59,8 +54,10 @@ local function ToggleAlpha(frame, element, endAlpha)
 	else
 		local alpha = frame:GetAlpha()
 		if element.Smooth and oUF:NotSecretValue(alpha) then
-			E:UIFrameFadeOut(frame, element.Smooth, alpha, endAlpha)
-		else
+			if (frame.FadeObject and frame.FadeObject.endAlpha ~= endAlpha) or abs(alpha - endAlpha) > 0.01 then
+				E:UIFrameFadeOut(frame, element.Smooth, alpha, endAlpha)
+			end
+		elseif oUF:IsSecretValue(alpha) or abs(alpha - endAlpha) > 0.01 then
 			frame:SetAlpha(endAlpha)
 		end
 	end
@@ -68,7 +65,7 @@ end
 
 local function UpdateInstanceDifficulty(element)
 	local _, _, difficultyID = GetInstanceInfo()
-	element.InstancedCached = element.InstanceDifficulty and element.InstanceDifficulty[difficultyID] or nil
+	element.InstancedCached = element.InstanceDifficulty and element.InstanceDifficulty[difficultyID] or false -- false means checked and not matching, nil means not checked yet
 end
 
 local isGliding = false
@@ -109,7 +106,7 @@ local function Update(frame, event, unit)
 	end
 
 	-- Instance Difficulty is enabled and we haven't checked yet
-	if element.InstanceDifficulty and not element.InstancedCached then
+	if element.InstanceDifficulty and element.InstancedCached == nil then
 		UpdateInstanceDifficulty(element)
 	end
 
@@ -119,11 +116,11 @@ local function Update(frame, event, unit)
 		_, powerType = UnitPowerType(unit)
 	end
 
-	local currentHealth = UnitHealth(unit)
-	local maxHealth = UnitHealthMax(unit)
-	local currentPower = UnitPower(unit)
-	local maxPower = UnitPowerMax(unit)
+	local currentHealth, maxHealth, currentPower, maxPower
+	if element.Health then currentHealth, maxHealth = UnitHealth(unit), UnitHealthMax(unit) end
+	if element.Power then currentPower, maxPower = UnitPower(unit), UnitPowerMax(unit) end
 
+	local hoverFrame = frame.__faderobject or frame
 	if	(element.InstanceDifficulty and element.InstancedCached) or
 		(element.Casting and (UnitCastingInfo(unit) or UnitChannelInfo(unit))) or
 		(element.Combat and UnitAffectingCombat(unit)) or
@@ -134,7 +131,7 @@ local function Update(frame, event, unit)
 		(element.Power and (PowerTypesFull[powerType] and oUF:NotSecretValue(currentPower) and (currentPower < maxPower))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI(unit)) or
 		(element.DynamicFlight and oUF.isRetail and not isGliding) or
-		(element.Hover and GetMouseFocus() == (frame.__faderobject or frame))
+		(element.Hover and hoverFrame:IsMouseOver())
 	then
 		ToggleAlpha(frame, element, element.MaxAlpha)
 	elseif element.Delay then

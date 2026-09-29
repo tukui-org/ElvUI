@@ -9,4 +9,4 @@ function S:TaxiFrame()
 	S:HandleFrame(_G.TaxiFrame)
 end
 
-S:AddCallback('TaxiFrame')
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'TaxiFrame')

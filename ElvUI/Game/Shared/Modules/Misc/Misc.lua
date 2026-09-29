@@ -7,7 +7,6 @@ local next = next
 local wipe = wipe
 local select = select
 local format = format
-local strmatch = strmatch
 local hooksecurefunc = hooksecurefunc
 
 local AcceptGroup = AcceptGroup
@@ -42,8 +41,8 @@ local UnitInRaid = UnitInRaid
 local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitName = UnitName
 
-local UninviteUnit = C_PartyInfo.UninviteUnit or UninviteUnit
-local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
+local UninviteUnit = C_PartyInfo.UninviteUnit
+local SendChatMessage = C_ChatInfo.SendChatMessage
 local GetNumFactions = C_Reputation.GetNumFactions or GetNumFactions
 local GetFactionInfo = C_Reputation.GetFactionDataByIndex or GetFactionInfo
 local GetFactionDataByID = C_Reputation.GetFactionDataByID or GetFactionDataByID
@@ -119,7 +118,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	if not inGroup then return end
 
 	local _, event, _, sourceGUID, _, _, _, destGUID, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
-	local announce = spellName and (destGUID ~= E.myguid) and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet')) and strmatch(event, '_INTERRUPT')
+	local announce = (spellName and event == 'SPELL_INTERRUPT') and (destGUID ~= E.myguid) and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))
 	if not announce then return end -- No announce-able interrupt from player or pet, exit.
 
 	local inRaid, inPartyLFG = IsInRaid(), M:IsRandomGroup()
@@ -174,7 +173,7 @@ do
 
 				local khazAlgar = E.MapInfo.continentMapID == 2274
 				for i = 1, GetNumFactions() do
-					if E.Retail then
+					if E.Modern then
 						local info = GetFactionInfo(i)
 						if info then
 							local name, factionID = info.name, info.factionID
@@ -351,7 +350,7 @@ function M:ADDON_LOADED(_, addon)
 	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' then
 		M:LoadQueueStatus()
 	elseif addon == 'Blizzard_HousingControls' then
-		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, 'ALL,SOLO')
+		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, nil, 'ALL,SOLO')
 	end
 end
 
@@ -412,6 +411,12 @@ function M:ToggleInterrupt()
 	end
 end
 
+function M:QuestRewardPanel_Hide()
+	if M.QuestRewardGoldIconFrame then
+		M.QuestRewardGoldIconFrame:Hide()
+	end
+end
+
 function M:Initialize()
 	M.Initialized = true
 
@@ -422,11 +427,11 @@ function M:Initialize()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
 
-	if not E.Retail then
+	if not E.Modern then
 		M:ToggleInterrupt()
 	end
 
-	local vanillaStyle = E.ClassicAnniv or E.TBC
+	local vanillaStyle = E.Classic or E.TBC
 	if not vanillaStyle then -- it uses Blizzard_GroupFinder_VanillaStyle
 		M:LoadQueueStatus()
 	end
@@ -468,14 +473,10 @@ function M:Initialize()
 
 		M.QuestRewardGoldIconFrame = MostValue
 
-		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', function()
-			if M.QuestRewardGoldIconFrame then
-				M.QuestRewardGoldIconFrame:Hide()
-			end
-		end)
+		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', M.QuestRewardPanel_Hide)
 	end
 
-	if E.Retail then
+	if E.Modern then
 		M:Hook('BossBanner_ConfigureLootFrame', nil, true) -- fix blizz thing x.x
 	end
 end

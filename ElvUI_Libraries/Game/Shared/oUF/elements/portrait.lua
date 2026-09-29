@@ -46,12 +46,12 @@ local UnitIsConnected = UnitIsConnected
 local SetPortraitTexture = SetPortraitTexture
 local IsUnitModelReadyForUI = IsUnitModelReadyForUI
 
-local function Update(self, event)
+local function Update(self, event, arg1)
 	local element = self.Portrait
 	if not element then return end
 
-	local unit = self.__unit
-	if not unit then return end
+	local unit, eventless = self.__unit, self.__eventless and arg1
+	if not unit or (eventless and oUF:UnitNotUnit(arg1, unit)) then return end
 
 	local guid = UnitGUID(unit)
 	local secretGUID = oUF:IsSecretValue(guid)

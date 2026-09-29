@@ -35,6 +35,8 @@ local function Update(self, event)
 	local element = self.LeaderIndicator
 	local unit = self.__unit
 
+	if not element.combatHide and (event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_REGEN_ENABLED') then return end
+
 	--[[ Callback: LeaderIndicator:PreUpdate()
 	Called before the element has been updated.
 
@@ -53,7 +55,7 @@ local function Update(self, event)
 	-- own groups via UnitIsGroupLeader(unit, LE_PARTY_CATEGORY_HOME) or by members of other groups via
 	-- UnitLeadsAnyGroup(unit). Inside the group formed by the dungeon finder UnitIsGroupLeader(unit) will only return
 	-- true for the instance leader.
-	local isInLFGInstance = oUF.isRetail and HasLFGRestrictions()
+	local isInLFGInstance = oUF.isModern and HasLFGRestrictions()
 
 	local isLeader
 	if IsInInstance() then

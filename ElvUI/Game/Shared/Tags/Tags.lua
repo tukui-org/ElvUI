@@ -9,13 +9,14 @@ local next, gsub, format = next, gsub, format
 local abs, ipairs, pairs, floor, ceil = abs, ipairs, pairs, floor, ceil
 local strfind, strmatch, strlower, strsplit = strfind, strmatch, strlower, strsplit
 local utf8sub, utf8len = string.utf8sub, strlenutf8
+local tconcat = table.concat
 
 local AbbreviateNumbers = AbbreviateNumbers
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetCurrentTitle = GetCurrentTitle
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
-local GetPetLoyalty = GetPetLoyalty
+local GetPetLoyalty = (C_PetInfo and C_PetInfo.GetPetLoyalty) or GetPetLoyalty
 local GetPVPRankInfo = GetPVPRankInfo
 local GetPVPTimer = GetPVPTimer
 local GetRaidRosterInfo = GetRaidRosterInfo
@@ -55,7 +56,7 @@ local UnitReaction = UnitReaction
 local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
-local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal and C_PetJournal.GetPetTeamAverageLevel
+local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
 local POWERTYPE_MANA = Enum.PowerType.Mana
@@ -74,7 +75,7 @@ local HEX_FALLBACK = '|cFFcccccc'
 --	Looping
 ------------------------------------------------------------------------
 
-local classSpecificAura = { MAGE = E.Retail or E.Mists, SHAMAN = E.Retail, MONK = true }
+local classSpecificAura = { MAGE = E.Modern or E.Mists, SHAMAN = E.Modern, MONK = true }
 local classSpecificEvents = (E.myclass == 'DEATHKNIGHT' and 'RUNE_POWER_UPDATE ') or (classSpecificAura[E.myclass] and 'UNIT_AURA ') or ''
 local classSpecificMonk = not E.Classic and E.myclass == 'MONK'
 local classSpecificSpells = { -- stagger IDs also in oUF stagger element
@@ -82,11 +83,11 @@ local classSpecificSpells = { -- stagger IDs also in oUF stagger element
 	[124274] = classSpecificMonk or nil, --	[YELLOW]	Moderate Stagger
 	[124273] = classSpecificMonk or nil, --	[RED]		Heavy Stagger
 	[SPELL_ARCANE_CHARGE] = (E.Mists and E.myclass == 'MAGE') or nil,
-	[SPELL_FROST_ICICLES] = (E.Retail and E.myclass == 'MAGE') or nil,
-	[SPELL_MAELSTROM] = (E.Retail and E.myclass == 'SHAMAN') or nil
+	[SPELL_FROST_ICICLES] = (E.Modern and E.myclass == 'MAGE') or nil,
+	[SPELL_MAELSTROM] = (E.Modern and E.myclass == 'SHAMAN') or nil
 }
 
-if not E.Retail then
+if not E.Modern then
 	for textFormat in pairs(E.GetFormattedTextStyles) do
 		local tagFormat = strlower(gsub(textFormat, '_', '-'))
 		E:AddTag(format('health:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_CONNECTION PARTY_MEMBER_ENABLE PARTY_MEMBER_DISABLE', function(unit)
@@ -225,7 +226,7 @@ end
 --	Regular
 ------------------------------------------------------------------------
 
-if not E.Retail then
+if not E.Modern then
 	E:AddTag('classcolor:target', 'UNIT_TARGET', function(unit)
 		if UnitExists(unit..'target') then
 			return _TAGS.classcolor(unit..'target')
@@ -429,7 +430,7 @@ if not E.Retail then
 		end
 	end)
 
-	E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Retail and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
+	E:AddTag('classpowercolor', 'UNIT_POWER_FREQUENT UNIT_DISPLAYPOWER'..(E.Modern and ' PLAYER_SPECIALIZATION_CHANGED' or ''), function(unit)
 		local _, _, r, g, b = GetClassPower(unit)
 		return Hex(r, g, b)
 	end, E.Classic)
@@ -585,7 +586,7 @@ if not E.Retail then
 		}
 
 		E:AddTag('class:icon', 'PLAYER_TARGET_CHANGED', function(unit)
-			if not (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then return end
+			if not (UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit))) then return end
 
 			local _, classToken = UnitClass(unit)
 			local icon = E:NotSecretValue(classToken) and classIcons[classToken]
@@ -603,7 +604,7 @@ if not E.Retail then
 			return E.myspecName
 		end
 
-		-- try to get spec from tooltip
+		-- try to get spec from tooltip (forever has one spec per class)
 		local info = E.Retail and E:GetUnitSpecInfo(unit)
 		if info then
 			return info.name
@@ -625,6 +626,8 @@ if not E.Retail then
 end
 
 for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long = 20 }) do
+	local nameTag = format('name:%s', textFormat)
+
 	E:AddTag(format('health:current:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 		local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -648,7 +651,7 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		if deficit > 0 and cur > 0 then
 			return _TAGS['health:deficit-percent:nostatus'](unit)
 		else
-			return _TAGS[format('name:%s', textFormat)](unit)
+			return _TAGS[nameTag](unit)
 		end
 	end)
 
@@ -762,7 +765,7 @@ E:AddTag('selectioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENG
 end)
 
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-	if UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit)) then
+	if UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit)) then
 		local _, classToken = UnitClass(unit)
 		local cs = E:NotSecretValue(classToken) and ElvUF.colors.class[classToken]
 		return cs and Hex(cs) or HEX_FALLBACK
@@ -772,7 +775,7 @@ E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_
 	end
 end)
 
-E:AddTag('namecolor', 'UNIT_TARGET', function(unit)
+E:AddTag('namecolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	return _TAGS.classcolor(unit)
 end)
 
@@ -881,7 +884,7 @@ E:AddTag('group:raid', 'GROUP_ROSTER_UPDATE', function(unit)
 	local name, realm = UnitName(unit)
 	if E:IsSecretValue(name) or E:IsSecretValue(realm) or not name then return end
 
-	local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
+	local nameRealm = E:GetNameRealm(name, realm)
 	for i = 1, GetNumGroupMembers() do
 		local raidName, _, group = GetRaidRosterInfo(i)
 		if raidName == nameRealm then
@@ -982,7 +985,7 @@ E:AddTag('arena:number', 'UNIT_NAME_UPDATE', function(unit)
 end)
 
 E:AddTag('class', 'UNIT_NAME_UPDATE', function(unit)
-	if not (UnitIsPlayer(unit) or (E.Retail and UnitInPartyIsAI(unit))) then return end
+	if not (UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit))) then return end
 
 	local _, classToken = UnitClass(unit)
 	if E:NotSecretValue(classToken) then
@@ -1099,7 +1102,7 @@ do
 		return format('%.1f', speed)
 	end)
 
-	if E.Retail then
+	if E.Modern then
 		E:AddTag('speed:percent', 0.1, function(unit)
 			local speed = GetUnitSpeed(unit)
 			local perc = AbbreviateNumbers(speed, breakpoint)
@@ -1116,7 +1119,7 @@ do
 			local speed = TruncateWhenZero(GetUnitSpeed(unit))
 			return format('%s', speed)
 		end)
-	elseif not E.Retail then
+	elseif not E.Modern then
 		E:AddTag('speed:percent', 0.1, function(unit)
 			local speed = GetUnitSpeed(unit)
 			return format('%s: %d%%', speedText, (speed / baseSpeed) * 100)
@@ -1139,7 +1142,7 @@ do
 
 		E:AddTag('speed:percent-moving', 0.1, function(unit)
 			local speed = GetUnitSpeed(unit)
-			return speed > 0 and format('%s: %d%%', (speed / baseSpeed) * 100) or nil
+			return speed > 0 and format('%s: %d%%', speedText, (speed / baseSpeed) * 100) or nil
 		end)
 
 		E:AddTag('speed:percent-moving-raw', 0.1, function(unit)
@@ -1192,7 +1195,7 @@ E:AddTag('quest:count', 'QUEST_LOG_UPDATE', function(unit)
 	return GetQuestData(unit, 'count', Hex)
 end, E.Classic)
 
-if not E.Retail then
+if not E.Modern then
 	E:AddTag('pvp:title', 'UNIT_NAME_UPDATE', function(unit)
 		if not UnitIsPlayer(unit) then return end
 
@@ -1231,11 +1234,11 @@ E:AddTag('loyalty', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 	if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
 		return (gsub(GetPetLoyalty(), '.-(%d).*', '%1'))
 	end
-end, not (E.Classic or E.TBC or E.Wrath))
+end, not (E.Classic or E.TBC or E.Wrath or E.Forever))
 
-if E.Classic or E.TBC or E.Wrath then
-	local GetPetHappiness = GetPetHappiness
-	local GetPetFoodTypes = GetPetFoodTypes
+if E.Classic or E.TBC or E.Wrath or E.Forever then
+	local GetPetHappiness = (C_PetInfo and C_PetInfo.GetPetHappiness) or GetPetHappiness
+	local GetPetFoodTypes = (C_PetInfo and C_PetInfo.GetPetFoodTypes) or GetPetFoodTypes
 
 	local emotionsIcons = {
 		[[|TInterface\PetPaperDollFrame\UI-PetHappiness:16:16:0:0:128:64:48:72:0:23|t]],
@@ -1280,7 +1283,8 @@ if E.Classic or E.TBC or E.Wrath then
 	E:AddTag('diet', 'UNIT_HAPPINESS PET_UI_UPDATE', function(unit)
 		local hasPetUI, isHunterPet = HasPetUI()
 		if hasPetUI and isHunterPet and E:UnitIsUnit('pet', unit) then
-			return GetPetFoodTypes()
+			local foodTypes = GetPetFoodTypes()
+			return E.Forever and tconcat(foodTypes, _G.PET_FOOD_DELIMIT) or foodTypes
 		end
 	end)
 end
@@ -1296,8 +1300,8 @@ do
 		local name, realm = UnitName(unit)
 		if E:IsSecretValue(name) or E:IsSecretValue(realm) or not name then return end
 
-		local nameRealm = (realm and realm ~= '' and format('%s-%s', name, realm)) or name
-		local userVersion = nameRealm and E.UserList[nameRealm]
+		local nameRealm = E:GetNameRealm(name, realm)
+		local userVersion = E.UserList[nameRealm]
 		if userVersion then
 			if highestVersion < userVersion then
 				highestVersion = userVersion
@@ -1395,11 +1399,11 @@ if info then
 	info['incomingheals:others'] = { category = "Health", description = "Displays only incoming heals from other units" }
 	info['incomingheals:personal'] = { category = "Health", description = "Displays only personal incoming heals" }
 
-	info['diet'] = { hidden = E.Retail, category = "Hunter", description = "Displays the diet of your pet (Fish, Meat, ...)" }
+	info['diet'] = { hidden = E.Modern, category = "Hunter", description = "Displays the diet of your pet (Fish, Meat, ...)" }
 	info['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like a Discord emoji" }
 	info['happiness:full'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness as a word (e.g. 'Happy')" }
 	info['happiness:icon'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like the default Blizzard icon" }
-	info['loyalty'] = { hidden = E.Retail, category = "Hunter", description = "Displays the pet loyalty level" }
+	info['loyalty'] = { hidden = E.Modern, category = "Hunter", description = "Displays the pet loyalty level" }
 
 	info['mana:current'] = { category = "Mana", description = "Displays the unit's current mana" }
 	info['mana:current-max'] = { category = "Mana", description = "Displays the unit's current and maximum mana, separated by a dash" }
@@ -1484,9 +1488,9 @@ if info then
 
 	info['arena:number'] = { category = "PvP", description = "Displays the arena number 1-5" }
 	info['faction:icon'] = { category = "PvP", description = "Displays the 'Alliance' or 'Horde' texture" }
-	info['pvp:icon'] = { hidden = E.Retail, category = "PvP", description = "Displays player pvp rank icon" }
-	info['pvp:rank'] = { hidden = E.Retail, category = "PvP", description = "Displays player pvp rank number" }
-	info['pvp:title'] = { hidden = E.Retail, category = "PvP", description = "Displays player pvp title" }
+	info['pvp:icon'] = { hidden = E.Modern, category = "PvP", description = "Displays player pvp rank icon" }
+	info['pvp:rank'] = { hidden = E.Modern, category = "PvP", description = "Displays player pvp rank number" }
+	info['pvp:title'] = { hidden = E.Modern, category = "PvP", description = "Displays player pvp title" }
 	info['pvptimer'] = { category = "PvP", description = "Displays remaining time on pvp-flagged status" }
 
 	info['quest:count'] = { category = "Quest", description = "Displays the quest count" }
@@ -1515,10 +1519,10 @@ if info then
 	info['speed:yardspersec-raw'] = { category = "Speed" }
 	info['speed:percent'] = { category = "Speed" }
 	info['speed:percent-raw'] = { category = "Speed" }
-	info['speed:yardspersec-moving'] = { hidden = E.Retail, category = "Speed" }
+	info['speed:yardspersec-moving'] = { hidden = E.Modern, category = "Speed" }
 	info['speed:yardspersec-moving-raw'] = { category = "Speed" }
-	info['speed:percent-moving'] = { hidden = E.Retail, category = "Speed" }
-	info['speed:percent-moving-raw'] = { hidden = E.Retail, category = "Speed" }
+	info['speed:percent-moving'] = { hidden = E.Modern, category = "Speed" }
+	info['speed:percent-moving-raw'] = { hidden = E.Modern, category = "Speed" }
 
 	info['afk'] = { category = "Status", description = "Displays <AFK> if the unit is afk" }
 	info['ElvUI-Users'] = { category = "Status", description = "Displays current ElvUI users" }

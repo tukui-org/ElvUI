@@ -7,13 +7,9 @@ local next = next
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local hooksecurefunc = hooksecurefunc
 
-local function SkinContainer(frame, container)
+local function SkinContainer(frame)
 	frame.NineSlice:Kill()
-
-	local child = container or frame.scrollFrame
-	if child and not child.backdrop then
-		child:CreateBackdrop('Transparent')
-	end
+	frame:CreateBackdrop('Transparent')
 end
 
 local function StripClassTextures(button, classFile)
@@ -27,6 +23,10 @@ local function HandleEventIcon(icon)
 	icon:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, nil, true)
 	icon:SetTexCoords()
 	icon.SetTexCoord = E.noop
+end
+
+local function CalendarSetToday()
+	_G.CalendarTodayFrame:SetAllPoints()
 end
 
 function S:Blizzard_Calendar()
@@ -46,8 +46,8 @@ function S:Blizzard_Calendar()
 
 	SkinContainer(_G.CalendarViewEventInviteList)
 	SkinContainer(_G.CalendarCreateEventInviteList)
-	SkinContainer(_G.CalendarViewEventDescriptionContainer, _G.CalendarViewEventDescriptionScrollFrame)
-	SkinContainer(_G.CalendarCreateEventDescriptionContainer, _G.CalendarCreateEventDescriptionScrollFrame)
+	SkinContainer(_G.CalendarViewEventDescriptionContainer)
+	SkinContainer(_G.CalendarCreateEventDescriptionContainer)
 
 	_G.CalendarCreateEventFrameButtonBackground:Hide()
 	_G.CalendarCreateEventMassInviteButtonBorder:Hide()
@@ -57,7 +57,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarCreateEventRaidInviteButtonBorder:Hide()
 	_G.CalendarMonthBackground:SetAlpha(0)
 	_G.CalendarYearBackground:SetAlpha(0)
-	_G.CalendarFrameModalOverlay:SetAlpha(.25)
+	_G.CalendarFrameModalOverlay:SetAlpha(0.25)
 	_G.CalendarTexturePickerFrameButtonBackground:Hide()
 	_G.CalendarTexturePickerAcceptButtonBorder:Hide()
 	_G.CalendarTexturePickerCancelButtonBorder:Hide()
@@ -72,7 +72,7 @@ function S:Blizzard_Calendar()
 
 	-- Boost frame levels
 	for i = 1, 42 do
-		_G['CalendarDayButton'..i..'DarkFrame']:SetAlpha(.5)
+		_G['CalendarDayButton'..i..'DarkFrame']:SetAlpha(0.5)
 		local bu = _G['CalendarDayButton'..i]
 
 		if E.private.skins.parchmentRemoverEnable then
@@ -102,9 +102,7 @@ function S:Blizzard_Calendar()
 	_G.CalendarTodayFrame:SetBackdropColor(0,0,0,0)
 	_G.CalendarTodayFrame:SetScript('OnUpdate', nil)
 
-	hooksecurefunc('CalendarFrame_SetToday', function()
-		_G.CalendarTodayFrame:SetAllPoints()
-	end)
+	hooksecurefunc('CalendarFrame_SetToday', CalendarSetToday)
 
 	-- CreateEventFrame
 	_G.CalendarCreateEventFrame:StripTextures()
@@ -178,7 +176,6 @@ function S:Blizzard_Calendar()
 
 	S:HandleButton(_G.CalendarTexturePickerAcceptButton, true)
 	S:HandleButton(_G.CalendarTexturePickerCancelButton, true)
-	S:HandleButton(_G.CalendarCreateEventInviteButton, true)
 	S:HandleButton(_G.CalendarCreateEventRaidInviteButton, true)
 
 	-- Mass Invite Frame

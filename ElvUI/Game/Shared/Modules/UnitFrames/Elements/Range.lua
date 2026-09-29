@@ -17,7 +17,7 @@ local IsInInstance = IsInInstance
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 
-local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook
 local IsSpellInRange = C_Spell.IsSpellInRange
 local PhaseReason = Enum.PhaseReason
 
@@ -88,7 +88,7 @@ end
 
 function UF:FriendlyInRange(unit)
 	if UnitIsPlayer(unit) then
-		if E.Retail then
+		if E.Modern then
 			local phaseReason = UnitPhaseReason(unit)
 			if not E:IsSecretValue(phaseReason) then
 				if phaseReason == PhaseReason.TimerunningHwt then

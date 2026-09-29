@@ -17,7 +17,6 @@ local PAPERDOLLFRAME_TOOLTIP_FORMAT = PAPERDOLLFRAME_TOOLTIP_FORMAT
 local HIGHLIGHT_FONT_COLOR_CODE = HIGHLIGHT_FONT_COLOR_CODE
 local FONT_COLOR_CODE_CLOSE = FONT_COLOR_CODE_CLOSE
 local STAT_FORMAT = STAT_FORMAT
-local HONOR_CURRENCY = HONOR_CURRENCY
 
 local spellSchoolIcon = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
 
@@ -63,7 +62,7 @@ local function HandleItemButtonQuality(button, rarity)
 end
 
 local function PaperDollItemButtonQuality(button)
-	if not button.SetBackdropBorderColor then return end
+	if not button.SetBackdropBorderColor then return end -- bag bar slots run this too, no backdrop when the bag bar is off
 
 	local id = button.id or button:GetID()
 	local rarity = id and GetInventoryItemQuality('player', id)
@@ -148,96 +147,86 @@ end
 
 local function UpdateCurrencySkins()
 	local TokenFramePopup = _G.TokenFramePopup
-	if TokenFramePopup then
-		TokenFramePopup:ClearAllPoints()
-		TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 1, 0)
-		TokenFramePopup:StripTextures()
-		TokenFramePopup:SetTemplate('Transparent')
+	TokenFramePopup:ClearAllPoints()
+	TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', 1, 0)
+	TokenFramePopup:StripTextures()
+	TokenFramePopup:SetTemplate('Transparent')
 
-		S:HandleCheckBox(_G.TokenFramePopupInactiveCheckbox)
-		S:HandleCheckBox(_G.TokenFramePopupBackpackCheckbox)
-	end
+	S:HandleCheckBox(_G.TokenFramePopupInactiveCheckbox)
+	S:HandleCheckBox(_G.TokenFramePopupBackpackCheckbox)
 
 	local TokenFrameContainer = _G.TokenFrameContainer
-	if not TokenFrameContainer.buttons then return end
+	if not TokenFrameContainer.buttons then return end -- created on the first OnShow
 
 	for _, button in next, TokenFrameContainer.buttons do
-		if button.highlight then button.highlight:Kill() end
-		if button.categoryLeft then button.categoryLeft:Kill() end
-		if button.categoryRight then button.categoryRight:Kill() end
-		if button.categoryMiddle then button.categoryMiddle:Kill() end
+		button.highlight:Kill()
+		button.categoryLeft:Kill()
+		button.categoryRight:Kill()
+		button.categoryMiddle:Kill()
 
 		if not button.backdrop then
 			button:CreateBackdrop(nil, nil, nil, true)
 		end
 
-		if button.icon then
-			if button.itemID == HONOR_CURRENCY and E.myfaction then
-				button.icon:SetTexCoord(0.06325, 0.59375, 0.03125, 0.57375)
-			else
-				button.icon:SetTexCoords()
-			end
+		button.icon:SetTexCoords()
+		button.icon:Size(17)
 
-			button.icon:Size(17)
+		button.backdrop:SetOutside(button.icon, 1, 1)
+		button.backdrop:Show()
 
-			button.backdrop:SetOutside(button.icon, 1, 1)
-			button.backdrop:Show()
-		else
-			button.backdrop:Hide()
+		if not button.highlightTexture then
+			button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
+			button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
+			button.highlightTexture:SetBlendMode('ADD')
+			button.highlightTexture:SetInside(button.expandIcon)
+
+			-- these two only need to be called once
+			-- adding them here will prevent additional calls
+			button.expandIcon:ClearAllPoints()
+			button.expandIcon:Point('LEFT', 4, 0)
+			button.expandIcon:Size(15)
 		end
 
-		if button.expandIcon then
-			if not button.highlightTexture then
-				button.highlightTexture = button:CreateTexture(button:GetName()..'HighlightTexture', 'HIGHLIGHT')
-				button.highlightTexture:SetTexture([[Interface\Buttons\UI-PlusButton-Hilight]])
-				button.highlightTexture:SetBlendMode('ADD')
-				button.highlightTexture:SetInside(button.expandIcon)
+		if button.isHeader then
+			button.backdrop:Hide()
 
-				-- these two only need to be called once
-				-- adding them here will prevent additional calls
-				button.expandIcon:ClearAllPoints()
-				button.expandIcon:Point('LEFT', 4, 0)
-				button.expandIcon:Size(15)
+			for _, region in next, { button:GetRegions() } do
+				if region:IsObjectType('FontString') and region:GetText() then
+					region:ClearAllPoints()
+					region:Point('LEFT', 25, 0)
+				end
 			end
 
-			if button.isHeader then
-				button.backdrop:Hide()
-
-				for _, region in next, { button:GetRegions() } do
-					if region:IsObjectType('FontString') and region:GetText() then
-						region:ClearAllPoints()
-						region:Point('LEFT', 25, 0)
-					end
-				end
-
-				if button.isExpanded then
-					button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
-					button.expandIcon:SetTexCoord(0,1,0,1)
-				else
-					button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
-					button.expandIcon:SetTexCoord(0,1,0,1)
-				end
-
-				button.highlightTexture:Show()
+			if button.isExpanded then
+				button.expandIcon:SetTexture(E.Media.Textures.MinusButton)
+				button.expandIcon:SetTexCoord(0,1,0,1)
 			else
-				button.highlightTexture:Hide()
+				button.expandIcon:SetTexture(E.Media.Textures.PlusButton)
+				button.expandIcon:SetTexCoord(0,1,0,1)
 			end
+
+			button.highlightTexture:Show()
+		else
+			button.highlightTexture:Hide()
 		end
 	end
 end
 
 local function HandleTabs()
 	local lastTab
-	for index, tab in next, { _G.CharacterFrameTab1, HasPetUI() and _G.CharacterFrameTab2 or nil, _G.CharacterFrameTab3, _G.CharacterFrameTab4, _G.CharacterFrameTab5 } do
-		tab:ClearAllPoints()
+	for index = 1, 4 do
+		local tab = _G['CharacterFrameTab'..index]
+		if index ~= 2 or HasPetUI() then -- pet tab is hidden without a pet
+			tab:ClearAllPoints()
 
-		if index == 1 then
-			tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -10, 0)
-		else
-			tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			if lastTab then
+				tab:Point('TOPLEFT', lastTab, 'TOPRIGHT', -19, 0)
+			else
+				tab:Point('TOPLEFT', _G.CharacterFrame, 'BOTTOMLEFT', -10, 0)
+			end
+
+			lastTab = tab
 		end
-
-		lastTab = tab
 	end
 end
 
@@ -276,8 +265,6 @@ end
 
 local function EquipmentUpdateNavigation()
 	local navi = _G.EquipmentFlyoutFrame.NavigationFrame
-	if not navi then return end
-
 	navi:ClearAllPoints()
 	navi:Point('TOPLEFT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMLEFT', 0, -E.Border - E.Spacing)
 	navi:Point('TOPRIGHT', _G.EquipmentFlyoutFrameButtons, 'BOTTOMRIGHT', 0, -E.Border - E.Spacing)
@@ -318,37 +305,30 @@ function S:CharacterFrame()
 		_G.CharacterMainHandSlot,
 		_G.CharacterSecondaryHandSlot,
 		_G.CharacterRangedSlot,
-		_G.CharacterTabardSlot,
-		_G.CharacterAmmoSlot
+		_G.CharacterTabardSlot
 	}
 
 	for _, slot in pairs(slots) do
-		if slot:IsObjectType('Button') then
-			local icon = _G[slot:GetName()..'IconTexture']
-			local cooldown = _G[slot:GetName()..'Cooldown']
+		local name = slot:GetName()
+		local icon = _G[name..'IconTexture']
 
-			slot:StripTextures()
-			slot:SetTemplate(nil, true, true)
-			slot:StyleButton()
+		slot:StripTextures()
+		slot:SetTemplate(nil, true, true)
+		slot:StyleButton()
 
-			S:HandleIcon(icon)
-			icon:SetInside()
+		S:HandleIcon(icon)
+		icon:SetInside()
 
-			if cooldown then
-				E:RegisterCooldown(cooldown)
-			end
-		end
+		E:RegisterCooldown(_G[name..'Cooldown'])
 	end
 
 	-- Give character frame model backdrop it's color back
 	for _, corner in pairs({'TopLeft','TopRight','BotLeft','BotRight'}) do
 		local bg = _G['CharacterModelFrameBackground'..corner]
-		if bg then
-			bg:SetDesaturated(false)
-			bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
+		bg:SetDesaturated(false)
+		bg.ignoreDesaturated = true -- so plugins can prevent this if they want.
 
-			hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
-		end
+		hooksecurefunc(bg, 'SetDesaturated', BackdropDesaturated)
 	end
 
 	_G.CharacterLevelText:FontTemplate()
@@ -402,9 +382,7 @@ function S:CharacterFrame()
 	CharacterMainHandSlot:ClearAllPoints()
 	CharacterMainHandSlot:Point('BOTTOMLEFT', _G.PaperDollItemsFrame, 'BOTTOMLEFT', 106, 10)
 
-	if _G.GearManagerPopupFrame then -- New icon selection
-		_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
-	end
+	_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
 
 	-- Stats
 	for i = 1, 7 do
@@ -416,10 +394,8 @@ function S:CharacterFrame()
 		S:HandleButton(frame.Toolbar, nil, nil, true)
 
 		local name = _G['CharacterStatsPaneCategory'..i..'NameText']
-		if name then
-			name:ClearAllPoints()
-			name:Point('CENTER', frame.Toolbar)
-		end
+		name:ClearAllPoints()
+		name:Point('CENTER', frame.Toolbar)
 
 		_G['CharacterStatsPaneCategory'..i..'Stat1']:Point('TOPLEFT', frame, 16, -18)
 		_G['CharacterStatsPaneCategory'..i..'ToolbarSortDownArrow']:Kill()
@@ -495,15 +471,6 @@ function S:CharacterFrame()
 
 	-- TokenFrame (Currency Tab)
 	_G.TokenFrame:StripTextures()
-
-	-- Try to find the close button
-	for _, child in next, { _G.TokenFrame:GetChildren() } do
-		if child.Hide and child:IsShown() and not child:GetName() then
-			child:Hide()
-			break
-		end
-	end
-
 	S:HandleScrollBar(_G.TokenFrameContainerScrollBar)
 	S:HandleCloseButton(_G.TokenFramePopupCloseButton, _G.TokenFramePopup)
 

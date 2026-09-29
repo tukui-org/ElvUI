@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:WorldMapFrame()
+function S:Blizzard_WorldMap()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.worldmap) then return end
 
 	local WorldMapFrame = _G.WorldMapFrame
@@ -48,9 +48,9 @@ function S:WorldMapFrame()
 		S:HandleButton(_G.Questie_Toggle)
 	end
 
-	S:HandleMaxMinFrame(WorldMapFrame.MaxMinButtonFrame)
-	S:HandleCloseButton(_G.WorldMapFrameCloseButton, WorldMapFrame.backdrop)
+	S:HandleMaxMinFrame(WorldMapFrame.MaximizeMinimizeFrame)
+	S:HandleCloseButton(_G.WorldMapFrameCloseButton)
 	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
 end
 
-S:AddCallback('WorldMapFrame')
+S:AddCallbackForAddon('Blizzard_WorldMap')

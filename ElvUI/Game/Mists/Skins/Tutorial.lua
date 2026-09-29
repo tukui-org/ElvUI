@@ -4,7 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 
 function S:SkinTutorial()
-	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tutorial) then return end
+	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tutorials) then return end
 
 	S:HandleFrame(_G.TutorialFrame, false)
 
@@ -25,4 +25,4 @@ function S:SkinTutorial()
 	S:HandleButton(_G.TutorialFrameOkayButton)
 end
 
-S:AddCallback('SkinTutorial')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinTutorial')

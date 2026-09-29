@@ -29,7 +29,7 @@ local Mixin = Mixin
 local SecureButton_GetUnit = SecureButton_GetUnit
 local SecureButton_GetModifiedUnit = SecureButton_GetModifiedUnit
 
-local SetNamePlateHitTestInsets = C_NamePlateManager and C_NamePlateManager.SetNamePlateHitTestInsets
+local SetNamePlateHitTestInsets = C_NamePlateManager.SetNamePlateHitTestInsets
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local SetNamePlateSize = C_NamePlate.SetNamePlateSize
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
@@ -749,7 +749,7 @@ do
 		local name = overrideName or createName(nil, attributes)
 		local header = Mixin(CreateFrame('Frame', name, UFParentHider, template), headerMixin)
 
-		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isRetail and ', PingableUnitFrameTemplate' or ''))
+		header:SetAttribute('template', 'SecureUnitButtonTemplate, SecureHandlerStateTemplate, SecureHandlerEnterLeaveTemplate' .. (oUF.isModern and ', PingableUnitFrameTemplate' or ''))
 
 		for att, val in next, attributes do
 			header:SetAttribute(att, val)
@@ -826,7 +826,7 @@ function oUF:Spawn(unit, overrideName, overrideTemplate) -- ElvUI adds overrideT
 	unit = unit:lower()
 
 	local name = overrideName or createName(unit)
-	local object = CreateFrame('Button', name, UFParentHider, overrideTemplate or (oUF.isRetail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
+	local object = CreateFrame('Button', name, UFParentHider, overrideTemplate or (oUF.isModern and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate') or 'SecureUnitButtonTemplate')
 	Private.UpdateUnits(object, unit)
 
 	self:DisableBlizzard(unit)
@@ -844,13 +844,11 @@ do
 		if(SetNamePlateSize and IsLoggedIn()) then
 			SetNamePlateSize(driver.plateWidth or 200, driver.plateHeight or 30)
 
-			if SetNamePlateHitTestInsets then
-				local enemyInset = driver.enemyNonInteractible and hitInset or -hitInset
-				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Enemy, enemyInset, enemyInset, enemyInset, enemyInset)
+			local enemyInset = driver.enemyNonInteractible and hitInset or -hitInset
+			SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Enemy, enemyInset, enemyInset, enemyInset, enemyInset)
 
-				local friendlyInset = driver.friendlyNonInteractible and hitInset or -hitInset
-				SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Friendly, friendlyInset, friendlyInset, friendlyInset, friendlyInset)
-			end
+			local friendlyInset = driver.friendlyNonInteractible and hitInset or -hitInset
+			SetNamePlateHitTestInsets(NAMEPLATE_TYPE.Friendly, friendlyInset, friendlyInset, friendlyInset, friendlyInset)
 
 			if(driver.cvars) then
 				for name, value in next, driver.cvars do
@@ -965,7 +963,7 @@ do
 			if(not nameplate.unitFrame) then
 				nameplate.style = self.style
 
-				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, oUF.isRetail and 'PingableUnitFrameTemplate' or '')
+				nameplate.unitFrame = CreateFrame('Button', self.prefix .. nameplate:GetName(), nameplate, oUF.isModern and 'PingableUnitFrameTemplate' or '')
 				nameplate.unitFrame:EnableMouse(false)
 				nameplate.unitFrame:SetAllPoints()
 				nameplate.unitFrame.isNameplate = true

@@ -238,7 +238,9 @@ end
 
 local function UpdateColors(_, _, r, g, b)
 	for _, holder in pairs(E.CreatedMovers) do
-		OnShow(holder.mover, r, g, b)
+		if holder.mover:IsShown() then -- hidden movers take the color in OnShow
+			OnShow(holder.mover, r, g, b)
+		end
 	end
 end
 E.valueColorUpdateFuncs.Movers = UpdateColors

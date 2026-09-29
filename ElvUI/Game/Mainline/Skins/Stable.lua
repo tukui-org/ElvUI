@@ -5,8 +5,6 @@ local _G = _G
 local hooksecurefunc = hooksecurefunc
 
 local function AbilitiesList_Layout(list)
-	if not list.abilityPool then return end
-
 	for frame in list.abilityPool:EnumerateActive() do
 		if not frame.IsSkinned then
 			S:HandleIcon(frame.Icon)
@@ -37,36 +35,14 @@ function S:Blizzard_StableUI()
 	S:HandleTrimScrollBar(StabledPetList.ScrollBar)
 
 	local modelScene = StableFrame.PetModelScene
-	if modelScene then
-		local sceneShadow = modelScene.PetModelSceneShadow
-		if sceneShadow then
-			sceneShadow:SetInside()
-		end
-
-		local inset = modelScene.Inset
-		if inset then
-			inset.NineSlice:SetTemplate()
-			inset.Bg:Hide()
-		end
-
-		local abilitiesList = modelScene.AbilitiesList
-		if abilitiesList then
-			hooksecurefunc(abilitiesList, 'Layout', AbilitiesList_Layout)
-		end
-
-		local petInfo = modelScene.PetInfo
-		if petInfo then
-			if petInfo.Type then
-				hooksecurefunc(petInfo.Type, 'SetText', S.ReplaceIconString)
-			end
-
-			if petInfo.Specialization then
-				S:HandleDropDownBox(petInfo.Specialization)
-			end
-		end
-	end
-
+	modelScene.PetModelSceneShadow:SetInside()
+	modelScene.Inset.NineSlice:SetTemplate()
+	modelScene.Inset.Bg:Hide()
 	S:HandleModelSceneControlButtons(modelScene.ControlFrame)
+
+	hooksecurefunc(modelScene.AbilitiesList, 'Layout', AbilitiesList_Layout)
+	hooksecurefunc(modelScene.PetInfo.Type, 'SetText', S.ReplaceIconString)
+	S:HandleDropDownBox(modelScene.PetInfo.Specialization)
 end
 
 S:AddCallbackForAddon('Blizzard_StableUI')

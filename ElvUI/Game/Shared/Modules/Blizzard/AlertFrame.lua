@@ -9,16 +9,6 @@ local hooksecurefunc = hooksecurefunc
 
 local POSITION, POINT, X_OFFSET, Y_OFFSET, BASE_YOFFSET = 'TOP', 'BOTTOM', 0, -5, 0 -- should match in PostAlertMove
 
-local function AlertSubSystem_AdjustPosition(alertFrameSubSystem)
-	if alertFrameSubSystem.alertFramePool then --queued alert system
-		alertFrameSubSystem.AdjustAnchors = BL.AdjustQueuedAnchors
-	elseif not alertFrameSubSystem.anchorFrame then --simple alert system
-		alertFrameSubSystem.AdjustAnchors = BL.AdjustAnchors
-	elseif alertFrameSubSystem.anchorFrame then --anchor frame system
-		alertFrameSubSystem.AdjustAnchors = BL.AdjustAnchorsNonAlert
-	end
-end
-
 function E:PostAlertMove()
 	local perks, anchor = BL:GetAlertAnchors()
 
@@ -41,6 +31,16 @@ function E:PostAlertMove()
 
 	if E.private.general.lootRoll then
 		M:PositionGroupLootContainer()
+	end
+end
+
+function BL:AdjustSubSystemPosition(subSystem)	-- self is not always BL
+	if subSystem.alertFramePool then			-- queued alert system
+		subSystem.AdjustAnchors = BL.AdjustQueuedAnchors
+	elseif subSystem.anchorFrame then			-- anchor frame system
+		subSystem.AdjustAnchors = BL.AdjustAnchorsNonAlert
+	elseif not subSystem.anchorFrame then		-- simple alert system
+		subSystem.AdjustAnchors = BL.AdjustAnchors
 	end
 end
 
@@ -112,16 +112,14 @@ function BL:AlertMovers()
 
 	--Replace AdjustAnchors functions to allow alerts to grow down if needed.
 	--We will need to keep an eye on this in case it taints. It shouldn't, but you never know.
-	for _, alertFrameSubSystem in ipairs(_G.AlertFrame.alertFrameSubSystems) do
-		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
+	for _, subSystem in ipairs(_G.AlertFrame.alertFrameSubSystems) do
+		BL:AdjustSubSystemPosition(subSystem)
 	end
 
 	--This should catch any alert systems that are created by other addons
-	hooksecurefunc(_G.AlertFrame, 'AddAlertFrameSubSystem', function(_, alertFrameSubSystem)
-		AlertSubSystem_AdjustPosition(alertFrameSubSystem)
-	end)
+	hooksecurefunc(_G.AlertFrame, 'AddAlertFrameSubSystem', BL.AdjustSubSystemPosition)
 
-	if E.Retail then -- alerts on the Perks Program Frame (Trading Post)
+	if E.Modern then -- alerts on the Perks Program Frame (Trading Post)
 		hooksecurefunc(_G.AlertFrame, 'SetBaseAnchorFrame', E.PostAlertMove)
 		hooksecurefunc(_G.AlertFrame, 'ResetBaseAnchorFrame', E.PostAlertMove)
 	end

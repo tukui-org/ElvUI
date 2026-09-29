@@ -10,7 +10,7 @@ local huge = math.huge
 local GameTooltip = GameTooltip
 local ToggleCharacter = ToggleCharacter
 
-local GetFriendshipReputation = GetFriendshipReputation or C_GossipInfo.GetFriendshipReputation
+local GetFriendshipReputation = C_GossipInfo.GetFriendshipReputation
 local C_Reputation_GetFactionParagonInfo = C_Reputation.GetFactionParagonInfo
 local C_Reputation_IsFactionParagonForCurrentPlayer = C_Reputation.IsFactionParagonForCurrentPlayer
 local C_Reputation_IsMajorFaction = C_Reputation.IsMajorFaction
@@ -45,7 +45,9 @@ local function GetValues(currentStanding, currentReactionThreshold, nextReaction
 	end
 end
 
-function DB:ReputationBar_Update()
+function DB:ReputationBar_Update(event, messageType)
+	if event == 'COMBAT_TEXT_UPDATE' and messageType ~= 'FACTION' then return end
+
 	local bar = DB.StatusBars.Reputation
 	DB:SetVisibility(bar)
 
@@ -64,7 +66,7 @@ function DB:ReputationBar_Update()
 		standing, currentReactionThreshold, nextReactionThreshold, currentStanding = info.reaction, info.reactionThreshold or 0, info.nextThreshold or huge, info.standing or 1
 	end
 
-	if E.Retail and not standing and factionID and C_Reputation_IsFactionParagonForCurrentPlayer(factionID) then
+	if E.Modern and not standing and factionID and C_Reputation_IsFactionParagonForCurrentPlayer(factionID) then
 		local current, threshold
 		current, threshold, _, rewardPending = C_Reputation_GetFactionParagonInfo(factionID)
 
@@ -73,7 +75,7 @@ function DB:ReputationBar_Update()
 		end
 	end
 
-	if not standing and factionID and E.Retail and C_Reputation_IsMajorFaction(factionID) then
+	if not standing and factionID and E.Modern and C_Reputation_IsMajorFaction(factionID) then
 		local majorFactionData = C_MajorFactions_GetMajorFactionData(factionID)
 		local renownColor = DB.db.colors.factionColors[10]
 
@@ -152,7 +154,7 @@ function DB:ReputationBar_OnEnter()
 	local data = E:GetWatchedFactionInfo()
 	local name, reaction, currentReactionThreshold, nextReactionThreshold, currentStanding, factionID = data.name, data.reaction, data.currentReactionThreshold, data.nextReactionThreshold, data.currentStanding, data.factionID
 
-	local isParagon = E.Retail and factionID and C_Reputation_IsFactionParagonForCurrentPlayer(factionID)
+	local isParagon = E.Modern and factionID and C_Reputation_IsFactionParagonForCurrentPlayer(factionID)
 	local standing
 
 	if isParagon then
@@ -177,7 +179,7 @@ function DB:ReputationBar_OnEnter()
 			standing = _G['FACTION_STANDING_LABEL'..reaction] or UNKNOWN
 		end
 
-		local isMajorFaction = factionID and E.Retail and C_Reputation_IsMajorFaction(factionID)
+		local isMajorFaction = factionID and E.Modern and C_Reputation_IsMajorFaction(factionID)
 		if not isMajorFaction then
 			GameTooltip:AddDoubleLine(STANDING..':', standing, 1, 1, 1)
 		end
@@ -215,7 +217,7 @@ function DB:ReputationBar_Toggle()
 		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
 		DB:RegisterEvent('QUEST_FINISHED', 'ReputationBar_Update')
 
-		if E.Retail then
+		if E.Modern then
 			DB:RegisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
 			DB:RegisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
 		end
@@ -228,7 +230,7 @@ function DB:ReputationBar_Toggle()
 		DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
 		DB:UnregisterEvent('QUEST_FINISHED')
 
-		if E.Retail then
+		if E.Modern then
 			DB:UnregisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
 			DB:UnregisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
 		end

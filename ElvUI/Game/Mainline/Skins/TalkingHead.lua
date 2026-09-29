@@ -150,4 +150,4 @@ function S:TalkingHead()
 	TalkingHeadFrame.TextFrame.Text:SetShadowOffset(2, -2)
 end
 
-S:AddCallback('TalkingHead')
+S:AddCallbackForAddon('Blizzard_FrameXML', 'TalkingHead')

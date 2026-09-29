@@ -4,11 +4,8 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local function SkinRewards()
-	local pool = _G.AdventureMapQuestChoiceDialog.rewardPool
-	if not pool or not pool.EnumerateActive then return end
-
-	for reward in pool:EnumerateActive() do
+local function SkinRewards(frame)
+	for reward in frame.rewardPool:EnumerateActive() do
 		if not reward.IsSkinned then
 			S:HandleItemButton(reward)
 			S:HandleIcon(reward.Icon)
@@ -29,13 +26,8 @@ function S:Blizzard_AdventureMap()
 	AdventureMapQuestChoiceDialog.backdrop:Point('TOPLEFT', 0, -13)
 	AdventureMapQuestChoiceDialog.backdrop:Point('BOTTOMRIGHT', 0, -3)
 
-	if AdventureMapQuestChoiceDialog.Portrait then
-		AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
-	end
-
-	if AdventureMapQuestChoiceDialog.Background then
-		AdventureMapQuestChoiceDialog.Background:SetAlpha(0)
-	end
+	AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
+	AdventureMapQuestChoiceDialog.Background:SetAlpha(0)
 
 	-- Rewards
 	hooksecurefunc(AdventureMapQuestChoiceDialog, 'RefreshRewards', SkinRewards)

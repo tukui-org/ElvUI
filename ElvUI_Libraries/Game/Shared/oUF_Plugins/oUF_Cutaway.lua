@@ -89,6 +89,7 @@ end
 
 local function Health_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Health
+	if not element.enabled or element.ready then return end
 
 	local okTap, tapDenied = pcall(UnitIsTapDenied, unit)
 	if not okTap or tapDenied then return end
@@ -120,7 +121,7 @@ local function Health_PostUpdate(self, unit, curHealth, maxHealth)
 	if (element.cur - curHealth) > (maxHealth * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
-		E:Delay(element.lengthBeforeFade, FadeClosure, element)
+		E:Delay(element.lengthBeforeFade, element.FadeFunc)
 
 		element.playing = true
 	else
@@ -132,6 +133,7 @@ end
 
 local function Power_PreUpdate(self, unit)
 	local element = self.__owner.Cutaway.Power
+	if not element.enabled or element.ready then return end
 
 	local okTap, tapDenied = pcall(UnitIsTapDenied, unit)
 	if not okTap or tapDenied then return end
@@ -163,7 +165,7 @@ local function Power_PostUpdate(self, unit, curPower, _, maxPower)
 	if (element.cur - curPower) > (maxPower * 0.01) then
 		element:SetAlpha(self:GetAlpha())
 
-		E:Delay(element.lengthBeforeFade, FadeClosure, element)
+		E:Delay(element.lengthBeforeFade, element.FadeFunc)
 
 		element.playing = true
 	else
@@ -245,6 +247,8 @@ local function Enable(self)
 			element.Health:SetAlpha(0)
 
 			if not element.Health.hasCutawayHook then
+				element.Health.FadeFunc = function() FadeClosure(element.Health) end
+
 				if self.Health.PreUpdate then
 					hooksecurefunc(self.Health, "PreUpdate", Health_PreUpdate)
 				else
@@ -267,6 +271,8 @@ local function Enable(self)
 			element.Power:SetAlpha(0)
 
 			if not element.Power.hasCutawayHook then
+				element.Power.FadeFunc = function() FadeClosure(element.Power) end
+
 				if self.Power.PreUpdate then
 					hooksecurefunc(self.Power, "PreUpdate", Power_PreUpdate)
 				else

@@ -13,7 +13,7 @@ end
 
 local function OnUpdate(self, elapsed)
 	if self.elapsed and self.elapsed > 0.1 then
-		if not MouseOnUnit(self) then
+		if not MouseOnUnit(self.__owner) then
 			self:Hide()
 			self:ForceUpdate()
 		end

@@ -18,10 +18,10 @@ local PickupGuildBankItem = PickupGuildBankItem
 local QueryGuildBankTab = QueryGuildBankTab
 local SplitGuildBankItem = SplitGuildBankItem
 
-local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
-local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Retail and 1 or 0) -- add the profession bag
 local BANK_CONTAINER = Enum.BagIndex.Bank
-local REAGENT_CONTAINER = E.Retail and Enum.BagIndex.ReagentBag or math.huge
+local ITEMQUALITY_POOR = Enum.ItemQuality.Poor
+local NUM_BAG_SLOTS = NUM_BAG_SLOTS + (E.Modern and 1 or 0) -- add the profession bag
+local REAGENT_CONTAINER = E.Modern and Enum.BagIndex.ReagentBag or math.huge
 
 local BagSlotFlags = Enum.BagSlotFlags
 local FILTER_FLAG_TRADE_GOODS = LE_BAG_FILTER_FLAG_TRADE_GOODS or BagSlotFlags.PriorityTradeGoods or BagSlotFlags.ClassProfessionGoods
@@ -36,7 +36,7 @@ local ItemClass_Weapon = Enum.ItemClass.Weapon
 
 local GetItemInfo = C_Item.GetItemInfo
 local GetItemFamily = C_Item.GetItemFamily
-local GetPetInfoBySpeciesID = C_PetJournal and C_PetJournal.GetPetInfoBySpeciesID
+local GetPetInfoBySpeciesID = C_PetJournal.GetPetInfoBySpeciesID
 local ContainerIDToInventoryID = C_Container.ContainerIDToInventoryID
 local GetContainerItemID = C_Container.GetContainerItemID
 local GetContainerItemLink = C_Container.GetContainerItemLink
@@ -50,7 +50,7 @@ local bankBags = {}
 
 local MAX_MOVE_TIME = 1.25
 
-if not E.Retail then
+if not E.Modern then
 	tinsert(bankBags, BANK_CONTAINER)
 end
 
@@ -213,7 +213,7 @@ local safe = {
 	[0] = true
 }
 
-if not E.Retail then
+if not E.Modern then
 	safe[BANK_CONTAINER] = true
 end
 
@@ -237,8 +237,8 @@ do
 	B.SortUpdateTimer = frame
 end
 
-local function WaitDelay(guild, reagent)
-	return (guild and 0.6) or (reagent and 0.3) or 0.1
+local function WaitDelay(guild)
+	return (guild and 0.6) or 0.1
 end
 
 local function IsGuildBankBag(bagid)
@@ -289,7 +289,7 @@ local function DefaultSort(a, b)
 
 	if not aID or not bID then return aID end
 
-	if E.Retail and bagPetIDs[a] and bagPetIDs[b] then
+	if E.Modern and bagPetIDs[a] and bagPetIDs[b] then
 		local aName, _, aType = GetPetInfoBySpeciesID(aID)
 		local bName, _, bType = GetPetInfoBySpeciesID(bID)
 
@@ -568,8 +568,6 @@ do
 end
 
 function B:IsSpecialtyBag(bagID)
-	if bagID == REAGENT_CONTAINER then return 'Reagent' end
-
 	if safe[bagID] or IsGuildBankBag(bagID) then return 'Normal' end
 
 	local assigned = B:IsAssignedBag(bagID)
@@ -582,7 +580,9 @@ function B:IsSpecialtyBag(bagID)
 	if not bag then return 'Normal' end
 
 	local family = GetItemFamily(bag)
-	if family == 0 or family == nil then return 'Normal' end
+	if family == 0 or not family then
+		return (bagID == REAGENT_CONTAINER and 'Reagent') or 'Normal'
+	end
 
 	return family
 end
@@ -592,9 +592,6 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 
 	local item = bagIDs[B:Encode_BagSlot(bag, slot)]
 	local _, _, rarity, _, _, _, _, _, equipSlot, _, sellPrice, classID, _, bindType, _, _, isReagent = GetItemInfo(item)
-	if targetBag == REAGENT_CONTAINER then
-		return isReagent
-	end
 
 	local assigned = B:IsAssignedBag(targetBag)
 	if assigned then
@@ -615,7 +612,7 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 
 	local _, bagType = GetContainerNumFreeSlots(targetBag)
 	if bagType == 0 then
-		return true -- target bag is normal
+		return targetBag ~= REAGENT_CONTAINER or isReagent
 	elseif bagType and classID ~= 11 then -- prevent quiverception
 		local itemFamily = GetItemFamily(item)
 		if itemFamily then
@@ -712,7 +709,7 @@ function B.Sort(bags, sorter, invertDirection)
 	B:BuildBlacklist(E.global.bags.ignoredItems)
 
 	for i, bag, slot in B:IterateBags(bags, nil, 'both') do
-		if not E.Retail or not B:IsSortIgnored(bag) then
+		if not E.Modern or not B:IsSortIgnored(bag) then
 			local link = B:GetItemLink(bag, slot)
 			local itemID = B:GetItemID(bag, slot)
 			local bagSlot = B:Encode_BagSlot(bag, slot)
@@ -736,7 +733,7 @@ function B.Sort(bags, sorter, invertDirection)
 		local i = 1
 		for _, bag, slot in B:IterateBags(bags, nil, 'both') do
 			local destination = B:Encode_BagSlot(bag, slot)
-			if not blackListedSlots[destination] and (not E.Retail or not B:IsSortIgnored(bag)) then
+			if not blackListedSlots[destination] and (not E.Modern or not B:IsSortIgnored(bag)) then
 				local source = bagSorted[i]
 				if ShouldMove(source, destination) then
 					if not (bagLocked[source] or bagLocked[destination]) then
@@ -950,9 +947,7 @@ function B:DoMove(move)
 	if sourceGuild then QueryGuildBankTab(sourceBag - 50) end
 	if targetGuild then QueryGuildBankTab(targetBag - 50) end
 
-	local sourceReagent = sourceBag == REAGENT_CONTAINER
-	local targetReagent = targetBag == REAGENT_CONTAINER
-	return true, sourceItemID, source, targetItemID, target, sourceGuild or targetGuild, sourceReagent or targetReagent
+	return true, sourceItemID, source, targetItemID, target, sourceGuild or targetGuild
 end
 
 function B:DoMoves()
@@ -988,8 +983,8 @@ function B:DoMoves()
 
 				if (now - lockStop) > MAX_MOVE_TIME then
 					if lastMove and moveRetries < 100 then
-						local success, moveID, moveSource, targetID, moveTarget, wasGuild, wasReagent = B:DoMove(lastMove)
-						WAIT_TIME = WaitDelay(wasGuild, wasReagent)
+						local success, moveID, moveSource, targetID, moveTarget, wasGuild = B:DoMove(lastMove)
+						WAIT_TIME = WaitDelay(wasGuild)
 
 						if not success then
 							lockStop = now
@@ -1020,9 +1015,9 @@ function B:DoMoves()
 
 	if #moves > 0 then
 		for i = #moves, 1, -1 do
-			local success, moveID, moveSource, targetID, moveTarget, wasGuild, wasReagent = B:DoMove(moves[i])
+			local success, moveID, moveSource, targetID, moveTarget, wasGuild = B:DoMove(moves[i])
 			if not success then
-				WAIT_TIME = WaitDelay(wasGuild, wasReagent)
+				WAIT_TIME = WaitDelay(wasGuild)
 				lockStop = now
 				return
 			end
@@ -1035,7 +1030,7 @@ function B:DoMoves()
 			tremove(moves, i)
 
 			if moves[i-1] then
-				WAIT_TIME = WaitDelay(wasGuild, wasReagent)
+				WAIT_TIME = WaitDelay(wasGuild)
 				return
 			end
 		end

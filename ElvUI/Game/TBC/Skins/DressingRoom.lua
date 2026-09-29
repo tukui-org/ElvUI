@@ -3,7 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-function S:DressUpFrame()
+function S:Blizzard_CharacterFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.dressingroom) then return end
 
 	local DressUpFrame = _G.DressUpFrame
@@ -15,8 +15,6 @@ function S:DressUpFrame()
 	DressUpFrame.BGTopRight:SetDesaturated(true)
 
 	_G.DressUpFrameDescriptionText:Point('CENTER', _G.DressUpFrameTitleText, 'BOTTOM', -5, -22)
-
-	S:HandleCloseButton(_G.DressUpFrameCloseButton, DressUpFrame.backdrop)
 
 	-- Rotate Buttons
 	S:HandleRotateButton(_G.DressUpModelFrameRotateLeftButton)
@@ -33,4 +31,4 @@ function S:DressUpFrame()
 	S:HandleFrame(_G.DressUpModelFrame, true, nil, -2, -19, 0, -1)
 end
 
-S:AddCallback('DressUpFrame')
+S:AddCallbackForAddon('Blizzard_CharacterFrame')

@@ -299,6 +299,7 @@ L["Session:"] = true
 L["Set:"] = true
 L["Setup Chat"] = true
 L["Setup CVars"] = true
+L["Shard Transfer Frame"] = true
 L["Shared Profile"] = true
 L["Shared Profile will select the default profile."] = true
 L["Shift + Left Click to Toggle Bag"] = true

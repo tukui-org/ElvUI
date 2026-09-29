@@ -9,11 +9,11 @@ local _G = _G
 local wipe, ceil, huge = wipe, ceil, math.huge
 local strfind, strmatch = strfind, strmatch
 local floor, next, type = floor, next, type
-local hooksecurefunc = hooksecurefunc
 
 local AnchorUtil = AnchorUtil
 local CreateFrame = CreateFrame
 local UnitCanAssist = UnitCanAssist
+local UnitIsVisible = UnitIsVisible
 
 local GetCVarBool = C_CVar.GetCVarBool
 local AuraButtonBorderStyle = AuraButtonBorderStyle
@@ -57,7 +57,7 @@ E.AuraDispel = {
 	customDispelColorMap = {} -- updated by UpdateDispelColors
 }
 
-E.AuraHighlightActive = {}
+E.AuraHighlightDispellable = {}
 E.AuraContainerSortDirection = {}
 E.AuraContainerSortMethod = {}
 E.AuraPreviewFrames = {}
@@ -98,7 +98,7 @@ if SORTDIRECTION then
 end
 
 function E:Auras_DispelUpdated()
-	for container in next, E.AuraHighlightActive do
+	for container in next, E.AuraHighlightDispellable do
 		E:Auras_SetHighlight(container)
 	end
 end
@@ -112,15 +112,15 @@ function E:Auras_OnEvent(event, arg1)
 				UF:AuraBars_UpdateFilter(container, eventUnit)
 				E:Auras_SetContainer(container)
 			else -- for target frame
-				E:Auras_AssistUnit(container, eventUnit, true)
+				E:Auras_AssistUnit(container, eventUnit)
 			end
 		end
 	elseif event == 'GROUP_ROSTER_UPDATE' then
 		if container.unit then
-			E:Auras_AssistUnit(container, container.unit, true)
+			E:Auras_AssistUnit(container, container.unit)
 		end
 	elseif arg1 and (arg1 == container.unit) then
-		E:Auras_AssistUnit(container, arg1, true)
+		E:Auras_AssistUnit(container, arg1)
 	end
 end
 
@@ -142,7 +142,8 @@ end
 function E:Auras_UpdateHighlight(container, button)
 	if button.highlight then
 		if container.key == 'bad' then
-			button:SetAuraBorder(button.highlight, E.AuraHighlight)
+			button:ClearDispelTypeTextures()
+			button:AddDispelTypeTexture(button.highlight, E.AuraHighlight)
 		else
 			local color = button.data.color or FALLBACK
 			button.highlight:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
@@ -385,11 +386,10 @@ function E:Auras_UpdateButton(container, button)
 			end
 		else
 			button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
+			button:ClearDispelTypeTextures()
 
 			if container.isAuraBar or container.colorByType then -- auraByDispels would be isStealable
-				button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
-			else
-				button:ClearAuraBorder()
+				button:AddDispelTypeTexture(button.dispelBorder, E.AuraDispel)
 			end
 		end
 	end
@@ -1030,27 +1030,39 @@ function E:Auras_ToggleEnable(container, shown)
 	else
 		container:SetEnabled(state)
 
-		E.AuraHighlightActive[container] = (container.isHighlight and state) or nil
+		E.AuraHighlightDispellable[container] = (container.key == 'bad' and container.isHighlight and state) or nil
 
 		return state, true
 	end
 end
 
-function E:Auras_AssistUnit(container, unit, update)
-	container.canReach = unit and UnitCanAssist('player', unit, true, true)
-	container.canAssist = unit and UnitCanAssist('player', unit)
+function E:Auras_AssistUnit(container, unit, shown, skip)
+	local isVisible = unit and UnitIsVisible(unit)
+	container.canReach = isVisible and UnitCanAssist('player', unit, true, true)
+	container.canAssist = isVisible and UnitCanAssist('player', unit)
 
-	local state, changed = E:Auras_ToggleEnable(container)
-	if update and state and not changed then -- update when the state doesnt change but its active
+	local state, changed = E:Auras_ToggleEnable(container, shown)
+	if state and not skip and not changed then -- update when the state doesnt change but its active
 		container:UpdateAllAuras()
 	end
 end
 
-function E:Auras_GroupUnit(container, unit)
+function E:Auras_GroupUnit(container, unit, shown)
 	if not container then return end
 
 	E:Auras_SetUnit(container, unit)
-	E:Auras_AssistUnit(container, unit)
+	E:Auras_RegisterUnitEvents(container, unit)
+	E:Auras_AssistUnit(container, unit, shown, true)
+end
+
+function E:Auras_ToggleActive(container, unit, shown)
+	if not container then return end
+
+	E:Auras_GroupUnit(container, unit, shown)
+
+	if container.events then
+		container.events:SetScript('OnEvent', shown and E.Auras_OnEvent or nil)
+	end
 end
 
 function E:Auras_GetFilter(obj, key)
@@ -1070,22 +1082,17 @@ function E:Auras_GetFilter(obj, key)
 	return list
 end
 
-function E:Auras_ToggleActive(container, shown)
-	if not container then return end
-
-	E:Auras_ToggleEnable(container, shown)
-
-	if container.events then
-		container.events:SetScript('OnEvent', shown and E.Auras_OnEvent or nil)
-	end
-end
-
 function E:Auras_CreateEventFrame(container, parent)
 	local events = CreateFrame('Frame', nil, container)
 
 	local frameType = parent.unitframeType
-	local group = E.AuraGroupHeaders[frameType]
-	if group then
+	local isGroup = E.AuraGroupHeaders[frameType]
+
+	events.isHighlight = parent.isHighlight
+	events.frameType = frameType
+	events.isGroup = isGroup
+
+	if isGroup then
 		events:RegisterEvent('GROUP_ROSTER_UPDATE')		-- raid: when people move between groups
 	elseif strmatch(frameType, '^focus') then
 		events:RegisterEvent('PLAYER_FOCUS_CHANGED')	-- aurabar: switch friendship
@@ -1093,20 +1100,27 @@ function E:Auras_CreateEventFrame(container, parent)
 		events:RegisterEvent('PLAYER_TARGET_CHANGED')	-- aurabar: switch friendship
 	end
 
-	-- technically we might need this on group too
-	-- however blizzard plans to fix us needing this
-	-- so for now we only add it to highlight
-	local highlight = parent.isHighlight
-	if highlight then
-		events:RegisterEvent('UNIT_FACTION')
-	end
+	return events
+end
+
+function E:Auras_RegisterUnitEvents(container, unit)
+	local events = container.events
+	if not events then return end
 
 	-- keeps opposite faction correct when zoning into content
-	if highlight or group then
-		events:RegisterEvent('UNIT_PHASE')
+	if unit and (events.isHighlight or events.isGroup) then
+		events:RegisterUnitEvent('UNIT_DISTANCE_CHECK_UPDATE', unit)
+		events:RegisterUnitEvent('UNIT_IN_RANGE_UPDATE', unit)
+		events:RegisterUnitEvent('UNIT_CONNECTION', unit)
+		events:RegisterUnitEvent('UNIT_FACTION', unit)
+		events:RegisterUnitEvent('UNIT_PHASE', unit)
+	else
+		events:UnregisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
+		events:UnregisterEvent('UNIT_IN_RANGE_UPDATE')
+		events:UnregisterEvent('UNIT_CONNECTION')
+		events:UnregisterEvent('UNIT_FACTION')
+		events:UnregisterEvent('UNIT_PHASE')
 	end
-
-	return events
 end
 
 function E:Auras_Create(parent, which, override)

@@ -3,6 +3,7 @@ local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
 local _G = _G
+local next = next
 local hooksecurefunc = hooksecurefunc
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
@@ -33,8 +34,8 @@ local function SkinOnShow()
 	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('TOPLEFT', ScriptErrorsFrame.ScrollFrame, 'TOPRIGHT', 4, 2)
 	ScriptErrorsFrame.ScrollFrame.ScrollBar:Point('BOTTOMLEFT', ScriptErrorsFrame.ScrollFrame, 'BOTTOMRIGHT', 4, 2)
 
-	for i = 1, #FrameTexs do
-		_G['ScriptErrorsFrame'..FrameTexs[i]]:SetTexture()
+	for _, name in next, FrameTexs do
+		_G['ScriptErrorsFrame'..name]:SetTexture()
 	end
 
 	-- Our Buttons
@@ -55,6 +56,8 @@ local function SkinOnShow()
 end
 
 local function SkinTableAttributeDisplay(frame)
+	if frame.IsSkinned then return end
+
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
 	frame.ScrollFrameArt.NineSlice:SetTemplate('Transparent')
@@ -92,7 +95,7 @@ local function SkinTableAttributeDisplay(frame)
 	frame.IsSkinned = true
 end
 
-function S:ScriptErrorsFrame()
+function S:Blizzard_ScriptErrorsFrame()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.debug) then return end
 
 	S:SecureHookScript(_G.ScriptErrorsFrame, 'OnShow', SkinOnShow)
@@ -108,15 +111,11 @@ function S:Blizzard_DebugTools()
 
 	--New Table Attribute Display: mouse over frame and (/tableinspect or [/fstack -> then Ctrl])
 	SkinTableAttributeDisplay(_G.TableAttributeDisplay)
-	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', function(frame)
-		if frame.ScrollFrameArt and not frame.IsSkinned then
-			SkinTableAttributeDisplay(frame)
-		end
-	end)
+	hooksecurefunc(_G.TableInspectorMixin, 'OnLoad', SkinTableAttributeDisplay)
 end
 
 -- ScriptErrorsFrame Skin
-S:AddCallback('ScriptErrorsFrame')
+S:AddCallbackForAddon('Blizzard_ScriptErrorsFrame')
 
 -- FrameStack, TableInspect Skins
 if IsAddOnLoaded('Blizzard_DebugTools') then

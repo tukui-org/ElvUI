@@ -36,7 +36,7 @@ local function OnEnter()
 		end
 	else
 		local haste = GetHaste()
-		local color = (not E.Retail and (haste < 0) and '|cffFF3333') or '|cffFFFFFF'
+		local color = (not E.Modern and (haste < 0) and '|cffFF3333') or '|cffFFFFFF'
 		DT.tooltip:AddLine(format('%s: %s%.2f%%|r', STAT_HASTE, color, haste), 1, 1, 1)
 	end
 

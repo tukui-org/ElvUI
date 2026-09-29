@@ -25,12 +25,14 @@ A default texture will be applied if the widget is a Texture and doesn't have a 
 local _, ns = ...
 local oUF = ns.oUF
 
-local GetLootMethod = C_PartyInfo.GetLootMethod or GetLootMethod
+local GetLootMethod = C_PartyInfo.GetLootMethod
 local UnitAffectingCombat = UnitAffectingCombat
 
 local function Update(self, event)
 	local unit = self.__unit
 	local element = self.MasterLooterIndicator
+
+	if not element.combatHide and (event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_REGEN_ENABLED') then return end
 
 	--[[ Callback: MasterLooterIndicator:PreUpdate()
 	Called before the element has been updated.

@@ -12,16 +12,11 @@ function S:Blizzard_ItemUpgradeUI()
 	ItemUpgrade:SetTemplate('Transparent')
 
 	local ItemButton = ItemUpgrade.ItemButton
-	if ItemButton then
-		ItemButton:StripTextures()
-		ItemButton:SetTemplate(nil, true)
-		ItemButton:StyleButton()
-	end
+	ItemButton:StripTextures()
+	ItemButton:SetTemplate(nil, true)
+	ItemButton:StyleButton()
 
-	local ButtonFrame = ItemUpgrade.ButtonFrame
-	if ButtonFrame then
-		ButtonFrame:StripTextures()
-	end
+	ItemUpgrade.ButtonFrame:StripTextures()
 
 	-- Close Button
 	S:HandleCloseButton(_G.ItemUpgradeFrameCloseButton)

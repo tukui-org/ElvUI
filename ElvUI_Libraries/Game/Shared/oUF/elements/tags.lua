@@ -74,10 +74,10 @@ local validateUnit = Private.validateUnit
 local isUnitEvent = Private.isUnitEvent
 
 local _G = _G
-local next, type, unpack = next, type, unpack
-local wipe, rawset, tonumber = wipe, rawset, tonumber
+local next, wipe, type, unpack = next, wipe, type, unpack
+local strmatch, rawset, tonumber, max = strmatch, rawset, tonumber, max
+local setfenv, getfenv, gsub, gmatch = setfenv, getfenv, gsub, gmatch
 local pcall, format, tinsert, floor = pcall, format, tinsert, floor
-local setfenv, getfenv, gsub, max = setfenv, getfenv, gsub, max
 local error, assert, loadstring = error, assert, loadstring
 
 local SPEC_MAGE_ARCANE = SPEC_MAGE_ARCANE or 1
@@ -92,10 +92,10 @@ local POWERTYPE_CHI = Enum.PowerType.Chi or 12
 local POWERTYPE_ARCANE_CHARGES = Enum.PowerType.ArcaneCharges or 16
 
 local C_Timer_NewTimer = C_Timer.NewTimer
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local CreateFrame = CreateFrame
 
-local ScaleTo100 = CurveConstants and CurveConstants.ScaleTo100
+local ScaleTo100 = CurveConstants.ScaleTo100
 local GenerateTextColorCode = C_ColorUtil.GenerateTextColorCode
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
 local WrapString = C_StringUtil.WrapString
@@ -141,7 +141,7 @@ local _ENV = {
 		if not r or type(r) == 'string' then -- wtf?
 			return '|cffFFFFFF'
 		elseif type(r) == 'table' then
-			if oUF.isRetail then
+			if oUF.isModern then
 				return '|c' .. GenerateTextColorCode(r)
 			elseif(r.r) then
 				r, g, b = r.r, r.g, r.b
@@ -214,7 +214,7 @@ tagFunctions.arcanecharges = function()
 end
 
 tagFunctions.arenaspec = function(u)
-	local id = u:match('arena(%d)$')
+	local id = strmatch(u, 'arena(%d)$')
 	if(id) then
 		local specID = GetArenaOpponentSpec(tonumber(id))
 		if(specID and specID > 0) then
@@ -331,7 +331,7 @@ tagFunctions.maxmana = function(unit)
 end
 
 tagFunctions.missinghp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		return TruncateWhenZero(UnitHealthMissing(u))
 	else
 		local current = UnitHealthMax(u) - UnitHealth(u)
@@ -342,7 +342,7 @@ tagFunctions.missinghp = function(u)
 end
 
 tagFunctions.missingpp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		return TruncateWhenZero(UnitPowerMissing(u))
 	else
 		local current = UnitPowerMax(u) - UnitPower(u)
@@ -363,7 +363,7 @@ tagFunctions.offline = function(u)
 end
 
 tagFunctions.perhp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		local precent = UnitHealthPercent(u, true, ScaleTo100)
 		return format('%d', precent)
 	else
@@ -377,7 +377,7 @@ tagFunctions.perhp = function(u)
 end
 
 tagFunctions.perpp = function(u)
-	if oUF.isRetail then
+	if oUF.isModern then
 		local precent = UnitPowerPercent(u, nil, true, ScaleTo100)
 		return format('%d', precent)
 	else
@@ -428,7 +428,7 @@ tagFunctions.raidcolor = function(u)
 	if oUF:NotSecretValue(classToken) and classToken then
 		return Hex(_COLORS.class[classToken])
 	else
-		local id = u:match('arena(%d)$')
+		local id = strmatch(u, 'arena(%d)$')
 		local specID = id and GetArenaOpponentSpec(tonumber(id))
 		if specID and specID > 0 then
 			local _, _, _, _, _, classSpec = GetSpecializationInfoByID(specID)
@@ -624,7 +624,7 @@ local unitlessEvents = {
 	RUNE_POWER_UPDATE = true,
 }
 
-if oUF.isRetail then
+if oUF.isModern then
 	tagEvents.arcanecharges       = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents.chi                 = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
 	tagEvents.holypower           = 'UNIT_POWER_UPDATE PLAYER_TALENT_UPDATE'
@@ -714,8 +714,8 @@ local bracketFuncs = {}
 local tagBuffer = {}
 
 local function GetTagName(tag)
-	local tagStart = tag:match('.*>()') or 2
-	local tagEnd = (tag:match('.-()<') or -1) - 1
+	local tagStart = strmatch(tag, '^.*>()') or 2
+	local tagEnd = (strmatch(tag, '^.-()<') or -1) - 1
 
 	return tag:sub(tagStart, tagEnd), tagStart, tagEnd
 end
@@ -723,10 +723,10 @@ end
 local function GetTagFunc(tagstr)
 	local func = tagStringFuncs[tagstr]
 	if not func then
-		local frmt, numTags = tagstr:gsub('%%', '%%%%'):gsub(_PATTERN, '%%s')
+		local frmt, numTags = gsub(gsub(tagstr, '%%', '%%%%'), _PATTERN, '%%s')
 		local data = {}
 
-		for bracket in tagstr:gmatch(_PATTERN) do
+		for bracket in gmatch(tagstr, _PATTERN) do
 			local tagFunc = bracketFuncs[bracket] or tagFuncs[bracket:sub(2, -2)]
 			if not tagFunc then
 				local tagName, tagStart, tagEnd = GetTagName(bracket)
@@ -786,14 +786,15 @@ local function ShouldUpdateTag(frame, event, unit)
 
 	if unitlessEvents[event] then
 		return true
-	elseif validateUnit(unit) and oUF:UnitExists(unit) then
-		if frame.__unit == unit then
-			return true
-		else
-			local allowExtra = eventExtraUnits[frame]
-			return allowExtra and allowExtra[unit]
-		end
 	end
+
+	-- own unit events come through RegisterUnitEvent, skip the validateUnit
+	if oUF:NotSecretValue(unit) and frame.__unit == unit then
+		return oUF:UnitExists(unit)
+	end
+
+	local extra = validateUnit(unit) and oUF:UnitExists(unit) and eventExtraUnits[frame]
+	return extra and extra[unit]
 end
 
 local function ProcessStrings(strs)
@@ -875,8 +876,11 @@ local function RegisterEvent(frame, event, fs)
 		if not handler.eventStrings[event] then
 			handler.eventStrings[event] = {}
 
-			if isUnitEvent(event, frame.__unit) then
-				handler:RegisterUnitEvent(event, frame.__unit)
+			local unit = frame.__unit
+			if isUnitEvent(event, unit or 'player') then
+				if unit then -- header units without a unit yet get it from UpdateTagUnits
+					handler:RegisterUnitEvent(event, unit)
+				end
 			else
 				handler:RegisterEvent(event)
 			end
@@ -887,10 +891,10 @@ local function RegisterEvent(frame, event, fs)
 end
 
 local function RegisterEvents(frame, fs, ts)
-	for tag in ts:gmatch(_PATTERN) do
+	for tag in gmatch(ts, _PATTERN) do
 		local tagevents = tagEvents[GetTagName(tag)]
 		if tagevents then
-			for event in tagevents:gmatch('%S+') do
+			for event in gmatch(tagevents, '%S+') do
 				RegisterEvent(frame, event, fs)
 			end
 		end
@@ -898,12 +902,15 @@ local function RegisterEvents(frame, fs, ts)
 end
 
 function oUF:UpdateTagUnits(frame)
+	local unit = frame.__unit
+	if not unit then return end
+
 	local handler = eventHandlers[frame]
 	if not handler then return end
 
 	for event in next, handler.eventStrings do
-		if isUnitEvent(event, frame.__unit) then
-			handler:RegisterUnitEvent(event, frame.__unit)
+		if isUnitEvent(event, unit) then
+			handler:RegisterUnitEvent(event, unit)
 		end
 	end
 end
@@ -968,12 +975,12 @@ local function Tag(self, fs, ts, arg1, ...)
 		self:Untag(fs)
 	end
 
-	ts = ts:gsub('||([TCRAtncra])', EscapeSequence)
+	ts = gsub(ts, '||([TCRAtncra])', EscapeSequence)
 
-	local customArgs = ts:match('{(.-)}%]')
+	local customArgs = strmatch(ts, '{(.-)}%]')
 	if customArgs then
 		self.__customargs[fs] = customArgs
-		ts = ts:gsub('{.-}%]', ']')
+		ts = gsub(ts, '{.-}%]', ']')
 	else
 		self.__customargs[fs] = nil
 	end
@@ -983,7 +990,7 @@ local function Tag(self, fs, ts, arg1, ...)
 			self.__mousetags[fs] = true
 			fs:SetAlpha(0)
 
-			ts = ts:gsub('%[mouseover%]', '')
+			ts = gsub(ts, '%[mouseover%]', '')
 		else
 			for fontString in next, self.__mousetags do
 				if fontString == fs then
@@ -995,7 +1002,7 @@ local function Tag(self, fs, ts, arg1, ...)
 	end
 
 	local containsOnUpdate
-	for tag in ts:gmatch(_PATTERN) do
+	for tag in gmatch(ts, _PATTERN) do
 		tag = GetTagName(tag)
 
 		local delay = not tagEvents[tag] and onUpdateDelay[tag]
@@ -1056,7 +1063,7 @@ local function Untag(self, fs)
 end
 
 local function StripTag(tag) -- remove prefix, custom args, and suffix
-	return tag:gsub("%[[^%[%]]*>", "["):gsub("<[^%[%]]*%]", "]") -- ElvUI uses old tag format
+	return gsub(gsub(tag, "%[[^%[%]]*>", "["), "<[^%[%]]*%]", "]") -- ElvUI uses old tag format
 end
 
 oUF.Tags = {
@@ -1071,16 +1078,16 @@ oUF.Tags = {
 		if not tag then return end
 
 		-- if a tag's name contains magic chars, there's a chance that string.match will fail to find the match
-		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
+		tag = '%[' .. gsub(tag, '[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 
 		for bracket in next, bracketFuncs do
-			if StripTag(bracket):match(tag) then
+			if strmatch(StripTag(bracket), tag) then
 				bracketFuncs[bracket] = nil
 			end
 		end
 
 		for tagstr, func in next, tagStringFuncs do
-			if StripTag(tagstr):match(tag) then
+			if strmatch(StripTag(tagstr), tag) then
 				tagStringFuncs[tagstr] = nil
 
 				for fs in next, taggedFontStrings do
@@ -1099,10 +1106,10 @@ oUF.Tags = {
 		if not tag then return end
 
 		-- if a tag's name contains magic chars, there's a chance that string.match will fail to find the match
-		tag = '%[' .. tag:gsub('[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
+		tag = '%[' .. gsub(tag, '[%^%$%(%)%%%.%*%+%-%?]', '%%%1') .. '%]'
 
 		for tagstr in next, tagStringFuncs do
-			if StripTag(tagstr):match(tag) then
+			if strmatch(StripTag(tagstr), tag) then
 				for fs, ts in next, taggedFontStrings do
 					if ts == tagstr then
 						UnregisterEvents(fs.parent, fs)

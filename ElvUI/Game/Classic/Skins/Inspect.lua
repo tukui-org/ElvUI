@@ -38,16 +38,10 @@ end
 function S:Blizzard_InspectUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.inspect) then return end
 
-	local InspectFrame = _G.InspectFrame
-	S:HandleFrame(InspectFrame)
-	S:HandleCloseButton(_G.InspectFrameCloseButton, InspectFrame.backdrop)
+	S:HandleFrame(_G.InspectFrame)
 
 	-- Tabs
 	HandleTabs()
-
-	for i = 1, #_G.INSPECTFRAME_SUBFRAMES do
-		S:HandleTab(_G['InspectFrameTab'..i])
-	end
 
 	_G.InspectPaperDollFrame:StripTextures()
 	_G.InspectModelFrameBackgroundOverlay:SetTexture(E.Media.Textures.Invisible)
@@ -69,17 +63,9 @@ function S:Blizzard_InspectUI()
 		slot:OffsetFrameLevel(2)
 		slot:StyleButton()
 
-		local name = slot:GetName()
-		local icon = _G[name..'IconTexture']
-		if icon then
-			icon:SetTexCoords()
-			icon:SetInside()
-		end
-
-		local cooldown = _G[name..'Cooldown']
-		if cooldown then
-			E:RegisterCooldown(cooldown)
-		end
+		local icon = slot.icon
+		icon:SetTexCoords()
+		icon:SetInside()
 	end
 
 	hooksecurefunc('InspectPaperDollItemSlotButton_Update', Update_InspectPaperDollItemSlotButton)
@@ -90,18 +76,17 @@ function S:Blizzard_InspectUI()
 	_G.InspectModelFrameRotateLeftButton:Point('TOPLEFT', 3, -3)
 	_G.InspectModelFrameRotateRightButton:Point('TOPLEFT', _G.InspectModelFrameRotateLeftButton, 'TOPRIGHT', 3, 0)
 
-	-- PvP Tab
-	local InspectHonorFrame = _G.InspectHonorFrame
-	InspectHonorFrame:StripTextures()
+	-- Honor Tab
+	_G.InspectHonorFrame:StripTextures()
 
 	_G.InspectHonorFrameProgressButton:CreateBackdrop('Transparent')
 
-	local InspectHonorFrameProgressBar = _G.InspectHonorFrameProgressBar
-	InspectHonorFrameProgressBar:SetStatusBarTexture(E.media.normTex)
-	InspectHonorFrameProgressBar:PointXY(19, -74)
-	InspectHonorFrameProgressBar:Width(300)
+	local progressBar = _G.InspectHonorFrameProgressBar
+	progressBar:SetStatusBarTexture(E.media.normTex)
+	progressBar:PointXY(19, -74)
+	progressBar:Width(300)
 
-	E:RegisterStatusBar(InspectHonorFrameProgressBar)
+	E:RegisterStatusBar(progressBar)
 end
 
 S:AddCallbackForAddon('Blizzard_InspectUI')

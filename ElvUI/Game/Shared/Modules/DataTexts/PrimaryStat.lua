@@ -5,7 +5,7 @@ local _G = _G
 local strjoin = strjoin
 
 local UnitStat = UnitStat
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local PRIMARY_STAT = gsub(SPEC_FRAME_PRIMARY_STAT, '[:：%s]-%%s$', '')
@@ -14,7 +14,7 @@ local NOT_APPLICABLE = NOT_APPLICABLE
 local displayString = ''
 
 local function OnEvent(panel)
-	local current = E.Retail and GetSpecialization() or nil
+	local current = E.Modern and GetSpecialization() or nil
 	local spec = DT.SPECIALIZATION_CACHE[current]
 	local stat = spec and spec.statID
 

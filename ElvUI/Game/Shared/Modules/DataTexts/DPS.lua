@@ -8,7 +8,7 @@ local UnitGUID = UnitGUID
 local lastSegment, petGUID = 0
 local timeStamp, combatTime, DMGTotal, lastDMGAmount = 0, 0, 0, 0
 local displayString = ''
-local events = {
+local subEvents = {
 	SWING_DAMAGE = true,
 	RANGE_DAMAGE = true,
 	SPELL_DAMAGE = true,
@@ -35,26 +35,21 @@ local function OnEvent(panel, event)
 		if now - lastSegment > 20 then --time since the last segment
 			Reset()
 		end
+
 		lastSegment = now
 	elseif event == 'COMBAT_LOG_EVENT_UNFILTERED' then
-		local timestamp, Event, _, sourceGUID, _, _, _, _, _, _, _, arg12, _, _, arg15, arg16 = CombatLogGetCurrentEventInfo()
-		if not events[Event] then return end
+		local timestamp, subEvent, _, sourceGUID, _, _, _, _, _, _, _, arg12, _, _, arg15, overkill = CombatLogGetCurrentEventInfo()
+		if not subEvents[subEvent] or (sourceGUID ~= E.myguid and sourceGUID ~= petGUID) then return end
 
-		-- only use events from the player
-		local overKill
-
-		if sourceGUID == E.myguid or sourceGUID == petGUID then
-			if timeStamp == 0 then timeStamp = timestamp end
-			lastSegment = timeStamp
-			combatTime = timestamp - timeStamp
-			if Event == 'SWING_DAMAGE' then
-				lastDMGAmount = arg12
-			else
-				lastDMGAmount = arg15
-			end
-			if arg16 == nil then overKill = 0 else overKill = arg16 end
-			DMGTotal = DMGTotal + max(0, lastDMGAmount - overKill)
+		if timeStamp == 0 then
+			timeStamp = timestamp
 		end
+
+		lastSegment = timeStamp
+		combatTime = timestamp - timeStamp
+		lastDMGAmount = (subEvent == 'SWING_DAMAGE' and arg12) or arg15
+
+		DMGTotal = DMGTotal + max(0, lastDMGAmount - (overkill or 0))
 	end
 
 	GetDPS(panel)
@@ -69,4 +64,4 @@ local function ApplySettings(_, hex)
 	displayString = strjoin('', '%s: ', hex, '%s')
 end
 
-DT:RegisterDatatext('DPS', nil, { 'UNIT_PET', not E.Retail and 'COMBAT_LOG_EVENT_UNFILTERED' or nil, 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED' }, OnEvent, nil, OnClick, nil, nil, _G.STAT_DPS_SHORT, nil, ApplySettings)
+DT:RegisterDatatext('DPS', nil, { 'UNIT_PET', not E.Modern and 'COMBAT_LOG_EVENT_UNFILTERED' or nil, 'PLAYER_LEAVE_COMBAT', 'PLAYER_REGEN_DISABLED' }, OnEvent, nil, OnClick, nil, nil, _G.STAT_DPS_SHORT, nil, ApplySettings)

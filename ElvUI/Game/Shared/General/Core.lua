@@ -27,7 +27,7 @@ local UIParent = UIParent
 local UnitFactionGroup = UnitFactionGroup
 local C_Timer_NewTicker = C_Timer.NewTicker
 
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local PlayerGetTimerunningSeasonID = PlayerGetTimerunningSeasonID
 
 local DisableAddOn = C_AddOns.DisableAddOn
@@ -67,7 +67,8 @@ E.mygender = UnitSex('player')
 E.mylevel = UnitLevel('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
-E.mynameRealm = format('%s - %s', E.myname, E.myrealm) -- contains spaces/dashes in realm (for profile keys)
+E.playerName, E.playerRealm = UnitNameUnmodified('player')
+E.mynameRealm = format((E.Forever and (E.playerRealm and '%s %s' or '%s')) or '%s - %s', E.playerName, E.playerRealm or E.myrealm) -- contains spaces/dashes in realm (for profile keys)
 E.expansionLevel = GetExpansionLevel()
 E.expansionLevelMax = GetMaxLevelForExpansionLevel(E.expansionLevel)
 E.wowbuild = tonumber(E.wowbuild)
@@ -75,7 +76,7 @@ E.physicalWidth, E.physicalHeight = GetPhysicalScreenSize()
 E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
-E.allowRoles = E.Retail or E.TBC or E.Wrath or E.Mists or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
+E.allowRoles = E.Modern or E.TBC or E.Wrath or E.Mists or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
@@ -217,47 +218,53 @@ do
 	end
 end
 
+function E:GetNameRealm(name, realm)
+	if E.Forever then
+		return format(realm and '%s %s' or '%s', name, realm)
+	elseif realm and realm ~= '' then
+		return format('%s-%s', name, realm)
+	else
+		return name
+	end
+end
+
+function E:SetColorPickerRGB(r, g, b)
+	local frame = _G.ColorPickerFrame
+	local content = frame.Content
+	local picker = content and content.ColorPicker
+	if picker then
+		picker:SetColorRGB(r, g, b)
+	else
+		frame:SetColorRGB(r, g, b)
+	end
+end
+
 function E:GrabColorPickerValues(r, g, b)
 	-- we must block the execution path to `ColorCallback` in `AceGUIWidget-ColorPicker-ElvUI`
 	-- in order to prevent an infinite loop from `OnValueChanged` when passing into `E.UpdateMedia` which eventually leads here again.
 	_G.ColorPickerFrame.noColorCallback = true
 
-	-- grab old values
-	local oldR, oldG, oldB = _G.ColorPickerFrame:GetColorRGB()
+	local cr, cg, cb = _G.ColorPickerFrame:GetColorRGB() -- grab old values
+	E:SetColorPickerRGB(r or 1, g or 1, b or 1) -- set and define the new values
 
-	-- set and define the new values
-	if E.Retail then
-		_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(r or 1, g or 1, b or 1)
-	else
-		_G.ColorPickerFrame:SetColorRGB(r or 1, g or 1, b or 1)
-	end
+	local sr, sg, sb = _G.ColorPickerFrame:GetColorRGB() -- grab new values
+	if cr then E:SetColorPickerRGB(cr, cg, cb) end -- swap back to the old values
 
-	r, g, b = _G.ColorPickerFrame:GetColorRGB()
+	_G.ColorPickerFrame.noColorCallback = nil -- free it up
 
-	-- swap back to the old values
-	if oldR then
-		if E.Retail then
-			_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(oldR, oldG, oldB)
-		else
-			_G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB)
-		end
-	end
-
-	-- free it up..
-	_G.ColorPickerFrame.noColorCallback = nil
-
-	return r, g, b
+	return sr, sg, sb
 end
 
---Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
+-- another class color is being used on a class that
+-- doesnt match, if a match is found then return true
 function E:CheckClassColor(r, g, b)
-	r, g, b = E:GrabColorPickerValues(r, g, b)
+	local sr, sg, sb = E:GrabColorPickerValues(r, g, b)
 
 	for classToken in next, _G.RAID_CLASS_COLORS do
 		if classToken ~= E.myclass then
 			local color = E:ClassColor(classToken, true)
-			local red, green, blue = E:GrabColorPickerValues(color.r, color.g, color.b)
-			if red == r and green == g and blue == b then
+			local cr, cg, cb = E:GrabColorPickerValues(color.r, color.g, color.b)
+			if cr == sr and cg == sg and cb == sb then
 				return true
 			end
 		end
@@ -322,9 +329,13 @@ function E:UpdateColorTable(color, data)
 end
 
 function E:ForceBorderColor(frame, r, g, b, a)
-	local colors = frame.forcedBorderColors or {}
+	local colors = frame.forcedBorderColors
 
 	if r then
+		if not colors then
+			colors = {}
+		end
+
 		colors[1], colors[2], colors[3], colors[4] = r, g, b, a
 	else
 		colors = nil
@@ -357,6 +368,8 @@ function E:UpdateMedia() -- late LSM data can trigger updates to fonts and bars:
 	local value = E:UpdateClassColor(E.db.general.valuecolor)
 	E.media.rgbvaluecolor = E:SetColorTable(E.media.rgbvaluecolor, value)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
+
+	if not E.data then return end -- ignore the rest before Initialize
 
 	if E.db.cooldown.enable then
 		for key in next, P.cooldown do
@@ -592,7 +605,7 @@ do
 		info.unitframes.r, info.unitframes.g, info.unitframes.b = unpack(E.media.unitframeBorderColor)
 		E:CoroutineUpdate(E.UpdateUnitframeBorderColor, E.unitFrameElements, info.unitframes)
 
-		if E.Retail and Tooltip.isStyled then
+		if E.Modern and Tooltip.isStyled then
 			Tooltip:SetAuraButtonTooltipStyle()
 		end
 	end
@@ -639,7 +652,7 @@ do
 		E:CoroutineUpdate(E.UpdateBackdropColor, E.frames, info)
 		E:CoroutineUpdate(E.UpdateUnitframeBackdropColor, E.unitFrameElements, info)
 
-		if E.Retail and Tooltip.isStyled then
+		if E.Modern and Tooltip.isStyled then
 			Tooltip:SetAuraButtonTooltipStyle()
 		end
 	end
@@ -1664,7 +1677,7 @@ function E:UpdateActionBars()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroButtons()
 
-	if E.Retail or E.Mists then
+	if E.Modern or E.Mists then
 		ActionBars:UpdateExtraButtons()
 	end
 end
@@ -1709,7 +1722,7 @@ end
 function E:UpdateMisc()
 	AFK:Toggle()
 
-	if E.Retail then
+	if E.Modern then
 		TotemTracker:PositionAndSize()
 	elseif E.Wrath then
 		ActionBars:PositionAndSizeTotemBar()
@@ -2039,7 +2052,7 @@ function E:Initialize()
 
 		E.Initialized = true
 
-		if E.Retail then
+		if E.Modern then
 			E:Tutorials()
 		end
 

@@ -21,7 +21,7 @@ local IsInInstance = IsInInstance
 local RegisterStateDriver = RegisterStateDriver
 local UnregisterStateDriver = UnregisterStateDriver
 
-local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo or GetSpecializationInfo
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
 local C_ClassTalents_GetActiveConfigID = C_ClassTalents and C_ClassTalents.GetActiveConfigID
 local ExpandCurrencyList = C_CurrencyInfo.ExpandCurrencyList or ExpandCurrencyList
 local C_CurrencyInfo_GetCurrencyInfo = C_CurrencyInfo.GetCurrencyInfo
@@ -64,13 +64,16 @@ DT.PanelPool = {
 DT.FontStrings = {}
 DT.AssignedDatatexts = {}
 DT.UnitEvents = {
-	UNIT_AURA = true,
-	UNIT_RESISTANCES = true,
-	UNIT_STATS = true,
-	UNIT_ATTACK_POWER = true,
-	UNIT_RANGED_ATTACK_POWER = true,
-	UNIT_TARGET = true,
-	UNIT_SPELL_HASTE = true
+	UNIT_PET = true,	-- DPS and HPS
+	UNIT_AURA = true,	-- multiple
+	UNIT_STATS = true,	-- multiple
+	UNIT_RESISTANCES = 'Armor',
+	UNIT_ATTACK_POWER = 'AttackPower',
+	UNIT_RANGED_ATTACK_POWER = 'AttackPower',
+	UNIT_TARGET = 'Avoidance',
+	UNIT_SPELL_HASTE = 'MovementSpeed',
+	UNIT_ATTACK_SPEED = 'Haste',
+	UNIT_INVENTORY_CHANGED = 'Ammo'
 }
 
 DT.SPECIALIZATION_CACHE = {}
@@ -416,7 +419,7 @@ do
 	local defaults = { enable = false, battleground = false }
 	function DT:GetPanelSettings(name)
 		-- battleground dt
-		if not E.Retail then
+		if not E.Modern then
 			if not P.datatexts.battlePanel[name] then
 				P.datatexts.battlePanel[name] = {}
 			end
@@ -435,7 +438,7 @@ do
 		-- global number of datatext slots for the profile
 		for i = 1, (E.global.datatexts.customPanels[name].numPoints or 1) do
 			if not panelDB[i] then panelDB[i] = '' end
-			if not E.Retail and not DT.db.battlePanel[name][i] then DT.db.battlePanel[name][i] = '' end
+			if not E.Modern and not DT.db.battlePanel[name][i] then DT.db.battlePanel[name][i] = '' end
 		end
 
 		-- pass the table back
@@ -553,7 +556,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		font, fontSize, fontOutline = db.fonts.font, db.fonts.fontSize, db.fonts.fontOutline
 	end
 
-	local battlePanel = not E.Retail and info.isInBattle and (not DT.ForceHideBGStats and E.db.datatexts.panels[panelName].battleground)
+	local battlePanel = not E.Modern and info.isInBattle and (not DT.ForceHideBGStats and E.db.datatexts.panels[panelName].battleground)
 	if battlePanel then
 		DT.ShowingBattleStats = info.instanceType
 	elseif DT.ShowingBattleStats then
@@ -619,7 +622,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.pointIndex = i
 		dt.parent = panel
 		dt.parentName = panelName
-		dt.battlePanel = not E.Retail and battlePanel
+		dt.battlePanel = not E.Modern and battlePanel
 		dt.db = db
 		dt.watchModKey = nil
 		dt.name = nil
@@ -810,7 +813,7 @@ do
 			elseif inviteType == 'REQUEST_INVITE' then
 				if isBNet then
 					BNRequestInviteFriend(name)
-				elseif E.Retail then
+				elseif E.Modern then
 					C_PartyInfo_RequestInviteFromUnit(name)
 				end
 			end
@@ -906,7 +909,7 @@ function DT:CURRENCY_DISPLAY_UPDATE(_, currencyID)
 end
 
 function DT:CurrencyListInfo(index)
-	local info = E.Retail and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
+	local info = E.Modern and C_CurrencyInfo_GetCurrencyListInfo(index) or {}
 
 	if E.Mists or E.Wrath then
 		info.name, info.isHeader, info.isHeaderExpanded, info.isUnused, info.isWatched, info.quantity, info.iconFileID, info.maxQuantity, info.weeklyMax, info.earnedThisWeek, info.isTradeable, info.itemID = GetCurrencyListInfo(index)
@@ -922,7 +925,7 @@ function DT:CurrencyInfo(id)
 end
 
 function DT:BackpackCurrencyInfo(index)
-	local info = E.Retail and GetBackpackCurrencyInfo(index) or {}
+	local info = E.Modern and GetBackpackCurrencyInfo(index) or {}
 
 	if E.Mists or E.Wrath then
 		info.name, info.quantity, info.iconFileID, info.currencyTypesID = GetBackpackCurrencyInfo(index)
@@ -956,7 +959,7 @@ function DT:BuildTables()
 end
 
 function DT:CloseMenus()
-	if E.Retail or E.Mists then
+	if E.Modern or E.Mists then
 		local manager = _G.Menu.GetManager()
 		if manager then
 			manager:CloseMenus()
@@ -992,10 +995,31 @@ function DT:MenuGetItem(dt, value)
 	return index and options[index] == value
 end
 
+function DT:UpdateTooltipFonts()
+	if not DT.tooltip then return end
+
+	-- Ignore header font size here
+	local font, fontSize, fontOutline = TT.db.font, TT.db.textFontSize, TT.db.fontOutline
+	_G.DataTextTooltipTextLeft1:FontTemplate(font, fontSize, fontOutline)
+	_G.DataTextTooltipTextRight1:FontTemplate(font, fontSize, fontOutline)
+end
+
+function DT:UpdateLastSelectedSavedConfigID(newConfigID)
+	if not newConfigID or (DT.ClassTalentsID and newConfigID == C_ClassTalents_GetActiveConfigID()) then return end
+	DT.ClassTalentsID = newConfigID
+
+	DT:ForceUpdate_DataText('Talent/Loot Specialization')
+end
+
+function DT:SetCurrencyBackpack()
+	DT:ForceUpdate_DataText('Currencies')
+end
+
 function DT:Initialize()
 	DT.Initialized = true
 
 	DT:BuildTables()
+	DT:UpdateTooltipFonts()
 
 	E.EasyMenu:SetClampedToScreen(true)
 	E.EasyMenu:EnableMouse(true)
@@ -1004,28 +1028,14 @@ function DT:Initialize()
 		TT:SetStyle(DT.tooltip)
 	end
 
-	-- Ignore header font size on DatatextTooltip
-	local font = E.db.tooltip.font
-	local fontOutline = E.db.tooltip.fontOutline
-	local textSize = E.db.tooltip.textFontSize
-	_G.DataTextTooltipTextLeft1:FontTemplate(font, textSize, fontOutline)
-	_G.DataTextTooltipTextRight1:FontTemplate(font, textSize, fontOutline)
-
-	if E.Retail or E.Mists or E.Wrath then
+	if E.Modern or E.Mists or E.Wrath then
 		DT:RegisterCustomCurrencyDT() -- Register all the user created currency datatexts from the 'CustomCurrency' DT.
 
-		if E.Retail then
-			hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
-
-			hooksecurefunc(_G.C_ClassTalents, 'UpdateLastSelectedSavedConfigID', function(_, newConfigID)
-				if not newConfigID then return end
-				if DT.ClassTalentsID and newConfigID == C_ClassTalents_GetActiveConfigID() then return end
-				DT.ClassTalentsID = newConfigID
-
-				DT:ForceUpdate_DataText('Talent/Loot Specialization')
-			end)
+		if E.Modern then
+			hooksecurefunc(_G.C_CurrencyInfo, 'SetCurrencyBackpack', DT.SetCurrencyBackpack)
+			hooksecurefunc(_G.C_ClassTalents, 'UpdateLastSelectedSavedConfigID', DT.UpdateLastSelectedSavedConfigID)
 		else
-			hooksecurefunc('SetCurrencyBackpack', function() DT:ForceUpdate_DataText('Currencies') end)
+			hooksecurefunc('SetCurrencyBackpack', DT.SetCurrencyBackpack)
 		end
 
 		DT:PopulateData()
@@ -1041,7 +1051,7 @@ function DT:Initialize()
 	DT:RegisterLDB() -- LibDataBroker
 	DT:UpdateQuickDT()
 
-	if not E.Retail then
+	if not E.Modern then
 		DT:RegisterEvent('UPDATE_BATTLEFIELD_SCORE') -- function added by the Battlegrounds file.
 	end
 

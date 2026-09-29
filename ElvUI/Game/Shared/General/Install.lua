@@ -32,6 +32,7 @@ local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEdit
 local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
 local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
 
+local MAX_WOW_CHAT_CHANNELS = MAX_WOW_CHAT_CHANNELS or Constants.ChatFrameConstants.MaxChatChannels
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local VOICE, LOOT, GENERAL, TRADE = VOICE, LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
@@ -106,7 +107,7 @@ function E:SetupChat(noDisplayMsg)
 	end
 
 	-- keys taken from `ChatTypeGroup` but doesnt add: 'OPENING', 'TRADESKILLS', 'PET_INFO', 'COMBAT_MISC_INFO', 'COMMUNITIES_CHANNEL', 'PET_BATTLE_COMBAT_LOG', 'PET_BATTLE_INFO', 'TARGETICONS'
-	local chatGroup = { 'SYSTEM', 'CHANNEL', 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'MONSTER_SAY', 'MONSTER_YELL', 'MONSTER_EMOTE', 'MONSTER_WHISPER', 'MONSTER_BOSS_EMOTE', 'MONSTER_BOSS_WHISPER', 'ERRORS', 'AFK', 'DND', 'IGNORED', 'BG_HORDE', 'BG_ALLIANCE', 'BG_NEUTRAL', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'BN_WHISPER', 'BN_INLINE_TOAST_ALERT' }
+	local chatGroup = { E.Modern and 'PING' or nil, 'SYSTEM', 'CHANNEL', 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD_DISCORD', 'GUILD', 'OFFICER', 'MONSTER_SAY', 'MONSTER_YELL', 'MONSTER_EMOTE', 'MONSTER_WHISPER', 'MONSTER_BOSS_EMOTE', 'MONSTER_BOSS_WHISPER', 'ERRORS', 'AFK', 'DND', 'IGNORED', 'BG_HORDE', 'BG_ALLIANCE', 'BG_NEUTRAL', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'BN_WHISPER', 'BN_INLINE_TOAST_ALERT' }
 	local ChatFrame1_RemoveAllMessageGroups = _G.ChatFrame1.RemoveAllMessageGroups or _G.ChatFrame_RemoveAllMessageGroups
 	local ChatFrame1_AddMessageGroup = _G.ChatFrame1.AddMessageGroup or _G.ChatFrame_AddMessageGroup
 
@@ -116,7 +117,7 @@ function E:SetupChat(noDisplayMsg)
 	end
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1 but keeping CHANNEL
-	chatGroup = { E.Retail and 'PING' or nil, 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
+	chatGroup = { 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
 	local RightChat_RemoveAllMessageGroups = rightChat.RemoveAllMessageGroups or _G.ChatFrame_RemoveAllMessageGroups
 	local RightChat_AddMessageGroup = rightChat.AddMessageGroup or _G.ChatFrame_AddMessageGroup
 
@@ -135,7 +136,7 @@ function E:SetupChat(noDisplayMsg)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
 	chatGroup = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
-	for i = 1, _G.MAX_WOW_CHAT_CHANNELS do
+	for i = 1, MAX_WOW_CHAT_CHANNELS do
 		tinsert(chatGroup, 'CHANNEL'..i)
 	end
 	for _, v in next, chatGroup do
@@ -181,7 +182,7 @@ function E:SetupCVars(noDisplayMsg)
 	E:SetCVar('ActionButtonUseKeyDown', 1)
 	E:SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
 
-	if E.Retail then
+	if E.Modern then
 		E:SetCVar('worldMapShowPlayerCoords', 0)
 		E:SetCVar('worldMapShowCursorCoords', 0)
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
@@ -451,7 +452,7 @@ function E:LayoutAnniversary()
 	E.db.datatexts.panels.LeftChatDataPanel[2] = 'Guild'
 	E.db.datatexts.panels.LeftChatDataPanel[3] = 'System'
 
-	if E.Retail then
+	if E.Modern then
 		if not E.global.datatexts.customPanels.QuickJoin then
 			E.global.datatexts.customPanels.QuickJoin = E:CopyTable({}, G.datatexts.newPanelInfo)
 		end
@@ -1118,7 +1119,7 @@ function E:LayoutNormal()
 	E.db.unitframe.units.raid1.roleIcon.xOffset = 0
 	E.db.unitframe.units.raid1.width = 92
 	--DataTexts
-	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Coords'
+	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Modern and 'QuickJoin' or 'Coords'
 
 	if E.db.datatexts.panels.Coords then
 		E.db.datatexts.panels.Coords.enable = false
@@ -1682,5 +1683,8 @@ function E:Install()
 
 	E.InstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	E.InstallFrame:Show()
-	E:NextPage()
+
+	if CURRENT_PAGE == 0 then
+		E:NextPage()
+	end
 end

@@ -6,13 +6,13 @@ local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function MacroSelectorScrollUpdateChild(button)
-	if button.Icon and not button.IsSkinned then
-		S:HandleItemButton(button, true)
+	if not button.IsSkinned then
+		S:HandleItemButton(button, true, true)
 	end
 end
 
 local function MacroSelectorScrollUpdate(frame)
-	if frame.view then
+	if frame.view then -- the selector creates its view on first show, Update can fire before that
 		frame:ForEachFrame(MacroSelectorScrollUpdateChild)
 	end
 end
@@ -80,9 +80,7 @@ function S:Blizzard_MacroUI()
 	-- handle the macro buttons
 	hooksecurefunc(MacroFrame.MacroSelector.ScrollBox, 'Update', MacroSelectorScrollUpdate)
 
-	if _G.MacroPopupFrame then -- New icon selection
-		_G.MacroPopupFrame:HookScript('OnShow', MacroPopupFrame_OnShow)
-	end
+	_G.MacroPopupFrame:HookScript('OnShow', MacroPopupFrame_OnShow) -- New icon selection
 end
 
 S:AddCallbackForAddon('Blizzard_MacroUI')

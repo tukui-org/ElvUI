@@ -9,13 +9,16 @@ local CreateFrame = CreateFrame
 -- Custom Orders (Credits: siweia - NDUI)
 
 local function RefreshFlyoutButton(button)
-	if button.IconBorder and not button.IsSkinned then
+	button.NormalTexture:SetAlpha(0)
+	button.PushedTexture:SetAlpha(0)
+
+	if not button.IsSkinned then
 		S:HandleIcon(button.icon, true)
 		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
 
-		button:SetNormalTexture(0)
-		button:SetPushedTexture(0)
-		button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
+		local hl = button:GetHighlightTexture()
+		hl:SetColorTexture(1, 1, 1, .25)
+		hl:SetOutside(button)
 
 		button.IsSkinned = true
 	end
@@ -36,24 +39,16 @@ local function HandleListIcon(frame)
 	local builder = frame.tableBuilder
 	if not builder then return end
 
-	for i = 1, 22 do
-		local row = builder.rows[i]
-		if row then
-			local cell = row.cells and row.cells[1]
-			if cell and cell.Icon then
-				if not cell.IsSkinned then
-					S:HandleIcon(cell.Icon, true)
+	for _, row in next, builder.rows do
+		local cell = row.cells[1] -- the item name column
+		if not cell.IsSkinned then
+			S:HandleIcon(cell.Icon, true)
+			cell.IconBorder:Hide()
 
-					if cell.IconBorder then
-						cell.IconBorder:Hide()
-					end
-
-					cell.IsSkinned = true
-				end
-
-				cell.Icon.backdrop:SetShown(cell.Icon:IsShown())
-			end
+			cell.IsSkinned = true
 		end
+
+		cell.Icon.backdrop:SetShown(cell.Icon:IsShown())
 	end
 end
 
@@ -71,9 +66,7 @@ local function HandleListHeader(headerContainer)
 			header.IsSkinned = true
 		end
 
-		if header.backdrop then
-			header.backdrop:SetPoint('BOTTOMRIGHT', i < maxHeaders and -5 or 0, -2)
-		end
+		header.backdrop:SetPoint('BOTTOMRIGHT', i < maxHeaders and -5 or 0, -2)
 	end
 end
 
@@ -85,76 +78,62 @@ local function HandleMoneyInput(box)
 end
 
 local function HandleBrowseOrders(frame)
-	local headerContainer = frame.RecipeList and frame.RecipeList.HeaderContainer
-	if headerContainer then
-		HandleListHeader(headerContainer)
-	end
+	HandleListHeader(frame.RecipeList.HeaderContainer)
 end
 
 local function FormInit(form)
 	for slot in form.reagentSlotPool:EnumerateActive() do
-		local button = slot and slot.Button
-		local icon = button and button.Icon
-		if icon then
-			if button.CropFrame then button.CropFrame:SetAlpha(0) end
-			if button.NormalTexture then button.NormalTexture:SetAlpha(0) end
-			if button.SlotBackground then button.SlotBackground:SetAlpha(0) end
-			if button.HighlightTexture then button.HighlightTexture:SetAlpha(0) end
+		local button = slot.Button
+		button.CropFrame:SetAlpha(0)
+		button.SlotBackground:SetAlpha(0)
+		button.HighlightTexture:SetAlpha(0)
 
-			local hl = button:GetHighlightTexture()
-			hl:SetColorTexture(1, 1, 1, .25)
-			hl:SetOutside(button)
+		local hl = button:GetHighlightTexture()
+		hl:SetColorTexture(1, 1, 1, .25)
+		hl:SetOutside(button)
 
-			local ps = button:GetPushedTexture()
-			ps:SetColorTexture(0.9, 0.8, 0.1, 0.3)
-			ps:SetBlendMode('ADD')
-			ps:SetOutside(button)
+		local nt = button:GetNormalTexture()
+		local greenPlus = nt:GetAtlas() == 'ItemUpgrade_GreenPlusIcon'
+		nt:SetAlpha(greenPlus and 1 or 0)
+		nt:SetOutside(button)
 
-			if not button.IsSkinned then
-				S:HandleIcon(icon, true)
-				S:HandleIconBorder(button.IconBorder, icon.backdrop)
-				icon:SetOutside(button)
+		local ps = button:GetPushedTexture()
+		ps:SetAlpha(greenPlus and 1 or 0)
+		ps:SetOutside(button)
 
-				if slot.Checkbox then
-					S:HandleCheckBox(slot.Checkbox)
-				end
+		if not button.IsSkinned then
+			local icon = button.Icon
+			S:HandleIcon(icon, true)
+			S:HandleIconBorder(button.IconBorder, icon.backdrop)
+			icon:SetOutside(button)
 
-				button.IsSkinned = true
-			end
+			S:HandleCheckBox(slot.Checkbox)
+
+			button.IsSkinned = true
 		end
 	end
 end
 
-local function HandleFlyouts(flyout)
-	if not flyout.IsSkinned then
-		flyout:StripTextures()
-		flyout:SetTemplate('Transparent')
+-- the reagent flyout is a single frame that gets reparented to whichever form opened it
+-- Professions.lua hooks the same function with the same skin, whichever runs first skins it
+local function OpenItemFlyout(_, owner)
+	for _, child in next, { owner:GetChildren() } do
+		if child.InitializeContents and not child.IsSkinned then
+			child.NineSlice:SetTemplate('Transparent')
+			S:HandleTrimScrollBar(child.ScrollBar)
+			S:HandleCheckBox(child.HideUnownedCheckbox)
+			child.HideUnownedCheckbox:Size(24)
 
-		S:HandleCheckBox(flyout.HideUnownedCheckBox)
+			RefreshFlyoutButtons(child.ScrollBox)
+			hooksecurefunc(child.ScrollBox, 'Update', RefreshFlyoutButtons)
 
-		hooksecurefunc(flyout.ScrollBox, 'Update', RefreshFlyoutButtons)
-
-		flyout.IsSkinned = true
-	end
-end
-
-local flyoutFrame
-local function OpenItemFlyout(frame)
-	if flyoutFrame then return end
-
-	for _, child in next, { frame:GetChildren() } do
-		if child.HideUnownedCheckBox then
-			flyoutFrame = child
-
-			HandleFlyouts(flyoutFrame)
-
-			break
+			child.IsSkinned = true
 		end
 	end
 end
 
 local function BrowseOrdersUpdateChild(child)
-	if child.Text and not child.IsSkinned then
+	if not child.IsSkinned then
 		HideCategoryButton(child)
 
 		hooksecurefunc(child, 'Init', HideCategoryButton)
@@ -209,10 +188,7 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	S:HandleFrame(frame)
 	HandleTabs(frame)
 
-	-- Item flyout
-	if _G.OpenProfessionsItemFlyout then
-		hooksecurefunc('OpenProfessionsItemFlyout', OpenItemFlyout)
-	end
+	hooksecurefunc('OpenProfessionsItemFlyout', OpenItemFlyout)
 
 	frame.MoneyFrameBorder:StripTextures()
 	frame.MoneyFrameInset:StripTextures()
@@ -283,16 +259,11 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	form.OrderRecipientTarget.backdrop:SetPoint('BOTTOMRIGHT', 0, 2)
 
 	local payment = form.PaymentContainer
-	if payment then
-		payment.NoteEditBox:StripTextures()
-		payment.NoteEditBox:CreateBackdrop('Transparent')
-		payment.NoteEditBox.backdrop:SetPoint('TOPLEFT', 15, 5)
-		payment.NoteEditBox.backdrop:SetPoint('BOTTOMRIGHT', -18, 0)
-
-		if payment.CancelOrderButton then
-			S:HandleButton(payment.CancelOrderButton)
-		end
-	end
+	payment.NoteEditBox:StripTextures()
+	payment.NoteEditBox:CreateBackdrop('Transparent')
+	payment.NoteEditBox.backdrop:SetPoint('TOPLEFT', 15, 5)
+	payment.NoteEditBox.backdrop:SetPoint('BOTTOMRIGHT', -18, 0)
+	S:HandleButton(payment.CancelOrderButton)
 
 	S:HandleDropDownBox(form.MinimumQuality.Dropdown)
 	S:HandleDropDownBox(form.OrderRecipientDropdown)
@@ -310,34 +281,27 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	viewListingTexture:SetTexture([[Interface\CURSOR\Crosshair\Repair]])
 
 	local currentListings = form.CurrentListings
-	if currentListings then
-		currentListings:StripTextures()
-		currentListings:SetTemplate('Transparent')
-		S:HandleButton(currentListings.CloseButton)
-		S:HandleTrimScrollBar(currentListings.OrderList.ScrollBar)
-		HandleListHeader(currentListings.OrderList.HeaderContainer)
-		currentListings.OrderList:StripTextures()
-		currentListings:ClearAllPoints()
-		currentListings:SetPoint('LEFT', frame, 'RIGHT', 10, 0)
-	end
+	currentListings:StripTextures()
+	currentListings:SetTemplate('Transparent')
+	S:HandleButton(currentListings.CloseButton)
+	S:HandleTrimScrollBar(currentListings.OrderList.ScrollBar)
+	HandleListHeader(currentListings.OrderList.HeaderContainer)
+	currentListings.OrderList:StripTextures()
+	currentListings:ClearAllPoints()
+	currentListings:SetPoint('LEFT', frame, 'RIGHT', 10, 0)
 
 	local qualityDialog = form.QualityDialog
-	if qualityDialog then
-		qualityDialog:StripTextures()
-		qualityDialog:SetTemplate('Transparent')
+	qualityDialog:StripTextures()
+	qualityDialog:SetTemplate('Transparent')
+	qualityDialog.Bg:SetAlpha(0)
 
-		if qualityDialog.Bg then
-			qualityDialog.Bg:SetAlpha(0)
-		end
+	S:HandleCloseButton(qualityDialog.ClosePanelButton)
+	S:HandleButton(qualityDialog.AcceptButton)
+	S:HandleButton(qualityDialog.CancelButton)
 
-		S:HandleCloseButton(qualityDialog.ClosePanelButton)
-		S:HandleButton(qualityDialog.AcceptButton)
-		S:HandleButton(qualityDialog.CancelButton)
-
-		ReskinQualityContainer(qualityDialog.Container1)
-		ReskinQualityContainer(qualityDialog.Container2)
-		ReskinQualityContainer(qualityDialog.Container3)
-	end
+	ReskinQualityContainer(qualityDialog.Container1)
+	ReskinQualityContainer(qualityDialog.Container2)
+	ReskinQualityContainer(qualityDialog.Container3)
 
 	hooksecurefunc(form, 'Init', FormInit)
 

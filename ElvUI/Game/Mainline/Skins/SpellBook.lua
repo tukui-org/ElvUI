@@ -38,18 +38,8 @@ local function ProfessionButtonUpdate(button)
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
-		if button.spellString then
-			button.spellString:SetTextColor(1, 1, 1)
-		end
-		if button.subSpellString then
-			button.subSpellString:SetTextColor(1, 1, 1)
-		end
-		if button.SpellName then
-			button.SpellName:SetTextColor(1, 1, 1)
-		end
-		if button.SpellSubName then
-			button.SpellSubName:SetTextColor(1, 1, 1)
-		end
+		button.spellString:SetTextColor(1, 1, 1)
+		button.subSpellString:SetTextColor(1, 1, 1)
 	end
 end
 
@@ -67,23 +57,18 @@ local function ProfessionsBookFrameUpdate()
 end
 
 local function HandleSkillButton(button)
-	if not button then return end
-
 	button:SetCheckedTexture(E.media.normTex)
 	button:GetCheckedTexture():SetColorTexture(1, 1, 1, .25)
 	button:SetPushedTexture(E.media.normTex)
 	button:GetPushedTexture():SetColorTexture(1, 1, 1, .5)
 	button.IconTexture:SetInside()
 
-	if button.cooldown then
-		E:RegisterCooldown(button.cooldown)
-	end
+	E:RegisterCooldown(button.cooldown)
 
 	S:HandleIcon(button.IconTexture, true)
 	button.highlightTexture:SetInside(button.IconTexture.backdrop)
 
-	local nameFrame = _G[button:GetName()..'NameFrame']
-	if nameFrame then nameFrame:Hide() end
+	_G[button:GetName()..'NameFrame']:Hide()
 end
 
 function S:Blizzard_ProfessionsBook()
@@ -114,11 +99,7 @@ function S:Blizzard_ProfessionsBook()
 			button.rank:Point('TOPLEFT', button.professionName, 'BOTTOMLEFT', 0, -20)
 		end
 
-		if button.unlearn then
-			button.unlearn:Point('RIGHT', button.statusBar, 'LEFT', -18, -5)
-		end
-
-		if button.icon then
+		if button.icon then -- primary professions only
 			S:HandleIcon(button.icon)
 
 			button:StripTextures()
@@ -143,12 +124,7 @@ function S:Blizzard_ProfessionsBook()
 	end
 
 	for i = 1, 2 do
-		local button = _G['PrimaryProfession'..i]
-		S:HandleButton(button, true, nil, true)
-
-		if button.iconTexture then
-			S:HandleIcon(button.iconTexture, true)
-		end
+		S:HandleButton(_G['PrimaryProfession'..i], true, nil, true)
 	end
 
 	hooksecurefunc('FormatProfession', FormatProfessionHook)

@@ -25,16 +25,6 @@ function S:BattleNetFrames()
 	S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
 
 	S:HandleButton(ReportFrame.ReportButton)
-	S:HandleButton(ReportFrame.CloseButton)
-
-	S:HandleFrame(_G.ReportCheatingDialog, true)
-
-	_G.ReportCheatingDialogCommentFrame:StripTextures()
-
-	S:HandleButton(_G.ReportCheatingDialogReportButton)
-	S:HandleButton(_G.ReportCheatingDialogCancelButton)
-
-	S:HandleEditBox(_G.ReportCheatingDialogCommentFrameEditBox)
 
 	local BattleTagInviteFrame = _G.BattleTagInviteFrame
 	S:HandleFrame(BattleTagInviteFrame, true)

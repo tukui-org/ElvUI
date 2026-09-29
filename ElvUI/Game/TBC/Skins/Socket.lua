@@ -8,10 +8,7 @@ local hooksecurefunc = hooksecurefunc
 local C_ItemSocketInfo_GetSocketTypes = C_ItemSocketInfo.GetSocketTypes
 
 local function UpdateItemSocketing()
-	local SocketingContainer = _G.ItemSocketingFrame.SocketingContainer
-	if not SocketingContainer or not SocketingContainer.SocketFrames then return end
-
-	for i, socket in next, SocketingContainer.SocketFrames do
+	for i, socket in next, _G.ItemSocketingFrame.SocketingContainer.SocketFrames do
 		local gemColor = C_ItemSocketInfo_GetSocketTypes(i)
 		local color = E.GemTypeInfo[gemColor]
 		if color then
@@ -38,33 +35,23 @@ function S:Blizzard_ItemSocketingUI()
 	S:HandleTrimScrollBar(_G.ItemSocketingScrollFrame.ScrollBar)
 
 	local SocketingContainer = ItemSocketingFrame.SocketingContainer
-	if SocketingContainer and SocketingContainer.SocketFrames then
-		for _, button in next, SocketingContainer.SocketFrames do
-			button:StripTextures()
-			button:StyleButton()
-			button:SetTemplate(nil, true)
+	for _, button in next, SocketingContainer.SocketFrames do
+		button:StripTextures()
+		button:StyleButton()
+		button:SetTemplate(nil, true)
 
-			if button.Shine then
-				button.Shine:Kill()
-			end
+		button.Shine:Kill()
+		button.BracketFrame:Kill()
+		button.Background:Kill()
 
-			if button.BracketFrame then
-				button.BracketFrame:Kill()
-			end
-
-			if button.Background then
-				button.Background:Kill()
-			end
-		end
-
-		local ApplySocketsButton = SocketingContainer.ApplySocketsButton
-		if ApplySocketsButton then
-			ApplySocketsButton:ClearAllPoints()
-			ApplySocketsButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
-
-			S:HandleButton(ApplySocketsButton)
-		end
+		button.Icon:SetTexCoords()
+		button.Icon:SetInside()
 	end
+
+	local ApplySocketsButton = SocketingContainer.ApplySocketsButton
+	ApplySocketsButton:ClearAllPoints()
+	ApplySocketsButton:Point('BOTTOMRIGHT', ItemSocketingFrame, 'BOTTOMRIGHT', -5, 5)
+	S:HandleButton(ApplySocketsButton)
 
 	hooksecurefunc('ItemSocketingFrame_Update', UpdateItemSocketing)
 end

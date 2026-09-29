@@ -9,18 +9,14 @@ function S:StyleTooltips()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.tooltip) then return end
 	TT.isStyled = true
 
-	if E.Retail then
-		TT:SetAuraButtonTooltipStyle()
-	end
+	TT:SetAuraButtonTooltipStyle()
 
 	for _, tt in next, {
 		_G.ItemRefTooltip,
 		_G.ItemRefShoppingTooltip1,
 		_G.ItemRefShoppingTooltip2,
 		_G.FriendsTooltip,
-		_G.WarCampaignTooltip,
 		_G.EmbeddedItemTooltip,
-		_G.ReputationParagonTooltip,
 		_G.GameTooltip,
 		_G.ShoppingTooltip1,
 		_G.ShoppingTooltip2,

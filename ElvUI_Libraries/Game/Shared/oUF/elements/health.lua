@@ -95,7 +95,7 @@ local Private = oUF.Private
 local gsub = gsub
 local unpack = unpack
 
-local GetPetHappiness = GetPetHappiness
+local GetPetHappiness = (C_PetInfo and C_PetInfo.GetPetHappiness) or GetPetHappiness
 local UnitClass = UnitClass
 local UnitHealth = UnitHealth
 local UnitHealthMax = UnitHealthMax
@@ -130,11 +130,11 @@ local function UpdateColor(self, event, unit)
 	local unitReaction = UnitReaction(unit, 'player')
 	local unitThreat = UnitThreatSituation('player', unit)
 	local unitControlled = UnitPlayerControlled(unit)
-	local unitHappiness = (oUF.isClassic or oUF.isTBC) and oUF.myclass == 'HUNTER' and oUF:UnitIsUnit(unit, 'pet') and GetPetHappiness()
+	local unitHappiness = (oUF.isClassic or oUF.isTBC or oUF.isForever) and oUF.myclass == 'HUNTER' and oUF:UnitIsUnit(unit, 'pet') and GetPetHappiness()
 	local unitClassToken = UnitClassColor(element, unit) -- swaps pet to class color when needed
 	local unitSelectionType = GetSelectionType(unit, element.considerSelectionInCombatHostile) -- Private.unitSelectionType
 
-	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
+	local isPlayer = UnitIsPlayer(unit) or (oUF.isModern and UnitInPartyIsAI(unit))
 	local classColorPet = (element.colorClassPet or element.colorPetByUnitClass) and unitControlled and not isPlayer
 
 	local color
@@ -153,7 +153,7 @@ local function UpdateColor(self, event, unit)
 	elseif(element.colorReaction and unitReaction) then
 		color = self.colors.reaction[unitReaction]
 	elseif(element.colorSmooth) then
-		if oUF.isRetail then
+		if oUF.isModern then
 			local curve = self.colors.health:GetCurve()
 			color = UnitHealthPercent(unit, true, curve)
 		else
@@ -386,7 +386,7 @@ local function Enable(self)
 		self:RegisterEvent('UNIT_MAXHEALTH', Path)
 		self:RegisterEvent('UNIT_HEALTH', Path)
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:RegisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
 		elseif oUF.isClassic then
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
@@ -438,7 +438,7 @@ local function Disable(self)
 	if(element) then
 		element:Hide()
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:UnregisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
 		elseif oUF.isClassic then
 			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)

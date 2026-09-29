@@ -57,7 +57,7 @@ local POWER_NAME = _G.ADDITIONAL_POWER_BAR_NAME or 'MANA'
 local POWER_INDEX = _G.ADDITIONAL_POWER_BAR_INDEX or 0
 
 local function UpdateColor(self, event, unit, powerType)
-	if(not (unit and oUF:UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
+	if(not (unit and powerType == POWER_NAME and oUF:UnitIsUnit(unit, 'player'))) then return end
 	local element = self.AdditionalPower
 
 	local color
@@ -65,7 +65,7 @@ local function UpdateColor(self, event, unit, powerType)
 		color = self.colors.power[POWER_INDEX]
 
 		if(element.colorPowerSmooth) then
-			if oUF.isRetail then
+			if oUF.isModern then
 				local curve = color:GetCurve()
 				color = UnitPowerPercent(unit, nil, true, curve)
 			else
@@ -96,7 +96,7 @@ local function UpdateColor(self, event, unit, powerType)
 end
 
 local function Update(self, event, unit, powerType)
-	if(not (unit and oUF:UnitIsUnit(unit, 'player') and powerType == POWER_NAME)) then return end
+	if(not (unit and powerType == POWER_NAME and oUF:UnitIsUnit(unit, 'player'))) then return end
 	local element = self.AdditionalPower
 
 	--[[ Callback: AdditionalPower:PreUpdate(unit)
@@ -180,7 +180,7 @@ local function Visibility(self, event, unit)
 	local element = self.AdditionalPower
 	local shouldEnable
 
-	local display = element.displayPairs and ((oUF.isClassic or oUF.isTBC) or not UnitHasVehicleUI('player'))
+	local display = element.displayPairs and (not (oUF.isRetail or oUF.isWrath or oUF.isMists) or not UnitHasVehicleUI('player'))
 	local allowed = display and element.displayPairs[oUF.myclass]
 	if allowed then
 		local maxPower = UnitPowerMax(unit, POWER_INDEX)

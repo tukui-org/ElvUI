@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local ipairs = ipairs
 local CreateFrame = CreateFrame
 
-local targetIndicators = {'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}
+local targetIndicators = { 'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator' }
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate.frameName..'QuestIcons', nameplate.RaisedElement)
@@ -281,7 +281,7 @@ function NP:Construct_Cutaway(nameplate)
 end
 
 function NP:Update_Cutaway(nameplate)
-	if not E.Retail and (NP.db.cutaway.health.enabled or NP.db.cutaway.power.enabled) then
+	if not E.Modern and (NP.db.cutaway.health.enabled or NP.db.cutaway.power.enabled) then
 		if not nameplate:IsElementEnabled('Cutaway') then
 			nameplate:EnableElement('Cutaway')
 		end
