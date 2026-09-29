@@ -1,0 +1,53 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+
+local data = S:AddCallbackForAddon('Blizzard_GMChatUI')
+data.toggle = 'gmChat'
+
+function S:Blizzard_GMChatUI()
+	local frame = _G.GMChatFrame
+	frame:SetClampRectInsets(0, 0, 0, 0)
+	frame:StripTextures()
+	frame:SetTemplate('Transparent')
+	frame.buttonFrame:Hide()
+
+	local editbox = frame.editBox
+	editbox:SetAltArrowKeyMode(false)
+	editbox:SetTemplate()
+	editbox:ClearAllPoints()
+	editbox:Point('TOPLEFT', frame, 'BOTTOMLEFT', 0, -5)
+	editbox:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', 0, -32)
+
+	_G.GMChatFrameEditBoxRight:SetAlpha(0)
+	_G.GMChatFrameEditBoxLeft:SetAlpha(0)
+	_G.GMChatFrameEditBoxMid:SetAlpha(0)
+
+	if E.Modern then
+		_G.GMChatFrameEditBoxFocusRight:SetAlpha(0)
+		_G.GMChatFrameEditBoxFocusLeft:SetAlpha(0)
+		_G.GMChatFrameEditBoxFocusMid:SetAlpha(0)
+	end
+
+	local langEditbox = _G.GMChatFrameEditBoxLanguage
+	local langTexture = langEditbox:GetNormalTexture()
+	langTexture:SetAlpha(0)
+	langEditbox:ClearAllPoints()
+	langEditbox:Point('TOPLEFT', editbox, 'TOPRIGHT', 3, 0)
+	langEditbox:Point('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', 28, 0)
+
+	local tab = _G.GMChatTab
+	tab:StripTextures()
+	tab:SetTemplate('Transparent')
+	tab:SetBackdropColor(0, .6, 1, .3)
+	tab:ClearAllPoints()
+	tab:Point('BOTTOMLEFT', frame, 'TOPLEFT', 0, 2)
+	tab:Point('TOPRIGHT', frame, 'TOPRIGHT', 0, 28)
+	_G.GMChatTabIcon:SetTexture([[Interface\ChatFrame\UI-ChatIcon-Blizz]])
+
+	local close = _G.GMChatFrameCloseButton
+	close:ClearAllPoints()
+	close:Point('RIGHT', tab, -5, 0)
+	S:HandleCloseButton(close)
+end

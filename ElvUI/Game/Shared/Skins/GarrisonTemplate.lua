@@ -1,0 +1,34 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+local hooksecurefunc = hooksecurefunc
+
+local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
+
+local data = S:AddCallbackForAddon('Blizzard_GarrisonTemplates')
+function data.check()
+	return E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall and E.private.skins.blizzard.garrison
+end
+
+local function ShowFollower(s, followerID)
+	local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)
+	if not followerInfo then return end
+
+	if not s.PortraitFrameStyled then
+		S:HandleGarrisonPortrait(s.PortraitFrame)
+		s.PortraitFrameStyled = true
+	end
+
+	local r, g, b = E:GetItemQualityColor(followerInfo.quality or 1)
+
+	s.Name:SetVertexColor(r, g, b)
+	s.PortraitFrame.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
+
+	s.XPBar:ClearAllPoints()
+	s.XPBar:Point('BOTTOMLEFT', s.PortraitFrame, 'BOTTOMRIGHT', 7, -15)
+end
+
+function S:Blizzard_GarrisonTemplates()
+	hooksecurefunc(_G.GarrisonFollowerTabMixin, 'ShowFollower', ShowFollower)
+end

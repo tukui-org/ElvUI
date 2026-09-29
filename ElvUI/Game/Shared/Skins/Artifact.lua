@@ -1,0 +1,72 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+local next = next
+local unpack = unpack
+local hooksecurefunc = hooksecurefunc
+
+local artifact = S:AddCallbackForAddon('Blizzard_ArtifactUI')
+artifact.toggle = 'artifact'
+
+local remixArtifact = S:AddCallbackForAddon('Blizzard_RemixArtifactUI')
+remixArtifact.toggle = 'remixArtifact'
+
+local function Selected_SetShown(selected, isActive)
+	local r, g, b
+	if not isActive then
+		r, g, b = unpack(E.media.bordercolor)
+	end
+
+	local child = selected:GetParent()
+	child.backdrop:SetBackdropBorderColor(r or 1, g or 1, b or 1)
+end
+
+function S:Blizzard_ArtifactUI()
+	local ArtifactFrame = _G.ArtifactFrame
+	ArtifactFrame:StripTextures()
+	ArtifactFrame:SetTemplate('Transparent')
+	ArtifactFrame.BorderFrame:StripTextures()
+	S:HandleCloseButton(ArtifactFrame.CloseButton)
+
+	for i = 1, 2 do
+		S:HandleTab(_G['ArtifactFrameTab' .. i])
+	end
+
+	local ArtifactFrameTab1 = _G.ArtifactFrameTab1
+	ArtifactFrameTab1:ClearAllPoints()
+	ArtifactFrameTab1:Point('TOPLEFT', ArtifactFrame, 'BOTTOMLEFT', 0, 0)
+
+	ArtifactFrame.ForgeBadgeFrame.ItemIcon:Hide()
+	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:ClearAllPoints()
+	ArtifactFrame.ForgeBadgeFrame.ForgeLevelBackground:Point('TOPLEFT', ArtifactFrame)
+
+	ArtifactFrame.AppearancesTab:HookScript('OnShow', function(frame)
+		for _, child in next, { frame:GetChildren() } do
+			if child.appearanceID and not child.backdrop then
+				child:CreateBackdrop('Transparent')
+				child.SwatchTexture:SetTexCoord(.20,.80,.20,.80)
+				child.SwatchTexture:SetInside(child.backdrop)
+				child.Border:SetAlpha(0)
+				child.Background:SetAlpha(0)
+				child.HighlightTexture:SetAlpha(0)
+				child.HighlightTexture.SetAlpha = E.noop
+
+				if child.Selected:IsShown() then
+					child.backdrop:SetBackdropBorderColor(1,1,1)
+				end
+
+				child.Selected:SetAlpha(0)
+				child.Selected.SetAlpha = E.noop
+
+				hooksecurefunc(child.Selected, 'SetShown', Selected_SetShown)
+			end
+		end
+	end)
+end
+
+function S:Blizzard_RemixArtifactUI()
+	local ArtifactFrame = _G.RemixArtifactFrame
+	S:HandleCloseButton(ArtifactFrame.CloseButton)
+	S:HandleButton(ArtifactFrame.CommitConfigControls.CommitButton)
+end

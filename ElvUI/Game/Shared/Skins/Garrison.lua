@@ -1,0 +1,675 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
+
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+
+local data = S:AddCallbackForAddon('Blizzard_GarrisonUI')
+data.toggle = 'garrison'
+
+local function ShowFollower(frame)
+	S:HandleFollowerAbilities(frame)
+end
+
+local function UpdateFollowerColorOnBoard(self, _, info)
+	local r, g, b = E:GetItemQualityColor(info.quality)
+	self.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
+end
+
+local function ResetFollowerColorOnBoard(self)
+	self.Portrait.backdrop:SetBackdropBorderColor(0, 0, 0)
+end
+
+local function SkinFollowerBoard(self, group)
+	for socketTexture in self[group..'SocketFramePool']:EnumerateActive() do
+		socketTexture:DisableDrawLayer('BACKGROUND')
+	end
+
+	for frame in self[group..'FramePool']:EnumerateActive() do
+		if not frame.IsSkinned then
+			S:HandleGarrisonPortrait(frame)
+			frame.PuckShadow:SetAlpha(0)
+
+			-- enemy pucks have neither, mission page follower pucks have both
+			if frame.SetFollowerGUID then
+				hooksecurefunc(frame, 'SetFollowerGUID', UpdateFollowerColorOnBoard)
+			end
+			if frame.SetEmpty then
+				hooksecurefunc(frame, 'SetEmpty', ResetFollowerColorOnBoard)
+			end
+
+			frame.IsSkinned = true
+		end
+	end
+end
+
+local function SkinMissionBoards(board)
+	SkinFollowerBoard(board, 'enemy')
+	SkinFollowerBoard(board, 'follower')
+end
+
+local function UpdateSpellAbilities(followerTab)
+	for abilityFrame in followerTab.autoSpellPool:EnumerateActive() do
+		if not abilityFrame.IsSkinned then
+			S:HandleIcon(abilityFrame.Icon, true)
+			abilityFrame.IconMask:Hide()
+			abilityFrame.SpellBorder:Hide()
+
+			abilityFrame.IsSkinned = true
+		end
+	end
+end
+
+local function ReskinMissionButton(button)
+	if not button.IsSkinned then
+		local rareOverlay = button.RareOverlay
+		local rareText = button.RareText
+
+		button.LocBG:SetDrawLayer('BACKGROUND')
+		if button.ButtonBG then button.ButtonBG:Hide() end
+		button:StripTextures()
+		button:CreateBackdrop('Transparent')
+		button.Highlight:SetColorTexture(.6, .8, 1, .15)
+		button.Highlight:SetAllPoints()
+
+		if button.CompleteCheck then
+			button.CompleteCheck:SetAtlas('Adventures-Checkmark')
+		end
+		if rareText then
+			rareText:ClearAllPoints()
+			rareText:SetPoint('BOTTOMLEFT', button, 20, 10)
+		end
+		if rareOverlay then
+			rareOverlay:SetDrawLayer('BACKGROUND')
+			rareOverlay:SetTexture([[Interface\ChatFrame\ChatFrameBackground]])
+			rareOverlay:SetAllPoints()
+			rareOverlay:SetVertexColor(.098, .537, .969, .2)
+		end
+		button.Overlay.Overlay:SetAllPoints()
+
+		button.IsSkinned = true
+	end
+end
+
+local function ReskinMissionList(frame)
+	frame:ForEachFrame(ReskinMissionButton)
+end
+
+local function ReskinMissionComplete(frame)
+	local missionComplete = frame.MissionComplete
+	local bonusRewards = missionComplete.BonusRewards
+
+	if bonusRewards then
+		select(11, bonusRewards:GetRegions()):SetTextColor(1, .8, 0)
+		bonusRewards.Saturated:StripTextures()
+		for i = 1, 9 do
+			select(i, bonusRewards:GetRegions()):SetAlpha(0)
+		end
+		bonusRewards:SetTemplate()
+	end
+
+	if missionComplete.NextMissionButton then
+		S:HandleButton(missionComplete.NextMissionButton)
+	end
+
+	if missionComplete.CompleteFrame then
+		if E.private.skins.parchmentRemoverEnable then
+			missionComplete:StripTextures()
+		end
+
+		missionComplete:CreateBackdrop('Transparent')
+		missionComplete.backdrop:Point('TOPLEFT', 3, 2)
+		missionComplete.backdrop:Point('BOTTOMRIGHT', -3, -10)
+
+		if E.private.skins.parchmentRemoverEnable then
+			missionComplete.CompleteFrame:StripTextures()
+		end
+		S:HandleButton(missionComplete.CompleteFrame.ContinueButton)
+		S:HandleButton(missionComplete.CompleteFrame.SpeedButton)
+		S:HandleButton(missionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
+	end
+
+	if missionComplete.MissionInfo then
+		missionComplete.MissionInfo:StripTextures()
+	end
+	if missionComplete.EnemyBackground then missionComplete.EnemyBackground:Hide() end
+	if missionComplete.FollowerBackground then missionComplete.FollowerBackground:Hide() end
+end
+
+local function SkinMissionItems(followerTab)
+	for _, item in pairs({followerTab.ItemWeapon, followerTab.ItemArmor}) do
+		if item then
+			local icon = item.Icon
+			item.Border:Hide()
+			S:HandleIcon(icon)
+		end
+	end
+end
+
+-- TO DO: Extend this function
+local function SkinMissionFrame(frame, strip)
+	if strip then
+		frame:StripTextures()
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+	end
+
+	frame.CloseButton:StripTextures()
+	S:HandleCloseButton(frame.CloseButton)
+	frame.GarrCorners:Hide()
+
+	if frame.OverlayElements then frame.OverlayElements:SetAlpha(0) end
+	if frame.TitleScroll then
+		frame.TitleScroll:StripTextures()
+		select(4, frame.TitleScroll:GetRegions()):SetTextColor(1, .8, 0)
+	end
+
+	for i = 1, 3 do
+		local tab = _G[frame:GetName()..'Tab'..i]
+		if tab then S:HandleTab(tab) end
+	end
+
+	if frame.MapTab then
+		frame.MapTab.ScrollContainer.Child.TiledBackground:Hide()
+	end
+
+	local missionList = frame.MissionTab.MissionList
+	missionList:StripTextures()
+
+	S:HandleTrimScrollBar(missionList.ScrollBar)
+
+	ReskinMissionComplete(frame)
+	SkinMissionItems(frame.FollowerTab)
+
+	hooksecurefunc(missionList.ScrollBox, 'Update', ReskinMissionList)
+	hooksecurefunc(frame.FollowerTab, 'UpdateAutoSpellAbilities', UpdateSpellAbilities)
+end
+
+local function ReportListScrollUpdateChild(button)
+	if not button.IsSkinned then
+		button.BG:Hide()
+		button:CreateBackdrop('Transparent')
+		button.backdrop:Point('TOPLEFT')
+		button.backdrop:Point('BOTTOMRIGHT', 0, 1)
+
+		for _, reward in pairs(button.Rewards) do
+			reward:GetRegions():Hide()
+			S:HandleIcon(reward.Icon, true)
+			S:HandleIconBorder(reward.IconBorder, reward.Icon.backdrop)
+		end
+
+		button.IsSkinned = true
+	end
+end
+
+local function ReportListScrollUpdate(frame)
+	frame:ForEachFrame(ReportListScrollUpdateChild)
+end
+
+local function Covenant_SetupTabs(frame)
+	frame.MapTab:SetShown(not frame.Tab2:IsShown())
+end
+
+local function GarrisonSetRewards(frame)
+	local index, r, g, b = 0 -- Set border color according to rarity of item
+	for _, reward in pairs(frame.Rewards) do
+		reward:GetRegions():Hide()
+
+		reward.IconBorder:SetTexture()
+
+		if reward.IconBorder:IsShown() then
+			r, g, b = reward.IconBorder:GetVertexColor()
+		else
+			r, g, b = unpack(E.media.bordercolor)
+		end
+
+		if not reward.Icon.backdrop then
+			S:HandleIcon(reward.Icon, true)
+
+			reward.Icon.backdrop:OffsetFrameLevel(nil, reward)
+		end
+
+		reward.Icon.backdrop:SetBackdropBorderColor(r, g, b)
+
+		index = index + 1
+	end
+end
+
+local function GarrisonSetReward(frame)
+	frame.BG:SetTexture()
+	if not frame.backdrop then
+		S:HandleIcon(frame.Icon)
+	end
+
+	frame.IconBorder:SetTexture()
+	frame.Icon:SetDrawLayer('BORDER', 0)
+end
+
+local function SetFollowerPortrait(portraitFrame, followerInfo)
+	if not portraitFrame.IsSkinned then
+		S:HandleGarrisonPortrait(portraitFrame)
+		portraitFrame.IsSkinned = true
+	end
+
+	local r, g, b = E:GetItemQualityColor(followerInfo.quality)
+	portraitFrame.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
+	portraitFrame.Portrait.backdrop:Show()
+end
+
+local function CapacitiveDisplayUpdate(frame)
+	for _, Reagent in ipairs(frame.CapacitiveDisplay.Reagents) do
+		if not Reagent.template then
+			Reagent:SetTemplate()
+			Reagent.NameFrame:SetTexture()
+			Reagent.Icon:SetDrawLayer('ARTWORK')
+			Reagent.Icon:ClearAllPoints()
+			Reagent.Icon:Point('TOPLEFT', 1, -1)
+			S:HandleIcon(Reagent.Icon)
+		end
+	end
+end
+
+local function PanelUpdateTabs()
+	_G.GarrisonLandingPageTab1:ClearAllPoints()
+	_G.GarrisonLandingPageTab1:Point('TOPLEFT', _G.GarrisonLandingPage, 'BOTTOMLEFT', -3, 0)
+
+	_G.GarrisonLandingPageTab2:ClearAllPoints()
+	_G.GarrisonLandingPageTab2:Point('TOPLEFT', _G.GarrisonLandingPageTab1, 'TOPRIGHT', -5, 0)
+
+	_G.GarrisonLandingPageTab3:ClearAllPoints()
+	_G.GarrisonLandingPageTab3:Point('TOPLEFT', _G.GarrisonLandingPageTab2, 'TOPRIGHT', -5, 0)
+end
+
+local function GarrisonSetTab(frame)
+	local Report = _G.GarrisonLandingPage.Report
+
+	local unselectedTab = Report.unselectedTab
+	unselectedTab:Height(36)
+	unselectedTab:SetNormalTexture(E.ClearTexture)
+
+	frame:SetNormalTexture(E.ClearTexture)
+
+	if unselectedTab.selectedTex then
+		unselectedTab.selectedTex:Hide()
+	end
+
+	if frame.selectedTex then
+		frame.selectedTex:Show()
+	end
+end
+
+local function GarrisonAddAbility(frame, index)
+	local ability = frame.Abilities[index]
+	if not ability.IsSkinned then
+		S:HandleIcon(ability.Icon, ability)
+		ability.IsSkinned = true
+	end
+end
+
+function S:Blizzard_GarrisonUI()
+	-- These hooks affect both Garrison and OrderHall
+	hooksecurefunc('GarrisonMissionButton_SetRewards', GarrisonSetRewards)
+	hooksecurefunc('GarrisonMissionPage_SetReward', GarrisonSetReward)
+	hooksecurefunc('GarrisonMissionPortrait_SetFollowerPortrait', SetFollowerPortrait)
+
+	-- Building frame
+	local GarrisonBuildingFrame = _G.GarrisonBuildingFrame
+	GarrisonBuildingFrame:StripTextures(true)
+	GarrisonBuildingFrame.TitleText:Show()
+	GarrisonBuildingFrame:SetTemplate('Transparent')
+
+	S:HandleCloseButton(GarrisonBuildingFrame.CloseButton, GarrisonBuildingFrame.backdrop)
+
+	-- Follower List
+	local FollowerList = GarrisonBuildingFrame.FollowerList
+	FollowerList:ClearAllPoints()
+	FollowerList:Point('BOTTOMLEFT', 24, 34)
+
+	-- Capacitive display frame
+	local GarrisonCapacitiveDisplayFrame = _G.GarrisonCapacitiveDisplayFrame
+	S:HandlePortraitFrame(GarrisonCapacitiveDisplayFrame)
+	S:HandleButton(GarrisonCapacitiveDisplayFrame.StartWorkOrderButton)
+	S:HandleButton(GarrisonCapacitiveDisplayFrame.CreateAllWorkOrdersButton)
+	GarrisonCapacitiveDisplayFrame.Count:StripTextures()
+	S:HandleEditBox(GarrisonCapacitiveDisplayFrame.Count)
+	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.DecrementButton)
+	S:HandleNextPrevButton(GarrisonCapacitiveDisplayFrame.IncrementButton)
+	local CapacitiveDisplay = GarrisonCapacitiveDisplayFrame.CapacitiveDisplay
+	CapacitiveDisplay.IconBG:SetTexture()
+	CapacitiveDisplay.ShipmentIconFrame.Icon:SetTexCoords()
+	CapacitiveDisplay.ShipmentIconFrame.Icon:SetInside()
+	--Fix unitframes appearing above work orders
+	GarrisonCapacitiveDisplayFrame:SetFrameStrata('MEDIUM')
+	GarrisonCapacitiveDisplayFrame:SetFrameLevel(45)
+
+	hooksecurefunc('GarrisonCapacitiveDisplayFrame_Update', CapacitiveDisplayUpdate)
+
+	-- Recruiter frame
+	S:HandlePortraitFrame(_G.GarrisonRecruiterFrame)
+
+	-- Recruiter Unavailable frame
+	local UnavailableFrame = _G.GarrisonRecruiterFrame.UnavailableFrame
+	S:HandleButton(UnavailableFrame:GetChildren())
+
+	-- Mission UI
+	local GarrisonMissionFrame = _G.GarrisonMissionFrame
+	GarrisonMissionFrame:StripTextures(true)
+	GarrisonMissionFrame.TitleText:Show()
+	GarrisonMissionFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(GarrisonMissionFrame.CloseButton, GarrisonMissionFrame.backdrop)
+	_G.GarrisonMissionFrameMissions:CreateBackdrop('Transparent')
+
+	SkinMissionFrame(GarrisonMissionFrame, E.private.skins.parchmentRemoverEnable) -- OG Garrison
+
+	for i = 1,2 do
+		S:HandleTab(_G['GarrisonMissionFrameTab'..i])
+	end
+
+	_G.GarrisonMissionFrameTab1:ClearAllPoints()
+	_G.GarrisonMissionFrameTab1:Point('BOTTOMLEFT', 11, -40)
+	GarrisonMissionFrame.GarrCorners:Hide()
+
+	-- Follower list
+	FollowerList = GarrisonMissionFrame.FollowerList
+	FollowerList:DisableDrawLayer('BORDER')
+	FollowerList:CreateBackdrop('Transparent')
+	FollowerList.MaterialFrame.BG:StripTextures()
+	S:HandleEditBox(FollowerList.SearchBox)
+	S:HandleTrimScrollBar(_G.GarrisonMissionFrameFollowers.ScrollBar)
+	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+
+	local FollowerTab = GarrisonMissionFrame.FollowerTab
+	FollowerTab:StripTextures()
+	FollowerTab:SetTemplate('Transparent')
+	SkinMissionItems(FollowerTab)
+
+	-- Mission list
+	local MissionTab = GarrisonMissionFrame.MissionTab
+	local MissionList = MissionTab.MissionList
+	local MissionPage = GarrisonMissionFrame.MissionTab.MissionPage
+
+	MissionList:DisableDrawLayer('BORDER')
+	S:HandleTrimScrollBar(_G.GarrisonMissionFrameMissions.ScrollBar)
+	S:HandleCloseButton(MissionPage.CloseButton)
+	MissionPage.CloseButton:OffsetFrameLevel(2, MissionPage)
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
+	S:HandleButton(GarrisonMissionFrame.MissionComplete.NextMissionButton)
+	S:HandleButton(MissionPage.StartMissionButton)
+	MissionPage.StartMissionButton.Flash:Kill()
+
+	-- Landing page
+	local GarrisonLandingPage = _G.GarrisonLandingPage
+	local Report = GarrisonLandingPage.Report
+	S:HandleCloseButton(GarrisonLandingPage.CloseButton, GarrisonLandingPage.backdrop)
+
+	local pageTabs = {
+		_G.GarrisonLandingPageTab1,
+		_G.GarrisonLandingPageTab2,
+		_G.GarrisonLandingPageTab3,
+	}
+	for _, tab in pairs(pageTabs) do
+		S:HandleTab(tab)
+		tab:SetHeight(tab:GetHeight() * .75)
+	end
+
+	-- Reposition Tabs
+	hooksecurefunc('PanelTemplates_UpdateTabs', PanelUpdateTabs)
+
+	if E.private.skins.parchmentRemoverEnable then
+		GarrisonLandingPage:StripTextures()
+
+		for _, tab in pairs({Report.InProgress, Report.Available}) do
+			tab:SetHighlightTexture(E.ClearTexture)
+			tab.Text:ClearAllPoints()
+			tab.Text:Point('CENTER')
+
+			local bg = CreateFrame('Frame', nil, tab)
+			bg:OffsetFrameLevel(-1, tab)
+			bg:SetTemplate('Transparent')
+
+			local selectedTex = bg:CreateTexture(nil, 'BACKGROUND')
+			selectedTex:SetAllPoints()
+			selectedTex:SetColorTexture(unpack(E.media.rgbvaluecolor))
+			selectedTex:SetAlpha(0.25)
+			selectedTex:Hide()
+			tab.selectedTex = selectedTex
+
+			if tab == Report.InProgress then
+				bg:Point('TOPLEFT', 5, 0)
+				bg:Point('BOTTOMRIGHT')
+			else
+				bg:Point('TOPLEFT')
+				bg:Point('BOTTOMRIGHT', -7, 0)
+			end
+		end
+	end
+
+	GarrisonLandingPage:SetTemplate('Transparent') -- keep below parchmentRemover
+	GarrisonLandingPage.Center:SetDrawLayer('BACKGROUND', -2)
+
+	hooksecurefunc('GarrisonLandingPageReport_SetTab', GarrisonSetTab)
+
+	-- Landing page: Report
+	Report = _G.GarrisonLandingPage.Report -- reassigned
+	Report:StripTextures(true)
+
+	local List = Report.List
+	List:StripTextures()
+	S:HandleTrimScrollBar(List.ScrollBar)
+
+	hooksecurefunc(Report.List.ScrollBox, 'Update', ReportListScrollUpdate)
+
+	-- Landing page: Follower list
+	FollowerList = GarrisonLandingPage.FollowerList
+	FollowerList.FollowerHeaderBar:Hide()
+	FollowerList.FollowerScrollFrame:Hide()
+	S:HandleEditBox(FollowerList.SearchBox)
+	S:HandleTrimScrollBar(_G.GarrisonLandingPageFollowerList.ScrollBar)
+
+	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+	hooksecurefunc('GarrisonFollowerButton_AddAbility', GarrisonAddAbility)
+
+	-- Garrison Portraits
+	S:HandleFollowerListOnUpdateData('GarrisonMissionFrameFollowers')
+	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to orderhall landing page
+	hooksecurefunc(GarrisonLandingPage.FollowerTab, 'UpdateAutoSpellAbilities', UpdateSpellAbilities)
+
+	-- Landing page: Fleet
+	local ShipFollowerList = GarrisonLandingPage.ShipFollowerList
+	ShipFollowerList.FollowerHeaderBar:Hide()
+	S:HandleEditBox(ShipFollowerList.SearchBox)
+
+	-- ShipYard
+	local GarrisonShipyardFrame = _G.GarrisonShipyardFrame
+	GarrisonShipyardFrame.BorderFrame:StripTextures(true)
+	GarrisonShipyardFrame:StripTextures(true)
+	GarrisonShipyardFrame:SetTemplate('Transparent')
+	GarrisonShipyardFrame.BorderFrame.GarrCorners:Hide()
+	S:HandleCloseButton(GarrisonShipyardFrame.BorderFrame.CloseButton2)
+	S:HandleTab(_G.GarrisonShipyardFrameTab1)
+	S:HandleTab(_G.GarrisonShipyardFrameTab2)
+
+	-- ShipYard: Naval Map
+	MissionTab = GarrisonShipyardFrame.MissionTab
+	MissionList = MissionTab.MissionList
+	MissionList:SetTemplate('Transparent')
+	MissionList.CompleteDialog.BorderFrame:StripTextures()
+	MissionList.CompleteDialog.BorderFrame:SetTemplate('Transparent')
+
+	-- ShipYard: Mission
+	MissionPage = MissionTab.MissionPage
+	S:HandleCloseButton(MissionPage.CloseButton)
+	MissionPage.CloseButton:OffsetFrameLevel(2)
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
+	S:HandleButton(GarrisonShipyardFrame.MissionComplete.NextMissionButton)
+	MissionList.CompleteDialog:SetAllPoints(MissionList.MapTexture)
+	GarrisonShipyardFrame.MissionCompleteBackground:SetAllPoints(MissionList.MapTexture)
+	S:HandleButton(MissionPage.StartMissionButton)
+	MissionPage.StartMissionButton.Flash:Kill()
+
+	-- ShipYard: Follower List
+	FollowerList = GarrisonShipyardFrame.FollowerList
+	FollowerList:StripTextures()
+	FollowerList:CreateBackdrop('Transparent')
+	FollowerList.MaterialFrame.BG:StripTextures()
+	S:HandleTrimScrollBar(_G.GarrisonShipyardFrameFollowers.ScrollBar)
+	S:HandleEditBox(FollowerList.SearchBox)
+
+	-- MissionFrame
+	local OrderHallMissionFrame = _G.OrderHallMissionFrame
+	OrderHallMissionFrame.ClassHallIcon:Kill()
+	OrderHallMissionFrame.GarrCorners:Hide()
+	OrderHallMissionFrame:StripTextures()
+	OrderHallMissionFrame:CreateBackdrop('Transparent')
+	S:HandleCloseButton(OrderHallMissionFrame.CloseButton)
+
+	SkinMissionFrame(OrderHallMissionFrame, E.private.skins.parchmentRemoverEnable)
+
+	for i = 1, 3 do
+		S:HandleTab(_G['OrderHallMissionFrameTab' .. i])
+	end
+
+	-- Followers
+	local Follower = _G.OrderHallMissionFrameFollowers
+	FollowerList = OrderHallMissionFrame.FollowerList -- swap
+	FollowerTab = OrderHallMissionFrame.FollowerTab -- swap
+
+	S:HandleTrimScrollBar(Follower.ScrollBar)
+
+	Follower:StripTextures()
+	FollowerList:StripTextures()
+	FollowerList:CreateBackdrop('Transparent')
+	FollowerList.MaterialFrame.BG:StripTextures()
+
+	S:HandleEditBox(FollowerList.SearchBox)
+	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+
+	FollowerTab.Class:Size(50, 43)
+	FollowerTab.XPBar:StripTextures()
+	FollowerTab.XPBar:SetStatusBarTexture(E.media.normTex)
+	FollowerTab.XPBar:SetTemplate()
+	FollowerTab:StripTextures()
+	FollowerTab:SetTemplate('Transparent')
+	SkinMissionItems(FollowerTab)
+
+	-- Orderhall Portraits
+	S:HandleFollowerListOnUpdateData('OrderHallMissionFrameFollowers')
+	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to garrison landing page
+
+	-- Missions
+	MissionTab = OrderHallMissionFrame.MissionTab -- swap
+	local MissionComplete = OrderHallMissionFrame.MissionComplete
+	MissionList = MissionTab.MissionList -- swap
+	MissionPage = MissionTab.MissionPage -- swap
+	local ZoneSupportMissionPage = MissionTab.ZoneSupportMissionPage
+	MissionList.CompleteDialog:StripTextures()
+	MissionList.CompleteDialog:SetTemplate('Transparent')
+	S:HandleButton(MissionList.CompleteDialog.BorderFrame.ViewButton)
+	MissionList:StripTextures()
+	S:HandleCloseButton(MissionPage.CloseButton)
+	S:HandleCloseButton(ZoneSupportMissionPage.CloseButton)
+	S:HandleButton(MissionComplete.NextMissionButton)
+	S:HandleButton(MissionPage.StartMissionButton)
+	MissionPage.StartMissionButton.Flash:Kill()
+	S:HandleButton(ZoneSupportMissionPage.StartMissionButton)
+	ZoneSupportMissionPage.StartMissionButton.Flash:Kill()
+
+	local LegionMissions = _G.OrderHallMissionFrameMissions
+	S:HandleButton(LegionMissions.CombatAllyUI.InProgress.Unassign)
+	LegionMissions.MaterialFrame.BG:StripTextures()
+	LegionMissions:CreateBackdrop('Transparent')
+
+	-- BFA Mission
+	local MissionFrame = _G.BFAMissionFrame
+	MissionFrame:StripTextures()
+	MissionFrame:CreateBackdrop('Transparent')
+	MissionFrame.FollowerList:CreateBackdrop('Transparent')
+	MissionFrame.OverlayElements:Hide()
+	MissionFrame.TitleScroll:Hide()
+
+	SkinMissionFrame(MissionFrame, E.private.skins.parchmentRemoverEnable)
+
+	S:HandleButton(MissionFrame.MissionComplete.NextMissionButton)
+
+	for i = 1, 3 do
+		S:HandleTab(_G['BFAMissionFrameTab'..i])
+	end
+
+	-- Missions
+	local BFAMissions = _G.BFAMissionFrameMissions
+	S:HandleButton(BFAMissions.CompleteDialog.BorderFrame.ViewButton)
+	BFAMissions.MaterialFrame.BG:StripTextures()
+	BFAMissions:StripTextures()
+	BFAMissions:CreateBackdrop('Transparent')
+
+	-- Mission Tab
+	MissionTab = MissionFrame.MissionTab -- swap
+	S:HandleCloseButton(MissionTab.MissionPage.CloseButton)
+	S:HandleButton(MissionTab.MissionPage.StartMissionButton)
+	MissionTab.MissionPage.StartMissionButton.Flash:Kill()
+
+	-- Follower Tab
+	FollowerTab = MissionFrame.FollowerTab -- swap
+	FollowerTab:StripTextures()
+	FollowerTab:SetTemplate('Transparent')
+	FollowerTab.Class:Size(50, 43)
+	SkinMissionItems(FollowerTab)
+
+	Follower = _G.BFAMissionFrameFollowers -- swap
+	Follower:StripTextures()
+	Follower.MaterialFrame.BG:StripTextures()
+	S:HandleEditBox(Follower.SearchBox)
+	hooksecurefunc(Follower, 'ShowFollower', ShowFollower)
+	S:HandleFollowerListOnUpdateData('BFAMissionFrameFollowers') -- The function needs to be updated for BFA
+
+	local XPBar = FollowerTab.XPBar
+	XPBar:StripTextures()
+	XPBar:SetStatusBarTexture(E.media.normTex)
+	XPBar:CreateBackdrop()
+
+	-- Shadowlands Mission
+	local CovenantMissionFrame = _G.CovenantMissionFrame
+	SkinMissionFrame(CovenantMissionFrame, E.private.skins.parchmentRemoverEnable)
+	S:HandleIcon(_G.CovenantMissionFrameMissions.MaterialFrame.Icon)
+	_G.CovenantMissionFrameMissions.RaisedFrameEdges:SetAlpha(0)
+	CovenantMissionFrame.RaisedBorder:SetAlpha(0)
+
+	-- This is needed if we use StripTextures on the Covenant Frames
+	hooksecurefunc(CovenantMissionFrame, 'SetupTabs', Covenant_SetupTabs)
+
+	-- Complete Missions
+	_G.CombatLog.ElevatedFrame:SetAlpha(0)
+	_G.CombatLog.CombatLogMessageFrame:StripTextures()
+	_G.CombatLog.CombatLogMessageFrame:SetTemplate('Transparent')
+
+	-- Adventures / Follower Tab
+	Follower = _G.CovenantMissionFrameFollowers -- swap
+	FollowerTab = CovenantMissionFrame.FollowerTab
+
+	hooksecurefunc(Follower, 'ShowFollower', ShowFollower)
+	Follower:StripTextures()
+
+	FollowerTab:StripTextures()
+	FollowerTab:SetTemplate('Transparent')
+	FollowerTab.RaisedFrameEdges:SetAlpha(0)
+	local HealFollowerFrame = FollowerTab.HealFollowerFrame
+	S:HandleIcon(HealFollowerFrame.CostFrame.CostIcon)
+	S:HandleButton(HealFollowerFrame.HealFollowerButton)
+
+	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
+	S:HandleButton(Follower.HealAllButton)
+
+	-- Mission Tab
+	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
+	S:HandleIcon(CovenantMissionFrame.MissionTab.MissionPage.CostFrame.CostIcon)
+	S:HandleButton(CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton)
+	CovenantMissionFrame.MissionTab.MissionPage.StartMissionButton.Flash:Kill()
+
+	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
+	CovenantMissionFrame.MissionComplete.Board:HookScript('OnShow', SkinMissionBoards)
+end

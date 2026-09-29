@@ -1,0 +1,33 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+local hooksecurefunc = hooksecurefunc
+
+local data = S:AddCallbackForAddon('Blizzard_MajorFactionRenown')
+data.toggle = 'majorFactions'
+
+local function SetupMajorFaction(frame)
+	if frame.Divider then frame.Divider:Hide() end
+	if frame.NineSlice then frame.NineSlice:Hide() end
+	if frame.Border then frame.Border:Hide() end
+	if frame.TopLeftBorderDecoration then frame.TopLeftBorderDecoration:Hide() end
+	if frame.TopRightBorderDecoration then frame.TopRightBorderDecoration:Hide() end
+	if frame.Background then frame.Background:Hide() end
+	if frame.BackgroundShadow then frame.BackgroundShadow:Hide() end
+	if frame.CloseButton.Border then frame.CloseButton.Border:Hide() end
+end
+
+function S:Blizzard_MajorFactionRenown()
+	local RenownFrame = _G.MajorFactionRenownFrame
+	RenownFrame:SetTemplate('Transparent')
+	S:HandleCloseButton(RenownFrame.CloseButton)
+
+	if RenownFrame.LevelSkipButton then
+		S:HandleButton(RenownFrame.LevelSkipButton)
+	end
+
+	if E.private.skins.parchmentRemoverEnable then
+		hooksecurefunc(RenownFrame, 'SetUpMajorFactionData', SetupMajorFaction)
+	end
+end

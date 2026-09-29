@@ -192,7 +192,10 @@ function UF:Configure_AuraBars(frame)
 
 		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 		bars:ClearAllPoints()
-		bars:Show()
+
+		if not E.Modern then
+			bars:Show()
+		end
 
 		local p1 = below and 'BOTTOM' or 'TOP'
 		local p2 = detached and p1 or (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'

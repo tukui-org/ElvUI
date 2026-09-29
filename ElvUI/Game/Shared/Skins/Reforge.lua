@@ -1,0 +1,47 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+local hooksecurefunc = hooksecurefunc
+
+local GetItemIconByID = C_Item.GetItemIconByID
+local GetReforgeItemInfo = C_Reforge.GetReforgeItemInfo
+
+local data = S:AddCallbackForAddon('Blizzard_ReforgingUI')
+data.toggle = 'reforge'
+
+local function ReforgingFrameUpdate()
+	local _, itemID, _, quality = GetReforgeItemInfo()
+	local texture = itemID and GetItemIconByID(itemID) or nil
+	_G.ReforgingFrameItemButtonIconTexture:SetTexture(texture)
+	_G.ReforgingFrameItemButtonIconTexture:SetTexCoords()
+
+	local r, g, b = E:GetItemQualityColor(quality)
+	_G.ReforgingFrameItemButton:SetBackdropBorderColor(r, g, b)
+end
+
+function S:Blizzard_ReforgingUI()
+	local ReforgingFrame = _G.ReforgingFrame
+	ReforgingFrame:StripTextures()
+	ReforgingFrame:SetTemplate('Transparent')
+
+	_G.ReforgingFrameFinishedGlow:Kill()
+	_G.ReforgingFrameButtonFrame:StripTextures()
+	_G.ReforgingFrameItemButtonIconTexture:SetInside()
+
+	S:HandleButton(_G.ReforgingFrameRestoreButton, true)
+	S:HandleButton(_G.ReforgingFrameReforgeButton, true)
+	S:HandleCloseButton(_G.ReforgingFrameCloseButton)
+
+	ReforgingFrame.missingDescription:SetTextColor(1, 1, 1)
+	_G.ReforgingFrameRestoreMessage:SetTextColor(1, 1, 1)
+	_G.ReforgingFrameReforgeButton:Point('BOTTOMRIGHT', -3, 3)
+
+	local ItemButton = _G.ReforgingFrameItemButton
+	ItemButton.missingText:SetTextColor(1, 0.80, 0.10)
+	ItemButton:StripTextures()
+	ItemButton:SetTemplate(nil, true)
+	ItemButton:StyleButton()
+
+	hooksecurefunc('ReforgingFrame_Update', ReforgingFrameUpdate)
+end

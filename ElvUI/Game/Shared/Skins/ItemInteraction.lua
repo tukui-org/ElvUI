@@ -1,0 +1,37 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+
+local data = S:AddCallbackForAddon('Blizzard_ItemInteractionUI')
+data.toggle = 'itemInteraction'
+
+function S:Blizzard_ItemInteractionUI()
+	local mainFrame = _G.ItemInteractionFrame
+	S:HandlePortraitFrame(mainFrame)
+
+	local itemSlot = mainFrame.ItemSlot
+	itemSlot:StripTextures()
+	itemSlot:SetTemplate()
+	itemSlot:Size(58)
+	itemSlot:ClearAllPoints()
+	itemSlot:Point('TOPLEFT', 143, -97)
+
+	itemSlot.GlowOverlay:SetAlpha(0)
+
+	itemSlot.Icon:ClearAllPoints()
+	itemSlot.Icon:Point('TOPLEFT', 1, -1)
+	itemSlot.Icon:Point('BOTTOMRIGHT', -1, 1)
+	S:HandleIcon(itemSlot.Icon)
+
+	local buttonFrame = mainFrame.ButtonFrame
+	buttonFrame:StripTextures()
+	buttonFrame.ButtonBorder:Hide()
+	buttonFrame.ButtonBottomBorder:Hide()
+	buttonFrame.MoneyFrameEdge:SetAlpha(0)
+	buttonFrame.BlackBorder:SetAlpha(0)
+
+	S:HandleIcon(buttonFrame.Currency.Icon)
+
+	S:HandleButton(buttonFrame.ActionButton)
+end

@@ -220,6 +220,7 @@ local function CreateDTOptions(name, data)
 				end
 			end
 		elseif name == 'System' then
+			optionTable.args.separator = ACH:Input(L["Separator"], nil, 3, nil, nil, function(info) return EscapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = EscapeString(value) DT:ForceUpdate_DataText(name) end, function() return not settings.NoLabel end)
 			optionTable.args.showTooltip = ACH:Toggle(L["Tooltip"], nil, 20)
 		elseif name == 'Durability' then
 			optionTable.args.percThreshold = ACH:Range(L["Flash Threshold"], L["The durability percent that the datatext will start flashing. Set to -1 to disable"], 5, { min = -1, max = 99, step = 1 }, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)

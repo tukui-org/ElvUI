@@ -144,7 +144,7 @@ do
 	function NP:AuraContainer_RemoveActive(nameplate)
 		for auras in next, nameplate.ActiveContainers do
 			auras:SetEnabled(false)
-			auras:SetShown(false)
+			auras:Hide()
 
 			nameplate.ActiveContainers[auras] = nil
 		end
@@ -167,7 +167,7 @@ do
 				E:Auras_SetUnit(auras, nameplate.__unit)
 
 				auras:SetEnabled(true)
-				auras:SetShown(true)
+				auras:Show()
 			end
 		end
 
@@ -220,6 +220,7 @@ function NP:AuraContainer_ConstructAuraTypes(frameType, name)
 	for which in next, AURA_TYPES do
 		local auras = E:Auras_Create(frame, which)
 		auras:SetEnabled(false)
+		auras:Hide()
 
 		auras.frameType = frameType
 		NP:Configure_Auras(auras, which, true)
@@ -338,7 +339,10 @@ function NP:Update_Auras(nameplate)
 		if db.auras.enable then
 			nameplate.Auras = nameplate.Auras_
 			NP:Configure_Auras(nameplate, 'Auras')
-			nameplate.Auras:Show()
+
+			if not E.Modern then
+				nameplate.Auras:Show()
+			end
 		elseif nameplate.Auras then
 			nameplate.Auras:Hide()
 			nameplate.Auras = nil
@@ -347,7 +351,10 @@ function NP:Update_Auras(nameplate)
 		if db.debuffs.enable then
 			nameplate.Debuffs = nameplate.Debuffs_
 			NP:Configure_Auras(nameplate, 'Debuffs')
-			nameplate.Debuffs:Show()
+
+			if not E.Modern then
+				nameplate.Debuffs:Show()
+			end
 		elseif nameplate.Debuffs then
 			nameplate.Debuffs:Hide()
 			nameplate.Debuffs = nil
@@ -356,7 +363,10 @@ function NP:Update_Auras(nameplate)
 		if db.buffs.enable then
 			nameplate.Buffs = nameplate.Buffs_
 			NP:Configure_Auras(nameplate, 'Buffs')
-			nameplate.Buffs:Show()
+
+			if not E.Modern then
+				nameplate.Buffs:Show()
+			end
 		elseif nameplate.Buffs then
 			nameplate.Buffs:Hide()
 			nameplate.Buffs = nil

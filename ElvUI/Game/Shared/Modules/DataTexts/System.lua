@@ -281,7 +281,11 @@ local function OnUpdate(panel, elapsed)
 		local latency = (db.latency == 'HOME' and homePing) or worldPing
 		local fps = E.FPS.rate or 0
 
-		panel.text:SetFormattedText(db.NoLabel and '%s%d|r %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', StatusColor(fps), fps, StatusColor(nil, latency), latency)
+		if db.NoLabel then
+			panel.text:SetFormattedText('%s%d|r %s %s%d|r', StatusColor(fps), fps, db.separator, StatusColor(nil, latency), latency)
+		else
+			panel.text:SetFormattedText('FPS: %s%d|r MS: %s%d|r', StatusColor(fps), fps, StatusColor(nil, latency), latency)
+		end
 
 		if not enteredFrame then
 			return

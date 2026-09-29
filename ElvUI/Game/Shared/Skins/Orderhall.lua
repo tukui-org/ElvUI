@@ -1,0 +1,48 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+local unpack = unpack
+local hooksecurefunc = hooksecurefunc
+
+local data = S:AddCallbackForAddon('Blizzard_OrderHallUI')
+data.toggle = 'orderhall'
+
+local function RefreshAllData(frame)
+	frame:StripTextures()
+	frame:SetTemplate('Transparent')
+
+	if frame.CloseButton.Border then -- only the themed (war effort) frames get one
+		frame.CloseButton.Border:SetAlpha(0)
+	end
+
+	frame.CurrencyBG:SetAlpha(0)
+
+	for bu in frame.buttonPool:EnumerateActive() do
+		bu:SetTemplate()
+
+		bu.Border:SetAlpha(0)
+		bu.Highlight:SetColorTexture(1, 1, 1, .25)
+		bu.Icon:SetTexCoords()
+		bu.Icon:SetInside()
+
+		if bu.talent.isBeingResearched then
+			bu:SetBackdropBorderColor(0, 1, 0)
+		elseif bu.talent.researched or bu.talent.selected then
+			bu:SetBackdropBorderColor(1, 0.8, 0)
+		else
+			local r, g, b = unpack(E.media.bordercolor)
+			bu:SetBackdropBorderColor(r, g, b)
+		end
+	end
+end
+
+function S:Blizzard_OrderHallUI()
+	local OrderHallTalentFrame = _G.OrderHallTalentFrame
+	S:HandlePortraitFrame(OrderHallTalentFrame)
+	S:HandleButton(OrderHallTalentFrame.BackButton)
+	S:HandleIcon(OrderHallTalentFrame.Currency.Icon, true)
+	OrderHallTalentFrame.OverlayElements:SetAlpha(0)
+
+	hooksecurefunc(OrderHallTalentFrame, 'RefreshAllData', RefreshAllData)
+end

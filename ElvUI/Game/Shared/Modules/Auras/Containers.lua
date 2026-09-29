@@ -6,6 +6,7 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
+local hooksecurefunc = hooksecurefunc
 local wipe, ceil, huge = wipe, ceil, math.huge
 local strfind, strmatch = strfind, strmatch
 local floor, next, type = floor, next, type
@@ -720,6 +721,12 @@ function E:Auras_HighlightFilter(container, data)
 end
 
 function E:Auras_SetHighlight(container)
+	if not container:IsShown() then
+		container.needsHighlight = true
+
+		return
+	end
+
 	local groupKey = container.key
 	if groupKey == 'bad' then
 		local candidate = E:Auras_FilterSlot(container)
@@ -766,6 +773,12 @@ function E:Auras_SetHighlight(container)
 end
 
 function E:Auras_SetIndicator(container)
+	if not container:IsShown() then
+		container.needsIndicator = true
+
+		return
+	end
+
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
@@ -943,6 +956,12 @@ function E:Auras_UpdatePreviewIcons(container)
 end
 
 function E:Auras_SetContainer(container)
+	if not container:IsShown() then
+		container.needsGroups = true
+
+		return
+	end
+
 	local allowPreview = container.isUnitframe or container.isNameplate
 	if allowPreview then -- dont add the ones we dont want to preview
 		E.AuraPreviewFrames[container] = true
@@ -1042,8 +1061,14 @@ function E:Auras_AssistUnit(container, unit, shown, skip)
 	container.canAssist = isVisible and UnitCanAssist('player', unit)
 
 	local state, changed = E:Auras_ToggleEnable(container, shown)
-	if state and not skip and not changed then -- update when the state doesnt change but its active
-		container:UpdateAllAuras()
+	if not state then
+		if container:IsShown() then
+			container:Hide() -- no need to call show or update
+		end
+	elseif not container:IsShown() then
+		container:Show() -- this should fire an update
+	elseif not skip and not changed then
+		container:UpdateAllAuras() -- update when the state doesnt change but its active
 	end
 end
 
@@ -1123,9 +1148,34 @@ function E:Auras_RegisterUnitEvents(container, unit)
 	end
 end
 
+function E:Auras_Show()
+	if self.needsHighlight then
+		self.needsHighlight = nil
+
+		E:Auras_SetHighlight(self)
+	elseif self.needsIndicator then
+		self.needsIndicator = nil
+
+		E:Auras_SetIndicator(self)
+	elseif self.needsGroups then
+		self.needsGroups = nil
+
+		E:Auras_SetContainer(self)
+	end
+end
+
+function E:Auras_Hide()
+
+end
+
 function E:Auras_Create(parent, which, override)
 	local parentName = parent and parent:GetName()
 	local container = CreateFrame('AuraContainer', override or (parentName and (parentName..which)) or nil, parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
+
+	container:Hide() -- we use this to prevent updates until a container is shown
+
+	hooksecurefunc(container, 'Show', E.Auras_Show)
+	hooksecurefunc(container, 'Hide', E.Auras_Hide)
 
 	container.parentName = parentName
 	container.parent = parent

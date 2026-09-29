@@ -53,6 +53,7 @@ local toggles = {
 if E.Modern or E.Mists then
 	toggles.pvp = L["PvP Frames"]
 	toggles.guild = L["Guild"]
+	toggles.losscontrol = L["LOSS_OF_CONTROL"]
 end
 
 if E.Retail or E.Mists then
@@ -121,7 +122,6 @@ if E.Modern then
 	toggles.damageMeter = L["Damage Meter"]
 	toggles.deathRecap = L["DEATH_RECAP_TITLE"]
 	toggles.itemInteraction = L["Item Interaction"]
-	toggles.losscontrol = L["LOSS_OF_CONTROL"]
 	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	toggles.subscriptionInterstitial = L["Subscription Interstitial"]
 end

@@ -1,0 +1,50 @@
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule('Skins')
+
+local _G = _G
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
+
+local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'LossOfControlFrame')
+data.toggle = 'losscontrol'
+
+local function SetupDisplay(frame)
+	frame.Icon:ClearAllPoints()
+	frame.Icon:Point('CENTER', frame, 'CENTER', 0, 0)
+
+	frame.AbilityName:ClearAllPoints()
+	frame.AbilityName:Point('BOTTOM', frame, 0, -28)
+	frame.AbilityName:FontTemplate(nil, 20, 'OUTLINE')
+	frame.AbilityName.scrollTime = nil -- huh?
+
+	local TimeLeft = frame.TimeLeft
+	TimeLeft.NumberText:ClearAllPoints()
+	TimeLeft.NumberText:Point('BOTTOM', frame, 4, -58)
+	TimeLeft.NumberText:FontTemplate(nil, 20, 'OUTLINE')
+	TimeLeft.NumberText.scrollTime = nil -- huh?
+
+	TimeLeft.SecondsText:ClearAllPoints()
+	TimeLeft.SecondsText:Point('BOTTOM', frame, 0, -80)
+	TimeLeft.SecondsText:FontTemplate(nil, 20, 'OUTLINE')
+	TimeLeft.SecondsText.scrollTime = nil -- huh?
+
+	-- always stop shake animation on start
+	if frame.Anim:IsPlaying() then
+		frame.Anim:Stop()
+	end
+end
+function S:LossOfControlFrame()
+	-- /run LossOfControlFrame.fadeTime = 2000; LossOfControlFrame_SetUpDisplay(LossOfControlFrame, true, 'CONFUSE', 2094, 'Disoriented', [[Interface\Icons\Spell_Shadow_MindSteal]], 72101.9765625, 7.9950003623962, 8, 0, 5, 2)
+	local LossOfControlFrame = _G.LossOfControlFrame
+	local IconBackdrop = CreateFrame('Frame', nil, LossOfControlFrame)
+	IconBackdrop:SetTemplate()
+	IconBackdrop:SetOutside(LossOfControlFrame.Icon)
+	IconBackdrop:OffsetFrameLevel(-1, LossOfControlFrame)
+
+	LossOfControlFrame.Icon:SetTexCoord(.1, .9, .1, .9)
+	LossOfControlFrame:StripTextures()
+	LossOfControlFrame.AbilityName:ClearAllPoints()
+	LossOfControlFrame:Size(LossOfControlFrame.Icon:GetWidth() + 50)
+
+	hooksecurefunc(LossOfControlFrame, 'SetUpDisplay', SetupDisplay)
+end
