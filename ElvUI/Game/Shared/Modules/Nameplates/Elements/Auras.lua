@@ -5,6 +5,7 @@ local UF = E:GetModule('UnitFrames')
 local next = next
 local unpack = unpack
 local strfind = strfind
+local wipe = wipe
 
 local CreateFrame = CreateFrame
 
@@ -200,10 +201,12 @@ function NP:AuraContainer_ConstructFilters()
 			end
 
 			local db = plateDB[auraType]
-			if db then
+			if db and db.enable and plateDB.enable and not plateDB.nameOnly then
 				info.filterLists = db.filterLists
 
 				UF:GroupFilters(info, info.filterLists)
+			else -- no groups (and their buttons) for types Update_Auras never configures
+				wipe(info.filters)
 			end
 		end
 	end
