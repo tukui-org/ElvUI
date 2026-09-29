@@ -2051,7 +2051,8 @@ function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 end
 
 function B:ConstructContainerHolder(f, bagID, isBank, name, index)
-	local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - bankOffset)) or (bagID - (E.Modern and 0 or 1))
+	local bankBag = bagID == BANK_CONTAINER
+	local bagNum = isBank and (bankBag and 0 or (bagID - bankOffset)) or (bagID - (E.Modern and 0 or 1))
 	local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or B:ConstructContainerName(isBank, bagNum)
 	local inherit = (E.Modern and '' or isBank and 'BankItemButtonBagTemplate') or (not E.Modern or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Modern and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
@@ -2136,12 +2137,14 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 
 	f.Bags[bagID] = bag
 
-	if bagID == BANK_CONTAINER then
+	if bankBag then
 		bag.staleSlots = {}
 	end
 
-	for slotID = 1, (E.Modern and isBank and B.CHARACTERBANK_SIZE) or B.MAX_CONTAINER_ITEMS do
-		bag[slotID] = B:ConstructContainerButton(f, bagID, slotID)
+	if not (E.Modern and isBank) then -- modern bank slots are built per tab in ConstructContainerBank
+		for slotID = 1, (bankBag and NUM_BANKGENERIC_SLOTS) or B.MAX_CONTAINER_ITEMS do
+			bag[slotID] = B:ConstructContainerButton(f, bagID, slotID)
+		end
 	end
 
 	return holder
