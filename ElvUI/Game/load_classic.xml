@@ -74,7 +74,7 @@
 	<Script file='Classic\Skins\Bags.lua'/>
 	<Script file='Classic\Skins\Battlefield.lua'/>
 	<Script file='Classic\Skins\Battlenet.lua'/>
-	<Script file='Classic\Skins\BGMap.lua'/>
+	<Script file='Shared\Skins\BGMap.lua'/>
 	<Script file='Classic\Skins\BGScore.lua'/>
 	<Script file='Classic\Skins\BlizzardOptions.lua'/>
 	<Script file='Classic\Skins\Channels.lua'/>
@@ -85,7 +85,7 @@
 	<Script file='Classic\Skins\Debug.lua'/>
 	<Script file='Classic\Skins\DressingRoom.lua'/>
 	<Script file='Classic\Skins\EditorManager.lua'/>
-	<Script file='Classic\Skins\Engraving.lua'/>
+	<Script file='Shared\Skins\Engraving.lua'/>
 	<Script file='Classic\Skins\EventTrace.lua'/>
 	<Script file='Classic\Skins\Friends.lua'/>
 	<Script file='Classic\Skins\GMChat.lua'/>
@@ -113,7 +113,7 @@
 	<Script file='Classic\Skins\Tabard.lua'/>
 	<Script file='Classic\Skins\Talent.lua'/>
 	<Script file='Classic\Skins\Taxi.lua'/>
-	<Script file='Classic\Skins\TimeManager.lua'/>
+	<Script file='Shared\Skins\TimeManager.lua'/>
 	<Script file='Classic\Skins\Tooltip.lua'/>
 	<Script file='Classic\Skins\Trade.lua'/>
 	<Script file='Classic\Skins\TradeSkill.lua'/>

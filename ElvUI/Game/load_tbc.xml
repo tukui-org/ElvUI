@@ -70,13 +70,13 @@
 	<Script file='Shared\Modules\DataTexts\Spirit.lua'/>
 	<Script file='Shared\Modules\DataBars\PetExperience.lua'/>
 	<Script file='TBC\Skins\AddonManager.lua'/>
-	<Script file='TBC\Skins\Arena.lua'/>
-	<Script file='TBC\Skins\ArenaRegistrar.lua'/>
+	<Script file='Shared\Skins\Arena.lua'/>
+	<Script file='Shared\Skins\ArenaRegistrar.lua'/>
 	<Script file='TBC\Skins\AuctionHouse.lua'/>
 	<Script file='TBC\Skins\Bags.lua'/>
 	<Script file='TBC\Skins\Battlefield.lua'/>
 	<Script file='TBC\Skins\Battlenet.lua'/>
-	<Script file='TBC\Skins\BGMap.lua'/>
+	<Script file='Shared\Skins\BGMap.lua'/>
 	<Script file='TBC\Skins\BGScore.lua'/>
 	<Script file='TBC\Skins\BlizzardOptions.lua'/>
 	<Script file='TBC\Skins\CatalogShop.lua'/>
@@ -117,7 +117,7 @@
 	<Script file='TBC\Skins\Tabard.lua'/>
 	<Script file='TBC\Skins\Talent.lua'/>
 	<Script file='TBC\Skins\Taxi.lua'/>
-	<Script file='TBC\Skins\TimeManager.lua'/>
+	<Script file='Shared\Skins\TimeManager.lua'/>
 	<Script file='TBC\Skins\Tooltip.lua'/>
 	<Script file='TBC\Skins\Trade.lua'/>
 	<Script file='TBC\Skins\TradeSkill.lua'/>
