@@ -192,6 +192,7 @@ function UF:Configure_AuraBars(frame)
 
 		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 		bars:ClearAllPoints()
+
 		if not E.Modern then
 			bars:Show()
 		end
@@ -233,10 +234,6 @@ function UF:Configure_AuraBars(frame)
 			E:Auras_GroupUnit(bars, frame.__unit)
 			E:Auras_SetContainer(bars)
 			E:Auras_SetLineSize(bars)
-
-			if bars.forceShowAuras or frame:IsShown() then
-				E:Auras_ShowList(bars)
-			end
 
 			if known then
 				E:Auras_UpdateButtons(bars)
