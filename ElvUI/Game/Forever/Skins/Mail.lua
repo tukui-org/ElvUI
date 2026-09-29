@@ -124,9 +124,7 @@ function S:Blizzard_MailFrame()
 
 	_G.SendMailFrame:StripTextures()
 
-	Skin_SendMail()
-	Skin_OpenMail()
-	Skin_InboxItems()
+	Skin_InboxItems() -- send and open mail get skinned by the hooks below before they show
 
 	hooksecurefunc('SendMailFrame_Update', Skin_SendMail)
 	hooksecurefunc(_G.OpenMailFrame, 'Update', Skin_OpenMail)

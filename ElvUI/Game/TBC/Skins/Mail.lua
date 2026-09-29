@@ -126,9 +126,7 @@ function S:MailFrame()
 	_G.SendMailSubjectEditBox:Width(214)
 	_G.SendMailSubjectEditBox:Height(18)
 
-	Skin_SendMail()
-	Skin_OpenMail()
-	Skin_InboxItems()
+	Skin_InboxItems() -- send and open mail get skinned by the hooks below before they show
 
 	hooksecurefunc('SendMailFrame_Update', Skin_SendMail)
 	hooksecurefunc('OpenMail_Update', Skin_OpenMail)
