@@ -111,7 +111,7 @@ local function DelayCall()
 	end
 end
 
-local last = { r = 0, g = 0, b = 0, a = 0 }
+local last = { r = -1, g = -1, b = -1, a = 0 }
 local function OnAlphaValueChanged(_, value)
 	local alpha = AlphaValue(value)
 	if last.a ~= alpha then
@@ -148,7 +148,7 @@ local function UpdateAlpha(tbox)
 end
 
 local function OnColorSelect(frame, r, g, b)
-	if frame.noColorCallback then
+	if ColorPickerFrame.noColorCallback then
 		return -- prevent error from E:GrabColorPickerValues, better note in that function
 	elseif r ~= last.r or g ~= last.g or b ~= last.b then
 		last.r, last.g, last.b = r, g, b
