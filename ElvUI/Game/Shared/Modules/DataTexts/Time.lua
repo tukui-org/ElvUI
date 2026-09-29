@@ -509,12 +509,12 @@ local function OnEnter()
 end
 
 local function OnEvent(panel, event)
-	if event == 'ELVUI_FORCE_UPDATE' or event == 'BOSS_KILL' then
-		RequestRaidInfo()
-
+	if event == 'ELVUI_FORCE_UPDATE' then
 		if not collectedImages then
 			CollectImages()
 		end
+	elseif event == 'BOSS_KILL' then
+		RequestRaidInfo()
 	elseif event == 'LOADING_SCREEN_ENABLED' then
 		if enteredFrame then
 			OnLeave()
