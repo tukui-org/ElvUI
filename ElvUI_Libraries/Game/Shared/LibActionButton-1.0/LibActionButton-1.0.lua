@@ -332,6 +332,9 @@ function lib:CreateButton(id, name, header, config)
 	-- Store the LAB Version that created this button for debugging
 	button.__LAB_Version = MINOR_VERSION
 
+	-- start it as empty
+	button._state_type = "empty"
+
 	-- just in case we're not run by a header, default to state 0
 	button:SetAttribute("state", 0)
 
@@ -1620,7 +1623,11 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			UpdateTargetAuras(event)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
-		ForAllButtons(Update, nil, event)
+		for button in next, ButtonRegistry do
+			if button._state_type ~= "empty" then -- empty buttons have nothing to refresh
+				Update(button, event)
+			end
+		end
 	elseif event == "ACTIONBAR_SHOWGRID" then
 		ShowGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" or event == "PET_BAR_HIDEGRID" then
