@@ -899,12 +899,15 @@ local function RegisterEvents(frame, fs, ts)
 end
 
 function oUF:UpdateTagUnits(frame)
+	local unit = frame.__unit
+	if not unit then return end
+
 	local handler = eventHandlers[frame]
 	if not handler then return end
 
 	for event in next, handler.eventStrings do
-		if isUnitEvent(event, frame.__unit) then
-			handler:RegisterUnitEvent(event, frame.__unit)
+		if isUnitEvent(event, unit) then
+			handler:RegisterUnitEvent(event, unit)
 		end
 	end
 end
