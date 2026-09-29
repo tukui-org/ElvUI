@@ -243,24 +243,23 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local localeClass, className = UnitClass(unit)
 		if not localeClass or not className then return end
 
+		local nameColor = E:ClassColor(className) or PRIEST_COLOR
 		local guildName, guildRankName, _, guildRealm = GetGuildInfo(unit)
 		if E:IsSecretValue(guildName) then
 			guildName, guildRankName, guildRealm = nil, nil, nil
 		end
 
 		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
-		local level, realLevel = E:UnitEffectiveLevel(unit), UnitLevel(unit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
 
-		local nameColor = E:ClassColor(className) or PRIEST_COLOR
-
-		if TT.db.playerTitles and (pvpName and pvpName ~= '') then
+		local useTitle = TT.db.playerTitles and (pvpName and pvpName ~= '')
+		if useTitle then
 			name = pvpName
 		end
 
 		if E.Forever then
-			if realm then
+			if realm and not useTitle then -- title adds LastName
 				name = format('%s %s', name, realm)
 			end
 		elseif realm and realm ~= '' then
@@ -298,17 +297,20 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 			local _, localizedFaction = E:GetUnitBattlefieldFaction(unit)
 			if localizedFaction and englishRaces[englishRace] then
-				race = localizedFaction..' '..race
+				race = format('%s %s', localizedFaction, race)
 			end
 
 			local levelText
-			local diffColor = GetCreatureDifficultyColor(level)
-			local unitGender = TT.db.gender and E:NotSecretValue(gender) and genderTable[gender]
+			local realLevel = UnitLevel(unit)
+			local effectiveLevel = E:UnitEffectiveLevel(unit)
+			local diffColor = GetCreatureDifficultyColor(effectiveLevel)
+			local shownLevel = effectiveLevel > 0 and effectiveLevel or '??'
+			local unitGender = TT.db.gender and (E:NotSecretValue(gender) and genderTable[gender]) or ''
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
-			if level < realLevel then
-				levelText = format('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, level > 0 and level or '??', realLevel, unitGender or '', race or '')
+			if effectiveLevel < realLevel then
+				levelText = format('%s%s|r |cffFFFFFF(%s)|r %s%s', hexColor, shownLevel, realLevel, unitGender, race or '')
 			else
-				levelText = format('%s%s|r %s%s', hexColor, level > 0 and level or '??', unitGender or '', race or '')
+				levelText = format('%s%s|r %s%s', hexColor, shownLevel, unitGender, race or '')
 			end
 
 			if E.Modern then
