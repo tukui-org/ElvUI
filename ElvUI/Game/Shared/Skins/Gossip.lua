@@ -76,6 +76,10 @@ local function GreetingPanel_Update(frame)
 	frame:ForEachFrame(GreetingPanel_UpdateChild)
 end
 
+local function GossipFrame_SetAtlas(frame)
+	frame:Height(frame:GetHeight() - 2)
+end
+
 local function CreateParchment(frame)
 	local tex = frame:CreateTexture(nil, 'ARTWORK')
 	tex:SetTexture([[Interface\QuestFrame\QuestBG]])
@@ -88,57 +92,80 @@ function S:GossipFrame()
 
 	local GossipFrame = _G.GossipFrame
 	S:HandlePortraitFrame(GossipFrame, true)
-	S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
 
-	local GreetingPanel = _G.GossipFrame.GreetingPanel
-	S:HandleTrimScrollBar(GreetingPanel.ScrollBar)
-	S:HandleButton(GreetingPanel.GoodbyeButton, true)
+	if E.Modern then
+		S:HandleTrimScrollBar(_G.ItemTextScrollFrame.ScrollBar)
+	else
+		S:HandleScrollBar(_G.ItemTextScrollFrameScrollBar)
+	end
+
+	S:HandleTrimScrollBar(_G.GossipFrame.GreetingPanel.ScrollBar)
+	S:HandleButton(_G.GossipFrame.GreetingPanel.GoodbyeButton, true)
 	S:HandleCloseButton(_G.ItemTextFrameCloseButton)
-
-	GreetingPanel:StripTextures()
-	GreetingPanel:CreateBackdrop('Transparent')
-	GreetingPanel.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, 0, 0)
-	GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 4)
-
-	local ItemTextFrame = _G.ItemTextFrame
-	ItemTextFrame:StripTextures()
-	ItemTextFrame:SetTemplate('Transparent')
-
-	local ItemTextScrollFrame = _G.ItemTextScrollFrame
-	ItemTextScrollFrame:DisableDrawLayer('ARTWORK')
-	ItemTextScrollFrame:DisableDrawLayer('BACKGROUND')
-
-	GossipFrame.backdrop:ClearAllPoints()
-	GossipFrame.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, -8, 69)
-	GossipFrame.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 32, -30)
 
 	S:HandleNextPrevButton(_G.ItemTextNextPageButton)
 	S:HandleNextPrevButton(_G.ItemTextPrevPageButton)
 
+	for i = 1, 4 do
+		local notch = GossipFrame.FriendshipStatusBar['Notch'..i]
+		notch:SetColorTexture(0, 0, 0)
+		notch:SetSize(E.mult, 16)
+	end
+
+	-- titan keeps the frame border in a child frame
+	if E.Wrath then
+		_G.ItemTextFrame.BorderTexture:SetAlpha(0)
+	end
+
 	if E.private.skins.parchmentRemoverEnable then
+		_G.ItemTextFrame:StripTextures(true)
+		_G.ItemTextFrame:SetTemplate('Transparent')
+		_G.ItemTextScrollFrame:StripTextures()
+
+		_G.GossipFrameInset:Hide()
 		_G.QuestFont:SetTextColor(1, 1, 1)
+
 		_G.ItemTextPageText:SetTextColor('P', 1, 1, 1)
-
-		_G.ItemTextMaterialBotLeft:SetAlpha(0)
-		_G.ItemTextMaterialBotRight:SetAlpha(0)
-		_G.ItemTextMaterialTopLeft:SetAlpha(0)
-		_G.ItemTextMaterialTopRight:SetAlpha(0)
-
 		hooksecurefunc(_G.ItemTextPageText, 'SetTextColor', ItemTextPage_SetTextColor)
-		hooksecurefunc(GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
+		hooksecurefunc(GossipFrame.GreetingPanel.ScrollBox, 'Update', GreetingPanel_Update)
+
+		if E.Modern then
+			GossipFrame.Background:Hide()
+		end
 	else
-		_G.ItemTextMaterialBotLeft:SetDrawLayer('ARTWORK', 1)
-		_G.ItemTextMaterialBotRight:SetDrawLayer('ARTWORK', 1)
-		_G.ItemTextMaterialTopLeft:SetDrawLayer('ARTWORK', 1)
-		_G.ItemTextMaterialTopRight:SetDrawLayer('ARTWORK', 1)
+		local pageBG = E.Modern and _G.ItemTextFramePageBg:GetTexture()
+		_G.ItemTextFrame:StripTextures()
+		_G.ItemTextFrame:SetTemplate('Transparent')
+		_G.ItemTextScrollFrame:StripTextures()
+		_G.ItemTextScrollFrame:CreateBackdrop('Transparent')
 
-		local spellTex = CreateParchment(GreetingPanel)
-		spellTex:SetInside(GreetingPanel.backdrop)
-		GreetingPanel.spellTex = spellTex
+		if E.Modern then
+			_G.ItemTextFramePageBg:SetTexture(pageBG)
+			_G.ItemTextFramePageBg:SetDrawLayer('BACKGROUND', 1)
+			_G.ItemTextFramePageBg:SetInside(_G.ItemTextScrollFrame.backdrop)
 
-		local itemTex = CreateParchment(ItemTextFrame)
-		itemTex:SetInside(ItemTextScrollFrame, -5)
-		ItemTextFrame.itemTex = itemTex
+			GossipFrame.Background:CreateBackdrop('Transparent')
+			hooksecurefunc(GossipFrame.Background, 'SetAtlas', GossipFrame_SetAtlas)
+		else
+			_G.ItemTextMaterialBotLeft:SetDrawLayer('ARTWORK', 1)
+			_G.ItemTextMaterialBotRight:SetDrawLayer('ARTWORK', 1)
+			_G.ItemTextMaterialTopLeft:SetDrawLayer('ARTWORK', 1)
+			_G.ItemTextMaterialTopRight:SetDrawLayer('ARTWORK', 1)
+
+			local ItemTextFrame = _G.ItemTextFrame
+			local itemTex = CreateParchment(ItemTextFrame)
+			itemTex:SetInside(_G.ItemTextScrollFrame.backdrop)
+			ItemTextFrame.itemTex = itemTex
+
+			local GreetingPanel = _G.GossipFrame.GreetingPanel
+			GreetingPanel:CreateBackdrop('Transparent')
+			GreetingPanel.backdrop:Point('TOPLEFT', GreetingPanel.ScrollBox, 0, 0)
+			GreetingPanel.backdrop:Point('BOTTOMRIGHT', GreetingPanel.ScrollBox, 0, 4)
+
+			local spellTex = CreateParchment(GreetingPanel)
+			spellTex:SetInside(GreetingPanel.backdrop)
+			GreetingPanel.spellTex = spellTex
+		end
 	end
 end
 

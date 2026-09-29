@@ -3,7 +3,6 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-local select = select
 local hooksecurefunc = hooksecurefunc
 
 local CreateFrame = CreateFrame
@@ -111,13 +110,56 @@ local function SkinDungeonCompletionAlert(frame)
 	frame.shine:Kill()
 	frame.raidArt:Kill()
 	frame.heroicIcon:Kill()
-	frame.dungeonArt:Kill()
+
+	if E.Modern then
+		frame.dungeonArt:Kill()
+	else
+		frame.dungeonArt1:Kill()
+		frame.dungeonArt2:Kill()
+		frame.dungeonArt3:Kill()
+		frame.dungeonArt4:Kill()
+	end
 
 	-- Icon
 	frame.dungeonTexture:SetTexCoords()
 	frame.dungeonTexture:SetDrawLayer('OVERLAY')
 	frame.dungeonTexture:ClearAllPoints()
 	frame.dungeonTexture:Point('LEFT', frame, 7, 0)
+
+	if not frame.dungeonTexture.b then
+		frame.dungeonTexture.b = CreateFrame('Frame', nil, frame)
+		frame.dungeonTexture.b:SetTemplate()
+		frame.dungeonTexture.b:SetOutside(frame.dungeonTexture)
+		frame.dungeonTexture:SetParent(frame.dungeonTexture.b)
+	end
+end
+
+local function SkinChallengeModeAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -2, -6)
+		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
+	end
+
+	frame.glowFrame:Kill()
+	frame.glowFrame.glow:Kill()
+	frame.shine:Kill()
+
+	-- the $parentBorder ring are only reachable by region order
+	local background, _, border = frame:GetRegions()
+	background:Hide()
+	border:Kill()
+
+	-- Icon
+	frame.dungeonTexture:SetTexCoords()
+	frame.dungeonTexture:SetDrawLayer('OVERLAY')
 
 	if not frame.dungeonTexture.b then
 		frame.dungeonTexture.b = CreateFrame('Frame', nil, frame)
@@ -142,12 +184,8 @@ local function SkinGuildChallengeAlert(frame)
 	end
 
 	-- Background
-	local region = select(2, frame:GetRegions())
-	if region:IsObjectType('Texture') then
-		if region:GetTexture() == [[Interface\GuildFrame\GuildChallenges]] then
-			region:Kill()
-		end
-	end
+	local _, background = frame:GetRegions() -- unnamed GuildChallenges art, the emblem background stays
+	background:Kill()
 
 	frame.glow:Kill()
 	frame.shine:Kill()
@@ -513,7 +551,7 @@ local function SkinLootWonAlert(frame)
 	frame:SetAlpha(1)
 	frame.Background:Kill()
 
-	local lootItem = frame.lootItem
+	local lootItem = E.Modern and frame.lootItem or frame
 	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	lootItem.Icon:SetDrawLayer('BORDER')
 	lootItem.IconBorder:Kill()
@@ -728,6 +766,39 @@ local function SkinDigsiteCompleteAlert(frame)
 	frame.DigsiteTypeTexture:Point('LEFT', -10, -14)
 end
 
+local function SkinStorePurchaseAlert(frame)
+	frame:SetAlpha(1)
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
+
+	if not frame.backdrop then
+		frame:CreateBackdrop('Transparent')
+		frame.backdrop:Point('TOPLEFT', frame, 'TOPLEFT', -2, -6)
+		frame.backdrop:Point('BOTTOMRIGHT', frame, 'BOTTOMRIGHT', -2, 6)
+	end
+
+	local _, ring = frame:GetRegions() -- the CheckButtonGlow ring is only named Border
+	ring:Kill()
+
+	frame.Background:Kill()
+	frame.glow:Kill()
+	frame.shine:Kill()
+
+	frame.Icon:SetTexCoords()
+	frame.Icon:SetDrawLayer('BORDER', 5)
+
+	-- Icon border
+	if not frame.Icon.b then
+		frame.Icon.b = CreateFrame('Frame', nil, frame)
+		frame.Icon.b:SetTemplate()
+		frame.Icon.b:SetOutside(frame.Icon)
+		frame.Icon:SetParent(frame.Icon.b)
+	end
+end
+
 local function SkinNewRecipeLearnedAlert(frame)
 	frame:SetAlpha(1)
 
@@ -799,14 +870,22 @@ function S:AlertSystem()
 	-- Achievements
 	hooksecurefunc(_G.AchievementAlertSystem, 'setUpFunction', SkinAchievementAlert)
 	hooksecurefunc(_G.CriteriaAlertSystem, 'setUpFunction', SkinCriteriaAlert)
-	hooksecurefunc(_G.MonthlyActivityAlertSystem, 'setUpFunction', SkinCriteriaAlert) -- untested needs testing
+
+	if E.Modern then
+		hooksecurefunc(_G.MonthlyActivityAlertSystem, 'setUpFunction', SkinCriteriaAlert) -- untested needs testing
+	end
 
 	-- Encounters
 	hooksecurefunc(_G.DungeonCompletionAlertSystem, 'setUpFunction', SkinDungeonCompletionAlert)
 	hooksecurefunc(_G.GuildChallengeAlertSystem, 'setUpFunction', SkinGuildChallengeAlert)
 	hooksecurefunc(_G.InvasionAlertSystem, 'setUpFunction', SkinInvasionAlert)
 	hooksecurefunc(_G.ScenarioAlertSystem, 'setUpFunction', SkinScenarioAlert)
-	hooksecurefunc(_G.WorldQuestCompleteAlertSystem, 'setUpFunction', SkinWorldQuestCompleteAlert)
+
+	if E.Modern then
+		hooksecurefunc(_G.WorldQuestCompleteAlertSystem, 'setUpFunction', SkinWorldQuestCompleteAlert)
+	else
+		hooksecurefunc(_G.ChallengeModeAlertSystem, 'setUpFunction', SkinChallengeModeAlert)
+	end
 
 	-- Garrisons
 	hooksecurefunc(_G.GarrisonFollowerAlertSystem, 'setUpFunction', SkinGarrisonFollowerAlert)
@@ -825,26 +904,36 @@ function S:AlertSystem()
 	hooksecurefunc(_G.LootAlertSystem, 'setUpFunction', SkinLootWonAlert)
 	hooksecurefunc(_G.LootUpgradeAlertSystem, 'setUpFunction', SkinLootUpgradeAlert)
 	hooksecurefunc(_G.MoneyWonAlertSystem, 'setUpFunction', SkinMoneyWonAlert)
-	hooksecurefunc(_G.EntitlementDeliveredAlertSystem, 'setUpFunction', SkinEntitlementDeliveredAlert)
-	hooksecurefunc(_G.RafRewardDeliveredAlertSystem, 'setUpFunction', SkinRafRewardDeliveredAlert)
-	hooksecurefunc(_G.HousingItemEarnedAlertFrameSystem, 'setUpFunction', SkinHousingItemEarnedAlert)
-	hooksecurefunc(_G.InitiativeTaskCompleteAlertFrameSystem, 'setUpFunction', SkinHousingItemEarnedAlert)
+
+	if E.Modern then
+		hooksecurefunc(_G.EntitlementDeliveredAlertSystem, 'setUpFunction', SkinEntitlementDeliveredAlert)
+		hooksecurefunc(_G.RafRewardDeliveredAlertSystem, 'setUpFunction', SkinRafRewardDeliveredAlert)
+		hooksecurefunc(_G.HousingItemEarnedAlertFrameSystem, 'setUpFunction', SkinHousingItemEarnedAlert)
+		hooksecurefunc(_G.InitiativeTaskCompleteAlertFrameSystem, 'setUpFunction', SkinHousingItemEarnedAlert)
+	else
+		hooksecurefunc(_G.StorePurchaseAlertSystem, 'setUpFunction', SkinStorePurchaseAlert)
+	end
 
 	-- Professions
 	hooksecurefunc(_G.DigsiteCompleteAlertSystem, 'setUpFunction', SkinDigsiteCompleteAlert)
 	hooksecurefunc(_G.NewRecipeLearnedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
-	hooksecurefunc(_G.SkillLineSpecsUnlockedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
+
+	if E.Modern then
+		hooksecurefunc(_G.SkillLineSpecsUnlockedAlertSystem, 'setUpFunction', SkinNewRecipeLearnedAlert)
+	end
 
 	-- Pets/Mounts/Toys
 	hooksecurefunc(_G.NewPetAlertSystem, 'setUpFunction', SkinMiscAlerts)
 	hooksecurefunc(_G.NewMountAlertSystem, 'setUpFunction', SkinMiscAlerts)
 	hooksecurefunc(_G.NewToyAlertSystem, 'setUpFunction', SkinMiscAlerts)
 
-	-- Cosmetics
-	hooksecurefunc(_G.NewCosmeticAlertFrameSystem, 'setUpFunction', SkinMiscAlerts)
+	if E.Modern then
+		-- Cosmetics
+		hooksecurefunc(_G.NewCosmeticAlertFrameSystem, 'setUpFunction', SkinMiscAlerts)
 
-	-- Warband
-	hooksecurefunc(_G.NewWarbandSceneAlertSystem, 'setUpFunction', SkinMiscAlerts)
+		-- Warband
+		hooksecurefunc(_G.NewWarbandSceneAlertSystem, 'setUpFunction', SkinMiscAlerts)
+	end
 
 	--Bonus Roll Money
 	local frame = _G.BonusRollMoneyWonFrame
@@ -873,7 +962,7 @@ function S:AlertSystem()
 	frame.glow:Kill()
 	frame.shine:Kill()
 
-	local lootItem = frame.lootItem
+	local lootItem = E.Modern and frame.lootItem or frame
 	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	lootItem.IconBorder:Kill()
 

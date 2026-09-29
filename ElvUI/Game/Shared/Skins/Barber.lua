@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local function SetSelectedCategory(list)
@@ -52,10 +53,31 @@ function S:Blizzard_BarbershopUI()
 	if not (E.private.skins.blizzard.enable and E.private.skins.blizzard.barber) then return end
 
 	local frame = _G.BarberShopFrame
-	S:HandleButton(frame.ResetButton, nil, nil, nil, true, nil, nil, nil, true)
-	S:HandleButton(frame.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
-	S:HandleButton(frame.AcceptButton, nil, nil, nil, true, nil, nil, nil, true)
+	if E.Modern then
+		S:HandleButton(frame.ResetButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleButton(frame.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleButton(frame.AcceptButton, nil, nil, nil, true, nil, nil, nil, true)
+
+		if E.Forever then -- ToDo: Forever
+			S:HandleCheckBox(frame.SDToggleButton) -- HD models toggle, shown by C_GameRules.IsSDHDToggleEnabled
+		end
+	else
+		S:HandleFrame(frame)
+
+		for _, selector in next, frame.Selector do
+			S:HandleNextPrevButton(selector.Prev)
+			S:HandleNextPrevButton(selector.Next)
+		end
+
+		S:HandleButton(_G.BarberShopFrameResetButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleButton(_G.BarberShopFrameCancelButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleButton(_G.BarberShopFrameOkayButton, nil, nil, nil, true, nil, nil, nil, true)
+	end
 end
 
 S:AddCallbackForAddon('Blizzard_BarbershopUI')
-S:AddCallbackForAddon('Blizzard_CharacterCustomize')
+
+-- classic has this addon too, but without CharCustomizeFrame
+if E.Modern then
+	S:AddCallbackForAddon('Blizzard_CharacterCustomize')
+end

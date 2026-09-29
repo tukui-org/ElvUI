@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local next = next
 
 local function ShardTransferToggle(frame)
 	_G.ShardTransferImminentMinimizeButton:SetNormalTexture(frame:IsShown() and E.Media.Textures.MinusButton or E.Media.Textures.PlusButton, true)
@@ -13,8 +14,6 @@ function S:BattleNetFrames()
 	local skins = {
 		_G.BNToastFrame,
 		_G.TimeAlertFrame,
-		_G.ShardTransferImminentFrame,
-		_G.ShardTransferImminentMinimizeButton,
 		_G.TicketStatusFrameButton.NineSlice -- Ticket Frames (not GMTicketFrames)
 	}
 
@@ -23,10 +22,18 @@ function S:BattleNetFrames()
 	end
 
 	local ShardFrame = _G.ShardTransferImminentFrame
-	ShardTransferToggle(ShardFrame)
-	ShardFrame:HookScript('OnShow', ShardTransferToggle)
-	ShardFrame:HookScript('OnHide', ShardTransferToggle)
-	_G.ShardTransferImminentMinimizeButton:GetNormalTexture():SetInside(nil, 5, 5)
+	if ShardFrame then
+		local MinimizeButton = _G.ShardTransferImminentMinimizeButton
+		ShardFrame:SetTemplate('Transparent')
+		MinimizeButton:SetTemplate('Transparent')
+
+		ShardTransferToggle(ShardFrame)
+		ShardFrame:HookScript('OnShow', ShardTransferToggle)
+		ShardFrame:HookScript('OnHide', ShardTransferToggle)
+
+		local minimizeTexture = MinimizeButton:GetNormalTexture()
+		minimizeTexture:SetInside(nil, 5, 5)
+	end
 
 	local ReportFrame = _G.ReportFrame
 	ReportFrame:StripTextures()
@@ -36,6 +43,17 @@ function S:BattleNetFrames()
 	S:HandleDropDownBox(ReportFrame.ReportingMajorCategoryDropdown)
 	S:HandleButton(ReportFrame.ReportButton)
 	S:HandleEditBox(ReportFrame.Comment)
+
+	if not E.Modern then
+		local BattleTagInviteFrame = _G.BattleTagInviteFrame
+		S:HandleFrame(BattleTagInviteFrame, true)
+
+		for _, child in next, { BattleTagInviteFrame:GetChildren() } do
+			if child:IsObjectType('Button') then
+				S:HandleButton(child)
+			end
+		end
+	end
 end
 
 S:AddCallback('BattleNetFrames')

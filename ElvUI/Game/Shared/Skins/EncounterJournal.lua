@@ -97,10 +97,20 @@ local function SkinAbilitiesInfo()
 	local index = 1
 	local header = _G['EncounterJournalInfoHeader'..index]
 	while header do
+		local button = header.button
 		if not header.IsSkinned then
 			ReskinHeader(header)
+
+			button.bg = CreateFrame('Frame', nil, button)
+			button.bg:SetTemplate()
+			button.bg:SetOutside(button.abilityIcon)
+			button.bg:OffsetFrameLevel(-1)
+			button.abilityIcon:SetTexCoord(.08, .92, .08, .92)
+
 			header.IsSkinned = true
 		end
+
+		button.bg:SetShown(button.abilityIcon:IsShown())
 
 		index = index + 1
 		header = _G['EncounterJournalInfoHeader'..index]
@@ -377,12 +387,14 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
-	S:HandleTrimScrollBar(_G.EncounterJournalJourneysFrame.ScrollBar)
-	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
-	S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.FilterList.ScrollBar)
+	if E.Modern then
+		S:HandleTrimScrollBar(_G.EncounterJournalJourneysFrame.ScrollBar)
+		S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
+		S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.FilterList.ScrollBar)
 
-	if E.global.general.disableTutorialButtons then
-		EJ.MonthlyActivitiesFrame.HelpButton:Kill()
+		if E.global.general.disableTutorialButtons then
+			EJ.MonthlyActivitiesFrame.HelpButton:Kill()
+		end
 	end
 
 	local InstanceSelect = EJ.instanceSelect
@@ -392,24 +404,39 @@ function S:Blizzard_EncounterJournal()
 	S:HandleTrimScrollBar(InstanceSelect.ScrollBar)
 
 	-- Bottom tabs
-	tinsert(journalBottomTabs, _G.EncounterJournalJourneysTab)
-	tinsert(journalBottomTabs, _G.EncounterJournalMonthlyActivitiesTab)
-	tinsert(journalBottomTabs, _G.EncounterJournalSuggestTab)
-	tinsert(journalBottomTabs, _G.EncounterJournalDungeonTab)
-	tinsert(journalBottomTabs, _G.EncounterJournalRaidTab)
-	tinsert(journalBottomTabs, _G.EncounterJournalLootJournalTab)
-	tinsert(journalBottomTabs, EJ.TutorialsTab)
+	if E.Modern then
+		tinsert(journalBottomTabs, _G.EncounterJournalJourneysTab)
+		tinsert(journalBottomTabs, _G.EncounterJournalMonthlyActivitiesTab)
+		tinsert(journalBottomTabs, _G.EncounterJournalSuggestTab)
+		tinsert(journalBottomTabs, _G.EncounterJournalDungeonTab)
+		tinsert(journalBottomTabs, _G.EncounterJournalRaidTab)
+		tinsert(journalBottomTabs, _G.EncounterJournalLootJournalTab)
+		tinsert(journalBottomTabs, EJ.TutorialsTab)
 
-	for _, tab in next, journalBottomTabs do
-		S:HandleTab(tab)
+		for _, tab in next, journalBottomTabs do
+			S:HandleTab(tab)
+		end
+
+		hooksecurefunc('EncounterJournal_OnShow', RepositionTabs)
+		hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', RepositionTabs)
+		hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', RepositionTabs)
+
+		hooksecurefunc(_G.EncounterJournalJourneysFrame.JourneysList, 'Update', JourneysListUpdate)
+		hooksecurefunc(_G.EncounterJournalMonthlyActivitiesFrame.ScrollBox, 'Update', HandleCollapseButtons)
+	else
+		for _, tab in next, {
+			_G.EncounterJournalDungeonTab,
+			_G.EncounterJournalRaidTab,
+		} do
+			S:HandleTab(tab)
+		end
+
+		_G.EncounterJournalDungeonTab:ClearAllPoints()
+		_G.EncounterJournalDungeonTab:Point('TOPLEFT', _G.EncounterJournal, 'BOTTOMLEFT', -10, 0)
+
+		_G.EncounterJournalRaidTab:ClearAllPoints()
+		_G.EncounterJournalRaidTab:Point('LEFT', _G.EncounterJournalDungeonTab, 'RIGHT', -19, 0)
 	end
-
-	hooksecurefunc('EncounterJournal_OnShow', RepositionTabs)
-	hooksecurefunc('EncounterJournal_CheckAndDisplayTradingPostTab', RepositionTabs)
-	hooksecurefunc('EncounterJournal_CheckAndDisplaySuggestedContentTab', RepositionTabs)
-
-	hooksecurefunc(_G.EncounterJournalJourneysFrame.JourneysList, 'Update', JourneysListUpdate)
-	hooksecurefunc(_G.EncounterJournalMonthlyActivitiesFrame.ScrollBox, 'Update', HandleCollapseButtons)
 
 	-- Encounter Info Frame
 	local EncounterInfo = EJ.encounter.info
@@ -433,7 +460,7 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.instanceButton:Point('TOPLEFT', EncounterInfo, 'TOPLEFT', 0, 10)
 
 	EncounterInfo.instanceTitle:ClearAllPoints()
-	EncounterInfo.instanceTitle:Point('BOTTOM', EncounterInfo.bossesScroll, 'TOP', 10, 15)
+	EncounterInfo.instanceTitle:Point('BOTTOM', EncounterInfo, 'TOP', 10, 15)
 
 	-- Buttons
 	EncounterInfo.difficulty:ClearAllPoints()
@@ -444,6 +471,19 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.LootContainer.filter:Point('RIGHT', EncounterInfo.difficulty, 'LEFT', -120, 0)
 	S:HandleDropDownBox(EncounterInfo.LootContainer.filter, 120)
 	S:HandleDropDownBox(EncounterInfo.LootContainer.slotFilter, 100)
+
+	if not E.Modern then
+		local reset = EncounterInfo.reset
+		reset:StripTextures()
+		HandleButton(reset)
+
+		reset:ClearAllPoints()
+		reset:Point('TOPRIGHT', EncounterInfo.difficulty, 'TOPLEFT', -10, 0)
+
+		local resetTexture = _G.EncounterJournalEncounterFrameInfoResetButtonTexture
+		resetTexture:SetTexture([[Interface\EncounterJournal\UI-EncounterJournalTextures]])
+		resetTexture:SetTexCoord(0.90625000, 0.94726563, 0.00097656, 0.02050781)
+	end
 
 	S:HandleTrimScrollBar(EncounterInfo.BossesScrollBar)
 	S:HandleTrimScrollBar(_G.EncounterJournalEncounterFrameInstanceFrame.LoreScrollBar)
@@ -501,63 +541,65 @@ function S:Blizzard_EncounterJournal()
 	S:HandleCloseButton(_G.EncounterJournalSearchResultsCloseButton)
 	S:HandleTrimScrollBar(_G.EncounterJournalSearchResults.ScrollBar)
 
-	-- Suggestions
-	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
-		local suggestion = EJ.suggestFrame['Suggestion'..i]
-		if i == 1 then
-			HandleButton(suggestion.button)
-			suggestion.button:SetFrameLevel(4)
+	if E.Modern then
+		-- Suggestions
+		for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
+			local suggestion = EJ.suggestFrame['Suggestion'..i]
+			if i == 1 then
+				HandleButton(suggestion.button)
+				suggestion.button:SetFrameLevel(4)
 
-			S:HandleNextPrevButton(suggestion.prevButton, nil, nil, true)
-			S:HandleNextPrevButton(suggestion.nextButton, nil, nil, true)
-		else
-			HandleButton(suggestion.centerDisplay.button)
+				S:HandleNextPrevButton(suggestion.prevButton, nil, nil, true)
+				S:HandleNextPrevButton(suggestion.nextButton, nil, nil, true)
+			else
+				HandleButton(suggestion.centerDisplay.button)
+			end
 		end
-	end
 
-	if E.private.skins.parchmentRemoverEnable then
-		EJ.MonthlyActivitiesFrame.Divider:Hide()
-		EJ.MonthlyActivitiesFrame.DividerVertical:Hide()
-		EJ.MonthlyActivitiesFrame.Bg:SetAlpha(0)
-		EJ.MonthlyActivitiesFrame.ThemeContainer:SetAlpha(0)
-		_G.EncounterJournalInstanceSelectBG:SetAlpha(0)
+		if E.private.skins.parchmentRemoverEnable then
+			EJ.MonthlyActivitiesFrame.Divider:Hide()
+			EJ.MonthlyActivitiesFrame.DividerVertical:Hide()
+			EJ.MonthlyActivitiesFrame.Bg:SetAlpha(0)
+			EJ.MonthlyActivitiesFrame.ThemeContainer:SetAlpha(0)
+			_G.EncounterJournalInstanceSelectBG:SetAlpha(0)
 
-		local suggestFrame = EJ.suggestFrame
+			local suggestFrame = EJ.suggestFrame
 
-		-- Suggestion 1
-		local suggestion = suggestFrame.Suggestion1
-		suggestion.bg:Hide()
-		suggestion:SetTemplate('Transparent')
-
-		local centerDisplay = suggestion.centerDisplay
-		centerDisplay.title.text:SetTextColor(1, 1, 1)
-		centerDisplay.description.text:SetTextColor(.9, .9, .9)
-
-		local reward = suggestion.reward
-		reward.text:SetTextColor(.9, .9, .9)
-		reward.iconRing:Hide()
-		reward.iconRingHighlight:SetTexture()
-
-		-- Suggestion 2 and 3
-		for i = 2, 3 do
-			suggestion = suggestFrame['Suggestion'..i]
+			-- Suggestion 1
+			local suggestion = suggestFrame.Suggestion1
 			suggestion.bg:Hide()
 			suggestion:SetTemplate('Transparent')
-			suggestion.icon:Point('TOPLEFT', 10, -10)
 
-			centerDisplay = suggestion.centerDisplay
-			centerDisplay:ClearAllPoints()
-			centerDisplay:Point('TOPLEFT', 85, -10)
+			local centerDisplay = suggestion.centerDisplay
 			centerDisplay.title.text:SetTextColor(1, 1, 1)
 			centerDisplay.description.text:SetTextColor(.9, .9, .9)
 
-			reward = suggestion.reward
+			local reward = suggestion.reward
+			reward.text:SetTextColor(.9, .9, .9)
 			reward.iconRing:Hide()
 			reward.iconRingHighlight:SetTexture()
-		end
 
-		hooksecurefunc('EJSuggestFrame_RefreshDisplay', SuggestFrameRefreshDisplay)
-		hooksecurefunc('EJSuggestFrame_UpdateRewards', SuggestFrameUpdateRewards)
+			-- Suggestion 2 and 3
+			for i = 2, 3 do
+				suggestion = suggestFrame['Suggestion'..i]
+				suggestion.bg:Hide()
+				suggestion:SetTemplate('Transparent')
+				suggestion.icon:Point('TOPLEFT', 10, -10)
+
+				centerDisplay = suggestion.centerDisplay
+				centerDisplay:ClearAllPoints()
+				centerDisplay:Point('TOPLEFT', 85, -10)
+				centerDisplay.title.text:SetTextColor(1, 1, 1)
+				centerDisplay.description.text:SetTextColor(.9, .9, .9)
+
+				reward = suggestion.reward
+				reward.iconRing:Hide()
+				reward.iconRingHighlight:SetTexture()
+			end
+
+			hooksecurefunc('EJSuggestFrame_RefreshDisplay', SuggestFrameRefreshDisplay)
+			hooksecurefunc('EJSuggestFrame_UpdateRewards', SuggestFrameUpdateRewards)
+		end
 	end
 
 	-- Suggestion Reward Tooltips
@@ -573,17 +615,21 @@ function S:Blizzard_EncounterJournal()
 	end
 
 	local LJ = EJ.LootJournal
-	S:HandleTrimScrollBar(LJ.ScrollBar)
+	if E.Modern then
+		S:HandleTrimScrollBar(LJ.ScrollBar)
+	end
 
 	hooksecurefunc(EJ.instanceSelect.ScrollBox, 'Update', InstanceSelectScrollUpdate)
 
 	if E.private.skins.parchmentRemoverEnable then
-		LJ:StripTextures()
-		LJ:SetTemplate('Transparent')
-		LJ:GetRegions():Kill() -- loottab-background
+		if E.Modern then
+			LJ:StripTextures()
+			LJ:SetTemplate('Transparent')
+			LJ:GetRegions():Kill() -- loottab-background
 
-		_G.EncounterJournalJourneysFrame.BorderFrame:StripTextures()
-		_G.EncounterJournalInstanceSelect.evergreenBg:StripTextures()
+			_G.EncounterJournalJourneysFrame.BorderFrame:StripTextures()
+			_G.EncounterJournalInstanceSelect.evergreenBg:StripTextures()
+		end
 
 		hooksecurefunc(EncounterInfo.BossesScrollBox, 'Update', BossesScrollUpdate)
 		hooksecurefunc(EncounterInfo.LootContainer.ScrollBox, 'Update', LootContainerUpdate)
@@ -615,39 +661,41 @@ function S:Blizzard_EncounterJournal()
 		LoreScrollingText:SetTextColor(1, 1, 1)
 	end
 
-	do -- Item Sets
-		local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
-		S:HandleTrimScrollBar(ItemSetsFrame.ScrollBar)
-		S:HandleDropDownBox(ItemSetsFrame.ClassDropdown)
+	if E.Modern then
+		do -- Item Sets
+			local ItemSetsFrame = EJ.LootJournalItems.ItemSetsFrame
+			S:HandleTrimScrollBar(ItemSetsFrame.ScrollBar)
+			S:HandleDropDownBox(ItemSetsFrame.ClassDropdown)
 
-		if E.private.skins.parchmentRemoverEnable then
-			EJ.LootJournalItems:StripTextures()
-			EJ.LootJournalItems:SetTemplate('Transparent')
+			if E.private.skins.parchmentRemoverEnable then
+				EJ.LootJournalItems:StripTextures()
+				EJ.LootJournalItems:SetTemplate('Transparent')
+			end
+
+			hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
 		end
 
-		hooksecurefunc(ItemSetsFrame.ScrollBox, 'Update', HandleItemSetsElements)
+		local Contents = EJ.TutorialsFrame.Contents
+		if E.private.skins.parchmentRemoverEnable then
+			Contents:CreateBackdrop()
+			Contents:DisableDrawLayer('BACKGROUND')
+			Contents.Header:SetTextColor(1, 1, 1)
+			Contents.Description:SetTextColor(1, 1, 1)
+		end
+
+		S:HandleButton(Contents.StartButton, nil, nil, nil, true)
+		Contents.StartButton.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
+
+		local JourneysFrame = _G.EncounterJournalJourneysFrame
+		local LevelSkipButton = JourneysFrame.JourneyProgress.LevelSkipButton
+		S:HandleButton(LevelSkipButton, nil, nil, nil, true)
+		LevelSkipButton:SetNormalFontObject('ElvUIFontSmall')
+		LevelSkipButton:SetHighlightFontObject('ElvUIFontSmall')
+		LevelSkipButton:SetDisabledFontObject('ElvUIFontSmall')
+
+		S:HandleButton(JourneysFrame.JourneyProgress.OverviewBtn)
+		S:HandleButton(JourneysFrame.JourneyOverview.OverviewBtn)
 	end
-
-	local Contents = EJ.TutorialsFrame.Contents
-	if E.private.skins.parchmentRemoverEnable then
-		Contents:CreateBackdrop()
-		Contents:DisableDrawLayer('BACKGROUND')
-		Contents.Header:SetTextColor(1, 1, 1)
-		Contents.Description:SetTextColor(1, 1, 1)
-	end
-
-	S:HandleButton(Contents.StartButton, nil, nil, nil, true)
-	Contents.StartButton.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
-
-	local JourneysFrame = _G.EncounterJournalJourneysFrame
-	local LevelSkipButton = JourneysFrame.JourneyProgress.LevelSkipButton
-	S:HandleButton(LevelSkipButton, nil, nil, nil, true)
-	LevelSkipButton:SetNormalFontObject('ElvUIFontSmall')
-	LevelSkipButton:SetHighlightFontObject('ElvUIFontSmall')
-	LevelSkipButton:SetDisabledFontObject('ElvUIFontSmall')
-
-	S:HandleButton(JourneysFrame.JourneyProgress.OverviewBtn)
-	S:HandleButton(JourneysFrame.JourneyOverview.OverviewBtn)
 end
 
 S:AddCallbackForAddon('Blizzard_EncounterJournal')
