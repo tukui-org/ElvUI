@@ -780,6 +780,7 @@ function A:Initialize()
 		A:UpdateHeader(A.BuffFrame)
 
 		if E.Modern then -- keep below UpdateHeader
+			E:Auras_ShowList(A.BuffFrame)
 			E:Auras_AddEnchantments(A.BuffFrame)
 			A.BuffFrame.hasEnchantments = true
 		end
@@ -810,6 +811,10 @@ function A:Initialize()
 		E:CreateMover(A.DebuffFrame, 'DebuffsMover', L["Player Debuffs"], nil, nil, nil, nil, nil, 'auras,debuffs')
 
 		A:UpdateHeader(A.DebuffFrame)
+
+		if E.Modern then
+			E:Auras_ShowList(A.DebuffFrame)
+		end
 	end
 end
 

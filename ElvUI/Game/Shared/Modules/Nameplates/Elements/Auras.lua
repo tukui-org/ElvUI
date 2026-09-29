@@ -167,7 +167,6 @@ do
 				E:Auras_SetUnit(auras, nameplate.__unit)
 
 				auras:SetEnabled(true)
-				auras:SetShown(true)
 			end
 		end
 
@@ -338,7 +337,7 @@ function NP:Update_Auras(nameplate)
 		if db.auras.enable then
 			nameplate.Auras = nameplate.Auras_
 			NP:Configure_Auras(nameplate, 'Auras')
-			nameplate.Auras:Show()
+			E:Auras_ShowList(nameplate.Auras)
 		elseif nameplate.Auras then
 			nameplate.Auras:Hide()
 			nameplate.Auras = nil
@@ -347,7 +346,7 @@ function NP:Update_Auras(nameplate)
 		if db.debuffs.enable then
 			nameplate.Debuffs = nameplate.Debuffs_
 			NP:Configure_Auras(nameplate, 'Debuffs')
-			nameplate.Debuffs:Show()
+			E:Auras_ShowList(nameplate.Debuffs)
 		elseif nameplate.Debuffs then
 			nameplate.Debuffs:Hide()
 			nameplate.Debuffs = nil
@@ -356,7 +355,7 @@ function NP:Update_Auras(nameplate)
 		if db.buffs.enable then
 			nameplate.Buffs = nameplate.Buffs_
 			NP:Configure_Auras(nameplate, 'Buffs')
-			nameplate.Buffs:Show()
+			E:Auras_ShowList(nameplate.Buffs)
 		elseif nameplate.Buffs then
 			nameplate.Buffs:Hide()
 			nameplate.Buffs = nil

@@ -720,6 +720,13 @@ function E:Auras_HighlightFilter(container, data)
 end
 
 function E:Auras_SetHighlight(container)
+	if not E:Auras_ListShown(container) then
+		container.slotsWaiting = true
+		return
+	end
+
+	container.slotsWaiting = nil
+
 	local groupKey = container.key
 	if groupKey == 'bad' then
 		local candidate = E:Auras_FilterSlot(container)
@@ -766,6 +773,13 @@ function E:Auras_SetHighlight(container)
 end
 
 function E:Auras_SetIndicator(container)
+	if not E:Auras_ListShown(container) then
+		container.slotsWaiting = true
+		return
+	end
+
+	container.slotsWaiting = nil
+
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
@@ -942,7 +956,43 @@ function E:Auras_UpdatePreviewIcons(container)
 	end
 end
 
+function E:Auras_ListShown(container)
+	if not container then return end
+
+	-- NamePlateAurasMixin:RefreshList returns before Acquire when the list is hidden.
+	if container.forceShowAuras then
+		return true
+	end
+
+	return container:IsShown()
+end
+
+function E:Auras_ShowList(container)
+	if not container then return end
+
+	container:Show()
+
+	if container.groupsWaiting then
+		E:Auras_SetContainer(container)
+	end
+
+	if container.slotsWaiting then
+		if container.isIndicator then
+			E:Auras_SetIndicator(container)
+		elseif container.isHighlight then
+			E:Auras_SetHighlight(container)
+		end
+	end
+end
+
 function E:Auras_SetContainer(container)
+	if not E:Auras_ListShown(container) then
+		container.groupsWaiting = true
+		return
+	end
+
+	container.groupsWaiting = nil
+
 	local allowPreview = container.isUnitframe or container.isNameplate
 	if allowPreview then -- dont add the ones we dont want to preview
 		E.AuraPreviewFrames[container] = true
@@ -1031,6 +1081,10 @@ function E:Auras_ToggleEnable(container, shown)
 		container:SetEnabled(state)
 
 		E.AuraHighlightDispellable[container] = (container.key == 'bad' and container.isHighlight and state) or nil
+
+		if state then
+			E:Auras_ShowList(container)
+		end
 
 		return state, true
 	end
@@ -1143,6 +1197,8 @@ function E:Auras_Create(parent, which, override)
 	if parent and parent.unitframeType then -- we only need events for unitframes
 		container.events = E:Auras_CreateEventFrame(container, parent)
 	end
+
+	container:Hide()
 
 	return container
 end

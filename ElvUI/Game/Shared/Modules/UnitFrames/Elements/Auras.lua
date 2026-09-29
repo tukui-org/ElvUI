@@ -547,8 +547,8 @@ function UF:Configure_Auras(frame, which)
 	auras:SetFrameStrata((settings.strataAndLevel and settings.strataAndLevel.useCustomStrata and settings.strataAndLevel.frameStrata) or 'LOW')
 	auras:SetFrameLevel((settings.strataAndLevel and settings.strataAndLevel.useCustomLevel and settings.strataAndLevel.frameLevel) or frame.RaisedElementParent.AuraLevel)
 
-	if settings.enable then
-		auras:Show()
+	if settings.enable and (auras.forceShowAuras or frame:IsShown()) then
+		E:Auras_ShowList(auras)
 	else
 		auras:Hide()
 	end
