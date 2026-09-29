@@ -876,8 +876,11 @@ local function RegisterEvent(frame, event, fs)
 		if not handler.eventStrings[event] then
 			handler.eventStrings[event] = {}
 
-			if isUnitEvent(event, frame.__unit) then
-				handler:RegisterUnitEvent(event, frame.__unit)
+			local unit = frame.__unit
+			if isUnitEvent(event, unit or 'player') then
+				if unit then -- header units without a unit yet get it from UpdateTagUnits
+					handler:RegisterUnitEvent(event, unit)
+				end
 			else
 				handler:RegisterEvent(event)
 			end
