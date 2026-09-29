@@ -228,47 +228,40 @@ function E:GetNameRealm(name, realm)
 	end
 end
 
+function E:SetColorPickerValues(r, g, b)
+	if E.Modern then
+		_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(r, g, b)
+	else
+		_G.ColorPickerFrame:SetColorRGB(r, g, b)
+	end
+end
+
 function E:GrabColorPickerValues(r, g, b)
 	-- we must block the execution path to `ColorCallback` in `AceGUIWidget-ColorPicker-ElvUI`
 	-- in order to prevent an infinite loop from `OnValueChanged` when passing into `E.UpdateMedia` which eventually leads here again.
 	_G.ColorPickerFrame.noColorCallback = true
 
-	-- grab old values
-	local oldR, oldG, oldB = _G.ColorPickerFrame:GetColorRGB()
+	local cr, cg, cb = _G.ColorPickerFrame:GetColorRGB() -- grab old values
+	E:SetColorPickerValues(r or 1, g or 1, b or 1) -- set and define the new values
 
-	-- set and define the new values
-	if E.Modern then
-		_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(r or 1, g or 1, b or 1)
-	else
-		_G.ColorPickerFrame:SetColorRGB(r or 1, g or 1, b or 1)
-	end
+	local sr, sg, sb = _G.ColorPickerFrame:GetColorRGB() -- grab new values
+	if cr then E:SetColorPickerValues(cr, cg, cb) end -- swap back to the old values
 
-	r, g, b = _G.ColorPickerFrame:GetColorRGB()
+	_G.ColorPickerFrame.noColorCallback = nil -- free it up
 
-	-- swap back to the old values
-	if oldR then
-		if E.Modern then
-			_G.ColorPickerFrame.Content.ColorPicker:SetColorRGB(oldR, oldG, oldB)
-		else
-			_G.ColorPickerFrame:SetColorRGB(oldR, oldG, oldB)
-		end
-	end
-
-	-- free it up..
-	_G.ColorPickerFrame.noColorCallback = nil
-
-	return r, g, b
+	return sr, sg, sb
 end
 
---Basically check if another class border is being used on a class that doesn't match. And then return true if a match is found.
+-- another class color is being used on a class that
+-- doesnt match, if a match is found then return true
 function E:CheckClassColor(r, g, b)
-	r, g, b = E:GrabColorPickerValues(r, g, b)
+	local sr, sg, sb = E:GrabColorPickerValues(r, g, b)
 
 	for classToken in next, _G.RAID_CLASS_COLORS do
 		if classToken ~= E.myclass then
 			local color = E:ClassColor(classToken, true)
-			local red, green, blue = E:GrabColorPickerValues(color.r, color.g, color.b)
-			if red == r and green == g and blue == b then
+			local cr, cg, cb = E:GrabColorPickerValues(color.r, color.g, color.b)
+			if cr == sr and cg == sg and cb == sb then
 				return true
 			end
 		end
