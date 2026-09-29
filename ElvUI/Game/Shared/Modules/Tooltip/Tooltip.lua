@@ -255,11 +255,15 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 		local nameColor = E:ClassColor(className) or PRIEST_COLOR
 
-		if TT.db.playerTitles and pvpName and pvpName ~= '' then
+		if TT.db.playerTitles and (pvpName and pvpName ~= '') then
 			name = pvpName
 		end
 
-		if realm and realm ~= '' then
+		if E.Forever then
+			if realm then
+				name = format('%s %s', name, realm)
+			end
+		elseif realm and realm ~= '' then
 			if isShiftKeyDown or TT.db.alwaysShowRealm then
 				name = name..'-'..realm
 			elseif relationship == _G.LE_REALM_RELATION_COALESCED then
