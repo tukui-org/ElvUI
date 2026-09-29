@@ -228,16 +228,15 @@ function UF:Configure_HealthBar(frame, powerUpdate)
 	if powerUpdate then return end -- we dont need to redo this stuff, power updated it
 
 	UF:ToggleTransparentStatusBar(UF.db.colors.transparentHealth, frame.Health, frame.Health.bg, true, UF.db.colors.invertHealth, db.health and db.health.reverseFill)
-
-	if not frame.__unit then -- this is a unit token failure case
-		local color = ElvUF.colors.health
-		UF:SetStatusBarColor(health, color.r, color.g, color.b)
-	end
-
 	UF:Configure_FrameGlow(frame)
 
-	if frame:IsElementEnabled('Health') then
-		frame.Health:ForceUpdate()
+	if E:UnitExists(frame.__unit) then -- hidden frames update on show
+		if frame:IsElementEnabled('Health') then
+			frame.Health:ForceUpdate()
+		end
+	else -- this is a unit token failure case
+		local color = ElvUF.colors.health
+		UF:SetStatusBarColor(health, color.r, color.g, color.b)
 	end
 end
 
