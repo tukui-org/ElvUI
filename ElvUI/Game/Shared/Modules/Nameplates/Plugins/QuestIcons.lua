@@ -207,7 +207,7 @@ local function Update(self, event)
 	if not unit then return end
 
 	-- this only runs on npc units anyways
-	if IsInInstance() then return end
+	if IsInInstance() or UnitIsPlayer(unit) then return end
 
 	local list -- quests
 	local guid = UnitGUID(unit)
