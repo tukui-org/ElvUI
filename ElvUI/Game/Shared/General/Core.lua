@@ -373,6 +373,8 @@ function E:UpdateMedia() -- late LSM data can trigger updates to fonts and bars:
 	E.media.rgbvaluecolor = E:SetColorTable(E.media.rgbvaluecolor, value)
 	E.media.hexvaluecolor = E:RGBToHex(value.r, value.g, value.b)
 
+	if not E.data then return end -- ignore the rest before Initialize
+
 	if E.db.cooldown.enable then
 		for key in next, P.cooldown do
 			local db = E.db.cooldown[key]
