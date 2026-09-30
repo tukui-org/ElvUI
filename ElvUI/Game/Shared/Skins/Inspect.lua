@@ -94,7 +94,7 @@ local function InspectTalentIconDesaturated(icon, desaturate)
 end
 
 local function UpdateGlyph(frame)
-	local talentGroup = _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup;
+	local talentGroup = _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup
 	local _, glyphType, _, _, iconFilename = GetGlyphSocketInfo(frame:GetID(), talentGroup, true, _G.INSPECTED_UNIT)
 	frame.texture:SetTexture(glyphType and iconFilename or [[Interface\Spellbook\UI-Glyph-Rune1]])
 end

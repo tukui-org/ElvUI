@@ -208,7 +208,11 @@ end
 
 local function SkinHonorAwardedAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', ForceAlpha); frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
 
 	frame.Background:Kill()
 	frame.IconBorder:Kill()
