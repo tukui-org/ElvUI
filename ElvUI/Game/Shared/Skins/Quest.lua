@@ -164,15 +164,27 @@ function data:QuestInfoItem_OnClick() -- self is not data
 	_G.QuestInfoItemHighlight:ClearAllPoints()
 	_G.QuestInfoItemHighlight:SetOutside(self.Icon)
 
-	for _, Button in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
-		Button.Name:SetTextColor(1, 1, 1)
-	end
+	-- on the parchment the names keep the page text color
+	if E.private.skins.parchmentRemoverEnable then
+		for _, Button in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
+			Button.Name:SetTextColor(1, 1, 1)
+		end
 
-	self.Name:SetTextColor(1, .8, .1)
+		self.Name:SetTextColor(1, .8, .1)
+	end
 end
 
 function data:QuestInfo_Display(parentFrame) -- self is template, not data
 	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
+
+	-- the classic quest logs stay stripped with the remover off
+	local lightText = E.private.skins.parchmentRemoverEnable or (not E.Modern and _G.QuestInfoFrame.questLog)
+
+	local nameR, nameG, nameB = 1, 1, 1
+	if not lightText and rewardsFrame == _G.QuestInfoRewardsFrame then
+		nameR, nameG, nameB = rewardsFrame.ItemReceiveText:GetTextColor()
+	end
+
 	for i, questItem in ipairs(rewardsFrame.RewardButtons) do
 		local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
 		if point and relativeTo and relativePoint then
@@ -188,15 +200,12 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		HandleReward(questItem)
 
 		questItem.NameFrame:Hide()
-		questItem.Name:SetTextColor(1, 1, 1)
+		questItem.Name:SetTextColor(nameR, nameG, nameB)
 	end
 
 	if not E.Modern then
 		UpdateRewardQuality()
 	end
-
-	-- the classic quest logs stay stripped with the remover off
-	local lightText = E.private.skins.parchmentRemoverEnable or (not E.Modern and _G.QuestInfoFrame.questLog)
 
 	local questID = Quest_GetQuestID()
 	local spellRewards = C_QuestInfoSystem_GetQuestRewardSpells(questID)
@@ -211,6 +220,7 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		local spellBorders = (E.Modern or E.Classic) and rewardsFrame == _G.QuestInfoRewardsFrame
 		for spellIcon in rewardsFrame.spellRewardPool:EnumerateActive() do
 			HandleReward(spellIcon)
+			spellIcon.Name:SetTextColor(nameR, nameG, nameB)
 
 			if spellBorders then
 				local _, _, spellBorder = spellIcon:GetRegions() -- Icon, NameFrame, SpellBorder
@@ -253,10 +263,15 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		end
 	end
 
-	if E.Modern then -- MajorFaction Rewards thing
-		for spellIcon in rewardsFrame.reputationRewardPool:EnumerateActive() do
+	if E.Modern then
+		for spellIcon in rewardsFrame.reputationRewardPool:EnumerateActive() do -- MajorFaction Rewards thing
 			HandleReward(spellIcon)
+			spellIcon.Name:SetTextColor(nameR, nameG, nameB)
 		end
+
+		rewardsFrame.HonorFrame.Name:SetTextColor(nameR, nameG, nameB)
+		rewardsFrame.ArtifactXPFrame.Name:SetTextColor(nameR, nameG, nameB)
+		rewardsFrame.TitleFrame.Name:SetTextColor(nameR, nameG, nameB)
 	end
 
 	if lightText then
@@ -316,6 +331,14 @@ end
 function data:QuestFrameProgressItems_Update() -- self is not data
 	_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
 	_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
+end
+
+-- parchment remover off: use the page text color to make text readable on parchment
+local function UpdateProgressItemNames()
+	local r, g, b = _G.QuestProgressText:GetTextColor()
+	for i = 1, 6 do
+		_G['QuestProgressItem'..i..'Name']:SetTextColor(r, g, b)
+	end
 end
 
 function data:QuestFrame_SetTitleTextColor() -- self is fontString
@@ -753,6 +776,8 @@ function S:BlizzardQuestFrames()
 		modelTextFrame:StripTextures()
 		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
+		hooksecurefunc('QuestFrameProgressItems_Update', UpdateProgressItemNames)
+
 		_G.QuestDetailScrollFrame:SetTemplate('Transparent')
 		_G.QuestProgressScrollFrame:SetTemplate('Transparent')
 		_G.QuestGreetingScrollFrame:SetTemplate('Transparent')
