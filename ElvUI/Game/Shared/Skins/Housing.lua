@@ -5,7 +5,6 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-
 for _, addonName in next, {
 	'Blizzard_HouseList',
 	'Blizzard_HousingCharter',
