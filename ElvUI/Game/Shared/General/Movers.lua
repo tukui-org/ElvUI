@@ -16,19 +16,19 @@ E.CreatedMovers = {}
 E.DisabledMovers = {}
 E.ConnectedMovers = {}
 
-local function SizeChanged(frame, width, height)
+local function SizeChanged(parent, width, height)
 	if InCombatLockdown() then return end
-	frame.mover:SetSize(width, height)
+	parent.mover:SetSize(width, height)
 end
 
-local function WidthChanged(frame, width)
+local function WidthChanged(parent, width)
 	if InCombatLockdown() then return end
-	frame.mover:SetWidth(width)
+	parent.mover:SetWidth(width)
 end
 
-local function HeightChanged(frame, height)
+local function HeightChanged(parent, height)
 	if InCombatLockdown() then return end
-	frame.mover:SetHeight(height)
+	parent.mover:SetHeight(height)
 end
 
 local function GetPoint(obj)
@@ -45,8 +45,8 @@ local function GetSettingPoints(text)
 	return split(delim, text)
 end
 
-local function UpdateCoords(self)
-	local mover = self.child
+local function UpdateCoords(frame)
+	local mover = frame.child
 	local x, y, _, nudgePoint, nudgeInversePoint = E:CalculateMoverPoints(mover)
 	local coordX, coordY = E:GetXYOffset(nudgeInversePoint, 1)
 
@@ -81,18 +81,19 @@ local coordFrame = CreateFrame('Frame')
 coordFrame:SetScript('OnUpdate', UpdateCoords)
 coordFrame:Hide()
 
-local function HandlePostDrag(self, event)
-	if self.postdrag and type(self.postdrag) == 'function' then
-		self.postdrag(self, E:GetScreenQuadrant(self))
+local function HandlePostDrag(frame, event)
+	if frame.postdrag and type(frame.postdrag) == 'function' then
+		frame.postdrag(frame, E:GetScreenQuadrant(frame))
 	end
 
 	if event then
-		self:UnregisterAllEvents()
+		frame:UnregisterAllEvents()
 	end
 end
 
-local function StartMoving(frame, anchor)
-	Sticky:StartMoving(frame, E.db.general.stickyFrames and E.snapBars, frame.snapOffset, frame.snapOffset, frame.snapOffset, frame.snapOffset, anchor)
+local function StartMoving(mover, anchor)
+	local offset = mover.snapOffset
+	Sticky:StartMoving(mover, E.db.general.stickyFrames and E.snapBars, offset, offset, offset, offset, anchor)
 end
 
 local function OnDragStart(frame)
@@ -112,6 +113,7 @@ local function OnDragStart(frame)
 
 	coordFrame.child = frame
 	coordFrame:Show()
+
 	isDragging = true
 end
 
@@ -138,6 +140,7 @@ local function OnDragStop(frame)
 
 	coordFrame.child = nil
 	coordFrame:Hide()
+
 	isDragging = false
 
 	if next(E.ConnectedMovers) then
@@ -156,38 +159,38 @@ local function OnDragStop(frame)
 	end
 end
 
-local function OnEnter(self)
+local function OnEnter(frame)
 	if isDragging then return end
 
-	for _, frame in pairs(E.CreatedMovers) do
-		local mover = frame.mover
-		if mover:IsShown() and mover ~= self then
+	for _, holder in pairs(E.CreatedMovers) do
+		local mover = holder.mover
+		if mover:IsShown() and mover ~= frame then
 			E:UIFrameFadeOut(mover, 0.75, mover:GetAlpha(), 0.5)
 		end
 	end
 
-	E.AssignFrameToNudge(self)
+	E.AssignFrameToNudge(frame)
 
-	coordFrame.child = self
+	coordFrame.child = frame
 	coordFrame:GetScript('OnUpdate')(coordFrame)
 
-	if not self.IsConnected then
-		self.text:SetTextColor(1, 1, 1)
+	if not frame.IsConnected then
+		frame.text:SetTextColor(1, 1, 1)
 	end
 end
 
-local function OnLeave(self)
+local function OnLeave(frame)
 	if isDragging then return end
 
-	for _, frame in pairs(E.CreatedMovers) do
-		local mover = frame.mover
-		if mover:IsShown() and mover ~= self then
+	for _, holder in pairs(E.CreatedMovers) do
+		local mover = holder.mover
+		if mover:IsShown() and mover ~= frame then
 			E:UIFrameFadeIn(mover, 0.75, mover:GetAlpha(), 1)
 		end
 	end
 
-	if not self.IsConnected then
-		self.text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	if not frame.IsConnected then
+		frame.text:SetTextColor(unpack(E.media.rgbvaluecolor))
 	end
 end
 
@@ -197,23 +200,23 @@ local function OnMouseUp(_, button)
 	end
 end
 
-local function OnMouseDown(self, button)
+local function OnMouseDown(frame, button)
 	if isDragging then
-		OnDragStop(self)
+		OnDragStop(frame)
 	elseif button == 'RightButton' then
-		if IsControlKeyDown() and self.textString then
-			E:ResetMovers(self.textString) --Allow resetting of anchor by Ctrl+RightClick
+		if IsControlKeyDown() and frame.textString then
+			E:ResetMovers(frame.textString) --Allow resetting of anchor by Ctrl+RightClick
 		elseif IsShiftKeyDown() then
-			self:Hide() --Allow hiding a mover temporarily
-		elseif self.configString then
-			E:ToggleOptions(self.configString) --OpenConfig
+			frame:Hide() --Allow hiding a mover temporarily
+		elseif frame.configString then
+			E:ToggleOptions(frame.configString) --OpenConfig
 		end
 	elseif IsShiftKeyDown() then
-	--	E.ConnectedMovers[self] = true
-	--	self.IsConnected = true
+	--	E.ConnectedMovers[frame] = true
+	--	frame.IsConnected = true
 
-	--	self.text:SetTextColor(1, 0.3, 0.3)
-	--	self:SetBackdropBorderColor(1, 0.3, 0.3)
+	--	frame.text:SetTextColor(1, 0.3, 0.3)
+	--	frame:SetBackdropBorderColor(1, 0.3, 0.3)
 	end
 end
 
@@ -225,15 +228,15 @@ local function OnMouseWheel(_, delta)
 	end
 end
 
-local function OnShow(self, r, g, b)
+local function OnShow(frame, r, g, b)
 	if not r then r, g, b = unpack(E.media.rgbvaluecolor) end
 
-	self.text:FontTemplate()
-	self.text:SetTextColor(r, g, b)
+	frame.text:FontTemplate()
+	frame.text:SetTextColor(r, g, b)
 
-	self:SetBackdropBorderColor(r, g, b)
+	frame:SetBackdropBorderColor(r, g, b)
 
-	E:ForceBorderColor(self, r, g, b)
+	E:ForceBorderColor(frame, r, g, b)
 end
 
 local function UpdateColors(_, _, r, g, b)
@@ -244,6 +247,20 @@ local function UpdateColors(_, _, r, g, b)
 	end
 end
 E.valueColorUpdateFuncs.Movers = UpdateColors
+
+local function SetSnapOffset(holder, snapOffset)
+	local offset = snapOffset or -2
+
+	holder.mover.snapOffset = offset
+	holder.snapOffset = offset
+end
+
+function E:SetMoverSnapOffset(name, snapOffset)
+	local holder = E.CreatedMovers[name]
+	if not holder then return end
+
+	SetSnapOffset(holder, snapOffset)
+end
 
 local function UpdateMover(name, parent, textString, overlay, snapOffset, postdrag, shouldDisable, configString, ignoreSizeChanged)
 	if not (name and parent) then return end --If for some reason the parent isnt loaded yet, also require a name
@@ -258,39 +275,41 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 		overlay = 'BACKGROUND'
 	end
 
-	local f = CreateFrame('Button', name, UIParent)
-	f:SetClampedToScreen(true)
-	f:RegisterForDrag('LeftButton', 'RightButton')
-	f:OffsetFrameLevel(1, parent)
-	f:SetFrameStrata(overlay)
-	f:EnableMouseWheel(true)
-	f:SetMovable(true)
-	f:SetTemplate('Transparent', nil, nil, true)
-	f:SetSize(parent:GetSize())
-	f:Hide()
+	local mover = CreateFrame('Button', name, UIParent)
+	mover:SetClampedToScreen(true)
+	mover:RegisterForDrag('LeftButton', 'RightButton')
+	mover:OffsetFrameLevel(1, parent)
+	mover:SetFrameStrata(overlay)
+	mover:EnableMouseWheel(true)
+	mover:SetMovable(true)
+	mover:SetTemplate('Transparent', nil, nil, true)
+	mover:SetSize(parent:GetSize())
+	mover:Hide()
 
-	local fs = f:CreateFontString(nil, 'OVERLAY')
-	fs:FontTemplate()
-	fs:SetPoint('CENTER')
-	fs:SetText(textString or name)
-	fs:SetJustifyH('CENTER')
-	fs:SetTextColor(unpack(E.media.rgbvaluecolor))
-	f:SetFontString(fs)
+	local text = mover:CreateFontString(nil, 'OVERLAY')
+	text:FontTemplate()
+	text:SetPoint('CENTER')
+	text:SetText(textString or name)
+	text:SetJustifyH('CENTER')
+	text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	mover:SetFontString(text)
 
-	f.text = fs
-	f.name = name
-	f.parent = parent
-	f.overlay = overlay
-	f.postdrag = postdrag
-	f.textString = textString or name
-	f.snapOffset = snapOffset or -2
-	f.shouldDisable = shouldDisable
-	f.configString = configString
-	f.ignoreSizeChanged = ignoreSizeChanged
+	mover.text = text
+	mover.name = name
+	mover.parent = parent
+	mover.overlay = overlay
+	mover.postdrag = postdrag
+	mover.textString = textString or name
+	mover.configString = configString
+	mover.ignoreSizeChanged = ignoreSizeChanged
 
-	holder.mover = f
-	parent.mover = f
-	E.snapBars[#E.snapBars+1] = f
+	holder.shouldDisable = type(shouldDisable) == 'function' and shouldDisable or nil
+
+	holder.mover = mover
+	parent.mover = mover
+	E.snapBars[#E.snapBars+1] = mover
+
+	SetSnapOffset(holder, snapOffset)
 
 	if not ignoreSizeChanged then
 		hooksecurefunc(parent, 'SetSize', SizeChanged)
@@ -300,16 +319,16 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	E:SetMoverPoints(name, parent)
 
-	f:SetScript('OnDragStart', OnDragStart)
-	f:SetScript('OnDragStop', OnDragStop)
-	f:SetScript('OnEnter', OnEnter)
-	f:SetScript('OnLeave', OnLeave)
-	f:SetScript('OnMouseDown', OnMouseDown)
-	f:SetScript('OnMouseUp', OnMouseUp)
-	f:SetScript('OnMouseWheel', OnMouseWheel)
-	f:SetScript('OnShow', OnShow)
-	f:SetScript('OnEvent', HandlePostDrag)
-	f:RegisterEvent('PLAYER_ENTERING_WORLD')
+	mover:SetScript('OnDragStart', OnDragStart)
+	mover:SetScript('OnDragStop', OnDragStop)
+	mover:SetScript('OnEnter', OnEnter)
+	mover:SetScript('OnLeave', OnLeave)
+	mover:SetScript('OnMouseDown', OnMouseDown)
+	mover:SetScript('OnMouseUp', OnMouseUp)
+	mover:SetScript('OnMouseWheel', OnMouseWheel)
+	mover:SetScript('OnShow', OnShow)
+	mover:SetScript('OnEvent', HandlePostDrag)
+	mover:RegisterEvent('PLAYER_ENTERING_WORLD')
 end
 
 function E:CalculateMoverPoints(mover, nudgeX, nudgeY)
@@ -361,14 +380,7 @@ function E:SaveMoverPosition(name)
 	E.db.movers[name] = GetPoint(holder.mover)
 end
 
-function E:SetMoverSnapOffset(name, offset)
-	local holder = E.CreatedMovers[name]
-	if not holder then return end
-	holder.mover.snapOffset = offset or -2
-	holder.snapoffset = offset or -2
-end
-
-function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, types, shouldDisable, configString, ignoreSizeChanged)
+function E:CreateMover(parent, name, textString, overlay, snapOffset, postdrag, types, shouldDisable, configString, ignoreSizeChanged)
 	local holder = E.CreatedMovers[name]
 	if holder == nil then
 		holder = {}
@@ -385,12 +397,11 @@ function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, 
 
 		holder.parent = parent
 		holder.originPoint = { parent:GetPoint() }
-		holder.shouldDisable = shouldDisable -- SetMoversPositions reads it from the disabled copy
 
 		E.CreatedMovers[name] = holder
 	end
 
-	UpdateMover(name, parent, textString, overlay, snapoffset, postdrag, shouldDisable, configString, ignoreSizeChanged)
+	UpdateMover(name, parent, textString, overlay, snapOffset, postdrag, shouldDisable, configString, ignoreSizeChanged)
 
 	return holder
 end
@@ -482,10 +493,10 @@ function E:SetMoversPositions()
 	--E:SetMoversPositions() is the first function called in E:UpdateAll().
 	--Because of that, we can allow ourselves to re-enable all disabled movers here,
 	--as the subsequent updates to these elements will disable them again if needed.
-	for name in pairs(E.DisabledMovers) do
-		local disable = E.DisabledMovers[name].shouldDisable
-		local shouldDisable = (type(disable) == 'function' and disable()) or false
-		if not shouldDisable then E:EnableMover(name) end
+	for name, holder in pairs(E.DisabledMovers) do
+		local check = holder.shouldDisable
+		local disable = check and check()
+		if not disable then E:EnableMover(name) end
 	end
 
 	for name in pairs(E.CreatedMovers) do
@@ -500,7 +511,7 @@ function E:SetMoversClampedToScreen(value)
 end
 
 function E:LoadMovers()
-	for n, t in pairs(E.CreatedMovers) do
-		UpdateMover(n, t.parent, t.textString, t.overlay, t.snapoffset, t.postdrag, t.shouldDisable, t.configString, t.ignoreSizeChanged)
+	for n, h in pairs(E.CreatedMovers) do
+		UpdateMover(n, h.parent, h.textString, h.overlay, h.snapOffset, h.postdrag, h.shouldDisable, h.configString, h.ignoreSizeChanged)
 	end
 end
