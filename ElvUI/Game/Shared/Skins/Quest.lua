@@ -329,15 +329,14 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 end
 
 function data:QuestFrameProgressItems_Update() -- self is not data
-	_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
-	_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
-end
-
--- parchment remover off: use the page text color to make text readable on parchment
-local function UpdateProgressItemNames()
-	local r, g, b = _G.QuestProgressText:GetTextColor()
-	for i = 1, 6 do
-		_G['QuestProgressItem'..i..'Name']:SetTextColor(r, g, b)
+	if E.private.skins.parchmentRemoverEnable then
+		_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
+		_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
+	else -- use the page text color to make text readable on parchment
+		local r, g, b = _G.QuestProgressText:GetTextColor()
+		for i = 1, 6 do
+			_G['QuestProgressItem'..i..'Name']:SetTextColor(r, g, b)
+		end
 	end
 end
 
@@ -753,10 +752,10 @@ function S:BlizzardQuestFrames()
 	end
 
 	hooksecurefunc('QuestFrame_ShowQuestPortrait', E.Classic and ShowQuestNPCModel or ShowQuestPortrait)
+	hooksecurefunc('QuestFrameProgressItems_Update', data.QuestFrameProgressItems_Update)
 
 	local modelTextFrame = E.Modern and _G.QuestModelScene.ModelTextFrame or _G.QuestNPCModelTextFrame
 	if E.private.skins.parchmentRemoverEnable then
-		hooksecurefunc('QuestFrameProgressItems_Update', data.QuestFrameProgressItems_Update)
 		hooksecurefunc('QuestFrame_SetTitleTextColor', data.QuestFrame_SetTitleTextColor)
 		hooksecurefunc('QuestFrame_SetTextColor', data.QuestFrame_SetTextColor)
 		hooksecurefunc(_G.QuestInfoSealFrame.Text, 'SetText', data.QuestInfoSealFrameText)
@@ -776,8 +775,6 @@ function S:BlizzardQuestFrames()
 		modelTextFrame:StripTextures()
 		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
-		hooksecurefunc('QuestFrameProgressItems_Update', UpdateProgressItemNames)
-
 		_G.QuestDetailScrollFrame:SetTemplate('Transparent')
 		_G.QuestProgressScrollFrame:SetTemplate('Transparent')
 		_G.QuestGreetingScrollFrame:SetTemplate('Transparent')
