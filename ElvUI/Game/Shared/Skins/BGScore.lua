@@ -8,6 +8,7 @@ local format, next, strmatch = format, next, strmatch
 local GetBattlefieldScore = GetBattlefieldScore
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
 
 S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore', nil, nil, nil, nil, 'bgscore')
 
@@ -36,7 +37,7 @@ local function UpdateScore()
 				name = format('%s|cffffffff - |r%s%s|r', name, color, realm)
 			end
 
-			local classTextColor = E:ClassColor(classToken)
+			local classTextColor = E:ClassColor(classToken) or NORMAL_FONT_COLOR
 			local nameText = _G['WorldStateScoreButton'..i..'NameText']
 			nameText:SetText(name)
 			nameText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)

@@ -303,6 +303,13 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		_G.QuestInfoQuestType:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetShadowColor(0, 0, 0, 0)
+
+		-- Blizzard's material flip skips the arena and honor lines - the quest log and map leave them white
+		if E.Wrath or E.Mists then
+			local r, g, b = _G.QuestFont:GetTextColor()
+			_G.QuestInfoRewardsFrameReceiveText:SetTextColor(r, g, b)
+			_G.QuestInfoRewardsFrameHonorReceiveText:SetTextColor(r, g, b)
+		end
 	end
 end
 
@@ -540,10 +547,13 @@ local function SkinQuestLogFrame()
 	_G.QuestLogDetailScrollFrame:Width(303)
 	_G.QuestLogFrameAbandonButton:Width(129)
 
-	_G.QuestLogHighlightFrame:Width(303)
-	_G.QuestLogHighlightFrame.SetWidth = E.noop
+	local QuestLogHighlightFrame = _G.QuestLogHighlightFrame
+	QuestLogHighlightFrame:Width(303)
+	QuestLogHighlightFrame.SetWidth = E.noop
 
-	_G.QuestLogSkillHighlight:SetTexture(E.Media.Textures.Highlight)
+	-- QuestLogSkillHighlight - the wrath and mists world map reuses that global name
+	local skillHighlight = QuestLogHighlightFrame:GetRegions()
+	skillHighlight:SetTexture(E.Media.Textures.Highlight)
 
 	if E.Mists or E.Wrath then
 		S:HandleButton(_G.QuestLogFrameTrackButton, true)
@@ -561,7 +571,7 @@ local function SkinQuestLogFrame()
 		_G.QuestLogFrameCancelButton:PointXY(-4, 4)
 		_G.QuestFramePushQuestButton:PointXY(1)
 
-		_G.QuestLogSkillHighlight:SetAlpha(0.3)
+		skillHighlight:SetAlpha(0.3)
 	else
 		S:HandleButton(_G.QuestFrameExitButton, true)
 
@@ -579,7 +589,7 @@ local function SkinQuestLogFrame()
 		_G.QuestFramePushQuestButton:PointXY(-2)
 		_G.QuestFrameExitButton:PointXY(-36, 49)
 
-		_G.QuestLogSkillHighlight:SetAlpha(0.35)
+		skillHighlight:SetAlpha(0.35)
 
 		local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
 		S:HandleCollapseTexture(QuestLogCollapseAllButton, nil, true)

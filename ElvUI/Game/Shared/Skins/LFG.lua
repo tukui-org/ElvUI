@@ -20,17 +20,15 @@ local C_MythicPlus_GetCurrentAffixes = C_MythicPlus and C_MythicPlus.GetCurrentA
 
 local LE_PARTY_CATEGORY_HOME = LE_PARTY_CATEGORY_HOME
 
-local groupButtonIcons = {
-	133076,	-- interface\icons\inv_helmet_08.blp
-	133074,	-- interface\icons\inv_helmet_06.blp
-	464820	-- interface\icons\achievement_general_stayclassy.blp
-}
-
 if E.Retail or E.Mists or E.Wrath then -- tbc and vanilla load a Blizzard_GroupFinder without PVEFrame
 	S:AddCallbackForAddon('Blizzard_GroupFinder', 'LookingForGroupFrames', nil, nil, nil, nil, 'lfg')
 else -- LookingForGroupFrames skins the role poll popup on the flavors above
 	S:AddCallbackForAddon('Blizzard_GroupFinder_VanillaStyle', nil, nil, nil, nil, nil, 'lfg')
 	S:AddCallbackForAddon('Blizzard_FrameXML', 'RolePollPopup', nil, nil, nil, nil, 'lfg')
+end
+
+if E.Retail or E.Mists or E.Wrath or E.TBC then -- vanilla and Forever don't load LFGReadyCheck
+	S:AddCallbackForAddon('Blizzard_GroupFinder', 'LFGReadyCheckPopup', nil, nil, nil, nil, 'lfg')
 end
 
 if E.Forever then -- ToDo: Forever
@@ -328,6 +326,12 @@ local function ListCategoryAddButton(btn, btnIndex, categoryID, filters)
 	end
 end
 
+local function GroupFinderFrameOnShow(frame)
+	-- scenarios take the second button while they are enabled
+	local raidFinder = _G.PVEFrame:ScenariosEnabled() and frame.groupButton3 or frame.groupButton2
+	raidFinder.icon:SetTexture(133074) -- interface\icons\inv_helmet_06.blp
+end
+
 function S:LookingForGroupFrames()
 	local PVEFrame = _G.PVEFrame
 	S:HandlePortraitFrame(PVEFrame)
@@ -419,8 +423,9 @@ function S:LookingForGroupFrames()
 	hooksecurefunc('LFGListApplicationDialog_UpdateRoles', ApplicationDialogUpdateRoles) -- Copy from Blizzard, we just fix position
 
 	do
+		local GroupFinderFrame = _G.GroupFinderFrame
 		local index = 1
-		local button = _G.GroupFinderFrame['groupButton'..index]
+		local button = GroupFinderFrame['groupButton'..index]
 		while button do
 			button.ring:Hide()
 			button.CircleMask:Hide()
@@ -428,18 +433,20 @@ function S:LookingForGroupFrames()
 
 			S:HandleButton(button)
 
-			local texture = groupButtonIcons[index]
-			if texture then -- the fourth button keeps its own icon
-				button.icon:SetTexture(texture)
-			end
-
 			button.icon:Size(45)
 			button.icon:ClearAllPoints()
 			button.icon:Point('LEFT', 10, 0)
 			S:HandleIcon(button.icon, true)
 
 			index = index + 1
-			button = _G.GroupFinderFrame['groupButton'..index]
+			button = GroupFinderFrame['groupButton'..index]
+		end
+
+		-- the raid finder icon is a round portrait - Modern sets the icons again on every show
+		if E.Modern then
+			GroupFinderFrame:HookScript('OnShow', GroupFinderFrameOnShow)
+		else
+			GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface\icons\inv_helmet_06.blp
 		end
 	end
 
@@ -578,6 +585,8 @@ function S:LookingForGroupFrames()
 
 	SearchPanel.BackButton:ClearAllPoints()
 	SearchPanel.BackButton:Point('BOTTOMLEFT', -1, 3)
+	SearchPanel.BackToGroupButton:ClearAllPoints()
+	SearchPanel.BackToGroupButton:Point('BOTTOMLEFT', -1, 3)
 	SearchPanel.SignUpButton:ClearAllPoints()
 	SearchPanel.SignUpButton:Point('BOTTOMRIGHT', -6, 3)
 	SearchPanel.ResultsInset:StripTextures()
@@ -589,6 +598,7 @@ function S:LookingForGroupFrames()
 		EntryCreation.CancelButton.RightSeparator:Hide()
 		EntryCreation.ListGroupButton.LeftSeparator:Hide()
 		SearchPanel.BackButton.RightSeparator:Hide()
+		SearchPanel.BackToGroupButton.RightSeparator:Hide()
 		SearchPanel.SignUpButton.LeftSeparator:Hide()
 	end
 
@@ -1119,6 +1129,14 @@ function S:RolePollPopup()
 		checkButton.backdrop:SetInside()
 		checkButton:Size(18)
 	end
+end
+
+function S:LFGReadyCheckPopup()
+	local LFGReadyCheckPopup = _G.LFGReadyCheckPopup
+	LFGReadyCheckPopup.Border:Hide()
+	LFGReadyCheckPopup:SetTemplate('Transparent')
+	S:HandleButton(LFGReadyCheckPopup.YesButton)
+	S:HandleButton(LFGReadyCheckPopup.NoButton)
 end
 
 -- Forever loads these from Blizzard_LFGUtil, without the PVEFrame group finder that skins them on Retail

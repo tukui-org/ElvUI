@@ -2375,6 +2375,7 @@ do -- Handle collapse
 end
 
 -- World Map related Skinning functions used for WoW 8.0
+-- Currently unused, leave for plugins?
 function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
 	S[templateName](frame.overlayFrames[#frame.overlayFrames])
 end

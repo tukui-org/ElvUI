@@ -128,7 +128,8 @@ local function SettingsListScrollUpdateChild(child)
 
 	local button = child.Button
 	if button then
-		if button.New then
+		-- only expandable sections have a header button - the other Buttons are UIPanelButtonTemplate
+		if not child.OnExpandedChanged then
 			S:HandleButton(button)
 		else
 			button:StripTextures()

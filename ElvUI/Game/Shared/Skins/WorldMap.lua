@@ -279,9 +279,7 @@ local function SkinMainline()
 		MapBorderFrame.Tutorial:Kill()
 	end
 
-	do -- Add a hook to adjust the OverlayFrames
-		hooksecurefunc(WorldMapFrame, 'AddOverlayFrame', S.WorldMapMixin_AddOverlayFrame)
-
+	do -- Overlay frames
 		local dropdown, tracking, pin = unpack(WorldMapFrame.overlayFrames)
 		S:HandleDropDownBox(dropdown) -- NavBar handled in ElvUI/modules/skins/misc
 
