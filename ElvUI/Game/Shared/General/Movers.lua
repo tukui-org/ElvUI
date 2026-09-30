@@ -385,6 +385,7 @@ function E:CreateMover(parent, name, textString, overlay, snapoffset, postdrag, 
 
 		holder.parent = parent
 		holder.originPoint = { parent:GetPoint() }
+		holder.shouldDisable = shouldDisable -- SetMoversPositions reads it from the disabled copy
 
 		E.CreatedMovers[name] = holder
 	end
@@ -483,7 +484,7 @@ function E:SetMoversPositions()
 	--as the subsequent updates to these elements will disable them again if needed.
 	for name in pairs(E.DisabledMovers) do
 		local disable = E.DisabledMovers[name].shouldDisable
-		local shouldDisable = (disable and disable()) or false
+		local shouldDisable = (type(disable) == 'function' and disable()) or false
 		if not shouldDisable then E:EnableMover(name) end
 	end
 
