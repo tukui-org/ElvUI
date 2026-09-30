@@ -190,7 +190,8 @@ local function OnLeave(frame)
 	end
 
 	if not frame.IsConnected then
-		frame.text:SetTextColor(unpack(E.media.rgbvaluecolor))
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		frame.text:SetTextColor(r, g, b)
 	end
 end
 
@@ -229,7 +230,9 @@ local function OnMouseWheel(_, delta)
 end
 
 local function OnShow(frame, r, g, b)
-	if not r then r, g, b = unpack(E.media.rgbvaluecolor) end
+	if not r then
+		r, g, b = unpack(E.media.rgbvaluecolor)
+	end
 
 	frame.text:FontTemplate()
 	frame.text:SetTextColor(r, g, b)
@@ -286,12 +289,13 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 	mover:SetSize(parent:GetSize())
 	mover:Hide()
 
+	local r, g, b = unpack(E.media.rgbvaluecolor)
 	local text = mover:CreateFontString(nil, 'OVERLAY')
 	text:FontTemplate()
 	text:SetPoint('CENTER')
 	text:SetText(textString or name)
 	text:SetJustifyH('CENTER')
-	text:SetTextColor(unpack(E.media.rgbvaluecolor))
+	text:SetTextColor(r, g, b)
 	mover:SetFontString(text)
 
 	mover.text = text
