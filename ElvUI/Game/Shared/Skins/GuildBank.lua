@@ -13,13 +13,12 @@ local NUM_GUILDBANK_ICONS_SHOWN = NUM_GUILDBANK_ICONS_PER_ROW * NUM_GUILDBANK_IC
 S:AddCallbackForAddon('Blizzard_GuildBankUI', nil, nil, nil, nil, nil, 'gbank')
 
 local function GuildBankOnShow(frame)
-	if not frame.IsSkinned then
-		if E.Modern then
-			S:HandleIconSelectionFrame(frame, nil, nil, 'GuildBankPopup')
-		else
-			-- BuildIconArray creates the icon buttons on first show
-			S:HandleIconSelectionFrame(frame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
-		end
+	if frame.IsSkinned then return end
+
+	if E.Modern then
+		S:HandleIconSelectionFrame(frame, nil, nil, 'GuildBankPopup')
+	else -- BuildIconArray creates the icon buttons on first show
+		S:HandleIconSelectionFrame(frame, NUM_GUILDBANK_ICONS_SHOWN, 'GuildBankPopupButton', 'GuildBankPopup')
 	end
 end
 

@@ -430,7 +430,6 @@ local function SkinPetFrame()
 	end
 
 	local Card = _G.PetJournalPetCard
-
 	Card:StripTextures()
 	Card:SetTemplate('Transparent')
 

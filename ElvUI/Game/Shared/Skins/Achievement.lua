@@ -209,7 +209,6 @@ local function UpdateTabs()
 	end
 end
 
--- Mists anchors the statistics tab again on every open, next to the guild tab only while that one is shown
 local function SetTabs()
 	local tab = _G.AchievementFrameTab3
 	tab:ClearAllPoints()
@@ -593,7 +592,7 @@ function S:Blizzard_AchievementUI()
 
 		-- https://github.com/Gethe/wow-ui-source/blob/live/Interface/AddOns/Blizzard_AchievementUI/Mainline/Blizzard_AchievementUI.lua#L337-L343
 		hooksecurefunc('AchievementFrame_UpdateTabs', UpdateTabs)
-	elseif E.Mists then
+	elseif E.Mists then -- Mists anchors the statistics tab again on every open, next to the guild tab only while that one is shown
 		hooksecurefunc('AchievementFrame_SetTabs', SetTabs)
 		SetTabs()
 	end

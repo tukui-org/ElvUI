@@ -58,6 +58,10 @@ end
 
 local function HandleClassButtons()
 	local numClasses = _G.MAX_CLASSES
+	local plusOne = numClasses + 1
+	local plusTwo = numClasses + 2
+	local plusThree = numClasses + 3
+
 	local prevButton
 	for index = 1, _G.MAX_RAID_CLASS_BUTTONS do -- classes, pets, main tank, main assist
 		local button = _G['RaidClassButton'..index]
@@ -71,7 +75,7 @@ local function HandleClassButtons()
 		button:ClearAllPoints()
 		if index == 1 then
 			button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -3, -48)
-		elseif index == numClasses + 1 then
+		elseif index == plusOne then
 			button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
 		else
 			button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
@@ -80,13 +84,13 @@ local function HandleClassButtons()
 
 		icon:SetInside()
 
-		if index == numClasses + 1 then
+		if index == plusOne then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
 			icon:SetTexCoords()
-		elseif index == numClasses + 2 then
+		elseif index == plusTwo then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
 			icon:SetTexCoords()
-		elseif index == numClasses + 3 then
+		elseif index == plusThree then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
 			icon:SetTexCoords()
 		else

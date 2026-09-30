@@ -282,43 +282,43 @@ local function SkinMainline()
 	do -- Add a hook to adjust the OverlayFrames
 		hooksecurefunc(WorldMapFrame, 'AddOverlayFrame', S.WorldMapMixin_AddOverlayFrame)
 
-		local Dropdown, Tracking, Pin = unpack(WorldMapFrame.overlayFrames)
-		S:HandleDropDownBox(Dropdown) -- NavBar handled in ElvUI/modules/skins/misc
+		local dropdown, tracking, pin = unpack(WorldMapFrame.overlayFrames)
+		S:HandleDropDownBox(dropdown) -- NavBar handled in ElvUI/modules/skins/misc
 
 		if E.Forever then -- ToDo: Forever
-			Tracking, Pin = WorldMapFrame.WorldMapTrackingOptionsButton, WorldMapFrame.WorldMapTrackingPinButton
+			tracking, pin = WorldMapFrame.WorldMapTrackingOptionsButton, WorldMapFrame.WorldMapTrackingPinButton
 
 			-- Forever tracking button is an arrow dropdown next to the NavBar
-			if Tracking then
-				S:HandleNextPrevButton(Tracking, 'down', nil, true)
-				Tracking:SetTemplate()
-				Tracking:ClearAllPoints()
-				Tracking:Point('LEFT', MapNavBar, 'RIGHT', 10, 0)
-				Tracking.Icon:SetAlpha(0) -- OnMouseDown and OnMouseUp set the atlas again
+			if tracking then
+				S:HandleNextPrevButton(tracking, 'down', nil, true)
+				tracking:SetTemplate()
+				tracking:ClearAllPoints()
+				tracking:Point('LEFT', MapNavBar, 'RIGHT', 10, 0)
+				tracking.Icon:SetAlpha(0) -- OnMouseDown and OnMouseUp set the atlas again
 
-				local ResetButton = Tracking.ResetButton
+				local ResetButton = tracking.ResetButton
 				S:HandleCloseButton(ResetButton)
 				ResetButton:ClearAllPoints()
-				ResetButton:Point('CENTER', Tracking, 'TOPRIGHT', 0, 0)
+				ResetButton:Point('CENTER', tracking, 'TOPRIGHT', 0, 0)
 			end
 		else
-			Tracking:StripTextures()
-			Tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking/None
-			Tracking:SetHighlightTexture(136460, 'ADD')
+			tracking:StripTextures()
+			tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking/None
+			tracking:SetHighlightTexture(136460, 'ADD')
 
-			local TrackingHighlight = Tracking:GetHighlightTexture()
-			TrackingHighlight:SetAllPoints(Tracking.Icon)
+			local TrackingHighlight = tracking:GetHighlightTexture()
+			TrackingHighlight:SetAllPoints(tracking.Icon)
 		end
 
-		if Pin then
-			Pin:StripTextures()
-			Pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
-			Pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
-			Pin.ActiveTexture:SetAllPoints(Pin.Icon)
-			Pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
+		if pin then
+			pin:StripTextures()
+			pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
+			pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
+			pin.ActiveTexture:SetAllPoints(pin.Icon)
+			pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
 
-			local PinHighlight = Pin:GetHighlightTexture()
-			PinHighlight:SetAllPoints(Pin.Icon)
+			local PinHighlight = pin:GetHighlightTexture()
+			PinHighlight:SetAllPoints(pin.Icon)
 			PinHighlight:SetTexCoord(0.3203125, 0.5546875, 0.015625, 0.484375)
 		end
 	end

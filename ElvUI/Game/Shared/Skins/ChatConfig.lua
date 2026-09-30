@@ -20,12 +20,9 @@ local function UpdateCheckboxes(frame)
 			checkbox:StripTextures()
 			S:HandleCheckBox(_G[checkboxName..'Check'])
 
-			if not E.Modern then
-				-- only the chat and channel list templates have one
-				local colorClasses = _G[checkboxName..'ColorClasses']
-				if colorClasses then
-					S:HandleCheckBox(colorClasses)
-				end
+			local colorClasses = not E.Modern and _G[checkboxName..'ColorClasses']
+			if colorClasses then -- only the chat and channel list templates have one
+				S:HandleCheckBox(colorClasses)
 			end
 
 			checkbox.IsSkinned = true
