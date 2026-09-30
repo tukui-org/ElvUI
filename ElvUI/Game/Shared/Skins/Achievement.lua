@@ -133,7 +133,7 @@ end
 
 local function AchievementFrameStatsScrollUpdateChild(child)
 	if not child.IsSkinned then
-		S:HandleFrame(child, true, nil, 2, -E.mult, 4, E.mult)
+		S:HandleFrame(child, true, nil, 2, -1, 4, 1)
 		SetupButtonHighlight(child, child.backdrop)
 
 		child.IsSkinned = true
@@ -161,7 +161,7 @@ end
 
 local function ComparisonStatContainerScrollUpdateChild(child)
 	if not child.IsSkinned then
-		S:HandleFrame(child, true, nil, 2, -E.mult, 6, E.mult)
+		S:HandleFrame(child, true, nil, 2, -1, 6, 1)
 
 		child.IsSkinned = true
 	end

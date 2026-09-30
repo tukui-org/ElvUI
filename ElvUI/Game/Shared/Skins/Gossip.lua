@@ -109,7 +109,7 @@ function S:GossipFrame()
 	for i = 1, 4 do
 		local notch = GossipFrame.FriendshipStatusBar['Notch'..i]
 		notch:SetColorTexture(0, 0, 0)
-		notch:SetSize(E.mult, 16)
+		notch:Size(1, 16)
 	end
 
 	-- titan keeps the frame border in a child frame

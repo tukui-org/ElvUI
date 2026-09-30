@@ -1969,9 +1969,9 @@ function S:HandleStepSlider(frame, minimal)
 		local step = CreateFrame('StatusBar', nil, slider.backdrop)
 		step:SetStatusBarTexture(E.Media.Textures.Melli)
 		step:SetStatusBarColor(1, .8, 0, .5)
-		step:SetPoint('TOPLEFT', slider.backdrop, E.mult, -E.mult)
-		step:SetPoint('BOTTOMLEFT', slider.backdrop, E.mult, E.mult)
-		step:SetPoint('RIGHT', thumb, 'CENTER')
+		step:Point('TOPLEFT', slider.backdrop, 1, -1)
+		step:Point('BOTTOMLEFT', slider.backdrop, 1, 1)
+		step:Point('RIGHT', thumb, 'CENTER')
 
 		slider.barStep = step
 	end
