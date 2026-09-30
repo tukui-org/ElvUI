@@ -45,17 +45,31 @@ local function UpdateScore()
 	end
 end
 
+local function UpdateBackdropWidth()
+	_G.WorldStateScoreFrame.backdrop:Point('BOTTOMRIGHT', _G.WorldStateScoreScrollFrame:IsShown() and -78 or -102, 25)
+end
+
 function S:SkinWorldStateScore()
 	local WorldStateScoreFrame = _G.WorldStateScoreFrame
 	WorldStateScoreFrame:EnableMouse(true)
 
 	S:HandleFrame(WorldStateScoreFrame, true, nil, 0, -12, -102, 25)
 
-	_G.WorldStateScoreScrollFrame:StripTextures()
+	local scrollFrame = _G.WorldStateScoreScrollFrame
+	scrollFrame:StripTextures()
 
 	local scrollBar = _G.WorldStateScoreScrollFrameScrollBar
 	S:HandleScrollBar(scrollBar)
-	scrollBar:Point('RIGHT', WorldStateScoreFrame, 'RIGHT', -44, 38)
+
+	-- Player rows grow all the way under the scroll bar (Except in Classic)
+	if not E.Classic then
+		scrollBar:Point('TOPLEFT', scrollFrame, 'TOPRIGHT', 47, -16)
+		scrollBar:Point('BOTTOMLEFT', scrollFrame, 'BOTTOMRIGHT', 47, 16)
+
+		-- Adjust the backdrop while the scroll bar is visible
+		_G.WorldStateScoreFrameCloseButton:Point('TOPRIGHT', WorldStateScoreFrame.backdrop, 'TOPRIGHT', -9, 0)
+		hooksecurefunc('WorldStateScoreFrame_Update', UpdateBackdropWidth)
+	end
 
 	for _, button in next, {
 		_G.WorldStateScoreFrameKB,
