@@ -12,6 +12,10 @@ local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
 
 S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore', nil, nil, nil, nil, 'bgscore')
 
+local function UpdateBackdropWidth()
+	_G.WorldStateScoreFrame.backdrop:Point('BOTTOMRIGHT', _G.WorldStateScoreScrollFrame:IsShown() and -78 or -102, 25)
+end
+
 local myName = format('> %s <', E.myname)
 local function UpdateScore()
 	local inArena = IsActiveBattlefieldArena()
@@ -43,10 +47,10 @@ local function UpdateScore()
 			nameText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 		end
 	end
-end
 
-local function UpdateBackdropWidth()
-	_G.WorldStateScoreFrame.backdrop:Point('BOTTOMRIGHT', _G.WorldStateScoreScrollFrame:IsShown() and -78 or -102, 25)
+	if not E.Classic then
+		UpdateBackdropWidth()
+	end
 end
 
 function S:SkinWorldStateScore()
@@ -61,14 +65,12 @@ function S:SkinWorldStateScore()
 	local scrollBar = _G.WorldStateScoreScrollFrameScrollBar
 	S:HandleScrollBar(scrollBar)
 
-	-- Player rows grow all the way under the scroll bar (Except in Classic)
-	if not E.Classic then
+	if not E.Classic then -- Player rows grow all the way under the scroll bar (except in Classic)
 		scrollBar:Point('TOPLEFT', scrollFrame, 'TOPRIGHT', 47, -16)
 		scrollBar:Point('BOTTOMLEFT', scrollFrame, 'BOTTOMRIGHT', 47, 16)
 
 		-- Adjust the backdrop while the scroll bar is visible
 		_G.WorldStateScoreFrameCloseButton:Point('TOPRIGHT', WorldStateScoreFrame.backdrop, 'TOPRIGHT', -9, 0)
-		hooksecurefunc('WorldStateScoreFrame_Update', UpdateBackdropWidth)
 	end
 
 	for _, button in next, {
