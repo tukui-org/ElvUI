@@ -34,8 +34,8 @@ local function RaidPulloutUpdate(pullOutFrame)
 	for i = 1, pullOutFrame.numPulloutButtons do
 		local name = frameName..'Button'..i
 		local object = _G[name]
-		-- the Target bar is secure and anchored to the ManaBar
-		-- only run update out of combat
+
+		-- the Target bar is secure and anchored to the ManaBar, only run update out of combat
 		if not object.backdrop and not InCombatLockdown() then
 			for _, v in ipairs(bars) do
 				local bar = _G[name..v]

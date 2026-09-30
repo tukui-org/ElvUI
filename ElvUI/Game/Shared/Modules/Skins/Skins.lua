@@ -1957,8 +1957,11 @@ function S:HandleStepSlider(frame, minimal)
 		thumb:SetSize(20, 30)
 	end
 
+	if not slider.backdrop then
+		slider:CreateBackdrop()
+	end
+
 	local offset = minimal and 10 or 13
-	slider:CreateBackdrop()
 	slider.backdrop:SetPoint('TOPLEFT', 10, -offset)
 	slider.backdrop:SetPoint('BOTTOMRIGHT', -10, offset)
 
@@ -2372,12 +2375,6 @@ do -- Handle collapse
 		hooksecurefunc(button, 'SetNormalTexture', UpdateCollapseTexture)
 		UpdateCollapseTexture(button, button:GetNormalTexture():GetTexture())
 	end
-end
-
--- World Map related Skinning functions used for WoW 8.0
--- Currently unused, leave for plugins?
-function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
-	S[templateName](frame.overlayFrames[#frame.overlayFrames])
 end
 
 -- UIWidgets

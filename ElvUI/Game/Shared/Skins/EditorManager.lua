@@ -41,12 +41,12 @@ local function HandleDialogs()
 			dropdown.IsSkinned = true
 		end
 
-		-- HandleStepSlider puts the backdrop on the inner Slider
-		local slider = frame.Slider
-		if slider and not slider.Slider.backdrop then
-			S:HandleStepSlider(slider)
-			S:HandleNextPrevButton(slider.Back)
-			S:HandleNextPrevButton(slider.Forward)
+		local mainSlider = frame.Slider
+		local innerSlider = mainSlider and mainSlider.Slider
+		if innerSlider and not innerSlider.backdrop then
+			S:HandleStepSlider(mainSlider) -- puts the backdrop on the inner Slider
+			S:HandleNextPrevButton(mainSlider.Back)
+			S:HandleNextPrevButton(mainSlider.Forward)
 		end
 
 		local checkbox = frame.Button

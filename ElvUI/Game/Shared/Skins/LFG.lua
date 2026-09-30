@@ -326,10 +326,9 @@ local function ListCategoryAddButton(btn, btnIndex, categoryID, filters)
 	end
 end
 
-local function GroupFinderFrameOnShow(frame)
-	-- scenarios take the second button while they are enabled
-	local raidFinder = _G.PVEFrame:ScenariosEnabled() and frame.groupButton3 or frame.groupButton2
-	raidFinder.icon:SetTexture(133074) -- interface\icons\inv_helmet_06.blp
+local function GroupFinderFrameOnShow(frame) -- scenarios take the second button while they are enabled
+	local groupButton = _G.PVEFrame:ScenariosEnabled() and frame.groupButton3 or frame.groupButton2
+	groupButton.icon:SetTexture(133074) -- interface\icons\inv_helmet_06.blp
 end
 
 function S:LookingForGroupFrames()
@@ -442,8 +441,7 @@ function S:LookingForGroupFrames()
 			button = GroupFinderFrame['groupButton'..index]
 		end
 
-		-- the raid finder icon is a round portrait - Modern sets the icons again on every show
-		if E.Modern then
+		if E.Modern then -- the raid finder icon is a round portrait - Modern sets the icons again on every show
 			GroupFinderFrame:HookScript('OnShow', GroupFinderFrameOnShow)
 		else
 			GroupFinderFrame.groupButton2.icon:SetTexture(133074) -- interface\icons\inv_helmet_06.blp
@@ -1133,8 +1131,9 @@ end
 
 function S:LFGReadyCheckPopup()
 	local LFGReadyCheckPopup = _G.LFGReadyCheckPopup
-	LFGReadyCheckPopup.Border:Hide()
 	LFGReadyCheckPopup:SetTemplate('Transparent')
+	LFGReadyCheckPopup.Border:Hide()
+
 	S:HandleButton(LFGReadyCheckPopup.YesButton)
 	S:HandleButton(LFGReadyCheckPopup.NoButton)
 end
