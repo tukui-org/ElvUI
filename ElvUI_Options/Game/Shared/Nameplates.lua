@@ -78,9 +78,9 @@ local function GetUnitAuras(unit, auraType)
 	group.args.textGroup.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 	group.args.textGroup.args.stacks.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
 	group.args.textGroup.args.stacks.args.countFontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
-	group.args.textGroup.args.stacks.args.countXOffset = ACH:Range(L["X-Offset"], nil, 10, { min = -100, max = 100, step = 1 })
-	group.args.textGroup.args.stacks.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -100, max = 100, step = 1 })
-	group.args.textGroup.args.stacks.args.countPosition = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
+	group.args.textGroup.args.stacks.args.countPosition = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
+	group.args.textGroup.args.stacks.args.countXOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
+	group.args.textGroup.args.stacks.args.countYOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 
 	group.args.textGroup.args.duration = ACH:Group(L["Duration"], nil, 25)
 	group.args.textGroup.args.duration.inline = true
