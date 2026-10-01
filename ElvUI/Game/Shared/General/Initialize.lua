@@ -119,9 +119,9 @@ do -- Expansions
 	E.ClassicAnnivHC = season == 12 -- Anniversary Hardcore
 
 	local rules = Enum.GameRule
-	E.IsGameRuleHardcore = C_GameRules.IsGameRuleActive(rules.HardcoreRuleset)
-	E.IsGameRulePVP = C_GameRules.IsGameRuleActive(rules.PvPRuleset)
-	E.IsGameRuleRP = C_GameRules.IsGameRuleActive(rules.RPRuleset)
+	E.IsGameRuleHardcore = rules.HardcoreRuleset and C_GameRules.IsGameRuleActive(rules.HardcoreRuleset)
+	E.IsGameRulePVP = rules.PvPRuleset and C_GameRules.IsGameRuleActive(rules.PvPRuleset)
+	E.IsGameRuleRP = rules.RPRuleset and C_GameRules.IsGameRuleActive(rules.RPRuleset)
 
 	local IsHardcoreActive = C_GameRules.IsHardcoreActive
 	E.IsHardcoreActive = IsHardcoreActive and IsHardcoreActive()
