@@ -46,6 +46,7 @@ local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
+local UnitNameUnmodified = UnitNameUnmodified
 local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitPowerMax = UnitPowerMax
@@ -69,7 +70,7 @@ local HEX_FALLBACK = '|cFFcccccc'
 
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
 -- GLOBALS: UnitPower, UnitHealth, UnitName, UnitClass, UnitIsDead, UnitIsGhost, UnitIsDeadOrGhost, UnitIsConnected -- override during testing groups
--- GLOBALS: GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
+-- GLOBALS: GetUnitRealm, GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
 
 ------------------------------------------------------------------------
 --	Looping
@@ -486,24 +487,6 @@ if not E.Modern then
 		return name
 	end)
 
-	E:AddTag('name:last', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-		local name = UnitName(unit)
-		if name and strfind(name, '%s') then
-			name = strmatch(name, '([%S]+)$')
-		end
-
-		return name
-	end)
-
-	E:AddTag('name:first', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-		local name = UnitName(unit)
-		if name and strfind(name, '%s') then
-			name = strmatch(name, '^(%S+)')
-		end
-
-		return name
-	end)
-
 	E:AddTag('health:deficit-percent:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		local min, max = UnitHealth(unit), UnitHealthMax(unit)
 		local deficit = (min / max) - 1
@@ -657,11 +640,12 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 
 	E:AddTag(format('name:abbrev:%s', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 		local name = UnitName(unit)
-		if E:NotSecretValue(name) and name and strfind(name, '%s') then
-			name = Abbrev(name)
-		end
 
 		if E:NotSecretValue(name) and name then
+			if strfind(name, '%s') then
+				name = Abbrev(name)
+			end
+
 			return E:ShortenString(name, length)
 		end
 
@@ -692,11 +676,12 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 
 	E:AddTag(format('target:abbrev:%s', textFormat), 'UNIT_TARGET', function(unit)
 		local targetName = UnitName(unit..'target')
-		if E:NotSecretValue(targetName) and targetName and strfind(targetName, '%s') then
-			targetName = Abbrev(targetName)
-		end
 
 		if E:NotSecretValue(targetName) and targetName then
+			if strfind(targetName, '%s') then
+				targetName = Abbrev(targetName)
+			end
+
 			return E:ShortenString(targetName, length)
 		end
 
@@ -732,6 +717,33 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		return targetName
 	end)
 end
+
+E:AddTag('name:last', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	if E.Forever and UnitIsPlayer(unit) then
+		local _, lastName = UnitNameUnmodified(unit)
+		return lastName
+	else
+		local name = UnitName(unit)
+		if E:NotSecretValue(name) and name and strfind(name, '%s') then
+			name = strmatch(name, '([%S]+)$')
+		end
+
+		return name
+	end
+end)
+
+E:AddTag('name:first', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	if E.Forever and UnitIsPlayer(unit) then
+		return UnitNameUnmodified(unit)
+	else
+		local name = UnitName(unit)
+		if E:NotSecretValue(name) and name and strfind(name, '%s') then
+			name = strmatch(name, '^(%S+)')
+		end
+
+		return name
+	end
+end)
 
 E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
@@ -817,12 +829,11 @@ E:AddTag('smartlevel', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 end)
 
 E:AddTag('realm', 'UNIT_NAME_UPDATE', function(unit)
-	local _, realm = UnitName(unit)
-	return realm
+	return GetUnitRealm(unit)
 end)
 
 E:AddTag('realm:dash', 'UNIT_NAME_UPDATE', function(unit)
-	local _, realm = UnitName(unit)
+	local realm = GetUnitRealm(unit)
 	if E:IsSecretValue(realm) then
 		return realm
 	elseif not realm or realm == '' then
@@ -833,7 +844,7 @@ E:AddTag('realm:dash', 'UNIT_NAME_UPDATE', function(unit)
 end)
 
 E:AddTag('realm:translit', 'UNIT_NAME_UPDATE', function(unit)
-	local _, realm = UnitName(unit)
+	local realm = GetUnitRealm(unit)
 	if E:IsSecretValue(realm) then
 		return realm
 	elseif not realm or realm == '' then
@@ -849,7 +860,7 @@ E:AddTag('realm:translit', 'UNIT_NAME_UPDATE', function(unit)
 end)
 
 E:AddTag('realm:dash:translit', 'UNIT_NAME_UPDATE', function(unit)
-	local _, realm = UnitName(unit)
+	local realm = GetUnitRealm(unit)
 	if E:IsSecretValue(realm) then
 		return format('-%s', realm)
 	elseif not realm or realm == '' then

@@ -123,12 +123,13 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitLevel = UnitLevel
+local UnitNameUnmodified = UnitNameUnmodified
 local UnitPowerMax = UnitPowerMax
 local UnitPowerMissing = UnitPowerMissing
 local UnitPowerPercent = UnitPowerPercent
 local UnitPowerType = UnitPowerType
-local UnitSex = UnitSex
 local UnitRace = UnitRace
+local UnitSex = UnitSex
 local UnitThreatSituation = UnitThreatSituation
 
 -- GLOBALS: Hex, _TAGS, _COLORS
@@ -353,7 +354,12 @@ tagFunctions.missingpp = function(u)
 end
 
 tagFunctions.name = function(u, r)
-	return UnitName(r or u)
+	if oUF.isForever then
+		local firstName, lastName = UnitNameUnmodified(r or u)
+		format('%s %s', firstName, lastName)
+	else
+		return UnitName(r or u)
+	end
 end
 
 tagFunctions.offline = function(u)

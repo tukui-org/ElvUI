@@ -140,6 +140,19 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 --	Tag Functions
 ------------------------------------------------------------------------
 
+Tags.Env.GetUnitRealm = function(unit)
+	if E.Forever then
+		local guid = UnitGUID(unit)
+		if guid then
+			local _, _, _, _, _, _, realmName = GetPlayerInfoByGUID(guid)
+			return realmName
+		end
+	else
+		local _, realm = UnitName(unit)
+		return realm
+	end
+end
+
 Tags.Env.UnitEffectiveLevel = function(unit)
 	if E.Modern or E.TBC or E.Wrath or E.Mists then
 		return _G.UnitEffectiveLevel(unit)
