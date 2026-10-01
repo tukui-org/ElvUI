@@ -356,7 +356,7 @@ end
 tagFunctions.name = function(u, r)
 	if oUF.isForever then
 		local firstName, lastName = UnitNameUnmodified(r or u)
-		format('%s %s', firstName, lastName)
+		return format('%s %s', firstName, lastName)
 	else
 		return UnitName(r or u)
 	end
