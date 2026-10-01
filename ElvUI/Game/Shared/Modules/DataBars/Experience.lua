@@ -277,6 +277,8 @@ function DB:ExperienceBar_Toggle()
 		DB:UnregisterEvent('ZONE_CHANGED_NEW_AREA')
 
 		if E.Modern then
+			DB:UnregisterEvent('TRACKED_HOUSE_CHANGED')
+			DB:UnregisterEvent('HOUSE_LEVEL_FAVOR_UPDATED')
 			DB:UnregisterEvent('SUPER_TRACKING_CHANGED')
 		end
 	end

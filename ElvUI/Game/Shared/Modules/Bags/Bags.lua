@@ -953,6 +953,8 @@ function B:UpdateCooldown(slot)
 		end
 	else
 		cd:Hide()
+
+		cd.start, cd.duration = nil, nil -- the same cooldown can come back, like an item moved out and back in
 	end
 end
 
@@ -1506,7 +1508,9 @@ function B:Container_OnEvent(event, ...)
 		if not self.isBank or self:IsShown() then
 			local id = ...
 			if B.WarbandBanks[id] then
-				B:UpdateBagSlots(self, id)
+				if self.isBank then -- the bag frame gets these too
+					B:UpdateBagSlots(self, id)
+				end
 			else
 				B:DelayedContainer(self, event, id)
 			end

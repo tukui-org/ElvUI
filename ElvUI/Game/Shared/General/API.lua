@@ -1034,7 +1034,10 @@ function E:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 
 	local _, instanceType = IsInInstance()
 	if instanceType == 'pvp' then
-		E.BGTimer = E:ScheduleRepeatingTimer('RequestBGInfo', 5)
+		if not E.BGTimer then
+			E.BGTimer = E:ScheduleRepeatingTimer('RequestBGInfo', 5)
+		end
+
 		E:RequestBGInfo()
 	elseif E.BGTimer then
 		E:CancelTimer(E.BGTimer)

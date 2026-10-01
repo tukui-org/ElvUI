@@ -88,6 +88,29 @@ local classSpecificSpells = { -- stagger IDs also in oUF stagger element
 	[SPELL_MAELSTROM] = (E.Modern and E.myclass == 'SHAMAN') or nil
 }
 
+E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
+	local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
+	if E:NotSecretValue(cur) and cur > 0 then
+		local _, r, g, b = GetUnitPowerBarTextureInfo(unit, 3)
+		if not r then
+			r, g, b = 1, 1, 1
+		end
+
+		return Hex(r,g,b)
+	end
+end)
+
+for textFormat in pairs(E.GetFormattedTextStyles) do
+	local tagFormat = strlower(gsub(textFormat, '_', '-'))
+	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
+		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
+		if E:NotSecretValue(cur) and cur > 0 then
+			local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
+			return E:GetFormattedText(textFormat, cur, max)
+		end
+	end)
+end
+
 if not E.Modern then
 	for textFormat in pairs(E.GetFormattedTextStyles) do
 		local tagFormat = strlower(gsub(textFormat, '_', '-'))
@@ -97,26 +120,6 @@ if not E.Modern then
 				return status
 			else
 				return E:GetFormattedText(textFormat, UnitHealth(unit), UnitHealthMax(unit))
-			end
-		end)
-
-		E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
-			local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
-			if cur > 0 then
-				local _, r, g, b = GetUnitPowerBarTextureInfo(unit, 3)
-				if not r then
-					r, g, b = 1, 1, 1
-				end
-
-				return Hex(r,g,b)
-			end
-		end)
-
-		E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
-			local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
-			if cur > 0 then
-				local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
-				return E:GetFormattedText(textFormat, cur, max)
 			end
 		end)
 
@@ -632,7 +635,7 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 
 		local deficit = E:NotSecretValue(cur) and E:NotSecretValue(max) and cur and max and (max - cur) or 0
 		if deficit > 0 and cur > 0 then
-			return _TAGS['health:deficit-percent:nostatus'](unit)
+			return E:GetFormattedText('PERCENT', (cur / max) - 1, -1) -- health:deficit-percent:nostatus, which only exists on classic
 		else
 			return _TAGS[nameTag](unit)
 		end
@@ -1393,12 +1396,12 @@ if info then
 	info['health:deficit-nostatus'] = { category = "Health", description = "Displays the health of the unit as a deficit, without status" }
 	info['health:deficit-nostatus:shortvalue'] = { category = "Health", description = "Shortvalue of the health deficit, without status" }
 	info['health:deficit-percent-absorbs'] = { hidden = E.Classic, category = "Health", description = "Displays the percentage deficit health including absorb values. If greater than max health that will be reflected." }
-	info['health:deficit-percent:name'] = { category = "Health", description = "Displays the health deficit as a percentage and the full name of the unit" }
+	info['health:deficit-percent:name'] = { hidden = E.Modern, category = "Health", description = "Displays the health deficit as a percentage and the full name of the unit" }
 	info['health:deficit-percent:name-long'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 20 letters)" }
 	info['health:deficit-percent:name-medium'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 15 letters)" }
 	info['health:deficit-percent:name-short'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 10 letters)" }
 	info['health:deficit-percent:name-veryshort'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 5 letters)" }
-	info['health:deficit-percent:nostatus'] = { category = "Health", description = "Displays the health deficit as a percentage, without status" }
+	info['health:deficit-percent:nostatus'] = { hidden = E.Modern, category = "Health", description = "Displays the health deficit as a percentage, without status" }
 	info['health:deficit:shortvalue'] = { category = "Health", description = "Shortvalue of the health deficit (e.g. -41k instead of -41300)" }
 	info['health:max'] = { category = "Health", description = "Displays the maximum health of the unit" }
 	info['health:max:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's maximum health" }

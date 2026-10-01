@@ -168,6 +168,11 @@ function DT:EmptyPanel(panel)
 		dt:SetScript('OnEnter', nil)
 		dt:SetScript('OnLeave', nil)
 		dt:SetScript('OnClick', nil)
+
+		if dt.objectEvent and dt.objectEventFunc then
+			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
+			dt.objectEvent, dt.objectEventFunc = nil, nil
+		end
 	end
 
 	UnregisterStateDriver(panel, 'visibility')

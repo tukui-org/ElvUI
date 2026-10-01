@@ -749,6 +749,12 @@ function NP:PLAYER_TARGET_CHANGED(_, unit)
 	NP:SetupTarget(self) -- pass it, even as nil here
 end
 
+function NP:UpdateTargets() -- the driver callback above only runs when the new target has a plate
+	for nameplate in pairs(NP.Plates) do
+		nameplate.isTarget = nameplate.__unit and E:UnitIsUnit(nameplate.__unit, 'target') or nil
+	end
+end
+
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	if not unit then unit = self.__unit end
 
@@ -758,6 +764,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.creatureType = UnitCreatureType(unit)
 	self.isMe = E:UnitIsUnit(unit, 'player')
 	self.isPet = E:UnitIsUnit(unit, 'pet')
+	self.isTarget = E:UnitIsUnit(unit, 'target')
 	self.isFriend = UnitIsFriend('player', unit)
 	self.isEnemy = UnitIsEnemy('player', unit)
 	self.isPlayer = UnitIsPlayer(unit)
@@ -1121,6 +1128,7 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
+	NP:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateTargets')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')

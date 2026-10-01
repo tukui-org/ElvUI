@@ -536,7 +536,7 @@ local function ClassPowerDisable(element, owner)
 	owner:UnregisterEvent('UNIT_MAXPOWER', Path)
 	owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	owner:UnregisterEvent('SPELL_UPDATE_CHARGES', CheckCharges)
-	owner:UnregisterEvent('UNIT_AURA')
+	owner:UnregisterEvent('UNIT_AURA', Path)
 
 	if oUF.isModern then
 		owner:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)

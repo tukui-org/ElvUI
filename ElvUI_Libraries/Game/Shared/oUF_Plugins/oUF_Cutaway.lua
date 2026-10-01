@@ -305,7 +305,7 @@ local function DisableElement(element)
 end
 
 local function Disable(self)
-	if self.Cutaway then return end
+	if not self.Cutaway then return end
 
 	DisableElement(self.Cutaway.Health)
 	DisableElement(self.Cutaway.Power)

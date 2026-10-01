@@ -495,6 +495,10 @@ do	-- i guess we finally need it ~Simpy
 					info.count = 0
 
 					co_yield()
+
+					if info.cancel then
+						return
+					end
 				end
 			end
 		end
@@ -1891,7 +1895,7 @@ do
 				objs[object] = nil
 			end
 
-			if not next(funcs) then
+			if not next(objs) then
 				eventFrame:UnregisterEvent(event)
 				eventTable[event] = nil
 			end

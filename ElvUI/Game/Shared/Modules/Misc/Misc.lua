@@ -45,7 +45,6 @@ local UninviteUnit = C_PartyInfo.UninviteUnit
 local SendChatMessage = C_ChatInfo.SendChatMessage
 local GetNumFactions = C_Reputation.GetNumFactions or GetNumFactions
 local GetFactionInfo = C_Reputation.GetFactionDataByIndex or GetFactionInfo
-local GetFactionDataByID = C_Reputation.GetFactionDataByID or GetFactionDataByID
 local ExpandAllFactionHeaders = C_Reputation.ExpandAllFactionHeaders or ExpandAllFactionHeaders
 local SetWatchedFactionIndex = C_Reputation.SetWatchedFactionByIndex or SetWatchedFactionIndex
 local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
@@ -158,47 +157,30 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
-do
-	local twwBW = 2673	-- 11.1.0, both factions, account wide
-	local cataBW = 1133	-- 4.0.3, horde only, not account wide
-	local bilgewater = E.Retail and GetFactionDataByID(twwBW)
-	function M:COMBAT_TEXT_UPDATE(_, messagetype)
-		if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
+function M:FACTION_STANDING_CHANGED(_, factionID)
+	if not E.db.general.autoTrackReputation or factionID == 1168 then return end -- guild faction
 
-		local faction, rep = GetCurrentCombatTextEventInfo()
-		if E:NotSecretValue(faction) and (faction and faction ~= 'Guild') and (rep and rep > 0) then
-			local data = E:GetWatchedFactionInfo()
-			if not (data and data.name) or faction ~= data.name then
-				ExpandAllFactionHeaders()
+	local data = E:GetWatchedFactionInfo()
+	if not data or data.factionID ~= factionID then
+		SetWatchedFactionByID(factionID)
+	end
+end
 
-				local khazAlgar = E.MapInfo.continentMapID == 2274
-				for i = 1, GetNumFactions() do
-					if E.Modern then
-						local info = GetFactionInfo(i)
-						if info then
-							local name, factionID = info.name, info.factionID
-							if factionID == twwBW then
-								bilgewater = info -- reupdate this info
-							end
+function M:COMBAT_TEXT_UPDATE(_, messagetype)
+	if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
-							if name == faction and factionID and factionID ~= 0 then
-								if bilgewater and name == bilgewater.name then -- two have matching faction names
-									SetWatchedFactionByID(khazAlgar and twwBW or cataBW) -- prefer TWW when in Khaz Algar
-								else
-									SetWatchedFactionByID(factionID)
-								end
+	local faction, rep = GetCurrentCombatTextEventInfo()
+	if E:NotSecretValue(faction) and (faction and faction ~= 'Guild') and (rep and rep > 0) then
+		local data = E:GetWatchedFactionInfo()
+		if not (data and data.name) or faction ~= data.name then
+			ExpandAllFactionHeaders()
 
-								break
-							end
-						end
-					else
-						local name, _, _, _, _, _, _, _, _, _, _, _, _, factionID = GetFactionInfo(i)
-						if name == faction and factionID and factionID ~= 0 then
-							SetWatchedFactionIndex(i)
+			for i = 1, GetNumFactions() do
+				local name, _, _, _, _, _, _, _, _, _, _, _, _, factionID = GetFactionInfo(i)
+				if name == faction and factionID and factionID ~= 0 then
+					SetWatchedFactionIndex(i)
 
-							break
-						end
-					end
+					break
 				end
 			end
 		end
@@ -445,7 +427,7 @@ function M:Initialize()
 	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	M:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	M:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
-	M:RegisterEvent('COMBAT_TEXT_UPDATE')
+	M:RegisterEvent(E.Modern and 'FACTION_STANDING_CHANGED' or 'COMBAT_TEXT_UPDATE') -- the combat text info is secret on Modern
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
 

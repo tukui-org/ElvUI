@@ -226,7 +226,7 @@ function UF:Configure_Power(frame, healthUpdate)
 		-- Hide holder until we detach again
 		UF:PowerBar_DisableHolder(frame, power, frame.POWERBAR_DETACHED)
 
-		power:SetFrameStrata(db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+		power:SetFrameStrata(db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata and db.power.strataAndLevel.frameStrata or 'LOW')
 
 		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomLevel then
 			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)

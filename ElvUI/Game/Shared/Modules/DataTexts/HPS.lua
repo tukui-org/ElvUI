@@ -40,7 +40,7 @@ local function OnEvent(panel, event)
 			timeStamp = timestamp
 		end
 
-		lastSegment = timeStamp
+		lastSegment = timestamp
 		combatTime = timestamp - timeStamp
 
 		healTotal = healTotal + max(0, lastHealAmount - overHeal)

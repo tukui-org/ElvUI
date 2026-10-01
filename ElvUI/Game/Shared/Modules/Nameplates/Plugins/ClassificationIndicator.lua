@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local ElvUF = E.oUF
 
+local UnitClassification = UnitClassification
+
 local textures = {}
 local atlases = {
 	elite = 'nameplates-icon-elite-gold',
@@ -9,8 +11,13 @@ local atlases = {
 	rare = 'nameplates-icon-elite-silver'
 }
 
-local function Update(self)
+local function Update(self, event, unit)
 	local element = self.ClassificationIndicator
+
+	if event == 'UNIT_CLASSIFICATION_CHANGED' then
+		self.classification = UnitClassification(unit) -- otherwise set by NAME_PLATE_UNIT_ADDED
+	end
+
 	local classification = self.classification
 
 	if element.PreUpdate then
