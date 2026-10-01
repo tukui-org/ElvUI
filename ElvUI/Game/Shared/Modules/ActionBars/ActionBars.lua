@@ -1773,8 +1773,7 @@ function AB:SetButtonDesaturation(button, start, duration)
 			local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
 			allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
 		else
-			local GCD = AB:GetGlobalCooldown()
-			allow = (duration and duration > GCD) and 1 or 0
+			allow = (duration and duration > 0 and duration > AB:GetGlobalCooldown()) and 1 or 0
 		end
 	end
 
@@ -1846,7 +1845,8 @@ end
 function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	if button._state_type == 'action' then
 		if info then
-			AB:SetButtonDesaturation(button, info.startTime, info.duration)
+			-- isActive and isEnabled are never secret - idle buttons skip the cooldown lookups
+			AB:SetButtonDesaturation(button, info.startTime, (info.isActive or not info.isEnabled) and info.duration)
 		else
 			AB:SetButtonDesaturation(button, start, duration)
 		end

@@ -418,11 +418,11 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
-	NP:Update_QuestIcons(nameplate)
+	NP:Update_QuestIcons(nameplate, not updateBase)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
-		NP:DisablePlate(nameplate, db.enable and db.nameOnly, not db.enable)
+		NP:DisablePlate(nameplate, db.enable and db.nameOnly, not db.enable, not updateBase)
 
 		if nameplate == NP.TestFrame then
 			nameplate.Castbar:SetAlpha(0)
@@ -454,7 +454,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	end
 end
 
-function NP:DisablePlate(nameplate, nameOnly, hideRaised)
+function NP:DisablePlate(nameplate, nameOnly, hideRaised, keepTags)
 	if hideRaised and nameplate.RaisedElement:IsShown() then
 		nameplate.RaisedElement:Hide() -- reshown by NAME_PLATE_UNIT_ADDED
 	end
@@ -462,7 +462,10 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised)
 	NP:ReparentElements(nameplate, E.HiddenFrame)
 
 	if nameOnly then
-		NP:Update_Tags(nameplate)
+		if not keepTags then
+			NP:Update_Tags(nameplate)
+		end
+
 		NP:Update_Highlight(nameplate)
 
 		-- The position values here are forced on purpose.
@@ -1121,10 +1124,6 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')
-
-	if not E.Modern then
-		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
-	end
 
 	NP:HideInterfaceOptions()
 	NP:SetCVars()

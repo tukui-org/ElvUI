@@ -63,12 +63,12 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 		return E:AbbreviateNumbers(currentPower, E.Abbreviate[which])
 	end)
 
-	E:AddTag(format('health:max:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+	E:AddTag(format('health:max:%s', tagFormat), 'UNIT_MAXHEALTH', function(unit)
 		local maxHealth = UnitHealthMax(unit)
 		return E:AbbreviateNumbers(maxHealth, E.Abbreviate[which])
 	end)
 
-	E:AddTag(format('power:max:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+	E:AddTag(format('power:max:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
 		local powerType = UnitPowerType(unit)
 		local maxPower = UnitPowerMax(unit, powerType)
 		return E:AbbreviateNumbers(maxPower, E.Abbreviate[which])

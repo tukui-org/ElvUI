@@ -721,9 +721,10 @@ local function UpdateAbilityInfo(self)
 		self.abilityName = spellName
 		self.abilityID = spellID
 
-		AuraButtons.buttons[self] = spellName
+		-- only the target aura cooldowns read these - classic only
+		if spellName and not WoWModern then
+			AuraButtons.buttons[self] = spellName
 
-		if spellName then
 			if not AuraButtons.auras[spellName] then
 				AuraButtons.auras[spellName] = {}
 			end
@@ -1542,8 +1543,8 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_USABLE")
 	lib.eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 
-	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
-	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
+	lib.eventFrame:RegisterUnitEvent("LOSS_OF_CONTROL_ADDED", "player")
+	lib.eventFrame:RegisterUnitEvent("LOSS_OF_CONTROL_UPDATE", "player")
 
 	if WoWModern then
 		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")

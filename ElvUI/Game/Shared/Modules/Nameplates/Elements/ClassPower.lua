@@ -209,7 +209,8 @@ function NP:Construct_Runes(nameplate)
 		local rune = CreateFrame('StatusBar', barName, Runes)
 		rune:SetStatusBarTexture(texture)
 		NP:SetStatusBarColor(rune, color.r, color.g, color.b)
-		rune.PostUpdateColor = NP.Runes_UpdateChargedColor
+		-- only Wrath and Mists fade the charging color - Runes_PostUpdate sets it everywhere else
+		rune.PostUpdateColor = (E.Wrath or E.Mists) and NP.Runes_UpdateChargedColor or nil
 		rune.__owner = Runes
 		NP.StatusBars[rune] = 'runes'
 

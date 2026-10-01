@@ -214,6 +214,8 @@ local function AuraUpdate(frame, element, unit, aura, index, offset, filter, isD
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
+	if not show then return HIDDEN end
+
 	UpdateBar(element, bar)
 
 	if bar.noTime then
@@ -224,7 +226,7 @@ local function AuraUpdate(frame, element, unit, aura, index, offset, filter, isD
 		bar:SetScript('OnUpdate', OnUpdate)
 	end
 
-	return show and VISIBLE or HIDDEN
+	return VISIBLE
 end
 
 local function SetPosition(element, from, to)

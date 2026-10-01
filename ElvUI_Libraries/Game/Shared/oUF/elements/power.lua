@@ -298,7 +298,11 @@ local function Path(self, event, ...)
 	--]]
 	(self.Power.Override or Update) (self, event, ...);
 
-	ColorPath(self, event, ...)
+	-- ElvUI: power ticks only change the color when it follows the value
+	local element = self.Power
+	if event ~= 'UNIT_POWER_FREQUENT' or not element.colorPower or element.colorPowerSmooth then
+		ColorPath(self, event, ...)
+	end
 end
 
 local function ForceUpdate(element)

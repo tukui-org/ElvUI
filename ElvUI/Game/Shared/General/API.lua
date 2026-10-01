@@ -9,7 +9,7 @@ local _G = _G
 local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
 local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
-local wipe, max, next, tinsert, date, time = wipe, max, next, tinsert, date, time
+local wipe, max, next, date, time = wipe, max, next, date, time
 local pcall, strlen, tonumber = pcall, strlen, tonumber
 
 local CreateFrame = CreateFrame
@@ -1199,7 +1199,7 @@ end
 function E:CompatibleTooltip(tt) -- knock off compatibility
 	if tt.GetTooltipData then return end -- real support exists
 
-	local info = { lines = {}, name = tt:GetName() }
+	local info, pool = { lines = {}, name = tt:GetName() }, {}
 
 	tt.GetTooltipData = function()
 		wipe(info.lines)
@@ -1211,7 +1211,14 @@ function E:CompatibleTooltip(tt) -- knock off compatibility
 			local right = info.name and _G[info.name..'TextRight'..i]
 			local rightText = right and right:GetText() or nil
 
-			tinsert(info.lines, i, { lineIndex = i, leftText = leftText, rightText = rightText })
+			local line = pool[i] -- reuse the line tables
+			if not line then
+				line = { lineIndex = i }
+				pool[i] = line
+			end
+
+			line.leftText, line.rightText = leftText, rightText
+			info.lines[i] = line
 		end
 
 		return info

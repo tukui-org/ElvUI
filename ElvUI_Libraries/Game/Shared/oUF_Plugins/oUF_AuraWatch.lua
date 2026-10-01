@@ -248,11 +248,16 @@ local function FilterIcons(element, unit, filter, limit, isDebuff, offset, dontH
 	return visible, hidden
 end
 
+-- only a change to a watched spell can change the indicators
+local function WatchedAura(frame, _, _, _, aura)
+	return not aura or (oUF:NotSecretValue(aura.spellId) and frame.AuraWatch.watched[aura.spellId])
+end
+
 local function UpdateAuras(self, event, unit, updateInfo)
 	local element = self.AuraWatch
 	if not element then return end
 
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, WatchedAura) then return end
 
 	if element.PreUpdate then element:PreUpdate(unit) end
 

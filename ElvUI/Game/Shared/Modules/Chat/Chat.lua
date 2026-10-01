@@ -2792,6 +2792,9 @@ function CH:ChatThrottleIntervalHandler(event, text, author, ...)
 end
 
 function CH:CHAT_MSG_CHANNEL(event, msg, author, ...)
+	-- self is the chat frame - one without channels drops the line anyway
+	if self.channelList and not next(self.channelList) then return false end
+
 	return CH:ChatThrottleIntervalHandler(event, msg, author, ...)
 end
 

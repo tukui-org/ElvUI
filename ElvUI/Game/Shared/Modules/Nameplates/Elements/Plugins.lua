@@ -34,13 +34,15 @@ function NP:Construct_QuestIcons(nameplate)
 	return QuestIcons
 end
 
-function NP:Update_QuestIcons(nameplate)
+function NP:Update_QuestIcons(nameplate, keepLayout)
 	local plateDB = NP:PlateDB(nameplate)
 	local db = not E.Classic and plateDB.questIcon
 
 	if db and db.enable and not nameplate.isBattlePet and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
 		if not nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:EnableElement('QuestIcons')
+		elseif keepLayout then
+			return
 		end
 
 		nameplate.QuestIcons:ClearAllPoints()

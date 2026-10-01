@@ -653,7 +653,7 @@ local function UpdateTimer(frame, elapsed)
 	local total = frame.total
 	if total >= frame.timer then
 		for fs, parent in next, frame.strings do -- isForced prevents spam in ElvUI
-			if not parent.isForced and parent:IsShown() and oUF:UnitExists(parent.__unit) then
+			if not parent.isForced and parent:IsVisible() and oUF:UnitExists(parent.__unit) then
 				fs:UpdateTag()
 			end
 		end
@@ -792,7 +792,7 @@ local function verifyAura(frame, event, unit, auraInstanceID, aura)
 end
 
 local function ShouldUpdateTag(frame, event, unit)
-	if not frame:IsShown() or frame.isForced then return end -- isForced prevents spam in ElvUI
+	if not frame:IsVisible() or frame.isForced then return end -- isForced prevents spam in ElvUI
 
 	if unitlessEvents[event] then
 		return true

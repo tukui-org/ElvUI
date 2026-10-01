@@ -557,6 +557,10 @@ end
 function B:NewItemGlowSlotSwitch(slot, show)
 	if slot and slot.newItemGlow then
 		if show then
+			if not slot.newItemGlow:IsShown() then
+				slot.bagFrame.NewItemGlow.Fade:AddChild(slot.newItemGlow, slot.newItemGlow)
+			end
+
 			slot.newItemGlow:Show()
 
 			local bank = slot.bagFrame.isBank and B.BankFrame
@@ -833,7 +837,9 @@ end
 
 function B:Slot_OnEvent(event, arg1)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
-		B:UpdateCooldown(self)
+		if self:IsVisible() then -- closed bags catch up in Slot_OnShow
+			B:UpdateCooldown(self)
+		end
 	elseif event == 'INVENTORY_SEARCH_UPDATE' then
 		B:InventorySearchUpdate(self)
 	elseif event == 'COLOR_OVERRIDES_RESET' then -- no clue why a delay is needed here
@@ -855,6 +861,12 @@ function B:Slot_OnEnter()
 end
 
 function B:Slot_OnLeave() end
+
+function B:Slot_OnShow()
+	if self.Cooldown and self.spellID then
+		B:UpdateCooldown(self)
+	end
+end
 
 function B:Holder_OnReceiveDrag()
 	PutItemInBag(self.isBank and self:GetInventorySlot() or self:GetID())
@@ -2670,6 +2682,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
 	slot:HookScript('OnEnter', B.Slot_OnEnter)
 	slot:HookScript('OnLeave', B.Slot_OnLeave)
+	slot:HookScript('OnShow', B.Slot_OnShow)
 	slot:SetID(slotID)
 
 	slot:SetNormalTexture(E.ClearTexture)
@@ -2787,7 +2800,6 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.newItemGlow:SetInside()
 		slot.newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 		slot.newItemGlow:Hide()
-		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
 	end
 
 	return slot
@@ -3270,6 +3282,8 @@ function B:HideItemGlow(bag)
 		for _, itemGlow in next, bag.NewItemGlow.Fade.children do
 			itemGlow:SetAlpha(0)
 		end
+
+		wipe(bag.NewItemGlow.Fade.children)
 	end
 end
 
