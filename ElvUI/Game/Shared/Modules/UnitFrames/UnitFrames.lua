@@ -1608,7 +1608,7 @@ end
 function UF:Eventless_UpdateAll(frame)
 	frame.elapsedThrottle = frame.eventlessThrottle
 	frame.elapsedSecret = 0
-	frame.elapsedPower = 0
+	frame.elapsedResource = 0
 	frame.elapsedPrediction = 0
 	frame.elapsedAura = 0
 
@@ -1642,8 +1642,8 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 		return -- bail out
 	end
 
-	local waitPower = (self.elapsedPower or 0) + elapsed
-	if waitPower >= self.eventlessPower then
+	local waitResource = (self.elapsedResource or 0) + elapsed
+	if waitResource >= self.eventlessResource then
 		local guid = UnitGUID(unit)
 		if self.lastGUID ~= guid then
 			self.lastGUID = guid
@@ -1656,9 +1656,9 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 		if self:IsElementEnabled('Health') then self.Health:ForceUpdate() end
 		if self:IsElementEnabled('Power') then self.Power:ForceUpdate() end
 
-		self.elapsedPower = 0
+		self.elapsedResource = 0
 	else
-		self.elapsedPower = waitPower
+		self.elapsedResource = waitResource
 	end
 
 	local waitPrediction = (self.elapsedPrediction or 0) + elapsed
@@ -1690,7 +1690,7 @@ end
 
 function ElvUF:HandleEventlessUnit(frame)
 	if not frame.eventlessThrottle then frame.eventlessThrottle = 0.1 end
-	if not frame.eventlessPower then frame.eventlessPower = 0.2 end
+	if not frame.eventlessResource then frame.eventlessResource = 0.2 end
 	if not frame.eventlessPrediction then frame.eventlessPrediction = 0.4 end
 	if not frame.eventlessSecret then frame.eventlessSecret = 0.5 end
 	if not E.Modern and not frame.eventlessAura then frame.eventlessAura = 0.6 end
