@@ -942,20 +942,23 @@ function DT:BuildTables()
 	local db = ElvDB
 	if not db then db = {} ElvDB = db end
 
+	local realm = E.myrealm
 	if not db.gold then db.gold = {} end
-	db.gold[E.myrealm] = db.gold[E.myrealm] or {}
+	db.gold[realm] = db.gold[realm] or {}
 
+	local name = E.myname
 	if not db.class then db.class = {} end
-	db.class[E.myrealm] = db.class[E.myrealm] or {}
-	db.class[E.myrealm][E.myname] = E.myclass
+	db.class[realm] = db.class[realm] or {}
+	db.class[realm][name] = E.myclass
 
 	if not db.faction then db.faction = {} end
-	db.faction[E.myrealm] = db.faction[E.myrealm] or {}
-	db.faction[E.myrealm][E.myname] = E.myfaction
+	db.faction[realm] = db.faction[realm] or {}
+	db.faction[realm][name] = E.myfaction
 
+	local server = E.serverID
 	if not db.serverID then db.serverID = {} end
-	db.serverID[E.serverID] = db.serverID[E.serverID] or {}
-	db.serverID[E.serverID][E.myrealm] = true
+	db.serverID[server] = db.serverID[server] or {}
+	db.serverID[server][realm] = true
 end
 
 function DT:CloseMenus()
