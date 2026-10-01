@@ -2056,7 +2056,7 @@ function E:Initialize()
 			E:Tutorials()
 		end
 
-		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
+		if E.db.general.tagUpdateRate then
 			E:TagUpdateRate(E.db.general.tagUpdateRate)
 		end
 
