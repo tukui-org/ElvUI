@@ -67,6 +67,8 @@ local function UpdateBuybackInfo()
 end
 
 local function UpdateMerchantInfo()
+	if not _G.MerchantFrame:IsShown() then return end
+
 	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
 		local button = _G['MerchantItem'..i..'ItemButton']
 
