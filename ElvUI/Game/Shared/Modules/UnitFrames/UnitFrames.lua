@@ -1605,70 +1605,98 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-do
-	local function EventlessUpdate(frame, elapsed)
-		local unit = frame.__eventless and frame.__unit
-		local guid = UnitGUID(unit)
-		if not guid then return end
+function UF:Eventless_UpdateAll(frame)
+	frame.elapsedThrottle = frame.eventlessThrottle
+	frame.elapsedSecret = 0
+	frame.elapsedPower = 0
+	frame.elapsedPrediction = 0
+	frame.elapsedAura = 0
 
-		if E:IsSecretValue(guid) then
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateSecrets then
-				frame:UpdateAllElements('OnUpdate')
+	frame:UpdateAllElements('OnUpdate')
+end
 
-				frame.elapsed = 0
-			else
-				frame.elapsed = frequency + elapsed
-			end
+function UF:Eventless_OnUpdate(elapsed) -- self = frame
+	local unit = self.__eventless and self.__unit
+	if not unit then return end
+
+	local waitThrottle = (self.elapsedThrottle or self.eventlessThrottle) - elapsed
+	if waitThrottle > 0 then
+		self.elapsedThrottle = waitThrottle
+		return
+	end
+
+	self.elapsedThrottle = self.eventlessThrottle
+
+	if E:IsSecretUnit(unit) then
+		local waitSecret = (self.elapsedSecret or 0) + elapsed
+		if waitSecret >= self.eventlessSecret then
+			UF:Eventless_UpdateAll(self)
+
+			self.elapsedSecret = 0
 		else
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateElements then
-				if frame.lastGUID ~= guid then
-					frame:UpdateAllElements('OnUpdate')
-					frame.lastGUID = guid
-				else
-					if frame:IsElementEnabled('Health') then frame.Health:ForceUpdate() end
-					if frame:IsElementEnabled('Power') then frame.Power:ForceUpdate() end
-				end
+			self.elapsedSecret = waitSecret
+		end
 
-				frame.elapsed = 0
-			else
-				frame.elapsed = frequency + elapsed
+		return
+	elseif not UnitExists(unit) then
+		return -- bail out
+	end
+
+	local waitPower = (self.elapsedPower or 0) + elapsed
+	if waitPower >= self.eventlessPower then
+		local guid = UnitGUID(unit)
+		if self.lastGUID ~= guid then
+			self.lastGUID = guid
+
+			UF:Eventless_UpdateAll(self)
+
+			return -- UAE happened, no need to continue
+		end
+
+		if self:IsElementEnabled('Health') then self.Health:ForceUpdate() end
+		if self:IsElementEnabled('Power') then self.Power:ForceUpdate() end
+
+		self.elapsedPower = 0
+	else
+		self.elapsedPower = waitPower
+	end
+
+	local waitPrediction = (self.elapsedPrediction or 0) + elapsed
+	if waitPrediction >= self.eventlessPrediction then
+		if self:IsElementEnabled('HealthPrediction') then self.HealthPrediction:ForceUpdate() end
+		if self:IsElementEnabled('PowerPrediction') then self.PowerPrediction:ForceUpdate() end
+		if self:IsElementEnabled('RaidTargetIndicator') then self.RaidTargetIndicator:ForceUpdate() end
+
+		self.elapsedPrediction = 0
+	else
+		self.elapsedPrediction = waitPrediction
+	end
+
+	if self.eventlessAura then -- not on Modern
+		local waitAura = (self.elapsedAura or 0) + elapsed
+		if waitAura >= self.eventlessAura then
+			if self:IsElementEnabled('Auras') then
+				if self.Auras then self.Auras:ForceUpdate() end
+				if self.Buffs then self.Buffs:ForceUpdate() end
+				if self.Debuffs then self.Debuffs:ForceUpdate() end
 			end
 
-			local prediction = frame.elapsedPrediction or 0
-			if prediction > frame.onUpdatePrediction then
-				if frame:IsElementEnabled('HealthPrediction') then frame.HealthPrediction:ForceUpdate() end
-				if frame:IsElementEnabled('PowerPrediction') then frame.PowerPrediction:ForceUpdate() end
-				if frame:IsElementEnabled('RaidTargetIndicator') then frame.RaidTargetIndicator:ForceUpdate() end
-
-				frame.elapsedPrediction = 0
-			else
-				frame.elapsedPrediction = prediction + elapsed
-			end
-
-			local auras = frame.elapsedAuras or 0
-			if auras > frame.onUpdateAuras and frame:IsElementEnabled('Auras') then
-				if frame.Auras then frame.Auras:ForceUpdate() end
-				if frame.Buffs then frame.Buffs:ForceUpdate() end
-				if frame.Debuffs then frame.Debuffs:ForceUpdate() end
-
-				frame.elapsedAuras = 0
-			else
-				frame.elapsedAuras = auras + elapsed
-			end
+			self.elapsedAura = 0
+		else
+			self.elapsedAura = waitAura
 		end
 	end
+end
 
-	function ElvUF:HandleEventlessUnit(frame)
-		if not frame.onUpdateSecrets then frame.onUpdateSecrets = 0.5 end -- same as oUF
-		if not frame.onUpdateElements then frame.onUpdateElements = 0.2 end
-		if not frame.onUpdatePrediction then frame.onUpdatePrediction = 0.4 end
-		if not frame.onUpdateAuras then frame.onUpdateAuras = 0.6 end
+function ElvUF:HandleEventlessUnit(frame)
+	if not frame.eventlessThrottle then frame.eventlessThrottle = 0.1 end
+	if not frame.eventlessPower then frame.eventlessPower = 0.2 end
+	if not frame.eventlessPrediction then frame.eventlessPrediction = 0.4 end
+	if not frame.eventlessSecret then frame.eventlessSecret = 0.5 end
+	if not E.Modern and not frame.eventlessAura then frame.eventlessAura = 0.6 end
 
-		frame.__eventless = true
-		frame:SetScript('OnUpdate', EventlessUpdate)
-	end
+	frame.__eventless = true
+	frame:SetScript('OnUpdate', UF.Eventless_OnUpdate)
 end
 
 do
