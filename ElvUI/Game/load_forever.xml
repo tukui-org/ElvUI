@@ -45,13 +45,13 @@
 	<Script file='Shared\General\MapInfo.lua'/>
 	<Script file='Shared\General\ModuleCopy.lua'/>
 	<Script file='Shared\Tags\API.lua'/>
-	<Script file='Shared\Tags\Tags.lua'/>
+	<Script file='Shared\Tags\Shared.lua'/>
+	<Script file='Shared\Tags\Modern.lua'/>
 	<Script file='Shared\Layout\Layout.lua'/>
 	<Include file='Shared\Modules\load_modules.xml'/>
 	<Script file='Shared\Filters\Filters.lua'/>
 
 	<Script file='Forever\Filters\Filters.lua'/>
-	<Script file='Mainline\Tags\Tags.lua'/>
 	<Script file='Shared\Modules\Nameplates\Plugins\PVPRole.lua'/>
 	<Script file='Shared\Modules\DataTexts\Currencies.lua'/>
 	<Script file='Shared\Modules\DataTexts\Defense.lua'/>
