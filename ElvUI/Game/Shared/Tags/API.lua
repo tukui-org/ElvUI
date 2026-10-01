@@ -150,7 +150,7 @@ Tags.Env.GetUnitRealm = function(unit)
 			local guid = UnitGUID(unit)
 			if guid then
 				local _, _, _, _, _, _, realm = GetPlayerInfoByGUID(guid)
-				return (realm == '' and E.myrealm) or realm
+				return (E:NotSecretValue(realm) and realm == '' and E.myrealm) or realm
 			end
 		end
 	else
