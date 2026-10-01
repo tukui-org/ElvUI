@@ -780,7 +780,7 @@ local eventHandlers = {}
 local eventAuraCache = {}
 local eventExtraUnits = {}
 local eventWaiters = {}
-local eventTimerThreshold = 0.1
+local eventTimerThreshold = 0.2
 local function verifyAura(frame, event, unit, auraInstanceID, aura)
 	if aura and tagSpells[aura.spellId] then
 		eventAuraCache[auraInstanceID] = aura
