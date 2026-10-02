@@ -504,12 +504,11 @@ function NP:GetClassAnchor()
 end
 
 function NP:SetupTarget(nameplate, removed)
-	if not (NP.db.units and NP.db.units.TARGET) then return end
+	local classpower = NP.db.units and NP.db.units.TARGET and NP.db.units.TARGET.classpower
+	if not classpower then return end
 
 	local TCP = NP.TargetClassPower
-	local cp = NP.db.units.TARGET.classpower
-
-	if removed or not nameplate or not cp.enable then
+	if removed or not nameplate or not classpower.enable then
 		TCP.realPlate = nil
 	else
 		local db = NP:PlateDB(nameplate)
@@ -520,17 +519,17 @@ function NP:SetupTarget(nameplate, removed)
 	if TCP.ClassPower then
 		TCP.ClassPower:SetParent(anchor)
 		TCP.ClassPower:ClearAllPoints()
-		TCP.ClassPower:Point('CENTER', anchor, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.ClassPower:Point('CENTER', anchor, 'CENTER', classpower.xOffset, classpower.yOffset)
 	end
 
 	if TCP.Runes then
 		TCP.Runes:SetParent(anchor)
 		TCP.Runes:ClearAllPoints()
-		TCP.Runes:Point('CENTER', anchor, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.Runes:Point('CENTER', anchor, 'CENTER', classpower.xOffset, classpower.yOffset)
 	elseif TCP.Stagger then
 		TCP.Stagger:SetParent(anchor)
 		TCP.Stagger:ClearAllPoints()
-		TCP.Stagger:Point('CENTER', anchor, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.Stagger:Point('CENTER', anchor, 'CENTER', classpower.xOffset, classpower.yOffset)
 	end
 end
 
