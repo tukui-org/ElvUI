@@ -623,7 +623,6 @@ local NP_Auras = {
 	growthY = 'UP',
 	onlyShowPlayer = false,
 	stackAuras = true,
-	filter = 'HELPFUL',
 	sortDirection = 'DESCENDING',
 	sortMethod = 'TIME_REMAINING',
 	spacing = 1,
@@ -638,7 +637,6 @@ local NP_Auras = {
 	countFontSize = 9,
 	countXOffset = 0,
 	countYOffset = 2,
-	durationPosition = 'CENTER',
 	minDuration = 0,
 	maxDuration = 0,
 	priority = '',
@@ -839,7 +837,6 @@ local NP_QuestIcon = {
 
 --NamePlate
 P.nameplates = {
-	clampToScreen = false,
 	fadeIn = true,
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
@@ -861,8 +858,6 @@ P.nameplates = {
 		enemy = false,
 	},
 	clickSize = {
-		width = 150,
-		height = 30,
 		personalWidth = 150,
 		personalHeight = 30,
 		friendlyWidth = 150,
@@ -1189,7 +1184,6 @@ for unit, data in next, P.nameplates.units do
 		if useCCDebuffs then
 			data.auras.priority = 'Blacklist,CCDebuffs'
 			data.auras.anchorPoint = 'RIGHT'
-			data.auras.filter = 'HARMFUL'
 			data.auras.numAuras = 2
 			data.auras.xOffset = 2
 			data.auras.yOffset = 0
@@ -1638,7 +1632,6 @@ local UF_Auras = {
 	stackAuras = true,
 	growthX = 'RIGHT',
 	growthY = 'UP',
-	durationPosition = 'CENTER',
 	enable = false,
 	numrows = 1,
 	perrow = 8,

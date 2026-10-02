@@ -48,7 +48,7 @@ function NP:Power_UpdateColor(_, unit)
 				end
 			end
 		else
-			color = NP.Colors.power.ALT_POWER
+			color = NP.Colors.power[POWERTYPE_ALTERNATE]
 		end
 
 		if element.useAtlas and color and color.atlas then
@@ -93,7 +93,7 @@ function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
 	local db = NP:PlateDB(self.__owner)
 	if not db.enable then return end
 
-	if self.__owner.frameType ~= 'PLAYER' and db.power.displayAltPower and not self.displayType then
+	if E.Modern and self.__owner.frameType ~= 'PLAYER' and db.power.displayAltPower and not self.displayType then
 		self:Hide()
 		return
 	end

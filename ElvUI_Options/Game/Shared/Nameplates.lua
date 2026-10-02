@@ -52,7 +52,7 @@ local function GetUnitAuras(unit, auraType)
 	local key = auraKeys[auraType]
 	local group = ACH:Group(key.name, nil, key.order, nil, function(info) return E.db.nameplates.units[unit][auraType][info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType][info[#info]] = value NP:ConfigureAll() end)
 	group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	group.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
+	group.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2, nil, nil, nil, nil, nil, nil, E.Modern)
 	group.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
 	group.args.desaturate = ACH:Toggle(L["Desaturate Icon"], E.Modern and L["Requres the filter string to contain !PLAYER (requires a reload)."] or L["Set auras that are not from you to desaturated."], 4)
 
@@ -70,7 +70,6 @@ local function GetUnitAuras(unit, auraType)
 	group.args.generalGroup.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 15, { UP = L["Up"], DOWN = L["Down"] }, nil, nil, nil, nil, function() local point = E.db.nameplates.units[unit][auraType].anchorPoint return point == 'TOP' or point == 'BOTTOM' end)
 	group.args.generalGroup.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 16, { IMPORTANT = E.Modern and L["Important"] or nil, DEFENSIVE = E.Modern and L["Big Defensive"] or nil, TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = E.Modern and L["Debuffs"] or L["Player"] })
 	group.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 17, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
-	group.args.generalGroup.args.filter = ACH:Select(L["Aura Filter"], nil, 18, { RAID = L["Raid"], HELPFUL = L["Buffs"], HARMFUL = L["Debuffs"], ["HELPFUL|HARMFUL"] = L["Buffs and Debuffs"] }, nil, nil, nil, nil, nil, auraType ~= 'auras')
 
 	group.args.textGroup = ACH:Group(L["Text"], nil, 15)
 	group.args.textGroup.args.stacks = ACH:Group(L["Stack Counter"], nil, 20)
@@ -85,9 +84,8 @@ local function GetUnitAuras(unit, auraType)
 	group.args.textGroup.args.duration = ACH:Group(L["Duration"], nil, 25)
 	group.args.textGroup.args.duration.inline = true
 	group.args.textGroup.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'nameplates') end)
-	group.args.textGroup.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 
-	group.args.sourceGroup = ACH:Group(L["Source Text"], nil, 20, nil, function(info) return E.db.nameplates.units[unit][auraType].sourceText[info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].sourceText[info[#info]] = value NP:ConfigureAll() end)
+	group.args.sourceGroup = ACH:Group(L["Source Text"], nil, 20, nil, function(info) return E.db.nameplates.units[unit][auraType].sourceText[info[#info]] end, function(info, value) E.db.nameplates.units[unit][auraType].sourceText[info[#info]] = value NP:ConfigureAll() end, nil, E.Modern)
 	group.args.sourceGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.sourceGroup.args.class = ACH:Toggle(L["Use Class Color"], nil, 2)
 	group.args.sourceGroup.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
@@ -188,7 +186,7 @@ local function GetUnitSettings(unit, name)
 	group.args.powerGroup = ACH:Group(L["Power"], nil, 15, nil, function(info) return E.db.nameplates.units[unit].power[info[#info]] end, function(info, value) E.db.nameplates.units[unit].power[info[#info]] = value NP:ConfigureAll() end)
 	group.args.powerGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.powerGroup.args.hideWhenEmpty = ACH:Toggle(L["Hide When Empty"], nil, 2)
-	group.args.powerGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 3)
+	group.args.powerGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 3, nil, nil, nil, nil, nil, nil, not E.Modern)
 	group.args.powerGroup.args.useAtlas = ACH:Toggle(L["Use Atlas Textures"], nil, 4)
 	group.args.powerGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 5)
 	group.args.powerGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 7)
@@ -320,7 +318,7 @@ local function GetUnitSettings(unit, name)
 
 	group.args.pvpindicator = ACH:Group(L["PvP Indicator"], L["Horde / Alliance / Honor Info"], 60, nil, function(info) return E.db.nameplates.units[unit].pvpindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpindicator[info[#info]] = value NP:ConfigureAll() end)
 	group.args.pvpindicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	group.args.pvpindicator.args.showBadge = ACH:Toggle(L["Show Badge"], L["Show PvP Badge Indicator if available"], 2)
+	group.args.pvpindicator.args.showBadge = ACH:Toggle(L["Show Badge"], L["Show PvP Badge Indicator if available"], 2, nil, nil, nil, nil, nil, nil, not E.Modern)
 	group.args.pvpindicator.args.size = ACH:Range(L["Size"], nil, 3, { min = 12, max = 64, step = 1 })
 	group.args.pvpindicator.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPositions)
 	group.args.pvpindicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
@@ -341,12 +339,12 @@ local function GetUnitSettings(unit, name)
 		group.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = MIN_HEIGHT, max = MAX_HEIGHT, step = 1 })
 		group.args.classBarGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 		group.args.classBarGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
-		group.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
+		group.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return E.myclass ~= 'DEATHKNIGHT' or E.Wrath or E.Mists end)
 
 		group.args.general.args.useStaticPosition = ACH:Toggle(L["Use Static Position"], L["When enabled the nameplate will stay visible in a locked position."], 105, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].enable end)
 	elseif unit == 'FRIENDLY_PLAYER' or unit == 'ENEMY_PLAYER' then
-		group.args.general.args.markHealers = ACH:Toggle(L["Healer Icon"], L["Display a healer icon over known healers inside battlegrounds or arenas."], 105)
-		group.args.general.args.markTanks = ACH:Toggle(L["Tank Icon"], L["Display a tank icon over known tanks inside battlegrounds or arenas."], 106)
+		group.args.general.args.markHealers = ACH:Toggle(L["Healer Icon"], L["Display a healer icon over known healers inside battlegrounds or arenas."], 105, nil, nil, nil, nil, nil, nil, not (E.Modern or E.Mists))
+		group.args.general.args.markTanks = ACH:Toggle(L["Tank Icon"], L["Display a tank icon over known tanks inside battlegrounds or arenas."], 106, nil, nil, nil, nil, nil, nil, not (E.Modern or E.Mists))
 	elseif unit == 'ENEMY_NPC' or unit == 'FRIENDLY_NPC' then
 		group.args.eliteIcon = ACH:Group(L["Elite Icon"], nil, 75, nil, function(info) return E.db.nameplates.units[unit].eliteIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].eliteIcon[info[#info]] = value NP:ConfigureAll() end)
 		group.args.eliteIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -380,9 +378,9 @@ local function GetUnitSettings(unit, name)
 		group.args.healthGroup.args.useClassColor = ACH:Toggle(L["Use Class Color"], nil, 10)
 
 		group.args.portraitGroup.args.classicon = ACH:Toggle(L["Class Icon"], nil, 20)
-		group.args.portraitGroup.args.specicon = ACH:Toggle(L["Spec Icon"], nil, 21, nil, 21, nil, nil, nil, nil, nil, nil, not E.Modern)
+		group.args.portraitGroup.args.specicon = ACH:Toggle(L["Spec Icon"], nil, 21, nil, nil, nil, nil, nil, nil, not E.Retail)
 
-		group.args.pvpclassificationindicator = ACH:Group(L["PvP Classification Indicator"], L["Cart / Flag / Orb / Assassin Bounty"], 70, nil, function(info) return E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] = value NP:ConfigureAll() end)
+		group.args.pvpclassificationindicator = ACH:Group(L["PvP Classification Indicator"], L["Cart / Flag / Orb / Assassin Bounty"], 70, nil, function(info) return E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpclassificationindicator[info[#info]] = value NP:ConfigureAll() end, nil, not E.Modern)
 		group.args.pvpclassificationindicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.pvpclassificationindicator.args.size = ACH:Range(L["Size"], nil, 2, { min = 12, max = 64, step = 1 })
 		group.args.pvpclassificationindicator.args.position = ACH:Select(L["Position"], nil, 3, C.Values.AllPositions)
@@ -407,15 +405,14 @@ NamePlates.generalGroup = ACH:Group(L["General"], nil, 5, nil, nil, function(inf
 NamePlates.generalGroup.args.showEnemyCombat = ACH:Select(L["Enemy Combat Toggle"], L["Control enemy nameplates toggling on or off when in combat."], 2, { DISABLED = L["Disable"], TOGGLE_ON = L["Toggle On While In Combat"], TOGGLE_OFF = L["Toggle Off While In Combat"] }, nil, nil, nil, function(info, value) E.db.nameplates[info[#info]] = value NP:PLAYER_REGEN_ENABLED() end)
 NamePlates.generalGroup.args.showFriendlyCombat = ACH:Select(L["Friendly Combat Toggle"], L["Control friendly nameplates toggling on or off when in combat."], 3, { DISABLED = L["Disable"], TOGGLE_ON = L["Toggle On While In Combat"], TOGGLE_OFF = L["Toggle Off While In Combat"] }, nil, nil, nil, function(info, value) E.db.nameplates[info[#info]] = value NP:PLAYER_REGEN_ENABLED() end)
 NamePlates.generalGroup.args.spacer1 = ACH:Spacer(5)
-NamePlates.generalGroup.args.clampToScreen = ACH:Toggle(L["Clamp Nameplates"], L["Clamp nameplates to the top of the screen when outside of view."], 7)
 NamePlates.generalGroup.args.highlight = ACH:Toggle(L["Hover Highlight"], nil, 8)
 NamePlates.generalGroup.args.fadeIn = ACH:Toggle(L["Alpha Fading"], nil, 9)
 NamePlates.generalGroup.args.spacer2 = ACH:Spacer(10, 'full')
 NamePlates.generalGroup.args.multiplier = ACH:Range(L["Multiplier"], L["Backdrop Multiplier"], 11, { softMin = 0.2, min = 0, softMax = 0.8, max = 1, step = 0.01 })
 NamePlates.generalGroup.args.overlapV = ACH:Range(L["Overlap Vertical"], L["Percentage amount for vertical overlap of Nameplates."], 12, { min = 0, max = 3, step = .1 })
 NamePlates.generalGroup.args.overlapH = ACH:Range(L["Overlap Horizontal"], L["Percentage amount for horizontal overlap of Nameplates."], 13, { min = 0, max = 3, step = .1 })
-NamePlates.generalGroup.args.lowHealthThreshold = ACH:Range(L["Low Health Threshold"], L["Make the unitframe glow when it is below this percent of health."], 14, { min = 0, softMax = .5, max = .8, step = .01, isPercent = true })
-NamePlates.generalGroup.args.loadDistance = ACH:Range(L["Load Distance"], L["Only load nameplates for units within this range."], 15, { min = 0, max = 41, step = 1 }, nil, nil, nil, nil, not (E.TBC or E.Wrath or E.Mists))
+NamePlates.generalGroup.args.lowHealthThreshold = ACH:Range(L["Low Health Threshold"], L["Make the unitframe glow when it is below this percent of health."], 14, { min = 0, softMax = .5, max = .8, step = .01, isPercent = true }, nil, nil, nil, nil, E.Modern)
+NamePlates.generalGroup.args.loadDistance = ACH:Range(L["Load Distance"], L["Only load nameplates for units within this range."], 15, { min = 0, max = 41, step = 1 }, nil, nil, nil, nil, E.Modern)
 
 NamePlates.generalGroup.args.spacer3 = ACH:Spacer(20, 'full')
 NamePlates.generalGroup.args.plateVisibility = ACH:Group(L["Visibility"], nil, 50)
@@ -446,8 +443,8 @@ do
 
 	local cvarToggles = {
 		nameplateOtherAtBase = L["Nameplate At Base"],
-		nameplateShowOnlyNames = L["Show Only Names"],
-		useClassColorNames = L["Class Color Names"]
+		nameplateShowOnlyNameForFriendlyPlayerUnits = L["Show Only Names"],
+		nameplateUseClassColorForFriendlyPlayerUnitNames = L["Class Color Names"]
 	}
 
 	-- Descriptions based on GetCVar
@@ -461,9 +458,9 @@ do
 		if cvarToggles[key] then
 			E:SetCVar(key, value and (key == 'nameplateOtherAtBase' and 2 or 1) or 0)
 
-			if key == 'nameplateShowOnlyNames' then
+			if key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
 				E.db.nameplates.visibility.showOnlyNames = value
-			elseif key == 'useClassColorNames' then
+			elseif key == 'nameplateUseClassColorForFriendlyPlayerUnitNames' then
 				E.db.nameplates.classColorNames = value
 			end
 		else
@@ -472,9 +469,9 @@ do
 	end
 
 	local function CheckCVar(key)
-		if key == 'nameplateShowOnlyNames' then
+		if key == 'nameplateShowOnlyNameForFriendlyPlayerUnits' then
 			return E.db.nameplates.visibility.showOnlyNames
-		elseif key == 'useClassColorNames' then
+		elseif key == 'nameplateUseClassColorForFriendlyPlayerUnitNames' then
 			return E.db.nameplates.classColorNames
 		elseif cvarRanges[key] then
 			return tonumber(GetCVar(key)) or 0
@@ -502,11 +499,11 @@ NamePlates.generalGroup.args.enviromentConditions.args.friendly = ACH:MultiSelec
 NamePlates.generalGroup.args.enviromentConditions.args.stackingEnabled = ACH:Toggle(L["Stacking Enabled"], L["This option controls whether nameplates will follow the settings below.\n\n|cffff3333Note:|r This is an override to the Motion Type setting."], 30, nil, nil, 250)
 NamePlates.generalGroup.args.enviromentConditions.args.stacking = ACH:MultiSelect(L["Stacking Plates"], nil, 31, envConditions, nil, nil, function(_, key) return E.db.nameplates.enviromentConditions.stackingNameplates[key] end, function(_, key, value) E.db.nameplates.enviromentConditions.stackingNameplates[key] = value NP:EnviromentConditionals() end, nil, function() return not E.db.nameplates.enviromentConditions.stackingEnabled end)
 
-NamePlates.generalGroup.args.clickThrough = ACH:Group(L["Click Through"], nil, 65, nil, function(info) return E.db.nameplates.clickThrough[info[#info]] end)
+NamePlates.generalGroup.args.clickThrough = ACH:Group(L["Click Through"], nil, 65, nil, function(info) return E.db.nameplates.clickThrough[info[#info]] end, nil, nil, not E.Modern)
 NamePlates.generalGroup.args.clickThrough.args.friendly = ACH:Toggle(L["Friendly"], nil, 2, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateClickThrough() end)
 NamePlates.generalGroup.args.clickThrough.args.enemy = ACH:Toggle(L["Enemy"], nil, 3, nil, nil, nil, nil, function(info, value) E.db.nameplates.clickThrough[info[#info]] = value NP:SetNamePlateClickThrough() end)
 
-NamePlates.generalGroup.args.clickableRange = ACH:Group(L["Clickable Size"], nil, 70, nil, function(info) return E.db.nameplates.clickSize[info[#info]] end, function(info, value) E.db.nameplates.clickSize[info[#info]] = value NP:ConfigureAll() end, nil, E.Modern)
+NamePlates.generalGroup.args.clickableRange = ACH:Group(L["Clickable Size"], nil, 70, nil, function(info) return E.db.nameplates.clickSize[info[#info]] end, function(info, value) E.db.nameplates.clickSize[info[#info]] = value NP:ConfigureAll() end)
 
 NamePlates.generalGroup.args.clickableRange.args.personal = ACH:Group(L["Personal"], nil, 10)
 NamePlates.generalGroup.args.clickableRange.args.personal.inline = true
@@ -561,15 +558,15 @@ NamePlates.colorsGroup.args.general.inline = true
 do
 	local function GetToggle(info) return E.db.nameplates.colors[info[#info]] end
 	local function SetToggle(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end
-	NamePlates.colorsGroup.args.general.args.preferGlowColor = ACH:Toggle(L["Prefer Target Color"], L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."], 1, nil, nil, nil, GetToggle, SetToggle)
+	NamePlates.colorsGroup.args.general.args.preferGlowColor = ACH:Toggle(L["Prefer Target Color"], L["When this is enabled, Low Health Threshold colors will not be displayed while targeted."], 1, nil, nil, nil, GetToggle, SetToggle, nil, E.Modern)
 	NamePlates.colorsGroup.args.general.args.auraByDispels = ACH:Toggle(L["Borders By Dispel"], nil, 2, nil, nil, nil, GetToggle, SetToggle, nil, E.Modern)
 	NamePlates.colorsGroup.args.general.args.auraByType = ACH:Toggle(L["Borders By Type"], nil, 3, nil, nil, nil, GetToggle, SetToggle)
 end
 
 NamePlates.colorsGroup.args.general.args.spacer1 = ACH:Spacer(5, 'full')
 NamePlates.colorsGroup.args.general.args.glowColor = ACH:Color(L["Target Indicator Color"], nil, 6, true)
-NamePlates.colorsGroup.args.general.args.lowHealthColor = ACH:Color(L["Low Health Color"], L["Color when at Low Health Threshold"], 7, true)
-NamePlates.colorsGroup.args.general.args.lowHealthHalf = ACH:Color(L["Low Health Half"], L["Color when at half of the Low Health Threshold"], 8, true)
+NamePlates.colorsGroup.args.general.args.lowHealthColor = ACH:Color(L["Low Health Color"], L["Color when at Low Health Threshold"], 7, true, nil, nil, nil, nil, E.Modern)
+NamePlates.colorsGroup.args.general.args.lowHealthHalf = ACH:Color(L["Low Health Half"], L["Color when at half of the Low Health Threshold"], 8, true, nil, nil, nil, nil, E.Modern)
 NamePlates.colorsGroup.args.general.args.tapped = ACH:Color(L["Tagged NPC"], nil, 9, true)
 
 NamePlates.colorsGroup.args.threat = ACH:Group(L["Threat"], nil, 2, nil, function(info) local t, d = E.db.nameplates.colors.threat[info[#info]], P.nameplates.colors.threat[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.threat[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, function() return not E.db.nameplates.threat.useThreatColor end)
@@ -590,14 +587,14 @@ NamePlates.colorsGroup.args.castGroup.args.castNoInterruptColor = ACH:Color(L["N
 NamePlates.colorsGroup.args.castGroup.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 3, true)
 NamePlates.colorsGroup.args.castGroup.args.castbarDesaturate = ACH:Toggle(L["Desaturated Icon"], L["Show the castbar icon desaturated if a spell is not interruptible."], 4, nil, nil, nil, function(info) return E.db.nameplates.colors[info[#info]] end, function(info, value) E.db.nameplates.colors[info[#info]] = value NP:ConfigureAll() end)
 
-NamePlates.colorsGroup.args.castGroup.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.empoweredCast[i], P.nameplates.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.nameplates.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Modern)
+NamePlates.colorsGroup.args.castGroup.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.empoweredCast[i], P.nameplates.colors.empoweredCast[i] return t.r, t.g, t.b, 1, d.r, d.g, d.b, 1 end, function(info, r, g, b) local t = E.db.nameplates.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.castGroup.args.empowerStage.inline = true
 
 for i in next, P.nameplates.colors.empoweredCast do
 	NamePlates.colorsGroup.args.castGroup.args.empowerStage.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
-NamePlates.colorsGroup.args.selectionGroup = ACH:Group(L["Selection"], nil, 4, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.nameplates.colors.selection[n], P.nameplates.colors.selection[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.selection[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+NamePlates.colorsGroup.args.selectionGroup = ACH:Group(L["Selection"], nil, 4, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.nameplates.colors.selection[n], P.nameplates.colors.selection[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.selection[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Modern)
 NamePlates.colorsGroup.args.selectionGroup.inline = true
 NamePlates.colorsGroup.args.selectionGroup.args['0'] = ACH:Color(L["Hostile"], nil, 0)
 NamePlates.colorsGroup.args.selectionGroup.args['1'] = ACH:Color(L["Unfriendly"], nil, 1)
@@ -640,7 +637,7 @@ do
 		L["FACTION_STANDING_LABEL8"]
 	}
 
-	NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 6, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
+	NamePlates.colorsGroup.args.reactions = ACH:Group(L["Reaction Colors"], nil, 6, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.reactions[i], P.nameplates.colors.reactions[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local i = tonumber(info[#info]); local t = E.db.nameplates.colors.reactions[i] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, E.Modern)
 	NamePlates.colorsGroup.args.reactions.inline = true
 
 	for i = 1, 8 do
@@ -653,8 +650,8 @@ NamePlates.colorsGroup.args.healPrediction.inline = true
 
 NamePlates.colorsGroup.args.healPrediction.args.personal = ACH:Color(L["Personal"], nil, 1, true)
 NamePlates.colorsGroup.args.healPrediction.args.others = ACH:Color(L["Others"], nil, 2, true)
-NamePlates.colorsGroup.args.healPrediction.args.absorbs = ACH:Color(L["Absorbs"], nil, 3, true, nil, nil, nil, nil, not E.Modern)
-NamePlates.colorsGroup.args.healPrediction.args.healAbsorbs = ACH:Color(L["Heal Absorbs"], nil, 4, true, nil, nil, nil, nil, E.Classic)
+NamePlates.colorsGroup.args.healPrediction.args.absorbs = ACH:Color(L["Absorbs"], nil, 3, true, nil, nil, nil, nil, not (E.Modern or E.Mists))
+NamePlates.colorsGroup.args.healPrediction.args.healAbsorbs = ACH:Color(L["Heal Absorbs"], nil, 4, true, nil, nil, nil, nil, not (E.Modern or E.Mists))
 
 NamePlates.colorsGroup.args.power = ACH:Group(L["Power Color"], nil, 8, nil, function(info) local t, d = E.db.nameplates.colors.power[info[#info]], P.nameplates.colors.power[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.power[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
 NamePlates.colorsGroup.args.power.inline = true
@@ -662,30 +659,29 @@ NamePlates.colorsGroup.args.power.args.MANA = ACH:Color(L["MANA"], nil, 1)
 NamePlates.colorsGroup.args.power.args.RAGE = ACH:Color(L["RAGE"], nil, 2)
 NamePlates.colorsGroup.args.power.args.FOCUS = ACH:Color(L["FOCUS"], nil, 3)
 NamePlates.colorsGroup.args.power.args.ENERGY = ACH:Color(L["ENERGY"], nil, 4)
-NamePlates.colorsGroup.args.power.args.RUNIC_POWER = ACH:Color(L["RUNIC_POWER"], nil, 5)
+NamePlates.colorsGroup.args.power.args.RUNIC_POWER = ACH:Color(L["RUNIC_POWER"], nil, 5, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath or E.Mists))
 NamePlates.colorsGroup.args.power.args.PAIN = ACH:Color(L["PAIN"], nil, 6, nil, nil, nil, nil, nil, not E.Retail)
 NamePlates.colorsGroup.args.power.args.FURY = ACH:Color(L["FURY"], nil, 7, nil, nil, nil, nil, nil, not E.Retail)
 NamePlates.colorsGroup.args.power.args.LUNAR_POWER = ACH:Color(L["LUNAR_POWER"], nil, 8, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 NamePlates.colorsGroup.args.power.args.INSANITY = ACH:Color(L["INSANITY"], nil, 9, nil, nil, nil, nil, nil, not E.Retail)
 NamePlates.colorsGroup.args.power.args.MAELSTROM = ACH:Color(L["MAELSTROM"], nil, 10, nil, nil, nil, nil, nil, not E.Retail)
-NamePlates.colorsGroup.args.power.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 11)
+NamePlates.colorsGroup.args.power.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 11, nil, nil, nil, nil, nil, not E.Modern)
 
 NamePlates.colorsGroup.args.classResources = ACH:Group(L["Class Resources"], nil, 9, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
-NamePlates.colorsGroup.args.classResources.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, E.Classic)
-NamePlates.colorsGroup.args.classResources.args.ARCANE_CHARGES = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.MAGE[info[#info]], P.nameplates.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
-NamePlates.colorsGroup.args.classResources.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.WARLOCK[info[#info]], P.nameplates.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, E.Classic)
-NamePlates.colorsGroup.args.classResources.args.SOUL_FRAGMENTS = ACH:Color(L["SOUL_FRAGMENTS"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.DEMONHUNTER[info[#info]], P.nameplates.colors.classResources.DEMONHUNTER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.DEMONHUNTER[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not E.Modern)
-NamePlates.colorsGroup.args.classResources.args.EBON_MIGHT = ACH:Color(L["EBON_MIGHT"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.EVOKER[info[#info]], P.nameplates.colors.classResources.EVOKER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.EVOKER[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not E.Modern)
+NamePlates.colorsGroup.args.classResources.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
+NamePlates.colorsGroup.args.classResources.args.ARCANE_CHARGES = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.MAGE[info[#info]], P.nameplates.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not (E.Retail or E.Mists))
+NamePlates.colorsGroup.args.classResources.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.WARLOCK[info[#info]], P.nameplates.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not (E.Retail or E.Mists))
+NamePlates.colorsGroup.args.classResources.args.SOUL_FRAGMENTS = ACH:Color(L["SOUL_FRAGMENTS"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.DEMONHUNTER[info[#info]], P.nameplates.colors.classResources.DEMONHUNTER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.DEMONHUNTER[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.classResources.inline = true
 
 NamePlates.colorsGroup.args.COMBO_POINTS = ACH:Group(L["COMBO_POINTS"], nil, 10, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.comboPoints[i], P.nameplates.colors.classResources.comboPoints[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.comboPoints[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end)
-NamePlates.colorsGroup.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 13, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Modern)
+NamePlates.colorsGroup.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 13, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.COMBO_POINTS.inline = true
 
-NamePlates.colorsGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 11, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.MONK[i], P.nameplates.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, E.Classic)
+NamePlates.colorsGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 11, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.MONK[i], P.nameplates.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not (E.Retail or E.Mists))
 NamePlates.colorsGroup.args.CHI_POWER.inline = true
 
-NamePlates.colorsGroup.args.ESSENCE = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 12, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.EVOKER.ESSENCE[i], P.nameplates.colors.classResources.EVOKER.ESSENCE[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.EVOKER.ESSENCE[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Modern)
+NamePlates.colorsGroup.args.ESSENCE = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 12, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.EVOKER.ESSENCE[i], P.nameplates.colors.classResources.EVOKER.ESSENCE[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.EVOKER.ESSENCE[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not E.Retail)
 NamePlates.colorsGroup.args.ESSENCE.inline = true
 
 for i = 1, 7 do
@@ -697,13 +693,13 @@ for i = 1, 7 do
 	NamePlates.colorsGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
-NamePlates.colorsGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 4, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.DEATHKNIGHT[i], P.nameplates.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, E.Classic)
+NamePlates.colorsGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 4, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.nameplates.colors.classResources.DEATHKNIGHT[i], P.nameplates.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.nameplates.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b NP:ConfigureAll() end, nil, not (E.Retail or E.Wrath or E.Mists))
 NamePlates.colorsGroup.args.RUNES.inline = true
 
 do
 	local runeText = { [-1] = L["RUNE_CHARGE"], [0] = L["RUNES"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
 	for i = -1, 4 do
-		NamePlates.colorsGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.nameplates.colors.chargingRunes end, function() return (E.Mists and i < 1) or (not E.Mists and i == 4) or (E.Modern and E.db.unitframe.colors.runeBySpec and i == 0) or (E.Modern and not E.db.unitframe.colors.runeBySpec and i > 0) end)
+		NamePlates.colorsGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.nameplates.colors.chargingRunes end, function() return ((E.Wrath or E.Mists) and i < 1) or (not (E.Wrath or E.Mists) and i == 4) or (E.Modern and E.db.nameplates.colors.runeBySpec and i == 0) or (E.Modern and not E.db.nameplates.colors.runeBySpec and i > 0) end)
 	end
 end
 
@@ -735,4 +731,4 @@ NamePlates.targetGroup.args.classBarGroup.args.width = ACH:Range(L["Width"], nil
 NamePlates.targetGroup.args.classBarGroup.args.height = ACH:Range(L["Height"], nil, 4, { min = MIN_HEIGHT, max = MAX_HEIGHT, step = 1 })
 NamePlates.targetGroup.args.classBarGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 NamePlates.targetGroup.args.classBarGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
-NamePlates.targetGroup.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
+NamePlates.targetGroup.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return E.myclass ~= 'DEATHKNIGHT' or E.Wrath or E.Mists end)

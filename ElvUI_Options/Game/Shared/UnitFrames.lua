@@ -243,7 +243,6 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 
 	config.args.textGroup.args.duration = ACH:Group(L["Duration"], nil, 2, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.textGroup.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
-	config.args.textGroup.args.duration.args.durationPosition = ACH:Select(L["Position"], nil, 2, C.Values.AllPoints)
 	config.args.textGroup.args.duration.inline = true
 
 	config.args.sourceGroup = ACH:Group(L["Source Text"], nil, 40, nil, function(info) return E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
