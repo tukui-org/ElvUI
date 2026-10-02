@@ -1090,7 +1090,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 	_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
 
 	if E.Forever then -- Forever sidebar tabs are plain check buttons with an icon
-		for i = 1, 3 do
+		for i = 1, 4 do
 			HandleSidebarTab(_G['PaperDollSidebarTab'..i])
 		end
 	else
