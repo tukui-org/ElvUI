@@ -2,7 +2,6 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local next = next
-
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
@@ -72,8 +71,8 @@ function UF:Configure_AuraWatch(frame, isPet)
 		elseif auras.SetNewTable then
 			auras:SetNewTable(auraTable)
 
-			for i = 1, #auras do
-				auras[i].count:FontTemplate(auras.countFont, auras.countFontSize or 12, auras.countFontOutline or 'OUTLINE')
+			for _, aura in next, auras do
+				aura.count:FontTemplate(auras.countFont, auras.countFontSize or 12, auras.countFontOutline or 'OUTLINE')
 			end
 		end
 	elseif frame:IsElementEnabled('AuraWatch') then
