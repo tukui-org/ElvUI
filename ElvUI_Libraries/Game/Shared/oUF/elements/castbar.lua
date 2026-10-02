@@ -296,7 +296,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	local real, casting, channeling = event, true, false
+	local real, casting, channeling, castsent = event, true, false, false
 	local name, text, texture, startTime, endTime, isTradeSkill, empowering, castID, barID, notInterruptible, castDuration, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
@@ -311,6 +311,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 				castTime = castTime * speedMod
 			end
 
+			castsent = true
 			castID = castGUID
 			startTime = GetTime() * 1000
 			endTime = startTime + castTime
@@ -342,6 +343,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.casting = casting
 	element.channeling = channeling
 	element.empowering = empowering
+	element.castsent = castsent
 
 	local isPlayer = oUF:UnitIsUnit(unit, 'player')
 	if not isPlayer or (oUF.isModern or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START')) then
@@ -768,7 +770,7 @@ local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
 		local duration, durationObject
 
-		if oUF.isModern then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
+		if oUF.isModern and not self.castsent then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
 			if durationObject then
