@@ -72,7 +72,7 @@ local FontStringScaleAnimationMode = Enum.FontStringScaleAnimationMode
 -- GLOBALS: CooldownFrame_Clear, ClearActionButtonCooldowns, ClearCursor, CooldownFrame_Set, CreateFrame
 -- GLOBALS: FlyoutButtonMixin, FlyoutHasSpell, GameTooltip, GetActionCharges, GetActionCooldown, GetActionInfo
 -- GLOBALS: GetActionLossOfControlCooldown, GetActionTexture, GetActionText, GetBindingKey, GetBindingText, GetCallPetSpellInfo
--- GLOBALS: GetCursorInfo, GetFlyoutInfo, GetFlyoutSlotInfo, GetItemCooldown, GetMacroInfo, GetMacroSpell
+-- GLOBALS: GetCursorInfo, GetFlyoutInfo, GetFlyoutSlotInfo, GetMacroInfo, GetMacroSpell
 -- GLOBALS: GetTime, HasAction, InCombatLockdown, IsActionInRange, IsAttackAction, IsAutoRepeatAction
 -- GLOBALS: IsConsumableAction, IsCurrentAction, IsEquippedAction, IsItemAction, IsLoggedIn, IsMouseButtonDown
 -- GLOBALS: IsStackableAction, IsUsableAction, PickupAction, PickupCompanion, PickupMacro, PickupPetAction
@@ -3315,7 +3315,7 @@ Toy.GetActionText           = function(self) return "" end
 Toy.GetTexture              = function(self) return select(3, C_ToyBox.GetToyInfo(self._state_action)) end
 Toy.GetCharges              = function(self) return nil end
 Toy.GetCount                = function(self) return 0 end
-Toy.GetCooldown             = function(self) return GetItemCooldown(self._state_action) end
+Toy.GetCooldown             = function(self) return C_Container_GetItemCooldown(self._state_action) end
 Toy.IsAttack                = function(self) return nil end
 Toy.IsEquipped              = function(self) return nil end
 Toy.IsCurrentlyActive       = function(self) return nil end
