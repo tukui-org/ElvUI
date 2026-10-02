@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 84 -- the real minor version is 155
+local MINOR_VERSION = 84 -- the real minor version is 161
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -651,7 +651,7 @@ function WrapOnClick(button, unwrapheader)
 	]])
 end
 
-function Generic:OnButtonEvent(event, ...)
+function Generic:OnButtonEvent(event)
 	if event == "GLOBAL_MOUSE_UP" then
 		self:UnregisterEvent(event)
 
@@ -1383,7 +1383,7 @@ function Generic:PreClick()
 	end
 
 	-- check if there is actually something on the cursor
-	local kind, value, _subtype = GetCursorInfo()
+	local kind, value = GetCursorInfo()
 	if not (kind and value) then return end
 
 	self._old_type = self._state_type
@@ -1404,7 +1404,7 @@ local function FormatHelper(input)
 	end
 end
 
-function Generic:PostClick(button, down)
+function Generic:PostClick(_, down)
 	UpdateButtonState(self)
 	UpdateFlyout(self, down)
 
@@ -1855,7 +1855,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	elseif event == "UPDATE_SUMMONPETS_ACTION" then
 		for button in next, ActiveButtons do
 			if button._state_type == "action" then
-				local actionType, _id = GetActionInfo(button._state_action)
+				local actionType = GetActionInfo(button._state_action)
 				if actionType == "summonpet" then
 					local texture = GetActionTexture(button._state_action)
 					if texture then
@@ -3016,7 +3016,7 @@ Generic.GetDisplayCount          = function(self)
 			return count
 		end
 	else
-		local charges, maxCharges, _chargeStart, _chargeDuration = self:GetCharges()
+		local charges, maxCharges = self:GetCharges()
 		if charges and maxCharges and maxCharges > 1 then
 			return charges
 		end
@@ -3217,7 +3217,7 @@ if GetSpellLossOfControlCooldown then
 else
 	GetSpellLoCCooldownInfoFallback = function() end
 end
-local GetSpellLossOfControlCooldownInfo = C_Spell.GetSpellLossOfControlCooldownInfo
+local GetSpellLossOfControlCooldownInfo = C_Spell.GetSpellLossOfControlCooldownInfo or GetSpellLoCCooldownInfoFallback
 
 -----------------------------------------------------------
 --- Spell Button
