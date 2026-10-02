@@ -120,7 +120,7 @@ local StatusBarInterpolation = Enum.StatusBarInterpolation
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
-if oUF.isClassic or oUF.isTBC then
+if oUF.isClassic or oUF.isTBC or oUF.isForever then
 	specialCast[2643] = 500 -- Multishot R1
 	specialCast[14288] = 500 -- Multishot R2
 	specialCast[14289] = 500 -- Multishot R3
@@ -422,7 +422,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
-			element.Shield:SetAlphaFromBoolean(notInterruptible, element.Shield.alphaValue or 1, 0)
+			element.Shield:SetAlphaFromBoolean(notInterruptible or false, element.Shield.alphaValue or 1, 0)
 		else
 			element.Shield:SetShown(notInterruptible)
 		end
@@ -702,7 +702,7 @@ local function CastInterruptible(self, event, unit)
 
 	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
-			element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
+			element.Shield:SetAlphaFromBoolean(element.notInterruptible or false, element.Shield.alphaValue or 1, 0)
 		else
 			element.Shield:SetShown(element.notInterruptible)
 		end
