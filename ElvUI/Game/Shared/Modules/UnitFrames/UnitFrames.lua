@@ -146,8 +146,9 @@ UF.headerGroupBy = {
 		header:SetAttribute('groupBy', 'CLASS')
 	end,
 	ROLE = function(header)
-		local groupingOrder = header.db and strjoin(',', header.db.ROLE1, header.db.ROLE2, header.db.ROLE3, 'NONE')
-		local sortMethod = header.db and header.db.sortMethod
+		local db = header.db
+		local groupingOrder = db and strjoin(',', db.ROLE1, db.ROLE2, db.ROLE3, 'NONE')
+		local sortMethod = db and db.sortMethod
 		header:SetAttribute('groupingOrder', groupingOrder or 'TANK,HEALER,DAMAGER,NONE')
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
@@ -158,7 +159,8 @@ UF.headerGroupBy = {
 		header:SetAttribute('groupBy', nil)
 	end,
 	GROUP = function(header)
-		local sortMethod = header.db and header.db.sortMethod
+		local db = header.db
+		local sortMethod = db and db.sortMethod
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
 		header:SetAttribute('sortMethod', sortMethod or 'INDEX')
 		header:SetAttribute('groupBy', 'GROUP')
