@@ -99,7 +99,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 5)
 	config.args.generalGroup.args.reverseFill = ACH:Toggle(L["Reverse Fill"], nil, 1)
-	config.args.generalGroup.args.abbrevName = ACH:Toggle(L["Abbreviate Name"], nil, 2)
+	config.args.generalGroup.args.abbrevName = ACH:Toggle(L["Abbreviate Name"], nil, 2, nil, nil, nil, nil, nil, nil, E.Modern)
 	config.args.generalGroup.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 3)
 	config.args.generalGroup.args.configureButton1 = ACH:Execute(L["Coloring"], L["This opens the UnitFrames Color settings. These settings affect all unitframes."], 4, function() ACD:SelectGroup('ElvUI', 'unitframe', 'allColorsGroup') end)
 	config.args.generalGroup.args.configureButton2 = ACH:Execute(L["Coloring (Specific)"], L["This opens the AuraBar Colors filter. These settings affect specific spells."], 5, function() C:SetToFilterConfig('AuraBar Colors') end, nil, nil, nil, nil, nil, nil, E.Modern)
@@ -204,7 +204,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	local config = ACH:Group(key.name, nil, key.order, nil, function(info) return E.db.unitframe.units[groupName][auraType][info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2)
+	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2, nil, nil, nil, nil, nil, nil, E.Modern)
 	config.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
 	config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], E.Modern and L["Requres the filter string to contain !PLAYER (requires a reload)."] or L["Set auras that are not from you to desaturated."], 4)
 
@@ -223,10 +223,10 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.generalGroup.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 14, { UP = L["Up"], DOWN = L["Down"] }, nil, nil, nil, nil, function() local point = E.db.unitframe.units[groupName][auraType].anchorPoint return point == 'TOP' or point == 'BOTTOM' end)
 	config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Ascending or Descending order."], 15, { ASCENDING = L["Ascending"], DESCENDING = L["Descending"] })
 	config.args.generalGroup.args.sortMethod = ACH:Select(L["Sort By"], L["Method to sort by."], 16, { IMPORTANT = E.Modern and L["Important"] or nil, DEFENSIVE = E.Modern and L["Big Defensive"] or nil, TIME_REMAINING = L["Time Remaining"], DURATION = L["Duration"], NAME = L["Name"], INDEX = L["Index"], PLAYER = E.Modern and L["Debuffs"] or L["Player"] })
-	config.args.generalGroup.args.filter = ACH:Select(L["Aura Filter"], nil, 17, { RAID = L["Raid"], HELPFUL = L["Buffs"], HARMFUL = L["Debuffs"], ["HELPFUL|HARMFUL"] = L["Buffs and Debuffs"] }, nil, nil, nil, nil, nil, auraType ~= 'auras')
+	config.args.generalGroup.args.filter = ACH:Select(L["Aura Filter"], nil, 17, { RAID = L["Raid"], HELPFUL = L["Buffs"], HARMFUL = L["Debuffs"], ["HELPFUL|HARMFUL"] = L["Buffs and Debuffs"] }, nil, nil, nil, nil, nil, E.Modern or auraType ~= 'auras')
 	config.args.generalGroup.args.clickThrough = ACH:Toggle(L["Click Through"], L["Ignore mouse events."], 18)
 
-	config.args.tooltip = ACH:Group(L["Tooltip"], nil, 20)
+	config.args.tooltip = ACH:Group(L["Tooltip"], nil, 20, nil, nil, nil, nil, E.Modern)
 	config.args.tooltip.args.tooltipAnchorType = ACH:Select(L["Anchor Type"], nil, 1, C.Values.TooltipAnchors)
 	config.args.tooltip.args.tooltipAnchorX = ACH:Range(L["Anchor Offset X"], nil, 2, { min = -300, max = 300, step = 1 })
 	config.args.tooltip.args.tooltipAnchorY = ACH:Range(L["Anchor Offset Y"], nil, 3, { min = -300, max = 300, step = 1 })
@@ -245,7 +245,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.textGroup.args.duration.args.cooldownShortcut = ACH:Execute(L["Cooldowns"], nil, 1, function() ACD:SelectGroup('ElvUI', 'cooldown', 'unitframe') end)
 	config.args.textGroup.args.duration.inline = true
 
-	config.args.sourceGroup = ACH:Group(L["Source Text"], nil, 40, nil, function(info) return E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
+	config.args.sourceGroup = ACH:Group(L["Source Text"], nil, 40, nil, function(info) return E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] end, function(info, value) E.db.unitframe.units[groupName][auraType].sourceText[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, E.Modern)
 	config.args.sourceGroup.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.sourceGroup.args.class = ACH:Toggle(L["Use Class Color"], nil, 2)
 	config.args.sourceGroup.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPoints)
@@ -477,10 +477,10 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.customColor.args.useCustomBackdrop = ACH:Toggle(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 7, nil, nil, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.spacer2 = ACH:Spacer(8, 'full', function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.colorBackdrop = ACH:Color(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 9, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable or not E.db.unitframe.units[groupName].castbar.customColor.useCustomBackdrop end)
-	config.args.customColor.args.color = ACH:Color(function() return (E.Modern or E.Mists) and L["Interruptible"] or L["COLOR"] end, nil, 10, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
-	config.args.customColor.args.colorNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 11, true, nil, nil, nil, nil, function() return E.Classic or not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.color = ACH:Color(L["Interruptible"], nil, 10, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.colorNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 11, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 	config.args.customColor.args.spacer3 = ACH:Spacer(11, 'full', function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
-	config.args.customColor.args.colorInterrupted = ACH:Color(L["Interrupted"], nil, 12, true, nil, nil, nil, nil, function() return E.Classic or not E.db.unitframe.units[groupName].castbar.customColor.enable end)
+	config.args.customColor.args.colorInterrupted = ACH:Color(L["Interrupted"], nil, 12, true, nil, nil, nil, nil, function() return not E.db.unitframe.units[groupName].castbar.customColor.enable end)
 
 	if groupName == 'player' then
 		config.args.latency = ACH:Toggle(L["Latency"], nil, 19)
@@ -726,12 +726,12 @@ local function GetOptionsTable_Fader(updateFunc, groupName, numUnits)
 	config.args.hover = ACH:Toggle(L["Hover"], nil, 11, nil, nil, nil, nil, nil, disabled, ranged)
 	config.args.combat = ACH:Toggle(L["Combat"], nil, 12, nil, nil, nil, nil, nil, disabled, ranged)
 	config.args.playertarget = ACH:Toggle(groupName == 'player' and L["Target"] or L["Player Target"], nil, 13, nil, nil, nil, nil, nil, disabled, ranged)
-	config.args.focus = ACH:Toggle(L["Focus"], nil, 14, nil, nil, nil, nil, nil, disabled, ranged)
+	config.args.focus = ACH:Toggle(L["Focus"], nil, 14, nil, nil, nil, nil, nil, disabled, E.Classic or ranged)
 	config.args.health = ACH:Toggle(L["Health"], nil, 15, nil, nil, nil, nil, nil, disabled, ranged)
 	config.args.power = ACH:Toggle(L["Power"], nil, 16, nil, nil, nil, nil, nil, disabled, ranged)
-	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 17, nil, nil, nil, nil, nil, disabled, ranged)
+	config.args.vehicle = ACH:Toggle(L["Vehicle"], nil, 17, nil, nil, nil, nil, nil, disabled, not (E.Retail or E.Wrath or E.Mists) or ranged)
 	config.args.casting = ACH:Toggle(L["Casting"], nil, 18, nil, nil, nil, nil, nil, disabled, ranged)
-	config.args.dynamicflight = ACH:Toggle(L["Dynamic Flight"], nil, 19, nil, nil, nil, nil, nil, disabled, ranged)
+	config.args.dynamicflight = ACH:Toggle(L["Dynamic Flight"], nil, 19, nil, nil, nil, nil, nil, disabled, not E.Retail or ranged)
 
 	config.args.spacer1 = ACH:Spacer(30, 'full')
 	config.args.delay = ACH:Range(L["Fade Out Delay"], nil, 31, { min = 0, max = 3, step = 0.01 }, nil, nil, nil, disabled, ranged)
@@ -835,7 +835,7 @@ local function GetOptionsTable_Name(updateFunc, groupName, numUnits, subGroup)
 end
 
 local function GetOptionsTable_PhaseIndicator(updateFunc, groupName, numGroup)
-	local config = ACH:Group(L["Phase Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].phaseIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].phaseIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end)
+	local config = ACH:Group(L["Phase Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units[groupName].phaseIndicator[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].phaseIndicator[info[#info]] = value updateFunc(UF, groupName, numGroup) end, nil, not E.Modern)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.5, max = 2, step = 0.01, isPercent = true })
 	config.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
@@ -905,7 +905,7 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 	config.args.strataAndLevel.inline = nil
 
 	if groupName == 'party' or strmatch(groupName, '^raid(%d)') then
-		config.args.generalGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 20)
+		config.args.generalGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 20, nil, nil, nil, nil, nil, nil, not E.Modern)
 	end
 
 	if (E.Classic or E.TBC or E.Wrath) and groupName == 'player' then
@@ -1063,9 +1063,9 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 		config.args.generalGroup.args.height.max = function() return E.db.unitframe.units.player.classbar.detachFromFrame and 300 or 30 end
 		config.args.generalGroup.args.autoHide = ACH:Toggle(L["Auto-Hide"], nil, 5)
 		config.args.generalGroup.args.smoothbars = ACH:Toggle(L["Smooth Bars"], L["Bars will transition smoothly."], 6)
-		config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return (E.myclass ~= 'DEATHKNIGHT') end)
+		config.args.generalGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return E.myclass ~= 'DEATHKNIGHT' or E.Wrath or E.Mists end)
 
-		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' or E.myclass == 'EVOKER' or E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK')) end)
+		config.args.additionalGroup = ACH:Group(L["Additional Power"], nil, 20, nil, function(info) return E.db.unitframe.units[groupName].classAdditional[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].classAdditional[info[#info]] = value updateFunc(UF, groupName, numUnits) end, nil, function() return not (E.myclass == 'DRUID' or (E.Mists and E.myclass == 'MONK') or (E.Retail and (E.myclass == 'PRIEST' or E.myclass == 'SHAMAN' or E.myclass == 'EVOKER'))) end)
 		config.args.additionalGroup.args.width = ACH:Range(L["Width"], nil, 1, { min = 15, max = 1000, step = 1 })
 		config.args.additionalGroup.args.height = ACH:Range(L["Height"], nil, 2, { min = 5, max = 500, step = 1 })
 		config.args.additionalGroup.args.orientation = ACH:Select(L["Frame Orientation"], nil, 3, { HORIZONTAL = L["Horizontal"], VERTICAL = L["Vertical"] })
@@ -1258,7 +1258,7 @@ UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames = ACH:Group(L["Disable
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.inline = true
 
 UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.individual = ACH:MultiSelect(L["Individual Units"], nil, 1, { castbar = L["Cast Bar"], player = L["Player"], target = L["Target"], focus = not E.Classic and L["Focus"] or nil })
-UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.group = ACH:MultiSelect(L["Group Units"], nil, 2, { party = L["Party"], raid = L["Raid"], boss = (E.Modern or E.Mists) and L["Boss"] or nil, arena = not E.Classic and L["Arena"] or nil })
+UnitFrame.generalOptionsGroup.args.disabledBlizzardFrames.args.group = ACH:MultiSelect(L["Group Units"], nil, 2, { party = L["Party"], raid = L["Raid"], boss = not (E.Classic or E.TBC) and L["Boss"] or nil, arena = not E.Classic and L["Arena"] or nil })
 
 UnitFrame.allColorsGroup = ACH:Group(L["Colors"], nil, 40, 'tree', function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, function() return not E.UnitFrames.Initialized end)
 local Colors = UnitFrame.allColorsGroup.args
@@ -1300,10 +1300,10 @@ Colors.healPrediction.args.maxOverflow = ACH:Range(L["Max Overflow"], L["Max amo
 Colors.healPrediction.args.spacer1 = ACH:Spacer(2, 'full')
 Colors.healPrediction.args.personal = ACH:Color(L["Personal"], nil, 3, true)
 Colors.healPrediction.args.others = ACH:Color(L["Others"], nil, 4, true)
-Colors.healPrediction.args.absorbs = ACH:Color(L["Absorbs"], nil, 5, true, nil, nil, nil, nil, E.Classic)
-Colors.healPrediction.args.healAbsorbs = ACH:Color(L["Heal Absorbs"], nil, 6, true, nil, nil, nil, nil, E.Classic)
-Colors.healPrediction.args.overabsorbs = ACH:Color(L["Over Absorbs"], nil, 7, true, nil, nil, nil, nil, E.Classic)
-Colors.healPrediction.args.overhealabsorbs = ACH:Color(L["Over Heal Absorbs"], nil, 8, true, nil, nil, nil, nil, E.Classic)
+Colors.healPrediction.args.absorbs = ACH:Color(L["Absorbs"], nil, 5, true, nil, nil, nil, nil, not (E.Modern or E.Mists))
+Colors.healPrediction.args.healAbsorbs = ACH:Color(L["Heal Absorbs"], nil, 6, true, nil, nil, nil, nil, not (E.Modern or E.Mists))
+Colors.healPrediction.args.overabsorbs = ACH:Color(L["Over Absorbs"], nil, 7, true, nil, nil, nil, nil, not (E.Modern or E.Mists))
+Colors.healPrediction.args.overhealabsorbs = ACH:Color(L["Over Heal Absorbs"], nil, 8, true, nil, nil, nil, nil, not (E.Modern or E.Mists))
 
 Colors.powerGroup = ACH:Group(L["Power"], nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end)
 Colors.powerGroup.args.transparentPower = ACH:Toggle(L["Transparent"], L["Make textures transparent."], 1)
@@ -1329,11 +1329,11 @@ Colors.castBars.args.spacer1 = ACH:Spacer(5, 'full')
 Colors.castBars.args.customcastbarbackdrop = ACH:Toggle(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 6)
 Colors.castBars.args.castbar_backdrop = ACH:Color(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 7, true, nil, nil, nil, function() return not E.db.unitframe.colors.customcastbarbackdrop end)
 Colors.castBars.args.spacer2 = ACH:Spacer(8, 'full')
-Colors.castBars.args.castColor = ACH:Color(function() return (E.Modern or E.Mists) and L["Interruptible"] or L["COLOR"] end, nil, 9, true)
-Colors.castBars.args.castNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 10, true, nil, nil, nil, nil, E.Classic)
-Colors.castBars.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 11, true, nil, nil, nil, nil, E.Classic)
+Colors.castBars.args.castColor = ACH:Color(L["Interruptible"], nil, 9, true)
+Colors.castBars.args.castNoInterrupt = ACH:Color(L["Non-Interruptible"], nil, 10, true)
+Colors.castBars.args.castInterruptedColor = ACH:Color(L["Interrupted"], nil, 11, true)
 
-Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b, t.a = r, g, b, a UF:Update_AllFrames() end, nil, not E.Modern)
+Colors.castBars.args.empowerStage = ACH:Group(L["Empower Stages"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.empoweredCast[i], P.unitframe.colors.empoweredCast[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.unitframe.colors.empoweredCast[tonumber(info[#info])] t.r, t.g, t.b, t.a = r, g, b, a UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.castBars.args.empowerStage.inline = true
 
 for i in next, P.unitframe.colors.empoweredCast do
@@ -1422,24 +1422,24 @@ Colors.classResourceGroup.args.powerGroup.args.MANA = ACH:Color(L["MANA"], nil, 
 Colors.classResourceGroup.args.powerGroup.args.RAGE = ACH:Color(L["RAGE"], nil, 2)
 Colors.classResourceGroup.args.powerGroup.args.FOCUS = ACH:Color(L["FOCUS"], nil, 3)
 Colors.classResourceGroup.args.powerGroup.args.ENERGY = ACH:Color(L["ENERGY"], nil, 4)
-Colors.classResourceGroup.args.powerGroup.args.RUNIC_POWER = ACH:Color(L["RUNIC_POWER"], nil, 5)
+Colors.classResourceGroup.args.powerGroup.args.RUNIC_POWER = ACH:Color(L["RUNIC_POWER"], nil, 5, nil, nil, nil, nil, nil, not (E.Retail or E.Wrath or E.Mists))
 Colors.classResourceGroup.args.powerGroup.args.PAIN = ACH:Color(L["PAIN"], nil, 6, nil, nil, nil, nil, nil, not E.Retail)
 Colors.classResourceGroup.args.powerGroup.args.FURY = ACH:Color(L["FURY"], nil, 7, nil, nil, nil, nil, nil, not E.Retail)
 Colors.classResourceGroup.args.powerGroup.args.LUNAR_POWER = ACH:Color(L["LUNAR_POWER"], nil, 8, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 Colors.classResourceGroup.args.powerGroup.args.INSANITY = ACH:Color(L["INSANITY"], nil, 9, nil, nil, nil, nil, nil, not E.Retail)
 Colors.classResourceGroup.args.powerGroup.args.MAELSTROM = ACH:Color(L["MAELSTROM"], nil, 11, nil, nil, nil, nil, nil, not E.Retail)
-Colors.classResourceGroup.args.powerGroup.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 12)
+Colors.classResourceGroup.args.powerGroup.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 12, nil, nil, nil, nil, nil, not E.Modern)
 
-Colors.classResourceGroup.args.class = ACH:Group(L["Class Resources"], nil, 15, nil, nil, nil, nil, E.Classic)
-Colors.classResourceGroup.args.class.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, E.Classic)
+Colors.classResourceGroup.args.class = ACH:Group(L["Class Resources"], nil, 15, nil, nil, nil, nil, not (E.Retail or E.Mists))
+Colors.classResourceGroup.args.class.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 Colors.classResourceGroup.args.class.args.PRIEST = ACH:Color(L["SHADOW_ORBS"], nil, 10, nil, nil, nil, nil, nil, not E.Mists)
 Colors.classResourceGroup.args.class.inline = true
 
-Colors.classResourceGroup.args.class.args.ARCANE_CHARGES = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 11, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.MAGE[info[#info]], P.unitframe.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
+Colors.classResourceGroup.args.class.args.ARCANE_CHARGES = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 11, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.MAGE[info[#info]], P.unitframe.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Retail or E.Mists))
 Colors.classResourceGroup.args.class.args.FROST_ICICLES = ACH:Color(L["FROST_ICICLES"], nil, 12, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.MAGE[info[#info]], P.unitframe.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.class.args.FIRE_BLAST = ACH:Color(L["FIRE_BLAST"], nil, 12, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.MAGE[info[#info]], P.unitframe.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.class.args.MAELSTROM = ACH:Color(L["MAELSTROM_WEAPON"], nil, 11, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.SHAMAN[info[#info]], P.unitframe.colors.classResources.SHAMAN[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.SHAMAN[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
-Colors.classResourceGroup.args.class.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 13, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.WARLOCK[info[#info]], P.unitframe.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, E.Classic)
+Colors.classResourceGroup.args.class.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 13, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.WARLOCK[info[#info]], P.unitframe.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Retail or E.Mists))
 Colors.classResourceGroup.args.class.args.DEMONIC_FURY = ACH:Color(L["DEMONIC_FURY"], nil, 14, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.WARLOCK[info[#info]], P.unitframe.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Mists)
 Colors.classResourceGroup.args.class.args.SOUL_FRAGMENTS = ACH:Color(L["SOUL_FRAGMENTS"], nil, 14, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.DEMONHUNTER[info[#info]], P.unitframe.colors.classResources.DEMONHUNTER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DEMONHUNTER[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.class.args.SOUL_CLEAVE = ACH:Color(L["SOUL_CLEAVE"], nil, 14, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources.DEMONHUNTER[info[#info]], P.unitframe.colors.classResources.DEMONHUNTER[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DEMONHUNTER[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
@@ -1454,13 +1454,13 @@ for i = 1, 4 do
 end
 
 Colors.classResourceGroup.args.COMBO_POINTS = ACH:Group(L["COMBO_POINTS"], nil, 20, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.comboPoints[i], P.unitframe.colors.classResources.comboPoints[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.comboPoints[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
-Colors.classResourceGroup.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 20, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources[info[#info]], P.unitframe.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Modern)
+Colors.classResourceGroup.args.COMBO_POINTS.args.chargedComboPoint = ACH:Color(L["Charged Combo Point"], nil, 20, nil, nil, function(info) local t, d = E.db.unitframe.colors.classResources[info[#info]], P.unitframe.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.COMBO_POINTS.inline = true
 
-Colors.classResourceGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 25, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.MONK[i], P.unitframe.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, E.Classic)
+Colors.classResourceGroup.args.CHI_POWER = ACH:Group(L["CHI_POWER"], nil, 25, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.MONK[i], P.unitframe.colors.classResources.MONK[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.MONK[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Retail or E.Mists))
 Colors.classResourceGroup.args.CHI_POWER.inline = true
 
-Colors.classResourceGroup.args.ESSENCE = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 30, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.EVOKER.ESSENCE[i], P.unitframe.colors.classResources.EVOKER.ESSENCE[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER.ESSENCE[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Modern)
+Colors.classResourceGroup.args.ESSENCE = ACH:Group(L["POWER_TYPE_ESSENCE"], nil, 30, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.EVOKER.ESSENCE[i], P.unitframe.colors.classResources.EVOKER.ESSENCE[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.EVOKER.ESSENCE[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not E.Retail)
 Colors.classResourceGroup.args.ESSENCE.inline = true
 
 for i = 1, 7 do
@@ -1472,13 +1472,13 @@ for i = 1, 7 do
 	Colors.classResourceGroup.args.COMBO_POINTS.args[''..i] = ACH:Color(C.Values.Roman[i])
 end
 
-Colors.classResourceGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 35, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DEATHKNIGHT[i], P.unitframe.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, E.Classic)
+Colors.classResourceGroup.args.RUNES = ACH:Group(L["RUNES"], nil, 35, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.DEATHKNIGHT[i], P.unitframe.colors.classResources.DEATHKNIGHT[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.DEATHKNIGHT[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Retail or E.Wrath or E.Mists))
 Colors.classResourceGroup.args.RUNES.inline = true
 
 do
 	local runeText = { [-1] = L["RUNE_CHARGE"], [0] = L["RUNES"], L["RUNE_BLOOD"], L["RUNE_FROST"], L["RUNE_UNHOLY"], L["RUNE_DEATH"] }
 	for i = -1, 4 do
-		Colors.classResourceGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.unitframe.colors.chargingRunes end, function() return (E.Mists and i < 1) or (not E.Mists and i == 4) or (E.Modern and E.db.unitframe.colors.runeBySpec and i == 0) or (E.Modern and not E.db.unitframe.colors.runeBySpec and i > 0) end)
+		Colors.classResourceGroup.args.RUNES.args[''..i] = ACH:Color(runeText[i], nil, i == -1 and 10 or i, nil, nil, nil, nil, function() return i == -1 and not E.db.unitframe.colors.chargingRunes end, function() return ((E.Wrath or E.Mists) and i < 1) or (not (E.Wrath or E.Mists) and i == 4) or (E.Modern and E.db.unitframe.colors.runeBySpec and i == 0) or (E.Modern and not E.db.unitframe.colors.runeBySpec and i > 0) end)
 	end
 end
 
@@ -1496,7 +1496,7 @@ end
 Colors.classResourceGroup.args.RUNES.args.runeBySpec = ACH:Toggle(L["Color By Spec"], nil, 11, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end, nil, not E.Modern)
 Colors.classResourceGroup.args.RUNES.args.chargingRunes = ACH:Toggle(E.Modern and L["Charging Rune Color"] or L["Faded Charging Rune"], nil, 11, nil, nil, nil, function(info) return E.db.unitframe.colors[info[#info]] end, function(info, value) E.db.unitframe.colors[info[#info]] = value UF:Update_AllFrames() end)
 
-Colors.classResourceGroup.args.TOTEMS = ACH:Group(L["Totems"], nil, 40, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.SHAMAN.TOTEMS[i], P.unitframe.colors.classResources.SHAMAN.TOTEMS[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.SHAMAN.TOTEMS[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, E.Modern)
+Colors.classResourceGroup.args.TOTEMS = ACH:Group(L["Totems"], nil, 40, nil, function(info) local i = tonumber(info[#info]); local t, d = E.db.unitframe.colors.classResources.SHAMAN.TOTEMS[i], P.unitframe.colors.classResources.SHAMAN.TOTEMS[i] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors.classResources.SHAMAN.TOTEMS[tonumber(info[#info])] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, E.Retail)
 Colors.classResourceGroup.args.TOTEMS.inline = true
 
 do
@@ -1720,7 +1720,7 @@ for key, icon in pairs(E.Media.RestIcons) do
 	Player.RestIcon.args.texture.values[key] = E:TextureString(icon, ':14:14')
 end
 
-Player.PartyIndicator = ACH:Group(L["Party Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units.player.partyIndicator[info[#info]] end, function(info, value) E.db.unitframe.units.player.partyIndicator[info[#info]] = value UF:CreateAndUpdateUF('player') end)
+Player.PartyIndicator = ACH:Group(L["Party Indicator"], nil, nil, nil, function(info) return E.db.unitframe.units.player.partyIndicator[info[#info]] end, function(info, value) E.db.unitframe.units.player.partyIndicator[info[#info]] = value UF:CreateAndUpdateUF('player') end, nil, not E.Modern)
 Player.PartyIndicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 Player.PartyIndicator.args.scale = ACH:Range(L["Scale"], nil, 2, { min = 0.5, max = 2, step = 0.01, isPercent = true })
 Player.PartyIndicator.args.anchorPoint = ACH:Select(L["Position"], nil, 3, C.Values.AllPoints)
@@ -1814,7 +1814,7 @@ local Arena = GroupUnits.arena.args
 
 Arena.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to show, they will act as if they are the player frame."], 2, function() UF:ToggleForceShowGroupFrames('arena', 5) end)
 Arena.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, { unit = 'arena', mover = 'Arena Frames' }) end)
-Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end, nil, not E.Modern)
+Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end, nil, E.Classic or E.TBC)
 Arena.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'arena', 5)
 
 Arena.pvpTrinket = ACH:Group(L["PVP Trinket"], nil, nil, nil, function(info) return E.db.unitframe.units.arena.pvpTrinket[info[#info]] end, function(info, value) E.db.unitframe.units.arena.pvpTrinket[info[#info]] = value UF:CreateAndUpdateUFGroup('arena', 5) end)
