@@ -10,9 +10,9 @@ local hooksecurefunc = hooksecurefunc
 S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')
 
 local function FixReadyCheckFrame(frame)
-	if frame.initiator and E:UnitIsUnit('player', frame.initiator) then
-		frame:Hide() -- bug fix, don't show it if player is initiator
-	end
+	if _G.ReadyCheckListenerFrame:IsShown() then return end
+
+	frame:Hide() -- bug fix, dont show it if player is initiator
 end
 
 local function FixAutoCompleteLevel(frame)
