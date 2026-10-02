@@ -20,20 +20,20 @@ AB.MICRO_BUTTONS = {
 	'SpellbookMicroButton',
 	'ProfessionMicroButton',
 	'TalentMicroButton',
-	'PlayerSpellsMicroButton',
-	'AchievementMicroButton',
+	not E.Forever and 'PlayerSpellsMicroButton' or nil,
+	not E.Forever and 'AchievementMicroButton' or nil,
 	'LegacyMicroButton',
 	'QuestLogMicroButton',
 	'GuildMicroButton',
 	'SocialsMicroButton',
 	'LFDMicroButton',
 	'LFGMicroButton',
-	'EJMicroButton',
+	not E.Forever and 'EJMicroButton' or nil,
 	'CollectionsMicroButton',
 	'MainMenuMicroButton',
 	'HelpMicroButton',
 	'StoreMicroButton',
-	'HousingMicroButton',
+	not E.Forever and 'HousingMicroButton' or nil,
 	'WorldMapMicroButton',
 	'PVPMicroButton' -- no offset required
 }
@@ -467,17 +467,6 @@ function AB:SetupMicroBar()
 	microBar.visibility:SetScript('OnShow', function() microBar:Show() end)
 	microBar.visibility:SetScript('OnHide', function() microBar:Hide() end)
 
-	if E.Forever then -- Sharex xml defined, but not part of the actual micro menu
-		_G.AchievementMicroButton:Kill()
-		_G.PlayerSpellsMicroButton:Kill()
-		_G.HousingMicroButton:Kill()
-		_G.EJMicroButton:Kill()
-
-		-- bar art stays behind on the empty Blizzard menu
-		_G.MicroMenu.BorderArt:Kill()
-		_G.MicroMenu.BackgroundArt:Kill()
-	end
-
 	for _, name in next, AB.MICRO_BUTTONS do
 		local button = _G[name]
 		if button then
@@ -492,7 +481,7 @@ function AB:SetupMicroBar()
 					hooksecurefunc(button, 'SetPushed', AB.HandleCharacterPortrait)
 					hooksecurefunc(button, 'SetNormal', AB.HandleCharacterPortrait)
 				end
-			elseif name == 'TalentMicroButton' and E.global.general.disableTutorialButtons and _G.TalentMicroButtonAlert then
+			elseif name == 'TalentMicroButton' and (_G.TalentMicroButtonAlert and E.global.general.disableTutorialButtons) then
 				_G.TalentMicroButtonAlert:Kill()
 			end
 		end
@@ -509,6 +498,14 @@ function AB:SetupMicroBar()
 
 	local microMenu = AB:HasTicketButton()
 	if microMenu then
+		if microMenu.BorderArt then
+			microMenu.BorderArt:SetAlpha(0)
+		end
+
+		if microMenu.BackgroundArt then
+			microMenu.BackgroundArt:SetAlpha(0)
+		end
+
 		microMenu.UpdateHelpTicketButtonAnchor = E.noop -- prevent layout erroring
 		hooksecurefunc(microMenu, 'UpdateHelpTicketButtonAnchor', AB.UpdateHelpTicketButtonAnchor)
 	end
