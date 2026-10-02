@@ -123,6 +123,7 @@
 	<Script file='Shared\Skins\SubscriptionInterstitial.lua'/>
 	<Script file='Shared\Skins\SwingTimer.lua'/>
 	<Script file='Shared\Skins\Tabard.lua'/>
+	<Script file='Shared\Skins\TalkingHead.lua'/>
 	<Script file='Shared\Skins\Taxi.lua'/>
 	<Script file='Shared\Skins\TimeManager.lua'/>
 	<Script file='Shared\Skins\Tooltip.lua'/>
