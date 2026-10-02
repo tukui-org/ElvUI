@@ -587,10 +587,12 @@ local function CastStop(self, event, unit, ...)
 
 	local spellID, interruptedBy, empowerComplete, _
 	if oUF.isModern then
-		if(event == 'UNIT_SPELLCAST_EMPOWER_STOP') then
+		if event == 'UNIT_SPELLCAST_EMPOWER_STOP' then
 			_, _, empowerComplete, interruptedBy = ...
-		elseif(event == 'UNIT_SPELLCAST_CHANNEL_STOP') then
+		elseif event == 'UNIT_SPELLCAST_CHANNEL_STOP' then
 			_, _, interruptedBy = ...
+		elseif event == 'UNIT_SPELLCAST_SUCCEEDED' then
+			_, spellID = ...
 		end
 	else
 		_, spellID = ...
