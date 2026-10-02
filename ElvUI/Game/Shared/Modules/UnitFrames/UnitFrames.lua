@@ -11,6 +11,7 @@ local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostrin
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CreateColor = CreateColor
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
@@ -131,12 +132,15 @@ UF.SortAuraFuncs = {
 
 UF.headerGroupBy = {
 	CLASS = function(header)
-		local groupingOrder = header.db and strjoin(',', header.db.CLASS1, header.db.CLASS2, header.db.CLASS3, header.db.CLASS4, header.db.CLASS5, header.db.CLASS6, header.db.CLASS7, header.db.CLASS8, header.db.CLASS9)
-		if E.Retail and groupingOrder then -- forever only has the original nine classes
-			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12, header.db.CLASS13)
+		local db = header.db
+		local groupingOrder = db and db.CLASS1
+		if groupingOrder then -- one slot per class the client has
+			for i = 2, #CLASS_SORT_ORDER do
+				groupingOrder = groupingOrder..','..db['CLASS'..i]
+			end
 		end
 
-		local sortMethod = header.db and header.db.sortMethod
+		local sortMethod = db and db.sortMethod
 		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,EVOKER,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'CLASS')
@@ -1157,7 +1161,7 @@ end
 function UF:ZONE_CHANGED_NEW_AREA(event)
 	local previous = UF.maxAllowedGroups
 
-	if E.Modern and UF.db.maxAllowedGroups then
+	if E.Retail and UF.db.maxAllowedGroups then -- forever has 40 player raids
 		local _, instanceType, difficultyID = GetInstanceInfo()
 		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
 	else

@@ -121,7 +121,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.tooltip.args.tooltipAnchorX = ACH:Range(L["Anchor Offset X"], nil, 2, { min = -300, max = 300, step = 1 })
 	config.args.tooltip.args.tooltipAnchorY = ACH:Range(L["Anchor Offset Y"], nil, 3, { min = -300, max = 300, step = 1 })
 
-	config.args.textGroup = ACH:Group(L["Text"], nil, 30)
+	config.args.textGroup = ACH:Group(L["Text"], nil, 30, nil, nil, nil, nil, not E.Modern)
 	config.args.textGroup.args.stacks = ACH:Group(L["Stack Counter"], nil, 1, nil, function(info) return E.db.unitframe.units[groupName].aurabar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].aurabar[info[#info]] = value updateFunc(UF, groupName) end)
 	config.args.textGroup.args.stacks.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
 	config.args.textGroup.args.stacks.args.countFontSize = ACH:Range(L["Font Size"], nil, 2, C.Values.FontSize)
@@ -324,10 +324,10 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 2)
-	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 1, function() local configString = format('Aura Indicator (%s)', (petTypes[groupName] and E.db.unitframe.units[groupName].buffIndicator.petSpecific and 'Pet') or (E.db.unitframe.units[groupName].buffIndicator.profileSpecific and 'Profile') or 'Class') C:SetToFilterConfig(configString) end)
+	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 1, function() local db = (subGroup and E.db.unitframe.units[groupName][subGroup] or E.db.unitframe.units[groupName]).buffIndicator local configString = format('Aura Indicator (%s)', ((petTypes[groupName] or subGroup == 'petsGroup') and db.petSpecific and 'Pet') or (db.profileSpecific and 'Profile') or 'Class') C:SetToFilterConfig(configString) end)
 	config.args.generalGroup.args.size = ACH:Range(L["Size"], nil, 2, { min = 6, max = 48, step = 1 })
 	config.args.generalGroup.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 3)
-	config.args.generalGroup.args.petSpecific = ACH:Toggle(L["Pet Specific"], L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."], 4, nil, nil, nil, nil, nil, nil, function() return not petTypes[groupName] end)
+	config.args.generalGroup.args.petSpecific = ACH:Toggle(L["Pet Specific"], L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."], 4, nil, nil, nil, nil, nil, nil, function() return not (petTypes[groupName] or subGroup == 'petsGroup') end)
 
 	config.args.generalGroup.args.countGroup = ACH:Group(L["Count Text"], nil, 15)
 	config.args.generalGroup.args.countGroup.args.countFont = ACH:SharedMediaFont(L["Font"], nil, 1)
@@ -767,7 +767,7 @@ local function GetOptionsTable_HealPrediction(updateFunc, groupName, numGroup, s
 			local text = L["Max Overflow is set to zero. Absorb Overflows will be hidden when using Overflow style.\nIf used together Max Overflow at zero and Overflow mode will act like Normal mode without the ending sliver of overflow."]
 			return text .. (E.db.unitframe.units[groupName].healPrediction.absorbStyle == 'OVERFLOW' and ' |cffFF9933' .. L["You are using Overflow with Max Overflow at zero."] .. '|r ' or '')
 		end
-	end, 50, 'medium', nil, nil, nil, nil, 'full')
+	end, 50, 'medium', nil, nil, nil, nil, 'full', not (E.Modern or E.Mists))
 
 	if subGroup then
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].healPrediction[info[#info]] end
@@ -800,7 +800,7 @@ local function GetOptionsTable_Health(isGroupFrame, updateFunc, groupName, numUn
 	if petTypes[groupName] then
 		config.args.colorPetByUnitClass = ACH:Toggle(L["Color by Unit Class"], nil, 2)
 
-		if (E.Classic or E.TBC or E.Forever) and (groupName == 'pet' and E.myclass == 'HUNTER') then
+		if (E.Classic or E.TBC or E.Wrath or E.Forever) and (groupName == 'pet' and E.myclass == 'HUNTER') then
 			config.args.colorHappiness = ACH:Toggle(L["Color by Happiness"], nil, 3)
 		end
 	end
@@ -1235,7 +1235,7 @@ UnitFrame.generalOptionsGroup = ACH:Group(L["General"], nil, 5, 'tree')
 UnitFrame.generalOptionsGroup.args.multiplier = ACH:Range(L["Multiplier"], L["Backdrop Multiplier. Also used for the Transparent multiplier."], 1, { softMin = 0.2, min = 0, softMax = 0.8, max = 1, step = 0.01 }, nil, function(info) return E.db.unitframe[info[#info]] end, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_AllFrames() end)
 UnitFrame.generalOptionsGroup.args.targetOnMouseDown = ACH:Toggle(L["Target On Mouse-Down"], L["Target units on mouse down rather than mouse up.\n\n|cffff3333Note:|r If Clique is enabled, this option only effects ElvUI frames if they are not blacklisted in Clique."], 2)
 UnitFrame.generalOptionsGroup.args.targetSound = ACH:Toggle(L["Targeting Sound"], L["Enable a sound if you select a unit."], 3)
-UnitFrame.generalOptionsGroup.args.maxAllowedGroups = ACH:Toggle(L["Max Allowed Groups"], L["Groups will be maxed as Mythic to 4, Other Raids to 6, and PVP / World to 8."], 4, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:ZONE_CHANGED_NEW_AREA() end, nil, not E.Modern)
+UnitFrame.generalOptionsGroup.args.maxAllowedGroups = ACH:Toggle(L["Max Allowed Groups"], L["Groups will be maxed as Mythic to 4, Other Raids to 6, and PVP / World to 8."], 4, nil, nil, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:ZONE_CHANGED_NEW_AREA() end, nil, not E.Retail)
 
 UnitFrame.generalOptionsGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 10, nil, nil, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_FontStrings() end)
 UnitFrame.generalOptionsGroup.args.fontGroup.inline = true
@@ -1270,21 +1270,21 @@ Colors.healthGroup.args.invertHealth = ACH:Toggle(L["Invert Colors"], L["Invert 
 Colors.healthGroup.args.colorhealthbyvalue = ACH:Toggle(L["Health By Value"], L["Color health by amount remaining."], 4)
 Colors.healthGroup.args.healthselection = ACH:Toggle(L["Selection Health"], L["Color health by color selection."], 5, nil, nil, nil, nil, nil, nil, not E.Modern)
 Colors.healthGroup.args.healthclass = ACH:Toggle(L["Class Health"], L["Color health by classcolor or reaction."], 6, nil, nil, nil, nil, nil, function() return E.Modern and E.db.unitframe.colors.healthselection end)
-Colors.healthGroup.args.forcehealthreaction = ACH:Toggle(L["Force Reaction Color"], L["Forces reaction color instead of class color on units controlled by players."], 7, nil, nil, nil, nil, nil, function() return E.db.unitframe.colors.healthselection or not E.db.unitframe.colors.healthclass end)
+Colors.healthGroup.args.forcehealthreaction = ACH:Toggle(L["Force Reaction Color"], L["Forces reaction color instead of class color on units controlled by players."], 7, nil, nil, nil, nil, nil, function() return (E.Modern and E.db.unitframe.colors.healthselection) or not E.db.unitframe.colors.healthclass end)
 Colors.healthGroup.args.tapped = ACH:Color(L["Tapped"], nil, 10)
 Colors.healthGroup.args.health = ACH:Color(L["Health"], nil, 11)
 Colors.healthGroup.args.disconnected = ACH:Color(L["Disconnected"], nil, 12)
 
 Colors.healthGroup.args.healthBackdrop = ACH:Group(L["Health Backdrop"])
 Colors.healthGroup.args.healthBackdrop.inline = true
-Colors.healthGroup.args.healthBackdrop.args.healthbackdropbyvalue = ACH:Toggle(L["Backdrop By Value"], L["Color health by amount remaining."], 1)
+Colors.healthGroup.args.healthBackdrop.args.healthbackdropbyvalue = ACH:Toggle(L["Backdrop By Value"], L["Color health by amount remaining."], 1, nil, nil, nil, nil, nil, nil, E.Modern)
 Colors.healthGroup.args.healthBackdrop.args.customhealthbackdrop = ACH:Toggle(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 2)
 Colors.healthGroup.args.healthBackdrop.args.health_backdrop = ACH:Color(L["Custom Backdrop"], nil, 3, nil, nil, nil, nil, function() return not E.db.unitframe.colors.customhealthbackdrop end)
 Colors.healthGroup.args.healthBackdrop.args.classbackdrop = ACH:Toggle(L["Class Backdrop"], L["Color the health backdrop by class or reaction."], 4, nil, nil, nil, nil, nil, function() return E.db.unitframe.colors.customhealthbackdrop end)
 Colors.healthGroup.args.healthBackdrop.args.useDeadBackdrop = ACH:Toggle(L["Use Dead Backdrop"], nil, 5)
 Colors.healthGroup.args.healthBackdrop.args.health_backdrop_dead = ACH:Color(L["Dead Backdrop"], L["Use this backdrop color for units that are dead or ghosts."], 6, nil, 250)
 
-Colors.healthBreak = ACH:Group(L["Health Breakpoint"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors.healthBreak[info[#info]], P.unitframe.colors.healthBreak[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b else return E.db.unitframe.colors.healthBreak[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors.healthBreak[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a or 1 else local value = ... E.db.unitframe.colors.healthBreak[info[#info]] = value end UF:Update_AllFrames() end)
+Colors.healthBreak = ACH:Group(L["Health Breakpoint"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors.healthBreak[info[#info]], P.unitframe.colors.healthBreak[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b else return E.db.unitframe.colors.healthBreak[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors.healthBreak[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a or 1 else local value = ... E.db.unitframe.colors.healthBreak[info[#info]] = value end UF:Update_AllFrames() end, nil, E.Modern)
 Colors.healthBreak.args.enabled = ACH:Toggle(L["Enable"], nil, 1)
 Colors.healthBreak.args.onlyFriendly = ACH:Toggle(L["Only Friendly"], nil, 2)
 Colors.healthBreak.args.colorBackdrop = ACH:Toggle(L["Color Backdrop"], nil, 3)
@@ -1309,7 +1309,7 @@ Colors.powerGroup = ACH:Group(L["Power"], nil, nil, nil, function(info) return E
 Colors.powerGroup.args.transparentPower = ACH:Toggle(L["Transparent"], L["Make textures transparent."], 1)
 Colors.powerGroup.args.invertPower = ACH:Toggle(L["Invert Colors"], L["Invert foreground and background colors."], 2)
 Colors.powerGroup.args.powerselection = ACH:Toggle(L["Selection Power"], L["Color power by color selection."], 3, nil, nil, nil, nil, nil, nil, not E.Modern)
-Colors.powerGroup.args.powerclass = ACH:Toggle(L["Class Power"], L["Color power by classcolor or reaction."], 4, nil, nil, nil, nil, nil, function() return E.db.unitframe.colors.powerselection end)
+Colors.powerGroup.args.powerclass = ACH:Toggle(L["Class Power"], L["Color power by classcolor or reaction."], 4, nil, nil, nil, nil, nil, function() return E.Modern and E.db.unitframe.colors.powerselection end)
 Colors.powerGroup.args.custompowerbackdrop = ACH:Toggle(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 5)
 Colors.powerGroup.args.power_backdrop = ACH:Color(L["Custom Backdrop"], L["Use the custom backdrop color instead of a multiple of the main color."], 6, nil, nil, function(info) local t, d = E.db.unitframe.colors[info[#info]], P.unitframe.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.unitframe.colors[info[#info]] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, function() return not E.db.unitframe.colors.custompowerbackdrop end)
 
@@ -1376,7 +1376,7 @@ do
 	end
 end
 
-Colors.happiness = ACH:Group(L["Pet Happiness"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.happiness[n], P.unitframe.colors.happiness[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.happiness[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Classic or E.TBC or E.Forever))
+Colors.happiness = ACH:Group(L["Pet Happiness"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.happiness[n], P.unitframe.colors.happiness[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.happiness[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end, nil, not (E.Classic or E.TBC or E.Wrath or E.Forever))
 Colors.happiness.args['1'] = ACH:Color(L["Unhappy"], nil, 1)
 Colors.happiness.args['2'] = ACH:Color(L["Content"], nil, 2)
 Colors.happiness.args['3'] = ACH:Color(L["Happy"], nil, 3)
@@ -1401,7 +1401,7 @@ Colors.debuffHighlight.args.Magic = ACH:Color(L["Magic Effect"], nil, 4, true)
 Colors.debuffHighlight.args.Curse = ACH:Color(L["Curse Effect"], nil, 5, true)
 Colors.debuffHighlight.args.Disease = ACH:Color(L["Disease Effect"], nil, 6, true)
 Colors.debuffHighlight.args.Poison = ACH:Color(L["Poison Effect"], nil, 7, true)
-Colors.debuffHighlight.args.Bleed = ACH:Color(L["Bleed Effect"], nil, 8, true)
+Colors.debuffHighlight.args.Bleed = ACH:Color(L["Bleed Effect"], nil, 8, true, nil, nil, nil, nil, not E.Retail)
 
 Colors.threatGroup = ACH:Group(L["Threat"], nil, nil, nil, function(info) local n = tonumber(info[#info]) local t, d = E.db.unitframe.colors.threat[n], P.unitframe.colors.threat[n] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b) local n = tonumber(info[#info]) local t = E.db.unitframe.colors.threat[n] t.r, t.g, t.b = r, g, b UF:Update_AllFrames() end)
 Colors.threatGroup.args['0'] = ACH:Color(L["Low Threat"], nil, 1)
