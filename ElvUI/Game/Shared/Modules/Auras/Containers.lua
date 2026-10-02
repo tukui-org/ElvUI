@@ -214,6 +214,8 @@ function E:Auras_CreateIndicator(button)
 	cooldown:SetAllPoints(texture)
 	button.cooldown = cooldown
 
+	button.durationConfig = { interpolation = StatusBarInterpolation.ExponentialEaseOut }
+
 	button.textFrame = E:Auras_CreateText(button)
 end
 
@@ -351,6 +353,8 @@ function E:Auras_CreateButton(button)
 	cooldown:SetAllPoints(texture)
 	button.cooldown = cooldown
 
+	button.durationConfig = { interpolation = StatusBarInterpolation.ExponentialEaseOut }
+
 	button.textFrame = E:Auras_CreateText(button)
 end
 
@@ -436,7 +440,7 @@ function E:Auras_UpdateButton(container, button)
 	if container.isTopAura then
 		local statusbar = button.statusbar
 		if container.useStatusbar then
-			button:SetDurationBar(statusbar, container.smoothbars and { interpolation = StatusBarInterpolation.ExponentialEaseOut } or nil)
+			button:SetDurationBar(statusbar, container.smoothbars and button.durationConfig or nil)
 
 			local color = container.barColor or backdropColor
 			statusbar:SetStatusBarTexture(container.barTexture)
@@ -454,7 +458,7 @@ function E:Auras_UpdateButton(container, button)
 		end
 	elseif container.isAuraBar then
 		if button.statusbar then
-			button:SetDurationBar(button.statusbar, container.smoothbars and { interpolation = StatusBarInterpolation.ExponentialEaseOut } or nil)
+			button:SetDurationBar(button.statusbar, container.smoothbars and button.durationConfig or nil)
 
 			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
