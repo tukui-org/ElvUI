@@ -757,27 +757,29 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 
 	self.widgetsOnly = E.Modern and self.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
 	self.widgetSet = E.Modern and UnitWidgetSet(unit)
-	self.classification = UnitClassification(unit)
+	self.classification = UnitClassification(unit) -- also updated by ClassificationIndicator
 	self.creatureType = UnitCreatureType(unit)
-	self.isTarget = E:UnitIsUnit(unit, 'target')
-	self.isMe = E:UnitIsUnit(unit, 'player')
+	self.isTarget = E:UnitIsUnit(unit, 'target') -- also updated by PLAYER_TARGET_CHANGED
 	self.isPet = E:UnitIsUnit(unit, 'pet')
-	self.isFriend = UnitIsFriend('player', unit)
-	self.isEnemy = UnitIsEnemy('player', unit)
 	self.isPlayer = UnitIsPlayer(unit)
 	self.isGameObject = UnitIsGameObject(unit)
-	self.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 	self.isBattlePet = not E.Classic and UnitIsBattlePet(unit)
-	self.reaction = UnitReaction('player', unit) -- Player Reaction
-	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
-	self.faction = UnitFactionGroup(unit)
-	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
 	self.unitName, self.unitRealm = UnitName(unit)
 	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
 
+	-- this list is also updated by UNIT_FACTION
+	self.isMe = E:UnitIsUnit(unit, 'player')
+	self.reaction = UnitReaction('player', unit) -- Player Reaction
+	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
+	self.isFriend = UnitIsFriend('player', unit)
+	self.isEnemy = UnitIsEnemy('player', unit)
+	self.faction = UnitFactionGroup(unit)
+	self.isPVPSanctuary = UnitIsPVPSanctuary(unit)
+	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
+	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
+
 	self.className, self.classFile, self.classID = UnitClass(unit)
 	self.classColor = self.isPlayer and (E:IsSecretValue(self.classFile) and C_ClassColor_GetClassColor(self.classFile) or E:ClassColor(self.classFile))
-	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
 	local specID, specIcon
 	local spec = E.Retail and E:GetUnitSpecInfo(unit) -- forever has one spec per class
