@@ -107,8 +107,8 @@ do -- Expansions
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-	E.Forever = E.wowtoc >= 16000 and E.wowtoc < 20000 -- ToDo: classic_beta
-	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and not E.Forever
+	E.Forever = WOW_PROJECT_ID == WOW_PROJECT_CAMELOT
+	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 	E.Modern = E.Retail or E.Forever
 
