@@ -32,7 +32,7 @@ local Update = function(frame, event, unit)
 	if instanceType == 'arena' then
 		local unitID = tonumber(arenaIndex or frame:GetID() or 0)
 		local specID, icon, _ = unitID and GetArenaOpponentSpec(unitID)
-		if specID and specID > 0 then
+		if specID and oUF:NotSecretValue(specID) and specID > 0 then
 			_, _, _, icon = GetSpecializationInfoByID(specID)
 		end
 

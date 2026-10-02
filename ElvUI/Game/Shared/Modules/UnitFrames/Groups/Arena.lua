@@ -7,7 +7,7 @@ local CreateFrame = CreateFrame
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
 function UF:ToggleArenaPreparationInfo(frame, specID)
-	local specInfo = E.SpecInfoBySpecID[specID]
+	local specInfo = E:NotSecretValue(specID) and E.SpecInfoBySpecID[specID]
 
 	local show = specInfo and not not specInfo.classFile
 	frame.forceInRange = show -- used to force unitframe range

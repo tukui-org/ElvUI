@@ -218,7 +218,7 @@ tagFunctions.arenaspec = function(u)
 	local id = strmatch(u, 'arena(%d)$')
 	if(id) then
 		local specID = GetArenaOpponentSpec(tonumber(id))
-		if(specID and specID > 0) then
+		if(specID and oUF:NotSecretValue(specID) and specID > 0) then
 			local _, specName = GetSpecializationInfoByID(specID)
 			return specName
 		end
@@ -440,7 +440,7 @@ tagFunctions.raidcolor = function(u)
 	else
 		local id = strmatch(u, 'arena(%d)$')
 		local specID = id and GetArenaOpponentSpec(tonumber(id))
-		if specID and specID > 0 then
+		if specID and oUF:NotSecretValue(specID) and specID > 0 then
 			local _, _, _, _, _, classSpec = GetSpecializationInfoByID(specID)
 			if oUF:NotSecretValue(classSpec) and classSpec then
 				return Hex(_COLORS.class[classSpec])
