@@ -10,26 +10,6 @@ S:AddCallbackForAddon('Blizzard_ProfessionsCustomerOrders', nil, nil, nil, nil, 
 
 -- Custom Orders (Credits: siweia - NDUI)
 
-local function RefreshFlyoutButton(button)
-	button.NormalTexture:SetAlpha(0)
-	button.PushedTexture:SetAlpha(0)
-
-	if not button.IsSkinned then
-		S:HandleIcon(button.icon, true)
-		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
-
-		local hl = button:GetHighlightTexture()
-		hl:SetColorTexture(1, 1, 1, .25)
-		hl:SetOutside(button)
-
-		button.IsSkinned = true
-	end
-end
-
-local function RefreshFlyoutButtons(frame)
-	frame:ForEachFrame(RefreshFlyoutButton)
-end
-
 local function HideCategoryButton(button)
 	--button:SetTemplate('Transparnt')
 	button.NormalTexture:Hide()
@@ -116,24 +96,6 @@ local function FormInit(form)
 	end
 end
 
--- the reagent flyout is a single frame that gets reparented to whichever form opened it
--- Professions.lua hooks the same function with the same skin, whichever runs first skins it
-local function OpenItemFlyout(_, owner)
-	for _, child in next, { owner:GetChildren() } do
-		if child.InitializeContents and not child.IsSkinned then
-			child.NineSlice:SetTemplate('Transparent')
-			S:HandleTrimScrollBar(child.ScrollBar)
-			S:HandleCheckBox(child.HideUnownedCheckbox)
-			child.HideUnownedCheckbox:Size(24)
-
-			RefreshFlyoutButtons(child.ScrollBox)
-			hooksecurefunc(child.ScrollBox, 'Update', RefreshFlyoutButtons)
-
-			child.IsSkinned = true
-		end
-	end
-end
-
 local function BrowseOrdersUpdateChild(child)
 	if not child.IsSkinned then
 		HideCategoryButton(child)
@@ -187,8 +149,6 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	local frame = _G.ProfessionsCustomerOrdersFrame
 	S:HandleFrame(frame)
 	HandleTabs(frame)
-
-	hooksecurefunc('OpenProfessionsItemFlyout', OpenItemFlyout)
 
 	frame.MoneyFrameBorder:StripTextures()
 	frame.MoneyFrameInset:StripTextures()

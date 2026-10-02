@@ -48,8 +48,46 @@ local function HandleFlyoutItems(scrollBox)
 	scrollBox:ForEachFrame(HandleSalvageItem)
 end
 
+local function RefreshFlyoutButton(button)
+	button.NormalTexture:SetAlpha(0)
+	button.PushedTexture:SetAlpha(0)
+
+	if not button.IsSkinned then
+		S:HandleIcon(button.icon, true)
+		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
+
+		local hl = button:GetHighlightTexture()
+		hl:SetColorTexture(1, 1, 1, .25)
+		hl:SetOutside(button)
+
+		button.IsSkinned = true
+	end
+end
+
+local function RefreshFlyoutButtons(frame)
+	frame:ForEachFrame(RefreshFlyoutButton)
+end
+
 -- the reagent flyout is a single frame that gets reparented to whichever form opened it
-local function HandleItemFlyout(_, owner)
+-- Professions.lua hooks the same function with the same skin, whichever runs first skins it
+local function ItemFlyout_CustomerOrders(_, owner)
+	for _, child in next, { owner:GetChildren() } do
+		if child.InitializeContents and not child.IsSkinned then
+			child.NineSlice:SetTemplate('Transparent')
+			S:HandleTrimScrollBar(child.ScrollBar)
+			S:HandleCheckBox(child.HideUnownedCheckbox)
+			child.HideUnownedCheckbox:Size(24)
+
+			RefreshFlyoutButtons(child.ScrollBox)
+			hooksecurefunc(child.ScrollBox, 'Update', RefreshFlyoutButtons)
+
+			child.IsSkinned = true
+		end
+	end
+end
+
+-- the reagent flyout is a single frame that gets reparented to whichever form opened it
+local function ItemFlyout_Professions(_, owner)
 	for _, child in next, { owner:GetChildren() } do
 		if child.InitializeContents and not child.IsSkinned then
 			child.NineSlice:SetTemplate('Transparent')
@@ -63,6 +101,11 @@ local function HandleItemFlyout(_, owner)
 			child.IsSkinned = true
 		end
 	end
+end
+
+local function OpenProfessionsItemFlyout(frame, owner)
+	ItemFlyout_Professions(frame, owner)	-- Blizzard_Professions
+	ItemFlyout_CustomerOrders(frame, owner) -- Blizzard_ProfessionsCustomerOrders
 end
 
 local function ReskinSlotButton(button)
@@ -411,7 +454,7 @@ function S:Blizzard_Professions()
 	S:HandleFrame(InspectRecipe)
 	HandleSchematicForm(InspectRecipe.SchematicForm, true)
 
-	hooksecurefunc('OpenProfessionsItemFlyout', HandleItemFlyout)
+	hooksecurefunc('OpenProfessionsItemFlyout', OpenProfessionsItemFlyout)
 
 	if E.global.general.disableTutorialButtons then
 		CraftingPage.TutorialButton:Kill()
