@@ -940,7 +940,7 @@ function Generic:GetTargetInfo()
 	elseif self._state_type == "spell" then
 		targetInfo.spellID = self:GetSpellId()
 	elseif self._state_type == "item" then
-		targetInfo.itemID = self._state_action:match("^item:(%d+)")
+		targetInfo.itemID = strmatch(self._state_action, "^item:(%d+)")
 	end
 
 	return targetInfo
@@ -3254,7 +3254,7 @@ end
 -----------------------------------------------------------
 --- Item Button
 local function getItemId(input)
-	return input:match("^item:(%d+)")
+	return strmatch(input, "^item:(%d+)")
 end
 
 Item.HasAction               = function(self) return true end
