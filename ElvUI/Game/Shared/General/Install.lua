@@ -541,7 +541,6 @@ function E:LayoutAnniversary()
 	E.db.general.talkingHeadFrameScale = 1
 	E.db.general.totems.growthDirection = 'HORIZONTAL'
 	E.db.general.totems.size = 36
-	E.db.general.vehicleSeatIndicatorSize = 76
 	E.db.nameplates.colors.selection[0] = E:NewColorTable(0.78, 0.25, 0.25, 1)
 	E.db.nameplates.colors.selection[2] = E:NewColorTable(0.85, 0.768, 0.36, 1)
 	E.db.nameplates.colors.threat.badColor = E:NewColorTable(0.78, 0.25, 0.25, 1)

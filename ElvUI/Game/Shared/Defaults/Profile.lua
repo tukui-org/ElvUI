@@ -57,7 +57,6 @@ P.general = {
 	objectiveFrameAutoHideInKeystone = false,
 	talkingHeadFrameScale = 0.9,
 	talkingHeadFrameBackdrop = false,
-	vehicleSeatIndicatorSize = 128,
 	resurrectSound = false,
 	questRewardMostValueIcon = true,
 	questXPPercent = true,
