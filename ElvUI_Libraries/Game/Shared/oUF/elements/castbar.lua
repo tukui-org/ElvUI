@@ -120,20 +120,23 @@ local StatusBarInterpolation = Enum.StatusBarInterpolation
 local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
-if oUF.isClassic or oUF.isTBC then
+if oUF.isClassic or oUF.isTBC or oUF.isForever then
 	specialCast[2643] = 500 -- Multishot R1
 	specialCast[14288] = 500 -- Multishot R2
 	specialCast[14289] = 500 -- Multishot R3
 	specialCast[14290] = 500 -- Multishot R4
 	specialCast[25294] = 500 -- Multishot R5
 	specialCast[27021] = 500 -- Multishot R6
-	specialCast[19434] = 3000 -- Aimed Shot R1
-	specialCast[20900] = 3000 -- Aimed Shot R2
-	specialCast[20901] = 3000 -- Aimed Shot R3
-	specialCast[20902] = 3000 -- Aimed Shot R4
-	specialCast[20903] = 3000 -- Aimed Shot R5
-	specialCast[20904] = 3000 -- Aimed Shot R6
-	specialCast[27065] = 3000 -- Aimed Shot R7
+
+	if not oUF.isForever then
+		specialCast[19434] = 3000 -- Aimed Shot R1
+		specialCast[20900] = 3000 -- Aimed Shot R2
+		specialCast[20901] = 3000 -- Aimed Shot R3
+		specialCast[20902] = 3000 -- Aimed Shot R4
+		specialCast[20903] = 3000 -- Aimed Shot R5
+		specialCast[20904] = 3000 -- Aimed Shot R6
+		specialCast[27065] = 3000 -- Aimed Shot R7
+	end
 
 	specialAuras[3045] = 0.4 -- Rapid Fire: 40%
 	specialAuras[6150] = 0.3 -- Quick Shots [Improved Hawk]: 30%
@@ -293,7 +296,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	local real, casting, channeling = event, true, false
+	local real, casting, channeling, castsent = event, true, false, false
 	local name, text, texture, startTime, endTime, isTradeSkill, empowering, castID, barID, notInterruptible, castDuration, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
@@ -308,6 +311,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 				castTime = castTime * speedMod
 			end
 
+			castsent = true
 			castID = castGUID
 			startTime = GetTime() * 1000
 			endTime = startTime + castTime
@@ -339,6 +343,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.casting = casting
 	element.channeling = channeling
 	element.empowering = empowering
+	element.castsent = castsent
 
 	local isPlayer = oUF:UnitIsUnit(unit, 'player')
 	if not isPlayer or (oUF.isModern or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START')) then
@@ -361,7 +366,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	-- end block
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	if oUF.isModern then
+	if oUF.isModern and not castsent then
 		if oUF:NotSecretValue(startTime) then
 			element.startTime = startTime * 0.001
 
@@ -584,10 +589,12 @@ local function CastStop(self, event, unit, ...)
 
 	local spellID, interruptedBy, empowerComplete, _
 	if oUF.isModern then
-		if(event == 'UNIT_SPELLCAST_EMPOWER_STOP') then
+		if event == 'UNIT_SPELLCAST_EMPOWER_STOP' then
 			_, _, empowerComplete, interruptedBy = ...
-		elseif(event == 'UNIT_SPELLCAST_CHANNEL_STOP') then
+		elseif event == 'UNIT_SPELLCAST_CHANNEL_STOP' then
 			_, _, interruptedBy = ...
+		elseif event == 'UNIT_SPELLCAST_SUCCEEDED' then
+			_, spellID = ...
 		end
 	else
 		_, spellID = ...
@@ -765,7 +772,7 @@ local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
 		local duration, durationObject
 
-		if oUF.isModern then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
+		if oUF.isModern and not self.castsent then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
 			if durationObject then
@@ -849,7 +856,7 @@ local function onUpdate(self, elapsed)
 		end
 		]]
 
-		if not oUF.isModern then
+		if not oUF.isModern or self.castsent then
 			if self.SetValue_ then
 				self:SetValue_(duration)
 			else
@@ -901,6 +908,8 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+		elseif oUF.isForever then
+			self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', CastStop)
 		end
 
 		-- ElvUI block
@@ -961,6 +970,8 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+		elseif oUF.isForever then
+			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', CastStop)
 		end
 
 		-- ElvUI block
