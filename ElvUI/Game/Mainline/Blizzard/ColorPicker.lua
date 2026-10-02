@@ -251,7 +251,7 @@ function BL:EnhanceColorPicker()
 
 	local alphaUpdater = CreateFrame('Frame', '$parent_AlphaUpdater', ColorPickerFrame)
 	alphaUpdater:SetScript('OnUpdate', function()
-		if ColorPickerFrame.Content.ColorPicker.Alpha:IsMouseOver() then
+		if ColorPickerFrame.Content.ColorPicker.Alpha:IsMouseMotionFocus() then
 			OnAlphaValueChanged(nil, ColorPickerFrame:GetColorAlpha())
 		end
 	end)

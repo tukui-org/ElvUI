@@ -131,7 +131,7 @@ local function Update(frame, event, unit)
 		(element.Power and (PowerTypesFull[powerType] and oUF:NotSecretValue(currentPower) and (currentPower < maxPower))) or
 		(element.Vehicle and (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI(unit)) or
 		(element.DynamicFlight and oUF.isRetail and not isGliding) or
-		(element.Hover and hoverFrame:IsMouseOver())
+		(element.Hover and hoverFrame:IsMouseMotionFocus())
 	then
 		ToggleAlpha(frame, element, element.MaxAlpha)
 	elseif element.Delay then

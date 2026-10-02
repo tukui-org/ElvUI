@@ -804,7 +804,7 @@ function E:Config_SearchFocusLost()
 end
 
 function E:Config_SearchOnEvent()
-	if self:HasFocus() and (not self:IsMouseOver() and not self.clearButton:IsMouseOver()) then
+	if self:HasFocus() and (not self:IsMouseMotionFocus() and not self.clearButton:IsMouseMotionFocus()) then
 		EditBox_ClearFocus(self)
 	end
 end

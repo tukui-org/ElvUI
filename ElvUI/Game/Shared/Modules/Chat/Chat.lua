@@ -1240,7 +1240,7 @@ function CH:TabOnEnter(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and not chat.copyButton:IsMouseOver() then
+		if chat and chat.copyButton and not chat.copyButton:IsMouseMotionFocus() then
 			chat.copyButton:SetAlpha(0.35)
 		end
 	end
@@ -1255,7 +1255,7 @@ function CH:TabOnLeave(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and not chat.copyButton:IsMouseOver() then
+		if chat and chat.copyButton and not chat.copyButton:IsMouseMotionFocus() then
 			chat.copyButton:SetAlpha(0)
 		end
 	end
@@ -1296,7 +1296,7 @@ function CH:HandleFadeTabs(chat, hook)
 
 	if not hook then
 		CH:TabOnEnter(tab)
-	elseif not tab:IsMouseOver() and not chat:IsMouseOver() then
+	elseif not tab:IsMouseMotionFocus() then
 		CH:TabOnLeave(tab)
 	end
 end
@@ -2634,7 +2634,7 @@ function CH:FCFDockOverflowButton_UpdatePulseState(btn)
 	if btn.alerting then
 		btn:SetAlpha(1)
 		btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
-	elseif not btn:IsMouseOver() then
+	elseif not btn:IsMouseMotionFocus() then
 		btn.Texture:SetVertexColor(1, 1, 1)
 	end
 end
