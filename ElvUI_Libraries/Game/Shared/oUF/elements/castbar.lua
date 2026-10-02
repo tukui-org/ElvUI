@@ -363,12 +363,12 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
 	if oUF.isModern then
 		if oUF:NotSecretValue(startTime) then
-			element.startTime = startTime / 1000
+			element.startTime = startTime * 0.001
 
 			if(element.empowering) then
-				element.endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
+				element.endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) * 0.001
 			else
-				element.endTime = endTime / 1000
+				element.endTime = endTime * 0.001
 			end
 
 			-- Calculate max for CustomTimeText compatibility
@@ -507,12 +507,12 @@ local function CastUpdate(self, event, unit)
 	if oUF.isModern then
 		if oUF:NotSecretValue(startTime) then
 			if(element.empowering) then
-				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
+				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) * 0.001
 			else
-				endTime = endTime / 1000
+				endTime = endTime * 0.001
 			end
 
-			startTime = startTime / 1000
+			startTime = startTime * 0.001
 
 			-- Update max for CustomTimeText compatibility
 			element.max = endTime - startTime
