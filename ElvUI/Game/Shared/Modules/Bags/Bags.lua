@@ -3297,11 +3297,13 @@ function B:SetupItemGlow(frame)
 	frame.NewItemGlow = _G.CreateAnimationGroup(frame)
 	frame.NewItemGlow:SetLooping(true)
 
-	frame.NewItemGlow.Fade = frame.NewItemGlow:CreateAnimation('fade')
-	frame.NewItemGlow.Fade:SetDuration(0.7)
-	frame.NewItemGlow.Fade:SetChange(0)
-	frame.NewItemGlow.Fade:SetEasing('in')
-	frame.NewItemGlow.Fade:SetScript('OnFinished', B.ItemGlowOnFinished)
+	local glow = frame.NewItemGlow:CreateAnimation('fade')
+	glow:SetDuration(0.7)
+	glow:SetChange(0)
+	glow:SetEasing('in')
+	glow:SetScript('OnFinished', B.ItemGlowOnFinished)
+
+	frame.NewItemGlow.Fade = glow
 end
 
 function B:OpenBank()
