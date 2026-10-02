@@ -317,7 +317,10 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 		auras:Size(db.numAuras * db.size + ((db.numAuras - 1) * db.spacing), 1)
 	end
 
-	auras:SetFrameLevel(nameplate.RaisedElement.AuraLevel)
+	if not preallocated then
+		auras:SetFrameLevel(nameplate.RaisedElement.AuraLevel)
+	end
+
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 end
