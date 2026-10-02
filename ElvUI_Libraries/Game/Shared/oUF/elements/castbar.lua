@@ -720,7 +720,7 @@ local function CastInterruptible(self, event, unit)
 end
 
 -- ElvUI block
-local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
+local UNIT_SPELLCAST_SENT = function(self, event, unit, target, castID, spellID)
 	if not oUF.isModern then
 		UpdateCurrentTarget(self.Castbar, unit, target)
 	end
