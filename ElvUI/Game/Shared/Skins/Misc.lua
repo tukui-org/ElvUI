@@ -9,12 +9,11 @@ local hooksecurefunc = hooksecurefunc
 
 S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')
 
-local function FixReadyCheckFrame(frame)
-	if not frame.initiator or _G.ReadyCheckListenerFrame:IsShown() then
-		return -- this is basically a UnitIsUnit('player', initiator)
+local function FixReadyCheckFrame()
+	local frame = _G.ReadyCheckFrame
+	if frame.initiator and not _G.ReadyCheckListenerFrame:IsShown() then
+		frame:Hide() -- bug fix, dont show it if player is initiator; blizzard checks UnitIsUnit('player', initiator)
 	end
-
-	frame:Hide() -- bug fix, dont show it if player is initiator
 end
 
 local function FixAutoCompleteLevel(frame)
@@ -120,7 +119,7 @@ function S:BlizzardMiscFrames()
 		ListenerFrame:SetAlpha(0)
 	end
 
-	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
+	ListenerFrame:HookScript('OnShow', FixReadyCheckFrame)
 
 	-- Retail, Forever and Mists skin it in PVP.lua
 	if not (E.Modern or E.Mists) then
