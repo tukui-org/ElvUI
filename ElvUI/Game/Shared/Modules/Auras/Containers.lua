@@ -18,6 +18,7 @@ local UnitIsVisible = UnitIsVisible
 
 local GetCVarBool = C_CVar.GetCVarBool
 local AuraButtonBorderStyle = AuraButtonBorderStyle
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 local ItemEnchantmentPlacement = _G.CustomAuraContainerItemEnchantmentPlacement
 local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
@@ -435,7 +436,7 @@ function E:Auras_UpdateButton(container, button)
 	if container.isTopAura then
 		local statusbar = button.statusbar
 		if container.useStatusbar then
-			button:SetDurationBar(statusbar)
+			button:SetDurationBar(statusbar, container.smoothbars and { interpolation = StatusBarInterpolation.ExponentialEaseOut } or nil)
 
 			local color = container.barColor or backdropColor
 			statusbar:SetStatusBarTexture(container.barTexture)
@@ -453,7 +454,7 @@ function E:Auras_UpdateButton(container, button)
 		end
 	elseif container.isAuraBar then
 		if button.statusbar then
-			button:SetDurationBar(button.statusbar)
+			button:SetDurationBar(button.statusbar, container.smoothbars and { interpolation = StatusBarInterpolation.ExponentialEaseOut } or nil)
 
 			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
