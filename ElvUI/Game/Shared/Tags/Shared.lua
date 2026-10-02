@@ -1361,14 +1361,14 @@ if info then
 	info['classpower:deficit'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" }
 	info['classpower:deficit:shortvalue'] = { hidden = E.Classic, category = "Classpower", description = "" }
 	info['classpower:percent'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's current amount of special power as a percentage" }
-	info['holypower'] = { hidden = E.Classic, category = "Classpower", description = "Displays the holy power (Paladin)" }
+	info['holypower'] = { hidden = not E.Retail, category = "Classpower", description = "Displays the holy power (Paladin)" }
 
 	info['classcolor'] = { category = "Colors", description = "Colors names by player class or NPC reaction (Ex: [classcolor][name])" }
 	info['classificationcolor'] = { category = "Colors", description = "Changes the text color, depending on the unit's classification" }
 	info['classpowercolor'] = { category = "Colors", description = "Changes the color of the special power based upon its type" }
 	info['difficultycolor'] = { category = "Colors", description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" }
 	info['factioncolor'] = { category = "Colors", description = "Colors names by Faction (Alliance, Horde, Neutral)" }
-	info['happiness:color'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Colors", description = "Changes the text color, depending on the pet happiness" }
+	info['happiness:color'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Colors", description = "Changes the text color, depending on the pet happiness" }
 	info['healthcolor'] = { category = "Colors", description = "Changes the text color, depending on the unit's current health" }
 	info['manacolor'] = { category = "Colors", description = "Colors the power text based on the mana color" }
 	info['namecolor'] = { hidden = true, category = "Colors", description = "Deprecated version of [classcolor]" }
@@ -1433,11 +1433,11 @@ if info then
 	info['altpower:deficit'] = { category = "Altpower", description = "Displays altpower text on a unit in deficit format" }
 	info['altpower:percent'] = { category = "Altpower", description = "Displays altpower text on a unit in percent format" }
 
-	info['diet'] = { hidden = E.Modern, category = "Hunter", description = "Displays the diet of your pet (Fish, Meat, ...)" }
-	info['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like a Discord emoji" }
-	info['happiness:full'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness as a word (e.g. 'Happy')" }
-	info['happiness:icon'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like the default Blizzard icon" }
-	info['loyalty'] = { hidden = E.Modern, category = "Hunter", description = "Displays the pet loyalty level" }
+	info['diet'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the diet of your pet (Fish, Meat, ...)" }
+	info['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the pet happiness like a Discord emoji" }
+	info['happiness:full'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the pet happiness as a word (e.g. 'Happy')" }
+	info['happiness:icon'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the pet happiness like the default Blizzard icon" }
+	info['loyalty'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the pet loyalty level" }
 
 	info['mana:current'] = { category = "Mana", description = "Displays the unit's current mana" }
 	info['mana:current-max'] = { category = "Mana", description = "Displays the unit's current and maximum mana, separated by a dash" }

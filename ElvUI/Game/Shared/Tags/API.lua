@@ -426,16 +426,16 @@ info.powercolor				= { category = "Colors", description = "Colors the power text
 info.pvp					= { category = "PvP", description = "Displays 'PvP' if the unit is pvp flagged" }
 info.rare					= { category = "Classification", description = "Displays 'Rare' when the unit is a rare or rareelite" }
 info.resting				= { category = "Status", description = "Displays 'zzz' if the unit is resting" }
-info.runes					= { hidden = E.Classic, category = "Classpower", description = "Displays the runes (Death Knight)" }
+info.runes					= { hidden = not (E.Retail or E.Wrath or E.Mists), category = "Classpower", description = "Displays the runes (Death Knight)" }
 info.shortclassification	= { category = "Classification", description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" }
 info.smartlevel				= { category = "Level", description = "Only display the unit's level if it is not the same as yours" }
-info.soulshards				= { hidden = E.Classic, category = "Classpower", description = "Displays the soulshards (Warlock)" }
+info.soulshards				= { hidden = not (E.Retail or E.Mists), category = "Classpower", description = "Displays the soulshards (Warlock)" }
 info.status					= { category = "Status", description = "Displays zzz, dead, ghost, offline" }
 info.threat					= { category = "Threat", description = "Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)" }
 info.threatcolor			= { category = "Colors", description = "Changes the text color, depending on the unit's threat situation" }
-info.spec					= { hidden = not E.Modern, category = "Class", description = "Displays the specialization icon of the unit as text" }
-info.arcanecharges			= { hidden = not E.Modern, category = "Classpower", description = "Displays the arcane charges (Mage)" }
-info.chi					= { hidden = not E.Modern, category = "Classpower", description = "Displays the chi points (Monk)" }
+info.spec					= { hidden = E.Modern, category = "Class", description = "Displays the specialization icon of the unit as text" }
+info.arcanecharges			= { hidden = not E.Retail, category = "Classpower", description = "Displays the arcane charges (Mage)" }
+info.chi					= { hidden = not E.Retail, category = "Classpower", description = "Displays the chi points (Monk)" }
 
 -- Allow Refreshing
 RefreshNewTags = true
