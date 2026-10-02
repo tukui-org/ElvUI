@@ -476,6 +476,10 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised, updateBase)
 
 		nameplate.Title:ClearAllPoints()
 		nameplate.Title:Point('TOP', nameplate.Name, 'BOTTOM', 0, -2)
+
+		if nameplate.isTarget then
+			NP:SetupTarget(nameplate, true)
+		end
 	else
 		NP:ReparentNotNameonly(nameplate, E.HiddenFrame)
 	end
@@ -486,13 +490,13 @@ function NP:GetClassAnchor()
 	return TCP.realPlate or TCP
 end
 
-function NP:SetupTarget(nameplate, isTarget)
+function NP:SetupTarget(nameplate, removed)
 	if not (NP.db.units and NP.db.units.TARGET) then return end
 
 	local TCP = NP.TargetClassPower
 	local cp = NP.db.units.TARGET.classpower
 
-	if not isTarget or not nameplate or not cp.enable then
+	if removed or not nameplate or not cp.enable then
 		TCP.realPlate = nil
 	else
 		local db = NP:PlateDB(nameplate)
@@ -673,7 +677,7 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 		nameplate.FadeObject = {}
 	end
 
-	nameplate.FadeObject.timeToFade = timeToFade
+	nameplate.FadeObject.timeToFade = (nameplate.isTarget and 0) or timeToFade
 	nameplate.FadeObject.startAlpha = startAlpha
 	nameplate.FadeObject.endAlpha = endAlpha
 	nameplate.FadeObject.diffAlpha = endAlpha - startAlpha
@@ -748,14 +752,6 @@ function NP:UpdatePlateBase(nameplate)
 	end
 end
 
-function NP:IsTarget(nameplate, unit)
-	return E:NotSecretValue(unit) and nameplate.__unit and E:UnitIsUnit(unit, nameplate.__unit)
-end
-
-function NP:PLAYER_TARGET_CHANGED(_, unit)
-	NP:SetupTarget(self, NP:IsTarget(self, unit))
-end
-
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	if not unit then unit = self.__unit end
 
@@ -763,6 +759,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.widgetSet = E.Modern and UnitWidgetSet(unit)
 	self.classification = UnitClassification(unit)
 	self.creatureType = UnitCreatureType(unit)
+	self.isTarget = E:UnitIsUnit(unit, 'target')
 	self.isMe = E:UnitIsUnit(unit, 'player')
 	self.isPet = E:UnitIsUnit(unit, 'pet')
 	self.isFriend = UnitIsFriend('player', unit)
@@ -829,7 +826,6 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		end
 
 		NP:UpdatePlateBase(self)
-		NP:SetupTarget(self, NP:IsTarget(self, unit))
 	end
 
 	if (NP.db.fadeIn and not NP.SkipFading) and self.frameType ~= 'PLAYER' then
@@ -841,6 +837,11 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	if self ~= NP.TestFrame then
 		if self.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:Hide()
+		end
+
+		if self.isTarget then
+			NP:ScalePlate(self, 1, true)
+			NP:SetupTarget(self, true)
 		end
 	end
 
@@ -875,6 +876,14 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	self.Health.cur = nil -- cutaway
 	self.Power.cur = nil -- cutaway
 	self.npcID = nil -- just cause
+end
+
+function NP:PLAYER_TARGET_CHANGED(_, unit)
+	if not unit then unit = self.__unit end
+
+	self.isTarget = E:UnitIsUnit(unit, 'target')
+
+	NP:SetupTarget(self)
 end
 
 function NP:UNIT_FACTION(_, unit)
