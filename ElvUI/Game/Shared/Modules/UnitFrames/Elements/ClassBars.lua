@@ -581,6 +581,7 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		rune:GetStatusBarTexture():SetHorizTile(false)
 
 		rune.__owner = runes
+
 		-- only Wrath and Mists fade the charging color - Runes_PostUpdate sets it everywhere else
 		rune.PostUpdateColor = (E.Wrath or E.Mists) and UF.Runes_UpdateChargedColor or nil
 

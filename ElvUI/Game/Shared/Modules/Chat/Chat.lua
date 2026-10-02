@@ -2786,14 +2786,18 @@ function CH:ChatThrottleIntervalHandler(event, text, author, ...)
 	if blockFlag then
 		return true
 	else
-		if blockObject then blockObject.time = time() end
+		if blockObject then
+			blockObject.time = time()
+		end
+
 		return CH:FindURL(event, text, author, ...)
 	end
 end
 
 function CH:CHAT_MSG_CHANNEL(event, msg, author, ...)
-	-- self is the chat frame - one without channels drops the line anyway
-	if self.channelList and not next(self.channelList) then return false end
+	if self.channelList and not next(self.channelList) then
+		return false -- one without channels drops the line anyway
+	end
 
 	return CH:ChatThrottleIntervalHandler(event, msg, author, ...)
 end

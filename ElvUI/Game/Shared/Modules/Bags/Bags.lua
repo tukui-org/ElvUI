@@ -3283,11 +3283,13 @@ function B:HideItemGlow(bag)
 	if bag.NewItemGlow:IsPlaying() then
 		bag.NewItemGlow:Stop()
 
-		for _, itemGlow in next, bag.NewItemGlow.Fade.children do
+		local glow = bag.NewItemGlow.Fade
+		local slots = glow.children
+		for key, itemGlow in next, slots do
 			itemGlow:SetAlpha(0)
-		end
 
-		wipe(bag.NewItemGlow.Fade.children)
+			slots[key] = nil
+		end
 	end
 end
 

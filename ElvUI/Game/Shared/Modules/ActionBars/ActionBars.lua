@@ -1844,8 +1844,7 @@ end
 
 function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	if button._state_type == 'action' then
-		if info then
-			-- isActive and isEnabled are never secret - idle buttons skip the cooldown lookups
+		if info then -- isActive and isEnabled are never secret - idle buttons skip the cooldown lookups
 			AB:SetButtonDesaturation(button, info.startTime, (info.isActive or not info.isEnabled) and info.duration)
 		else
 			AB:SetButtonDesaturation(button, start, duration)

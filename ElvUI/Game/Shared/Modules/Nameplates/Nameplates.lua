@@ -418,11 +418,11 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
-	NP:Update_QuestIcons(nameplate, not updateBase)
+	NP:Update_QuestIcons(nameplate, updateBase)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
-		NP:DisablePlate(nameplate, db.enable and db.nameOnly, not db.enable, not updateBase)
+		NP:DisablePlate(nameplate, db.enable and db.nameOnly, not db.enable, updateBase)
 
 		if nameplate == NP.TestFrame then
 			nameplate.Castbar:SetAlpha(0)
@@ -454,7 +454,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	end
 end
 
-function NP:DisablePlate(nameplate, nameOnly, hideRaised, keepTags)
+function NP:DisablePlate(nameplate, nameOnly, hideRaised, updateBase)
 	if hideRaised and nameplate.RaisedElement:IsShown() then
 		nameplate.RaisedElement:Hide() -- reshown by NAME_PLATE_UNIT_ADDED
 	end
@@ -462,7 +462,7 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised, keepTags)
 	NP:ReparentElements(nameplate, E.HiddenFrame)
 
 	if nameOnly then
-		if not keepTags then
+		if updateBase then
 			NP:Update_Tags(nameplate)
 		end
 
@@ -612,6 +612,23 @@ function NP:ConfigurePlates(init)
 
 	if E.Modern then
 		NP:AuraContainer_ConstructFilters() -- rebuilds the filters
+	else
+		local allowCLEU
+		for frameType in next, NP.AuraContainerFilterKeys do
+			local plateDB = NP:PlateDB(nil, frameType)
+			local notHidden = plateDB.enable and not plateDB.nameOnly
+			local castDB = notHidden and plateDB.castbar -- only when it can actually show up
+			if castDB and castDB.enable and castDB.sourceInterrupt and (castDB.timeToHold > 0) then
+				allowCLEU = true
+				break
+			end
+		end
+
+		if allowCLEU then
+			NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+		else
+			NP:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+		end
 	end
 
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
