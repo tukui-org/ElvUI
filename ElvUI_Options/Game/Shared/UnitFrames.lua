@@ -324,7 +324,7 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 2)
-	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 1, function() local db = (subGroup and E.db.unitframe.units[groupName][subGroup] or E.db.unitframe.units[groupName]).buffIndicator local configString = format('Aura Indicator (%s)', ((petTypes[groupName] or subGroup == 'petsGroup') and db.petSpecific and 'Pet') or (db.profileSpecific and 'Profile') or 'Class') C:SetToFilterConfig(configString) end)
+	config.args.generalGroup.args.configureButton = ACH:Execute(L["Configure Auras"], nil, 1, function() local opt = ((subGroup and E.db.unitframe.units[groupName][subGroup]) or E.db.unitframe.units[groupName]) local db = opt.buffIndicator local configKey = (((petTypes[groupName] or subGroup == 'petsGroup') and db.petSpecific and 'Pet') or (db.profileSpecific and 'Profile') or 'Class') local configString = format('Aura Indicator (%s)', configKey) C:SetToFilterConfig(configString) end)
 	config.args.generalGroup.args.size = ACH:Range(L["Size"], nil, 2, { min = 6, max = 48, step = 1 })
 	config.args.generalGroup.args.profileSpecific = ACH:Toggle(L["Profile Specific"], L["Use the profile specific filter Aura Indicator (Profile) instead of the global filter Aura Indicator."], 3)
 	config.args.generalGroup.args.petSpecific = ACH:Toggle(L["Pet Specific"], L["Use the profile specific filter Aura Indicator (Pet) instead of the global filter Aura Indicator."], 4, nil, nil, nil, nil, nil, nil, function() return not (petTypes[groupName] or subGroup == 'petsGroup') end)
