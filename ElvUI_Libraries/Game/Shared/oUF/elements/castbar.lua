@@ -376,6 +376,14 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 				element.endTime = endTime * 0.001
 			end
 
+			if element.castsent then
+				if element.channeling then
+					element.duration = endTime - GetTime()
+				else
+					element.duration = GetTime() - startTime
+				end
+			end
+
 			-- Calculate max for CustomTimeText compatibility
 			element.max = element.endTime - element.startTime
 		else
