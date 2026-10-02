@@ -2038,8 +2038,8 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		end
 	end
 
-	if E.Retail and E:NotSecretValue(unitGUID) and unitGUID then
-		if CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
+	if E.Modern and E:NotSecretValue(unitGUID) and unitGUID then
+		if E.Retail and CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
 			flag = flag .. TIMERUNNING_SMALL
 		end
 
