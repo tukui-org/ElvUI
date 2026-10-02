@@ -600,7 +600,7 @@ local function SkinWardrobeFrame()
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 
 	S:HandleButton(WardrobeCollectionFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
-	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.SearchBox, 'RIGHT', 2, 0)
+	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.SearchBox, 'RIGHT', 4, 0)
 	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
 	WardrobeCollectionFrame.FilterButton.ResetButton:ClearAllPoints()
 	WardrobeCollectionFrame.FilterButton.ResetButton:Point('CENTER', WardrobeCollectionFrame.FilterButton, 'TOPRIGHT', 0, 0)
