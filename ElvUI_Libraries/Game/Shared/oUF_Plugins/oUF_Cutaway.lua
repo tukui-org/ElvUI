@@ -305,10 +305,11 @@ local function DisableElement(element)
 end
 
 local function Disable(self)
-	if not self.Cutaway then return end
+	local element = self and self.Cutaway
+	if not element then return end
 
-	DisableElement(self.Cutaway.Health)
-	DisableElement(self.Cutaway.Power)
+	DisableElement(element.Health)
+	DisableElement(element.Power)
 end
 
 oUF:AddElement("Cutaway", nil, Enable, Disable)

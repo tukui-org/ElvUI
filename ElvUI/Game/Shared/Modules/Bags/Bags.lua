@@ -1507,10 +1507,8 @@ function B:Container_OnEvent(event, ...)
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
 		if not self.isBank or self:IsShown() then
 			local id = ...
-			if B.WarbandBanks[id] then
-				if self.isBank then -- the bag frame gets these too
-					B:UpdateBagSlots(self, id)
-				end
+			if self.isBank and B.WarbandBanks[id] then -- the bag frame gets these too
+				B:UpdateBagSlots(self, id)
 			else
 				B:DelayedContainer(self, event, id)
 			end

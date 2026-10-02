@@ -158,21 +158,29 @@ function DT:FetchFrame(givenName)
 	return frame
 end
 
+function DT:CleanPanel(dt, restore)
+	dt:UnregisterAllEvents()
+
+	dt:SetScript('OnUpdate', nil)
+	dt:SetScript('OnEvent', nil)
+	dt:SetScript('OnClick', nil)
+
+	if not restore then
+		dt:SetScript('OnEnter', nil)
+		dt:SetScript('OnLeave', nil)
+	end
+
+	if dt.objectEvent and dt.objectEventFunc then
+		E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
+		dt.objectEvent, dt.objectEventFunc = nil, nil
+	end
+end
+
 function DT:EmptyPanel(panel)
 	panel:Hide()
 
 	for _, dt in ipairs(panel.dataPanels) do
-		dt:UnregisterAllEvents()
-		dt:SetScript('OnUpdate', nil)
-		dt:SetScript('OnEvent', nil)
-		dt:SetScript('OnEnter', nil)
-		dt:SetScript('OnLeave', nil)
-		dt:SetScript('OnClick', nil)
-
-		if dt.objectEvent and dt.objectEventFunc then
-			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
-			dt.objectEvent, dt.objectEventFunc = nil, nil
-		end
+		DT:CleanPanel(dt)
 	end
 
 	UnregisterStateDriver(panel, 'visibility')
@@ -610,17 +618,16 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	for i, dt in ipairs(panel.dataPanels) do
 		local assigned = DT.AssignedDatatexts[dt]
 
+		DT:CleanPanel(dt, true)
+		dt:SetScript('OnEnter', DT.OnEnter)
+		dt:SetScript('OnLeave', DT.OnLeave)
+
 		dt:SetShown(i <= numPoints)
 		dt:Size(width, height)
 		dt:ClearAllPoints()
 		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
-		dt:UnregisterAllEvents()
 		dt:EnableMouseWheel(false)
-		dt:SetScript('OnUpdate', nil)
-		dt:SetScript('OnEvent', nil)
-		dt:SetScript('OnClick', nil)
-		dt:SetScript('OnEnter', DT.OnEnter)
-		dt:SetScript('OnLeave', DT.OnLeave)
+
 		wipe(dt.MouseEnters)
 		wipe(dt.MouseLeaves)
 
@@ -641,11 +648,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 		dt.icon:Size(iconSize)
 		dt.icon:SetTexture(E.ClearTexture)
-
-		if dt.objectEvent and dt.objectEventFunc then
-			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
-			dt.objectEvent, dt.objectEventFunc = nil, nil
-		end
 
 		if assigned and assigned.isLDB and assigned.eventFunc then
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')

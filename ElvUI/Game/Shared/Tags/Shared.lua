@@ -334,17 +334,6 @@ if not E.Modern then
 		end, E.Classic)
 	end
 
-	E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
-		local currentHealth = UnitHealth(unit)
-		local deficit = UnitHealthMax(unit) - currentHealth
-
-		if deficit > 0 and currentHealth > 0 then
-			return _TAGS['health:percent-nostatus'](unit)
-		else
-			return _TAGS.name(unit)
-		end
-	end)
-
 	E:AddTag('health:current:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 		local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local currentHealth, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -490,14 +479,6 @@ if not E.Modern then
 		return name
 	end)
 
-	E:AddTag('health:deficit-percent:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
-		local min, max = UnitHealth(unit), UnitHealthMax(unit)
-		local deficit = (min / max) - 1
-		if deficit ~= 0 then
-			return E:GetFormattedText('PERCENT', deficit, -1)
-		end
-	end)
-
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	E:AddTag('name:health', 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH UNIT_MAXHEALTH', function(unit, _, args)
 		local name = UnitName(unit)
@@ -630,12 +611,44 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		return name
 	end)
 
-	E:AddTag(format('health:deficit-percent:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
-		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
+	E:AddTag('health:deficit-percent:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+		local cur = UnitHealth(unit)
+		if E:IsSecretValue(cur) or cur <= 0 then
+			return
+		end
 
-		local deficit = E:NotSecretValue(cur) and E:NotSecretValue(max) and cur and max and (max - cur) or 0
-		if deficit > 0 and cur > 0 then
-			return E:GetFormattedText('PERCENT', (cur / max) - 1, -1) -- health:deficit-percent:nostatus, which only exists on classic
+		local max = UnitHealthMax(unit)
+		local deficit = E:NotSecretValue(max) and (cur and max) and ((cur / max) - 1) or 0
+		if deficit ~= 0 then
+			return E:GetFormattedText('PERCENT', deficit, -1)
+		end
+	end)
+
+	E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+		local cur = UnitHealth(unit)
+		if E:IsSecretValue(cur) or cur <= 0 then
+			return _TAGS.name(unit)
+		end
+
+		local max = UnitHealthMax(unit)
+		local deficit = E:NotSecretValue(max) and (cur and max) and ((cur / max) - 1) or 0
+		if deficit ~= 0 then
+			return E:GetFormattedText('PERCENT', deficit, -1)
+		else
+			return _TAGS.name(unit)
+		end
+	end)
+
+	E:AddTag(format('health:deficit-percent:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+		local cur = UnitHealth(unit)
+		if E:IsSecretValue(cur) or cur <= 0 then
+			return _TAGS[nameTag](unit)
+		end
+
+		local max = UnitHealthMax(unit)
+		local deficit = E:NotSecretValue(max) and (cur and max) and ((cur / max) - 1) or 0
+		if deficit ~= 0 then
+			return E:GetFormattedText('PERCENT', deficit, -1)
 		else
 			return _TAGS[nameTag](unit)
 		end
@@ -1396,12 +1409,12 @@ if info then
 	info['health:deficit-nostatus'] = { category = "Health", description = "Displays the health of the unit as a deficit, without status" }
 	info['health:deficit-nostatus:shortvalue'] = { category = "Health", description = "Shortvalue of the health deficit, without status" }
 	info['health:deficit-percent-absorbs'] = { hidden = E.Classic, category = "Health", description = "Displays the percentage deficit health including absorb values. If greater than max health that will be reflected." }
-	info['health:deficit-percent:name'] = { hidden = E.Modern, category = "Health", description = "Displays the health deficit as a percentage and the full name of the unit" }
+	info['health:deficit-percent:name'] = { category = "Health", description = "Displays the health deficit as a percentage and the full name of the unit" }
 	info['health:deficit-percent:name-long'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 20 letters)" }
 	info['health:deficit-percent:name-medium'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 15 letters)" }
 	info['health:deficit-percent:name-short'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 10 letters)" }
 	info['health:deficit-percent:name-veryshort'] = { category = "Health", description = "Displays the health deficit as a percentage and the name of the unit (limited to 5 letters)" }
-	info['health:deficit-percent:nostatus'] = { hidden = E.Modern, category = "Health", description = "Displays the health deficit as a percentage, without status" }
+	info['health:deficit-percent:nostatus'] = { category = "Health", description = "Displays the health deficit as a percentage, without status" }
 	info['health:deficit:shortvalue'] = { category = "Health", description = "Shortvalue of the health deficit (e.g. -41k instead of -41300)" }
 	info['health:max'] = { category = "Health", description = "Displays the maximum health of the unit" }
 	info['health:max:shortvalue'] = { category = "Health", description = "Shortvalue of the unit's maximum health" }
@@ -1412,6 +1425,13 @@ if info then
 	info['incomingheals'] = { category = "Health", description = "Displays all incoming heals" }
 	info['incomingheals:others'] = { category = "Health", description = "Displays only incoming heals from other units" }
 	info['incomingheals:personal'] = { category = "Health", description = "Displays only personal incoming heals" }
+
+	info['altpower:current-max-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max-percent format" }
+	info['altpower:current-max'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max format" }
+	info['altpower:current-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-percent format" }
+	info['altpower:current'] = { category = "Altpower", description = "Displays altpower text on a unit in current format" }
+	info['altpower:deficit'] = { category = "Altpower", description = "Displays altpower text on a unit in deficit format" }
+	info['altpower:percent'] = { category = "Altpower", description = "Displays altpower text on a unit in percent format" }
 
 	info['diet'] = { hidden = E.Modern, category = "Hunter", description = "Displays the diet of your pet (Fish, Meat, ...)" }
 	info['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like a Discord emoji" }

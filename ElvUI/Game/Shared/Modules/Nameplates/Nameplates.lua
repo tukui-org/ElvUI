@@ -313,14 +313,6 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 	end
 end
 
-function NP:PostUpdateAllElements(event)
-	if self == NP.TestFrame or self.widgetsOnly then return end -- skip test and widget plates
-
-	if event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
-		NP:SetupTarget(self)
-	end
-end
-
 function NP:StylePlate(nameplate)
 	nameplate:SetScale(1)
 	nameplate:ClearAllPoints()
@@ -355,8 +347,6 @@ function NP:StylePlate(nameplate)
 	NP:Construct_ClassPowerTwo(nameplate)
 
 	NP.Plates[nameplate] = nameplate.frameName
-
-	hooksecurefunc(nameplate, 'UpdateAllElements', NP.PostUpdateAllElements)
 end
 
 do
@@ -486,10 +476,6 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised, updateBase)
 
 		nameplate.Title:ClearAllPoints()
 		nameplate.Title:Point('TOP', nameplate.Name, 'BOTTOM', 0, -2)
-
-		if nameplate.isTarget then
-			NP:SetupTarget(nameplate, true)
-		end
 	else
 		NP:ReparentNotNameonly(nameplate, E.HiddenFrame)
 	end
@@ -500,13 +486,13 @@ function NP:GetClassAnchor()
 	return TCP.realPlate or TCP
 end
 
-function NP:SetupTarget(nameplate, removed)
+function NP:SetupTarget(nameplate, isTarget)
 	if not (NP.db.units and NP.db.units.TARGET) then return end
 
 	local TCP = NP.TargetClassPower
 	local cp = NP.db.units.TARGET.classpower
 
-	if removed or not nameplate or not cp.enable then
+	if not isTarget or not nameplate or not cp.enable then
 		TCP.realPlate = nil
 	else
 		local db = NP:PlateDB(nameplate)
@@ -613,7 +599,7 @@ function NP:ConfigurePlates(init)
 	if E.Modern then
 		NP:AuraContainer_ConstructFilters() -- rebuilds the filters
 	else
-		local allowCLEU
+		local allowCLEU -- only register when we actually need it
 		for frameType in next, NP.AuraContainerFilterKeys do
 			local plateDB = NP:PlateDB(nil, frameType)
 			local notHidden = plateDB.enable and not plateDB.nameOnly
@@ -687,7 +673,7 @@ function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
 		nameplate.FadeObject = {}
 	end
 
-	nameplate.FadeObject.timeToFade = (nameplate.isTarget and 0) or timeToFade
+	nameplate.FadeObject.timeToFade = timeToFade
 	nameplate.FadeObject.startAlpha = startAlpha
 	nameplate.FadeObject.endAlpha = endAlpha
 	nameplate.FadeObject.diffAlpha = endAlpha - startAlpha
@@ -762,14 +748,12 @@ function NP:UpdatePlateBase(nameplate)
 	end
 end
 
-function NP:PLAYER_TARGET_CHANGED(_, unit)
-	NP:SetupTarget(self) -- pass it, even as nil here
+function NP:IsTarget(nameplate, unit)
+	return E:NotSecretValue(unit) and nameplate.__unit and E:UnitIsUnit(unit, nameplate.__unit)
 end
 
-function NP:UpdateTargets() -- the driver callback above only runs when the new target has a plate
-	for nameplate in pairs(NP.Plates) do
-		nameplate.isTarget = nameplate.__unit and E:UnitIsUnit(nameplate.__unit, 'target') or nil
-	end
+function NP:PLAYER_TARGET_CHANGED(_, unit)
+	NP:SetupTarget(self, NP:IsTarget(self, unit))
 end
 
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
@@ -781,7 +765,6 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	self.creatureType = UnitCreatureType(unit)
 	self.isMe = E:UnitIsUnit(unit, 'player')
 	self.isPet = E:UnitIsUnit(unit, 'pet')
-	self.isTarget = E:UnitIsUnit(unit, 'target')
 	self.isFriend = UnitIsFriend('player', unit)
 	self.isEnemy = UnitIsEnemy('player', unit)
 	self.isPlayer = UnitIsPlayer(unit)
@@ -846,6 +829,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		end
 
 		NP:UpdatePlateBase(self)
+		NP:SetupTarget(self, NP:IsTarget(self, unit))
 	end
 
 	if (NP.db.fadeIn and not NP.SkipFading) and self.frameType ~= 'PLAYER' then
@@ -857,11 +841,6 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	if self ~= NP.TestFrame then
 		if self.frameType == 'PLAYER' then
 			NP.PlayerNamePlateAnchor:Hide()
-		end
-
-		if self.isTarget then
-			NP:ScalePlate(self, 1, true)
-			NP:SetupTarget(self, true)
 		end
 	end
 
@@ -1145,7 +1124,6 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
-	NP:RegisterEvent('PLAYER_TARGET_CHANGED', 'UpdateTargets')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')

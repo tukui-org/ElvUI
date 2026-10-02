@@ -170,7 +170,7 @@ function M:COMBAT_TEXT_UPDATE(_, messagetype)
 	if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
 	local faction, rep = GetCurrentCombatTextEventInfo()
-	if E:NotSecretValue(faction) and (faction and faction ~= 'Guild') and (rep and rep > 0) then
+	if (faction and faction ~= 'Guild') and (rep and rep > 0) then
 		local data = E:GetWatchedFactionInfo()
 		if not (data and data.name) or faction ~= data.name then
 			ExpandAllFactionHeaders()
@@ -427,9 +427,14 @@ function M:Initialize()
 	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	M:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	M:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
-	M:RegisterEvent(E.Modern and 'FACTION_STANDING_CHANGED' or 'COMBAT_TEXT_UPDATE') -- the combat text info is secret on Modern
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
+
+	if E.Modern then -- the combat text info is secret on Modern
+		M:RegisterEvent('FACTION_STANDING_CHANGED')
+	else
+		M:RegisterEvent('COMBAT_TEXT_UPDATE')
+	end
 
 	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.Retail and 'Blizzard_HousingControls' or nil, vanillaStyle and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
 		if IsAddOnLoaded(addon) then

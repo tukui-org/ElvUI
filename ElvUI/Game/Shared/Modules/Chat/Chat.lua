@@ -3048,6 +3048,11 @@ function CH:DelayGuildMOTD()
 end
 
 function CH:SaveChatHistory(event, ...)
+	local historyType = historyTypes[event]
+	if historyType and not CH.db.showHistory[historyType] then
+		return -- let others go by but kill ignored ones
+	end
+
 	if CH.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
 		local msg, author = ...
 		local when = time()
@@ -3057,11 +3062,6 @@ function CH:SaveChatHistory(event, ...)
 		if CH:ChatThrottleBlockFlag(author, msg, when) then
 			return
 		end
-	end
-
-	local historyType = historyTypes[event]
-	if historyType then -- let others go by..
-		if not CH.db.showHistory[historyType] then return end -- but kill ignored ones
 	end
 
 	if not CH.db.chatHistory then return end

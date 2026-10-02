@@ -139,11 +139,5 @@ if info then
 	info['additionalmana:current-percent:shortvalue'] = { category = "Mana", description = "" }
 	info['additionalmana:current:shortvalue'] = { category = "Mana", description = "" }
 	info['additionalmana:deficit:shortvalue'] = { category = "Mana", description = "" }
-	info['altpower:current-max-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max-percent format" }
-	info['altpower:current-max'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max format" }
-	info['altpower:current-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-percent format" }
-	info['altpower:current'] = { category = "Altpower", description = "Displays altpower text on a unit in current format" }
-	info['altpower:deficit'] = { category = "Altpower", description = "Displays altpower text on a unit in deficit format" }
-	info['altpower:percent'] = { category = "Altpower", description = "Displays altpower text on a unit in percent format" }
 	info['pvp:honorlevel'] = { category = "PvP", description = "Displays honor level of the unit" }
 end
