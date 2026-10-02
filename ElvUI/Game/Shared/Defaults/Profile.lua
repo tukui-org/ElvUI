@@ -55,7 +55,6 @@ P.general = {
 	objectiveFrameHeight = 480,
 	objectiveFrameAutoHide = true,
 	objectiveFrameAutoHideInKeystone = false,
-	bonusObjectivePosition = 'LEFT',
 	talkingHeadFrameScale = 0.9,
 	talkingHeadFrameBackdrop = false,
 	vehicleSeatIndicatorSize = 128,
