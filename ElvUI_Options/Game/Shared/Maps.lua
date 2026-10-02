@@ -87,7 +87,7 @@ Maps.args.minimap.args.icons.args.classHall.args.scale = ACH:Range(L["Scale"], n
 Maps.args.minimap.args.icons.args.classHall.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end)
 Maps.args.minimap.args.icons.args.classHall.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideClassHallReport end)
 
-Maps.args.minimap.args.icons.args.tracking = ACH:Group(L["Tracking"], nil, 4, nil, nil, nil, function() return not E.db.general.minimap.clusterDisable end, E.Modern and not E.Modern)
+Maps.args.minimap.args.icons.args.tracking = ACH:Group(L["Tracking"], nil, 4, nil, nil, nil, function() return not E.db.general.minimap.clusterDisable end)
 Maps.args.minimap.args.icons.args.tracking.args.hideTracking = ACH:Toggle(L["Hide"], nil, 1, nil, nil, nil, function() return E.private.general.minimap.hideTracking end, function(_, value) E.private.general.minimap.hideTracking = value; MM:UpdateSettings() end)
 Maps.args.minimap.args.icons.args.tracking.args.spacer = ACH:Spacer(2, "full")
 Maps.args.minimap.args.icons.args.tracking.args.position = ACH:Select(L["Position"], nil, 3, buttonPositions, nil, nil, nil, nil, function() return E.private.general.minimap.hideTracking end)
@@ -111,7 +111,7 @@ Maps.args.minimap.args.icons.args.mail.args.xOffset = ACH:Range(L["X-Offset"], n
 Maps.args.minimap.args.icons.args.mail.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
 Maps.args.minimap.args.icons.args.mail.args.texture = ACH:Select(L["Texture"], nil, 5)
 
-Maps.args.minimap.args.icons.args.crafting = ACH:Group(L["PROFESSIONS_CRAFTING"], nil, 7, nil, nil, nil, function() return E.Modern and not E.db.general.minimap.clusterDisable end)
+Maps.args.minimap.args.icons.args.crafting = ACH:Group(L["PROFESSIONS_CRAFTING"], nil, 7, nil, nil, nil, function() return E.Modern and not E.db.general.minimap.clusterDisable end, not E.Modern)
 Maps.args.minimap.args.icons.args.crafting.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
 Maps.args.minimap.args.icons.args.crafting.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
 Maps.args.minimap.args.icons.args.crafting.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
@@ -132,7 +132,7 @@ Maps.args.minimap.args.icons.args.battlefield.args.scale = ACH:Range(L["Scale"],
 Maps.args.minimap.args.icons.args.battlefield.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
 Maps.args.minimap.args.icons.args.battlefield.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
 
-Maps.args.minimap.args.icons.args.difficulty = ACH:Group(L["Instance Difficulty"], nil, 8, nil, nil, nil, function() return E.Modern and not E.db.general.minimap.clusterDisable end, E.Classic)
+Maps.args.minimap.args.icons.args.difficulty = ACH:Group(L["Instance Difficulty"], nil, 8, nil, nil, nil, function() return E.Modern and not E.db.general.minimap.clusterDisable end, E.Classic or E.TBC)
 Maps.args.minimap.args.icons.args.difficulty.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
 Maps.args.minimap.args.icons.args.difficulty.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
 Maps.args.minimap.args.icons.args.difficulty.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
