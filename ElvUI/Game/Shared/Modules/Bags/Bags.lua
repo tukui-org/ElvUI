@@ -561,7 +561,7 @@ function B:NewItemGlowSlotSwitch(slot, show)
 	if show then
 		local bag = slot.bagFrame
 		if not glow:IsShown() then
-			bag.NewItemGlow.Fade:AddChild(glow, glow)
+			bag.NewItemGlow.Fade:AddChild(glow)
 		end
 
 		glow:Show()
