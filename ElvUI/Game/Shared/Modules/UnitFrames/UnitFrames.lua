@@ -1675,10 +1675,9 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 	if self.eventlessAura then -- not on Modern
 		local waitAura = (self.elapsedAura or 0) + elapsed
 		if waitAura >= self.eventlessAura then
-			if self:IsElementEnabled('Auras') then
-				-- one ForceUpdate updates all three containers
-				local element = self.Auras or self.Buffs or self.Debuffs
-				if element then element:ForceUpdate() end
+			local element = self:IsElementEnabled('Auras') and (self.Auras or self.Buffs or self.Debuffs)
+			if element then -- one ForceUpdate updates all three containers
+				element:ForceUpdate()
 			end
 
 			self.elapsedAura = 0

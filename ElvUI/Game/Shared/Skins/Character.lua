@@ -742,8 +742,7 @@ local function PaperDollFrameSetResistance(frame, unit, index)
 end
 
 local function UpdateCurrencySkins()
-	-- Wrath runs TokenFrame_Update on every currency update - TokenFrame_OnShow runs it again
-	if not _G.TokenFrame:IsVisible() then return end
+	if not _G.TokenFrame:IsVisible() then return end -- Wrath runs TokenFrame_Update on every currency update - TokenFrame_OnShow runs it again
 
 	local TokenFramePopup = _G.TokenFramePopup
 	TokenFramePopup:ClearAllPoints()
