@@ -991,32 +991,33 @@ if Feat_UseCustomFlyout then
 
 		-- calculate extent for the long dimension
 		-- 3 pixel extra initial padding, button size + padding, and everything at 0.8 scale
-		local extent = (3 + (45 + 4) * usedSlots) * 0.8
+		local buttonSize = prevButton:GetWidth()
+		local extent = (3 + (buttonSize + 4) * usedSlots) * 0.8
 
 		self:ClearAllPoints()
 
 		if direction == "UP" then
 			self:SetPoint("BOTTOM", parent, "TOP")
-			self:SetWidth(45)
+			self:SetWidth(buttonSize)
 			self:SetHeight(extent)
 		elseif direction == "DOWN" then
 			self:SetPoint("TOP", parent, "BOTTOM")
-			self:SetWidth(45)
+			self:SetWidth(buttonSize)
 			self:SetHeight(extent)
 		elseif direction == "LEFT" then
 			self:SetPoint("RIGHT", parent, "LEFT")
 			self:SetWidth(extent)
-			self:SetHeight(45)
+			self:SetHeight(buttonSize)
 		elseif direction == "RIGHT" then
 			self:SetPoint("LEFT", parent, "RIGHT")
 			self:SetWidth(extent)
-			self:SetHeight(45)
+			self:SetHeight(buttonSize)
 		end
 
 		self:SetFrameStrata("DIALOG")
 		self:Show()
 
-		self:CallMethod("ShowFlyoutInsecure", direction)
+		self:CallMethod("ShowFlyoutInsecure", direction, buttonSize)
 
 		if oldParent and oldParent:GetAttribute("LABUseCustomFlyout") then
 			oldParent:CallMethod("UpdateFlyout")
@@ -1024,7 +1025,7 @@ if Feat_UseCustomFlyout then
 	]]
 
 	local SPELLFLYOUT_INITIAL_SPACING = 7
-	local function ShowFlyoutInsecure(self, direction)
+	local function ShowFlyoutInsecure(self, direction, buttonSize)
 		self.Background.End:ClearAllPoints()
 		self.Background.Start:ClearAllPoints()
 		if direction == "UP" then
@@ -1074,15 +1075,15 @@ if Feat_UseCustomFlyout then
 		end
 
 		if direction == "UP" or direction == "DOWN" then
-			self.Background.Start:SetWidth(47)
-			self.Background.HorizontalMiddle:SetWidth(47)
-			self.Background.VerticalMiddle:SetWidth(47)
-			self.Background.End:SetWidth(47)
+			self.Background.Start:SetWidth((buttonSize or 45) + 2)
+			self.Background.HorizontalMiddle:SetWidth((buttonSize or 45) + 2)
+			self.Background.VerticalMiddle:SetWidth((buttonSize or 45) + 2)
+			self.Background.End:SetWidth((buttonSize or 45) + 2)
 		else
-			self.Background.Start:SetHeight(47)
-			self.Background.HorizontalMiddle:SetHeight(47)
-			self.Background.VerticalMiddle:SetHeight(47)
-			self.Background.End:SetHeight(47)
+			self.Background.Start:SetHeight((buttonSize or 45) + 2)
+			self.Background.HorizontalMiddle:SetHeight((buttonSize or 45) + 2)
+			self.Background.VerticalMiddle:SetHeight((buttonSize or 45) + 2)
+			self.Background.End:SetHeight((buttonSize or 45) + 2)
 		end
 	end
 
