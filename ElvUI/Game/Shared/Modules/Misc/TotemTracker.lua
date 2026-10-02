@@ -16,7 +16,7 @@ local classic = { 2, 1, 3, 4 } -- we need to swap 1/2 on era
 function TM:UpdateButton(button, totem)
 	if not (button and totem) then return end
 
-	local slot = (E.Modern and totem.slot) or totem
+	local slot = (E.Forever and classic[totem.slot]) or (E.Retail and totem.slot) or totem
 	local _, _, startTime, duration, icon = GetTotemInfo(slot)
 
 	if startTime then
