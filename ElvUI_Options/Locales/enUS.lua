@@ -603,6 +603,7 @@ L["Displays item level on equippable items."] = true
 L["Displays the gender of players."] = true
 L["Don't display auras that are longer than this duration (in seconds). Set to zero to disable."] = true
 L["Don't display auras that are shorter than this duration (in seconds). Set to zero to disable."] = true
+L["Donate"] = true
 L["Donations:"] = true
 L["Dont scale by Font Size as base."] = true
 L["Down"] = true

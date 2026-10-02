@@ -1294,6 +1294,13 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			end
 		},
 		{
+			var = 'Donate',
+			name = '|cFF33FF33'..L["Donate"]..'|r',
+			func = function()
+				E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.patreon.com/ElvUI')
+			end
+		},
+		{
 			texture = true,
 			var = 'RepositionWindow',
 			name = L["Reposition Window"],
