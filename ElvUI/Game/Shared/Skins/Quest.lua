@@ -746,7 +746,7 @@ function S:BlizzardQuestFrames()
 		end
 
 		if E.private.skins.parchmentRemoverEnable then
-			_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
+			_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
 			hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 		end
 	end
