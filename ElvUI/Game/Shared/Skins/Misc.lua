@@ -10,9 +10,8 @@ local hooksecurefunc = hooksecurefunc
 S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')
 
 local function FixReadyCheckFrame(frame)
-	local initiator = frame.initiator -- we cant verify a secret value
-	if E:NotSecretValue(initiator) and initiator and E:UnitIsUnit('player', initiator) then
-		frame:Hide() -- bug fix, dont show it if player is initiator
+	if frame.initiator and E:UnitIsUnit('player', frame.initiator) then
+		frame:Hide() -- bug fix, don't show it if player is initiator
 	end
 end
 
