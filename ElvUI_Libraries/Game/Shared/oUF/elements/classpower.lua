@@ -144,17 +144,17 @@ local ClassPowerMax = {
 }
 
 local PoweredByCharges = {
-	[POWERTYPE_FIREBLAST] = oUF.isModern
+	[POWERTYPE_FIREBLAST] = oUF.isRetail
 }
 
 local PoweredByAuras = {
-	[POWERTYPE_SPEAR_TIP] = oUF.isModern,
+	[POWERTYPE_SPEAR_TIP] = oUF.isRetail,
 	[POWERTYPE_SOUL_CLEAVE] = oUF.isRetail,
 	[POWERTYPE_EBON_MIGHT] = oUF.isRetail,
-	[POWERTYPE_SOUL_FRAGMENTS] = oUF.isModern,
+	[POWERTYPE_SOUL_FRAGMENTS] = oUF.isRetail,
 	[POWERTYPE_ARCANE_CHARGES] = oUF.isMists,
-	[POWERTYPE_MAELSTROM] = oUF.isModern,
-	[POWERTYPE_ICICLES] = oUF.isModern
+	[POWERTYPE_MAELSTROM] = oUF.isRetail,
+	[POWERTYPE_ICICLES] = oUF.isRetail
 }
 
 local function UpdateColor(element, powerType)
@@ -281,9 +281,9 @@ local function Update(self, element, event, unit, powerType)
 			else
 				maximum, powerMax = 1, GetSpellMaxCumulativeAuraApplications(SPELL_DARK_HEART)
 			end
-		elseif oUF.isModern and (myClass == 'WARLOCK' and element.currentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
+		elseif oUF.isRetail and (myClass == 'WARLOCK' and element.currentSpec == SPEC_WARLOCK_DESTRUCTION) then -- destro locks are special
 			current = UnitPower(unit, powerID, true) / displayMod
-		elseif oUF.isModern and classPowerID == POWERTYPE_FIREBLAST then
+		elseif oUF.isRetail and classPowerID == POWERTYPE_FIREBLAST then
 			current = CheckSpellCharges(SPELL_FIRE_BLAST)
 		elseif oUF.isRetail and classPowerID == POWERTYPE_SOUL_CLEAVE then
 			current = CheckCastCount(SPELL_SOUL_CLEAVE)
@@ -312,7 +312,7 @@ local function Update(self, element, event, unit, powerType)
 			maximum = (classPowerID == POWERTYPE_MANA and 1) or powerMax or 0
 		end
 
-		chargedPoints = oUF.isModern and powerID == POWERTYPE_COMBO_POINTS and GetUnitChargedPowerPoints(unit)
+		chargedPoints = oUF.isRetail and powerID == POWERTYPE_COMBO_POINTS and GetUnitChargedPowerPoints(unit)
 
 		for i = 1, maximum do
 			local bar = element[i]
@@ -387,7 +387,7 @@ end
 local function Visibility(self, element, event, unit)
 	local shouldEnable
 
-	local currentSpec = (oUF.isModern or oUF.isMists) and GetSpecialization()
+	local currentSpec = (oUF.isRetail or oUF.isMists) and GetSpecialization()
 
 	local classPowerID, requirePower, requireSpell
 	local myClass = oUF.myclass
@@ -395,7 +395,7 @@ local function Visibility(self, element, event, unit)
 		classPowerID = POWERTYPE_COMBO_POINTS
 
 		requirePower = POWERTYPE_ENERGY
-		requireSpell = oUF.isModern and SPELL_SHRED or SPELL_CATFORM
+		requireSpell = oUF.isRetail and SPELL_SHRED or SPELL_CATFORM
 	elseif myClass == 'PALADIN' then
 		classPowerID = POWERTYPE_HOLY_POWER
 	elseif myClass == 'ROGUE' then
@@ -403,9 +403,9 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'MONK' then
 		classPowerID = (oUF.isMists or currentSpec == SPEC_MONK_WINDWALKER) and POWERTYPE_CHI or nil
 	elseif myClass == 'HUNTER' then
-		classPowerID = (oUF.isModern and currentSpec == SPEC_HUNTER_SURVIVAL) and POWERTYPE_SPEAR_TIP or nil
+		classPowerID = (oUF.isRetail and currentSpec == SPEC_HUNTER_SURVIVAL) and POWERTYPE_SPEAR_TIP or nil
 	elseif myClass == 'SHAMAN' then
-		classPowerID = oUF.isModern and (currentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM or currentSpec == SPEC_SHAMAN_ELEMENTAL and POWERTYPE_MANA) or nil
+		classPowerID = oUF.isRetail and (currentSpec == SPEC_SHAMAN_ENHANCEMENT and POWERTYPE_MAELSTROM or currentSpec == SPEC_SHAMAN_ELEMENTAL and POWERTYPE_MANA) or nil
 	elseif myClass == 'EVOKER' and not element.which then
 		classPowerID = POWERTYPE_ESSENCE
 	elseif myClass == 'EVOKER' and element.which then
@@ -415,9 +415,9 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'WARLOCK' then
 		classPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsSpellKnown(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
 	elseif myClass == 'MAGE' then
-		classPowerID = oUF.isModern and ((currentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (currentSpec == SPEC_MAGE_FIRE and POWERTYPE_FIREBLAST)) or (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
+		classPowerID = oUF.isRetail and ((currentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (currentSpec == SPEC_MAGE_FIRE and POWERTYPE_FIREBLAST)) or (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
 	elseif myClass == 'PRIEST' then
-		classPowerID = (oUF.isModern and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
+		classPowerID = (oUF.isRetail and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_MANA) or (oUF.isMists and currentSpec == SPEC_PRIEST_SHADOW and POWERTYPE_SHADOW_ORBS) or nil
 	end
 
 	if (oUF.isRetail or oUF.isWrath or oUF.isMists) and UnitHasVehicleUI('player') then

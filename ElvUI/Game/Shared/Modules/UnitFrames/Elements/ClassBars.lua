@@ -21,9 +21,9 @@ local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 local AltManaTypes = {
 	Rage = 1,
 	Energy = 3,
-	LunarPower = (E.Modern or E.Mists) and 8 or nil,
-	Maelstrom = E.Modern and 11 or nil,
-	Insanity = E.Modern and 13 or nil
+	LunarPower = (E.Retail or E.Mists) and 8 or nil,
+	Maelstrom = E.Retail and 11 or nil,
+	Insanity = E.Retail and 13 or nil
 }
 
 local ManaType = { powerName = 'MANA', powerType = 0 }
@@ -57,7 +57,7 @@ function UF:GetClassPower_Construct(frame)
 	elseif E.myclass == 'DEATHKNIGHT' then
 		frame.Runes = UF:Construct_DeathKnightResourceBar(frame)
 		frame.ClassBar = 'Runes'
-	elseif not E.Modern and E.myclass == 'SHAMAN' then
+	elseif not E.Retail and E.myclass == 'SHAMAN' then
 		frame.Totems = UF:Construct_Totems(frame)
 	end
 
