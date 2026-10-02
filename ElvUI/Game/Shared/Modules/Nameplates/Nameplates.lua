@@ -31,7 +31,6 @@ local UnitWidgetSet = UnitWidgetSet
 local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
-local C_NamePlate_GetNamePlates = C_NamePlate.GetNamePlates
 local GetCVarDefault = C_CVar.GetCVarDefault
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
@@ -154,7 +153,7 @@ function NP:SetCVars()
 
 	-- The order of these is important !!
 
-	if E.Retail then
+	if E.Modern then
 		E:SetCVar('nameplateShowFriendlyRealmName', 0)
 	else
 		E:SetCVar('nameplateMaxDistance', db.loadDistance)
@@ -251,9 +250,22 @@ end
 
 function NP:Construct_RaisedElement(nameplate)
 	local element = CreateFrame('Frame', '$parent_RaisedElement', nameplate)
+	local RaisedLevel = 10 -- start at 10
+
 	element:EnableMouse(false)
-	element:SetFrameLevel(10)
+	element:SetFrameLevel(RaisedLevel)
 	element:SetAllPoints()
+
+	element.TargetIndicatorLevel = 0
+	element.HealthLevel = RaisedLevel + 5 -- prediction goes up to 3 over this
+	element.PowerLevel = RaisedLevel + 10
+	element.HighlightLevel = RaisedLevel + 15
+	element.TagTextLevel = RaisedLevel + 20
+	element.RaidTargetIndicatorLevel = RaisedLevel + 25 -- one over target indicator
+	element.AuraLevel = RaisedLevel + 30
+	element.ClassBarLevel = RaisedLevel + 35
+	element.ClassButtonLevel = RaisedLevel + 36 -- one over bar level
+	element.CastBarLevel = RaisedLevel + 40
 
 	element.frameName = element:GetName()
 
@@ -264,7 +276,7 @@ function NP:Construct_ClassPowerTwo(nameplate)
 	if nameplate ~= NP.TestFrame then
 		if E.myclass == 'DEATHKNIGHT' then
 			nameplate.Runes = NP:Construct_Runes(nameplate)
-		elseif E.myclass == 'MONK' and E.Retail then
+		elseif E.myclass == 'MONK' and E.Modern then
 			nameplate.Stagger = NP:Construct_Stagger(nameplate)
 		end
 	end
@@ -274,7 +286,7 @@ function NP:Update_ClassPowerTwo(nameplate)
 	if nameplate ~= NP.TestFrame then
 		if E.myclass == 'DEATHKNIGHT' then
 			NP:Update_Runes(nameplate)
-		elseif E.myclass == 'MONK' and E.Retail then
+		elseif E.myclass == 'MONK' and E.Modern then
 			NP:Update_Stagger(nameplate)
 		end
 	end
@@ -314,14 +326,6 @@ function NP:ScalePlate(nameplate, scale, targetPlate)
 	end
 end
 
-function NP:PostUpdateAllElements(event)
-	if self == NP.TestFrame or self.widgetsOnly then return end -- skip test and widget plates
-
-	if event == 'NAME_PLATE_UNIT_ADDED' and self.isTarget then
-		NP:SetupTarget(self)
-	end
-end
-
 function NP:StylePlate(nameplate)
 	nameplate:SetScale(1)
 	nameplate:ClearAllPoints()
@@ -356,8 +360,6 @@ function NP:StylePlate(nameplate)
 	NP:Construct_ClassPowerTwo(nameplate)
 
 	NP.Plates[nameplate] = nameplate.frameName
-
-	hooksecurefunc(nameplate, 'UpdateAllElements', NP.PostUpdateAllElements)
 end
 
 do
@@ -419,11 +421,11 @@ function NP:UpdatePlate(nameplate, updateBase)
 	NP:Update_RaidTargetIndicator(nameplate)
 	NP:Update_PVPRole(nameplate)
 	NP:Update_Portrait(nameplate)
-	NP:Update_QuestIcons(nameplate)
+	NP:Update_QuestIcons(nameplate, updateBase)
 
 	local db = NP:PlateDB(nameplate)
 	if db.nameOnly or not db.enable then
-		NP:DisablePlate(nameplate, db.enable and db.nameOnly, not db.enable)
+		NP:DisablePlate(nameplate, db.enable and db.nameOnly, not db.enable, updateBase)
 
 		if nameplate == NP.TestFrame then
 			nameplate.Castbar:SetAlpha(0)
@@ -455,7 +457,7 @@ function NP:UpdatePlate(nameplate, updateBase)
 	end
 end
 
-function NP:DisablePlate(nameplate, nameOnly, hideRaised)
+function NP:DisablePlate(nameplate, nameOnly, hideRaised, updateBase)
 	if hideRaised and nameplate.RaisedElement:IsShown() then
 		nameplate.RaisedElement:Hide() -- reshown by NAME_PLATE_UNIT_ADDED
 	end
@@ -463,7 +465,10 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised)
 	NP:ReparentElements(nameplate, E.HiddenFrame)
 
 	if nameOnly then
-		NP:Update_Tags(nameplate)
+		if updateBase then
+			NP:Update_Tags(nameplate)
+		end
+
 		NP:Update_Highlight(nameplate)
 
 		-- The position values here are forced on purpose.
@@ -499,12 +504,11 @@ function NP:GetClassAnchor()
 end
 
 function NP:SetupTarget(nameplate, removed)
-	if not (NP.db.units and NP.db.units.TARGET) then return end
+	local classpower = NP.db.units and NP.db.units.TARGET and NP.db.units.TARGET.classpower
+	if not classpower then return end
 
 	local TCP = NP.TargetClassPower
-	local cp = NP.db.units.TARGET.classpower
-
-	if removed or not nameplate or not cp.enable then
+	if removed or not nameplate or not classpower.enable then
 		TCP.realPlate = nil
 	else
 		local db = NP:PlateDB(nameplate)
@@ -515,22 +519,22 @@ function NP:SetupTarget(nameplate, removed)
 	if TCP.ClassPower then
 		TCP.ClassPower:SetParent(anchor)
 		TCP.ClassPower:ClearAllPoints()
-		TCP.ClassPower:Point('CENTER', anchor, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.ClassPower:Point('CENTER', anchor, 'CENTER', classpower.xOffset, classpower.yOffset)
 	end
 
 	if TCP.Runes then
 		TCP.Runes:SetParent(anchor)
 		TCP.Runes:ClearAllPoints()
-		TCP.Runes:Point('CENTER', anchor, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.Runes:Point('CENTER', anchor, 'CENTER', classpower.xOffset, classpower.yOffset)
 	elseif TCP.Stagger then
 		TCP.Stagger:SetParent(anchor)
 		TCP.Stagger:ClearAllPoints()
-		TCP.Stagger:Point('CENTER', anchor, 'CENTER', cp.xOffset, cp.yOffset)
+		TCP.Stagger:Point('CENTER', anchor, 'CENTER', classpower.xOffset, classpower.yOffset)
 	end
 end
 
 function NP:SetNamePlateClickThrough()
-	if E.Retail then
+	if E.Modern then
 		NP.PlateDriver:SetEnemyInteractible(not NP.db.clickThrough.enemy)
 		NP.PlateDriver:SetFriendlyInteractible(not NP.db.clickThrough.friendly)
 	end
@@ -608,8 +612,25 @@ function NP:ConfigurePlates(init)
 		NP.NAME_PLATE_UNIT_ADDED(NP.TestFrame, 'NAME_PLATE_UNIT_ADDED', NP.TestFrame.__unit)
 	end
 
-	if E.Retail then
+	if E.Modern then
 		NP:AuraContainer_ConstructFilters() -- rebuilds the filters
+	else
+		local allowCLEU -- only register when we actually need it
+		for frameType in next, NP.AuraContainerFilterKeys do
+			local plateDB = NP:PlateDB(nil, frameType)
+			local notHidden = plateDB.enable and not plateDB.nameOnly
+			local castDB = notHidden and plateDB.castbar -- only when it can actually show up
+			if castDB and castDB.enable and castDB.sourceInterrupt and (castDB.timeToHold > 0) then
+				allowCLEU = true
+				break
+			end
+		end
+
+		if allowCLEU then
+			NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+		else
+			NP:UnregisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
+		end
 	end
 
 	local staticEvent = (NP.db.units.PLAYER.enable and NP.db.units.PLAYER.useStaticPosition) and 'NAME_PLATE_UNIT_ADDED' or 'NAME_PLATE_UNIT_REMOVED'
@@ -617,11 +638,13 @@ function NP:ConfigurePlates(init)
 	if init then -- since this is a fake plate, we actually need to trigger this always
 		staticFunc(NP.PlayerFrame, staticEvent, 'player')
 
-		if E.Retail then
+		if E.Modern then
 			NP:AuraContainer_ConstructContainers() -- this spawns the containers
 		end
 
-		NP.PlayerFrame:UpdateAllElements('ForceUpdate')
+		if staticEvent == 'NAME_PLATE_UNIT_ADDED' then
+			NP.PlayerFrame:UpdateAllElements('ForceUpdate')
+		end
 	else -- however, these only need to happen when changing options
 		for nameplate in pairs(NP.Plates) do
 			NP:UpdatePlateSize(nameplate)
@@ -633,7 +656,7 @@ function NP:ConfigurePlates(init)
 				NP.NAME_PLATE_UNIT_ADDED(nameplate, 'NAME_PLATE_UNIT_ADDED', nameplate.__unit)
 			end
 
-			if E.Retail then
+			if E.Modern then
 				NP:Configure_AuraUpdate(nameplate)
 			end
 
@@ -692,11 +715,6 @@ function NP:UnitNPCID(unit) -- also used by Bags.lua
 	end
 end
 
-function NP:UpdateNumPlates()
-	-- wish there was another way to get just the amount
-	NP.numPlates = #C_NamePlate_GetNamePlates()
-end
-
 function NP:UpdatePlateGUID(nameplate, guid)
 	NP.PlateGUID[nameplate.unitGUID] = (guid and nameplate) or nil
 end
@@ -746,38 +764,37 @@ function NP:UpdatePlateBase(nameplate)
 	end
 end
 
-function NP:PLAYER_TARGET_CHANGED(_, unit)
-	NP:SetupTarget(self) -- pass it, even as nil here
-end
-
 function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 	if not unit then unit = self.__unit end
 
-	self.widgetsOnly = E.Retail and self.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
-	self.widgetSet = E.Retail and UnitWidgetSet(unit)
-	self.classification = UnitClassification(unit)
+	self.widgetsOnly = E.Modern and self.blizzPlate and UnitNameplateShowsWidgetsOnly(unit)
+	self.widgetSet = E.Modern and UnitWidgetSet(unit)
+	self.classification = UnitClassification(unit) -- also updated by ClassificationIndicator
 	self.creatureType = UnitCreatureType(unit)
-	self.isMe = E:UnitIsUnit(unit, 'player')
+	self.isTarget = E:UnitIsUnit(unit, 'target') -- also updated by PLAYER_TARGET_CHANGED
 	self.isPet = E:UnitIsUnit(unit, 'pet')
-	self.isFriend = UnitIsFriend('player', unit)
-	self.isEnemy = UnitIsEnemy('player', unit)
 	self.isPlayer = UnitIsPlayer(unit)
 	self.isGameObject = UnitIsGameObject(unit)
-	self.isPVPSanctuary = UnitIsPVPSanctuary(unit)
 	self.isBattlePet = not E.Classic and UnitIsBattlePet(unit)
-	self.reaction = UnitReaction('player', unit) -- Player Reaction
-	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
-	self.faction = UnitFactionGroup(unit)
-	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
 	self.unitName, self.unitRealm = UnitName(unit)
 	self.npcID, self.unitGUID = NP:UnitNPCID(unit)
 
-	self.className, self.classFile, self.classID = UnitClass(unit)
-	self.classColor = self.isPlayer and (E:IsSecretValue(self.classFile) and C_ClassColor_GetClassColor(self.classFile) or E:ClassColor(self.classFile))
+	-- this list is also updated by UNIT_FACTION
+	self.isMe = E:UnitIsUnit(unit, 'player')
+	self.reaction = UnitReaction('player', unit) -- Player Reaction
+	self.repReaction = UnitReaction(unit, 'player') -- Reaction to Player
+	self.isFriend = UnitIsFriend('player', unit)
+	self.isEnemy = UnitIsEnemy('player', unit)
+	self.faction = UnitFactionGroup(unit)
+	self.isPVPSanctuary = UnitIsPVPSanctuary(unit)
+	self.battleFaction = E:GetUnitBattlefieldFaction(unit)
 	self.reactionColor = self.repReaction and NP.Colors.reactions[self.repReaction]
 
+	self.className, self.classFile, self.classID = UnitClass(unit)
+	self.classColor = self.isPlayer and (E:IsSecretValue(self.classFile) and C_ClassColor_GetClassColor(self.classFile) or E:ClassColor(self.classFile))
+
 	local specID, specIcon
-	local spec = E.Retail and E:GetUnitSpecInfo(unit)
+	local spec = E.Retail and E:GetUnitSpecInfo(unit) -- forever has one spec per class
 	if spec then
 		specID, specIcon = spec.id, spec.icon
 	end
@@ -789,11 +806,10 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		NP:UpdatePlateGUID(self, self.unitGUID)
 	end
 
-	NP:UpdateNumPlates()
 	NP:UpdatePlateType(self)
 	NP:UpdatePlateSize(self)
 
-	if E.Retail then
+	if E.Modern then
 		self.AuraContainer = NP:AuraContainer_SetActive(self)
 	end
 
@@ -847,9 +863,7 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 		NP:UpdatePlateGUID(self)
 	end
 
-	NP:UpdateNumPlates()
-
-	if E.Retail then
+	if E.Modern then
 		NP:AuraContainer_RemoveActive(self)
 	end
 
@@ -876,6 +890,14 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 	self.Health.cur = nil -- cutaway
 	self.Power.cur = nil -- cutaway
 	self.npcID = nil -- just cause
+end
+
+function NP:PLAYER_TARGET_CHANGED(_, unit)
+	if not unit then unit = self.__unit end
+
+	self.isTarget = E:UnitIsUnit(unit, 'target')
+
+	NP:SetupTarget(self)
 end
 
 function NP:UNIT_FACTION(_, unit)
@@ -1052,14 +1074,13 @@ function NP:Initialize()
 	}
 
 	NP.multiplier = NP.db.multiplier or 0.35
-	NP.numPlates = 0
 
 	NP:UpdateColors()
 
 	ElvUF:RegisterStyle('ElvNP', NP.Style)
 	ElvUF:SetActiveStyle('ElvNP')
 
-	if E.Retail then
+	if E.Modern then
 		NP.SetupClassNameplateBars(_G.NamePlateDriverFrame)
 
 		hooksecurefunc(_G.NamePlateDriverFrame, 'SetupClassNameplateBars', NP.SetupClassNameplateBars)
@@ -1129,10 +1150,6 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')
-
-	if not E.Retail then
-		NP:RegisterEvent('COMBAT_LOG_EVENT_UNFILTERED')
-	end
 
 	NP:HideInterfaceOptions()
 	NP:SetCVars()

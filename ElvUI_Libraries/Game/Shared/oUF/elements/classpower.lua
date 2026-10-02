@@ -108,8 +108,8 @@ local GetSpellCharges = C_Spell.GetSpellCharges
 local GetSpellCastCount = C_Spell.GetSpellCastCount
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetSpellMaxCumulativeAuraApplications = C_Spell.GetSpellMaxCumulativeAuraApplications
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
-local IsPlayerSpell = C_SpellBook.IsSpellKnown or IsPlayerSpell
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
+local IsSpellKnown = C_SpellBook.IsSpellKnown
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 local ClassPowerType = {
@@ -249,7 +249,7 @@ local function Update(self, element, event, unit, powerType)
 
 	local myClass = oUF.myclass
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
-	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (myClass == 'ROGUE' and powerType == 'ENERGY'))
+	local classic = not oUF.isModern and (powerType == 'COMBO_POINTS' or (myClass == 'ROGUE' and powerType == 'ENERGY'))
 	if not (vehicle or classic or powerType == currentType) then return end
 
 	--[[ Callback: ClassPower:PreUpdate(event)
@@ -312,7 +312,7 @@ local function Update(self, element, event, unit, powerType)
 			maximum = (classPowerID == POWERTYPE_MANA and 1) or powerMax or 0
 		end
 
-		chargedPoints = oUF.isRetail and GetUnitChargedPowerPoints(unit)
+		chargedPoints = oUF.isRetail and powerID == POWERTYPE_COMBO_POINTS and GetUnitChargedPowerPoints(unit)
 
 		for i = 1, maximum do
 			local bar = element[i]
@@ -395,7 +395,7 @@ local function Visibility(self, element, event, unit)
 		classPowerID = POWERTYPE_COMBO_POINTS
 
 		requirePower = POWERTYPE_ENERGY
-		requireSpell = oUF.isRetail and SPELL_SHRED or SPELL_CATFORM
+		requireSpell = oUF.isModern and SPELL_SHRED or SPELL_CATFORM
 	elseif myClass == 'PALADIN' then
 		classPowerID = POWERTYPE_HOLY_POWER
 	elseif myClass == 'ROGUE' then
@@ -413,7 +413,7 @@ local function Visibility(self, element, event, unit)
 	elseif myClass == 'DEMONHUNTER' then
 		classPowerID = oUF.isRetail and ((currentSpec == SPEC_DEMONHUNTER_DEVOURER and POWERTYPE_SOUL_FRAGMENTS) or (currentSpec == SPEC_DEMONHUNTER_VENGEANCE and POWERTYPE_SOUL_CLEAVE)) or nil
 	elseif myClass == 'WARLOCK' then
-		classPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsPlayerSpell(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
+		classPowerID = (not oUF.isMists and POWERTYPE_SOUL_SHARDS) or (currentSpec == SPEC_WARLOCK_DEMONOLOGY and POWERTYPE_DEMONIC_FURY) or (currentSpec == SPEC_WARLOCK_DESTRUCTION and POWERTYPE_BURNING_EMBERS) or (IsSpellKnown(SPELL_SOULBURN) and POWERTYPE_SOUL_SHARDS) or nil
 	elseif myClass == 'MAGE' then
 		classPowerID = oUF.isRetail and ((currentSpec == SPEC_MAGE_FROST and POWERTYPE_ICICLES) or (currentSpec == SPEC_MAGE_FIRE and POWERTYPE_FIREBLAST)) or (currentSpec == SPEC_MAGE_ARCANE and POWERTYPE_ARCANE_CHARGES) or nil
 	elseif myClass == 'PRIEST' then
@@ -425,7 +425,7 @@ local function Visibility(self, element, event, unit)
 		unit = 'vehicle'
 	elseif classPowerID then -- use 'player' instead of unit because 'SPELLS_CHANGED' is a unitless event
 		if not requirePower or requirePower == UnitPowerType('player') then
-			if not requireSpell or IsPlayerSpell(requireSpell) then
+			if not requireSpell or IsSpellKnown(requireSpell) then
 				shouldEnable = true
 				unit = 'player'
 			end
@@ -515,7 +515,7 @@ local function ClassPowerEnable(element, owner)
 		owner:RegisterEvent('UNIT_AURA', Path)
 	end
 
-	if oUF.isRetail then -- according to Blizz any class may receive this event due to specific spell auras
+	if oUF.isModern then -- according to Blizz any class may receive this event due to specific spell auras
 		owner:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 	else
 		owner:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
@@ -536,9 +536,9 @@ local function ClassPowerDisable(element, owner)
 	owner:UnregisterEvent('UNIT_MAXPOWER', Path)
 	owner:UnregisterEvent('UNIT_POWER_FREQUENT', Path)
 	owner:UnregisterEvent('SPELL_UPDATE_CHARGES', CheckCharges)
-	owner:UnregisterEvent('UNIT_AURA')
+	owner:UnregisterEvent('UNIT_AURA', Path)
 
-	if oUF.isRetail then
+	if oUF.isModern then
 		owner:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
 	else
 		owner:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)

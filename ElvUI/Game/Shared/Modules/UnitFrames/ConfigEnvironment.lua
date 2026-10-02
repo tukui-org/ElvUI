@@ -18,10 +18,10 @@ local UnregisterUnitWatch = UnregisterUnitWatch
 local RegisterUnitWatch = RegisterUnitWatch
 local RegisterStateDriver = RegisterStateDriver
 
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
-local NUM_CLASS_ORDER = #CLASS_SORT_ORDER
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local NUM_CLASS_ORDER = #CLASS_SORT_ORDER
 
 local configEnv
 local originalEnvs = {}
@@ -70,7 +70,7 @@ elseif E.Mists then
 	classPowers[14] = PowerType.BurningEmbers or 14
 	classPowers[15] = PowerType.DemonicFury or 15
 	classPowers[28] = PowerType.ShadowOrbs or 28
-elseif E.Retail then
+elseif E.Modern then
 	classPowers[4] = PowerType.RunicPower
 	classPowers[5] = PowerType.PAIN
 	classPowers[6] = PowerType.FURY

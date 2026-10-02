@@ -28,7 +28,6 @@ local GetGuildRosterMOTD = C_GuildInfo.GetMOTD or GetGuildRosterMOTD
 local C_GuildInfo_GuildRoster = C_GuildInfo.GuildRoster
 local GetGuildFactionData = C_Reputation.GetGuildFactionData
 local GetMemberIdsSortedByName = CommunitiesUtil.GetMemberIdsSortedByName
-local SortMemberInfo = CommunitiesUtil.SortMemberInfo
 local GetMemberInfo = CommunitiesUtil.GetMemberInfo
 local GetSubscribedClubs = C_Club.GetSubscribedClubs
 local CLUBTYPE_GUILD = Enum.ClubType.Guild
@@ -105,7 +104,7 @@ local function BuildGuildTable()
 	wipe(guildTable)
 	wipe(clubTable)
 
-	local clubs = E.Retail and GetSubscribedClubs()
+	local clubs = E.Modern and GetSubscribedClubs()
 	if E:NotSecretValue(clubs) and clubs then -- use this to get the timerunning flag (and other info?)
 		local guildClubID
 		for _, data in next, clubs do
@@ -118,9 +117,8 @@ local function BuildGuildTable()
 		-- replicate GetAndSortMemberInfo while protecting secret failure during chat restrictions
 		local members = GetMemberIdsSortedByName(guildClubID)
 		local memberInfo = E:NotSecretValue(members) and GetMemberInfo(guildClubID, members)
-		local membersSorted = memberInfo and SortMemberInfo(guildClubID, memberInfo)
-		if membersSorted then
-			for _, data in next, membersSorted do
+		if memberInfo then
+			for _, data in next, memberInfo do
 				if data.guid then
 					clubTable[data.guid] = data
 				end
@@ -269,7 +267,7 @@ local function OnEnter(_, _, noUpdate)
 		DT.tooltip:AddLine(format(guildMotDString, GUILD_MOTD, guildMotD), ttsubh.r, ttsubh.g, ttsubh.b, 1)
 	end
 
-	if E.Retail then
+	if E.Modern then
 		local info = GetGuildFactionData()
 		if info and info.reaction ~= 8 then -- Not Max Rep
 			local nextReactionThreshold = info.nextReactionThreshold - info.currentReactionThreshold

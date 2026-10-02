@@ -5,7 +5,7 @@ local LSM = E.Libs.LSM
 local ipairs = ipairs
 local CreateFrame = CreateFrame
 
-local targetIndicators = {'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator'}
+local targetIndicators = { 'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator' }
 
 function NP:Construct_QuestIcons(nameplate)
 	local QuestIcons = CreateFrame('Frame', nameplate.frameName..'QuestIcons', nameplate.RaisedElement)
@@ -34,13 +34,15 @@ function NP:Construct_QuestIcons(nameplate)
 	return QuestIcons
 end
 
-function NP:Update_QuestIcons(nameplate)
+function NP:Update_QuestIcons(nameplate, updateBase)
 	local plateDB = NP:PlateDB(nameplate)
 	local db = not E.Classic and plateDB.questIcon
 
 	if db and db.enable and not nameplate.isBattlePet and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
 		if not nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:EnableElement('QuestIcons')
+		elseif not updateBase then
+			return
 		end
 
 		nameplate.QuestIcons:ClearAllPoints()
@@ -115,7 +117,7 @@ function NP:Update_TargetIndicator(nameplate)
 
 	local tdb = NP.db.units.TARGET
 	local indicator = nameplate.TargetIndicator
-	indicator:SetFrameLevel(0)
+	indicator:SetFrameLevel(nameplate.RaisedElement.TargetIndicatorLevel)
 
 	indicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow] or E.Media.Arrows.Arrow9
 	indicator.lowHealthThreshold = NP.db.lowHealthThreshold
@@ -171,7 +173,7 @@ function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame('Frame', '$parentHighlight', nameplate)
 	Highlight:Hide()
 	Highlight:EnableMouse(false)
-	Highlight:SetFrameLevel(9)
+	Highlight:SetFrameLevel(nameplate.RaisedElement.HighlightLevel)
 
 	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK')
 
@@ -281,7 +283,7 @@ function NP:Construct_Cutaway(nameplate)
 end
 
 function NP:Update_Cutaway(nameplate)
-	if not E.Retail and (NP.db.cutaway.health.enabled or NP.db.cutaway.power.enabled) then
+	if not E.Modern and (NP.db.cutaway.health.enabled or NP.db.cutaway.power.enabled) then
 		if not nameplate:IsElementEnabled('Cutaway') then
 			nameplate:EnableElement('Cutaway')
 		end

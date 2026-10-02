@@ -6,16 +6,19 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local ceil, huge = ceil, math.huge
-local strfind, wipe = strfind, wipe
+local hooksecurefunc = hooksecurefunc
+local wipe, ceil, huge = wipe, ceil, math.huge
+local strfind, strmatch = strfind, strmatch
 local floor, next, type = floor, next, type
 
 local AnchorUtil = AnchorUtil
 local CreateFrame = CreateFrame
 local UnitCanAssist = UnitCanAssist
+local UnitIsVisible = UnitIsVisible
 
 local GetCVarBool = C_CVar.GetCVarBool
 local AuraButtonBorderStyle = AuraButtonBorderStyle
+local StatusBarInterpolation = Enum.StatusBarInterpolation
 local ItemEnchantmentPlacement = _G.CustomAuraContainerItemEnchantmentPlacement
 local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
 local MAINHAND = ItemEnchantmentSlot and ItemEnchantmentSlot.MainHand
@@ -56,6 +59,7 @@ E.AuraDispel = {
 	customDispelColorMap = {} -- updated by UpdateDispelColors
 }
 
+E.AuraHighlightDispellable = {}
 E.AuraContainerSortDirection = {}
 E.AuraContainerSortMethod = {}
 E.AuraPreviewFrames = {}
@@ -95,8 +99,14 @@ if SORTDIRECTION then
 	E.AuraContainerSortDirection['-'] = SORTDIRECTION.Reverse
 end
 
+function E:Auras_DispelUpdated()
+	for container in next, E.AuraHighlightDispellable do
+		E:Auras_SetHighlight(container)
+	end
+end
+
 function E:Auras_OnEvent(event, arg1)
-	local container = self.owner
+	local container = self:GetParent()
 	if event == 'PLAYER_FOCUS_CHANGED' or event == 'PLAYER_TARGET_CHANGED' then
 		local eventUnit = E.AuraEventUnits[event]
 		if eventUnit == container.unit then
@@ -105,15 +115,11 @@ function E:Auras_OnEvent(event, arg1)
 				E:Auras_SetContainer(container)
 			else -- for target frame
 				E:Auras_AssistUnit(container, eventUnit)
-
-				container:UpdateAllAuras()
 			end
 		end
 	elseif event == 'GROUP_ROSTER_UPDATE' then
-		if container.unit and E.AuraGroupHeaders[container.unitframeType] then
+		if container.unit then
 			E:Auras_AssistUnit(container, container.unit)
-
-			container:UpdateAllAuras()
 		end
 	elseif arg1 and (arg1 == container.unit) then
 		E:Auras_AssistUnit(container, arg1)
@@ -138,7 +144,8 @@ end
 function E:Auras_UpdateHighlight(container, button)
 	if button.highlight then
 		if container.key == 'bad' then
-			button:SetAuraBorder(button.highlight, E.AuraHighlight)
+			button:ClearDispelTypeTextures()
+			button:AddDispelTypeTexture(button.highlight, E.AuraHighlight)
 		else
 			local color = button.data.color or FALLBACK
 			button.highlight:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
@@ -206,6 +213,8 @@ function E:Auras_CreateIndicator(button)
 	local cooldown = CreateFrame('Cooldown', nil, button, 'CooldownFrameTemplate')
 	cooldown:SetAllPoints(texture)
 	button.cooldown = cooldown
+
+	button.durationConfig = { interpolation = StatusBarInterpolation.ExponentialEaseOut }
 
 	button.textFrame = E:Auras_CreateText(button)
 end
@@ -344,6 +353,8 @@ function E:Auras_CreateButton(button)
 	cooldown:SetAllPoints(texture)
 	button.cooldown = cooldown
 
+	button.durationConfig = { interpolation = StatusBarInterpolation.ExponentialEaseOut }
+
 	button.textFrame = E:Auras_CreateText(button)
 end
 
@@ -381,11 +392,10 @@ function E:Auras_UpdateButton(container, button)
 			end
 		else
 			button.dispelBorder:SetVertexColor(borderColor.r, borderColor.g, borderColor.b)
+			button:ClearDispelTypeTextures()
 
 			if container.isAuraBar or container.colorByType then -- auraByDispels would be isStealable
-				button:SetAuraBorder(button.dispelBorder, E.AuraDispel)
-			else
-				button:ClearAuraBorder()
+				button:AddDispelTypeTexture(button.dispelBorder, E.AuraDispel)
 			end
 		end
 	end
@@ -430,7 +440,7 @@ function E:Auras_UpdateButton(container, button)
 	if container.isTopAura then
 		local statusbar = button.statusbar
 		if container.useStatusbar then
-			button:SetDurationBar(statusbar)
+			button:SetDurationBar(statusbar, container.smoothbars and button.durationConfig or nil)
 
 			local color = container.barColor or backdropColor
 			statusbar:SetStatusBarTexture(container.barTexture)
@@ -448,7 +458,7 @@ function E:Auras_UpdateButton(container, button)
 		end
 	elseif container.isAuraBar then
 		if button.statusbar then
-			button:SetDurationBar(button.statusbar)
+			button:SetDurationBar(button.statusbar, container.smoothbars and button.durationConfig or nil)
 
 			if container.invertAurabars then
 				button.statusbar:SetStatusBarTexture(E.media.blankTex)
@@ -716,17 +726,25 @@ function E:Auras_HighlightFilter(container, data)
 end
 
 function E:Auras_SetHighlight(container)
+	if not container:IsShown() then
+		container.needsHighlight = true
+
+		return
+	end
+
 	local groupKey = container.key
 	if groupKey == 'bad' then
-		if container.known[groupKey] then return end
-
 		local candidate = E:Auras_FilterSlot(container)
 		E:Auras_CleanCandidates(container, candidate)
 
-		local slot = E:Auras_SetupHighlight(container, candidate)
-		container:AddAuraSlot(groupKey, container.filter, slot)
+		if container.known[groupKey] then
+			container:SetAuraSlotCandidateFilters(groupKey, candidate)
+		else
+			local slot = E:Auras_SetupHighlight(container, candidate)
+			container:AddAuraSlot(groupKey, container.filter, slot)
 
-		container.known[groupKey] = 'meow'
+			container.known[groupKey] = 'meow'
+		end
 	else
 		for key, data in next, container.active do
 			if not container.keys[key] then -- only handle previous keys
@@ -760,6 +778,12 @@ function E:Auras_SetHighlight(container)
 end
 
 function E:Auras_SetIndicator(container)
+	if not container:IsShown() then
+		container.needsIndicator = true
+
+		return
+	end
+
 	local sortMethod = container.sortMethod or SORTMETHOD.Default
 	local sortDirection = container.sortDirection or SORTDIRECTION.Normal
 
@@ -805,15 +829,13 @@ function E:Auras_SetupList(container, auraTable)
 			if data.enabled then
 				container.keys[key] = E:Auras_CleanClone(container, key, data)
 			end
-		elseif container.isHighlight then
-			if data.enable then
-				local clone = E:Auras_CleanClone(container, key, data)
-				if not clone.id then
-					clone.id = spell
-				end
-
-				container.keys[key] = clone
+		elseif data.enable then -- isHighlight db check
+			local clone = E:Auras_CleanClone(container, key, data)
+			if not clone.id then
+				clone.id = spell
 			end
+
+			container.keys[key] = clone
 		end
 	end
 end
@@ -939,6 +961,12 @@ function E:Auras_UpdatePreviewIcons(container)
 end
 
 function E:Auras_SetContainer(container)
+	if not container:IsShown() then
+		container.needsGroups = true
+
+		return
+	end
+
 	local allowPreview = container.isUnitframe or container.isNameplate
 	if allowPreview then -- dont add the ones we dont want to preview
 		E.AuraPreviewFrames[container] = true
@@ -998,27 +1026,73 @@ function E:Auras_SetLineSize(container)
 end
 
 function E:Auras_SetUnit(container, unit)
-	container:SetUnit(unit)
+	container:SetUnit(unit or '')
 	container.unit = unit
 end
 
-function E:Auras_SetEnabled(container)
-	container:SetEnabled(container.enabled and container.canAssist)
-end
+function E:Auras_ToggleEnable(container, shown)
+	if not container then return end
 
-function E:Auras_AssistUnit(container, unit)
-	container.canAssist = UnitCanAssist('player', unit)
+	local state
+	local gated = E.AuraGroupHeaders[container.unitframeType] and not container.forceShowAuras
+	local allowed = container.allowEnable and (not container.isHighlight or container.canReach) and (not gated or container.canAssist)
+	if not allowed then
+		state = false
+	elseif shown ~= nil then
+		state = shown
+	else
+		local parent = container:GetParent()
+		if container.isHighlight then
+			parent = parent:GetParent()
+		end
 
-	if container.isHighlight then
-		E:Auras_SetEnabled(container)
+		state = not parent or parent:IsShown()
+	end
+
+	if state == container:IsEnabled() then
+		return state
+	else
+		container:SetEnabled(state)
+
+		E.AuraHighlightDispellable[container] = (container.key == 'bad' and container.isHighlight and state) or nil
+
+		return state, true
 	end
 end
 
-function E:Auras_GroupUnit(container, unit)
+function E:Auras_AssistUnit(container, unit, shown, skip)
+	local isVisible = unit and UnitIsVisible(unit)
+	container.canReach = isVisible and UnitCanAssist('player', unit, true, true)
+	container.canAssist = isVisible and UnitCanAssist('player', unit)
+
+	local state, changed = E:Auras_ToggleEnable(container, shown)
+	if not state then
+		if container:IsShown() then
+			container:Hide() -- no need to call show or update
+		end
+	elseif not container:IsShown() then
+		container:Show() -- this should fire an update
+	elseif not skip and not changed then
+		container:UpdateAllAuras() -- update when the state doesnt change but its active
+	end
+end
+
+function E:Auras_GroupUnit(container, unit, shown)
 	if not container then return end
 
 	E:Auras_SetUnit(container, unit)
-	E:Auras_AssistUnit(container, unit)
+	E:Auras_RegisterUnitEvents(container, unit)
+	E:Auras_AssistUnit(container, unit, shown, true)
+end
+
+function E:Auras_ToggleActive(container, unit, shown)
+	if not container then return end
+
+	E:Auras_GroupUnit(container, unit, shown)
+
+	if container.events then
+		container.events:SetScript('OnEvent', shown and E.Auras_OnEvent or nil)
+	end
 end
 
 function E:Auras_GetFilter(obj, key)
@@ -1038,9 +1112,79 @@ function E:Auras_GetFilter(obj, key)
 	return list
 end
 
+function E:Auras_CreateEventFrame(container, parent)
+	local events = CreateFrame('Frame', nil, container)
+
+	local frameType = parent.unitframeType
+	local isGroup = E.AuraGroupHeaders[frameType]
+
+	events.isHighlight = parent.isHighlight
+	events.frameType = frameType
+	events.isGroup = isGroup
+
+	if isGroup then
+		events:RegisterEvent('GROUP_ROSTER_UPDATE')		-- raid: when people move between groups
+	elseif strmatch(frameType, '^focus') then
+		events:RegisterEvent('PLAYER_FOCUS_CHANGED')	-- aurabar: switch friendship
+	elseif strmatch(frameType, '^target') then
+		events:RegisterEvent('PLAYER_TARGET_CHANGED')	-- aurabar: switch friendship
+	end
+
+	return events
+end
+
+function E:Auras_RegisterUnitEvents(container, unit)
+	local events = container.events
+	if not events then return end
+
+	-- keeps opposite faction correct when zoning into content
+	if unit and (events.isHighlight or events.isGroup) then
+		events:RegisterUnitEvent('UNIT_DISTANCE_CHECK_UPDATE', unit)
+		events:RegisterUnitEvent('UNIT_IN_RANGE_UPDATE', unit)
+		events:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', unit)
+		events:RegisterUnitEvent('UNIT_EXITED_VEHICLE', unit)
+		events:RegisterUnitEvent('UNIT_CONNECTION', unit)
+		events:RegisterUnitEvent('UNIT_FACTION', unit)
+		events:RegisterUnitEvent('UNIT_PHASE', unit)
+	else
+		events:UnregisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
+		events:UnregisterEvent('UNIT_IN_RANGE_UPDATE')
+		events:UnregisterEvent('UNIT_ENTERED_VEHICLE')
+		events:UnregisterEvent('UNIT_EXITED_VEHICLE')
+		events:UnregisterEvent('UNIT_CONNECTION')
+		events:UnregisterEvent('UNIT_FACTION')
+		events:UnregisterEvent('UNIT_PHASE')
+	end
+end
+
+function E:Auras_Show()
+	if self.needsHighlight then
+		self.needsHighlight = nil
+
+		E:Auras_SetHighlight(self)
+	elseif self.needsIndicator then
+		self.needsIndicator = nil
+
+		E:Auras_SetIndicator(self)
+	elseif self.needsGroups then
+		self.needsGroups = nil
+
+		E:Auras_SetContainer(self)
+	end
+end
+
+function E:Auras_Hide()
+
+end
+
 function E:Auras_Create(parent, which, override)
 	local parentName = parent and parent:GetName()
 	local container = CreateFrame('AuraContainer', override or (parentName and (parentName..which)) or nil, parent, 'CustomAuraContainerTemplate, DisableUntrustedLayoutScriptsTemplate')
+
+	container:Hide() -- we use this to prevent updates until a container is shown
+
+	hooksecurefunc(container, 'Show', E.Auras_Show)
+	hooksecurefunc(container, 'Hide', E.Auras_Hide)
 
 	container.parentName = parentName
 	container.parent = parent
@@ -1055,18 +1199,9 @@ function E:Auras_Create(parent, which, override)
 	container.layout = {}
 	container.filters = {}
 
-	local events = CreateFrame('Frame', nil, container)
-	events.owner = container
-	container.events = events
-
-	-- aurabar to switch to friendship
-	events:RegisterEvent('UNIT_FACTION') -- highlight: faction changes
-	events:RegisterEvent('UNIT_FLAGS') -- highlight: flags changes
-	events:RegisterEvent('UNIT_PHASE') -- highlight: phase changes
-	events:RegisterEvent('GROUP_ROSTER_UPDATE')
-	events:RegisterEvent('PLAYER_TARGET_CHANGED')
-	events:RegisterEvent('PLAYER_FOCUS_CHANGED')
-	events:SetScript('OnEvent', E.Auras_OnEvent)
+	if parent and parent.unitframeType then -- we only need events for unitframes
+		container.events = E:Auras_CreateEventFrame(container, parent)
+	end
 
 	return container
 end

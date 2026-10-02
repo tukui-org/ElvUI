@@ -5,7 +5,7 @@ local strjoin = strjoin
 
 local GetSpellHitModifier = GetSpellHitModifier
 local GetCombatRatingBonus = GetCombatRatingBonus
-local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
+local IsSpellKnown = C_SpellBook.IsSpellKnown
 
 local STAT_CATEGORY_ENHANCEMENTS = STAT_CATEGORY_ENHANCEMENTS
 local CR_HIT_SPELL = CR_HIT_SPELL

@@ -7,6 +7,7 @@ local max, next, ipairs = max, next, ipairs
 
 local CreateFrame = CreateFrame
 local UnitHasVehicleUI = UnitHasVehicleUI
+
 local MAX_COMBO_POINTS = MAX_COMBO_POINTS
 
 function NP:ClassPower_UpdateColor(powerType, rune)
@@ -113,14 +114,14 @@ function NP:Update_ClassPower(nameplate)
 		nameplate.ClassPower:ClearAllPoints()
 		nameplate.ClassPower:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.ClassPower:Size(db.classpower.width, db.classpower.height)
-		nameplate.ClassPower:SetFrameLevel(5)
+		nameplate.ClassPower:SetFrameLevel(nameplate.RaisedElement.ClassBarLevel)
 
 		nameplate.ClassPower.classColor = db.classpower.classColor and E.myClassColor
 
 		for i = 1, #nameplate.ClassPower do
 			local button = nameplate.ClassPower[i]
 			if button then
-				button:SetFrameLevel(6)
+				button:SetFrameLevel(nameplate.RaisedElement.ClassButtonLevel)
 				button:Hide()
 				button.bg:Hide()
 			end
@@ -208,8 +209,12 @@ function NP:Construct_Runes(nameplate)
 		local rune = CreateFrame('StatusBar', barName, Runes)
 		rune:SetStatusBarTexture(texture)
 		NP:SetStatusBarColor(rune, color.r, color.g, color.b)
-		rune.PostUpdateColor = NP.Runes_UpdateChargedColor
+
 		rune.__owner = Runes
+
+		-- only Wrath and Mists fade the charging color - Runes_PostUpdate sets it everywhere else
+		rune.PostUpdateColor = (E.Wrath or E.Mists) and NP.Runes_UpdateChargedColor or nil
+
 		NP.StatusBars[rune] = 'runes'
 
 		rune.bg = rune:CreateTexture(barName..'bg'..i, 'BORDER')
@@ -233,14 +238,14 @@ function NP:Update_Runes(nameplate)
 		end
 
 		local anchor = target and NP:GetClassAnchor()
-		nameplate.Runes:SetFrameLevel(5)
+		nameplate.Runes:SetFrameLevel(nameplate.RaisedElement.ClassBarLevel)
 		nameplate.Runes:ClearAllPoints()
 		nameplate.Runes:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 		nameplate.Runes:Show()
 
-		nameplate.Runes.classColor = E.Retail and db.classpower.classColor and E.myClassColor
+		nameplate.Runes.classColor = E.Modern and db.classpower.classColor and E.myClassColor
 		nameplate.Runes.sortOrder = (db.classpower.sortDirection ~= 'NONE') and db.classpower.sortDirection
-		nameplate.Runes.colorSpec = E.Retail and NP.db.colors.runeBySpec
+		nameplate.Runes.colorSpec = E.Modern and NP.db.colors.runeBySpec
 
 		local width = db.classpower.width / 6
 		nameplate.Runes:Size(db.classpower.width, db.classpower.height)
@@ -291,7 +296,7 @@ function NP:Update_Stagger(nameplate)
 		end
 
 		local anchor = target and NP:GetClassAnchor()
-		nameplate.Stagger:SetFrameLevel(5)
+		nameplate.Stagger:SetFrameLevel(nameplate.RaisedElement.ClassBarLevel)
 		nameplate.Stagger:ClearAllPoints()
 		nameplate.Stagger:Point('CENTER', anchor or nameplate, 'CENTER', db.classpower.xOffset, db.classpower.yOffset)
 

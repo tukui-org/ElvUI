@@ -168,7 +168,7 @@ function BL:ADDON_LOADED(_, addon)
 	if addon == 'Blizzard_GuildBankUI' then
 		BL:ImproveGuildBank()
 	elseif addon == 'Blizzard_QuestTimer' then
-		if E.Classic then
+		if E.Classic or E.TBC then
 			BL:QuestWatch_CreateMover(_G.QuestTimerFrame, 'QuestTimerFrameMover')
 		end
 	elseif BL.TryDisableTutorials then
@@ -189,21 +189,26 @@ function BL:Initialize()
 
 	BL:SkinBlizzTimers()
 
-	if (E.Retail or E.Mists) and not E.OtherAddons.SimplePowerBar then
+	if (E.Modern or E.Mists) and not E.OtherAddons.SimplePowerBar then
 		BL:PositionAltPowerBar()
 		BL:SkinAltPowerBar()
 	end
 
 	if E.Retail then
 		BL:DisableHelpTip()
+	end
+
+	if E.Modern then
 		BL:DisableTutorials()
 		BL:HandleTalkingHead()
 		BL:HandleAddonCompartment()
 
-		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
-
 		--Add (+X%) to quest rewards experience text
 		BL:SecureHook('QuestInfo_Display', 'QuestXPPercent')
+	end
+
+	if E.Modern or E.Mists then
+		E:CreateMover(_G.LossOfControlFrame, 'LossControlMover', L["Loss Control Icon"])
 	end
 
 	if E.Classic or E.TBC then
@@ -235,6 +240,13 @@ function BL:Initialize()
 		E:CreateMover(_G.TimeAlertFrame, 'TimeAlertFrameMover', L["Time Alert Frame"], nil, nil, PostMove)
 		_G.TimeAlertFrame.mover:Size(_G.TimeAlertFrame:GetSize())
 		BL:SecureHook(_G.TimeAlertFrame, 'SetPoint', 'RepositionFrame')
+	end
+
+	local ShardFrame = _G.ShardTransferImminentFrame
+	if ShardFrame then
+		ShardFrame:ClearAllPoints()
+		ShardFrame:Point('BOTTOMLEFT', _G.LeftChatPanel, 'TOPLEFT', 30, 10) -- x offset for the minimize button anchored to its left
+		E:CreateMover(ShardFrame, 'ShardTransferMover', L["Shard Transfer Frame"], nil, nil, PostMove)
 	end
 end
 

@@ -87,10 +87,8 @@ local Private = oUF.Private
 local unpack = unpack
 
 local UnitClass = UnitClass
-local UnitInParty = UnitInParty
 local UnitPowerPercent = UnitPowerPercent
 local UnitInPartyIsAI = UnitInPartyIsAI
-local UnitInRaid = UnitInRaid
 local UnitIsConnected = UnitIsConnected
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsTapDenied = UnitIsTapDenied
@@ -122,10 +120,7 @@ type and zero for the minimum value.
 --]]
 local function GetDisplayPower(_, unit)
 	local barInfo = GetUnitPowerBarInfo(unit)
-	local unitRaid, unitParty = UnitInRaid(unit), UnitInParty(unit)
-	local unitSecret = oUF:IsSecretValue(unitRaid) or oUF:IsSecretValue(unitParty) -- what do i do here?
-	local showOnRaid = barInfo and barInfo.showOnRaid and not unitSecret and (unitRaid or unitParty)
-	if showOnRaid then
+	if barInfo and barInfo.showOnRaid then
 		return ALTERNATE_POWER_INDEX, barInfo.minPower
 	end
 end
@@ -134,12 +129,11 @@ local function UpdateColor(self, event, unit)
 	if(self.__unit ~= unit) then return end
 	local element = self.Power
 
-	local isPlayer = UnitIsPlayer(unit) or (oUF.isRetail and UnitInPartyIsAI(unit))
+	local isPlayer = UnitIsPlayer(unit) or (oUF.isModern and UnitInPartyIsAI(unit))
 	local unitSelectionType = GetSelectionType(unit, element.considerSelectionInCombatHostile) -- Private.unitSelectionType
 	local unitThreat = UnitThreatSituation('player', unit)
 	local unitControlled = UnitPlayerControlled(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	local _, classToken = UnitClass(unit)
 
 	local r, g, b, color, atlas
 	if(element.colorDisconnected and not UnitIsConnected(unit)) then
@@ -177,7 +171,7 @@ local function UpdateColor(self, event, unit)
 		end
 
 		if(element.colorPowerSmooth) then
-			if oUF.isRetail then
+			if oUF.isModern then
 				local curve = color and color:GetCurve()
 				color = UnitPowerPercent(unit, nil, true, curve)
 			else
@@ -190,6 +184,7 @@ local function UpdateColor(self, event, unit)
 			end
 		end
 	elseif (element.colorClass and isPlayer) or (element.colorClassNPC and not isPlayer) or (element.colorClassPet and unitControlled and not isPlayer) then
+		local _, classToken = UnitClass(unit)
 		color = (oUF:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif(element.colorSelection and unitSelectionType) then
 		color = self.colors.selection[unitSelectionType]
@@ -254,7 +249,7 @@ local function Update(self, event, unit)
 	end
 
 	local displayType, min
-	if(oUF.isRetail and element.displayAltPower) then
+	if(oUF.isModern and element.displayAltPower) then
 		displayType, min = element:GetDisplayPower(unit)
 	end
 
@@ -303,7 +298,11 @@ local function Path(self, event, ...)
 	--]]
 	(self.Power.Override or Update) (self, event, ...);
 
-	ColorPath(self, event, ...)
+	-- ElvUI: power ticks only change the color when it follows the value
+	local element = self.Power
+	if event ~= 'UNIT_POWER_FREQUENT' or not element.colorPower or element.colorPowerSmooth then
+		ColorPath(self, event, ...)
+	end
 end
 
 local function ForceUpdate(element)
@@ -449,7 +448,7 @@ local function Enable(self)
 			element.__texture = element.__texture or element:GetStatusBarTexture():GetTexture()
 		end
 
-		if(oUF.isRetail and not element.GetDisplayPower) then
+		if(oUF.isModern and not element.GetDisplayPower) then
 			element.GetDisplayPower = GetDisplayPower
 		end
 

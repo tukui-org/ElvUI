@@ -26,7 +26,7 @@ local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
 local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local C_FriendList_GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
-local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
+local SendChatMessage = C_ChatInfo.SendChatMessage
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
@@ -400,7 +400,7 @@ local function Click(panel, btn)
 		E:SetEasyMenuAnchor(E.EasyMenu, panel)
 		E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif not E:AlertCombat() then
-		ToggleFriendsFrame(not E.Retail and 1 or nil)
+		ToggleFriendsFrame(not E.Modern and 1 or nil)
 	end
 end
 

@@ -61,7 +61,7 @@ function NP:Castbar_SetText(castbar, db, changed, spellName, unit)
 		local target, frameType = castbar.targetCurrent, plate.frameType
 
 		local targetClass, _
-		if E.Retail then
+		if E.Modern then
 			targetClass = castbar.targetClass
 		elseif not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then -- player or NPCs; if used on other players:
 			target = UnitName(unit..'target') -- the cast target doesn't match their target, can be misleading if they mouseover cast
@@ -255,12 +255,12 @@ function NP:Update_Castbar(nameplate)
 		castbar.channelTimeFormat = db.channelTimeFormat
 		castbar.pipColor = NP.db.colors.empoweredCast
 
-		castbar:SetFrameLevel(8)
+		castbar:SetFrameLevel(nameplate.RaisedElement.CastBarLevel)
 		castbar:ClearAllPoints()
 		castbar:Point(E.InversePoints[db.anchorPoint], nameplate, db.anchorPoint, db.xOffset, db.yOffset)
 		castbar:Size(db.width, db.height)
 
-		if E.Retail then
+		if E.Modern then
 			castbar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(castbar, db.smoothbars)
@@ -310,7 +310,7 @@ function NP:Update_Castbar(nameplate)
 		castbar.Shield:Point('BOTTOM')
 		castbar.Shield:Point('TOP')
 
-		if E.Retail then
+		if E.Modern then
 			castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, NP.db.colors.castNoInterruptColor.a)
 			castbar.Shield.alphaValue = NP.db.colors.castNoInterruptColor.a
 		end

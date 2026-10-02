@@ -18,7 +18,7 @@ local GetSpellSubtext = GetSpellSubtext
 local quickSearchText, selectedSpell, selectedFilter, filterList, spellList = '', nil, nil, {}, {}
 local auraBarDefaults = { enable = true, color = { r = 1, g = 1, b = 1, a = 1 } }
 local overrideNames = {
-	Blacklist = not E.Retail and L["Blacklist |cFF888888(Legacy)|r"] or nil
+	Blacklist = not E.Modern and L["Blacklist |cFF888888(Legacy)|r"] or nil
 }
 
 local defaultFilterList = {
@@ -29,7 +29,7 @@ local defaultFilterList = {
 	['Aura Indicator (Profile)'] = L["Aura Indicator (Profile)"]
 }
 
-if not E.Retail then
+if not E.Modern then
 	defaultFilterList['AuraBar Colors'] = L["AuraBar Colors"]
 end
 
@@ -155,7 +155,7 @@ local function GetSpellNameRank(id)
 		return tostring(id)
 	end
 
-	local rank = not E.Retail and GetSpellSubtext(id)
+	local rank = not E.Modern and GetSpellSubtext(id)
 	if not rank or not strfind(rank, '%d') then
 		return format('%s |cFF888888[%s]|r', name, id)
 	end
@@ -420,7 +420,7 @@ Filters.mainOptions.args.auraIndicator.args.style = ACH:Select(L["Style"], nil, 
 Filters.mainOptions.args.auraIndicator.args.color = ACH:Color(' ', nil, 4, true, nil, nil, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'texturedIcon' end)
 Filters.mainOptions.args.auraIndicator.args.spacer = ACH:Spacer(5)
 Filters.mainOptions.args.auraIndicator.args.anyUnit = ACH:Toggle(L["Show Aura From Other Players"], nil, 6, nil, nil, 205)
-Filters.mainOptions.args.auraIndicator.args.onlyShowMissing = ACH:Toggle(L["Show When Not Active"], nil, 7, nil, nil, nil, nil, nil, nil, E.Retail)
+Filters.mainOptions.args.auraIndicator.args.onlyShowMissing = ACH:Toggle(L["Show When Not Active"], nil, 7, nil, nil, nil, nil, nil, nil, E.Modern)
 Filters.mainOptions.args.auraIndicator.args.displayText = ACH:Toggle(L["Display Text"], nil, 8, nil, nil, nil, function(info) local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return (selectedTable[spell].style == 'timerOnly') or selectedTable[spell][info[#info]] end, nil, nil, function() local spell = GetSelectedSpell() if not spell then return end local selectedTable = GetSelectedFilters() return selectedTable[spell].style == 'timerOnly' end)
 
 Filters.mainOptions.args.auraIndicator.args.positionGroup = ACH:Group(L["Position"], nil, 15)
@@ -445,13 +445,13 @@ Filters.mainOptions.args.spellGroup.args.style = ACH:Select(L["Style"], nil, 1, 
 Filters.mainOptions.args.spellGroup.args.color = ACH:Color(L["COLOR"], nil, 2, function() return selectedFilter ~= 'AuraBar Colors' end, nil, nil, nil, nil, function() return (selectedFilter ~= 'Aura Highlight' and selectedFilter ~= 'AuraBar Colors' and selectedFilter ~= 'Aura Indicator (Pet)' and selectedFilter ~= 'Aura Indicator (Profile)' and selectedFilter ~= 'Aura Indicator (Class)' and selectedFilter ~= 'Aura Indicator (Global)') end)
 Filters.mainOptions.args.spellGroup.args.removeColor = ACH:Execute(L["Restore Defaults"], nil, 3, function() local spell = GetSelectedSpell() if not spell then return end if G.unitframe.AuraBarColors[spell] then E.global.unitframe.AuraBarColors[spell] = E:CopyTable({}, G.unitframe.AuraBarColors[spell]) else E.global.unitframe.AuraBarColors[spell] = E:CopyTable({}, auraBarDefaults) end UF:Update_AllFrames() end, nil, nil, nil, nil, nil, nil, function() return selectedFilter ~= 'AuraBar Colors' end)
 
-Filters.mainOptions.args.spellGroup.args.forDebuffIndicator = ACH:Group(L["Used as Raid Debuff Indicator"], nil, 4, nil, UpdateDebuffIndicator, UpdateDebuffIndicator, nil, function() return defaultFilterList[selectedFilter] end)
+Filters.mainOptions.args.spellGroup.args.forDebuffIndicator = ACH:Group(L["Used as Raid Debuff Indicator"], nil, 4, nil, UpdateDebuffIndicator, UpdateDebuffIndicator, nil, function() return E.Modern or defaultFilterList[selectedFilter] end)
 Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.inline = true
 Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.priority = ACH:Range(L["Priority"], L["Set the priority order of the spell, please note that priorities are only used for the raid debuff module, not the standard buff/debuff module. If you want to disable set to zero."], 1, { min = 0, max = 99, step = 1 })
 Filters.mainOptions.args.spellGroup.args.forDebuffIndicator.args.stackThreshold = ACH:Range(L["Stack Threshold"], L["The debuff needs to reach this amount of stacks before it is shown. Set to 0 to always show the debuff."], 2, { min = 0, max = 99, step = 1 })
 Filters.mainOptions.args.spellGroup.args.ownOnly = ACH:Toggle(L["Casted by Player Only"], L["Only highlight the aura that originated from you and not others."], 5, nil, nil, nil, nil, nil, nil, function() return selectedFilter ~= 'Aura Highlight' end)
 
-Filters.help = ACH:Group(L["Help"], nil, 2, nil, nil, nil, nil, E.Retail)
+Filters.help = ACH:Group(L["Help"], nil, 2, nil, nil, nil, nil, E.Modern)
 Filters.filtersGuide = C:GetOptionsTable_FiltersGuide(10) -- Retail only
 
 local FilterHelp = {

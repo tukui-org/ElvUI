@@ -10,51 +10,65 @@ local UnitLevel = UnitLevel
 local STAT_CATEGORY_ATTRIBUTES = STAT_CATEGORY_ATTRIBUTES
 local ARMOR = ARMOR
 
-local chanceString = '%.2f%%'
-local displayString, db, effectiveArmor, _ = ''
+local armorStale, armorActive
+local changeStale, changeActive = '|cFF888888%.2f%%|r', '%.2f%%'
+local displayString, db = ''
 
-local function GetArmorReduction(armor, attackerLevel)
-	local levelModifier = attackerLevel
-	if levelModifier > 59 then
-		levelModifier = levelModifier + (4.5 * (levelModifier - 59))
+local function GetArmorReduction(armor, level)
+	if level > 59 then
+		level = level + (4.5 * (level - 59))
 	end
 
-	local temp = 0.1 * armor / (8.5 * levelModifier + 40)
-	temp = temp/(1 + temp)
+	local amount = (0.1 * armor) / (8.5 * level + 40)
+	local value = amount / (1 + amount)
 
-	if temp > 0.75 then return 75 end
-	if temp < 0 then return 0 end
+	if value > 0.75 then
+		return 75
+	elseif value < 0 then
+		return 0
+	end
 
-	return temp * 100
+	return value * 100
 end
 
 local function OnEvent(panel)
-	_, effectiveArmor = UnitArmor('player')
+	local _, effective = UnitArmor('player')
+
+	armorActive = effective
+
+	if E:NotSecretValue(effective) then
+		armorStale = effective
+	end
 
 	if db.NoLabel then
-		panel.text:SetFormattedText(displayString, effectiveArmor)
+		panel.text:SetFormattedText(displayString, effective)
 	else
-		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ARMOR..': ', effectiveArmor)
+		panel.text:SetFormattedText(displayString, db.Label ~= '' and db.Label or ARMOR..': ', effective)
 	end
 end
 
 local function OnEnter()
 	DT.tooltip:ClearLines()
+
+	local isActive = E:NotSecretValue(armorActive)
+	local effective = (isActive and armorActive) or armorStale
+	local changeText = (isActive and changeActive) or changeStale
+
 	DT.tooltip:AddLine(L["Mitigation By Level: "])
 	DT.tooltip:AddLine(' ')
 
 	local playerLevel = E.mylevel + 3
 	for _ = 1, 4 do
-		local armorReduction = GetArmorReduction(effectiveArmor, playerLevel)
-		DT.tooltip:AddDoubleLine(format(L["Level %d"], playerLevel), format(chanceString, armorReduction), 1, 1, 1)
+		local reduction = GetArmorReduction(effective, playerLevel)
+		DT.tooltip:AddDoubleLine(format(L["Level %d"], playerLevel), format(changeText, reduction), 1, 1, 1)
 		playerLevel = playerLevel - 1
 	end
 
 	local targetLevel = UnitLevel('target')
-	if targetLevel and targetLevel > 0 and (targetLevel > playerLevel + 3 or targetLevel < playerLevel) then
-		local armorReduction = GetArmorReduction(effectiveArmor, targetLevel)
+	if (targetLevel and targetLevel > 0) and ((targetLevel > playerLevel + 3) or (targetLevel < playerLevel)) then
+		local reduction = GetArmorReduction(effective, targetLevel)
 		DT.tooltip:AddLine(' ')
-		DT.tooltip:AddDoubleLine(L["Target Mitigation"], format(chanceString, armorReduction), 1, 1, 1)
+		DT.tooltip:AddDoubleLine(L["Target Mitigation"], format(changeText, reduction), 1, 1, 1)
 	end
 
 	DT.tooltip:Show()

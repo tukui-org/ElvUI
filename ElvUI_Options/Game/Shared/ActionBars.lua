@@ -16,7 +16,7 @@ local SaveBindings = SaveBindings
 
 local GetCVarBool = C_CVar.GetCVarBool
 
-local MICRO_SLOTS = E.Mists and 13 or 12
+local MICRO_SLOTS = (E.Mists or E.Forever) and 13 or 12
 local STANCE_SLOTS = _G.NUM_STANCE_SLOTS or 10
 local ACTION_SLOTS = _G.NUM_PET_ACTION_SLOTS or 10
 
@@ -98,7 +98,7 @@ macroTextGroup.args.macroFontOutline = ACH:FontFlags(L["Font Outline"], nil, 9)
 macroTextGroup.args.macroFontSize = ACH:Range(L["Font Size"], nil, 10, C.Values.FontSize)
 SharedBarOptions.macroTextGroup = macroTextGroup
 
-local professionQuality = ACH:Group(L["Profession Quality"], nil, 70, nil, function(info) return E.db.actionbar[info[#info-2]].professionQuality[info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]].professionQuality[info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end, nil, not E.Retail)
+local professionQuality = ACH:Group(L["Profession Quality"], nil, 70, nil, function(info) return E.db.actionbar[info[#info-2]].professionQuality[info[#info]] end, function(info, value) E.db.actionbar[info[#info-2]].professionQuality[info[#info]] = value AB:UpdateButtonSettings(info[#info-2]) end, nil, not E.Modern)
 professionQuality.args.enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, nil, nil, nil, false)
 professionQuality.args.spacer1 = ACH:Spacer(3, 'full')
 professionQuality.args.alpha = ACH:Range(L["Alpha"], L["Change the alpha level of the frame."], 1, { min = 0, max = 1, step = 0.01, isPercent = true })
@@ -132,7 +132,7 @@ general.args.generalGroup = ACH:Group(L["General"], nil, 20, nil, function(info)
 general.args.generalGroup.inline = true
 general.args.generalGroup.args.keyDown = ACH:Toggle(L["Key Down"], L["OPTION_TOOLTIP_ACTION_BUTTON_USE_KEY_DOWN"], 1, nil, nil, nil, function() return GetCVarBool('ActionButtonUseKeyDown') end, function(_, value) E:SetCVar('ActionButtonUseKeyDown', value and 1 or 0) AB:UpdateButtonSettings() end)
 general.args.generalGroup.args.lockActionBars = ACH:Toggle(L["LOCK_ACTIONBAR_TEXT"], L["If you unlock actionbars then trying to move a spell might instantly cast it if you cast spells on key press instead of key release."], 2, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E:SetCVar('lockActionBars', value and 1 or 0) _G.LOCK_ACTIONBAR = (value and '1' or '0') AB:UpdateButtonSettings() end)
-general.args.generalGroup.args.addNewSpells = ACH:Toggle(L["Auto Add New Spells"], L["Allow newly learned spells to be automatically placed on an empty actionbar slot."], 4, nil, nil, nil, function() return GetCVarBool('AutoPushSpellToActionBar') end, function(_, value) E:SetCVar('AutoPushSpellToActionBar', value and 1 or 0) end, nil, not E.Retail)
+general.args.generalGroup.args.addNewSpells = ACH:Toggle(L["Auto Add New Spells"], L["Allow newly learned spells to be automatically placed on an empty actionbar slot."], 4, nil, nil, nil, function() return GetCVarBool('AutoPushSpellToActionBar') end, function(_, value) E:SetCVar('AutoPushSpellToActionBar', value and 1 or 0) end, nil, not E.Modern)
 general.args.generalGroup.args.desaturateOnCooldown = ACH:Toggle(L["Desaturate Cooldowns"], nil, 11, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value AB:ToggleCooldownOptions() end)
 general.args.generalGroup.args.transparent = ACH:Toggle(L["Transparent"], nil, 12, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E.ShowPopup = true end)
 general.args.generalGroup.args.flashAnimation = ACH:Toggle(L["Button Flash"], L["Use a more visible flash animation for Auto Attacks."], 13, nil, nil, nil, nil, function(info, value) E.db.actionbar[info[#info]] = value E.ShowPopup = true end)
@@ -141,9 +141,9 @@ general.args.generalGroup.args.useRangeColorText = ACH:Toggle(L["Color Keybind T
 general.args.generalGroup.args.handleOverlay = ACH:Toggle(L["Action Button Glow"], nil, 16)
 
 general.args.castGroup = ACH:Group(L["Casting"], nil, 25)
-general.args.castGroup.args.mouseoverCastKey = ACH:Select(L["Mouseover Cast Key"], nil, 1, castKeyValues, nil, nil, function() return GetModifiedClick('MOUSEOVERCAST') end, function(_, value) SetModifiedClick('MOUSEOVERCAST', value) SaveBindings(GetCurrentBindingSet()) end, nil, not E.Retail)
-general.args.castGroup.args.checkMouseoverCast = ACH:Toggle(L["Check Mouseover Cast"], nil, 2, nil, nil, nil, function() return GetCVarBool('enableMouseoverCast') end, function(_, value) E:SetCVar('enableMouseoverCast', value and 1 or 0) AB:UpdateButtonSettings() end, nil, not E.Retail)
-general.args.castGroup.args.spacer1 = ACH:Spacer(3, 'full', not E.Retail)
+general.args.castGroup.args.mouseoverCastKey = ACH:Select(L["Mouseover Cast Key"], nil, 1, castKeyValues, nil, nil, function() return GetModifiedClick('MOUSEOVERCAST') end, function(_, value) SetModifiedClick('MOUSEOVERCAST', value) SaveBindings(GetCurrentBindingSet()) end, nil, not E.Modern)
+general.args.castGroup.args.checkMouseoverCast = ACH:Toggle(L["Check Mouseover Cast"], nil, 2, nil, nil, nil, function() return GetCVarBool('enableMouseoverCast') end, function(_, value) E:SetCVar('enableMouseoverCast', value and 1 or 0) AB:UpdateButtonSettings() end, nil, not E.Modern)
+general.args.castGroup.args.spacer1 = ACH:Spacer(3, 'full', not E.Modern)
 general.args.castGroup.args.focusCastKey = ACH:Select(L["Focus Cast Key"], nil, 10, castKeyValues, nil, nil, function() return GetModifiedClick('FOCUSCAST') end, function(_, value) SetModifiedClick('FOCUSCAST', value) SaveBindings(GetCurrentBindingSet()) end, nil, E.Classic)
 general.args.castGroup.args.checkFocusCast = ACH:Toggle(L["Check Focus Cast"], nil, 11, nil, nil, nil, nil, nil, nil, E.Classic)
 general.args.castGroup.args.spacer2 = ACH:Spacer(12, 'full', E.Classic)
@@ -160,7 +160,7 @@ general.args.colorGroup.args.noPowerColor = ACH:Color(L["Out of Power"], L["Colo
 general.args.colorGroup.args.usableColor = ACH:Color(L["Usable"], L["Color of the actionbutton when usable."], 3)
 general.args.colorGroup.args.notUsableColor = ACH:Color(L["Not Usable"], L["Color of the actionbutton when not usable."], 4)
 general.args.colorGroup.args.equippedItemColor = ACH:Color(L["Equipped Item"], nil, 5)
-general.args.colorGroup.args.targetReticleColor = ACH:Color(L["Target Reticle"], nil, 6)
+general.args.colorGroup.args.targetReticleColor = ACH:Color(L["Target Reticle"], nil, 6, nil, nil, nil, nil, nil, not E.Modern)
 
 general.args.applyGroup = ACH:Group(L["Apply To All"], nil, 35, nil, function(info) return E.db.actionbar[info[#info]] end, function(info, value) E.db.actionbar[info[#info]] = value AB:ApplyTextOption(info[#info], value, info[#info - 1] == 'fontGroup') end)
 general.args.applyGroup.args.fontGroup = ACH:Group(L["Font Group"], nil, 1)
@@ -304,7 +304,7 @@ ActionBar.args.masqueGroup = ACH:Group(L["Masque"], nil, -1, nil, nil, nil, func
 ActionBar.args.masqueGroup.args.masque = ACH:MultiSelect(L["Masque Support"], L["Allow Masque to handle the skinning of this element."], 10, { actionbars = L["ActionBars"], petBar = L["Pet Bar"], stanceBar = L["Stance Bar"] }, nil, nil, function(_, key) return E.private.actionbar.masque[key] end, function(_, key, value) E.private.actionbar.masque[key] = value E.ShowPopup = true end)
 
 ActionBar.args.extraButtons = ACH:Group(L["Extra Buttons"], nil, 18, nil, nil, nil, function() return not E.ActionBars.Initialized end)
-ActionBar.args.extraButtons.args.extraActionButton = ACH:Group(L["Boss Button"], nil, 1, nil, function(info) return E.db.actionbar.extraActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.extraActionButton[key] = value if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end, nil, E.Classic)
+ActionBar.args.extraButtons.args.extraActionButton = ACH:Group(L["Boss Button"], nil, 1, nil, function(info) return E.db.actionbar.extraActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.extraActionButton[key] = value if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end, nil, not (E.Modern or E.Mists))
 ActionBar.args.extraButtons.args.extraActionButton.inline = true
 ActionBar.args.extraButtons.args.extraActionButton.args = E:CopyTable({}, SharedButtonOptions)
 
@@ -322,7 +322,7 @@ ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hot
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hotkeyFontOutline = ACH:FontFlags(L["Font Outline"], nil, 9)
 ActionBar.args.extraButtons.args.extraActionButton.args.hotkeyTextGroup.args.hotkeyFontSize = ACH:Range(L["Font Size"], nil, 10, C.Values.FontSize)
 
-ActionBar.args.extraButtons.args.zoneActionButton = ACH:Group(L["Zone Button"], nil, 2, nil, function(info) return E.db.actionbar.zoneActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.zoneActionButton[key] = value if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end, nil, not E.Retail)
+ActionBar.args.extraButtons.args.zoneActionButton = ACH:Group(L["Zone Button"], nil, 2, nil, function(info) return E.db.actionbar.zoneActionButton[info[#info]] end, function(info, value) local key = info[#info] E.db.actionbar.zoneActionButton[key] = value if key == 'inheritGlobalFade' then AB:ExtraButtons_GlobalFade() elseif key == 'scale' then AB:ExtraButtons_UpdateScale() else AB:ExtraButtons_UpdateAlpha() end end, nil, not E.Modern)
 ActionBar.args.extraButtons.args.zoneActionButton.inline = true
 ActionBar.args.extraButtons.args.zoneActionButton.args = E:CopyTable({}, SharedButtonOptions)
 
@@ -351,7 +351,7 @@ local function CreateBarOptions(num)
 	bar.args.generalOptions.values.showGrid = L["Show Empty Buttons"]
 	bar.args.generalOptions.values.keepSizeRatio = L["Keep Size Ratio"]
 
-	if E.Retail then
+	if E.Modern then
 		bar.args.generalOptions.values.targetReticle = L["Target Reticle"]
 		bar.args.generalOptions.values.spellCastVFX = L["Spell Cast VFX"]
 	end

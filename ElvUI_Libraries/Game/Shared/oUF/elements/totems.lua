@@ -76,7 +76,7 @@ end
 local function TotemOnUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
 
-	if (self.elapsed >= .01) then
+	if (self.elapsed >= .05) then -- 20 Hz is under a pixel per step on any sane bar width, no need to poll GetTotemInfo every frame
 		self.elapsed = 0
 
 		local _, _, startTime, expiration = GetTotemInfo(self:GetID())
@@ -117,9 +117,16 @@ local function UpdateTotem(self, event, slot)
 	if totem.Cooldown then
 		if oUF:IsSecretValue(duration) then
 			durationObj = GetTotemDuration(slot)
-			totem.Cooldown:SetCooldownFromDuration(durationObj)
+
+			if durationObj then
+				totem.Cooldown:SetCooldownFromDuration(durationObj)
+			else
+				totem.Cooldown:Clear()
+			end
 		elseif start and (duration and duration > 0) then
 			totem.Cooldown:SetCooldown(start, duration)
+		else
+			totem.Cooldown:Clear()
 		end
 	end
 

@@ -12,25 +12,28 @@ local RegisterStateDriver = RegisterStateDriver
 local InCombatLockdown = InCombatLockdown
 local hooksecurefunc = hooksecurefunc
 
+local GetAtlasInfo = C_Texture.GetAtlasInfo
+
 AB.MICRO_CLASSIC = {}
 AB.MICRO_BUTTONS = {
 	'CharacterMicroButton',
 	'SpellbookMicroButton',
 	'ProfessionMicroButton',
 	'TalentMicroButton',
-	'PlayerSpellsMicroButton',
-	'AchievementMicroButton',
+	not E.Forever and 'PlayerSpellsMicroButton' or nil,
+	not E.Forever and 'AchievementMicroButton' or nil,
+	'LegacyMicroButton',
 	'QuestLogMicroButton',
 	'GuildMicroButton',
 	'SocialsMicroButton',
 	'LFDMicroButton',
 	'LFGMicroButton',
-	'EJMicroButton',
+	not E.Forever and 'EJMicroButton' or nil,
 	'CollectionsMicroButton',
 	'MainMenuMicroButton',
 	'HelpMicroButton',
 	'StoreMicroButton',
-	'HousingMicroButton',
+	not E.Forever and 'HousingMicroButton' or nil,
 	'WorldMapMicroButton',
 	'PVPMicroButton' -- no offset required
 }
@@ -44,6 +47,7 @@ do
 		TalentMicroButton		= 2.04 / meep,
 		PlayerSpellsMicroButton = 2.04 / meep,
 		AchievementMicroButton	= 3.03 / meep,
+		LegacyMicroButton		= 3.03 / meep, -- Forever, use achievement icon
 		QuestLogMicroButton		= 4.02 / meep,
 		GuildMicroButton		= 5.01 / meep, -- Retail
 		SocialsMicroButton		= 5.01 / meep, -- Classic, use Guild button
@@ -68,8 +72,8 @@ end
 local watcher = 0
 local function OnUpdate(self, elapsed)
 	if watcher > 0.1 then
-		if not self:IsMouseOver() then
-			self.IsMouseOvered = nil
+		if not self:IsMouseMotionFocus() then
+			self.isMouseFocused = nil
 			self:SetScript('OnUpdate', nil)
 			OnLeaveBar()
 		end
@@ -80,8 +84,8 @@ local function OnUpdate(self, elapsed)
 end
 
 local function OnEnter(button)
-	if AB.db.microbar.mouseover and not microBar.IsMouseOvered then
-		microBar.IsMouseOvered = true
+	if AB.db.microbar.mouseover and not microBar.isMouseFocused then
+		microBar.isMouseFocused = true
 		microBar:SetScript('OnUpdate', OnUpdate)
 		E:UIFrameFadeIn(microBar, 0.2, microBar:GetAlpha(), AB.db.microbar.alpha)
 	end
@@ -113,7 +117,15 @@ function AB:GetMicroCoords(name, icons, character)
 
 	if name == 'PVPMicroButton' or (character and name == 'CharacterMicroButton') then
 		l, r, t, b = 0, 1, 0, 1
-	elseif E.Retail or icons then
+	elseif E.Forever and name == 'ProfessionMicroButton' then
+		local atlas = not icons and GetAtlasInfo('UI-HUD-MicroMenu-Professions-Up')
+		if atlas then -- trim off ~13%, tons of empty space around the actual icon
+			local x, y = (atlas.rightTexCoord - atlas.leftTexCoord) * 0.125, (atlas.bottomTexCoord - atlas.topTexCoord) * 0.125
+			l, r, t, b = atlas.leftTexCoord + x, atlas.rightTexCoord - x, atlas.topTexCoord + y, atlas.bottomTexCoord - y
+		else
+			l, r, t, b = 0.15, 0.85, 0.08, 0.92
+		end
+	elseif E.Modern or icons then
 		local offset = AB.MICRO_OFFSETS[name]
 		if offset then
 			l, r = offset, offset + 0.065
@@ -125,7 +137,7 @@ function AB:GetMicroCoords(name, icons, character)
 end
 
 function AB:HandleMicroCoords(button, name)
-	local l, r, t, b = AB:GetMicroCoords(name, AB.db.microbar.useIcons, not E.Retail)
+	local l, r, t, b = AB:GetMicroCoords(name, AB.db.microbar.useIcons, not E.Modern)
 
 	local normal = button.GetNormalTexture and button:GetNormalTexture()
 	if normal then
@@ -169,10 +181,16 @@ function AB:HandleMicroTextures(button, name)
 		end
 	else
 		local icons = AB.db.microbar.useIcons
-		local character = not E.Retail and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
+		local character = not E.Modern and name == 'CharacterMicroButton' and E.Media.Textures.Black8x8
 		local faction = name == 'PVPMicroButton' and ((E.myfaction == 'Horde' and E.Media.Textures.PVPHorde) or E.Media.Textures.PVPAlliance)
-		local texture = faction or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
-		local stock = not E.Retail and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
+		local profession -- Forever, the book is used by Spellbook so take Blizzard's art
+		if E.Forever and name == 'ProfessionMicroButton' then
+			local atlas = not icons and GetAtlasInfo('UI-HUD-MicroMenu-Professions-Up')
+			profession = atlas and atlas.file or [[Interface\ICONS\INV_SideTab_Professions_c60]]
+		end
+
+		local texture = faction or profession or (not character and AB.MICRO_OFFSETS[name] and E.Media.Textures.MicroBar)
+		local stock = not E.Modern and not icons and AB.MICRO_CLASSIC[name] -- classic default icons from the game
 		local pushed = button.GetPushedTexture and button:GetPushedTexture()
 		if stock then
 			normal:SetTexture(faction or stock.normal)
@@ -239,7 +257,7 @@ function AB:HandleMicroButton(button, name)
 	button:HookScript('OnLeave', OnLeave)
 	button:SetHitRectInsets(0, 0, 0, 0)
 
-	if not E.Retail then
+	if not E.Modern then
 		local pushed = button.GetPushedTexture and button:GetPushedTexture()
 		local normal = button.GetNormalTexture and button:GetNormalTexture()
 		local disabled = button.GetDisabledTexture and button:GetDisabledTexture()
@@ -368,7 +386,7 @@ do
 			local columnName = btns[columnIndex]
 			local columnButton = _G[columnName]
 
-			if not E.Retail then
+			if not E.Modern then
 				button.commandName = commandKeys[name] -- to support KB like retail
 			end
 
@@ -384,7 +402,7 @@ do
 			lastButton = button
 		end
 
-		microBar:SetAlpha((db.mouseover and not microBar.IsMouseOvered and 0) or db.alpha)
+		microBar:SetAlpha((db.mouseover and not microBar.isMouseFocused and 0) or db.alpha)
 
 		AB:HandleBackdropMultiplier(microBar, backdropSpacing, db.buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastButton, anchorRowButton)
 		AB:HandleBackdropMover(microBar, backdropSpacing)
@@ -454,8 +472,8 @@ function AB:SetupMicroBar()
 		if button then
 			AB:HandleMicroButton(button, name)
 
-			if E.Retail or (name == 'MainMenuMicroButton' or name == 'GuildMicroButton') then
-				hooksecurefunc(button, (E.Retail and 'SetHighlightAtlas') or (E.Classic and 'SetPushedTexture') or 'SetHighlightTexture', function()
+			if E.Modern or (name == 'MainMenuMicroButton' or name == 'GuildMicroButton') then
+				hooksecurefunc(button, (E.Modern and 'SetHighlightAtlas') or (E.Classic and 'SetPushedTexture') or 'SetHighlightTexture', function()
 					AB:UpdateMicroButtonTexture(name)
 				end)
 
@@ -463,7 +481,7 @@ function AB:SetupMicroBar()
 					hooksecurefunc(button, 'SetPushed', AB.HandleCharacterPortrait)
 					hooksecurefunc(button, 'SetNormal', AB.HandleCharacterPortrait)
 				end
-			elseif name == 'TalentMicroButton' and E.global.general.disableTutorialButtons and _G.TalentMicroButtonAlert then
+			elseif name == 'TalentMicroButton' and (_G.TalentMicroButtonAlert and E.global.general.disableTutorialButtons) then
 				_G.TalentMicroButtonAlert:Kill()
 			end
 		end
@@ -480,6 +498,14 @@ function AB:SetupMicroBar()
 
 	local microMenu = AB:HasTicketButton()
 	if microMenu then
+		if microMenu.BorderArt then
+			microMenu.BorderArt:SetAlpha(0)
+		end
+
+		if microMenu.BackgroundArt then
+			microMenu.BackgroundArt:SetAlpha(0)
+		end
+
 		microMenu.UpdateHelpTicketButtonAnchor = E.noop -- prevent layout erroring
 		hooksecurefunc(microMenu, 'UpdateHelpTicketButtonAnchor', AB.UpdateHelpTicketButtonAnchor)
 	end

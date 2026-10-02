@@ -19,8 +19,10 @@ function E:Smoothing_IsCloseEnough(new, target, range)
 end
 
 function E:Smoothing_OnUpdate(elapsed)
+	local amount = E:Clamp(AMOUNT * elapsed * TARGET_FPS)
+
 	for object, target in next, activeObjects do
-		local new = Lerp(object._value, target, E:Clamp(AMOUNT * elapsed * TARGET_FPS))
+		local new = Lerp(object._value, target, amount)
 		if E:Smoothing_IsCloseEnough(new, target, object._max - object._min) then
 			new = target
 

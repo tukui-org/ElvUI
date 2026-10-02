@@ -26,12 +26,13 @@ local _, ns = ...
 local oUF = ns.oUF
 
 local UnitIsGroupAssistant = UnitIsGroupAssistant
-local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitAffectingCombat = UnitAffectingCombat
 
 local function Update(self, event)
 	local element = self.AssistantIndicator
 	local unit = self.__unit
+
+	if not element.combatHide and (event == 'PLAYER_REGEN_DISABLED' or event == 'PLAYER_REGEN_ENABLED') then return end
 
 	--[[ Callback: AssistantIndicator:PreUpdate()
 	Called before the element has been updated.
@@ -42,14 +43,12 @@ local function Update(self, event)
 		element:PreUpdate()
 	end
 
-	local isAssist = UnitIsGroupAssistant(unit)
-	local isLeader = UnitIsGroupLeader(unit)
-	local isSecret = oUF:IsSecretValue(isAssist) or oUF:IsSecretValue(isLeader)
-	local isAssistant = not isSecret and (isAssist and not isLeader)
-	if not isAssistant or (element.combatHide and UnitAffectingCombat(unit)) then
-		element:Hide()
+	local isAssistant = UnitIsGroupAssistant(unit)
+	local combatHide = element.combatHide and UnitAffectingCombat(unit)
+	if element.SetAlphaFromBoolean then
+		element:SetAlphaFromBoolean(isAssistant, not combatHide and 1 or 0, 0)
 	else
-		element:Show()
+		element:SetAlpha(not combatHide and isAssistant and 1 or 0)
 	end
 
 	--[[ Callback: AssistantIndicator:PostUpdate(isAssistant)
@@ -100,7 +99,7 @@ end
 local function Disable(self)
 	local element = self.AssistantIndicator
 	if(element) then
-		element:Hide()
+		element:SetAlpha(0)
 
 		self:UnregisterEvent('UNIT_FLAGS', Path)
 		self:UnregisterEvent('GROUP_ROSTER_UPDATE', Path)

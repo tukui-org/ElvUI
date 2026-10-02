@@ -37,4 +37,4 @@ local function ApplySettings(_, hex)
 	displayString = strjoin('', hex, '%s|r')
 end
 
-DT:RegisterDatatext('Mail', nil, {'MAIL_INBOX_UPDATE', 'UPDATE_PENDING_MAIL', 'MAIL_CLOSED', 'MAIL_SHOW'}, OnEvent, nil, nil, OnEnter, nil, MAIL_LABEL, nil, ApplySettings)
+DT:RegisterDatatext('Mail', nil, { 'MAIL_INBOX_UPDATE', 'UPDATE_PENDING_MAIL', 'MAIL_CLOSED', 'MAIL_SHOW' }, OnEvent, nil, nil, OnEnter, nil, MAIL_LABEL, nil, ApplySettings)

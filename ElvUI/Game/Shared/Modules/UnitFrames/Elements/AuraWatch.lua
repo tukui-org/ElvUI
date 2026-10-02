@@ -1,10 +1,11 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
+local next, ipairs = next, ipairs
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
-	if E.Retail then
+	if E.Modern then
 		local auras = E:Auras_Create(frame, 'AuraWatch')
 		auras:SetFrameLevel(frame.RaisedElementParent.AuraWatchLevel)
 		auras:SetInside(frame.Health)
@@ -28,8 +29,8 @@ function UF:Configure_AuraWatch(frame, isPet)
 
 	local enabled = db and db.enable
 	local auras = frame.AuraWatch
-	if E.Retail then
-		auras:SetEnabled(enabled)
+	if E.Modern then
+		auras.allowEnable = enabled
 	end
 
 	if enabled then
@@ -55,15 +56,24 @@ function UF:Configure_AuraWatch(frame, isPet)
 			E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 		end
 
-		if E.Retail then
+		if E.Modern then
 			auras.filter = 'HELPFUL'
+
+			local known = next(auras.known) -- new slots update their buttons in initializeFrame
 
 			E:Auras_SetupList(auras, auraTable)
 			E:Auras_GroupUnit(auras, frame.__unit)
 			E:Auras_SetIndicator(auras)
-			E:Auras_UpdateIndicators(auras)
+
+			if known then
+				E:Auras_UpdateIndicators(auras)
+			end
 		elseif auras.SetNewTable then
 			auras:SetNewTable(auraTable)
+
+			for _, aura in ipairs(auras) do
+				aura.count:FontTemplate(auras.countFont, auras.countFontSize or 12, auras.countFontOutline or 'OUTLINE')
+			end
 		end
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
@@ -85,6 +95,7 @@ function UF:AuraWatch_PostCreateIcon(button)
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
+	button.count:FontTemplate(self.countFont, self.countFontSize or 12, self.countFontOutline or 'OUTLINE')
 end
 
 function UF:AuraWatch_PostUpdateIcon(_, button)
@@ -130,7 +141,6 @@ function UF:AuraWatch_PostUpdateIcon(_, button)
 	if count then
 		button.count:ClearAllPoints()
 		button.count:Point(settings.countAnchor or 'BOTTOMRIGHT', settings.countX or 1, settings.countY or 1)
-		button.count:FontTemplate(self.countFont, self.countFontSize or 12, self.countFontOutline or 'OUTLINE')
 	end
 
 	if colorIcon then

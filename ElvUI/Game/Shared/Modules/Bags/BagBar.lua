@@ -11,12 +11,12 @@ local hooksecurefunc = hooksecurefunc
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetKeyRingSize = GetKeyRingSize
-local IsKeyRingEnabled = IsKeyRingEnabled
+local IsKeyRingEnabled = C_ActionBar.ShouldShowKeyring or IsKeyRingEnabled
 local IsModifiedClick = IsModifiedClick
 local PutItemInBackpack = PutItemInBackpack
 local InCombatLockdown = InCombatLockdown
 local RegisterStateDriver = RegisterStateDriver
-local CalculateTotalNumberOfFreeBagSlots = C_Container.CalculateTotalNumberOfFreeBagSlots or CalculateTotalNumberOfFreeBagSlots
+local CalculateTotalNumberOfFreeBagSlots = C_Container.CalculateTotalNumberOfFreeBagSlots
 
 local NUM_BAG_FRAMES = NUM_BAG_FRAMES or 4
 local KEYRING_CONTAINER = Enum.BagIndex.Keyring
@@ -90,22 +90,40 @@ function B:KeyRing_OnLeave()
 	B:BagBar_OnEnter()
 end
 
+-- Normal texture back to the slot atlas on bag updates (See KeyRingMixin:OnBagUpdate())
+function B:KeyRing_UpdateTextures()
+	B:SetButtonTexture(self, 134237) -- Interface\ICONS\INV_Misc_Key_03
+
+	local highlight = self:GetHighlightTexture()
+	if highlight then
+		highlight:SetAlpha(0)
+	end
+
+	self.icon = self:GetNormalTexture()
+end
+
 function B:SkinBag(bag)
 	local icon = bag.icon or _G[bag:GetName()..'IconTexture']
 	bag.oldTex = icon and icon:GetTexture()
 
-	bag:StripTextures(E.Retail)
+	bag:StripTextures(E.Modern)
 	bag:SetTemplate()
 	bag:StyleButton(true)
+
+	if bag.SlotHighlightTexture then
+		bag.SlotHighlightTexture:SetInside()
+	end
 
 	if bag.searchOverlay then
 		bag.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
 	end
 
-	if E.Retail then
+	if E.Modern then
 		bag:GetNormalTexture():SetAlpha(0)
 		bag:GetHighlightTexture():SetAlpha(0)
-		bag.CircleMask:Hide()
+
+		local mask = bag.CircleMask or bag.SquareMask -- Forever: SquareBagSlotButtonTemplate
+		mask:Hide()
 
 		if icon then -- needed for retail
 			icon.Show = nil
@@ -154,7 +172,7 @@ function B:SizeAndPositionBagBar()
 
 	local firstButton, lastButton
 	for i, button in ipairs(B.BagBar.buttons) do
-		if E.Retail then
+		if E.Modern then
 			button.filterIcon.FilterBackdrop:Size(bagBarSize * 0.5)
 		end
 
@@ -204,7 +222,7 @@ function B:SizeAndPositionBagBar()
 			end
 		end
 
-		if button.bagID ~= KEYRING_CONTAINER then
+		if button.BagID ~= KEYRING_CONTAINER then
 			B:GetBagAssignedInfo(button)
 		end
 	end
@@ -243,7 +261,7 @@ function B:BackpackButton_OnClick()
 end
 
 function B:BagButton_OnClick(key)
-	if E.Retail and key == 'RightButton' then
+	if E.Modern and key == 'RightButton' then
 		B:OpenBagFlagsMenu(self)
 	end
 end
@@ -254,8 +272,7 @@ function B:BagButton_UpdateTextures()
 	pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
 
 	if self.SlotHighlightTexture then
-		self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3)
-		self.SlotHighlightTexture:SetInside()
+		self.SlotHighlightTexture:SetColorTexture(1, 1, 1, 0.3) -- blizzard never re-anchors this one, SetInside is done once in SkinBag
 	end
 end
 
@@ -287,7 +304,7 @@ function B:LoadBagBar()
 	--_G.EventRegistry:UnregisterCallback('MainMenuBarManager.OnExpandChanged', _G.BagsBar.Layout, _G.BagsBar)
 
 	if _G.MainMenuBarBagManager.OnCursorChanged then
-		_G.EventRegistry:UnregisterFrameEventAndCallback('CURSOR_CHANGED', _G.MainMenuBarBagManager.OnCursorChanged, _G.MainMenuBarBagManager)
+		_G.EventRegistry:UnregisterFrameEventAndCallback('CURSOR_CHANGED', _G.MainMenuBarBagManager)
 	end
 
 	if not E.private.bags.bagBar then return end
@@ -328,7 +345,7 @@ function B:LoadBagBar()
 		b:SetParent(B.BagBar)
 		B:SkinBag(b)
 
-		if E.Retail then
+		if E.Modern then
 			hooksecurefunc(b, 'UpdateTextures', B.BagButton_UpdateTextures)
 		else
 			B.BagButton_UpdateTextures(b)
@@ -376,6 +393,12 @@ function B:LoadBagBar()
 
 		KeyRing.searchOverlay:SetColorTexture(0, 0, 0, 0.6)
 
+		if E.Forever then
+			B.KeyRing_UpdateTextures(KeyRing)
+
+			hooksecurefunc(KeyRing, 'UpdateTextures', B.KeyRing_UpdateTextures)
+		end
+
 		tinsert(B.BagBar.buttons, KeyRing)
 	end
 
@@ -386,14 +409,14 @@ function B:LoadBagBar()
 			local bagID = i - 1
 			button.BagID = bagID
 
-			if not E.Retail and button.BagID == BACKPACK_CONTAINER then
+			if not E.Modern and button.BagID == BACKPACK_CONTAINER then
 				button:SetScript('OnClick', B.BackpackButton_OnClick)
 			end
 
 			button:HookScript('OnClick', B.BagButton_OnClick)
 		end
 
-		if E.Retail then -- Item Assignment
+		if E.Modern then -- Item Assignment
 			B:CreateFilterIcon(button)
 		end
 	end

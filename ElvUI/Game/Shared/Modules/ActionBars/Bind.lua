@@ -34,7 +34,7 @@ local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Play
 local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
 local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
 local QUICK_KEYBIND_MODE = QUICK_KEYBIND_MODE
-local MAX_ACCOUNT_MACROS = MAX_ACCOUNT_MACROS
+local MAX_ACCOUNT_MACROS = (Constants.MacroConsts and Constants.MacroConsts.MAX_ACCOUNT_MACROS) or MAX_ACCOUNT_MACROS
 
 local bind = CreateFrame('Frame', 'ElvUI_KeyBinder', E.UIParent)
 AB.KeyBinder = bind
@@ -192,7 +192,7 @@ function AB:BindUpdate(button, spellmacro)
 			button.bindstring = 'SPELL '..bind.name
 		end
 	elseif spellmacro == 'SPELL' then
-		if E.Retail then
+		if E.Modern then
 			local slotIndex = button.slotIndex or button:GetParent().slotIndex
 			if slotIndex then
 				bind.name = GetSpellBookItemName(slotIndex, BOOKTYPE_SPELL) or nil
@@ -318,7 +318,7 @@ function AB:LoadKeyBinder()
 
 	AB:SecureHook(GameTooltip, 'Hide', AB.ShowBinds) -- helper for BindTooltip
 
-	if E.Retail then
+	if E.Modern then
 		AB:SecureHook(_G.SettingsPanel, 'DisplayCategory', AB.SettingsDisplayCategory)
 	end
 

@@ -20,6 +20,10 @@ end
 
 -- Blizzard_NewPlayerExperience: ActionBars heavily conflicts with this
 local function ShutdownNPE()
+	if not E.Retail then	-- this doesnt exist so we can say its shutdown
+		return true			-- which will allow TryDisableTutorials to eventually be cleared
+	end
+
 	local NPE = _G.NewPlayerExperience
 	if NPE and NPE:GetIsActive() then
 		NPE:Shutdown()

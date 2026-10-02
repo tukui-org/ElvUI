@@ -9,9 +9,11 @@ local format, gmatch, strmatch, strsub = format, gmatch, strmatch, strsub
 local utf8lower, utf8sub = string.utf8lower, string.utf8sub
 
 local _G = _G
+local GetPlayerInfoByGUID = GetPlayerInfoByGUID
 local GetRuneCooldown = GetRuneCooldown
-local UnitHealthMax = UnitHealthMax
 local IsInInstance = IsInInstance
+local UnitGUID = UnitGUID
+local UnitHealthMax = UnitHealthMax
 local UnitIsPlayer = UnitIsPlayer
 local UnitPowerMax = UnitPowerMax
 local UnitPowerType = UnitPowerType
@@ -22,7 +24,7 @@ local GetCVarBool = C_CVar.GetCVarBool
 
 local LEVEL = strlower(LEVEL)
 
--- GLOBALS: UnitPower -- override during testing groups
+-- GLOBALS: UnitName, UnitPower -- override during testing groups
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 local POWERTYPE_COMBOPOINTS = Enum.PowerType.ComboPoints
@@ -140,8 +142,25 @@ Tags.SharedEvents.QUEST_LOG_UPDATE = true
 --	Tag Functions
 ------------------------------------------------------------------------
 
+Tags.Env.GetUnitRealm = function(unit)
+	if E.Forever then
+		if E:UnitIsUnit(unit, 'player') then
+			return E.myrealm
+		elseif UnitIsPlayer(unit) then
+			local guid = UnitGUID(unit)
+			if guid then
+				local _, _, _, _, _, _, realm = GetPlayerInfoByGUID(guid)
+				return (E:NotSecretValue(realm) and realm == '' and E.myrealm) or realm
+			end
+		end
+	else
+		local _, realm = UnitName(unit)
+		return realm
+	end
+end
+
 Tags.Env.UnitEffectiveLevel = function(unit)
-	if E.Retail or E.TBC or E.Wrath or E.Mists then
+	if E.Modern or E.TBC or E.Wrath or E.Mists then
 		return _G.UnitEffectiveLevel(unit)
 	else
 		return _G.UnitLevel(unit)
@@ -201,16 +220,16 @@ Tags.Env.GetQuestData = function(unit, which, Hex)
 		if E:NotSecretValue(text) then -- skip any secret lines
 			if not text or text == '' then return end
 
-			if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
+			if line.type == 18 or (not E.Modern and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.myname
 			elseif text and not notMyQuest then
-				if line.type == 17 or (not E.Retail and not lastTitle) then
+				if line.type == 17 or (not E.Modern and not lastTitle) then
 					lastTitle = NP.QuestIcons.activeQuests[text]
 				end -- this line comes from one line up in the tooltip
 
-				local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
+				local objectives = (line.type == 8 or not E.Modern) and lastTitle and lastTitle.objectives
 				if objectives then
-					local quest = objectives[text] or (not E.Retail and objectives[strsub(text, 4)])
+					local quest = objectives[text] or (not E.Modern and objectives[strsub(text, 4)])
 					if quest then
 						if not which then
 							return text
@@ -289,9 +308,9 @@ do
 		-- handle the fake powers (these use UNIT_AURA)
 		if E.Mists and unitClass == 'MAGE' and spec == SPEC_MAGE_ARCANE then
 			return ClassPowerSpecial(unit, SPELL_ARCANE_CHARGE, POWERTYPE_ARCANE_CHARGES, ElvUF.colors.ClassBars.MAGE.ARCANE_CHARGES, 'HARMFUL')
-		elseif E.Retail and unitClass == 'MAGE' and spec == SPEC_MAGE_FROST then
+		elseif E.Modern and unitClass == 'MAGE' and spec == SPEC_MAGE_FROST then
 			return ClassPowerSpecial(unit, SPELL_FROST_ICICLES, POWERTYPE_ICICLES, ElvUF.colors.ClassBars.MAGE.FROST_ICICLES, 'HELPFUL')
-		elseif E.Retail and unitClass == 'SHAMAN' and spec == SPEC_SHAMAN_ENHANCEMENT then
+		elseif E.Modern and unitClass == 'SHAMAN' and spec == SPEC_SHAMAN_ENHANCEMENT then
 			return ClassPowerSpecial(unit, SPELL_MAELSTROM, POWERTYPE_MAELSTROM, ElvUF.colors.ClassBars.SHAMAN.MAELSTROM, 'HELPFUL')
 		end
 
@@ -350,7 +369,7 @@ do
 		end
 
 		-- try additional mana
-		local altIndex = not r and E.Retail and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
+		local altIndex = not r and E.Modern and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
 		if altIndex and altIndex[UnitPowerType(unit)] then
 			Min = UnitPower(unit, POWERTYPE_MANA)
 			Max = UnitPowerMax(unit, POWERTYPE_MANA)
@@ -407,14 +426,14 @@ info.powercolor				= { category = "Colors", description = "Colors the power text
 info.pvp					= { category = "PvP", description = "Displays 'PvP' if the unit is pvp flagged" }
 info.rare					= { category = "Classification", description = "Displays 'Rare' when the unit is a rare or rareelite" }
 info.resting				= { category = "Status", description = "Displays 'zzz' if the unit is resting" }
-info.runes					= { hidden = E.Classic, category = "Classpower", description = "Displays the runes (Death Knight)" }
+info.runes					= { hidden = not (E.Retail or E.Wrath or E.Mists), category = "Classpower", description = "Displays the runes (Death Knight)" }
 info.shortclassification	= { category = "Classification", description = "Displays the unit's classification in short form (e.g. '+' for ELITE and 'R' for RARE)" }
 info.smartlevel				= { category = "Level", description = "Only display the unit's level if it is not the same as yours" }
-info.soulshards				= { hidden = E.Classic, category = "Classpower", description = "Displays the soulshards (Warlock)" }
+info.soulshards				= { hidden = not (E.Retail or E.Mists), category = "Classpower", description = "Displays the soulshards (Warlock)" }
 info.status					= { category = "Status", description = "Displays zzz, dead, ghost, offline" }
 info.threat					= { category = "Threat", description = "Displays the current threat situation (Aggro is secure tanking, -- is losing threat and ++ is gaining threat)" }
 info.threatcolor			= { category = "Colors", description = "Changes the text color, depending on the unit's threat situation" }
-info.spec					= { hidden = not E.Retail, category = "Class", description = "Displays the specialization icon of the unit as text" }
+info.spec					= { hidden = E.Modern, category = "Class", description = "Displays the specialization icon of the unit as text" }
 info.arcanecharges			= { hidden = not E.Retail, category = "Classpower", description = "Displays the arcane charges (Mage)" }
 info.chi					= { hidden = not E.Retail, category = "Classpower", description = "Displays the chi points (Monk)" }
 

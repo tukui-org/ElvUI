@@ -4,13 +4,14 @@ local LibStub = _G.LibStub
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local tinsert, next, strfind = tinsert, next, strfind
+local tinsert, next, ipairs, strfind = tinsert, next, ipairs, strfind
 local unpack, type, gsub, rad = unpack, type, gsub, rad
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 S.allowBypass = {}
+S.addonStorage = {}
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
 
@@ -1213,7 +1214,7 @@ do
 		end
 	end
 
-	function S:HandleTrimScrollBar(frame, ignoreUpdates)
+	function S:HandleTrimScrollBar(frame, ignoreUpdates, trackBackdrop)
 		frame:StripTextures()
 
 		ReskinScrollBarArrow(frame.Back, 'up')
@@ -1227,6 +1228,10 @@ do
 		local track = frame.Track
 		if track then
 			track:DisableDrawLayer('ARTWORK')
+
+			if trackBackdrop and not track.backdrop then
+				track:CreateBackdrop('Transparent', nil, ignoreUpdates)
+			end
 		end
 
 		local thumb = frame.GetThumb and frame:GetThumb()
@@ -1250,7 +1255,7 @@ do
 	end
 end
 
-do --Tab Regions
+do -- Tab Regions
 	local tabs = {
 		'LeftDisabled',
 		'MiddleDisabled',
@@ -1302,9 +1307,80 @@ do --Tab Regions
 		if not noBackdrop then
 			tab:CreateBackdrop(template)
 
-			local spacing = E.Retail and 3 or 10
+			local spacing = E.Modern and 3 or 10
 			tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -1 or -3)
 			tab.backdrop:Point('BOTTOMRIGHT', -spacing, 3)
+		end
+	end
+end
+
+-- ToDo: classic_beta WIP
+do -- Large Side Tabs
+	local function UpdateIconInterior(tab)
+		tab.Icon:SetTexCoords()
+		tab.Icon:Size(30) -- Resets on SetChecked
+	end
+
+	-- Size will now match other side tabs (Like Communitiesframe)
+	function S:HandleLargeSideTab(tab)
+		if not tab or tab.backdrop then return end
+
+		local icon = tab.Icon
+		icon:SetTexCoords()
+		icon:Size(30)
+
+		tab:CreateBackdrop(nil, true)
+		tab.backdrop:SetOutside(icon, 1, 1)
+		tab:Size(36, 30)
+
+		if tab.UpdateIconInterior then
+			hooksecurefunc(tab, 'UpdateIconInterior', UpdateIconInterior)
+		end
+
+		if tab.Mask then
+			icon:RemoveMaskTexture(tab.Mask)
+		end
+
+		local background = tab.Background
+		if background then
+			background:SetTexture()
+		end
+
+		local highlight = tab.HighlightTexture
+		if highlight then
+			highlight:SetColorTexture(1, 1, 1, .3)
+			highlight:SetAllPoints(icon)
+		end
+
+		local glow = tab.TabGlow
+		if glow then
+			glow:SetColorTexture(1, .8, .1, .5)
+			glow:SetAllPoints(icon)
+		end
+
+		local selected = tab.SelectedTexture
+		if selected then
+			selected:SetColorTexture(1, 1, 1, .3)
+			selected:SetBlendMode('ADD')
+			selected:SetAllPoints(icon)
+		end
+	end
+
+	-- Pixel spacing fix, Blizzard is stacking them unscaled -> tab:SetPoint('TOPLEFT', last, 'BOTTOMLEFT', 0, -2)
+	function S:LayoutLargeSideTabs(frame, tabs)
+		local last
+		for _, tab in ipairs(tabs) do
+			if tab:IsShown() then
+				tab:ClearAllPoints()
+
+				if last then
+					tab:Point('TOPLEFT', last, 'BOTTOMLEFT', 0, -3)
+				else
+					tab:Point('TOPLEFT', frame, 'TOPRIGHT', 4, -1)
+				end
+
+				last = tab
+			end
 		end
 	end
 end
@@ -1441,7 +1517,7 @@ function S:HandleEditBox(frame, template)
 		local name = frame:GetDebugName()
 		local gold, silver, copper = strfind(name, 'Gold'), strfind(name, 'Silver'), strfind(name, 'Copper')
 		if gold or silver or copper then
-			if E.Retail then
+			if E.Modern then
 				frame.backdrop:Point('TOPLEFT', -4, 0)
 				frame.backdrop:Point('BOTTOMRIGHT')
 			elseif frame.label then -- send mail, popups, and others
@@ -1881,8 +1957,11 @@ function S:HandleStepSlider(frame, minimal)
 		thumb:SetSize(20, 30)
 	end
 
+	if not slider.backdrop then
+		slider:CreateBackdrop()
+	end
+
 	local offset = minimal and 10 or 13
-	slider:CreateBackdrop()
 	slider.backdrop:SetPoint('TOPLEFT', 10, -offset)
 	slider.backdrop:SetPoint('BOTTOMRIGHT', -10, offset)
 
@@ -1890,9 +1969,9 @@ function S:HandleStepSlider(frame, minimal)
 		local step = CreateFrame('StatusBar', nil, slider.backdrop)
 		step:SetStatusBarTexture(E.Media.Textures.Melli)
 		step:SetStatusBarColor(1, .8, 0, .5)
-		step:SetPoint('TOPLEFT', slider.backdrop, E.mult, -E.mult)
-		step:SetPoint('BOTTOMLEFT', slider.backdrop, E.mult, E.mult)
-		step:SetPoint('RIGHT', thumb, 'CENTER')
+		step:Point('TOPLEFT', slider.backdrop, 1, -1)
+		step:Point('BOTTOMLEFT', slider.backdrop, 1, 1)
+		step:Point('RIGHT', thumb, 'CENTER')
 
 		slider.barStep = step
 	end
@@ -1980,7 +2059,7 @@ do
 	S.FollowerListUpdateDataFrames = {}
 
 	local function UpdateFollower(button)
-		if not E.Retail then
+		if not E.Modern then
 			button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
 		end
 
@@ -2119,7 +2198,7 @@ function S:HandleGarrisonPortrait(portrait, updateAtlas)
 		level:FontTemplate(nil, 14, 'OUTLINE')
 
 		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
-		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
+		if portrait.LevelBorder then portrait.LevelBorder:SetScale(0.0001) end
 	end
 
 	if portrait.PortraitRing then
@@ -2298,11 +2377,6 @@ do -- Handle collapse
 	end
 end
 
--- World Map related Skinning functions used for WoW 8.0
-function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
-	S[templateName](frame.overlayFrames[#frame.overlayFrames])
-end
-
 -- UIWidgets
 function S:SkinIconAndTextWidget()
 end
@@ -2420,7 +2494,7 @@ do
 		[W.ScenarioHeaderCurrenciesAndBackground] = 'SkinScenarioHeaderCurrenciesAndBackgroundWidget',
 	}
 
-	if E.Retail then
+	if E.Modern then
 		S.WidgetSkinningFuncs[W.SpellDisplay] = 'SkinSpellDisplay'
 		S.WidgetSkinningFuncs[W.TextureAndText] = 'SkinTextureAndTextWidget'
 		S.WidgetSkinningFuncs[W.DoubleStateIconRow] = 'SkinDoubleStateIconRow'
@@ -2455,33 +2529,71 @@ end
 ---- arg3: load function (preferably not-local)
 -- this is used for loading skins that should be executed when the addon loads (including blizzard addons that load later).
 -- please add a given name, non-given-name is specific for elvui core addon.
-function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position) -- arg2: name is 'given name'; see example above.
-	local load = (type(name) == 'function' and name) or (not func and (S[name] or S[addonName]))
-	S:RegisterSkin(addonName, load or func, forceLoad, bypass, position)
+-- without a load function the given name is looked up when the skin loads.
+function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position, toggle)
+	if type(name) == 'function' then -- arg2: name is 'given name'; see example above.
+		return S:RegisterSkin(addonName, name, forceLoad, bypass, position, nil, toggle)
+	else
+		return S:RegisterSkin(addonName, func, forceLoad, bypass, position, name, toggle)
+	end
 end
 
 -- nonAddonsToLoad:
 --- this is used for loading skins when our skin init function executes.
 --- please add a given name, non-given-name is specific for elvui core addon.
-function S:AddCallback(name, func, position) -- arg1: name is 'given name'
-	local load = (type(name) == 'function' and name) or (not func and S[name])
-	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
+function S:AddCallback(name, func, position, toggle)
+	if type(name) == 'function' then -- arg1: name is 'given name'
+		return S:RegisterSkin('ElvUI', name, nil, nil, position, nil, toggle)
+	else
+		return S:RegisterSkin('ElvUI', func, nil, nil, position, name, toggle)
+	end
 end
 
-function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
+function S:LoadSkin(info)
+	local func = info.func or S[info.name] or S[info.addonName]
+	if not func then return end -- we need this
+
+	if info.check then -- custom override to specifically allow
+		local ok, allow = E:CallLoadFunc(info.check)
+		if not (ok and allow) then return end
+	elseif info.toggle then -- regular check which is used for almost all blizzard skins
+		local blizzard = E.private.skins.blizzard
+		if not (blizzard.enable and blizzard[info.toggle]) then return end
+	end
+
+	E:CallLoadFunc(func, S, info.data) -- only allowed when checks above pass
+end
+
+function S:RegisterSkin(addonName, func, forceLoad, bypass, position, name, toggle)
+	local key, info = name or addonName, {}
+	if key and not S.addonStorage[key] then
+		S.addonStorage[key] = info -- for plugins
+	end
+
+	local data = {} -- for specific skin function exports
+	info.addonName = addonName
+	info.forceLoad = forceLoad
+	info.position = position
+	info.bypass = bypass
+	info.func = func
+	info.name = name -- can be the load func
+	info.check = type(toggle) == 'function' and toggle or nil
+	info.toggle = not info.check and toggle or nil
+	info.data = data
+
 	if bypass then
 		S.allowBypass[addonName] = true
 	end
 
 	if forceLoad then
-		E:CallLoadFunc(func)
+		S:LoadSkin(info)
 
 		S.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
 		if position then
-			tinsert(S.nonAddonsToLoad, position, func)
+			tinsert(S.nonAddonsToLoad, position, info)
 		else
-			tinsert(S.nonAddonsToLoad, func)
+			tinsert(S.nonAddonsToLoad, info)
 		end
 	else
 		local addon = S.addonsToLoad[addonName]
@@ -2491,22 +2603,24 @@ function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 		end
 
 		if position then
-			tinsert(addon, position, func)
+			tinsert(addon, position, info)
 		else
-			tinsert(addon, func)
+			tinsert(addon, info)
 		end
 	end
+
+	return data
 end
 
-function S:CallLoadedNonAddon(index, func)
-	E:CallLoadFunc(func)
+function S:CallLoadedNonAddon(index, info)
+	S:LoadSkin(info)
 
 	S.nonAddonsToLoad[index] = nil
 end
 
 function S:CallLoadedAddon(addonName, object)
-	for _, func in next, object do
-		E:CallLoadFunc(func)
+	for _, info in next, object do
+		S:LoadSkin(info)
 	end
 
 	S.addonsToLoad[addonName] = nil
@@ -2521,8 +2635,8 @@ end
 function S:Initialize()
 	S.Initialized = true
 
-	for index, func in next, S.nonAddonsToLoad do
-		S:CallLoadedNonAddon(index, func)
+	for index, info in next, S.nonAddonsToLoad do
+		S:CallLoadedNonAddon(index, info)
 	end
 
 	for addonName, object in next, S.addonsToLoad do
@@ -2556,7 +2670,7 @@ function S:Initialize()
 		end
 	end
 
-	if E.Retail and S.db.blizzard.enable and S.db.blizzard.misc then
+	if E.Modern and S.db.blizzard.enable and S.db.blizzard.misc then
 		S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
 		S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
 	end

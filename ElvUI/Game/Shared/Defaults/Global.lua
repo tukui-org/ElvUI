@@ -90,7 +90,7 @@ G.datatexts = {
 		Speed = { Label = '', NoLabel = false, decimalLength = 1 },
 		Stamina = { Label = '', NoLabel = false },
 		Strength = { Label = '', NoLabel = false },
-		System = { NoLabel = false, ShowOthers = true, latency = 'WORLD', showTooltip = true },
+		System = { NoLabel = false, ShowOthers = true, latency = 'WORLD', separator = '|', showTooltip = true },
 		Time = { time24 = _G.GetCurrentRegion() ~= 1, localTime = true, flashInvite = true, savedInstances = true },
 		Versatility = { Label = '', NoLabel = false, decimalLength = 1 },
 		Dodge = { decimalLength = 1 },
@@ -257,7 +257,7 @@ G.unitframe = {
 				['2008'] = 'Ancestral Spirit'
 			},
 			WARLOCK = {
-				['20707'] = not E.Classic and 'Soulstone' or nil
+				['20707'] = not (E.Classic or E.Forever) and 'Soulstone' or nil
 			},
 			WARRIOR = {}
 		},

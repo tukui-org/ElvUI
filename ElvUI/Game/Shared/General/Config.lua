@@ -804,8 +804,7 @@ function E:Config_SearchFocusLost()
 end
 
 function E:Config_SearchOnEvent()
-	local frame = self:HasFocus() and E:GetMouseFocus()
-	if frame and (frame ~= self and frame ~= self.clearButton) then
+	if self:HasFocus() and (not self:IsMouseMotionFocus() and not self.clearButton:IsMouseMotionFocus()) then
 		EditBox_ClearFocus(self)
 	end
 end
@@ -1295,6 +1294,13 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 			end
 		},
 		{
+			var = 'Donate',
+			name = '|cFF33FF33'..L["Donate"]..'|r',
+			func = function()
+				E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.patreon.com/ElvUI')
+			end
+		},
+		{
 			texture = true,
 			var = 'RepositionWindow',
 			name = L["Reposition Window"],
@@ -1334,7 +1340,7 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 		if not search and (info.var == 'Search') then
 			search = element
 
-			if not E.Retail then
+			if not E.Modern then
 				search:RegisterEvent('GLOBAL_MOUSE_DOWN')
 				search:SetScript('OnEvent', info.event)
 			end

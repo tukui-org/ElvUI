@@ -103,7 +103,7 @@ function UF:Configure_Power(frame, healthUpdate)
 			frame:EnableElement('Power')
 		end
 
-		if E.Retail then
+		if E.Modern then
 			power.smoothing = (db.power.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(power, db.power.smoothbars)
@@ -134,7 +134,7 @@ function UF:Configure_Power(frame, healthUpdate)
 		power.colorSelection = nil
 		power.displayAltPower = db.power.displayAltPower
 
-		if E.Retail and UF.db.colors.powerselection then
+		if E.Modern and UF.db.colors.powerselection then
 			power.colorSelection = true
 		elseif UF.db.colors.powerclass then
 			power.colorClass = true
@@ -226,10 +226,11 @@ function UF:Configure_Power(frame, healthUpdate)
 		-- Hide holder until we detach again
 		UF:PowerBar_DisableHolder(frame, power, frame.POWERBAR_DETACHED)
 
-		power:SetFrameStrata(db.power.strataAndLevel and db.power.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+		local strataLevel = db.power.strataAndLevel
+		power:SetFrameStrata(strataLevel and strataLevel.useCustomStrata and strataLevel.frameStrata or 'LOW')
 
-		if db.power.strataAndLevel and db.power.strataAndLevel.useCustomLevel then
-			power:SetFrameLevel(db.power.strataAndLevel.frameLevel)
+		if strataLevel and strataLevel.useCustomLevel then
+			power:SetFrameLevel(strataLevel.frameLevel)
 		end
 
 		power.backdrop:OffsetFrameLevel(-1, power)
@@ -258,7 +259,7 @@ end
 
 function UF:GetDisplayPower(unit)
 	local barInfo = GetUnitPowerBarInfo(unit)
-	if barInfo then
+	if barInfo and barInfo.showOnRaid then
 		return POWERTYPE_ALTERNATE, barInfo.minPower
 	end
 end
@@ -268,7 +269,7 @@ do
 
 	if E.Mists or E.Wrath then -- also handled in ConfigEnvironment
 		classPowers[4] = 'RUNIC_POWER'
-	elseif E.Retail then
+	elseif E.Modern then
 		classPowers[4] = 'RUNIC_POWER'
 		classPowers[5] = 'PAIN'
 		classPowers[6] = 'FURY'

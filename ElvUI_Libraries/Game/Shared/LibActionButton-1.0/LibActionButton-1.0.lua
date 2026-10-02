@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 84 -- the real minor version is 155
+local MINOR_VERSION = 84 -- the real minor version is 166
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -14,16 +14,25 @@ local type, error, tostring, tonumber, assert, select, strsub = type, error, tos
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strmatch, format, tinsert, tremove
 
-local _, _, _, wowtoc = GetBuildInfo()
+-- Game Versions
+local WoWMainline = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local WoWForever = WOW_PROJECT_ID == WOW_PROJECT_CAMELOT
+local WoWClassicEra = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local WoWClassicBCC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+local WoWClassicWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+local WoWClassicCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
+local WoWClassicMists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 
-local WoWBCC = wowtoc >= 20000 and wowtoc < 30000
-local WoWRetail = (WOW_PROJECT_ID == WOW_PROJECT_MAINLINE)
-local WoWClassic = (WOW_PROJECT_ID == WOW_PROJECT_CLASSIC)
-local WoWWrath = (WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC)
-local WoWCata = (WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC)
-local WoWMists = (WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC)
+-- Compound variants
+local WoWModern = WoWMainline or WoWForever
 
-local DisableOverlayGlow = WoWClassic or WoWBCC or WoWWrath
+-- Features
+local Feat_DisableOverlayGlow = WoWClassicEra or WoWClassicBCC or WoWClassicWrath
+local Feat_UseCustomFlyout = true
+local Feat_ButtonCastBars = WoWModern
+local Feat_CooldownDurationObject = WoWModern
+local Feat_Secrets = WoWModern
+local Feat_PingableButton = WoWModern
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -57,8 +66,6 @@ local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
 
 local SpellVFX_ClearReticle, SpellVFX_ClearInterruptDisplay, SpellVFX_PlaySpellCastAnim, SpellVFX_PlayTargettingReticleAnim, SpellVFX_StopTargettingReticleAnim, SpellVFX_StopSpellCastAnim, SpellVFX_PlaySpellInterruptedAnim
 local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
-
-local UseCustomFlyout = FlyoutButtonMixin and not ActionButton_UpdateFlyout -- Enable custom flyouts
 local FontStringScaleAnimationMode = Enum.FontStringScaleAnimationMode
 
 -- GLOBALS: C_Item, C_Spell, C_ToyBox, UIParent
@@ -285,7 +292,7 @@ function lib:CreateButton(id, name, header, config)
 		KeyBound = LibStub("LibKeyBound-1.0", true)
 	end
 
-	local button = setmetatable(CreateFrame("CheckButton", name, header, (WoWRetail and "PingableActionButtonTemplate, " or "").."ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
+	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	button:RegisterForClicks("AnyDown", "AnyUp")
 
@@ -329,6 +336,9 @@ function lib:CreateButton(id, name, header, config)
 	-- Store the LAB Version that created this button for debugging
 	button.__LAB_Version = MINOR_VERSION
 
+	-- start it as empty
+	button._state_type = "empty"
+
 	-- just in case we're not run by a header, default to state 0
 	button:SetAttribute("state", 0)
 
@@ -347,17 +357,13 @@ function lib:CreateButton(id, name, header, config)
 	-- Store the button in the registry, needed for event and OnUpdate handling
 	ButtonRegistry[button] = true
 
-	-- setup button configuration
+	-- setup button configuration, this runs the initial update and hotkeys too
 	button:UpdateConfig(config)
 
-	-- run an initial update
-	button:UpdateAction()
-	UpdateHotkeys(button)
-
-	button:SetAttribute("LABUseCustomFlyout", UseCustomFlyout)
+	button:SetAttribute("LABUseCustomFlyout", Feat_UseCustomFlyout)
 
 	-- nil out inherited functions from the flyout mixin, we override these in a metatable
-	if UseCustomFlyout then
+	if Feat_UseCustomFlyout then
 		button.GetPopupDirection = nil
 		button.IsPopupOpen = nil
 	end
@@ -365,6 +371,13 @@ function lib:CreateButton(id, name, header, config)
 	-- initialize events
 	if InitializeEvents then
 		InitializeEventHandler()
+	end
+
+	-- remove default ping functions which we implement through MTs below
+	if Feat_PingableButton then
+		button.UpdatePingAttributes = nil
+		button.GetIsPingable = nil
+		button.GetTargetInfo = nil
 	end
 
 	-- somewhat of a hack for the Flyout buttons to not error.
@@ -422,11 +435,19 @@ function SetupSecureSnippets(button)
 			local action_field = (type == "pet") and "action" or type
 			self:SetAttribute(action_field, action)
 			self:SetAttribute("action_field", action_field)
-		end
 
-		local actionID, _, hasAction = self:GetAttribute("type") == "action" and self:GetAttribute("action")
-		if actionID then _, hasAction = GetActionInfo(actionID) end
-		self:SetAttribute('ping-receiver', hasAction) -- replicate UpdatePingAttributes ~Simpy
+			if type == "action" then
+				if HasAction(action) then
+					self:SetAttribute("ping-receiver", true)
+				else
+					self:SetAttribute("ping-receiver", nil)
+				end
+			else
+				self:SetAttribute("ping-receiver", true)
+			end
+		else
+			self:SetAttribute("ping-receiver", nil)
+		end
 
 		local updateReleaseCasting = self:GetAttribute("UpdateReleaseCasting")
 		if updateReleaseCasting then
@@ -556,7 +577,7 @@ function SetupSecureSnippets(button)
 		self:RunAttribute("UpdateState", self:GetAttribute("state"))
 	]])
 
-	if UseCustomFlyout then
+	if Feat_UseCustomFlyout then
 		button.header:SetFrameRef("flyoutHandler", GetFlyoutHandler())
 	end
 end
@@ -630,7 +651,7 @@ function WrapOnClick(button, unwrapheader)
 	]])
 end
 
-function Generic:OnButtonEvent(event, ...)
+function Generic:OnButtonEvent(event)
 	if event == "GLOBAL_MOUSE_UP" then
 		self:UnregisterEvent(event)
 
@@ -659,7 +680,7 @@ local function WatchRange(button, slot)
 	lib.buttonsBySlot[slot][button] = true
 	lib.slotByButton[button] = slot
 
-	if WoWRetail then -- activate the event for slot
+	if WoWModern then -- activate the event for slot
 		EnableActionRangeCheck(slot, true)
 	end
 end
@@ -670,7 +691,7 @@ local function ClearRange(button, slot)
 		buttons[button] = nil
 
 		if not next(buttons) then -- deactivate event for slot (unused)
-			if WoWRetail then
+			if WoWModern then
 				EnableActionRangeCheck(slot, false)
 			end
 
@@ -719,9 +740,10 @@ local function UpdateAbilityInfo(self)
 		self.abilityName = spellName
 		self.abilityID = spellID
 
-		AuraButtons.buttons[self] = spellName
+		-- only the target aura cooldowns read these - classic only
+		if spellName and not WoWModern then
+			AuraButtons.buttons[self] = spellName
 
-		if spellName then
 			if not AuraButtons.auras[spellName] then
 				AuraButtons.auras[spellName] = {}
 			end
@@ -879,12 +901,57 @@ function Generic:UpdateAlpha()
 	UpdateCooldown(self)
 end
 
+-- PingableType
+function Generic:UpdatePingAttributes()
+	-- handled in the UpdateState RE script
+end
+
+function Generic:GetIsPingable()
+	-- Only certain kinds of actions are pingable. This only checks high level types, the client will determine if a specific spell or item etc. is valid later.
+	local isPingable = false
+
+	if self._state_type == "action" then
+		local actionType = GetActionInfo(self._state_action)
+		if actionType then
+			-- Only allow spells and items to be pinged if this action button allows different types of actions.
+			if actionType == "spell" or actionType == "item" then
+				isPingable = true
+			end
+		end
+	elseif self._state_type == "spell" or self._state_type == "item" then
+		isPingable = true
+	end
+
+	return isPingable
+end
+
+function Generic:GetTargetInfo()
+	local targetInfo = {}
+
+	if self._state_type == "action" then
+		local actionType, id = GetActionInfo(self._state_action)
+		if actionType and actionType == "item" then
+			targetInfo.itemID = id
+		else
+			-- this is under the assumption that invalid actionType has been blocked by GetIsPingable
+			-- so id passed back by Script_GetActionInfo should only be spellID
+			targetInfo.spellID = self:GetSpellId()
+		end
+	elseif self._state_type == "spell" then
+		targetInfo.spellID = self:GetSpellId()
+	elseif self._state_type == "item" then
+		targetInfo.itemID = strmatch(self._state_action, "^item:(%d+)")
+	end
+
+	return targetInfo
+end
+
 -----------------------------------------------------------
 --- flyouts
 
 local DiscoverFlyoutSpells, UpdateFlyoutSpells, UpdateFlyoutHandlerScripts, FlyoutUpdateQueued
 
-if UseCustomFlyout then
+if Feat_UseCustomFlyout then
 	-- params: self, flyoutID
 	local FlyoutHandleFunc = [[
 		local SPELLFLYOUT_DEFAULT_SPACING = 4
@@ -985,32 +1052,33 @@ if UseCustomFlyout then
 
 		-- calculate extent for the long dimension
 		-- 3 pixel extra initial padding, button size + padding, and everything at 0.8 scale
-		local extent = (3 + (45 + 4) * usedSlots) * 0.8
+		local buttonSize = prevButton:GetWidth()
+		local extent = (3 + (buttonSize + 4) * usedSlots) * 0.8
 
 		self:ClearAllPoints()
 
 		if direction == "UP" then
 			self:SetPoint("BOTTOM", parent, "TOP")
-			self:SetWidth(45)
+			self:SetWidth(buttonSize)
 			self:SetHeight(extent)
 		elseif direction == "DOWN" then
 			self:SetPoint("TOP", parent, "BOTTOM")
-			self:SetWidth(45)
+			self:SetWidth(buttonSize)
 			self:SetHeight(extent)
 		elseif direction == "LEFT" then
 			self:SetPoint("RIGHT", parent, "LEFT")
 			self:SetWidth(extent)
-			self:SetHeight(45)
+			self:SetHeight(buttonSize)
 		elseif direction == "RIGHT" then
 			self:SetPoint("LEFT", parent, "RIGHT")
 			self:SetWidth(extent)
-			self:SetHeight(45)
+			self:SetHeight(buttonSize)
 		end
 
 		self:SetFrameStrata("DIALOG")
 		self:Show()
 
-		self:CallMethod("ShowFlyoutInsecure", direction)
+		self:CallMethod("ShowFlyoutInsecure", direction, buttonSize)
 
 		if oldParent and oldParent:GetAttribute("LABUseCustomFlyout") then
 			oldParent:CallMethod("UpdateFlyout")
@@ -1018,7 +1086,7 @@ if UseCustomFlyout then
 	]]
 
 	local SPELLFLYOUT_INITIAL_SPACING = 7
-	local function ShowFlyoutInsecure(self, direction)
+	local function ShowFlyoutInsecure(self, direction, buttonSize)
 		self.Background.End:ClearAllPoints()
 		self.Background.Start:ClearAllPoints()
 		if direction == "UP" then
@@ -1068,15 +1136,15 @@ if UseCustomFlyout then
 		end
 
 		if direction == "UP" or direction == "DOWN" then
-			self.Background.Start:SetWidth(47)
-			self.Background.HorizontalMiddle:SetWidth(47)
-			self.Background.VerticalMiddle:SetWidth(47)
-			self.Background.End:SetWidth(47)
+			self.Background.Start:SetWidth((buttonSize or 45) + 2)
+			self.Background.HorizontalMiddle:SetWidth((buttonSize or 45) + 2)
+			self.Background.VerticalMiddle:SetWidth((buttonSize or 45) + 2)
+			self.Background.End:SetWidth((buttonSize or 45) + 2)
 		else
-			self.Background.Start:SetHeight(47)
-			self.Background.HorizontalMiddle:SetHeight(47)
-			self.Background.VerticalMiddle:SetHeight(47)
-			self.Background.End:SetHeight(47)
+			self.Background.Start:SetHeight((buttonSize or 45) + 2)
+			self.Background.HorizontalMiddle:SetHeight((buttonSize or 45) + 2)
+			self.Background.VerticalMiddle:SetHeight((buttonSize or 45) + 2)
+			self.Background.End:SetHeight((buttonSize or 45) + 2)
 		end
 	end
 
@@ -1190,8 +1258,8 @@ if UseCustomFlyout then
 		-- 300 is a safe upper limit in 10.0.2, the highest known spell is 229
 		for flyoutID = 1, 300 do
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
-			if success then
-				lib.FlyoutInfo[flyoutID] = { numSlots = numSlots, isKnown = isKnown, slots = {} }
+			if success and numSlots then
+				local data = { numSlots = numSlots, isKnown = isKnown, slots = {} }
 				for slotID = 1, numSlots do
 					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
@@ -1201,8 +1269,10 @@ if UseCustomFlyout then
 						isKnownSlot = false
 					end
 
-					lib.FlyoutInfo[flyoutID].slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
+					data.slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
 				end
+
+				lib.FlyoutInfo[flyoutID] = data
 			end
 		end
 
@@ -1220,19 +1290,22 @@ if UseCustomFlyout then
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
 			if success then
 				data.isKnown = isKnown
-				for slotID = 1, numSlots do
-					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
-					-- hide empty pet slots from the flyout
-					local petIndex, petName = GetCallPetSpellInfo(spellID)
-					if petIndex and (not petName or petName == "") then
-						isKnownSlot = false
+				if numSlots and isKnown then
+					for slotID = 1, numSlots do
+						local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
+
+						-- hide empty pet slots from the flyout
+						local petIndex, petName = GetCallPetSpellInfo(spellID)
+						if petIndex and (not petName or petName == "") then
+							isKnownSlot = false
+						end
+
+						data.slots[slotID].spellID = spellID
+						data.slots[slotID].spellName = spellName
+						data.slots[slotID].overrideSpellID = overrideSpellID
+						data.slots[slotID].isKnown = isKnownSlot
 					end
-
-					data.slots[slotID].spellID = spellID
-					data.slots[slotID].spellName = spellName
-					data.slots[slotID].overrideSpellID = overrideSpellID
-					data.slots[slotID].isKnown = isKnownSlot
 				end
 			end
 		end
@@ -1283,7 +1356,7 @@ function Generic:OnEnter()
 		ClearNewActionHighlight(self._state_action, false, false, self)
 	end
 
-	if FlyoutButtonMixin and UseCustomFlyout then
+	if FlyoutButtonMixin and Feat_UseCustomFlyout then
 		FlyoutButtonMixin.OnEnter(self)
 	else
 		UpdateFlyout(self)
@@ -1291,7 +1364,7 @@ function Generic:OnEnter()
 end
 
 function Generic:OnLeave()
-	if FlyoutButtonMixin and UseCustomFlyout then
+	if FlyoutButtonMixin and Feat_UseCustomFlyout then
 		FlyoutButtonMixin.OnLeave(self)
 	else
 		UpdateFlyout(self)
@@ -1310,7 +1383,7 @@ function Generic:PreClick()
 	end
 
 	-- check if there is actually something on the cursor
-	local kind, value, _subtype = GetCursorInfo()
+	local kind, value = GetCursorInfo()
 	if not (kind and value) then return end
 
 	self._old_type = self._state_type
@@ -1331,7 +1404,7 @@ local function FormatHelper(input)
 	end
 end
 
-function Generic:PostClick(button, down)
+function Generic:PostClick(_, down)
 	UpdateButtonState(self)
 	UpdateFlyout(self, down)
 
@@ -1508,23 +1581,20 @@ function InitializeEventHandler()
 
 	lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 
-	if not WoWClassic and not WoWBCC then
-		if WoWRetail then
-			lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
-			lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
-			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
-			lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
-		end
-
+	if WoWMainline or WoWClassicWrath or WoWClassicMists then
 		lib.eventFrame:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
 	end
 
-	if WoWRetail then
-		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
-		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
+	if WoWModern then
 		lib.eventFrame:RegisterEvent("ACTION_RANGE_CHECK_UPDATE")
+		lib.eventFrame:RegisterEvent("ACTION_USABLE_CHANGED")
+		lib.eventFrame:RegisterEvent("ARCHAEOLOGY_CLOSED")
+		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_HIDE")
+		lib.eventFrame:RegisterEvent("SPELL_ACTIVATION_OVERLAY_GLOW_SHOW")
+		lib.eventFrame:RegisterEvent("SPELLS_CHANGED")
+		lib.eventFrame:RegisterEvent("UPDATE_SUMMONPETS_ACTION")
 	else
 		lib.eventFrame:RegisterUnitEvent("UNIT_AURA", "target")
 		lib.eventFrame:RegisterUnitEvent("UNIT_FACTION", "target")
@@ -1538,10 +1608,10 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterEvent("SPELL_UPDATE_USABLE")
 	lib.eventFrame:RegisterEvent("PLAYER_EQUIPMENT_CHANGED")
 
-	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_ADDED")
-	lib.eventFrame:RegisterEvent("LOSS_OF_CONTROL_UPDATE")
+	lib.eventFrame:RegisterUnitEvent("LOSS_OF_CONTROL_ADDED", "player")
+	lib.eventFrame:RegisterUnitEvent("LOSS_OF_CONTROL_UPDATE", "player")
 
-	if WoWRetail then
+	if Feat_ButtonCastBars then
 		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
@@ -1556,7 +1626,7 @@ function InitializeEventHandler()
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_EMPOWER_STOP", "player")
 	end
 
-	if UseCustomFlyout then
+	if Feat_UseCustomFlyout then
 		lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
 		lib.eventFrame:RegisterEvent("SPELL_FLYOUT_UPDATE")
 
@@ -1568,7 +1638,7 @@ end
 
 function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	if event == "PLAYER_LOGIN" then
-		if UseCustomFlyout then
+		if Feat_UseCustomFlyout then
 			DiscoverFlyoutSpells()
 		end
 	elseif event == "CVAR_UPDATE" then
@@ -1576,7 +1646,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			wipe(lib.activeAssist)
 		end
 	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
-		if UseCustomFlyout then
+		if Feat_UseCustomFlyout then
 			UpdateFlyoutSpells()
 		end
 
@@ -1619,7 +1689,11 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			UpdateTargetAuras(event)
 		end
 	elseif event == "PLAYER_ENTERING_WORLD" or event == "UPDATE_VEHICLE_ACTIONBAR" then
-		ForAllButtons(Update, nil, event)
+		for button in next, ButtonRegistry do
+			if button._state_type ~= "empty" then -- empty buttons have nothing to refresh
+				Update(button, event)
+			end
+		end
 	elseif event == "ACTIONBAR_SHOWGRID" then
 		ShowGrid()
 	elseif event == "ACTIONBAR_HIDEGRID" or event == "PET_BAR_HIDEGRID" then
@@ -1631,7 +1705,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			UpdateTargetAuras(event)
 		end
 
-		if not WoWRetail then
+		if not WoWModern then
 			for button in next, ActiveButtons do
 				UpdateRangeTimer(button)
 			end
@@ -1655,11 +1729,13 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			end
 		end
 	elseif event == "ACTION_USABLE_CHANGED" then
-		for _, change in ipairs(arg1) do
-			local buttons = change.slot and lib.buttonsBySlot[change.slot]
-			if buttons then
-				for button in next, buttons do
-					UpdateUsable(button, change.usable, change.noMana)
+		if arg1 then
+			for _, change in ipairs(arg1) do
+				local buttons = lib.buttonsBySlot[change.slot]
+				if buttons then
+					for button in next, buttons do
+						UpdateUsable(button, change.usable, change.noMana)
+					end
 				end
 			end
 		end
@@ -1676,23 +1752,26 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			UpdateUsable(button)
 		end
 	elseif event == "ACTIONBAR_UPDATE_COOLDOWN" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, ActionButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
 	elseif event == "SPELL_UPDATE_COOLDOWN" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, NonActionButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
 	elseif event == "LOSS_OF_CONTROL_ADDED" then
+		local tooltip = GameTooltip_GetOwnerForbidden()
 		for button in next, ActiveButtons do
 			UpdateCooldown(button)
-			if GameTooltip_GetOwnerForbidden() == button then
+			if tooltip == button then
 				UpdateTooltip(button)
 			end
 		end
@@ -1713,7 +1792,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			end
 		end
 
-		if UseCustomFlyout and FlyoutUpdateQueued then
+		if Feat_UseCustomFlyout and FlyoutUpdateQueued then
 			UpdateFlyoutSpells()
 			FlyoutUpdateQueued = nil
 		end
@@ -1732,7 +1811,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	elseif event == "PET_STABLE_UPDATE" or event == "PET_STABLE_SHOW" then
 		ForAllButtons(Update, nil, event)
 
-		if event == "PET_STABLE_UPDATE" and UseCustomFlyout then
+		if event == "PET_STABLE_UPDATE" and Feat_UseCustomFlyout then
 			UpdateFlyoutSpells()
 		end
 	elseif event == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW" then
@@ -1743,12 +1822,10 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			if not lib.activeAssist[spellId] then
 				if spellId and spellId == arg1 then
 					ShowOverlayGlow(button)
-				else
-					if button._state_type == "action" then
-						local actionType, id = GetActionInfo(button._state_action)
-						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-							ShowOverlayGlow(button)
-						end
+				elseif button.isFlyoutButton then
+					local actionType, id = GetActionInfo(button._state_action)
+					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+						ShowOverlayGlow(button)
 					end
 				end
 			end
@@ -1761,12 +1838,10 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			if not lib.activeAssist[spellId] then
 				if spellId and spellId == arg1 then
 					HideOverlayGlow(button)
-				else
-					if button._state_type == "action" then
-						local actionType, id = GetActionInfo(button._state_action)
-						if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
-							HideOverlayGlow(button)
-						end
+				elseif button.isFlyoutButton then
+					local actionType, id = GetActionInfo(button._state_action)
+					if actionType == "flyout" and FlyoutHasSpell(id, arg1) then
+						HideOverlayGlow(button)
 					end
 				end
 			end
@@ -1782,7 +1857,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	elseif event == "UPDATE_SUMMONPETS_ACTION" then
 		for button in next, ActiveButtons do
 			if button._state_type == "action" then
-				local actionType, _id = GetActionInfo(button._state_action)
+				local actionType = GetActionInfo(button._state_action)
 				if actionType == "summonpet" then
 					local texture = GetActionTexture(button._state_action)
 					if texture then
@@ -1828,7 +1903,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 end
 
 function Generic:OnUpdate(elapsed)
-	if self.flashing then
+	if self.flashing then -- on modern the handler only drives the attack flash
 		self.flashTime = (self.flashTime or 0) - elapsed
 
 		if self.flashTime <= 0 then
@@ -1838,7 +1913,7 @@ function Generic:OnUpdate(elapsed)
 		end
 	end
 
-	if not WoWRetail then
+	if not WoWModern then
 		self.rangeTimer = (self.rangeTimer or 0) - elapsed
 
 		if self.rangeTimer <= 0 then
@@ -2020,7 +2095,7 @@ do
 end
 
 function lib:SetTargetAuraCooldowns(enabled)
-	local activate = not WoWRetail and enabled
+	local activate = not WoWModern and enabled
 
 	TARGETAURA_ENABLED = activate
 
@@ -2198,7 +2273,7 @@ function Update(self, which)
 	-- Update icon and hotkey
 	local texture = self:GetTexture()
 	if texture then
-		self:SetScript("OnUpdate", Generic.OnUpdate)
+		self:SetScript("OnUpdate", (not WoWModern or self.flashing) and Generic.OnUpdate or nil) -- see note in Generic.OnUpdate
 		self.icon:SetTexture(texture)
 		self.icon:Show()
 
@@ -2292,14 +2367,14 @@ function Generic:UpdateLocal()
 end
 
 function UpdateButtonState(self)
-	if (self:IsCurrentlyActive() or self:IsAutoRepeat()) and (not WoWRetail or not self.TargetReticleAnimFrame:IsShown()) then
+	if (self:IsCurrentlyActive() or self:IsAutoRepeat()) and (not WoWMainline or not self.TargetReticleAnimFrame:IsShown()) then
 		self:SetChecked(true)
 	else
 		self:SetChecked(false)
 	end
 
 	-- one punch button ~Simpy
-	local actionID = WoWRetail and self._state_type == "action" and tonumber(self._state_action)
+	local actionID = WoWMainline and self._state_type == "action" and tonumber(self._state_action)
 	if actionID and IsAssistedCombatAction(actionID) then
 		UpdateAbilityInfo(self) -- lets clean that up
 		UpdateCooldown(self) -- update cooldown
@@ -2335,7 +2410,7 @@ function UpdateUsable(self, isUsable, notEnoughMana)
 		end
 	end
 
-	if WoWRetail and self._state_type == "action" then
+	if WoWMainline and self._state_type == "action" then
 		local isLevelLinkLocked = C_LevelLink_IsActionLocked(self._state_action)
 		if not self.saturationLocked then
 			self.icon:SetDesaturated(isLevelLinkLocked)
@@ -2411,7 +2486,7 @@ local defaultCooldownInfo = { startTime = 0; duration = 0; isEnabled = false; is
 local defaultChargeInfo = { currentCharges = 0; maxCharges = 0; cooldownStartTime = 0; cooldownDuration = 0; chargeModRate = 0; isActive = false }
 local defaultLossOfControlInfo = { startTime = 0; duration = 0; modRate = 0; isActive = false; shouldReplaceNormalCooldown = false; }
 
-if WoWRetail then
+if Feat_CooldownDurationObject then
 	local function SetOrClearCooldown(cooldown, shouldShow, durationObject)
 		if not cooldown then return end
 		if not shouldShow or not durationObject then
@@ -2431,9 +2506,10 @@ if WoWRetail then
 		local showCharge = not locShouldReplaceCooldown and chargeInfo.isActive
 		local showNormal = not locShouldReplaceCooldown and cooldownInfo.isActive
 
-		SetOrClearCooldown(self.cooldown, showNormal, self:GetCooldownDuration())
-		SetOrClearCooldown(self.chargeCooldown, showCharge, self:GetChargeDuration())
-		SetOrClearCooldown(self.lossOfControlCooldown, showLoC, self:GetLoCCooldownDuration())
+		-- the duration gets return a new object each call, only fetch the ones that will be shown
+		SetOrClearCooldown(self.cooldown, showNormal, showNormal and self:GetCooldownDuration())
+		SetOrClearCooldown(self.chargeCooldown, showCharge, showCharge and self:GetChargeDuration())
+		SetOrClearCooldown(self.lossOfControlCooldown, showLoC, showLoC and self:GetLoCCooldownDuration())
 
 		lib.callbacks:Fire("OnCooldownUpdate", self, nil, nil, nil, cooldownInfo, chargeInfo, locInfo)
 	end
@@ -2498,6 +2574,10 @@ function StartFlash(self)
 
 	self.flashing = true
 
+	if WoWModern then
+		self:SetScript("OnUpdate", Generic.OnUpdate)
+	end
+
 	if prevFlash ~= self.flashing then
 		UpdateButtonState(self)
 	end
@@ -2508,6 +2588,10 @@ function StopFlash(self)
 
 	self.flashing = false
 	self.flashTime = nil
+
+	if WoWModern then
+		self:SetScript("OnUpdate", nil)
+	end
 
 	if self.Flash:IsShown() then
 		self.Flash:Hide()
@@ -2792,61 +2876,7 @@ function UpdateSpellHighlight(self)
 	end
 end
 
--- Hook UpdateFlyout so we can use the blizzy templates
-if _G.ActionButton_UpdateFlyout then -- on Classic only?
-	hooksecurefunc("ActionButton_UpdateFlyout", function(self)
-		if ButtonRegistry[self] then
-			UpdateFlyout(self)
-		end
-	end)
-
-	function UpdateFlyout(self)
-		local hideArrow = true
-
-		-- disabled FlyoutBorder/BorderShadow, those are not handled by LBF and look terrible
-		if self.FlyoutBorder then
-			self.FlyoutBorder:Hide()
-		end
-		if self.FlyoutBorderShadow then
-			self.FlyoutBorderShadow:Hide()
-		end
-
-		if self._state_type == "action" then
-			-- based on ActionButton_UpdateFlyout in ActionButton.lua
-			local actionType = GetActionInfo(self._state_action)
-			if actionType == "flyout" then
-				local isFlyoutShown = SpellFlyout and SpellFlyout:IsShown() and SpellFlyout:GetParent() == self
-				local arrowDistance = isFlyoutShown and 1 or 4
-
-				-- Update arrow
-				self.FlyoutArrow:Show()
-				self.FlyoutArrow:ClearAllPoints()
-				local direction = self:GetAttribute("flyoutDirection")
-				if direction == "LEFT" then
-					self.FlyoutArrow:SetPoint("LEFT", self, "LEFT", -arrowDistance, 0)
-					SetClampedTextureRotation(self.FlyoutArrow, isFlyoutShown and 90 or 270)
-				elseif direction == "RIGHT" then
-					self.FlyoutArrow:SetPoint("RIGHT", self, "RIGHT", arrowDistance, 0)
-					SetClampedTextureRotation(self.FlyoutArrow, isFlyoutShown and 270 or 90)
-				elseif direction == "DOWN" then
-					self.FlyoutArrow:SetPoint("BOTTOM", self, "BOTTOM", 0, -arrowDistance)
-					SetClampedTextureRotation(self.FlyoutArrow, isFlyoutShown and 0 or 180)
-				else
-					self.FlyoutArrow:SetPoint("TOP", self, "TOP", 0, arrowDistance)
-					SetClampedTextureRotation(self.FlyoutArrow, isFlyoutShown and 180 or 0)
-				end
-
-				hideArrow = false
-			end
-		end
-
-		if hideArrow then
-			self.FlyoutArrow:Hide()
-		end
-
-		lib.callbacks:Fire("OnFlyoutUpdate", self)
-	end
-elseif FlyoutButtonMixin and UseCustomFlyout then -- on Retail and Classic
+if FlyoutButtonMixin and Feat_UseCustomFlyout then
 	function Generic:GetPopupDirection()
 		return self:GetAttribute("flyoutDirection") or "UP"
 	end
@@ -2988,7 +3018,7 @@ Generic.GetDisplayCount          = function(self)
 			return count
 		end
 	else
-		local charges, maxCharges, _chargeStart, _chargeDuration = self:GetCharges()
+		local charges, maxCharges = self:GetCharges()
 		if charges and maxCharges and maxCharges > 1 then
 			return charges
 		end
@@ -3042,7 +3072,7 @@ end
 local GetActionCount = C_ActionBar.GetActionUseCount or GetActionCount
 
 -- the remaining uses of GetActionCount can't deal with secrets, so disable on Midnight
-if WoWRetail then
+if Feat_Secrets then
 	GetActionCount = function() return 0 end
 end
 
@@ -3156,7 +3186,7 @@ if GetActionLossOfControlCooldownDuration then
 end
 
 -- Classic overrides for item count breakage
-if WoWClassic then
+if WoWClassicEra then
 	-- if the library is present, simply use it to override action counts
 	local LibClassicSpellActionCount = LibStub("LibClassicSpellActionCount-1.0", true)
 	if LibClassicSpellActionCount then
@@ -3170,7 +3200,7 @@ if WoWClassic then
 	end
 end
 
-if not WoWRetail then
+if not WoWModern then
 	-- disable loss of control cooldown on classic
 	Action.GetLoCCooldownInfo = function(self) return nil end
 end
@@ -3189,7 +3219,7 @@ if GetSpellLossOfControlCooldown then
 else
 	GetSpellLoCCooldownInfoFallback = function() end
 end
-local GetSpellLossOfControlCooldownInfo = C_Spell.GetSpellLossOfControlCooldownInfo
+local GetSpellLossOfControlCooldownInfo = C_Spell.GetSpellLossOfControlCooldownInfo or GetSpellLoCCooldownInfoFallback
 
 -----------------------------------------------------------
 --- Spell Button
@@ -3226,7 +3256,7 @@ end
 -----------------------------------------------------------
 --- Item Button
 local function getItemId(input)
-	return input:match("^item:(%d+)")
+	return strmatch(input, "^item:(%d+)")
 end
 
 Item.HasAction               = function(self) return true end
@@ -3316,7 +3346,7 @@ Custom.GetSpellId              = function(self) return nil end
 Custom.RunCustom               = function(self, unit, button) return self._state_action.func(self, unit, button) end
 
 --- WoW Classic overrides
-if DisableOverlayGlow then
+if Feat_DisableOverlayGlow then
 	UpdateOverlayGlow = function() end
 end
 

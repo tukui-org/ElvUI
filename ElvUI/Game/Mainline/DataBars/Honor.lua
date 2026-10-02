@@ -3,10 +3,12 @@ local DB = E:GetModule('DataBars')
 
 local _G = _G
 local format = format
+
 local UnitHonor = UnitHonor
 local UnitHonorLevel = UnitHonorLevel
 local UnitHonorMax = UnitHonorMax
 local TogglePVPUI = TogglePVPUI
+
 local HONOR = HONOR
 
 local CurrentHonor, MaxHonor, CurrentLevel, PercentHonor, RemainingHonor
@@ -46,7 +48,7 @@ function DB:HonorBar_Update(event, unit)
 	elseif textFormat == 'CURREM' then
 		displayString = format('%s - %s - [%s]', E:ShortValue(CurrentHonor), E:ShortValue(RemainingHonor), CurrentLevel)
 	elseif textFormat == 'CURPERCREM' then
-		displayString = format('%s - %d%% (%s) - [%s]', E:ShortValue(CurrentHonor), CurrentHonor, E:ShortValue(RemainingHonor), CurrentLevel)
+		displayString = format('%s - %d%% (%s) - [%s]', E:ShortValue(CurrentHonor), PercentHonor, E:ShortValue(RemainingHonor), CurrentLevel)
 	end
 
 	bar.text:SetText(displayString)

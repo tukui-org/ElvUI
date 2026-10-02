@@ -7,7 +7,6 @@ local next = next
 local wipe = wipe
 local select = select
 local format = format
-local strmatch = strmatch
 local hooksecurefunc = hooksecurefunc
 
 local AcceptGroup = AcceptGroup
@@ -42,11 +41,10 @@ local UnitInRaid = UnitInRaid
 local UnitIsGroupLeader = UnitIsGroupLeader
 local UnitName = UnitName
 
-local UninviteUnit = C_PartyInfo.UninviteUnit or UninviteUnit
-local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
+local UninviteUnit = C_PartyInfo.UninviteUnit
+local SendChatMessage = C_ChatInfo.SendChatMessage
 local GetNumFactions = C_Reputation.GetNumFactions or GetNumFactions
 local GetFactionInfo = C_Reputation.GetFactionDataByIndex or GetFactionInfo
-local GetFactionDataByID = C_Reputation.GetFactionDataByID or GetFactionDataByID
 local ExpandAllFactionHeaders = C_Reputation.ExpandAllFactionHeaders or ExpandAllFactionHeaders
 local SetWatchedFactionIndex = C_Reputation.SetWatchedFactionByIndex or SetWatchedFactionIndex
 local LeaveParty = C_PartyInfo.LeaveParty or LeaveParty
@@ -119,7 +117,7 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	if not inGroup then return end
 
 	local _, event, _, sourceGUID, _, _, _, destGUID, destName, _, _, _, _, _, spellID, spellName = CombatLogGetCurrentEventInfo()
-	local announce = spellName and (destGUID ~= E.myguid) and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet')) and strmatch(event, '_INTERRUPT')
+	local announce = (spellName and event == 'SPELL_INTERRUPT') and (destGUID ~= E.myguid) and (sourceGUID == E.myguid or sourceGUID == UnitGUID('pet'))
 	if not announce then return end -- No announce-able interrupt from player or pet, exit.
 
 	local inRaid, inPartyLFG = IsInRaid(), M:IsRandomGroup()
@@ -159,47 +157,30 @@ function M:COMBAT_LOG_EVENT_UNFILTERED()
 	end
 end
 
-do
-	local twwBW = 2673	-- 11.1.0, both factions, account wide
-	local cataBW = 1133	-- 4.0.3, horde only, not account wide
-	local bilgewater = E.Retail and GetFactionDataByID(twwBW)
-	function M:COMBAT_TEXT_UPDATE(_, messagetype)
-		if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
+function M:FACTION_STANDING_CHANGED(_, factionID)
+	if not E.db.general.autoTrackReputation or factionID == 1168 then return end -- guild faction
 
-		local faction, rep = GetCurrentCombatTextEventInfo()
-		if E:NotSecretValue(faction) and (faction and faction ~= 'Guild') and (rep and rep > 0) then
-			local data = E:GetWatchedFactionInfo()
-			if not (data and data.name) or faction ~= data.name then
-				ExpandAllFactionHeaders()
+	local data = E:GetWatchedFactionInfo()
+	if not data or data.factionID ~= factionID then
+		SetWatchedFactionByID(factionID)
+	end
+end
 
-				local khazAlgar = E.MapInfo.continentMapID == 2274
-				for i = 1, GetNumFactions() do
-					if E.Retail then
-						local info = GetFactionInfo(i)
-						if info then
-							local name, factionID = info.name, info.factionID
-							if factionID == twwBW then
-								bilgewater = info -- reupdate this info
-							end
+function M:COMBAT_TEXT_UPDATE(_, messagetype)
+	if messagetype ~= 'FACTION' or not E.db.general.autoTrackReputation then return end
 
-							if name == faction and factionID and factionID ~= 0 then
-								if bilgewater and name == bilgewater.name then -- two have matching faction names
-									SetWatchedFactionByID(khazAlgar and twwBW or cataBW) -- prefer TWW when in Khaz Algar
-								else
-									SetWatchedFactionByID(factionID)
-								end
+	local faction, rep = GetCurrentCombatTextEventInfo()
+	if (faction and faction ~= 'Guild') and (rep and rep > 0) then
+		local data = E:GetWatchedFactionInfo()
+		if not (data and data.name) or faction ~= data.name then
+			ExpandAllFactionHeaders()
 
-								break
-							end
-						end
-					else
-						local name, _, _, _, _, _, _, _, _, _, _, _, _, factionID = GetFactionInfo(i)
-						if name == faction and factionID and factionID ~= 0 then
-							SetWatchedFactionIndex(i)
+			for i = 1, GetNumFactions() do
+				local name, _, _, _, _, _, _, _, _, _, _, _, _, factionID = GetFactionInfo(i)
+				if name == faction and factionID and factionID ~= 0 then
+					SetWatchedFactionIndex(i)
 
-							break
-						end
-					end
+					break
 				end
 			end
 		end
@@ -351,7 +332,7 @@ function M:ADDON_LOADED(_, addon)
 	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' then
 		M:LoadQueueStatus()
 	elseif addon == 'Blizzard_HousingControls' then
-		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, 'ALL,SOLO')
+		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, nil, 'ALL,SOLO')
 	end
 end
 
@@ -412,6 +393,12 @@ function M:ToggleInterrupt()
 	end
 end
 
+function M:QuestRewardPanel_Hide()
+	if M.QuestRewardGoldIconFrame then
+		M.QuestRewardGoldIconFrame:Hide()
+	end
+end
+
 function M:Initialize()
 	M.Initialized = true
 
@@ -422,11 +409,11 @@ function M:Initialize()
 	M:ToggleItemLevelInfo(true)
 	M:ZoneTextToggle()
 
-	if not E.Retail then
+	if not E.Modern then
 		M:ToggleInterrupt()
 	end
 
-	local vanillaStyle = E.ClassicAnniv or E.TBC
+	local vanillaStyle = E.Classic or E.TBC
 	if not vanillaStyle then -- it uses Blizzard_GroupFinder_VanillaStyle
 		M:LoadQueueStatus()
 	end
@@ -440,9 +427,14 @@ function M:Initialize()
 	M:RegisterEvent('CHAT_MSG_BG_SYSTEM_NEUTRAL', 'PVPMessageEnhancement')
 	M:RegisterEvent('PARTY_INVITE_REQUEST', 'AutoInvite')
 	M:RegisterEvent('GROUP_ROSTER_UPDATE', 'AutoInvite')
-	M:RegisterEvent('COMBAT_TEXT_UPDATE')
 	M:RegisterEvent('QUEST_COMPLETE')
 	M:RegisterEvent('ADDON_LOADED')
+
+	if E.Modern then -- the combat text info is secret on Modern
+		M:RegisterEvent('FACTION_STANDING_CHANGED')
+	else
+		M:RegisterEvent('COMBAT_TEXT_UPDATE')
+	end
 
 	for _, addon in next, { 'Blizzard_InspectUI', 'Blizzard_PTRFeedback', E.Retail and 'Blizzard_HousingControls' or nil, vanillaStyle and 'Blizzard_GroupFinder_VanillaStyle' or nil } do
 		if IsAddOnLoaded(addon) then
@@ -468,14 +460,10 @@ function M:Initialize()
 
 		M.QuestRewardGoldIconFrame = MostValue
 
-		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', function()
-			if M.QuestRewardGoldIconFrame then
-				M.QuestRewardGoldIconFrame:Hide()
-			end
-		end)
+		hooksecurefunc(_G.QuestFrameRewardPanel, 'Hide', M.QuestRewardPanel_Hide)
 	end
 
-	if E.Retail then
+	if E.Modern then
 		M:Hook('BossBanner_ConfigureLootFrame', nil, true) -- fix blizz thing x.x
 	end
 end

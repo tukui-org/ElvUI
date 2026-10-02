@@ -29,6 +29,8 @@ local REQUEST_PREFIX = 'ELVUI_REQUEST'
 local REPLY_PREFIX = 'ELVUI_REPLY'
 local TRANSFER_PREFIX = 'ELVUI_TRANSFER'
 local TRANSFER_COMPLETE_PREFIX = 'ELVUI_COMPLETE'
+local LETTERS_MAX = 50 -- forced by Ace3 for some reason?
+local LETTERS_WIDTH = 350
 
 local profileTypes = {
 	profile = true,
@@ -328,8 +330,8 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 					confirm.button1 = ACCEPT
 					confirm.button2 = nil
 					confirm.hasEditBox = 1
-					confirm.editBoxWidth = 350
-					confirm.maxLetters = 127
+					confirm.editBoxWidth = LETTERS_WIDTH
+					confirm.maxLetters = LETTERS_MAX
 					confirm.timeout = 0
 					confirm.exclusive = 1
 					confirm.preferredIndex = 3
@@ -535,11 +537,11 @@ function D:Decode(dataString)
 			return
 		end
 
-		profileData = format('%s%s', profileData, '}') --Add back the missing '}'
-		profileData = gsub(profileData, '\124\124', '\124') --Remove escape pipe characters
+		local profileText = gsub(profileData, '\124\124', '\124') -- Remove escape pipe characters
+		local profileFunc = format('%s %s', 'return', profileText)
 
 		local success
-		local profileTable = loadstring(format('%s %s', 'return', profileData))
+		local profileTable = loadstring(profileFunc)
 		if profileTable then
 			success, profileData = pcall(profileTable)
 		end
@@ -656,8 +658,8 @@ E.PopupDialogs.IMPORT_PROFILE_EXISTS = {
 	button1 = ACCEPT,
 	button2 = CANCEL,
 	hasEditBox = 1,
-	editBoxWidth = 350,
-	maxLetters = 127,
+	editBoxWidth = LETTERS_WIDTH,
+	maxLetters = LETTERS_MAX,
 	OnAccept = function(frame, data)
 		D:SetImportedProfile(data.profileType, frame.editBox:GetText(), data.profileData, true)
 	end,

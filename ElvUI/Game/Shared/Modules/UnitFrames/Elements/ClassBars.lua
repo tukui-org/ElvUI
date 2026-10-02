@@ -46,7 +46,7 @@ function UF:GetClassPower_Construct(frame)
 		if E.Mists then
 			frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 		end
-	elseif E.Retail and E.myclass == 'EVOKER' then
+	elseif E.Modern and E.myclass == 'EVOKER' then
 		frame.ThirdPower = UF:Construct_ThirdPower(frame)
 	elseif E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame) -- Retail: Classbar, Mists: AdditionalPower
@@ -190,7 +190,7 @@ function UF:Configure_ClassBar(frame)
 	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
 		if frame.ClassBar == 'Runes' then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
-			bars.colorSpec = E.Retail and UF.db.colors.runeBySpec
+			bars.colorSpec = E.Modern and UF.db.colors.runeBySpec
 		end
 
 		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
@@ -364,8 +364,8 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	local activeBar = frame.USE_CLASSBAR
-	local checkPriest = E.Retail and E.myclass == 'PRIEST'
-	local checkShaman = E.Retail and E.myclass == 'SHAMAN'
+	local checkPriest = E.Modern and E.myclass == 'PRIEST'
+	local checkShaman = E.Modern and E.myclass == 'SHAMAN'
 	local allowPriest = checkPriest and E.myspec == SPEC_PRIEST_SHADOW
 	local allowShaman = checkShaman and E.myspec == SPEC_SHAMAN_ELEMENTAL
 	for _, powerType in pairs(UF.ClassPowerTypes) do
@@ -581,7 +581,9 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		rune:GetStatusBarTexture():SetHorizTile(false)
 
 		rune.__owner = runes
-		rune.PostUpdateColor = UF.Runes_UpdateChargedColor
+
+		-- only Wrath and Mists fade the charging color - Runes_PostUpdate sets it everywhere else
+		rune.PostUpdateColor = (E.Wrath or E.Mists) and UF.Runes_UpdateChargedColor or nil
 
 		rune:CreateBackdrop(nil, nil, nil, nil, true)
 		rune.backdrop:SetParent(runes)
@@ -817,7 +819,7 @@ function UF:PostUpdateStagger(stagger)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if E.Retail then
+	if E.Modern then
 		local autohide = stagger == 0 and db.classbar.autoHide
 		self:SetShown(frame.USE_CLASSBAR and not autohide)
 	else
@@ -828,7 +830,7 @@ function UF:PostUpdateStagger(stagger)
 end
 
 function UF:PostVisibilityStagger(_, _, isShown, stateChanged)
-	if not E.Retail then return end
+	if not E.Modern then return end
 
 	self.ClassBar = (isShown and 'Stagger') or 'ClassPower'
 

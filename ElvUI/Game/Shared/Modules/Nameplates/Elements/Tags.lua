@@ -2,10 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
 function NP:Construct_TagText(nameplate)
-	local Text = nameplate.RaisedElement:CreateFontString(nil, 'OVERLAY')
-	Text:FontTemplate(NP.db.font, NP.db.fontSize, NP.db.fontOutline)
+	local element = CreateFrame('Frame', '$parent_TagText', nameplate)
+	element:SetFrameLevel(nameplate.RaisedElement.TagTextLevel)
 
-	return Text
+	local text = element:CreateFontString(nil, 'OVERLAY')
+	text:FontTemplate(NP.db.font, NP.db.fontSize, NP.db.fontOutline)
+
+	return text
 end
 
 function NP:Update_TagText(nameplate, element, db, hide)

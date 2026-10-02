@@ -204,8 +204,8 @@ local function OnEnter(_, slow)
 			end
 
 			for k, data in pairs(infoDisplay) do
-				local cleanTitle = type(data) == 'table' and data.title and E:StripString(data.title)
-				if cleanTitle and cleanTitle ~= addon and strmatch(cleanTitle, searchString) then
+				local cleanTitle = (addonIndex ~= k) and type(data) == 'table' and data.title and E:StripString(data.title)
+				if (cleanTitle and cleanTitle ~= addon) and strmatch(cleanTitle, searchString) then
 					memoryUsage = memoryUsage + data.mem
 
 					if showByCPU and cpuProfiling then
@@ -260,16 +260,11 @@ end
 local function OnEvent(panel, event)
 	if event == 'MODIFIER_STATE_CHANGED' then
 		OnEnter(panel)
-	else
-		local addOnCount = GetNumAddOns()
-		if addOnCount == #infoTable then return end
-
-		wipe(infoTable)
-
-		for i = 1, addOnCount do
+	elseif not infoTable[1] then
+		for i = 1, GetNumAddOns() do
 			local name, title, _, loadable, reason = GetAddOnInfo(i)
-			if loadable or reason == 'DEMAND_LOADED' then
-				tinsert(infoTable, {name = name, index = i, title = title})
+			if loadable or (reason == 'DEMAND_LOADED' or reason == 'DEP_DEMAND_LOADED') then -- the tooltip only lists the loaded ones
+				tinsert(infoTable, { name = name, index = i, title = title })
 			end
 		end
 	end
@@ -286,7 +281,11 @@ local function OnUpdate(panel, elapsed)
 		local latency = (db.latency == 'HOME' and homePing) or worldPing
 		local fps = E.FPS.rate or 0
 
-		panel.text:SetFormattedText(db.NoLabel and '%s%d|r | %s%d|r' or 'FPS: %s%d|r MS: %s%d|r', StatusColor(fps), fps, StatusColor(nil, latency), latency)
+		if db.NoLabel then
+			panel.text:SetFormattedText('%s%d|r %s %s%d|r', StatusColor(fps), fps, db.separator, StatusColor(nil, latency), latency)
+		else
+			panel.text:SetFormattedText('FPS: %s%d|r MS: %s%d|r', StatusColor(fps), fps, StatusColor(nil, latency), latency)
+		end
 
 		if not enteredFrame then
 			return

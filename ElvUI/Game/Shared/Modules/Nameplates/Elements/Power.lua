@@ -24,7 +24,6 @@ function NP:Power_UpdateColor(_, unit)
 	local ptype, ptoken, altR, altG, altB = UnitPowerType(unit)
 	local unitControlled = UnitPlayerControlled(unit)
 	local unitReaction = UnitReaction(unit, 'player')
-	local _, classToken = UnitClass(unit)
 	element.token = ptoken
 
 	local Selection = element.colorSelection and E:UnitSelectionType(unit, element.considerSelectionInCombatHostile)
@@ -49,20 +48,21 @@ function NP:Power_UpdateColor(_, unit)
 				end
 			end
 		else
-			color = NP.Colors.power.ALT_POWER
+			color = NP.Colors.power[POWERTYPE_ALTERNATE]
 		end
 
 		if element.useAtlas and color and color.atlas then
 			atlas = color.atlas
 		end
 	elseif (element.colorClass and self.isPlayer) or (element.colorClassNPC and not self.isPlayer) or (element.colorClassPet and unitControlled and not self.isPlayer) then
+		local _, classToken = UnitClass(unit)
 		color = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or self.colors.class[classToken]
 	elseif Selection then
 		color = NP.Colors.selection[Selection]
 	elseif element.colorReaction and unitReaction then
 		color = NP.Colors.reactions[unitReaction]
 	elseif element.colorSmooth then
-		if E.Retail then
+		if E.Modern then
 			local curve = self.colors.power.MANA:GetCurve()
 			if curve then
 				color = curve:Evaluate(1)
@@ -90,15 +90,16 @@ function NP:Power_UpdateColor(_, unit)
 end
 
 function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
-	local db = NP:PlateDB(self.__owner)
+	local nameplate = self.__owner
+	local db = NP:PlateDB(nameplate)
 	if not db.enable then return end
 
-	if self.__owner.frameType ~= 'PLAYER' and db.power.displayAltPower and not self.displayType then
+	if E.Modern and (not self.displayType and nameplate.frameType ~= 'PLAYER') and db.power.displayAltPower then
 		self:Hide()
 		return
 	end
 
-	if db.power and db.power.enable and db.power.hideWhenEmpty and E:NotSecretValue(cur) and (cur == 0) then
+	if (db.power and db.power.enable and db.power.hideWhenEmpty) and (E:NotSecretValue(cur) and cur == 0) then
 		self:Hide()
 	else
 		self:Show()
@@ -130,12 +131,12 @@ function NP:Update_Power(nameplate)
 			nameplate:EnableElement('Power')
 		end
 
-		nameplate.Power:SetFrameLevel(6)
+		nameplate.Power:SetFrameLevel(nameplate.RaisedElement.PowerLevel)
 		nameplate.Power:ClearAllPoints()
 		nameplate.Power:Point(E.InversePoints[db.power.anchorPoint], nameplate, db.power.anchorPoint, db.power.xOffset, db.power.yOffset)
 		nameplate.Power:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 
-		if E.Retail then
+		if E.Modern then
 			nameplate.Power.smoothing = (db.power.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(nameplate.Power, db.power.smoothbars)

@@ -13,7 +13,7 @@ local UnitDefense = UnitDefense
 local UnitExists = UnitExists
 local UnitLevel = UnitLevel
 
-local GetItemInfo = C_Item.GetItemInfo
+local GetItemInfoInstant = C_Item.GetItemInfoInstant
 
 local BOSS = BOSS
 local MISS_CHANCE = MISS_CHANCE
@@ -26,14 +26,14 @@ local chanceString, db = '%.2f%%'
 local displayString, targetLevel, playerLevel
 local miss, dodge, parry, block, unhittable
 
-local function IsWearingShield()
-	local slotID = GetInventorySlotInfo('SecondaryHandSlot')
-	local itemID = GetInventoryItemID('player', slotID)
+local SECONDARY_SLOT = GetInventorySlotInfo('SecondaryHandSlot')
 
-	if itemID then
-		local _, _, _, _, _, _, _, _, itemEquipLoc = GetItemInfo(itemID)
-		return itemEquipLoc == 'INVTYPE_SHIELD'
-	end
+local function IsWearingShield()
+	local itemID = GetInventoryItemID('player', SECONDARY_SLOT)
+	if not itemID then return end
+
+	local _, _, _, itemEquipLoc = GetItemInfoInstant(itemID)
+	return itemEquipLoc == 'INVTYPE_SHIELD'
 end
 
 local function OnEvent(panel)

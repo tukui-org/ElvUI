@@ -7,8 +7,11 @@ local CreateFrame = CreateFrame
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 
 function UF:Construct_AuraHighlight(frame)
-	if E.Retail then
+	if E.Modern then
 		local highlight = CreateFrame('Frame', '$parentAuraHighlight', frame)
+		highlight.unitframeType = frame.unitframeType
+		highlight.isHighlight = true -- used in Auras_CreateEventFrame
+
 		highlight.good = E:Auras_Create(highlight, 'Good')
 		highlight.bad = E:Auras_Create(highlight, 'Bad')
 
@@ -74,13 +77,13 @@ function UF:Configure_AuraHighlight(frame)
 
 	local enabled = db and db.enable
 	local highlight = frame.AuraHighlight
-	if E.Retail then
+	if E.Modern then
 		local good = highlight.good
-		good.enabled = enabled
+		good.allowEnable = enabled
 		good.key = 'good'
 
 		local bad = highlight.bad
-		bad.enabled = enabled
+		bad.allowEnable = enabled
 		bad.key = 'bad'
 	end
 
@@ -91,7 +94,7 @@ function UF:Configure_AuraHighlight(frame)
 
 		highlight.glowAnchor = (frame.ThreatIndicator and frame.ThreatIndicator.MainGlow) or frame.TargetGlow
 
-		if E.Retail then -- this will lead to call on `Auras_SetEnabled`
+		if E.Modern then
 			UF:AuraHighlight_SetupContainer(frame, highlight, 'good')
 			UF:AuraHighlight_SetupContainer(frame, highlight, 'bad')
 		else
@@ -109,7 +112,7 @@ function UF:Configure_AuraHighlight(frame)
 				frame.AuraHighlightBackdrop = false
 			end
 		end
-	elseif E.Retail then -- this will lead to call on `Auras_SetEnabled`
+	elseif E.Modern then
 		E:Auras_GroupUnit(highlight.good, frame.__unit)
 		E:Auras_GroupUnit(highlight.bad, frame.__unit)
 	elseif frame:IsElementEnabled('AuraHighlight') then
@@ -120,7 +123,7 @@ end
 function UF:PostUpdate_AuraHighlight(frame, unit, aura, debuffType, _, wasFiltered)
 	if wasFiltered then return end
 
-	local curve = E.Retail and E.Curves.Color.Auras.highlight
+	local curve = E.Modern and E.Curves.Color.Auras.highlight
 	local secretColor = curve and aura and GetAuraDispelTypeColor(unit, aura.auraInstanceID, curve)
 	local color = secretColor or (E:NotSecretValue(debuffType) and UF.db.colors.debuffHighlight[debuffType]) or FALLBACK
 

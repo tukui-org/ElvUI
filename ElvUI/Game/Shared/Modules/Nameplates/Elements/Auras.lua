@@ -5,6 +5,7 @@ local UF = E:GetModule('UnitFrames')
 local next = next
 local unpack = unpack
 local strfind = strfind
+local wipe = wipe
 
 local CreateFrame = CreateFrame
 
@@ -18,8 +19,8 @@ local AURA_TYPES = {
 function NP:Construct_Auras(nameplate)
 	local Auras, Buffs, Debuffs
 
-	local container = E.Retail and NP:GetAuraContainer(nameplate.frameName, nameplate.frameType)
-	if E.Retail then
+	local container = E.Modern and NP:GetAuraContainer(nameplate.frameName, nameplate.frameType)
+	if E.Modern then
 		Auras = (container and container.Auras) or E:Auras_Create(nameplate, 'Auras')
 	else
 		Auras = CreateFrame('Frame', '$parentAuras', nameplate)
@@ -39,7 +40,7 @@ function NP:Construct_Auras(nameplate)
 		Auras.rows = {}
 	end
 
-	if E.Retail then
+	if E.Modern then
 		Buffs = (container and container.Buffs) or E:Auras_Create(nameplate, 'Buffs')
 	else
 		Buffs = CreateFrame('Frame', '$parentBuffs', nameplate)
@@ -59,7 +60,7 @@ function NP:Construct_Auras(nameplate)
 		Buffs.rows = {}
 	end
 
-	if E.Retail then
+	if E.Modern then
 		Debuffs = (container and container.Debuffs) or E:Auras_Create(nameplate, 'Debuffs')
 	else
 		Debuffs = CreateFrame('Frame', '$parentDebuffs', nameplate)
@@ -141,11 +142,11 @@ do
 	end -- the normal configure that happens when a plate type changes
 
 	function NP:AuraContainer_RemoveActive(nameplate)
-		for container in next, nameplate.ActiveContainers do
-			container:SetEnabled(false)
-			container:SetShown(false)
+		for auras in next, nameplate.ActiveContainers do
+			auras:SetEnabled(false)
+			auras:Hide()
 
-			nameplate.ActiveContainers[container] = nil
+			nameplate.ActiveContainers[auras] = nil
 		end
 	end
 
@@ -166,7 +167,7 @@ do
 				E:Auras_SetUnit(auras, nameplate.__unit)
 
 				auras:SetEnabled(true)
-				auras:SetShown(true)
+				auras:Show()
 			end
 		end
 
@@ -192,6 +193,7 @@ end
 function NP:AuraContainer_ConstructFilters()
 	for frameType, data in next, NP.AuraContainerFilterTypes do
 		local plateDB = NP:PlateDB(nil, frameType)
+
 		for which, auraType in next, AURA_TYPES do
 			local info = data[which]
 			if not info then
@@ -199,11 +201,13 @@ function NP:AuraContainer_ConstructFilters()
 				data[which] = info
 			end
 
-			local db = plateDB[auraType]
-			if db then
+			local db = (plateDB.enable and not plateDB.nameOnly) and plateDB[auraType]
+			if db and db.enable then
 				info.filterLists = db.filterLists
 
 				UF:GroupFilters(info, info.filterLists)
+			elseif next(info.filters) then -- types that wont be configured
+				wipe(info.filters) -- so just empty their list if it has one
 			end
 		end
 	end
@@ -211,9 +215,12 @@ end
 
 function NP:AuraContainer_ConstructAuraTypes(frameType, name)
 	local frame = CreateFrame('Frame', name)
+	frame.nameplateType = frameType
+
 	for which in next, AURA_TYPES do
 		local auras = E:Auras_Create(frame, which)
 		auras:SetEnabled(false)
+		auras:Hide()
 
 		auras.frameType = frameType
 		NP:Configure_Auras(auras, which, true)
@@ -244,14 +251,6 @@ function NP:GetAuraContainer(plateName, frameType)
 	return object and object[frameType] or nil
 end
 
-function NP:GetAuraFilter(which, db)
-	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
-		return db.filter or 'HARMFUL'
-	elseif E.Retail then
-		return (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
-	end
-end
-
 function NP:Configure_Auras(nameplate, which, preallocated)
 	local plateDB = NP:PlateDB(nameplate)
 	local auraType = AURA_TYPES[which]
@@ -271,7 +270,7 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 	auras.yOffset = db.yOffset
 	auras.anchorPoint = db.anchorPoint
 	auras.colorByType = NP.db.colors.auraByType
-	auras.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
+	auras.auraSort = UF.SortAuraFuncs[E.Modern and 'PLAYER' or db.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(nameplate)
 	auras.attachTo = not preallocated and UF:GetAuraAnchorFrame(nameplate, db.attachTo, nameplate.AuraContainer) or nil -- keep below SetSmartPosition
 	auras.num = db.numAuras * db.numRows
@@ -281,7 +280,7 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 	auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and 1 or 0, growDown and 0 or 1
 
 	local initialAnchor = E.InversePoints[db.anchorPoint]
-	if E.Retail then
+	if E.Modern then
 		auras.noMouse = true
 		auras.auraType = auraType
 		auras.maxFrameCount = auras.num
@@ -289,6 +288,8 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 		auras.initialAnchor = E.CenterPoint[db.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = db.keepSizeRatio
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
+		auras.sortDirection = E.AuraContainerSortDirection[db.sortDirection]
+		auras.useDesaturate = db.desaturate
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 		auras.forceShowAuras = nameplate == NP.TestFrame
@@ -316,7 +317,10 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 		auras:Size(db.numAuras * db.size + ((db.numAuras - 1) * db.spacing), 1)
 	end
 
-	auras:SetFrameLevel(7)
+	if not preallocated then
+		auras:SetFrameLevel(nameplate.RaisedElement.AuraLevel)
+	end
+
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 end
@@ -332,7 +336,10 @@ function NP:Update_Auras(nameplate)
 		if db.auras.enable then
 			nameplate.Auras = nameplate.Auras_
 			NP:Configure_Auras(nameplate, 'Auras')
-			nameplate.Auras:Show()
+
+			if not E.Modern then
+				nameplate.Auras:Show()
+			end
 		elseif nameplate.Auras then
 			nameplate.Auras:Hide()
 			nameplate.Auras = nil
@@ -341,7 +348,10 @@ function NP:Update_Auras(nameplate)
 		if db.debuffs.enable then
 			nameplate.Debuffs = nameplate.Debuffs_
 			NP:Configure_Auras(nameplate, 'Debuffs')
-			nameplate.Debuffs:Show()
+
+			if not E.Modern then
+				nameplate.Debuffs:Show()
+			end
 		elseif nameplate.Debuffs then
 			nameplate.Debuffs:Hide()
 			nameplate.Debuffs = nil
@@ -350,12 +360,15 @@ function NP:Update_Auras(nameplate)
 		if db.buffs.enable then
 			nameplate.Buffs = nameplate.Buffs_
 			NP:Configure_Auras(nameplate, 'Buffs')
-			nameplate.Buffs:Show()
+
+			if not E.Modern then
+				nameplate.Buffs:Show()
+			end
 		elseif nameplate.Buffs then
 			nameplate.Buffs:Hide()
 			nameplate.Buffs = nil
 		end
-	elseif E.Retail then
+	elseif E.Modern then
 		NP:AuraContainer_RemoveActive(nameplate)
 	elseif nameplate:IsElementEnabled('Auras') then
 		nameplate:DisableElement('Auras')

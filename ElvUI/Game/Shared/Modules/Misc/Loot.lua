@@ -95,6 +95,7 @@ local function SlotClick(slot)
 	frame.selectedItemName = slot.name:GetText()
 	frame.selectedTexture = slot.icon:GetTexture()
 	frame.selectedLootButton = slot:GetName()
+	frame.selectedLootFrame = slot -- Mainline anchors the master looter list here
 	frame.selectedSlot = slot:GetID()
 
 	if IsModifiedClick() then
@@ -184,7 +185,7 @@ local function CreateSlot(id)
 	drop:Point('LEFT', icon, 'RIGHT', 0, 0)
 	drop:Point('RIGHT', slot)
 	drop:SetAllPoints(slot)
-	drop:SetAlpha(.3)
+	drop:SetAlpha(0.3)
 	slot.drop = drop
 
 	local questTexture = iconFrame:CreateTexture(nil, 'OVERLAY')
@@ -193,7 +194,7 @@ local function CreateSlot(id)
 	questTexture:SetTexCoords()
 	slot.questTexture = questTexture
 
-	local profQuality = E.Retail and iconFrame:CreateTexture(nil, 'OVERLAY')
+	local profQuality = E.Modern and iconFrame:CreateTexture(nil, 'OVERLAY')
 	if profQuality then
 		profQuality:SetPoint('TOPLEFT', -3, 2)
 		slot.ProfessionQualityOverlayFrame = profQuality
@@ -372,8 +373,11 @@ function M:LoadLoot()
 	M:RegisterEvent('LOOT_OPENED')
 	M:RegisterEvent('LOOT_SLOT_CLEARED')
 	M:RegisterEvent('LOOT_CLOSED')
-	M:RegisterEvent('OPEN_MASTER_LOOT_LIST')
 	M:RegisterEvent('UPDATE_MASTER_LOOT_LIST')
+
+	if not E.Modern then -- Mainline answers it with its own assign loot menu
+		M:RegisterEvent('OPEN_MASTER_LOOT_LIST')
+	end
 
 	E:CreateMover(lootFrameHolder, 'LootFrameMover', L["Loot Frame"], nil, nil, nil, nil, nil, 'general,blizzardImprovements')
 
@@ -381,6 +385,12 @@ function M:LoadLoot()
 
 	tinsert(_G.UISpecialFrames, 'ElvLootFrame')
 
+	-- Forever parents the master looter list to the Blizzard LootFrame, which never shows once ours replaces it
+	local MasterLooterFrame = _G.MasterLooterFrame
+	if MasterLooterFrame:GetParent() == _G.LootFrame then
+		MasterLooterFrame:SetParent(_G.UIParent)
+	end
+
 	-- fix blizzard setpoint connection bs
-	hooksecurefunc(_G.MasterLooterFrame, 'Hide', _G.MasterLooterFrame.ClearAllPoints)
+	hooksecurefunc(MasterLooterFrame, 'Hide', MasterLooterFrame.ClearAllPoints)
 end
