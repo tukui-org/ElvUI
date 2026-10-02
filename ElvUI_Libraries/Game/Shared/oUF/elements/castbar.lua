@@ -422,7 +422,11 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
-			element.Shield:SetAlphaFromBoolean(notInterruptible, element.Shield.alphaValue or 1, 0)
+			if oUF:IsSecretValue(notInterruptible) then
+				element.Shield:SetAlphaFromBoolean(notInterruptible, element.Shield.alphaValue or 1, 0)
+			else
+				element.Shield:SetAlphaFromBoolean(false, element.Shield.alphaValue or 1, 0)
+			end
 		else
 			element.Shield:SetShown(notInterruptible)
 		end
@@ -702,7 +706,11 @@ local function CastInterruptible(self, event, unit)
 
 	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
-			element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
+			if oUF:IsSecretValue(element.notInterruptible) then
+				element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
+			else
+				element.Shield:SetAlphaFromBoolean(false, element.Shield.alphaValue or 1, 0)
+			end
 		else
 			element.Shield:SetShown(element.notInterruptible)
 		end
