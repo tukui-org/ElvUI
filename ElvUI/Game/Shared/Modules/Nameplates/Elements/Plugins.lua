@@ -117,7 +117,7 @@ function NP:Update_TargetIndicator(nameplate)
 
 	local tdb = NP.db.units.TARGET
 	local indicator = nameplate.TargetIndicator
-	indicator:SetFrameLevel(0)
+	indicator:SetFrameLevel(nameplate.RaisedElement.TargetIndicatorLevel)
 
 	indicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow] or E.Media.Arrows.Arrow9
 	indicator.lowHealthThreshold = NP.db.lowHealthThreshold
@@ -173,7 +173,7 @@ function NP:Construct_Highlight(nameplate)
 	local Highlight = CreateFrame('Frame', '$parentHighlight', nameplate)
 	Highlight:Hide()
 	Highlight:EnableMouse(false)
-	Highlight:SetFrameLevel(9)
+	Highlight:SetFrameLevel(nameplate.RaisedElement.HighlightLevel)
 
 	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK')
 
