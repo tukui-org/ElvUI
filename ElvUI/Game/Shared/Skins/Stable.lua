@@ -71,7 +71,7 @@ local function SkinForeverPetStableFrame()
 	modelScene.Inset.Bg:Hide()
 	S:HandleModelSceneControlButtons(modelScene.ControlFrame)
 
-	local diet = modelScene.diet
+	local diet = PetStableFrame.diet
 	diet:CreateBackdrop()
 	diet:Size(24)
 
