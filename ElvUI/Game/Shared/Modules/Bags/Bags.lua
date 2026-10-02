@@ -555,22 +555,24 @@ function B:UpdateItemScrapIcon(slot)
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
-	if slot and slot.newItemGlow then
-		if show then
-			if not slot.newItemGlow:IsShown() then
-				slot.bagFrame.NewItemGlow.Fade:AddChild(slot.newItemGlow, slot.newItemGlow)
-			end
+	local glow = slot and slot.newItemGlow
+	if not glow then return end
 
-			slot.newItemGlow:Show()
-
-			local bank = slot.bagFrame.isBank and B.BankFrame
-			B:ShowItemGlow(bank or B.BagFrame, slot.newItemGlow)
-		else
-			slot.newItemGlow:Hide()
-
-			-- also clear them on blizzard's side
-			C_NewItems_RemoveNewItem(slot.BagID, slot.SlotID)
+	if show then
+		local bag = slot.bagFrame
+		if not glow:IsShown() then
+			bag.NewItemGlow.Fade:AddChild(glow, glow)
 		end
+
+		glow:Show()
+
+		local bank = bag.isBank and B.BankFrame
+		B:ShowItemGlow(bank or B.BagFrame, glow)
+	else
+		glow:Hide()
+
+		-- also clear them on blizzard's side
+		C_NewItems_RemoveNewItem(slot.BagID, slot.SlotID)
 	end
 end
 
