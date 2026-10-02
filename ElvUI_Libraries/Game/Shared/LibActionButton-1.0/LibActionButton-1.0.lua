@@ -32,6 +32,7 @@ local Feat_UseCustomFlyout = true
 local Feat_ButtonCastBars = WoWModern
 local Feat_CooldownDurationObject = WoWModern
 local Feat_Secrets = WoWModern
+local Feat_PingableButton = WoWModern
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -291,7 +292,7 @@ function lib:CreateButton(id, name, header, config)
 		KeyBound = LibStub("LibKeyBound-1.0", true)
 	end
 
-	local button = setmetatable(CreateFrame("CheckButton", name, header, (WoWModern and "PingableActionButtonTemplate, " or "").."ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
+	local button = setmetatable(CreateFrame("CheckButton", name, header, "ActionButtonTemplate, SecureActionButtonTemplate"), Generic_MT)
 	button:RegisterForDrag("LeftButton", "RightButton")
 	button:RegisterForClicks("AnyDown", "AnyUp")
 
@@ -372,6 +373,13 @@ function lib:CreateButton(id, name, header, config)
 		InitializeEventHandler()
 	end
 
+	-- remove default ping functions which we implement through MTs below
+	if Feat_PingableButton then
+		button.UpdatePingAttributes = nil
+		button.GetIsPingable = nil
+		button.GetTargetInfo = nil
+	end
+
 	-- somewhat of a hack for the Flyout buttons to not error.
 	button.action = 0
 
@@ -427,11 +435,19 @@ function SetupSecureSnippets(button)
 			local action_field = (type == "pet") and "action" or type
 			self:SetAttribute(action_field, action)
 			self:SetAttribute("action_field", action_field)
-		end
 
-		local actionID, _, hasAction = self:GetAttribute("type") == "action" and self:GetAttribute("action")
-		if actionID then _, hasAction = GetActionInfo(actionID) end
-		self:SetAttribute('ping-receiver', hasAction) -- replicate UpdatePingAttributes ~Simpy
+			if type == "action" then
+				if HasAction(action) then
+					self:SetAttribute("ping-receiver", true)
+				else
+					self:SetAttribute("ping-receiver", nil)
+				end
+			else
+				self:SetAttribute("ping-receiver", true)
+			end
+		else
+			self:SetAttribute("ping-receiver", nil)
+		end
 
 		local updateReleaseCasting = self:GetAttribute("UpdateReleaseCasting")
 		if updateReleaseCasting then
@@ -883,6 +899,51 @@ end
 
 function Generic:UpdateAlpha()
 	UpdateCooldown(self)
+end
+
+-- PingableType
+function Generic:UpdatePingAttributes()
+	-- handled in the UpdateState RE script
+end
+
+function Generic:GetIsPingable()
+	-- Only certain kinds of actions are pingable. This only checks high level types, the client will determine if a specific spell or item etc. is valid later.
+	local isPingable = false
+
+	if self._state_type == "action" then
+		local actionType = GetActionInfo(self._state_action)
+		if actionType then
+			-- Only allow spells and items to be pinged if this action button allows different types of actions.
+			if actionType == "spell" or actionType == "item" then
+				isPingable = true
+			end
+		end
+	elseif self._state_type == "spell" or self._state_type == "item" then
+		isPingable = true
+	end
+
+	return isPingable
+end
+
+function Generic:GetTargetInfo()
+	local targetInfo = {}
+
+	if self._state_type == "action" then
+		local actionType, id = GetActionInfo(self._state_action)
+		if actionType and actionType == "item" then
+			targetInfo.itemID = id
+		else
+			-- this is under the assumption that invalid actionType has been blocked by GetIsPingable
+			-- so id passed back by Script_GetActionInfo should only be spellID
+			targetInfo.spellID = self:GetSpellId()
+		end
+	elseif self._state_type == "spell" then
+		targetInfo.spellID = self:GetSpellId()
+	elseif self._state_type == "item" then
+		targetInfo.itemID = self._state_action:match("^item:(%d+)")
+	end
+
+	return targetInfo
 end
 
 -----------------------------------------------------------
