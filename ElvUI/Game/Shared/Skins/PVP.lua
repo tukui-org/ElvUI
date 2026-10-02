@@ -281,8 +281,7 @@ function S:Blizzard_PVPUI()
 		BonusTrainingGroundList.ShadowOverlay:Hide()
 		BonusTrainingGroundList.WorldBattlesTexture:Hide()
 
-		for _, bonusButton in next, {'RandomTrainingGroundButton', 'RandomTrainingGroundArenaButton'} do
-			local bu = BonusTrainingGroundList[bonusButton]
+		for _, bu in next, BonusTrainingGroundList.BonusTrainingGroundButtons do
 			local reward = bu.Reward
 			S:HandleButton(bu)
 			bu.SelectedTexture:SetInside()
