@@ -14,17 +14,24 @@ local type, error, tostring, tonumber, assert, select, strsub = type, error, tos
 local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strmatch, format, tinsert, tremove
 
-local WoWBCC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
-local WoWClassic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-local WoWWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
-local WoWCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
-local WoWMists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
+-- Game Versions
+local WoWMainline = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 local WoWForever = WOW_PROJECT_ID == WOW_PROJECT_CAMELOT
-local WoWRetail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+local WoWClassicEra = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+local WoWClassicBCC = WOW_PROJECT_ID == WOW_PROJECT_BURNING_CRUSADE_CLASSIC
+local WoWClassicWrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
+local WoWClassicCata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
+local WoWClassicMists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 
-local WoWModern = WoWRetail or WoWForever
+-- Compound variants
+local WoWModern = WoWMainline or WoWForever
 
-local DisableOverlayGlow = WoWClassic or WoWBCC or WoWWrath
+-- Features
+local Feat_DisableOverlayGlow = WoWClassicEra or WoWClassicBCC or WoWClassicWrath
+local Feat_UseCustomFlyout = true
+local Feat_ButtonCastBars = WoWModern
+local Feat_CooldownDurationObject = WoWModern
+local Feat_Secrets = WoWModern
 
 local KeyBound = LibStub("LibKeyBound-1.0", true)
 local CBH = LibStub("CallbackHandler-1.0")
@@ -58,8 +65,6 @@ local CreateDuration = C_DurationUtil and C_DurationUtil.CreateDuration
 
 local SpellVFX_ClearReticle, SpellVFX_ClearInterruptDisplay, SpellVFX_PlaySpellCastAnim, SpellVFX_PlayTargettingReticleAnim, SpellVFX_StopTargettingReticleAnim, SpellVFX_StopSpellCastAnim, SpellVFX_PlaySpellInterruptedAnim
 local SpellVFX_CastingAnim_OnHide, SpellVFX_CastingAnim_Finish_OnFinished
-
-local UseCustomFlyout = true
 local FontStringScaleAnimationMode = Enum.FontStringScaleAnimationMode
 
 -- GLOBALS: C_Item, C_Spell, C_ToyBox, UIParent
@@ -354,10 +359,10 @@ function lib:CreateButton(id, name, header, config)
 	-- setup button configuration, this runs the initial update and hotkeys too
 	button:UpdateConfig(config)
 
-	button:SetAttribute("LABUseCustomFlyout", UseCustomFlyout)
+	button:SetAttribute("LABUseCustomFlyout", Feat_UseCustomFlyout)
 
 	-- nil out inherited functions from the flyout mixin, we override these in a metatable
-	if UseCustomFlyout then
+	if Feat_UseCustomFlyout then
 		button.GetPopupDirection = nil
 		button.IsPopupOpen = nil
 	end
@@ -556,7 +561,7 @@ function SetupSecureSnippets(button)
 		self:RunAttribute("UpdateState", self:GetAttribute("state"))
 	]])
 
-	if UseCustomFlyout then
+	if Feat_UseCustomFlyout then
 		button.header:SetFrameRef("flyoutHandler", GetFlyoutHandler())
 	end
 end
@@ -885,7 +890,7 @@ end
 
 local DiscoverFlyoutSpells, UpdateFlyoutSpells, UpdateFlyoutHandlerScripts, FlyoutUpdateQueued
 
-if UseCustomFlyout then
+if Feat_UseCustomFlyout then
 	-- params: self, flyoutID
 	local FlyoutHandleFunc = [[
 		local SPELLFLYOUT_DEFAULT_SPACING = 4
@@ -1289,7 +1294,7 @@ function Generic:OnEnter()
 		ClearNewActionHighlight(self._state_action, false, false, self)
 	end
 
-	if FlyoutButtonMixin and UseCustomFlyout then
+	if FlyoutButtonMixin and Feat_UseCustomFlyout then
 		FlyoutButtonMixin.OnEnter(self)
 	else
 		UpdateFlyout(self)
@@ -1297,7 +1302,7 @@ function Generic:OnEnter()
 end
 
 function Generic:OnLeave()
-	if FlyoutButtonMixin and UseCustomFlyout then
+	if FlyoutButtonMixin and Feat_UseCustomFlyout then
 		FlyoutButtonMixin.OnLeave(self)
 	else
 		UpdateFlyout(self)
@@ -1514,7 +1519,7 @@ function InitializeEventHandler()
 
 	lib.eventFrame:RegisterEvent("LEARNED_SPELL_IN_SKILL_LINE")
 
-	if WoWRetail or WoWWrath or WoWMists then
+	if WoWMainline or WoWClassicWrath or WoWClassicMists then
 		lib.eventFrame:RegisterUnitEvent("UNIT_ENTERED_VEHICLE", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_EXITED_VEHICLE", "player")
 		lib.eventFrame:RegisterEvent("UPDATE_VEHICLE_ACTIONBAR")
@@ -1544,7 +1549,7 @@ function InitializeEventHandler()
 	lib.eventFrame:RegisterUnitEvent("LOSS_OF_CONTROL_ADDED", "player")
 	lib.eventFrame:RegisterUnitEvent("LOSS_OF_CONTROL_UPDATE", "player")
 
-	if WoWModern then
+	if Feat_ButtonCastBars then
 		lib.eventFrame:RegisterEvent("UNIT_SPELLCAST_SENT")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_INTERRUPTED", "player")
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_SUCCEEDED", "player")
@@ -1559,7 +1564,7 @@ function InitializeEventHandler()
 		lib.eventFrame:RegisterUnitEvent("UNIT_SPELLCAST_EMPOWER_STOP", "player")
 	end
 
-	if UseCustomFlyout then
+	if Feat_UseCustomFlyout then
 		lib.eventFrame:RegisterEvent("PLAYER_LOGIN")
 		lib.eventFrame:RegisterEvent("SPELL_FLYOUT_UPDATE")
 
@@ -1571,7 +1576,7 @@ end
 
 function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	if event == "PLAYER_LOGIN" then
-		if UseCustomFlyout then
+		if Feat_UseCustomFlyout then
 			DiscoverFlyoutSpells()
 		end
 	elseif event == "CVAR_UPDATE" then
@@ -1579,7 +1584,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			wipe(lib.activeAssist)
 		end
 	elseif event == "SPELLS_CHANGED" or event == "SPELL_FLYOUT_UPDATE" then
-		if UseCustomFlyout then
+		if Feat_UseCustomFlyout then
 			UpdateFlyoutSpells()
 		end
 
@@ -1723,7 +1728,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 			end
 		end
 
-		if UseCustomFlyout and FlyoutUpdateQueued then
+		if Feat_UseCustomFlyout and FlyoutUpdateQueued then
 			UpdateFlyoutSpells()
 			FlyoutUpdateQueued = nil
 		end
@@ -1742,7 +1747,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 	elseif event == "PET_STABLE_UPDATE" or event == "PET_STABLE_SHOW" then
 		ForAllButtons(Update, nil, event)
 
-		if event == "PET_STABLE_UPDATE" and UseCustomFlyout then
+		if event == "PET_STABLE_UPDATE" and Feat_UseCustomFlyout then
 			UpdateFlyoutSpells()
 		end
 	elseif event == "SPELL_ACTIVATION_OVERLAY_GLOW_SHOW" then
@@ -2298,14 +2303,14 @@ function Generic:UpdateLocal()
 end
 
 function UpdateButtonState(self)
-	if (self:IsCurrentlyActive() or self:IsAutoRepeat()) and (not WoWRetail or not self.TargetReticleAnimFrame:IsShown()) then
+	if (self:IsCurrentlyActive() or self:IsAutoRepeat()) and (not WoWMainline or not self.TargetReticleAnimFrame:IsShown()) then
 		self:SetChecked(true)
 	else
 		self:SetChecked(false)
 	end
 
 	-- one punch button ~Simpy
-	local actionID = WoWRetail and self._state_type == "action" and tonumber(self._state_action)
+	local actionID = WoWMainline and self._state_type == "action" and tonumber(self._state_action)
 	if actionID and IsAssistedCombatAction(actionID) then
 		UpdateAbilityInfo(self) -- lets clean that up
 		UpdateCooldown(self) -- update cooldown
@@ -2341,7 +2346,7 @@ function UpdateUsable(self, isUsable, notEnoughMana)
 		end
 	end
 
-	if WoWRetail and self._state_type == "action" then
+	if WoWMainline and self._state_type == "action" then
 		local isLevelLinkLocked = C_LevelLink_IsActionLocked(self._state_action)
 		if not self.saturationLocked then
 			self.icon:SetDesaturated(isLevelLinkLocked)
@@ -2417,7 +2422,7 @@ local defaultCooldownInfo = { startTime = 0; duration = 0; isEnabled = false; is
 local defaultChargeInfo = { currentCharges = 0; maxCharges = 0; cooldownStartTime = 0; cooldownDuration = 0; chargeModRate = 0; isActive = false }
 local defaultLossOfControlInfo = { startTime = 0; duration = 0; modRate = 0; isActive = false; shouldReplaceNormalCooldown = false; }
 
-if WoWModern then
+if Feat_CooldownDurationObject then
 	local function SetOrClearCooldown(cooldown, shouldShow, durationObject)
 		if not cooldown then return end
 		if not shouldShow or not durationObject then
@@ -2807,7 +2812,7 @@ function UpdateSpellHighlight(self)
 	end
 end
 
-if FlyoutButtonMixin and UseCustomFlyout then
+if FlyoutButtonMixin and Feat_UseCustomFlyout then
 	function Generic:GetPopupDirection()
 		return self:GetAttribute("flyoutDirection") or "UP"
 	end
@@ -3003,7 +3008,7 @@ end
 local GetActionCount = C_ActionBar.GetActionUseCount or GetActionCount
 
 -- the remaining uses of GetActionCount can't deal with secrets, so disable on Midnight
-if WoWModern then
+if Feat_Secrets then
 	GetActionCount = function() return 0 end
 end
 
@@ -3117,7 +3122,7 @@ if GetActionLossOfControlCooldownDuration then
 end
 
 -- Classic overrides for item count breakage
-if WoWClassic then
+if WoWClassicEra then
 	-- if the library is present, simply use it to override action counts
 	local LibClassicSpellActionCount = LibStub("LibClassicSpellActionCount-1.0", true)
 	if LibClassicSpellActionCount then
@@ -3277,7 +3282,7 @@ Custom.GetSpellId              = function(self) return nil end
 Custom.RunCustom               = function(self, unit, button) return self._state_action.func(self, unit, button) end
 
 --- WoW Classic overrides
-if DisableOverlayGlow then
+if Feat_DisableOverlayGlow then
 	UpdateOverlayGlow = function() end
 end
 
