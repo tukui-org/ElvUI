@@ -904,6 +904,8 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+		elseif oUF.isForever then
+			self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', CastStop)
 		end
 
 		-- ElvUI block
@@ -964,6 +966,8 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+		elseif oUF.isForever then
+			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', CastStop)
 		end
 
 		-- ElvUI block
