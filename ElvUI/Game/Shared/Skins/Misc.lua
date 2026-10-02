@@ -4,7 +4,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
-
 local CreateFrame = CreateFrame
 
 S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')

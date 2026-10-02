@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
+local CreateFrame = CreateFrame
+
 function NP:Construct_TagText(nameplate)
 	local element = CreateFrame('Frame', '$parent_TagText', nameplate)
 	element:SetFrameLevel(nameplate.RaisedElement.TagTextLevel)
