@@ -21,13 +21,13 @@ local General = Tooltip.general.args
 General.targetInfo = ACH:Toggle(L["Target Info"], L["When in a raid group display if anyone in your raid is targeting the current tooltip unit."], 1)
 General.playerTitles = ACH:Toggle(L["Player Titles"], L["Display player titles."], 2)
 General.guildRanks = ACH:Toggle(L["Guild Ranks"], L["Display guild ranks if a unit is guilded."], 3)
-General.alwaysShowRealm = ACH:Toggle(L["Always Show Realm"], nil, 4)
+General.alwaysShowRealm = ACH:Toggle(L["Always Show Realm"], nil, 4, nil, nil, nil, nil, nil, nil, E.Forever)
 General.role = ACH:Toggle(L["ROLE"], L["Display the unit role in the tooltip."], 5, nil, nil, nil, nil, nil, nil, not E.allowRoles)
 General.showMount = ACH:Toggle(L["Current Mount"], L["Display current mount the unit is riding."], 6)
 General.gender = ACH:Toggle(L["Gender"], L["Displays the gender of players."], 7)
 General.showElvUIUsers = ACH:Toggle(L["Show ElvUI Users"], L["Show ElvUI users and their version of ElvUI."], 8)
 General.itemQuality = ACH:Toggle(L["Item Quality"], L["Color tooltip border based on Item Quality."], 9)
-General.inspectDataEnable = ACH:Toggle(L["Inspect Data"], L["Display the item level and current specialization of the unit on modifier press."], 10, nil, nil, nil, nil, nil, nil, E.Classic)
+General.inspectDataEnable = ACH:Toggle(L["Inspect Data"], L["Display the item level and current specialization of the unit on modifier press."], 10, nil, nil, nil, nil, nil, nil, not (E.Modern or E.Wrath or E.Mists))
 General.moneyLines = ACH:Toggle(L["Money Lines"], L["Replaces Blizzards price lines with custom ones.\n\n|cffff3333Note:|r Required to prevent issues with MoneyFrame."], 11, nil, nil, nil, nil, nil, nil, not E.Modern)
 General.moneyHide = ACH:Toggle(L["Money Hide"], L["Hides Blizzards price lines."], 12, nil, nil, nil, nil, nil, function() return not E.db.tooltip.moneyLines end, not E.Modern)
 General.fadeOut = ACH:Toggle(L["Fade Out"], L["Fade out the tooltip when it disappears, instant otherwise. Cursor anchored tooltips are unaffected."], 13, nil, nil, nil, nil, nil, nil, not E.Modern)
@@ -41,14 +41,14 @@ General.anchorToBags = ACH:Select(L["Anchor to Bags"], L["Tooltip gets anchored 
 
 General.modifierGroup = ACH:Group(L["Spell/Item IDs"], nil, -3)
 General.modifierGroup.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 1, modifierValues, nil, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value TT:UpdateAuraSpellIDCVar() end)
-General.modifierGroup.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 3, nil, nil, nil, nil, nil, function() return E.db.tooltip.itemCount == 'NONE' end)
-General.modifierGroup.args.includeReagents = ACH:Toggle(L["Include Reagents"], nil, 6)
+General.modifierGroup.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 3, nil, nil, nil, nil, nil, function() local count = E.db.tooltip.itemCount return not (count.bags or count.bank or count.stack) end)
+General.modifierGroup.args.includeReagents = ACH:Toggle(L["Include Reagents"], nil, 6, nil, nil, nil, nil, nil, nil, not E.Modern)
 General.modifierGroup.args.includeWarband = ACH:Toggle(L["Include Warband"], nil, 7, nil, nil, nil, nil, nil, nil, not E.Modern)
 General.modifierGroup.inline = true
 
 General.itemCount = ACH:MultiSelect(L["Item Count"], L["Display how many of a certain item you have in your possession."], -2, { bags = L["Bags"], bank = L["Bank"], stack = L["Stack Size"] }, nil, nil, function(_, key) return E.db.tooltip.itemCount[key] end, function(_, key, value) E.db.tooltip.itemCount[key] = value end)
 
-General.mythicPlus = ACH:Group(L["Mythic+ Data"], nil, -1, nil, nil, nil, nil, not E.Modern)
+General.mythicPlus = ACH:Group(L["Mythic+ Data"], nil, -1, nil, nil, nil, nil, not E.Retail)
 General.mythicPlus.args.mythicDataEnable = ACH:Toggle(L["Enable"], nil, 1)
 General.mythicPlus.args.dungeonScore = ACH:Toggle(L["Mythic+ Score"], L["Display the current Mythic+ Dungeon Score."], 2, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
 General.mythicPlus.args.mythicBestRun = ACH:Toggle(L["Mythic+ Best Run"], nil, 3, nil, nil, nil, nil, nil, function() return not E.db.tooltip.mythicDataEnable end)
