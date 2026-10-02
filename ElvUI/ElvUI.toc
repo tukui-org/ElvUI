@@ -1,4 +1,4 @@
-## Interface: 11509, 16001, 20506, 38002, 50504, 120100
+## Interface: 11509, 16001, 20506, 38002, 50504, 120100, 120105
 ## Version: @project-version@
 ## Author: Elv, Simpy
 
