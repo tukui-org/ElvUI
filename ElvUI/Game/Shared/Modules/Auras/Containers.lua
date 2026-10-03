@@ -1144,12 +1144,14 @@ function E:Auras_RegisterUnitEvents(container, unit)
 		events:RegisterUnitEvent('UNIT_CONNECTION', unit)
 		events:RegisterUnitEvent('UNIT_FACTION', unit)
 		events:RegisterUnitEvent('UNIT_PHASE', unit)
+		events:RegisterUnitEvent('UNIT_FLAGS', unit)
 	else
 		events:UnregisterEvent('UNIT_DISTANCE_CHECK_UPDATE')
 		events:UnregisterEvent('UNIT_IN_RANGE_UPDATE')
 		events:UnregisterEvent('UNIT_CONNECTION')
 		events:UnregisterEvent('UNIT_FACTION')
 		events:UnregisterEvent('UNIT_PHASE')
+		events:UnregisterEvent('UNIT_FLAGS')
 	end
 end
 
