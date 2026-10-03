@@ -11,7 +11,6 @@ local wipe, type, unpack, assert, tostring = wipe, type, unpack, assert, tostrin
 local huge, strfind, gsub, format, strjoin, strmatch = math.huge, strfind, gsub, format, strjoin, strmatch
 local min, next, pairs, ipairs, tinsert, strsub = min, next, pairs, ipairs, tinsert, strsub
 
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CreateColor = CreateColor
 local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
@@ -40,6 +39,7 @@ local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CURVE_RED = CreateColor(1, 0, 0)
 local CURVE_YELLOW = CreateColor(1, 1, 0)
 local CURVE_HEALTH = {}
