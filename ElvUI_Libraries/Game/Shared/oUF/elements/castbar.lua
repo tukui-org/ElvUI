@@ -597,7 +597,7 @@ local function CastStop(self, event, unit, ...)
 			castID, spellID = ... -- castID is really castGUID
 
 			-- only for the fake castbars, channels fire this right after they start
-			if not element.castsent or CastMatch(element, castID) then return end
+			if not element.castsent or not CastMatch(element, castID) then return end
 		end
 	else
 		_, spellID = ...
