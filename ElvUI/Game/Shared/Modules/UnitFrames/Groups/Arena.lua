@@ -6,6 +6,8 @@ local CreateFrame = CreateFrame
 local UnitFrameUtil = UnitFrameUtil
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
+
+local specUnknown = [[Interface\Icons\INV_MISC_QUESTIONMARK]]
 local specDisplay = {}
 
 function UF:ToggleArenaPreparationInfo(frame, specID)
@@ -32,14 +34,17 @@ function UF:ToggleArenaPreparationInfo(frame, specID)
 			specDisplay.specNameText = frame.ArenaPrepSpec
 			specDisplay.specPortrait = showIcon and frame.PVPSpecIcon.Icon or nil
 
-			UnitFrameUtil.UpdateArenaOpponentSpecDisplay(specDisplay, frame.index)
+			local hasSpec = UnitFrameUtil.UpdateArenaOpponentSpecDisplay(specDisplay, frame.index)
+			if showIcon and not hasSpec then -- we can still use the unknown
+				frame.PVPSpecIcon.Icon:SetTexture(specUnknown)
+			end
 		else
 			frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', show and specInfo.name or '', show and specInfo.classMale or '')
 		end
 
 		if showIcon then
 			if not secretSpec then
-				frame.PVPSpecIcon.Icon:SetTexture(specInfo.icon or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+				frame.PVPSpecIcon.Icon:SetTexture(specInfo.icon or specUnknown)
 			end
 
 			frame.PVPSpecIcon.Icon:SetTexCoords()
