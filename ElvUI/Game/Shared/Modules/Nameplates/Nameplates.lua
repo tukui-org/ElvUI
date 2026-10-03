@@ -619,7 +619,7 @@ function NP:ToggleStaticPlate()
 	E:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
 end
 
-function NP:PreloadContainers()
+function NP:AuraContainer_Preloader()
 	if self:IsShown() then return end
 
 	self:Show() -- let the container build its filtering
@@ -664,7 +664,7 @@ function NP:ConfigurePlates(init)
 
 			-- /dump (40 * 5 * 3) / 3 / (60 / 0.9) = (3 x 0.9) = 3 mins
 			-- (plates * frametypes * auratypes) / containers per tick / (seconds / tickdelay)
-			E:CoroutineUpdate(NP.PreloadContainers, NP.AuraContainersCreated, nil, 3, 0.9)
+			E:CoroutineUpdate(NP.AuraContainer_Preloader, NP.AuraContainersCreated, nil, 3, 0.9)
 		end
 
 		if staticEvent == 'NAME_PLATE_UNIT_ADDED' then
