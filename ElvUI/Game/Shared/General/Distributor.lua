@@ -682,6 +682,7 @@ E.PopupDialogs.IMPORT_RL = {
 	button2 = CANCEL,
 	timeout = 0,
 	whileDead = 1,
+	OnAccept = ReloadUI,
 	hideOnEscape = false,
 	preferredIndex = 3
 }
