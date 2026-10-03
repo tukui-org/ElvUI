@@ -430,7 +430,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			if oUF:IsSecretValue(notInterruptible) then
 				element.Shield:SetAlphaFromBoolean(notInterruptible, element.Shield.alphaValue or 1, 0)
 			else
-				element.Shield:SetAlphaFromBoolean(false, element.Shield.alphaValue or 1, 0)
+				element.Shield:SetAlphaFromBoolean(notInterruptible or false, element.Shield.alphaValue or 1, 0)
 			end
 		else
 			element.Shield:SetShown(notInterruptible)
@@ -587,14 +587,17 @@ local function CastStop(self, event, unit, ...)
 		return
 	end
 
-	local spellID, interruptedBy, empowerComplete, _
+	local spellID, interruptedBy, empowerComplete, castGUID, _
 	if oUF.isModern then
 		if event == 'UNIT_SPELLCAST_EMPOWER_STOP' then
 			_, _, empowerComplete, interruptedBy = ...
 		elseif event == 'UNIT_SPELLCAST_CHANNEL_STOP' then
 			_, _, interruptedBy = ...
 		elseif event == 'UNIT_SPELLCAST_SUCCEEDED' then
-			_, spellID = ...
+			castGUID, spellID = ...
+
+			-- only for the fake castbars, channels fire this right after they start
+			if not element.castsent or castGUID ~= element.castID then return end
 		end
 	else
 		_, spellID = ...
@@ -713,11 +716,7 @@ local function CastInterruptible(self, event, unit)
 
 	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
-			if oUF:IsSecretValue(element.notInterruptible) then
-				element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
-			else
-				element.Shield:SetAlphaFromBoolean(false, element.Shield.alphaValue or 1, 0)
-			end
+			element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
 		else
 			element.Shield:SetShown(element.notInterruptible)
 		end
