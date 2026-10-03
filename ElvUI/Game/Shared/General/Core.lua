@@ -515,7 +515,7 @@ do	-- i guess we finally need it ~Simpy
 		funcs[func] = info
 
 		if not tickers[func] then
-			local ticker = C_Timer_NewTicker(delay or (E.ClassicHC and 0.1) or 0.05, process)
+			local ticker = C_Timer_NewTicker(delay or 0.1, process)
 			info.ticker = ticker
 		end
 	end
