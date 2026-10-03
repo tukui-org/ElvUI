@@ -32,6 +32,7 @@ local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local GetCVarDefault = C_CVar.GetCVarDefault
+local GetCVar = C_CVar.GetCVar
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
@@ -152,6 +153,18 @@ function NP:SetCVars()
 	local db = NP.db
 
 	-- The order of these is important !!
+
+	local insetTop = GetCVarDefault('nameplateTopInset')
+	if insetTop then -- currently only on PTR and Forever
+		local insetBottom = GetCVarDefault('nameplateBottomInset')
+		if db.clampToScreen then
+			E:SetCVar('nameplateTopInset', insetTop)
+			E:SetCVar('nameplateBottomInset', insetBottom)
+		elseif GetCVar('nameplateTopInset') == insetTop and GetCVar('nameplateBottomInset') == insetBottom then
+			E:SetCVar('nameplateTopInset', -1)
+			E:SetCVar('nameplateBottomInset', -1)
+		end
+	end
 
 	if E.Modern then
 		E:SetCVar('nameplateShowFriendlyRealmName', 0)
