@@ -2018,6 +2018,15 @@ local UF_SummonIcon = {
 	yOffset = 0,
 }
 
+local UF_PingIcon = {
+	enable = true,
+	size = 30,
+	attachTo = 'CENTER',
+	attachToObject = 'Frame',
+	xOffset = 0,
+	yOffset = 0,
+}
+
 local UF_SubGroup = {
 	enable = false,
 	anchorPoint = 'RIGHT',
@@ -2306,6 +2315,7 @@ P.unitframe = {
 			raidicon = E:CopyTable({}, UF_RaidIcon),
 			raidRoleIcons = E:CopyTable({}, UF_RaidRoles),
 			resurrectIcon = E:CopyTable({}, UF_Ressurect),
+			pingIcon = E:CopyTable({}, UF_PingIcon),
 			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		target = {
@@ -2344,6 +2354,7 @@ P.unitframe = {
 			raidicon = E:CopyTable({}, UF_RaidIcon),
 			raidRoleIcons = E:CopyTable({}, UF_RaidRoles),
 			resurrectIcon = E:CopyTable({}, UF_Ressurect),
+			pingIcon = E:CopyTable({}, UF_PingIcon),
 			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		targettarget = {
@@ -2371,6 +2382,7 @@ P.unitframe = {
 			portrait = E:CopyTable({}, UF_Portrait),
 			power = E:CopyTable({}, UF_Power),
 			raidicon = E:CopyTable({}, UF_RaidIcon),
+			pingIcon = E:CopyTable({}, UF_PingIcon),
 			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel),
 		},
 		focus = {
@@ -2404,6 +2416,7 @@ P.unitframe = {
 			portrait = E:CopyTable({}, UF_Portrait),
 			power = E:CopyTable({}, UF_Power),
 			raidicon = E:CopyTable({}, UF_RaidIcon),
+			pingIcon = E:CopyTable({}, UF_PingIcon),
 			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		pet = {
@@ -2435,6 +2448,7 @@ P.unitframe = {
 			portrait = E:CopyTable({}, UF_Portrait),
 			power = E:CopyTable({}, UF_Power),
 			raidicon = E:CopyTable({}, UF_RaidIcon),
+			pingIcon = E:CopyTable({}, UF_PingIcon),
 			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
 		boss = {
@@ -2558,6 +2572,7 @@ P.unitframe = {
 			resurrectIcon = E:CopyTable({}, UF_Ressurect),
 			roleIcon = E:CopyTable({}, UF_RoleIcon),
 			summonIcon = E:CopyTable({}, UF_SummonIcon),
+			pingIcon = E:CopyTable({}, UF_PingIcon),
 			targetsGroup = E:CopyTable({}, UF_SubGroup),
 			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},
@@ -2587,6 +2602,7 @@ P.unitframe = {
 			name = E:CopyTable({}, UF_Name),
 			raidicon = E:CopyTable({}, UF_RaidIcon),
 			rdebuffs = E:CopyTable({}, UF_RaidDebuffs),
+			pingIcon = E:CopyTable({}, UF_PingIcon),
 			targetsGroup = E:CopyTable({}, UF_SubGroup),
 			strataAndLevel = E:CopyTable({}, UF_StrataAndLevel)
 		},

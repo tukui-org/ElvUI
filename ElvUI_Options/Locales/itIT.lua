@@ -1301,6 +1301,7 @@ L["Pets"] = true
 L["PetTarget"] = true
 L["Phase Indicator"] = true
 L["Pin Voice Buttons"] = true
+L["Ping Icon"] = true
 L["Pixel Glow"] = true
 L["Player Auras"] = true
 L["Player Bars"] = true

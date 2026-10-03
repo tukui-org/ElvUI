@@ -17,6 +17,7 @@
 	<Script file='UnitFrames\Elements\InfoPanel.lua'/>
 	<Script file='UnitFrames\Elements\Name.lua'/>
 	<Script file='UnitFrames\Elements\PhaseIndicator.lua'/>
+	<Script file='UnitFrames\Elements\PingIndicator.lua'/>
 	<Script file='UnitFrames\Elements\PartyIndicator.lua'/>
 	<Script file='UnitFrames\Elements\Portrait.lua'/>
 	<Script file='UnitFrames\Elements\Power.lua'/>

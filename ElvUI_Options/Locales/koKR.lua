@@ -1301,6 +1301,7 @@ L["Pets"] = "펫(소환수)"
 L["PetTarget"] = "팻(소환수)의 대상"
 L["Phase Indicator"] = "단계 표시기"
 L["Pin Voice Buttons"] = "음성 버튼 고정"
+L["Ping Icon"] = true
 L["Pixel Glow"] = true
 L["Player Auras"] = true
 L["Player Bars"] = "행동단축 바"
