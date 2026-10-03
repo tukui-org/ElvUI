@@ -503,7 +503,8 @@ do	-- i guess we finally need it ~Simpy
 		if exists then
 			exists.cancel = true
 
-			if not InCombatLockdown() then
+			-- dont try to continue one that yields before it reaches here
+			if not InCombatLockdown() and (co_status(exists.routine) ~= 'dead') then
 				E:Coroutine_Continue(exists)
 			end
 		end
