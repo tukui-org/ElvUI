@@ -587,17 +587,17 @@ local function CastStop(self, event, unit, ...)
 		return
 	end
 
-	local spellID, interruptedBy, empowerComplete, castGUID, _
+	local spellID, interruptedBy, empowerComplete, castID, _
 	if oUF.isModern then
 		if event == 'UNIT_SPELLCAST_EMPOWER_STOP' then
 			_, _, empowerComplete, interruptedBy = ...
 		elseif event == 'UNIT_SPELLCAST_CHANNEL_STOP' then
 			_, _, interruptedBy = ...
 		elseif event == 'UNIT_SPELLCAST_SUCCEEDED' then
-			castGUID, spellID = ...
+			castID, spellID = ... -- castID is really castGUID
 
 			-- only for the fake castbars, channels fire this right after they start
-			if not element.castsent or castGUID ~= element.castID then return end
+			if not element.castsent or CastMatch(element, castID) then return end
 		end
 	else
 		_, spellID = ...
