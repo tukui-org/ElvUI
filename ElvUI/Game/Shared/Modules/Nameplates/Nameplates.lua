@@ -662,7 +662,9 @@ function NP:ConfigurePlates(init)
 		if E.Modern then
 			NP:AuraContainer_ConstructContainers() -- this spawns the containers
 
-			E:CoroutineUpdate(NP.PreloadContainers, NP.AuraContainersCreated, nil, 3, 1) -- 3 aura types per second
+			-- /dump (40 * 5 * 3) / 3 / (60 / 0.9) = (3 x 0.9) = 3 mins
+			-- (plates * frametypes * auratypes) / containers per tick / (seconds / tickdelay)
+			E:CoroutineUpdate(NP.PreloadContainers, NP.AuraContainersCreated, nil, 3, 0.9)
 		end
 
 		if staticEvent == 'NAME_PLATE_UNIT_ADDED' then
