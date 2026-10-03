@@ -2628,10 +2628,21 @@ function CH:ChatFrame_SetScript(script, func)
 	end
 end
 
+function CH:ChatFrame_OverflowAlerting(btn)
+	if btn.alerting then
+		return true
+	end
+
+	-- 12.1.5 and Forever dropped the alerting key, the highlight FlashAnim plays instead
+	local hl = btn:GetHighlightTexture()
+	local anim = hl and hl.FlashAnim
+	return anim and anim:IsPlaying()
+end
+
 function CH:FCFDockOverflowButton_UpdatePulseState(btn)
 	if not btn.Texture then return end
 
-	if btn.alerting then
+	if CH:ChatFrame_OverflowAlerting(btn) then
 		btn:SetAlpha(1)
 		btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	elseif not btn:IsMouseMotionFocus() then
@@ -2648,14 +2659,14 @@ do
 	end
 
 	function CH:Overflow_OnLeave()
-		if self.Texture and not self.alerting then
+		if self.Texture and not CH:ChatFrame_OverflowAlerting(self) then
 			self.Texture:SetVertexColor(1, 1, 1)
 		end
 	end
 
 	local overflow_SetAlpha
 	function CH:Overflow_SetAlpha(alpha)
-		if self.alerting then
+		if CH:ChatFrame_OverflowAlerting(self) then
 			alpha = 1
 		elseif alpha < 0.5 then
 			local hooks = CH.hooks and CH.hooks[_G.GeneralDockManager.primary]

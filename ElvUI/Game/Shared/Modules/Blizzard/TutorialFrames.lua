@@ -7,7 +7,10 @@ local hooksecurefunc = hooksecurefunc
 
 local function AcknowledgeTips()
 	for frame in _G.HelpTip.framePool:EnumerateActive() do
-		frame:Acknowledge()
+		 -- closing tips clear it before their callbacks show the next one
+		if frame.info then
+			frame:Acknowledge()
+		end
 	end
 end
 

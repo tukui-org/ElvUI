@@ -59,7 +59,7 @@ local function Event(_, event, initLogin, isReload)
 					end
 
 					local specID = GetArenaOpponentSpec(i)
-					local specInfo = E.SpecInfoBySpecID[specID]
+					local specInfo = E:NotSecretValue(specID) and E.SpecInfoBySpecID[specID]
 					local specName = specInfo and specInfo.name
 
 					if HealerSpecs[specName] then

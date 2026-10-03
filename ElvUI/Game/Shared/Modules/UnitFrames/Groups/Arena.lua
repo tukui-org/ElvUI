@@ -3,13 +3,18 @@ local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
 local CreateFrame = CreateFrame
+local UnitFrameUtil = UnitFrameUtil
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
-function UF:ToggleArenaPreparationInfo(frame, specID)
-	local specInfo = E.SpecInfoBySpecID[specID]
+local specUnknown = [[Interface\Icons\INV_MISC_QUESTIONMARK]]
+local specDisplay = {}
 
-	local show = specInfo and not not specInfo.classFile
+function UF:ToggleArenaPreparationInfo(frame, specID)
+	local secretSpec = E:IsSecretValue(specID)
+	local specInfo = not secretSpec and E.SpecInfoBySpecID[specID]
+
+	local show = secretSpec or (specInfo and not not specInfo.classFile)
 	frame.forceInRange = show -- used to force unitframe range
 
 	local visibility = not show
@@ -24,10 +29,24 @@ function UF:ToggleArenaPreparationInfo(frame, specID)
 	frame.Trinket.cd:Clear()
 
 	if not E.Classic then -- during `PostUpdateArenaPreparation` this means spec class and name exist
-		frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', show and specInfo.name or '', show and specInfo.classMale or '')
+		local showIcon = show and frame.db and frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon')
+		if secretSpec then -- 12.1.5 spec is secret, Blizzard applies the name and icon
+			specDisplay.specNameText = frame.ArenaPrepSpec
+			specDisplay.specPortrait = showIcon and frame.PVPSpecIcon.Icon or nil
 
-		if show and frame.db and frame.db.pvpSpecIcon and frame:IsElementEnabled('PVPSpecIcon') then
-			frame.PVPSpecIcon.Icon:SetTexture(specInfo.icon or [[INTERFACE\ICONS\INV_MISC_QUESTIONMARK]])
+			local hasSpec = UnitFrameUtil.UpdateArenaOpponentSpecDisplay(specDisplay, frame.index)
+			if showIcon and not hasSpec then -- we can still use the unknown
+				frame.PVPSpecIcon.Icon:SetTexture(specUnknown)
+			end
+		else
+			frame.ArenaPrepSpec:SetFormattedText(show and '%s - %s' or '', show and specInfo.name or '', show and specInfo.classMale or '')
+		end
+
+		if showIcon then
+			if not secretSpec then
+				frame.PVPSpecIcon.Icon:SetTexture(specInfo.icon or specUnknown)
+			end
+
 			frame.PVPSpecIcon.Icon:SetTexCoords()
 			frame.PVPSpecIcon:Show()
 		end
