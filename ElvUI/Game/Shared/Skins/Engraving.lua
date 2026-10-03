@@ -23,7 +23,7 @@ function S:Blizzard_EngravingUI()
 		header.middle:SetTexture() -- keep the plus / minus and category icons
 		header.leftEdge:SetTexture()
 		header.rightEdge:SetTexture()
-		header:SetTemplate('Transparent')
+		header:SetTemplate()
 	end
 
 	for _, button in next, frame.scrollFrame.buttons do

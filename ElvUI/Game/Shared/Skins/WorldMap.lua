@@ -6,6 +6,7 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
 local QuestSessionCommand = Enum.QuestSessionCommand
 local SessionCommand_ButtonAtlases = QuestSessionCommand and { -- only read by the Mainline quest session skin
 	[QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
@@ -49,15 +50,28 @@ local function NotifyDialogShow(_, dialog)
 	dialog.IsSkinned = true
 end
 
+local function QuestLogHeader_CheckHighlightTitle(header, isMouseOver)
+	if isMouseOver == nil then
+		isMouseOver = header:IsMouseMotionFocus()
+	end
+
+	if not isMouseOver then
+		local title = header:GetTitleRegion()
+		title:SetTextColor(NORMAL_FONT_COLOR:GetRGB())
+	end
+end
+
 local function QuestLogQuests()
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 
 	for button in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
 		if not button.IsSkinned then
 			button:StripTextures()
-			button:CreateBackdrop('Transparent')
+			button:CreateBackdrop()
 			button:GetHighlightTexture():SetColorTexture(r, g, b, .25)
 			button.ButtonText:FontTemplate(nil, 16)
+			hooksecurefunc(button, 'CheckHighlightTitle', QuestLogHeader_CheckHighlightTitle)
+			QuestLogHeader_CheckHighlightTitle(button)
 			button.IsSkinned = true
 		end
 	end
@@ -81,10 +95,13 @@ local function QuestLogQuests()
 	for header in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
 		if not header.IsSkinned then
 			header:StripTextures()
-			header.Background:CreateBackdrop('Transparent')
+			header.Background:CreateBackdrop()
 			header.Highlight:SetColorTexture(r, g, b, 0.75)
+			hooksecurefunc(header, 'CheckHighlightTitle', QuestLogHeader_CheckHighlightTitle)
 			header.IsSkinned = true
 		end
+
+		QuestLogHeader_CheckHighlightTitle(header) -- UpdateTitle sets it gray again on every update
 	end
 end
 

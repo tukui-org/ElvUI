@@ -13,7 +13,7 @@ local function HandleCategory(button)
 	button.CenterPiece:SetAlpha(0)
 	button.RightPiece:SetAlpha(0)
 
-	button:CreateBackdrop('Transparent')
+	button:CreateBackdrop()
 	button.backdrop:SetInside(button, 0, 1)
 end
 
