@@ -342,7 +342,7 @@ end
 -- RecipeList category rows (ProfessionsRecipeListCategoryTemplate)
 local function HandleRecipeCategory(button)
 	button:StripTextures()
-	button:CreateBackdrop('Transparent')
+	button:CreateBackdrop()
 	button.backdrop:SetInside(button, 0, 1)
 
 	local rankBar = button.RankBar

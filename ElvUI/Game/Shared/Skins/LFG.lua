@@ -934,14 +934,14 @@ local function HandleBrowseButton(button)
 	local background = button.ResultBG
 	background:SetAlpha(0)
 
-	button:CreateBackdrop('Transparent')
+	local selected = button.Selected -- grouping headers have no Selected or DataDisplay
+	button:CreateBackdrop(selected and 'Transparent')
 	button.backdrop:SetAllPoints(background)
 
 	local highlight = button.Highlight
 	highlight:SetColorTexture(1, 1, 1, .25)
 	highlight:SetInside(button.backdrop)
 
-	local selected = button.Selected -- grouping headers have no Selected or DataDisplay
 	if selected then
 		local r, g, b = unpack(E.media.rgbvaluecolor)
 		selected:SetColorTexture(r, g, b, .25)
@@ -996,6 +996,11 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 		S:HandleCheckBox(ActivityView.LevelRangesCheckbox.Checkbox)
 		ActivityView.BarTop:SetAlpha(0)
 		ActivityView.BarMiddle:SetAlpha(0)
+
+		local PlayStyleDropdown = ActivityView.PlayStyleDropdown
+		if PlayStyleDropdown then
+			S:HandleDropDownBox(PlayStyleDropdown, 230)
+		end
 
 		-- Browse
 		S:HandlePortraitFrame(LFGBrowseFrame)

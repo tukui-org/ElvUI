@@ -72,8 +72,8 @@ end
 local watcher = 0
 local function OnUpdate(self, elapsed)
 	if watcher > 0.1 then
-		if not self:IsMouseMotionFocus() then
-			self.isMouseFocused = nil
+		if not self:IsMouseOver() then
+			self.isMouseOver = nil
 			self:SetScript('OnUpdate', nil)
 			OnLeaveBar()
 		end
@@ -84,8 +84,8 @@ local function OnUpdate(self, elapsed)
 end
 
 local function OnEnter(button)
-	if AB.db.microbar.mouseover and not microBar.isMouseFocused then
-		microBar.isMouseFocused = true
+	if AB.db.microbar.mouseover and not microBar.isMouseOver then
+		microBar.isMouseOver = true
 		microBar:SetScript('OnUpdate', OnUpdate)
 		E:UIFrameFadeIn(microBar, 0.2, microBar:GetAlpha(), AB.db.microbar.alpha)
 	end
@@ -402,7 +402,7 @@ do
 			lastButton = button
 		end
 
-		microBar:SetAlpha((db.mouseover and not microBar.isMouseFocused and 0) or db.alpha)
+		microBar:SetAlpha((db.mouseover and not microBar.isMouseOver and 0) or db.alpha)
 
 		AB:HandleBackdropMultiplier(microBar, backdropSpacing, db.buttonSpacing, db.widthMult, db.heightMult, anchorUp, anchorLeft, horizontal, lastButton, anchorRowButton)
 		AB:HandleBackdropMover(microBar, backdropSpacing)

@@ -222,6 +222,8 @@ function NP:AuraContainer_ConstructAuraTypes(frameType, name)
 		auras:SetEnabled(false)
 		auras:Hide()
 
+		NP.AuraContainersCreated[auras] = frame
+
 		auras.frameType = frameType
 		NP:Configure_Auras(auras, which, true)
 

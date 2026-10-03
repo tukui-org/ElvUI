@@ -837,6 +837,7 @@ local NP_QuestIcon = {
 
 --NamePlate
 P.nameplates = {
+	clampToScreen = false,
 	fadeIn = true,
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',

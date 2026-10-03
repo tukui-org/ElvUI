@@ -12,7 +12,7 @@ local function ButtonHeader_Update(header)
 	header.HighlightTexture:SetColorTexture(r, g, b, 0.25)
 	header.HighlightTexture:SetInside()
 	header.NormalTexture:SetTexture()
-	header:SetTemplate('Transparent')
+	header:SetTemplate()
 end
 
 function S:Blizzard_Channels()

@@ -298,16 +298,17 @@ function B:BagBar_UpdateDesaturated(inactive)
 end
 
 function B:LoadBagBar()
-	_G.BagsBar:SetParent(E.HiddenFrame)
-	_G.BagsBar:UnregisterAllEvents()
+	local enabled = E.private.bags.bagBar
+	if AB.Initialized or enabled then
+		_G.BagsBar:SetParent(E.HiddenFrame)
+		_G.BagsBar:UnregisterAllEvents()
 
-	--_G.EventRegistry:UnregisterCallback('MainMenuBarManager.OnExpandChanged', _G.BagsBar.Layout, _G.BagsBar)
-
-	if _G.MainMenuBarBagManager.OnCursorChanged then
-		_G.EventRegistry:UnregisterFrameEventAndCallback('CURSOR_CHANGED', _G.MainMenuBarBagManager)
+		if _G.MainMenuBarBagManager.OnCursorChanged then
+			_G.EventRegistry:UnregisterFrameEventAndCallback('CURSOR_CHANGED', _G.MainMenuBarBagManager)
+		end
 	end
 
-	if not E.private.bags.bagBar then return end
+	if not enabled then return end
 
 	B.BagBar = CreateFrame('Frame', 'ElvUIBagBar', E.UIParent)
 	B.BagBar:Point('TOPRIGHT', _G.RightChatPanel, 'TOPLEFT', -4, 0)
@@ -318,42 +319,48 @@ function B:LoadBagBar()
 	B.BagBar:EnableMouse(true)
 	B.BagBar.buttons = {}
 
-	_G.MainMenuBarBackpackButton:SetParent(B.BagBar)
-	_G.MainMenuBarBackpackButton:ClearAllPoints()
-	_G.MainMenuBarBackpackButton:HookScript('OnEnter', B.BagButton_OnEnter)
-	_G.MainMenuBarBackpackButton:HookScript('OnLeave', B.BagButton_OnLeave)
-
-	_G.MainMenuBarBackpackButtonCount:ClearAllPoints()
-	_G.MainMenuBarBackpackButtonCount:Point('BOTTOMRIGHT', _G.MainMenuBarBackpackButton, 0, 1)
-	_G.MainMenuBarBackpackButtonCount:FontTemplate(E.db.bags.bagBar.font, E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
-
+	-- keep these regardless of Actionbars
 	hooksecurefunc(_G.BagsBar, 'Layout', B.SizeAndPositionBagBar)
 	hooksecurefunc(_G.MainMenuBarBagManager, 'OnExpandBarChanged', B.SizeAndPositionBagBar)
 
-	if _G.BagBarExpandToggle then
-		_G.BagBarExpandToggle:Kill()
+	local blizzardExpand = _G.BagBarExpandToggle
+	if blizzardExpand then
+		blizzardExpand:Kill()
 	end
 
-	tinsert(B.BagBar.buttons, _G.MainMenuBarBackpackButton)
-	B:SkinBag(_G.MainMenuBarBackpackButton)
-	B.BagButton_UpdateTextures(_G.MainMenuBarBackpackButton)
+	local blizzardBag = _G.MainMenuBarBackpackButton
+	blizzardBag:SetParent(B.BagBar)
+	blizzardBag:ClearAllPoints()
+	blizzardBag:HookScript('OnEnter', B.BagButton_OnEnter)
+	blizzardBag:HookScript('OnLeave', B.BagButton_OnLeave)
+
+	local blizzardCount = _G.MainMenuBarBackpackButtonCount
+	blizzardCount:ClearAllPoints()
+	blizzardCount:Point('BOTTOMRIGHT', blizzardBag, 0, 1)
+	blizzardCount:FontTemplate(E.db.bags.bagBar.font, E.db.bags.bagBar.fontSize, E.db.bags.bagBar.fontOutline)
+
+	tinsert(B.BagBar.buttons, blizzardBag)
+
+	B:SkinBag(blizzardBag)
+	B.BagButton_UpdateTextures(blizzardBag)
 
 	for i = 0, NUM_BAG_FRAMES-1 do
-		local b = _G['CharacterBag'..i..'Slot']
-		b:HookScript('OnEnter', B.BagButton_OnEnter)
-		b:HookScript('OnLeave', B.BagButton_OnLeave)
-		b:SetParent(B.BagBar)
-		B:SkinBag(b)
+		local slot = _G['CharacterBag'..i..'Slot']
+		slot:HookScript('OnEnter', B.BagButton_OnEnter)
+		slot:HookScript('OnLeave', B.BagButton_OnLeave)
+		slot:SetParent(B.BagBar)
+
+		B:SkinBag(slot)
 
 		if E.Modern then
-			hooksecurefunc(b, 'UpdateTextures', B.BagButton_UpdateTextures)
+			hooksecurefunc(slot, 'UpdateTextures', B.BagButton_UpdateTextures)
 		else
-			B.BagButton_UpdateTextures(b)
+			B.BagButton_UpdateTextures(slot)
 
-			b.commandName = commandNames[i]
+			slot.commandName = commandNames[i]
 		end
 
-		tinsert(B.BagBar.buttons, b)
+		tinsert(B.BagBar.buttons, slot)
 	end
 
 	local ReagentSlot = _G.CharacterReagentBag0Slot
@@ -422,7 +429,9 @@ function B:LoadBagBar()
 	end
 
 	E:CreateMover(B.BagBar, 'BagsMover', L["Bag Bar"], nil, nil, nil, nil, nil, 'bags,general')
+
 	B.BagBar:SetPoint('BOTTOMLEFT', B.BagBar.mover)
+
 	B:RegisterEvent('BAG_SLOT_FLAGS_UPDATED', 'SizeAndPositionBagBar')
 	B:RegisterEvent('BAG_UPDATE_DELAYED', 'UpdateMainButtonCount')
 	B:SizeAndPositionBagBar()

@@ -32,6 +32,7 @@ local UnitNameplateShowsWidgetsOnly = UnitNameplateShowsWidgetsOnly
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local C_NamePlate_GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 local GetCVarDefault = C_CVar.GetCVarDefault
+local GetCVar = C_CVar.GetCVar
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 
@@ -44,6 +45,7 @@ local Blacklist = {
 }
 
 NP.AuraContainers = {}
+NP.AuraContainersCreated = {}
 NP.AuraContainerFilterTypes = {}
 NP.AuraContainerFilterKeys = {
 	PLAYER = 'Player',
@@ -152,6 +154,18 @@ function NP:SetCVars()
 	local db = NP.db
 
 	-- The order of these is important !!
+
+	local insetTop = GetCVarDefault('nameplateTopInset')
+	if insetTop then -- currently only on PTR and Forever
+		local insetBottom = GetCVarDefault('nameplateBottomInset')
+		if db.clampToScreen then
+			E:SetCVar('nameplateTopInset', insetTop)
+			E:SetCVar('nameplateBottomInset', insetBottom)
+		elseif GetCVar('nameplateTopInset') == insetTop and GetCVar('nameplateBottomInset') == insetBottom then
+			E:SetCVar('nameplateTopInset', -1)
+			E:SetCVar('nameplateBottomInset', -1)
+		end
+	end
 
 	if E.Modern then
 		E:SetCVar('nameplateShowFriendlyRealmName', 0)
@@ -335,13 +349,13 @@ function NP:StylePlate(nameplate)
 	nameplate.StackingBounds = NP:Construct_StackingBounds(nameplate)
 	nameplate.RaisedElement = NP:Construct_RaisedElement(nameplate)
 	nameplate.Health = NP:Construct_Health(nameplate)
-	nameplate.Health.Text = NP:Construct_TagText(nameplate)
+	nameplate.Health.Text = NP:Construct_TagText(nameplate, 'HealthText')
 	nameplate.HealthPrediction = NP:Construct_HealthPrediction(nameplate)
 	nameplate.Power = NP:Construct_Power(nameplate)
-	nameplate.Power.Text = NP:Construct_TagText(nameplate)
-	nameplate.Name = NP:Construct_TagText(nameplate)
-	nameplate.Level = NP:Construct_TagText(nameplate)
-	nameplate.Title = NP:Construct_TagText(nameplate)
+	nameplate.Power.Text = NP:Construct_TagText(nameplate, 'PowerText')	-- Power.Text will be element.text
+	nameplate.Name = NP:Construct_TagText(nameplate, 'NameText')		-- Name will be element.text
+	nameplate.Level = NP:Construct_TagText(nameplate, 'LevelText')
+	nameplate.Title = NP:Construct_TagText(nameplate, 'TitleText')
 	nameplate.ClassificationIndicator = NP:Construct_ClassificationIndicator(nameplate)
 	nameplate.Castbar = NP:Construct_Castbar(nameplate)
 	nameplate.Portrait = NP:Construct_Portrait(nameplate)
@@ -605,6 +619,13 @@ function NP:ToggleStaticPlate()
 	E:SetCVar('nameplateShowSelf', (isStatic or not playerEnabled) and 0 or 1)
 end
 
+function NP:AuraContainer_Preloader()
+	if self:IsShown() then return end
+
+	self:Show() -- let the container build its filtering
+	self:Hide() -- now rehide it
+end
+
 function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
@@ -640,6 +661,10 @@ function NP:ConfigurePlates(init)
 
 		if E.Modern then
 			NP:AuraContainer_ConstructContainers() -- this spawns the containers
+
+			-- /dump (40 * 5 * 3) / 3 / (60 / 0.9) = (3 x 0.9) = 3 mins
+			-- (plates * frametypes * auratypes) / containers per tick / (seconds / tickdelay)
+			E:CoroutineUpdate(NP.AuraContainer_Preloader, NP.AuraContainersCreated, nil, 1, 0.3)
 		end
 
 		if staticEvent == 'NAME_PLATE_UNIT_ADDED' then
