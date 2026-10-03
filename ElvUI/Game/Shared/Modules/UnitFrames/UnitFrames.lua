@@ -2294,8 +2294,10 @@ function UF:Configure_UnitAuras(frame, unit)
 end
 
 function UF:UpdateAllElements(event)
-	if event == 'OnAttributeChanged' then
-		UF:Configure_UnitAuras(self, self.__unit)
+	local unit = self.__unit
+	if event == 'OnAttributeChanged' or self.aurasUnit ~= unit then
+		self.aurasUnit = unit
+		UF:Configure_UnitAuras(self, unit)
 	end
 end
 
