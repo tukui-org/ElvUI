@@ -997,6 +997,11 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 		ActivityView.BarTop:SetAlpha(0)
 		ActivityView.BarMiddle:SetAlpha(0)
 
+		local PlayStyleDropdown = ActivityView.PlayStyleDropdown
+		if PlayStyleDropdown then
+			S:HandleDropDownBox(PlayStyleDropdown, 230)
+		end
+
 		-- Browse
 		S:HandlePortraitFrame(LFGBrowseFrame)
 		S:HandleTrimScrollBar(LFGBrowseFrame.ScrollBar)
