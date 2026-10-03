@@ -276,10 +276,6 @@ local function UpdatePips(element, stages)
 	end
 end
 
-local function CastMatch(element, castID)
-	return element.castID == castID
-end
-
 --[[ Override: Castbar:ShouldShow(unit)
 Handles check for which unit the castbar should show for.
 Defaults to the object unit.
@@ -597,7 +593,7 @@ local function CastStop(self, event, unit, ...)
 			castID, spellID = ... -- castID is really castGUID
 
 			-- only for the fake castbars, channels fire this right after they start
-			if not element.castsent or not CastMatch(element, castID) then return end
+			if not element.castsent or (element.castID ~= castID) then return end
 		end
 	else
 		_, spellID = ...
@@ -664,7 +660,7 @@ local function CastFail(self, event, unit, ...)
 		castID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID) then return end
+	if not element:IsShown() or (element.castID ~= castID) then return end
 
 	if(element.Text) then
 		element.Text:SetText(event == 'UNIT_SPELLCAST_FAILED' and FAILED or INTERRUPTED)
