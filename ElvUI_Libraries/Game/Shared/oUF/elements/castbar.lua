@@ -276,10 +276,6 @@ local function UpdatePips(element, stages)
 	end
 end
 
-local function CastMatch(element, castID)
-	return element.castID == castID
-end
-
 --[[ Override: Castbar:ShouldShow(unit)
 Handles check for which unit the castbar should show for.
 Defaults to the object unit.
@@ -430,7 +426,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			if oUF:IsSecretValue(notInterruptible) then
 				element.Shield:SetAlphaFromBoolean(notInterruptible, element.Shield.alphaValue or 1, 0)
 			else
-				element.Shield:SetAlphaFromBoolean(false, element.Shield.alphaValue or 1, 0)
+				element.Shield:SetAlphaFromBoolean(notInterruptible or false, element.Shield.alphaValue or 1, 0)
 			end
 		else
 			element.Shield:SetShown(notInterruptible)
@@ -587,14 +583,17 @@ local function CastStop(self, event, unit, ...)
 		return
 	end
 
-	local spellID, interruptedBy, empowerComplete, _
+	local spellID, interruptedBy, empowerComplete, castID, _
 	if oUF.isModern then
 		if event == 'UNIT_SPELLCAST_EMPOWER_STOP' then
 			_, _, empowerComplete, interruptedBy = ...
 		elseif event == 'UNIT_SPELLCAST_CHANNEL_STOP' then
 			_, _, interruptedBy = ...
 		elseif event == 'UNIT_SPELLCAST_SUCCEEDED' then
-			_, spellID = ...
+			castID, spellID = ... -- castID is really castGUID
+
+			-- only for the fake castbars, channels fire this right after they start
+			if not element.castsent or (element.castID ~= castID) then return end
 		end
 	else
 		_, spellID = ...
@@ -661,7 +660,7 @@ local function CastFail(self, event, unit, ...)
 		castID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID) then return end
+	if not element:IsShown() or (element.castID ~= castID) then return end
 
 	if(element.Text) then
 		element.Text:SetText(event == 'UNIT_SPELLCAST_FAILED' and FAILED or INTERRUPTED)
@@ -713,11 +712,7 @@ local function CastInterruptible(self, event, unit)
 
 	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
-			if oUF:IsSecretValue(element.notInterruptible) then
-				element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
-			else
-				element.Shield:SetAlphaFromBoolean(false, element.Shield.alphaValue or 1, 0)
-			end
+			element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
 		else
 			element.Shield:SetShown(element.notInterruptible)
 		end
