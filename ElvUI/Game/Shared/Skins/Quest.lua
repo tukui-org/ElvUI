@@ -340,8 +340,15 @@ function data:QuestFrameProgressItems_Update() -- self is not data
 		_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
 	else -- use the page text color to make text readable on parchment
 		local r, g, b = _G.QuestProgressText:GetTextColor()
-		for i = 1, 6 do
-			_G['QuestProgressItem'..i..'Name']:SetTextColor(r, g, b)
+
+		local i = 1
+		local name = _G['QuestProgressItem'..i..'Name']
+		while name do
+			name:SetTextColor(r, g, b)
+			name:SetShadowColor(0, 0, 0, 0)
+
+			i = i + 1
+			name = _G['QuestProgressItem'..i..'Name']
 		end
 	end
 end
