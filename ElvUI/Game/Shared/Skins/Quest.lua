@@ -174,17 +174,10 @@ function data:QuestInfoItem_OnClick() -- self is not data
 	end
 end
 
-function data:QuestInfo_Display(parentFrame) -- self is template, not data
+function data:QuestInfo_Display() -- self is template, not data
+	local lightText = E.private.skins.parchmentRemoverEnable or (not E.Modern and _G.QuestInfoFrame.questLog) -- the classic quest logs stay stripped with the remover off
+
 	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
-
-	-- the classic quest logs stay stripped with the remover off
-	local lightText = E.private.skins.parchmentRemoverEnable or (not E.Modern and _G.QuestInfoFrame.questLog)
-
-	local nameR, nameG, nameB = 1, 1, 1
-	if not lightText and rewardsFrame == _G.QuestInfoRewardsFrame then
-		nameR, nameG, nameB = rewardsFrame.ItemReceiveText:GetTextColor()
-	end
-
 	for i, questItem in ipairs(rewardsFrame.RewardButtons) do
 		local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
 		if point and relativeTo and relativePoint then
@@ -200,7 +193,10 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		HandleReward(questItem)
 
 		questItem.NameFrame:Hide()
-		questItem.Name:SetTextColor(nameR, nameG, nameB)
+
+		if lightText then
+			questItem.Name:SetTextColor(1, 1, 1)
+		end
 	end
 
 	if not E.Modern then
@@ -220,7 +216,10 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		local spellBorders = (E.Modern or E.Classic) and rewardsFrame == _G.QuestInfoRewardsFrame
 		for spellIcon in rewardsFrame.spellRewardPool:EnumerateActive() do
 			HandleReward(spellIcon)
-			spellIcon.Name:SetTextColor(nameR, nameG, nameB)
+
+			if lightText then
+				spellIcon.Name:SetTextColor(1, 1, 1)
+			end
 
 			if spellBorders then
 				local _, _, spellBorder = spellIcon:GetRegions() -- Icon, NameFrame, SpellBorder
@@ -266,25 +265,31 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 	if E.Modern then
 		for spellIcon in rewardsFrame.reputationRewardPool:EnumerateActive() do -- MajorFaction Rewards thing
 			HandleReward(spellIcon)
-			spellIcon.Name:SetTextColor(nameR, nameG, nameB)
+
+			if lightText then
+				spellIcon.Name:SetTextColor(1, 1, 1)
+			end
 		end
 
-		rewardsFrame.HonorFrame.Name:SetTextColor(nameR, nameG, nameB)
-		rewardsFrame.ArtifactXPFrame.Name:SetTextColor(nameR, nameG, nameB)
-		rewardsFrame.TitleFrame.Name:SetTextColor(nameR, nameG, nameB)
+		if lightText then
+			rewardsFrame.HonorFrame.Name:SetTextColor(1, 1, 1)
+			rewardsFrame.ArtifactXPFrame.Name:SetTextColor(1, 1, 1)
+			rewardsFrame.TitleFrame.Name:SetTextColor(1, 1, 1)
+		end
 	end
 
 	if lightText then
 		_G.QuestInfoTitleHeader:SetTextColor(1, .8, .1)
 		_G.QuestInfoDescriptionHeader:SetTextColor(1, .8, .1)
 		_G.QuestInfoObjectivesHeader:SetTextColor(1, .8, .1)
-		_G.QuestInfoRewardsFrame.Header:SetTextColor(1, .8, .1)
 		_G.QuestInfoDescriptionText:SetTextColor(1, 1, 1)
 		_G.QuestInfoObjectivesText:SetTextColor(1, 1, 1)
 		_G.QuestInfoGroupSize:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardText:SetTextColor(1, 1, 1)
 		_G.QuestInfoTimerText:SetTextColor(1, 1, 1)
 		_G.QuestInfoQuestType:SetTextColor(1, 1, 1)
+
+		_G.QuestInfoRewardsFrame.Header:SetTextColor(1, .8, .1)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
 
@@ -309,13 +314,14 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		_G.QuestInfoTitleHeader:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoDescriptionHeader:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoObjectivesHeader:SetShadowColor(0, 0, 0, 0)
-		_G.QuestInfoRewardsFrame.Header:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoDescriptionText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoObjectivesText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoGroupSize:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoTimerText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoQuestType:SetShadowColor(0, 0, 0, 0)
+
+		_G.QuestInfoRewardsFrame.Header:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetShadowColor(0, 0, 0, 0)
 
