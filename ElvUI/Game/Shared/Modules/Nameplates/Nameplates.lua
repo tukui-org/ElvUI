@@ -154,12 +154,16 @@ function NP:SetCVars()
 
 	-- The order of these is important !!
 
-	if db.clampToScreen then
-		E:SetCVar('nameplateTopInset', 0.08)
-		E:SetCVar('nameplateBottomInset', 0.1)
-	elseif GetCVar('nameplateTopInset') == '0.08' and GetCVar('nameplateBottomInset') == '0.1' then
-		E:SetCVar('nameplateTopInset', -1)
-		E:SetCVar('nameplateBottomInset', -1)
+	local insetTop = GetCVarDefault('nameplateTopInset')
+	if insetTop then -- currently only on PTR and Forever
+		local insetBottom = GetCVarDefault('nameplateBottomInset')
+		if db.clampToScreen then
+			E:SetCVar('nameplateTopInset', insetTop)
+			E:SetCVar('nameplateBottomInset', insetBottom)
+		elseif GetCVar('nameplateTopInset') == insetTop and GetCVar('nameplateBottomInset') == insetBottom then
+			E:SetCVar('nameplateTopInset', -1)
+			E:SetCVar('nameplateBottomInset', -1)
+		end
 	end
 
 	if E.Modern then
