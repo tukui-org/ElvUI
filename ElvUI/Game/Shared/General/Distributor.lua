@@ -3,7 +3,7 @@ local D = E:GetModule('Distributor')
 
 local _G = _G
 local tonumber, type, gsub, pairs, pcall, loadstring = tonumber, type, gsub, pairs, pcall, loadstring
-local strlen, format, split, strmatch, strfind = strlen, format, strsplit, strmatch, strfind
+local strlen, format, strmatch, strfind = strlen, format, strmatch, strfind
 
 local ReloadUI = ReloadUI
 local CreateFrame = CreateFrame
@@ -155,7 +155,7 @@ function D:Initialize()
 	D:UpdateSettings()
 
 	D.StatusBar = CreateFrame('StatusBar', 'ElvUI_Distributor_StatusBar', E.UIParent)
-	D.StatusBar:CreateBackdrop()
+	D.StatusBar:CreateBackdrop('Transparent')
 	D.StatusBar:SetStatusBarTexture(E.media.normTex)
 	D.StatusBar:SetStatusBarColor(0.95, 0.15, 0.15)
 	D.StatusBar:Size(250, 18)
@@ -205,36 +205,41 @@ function D:Distribute(target, otherServer, dataKey)
 	end
 
 	local serialString = SerializeCBOR(data)
-	local length = strlen(serialString)
-	local message = format('%s:%d:%s:%s', profileKey, length, target, dataKey or 'profile')
+	local compressedData = CompressString(serialString, COMPRESS, OPTIMIZE)
+	local printableString = EncodeBase64(compressedData)
+	local printableLength = strlen(printableString)
+	local msg = format('%s::%d::%s::%s', profileKey, printableLength, target, dataKey or 'profile')
 
-	Uploads[profileKey] = { serialString = serialString, target = target }
+	Uploads[profileKey] = { printableString = printableString, target = target }
 
 	if otherServer then
 		local targetRaid = UnitInRaid('target')
 		local targetParty = UnitInParty('target')
 		if IsInRaid() and E:NotSecretValue(targetRaid) and targetRaid then
-			D:SendCommMessage(REQUEST_PREFIX, message, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
+			D:SendCommMessage(REQUEST_PREFIX, msg, (not IsInRaid(LE_PARTY_CATEGORY_HOME) and IsInRaid(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'RAID')
 		elseif IsInGroup() and E:NotSecretValue(targetParty) and targetParty then
-			D:SendCommMessage(REQUEST_PREFIX, message, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
+			D:SendCommMessage(REQUEST_PREFIX, msg, (not IsInGroup(LE_PARTY_CATEGORY_HOME) and IsInGroup(LE_PARTY_CATEGORY_INSTANCE)) and 'INSTANCE_CHAT' or 'PARTY')
 		else -- dont proceed
 			return
 		end
 	else
-		D:SendCommMessage(REQUEST_PREFIX, message, 'WHISPER', target)
+		D:SendCommMessage(REQUEST_PREFIX, msg, 'WHISPER', target)
 	end
 
 	D:RegisterComm(REPLY_PREFIX)
 	E:StaticPopup_Show('DISTRIBUTOR_WAITING')
 end
 
-function D:CHAT_MSG_ADDON(_, prefix, message, _, senderOne, senderTwo)
-	local download = prefix == TRANSFER_PREFIX and Downloads[strfind(senderOne, '-') and senderOne or senderTwo]
+function D:CHAT_MSG_ADDON(_, prefix, msg, _, senderOne, senderTwo)
+	local download = prefix == TRANSFER_PREFIX and Downloads[strfind(senderOne, '-', 1, true) and E:StripMyRealm(senderOne) or senderTwo]
 	if not download then return end
 
-	local cur, max = strlen(message), download.length
-	local current = download.current + cur
-	if current > max then current = max end
+	local amount, total = strlen(msg), download.length
+	local current = download.current + amount
+	if current > total then
+		current = total
+	end
+
 	download.current = current
 
 	D.StatusBar:SetValue(current)
@@ -242,11 +247,11 @@ end
 
 function D:OnCommReceived(prefix, msg, dist, sender)
 	if prefix == REQUEST_PREFIX then
-		local profile, length, sendTo, dataKey = split(':', msg)
+		local profile, msgLength, sendTo, dataKey = strmatch(msg, '(.+)::([^:]-)::([^:]-)::(.-)$')
 		if dist ~= 'WHISPER' and sendTo ~= E.myname then return end
 
 		if D.StatusBar:IsShown() then
-			D:SendCommMessage(REPLY_PREFIX, profile..':NO', dist, sender)
+			D:SendCommMessage(REPLY_PREFIX, profile..'::NO', dist, sender)
 
 			return
 		end
@@ -262,24 +267,28 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 		if not textString then return end
 
+		local length = tonumber(msgLength)
 		local response = E.PopupDialogs.DISTRIBUTOR_RESPONSE
 		response.text = textString
 		response.OnAccept = function()
 			D.StatusBar:SetMinMaxValues(0, length)
 			D.StatusBar:SetValue(0)
+
 			D.StatusBar.text:SetFormattedText(L["Data From: %s"], sender)
+
 			E:StaticPopupSpecial_Show(D.StatusBar)
-			D:SendCommMessage(REPLY_PREFIX, profile..':YES', dist, sender)
+
+			D:SendCommMessage(REPLY_PREFIX, profile..'::YES', dist, sender)
 		end
 		response.OnCancel = function()
-			D:SendCommMessage(REPLY_PREFIX, profile..':NO', dist, sender)
+			D:SendCommMessage(REPLY_PREFIX, profile..'::NO', dist, sender)
 		end
 
 		E:StaticPopup_Show('DISTRIBUTOR_RESPONSE')
 
 		Downloads[sender] = {
 			current = 0,
-			length = tonumber(length),
+			length = length,
 			profile = profile,
 			dataKey = dataKey
 		}
@@ -289,11 +298,11 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		D:UnregisterComm(REPLY_PREFIX)
 		E:StaticPopup_Hide('DISTRIBUTOR_WAITING')
 
-		local profileKey, response = split(':', msg)
+		local profileKey, response = strmatch(msg, '(.+)::([^:]-)$')
 		local upload = Uploads[profileKey]
 		if upload and response == 'YES' then
 			D:RegisterComm(TRANSFER_COMPLETE_PREFIX)
-			D:SendCommMessage(TRANSFER_PREFIX, upload.serialString, dist, upload.target)
+			D:SendCommMessage(TRANSFER_PREFIX, upload.printableString, dist, upload.target)
 		else
 			E:StaticPopup_Show('DISTRIBUTOR_REQUEST_DENIED')
 		end
@@ -301,15 +310,28 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 		Uploads[profileKey] = nil
 	elseif prefix == TRANSFER_PREFIX then
 		D:UnregisterComm(TRANSFER_PREFIX)
+
 		E:StaticPopupSpecial_Hide(D.StatusBar)
 
-		local download, data = Downloads[sender]
+		local download, profileData = Downloads[sender]
 		local profileKey = download and download.profile
+
 		if profileKey then -- verify sender first before trying to handle the msg
-			data = DeserializeCBOR(msg)
+			local decodedData = DecodeBase64(msg)
+			local decompressed = DecompressString(decodedData, COMPRESS)
+			if not decompressed then
+				E:Print('Error decompressing data.')
+				return
+			end
+
+			profileData = DeserializeCBOR(decompressed)
+			if not profileData then
+				E:Print('Error deserializing data.')
+				return
+			end
 		end
 
-		if data then
+		if profileData then
 			local textString = format(L["Profile download complete from %s, would you like to load the profile %s now?"], sender, profileKey)
 
 			local confirm = E.PopupDialogs.DISTRIBUTOR_CONFIRM
@@ -320,15 +342,15 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 				textString = format(L["Download complete from %s, would you like to apply changes now?"], sender)
 			else
 				if download.dataKey == 'private' and not ElvPrivateDB.profiles[profileKey] then
-					ElvPrivateDB.profiles[profileKey] = data
+					ElvPrivateDB.profiles[profileKey] = profileData
 				elseif download.dataKey == 'profile' and not ElvDB.profiles[profileKey] then
-					ElvDB.profiles[profileKey] = data
+					ElvDB.profiles[profileKey] = profileData
 				else
 					textString = format(L["Profile download complete from %s, but the profile %s already exists. Change the name or else it will overwrite the existing profile."], sender, profileKey)
 
 					confirm.text = textString
 					confirm.button1 = ACCEPT
-					confirm.button2 = nil
+					confirm.button2 = CANCEL
 					confirm.hasEditBox = 1
 					confirm.editBoxWidth = LETTERS_WIDTH
 					confirm.maxLetters = LETTERS_MAX
@@ -338,7 +360,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 					confirm.OnAccept = function()
 						if download.dataKey == 'private' then
-							ElvPrivateDB.profiles[profileKey] = data
+							ElvPrivateDB.profiles[profileKey] = profileData
 
 							import.OnAccept = function()
 								E.charSettings:SetProfile(profileKey)
@@ -347,7 +369,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 							E:StaticPopup_Show('IMPORT_RL')
 						elseif download.dataKey == 'profile' then
-							ElvDB.profiles[profileKey] = data
+							ElvDB.profiles[profileKey] = profileData
 
 							E.data:SetProfile(profileKey)
 							E:UpdateAll()
@@ -380,7 +402,7 @@ function D:OnCommReceived(prefix, msg, dist, sender)
 
 			confirm.OnAccept = function()
 				if download.dataKey == 'global' then
-					E:CopyTable(ElvDB.global, data)
+					E:CopyTable(ElvDB.global, profileData)
 					E:UpdateAll()
 				elseif download.dataKey == 'private' then
 					import.OnAccept = function()
@@ -428,11 +450,11 @@ function D:GetProfileData(dataType, dataKey)
 		local data = ElvDB.profiles[profileKey]
 		if not data then return end -- bad dataKey
 
-		profileData = E:CopyTable(profileData, data)
-
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
+
+		profileData = E:CopyTable(profileData, data)
 		profileData = E:RemoveTableDuplicates(profileData, P, D.GeneratedKeys.profile)
 		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.profile)
 	elseif dataType == 'private' then
