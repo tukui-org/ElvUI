@@ -450,11 +450,11 @@ function D:GetProfileData(dataType, dataKey)
 		local data = ElvDB.profiles[profileKey]
 		if not data then return end -- bad dataKey
 
-		profileData = E:CopyTable(profileData, data)
-
 		--This table will also hold all default values, not just the changed settings.
 		--This makes the table huge, and will cause the WoW client to lock up for several seconds.
 		--We compare against the default table and remove all duplicates from our table. The table is now much smaller.
+
+		profileData = E:CopyTable(profileData, data)
 		profileData = E:RemoveTableDuplicates(profileData, P, D.GeneratedKeys.profile)
 		profileData = E:FilterTableFromBlacklist(profileData, D.blacklistedKeys.profile)
 	elseif dataType == 'private' then
