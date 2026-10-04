@@ -1,7 +1,7 @@
 -- License: LICENSE.txt
 
 local MAJOR_VERSION = "LibActionButton-1.0-ElvUI"
-local MINOR_VERSION = 84 -- the real minor version is 166
+local MINOR_VERSION = 85 -- the real minor version is 166
 
 local LibStub = LibStub
 if not LibStub then error(MAJOR_VERSION .. " requires LibStub.") end
@@ -1207,7 +1207,7 @@ if Feat_UseCustomFlyout then
 				local numSlots = 0
 				data = data .. ("local info = newtable();LAB_FlyoutInfo[%d] = info;info.slots = newtable();\n"):format(flyoutID)
 				for slotID, slotInfo in ipairs(info.slots) do
-					data = data .. ("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %s;\n"):format(flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName and format('"%s"', slotInfo.spellName) or nil)
+					data = data .. ("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %s;\n"):format(flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName and format("%q", slotInfo.spellName) or "nil")
 					numSlots = numSlots + 1
 				end
 
@@ -1290,6 +1290,8 @@ if Feat_UseCustomFlyout then
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
 			if success then
 				data.isKnown = isKnown
+				data.numSlots = numSlots or 0
+				wipe(data.slots)
 
 				if numSlots and isKnown then
 					for slotID = 1, numSlots do
@@ -1301,10 +1303,7 @@ if Feat_UseCustomFlyout then
 							isKnownSlot = false
 						end
 
-						data.slots[slotID].spellID = spellID
-						data.slots[slotID].spellName = spellName
-						data.slots[slotID].overrideSpellID = overrideSpellID
-						data.slots[slotID].isKnown = isKnownSlot
+						data.slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
 					end
 				end
 			end
