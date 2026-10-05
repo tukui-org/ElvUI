@@ -710,14 +710,21 @@ function NP:ConfigureAll(init)
 end
 
 function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
-	-- we need our own function because we want a smooth transition and dont want it to force update every pass.
-	-- its controlled by fadeTimer which is reset when UIFrameFadeOut or UIFrameFadeIn code runs.
+	if E:IsSecretValue(startAlpha) or E:IsSecretValue(endAlpha) then return end
+
+	local parent = nameplate.GetParent and nameplate:GetParent()
+	if parent and parent.GetAlpha and E:IsSecretValue(parent:GetAlpha()) then return end
 
 	if not nameplate.FadeObject then
 		nameplate.FadeObject = {}
 	end
 
-	nameplate.FadeObject.timeToFade = (nameplate.isTarget and 0) or timeToFade
+	local isTarget = nameplate.isTarget
+	if E:IsSecretValue(isTarget) then
+		isTarget = nil
+	end
+
+	nameplate.FadeObject.timeToFade = (isTarget and 0) or timeToFade
 	nameplate.FadeObject.startAlpha = startAlpha
 	nameplate.FadeObject.endAlpha = endAlpha
 	nameplate.FadeObject.diffAlpha = endAlpha - startAlpha
