@@ -52,12 +52,12 @@ local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
 	['UI-Character-Info-Resistance-Arcane'] = spellSchoolIcon..7,
 }
 
-local ResistanceCoords = {
-	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-	{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-	{ 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-	{ 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+local RESISTANCE_COORDS = {
+	{ left = 0.21875, right = 0.8125, top = 0.25, bottom = 0.32421875 },		--Arcane
+	{ left = 0.21875, right = 0.8125, top = 0.0234375, bottom = 0.09765625 },	--Fire
+	{ left = 0.21875, right = 0.8125, top = 0.13671875, bottom = 0.2109375 },	--Nature
+	{ left = 0.21875, right = 0.8125, top = 0.36328125, bottom = 0.4375},		--Frost
+	{ left = 0.21875, right = 0.8125, top = 0.4765625, bottom = 0.55078125},	--Shadow
 }
 
 if E.Modern then
@@ -887,9 +887,10 @@ local function HandleResistanceFrame(name)
 			frame:Point('TOP', _G[name..(i - 1)], 'BOTTOM', 0, -1)
 		end
 
-		icon:SetInside()
-		icon:SetTexCoord(unpack(ResistanceCoords[i]))
+		local coords = RESISTANCE_COORDS[i]
+		icon:SetTexCoord(coords.left, coords.right, coords.top, coords.bottom)
 		icon:SetDrawLayer('ARTWORK')
+		icon:SetInside()
 
 		text:SetDrawLayer('OVERLAY')
 	end
