@@ -68,6 +68,7 @@ E.mylevel = UnitLevel('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.playerName, E.playerRealm = UnitNameUnmodified('player')
+E.mynameFull = format((E.Forever and E.playerRealm) and '%s %s' or '%s', E.playerName, E.playerRealm) -- forever "First Last" otherwise "First"
 E.mynameRealm = format((E.Forever and (E.playerRealm and '%s %s' or '%s')) or '%s - %s', E.playerName, E.playerRealm or E.myrealm) -- contains spaces/dashes in realm (for profile keys)
 E.expansionLevel = GetExpansionLevel()
 E.expansionLevelMax = GetMaxLevelForExpansionLevel(E.expansionLevel)
