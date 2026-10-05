@@ -108,9 +108,10 @@ local function UpdateTotem(self, event, slot)
 	if(element.PreUpdate) then element:PreUpdate(slot) end
 
 	local totem = element[priority[slot]]
-	totem.totemDuration = nil
-
 	local haveTotem, name, start, duration, icon = GetTotemInfo(slot) -- slot is the same as totem:GetID()
+	local totemDuration = GetTotemDuration(slot)
+	totem.totemDuration = totemDuration
+
 	if totem.Icon then
 		totem.Icon:SetTexture(icon)
 	end
@@ -122,9 +123,6 @@ local function UpdateTotem(self, event, slot)
 
 	if totem.Cooldown then
 		if oUF:IsSecretValue(duration) then
-			local totemDuration = GetTotemDuration(slot)
-			totem.totemDuration = totemDuration
-
 			if totemDuration then
 				totem.Cooldown:SetCooldownFromDuration(totemDuration)
 			else
