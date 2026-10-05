@@ -1204,7 +1204,7 @@ if Feat_UseCustomFlyout then
 
 				for slotID, slotInfo in ipairs(info.slots) do
 					if slotInfo.isKnown then
-						data = data .. format("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %s;\n", flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName or "nil")
+						data = data .. format("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %q;\n", flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, tostring(slotInfo.isKnown), slotInfo.spellName or "nil")
 						numSlots = numSlots + 1
 					end
 				end
