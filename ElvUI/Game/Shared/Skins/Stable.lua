@@ -66,9 +66,9 @@ local function SkinForeverPetStableFrame()
 	S:HandleButton(stableFrame.purchaseButton)
 
 	for slot, texture in next, {
-		[_G.PetStableCurrentPet] = 'PetStableCurrentPetIconTexture',
-		[_G.PetStableStabledPet1] = 'PetStableStabledPet1IconTexture',
-		[_G.PetStableStabledPet2] = 'PetStableStabledPet2IconTexture'
+		[_G.PetStableCurrentPet] = _G.PetStableCurrentPetIconTexture,
+		[_G.PetStableStabledPet1] = _G.PetStableStabledPet1IconTexture,
+		[_G.PetStableStabledPet2] = _G.PetStableStabledPet2IconTexture
 	} do
 		S:HandleItemButton(slot, true)
 
