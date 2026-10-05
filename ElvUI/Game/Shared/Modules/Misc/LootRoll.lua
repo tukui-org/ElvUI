@@ -476,7 +476,7 @@ function M:UpdateLootRollFrames()
 		bar.status.backdrop.Center:SetTexture(db.statusBarBGTexture and E.media.normTex or E.media.blankTex)
 
 		bar.button:ClearAllPoints()
-		bar.button:Point('RIGHT', bar, 'LEFT', E.PixelMode and -1 or -2, 0)
+		bar.button:Point('RIGHT', bar, 'LEFT', -E.Border, 0)
 		bar.button:Size(db.height)
 
 		bar.button.questIcon:ClearAllPoints()

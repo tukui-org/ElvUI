@@ -197,10 +197,9 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameContentsFrameIcon:SetTexCoords()
 		_G.GhostFrameContentsFrameIcon:Point('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
 
-		local x = E.PixelMode and 1 or 2
 		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent())
-		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -x, x)
-		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, x, -x)
+		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -E.Border, E.Border)
+		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, E.Border, -E.Border)
 		_G.GhostFrameContentsFrameIcon:Size(37, 38)
 		_G.GhostFrameContentsFrameIcon:SetParent(button)
 		button:SetTemplate()

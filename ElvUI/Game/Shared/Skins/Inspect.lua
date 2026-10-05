@@ -137,8 +137,8 @@ function S:Blizzard_InspectUI()
 		local InspectModelFrame = _G.InspectModelFrame
 		InspectModelFrame:StripTextures()
 		InspectModelFrame:CreateBackdrop()
-		InspectModelFrame.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-		InspectModelFrame.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+		InspectModelFrame.backdrop:Point('TOPLEFT', -E.Border, E.Border)
+		InspectModelFrame.backdrop:Point('BOTTOMRIGHT', E.Border, -(E.Border+1))
 
 		-- Re-add the overlay texture which was removed via StripTextures
 		InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)

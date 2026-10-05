@@ -77,9 +77,8 @@ function BL:BelowMinimap_CaptureBar()
 	if not self.backdrop then
 		self:CreateBackdrop()
 
-		local x = E.PixelMode and 1 or 2
-		self.backdrop:Point('TOPLEFT', self.LeftBar, -x, x)
-		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, x, -x)
+		self.backdrop:Point('TOPLEFT', self.LeftBar, -E.Border, E.Border)
+		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, E.Border, -E.Border)
 	else
 		self.backdrop:OffsetFrameLevel(-1, self)
 	end
