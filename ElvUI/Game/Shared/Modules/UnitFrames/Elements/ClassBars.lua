@@ -187,24 +187,22 @@ function UF:Configure_ClassBar(frame)
 	bars:Size(barsWidth, barsHeight)
 
 	local isVertical = frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation
-	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
+	local isTotem = frame.ClassBar == 'Totems'
+	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or isTotem then
 		if frame.ClassBar == 'Runes' then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
 			bars.colorSpec = E.Modern and UF.db.colors.runeBySpec
 		end
 
-		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
+		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, isTotem and 4 or MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
 			local button = bars[i]
-			if button.backdrop then
-				button.backdrop:Hide()
+			local backdrop = button.backdrop
+			if backdrop then
+				backdrop:Hide()
 			end
 
 			if i <= MAX_CLASS_BAR then
-				if button.backdrop and not button.backdrop.forcedBorderColors then
-					button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-				end
-
 				button:Height(barsHeight)
 
 				if MAX_CLASS_BAR == 1 then
@@ -240,13 +238,21 @@ function UF:Configure_ClassBar(frame)
 					end
 				end
 
-				if button.backdrop then
-					button.backdrop:SetShown(frame.USE_MINI_CLASSBAR)
+				if backdrop then
+					if not backdrop.forcedBorderColors then
+						backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					end
+
+					backdrop:SetShown(frame.USE_MINI_CLASSBAR)
 				end
 
 				button:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 
-				if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Totems' then
+				if isTotem then
+					button.smoothing = (db.classbar.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+				end
+
+				if frame.ClassBar == 'ClassPower' or isTotem then
 					button.bg:SetParent(frame.USE_MINI_CLASSBAR and bars[i].backdrop or bars)
 				end
 			end

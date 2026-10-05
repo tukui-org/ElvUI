@@ -80,7 +80,7 @@ local function OnUpdate(self, elapsed)
 	local duration = self.totemDuration
 	local remaining = duration and duration:GetRemainingDuration()
 	if remaining then
-		self:SetValue(remaining)
+		self:SetValue(remaining, self.smoothing)
 	else
 		self:SetValue(0)
 	end
