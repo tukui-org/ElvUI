@@ -2567,6 +2567,7 @@ P.unitframe = {
 			orientation = 'LEFT',
 			threatStyle = 'GLOW',
 			threatPrimary = true,
+			growthY = 'DOWN',
 			colorOverride = 'USE_DEFAULT',
 			middleClickFocus = false,
 			width = 120,
