@@ -175,9 +175,10 @@ function UF:Configure_ClassBar(frame)
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
 	local ONE_LESS_BAR = MAX_CLASS_BAR - 1
+	local SINGLE_BAR = MAX_CLASS_BAR == 1
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		if MAX_CLASS_BAR == 1 or isEclipse or isStagger or isAlternative then
+		if SINGLE_BAR or (isEclipse or isStagger or isAlternative) then
 			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * 2) / 3
 		else
 			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * ONE_LESS_BAR) / MAX_CLASS_BAR
@@ -212,7 +213,7 @@ function UF:Configure_ClassBar(frame)
 			if i <= MAX_CLASS_BAR then
 				button:Height(barsHeight)
 
-				if MAX_CLASS_BAR == 1 then
+				if SINGLE_BAR then
 					button:Width(barsWidth)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
