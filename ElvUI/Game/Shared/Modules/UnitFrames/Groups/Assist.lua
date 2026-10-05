@@ -58,7 +58,7 @@ function UF:Update_AssistHeader(header, db)
 		header.positioned = true
 	end
 
-	local down = db.growthY == 'DOWN'
+	local down = db.growthY == 'UP'
 	header:ClearChildPoints()
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
 	header:SetAttribute('yOffset', down and db.verticalSpacing or -db.verticalSpacing)
