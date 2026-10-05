@@ -9,47 +9,10 @@ local hooksecurefunc = hooksecurefunc
 
 local data = S:AddCallbackForAddon('Blizzard_Menu', nil, nil, nil, nil, nil, 'misc')
 
-local backdrops = {}
-local function SkinFrame(frame)
-	frame:StripTextures()
-
-	if backdrops[frame] then
-		frame.backdrop = backdrops[frame] -- relink it back
-	else
-		frame:CreateBackdrop('Transparent') -- :SetTemplate errors out
-		frame.backdrop:SetInside(nil, 1, 5)
-
-		backdrops[frame] = frame.backdrop -- keep below CreateBackdrop
-
-		S:HandleTrimScrollBar(frame.ScrollBar)
-	end
-
-	frame.backdrop:OffsetFrameLevel(nil, frame)
-end
-
-local widgets = {}
-local function SkinFrameAttachments(frame)
-	if not frame.attachments then return end
-
-	local r, g, b = unpack(E.media.rgbvaluecolor)
-	for _, widget in next, frame.attachments do
-		if widget:IsObjectType('Texture') then
-			if widget:GetTexture() == 130940 then
-				widget:SetTexture(E.Media.Textures.ArrowUp)
-				widget:SetRotation(S.ArrowRotation.right)
-				widget:SetVertexColor(r, g, b)
-				widget:Size(12)
-
-				widgets[widget] = true
-			elseif widgets[widget] then
-				widget:SetRotation(S.ArrowRotation.up)
-				widgets[widget] = nil
-			end
-		end
-	end
-end
-
-local checkedAtlas = {
+local CHECKBOXES = {}
+local BACKDROPS = {}
+local WIDGETS = {}
+local ATLAS = {
 	['common-dropdown-icon-checkmark-yellow'] = true,
 	['common-dropdown-icon-radialtick-yellow'] = true,
 	['common-dropdown-icon-checkmark-yellow-classic'] = true,
@@ -57,20 +20,62 @@ local checkedAtlas = {
 	['common-dropdown-icon-radialtick-yellow-classic'] = true,
 }
 
+function data:SkinFrame()
+	self:StripTextures()
+
+	if BACKDROPS[self] then
+		self.backdrop = BACKDROPS[self] -- relink it back
+	else
+		self:CreateBackdrop('Transparent') -- :SetTemplate errors out
+		self.backdrop:SetInside(nil, 1, 5)
+
+		BACKDROPS[self] = self.backdrop -- keep below CreateBackdrop
+
+		S:HandleTrimScrollBar(self.ScrollBar)
+	end
+
+	self.backdrop:OffsetFrameLevel(nil, self)
+end
+
+function data:SkinFrameAttachments()
+	local objects = self.attachments
+	if not objects then return end
+
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	for _, widget in next, objects do
+		if widget:IsObjectType('Texture') then
+			if widget:GetTexture() == 130940 then
+				WIDGETS[widget] = widget:GetRotation()
+
+				widget:SetTexture(E.Media.Textures.ArrowUp)
+				widget:SetRotation(S.ArrowRotation.right)
+				widget:SetVertexColor(r, g, b)
+				widget:Size(12)
+			else
+				local rotation = WIDGETS[widget]
+				if rotation then
+					widget:SetRotation(rotation)
+
+					WIDGETS[widget] = nil
+				end
+			end
+		end
+	end
+end
+
 -- Menu rows are pooled - hide the box when Blizzard releases one
-local checkboxes = {}
-local function HideCheckbox(compositor)
-	local box = checkboxes[compositor.target]
+function data:HideCheckbox()
+	local box = CHECKBOXES[self.target]
 	if box then
 		box:Hide()
 	end
 end
 
-local function SkinCheckbox(_, button)
-	local leftTexture1, leftTexture2 = button.leftTexture1, button.leftTexture2
-	if not leftTexture1 then return end
+function data:SkinCheckbox(button)
+	local tex1, tex2 = button.leftTexture1, button.leftTexture2
+	if not tex1 then return end
 
-	local box = checkboxes[button]
+	local box = CHECKBOXES[button]
 	if not box then
 		box = CreateFrame('Frame', nil, button)
 		box:Size(12)
@@ -83,27 +88,29 @@ local function SkinCheckbox(_, button)
 		mark:SetInside()
 
 		box.mark = mark
-		checkboxes[button] = box
+		CHECKBOXES[button] = box
 	end
 
-	local atlas = (leftTexture2 or leftTexture1):GetAtlas()
-	box.mark:SetShown(checkedAtlas[atlas])
+	local mainTex = tex2 or tex1
+	local atlas = mainTex:GetAtlas()
+	box.mark:SetShown(ATLAS[atlas])
 
 	-- Pooled textures
-	leftTexture1:SetTexture(E.ClearTexture)
-	if leftTexture2 then
-		leftTexture2:SetTexture(E.ClearTexture)
+	tex1:SetTexture(E.ClearTexture)
+
+	if tex2 then
+		tex2:SetTexture(E.ClearTexture)
 	end
 
 	box:ClearAllPoints()
-	box:SetPoint('CENTER', leftTexture1)
+	box:SetPoint('CENTER', tex1)
 	box:Show()
 end
 
 -- Talent loadout dropdown hides the radio textures in a later init
-local function HierarchyCheckbox(button)
-	local box = checkboxes[button]
-	if box and box:IsShown() and not button.leftTexture1:IsShown() then
+function data:HierarchyCheckbox()
+	local box = CHECKBOXES[self]
+	if box and box:IsShown() and not self.leftTexture1:IsShown() then
 		box:Hide()
 	end
 end
@@ -112,8 +119,8 @@ function data:SkinMenu(manager, ownerRegion, menuDescription, anchor)
 	local menu = manager:GetOpenMenu()
 	if not menu then return end
 
-	SkinFrame(menu) -- Initial context menu
-	menuDescription:AddMenuAcquiredCallback(SkinFrame) -- SubMenus
+	data.SkinFrame(menu) -- Initial context menu
+	menuDescription:AddMenuAcquiredCallback(data.SkinFrame) -- SubMenus
 end
 
 function data:OpenMenu(ownerRegion, menuDescription, anchor)
@@ -128,9 +135,12 @@ function S:Blizzard_Menu()
 	local manager = _G.Menu.GetManager()
 	hooksecurefunc(manager, 'OpenMenu', data.OpenMenu)
 	hooksecurefunc(manager, 'OpenContextMenu', data.OpenContextMenu)
-	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', SkinFrameAttachments)
-	hooksecurefunc(_G.CompositorMixin, 'Detach', HideCheckbox)
-	hooksecurefunc(_G.MenuVariants, 'CreateCheckbox', SkinCheckbox)
-	hooksecurefunc(_G.MenuVariants, 'CreateRadio', SkinCheckbox)
-	hooksecurefunc(_G.MenuTemplates, 'SetHierarchyEnabled', HierarchyCheckbox)
+
+	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', data.SkinFrameAttachments)
+	hooksecurefunc(_G.CompositorMixin, 'Detach', data.HideCheckbox)
+
+	hooksecurefunc(_G.MenuVariants, 'CreateCheckbox', data.SkinCheckbox)
+	hooksecurefunc(_G.MenuVariants, 'CreateRadio', data.SkinCheckbox)
+
+	hooksecurefunc(_G.MenuTemplates, 'SetHierarchyEnabled', data.HierarchyCheckbox)
 end
