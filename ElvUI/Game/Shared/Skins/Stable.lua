@@ -34,7 +34,7 @@ local function SkinStableFrame()
 
 	stableFrame.MainHelpButton:Hide()
 
-	local stabledList = stableFrame.StabledList
+	local stabledList = stableFrame.StabledPetList
 	S:HandleTrimScrollBar(stabledList.ScrollBar)
 
 	stabledList:StripTextures()
