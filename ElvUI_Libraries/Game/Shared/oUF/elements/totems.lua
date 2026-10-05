@@ -73,19 +73,24 @@ local function OnLeave()
 	GameTooltip:Hide()
 end
 
-local function TotemOnUpdate(self, elapsed)
+local function OnUpdate(self, elapsed)
 	self.elapsed = (self.elapsed or 0) + elapsed
+	if self.elapsed < 0.1 then return end
+	self.elapsed = 0
 
-	if (self.elapsed >= .05) then -- 20 Hz is under a pixel per step on any sane bar width, no need to poll GetTotemInfo every frame
-		self.elapsed = 0
-
-		local _, _, startTime, expiration = GetTotemInfo(self:GetID())
-		local currentTime = GetTime() - startTime
-
-		if currentTime <= 0 or expiration <= 0 then
-			self:SetValue(0)
+	local totemDuration = self.totemDuration
+	if totemDuration then -- secret totem duration
+		local remaining = totemDuration:GetRemainingDuration()
+		if remaining then
+			self:SetValue(remaining)
 		else
-			self:SetValue(1 - (currentTime / expiration))
+			self:SetValue(0)
+		end
+	else
+		local slot = self:GetID()
+		local _, _, start, duration = GetTotemInfo(slot)
+		if not oUF:IsSecretValue(duration) then
+			self:SetValue(duration - (GetTime() - start))
 		end
 	end
 end
@@ -102,7 +107,7 @@ local function UpdateTotem(self, event, slot)
 	--]]
 	if(element.PreUpdate) then element:PreUpdate(slot) end
 
-	local totem, durationObj = element[priority[slot]]
+	local totem = element[priority[slot]]
 	local haveTotem, name, start, duration, icon = GetTotemInfo(slot) -- slot is the same as totem:GetID()
 	if haveTotem then
 		if totem.Icon then
@@ -110,16 +115,20 @@ local function UpdateTotem(self, event, slot)
 		end
 
 		if totem:IsObjectType('StatusBar') then
+			totem:SetMinMaxValues(0, duration)
 			totem:SetValue(0)
 		end
 	end
 
+	totem.totemDuration = nil
+
 	if totem.Cooldown then
 		if oUF:IsSecretValue(duration) then
-			durationObj = GetTotemDuration(slot)
+			local totemDuration = GetTotemDuration(slot)
+			totem.totemDuration = totemDuration
 
-			if durationObj then
-				totem.Cooldown:SetCooldownFromDuration(durationObj)
+			if totemDuration then
+				totem.Cooldown:SetCooldownFromDuration(totemDuration)
 			else
 				totem.Cooldown:Clear()
 			end
@@ -149,7 +158,7 @@ local function UpdateTotem(self, event, slot)
 	* durationObj - totem duration ([DurationObject](https://warcraft.wiki.gg/wiki/ScriptObject_DurationObject))
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(slot, haveTotem, name, start, duration, icon, durationObj)
+		return element:PostUpdate(slot, haveTotem, name, start, duration, icon, totem.totemDuration)
 	end
 end
 
@@ -192,7 +201,7 @@ local function Enable(self)
 			totem:SetID(i)
 
 			if totem:IsObjectType('StatusBar') then
-				totem:SetScript('OnUpdate', TotemOnUpdate)
+				totem:SetScript('OnUpdate', OnUpdate)
 			end
 
 			if totem:IsMouseEnabled() then
