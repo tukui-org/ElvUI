@@ -437,6 +437,7 @@ do --this can save some main file locals
 			z['Player-1168-0870FBCE']	= itsSimpy -- [Horde] Druid:	Imsojuicy
 			z['Player-1168-07C00783']	= itsSimpy -- [Horde] DH:		Imsopeachy
 			z['Player-1168-07B41C4C']	= itsSimpy -- [Horde] Paladin:	Imsosalty
+			z['Player-1168-0B0D8346']	= itsSimpy -- [Horde] Paladin:	Imsosour
 			z['Player-1168-0870F320']	= itsSimpy -- [Horde] Mage:		Imsospicy
 			z['Player-1168-0A395531']	= itsSimpy -- [Horde] Hunter:	Imsonutty
 			z['Player-1168-0A395540']	= itsSimpy -- [Horde] Monk:		Imsotasty
@@ -2231,16 +2232,20 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		body = (classLink and gsub(msg, arg2..'%-'..realm, pflag..classLink, 1)) or ((E:NotSecretValue(arg2) and arg2 ~= sender) and gsub(msg, arg2, sender, 1)) or msg
 	elseif specialType then -- contains special formatting
 		body = format(header..msg, pflag..sender)
-	else -- ignore special characters from players
+	elseif header then -- ignore special characters from players
 		body = format(header..'%s', pflag..sender, msg)
+	else -- new chat types might fail to here
+		body = msg
 	end
 
-	if not specialType and (channelLength > 0) then -- Add Channel
-		body = '|Hchannel:channel:'..arg8..'|h['..ResolvePrefixedChannelName(arg4)..']|h '..body
-	end
+	if header and not specialType then
+		if channelLength > 0 then -- Add Channel
+			body = '|Hchannel:channel:'..arg8..'|h['..ResolvePrefixedChannelName(arg4)..']|h '..body
+		end
 
-	if not specialType and not msgProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
-		body = CH:HandleShortChannels(body, CH.db.hideChannels)
+		if not msgProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
+			body = CH:HandleShortChannels(body, CH.db.hideChannels)
+		end
 	end
 
 	for _, filter in ipairs(CH.PluginMessageFilters) do
@@ -2393,7 +2398,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		if (chatType == 'SYSTEM' or chatType == 'SKILL' or chatType == 'CURRENCY' or chatType == 'MONEY' or
-			chatType == 'OPENING' or chatType == 'TRADESKILLS' or chatType == 'PET_INFO' or chatType == 'TARGETICONS' or chatType == 'BN_WHISPER_PLAYER_OFFLINE') then
+			chatType == 'OPENING' or chatType == 'TRADESKILLS' or chatType == 'PET_INFO' or chatType == 'TARGETICONS' or
+			chatType == 'BN_WHISPER_PLAYER_OFFLINE' or chatType == 'COLLECTED_APPEARANCE') then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'LOOT' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)

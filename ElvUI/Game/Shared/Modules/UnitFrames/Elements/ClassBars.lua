@@ -139,7 +139,8 @@ function UF:Configure_ClassBar(frame)
 	local db = frame.db
 	if not db then return end
 
-	local bars = frame[frame.ClassBar]
+	local classBar = frame.ClassBar
+	local bars = frame[classBar]
 	if not bars then return end
 
 	bars.Holder = frame.ClassBarHolder
@@ -163,13 +164,21 @@ function UF:Configure_ClassBar(frame)
 		bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 
+	local isRunes = classBar == 'Runes'
+	local isTotem = classBar == 'Totems'
+	local isStagger = classBar == 'Stagger'
+	local isClass = classBar == 'ClassPower'
+	local isEclipse = classBar == 'EclipseBar'
+	local isAlternative = classBar == 'AlternativePower'
+
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
 	local ONE_LESS_BAR = MAX_CLASS_BAR - 1
+	local SINGLE_BAR = MAX_CLASS_BAR == 1
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		if MAX_CLASS_BAR == 1 or frame.ClassBar == 'EclipseBar' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
+		if SINGLE_BAR or (isEclipse or isStagger or isAlternative) then
 			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * 2) / 3
 		else
 			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * ONE_LESS_BAR) / MAX_CLASS_BAR
@@ -187,27 +196,24 @@ function UF:Configure_ClassBar(frame)
 	bars:Size(barsWidth, barsHeight)
 
 	local isVertical = frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation
-	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
-		if frame.ClassBar == 'Runes' then
+	if isRunes or isTotem or isClass then
+		if isRunes then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
 			bars.colorSpec = E.Modern and UF.db.colors.runeBySpec
 		end
 
-		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
+		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, isTotem and 4 or MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
 			local button = bars[i]
-			if button.backdrop then
-				button.backdrop:Hide()
+			local backdrop = button.backdrop
+			if backdrop then
+				backdrop:Hide()
 			end
 
 			if i <= MAX_CLASS_BAR then
-				if button.backdrop and not button.backdrop.forcedBorderColors then
-					button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-				end
-
 				button:Height(barsHeight)
 
-				if MAX_CLASS_BAR == 1 then
+				if SINGLE_BAR then
 					button:Width(barsWidth)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
@@ -240,13 +246,21 @@ function UF:Configure_ClassBar(frame)
 					end
 				end
 
-				if button.backdrop then
-					button.backdrop:SetShown(frame.USE_MINI_CLASSBAR)
+				if backdrop then
+					if not backdrop.forcedBorderColors then
+						backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					end
+
+					backdrop:SetShown(frame.USE_MINI_CLASSBAR)
 				end
 
 				button:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 
-				if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Totems' then
+				if isTotem then
+					button.smoothing = (db.classbar.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+				end
+
+				if isClass or isTotem then
 					button.bg:SetParent(frame.USE_MINI_CLASSBAR and bars[i].backdrop or bars)
 				end
 			end
@@ -255,7 +269,7 @@ function UF:Configure_ClassBar(frame)
 		if bars.backdrop then
 			bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
 		end
-	elseif frame.ClassBar == 'EclipseBar' then
+	elseif isEclipse then
 		local lunarTex = bars.LunarBar:GetStatusBarTexture()
 
 		local lr, lg, lb = unpack(ElvUF.colors.ClassBars.DRUID[1])
@@ -276,7 +290,7 @@ function UF:Configure_ClassBar(frame)
 
 		bars.Arrow:ClearAllPoints()
 		bars.Arrow:Point('CENTER', lunarTex, isVertical and 'TOP' or 'RIGHT', 0, isVertical and -4 or 0)
-	elseif frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
+	elseif isStagger or isAlternative then
 		bars:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 	end
 

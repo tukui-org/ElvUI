@@ -65,12 +65,10 @@ end
 
 local function OnUpdate(bar, elapsed)
 	bar.elapsed = (bar.elapsed or 0) + elapsed
+	if bar.elapsed < 0.1 then return end
+	bar.elapsed = 0
 
-	if bar.elapsed > 0.05 then -- 20 Hz is under a pixel per step, smoothbars lerps between anyway
-		UpdateValue(bar)
-
-		bar.elapsed = 0
-	end
+	UpdateValue(bar)
 end
 
 local function CreateAuraBar(element, index)

@@ -953,7 +953,7 @@ function DT:BuildTables()
 	if not db.gold then db.gold = {} end
 	db.gold[realm] = db.gold[realm] or {}
 
-	local name = E.myname
+	local name = E.mynameFull
 	if not db.class then db.class = {} end
 	db.class[realm] = db.class[realm] or {}
 	db.class[realm][name] = E.myclass

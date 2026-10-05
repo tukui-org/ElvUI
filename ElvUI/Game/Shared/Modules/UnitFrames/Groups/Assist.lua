@@ -43,14 +43,9 @@ function UF:Update_AssistHeader(header, db)
 		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	end
 
-	header:SetAttribute('point', 'BOTTOM')
-	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute('yOffset', db.verticalSpacing)
-
 	if not header.positioned then
 		header:ClearAllPoints()
-		header:ClearChildPoints()
-		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -248)
+		header:Point('TOPLEFT', E.UIParent, 4, -248)
 
 		local width, height = header:GetSize()
 		local minHeight = max(height, 2 * db.height + db.verticalSpacing)
@@ -62,6 +57,12 @@ function UF:Update_AssistHeader(header, db)
 
 		header.positioned = true
 	end
+
+	local up = db.growthY == 'UP'
+	header:ClearChildPoints()
+	header:SetAttribute('columnAnchorPoint', 'LEFT')
+	header:SetAttribute('yOffset', up and db.verticalSpacing or -db.verticalSpacing)
+	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 end
 
 function UF:Update_AssistFrames(frame, db)

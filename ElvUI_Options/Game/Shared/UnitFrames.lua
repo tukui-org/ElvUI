@@ -1860,6 +1860,7 @@ for unit, locale in next, { tank = 'Tank', assist = 'Assist' } do
 	local group = ACH:Group(L[locale], nil, nil, nil, function(info) return E.db.unitframe.units[unit][info[#info]] end, function(info, value) E.db.unitframe.units[unit][info[#info]] = value UF:CreateAndUpdateHeaderGroup(unit) end)
 	group.args = GetUnitSettings(unit, UF.CreateAndUpdateHeaderGroup)
 	group.args.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, unit)
+	group.args.generalGroup.args.growthY = ACH:Select(L["Growth Y-Direction"], nil, 0, { UP = L["Up"], DOWN = L["Down"] })
 	group.args.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to show, they will act as if they are the player frame."], 2, function() UF:HeaderConfig(UF[unit], UF[unit].forceShow ~= true or nil) end)
 
 	group.args.name.args.attachTextTo.values = { Health = L["Health"], Frame = L["Frame"] }
