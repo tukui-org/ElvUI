@@ -78,20 +78,12 @@ local function OnUpdate(self, elapsed)
 	if self.elapsed < 0.1 then return end
 	self.elapsed = 0
 
-	local totemDuration = self.totemDuration
-	if totemDuration then -- secret totem duration
-		local remaining = totemDuration:GetRemainingDuration()
-		if remaining then
-			self:SetValue(remaining)
-		else
-			self:SetValue(0)
-		end
+	local duration = self.totemDuration
+	local remaining = duration and duration:GetRemainingDuration()
+	if remaining then
+		self:SetValue(remaining)
 	else
-		local slot = self:GetID()
-		local _, _, start, duration = GetTotemInfo(slot)
-		if not oUF:IsSecretValue(duration) then
-			self:SetValue(duration - (GetTime() - start))
-		end
+		self:SetValue(0)
 	end
 end
 
@@ -122,14 +114,8 @@ local function UpdateTotem(self, event, slot)
 	end
 
 	if totem.Cooldown then
-		if oUF:IsSecretValue(duration) then
-			if totemDuration then
-				totem.Cooldown:SetCooldownFromDuration(totemDuration)
-			else
-				totem.Cooldown:Clear()
-			end
-		elseif start and (duration and duration > 0) then
-			totem.Cooldown:SetCooldown(start, duration)
+		if totemDuration then
+			totem.Cooldown:SetCooldownFromDuration(totemDuration)
 		else
 			totem.Cooldown:Clear()
 		end
@@ -154,7 +140,7 @@ local function UpdateTotem(self, event, slot)
 	* durationObj - totem duration ([DurationObject](https://warcraft.wiki.gg/wiki/ScriptObject_DurationObject))
 	--]]
 	if(element.PostUpdate) then
-		return element:PostUpdate(slot, haveTotem, name, start, duration, icon, totem.totemDuration)
+		return element:PostUpdate(slot, haveTotem, name, start, duration, icon, totemDuration)
 	end
 end
 
