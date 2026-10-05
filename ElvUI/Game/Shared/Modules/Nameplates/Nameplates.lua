@@ -709,26 +709,6 @@ function NP:ConfigureAll(init)
 	NP:ToggleStaticPlate()
 end
 
-function NP:PlateFade(nameplate, timeToFade, startAlpha, endAlpha)
-	-- we need our own function because we want a smooth transition and dont want it to force update every pass.
-	-- its controlled by fadeTimer which is reset when UIFrameFadeOut or UIFrameFadeIn code runs.
-
-	if not nameplate.FadeObject then
-		nameplate.FadeObject = {}
-	end
-
-	nameplate.FadeObject.timeToFade = (nameplate.isTarget and 0) or timeToFade
-	nameplate.FadeObject.startAlpha = startAlpha
-	nameplate.FadeObject.endAlpha = endAlpha
-	nameplate.FadeObject.diffAlpha = endAlpha - startAlpha
-
-	if nameplate.FadeObject.fadeTimer then
-		nameplate.FadeObject.fadeTimer = 0
-	else
-		E:UIFrameFade(nameplate, nameplate.FadeObject)
-	end
-end
-
 function NP:GetNPCID(guid)
 	if E:IsSecretValue(guid) or not guid then return end
 
@@ -868,10 +848,6 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		end
 
 		NP:UpdatePlateBase(self)
-	end
-
-	if (NP.db.fadeIn and not NP.SkipFading) and self.frameType ~= 'PLAYER' then
-		NP:PlateFade(self, 1, 0, 1)
 	end
 end
 
