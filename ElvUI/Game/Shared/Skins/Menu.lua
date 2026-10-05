@@ -36,7 +36,7 @@ function data:HandleMenu()
 	self.backdrop:OffsetFrameLevel(nil, self)
 end
 
-function data:HandleAttachments()
+function data:HandleAttachments() -- self is compositor
 	local objects = self.attachments
 	if not objects then return end
 
@@ -52,7 +52,7 @@ function data:HandleAttachments()
 end
 
 -- Menu rows are pooled - hide the box when Blizzard releases one
-function data:HideCheckbox()
+function data:HideCheckbox() -- self is compositor
 	local box = CHECKBOXES[self.target]
 	if box then
 		box:Hide()
@@ -108,15 +108,16 @@ function data:SkinMenu(manager, ownerRegion, menuDescription, anchor)
 	if not menu then return end
 
 	data.HandleMenu(menu) -- Initial context menu
+
 	menuDescription:AddMenuAcquiredCallback(data.HandleMenu) -- SubMenus
 end
 
 function data:OpenMenu(ownerRegion, menuDescription, anchor)
-	data:SkinMenu(self, ownerRegion, menuDescription, anchor) -- self is manager (Menu.GetManager)
+	data:SkinMenu(self, ownerRegion, menuDescription, anchor) -- self is manager: Menu.GetManager
 end
 
 function data:OpenContext(ownerRegion, menuDescription)
-	data:SkinMenu(self, ownerRegion, menuDescription) -- self is manager (Menu.GetManager)
+	data:SkinMenu(self, ownerRegion, menuDescription) -- self is manager: Menu.GetManager
 end
 
 function S:Blizzard_Menu()
