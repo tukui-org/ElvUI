@@ -341,7 +341,6 @@ function S:Blizzard_PVPUI()
 		BonusFrame.ShadowOverlay:Hide()
 		BonusFrame.WorldBattlesTexture:Hide()
 
-		-- TODO: This is a fake dropdown
 		HandleHonorDropdown(_G.HonorQueueFrameTypeDropDown)
 
 		for _, bu in next, { BonusFrame.RandomBGButton, BonusFrame.CallToArmsButton, BonusFrame.WorldPVP1Button, BonusFrame.WorldPVP2Button } do

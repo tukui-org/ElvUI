@@ -47,6 +47,11 @@ local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
 	['UI-Character-Info-Resistance-Arcane'] = spellSchoolIcon..7,
 }
 
+local fillColors = {
+	['common-stat-bar-blue'] = { .03, .43, .92 },
+	['common-stat-bar-green'] = { .23, 1, 0 },
+}
+
 local ResistanceCoords = {
 	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
 	{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
@@ -445,8 +450,21 @@ local function HandleCategory(frame)
 	frame.backdrop:Size(150, 18)
 end
 
-local function ColoredProgressBar_SetFillWidth(bar, width)
-	bar.Fill:SetShown(width > 0)
+-- Blizzard sets the atlas, a white tint and a vertically flipped TexCoord again on every skill init
+local function ColoredProgressBar_UpdateFill(bar)
+	local fill = bar.Fill
+	local color = fillColors[fill:GetAtlas()]
+	if color then
+		fill:SetVertexColor(unpack(color))
+	end
+
+	fill:SetTexture(E.media.normTex)
+	fill:SetTexCoord(0, 1, 0, 1)
+end
+
+local function ColoredProgressBar_SetFillPercent(bar, percent)
+	ColoredProgressBar_UpdateFill(bar)
+	bar.Fill:SetShown(percent > 0)
 end
 
 -- ColoredProgressBarTemplate: unnamed background, a masked Fill and Text
@@ -463,8 +481,10 @@ local function HandleColoredProgressBar(bar)
 	bar.Fill:ClearAllPoints()
 	bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
 	bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
+	E:RegisterStatusBar(bar.Fill)
 
-	hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
+	ColoredProgressBar_UpdateFill(bar)
+	hooksecurefunc(bar, 'SetFillPercent', ColoredProgressBar_SetFillPercent)
 end
 
 local function HappinessInfo_UpdateHappiness(info)
@@ -617,7 +637,7 @@ local function HandleListHeader(header)
 		end
 	end
 
-	header:CreateBackdrop('Transparent')
+	header:CreateBackdrop()
 	header.backdrop:SetInside(header, 0, 1)
 end
 

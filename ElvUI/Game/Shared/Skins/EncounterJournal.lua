@@ -249,10 +249,6 @@ local function JourneysListUpdateChild(child)
 	-- This check is to avoid separators and headers from being skinned
 	if (child.RenownCardFactionName or child.JourneyCardName) and not child.IsSkinned then
 
-		-- ToDo: Doesn't look great
-		-- child:StripTextures()
-		-- child:SetTemplate()
-
 		local watchedFactionToggle = child.WatchedFactionToggleFrame
 		if watchedFactionToggle and watchedFactionToggle.WatchFactionCheckbox then
 			S:HandleCheckBox(watchedFactionToggle.WatchFactionCheckbox)
