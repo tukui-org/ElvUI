@@ -437,6 +437,7 @@ do --this can save some main file locals
 			z['Player-1168-0870FBCE']	= itsSimpy -- [Horde] Druid:	Imsojuicy
 			z['Player-1168-07C00783']	= itsSimpy -- [Horde] DH:		Imsopeachy
 			z['Player-1168-07B41C4C']	= itsSimpy -- [Horde] Paladin:	Imsosalty
+			z['Player-1168-0B0D8346']	= itsSimpy -- [Horde] Paladin:	Imsosour
 			z['Player-1168-0870F320']	= itsSimpy -- [Horde] Mage:		Imsospicy
 			z['Player-1168-0A395531']	= itsSimpy -- [Horde] Hunter:	Imsonutty
 			z['Player-1168-0A395540']	= itsSimpy -- [Horde] Monk:		Imsotasty
