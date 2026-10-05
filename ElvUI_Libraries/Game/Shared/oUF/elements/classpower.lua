@@ -395,7 +395,7 @@ local function Visibility(self, element, event, unit)
 		classPowerID = POWERTYPE_COMBO_POINTS
 
 		requirePower = POWERTYPE_ENERGY
-		requireSpell = oUF.isModern and SPELL_SHRED or SPELL_CATFORM
+		requireSpell = oUF.isRetail and SPELL_SHRED or SPELL_CATFORM
 	elseif myClass == 'PALADIN' then
 		classPowerID = POWERTYPE_HOLY_POWER
 	elseif myClass == 'ROGUE' then
