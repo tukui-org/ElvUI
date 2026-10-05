@@ -25,7 +25,7 @@ local classicCategoryButtonIcons = {
 	464820, -- interface\icons\achievement_general_stayclassy
 }
 
-if E.Forever then -- ToDo: Forever
+if E.Forever then
 	S:AddCallbackForAddon('Blizzard_LFGUtil', 'PVPReadyDialog', nil, nil, nil, nil, 'pvp')
 else
 	S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog', nil, nil, nil, nil, 'pvp')

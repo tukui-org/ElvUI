@@ -139,10 +139,10 @@ local function SkinProfessions()
 		S:HandleButton(_G['PrimaryProfession'..i], true, nil, true)
 	end
 
-	hooksecurefunc('FormatProfession', FormatProfessionHook) -- ToDo: Forever
+	hooksecurefunc('FormatProfession', FormatProfessionHook)
 
 	if E.Retail then
-		hooksecurefunc('ProfessionsBookFrame_Update', ProfessionsBookFrameUpdate) -- ToDo: Forever
+		hooksecurefunc('ProfessionsBookFrame_Update', ProfessionsBookFrameUpdate)
 	else
 		hooksecurefunc('UpdateProfessionButton', ProfessionButtonUpdate)
 	end

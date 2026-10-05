@@ -216,7 +216,7 @@ do
 end
 
 function data:HandleAbilityTabs(viewer)
-	if E.Forever then -- ToDo: Forever
+	if E.Forever then
 		for _, tab in next, viewer.TabButtons do
 			S:HandleLargeSideTab(tab)
 		end
