@@ -58,11 +58,11 @@ function UF:Update_TankHeader(header, db)
 		header.positioned = true
 	end
 
-	local down = db.growthY == 'UP'
+	local up = db.growthY == 'UP'
 	header:ClearChildPoints()
 	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute('yOffset', down and db.verticalSpacing or -db.verticalSpacing)
-	header:SetAttribute('point', down and 'BOTTOM' or 'TOP')
+	header:SetAttribute('yOffset', up and db.verticalSpacing or -db.verticalSpacing)
+	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 end
 
 function UF:Update_TankFrames(frame, db)
