@@ -33,9 +33,14 @@ local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFD] = 'UNIGNORESLOT'
 }
 
-local oldAtlas = {
+local OLD_ATLAS = {
 	Options_ListExpand_Right = 1,
 	Options_ListExpand_Right_Expanded = 1
+}
+
+local FILL_COLORS = {
+	['common-stat-bar-blue'] = { r = 0.03, g = 0.43, b = 0.92 },
+	['common-stat-bar-green'] = { r = 0.23, g = 1, b = 0 },
 }
 
 local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
@@ -45,11 +50,6 @@ local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
 	['UI-Character-Info-Resistance-Frost'] = spellSchoolIcon..5,
 	['UI-Character-Info-Resistance-Shadow'] = spellSchoolIcon..6,
 	['UI-Character-Info-Resistance-Arcane'] = spellSchoolIcon..7,
-}
-
-local fillColors = {
-	['common-stat-bar-blue'] = { .03, .43, .92 },
-	['common-stat-bar-green'] = { .23, 1, 0 },
 }
 
 local ResistanceCoords = {
@@ -71,7 +71,7 @@ if E.Forever then -- Forever only addon
 end
 
 local function UpdateCollapse(texture, atlas)
-	if not atlas or oldAtlas[atlas] then
+	if not atlas or OLD_ATLAS[atlas] then
 		local parent = texture:GetParent()
 		if parent:IsCollapsed() then
 			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Expand')
@@ -453,9 +453,10 @@ end
 -- Blizzard sets the atlas, a white tint and a vertically flipped TexCoord again on every skill init
 local function ColoredProgressBar_UpdateFill(bar)
 	local fill = bar.Fill
-	local color = fillColors[fill:GetAtlas()]
+	local atlas = fill:GetAtlas()
+	local color = FILL_COLORS[atlas]
 	if color then
-		fill:SetVertexColor(unpack(color))
+		fill:SetVertexColor(color.r, color.g, color.b)
 	end
 
 	fill:SetTexture(E.media.normTex)
@@ -464,6 +465,7 @@ end
 
 local function ColoredProgressBar_SetFillPercent(bar, percent)
 	ColoredProgressBar_UpdateFill(bar)
+
 	bar.Fill:SetShown(percent > 0)
 end
 
@@ -477,13 +479,15 @@ local function HandleColoredProgressBar(bar)
 
 	bar.Text:FontTemplate()
 
-	bar.Fill:RemoveMaskTexture(bar.Mask)
 	bar.Fill:ClearAllPoints()
 	bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
 	bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
+	bar.Fill:RemoveMaskTexture(bar.Mask)
+
 	E:RegisterStatusBar(bar.Fill)
 
 	ColoredProgressBar_UpdateFill(bar)
+
 	hooksecurefunc(bar, 'SetFillPercent', ColoredProgressBar_SetFillPercent)
 end
 
