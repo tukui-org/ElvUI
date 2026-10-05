@@ -2234,7 +2234,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		body = format(header..msg, pflag..sender)
 	elseif header then -- ignore special characters from players
 		body = format(header..'%s', pflag..sender, msg)
-	else -- Forever: COLLECTED_APPEARANCE will end up here
+	else -- new chat types might fail to here
 		body = msg
 	end
 
@@ -2398,7 +2398,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		if (chatType == 'SYSTEM' or chatType == 'SKILL' or chatType == 'CURRENCY' or chatType == 'MONEY' or
-			chatType == 'OPENING' or chatType == 'TRADESKILLS' or chatType == 'PET_INFO' or chatType == 'TARGETICONS' or chatType == 'BN_WHISPER_PLAYER_OFFLINE') then
+			chatType == 'OPENING' or chatType == 'TRADESKILLS' or chatType == 'PET_INFO' or chatType == 'TARGETICONS' or
+			chatType == 'BN_WHISPER_PLAYER_OFFLINE' or chatType == 'COLLECTED_APPEARANCE') then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'LOOT' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
