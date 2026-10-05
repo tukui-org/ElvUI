@@ -253,8 +253,6 @@ function NP:Update_Fader(nameplate)
 	if not vis or vis.showAlways then
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
-
-			NP:PlateFade(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
 	elseif db.enable then
 		if not nameplate.Fader then

@@ -407,7 +407,6 @@ NamePlates.generalGroup.args.showFriendlyCombat = ACH:Select(L["Friendly Combat 
 NamePlates.generalGroup.args.spacer1 = ACH:Spacer(5)
 NamePlates.generalGroup.args.clampToScreen = ACH:Toggle(L["Clamp Nameplates"], L["Clamp nameplates to the top of the screen when outside of view."], 7, nil, nil, nil, nil, nil, not E.Modern)
 NamePlates.generalGroup.args.highlight = ACH:Toggle(L["Hover Highlight"], nil, 8)
-NamePlates.generalGroup.args.fadeIn = ACH:Toggle(L["Alpha Fading"], nil, 9)
 NamePlates.generalGroup.args.spacer2 = ACH:Spacer(10, 'full')
 NamePlates.generalGroup.args.multiplier = ACH:Range(L["Multiplier"], L["Backdrop Multiplier"], 11, { softMin = 0.2, min = 0, softMax = 0.8, max = 1, step = 0.01 })
 NamePlates.generalGroup.args.overlapV = ACH:Range(L["Overlap Vertical"], L["Percentage amount for vertical overlap of Nameplates."], 12, { min = 0, max = 3, step = .1 })

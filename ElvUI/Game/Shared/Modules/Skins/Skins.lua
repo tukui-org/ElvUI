@@ -497,9 +497,8 @@ do -- We need to test this for the BGScore frame
 				nextAvailable:CreateBackdrop()
 
 				if nextAvailable.Icon then
-					local x = E.PixelMode and 1 or 2
-					nextAvailable.backdrop:Point('TOPLEFT', nextAvailable.Icon, -x, x)
-					nextAvailable.backdrop:Point('BOTTOMRIGHT', nextAvailable.Icon, x, -x)
+					nextAvailable.backdrop:Point('TOPLEFT', nextAvailable.Icon, -E.Border, E.Border)
+					nextAvailable.backdrop:Point('BOTTOMRIGHT', nextAvailable.Icon, E.Border, -E.Border)
 				end
 			end
 

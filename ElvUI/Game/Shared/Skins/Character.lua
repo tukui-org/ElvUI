@@ -1082,8 +1082,8 @@ local function SkinPaperDollFrame(CharacterFrame)
 	else
 		_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0, 0, 0)
 		CharacterModelScene:CreateBackdrop()
-		CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-		CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+		CharacterModelScene.backdrop:Point('TOPLEFT', -E.Border, E.Border)
+		CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.Border, -(E.Border+1))
 	end
 
 	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
@@ -1189,8 +1189,8 @@ local function SkinPetPaperDollFrame()
 		_G.PetModelFrameShadowOverlay:StripTextures()
 
 		PetModelFrame:CreateBackdrop()
-		PetModelFrame.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-		PetModelFrame.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+		PetModelFrame.backdrop:Point('TOPLEFT', -E.Border, E.Border)
+		PetModelFrame.backdrop:Point('BOTTOMRIGHT', E.Border, -(E.Border+1))
 
 		S:HandleStatusBar(_G.PetPaperDollFrameExpBar)
 		S:HandleRotateButton(_G.PetModelFrameRotateLeftButton)

@@ -413,9 +413,10 @@ local function HandleItemButton(item)
 	item:Size(143, 40)
 	item:OffsetFrameLevel(2)
 
+	local offset = E.Border * 2
 	item.Icon:Size(E.PixelMode and 35 or 32)
 	item.Icon:SetDrawLayer('ARTWORK')
-	item.Icon:Point('TOPLEFT', E.PixelMode and 2 or 4, -(E.PixelMode and 2 or 4))
+	item.Icon:Point('TOPLEFT', offset, -offset)
 	S:HandleIcon(item.Icon)
 
 	item.Count:SetDrawLayer('OVERLAY')

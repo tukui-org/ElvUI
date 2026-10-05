@@ -974,60 +974,56 @@ if Feat_UseCustomFlyout then
 		self:SetParent(parent)
 
 		local direction = parent:GetAttribute("flyoutDirection") or "UP"
-
-		local usedSlots = 0
-		local prevButton
+		local usedSlots, prevButton = 0
 		for slotID, slotInfo in ipairs(info.slots) do
-			if slotInfo.isKnown then
-				usedSlots = usedSlots + 1
-				local slotButton = self:GetFrameRef("flyoutButton" .. usedSlots)
+			usedSlots = usedSlots + 1
+			local slotButton = self:GetFrameRef("flyoutButton" .. usedSlots)
 
-				-- set secure action attributes
-				slotButton:SetAttribute("type", "spell")
-				slotButton:SetAttribute("spell", slotInfo.spellID)
+			-- set secure action attributes
+			slotButton:SetAttribute("type", "spell")
+			slotButton:SetAttribute("spell", slotInfo.spellID)
 
-				-- custom ones for elvui
-				slotButton:SetAttribute("spellName", slotInfo.spellName)
+			-- custom ones for elvui
+			slotButton:SetAttribute("spellName", slotInfo.spellName)
 
-				-- set LAB attributes
-				slotButton:SetAttribute("labtype-0", "spell")
-				slotButton:SetAttribute("labaction-0", slotInfo.spellID)
+			-- set LAB attributes
+			slotButton:SetAttribute("labtype-0", "spell")
+			slotButton:SetAttribute("labaction-0", slotInfo.spellID)
 
-				-- run LAB updates
-				slotButton:CallMethod("SetStateFromHandlerInsecure", 0, "spell", slotInfo.overrideSpellID or slotInfo.spellID)
-				slotButton:CallMethod("UpdateAction")
+			-- run LAB updates
+			slotButton:CallMethod("SetStateFromHandlerInsecure", 0, "spell", slotInfo.overrideSpellID or slotInfo.spellID)
+			slotButton:CallMethod("UpdateAction")
 
-				slotButton:ClearAllPoints()
+			slotButton:ClearAllPoints()
 
-				if direction == "UP" then
-					if prevButton then
-						slotButton:SetPoint("BOTTOM", prevButton, "TOP", 0, SPELLFLYOUT_DEFAULT_SPACING)
-					else
-						slotButton:SetPoint("BOTTOM", self, "BOTTOM", 0, SPELLFLYOUT_INITIAL_SPACING)
-					end
-				elseif direction == "DOWN" then
-					if prevButton then
-						slotButton:SetPoint("TOP", prevButton, "BOTTOM", 0, -SPELLFLYOUT_DEFAULT_SPACING)
-					else
-						slotButton:SetPoint("TOP", self, "TOP", 0, -SPELLFLYOUT_INITIAL_SPACING)
-					end
-				elseif direction == "LEFT" then
-					if prevButton then
-						slotButton:SetPoint("RIGHT", prevButton, "LEFT", -SPELLFLYOUT_DEFAULT_SPACING, 0)
-					else
-						slotButton:SetPoint("RIGHT", self, "RIGHT", -SPELLFLYOUT_INITIAL_SPACING, 0)
-					end
-				elseif direction == "RIGHT" then
-					if prevButton then
-						slotButton:SetPoint("LEFT", prevButton, "RIGHT", SPELLFLYOUT_DEFAULT_SPACING, 0)
-					else
-						slotButton:SetPoint("LEFT", self, "LEFT", SPELLFLYOUT_INITIAL_SPACING, 0)
-					end
+			if direction == "UP" then
+				if prevButton then
+					slotButton:SetPoint("BOTTOM", prevButton, "TOP", 0, SPELLFLYOUT_DEFAULT_SPACING)
+				else
+					slotButton:SetPoint("BOTTOM", self, "BOTTOM", 0, SPELLFLYOUT_INITIAL_SPACING)
 				end
-
-				slotButton:Show()
-				prevButton = slotButton
+			elseif direction == "DOWN" then
+				if prevButton then
+					slotButton:SetPoint("TOP", prevButton, "BOTTOM", 0, -SPELLFLYOUT_DEFAULT_SPACING)
+				else
+					slotButton:SetPoint("TOP", self, "TOP", 0, -SPELLFLYOUT_INITIAL_SPACING)
+				end
+			elseif direction == "LEFT" then
+				if prevButton then
+					slotButton:SetPoint("RIGHT", prevButton, "LEFT", -SPELLFLYOUT_DEFAULT_SPACING, 0)
+				else
+					slotButton:SetPoint("RIGHT", self, "RIGHT", -SPELLFLYOUT_INITIAL_SPACING, 0)
+				end
+			elseif direction == "RIGHT" then
+				if prevButton then
+					slotButton:SetPoint("LEFT", prevButton, "RIGHT", SPELLFLYOUT_DEFAULT_SPACING, 0)
+				else
+					slotButton:SetPoint("LEFT", self, "LEFT", SPELLFLYOUT_INITIAL_SPACING, 0)
+				end
 			end
+
+			slotButton:Show()
+			prevButton = slotButton
 		end
 
 		-- hide excess buttons
@@ -1199,20 +1195,22 @@ if Feat_UseCustomFlyout then
 		if InCombatLockdown() or InSync then return end
 		InSync = true
 
-		local maxNumSlots = 0
-
+		local maxSlots = 0
 		local data = "LAB_FlyoutInfo = newtable();\n"
 		for flyoutID, info in pairs(lib.FlyoutInfo) do
 			if info.isKnown then
 				local numSlots = 0
-				data = data .. ("local info = newtable();LAB_FlyoutInfo[%d] = info;info.slots = newtable();\n"):format(flyoutID)
+				data = data .. format("local info = newtable();LAB_FlyoutInfo[%d] = info;info.slots = newtable();\n", flyoutID)
+
 				for slotID, slotInfo in ipairs(info.slots) do
-					data = data .. ("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %s;\n"):format(flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, slotInfo.isKnown and "true" or "nil", slotInfo.spellName and format('"%s"', slotInfo.spellName) or nil)
-					numSlots = numSlots + 1
+					if slotInfo.isKnown then
+						data = data .. format("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %q;\n", flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, tostring(slotInfo.isKnown), slotInfo.spellName or "nil")
+						numSlots = numSlots + 1
+					end
 				end
 
-				if numSlots > maxNumSlots then
-					maxNumSlots = numSlots
+				if numSlots > maxSlots then
+					maxSlots = numSlots
 				end
 			end
 		end
@@ -1220,8 +1218,9 @@ if Feat_UseCustomFlyout then
 		-- load generated data into the restricted environment
 		GetFlyoutHandler():Execute(data)
 
-		if maxNumSlots > #lib.FlyoutButtons then
-			for i = #lib.FlyoutButtons + 1, maxNumSlots do
+		local numFlyouts = #lib.FlyoutButtons
+		if maxSlots > numFlyouts then
+			for i = numFlyouts + 1, maxSlots do
 				local button = lib:CreateButton(i, "LABFlyoutButton" .. i, lib.flyoutHandler, nil)
 
 				button:SetScale(0.8)
@@ -1234,19 +1233,22 @@ if Feat_UseCustomFlyout then
 
 				-- link the button to the header
 				lib.flyoutHandler:SetFrameRef("flyoutButton" .. i, button)
-				tinsert(lib.FlyoutButtons, button)
+
+				tinsert(lib.FlyoutButtons, button) -- add button
 
 				lib.callbacks:Fire("OnFlyoutButtonCreated", button)
 			end
 
-			lib.flyoutHandler:SetAttribute("numFlyoutButtons", #lib.FlyoutButtons)
+			numFlyouts = #lib.FlyoutButtons -- update count
+
+			lib.flyoutHandler:SetAttribute("numFlyoutButtons", numFlyouts)
 		end
 
 		-- hide flyout frame
 		GetFlyoutHandler():Hide()
 
 		-- ensure buttons are cleared, they will be filled when the flyout is shown
-		for i = 1, #lib.FlyoutButtons do
+		for i = 1, numFlyouts do
 			lib.FlyoutButtons[i]:SetState(0, "empty")
 		end
 
@@ -1259,7 +1261,12 @@ if Feat_UseCustomFlyout then
 		for flyoutID = 1, 300 do
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
 			if success and numSlots then
-				local data = { numSlots = numSlots, isKnown = isKnown, slots = {} }
+				local data = {
+					numSlots = numSlots,
+					isKnown = isKnown,
+					slots = {}
+				}
+
 				for slotID = 1, numSlots do
 					local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
@@ -1269,7 +1276,12 @@ if Feat_UseCustomFlyout then
 						isKnownSlot = false
 					end
 
-					data.slots[slotID] = { spellID = spellID, spellName = spellName, overrideSpellID = overrideSpellID, isKnown = isKnownSlot }
+					data.slots[slotID] = {
+						spellID = spellID,
+						spellName = spellName,
+						overrideSpellID = overrideSpellID,
+						isKnown = isKnownSlot
+					}
 				end
 
 				lib.FlyoutInfo[flyoutID] = data
@@ -1279,7 +1291,7 @@ if Feat_UseCustomFlyout then
 		SyncFlyoutInfoToHandler()
 	end
 
-	-- update flyout information (mostly the isKnown flag)
+	-- update flyout information
 	function UpdateFlyoutSpells()
 		if InCombatLockdown() then
 			FlyoutUpdateQueued = true
@@ -1290,8 +1302,9 @@ if Feat_UseCustomFlyout then
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
 			if success then
 				data.isKnown = isKnown
+				data.numSlots = numSlots or 0
 
-				if numSlots and isKnown then
+				if isKnown and numSlots then
 					for slotID = 1, numSlots do
 						local spellID, overrideSpellID, isKnownSlot, spellName = GetFlyoutSlotInfo(flyoutID, slotID)
 
@@ -1301,10 +1314,11 @@ if Feat_UseCustomFlyout then
 							isKnownSlot = false
 						end
 
-						data.slots[slotID].spellID = spellID
-						data.slots[slotID].spellName = spellName
-						data.slots[slotID].overrideSpellID = overrideSpellID
-						data.slots[slotID].isKnown = isKnownSlot
+						local slotInfo = data.slots[slotID]
+						slotInfo.spellID = spellID
+						slotInfo.spellName = spellName
+						slotInfo.overrideSpellID = overrideSpellID
+						slotInfo.isKnown = isKnownSlot
 					end
 				end
 			end
