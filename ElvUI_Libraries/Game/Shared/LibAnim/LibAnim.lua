@@ -506,6 +506,14 @@ local AnimMethods = {
 			end
 		end,
 
+		RemoveChildren = function(self)
+			if not self.children then return end
+
+			wipe(self.children)
+
+			self.mainChild = nil
+		end,
+
 		SetScript = function(self, handler, func)
 			handler = strlower(handler)
 

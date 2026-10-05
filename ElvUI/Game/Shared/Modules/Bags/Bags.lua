@@ -566,8 +566,7 @@ function B:NewItemGlowSlotSwitch(slot, show)
 
 		glow:Show()
 
-		local bank = bag.isBank and B.BankFrame
-		B:ShowItemGlow(bank or B.BagFrame, glow)
+		B:ShowItemGlow(bag.isBank and B.BankFrame or B.BagFrame)
 	else
 		glow:Hide()
 
@@ -3262,35 +3261,20 @@ function B:ShowBankTab(f, bankTab)
 end
 
 function B:ItemGlowOnFinished()
-	if self:GetChange() == 1 then
-		self:SetChange(0)
-	else
-		self:SetChange(1)
-	end
+	self:SetChange(self:GetChange() == 1 and 0 or 1)
 end
 
-function B:ShowItemGlow(bag, newItemGlow)
-	if newItemGlow then
-		newItemGlow:SetAlpha(1)
-	end
+function B:ShowItemGlow(bag)
+	if bag.NewItemGlow:IsPlaying() then return end
 
-	if not bag.NewItemGlow:IsPlaying() then
-		bag.NewItemGlow:Play()
-	end
+	bag.NewItemGlow:Play()
 end
 
 function B:HideItemGlow(bag)
-	if bag.NewItemGlow:IsPlaying() then
-		bag.NewItemGlow:Stop()
+	if not bag.NewItemGlow:IsPlaying() then return end
 
-		local glow = bag.NewItemGlow.Fade
-		local slots = glow.children
-		for key, itemGlow in next, slots do
-			itemGlow:SetAlpha(0)
-
-			slots[key] = nil
-		end
-	end
+	bag.NewItemGlow:Stop()
+	bag.NewItemGlow.Fade:RemoveChildren()
 end
 
 function B:SetupItemGlow(frame)
@@ -3298,10 +3282,10 @@ function B:SetupItemGlow(frame)
 	frame.NewItemGlow:SetLooping(true)
 
 	local glow = frame.NewItemGlow:CreateAnimation('fade')
+	glow:SetScript('OnFinished', B.ItemGlowOnFinished)
+	glow:SetEasing('in')
 	glow:SetDuration(0.7)
 	glow:SetChange(0)
-	glow:SetEasing('in')
-	glow:SetScript('OnFinished', B.ItemGlowOnFinished)
 
 	frame.NewItemGlow.Fade = glow
 end
@@ -3562,8 +3546,8 @@ function B:CreateSellFrame()
 	B.SellFrame.statusbar:CreateBackdrop('Transparent')
 
 	B.SellFrame.statusbar.anim = _G.CreateAnimationGroup(B.SellFrame.statusbar)
-	B.SellFrame.statusbar.anim.progress = B.SellFrame.statusbar.anim:CreateAnimation('Progress')
-	B.SellFrame.statusbar.anim.progress:SetEasing('Out')
+	B.SellFrame.statusbar.anim.progress = B.SellFrame.statusbar.anim:CreateAnimation('progress')
+	B.SellFrame.statusbar.anim.progress:SetEasing('out')
 	B.SellFrame.statusbar.anim.progress:SetDuration(0.3)
 
 	B.SellFrame.statusbar.ValueText = B.SellFrame.statusbar:CreateFontString(nil, 'OVERLAY')

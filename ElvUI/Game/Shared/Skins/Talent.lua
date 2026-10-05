@@ -260,7 +260,7 @@ local function SkinMistsTalentFrame()
 		transition:SetLooping(true)
 		row.transition = transition
 
-		local colorAnimation = transition:CreateAnimation('Color')
+		local colorAnimation = transition:CreateAnimation('color')
 		colorAnimation:SetDuration(0.7)
 		colorAnimation:SetColorType('border')
 		colorAnimation:SetChange(unpack(E.media.rgbvaluecolor))
