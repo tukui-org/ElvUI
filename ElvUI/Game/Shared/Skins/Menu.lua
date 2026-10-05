@@ -11,7 +11,6 @@ local data = S:AddCallbackForAddon('Blizzard_Menu', nil, nil, nil, nil, nil, 'mi
 
 local CHECKBOXES = {}
 local BACKDROPS = {}
-local WIDGETS = {}
 local ATLAS = {
 	['common-dropdown-icon-checkmark-yellow'] = true,
 	['common-dropdown-icon-radialtick-yellow'] = true,
@@ -20,7 +19,7 @@ local ATLAS = {
 	['common-dropdown-icon-radialtick-yellow-classic'] = true,
 }
 
-function data:SkinFrame()
+function data:HandleMenu()
 	self:StripTextures()
 
 	if BACKDROPS[self] then
@@ -37,28 +36,17 @@ function data:SkinFrame()
 	self.backdrop:OffsetFrameLevel(nil, self)
 end
 
-function data:SkinFrameAttachments()
+function data:HandleAttachments()
 	local objects = self.attachments
 	if not objects then return end
 
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 	for _, widget in next, objects do
-		if widget:IsObjectType('Texture') then
-			if widget:GetTexture() == 130940 then
-				WIDGETS[widget] = widget:GetRotation()
-
-				widget:SetTexture(E.Media.Textures.ArrowUp)
-				widget:SetRotation(S.ArrowRotation.right)
-				widget:SetVertexColor(r, g, b)
-				widget:Size(12)
-			else
-				local rotation = WIDGETS[widget]
-				if rotation then
-					widget:SetRotation(rotation)
-
-					WIDGETS[widget] = nil
-				end
-			end
+		if widget:IsObjectType('Texture') and (widget:GetTexture() == 130940 and widget:GetRotation() == 0) then
+			widget:SetTexture(E.Media.Textures.ArrowUp)
+			widget:SetRotation(S.ArrowRotation.right)
+			widget:SetVertexColor(r, g, b)
+			widget:Size(12)
 		end
 	end
 end
@@ -71,7 +59,7 @@ function data:HideCheckbox()
 	end
 end
 
-function data:SkinCheckbox(button)
+function data:HandleCheckbox(button)
 	local tex1, tex2 = button.leftTexture1, button.leftTexture2
 	if not tex1 then return end
 
@@ -119,28 +107,28 @@ function data:SkinMenu(manager, ownerRegion, menuDescription, anchor)
 	local menu = manager:GetOpenMenu()
 	if not menu then return end
 
-	data.SkinFrame(menu) -- Initial context menu
-	menuDescription:AddMenuAcquiredCallback(data.SkinFrame) -- SubMenus
+	data.HandleMenu(menu) -- Initial context menu
+	menuDescription:AddMenuAcquiredCallback(data.HandleMenu) -- SubMenus
 end
 
 function data:OpenMenu(ownerRegion, menuDescription, anchor)
 	data:SkinMenu(self, ownerRegion, menuDescription, anchor) -- self is manager (Menu.GetManager)
 end
 
-function data:OpenContextMenu(ownerRegion, menuDescription)
+function data:OpenContext(ownerRegion, menuDescription)
 	data:SkinMenu(self, ownerRegion, menuDescription) -- self is manager (Menu.GetManager)
 end
 
 function S:Blizzard_Menu()
 	local manager = _G.Menu.GetManager()
 	hooksecurefunc(manager, 'OpenMenu', data.OpenMenu)
-	hooksecurefunc(manager, 'OpenContextMenu', data.OpenContextMenu)
+	hooksecurefunc(manager, 'OpenContextMenu', data.OpenContext)
 
-	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', data.SkinFrameAttachments)
+	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', data.HandleAttachments)
 	hooksecurefunc(_G.CompositorMixin, 'Detach', data.HideCheckbox)
 
-	hooksecurefunc(_G.MenuVariants, 'CreateCheckbox', data.SkinCheckbox)
-	hooksecurefunc(_G.MenuVariants, 'CreateRadio', data.SkinCheckbox)
+	hooksecurefunc(_G.MenuVariants, 'CreateCheckbox', data.HandleCheckbox)
+	hooksecurefunc(_G.MenuVariants, 'CreateRadio', data.HandleCheckbox)
 
 	hooksecurefunc(_G.MenuTemplates, 'SetHierarchyEnabled', data.HierarchyCheckbox)
 end
