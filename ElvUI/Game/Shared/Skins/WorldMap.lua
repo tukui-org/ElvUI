@@ -300,7 +300,7 @@ local function SkinMainline()
 		local dropdown, tracking, pin = unpack(WorldMapFrame.overlayFrames)
 		S:HandleDropDownBox(dropdown) -- NavBar handled in ElvUI/modules/skins/misc
 
-		if E.Forever then -- ToDo: Forever
+		if E.Forever then
 			tracking, pin = WorldMapFrame.WorldMapTrackingOptionsButton, WorldMapFrame.WorldMapTrackingPinButton
 
 			-- Forever tracking button is an arrow dropdown next to the NavBar

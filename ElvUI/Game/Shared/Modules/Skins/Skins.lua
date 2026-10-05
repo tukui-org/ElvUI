@@ -1314,7 +1314,6 @@ do -- Tab Regions
 	end
 end
 
--- ToDo: classic_beta WIP
 do -- Large Side Tabs
 	local function UpdateIconInterior(tab)
 		tab.Icon:SetTexCoords()

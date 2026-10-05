@@ -77,15 +77,15 @@ function S:Blizzard_MailFrame()
 	_G.InboxFrame.backdrop:Point('TOPLEFT', _G.MailItem1, 'TOPLEFT')
 	_G.InboxFrame.backdrop:Point('BOTTOMRIGHT', _G.MailItem7, 'BOTTOMRIGHT')
 
-	local prevButton = E.Forever and _G.InboxFrame.PrevPageButton or _G.InboxPrevPageButton -- ToDo: Forever
+	local prevButton = E.Forever and _G.InboxFrame.PrevPageButton or _G.InboxPrevPageButton
 	S:HandleNextPrevButton(prevButton, nil, nil, true)
 	prevButton:StripTexts()
 
-	local nextButton = E.Forever and _G.InboxFrame.NextPageButton or _G.InboxNextPageButton -- ToDo: Forever
+	local nextButton = E.Forever and _G.InboxFrame.NextPageButton or _G.InboxNextPageButton
 	S:HandleNextPrevButton(nextButton, nil, nil, true)
 	nextButton:StripTexts()
 
-	if not E.Forever then -- ToDo: Forever
+	if not E.Forever then
 		prevButton:Point('BOTTOMLEFT', 30, 100)
 		nextButton:Point('BOTTOMRIGHT', -80, 100)
 	end
@@ -149,7 +149,7 @@ function S:Blizzard_MailFrame()
 
 	hooksecurefunc('SendMailFrame_Update', Skin_SendMail)
 
-	if E.Forever then -- ToDo: Forever
+	if E.Forever then
 		hooksecurefunc(_G.OpenMailFrame, 'Update', Skin_OpenMail)
 		hooksecurefunc(_G.InboxFrame, 'Update', Skin_InboxItems)
 	else

@@ -58,7 +58,7 @@ local function SkinOnShow()
 
 	-- Default Buttons
 	S:HandleButton(ScriptErrorsFrame.Reload)
-	S:HandleButton(E.Forever and ScriptErrorsFrame.CloseButton or ScriptErrorsFrame.Close) -- ToDo: Forever
+	S:HandleButton(E.Forever and ScriptErrorsFrame.CloseButton or ScriptErrorsFrame.Close)
 	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError)
 	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
 

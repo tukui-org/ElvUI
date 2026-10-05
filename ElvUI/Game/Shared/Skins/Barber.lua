@@ -60,7 +60,7 @@ function S:Blizzard_BarbershopUI()
 		S:HandleButton(frame.CancelButton, nil, nil, nil, true, nil, nil, nil, true)
 		S:HandleButton(frame.AcceptButton, nil, nil, nil, true, nil, nil, nil, true)
 
-		if E.Forever then -- ToDo: Forever
+		if E.Forever then
 			S:HandleCheckBox(frame.SDToggleButton) -- HD models toggle, shown by C_GameRules.IsSDHDToggleEnabled
 		end
 	else

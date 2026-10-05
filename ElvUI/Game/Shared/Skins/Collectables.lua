@@ -484,7 +484,7 @@ local function SkinToyFrame()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
 
-	if E.Forever then -- ToDo: Forever
+	if E.Forever then
 		ToyBox.ProgressTracker:StripTextures()
 	else
 		ToyBox.progressBar.border:Hide()
@@ -558,7 +558,7 @@ local function HandleTabs()
 	end
 
 	-- Blizzard clears points on the wardrobe tab
-	if E.Retail then -- ToDo: Forever
+	if E.Retail then
 		hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 	end
 end

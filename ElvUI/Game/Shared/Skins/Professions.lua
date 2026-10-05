@@ -369,7 +369,7 @@ end
 local function HandleRecipeListChild(child)
 	if child.IsSkinned then return end
 
-	if E.Forever and child.CollapseButton then -- ToDo: Forever
+	if E.Forever and child.CollapseButton then
 		HandleRecipeCategory(child)
 	elseif child.SkillUps then
 		HandleRecipe(child)
@@ -465,7 +465,7 @@ function S:Blizzard_Professions()
 	HandleRankBar(CraftingPage.RankBar)
 
 	local LinkButton = CraftingPage.LinkButton
-	if not E.Forever then -- ToDo: Forever
+	if not E.Forever then
 		LinkButton:GetNormalTexture():SetTexCoord(0.25, 0.7, 0.37, 0.75)
 		LinkButton:GetPushedTexture():SetTexCoord(0.25, 0.7, 0.45, 0.8)
 		LinkButton:GetHighlightTexture():Kill()

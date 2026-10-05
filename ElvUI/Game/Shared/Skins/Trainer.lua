@@ -92,7 +92,7 @@ local function SkinMainline()
 	ClassTrainerStatusBar.rankText:Point('CENTER', ClassTrainerStatusBar, 'CENTER')
 	E:RegisterStatusBar(ClassTrainerStatusBar)
 
-	local money = E.Forever and ClassTrainerFrame.money or _G.ClassTrainerFrameMoneyFrame -- ToDo: Forever
+	local money = E.Forever and ClassTrainerFrame.money or _G.ClassTrainerFrameMoneyFrame
 	money:CreateBackdrop('Transparent')
 	money.backdrop:SetOutside(money, 4, 4)
 

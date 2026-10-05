@@ -31,7 +31,7 @@ if E.Retail or E.Mists or E.Wrath or E.TBC then -- vanilla and Forever don't loa
 	S:AddCallbackForAddon('Blizzard_GroupFinder', 'LFGReadyCheckPopup', nil, nil, nil, nil, 'lfg')
 end
 
-if E.Forever then -- ToDo: Forever
+if E.Forever then
 	S:AddCallbackForAddon('Blizzard_LFGUtil', nil, nil, nil, nil, nil, 'lfg')
 end
 
