@@ -4232,8 +4232,8 @@ function CH:Initialize()
 		chatHead.StatusBar:SetMinMaxValues(0, 1)
 
 		chatHead.StatusBar.anim = _G.CreateAnimationGroup(chatHead.StatusBar)
-		chatHead.StatusBar.anim.progress = chatHead.StatusBar.anim:CreateAnimation('Progress')
-		chatHead.StatusBar.anim.progress:SetEasing('Out')
+		chatHead.StatusBar.anim.progress = chatHead.StatusBar.anim:CreateAnimation('progress')
+		chatHead.StatusBar.anim.progress:SetEasing('out')
 		chatHead.StatusBar.anim.progress:SetDuration(0.3)
 
 		chatHead:Hide()
