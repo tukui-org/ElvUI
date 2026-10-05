@@ -19,67 +19,78 @@ end
 local function AbilitiesList_Layout(list)
 	for frame in list.abilityPool:EnumerateActive() do
 		if not frame.IsSkinned then
-			S:HandleIcon(frame.Icon)
 			frame.IsSkinned = true
+
+			S:HandleIcon(frame.Icon)
 		end
 	end
 end
 
 local function SkinStableFrame()
-	local StableFrame = _G.StableFrame
-	S:HandlePortraitFrame(StableFrame)
-	StableFrame.MainHelpButton:Hide()
-	S:HandleButton(StableFrame.StableTogglePetButton)
-	S:HandleButton(StableFrame.ReleasePetButton)
+	local stableFrame = _G.StableFrame
+	S:HandlePortraitFrame(stableFrame)
+	S:HandleButton(stableFrame.StableTogglePetButton)
+	S:HandleButton(stableFrame.ReleasePetButton)
 
-	local StabledPetList = StableFrame.StabledPetList
-	StabledPetList:StripTextures()
-	StabledPetList.ListName:FontTemplate(nil, 32)
-	StabledPetList.ListCounter:StripTextures()
-	StabledPetList.ListCounter:CreateBackdrop('Transparent')
+	stableFrame.MainHelpButton:Hide()
 
-	S:HandleEditBox(StabledPetList.FilterBar.SearchBox)
-	S:HandleButton(StableFrame.StabledPetList.FilterBar.FilterDropdown)
-	S:HandleCloseButton(StableFrame.StabledPetList.FilterBar.FilterDropdown.ResetButton)
+	local stabledList = stableFrame.StabledList
+	S:HandleTrimScrollBar(stabledList.ScrollBar)
 
-	S:HandleTrimScrollBar(StabledPetList.ScrollBar)
+	stabledList:StripTextures()
+	stabledList.ListName:FontTemplate(nil, 32)
+	stabledList.ListCounter:StripTextures()
+	stabledList.ListCounter:CreateBackdrop('Transparent')
 
-	local modelScene = StableFrame.PetModelScene
+	local filterBar = stabledList.FilterBar
+	S:HandleEditBox(filterBar.SearchBox)
+	S:HandleButton(filterBar.FilterDropdown)
+	S:HandleCloseButton(filterBar.FilterDropdown.ResetButton)
+
+	local modelScene = stableFrame.PetModelScene
 	modelScene.PetModelSceneShadow:SetInside()
 	modelScene.Inset.NineSlice:SetTemplate()
 	modelScene.Inset.Bg:Hide()
+
+	local modelPetInfo = modelScene.PetInfo
 	S:HandleModelSceneControlButtons(modelScene.ControlFrame)
+	S:HandleDropDownBox(modelPetInfo.Specialization)
 
 	hooksecurefunc(modelScene.AbilitiesList, 'Layout', AbilitiesList_Layout)
-	hooksecurefunc(modelScene.PetInfo.Type, 'SetText', S.ReplaceIconString)
-	S:HandleDropDownBox(modelScene.PetInfo.Specialization)
+	hooksecurefunc(modelPetInfo.Type, 'SetText', S.ReplaceIconString)
 end
 
 local function SkinForeverPetStableFrame()
-	local PetStableFrame = _G.PetStableFrame
-	S:HandlePortraitFrame(PetStableFrame)
-	S:HandleButton(PetStableFrame.purchaseButton)
+	local stableFrame = _G.PetStableFrame
+	S:HandlePortraitFrame(stableFrame)
+	S:HandleButton(stableFrame.purchaseButton)
 
-	for _, slot in next, { _G.PetStableCurrentPet, _G.PetStableStabledPet1, _G.PetStableStabledPet2 } do
+	for slot, texture in next, {
+		[_G.PetStableCurrentPet] = 'PetStableCurrentPetIconTexture',
+		[_G.PetStableStabledPet1] = 'PetStableStabledPet1IconTexture',
+		[_G.PetStableStabledPet2] = 'PetStableStabledPet2IconTexture'
+	} do
 		S:HandleItemButton(slot, true)
-		_G[slot:GetName()..'IconTexture']:SetDrawLayer('ARTWORK')
+
+		texture:SetDrawLayer('ARTWORK')
 	end
 
-	local modelScene = PetStableFrame.modelScene
+	local modelScene = stableFrame.modelScene
+	S:HandleModelSceneControlButtons(modelScene.ControlFrame)
+
 	modelScene.PetModelSceneShadow:SetInside()
 	modelScene.Inset.NineSlice:SetTemplate()
 	modelScene.Inset.Bg:Hide()
-	S:HandleModelSceneControlButtons(modelScene.ControlFrame)
 
-	local diet = PetStableFrame.diet
+	local diet = stableFrame.diet
 	diet:CreateBackdrop()
 	diet:Size(24)
 
-	local expBar = PetStableFrame.expBar
+	local expBar = stableFrame.expBar
 	S:HandleStatusBar(expBar.StatusBar)
 	expBar.overlay:StripTextures()
 
-	local loyaltyLevel = PetStableFrame.loyaltyLevel
+	local loyaltyLevel = stableFrame.loyaltyLevel
 	loyaltyLevel:StripTextures()
 	loyaltyLevel:CreateBackdrop()
 	loyaltyLevel:Size(24)
@@ -92,9 +103,10 @@ local function PetButtons(btn, offset)
 	local icon = _G[btn..'IconTexture']
 	button:StripTextures()
 
-	button.Checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
-	button.Checked:SetAllPoints(icon)
-	button.Checked:SetAlpha(0.3)
+	local checked = button.Checked
+	checked:SetColorTexture(unpack(E.media.rgbvaluecolor))
+	checked:SetAllPoints(icon)
+	checked:SetAlpha(0.3)
 
 	local highlight = button:GetHighlightTexture()
 	highlight:SetColorTexture(1, 1, 1, 0.3)
@@ -110,8 +122,8 @@ local function PetButtons(btn, offset)
 end
 
 local function SkinMistsPetStableFrame()
-	local PetStableFrame = _G.PetStableFrame
-	S:HandlePortraitFrame(PetStableFrame)
+	local stableFrame = _G.PetStableFrame
+	S:HandlePortraitFrame(stableFrame)
 
 	_G.PetStableLeftInset:Hide()
 	_G.PetStableBottomInset:Hide()
@@ -124,23 +136,23 @@ local function SkinMistsPetStableFrame()
 	S:HandleButton(_G.PetStablePrevPageButton) -- Required to remove graphical glitch from Prev page button
 	S:HandleButton(_G.PetStableNextPageButton) -- Required to remove graphical glitch from Next page button
 
-	local offset = E.PixelMode and 1 or 2
-	local SelectedIcon = _G.PetStableSelectedPetIcon
-	SelectedIcon:SetTexCoords()
+	local selectedIcon = _G.PetStableSelectedPetIcon
+	selectedIcon:SetTexCoords()
 
-	local SelectedBackground = CreateFrame('Frame', nil, SelectedIcon:GetParent())
-	SelectedBackground:Point('TOPLEFT', SelectedIcon, -offset, offset)
-	SelectedBackground:Point('BOTTOMRIGHT', SelectedIcon, offset, -offset)
-	SelectedBackground:SetTemplate()
-	SelectedIcon:Size(37)
-	SelectedIcon:SetParent(SelectedBackground)
+	local selectedBG = CreateFrame('Frame', nil, selectedIcon:GetParent())
+	selectedBG:Point('TOPLEFT', selectedIcon, -E.Border, E.Border)
+	selectedBG:Point('BOTTOMRIGHT', selectedIcon, E.Border, -E.Border)
+	selectedBG:SetTemplate()
+
+	selectedIcon:Size(37)
+	selectedIcon:SetParent(selectedBG)
 
 	for i = 1, _G.NUM_PET_ACTIVE_SLOTS do
-		PetButtons('PetStableActivePet' .. i, offset)
+		PetButtons('PetStableActivePet' .. i, E.Border)
 	end
 
 	for i = 1, _G.NUM_PET_STABLE_SLOTS do
-		PetButtons('PetStableStabledPet' .. i, offset)
+		PetButtons('PetStableStabledPet' .. i, E.Border)
 	end
 end
 
@@ -161,12 +173,27 @@ local function UpdatePetStable()
 end
 
 local function SkinClassicPetStableFrame()
-	local PetStableFrame = _G.PetStableFrame
-	S:HandleFrame(PetStableFrame, true, nil, 10, -11, -32, 71)
-
+	local stableFrame = _G.PetStableFrame
+	S:HandleFrame(stableFrame, true, nil, 10, -11, -32, 71)
 	S:HandleButton(_G.PetStablePurchaseButton)
-	S:HandleRotateButton(_G.PetStableModelRotateRightButton)
-	S:HandleRotateButton(_G.PetStableModelRotateLeftButton)
+
+	local model = _G.PetStableModel
+	local rotationLeft = _G.PetStableModelRotateLeftButton
+	rotationLeft:ClearAllPoints()
+	rotationLeft:Point('TOPLEFT', model)
+	S:HandleRotateButton(rotationLeft)
+
+	local rotationRight = _G.PetStableModelRotateRightButton
+	rotationRight:ClearAllPoints()
+	rotationRight:Point('LEFT', rotationLeft, 'RIGHT', 1, 0)
+	S:HandleRotateButton(rotationRight)
+
+	local petInfo = _G.PetStablePetInfo
+	petInfo:ClearAllPoints()
+	petInfo:Point('TOPLEFT', rotationLeft, 'BOTTOM', 1, -2)
+	petInfo:OffsetFrameLevel(2, model)
+	petInfo:CreateBackdrop()
+	petInfo:Size(24)
 
 	S:HandleItemButton(_G.PetStableCurrentPet, true)
 	_G.PetStableCurrentPetIconTexture:SetDrawLayer('ARTWORK')
@@ -175,11 +202,6 @@ local function SkinClassicPetStableFrame()
 		S:HandleItemButton(_G['PetStableStabledPet'..i], true)
 		_G['PetStableStabledPet'..i..'IconTexture']:SetDrawLayer('ARTWORK')
 	end
-
-	local PetStablePetInfo = _G.PetStablePetInfo
-	PetStablePetInfo:OffsetFrameLevel(2, _G.PetStableModel)
-	PetStablePetInfo:CreateBackdrop()
-	PetStablePetInfo:Size(24)
 
 	UpdatePetStable()
 
