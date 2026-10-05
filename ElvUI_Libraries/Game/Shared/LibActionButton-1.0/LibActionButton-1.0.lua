@@ -11,8 +11,8 @@ if not lib then return end
 
 local _G = _G
 local type, error, tostring, tonumber, assert, select, strsub = type, error, tostring, tonumber, assert, select, strsub
-local setmetatable, wipe, unpack, pairs, ipairs, next, pcall = setmetatable, wipe, unpack, pairs, ipairs, next, pcall
 local hooksecurefunc, strmatch, format, tinsert, tremove = hooksecurefunc, strmatch, format, tinsert, tremove
+local setmetatable, wipe, unpack, next, pcall = setmetatable, wipe, unpack, next, pcall
 
 -- Game Versions
 local WoWMainline = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
@@ -782,7 +782,7 @@ end
 --- state management
 
 function Generic:ClearStates()
-	for state in pairs(self.state_types) do
+	for state in next, self.state_types do
 		self:SetAttribute(format("labtype-%s", state), nil)
 		self:SetAttribute(format("labaction-%s", state), nil)
 	end
@@ -860,7 +860,7 @@ function Generic:GetAction(state)
 end
 
 function Generic:UpdateAllStates()
-	for state in pairs(self.state_types) do
+	for state in next, self.state_types do
 		self:UpdateState(state)
 	end
 end
@@ -975,7 +975,7 @@ if Feat_UseCustomFlyout then
 
 		local direction = parent:GetAttribute("flyoutDirection") or "UP"
 		local usedSlots, prevButton = 0
-		for slotID, slotInfo in ipairs(info.slots) do
+		for slotID, slotInfo in next, info.slots do
 			usedSlots = usedSlots + 1
 			local slotButton = self:GetFrameRef("flyoutButton" .. usedSlots)
 
@@ -1197,12 +1197,12 @@ if Feat_UseCustomFlyout then
 
 		local maxSlots = 0
 		local data = "LAB_FlyoutInfo = newtable();\n"
-		for flyoutID, info in pairs(lib.FlyoutInfo) do
+		for flyoutID, info in next, lib.FlyoutInfo do
 			if info.isKnown then
 				local numSlots = 0
 				data = data .. format("local info = newtable();LAB_FlyoutInfo[%d] = info;info.slots = newtable();\n", flyoutID)
 
-				for slotID, slotInfo in ipairs(info.slots) do
+				for slotID, slotInfo in next, info.slots do
 					if slotInfo.isKnown then
 						data = data .. format("local info = newtable();LAB_FlyoutInfo[%d].slots[%d] = info;info.spellID = %d;info.overrideSpellID = %d;info.isKnown = %s;info.spellName = %q;\n", flyoutID, slotID, slotInfo.spellID, slotInfo.overrideSpellID, tostring(slotInfo.isKnown), slotInfo.spellName or "nil")
 						numSlots = numSlots + 1
@@ -1298,7 +1298,7 @@ if Feat_UseCustomFlyout then
 			return
 		end
 
-		for flyoutID, data in pairs(lib.FlyoutInfo) do
+		for flyoutID, data in next, lib.FlyoutInfo do
 			local success, _, _, numSlots, isKnown = pcall(GetFlyoutInfo, flyoutID)
 			if success then
 				data.isKnown = isKnown
@@ -1456,7 +1456,7 @@ end
 --- configuration
 
 local function Merge(target, source, default)
-	for k,v in pairs(default) do
+	for k,v in next, default do
 		if type(v) ~= "table" then
 			if source and source[k] ~= nil then
 				target[k] = source[k]
@@ -1744,7 +1744,7 @@ function OnEvent(_, event, arg1, arg2, arg3, arg4)
 		end
 	elseif event == "ACTION_USABLE_CHANGED" then
 		if arg1 then
-			for _, change in ipairs(arg1) do
+			for _, change in next, arg1 do
 				local buttons = lib.buttonsBySlot[change.slot]
 				if buttons then
 					for button in next, buttons do
@@ -2812,7 +2812,7 @@ function ClearNewActionHighlight(action, preventIdenticalActionsFromClearing, va
 
 	-- iterate through actions and unmark all that are the same type
 	local unmarkedType, unmarkedID = GetActionInfo(action)
-	for actionKey, markValue in pairs(lib.ACTION_HIGHLIGHT_MARKS) do
+	for actionKey, markValue in next, lib.ACTION_HIGHLIGHT_MARKS do
 		if markValue then
 			local actionType, actionID = GetActionInfo(actionKey)
 			if actionType == unmarkedType and actionID == unmarkedID then
