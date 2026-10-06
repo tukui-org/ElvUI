@@ -2232,7 +2232,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		local classLink = realm and playerLink and not msgProtected and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
 		body = (classLink and gsub(msg, arg2..'%-'..realm, pflag..classLink, 1)) or ((E:NotSecretValue(arg2) and arg2 ~= sender) and gsub(msg, arg2, sender, 1)) or msg
 	elseif specialType then -- contains special formatting
-		body = format(header..msg, pflag..sender)
+		body = format(header..msg, pflag..sender, sender)
 	elseif header then -- ignore special characters from players
 		body = format(header..'%s', pflag..sender, msg)
 	else -- new chat types might fail to here
