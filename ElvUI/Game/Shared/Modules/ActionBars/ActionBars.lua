@@ -663,7 +663,9 @@ function AB:UpdateAllBinds(event)
 
 	if E.Modern then
 		AB:UpdateExtraBindings()
-	elseif E.Wrath and E.myclass == 'SHAMAN' then
+	end
+
+	if E.allowTotemBar then
 		AB:UpdateTotemBindings()
 	end
 
@@ -749,7 +751,7 @@ function AB:UpdateButtonSettings(specific)
 			if LAB.FlyoutButtons then
 				AB:LAB_FlyoutSpells()
 			end
-		elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+		elseif E.allowTotemBar and AB.db.totemBar.enable then
 			AB:PositionAndSizeTotemBar()
 		end
 	end
@@ -1868,7 +1870,7 @@ function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 	AB:UpdatePet(event)
 
-	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if (initLogin or isReload) and E.allowTotemBar and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()
 	end
@@ -2080,7 +2082,7 @@ function AB:Initialize()
 		AB:SetupExtraButtons()
 	end
 
-	if (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if E.allowTotemBar and AB.db.totemBar.enable then
 		AB:CreateTotemBar()
 	end
 

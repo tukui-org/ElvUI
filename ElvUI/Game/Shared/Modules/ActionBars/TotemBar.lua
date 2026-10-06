@@ -24,14 +24,14 @@ local SLOT_BORDER_COLORS = {
 }
 
 local SLOT_EMPTY_TCOORDS = {
-	[_G.EARTH_TOTEM_SLOT]	= {left = 0.52, right = 0.75, top = 0.01, bottom = 0.13},
-	[_G.FIRE_TOTEM_SLOT]	= {left = 0.52, right = 0.76, top = 0.39, bottom = 0.51},
-	[_G.WATER_TOTEM_SLOT]	= {left = 0.30, right = 0.54, top = 0.82, bottom = 0.93},
-	[_G.AIR_TOTEM_SLOT]		= {left = 0.52, right = 0.75, top = 0.14, bottom = 0.26}
+	[_G.EARTH_TOTEM_SLOT]	= { left = 0.52, right = 0.75, top = 0.01, bottom = 0.13 },
+	[_G.FIRE_TOTEM_SLOT]	= { left = 0.52, right = 0.76, top = 0.39, bottom = 0.51 },
+	[_G.WATER_TOTEM_SLOT]	= { left = 0.30, right = 0.54, top = 0.82, bottom = 0.93 },
+	[_G.AIR_TOTEM_SLOT]		= { left = 0.52, right = 0.75, top = 0.14, bottom = 0.26 }
 }
 
 function AB:MultiCastFlyoutFrameOpenButton_Show(button, which, parent)
-	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
+	local color = SLOT_BORDER_COLORS[(which == 'page' and 'summon') or parent:GetID()]
 	button:SetBackdropBorderColor(color.r, color.g, color.b)
 
 	button:ClearAllPoints()
@@ -60,8 +60,7 @@ function AB:MultiCastSummonSpellButton_Update(summonButton)
 	if InCombatLockdown() then
 		AB.NeedsMultiCastButtonUpdate = summonButton
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-	else
-		-- reposition the first slot to the summon button
+	else -- reposition the first slot to the summon button
 		local buttonSpacing = AB.db.totemBar.spacing
 		local slot1 = _G.MultiCastSlotButton1
 		slot1:ClearAllPoints()
@@ -116,6 +115,7 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 
 	AB.handledbuttons[button] = true
 	bar.buttons[button] = true
+
 	button.IsSkinned = true
 end
 
@@ -207,18 +207,18 @@ function AB:TotemButton_OnLeave()
 end
 
 function AB:TotemBar_OnEnter()
-	if bar.mouseover then
-		local alpha = AB.db.totemBar.alpha
-		E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), alpha)
-		AB:FadeTotemBlings(bar, alpha)
-	end
+	if not bar.mouseover then return end
+
+	local alpha = AB.db.totemBar.alpha
+	E:UIFrameFadeIn(bar, 0.2, bar:GetAlpha(), alpha)
+	AB:FadeTotemBlings(bar, alpha)
 end
 
 function AB:TotemBar_OnLeave()
-	if bar.mouseover then
-		E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
-		AB:FadeTotemBlings(bar, 0)
-	end
+	if not bar.mouseover then return end
+
+	E:UIFrameFadeOut(bar, 0.2, bar:GetAlpha(), 0)
+	AB:FadeTotemBlings(bar, 0)
 end
 
 function AB:PositionAndSizeTotemBar()
@@ -329,8 +329,11 @@ function AB:MultiCastRecallSpellButton_Update(button)
 	if InCombatLockdown() then
 		AB.NeedsRecallButtonUpdate = true
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
-	else -- if we call it with no button, assume it's this one
-		if not button then button = _G.MultiCastRecallSpellButton end
+	else
+		if not button then -- if we call it with no button, assume it's this one
+			button = _G.MultiCastRecallSpellButton
+		end
+
 		if button and button:GetID() then
 			if self.hooks.MultiCastRecallSpellButton_Update then
 				self.hooks.MultiCastRecallSpellButton_Update(button)
@@ -394,17 +397,14 @@ function AB:CreateTotemBar()
 	for i = 1, 4 do
 		local button = _G['MultiCastSlotButton'..i]
 		button.icon = button.background
+
 		AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
-	local isShaman = E.myclass == 'SHAMAN'
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
-
-		if isShaman then
-			button:SetAttribute('type2', 'destroytotem')
-			button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
-		end
+		button:SetAttribute('type2', 'destroytotem')
+		button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
 
 		AB:SkinMultiCastButton(button, true, MasqueGroup and E.private.actionbar.masque.actionbars)
 
