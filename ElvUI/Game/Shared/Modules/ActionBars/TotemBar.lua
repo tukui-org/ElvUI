@@ -397,14 +397,10 @@ function AB:CreateTotemBar()
 		AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
 	end
 
-	local isShaman = E.myclass == 'SHAMAN'
 	for i = 1, 12 do
 		local button = _G['MultiCastActionButton'..i]
-
-		if isShaman then
-			button:SetAttribute('type2', 'destroytotem')
-			button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
-		end
+		button:SetAttribute('type2', 'destroytotem')
+		button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
 
 		AB:SkinMultiCastButton(button, true, MasqueGroup and E.private.actionbar.masque.actionbars)
 
