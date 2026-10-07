@@ -6,13 +6,13 @@ local UnitClass = UnitClass
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
-function NP:PortraitBackdrop_Show()
+function NP:Portrait_BackdropShow()
 	if not self.backdrop then return end
 
 	self.backdrop:Show()
 end
 
-function NP:PortraitBackdrop_Hide()
+function NP:Portrait_BackdropHide()
 	if not self.backdrop then return end
 
 	self.backdrop:Hide()
@@ -53,8 +53,8 @@ function NP:Construct_Portrait(nameplate)
 	Portrait:SetSize(28, 28)
 	Portrait:Hide()
 
-	Portrait:HookScript('OnShow', NP.PortraitBackdrop_Show)
-	Portrait:HookScript('OnHide', NP.PortraitBackdrop_Hide)
+	Portrait:HookScript('OnShow', NP.Portrait_BackdropShow)
+	Portrait:HookScript('OnHide', NP.Portrait_BackdropHide)
 
 	Portrait.PostUpdate = NP.Portrait_PostUpdate
 
