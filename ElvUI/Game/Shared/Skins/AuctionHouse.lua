@@ -200,6 +200,7 @@ local function HandleSellList(frame, hasHeader, fitScrollBar)
 
 	if hasHeader then
 		frame.ScrollBox:SetTemplate('Transparent')
+		frame.ResultsText:SetParent(frame.ScrollBox)
 
 		hooksecurefunc(frame, 'RefreshScrollFrame', HandleHeaders)
 	else
