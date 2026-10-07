@@ -493,7 +493,7 @@ function S:Blizzard_Professions()
 			S:HandleLargeSideTab(tab)
 		end
 
-		data.RefreshRightTabs(data.ProfessionsFrame)
+		data.RefreshRightTabs(ProfessionsFrame)
 		hooksecurefunc(ProfessionsFrame, 'RefreshRightTabs', data.RefreshRightTabs)
 	else
 		S:HandleMaxMinFrame(ProfessionsFrame.MaximizeMinimize)
