@@ -123,6 +123,12 @@ local function FrameHide()
 	end
 end
 
+local function MasterLooterHide()
+	if _G.MasterLooterFrame then
+		_G.MasterLooterFrame:ClearAllPoints()
+	end
+end
+
 local function AnchorSlots(frame)
 	local shownSlots = 0
 
@@ -392,5 +398,5 @@ function M:LoadLoot()
 	end
 
 	-- fix blizzard setpoint connection bs
-	hooksecurefunc(MasterLooterFrame, 'Hide', MasterLooterFrame.ClearAllPoints)
+	hooksecurefunc(MasterLooterFrame, 'Hide', MasterLooterHide)
 end
