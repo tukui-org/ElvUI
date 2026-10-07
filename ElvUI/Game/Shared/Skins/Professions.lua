@@ -3,9 +3,10 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next, unpack = next, unpack
+local wipe, tinsert = wipe, tinsert
 local hooksecurefunc = hooksecurefunc
 
-S:AddCallbackForAddon('Blizzard_Professions', nil, nil, nil, nil, nil, 'tradeskill')
+local data = S:AddCallbackForAddon('Blizzard_Professions', nil, nil, nil, nil, nil, 'tradeskill')
 
 local function HandleInputBox(box)
 	box:DisableDrawLayer('BACKGROUND')
@@ -422,13 +423,19 @@ local function HandleBookProfession(frame)
 	end
 end
 
-local function RefreshRightTabs(frame)
-	local tabs = { frame.ProfessionsOverviewTab }
-	for _, tab in next, frame.rightProfessionTabs do
-		tabs[#tabs + 1] = tab
-	end
+do
+	local tabs = {}
+	function data:RefreshRightTabs()
+		wipe(tabs)
 
-	S:LayoutLargeSideTabs(frame, tabs)
+		tinsert(tabs, self.ProfessionsOverviewTab)
+
+		for _, tab in next, self.rightProfessionTabs do
+			tinsert(tabs, tab)
+		end
+
+		S:LayoutLargeSideTabs(self, tabs)
+	end
 end
 
 function S:Blizzard_Professions()
@@ -486,8 +493,8 @@ function S:Blizzard_Professions()
 			S:HandleLargeSideTab(tab)
 		end
 
-		hooksecurefunc(ProfessionsFrame, 'RefreshRightTabs', RefreshRightTabs)
-		RefreshRightTabs(ProfessionsFrame)
+		data.RefreshRightTabs(data.ProfessionsFrame)
+		hooksecurefunc(ProfessionsFrame, 'RefreshRightTabs', data.RefreshRightTabs)
 	else
 		S:HandleMaxMinFrame(ProfessionsFrame.MaximizeMinimize)
 

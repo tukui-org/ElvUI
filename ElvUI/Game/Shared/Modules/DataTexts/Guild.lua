@@ -3,7 +3,7 @@ local DT = E:GetModule('DataTexts')
 
 local _G = _G
 local ipairs, select, next, sort, unpack, wipe, ceil = ipairs, select, next, sort, unpack, wipe, ceil
-local format, strfind, strjoin, strsplit, strmatch = format, strfind, strjoin, strsplit, strmatch
+local format, strfind, strjoin, strsplit, strmatch, tinsert = format, strfind, strjoin, strsplit, strmatch, tinsert
 
 local GetGuildInfo = GetGuildInfo
 local GetGuildRosterInfo = GetGuildRosterInfo
@@ -156,7 +156,7 @@ local function BuildGuildTable()
 				data.faction = clubMember.faction
 			end
 
-			guildTable[#guildTable + 1] = data
+			tinsert(guildTable, data)
 		end
 	end
 end

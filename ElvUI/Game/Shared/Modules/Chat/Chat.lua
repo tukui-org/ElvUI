@@ -230,7 +230,7 @@ do
 
 		for accessID, sender in next, accessSender do
 			if strlower(sender) == strlower(chanSender) then
-				senders[#senders + 1] = accessID
+				tinsert(senders, accessID)
 			end
 		end
 

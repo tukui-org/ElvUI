@@ -516,8 +516,9 @@ do	-- this is so we can join nil values too
 	function E:StringJoin(sep, ...)
 		wipe(text)
 
-		for _, value in next, { ... } do
-			text[#text+1] = tostring(value)
+		for _, txts in next, { ... } do
+			local value = tostring(txts)
+			tinsert(text, value)
 		end
 
 		return tconcat(text, sep)

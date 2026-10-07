@@ -190,7 +190,7 @@ E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 E.UIParent:SetSize(E.screenWidth, E.screenHeight)
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
-E.snapBars[#E.snapBars + 1] = E.UIParent
+tinsert(E.snapBars, E.UIParent)
 
 E.UFParent = _G.ElvUF_UFParentFrameHider -- created in oUF
 E.UFParent:SetParent(E.UIParent)
@@ -1960,7 +1960,7 @@ function E:CallLoadedModule(obj, silent, object, index)
 end
 
 function E:RegisterInitialModule(name, func)
-	E.RegisteredInitialModules[#E.RegisteredInitialModules + 1] = { name = name, func = func }
+	tinsert(E.RegisteredInitialModules, { name = name, func = func })
 end
 
 do
@@ -1972,7 +1972,7 @@ do
 
 			E:CallLoadedModule(loaded)
 		else
-			E.RegisteredModules[#E.RegisteredModules + 1] = { name = name, func = func }
+			tinsert(E.RegisteredModules, { name = name, func = func })
 		end
 	end
 end
