@@ -114,15 +114,6 @@ local function SlotShow(slot)
 	end
 end
 
-local function FrameHide()
-	StaticPopup_Hide('CONFIRM_LOOT_DISTRIBUTION')
-	CloseLoot()
-
-	if _G.MasterLooterFrame then
-		_G.MasterLooterFrame:Hide()
-	end
-end
-
 local function AnchorSlots(frame)
 	local shownSlots = 0
 
@@ -202,6 +193,19 @@ local function CreateSlot(id)
 
 	lootFrame.slots[id] = slot
 	return slot
+end
+
+function M:LootFrame_Hide()
+	StaticPopup_Hide('CONFIRM_LOOT_DISTRIBUTION')
+	CloseLoot()
+
+	if _G.MasterLooterFrame then
+		_G.MasterLooterFrame:Hide()
+	end
+end
+
+function M:MasterLooter_Hide()
+	self:ClearAllPoints()
 end
 
 function M:LOOT_SLOT_CLEARED(_, id)
@@ -367,7 +371,7 @@ function M:LoadLoot()
 
 	lootFrame.slots = {}
 
-	lootFrame:SetScript('OnHide', FrameHide) -- mimic LootFrame_OnHide, mostly
+	lootFrame:SetScript('OnHide', M.LootFrame_Hide) -- mimic LootFrame_OnHide, mostly
 	E.frames[lootFrame] = nil
 
 	M:RegisterEvent('LOOT_OPENED')
@@ -392,5 +396,5 @@ function M:LoadLoot()
 	end
 
 	-- fix blizzard setpoint connection bs
-	hooksecurefunc(MasterLooterFrame, 'Hide', MasterLooterFrame.ClearAllPoints)
+	hooksecurefunc(MasterLooterFrame, 'Hide', M.MasterLooter_Hide)
 end

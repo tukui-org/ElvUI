@@ -144,6 +144,7 @@ local function SpecIconHide(bonusSpecIcon)
 		local frame = _G.BonusRollFrame
 		frame.CurrentCountFrame:ClearAllPoints()
 		frame.CurrentCountFrame:Point('BOTTOMRIGHT', frame, -2, 1)
+
 		bonusSpecIcon.backdrop:Hide()
 	end
 end
@@ -152,7 +153,8 @@ local function SpecIconShow(bonusSpecIcon)
 	if not bonusSpecIcon.backdrop:IsShown() and bonusSpecIcon:GetTexture() ~= nil then
 		local frame = _G.BonusRollFrame
 		frame.CurrentCountFrame:ClearAllPoints()
-		frame.CurrentCountFrame:Point('RIGHT', frame.SpecIcon.backdrop, 'LEFT', -2, -2)
+		frame.CurrentCountFrame:Point('RIGHT', bonusSpecIcon.backdrop, 'LEFT', -2, -2)
+
 		bonusSpecIcon.backdrop:Show()
 	end
 end
@@ -412,6 +414,6 @@ function S:LootFrame()
 	BonusSpecIcon:SetTexCoords()
 	BonusSpecIcon:SetInside()
 
-	hooksecurefunc(BonusSpecIcon, 'Hide', SpecIconHide)
-	hooksecurefunc(BonusSpecIcon, 'Show', SpecIconShow)
+	BonusSpecIcon:HookScript('OnShow', SpecIconShow)
+	BonusSpecIcon:HookScript('OnHide', SpecIconHide)
 end

@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local Sticky = E.Libs.SimpleSticky
 
 local _G = _G
-local type, unpack, pairs, error, ipairs = type, unpack, pairs, error, ipairs
+local type, unpack, pairs, error, ipairs, tinsert = type, unpack, pairs, error, ipairs, tinsert
 local format, next, split, find, strupper = format, next, strsplit, strfind, strupper
 
 local UIParent = UIParent
@@ -311,7 +311,8 @@ local function UpdateMover(name, parent, textString, overlay, snapOffset, postdr
 
 	holder.mover = mover
 	parent.mover = mover
-	E.snapBars[#E.snapBars+1] = mover
+
+	tinsert(E.snapBars, mover)
 
 	SetSnapOffset(holder, snapOffset)
 

@@ -400,6 +400,10 @@ local function SkinClassicTalentFrame()
 	resetButton:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', -38, 80)
 end
 
+local function GlyphShow(frame)
+	frame:Hide()
+end
+
 local function SkinMistsGlyphFrame()
 	-- Glyph Tab
 	local GlyphFrame = _G.GlyphFrame
@@ -437,7 +441,7 @@ local function SkinMistsGlyphFrame()
 		frame.highlight:SetTexture(nil)
 		frame.ring:Hide()
 
-		hooksecurefunc(frame.glyph, 'Show', frame.glyph.Hide)
+		frame.glyph:HookScript('OnShow', GlyphShow)
 
 		frame.icon = frame:CreateTexture(nil, 'OVERLAY')
 		frame.icon:SetInside()

@@ -1129,6 +1129,7 @@ function B:CreateFilterIcon(parent)
 	parent.filterIcon.FilterBackdrop = FilterBackdrop
 
 	hooksecurefunc(parent.filterIcon, 'SetShown', B.FilterIconShown)
+
 	parent.filterIcon:SetShown(false)
 end
 

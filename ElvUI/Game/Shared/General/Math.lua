@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 
+local round, clamp = math.round, math.clamp
 local next, wipe, ipairs = next, wipe, ipairs
 local modf, atan2, floor, abs, sqrt, mod = math.modf, atan2, floor, abs, sqrt, mod
 local select, tonumber, type, unpack, strmatch = select, tonumber, type, unpack, strmatch
@@ -196,6 +197,10 @@ function E:Clamp(value, minimum, maximum)
 	if not minimum then minimum = 0 end
 	if not maximum then maximum = 1 end
 
+	if clamp then
+		return clamp(value, minimum, maximum)
+	end
+
 	if value > maximum then
 		return maximum
 	elseif value < minimum then
@@ -207,6 +212,10 @@ end
 
 --Return rounded number
 function E:Round(num, idp)
+	if round then
+		return round(num, idp)
+	end
+
 	if type(num) ~= 'number' then
 		return num, idp
 	end

@@ -75,17 +75,14 @@ local function FrameBackdrop_OnLeave(frame)
 	frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
-local function TalentBorderSetShown(border, shown) -- TalentFrame_Update shows the border on the inspected unit's chosen talents
+local function TalentBorder_OnShow(border)
 	local button = border:GetParent()
-	if shown then
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-	else
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 end
 
-local function TalentBorderHide(border)
-	TalentBorderSetShown(border, false)
+local function TalentBorder_OnHide(border)
+	local button = border:GetParent()
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
 local function InspectTalentIconDesaturated(icon, desaturate)
@@ -295,8 +292,9 @@ function S:Blizzard_InspectUI()
 				button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 
 				hooksecurefunc(icon, 'SetDesaturated', InspectTalentIconDesaturated)
-				hooksecurefunc(button.border, 'SetShown', TalentBorderSetShown)
-				hooksecurefunc(button.border, 'Hide', TalentBorderHide)
+
+				button.border:HookScript('OnShow', TalentBorder_OnShow)
+				button.border:HookScript('OnHide', TalentBorder_OnHide)
 			end
 		end
 

@@ -1713,6 +1713,10 @@ do
 		[_G.DefaultCompactUnitFrameSetup] = true
 	}
 
+	local function FrameShow(frame)
+		frame:Hide()
+	end
+
 	local function FrameShown(frame, shown)
 		if shown then
 			frame:Hide()
@@ -1787,7 +1791,7 @@ do
 		if not SetFrameHidden[frame] then
 			SetFrameHidden[frame] = true
 
-			hooksecurefunc(frame, 'Show', frame.Hide)
+			hooksecurefunc(frame, 'Show', FrameShow)
 			hooksecurefunc(frame, 'SetShown', FrameShown)
 		end
 	end

@@ -2,8 +2,10 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local next = next
+local ipairs, next = ipairs, next
 local hooksecurefunc = hooksecurefunc
+
+local PROGESS_COLOR = { .81, .52, .04 }
 
 for _, addonName in next, {
 	'Blizzard_HouseList',
@@ -22,59 +24,86 @@ end
 
 local dashboard = S:AddCallbackForAddon('Blizzard_HousingDashboard', nil, nil, nil, nil, nil, 'housing')
 
-do
-	local X, Y = 2, -1
-	function dashboard:PositionDashboardTab(_, _, _, x, y)
-		if x ~= X or y ~= Y then
-			self:ClearAllPoints()
-			self:SetPoint('TOPLEFT', _G.HousingDashboardFrame, 'TOPRIGHT', X, Y)
-		end
-	end
-end
-
-function dashboard:PositionTabIcons(point)
-	if point == 'CENTER' then return end
+function dashboard:PositionTabIcons(_, x)
+	if not x then return end
 
 	self:ClearAllPoints()
 	self:SetPoint('CENTER')
 end
 
 function dashboard:HandleDashboardTabs(frame)
-	local tabs = {
-		frame.HouseInfoTabButton,
-		frame.CatalogTabButton,
-		frame.CollectionTabButton
-	}
+	local previous
+	for _, tab in ipairs(frame.TabButtons) do
+		tab:Size(32, 42)
+		tab:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true) -- noScale
 
-	for i, tab in next, tabs do
-		tab:CreateBackdrop()
-		tab:Size(30, 40)
-
-		local previous = tabs[i - 1]
-		if i == 1 then
-			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', frame, 'TOPRIGHT', 2, -1)
-
-			hooksecurefunc(tab, 'SetPoint', dashboard.PositionDashboardTab)
-		elseif previous then
-			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', previous, 'BOTTOMLEFT', 0, -3)
+		tab:ClearAllPoints()
+		if previous then
+			tab:Point('TOPLEFT', previous, 'BOTTOMLEFT', 0, -1)
+		else
+			tab:Point('TOPLEFT', frame, 'TOPRIGHT', 1, 0)
 		end
 
-		tab.Icon:ClearAllPoints()
-		tab.Icon:SetPoint('CENTER')
-		hooksecurefunc(tab.Icon, 'SetPoint', dashboard.PositionTabIcons)
+		previous = tab
+
+		tab.SelectedTexture:SetDrawLayer('ARTWORK')
+		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
+		tab.SelectedTexture:SetInside(tab.backdrop)
+
+		tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
+		tab.HighlightTexture:SetInside(tab.backdrop)
 
 		tab.Background:SetAlpha(0)
 		tab.TabGlow:SetAlpha(0)
 
-		tab.SelectedTexture:SetDrawLayer('ARTWORK')
-		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
-		tab.SelectedTexture:SetAllPoints()
+		tab.Icon:ClearAllPoints()
+		tab.Icon:SetPoint('CENTER')
 
-		tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
-		tab.HighlightTexture:SetAllPoints()
+		hooksecurefunc(tab.Icon, 'SetPoint', dashboard.PositionTabIcons)
 	end
+end
+
+-- Initiative task rows (HousingDashboard_InitiativeTaskTemplate, HousingDashboard_InitiativeSubtaskTemplate)
+function dashboard:HandleInitiativeTask()
+	if self.IsSkinned then return end
+
+	self.BG:SetAlpha(0)
+
+	self:CreateBackdrop()
+	self.backdrop:SetInside(self, 0, 1)
+
+	-- hover texture, the template sets its alpha to .7
+	local hover = self.BGAlphaAdd
+	hover:SetColorTexture(1, 1, 1, .25)
+	hover:SetInside(self.backdrop)
+	hover:SetAlpha(1)
+
+	self.IsSkinned = true
+end
+
+function dashboard:TaskListUpdate()
+	self:ForEachFrame(dashboard.HandleInitiativeTask)
+end
+
+-- Activity log rows (HousingDashboard_InitiativeTaskActivityEntryTemplate)
+function dashboard:HandleActivityEntry()
+	if self.IsSkinned then return end
+
+	self.Divider:SetAlpha(0)
+
+	self:CreateBackdrop()
+	self.backdrop:SetInside(self, 0, 1)
+
+	self.IsSkinned = true
+end
+
+function dashboard:ActivityLogUpdate()
+	self:ForEachFrame(dashboard.HandleActivityEntry)
+end
+
+-- Clear the gradient instead of ClearEdgeFade
+function dashboard:ClearEdgeGradient()
+	self:ClearAlphaGradient()
 end
 
 local function HouseList_UpdateChild(child)
@@ -136,16 +165,26 @@ function S:Blizzard_HousingDashboard()
 	local initiativesFrame = contentFrame.InitiativesFrame
 	initiativesFrame.InitiativesArt:Hide() -- Main Top Art BG
 
-	local tasks = initiativesFrame.InitiativeSetFrame.InitiativeTasks
+	local initiativeSet = initiativesFrame.InitiativeSetFrame
+
+	-- Progress bar in Blizzard's fill color
+	local progressBar = initiativeSet.ProgressBar
+	S:HandleStatusBar(progressBar, PROGESS_COLOR)
+	progressBar.BarEnd.Overlay:SetAlpha(0)
+
+	local tasks = initiativeSet.InitiativeTasks
 	tasks.BG:StripTextures()
 	tasks:SetTemplate('Transparent')
 	S:HandleTrimScrollBar(tasks.ScrollBar)
+
+	local taskList = tasks.TaskList
+	hooksecurefunc(taskList, 'Update', dashboard.TaskListUpdate)
+	hooksecurefunc(taskList, 'ApplyEdgeFade', dashboard.ClearEdgeGradient)
 
 	for _, frame in next, {
 		tasks.BG,
 		tasks.BorderRight,
 		tasks.BorderTop,
-		tasks.TitleCornerBR,
 		tasks.TitleCornerTR,
 		tasks.TaskListTitleContainer.TitleCornerBR,
 		tasks.TaskListTitleContainer.TitleFoliage
@@ -153,15 +192,18 @@ function S:Blizzard_HousingDashboard()
 		frame:StripTextures()
 	end
 
-	local activity = initiativesFrame.InitiativeSetFrame.InitiativeActivity
+	local activity = initiativeSet.InitiativeActivity
 	activity:SetTemplate('Transparent')
 	S:HandleTrimScrollBar(activity.ScrollBar)
+
+	local activityLog = activity.ActivityLog
+	hooksecurefunc(activityLog, 'Update', dashboard.ActivityLogUpdate)
+	hooksecurefunc(activityLog, 'ApplyEdgeFade', dashboard.ClearEdgeGradient)
 
 	for _, frame in next, {
 		activity.BG,
 		activity.BGTexture,
 		activity.BorderTop,
-		activity.TitleCornerBL,
 		activity.TitleCornerTR,
 		activity.ActivityLogTitleContainer.TitleCornerBL,
 		activity.ActivityLogTitleContainer.TitleFoliage

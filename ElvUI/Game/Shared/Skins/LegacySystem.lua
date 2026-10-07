@@ -37,12 +37,12 @@ local function Challenge_UpdatePlusMinusArt(button)
 end
 
 local function SelectedOverlay_SetShown(overlay, shown)
-	local backdrop = overlay:GetParent().backdrop
+	local button = overlay:GetParent()
 	if shown then
-		backdrop:SetBackdropBorderColor(1, .8, .1)
+		button.backdrop:SetBackdropBorderColor(1, .8, .1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
-		backdrop:SetBackdropBorderColor(r, g, b)
+		button.backdrop:SetBackdropBorderColor(r, g, b)
 	end
 end
 
@@ -50,12 +50,13 @@ end
 local function HandleChallenge(button)
 	if button.IsSkinned then return end
 
+	button.TitleBar:SetAlpha(0)
 	button.Background:SetAlpha(0)
 	button.BackgroundTop:SetAlpha(0)
 	button.BackgroundMiddle:SetAlpha(0)
 	button.BackgroundBottom:SetAlpha(0)
-	button.TitleBar:SetAlpha(0)
 	button.SelectedOverlay:SetAlpha(0)
+	button.Shield.CheckBackground:SetAlpha(0)
 
 	button:CreateBackdrop('Transparent')
 
@@ -63,14 +64,14 @@ local function HandleChallenge(button)
 	button.Icon.texture:RemoveMaskTexture(button.Icon.TextureMask)
 	S:HandleIcon(button.Icon.texture, true)
 
-	button.Shield.CheckBackground:SetAlpha(0)
-
 	S:HandleCheckBox(button.Tracked)
 	button.Tracked:Size(20)
 
 	hooksecurefunc(button.SelectedOverlay, 'SetShown', SelectedOverlay_SetShown)
+
 	hooksecurefunc(button, 'DisplayObjectives', Challenge_DisplayObjectives)
 	hooksecurefunc(button, 'UpdatePlusMinusArt', Challenge_UpdatePlusMinusArt)
+
 	Challenge_UpdatePlusMinusArt(button)
 
 	button.IsSkinned = true
