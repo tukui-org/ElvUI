@@ -613,6 +613,11 @@ local function UpdateStats(frame)
 	frame:ForEachFrame(UpdateStatsChild)
 end
 
+-- Clear the gradient instead of ClearEdgeFade
+local function ClearEdgeGradient(scrollBox)
+	scrollBox:ClearAlphaGradient()
+end
+
 local function HandleStatsPane(pane)
 	pane:StripTextures()
 
@@ -621,7 +626,7 @@ local function HandleStatsPane(pane)
 	end
 
 	S:HandleTrimScrollBar(pane.ScrollBar, nil, true)
-	pane.ScrollBox:ClearEdgeFade()
+	hooksecurefunc(pane.ScrollBox, 'ApplyEdgeFade', ClearEdgeGradient)
 	hooksecurefunc(pane.ScrollBox, 'Update', UpdateStats)
 end
 
