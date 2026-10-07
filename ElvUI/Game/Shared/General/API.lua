@@ -85,9 +85,6 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
-local SCRIPT_BINDING_TYPE = Enum.ScriptBindingType
-local SCRIPT_BINDING_POSTCALL = (SCRIPT_BINDING_TYPE and SCRIPT_BINDING_TYPE.PostCall) or 2
-
 local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local AddOnRestrictionType = Enum.AddOnRestrictionType or {}
 local LuaCurveTypeLinear = Enum.LuaCurveType and Enum.LuaCurveType.Linear
@@ -114,11 +111,6 @@ E.GroupUnitsByRole = {
 	HEALER = {},
 	DAMAGER = {},
 	NONE = {}
-}
-
-E.ScriptBinding = {
-	Show = 'OnShow',
-	Hide = 'OnHide'
 }
 
 E.SpecInfoBySpecClass = {} -- ['Protection Warrior'] = specInfo (table)
@@ -229,15 +221,6 @@ do	-- credit: oUF/private.lua
 		elseif E.Modern then
 			return selectionTypes[UnitSelectionType(unit, true)]
 		end
-	end
-end
-
-function E:SetScriptBinding(frame, method, func, which)
-	if SCRIPT_BINDING_TYPE then
-		local bind = E.ScriptBinding[method]
-		frame:HookScript(bind, func, which or SCRIPT_BINDING_POSTCALL)
-	else
-		hooksecurefunc(frame, method, func)
 	end
 end
 

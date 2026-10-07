@@ -1181,7 +1181,6 @@ function E:Auras_Create(parent, which, override)
 
 	container:Hide() -- we use this to prevent updates until a container is shown
 
-	-- dont use SetScriptBinding as these have forbidden script handlers
 	hooksecurefunc(container, 'Show', E.Auras_Show)
 	hooksecurefunc(container, 'Hide', E.Auras_Hide)
 

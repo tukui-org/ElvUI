@@ -9,7 +9,6 @@ local unpack, type, gsub, rad = unpack, type, gsub, rad
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local SCRIPT_BINDING_TYPE = Enum.ScriptBindingType
 
 S.allowBypass = {}
 S.addonStorage = {}
@@ -811,7 +810,7 @@ do
 		end
 	end
 
-	local function BorderHide(border, value) -- value wont exist when using SetScriptBinding OnHide
+	local function BorderHide(border, value)
 		if value == 0 then return end -- hiding blizz border
 
 		local br, bg, bb = unpack(E.media.bordercolor)
@@ -868,13 +867,9 @@ do
 
 			hooksecurefunc(border, 'SetAtlas', ColorAtlas)
 			hooksecurefunc(border, 'SetVertexColor', ColorVertex)
-
-			if not SCRIPT_BINDING_TYPE then -- OnShow and OnHide already handled
-				hooksecurefunc(border, 'SetShown', BorderShown)
-			end
-
-			E:SetScriptBinding(border, 'Show', BorderShow)
-			E:SetScriptBinding(border, 'Hide', BorderHide)
+			hooksecurefunc(border, 'SetShown', BorderShown)
+			hooksecurefunc(border, 'Show', BorderShow)
+			hooksecurefunc(border, 'Hide', BorderHide)
 		end
 	end
 end
