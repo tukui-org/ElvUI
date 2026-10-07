@@ -38,6 +38,7 @@ local SELECT_NPC = SOUNDKIT.IG_CHARACTER_NPC_SELECT
 local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 
+local SCRIPT_BINDING_TYPE = Enum.ScriptBindingType
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CURVE_RED = CreateColor(1, 0, 0)
@@ -1713,6 +1714,10 @@ do
 		[_G.DefaultCompactUnitFrameSetup] = true
 	}
 
+	local function FrameShow(frame)
+		frame:Hide()
+	end
+
 	local function FrameShown(frame, shown)
 		if shown then
 			frame:Hide()
@@ -1787,8 +1792,11 @@ do
 		if not SetFrameHidden[frame] then
 			SetFrameHidden[frame] = true
 
-			hooksecurefunc(frame, 'Show', frame.Hide)
-			hooksecurefunc(frame, 'SetShown', FrameShown)
+			E:SetScriptBinding(frame, 'Show', FrameShow)
+
+			if not SCRIPT_BINDING_TYPE then -- OnShow already handled
+				hooksecurefunc(frame, 'SetShown', FrameShown)
+			end
 		end
 	end
 
@@ -2351,11 +2359,11 @@ function UF:AfterStyleCallback()
 	if not E.Modern or self.isNameplate then return end
 
 	if self.Show then
-		hooksecurefunc(self, 'Show', UF.Show)
+		E:SetScriptBinding(self, 'Show', UF.Show)
 	end
 
 	if self.Hide then
-		hooksecurefunc(self, 'Hide', UF.Hide)
+		E:SetScriptBinding(self, 'Hide', UF.Hide)
 	end
 
 	if self.UpdateAllElements then

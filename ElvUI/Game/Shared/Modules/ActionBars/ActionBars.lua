@@ -2100,9 +2100,8 @@ function AB:Initialize()
 	if E.Modern then
 		AB:RegisterEvent('HOUSE_EDITOR_MODE_CHANGED', 'HandleBinds')
 
-		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
-		hooksecurefunc(_G.SpellFlyout, 'Hide', AB.UpdateFlyoutButtons)
-
+		_G.SpellFlyout:HookScript('OnShow', AB.UpdateFlyoutButtons)
+		_G.SpellFlyout:HookScript('OnHide', AB.UpdateFlyoutButtons)
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
 

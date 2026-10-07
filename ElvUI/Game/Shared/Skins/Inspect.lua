@@ -295,6 +295,7 @@ function S:Blizzard_InspectUI()
 				button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 
 				hooksecurefunc(icon, 'SetDesaturated', InspectTalentIconDesaturated)
+
 				hooksecurefunc(button.border, 'SetShown', TalentBorderSetShown)
 				hooksecurefunc(button.border, 'Hide', TalentBorderHide)
 			end

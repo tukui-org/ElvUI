@@ -45,10 +45,10 @@ function NP:Construct_Portrait(nameplate)
 	Portrait:SetSize(28, 28)
 	Portrait:Hide()
 
-	Portrait.PostUpdate = NP.Portrait_PostUpdate
+	Portrait:HookScript('OnShow', NP.Update_PortraitBackdrop)
+	Portrait:HookScript('OnHide', NP.Update_PortraitBackdrop)
 
-	hooksecurefunc(Portrait, 'Hide', NP.Update_PortraitBackdrop)
-	hooksecurefunc(Portrait, 'Show', NP.Update_PortraitBackdrop)
+	Portrait.PostUpdate = NP.Portrait_PostUpdate
 
 	return Portrait
 end

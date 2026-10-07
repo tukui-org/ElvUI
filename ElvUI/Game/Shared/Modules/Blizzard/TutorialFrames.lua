@@ -16,7 +16,9 @@ end
 function BL:DisableHelpTip() -- auto complete helptips
 	if not E.global.general.disableTutorialButtons then return end
 
+	-- dont use SetScriptBinding as this is a Mixin API
 	hooksecurefunc(_G.HelpTip, 'Show', AcknowledgeTips)
+
 	E:Delay(1, AcknowledgeTips)
 end
 

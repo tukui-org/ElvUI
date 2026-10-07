@@ -112,8 +112,8 @@ local function SkinJournalScrollButton(bu)
 		bu:HookScript('OnLeave', ButtonOnLeave)
 
 		bu.selectedTexture:SetTexture()
-		hooksecurefunc(bu.selectedTexture, 'Show', SelectedTextureShow)
-		hooksecurefunc(bu.selectedTexture, 'Hide', SelectedTextureHide)
+		bu.selectedTexture:HookScript('OnShow', SelectedTextureShow)
+		bu.selectedTexture:HookScript('OnHide', SelectedTextureHide)
 
 		local parent = bu:GetParent():GetParent():GetParent()
 		if parent == _G.PetJournal then

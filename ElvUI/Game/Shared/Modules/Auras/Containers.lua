@@ -6,7 +6,6 @@ local A = E:GetModule('Auras')
 local UF = E:GetModule('UnitFrames')
 
 local _G = _G
-local hooksecurefunc = hooksecurefunc
 local wipe, ceil, huge = wipe, ceil, math.huge
 local strfind, strmatch = strfind, strmatch
 local floor, next, type = floor, next, type
@@ -1181,8 +1180,8 @@ function E:Auras_Create(parent, which, override)
 
 	container:Hide() -- we use this to prevent updates until a container is shown
 
-	hooksecurefunc(container, 'Show', E.Auras_Show)
-	hooksecurefunc(container, 'Hide', E.Auras_Hide)
+	E:SetScriptBinding(container, 'Show', E.Auras_Show)
+	E:SetScriptBinding(container, 'Hide', E.Auras_Hide)
 
 	container.parentName = parentName
 	container.parent = parent

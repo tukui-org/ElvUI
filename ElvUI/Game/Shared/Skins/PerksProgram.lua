@@ -249,7 +249,7 @@ function S:Blizzard_PerksProgram() -- Trading Post
 	footer.PurchaseButton:HookScript('OnEnter', PurchaseButton_OnEnter)
 	footer.PurchaseButton:HookScript('OnLeave', PurchaseButton_OnLeave)
 
-	-- handle the glow
+	-- handle the glow, dont use SetScriptBinding as this is a Mixin API
 	hooksecurefunc(_G.GlowEmitterFactory, 'Show', GlowEmitterFactory_Show)
 	hooksecurefunc(_G.GlowEmitterFactory, 'Hide', GlowEmitterFactory_Hide)
 
