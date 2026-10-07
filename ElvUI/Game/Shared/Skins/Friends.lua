@@ -2,12 +2,15 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local ipairs = ipairs
 local next = next
 local pairs = pairs
 local unpack = unpack
+local wipe = wipe
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
 local WhoFrameColumn_SetWidth = WhoFrameColumn_SetWidth
 local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 
@@ -489,6 +492,208 @@ local function HandleGuild() -- /groster
 	S:HandleButton(_G.GuildControlPopupFrameCancelButton)
 end
 
+-- Shared "Recruit a Friend" reward header
+local function HandleRAFRewardClaiming(frame)
+	frame:StripTextures()
+	frame:SetTemplate('Transparent')
+	frame.Background:SetAlpha(0)
+	frame.Watermark:SetAlpha(0)
+
+	local nextReward = frame.NextRewardButton
+	S:HandleIcon(nextReward.Icon, true)
+	nextReward.CircleMask:Hide()
+	nextReward.IconBorder:SetAlpha(0)
+	nextReward.IconOverlay:SetAlpha(0)
+	RAFRewardQuality(nextReward)
+end
+
+local function HandleBroadcastEditBox(editBox)
+	for _, name in next, EditBoxBorders do
+		editBox[name]:Hide()
+	end
+
+	S:HandleEditBox(editBox)
+end
+
+-- SocialUI (C_SocialUI.IsSystemEnabled)
+local socialTabs = {}
+local function UpdateSocialTabs(frame)
+	wipe(socialTabs)
+
+	-- The tab pool enumerates in no order, availableTabData is sorted
+	for _, tabData in ipairs(frame.availableTabData) do
+		local tab = frame:GetTabByType(tabData.tabType)
+		if tab then
+			S:HandleLargeSideTab(tab)
+			socialTabs[#socialTabs + 1] = tab
+		end
+	end
+
+	S:LayoutLargeSideTabs(frame, socialTabs)
+end
+
+-- SocialUIScrollableHeaderTemplate, keeps Blizzard's plus / minus
+local function HandleSocialHeader(header)
+	header:SetNormalTexture(E.ClearTexture)
+	header:SetHighlightTexture(E.ClearTexture)
+	header:CreateBackdrop()
+	header.backdrop:SetInside(header, 0, 1)
+end
+
+-- Friend, friend request, recent ally, recruit and quick join cards
+local function HandleSocialCard(card)
+	card.Background:SetAlpha(0)
+	card:CreateBackdrop('Transparent')
+	card.backdrop:SetInside(card, 0, 1)
+
+	-- Quick join cards have their own Highlight and Selected textures
+	local highlight = card:GetHighlightTexture() or card.Highlight
+	highlight:SetColorTexture(1, 1, 1, .25)
+	highlight:SetInside(card.backdrop)
+
+	local selected = card.Selected
+	if selected then
+		local r, g, b = unpack(E.media.rgbvaluecolor)
+		selected:SetColorTexture(r, g, b, .25)
+		selected:SetInside(card.backdrop)
+	end
+
+	-- Party invite (friends, recent allies), RAF summon (friends) and accept (friend requests)
+	for _, button in next, { card.PartyButton, card.RAFSummonButton, card.AcceptButton } do
+		S:HandleButton(button)
+	end
+end
+
+local function UpdateSocialRow(row)
+	if row.IsSkinned then return end
+
+	if row.CollapseButton then
+		HandleSocialHeader(row)
+	elseif row.Background then -- Spacer rows have nothing to skin
+		HandleSocialCard(row)
+	end
+
+	row.IsSkinned = true
+end
+
+local function UpdateSocialList(scrollBox)
+	scrollBox:ForEachFrame(UpdateSocialRow)
+end
+
+-- SocialUIContactsFrameTemplate, the content frame of every tab (except raid tab)
+local function HandleContactsFrame(frame)
+	frame:StripTextures()
+	-- Three-Slice SharedButtonTemplate
+	S:HandleButton(frame.ActionButton, nil, nil, nil, true, nil, nil, nil, true)
+	S:HandleTrimScrollBar(frame.ScrollBar)
+	hooksecurefunc(frame.ScrollBox, 'Update', UpdateSocialList)
+
+	local filterBar = frame.FilterBar
+	S:HandleEditBox(filterBar.SearchBar)
+
+	local filter = filterBar.SearchFilterDropdown
+	S:HandleButton(filter, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
+	S:HandleCloseButton(filter.ResetButton)
+	filter.ResetButton:ClearAllPoints()
+	filter.ResetButton:Point('CENTER', filter, 'TOPRIGHT', 0, 0)
+end
+
+-- The raid tab pools its group boxes and player buttons
+local function UpdateRaidGroups(frame)
+	if InCombatLockdown() then return end -- Player buttons (Secure unit buttons)
+
+	for _, group in next, frame.groups do
+		if not group.IsSkinned then
+			group:StripTextures()
+			group:CreateBackdrop('Transparent')
+			group.IsSkinned = true
+		end
+	end
+
+	for _, player in next, frame.players do
+		if not player.IsSkinned then
+			player:StripTextures()
+			player:CreateBackdrop('Transparent')
+			player.IsSkinned = true
+		end
+	end
+end
+
+local function HandleSocialUI()
+	local SocialUIFrame = _G.SocialUIFrame
+	S:HandlePortraitFrame(SocialUIFrame)
+	hooksecurefunc(SocialUIFrame, 'RefreshTabs', UpdateSocialTabs)
+
+	local bar = SocialUIFrame.BattleNetBar
+	bar:StripTextures()
+
+	local controls = bar.ControlsContainer
+	S:HandleDropDownBox(controls.OnlineStatusDropdown, 54)
+	S:HandleButton(controls.BattleNetMenuButton)
+
+	local battleTag = controls.PersonalBattleTagDisplay
+	battleTag:CreateBackdrop('Transparent')
+	battleTag.backdrop:SetAllPoints(controls.BattleNetBackground)
+	battleTag.backdrop:SetBackdropColor(BNET_BACKGROUND_COLOR.r, BNET_BACKGROUND_COLOR.g, BNET_BACKGROUND_COLOR.b, BNET_BACKGROUND_COLOR.a)
+	controls.BattleNetBackground:SetAlpha(0)
+
+	-- Side windows
+	local notice = SocialUIFrame.BattleNetUnavailableNoticeFrame
+	notice:StripTextures()
+	notice:SetTemplate('Transparent')
+
+	local broadcast = SocialUIFrame.BattleNetBroadcastFrame
+	broadcast:StripTextures()
+	broadcast:SetTemplate('Transparent')
+	HandleBroadcastEditBox(broadcast.EditBox)
+	S:HandleButton(broadcast.UpdateButton)
+	S:HandleButton(broadcast.CancelButton)
+
+	local ignoreList = SocialUIFrame.IgnoreListFrame
+	S:HandleFrame(ignoreList)
+	S:HandleTrimScrollBar(ignoreList.ScrollBar)
+	S:HandleButton(ignoreList.BlockButton)
+	S:HandleButton(ignoreList.UnblockButton)
+
+	-- Tab content
+	for _, frame in next, { SocialUIFrame.FriendsList, SocialUIFrame.RecentAlliesList, SocialUIFrame.QuickJoinFrame, SocialUIFrame.FriendRequestsList, SocialUIFrame.RecruitAFriendFrame } do
+		HandleContactsFrame(frame)
+	end
+
+	local requests = SocialUIFrame.FriendRequestsList
+	if requests then
+		local warning = requests.RealIDWarning
+		S:HandleButton(warning.ContinueButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleTrimScrollBar(warning.ScrollBar)
+	end
+
+	local raf = SocialUIFrame.RecruitAFriendFrame
+	if raf then
+		HandleRAFRewardClaiming(raf.RewardClaiming)
+		S:HandleButton(raf.RewardClaiming.ClaimOrViewRewardButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleTrimScrollBar(raf.NoRecruitsScrollBar)
+	end
+
+	local raidFrame = SocialUIFrame.RaidFrame
+	if raidFrame then
+		local allAssist = raidFrame.AllAssistCheckButton
+		S:HandleCheckBox(allAssist)
+		-- HandleCheckBox strips the raid assist icon next to the box
+		allAssist.Icon:SetAtlas('friends-icon-raidAssist', true)
+
+		S:HandleButton(raidFrame.RaidInfoButton, nil, nil, nil, true, nil, nil, nil, true)
+		S:HandleButton(raidFrame.ConvertToRaidButton, nil, nil, nil, true, nil, nil, nil, true)
+		hooksecurefunc(raidFrame, 'UpdateContents', UpdateRaidGroups)
+
+		local raidInfo = SocialUIFrame.RaidInfoFrame
+		raidInfo:StripTextures()
+		raidInfo:SetTemplate('Transparent')
+		S:HandleCloseButton(raidInfo.CloseButton)
+		S:HandleTrimScrollBar(raidInfo.ScrollBar)
+		S:HandleButton(raidInfo.ExtendButton, nil, nil, nil, true, nil, nil, nil, true)
+	end
+end
+
 function S:FriendsFrame()
 	if E.Modern then
 		S:HandleTrimScrollBar(_G.FriendsListFrame.ScrollBar)
@@ -537,12 +742,7 @@ function S:FriendsFrame()
 		S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.UpdateButton)
 		S:HandleButton(FriendsFrameBattlenetFrame.BroadcastFrame.CancelButton)
 
-		local broadcastEdit = FriendsFrameBattlenetFrame.BroadcastFrame.EditBox
-		for _, name in next, EditBoxBorders do
-			broadcastEdit[name]:Hide()
-		end
-
-		S:HandleEditBox(broadcastEdit)
+		HandleBroadcastEditBox(FriendsFrameBattlenetFrame.BroadcastFrame.EditBox)
 		S:HandleEditBox(_G.AddFriendNameEditBox)
 		_G.AddFriendFrame:StripTextures()
 		_G.AddFriendFrame:SetTemplate('Transparent')
@@ -563,9 +763,9 @@ function S:FriendsFrame()
 		S:HandleButton(IgnoreWindow.UnignorePlayerButton)
 		S:HandleCloseButton(IgnoreWindow.CloseButton)
 
-		--Who Frame
+		-- Who Frame
 		local WhoFrame = _G.WhoFrame
-		if WhoFrame then -- not on Forever, its Who list lives in the group finder
+		if WhoFrame then -- Not on Forever, its Who list lives in the group finder
 			WhoFrame:StripTextures()
 			_G.WhoFrameListInset:StripTextures()
 			_G.WhoFrameListInset.NineSlice:Hide()
@@ -581,7 +781,7 @@ function S:FriendsFrame()
 				S:HandleButton(button)
 			end
 
-			--Increase width of Level column slightly
+			-- Increase width of Level column slightly
 			WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) -- Default is 32
 
 			S:HandleDropDownBox(_G.WhoFrameDropdown, 90)
@@ -594,7 +794,7 @@ function S:FriendsFrame()
 			S:HandleTab(tab)
 		end
 
-		--View Friends BN Frame
+		-- View Friends BN Frame
 		local FriendsFriendsFrame = _G.FriendsFriendsFrame
 		FriendsFriendsFrame.ScrollFrameBorder:Hide()
 		FriendsFriendsFrame:StripTextures()
@@ -603,11 +803,11 @@ function S:FriendsFrame()
 		S:HandleButton(FriendsFriendsFrame.SendRequestButton)
 		S:HandleButton(FriendsFriendsFrame.CloseButton)
 
-		--Quick join
+		-- Quick join
 		local QuickJoinFrame = _G.QuickJoinFrame
 		local QuickJoinRoleSelectionFrame = _G.QuickJoinRoleSelectionFrame
 		S:HandleButton(_G.QuickJoinFrame.JoinQueueButton)
-		QuickJoinFrame.JoinQueueButton:Size(131, 21) --Match button on other tab
+		QuickJoinFrame.JoinQueueButton:Size(131, 21) -- Match button on other tab
 		QuickJoinFrame.JoinQueueButton:ClearAllPoints()
 		QuickJoinFrame.JoinQueueButton:Point('BOTTOMRIGHT', QuickJoinFrame, 'BOTTOMRIGHT', -6, 4)
 		QuickJoinRoleSelectionFrame:StripTextures()
@@ -644,20 +844,9 @@ function S:FriendsFrame()
 		end
 
 		local Claiming = RAF.RewardClaiming
-		Claiming:StripTextures()
-		Claiming:SetTemplate('Transparent')
+		HandleRAFRewardClaiming(Claiming)
 		Claiming:Point('TOPLEFT', 4, -84)
-		-- Blizzard sets the atlas again on every reward update
-		Claiming.Background:SetAlpha(0)
-		Claiming.Watermark:SetAlpha(0)
 		S:HandleButton(Claiming.ClaimOrViewRewardButton)
-
-		local NextReward = Claiming.NextRewardButton
-		S:HandleIcon(NextReward.Icon, true)
-		NextReward.CircleMask:Hide()
-		NextReward.IconBorder:SetAlpha(0)
-		NextReward.IconOverlay:SetAlpha(0)
-		RAFRewardQuality(NextReward)
 
 		local RecruitList = RAF.RecruitList
 		RecruitList.Header:StripTextures()
@@ -684,6 +873,8 @@ function S:FriendsFrame()
 
 		hooksecurefunc(rewardsFrame, 'UpdateRewards', RAFRewards)
 		RAFRewards() -- Because it's loaded already. The securehook is for when it updates in game. Thanks for playing.
+
+		HandleSocialUI()
 	else
 		-- Friends Frame
 		local FriendsFrame = _G.FriendsFrame
@@ -787,7 +978,7 @@ function S:FriendsFrame()
 		S:HandleButton(_G.FriendsFrameIgnorePlayerButton, true)
 		S:HandleScrollBar(_G.FriendsFrameIgnoreScrollFrameScrollBar)
 
-		--Who Frame
+		-- Who Frame
 		_G.WhoFrame:StripTextures()
 		_G.WhoFrameListInset:StripTextures()
 		_G.WhoFrameListInset.NineSlice:Hide()
@@ -808,7 +999,7 @@ function S:FriendsFrame()
 			S:HandleButton(button)
 		end
 
-		--Increase width of Level column slightly
+		-- Increase width of Level column slightly
 		WhoFrameColumn_SetWidth(_G.WhoFrameColumnHeader3, 37) -- Default is 32
 
 		for i = 1, _G.WHOS_TO_DISPLAY do
