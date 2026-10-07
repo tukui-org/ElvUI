@@ -5,6 +5,8 @@ local _G = _G
 local ipairs, next = ipairs, next
 local hooksecurefunc = hooksecurefunc
 
+local PROGESS_COLOR = { .81, .52, .04 }
+
 for _, addonName in next, {
 	'Blizzard_HouseList',
 	'Blizzard_HousingCharter',
@@ -33,7 +35,7 @@ function dashboard:HandleDashboardTabs(frame)
 	local previous
 	for _, tab in ipairs(frame.TabButtons) do
 		tab:Size(32, 42)
-		tab:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true)
+		tab:CreateBackdrop(nil, nil, nil, nil, nil, nil, nil, true) -- noScale
 
 		tab:ClearAllPoints()
 		if previous then
@@ -44,19 +46,20 @@ function dashboard:HandleDashboardTabs(frame)
 
 		previous = tab
 
-		tab.Icon:ClearAllPoints()
-		tab.Icon:SetPoint('CENTER')
-		hooksecurefunc(tab.Icon, 'SetPoint', dashboard.PositionTabIcons)
-
-		tab.Background:SetAlpha(0)
-		tab.TabGlow:SetAlpha(0)
-
 		tab.SelectedTexture:SetDrawLayer('ARTWORK')
 		tab.SelectedTexture:SetColorTexture(1, 0.82, 0, 0.3)
 		tab.SelectedTexture:SetInside(tab.backdrop)
 
 		tab.HighlightTexture:SetColorTexture(1, 1, 1, 0.3)
 		tab.HighlightTexture:SetInside(tab.backdrop)
+
+		tab.Background:SetAlpha(0)
+		tab.TabGlow:SetAlpha(0)
+
+		tab.Icon:ClearAllPoints()
+		tab.Icon:SetPoint('CENTER')
+
+		hooksecurefunc(tab.Icon, 'SetPoint', dashboard.PositionTabIcons)
 	end
 end
 
@@ -65,6 +68,7 @@ function dashboard:HandleInitiativeTask()
 	if self.IsSkinned then return end
 
 	self.BG:SetAlpha(0)
+
 	self:CreateBackdrop()
 	self.backdrop:SetInside(self, 0, 1)
 
@@ -86,6 +90,7 @@ function dashboard:HandleActivityEntry()
 	if self.IsSkinned then return end
 
 	self.Divider:SetAlpha(0)
+
 	self:CreateBackdrop()
 	self.backdrop:SetInside(self, 0, 1)
 
@@ -164,7 +169,7 @@ function S:Blizzard_HousingDashboard()
 
 	-- Progress bar in Blizzard's fill color
 	local progressBar = initiativeSet.ProgressBar
-	S:HandleStatusBar(progressBar, { .81, .52, .04 })
+	S:HandleStatusBar(progressBar, PROGESS_COLOR)
 	progressBar.BarEnd.Overlay:SetAlpha(0)
 
 	local tasks = initiativeSet.InitiativeTasks

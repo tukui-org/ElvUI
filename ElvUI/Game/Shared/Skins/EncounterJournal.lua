@@ -423,6 +423,30 @@ local function SuggestFrameUpdateRewards(sugg)
 	end
 end
 
+local function HandleSideTabs(encounterInfo, tabNames)
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	for _, name in next, tabNames do
+		local tab = encounterInfo[name]
+		tinsert(encounterInfoTabs, tab)
+
+		tab:Size(32)
+		tab:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, true) -- glossTex noScale
+
+		tab:SetNormalTexture(E.ClearTexture)
+		tab:SetPushedTexture(E.ClearTexture)
+		tab:SetDisabledTexture(E.ClearTexture)
+
+		local hl = tab:GetHighlightTexture()
+		hl:SetColorTexture(r, g, b, .2)
+		hl:SetInside(tab.backdrop)
+
+		tab.selected:Size(36, 32)
+		tab.unselected:Size(36, 32)
+		tab.unselected:ClearAllPoints()
+		tab.unselected:Point('CENTER')
+	end
+end
+
 function S:Blizzard_EncounterJournal()
 	local EJ = _G.EncounterJournal
 	S:HandlePortraitFrame(EJ)
@@ -439,13 +463,14 @@ function S:Blizzard_EncounterJournal()
 	EJ.searchBox:ClearAllPoints()
 	EJ.searchBox:Point('TOPLEFT', EJ.navBar, 'TOPRIGHT', 4, 0)
 
+	local MonthlyActivities = EJ.MonthlyActivitiesFrame
 	if E.Modern then
 		S:HandleTrimScrollBar(_G.EncounterJournalJourneysFrame.ScrollBar)
-		S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.ScrollBar)
-		S:HandleTrimScrollBar(EJ.MonthlyActivitiesFrame.FilterList.ScrollBar)
+		S:HandleTrimScrollBar(MonthlyActivities.ScrollBar)
+		S:HandleTrimScrollBar(MonthlyActivities.FilterList.ScrollBar)
 
 		if E.global.general.disableTutorialButtons then
-			EJ.MonthlyActivitiesFrame.HelpButton:Kill()
+			MonthlyActivities.HelpButton:Kill()
 		end
 	end
 
@@ -559,27 +584,7 @@ function S:Blizzard_EncounterJournal()
 	EncounterInfo.overviewScroll:Height(360)
 
 	-- Side tabs
-	for _, name in next, { 'overviewTab', 'lootTab', 'bossTab', 'modelTab' } do
-		local tab = EncounterInfo[name]
-		tinsert(encounterInfoTabs, tab)
-		tab:Size(32)
-		tab:CreateBackdrop(nil, true, nil, nil, nil, nil, nil, true)
-
-		tab:SetNormalTexture(E.ClearTexture)
-		tab:SetPushedTexture(E.ClearTexture)
-		tab:SetDisabledTexture(E.ClearTexture)
-
-		local hl = tab:GetHighlightTexture()
-		local r, g, b = unpack(E.media.rgbvaluecolor)
-		hl:SetColorTexture(r, g, b, .2)
-		hl:SetInside(tab.backdrop)
-
-		tab.unselected:Size(36, 32)
-		tab.unselected:ClearAllPoints()
-		tab.unselected:Point('CENTER')
-		tab.selected:Size(36, 32)
-	end
-
+	HandleSideTabs(EncounterInfo, { 'overviewTab', 'lootTab', 'bossTab', 'modelTab' })
 	RepositionInfoTabs()
 	hooksecurefunc('EncounterJournal_DisplayInstance', RepositionInfoTabs)
 
@@ -607,12 +612,14 @@ function S:Blizzard_EncounterJournal()
 		end
 
 		if E.private.skins.parchmentRemoverEnable then
-			EJ.MonthlyActivitiesFrame.Divider:Hide()
-			EJ.MonthlyActivitiesFrame.DividerVertical:Hide()
-			EJ.MonthlyActivitiesFrame.Bg:SetAlpha(0)
-			EJ.MonthlyActivitiesFrame.ThemeContainer:SetAlpha(0)
-			hooksecurefunc(EJ.MonthlyActivitiesFrame.ScrollBox, 'Update', MonthlyActivitiesUpdate)
 			_G.EncounterJournalInstanceSelectBG:SetAlpha(0)
+
+			MonthlyActivities.Divider:Hide()
+			MonthlyActivities.DividerVertical:Hide()
+			MonthlyActivities.Bg:SetAlpha(0)
+			MonthlyActivities.ThemeContainer:SetAlpha(0)
+
+			hooksecurefunc(MonthlyActivities.ScrollBox, 'Update', MonthlyActivitiesUpdate)
 
 			local suggestFrame = EJ.suggestFrame
 
