@@ -441,7 +441,7 @@ local function SkinMistsGlyphFrame()
 		frame.highlight:SetTexture(nil)
 		frame.ring:Hide()
 
-		hooksecurefunc(frame.glyph, 'Show', GlyphShow)
+		frame.glyph:SetScript('OnShow', GlyphShow)
 
 		frame.icon = frame:CreateTexture(nil, 'OVERLAY')
 		frame.icon:SetInside()
