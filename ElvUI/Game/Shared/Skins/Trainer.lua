@@ -7,12 +7,16 @@ local hooksecurefunc = hooksecurefunc
 
 S:AddCallbackForAddon('Blizzard_TrainerUI', nil, nil, nil, nil, nil, 'trainer')
 
+local COLLAPSE_ATLAS = {
+	['Professions-recipe-header-expand'] = 'common-button-list-plus',
+	['Professions-recipe-header-collapse'] = 'common-button-list-minus'
+}
+
 -- Use Blizzard's plus / minus for headers
 local function UpdateCollapseIcon(texture, atlas)
-	if atlas == 'Professions-recipe-header-expand' then
-		texture:SetAtlas('common-button-list-plus', true)
-	elseif atlas == 'Professions-recipe-header-collapse' then
-		texture:SetAtlas('common-button-list-minus', true)
+	local icon = COLLAPSE_ATLAS[atlas]
+	if icon then
+		texture:SetAtlas(icon, true)
 	end
 end
 
@@ -27,6 +31,7 @@ local function HandleCategory(button)
 
 	for _, icon in next, { button.CollapseIcon, button.CollapseIconAlphaAdd } do
 		UpdateCollapseIcon(icon, icon:GetAtlas())
+
 		hooksecurefunc(icon, 'SetAtlas', UpdateCollapseIcon)
 	end
 end
