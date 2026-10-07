@@ -41,6 +41,8 @@ end
 function NP:Construct_Portrait(nameplate)
 	local Portrait = nameplate.RaisedElement:CreateTexture(nameplate.frameName..'Portrait', 'OVERLAY', nil, 2)
 	Portrait:CreateBackdrop(nil, nil, nil, nil, nil, true, true)
+	Portrait.backdrop:Hide()
+
 	Portrait:SetTexCoord(.18, .82, .18, .82)
 	Portrait:SetSize(28, 28)
 	Portrait:Hide()
