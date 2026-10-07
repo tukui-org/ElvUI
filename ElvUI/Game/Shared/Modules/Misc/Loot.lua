@@ -123,10 +123,8 @@ local function FrameHide()
 	end
 end
 
-local function MasterLooterHide()
-	if _G.MasterLooterFrame then
-		_G.MasterLooterFrame:ClearAllPoints()
-	end
+local function MasterLooterHide(frame)
+	frame:ClearAllPoints()
 end
 
 local function AnchorSlots(frame)
