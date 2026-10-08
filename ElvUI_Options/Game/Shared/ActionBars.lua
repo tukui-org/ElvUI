@@ -251,10 +251,10 @@ ActionBar.args.totemBar.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"],
 ActionBar.args.totemBar.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 ActionBar.args.totemBar.args.fontGroup.inline = true
 
-ActionBar.args.totemBar.args.flyoutGroup = ACH:Group("Flyout Options", nil, 50)
+ActionBar.args.totemBar.args.flyoutGroup = ACH:Group(L["Flyout Options"], nil, 50)
 ActionBar.args.totemBar.args.flyoutGroup.args.flyoutDirection = ACH:Select(L["Flyout Direction"], nil, 1, { UP = L["Up"], DOWN = L["Down"] })
-ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSpacing = ACH:Range("Flyout Spacing", nil, 2, { min = 1, max = 10, step = 1 })
-ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize = ACH:Range("Flyout Size", nil, 3, { min = 24, max = 60, step = 1 })
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSpacing = ACH:Range(L["Flyout Spacing"], nil, 2, { min = 1, max = 10, step = 1 })
+ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize = ACH:Range(L["Flyout Size"], nil, 3, { min = 24, max = 60, step = 1 })
 ActionBar.args.totemBar.args.flyoutGroup.args.flyoutHeight = ACH:Range(L["Flyout Height"], nil, 4, { min = 24, max = 60, step = 1 })
 ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize.name = function() return E.db.actionbar.totemBar.keepSizeRatio and L["Flyout Size"] or L["Flyout Width"] end
 ActionBar.args.totemBar.args.flyoutGroup.args.flyoutSize.desc = function() return E.db.actionbar.totemBar.keepSizeRatio and L["The size of the action buttons."] or L["The width of the action buttons."] end
