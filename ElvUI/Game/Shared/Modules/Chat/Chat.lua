@@ -2134,7 +2134,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	-- ElvUI: data from populated guid info
 	local nameWithRealm, realm
-	local data = CH:GetPlayerInfoByGUID(arg12)
+	local guidProtected = E:IsSecretValue(arg12)
+	local data = not guidProtected and CH:GetPlayerInfoByGUID(arg12)
 	if data and not E.Forever then
 		realm = data.realm
 		nameWithRealm = data.nameWithRealm
@@ -2169,8 +2170,8 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 	elseif chatType == 'BN_WHISPER' or chatType == 'BN_WHISPER_INFORM' then -- arg11: lineID
 		playerLink = CH:GetBNPlayerLink(unitName, playerLinkDisplayText, arg13, arg11, chatGroup, chatTarget)
 	elseif (chatType == 'GUILD_DISCORD' or chatType == 'GUILD') and isFromDiscord then
-		playerLink = CH:GetDiscordLink(playerLinkDisplayText, arg13, discordInfo.userID, arg11, chatGroup, chatTarget);
-	else
+		playerLink = CH:GetDiscordLink(playerLinkDisplayText, arg13, discordInfo.userID, arg11, chatGroup, chatTarget)
+	elseif (chatType ~= 'CHANNEL') or guidProtected or arg12 then -- channel: we only want to allow playerLink when there is a valid GUID
 		playerLink = CH:GetPlayerLink(unitName, playerLinkDisplayText, arg11, chatGroup, chatTarget)
 	end
 
@@ -2183,7 +2184,7 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 
 	-- Player Flags
 	local pflag = CH:GetPFlag(arg6, arg7, arg12)
-	if not bossMonster and (E:NotSecretValue(arg12) and E:NotSecretValue(unitName)) then
+	if not bossMonster and (not guidProtected and E:NotSecretValue(unitName)) then
 		local chatIcon, pluginChatIcon = specialChatIcons[arg12] or specialChatIcons[unitName], CH:GetPluginIcon(arg12, unitName)
 		if type(chatIcon) == 'function' then
 			local icon, prettify, var1, var2, var3 = chatIcon()

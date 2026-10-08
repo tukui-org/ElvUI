@@ -79,20 +79,20 @@ function UF:Construct_AuraBarHeader(frame)
 
 		return bars
 	else
-		local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
-		auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
-		auraBar:SetSize(1, 1)
+		local bars = CreateFrame('Frame', '$parent_AuraBars', frame)
+		bars:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
+		bars:SetSize(1, 1)
 
-		auraBar.PreSetPosition = UF.SortAuras
-		auraBar.PostCreateBar = UF.Construct_AuraBars
-		auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
-		auraBar.CustomFilter = UF.AuraFilter
+		bars.PreSetPosition = UF.SortAuras
+		bars.PostCreateBar = UF.Construct_AuraBars
+		bars.PostUpdateBar = UF.PostUpdateBar_AuraBars
+		bars.CustomFilter = UF.AuraFilter
 
-		auraBar.sparkEnabled = true
-		auraBar.initialAnchor = 'BOTTOMRIGHT'
-		auraBar.type = 'aurabar'
+		bars.sparkEnabled = true
+		bars.initialAnchor = 'BOTTOMRIGHT'
+		bars.type = 'aurabar'
 
-		return auraBar
+		return bars
 	end
 end
 
@@ -228,6 +228,7 @@ function UF:Configure_AuraBars(frame)
 			bars.enemyFilter = db.enemyFilter.filterLists
 			bars.noMouse = db.clickThrough
 			bars.forceShowAuras = frame.forceShowAuras
+			bars.allowEnable = true -- keep over Auras_GroupUnit
 
 			UF:AuraBars_UpdateFilter(bars, frame.__unit)
 
@@ -240,8 +241,6 @@ function UF:Configure_AuraBars(frame)
 			if known then
 				E:Auras_UpdateButtons(bars)
 			end
-
-			bars.allowEnable = true
 		else
 			bars.disableMouse = db.clickThrough
 

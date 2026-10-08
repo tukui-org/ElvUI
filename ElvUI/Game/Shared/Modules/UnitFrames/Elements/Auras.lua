@@ -470,8 +470,6 @@ function UF:Configure_Auras(frame, which)
 
 	local initialAnchor = (UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint]) or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
 	if E.Modern then
-		auras.allowEnable = settings.enable
-
 		auras.isUnitframe = true
 		auras.useWidth = true -- this helps keeps row count proper when using keepSizeRatio
 		auras.auraType = auraType
@@ -488,6 +486,7 @@ function UF:Configure_Auras(frame, which)
 		auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and growOffset or 0, growDown and 0 or growOffset
 		auras.noMouse = settings.clickThrough
 		auras.forceShowAuras = frame.forceShowAuras
+		auras.allowEnable = settings.enable -- keep over Auras_GroupUnit
 
 		if settings.enable then
 			auras.filterLists = settings.filterLists
