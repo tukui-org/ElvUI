@@ -226,12 +226,12 @@ local function ColorizeStatPane(frame)
 end
 
 local function StatsPane(which)
-	local CharacterStatsPane = _G.CharacterStatsPane
-	CharacterStatsPane[which]:StripTextures()
-	CharacterStatsPane[which]:CreateBackdrop('Transparent')
-	CharacterStatsPane[which].backdrop:ClearAllPoints()
-	CharacterStatsPane[which].backdrop:Point('CENTER')
-	CharacterStatsPane[which].backdrop:Size(150, 18)
+	local pane = _G.CharacterStatsPane[which]
+	pane:StripTextures()
+	pane:CreateBackdrop('Transparent')
+	pane.backdrop:ClearAllPoints()
+	pane.backdrop:Point('CENTER')
+	pane.backdrop:Size(150, 18)
 end
 
 local function EquipmentDisplayButton(button, index)
