@@ -943,11 +943,11 @@ do -- shared filters
 		group.args.candidates.args.nameplateShowAll = ACH:Toggle(L["NP: All"], L["Nameplate: Show all"], 4, true)
 		group.args.candidates.args.nameplateShowPersonal = ACH:Toggle(L["NP: Personal"], L["Nameplate: Personal"], 5, true)
 		group.args.candidates.args.isFromPlayerOrPlayerPet = ACH:Toggle(L["Player or Pet"], L["From unit: player or pet"], 6, true)
-		group.args.candidates.args.isRoleAura = ACH:Toggle(L["ROLE"], L["Role aura - tank/heal/dps?"], 7, true)
+		group.args.candidates.args.isRoleAura = ACH:Toggle(L["ROLE"], L["Aura is listed as Tank, Healer or DPS aura by Blizzard."], 7, true)
 		group.args.candidates.args.isPriorityAura = ACH:Toggle(L["Priority"], L["Priority aura"], 8, true)
-		group.args.candidates.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["Can apply aura"], 9, true)
-		group.args.candidates.args.isBossAura = ACH:Toggle(L["Boss"], L["Boss aura - important stuff, was used on last boss this season"], 10, true)
-		group.args.candidates.args.isBossOrRoleAura = ACH:Toggle(L["Boss or Role"], L["the either-or between isRoleAura and isBossAura"], 11, true)
+		group.args.candidates.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["You can apply the same aura."], 9, true)
+		group.args.candidates.args.isBossAura = ACH:Toggle(L["Boss"], L["Aura is listed as Boss aura by Blizzard."], 10, true)
+		group.args.candidates.args.isBossOrRoleAura = ACH:Toggle(L["Boss or Role"], L["Aura is listed as Boss or Role aura by Blizzard."], 11, true)
 		group.args.candidates.inline = true
 
 		return group
