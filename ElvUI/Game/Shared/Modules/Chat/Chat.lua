@@ -322,8 +322,8 @@ do --this can save some main file locals
 			if next(g) then if #g > 1 then sort(g) end for n in gmatch(t, '\24') do local _, v = next(g) t = gsub(t, n, f[v], 1) tremove(g, 1) f[v] = nil end end return t
 		end
 
-		-- Simpy: Turquoise (49CAF5), Sea Green (80C661), Khaki (FFF461), Salmon (F6885F), Orchid (CD84B9), Light Sky Blue (58CCF5)
-		local SimpyColors = function(t) return specialText(t, 0.28,0.79,0.96, 0.50,0.77,0.38, 1.00,0.95,0.38, 0.96,0.53,0.37, 0.80,0.51,0.72, 0.34,0.80,0.96) end
+		-- Simpy: Pastel Yellow (FFFF66), Light Green (88FF66), Dodger Blue (3399FF), Blue Violet (9933FF), Deep Pink (FF3399), Pastel Yellow (FFFF66)
+		local SimpyColors = function(t) return specialText(t, 1.00,1.00,0.40, 0.53,1.00,0.40, 0.20,0.60,1.00, 0.60,0.20,1.00, 1.00,0.20,0.60, 1.00,1.00,0.40) end
 		-- Detroit Lions: Honolulu Blue to Silver [Elv: I stoles it @Simpy]
 		local ElvColors = function(t) return specialText(t, 0,0.42,0.69, 0.61,0.61,0.61) end
 		-- Rainbow: FD3E44, FE9849, FFDE4B, 6DFD65, 54C4FC, A35DFA, C679FB, FE81C1
@@ -432,6 +432,7 @@ do --this can save some main file locals
 			z['Player-1168-069837CD']	= itsSimpy -- Warlock:	Simpy
 			z['Player-1168-06984CD4']	= itsSimpy -- Monk:		Twigly
 			z['Player-1168-0A98C560']	= itsSimpy -- [Horde] Evoker:	Imsofire
+			z['Player-1168-0B0DB070']	= itsSimpy -- [Horde] Evoker:	Imsosweet
 			z['Player-1168-090A34ED']	= itsSimpy -- [Horde] Shaman:	Imsobeefy
 			z['Player-1168-090A34E6']	= itsSimpy -- [Horde] Priest:	Imsocheesy
 			z['Player-1168-069838E1']	= itsSimpy -- [Horde] DK:		Imsojelly
@@ -443,7 +444,9 @@ do --this can save some main file locals
 			z['Player-1168-0A395531']	= itsSimpy -- [Horde] Hunter:	Imsonutty
 			z['Player-1168-0A395540']	= itsSimpy -- [Horde] Monk:		Imsotasty
 			z['Player-1168-0A39554F']	= itsSimpy -- [Horde] Warlock:	Imsosaucy
+			z['Player-1168-0B0DB078']	= itsSimpy -- [Horde] Warlock:	Imsobitter
 			z['Player-1168-0A395551']	= itsSimpy -- [Horde] Rogue:	Imsodrippy
+			z['Player-1168-0B0DB05E']	= itsSimpy -- [Horde] Rogue:	Imsozesty
 			z['Player-1168-0AD0C8C9']	= itsSimpy -- [Horde] Warrior:	Imsobubbly
 			z['Player-125-09A8E282']	= itsSimpy -- [RP] Priest:	Wennie
 			z['Player-125-09A7F9ED']	= itsSimpy -- [RP] Warrior:	Bunne
