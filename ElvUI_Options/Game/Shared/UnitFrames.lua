@@ -196,7 +196,7 @@ end
 local auraKeys = {
 	buffs = { name = L["Buffs"], order = 1 },
 	debuffs = { name = L["Debuffs"], order = 2 },
-	auras = { name = L["Custom"], order = 3 },
+	auras = { name = L["CUSTOM"], order = 3 },
 }
 
 local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
@@ -1079,15 +1079,15 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 
 		if E.myclass == 'DRUID' then
 			config.args.additionalGroup.args.altManaGroup.args.Rage = ACH:Toggle(L["RAGE"], nil, 1)
-			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
+			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["ENERGY"], nil, 2)
 			config.args.additionalGroup.args.altManaGroup.args.LunarPower = ACH:Toggle(L["LUNAR_POWER"], nil, 3, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 		elseif E.myclass == 'MONK' then
 			config.args.additionalGroup.args.altManaGroup.args.Stagger = ACH:Toggle(L["Stagger"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail)
-			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
+			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["ENERGY"], nil, 2)
 		elseif E.myclass == 'PRIEST' then
-			config.args.additionalGroup.args.altManaGroup.args.Insanity = ACH:Toggle(L["Insanity"], nil, 1)
+			config.args.additionalGroup.args.altManaGroup.args.Insanity = ACH:Toggle(L["INSANITY"], nil, 1)
 		elseif E.myclass == 'SHAMAN' then
-			config.args.additionalGroup.args.altManaGroup.args.Maelstrom = ACH:Toggle(L["Maelstrom"], nil, 1)
+			config.args.additionalGroup.args.altManaGroup.args.Maelstrom = ACH:Toggle(L["MAELSTROM"], nil, 1)
 		elseif E.myclass == 'EVOKER' then
 			config.args.additionalGroup.args.altManaGroup.args.EbonMight = ACH:Toggle(L["EBON_MIGHT"], nil, 1)
 		end

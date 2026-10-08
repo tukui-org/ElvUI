@@ -395,6 +395,7 @@ L["Volume"] = "볼륨"
 L["Volume Streams"] = "볼륨 조정"
 L["Warband"] = true
 L["Warband:"] = true
+L["Wave"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["whispers"] = "귓속말"
 L["Withdraw"] = true

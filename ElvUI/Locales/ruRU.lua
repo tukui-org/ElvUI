@@ -395,6 +395,7 @@ L["Volume"] = "Громкость"
 L["Volume Streams"] = "Звуковые потоки"
 L["Warband"] = true
 L["Warband:"] = true
+L["Wave"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["whispers"] = "шепчет"
 L["Withdraw"] = true

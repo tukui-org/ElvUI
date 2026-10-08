@@ -395,6 +395,7 @@ L["Volume"] = "Lautsärke"
 L["Volume Streams"] = "Lautstärke Stream"
 L["Warband"] = true
 L["Warband:"] = true
+L["Wave"] = true
 L["Welcome to ElvUI version %s!"] = "Willkommen zu ElvUI Version %s!"
 L["whispers"] = "flüstern"
 L["Withdraw"] = "Zurückziehen"

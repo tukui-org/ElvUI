@@ -752,7 +752,7 @@ do -- Module Copy
 
 		config.args.altPowerBar.name = L["Alternative Power"]
 		config.args.minimap.name = L["Minimap"]
-		config.args.totems.name = L["Class Totems"]
+		config.args.totems.name = L["Totem Tracker"]
 		config.args.itemLevel.name = L["Item Level"]
 		config.args.addonCompartment.name = L["Addon Compartment"]
 		config.args.bottomPanelSettings.name = L["Bottom Panel"]
@@ -943,7 +943,7 @@ do -- shared filters
 		group.args.candidates.args.nameplateShowAll = ACH:Toggle(L["NP: All"], L["Nameplate: Show all"], 4, true)
 		group.args.candidates.args.nameplateShowPersonal = ACH:Toggle(L["NP: Personal"], L["Nameplate: Personal"], 5, true)
 		group.args.candidates.args.isFromPlayerOrPlayerPet = ACH:Toggle(L["Player or Pet"], L["From unit: player or pet"], 6, true)
-		group.args.candidates.args.isRoleAura = ACH:Toggle(L["Role"], L["Role aura - tank/heal/dps?"], 7, true)
+		group.args.candidates.args.isRoleAura = ACH:Toggle(L["ROLE"], L["Role aura - tank/heal/dps?"], 7, true)
 		group.args.candidates.args.isPriorityAura = ACH:Toggle(L["Priority"], L["Priority aura"], 8, true)
 		group.args.candidates.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["Can apply aura"], 9, true)
 		group.args.candidates.args.isBossAura = ACH:Toggle(L["Boss"], L["Boss aura - important stuff, was used on last boss this season"], 10, true)
@@ -1066,7 +1066,7 @@ do -- shared cooldown
 		position.inline = true
 		text.args.positionGroup = position
 
-		local colors = ACH:Group(L["Color"], nil, 3, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+		local colors = ACH:Group(L["Colors"], nil, 3, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
 		colors.args.text = ACH:Color(L["Text Color"], nil, 1)
 		colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
 		colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')

@@ -26,7 +26,7 @@ local TEXT_FORMAT_WIDTH = 330
 local auraKeys = {
 	buffs = { name = L["Buffs"], order = 1 },
 	debuffs = { name = L["Debuffs"], order = 2 },
-	auras = { name = L["Custom"], order = 3 },
+	auras = { name = L["CUSTOM"], order = 3 },
 }
 
 local function GetTargetText(unit)
@@ -490,7 +490,7 @@ do
 	NamePlates.generalGroup.args.blizzardCVars.args.cvars = ACH:MultiSelect(C.Blank, nil, 10, cvarToggles, nil, nil, function(_, key) return CheckCVar(key) end, function(_, key, value) ApplyCVar(key, value) end)
 end
 
-local envConditions = { party = L["Dungeons"], raid = L["Raids"], scenario = L["Scenario"], arena = L["Arena"], pvp = L["Battleground"], resting = L["Resting"], world = L["World"] }
+local envConditions = { party = L["Dungeons"], raid = L["Raids"], scenario = L["Scenario"], arena = L["Arena"], pvp = L["Battlegrounds"], resting = L["Resting"], world = L["World"] }
 NamePlates.generalGroup.args.enviromentConditions = ACH:Group(L["Environment Conditions"], nil, 60, nil, function(info) return E.db.nameplates.enviromentConditions[info[#info]] end, function(info, value) E.db.nameplates.enviromentConditions[info[#info]] = value NP:EnviromentConditionals() end)
 NamePlates.generalGroup.args.enviromentConditions.args.enemyEnabled = ACH:Toggle(L["Enemy Enabled"], L["This option controls whether nameplates will follow the visibility settings below.\n\n|cffff3333Note:|r This will be overridden by the Enemy Combat Toggle."], 10, nil, nil, 250)
 NamePlates.generalGroup.args.enviromentConditions.args.enemy = ACH:MultiSelect(L["Enemy"], nil, 11, envConditions, nil, nil, function(_, key) return E.db.nameplates.enviromentConditions.enemy[key] end, function(_, key, value) E.db.nameplates.enviromentConditions.enemy[key] = value NP:EnviromentConditionals() end, nil, function() return not E.db.nameplates.enviromentConditions.enemyEnabled end)

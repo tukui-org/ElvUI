@@ -395,6 +395,7 @@ L["Volume"] = "音量"
 L["Volume Streams"] = "音频流"
 L["Warband"] = "战团银行"
 L["Warband:"] = "战团银行:"
+L["Wave"] = true
 L["Welcome to ElvUI version %s!"] = "欢迎使用 ElvUI 版本 %s!"
 L["whispers"] = "密语"
 L["Withdraw"] = "提取"

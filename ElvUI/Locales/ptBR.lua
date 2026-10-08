@@ -395,6 +395,7 @@ L["Volume"] = true
 L["Volume Streams"] = "Volume de Canais"
 L["Warband"] = true
 L["Warband:"] = true
+L["Wave"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["whispers"] = "sussurra"
 L["Withdraw"] = true

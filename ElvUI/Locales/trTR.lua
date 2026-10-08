@@ -395,6 +395,7 @@ L["Volume"] = "Ses Hacmi"
 L["Volume Streams"] = "Ses Hacmi Akislari"
 L["Warband"] = true
 L["Warband:"] = true
+L["Wave"] = true
 L["Welcome to ElvUI version %s!"] = true
 L["whispers"] = "fisiltilar"
 L["Withdraw"] = true
