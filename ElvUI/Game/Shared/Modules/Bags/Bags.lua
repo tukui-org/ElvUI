@@ -909,33 +909,33 @@ function B:Holder_OnEnter()
 
 	B:SetSlotAlphaForBag(self.bagFrame, self.BagID)
 
-	if not GameTooltip:IsForbidden() then
-		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+	if GameTooltip:IsForbidden() then return end
 
-		if self.BagID == BACKPACK_CONTAINER then
-			local kb = GetBindingKey('TOGGLEBACKPACK')
-			GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
-		elseif self.BagID == BANK_CONTAINER then
-			GameTooltip:AddLine(_G.BANK, 1, 1, 1)
-		elseif self.BagID == KEYRING_CONTAINER then
-			GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
-		elseif self.bag.numSlots == 0 then
-			GameTooltip:AddLine(self.BagID == REAGENT_CONTAINER and _G.EQUIP_CONTAINER_REAGENT or _G.EQUIP_CONTAINER, 1, 1, 1)
-		elseif self.isBank then
-			GameTooltip:SetInventoryItem('player', self:GetInventorySlot())
-		else
-			GameTooltip:SetInventoryItem('player', self:GetID())
-		end
+	GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 
-		GameTooltip:AddLine(' ')
-		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
-
-		if E.Modern then
-			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
-		end
-
-		GameTooltip:Show()
+	if self.BagID == BACKPACK_CONTAINER then
+		local kb = GetBindingKey('TOGGLEBACKPACK')
+		GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
+	elseif self.BagID == BANK_CONTAINER then
+		GameTooltip:AddLine(_G.BANK, 1, 1, 1)
+	elseif self.BagID == KEYRING_CONTAINER then
+		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
+	elseif self.bag.numSlots == 0 then
+		GameTooltip:AddLine(self.BagID == REAGENT_CONTAINER and _G.EQUIP_CONTAINER_REAGENT or _G.EQUIP_CONTAINER, 1, 1, 1)
+	elseif self.isBank then
+		GameTooltip:SetInventoryItem('player', self:GetInventorySlot())
+	else
+		GameTooltip:SetInventoryItem('player', self:GetID())
 	end
+
+	GameTooltip:AddLine(' ')
+	GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+
+	if E.Modern then
+		GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
+	end
+
+	GameTooltip:Show()
 end
 
 function B:Holder_OnLeave()
@@ -973,8 +973,9 @@ end
 function B:BankBag_OnClick(button)
 	if button ~= 'LeftButton' then return end
 
-	if CursorHasItem() and self:GetID() > 1 then
-		PickupContainerItem(CHARACTERBANKTAB_CONTAINER, self:GetID())
+	local slotID = self:GetID()
+	if (slotID > 1) and CursorHasItem() then
+		PickupContainerItem(CHARACTERBANKTAB_CONTAINER, slotID)
 	else
 		B:ToggleContainer(self)
 	end
@@ -985,8 +986,6 @@ function B:BankBag_Pickup()
 end
 
 function B:UpdateBankBags()
-	if not E.Forever then return end
-
 	local purchased = FetchNumPurchasedBankTabs(CHARACTERBANK_TYPE)
 	for _, holder in next, B.BankFrame.ContainerHolderByBagID do
 		local slotID = holder:GetID()
@@ -1260,11 +1259,11 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns, ba
 	for index, tabID in next, (isWarband and B.WarbandIndexs) or B.CharacterBankIndexs do
 		B:BankTabs_UpdateIcon(f, tabID, data)
 
-		local showTab = combined and data[tabID] and (not E.Forever or B:IsBagShown(tabID))
+		local showTab = (combined and data[tabID]) and (not E.Forever or B:IsBagShown(tabID))
 		f[key..index]:SetShown(showTab)
 
 		if showTab then
-			local tabSplit = isSplit and db.split[keySplit..tabID] and B:GetContainerNumSlots(tabID) > 0
+			local tabSplit = (isSplit and db.split[keySplit..tabID]) and (B:GetContainerNumSlots(tabID) > 0)
 			if tabSplit then numSpaced = numSpaced + 1 end
 			if numRows == 0 then numRows = 1 end
 
@@ -1866,7 +1865,9 @@ function B:UpdateContainerIcons()
 	end
 
 	-- Forever bank bags change with the container list too
-	B:UpdateBankBags()
+	if E.Forever then
+		B:UpdateBankBags()
+	end
 end
 
 function B:UpdateContainerIcon(holder, bagID)
@@ -2192,14 +2193,14 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 		holder:SetScript('OnReceiveDrag', PutItemInBackpack)
 	elseif bagID == KEYRING_CONTAINER then
 		holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
-	elseif isBank and E.Forever then
-		-- Forever bank bags sit in the Characterbanktab container, slot 1 is the base bank
-		holder:SetID(bagNum)
+	elseif isBank and E.Forever then -- Forever bank bags sit in the Characterbanktab container, slot 1 is the base bank
 		holder:SetScript('OnEnter', B.BankBag_OnEnter)
 		holder:SetScript('OnClick', B.BankBag_OnClick)
+		holder:SetID(bagNum)
 
 		if bagNum > 1 then
 			holder.bagLocation = _G.ItemLocation:CreateFromBagAndSlot(CHARACTERBANKTAB_CONTAINER, bagNum)
+
 			holder:RegisterForDrag('LeftButton')
 			holder:SetScript('OnDragStart', B.BankBag_Pickup)
 			holder:SetScript('OnReceiveDrag', B.BankBag_Pickup)
@@ -3297,7 +3298,10 @@ end
 
 function B:BANK_TABS_CHANGED(_, bankType)
 	B:BankTabs_UpdateIcons(bankType)
-	B:UpdateBankBags()
+
+	if E.Forever then
+		B:UpdateBankBags()
+	end
 end
 
 function B:ShowBankTab(f, bankTab)
@@ -3409,7 +3413,9 @@ function B:OpenBank()
 		B:SetBankTabs(B.BankFrame)
 	end
 
-	B:UpdateBankBags()
+	if E.Forever then
+		B:UpdateBankBags()
+	end
 
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame, true)

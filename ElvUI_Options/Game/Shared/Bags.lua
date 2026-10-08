@@ -131,8 +131,7 @@ for i = 1, (E.Classic and 10 or 11) do
 end
 
 for id, index in next, B.CharacterBanks do
-	if index ~= 1 then
-		-- Forever bank tabs are bag slots
+	if index ~= 1 then -- Forever bank tabs are bag slots
 		Bags.args.general.args.bankGroup.args.split.args.splitbank.values['bank'..id] = E.Forever and format(L["Bank %d"], index - 1) or format(L["Tab %d"], index)
 	end
 end
