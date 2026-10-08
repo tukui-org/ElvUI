@@ -2087,7 +2087,7 @@ function AB:Initialize()
 	end
 
 	-- handle the first set of bindings unless in a pet battle
-	if (E.Modern or E.Mists) and IsInBattle() then
+	if (E.Retail or E.Mists) and IsInBattle() then
 		AB:UpdateBinds() -- no function passed, clears bindings
 	else
 		AB:HandleBinds() -- set override binds

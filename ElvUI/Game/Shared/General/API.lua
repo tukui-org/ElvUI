@@ -1565,9 +1565,12 @@ function E:LoadAPI()
 	if E.Modern or E.Mists then
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
-		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
-		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 	else
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
+	end
+
+	if E.Retail or E.Mists then
+		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
+		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 	end
 end
