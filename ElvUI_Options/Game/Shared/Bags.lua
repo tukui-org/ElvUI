@@ -99,7 +99,7 @@ Bags.args.general.args.bankGroup.args.bankButtonSpacing = ACH:Range(L["Button Sp
 Bags.args.general.args.bankGroup.args.bankWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
 Bags.args.general.args.bankGroup.args.disableBankSort = ACH:Toggle(L["Disable Sort"], nil, 5, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:ToggleSortButtonState(true) end)
 Bags.args.general.args.bankGroup.args.useBlizzardCleanupBank = ACH:Toggle(L["Use Blizzard Cleanup"], nil, 6, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value end, nil, not E.Modern)
-Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(L["Combined"], nil, 7, nil, nil, nil, nil, nil, nil, not E.Modern)
+Bags.args.general.args.bankGroup.args.bankCombined = ACH:Toggle(L["Combined"], nil, 7, nil, nil, nil, nil, nil, nil, not E.Retail)
 
 Bags.args.general.args.bankGroup.args.split = ACH:Group(L["Split"], nil, -1, nil, function(info) return E.db.bags.split[info[#info]] end, function(info, value) E.db.bags.split[info[#info]] = value B:Layout(true) end)
 Bags.args.general.args.bankGroup.args.split.args.bank = ACH:Toggle(L["Enable"], nil, 1)
@@ -132,7 +132,8 @@ end
 
 for id, index in next, B.CharacterBanks do
 	if index ~= 1 then
-		Bags.args.general.args.bankGroup.args.split.args.splitbank.values['bank'..id] = format(L["Tab %d"], index)
+		-- Forever bank tabs are bag slots
+		Bags.args.general.args.bankGroup.args.split.args.splitbank.values['bank'..id] = E.Forever and format(L["Bank %d"], index - 1) or format(L["Tab %d"], index)
 	end
 end
 

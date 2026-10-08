@@ -580,7 +580,7 @@ P.bags = {
 	},
 }
 
-for i = -3, 12 do
+for i = -3, E.Forever and 14 or 12 do
 	local name = 'bag'..i
 	P.bags.shownBags[name] = true
 
@@ -589,7 +589,7 @@ for i = -3, 12 do
 	end
 end
 
-for id = 6, 11 do
+for id = 6, E.Forever and 14 or 11 do
 	P.bags.split['bank'..id] = false
 end
 
