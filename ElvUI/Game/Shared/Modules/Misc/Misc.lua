@@ -329,7 +329,7 @@ function M:ADDON_LOADED(_, addon)
 		M:SetupInspectPageInfo()
 	elseif addon == 'Blizzard_PTRFeedback' then
 		KillFeedback(_G.PTR_IssueReporter)
-	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' then
+	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' and (E.Classic or E.TBC) then
 		M:LoadQueueStatus()
 	elseif addon == 'Blizzard_HousingControls' then
 		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, nil, 'ALL,SOLO')

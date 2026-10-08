@@ -643,9 +643,12 @@ do -- Module Copy
 		config.args.stanceBar.name = L["Stance Bar"]
 		config.args.microbar.name = L["Micro Bar"]
 		config.args.totemBar.name = L["Totem Bar"]
+		config.args.totemBar.hidden = not E.allowTotemBar
 		config.args.extraActionButton.name = L["Boss Button"]
+		config.args.extraActionButton.hidden = not (E.Modern or E.Mists)
 		config.args.vehicleExitButton.name = L["Vehicle Exit"]
 		config.args.zoneActionButton.name = L["Zone Ability"]
+		config.args.zoneActionButton.hidden = not E.Modern
 
 		return config
 	end
@@ -708,9 +711,12 @@ do -- Module Copy
 		config.args.aurabars.name = L["Aura Bars"]
 		config.args.auraindicator.name = L["Aura Indicator"]
 		config.args.cdmanager.name = L["Cooldown Manager"]
+		config.args.cdmanager.hidden = not E.Modern
 		config.args.totemtracker.name = L["Totem Tracker"]
 		config.args.bossbutton.name = L["Boss Button"]
+		config.args.bossbutton.hidden = not (E.Modern or E.Mists)
 		config.args.zonebutton.name = L["Zone Button"]
+		config.args.zonebutton.hidden = not E.Modern
 
 		return config
 	end
@@ -725,9 +731,12 @@ do -- Module Copy
 		config.args.experience.name = L["Experience"]
 		config.args.reputation.name = L["Reputation"]
 		config.args.honor.name = L["Honor"]
+		config.args.honor.hidden = not E.Retail
 		config.args.threat.name = L["Threat"]
 		config.args.azerite.name = L["Azerite"]
+		config.args.azerite.hidden = not E.Retail
 		config.args.petExperience.name = L["Pet Experience"]
+		config.args.petExperience.hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever) or E.myclass ~= 'HUNTER'
 
 		return config
 	end
@@ -740,6 +749,7 @@ do -- Module Copy
 
 		config.args.panels = ACH:Toggle(L["Panels"], nil, 2)
 		config.args.battlePanel.name = L["Battlegrounds"]
+		config.args.battlePanel.hidden = E.Modern
 
 		return config
 	end
@@ -751,21 +761,27 @@ do -- Module Copy
 		MC:AddConfigOptions(P.general, config, 'general')
 
 		config.args.altPowerBar.name = L["Alternative Power"]
+		config.args.altPowerBar.hidden = not (E.Modern or E.Mists)
 		config.args.minimap.name = L["Minimap"]
 		config.args.totems.name = L["Totem Tracker"]
 		config.args.itemLevel.name = L["Item Level"]
 		config.args.addonCompartment.name = L["Addon Compartment"]
+		config.args.addonCompartment.hidden = not E.Modern
 		config.args.bottomPanelSettings.name = L["Bottom Panel"]
 		config.args.classColors.name = L["Custom Class Colors"]
 		config.args.cooldownManager.name = L["Cooldown Manager"]
+		config.args.cooldownManager.hidden = not E.Modern
 		config.args.customGlow.name = L["Custom Glow"]
 		config.args.fonts.name = L["Fonts"]
 		config.args.guildBank.name = L["Guild Bank"]
+		config.args.guildBank.hidden = E.Classic
 		config.args.lootRoll.name = L["Loot Roll"]
 		config.args.privateRaidWarning.name = L["Raid Warning"]
+		config.args.privateRaidWarning.hidden = not E.Retail
 		config.args.queueStatus.name = L["Queue Status"]
 		config.args.raidUtility.name = L["RAID_CONTROL"]
 		config.args.rotationAssist.name = L["Rotation Assist"]
+		config.args.rotationAssist.hidden = not E.Retail
 		config.args.topPanelSettings.name = L["Top Panel"]
 		config.args.debuffColors.name = L["Debuff Colors"]
 
@@ -781,7 +797,9 @@ do -- Module Copy
 		-- Locales
 		config.args.threat.name = L["Threat"]
 		config.args.cutaway.name = L["Cutaway Bars"]
+		config.args.cutaway.hidden = E.Modern
 		config.args.clickThrough.name = L["Click Through"]
+		config.args.clickThrough.hidden = not E.Modern
 		config.args.clickSize.name = L["Clickable Size"]
 		config.args.colors.name = L["Colors"]
 		config.args.visibility.name = L["Visibility"]
@@ -843,9 +861,13 @@ do -- Module Copy
 		config.args.colors.args.debuffHighlight.name = L["Debuff Highlighting"]
 		config.args.colors.args.powerPrediction.name = L["Power Prediction"]
 		config.args.colors.args.empoweredCast.name = L["Empower Stages"]
+		config.args.colors.args.empoweredCast.hidden = not E.Retail
 		config.args.colors.args.happiness.name = L["Pet Happiness"]
+		config.args.colors.args.happiness.hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever)
 		config.args.colors.args.healthBreak.name = L["Health Breakpoint"]
+		config.args.colors.args.healthBreak.hidden = E.Modern
 		config.args.colors.args.selection.name = L["Selection"]
+		config.args.colors.args.selection.hidden = not E.Modern
 		config.args.colors.args.threat.name = L["Threat"]
 
 		config.args.units = ACH:Group(L["UnitFrames"], nil, -10, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
@@ -858,11 +880,15 @@ do -- Module Copy
 		config.args.units.args.targettarget.name = L["TargetTarget"]
 		config.args.units.args.targettargettarget.name = L["TargetTargetTarget"]
 		config.args.units.args.focus.name = L["Focus"]
+		config.args.units.args.focus.hidden = E.Classic
 		config.args.units.args.focustarget.name = L["FocusTarget"]
+		config.args.units.args.focustarget.hidden = E.Classic
 		config.args.units.args.pet.name = L["Pet"]
 		config.args.units.args.pettarget.name = L["PetTarget"]
 		config.args.units.args.boss.name = L["Boss"]
+		config.args.units.args.boss.hidden = E.Classic or E.TBC
 		config.args.units.args.arena.name = L["Arena"]
+		config.args.units.args.arena.hidden = E.Classic
 		config.args.units.args.party.name = L["Party"]
 
 		for i = 1, 3 do

@@ -661,7 +661,7 @@ function AB:UpdateAllBinds(event)
 	AB:UpdatePetBindings()
 	AB:UpdateStanceBindings()
 
-	if E.Modern then
+	if E.Modern or E.Mists then
 		AB:UpdateExtraBindings()
 	end
 
