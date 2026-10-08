@@ -866,7 +866,7 @@ do -- Module Copy
 		config.args.units.args.party.name = L["Party"]
 
 		for i = 1, 3 do
-			config.args.units.args['raid'..i].name = L[format("Raid %s", i)]
+			config.args.units.args['raid'..i].name = L["Raid"].." "..i
 		end
 
 		config.args.units.args.raidpet.name = L["Raid Pet"]
@@ -967,9 +967,9 @@ do -- shared filters
 		HELPFUL					= { order = 1,	desc = L["FILTER_STRING_HELPFUL_DESC"],					text = nil },
 		HARMFUL					= { order = 2,	desc = L["FILTER_STRING_HARMFUL_DESC"],					text = nil },
 		PLAYER					= { order = 3,	desc = L["FILTER_STRING_PLAYER_DESC"],					text = nil },
-		RAID					= { order = 4,	desc = L["FILTER_STRING_RAID_DESC"],					text = L["FILTER_STRING_RAID_TEXT"] },
-		RAID_PLAYER_DISPELLABLE = { order = 5,	desc = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_DESC"],	text = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_TEXT"] },
-		RAID_IN_COMBAT			= { order = 6,	desc = L["FILTER_STRING_RAID_IN_COMBAT_DESC"],			text = L["FILTER_STRING_RAID_IN_COMBAT_TEXT"] },
+		RAID					= { order = 4,	desc = L["FILTER_STRING_RAID_DESC"],					text = nil },
+		RAID_PLAYER_DISPELLABLE = { order = 5,	desc = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_DESC"],	text = nil },
+		RAID_IN_COMBAT			= { order = 6,	desc = L["FILTER_STRING_RAID_IN_COMBAT_DESC"],			text = nil },
 		CANCELABLE				= { order = 7,	desc = L["FILTER_STRING_CANCELABLE_DESC"],				text = nil },
 		INCLUDE_NAME_PLATE_ONLY = { order = 8,	desc = L["FILTER_STRING_INCLUDE_NAME_PLATE_ONLY_DESC"],	text = nil },
 		EXTERNAL_DEFENSIVE		= { order = 9,	desc = L["FILTER_STRING_EXTERNAL_DEFENSIVE_DESC"],		text = L["FILTER_STRING_EXTERNAL_DEFENSIVE_TEXT"],	testCommand = '/dump C_Spell.IsExternalDefensive(ID)' },
