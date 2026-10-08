@@ -108,7 +108,7 @@ Bags.args.general.args.bankGroup.args.split.args.alwaysProfessionBank = ACH:Togg
 Bags.args.general.args.bankGroup.args.split.args.splitbank = ACH:MultiSelect('', nil, 5, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end, nil, function() return not E.db.bags.split.bank end, true)
 Bags.args.general.args.bankGroup.args.split.inline = true
 
-Bags.args.general.args.warbandGroup = ACH:Group(L["Warband"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end, not E.Modern)
+Bags.args.general.args.warbandGroup = ACH:Group(L["Warband"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end, not E.Retail)
 Bags.args.general.args.warbandGroup.args.warbandSize = ACH:Range(L["Button Size"], nil, 2, { min = 15, max = 45, step = 1 })
 Bags.args.general.args.warbandGroup.args.warbandButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.warbandGroup.args.warbandWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
