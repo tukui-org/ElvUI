@@ -58,6 +58,7 @@ E.Filters.Expand = function(output, source)
 				output[spellID] = source[auraID]
 			end
 		end
+
 		output[auraID] = source[auraID]
 	end
 
