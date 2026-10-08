@@ -72,7 +72,12 @@ do -- API for secrets by Simpy
 end
 
 function oUF:UnitIsUnit(unit1, unit2)
-	if not CanCompareUnitTokens(unit1, unit2) then
+	-- C_Secrets.CanCompareUnitTokens: SecretArguments AllowedWhenUntainted.
+	if not unit1 or not unit2 or oUF:CanNotAccessValue(unit1) or oUF:CanNotAccessValue(unit2) then
+		return
+	end
+
+	if CanCompareUnitTokens and not CanCompareUnitTokens(unit1, unit2) then
 		return
 	end
 
