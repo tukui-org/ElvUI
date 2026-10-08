@@ -73,26 +73,19 @@ function S:BlizzardMiscFrames()
 		frame:SetTemplate('Transparent')
 	end
 
-	-- ReadyCheck thing
-	S:HandleButton(_G.ReadyCheckFrameYesButton)
-	S:HandleButton(_G.ReadyCheckFrameNoButton)
-
 	local ReadyCheckFrame = _G.ReadyCheckFrame
-	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameYesButton:ClearAllPoints()
-	_G.ReadyCheckFrameNoButton:ClearAllPoints()
-	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
-	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
-
-	-- the classic listener frame is faded out below, so the text moves to the ready check frame
-	if not E.Modern then
-		_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
-	end
-
+	_G.ReadyCheckFrameText:OffsetFrameLevel(1) -- the classic listener frame is faded out below
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, E.Modern and -30 or -15)
 	_G.ReadyCheckFrameText:Width(300)
+
+	S:HandleButton(_G.ReadyCheckFrameYesButton)
+	_G.ReadyCheckFrameYesButton:ClearAllPoints()
+	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
+
+	S:HandleButton(_G.ReadyCheckFrameNoButton)
+	_G.ReadyCheckFrameNoButton:ClearAllPoints()
+	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 
 	-- the Mainline listener frame has a title bar, the classic one is a single texture
 	local ListenerFrame = _G.ReadyCheckListenerFrame
