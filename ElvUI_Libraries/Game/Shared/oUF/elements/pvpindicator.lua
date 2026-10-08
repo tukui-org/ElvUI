@@ -61,7 +61,7 @@ local function Update(self, event, unit)
 	local status
 	local unitIsPVP = UnitIsPVP(unit)
 	local factionGroup = UnitFactionGroup(unit) or 'Neutral'
-	local honorLevel = oUF.isModern and UnitHonorLevel(unit)
+	local honorLevel = oUF.isRetail and UnitHonorLevel(unit)
 	local honorRewardInfo = oUF:NotSecretValue(honorLevel) and honorLevel and GetHonorRewardInfo(honorLevel)
 
 	if(UnitIsPVPFreeForAll(unit)) then

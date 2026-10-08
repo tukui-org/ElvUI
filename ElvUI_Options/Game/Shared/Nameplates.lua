@@ -318,7 +318,7 @@ local function GetUnitSettings(unit, name)
 
 	group.args.pvpindicator = ACH:Group(L["PvP Indicator"], L["Horde / Alliance / Honor Info"], 60, nil, function(info) return E.db.nameplates.units[unit].pvpindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpindicator[info[#info]] = value NP:ConfigureAll() end)
 	group.args.pvpindicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	group.args.pvpindicator.args.showBadge = ACH:Toggle(L["Show Badge"], L["Show PvP Badge Indicator if available"], 2, nil, nil, nil, nil, nil, nil, not E.Modern)
+	group.args.pvpindicator.args.showBadge = ACH:Toggle(L["Show Badge"], L["Show PvP Badge Indicator if available"], 2, nil, nil, nil, nil, nil, nil, not E.Retail)
 	group.args.pvpindicator.args.size = ACH:Range(L["Size"], nil, 3, { min = 12, max = 64, step = 1 })
 	group.args.pvpindicator.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPositions)
 	group.args.pvpindicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
