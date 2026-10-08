@@ -74,7 +74,6 @@ function S:BlizzardMiscFrames()
 	end
 
 	local ReadyCheckFrame = _G.ReadyCheckFrame
-	_G.ReadyCheckFrameText:OffsetFrameLevel(1) -- the classic listener frame is faded out below
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, E.Modern and -30 or -15)
 	_G.ReadyCheckFrameText:Width(300)
