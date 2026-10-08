@@ -8,19 +8,11 @@ local CreateFrame = CreateFrame
 
 S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')
 
-local function FixReadyCheckFrame(listener)
-	local readyCheck = _G.ReadyCheckFrame
-	if readyCheck.initiator and not listener:IsShown() then
-		readyCheck:Hide() -- bug fix, dont show it if player is initiator; blizzard checks UnitIsUnit('player', initiator)
-	end
-end
-
 local function FixAutoCompleteLevel(frame)
 	local parent = frame:GetParent()
 	if not parent then return end
 
-	local frameLevel = parent:GetFrameLevel()
-	frame:SetFrameLevel(frameLevel + 4)
+	frame:OffsetFrameLevel(4, parent)
 end
 
 local function ClearedHooks(button, script)
@@ -81,26 +73,18 @@ function S:BlizzardMiscFrames()
 		frame:SetTemplate('Transparent')
 	end
 
-	-- ReadyCheck thing
-	S:HandleButton(_G.ReadyCheckFrameYesButton)
-	S:HandleButton(_G.ReadyCheckFrameNoButton)
-
 	local ReadyCheckFrame = _G.ReadyCheckFrame
-	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameYesButton:ClearAllPoints()
-	_G.ReadyCheckFrameNoButton:ClearAllPoints()
-	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
-	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
-
-	-- the classic listener frame is faded out below, so the text moves to the ready check frame
-	if not E.Modern then
-		_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
-	end
-
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, E.Modern and -30 or -15)
 	_G.ReadyCheckFrameText:Width(300)
+
+	S:HandleButton(_G.ReadyCheckFrameYesButton)
+	_G.ReadyCheckFrameYesButton:ClearAllPoints()
+	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
+
+	S:HandleButton(_G.ReadyCheckFrameNoButton)
+	_G.ReadyCheckFrameNoButton:ClearAllPoints()
+	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 
 	-- the Mainline listener frame has a title bar, the classic one is a single texture
 	local ListenerFrame = _G.ReadyCheckListenerFrame
@@ -117,8 +101,6 @@ function S:BlizzardMiscFrames()
 		ReadyCheckFrame:SetTemplate('Transparent')
 		ListenerFrame:SetAlpha(0)
 	end
-
-	ListenerFrame:HookScript('OnShow', FixReadyCheckFrame)
 
 	-- Retail, Forever and Mists skin it in PVP.lua
 	if not (E.Modern or E.Mists) then

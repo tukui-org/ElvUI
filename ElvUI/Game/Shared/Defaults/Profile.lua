@@ -133,7 +133,6 @@ P.general = {
 
 		-- These dont exist in Blizzards color table
 		Bleed = { r = 1, g = 0.2, b = 0.6, a = 1 },
-		BadDispel = { r = 0.05, g = 0.85, b = 0.94, a = 1 },
 		Stealable = { r = 0.93, g = 0.91, b = 0.55, a = 1 },
 	},
 	bordercolor = { r = 0, g = 0, b = 0, a = 1 }, -- updated in E.Initialize
@@ -580,7 +579,7 @@ P.bags = {
 	},
 }
 
-for i = -3, 12 do
+for i = -3, E.Forever and 14 or 12 do
 	local name = 'bag'..i
 	P.bags.shownBags[name] = true
 
@@ -589,7 +588,7 @@ for i = -3, 12 do
 	end
 end
 
-for id = 6, 11 do
+for id = 6, E.Forever and 14 or 11 do
 	P.bags.split['bank'..id] = false
 end
 
@@ -1496,9 +1495,9 @@ P.datatexts = {
 			backdrop = true,
 			border = true,
 			panelTransparency = false,
-			E.Modern and 'Talent/Loot Specialization' or 'ElvUI',
+			E.Retail and 'Talent/Loot Specialization' or 'ElvUI',
 			'Durability',
-			E.Modern and 'Missions' or 'Mail'
+			E.Retail and 'Missions' or 'Mail'
 		},
 		RightChatDataPanel = {
 			enable = true,
@@ -3329,9 +3328,7 @@ P.actionbar = {
 		fontOutline = 'OUTLINE',
 		fontSize = 12,
 		mouseover = false,
-		visibility = '[vehicleui] hide;show',
-		frameStrata = 'LOW',
-		frameLevel = 5
+		visibility = '[vehicleui] hide;show'
 	},
 	microbar = {
 		enabled = false,
@@ -3499,8 +3496,8 @@ P.actionbar.bar1.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show'
 P.actionbar.bar1.paging.ROGUE = (E.TBC and '[possessbar] 16; ' or '') .. '[bonusbar:1] 7;' .. ((E.Wrath or E.Mists) and ' [bonusbar:2] 8;' or '')
 P.actionbar.bar1.paging.WARLOCK = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Wrath or E.Mists) and '[form:1] 7;' or '')
 P.actionbar.bar1.paging.DRUID = (E.TBC and '[possessbar] 16; ' or '') .. '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
-P.actionbar.bar1.paging.PRIEST = (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Modern and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.WARRIOR = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Classic or E.TBC or E.Wrath) and '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' or '')
+P.actionbar.bar1.paging.PRIEST = (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Retail and '[form:1, spec:3] 7;') or ((E.Classic or E.Forever) and '[form:1] 7;') or '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.WARRIOR = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Classic or E.TBC or E.Wrath or E.Forever) and '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' or '')
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
 
 if E.Mists then

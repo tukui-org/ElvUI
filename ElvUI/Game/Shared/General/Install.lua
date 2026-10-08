@@ -291,7 +291,7 @@ function E:LayoutAnniversary()
 	E.db.actionbar.bar2.buttonsPerRow = 1
 	E.db.actionbar.bar2.enabled = true
 	E.db.actionbar.bar2.inheritGlobalFade = true
-	E.db.actionbar.bar2.visibility = '[vehicleui][overridebar][petbattle][possessbar] hide; show'
+	E.db.actionbar.bar2.visibility = (E.Retail or E.Mists) and '[vehicleui][overridebar][petbattle][possessbar] hide; show' or '[vehicleui][overridebar][possessbar] hide; show'
 	E.db.actionbar.bar3.alpha = 0.6
 	E.db.actionbar.bar3.backdropSpacing = 1
 	E.db.actionbar.bar3.buttonHeight = 44
@@ -315,7 +315,7 @@ function E:LayoutAnniversary()
 	E.db.actionbar.bar5.buttonsPerRow = 1
 	E.db.actionbar.bar5.heightMult = 2
 	E.db.actionbar.bar5.inheritGlobalFade = true
-	E.db.actionbar.bar5.visibility = '[vehicleui][overridebar][petbattle][possessbar] hide; show'
+	E.db.actionbar.bar5.visibility = (E.Retail or E.Mists) and '[vehicleui][overridebar][petbattle][possessbar] hide; show' or '[vehicleui][overridebar][possessbar] hide; show'
 	E.db.actionbar.bar6.enabled = false
 	E.db.actionbar.bar6.backdrop = true
 	E.db.actionbar.bar6.backdropSpacing = 1
@@ -342,7 +342,7 @@ function E:LayoutAnniversary()
 	E.db.actionbar.stanceBar.inheritGlobalFade = true
 	E.db.actionbar.stanceBar.keepSizeRatio = false
 	E.db.actionbar.stanceBar.style = 'classic'
-	E.db.actionbar.stanceBar.visibility = '[vehicleui][petbattle][pet] hide; show'
+	E.db.actionbar.stanceBar.visibility = (E.Retail or E.Mists) and '[vehicleui][petbattle][pet] hide; show' or '[vehicleui][pet] hide; show'
 	E.db.actionbar.transparent = true
 	E.db.actionbar.zoneActionButton.clean = true
 	E.db.auras.buffs.barColorGradient = true
@@ -452,7 +452,7 @@ function E:LayoutAnniversary()
 	E.db.datatexts.panels.LeftChatDataPanel[2] = 'Guild'
 	E.db.datatexts.panels.LeftChatDataPanel[3] = 'System'
 
-	if E.Modern then
+	if E.Retail then
 		if not E.global.datatexts.customPanels.QuickJoin then
 			E.global.datatexts.customPanels.QuickJoin = E:CopyTable({}, G.datatexts.newPanelInfo)
 		end
@@ -954,17 +954,17 @@ function E:LayoutNormal()
 	E.db.actionbar.bar2.buttonSize = 38
 	E.db.actionbar.bar2.buttonSpacing = 1
 	E.db.actionbar.bar2.enabled = true
-	E.db.actionbar.bar2.visibility = '[petbattle] hide; show'
+	E.db.actionbar.bar2.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 	E.db.actionbar.bar3.buttons = 8
 	E.db.actionbar.bar3.buttonSize = 50
 	E.db.actionbar.bar3.buttonSpacing = 1
 	E.db.actionbar.bar3.buttonsPerRow = 10
-	E.db.actionbar.bar3.visibility = '[petbattle] hide; show'
+	E.db.actionbar.bar3.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 	E.db.actionbar.bar4.enabled = false
-	E.db.actionbar.bar4.visibility = '[petbattle] hide; show'
+	E.db.actionbar.bar4.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 	E.db.actionbar.bar5.enabled = false
-	E.db.actionbar.bar5.visibility = '[petbattle] hide; show'
-	E.db.actionbar.bar6.visibility = '[petbattle] hide; show'
+	E.db.actionbar.bar5.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
+	E.db.actionbar.bar6.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 	--Auras
 	E.db.auras.buffs.countFontSize = 10
 	E.db.auras.buffs.size = 40
@@ -1116,7 +1116,7 @@ function E:LayoutNormal()
 	E.db.unitframe.units.raid1.roleIcon.xOffset = 0
 	E.db.unitframe.units.raid1.width = 92
 	--DataTexts
-	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Modern and 'QuickJoin' or 'Coords'
+	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Coords'
 
 	if E.db.datatexts.panels.Coords then
 		E.db.datatexts.panels.Coords.enable = false

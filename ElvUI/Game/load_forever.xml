@@ -52,17 +52,14 @@
 	<Script file='Shared\Filters\Filters.lua'/>
 
 	<Script file='Forever\Filters\Filters.lua'/>
-	<Script file='Shared\Modules\Nameplates\Plugins\PVPRole.lua'/>
 	<Script file='Shared\Modules\DataTexts\Currencies.lua'/>
 	<Script file='Shared\Modules\DataTexts\Defense.lua'/>
 	<Script file='Shared\Modules\DataTexts\Difficulty.lua'/>
 	<Script file='Shared\Modules\DataTexts\EquipmentSets.lua'/>
 	<Script file='Shared\Modules\DataTexts\PrimaryStat.lua'/>
 	<Script file='Shared\Modules\DataTexts\Speed.lua'/>
-	<Script file='Mainline\DataTexts\Quickjoin.lua'/>
 	<Script file='Shared\Modules\DataBars\PetExperience.lua'/>
 	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
-	<Script file='Shared\Modules\Misc\PrivateAuras.lua'/>
 
 	<Script file='Shared\Skins\AddonManager.lua'/>
 	<Script file='Shared\Skins\Alerts.lua'/>

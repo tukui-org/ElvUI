@@ -5,7 +5,6 @@ local AuraFiltered = oUF.AuraFiltered
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 local DispelFilter = LibDispel:GetMyDispelTypes()
-local BlockList = LibDispel:GetBlockList()
 
 local next = next
 local UnitCanAssist = UnitCanAssist
@@ -19,12 +18,7 @@ local function DebuffLoop(_, check, list, name, icon, _, auraType, _, _, _, _, _
 			return auraType, icon, true, spell.style, spell.color
 		end
 	elseif oUF:NotSecretValue(auraType) and auraType then
-		local allow = not check
-		if not allow then
-			allow = DispelFilter[auraType]
-		end
-
-		if allow and not BlockList[spellID] then
+		if not check or DispelFilter[auraType] then
 			return auraType, icon
 		end
 	end
@@ -96,7 +90,7 @@ local function Update(self, event, unit, updateInfo)
 		end
 	elseif auraType then
 		if not color then
-			color = oUF:NotSecretValue(auraType) and DebuffColors[auraType] or DebuffColors.None
+			color = (oUF:NotSecretValue(auraType) and DebuffColors[auraType]) or DebuffColors.None
 		end
 
 		if self.AuraHighlightBackdrop and self.AuraHightlightGlow then

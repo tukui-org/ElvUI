@@ -26,7 +26,7 @@ local TEXT_FORMAT_WIDTH = 330
 local auraKeys = {
 	buffs = { name = L["Buffs"], order = 1 },
 	debuffs = { name = L["Debuffs"], order = 2 },
-	auras = { name = L["Custom"], order = 3 },
+	auras = { name = L["CUSTOM"], order = 3 },
 }
 
 local function GetTargetText(unit)
@@ -54,7 +54,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	group.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2, nil, nil, nil, nil, nil, nil, E.Modern)
 	group.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
-	group.args.desaturate = ACH:Toggle(L["Desaturate Icon"], E.Modern and L["Requres the filter string to contain !PLAYER (requires a reload)."] or L["Set auras that are not from you to desaturated."], 4)
+	group.args.desaturate = ACH:Toggle(L["Desaturate Icon"], E.Modern and L["Requires the filter string to contain !PLAYER (requires a reload)."] or L["Set auras that are not from you to desaturated."], 4)
 
 	group.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	group.args.generalGroup.args.size = ACH:Range(function() return E.db.nameplates.units[unit][auraType].keepSizeRatio and L["Size"] or L["Width"] end, nil, 5, { min = 6, max = 60, step = 1 })
@@ -318,7 +318,7 @@ local function GetUnitSettings(unit, name)
 
 	group.args.pvpindicator = ACH:Group(L["PvP Indicator"], L["Horde / Alliance / Honor Info"], 60, nil, function(info) return E.db.nameplates.units[unit].pvpindicator[info[#info]] end, function(info, value) E.db.nameplates.units[unit].pvpindicator[info[#info]] = value NP:ConfigureAll() end)
 	group.args.pvpindicator.args.enable = ACH:Toggle(L["Enable"], nil, 1)
-	group.args.pvpindicator.args.showBadge = ACH:Toggle(L["Show Badge"], L["Show PvP Badge Indicator if available"], 2, nil, nil, nil, nil, nil, nil, not E.Modern)
+	group.args.pvpindicator.args.showBadge = ACH:Toggle(L["Show Badge"], L["Show PvP Badge Indicator if available"], 2, nil, nil, nil, nil, nil, nil, not E.Retail)
 	group.args.pvpindicator.args.size = ACH:Range(L["Size"], nil, 3, { min = 12, max = 64, step = 1 })
 	group.args.pvpindicator.args.position = ACH:Select(L["Position"], nil, 4, C.Values.AllPositions)
 	group.args.pvpindicator.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
@@ -343,8 +343,8 @@ local function GetUnitSettings(unit, name)
 
 		group.args.general.args.useStaticPosition = ACH:Toggle(L["Use Static Position"], L["When enabled the nameplate will stay visible in a locked position."], 105, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].enable end)
 	elseif unit == 'FRIENDLY_PLAYER' or unit == 'ENEMY_PLAYER' then
-		group.args.general.args.markHealers = ACH:Toggle(L["Healer Icon"], L["Display a healer icon over known healers inside battlegrounds or arenas."], 105, nil, nil, nil, nil, nil, nil, not (E.Modern or E.Mists))
-		group.args.general.args.markTanks = ACH:Toggle(L["Tank Icon"], L["Display a tank icon over known tanks inside battlegrounds or arenas."], 106, nil, nil, nil, nil, nil, nil, not (E.Modern or E.Mists))
+		group.args.general.args.markHealers = ACH:Toggle(L["Healer Icon"], L["Display a healer icon over known healers inside battlegrounds or arenas."], 105, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
+		group.args.general.args.markTanks = ACH:Toggle(L["Tank Icon"], L["Display a tank icon over known tanks inside battlegrounds or arenas."], 106, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 	elseif unit == 'ENEMY_NPC' or unit == 'FRIENDLY_NPC' then
 		group.args.eliteIcon = ACH:Group(L["Elite Icon"], nil, 75, nil, function(info) return E.db.nameplates.units[unit].eliteIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].eliteIcon[info[#info]] = value NP:ConfigureAll() end)
 		group.args.eliteIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
@@ -490,7 +490,7 @@ do
 	NamePlates.generalGroup.args.blizzardCVars.args.cvars = ACH:MultiSelect(C.Blank, nil, 10, cvarToggles, nil, nil, function(_, key) return CheckCVar(key) end, function(_, key, value) ApplyCVar(key, value) end)
 end
 
-local envConditions = { party = L["Dungeons"], raid = L["Raids"], scenario = L["Scenario"], arena = L["Arena"], pvp = L["Battleground"], resting = L["Resting"], world = L["World"] }
+local envConditions = { party = L["Dungeons"], raid = L["Raids"], scenario = L["Scenario"], arena = L["Arena"], pvp = L["Battlegrounds"], resting = L["Resting"], world = L["World"] }
 NamePlates.generalGroup.args.enviromentConditions = ACH:Group(L["Environment Conditions"], nil, 60, nil, function(info) return E.db.nameplates.enviromentConditions[info[#info]] end, function(info, value) E.db.nameplates.enviromentConditions[info[#info]] = value NP:EnviromentConditionals() end)
 NamePlates.generalGroup.args.enviromentConditions.args.enemyEnabled = ACH:Toggle(L["Enemy Enabled"], L["This option controls whether nameplates will follow the visibility settings below.\n\n|cffff3333Note:|r This will be overridden by the Enemy Combat Toggle."], 10, nil, nil, 250)
 NamePlates.generalGroup.args.enviromentConditions.args.enemy = ACH:MultiSelect(L["Enemy"], nil, 11, envConditions, nil, nil, function(_, key) return E.db.nameplates.enviromentConditions.enemy[key] end, function(_, key, value) E.db.nameplates.enviromentConditions.enemy[key] = value NP:EnviromentConditionals() end, nil, function() return not E.db.nameplates.enviromentConditions.enemyEnabled end)
@@ -667,7 +667,7 @@ NamePlates.colorsGroup.args.power.args.INSANITY = ACH:Color(L["INSANITY"], nil, 
 NamePlates.colorsGroup.args.power.args.MAELSTROM = ACH:Color(L["MAELSTROM"], nil, 10, nil, nil, nil, nil, nil, not E.Retail)
 NamePlates.colorsGroup.args.power.args.ALT_POWER = ACH:Color(L["Swapped Alt Power"], nil, 11, nil, nil, nil, nil, nil, not E.Modern)
 
-NamePlates.colorsGroup.args.classResources = ACH:Group(L["Class Resources"], nil, 9, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end)
+NamePlates.colorsGroup.args.classResources = ACH:Group(L["Class Resources"], nil, 9, nil, function(info) local t, d = E.db.nameplates.colors.classResources[info[#info]], P.nameplates.colors.classResources[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not (E.Retail or E.Mists))
 NamePlates.colorsGroup.args.classResources.args.PALADIN = ACH:Color(L["HOLY_POWER"], nil, 1, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 NamePlates.colorsGroup.args.classResources.args.ARCANE_CHARGES = ACH:Color(L["POWER_TYPE_ARCANE_CHARGES"], nil, 2, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.MAGE[info[#info]], P.nameplates.colors.classResources.MAGE[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.MAGE[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not (E.Retail or E.Mists))
 NamePlates.colorsGroup.args.classResources.args.SOUL_SHARDS = ACH:Color(L["SOUL_SHARDS"], nil, 3, nil, nil, function(info) local t, d = E.db.nameplates.colors.classResources.WARLOCK[info[#info]], P.nameplates.colors.classResources.WARLOCK[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local t = E.db.nameplates.colors.classResources.WARLOCK[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a NP:ConfigureAll() end, nil, not (E.Retail or E.Mists))

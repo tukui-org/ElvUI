@@ -1,6 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
+local UF = E:GetModule('UnitFrames')
 
-local _G = _G
 local gsub = gsub
 local format = format
 local strlower = strlower
@@ -85,7 +85,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagFormat = strlower(gsub(textFormat, '_', '-'))
 
 	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
-		local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
+		local altIndex = E.AltPowerInfo[E.myclass]
 		local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
 		if E:NotSecretValue(min) and (min and min ~= 0) then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
@@ -94,7 +94,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	if tagFormat ~= 'percent' then
 		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
-			local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
+			local altIndex = E.AltPowerInfo[E.myclass]
 			local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
 			if E:NotSecretValue(min) and (min and min ~= 0) then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)

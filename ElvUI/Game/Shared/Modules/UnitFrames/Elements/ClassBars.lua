@@ -18,21 +18,6 @@ local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 
-local AltManaTypes = {
-	Rage = 1,
-	Energy = 3,
-	LunarPower = (E.Retail or E.Mists) and 8 or nil,
-	Maelstrom = E.Retail and 11 or nil,
-	Insanity = E.Retail and 13 or nil
-}
-
-local ManaType = { powerName = 'MANA', powerType = 0 }
-UF.ALT_POWER_INFO = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO and E:CopyTable({}, _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO) or {
-	DRUID = { [8] = E:CopyTable({}, ManaType) },		-- LunarPower
-	SHAMAN = { [11] = E:CopyTable({}, ManaType) },	-- Maelstrom
-	PRIEST = { [13] = E:CopyTable({}, ManaType) }		-- Insanity
-}
-
 UF.ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
 UF.ClassPowerColors = { COMBO_POINTS = 'comboPoints', CHI = 'MONK' }
 
@@ -122,9 +107,9 @@ function UF:ClassPower_ShouldShowAdditionalPower(element)
 
 	local hasAny = false
 	for name, value in pairs(altPower) do
-		local powerIndex = AltManaTypes[name]
+		local powerIndex = E.AltManaTypes[name]
 		if powerIndex then
-			displayTypes[powerIndex] = value and ManaType or nil
+			displayTypes[powerIndex] = (value and E.ManaType) or nil
 
 			if value then
 				hasAny = true
@@ -443,7 +428,7 @@ function UF:Construct_ClassBar(frame)
 	bars:CreateBackdrop(nil, nil, nil, nil, true)
 	bars:Hide()
 
-	bars.displayPairs = UF.ALT_POWER_INFO
+	bars.displayPairs = E.AltPowerInfo
 	bars.RaisedElementParent = UF:CreateRaisedElement(bars)
 
 	local frameName = frame:GetName()
@@ -638,7 +623,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.backdrop.callbackBackdropColor = UF.StatusBarBlackBackdrop
 	additionalPower.backdrop:SetBackdropColor(0, 0, 0, 1)
 
-	additionalPower.displayPairs = UF.ALT_POWER_INFO
+	additionalPower.displayPairs = E.AltPowerInfo
 	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower)
 	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
 

@@ -714,9 +714,12 @@ function A:CreateAuraHeader(filter)
 	end
 
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
-	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
-	RegisterStateDriver(header.visibility, 'customVisibility', '[petbattle] 0;1')
-	header.visibility:SetAttribute('_onstate-customVisibility', A.AttributeCustomVisibility)
+
+	if E.Mists then -- only client with this header that has pet battles
+		SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
+		RegisterStateDriver(header.visibility, 'customVisibility', '[petbattle] 0;1')
+		header.visibility:SetAttribute('_onstate-customVisibility', A.AttributeCustomVisibility)
+	end
 
 	if filter == 'HELPFUL' then
 		header:SetAttribute('consolidateDuration', -1)
