@@ -452,7 +452,7 @@ function E:LayoutAnniversary()
 	E.db.datatexts.panels.LeftChatDataPanel[2] = 'Guild'
 	E.db.datatexts.panels.LeftChatDataPanel[3] = 'System'
 
-	if E.Modern then
+	if E.Retail then
 		if not E.global.datatexts.customPanels.QuickJoin then
 			E.global.datatexts.customPanels.QuickJoin = E:CopyTable({}, G.datatexts.newPanelInfo)
 		end
@@ -1116,7 +1116,7 @@ function E:LayoutNormal()
 	E.db.unitframe.units.raid1.roleIcon.xOffset = 0
 	E.db.unitframe.units.raid1.width = 92
 	--DataTexts
-	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Modern and 'QuickJoin' or 'Coords'
+	E.db.datatexts.panels.LeftChatDataPanel[3] = E.Retail and 'QuickJoin' or 'Coords'
 
 	if E.db.datatexts.panels.Coords then
 		E.db.datatexts.panels.Coords.enable = false

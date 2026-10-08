@@ -1496,9 +1496,9 @@ P.datatexts = {
 			backdrop = true,
 			border = true,
 			panelTransparency = false,
-			E.Modern and 'Talent/Loot Specialization' or 'ElvUI',
+			E.Retail and 'Talent/Loot Specialization' or 'ElvUI',
 			'Durability',
-			E.Modern and 'Missions' or 'Mail'
+			E.Retail and 'Missions' or 'Mail'
 		},
 		RightChatDataPanel = {
 			enable = true,

@@ -59,7 +59,6 @@
 	<Script file='Shared\Modules\DataTexts\EquipmentSets.lua'/>
 	<Script file='Shared\Modules\DataTexts\PrimaryStat.lua'/>
 	<Script file='Shared\Modules\DataTexts\Speed.lua'/>
-	<Script file='Mainline\DataTexts\Quickjoin.lua'/>
 	<Script file='Shared\Modules\DataBars\PetExperience.lua'/>
 	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
 
