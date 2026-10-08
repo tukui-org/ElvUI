@@ -330,7 +330,7 @@ function M:ADDON_LOADED(_, addon)
 	elseif addon == 'Blizzard_PTRFeedback' then
 		KillFeedback(_G.PTR_IssueReporter)
 	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' then
-		if E.Classic or E.TBC then
+		if E.Classic or E.TBC then -- vanillaStyle
 			M:LoadQueueStatus()
 		end
 	elseif addon == 'Blizzard_HousingControls' then
