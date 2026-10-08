@@ -8,8 +8,7 @@ local hooksecurefunc = hooksecurefunc
 
 local DROPDOWN_WIDTH_OFFSET = 8
 
-local data = S:AddCallbackForAddon('Blizzard_DamageMeter')
-data.toggle = 'damageMeter'
+local data = S:AddCallbackForAddon('Blizzard_DamageMeter', nil, nil, nil, nil, nil, 'damageMeter')
 
 function data:ButtonOnEnter()
 	local r, g, b = unpack(E.media.rgbvaluecolor)

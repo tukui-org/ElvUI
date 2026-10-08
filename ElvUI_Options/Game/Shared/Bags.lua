@@ -21,7 +21,7 @@ Bags.args.cooldownShortcut = ACH:Execute(L["Cooldown & Duration"], nil, 3, funct
 
 Bags.args.general = ACH:Group(L["General"], nil, 1, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateLayouts() B:UpdateAllBagSlots() end, function() return not E.Bags.Initialized end)
 Bags.args.general.args.strata = ACH:Select(L["Frame Strata"], nil, 1, { BACKGROUND = L["BACKGROUND"], LOW = L["LOW"], MEDIUM = L["MEDIUM"], HIGH = L["HIGH"] })
-Bags.args.general.args.currencyFormat = ACH:Select(L["Currency Format"], L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"], 2, { NONE = L["None"], ICON = L["Icons Only"], ICON_TEXT = L["Icons and Text"], ICON_TEXT_ABBR = L["Icons and Text (Short)"] }, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateTokens() B:Layout() end, nil, E.Classic)
+Bags.args.general.args.currencyFormat = ACH:Select(L["Currency Format"], L["The display format of the currency icons that get displayed below the main bag. (You have to be watching a currency for this to display)"], 2, { NONE = L["None"], ICON = L["Icons Only"], ICON_TEXT = L["Icons and Text"], ICON_TEXT_ABBR = L["Icons and Text (Short)"] }, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateTokens() B:Layout() end, nil, E.Classic or E.TBC)
 Bags.args.general.args.moneyFormat = ACH:Select(L["Gold Format"], L["The display format of the money text that is shown at the top of the main bag."], 3, { SMART = L["Smart"], FULL = L["Full"], SHORT = L["SHORT"], SHORTSPACED = L["Short (Whole Numbers Spaced)"], SHORTINT = L["Short (Whole Numbers)"], CONDENSED = L["Condensed"], CONDENSED_SPACED = L["Condensed (Spaced)"], BLIZZARD = L["Blizzard Style"], BLIZZARD2 = L["Blizzard Style"].." 2", HIDE = L["Hide"] }, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateGoldText() end)
 Bags.args.general.args.moneyCoins = ACH:Toggle(L["Show Coins"], L["Use coin icons instead of colored text."], 4, nil, nil, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateGoldText() end)
 
@@ -108,7 +108,7 @@ Bags.args.general.args.bankGroup.args.split.args.alwaysProfessionBank = ACH:Togg
 Bags.args.general.args.bankGroup.args.split.args.splitbank = ACH:MultiSelect('', nil, 5, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end, nil, function() return not E.db.bags.split.bank end, true)
 Bags.args.general.args.bankGroup.args.split.inline = true
 
-Bags.args.general.args.warbandGroup = ACH:Group(L["Warband"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end)
+Bags.args.general.args.warbandGroup = ACH:Group(L["Warband"], nil, 7, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:Layout(true) end, function() return not E.Bags.Initialized end, not E.Modern)
 Bags.args.general.args.warbandGroup.args.warbandSize = ACH:Range(L["Button Size"], nil, 2, { min = 15, max = 45, step = 1 })
 Bags.args.general.args.warbandGroup.args.warbandButtonSpacing = ACH:Range(L["Button Spacing"], nil, 3, { min = -3, max = 20, step = 1 })
 Bags.args.general.args.warbandGroup.args.warbandWidth = ACH:Range(L["Panel Width"], L["Adjust the width of the bank frame."], 4, { min = 150, max = 1400, step = 1 })
@@ -120,7 +120,7 @@ Bags.args.general.args.warbandGroup.args.split.args.warbandSpacing = ACH:Range(L
 Bags.args.general.args.warbandGroup.args.split.args.splitWarband = ACH:MultiSelect('', nil, 4, {}, nil, nil, function(_, key) return E.db.bags.split[key] end, function(_, key, value) E.db.bags.split[key] = value B:Layout(true) end, nil, function() return not E.db.bags.split.warband end)
 Bags.args.general.args.warbandGroup.args.split.inline = true
 
-for i = 1, 11 do
+for i = 1, (E.Classic and 10 or 11) do
 	local bag = 'bag'..i
 	local lastSlot = (E.Modern and 5 or 4)
 	if i >= 1 and i <= lastSlot then
@@ -155,7 +155,7 @@ Bags.args.general.args.countGroup.args.positionGroup.args.countPosition = ACH:Se
 Bags.args.general.args.countGroup.args.positionGroup.args.countxOffset = ACH:Range(L["X-Offset"], nil, 8, { min = -45, max = 45, step = 1 })
 Bags.args.general.args.countGroup.args.positionGroup.args.countyOffset = ACH:Range(L["Y-Offset"], nil, 9, { min = -45, max = 45, step = 1 })
 
-Bags.args.general.args.itemInfoGroup = ACH:Group(L["Item Info"], nil, 9, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemDisplay() end)
+Bags.args.general.args.itemInfoGroup = ACH:Group(L["Item Info"], nil, 9, nil, nil, function(info, value) E.db.bags[info[#info]] = value B:UpdateItemDisplay() end, nil, not E.Modern)
 Bags.args.general.args.itemInfoGroup.args.itemInfo = ACH:Toggle(L["Display Item Info"], L["Displays item info on center of item."], 1)
 Bags.args.general.args.itemInfoGroup.args.itemInfoColor = ACH:Color(L["COLOR"], nil, 4, nil, nil, function(info) local t = E.db.bags[info[#info]] local d = P.bags[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags[info[#info]] t.r, t.g, t.b = r, g, b B:UpdateItemDisplay() end, nil, function() return not E.db.bags.itemInfo end)
 Bags.args.general.args.itemInfoGroup.args.fontGroup = ACH:Group(L["Fonts"], nil, 5, nil, nil, nil, nil, function() return not E.db.bags.itemInfo end)
@@ -182,7 +182,7 @@ Bags.args.general.args.itemLevelGroup.args.positionGroup.args.itemLevelyOffset =
 
 Bags.args.general.args.autoToggle = ACH:Group(L["Auto Toggle"], nil, 11)
 Bags.args.general.args.autoToggle.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.db.bags.autoToggle.enable end, function(_, value) E.db.bags.autoToggle.enable = value B:SetupAutoToggle() end)
-Bags.args.general.args.autoToggle.args.toggles = ACH:MultiSelect('', nil, 2, { bank = L["Bank"], mail = L["MAIL_LABEL"], guildBank = L["Guild Bank"], auctionHouse = L["Auction House"], professions = L["Professions"], trade = L["TRADE"], vendor = L["Vendor"] }, nil, nil, function(_, key) return E.db.bags.autoToggle[key] end, function(_, key, value) E.db.bags.autoToggle[key] = value end, function() return not E.db.bags.autoToggle.enable end)
+Bags.args.general.args.autoToggle.args.toggles = ACH:MultiSelect('', nil, 2, { bank = L["Bank"], mail = L["MAIL_LABEL"], guildBank = not E.Classic and L["Guild Bank"] or nil, auctionHouse = L["Auction House"], professions = L["Professions"], trade = L["TRADE"], vendor = L["Vendor"] }, nil, nil, function(_, key) return E.db.bags.autoToggle[key] end, function(_, key, value) E.db.bags.autoToggle[key] = value end, function() return not E.db.bags.autoToggle.enable end)
 
 if E.Modern then
 	Bags.args.general.args.autoToggle.args.toggles.values.soulBind = L["Soul Binds"]
@@ -196,22 +196,22 @@ Bags.args.general.args.spinnerGroup.args.color = ACH:Color(L["COLOR"], nil, 3, n
 Bags.args.colorGroup = ACH:Group(L["Colors"], nil, 2, nil, function(info) local t = E.db.bags.colors[info[#info - 1]][info[#info]] local d = P.bags.colors[info[#info - 1]][info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b end, function(info, r, g, b) local t = E.db.bags.colors[info[#info - 1]][info[#info]] t.r, t.g, t.b = r, g, b B:UpdateBagColors(info[#info - 1], info[#info], r, g, b) if E.Bags.Initialized then B:UpdateAllBagSlots() end end)
 Bags.args.colorGroup.args.general = ACH:Group(L["General"], nil, 0, nil, function(info) return E.db.bags[info[#info]] end, function(info, value) E.db.bags[info[#info]] = value B:UpdateAllBagSlots() end, function() return not E.Bags.Initialized end)
 Bags.args.colorGroup.args.general.inline = true
-Bags.args.colorGroup.args.general.args.showAssignedColor = ACH:Toggle(L["Show Assigned Color"], L["Colors the border according to the type of items assigned to the bag."], 1)
+Bags.args.colorGroup.args.general.args.showAssignedColor = ACH:Toggle(L["Show Assigned Color"], L["Colors the border according to the type of items assigned to the bag."], 1, nil, nil, nil, nil, nil, nil, not E.Modern)
 Bags.args.colorGroup.args.general.args.qualityColors = ACH:Toggle(L["Show Quality Color"], L["Colors the border according to the Quality of the Item."], 2)
 Bags.args.colorGroup.args.general.args.specialtyColors = ACH:Toggle(L["Show Special Bags Color"], nil, 3)
 Bags.args.colorGroup.args.general.args.colorBackdrop = ACH:Toggle(L["Color Backdrop"], nil, 4)
 
-Bags.args.colorGroup.args.assignment = ACH:Group(L["Bag Assignment"], nil, 1)
+Bags.args.colorGroup.args.assignment = ACH:Group(L["Bag Assignment"], nil, 1, nil, nil, nil, nil, not E.Modern)
 Bags.args.colorGroup.args.assignment.inline = true
 Bags.args.colorGroup.args.assignment.args.equipment = ACH:Color(L["BAG_FILTER_EQUIPMENT"])
 Bags.args.colorGroup.args.assignment.args.consumables = ACH:Color(L["BAG_FILTER_CONSUMABLES"])
 Bags.args.colorGroup.args.assignment.args.tradegoods = ACH:Color(L["BAG_FILTER_TRADE_GOODS"])
-Bags.args.colorGroup.args.assignment.args.quest = ACH:Color(L["BAG_FILTER_QUEST_ITEMS"], nil, nil, nil, nil, nil, nil, nil, not E.Modern)
+Bags.args.colorGroup.args.assignment.args.quest = ACH:Color(L["BAG_FILTER_QUEST_ITEMS"])
 Bags.args.colorGroup.args.assignment.args.junk = ACH:Color(L["BAG_FILTER_JUNK"])
 
 Bags.args.colorGroup.args.profession = ACH:Group(L["Profession Bags"], nil, 2)
 Bags.args.colorGroup.args.profession.inline = true
-Bags.args.colorGroup.args.profession.args.quiver = ACH:Color(L["Quiver / Ammo"])
+Bags.args.colorGroup.args.profession.args.quiver = ACH:Color(L["Quiver / Ammo"], nil, nil, nil, nil, nil, nil, nil, E.Retail or E.Mists)
 Bags.args.colorGroup.args.profession.args.cooking = ACH:Color(L["PROFESSIONS_COOKING"])
 Bags.args.colorGroup.args.profession.args.enchanting = ACH:Color(L["Enchanting"])
 Bags.args.colorGroup.args.profession.args.engineering = ACH:Color(L["Engineering"])
@@ -219,10 +219,10 @@ Bags.args.colorGroup.args.profession.args.fishing = ACH:Color(L["PROFESSIONS_FIS
 Bags.args.colorGroup.args.profession.args.gems = ACH:Color(L["Gems"])
 Bags.args.colorGroup.args.profession.args.herbs = ACH:Color(L["Herbalism"])
 Bags.args.colorGroup.args.profession.args.inscription = ACH:Color(L["Inscription"])
-Bags.args.colorGroup.args.profession.args.keyring = ACH:Color(L["Key Ring"])
+Bags.args.colorGroup.args.profession.args.keyring = ACH:Color(L["Key Ring"], nil, nil, nil, nil, nil, nil, nil, E.Retail or E.Mists)
 Bags.args.colorGroup.args.profession.args.leatherworking = ACH:Color(L["Leatherworking"])
 Bags.args.colorGroup.args.profession.args.mining = ACH:Color(L["Mining"])
-Bags.args.colorGroup.args.profession.args.reagent = ACH:Color(L["Reagent"])
+Bags.args.colorGroup.args.profession.args.reagent = ACH:Color(L["Reagent"], nil, nil, nil, nil, nil, nil, nil, not E.Modern)
 
 Bags.args.colorGroup.args.items = ACH:Group(L["Items"], nil, 3)
 Bags.args.colorGroup.args.items.inline = true

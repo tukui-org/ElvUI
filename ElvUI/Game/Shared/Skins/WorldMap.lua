@@ -6,14 +6,14 @@ local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
+local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
 local QuestSessionCommand = Enum.QuestSessionCommand
 local SessionCommand_ButtonAtlases = QuestSessionCommand and { -- only read by the Mainline quest session skin
 	[QuestSessionCommand.Start] = 'QuestSharing-DialogIcon',
 	[QuestSessionCommand.Stop] = 'QuestSharing-Stop-DialogIcon'
 }
 
-local data = S:AddCallback('WorldMapFrame')
-data.toggle = 'worldmap'
+local data = S:AddCallback('WorldMapFrame', nil, nil, 'worldmap')
 
 local function UpdateExecuteCommandAtlases(frame, command)
 	frame.ExecuteSessionCommand:SetNormalTexture(E.ClearTexture)
@@ -50,15 +50,28 @@ local function NotifyDialogShow(_, dialog)
 	dialog.IsSkinned = true
 end
 
+local function QuestLogHeader_CheckHighlightTitle(header, isMouseOver)
+	if isMouseOver == nil then
+		isMouseOver = header:IsMouseMotionFocus()
+	end
+
+	if not isMouseOver then
+		local title = header:GetTitleRegion()
+		title:SetTextColor(NORMAL_FONT_COLOR:GetRGB())
+	end
+end
+
 local function QuestLogQuests()
 	local r, g, b = unpack(E.media.rgbvaluecolor)
 
 	for button in _G.QuestScrollFrame.headerFramePool:EnumerateActive() do
 		if not button.IsSkinned then
 			button:StripTextures()
-			button:CreateBackdrop('Transparent')
+			button:CreateBackdrop()
 			button:GetHighlightTexture():SetColorTexture(r, g, b, .25)
 			button.ButtonText:FontTemplate(nil, 16)
+			hooksecurefunc(button, 'CheckHighlightTitle', QuestLogHeader_CheckHighlightTitle)
+			QuestLogHeader_CheckHighlightTitle(button)
 			button.IsSkinned = true
 		end
 	end
@@ -82,10 +95,13 @@ local function QuestLogQuests()
 	for header in _G.QuestScrollFrame.campaignHeaderMinimalFramePool:EnumerateActive() do
 		if not header.IsSkinned then
 			header:StripTextures()
-			header.Background:CreateBackdrop('Transparent')
+			header.Background:CreateBackdrop()
 			header.Highlight:SetColorTexture(r, g, b, 0.75)
+			hooksecurefunc(header, 'CheckHighlightTitle', QuestLogHeader_CheckHighlightTitle)
 			header.IsSkinned = true
 		end
+
+		QuestLogHeader_CheckHighlightTitle(header) -- UpdateTitle sets it gray again on every update
 	end
 end
 
@@ -285,46 +301,44 @@ local function SkinMainline()
 		MapBorderFrame.Tutorial:Kill()
 	end
 
-	do -- Add a hook to adjust the OverlayFrames
-		hooksecurefunc(WorldMapFrame, 'AddOverlayFrame', S.WorldMapMixin_AddOverlayFrame)
+	do -- Overlay frames
+		local dropdown, tracking, pin = unpack(WorldMapFrame.overlayFrames)
+		S:HandleDropDownBox(dropdown) -- NavBar handled in ElvUI/modules/skins/misc
 
-		local Dropdown, Tracking, Pin = unpack(WorldMapFrame.overlayFrames)
-		S:HandleDropDownBox(Dropdown) -- NavBar handled in ElvUI/modules/skins/misc
-
-		if E.Forever then -- ToDo: Forever
-			Tracking, Pin = WorldMapFrame.WorldMapTrackingOptionsButton, WorldMapFrame.WorldMapTrackingPinButton
+		if E.Forever then
+			tracking, pin = WorldMapFrame.WorldMapTrackingOptionsButton, WorldMapFrame.WorldMapTrackingPinButton
 
 			-- Forever tracking button is an arrow dropdown next to the NavBar
-			if Tracking then
-				S:HandleNextPrevButton(Tracking, 'down', nil, true)
-				Tracking:SetTemplate()
-				Tracking:ClearAllPoints()
-				Tracking:Point('LEFT', MapNavBar, 'RIGHT', 10, 0)
-				Tracking.Icon:SetAlpha(0) -- OnMouseDown and OnMouseUp set the atlas again
+			if tracking then
+				S:HandleNextPrevButton(tracking, 'down', nil, true)
+				tracking:SetTemplate()
+				tracking:ClearAllPoints()
+				tracking:Point('LEFT', MapNavBar, 'RIGHT', 10, 0)
+				tracking.Icon:SetAlpha(0) -- OnMouseDown and OnMouseUp set the atlas again
 
-				local ResetButton = Tracking.ResetButton
+				local ResetButton = tracking.ResetButton
 				S:HandleCloseButton(ResetButton)
 				ResetButton:ClearAllPoints()
-				ResetButton:Point('CENTER', Tracking, 'TOPRIGHT', 0, 0)
+				ResetButton:Point('CENTER', tracking, 'TOPRIGHT', 0, 0)
 			end
 		else
-			Tracking:StripTextures()
-			Tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking/None
-			Tracking:SetHighlightTexture(136460, 'ADD')
+			tracking:StripTextures()
+			tracking.Icon:SetTexture(136460) -- Interface\Minimap\Tracking/None
+			tracking:SetHighlightTexture(136460, 'ADD')
 
-			local TrackingHighlight = Tracking:GetHighlightTexture()
-			TrackingHighlight:SetAllPoints(Tracking.Icon)
+			local TrackingHighlight = tracking:GetHighlightTexture()
+			TrackingHighlight:SetAllPoints(tracking.Icon)
 		end
 
-		if Pin then
-			Pin:StripTextures()
-			Pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
-			Pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
-			Pin.ActiveTexture:SetAllPoints(Pin.Icon)
-			Pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
+		if pin then
+			pin:StripTextures()
+			pin.Icon:SetAtlas('Waypoint-MapPin-Untracked')
+			pin.ActiveTexture:SetAtlas('Waypoint-MapPin-Tracked')
+			pin.ActiveTexture:SetAllPoints(pin.Icon)
+			pin:SetHighlightTexture(3500068, 'ADD') -- Interface\Waypoint\WaypoinMapPinUI
 
-			local PinHighlight = Pin:GetHighlightTexture()
-			PinHighlight:SetAllPoints(Pin.Icon)
+			local PinHighlight = pin:GetHighlightTexture()
+			PinHighlight:SetAllPoints(pin.Icon)
 			PinHighlight:SetTexCoord(0.3203125, 0.5546875, 0.015625, 0.484375)
 		end
 	end

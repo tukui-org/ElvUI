@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_AdventureMap')
-data.toggle = 'adventureMap'
+S:AddCallbackForAddon('Blizzard_AdventureMap', nil, nil, nil, nil, nil, 'adventureMap')
 
 local function SkinRewards(frame)
 	for reward in frame.rewardPool:EnumerateActive() do

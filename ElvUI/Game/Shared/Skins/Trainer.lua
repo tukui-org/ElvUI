@@ -2,20 +2,38 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack = unpack
+local next, unpack = next, unpack
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_TrainerUI')
-data.toggle = 'trainer'
+S:AddCallbackForAddon('Blizzard_TrainerUI', nil, nil, nil, nil, nil, 'trainer')
 
--- TrainerUICategoryTemplate, keep the Blizzard plus / minus
+local COLLAPSE_ATLAS = {
+	['Professions-recipe-header-expand'] = 'common-button-list-plus',
+	['Professions-recipe-header-collapse'] = 'common-button-list-minus'
+}
+
+-- Use Blizzard's plus / minus for headers
+local function UpdateCollapseIcon(texture, atlas)
+	local icon = COLLAPSE_ATLAS[atlas]
+	if icon then
+		texture:SetAtlas(icon, true)
+	end
+end
+
+-- TrainerUICategoryTemplate
 local function HandleCategory(button)
 	button.LeftPiece:SetAlpha(0)
 	button.CenterPiece:SetAlpha(0)
 	button.RightPiece:SetAlpha(0)
 
-	button:CreateBackdrop('Transparent')
+	button:CreateBackdrop()
 	button.backdrop:SetInside(button, 0, 1)
+
+	for _, icon in next, { button.CollapseIcon, button.CollapseIconAlphaAdd } do
+		UpdateCollapseIcon(icon, icon:GetAtlas())
+
+		hooksecurefunc(icon, 'SetAtlas', UpdateCollapseIcon)
+	end
 end
 
 local function ClassTrainerScrollUpdateChild(button)
@@ -93,7 +111,7 @@ local function SkinMainline()
 	ClassTrainerStatusBar.rankText:Point('CENTER', ClassTrainerStatusBar, 'CENTER')
 	E:RegisterStatusBar(ClassTrainerStatusBar)
 
-	local money = E.Forever and ClassTrainerFrame.money or _G.ClassTrainerFrameMoneyFrame -- ToDo: Forever
+	local money = E.Forever and ClassTrainerFrame.money or _G.ClassTrainerFrameMoneyFrame
 	money:CreateBackdrop('Transparent')
 	money.backdrop:SetOutside(money, 4, 4)
 

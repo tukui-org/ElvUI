@@ -37,8 +37,7 @@ local sealFrameTextColor = {
 	['042c54'] = '1c86ee',
 }
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames')
-data.toggle = 'quest'
+local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'BlizzardQuestFrames', nil, nil, nil, nil, 'quest')
 
 function data:QuestInfoSealFrameText(text)
 	if text and text ~= '' then
@@ -165,14 +164,19 @@ function data:QuestInfoItem_OnClick() -- self is not data
 	_G.QuestInfoItemHighlight:ClearAllPoints()
 	_G.QuestInfoItemHighlight:SetOutside(self.Icon)
 
-	for _, Button in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
-		Button.Name:SetTextColor(1, 1, 1)
-	end
+	-- on the parchment the names keep the page text color
+	if E.private.skins.parchmentRemoverEnable then
+		for _, Button in ipairs(_G.QuestInfoRewardsFrame.RewardButtons) do
+			Button.Name:SetTextColor(1, 1, 1)
+		end
 
-	self.Name:SetTextColor(1, .8, .1)
+		self.Name:SetTextColor(1, .8, .1)
+	end
 end
 
-function data:QuestInfo_Display(parentFrame) -- self is template, not data
+function data:QuestInfo_Display() -- self is template, not data
+	local lightText = E.private.skins.parchmentRemoverEnable or (not E.Modern and _G.QuestInfoFrame.questLog) -- the classic quest logs stay stripped with the remover off
+
 	local rewardsFrame = _G.QuestInfoFrame.rewardsFrame
 	for i, questItem in ipairs(rewardsFrame.RewardButtons) do
 		local point, relativeTo, relativePoint, _, y = questItem:GetPoint()
@@ -189,15 +193,15 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		HandleReward(questItem)
 
 		questItem.NameFrame:Hide()
-		questItem.Name:SetTextColor(1, 1, 1)
+
+		if lightText then
+			questItem.Name:SetTextColor(1, 1, 1)
+		end
 	end
 
 	if not E.Modern then
 		UpdateRewardQuality()
 	end
-
-	-- the classic quest logs stay stripped with the remover off
-	local lightText = E.private.skins.parchmentRemoverEnable or (not E.Modern and _G.QuestInfoFrame.questLog)
 
 	local questID = Quest_GetQuestID()
 	local spellRewards = C_QuestInfoSystem_GetQuestRewardSpells(questID)
@@ -212,6 +216,10 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		local spellBorders = (E.Modern or E.Classic) and rewardsFrame == _G.QuestInfoRewardsFrame
 		for spellIcon in rewardsFrame.spellRewardPool:EnumerateActive() do
 			HandleReward(spellIcon)
+
+			if lightText then
+				spellIcon.Name:SetTextColor(1, 1, 1)
+			end
 
 			if spellBorders then
 				local _, _, spellBorder = spellIcon:GetRegions() -- Icon, NameFrame, SpellBorder
@@ -254,9 +262,19 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		end
 	end
 
-	if E.Modern then -- MajorFaction Rewards thing
-		for spellIcon in rewardsFrame.reputationRewardPool:EnumerateActive() do
+	if E.Modern then
+		for spellIcon in rewardsFrame.reputationRewardPool:EnumerateActive() do -- MajorFaction Rewards thing
 			HandleReward(spellIcon)
+
+			if lightText then
+				spellIcon.Name:SetTextColor(1, 1, 1)
+			end
+		end
+
+		if lightText then
+			rewardsFrame.HonorFrame.Name:SetTextColor(1, 1, 1)
+			rewardsFrame.ArtifactXPFrame.Name:SetTextColor(1, 1, 1)
+			rewardsFrame.TitleFrame.Name:SetTextColor(1, 1, 1)
 		end
 	end
 
@@ -264,13 +282,14 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		_G.QuestInfoTitleHeader:SetTextColor(1, .8, .1)
 		_G.QuestInfoDescriptionHeader:SetTextColor(1, .8, .1)
 		_G.QuestInfoObjectivesHeader:SetTextColor(1, .8, .1)
-		_G.QuestInfoRewardsFrame.Header:SetTextColor(1, .8, .1)
 		_G.QuestInfoDescriptionText:SetTextColor(1, 1, 1)
 		_G.QuestInfoObjectivesText:SetTextColor(1, 1, 1)
 		_G.QuestInfoGroupSize:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardText:SetTextColor(1, 1, 1)
 		_G.QuestInfoTimerText:SetTextColor(1, 1, 1)
 		_G.QuestInfoQuestType:SetTextColor(1, 1, 1)
+
+		_G.QuestInfoRewardsFrame.Header:SetTextColor(1, .8, .1)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetTextColor(1, 1, 1)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetTextColor(1, 1, 1)
 
@@ -295,21 +314,43 @@ function data:QuestInfo_Display(parentFrame) -- self is template, not data
 		_G.QuestInfoTitleHeader:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoDescriptionHeader:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoObjectivesHeader:SetShadowColor(0, 0, 0, 0)
-		_G.QuestInfoRewardsFrame.Header:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoDescriptionText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoObjectivesText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoGroupSize:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoTimerText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoQuestType:SetShadowColor(0, 0, 0, 0)
+
+		_G.QuestInfoRewardsFrame.Header:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemChooseText:SetShadowColor(0, 0, 0, 0)
 		_G.QuestInfoRewardsFrame.ItemReceiveText:SetShadowColor(0, 0, 0, 0)
+
+		-- Blizzard's material flip skips the arena and honor lines - the quest log and map leave them white
+		if E.Wrath or E.Mists then
+			local r, g, b = _G.QuestFont:GetTextColor()
+			_G.QuestInfoRewardsFrameReceiveText:SetTextColor(r, g, b)
+			_G.QuestInfoRewardsFrameHonorReceiveText:SetTextColor(r, g, b)
+		end
 	end
 end
 
 function data:QuestFrameProgressItems_Update() -- self is not data
-	_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
-	_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
+	if E.private.skins.parchmentRemoverEnable then
+		_G.QuestProgressRequiredItemsText:SetTextColor(1, .8, .1)
+		_G.QuestProgressRequiredMoneyText:SetTextColor(1, 1, 1)
+	else -- use the page text color to make text readable on parchment
+		local r, g, b = _G.QuestProgressText:GetTextColor()
+
+		local i = 1
+		local name = _G['QuestProgressItem'..i..'Name']
+		while name do
+			name:SetTextColor(r, g, b)
+			name:SetShadowColor(0, 0, 0, 0)
+
+			i = i + 1
+			name = _G['QuestProgressItem'..i..'Name']
+		end
+	end
 end
 
 function data:QuestFrame_SetTitleTextColor() -- self is fontString
@@ -372,9 +413,10 @@ local function HandleItemButton(item)
 	item:Size(143, 40)
 	item:OffsetFrameLevel(2)
 
+	local offset = E.Border * 2
 	item.Icon:Size(E.PixelMode and 35 or 32)
 	item.Icon:SetDrawLayer('ARTWORK')
-	item.Icon:Point('TOPLEFT', E.PixelMode and 2 or 4, -(E.PixelMode and 2 or 4))
+	item.Icon:Point('TOPLEFT', offset, -offset)
 	S:HandleIcon(item.Icon)
 
 	item.Count:SetDrawLayer('OVERLAY')
@@ -541,10 +583,13 @@ local function SkinQuestLogFrame()
 	_G.QuestLogDetailScrollFrame:Width(303)
 	_G.QuestLogFrameAbandonButton:Width(129)
 
-	_G.QuestLogHighlightFrame:Width(303)
-	_G.QuestLogHighlightFrame.SetWidth = E.noop
+	local QuestLogHighlightFrame = _G.QuestLogHighlightFrame
+	QuestLogHighlightFrame:Width(303)
+	QuestLogHighlightFrame.SetWidth = E.noop
 
-	_G.QuestLogSkillHighlight:SetTexture(E.Media.Textures.Highlight)
+	-- QuestLogSkillHighlight - the wrath and mists world map reuses that global name
+	local skillHighlight = QuestLogHighlightFrame:GetRegions()
+	skillHighlight:SetTexture(E.Media.Textures.Highlight)
 
 	if E.Mists or E.Wrath then
 		S:HandleButton(_G.QuestLogFrameTrackButton, true)
@@ -562,7 +607,7 @@ local function SkinQuestLogFrame()
 		_G.QuestLogFrameCancelButton:PointXY(-4, 4)
 		_G.QuestFramePushQuestButton:PointXY(1)
 
-		_G.QuestLogSkillHighlight:SetAlpha(0.3)
+		skillHighlight:SetAlpha(0.3)
 	else
 		S:HandleButton(_G.QuestFrameExitButton, true)
 
@@ -580,7 +625,7 @@ local function SkinQuestLogFrame()
 		_G.QuestFramePushQuestButton:PointXY(-2)
 		_G.QuestFrameExitButton:PointXY(-36, 49)
 
-		_G.QuestLogSkillHighlight:SetAlpha(0.35)
+		skillHighlight:SetAlpha(0.35)
 
 		local QuestLogCollapseAllButton = _G.QuestLogCollapseAllButton
 		S:HandleCollapseTexture(QuestLogCollapseAllButton, nil, true)
@@ -715,16 +760,16 @@ function S:BlizzardQuestFrames()
 		end
 
 		if E.private.skins.parchmentRemoverEnable then
-			_G.QuestFrameGreetingPanel:HookScript('OnUpdate', UpdateGreetingFrame)
+			_G.QuestFrameGreetingPanel:HookScript('OnShow', UpdateGreetingFrame)
 			hooksecurefunc('QuestFrameGreetingPanel_OnShow', UpdateGreetingFrame)
 		end
 	end
 
 	hooksecurefunc('QuestFrame_ShowQuestPortrait', E.Classic and ShowQuestNPCModel or ShowQuestPortrait)
+	hooksecurefunc('QuestFrameProgressItems_Update', data.QuestFrameProgressItems_Update)
 
 	local modelTextFrame = E.Modern and _G.QuestModelScene.ModelTextFrame or _G.QuestNPCModelTextFrame
 	if E.private.skins.parchmentRemoverEnable then
-		hooksecurefunc('QuestFrameProgressItems_Update', data.QuestFrameProgressItems_Update)
 		hooksecurefunc('QuestFrame_SetTitleTextColor', data.QuestFrame_SetTitleTextColor)
 		hooksecurefunc('QuestFrame_SetTextColor', data.QuestFrame_SetTextColor)
 		hooksecurefunc(_G.QuestInfoSealFrame.Text, 'SetText', data.QuestInfoSealFrameText)

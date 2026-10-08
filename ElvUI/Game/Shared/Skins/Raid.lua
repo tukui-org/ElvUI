@@ -5,6 +5,7 @@ local _G = _G
 local pairs = pairs
 local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
+local InCombatLockdown = InCombatLockdown
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 
 local StripAllTextures = {
@@ -18,8 +19,7 @@ local StripAllTextures = {
 	'RaidGroup8',
 }
 
-local data = S:AddCallbackForAddon('Blizzard_RaidUI')
-data.toggle = 'raid'
+S:AddCallbackForAddon('Blizzard_RaidUI', nil, nil, nil, nil, nil, 'raid')
 
 local function RaidPulloutGetFrame()
 	for i = 1, _G.NUM_RAID_PULLOUT_FRAMES do
@@ -34,7 +34,9 @@ local function RaidPulloutUpdate(pullOutFrame)
 	for i = 1, pullOutFrame.numPulloutButtons do
 		local name = frameName..'Button'..i
 		local object = _G[name]
-		if not object.backdrop then
+
+		-- the Target bar is secure and anchored to the ManaBar, only run update out of combat
+		if not object.backdrop and not InCombatLockdown() then
 			for _, v in ipairs(bars) do
 				local bar = _G[name..v]
 				bar:StripTextures()
@@ -59,6 +61,10 @@ end
 
 local function HandleClassButtons()
 	local numClasses = _G.MAX_CLASSES
+	local plusOne = numClasses + 1
+	local plusTwo = numClasses + 2
+	local plusThree = numClasses + 3
+
 	local prevButton
 	for index = 1, _G.MAX_RAID_CLASS_BUTTONS do -- classes, pets, main tank, main assist
 		local button = _G['RaidClassButton'..index]
@@ -72,7 +78,7 @@ local function HandleClassButtons()
 		button:ClearAllPoints()
 		if index == 1 then
 			button:Point('TOPLEFT', _G.RaidFrame, 'TOPRIGHT', -3, -48)
-		elseif index == numClasses + 1 then
+		elseif index == plusOne then
 			button:Point('TOP', prevButton, 'BOTTOM', 0, -25)
 		else
 			button:Point('TOP', prevButton, 'BOTTOM', 0, -5)
@@ -81,13 +87,13 @@ local function HandleClassButtons()
 
 		icon:SetInside()
 
-		if index == numClasses + 1 then
+		if index == plusOne then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-Pets]])
 			icon:SetTexCoords()
-		elseif index == numClasses + 2 then
+		elseif index == plusTwo then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainTank]])
 			icon:SetTexCoords()
-		elseif index == numClasses + 3 then
+		elseif index == plusThree then
 			icon:SetTexture([[Interface\RaidFrame\UI-RaidFrame-MainAssist]])
 			icon:SetTexCoords()
 		else

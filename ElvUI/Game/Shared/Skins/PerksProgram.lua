@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_PerksProgram')
-data.toggle = 'perks'
+S:AddCallbackForAddon('Blizzard_PerksProgram', nil, nil, nil, nil, nil, 'perks')
 
 local function HandleSetButtons(button)
 	if not button.Icon.backdrop then
@@ -250,7 +249,6 @@ function S:Blizzard_PerksProgram() -- Trading Post
 	footer.PurchaseButton:HookScript('OnEnter', PurchaseButton_OnEnter)
 	footer.PurchaseButton:HookScript('OnLeave', PurchaseButton_OnLeave)
 
-	-- handle the glow
 	hooksecurefunc(_G.GlowEmitterFactory, 'Show', GlowEmitterFactory_Show)
 	hooksecurefunc(_G.GlowEmitterFactory, 'Hide', GlowEmitterFactory_Hide)
 

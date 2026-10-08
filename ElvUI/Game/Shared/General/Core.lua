@@ -68,6 +68,7 @@ E.mylevel = UnitLevel('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
 E.playerName, E.playerRealm = UnitNameUnmodified('player')
+E.mynameFull = format((E.Forever and E.playerRealm) and '%s %s' or '%s', E.playerName, E.playerRealm) -- forever "First Last" otherwise "First"
 E.mynameRealm = format((E.Forever and (E.playerRealm and '%s %s' or '%s')) or '%s - %s', E.playerName, E.playerRealm or E.myrealm) -- contains spaces/dashes in realm (for profile keys)
 E.expansionLevel = GetExpansionLevel()
 E.expansionLevelMax = GetMaxLevelForExpansionLevel(E.expansionLevel)
@@ -77,6 +78,7 @@ E.screenWidth, E.screenHeight = GetScreenWidth(), GetScreenHeight()
 E.resolution = format('%dx%d', E.physicalWidth, E.physicalHeight)
 E.perfect = 768 / E.physicalHeight
 E.allowRoles = E.Modern or E.TBC or E.Wrath or E.Mists or E.ClassicAnniv or E.ClassicAnnivHC or E.ClassicSOD
+E.allowTotemBar = (E.Wrath --[[or E.Forever]]) and (E.myclass == 'SHAMAN')
 E.NewSign = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14|t]]
 E.NewSignNoWhatsNew = [[|TInterface\OptionsFrame\UI-OptionsFrame-NewFeatureIcon:14:14:0:0|t]]
 E.TexturePath = [[Interface\AddOns\ElvUI\Media\Textures\]] -- for plugins?
@@ -188,7 +190,7 @@ E.UIParent:SetFrameLevel(UIParent:GetFrameLevel())
 E.UIParent:SetSize(E.screenWidth, E.screenHeight)
 E.UIParent:SetPoint('BOTTOM')
 E.UIParent.origHeight = E.UIParent:GetHeight()
-E.snapBars[#E.snapBars + 1] = E.UIParent
+tinsert(E.snapBars, E.UIParent)
 
 E.UFParent = _G.ElvUF_UFParentFrameHider -- created in oUF
 E.UFParent:SetParent(E.UIParent)
@@ -445,36 +447,16 @@ function E:GeneralMedia_ApplyToAll()
 end
 
 do	-- i guess we finally need it ~Simpy
-	local funcs, callbacks, ticker = {}, {}
-	function E:Coroutine_Continue(func, info)
+	local funcs, callbacks, tickers = {}, {}, {}
+	function E:Coroutine_Continue(info)
 		local resumed, err = co_resume(info.routine)
 		if not resumed and err then -- it broke, throw the error
 			E.ErrorHandler(err)
 		end
-
-		-- cant continue
-		if co_status(info.routine) == 'dead' then
-			funcs[func] = nil
-		end
-	end
-
-	function E:Coroutine_Process()
-		if InCombatLockdown() then return end
-
-		-- resume is a protected function, wait until after combat
-		for func, info in next, funcs do
-			E:Coroutine_Continue(func, info)
-		end
-
-		-- no more to process
-		if not next(funcs) then
-			ticker:Cancel()
-			ticker = nil
-		end
 	end
 
 	function E:Coroutine_Generate(info)
-		return function()
+		local loop = function()
 			if info.cancel then
 				return
 			end
@@ -495,26 +477,48 @@ do	-- i guess we finally need it ~Simpy
 					info.count = 0
 
 					co_yield()
+
+					if info.cancel then
+						return
+					end
 				end
 			end
 		end
+
+		local process = function()
+			if info.cancel or (co_status(info.routine) == 'dead') then
+				info.ticker:Cancel() -- cant continue
+
+				funcs[info.func] = nil
+				tickers[info.func] = nil
+			elseif not InCombatLockdown() then -- resume is a protected function, wait until after combat
+				E:Coroutine_Continue(info)
+			end
+		end
+
+		return loop, process
 	end
 
 	-- these two functions are meant to be called
-	function E:CoroutineUpdate(func, obj, data, limit)
-		local exists = funcs[func]
+	function E:CoroutineUpdate(func, obj, data, limit, delay)
+		local exists = funcs[func] -- exists is the info
 		if exists then
 			exists.cancel = true
-			E:Coroutine_Continue(func, exists)
+
+			-- dont try to continue one that yields before it reaches here
+			if not InCombatLockdown() and (co_status(exists.routine) ~= 'dead') then
+				E:Coroutine_Continue(exists)
+			end
 		end
 
-		local info = { count = 0, limit = limit or 100, data = data, obj = obj, func = func }
-		local loop = E:Coroutine_Generate(info)
+		local info = { count = 0, limit = (limit or 100) - 1, data = data, obj = obj, func = func }
+		local loop, process = E:Coroutine_Generate(info)
 		info.routine = co_create(loop)
 		funcs[func] = info
 
-		if not ticker then
-			ticker = C_Timer_NewTicker(E.ClassicHC and 0.1 or 0.05, E.Coroutine_Process)
+		if not tickers[func] then
+			local ticker = C_Timer_NewTicker(delay or 0.1, process)
+			info.ticker = ticker
 		end
 	end
 
@@ -1891,7 +1895,7 @@ do
 				objs[object] = nil
 			end
 
-			if not next(funcs) then
+			if not next(objs) then
 				eventFrame:UnregisterEvent(event)
 				eventTable[event] = nil
 			end
@@ -1956,7 +1960,7 @@ function E:CallLoadedModule(obj, silent, object, index)
 end
 
 function E:RegisterInitialModule(name, func)
-	E.RegisteredInitialModules[#E.RegisteredInitialModules + 1] = { name = name, func = func }
+	tinsert(E.RegisteredInitialModules, { name = name, func = func })
 end
 
 do
@@ -1968,7 +1972,7 @@ do
 
 			E:CallLoadedModule(loaded)
 		else
-			E.RegisteredModules[#E.RegisteredModules + 1] = { name = name, func = func }
+			tinsert(E.RegisteredModules, { name = name, func = func })
 		end
 	end
 end
@@ -2056,11 +2060,11 @@ function E:Initialize()
 			E:Tutorials()
 		end
 
-		if E.db.general.tagUpdateRate and (E.db.general.tagUpdateRate ~= P.general.tagUpdateRate) then
+		if E.db.general.tagUpdateRate then
 			E:TagUpdateRate(E.db.general.tagUpdateRate)
 		end
 
-		if E.db.general.smoothingAmount and (E.db.general.smoothingAmount ~= P.general.smoothingAmount) then
+		if E.db.general.smoothingAmount then
 			E:SetSmoothingAmount(E.db.general.smoothingAmount)
 		end
 

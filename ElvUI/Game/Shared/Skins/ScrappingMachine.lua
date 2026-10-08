@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local unpack = unpack
 
-local data = S:AddCallbackForAddon('Blizzard_ScrappingMachineUI')
-data.toggle = 'scrapping'
+S:AddCallbackForAddon('Blizzard_ScrappingMachineUI', nil, nil, nil, nil, nil, 'scrapping')
 
 function S:Blizzard_ScrappingMachineUI()
 	local MachineFrame = _G.ScrappingMachineFrame

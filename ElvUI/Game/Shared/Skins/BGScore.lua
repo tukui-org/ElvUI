@@ -8,12 +8,15 @@ local format, next, strmatch = format, next, strmatch
 local GetBattlefieldScore = GetBattlefieldScore
 local IsActiveBattlefieldArena = IsActiveBattlefieldArena
 local FauxScrollFrame_GetOffset = FauxScrollFrame_GetOffset
+local NORMAL_FONT_COLOR = NORMAL_FONT_COLOR
+
+S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore', nil, nil, nil, nil, 'bgscore')
+
+local function UpdateBackdropWidth()
+	_G.WorldStateScoreFrame.backdrop:Point('BOTTOMRIGHT', _G.WorldStateScoreScrollFrame:IsShown() and -78 or -102, 25)
+end
 
 local myName = format('> %s <', E.myname)
-
-local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'SkinWorldStateScore')
-data.toggle = 'bgscore'
-
 local function UpdateScore()
 	local inArena = IsActiveBattlefieldArena()
 	local offset = FauxScrollFrame_GetOffset(_G.WorldStateScoreScrollFrame)
@@ -38,11 +41,15 @@ local function UpdateScore()
 				name = format('%s|cffffffff - |r%s%s|r', name, color, realm)
 			end
 
-			local classTextColor = E:ClassColor(classToken)
+			local classTextColor = E:ClassColor(classToken) or NORMAL_FONT_COLOR
 			local nameText = _G['WorldStateScoreButton'..i..'NameText']
 			nameText:SetText(name)
 			nameText:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 		end
+	end
+
+	if not E.Classic then
+		UpdateBackdropWidth()
 	end
 end
 
@@ -52,11 +59,19 @@ function S:SkinWorldStateScore()
 
 	S:HandleFrame(WorldStateScoreFrame, true, nil, 0, -12, -102, 25)
 
-	_G.WorldStateScoreScrollFrame:StripTextures()
+	local scrollFrame = _G.WorldStateScoreScrollFrame
+	scrollFrame:StripTextures()
 
 	local scrollBar = _G.WorldStateScoreScrollFrameScrollBar
 	S:HandleScrollBar(scrollBar)
-	scrollBar:Point('RIGHT', WorldStateScoreFrame, 'RIGHT', -44, 38)
+
+	if not E.Classic then -- Player rows grow all the way under the scroll bar (except in Classic)
+		scrollBar:Point('TOPLEFT', scrollFrame, 'TOPRIGHT', 47, -16)
+		scrollBar:Point('BOTTOMLEFT', scrollFrame, 'BOTTOMRIGHT', 47, 16)
+
+		-- Adjust the backdrop while the scroll bar is visible
+		_G.WorldStateScoreFrameCloseButton:Point('TOPRIGHT', WorldStateScoreFrame.backdrop, 'TOPRIGHT', -9, 0)
+	end
 
 	for _, button in next, {
 		_G.WorldStateScoreFrameKB,

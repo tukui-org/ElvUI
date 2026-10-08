@@ -70,7 +70,7 @@ local function SetTip(button)
 end
 
 local function SetItemTip(button, event)
-	if not button.rollID or (event == 'MODIFIER_STATE_CHANGED' and not button:IsMouseOver()) then return end
+	if not button.rollID or (event == 'MODIFIER_STATE_CHANGED' and not button:IsMouseMotionFocus()) then return end
 
 	GameTooltip:SetOwner(button, 'ANCHOR_TOPLEFT')
 	GameTooltip:SetLootRollItem(button.rollID)
@@ -476,7 +476,7 @@ function M:UpdateLootRollFrames()
 		bar.status.backdrop.Center:SetTexture(db.statusBarBGTexture and E.media.normTex or E.media.blankTex)
 
 		bar.button:ClearAllPoints()
-		bar.button:Point('RIGHT', bar, 'LEFT', E.PixelMode and -1 or -2, 0)
+		bar.button:Point('RIGHT', bar, 'LEFT', -E.Border, 0)
 		bar.button:Size(db.height)
 
 		bar.button.questIcon:ClearAllPoints()

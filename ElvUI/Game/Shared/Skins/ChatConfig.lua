@@ -7,8 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local FCF_GetCurrentChatFrame = FCF_GetCurrentChatFrame
 
-local data = S:AddCallbackForAddon('Blizzard_ChatFrame')
-data.toggle = 'blizzardOptions'
+S:AddCallbackForAddon('Blizzard_ChatFrame', nil, nil, nil, nil, nil, 'blizzardOptions')
 
 local function UpdateCheckboxes(frame)
 	if not FCF_GetCurrentChatFrame() then return end
@@ -21,12 +20,9 @@ local function UpdateCheckboxes(frame)
 			checkbox:StripTextures()
 			S:HandleCheckBox(_G[checkboxName..'Check'])
 
-			if not E.Modern then
-				-- only the chat and channel list templates have one
-				local colorClasses = _G[checkboxName..'ColorClasses']
-				if colorClasses then
-					S:HandleCheckBox(colorClasses)
-				end
+			local colorClasses = not E.Modern and _G[checkboxName..'ColorClasses']
+			if colorClasses then -- only the chat and channel list templates have one
+				S:HandleCheckBox(colorClasses)
 			end
 
 			checkbox.IsSkinned = true

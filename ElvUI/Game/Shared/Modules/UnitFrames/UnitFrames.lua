@@ -39,6 +39,7 @@ local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
+local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local CURVE_RED = CreateColor(1, 0, 0)
 local CURVE_YELLOW = CreateColor(1, 1, 0)
 local CURVE_HEALTH = {}
@@ -69,7 +70,7 @@ UF.headerFunctions = {}
 UF.classMaxResourceBar = { -- also used by Nameplates
 	DEATHKNIGHT = 6,
 	DEMONHUNTER = 6,
-	SHAMAN = E.Modern and 10 or nil,
+	SHAMAN = E.Retail and 10 or nil,
 	PALADIN = 5,
 	WARLOCK = 5,
 	EVOKER = 6,
@@ -152,19 +153,23 @@ UF.SortAuraFuncs = {
 
 UF.headerGroupBy = {
 	CLASS = function(header)
-		local groupingOrder = header.db and strjoin(',', header.db.CLASS1, header.db.CLASS2, header.db.CLASS3, header.db.CLASS4, header.db.CLASS5, header.db.CLASS6, header.db.CLASS7, header.db.CLASS8, header.db.CLASS9)
-		if E.Retail and groupingOrder then -- forever only has the original nine classes
-			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12, header.db.CLASS13)
+		local db = header.db
+		local groupingOrder = db and db.CLASS1
+		if groupingOrder then -- one slot per class the client has
+			for i = 2, #CLASS_SORT_ORDER do
+				groupingOrder = groupingOrder..','..db['CLASS'..i]
+			end
 		end
 
-		local sortMethod = header.db and header.db.sortMethod
+		local sortMethod = db and db.sortMethod
 		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,EVOKER,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'CLASS')
 	end,
 	ROLE = function(header)
-		local groupingOrder = header.db and strjoin(',', header.db.ROLE1, header.db.ROLE2, header.db.ROLE3, 'NONE')
-		local sortMethod = header.db and header.db.sortMethod
+		local db = header.db
+		local groupingOrder = db and strjoin(',', db.ROLE1, db.ROLE2, db.ROLE3, 'NONE')
+		local sortMethod = db and db.sortMethod
 		header:SetAttribute('groupingOrder', groupingOrder or 'TANK,HEALER,DAMAGER,NONE')
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
@@ -175,7 +180,8 @@ UF.headerGroupBy = {
 		header:SetAttribute('groupBy', nil)
 	end,
 	GROUP = function(header)
-		local sortMethod = header.db and header.db.sortMethod
+		local db = header.db
+		local sortMethod = db and db.sortMethod
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
 		header:SetAttribute('sortMethod', sortMethod or 'INDEX')
 		header:SetAttribute('groupBy', 'GROUP')
@@ -1178,7 +1184,7 @@ end
 function UF:ZONE_CHANGED_NEW_AREA(event)
 	local previous = UF.maxAllowedGroups
 
-	if E.Modern and UF.db.maxAllowedGroups then
+	if E.Retail and UF.db.maxAllowedGroups then -- forever has 40 player raids
 		local _, instanceType, difficultyID = GetInstanceInfo()
 		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
 	else
@@ -1634,70 +1640,97 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-do
-	local function EventlessUpdate(frame, elapsed)
-		local unit = frame.__eventless and frame.__unit
-		local guid = UnitGUID(unit)
-		if not guid then return end
+function UF:Eventless_UpdateAll(frame)
+	frame.elapsedThrottle = frame.eventlessThrottle
+	frame.elapsedSecret = 0
+	frame.elapsedResource = 0
+	frame.elapsedPrediction = 0
+	frame.elapsedAura = 0
 
-		if E:IsSecretValue(guid) then
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateSecrets then
-				frame:UpdateAllElements('OnUpdate')
+	frame:UpdateAllElements('OnUpdate')
+end
 
-				frame.elapsed = 0
-			else
-				frame.elapsed = frequency + elapsed
-			end
+function UF:Eventless_OnUpdate(elapsed) -- self = frame
+	local unit = self.__eventless and self.__unit
+	if not unit then return end
+
+	local waitThrottle = (self.elapsedThrottle or self.eventlessThrottle) - elapsed
+	if waitThrottle > 0 then
+		self.elapsedThrottle = waitThrottle
+		return
+	end
+
+	self.elapsedThrottle = self.eventlessThrottle
+
+	if E:IsSecretUnit(unit) then
+		local waitSecret = (self.elapsedSecret or 0) + elapsed
+		if waitSecret >= self.eventlessSecret then
+			UF:Eventless_UpdateAll(self)
+
+			self.elapsedSecret = 0
 		else
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateElements then
-				if frame.lastGUID ~= guid then
-					frame:UpdateAllElements('OnUpdate')
-					frame.lastGUID = guid
-				else
-					if frame:IsElementEnabled('Health') then frame.Health:ForceUpdate() end
-					if frame:IsElementEnabled('Power') then frame.Power:ForceUpdate() end
-				end
+			self.elapsedSecret = waitSecret
+		end
 
-				frame.elapsed = 0
-			else
-				frame.elapsed = frequency + elapsed
+		return
+	elseif not UnitExists(unit) then
+		return -- bail out
+	end
+
+	local waitResource = (self.elapsedResource or 0) + elapsed
+	if waitResource >= self.eventlessResource then
+		local guid = UnitGUID(unit)
+		if self.lastGUID ~= guid then
+			self.lastGUID = guid
+
+			UF:Eventless_UpdateAll(self)
+
+			return -- UAE happened, no need to continue
+		end
+
+		if self:IsElementEnabled('Health') then self.Health:ForceUpdate() end
+		if self:IsElementEnabled('Power') then self.Power:ForceUpdate() end
+
+		self.elapsedResource = 0
+	else
+		self.elapsedResource = waitResource
+	end
+
+	local waitPrediction = (self.elapsedPrediction or 0) + elapsed
+	if waitPrediction >= self.eventlessPrediction then
+		if self:IsElementEnabled('HealthPrediction') then self.HealthPrediction:ForceUpdate() end
+		if self:IsElementEnabled('PowerPrediction') then self.PowerPrediction:ForceUpdate() end
+		if self:IsElementEnabled('RaidTargetIndicator') then self.RaidTargetIndicator:ForceUpdate() end
+
+		self.elapsedPrediction = 0
+	else
+		self.elapsedPrediction = waitPrediction
+	end
+
+	if self.eventlessAura then -- not on Modern
+		local waitAura = (self.elapsedAura or 0) + elapsed
+		if waitAura >= self.eventlessAura then
+			local element = self:IsElementEnabled('Auras') and (self.Auras or self.Buffs or self.Debuffs)
+			if element then -- one ForceUpdate updates all three containers
+				element:ForceUpdate()
 			end
 
-			local prediction = frame.elapsedPrediction or 0
-			if prediction > frame.onUpdatePrediction then
-				if frame:IsElementEnabled('HealthPrediction') then frame.HealthPrediction:ForceUpdate() end
-				if frame:IsElementEnabled('PowerPrediction') then frame.PowerPrediction:ForceUpdate() end
-				if frame:IsElementEnabled('RaidTargetIndicator') then frame.RaidTargetIndicator:ForceUpdate() end
-
-				frame.elapsedPrediction = 0
-			else
-				frame.elapsedPrediction = prediction + elapsed
-			end
-
-			local auras = frame.elapsedAuras or 0
-			if auras > frame.onUpdateAuras and frame:IsElementEnabled('Auras') then
-				if frame.Auras then frame.Auras:ForceUpdate() end
-				if frame.Buffs then frame.Buffs:ForceUpdate() end
-				if frame.Debuffs then frame.Debuffs:ForceUpdate() end
-
-				frame.elapsedAuras = 0
-			else
-				frame.elapsedAuras = auras + elapsed
-			end
+			self.elapsedAura = 0
+		else
+			self.elapsedAura = waitAura
 		end
 	end
+end
 
-	function ElvUF:HandleEventlessUnit(frame)
-		if not frame.onUpdateSecrets then frame.onUpdateSecrets = 0.5 end -- same as oUF
-		if not frame.onUpdateElements then frame.onUpdateElements = 0.2 end
-		if not frame.onUpdatePrediction then frame.onUpdatePrediction = 0.4 end
-		if not frame.onUpdateAuras then frame.onUpdateAuras = 0.6 end
+function ElvUF:HandleEventlessUnit(frame)
+	if not frame.eventlessThrottle then frame.eventlessThrottle = 0.1 end
+	if not frame.eventlessResource then frame.eventlessResource = 0.2 end
+	if not frame.eventlessPrediction then frame.eventlessPrediction = 0.4 end
+	if not frame.eventlessSecret then frame.eventlessSecret = 0.5 end
+	if not E.Modern and not frame.eventlessAura then frame.eventlessAura = 0.6 end
 
-		frame.__eventless = true
-		frame:SetScript('OnUpdate', EventlessUpdate)
-	end
+	frame.__eventless = true
+	frame:SetScript('OnUpdate', UF.Eventless_OnUpdate)
 end
 
 do
@@ -1708,6 +1741,10 @@ do
 	local AllowedFuncs = {
 		[_G.DefaultCompactUnitFrameSetup] = true
 	}
+
+	local function FrameShow(frame)
+		frame:Hide()
+	end
 
 	local function FrameShown(frame, shown)
 		if shown then
@@ -1783,7 +1820,7 @@ do
 		if not SetFrameHidden[frame] then
 			SetFrameHidden[frame] = true
 
-			hooksecurefunc(frame, 'Show', frame.Hide)
+			hooksecurefunc(frame, 'Show', FrameShow)
 			hooksecurefunc(frame, 'SetShown', FrameShown)
 		end
 	end

@@ -158,16 +158,29 @@ function DT:FetchFrame(givenName)
 	return frame
 end
 
+function DT:CleanPanel(dt, restore)
+	dt:UnregisterAllEvents()
+
+	dt:SetScript('OnUpdate', nil)
+	dt:SetScript('OnEvent', nil)
+	dt:SetScript('OnClick', nil)
+
+	if not restore then
+		dt:SetScript('OnEnter', nil)
+		dt:SetScript('OnLeave', nil)
+	end
+
+	if dt.objectEvent and dt.objectEventFunc then
+		E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
+		dt.objectEvent, dt.objectEventFunc = nil, nil
+	end
+end
+
 function DT:EmptyPanel(panel)
 	panel:Hide()
 
 	for _, dt in ipairs(panel.dataPanels) do
-		dt:UnregisterAllEvents()
-		dt:SetScript('OnUpdate', nil)
-		dt:SetScript('OnEvent', nil)
-		dt:SetScript('OnEnter', nil)
-		dt:SetScript('OnLeave', nil)
-		dt:SetScript('OnClick', nil)
+		DT:CleanPanel(dt)
 	end
 
 	UnregisterStateDriver(panel, 'visibility')
@@ -605,17 +618,16 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 	for i, dt in ipairs(panel.dataPanels) do
 		local assigned = DT.AssignedDatatexts[dt]
 
+		DT:CleanPanel(dt, true)
+		dt:SetScript('OnEnter', DT.OnEnter)
+		dt:SetScript('OnLeave', DT.OnLeave)
+
 		dt:SetShown(i <= numPoints)
 		dt:Size(width, height)
 		dt:ClearAllPoints()
 		dt:Point(DT:GetDataPanelPoint(panel, i, numPoints, vertical))
-		dt:UnregisterAllEvents()
 		dt:EnableMouseWheel(false)
-		dt:SetScript('OnUpdate', nil)
-		dt:SetScript('OnEvent', nil)
-		dt:SetScript('OnClick', nil)
-		dt:SetScript('OnEnter', DT.OnEnter)
-		dt:SetScript('OnLeave', DT.OnLeave)
+
 		wipe(dt.MouseEnters)
 		wipe(dt.MouseLeaves)
 
@@ -636,11 +648,6 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 
 		dt.icon:Size(iconSize)
 		dt.icon:SetTexture(E.ClearTexture)
-
-		if dt.objectEvent and dt.objectEventFunc then
-			E:UnregisterAllEventsForObject(dt.objectEvent, dt.objectEventFunc)
-			dt.objectEvent, dt.objectEventFunc = nil, nil
-		end
 
 		if assigned and assigned.isLDB and assigned.eventFunc then
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')
@@ -942,20 +949,23 @@ function DT:BuildTables()
 	local db = ElvDB
 	if not db then db = {} ElvDB = db end
 
+	local realm = E.myrealm
 	if not db.gold then db.gold = {} end
-	db.gold[E.myrealm] = db.gold[E.myrealm] or {}
+	db.gold[realm] = db.gold[realm] or {}
 
+	local name = E.mynameFull
 	if not db.class then db.class = {} end
-	db.class[E.myrealm] = db.class[E.myrealm] or {}
-	db.class[E.myrealm][E.myname] = E.myclass
+	db.class[realm] = db.class[realm] or {}
+	db.class[realm][name] = E.myclass
 
 	if not db.faction then db.faction = {} end
-	db.faction[E.myrealm] = db.faction[E.myrealm] or {}
-	db.faction[E.myrealm][E.myname] = E.myfaction
+	db.faction[realm] = db.faction[realm] or {}
+	db.faction[realm][name] = E.myfaction
 
+	local server = E.serverID
 	if not db.serverID then db.serverID = {} end
-	db.serverID[E.serverID] = db.serverID[E.serverID] or {}
-	db.serverID[E.serverID][E.myrealm] = true
+	db.serverID[server] = db.serverID[server] or {}
+	db.serverID[server][realm] = true
 end
 
 function DT:CloseMenus()

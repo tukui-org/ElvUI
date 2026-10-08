@@ -119,7 +119,7 @@ function NP:Update_Health(nameplate)
 		nameplate.Health.colorClassificationInInstance = db.health and db.health.useClassificationColorInInstance
 		nameplate.Health.colorClass = db.health and db.health.useClassColor
 
-		nameplate.Health:SetFrameLevel(5)
+		nameplate.Health:SetFrameLevel(nameplate.RaisedElement.HealthLevel)
 		nameplate.Health:Point('CENTER')
 		nameplate.Health:Size(db.health.width, db.health.height)
 
@@ -150,7 +150,7 @@ function NP:Construct_HealthPrediction(nameplate)
 
 	local colors = NP.db.colors.healPrediction
 	local healthTexture = nameplate.Health:GetStatusBarTexture()
-	local healthFrameLevel = nameplate.Health:GetFrameLevel()
+	local healthFrameLevel = nameplate.RaisedElement.HealthLevel
 	HealthPrediction.healingPlayer:Point('LEFT', healthTexture, 'RIGHT')
 	HealthPrediction.healingPlayer:SetFrameLevel(healthFrameLevel + 2)
 	NP:SetStatusBarColor(HealthPrediction.healingPlayer, colors.personal.r, colors.personal.g, colors.personal.b, colors.personal.a)

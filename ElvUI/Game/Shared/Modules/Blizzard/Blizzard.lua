@@ -194,11 +194,8 @@ function BL:Initialize()
 		BL:SkinAltPowerBar()
 	end
 
-	if E.Retail then
-		BL:DisableHelpTip()
-	end
-
 	if E.Modern then
+		BL:DisableHelpTip()
 		BL:DisableTutorials()
 		BL:HandleTalkingHead()
 		BL:HandleAddonCompartment()

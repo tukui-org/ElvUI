@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_AzeriteUI')
-data.toggle = 'azerite'
+S:AddCallbackForAddon('Blizzard_AzeriteUI', nil, nil, nil, nil, nil, 'azerite')
 
 function S:Blizzard_AzeriteUI()
 	_G.AzeriteEmpoweredItemUIPortrait:Hide()

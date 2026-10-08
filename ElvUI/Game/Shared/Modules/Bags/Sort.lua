@@ -691,7 +691,7 @@ function B:BuildBlacklist(...)
 				entry = strmatch(entry, '%[(.*)%]')
 			end
 
-			blackListQueries[#blackListQueries+1] = entry
+			tinsert(blackListQueries, entry)
 		end
 	end
 end

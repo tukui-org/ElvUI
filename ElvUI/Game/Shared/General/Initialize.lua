@@ -107,8 +107,8 @@ do -- Expansions
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
-	E.Forever = E.wowtoc >= 16000 and E.wowtoc < 20000 -- ToDo: classic_beta
-	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE and not E.Forever
+	E.Forever = WOW_PROJECT_ID == WOW_PROJECT_CAMELOT
+	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 
 	E.Modern = E.Retail or E.Forever
 
@@ -117,6 +117,11 @@ do -- Expansions
 	E.ClassicSOD = season == 2 -- Season of Discovery
 	E.ClassicAnniv = season == 11 -- Anniversary
 	E.ClassicAnnivHC = season == 12 -- Anniversary Hardcore
+
+	local rules = Enum.GameRule
+	E.IsGameRuleHardcore = rules.HardcoreRuleset and C_GameRules.IsGameRuleActive(rules.HardcoreRuleset)
+	E.IsGameRulePVP = rules.PvPRuleset and C_GameRules.IsGameRuleActive(rules.PvPRuleset)
+	E.IsGameRuleRP = rules.RPRuleset and C_GameRules.IsGameRuleActive(rules.RPRuleset)
 
 	local IsHardcoreActive = C_GameRules.IsHardcoreActive
 	E.IsHardcoreActive = IsHardcoreActive and IsHardcoreActive()
@@ -511,8 +516,9 @@ do	-- this is so we can join nil values too
 	function E:StringJoin(sep, ...)
 		wipe(text)
 
-		for _, value in next, { ... } do
-			text[#text+1] = tostring(value)
+		for _, txts in next, { ... } do
+			local value = tostring(txts)
+			tinsert(text, value)
 		end
 
 		return tconcat(text, sep)

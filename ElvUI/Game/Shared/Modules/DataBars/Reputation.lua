@@ -82,8 +82,6 @@ function DB:ReputationBar_Update(event, messageType)
 		reaction, currentReactionThreshold, nextReactionThreshold = 10, 0, majorFactionData.renownLevelThreshold
 		currentStanding = C_MajorFactions_HasMaximumRenown(factionID) and majorFactionData.renownLevelThreshold or majorFactionData.renownReputationEarned or 0
 		standing = E:RGBToHex(renownColor.r, renownColor.g, renownColor.b, nil, format(RENOWN_LEVEL_LABEL..'|r', majorFactionData.renownLevel))
-
-		DB:ReputationBar_QuestRep(factionID)
 	end
 
 	if not standing then
@@ -190,6 +188,8 @@ function DB:ReputationBar_OnEnter()
 			nextReactionThreshold = majorFactionData.renownLevelThreshold
 			GameTooltip:AddDoubleLine(format(RENOWN_LEVEL_LABEL, majorFactionData.renownLevel), format('%d / %d (%d%%)', GetValues(currentStanding, 0, nextReactionThreshold)), BLUE_FONT_COLOR.r, BLUE_FONT_COLOR.g, BLUE_FONT_COLOR.b, 1, 1, 1)
 
+			DB:ReputationBar_QuestRep(factionID)
+
 			local current, _, percent = GetValues(QuestRep, 0, nextReactionThreshold)
 			GameTooltip:AddDoubleLine('Reputation from Quests', format('%d (%d%%)', current, percent), nil, nil, nil, 1, 1, 1)
 		elseif (isParagon or (reaction ~= _G.MAX_REPUTATION_REACTION)) and nextReactionThreshold ~= huge then
@@ -214,12 +214,14 @@ function DB:ReputationBar_Toggle()
 		E:EnableMover(bar.holder.mover.name)
 
 		DB:RegisterEvent('UPDATE_FACTION', 'ReputationBar_Update')
-		DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
 		DB:RegisterEvent('QUEST_FINISHED', 'ReputationBar_Update')
 
 		if E.Modern then
 			DB:RegisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
 			DB:RegisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
+			DB:RegisterEvent('FACTION_STANDING_CHANGED', 'ReputationBar_Update')
+		else
+			DB:RegisterEvent('COMBAT_TEXT_UPDATE', 'ReputationBar_Update')
 		end
 
 		DB:ReputationBar_Update()
@@ -227,12 +229,14 @@ function DB:ReputationBar_Toggle()
 		E:DisableMover(bar.holder.mover.name)
 
 		DB:UnregisterEvent('UPDATE_FACTION')
-		DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
 		DB:UnregisterEvent('QUEST_FINISHED')
 
 		if E.Modern then
 			DB:UnregisterEvent('MAJOR_FACTION_RENOWN_LEVEL_CHANGED', 'ReputationBar_Update')
 			DB:UnregisterEvent('MAJOR_FACTION_UNLOCKED', 'ReputationBar_Update')
+			DB:UnregisterEvent('FACTION_STANDING_CHANGED')
+		else
+			DB:UnregisterEvent('COMBAT_TEXT_UPDATE')
 		end
 	end
 end

@@ -7,8 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local C_ItemSocketInfo_GetSocketTypes = C_ItemSocketInfo.GetSocketTypes
 
-local data = S:AddCallbackForAddon('Blizzard_ItemSocketingUI')
-data.toggle = 'socket'
+S:AddCallbackForAddon('Blizzard_ItemSocketingUI', nil, nil, nil, nil, nil, 'socket')
 
 local function UpdateItemSocketing()
 	for i, socket in next, _G.ItemSocketingFrame.SocketingContainer.SocketFrames do

@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_QuestTimer')
-data.toggle = 'questTimers'
+S:AddCallbackForAddon('Blizzard_QuestTimer', nil, nil, nil, nil, nil, 'questTimers')
 
 function S:Blizzard_QuestTimer()
 	local QuestTimerFrame = _G.QuestTimerFrame

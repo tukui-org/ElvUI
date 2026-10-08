@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'TutorialFrame')
-data.toggle = 'tutorials'
+S:AddCallbackForAddon('Blizzard_FrameXML', 'TutorialFrame', nil, nil, nil, nil, 'tutorials')
 
 function S:TutorialFrame()
 	if E.Modern then

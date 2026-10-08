@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_Transmog')
-data.toggle = 'transmogrify'
+S:AddCallbackForAddon('Blizzard_Transmog', nil, nil, nil, nil, nil, 'transmogrify')
 
 local function SkinSituationsDropdowns(frame)
 	for situation in frame.SituationFramePool:EnumerateActive() do

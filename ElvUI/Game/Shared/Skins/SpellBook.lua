@@ -16,11 +16,9 @@ local barColor = { 0, .86, 0 }
 
 -- the Retail spellbook is skinned in PlayerSpells.lua
 if E.Retail then
-	local data = S:AddCallbackForAddon('Blizzard_ProfessionsBook')
-	data.toggle = 'spellbook'
+	S:AddCallbackForAddon('Blizzard_ProfessionsBook', nil, nil, nil, nil, nil, 'spellbook')
 else
-	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SpellBookFrame')
-	data.toggle = 'spellbook'
+	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SpellBookFrame', nil, nil, nil, nil, 'spellbook')
 end
 
 local function ClearBackdrop(backdrop)
@@ -141,10 +139,10 @@ local function SkinProfessions()
 		S:HandleButton(_G['PrimaryProfession'..i], true, nil, true)
 	end
 
-	hooksecurefunc('FormatProfession', FormatProfessionHook) -- ToDo: Forever
+	hooksecurefunc('FormatProfession', FormatProfessionHook)
 
 	if E.Retail then
-		hooksecurefunc('ProfessionsBookFrame_Update', ProfessionsBookFrameUpdate) -- ToDo: Forever
+		hooksecurefunc('ProfessionsBookFrame_Update', ProfessionsBookFrameUpdate)
 	else
 		hooksecurefunc('UpdateProfessionButton', ProfessionButtonUpdate)
 	end

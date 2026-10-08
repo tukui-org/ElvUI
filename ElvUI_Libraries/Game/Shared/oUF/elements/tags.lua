@@ -123,12 +123,13 @@ local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitLevel = UnitLevel
+local UnitNameUnmodified = UnitNameUnmodified
 local UnitPowerMax = UnitPowerMax
 local UnitPowerMissing = UnitPowerMissing
 local UnitPowerPercent = UnitPowerPercent
 local UnitPowerType = UnitPowerType
-local UnitSex = UnitSex
 local UnitRace = UnitRace
+local UnitSex = UnitSex
 local UnitThreatSituation = UnitThreatSituation
 
 -- GLOBALS: Hex, _TAGS, _COLORS
@@ -217,7 +218,7 @@ tagFunctions.arenaspec = function(u)
 	local id = strmatch(u, 'arena(%d)$')
 	if(id) then
 		local specID = GetArenaOpponentSpec(tonumber(id))
-		if(specID and specID > 0) then
+		if(specID and oUF:NotSecretValue(specID) and specID > 0) then
 			local _, specName = GetSpecializationInfoByID(specID)
 			return specName
 		end
@@ -353,7 +354,16 @@ tagFunctions.missingpp = function(u)
 end
 
 tagFunctions.name = function(u, r)
-	return UnitName(r or u)
+	if oUF.isForever then
+		local firstName, lastName = UnitNameUnmodified(r or u)
+		if lastName then
+			return format('%s %s', firstName, lastName)
+		else
+			return firstName
+		end
+	else
+		return UnitName(r or u)
+	end
 end
 
 tagFunctions.offline = function(u)
@@ -430,7 +440,7 @@ tagFunctions.raidcolor = function(u)
 	else
 		local id = strmatch(u, 'arena(%d)$')
 		local specID = id and GetArenaOpponentSpec(tonumber(id))
-		if specID and specID > 0 then
+		if specID and oUF:NotSecretValue(specID) and specID > 0 then
 			local _, _, _, _, _, classSpec = GetSpecializationInfoByID(specID)
 			if oUF:NotSecretValue(classSpec) and classSpec then
 				return Hex(_COLORS.class[classSpec])
@@ -643,7 +653,7 @@ local function UpdateTimer(frame, elapsed)
 	local total = frame.total
 	if total >= frame.timer then
 		for fs, parent in next, frame.strings do -- isForced prevents spam in ElvUI
-			if not parent.isForced and parent:IsShown() and oUF:UnitExists(parent.__unit) then
+			if not parent.isForced and parent:IsVisible() and oUF:UnitExists(parent.__unit) then
 				fs:UpdateTag()
 			end
 		end
@@ -770,7 +780,7 @@ local eventHandlers = {}
 local eventAuraCache = {}
 local eventExtraUnits = {}
 local eventWaiters = {}
-local eventTimerThreshold = 0.1
+local eventTimerThreshold = 0.2
 local function verifyAura(frame, event, unit, auraInstanceID, aura)
 	if aura and tagSpells[aura.spellId] then
 		eventAuraCache[auraInstanceID] = aura
@@ -782,7 +792,7 @@ local function verifyAura(frame, event, unit, auraInstanceID, aura)
 end
 
 local function ShouldUpdateTag(frame, event, unit)
-	if not frame:IsShown() or frame.isForced then return end -- isForced prevents spam in ElvUI
+	if not frame:IsVisible() or frame.isForced then return end -- isForced prevents spam in ElvUI
 
 	if unitlessEvents[event] then
 		return true

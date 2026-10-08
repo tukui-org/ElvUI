@@ -23,8 +23,7 @@ local LOOT, ITEMS = LOOT, ITEMS
 local fullFillWidth = 234 -- picked by Blizzard in LootHistory.lua
 local fullDropWidth = fullFillWidth + 30 -- some padding to let it match (via the skinning)
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame')
-data.toggle = 'loot'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'LootFrame', nil, nil, nil, nil, 'loot')
 
 local function LootHistoryElements(button) -- headers and padding rows share the scroll box
 	local item = button.Item
@@ -145,6 +144,7 @@ local function SpecIconHide(bonusSpecIcon)
 		local frame = _G.BonusRollFrame
 		frame.CurrentCountFrame:ClearAllPoints()
 		frame.CurrentCountFrame:Point('BOTTOMRIGHT', frame, -2, 1)
+
 		bonusSpecIcon.backdrop:Hide()
 	end
 end
@@ -153,7 +153,8 @@ local function SpecIconShow(bonusSpecIcon)
 	if not bonusSpecIcon.backdrop:IsShown() and bonusSpecIcon:GetTexture() ~= nil then
 		local frame = _G.BonusRollFrame
 		frame.CurrentCountFrame:ClearAllPoints()
-		frame.CurrentCountFrame:Point('RIGHT', frame.SpecIcon.backdrop, 'LEFT', -2, -2)
+		frame.CurrentCountFrame:Point('RIGHT', bonusSpecIcon.backdrop, 'LEFT', -2, -2)
+
 		bonusSpecIcon.backdrop:Show()
 	end
 end
@@ -413,6 +414,6 @@ function S:LootFrame()
 	BonusSpecIcon:SetTexCoords()
 	BonusSpecIcon:SetInside()
 
-	hooksecurefunc(BonusSpecIcon, 'Hide', SpecIconHide)
-	hooksecurefunc(BonusSpecIcon, 'Show', SpecIconShow)
+	BonusSpecIcon:HookScript('OnShow', SpecIconShow)
+	BonusSpecIcon:HookScript('OnHide', SpecIconHide)
 end

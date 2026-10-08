@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_EditMode')
-data.toggle = 'editor'
+S:AddCallbackForAddon('Blizzard_EditMode', nil, nil, nil, nil, nil, 'editor')
 
 local function HandleCheckBoxMini(checkbox, region)
 	if region:GetTexture() == 130751 then
@@ -42,11 +41,12 @@ local function HandleDialogs()
 			dropdown.IsSkinned = true
 		end
 
-		local slider = frame.Slider
-		if slider and not slider.backdrop then
-			S:HandleStepSlider(slider)
-			S:HandleNextPrevButton(slider.Back)
-			S:HandleNextPrevButton(slider.Forward)
+		local mainSlider = frame.Slider
+		local innerSlider = mainSlider and mainSlider.Slider
+		if innerSlider and not innerSlider.backdrop then
+			S:HandleStepSlider(mainSlider) -- puts the backdrop on the inner Slider
+			S:HandleNextPrevButton(mainSlider.Back)
+			S:HandleNextPrevButton(mainSlider.Forward)
 		end
 
 		local checkbox = frame.Button

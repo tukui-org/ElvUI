@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_WarfrontsPartyPoseUI')
-data.toggle = 'islandsPartyPose'
+S:AddCallbackForAddon('Blizzard_WarfrontsPartyPoseUI', nil, nil, nil, nil, nil, 'islandsPartyPose')
 
 function S:Blizzard_WarfrontsPartyPoseUI()
 	local WarfrontsPartyPoseFrame = _G.WarfrontsPartyPoseFrame

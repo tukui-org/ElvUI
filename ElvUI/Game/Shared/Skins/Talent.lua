@@ -12,12 +12,10 @@ local C_SpecializationInfo_GetSpecializationInfo = C_SpecializationInfo.GetSpeci
 
 local MAX_NUM_TALENTS = MAX_NUM_TALENTS
 
-local data = S:AddCallbackForAddon('Blizzard_TalentUI')
-data.toggle = 'talent'
+S:AddCallbackForAddon('Blizzard_TalentUI', nil, nil, nil, nil, nil, 'talent')
 
 if E.Mists or E.Wrath then
-	local data = S:AddCallbackForAddon('Blizzard_GlyphUI')
-	data.toggle = 'talent'
+	S:AddCallbackForAddon('Blizzard_GlyphUI', nil, nil, nil, nil, nil, 'talent')
 end
 
 local function ClearBackdrop(backdrop)
@@ -262,7 +260,7 @@ local function SkinMistsTalentFrame()
 		transition:SetLooping(true)
 		row.transition = transition
 
-		local colorAnimation = transition:CreateAnimation('Color')
+		local colorAnimation = transition:CreateAnimation('color')
 		colorAnimation:SetDuration(0.7)
 		colorAnimation:SetColorType('border')
 		colorAnimation:SetChange(unpack(E.media.rgbvaluecolor))
@@ -402,6 +400,10 @@ local function SkinClassicTalentFrame()
 	resetButton:Point('BOTTOMRIGHT', PlayerTalentFrame, 'BOTTOMRIGHT', -38, 80)
 end
 
+local function GlyphShow(frame)
+	frame:Hide()
+end
+
 local function SkinMistsGlyphFrame()
 	-- Glyph Tab
 	local GlyphFrame = _G.GlyphFrame
@@ -439,7 +441,7 @@ local function SkinMistsGlyphFrame()
 		frame.highlight:SetTexture(nil)
 		frame.ring:Hide()
 
-		hooksecurefunc(frame.glyph, 'Show', frame.glyph.Hide)
+		frame.glyph:HookScript('OnShow', GlyphShow)
 
 		frame.icon = frame:CreateTexture(nil, 'OVERLAY')
 		frame.icon:SetInside()

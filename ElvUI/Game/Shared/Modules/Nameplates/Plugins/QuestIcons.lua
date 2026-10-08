@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
-local wipe, ipairs, ceil, floor, tonumber = wipe, ipairs, ceil, floor, tonumber
+local wipe, ipairs, ceil, floor, tonumber, tinsert = wipe, ipairs, ceil, floor, tonumber, tinsert
 local strsub, strmatch, strlower, strfind, next = strsub, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
@@ -165,14 +165,16 @@ local function GetQuests(unitID)
 					if objectives then
 						local quest = objectives[text] or (not E.Modern and objectives[strsub(text, 4)])
 						if quest then
-							if not QuestList then QuestList = {} end
+							if not QuestList then
+								QuestList = {}
+							end
 
-							QuestList[#QuestList + 1] = {
+							tinsert(QuestList, {
 								itemTexture = lastTitle.texture,
 								isPercent = quest.isPercent,
 								objectiveCount = quest.value,
 								questType = quest.type or 'DEFAULT',
-							}
+							})
 						end
 					end
 				end

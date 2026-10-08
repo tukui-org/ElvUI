@@ -46,6 +46,7 @@ local UnitIsBattlePetCompanion = UnitIsBattlePetCompanion
 local UnitIsFeignDeath = UnitIsFeignDeath
 local UnitIsPlayer = UnitIsPlayer
 local UnitIsPVP = UnitIsPVP
+local UnitNameUnmodified = UnitNameUnmodified
 local UnitIsPVPFreeForAll = UnitIsPVPFreeForAll
 local UnitIsWildBattlePet = UnitIsWildBattlePet
 local UnitPowerMax = UnitPowerMax
@@ -69,7 +70,7 @@ local HEX_FALLBACK = '|cFFcccccc'
 
 -- GLOBALS: Hex, _TAGS, _COLORS -- added by oUF
 -- GLOBALS: UnitPower, UnitHealth, UnitName, UnitClass, UnitIsDead, UnitIsGhost, UnitIsDeadOrGhost, UnitIsConnected -- override during testing groups
--- GLOBALS: GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
+-- GLOBALS: GetUnitRealm, GetTitleNPC, Abbrev, GetClassPower, GetQuestData, UnitEffectiveLevel, NameHealthColor -- custom ones we made
 
 ------------------------------------------------------------------------
 --	Looping
@@ -87,6 +88,29 @@ local classSpecificSpells = { -- stagger IDs also in oUF stagger element
 	[SPELL_MAELSTROM] = (E.Modern and E.myclass == 'SHAMAN') or nil
 }
 
+E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
+	local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
+	if E:NotSecretValue(cur) and cur > 0 then
+		local _, r, g, b = GetUnitPowerBarTextureInfo(unit, 3)
+		if not r then
+			r, g, b = 1, 1, 1
+		end
+
+		return Hex(r,g,b)
+	end
+end)
+
+for textFormat in pairs(E.GetFormattedTextStyles) do
+	local tagFormat = strlower(gsub(textFormat, '_', '-'))
+	E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
+		local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
+		if E:NotSecretValue(cur) and cur > 0 then
+			local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
+			return E:GetFormattedText(textFormat, cur, max)
+		end
+	end)
+end
+
 if not E.Modern then
 	for textFormat in pairs(E.GetFormattedTextStyles) do
 		local tagFormat = strlower(gsub(textFormat, '_', '-'))
@@ -96,26 +120,6 @@ if not E.Modern then
 				return status
 			else
 				return E:GetFormattedText(textFormat, UnitHealth(unit), UnitHealthMax(unit))
-			end
-		end)
-
-		E:AddTag('altpowercolor', 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
-			local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
-			if cur > 0 then
-				local _, r, g, b = GetUnitPowerBarTextureInfo(unit, 3)
-				if not r then
-					r, g, b = 1, 1, 1
-				end
-
-				return Hex(r,g,b)
-			end
-		end)
-
-		E:AddTag(format('altpower:%s', tagFormat), 'UNIT_POWER_UPDATE UNIT_POWER_BAR_SHOW UNIT_POWER_BAR_HIDE', function(unit)
-			local cur = UnitPower(unit, POWERTYPE_ALTERNATE)
-			if cur > 0 then
-				local max = UnitPowerMax(unit, POWERTYPE_ALTERNATE)
-				return E:GetFormattedText(textFormat, cur, max)
 			end
 		end)
 
@@ -330,17 +334,6 @@ if not E.Modern then
 		end, E.Classic)
 	end
 
-	E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
-		local currentHealth = UnitHealth(unit)
-		local deficit = UnitHealthMax(unit) - currentHealth
-
-		if deficit > 0 and currentHealth > 0 then
-			return _TAGS['health:percent-nostatus'](unit)
-		else
-			return _TAGS.name(unit)
-		end
-	end)
-
 	E:AddTag('health:current:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
 		local status = not UnitIsFeignDeath(unit) and UnitIsDead(unit) and L["Dead"] or UnitIsGhost(unit) and L["Ghost"] or not UnitIsConnected(unit) and L["Offline"]
 		local currentHealth, max = UnitHealth(unit), UnitHealthMax(unit)
@@ -486,32 +479,6 @@ if not E.Modern then
 		return name
 	end)
 
-	E:AddTag('name:last', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-		local name = UnitName(unit)
-		if name and strfind(name, '%s') then
-			name = strmatch(name, '([%S]+)$')
-		end
-
-		return name
-	end)
-
-	E:AddTag('name:first', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
-		local name = UnitName(unit)
-		if name and strfind(name, '%s') then
-			name = strmatch(name, '^(%S+)')
-		end
-
-		return name
-	end)
-
-	E:AddTag('health:deficit-percent:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
-		local min, max = UnitHealth(unit), UnitHealthMax(unit)
-		local deficit = (min / max) - 1
-		if deficit ~= 0 then
-			return E:GetFormattedText('PERCENT', deficit, -1)
-		end
-	end)
-
 	-- the third arg here is added from the user as like [name:health{ff00ff:00ff00}] or [name:health{class:00ff00}]
 	E:AddTag('name:health', 'UNIT_NAME_UPDATE UNIT_FACTION UNIT_HEALTH UNIT_MAXHEALTH', function(unit, _, args)
 		local name = UnitName(unit)
@@ -644,12 +611,44 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		return name
 	end)
 
-	E:AddTag(format('health:deficit-percent:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
-		local cur, max = UnitHealth(unit), UnitHealthMax(unit)
+	E:AddTag('health:deficit-percent:nostatus', 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+		local cur = UnitHealth(unit)
+		if E:IsSecretValue(cur) or cur <= 0 then
+			return
+		end
 
-		local deficit = E:NotSecretValue(cur) and E:NotSecretValue(max) and cur and max and (max - cur) or 0
-		if deficit > 0 and cur > 0 then
-			return _TAGS['health:deficit-percent:nostatus'](unit)
+		local max = UnitHealthMax(unit)
+		local deficit = E:NotSecretValue(max) and (cur and max) and ((cur / max) - 1) or 0
+		if deficit ~= 0 then
+			return E:GetFormattedText('PERCENT', deficit, -1)
+		end
+	end)
+
+	E:AddTag('health:deficit-percent:name', 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+		local cur = UnitHealth(unit)
+		if E:IsSecretValue(cur) or cur <= 0 then
+			return _TAGS.name(unit)
+		end
+
+		local max = UnitHealthMax(unit)
+		local deficit = E:NotSecretValue(max) and (cur and max) and ((cur / max) - 1) or 0
+		if deficit ~= 0 then
+			return E:GetFormattedText('PERCENT', deficit, -1)
+		else
+			return _TAGS.name(unit)
+		end
+	end)
+
+	E:AddTag(format('health:deficit-percent:name-%s', textFormat), 'UNIT_HEALTH UNIT_MAXHEALTH UNIT_NAME_UPDATE', function(unit)
+		local cur = UnitHealth(unit)
+		if E:IsSecretValue(cur) or cur <= 0 then
+			return _TAGS[nameTag](unit)
+		end
+
+		local max = UnitHealthMax(unit)
+		local deficit = E:NotSecretValue(max) and (cur and max) and ((cur / max) - 1) or 0
+		if deficit ~= 0 then
+			return E:GetFormattedText('PERCENT', deficit, -1)
 		else
 			return _TAGS[nameTag](unit)
 		end
@@ -657,11 +656,12 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 
 	E:AddTag(format('name:abbrev:%s', textFormat), 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 		local name = UnitName(unit)
-		if E:NotSecretValue(name) and name and strfind(name, '%s') then
-			name = Abbrev(name)
-		end
 
 		if E:NotSecretValue(name) and name then
+			if strfind(name, '%s') then
+				name = Abbrev(name)
+			end
+
 			return E:ShortenString(name, length)
 		end
 
@@ -692,11 +692,12 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 
 	E:AddTag(format('target:abbrev:%s', textFormat), 'UNIT_TARGET', function(unit)
 		local targetName = UnitName(unit..'target')
-		if E:NotSecretValue(targetName) and targetName and strfind(targetName, '%s') then
-			targetName = Abbrev(targetName)
-		end
 
 		if E:NotSecretValue(targetName) and targetName then
+			if strfind(targetName, '%s') then
+				targetName = Abbrev(targetName)
+			end
+
 			return E:ShortenString(targetName, length)
 		end
 
@@ -732,6 +733,33 @@ for textFormat, length in pairs({ veryshort = 5, short = 10, medium = 15, long =
 		return targetName
 	end)
 end
+
+E:AddTag('name:last', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	if E.Forever and UnitIsPlayer(unit) then
+		local _, lastName = UnitNameUnmodified(unit)
+		return lastName
+	else
+		local name = UnitName(unit)
+		if E:NotSecretValue(name) and name and strfind(name, '%s') then
+			name = strmatch(name, '([%S]+)$')
+		end
+
+		return name
+	end
+end)
+
+E:AddTag('name:first', 'UNIT_NAME_UPDATE INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
+	if E.Forever and UnitIsPlayer(unit) then
+		return UnitNameUnmodified(unit)
+	else
+		local name = UnitName(unit)
+		if E:NotSecretValue(name) and name and strfind(name, '%s') then
+			name = strmatch(name, '^(%S+)')
+		end
+
+		return name
+	end
+end)
 
 E:AddTag('reactioncolor', 'UNIT_NAME_UPDATE UNIT_FACTION', function(unit)
 	local unitReaction = UnitReaction(unit, 'player')
@@ -817,12 +845,11 @@ E:AddTag('smartlevel', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 end)
 
 E:AddTag('realm', 'UNIT_NAME_UPDATE', function(unit)
-	local _, realm = UnitName(unit)
-	return realm
+	return GetUnitRealm(unit)
 end)
 
 E:AddTag('realm:dash', 'UNIT_NAME_UPDATE', function(unit)
-	local _, realm = UnitName(unit)
+	local realm = GetUnitRealm(unit)
 	if E:IsSecretValue(realm) then
 		return realm
 	elseif not realm or realm == '' then
@@ -833,7 +860,7 @@ E:AddTag('realm:dash', 'UNIT_NAME_UPDATE', function(unit)
 end)
 
 E:AddTag('realm:translit', 'UNIT_NAME_UPDATE', function(unit)
-	local _, realm = UnitName(unit)
+	local realm = GetUnitRealm(unit)
 	if E:IsSecretValue(realm) then
 		return realm
 	elseif not realm or realm == '' then
@@ -849,7 +876,7 @@ E:AddTag('realm:translit', 'UNIT_NAME_UPDATE', function(unit)
 end)
 
 E:AddTag('realm:dash:translit', 'UNIT_NAME_UPDATE', function(unit)
-	local _, realm = UnitName(unit)
+	local realm = GetUnitRealm(unit)
 	if E:IsSecretValue(realm) then
 		return format('-%s', realm)
 	elseif not realm or realm == '' then
@@ -1334,14 +1361,14 @@ if info then
 	info['classpower:deficit'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's special power as a deficit (Total Special Power - Current Special Power = -Deficit)" }
 	info['classpower:deficit:shortvalue'] = { hidden = E.Classic, category = "Classpower", description = "" }
 	info['classpower:percent'] = { hidden = E.Classic, category = "Classpower", description = "Displays the unit's current amount of special power as a percentage" }
-	info['holypower'] = { hidden = E.Classic, category = "Classpower", description = "Displays the holy power (Paladin)" }
+	info['holypower'] = { hidden = not E.Retail, category = "Classpower", description = "Displays the holy power (Paladin)" }
 
 	info['classcolor'] = { category = "Colors", description = "Colors names by player class or NPC reaction (Ex: [classcolor][name])" }
 	info['classificationcolor'] = { category = "Colors", description = "Changes the text color, depending on the unit's classification" }
 	info['classpowercolor'] = { category = "Colors", description = "Changes the color of the special power based upon its type" }
 	info['difficultycolor'] = { category = "Colors", description = "Colors the following tags by difficulty, red for impossible, orange for hard, green for easy" }
 	info['factioncolor'] = { category = "Colors", description = "Colors names by Faction (Alliance, Horde, Neutral)" }
-	info['happiness:color'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Colors", description = "Changes the text color, depending on the pet happiness" }
+	info['happiness:color'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Colors", description = "Changes the text color, depending on the pet happiness" }
 	info['healthcolor'] = { category = "Colors", description = "Changes the text color, depending on the unit's current health" }
 	info['manacolor'] = { category = "Colors", description = "Colors the power text based on the mana color" }
 	info['namecolor'] = { hidden = true, category = "Colors", description = "Deprecated version of [classcolor]" }
@@ -1399,11 +1426,18 @@ if info then
 	info['incomingheals:others'] = { category = "Health", description = "Displays only incoming heals from other units" }
 	info['incomingheals:personal'] = { category = "Health", description = "Displays only personal incoming heals" }
 
-	info['diet'] = { hidden = E.Modern, category = "Hunter", description = "Displays the diet of your pet (Fish, Meat, ...)" }
-	info['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like a Discord emoji" }
-	info['happiness:full'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness as a word (e.g. 'Happy')" }
-	info['happiness:icon'] = { hidden = not (E.Classic or E.TBC or E.Wrath), category = "Hunter", description = "Displays the pet happiness like the default Blizzard icon" }
-	info['loyalty'] = { hidden = E.Modern, category = "Hunter", description = "Displays the pet loyalty level" }
+	info['altpower:current-max-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max-percent format" }
+	info['altpower:current-max'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max format" }
+	info['altpower:current-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-percent format" }
+	info['altpower:current'] = { category = "Altpower", description = "Displays altpower text on a unit in current format" }
+	info['altpower:deficit'] = { category = "Altpower", description = "Displays altpower text on a unit in deficit format" }
+	info['altpower:percent'] = { category = "Altpower", description = "Displays altpower text on a unit in percent format" }
+
+	info['diet'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the diet of your pet (Fish, Meat, ...)" }
+	info['happiness:discord'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the pet happiness like a Discord emoji" }
+	info['happiness:full'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the pet happiness as a word (e.g. 'Happy')" }
+	info['happiness:icon'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the pet happiness like the default Blizzard icon" }
+	info['loyalty'] = { hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever), category = "Hunter", description = "Displays the pet loyalty level" }
 
 	info['mana:current'] = { category = "Mana", description = "Displays the unit's current mana" }
 	info['mana:current-max'] = { category = "Mana", description = "Displays the unit's current and maximum mana, separated by a dash" }

@@ -8,39 +8,43 @@ local CreateFrame = CreateFrame
 local targetIndicators = { 'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator' }
 
 function NP:Construct_QuestIcons(nameplate)
-	local QuestIcons = CreateFrame('Frame', nameplate.frameName..'QuestIcons', nameplate.RaisedElement)
-	QuestIcons:Size(20)
-	QuestIcons:Hide()
-	QuestIcons:CreateBackdrop()
-	QuestIcons.backdrop:Hide()
+	local element = CreateFrame('Frame', nameplate.frameName..'QuestIcons', nameplate.RaisedElement)
+	element:SetFrameLevel(nameplate.RaisedElement.QuestIconLevel)
+	element:Size(20)
+	element:Hide()
+
+	element:CreateBackdrop()
+	element.backdrop:Hide()
 
 	for name, object in ipairs(NP.QuestIcons.iconTypes) do
-		local icon = QuestIcons:CreateTexture(nil, 'BORDER', nil, 1)
-		icon.Text = QuestIcons:CreateFontString(nil, 'OVERLAY')
+		local icon = element:CreateTexture(nil, 'BORDER', nil, 1)
+		icon.Text = element:CreateFontString(nil, 'OVERLAY')
 		icon.Text:FontTemplate()
 		icon:Hide()
 
 		if name == 'Item' then
-			QuestIcons.backdrop:SetOutside(icon)
+			element.backdrop:SetOutside(icon)
 		end
 
-		QuestIcons[object] = icon
+		element[object] = icon
 	end
 
-	QuestIcons.Item:SetTexCoords()
-	QuestIcons.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
-	QuestIcons.Chat:SetTexCoord(0, 0.5, 0.5, 1)
+	element.Item:SetTexCoords()
+	element.Chat:SetTexture([[Interface\WorldMap\ChatBubble_64.PNG]])
+	element.Chat:SetTexCoord(0, 0.5, 0.5, 1)
 
-	return QuestIcons
+	return element
 end
 
-function NP:Update_QuestIcons(nameplate)
+function NP:Update_QuestIcons(nameplate, updateBase)
 	local plateDB = NP:PlateDB(nameplate)
 	local db = not E.Classic and plateDB.questIcon
 
 	if db and db.enable and not nameplate.isBattlePet and (nameplate.frameType == 'FRIENDLY_NPC' or nameplate.frameType == 'ENEMY_NPC') then
 		if not nameplate:IsElementEnabled('QuestIcons') then
 			nameplate:EnableElement('QuestIcons')
+		elseif not updateBase then
+			return
 		end
 
 		nameplate.QuestIcons:ClearAllPoints()
@@ -65,7 +69,13 @@ function NP:Update_QuestIcons(nameplate)
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
-	return nameplate.RaisedElement:CreateTexture(nameplate.frameName..'ClassificationIndicator', 'OVERLAY')
+	local element = CreateFrame('Frame', nameplate.frameName..'ClassificationIndicator', nameplate.RaisedElement)
+	element:SetFrameLevel(nameplate.RaisedElement.ClassificationLevel)
+
+	local texture = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
+	element.texture = texture
+
+	return texture
 end
 
 function NP:Update_ClassificationIndicator(nameplate)
@@ -86,19 +96,22 @@ function NP:Update_ClassificationIndicator(nameplate)
 end
 
 function NP:Construct_TargetIndicator(nameplate)
-	local TargetIndicator = CreateFrame('Frame', '$parentTargetIndicator', nameplate)
+	local element = CreateFrame('Frame', '$parentTargetIndicator', nameplate)
+	element:SetFrameLevel(nameplate.RaisedElement.TargetIndicatorLevel)
 
-	TargetIndicator.Shadow = CreateFrame('Frame', nil, TargetIndicator, 'BackdropTemplate')
-	TargetIndicator.Shadow:Hide()
+	local shadow = CreateFrame('Frame', nil, element, 'BackdropTemplate')
+	shadow:Hide()
+
+	element.Shadow = shadow
 
 	for _, object in ipairs(targetIndicators) do
-		local indicator = TargetIndicator:CreateTexture(nil, 'BACKGROUND', nil, -5)
+		local indicator = element:CreateTexture(nil, 'BACKGROUND', nil, -5)
 		indicator:Hide()
 
-		TargetIndicator[object] = indicator
+		element[object] = indicator
 	end
 
-	return TargetIndicator
+	return element
 end
 
 function NP:Update_TargetIndicator(nameplate)
@@ -115,7 +128,6 @@ function NP:Update_TargetIndicator(nameplate)
 
 	local tdb = NP.db.units.TARGET
 	local indicator = nameplate.TargetIndicator
-	indicator:SetFrameLevel(0)
 
 	indicator.arrow = E.Media.Arrows[NP.db.units.TARGET.arrow] or E.Media.Arrows.Arrow9
 	indicator.lowHealthThreshold = NP.db.lowHealthThreshold
@@ -168,14 +180,14 @@ function NP:Update_TargetIndicator(nameplate)
 end
 
 function NP:Construct_Highlight(nameplate)
-	local Highlight = CreateFrame('Frame', '$parentHighlight', nameplate)
-	Highlight:Hide()
-	Highlight:EnableMouse(false)
-	Highlight:SetFrameLevel(9)
+	local element = CreateFrame('Frame', '$parentHighlight', nameplate)
+	element:SetFrameLevel(nameplate.RaisedElement.HighlightLevel)
+	element:EnableMouse(false)
+	element:Hide()
 
-	Highlight.texture = Highlight:CreateTexture(nil, 'ARTWORK')
+	element.texture = element:CreateTexture(nil, 'ARTWORK')
 
-	return Highlight
+	return element
 end
 
 function NP:Update_Highlight(nameplate)
@@ -201,13 +213,18 @@ function NP:Update_Highlight(nameplate)
 end
 
 function NP:Construct_PVPRole(nameplate)
-	local texture = nameplate.RaisedElement:CreateTexture(nameplate.frameName..'PVPRole', 'OVERLAY', nil, 1)
+	local element = CreateFrame('Frame', nameplate.frameName..'PVPRole', nameplate.RaisedElement)
+	element:SetFrameLevel(nameplate.RaisedElement.PVPRoleLevel)
+
+	local texture = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
+	texture:SetTexture(texture.HealerTexture)
 	texture:Size(40)
+	texture:Hide()
+
 	texture.HealerTexture = E.Media.Textures.Healer
 	texture.TankTexture = E.Media.Textures.Tank
-	texture:SetTexture(texture.HealerTexture)
 
-	texture:Hide()
+	element.texture = texture
 
 	return texture
 end
@@ -236,8 +253,6 @@ function NP:Update_Fader(nameplate)
 	if not vis or vis.showAlways then
 		if nameplate:IsElementEnabled('Fader') then
 			nameplate:DisableElement('Fader')
-
-			NP:PlateFade(nameplate, 1, nameplate:GetAlpha(), 1)
 		end
 	elseif db.enable then
 		if not nameplate.Fader then
@@ -265,19 +280,21 @@ function NP:Update_Fader(nameplate)
 end
 
 function NP:Construct_Cutaway(nameplate)
-	local Cutaway = {}
+	local element = {}
 
-	Cutaway.Health = nameplate.Health.ClipFrame:CreateTexture(nameplate.frameName..'CutawayHealth')
 	local healthTexture = nameplate.Health:GetStatusBarTexture()
-	Cutaway.Health:Point('TOPLEFT', healthTexture, 'TOPRIGHT')
-	Cutaway.Health:Point('BOTTOMLEFT', healthTexture, 'BOTTOMRIGHT')
+	local health = nameplate.Health.ClipFrame:CreateTexture(nameplate.frameName..'CutawayHealth')
+	health:Point('TOPLEFT', healthTexture, 'TOPRIGHT')
+	health:Point('BOTTOMLEFT', healthTexture, 'BOTTOMRIGHT')
+	element.Health = health
 
-	Cutaway.Power = nameplate.Power.ClipFrame:CreateTexture(nameplate.frameName..'CutawayPower')
 	local powerTexture = nameplate.Power:GetStatusBarTexture()
-	Cutaway.Power:Point('TOPLEFT', powerTexture, 'TOPRIGHT')
-	Cutaway.Power:Point('BOTTOMLEFT', powerTexture, 'BOTTOMRIGHT')
+	local power = nameplate.Power.ClipFrame:CreateTexture(nameplate.frameName..'CutawayPower')
+	power:Point('TOPLEFT', powerTexture, 'TOPRIGHT')
+	power:Point('BOTTOMLEFT', powerTexture, 'BOTTOMRIGHT')
+	element.Power = power
 
-	return Cutaway
+	return element
 end
 
 function NP:Update_Cutaway(nameplate)

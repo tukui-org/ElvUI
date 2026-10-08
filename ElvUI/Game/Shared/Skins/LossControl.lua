@@ -5,8 +5,7 @@ local _G = _G
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'LossOfControlFrame')
-data.toggle = 'losscontrol'
+S:AddCallbackForAddon('Blizzard_FrameXML', 'LossOfControlFrame', nil, nil, nil, nil, 'losscontrol')
 
 local function SetupDisplay(frame)
 	frame.Icon:ClearAllPoints()

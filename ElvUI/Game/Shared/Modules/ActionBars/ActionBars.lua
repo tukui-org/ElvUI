@@ -663,7 +663,9 @@ function AB:UpdateAllBinds(event)
 
 	if E.Modern then
 		AB:UpdateExtraBindings()
-	elseif E.Wrath and E.myclass == 'SHAMAN' then
+	end
+
+	if E.allowTotemBar then
 		AB:UpdateTotemBindings()
 	end
 
@@ -749,7 +751,7 @@ function AB:UpdateButtonSettings(specific)
 			if LAB.FlyoutButtons then
 				AB:LAB_FlyoutSpells()
 			end
-		elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+		elseif E.allowTotemBar and AB.db.totemBar.enable then
 			AB:PositionAndSizeTotemBar()
 		end
 	end
@@ -1773,8 +1775,7 @@ function AB:SetButtonDesaturation(button, start, duration)
 			local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
 			allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
 		else
-			local GCD = AB:GetGlobalCooldown()
-			allow = (duration and duration > GCD) and 1 or 0
+			allow = (duration and duration > 0 and duration > AB:GetGlobalCooldown()) and 1 or 0
 		end
 	end
 
@@ -1845,8 +1846,8 @@ end
 
 function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	if button._state_type == 'action' then
-		if info then
-			AB:SetButtonDesaturation(button, info.startTime, info.duration)
+		if info then -- isActive and isEnabled are never secret - idle buttons skip the cooldown lookups
+			AB:SetButtonDesaturation(button, info.startTime, (info.isActive or not info.isEnabled) and info.duration)
 		else
 			AB:SetButtonDesaturation(button, start, duration)
 		end
@@ -1869,7 +1870,7 @@ function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
 	AB:UpdatePet(event)
 
-	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if (initLogin or isReload) and E.allowTotemBar and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()
 	end
@@ -2081,7 +2082,7 @@ function AB:Initialize()
 		AB:SetupExtraButtons()
 	end
 
-	if (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if E.allowTotemBar and AB.db.totemBar.enable then
 		AB:CreateTotemBar()
 	end
 
@@ -2099,9 +2100,8 @@ function AB:Initialize()
 	if E.Modern then
 		AB:RegisterEvent('HOUSE_EDITOR_MODE_CHANGED', 'HandleBinds')
 
-		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
-		hooksecurefunc(_G.SpellFlyout, 'Hide', AB.UpdateFlyoutButtons)
-
+		_G.SpellFlyout:HookScript('OnShow', AB.UpdateFlyoutButtons)
+		_G.SpellFlyout:HookScript('OnHide', AB.UpdateFlyoutButtons)
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
 

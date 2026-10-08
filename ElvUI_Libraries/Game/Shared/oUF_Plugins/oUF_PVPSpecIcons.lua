@@ -7,7 +7,9 @@ local IsInInstance = IsInInstance
 local UnitFactionGroup = UnitFactionGroup
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetSpecializationInfoByID = GetSpecializationInfoByID
+local UnitFrameUtil = UnitFrameUtil
 
+local specDisplay = {}
 local factions = {
 	Horde = [[Interface\Icons\INV_BannerPVP_01]],
 	Alliance = [[Interface\Icons\INV_BannerPVP_02]],
@@ -32,11 +34,20 @@ local Update = function(frame, event, unit)
 	if instanceType == 'arena' then
 		local unitID = tonumber(arenaIndex or frame:GetID() or 0)
 		local specID, icon, _ = unitID and GetArenaOpponentSpec(unitID)
-		if specID and specID > 0 then
-			_, _, _, icon = GetSpecializationInfoByID(specID)
-		end
+		if oUF:IsSecretValue(specID) then -- 12.1.5 spec is secret, Blizzard applies the icon
+			specDisplay.specPortrait = element.Icon
 
-		element.Icon:SetTexture(icon or factions.Unknown)
+			local hasSpec = UnitFrameUtil.UpdateArenaOpponentSpecDisplay(specDisplay, unitID)
+			if not hasSpec then -- we can still use the unknown
+				element.Icon:SetTexture(factions.Unknown)
+			end
+		else
+			if specID and specID > 0 then
+				_, _, _, icon = GetSpecializationInfoByID(specID)
+			end
+
+			element.Icon:SetTexture(icon or factions.Unknown)
+		end
 	else
 		element.Icon:SetTexture(GetSpecIconByFaction(arenaIndex or (frame.isForced and 'player')))
 	end

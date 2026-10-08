@@ -25,16 +25,13 @@ local classicCategoryButtonIcons = {
 	464820, -- interface\icons\achievement_general_stayclassy
 }
 
-if E.Forever then -- ToDo: Forever
-	local data = S:AddCallbackForAddon('Blizzard_LFGUtil', 'PVPReadyDialog')
-	data.toggle = 'pvp'
+if E.Forever then
+	S:AddCallbackForAddon('Blizzard_LFGUtil', 'PVPReadyDialog', nil, nil, nil, nil, 'pvp')
 else
-	local data = S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog')
-	data.toggle = 'pvp'
+	S:AddCallbackForAddon('Blizzard_GroupFinder', 'PVPReadyDialog', nil, nil, nil, nil, 'pvp')
 end
 
-local data = S:AddCallbackForAddon('Blizzard_PVPUI')
-data.toggle = 'pvp'
+S:AddCallbackForAddon('Blizzard_PVPUI', nil, nil, nil, nil, nil, 'pvp')
 
 local function HandleRoleButton(button)
 	local checkbox = button.checkButton
@@ -284,8 +281,7 @@ function S:Blizzard_PVPUI()
 		BonusTrainingGroundList.ShadowOverlay:Hide()
 		BonusTrainingGroundList.WorldBattlesTexture:Hide()
 
-		for _, bonusButton in next, {'RandomTrainingGroundButton', 'RandomTrainingGroundArenaButton'} do
-			local bu = BonusTrainingGroundList[bonusButton]
+		for _, bu in next, BonusTrainingGroundList.BonusTrainingGroundButtons do
 			local reward = bu.Reward
 			S:HandleButton(bu)
 			bu.SelectedTexture:SetInside()
@@ -345,7 +341,6 @@ function S:Blizzard_PVPUI()
 		BonusFrame.ShadowOverlay:Hide()
 		BonusFrame.WorldBattlesTexture:Hide()
 
-		-- TODO: This is a fake dropdown
 		HandleHonorDropdown(_G.HonorQueueFrameTypeDropDown)
 
 		for _, bu in next, { BonusFrame.RandomBGButton, BonusFrame.CallToArmsButton, BonusFrame.WorldPVP1Button, BonusFrame.WorldPVP2Button } do

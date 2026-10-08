@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_ItemUpgradeUI')
-data.toggle = 'itemUpgrade'
+S:AddCallbackForAddon('Blizzard_ItemUpgradeUI', nil, nil, nil, nil, nil, 'itemUpgrade')
 
 local function Update(frame)
 	if frame.upgradeInfo then

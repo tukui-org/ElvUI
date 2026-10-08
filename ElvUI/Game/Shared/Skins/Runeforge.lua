@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_RuneforgeUI')
-data.toggle = 'runeforge'
+S:AddCallbackForAddon('Blizzard_RuneforgeUI', nil, nil, nil, nil, nil, 'runeforge')
 
 local function RefreshListDisplay(list)
 	local lists = list.elements

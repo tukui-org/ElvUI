@@ -10,8 +10,7 @@ local GossipTextColors = {
 	['414141'] = '7b8489',
 }
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GossipFrame')
-data.toggle = 'gossip'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'GossipFrame', nil, nil, nil, nil, 'gossip')
 
 local function Gossip_SetTextColor(text, r, g, b)
 	if r ~= 1 or g ~= 1 or b ~= 1 then
@@ -110,7 +109,7 @@ function S:GossipFrame()
 	for i = 1, 4 do
 		local notch = GossipFrame.FriendshipStatusBar['Notch'..i]
 		notch:SetColorTexture(0, 0, 0)
-		notch:SetSize(E.mult, 16)
+		notch:Size(1, 16)
 	end
 
 	-- titan keeps the frame border in a child frame

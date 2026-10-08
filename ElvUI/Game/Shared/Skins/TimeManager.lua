@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_TimeManager')
-data.toggle = 'timemanager'
+S:AddCallbackForAddon('Blizzard_TimeManager', nil, nil, nil, nil, nil, 'timemanager')
 
 local function SetPlayTexture()
 	_G.StopwatchPlayPauseButton:SetNormalTexture(E.Media.Textures.Play)

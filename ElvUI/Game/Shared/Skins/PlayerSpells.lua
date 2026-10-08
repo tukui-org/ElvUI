@@ -8,8 +8,7 @@ local hooksecurefunc = hooksecurefunc
 
 local GetSpellTexture = C_Spell.GetSpellTexture
 
-local data = S:AddCallbackForAddon('Blizzard_PlayerSpells')
-data.toggle = 'talent'
+S:AddCallbackForAddon('Blizzard_PlayerSpells', nil, nil, nil, nil, nil, 'talent')
 
 local function HandleTalentFrameDialog(dialog)
 	dialog:StripTextures()

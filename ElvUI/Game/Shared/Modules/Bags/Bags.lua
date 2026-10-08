@@ -555,18 +555,23 @@ function B:UpdateItemScrapIcon(slot)
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
-	if slot and slot.newItemGlow then
-		if show then
-			slot.newItemGlow:Show()
+	local glow = slot and slot.newItemGlow
+	if not glow then return end
 
-			local bank = slot.bagFrame.isBank and B.BankFrame
-			B:ShowItemGlow(bank or B.BagFrame, slot.newItemGlow)
-		else
-			slot.newItemGlow:Hide()
-
-			-- also clear them on blizzard's side
-			C_NewItems_RemoveNewItem(slot.BagID, slot.SlotID)
+	if show then
+		local bag = slot.bagFrame
+		if not glow:IsShown() then
+			bag.NewItemGlow.Fade:AddChild(glow)
 		end
+
+		glow:Show()
+
+		B:ShowItemGlow(bag.isBank and B.BankFrame or B.BagFrame)
+	else
+		glow:Hide()
+
+		-- also clear them on blizzard's side
+		C_NewItems_RemoveNewItem(slot.BagID, slot.SlotID)
 	end
 end
 
@@ -833,7 +838,9 @@ end
 
 function B:Slot_OnEvent(event, arg1)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
-		B:UpdateCooldown(self)
+		if self:IsVisible() then -- closed bags catch up in Slot_OnShow
+			B:UpdateCooldown(self)
+		end
 	elseif event == 'INVENTORY_SEARCH_UPDATE' then
 		B:InventorySearchUpdate(self)
 	elseif event == 'COLOR_OVERRIDES_RESET' then -- no clue why a delay is needed here
@@ -855,6 +862,12 @@ function B:Slot_OnEnter()
 end
 
 function B:Slot_OnLeave() end
+
+function B:Slot_OnShow()
+	if self.Cooldown and self.spellID then
+		B:UpdateCooldown(self)
+	end
+end
 
 function B:Holder_OnReceiveDrag()
 	PutItemInBag(self.isBank and self:GetInventorySlot() or self:GetID())
@@ -941,6 +954,8 @@ function B:UpdateCooldown(slot)
 		end
 	else
 		cd:Hide()
+
+		cd.start, cd.duration = nil, nil -- the same cooldown can come back, like an item moved out and back in
 	end
 end
 
@@ -1114,6 +1129,7 @@ function B:CreateFilterIcon(parent)
 	parent.filterIcon.FilterBackdrop = FilterBackdrop
 
 	hooksecurefunc(parent.filterIcon, 'SetShown', B.FilterIconShown)
+
 	parent.filterIcon:SetShown(false)
 end
 
@@ -1493,7 +1509,7 @@ function B:Container_OnEvent(event, ...)
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
 		if not self.isBank or self:IsShown() then
 			local id = ...
-			if B.WarbandBanks[id] then
+			if self.isBank and B.WarbandBanks[id] then -- the bag frame gets these too
 				B:UpdateBagSlots(self, id)
 			else
 				B:DelayedContainer(self, event, id)
@@ -2670,6 +2686,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
 	slot:HookScript('OnEnter', B.Slot_OnEnter)
 	slot:HookScript('OnLeave', B.Slot_OnLeave)
+	slot:HookScript('OnShow', B.Slot_OnShow)
 	slot:SetID(slotID)
 
 	slot:SetNormalTexture(E.ClearTexture)
@@ -2787,7 +2804,6 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.newItemGlow:SetInside()
 		slot.newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 		slot.newItemGlow:Hide()
-		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
 	end
 
 	return slot
@@ -3246,42 +3262,33 @@ function B:ShowBankTab(f, bankTab)
 end
 
 function B:ItemGlowOnFinished()
-	if self:GetChange() == 1 then
-		self:SetChange(0)
-	else
-		self:SetChange(1)
-	end
+	self:SetChange(self:GetChange() == 1 and 0 or 1)
 end
 
-function B:ShowItemGlow(bag, newItemGlow)
-	if newItemGlow then
-		newItemGlow:SetAlpha(1)
-	end
+function B:ShowItemGlow(bag)
+	if bag.NewItemGlow:IsPlaying() then return end
 
-	if not bag.NewItemGlow:IsPlaying() then
-		bag.NewItemGlow:Play()
-	end
+	bag.NewItemGlow:Play()
 end
 
 function B:HideItemGlow(bag)
-	if bag.NewItemGlow:IsPlaying() then
-		bag.NewItemGlow:Stop()
+	if not bag.NewItemGlow:IsPlaying() then return end
 
-		for _, itemGlow in next, bag.NewItemGlow.Fade.children do
-			itemGlow:SetAlpha(0)
-		end
-	end
+	bag.NewItemGlow:Stop()
+	bag.NewItemGlow.Fade:RemoveChildren()
 end
 
 function B:SetupItemGlow(frame)
 	frame.NewItemGlow = _G.CreateAnimationGroup(frame)
 	frame.NewItemGlow:SetLooping(true)
 
-	frame.NewItemGlow.Fade = frame.NewItemGlow:CreateAnimation('fade')
-	frame.NewItemGlow.Fade:SetDuration(0.7)
-	frame.NewItemGlow.Fade:SetChange(0)
-	frame.NewItemGlow.Fade:SetEasing('in')
-	frame.NewItemGlow.Fade:SetScript('OnFinished', B.ItemGlowOnFinished)
+	local glow = frame.NewItemGlow:CreateAnimation('fade')
+	glow:SetScript('OnFinished', B.ItemGlowOnFinished)
+	glow:SetEasing('in')
+	glow:SetDuration(0.7)
+	glow:SetChange(0)
+
+	frame.NewItemGlow.Fade = glow
 end
 
 function B:OpenBank()
@@ -3540,8 +3547,8 @@ function B:CreateSellFrame()
 	B.SellFrame.statusbar:CreateBackdrop('Transparent')
 
 	B.SellFrame.statusbar.anim = _G.CreateAnimationGroup(B.SellFrame.statusbar)
-	B.SellFrame.statusbar.anim.progress = B.SellFrame.statusbar.anim:CreateAnimation('Progress')
-	B.SellFrame.statusbar.anim.progress:SetEasing('Out')
+	B.SellFrame.statusbar.anim.progress = B.SellFrame.statusbar.anim:CreateAnimation('progress')
+	B.SellFrame.statusbar.anim.progress:SetEasing('out')
 	B.SellFrame.statusbar.anim.progress:SetDuration(0.3)
 
 	B.SellFrame.statusbar.ValueText = B.SellFrame.statusbar:CreateFontString(nil, 'OVERLAY')

@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetitionFrame')
-data.toggle = 'petition'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'PetitionFrame', nil, nil, nil, nil, 'petition')
 
 function S:PetitionFrame()
 	local PetitionFrame = _G.PetitionFrame

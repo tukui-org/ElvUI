@@ -45,7 +45,7 @@ local function OnEvent(panel, event)
 			timeStamp = timestamp
 		end
 
-		lastSegment = timeStamp
+		lastSegment = timestamp
 		combatTime = timestamp - timeStamp
 		lastDMGAmount = (subEvent == 'SWING_DAMAGE' and arg12) or arg15
 

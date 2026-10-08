@@ -11,8 +11,7 @@ local SetLargeGuildTabardTextures = SetLargeGuildTabardTextures
 
 local HOUSING_REWARD_COLOR = _G.HOUSING_REWARD_TOAST_LABEL_FONT_COLOR
 
-local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'AlertSystem')
-data.toggle = 'alertframes'
+S:AddCallbackForAddon('Blizzard_FrameXML', 'AlertSystem', nil, nil, nil, nil, 'alertframes')
 
 local function ForceAlpha(frame, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
@@ -209,7 +208,11 @@ end
 
 local function SkinHonorAwardedAlert(frame)
 	frame:SetAlpha(1)
-	if not frame.hooked then hooksecurefunc(frame, 'SetAlpha', ForceAlpha); frame.hooked = true end
+
+	if not frame.hooked then
+		hooksecurefunc(frame, 'SetAlpha', ForceAlpha)
+		frame.hooked = true
+	end
 
 	frame.Background:Kill()
 	frame.IconBorder:Kill()

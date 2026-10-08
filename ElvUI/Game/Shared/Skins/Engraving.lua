@@ -6,8 +6,7 @@ if not E.ClassicSOD then return end
 local _G = _G
 local next = next
 
-local data = S:AddCallbackForAddon('Blizzard_EngravingUI')
-data.toggle = 'engraving'
+S:AddCallbackForAddon('Blizzard_EngravingUI', nil, nil, nil, nil, nil, 'engraving')
 
 function S:Blizzard_EngravingUI()
 	local frame = _G.EngravingFrame
@@ -24,7 +23,7 @@ function S:Blizzard_EngravingUI()
 		header.middle:SetTexture() -- keep the plus / minus and category icons
 		header.leftEdge:SetTexture()
 		header.rightEdge:SetTexture()
-		header:SetTemplate('Transparent')
+		header:SetTemplate()
 	end
 
 	for _, button in next, frame.scrollFrame.buttons do

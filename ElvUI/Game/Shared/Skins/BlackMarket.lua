@@ -7,8 +7,7 @@ local hooksecurefunc = hooksecurefunc
 
 local GetItemQualityByID = C_Item.GetItemQualityByID
 
-local data = S:AddCallbackForAddon('Blizzard_BlackMarketUI')
-data.toggle = 'bmah'
+S:AddCallbackForAddon('Blizzard_BlackMarketUI', nil, nil, nil, nil, nil, 'bmah')
 
 local function SkinTab(tab)
 	tab.Left:SetAlpha(0)

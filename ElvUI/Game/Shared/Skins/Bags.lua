@@ -27,10 +27,9 @@ local NUM_CONTAINER_FRAMES = NUM_CONTAINER_FRAMES
 local BACKPACK_TOOLTIP = BACKPACK_TOOLTIP
 local QUESTS_LABEL = QUESTS_LABEL
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'ContainerFrame')
-function data.check() -- the bags module replaces these frames
-	return not E.private.bags.enable and E.private.skins.blizzard.enable and E.private.skins.blizzard.bags
-end
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'ContainerFrame', nil, nil, nil, nil, function()
+	return not E.private.bags.enable and E.private.skins.blizzard.enable and E.private.skins.blizzard.bags -- the bags module replaces these frames
+end)
 
 local function UpdateBorderColors(button)
 	if button.type and button.type == QUESTS_LABEL then

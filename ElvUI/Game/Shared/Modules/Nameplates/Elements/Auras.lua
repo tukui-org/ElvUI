@@ -222,6 +222,8 @@ function NP:AuraContainer_ConstructAuraTypes(frameType, name)
 		auras:SetEnabled(false)
 		auras:Hide()
 
+		NP.AuraContainersCreated[auras] = frame
+
 		auras.frameType = frameType
 		NP:Configure_Auras(auras, which, true)
 
@@ -249,14 +251,6 @@ end
 function NP:GetAuraContainer(plateName, frameType)
 	local object = NP.AuraContainers[plateName]
 	return object and object[frameType] or nil
-end
-
-function NP:GetAuraFilter(which, db)
-	if which == 'Auras' then -- this wont actually use helpful for blizzard auras its just to stop it from trying debuffs too
-		return db.filter or 'HARMFUL'
-	elseif E.Modern then
-		return (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
-	end
 end
 
 function NP:Configure_Auras(nameplate, which, preallocated)
@@ -296,6 +290,8 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 		auras.initialAnchor = E.CenterPoint[db.anchorPoint] or initialAnchor
 		auras.keepSizeRatio = db.keepSizeRatio
 		auras.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
+		auras.sortDirection = E.AuraContainerSortDirection[db.sortDirection]
+		auras.useDesaturate = db.desaturate
 		auras.countPosition, auras.countXOffset, auras.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 		auras.countFont, auras.countFontSize, auras.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
 		auras.forceShowAuras = nameplate == NP.TestFrame
@@ -323,7 +319,10 @@ function NP:Configure_Auras(nameplate, which, preallocated)
 		auras:Size(db.numAuras * db.size + ((db.numAuras - 1) * db.spacing), 1)
 	end
 
-	auras:SetFrameLevel(7)
+	if not preallocated then
+		auras:SetFrameLevel(nameplate.RaisedElement.AuraLevel)
+	end
+
 	auras:ClearAllPoints()
 	auras:Point(auras.initialAnchor, auras.attachTo, auras.anchorPoint, auras.xOffset, auras.yOffset)
 end

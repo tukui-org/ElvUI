@@ -45,15 +45,15 @@
 	<Script file='Shared\General\MapInfo.lua'/>
 	<Script file='Shared\General\ModuleCopy.lua'/>
 	<Script file='Shared\Tags\API.lua'/>
-	<Script file='Shared\Tags\Tags.lua'/>
+	<Script file='Shared\Tags\Shared.lua'/>
 	<Script file='Shared\Layout\Layout.lua'/>
 	<Include file='Shared\Modules\load_modules.xml'/>
 	<Script file='Shared\Filters\Filters.lua'/>
 
 	<Script file='Wrath\Filters\Filters.lua'/>
-	<Script file='Wrath\ActionBars\TotemBar.lua'/>
 	<Script file='Wrath\Blizzard\ObjectiveFrame.lua'/>
 	<Script file='Classic\Blizzard\ColorPicker.lua'/>
+	<Script file='Shared\Modules\ActionBars\TotemBar.lua'/>
 	<Script file='Shared\Modules\DataTexts\Ammo.lua'/>
 	<Script file='Shared\Modules\DataTexts\ArmorPenetration.lua'/>
 	<Script file='Shared\Modules\DataTexts\Avoidance.lua'/>

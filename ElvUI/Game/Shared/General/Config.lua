@@ -804,7 +804,7 @@ function E:Config_SearchFocusLost()
 end
 
 function E:Config_SearchOnEvent()
-	if self:HasFocus() and (not self:IsMouseOver() and not self.clearButton:IsMouseOver()) then
+	if self:HasFocus() and (not self:IsMouseMotionFocus() and not self.clearButton:IsMouseMotionFocus()) then
 		EditBox_ClearFocus(self)
 	end
 end
@@ -1291,6 +1291,13 @@ function E:Config_CreateBottomButtons(frame, unskinned)
 				C:Search_AddResults()
 
 				ACD:SelectGroup('ElvUI', 'search') -- trigger update
+			end
+		},
+		{
+			var = 'Donate',
+			name = '|cFF33FF33'..L["Donate"]..'|r',
+			func = function()
+				E:StaticPopup_Show('ELVUI_EDITBOX', nil, nil, 'https://www.patreon.com/ElvUI')
 			end
 		},
 		{

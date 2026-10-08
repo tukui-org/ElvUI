@@ -17,10 +17,9 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local ITEMQUALITY_HEIRLOOM = Enum.ItemQuality.Heirloom or 7
 
-local data = S:AddCallbackForAddon('Blizzard_Collections')
-function data.check() -- every section checks its own toggle
-	return E.private.skins.blizzard.enable
-end
+S:AddCallbackForAddon('Blizzard_Collections', nil, nil, nil, nil, nil, function()
+	return E.private.skins.blizzard.enable -- every section checks its own toggle
+end)
 
 local function ClearBackdrop(backdrop)
 	backdrop:SetBackdropColor(0, 0, 0, 0)
@@ -113,8 +112,8 @@ local function SkinJournalScrollButton(bu)
 		bu:HookScript('OnLeave', ButtonOnLeave)
 
 		bu.selectedTexture:SetTexture()
-		hooksecurefunc(bu.selectedTexture, 'Show', SelectedTextureShow)
-		hooksecurefunc(bu.selectedTexture, 'Hide', SelectedTextureHide)
+		bu.selectedTexture:HookScript('OnShow', SelectedTextureShow)
+		bu.selectedTexture:HookScript('OnHide', SelectedTextureHide)
 
 		local parent = bu:GetParent():GetParent():GetParent()
 		if parent == _G.PetJournal then
@@ -431,7 +430,6 @@ local function SkinPetFrame()
 	end
 
 	local Card = _G.PetJournalPetCard
-
 	Card:StripTextures()
 	Card:SetTemplate('Transparent')
 
@@ -486,7 +484,7 @@ local function SkinToyFrame()
 	S:HandleNextPrevButton(ToyBox.PagingFrame.NextPageButton, nil, nil, true)
 	S:HandleNextPrevButton(ToyBox.PagingFrame.PrevPageButton, nil, nil, true)
 
-	if E.Forever then -- ToDo: Forever
+	if E.Forever then
 		ToyBox.ProgressTracker:StripTextures()
 	else
 		ToyBox.progressBar.border:Hide()
@@ -560,7 +558,7 @@ local function HandleTabs()
 	end
 
 	-- Blizzard clears points on the wardrobe tab
-	if E.Retail then -- ToDo: Forever
+	if E.Retail then
 		hooksecurefunc('CollectionsJournal_CheckAndDisplayHeirloomsTab', CheckAndDisplayHeirloomsTab)
 	end
 end
@@ -602,7 +600,7 @@ local function SkinWardrobeFrame()
 	_G.WardrobeCollectionFrameSearchBox:SetFrameLevel(5)
 
 	S:HandleButton(WardrobeCollectionFrame.FilterButton, nil, nil, nil, nil, nil, nil, nil, nil, nil, nil, true, 'right')
-	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.SearchBox, 'RIGHT', 2, 0)
+	WardrobeCollectionFrame.FilterButton:Point('LEFT', WardrobeCollectionFrame.SearchBox, 'RIGHT', 4, 0)
 	S:HandleCloseButton(WardrobeCollectionFrame.FilterButton.ResetButton)
 	WardrobeCollectionFrame.FilterButton.ResetButton:ClearAllPoints()
 	WardrobeCollectionFrame.FilterButton.ResetButton:Point('CENTER', WardrobeCollectionFrame.FilterButton, 'TOPRIGHT', 0, 0)

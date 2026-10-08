@@ -6,11 +6,9 @@ local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
 
 if E.Modern then
-	local data = S:AddCallbackForAddon('Blizzard_MirrorTimer')
-	data.toggle = 'mirrorTimers'
+	S:AddCallbackForAddon('Blizzard_MirrorTimer', nil, nil, nil, nil, nil, 'mirrorTimers')
 else
-	local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'Blizzard_MirrorTimer')
-	data.toggle = 'mirrorTimers'
+	S:AddCallbackForAddon('Blizzard_FrameXML', 'Blizzard_MirrorTimer', nil, nil, nil, nil, 'mirrorTimers')
 end
 
 local function SetupTimer(container, timer)

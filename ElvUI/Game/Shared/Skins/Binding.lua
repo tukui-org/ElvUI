@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_ClickBindingUI')
-data.toggle = 'binding'
+S:AddCallbackForAddon('Blizzard_ClickBindingUI', nil, nil, nil, nil, nil, 'binding')
 
 local function UpdateNewGlow(self)
 	self.backdrop:SetBackdropBorderColor(0, self.NewOutline:IsShown() and 0.8 or 0, 0)

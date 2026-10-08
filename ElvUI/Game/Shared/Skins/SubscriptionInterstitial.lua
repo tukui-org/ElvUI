@@ -5,8 +5,7 @@ local _G = _G
 
 -- /run SubscriptionInterstitial_LoadUI(); _G.SubscriptionInterstitialFrame:Show()
 
-local data = S:AddCallbackForAddon('Blizzard_SubscriptionInterstitialUI')
-data.toggle = 'subscriptionInterstitial'
+S:AddCallbackForAddon('Blizzard_SubscriptionInterstitialUI', nil, nil, nil, nil, nil, 'subscriptionInterstitial')
 
 function S:Blizzard_SubscriptionInterstitialUI()
 	local SubscriptionInterstitial = _G.SubscriptionInterstitialFrame

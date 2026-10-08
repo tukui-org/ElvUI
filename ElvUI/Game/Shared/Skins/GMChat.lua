@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_GMChatUI')
-data.toggle = 'gmChat'
+S:AddCallbackForAddon('Blizzard_GMChatUI', nil, nil, nil, nil, nil, 'gmChat')
 
 function S:Blizzard_GMChatUI()
 	local frame = _G.GMChatFrame

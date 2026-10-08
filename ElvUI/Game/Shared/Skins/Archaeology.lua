@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local pairs, next = pairs, next
 
-local data = S:AddCallbackForAddon('Blizzard_ArchaeologyUI')
-data.toggle = 'archaeology'
+S:AddCallbackForAddon('Blizzard_ArchaeologyUI', nil, nil, nil, nil, nil, 'archaeology')
 
 function S:Blizzard_ArchaeologyUI()
 	local ArchaeologyFrame = _G.ArchaeologyFrame

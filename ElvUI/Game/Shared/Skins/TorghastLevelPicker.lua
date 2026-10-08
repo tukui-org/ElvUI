@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_TorghastLevelPicker')
-data.toggle = 'torghastLevelPicker'
+S:AddCallbackForAddon('Blizzard_TorghastLevelPicker', nil, nil, nil, nil, nil, 'torghastLevelPicker')
 
 local function UpdateHighestAvailableLayer(page)
 	for layer in page.gossipOptionsPool:EnumerateActive() do

@@ -6,10 +6,9 @@ local _G = _G
 local ipairs = ipairs
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_CombatLog')
-function data.check() -- this is always on with the chat module, it's only handle the top bar in combat log chat frame
-	return E.private.chat.enable
-end
+S:AddCallbackForAddon('Blizzard_CombatLog', nil, nil, nil, nil, nil, function()
+	return E.private.chat.enable -- this is always on with the chat module, it's only handle the top bar in combat log chat frame
+end)
 
 local function StyleButtons()
 	for index in ipairs(_G.Blizzard_CombatLog_Filters.filters) do

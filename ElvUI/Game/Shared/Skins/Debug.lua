@@ -21,16 +21,13 @@ local FrameTexs = {
 }
 
 -- ScriptErrorsFrame Skin
-local data = S:AddCallbackForAddon('Blizzard_ScriptErrorsFrame')
-data.toggle = 'debug'
+S:AddCallbackForAddon('Blizzard_ScriptErrorsFrame', nil, nil, nil, nil, nil, 'debug')
 
 -- FrameStack, TableInspect Skins
 if IsAddOnLoaded('Blizzard_DebugTools') then
-	local data = S:AddCallback('Blizzard_DebugTools')
-	data.toggle = 'debug'
+	S:AddCallback('Blizzard_DebugTools', nil, nil, 'debug')
 else
-	local data = S:AddCallbackForAddon('Blizzard_DebugTools')
-	data.toggle = 'debug'
+	S:AddCallbackForAddon('Blizzard_DebugTools', nil, nil, nil, nil, nil, 'debug')
 end
 
 local function SkinOnShow()
@@ -61,7 +58,7 @@ local function SkinOnShow()
 
 	-- Default Buttons
 	S:HandleButton(ScriptErrorsFrame.Reload)
-	S:HandleButton(E.Forever and ScriptErrorsFrame.CloseButton or ScriptErrorsFrame.Close) -- ToDo: Forever
+	S:HandleButton(E.Forever and ScriptErrorsFrame.CloseButton or ScriptErrorsFrame.Close)
 	S:HandleNextPrevButton(ScriptErrorsFrame.PreviousError)
 	S:HandleNextPrevButton(ScriptErrorsFrame.NextError)
 

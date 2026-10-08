@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_IslandsQueueUI')
-data.toggle = 'islandQueue'
+S:AddCallbackForAddon('Blizzard_IslandsQueueUI', nil, nil, nil, nil, nil, 'islandQueue')
 
 function S:Blizzard_IslandsQueueUI()
 	local IslandsFrame = _G.IslandsQueueFrame

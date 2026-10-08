@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_Settings_Shared')
-data.toggle = 'blizzardOptions'
+S:AddCallbackForAddon('Blizzard_Settings_Shared', nil, nil, nil, nil, nil, 'blizzardOptions')
 
 local function HandleDropdown(option)
 	S:HandleButton(option.Dropdown)
@@ -129,7 +128,8 @@ local function SettingsListScrollUpdateChild(child)
 
 	local button = child.Button
 	if button then
-		if button.New then
+		-- only expandable sections have a header button - the other Buttons are UIPanelButtonTemplate
+		if not child.OnExpandedChanged then
 			S:HandleButton(button)
 		else
 			button:StripTextures()

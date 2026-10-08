@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_EventTrace')
-data.toggle = 'eventLog'
+S:AddCallbackForAddon('Blizzard_EventTrace', nil, nil, nil, nil, nil, 'eventLog')
 
 local function ReskinScrollUpdateChild(child)
 	local button = child.HideButton

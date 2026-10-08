@@ -9,8 +9,7 @@ local CreateFrame = CreateFrame
 local BATTLENET_FONT_COLOR = BATTLENET_FONT_COLOR
 local GREEN_FONT_COLOR = GREEN_FONT_COLOR
 
-local data = S:AddCallbackForAddon('Blizzard_Communities')
-data.toggle = 'communities'
+S:AddCallbackForAddon('Blizzard_Communities', nil, nil, nil, nil, nil, 'communities')
 
 local function HandleCommunitiesButton(button)
 	button.Background:Hide()

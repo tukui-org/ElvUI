@@ -14,8 +14,7 @@ local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 local MAX_TALENT_TABS = MAX_TALENT_TABS
 local MAX_NUM_TALENTS = MAX_NUM_TALENTS
 
-local data = S:AddCallbackForAddon('Blizzard_InspectUI')
-data.toggle = 'inspect'
+S:AddCallbackForAddon('Blizzard_InspectUI', nil, nil, nil, nil, nil, 'inspect')
 
 local function HandleTabs()
 	local tab = _G.InspectFrameTab1
@@ -76,17 +75,14 @@ local function FrameBackdrop_OnLeave(frame)
 	frame.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
-local function TalentBorderSetShown(border, shown) -- TalentFrame_Update shows the border on the inspected unit's chosen talents
+local function TalentBorder_OnShow(border)
 	local button = border:GetParent()
-	if shown then
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
-	else
-		button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
-	end
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.rgbvaluecolor))
 end
 
-local function TalentBorderHide(border)
-	TalentBorderSetShown(border, false)
+local function TalentBorder_OnHide(border)
+	local button = border:GetParent()
+	button.backdrop:SetBackdropBorderColor(unpack(E.media.bordercolor))
 end
 
 local function InspectTalentIconDesaturated(icon, desaturate)
@@ -95,7 +91,7 @@ local function InspectTalentIconDesaturated(icon, desaturate)
 end
 
 local function UpdateGlyph(frame)
-	local talentGroup = _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup;
+	local talentGroup = _G.PlayerTalentFrame and _G.PlayerTalentFrame.talentGroup
 	local _, glyphType, _, _, iconFilename = GetGlyphSocketInfo(frame:GetID(), talentGroup, true, _G.INSPECTED_UNIT)
 	frame.texture:SetTexture(glyphType and iconFilename or [[Interface\Spellbook\UI-Glyph-Rune1]])
 end
@@ -138,8 +134,8 @@ function S:Blizzard_InspectUI()
 		local InspectModelFrame = _G.InspectModelFrame
 		InspectModelFrame:StripTextures()
 		InspectModelFrame:CreateBackdrop()
-		InspectModelFrame.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-		InspectModelFrame.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+		InspectModelFrame.backdrop:Point('TOPLEFT', -E.Border, E.Border)
+		InspectModelFrame.backdrop:Point('BOTTOMRIGHT', E.Border, -(E.Border+1))
 
 		-- Re-add the overlay texture which was removed via StripTextures
 		InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)
@@ -296,8 +292,9 @@ function S:Blizzard_InspectUI()
 				button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 
 				hooksecurefunc(icon, 'SetDesaturated', InspectTalentIconDesaturated)
-				hooksecurefunc(button.border, 'SetShown', TalentBorderSetShown)
-				hooksecurefunc(button.border, 'Hide', TalentBorderHide)
+
+				button.border:HookScript('OnShow', TalentBorder_OnShow)
+				button.border:HookScript('OnHide', TalentBorder_OnHide)
 			end
 		end
 

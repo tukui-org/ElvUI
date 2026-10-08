@@ -230,7 +230,7 @@ do
 
 		for accessID, sender in next, accessSender do
 			if strlower(sender) == strlower(chanSender) then
-				senders[#senders + 1] = accessID
+				tinsert(senders, accessID)
 			end
 		end
 
@@ -361,10 +361,11 @@ do --this can save some main file locals
 		if E.Classic then
 			-- Simpy Seasonal (5813: Wild Growth)
 			z['Player-5813-0301DEC1']	= itsSimpy -- Warlock: Yubi
-			-- Simpy Era (5149: Mankrik, 5066: Whitemane)
+			-- Simpy Era (5149: Mankrik)
 			z['Player-5149-04172B76']	= itsSimpy -- Warlock: Simpy
 			z['Player-5149-04C878ED']	= itsSimpy -- Warrior: Feldia
-			z['Player-5066-0659581C']	= itsSimpy -- Priest: Cutepriest
+			z['Player-5066-0659581C']	= itsSimpy -- [Alliance, Whitemane] Priest: Cutepriest
+			z['Player-5066-06716CCB']	= itsSimpy -- [Horde, Blaumeux] Hunter: Neah
 		elseif E.TBC then
 			-- Simpy TBC Anniversary (6064: Dreamscythe)
 			z['Player-6064-02A886D5']	= itsSimpy -- Warlock: Simpy
@@ -437,6 +438,7 @@ do --this can save some main file locals
 			z['Player-1168-0870FBCE']	= itsSimpy -- [Horde] Druid:	Imsojuicy
 			z['Player-1168-07C00783']	= itsSimpy -- [Horde] DH:		Imsopeachy
 			z['Player-1168-07B41C4C']	= itsSimpy -- [Horde] Paladin:	Imsosalty
+			z['Player-1168-0B0D8346']	= itsSimpy -- [Horde] Paladin:	Imsosour
 			z['Player-1168-0870F320']	= itsSimpy -- [Horde] Mage:		Imsospicy
 			z['Player-1168-0A395531']	= itsSimpy -- [Horde] Hunter:	Imsonutty
 			z['Player-1168-0A395540']	= itsSimpy -- [Horde] Monk:		Imsotasty
@@ -1240,7 +1242,7 @@ function CH:TabOnEnter(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and not chat.copyButton:IsMouseOver() then
+		if chat and chat.copyButton and not chat.copyButton:IsMouseMotionFocus() then
 			chat.copyButton:SetAlpha(0.35)
 		end
 	end
@@ -1255,7 +1257,7 @@ function CH:TabOnLeave(tab)
 
 	if not CH.db.hideCopyButton then
 		local chat = CH:GetOwner(tab)
-		if chat and chat.copyButton and not chat.copyButton:IsMouseOver() then
+		if chat and chat.copyButton and not chat.copyButton:IsMouseMotionFocus() then
 			chat.copyButton:SetAlpha(0)
 		end
 	end
@@ -1296,7 +1298,7 @@ function CH:HandleFadeTabs(chat, hook)
 
 	if not hook then
 		CH:TabOnEnter(tab)
-	elseif not tab:IsMouseOver() and not chat:IsMouseOver() then
+	elseif not tab:IsMouseMotionFocus() then
 		CH:TabOnLeave(tab)
 	end
 end
@@ -2038,8 +2040,8 @@ function CH:GetPFlag(specialFlag, zoneChannelID, unitGUID)
 		end
 	end
 
-	if E.Retail and E:NotSecretValue(unitGUID) and unitGUID then
-		if CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
+	if E.Modern and E:NotSecretValue(unitGUID) and unitGUID then
+		if E.Retail and CH.db.timerunningIcon and IsTimerunningPlayer(unitGUID) then
 			flag = flag .. TIMERUNNING_SMALL
 		end
 
@@ -2230,17 +2232,21 @@ function CH:MessageFormatter(frame, info, chatType, chatGroup, chatTarget, chann
 		local classLink = realm and playerLink and not msgProtected and (info.colorNameByClass and gsub(playerLink, '(|h|c.-)|r|h$','%1-'..realm..'|r|h') or gsub(playerLink, '(|h.-)|h$','%1-'..realm..'|h'))
 		body = (classLink and gsub(msg, arg2..'%-'..realm, pflag..classLink, 1)) or ((E:NotSecretValue(arg2) and arg2 ~= sender) and gsub(msg, arg2, sender, 1)) or msg
 	elseif specialType then -- contains special formatting
-		body = format(header..msg, pflag..sender)
-	else -- ignore special characters from players
+		body = format(header..msg, pflag..sender, sender)
+	elseif header then -- ignore special characters from players
 		body = format(header..'%s', pflag..sender, msg)
+	else -- new chat types might fail to here
+		body = msg
 	end
 
-	if not specialType and (channelLength > 0) then -- Add Channel
-		body = '|Hchannel:channel:'..arg8..'|h['..ResolvePrefixedChannelName(arg4)..']|h '..body
-	end
+	if header and not specialType then
+		if channelLength > 0 then -- Add Channel
+			body = '|Hchannel:channel:'..arg8..'|h['..ResolvePrefixedChannelName(arg4)..']|h '..body
+		end
 
-	if not specialType and not msgProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
-		body = CH:HandleShortChannels(body, CH.db.hideChannels)
+		if not msgProtected and (chatType ~= 'EMOTE' and chatType ~= 'TEXT_EMOTE') and (CH.db.shortChannels or CH.db.hideChannels) then
+			body = CH:HandleShortChannels(body, CH.db.hideChannels)
+		end
 	end
 
 	for _, filter in ipairs(CH.PluginMessageFilters) do
@@ -2341,7 +2347,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			if not found or not info then
 				local eventType, channelID = arg1, arg7
-				if not ChatFrame_CheckAddChannel(self, eventType, channelID) then
+				if not ChatFrame_CheckAddChannel(frame, eventType, channelID) then
 					return true
 				end
 			end
@@ -2393,7 +2399,8 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 		end
 
 		if (chatType == 'SYSTEM' or chatType == 'SKILL' or chatType == 'CURRENCY' or chatType == 'MONEY' or
-			chatType == 'OPENING' or chatType == 'TRADESKILLS' or chatType == 'PET_INFO' or chatType == 'TARGETICONS' or chatType == 'BN_WHISPER_PLAYER_OFFLINE') then
+			chatType == 'OPENING' or chatType == 'TRADESKILLS' or chatType == 'PET_INFO' or chatType == 'TARGETICONS' or
+			chatType == 'BN_WHISPER_PLAYER_OFFLINE' or chatType == 'COLLECTED_APPEARANCE') then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
 		elseif chatType == 'LOOT' then
 			frame:AddMessage(arg1, info.r, info.g, info.b, info.id, nil, nil, nil, nil, nil, isHistory, historyTime)
@@ -2628,13 +2635,24 @@ function CH:ChatFrame_SetScript(script, func)
 	end
 end
 
+function CH:ChatFrame_OverflowAlerting(btn)
+	if btn.alerting then
+		return true
+	end
+
+	-- 12.1.5 and Forever dropped the alerting key, the highlight FlashAnim plays instead
+	local hl = btn:GetHighlightTexture()
+	local anim = hl and hl.FlashAnim
+	return anim and anim:IsPlaying()
+end
+
 function CH:FCFDockOverflowButton_UpdatePulseState(btn)
 	if not btn.Texture then return end
 
-	if btn.alerting then
+	if CH:ChatFrame_OverflowAlerting(btn) then
 		btn:SetAlpha(1)
 		btn.Texture:SetVertexColor(unpack(E.media.rgbvaluecolor))
-	elseif not btn:IsMouseOver() then
+	elseif not btn:IsMouseMotionFocus() then
 		btn.Texture:SetVertexColor(1, 1, 1)
 	end
 end
@@ -2648,14 +2666,14 @@ do
 	end
 
 	function CH:Overflow_OnLeave()
-		if self.Texture and not self.alerting then
+		if self.Texture and not CH:ChatFrame_OverflowAlerting(self) then
 			self.Texture:SetVertexColor(1, 1, 1)
 		end
 	end
 
 	local overflow_SetAlpha
 	function CH:Overflow_SetAlpha(alpha)
-		if self.alerting then
+		if CH:ChatFrame_OverflowAlerting(self) then
 			alpha = 1
 		elseif alpha < 0.5 then
 			local hooks = CH.hooks and CH.hooks[_G.GeneralDockManager.primary]
@@ -2786,12 +2804,19 @@ function CH:ChatThrottleIntervalHandler(event, text, author, ...)
 	if blockFlag then
 		return true
 	else
-		if blockObject then blockObject.time = time() end
+		if blockObject then
+			blockObject.time = time()
+		end
+
 		return CH:FindURL(event, text, author, ...)
 	end
 end
 
 function CH:CHAT_MSG_CHANNEL(event, msg, author, ...)
+	if self.channelList and not next(self.channelList) then
+		return false -- one without channels drops the line anyway
+	end
+
 	return CH:ChatThrottleIntervalHandler(event, msg, author, ...)
 end
 
@@ -3042,8 +3067,8 @@ end
 
 function CH:SaveChatHistory(event, ...)
 	local historyType = historyTypes[event]
-	if historyType then -- let others go by..
-		if not CH.db.showHistory[historyType] then return end -- but kill ignored ones
+	if historyType and not CH.db.showHistory[historyType] then
+		return -- let others go by but kill ignored ones
 	end
 
 	if CH.db.throttleInterval ~= 0 and (event == 'CHAT_MSG_SAY' or event == 'CHAT_MSG_YELL' or event == 'CHAT_MSG_CHANNEL') then
@@ -4207,8 +4232,8 @@ function CH:Initialize()
 		chatHead.StatusBar:SetMinMaxValues(0, 1)
 
 		chatHead.StatusBar.anim = _G.CreateAnimationGroup(chatHead.StatusBar)
-		chatHead.StatusBar.anim.progress = chatHead.StatusBar.anim:CreateAnimation('Progress')
-		chatHead.StatusBar.anim.progress:SetEasing('Out')
+		chatHead.StatusBar.anim.progress = chatHead.StatusBar.anim:CreateAnimation('progress')
+		chatHead.StatusBar.anim.progress:SetEasing('out')
 		chatHead.StatusBar.anim.progress:SetDuration(0.3)
 
 		chatHead:Hide()

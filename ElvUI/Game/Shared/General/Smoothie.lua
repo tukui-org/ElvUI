@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 
 -- Credit: ls- (lightspark)
 
-local abs, next, Lerp = abs, next, Lerp
+local abs, next, lerp = abs, next, math.lerp or Lerp
 local tonumber, assert = tonumber, assert
 local activeObjects = {}
 local handledObjects = {}
@@ -22,7 +22,7 @@ function E:Smoothing_OnUpdate(elapsed)
 	local amount = E:Clamp(AMOUNT * elapsed * TARGET_FPS)
 
 	for object, target in next, activeObjects do
-		local new = Lerp(object._value, target, amount)
+		local new = lerp(object._value, target, amount)
 		if E:Smoothing_IsCloseEnough(new, target, object._max - object._min) then
 			new = target
 

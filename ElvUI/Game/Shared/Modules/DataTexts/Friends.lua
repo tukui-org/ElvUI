@@ -231,11 +231,13 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 
 	BNTable[bnIndex] = obj
 
-	if tableList[client] then
-		tableList[client][#tableList[client]+1] = BNTable[bnIndex]
+	local list = tableList[client]
+	if list then
+		tinsert(list, obj)
 	else
-		tableList[client] = {}
-		tableList[client][1] = BNTable[bnIndex]
+		list = { obj }
+
+		tableList[client] = list
 	end
 end
 

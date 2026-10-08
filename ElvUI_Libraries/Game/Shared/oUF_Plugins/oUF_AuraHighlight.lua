@@ -73,8 +73,16 @@ local function GetAuraType(unit, check, list)
 	end
 end
 
+-- any debuff can change the highlight - buffs only when they are listed
+local function HighlightAura(frame, _, _, _, aura)
+	if not aura or aura.isHarmful then return true end
+
+	local list = frame.AuraHighlightFilterTable
+	return list and oUF:NotSecretValue(aura.spellId) and oUF:NotSecretValue(aura.name) and (list[aura.spellId] or list[aura.name])
+end
+
 local function Update(self, event, unit, updateInfo)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, HighlightAura) then return end
 
 	local aura, auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 

@@ -5,8 +5,7 @@ local TT = E:GetModule('Tooltip')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_Contribution')
-data.toggle = 'contribution'
+S:AddCallbackForAddon('Blizzard_Contribution', nil, nil, nil, nil, nil, 'contribution')
 
 local function SetupContributeButton(frame)
 	if not frame.IsSkinned then

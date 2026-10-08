@@ -7,8 +7,7 @@ local hooksecurefunc = hooksecurefunc
 local GetNumGuildBankTabs = GetNumGuildBankTabs
 local GuildControlGetNumRanks = GuildControlGetNumRanks
 
-local data = S:AddCallbackForAddon('Blizzard_GuildControlUI')
-data.toggle = 'guildcontrol'
+S:AddCallbackForAddon('Blizzard_GuildControlUI', nil, nil, nil, nil, nil, 'guildcontrol')
 
 local function SkinGuildRanks()
 	for i = 1, GuildControlGetNumRanks() do

@@ -1,8 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local next = next
-
+local next, ipairs = next, ipairs
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)
@@ -71,6 +70,10 @@ function UF:Configure_AuraWatch(frame, isPet)
 			end
 		elseif auras.SetNewTable then
 			auras:SetNewTable(auraTable)
+
+			for _, aura in ipairs(auras) do
+				aura.count:FontTemplate(auras.countFont, auras.countFontSize or 12, auras.countFontOutline or 'OUTLINE')
+			end
 		end
 	elseif frame:IsElementEnabled('AuraWatch') then
 		frame:DisableElement('AuraWatch')
@@ -92,6 +95,7 @@ function UF:AuraWatch_PostCreateIcon(button)
 	button.count:ClearAllPoints()
 	button.count:Point('BOTTOMRIGHT', 1, 1)
 	button.count:SetJustifyH('RIGHT')
+	button.count:FontTemplate(self.countFont, self.countFontSize or 12, self.countFontOutline or 'OUTLINE')
 end
 
 function UF:AuraWatch_PostUpdateIcon(_, button)
@@ -137,7 +141,6 @@ function UF:AuraWatch_PostUpdateIcon(_, button)
 	if count then
 		button.count:ClearAllPoints()
 		button.count:Point(settings.countAnchor or 'BOTTOMRIGHT', settings.countX or 1, settings.countY or 1)
-		button.count:FontTemplate(self.countFont, self.countFontSize or 12, self.countFontOutline or 'OUTLINE')
 	end
 
 	if colorIcon then

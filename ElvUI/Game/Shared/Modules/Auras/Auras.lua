@@ -572,6 +572,7 @@ function A:UpdateHeader(header)
 		header.lineSpacing = db.verticalSpacing
 		header.keepSizeRatio = db.keepSizeRatio
 		header.growthDirection = db.growthDirection
+		header.smoothbars = db.smoothbars
 		header.useStatusbar = db.barShow
 		header.barColor = db.barColor
 		header.numAuras = db.wrapAfter

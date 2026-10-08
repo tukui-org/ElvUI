@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_AzeriteRespecUI')
-data.toggle = 'azeriteRespec'
+S:AddCallbackForAddon('Blizzard_AzeriteRespecUI', nil, nil, nil, nil, nil, 'azeriteRespec')
 
 local slotColor = { r = .6, g = 0, b = .6, a = .5 }
 local function ItemSlotColor(self)

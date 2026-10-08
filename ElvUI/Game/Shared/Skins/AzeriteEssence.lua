@@ -6,8 +6,7 @@ local hooksecurefunc = hooksecurefunc
 
 local C_AzeriteEssence_CanOpenUI = C_AzeriteEssence.CanOpenUI
 
-local data = S:AddCallbackForAddon('Blizzard_AzeriteEssenceUI')
-data.toggle = 'azeriteEssence'
+S:AddCallbackForAddon('Blizzard_AzeriteEssenceUI', nil, nil, nil, nil, nil, 'azeriteEssence')
 
 local function EssenceListScrollUpdateChild(button)
 	if not button.IsSkinned then

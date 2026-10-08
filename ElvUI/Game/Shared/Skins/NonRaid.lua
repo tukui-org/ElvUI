@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
-local data = S:AddCallbackForAddon('Blizzard_RaidFrame')
-data.toggle = 'nonraid'
+S:AddCallbackForAddon('Blizzard_RaidFrame', nil, nil, nil, nil, nil, 'nonraid')
 
 function S:Blizzard_RaidFrame()
 	for _, frame in next, {

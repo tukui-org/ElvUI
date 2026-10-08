@@ -7,8 +7,7 @@ local next = next
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_Calendar')
-data.toggle = 'calendar'
+S:AddCallbackForAddon('Blizzard_Calendar', nil, nil, nil, nil, nil, 'calendar')
 
 local function SkinContainer(frame)
 	frame.NineSlice:Kill()

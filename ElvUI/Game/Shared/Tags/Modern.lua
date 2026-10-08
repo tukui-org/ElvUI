@@ -63,12 +63,12 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 		return E:AbbreviateNumbers(currentPower, E.Abbreviate[which])
 	end)
 
-	E:AddTag(format('health:max:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
+	E:AddTag(format('health:max:%s', tagFormat), 'UNIT_MAXHEALTH', function(unit)
 		local maxHealth = UnitHealthMax(unit)
 		return E:AbbreviateNumbers(maxHealth, E.Abbreviate[which])
 	end)
 
-	E:AddTag(format('power:max:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
+	E:AddTag(format('power:max:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_MAXPOWER', function(unit)
 		local powerType = UnitPowerType(unit)
 		local maxPower = UnitPowerMax(unit, powerType)
 		return E:AbbreviateNumbers(maxPower, E.Abbreviate[which])
@@ -127,7 +127,7 @@ if info then
 	info['missingpp:longvalue'] = { category = "Power", description = "Displays the missing power of the unit in whole numbers when not at full power" }
 	info['missingpp:shortvalue'] = { category = "Power", description = "Displays the missing power of the unit in whole numbers when not at full power" }
 	info['altpowercolor'] = { category = "Colors", description = "Changes the text color to the current alternative power color (Blizzard defined)" }
-	info['spec:icon'] = { category = "Class", description = "Displays the specialization icon of the unit, if that unit is a player" }
+	info['spec:icon'] = { hidden = not E.Retail, category = "Class", description = "Displays the specialization icon of the unit, if that unit is a player" }
 	info['additionalmana:current-max-percent'] = { category = "Mana", description = "Displays the current and max additional mana of the unit, separated by a dash (% when not full)" }
 	info['additionalmana:current-max'] = { category = "Mana", description = "Displays the unit's current and maximum additional mana, separated by a dash" }
 	info['additionalmana:current-percent'] = { category = "Mana", description = "Displays the current additional mana of the unit and % when not full" }
@@ -139,11 +139,5 @@ if info then
 	info['additionalmana:current-percent:shortvalue'] = { category = "Mana", description = "" }
 	info['additionalmana:current:shortvalue'] = { category = "Mana", description = "" }
 	info['additionalmana:deficit:shortvalue'] = { category = "Mana", description = "" }
-	info['altpower:current-max-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max-percent format" }
-	info['altpower:current-max'] = { category = "Altpower", description = "Displays altpower text on a unit in current-max format" }
-	info['altpower:current-percent'] = { category = "Altpower", description = "Displays altpower text on a unit in current-percent format" }
-	info['altpower:current'] = { category = "Altpower", description = "Displays altpower text on a unit in current format" }
-	info['altpower:deficit'] = { category = "Altpower", description = "Displays altpower text on a unit in deficit format" }
-	info['altpower:percent'] = { category = "Altpower", description = "Displays altpower text on a unit in percent format" }
 	info['pvp:honorlevel'] = { category = "PvP", description = "Displays honor level of the unit" }
 end

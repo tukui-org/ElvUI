@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_FrameXML', 'GuildInviteFrame')
-data.toggle = 'guild'
+S:AddCallbackForAddon('Blizzard_FrameXML', 'GuildInviteFrame', nil, nil, nil, nil, 'guild')
 
 function S:GuildInviteFrame()
 	local GuildInviteFrame = _G.GuildInviteFrame

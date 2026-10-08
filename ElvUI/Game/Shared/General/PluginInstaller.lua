@@ -286,8 +286,8 @@ function PI:CreateFrame()
 	f.Status:Point('BOTTOMRIGHT', f.Next, 'BOTTOMLEFT', -6, 2)
 	-- Setup StatusBar Animation
 	f.Status.anim = _G.CreateAnimationGroup(f.Status)
-	f.Status.anim.progress = f.Status.anim:CreateAnimation('Progress')
-	f.Status.anim.progress:SetEasing('Out')
+	f.Status.anim.progress = f.Status.anim:CreateAnimation('progress')
+	f.Status.anim.progress:SetEasing('out')
 	f.Status.anim.progress:SetDuration(0.3)
 
 	f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')

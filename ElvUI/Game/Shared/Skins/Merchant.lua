@@ -12,8 +12,7 @@ local GetItemQualityByID = C_Item.GetItemQualityByID
 
 local QUEST_ICON = [[Interface\ContainerFrame\UI-Icon-QuestBang]]
 
-local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MerchantFrame')
-data.toggle = 'merchant'
+S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'MerchantFrame', nil, nil, nil, nil, 'merchant')
 
 local function HandleIconButton(button, ...)
 	S:HandleButton(button)
@@ -68,6 +67,8 @@ local function UpdateBuybackInfo()
 end
 
 local function UpdateMerchantInfo()
+	if not _G.MerchantFrame:IsShown() then return end
+
 	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
 		local button = _G['MerchantItem'..i..'ItemButton']
 

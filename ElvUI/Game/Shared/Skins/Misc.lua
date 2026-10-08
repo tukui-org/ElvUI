@@ -3,16 +3,15 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 local next = next
-
-local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local CreateFrame = CreateFrame
 
-local data = S:AddCallback('BlizzardMiscFrames')
-data.toggle = 'misc'
+S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')
 
-local function FixReadyCheckFrame(frame)
-	if frame.initiator and E:UnitIsUnit('player', frame.initiator) then
-		frame:Hide() -- bug fix, don't show it if player is initiator
+local function FixReadyCheckFrame(listener)
+	local readyCheck = _G.ReadyCheckFrame
+	if readyCheck.initiator and not listener:IsShown() then
+		readyCheck:Hide() -- bug fix, dont show it if player is initiator; blizzard checks UnitIsUnit('player', initiator)
 	end
 end
 
@@ -119,7 +118,7 @@ function S:BlizzardMiscFrames()
 		ListenerFrame:SetAlpha(0)
 	end
 
-	ReadyCheckFrame:HookScript('OnShow', FixReadyCheckFrame)
+	ListenerFrame:HookScript('OnShow', FixReadyCheckFrame)
 
 	-- Retail, Forever and Mists skin it in PVP.lua
 	if not (E.Modern or E.Mists) then
@@ -198,10 +197,9 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameContentsFrameIcon:SetTexCoords()
 		_G.GhostFrameContentsFrameIcon:Point('RIGHT', _G.GhostFrameContentsFrameText, 'LEFT', -12, 0)
 
-		local x = E.PixelMode and 1 or 2
 		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent())
-		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -x, x)
-		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, x, -x)
+		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -E.Border, E.Border)
+		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, E.Border, -E.Border)
 		_G.GhostFrameContentsFrameIcon:Size(37, 38)
 		_G.GhostFrameContentsFrameIcon:SetParent(button)
 		button:SetTemplate()

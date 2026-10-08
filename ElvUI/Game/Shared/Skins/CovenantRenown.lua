@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_CovenantRenown')
-data.toggle = 'covenantRenown'
+S:AddCallbackForAddon('Blizzard_CovenantRenown', nil, nil, nil, nil, nil, 'covenantRenown')
 
 local function Covenant_SetupData(frame)
 	frame.CloseButton.Border:Hide()

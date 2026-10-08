@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_DeathRecap')
-data.toggle = 'deathRecap'
+S:AddCallbackForAddon('Blizzard_DeathRecap', nil, nil, nil, nil, nil, 'deathRecap')
 
 local function DeathRecapScrollUpdateChild(child)
 	local spellInfo = child.SpellInfo

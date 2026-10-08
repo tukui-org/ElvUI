@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 
-local data = S:AddCallback('BattleNetFrames')
-data.toggle = 'misc'
+S:AddCallback('BattleNetFrames', nil, nil, 'misc')
 
 local function ShardTransferToggle(frame)
 	_G.ShardTransferImminentMinimizeButton:SetNormalTexture(frame:IsShown() and E.Media.Textures.MinusButton or E.Media.Textures.PlusButton, true)

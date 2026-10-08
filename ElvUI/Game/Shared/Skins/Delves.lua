@@ -5,11 +5,8 @@ local _G = _G
 local next = next
 local hooksecurefunc = hooksecurefunc
 
-local companionConfiguration = S:AddCallbackForAddon('Blizzard_DelvesCompanionConfiguration')
-companionConfiguration.toggle = 'lfg'
-
-local difficultyPicker = S:AddCallbackForAddon('Blizzard_DelvesDifficultyPicker')
-difficultyPicker.toggle = 'lfg'
+S:AddCallbackForAddon('Blizzard_DelvesCompanionConfiguration', nil, nil, nil, nil, nil, 'lfg')
+S:AddCallbackForAddon('Blizzard_DelvesDifficultyPicker', nil, nil, nil, nil, nil, 'lfg')
 
 local function HandleButton(button)
 	if button.IsSkinned then return end

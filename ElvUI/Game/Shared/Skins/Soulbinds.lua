@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_Soulbinds')
-data.toggle = 'soulbinds'
+S:AddCallbackForAddon('Blizzard_Soulbinds', nil, nil, nil, nil, nil, 'soulbinds')
 
 -- Credits: siweia - Aurora Classic
 function S:Blizzard_Soulbinds()

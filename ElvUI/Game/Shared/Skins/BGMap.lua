@@ -4,8 +4,7 @@ local S = E:GetModule('Skins')
 local _G = _G
 local hooksecurefunc = hooksecurefunc
 
-local data = S:AddCallbackForAddon('Blizzard_BattlefieldMap')
-data.toggle = 'bgmap'
+S:AddCallbackForAddon('Blizzard_BattlefieldMap', nil, nil, nil, nil, nil, 'bgmap')
 
 local function SetBackdropAlpha(frame)
 	frame.backdrop:SetBackdropColor(0, 0, 0, 1 - _G.BattlefieldMapOptions.opacity)

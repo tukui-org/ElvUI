@@ -3,8 +3,7 @@ local S = E:GetModule('Skins')
 
 local _G = _G
 
-local data = S:AddCallbackForAddon('Blizzard_AnimaDiversionUI')
-data.toggle = 'animaDiversion'
+S:AddCallbackForAddon('Blizzard_AnimaDiversionUI', nil, nil, nil, nil, nil, 'animaDiversion')
 
 function S:Blizzard_AnimaDiversionUI()
 	local frame = _G.AnimaDiversionFrame

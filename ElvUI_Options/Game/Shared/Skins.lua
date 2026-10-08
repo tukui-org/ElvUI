@@ -124,6 +124,7 @@ if E.Modern then
 	toggles.itemInteraction = L["Item Interaction"]
 	toggles.objectiveTracker = L["OBJECTIVES_TRACKER_LABEL"]
 	toggles.subscriptionInterstitial = L["Subscription Interstitial"]
+	toggles.talkinghead = L["Talking Head"]
 end
 
 if E.Retail then
@@ -156,7 +157,6 @@ if E.Retail then
 	toggles.runeforge = L["Runeforge"]
 	toggles.scrapping = L["SCRAP_BUTTON"]
 	toggles.soulbinds = L["Soulbinds"]
-	toggles.talkinghead = L["Talking Head"]
 	toggles.torghastLevelPicker = L["Torghast Level Picker"]
 	toggles.weeklyRewards = L["Weekly Rewards"]
 elseif E.Forever then

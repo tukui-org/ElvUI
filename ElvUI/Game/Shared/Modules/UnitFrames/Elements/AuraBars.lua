@@ -215,9 +215,11 @@ function UF:Configure_AuraBars(frame)
 			bars.numAuras = db.maxBars
 			bars.maxFrameCount = db.maxBars
 			bars.lineSpacing = bars.spacing
+			bars.smoothbars = db.smoothbars
 			bars.isTransparent = UF.db.colors.transparentAurabars -- always on for now
 			bars.invertAurabars = UF.db.colors.invertAurabars
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
+			bars.sortDirection = E.AuraContainerSortDirection[db.sortDirection]
 			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 			bars.countPosition, bars.countXOffset, bars.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline

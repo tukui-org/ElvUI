@@ -33,9 +33,14 @@ local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFD] = 'UNIGNORESLOT'
 }
 
-local oldAtlas = {
+local OLD_ATLAS = {
 	Options_ListExpand_Right = 1,
 	Options_ListExpand_Right_Expanded = 1
+}
+
+local FILL_COLORS = {
+	['common-stat-bar-blue'] = { r = 0.03, g = 0.43, b = 0.92 },
+	['common-stat-bar-green'] = { r = 0.23, g = 1, b = 0 },
 }
 
 local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
@@ -47,29 +52,26 @@ local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
 	['UI-Character-Info-Resistance-Arcane'] = spellSchoolIcon..7,
 }
 
-local ResistanceCoords = {
-	{ 0.21875, 0.8125, 0.25, 0.32421875 },		--Arcane
-	{ 0.21875, 0.8125, 0.0234375, 0.09765625 },	--Fire
-	{ 0.21875, 0.8125, 0.13671875, 0.2109375 },	--Nature
-	{ 0.21875, 0.8125, 0.36328125, 0.4375},		--Frost
-	{ 0.21875, 0.8125, 0.4765625, 0.55078125},	--Shadow
+local RESISTANCE_COORDS = {
+	{ left = 0.21875, right = 0.8125, top = 0.25, bottom = 0.32421875 },		--Arcane
+	{ left = 0.21875, right = 0.8125, top = 0.0234375, bottom = 0.09765625 },	--Fire
+	{ left = 0.21875, right = 0.8125, top = 0.13671875, bottom = 0.2109375 },	--Nature
+	{ left = 0.21875, right = 0.8125, top = 0.36328125, bottom = 0.4375},		--Frost
+	{ left = 0.21875, right = 0.8125, top = 0.4765625, bottom = 0.55078125},	--Shadow
 }
 
 if E.Modern then
-	local data = S:AddCallbackForAddon('Blizzard_UIPanels_Game')
-	data.toggle = 'character'
+	S:AddCallbackForAddon('Blizzard_UIPanels_Game', nil, nil, nil, nil, nil, 'character')
 else
-	local data = S:AddCallback('Blizzard_UIPanels_Game')
-	data.toggle = 'character'
+	S:AddCallback('Blizzard_UIPanels_Game', nil, nil, 'character')
 end
 
 if E.Forever then -- Forever only addon
-	local data = S:AddCallbackForAddon('Blizzard_Statistics')
-	data.toggle = 'character'
+	S:AddCallbackForAddon('Blizzard_Statistics', nil, nil, nil, nil, nil, 'character')
 end
 
 local function UpdateCollapse(texture, atlas)
-	if not atlas or oldAtlas[atlas] then
+	if not atlas or OLD_ATLAS[atlas] then
 		local parent = texture:GetParent()
 		if parent:IsCollapsed() then
 			texture:SetAtlas('Soulbinds_Collection_CategoryHeader_Expand')
@@ -448,8 +450,23 @@ local function HandleCategory(frame)
 	frame.backdrop:Size(150, 18)
 end
 
-local function ColoredProgressBar_SetFillWidth(bar, width)
-	bar.Fill:SetShown(width > 0)
+-- Blizzard sets the atlas, a white tint and a vertically flipped TexCoord again on every skill init
+local function ColoredProgressBar_UpdateFill(bar)
+	local fill = bar.Fill
+	local atlas = fill:GetAtlas()
+	local color = FILL_COLORS[atlas]
+	if color then
+		fill:SetVertexColor(color.r, color.g, color.b)
+	end
+
+	fill:SetTexture(E.media.normTex)
+	fill:SetTexCoord(0, 1, 0, 1)
+end
+
+local function ColoredProgressBar_SetFillPercent(bar, percent)
+	ColoredProgressBar_UpdateFill(bar)
+
+	bar.Fill:SetShown(percent > 0)
 end
 
 -- ColoredProgressBarTemplate: unnamed background, a masked Fill and Text
@@ -462,12 +479,16 @@ local function HandleColoredProgressBar(bar)
 
 	bar.Text:FontTemplate()
 
-	bar.Fill:RemoveMaskTexture(bar.Mask)
 	bar.Fill:ClearAllPoints()
 	bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
 	bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
+	bar.Fill:RemoveMaskTexture(bar.Mask)
 
-	hooksecurefunc(bar, 'SetFillWidth', ColoredProgressBar_SetFillWidth)
+	E:RegisterStatusBar(bar.Fill)
+
+	ColoredProgressBar_UpdateFill(bar)
+
+	hooksecurefunc(bar, 'SetFillPercent', ColoredProgressBar_SetFillPercent)
 end
 
 local function HappinessInfo_UpdateHappiness(info)
@@ -592,6 +613,11 @@ local function UpdateStats(frame)
 	frame:ForEachFrame(UpdateStatsChild)
 end
 
+-- Clear the gradient instead of ClearEdgeFade
+local function ClearEdgeGradient(scrollBox)
+	scrollBox:ClearAlphaGradient()
+end
+
 local function HandleStatsPane(pane)
 	pane:StripTextures()
 
@@ -600,7 +626,7 @@ local function HandleStatsPane(pane)
 	end
 
 	S:HandleTrimScrollBar(pane.ScrollBar, nil, true)
-	pane.ScrollBox:ClearEdgeFade()
+	hooksecurefunc(pane.ScrollBox, 'ApplyEdgeFade', ClearEdgeGradient)
 	hooksecurefunc(pane.ScrollBox, 'Update', UpdateStats)
 end
 
@@ -620,7 +646,7 @@ local function HandleListHeader(header)
 		end
 	end
 
-	header:CreateBackdrop('Transparent')
+	header:CreateBackdrop()
 	header.backdrop:SetInside(header, 0, 1)
 end
 
@@ -745,6 +771,8 @@ local function PaperDollFrameSetResistance(frame, unit, index)
 end
 
 local function UpdateCurrencySkins()
+	if not _G.TokenFrame:IsVisible() then return end -- Wrath runs TokenFrame_Update on every currency update - TokenFrame_OnShow runs it again
+
 	local TokenFramePopup = _G.TokenFramePopup
 	TokenFramePopup:ClearAllPoints()
 	TokenFramePopup:Point('TOPLEFT', _G.TokenFrame, 'TOPRIGHT', E.Mists and 1 or -31, E.Mists and 0 or -12)
@@ -864,9 +892,10 @@ local function HandleResistanceFrame(name)
 			frame:Point('TOP', _G[name..(i - 1)], 'BOTTOM', 0, -1)
 		end
 
-		icon:SetInside()
-		icon:SetTexCoord(unpack(ResistanceCoords[i]))
+		local coords = RESISTANCE_COORDS[i]
+		icon:SetTexCoord(coords.left, coords.right, coords.top, coords.bottom)
 		icon:SetDrawLayer('ARTWORK')
+		icon:SetInside()
 
 		text:SetDrawLayer('OVERLAY')
 	end
@@ -1058,8 +1087,8 @@ local function SkinPaperDollFrame(CharacterFrame)
 	else
 		_G.CharacterModelFrameBackgroundOverlay:SetColorTexture(0, 0, 0)
 		CharacterModelScene:CreateBackdrop()
-		CharacterModelScene.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-		CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+		CharacterModelScene.backdrop:Point('TOPLEFT', -E.Border, E.Border)
+		CharacterModelScene.backdrop:Point('BOTTOMRIGHT', E.Border, -(E.Border+1))
 	end
 
 	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
@@ -1090,7 +1119,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 	_G.GearManagerPopupFrame:HookScript('OnShow', GearManagerPopupFrame_OnShow)
 
 	if E.Forever then -- Forever sidebar tabs are plain check buttons with an icon
-		for i = 1, 3 do
+		for i = 1, 4 do
 			HandleSidebarTab(_G['PaperDollSidebarTab'..i])
 		end
 	else
@@ -1165,8 +1194,8 @@ local function SkinPetPaperDollFrame()
 		_G.PetModelFrameShadowOverlay:StripTextures()
 
 		PetModelFrame:CreateBackdrop()
-		PetModelFrame.backdrop:Point('TOPLEFT', E.PixelMode and -1 or -2, E.PixelMode and 1 or 2)
-		PetModelFrame.backdrop:Point('BOTTOMRIGHT', E.PixelMode and 1 or 2, E.PixelMode and -2 or -3)
+		PetModelFrame.backdrop:Point('TOPLEFT', -E.Border, E.Border)
+		PetModelFrame.backdrop:Point('BOTTOMRIGHT', E.Border, -(E.Border+1))
 
 		S:HandleStatusBar(_G.PetPaperDollFrameExpBar)
 		S:HandleRotateButton(_G.PetModelFrameRotateLeftButton)
