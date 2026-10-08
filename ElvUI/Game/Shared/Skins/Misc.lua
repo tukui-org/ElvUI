@@ -8,13 +8,6 @@ local CreateFrame = CreateFrame
 
 S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')
 
-local function FixReadyCheckFrame(listener)
-	local readyCheck = _G.ReadyCheckFrame
-	if readyCheck.initiator and not listener:IsShown() then
-		readyCheck:Hide() -- bug fix, dont show it if player is initiator; blizzard checks UnitIsUnit('player', initiator)
-	end
-end
-
 local function FixAutoCompleteLevel(frame)
 	local parent = frame:GetParent()
 	if not parent then return end
@@ -117,8 +110,6 @@ function S:BlizzardMiscFrames()
 		ReadyCheckFrame:SetTemplate('Transparent')
 		ListenerFrame:SetAlpha(0)
 	end
-
-	ListenerFrame:HookScript('OnShow', FixReadyCheckFrame)
 
 	-- Retail, Forever and Mists skin it in PVP.lua
 	if not (E.Modern or E.Mists) then
