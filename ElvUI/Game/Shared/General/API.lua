@@ -211,6 +211,21 @@ E.SpecName = { -- english locale
 	[73]	= 'Protection',
 }
 
+E.ManaType = { powerName = 'MANA', powerType = 0 }
+E.AltPowerInfo = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO and E:CopyTable({}, _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO) or {
+	DRUID = { [8] = E:CopyTable({}, E.ManaType) },		-- LunarPower
+	SHAMAN = { [11] = E:CopyTable({}, E.ManaType) },	-- Maelstrom
+	PRIEST = { [13] = E:CopyTable({}, E.ManaType) }		-- Insanity
+}
+
+E.AltManaTypes = {
+	Rage = 1,
+	Energy = 3,
+	LunarPower = (E.Retail or E.Mists) and 8 or nil,
+	Maelstrom = E.Retail and 11 or nil,
+	Insanity = E.Retail and 13 or nil
+}
+
 do	-- credit: oUF/private.lua
 	local selectionTypes = {[0]=0,[1]=1,[2]=2,[3]=3,[4]=4,[5]=5,[6]=6,[7]=7,[8]=8,[9]=9,[13]=13}
 	-- 10 and 11 are unavailable to players, 12 is inconsistent due to bugs and its reliance on cvars

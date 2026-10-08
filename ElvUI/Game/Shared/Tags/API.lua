@@ -369,7 +369,7 @@ do
 		end
 
 		-- try additional mana
-		local altIndex = not r and E.Modern and _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[unitClass]
+		local altIndex = not r and E.Modern and E.AltPowerInfo[unitClass]
 		if altIndex and altIndex[UnitPowerType(unit)] then
 			Min = UnitPower(unit, POWERTYPE_MANA)
 			Max = UnitPowerMax(unit, POWERTYPE_MANA)
