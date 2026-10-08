@@ -52,7 +52,6 @@
 	<Script file='Shared\Filters\Filters.lua'/>
 
 	<Script file='Forever\Filters\Filters.lua'/>
-	<Script file='Shared\Modules\Nameplates\Plugins\PVPRole.lua'/>
 	<Script file='Shared\Modules\DataTexts\Currencies.lua'/>
 	<Script file='Shared\Modules\DataTexts\Defense.lua'/>
 	<Script file='Shared\Modules\DataTexts\Difficulty.lua'/>

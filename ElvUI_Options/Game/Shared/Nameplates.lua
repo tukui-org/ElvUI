@@ -343,8 +343,8 @@ local function GetUnitSettings(unit, name)
 
 		group.args.general.args.useStaticPosition = ACH:Toggle(L["Use Static Position"], L["When enabled the nameplate will stay visible in a locked position."], 105, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].enable end)
 	elseif unit == 'FRIENDLY_PLAYER' or unit == 'ENEMY_PLAYER' then
-		group.args.general.args.markHealers = ACH:Toggle(L["Healer Icon"], L["Display a healer icon over known healers inside battlegrounds or arenas."], 105, nil, nil, nil, nil, nil, nil, not (E.Modern or E.Mists))
-		group.args.general.args.markTanks = ACH:Toggle(L["Tank Icon"], L["Display a tank icon over known tanks inside battlegrounds or arenas."], 106, nil, nil, nil, nil, nil, nil, not (E.Modern or E.Mists))
+		group.args.general.args.markHealers = ACH:Toggle(L["Healer Icon"], L["Display a healer icon over known healers inside battlegrounds or arenas."], 105, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
+		group.args.general.args.markTanks = ACH:Toggle(L["Tank Icon"], L["Display a tank icon over known tanks inside battlegrounds or arenas."], 106, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 	elseif unit == 'ENEMY_NPC' or unit == 'FRIENDLY_NPC' then
 		group.args.eliteIcon = ACH:Group(L["Elite Icon"], nil, 75, nil, function(info) return E.db.nameplates.units[unit].eliteIcon[info[#info]] end, function(info, value) E.db.nameplates.units[unit].eliteIcon[info[#info]] = value NP:ConfigureAll() end)
 		group.args.eliteIcon.args.enable = ACH:Toggle(L["Enable"], nil, 1)
