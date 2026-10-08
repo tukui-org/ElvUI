@@ -52,7 +52,10 @@ function UF:Configure_AuraWatch(frame, isPet)
 		elseif db.profileSpecific then
 			auraTable = E.db.unitframe.filters.aurawatch
 		else
-			auraTable = E.Filters.Expand({}, E.global.unitframe.aurawatch[E.myclass] or {})
+			local classTable = E.global.unitframe.aurawatch[E.myclass] or {}
+
+			-- modern slots match every rank through includeIDs, classic indicators need a key per rank
+			auraTable = (E.Modern and E:CopyTable({}, classTable, nil, true)) or E.Filters.Expand({}, classTable)
 			E:CopyTable(auraTable, E.global.unitframe.aurawatch.GLOBAL)
 		end
 

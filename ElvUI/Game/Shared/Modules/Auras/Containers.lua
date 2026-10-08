@@ -614,6 +614,14 @@ do
 				spell[dataID] = true
 			end
 
+			-- one slot covers every rank of the spell
+			local includeIDs = data.includeIDs
+			if includeIDs then
+				for _, spellID in next, includeIDs do
+					spell[spellID] = true
+				end
+			end
+
 			temp.includeSpellIDs = spell
 			temp.includeDispelTypes = nil
 		else

@@ -22,7 +22,6 @@ local UNKNOWN = UNKNOWN
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
-local BadDispels = E.Libs.Dispel:GetBadList()
 
 UF.SideAnchor = { TOP = true, BOTTOM = true, LEFT = true, RIGHT = true }
 UF.GrowthPoints = { UP = 'BOTTOM', DOWN = 'TOP', RIGHT = 'LEFT', LEFT = 'RIGHT' }
@@ -596,10 +595,7 @@ function UF:PostUpdateAura(unit, button)
 			r, g, b = color:GetRGB()
 		end
 	elseif button.isDebuff then
-		local bad = DebuffColors.BadDispel
-		if bad and db.auraByDispels and (BadDispels[button.spellID] and DispelTypes[button.debuffType]) then
-			r, g, b = bad.r, bad.g, bad.b
-		elseif db.auraByType then
+		if db.auraByType then
 			local debuffColor = DebuffColors[button.debuffType or 'None']
 			r, g, b = debuffColor.r * 0.6, debuffColor.g * 0.6, debuffColor.b * 0.6
 		end
