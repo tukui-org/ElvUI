@@ -12,8 +12,7 @@ local function FixAutoCompleteLevel(frame)
 	local parent = frame:GetParent()
 	if not parent then return end
 
-	local frameLevel = parent:GetFrameLevel()
-	frame:SetFrameLevel(frameLevel + 4)
+	frame:OffsetFrameLevel(4, parent)
 end
 
 local function ClearedHooks(button, script)
