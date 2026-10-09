@@ -410,7 +410,8 @@ function UF:CreateRaisedElement(frame)
 	RaisedElement.AuraWatchLevel = RaisedLevel + 30
 	RaisedElement.RestingIconLevel = RaisedLevel + 35
 	RaisedElement.RaidRoleLevel = RaisedLevel + 40
-	RaisedElement.CastBarLevel = RaisedLevel + 45
+	RaisedElement.RaidIconLevel = RaisedLevel + 45
+	RaisedElement.CastBarLevel = RaisedLevel + 50
 
 	return RaisedElement
 end
