@@ -88,7 +88,7 @@ local function CategoryListScrollUpdateChild(child)
 
 	if child.Background then
 		child.Background:SetAlpha(0)
-		child.Background:CreateBackdrop('Transparent')
+		child.Background:CreateBackdrop()
 		child.Background.backdrop:Point('TOPLEFT', 5, -5)
 		child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
 	end
@@ -147,7 +147,7 @@ local function SettingsListScrollUpdateChild(child)
 			end
 
 			if not button.backdrop then
-				button:CreateBackdrop('Transparent')
+				button:CreateBackdrop()
 				button.backdrop:Point('TOPLEFT', 2, -1)
 				button.backdrop:Point('BOTTOMRIGHT', -2, 3)
 			end
