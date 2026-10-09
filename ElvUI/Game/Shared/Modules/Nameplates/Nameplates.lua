@@ -274,15 +274,15 @@ function NP:Construct_RaisedElement(nameplate)
 	element.HealthLevel = RaisedLevel + 5 -- prediction goes up to 3 over this
 	element.PowerLevel = RaisedLevel + 10
 	element.HighlightLevel = RaisedLevel + 15
-	element.TagTextLevel = RaisedLevel + 20
-	element.RaidTargetIndicatorLevel = RaisedLevel + 25
-	element.AuraLevel = RaisedLevel + 30
-	element.ClassBarLevel = RaisedLevel + 35
-	element.ClassButtonLevel = RaisedLevel + 36 -- one over classbar
+	element.RaidTargetIndicatorLevel = RaisedLevel + 20
+	element.AuraLevel = RaisedLevel + 25
+	element.ClassBarLevel = RaisedLevel + 30
+	element.ClassButtonLevel = RaisedLevel + 31 -- one over classbar
 	element.PVPRoleLevel = RaisedLevel + 40
 	element.ClassificationLevel = RaisedLevel + 41 -- one over pvprole
 	element.QuestIconLevel = RaisedLevel + 42 -- one over classification
 	element.CastBarLevel = RaisedLevel + 50 -- most important
+	element.TagTextLevel = RaisedLevel + 55
 
 	element.frameName = element:GetName()
 

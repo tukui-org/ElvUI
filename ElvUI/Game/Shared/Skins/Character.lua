@@ -226,12 +226,12 @@ local function ColorizeStatPane(frame)
 end
 
 local function StatsPane(which)
-	local CharacterStatsPane = _G.CharacterStatsPane
-	CharacterStatsPane[which]:StripTextures()
-	CharacterStatsPane[which]:CreateBackdrop('Transparent')
-	CharacterStatsPane[which].backdrop:ClearAllPoints()
-	CharacterStatsPane[which].backdrop:Point('CENTER')
-	CharacterStatsPane[which].backdrop:Size(150, 18)
+	local pane = _G.CharacterStatsPane[which]
+	pane:StripTextures()
+	pane:CreateBackdrop('Transparent')
+	pane.backdrop:ClearAllPoints()
+	pane.backdrop:Point('CENTER')
+	pane.backdrop:Size(150, 18)
 end
 
 local function EquipmentDisplayButton(button, index)
@@ -960,10 +960,10 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 	_G.CharacterLevelText:FontTemplate()
 
-	if E.Forever then -- Forever level info
-		local LevelTextBackground = _G.CharacterLevelTextBackground
-		LevelTextBackground:SetAlpha(0)
-		LevelTextBackground:CreateBackdrop()
+	local PaperDollFrame = _G.PaperDollFrame
+	if E.Forever then -- level info
+		PaperDollFrame.TopBackgroundStripHost:SetAlpha(0)
+
 		hooksecurefunc('PaperDollFrame_SetLevel', SetLevel)
 	end
 
@@ -1048,8 +1048,8 @@ local function SkinPaperDollFrame(CharacterFrame)
 	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
 
-	local TitleManagerPane = _G.PaperDollFrame.TitleManagerPane
-	local EquipmentManagerPane = _G.PaperDollFrame.EquipmentManagerPane
+	local TitleManagerPane = PaperDollFrame.TitleManagerPane
+	local EquipmentManagerPane = PaperDollFrame.EquipmentManagerPane
 	for _, scrollbar in next, { EquipmentManagerPane.ScrollBar, TitleManagerPane.ScrollBar } do
 		S:HandleTrimScrollBar(scrollbar)
 	end
