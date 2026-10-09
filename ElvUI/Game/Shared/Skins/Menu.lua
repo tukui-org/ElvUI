@@ -61,11 +61,11 @@ function data:HandleTemplate(_, template) -- self is compositor
 	local objects = self.attachments
 	if not objects then return end
 
-	local frame = TEMPLATES[template] and objects[#objects]
-	if frame and not frame.IsSkinned then
-		S:HandleSliderFrame(frame.Slider)
+	local widget = TEMPLATES[template] and objects[#objects]
+	if widget and not widget.IsSkinned then
+		S:HandleSliderFrame(widget.Slider)
 
-		frame.IsSkinned = true
+		widget.IsSkinned = true
 	end
 end
 
