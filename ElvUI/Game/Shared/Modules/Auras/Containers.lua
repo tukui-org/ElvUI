@@ -109,7 +109,7 @@ function E:Auras_AurabarUpdate(container, unit)
 	if UF:AuraBars_UpdateFilter(container, unit) then
 		E:Auras_SetContainer(container) -- filter changed: update the container
 	else -- otherwise, update the auras
-		container:UpdateAllAuras()
+		E:Auras_AssistUnit(container, unit)
 	end
 end
 
