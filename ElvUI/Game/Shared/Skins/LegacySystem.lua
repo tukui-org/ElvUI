@@ -35,11 +35,12 @@ local function HandleRewardCard(card)
 
 	S:HandleIcon(card.Icon, true)
 
-	card.levelBadge = CreateFrame('Frame', nil, card)
-	card.levelBadge:SetTemplate()
-	card.levelBadge:Size(32)
-	card.levelBadge:Point('CENTER', card.LevelSquare)
-	card.Level:SetParent(card.levelBadge)
+	local levelBG = CreateFrame('Frame', nil, card)
+	levelBG:OffsetFrameLevel(nil, card.backdrop)
+	levelBG:Point('CENTER', card.LevelSquare)
+	levelBG:SetTemplate()
+	levelBG:Size(32)
+	card.levelBG = levelBG
 
 	hooksecurefunc(card, 'Refresh', RewardCard_Refresh)
 
@@ -141,10 +142,12 @@ local function HandleCategory(button)
 	local highlight = button:CreateTexture(nil, 'HIGHLIGHT')
 	highlight:SetColorTexture(r, g, b, 0.25)
 	highlight:SetInside(button.backdrop)
+	button.highlight = highlight
 
-	button.selectedTex = button:CreateTexture(nil, 'ARTWORK')
-	button.selectedTex:SetColorTexture(r, g, b, 0.25)
-	button.selectedTex:SetInside(button.backdrop)
+	local selectedTex = button:CreateTexture(nil, 'ARTWORK')
+	selectedTex:SetColorTexture(r, g, b, 0.25)
+	selectedTex:SetInside(button.backdrop)
+	button.selectedTex = selectedTex
 
 	hooksecurefunc(button, 'RefreshCardArt', Category_RefreshCardArt)
 	Category_RefreshCardArt(button)
@@ -219,8 +222,8 @@ function S:Blizzard_LegacySystem()
 	HandleProgressBar(RewardProgressBar, ProgressBarBackground)
 
 	-- Line the bar ends up with the cards below
-	RewardProgressBar:Point('TOPLEFT', ProgressBarBackground, 'TOPLEFT', 6, 0)
-	RewardProgressBar:Point('BOTTOMRIGHT', ProgressBarBackground, 'BOTTOMRIGHT', -6, 3)
+	RewardProgressBar:Point('TOPLEFT', ProgressBarBackground, 6, 0)
+	RewardProgressBar:Point('BOTTOMRIGHT', ProgressBarBackground, -6, 3)
 
 	RewardTrackPage.Points:FontTemplate(nil, 26)
 	RewardTrackPage.PointsLabel:FontTemplate(nil, 16)
@@ -234,6 +237,7 @@ function S:Blizzard_LegacySystem()
 	local parchmentRemover = E.private.skins.parchmentRemoverEnable
 	if parchmentRemover then
 		RewardTrackPage.Background:SetAlpha(0)
+
 		hooksecurefunc(RewardProgressFrame, 'Init', RewardTrack_Init)
 	end
 
@@ -274,11 +278,16 @@ function S:Blizzard_LegacySystem()
 
 	local TraitPanel = TreePage.LegacyTreeTraitPanel
 	S:HandleButton(TraitPanel.ApplyButton)
-	S:HandleEditBox(TraitPanel.SearchBox)
-	TraitPanel.SearchBox.backdrop:Point('TOPLEFT', -4, -5)
-	TraitPanel.SearchBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
+
+	local TraitSearch = TraitPanel.SearchBox
+	S:HandleEditBox(TraitSearch)
+
+	TraitSearch.backdrop:Point('TOPLEFT', -4, -5)
+	TraitSearch.backdrop:Point('BOTTOMRIGHT', 0, 5)
+
 	TraitPanel.SearchPreviewContainer:StripTextures()
 	TraitPanel.SearchPreviewContainer:CreateBackdrop('Transparent')
+
 	hooksecurefunc(TraitPanel, 'UpdateButtonFrameLevel', TraitPanel_UpdateButtonFrameLevel)
 
 	TreePage.VerticalDivider:Hide()
