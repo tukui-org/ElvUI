@@ -254,6 +254,7 @@ function S:Blizzard_Settings_Shared()
 
 	SettingsPanel.Container:CreateBackdrop('Transparent')
 	SettingsPanel.Container.backdrop:SetInside()
+	SettingsPanel.Container.backdrop:Point('BOTTOMRIGHT', -E.Border, E.Border - 1)
 	S:HandleButton(SettingsPanel.Container.SettingsList.Header.DefaultsButton)
 	S:HandleTrimScrollBar(SettingsPanel.Container.SettingsList.ScrollBar)
 

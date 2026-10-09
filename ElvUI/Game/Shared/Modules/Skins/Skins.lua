@@ -1374,7 +1374,7 @@ do -- Large Side Tabs
 				if last then
 					tab:Point('TOPLEFT', last, 'BOTTOMLEFT', 0, -3)
 				else
-					tab:Point('TOPLEFT', frame, 'TOPRIGHT', 4, -1)
+					tab:Point('TOPLEFT', frame, 'TOPRIGHT', 3, -1)
 				end
 
 				last = tab
