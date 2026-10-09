@@ -66,7 +66,6 @@ local function UpdateBuybackInfo()
 	end
 end
 
--- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
 local function HandleMerchantItem(index)
 	local item = _G['MerchantItem'..index]
 	if item.IsSkinned then return end
@@ -117,7 +116,7 @@ local function UpdateMerchantInfo()
 	if not _G.MerchantFrame:IsShown() then return end
 
 	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
-		HandleMerchantItem(i)
+		HandleMerchantItem(i) -- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
 
 		local button = _G['MerchantItem'..i..'ItemButton']
 
@@ -195,11 +194,6 @@ function S:MerchantFrame()
 	_G.MerchantFrameTab2:ClearAllPoints()
 	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', E.Modern and -3 or -10, 0)
 	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', E.Modern and -5 or -19, 0)
-
-	-- Skin icons / merchant slots
-	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
-		HandleMerchantItem(i)
-	end
 
 	-- Skin buyback item frame + icon
 	_G.MerchantBuyBackItem:Point('TOPLEFT', _G.MerchantItem10, 'BOTTOMLEFT', 0, -50)

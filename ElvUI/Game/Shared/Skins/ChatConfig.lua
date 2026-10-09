@@ -222,6 +222,7 @@ function S:Blizzard_ChatFrame()
 	S:HandleButton(_G.ChatConfigFrameOkayButton)
 	S:HandleButton(_G.ChatConfigFrameDefaultButton)
 	S:HandleButton(_G.ChatConfigFrameRedockButton)
+
 	_G.ChatConfigFrameRedockButton:Point('BOTTOMLEFT', _G.ChatConfigFrameDefaultButton, 'BOTTOMRIGHT', 1, 0)
 
 	if not E.Modern then
