@@ -72,12 +72,12 @@ local function HandleControlGroup(controls)
 	end
 end
 
-local function HandleControlTab(tab)
+local function HandleMinimalTab(tab)
 	tab:StripTextures(nil, true)
-	tab:CreateBackdrop()
+	tab:CreateBackdrop('Transparent')
 
-	local spacing = 3
-	tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -12 or -14)
+	local spacing = 1
+	tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -10 or -12)
 	tab.backdrop:Point('BOTTOMRIGHT', -spacing, -2)
 end
 
@@ -88,7 +88,7 @@ local function CategoryListScrollUpdateChild(child)
 
 	if child.Background then
 		child.Background:SetAlpha(0)
-		child.Background:CreateBackdrop('Transparent')
+		child.Background:CreateBackdrop()
 		child.Background.backdrop:Point('TOPLEFT', 5, -5)
 		child.Background.backdrop:Point('BOTTOMRIGHT', -5, 0)
 	end
@@ -147,7 +147,7 @@ local function SettingsListScrollUpdateChild(child)
 			end
 
 			if not button.backdrop then
-				button:CreateBackdrop('Transparent')
+				button:CreateBackdrop()
 				button.backdrop:Point('TOPLEFT', 2, -1)
 				button.backdrop:Point('BOTTOMRIGHT', -2, 3)
 			end
@@ -211,11 +211,11 @@ local function SettingsListScrollUpdateChild(child)
 	end
 
 	if child.BaseTab then
-		HandleControlTab(child.BaseTab)
+		HandleMinimalTab(child.BaseTab)
 	end
 
 	if child.RaidTab then
-		HandleControlTab(child.RaidTab)
+		HandleMinimalTab(child.RaidTab)
 	end
 
 	if child.BaseQualityControls then
@@ -242,8 +242,8 @@ function S:Blizzard_Settings_Shared()
 	S:HandleButton(SettingsPanel.ApplyButton)
 	S:HandleButton(SettingsPanel.CloseButton)
 
-	SettingsPanel.GameTab:StripTextures(true)
-	SettingsPanel.AddOnsTab:StripTextures(true)
+	HandleMinimalTab(SettingsPanel.GameTab)
+	HandleMinimalTab(SettingsPanel.AddOnsTab)
 
 	SettingsPanel.CategoryList:CreateBackdrop('Transparent')
 	SettingsPanel.CategoryList.backdrop:SetInside()
@@ -254,6 +254,7 @@ function S:Blizzard_Settings_Shared()
 
 	SettingsPanel.Container:CreateBackdrop('Transparent')
 	SettingsPanel.Container.backdrop:SetInside()
+	SettingsPanel.Container.backdrop:Point('BOTTOMRIGHT', -E.Border, E.Border - 1)
 	S:HandleButton(SettingsPanel.Container.SettingsList.Header.DefaultsButton)
 	S:HandleTrimScrollBar(SettingsPanel.Container.SettingsList.ScrollBar)
 

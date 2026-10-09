@@ -66,10 +66,58 @@ local function UpdateBuybackInfo()
 	end
 end
 
+local function HandleMerchantItem(index)
+	local item = _G['MerchantItem'..index]
+	if item.IsSkinned then return end
+
+	item:Size(155, 45)
+	item:StripTextures(true)
+	item:CreateBackdrop('Transparent')
+	item.backdrop:Point('TOPLEFT', -3, 2)
+	item.backdrop:Point('BOTTOMRIGHT', 2, -3)
+
+	local slot = _G['MerchantItem'..index..'SlotTexture']
+	item.Name:Point('LEFT', slot, 'RIGHT', -5, 5)
+	item.Name:Size(110, 30)
+
+	local button = _G['MerchantItem'..index..'ItemButton']
+	button:StripTextures()
+	button:StyleButton()
+	button:SetTemplate(nil, true)
+	button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
+
+	local icon = button.icon
+	icon:SetTexCoords()
+	icon:ClearAllPoints()
+	icon:Point('TOPLEFT', 1, -1)
+	icon:Point('BOTTOMRIGHT', -1, 1)
+
+	if E.Modern then
+		local questIcon = button.IconQuestTexture
+		questIcon:SetTexCoord(0, 1, 0, 1)
+		questIcon:SetInside()
+
+		hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
+	end
+
+	button.IconOverlay:SetInside(button, 1, 1) -- Decor items
+
+	S:HandleIconBorder(button.IconBorder)
+
+	for j = 1, _G.MAX_ITEM_COST do
+		local currencyIcon = _G['MerchantItem'..index..'AltCurrencyFrameItem'..j..'Texture']
+		currencyIcon:SetTexCoords()
+	end
+
+	item.IsSkinned = true
+end
+
 local function UpdateMerchantInfo()
 	if not _G.MerchantFrame:IsShown() then return end
 
 	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
+		HandleMerchantItem(i) -- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
+
 		local button = _G['MerchantItem'..i..'ItemButton']
 
 		local money = _G['MerchantItem'..i..'MoneyFrame']
@@ -146,49 +194,6 @@ function S:MerchantFrame()
 	_G.MerchantFrameTab2:ClearAllPoints()
 	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', E.Modern and -3 or -10, 0)
 	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', E.Modern and -5 or -19, 0)
-
-	-- Skin icons / merchant slots
-	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
-		local item = _G['MerchantItem'..i]
-		item:Size(155, 45)
-		item:StripTextures(true)
-		item:CreateBackdrop('Transparent')
-		item.backdrop:Point('TOPLEFT', -3, 2)
-		item.backdrop:Point('BOTTOMRIGHT', 2, -3)
-
-		local slot = _G['MerchantItem'..i..'SlotTexture']
-		item.Name:Point('LEFT', slot, 'RIGHT', -5, 5)
-		item.Name:Size(110, 30)
-
-		local button = _G['MerchantItem'..i..'ItemButton']
-		button:StripTextures()
-		button:StyleButton()
-		button:SetTemplate(nil, true)
-		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
-
-		local icon = button.icon
-		icon:SetTexCoords()
-		icon:ClearAllPoints()
-		icon:Point('TOPLEFT', 1, -1)
-		icon:Point('BOTTOMRIGHT', -1, 1)
-
-		if E.Modern then
-			local questIcon = button.IconQuestTexture
-			questIcon:SetTexCoord(0, 1, 0, 1)
-			questIcon:SetInside()
-
-			hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
-		end
-
-		button.IconOverlay:SetInside(button, 1, 1) -- Decor items
-
-		S:HandleIconBorder(button.IconBorder)
-
-		for j = 1, _G.MAX_ITEM_COST do
-			local currencyIcon = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j..'Texture']
-			currencyIcon:SetTexCoords()
-		end
-	end
 
 	-- Skin buyback item frame + icon
 	_G.MerchantBuyBackItem:Point('TOPLEFT', _G.MerchantItem10, 'BOTTOMLEFT', 0, -50)
