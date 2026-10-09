@@ -18,6 +18,11 @@ local ATLAS = {
 	['common-dropdown-icon-checkmark-yellow-classic-2'] = true,
 	['common-dropdown-icon-radialtick-yellow-classic'] = true,
 }
+local TEMPLATES = {
+	UnitPopupVoiceMicrophoneVolumeTemplate = true,
+	UnitPopupVoiceSpeakerVolumeTemplate = true,
+	UnitPopupVoiceUserVolumeTemplate = true,
+}
 
 function data:HandleMenu()
 	self:StripTextures()
@@ -48,6 +53,19 @@ function data:HandleAttachments() -- self is compositor
 			widget:SetVertexColor(r, g, b)
 			widget:Size(12)
 		end
+	end
+end
+
+-- Voice chat volume sliders
+function data:HandleTemplate(_, template) -- self is compositor
+	if not TEMPLATES[template] then return end
+
+	local objects = self.attachments
+	local frame = objects and objects[#objects]
+	if frame and not frame.IsSkinned then
+		S:HandleSliderFrame(frame.Slider)
+
+		frame.IsSkinned = true
 	end
 end
 
@@ -126,6 +144,7 @@ function S:Blizzard_Menu()
 	hooksecurefunc(manager, 'OpenContextMenu', data.OpenContext)
 
 	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', data.HandleAttachments)
+	hooksecurefunc(_G.CompositorMixin, 'AttachTemplate', data.HandleTemplate)
 	hooksecurefunc(_G.CompositorMixin, 'Detach', data.HideCheckbox)
 
 	hooksecurefunc(_G.MenuVariants, 'CreateCheckbox', data.HandleCheckbox)
