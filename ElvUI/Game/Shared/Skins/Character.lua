@@ -513,10 +513,6 @@ local function UpdateTabLayout(frame)
 	end
 end
 
-local function SetLevel() -- blizzard grows PaperDollLevelInfo to 40 for the pet loyalty line but never shrinks it back for the player
-	_G.PaperDollLevelInfo:SetHeight(20)
-end
-
 local function UpdateRightPaneToggleButton(frame)
 	local button = frame.RightPaneToggleButton
 	local rotation = S.ArrowRotation[frame:IsRightPaneCollapsed() and 'right' or 'left']
@@ -964,7 +960,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 	if E.Forever then -- level info
 		PaperDollFrame.TopBackgroundStripHost:SetAlpha(0)
 
-		hooksecurefunc('PaperDollFrame_SetLevel', SetLevel)
+		_G.PetCharacterLevelText:FontTemplate()
 	end
 
 	if E.Modern then
@@ -1566,7 +1562,7 @@ function S:Blizzard_UIPanels_Game()
 		RightPaneHost:StripTextures()
 		RightPaneHost:CreateBackdrop('Transparent')
 		RightPaneHost.backdrop:SetInside(RightPaneHost, 6, 6)
-		RightPaneHost.StoneBg:SetAlpha(0) -- set again through SetAtlas and SetShown on tab changes
+		RightPaneHost.StoneBg:SetAlpha(0) -- shown again through SetShown on tab changes
 
 		local divider = RightPaneHost:GetChildren() -- unnamed frame on the left edge (The ugly divider strip)
 		divider:StripTextures()
