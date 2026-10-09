@@ -1002,6 +1002,9 @@ function S:Blizzard_GroupFinder_VanillaStyle()
 			S:HandleDropDownBox(PlayStyleDropdown, 230)
 		end
 
+		-- 220 is the width Blizzard sets in LFGListingMixin:OnLoad
+		S:HandleDropDownBox(ActivityView.VoiceChatDropdown, 220)
+
 		-- Browse
 		S:HandlePortraitFrame(LFGBrowseFrame)
 		S:HandleTrimScrollBar(LFGBrowseFrame.ScrollBar)

@@ -105,14 +105,21 @@ function E:Auras_DispelUpdated()
 	end
 end
 
+function E:Auras_AurabarUpdate(container, unit)
+	if UF:AuraBars_UpdateFilter(container, unit) then
+		E:Auras_SetContainer(container) -- filter changed: update the container
+	else -- otherwise, update the auras
+		E:Auras_AssistUnit(container, unit)
+	end
+end
+
 function E:Auras_OnEvent(event, arg1)
 	local container = self:GetParent()
 	if event == 'PLAYER_FOCUS_CHANGED' or event == 'PLAYER_TARGET_CHANGED' then
 		local eventUnit = E.AuraEventUnits[event]
 		if eventUnit == container.unit then
 			if container.isAuraBar then
-				UF:AuraBars_UpdateFilter(container, eventUnit)
-				E:Auras_SetContainer(container)
+				E:Auras_AurabarUpdate(container, eventUnit)
 			else -- for target frame
 				E:Auras_AssistUnit(container, eventUnit)
 			end
