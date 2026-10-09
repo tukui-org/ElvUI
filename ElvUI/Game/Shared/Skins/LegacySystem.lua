@@ -18,7 +18,7 @@ end
 local function RewardCard_Refresh(card, _, displayLevel)
 	local r, g, b = unpack(card:GetLevel() == displayLevel and E.media.rgbvaluecolor or E.media.bordercolor)
 	card.backdrop:SetBackdropBorderColor(r, g, b)
-	card.levelBadge:SetBackdropBorderColor(r, g, b)
+	card.levelBG:SetBackdropBorderColor(r, g, b)
 end
 
 -- LegacyRewardCardTemplate (RenownLevelMixin)
@@ -29,14 +29,15 @@ local function HandleRewardCard(card)
 	card.IconBorder:SetAlpha(0)
 	card.LevelSquare:SetAlpha(0)
 
-	card:CreateBackdrop('Transparent')
+	local cardLevel = card:GetFrameLevel()
+	card:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, cardLevel - 2)
 	card.backdrop:Point('TOPLEFT', 4, -4)
 	card.backdrop:Point('BOTTOMRIGHT', -5, 5)
 
 	S:HandleIcon(card.Icon, true)
 
 	local levelBG = CreateFrame('Frame', nil, card)
-	levelBG:OffsetFrameLevel(nil, card.backdrop)
+	levelBG:OffsetFrameLevel(-1, card) -- backdrop is -2, level bg is -1
 	levelBG:Point('CENTER', card.LevelSquare)
 	levelBG:SetTemplate()
 	levelBG:Size(32)
