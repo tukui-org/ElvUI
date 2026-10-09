@@ -2307,8 +2307,16 @@ function UF:Auras_ToggleContainer(frame, unit, shown)
 	E:Auras_ToggleActive(frame.Auras, unit, shown)
 	E:Auras_ToggleActive(frame.Buffs, unit, shown)
 	E:Auras_ToggleActive(frame.Debuffs, unit, shown)
-	E:Auras_ToggleActive(frame.AuraBars, unit, shown)
 	E:Auras_ToggleActive(frame.AuraWatch, unit, shown)
+
+	local bars = frame.AuraBars
+	if bars then
+		E:Auras_ToggleActive(bars, unit, shown)
+
+		if shown and (unit == 'target' or unit == 'focus') then
+			E:Auras_AurabarUpdate(bars, unit)
+		end
+	end
 
 	local highlight = frame.AuraHighlight
 	if highlight then
