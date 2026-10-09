@@ -106,9 +106,11 @@ function E:Auras_DispelUpdated()
 end
 
 function E:Auras_AurabarUpdate(container, unit)
-	UF:AuraBars_UpdateFilter(container, unit)
-
-	E:Auras_SetContainer(container)
+	if UF:AuraBars_UpdateFilter(container, unit) then
+		E:Auras_SetContainer(container) -- filter changed: update the container
+	else -- otherwise, update the auras
+		container:UpdateAllAuras()
+	end
 end
 
 function E:Auras_OnEvent(event, arg1)
