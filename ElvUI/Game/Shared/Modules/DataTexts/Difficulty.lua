@@ -120,8 +120,7 @@ local function OnEvent(panel)
 	elseif E.Forever then
 		if instanceType == 'none' then
 			panel.text:SetText(_G.RESET_INSTANCES)
-		else
-			-- Blizzard's minimap indicator shows the player count instead of difficulty
+		else -- Blizzard's minimap indicator shows the player count instead of difficulty
 			panel.text:SetFormattedText('%s %s %s', instanceType == 'raid' and RaidTexture or DungeonTexture, name, maxPlayers)
 		end
 	elseif instanceType ~= 'none' and difficultyID and not Garrison[instanceID] then
