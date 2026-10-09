@@ -120,6 +120,7 @@ function S:Blizzard_InspectUI()
 			-- Create portrait element for the PvP Frame so we can see prestige
 			local portrait = InspectPVPFrame:CreateTexture(nil, 'OVERLAY')
 			portrait:Size(55)
+
 			InspectPVPFrame.SmallWreath:ClearAllPoints()
 			InspectPVPFrame.SmallWreath:Point('TOPLEFT', -2, -25)
 
