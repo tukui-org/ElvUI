@@ -96,10 +96,10 @@ function UF:Construct_AuraBarHeader(frame)
 	end
 end
 
-function UF:AuraBars_UpdateFilter(bars, unit)
+function UF:AuraBars_UpdateFilter(bars, unit, force)
 	local previous = bars.filterLists
 	local current = UF:UnitIsFriendly(unit) and bars.friendlyFilter or bars.enemyFilter
-	if previous == current then return end -- only update when needed
+	if not force and (previous == current) then return end -- only update when needed
 
 	bars.filterLists = current -- save current
 
@@ -235,7 +235,7 @@ function UF:Configure_AuraBars(frame)
 			bars.forceShowAuras = frame.forceShowAuras
 			bars.allowEnable = true -- keep over Auras_GroupUnit
 
-			UF:AuraBars_UpdateFilter(bars, frame.__unit)
+			UF:AuraBars_UpdateFilter(bars, frame.__unit, true)
 
 			local known = next(bars.known) -- new groups update their buttons in initializeFrame
 
