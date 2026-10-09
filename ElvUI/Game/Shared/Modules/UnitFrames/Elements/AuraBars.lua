@@ -97,10 +97,13 @@ function UF:Construct_AuraBarHeader(frame)
 end
 
 function UF:AuraBars_UpdateFilter(bars, unit)
-	local friendly = UF:UnitIsFriendly(unit)
-	bars.filterLists = friendly and bars.friendlyFilter or bars.enemyFilter
+	local previous = bars.filterLists
+	local current = UF:UnitIsFriendly(unit) and bars.friendlyFilter or bars.enemyFilter
+	if previous == current then return end -- only update when needed
 
-	UF:GroupFilters(bars, bars.filterLists) -- build the groups
+	bars.filterLists = current -- save current
+
+	UF:GroupFilters(bars, current) -- build the groups
 end
 
 function UF:Configure_AuraBars(frame)
