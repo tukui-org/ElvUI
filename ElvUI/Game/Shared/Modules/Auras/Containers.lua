@@ -106,9 +106,10 @@ function E:Auras_DispelUpdated()
 end
 
 function E:Auras_AurabarUpdate(container, unit)
-	UF:AuraBars_UpdateFilter(container, unit)
-
-	E:Auras_SetContainer(container)
+	local changed = UF:AuraBars_UpdateFilter(container, unit)
+	if changed then -- only update when the groups rebuilt
+		E:Auras_SetContainer(container)
+	end
 end
 
 function E:Auras_OnEvent(event, arg1)

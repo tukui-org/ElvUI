@@ -104,6 +104,8 @@ function UF:AuraBars_UpdateFilter(bars, unit)
 	bars.filterLists = current -- save current
 
 	UF:GroupFilters(bars, current) -- build the groups
+
+	return true
 end
 
 function UF:Configure_AuraBars(frame)
