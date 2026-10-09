@@ -58,10 +58,10 @@ end
 
 -- Voice chat volume sliders
 function data:HandleTemplate(_, template) -- self is compositor
-	if not TEMPLATES[template] then return end
-
 	local objects = self.attachments
-	local frame = objects and objects[#objects]
+	if not objects then return end
+
+	local frame = TEMPLATES[template] and objects[#objects]
 	if frame and not frame.IsSkinned then
 		S:HandleSliderFrame(frame.Slider)
 
