@@ -5,8 +5,7 @@ local _G = _G
 local next = next
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
-
--- /run ToggleLegacySystemUI()
+local CreateFrame = CreateFrame
 
 S:AddCallbackForAddon('Blizzard_LegacySystem', nil, nil, nil, nil, nil, 'legacySystem')
 
@@ -14,6 +13,43 @@ local function HandleProgressBar(bar, background)
 	S:HandleStatusBar(bar)
 	bar.Text:FontTemplate()
 	background:SetAlpha(0)
+end
+
+local function RewardCard_Refresh(card, _, displayLevel)
+	local r, g, b = unpack(card:GetLevel() == displayLevel and E.media.rgbvaluecolor or E.media.bordercolor)
+	card.backdrop:SetBackdropBorderColor(r, g, b)
+	card.levelBadge:SetBackdropBorderColor(r, g, b)
+end
+
+-- LegacyRewardCardTemplate (RenownLevelMixin)
+local function HandleRewardCard(card)
+	if card.IsSkinned then return end
+
+	card.RewardCardBG:SetAlpha(0)
+	card.IconBorder:SetAlpha(0)
+	card.LevelSquare:SetAlpha(0)
+
+	card:CreateBackdrop('Transparent')
+	card.backdrop:Point('TOPLEFT', 4, -4)
+	card.backdrop:Point('BOTTOMRIGHT', -5, 5)
+
+	S:HandleIcon(card.Icon, true)
+
+	card.levelBadge = CreateFrame('Frame', nil, card)
+	card.levelBadge:SetTemplate()
+	card.levelBadge:Size(32)
+	card.levelBadge:Point('CENTER', card.LevelSquare)
+	card.Level:SetParent(card.levelBadge)
+
+	hooksecurefunc(card, 'Refresh', RewardCard_Refresh)
+
+	card.IsSkinned = true
+end
+
+local function RewardTrack_Init(track)
+	for card in track.elementPool:EnumerateActive() do
+		HandleRewardCard(card)
+	end
 end
 
 local function HandleCriteria(criteria)
@@ -39,7 +75,7 @@ end
 local function SelectedOverlay_SetShown(overlay, shown)
 	local button = overlay:GetParent()
 	if shown then
-		button.backdrop:SetBackdropBorderColor(1, .8, .1)
+		button.backdrop:SetBackdropBorderColor(1, 0.8, 0.1)
 	else
 		local r, g, b = unpack(E.media.bordercolor)
 		button.backdrop:SetBackdropBorderColor(r, g, b)
@@ -81,19 +117,82 @@ local function DetailPane_Update(frame)
 	frame:ForEachFrame(HandleChallenge)
 end
 
+-- Clear the gradient instead of ClearEdgeFade(taint)
+local function ClearEdgeGradient(scrollBox)
+	scrollBox:ClearAlphaGradient()
+end
+
+local function Category_RefreshCardArt(button)
+	button.selectedTex:SetShown(not button.collapsable and button.selected)
+end
+
 -- LegacyChallengeCategoryTemplate (ListHeaderVisualTemplate), keep the Blizzard plus / minus
 local function HandleCategory(button)
 	if button.IsSkinned then return end
 
-	S:HandleButton(button)
 	button:GetNormalTexture():SetAlpha(0)
 	button:GetHighlightTexture():SetAlpha(0)
+
+	button:CreateBackdrop()
+	button.backdrop:SetInside(button, 0, 1)
+
+	local r, g, b = unpack(E.media.rgbvaluecolor)
+	local highlight = button:CreateTexture(nil, 'HIGHLIGHT')
+	highlight:SetColorTexture(r, g, b, 0.25)
+	highlight:SetInside(button.backdrop)
+
+	button.selectedTex = button:CreateTexture(nil, 'ARTWORK')
+	button.selectedTex:SetColorTexture(r, g, b, 0.25)
+	button.selectedTex:SetInside(button.backdrop)
+
+	hooksecurefunc(button, 'RefreshCardArt', Category_RefreshCardArt)
+	Category_RefreshCardArt(button)
 
 	button.IsSkinned = true
 end
 
 local function CategoryList_Update(frame)
 	frame:ForEachFrame(HandleCategory)
+end
+
+local function TalentButton_UpdateStateBorder(button, visualState)
+	button.StateBorderHover:SetAlpha(0)
+
+	local color = _G.TalentButtonUtil.GetColorForBaseVisualState(visualState)
+	button.Icon.backdrop:SetBackdropBorderColor(color:GetRGB())
+end
+
+local function HandleTalentButton(button)
+	button.Shadow:SetAlpha(0)
+	button.StateBorder:SetAlpha(0)
+	button.Icon:RemoveMaskTexture(button.IconMask)
+	button.DisabledOverlay:RemoveMaskTexture(button.DisabledOverlayMask)
+
+	S:HandleIcon(button.Icon, true)
+
+	local highlight = button:CreateTexture(nil, 'HIGHLIGHT')
+	highlight:SetColorTexture(1, 1, 1, 0.25)
+	highlight:SetInside(button.Icon.backdrop)
+
+	hooksecurefunc(button, 'UpdateStateBorder', TalentButton_UpdateStateBorder)
+
+	-- The state was applied before the hook existed
+	local visualState = button:GetVisualState()
+	if visualState then
+		TalentButton_UpdateStateBorder(button, visualState)
+	end
+end
+
+local function TraitPanel_UpdateButtonFrameLevel(_, button)
+	if not button.StateBorder or button.Icon2 then return end
+
+	if not button.IsSkinned then
+		HandleTalentButton(button)
+
+		button.IsSkinned = true
+	end
+
+	button.Icon.backdrop:OffsetFrameLevel(-1, button)
 end
 
 local function RefreshTreeButtons(panel)
@@ -114,7 +213,14 @@ function S:Blizzard_LegacySystem()
 
 	-- Reward Track
 	local RewardTrackPage = LegacySystemFrame.RewardTrackPage
-	HandleProgressBar(RewardTrackPage.LegacyRewardProgressBar, RewardTrackPage.ProgressBarBackground)
+	local RewardProgressBar = RewardTrackPage.LegacyRewardProgressBar
+	local ProgressBarBackground = RewardTrackPage.ProgressBarBackground
+	HandleProgressBar(RewardProgressBar, ProgressBarBackground)
+
+	-- Line the bar ends up with the cards below
+	RewardProgressBar:Point('TOPLEFT', ProgressBarBackground, 'TOPLEFT', 6, 0)
+	RewardProgressBar:Point('BOTTOMRIGHT', ProgressBarBackground, 'BOTTOMRIGHT', -6, 3)
+
 	RewardTrackPage.Points:FontTemplate(nil, 26)
 	RewardTrackPage.PointsLabel:FontTemplate(nil, 16)
 
@@ -127,6 +233,7 @@ function S:Blizzard_LegacySystem()
 	local parchmentRemover = E.private.skins.parchmentRemoverEnable
 	if parchmentRemover then
 		RewardTrackPage.Background:SetAlpha(0)
+		hooksecurefunc(RewardProgressFrame, 'Init', RewardTrack_Init)
 	end
 
 	-- Challenges
@@ -143,10 +250,20 @@ function S:Blizzard_LegacySystem()
 	local DetailPane = ChallengesPage.DetailPane
 	S:HandleTrimScrollBar(DetailPane.ScrollBar)
 	hooksecurefunc(DetailPane.ScrollBox, 'Update', DetailPane_Update)
+	hooksecurefunc(DetailPane.ScrollBox, 'ApplyEdgeFade', ClearEdgeGradient)
+
+	ChallengesPage.VerticalDivider:Hide()
 
 	if parchmentRemover then
 		ChallengesPage.Background:SetAlpha(0)
-		ChallengesPage.VerticalDivider:Hide()
+
+		CategoryList:CreateBackdrop('Transparent')
+		CategoryList.backdrop:Point('TOPLEFT', 0, 8)
+		CategoryList.backdrop:Point('BOTTOMRIGHT', -3, 0)
+
+		DetailPane:CreateBackdrop('Transparent')
+		DetailPane.backdrop:Point('TOPLEFT', 1, 5)
+		DetailPane.backdrop:Point('BOTTOMRIGHT', 18, 0)
 	end
 
 	-- Tree
@@ -161,14 +278,24 @@ function S:Blizzard_LegacySystem()
 	TraitPanel.SearchBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 	TraitPanel.SearchPreviewContainer:StripTextures()
 	TraitPanel.SearchPreviewContainer:CreateBackdrop('Transparent')
+	hooksecurefunc(TraitPanel, 'UpdateButtonFrameLevel', TraitPanel_UpdateButtonFrameLevel)
+
+	TreePage.VerticalDivider:Hide()
+	LegacyPointSummary.Border:SetAlpha(0)
 
 	if parchmentRemover then
 		TreePage.Background:SetAlpha(0)
-		TreePage.VerticalDivider:Hide()
-		LegacyPointSummary.Border:SetAlpha(0)
 
 		local SelectionPanel = TreePage.LegacyTreeSelectionPanel
 		RefreshTreeButtons(SelectionPanel)
 		hooksecurefunc(SelectionPanel, 'RefreshTreeButtons', RefreshTreeButtons)
+
+		SelectionPanel:CreateBackdrop('Transparent')
+		SelectionPanel.backdrop:Point('TOPLEFT', TreePage, 'TOPLEFT', 6, -72)
+		SelectionPanel.backdrop:Point('BOTTOMRIGHT', TraitPanel, 'BOTTOMLEFT', -4, 0)
+
+		TraitPanel:CreateBackdrop('Transparent')
+		TraitPanel.backdrop:Point('TOPLEFT', 0, -55)
+		TraitPanel.backdrop:Point('BOTTOMRIGHT', 0, 0)
 	end
 end
