@@ -95,6 +95,7 @@ local function HandleChallenge(button)
 	button.Shield.CheckBackground:SetAlpha(0)
 
 	button:CreateBackdrop('Transparent')
+	button.backdrop:SetInside(button, 0, 1)
 
 	button.Icon.frame:Hide()
 	button.Icon.texture:RemoveMaskTexture(button.Icon.TextureMask)
