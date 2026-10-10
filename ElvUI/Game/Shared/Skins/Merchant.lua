@@ -117,27 +117,19 @@ local function UpdateMerchantInfo()
 
 	local numMerchantItems, pageIndex
 	if not E.Modern then -- classic merchant has no quality borders
-		numMerchantItems = GetMerchantNumItems()
 		pageIndex = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
+		numMerchantItems = GetMerchantNumItems()
 
 		local numBuybackItems = GetNumBuybackItems()
 		local link = GetBuybackItemInfo(numBuybackItems)
 		SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
 	end
 
-	local numItems = _G.BUYBACK_ITEMS_PER_PAGE
-	for i = 1, numItems do
+	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
 		HandleMerchantItem(i) -- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
 
 		local button = _G['MerchantItem'..i..'ItemButton']
-		local money = _G['MerchantItem'..i..'MoneyFrame']
-		money:ClearAllPoints()
-		money:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
-
-		local currency = _G['MerchantItem'..i..'AltCurrencyFrame']
-		currency:ClearAllPoints()
-
-		if pageIndex then
+		if pageIndex then -- not E.Modern
 			pageIndex = pageIndex + 1
 
 			if pageIndex <= numMerchantItems then
@@ -145,6 +137,13 @@ local function UpdateMerchantInfo()
 				SetQualityColor(button, name, button.link)
 			end
 		end
+
+		local money = _G['MerchantItem'..i..'MoneyFrame']
+		money:ClearAllPoints()
+		money:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
+
+		local currency = _G['MerchantItem'..i..'AltCurrencyFrame']
+		currency:ClearAllPoints()
 
 		if button.price and button.extendedCost then
 			currency:Point('LEFT', money, 'RIGHT', -8, 0)
