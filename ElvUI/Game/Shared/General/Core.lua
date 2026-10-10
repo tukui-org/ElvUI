@@ -2078,7 +2078,7 @@ function E:Initialize()
 
 		if GetCVarBool('taintLog') then
 			E:StaticPopup_Show('TAINT_LOG')
-		elseif GetCVarBool('scriptProfile') then
+		elseif GetCVarBool('scriptProfile') and not E.OtherAddons.ElvUI_CPU then
 			E:StaticPopup_Show('SCRIPT_PROFILE')
 		end
 

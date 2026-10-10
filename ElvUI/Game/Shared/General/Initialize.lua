@@ -322,6 +322,7 @@ do
 		Questie = true,
 		SimplePowerBar = true,
 		Tukui = true,
+		ElvUI_CPU = true,
 		DBM = 'DBM-Core',
 		ConsolePort = 'ConsolePort_Menu',
 		KalielsTracker = '!KalielsTracker',
