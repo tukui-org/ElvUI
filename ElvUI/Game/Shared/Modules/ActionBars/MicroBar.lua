@@ -297,15 +297,6 @@ function AB:UpdateMicroBarTextures()
 	end
 end
 
-function AB:UpdateMicroButtonsParent()
-	for _, name in next, AB.MICRO_BUTTONS do
-		local button = _G[name]
-		if button then
-			button:SetParent(microBar)
-		end
-	end
-end
-
 do
 	local unsorted = {}
 	local sorted = {}
@@ -470,6 +461,7 @@ function AB:SetupMicroBar()
 	for _, name in next, AB.MICRO_BUTTONS do
 		local button = _G[name]
 		if button then
+			button:SetParent(microBar)
 			AB:HandleMicroButton(button, name)
 
 			if E.Modern or (name == 'MainMenuMicroButton' or name == 'GuildMicroButton') then
@@ -506,15 +498,7 @@ function AB:SetupMicroBar()
 			microMenu.BackgroundArt:SetAlpha(0)
 		end
 
-		microMenu.UpdateHelpTicketButtonAnchor = E.noop -- prevent layout erroring
 		hooksecurefunc(microMenu, 'UpdateHelpTicketButtonAnchor', AB.UpdateHelpTicketButtonAnchor)
-	end
-
-	if _G.ResetMicroMenuPosition then
-		_G.ResetMicroMenuPosition()
-	elseif _G.UpdateMicroButtonsParent then
-		_G.UpdateMicroButtonsParent(microBar)
-		AB:SecureHook('UpdateMicroButtonsParent')
 	end
 
 	if not E.Retail then
