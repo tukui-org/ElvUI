@@ -490,6 +490,10 @@ do	-- i guess we finally need it ~Simpy
 
 				funcs[info.func] = nil
 				tickers[info.func] = nil
+
+				if info.finish then
+					info.finish(info)
+				end
 			elseif not InCombatLockdown() then -- resume is a protected function, wait until after combat
 				E:Coroutine_Continue(info)
 			end
@@ -499,7 +503,7 @@ do	-- i guess we finally need it ~Simpy
 	end
 
 	-- these two functions are meant to be called
-	function E:CoroutineUpdate(func, obj, data, limit, delay)
+	function E:CoroutineUpdate(func, obj, data, finish, limit, delay)
 		local exists = funcs[func] -- exists is the info
 		if exists then
 			exists.cancel = true
@@ -510,7 +514,7 @@ do	-- i guess we finally need it ~Simpy
 			end
 		end
 
-		local info = { count = 0, limit = (limit or 100) - 1, data = data, obj = obj, func = func }
+		local info = { count = 0, limit = (limit or 100) - 1, data = data, obj = obj, func = func, finish = finish }
 		local loop, process = E:Coroutine_Generate(info)
 		info.routine = co_create(loop)
 		funcs[func] = info
