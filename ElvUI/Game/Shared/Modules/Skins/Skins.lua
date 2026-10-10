@@ -2024,30 +2024,6 @@ function S:HandleFollowerAbilities(followerList)
 	end
 end
 
-function S:HandleShipFollowerPage(followerTab)
-	local traits = followerTab.Traits
-	for i = 1, #traits do
-		local icon = traits[i].Portrait
-		local border = traits[i].Border
-		border:SetTexture() -- I think the default border looks nice, not sure if we want to replace that
-		-- The landing page icons display inner borders
-		if followerTab.isLandingPage then
-			icon:SetTexCoords()
-		end
-	end
-
-	local equipment = followerTab.EquipmentFrame.Equipment
-	for i = 1, #equipment do
-		local icon = equipment[i].Icon
-		local border = equipment[i].Border
-		border:SetAtlas('ShipMission_ShipFollower-TypeFrame') -- This border is ugly though, use the traits border instead
-		-- The landing page icons display inner borders
-		if followerTab.isLandingPage then
-			icon:SetTexCoords()
-		end
-	end
-end
-
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
 local ReplacedRoleTex = {
 	['Adventures-Tank'] = 'Soulbinds_Tree_Conduit_Icon_Protect',
