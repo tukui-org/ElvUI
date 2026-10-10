@@ -6,8 +6,84 @@ local unpack, select, ipairs, next = unpack, select, ipairs, next
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
 
 S:AddCallbackForAddon('Blizzard_GarrisonUI', nil, nil, nil, nil, nil, 'garrison')
+
+S:AddCallbackForAddon('Blizzard_GarrisonTemplates', nil, nil, nil, nil, nil, function()
+	return E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall and E.private.skins.blizzard.garrison
+end)
+
+-- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
+local ReplacedRoleTexture = {
+	['Adventures-Tank'] = 'Soulbinds_Tree_Conduit_Icon_Protect',
+	['Adventures-Healer'] = 'ui_adv_health',
+	['Adventures-DPS'] = 'ui_adv_atk',
+	['Adventures-DPS-Ranged'] = 'Soulbinds_Tree_Conduit_Icon_Utility',
+}
+
+local function HandleFollowerRole(roleIcon, atlas)
+	local newAtlas = ReplacedRoleTexture[atlas]
+	if newAtlas then
+		roleIcon:SetAtlas(newAtlas)
+	end
+end
+
+local function HandleGarrisonPortrait(portrait, updateAtlas)
+	local main = portrait.Portrait
+	if not main then return end
+
+	if not main.backdrop then
+		main:CreateBackdrop('Transparent')
+	end
+
+	local level = portrait.Level or portrait.LevelText
+	if level then
+		level:ClearAllPoints()
+		level:Point('BOTTOM', portrait, 0, 15)
+		level:FontTemplate(nil, 14, 'OUTLINE')
+
+		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
+		if portrait.LevelBorder then portrait.LevelBorder:SetScale(0.0001) end
+	end
+
+	if portrait.PortraitRing then
+		portrait.PortraitRing:Hide()
+		portrait.PortraitRingQuality:SetTexture(E.ClearTexture)
+		portrait.PortraitRingCover:SetColorTexture(0, 0, 0)
+		portrait.PortraitRingCover:SetAllPoints(main.backdrop)
+	end
+
+	if portrait.Empty then
+		portrait.Empty:SetColorTexture(0, 0, 0)
+		portrait.Empty:SetAllPoints(main)
+	end
+
+	if portrait.Highlight then portrait.Highlight:Hide() end
+	if portrait.PuckBorder then portrait.PuckBorder:SetAlpha(0) end
+	if portrait.TroopStackBorder1 then portrait.TroopStackBorder1:SetAlpha(0) end
+	if portrait.TroopStackBorder2 then portrait.TroopStackBorder2:SetAlpha(0) end
+
+	if portrait.HealthBar then
+		portrait.HealthBar.Border:Hide()
+
+		local roleIcon = portrait.HealthBar.RoleIcon
+		roleIcon:ClearAllPoints()
+		roleIcon:Point('CENTER', main.backdrop, 'TOPRIGHT')
+
+		if updateAtlas then
+			HandleFollowerRole(roleIcon, roleIcon:GetAtlas())
+		else
+			hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
+		end
+
+		local background = portrait.HealthBar.Background
+		background:SetAlpha(0)
+		background:SetInside(main.backdrop, 2, 1) -- unsnap it
+		background:Point('TOPLEFT', main.backdrop, 'BOTTOMLEFT', 2, 7)
+		portrait.HealthBar.Health:SetTexture(E.media.normTex)
+	end
+end
 
 local function HandleFollowerAbilities(followerList)
 	local followerTab = followerList and followerList.followerTab
@@ -74,7 +150,8 @@ local function SkinFollowerBoard(self, group)
 
 	for frame in self[group..'FramePool']:EnumerateActive() do
 		if not frame.IsSkinned then
-			S:HandleGarrisonPortrait(frame)
+			HandleGarrisonPortrait(frame)
+
 			frame.PuckShadow:SetAlpha(0)
 
 			-- enemy pucks have neither, mission page follower pucks have both
@@ -295,7 +372,8 @@ end
 
 local function SetFollowerPortrait(portraitFrame, followerInfo)
 	if not portraitFrame.IsSkinned then
-		S:HandleGarrisonPortrait(portraitFrame)
+		HandleGarrisonPortrait(portraitFrame)
+
 		portraitFrame.IsSkinned = true
 	end
 
@@ -405,7 +483,7 @@ local function UpdateFollowerButtons(button)
 
 		local portrait = follower.PortraitFrame
 		if portrait then
-			S:HandleGarrisonPortrait(portrait, true)
+			HandleGarrisonPortrait(portrait, true)
 
 			portrait:ClearAllPoints()
 			portrait:Point('TOPLEFT', 3, -3)
@@ -767,14 +845,15 @@ function S:Blizzard_GarrisonUI()
 
 	hooksecurefunc(Follower, 'ShowFollower', HandleFollowerAbilities)
 	Follower:StripTextures()
+	S:HandleButton(Follower.HealAllButton)
 
 	FollowerTab:StripTextures()
 	FollowerTab:SetTemplate('Transparent')
 	FollowerTab.RaisedFrameEdges:SetAlpha(0)
+
 	local HealFollowerFrame = FollowerTab.HealFollowerFrame
 	S:HandleIcon(HealFollowerFrame.CostFrame.CostIcon)
 	S:HandleButton(HealFollowerFrame.HealFollowerButton)
-	S:HandleButton(Follower.HealAllButton)
 
 	-- Mission Tab
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
@@ -784,4 +863,27 @@ function S:Blizzard_GarrisonUI()
 
 	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
 	CovenantMissionFrame.MissionComplete.Board:HookScript('OnShow', SkinMissionBoards)
+end
+
+local function ShowGarrisonFollower(frame, followerID)
+	local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)
+	if not followerInfo then return end
+
+	if not frame.PortraitFrameStyled then
+		HandleGarrisonPortrait(frame.PortraitFrame)
+
+		frame.PortraitFrameStyled = true
+	end
+
+	local r, g, b = E:GetItemQualityColor(followerInfo.quality or 1)
+
+	frame.Name:SetVertexColor(r, g, b)
+	frame.PortraitFrame.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
+
+	frame.XPBar:ClearAllPoints()
+	frame.XPBar:Point('BOTTOMLEFT', frame.PortraitFrame, 'BOTTOMRIGHT', 7, -15)
+end
+
+function S:Blizzard_GarrisonTemplates()
+	hooksecurefunc(_G.GarrisonFollowerTabMixin, 'ShowFollower', ShowGarrisonFollower)
 end
