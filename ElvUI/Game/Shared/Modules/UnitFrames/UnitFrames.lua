@@ -1938,9 +1938,6 @@ do
 				HideFrame(_G.ComboFrame)
 			elseif disable.focus and unit == 'focus' then
 				HideFrame(_G.FocusFrame)
-				HideFrame(_G.TargetofFocusFrame)
-			elseif disable.target and unit == 'targettarget' then
-				HideFrame(_G.TargetFrameToT)
 			elseif not disabledBoss and disable.boss and strmatch(unit, 'boss%d*$') then
 				disabledBoss = true
 
@@ -1959,8 +1956,6 @@ do
 					for child in frame.PartyMemberFramePool:EnumerateActive() do
 						HideFrame(child, true)
 					end
-				else
-					HideFrame(_G.PartyMemberBackground)
 				end
 
 				for i = 1, MAX_PARTY do

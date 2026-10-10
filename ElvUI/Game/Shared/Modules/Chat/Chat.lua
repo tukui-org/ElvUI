@@ -83,6 +83,7 @@ local GetClientTexture = BNet_GetClientEmbeddedAtlas or BNet_GetClientEmbeddedTe
 
 local AddMessageEventFilter = ChatFrameUtil.AddMessageEventFilter
 local CanChatGroupPerformExpressionExpansion = ChatFrameUtil.CanChatGroupPerformExpressionExpansion
+local ChatEditActivateChat = ChatFrameUtil.ActivateChat
 local ChatEditSetLastActiveWindow = ChatFrameUtil.SetLastActiveWindow
 local ChatEditSetLastTellTarget = ChatFrameUtil.SetLastTellTarget
 local ChooseBoxForSend = ChatFrameUtil.ChooseBoxForSend
@@ -809,11 +810,7 @@ do
 				elseif text == '/gr ' then
 					self:SetText(CH:GetGroupDistribution() .. strsub(text, 5))
 
-					if self.ParseText then
-						self:ParseText(0)
-					else
-						_G.ChatEdit_ParseText(self, 0)
-					end
+					self:ParseText(0)
 				end
 			end
 		end
@@ -1643,10 +1640,6 @@ function CH:Panels_ColorUpdate()
 	local panelColor = CH.db.panelColor
 	_G.LeftChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
 	_G.RightChatPanel.backdrop:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
-
-	if _G.ChatButtonHolder then
-		_G.ChatButtonHolder:SetBackdropColor(panelColor.r, panelColor.g, panelColor.b, panelColor.a)
-	end
 end
 
 function CH:UpdateChatTabColors()
@@ -1724,7 +1717,7 @@ function CH:SetChatEditBoxMessage(msg)
 	local editBoxShown = ChatFrameEditBox:IsShown()
 	local editBoxText = ChatFrameEditBox:GetText()
 	if not editBoxShown then
-		_G.ChatEdit_ActivateChat(ChatFrameEditBox)
+		ChatEditActivateChat(ChatFrameEditBox)
 	end
 
 	if editBoxText and editBoxText ~= '' then
@@ -4146,14 +4139,6 @@ function CH:Initialize()
 	CH:SecureHook('RedockChatWindows', 'ClearSnapping')
 	CH:SecureHook('UIDropDownMenu_AddButton')
 	CH:SecureHook('GetPlayerInfoByGUID')
-
-	if _G.ChatEdit_OnEnterPressed then
-		CH:SecureHook('ChatEdit_OnEnterPressed')
-	end
-
-	if _G.ChatEdit_UpdateHeader then
-		CH:SecureHook('ChatEdit_UpdateHeader', 'ChatEdit_UpdateHeader')
-	end
 
 	CH:RegisterEvent('UPDATE_CHAT_WINDOWS', 'SetupChat')
 	CH:RegisterEvent('UPDATE_FLOATING_CHAT_WINDOWS', 'SetupChat')

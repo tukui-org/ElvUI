@@ -131,7 +131,7 @@ function M:SetScale(frame, scale)
 end
 
 function M:HandleExpansionButton()
-	local garrison = _G.ExpansionLandingPageMinimapButton or _G.GarrisonLandingPageMinimapButton
+	local garrison = _G.ExpansionLandingPageMinimapButton
 	if not garrison then return end
 
 	M:SaveIconParent(garrison)
@@ -145,12 +145,6 @@ function M:HandleExpansionButton()
 		garrison:Point(position, Minimap, xOffset, yOffset)
 		M:SetIconParent(garrison)
 		M:SetScale(garrison, scale)
-
-		local box = _G.GarrisonLandingPageTutorialBox
-		if box then
-			box:SetScale(1 / scale)
-			box:SetClampedToScreen(true)
-		end
 	end
 end
 
@@ -745,7 +739,6 @@ end
 
 do
 	local killFrames = {
-		_G.MinimapBorderTop,
 		_G.MiniMapMailBorder,
 		_G.MinimapNorthTag,
 		_G.MiniMapWorldMapButton,
@@ -754,7 +747,9 @@ do
 
 	tinsert(killFrames, E.Modern and Minimap.ZoomIn or _G.MinimapZoomIn)
 	tinsert(killFrames, E.Modern and Minimap.ZoomOut or _G.MinimapZoomOut)
-	tinsert(killFrames, E.Modern and _G.MiniMapTracking or _G.MinimapToggleButton)
+	if not E.Modern then
+		tinsert(killFrames, _G.MinimapToggleButton)
+	end
 
 	if E.Forever then
 		tinsert(killFrames, MinimapCluster.DielFrame)
@@ -897,11 +892,7 @@ function M:Initialize()
 
 		MinimapCluster.Tracking.Background:StripTextures()
 
-		if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
-			hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)
-		else
-			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
-		end
+		hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
 	elseif E.Classic then
 		hooksecurefunc('SetLookingForGroupUIAvailable', M.HandleTrackingButton)
 	end

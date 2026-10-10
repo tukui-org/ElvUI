@@ -980,18 +980,6 @@ function AB:Button_OnLeave(button)
 	end
 end
 
-function AB:BlizzardOptionsPanel_OnEvent()
-	_G.InterfaceOptionsActionBarsPanelBottomRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 2)
-	_G.InterfaceOptionsActionBarsPanelBottomLeft.Text:SetFormattedText(L["Remove Bar %d Action Page"], 3)
-	_G.InterfaceOptionsActionBarsPanelRightTwo.Text:SetFormattedText(L["Remove Bar %d Action Page"], 4)
-	_G.InterfaceOptionsActionBarsPanelRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 5)
-
-	_G.InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
-	_G.InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
-	_G.InterfaceOptionsActionBarsPanelRightTwo:SetScript('OnEnter', nil)
-	_G.InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
-end
-
 do
 	local function CanGlide() -- required when reloading because the event wont fire yet
 		local isGliding, canGlide = C_PlayerInfo_GetGlidingInfo()

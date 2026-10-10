@@ -195,12 +195,6 @@ function E:SetupCVars(noDisplayMsg)
 		E:SetCVar('ShowAllSpellRanks', 1) -- Required for LibRangeCheck to function properly with Spell Ranks
 	end
 
-	local ActionButtonPickUp = _G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
-	if ActionButtonPickUp then
-		ActionButtonPickUp:SetValue('SHIFT')
-		ActionButtonPickUp:RefreshValue()
-	end
-
 	if E.private.nameplates.enable then
 		NP:CVarReset()
 	end
