@@ -157,14 +157,7 @@ function E:Auras_UpdateHighlight(container, button)
 	local highlight = button.highlight
 	if not highlight then return end
 
-	local glow = button.glow
-	local anchor = container.glowAnchor
-	if anchor then
-		glow:ClearAllPoints()
-		glow:SetAllPoints(anchor)
-	end
-
-	local useGlow
+	local glow, useGlow = button.glow
 	if container.key == 'bad' then
 		button:ClearDispelTypeTextures()
 
@@ -188,9 +181,17 @@ function E:Auras_UpdateHighlight(container, button)
 		end
 	end
 
+	local anchor = container.glowAnchor
+	if not useGlow then
+		highlight:SetBlendMode(container.blendMode)
+	elseif anchor then
+		glow:ClearAllPoints()
+		glow:SetAllPoints(anchor)
+		glow:SetupTextureCoordinates()
+	end
+
 	glow:SetShown(useGlow)
 	highlight:SetShown(not useGlow)
-	highlight:SetBlendMode(container.blendMode)
 end
 
 function E:Auras_CreateText(button)
