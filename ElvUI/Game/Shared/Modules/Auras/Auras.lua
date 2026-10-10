@@ -15,6 +15,7 @@ local GetAuraDuration = C_UnitAuras.GetAuraDuration
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
+local GetTemporaryEnchantmentInfo = C_PaperDollInfo and C_PaperDollInfo.GetTemporaryEnchantmentInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local RegisterStateDriver = RegisterStateDriver
@@ -25,6 +26,7 @@ local UIParent = UIParent
 local GetTime = GetTime
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
+local INVSLOT_MAINHAND, INVSLOT_OFFHAND, INVSLOT_RANGED = INVSLOT_MAINHAND, INVSLOT_OFFHAND, INVSLOT_RANGED
 
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group('ElvUI', 'Buffs')
@@ -326,6 +328,16 @@ function A:UpdateAura(button, index)
 	end
 end
 
+local function GetEnchantExpirations()
+	if GetTemporaryEnchantmentInfo then
+		local main, offhand, ranged = GetTemporaryEnchantmentInfo(INVSLOT_MAINHAND), GetTemporaryEnchantmentInfo(INVSLOT_OFFHAND), GetTemporaryEnchantmentInfo(INVSLOT_RANGED)
+		return main and main.remainingTimeMs, offhand and offhand.remainingTimeMs, ranged and ranged.remainingTimeMs
+	else
+		local _, main, _, _, _, offhand, _, _, _, ranged = GetWeaponEnchantInfo()
+		return main, offhand, ranged
+	end
+end
+
 function A:UpdateTempEnchant(button, index, expiration)
 	if expiration then
 		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
@@ -528,7 +540,7 @@ function A:Visibility_OnUpdate(elapsed)
 	if header.elapsedEnchants and header.elapsedEnchants > 0.5 then
 		local index, enchant = next(header.enchants)
 		if index then
-			local _, main, _, _, _, offhand, _, _, _, ranged = GetWeaponEnchantInfo()
+			local main, offhand, ranged = GetEnchantExpirations()
 			while enchant do
 				A:UpdateTempEnchant(enchant, enchant:GetID(), (index == 1 and main) or (index == 2 and offhand) or (index == 3 and ranged))
 
