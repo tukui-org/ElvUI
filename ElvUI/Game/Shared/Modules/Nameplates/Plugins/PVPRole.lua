@@ -22,7 +22,9 @@ local Tanks, TankSpecs = {}, {}
 local function GetScoreNameSpec(index)
 	if GetScoreInfo then
 		local info = GetScoreInfo(index)
-		return info and info.name, info and info.talentSpec
+		if info then
+			return info.name, info.talentSpec
+		end
 	else
 		local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, specName = GetBattlefieldScore(index)
 		return name, specName

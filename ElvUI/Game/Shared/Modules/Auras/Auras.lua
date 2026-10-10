@@ -328,7 +328,7 @@ function A:UpdateAura(button, index)
 	end
 end
 
-local function GetEnchantExpirations()
+function A:GetEnchantExpirations()
 	if GetTemporaryEnchantmentInfo then
 		local main, offhand, ranged = GetTemporaryEnchantmentInfo(INVSLOT_MAINHAND), GetTemporaryEnchantmentInfo(INVSLOT_OFFHAND), GetTemporaryEnchantmentInfo(INVSLOT_RANGED)
 		return main and main.remainingTimeMs, offhand and offhand.remainingTimeMs, ranged and ranged.remainingTimeMs
@@ -540,7 +540,7 @@ function A:Visibility_OnUpdate(elapsed)
 	if header.elapsedEnchants and header.elapsedEnchants > 0.5 then
 		local index, enchant = next(header.enchants)
 		if index then
-			local main, offhand, ranged = GetEnchantExpirations()
+			local main, offhand, ranged = A:GetEnchantExpirations()
 			while enchant do
 				A:UpdateTempEnchant(enchant, enchant:GetID(), (index == 1 and main) or (index == 2 and offhand) or (index == 3 and ranged))
 
