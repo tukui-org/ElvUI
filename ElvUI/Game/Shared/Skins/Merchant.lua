@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local max = max
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -115,10 +116,29 @@ end
 local function UpdateMerchantInfo()
 	if not _G.MerchantFrame:IsShown() then return end
 
-	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
-		HandleMerchantItem(i) -- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
+	local numMerchantItems, pageIndex
+	if not E.Modern then -- classic merchant has no quality borders
+		pageIndex = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
+		numMerchantItems = GetMerchantNumItems()
+
+		local numBuybackItems = GetNumBuybackItems()
+		local link = GetBuybackItemInfo(numBuybackItems)
+		SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
+	end
+
+	local numItems = max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE)
+	for i = 1, numItems do -- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
+		HandleMerchantItem(i)
 
 		local button = _G['MerchantItem'..i..'ItemButton']
+		if pageIndex then -- not E.Modern
+			pageIndex = pageIndex + 1
+
+			if pageIndex <= numMerchantItems then
+				local name = _G['MerchantItem'..i..'Name']
+				SetQualityColor(button, name, button.link)
+			end
+		end
 
 		local money = _G['MerchantItem'..i..'MoneyFrame']
 		money:ClearAllPoints()
@@ -132,25 +152,6 @@ local function UpdateMerchantInfo()
 		else
 			currency:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
 		end
-	end
-
-	-- classic merchant has no quality borders
-	if not E.Modern then
-		local numBuybackItems = GetNumBuybackItems()
-		local numMerchantItems = GetMerchantNumItems()
-		local index = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
-
-		for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
-			index = index + 1
-
-			if index <= numMerchantItems then
-				local button = _G['MerchantItem'..i..'ItemButton']
-				SetQualityColor(button, _G['MerchantItem'..i..'Name'], button.link)
-			end
-		end
-
-		local link = GetBuybackItemInfo(numBuybackItems)
-		SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
 	end
 end
 
@@ -229,11 +230,9 @@ function S:MerchantFrame()
 	_G.MerchantNextPageButton:ClearAllPoints() -- Monitor this
 	_G.MerchantNextPageButton:Point('LEFT', _G.MerchantPageText, 'RIGHT', 100, 4)
 
-	-- setup some hooks to fix placement
-	if E.Modern then
+	if E.Modern then -- setup some hooks to fix placement
 		hooksecurefunc('MerchantFrame_UpdateRepairButtons', UpdateRepairButtons)
-	else
-		-- classic merchant has no quality borders
+	else -- classic merchant has no quality borders
 		hooksecurefunc('MerchantFrame_UpdateBuybackInfo', UpdateBuybackInfo)
 	end
 
