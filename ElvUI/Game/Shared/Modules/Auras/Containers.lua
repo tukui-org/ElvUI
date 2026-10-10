@@ -17,7 +17,7 @@ local UnitCanAssist = UnitCanAssist
 local UnitIsVisible = UnitIsVisible
 
 local GetCVarBool = C_CVar.GetCVarBool
-local AuraButtonBorderStyle = AuraButtonBorderStyle
+local DispelTypeTextureStyle = Enum.CustomAuraButtonDispelTypeTextureStyle
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local ItemEnchantmentPlacement = _G.CustomAuraContainerItemEnchantmentPlacement
 local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
@@ -32,7 +32,7 @@ local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
 
 E.AuraHighlight = {
-	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
+	style = DispelTypeTextureStyle and DispelTypeTextureStyle.PreserveAsset or nil
  -- customDispelColorCurve is added from UpdateAuraCurves
 }
 
@@ -52,7 +52,7 @@ E.AuraEventUnits = {
 }
 
 E.AuraDispel = {
-	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
+	style = DispelTypeTextureStyle and DispelTypeTextureStyle.PreserveAsset or nil,
 	showWhenHarmful = true,
 	showWhenHelpful = false,
 	showWithoutDispelType = true,
