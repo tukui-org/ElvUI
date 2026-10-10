@@ -212,6 +212,7 @@ function S:Blizzard_Communities()
 	end
 
 	S:HandleDropDownBox(CommunitiesFrame.StreamDropdown)
+	S:HandleDropDownBox(CommunitiesFrame.CommunityMemberListDropdown)
 
 	hooksecurefunc(CommunitiesFrameCommunitiesList.ScrollBox, 'Update', CommunitiesListScrollUpdate)
 
