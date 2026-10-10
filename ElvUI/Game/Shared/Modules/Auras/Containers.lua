@@ -188,6 +188,8 @@ function E:Auras_UpdateHighlight(container, button)
 		glow:ClearAllPoints()
 		glow:SetAllPoints(anchor)
 		glow:SetupTextureCoordinates()
+	else -- should never reach here (anchor should always exist)
+		glow:SetupTextureCoordinates()
 	end
 
 	glow:SetShown(useGlow)
