@@ -475,7 +475,6 @@ function S:Blizzard_GarrisonUI()
 
 	-- Garrison Portraits
 	S:HandleFollowerListOnUpdateData('GarrisonMissionFrameFollowers')
-	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to orderhall landing page
 	hooksecurefunc(GarrisonLandingPage.FollowerTab, 'UpdateAutoSpellAbilities', UpdateSpellAbilities)
 
 	-- Landing page: Fleet
@@ -558,7 +557,6 @@ function S:Blizzard_GarrisonUI()
 
 	-- Orderhall Portraits
 	S:HandleFollowerListOnUpdateData('OrderHallMissionFrameFollowers')
-	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to garrison landing page
 
 	-- Missions
 	MissionTab = OrderHallMissionFrame.MissionTab -- swap
