@@ -489,7 +489,7 @@ do	-- i guess we finally need it ~Simpy
 				info.ticker:Cancel() -- cant continue
 
 				if info.finish then
-					info.finish()
+					info.finish(info)
 				end
 
 				funcs[info.func] = nil
