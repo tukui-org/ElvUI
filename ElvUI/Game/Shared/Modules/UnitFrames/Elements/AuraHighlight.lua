@@ -104,12 +104,14 @@ function UF:Configure_AuraHighlight(frame)
 
 			if mode == 'GLOW' then
 				frame.AuraHighlightBackdrop = true
+				highlight:SetVertexColor(0, 0, 0, 0)
 
 				if highlight.glowAnchor then
 					frame.AuraHightlightGlow:SetAllPoints(highlight.glowAnchor)
 				end
 			else
 				frame.AuraHighlightBackdrop = false
+				frame.AuraHightlightGlow:Hide()
 			end
 		end
 	elseif E.Modern then
