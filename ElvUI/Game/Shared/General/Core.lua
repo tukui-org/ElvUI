@@ -488,12 +488,12 @@ do	-- i guess we finally need it ~Simpy
 			if info.cancel or (co_status(info.routine) == 'dead') then
 				info.ticker:Cancel() -- cant continue
 
+				funcs[info.func] = nil
+				tickers[info.func] = nil
+
 				if info.finish then
 					info.finish(info)
 				end
-
-				funcs[info.func] = nil
-				tickers[info.func] = nil
 			elseif not InCombatLockdown() then -- resume is a protected function, wait until after combat
 				E:Coroutine_Continue(info)
 			end
