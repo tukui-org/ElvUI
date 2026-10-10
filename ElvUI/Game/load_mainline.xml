@@ -116,7 +116,6 @@
 	<Script file='Shared\Skins\FlightMap.lua'/>
 	<Script file='Shared\Skins\Friends.lua'/>
 	<Script file='Shared\Skins\Garrison.lua'/>
-	<Script file='Shared\Skins\GarrisonTemplate.lua'/>
 	<Script file='Shared\Skins\GarrisonTooltip.lua'/>
 	<Script file='Shared\Skins\GenericTrait.lua'/>
 	<Script file='Shared\Skins\GMChat.lua'/>
