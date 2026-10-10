@@ -629,6 +629,10 @@ function NP:AuraContainer_Preloader()
 	self:Hide() -- now rehide it
 end
 
+function NP:AuraContainer_PreloadDone()
+	NP.AurasPreloading = nil
+end
+
 function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
@@ -667,7 +671,8 @@ function NP:ConfigurePlates(init)
 
 			-- /dump (40 * 5 * 3) / 3 / (60 / 0.9) = (3 x 0.9) = 3 mins
 			-- (plates * frametypes * auratypes) / containers per tick / (seconds / tickdelay)
-			E:CoroutineUpdate(NP.AuraContainer_Preloader, NP.AuraContainersCreated, nil, 1, 0.3)
+			NP.AurasPreloading = true -- just a var to check if preloading is currently active
+			E:CoroutineUpdate(NP.AuraContainer_Preloader, NP.AuraContainersCreated, nil, NP.AuraContainer_PreloadDone, 1, 0.3)
 		end
 
 		if staticEvent == 'NAME_PLATE_UNIT_ADDED' then
