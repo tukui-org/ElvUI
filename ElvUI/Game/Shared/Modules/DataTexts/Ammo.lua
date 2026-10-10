@@ -6,7 +6,7 @@ local select, wipe = select, wipe
 local format, strjoin = format, strjoin
 
 local _G = _G
-local GetItemCount = (C_Item and C_Item.GetItemCount) or GetItemCount
+local GetItemCount = C_Item.GetItemCount or GetItemCount
 local GetInventoryItemCount = GetInventoryItemCount
 local GetInventoryItemID = GetInventoryItemID
 local GetItemInfo = C_Item.GetItemInfo
