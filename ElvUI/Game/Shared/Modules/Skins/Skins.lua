@@ -446,79 +446,6 @@ function S:HandleStaticPopup(popup)
 	end
 end
 
-do -- We need to test this for the BGScore frame
-	S.PVPHonorXPBarFrames = {}
-	S.PVPHonorXPBarSkinned = false
-
-	local function SetNextAvailable(frame)
-		local parent = frame:GetParent()
-		local parentName = parent and parent:GetName()
-		if not parentName or not S.PVPHonorXPBarFrames[parentName] then return end
-
-		frame:StripTextures()
-
-		local bar = frame.Bar
-		if bar and not bar.backdrop then
-			bar:CreateBackdrop()
-
-			if bar.Background then
-				bar.Background:SetInside(bar.backdrop)
-			end
-
-			if bar.Spark then
-				bar.Spark:SetAlpha(0)
-			end
-
-			if bar.OverlayFrame and bar.OverlayFrame.Text then
-				bar.OverlayFrame.Text:ClearAllPoints()
-				bar.OverlayFrame.Text:Point('CENTER', bar)
-			end
-		end
-
-		local prestigeReward = frame.PrestigeReward
-		if prestigeReward and prestigeReward.Accept then
-			prestigeReward.Accept:ClearAllPoints()
-			prestigeReward.Accept:Point('TOP', prestigeReward, 'BOTTOM', 0, 0)
-
-			if not prestigeReward.Accept.template then
-				S:HandleButton(prestigeReward.Accept)
-			end
-		end
-
-		local nextAvailable = frame.NextAvailable
-		if nextAvailable then
-			if bar then
-				nextAvailable:ClearAllPoints()
-				nextAvailable:Point('LEFT', bar, 'RIGHT', 0, -2)
-			end
-
-			if not nextAvailable.backdrop then
-				nextAvailable:StripTextures()
-				nextAvailable:CreateBackdrop()
-
-				if nextAvailable.Icon then
-					nextAvailable.backdrop:Point('TOPLEFT', nextAvailable.Icon, -E.Border, E.Border)
-					nextAvailable.backdrop:Point('BOTTOMRIGHT', nextAvailable.Icon, E.Border, -E.Border)
-				end
-			end
-
-			if nextAvailable.Icon then
-				nextAvailable.Icon:SetDrawLayer('ARTWORK')
-				nextAvailable.Icon:SetTexCoords()
-			end
-		end
-	end
-
-	function S:SkinPVPHonorXPBar(frame)
-		S.PVPHonorXPBarFrames[frame] = true
-
-		if S.PVPHonorXPBarSkinned then return end
-		S.PVPHonorXPBarSkinned = true
-
-		hooksecurefunc('PVPHonorXPBar_SetNextAvailable', SetNextAvailable)
-	end
-end
-
 function S:StatusBarColorGradient(bar, value, max, backdrop)
 	if not (bar and value) then return end
 
@@ -702,25 +629,6 @@ do -- WIM replaces Blizzard globals we need to rehook
 		hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index) S:DropDownMenu_CreateFrames(prefix, level, index) end)
 		hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture) S:DropDownMenu_SetIconImage(prefix, icon, texture) end)
 		hooksecurefunc('ToggleDropDownMenu', function(level) S:DropDownMenu_Toggle(prefix, level, textX, textY) end)
-	end
-end
-
-function S:SkinTalentListButtons(frame)
-	local name = frame and frame:GetName()
-	if name then
-		local bcl = _G[name..'BtnCornerLeft']
-		local bcr = _G[name..'BtnCornerRight']
-		local bbb = _G[name..'ButtonBottomBorder']
-		if bcl then bcl:SetTexture() end
-		if bcr then bcr:SetTexture() end
-		if bbb then bbb:SetTexture() end
-	end
-
-	if frame.Inset then
-		S:HandleInsetFrame(frame.Inset)
-
-		frame.Inset:Point('TOPLEFT', 4, -60)
-		frame.Inset:Point('BOTTOMRIGHT', -6, 26)
 	end
 end
 
