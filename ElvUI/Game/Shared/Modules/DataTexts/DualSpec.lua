@@ -14,9 +14,9 @@ local PRIMARY = PRIMARY
 local SECONDARY = SECONDARY
 
 local GetNumTalentGroups = GetNumTalentGroups
-local GetSpecializationInfo = C_SpecializationInfo and C_SpecializationInfo.GetSpecializationInfo
-local GetActiveTalentGroup = (C_SpecializationInfo and C_SpecializationInfo.GetActiveSpecGroup) or GetActiveTalentGroup
-local SetActiveTalentGroup = (C_SpecializationInfo and C_SpecializationInfo.SetActiveSpecGroup) or SetActiveTalentGroup
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
+local GetActiveTalentGroup = C_SpecializationInfo.GetActiveSpecGroup or GetActiveTalentGroup
+local SetActiveTalentGroup = C_SpecializationInfo.SetActiveSpecGroup or SetActiveTalentGroup
 
 local LoadAddOn = C_AddOns.LoadAddOn
 
