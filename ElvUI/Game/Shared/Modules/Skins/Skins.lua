@@ -1975,55 +1975,6 @@ function S:HandleStepSlider(frame, minimal)
 	end
 end
 
-function S:HandleFollowerAbilities(followerList)
-	local followerTab = followerList and followerList.followerTab
-	local abilityFrame = followerTab.AbilitiesFrame
-	if not abilityFrame then return end
-
-	local abilities = abilityFrame.Abilities
-	if abilities then
-		for i = 1, #abilities do
-			local iconButton = abilities[i].IconButton
-			local icon = iconButton and iconButton.Icon
-			if icon then
-				iconButton.Border:SetAlpha(0)
-				S:HandleIcon(icon, true)
-			end
-		end
-	end
-
-	local equipment = abilityFrame.Equipment
-	if equipment then
-		for i = 1, #equipment do
-			local equip = equipment[i]
-			if equip then
-				equip.Border:SetAlpha(0)
-				equip.BG:SetAlpha(0)
-
-				S:HandleIcon(equip.Icon, true)
-				equip.Icon.backdrop:SetBackdropColor(1, 1, 1, .15)
-			end
-		end
-	end
-
-	local combatAllySpell = abilityFrame.CombatAllySpell
-	if combatAllySpell then
-		for i = 1, #combatAllySpell do
-			local icon = combatAllySpell[i].iconTexture
-			if icon then
-				S:HandleIcon(icon, true)
-			end
-		end
-	end
-
-	local xpbar = followerTab.XPBar
-	if xpbar and not xpbar.backdrop then
-		xpbar:StripTextures()
-		xpbar:SetStatusBarTexture(E.media.normTex)
-		xpbar:CreateBackdrop('Transparent')
-	end
-end
-
 -- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
 local ReplacedRoleTex = {
 	['Adventures-Tank'] = 'Soulbinds_Tree_Conduit_Icon_Protect',

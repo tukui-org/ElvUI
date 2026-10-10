@@ -9,8 +9,53 @@ local hooksecurefunc = hooksecurefunc
 
 S:AddCallbackForAddon('Blizzard_GarrisonUI', nil, nil, nil, nil, nil, 'garrison')
 
-local function ShowFollower(frame)
-	S:HandleFollowerAbilities(frame)
+local function HandleFollowerAbilities(followerList)
+	local followerTab = followerList and followerList.followerTab
+	local abilityFrame = followerTab.AbilitiesFrame
+	if not abilityFrame then return end
+
+	local abilities = abilityFrame.Abilities
+	if abilities then
+		for i = 1, #abilities do
+			local iconButton = abilities[i].IconButton
+			local icon = iconButton and iconButton.Icon
+			if icon then
+				iconButton.Border:SetAlpha(0)
+				S:HandleIcon(icon, true)
+			end
+		end
+	end
+
+	local equipment = abilityFrame.Equipment
+	if equipment then
+		for i = 1, #equipment do
+			local equip = equipment[i]
+			if equip then
+				equip.Border:SetAlpha(0)
+				equip.BG:SetAlpha(0)
+
+				S:HandleIcon(equip.Icon, true)
+				equip.Icon.backdrop:SetBackdropColor(1, 1, 1, .15)
+			end
+		end
+	end
+
+	local combatAllySpell = abilityFrame.CombatAllySpell
+	if combatAllySpell then
+		for i = 1, #combatAllySpell do
+			local icon = combatAllySpell[i].iconTexture
+			if icon then
+				S:HandleIcon(icon, true)
+			end
+		end
+	end
+
+	local xpbar = followerTab.XPBar
+	if xpbar and not xpbar.backdrop then
+		xpbar:StripTextures()
+		xpbar:SetStatusBarTexture(E.media.normTex)
+		xpbar:CreateBackdrop('Transparent')
+	end
 end
 
 local function UpdateFollowerColorOnBoard(self, _, info)
@@ -457,7 +502,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleTrimScrollBar(_G.GarrisonMissionFrameFollowers.ScrollBar)
-	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', HandleFollowerAbilities)
 
 	local FollowerTab = GarrisonMissionFrame.FollowerTab
 	FollowerTab:StripTextures()
@@ -547,7 +592,7 @@ function S:Blizzard_GarrisonUI()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleTrimScrollBar(_G.GarrisonLandingPageFollowerList.ScrollBar)
 
-	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', HandleFollowerAbilities)
 	hooksecurefunc('GarrisonFollowerButton_AddAbility', GarrisonAddAbility)
 
 	-- Garrison Portraits
@@ -621,7 +666,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.BG:StripTextures()
 
 	S:HandleEditBox(FollowerList.SearchBox)
-	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', HandleFollowerAbilities)
 
 	FollowerTab.Class:Size(50, 43)
 	FollowerTab.XPBar:StripTextures()
@@ -694,7 +739,7 @@ function S:Blizzard_GarrisonUI()
 	Follower:StripTextures()
 	Follower.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(Follower.SearchBox)
-	hooksecurefunc(Follower, 'ShowFollower', ShowFollower)
+	hooksecurefunc(Follower, 'ShowFollower', HandleFollowerAbilities)
 
 	local XPBar = FollowerTab.XPBar
 	XPBar:StripTextures()
@@ -720,7 +765,7 @@ function S:Blizzard_GarrisonUI()
 	Follower = _G.CovenantMissionFrameFollowers -- swap
 	FollowerTab = CovenantMissionFrame.FollowerTab
 
-	hooksecurefunc(Follower, 'ShowFollower', ShowFollower)
+	hooksecurefunc(Follower, 'ShowFollower', HandleFollowerAbilities)
 	Follower:StripTextures()
 
 	FollowerTab:StripTextures()
