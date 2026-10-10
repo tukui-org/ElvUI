@@ -2048,12 +2048,12 @@ function S:HandleShipFollowerPage(followerTab)
 	end
 end
 
-local function UpdateFollowerQuality(self, followerInfo)
-	local r, g, b = E:GetItemQualityColor(followerInfo.quality)
-	self.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
-end
-
 do
+	local function UpdateFollowerQuality(self, followerInfo)
+		local r, g, b = E:GetItemQualityColor(followerInfo.quality)
+		self.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
+	end
+
 	local function UpdateFollower(button)
 		if not E.Modern then
 			button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
