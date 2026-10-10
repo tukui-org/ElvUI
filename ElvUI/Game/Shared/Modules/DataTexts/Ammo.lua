@@ -6,7 +6,7 @@ local select, wipe = select, wipe
 local format, strjoin = format, strjoin
 
 local _G = _G
-local GetItemCount = GetItemCount
+local GetItemCount = (C_Item and C_Item.GetItemCount) or GetItemCount
 local GetInventoryItemCount = GetInventoryItemCount
 local GetInventoryItemID = GetInventoryItemID
 local GetItemInfo = C_Item.GetItemInfo
@@ -20,8 +20,8 @@ local NUM_BAG_FRAMES = NUM_BAG_FRAMES
 local INVTYPE_AMMO = INVTYPE_AMMO
 local INVSLOT_RANGED = INVSLOT_RANGED
 local INVSLOT_AMMO = INVSLOT_AMMO
-local LE_ITEM_CLASS_QUIVER = LE_ITEM_CLASS_QUIVER
-local LE_ITEM_CLASS_CONTAINER = LE_ITEM_CLASS_CONTAINER
+local ITEM_CLASS_QUIVER = Enum.ItemClass.Quiver
+local ITEM_CLASS_CONTAINER = Enum.ItemClass.Container
 
 local iconString = '|T%s:16:16:0:0:64:64:4:55:4:55|t'
 local displayString = ''
@@ -113,7 +113,7 @@ local function OnEnter()
 		local itemID = GetInventoryItemID('player', ContainerIDToInventoryID(i))
 		if itemID then
 			local name, _, quality, _, _, _, itemSubType, _, _, texture, itemClassID, itemSubClassID = GetItemInfo(itemID)
-			if itemSubClassID == LE_ITEM_CLASS_QUIVER or itemClassID == LE_ITEM_CLASS_CONTAINER and itemSubClassID == 1 then
+			if itemSubClassID == ITEM_CLASS_QUIVER or itemClassID == ITEM_CLASS_CONTAINER and itemSubClassID == 1 then
 				local r, g, b = E:GetItemQualityColor(quality)
 				local free, total = GetContainerNumFreeSlots(i), GetContainerNumSlots(i)
 				local used = total - free
@@ -134,7 +134,7 @@ local function OnClick(_, btn)
 				local itemID = GetInventoryItemID('player', ContainerIDToInventoryID(i))
 				if itemID then
 					local itemClassID, itemSubClassID = select(11, GetItemInfo(itemID))
-					if itemSubClassID == LE_ITEM_CLASS_QUIVER or itemClassID == LE_ITEM_CLASS_CONTAINER and itemSubClassID == 1 then
+					if itemSubClassID == ITEM_CLASS_QUIVER or itemClassID == ITEM_CLASS_CONTAINER and itemSubClassID == 1 then
 						_G.ToggleBag(i)
 					end
 				end

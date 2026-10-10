@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local time, max, strjoin = time, max, strjoin
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local CombatLogGetCurrentEventInfo = (C_CombatLog and C_CombatLog.GetCurrentEventInfo) or CombatLogGetCurrentEventInfo
 local UnitGUID = UnitGUID
 
 local lastSegment, petGUID = 0
