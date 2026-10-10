@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local max = max
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -125,8 +126,9 @@ local function UpdateMerchantInfo()
 		SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
 	end
 
-	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
-		HandleMerchantItem(i) -- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
+	local numItems = max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE)
+	for i = 1, numItems do -- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
+		HandleMerchantItem(i)
 
 		local button = _G['MerchantItem'..i..'ItemButton']
 		if pageIndex then -- not E.Modern
