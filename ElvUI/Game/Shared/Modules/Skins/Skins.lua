@@ -347,10 +347,10 @@ function S:SetDisabledBackdrop()
 end
 
 do
-	local hookedFrames = {}
+	local hooked = {}
 	function S:StaticPopup_OnShow() -- UpdateRecapButton is created OnShow
-		if self.UpdateRecapButton and not hookedFrames[self] then
-			hookedFrames[self] = true
+		if self.UpdateRecapButton and not hooked[self] then
+			hooked[self] = true
 
 			hooksecurefunc(self, 'UpdateRecapButton', S.StaticPopup_UpdateRecapButton)
 		end
@@ -2054,8 +2054,6 @@ local function UpdateFollowerQuality(self, followerInfo)
 end
 
 do
-	S.FollowerListUpdateDataFrames = {}
-
 	local function UpdateFollower(button)
 		if not E.Modern then
 			button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
@@ -2142,13 +2140,11 @@ do
 		end
 	end
 
-	function S:HandleFollowerListOnUpdateData(frame)
-		if frame == 'GarrisonLandingPageFollowerList' and (not S.db.blizzard.orderhall or not S.db.blizzard.garrison) then
-			return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
-		end
+	local hooked = {} -- this hook is needed for several frames but only if one is active
+	function S:HandleFollowerListOnUpdateData()
+		if hooked.GarrisonFollowerList then return end
 
-		if S.FollowerListUpdateDataFrames[frame] then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
-		S.FollowerListUpdateDataFrames[frame] = true
+		hooked.GarrisonFollowerList = true -- we only need to hook this once
 
 		hooksecurefunc(_G, 'GarrisonFollowerList_InitButton', UpdateFollower)
 	end
