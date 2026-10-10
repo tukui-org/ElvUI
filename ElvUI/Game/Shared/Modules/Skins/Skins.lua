@@ -2142,14 +2142,6 @@ do
 		end
 	end
 
-	local function UpdateListScroll(dataFrame)
-		if not (dataFrame and dataFrame.listScroll) or not S.FollowerListUpdateDataFrames[dataFrame:GetName()] then return end
-
-		local buttons = dataFrame.listScroll.buttons
-		local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
-		S:HandleFollowerListOnUpdateDataFunc(buttons, buttons and #buttons, offset, dataFrame.listScroll and #dataFrame.listScroll)
-	end
-
 	function S:HandleFollowerListOnUpdateData(frame)
 		if frame == 'GarrisonLandingPageFollowerList' and (not S.db.blizzard.orderhall or not S.db.blizzard.garrison) then
 			return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
@@ -2158,11 +2150,7 @@ do
 		if S.FollowerListUpdateDataFrames[frame] then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
 		S.FollowerListUpdateDataFrames[frame] = true
 
-		if _G.GarrisonFollowerList_InitButton then
-			hooksecurefunc(_G, 'GarrisonFollowerList_InitButton', UpdateFollower)
-		else
-			hooksecurefunc(_G[frame], 'UpdateData', UpdateListScroll) -- pre DF
-		end
+		hooksecurefunc(_G, 'GarrisonFollowerList_InitButton', UpdateFollower)
 	end
 end
 

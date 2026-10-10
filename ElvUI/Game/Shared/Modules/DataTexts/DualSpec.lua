@@ -13,10 +13,10 @@ local LEVEL_UP_DUALSPEC = LEVEL_UP_DUALSPEC
 local PRIMARY = PRIMARY
 local SECONDARY = SECONDARY
 
-local GetTalentTabInfo = GetTalentTabInfo
 local GetNumTalentGroups = GetNumTalentGroups
-local GetActiveTalentGroup = GetActiveTalentGroup
-local SetActiveTalentGroup = SetActiveTalentGroup
+local GetSpecializationInfo = C_SpecializationInfo.GetSpecializationInfo
+local GetActiveTalentGroup = C_SpecializationInfo.GetActiveSpecGroup or GetActiveTalentGroup
+local SetActiveTalentGroup = C_SpecializationInfo.SetActiveSpecGroup or SetActiveTalentGroup
 
 local LoadAddOn = C_AddOns.LoadAddOn
 
@@ -27,8 +27,7 @@ local function BuildTalentString(group)
 	local str = ''
 
 	for i = 1, _G.MAX_TALENT_TABS do
-		local _, _, arg3, _, arg5 = GetTalentTabInfo(i, false, false, group)
-		local points = (E.Wrath and arg5) or arg3
+		local _, _, _, _, _, _, points = GetSpecializationInfo(i, false, false, nil, nil, group)
 		if points then
 			str = (str == '' and points) or strjoin('/', str, points)
 		end

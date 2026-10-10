@@ -14,7 +14,7 @@ local CreateFrame = CreateFrame
 local MoneyFrame_Update = MoneyFrame_Update
 local UnitIsDeadOrGhost, InCinematic = UnitIsDeadOrGhost, InCinematic
 local PurchaseSlot, GetBankSlotCost = PurchaseSlot, GetBankSlotCost
-local ReloadUI, PlaySound, StopMusic = ReloadUI, PlaySound, StopMusic
+local ReloadUI, PlaySound = ReloadUI, PlaySound
 local GetBindingFromClick = GetBindingFromClick
 
 local AutoCompleteOnTextChanged = AutoCompleteEditBox_OnTextChanged

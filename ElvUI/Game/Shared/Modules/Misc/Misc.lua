@@ -10,11 +10,11 @@ local format = format
 local hooksecurefunc = hooksecurefunc
 
 local AcceptGroup = AcceptGroup
+local CreateFrame = CreateFrame
 local CanGuildBankRepair = CanGuildBankRepair
 local CanMerchantRepair = CanMerchantRepair
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
-local CreateFrame = CreateFrame
-local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
+local CombatLogGetCurrentEventInfo = C_CombatLog.GetCurrentEventInfo or CombatLogGetCurrentEventInfo
+local GetCurrentCombatTextEventInfo = C_CombatText.GetCurrentEventInfo or GetCurrentCombatTextEventInfo
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumQuestChoices = GetNumQuestChoices

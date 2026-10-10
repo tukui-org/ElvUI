@@ -44,7 +44,6 @@ local ActionBars = E:GetModule('ActionBars')
 local AFK = E:GetModule('AFK')
 local Auras = E:GetModule('Auras')
 local Bags = E:GetModule('Bags')
-local Blizzard = E:GetModule('Blizzard')
 local Chat = E:GetModule('Chat')
 local DataBars = E:GetModule('DataBars')
 local DataTexts = E:GetModule('DataTexts')
@@ -2079,7 +2078,7 @@ function E:Initialize()
 
 		if GetCVarBool('taintLog') then
 			E:StaticPopup_Show('TAINT_LOG')
-		elseif GetCVarBool('scriptProfile') then
+		elseif GetCVarBool('scriptProfile') and not E.OtherAddons.ElvUI_CPU then
 			E:StaticPopup_Show('SCRIPT_PROFILE')
 		end
 

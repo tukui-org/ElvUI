@@ -3136,9 +3136,9 @@ else
 	GetActionLoCCooldownInfoFallback = function() end
 end
 
-local GetActionCooldownInfo = C_ActionBar and C_ActionBar.GetActionCooldown or GetActionCooldownInfoFallback
-local GetActionChargeInfo = C_ActionBar and C_ActionBar.GetActionCharges or GetActionChargeInfoFallback
-local GetActionLoCCooldownInfo = C_ActionBar and C_ActionBar.GetActionLossOfControlCooldownInfo or GetActionLoCCooldownInfoFallback
+local GetActionCooldownInfo = C_ActionBar.GetActionCooldown or GetActionCooldownInfoFallback
+local GetActionChargeInfo = C_ActionBar.GetActionCharges or GetActionChargeInfoFallback
+local GetActionLoCCooldownInfo = C_ActionBar.GetActionLossOfControlCooldownInfo or GetActionLoCCooldownInfoFallback
 
 -- fallbacks
 local HasAction = C_ActionBar.HasAction or HasAction

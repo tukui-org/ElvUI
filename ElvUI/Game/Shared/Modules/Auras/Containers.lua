@@ -17,7 +17,7 @@ local UnitCanAssist = UnitCanAssist
 local UnitIsVisible = UnitIsVisible
 
 local GetCVarBool = C_CVar.GetCVarBool
-local AuraButtonBorderStyle = AuraButtonBorderStyle
+local DispelTypeTextureStyle = Enum.CustomAuraButtonDispelTypeTextureStyle
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local ItemEnchantmentPlacement = _G.CustomAuraContainerItemEnchantmentPlacement
 local ItemEnchantmentSlot = _G.AuraContainerItemEnchantmentSlot
@@ -30,9 +30,10 @@ local SORTMETHOD = _G.AuraContainerSortMethod
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
 
 local FALLBACK = Mixin({ r = 1, g = 1, b = 1, a = 1 }, ColorMixin)
+local GLOWPARTS = { 'TopLeftCorner', 'TopRightCorner', 'BottomLeftCorner', 'BottomRightCorner', 'TopEdge', 'BottomEdge', 'LeftEdge', 'RightEdge' }
 
 E.AuraHighlight = {
-	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil
+	style = DispelTypeTextureStyle and DispelTypeTextureStyle.PreserveAsset or nil
  -- customDispelColorCurve is added from UpdateAuraCurves
 }
 
@@ -52,7 +53,7 @@ E.AuraEventUnits = {
 }
 
 E.AuraDispel = {
-	style = AuraButtonBorderStyle and AuraButtonBorderStyle.Color or nil,
+	style = DispelTypeTextureStyle and DispelTypeTextureStyle.PreserveAsset or nil,
 	showWhenHarmful = true,
 	showWhenHelpful = false,
 	showWithoutDispelType = true,
@@ -146,20 +147,53 @@ function E:Auras_CreateHighlight(button)
 	highlight:SetBlendMode('ADD')
 	highlight:SetAllPoints()
 	button.highlight = highlight
+
+	local glow = button:CreateShadow(nil, true)
+	glow:Hide()
+	button.glow = glow
 end
 
 function E:Auras_UpdateHighlight(container, button)
-	if button.highlight then
-		if container.key == 'bad' then
-			button:ClearDispelTypeTextures()
-			button:AddDispelTypeTexture(button.highlight, E.AuraHighlight)
-		else
-			local color = button.data.color or FALLBACK
-			button.highlight:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
-		end
+	local highlight = button.highlight
+	if not highlight then return end
 
-		button.highlight:SetBlendMode(container.blendMode)
+	local glow, useGlow = button.glow
+	if container.key == 'bad' then
+		button:ClearDispelTypeTextures()
+
+		if container.highlightMode == 'GLOW' then
+			useGlow = true
+
+			for _, piece in next, GLOWPARTS do
+				button:AddDispelTypeTexture(glow[piece], E.AuraHighlight)
+			end
+		else
+			button:AddDispelTypeTexture(highlight, E.AuraHighlight)
+		end
+	else
+		local color = button.data.color or FALLBACK
+		if button.data.style == 'GLOW' then
+			useGlow = true
+
+			glow:SetBackdropBorderColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
+		else
+			highlight:SetVertexColor(color.r or 1, color.g or 1, color.b or 1, color.a or 1)
+		end
 	end
+
+	local anchor = container.glowAnchor
+	if not useGlow then
+		highlight:SetBlendMode(container.blendMode)
+	elseif anchor then
+		glow:ClearAllPoints()
+		glow:SetAllPoints(anchor)
+		glow:SetupTextureCoordinates()
+	else -- should never reach here (anchor should always exist)
+		glow:SetupTextureCoordinates()
+	end
+
+	glow:SetShown(useGlow)
+	highlight:SetShown(not useGlow)
 end
 
 function E:Auras_CreateText(button)

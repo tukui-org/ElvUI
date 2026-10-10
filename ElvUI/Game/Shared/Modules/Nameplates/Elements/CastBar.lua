@@ -14,7 +14,7 @@ local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local UnitNameFromGUID = UnitNameFromGUID
 local UnitClassFromGUID = UnitClassFromGUID
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local CombatLogGetCurrentEventInfo = C_CombatLog.GetCurrentEventInfo or CombatLogGetCurrentEventInfo
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local INTERRUPTED = INTERRUPTED

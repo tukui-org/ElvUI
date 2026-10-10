@@ -4,10 +4,10 @@ local DT = E:GetModule('DataTexts')
 local format, strjoin, abs = format, strjoin, abs
 
 local GetBlockChance = GetBlockChance
-local GetBonusBarOffset = GetBonusBarOffset
+local GetBonusBarOffset = C_ActionBar.GetBonusBarOffset or GetBonusBarOffset
 local GetDodgeChance = GetDodgeChance
 local GetInventoryItemID = GetInventoryItemID
-local GetInventorySlotInfo = (C_PaperDollInfo and C_PaperDollInfo.GetInventorySlotInfo) or GetInventorySlotInfo
+local GetInventorySlotInfo = C_PaperDollInfo.GetInventorySlotInfo or GetInventorySlotInfo
 local GetParryChance = GetParryChance
 local UnitDefense = UnitDefense
 local UnitExists = UnitExists
