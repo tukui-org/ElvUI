@@ -12,8 +12,6 @@ function NP:ThreatIndicator_PreUpdate(unit, pass)
 	if pass then
 		return isTank, offTank, useSolo
 	else
-		self.__owner.threatScale = nil
-
 		self.useSolo = useSolo
 		self.offTank = offTank
 		self.isTank = isTank
@@ -23,16 +21,11 @@ end
 function NP:ThreatIndicator_PostUpdate(unit, status)
 	local nameplate, db = self.__owner, NP.db.threat
 
-	nameplate.threatStatus = status -- export for plugins
+	local allow = status and db.enable and db.useThreatColor and not UnitIsTapDenied(unit)
+	local scale = allow and NP:GetThreatSituationScale(self, db, status) or 1
+	nameplate:SetScale(scale)
 
-	if not status then
-		nameplate.threatScale = 1
-		nameplate:SetScale(1)
-	elseif db.enable and db.useThreatColor and not UnitIsTapDenied(unit) then
-		local scale = NP:GetThreatSituationScale(self, db, status)
-		nameplate.threatScale = scale
-		nameplate:SetScale(scale)
-	end
+	nameplate.threatStatus = status -- export for plugins
 end
 
 function NP:Construct_ThreatIndicator(nameplate)
