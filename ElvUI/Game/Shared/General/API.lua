@@ -330,7 +330,8 @@ do
 	local classByID = {}
 	local classByFile = {}
 	local classExists = {} -- use this to verify the class is on the client
-	local classNames = {}
+	local namesByFile = {}
+	local namesByID = {}
 
 	for index, name in next, CLASS_SORT_ORDER do
 		classExists[name] = index
@@ -340,15 +341,18 @@ do
 		local info = GetClassInfo(index) -- SHAMAN is 6 but 7 on anniversary; 14 is Adventurer on Retail
 		local classFile = info and info.classFile
 		if classExists[classFile] then
-			classByID[info.classID] = info
+			local classID, className = info.classID, info.className
+			classByID[classID] = info
+			namesByID[classID] = className
 			classByFile[classFile] = info
-			classNames[classFile] = info.className
+			namesByFile[classFile] = className
 		end
 	end
 
 	E.ClassInfoByID = classByID
+	E.ClassNamesByID = namesByID
 	E.ClassInfoByFile = classByFile
-	E.ClassNamesByFile = classNames
+	E.ClassNamesByFile = namesByFile
 
 	E.numClasses = #CLASS_SORT_ORDER
 
