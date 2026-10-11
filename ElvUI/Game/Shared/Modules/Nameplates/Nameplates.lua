@@ -525,7 +525,9 @@ function NP:SetupTarget(nameplate, removed)
 	if not classpower then return end
 
 	local TCP = NP.TargetClassPower
-	if removed or not nameplate or not classpower.enable then
+	if removed and nameplate and TCP.realPlate ~= nameplate then
+		return -- this plate doesn't hold the class bar, dont pull it from the actual target
+	elseif removed or not nameplate or not classpower.enable then
 		TCP.realPlate = nil
 	else
 		local db = NP:PlateDB(nameplate)
@@ -853,6 +855,10 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		end
 
 		NP:UpdatePlateBase(self)
+
+		if self.isTarget then -- the target can be selected before its plate exists
+			NP:SetupTarget(self)
+		end
 	end
 end
 
@@ -907,6 +913,23 @@ function NP:PLAYER_TARGET_CHANGED(_, unit)
 	self.isTarget = E:UnitIsUnit(unit, 'target')
 
 	NP:SetupTarget(self)
+end
+
+function NP:TargetChanged()
+	-- the driver only calls PLAYER_TARGET_CHANGED on the new target plate
+	-- so clear the old one here, otherwise it stays flagged as the target
+	local success, plate = pcall(C_NamePlate_GetNamePlateForUnit, 'target')
+	local current = success and plate and plate.unitFrame or nil
+
+	for nameplate in pairs(NP.Plates) do
+		if nameplate.isTarget and nameplate ~= current then
+			nameplate.isTarget = false
+		end
+	end
+
+	if not current then -- no target plate, release the class bar
+		NP:SetupTarget(nil, true)
+	end
 end
 
 function NP:UNIT_FACTION(_, unit)
@@ -1156,6 +1179,7 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
+	NP:RegisterEvent('PLAYER_TARGET_CHANGED', 'TargetChanged')
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')
