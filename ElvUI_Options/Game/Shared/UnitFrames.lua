@@ -1164,7 +1164,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.sortingGroup.args.classSetup.inline = true
 
 		for i = 1, E.numClasses do
-			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, E.ClassInfoNames)
+			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, E.ClassNamesByFile)
 		end
 	else
 		config.args.positionsGroup.inline = true -- inline for others

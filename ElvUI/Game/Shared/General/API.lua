@@ -348,7 +348,7 @@ do
 
 	E.ClassInfoByID = classByID
 	E.ClassInfoByFile = classByFile
-	E.ClassInfoNames = classNames
+	E.ClassNamesByFile = classNames
 
 	E.numClasses = #CLASS_SORT_ORDER
 
