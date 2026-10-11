@@ -171,8 +171,8 @@ do
 end
 
 function S:ClearSetTexture(texture)
-	if texture ~= E.ClearTexture then
-		self:SetTexture(E.ClearTexture)
+	if texture then
+		self:SetTexture()
 	end
 end
 
