@@ -329,18 +329,10 @@ function NP:UpdateTargetPlate(nameplate)
 	nameplate:UpdateAllElements('OnShow')
 end
 
-function NP:ScalePlate(nameplate, scale, targetPlate)
-	if targetPlate and NP.targetPlate then
-		NP.targetPlate:SetScale(1)
-		NP.targetPlate = nil
-	end
-
+function NP:ScalePlate(nameplate, scale)
 	if not nameplate then return end
-	nameplate:SetScale(scale)
 
-	if targetPlate then
-		NP.targetPlate = nameplate
-	end
+	nameplate:SetScale(scale)
 end
 
 function NP:StylePlate(nameplate)
@@ -872,7 +864,6 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 		end
 
 		if self.isTarget then
-			NP:ScalePlate(self, 1, true)
 			NP:SetupTarget(self, true)
 		end
 	end
