@@ -52,6 +52,10 @@ local function OnEnter()
 
 	local isActive = E:NotSecretValue(armorActive)
 	local effective = (isActive and armorActive) or armorStale
+
+	-- Reload in combat, secret/nil
+	if not effective then return end
+
 	local changeText = (isActive and changeActive) or changeStale
 
 	DT.tooltip:AddLine(L["Mitigation By Level: "])
