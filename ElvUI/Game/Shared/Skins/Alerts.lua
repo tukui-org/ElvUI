@@ -561,7 +561,7 @@ local function SkinLootWonAlert(frame)
 	lootItem.Icon:SetTexCoord(0.1, 0.9, 0.1, 0.9)
 	lootItem.Icon:SetDrawLayer('BORDER')
 	lootItem.IconBorder:Kill()
-	lootItem.SpecRing:SetTexture(E.ClearTexture)
+	lootItem.SpecRing:SetTexture()
 
 	frame.glow:Kill()
 	frame.shine:Kill()

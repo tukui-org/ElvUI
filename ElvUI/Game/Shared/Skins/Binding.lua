@@ -25,7 +25,7 @@ local function HandleScrollUpdateChild(child)
 		child.FrameHighlight:SetInside(child.backdrop)
 		child.FrameHighlight:SetColorTexture(1, 1, 1, .20)
 
-		child.NewOutline:SetTexture(E.ClearTexture)
+		child.NewOutline:SetTexture()
 		child.BindingText:FontTemplate()
 		hooksecurefunc(child, 'Init', UpdateNewGlow)
 

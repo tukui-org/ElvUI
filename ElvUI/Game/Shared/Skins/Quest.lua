@@ -223,7 +223,7 @@ function data:QuestInfo_Display() -- self is template, not data
 
 			if spellBorders then
 				local _, _, spellBorder = spellIcon:GetRegions() -- Icon, NameFrame, SpellBorder
-				spellBorder:SetTexture(E.ClearTexture)
+				spellBorder:SetTexture()
 			end
 		end
 

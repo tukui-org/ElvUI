@@ -136,7 +136,7 @@ local function EquipmentManagerPane_UpdateChild(child)
 			for _, region in next, { child:GetRegions() } do -- the card background and the icon frame are unnamed
 				local atlas = region:IsObjectType('Texture') and region:GetAtlas()
 				if atlas == 'UI-Character-Info-OutfitCard' or atlas == 'UI-Character-Info-OutfitIcon-Frame' then
-					region:SetTexture(E.ClearTexture)
+					region:SetTexture()
 				end
 			end
 
@@ -152,9 +152,9 @@ local function EquipmentManagerPane_UpdateChild(child)
 				bar:Point('BOTTOMRIGHT', child.backdrop, 'BOTTOMRIGHT', -E.Border, E.Border)
 			end
 		else
-			child.BgTop:SetTexture(E.ClearTexture)
-			child.BgMiddle:SetTexture(E.ClearTexture)
-			child.BgBottom:SetTexture(E.ClearTexture)
+			child.BgTop:SetTexture()
+			child.BgMiddle:SetTexture()
+			child.BgBottom:SetTexture()
 			S:HandleIcon(child.icon)
 		end
 
@@ -471,7 +471,7 @@ end
 
 -- ColoredProgressBarTemplate: unnamed background, a masked Fill and Text
 local function HandleColoredProgressBar(bar)
-	bar:GetRegions():SetTexture(E.ClearTexture)
+	bar:GetRegions():SetTexture()
 
 	bar:CreateBackdrop('Transparent')
 	bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
@@ -559,7 +559,7 @@ end
 local function HandleSidebarTab(tab)
 	for _, region in next, { tab:GetRegions() } do
 		if region ~= tab.Icon and region:IsObjectType('Texture') then
-			region:SetTexture(E.ClearTexture)
+			region:SetTexture()
 		end
 	end
 
@@ -638,7 +638,7 @@ end
 local function HandleListHeader(header)
 	for _, region in next, { header:GetRegions() } do
 		if region ~= header.StateIcon and region:IsObjectType('Texture') then -- keep the Blizzard plus / minus
-			region:SetTexture(E.ClearTexture)
+			region:SetTexture()
 		end
 	end
 
