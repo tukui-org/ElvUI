@@ -57,6 +57,7 @@ local UnitReaction = UnitReaction
 local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
@@ -795,7 +796,7 @@ end)
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	if UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit)) then
 		local _, classToken = UnitClass(unit)
-		local cs = E:NotSecretValue(classToken) and ElvUF.colors.class[classToken]
+		local cs = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or ElvUF.colors.class[classToken]
 		return cs and Hex(cs) or HEX_FALLBACK
 	else
 		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
