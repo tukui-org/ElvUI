@@ -90,13 +90,6 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckPortrait:Kill()
 	S:HandleFrame(ListenerFrame)
 
-	if E.Modern then
-		local TitleContainer = ListenerFrame.TitleContainer
-		TitleContainer:ClearAllPoints()
-		TitleContainer:Point('TOPLEFT', 1, -1)
-		TitleContainer:Point('TOPRIGHT', -1, 0)
-	end
-
 	-- Retail, Forever and Mists skin it in PVP.lua
 	if not (E.Modern or E.Mists) then
 		_G.PVPReadyDialog:StripTextures()
@@ -105,8 +98,12 @@ function S:BlizzardMiscFrames()
 		S:HandleButton(_G.PVPReadyDialogHideButton)
 	end
 
-	-- Mainline moves the box to the TOOLTIP strata itself
-	if not E.Modern then
+	if E.Modern then
+		local TitleContainer = ListenerFrame.TitleContainer
+		TitleContainer:ClearAllPoints()
+		TitleContainer:Point('TOPLEFT', 1, -1)
+		TitleContainer:Point('TOPRIGHT', -1, 0)
+	else -- modern moves the box to the TOOLTIP strata itself
 		_G.AutoCompleteBox:HookScript('OnShow', FixAutoCompleteLevel)
 	end
 
