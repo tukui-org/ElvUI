@@ -857,6 +857,7 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		NP:UpdatePlateBase(self)
 
 		if self.isTarget then -- the target can be selected before its plate exists
+			NP.TargetPlate = self
 			NP:SetupTarget(self)
 		end
 	end
@@ -917,15 +918,15 @@ end
 
 function NP:TargetChanged()
 	-- the driver only calls PLAYER_TARGET_CHANGED on the new target plate
-	-- so clear the old one here, otherwise it stays flagged as the target
-	local success, plate = pcall(C_NamePlate_GetNamePlateForUnit, 'target')
-	local current = success and plate and plate.unitFrame or nil
+	local plate = C_NamePlate_GetNamePlateForUnit('target')
+	local current = plate and plate.unitFrame
 
-	for nameplate in pairs(NP.Plates) do
-		if nameplate.isTarget and nameplate ~= current then
-			nameplate.isTarget = false
-		end
+	local previous = NP.TargetPlate
+	if previous and previous ~= current then
+		previous.isTarget = false
 	end
+
+	NP.TargetPlate = current
 
 	if not current then -- no target plate, release the class bar
 		NP:SetupTarget(nil, true)
