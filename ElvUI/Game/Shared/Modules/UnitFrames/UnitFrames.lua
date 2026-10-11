@@ -39,7 +39,7 @@ local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+
 local CURVE_RED = CreateColor(1, 0, 0)
 local CURVE_YELLOW = CreateColor(1, 1, 0)
 local CURVE_HEALTH = {}
@@ -135,7 +135,7 @@ UF.headerGroupBy = {
 		local db = header.db
 		local groupingOrder = db and db.CLASS1
 		if groupingOrder then -- one slot per class the client has
-			for i = 2, #CLASS_SORT_ORDER do
+			for i = 2, E.numClasses do
 				groupingOrder = groupingOrder..','..db['CLASS'..i]
 			end
 		end

@@ -8,9 +8,9 @@ local ElvUF = E.oUF
 local _G = _G
 local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
-local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
 local wipe, max, next, date, time = wipe, max, next, date, time
-local pcall, strlen, tonumber = pcall, strlen, tonumber
+local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
+local pcall, strlen, tonumber, tinsert = pcall, strlen, tonumber, tinsert
 
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
@@ -327,28 +327,32 @@ function E:InverseClassColor(class, usePriestColor, forceCap)
 end
 
 do
-	local classByID = {}
-	local classByFile = {}
-	local classExists = {}
+	local classByID, namesByID = {}, {}
+	local classByFile, namesByFile = {}, {}
+	local classExists = {} -- use this to verify the class is on the client
 
-	-- use this to verify the class is on the client
-	local classMax = #CLASS_SORT_ORDER
 	for index, name in next, CLASS_SORT_ORDER do
 		classExists[name] = index
 	end
 
-	E.ClassInfoByID = classByID
-	E.ClassInfoByFile = classByFile
-
-	for index = 1, classMax do -- really blizzard, whats up with this?
-		-- 1) _G.GetClassInfo gives SHAMAN for 6 and 7 on anniversary
-		-- 2) 14 is Adventurer on Retail ?
-		local info = GetClassInfo(index)
-		if info and classExists[info.classFile] then
-			classByID[info.classID] = info
-			classByFile[info.classFile] = info
+	for index = 1, 13 do -- really blizzard, whats up with this?
+		local info = GetClassInfo(index) -- SHAMAN is 6 but 7 on anniversary; 14 is Adventurer on Retail
+		local classFile = info and info.classFile
+		if classExists[classFile] then
+			local classID, className = info.classID, info.className
+			classByID[classID] = info
+			namesByID[classID] = className
+			classByFile[classFile] = info
+			namesByFile[classFile] = className
 		end
 	end
+
+	E.ClassInfoByID = classByID
+	E.ClassNamesByID = namesByID
+	E.ClassInfoByFile = classByFile
+	E.ClassNamesByFile = namesByFile
+
+	E.numClasses = #CLASS_SORT_ORDER
 
 	function E:GetClassInfo(value) -- classFile or classID
 		return classByFile[value] or classByID[value]

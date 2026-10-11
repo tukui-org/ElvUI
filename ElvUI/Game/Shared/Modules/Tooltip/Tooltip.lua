@@ -253,27 +253,23 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
 
-		local useTitle = TT.db.playerTitles and (pvpName and pvpName ~= '')
-		if useTitle then
-			name = pvpName
-		end
-
+		local displayName = TT.db.playerTitles and (pvpName and pvpName ~= '') and pvpName or nil
 		if E.Forever then
-			if realm and not useTitle then -- title adds LastName
-				name = format('%s %s', name, realm)
+			if realm and not displayName then -- title adds LastName
+				displayName = format('%s %s', name, realm)
 			end
 		elseif realm and realm ~= '' then
 			if isShiftKeyDown or TT.db.alwaysShowRealm then
-				name = format('%s-%s', name, realm)
+				displayName = format('%s-%s', name, realm)
 			elseif relationship == _G.LE_REALM_RELATION_COALESCED then
-				name = format('%s%s', name, _G.FOREIGN_SERVER_LABEL)
+				displayName = format('%s%s', name, _G.FOREIGN_SERVER_LABEL)
 			elseif relationship == _G.LE_REALM_RELATION_VIRTUAL then
-				name = format('%s%s', name, _G.INTERACTIVE_SERVER_LABEL)
+				displayName = format('%s%s', name, _G.INTERACTIVE_SERVER_LABEL)
 			end
 		end
 
 		local awayText = E:UnitIsAFK(unit) and AFK_LABEL or E:UnitIsDND(unit) and DND_LABEL or ''
-		_G.GameTooltipTextLeft1:SetFormattedText('%s%s', nameColor:WrapTextInColorCode(name or UNKNOWN), awayText)
+		_G.GameTooltipTextLeft1:SetFormattedText('%s%s', nameColor:WrapTextInColorCode(displayName or name or UNKNOWN), awayText)
 
 		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 2) or 1)
 		if guildName then

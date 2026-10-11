@@ -30,9 +30,6 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local IsValidFilterString = AuraUtil and AuraUtil.IsValidFilterString
 
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
-local NUM_CLASSES = #CLASS_SORT_ORDER
-
 C.Values = {
 	GrowthDirection = {
 		DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
@@ -45,7 +42,6 @@ C.Values = {
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
 	MAX_BOSS_FRAMES = 5,
-	NUM_CLASSES = NUM_CLASSES,
 	FontFlags = ACH.FontValues,
 	FontSize = { softMin = 10, min = 4, softMax = 64, max = 80, step = 1 },
 	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' }, -- 1 to 20
@@ -65,14 +61,6 @@ C.Values = {
 		FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
 	}
 }
-
-do
-	C.ClassTable = {}
-
-	for _, info in next, E.ClassInfoByID do
-		C.ClassTable[info.classFile] = info.className
-	end
-end
 
 do
 	C.DragGetTitle = function(_, text)

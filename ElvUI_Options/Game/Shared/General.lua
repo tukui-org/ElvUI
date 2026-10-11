@@ -425,7 +425,7 @@ blizz.classColors = ACH:Group(L["Custom Class Colors"], nil, 100, nil, function(
 blizz.classColors.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.classColors end, function(_, value) E.private.general.classColors = value; E.ShowPopup = true end)
 blizz.classColors.args.spacer1 = ACH:Spacer(10, 'full')
 
-for tag, name in next, C.ClassTable do
+for tag, name in next, E.ClassNamesByFile do
 	blizz.classColors.args[tag] = ACH:Color(name, nil, nil, nil, 120)
 end
 
