@@ -27,11 +27,11 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 
 	if not status then
 		nameplate.threatScale = 1
-		NP:ScalePlate(nameplate, 1)
+		nameplate:SetScale(1)
 	elseif db.enable and db.useThreatColor and not UnitIsTapDenied(unit) then
 		local scale = NP:GetThreatSituationScale(self, db, status)
 		nameplate.threatScale = scale
-		NP:ScalePlate(nameplate, scale)
+		nameplate:SetScale(scale)
 	end
 end
 

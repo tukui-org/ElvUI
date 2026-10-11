@@ -310,7 +310,6 @@ function NP:Update_ClassPowerTwo(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
-	nameplate:SetScale(1)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
@@ -329,14 +328,7 @@ function NP:UpdateTargetPlate(nameplate)
 	nameplate:UpdateAllElements('OnShow')
 end
 
-function NP:ScalePlate(nameplate, scale)
-	if not nameplate then return end
-
-	nameplate:SetScale(scale)
-end
-
 function NP:StylePlate(nameplate)
-	nameplate:SetScale(1)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
