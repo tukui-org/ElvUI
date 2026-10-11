@@ -3,24 +3,19 @@ local NP = E:GetModule('NamePlates')
 
 local UnitIsTapDenied = UnitIsTapDenied
 
-function NP:ThreatIndicator_PreUpdate(unit, pass)
+function NP:ThreatIndicator_PreUpdate(unit)
 	local targetUnit, db = unit..'target', NP.db.threat
 	local isTank = E.myrole == 'TANK' or E.GroupRoles.player == 'TANK'
 	local offTank = isTank and (E:UnitExists(targetUnit) and E:UnitNotUnit(targetUnit, 'player')) and ((db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)]) or (db.beingTankedByTank and E:UnitTankedByGroup(unit)))
 	local useSolo = not E.IsInGroup and db.useSoloColor
 
-	if pass then
-		return isTank, offTank, useSolo
-	else
-		self.useSolo = useSolo
-		self.offTank = offTank
-		self.isTank = isTank
-	end
+	self.useSolo = useSolo
+	self.offTank = offTank
+	self.isTank = isTank
 end
 
 function NP:ThreatIndicator_PostUpdate(unit, status)
 	local nameplate, db = self.__owner, NP.db.threat
-
 	local allow = status and db.enable and db.useThreatColor and not UnitIsTapDenied(unit)
 	local scale = allow and NP:GetThreatSituationScale(self, db, status) or 1
 	nameplate:SetScale(scale)
