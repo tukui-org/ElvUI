@@ -327,11 +327,9 @@ function E:InverseClassColor(class, usePriestColor, forceCap)
 end
 
 do
-	local classByID = {}
-	local classByFile = {}
+	local classByID, namesByID = {}, {}
+	local classByFile, namesByFile = {}, {}
 	local classExists = {} -- use this to verify the class is on the client
-	local namesByFile = {}
-	local namesByID = {}
 
 	for index, name in next, CLASS_SORT_ORDER do
 		classExists[name] = index
