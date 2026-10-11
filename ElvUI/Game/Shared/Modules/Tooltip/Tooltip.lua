@@ -249,6 +249,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			guildName, guildRankName, guildRealm = nil, nil, nil
 		end
 
+		local nameRealm = E:GetNameRealm(name, realm)
 		local pvpName, gender = UnitPVPName(unit), UnitSex(unit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
@@ -326,7 +327,6 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		end
 
 		if TT.db.showElvUIUsers then
-			local nameRealm = E:GetNameRealm(name, realm)
 			local userVersion = E.UserList[nameRealm]
 			if userVersion then
 				local same = userVersion == E.version
