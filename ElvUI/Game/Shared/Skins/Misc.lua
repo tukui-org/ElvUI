@@ -86,20 +86,15 @@ function S:BlizzardMiscFrames()
 	_G.ReadyCheckFrameNoButton:ClearAllPoints()
 	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
 
-	-- the Mainline listener frame has a title bar, the classic one is a single texture
 	local ListenerFrame = _G.ReadyCheckListenerFrame
-	if E.Modern then
-		_G.ReadyCheckPortrait:Kill()
-		S:HandleFrame(ListenerFrame)
+	_G.ReadyCheckPortrait:Kill()
+	S:HandleFrame(ListenerFrame)
 
+	if E.Modern then
 		local TitleContainer = ListenerFrame.TitleContainer
 		TitleContainer:ClearAllPoints()
 		TitleContainer:Point('TOPLEFT', 1, -1)
 		TitleContainer:Point('TOPRIGHT', -1, 0)
-	else
-		ReadyCheckFrame:StripTextures()
-		ReadyCheckFrame:SetTemplate('Transparent')
-		ListenerFrame:SetAlpha(0)
 	end
 
 	-- Retail, Forever and Mists skin it in PVP.lua
