@@ -2060,7 +2060,7 @@ function CH:ChatFrame_CheckAddChannel(chatFrame, eventType, channelID)
 	end
 
 	-- Only exists in Retail/Forever
-	if not IsChannelRegionalForChannelID or not IsChannelRegionalForChannelID(channelID) then
+	if IsChannelRegionalForChannelID and not IsChannelRegionalForChannelID(channelID) then
 		return false
 	end
 
