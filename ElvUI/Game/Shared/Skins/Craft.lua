@@ -118,7 +118,7 @@ function S:Blizzard_CraftUI()
 		normal:Point('LEFT', 4, 1)
 
 		local highlight = button:GetHighlightTexture()
-		highlight:SetTexture(E.ClearTexture)
+		highlight:SetTexture()
 		highlight.SetTexture = E.noop
 	end
 

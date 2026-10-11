@@ -102,10 +102,10 @@ function data:HandleCheckbox(button)
 	box.mark:SetShown(ATLAS[atlas])
 
 	-- Pooled textures
-	tex1:SetTexture(E.ClearTexture)
+	tex1:SetTexture()
 
 	if tex2 then
-		tex2:SetTexture(E.ClearTexture)
+		tex2:SetTexture()
 	end
 
 	box:ClearAllPoints()

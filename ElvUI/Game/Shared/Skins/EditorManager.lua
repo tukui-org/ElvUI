@@ -17,7 +17,7 @@ local function HandleCheckBoxMini(checkbox, region)
 			checkedTexture:SetInside(checkbox.backdrop)
 		end
 	else
-		region:SetTexture(E.ClearTexture)
+		region:SetTexture()
 	end
 end
 

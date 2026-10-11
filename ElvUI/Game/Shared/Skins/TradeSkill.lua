@@ -173,7 +173,7 @@ function S:Blizzard_TradeSkillUI()
 		normal:SetPoint('LEFT', 2, 1)
 
 		local highlight = button:GetHighlightTexture()
-		highlight:SetTexture(E.ClearTexture)
+		highlight:SetTexture()
 		highlight.SetTexture = E.noop
 
 		if E.Mists then

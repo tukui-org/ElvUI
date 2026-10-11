@@ -158,7 +158,7 @@ local function SkinClassic()
 		normal:Point('LEFT', 5, 0)
 
 		local highlight = button:GetHighlightTexture()
-		highlight:SetTexture(E.ClearTexture)
+		highlight:SetTexture()
 		highlight.SetTexture = E.noop
 	end
 

@@ -227,7 +227,7 @@ end
 local function SetsFrame_ScrollBoxUpdateChild(child)
 	if not child.IsSkinned then
 		child.Background:Hide()
-		child.HighlightTexture:SetTexture(E.ClearTexture)
+		child.HighlightTexture:SetTexture()
 		child.IconFrame.Icon:SetSize(42, 42)
 		S:HandleIcon(child.IconFrame.Icon)
 

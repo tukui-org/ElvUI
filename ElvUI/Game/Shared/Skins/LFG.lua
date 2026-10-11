@@ -155,7 +155,7 @@ local function LFDCheckboxMini_HookTexture(_, region)
 			hookedMiniCheckbox[region] = true
 		end
 	else
-		region:SetTexture(E.ClearTexture)
+		region:SetTexture()
 	end
 end
 

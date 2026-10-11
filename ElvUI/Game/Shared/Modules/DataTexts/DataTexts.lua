@@ -647,7 +647,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:SetText('')
 
 		dt.icon:Size(iconSize)
-		dt.icon:SetTexture(E.ClearTexture)
+		dt.icon:SetTexture()
 
 		if assigned and assigned.isLDB and assigned.eventFunc then
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')

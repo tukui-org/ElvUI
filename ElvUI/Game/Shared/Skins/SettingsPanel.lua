@@ -52,7 +52,7 @@ local function HandleCheckbox(checkbox)
 					checkedTexture:SetInside(checkbox.backdrop)
 				end
 			else
-				region:SetTexture(E.ClearTexture)
+				region:SetTexture()
 			end
 		end
 	end
