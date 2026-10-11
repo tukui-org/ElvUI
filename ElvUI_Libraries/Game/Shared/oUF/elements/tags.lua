@@ -446,8 +446,9 @@ tagFunctions.raidcolor = function(u)
 		local specID = id and GetArenaOpponentSpec(tonumber(id))
 		if specID and oUF:NotSecretValue(specID) and specID > 0 then
 			local _, _, _, _, _, classSpec = GetSpecializationInfoByID(specID)
-			if oUF:NotSecretValue(classSpec) and classSpec then
-				return Hex(_COLORS.class[classSpec])
+			local color = oUF:NotSecretValue(classSpec) and _COLORS.class[classSpec]
+			if color then
+				return Hex(color)
 			end
 		end
 	end
