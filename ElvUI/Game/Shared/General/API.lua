@@ -595,11 +595,7 @@ function E:CheckRole()
 	E.myspec = GetSpecialization()
 
 	if E.myspec then
-		if E.Modern then
-			E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecRole = GetSpecializationInfo(E.myspec)
-		else -- they add background
-			E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecBackground, E.myspecRole = GetSpecializationInfo(E.myspec)
-		end
+		E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecRole = GetSpecializationInfo(E.myspec)
 	end
 
 	E.myrole = E:GetPlayerRole()
