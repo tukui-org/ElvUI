@@ -1,3 +1,6 @@
+### Version 16.00 [ October 13th 2026 ]
+*   Very cool update.
+
 ### Version 15.26 [ August 29th 2026 ]
 *   Item level display for enchants will appear cleaner (regardless of abbreviate setting).
 *   Chat tabs had an unneeded workaround that was causing trouble, removed it.
