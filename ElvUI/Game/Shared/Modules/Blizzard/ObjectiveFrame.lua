@@ -128,13 +128,13 @@ function BL:ObjectiveTracker_SetPoint(_, parent)
 end
 
 function BL:ObjectiveTracker_SetHeight()
-	local Tracker = _G.WatchFrame
-	local top = Tracker:GetTop() or 0
+	local tracker = BL:ObjectiveTracker_GetTracker()
+	local top = tracker:GetTop() or 0
 	local gapFromTop = E.screenHeight - top
 	local maxHeight = E.screenHeight - gapFromTop
 	local frameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
-	Tracker:Height(frameHeight)
+	tracker:Height(frameHeight)
 end
 
 function BL:ObjectiveTracker_SetupModern()
@@ -155,16 +155,16 @@ function BL:ObjectiveTracker_SetupLegacy()
 	holder:SetAllPoints(_G.ObjectiveFrameMover)
 
 	-- prevent it from being moved by blizzard (the hook below will most likely do nothing now)
-	local Tracker = _G.WatchFrame
-	Tracker:SetMovable(true)
-	Tracker:SetUserPlaced(true)
-	Tracker:SetDontSavePosition(true)
-	Tracker:SetClampedToScreen(false)
-	Tracker:ClearAllPoints()
-	Tracker:SetPoint('TOP', holder)
+	local tracker = BL:ObjectiveTracker_GetTracker()
+	tracker:SetMovable(true)
+	tracker:SetUserPlaced(true)
+	tracker:SetDontSavePosition(true)
+	tracker:SetClampedToScreen(false)
+	tracker:ClearAllPoints()
+	tracker:SetPoint('TOP', holder)
 
-	Tracker.holder = holder
-	hooksecurefunc(Tracker, 'SetPoint', BL.ObjectiveTracker_SetPoint)
+	tracker.holder = holder
+	hooksecurefunc(tracker, 'SetPoint', BL.ObjectiveTracker_SetPoint)
 
 	BL:ObjectiveTracker_AutoHide() -- supported but no boss frames, only works for arena
 	BL:ObjectiveTracker_SetHeight()
