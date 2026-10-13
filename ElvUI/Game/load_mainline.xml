@@ -179,6 +179,6 @@
 	<Script file='Shared\Skins\WeeklyRewards.lua'/>
 	<Script file='Shared\Skins\WorldMap.lua'/>
 	<Script file='Shared\Modules\Blizzard\AltPower.lua'/>
-	<Script file='Mainline\Blizzard\ColorPicker.lua'/>
+	<Script file='Shared\Modules\Blizzard\ColorPickerModern.lua'/>
 	<Script file='Mainline\Blizzard\ObjectiveFrame.lua'/>
 </Ui>
