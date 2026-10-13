@@ -79,26 +79,28 @@ function BL:ObjectiveTracker_AutoHideOnHide()
 	local tracker = BL:ObjectiveTracker_GetTracker()
 	if not tracker then return end
 
-	if E.Modern then
-		if BL:ObjectiveTracker_IsCollapsed(tracker) then return end
-
-		if E.db.general.objectiveFrameAutoHideInKeystone then
-			BL:ObjectiveTracker_Collapse(tracker)
-		else
-			local _, _, difficultyID = GetInstanceInfo()
-			if difficultyID ~= 8 then -- ignore hide in keystone runs
-				BL:ObjectiveTracker_Collapse(tracker)
-			end
-		end
-	elseif E.Mists then
-		if BL:ObjectiveTracker_IsCollapsed(tracker) then return end
-
-		BL:ObjectiveTracker_Collapse(tracker)
-	elseif E.Wrath then
+	if E.Wrath then
 		if not tracker.collapsed then
 			tracker.userCollapsed = true
 
 			_G.WatchFrame_Collapse(tracker)
+		end
+	else
+		if BL:ObjectiveTracker_IsCollapsed(tracker) then
+			return -- dont hide twice
+		end
+
+		if E.Retail then
+			if E.db.general.objectiveFrameAutoHideInKeystone then
+				BL:ObjectiveTracker_Collapse(tracker)
+			else
+				local _, _, difficultyID = GetInstanceInfo()
+				if difficultyID ~= 8 then -- ignore hide in keystone runs
+					BL:ObjectiveTracker_Collapse(tracker)
+				end
+			end
+		else
+			BL:ObjectiveTracker_Collapse(tracker)
 		end
 	end
 end
