@@ -63,9 +63,11 @@ local function HandleControlGroup(controls)
 		if child.SliderWithSteppers then
 			S:HandleStepSlider(child.SliderWithSteppers)
 		end
+
 		if child.Checkbox then
 			S:HandleCheckBox(child.Checkbox)
 		end
+
 		if child.Control then
 			HandleDropdown(child.Control)
 		end
@@ -76,9 +78,8 @@ local function HandleMinimalTab(tab)
 	tab:StripTextures(nil, true)
 	tab:CreateBackdrop('Transparent')
 
-	local spacing = 1
-	tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -10 or -12)
-	tab.backdrop:Point('BOTTOMRIGHT', -spacing, -2)
+	tab.backdrop:Point('TOPLEFT', 1, E.PixelMode and -10 or -12)
+	tab.backdrop:Point('BOTTOMRIGHT', -1, -2)
 end
 
 local function CategoryListScrollUpdateChild(child)

@@ -18,8 +18,8 @@ local UnitClass = UnitClass
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
-local customBackdrop = Mixin({}, ColorMixin)
 
+local CUSTOM_BACKDROP = Mixin({}, ColorMixin)
 local HOSTILE_REACTION = 2
 
 function UF.HealthClipFrame_OnUpdate(clipFrame)
@@ -307,33 +307,33 @@ function UF:PostUpdateHealthColor(unit, color)
 	if bg then
 		if colors.useDeadBackdrop and isDeadOrGhost then
 			local dead = colors.health_backdrop_dead
-			customBackdrop:SetRGB(dead.r, dead.g, dead.b)
-			bgc = customBackdrop
+			CUSTOM_BACKDROP:SetRGB(dead.r, dead.g, dead.b)
+			bgc = CUSTOM_BACKDROP
 		elseif healthbreakBackdrop then
-			customBackdrop:SetRGB(healthColor.r, healthColor.g, healthColor.b)
-			bgc = customBackdrop
+			CUSTOM_BACKDROP:SetRGB(healthColor.r, healthColor.g, healthColor.b)
+			bgc = CUSTOM_BACKDROP
 		elseif colors.healthbackdropbyvalue and not E.Modern then
 			if colors.customhealthbackdrop then
 				local backdrop = colors.health_backdrop
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1,0,0, 1,1,0, backdrop.r or 1, backdrop.g or 1, backdrop.b or 1)
-				customBackdrop:SetRGB(bgr, bgg, bgb)
-				bgc = customBackdrop
+				CUSTOM_BACKDROP:SetRGB(bgr, bgg, bgb)
+				bgc = CUSTOM_BACKDROP
 			elseif not healthR and not colors.colorhealthbyvalue then
 				local bgr, bgg, bgb = E:ColorGradient(maxValue == 0 and 0 or (minValue / maxValue), 1,0,0, 1,1,0, r or 1, g or 1, b or 1)
-				customBackdrop:SetRGB(bgr, bgg, bgb)
-				bgc = customBackdrop
+				CUSTOM_BACKDROP:SetRGB(bgr, bgg, bgb)
+				bgc = CUSTOM_BACKDROP
 			end
 		elseif colors.customhealthbackdrop then
 			local backdrop = colors.health_backdrop
-			customBackdrop:SetRGB(backdrop.r, backdrop.g, backdrop.b)
-			bgc = customBackdrop
+			CUSTOM_BACKDROP:SetRGB(backdrop.r, backdrop.g, backdrop.b)
+			bgc = CUSTOM_BACKDROP
 		elseif colors.classbackdrop then
 			if UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit)) then
 				local _, classToken = UnitClass(unit)
 				local classColor = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or parent.colors.class[classToken]
 				if classColor then
-					customBackdrop:SetRGB(classColor.r, classColor.g, classColor.b)
-					bgc = customBackdrop
+					CUSTOM_BACKDROP:SetRGB(classColor.r, classColor.g, classColor.b)
+					bgc = CUSTOM_BACKDROP
 				end
 			end
 
@@ -341,8 +341,8 @@ function UF:PostUpdateHealthColor(unit, color)
 			if reaction then
 				local reactionColor = parent.colors.reaction[reaction]
 				if reactionColor then
-					customBackdrop:SetRGB(reactionColor.r, reactionColor.g, reactionColor.b)
-					bgc = customBackdrop
+					CUSTOM_BACKDROP:SetRGB(reactionColor.r, reactionColor.g, reactionColor.b)
+					bgc = CUSTOM_BACKDROP
 				end
 			end
 		end

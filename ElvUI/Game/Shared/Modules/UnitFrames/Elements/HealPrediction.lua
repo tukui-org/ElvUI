@@ -3,6 +3,7 @@ local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
 local CreateFrame = CreateFrame
+
 local UnitDamageAbsorbClampMode = Enum.UnitDamageAbsorbClampMode
 local UnitIncomingHealClampMode = Enum.UnitIncomingHealClampMode
 local UnitHealAbsorbClampMode = Enum.UnitHealAbsorbClampMode

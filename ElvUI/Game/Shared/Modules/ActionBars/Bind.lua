@@ -345,8 +345,8 @@ function AB:LoadKeyBinder()
 	Popup:Size(360, 130)
 	Popup:SetTemplate('Transparent')
 	Popup:RegisterForDrag('AnyUp', 'AnyDown')
-	Popup:SetScript('OnMouseDown', Popup.StartMoving)
-	Popup:SetScript('OnMouseUp', Popup.StopMovingOrSizing)
+	Popup:SetScript('OnMouseDown', function() Popup:StartMoving() end)
+	Popup:SetScript('OnMouseUp', function() Popup:StopMovingOrSizing() end)
 	Popup:Hide()
 
 	bind.Popup = Popup

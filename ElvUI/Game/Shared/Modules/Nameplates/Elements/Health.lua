@@ -6,11 +6,11 @@ local LSM = E.Libs.LSM
 local ipairs = ipairs
 local unpack = unpack
 
-local UnitPlayerControlled = UnitPlayerControlled
-local UnitIsTapDenied = UnitIsTapDenied
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
 local UnitIsConnected = UnitIsConnected
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitPlayerControlled = UnitPlayerControlled
 local CreateFrame = CreateFrame
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation

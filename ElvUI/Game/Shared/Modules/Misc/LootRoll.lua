@@ -18,8 +18,8 @@ local IsShiftKeyDown = IsShiftKeyDown
 local RollOnLoot = RollOnLoot
 
 local GameTooltip_Hide = GameTooltip_Hide
-local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local GetItemInfo = C_Item.GetItemInfo
+local GameTooltip_ShowCompareItem = GameTooltip_ShowCompareItem
 local C_LootHistory_GetItem = C_LootHistory.GetItem
 local C_LootHistory_GetPlayerInfo = C_LootHistory.GetPlayerInfo
 

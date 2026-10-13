@@ -15,19 +15,16 @@ function S:SkinArenaRegistrar()
 
 	ArenaRegistrarFrame:StripTextures(true)
 
-	local ArenaRegistrarFrameCloseButton = _G.ArenaRegistrarFrameCloseButton
-	S:HandleCloseButton(ArenaRegistrarFrameCloseButton)
+	S:HandleButton(_G.ArenaRegistrarFrameGoodbyeButton)
+	S:HandleCloseButton(_G.ArenaRegistrarFrameCloseButton)
 
-	local ArenaRegistrarGreetingFrame = _G.ArenaRegistrarGreetingFrame
-	ArenaRegistrarGreetingFrame:StripTextures()
+	local arenaGreetingFrame = _G.ArenaRegistrarGreetingFrame
+	arenaGreetingFrame:StripTextures()
 
-	local ArenaRegistrarGreetingRegion = ArenaRegistrarGreetingFrame:GetRegions()
-	ArenaRegistrarGreetingRegion:SetTextColor(1, 0.80, 0.10)
+	local greetingRegion1 = arenaGreetingFrame:GetRegions()
+	greetingRegion1:SetTextColor(1, 0.80, 0.10)
 
 	_G.RegistrationText:SetTextColor(1, 0.80, 0.10)
-
-	local ArenaRegistrarFrameGoodbyeButton = _G.ArenaRegistrarFrameGoodbyeButton
-	S:HandleButton(ArenaRegistrarFrameGoodbyeButton)
 
 	for i = 1, MAX_TEAM_BORDERS do
 		local button = _G['ArenaRegistrarButton'..i]
@@ -57,13 +54,10 @@ function S:SkinArenaRegistrar()
 	_G.PVPBannerFrameCustomizationFrame:StripTextures()
 
 	for i = 1, 2 do
-		local customization = _G['PVPBannerFrameCustomization'..i]
-		local customizationLeft = _G['PVPBannerFrameCustomization'..i..'LeftButton']
-		local customizationRight = _G['PVPBannerFrameCustomization'..i..'RightButton']
+		_G['PVPBannerFrameCustomization'..i]:StripTextures()
 
-		customization:StripTextures()
-		S:HandleNextPrevButton(customizationLeft)
-		S:HandleNextPrevButton(customizationRight)
+		S:HandleNextPrevButton(_G['PVPBannerFrameCustomization'..i..'LeftButton'])
+		S:HandleNextPrevButton(_G['PVPBannerFrameCustomization'..i..'RightButton'])
 	end
 
 	for i = 1, 3 do

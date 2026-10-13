@@ -1,8 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 local CreateFrame = CreateFrame
+
+local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 

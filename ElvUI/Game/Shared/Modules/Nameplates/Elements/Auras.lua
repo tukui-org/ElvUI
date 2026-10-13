@@ -3,9 +3,9 @@ local NP = E:GetModule('NamePlates')
 local UF = E:GetModule('UnitFrames')
 
 local next = next
+local wipe = wipe
 local unpack = unpack
 local strfind = strfind
-local wipe = wipe
 
 local CreateFrame = CreateFrame
 

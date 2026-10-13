@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
 local next, ipairs = next, ipairs
+
 local CreateFrame = CreateFrame
 
 function UF:Construct_AuraWatch(frame)

@@ -116,11 +116,12 @@ function S:Blizzard_GuildBankUI()
 		tab:StripTextures()
 
 		local button = tab.Button
-		local icon = button.IconTexture
-		local texture = icon:GetTexture()
 		button:StripTextures()
 		button:StyleButton(true)
 		button:SetTemplate(nil, true)
+
+		local icon = button.IconTexture
+		local texture = icon:GetTexture()
 		icon:SetTexture(texture)
 		icon:SetTexCoords()
 		icon:SetInside()

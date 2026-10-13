@@ -52,6 +52,9 @@
 	<Script file='Shared\Filters\Filters.lua'/>
 
 	<Script file='Forever\Filters\Filters.lua'/>
+	<Script file='Shared\Modules\Blizzard\AltPower.lua'/>
+	<Script file='Shared\Modules\Blizzard\ColorPickerModern.lua'/>
+	<Script file='Shared\Modules\Blizzard\ObjectiveFrame.lua'/>
 	<Script file='Shared\Modules\DataTexts\Currencies.lua'/>
 	<Script file='Shared\Modules\DataTexts\Defense.lua'/>
 	<Script file='Shared\Modules\DataTexts\Difficulty.lua'/>
@@ -129,8 +132,4 @@
 	<Script file='Shared\Skins\Transmog.lua'/>
 	<Script file='Shared\Skins\TutorialFrame.lua'/>
 	<Script file='Shared\Skins\WorldMap.lua'/>
-
-	<Script file='Shared\Modules\Blizzard\AltPower.lua'/>
-	<Script file='Mainline\Blizzard\ColorPicker.lua'/>
-	<Script file='Mainline\Blizzard\ObjectiveFrame.lua'/>
 </Ui>

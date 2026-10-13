@@ -52,6 +52,9 @@
 	<Script file='Shared\Filters\Filters.lua'/>
 
 	<Script file='Mainline\Filters\Filters.lua'/>
+	<Script file='Shared\Modules\Blizzard\AltPower.lua'/>
+	<Script file='Shared\Modules\Blizzard\ColorPickerModern.lua'/>
+	<Script file='Shared\Modules\Blizzard\ObjectiveFrame.lua'/>
 	<Script file='Shared\Modules\Nameplates\Plugins\PVPRole.lua'/>
 	<Script file='Shared\Modules\DataTexts\Currencies.lua'/>
 	<Script file='Shared\Modules\DataTexts\Difficulty.lua'/>
@@ -178,7 +181,4 @@
 	<Script file='Shared\Skins\WarfrontPartyPose.lua'/>
 	<Script file='Shared\Skins\WeeklyRewards.lua'/>
 	<Script file='Shared\Skins\WorldMap.lua'/>
-	<Script file='Shared\Modules\Blizzard\AltPower.lua'/>
-	<Script file='Mainline\Blizzard\ColorPicker.lua'/>
-	<Script file='Mainline\Blizzard\ObjectiveFrame.lua'/>
 </Ui>

@@ -9,5 +9,6 @@ function S:Blizzard_IslandsPartyPoseUI()
 	local IslandsPartyPoseFrame = _G.IslandsPartyPoseFrame
 	IslandsPartyPoseFrame:StripTextures()
 	IslandsPartyPoseFrame:SetTemplate('Transparent')
+
 	S:HandleButton(IslandsPartyPoseFrame.LeaveButton)
 end

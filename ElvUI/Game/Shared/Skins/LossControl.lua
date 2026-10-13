@@ -32,8 +32,9 @@ local function SetupDisplay(frame)
 		frame.Anim:Stop()
 	end
 end
+
+-- /run LossOfControlFrame.fadeTime = 2000; LossOfControlFrame_SetUpDisplay(LossOfControlFrame, true, 'CONFUSE', 2094, 'Disoriented', [[Interface\Icons\Spell_Shadow_MindSteal]], 72101.9765625, 7.9950003623962, 8, 0, 5, 2)
 function S:LossOfControlFrame()
-	-- /run LossOfControlFrame.fadeTime = 2000; LossOfControlFrame_SetUpDisplay(LossOfControlFrame, true, 'CONFUSE', 2094, 'Disoriented', [[Interface\Icons\Spell_Shadow_MindSteal]], 72101.9765625, 7.9950003623962, 8, 0, 5, 2)
 	local LossOfControlFrame = _G.LossOfControlFrame
 	local IconBackdrop = CreateFrame('Frame', nil, LossOfControlFrame)
 	IconBackdrop:SetTemplate()

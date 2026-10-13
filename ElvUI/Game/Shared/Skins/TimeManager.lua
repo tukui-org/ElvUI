@@ -58,6 +58,7 @@ function S:Blizzard_TimeManager()
 	StopwatchPlayPauseButton:HookScript('OnEnter', S.SetModifiedBackdrop)
 	StopwatchPlayPauseButton:HookScript('OnLeave', S.SetOriginalBackdrop)
 	StopwatchPlayPauseButton:Point('RIGHT', StopwatchResetButton, 'LEFT', -4, 0)
+
 	S:HandleButton(StopwatchResetButton)
 	StopwatchResetButton:Size(16)
 	StopwatchResetButton:SetNormalTexture(E.Media.Textures.Reset)

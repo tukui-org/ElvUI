@@ -77,6 +77,7 @@ local function ItemFlyout_CustomerOrders(_, owner)
 			child.NineSlice:SetTemplate('Transparent')
 			S:HandleTrimScrollBar(child.ScrollBar)
 			S:HandleCheckBox(child.HideUnownedCheckbox)
+
 			child.HideUnownedCheckbox:Size(24)
 
 			RefreshFlyoutButtons(child.ScrollBox)
@@ -94,6 +95,7 @@ local function ItemFlyout_Professions(_, owner)
 			child.NineSlice:SetTemplate('Transparent')
 			S:HandleTrimScrollBar(child.ScrollBar)
 			S:HandleCheckBox(child.HideUnownedCheckbox)
+
 			child.HideUnownedCheckbox:Size(24)
 
 			HandleFlyoutItems(child.ScrollBox)
@@ -231,6 +233,7 @@ local function HandleSchematicForm(form, noParchment)
 
 	S:HandleCheckBox(form.TrackRecipeCheckbox)
 	form.TrackRecipeCheckbox:Size(24)
+
 	S:HandleCheckBox(form.AllocateBestQualityCheckbox)
 	form.AllocateBestQualityCheckbox:Size(24)
 
@@ -307,6 +310,7 @@ local function HandleOrderView(frame)
 	local OrderInfo = frame.OrderInfo
 	OrderInfo:StripTextures()
 	OrderInfo:CreateBackdrop('Transparent')
+
 	S:HandleButton(OrderInfo.BackButton)
 	S:HandleButton(OrderInfo.StartOrderButton)
 	S:HandleButton(OrderInfo.DeclineOrderButton)
@@ -336,6 +340,7 @@ local function HandleOrderView(frame)
 	local OrderItemIcon = OrderDetails.FulfillmentForm.ItemIcon
 	S:HandleIcon(OrderItemIcon.Icon, true)
 	S:HandleIconBorder(OrderItemIcon.IconBorder, OrderItemIcon.Icon.backdrop)
+
 	OrderItemIcon:GetHighlightTexture():Hide()
 	OrderItemIcon.CircleMask:Hide()
 end
@@ -350,9 +355,10 @@ local function HandleRecipeCategory(button)
 	rankBar.BorderLeft:SetAlpha(0)
 	rankBar.BorderMid:SetAlpha(0)
 	rankBar.BorderRight:SetAlpha(0)
+	rankBar.Rank:FontTemplate()
+
 	rankBar:SetStatusBarTexture(E.media.normTex)
 	rankBar:CreateBackdrop('Transparent')
-	rankBar.Rank:FontTemplate()
 
 	E:RegisterStatusBar(rankBar)
 end
@@ -391,10 +397,12 @@ end
 -- BookPage profession spell buttons (ProfessionButtonTemplate)
 local function HandleProfessionButton(button)
 	button:OffsetFrameLevel(1) -- backdrops sit a level below, the card art would cover them
-	button.IconTexture:RemoveMaskTexture(button.OutlineMask)
 	button.IconTextureOverlay:SetAlpha(0)
+	button.IconTexture:RemoveMaskTexture(button.OutlineMask)
 	button.IconTexture:SetInside()
+
 	S:HandleIcon(button.IconTexture, true)
+
 	button.highlightTexture:SetInside(button.IconTexture.backdrop)
 
 	E:RegisterCooldown(button.cooldown)

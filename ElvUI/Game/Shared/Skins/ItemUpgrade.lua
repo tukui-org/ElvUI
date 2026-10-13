@@ -2,17 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local hooksecurefunc = hooksecurefunc
 
 S:AddCallbackForAddon('Blizzard_ItemUpgradeUI', nil, nil, nil, nil, nil, 'itemUpgrade')
-
-local function Update(frame)
-	if frame.upgradeInfo then
-		frame.UpgradeItemButton:GetPushedTexture():SetColorTexture(0.9, 0.8, 0.1, 0.3)
-	else
-		frame.UpgradeItemButton:GetNormalTexture():SetInside()
-	end
-end
 
 local function SkinMainline(frame)
 	_G.ItemUpgradeFrameBg:Hide()
@@ -49,8 +40,6 @@ local function SkinMainline(frame)
 	else
 		frame.TopBG:CreateBackdrop('Transparent')
 	end
-
-	--hooksecurefunc(frame, 'Update', Update) -- FIX ME 11.0
 
 	S:HandleIconBorder(button.IconBorder)
 	S:HandleButton(frame.UpgradeButton, true)

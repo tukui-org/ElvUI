@@ -14,6 +14,7 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 
 local GetCVar = C_CVar.GetCVar
 
+local NOT_APPLICABLE = NOT_APPLICABLE
 local MOUSE_LABEL = _G.MOUSE_LABEL:gsub('|[TA].-|[ta]','')
 
 local CoordsHolder
@@ -80,7 +81,7 @@ function M:UpdateRestrictedArea()
 		inRestrictedArea = false
 	else
 		inRestrictedArea = true
-		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], 'N/A')
+		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], NOT_APPLICABLE)
 	end
 end
 
@@ -103,7 +104,7 @@ function M:UpdateCoords(OnShow)
 		if E.MapInfo.x and E.MapInfo.y then
 			CoordsHolder.playerCoords:SetFormattedText('%s:   %.2f, %.2f', L["Player"], (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
-			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], 'N/A')
+			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], NOT_APPLICABLE)
 		end
 	end
 end

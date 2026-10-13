@@ -53,9 +53,9 @@
 	<Script file='Mists\Filters\Filters.lua'/>
 	<Script file='Shared\Modules\Nameplates\Plugins\PVPRole.lua'/>
 	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
-	<Script file='Mists\Blizzard\ObjectiveFrame.lua'/>
 	<Script file='Shared\Modules\Blizzard\AltPower.lua'/>
-	<Script file='Classic\Blizzard\ColorPicker.lua'/>
+	<Script file='Shared\Modules\Blizzard\ColorPickerLegacy.lua'/>
+	<Script file='Shared\Modules\Blizzard\ObjectiveFrame.lua'/>
 	<Script file='Shared\Modules\DataTexts\ArmorPenetration.lua'/>
 	<Script file='Shared\Modules\DataTexts\Avoidance.lua'/>
 	<Script file='Shared\Modules\DataTexts\Battlegrounds.lua'/>

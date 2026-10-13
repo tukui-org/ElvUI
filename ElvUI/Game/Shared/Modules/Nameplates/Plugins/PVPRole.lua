@@ -9,10 +9,10 @@ local format = format
 local UnitName = UnitName
 local IsInInstance = IsInInstance
 local GetBattlefieldScore = GetBattlefieldScore
-local GetScoreInfo = C_PvP.GetScoreInfo
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetScoreInfo = C_PvP.GetScoreInfo
 
 local UNKNOWN = UNKNOWN
 

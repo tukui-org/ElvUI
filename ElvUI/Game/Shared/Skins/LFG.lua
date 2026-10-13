@@ -4,8 +4,7 @@ local TT = E:GetModule('Tooltip')
 local LCG = E.Libs.CustomGlow
 
 local _G = _G
-local next, select = next, select
-local unpack, ipairs, pairs = unpack, ipairs, pairs
+local unpack, ipairs, pairs, next = unpack, ipairs, pairs, next
 local hooksecurefunc = hooksecurefunc
 
 local UnitIsGroupLeader = UnitIsGroupLeader
@@ -106,19 +105,17 @@ local function SkinItemButton(frame, _, index)
 end
 
 local function HandleAffixIcons(child)
-	local MapID, _, PowerLevel = C_ChallengeMode_GetSlottedKeystoneInfo()
-
-	if MapID and child.DungeonName then -- WeeklyInfo.Child has no DungeonName or PowerLevel
-		local Name = C_ChallengeMode_GetMapUIInfo(MapID)
-
-		if Name and PowerLevel then
-			child.DungeonName:SetText(Name.. ' |cffffffff-|r (' .. PowerLevel .. ')')
+	local mapID, _, powerLevel = C_ChallengeMode_GetSlottedKeystoneInfo()
+	if mapID and child.DungeonName then -- WeeklyInfo.Child has no DungeonName or PowerLevel
+		local name = C_ChallengeMode_GetMapUIInfo(mapID)
+		if name and powerLevel then
+			child.DungeonName:SetFormattedText('%s |cffffffff-|r (%s)', name, powerLevel)
 		end
 
 		child.PowerLevel:SetText('')
 	end
 
-	local list = child.AffixesContainer and child.AffixesContainer.Affixes or child.Affixes
+	local list = (child.AffixesContainer and child.AffixesContainer.Affixes) or child.Affixes
 	if not list then return end
 
 	for _, frame in ipairs(list) do
@@ -150,7 +147,9 @@ local function LFDCheckboxMini_HookTexture(_, region)
 	if region:GetTexture() == 130751 then
 		if E.private.skins.checkBoxSkin then
 			region:SetTexture(E.Media.Textures.Melli) -- set the initial texture
+
 			if hookedMiniCheckbox[region] then return end -- dont rehook
+
 			hooksecurefunc(region, 'SetTexture', LFDCheckboxMini_SetTexture)
 			hookedMiniCheckbox[region] = true
 		end
@@ -232,13 +231,9 @@ local function PermanentlyDisableRoleButton(button)
 end
 
 local function DungeonListSetDungeon(button)
-	if button.expandOrCollapseButton:IsShown() then
-		if button.isCollapsed then
-			button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.PlusButton)
-		else
-			button.expandOrCollapseButton:SetNormalTexture(E.Media.Textures.MinusButton)
-		end
-	end
+	if not button.expandOrCollapseButton:IsShown() then return end
+
+	button.expandOrCollapseButton:SetNormalTexture(button.isCollapsed and E.Media.Textures.PlusButton or E.Media.Textures.MinusButton)
 end
 
 local function ListSearchUpdateAutoComplete(panel)
@@ -275,9 +270,11 @@ local function ListApplicationUpdateApplicant(button)
 	if not button.DeclineButton.template then
 		S:HandleButton(button.DeclineButton, nil, true)
 	end
+
 	if not button.InviteButton.template then
 		S:HandleButton(button.InviteButton)
 	end
+
 	if not button.InviteButtonSmall.template then
 		S:HandleButton(button.InviteButtonSmall)
 	end
@@ -401,6 +398,7 @@ function S:LookingForGroupFrames()
 		end
 
 		S:HandleCheckBox(checkButton, nil, nil, true)
+
 		checkButton.backdrop:SetInside()
 		checkButton:Size(18)
 	end
@@ -729,6 +727,15 @@ local function HandleChallengeDetails(frame)
 	frame.MapName:Point('TOP', 0, -20)
 end
 
+local function Kestone_OnEvent(frame, event, itemID)
+	if event ~= 'CHALLENGE_MODE_KEYSTONE_SLOTTED' then return end
+
+	local _, _, _, _, _, _, _, _, _, texture = GetItemInfo(itemID)
+	if texture then
+		frame.Texture:SetTexture(texture)
+	end
+end
+
 function S:Blizzard_ChallengesUI()
 	local ChallengesFrame = _G.ChallengesFrame
 	if E.Modern then -- Mythic+ frame, Mists loads its own challenge mode frame
@@ -745,21 +752,13 @@ function S:Blizzard_ChallengesUI()
 		S:HandleCloseButton(KeyStoneFrame.CloseButton)
 		S:HandleIcon(KeyStoneFrame.KeystoneSlot.Texture, true)
 
-		KeyStoneFrame.KeystoneSlot:HookScript('OnEvent', function(frame, event, itemID)
-			if event == 'CHALLENGE_MODE_KEYSTONE_SLOTTED' then
-				local texture = select(10, GetItemInfo(itemID))
-				if texture then
-					frame.Texture:SetTexture(texture)
-				end
-			end
-		end)
+		KeyStoneFrame.KeystoneSlot:HookScript('OnEvent', Kestone_OnEvent)
 
 		hooksecurefunc(KeyStoneFrame, 'OnKeystoneSlotted', HandleAffixIcons)
 		hooksecurefunc(KeyStoneFrame, 'Reset', KeystoneReset)
 		hooksecurefunc(ChallengesFrame, 'Update', ChallengesUpdate)
 		hooksecurefunc(_G.ChallengesFrameWeeklyInfoMixin, 'SetUp', ChallengesWeeklySetup)
 
-		-- New Season Frame
 		local NoticeFrame = _G.ChallengesFrame.SeasonChangeNoticeFrame
 		S:HandleButton(NoticeFrame.Leave)
 
@@ -787,6 +786,38 @@ function S:Blizzard_ChallengesUI()
 		HandleChallengeDetails(_G.ChallengesFrameDetails)
 
 		for i = 1, 9 do
+			if i < 6 then -- bronze, silver, gold, platinum, diamond
+				local rewardsRow = ChallengesFrame['RewardRow'..i]
+				rewardsRow.Bg:SetTexture(E.Media.Textures.Highlight)
+
+				if i == 1 then
+					rewardsRow.Bg:SetVertexColor(0.859, 0.545, 0.204, 0.3)
+				elseif i == 2 then
+					rewardsRow.Bg:SetVertexColor(0.780, 0.722, 0.741, 0.3)
+				elseif i == 3 then
+					rewardsRow.Bg:SetVertexColor(0.945, 0.882, 0.337, 0.3)
+				elseif i == 4 then
+					local r, g, b = _G.CHALLENGE_PLATINUM_MEDAL_COLOR:GetRGB()
+					rewardsRow.Bg:SetVertexColor(r, g, b, 0.3)
+				else
+					local diamond = _G.CHALLENGE_DIAMOND_MEDAL_COLOR -- Blizzard guards this one in ChallengesFrame_OnLoad
+					if diamond then
+						local r, g, b = diamond:GetRGB()
+						rewardsRow.Bg:SetVertexColor(r, g, b, 0.3)
+					else
+						rewardsRow.Bg:SetVertexColor(0.224, 1, 0.988, 0.3)
+					end
+				end
+
+				for j = 1, 2 do
+					local button = rewardsRow['Reward'..j]
+
+					button:CreateBackdrop()
+
+					button.Icon:SetTexCoords()
+				end
+			end
+
 			local button = ChallengesFrame['button'..i]
 			if button then
 				button:CreateBackdrop('Transparent')
@@ -807,39 +838,6 @@ function S:Blizzard_ChallengesUI()
 					highlight:SetVertexColor(1, 1, 1, 0.35)
 					highlight:SetAllPoints()
 				end
-			end
-		end
-
-		for i = 1, 5 do -- bronze, silver, gold, platinum, diamond
-			local rewardsRow = ChallengesFrame['RewardRow'..i]
-
-			rewardsRow.Bg:SetTexture(E.Media.Textures.Highlight)
-
-			if i == 1 then
-				rewardsRow.Bg:SetVertexColor(0.859, 0.545, 0.204, 0.3)
-			elseif i == 2 then
-				rewardsRow.Bg:SetVertexColor(0.780, 0.722, 0.741, 0.3)
-			elseif i == 3 then
-				rewardsRow.Bg:SetVertexColor(0.945, 0.882, 0.337, 0.3)
-			elseif i == 4 then
-				local r, g, b = _G.CHALLENGE_PLATINUM_MEDAL_COLOR:GetRGB()
-				rewardsRow.Bg:SetVertexColor(r, g, b, 0.3)
-			else
-				local diamond = _G.CHALLENGE_DIAMOND_MEDAL_COLOR -- Blizzard guards this one in ChallengesFrame_OnLoad
-				if diamond then
-					local r, g, b = diamond:GetRGB()
-					rewardsRow.Bg:SetVertexColor(r, g, b, 0.3)
-				else
-					rewardsRow.Bg:SetVertexColor(0.224, 1, 0.988, 0.3)
-				end
-			end
-
-			for j = 1, 2 do
-				local button = rewardsRow['Reward'..j]
-
-				button:CreateBackdrop()
-
-				button.Icon:SetTexCoords()
 			end
 		end
 	end
@@ -894,9 +892,7 @@ local function CategorySelectionAddButton(frame, btnIndex)
 	else
 		button.Cover:Hide()
 		button.HighlightTexture:SetInside()
-
-		-- Fix issue with labels not following changes to GameFontNormal as they should
-		button.Label:SetFontObject('GameFontNormal')
+		button.Label:SetFontObject('GameFontNormal') -- Fix issue with labels not following changes to GameFontNormal as they should
 	end
 
 	button.IsSkinned = true

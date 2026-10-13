@@ -51,8 +51,8 @@
 	<Script file='Shared\Filters\Filters.lua'/>
 
 	<Script file='Wrath\Filters\Filters.lua'/>
-	<Script file='Wrath\Blizzard\ObjectiveFrame.lua'/>
-	<Script file='Classic\Blizzard\ColorPicker.lua'/>
+	<Script file='Shared\Modules\Blizzard\ColorPickerLegacy.lua'/>
+	<Script file='Shared\Modules\Blizzard\ObjectiveFrame.lua'/>
 	<Script file='Shared\Modules\ActionBars\TotemBar.lua'/>
 	<Script file='Shared\Modules\DataTexts\Ammo.lua'/>
 	<Script file='Shared\Modules\DataTexts\ArmorPenetration.lua'/>

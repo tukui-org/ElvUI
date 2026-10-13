@@ -1133,8 +1133,8 @@ function NP:Initialize()
 	testFrame:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
 	testFrame:SetMovable(true)
 	testFrame:RegisterForDrag('LeftButton', 'RightButton')
-	testFrame:SetScript('OnDragStart', function() NP.TestFrame:StartMoving() end)
-	testFrame:SetScript('OnDragStop', function() NP.TestFrame:StopMovingOrSizing() end)
+	testFrame:SetScript('OnDragStart', function() testFrame:StartMoving() end)
+	testFrame:SetScript('OnDragStop', function() testFrame:StopMovingOrSizing() end)
 	testFrame.frameType = 'PLAYER'
 	testFrame:Disable()
 
