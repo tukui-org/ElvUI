@@ -120,15 +120,6 @@ function BL:SplashFrame_OnHide() -- Clone of SplashFrameMixin:OnHide() to remove
 	self.showingQuestDialog = nil
 end
 
-function BL:ObjectiveTracker_SetupModern()
-	BL:ObjectiveTracker_AutoHide()
-
-	local splash = _G.SplashFrame
-	if splash then
-		splash:SetScript('OnHide', BL.SplashFrame_OnHide)
-	end
-end
-
 function BL:ObjectiveTracker_SetPoint(_, parent)
 	if parent ~= self.holder then
 		self:ClearAllPoints()
@@ -144,6 +135,15 @@ function BL:ObjectiveTracker_SetHeight()
 	local frameHeight = min(maxHeight, E.db.general.objectiveFrameHeight)
 
 	Tracker:Height(frameHeight)
+end
+
+function BL:ObjectiveTracker_SetupModern()
+	BL:ObjectiveTracker_AutoHide()
+
+	local splash = _G.SplashFrame
+	if splash then
+		splash:SetScript('OnHide', BL.SplashFrame_OnHide)
+	end
 end
 
 function BL:ObjectiveTracker_SetupLegacy()
