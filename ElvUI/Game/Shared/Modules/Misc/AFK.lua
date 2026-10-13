@@ -302,6 +302,14 @@ function AFK:Model_OnUpdate()
 	end
 end
 
+function AFK:Chat_OnDragStart()
+	self:StartMoving()
+end
+
+function AFK:Chat_OnDragStop()
+	self:StopMovingOrSizing()
+end
+
 function AFK:Initialize()
 	AFK.Initialized = true
 
@@ -320,8 +328,8 @@ function AFK:Initialize()
 	chat:SetFading(false)
 	chat:EnableMouse(true)
 	chat:RegisterForDrag('LeftButton')
-	chat:SetScript('OnDragStart', chat.StartMoving)
-	chat:SetScript('OnDragStop', chat.StopMovingOrSizing)
+	chat:SetScript('OnDragStart', AFK.Chat_OnDragStart)
+	chat:SetScript('OnDragStop', AFK.Chat_OnDragStop)
 	chat:SetScript('OnMouseWheel', AFK.Chat_OnMouseWheel)
 	AFK:ResetChatPosition()
 

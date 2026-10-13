@@ -306,8 +306,8 @@ function E:CreateMoverPopup()
 	header:OffsetFrameLevel(2)
 	header:EnableMouse(true)
 	header:RegisterForClicks('AnyUp', 'AnyDown')
-	header:SetScript('OnMouseDown', f.StartMoving)
-	header:SetScript('OnMouseUp', f.StopMovingOrSizing)
+	header:SetScript('OnMouseDown', function() f:StartMoving() end)
+	header:SetScript('OnMouseUp', function() f:StopMovingOrSizing() end)
 	f.header = header
 
 	local title = header:CreateFontString(nil, 'OVERLAY')

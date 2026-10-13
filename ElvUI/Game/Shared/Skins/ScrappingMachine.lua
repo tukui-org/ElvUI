@@ -29,6 +29,6 @@ function S:Blizzard_ScrappingMachineUI()
 	-- Temp mover
 	MachineFrame:SetMovable(true)
 	MachineFrame:RegisterForDrag('LeftButton')
-	MachineFrame:SetScript('OnDragStart', MachineFrame.StartMoving)
-	MachineFrame:SetScript('OnDragStop', MachineFrame.StopMovingOrSizing)
+	MachineFrame:SetScript('OnDragStart', function() MachineFrame:StartMoving() end)
+	MachineFrame:SetScript('OnDragStop', function() MachineFrame:StopMovingOrSizing() end)
 end
