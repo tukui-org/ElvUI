@@ -15,6 +15,14 @@ local SessionCommand_ButtonAtlases = QuestSessionCommand and { -- only read by t
 
 local data = S:AddCallback('WorldMapFrame', nil, nil, 'worldmap')
 
+function data:QuestMapHide() -- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
+	local QuestModelScene = _G.QuestModelScene
+	if self:GetParent() == QuestModelScene:GetParent() then -- variant of QuestFrame_HideQuestPortrait
+		QuestModelScene:SetParent(nil)
+		QuestModelScene:Hide()
+	end
+end
+
 local function UpdateExecuteCommandAtlases(frame, command)
 	frame.ExecuteSessionCommand:SetNormalTexture(E.ClearTexture)
 	frame.ExecuteSessionCommand:SetPushedTexture(E.ClearTexture)
@@ -70,8 +78,11 @@ local function QuestLogQuests()
 			button:CreateBackdrop()
 			button:GetHighlightTexture():SetColorTexture(r, g, b, .25)
 			button.ButtonText:FontTemplate(nil, 16)
+
 			hooksecurefunc(button, 'CheckHighlightTitle', QuestLogHeader_CheckHighlightTitle)
+
 			QuestLogHeader_CheckHighlightTitle(button)
+
 			button.IsSkinned = true
 		end
 	end
@@ -136,12 +147,14 @@ local EventsFrameFunctions = {
 
 		element.Label:SetTextColor(1, 1, 1)
 	end,
+
 	function(element) -- 2: OngoingEvent
 		if not EventsFrameHookedElements[element] then
 			hooksecurefunc(element.Background, 'SetAtlas', EventsFrameBackgroundNormal)
 			EventsFrameHookedElements[element] = element.Background
 		end
 	end,
+
 	function(element) -- 3: ScheduledHeader
 		if not element.Background.backdrop then
 			element.Background:StripTextures()
@@ -150,6 +163,7 @@ local EventsFrameFunctions = {
 
 		element.Label:SetTextColor(1, 1, 1)
 	end,
+
 	function(element) -- 4: ScheduledEvent
 		if element.Highlight then
 			EventsFrameHighlightTexture(element.Highlight)
@@ -163,6 +177,20 @@ local function EventsFrameCallback(_, frame, elementData)
 	local func = EventsFrameFunctions[elementData.data.entryType]
 	if func then
 		func(frame)
+	end
+end
+
+local function PositionQuestTab(tab, _, _, _, x, y)
+	local X, Y = 1, 0
+	if x ~= X or y ~= Y then
+		tab:ClearAllPoints()
+		tab:SetPoint('TOPLEFT', _G.QuestMapFrame, 'TOPRIGHT', X, Y)
+	end
+end
+
+local function PositionTabIcons(icon, point, anchor)
+	if anchor and point ~= 'CENTER' then
+		icon:SetPoint('CENTER')
 	end
 end
 
@@ -373,28 +401,11 @@ local function SkinMainline()
 
 	S:HandleTrimScrollBar(MapLegendScroll.ScrollBar)
 
-	-- 11.1 New Side Tabs
-	local tabs = {
+	for i, tab in next, {
 		QuestMapFrame.QuestsTab,
 		QuestMapFrame.EventsTab,
 		QuestMapFrame.MapLegendTab
-	}
-
-	local function PositionQuestTab(tab, _, _, _, x, y)
-		local X, Y = 1, 0
-		if x ~= X or y ~= Y then
-			tab:ClearAllPoints()
-			tab:SetPoint('TOPLEFT', QuestMapFrame, 'TOPRIGHT', X, Y)
-		end
-	end
-
-	local function PositionTabIcons(icon, point, anchor)
-		if anchor and point ~= 'CENTER' then
-			icon:SetPoint('CENTER')
-		end
-	end
-
-	for i, tab in next, tabs do
+	} do
 		tab:CreateBackdrop()
 		tab:Size(30, 40)
 
@@ -407,6 +418,7 @@ local function SkinMainline()
 
 		tab.Icon:ClearAllPoints()
 		tab.Icon:SetPoint('CENTER')
+
 		hooksecurefunc(tab.Icon, 'SetPoint', PositionTabIcons)
 
 		tab.Background:SetAlpha(0)
@@ -503,16 +515,8 @@ local function SkinClassic()
 	end
 
 	S:HandleCloseButton(_G.WorldMapFrameCloseButton)
-	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
-end
 
--- The original script here would taint the Quest Objective Tracker Button, so swapping to our own ~Simpy
-function data:QuestMapHide()
-	local QuestModelScene = _G.QuestModelScene
-	if self:GetParent() == QuestModelScene:GetParent() then -- variant of QuestFrame_HideQuestPortrait
-		QuestModelScene:SetParent(nil)
-		QuestModelScene:Hide()
-	end
+	_G.WorldMapFrameCloseButton:OffsetFrameLevel(2)
 end
 
 function S:WorldMapFrame()

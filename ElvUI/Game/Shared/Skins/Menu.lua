@@ -121,7 +121,7 @@ function data:HierarchyCheckbox()
 	end
 end
 
-function data:SkinMenu(manager, ownerRegion, menuDescription, anchor)
+function data:SkinMenu(manager, _, menuDescription) -- manager, ownerRegion, menuDescription, anchor
 	local menu = manager:GetOpenMenu()
 	if not menu then return end
 

@@ -48,8 +48,9 @@ local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookIte
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local GetActionCooldownDuration = C_ActionBar.GetActionCooldownDuration
 
-local GetProfessionQualityInfo = C_ActionBar.GetProfessionQualityInfo
+local GetCVarBool = C_CVar.GetCVarBool
 local IsInBattle = C_PetBattles.IsInBattle
+local GetProfessionQualityInfo = C_ActionBar.GetProfessionQualityInfo
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 local FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell or SpellBook_GetSpellBookSlot
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
@@ -61,7 +62,6 @@ local GetTempShapeshiftBarIndex = C_ActionBar.GetTempShapeshiftBarIndex or GetTe
 local GetOverrideBarIndex = C_ActionBar.GetOverrideBarIndex or GetOverrideBarIndex
 local GetVehicleBarIndex = C_ActionBar.GetVehicleBarIndex or GetVehicleBarIndex
 
-local GetCVarBool = C_CVar.GetCVarBool
 local COOLDOWN_GLOBAL = 61304
 local COOLDOWN_WAND = 5009
 

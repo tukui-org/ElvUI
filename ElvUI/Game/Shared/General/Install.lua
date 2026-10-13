@@ -1524,7 +1524,7 @@ function E:Install()
 		f:EnableMouse(true)
 		f:RegisterForDrag('LeftButton')
 		f:SetScript('OnDragStart', function(frame) frame:StartMoving() frame:SetUserPlaced(false) end)
-		f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
+		f:SetScript('OnDragStop', f.StopMovingOrSizing)
 
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
 		f.Title:FontTemplate(nil, 20)

@@ -131,6 +131,7 @@ function S:Blizzard_MailFrame()
 	S:HandleEditBox(_G.SendMailMoneyGold)
 	S:HandleEditBox(_G.SendMailMoneySilver)
 	S:HandleEditBox(_G.SendMailMoneyCopper)
+
 	_G.SendMailMoneyBg:Kill()
 	_G.SendMailMoneyInset:StripTextures()
 

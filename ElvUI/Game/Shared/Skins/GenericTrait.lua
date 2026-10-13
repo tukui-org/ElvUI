@@ -7,22 +7,18 @@ local hooksecurefunc = hooksecurefunc
 S:AddCallbackForAddon('Blizzard_GenericTraitUI', nil, nil, nil, nil, nil, 'genericTrait')
 
 function S:Blizzard_GenericTraitUI()
-	local GenericTrait = _G.GenericTraitFrame
+	local genericTrait = _G.GenericTraitFrame
 	if E.private.skins.parchmentRemoverEnable then
-		GenericTrait.Background:SetAlpha(0)
-		GenericTrait.BorderOverlay:SetAlpha(0)
-		GenericTrait.NineSlice:SetAlpha(0)
-
-		-- should we also handle these?
-		--GenericTrait.Header.TitleDivider:SetAlpha(0)
-		--GenericTrait.Inset:StripTextures()
-		--GenericTrait.Currency.CurrencyBackground:SetAlpha(0)
+		genericTrait.Background:SetAlpha(0)
+		genericTrait.BorderOverlay:SetAlpha(0)
+		genericTrait.NineSlice:SetAlpha(0)
 	end
 
-	GenericTrait:SetTemplate('Transparent')
-	S:HandleCloseButton(GenericTrait.CloseButton)
+	genericTrait:SetTemplate('Transparent')
+	S:HandleCloseButton(genericTrait.CloseButton)
 
-	local unspentCount = GenericTrait.Currency.UnspentPointsCount
+	local unspentCount = genericTrait.Currency.UnspentPointsCount
 	S.ReplaceIconString(unspentCount)
+
 	hooksecurefunc(unspentCount, 'SetText', S.ReplaceIconString)
 end

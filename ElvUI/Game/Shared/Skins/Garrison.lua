@@ -194,10 +194,10 @@ local function SkinFollowerBoard(self, group)
 
 			frame.PuckShadow:SetAlpha(0)
 
-			-- enemy pucks have neither, mission page follower pucks have both
 			if frame.SetFollowerGUID then
 				hooksecurefunc(frame, 'SetFollowerGUID', UpdateFollowerColorOnBoard)
 			end
+
 			if frame.SetEmpty then
 				hooksecurefunc(frame, 'SetEmpty', ResetFollowerColorOnBoard)
 			end
@@ -230,25 +230,31 @@ local function ReskinMissionButton(button)
 		local rareText = button.RareText
 
 		button.LocBG:SetDrawLayer('BACKGROUND')
-		if button.ButtonBG then button.ButtonBG:Hide() end
 		button:StripTextures()
 		button:CreateBackdrop('Transparent')
 		button.Highlight:SetColorTexture(.6, .8, 1, .15)
 		button.Highlight:SetAllPoints()
 
+		if button.ButtonBG then
+			button.ButtonBG:Hide()
+		end
+
 		if button.CompleteCheck then
 			button.CompleteCheck:SetAtlas('Adventures-Checkmark')
 		end
+
 		if rareText then
 			rareText:ClearAllPoints()
 			rareText:SetPoint('BOTTOMLEFT', button, 20, 10)
 		end
+
 		if rareOverlay then
 			rareOverlay:SetDrawLayer('BACKGROUND')
 			rareOverlay:SetTexture([[Interface\ChatFrame\ChatFrameBackground]])
 			rareOverlay:SetAllPoints()
 			rareOverlay:SetVertexColor(.098, .537, .969, .2)
 		end
+
 		button.Overlay.Overlay:SetAllPoints()
 
 		button.IsSkinned = true
@@ -264,40 +270,59 @@ local function ReskinMissionComplete(frame)
 	local bonusRewards = missionComplete.BonusRewards
 
 	if bonusRewards then
-		select(11, bonusRewards:GetRegions()):SetTextColor(1, .8, 0)
-		bonusRewards.Saturated:StripTextures()
-		for i = 1, 9 do
-			select(i, bonusRewards:GetRegions()):SetAlpha(0)
+		for index, region in ipairs({ bonusRewards:GetRegions() }) do
+			if index < 10 then -- skip 10
+				region:SetAlpha(0)
+			elseif index == 11 then -- handle 11 then stop
+				region:SetTextColor(1, .8, 0)
+
+				break
+			end
 		end
+
 		bonusRewards:SetTemplate()
+		bonusRewards.Saturated:StripTextures()
 	end
 
-	if missionComplete.NextMissionButton then
-		S:HandleButton(missionComplete.NextMissionButton)
+	local nextMission = missionComplete.NextMissionButton
+	if nextMission then
+		S:HandleButton(nextMission)
 	end
 
-	if missionComplete.CompleteFrame then
+	local rewardsScreen = missionComplete.RewardsScreen
+	if rewardsScreen then
+		S:HandleButton(rewardsScreen.FinalRewardsPanel.ContinueButton)
+	end
+
+	if E.private.skins.parchmentRemoverEnable then
+		missionComplete:StripTextures()
+	end
+
+	missionComplete:CreateBackdrop('Transparent')
+	missionComplete.backdrop:Point('TOPLEFT', 3, 2)
+	missionComplete.backdrop:Point('BOTTOMRIGHT', -3, -10)
+
+	local completeFrame = missionComplete.CompleteFrame
+	if completeFrame then
 		if E.private.skins.parchmentRemoverEnable then
-			missionComplete:StripTextures()
+			completeFrame:StripTextures()
 		end
 
-		missionComplete:CreateBackdrop('Transparent')
-		missionComplete.backdrop:Point('TOPLEFT', 3, 2)
-		missionComplete.backdrop:Point('BOTTOMRIGHT', -3, -10)
-
-		if E.private.skins.parchmentRemoverEnable then
-			missionComplete.CompleteFrame:StripTextures()
-		end
-		S:HandleButton(missionComplete.CompleteFrame.ContinueButton)
-		S:HandleButton(missionComplete.CompleteFrame.SpeedButton)
-		S:HandleButton(missionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
+		S:HandleButton(completeFrame.ContinueButton)
+		S:HandleButton(completeFrame.SpeedButton)
 	end
 
 	if missionComplete.MissionInfo then
 		missionComplete.MissionInfo:StripTextures()
 	end
-	if missionComplete.EnemyBackground then missionComplete.EnemyBackground:Hide() end
-	if missionComplete.FollowerBackground then missionComplete.FollowerBackground:Hide() end
+
+	if missionComplete.EnemyBackground then
+		missionComplete.EnemyBackground:Hide()
+	end
+
+	if missionComplete.FollowerBackground then
+		missionComplete.FollowerBackground:Hide()
+	end
 end
 
 local function SkinMissionItems(followerTab)
@@ -309,7 +334,6 @@ local function SkinMissionItems(followerTab)
 	end
 end
 
--- TO DO: Extend this function
 local function SkinMissionFrame(frame, strip)
 	if strip then
 		frame:StripTextures()

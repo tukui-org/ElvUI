@@ -37,6 +37,7 @@ local function GlyphFrameUpdate(frame)
 	local talentFrame = _G.PlayerTalentFrame
 	local talentGroup = talentFrame and talentFrame.talentGroup -- same guard as Blizzard's GlyphFrameGlyph_UpdateSlot
 	local left, right, top, bottom = E:GetTexCoords()
+
 	for i = 1, _G.NUM_GLYPH_SLOTS do
 		local glyph = _G['GlyphFrameGlyph'..i]
 		local _, _, _, _, iconFilename = _G.GetGlyphSocketInfo(i, talentGroup)
@@ -52,8 +53,12 @@ local function GlyphFrameUpdate(frame)
 	end
 end
 
-local function GlyphFrameGlyph_OnUpdate(updater)
-	local frame = updater.owner
+local function GlyphFrameGlyph_OnUpdate(watcher, elapsed)
+	watcher.elapsed = (watcher.elapsed or 0) + elapsed
+	if watcher.elapsed < 0.1 then return end
+	watcher.elapsed = 0
+
+	local frame = watcher.owner
 	local glyphTexture = frame.icon:GetTexture()
 	local glyphIcon = glyphTexture and strfind(glyphTexture, [[Interface\Spellbook\UI%-Glyph%-Rune]])
 
@@ -212,20 +217,23 @@ local function SkinMistsTalentFrame()
 			button.backdrop:Point('TOPLEFT', 8, 2)
 			button.backdrop:Point('BOTTOMRIGHT', 10, -2)
 
-			button.specIcon:Size(50, 50)
-			button.specIcon:Point('LEFT', button, 'LEFT', 15, 0)
-			button.specIcon:SetDrawLayer('ARTWORK', 2)
-			button.roleIcon:SetDrawLayer('ARTWORK', 2)
-
 			button.bg:SetAlpha(0)
 			button.ring:SetAlpha(0)
 			button.learnedTex:SetAlpha(0)
 			button.selectedTex:SetAlpha(0)
 			button.CircleMask:Hide()
-			button.specIcon:SetTexture(icon)
-			S:HandleIcon(button.specIcon, true, nil, nil, nil, nil, nil, nil, button:GetFrameLevel() + 1)
-			button.specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
-			button.specIcon.backdrop.callbackBackdropColor = ClearBackdrop
+
+			local specIcon = button.specIcon
+			specIcon:Size(50, 50)
+			specIcon:Point('LEFT', button, 'LEFT', 15, 0)
+			specIcon:SetDrawLayer('ARTWORK', 2)
+			specIcon:SetTexture(icon)
+
+			S:HandleIcon(specIcon, true, nil, nil, nil, nil, nil, nil, button:GetFrameLevel() + 1)
+			specIcon.backdrop:SetBackdropColor(0, 0, 0, 0)
+			specIcon.backdrop.callbackBackdropColor = ClearBackdrop
+
+			button.roleIcon:SetDrawLayer('ARTWORK', 2)
 			button:SetHighlightTexture(E.ClearTexture)
 
 			button.SelectedTexture = button:CreateTexture(nil, 'ARTWORK')
@@ -275,25 +283,27 @@ local function SkinMistsTalentFrame()
 			button.icon:SetDrawLayer('ARTWORK', 1)
 			S:HandleIcon(button.icon, true)
 
-			button.bg = CreateFrame('Frame', nil, button)
-			button.bg:SetTemplate()
-			button.bg:OffsetFrameLevel(-4, button)
-			button.bg:Point('TOPLEFT', 15, 2)
-			button.bg:Point('BOTTOMRIGHT', -10, -2)
+			local bg = CreateFrame('Frame', nil, button)
+			bg:SetTemplate()
+			bg:OffsetFrameLevel(-4, button)
+			bg:Point('TOPLEFT', 15, 2)
+			bg:Point('BOTTOMRIGHT', -10, -2)
+			button.bg = bg
 
-			colorAnimation:AddChild(button.bg)
+			colorAnimation:AddChild(bg)
 
 			button:SetHighlightTexture(E.media.blankTex)
 			local highlight = button:GetHighlightTexture()
 			highlight:SetColorTexture(1, 1, 1, 0.2)
-			highlight:SetInside(button.bg)
+			highlight:SetInside(bg)
 
-			button.bg.SelectedTexture = button.bg:CreateTexture(nil, 'ARTWORK')
-			button.bg.SelectedTexture:SetColorTexture(0, 1, 0, 0.2)
-			button.bg.SelectedTexture:SetInside(button.bg)
+			local bgSelected = bg:CreateTexture(nil, 'ARTWORK')
+			bgSelected:SetColorTexture(0, 1, 0, 0.2)
+			bgSelected:SetInside(bg)
+			bg.SelectedTexture = bgSelected
 
 			button.ShadowedTexture = button:CreateTexture(nil, 'OVERLAY', nil, -2)
-			button.ShadowedTexture:SetAllPoints(button.bg.SelectedTexture)
+			button.ShadowedTexture:SetAllPoints(bgSelected)
 			button.ShadowedTexture:SetColorTexture(0, 0, 0, 0.6)
 		end
 	end
@@ -446,9 +456,10 @@ local function SkinMistsGlyphFrame()
 		frame.icon = frame:CreateTexture(nil, 'OVERLAY')
 		frame.icon:SetInside()
 
-		frame.onUpdate = CreateFrame('Frame', nil, frame)
-		frame.onUpdate:SetScript('OnUpdate', GlyphFrameGlyph_OnUpdate)
-		frame.onUpdate.owner = frame
+		local watcher = CreateFrame('Frame', nil, frame)
+		watcher:SetScript('OnUpdate', GlyphFrameGlyph_OnUpdate)
+		watcher.owner = frame
+		frame.onUpdate = watcher
 	end
 
 	hooksecurefunc('GlyphFrame_Update', GlyphFrameUpdate)

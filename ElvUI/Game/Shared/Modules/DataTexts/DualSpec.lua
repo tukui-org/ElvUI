@@ -5,8 +5,8 @@ if not (E.Wrath or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) 
 
 local _G = _G
 local format, strjoin = format, strjoin
-local HideUIPanel = HideUIPanel
 local IsShiftKeyDown = IsShiftKeyDown
+local HideUIPanel = HideUIPanel
 local ShowUIPanel = ShowUIPanel
 
 local LEVEL_UP_DUALSPEC = LEVEL_UP_DUALSPEC

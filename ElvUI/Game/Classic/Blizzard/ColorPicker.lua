@@ -396,8 +396,8 @@ function BL:EnhanceColorPicker()
 	local mover = CreateFrame('Frame', nil, ColorPickerFrame)
 	mover:Point('TOPLEFT', ColorPickerFrame, 'TOP', -60, 0)
 	mover:Point('BOTTOMRIGHT', ColorPickerFrame, 'TOP', 60, -15)
-	mover:SetScript('OnMouseDown', function() ColorPickerFrame:StartMoving() end)
-	mover:SetScript('OnMouseUp', function() ColorPickerFrame:StopMovingOrSizing() end)
+	mover:SetScript('OnMouseDown', ColorPickerFrame.StartMoving)
+	mover:SetScript('OnMouseUp', ColorPickerFrame.StopMovingOrSizing)
 	mover:EnableMouse(true)
 
 	-- make the frame a bit taller, to make room for edit boxes

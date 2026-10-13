@@ -87,10 +87,10 @@ end
 
 local function MasterLooterShow()
 	local looter = _G.MasterLooterFrame
-	local item = looter.Item
-	local icon = item.Icon
 	local r, g, b = E:GetItemQualityColor(_G.LootFrame.selectedQuality or 1)
 
+	local item = looter.Item
+	local icon = item.Icon
 	local texture = icon:GetTexture() -- keep before strip textures
 	item:StripTextures()
 	item:SetTemplate()
@@ -224,10 +224,8 @@ end
 
 local function LootUpdateButton(index)
 	local LootFrame = _G.LootFrame
-	local numLootItems = LootFrame.numLootItems
-	--Logic to determine how many items to show per page
 	local numLootToShow = _G.LOOTFRAME_NUMBUTTONS
-	if numLootItems > _G.LOOTFRAME_NUMBUTTONS then
+	if LootFrame.numLootItems > _G.LOOTFRAME_NUMBUTTONS then
 		numLootToShow = numLootToShow - 1 -- Make space for the page buttons
 	end
 
@@ -294,18 +292,19 @@ function S:LootFrame()
 		S:HandleTrimScrollBar(HistoryFrame.ScrollBar)
 		hooksecurefunc(HistoryFrame.ScrollBox, 'Update', HandleScrollElements)
 
-		local LootResize = HistoryFrame.ResizeButton
-		LootResize:StripTextures()
-		LootResize:SetTemplate()
-		LootResize:ClearAllPoints()
-		LootResize:Point('TOP', HistoryFrame, 'BOTTOM', 0, -2)
-		LootResize:Size(HistoryFrame:GetWidth(), 19)
+		local resizeButton = HistoryFrame.ResizeButton
+		resizeButton:StripTextures()
+		resizeButton:SetTemplate()
+		resizeButton:ClearAllPoints()
+		resizeButton:Point('TOP', HistoryFrame, 'BOTTOM', 0, -2)
+		resizeButton:Size(HistoryFrame:GetWidth(), 19)
 
-		LootResize.text = LootResize:CreateFontString(nil, 'OVERLAY')
-		LootResize.text:FontTemplate(nil, 16, 'OUTLINE')
-		LootResize.text:SetJustifyH('CENTER')
-		LootResize.text:Point('CENTER', LootResize)
-		LootResize.text:SetText('v v v v')
+		local resizeText = resizeButton:CreateFontString(nil, 'OVERLAY')
+		resizeText:FontTemplate(nil, 16, 'OUTLINE')
+		resizeText:SetJustifyH('CENTER')
+		resizeText:Point('CENTER', resizeButton)
+		resizeText:SetText('v v v v')
+		resizeButton.text = resizeText
 
 		local MasterLooterFrame = _G.MasterLooterFrame
 		MasterLooterFrame:StripTextures()
@@ -317,17 +316,22 @@ function S:LootFrame()
 		LootHistoryFrame:StripTextures()
 		LootHistoryFrame:SetTemplate('Transparent')
 		S:HandleCloseButton(LootHistoryFrame.CloseButton)
-		LootHistoryFrame.ResizeButton:StripTextures()
-		LootHistoryFrame.ResizeButton.text = LootHistoryFrame.ResizeButton:CreateFontString(nil, 'OVERLAY')
-		LootHistoryFrame.ResizeButton.text:FontTemplate(nil, 16, 'OUTLINE')
-		LootHistoryFrame.ResizeButton.text:SetJustifyH('CENTER')
-		LootHistoryFrame.ResizeButton.text:Point('CENTER', LootHistoryFrame.ResizeButton)
-		LootHistoryFrame.ResizeButton.text:SetText('v v v v')
-		LootHistoryFrame.ResizeButton:SetTemplate()
-		LootHistoryFrame.ResizeButton:Width(LootHistoryFrame:GetWidth())
-		LootHistoryFrame.ResizeButton:Height(19)
-		LootHistoryFrame.ResizeButton:ClearAllPoints()
-		LootHistoryFrame.ResizeButton:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
+
+		local resizeButton = LootHistoryFrame.ResizeButton
+		resizeButton:StripTextures()
+		resizeButton:SetTemplate()
+		resizeButton:Width(LootHistoryFrame:GetWidth())
+		resizeButton:Height(19)
+		resizeButton:ClearAllPoints()
+		resizeButton:Point('TOP', LootHistoryFrame, 'BOTTOM', 0, -2)
+
+		local resizeText = resizeButton:CreateFontString(nil, 'OVERLAY')
+		resizeText:FontTemplate(nil, 16, 'OUTLINE')
+		resizeText:SetJustifyH('CENTER')
+		resizeText:Point('CENTER', resizeButton)
+		resizeText:SetText('v v v v')
+		resizeButton.text = resizeText
+
 		_G.LootHistoryFrameScrollFrame:StripTextures()
 		S:HandleScrollBar(_G.LootHistoryFrameScrollFrameScrollBar)
 

@@ -6,25 +6,19 @@ local _G = _G
 S:AddCallbackForAddon('Blizzard_IslandsQueueUI', nil, nil, nil, nil, nil, 'islandQueue')
 
 function S:Blizzard_IslandsQueueUI()
-	local IslandsFrame = _G.IslandsQueueFrame
-	S:HandlePortraitFrame(IslandsFrame)
+	local islandsFrame = _G.IslandsQueueFrame
+	S:HandlePortraitFrame(islandsFrame)
 
-	local queueButton = IslandsFrame.DifficultySelectorFrame.QueueButton
+	local queueButton = islandsFrame.DifficultySelectorFrame.QueueButton
 	S:HandleButton(queueButton)
 	queueButton.Flash:Kill()
 
-	local WeeklyQuest = IslandsFrame.WeeklyQuest
-	local StatusBar = WeeklyQuest.StatusBar
-	WeeklyQuest.OverlayFrame:StripTextures()
+	local weeklyQuest = islandsFrame.WeeklyQuest
+	weeklyQuest.OverlayFrame:StripTextures()
+	weeklyQuest.QuestReward.Icon:SetTexCoords()
+	weeklyQuest.StatusBar:CreateBackdrop()
 
-	-- StatusBar
-	StatusBar:CreateBackdrop()
-
-	--StatusBar Icon
-	WeeklyQuest.QuestReward.Icon:SetTexCoords()
-
-	-- Maybe Adjust me
-	local TutorialFrame = IslandsFrame.TutorialFrame
-	S:HandleButton(TutorialFrame.Leave)
-	S:HandleCloseButton(TutorialFrame.CloseButton)
+	local tutorialFrame = islandsFrame.TutorialFrame
+	S:HandleButton(tutorialFrame.Leave)
+	S:HandleCloseButton(tutorialFrame.CloseButton)
 end

@@ -2,9 +2,21 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local select = select
 
 S:AddCallbackForAddon('Blizzard_AlliedRacesUI', nil, nil, nil, nil, nil, 'alliedRaces')
+
+local function AlliedRaces_OnShow(frame)
+	for button in frame.abilityPool:EnumerateActive() do
+		local _, _, region3 = button:GetRegions()
+		region3:Hide()
+
+		S:HandleIcon(button.Icon, true)
+
+		if E.private.skins.parchmentRemoverEnable then
+			button.Text:SetTextColor(1, 1, 1)
+		end
+	end
+end
 
 function S:Blizzard_AlliedRacesUI()
 	local AlliedRacesFrame = _G.AlliedRacesFrame
@@ -12,7 +24,9 @@ function S:Blizzard_AlliedRacesUI()
 
 	if E.private.skins.parchmentRemoverEnable then
 		S:HandlePortraitFrame(AlliedRacesFrame)
-		select(2, AlliedRacesFrame.ModelScene:GetRegions()):Hide()
+
+		local _, region2 = AlliedRacesFrame.ModelScene:GetRegions()
+		region2:Hide()
 
 		AlliedScrollFrame.Child.ObjectivesFrame:StripTextures()
 		AlliedScrollFrame.Child.ObjectivesFrame:SetTemplate('Transparent')
@@ -33,14 +47,5 @@ function S:Blizzard_AlliedRacesUI()
 	S:HandleTrimScrollBar(AlliedScrollFrame.ScrollBar)
 	S:HandleModelSceneControlButtons(AlliedRacesFrame.ModelScene.ControlFrame)
 
-	AlliedRacesFrame:HookScript('OnShow', function(frame)
-		for button in frame.abilityPool:EnumerateActive() do
-			select(3, button:GetRegions()):Hide()
-			S:HandleIcon(button.Icon, true)
-
-			if E.private.skins.parchmentRemoverEnable then
-				button.Text:SetTextColor(1, 1, 1)
-			end
-		end
-	end)
+	AlliedRacesFrame:HookScript('OnShow', AlliedRaces_OnShow)
 end

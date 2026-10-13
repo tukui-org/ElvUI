@@ -61,7 +61,7 @@ function AB:MultiCastSummonSpellButton_Update(summonButton)
 		AB.NeedsMultiCastButtonUpdate = summonButton
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 	else -- reposition the first slot to the summon button
-		local buttonSpacing = AB.db.totemBar.spacing
+		local buttonSpacing = AB.db.totemBar.spacing or 0
 		local slot1 = _G.MultiCastSlotButton1
 		slot1:ClearAllPoints()
 		slot1:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
@@ -394,14 +394,14 @@ function AB:CreateTotemBar()
 	AB:MultiCastFlyoutFrameStyle(_G.MultiCastFlyoutFrameCloseButton, true)
 	AB:MultiCastFlyoutFrameStyle(_G.MultiCastFlyoutFrameOpenButton)
 
-	for i = 1, 4 do
-		local button = _G['MultiCastSlotButton'..i]
-		button.icon = button.background
-
-		AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
-	end
-
 	for i = 1, 12 do
+		if i < 5 then
+			local button = _G['MultiCastSlotButton'..i]
+			button.icon = button.background
+
+			AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
+		end
+
 		local button = _G['MultiCastActionButton'..i]
 		button:SetAttribute('type2', 'destroytotem')
 		button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])

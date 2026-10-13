@@ -49,54 +49,58 @@ local function ReplaceCurrencies(displayGroup)
 	end
 end
 
+local function Sanctum_OnShow(frame)
+	if not frame.IsSkinned then
+		frame:SetTemplate('Transparent')
+		frame.NineSlice:SetAlpha(0)
+
+		S:HandleCloseButton(frame.CloseButton)
+		frame.CloseButton:ClearAllPoints()
+		frame.CloseButton:Point('TOPRIGHT', frame, 'TOPRIGHT', 2, 2)
+		frame.CloseButton.Border:SetAlpha(0)
+
+		frame.IsSkinned = true
+	end
+end
+
 function S:Blizzard_CovenantSanctum()
-	local frame = _G.CovenantSanctumFrame
-	frame.LevelFrame.Level:FontTemplate()
+	local sanctumFrame = _G.CovenantSanctumFrame
+	sanctumFrame.LevelFrame.Level:FontTemplate()
 
 	if E.private.skins.parchmentRemoverEnable then
-		frame.LevelFrame.Background:SetAlpha(0)
+		sanctumFrame.LevelFrame.Background:SetAlpha(0)
 	end
 
-	local UpgradesTab = frame.UpgradesTab
-	UpgradesTab.Background:CreateBackdrop('Transparent')
-	S:HandleButton(UpgradesTab.DepositButton)
-	UpgradesTab.DepositButton:SetFrameLevel(10)
-	UpgradesTab.CurrencyBackground:SetAlpha(0)
-	ReplaceCurrencies(UpgradesTab.CurrencyDisplayGroup)
+	local upgradesTab = sanctumFrame.UpgradesTab
+	upgradesTab.Background:CreateBackdrop('Transparent')
+	S:HandleButton(upgradesTab.DepositButton)
 
-	for _, upgrade in ipairs(UpgradesTab.Upgrades) do
+	upgradesTab.DepositButton:SetFrameLevel(10)
+	upgradesTab.CurrencyBackground:SetAlpha(0)
+	ReplaceCurrencies(upgradesTab.CurrencyDisplayGroup)
+
+	for _, upgrade in ipairs(upgradesTab.Upgrades) do
 		if upgrade.TierBorder then
 			upgrade.TierBorder:SetAlpha(0)
 		end
 	end
 
 	if E.private.skins.parchmentRemoverEnable then
-		UpgradesTab.Background:SetAlpha(0)
+		upgradesTab.Background:SetAlpha(0)
 	end
 
-	local TalentList = frame.UpgradesTab.TalentsList
-	TalentList:SetTemplate('Transparent')
-	S:HandleButton(TalentList.UpgradeButton)
-	TalentList.UpgradeButton:SetFrameLevel(10)
-	TalentList.IntroBox.Background:Hide()
-	hooksecurefunc(TalentList, 'Refresh', ReskinTalents)
+	local talentList = upgradesTab.TalentsList
+	talentList:SetTemplate('Transparent')
+	S:HandleButton(talentList.UpgradeButton)
+
+	talentList.UpgradeButton:SetFrameLevel(10)
+	talentList.IntroBox.Background:Hide()
+	hooksecurefunc(talentList, 'Refresh', ReskinTalents)
 
 	if E.private.skins.parchmentRemoverEnable then
-		TalentList.Divider:SetAlpha(0)
-		TalentList.BackgroundTile:SetAlpha(0)
+		talentList.Divider:SetAlpha(0)
+		talentList.BackgroundTile:SetAlpha(0)
 	end
 
-	frame:HookScript('OnShow', function()
-		if not frame.IsSkinned then
-			frame:SetTemplate('Transparent')
-			frame.NineSlice:SetAlpha(0)
-
-			frame.CloseButton.Border:SetAlpha(0)
-			S:HandleCloseButton(frame.CloseButton)
-			frame.CloseButton:ClearAllPoints()
-			frame.CloseButton:Point('TOPRIGHT', frame, 'TOPRIGHT', 2, 2)
-
-			frame.IsSkinned = true
-		end
-	end)
+	sanctumFrame:HookScript('OnShow', Sanctum_OnShow)
 end

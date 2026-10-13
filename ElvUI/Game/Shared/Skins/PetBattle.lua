@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 local TT = E:GetModule('Tooltip')
 
-local pairs = pairs
+local next = next
 local unpack = unpack
 
 local _G = _G
@@ -23,15 +23,17 @@ local function SkinPetButton(frame, bf)
 		frame.backdrop:SetFrameStrata('LOW')
 	end
 
+	frame:SetFrameStrata('LOW')
 	frame:SetNormalTexture(E.ClearTexture)
+	frame:StyleButton(nil, nil, true)
+
 	frame.Icon:SetTexCoords()
 	frame.Icon:SetParent(frame.backdrop)
 	frame.Icon:SetDrawLayer('BORDER')
-	frame:StyleButton(nil, nil, true)
+
 	frame.SelectedHighlight:SetAlpha(0)
 	frame.pushed:SetInside(frame.backdrop)
 	frame.hover:SetInside(frame.backdrop)
-	frame:SetFrameStrata('LOW')
 
 	if frame == bf.SwitchPetButton then
 		local spbc = frame:GetCheckedTexture()
@@ -41,20 +43,23 @@ local function SkinPetButton(frame, bf)
 end
 
 local function UpdateSpeedIndicators()
-	local f = _G.PetBattleFrame
-	if not f.ActiveAlly.SpeedIcon:IsShown() and not f.ActiveEnemy.SpeedIcon:IsShown() then
-		f.ActiveAlly.FirstAttack:Hide()
-		f.ActiveEnemy.FirstAttack:Hide()
+	local petFrame = _G.PetBattleFrame
+	local petAlly = petFrame.ActiveAlly
+	local petEnemy = petFrame.ActiveEnemy
+
+	if not petAlly.SpeedIcon:IsShown() and not petEnemy.SpeedIcon:IsShown() then
+		petAlly.FirstAttack:Hide()
+		petEnemy.FirstAttack:Hide()
+
 		return
 	end
 
-	local infoBars = {
-		f.ActiveAlly,
-		f.ActiveEnemy
-	}
-
-	for _, infoBar in pairs(infoBars) do
+	for _, infoBar in next, {
+		petAlly,
+		petEnemy
+	} do
 		infoBar.FirstAttack:Show()
+
 		if infoBar.SpeedIcon:IsShown() then
 			infoBar.FirstAttack:SetVertexColor(0,1,0,1)
 		else
@@ -100,9 +105,11 @@ local function AuraHolder_Update(holder)
 			frame.Duration:FontTemplate(nil, 12, 'OUTLINE')
 			frame.Duration:ClearAllPoints()
 			frame.Duration:Point('TOP', frame.Icon, 'BOTTOM', 1, -4)
+
 			if turnsRemaining > 0 then
 				frame.Duration:SetText(turnsRemaining)
 			end
+
 			nextFrame = nextFrame + 1
 		end
 	end
@@ -110,19 +117,20 @@ end
 
 local function WeatherFrame_Update(frame)
 	local weather = C_PetBattles_GetAuraInfo(BattlePetOwner_Weather, _G.PET_BATTLE_PAD_INDEX, 1)
-	if weather then
-		frame.Icon:Hide()
-		frame.BackgroundArt:ClearAllPoints()
-		frame.BackgroundArt:Point('TOP', frame, 'TOP', 0, 14)
-		frame.BackgroundArt:Size(200, 100)
-		frame.Name:Hide()
-		frame.DurationShadow:Hide()
-		frame.Label:Hide()
-		frame.Duration:ClearAllPoints()
-		frame.Duration:Point('TOP', frame, 'TOP', 0, 10)
-		frame:ClearAllPoints()
-		frame:Point('TOP', E.UIParent, 0, -15)
-	end
+	if not weather then return end
+
+	frame.Icon:Hide()
+	frame.BackgroundArt:ClearAllPoints()
+	frame.BackgroundArt:Point('TOP', frame, 'TOP', 0, 14)
+	frame.BackgroundArt:Size(200, 100)
+	frame.Name:Hide()
+	frame.DurationShadow:Hide()
+	frame.Label:Hide()
+	frame.Duration:ClearAllPoints()
+	frame.Duration:Point('TOP', frame, 'TOP', 0, 10)
+
+	frame:ClearAllPoints()
+	frame:Point('TOP', E.UIParent, 0, -15)
 end
 
 local function UpdateDisplay(frame)
@@ -165,10 +173,12 @@ local function UpdateActionBarLayout()
 	bf.SwitchPetButton:ClearAllPoints()
 	bf.SwitchPetButton:Point('LEFT', bf.abilityButtons[3], 'RIGHT', 10, 0)
 	SkinPetButton(bf.SwitchPetButton, bf)
+
 	bf.CatchButton:SetParent(bar)
 	bf.CatchButton:ClearAllPoints()
 	bf.CatchButton:Point('LEFT', bf.SwitchPetButton, 'RIGHT', 10, 0)
 	SkinPetButton(bf.CatchButton, bf)
+
 	bf.ForfeitButton:SetParent(bar)
 	bf.ForfeitButton:ClearAllPoints()
 	bf.ForfeitButton:Point('LEFT', bf.CatchButton, 'RIGHT', 10, 0)
@@ -216,13 +226,14 @@ local function SkipButton_SetPoint(btn, _, _, _, _, _, forced)
 	turnTimer:SetSize(turnTimer.SkipButton:GetSize()) -- set after the skip button points
 end
 
+local function XPBar_OnShow(frame)
+	frame:StripTextures()
+	frame:SetStatusBarTexture(E.media.normTex)
+end
+
 function S:PetBattleFrame()
 	local f = _G.PetBattleFrame
 	local bf = f.BottomFrame
-	local infoBars = {
-		f.ActiveAlly,
-		f.ActiveEnemy
-	}
 
 	S:HandleCloseButton(_G.FloatingBattlePetTooltip.CloseButton)
 
@@ -230,7 +241,10 @@ function S:PetBattleFrame()
 	f:StripTextures()
 
 	local borderSpace = E.PixelMode and 1 or 3
-	for index, infoBar in pairs(infoBars) do
+	for index, infoBar in next, {
+		f.ActiveAlly,
+		f.ActiveEnemy
+	} do
 		infoBar.Border:SetAlpha(0)
 		infoBar.Border2:SetAlpha(0)
 		infoBar.healthBarWidth = 300
@@ -333,15 +347,13 @@ function S:PetBattleFrame()
 		hooksecurefunc('PetBattleAbilityTooltip_Show', AbilityTooltip_Show)	-- TOOLTIP DEFAULT POSITION
 	end
 
-	local extraInfoBars = {
+	local pixelSpace = E.PixelMode and 1
+	for _, infoBar in next, {
 		f.Ally2,
 		f.Ally3,
 		f.Enemy2,
 		f.Enemy3
-	}
-
-	local pixelSpace = E.PixelMode and 1
-	for _, infoBar in pairs(extraInfoBars) do
+	} do
 		infoBar:Size(40)
 		infoBar:SetTemplate()
 		infoBar:ClearAllPoints()
@@ -406,15 +418,13 @@ function S:PetBattleFrame()
 
 	local XPOffset = E.PixelMode and 2 or 3
 	E:RegisterStatusBar(bf.xpBar)
+
 	bf.xpBar:SetParent(bar)
 	bf.xpBar:CreateBackdrop()
 	bf.xpBar:ClearAllPoints()
 	bf.xpBar:Point('BOTTOMLEFT', turnTimer.SkipButton, 'TOPLEFT', E.Border, XPOffset)
 	bf.xpBar:Point('BOTTOMRIGHT', turnTimer.SkipButton, 'TOPRIGHT', -E.Border, XPOffset)
-	bf.xpBar:SetScript('OnShow', function(frame)
-		frame:StripTextures()
-		frame:SetStatusBarTexture(E.media.normTex)
-	end)
+	bf.xpBar:SetScript('OnShow', XPBar_OnShow)
 
 	-- PETS SELECTION SKIN
 	for i = 1, 3 do
@@ -441,6 +451,7 @@ function S:PetBattleFrame()
 	PetBattleQueueReadyFrame:StripTextures()
 	PetBattleQueueReadyFrame:SetTemplate('Transparent')
 	PetBattleQueueReadyFrame.Art:SetTexture([[Interface\PetBattles\PetBattlesQueue]])
+
 	S:HandleButton(PetBattleQueueReadyFrame.AcceptButton)
 	S:HandleButton(PetBattleQueueReadyFrame.DeclineButton)
 end

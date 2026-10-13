@@ -12,16 +12,16 @@ local function HandleTradeItem(item, button, icon, name)
 	button:SetTemplate(nil, true)
 	button:StyleButton()
 
-	button.bg = CreateFrame('Frame', nil, button)
-	button.bg:Point('TOPLEFT', button, 'TOPRIGHT', 4, 0)
-	button.bg:Point('BOTTOMRIGHT', name, 'BOTTOMRIGHT', 0, 14)
-	button.bg:OffsetFrameLevel(-3, button)
-	button.bg:SetTemplate('Transparent')
+	local buttonBG = CreateFrame('Frame', nil, button)
+	buttonBG:Point('TOPLEFT', button, 'TOPRIGHT', 4, 0)
+	buttonBG:Point('BOTTOMRIGHT', name, 'BOTTOMRIGHT', 0, 14)
+	buttonBG:OffsetFrameLevel(-3, button)
+	buttonBG:SetTemplate('Transparent')
+	button.bg = buttonBG
 
 	S:HandleIconBorder(button.IconBorder)
 
 	item:StripTextures()
-
 	icon:SetInside(button)
 	icon:SetTexCoords()
 end

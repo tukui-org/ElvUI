@@ -61,6 +61,10 @@ local function SkinDiscordFrame() -- the link frame is only created once the gui
 	linkFrame.IsSkinned = true
 end
 
+local function RankOrderNew_OnClick()
+	E:Delay(1, SkinGuildRanks)
+end
+
 function S:Blizzard_GuildControlUI()
 	_G.GuildControlUI:StripTextures()
 	_G.GuildControlUI:SetTemplate('Transparent')
@@ -78,13 +82,11 @@ function S:Blizzard_GuildControlUI()
 	S:HandleDropDownBox(_G.GuildControlUINavigationDropdown)
 	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropdown, 180)
 
+	_G.GuildControlUIHbar:StripTextures()
 	_G.GuildControlUIRankBankFrame:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
-	_G.GuildControlUIHbar:StripTextures()
-	_G.GuildControlUIRankOrderFrameNewButton:HookScript('OnClick', function()
-		E:Delay(1, SkinGuildRanks)
-	end)
+	_G.GuildControlUIRankOrderFrameNewButton:HookScript('OnClick', RankOrderNew_OnClick)
 
 	S:HandleCheckBox(_G.GuildControlUIRankSettingsFrameOfficerCheckbox)
 

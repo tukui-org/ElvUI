@@ -139,6 +139,7 @@ function S:BlizzardMiscFrames()
 	if LFDRoleCheckPopup then
 		LFDRoleCheckPopup:StripTextures()
 		LFDRoleCheckPopup:SetTemplate('Transparent')
+
 		S:HandleButton(_G.LFDRoleCheckPopupAcceptButton)
 		S:HandleButton(_G.LFDRoleCheckPopupDeclineButton)
 
@@ -148,6 +149,7 @@ function S:BlizzardMiscFrames()
 			_G.LFDRoleCheckPopupRoleButtonHealer
 		} do
 			S:HandleCheckBox(roleButton.checkButton, nil, nil, true)
+
 			roleButton:DisableDrawLayer('OVERLAY')
 		end
 	end
@@ -163,9 +165,11 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameMiddle:SetAlpha(0)
 		_G.GhostFrameRight:SetAlpha(0)
 		_G.GhostFrameLeft:SetAlpha(0)
+
 		GhostFrame:StripTextures()
 		GhostFrame:ClearAllPoints()
 		GhostFrame:Point('TOP', E.UIParent, 'TOP', 0, -200)
+
 		_G.GhostFrameContentsFrame:SetTemplate('Transparent')
 		_G.GhostFrameContentsFrameText:Point('TOPLEFT', 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoords()
@@ -174,9 +178,10 @@ function S:BlizzardMiscFrames()
 		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent())
 		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -E.Border, E.Border)
 		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, E.Border, -E.Border)
+		button:SetTemplate()
+
 		_G.GhostFrameContentsFrameIcon:Size(37, 38)
 		_G.GhostFrameContentsFrameIcon:SetParent(button)
-		button:SetTemplate()
 	end
 
 	_G.OpacityFrame:StripTextures()
@@ -188,8 +193,10 @@ function S:BlizzardMiscFrames()
 	local SideDressUpFrame = _G.SideDressUpFrame
 	S:HandleCloseButton(E.Modern and _G.SideDressUpFrameCloseButton or _G.SideDressUpModelCloseButton)
 	S:HandleButton(SideDressUpFrame.ResetButton)
+
 	SideDressUpFrame:StripTextures()
 	SideDressUpFrame:SetTemplate('Transparent')
+
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
 	SideDressUpFrame.ResetButton:OffsetFrameLevel(1)
@@ -202,11 +209,12 @@ function S:BlizzardMiscFrames()
 	StackSplitFrame:StripTextures()
 	StackSplitFrame:SetTemplate('Transparent')
 
-	StackSplitFrame.bg1 = CreateFrame('Frame', nil, StackSplitFrame)
-	StackSplitFrame.bg1:SetTemplate('Transparent')
-	StackSplitFrame.bg1:Point('TOPLEFT', 10, -15)
-	StackSplitFrame.bg1:Point('BOTTOMRIGHT', -10, 55)
-	StackSplitFrame.bg1:OffsetFrameLevel(-1)
+	local splitBG = CreateFrame('Frame', nil, StackSplitFrame)
+	splitBG:OffsetFrameLevel(-1)
+	splitBG:Point('TOPLEFT', 10, -15)
+	splitBG:Point('BOTTOMRIGHT', -10, 55)
+	splitBG:SetTemplate('Transparent')
+	StackSplitFrame.BG = splitBG
 
 	S:HandleButton(E.Modern and StackSplitFrame.OkayButton or _G.StackSplitOkayButton)
 	S:HandleButton(E.Modern and StackSplitFrame.CancelButton or _G.StackSplitCancelButton)
@@ -217,9 +225,9 @@ function S:BlizzardMiscFrames()
 		button:ClearAllPoints()
 
 		if button == leftButton then
-			button:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+			button:Point('LEFT', splitBG, 'LEFT', 4, 0)
 		else
-			button:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+			button:Point('RIGHT', splitBG, 'RIGHT', -4, 0)
 		end
 
 		S:HandleNextPrevButton(button, nil, nil, true)

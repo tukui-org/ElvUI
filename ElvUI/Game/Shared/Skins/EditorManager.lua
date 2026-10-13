@@ -57,7 +57,6 @@ local function HandleDialogs()
 end
 
 function S:Blizzard_EditMode()
-	-- Main Window
 	local editMode = _G.EditModeManagerFrame
 	editMode:StripTextures()
 	editMode:CreateBackdrop('Transparent')

@@ -21,8 +21,33 @@ local trackers = {
 
 S:AddCallbackForAddon('Blizzard_ObjectiveTracker', nil, nil, nil, nil, nil, 'objectiveTracker')
 
-local function SkinOjectiveTrackerHeaders(header)
+local function SetCollapsed(header, collapsed)
+	local MinimizeButton = header.MinimizeButton
+	local normalTexture = MinimizeButton:GetNormalTexture()
+	local pushedTexture = MinimizeButton:GetPushedTexture()
+
+	if collapsed then
+		normalTexture:SetTexture(E.Media.Textures.PlusButton)
+		pushedTexture:SetTexture(E.Media.Textures.PlusButton)
+	else
+		normalTexture:SetTexture(E.Media.Textures.MinusButton)
+		pushedTexture:SetTexture(E.Media.Textures.MinusButton)
+	end
+end
+
+local function SkinOjectiveTrackerHeaders(header, frame)
 	header.Background:SetAtlas(nil)
+	header.MinimizeButton:Size(15)
+
+	if frame then
+		SetCollapsed(header, frame.isCollapsed)
+	else
+		SetCollapsed(header, header.isCollapsed)
+
+		header.MinimizeButton:SetHighlightAtlas('UI-QuestTrackerButton-Red-Highlight', 'ADD')
+	end
+
+	hooksecurefunc(header, 'SetCollapsed', SetCollapsed)
 end
 
 local function HandleQuestIcons(_, block)
@@ -62,10 +87,10 @@ local function HandleProgressBar(tracker, key)
 	local icon = bar.Icon -- only the scenario and bonus bar templates have one
 	if icon and icon:IsShown() and not icon.backdrop then
 		icon:SetMask('') -- This needs to be before S:HandleIcon
-		S:HandleIcon(icon, true)
-
 		icon:ClearAllPoints()
 		icon:Point('LEFT', bar, 'RIGHT', E.PixelMode and 3 or 7, 0)
+
+		S:HandleIcon(icon, true)
 	end
 
 	local label = bar.Label
@@ -81,25 +106,11 @@ local function HandleTimers(tracker, key)
 	ReskinBarTemplate(progress.Bar)
 end
 
-local function SetCollapsed(header, collapsed)
-	local MinimizeButton = header.MinimizeButton
-	local normalTexture = MinimizeButton:GetNormalTexture()
-	local pushedTexture = MinimizeButton:GetPushedTexture()
-
-	if collapsed then
-		normalTexture:SetTexture(E.Media.Textures.PlusButton)
-		pushedTexture:SetTexture(E.Media.Textures.PlusButton)
-	else
-		normalTexture:SetTexture(E.Media.Textures.MinusButton)
-		pushedTexture:SetTexture(E.Media.Textures.MinusButton)
-	end
-end
-
 function S:Blizzard_ObjectiveTracker()
 	local TrackerFrame = _G.ObjectiveTrackerFrame
 	local TrackerHeader = TrackerFrame.Header
-	SkinOjectiveTrackerHeaders(TrackerHeader)
-	TrackerHeader.MinimizeButton:Size(15)
+
+	SkinOjectiveTrackerHeaders(TrackerHeader, TrackerFrame)
 	SetCollapsed(TrackerHeader, TrackerFrame.isCollapsed)
 	hooksecurefunc(TrackerHeader, 'SetCollapsed', SetCollapsed)
 
@@ -110,8 +121,6 @@ function S:Blizzard_ObjectiveTracker()
 
 		local header = tracker.Header
 		SkinOjectiveTrackerHeaders(header)
-		header.MinimizeButton:Size(15)
-		header.MinimizeButton:SetHighlightAtlas('UI-QuestTrackerButton-Red-Highlight', 'ADD')
 		SetCollapsed(header, header.isCollapsed)
 		hooksecurefunc(header, 'SetCollapsed', SetCollapsed)
 	end

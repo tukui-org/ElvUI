@@ -5,6 +5,10 @@ local _G = _G
 
 S:AddCallbackForAddon('Blizzard_FrameXML', 'GuildInviteFrame', nil, nil, nil, nil, 'guild')
 
+local function GuildInvite_OnEvent()
+	_G.GuildInviteFrame:Height(225)
+end
+
 function S:GuildInviteFrame()
 	local GuildInviteFrame = _G.GuildInviteFrame
 	GuildInviteFrame:StripTextures()
@@ -16,9 +20,7 @@ function S:GuildInviteFrame()
 	S:HandleButton(_G.GuildInviteFrameDeclineButton)
 
 	GuildInviteFrame:Height(225)
-	GuildInviteFrame:HookScript('OnEvent', function()
-		GuildInviteFrame:Height(225)
-	end)
+	GuildInviteFrame:HookScript('OnEvent', GuildInvite_OnEvent)
 
 	_G.GuildInviteFrameWarningText:Kill()
 end

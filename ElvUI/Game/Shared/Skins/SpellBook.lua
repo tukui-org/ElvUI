@@ -14,8 +14,7 @@ local SpellBook_GetWhatChangedItem = SpellBook_GetWhatChangedItem
 
 local barColor = { 0, .86, 0 }
 
--- the Retail spellbook is skinned in PlayerSpells.lua
-if E.Retail then
+if E.Retail then -- the Retail spellbook is skinned in PlayerSpells.lua
 	S:AddCallbackForAddon('Blizzard_ProfessionsBook', nil, nil, nil, nil, nil, 'spellbook')
 else
 	S:AddCallbackForAddon('Blizzard_UIPanels_Game', 'SpellBookFrame', nil, nil, nil, nil, 'spellbook')
@@ -242,8 +241,8 @@ local function SkinMistsSpellBook()
 
 	for i = 1, 2 do
 		local page = _G['SpellBookPage'..i]
-		page:SetParent(pagebackdrop)
 		page:SetDrawLayer('BACKGROUND', 3)
+		page:SetParent(pagebackdrop)
 	end
 
 	S:HandleNextPrevButton(_G.SpellBookPrevPageButton, nil, nil, true)
@@ -316,9 +315,10 @@ local function SkinMistsSpellBook()
 	for i = 1, #changedList do
 		local frame = SpellBook_GetWhatChangedItem(i)
 		frame:StripTextures()
+
+		frame.Title:SetTextColor(1, 1, 1)
 		frame.Number:SetTextColor(1, 1, 1)
 		frame.Number:Point('TOPLEFT', -15, 16)
-		frame.Title:SetTextColor(1, 1, 1)
 	end
 
 	-- Bottom Tabs
@@ -439,12 +439,11 @@ local function SkinClassicSpellBook()
 
 	_G.SpellButton1:PointXY(28, -55)
 
-	-- evens
-	for i = 2, _G.SPELLS_PER_PAGE, 2 do
+	for i = 2, _G.SPELLS_PER_PAGE, 2 do -- evens
 		_G['SpellButton'..i]:PointXY(163, 0)
 	end
-	-- odds
-	for i = 3, _G.SPELLS_PER_PAGE, 2 do
+
+	for i = 3, _G.SPELLS_PER_PAGE, 2 do -- odds
 		_G['SpellButton'..i]:PointXY(0, -20)
 	end
 
@@ -465,8 +464,7 @@ local function SkinClassicSpellBook()
 end
 
 function S:Blizzard_ProfessionsBook()
-	local ProfessionsBookFrame = _G.ProfessionsBookFrame
-	S:HandleFrame(ProfessionsBookFrame)
+	S:HandleFrame(_G.ProfessionsBookFrame)
 
 	if E.global.general.disableTutorialButtons then
 		_G.ProfessionsBookFrameTutorialButton:Kill()

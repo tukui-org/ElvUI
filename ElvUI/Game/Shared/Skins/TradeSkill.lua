@@ -93,23 +93,27 @@ function S:Blizzard_TradeSkillUI()
 	TradeSkillRankFrame:CreateBackdrop()
 	TradeSkillRankFrame:SetStatusBarTexture(E.media.normTex)
 	TradeSkillRankFrame:SetStatusBarColor(0.13, 0.35, 0.80)
+
 	E:RegisterStatusBar(TradeSkillRankFrame)
 
 	if E.Mists then
 		local TradeSkillFrameSearchBox = _G.TradeSkillFrameSearchBox
 		S:HandleEditBox(TradeSkillFrameSearchBox)
+
 		TradeSkillFrameSearchBox:ClearAllPoints()
 		TradeSkillFrameSearchBox:Point('TOPLEFT', TradeSkillRankFrame, 'TOPLEFT', 60, -28)
 		TradeSkillFrameSearchBox:Size(122, 18)
 	elseif E.Wrath then
 		local TradeSkillFrameEditBox = _G.TradeSkillFrameEditBox
 		S:HandleEditBox(TradeSkillFrameEditBox)
+
 		TradeSkillFrameEditBox:ClearAllPoints()
 		TradeSkillFrameEditBox:Point('TOPLEFT', TradeSkillFrame, 'TOPLEFT', 28, -16)
 		TradeSkillFrameEditBox:Size(122, 18)
 	elseif E.TBC then
 		local TradeSearchInputBox = _G.TradeSearchInputBox
 		S:HandleEditBox(TradeSearchInputBox)
+
 		TradeSearchInputBox:ClearAllPoints()
 		TradeSearchInputBox:Point('TOPRIGHT', TradeSkillRankFrame, 'BOTTOMRIGHT')
 	end
@@ -117,6 +121,7 @@ function S:Blizzard_TradeSkillUI()
 	if E.Wrath or E.TBC then
 		local AvailableCheckButton = _G.TradeSkillFrameAvailableFilterCheckButton
 		S:HandleCheckBox(AvailableCheckButton)
+
 		AvailableCheckButton:ClearAllPoints()
 
 		if E.Wrath then
@@ -211,10 +216,10 @@ function S:Blizzard_TradeSkillUI()
 	S:HandleButton(_G.TradeSkillCreateButton)
 	S:HandleButton(_G.TradeSkillCreateAllButton)
 
-	S:HandleNextPrevButton(_G.TradeSkillDecrementButton)
 	_G.TradeSkillInputBox:Size(36, 16)
 	S:HandleEditBox(_G.TradeSkillInputBox)
 	S:HandleNextPrevButton(_G.TradeSkillIncrementButton)
+	S:HandleNextPrevButton(_G.TradeSkillDecrementButton)
 
 	hooksecurefunc('TradeSkillFrame_SetSelection', SetSelection)
 end

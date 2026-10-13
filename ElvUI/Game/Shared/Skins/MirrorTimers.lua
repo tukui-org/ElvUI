@@ -16,21 +16,24 @@ local function SetupTimer(container, timer)
 	if not bar then return end
 
 	if not bar.atlasHolder then
-		bar.atlasHolder = CreateFrame('Frame', nil, bar)
-		bar.atlasHolder:SetClipsChildren(true)
-		bar.atlasHolder:SetInside()
+		local atlasHolder = CreateFrame('Frame', nil, bar)
+		atlasHolder:SetClipsChildren(true)
+		atlasHolder:SetInside()
+		bar.atlasHolder = atlasHolder
 
-		bar.StatusBar:SetParent(bar.atlasHolder)
-		bar.StatusBar:ClearAllPoints()
-		bar.StatusBar:SetSize(204, 22)
-		bar.StatusBar:Point('TOP', 0, 2)
+		local statusBar = bar.StatusBar
+		statusBar:SetParent(bar.atlasHolder)
+		statusBar:ClearAllPoints()
+		statusBar:SetSize(204, 22)
+		statusBar:Point('TOP', 0, 2)
 
 		bar:SetSize(200, 18)
 
-		bar.Text:FontTemplate()
-		bar.Text:ClearAllPoints()
-		bar.Text:SetParent(bar.StatusBar)
-		bar.Text:Point('CENTER', bar.StatusBar, 0, 1)
+		local barText = bar.Text
+		barText:FontTemplate()
+		barText:ClearAllPoints()
+		barText:SetParent(statusBar)
+		barText:Point('CENTER', statusBar, 0, 1)
 	end
 
 	bar:StripTextures()
@@ -60,18 +63,21 @@ function S:Blizzard_MirrorTimer() -- Mirror Timers (Underwater Breath, etc.)
 		hooksecurefunc(_G.MirrorTimerContainer, 'SetupTimer', SetupTimer)
 	else
 		for i = 1, _G.MIRRORTIMER_NUMTIMERS do
-			local mirrorTimer = _G['MirrorTimer'..i]
-			local statusBar = _G['MirrorTimer'..i..'StatusBar']
-			local text = _G['MirrorTimer'..i..'Text']
+			local mirrorText = _G['MirrorTimer'..i..'Text']
 
+			local mirrorTimer = _G['MirrorTimer'..i]
 			mirrorTimer:StripTextures()
 			mirrorTimer:Size(222, 18)
-			mirrorTimer.label = text
+			mirrorTimer.label = mirrorText
+
+			local statusBar = _G['MirrorTimer'..i..'StatusBar']
 			statusBar:SetStatusBarTexture(E.media.normTex)
-			E:RegisterStatusBar(statusBar)
 			statusBar:CreateBackdrop()
 			statusBar:Size(222, 18)
-			text:Hide()
+
+			E:RegisterStatusBar(statusBar)
+
+			mirrorText:Hide()
 
 			local timerText = mirrorTimer:CreateFontString(nil, 'OVERLAY')
 			timerText:FontTemplate(nil, nil, 'OUTLINE')

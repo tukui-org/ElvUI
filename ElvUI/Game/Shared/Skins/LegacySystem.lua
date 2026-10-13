@@ -107,7 +107,6 @@ local function HandleChallenge(button)
 	button.Tracked:Size(20)
 
 	hooksecurefunc(button.SelectedOverlay, 'SetShown', SelectedOverlay_SetShown)
-
 	hooksecurefunc(button, 'DisplayObjectives', Challenge_DisplayObjectives)
 	hooksecurefunc(button, 'UpdatePlusMinusArt', Challenge_UpdatePlusMinusArt)
 

@@ -13,6 +13,21 @@ local HOUSING_REWARD_COLOR = _G.HOUSING_REWARD_TOAST_LABEL_FONT_COLOR
 
 S:AddCallbackForAddon('Blizzard_FrameXML', 'AlertSystem', nil, nil, nil, nil, 'alertframes')
 
+local HousingItemEarnedAlertRemoveRegions = {
+	'Background',
+	'Border',
+	'Divider',
+	'Glow',
+	'LeafBL',
+	'LeafBR',
+	'LeafL',
+	'LeafTL',
+	'LeafTR',
+	'LightRays',
+	'LightRays2',
+	'Sparkles',
+}
+
 local function ForceAlpha(frame, alpha, forced)
 	if alpha ~= 1 and forced ~= true then
 		frame:SetAlpha(1, true)
@@ -708,21 +723,6 @@ local function SkinRafRewardDeliveredAlert(frame)
 		frame.Icon:SetParent(frame.Icon.b)
 	end
 end
-
-local HousingItemEarnedAlertRemoveRegions = {
-	'Background',
-	'Border',
-	'Divider',
-	'Glow',
-	'LeafBL',
-	'LeafBR',
-	'LeafL',
-	'LeafTL',
-	'LeafTR',
-	'LightRays',
-	'LightRays2',
-	'Sparkles',
-}
 
 local function SkinHousingItemEarnedAlert(frame)
 	frame:SetAlpha(1)

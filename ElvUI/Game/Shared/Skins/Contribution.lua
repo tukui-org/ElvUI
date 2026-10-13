@@ -41,10 +41,11 @@ function S:Blizzard_Contribution()
 
 	-- Reward Tooltip
 	if E.private.skins.blizzard.tooltip then
-		local tt = _G.ContributionBuffTooltip
-		S:HandleIcon(tt.Icon, true)
-		tt.Border:SetAlpha(0)
-		TT:SetStyle(tt)
+		local tooltip = _G.ContributionBuffTooltip
+		S:HandleIcon(tooltip.Icon, true)
+		tooltip.Border:SetAlpha(0)
+
+		TT:SetStyle(tooltip)
 	end
 
 	hooksecurefunc(_G.ContributionMixin, 'SetupContributeButton', SetupContributeButton)

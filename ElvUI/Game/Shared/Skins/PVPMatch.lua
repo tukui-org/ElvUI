@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local pairs = pairs
+local next = next
 
 S:AddCallbackForAddon('Blizzard_PVPMatch', nil, nil, nil, nil, nil, 'bgscore')
 
@@ -13,48 +13,41 @@ function S:Blizzard_PVPMatch()
 	PVPMatchScoreboard:DisableDrawLayer('BORDER')
 	PVPMatchScoreboard:CreateBackdrop('Transparent')
 
-	PVPMatchScoreboard.Content:StripTextures()
-	PVPMatchScoreboard.Content.TabContainer.InsetBorderTop:Hide()
+	local scoreContent = PVPMatchScoreboard.Content
+	local scoreTab = scoreContent.TabContainer
+	scoreContent:StripTextures()
+	scoreTab.InsetBorderTop:Hide()
+	scoreTab.MatchmakingText:FontTemplate()
 
 	S:HandleCloseButton(PVPMatchScoreboard.CloseButton)
-	S:HandleTrimScrollBar(PVPMatchScoreboard.Content.ScrollBar)
-
-	--Also have a look at the tabs
-	local tabs = {
-		PVPMatchScoreboard.Content.TabContainer.TabGroup.Tab1,
-		PVPMatchScoreboard.Content.TabContainer.TabGroup.Tab2,
-		PVPMatchScoreboard.Content.TabContainer.TabGroup.Tab3,
-	}
-
-	for _, tab in pairs(tabs) do
-		S:HandleTab(tab)
-	end
-
-	PVPMatchScoreboard.Content.TabContainer.MatchmakingText:FontTemplate()
+	S:HandleTrimScrollBar(scoreContent.ScrollBar)
 
 	-- Macro to show the PVPMatchResults: /run PVPMatchResults:Show()
-	local PVPMatchResults = _G.PVPMatchResults
-	PVPMatchResults:StripTextures()
-	PVPMatchResults:DisableDrawLayer('BORDER')
-	PVPMatchResults:CreateBackdrop('Transparent')
+	local matchResults = _G.PVPMatchResults
+	matchResults:StripTextures()
+	matchResults:DisableDrawLayer('BORDER')
+	matchResults:CreateBackdrop('Transparent')
 
-	PVPMatchResults.content:StripTextures()
-	PVPMatchResults.content.tabContainer:StripTextures()
+	local matchContent = matchResults.content
+	local matchTab = matchContent.tabContainer
+	matchContent:StripTextures()
+	matchTab:StripTextures()
+	matchTab.matchmakingText:FontTemplate()
 
-	S:HandleCloseButton(PVPMatchResults.CloseButton)
-	S:HandleButton(PVPMatchResults.buttonContainer.leaveButton)
-	S:HandleButton(PVPMatchResults.buttonContainer.requeueButton)
-	S:HandleTrimScrollBar(PVPMatchResults.content.scrollBar)
+	S:HandleTrimScrollBar(matchContent.scrollBar)
+	S:HandleCloseButton(matchResults.CloseButton)
+	S:HandleButton(matchResults.buttonContainer.leaveButton)
+	S:HandleButton(matchResults.buttonContainer.requeueButton)
 
-	local tabz = {
-		PVPMatchResults.content.tabContainer.tabGroup.tab1,
-		PVPMatchResults.content.tabContainer.tabGroup.tab2,
-		PVPMatchResults.content.tabContainer.tabGroup.tab3,
-	}
+	for _, tab in next, {
+		scoreTab.TabGroup.Tab1,
+		scoreTab.TabGroup.Tab2,
+		scoreTab.TabGroup.Tab3,
 
-	for _, tab in pairs(tabz) do
+		matchTab.tabGroup.tab1,
+		matchTab.tabGroup.tab2,
+		matchTab.tabGroup.tab3,
+	} do
 		S:HandleTab(tab)
 	end
-
-	PVPMatchResults.content.tabContainer.matchmakingText:FontTemplate()
 end

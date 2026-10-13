@@ -12,6 +12,7 @@ S:AddCallbackForAddon('Blizzard_GarrisonUI', 'GarrisonShipyardTooltip', nil, nil
 local function AbilityTooltip(frame)
 	frame.Icon:SetTexCoords()
 	S:HandleIcon(frame.Icon, true)
+
 	TT:SetStyle(frame)
 end
 
@@ -31,6 +32,7 @@ local function SetGarrisonFollower(tt)
 		numAbilities = numAbilities + 1
 		ability = abilities[numAbilities]
 	end
+
 	tt.numAbilitiesStyled = numAbilities
 
 	-- Traits
@@ -48,6 +50,7 @@ local function SetGarrisonFollower(tt)
 		numTraits = numTraits + 1
 		trait = traits[numTraits]
 	end
+
 	tt.numTraitsStyled = numTraits
 end
 

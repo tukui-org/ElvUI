@@ -25,7 +25,9 @@ local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 
-local spellSchoolIcon = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
+local SPELL_SCHOOL_ICON = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
+local GRADIENT_FROM = CreateColor(0.8, 0.8, 0.8, 0.25)
+local GRADIENT_TO = CreateColor(0.8, 0.8, 0.8, 0)
 
 local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFF] = 'PLACEINBAGS',
@@ -44,12 +46,12 @@ local FILL_COLORS = {
 }
 
 local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
-	['UI-Character-Info-Resistance-Holy'] = spellSchoolIcon..2,
-	['UI-Character-Info-Resistance-Fire'] = spellSchoolIcon..3,
-	['UI-Character-Info-Resistance-Nature'] = spellSchoolIcon..4,
-	['UI-Character-Info-Resistance-Frost'] = spellSchoolIcon..5,
-	['UI-Character-Info-Resistance-Shadow'] = spellSchoolIcon..6,
-	['UI-Character-Info-Resistance-Arcane'] = spellSchoolIcon..7,
+	['UI-Character-Info-Resistance-Holy'] = SPELL_SCHOOL_ICON..2,
+	['UI-Character-Info-Resistance-Fire'] = SPELL_SCHOOL_ICON..3,
+	['UI-Character-Info-Resistance-Nature'] = SPELL_SCHOOL_ICON..4,
+	['UI-Character-Info-Resistance-Frost'] = SPELL_SCHOOL_ICON..5,
+	['UI-Character-Info-Resistance-Shadow'] = SPELL_SCHOOL_ICON..6,
+	['UI-Character-Info-Resistance-Arcane'] = SPELL_SCHOOL_ICON..7,
 }
 
 local RESISTANCE_COORDS = {
@@ -209,20 +211,20 @@ end
 local function ColorizeStatPane(frame)
 	frame.Background:SetAlpha(0)
 
-	local r, g, b = 0.8, 0.8, 0.8
-	local gradientFrom, gradientTo = CreateColor(r, g, b, 0.25), CreateColor(r, g, b, 0)
+	local height = frame:GetHeight()
+	local leftGradient = frame:CreateTexture(nil, 'BORDER')
+	leftGradient:Size(80, height)
+	leftGradient:Point('LEFT', frame, 'CENTER')
+	leftGradient:SetTexture(E.Media.Textures.White8x8)
+	leftGradient:SetGradient('Horizontal', GRADIENT_FROM, GRADIENT_TO)
+	frame.leftGradient = leftGradient
 
-	frame.leftGrad = frame:CreateTexture(nil, 'BORDER')
-	frame.leftGrad:Size(80, frame:GetHeight())
-	frame.leftGrad:Point('LEFT', frame, 'CENTER')
-	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.leftGrad:SetGradient('Horizontal', gradientFrom, gradientTo)
-
-	frame.rightGrad = frame:CreateTexture(nil, 'BORDER')
-	frame.rightGrad:Size(80, frame:GetHeight())
-	frame.rightGrad:Point('RIGHT', frame, 'CENTER')
-	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.rightGrad:SetGradient('Horizontal', gradientTo, gradientFrom)
+	local rightGradient = frame:CreateTexture(nil, 'BORDER')
+	rightGradient:Size(80, height)
+	rightGradient:Point('RIGHT', frame, 'CENTER')
+	rightGradient:SetTexture(E.Media.Textures.White8x8)
+	rightGradient:SetGradient('Horizontal', GRADIENT_TO, GRADIENT_FROM)
+	frame.rightGradient = rightGradient
 end
 
 local function StatsPane(which)
@@ -399,13 +401,13 @@ end
 
 local function PaperDollUpdateStats()
 	for frame in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
-		if not frame.leftGrad then
+		if not frame.leftGradient then
 			ColorizeStatPane(frame)
 		end
 
 		local shown = frame.Background:IsShown()
-		frame.leftGrad:SetShown(shown)
-		frame.rightGrad:SetShown(shown)
+		frame.leftGradient:SetShown(shown)
+		frame.rightGradient:SetShown(shown)
 	end
 end
 
@@ -758,7 +760,7 @@ end
 
 local function PaperDollFrameSetResistance(frame, unit, index)
 	local _, resistance = UnitResistance(unit, index)
-	local icon = format('|T%s%d:12:12:0:0:64:64:4:55:4:55|t', spellSchoolIcon, index + 1)
+	local icon = format('|T%s%d:12:12:0:0:64:64:4:55:4:55|t', SPELL_SCHOOL_ICON, index + 1)
 	local name = frame:GetName()
 
 	_G[name..'Label']:SetFormattedText('%s '..STAT_FORMAT, icon, _G['SPELL_SCHOOL'..index..'_CAP'])

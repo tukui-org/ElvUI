@@ -74,33 +74,40 @@ local function SkinTableAttributeDisplay(frame)
 	frame.ScrollFrameArt.NineSlice:Point('TOPLEFT', -4, 0)
 	frame.ScrollFrameArt.NineSlice:Point('BOTTOMRIGHT', -8, 0)
 
-	S:HandleTrimScrollBar(frame.LinesScrollFrame.ScrollBar)
+	local scrollBar = frame.LinesScrollFrame.ScrollBar
+	S:HandleTrimScrollBar(scrollBar)
 
 	if not E.Modern then
-		frame.LinesScrollFrame.ScrollBar.Track:Point('TOPLEFT', 12, -20)
+		scrollBar.Track:Point('TOPLEFT', 12, -20)
 	end
 
-	frame.LinesScrollFrame.ScrollBar.Track.Thumb:Width(8)
+	scrollBar.Track.Thumb:Width(8)
 
 	S:HandleCloseButton(frame.CloseButton)
 	frame.OpenParentButton:ClearAllPoints()
 	frame.OpenParentButton:Point('TOPLEFT', frame, 'TOPLEFT', 2, -2)
+
 	S:HandleNextPrevButton(frame.OpenParentButton, 'up')
 	frame.OpenParentButton:Size(17)
+
 	S:HandleCheckBox(frame.VisibilityButton)
 	frame.VisibilityButton:Size(28)
+
 	S:HandleCheckBox(frame.HighlightButton)
 	frame.HighlightButton:Size(28)
+
 	S:HandleCheckBox(frame.DynamicUpdateButton)
 	frame.DynamicUpdateButton:Size(28)
+
 	frame.NavigateBackwardButton:ClearAllPoints()
 	frame.NavigateBackwardButton:Point('LEFT', frame.OpenParentButton, 'RIGHT', 2, 0)
 	frame.NavigateForwardButton:ClearAllPoints()
 	frame.NavigateForwardButton:Point('LEFT', frame.NavigateBackwardButton, 'RIGHT', 2, 0)
 	frame.DuplicateButton:ClearAllPoints()
 	frame.DuplicateButton:Point('LEFT', frame.NavigateForwardButton, 'RIGHT', 2, 0)
-	S:HandleNextPrevButton(frame.DuplicateButton)
 	frame.DuplicateButton:Size(17)
+
+	S:HandleNextPrevButton(frame.DuplicateButton)
 	S:HandleNextPrevButton(frame.NavigateBackwardButton)
 	S:HandleNextPrevButton(frame.NavigateForwardButton)
 	S:HandleEditBox(frame.FilterBox)
@@ -113,7 +120,6 @@ function S:Blizzard_ScriptErrorsFrame()
 end
 
 function S:Blizzard_DebugTools()
-	-- Tooltips
 	if E.private.skins.blizzard.tooltip then
 		TT:SetStyle(_G.FrameStackTooltip)
 	end
