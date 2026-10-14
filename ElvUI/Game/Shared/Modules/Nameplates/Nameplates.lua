@@ -377,7 +377,7 @@ do
 		for name, level in next, levels do
 			local element = nameplate[name]
 			if element then
-				local owner = element.element -- owner
+				local owner = element.element
 				element:SetParent(parent or owner or nameplate)
 
 				if not parent then
