@@ -368,8 +368,8 @@ end
 do
 	local levels = {
 		QuestIcons = 'QuestIconLevel',
-		Portrait = 'PortraitLevel',
-		PVPRole = 'PVPRoleLevel',
+		Portrait = 'PortraitLevel', -- has an element
+		PVPRole = 'PVPRoleLevel', -- has an element
 		Highlight = 'HighlightLevel',
 	}
 
