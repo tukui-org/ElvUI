@@ -45,13 +45,13 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 	E:AddTag(format('missinghp:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		local healthMissing = UnitHealthMissing(unit)
 		local text = E:AbbreviateNumbers(healthMissing, E.Abbreviate[which])
-		return WrapString(TruncateWhenZero(healthMissing), '|H', '|h' .. text .. '|h')
+		return WrapString(TruncateWhenZero(healthMissing), '|Htag:', '|h' .. text .. '|h')
 	end)
 
 	E:AddTag(format('missingpp:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerMissing = UnitPowerMissing(unit)
 		local text = E:AbbreviateNumbers(powerMissing, E.Abbreviate[which])
-		return WrapString(TruncateWhenZero(powerMissing), '|H', '|h' .. text .. '|h')
+		return WrapString(TruncateWhenZero(powerMissing), '|Htag:', '|h' .. text .. '|h')
 	end)
 
 	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
