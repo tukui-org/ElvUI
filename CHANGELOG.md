@@ -8,7 +8,7 @@
     *   **Chat:** The tab overflow button lights up again when a hidden tab gets a message.
     *   **Nameplates:** Clamp Nameplates works again.
 * **New and returning features**
-    *   **General:** Enchantable gear without an enchant is now colored in red. See Blizzard Improvements > Item Level (Retail),
+    *   **General:** Enchantable gear without an enchant is now colored in red. See Blizzard Improvements > Item Level (Retail).
     *   **Tooltip:** Current Mount option is back on Retail and now also works on Wrath TBC and Vanilla.
     *   **UnitFrames:** Additional growth directions for Main Assist and Main Tank frames as requested.
     *   **UnitFrames:** Aura Highlight Glow is back. with Highlight Color Style set to Glow, dispellable debuffs glow around the frame again (Retail).
@@ -16,8 +16,7 @@
     *   **Contrast:** Better contrast on a lot of frames with less transparent-on-transparent color overlaps.
     *   **Menus:** Small checkboxes (and sliders) in right-click menus are now nicely skinned when using Skins > Blizzard > Misc Frames.
     *   **Parchment:** Better consistency across most frames with parchment remover on/off.
-* **Fixes**
-    *   **There is a lot more than listed below, we only list some of the ones worth noting to avoid a even bigger wall of text.**
+* **There is a lot more fixed than listed below; we only list some of the ones worth noting to avoid a even bigger wall of text.**
     *   **ActionBars:** Blizzard's bag bar stays visible when both ElvUI Action Bars and the Bag Bar are disabled.
     *   **ActionBars:** Keybind Mode works on character-specific macros again (Retail).
     *   **Auras:** Smooth Bars option works on Buffs and Debuffs duration bars and on unit frame Aura Bars (Retail).
@@ -38,7 +37,7 @@
     *   **Tags:** Classcolor now works with secret values instead of falling back to white/gray text.
     *   **Translations:** German got a full review and Eltreum updated Brazilian Portuguese.
 * **Shoutouts**
-    *   Thanks to Dack, Eltreum, Flamanis, Nevcairiel, p3lim, Plusmouse and Tsxy for their contributions.
+    *   Thanks to Dack, Eltreum, Flamanis, Nevcairiel, p3lim, Plusmouse, and Tsxy for their contributions.
 
 ### Version 15.26 [ August 29th 2026 ]
 *   Item level display for enchants will appear cleaner (regardless of abbreviate setting).
