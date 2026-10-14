@@ -84,6 +84,7 @@ function S:Blizzard_DelvesDifficultyPicker()
 	DifficultyPickerFrame.CloseButton:Point('TOPRIGHT', DifficultyPickerFrame, 'TOPRIGHT', -3, -3)
 	S:HandleDropDownBox(DifficultyPickerFrame.Dropdown)
 	S:HandleButton(DifficultyPickerFrame.EnterDelveButton)
+	S:HandleTrimScrollBar(DelvesDifficultyPickerFrame.DelveRewardsContainerFrame.ScrollBar)
 
 	hooksecurefunc(DifficultyPickerFrame.DelveRewardsContainerFrame.ScrollBox, 'Update', DifficultyPickerFrame_Update)
 end
