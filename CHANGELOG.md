@@ -1,5 +1,44 @@
 ### Version 16.00 [ October 13th 2026 ]
-*   Very cool update.
+* **After almost two months of pretty much daily work and testing, we're introducing our 16.00 update for ElvUI:**
+    *   A large performance pass and many fixes, this includes a noticable speedup of loading screens.
+    *   Every game version now gets the same set of skins, this includes consistency of bottom and side tabs on frames.
+    *   This release also adds initial support for the upcoming WoW: Forever game version.
+    *   Note: Gamepads are not yet supported but we will work on it.
+* **Patch 12.1.5**
+    *   **Chat:** The tab overflow button lights up again when a hidden tab gets a message.
+    *   **Nameplates:** Clamp Nameplates works again.
+* **New and returning features**
+    *   **General:** Enchantable gear without an enchant is now colored in red. See Blizzard Improvements > Item Level (Retail),
+    *   **Tooltip:** Current Mount option is back on Retail and now also works on Wrath TBC and Vanilla.
+    *   **UnitFrames:** Additional growth directions for Main Assist and Main Tank frames as requested.
+    *   **UnitFrames:** Aura Highlight Glow is back. with Highlight Color Style set to Glow, dispellable debuffs glow around the frame again (Retail).
+* **Skins**
+    *   **Contrast:** Better contrast on a lot of frames with less transparent-on-transparent color overlaps.
+    *   **Menus:** Small checkboxes (and sliders) in right-click menus are now nicely skinned when using Skins > Blizzard > Misc Frames.
+    *   **Parchment:** Better consistency across most frames with parchment remover on/off.
+* **Fixes**
+    *   **There is a lot more than listed below, we only list some of the ones worth noting to avoid a even bigger wall of text.**
+    *   **ActionBars:** Blizzard's bag bar stays visible when both ElvUI Action Bars and the Bag Bar are disabled.
+    *   **ActionBars:** Keybind Mode works on character-specific macros again (Retail).
+    *   **Auras:** Smooth Bars option works on Buffs and Debuffs duration bars and on unit frame Aura Bars (Retail).
+    *   **Chat:** Channel messages without a sender (Local Defense) no longer show an empty name.
+    *   **DataTexts:** System: grouped addons such as DBM and Details no longer vanish from the memory list.
+    *   **Misc:** Auto Track Reputation works again (Retail).
+    *   **Nameplates:** Show Only Names and Class Color Names apply without a reload.
+    *   **Nameplates:** Sort Direction and Desaturate Icon work for nameplate auras (Retail).
+    *   **Nameplates:** The target's class bar follows your target and no longer sticks to an old plate.
+    *   **Profiles:** Profile import accepts Table-format strings again.
+    *   **UnitFrames:** Raid Role Indicator shows the raid assistant icon again.
+    *   **UnitFrames:** The dispel highlight follows your dispels after a spec or talent change, without a reload (Retail).
+* **Other changes**
+    *   **Auras:** Party and raid Buffs and Debuffs hide while a member can't be assisted, for example while mind-controlled (Retail).
+    *   **General:** The AddOn is now displayed as "ElvUI Midnight" on Retail.
+    *   **Nameplates:** Alpha Fading was removed. Plates now appear right away instead of fading in.
+    *   **Profiles:** Profile names are limited to 50 characters (Ace3 library update).
+    *   **Tags:** Classcolor now works with secret values instead of falling back to white/gray text.
+    *   **Translations:** German got a full review and Eltreum updated Brazilian Portuguese.
+* **Shoutouts**
+    *   Thanks to Dack, Eltreum, Flamanis, Nevcairiel, p3lim, Plusmouse and Tsxy for their contributions.
 
 ### Version 15.26 [ August 29th 2026 ]
 *   Item level display for enchants will appear cleaner (regardless of abbreviate setting).
