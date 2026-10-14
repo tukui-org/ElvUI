@@ -1,18 +1,24 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
+local format = format
 local strlower = strlower
+local CreateFrame = CreateFrame
 
 function NP:PvPIndicator_PostUpdate(_, status)
 	if status and status ~= 'FFA' and (not self.Badge or not self.Badge:IsShown()) then
-		self:SetAtlas('bfa-landingbutton-'..strlower(status)..'-up')
+		local atlas = format('bfa-landingbutton-%s-up', strlower(status))
+		self:SetAtlas(atlas)
 		self:SetTexCoord(0, 1, 0, 1)
 	end
 end
 
 function NP:Construct_PvPIndicator(nameplate)
-	local PvPIndicator = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
-	PvPIndicator.Badge_ = nameplate.RaisedElement:CreateTexture(nil, 'ARTWORK')
+	local element = CreateFrame('Frame', '$parent_PvPIndicator', nameplate)
+	element:SetFrameLevel(nameplate.RaisedElement.PvPIndicatorLevel)
+
+	local PvPIndicator = element:CreateTexture(nil, 'OVERLAY')
+	PvPIndicator.Badge_ = element:CreateTexture(nil, 'ARTWORK')
 	PvPIndicator.PostUpdate = NP.PvPIndicator_PostUpdate
 
 	return PvPIndicator
@@ -26,8 +32,9 @@ function NP:Update_PvPIndicator(nameplate)
 			nameplate:EnableElement('PvPIndicator')
 		end
 
-		nameplate.PvPIndicator:Size(db.pvpindicator.size, db.pvpindicator.size)
-		nameplate.PvPIndicator.Badge_:Size(db.pvpindicator.size + 14, db.pvpindicator.size + 16)
+		local size = db.pvpindicator.size
+		nameplate.PvPIndicator:Size(size, size)
+		nameplate.PvPIndicator.Badge_:Size(size + 14, size + 16)
 
 		nameplate.PvPIndicator.Badge = nil
 

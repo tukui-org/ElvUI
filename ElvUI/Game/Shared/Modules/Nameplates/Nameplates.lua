@@ -273,14 +273,16 @@ function NP:Construct_RaisedElement(nameplate)
 	element.TargetIndicatorLevel = 0
 	element.HealthLevel = RaisedLevel + 5 -- prediction goes up to 3 over this
 	element.PowerLevel = RaisedLevel + 10
-	element.HighlightLevel = RaisedLevel + 15
+	element.HighlightLevel = RaisedLevel + 15 -- changed by ReparentNotNameonly
 	element.RaidTargetIndicatorLevel = RaisedLevel + 20
+	element.PvPIndicatorLevel = RaisedLevel + 21 -- one over raid target
 	element.AuraLevel = RaisedLevel + 25
 	element.ClassBarLevel = RaisedLevel + 30
 	element.ClassButtonLevel = RaisedLevel + 31 -- one over classbar
-	element.PVPRoleLevel = RaisedLevel + 40
+	element.PortraitLevel = RaisedLevel + 35 -- changed by ReparentNotNameonly
+	element.PVPRoleLevel = RaisedLevel + 40 -- changed by ReparentNotNameonly
 	element.ClassificationLevel = RaisedLevel + 41 -- one over pvprole
-	element.QuestIconLevel = RaisedLevel + 42 -- one over classification
+	element.QuestIconLevel = RaisedLevel + 42 -- one over classification; changed by ReparentNotNameonly
 	element.CastBarLevel = RaisedLevel + 50 -- most important
 	element.TagTextLevel = RaisedLevel + 55
 
@@ -364,20 +366,22 @@ function NP:StylePlate(nameplate)
 end
 
 do
-	local elements = {
-		-- on the raised element
-		QuestIcons = true,
-		Portrait = true,
-		PVPRole = true,
-		-- on the nameplate itself
-		Highlight = false
+	local levels = {
+		QuestIcons = 'QuestIconLevel',
+		Portrait = 'PortraitLevel',
+		PVPRole = 'PVPRoleLevel',
+		Highlight = 'HighlightLevel',
 	}
 
 	function NP:ReparentNotNameonly(nameplate, parent)
-		for name, raised in next, elements do
+		for name, level in next, levels do
 			local element = nameplate[name]
 			if element then
-				element:SetParent(parent or (raised and nameplate.RaisedElement) or nameplate)
+				element:SetParent(parent or nameplate)
+
+				if not parent then
+					element:SetFrameLevel(nameplate.RaisedElement[level] or 10)
+				end
 			end
 		end
 	end

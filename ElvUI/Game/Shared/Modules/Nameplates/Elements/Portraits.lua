@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
 local UnitClass = UnitClass
+local CreateFrame = CreateFrame
 
 local classIcon = [[Interface\WorldStateFrame\Icons-Classes]]
 
@@ -44,7 +45,10 @@ function NP:Portrait_PostUpdate(unit, hasStateChanged)
 end
 
 function NP:Construct_Portrait(nameplate)
-	local Portrait = nameplate.RaisedElement:CreateTexture(nameplate.frameName..'Portrait', 'OVERLAY', nil, 2)
+	local element = CreateFrame('Frame', '$parent_Portrait', nameplate)
+	element:SetFrameLevel(nameplate.RaisedElement.PortraitLevel)
+
+	local Portrait = element:CreateTexture(nil, 'OVERLAY', nil, 2)
 	Portrait:CreateBackdrop(nil, nil, nil, nil, nil, true, true)
 	Portrait.backdrop:Hide()
 

@@ -89,7 +89,7 @@ function NP:Health_UpdateColor(_, unit)
 end
 
 function NP:Construct_Health(nameplate)
-	local Health = CreateFrame('StatusBar', nameplate.frameName..'Health', nameplate)
+	local Health = CreateFrame('StatusBar', '$parent_Health', nameplate)
 	Health:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Health:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 	Health.UpdateColor = NP.Health_UpdateColor
@@ -135,7 +135,7 @@ end
 
 local bars = { 'healingPlayer', 'healingOther', 'damageAbsorb', 'healAbsorb' }
 function NP:Construct_HealthPrediction(nameplate)
-	local HealthPrediction = CreateFrame('Frame', nameplate.frameName..'HealthPrediction', nameplate)
+	local HealthPrediction = CreateFrame('Frame', '$parent_HealthPrediction', nameplate)
 
 	for _, name in ipairs(bars) do
 		local bar = CreateFrame('StatusBar', nil, nameplate.Health.ClipFrame)
