@@ -377,10 +377,12 @@ do
 		for name, level in next, levels do
 			local element = nameplate[name]
 			if element then
-				element:SetParent(parent or element.element or nameplate)
+				local owner = element.element -- owner
+				element:SetParent(parent or owner or nameplate)
 
 				if not parent then
-					element:SetFrameLevel(nameplate.RaisedElement[level] or 10)
+					local frame = owner or element -- prefer the owner
+					frame:SetFrameLevel(nameplate.RaisedElement[level] or 10)
 				end
 			end
 		end
