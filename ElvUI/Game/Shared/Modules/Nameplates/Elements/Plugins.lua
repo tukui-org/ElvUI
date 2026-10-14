@@ -223,6 +223,7 @@ function NP:Construct_PVPRole(nameplate)
 
 	texture.HealerTexture = E.Media.Textures.Healer
 	texture.TankTexture = E.Media.Textures.Tank
+	texture.element = element -- used by ReparentNotNameonly
 
 	element.texture = texture
 

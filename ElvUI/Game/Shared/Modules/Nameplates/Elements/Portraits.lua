@@ -60,6 +60,7 @@ function NP:Construct_Portrait(nameplate)
 	Portrait:HookScript('OnHide', NP.Portrait_BackdropHide)
 
 	Portrait.PostUpdate = NP.Portrait_PostUpdate
+	Portrait.element = element -- used by ReparentNotNameonly
 
 	return Portrait
 end
