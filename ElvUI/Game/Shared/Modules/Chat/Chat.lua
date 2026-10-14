@@ -3900,7 +3900,7 @@ function CH:GetPlayerInfoByGUID(guid)
 
 	local data = CH.GuidCache[guid]
 	if not data then
-		local ok, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = pcall(GetPlayerInfoByGUID, guid)
+		local ok, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm, level = pcall(GetPlayerInfoByGUID, guid)
 		if not (ok and englishClass) then return end
 
 		if realm == '' then realm = nil end -- dont add realm for people on your realm
@@ -3918,6 +3918,7 @@ function CH:GetPlayerInfoByGUID(guid)
 			sex = sex,
 			name = name,
 			realm = realm,
+			level = level,
 			nameWithRealm = nameWithRealm -- we use this to correct mobile to link with the realm as well
 		}
 
