@@ -987,6 +987,8 @@ function UF.groupPrototype:Configure_Groups(Header)
 			group:SetAttribute('groupFilter', groupWide or tostring(i))
 
 			local point = DIRECTION_TO_POINT[direction]
+			group:SetAttribute('point', point)
+
 			if point == 'LEFT' or point == 'RIGHT' then
 				group:SetAttribute('xOffset', horizontalSpacing * x)
 				group:SetAttribute('yOffset', 0)
@@ -1005,27 +1007,25 @@ function UF.groupPrototype:Configure_Groups(Header)
 
 			if group.isForced then
 				group:SetAttribute('_ignore', nil) -- reallow updates
-				group:SetAttribute('point', point)
 			else
 				group:SetAttribute('maxColumns', raidWideSorting and numGroups or 1)
 				group:SetAttribute('unitsPerColumn', raidWideSorting and (groupsPerRowCol * 5) or 5)
 				group:SetAttribute('showPlayer', showPlayer)
 				group:SetAttribute('sortDir', sortDir)
-				group:SetAttribute('point', point)
 
 				UF:SetHeaderSortGroup(group, groupBy)
 
 				group:SetAttribute('_ignore', nil) -- reallow updates
 
-				if not group.initialized then -- keep below maxColumns and unitsPerColumn, otherwise it spawns more buttons than it can show
+				if not group.initialized then -- keep below maxColumns and unitsPerColumn
+					group.initialized = true  -- otherwise it spawns more buttons than it can show
+
 					group:SetAttribute('startingIndex', raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
-					group:Show()
-
-					group.initialized = true
+					group:Show() -- this will initialize the group and reupdate when startingIndex is set back to 1
 				end
-
-				group:SetAttribute('startingIndex', 1)
 			end
+
+			group:SetAttribute('startingIndex', 1)
 		end
 
 		--MATH!! WOOT
@@ -1112,7 +1112,6 @@ function UF.groupPrototype:AdjustVisibility(Header)
 				group:Show()
 			elseif group.forceShow then
 				group:Hide()
-				group:SetAttribute('startingIndex', 1)
 
 				UF:UnshowChildUnits(group)
 			else
