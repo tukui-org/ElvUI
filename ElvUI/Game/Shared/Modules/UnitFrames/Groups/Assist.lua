@@ -43,26 +43,26 @@ function UF:Update_AssistHeader(header, db)
 		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	end
 
-	if not header.positioned then
-		header:ClearAllPoints()
-		header:Point('TOPLEFT', E.UIParent, 4, -248)
+	local up = db.growthY == 'UP'
+	local spacing = db.verticalSpacing
+	header:ClearChildPoints()
+	header:SetAttribute('yOffset', up and spacing or -spacing)
+	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 
+	if not header.positioned then
 		local width, height = header:GetSize()
-		local minHeight = max(height, 2 * db.height + db.verticalSpacing)
+		local minHeight = max(height, 2 * db.height + spacing)
+		header:SetAttribute('columnAnchorPoint', 'LEFT')
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
+		header:ClearAllPoints()
+		header:Point('TOPLEFT', E.UIParent, 4, -248)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,assist,generalGroup')
 		header.mover:SetSize(width, minHeight)
 
 		header.positioned = true
 	end
-
-	local up = db.growthY == 'UP'
-	header:ClearChildPoints()
-	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute('yOffset', up and db.verticalSpacing or -db.verticalSpacing)
-	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 end
 
 function UF:Update_AssistFrames(frame, db)
