@@ -92,6 +92,10 @@ function UF:Update_AssistFrames(frame, db)
 		frame.BOTTOM_OFFSET = 0
 	end
 
+	frame:ClearAllPoints()
+	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
+
 	if frame.isChild then
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
@@ -103,16 +107,12 @@ function UF:Update_AssistFrames(frame, db)
 			frame:SetEnabled(enabled)
 
 			if enabled then
-				frame:ClearAllPoints()
 				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			end
 		end
 	else
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
-
-	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
-	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
 	UF:ConfigureFrame(frame, frame.isChild and 'assisttarget' or 'assist')
 end
