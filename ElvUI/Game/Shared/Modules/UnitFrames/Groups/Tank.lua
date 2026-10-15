@@ -46,8 +46,8 @@ function UF:Update_TankHeader(header, db)
 	local up = db.growthY == 'UP'
 	local spacing = db.verticalSpacing
 	header:ClearChildPoints()
+	header:SetAttribute('_ignore', true) -- hold the header update, the last attribute below runs it once
 	header:SetAttribute('yOffset', up and spacing or -spacing)
-	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 
 	if not header.positioned then
 		local width, height = header:GetSize()
@@ -63,6 +63,9 @@ function UF:Update_TankHeader(header, db)
 
 		header.positioned = true
 	end
+
+	header:SetAttribute('_ignore', nil) -- allow updates
+	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 end
 
 function UF:Update_TankFrames(frame, db)
