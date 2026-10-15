@@ -982,6 +982,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			group.db = db
 
 			local point = DIRECTION_TO_POINT[direction]
+			group:SetAttribute('_ignore', true) -- hold the header update, the last attribute below runs it once
 			group:SetAttribute('point', point)
 
 			if point == 'LEFT' or point == 'RIGHT' then
@@ -1018,6 +1019,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			end
 
 			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
+			group:SetAttribute('_ignore', nil) -- reallow updates
 			group:SetAttribute('groupFilter', groupWide or tostring(i))
 		end
 
@@ -1139,6 +1141,7 @@ function UF.headerPrototype:Update(isForced)
 end
 
 function UF.headerPrototype:Reset()
+	self:SetAttribute('_ignore', true) -- hold the header update, the last attribute below runs it once
 	self:SetAttribute('showPlayer', true)
 	self:SetAttribute('showSolo', true)
 	self:SetAttribute('showParty', true)
@@ -1157,6 +1160,7 @@ function UF.headerPrototype:Reset()
 	self:SetAttribute('strictFiltering', nil)
 	self:SetAttribute('unitsPerColumn', nil)
 	self:SetAttribute('xOffset', nil)
+	self:SetAttribute('_ignore', nil) -- reallow updates
 	self:SetAttribute('yOffset', nil)
 	self:Hide()
 end
