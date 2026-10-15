@@ -45,19 +45,17 @@ function UF:Update_TankHeader(header, db)
 
 	local up = db.growthY == 'UP'
 	local spacing = db.verticalSpacing
-	header:ClearAllPoints()
 	header:ClearChildPoints()
 	header:SetAttribute('yOffset', up and spacing or -spacing)
 	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 
-	if header.positioned then
-		E:SetMoverPoints(header.mover.name, header)
-	else
+	if not header.positioned then
 		local width, height = header:GetSize()
 		local minHeight = max(height, 2 * db.height + spacing)
 		header:SetAttribute('columnAnchorPoint', 'LEFT')
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
+		header:ClearAllPoints()
 		header:Point('TOPLEFT', E.UIParent, 4, -186)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,tank,generalGroup')
