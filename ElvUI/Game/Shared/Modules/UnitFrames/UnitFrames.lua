@@ -154,10 +154,8 @@ UF.headerGroupBy = {
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 	end,
 	NAME = function(header)
-		header:SetAttribute('_ignore', true) -- hold the header update
 		header:SetAttribute('groupBy', nil)
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
-		header:SetAttribute('_ignore', nil) -- allow updates
 		header:SetAttribute('sortMethod', 'NAME')
 	end,
 	GROUP = function(header)
