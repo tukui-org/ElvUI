@@ -55,6 +55,36 @@ NP.AuraContainerFilterKeys = {
 	FRIENDLY_NPC = 'FriendlyNPC'
 }
 
+NP.LevelNameonly = {
+	Highlight = 'HighlightLevel',
+	QuestIcons = 'QuestIconLevel',
+	Portrait = 'PortraitLevel', -- has an element
+	PVPRole = 'PVPRoleLevel', -- has an element
+}
+
+NP.LevelElements = {
+	PvPClassificationIndicator = 'PvPClassificationLevel', -- has an element
+	ClassificationIndicator = 'ClassificationLevel', -- has an element
+	ThreatIndicator = 'ThreatIndicatorLevel', -- has an element
+	PvPIndicator = 'PvPIndicatorLevel', -- has an element
+
+	Health = false,
+	HealthPrediction = false,
+	Power = false,
+	Castbar = false,
+	TargetIndicator = false,
+	ClassPower = false,
+	Auras_ = false,
+	Buffs_ = false,
+	Debuffs_ = false
+}
+
+if E.myclass == 'DEATHKNIGHT' then
+	NP.LevelElements.Runes = false
+elseif E.myclass == 'MONK' then
+	NP.LevelElements.Stagger = false
+end
+
 for key in next, Blacklist do
 	NP.AuraContainerFilterTypes[key] = {}
 end
@@ -274,12 +304,12 @@ function NP:Construct_RaisedElement(nameplate)
 	element.HealthLevel = RaisedLevel + 5 -- prediction goes up to 3 over this
 	element.PowerLevel = RaisedLevel + 10
 
-	-- used by ReparentNotNameonly
+	-- used by LevelNameonly
 	element.HighlightLevel = RaisedLevel + 20
 	element.PortraitLevel = RaisedLevel + 21
 	element.PVPRoleLevel = RaisedLevel + 22
 
-	-- used by ReparentElements
+	-- used by LevelElements
 	element.PvPClassificationLevel = RaisedLevel + 30
 	element.ThreatIndicatorLevel = RaisedLevel + 31
 	element.QuestIconLevel = RaisedLevel + 32
@@ -373,7 +403,7 @@ function NP:StylePlate(nameplate)
 	NP.Plates[nameplate] = nameplate.frameName
 end
 
-function NP:ReparentObjects(elements, nameplate, parent)
+function NP:ReparentElements(elements, nameplate, parent)
 	for name, key in next, elements do
 		local element = nameplate[name]
 		if element then
@@ -386,48 +416,6 @@ function NP:ReparentObjects(elements, nameplate, parent)
 				frame:SetFrameLevel(level)
 			end
 		end
-	end
-end
-
-do
-	local elements = {
-		PvPClassificationIndicator = 'PvPClassificationLevel', -- has an element
-		ClassificationIndicator = 'ClassificationLevel', -- has an element
-		ThreatIndicator = 'ThreatIndicatorLevel', -- has an element
-		PvPIndicator = 'PvPIndicatorLevel', -- has an element
-
-		Health = false,
-		HealthPrediction = false,
-		Power = false,
-		Castbar = false,
-		TargetIndicator = false,
-		ClassPower = false,
-		Auras_ = false,
-		Buffs_ = false,
-		Debuffs_ = false
-	}
-
-	if E.myclass == 'DEATHKNIGHT' then
-		elements.Runes = false
-	elseif E.myclass == 'MONK' then
-		elements.Stagger = false
-	end
-
-	function NP:ReparentElements(nameplate, parent)
-		NP:ReparentObjects(elements, nameplate, parent)
-	end
-end
-
-do
-	local elements = {
-		Highlight = 'HighlightLevel',
-		QuestIcons = 'QuestIconLevel',
-		Portrait = 'PortraitLevel', -- has an element
-		PVPRole = 'PVPRoleLevel', -- has an element
-	}
-
-	function NP:ReparentNotNameonly(nameplate, parent)
-		NP:ReparentObjects(elements, nameplate, parent)
 	end
 end
 
@@ -446,8 +434,8 @@ function NP:UpdatePlate(nameplate, updateBase)
 			nameplate.ClassPower:SetAlpha(0)
 		end
 	elseif updateBase and db.enable then
-		NP:ReparentElements(nameplate)
-		NP:ReparentNotNameonly(nameplate)
+		NP:ReparentElements(NP.LevelElements, nameplate)
+		NP:ReparentElements(NP.LevelNameonly, nameplate)
 
 		NP:Update_Tags(nameplate)
 		NP:Update_Health(nameplate)
@@ -476,7 +464,7 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised, updateBase)
 		nameplate.RaisedElement:Hide() -- reshown by NAME_PLATE_UNIT_ADDED
 	end
 
-	NP:ReparentElements(nameplate, E.HiddenFrame)
+	NP:ReparentElements(NP.LevelElements, nameplate, E.HiddenFrame)
 
 	if nameOnly then
 		if updateBase then
@@ -508,7 +496,7 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised, updateBase)
 			NP:SetupTarget(nameplate, true)
 		end
 	else
-		NP:ReparentNotNameonly(nameplate, E.HiddenFrame)
+		NP:ReparentElements(NP.LevelNameonly, nameplate, E.HiddenFrame)
 	end
 end
 

@@ -73,7 +73,7 @@ function NP:Construct_ClassificationIndicator(nameplate)
 	element:SetFrameLevel(nameplate.RaisedElement.ClassificationLevel)
 
 	local texture = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
-	texture.element = element -- used by ReparentElements
+	texture.element = element -- used by LevelElements
 	element.texture = texture
 
 	return texture
@@ -224,7 +224,7 @@ function NP:Construct_PVPRole(nameplate)
 
 	texture.HealerTexture = E.Media.Textures.Healer
 	texture.TankTexture = E.Media.Textures.Tank
-	texture.element = element -- used by ReparentNotNameonly
+	texture.element = element -- used by LevelNameonly
 
 	element.texture = texture
 

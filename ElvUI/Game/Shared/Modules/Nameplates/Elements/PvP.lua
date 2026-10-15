@@ -20,7 +20,7 @@ function NP:Construct_PvPIndicator(nameplate)
 	local texture = element:CreateTexture(nil, 'OVERLAY')
 	texture.Badge_ = element:CreateTexture(nil, 'ARTWORK')
 	texture.PostUpdate = NP.PvPIndicator_PostUpdate
-	texture.element = element -- used by ReparentElements
+	texture.element = element -- used by LevelElements
 	element.texture = texture
 
 	return texture
@@ -56,7 +56,7 @@ function NP:Construct_PvPClassificationIndicator(nameplate)
 	element:SetFrameLevel(nameplate.RaisedElement.PvPClassificationLevel)
 
 	local texture = element:CreateTexture(nil, 'OVERLAY')
-	texture.element = element -- used by ReparentElements
+	texture.element = element -- used by LevelElements
 	element.texture = texture
 
 	return texture

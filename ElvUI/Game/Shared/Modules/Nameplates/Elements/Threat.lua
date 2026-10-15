@@ -36,7 +36,7 @@ function NP:Construct_ThreatIndicator(nameplate)
 	texture.feedbackUnit = 'player'
 	texture.PreUpdate = NP.ThreatIndicator_PreUpdate
 	texture.PostUpdate = NP.ThreatIndicator_PostUpdate
-	texture.element = element  -- used by ReparentElements
+	texture.element = element  -- used by LevelElements
 	element.texture = texture
 
 	return texture
