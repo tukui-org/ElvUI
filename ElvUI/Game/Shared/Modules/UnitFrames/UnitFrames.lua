@@ -1015,6 +1015,8 @@ function UF.groupPrototype:Configure_Groups(Header)
 
 				UF:SetHeaderSortGroup(group, groupBy)
 
+				group:SetAttribute('_ignore', nil) -- reallow updates
+
 				if not group.initialized then -- keep below maxColumns and unitsPerColumn, otherwise it spawns more buttons than it can show
 					group:SetAttribute('startingIndex', raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
 					group:Show()
@@ -1022,7 +1024,6 @@ function UF.groupPrototype:Configure_Groups(Header)
 					group.initialized = true
 				end
 
-				group:SetAttribute('_ignore', nil) -- reallow updates
 				group:SetAttribute('startingIndex', 1)
 			end
 		end
