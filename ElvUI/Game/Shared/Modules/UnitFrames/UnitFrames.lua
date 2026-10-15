@@ -1360,6 +1360,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		end
 	else
 		UnregisterStateDriver(Header, 'visibility')
+
 		Header:Hide()
 
 		if Header.mover then
