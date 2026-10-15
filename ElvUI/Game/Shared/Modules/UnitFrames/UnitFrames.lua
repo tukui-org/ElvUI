@@ -1025,7 +1025,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 				end
 			end
 
-			group:SetAttribute('startingIndex', 1)
+			group:SetAttribute('startingIndex', 1) -- this triggers the update after ignore
 		end
 
 		--MATH!! WOOT
@@ -1167,6 +1167,7 @@ function UF.headerPrototype:Reset()
 	self:SetAttribute('xOffset', nil)
 	self:SetAttribute('_ignore', nil) -- reallow updates
 	self:SetAttribute('yOffset', nil)
+
 	self:Hide()
 end
 
