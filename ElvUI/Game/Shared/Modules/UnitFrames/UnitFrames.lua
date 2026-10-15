@@ -141,40 +141,52 @@ UF.headerGroupBy = {
 		end
 
 		local sortMethod = db and db.sortMethod
-		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,EVOKER,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
-		header:SetAttribute('sortMethod', sortMethod or 'NAME')
+		header:SetAttribute('_ignore', true) -- hold the header update
 		header:SetAttribute('groupBy', 'CLASS')
+		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,EVOKER,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
+		header:SetAttribute('_ignore', nil) -- allow updates
+		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 	end,
 	ROLE = function(header)
 		local db = header.db
 		local groupingOrder = db and strjoin(',', db.ROLE1, db.ROLE2, db.ROLE3, 'NONE')
 		local sortMethod = db and db.sortMethod
-		header:SetAttribute('groupingOrder', groupingOrder or 'TANK,HEALER,DAMAGER,NONE')
-		header:SetAttribute('sortMethod', sortMethod or 'NAME')
+		header:SetAttribute('_ignore', true) -- hold the header update
 		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
+		header:SetAttribute('groupingOrder', groupingOrder or 'TANK,HEALER,DAMAGER,NONE')
+		header:SetAttribute('_ignore', nil) -- allow updates
+		header:SetAttribute('sortMethod', sortMethod or 'NAME')
 	end,
 	NAME = function(header)
-		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
-		header:SetAttribute('sortMethod', 'NAME')
+		header:SetAttribute('_ignore', true) -- hold the header update
 		header:SetAttribute('groupBy', nil)
+		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
+		header:SetAttribute('_ignore', nil) -- allow updates
+		header:SetAttribute('sortMethod', 'NAME')
 	end,
 	GROUP = function(header)
 		local db = header.db
 		local sortMethod = db and db.sortMethod
-		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
-		header:SetAttribute('sortMethod', sortMethod or 'INDEX')
+		header:SetAttribute('_ignore', true) -- hold the header update
 		header:SetAttribute('groupBy', 'GROUP')
+		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
+		header:SetAttribute('_ignore', nil) -- allow updates
+		header:SetAttribute('sortMethod', sortMethod or 'INDEX')
 	end,
 	PETNAME = function(header)
-		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
-		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute('groupBy', nil)
+		header:SetAttribute('_ignore', true) -- hold the header update
 		header:SetAttribute('filterOnPet', true) --This is the line that matters. Without this, it sorts based on the owners name
+		header:SetAttribute('groupBy', nil)
+		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
+		header:SetAttribute('_ignore', nil) -- allow updates
+		header:SetAttribute('sortMethod', 'NAME')
 	end,
 	INDEX = function(header)
-		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
-		header:SetAttribute('sortMethod', 'INDEX')
+		header:SetAttribute('_ignore', true) -- hold the header update
 		header:SetAttribute('groupBy', nil)
+		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
+		header:SetAttribute('_ignore', nil) -- allow updates
+		header:SetAttribute('sortMethod', 'INDEX')
 	end,
 }
 
@@ -982,7 +994,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			group.db = db
 
 			local point = DIRECTION_TO_POINT[direction]
-			group:SetAttribute('_ignore', true) -- hold the header update, the last attribute below runs it once
+			group:SetAttribute('_ignore', true) -- hold the header update
 			group:SetAttribute('point', point)
 
 			if point == 'LEFT' or point == 'RIGHT' then
@@ -1141,7 +1153,7 @@ function UF.headerPrototype:Update(isForced)
 end
 
 function UF.headerPrototype:Reset()
-	self:SetAttribute('_ignore', true) -- hold the header update, the last attribute below runs it once
+	self:SetAttribute('_ignore', true) -- hold the header update
 	self:SetAttribute('showPlayer', true)
 	self:SetAttribute('showSolo', true)
 	self:SetAttribute('showParty', true)
