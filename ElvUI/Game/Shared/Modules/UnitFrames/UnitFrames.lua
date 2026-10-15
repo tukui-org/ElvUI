@@ -1003,29 +1003,27 @@ function UF.groupPrototype:Configure_Groups(Header)
 				group:SetAttribute('columnAnchorPoint', DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			end
 
-			local shouldShow
-			if not group.isForced then
+			if group.isForced then
+				group:SetAttribute('_ignore', nil) -- reallow updates
+				group:SetAttribute('point', point)
+			else
 				group:SetAttribute('maxColumns', raidWideSorting and numGroups or 1)
 				group:SetAttribute('unitsPerColumn', raidWideSorting and (groupsPerRowCol * 5) or 5)
-				group:SetAttribute('sortDir', sortDir)
 				group:SetAttribute('showPlayer', showPlayer)
+				group:SetAttribute('sortDir', sortDir)
+				group:SetAttribute('point', point)
+
+				UF:SetHeaderSortGroup(group, groupBy)
 
 				if not group.initialized then -- keep below maxColumns and unitsPerColumn, otherwise it spawns more buttons than it can show
 					group:SetAttribute('startingIndex', raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
+					group:Show()
+
 					group.initialized = true
-					shouldShow = true
 				end
 
+				group:SetAttribute('_ignore', nil) -- reallow updates
 				group:SetAttribute('startingIndex', 1)
-
-				UF:SetHeaderSortGroup(group, groupBy)
-			end
-
-			group:SetAttribute('_ignore', nil) -- reallow updates
-			group:SetAttribute('point', point)
-
-			if shouldShow then
-				group:Show()
 			end
 		end
 
@@ -1114,6 +1112,7 @@ function UF.groupPrototype:AdjustVisibility(Header)
 			elseif group.forceShow then
 				group:Hide()
 				group:SetAttribute('startingIndex', 1)
+
 				UF:UnshowChildUnits(group)
 			else
 				group:Reset()
