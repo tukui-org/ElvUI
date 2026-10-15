@@ -45,7 +45,6 @@ function UF:Update_AssistHeader(header, db)
 
 	local up = db.growthY == 'UP'
 	local spacing = db.verticalSpacing
-	header:ClearChildPoints()
 	header:SetAttribute('_ignore', true) -- hold the header update
 	header:SetAttribute('yOffset', up and spacing or -spacing)
 
