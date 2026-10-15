@@ -977,14 +977,16 @@ function UF.groupPrototype:Configure_Groups(Header)
 
 		if group then
 			UF:ConvertGroupDB(group)
+
 			group:ClearAllPoints()
 			group:ClearChildPoints()
 			group.db = db
 
-			local point = DIRECTION_TO_POINT[direction]
+			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
 			group:SetAttribute('_ignore', true) -- hold the header update
-			group:SetAttribute('point', point)
+			group:SetAttribute('groupFilter', groupWide or tostring(i))
 
+			local point = DIRECTION_TO_POINT[direction]
 			if point == 'LEFT' or point == 'RIGHT' then
 				group:SetAttribute('xOffset', horizontalSpacing * x)
 				group:SetAttribute('yOffset', 0)
@@ -1001,6 +1003,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 				group:SetAttribute('columnAnchorPoint', DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			end
 
+			local shouldShow
 			if not group.isForced then
 				group:SetAttribute('maxColumns', raidWideSorting and numGroups or 1)
 				group:SetAttribute('unitsPerColumn', raidWideSorting and (groupsPerRowCol * 5) or 5)
@@ -1009,8 +1012,8 @@ function UF.groupPrototype:Configure_Groups(Header)
 
 				if not group.initialized then -- keep below maxColumns and unitsPerColumn, otherwise it spawns more buttons than it can show
 					group:SetAttribute('startingIndex', raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
-					group:Show()
 					group.initialized = true
+					shouldShow = true
 				end
 
 				group:SetAttribute('startingIndex', 1)
@@ -1018,9 +1021,12 @@ function UF.groupPrototype:Configure_Groups(Header)
 				UF:SetHeaderSortGroup(group, groupBy)
 			end
 
-			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
 			group:SetAttribute('_ignore', nil) -- reallow updates
-			group:SetAttribute('groupFilter', groupWide or tostring(i))
+			group:SetAttribute('point', point)
+
+			if shouldShow then
+				group:Show()
+			end
 		end
 
 		--MATH!! WOOT
