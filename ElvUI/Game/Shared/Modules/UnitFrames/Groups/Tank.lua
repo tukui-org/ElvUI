@@ -43,26 +43,28 @@ function UF:Update_TankHeader(header, db)
 		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	end
 
-	if not header.positioned then
-		header:ClearAllPoints()
-		header:Point('TOPLEFT', E.UIParent, 4, -186)
+	local up = db.growthY == 'UP'
+	local spacing = db.verticalSpacing
+	header:ClearAllPoints()
+	header:ClearChildPoints()
+	header:SetAttribute('yOffset', up and spacing or -spacing)
+	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 
+	if header.positioned then
+		E:SetMoverPoints(header.mover.name, header)
+	else
 		local width, height = header:GetSize()
-		local minHeight = max(height, 2 * db.height + db.verticalSpacing)
+		local minHeight = max(height, 2 * db.height + spacing)
+		header:SetAttribute('columnAnchorPoint', 'LEFT')
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
+		header:Point('TOPLEFT', E.UIParent, 4, -186)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,tank,generalGroup')
 		header.mover:SetSize(width, minHeight)
 
 		header.positioned = true
 	end
-
-	local up = db.growthY == 'UP'
-	header:ClearChildPoints()
-	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute('yOffset', up and db.verticalSpacing or -db.verticalSpacing)
-	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 end
 
 function UF:Update_TankFrames(frame, db)
