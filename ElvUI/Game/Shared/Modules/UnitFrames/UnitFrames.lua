@@ -829,11 +829,13 @@ function UF:Configure_FontString(obj)
 end
 
 function UF:Update_UnitFrame(frame)
-	local enabled = UF.db.units[self].enable
+	local db = UF.db.units[self]
+	local enabled = db.enable
 	frame:SetEnabled(enabled)
 
 	if enabled then
 		frame:Update()
+
 		E:EnableMover(frame.mover.name)
 	else
 		E:DisableMover(frame.mover.name)
@@ -843,7 +845,8 @@ end
 function UF:Update_GroupFrame(group)
 	local frame = UF[self]
 
-	local enabled = UF.db.units[group].enable
+	local db = UF.db.units[group]
+	local enabled = db.enable
 	if group == 'arena' then
 		frame:SetAttribute('oUF-enableArenaPrep', enabled)
 	end
@@ -906,14 +909,15 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF[unit] = frame
 		end
 
+		local db = UF.db.units[group]
 		if not frame.Update then
 			local groupName = gsub(E:StringTitle(group), 't(arget)', 'T%1')
 			frame.Update = function()
-				UF['Update_'..E:StringTitle(groupName)..'Frames'](UF, frame, UF.db.units[group])
+				UF['Update_'..E:StringTitle(groupName)..'Frames'](UF, frame, db)
 			end
 		end
 
-		local enabled = UF.db.units[group].enable
+		local enabled = db.enable
 		if group == 'arena' then
 			frame:SetAttribute('oUF-enableArenaPrep', enabled)
 		end
@@ -972,15 +976,13 @@ function UF.groupPrototype:Configure_Groups(Header)
 	local numGroups = Header.numGroups
 	for i = 1, numGroups do
 		local group = Header.groups[i]
-		local lastIndex = i - 1
-		local lastGroup = lastIndex % groupsPerRowCol
-
 		if group then
 			UF:ConvertGroupDB(group)
 
+			group.db = db
+
 			group:ClearAllPoints()
 			group:ClearChildPoints()
-			group.db = db
 
 			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
 			group:SetAttribute('_ignore', true) -- hold the header update
@@ -1034,13 +1036,16 @@ function UF.groupPrototype:Configure_Groups(Header)
 			point = DIRECTION_TO_GROUP_ANCHOR_POINT['OUT_'..direction]
 		end
 
+		local lastGroup = (i - 1) % groupsPerRowCol
 		if lastGroup == 0 then
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if group then group:SetPoint(point, Header, point, 0, height * y) end
+
 				height = height + HEIGHT + groupSpacing
 				newRows = newRows + 1
 			else
 				if group then group:SetPoint(point, Header, point, width * x, 0) end
+
 				width = width + WIDTH + groupSpacing
 				newCols = newCols + 1
 			end
@@ -1048,6 +1053,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if newRows == 1 then
 					if group then group:SetPoint(point, Header, point, width * x, 0) end
+
 					width = width + WIDTH_FIVE + groupSpacing
 					newCols = newCols + 1
 				elseif group then
@@ -1056,6 +1062,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			else
 				if newCols == 1 then
 					if group then group:SetPoint(point, Header, point, 0, height * y) end
+
 					height = height + HEIGHT_FIVE + groupSpacing
 					newRows = newRows + 1
 				elseif group then
@@ -1278,7 +1285,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	if not Header then
 		ElvUF:RegisterStyle('ElvUF_'..name, UF[format('Construct_%sFrames', isRaidFrames and 'Raid' or name)])
 		ElvUF:SetActiveStyle('ElvUF_'..name)
-		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
+
+		if not UF.headerFunctions[group] then
+			UF.headerFunctions[group] = {}
+		end
 
 		if numGroups then
 			Header = CreateFrame('Frame', 'ElvUF_'..name, E.UFParent, 'SecureHandlerStateTemplate')
@@ -1344,12 +1354,14 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if not Header.isForced then
 			RegisterStateDriver(Header, 'visibility', visibility)
 		end
+
 		if Header.mover then
 			E:EnableMover(Header.mover.name)
 		end
 	else
 		UnregisterStateDriver(Header, 'visibility')
 		Header:Hide()
+
 		if Header.mover then
 			E:DisableMover(Header.mover.name)
 		end
@@ -1368,13 +1380,14 @@ function UF:CreateAndUpdateUF(unit)
 		UF[unit] = frame
 	end
 
+	local db = UF.db.units[unit]
 	if not frame.Update then
 		frame.Update = function()
-			UF['Update_'..frameName..'Frame'](UF, frame, UF.db.units[unit])
+			UF['Update_'..frameName..'Frame'](UF, frame, db)
 		end
 	end
 
-	local enabled = UF.db.units[unit].enable
+	local enabled = db.enable
 	frame:SetEnabled(enabled)
 
 	if enabled then
