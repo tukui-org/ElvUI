@@ -73,6 +73,7 @@ function NP:Construct_ClassificationIndicator(nameplate)
 	element:SetFrameLevel(nameplate.RaisedElement.ClassificationLevel)
 
 	local texture = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
+	texture.element = element -- used by ReparentElements
 	element.texture = texture
 
 	return texture

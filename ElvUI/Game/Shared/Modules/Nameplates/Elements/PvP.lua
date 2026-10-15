@@ -17,11 +17,13 @@ function NP:Construct_PvPIndicator(nameplate)
 	local element = CreateFrame('Frame', '$parent_PvPIndicator', nameplate)
 	element:SetFrameLevel(nameplate.RaisedElement.PvPIndicatorLevel)
 
-	local PvPIndicator = element:CreateTexture(nil, 'OVERLAY')
-	PvPIndicator.Badge_ = element:CreateTexture(nil, 'ARTWORK')
-	PvPIndicator.PostUpdate = NP.PvPIndicator_PostUpdate
+	local texture = element:CreateTexture(nil, 'OVERLAY')
+	texture.Badge_ = element:CreateTexture(nil, 'ARTWORK')
+	texture.PostUpdate = NP.PvPIndicator_PostUpdate
+	texture.element = element -- used by ReparentElements
+	element.texture = texture
 
-	return PvPIndicator
+	return texture
 end
 
 function NP:Update_PvPIndicator(nameplate)
@@ -50,7 +52,14 @@ function NP:Update_PvPIndicator(nameplate)
 end
 
 function NP:Construct_PvPClassificationIndicator(nameplate)
-	return nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
+	local element = CreateFrame('Frame', '$parent_PvPClassificationIndicator', nameplate)
+	element:SetFrameLevel(nameplate.RaisedElement.PvPClassificationLevel)
+
+	local texture = element:CreateTexture(nil, 'OVERLAY')
+	texture.element = element -- used by ReparentElements
+	element.texture = texture
+
+	return texture
 end
 
 function NP:Update_PvPClassificationIndicator(nameplate)
