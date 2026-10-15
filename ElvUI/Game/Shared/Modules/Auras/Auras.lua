@@ -656,7 +656,7 @@ function A:UpdateHeader(header)
 		header:SetAttribute('xOffset', xOffset)
 		header:SetAttribute('yOffset', yOffset)
 		header:SetAttribute('wrapXOffset', wrapXOffset)
-		header:SetAttribute('_ignore', nil)
+		header:SetAttribute('_ignore', nil) -- reallow updates
 		header:SetAttribute('wrapYOffset', wrapYOffset)
 
 		header:ForEachChild(A.UpdateChild, db)
