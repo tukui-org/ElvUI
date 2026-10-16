@@ -91,6 +91,7 @@
 	<Script file='Shared\Skins\Friends.lua'/>
 	<Script file='Shared\Skins\GMChat.lua'/>
 	<Script file='Shared\Skins\Gossip.lua'/>
+	<Script file='Shared\Skins\Guide.lua'/>
 	<Script file='Shared\Skins\Guild.lua'/>
 	<Script file='Shared\Skins\GuildBank.lua'/>
 	<Script file='Shared\Skins\GuildControl.lua'/>

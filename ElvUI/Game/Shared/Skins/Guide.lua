@@ -9,6 +9,10 @@ S:AddCallbackForAddon('Blizzard_NewPlayerExperienceGuide', nil, nil, nil, nil, n
 function S:Blizzard_NewPlayerExperience()
 	S:HandleButton(_G.KeyboardMouseConfirmButton)
 
+	if E.Forever then
+		S:HandleButton(_G.SkipTutorialButton)
+	end
+
 	local walk = _G.TutorialWalk_Frame.ContainerFrame
 	walk.STRAFELEFT.KeyBind:SetTextColor(1, .8, 0)
 	walk.STRAFERIGHT.KeyBind:SetTextColor(1, .8, 0)
