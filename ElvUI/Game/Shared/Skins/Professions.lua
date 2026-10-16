@@ -286,16 +286,10 @@ local function HandleRankBar(bar)
 	S:HandleButton(bar.ExpansionDropdownButton)
 end
 
-local function OrderView_UpdateCreateButton(frame)
-	frame.CreateButton:HookScript('OnEnter', S.SetModifiedBackdrop)
-end
-
-local function OrderView_UpdateFulfillButton(frame)
-	frame.CompleteOrderButton:HookScript('OnEnter', S.SetModifiedBackdrop)
-end
-
-local function OrderView_UpdateStartOrderButton(frame)
-	frame.OrderInfo.StartOrderButton:HookScript('OnEnter', S.SetModifiedBackdrop)
+local function SetModifiedBackdrop(button, method)
+	if method == 'OnEnter' then
+		button:HookScript('OnEnter', S.SetModifiedBackdrop)
+	end
 end
 
 local function HandleOrderView(frame)
@@ -319,10 +313,6 @@ local function HandleOrderView(frame)
 	S:HandleButton(frame.StartRecraftButton)
 	S:HandleButton(frame.CompleteOrderButton)
 
-	hooksecurefunc(frame, 'UpdateCreateButton', OrderView_UpdateCreateButton)
-	hooksecurefunc(frame, 'UpdateFulfillButton', OrderView_UpdateFulfillButton)
-	hooksecurefunc(frame, 'UpdateStartOrderButton', OrderView_UpdateStartOrderButton)
-
 	local OrderInfo = frame.OrderInfo
 	OrderInfo:StripTextures()
 	OrderInfo:CreateBackdrop('Transparent')
@@ -333,6 +323,11 @@ local function HandleOrderView(frame)
 	S:HandleButton(OrderInfo.ReleaseOrderButton)
 	S:HandleButton(OrderInfo.SocialDropdown)
 	S:HandleEditBox(OrderInfo.NoteBox, 'Transparent')
+
+	-- blizzard rescripts these later, see comment function
+	hooksecurefunc(frame.CreateButton, 'SetScript', SetModifiedBackdrop) -- UpdateCreateButton
+	hooksecurefunc(frame.CompleteOrderButton, 'SetScript', SetModifiedBackdrop) -- UpdateFulfillButton
+	hooksecurefunc(OrderInfo.StartOrderButton, 'SetScript', SetModifiedBackdrop) -- UpdateStartOrderButton
 
 	local RewardsFrame = OrderInfo.NPCRewardsFrame
 	RewardsFrame.Background:SetAlpha(0)
