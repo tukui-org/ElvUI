@@ -881,7 +881,9 @@ function M:Initialize()
 	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
 
-	MinimapCluster.BorderTop:StripTextures()
+	if MinimapCluster.BorderTop then
+		MinimapCluster.BorderTop:StripTextures()
+	end
 
 	if E.Modern then
 		-- hide the BlopRing on Minimap
