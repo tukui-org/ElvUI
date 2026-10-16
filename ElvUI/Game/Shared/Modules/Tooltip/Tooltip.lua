@@ -482,8 +482,8 @@ function TT:CheckMountInfo(tt, aura)
 
 	tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
 
-	local sourceText = E.MountText[mountID]
-	local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
+	local sourceText = IsControlKeyDown() and E.MountText[mountID]
+	local mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
 	if mountText then
 		local sourceModified = gsub(mountText, '|n', '\10')
 		for x in gmatch(sourceModified, '[^\10]+\10?') do
