@@ -4,7 +4,7 @@ local NP = E:GetModule('NamePlates')
 local CreateFrame = CreateFrame
 
 function NP:Construct_TagText(nameplate, name)
-	local element = CreateFrame('Frame', name and (nameplate.frameName..name) or nil, nameplate)
+	local element = CreateFrame('Frame', name and (nameplate.frameName..name) or nil, nameplate.RaisedElement)
 	element:SetFrameLevel(nameplate.RaisedElement.TagTextLevel)
 
 	local text = element:CreateFontString(nil, 'OVERLAY')
