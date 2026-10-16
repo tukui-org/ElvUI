@@ -62,7 +62,6 @@
 	<Script file='Shared\Modules\DataTexts\PrimaryStat.lua'/>
 	<Script file='Shared\Modules\DataTexts\Speed.lua'/>
 	<Script file='Shared\Modules\DataBars\PetExperience.lua'/>
-	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
 
 	<Script file='Shared\Skins\AddonManager.lua'/>
 	<Script file='Shared\Skins\Alerts.lua'/>

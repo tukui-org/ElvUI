@@ -1684,7 +1684,7 @@ function E:UpdateActionBars()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroButtons()
 
-	if E.Modern or E.Mists then
+	if E.Retail or E.Mists then
 		ActionBars:UpdateExtraButtons()
 	end
 end
