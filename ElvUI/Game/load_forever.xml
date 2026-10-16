@@ -62,7 +62,6 @@
 	<Script file='Shared\Modules\DataTexts\PrimaryStat.lua'/>
 	<Script file='Shared\Modules\DataTexts\Speed.lua'/>
 	<Script file='Shared\Modules\DataBars\PetExperience.lua'/>
-	<Script file='Shared\Modules\ActionBars\ExtraAB.lua'/>
 
 	<Script file='Shared\Skins\AddonManager.lua'/>
 	<Script file='Shared\Skins\Alerts.lua'/>
@@ -91,6 +90,7 @@
 	<Script file='Shared\Skins\Friends.lua'/>
 	<Script file='Shared\Skins\GMChat.lua'/>
 	<Script file='Shared\Skins\Gossip.lua'/>
+	<Script file='Shared\Skins\Guide.lua'/>
 	<Script file='Shared\Skins\Guild.lua'/>
 	<Script file='Shared\Skins\GuildBank.lua'/>
 	<Script file='Shared\Skins\GuildControl.lua'/>

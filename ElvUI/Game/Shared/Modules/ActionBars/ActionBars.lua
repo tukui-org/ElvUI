@@ -661,7 +661,7 @@ function AB:UpdateAllBinds(event)
 	AB:UpdatePetBindings()
 	AB:UpdateStanceBindings()
 
-	if E.Modern or E.Mists then
+	if E.Retail or E.Mists then
 		AB:UpdateExtraBindings()
 	end
 
@@ -743,8 +743,11 @@ function AB:UpdateButtonSettings(specific)
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
 
-		if E.Modern or E.Mists then
+		if E.Retail or E.Mists then
 			AB:UpdateExtraBindings()
+		end
+
+		if E.Modern or E.Mists then
 			AB:UpdateFlyoutButtons()
 
 			-- handle LAB custom flyout button sizes again
@@ -2066,7 +2069,7 @@ function AB:Initialize()
 		AB:ADDON_LOADED(nil, 'Blizzard_MacroUI')
 	end
 
-	if E.Modern or E.Mists then
+	if E.Retail or E.Mists then
 		AB:SetupExtraButtons()
 	end
 
