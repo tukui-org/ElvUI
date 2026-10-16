@@ -261,6 +261,7 @@ local function SkinMainline()
 		DetailsFrame:CreateBackdrop('Transparent')
 		DetailsFrame.backdrop:SetAllPoints(DetailsBg)
 
+		RewardsContainer:SetTemplate('Transparent')
 		RewardsContainer.RewardsFrame:StripTextures()
 		DetailsFrame.SealMaterialBG:SetAlpha(0)
 	else
