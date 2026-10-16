@@ -467,6 +467,10 @@ local function SkinPetFrame()
 		E:RegisterStatusBar(Card.xpBar)
 	else
 		Card.ShadowOverlay:Hide()
+
+		local modelScene = Card.modelScene
+		S:HandleRotateButton(modelScene.RotateLeftButton)
+		S:HandleRotateButton(modelScene.RotateRightButton)
 	end
 end
 
