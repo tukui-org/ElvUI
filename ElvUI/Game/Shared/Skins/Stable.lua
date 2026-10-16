@@ -81,26 +81,16 @@ local function SkinForeverPetStableFrame()
 	modelScene.PetModelSceneShadow:SetInside()
 	modelScene.Inset.NineSlice:SetTemplate()
 	modelScene.Inset.Bg:Hide()
+	modelScene.Background:Hide()
+
+	stableFrame.TopDividerFrame:StripTextures()
+	stableFrame.BottomDividerFrame:StripTextures()
 
 	local diet = stableFrame.diet
 	diet:CreateBackdrop()
 	diet:Size(24)
 
-	local expBar = stableFrame.expBar
-	if expBar.StatusBar then
-		S:HandleStatusBar(expBar.StatusBar)
-	end
-
-	if expBar.overlay then
-		expBar.overlay:StripTextures()
-	end
-
-	local loyaltyLevel = stableFrame.loyaltyLevel
-	if loyaltyLevel then
-		loyaltyLevel:StripTextures()
-		loyaltyLevel:CreateBackdrop()
-		loyaltyLevel:Size(24)
-	end
+	S:HandleColoredProgressBar(stableFrame.expBar)
 
 	_G.PetStableMoneyFrame.Border:StripTextures()
 end

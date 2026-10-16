@@ -1512,6 +1512,62 @@ do
 	end
 end
 
+do
+	local fillColors = {
+		['common-stat-bar-blue'] = { r = 0.03, g = 0.43, b = 0.92 },
+		['common-stat-bar-green'] = { r = 0.23, g = 1, b = 0 },
+	}
+
+	local function UpdateFill(bar)
+		local fill = bar.Fill
+		local atlas = fill:GetAtlas()
+		local color = fillColors[atlas]
+		if color then
+			fill:SetVertexColor(color.r, color.g, color.b)
+		end
+
+		fill:SetTexture(E.media.normTex)
+		fill:SetTexCoord(0, 1, 0, 1)
+	end
+
+	local function SetFillPercent(bar, percent)
+		UpdateFill(bar)
+
+		bar.Fill:SetShown(percent > 0)
+	end
+
+	-- ColoredProgressBarTemplate: unnamed background, a masked Fill sized from FillArea, and Text
+	function S:HandleColoredProgressBar(bar)
+		if bar.IsSkinned then return end
+
+		bar:GetRegions():SetTexture()
+
+		bar:CreateBackdrop('Transparent')
+		bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
+		bar.backdrop:Point('BOTTOMRIGHT', bar, 'RIGHT', 1, -8)
+
+		local fillArea = bar.FillArea
+		fillArea:ClearAllPoints()
+		fillArea:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
+		fillArea:Point('BOTTOMRIGHT', bar.backdrop, 'BOTTOMRIGHT', -E.Border, E.Border)
+
+		bar.Text:FontTemplate()
+
+		bar.Fill:ClearAllPoints()
+		bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
+		bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
+		bar.Fill:RemoveMaskTexture(bar.Mask)
+
+		E:RegisterStatusBar(bar.Fill)
+
+		UpdateFill(bar)
+
+		hooksecurefunc(bar, 'SetFillPercent', SetFillPercent)
+
+		bar.IsSkinned = true
+	end
+end
+
 function S:ForEachCheckboxTextureRegion(checkbox, func)
 	for _, region in next, { checkbox:GetRegions() } do
 		if region:IsObjectType('Texture') then
