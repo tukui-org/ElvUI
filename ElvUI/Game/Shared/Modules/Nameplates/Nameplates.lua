@@ -1146,7 +1146,7 @@ function NP:Initialize()
 	targetClassPower.frameType = 'TARGET'
 	targetClassPower:SetAttribute('toggleForVehicle', true)
 	targetClassPower:ClearAllPoints()
-	targetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+	targetClassPower:Point('TOP', UIParent, 'BOTTOM', 0, -5000)
 	NP.TargetClassPower = targetClassPower
 
 	NP.PlayerNamePlateAnchor = CreateFrame('Frame', 'ElvUIPlayerNamePlateAnchor', E.UIParent)
