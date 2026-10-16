@@ -286,6 +286,18 @@ local function HandleRankBar(bar)
 	S:HandleButton(bar.ExpansionDropdownButton)
 end
 
+local function OrderView_UpdateCreateButton(frame)
+	frame.CreateButton:HookScript('OnEnter', S.SetModifiedBackdrop)
+end
+
+local function OrderView_UpdateFulfillButton(frame)
+	frame.CompleteOrderButton:HookScript('OnEnter', S.SetModifiedBackdrop)
+end
+
+local function OrderView_UpdateStartOrderButton(frame)
+	frame.OrderInfo.StartOrderButton:HookScript('OnEnter', S.SetModifiedBackdrop)
+end
+
 local function HandleOrderView(frame)
 	local DeclineOrderDialog = frame.DeclineOrderDialog
 	DeclineOrderDialog:StripTextures()
@@ -306,6 +318,10 @@ local function HandleOrderView(frame)
 	S:HandleButton(frame.CreateButton)
 	S:HandleButton(frame.StartRecraftButton)
 	S:HandleButton(frame.CompleteOrderButton)
+
+	hooksecurefunc(frame, 'UpdateCreateButton', OrderView_UpdateCreateButton)
+	hooksecurefunc(frame, 'UpdateFulfillButton', OrderView_UpdateFulfillButton)
+	hooksecurefunc(frame, 'UpdateStartOrderButton', OrderView_UpdateStartOrderButton)
 
 	local OrderInfo = frame.OrderInfo
 	OrderInfo:StripTextures()
@@ -343,6 +359,27 @@ local function HandleOrderView(frame)
 
 	OrderItemIcon:GetHighlightTexture():Hide()
 	OrderItemIcon.CircleMask:Hide()
+end
+
+-- SetupTable refills headers per browse type
+local function HandleOrderListHeaders(page)
+	local columns = page.tableBuilder:GetColumns()
+	local numColumns = #columns
+	for i, column in next, columns do
+		local header = column:GetHeaderFrame()
+		if not header.IsSkinned then
+			header:DisableDrawLayer('BACKGROUND')
+			header:CreateBackdrop('Transparent')
+
+			local highlight = header:GetHighlightTexture()
+			highlight:SetColorTexture(1, 1, 1, 0.1)
+			highlight:SetAllPoints(header.backdrop)
+
+			header.IsSkinned = true
+		end
+
+		header.backdrop:Point('BOTTOMRIGHT', i < numColumns and -5 or 0, -2)
+	end
 end
 
 local COLLAPSE_ATLAS = {
@@ -642,6 +679,9 @@ function S:Blizzard_Professions()
 
 		BrowseFrame.OrderList:StripTextures()
 		S:HandleTrimScrollBar(BrowseFrame.OrderList.ScrollBar)
+
+		HandleOrderListHeaders(OrdersPage) -- First one exists OnLoad already
+		hooksecurefunc(OrdersPage, 'SetupTable', HandleOrderListHeaders)
 	end
 
 	if E.Forever then -- Forever BookPage (ProfessionsBookFrameTemplate)
