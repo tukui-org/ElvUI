@@ -107,7 +107,7 @@ function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
 end
 
 function NP:Construct_Power(nameplate)
-	local Power = CreateFrame('StatusBar', nameplate.frameName..'Power', nameplate)
+	local Power = CreateFrame('StatusBar', '$parent_Power', nameplate)
 	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 
 	NP.StatusBars[Power] = 'power'

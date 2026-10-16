@@ -3899,10 +3899,21 @@ function CH:GetPlayerInfoByGUID(guid)
 	if E:IsSecretValue(guid) then return end
 
 	local data = CH.GuidCache[guid]
-	if not data then
-		local ok, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm = pcall(GetPlayerInfoByGUID, guid)
-		if not (ok and englishClass) then return end
+	local ok, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm, level
+	if not data or data.level then -- only fetch for new or if a level exists, we need to update it
+		ok, localizedClass, englishClass, localizedRace, englishRace, sex, name, realm, level = pcall(GetPlayerInfoByGUID, guid)
+	end
 
+	-- something broke just return cache, if it exists
+	if not ok then
+		return data
+	end
+
+	-- time to cache
+	if data then
+		data.level = level -- update the level if we need to
+		data.classColor = E:ClassColor(data.englishClass) -- we still need to recheck this each time because CUSTOM_CLASS_COLORS can change
+	else
 		if realm == '' then realm = nil end -- dont add realm for people on your realm
 		local shortRealm, nameWithRealm = realm and E:ShortenRealm(realm)
 		if name and name ~= '' then
@@ -3911,20 +3922,23 @@ function CH:GetPlayerInfoByGUID(guid)
 
 		-- move em into a table
 		data = {
-			localizedClass = localizedClass,
-			englishClass = englishClass,
-			localizedRace = localizedRace,
-			englishRace = englishRace,
 			sex = sex,
 			name = name,
 			realm = realm,
-			nameWithRealm = nameWithRealm -- we use this to correct mobile to link with the realm as well
+			level = level,
+			englishRace = englishRace,
+			englishClass = englishClass,
+			localizedRace = localizedRace,
+			localizedClass = localizedClass,
+			nameWithRealm = nameWithRealm, -- we use this to correct mobile to link with the realm as well
+			classColor = E:ClassColor(englishClass)
 		}
 
 		-- add it to ClassNames
 		if name then
 			CH.ClassNames[strlower(name)] = englishClass
 		end
+
 		if nameWithRealm then
 			CH.ClassNames[strlower(nameWithRealm)] = englishClass
 		end
@@ -3932,9 +3946,6 @@ function CH:GetPlayerInfoByGUID(guid)
 		-- push into the cache
 		CH.GuidCache[guid] = data
 	end
-
-	-- we still need to recheck this each time because CUSTOM_CLASS_COLORS can change
-	if data then data.classColor = E:ClassColor(data.englishClass) end
 
 	return data
 end

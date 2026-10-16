@@ -23,7 +23,7 @@ function UF:Construct_TankFrames()
 	self.Fader = UF:Construct_Fader()
 	self.Cutaway = UF:Construct_Cutaway(self)
 
-	if not self.isChild then
+	if not isChild then
 		self.AuraWatch = UF:Construct_AuraWatch(self)
 		self.RaidDebuffs = UF:Construct_RaidDebuffs(self)
 		self.AuraHighlight = UF:Construct_AuraHighlight(self)
@@ -43,14 +43,19 @@ function UF:Update_TankHeader(header, db)
 		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	end
 
-	if not header.positioned then
-		header:ClearAllPoints()
-		header:Point('TOPLEFT', E.UIParent, 4, -186)
+	local up = db.growthY == 'UP'
+	local spacing = db.verticalSpacing
+	header:SetAttribute('_ignore', true) -- hold the header update
+	header:SetAttribute('yOffset', up and spacing or -spacing)
 
+	if not header.positioned then
 		local width, height = header:GetSize()
-		local minHeight = max(height, 2 * db.height + db.verticalSpacing)
+		local minHeight = max(height, 2 * db.height + spacing)
+		header:SetAttribute('columnAnchorPoint', 'LEFT')
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
+		header:ClearAllPoints()
+		header:Point('TOPLEFT', E.UIParent, 4, -186)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MT Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,tank,generalGroup')
 		header.mover:SetSize(width, minHeight)
@@ -58,10 +63,7 @@ function UF:Update_TankHeader(header, db)
 		header.positioned = true
 	end
 
-	local up = db.growthY == 'UP'
-	header:ClearChildPoints()
-	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute('yOffset', up and db.verticalSpacing or -db.verticalSpacing)
+	header:SetAttribute('_ignore', nil) -- allow updates
 	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 end
 
@@ -89,6 +91,10 @@ function UF:Update_TankFrames(frame, db)
 		frame.BOTTOM_OFFSET = 0
 	end
 
+	frame:ClearAllPoints()
+	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
+	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
+
 	if frame.isChild then
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
@@ -100,16 +106,12 @@ function UF:Update_TankFrames(frame, db)
 			frame:SetEnabled(enabled)
 
 			if enabled then
-				frame:ClearAllPoints()
 				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			end
 		end
 	else
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
 	end
-
-	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
-	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
 
 	UF:ConfigureFrame(frame, frame.isChild and 'tanktarget' or 'tank')
 end

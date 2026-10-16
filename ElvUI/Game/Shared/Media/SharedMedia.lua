@@ -282,7 +282,7 @@ end
 
 do	-- LSM Font Preloader ~Simpy
 	local preloader = CreateFrame('Frame')
-	preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -90000)
+	preloader:SetPoint('TOP', UIParent, 'BOTTOM', 0, -5000)
 	preloader:SetSize(100, 100)
 
 	local cacheFont = function(key, data)

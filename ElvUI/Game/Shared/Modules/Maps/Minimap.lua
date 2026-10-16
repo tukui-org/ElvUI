@@ -158,7 +158,7 @@ function M:HandleTrackingButton()
 
 	local hidden = not Minimap:IsShown()
 	if hidden or E.private.general.minimap.hideTracking then
-		tracking:Point('TOP', UIParent, 'BOTTOM') -- retail cant hide the parent otherwise the menu will error
+		tracking:Point('BOTTOM', UIParent, 'TOP', 0, 5000) -- retail cant hide the parent otherwise the menu will error
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
@@ -881,7 +881,9 @@ function M:Initialize()
 	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
 
-	MinimapCluster.BorderTop:StripTextures()
+	if MinimapCluster.BorderTop then
+		MinimapCluster.BorderTop:StripTextures()
+	end
 
 	if E.Modern then
 		-- hide the BlopRing on Minimap

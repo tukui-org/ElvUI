@@ -71,6 +71,10 @@ function S:BlizzardMiscFrames()
 	for _, frame in next, { _G.AddonCompartmentFrame, _G.AutoCompleteBox, _G.QueueStatusFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
+
+		if frame.StateTexture then
+			frame.StateTexture:SetAlpha(0)
+		end
 	end
 
 	local ReadyCheckFrame = _G.ReadyCheckFrame

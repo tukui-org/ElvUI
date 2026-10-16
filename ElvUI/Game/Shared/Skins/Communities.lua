@@ -231,8 +231,8 @@ function S:Blizzard_Communities()
 	local PreferredPlay = CommunitiesFrame.GuildPreferredPlaySettingsFrame
 	if PreferredPlay then
 		S:HandleItemButton(CommunitiesFrame.GuildPreferredPlaySettingsTab)
-		S:HandleDropDownBox(PreferredPlay.LocaleDropdown, 200, nil, true)
-		S:HandleDropDownBox(PreferredPlay.DatacenterDropdown, 200, nil, true)
+		S:HandleDropDownBox(PreferredPlay.LocaleDropdown, 200, nil, E.Retail)
+		S:HandleDropDownBox(PreferredPlay.DatacenterDropdown, 200, nil, E.Retail)
 		S:HandleButton(PreferredPlay.LocaleApplyButton)
 		S:HandleButton(PreferredPlay.DatacenterApplyButton)
 	end

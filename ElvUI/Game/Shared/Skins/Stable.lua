@@ -87,13 +87,20 @@ local function SkinForeverPetStableFrame()
 	diet:Size(24)
 
 	local expBar = stableFrame.expBar
-	S:HandleStatusBar(expBar.StatusBar)
-	expBar.overlay:StripTextures()
+	if expBar.StatusBar then
+		S:HandleStatusBar(expBar.StatusBar)
+	end
+
+	if expBar.overlay then
+		expBar.overlay:StripTextures()
+	end
 
 	local loyaltyLevel = stableFrame.loyaltyLevel
-	loyaltyLevel:StripTextures()
-	loyaltyLevel:CreateBackdrop()
-	loyaltyLevel:Size(24)
+	if loyaltyLevel then
+		loyaltyLevel:StripTextures()
+		loyaltyLevel:CreateBackdrop()
+		loyaltyLevel:Size(24)
+	end
 
 	_G.PetStableMoneyFrame.Border:StripTextures()
 end

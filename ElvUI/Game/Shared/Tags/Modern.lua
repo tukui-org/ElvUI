@@ -16,6 +16,7 @@ local UnitHealthMissing = UnitHealthMissing
 local UnitPowerMissing = UnitPowerMissing
 
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
+local WrapString = C_StringUtil.WrapString
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 
@@ -43,12 +44,14 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 
 	E:AddTag(format('missinghp:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		local healthMissing = UnitHealthMissing(unit)
-		return E:AbbreviateNumbers(healthMissing, E.Abbreviate[which])
+		local text = E:AbbreviateNumbers(healthMissing, E.Abbreviate[which])
+		return WrapString(TruncateWhenZero(healthMissing), '|Htag:', '|h' .. text .. '|h')
 	end)
 
 	E:AddTag(format('missingpp:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerMissing = UnitPowerMissing(unit)
-		return E:AbbreviateNumbers(powerMissing, E.Abbreviate[which])
+		local text = E:AbbreviateNumbers(powerMissing, E.Abbreviate[which])
+		return WrapString(TruncateWhenZero(powerMissing), '|Htag:', '|h' .. text .. '|h')
 	end)
 
 	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)

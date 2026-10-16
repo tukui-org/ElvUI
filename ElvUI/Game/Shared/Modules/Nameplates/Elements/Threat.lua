@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
+local CreateFrame = CreateFrame
 local UnitIsTapDenied = UnitIsTapDenied
 
 function NP:ThreatIndicator_PreUpdate(unit)
@@ -24,16 +25,21 @@ function NP:ThreatIndicator_PostUpdate(unit, status)
 end
 
 function NP:Construct_ThreatIndicator(nameplate)
-	local ThreatIndicator = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
-	ThreatIndicator:Size(16)
-	ThreatIndicator:Hide()
-	ThreatIndicator:Point('CENTER', nameplate.RaisedElement, 'TOPRIGHT')
+	local element = CreateFrame('Frame', '$parent_ThreatIndicator', nameplate)
+	element:SetFrameLevel(nameplate.RaisedElement.ThreatIndicatorLevel)
 
-	ThreatIndicator.feedbackUnit = 'player'
-	ThreatIndicator.PreUpdate = NP.ThreatIndicator_PreUpdate
-	ThreatIndicator.PostUpdate = NP.ThreatIndicator_PostUpdate
+	local texture = element:CreateTexture(nil, 'OVERLAY')
+	texture:Size(16)
+	texture:Hide()
+	texture:Point('CENTER', nameplate.RaisedElement, 'TOPRIGHT')
 
-	return ThreatIndicator
+	texture.feedbackUnit = 'player'
+	texture.PreUpdate = NP.ThreatIndicator_PreUpdate
+	texture.PostUpdate = NP.ThreatIndicator_PostUpdate
+	texture.element = element  -- used by LevelElements
+	element.texture = texture
+
+	return texture
 end
 
 function NP:Update_ThreatIndicator(nameplate)
