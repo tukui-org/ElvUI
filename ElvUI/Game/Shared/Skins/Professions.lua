@@ -454,14 +454,15 @@ end
 
 -- BookPage profession spell buttons (ProfessionButtonTemplate)
 local function HandleProfessionButton(button)
-	button:OffsetFrameLevel(1) -- backdrops sit a level below, the card art would cover them
+	local icon = button.IconTexture
+	icon:RemoveMaskTexture(button.OutlineMask)
+	icon:SetInside()
+
+	S:HandleIcon(icon, true)
+	icon.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
+
+	button.highlightTexture:SetInside(icon.backdrop)
 	button.IconTextureOverlay:SetAlpha(0)
-	button.IconTexture:RemoveMaskTexture(button.OutlineMask)
-	button.IconTexture:SetInside()
-
-	S:HandleIcon(button.IconTexture, true)
-
-	button.highlightTexture:SetInside(button.IconTexture.backdrop)
 
 	E:RegisterCooldown(button.cooldown)
 
@@ -474,6 +475,7 @@ local function HandleBookProfession(frame)
 	local unlearn = frame.UnlearnButton
 	if unlearn then
 		S:HandleCloseButton(unlearn)
+
 		unlearn:OffsetFrameLevel(1)
 		unlearn:CreateBackdrop()
 		unlearn:SetHitRectInsets(0, 0, 0, 0)
