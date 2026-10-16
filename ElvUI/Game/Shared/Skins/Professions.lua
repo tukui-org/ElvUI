@@ -345,9 +345,35 @@ local function HandleOrderView(frame)
 	OrderItemIcon.CircleMask:Hide()
 end
 
+local COLLAPSE_ATLAS = {
+	['Professions-recipe-header-expand'] = 'common-button-list-plus',
+	['Professions-recipe-header-collapse'] = 'common-button-list-minus'
+}
+
+-- Use Blizzard's plus / minus for headers
+local function UpdateCollapseIcon(texture, atlas)
+	local icon = COLLAPSE_ATLAS[atlas]
+	if icon then
+		texture:SetAtlas(icon, true)
+	end
+end
+
 -- RecipeList category rows (ProfessionsRecipeListCategoryTemplate)
 local function HandleRecipeCategory(button)
-	button:StripTextures()
+	if button.CollapseButton then -- Forever ListHeaderVisualTemplate
+		button:StripTextures()
+	else
+		button.LeftPiece:SetAlpha(0)
+		button.CenterPiece:SetAlpha(0)
+		button.RightPiece:SetAlpha(0)
+
+		for _, icon in next, { button.CollapseIcon, button.CollapseIconAlphaAdd } do
+			UpdateCollapseIcon(icon, icon:GetAtlas())
+
+			hooksecurefunc(icon, 'SetAtlas', UpdateCollapseIcon)
+		end
+	end
+
 	button:CreateBackdrop()
 	button.backdrop:SetInside(button, 0, 1)
 
@@ -376,7 +402,7 @@ end
 local function HandleRecipeListChild(child)
 	if child.IsSkinned then return end
 
-	if E.Forever and child.CollapseButton then
+	if child.CollapseIcon or (E.Forever and child.CollapseButton) then
 		HandleRecipeCategory(child)
 	elseif child.SkillUps then
 		HandleRecipe(child)
@@ -611,6 +637,8 @@ function S:Blizzard_Professions()
 		S:HandleTrimScrollBar(BrowseList.ScrollBar)
 		S:HandleEditBox(BrowseList.SearchBox)
 		S:HandleButton(BrowseList.FilterDropdown)
+
+		hooksecurefunc(BrowseList.ScrollBox, 'Update', HandleRecipeList)
 
 		BrowseFrame.OrderList:StripTextures()
 		S:HandleTrimScrollBar(BrowseFrame.OrderList.ScrollBar)
