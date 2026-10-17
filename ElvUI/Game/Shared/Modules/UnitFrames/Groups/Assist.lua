@@ -55,7 +55,7 @@ function UF:Update_AssistHeader(header, db)
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
 		header:ClearAllPoints()
-		header:Point('TOPLEFT', E.UIParent, 4, -248)
+		header:Point('TOPLEFT', E.UIParent, 4, -250)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,assist,generalGroup')
 		header.mover:SetSize(width, minHeight)
@@ -68,11 +68,10 @@ function UF:Update_AssistHeader(header, db)
 end
 
 function UF:Update_AssistFrames(frame, db)
-	frame.db = db
 	frame.colors = ElvUF.colors
 
 	do
-		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
+		frame.ORIENTATION = db.orientation -- allow this value to change when unitframes position changes on screen?
 		frame.SHADOW_SPACING = 3
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
@@ -91,26 +90,32 @@ function UF:Update_AssistFrames(frame, db)
 		frame.BOTTOM_OFFSET = 0
 	end
 
-	frame:ClearAllPoints()
-	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
-	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
+	local opt = db.strataAndLevel
+	frame:SetFrameStrata(opt and opt.useCustomStrata and opt.frameStrata or 'LOW')
+	frame:SetFrameLevel(opt and opt.useCustomLevel and opt.frameLevel or 1)
 
+	local noCombat = not InCombatLockdown()
 	if frame.isChild then
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
-
 		frame:Size(childDB.width, childDB.height)
 
-		if not InCombatLockdown() then
+		if noCombat then
 			local enabled = childDB.enable
 			frame:SetEnabled(enabled)
 
 			if enabled then
+				frame:ClearAllPoints()
 				frame:Point(E.InversePoints[childDB.anchorPoint], frame.originalParent, childDB.anchorPoint, childDB.xOffset, childDB.yOffset)
 			end
 		end
 	else
+		frame.db = db
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
+
+		if noCombat then
+			frame:ClearAllPoints()
+		end
 	end
 
 	UF:ConfigureFrame(frame, frame.isChild and 'assisttarget' or 'assist')

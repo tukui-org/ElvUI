@@ -286,6 +286,12 @@ local function HandleRankBar(bar)
 	S:HandleButton(bar.ExpansionDropdownButton)
 end
 
+local function SetModifiedBackdrop(button, method)
+	if method == 'OnEnter' then
+		button:HookScript('OnEnter', S.SetModifiedBackdrop)
+	end
+end
+
 local function HandleOrderView(frame)
 	local DeclineOrderDialog = frame.DeclineOrderDialog
 	DeclineOrderDialog:StripTextures()
@@ -318,6 +324,11 @@ local function HandleOrderView(frame)
 	S:HandleButton(OrderInfo.SocialDropdown)
 	S:HandleEditBox(OrderInfo.NoteBox, 'Transparent')
 
+	-- blizzard rescripts these later, see comment function
+	hooksecurefunc(frame.CreateButton, 'SetScript', SetModifiedBackdrop) -- UpdateCreateButton
+	hooksecurefunc(frame.CompleteOrderButton, 'SetScript', SetModifiedBackdrop) -- UpdateFulfillButton
+	hooksecurefunc(OrderInfo.StartOrderButton, 'SetScript', SetModifiedBackdrop) -- UpdateStartOrderButton
+
 	local RewardsFrame = OrderInfo.NPCRewardsFrame
 	RewardsFrame.Background:SetAlpha(0)
 	RewardsFrame.Background:CreateBackdrop('Transparent')
@@ -343,6 +354,27 @@ local function HandleOrderView(frame)
 
 	OrderItemIcon:GetHighlightTexture():Hide()
 	OrderItemIcon.CircleMask:Hide()
+end
+
+-- SetupTable refills headers per browse type
+local function HandleOrderListHeaders(page)
+	local columns = page.tableBuilder:GetColumns()
+	local numColumns = #columns
+	for i, column in next, columns do
+		local header = column:GetHeaderFrame()
+		if not header.IsSkinned then
+			header:DisableDrawLayer('BACKGROUND')
+			header:CreateBackdrop('Transparent')
+
+			local highlight = header:GetHighlightTexture()
+			highlight:SetColorTexture(1, 1, 1, 0.1)
+			highlight:SetAllPoints(header.backdrop)
+
+			header.IsSkinned = true
+		end
+
+		header.backdrop:Point('BOTTOMRIGHT', i < numColumns and -5 or 0, -2)
+	end
 end
 
 local COLLAPSE_ATLAS = {
@@ -422,14 +454,15 @@ end
 
 -- BookPage profession spell buttons (ProfessionButtonTemplate)
 local function HandleProfessionButton(button)
-	button:OffsetFrameLevel(1) -- backdrops sit a level below, the card art would cover them
+	local icon = button.IconTexture
+	icon:RemoveMaskTexture(button.OutlineMask)
+	icon:SetInside()
+
+	S:HandleIcon(icon, true)
+	icon.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
+
+	button.highlightTexture:SetInside(icon.backdrop)
 	button.IconTextureOverlay:SetAlpha(0)
-	button.IconTexture:RemoveMaskTexture(button.OutlineMask)
-	button.IconTexture:SetInside()
-
-	S:HandleIcon(button.IconTexture, true)
-
-	button.highlightTexture:SetInside(button.IconTexture.backdrop)
 
 	E:RegisterCooldown(button.cooldown)
 
@@ -442,6 +475,7 @@ local function HandleBookProfession(frame)
 	local unlearn = frame.UnlearnButton
 	if unlearn then
 		S:HandleCloseButton(unlearn)
+
 		unlearn:OffsetFrameLevel(1)
 		unlearn:CreateBackdrop()
 		unlearn:SetHitRectInsets(0, 0, 0, 0)
@@ -642,6 +676,9 @@ function S:Blizzard_Professions()
 
 		BrowseFrame.OrderList:StripTextures()
 		S:HandleTrimScrollBar(BrowseFrame.OrderList.ScrollBar)
+
+		HandleOrderListHeaders(OrdersPage) -- First one exists OnLoad already
+		hooksecurefunc(OrdersPage, 'SetupTable', HandleOrderListHeaders)
 	end
 
 	if E.Forever then -- Forever BookPage (ProfessionsBookFrameTemplate)

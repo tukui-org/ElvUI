@@ -32,9 +32,11 @@ local function HandleListIcon(frame)
 	end
 end
 
-local function HandleListHeader(headerContainer)
-	local maxHeaders = headerContainer:GetNumChildren()
-	for i, header in next, { headerContainer:GetChildren() } do
+local function HandleListHeader(builder)
+	local columns = builder:GetColumns()
+	local numColumns = #columns
+	for i, column in next, columns do
+		local header = column:GetHeaderFrame()
 		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
 			header:CreateBackdrop('Transparent')
@@ -46,7 +48,7 @@ local function HandleListHeader(headerContainer)
 			header.IsSkinned = true
 		end
 
-		header.backdrop:SetPoint('BOTTOMRIGHT', i < maxHeaders and -5 or 0, -2)
+		header.backdrop:SetPoint('BOTTOMRIGHT', i < numColumns and -5 or 0, -2)
 	end
 end
 
@@ -58,7 +60,7 @@ local function HandleMoneyInput(box)
 end
 
 local function HandleBrowseOrders(frame)
-	HandleListHeader(frame.RecipeList.HeaderContainer)
+	HandleListHeader(frame.tableBuilder)
 end
 
 local function FormInit(form)
@@ -254,7 +256,7 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	S:HandleButton(currentListings.CloseButton)
 	S:HandleTrimScrollBar(currentListings.OrderList.ScrollBar)
 
-	HandleListHeader(currentListings.OrderList.HeaderContainer)
+	HandleListHeader(currentListings.tableBuilder)
 
 	currentListings.OrderList:StripTextures()
 	currentListings:ClearAllPoints()
@@ -281,7 +283,7 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	S:HandleButton(myOrders.RefreshButton)
 	myOrders.RefreshButton:Size(26)
 
-	HandleListHeader(myOrders.OrderList.HeaderContainer)
+	HandleListHeader(myOrders.tableBuilder)
 
 	local myOrdersList = myOrders.OrderList
 	myOrdersList:StripTextures()
