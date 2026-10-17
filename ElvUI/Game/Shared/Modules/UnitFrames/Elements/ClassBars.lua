@@ -47,7 +47,7 @@ function UF:GetClassPower_Construct(frame)
 		frame.Totems = UF:Construct_Totems(frame)
 	end
 
-	if (E.Classic or E.TBC or E.Wrath) and E.myclass ~= 'WARRIOR' then
+	if (E.Classic or E.TBC or E.Wrath or E.Forever) and E.myclass ~= 'WARRIOR' then
 		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
 	end
 end

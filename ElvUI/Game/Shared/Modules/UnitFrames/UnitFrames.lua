@@ -909,14 +909,14 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF[unit] = frame
 		end
 
-		local db = UF.db.units[group]
 		if not frame.Update then
 			local groupName = gsub(E:StringTitle(group), 't(arget)', 'T%1')
-			frame.Update = function()
-				UF['Update_'..E:StringTitle(groupName)..'Frames'](UF, frame, db)
+			frame.Update = function() -- fetch the db on every call, a profile change replaces the table
+				UF['Update_'..E:StringTitle(groupName)..'Frames'](UF, frame, UF.db.units[group])
 			end
 		end
 
+		local db = UF.db.units[group]
 		local enabled = db.enable
 		if group == 'arena' then
 			frame:SetAttribute('oUF-enableArenaPrep', enabled)
@@ -1381,13 +1381,13 @@ function UF:CreateAndUpdateUF(unit)
 		UF[unit] = frame
 	end
 
-	local db = UF.db.units[unit]
 	if not frame.Update then
-		frame.Update = function()
-			UF['Update_'..frameName..'Frame'](UF, frame, db)
+		frame.Update = function() -- fetch the db on every call, a profile change replaces the table
+			UF['Update_'..frameName..'Frame'](UF, frame, UF.db.units[unit])
 		end
 	end
 
+	local db = UF.db.units[unit]
 	local enabled = db.enable
 	frame:SetEnabled(enabled)
 
@@ -1570,7 +1570,7 @@ do
 			UF:Configure_PartyIndicator(frame)
 			UF:Configure_RestingIndicator(frame)
 
-			if (E.Classic or E.TBC or E.Wrath) and E.myclass ~= 'WARRIOR' then
+			if (E.Classic or E.TBC or E.Wrath or E.Forever) and E.myclass ~= 'WARRIOR' then
 				UF:Configure_EnergyManaRegen(frame)
 			end
 
