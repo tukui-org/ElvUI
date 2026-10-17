@@ -5,29 +5,25 @@ local next = next
 local tonumber = tonumber
 
 local GetTime = GetTime
-local UnitPower = UnitPower
 local UnitPowerType = UnitPowerType
-local UnitPowerMax = UnitPowerMax
-local GetSpellPowerCost = GetSpellPowerCost
+local UnitPowerPercent = UnitPowerPercent
+local GetSpellPowerCost = C_Spell.GetSpellPowerCost or GetSpellPowerCost
 
 local LastTickTime = GetTime()
+local LastCastTime = 0
+local PendingTickTime = nil
 local TickDelay = 2.025 -- Average tick time is slightly over 2 seconds
 local Mp5Delay = 5
 local Mp5DelayWillEnd = nil
-local Mp5IgnoredSpells = {
-	[18182]	= true, -- Improved Life Tap 1
-	[18183]	= true, -- Improved Life Tap 2
-	[1454]	= true, -- Life Tap 1
-	[1455]	= true, -- Life Tap 2
-	[1456]	= true, -- Life Tap 3
-	[11687]	= true, -- Life Tap 4
-	[11688]	= true, -- Life Tap 5
-	[11689]	= true, -- Life Tap 6
-}
 
-local LastValue = UnitPower('player')
 local ENERGY = Enum.PowerType.Energy
 local MANA = Enum.PowerType.Mana
+
+-- The spark alpha comes from a curve
+local FullManaCurve = C_CurveUtil.CreateCurve()
+FullManaCurve:SetType(Enum.LuaCurveType.Step)
+FullManaCurve:AddPoint(0, 1)
+FullManaCurve:AddPoint(1, 0)
 
 -- Sets tick time to the last possible time based on the last tick
 local UpdateTickTime = function(now)
@@ -45,16 +41,18 @@ local Update = function(self, elapsed)
 			return
 		end
 
-		local CurrentValue = UnitPower('player', powerType)
-		local MaxPower = UnitPowerMax('player', powerType)
 		local Now = GetTime()
 
+		-- A power update is a tick when no cast cost follows within a moment
+		if PendingTickTime and Now - PendingTickTime > 0.1 then
+			LastTickTime = PendingTickTime
+			PendingTickTime = nil
+		end
+
+		-- The curve result goes into SetVertexColor
+		local alpha = 1
 		if powerType == MANA then
-			if CurrentValue >= MaxPower then
-				element:SetValue(0)
-				element.Spark:Hide()
-				return
-			end
+			alpha = UnitPowerPercent('player', MANA, true, FullManaCurve)
 
 			-- Sync last tick time after 5 seconds are over
 			if Mp5DelayWillEnd and Mp5DelayWillEnd < Now then
@@ -62,8 +60,8 @@ local Update = function(self, elapsed)
 				UpdateTickTime(Now)
 			end
 		elseif powerType == ENERGY then
-			-- If energy is not full we just wait for the next tick
-			if Now >= LastTickTime + TickDelay and CurrentValue >= MaxPower then
+			-- Full energy fires no power updates - keep the cycle going from the last tick
+			if Now >= LastTickTime + TickDelay then
 				UpdateTickTime(Now)
 			end
 		end
@@ -72,13 +70,13 @@ local Update = function(self, elapsed)
 			-- Show 5 second indicator
 			element.Spark:Show()
 			element:SetMinMaxValues(0, Mp5Delay)
-			element.Spark:SetVertexColor(1, 1, 0, 1)
+			element.Spark:SetVertexColor(1, 1, 0, alpha)
 			element:SetValue(Mp5DelayWillEnd - Now)
 		else
 			-- Show tick indicator
 			element.Spark:Show()
 			element:SetMinMaxValues(0, TickDelay)
-			element.Spark:SetVertexColor(1, 1, 1, 1)
+			element.Spark:SetVertexColor(1, 1, 1, alpha)
 			element:SetValue(Now - LastTickTime)
 		end
 
@@ -86,37 +84,36 @@ local Update = function(self, elapsed)
 	end
 end
 
-local OnUnitPowerUpdate = function()
-	local powerType = UnitPowerType('player')
-	if powerType ~= MANA and powerType ~= ENERGY then return end
+local OnUnitPowerUpdate = function(_, _, unit, powerToken)
+	-- The player frame also gets the vehicle's events while in one
+	if unit ~= 'player' then return end
 
-	-- We also register ticks from mp5 gear within the 5-second-rule to get a more accurate sync later.
-	-- Unfortunately this registers a tick when a mana pot or life tab is used.
-	local CurrentValue = UnitPower('player', powerType)
-	if CurrentValue > LastValue then
-		LastTickTime = GetTime()
+	local powerType, currentToken = UnitPowerType('player')
+	if powerToken ~= currentToken or (powerType ~= ENERGY and powerType ~= MANA) then return end
+
+	-- A power update right after a cast cost is not a tick
+	local now = GetTime()
+	if now - LastCastTime > 0.1 then
+		PendingTickTime = now
 	end
-
-	LastValue = CurrentValue
 end
 
-local OnUnitSpellcastSucceeded = function(_, _, _, _, spellID)
-	local powerType = UnitPowerType('player')
-	if powerType ~= MANA then return end
+local OnUnitSpellcastSucceeded = function(_, _, unit, _, spellID)
+	local costTable = unit == 'player' and oUF:NotSecretValue(spellID) and GetSpellPowerCost(spellID)
+	if not costTable then return end
 
-	local spellCost = false
-	local costTable = GetSpellPowerCost(spellID)
 	for _, costInfo in next, costTable do
 		if costInfo.cost and costInfo.cost > 0 then
-			spellCost = true
+			-- The power update of this cost is not a tick - it can come in just before or right after
+			LastCastTime = GetTime()
+			PendingTickTime = nil
+
+			-- Spending mana starts the five second rule
+			if costInfo.type == MANA then
+				Mp5DelayWillEnd = LastCastTime + Mp5Delay
+			end
 		end
 	end
-
-	if not spellCost or Mp5IgnoredSpells[spellID] then
-		return
-	end
-
-	Mp5DelayWillEnd = GetTime() + 5
 end
 
 local Path = function(self, ...)
