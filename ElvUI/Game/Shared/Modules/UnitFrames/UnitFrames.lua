@@ -912,8 +912,9 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 		local db = UF.db.units[group]
 		if not frame.Update then
 			local groupName = gsub(E:StringTitle(group), 't(arget)', 'T%1')
+			-- fetch the db on every call, a profile change replaces the table
 			frame.Update = function()
-				UF['Update_'..E:StringTitle(groupName)..'Frames'](UF, frame, db)
+				UF['Update_'..E:StringTitle(groupName)..'Frames'](UF, frame, UF.db.units[group])
 			end
 		end
 
@@ -1383,8 +1384,9 @@ function UF:CreateAndUpdateUF(unit)
 
 	local db = UF.db.units[unit]
 	if not frame.Update then
+		-- fetch the db on every call, a profile change replaces the table
 		frame.Update = function()
-			UF['Update_'..frameName..'Frame'](UF, frame, db)
+			UF['Update_'..frameName..'Frame'](UF, frame, UF.db.units[unit])
 		end
 	end
 
