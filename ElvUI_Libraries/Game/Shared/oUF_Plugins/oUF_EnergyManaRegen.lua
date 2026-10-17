@@ -41,10 +41,10 @@ local Update = function(self, elapsed)
 			return
 		end
 
-		local Now = GetTime()
-
 		-- A power update is a tick when no cast cost follows within a moment
-		if PendingTickTime and Now - PendingTickTime > 0.1 then
+
+		local currentTime = GetTime()
+		if PendingTickTime and currentTime - PendingTickTime > 0.1 then
 			LastTickTime = PendingTickTime
 			PendingTickTime = nil
 		end
@@ -55,31 +55,28 @@ local Update = function(self, elapsed)
 			alpha = UnitPowerPercent('player', MANA, true, FullManaCurve)
 
 			-- Sync last tick time after 5 seconds are over
-			if Mp5DelayWillEnd and Mp5DelayWillEnd < Now then
+			if Mp5DelayWillEnd and Mp5DelayWillEnd < currentTime then
 				Mp5DelayWillEnd = nil
-				UpdateTickTime(Now)
+				UpdateTickTime(currentTime)
 			end
 		elseif powerType == ENERGY then
 			-- Full energy fires no power updates - keep the cycle going from the last tick
-			if Now >= LastTickTime + TickDelay then
-				UpdateTickTime(Now)
+			if currentTime >= LastTickTime + TickDelay then
+				UpdateTickTime(currentTime)
 			end
 		end
 
 		if Mp5DelayWillEnd and powerType == MANA then
-			-- Show 5 second indicator
-			element.Spark:Show()
-			element:SetMinMaxValues(0, Mp5Delay)
 			element.Spark:SetVertexColor(1, 1, 0, alpha)
-			element:SetValue(Mp5DelayWillEnd - Now)
+			element:SetMinMaxValues(0, Mp5Delay) -- 5 second indicator
+			element:SetValue(Mp5DelayWillEnd - currentTime)
 		else
-			-- Show tick indicator
-			element.Spark:Show()
-			element:SetMinMaxValues(0, TickDelay)
 			element.Spark:SetVertexColor(1, 1, 1, alpha)
-			element:SetValue(Now - LastTickTime)
+			element:SetMinMaxValues(0, TickDelay)
+			element:SetValue(currentTime - LastTickTime)
 		end
 
+		element.Spark:Show()
 		element.sinceLastUpdate = 0
 	end
 end
@@ -89,7 +86,7 @@ local OnUnitPowerUpdate = function(_, _, unit, powerToken)
 	if unit ~= 'player' then return end
 
 	local powerType, currentToken = UnitPowerType('player')
-	if powerToken ~= currentToken or (powerType ~= ENERGY and powerType ~= MANA) then return end
+	if (powerToken ~= currentToken) or (powerType ~= ENERGY and powerType ~= MANA) then return end
 
 	-- A power update right after a cast cost is not a tick
 	local now = GetTime()
@@ -102,10 +99,11 @@ local OnUnitSpellcastSucceeded = function(_, _, unit, _, spellID)
 	local costTable = unit == 'player' and oUF:NotSecretValue(spellID) and GetSpellPowerCost(spellID)
 	if not costTable then return end
 
+	local currentTime = GetTime()
 	for _, costInfo in next, costTable do
 		if costInfo.cost and costInfo.cost > 0 then
 			-- The power update of this cost is not a tick - it can come in just before or right after
-			LastCastTime = GetTime()
+			LastCastTime = currentTime
 			PendingTickTime = nil
 
 			-- Spending mana starts the five second rule
