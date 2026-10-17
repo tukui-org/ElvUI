@@ -55,7 +55,7 @@ function UF:Update_AssistHeader(header, db)
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
 		header:ClearAllPoints()
-		header:Point('TOPLEFT', E.UIParent, 4, -248)
+		header:Point('TOPLEFT', E.UIParent, 4, -250)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,assist,generalGroup')
 		header.mover:SetSize(width, minHeight)
