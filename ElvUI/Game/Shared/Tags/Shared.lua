@@ -62,7 +62,7 @@ local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
 local POWERTYPE_MANA = Enum.PowerType.Mana
-local PVP = PVP
+local PVP_ENABLED = PVP_ENABLED
 
 local SPELL_FROST_ICICLES = 205473
 local SPELL_ARCANE_CHARGE = 36032
@@ -929,9 +929,9 @@ E:AddTag('pvptimer', 1, function(unit)
 		if timer ~= 301000 and timer ~= -1 then
 			local mins = floor((timer * 0.001) / 60)
 			local secs = floor((timer * 0.001) - (mins * 60))
-			return format('%s (%01.f:%02.f)', PVP, mins, secs)
+			return format('%s (%01.f:%02.f)', PVP_ENABLED, mins, secs)
 		else
-			return PVP
+			return PVP_ENABLED
 		end
 	end
 end)

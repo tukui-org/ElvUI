@@ -363,7 +363,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 
 			local unitPVP = UnitIsPVP(unit)
 			if E:NotSecretValue(unitPVP) and unitPVP then
-				pvpFlag = format(' (%s)', _G.PVP)
+				pvpFlag = format(' (%s)', _G.PVP_ENABLED)
 			end
 
 			if creatureClassification == 'rare' or creatureClassification == 'elite' or creatureClassification == 'rareelite' or creatureClassification == 'worldboss' then
