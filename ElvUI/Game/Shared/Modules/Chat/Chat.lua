@@ -3906,7 +3906,7 @@ function CH:GetPlayerInfoByGUID(guid)
 	end
 
 	-- something broke just return cache, if it exists
-	if not ok then
+	if not (ok and englishClass) then
 		return data
 	end
 
