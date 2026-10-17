@@ -109,6 +109,8 @@ local OnUnitSpellcastSucceeded = function(_, _, unit, _, spellID)
 			-- Spending mana starts the five second rule
 			if costInfo.type == MANA then
 				Mp5DelayWillEnd = LastCastTime + Mp5Delay
+
+				break -- stop can stop here
 			end
 		end
 	end
