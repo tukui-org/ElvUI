@@ -110,7 +110,7 @@ local OnUnitSpellcastSucceeded = function(_, _, unit, _, spellID)
 			if costInfo.type == MANA then
 				Mp5DelayWillEnd = LastCastTime + Mp5Delay
 
-				break -- stop can stop here
+				break -- we can stop here
 			end
 		end
 	end
