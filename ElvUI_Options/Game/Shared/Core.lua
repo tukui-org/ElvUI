@@ -702,9 +702,9 @@ do -- Module Copy
 		config.args.cdmanager.hidden = not E.Modern
 		config.args.totemtracker.name = L["Totem Tracker"]
 		config.args.bossbutton.name = L["Boss Button"]
-		config.args.bossbutton.hidden = not (E.Modern or E.Mists)
+		config.args.bossbutton.hidden = not (E.Retail or E.Mists)
 		config.args.zonebutton.name = L["Zone Button"]
-		config.args.zonebutton.hidden = not E.Modern
+		config.args.zonebutton.hidden = not E.Retail
 
 		return config
 	end
