@@ -2059,8 +2059,9 @@ function CH:ChatFrame_CheckAddChannel(chatFrame, eventType, channelID)
 		return false
 	end
 
-	-- Only exists in Retail/Forever
-	if IsChannelRegionalForChannelID and not IsChannelRegionalForChannelID(channelID) then
+	-- Only exists in Retail/Forever, classic/anniversary/wrath/mists don't have regional channels
+	-- and Blizzard drops the message there instead of adding the channel
+	if not IsChannelRegionalForChannelID or not IsChannelRegionalForChannelID(channelID) then
 		return false
 	end
 
