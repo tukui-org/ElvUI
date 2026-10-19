@@ -1314,7 +1314,7 @@ function E:LoadStaticPopups()
 
 	for index = 1, E.MAX_STATIC_POPUPS do
 		local name = 'ElvUI_StaticPopup'..index
-		local popup = CreateFrame('Frame', name, E.UIParent, 'ElvUIStaticPopupTemplate')
+		local popup = CreateFrame('Frame', name, E.UIParent, E.Forever and 'ElvUIStaticPopupForeverTemplate' or 'ElvUIStaticPopupTemplate')
 
 		E.StaticPopupFrames[index] = popup
 

@@ -22,6 +22,7 @@
 	<Script file='Shared\Defaults\Global.lua'/>
 	<Script file='Shared\Defaults\Private.lua'/>
 	<Include file ='Shared\Modules\load_templates.xml'/> <!-- ElvUIStaticPopupTemplate -->
+	<Include file='Forever\Templates.xml'/> <!-- ElvUIStaticPopupForeverTemplate -->
 	<Script file='Shared\General\Core.lua'/>
 	<Script file='Shared\General\Math.lua'/>
 	<Script file='Shared\General\API.lua'/>
