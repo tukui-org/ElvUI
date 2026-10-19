@@ -85,6 +85,7 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
+local INPUT_TYPES = Enum.InputDeviceInterfaceType
 local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local AddOnRestrictionType = Enum.AddOnRestrictionType or {}
 local LuaCurveTypeLinear = Enum.LuaCurveType and Enum.LuaCurveType.Linear
@@ -1153,7 +1154,7 @@ function E:PLAYER_LEVEL_UP(_, level)
 end
 
 function E:INPUT_DEVICE_INTERFACE_TRANSITION(_, newMode)
-	if (newMode == Enum.InputDeviceInterfaceType.Gamepad) ~= E.IsGamepadUIEnabled then
+	if (newMode == INPUT_TYPES.Gamepad) ~= E.IsGamepadActive then
 		E:StaticPopup_Show('CONFIG_RL')
 	end
 end

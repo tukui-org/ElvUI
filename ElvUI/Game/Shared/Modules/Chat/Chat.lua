@@ -1094,8 +1094,7 @@ function CH:StyleChat(frame)
 		CH:SecureHookScript(editbox, 'OnEnterPressed', 'ChatEdit_OnEnterPressed')
 	end
 
-	-- Copy chat button
-	-- Button, not Frame - Gamepad navigation reads the mouse scripts of plain frames inside the chat and taints
+	-- Copy chat button: Gamepad navigation reads the mouse scripts of plain frames inside the chat and taints
 	local copyButton = CreateFrame('Button', format('ElvUI_CopyChatButton%d', id), frame)
 	copyButton:EnableMouse(true)
 	copyButton:SetAlpha(0.35)

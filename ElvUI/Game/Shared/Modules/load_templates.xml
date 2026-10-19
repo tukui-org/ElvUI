@@ -270,11 +270,11 @@
 			</Frame>
 		</Frames>
 		<Scripts>
-			<OnLoad></OnLoad>
-			<OnEvent></OnEvent>
 			<OnUpdate></OnUpdate>
+			<OnEvent></OnEvent>
 			<OnShow></OnShow>
 			<OnHide></OnHide>
+			<OnLoad></OnLoad>
 			<OnHyperlinkClick method='OnHyperlinkClick'/>
 			<OnHyperlinkEnter method='OnHyperlinkEnter'/>
 			<OnHyperlinkLeave method='OnHyperlinkLeave'/>

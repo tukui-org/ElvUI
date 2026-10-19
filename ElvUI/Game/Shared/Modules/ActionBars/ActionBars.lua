@@ -1988,7 +1988,7 @@ function AB:Initialize()
 	end
 
 	-- Gamepad UI uses Blizzard's crossbar and hides the other action bars
-	if not E.private.actionbar.enable or E.IsGamepadUIEnabled then return end
+	if not E.private.actionbar.enable or E.IsGamepadActive then return end
 	AB.Initialized = true
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
