@@ -602,8 +602,9 @@ function S:Blizzard_EncounterJournal()
 
 	if E.Modern then
 		-- Suggestions
+		local suggestFrame = EJ.suggestFrame
 		for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
-			local suggestion = EJ.suggestFrame['Suggestion'..i]
+			local suggestion = suggestFrame['Suggestion'..i]
 			if i == 1 then
 				HandleButton(suggestion.button)
 				suggestion.button:SetFrameLevel(4)
@@ -624,8 +625,6 @@ function S:Blizzard_EncounterJournal()
 			MonthlyActivities.ThemeContainer:SetAlpha(0)
 
 			hooksecurefunc(MonthlyActivities.ScrollBox, 'Update', MonthlyActivitiesUpdate)
-
-			local suggestFrame = EJ.suggestFrame
 
 			-- Suggestion 1
 			local suggestion = suggestFrame.Suggestion1
