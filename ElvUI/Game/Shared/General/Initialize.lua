@@ -129,6 +129,8 @@ do -- Expansions
 
 	local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 	E.IsEngravingEnabled = IsEngravingEnabled and IsEngravingEnabled()
+
+	E.IsGamepadUIEnabled = E.Forever and C_InputInterfaceStyle.GetCurrentStyle() == Enum.InputDeviceInterfaceType.Gamepad
 end
 
 -- DONT USE: Deprecated

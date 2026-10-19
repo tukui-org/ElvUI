@@ -208,7 +208,7 @@ end
 -- COMMAND REGISTRATION
 --------------------------------------------------------------------
 function E:LoadCommands()
-	if E.private.actionbar.enable then
+	if E.private.actionbar.enable and not E.IsGamepadUIEnabled then
 		E:RegisterChatCommand('kb', AB.ActivateBindMode)
 	end
 

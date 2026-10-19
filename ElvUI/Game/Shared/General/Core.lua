@@ -733,7 +733,7 @@ do
 	local ADDONS = {
 		ActionBar = {
 			info = {
-				enabled = function() return E.private.actionbar.enable end,
+				enabled = function() return E.private.actionbar.enable and not E.IsGamepadUIEnabled end,
 				accept = function() E.private.actionbar.enable = false; ReloadUI() end,
 				name = 'ElvUI ActionBars'
 			},

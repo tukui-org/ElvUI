@@ -1152,6 +1152,12 @@ function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
 end
 
+function E:INPUT_DEVICE_INTERFACE_TRANSITION(_, newMode)
+	if (newMode == Enum.InputDeviceInterfaceType.Gamepad) ~= E.IsGamepadUIEnabled then
+		E:StaticPopup_Show('CONFIG_RL')
+	end
+end
+
 function E:PositionGameMenuButton()
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
@@ -1587,5 +1593,9 @@ function E:LoadAPI()
 	if E.Retail or E.Mists then
 		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
 		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
+	end
+
+	if E.Forever then
+		E:RegisterEvent('INPUT_DEVICE_INTERFACE_TRANSITION')
 	end
 end
