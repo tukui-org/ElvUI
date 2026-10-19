@@ -1,15 +1,4 @@
 <Ui xmlns='http://www.blizzard.com/wow/ui/'>
-	<!-- Remove the scripts added from GameDialogMixin -->
-	<Frame name='ElvUIStaticPopupTemplate' inherits='StaticPopupTemplate' toplevel='true' enableKeyboard='true' enableMouse='true' hyperlinksEnabled='true' virtual='true'>
-		<Scripts>
-			<OnUpdate></OnUpdate>
-			<OnEvent></OnEvent>
-			<OnShow></OnShow>
-			<OnHide></OnHide>
-			<OnLoad></OnLoad>
-		</Scripts>
-	</Frame>
-
 	<!-- framelevel 4 for Masque support -->
 	<Button name='ElvUIAuraTemplate' inherits='ElvUIAuraIconTemplate' virtual='true' framelevel='4' registerForClicks='RightButtonUp, RightButtonDown'></Button>
 
@@ -99,4 +88,196 @@
 			</Button>
 		</Frames>
 	</Button>
+
+	<!-- Remove the scripts added from GameDialogMixin -->
+	<Frame name='ElvUIStaticPopupTemplate' inherits='StaticPopupTemplate' toplevel='true' enableKeyboard='true' enableMouse='true' hyperlinksEnabled='true' virtual='true'>
+		<Scripts>
+			<OnUpdate></OnUpdate>
+			<OnEvent></OnEvent>
+			<OnShow></OnShow>
+			<OnHide></OnHide>
+			<OnLoad></OnLoad>
+		</Scripts>
+	</Frame>
+
+	<!-- Copy of StaticPopupTemplate without its GamepadSequence -->
+	<Frame name='ElvUIStaticPopupModernTemplate' inherits='StaticPopupBaseTemplate, ResizeLayoutFrame' mixin='GameDialogMixin' toplevel='true' enableKeyboard='true' enableMouse='true' hyperlinksEnabled='true' virtual='true'>
+		<KeyValues>
+			<KeyValue key='onCloseCallback' value='StaticPopup_OnCloseButtonClicked' type='global'/>
+			<KeyValue key='heightPadding' value='16' type='number'/>
+		</KeyValues>
+		<Layers>
+			<Layer level='ARTWORK'>
+				<FontString parentKey='TopSpacer'>
+					<KeyValues>
+						<KeyValue key='ignoreInLayout' value='true' type='boolean'/>
+					</KeyValues>
+					<Size x='1' y='16'/>
+					<Anchors>
+						<Anchor point='TOP'/>
+					</Anchors>
+				</FontString>
+				<FontString name='$parentText' parentKey='Text' inherits='UserScaledFontGameHighlight, UserScaledFontStringTemplate' mixin='StaticPopupElementMixin'>
+					<KeyValues>
+						<KeyValue key='useScaleWeight' value='true' type='boolean'/>
+					</KeyValues>
+					<Size x='1' y='0'/>
+					<Anchors>
+						<Anchor point='TOP' relativeKey='$parent.TopSpacer' relativePoint='BOTTOM' x='0' y='0'/>
+					</Anchors>
+				</FontString>
+				<FontString parentKey='ConfirmText' inherits='UserScaledFontGameHighlight, UserScaledFontStringTemplate'>
+					<KeyValues>
+						<KeyValue key='useScaleWeight' value='true' type='boolean'/>
+					</KeyValues>
+					<Size x='1' y='0'/>
+					<Anchors>
+						<Anchor point='TOP' relativeKey='$parent.Text' relativePoint='BOTTOM' x='0' y='-6'/>
+					</Anchors>
+				</FontString>
+				<Texture parentKey='AlertIcon'>
+					<KeyValues>
+						<KeyValue key='ignoreInLayout' value='true' type='boolean'/>
+					</KeyValues>
+					<Size x='36' y='36'/>
+					<Anchors>
+						<Anchor point='LEFT' x='24' y='0'/>
+					</Anchors>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Frame parentKey='ButtonContainer' inherits='ResizeLayoutFrame'>
+				<Frames>
+					<Button name='$parentButton1' parentKey='Button1' inherits='StaticPopupButtonTemplate' id='1'/>
+					<Button name='$parentButton2' parentKey='Button2' inherits='StaticPopupButtonTemplate' id='2'/>
+					<Button name='$parentButton3' parentKey='Button3' inherits='StaticPopupButtonTemplate' id='3'/>
+					<Button name='$parentButton4' parentKey='Button4' inherits='StaticPopupButtonTemplate' id='4'/>
+				</Frames>
+			</Frame>
+		</Frames>
+		<Layers>
+			<Layer level='ARTWORK'>
+				<Texture parentKey='Separator' hidden='true'>
+					<KeyValues>
+						<KeyValue key='ignoreInLayout' value='true' type='boolean'/>
+					</KeyValues>
+					<Size x='0' y='1'/>
+					<Anchors>
+						<Anchor point='LEFT' x='30' y='0'/>
+						<Anchor point='RIGHT' x='-30' y='0'/>
+						<Anchor point='TOP' relativeKey='$parent.ButtonContainer' relativePoint='BOTTOM' x='0' y='-24'/>
+					</Anchors>
+					<Color r='1' g='1' b='1' a='0.2'/>
+				</Texture>
+			</Layer>
+		</Layers>
+		<Frames>
+			<Button name='$parentExtraButton' parentKey='ExtraButton' inherits='StaticPopupButtonTemplate' id='5'>
+				<Anchors>
+					<Anchor point='TOP' relativeKey='$parent.Separator' relativePoint='BOTTOM' x='0' y='-13'/>
+				</Anchors>
+			</Button>
+			<EditBox name='$parentEditBox' parentKey='EditBox' historyLines='1' hidden='true' inherits='AutoCompleteEditBoxTemplate, TooltipBackdropTemplate, UserScaledFrameTemplate' mixin='StaticPopupEditBoxMixin'>
+				<KeyValues>
+					<KeyValue key='baseWidth' value='130' type='number'/>
+					<KeyValue key='baseHeight' value='24' type='number'/>
+					<KeyValue key='addHighlightedText' value='true' type='boolean'/>
+					<KeyValue key='useScaleWeight' value='true' type='boolean'/>
+				</KeyValues>
+				<Size x='130' y='24'/>
+				<Anchors>
+					<Anchor point='BOTTOM' x='0' y='45'/>
+				</Anchors>
+				<Layers>
+					<Layer level='ARTWORK'>
+						<FontString parentKey='Instructions' justifyH='LEFT' justifyV='MIDDLE' inherits='UserScaledFontGameDisableSmall, UserScaledFontStringTemplate'>
+							<KeyValues>
+								<KeyValue key='ignoreInLayout' value='true' type='boolean'/>
+							</KeyValues>
+							<Anchors>
+								<Anchor point='TOPLEFT' x='8' y='0'/>
+								<Anchor point='BOTTOMRIGHT' x='-8' y='0'/>
+							</Anchors>
+							<Color r='0.35' g='0.35' b='0.35'/>
+						</FontString>
+					</Layer>
+				</Layers>
+				<Scripts>
+					<OnAttributeChanged method='OnAttributeChanged'/>
+					<OnEnterPressed method='OnEnterPressed'/>
+					<OnEscapePressed method='OnEscapePressed'/>
+					<OnTextChanged method='OnTextChanged'/>
+				</Scripts>
+				<FontString inherits='UserScaledChatFontNormal'/>
+				<TextInsets left='6' right='6' top='2' bottom='2'/>
+			</EditBox>
+			<Frame name='$parentMoneyFrame' parentKey='MoneyFrame' inherits='SmallMoneyFrameTemplate' hidden='true'>
+				<Anchors>
+					<Anchor point='TOP' relativeKey='$parent.ConfirmText' relativePoint='BOTTOM' x='0' y='-5'/>
+				</Anchors>
+				<Scripts>
+					<OnLoad function='GameDialog_MoneyFrameOnLoad'/>
+				</Scripts>
+			</Frame>
+			<Frame name='$parentMoneyInputFrame' parentKey='MoneyInputFrame' inherits='MoneyInputFrameTemplate'>
+				<Anchors>
+					<Anchor point='TOP' relativeKey='$parent.ConfirmText' relativePoint='BOTTOM' x='0' y='-5'/>
+				</Anchors>
+			</Frame>
+			<Frame parentKey='ItemFrame' inherits='ResizeLayoutFrame' mixin='StaticPopupItemFrameMixin' hidden='true'>
+				<KeyValues>
+					<KeyValue key='widthPadding' value='-4' type='number'/>
+				</KeyValues>
+				<Layers>
+					<Layer level='ARTWORK'>
+						<FontString parentKey='Text' inherits='UserScaledFontGameNormal, UserScaledFontStringTemplate' justifyH='LEFT'>
+							<KeyValues>
+								<KeyValue key='baseWidth' value='103' type='number'/>
+								<KeyValue key='baseHeight' value='38' type='number'/>
+							</KeyValues>
+							<Size x='103' y='38'/>
+							<Anchors>
+								<Anchor point='RIGHT'/>
+							</Anchors>
+						</FontString>
+						<Texture parentKey='NameFrame' file='Interface\QuestFrame\UI-QuestItemNameFrame'>
+							<KeyValues>
+								<KeyValue key='ignoreInLayout' value='true' type='boolean'/>
+							</KeyValues>
+							<Size x='140' y='62'/>
+							<Anchors>
+								<Anchor point='BOTTOMRIGHT' relativeKey='$parent.Text' x='17' y='-12'/>
+								<Anchor point='TOPLEFT' relativeKey='$parent.Text' x='-17' y='12'/>
+							</Anchors>
+						</Texture>
+					</Layer>
+				</Layers>
+				<Frames>
+					<ItemButton parentKey='Item' propagateMouseInput='Both'>
+						<Size x='37' y='37'/>
+						<Anchors>
+							<Anchor point='RIGHT' relativeKey='$parent.Text' relativePoint='LEFT' x='-10' y='0'/>
+						</Anchors>
+					</ItemButton>
+				</Frames>
+				<Scripts>
+					<OnEnter method='OnEnter'/>
+					<OnLeave method='OnLeave'/>
+					<OnLoad method='OnLoad'/>
+					<OnEvent method='OnEvent'/>
+				</Scripts>
+			</Frame>
+		</Frames>
+		<Scripts>
+			<OnUpdate></OnUpdate>
+			<OnEvent></OnEvent>
+			<OnShow></OnShow>
+			<OnHide></OnHide>
+			<OnLoad></OnLoad>
+			<OnHyperlinkClick method='OnHyperlinkClick'/>
+			<OnHyperlinkEnter method='OnHyperlinkEnter'/>
+			<OnHyperlinkLeave method='OnHyperlinkLeave'/>
+		</Scripts>
+	</Frame>
 </Ui>

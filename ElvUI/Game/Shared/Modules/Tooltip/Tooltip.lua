@@ -129,8 +129,8 @@ function TT:SetCompareItems(tt, value)
 	tt.supportsItemComparison = value
 end
 
-function TT:GameTooltip_SetDefaultAnchor(tt, parent)
-	if not E.private.tooltip.enable or not TT.db.visibility or (tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE') then
+function TT:GameTooltip_SetDefaultAnchor(tt, parent) -- Gamepad radial passes a plain frame without GetAnchorType
+	if not E.private.tooltip.enable or not TT.db.visibility or (tt:IsForbidden() or not tt.GetAnchorType or tt:GetAnchorType() ~= 'ANCHOR_NONE') then
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
 		TT:SetCompareItems(tt, nil)

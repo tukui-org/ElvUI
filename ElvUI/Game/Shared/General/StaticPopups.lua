@@ -23,6 +23,7 @@ local ChatEditFocusActiveWindow = ChatFrameUtil.FocusActiveWindow
 
 local DisableAddOn = C_AddOns.DisableAddOn
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local C_InputInterfaceStyle = C_InputInterfaceStyle
 
 local STATICPOPUP_TEXTURE_ALERT = STATICPOPUP_TEXTURE_ALERT
 local STATICPOPUP_TEXTURE_ALERTGEAR = STATICPOPUP_TEXTURE_ALERTGEAR
@@ -1314,7 +1315,7 @@ function E:LoadStaticPopups()
 
 	for index = 1, E.MAX_STATIC_POPUPS do
 		local name = 'ElvUI_StaticPopup'..index
-		local popup = CreateFrame('Frame', name, E.UIParent, 'ElvUIStaticPopupTemplate')
+		local popup = CreateFrame('Frame', name, E.UIParent, C_InputInterfaceStyle and 'ElvUIStaticPopupModernTemplate' or 'ElvUIStaticPopupTemplate')
 
 		E.StaticPopupFrames[index] = popup
 
