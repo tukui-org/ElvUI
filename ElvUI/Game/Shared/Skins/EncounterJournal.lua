@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local ipairs, next, rad = ipairs, next, rad
+local next, rad = next, rad
 local unpack, select, tinsert = unpack, select, tinsert
 local hooksecurefunc = hooksecurefunc
 
@@ -390,17 +390,21 @@ end
 
 local function SuggestFrameRefreshDisplay()
 	local suggestFrame = _G.EncounterJournal.suggestFrame
-	for i, suggestion in ipairs(suggestFrame.suggestions) do
-		local sugg = next(suggestion) and suggestFrame['Suggestion'..i]
-		if sugg then
-			if not sugg.icon.backdrop then
-				sugg.icon:CreateBackdrop()
+	for i = 1, _G.AJ_MAX_NUM_SUGGESTIONS do
+		local suggestion = suggestFrame['Suggestion'..i]
+		local icon = suggestion.icon
+		if icon:IsShown() then
+			if not icon.backdrop then
+				icon:CreateBackdrop()
 			end
 
-			sugg.icon:SetMask('')
-			sugg.icon:SetTexture(suggestion.iconPath)
-			sugg.icon:SetTexCoords()
-			sugg.iconRing:Hide()
+			icon:SetMask('')
+			icon:SetTexCoords()
+			suggestion.iconRing:Hide()
+
+			local centerDisplay = suggestion.centerDisplay
+			centerDisplay.title.text:SetTextColor(1, 1, 1)
+			centerDisplay.description.text:SetTextColor(.9, .9, .9)
 		end
 	end
 end
