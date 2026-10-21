@@ -8,8 +8,6 @@ local next = next
 local strmatch = strmatch
 local utf8sub = string.utf8sub
 
-local UnitName = UnitName
-local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local UnitNameFromGUID = UnitNameFromGUID
@@ -54,36 +52,22 @@ function NP:Castbar_CustomTimeText(duration, durationObject)
 	UF:SetCastDisplayCustom(self, (self.channeling and self.channelTimeFormat) or self.castTimeFormat, duration, maximum, remain)
 end
 
-function NP:Castbar_SetText(castbar, db, changed, spellName, unit)
+function NP:Castbar_SetText(castbar, db, changed, spellName)
 	local targetChanged
-	if db.displayTarget then
-		local plate = castbar.__owner
-		local target, frameType = castbar.targetCurrent, plate.frameType
+	local target = db.displayTarget and castbar.targetCurrent
+	if target then
+		local color = (db.displayTargetClass and UF:GetCasterColor(castbar.targetClass)) or 'FFdddddd'
+		if db.targetStyle == 'SEPARATE' then
+			castbar.TargetText:SetFormattedText('|c%s%s|r', color, target)
+			targetChanged = true
 
-		local targetClass, _
-		if E.Modern then
-			targetClass = castbar.targetClass
-		elseif not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then -- player or NPCs; if used on other players:
-			target = UnitName(unit..'target') -- the cast target doesn't match their target, can be misleading if they mouseover cast
-			_, targetClass = UnitClass(unit..'target')
-		end
-
-		if target then
-			local color = (db.displayTargetClass and UF:GetCasterColor(targetClass)) or 'FFdddddd'
-			if db.targetStyle == 'SEPARATE' then
-				castbar.TargetText:SetFormattedText('|c%s%s|r', color, target)
-				targetChanged = true
-
-				if changed then
-					castbar.Text:SetText(spellName)
-				end
-			else
-				castbar.Text:SetFormattedText('%s: |c%s%s|r', spellName, color, target)
+			if changed then
+				castbar.Text:SetText(spellName)
 			end
-		elseif changed then -- always true when secret
-			castbar.Text:SetText(spellName)
+		else
+			castbar.Text:SetFormattedText('%s: |c%s%s|r', spellName, color, target)
 		end
-	elseif changed then
+	elseif changed then -- always true when secret
 		castbar.Text:SetText(spellName)
 	end
 
@@ -99,12 +83,12 @@ function NP:Castbar_PostCastStart(unit)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
 		local spellName = self.spellName
 		if E:IsSecretValue(self.spellID) then
-			targetChanged = NP:Castbar_SetText(self, db.castbar, true, spellName, unit)
+			targetChanged = NP:Castbar_SetText(self, db.castbar, true, spellName)
 		else
 			local length = db.castbar.nameLength
 			local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
 
-			targetChanged = NP:Castbar_SetText(self, db.castbar, name ~= spellName, spellName, unit)
+			targetChanged = NP:Castbar_SetText(self, db.castbar, name ~= spellName, name)
 		end
 	else
 		self.Text:SetText('')
