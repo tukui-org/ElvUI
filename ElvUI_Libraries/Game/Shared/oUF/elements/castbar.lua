@@ -192,11 +192,12 @@ local function resetAttributes(self)
 end
 
 local function UpdateCurrentTarget(element, unit, target)
-	if UnitSpellTargetName then
+	if target then
+		element.targetCurrent = target
+		element.targetClass = nil
+	else
 		element.targetCurrent = UnitSpellTargetName(unit)
 		element.targetClass = UnitSpellTargetClass(unit)
-	else
-		element.targetCurrent = target
 	end
 end
 
@@ -342,8 +343,10 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.castsent = castsent
 
 	local isPlayer = oUF:UnitIsUnit(unit, 'player')
-	if not isPlayer or (oUF.isModern or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START')) then
-		UpdateCurrentTarget(element, unit) -- we want to ignore the start events on player unit because sent adds the target info
+
+	-- Fake castbars (Multi-Shot, Aimed Shot) take the target from sent
+	if real ~= 'UNIT_SPELLCAST_SENT' then
+		UpdateCurrentTarget(element, unit)
 	end
 
 	element.delay = 0
@@ -731,12 +734,9 @@ end
 
 -- ElvUI block
 local UNIT_SPELLCAST_SENT = function(self, event, unit, target, castID, spellID)
-	if not oUF.isModern then
-		UpdateCurrentTarget(self.Castbar, unit, target)
-	end
-
 	local castTime = specialCast[spellID]
 	if castTime then
+		UpdateCurrentTarget(self.Castbar, unit, target)
 		CastStart(self, event, unit, castID, spellID, castTime)
 	end
 end
