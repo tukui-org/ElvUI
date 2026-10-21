@@ -104,6 +104,12 @@ Maps.args.minimap.args.icons.args.calendar.args.scale = ACH:Range(L["Scale"], ni
 Maps.args.minimap.args.icons.args.calendar.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
 Maps.args.minimap.args.icons.args.calendar.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
 
+Maps.args.minimap.args.icons.args.externalEvent = ACH:Group(L["External Event"], nil, 8, nil, nil, nil, function() return not E.db.general.minimap.clusterDisable end)
+Maps.args.minimap.args.icons.args.externalEvent.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
+Maps.args.minimap.args.icons.args.externalEvent.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)
+Maps.args.minimap.args.icons.args.externalEvent.args.xOffset = ACH:Range(L["X-Offset"], nil, 3, buttonOffsets)
+Maps.args.minimap.args.icons.args.externalEvent.args.yOffset = ACH:Range(L["Y-Offset"], nil, 4, buttonOffsets)
+
 Maps.args.minimap.args.icons.args.mail = ACH:Group(L["MAIL_LABEL"], nil, 6, nil, nil, nil, function() return not E.db.general.minimap.clusterDisable end)
 Maps.args.minimap.args.icons.args.mail.args.position = ACH:Select(L["Position"], nil, 1, buttonPositions)
 Maps.args.minimap.args.icons.args.mail.args.scale = ACH:Range(L["Scale"], nil, 2, buttonScale)

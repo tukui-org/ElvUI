@@ -408,6 +408,7 @@ end
 
 function M:UpdateIcons()
 	local gameTime = _G.GameTimeFrame
+	local externalEvent = _G.MinimapBackdrop and _G.MinimapBackdrop.ExternalEventURLButton
 	local indicator = MinimapCluster.IndicatorFrame
 	local craftingFrame = indicator and indicator.CraftingOrderFrame
 	local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
@@ -417,6 +418,7 @@ function M:UpdateIcons()
 
 	if not next(IconParents) then
 		if gameTime then M:SaveIconParent(gameTime) end
+		if externalEvent then M:SaveIconParent(externalEvent) end
 		if indicator then M:SaveIconParent(indicator) end
 		if craftingFrame then M:SaveIconParent(craftingFrame) end
 		if mailFrame then M:SaveIconParent(mailFrame) end
@@ -450,6 +452,7 @@ function M:UpdateIcons()
 		if difficultyGuild then M:HandleDifficulty(difficultyGuild, true) end
 
 		if gameTime then M:SetIconParent(gameTime) end
+		if externalEvent then M:SetIconParent(externalEvent) end
 		if craftingFrame then M:SetIconParent(craftingFrame) end
 		if mailFrame then M:SetIconParent(mailFrame) end
 		if battlefieldFrame then M:SetIconParent(battlefieldFrame) end
@@ -473,6 +476,19 @@ function M:UpdateIcons()
 				gameTime:OffsetFrameLevel(2, _G.MinimapBackdrop)
 				M:SetIconParent(gameTime)
 				M:SetScale(gameTime, scale)
+			end
+		end
+
+		if externalEvent then
+			M:SaveIconParent(externalEvent)
+			if hidden then
+				externalEvent:SetParent(E.HiddenFrame)
+			else
+				local scale, position, xOffset, yOffset = M:GetIconSettings('externalEvent')
+				externalEvent:ClearAllPoints()
+				externalEvent:Point(position, Minimap, xOffset, yOffset)
+				M:SetIconParent(externalEvent)
+				M:SetScale(externalEvent, scale)
 			end
 		end
 
