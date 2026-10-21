@@ -117,7 +117,8 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local StatusBarTimerDirection = Enum.StatusBarTimerDirection
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
-local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+local tradeskillCurrent, tradeskillTotal, tradeskillStart, mergeTradeskill = 0, 0, nil, false
+local tradeskillDuration = oUF.isModern and C_DurationUtil.CreateDuration()
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
 if oUF.isClassic or oUF.isTBC or oUF.isForever then
@@ -361,6 +362,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 	element.isTradeSkill = isTradeSkill
 	element.tradeSkillCastID = (isTradeSkill and castID) or nil
+	element.tradeSkillMerge = mergeTradeskill and casting and isPlayer and isTradeSkill and oUF:NotSecretValue(startTime)
 	element.stages = stages
 	-- end block
 
@@ -384,6 +386,21 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 
 		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
+
+		-- ElvUI block
+		if element.tradeSkillMerge then
+			if tradeskillStart ~= startTime then
+				tradeskillStart = startTime
+				tradeskillCurrent = tradeskillCurrent + 1
+			end
+
+			tradeskillDuration:SetTimeFromStart(element.startTime - (element.max * (tradeskillCurrent - 1)), element.max * tradeskillTotal)
+			duration = tradeskillDuration
+			element.max = element.max * tradeskillTotal
+			element.holdTime = 1
+		end
+		-- end block
+
 		if duration then
 			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
 			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
@@ -404,16 +421,6 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		else
 			element.duration = GetTime() - startTime
 		end
-
-		-- ElvUI block
-		if mergeTradeskill and isPlayer and isTradeSkill then
-			element.duration = element.duration + (element.max * tradeskillCurrent)
-			element.max = element.max * tradeskillTotal
-			element.holdTime = 1
-
-			tradeskillCurrent = tradeskillCurrent + 1
-		end
-		-- end block
 
 		element:SetMinMaxValues(0, element.max)
 
@@ -673,6 +680,9 @@ local function CastFail(self, event, unit, ...)
 
 	element.holdTime = element.timeToHold or 0
 
+	-- Failed crafts (When u start moving etc)
+	element.tradeSkillMerge = false
+
 	local isPlayer = oUF:UnitIsUnit(unit, 'player')
 	if mergeTradeskill and isPlayer then
 		mergeTradeskill = false
@@ -861,14 +871,20 @@ local function onUpdate(self, elapsed)
 	elseif(self.holdTime > 0) then
 		self.holdTime = self.holdTime - elapsed
 
-		-- force filled castbar
-		self:SetMinMaxValues(0, 1)
-		self:SetValue(1)
+		if not self.tradeSkillMerge then
+			-- force filled castbar
+			self:SetMinMaxValues(0, 1)
+			self:SetValue(1)
 
-		if(self.Time) then
-			self.Time:SetText('')
+			if(self.Time) then
+				self.Time:SetText('')
+			end
 		end
 	else
+		if self.tradeSkillMerge and tradeskillCurrent > 0 then
+			mergeTradeskill = false
+		end
+
 		resetAttributes(self)
 		self:Hide()
 	end
