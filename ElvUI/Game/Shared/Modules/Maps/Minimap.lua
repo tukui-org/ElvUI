@@ -143,6 +143,7 @@ function M:HandleExpansionButton()
 		local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
 		garrison:ClearAllPoints()
 		garrison:Point(position, Minimap, xOffset, yOffset)
+
 		M:SetIconParent(garrison)
 		M:SetScale(garrison, scale)
 	end
@@ -393,6 +394,7 @@ function M:HandleDifficulty(difficulty, cluster, hidden)
 	if cluster then
 		difficulty:ClearAllPoints()
 		difficulty:SetPoint('TOPRIGHT', MinimapCluster, 0, -25)
+
 		M:SetIconParent(difficulty)
 		M:SetScale(difficulty, 1)
 	elseif hidden then
@@ -401,6 +403,7 @@ function M:HandleDifficulty(difficulty, cluster, hidden)
 		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 		difficulty:ClearAllPoints()
 		difficulty:Point(position, Minimap, xOffset, yOffset)
+
 		M:SetIconParent(difficulty)
 		M:SetScale(difficulty, scale)
 	end
@@ -408,7 +411,8 @@ end
 
 function M:UpdateIcons()
 	local gameTime = _G.GameTimeFrame
-	local externalEvent = _G.MinimapBackdrop and _G.MinimapBackdrop.ExternalEventURLButton
+	local mmBackdrop = _G.MinimapBackdrop
+	local externalEvent = mmBackdrop and mmBackdrop.ExternalEventURLButton
 	local indicator = MinimapCluster.IndicatorFrame
 	local craftingFrame = indicator and indicator.CraftingOrderFrame
 	local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
@@ -436,6 +440,7 @@ function M:UpdateIcons()
 				if frame.Border then
 					frame.Border:SetVertexColor(r, g, b)
 				end
+
 				if frame.Background then
 					frame.Background:SetVertexColor(r2, g2, b2, a2)
 				end
@@ -473,20 +478,21 @@ function M:UpdateIcons()
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
 				gameTime:SetParent(Minimap)
-				gameTime:OffsetFrameLevel(2, _G.MinimapBackdrop)
+				gameTime:OffsetFrameLevel(2, mmBackdrop)
+
 				M:SetIconParent(gameTime)
 				M:SetScale(gameTime, scale)
 			end
 		end
 
 		if externalEvent then
-			M:SaveIconParent(externalEvent)
 			if hidden then
 				externalEvent:SetParent(E.HiddenFrame)
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('externalEvent')
 				externalEvent:ClearAllPoints()
 				externalEvent:Point(position, Minimap, xOffset, yOffset)
+
 				M:SetIconParent(externalEvent)
 				M:SetScale(externalEvent, scale)
 			end
@@ -499,6 +505,7 @@ function M:UpdateIcons()
 				local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
 				craftingFrame:ClearAllPoints()
 				craftingFrame:Point(position, Minimap, xOffset, yOffset)
+
 				M:SetIconParent(craftingFrame)
 				M:SetScale(craftingFrame, scale)
 			end
@@ -511,6 +518,7 @@ function M:UpdateIcons()
 				local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 				mailFrame:ClearAllPoints()
 				mailFrame:Point(position, Minimap, xOffset, yOffset)
+
 				M:SetIconParent(mailFrame)
 				M:SetScale(mailFrame, scale)
 			end
@@ -523,6 +531,7 @@ function M:UpdateIcons()
 				local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
 				battlefieldFrame:ClearAllPoints()
 				battlefieldFrame:Point(position, Minimap, xOffset, yOffset)
+
 				M:SetIconParent(battlefieldFrame)
 				M:SetScale(battlefieldFrame, scale)
 			end
