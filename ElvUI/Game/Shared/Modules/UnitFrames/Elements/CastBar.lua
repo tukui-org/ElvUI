@@ -10,7 +10,6 @@ local GetTime = GetTime
 local UnitCanAttack = UnitCanAttack
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
-local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
 
@@ -583,19 +582,7 @@ function UF:PostCastStart(unit)
 		local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
 		local changed = name ~= spellName
 
-		if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
-			if self.targetCurrent then
-				UF:SetCastText(self, db.castbar, changed, name, self.targetCurrent, self.targetClass)
-			elseif not E.Modern and (parent.unitframeType == 'pet' or parent.unitframeType == 'boss') then
-				local unitName = UnitName(unit)
-				local targetName = UnitName(unit..'target')
-				local _, targetClass = UnitClass(unit..'target')
-				local allowText = E:NotSecretValue(targetName) and (targetName and targetName ~= '') and (E:NotSecretValue(unitName) and (targetName ~= unitName))
-				UF:SetCastText(self, db.castbar, changed, name, allowText and targetName, targetClass)
-			end
-		elseif changed then
-			self.Text:SetText(name)
-		end
+		UF:SetCastText(self, db.castbar, changed, name, db.castbar.displayTarget and self.targetCurrent, self.targetClass)
 
 		if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
 			local spellID = E:NotSecretValue(self.spellID) and self.spellID or nil

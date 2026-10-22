@@ -135,6 +135,7 @@ L["Error resetting UnitFrame."] = "Erro ao resetar o Quadro de Unidade"
 L["EventToastWidget"] = "Widget de Mensagem de Evento"
 L["Experience"] = "Experiência"
 L["Experience Bar"] = "Barra de Experiência"
+L["External Event"] = true
 L["Finished"] = "Terminado"
 L["Fishy Loot"] = "Saque de Peixes"
 L["Focus Aura Bars"] = "Barras de Aura do Foco"

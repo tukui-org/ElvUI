@@ -135,6 +135,7 @@ L["Error resetting UnitFrame."] = true
 L["EventToastWidget"] = true
 L["Experience"] = true
 L["Experience Bar"] = true
+L["External Event"] = true
 L["Finished"] = true
 L["Fishy Loot"] = true
 L["Focus Aura Bars"] = true

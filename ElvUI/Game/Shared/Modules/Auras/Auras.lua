@@ -331,14 +331,16 @@ end
 function A:GetEnchantExpirations()
 	if GetTemporaryEnchantmentInfo then
 		local main, offhand, ranged = GetTemporaryEnchantmentInfo(INVSLOT_MAINHAND), GetTemporaryEnchantmentInfo(INVSLOT_OFFHAND), GetTemporaryEnchantmentInfo(INVSLOT_RANGED)
-		return main and main.remainingTimeMs, offhand and offhand.remainingTimeMs, ranged and ranged.remainingTimeMs
+		return main and main.remainingTimeMs, offhand and offhand.remainingTimeMs, ranged and ranged.remainingTimeMs, main and main.chargesRemaining, offhand and offhand.chargesRemaining, ranged and ranged.chargesRemaining
 	else
-		local _, main, _, _, _, offhand, _, _, _, ranged = GetWeaponEnchantInfo()
-		return main, offhand, ranged
+		local _, main, mainCharges, _, _, offhand, offhandCharges, _, _, ranged, rangedCharges = GetWeaponEnchantInfo()
+		return main, offhand, ranged, mainCharges, offhandCharges, rangedCharges
 	end
 end
 
-function A:UpdateTempEnchant(button, index, expiration)
+function A:UpdateTempEnchant(button, index, expiration, charges)
+	button.count:SetText((charges and charges > 1 and charges) or '')
+
 	if expiration then
 		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
 		local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
@@ -540,9 +542,11 @@ function A:Visibility_OnUpdate(elapsed)
 	if header.elapsedEnchants and header.elapsedEnchants > 0.5 then
 		local index, enchant = next(header.enchants)
 		if index then
-			local main, offhand, ranged = A:GetEnchantExpirations()
+			local main, offhand, ranged, mainCharges, offhandCharges, rangedCharges = A:GetEnchantExpirations()
 			while enchant do
-				A:UpdateTempEnchant(enchant, enchant:GetID(), (index == 1 and main) or (index == 2 and offhand) or (index == 3 and ranged))
+				local expiration = (index == 1 and main) or (index == 2 and offhand) or (index == 3 and ranged)
+				local charges = (index == 1 and mainCharges) or (index == 2 and offhandCharges) or (index == 3 and rangedCharges)
+				A:UpdateTempEnchant(enchant, enchant:GetID(), expiration, charges)
 
 				header.enchants[index] = nil
 				index, enchant = next(header.enchants)
@@ -721,10 +725,6 @@ function A:CreateAuraHeader(filter)
 	header.visibility:SetScript('OnEvent', A.Visibility_OnEvent) -- dont put this on the main frame
 	header.visibility.frame = header
 
-	if E.Modern then
-		header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
-	end
-
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
 
 	if E.Mists then -- only client with this header that has pet battles
@@ -736,6 +736,7 @@ function A:CreateAuraHeader(filter)
 	if filter == 'HELPFUL' then
 		header:SetAttribute('consolidateDuration', -1)
 		header:SetAttribute('includeWeapons', 1)
+		header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
 
 		if MasqueGroupBuffs and E.private.auras.masque.buffs then
 			header.MasqueGroup = MasqueGroupBuffs
