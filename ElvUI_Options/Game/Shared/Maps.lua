@@ -104,7 +104,7 @@ Maps.args.minimap.args.icons.args.calendar.args.scale = ACH:Range(L["Scale"], ni
 Maps.args.minimap.args.icons.args.calendar.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
 Maps.args.minimap.args.icons.args.calendar.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, buttonOffsets, nil, nil, nil, function() return E.private.general.minimap.hideCalendar end)
 
-Maps.args.minimap.args.icons.args.externalEvent = ACH:Group(L["External Event"], nil, 8, nil, nil, nil, function() return not E.db.general.minimap.clusterDisable end)
+Maps.args.minimap.args.icons.args.externalEvent = ACH:Group(L["External Event"], nil, 8, nil, nil, nil, function() return not E.db.general.minimap.clusterDisable end, not E.Wrath)
 Maps.args.minimap.args.icons.args.externalEvent.args.hideExternalEvent = ACH:Toggle(L["Hide"], nil, 1, nil, nil, nil, function() return E.private.general.minimap.hideExternalEvent end, function(_, value) E.private.general.minimap.hideExternalEvent = value; MM:UpdateSettings() end)
 Maps.args.minimap.args.icons.args.externalEvent.args.spacer = ACH:Spacer(2, 'full')
 Maps.args.minimap.args.icons.args.externalEvent.args.position = ACH:Select(L["Position"], nil, 3, buttonPositions, nil, nil, nil, nil, function() return E.private.general.minimap.hideExternalEvent end)
