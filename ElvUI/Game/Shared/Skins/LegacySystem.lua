@@ -29,10 +29,18 @@ local function HandleRewardCard(card)
 	card.IconBorder:SetAlpha(0)
 	card.LevelSquare:SetAlpha(0)
 
+	if card.Highlight then
+		card.Highlight:SetAlpha(0)
+	end
+
 	local cardLevel = card:GetFrameLevel()
 	card:CreateBackdrop('Transparent', nil, nil, nil, nil, nil, nil, nil, cardLevel - 2)
 	card.backdrop:Point('TOPLEFT', 4, -4)
 	card.backdrop:Point('BOTTOMRIGHT', -5, 5)
+
+	local highlight = card:CreateTexture(nil, 'HIGHLIGHT')
+	highlight:SetColorTexture(1, 1, 1, 0.25)
+	highlight:SetInside(card.backdrop)
 
 	S:HandleIcon(card.Icon, true)
 
