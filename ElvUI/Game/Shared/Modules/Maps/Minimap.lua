@@ -486,7 +486,7 @@ function M:UpdateIcons()
 		end
 
 		if externalEvent then
-			if hidden then
+			if hidden or E.private.general.minimap.hideExternalEvent then
 				externalEvent:SetParent(E.HiddenFrame)
 			else
 				local scale, position, xOffset, yOffset = M:GetIconSettings('externalEvent')
