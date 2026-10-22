@@ -135,6 +135,7 @@ L["Error resetting UnitFrame."] = "Birim cercevesi sifirlanirken hata olustu."
 L["EventToastWidget"] = "OlayikazBileseni"
 L["Experience"] = "Deneyim"
 L["Experience Bar"] = "Deneyim Cubugu"
+L["External Event"] = true
 L["Finished"] = "Tamamlandi"
 L["Fishy Loot"] = "supheli Ganimet"
 L["Focus Aura Bars"] = true

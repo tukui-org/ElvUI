@@ -135,6 +135,7 @@ L["Error resetting UnitFrame."] = "Error al restablecer UnitFrame."
 L["EventToastWidget"] = true
 L["Experience"] = "Experiencia"
 L["Experience Bar"] = "Barra de Experiencia"
+L["External Event"] = true
 L["Finished"] = "Terminado"
 L["Fishy Loot"] = "Botín Sospechoso"
 L["Focus Aura Bars"] = "Barras de Aura del Foco"

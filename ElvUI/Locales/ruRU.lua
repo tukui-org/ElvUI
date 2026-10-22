@@ -135,6 +135,7 @@ L["Error resetting UnitFrame."] = "Ошибка сброса рамки юнит
 L["EventToastWidget"] = "Виджет событий"
 L["Experience"] = "Опыт"
 L["Experience Bar"] = "Полоса опыта"
+L["External Event"] = true
 L["Finished"] = "Завершить"
 L["Fishy Loot"] = "Улов"
 L["Focus Aura Bars"] = "Полосы аур фокуса"

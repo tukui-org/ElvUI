@@ -135,6 +135,7 @@ L["Error resetting UnitFrame."] = "유닛 프레임 초기화 오류"
 L["EventToastWidget"] = "이벤트 알림"
 L["Experience"] = "경험치"
 L["Experience Bar"] = "경험치 바"
+L["External Event"] = true
 L["Finished"] = "마침"
 L["Fishy Loot"] = "낚시 전리품"
 L["Focus Aura Bars"] = "주시대상 오라 바"

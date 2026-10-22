@@ -135,6 +135,7 @@ L["Error resetting UnitFrame."] = "重置單位框架錯誤"
 L["EventToastWidget"] = "事件通知"
 L["Experience"] = "經驗/聲望條"
 L["Experience Bar"] = "經驗條"
+L["External Event"] = true
 L["Finished"] = "設定完畢"
 L["Fishy Loot"] = "貪婪"
 L["Focus Aura Bars"] = "焦點目標光環條"

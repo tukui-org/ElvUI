@@ -135,6 +135,7 @@ L["Error resetting UnitFrame."] = "Fehler beim Zurücksetzen des Einheitenfenste
 L["EventToastWidget"] = "EventToast-Widget"
 L["Experience"] = "Erfahrung"
 L["Experience Bar"] = "Erfahrungsleiste"
+L["External Event"] = true
 L["Finished"] = "Fertig"
 L["Fishy Loot"] = "Fischige Beute"
 L["Focus Aura Bars"] = "Fokus-Aurenleisten"
