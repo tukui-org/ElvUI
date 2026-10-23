@@ -11,6 +11,10 @@ else
 	S:AddCallbackForAddon('Blizzard_FrameXML', 'Blizzard_MirrorTimer', nil, nil, nil, nil, 'mirrorTimers')
 end
 
+local function MirrorTimer_OnValueChanged(statusBar, value)
+	statusBar.TimerText:SetFormattedText('%d:%02d', value / 60, value % 60)
+end
+
 local function SetupTimer(container, timer)
 	local bar = container:GetAvailableTimer(timer)
 	if not bar then return end
@@ -34,6 +38,14 @@ local function SetupTimer(container, timer)
 		barText:ClearAllPoints()
 		barText:SetParent(statusBar)
 		barText:Point('CENTER', statusBar, 0, 1)
+
+		local timerText = statusBar:CreateFontString(nil, 'OVERLAY')
+		timerText:FontTemplate()
+		timerText:Point('RIGHT', atlasHolder, -2, 0)
+		statusBar.TimerText = timerText
+
+		statusBar:HookScript('OnValueChanged', MirrorTimer_OnValueChanged)
+		MirrorTimer_OnValueChanged(statusBar, statusBar:GetValue())
 	end
 
 	bar:StripTextures()
