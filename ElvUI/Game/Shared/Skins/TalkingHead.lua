@@ -9,13 +9,13 @@ S:AddCallbackForAddon('Blizzard_FrameXML', 'TalkingHead', nil, nil, nil, nil, 't
 
 -- This prevents a taint trying to force an atlas or color lock by setting it to E.noop
 -- The kit call also resizes the region (useAtlasSize) and the Name anchors to the Portrait
-local atlasSizes = {}
+local ATLAS_SIZES = {}
 local function ClearAtlas(region, atlas)
-	if atlas then
-		local size = atlasSizes[region]
-		region:SetTexture()
-		region:SetSize(size[1], size[2])
-	end
+	if not atlas then return end
+
+	local size = ATLAS_SIZES[region]
+	region:SetTexture()
+	region:SetSize(size.width, size.height)
 end
 
 local function LockGold(text, r, g, b)
@@ -56,17 +56,21 @@ function S:TalkingHead()
 	end
 
 	for _, region in next, { frame.BackgroundFrame.TextBackground, frame.PortraitFrame.Portrait, frame.MainFrame.Model.PortraitBg } do
-		atlasSizes[region] = { region:GetSize() }
+		local width, height = region:GetSize()
+		ATLAS_SIZES[region] = { width = width, height = height }
+
 		hooksecurefunc(region, 'SetAtlas', ClearAtlas)
 	end
 
 	frame.NameFrame.Name:SetTextColor(1, 0.82, 0.02)
-	hooksecurefunc(frame.NameFrame.Name, 'SetTextColor', LockGold)
 	frame.NameFrame.Name:SetShadowColor(0, 0, 0, 1)
 	frame.NameFrame.Name:SetShadowOffset(2, -2)
 
+	hooksecurefunc(frame.NameFrame.Name, 'SetTextColor', LockGold)
+
 	frame.TextFrame.Text:SetTextColor(1, 1, 1)
-	hooksecurefunc(frame.TextFrame.Text, 'SetTextColor', LockWhite)
 	frame.TextFrame.Text:SetShadowColor(0, 0, 0, 1)
 	frame.TextFrame.Text:SetShadowOffset(2, -2)
+
+	hooksecurefunc(frame.TextFrame.Text, 'SetTextColor', LockWhite)
 end

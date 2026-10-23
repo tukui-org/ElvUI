@@ -559,9 +559,10 @@ function S:ContainerFrame()
 
 				local questIcon = _G['ContainerFrame'..i..'Item'..j..'IconQuestTexture']
 				questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
-				hooksecurefunc(questIcon, 'SetTexture', QuestIconTexture)
 				questIcon:SetTexCoord(0, 1, 0, 1)
 				questIcon:SetInside()
+
+				hooksecurefunc(questIcon, 'SetTexture', QuestIconTexture)
 
 				E:RegisterCooldown(_G['ContainerFrame'..i..'Item'..j..'Cooldown'], 'bags')
 			end
@@ -606,9 +607,10 @@ function S:ContainerFrame()
 			icon:SetTexCoords()
 
 			button.IconQuestTexture:SetTexture(E.Media.Textures.BagQuestIcon)
-			hooksecurefunc(button.IconQuestTexture, 'SetTexture', QuestIconTexture)
 			button.IconQuestTexture:SetTexCoord(0, 1, 0, 1)
 			button.IconQuestTexture:SetInside()
+
+			hooksecurefunc(button.IconQuestTexture, 'SetTexture', QuestIconTexture)
 
 			E:RegisterCooldown(cooldown, 'bags')
 		end

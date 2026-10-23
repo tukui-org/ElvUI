@@ -366,6 +366,7 @@ function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	button.normalTexture:SetSize(16, 16)
 	button.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
 	button.normalTexture:SetTexCoord(0, 1, 0, 1)
+
 	hooksecurefunc(button.normalTexture, 'SetTexCoord', ArrowTexCoord)
 
 	button:HookScript('OnEnter', AB.TotemBar_OnEnter)
@@ -422,6 +423,7 @@ function AB:CreateTotemBar()
 		AB:SkinMultiCastButton(button, true, MasqueGroup and E.private.actionbar.masque.actionbars)
 
 		hooksecurefunc(button.HotKey, 'SetVertexColor', HotKeyVertexColor)
+
 		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support
 	end
 
