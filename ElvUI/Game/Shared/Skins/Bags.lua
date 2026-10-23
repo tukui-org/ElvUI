@@ -343,6 +343,13 @@ local function SetBagIcon(frame, texture)
 	frame.BagIcon:SetTexture(texture)
 end
 
+-- This prevents a taint trying to force a texture lock by setting it to E.noop
+local function QuestIconTexture(icon, texture)
+	if texture ~= E.Media.Textures.BagQuestIcon then
+		icon:SetTexture(E.Media.Textures.BagQuestIcon)
+	end
+end
+
 local function BankFrameItemUpdate(button)
 	local id = button:GetID()
 
@@ -552,7 +559,7 @@ function S:ContainerFrame()
 
 				local questIcon = _G['ContainerFrame'..i..'Item'..j..'IconQuestTexture']
 				questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
-				questIcon.SetTexture = E.noop
+				hooksecurefunc(questIcon, 'SetTexture', QuestIconTexture)
 				questIcon:SetTexCoord(0, 1, 0, 1)
 				questIcon:SetInside()
 
@@ -599,7 +606,7 @@ function S:ContainerFrame()
 			icon:SetTexCoords()
 
 			button.IconQuestTexture:SetTexture(E.Media.Textures.BagQuestIcon)
-			button.IconQuestTexture.SetTexture = E.noop
+			hooksecurefunc(button.IconQuestTexture, 'SetTexture', QuestIconTexture)
 			button.IconQuestTexture:SetTexCoord(0, 1, 0, 1)
 			button.IconQuestTexture:SetInside()
 
