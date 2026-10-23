@@ -186,6 +186,21 @@ local function HandleTalentButton(button)
 	highlight:SetColorTexture(1, 1, 1, 0.25)
 	highlight:SetInside(button.Icon.backdrop)
 
+	-- Unnamed box with a shadow strip behind the spend text
+	for _, region in next, { button:GetRegions() } do
+		if region:IsObjectType('Texture') and region:GetAtlas() == 'Talents-Square-Box-c60' then
+			region:SetAlpha(0)
+
+			local spendBG = CreateFrame('Frame', nil, button)
+			spendBG:Point('CENTER', button.SpendText)
+			spendBG:Size(32, 22)
+			spendBG:SetTemplate()
+			button.SpendText:SetParent(spendBG)
+			button.spendBG = spendBG
+			break
+		end
+	end
+
 	hooksecurefunc(button, 'UpdateStateBorder', TalentButton_UpdateStateBorder)
 
 	-- The state was applied before the hook existed
@@ -205,6 +220,11 @@ local function TraitPanel_UpdateButtonFrameLevel(_, button)
 	end
 
 	button.Icon.backdrop:OffsetFrameLevel(-1, button)
+
+	-- Only LegacySquare buttons have the spend box
+	if button.spendBG then
+		button.spendBG:OffsetFrameLevel(1, button)
+	end
 end
 
 local function RefreshTreeButtons(panel)
