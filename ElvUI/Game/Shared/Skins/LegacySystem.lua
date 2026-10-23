@@ -195,8 +195,10 @@ local function HandleTalentButton(button)
 			spendBG:Point('CENTER', button.SpendText)
 			spendBG:Size(32, 22)
 			spendBG:SetTemplate()
+
 			button.SpendText:SetParent(spendBG)
 			button.spendBG = spendBG
+
 			break
 		end
 	end

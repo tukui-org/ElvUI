@@ -93,7 +93,7 @@ function S:Blizzard_MirrorTimer() -- Mirror Timers (Underwater Breath, etc.)
 
 			local timerText = mirrorTimer:CreateFontString(nil, 'OVERLAY')
 			timerText:FontTemplate(nil, nil, 'OUTLINE')
-			timerText:Point('CENTER', statusBar, 'CENTER', 0, 0)
+			timerText:Point('CENTER', statusBar)
 			mirrorTimer.TimerText = timerText
 
 			mirrorTimer.timeSinceUpdate = 0.3
