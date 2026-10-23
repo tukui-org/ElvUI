@@ -1399,7 +1399,7 @@ local function SkinSkillFrame()
 			E:RegisterStatusBar(bar)
 
 			border:StripTextures()
-			background:SetTexture(nil)
+			background:SetTexture()
 
 			label:GetNormalTexture():Size(14)
 			label:SetHighlightTexture(E.ClearTexture)

@@ -448,7 +448,7 @@ local function SkinMistsGlyphFrame()
 		frame:StyleButton(nil, true)
 		frame:Size((i % 2 == 0) and 42 or 28) -- Major or Minor Glyphs
 
-		frame.highlight:SetTexture(nil)
+		frame.highlight:SetTexture()
 		frame.ring:Hide()
 
 		frame.glyph:HookScript('OnShow', GlyphShow)

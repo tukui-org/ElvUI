@@ -90,9 +90,9 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 	button.useMasque = useMasque
 	button.db = AB.db.totemBar
 
-	if normal then normal:SetTexture(nil) end
+	if normal then normal:SetTexture() end
 	if button.overlayTex then button.overlayTex:Hide() end
-	if highlight then highlight:SetTexture(nil) end
+	if highlight then highlight:SetTexture() end
 
 	if not button.noBackdrop and not button.useMasque then
 		button:SetTemplate()
@@ -120,8 +120,8 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 end
 
 function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
-	frame.top:SetTexture(nil)
-	frame.middle:SetTexture(nil)
+	frame.top:SetTexture()
+	frame.middle:SetTexture()
 
 	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
