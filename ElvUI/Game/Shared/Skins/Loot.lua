@@ -113,12 +113,15 @@ local function MasterLooterShow()
 	end
 end
 
-local function StartBonusRoll()
-	local frame = _G.BonusRollFrame
-
+local function BonusRollOnShow(frame)
+	-- OnShow hides the timer below the frame (Cinematics, ALT+Z, etc)
 	-- keep the status bar a frame above but its increased 1 extra beacuse mera has a grid layer
 	frame.PromptFrame.Timer:OffsetFrameLevel(2, frame)
 	frame.BlackBackgroundHoist.backdrop:OffsetFrameLevel(1, frame)
+end
+
+local function StartBonusRoll()
+	local frame = _G.BonusRollFrame
 
 	-- set currency icons position at bottom right (or left of the spec icon, on the bottom right)
 	frame.CurrentCountFrame:ClearAllPoints()
@@ -406,6 +409,7 @@ function S:LootFrame()
 	BonusHoist.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
 	BonusHoist.backdrop:SetTemplate()
 	BonusHoist.backdrop:SetOutside(BonusPrompt.Timer)
+	BonusRollFrame:HookScript('OnShow', BonusRollOnShow)
 
 	local BonusSpecIcon = BonusRollFrame.SpecIcon
 	BonusSpecIcon.backdrop = CreateFrame('Frame', nil, BonusRollFrame)
