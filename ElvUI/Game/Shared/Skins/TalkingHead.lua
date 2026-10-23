@@ -32,45 +32,55 @@ end
 
 function S:TalkingHead()
 	local frame = _G.TalkingHeadFrame
-	frame.BackgroundFrame.TextBackground:SetAtlas(nil)
-	frame.PortraitFrame.Portrait:SetAtlas(nil)
-	frame.MainFrame.Model.PortraitBg:SetAtlas(nil)
-	frame.PortraitFrame:StripTextures()
+	local mainFrame = frame.MainFrame
+	local modelFrame = mainFrame.Model
+	modelFrame.PortraitBg:SetAtlas(nil)
 
+	local bgFrame = frame.BackgroundFrame
+	bgFrame.TextBackground:SetAtlas(nil)
+
+	local portraitFrame = frame.PortraitFrame
+	portraitFrame.Portrait:SetAtlas(nil)
+	portraitFrame:StripTextures()
+
+	local closeButton = mainFrame.CloseButton
 	if E.db.general.talkingHeadFrameBackdrop then
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
-		frame.MainFrame:StripTextures()
 
-		local button = frame.MainFrame.CloseButton
-		S:HandleCloseButton(button)
-		button:ClearAllPoints()
-		button:Point('TOPRIGHT', frame.BackgroundFrame, 'TOPRIGHT', 0, -2)
+		mainFrame:StripTextures()
+
+		closeButton:ClearAllPoints()
+		closeButton:Point('TOPRIGHT', bgFrame, 'TOPRIGHT', 0, -2)
+
+		S:HandleCloseButton(closeButton)
 	else
-		frame.MainFrame.Model:CreateBackdrop('Transparent')
-		frame.MainFrame.Model.backdrop:ClearAllPoints()
-		frame.MainFrame.Model.backdrop:Point('CENTER')
-		frame.MainFrame.Model.backdrop:Size(120, 119)
+		modelFrame:CreateBackdrop('Transparent')
+		modelFrame.backdrop:ClearAllPoints()
+		modelFrame.backdrop:Point('CENTER')
+		modelFrame.backdrop:Size(120, 119)
 
-		frame.MainFrame.CloseButton:Kill()
+		closeButton:Kill()
 	end
 
-	for _, region in next, { frame.BackgroundFrame.TextBackground, frame.PortraitFrame.Portrait, frame.MainFrame.Model.PortraitBg } do
+	for _, region in next, { bgFrame.TextBackground, portraitFrame.Portrait, modelFrame.PortraitBg } do
 		local width, height = region:GetSize()
 		ATLAS_SIZES[region] = { width = width, height = height }
 
 		hooksecurefunc(region, 'SetAtlas', ClearAtlas)
 	end
 
-	frame.NameFrame.Name:SetTextColor(1, 0.82, 0.02)
-	frame.NameFrame.Name:SetShadowColor(0, 0, 0, 1)
-	frame.NameFrame.Name:SetShadowOffset(2, -2)
+	local nameText = frame.NameFrame.Name
+	nameText:SetTextColor(1, 0.82, 0.02)
+	nameText:SetShadowColor(0, 0, 0, 1)
+	nameText:SetShadowOffset(2, -2)
 
-	hooksecurefunc(frame.NameFrame.Name, 'SetTextColor', LockGold)
+	hooksecurefunc(nameText, 'SetTextColor', LockGold)
 
-	frame.TextFrame.Text:SetTextColor(1, 1, 1)
-	frame.TextFrame.Text:SetShadowColor(0, 0, 0, 1)
-	frame.TextFrame.Text:SetShadowOffset(2, -2)
+	local frameText = frame.TextFrame.Text
+	frameText:SetTextColor(1, 1, 1)
+	frameText:SetShadowColor(0, 0, 0, 1)
+	frameText:SetShadowOffset(2, -2)
 
-	hooksecurefunc(frame.TextFrame.Text, 'SetTextColor', LockWhite)
+	hooksecurefunc(frameText, 'SetTextColor', LockWhite)
 end
