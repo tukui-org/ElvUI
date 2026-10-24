@@ -1028,7 +1028,7 @@ function CH:StyleChat(frame)
 	charCount:Point('TOPRIGHT', editbox, 'TOPRIGHT', -5, 0)
 	charCount:Point('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', -5, 0)
 	charCount:SetJustifyH('CENTER')
-	charCount:Width(40)
+	charCount:Width(50)
 	editbox.characterCount = charCount
 
 	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
