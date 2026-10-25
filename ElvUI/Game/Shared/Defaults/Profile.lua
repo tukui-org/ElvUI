@@ -1467,6 +1467,7 @@ P.chat = {
 	hideChatToggles = false,
 	hideCopyButton = false,
 	useAltKey = false,
+	countCharacters = true,
 	classColorMentionsChat = true,
 	enableCombatRepeat = true,
 	numAllowedCombatRepeat = 5,

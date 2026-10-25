@@ -90,9 +90,9 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 	button.useMasque = useMasque
 	button.db = AB.db.totemBar
 
-	if normal then normal:SetTexture(nil) end
+	if normal then normal:SetTexture() end
 	if button.overlayTex then button.overlayTex:Hide() end
-	if highlight then highlight:SetTexture(nil) end
+	if highlight then highlight:SetTexture() end
 
 	if not button.noBackdrop and not button.useMasque then
 		button:SetTemplate()
@@ -120,8 +120,8 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 end
 
 function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
-	frame.top:SetTexture(nil)
-	frame.middle:SetTexture(nil)
+	frame.top:SetTexture()
+	frame.middle:SetTexture()
 
 	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
@@ -344,6 +344,19 @@ function AB:MultiCastRecallSpellButton_Update(button)
 	end
 end
 
+-- This prevents a taint trying to force a texcoord or color lock by setting it to E.noop
+local function ArrowTexCoord(texture, left, right, top, bottom)
+	if left ~= 0 or right ~= 1 or top ~= 0 or bottom ~= 1 then
+		texture:SetTexCoord(0, 1, 0, 1)
+	end
+end
+
+local function HotKeyVertexColor(hotkey, r, g, b)
+	if r ~= 1 or g ~= 1 or b ~= 1 then
+		hotkey:SetVertexColor(1, 1, 1)
+	end
+end
+
 function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	button:SetTemplate()
 	button:StyleButton()
@@ -353,7 +366,8 @@ function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	button.normalTexture:SetSize(16, 16)
 	button.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
 	button.normalTexture:SetTexCoord(0, 1, 0, 1)
-	button.normalTexture.SetTexCoord = E.noop
+
+	hooksecurefunc(button.normalTexture, 'SetTexCoord', ArrowTexCoord)
 
 	button:HookScript('OnEnter', AB.TotemBar_OnEnter)
 	button:HookScript('OnLeave', AB.TotemBar_OnLeave)
@@ -408,7 +422,8 @@ function AB:CreateTotemBar()
 
 		AB:SkinMultiCastButton(button, true, MasqueGroup and E.private.actionbar.masque.actionbars)
 
-		button.HotKey.SetVertexColor = E.noop
+		hooksecurefunc(button.HotKey, 'SetVertexColor', HotKeyVertexColor)
+
 		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support
 	end
 

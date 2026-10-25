@@ -42,6 +42,15 @@ local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 local CURRENT_PAGE = 0
 local MAX_PAGE = 9
 
+-- keys taken from `ChatTypeGroup` but doesnt add: 'OPENING', 'TRADESKILLS', 'PET_INFO', 'COMBAT_MISC_INFO', 'COMMUNITIES_CHANNEL', 'PET_BATTLE_COMBAT_LOG', 'PET_BATTLE_INFO', 'TARGETICONS'
+local GROUPS_LEFT = { E.Modern and 'PING' or nil, 'SYSTEM', 'CHANNEL', 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD_DISCORD', 'GUILD', 'OFFICER', 'MONSTER_SAY', 'MONSTER_YELL', 'MONSTER_EMOTE', 'MONSTER_WHISPER', 'MONSTER_BOSS_EMOTE', 'MONSTER_BOSS_WHISPER', 'ERRORS', 'AFK', 'DND', 'IGNORED', 'BG_HORDE', 'BG_ALLIANCE', 'BG_NEUTRAL', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'BN_WHISPER', 'BN_INLINE_TOAST_ALERT' }
+local GROUPS_RIGHT = { 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
+local GROUPS_CHANNEL = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
+
+for i = 1, MAX_WOW_CHAT_CHANNELS do
+	tinsert(GROUPS_CHANNEL, 'CHANNEL'..i)
+end
+
 local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
 local ELV_TOONS = {
 	['Elv-Spirestone']			= true,
@@ -106,40 +115,26 @@ function E:SetupChat(noDisplayMsg)
 		FCF_StopDragging(frame)
 	end
 
-	-- keys taken from `ChatTypeGroup` but doesnt add: 'OPENING', 'TRADESKILLS', 'PET_INFO', 'COMBAT_MISC_INFO', 'COMMUNITIES_CHANNEL', 'PET_BATTLE_COMBAT_LOG', 'PET_BATTLE_INFO', 'TARGETICONS'
-	local chatGroup = { E.Modern and 'PING' or nil, 'SYSTEM', 'CHANNEL', 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD_DISCORD', 'GUILD', 'OFFICER', 'MONSTER_SAY', 'MONSTER_YELL', 'MONSTER_EMOTE', 'MONSTER_WHISPER', 'MONSTER_BOSS_EMOTE', 'MONSTER_BOSS_WHISPER', 'ERRORS', 'AFK', 'DND', 'IGNORED', 'BG_HORDE', 'BG_ALLIANCE', 'BG_NEUTRAL', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'BN_WHISPER', 'BN_INLINE_TOAST_ALERT' }
-	local ChatFrame1_RemoveAllMessageGroups = _G.ChatFrame1.RemoveAllMessageGroups or _G.ChatFrame_RemoveAllMessageGroups
-	local ChatFrame1_AddMessageGroup = _G.ChatFrame1.AddMessageGroup or _G.ChatFrame_AddMessageGroup
+	local leftChat = _G.ChatFrame1
+	leftChat:RemoveAllMessageGroups()
 
-	ChatFrame1_RemoveAllMessageGroups(_G.ChatFrame1)
-	for _, v in next, chatGroup do
-		ChatFrame1_AddMessageGroup(_G.ChatFrame1, v)
+	for _, v in next, GROUPS_LEFT do
+		leftChat:AddMessageGroup(v)
 	end
+
+	rightChat:RemoveAllMessageGroups()
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1 but keeping CHANNEL
-	chatGroup = { 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
-	local RightChat_RemoveAllMessageGroups = rightChat.RemoveAllMessageGroups or _G.ChatFrame_RemoveAllMessageGroups
-	local RightChat_AddMessageGroup = rightChat.AddMessageGroup or _G.ChatFrame_AddMessageGroup
-
-	RightChat_RemoveAllMessageGroups(rightChat)
-	for _, v in next, chatGroup do
-		RightChat_AddMessageGroup(rightChat, v)
+	for _, v in next, GROUPS_RIGHT do
+		rightChat:AddMessageGroup(v)
 	end
 
-	local ChatFrame1_AddChannel = _G.ChatFrame1.AddChannel or _G.ChatFrame_AddChannel
-	local ChatFrame1_RemoveChannel = _G.ChatFrame1.RemoveChannel or _G.ChatFrame_RemoveChannel
-	local RightChat_AddChannel = rightChat.AddChannel or _G.ChatFrame_AddChannel
-
-	ChatFrame1_AddChannel(_G.ChatFrame1, GENERAL)
-	ChatFrame1_RemoveChannel(_G.ChatFrame1, TRADE)
-	RightChat_AddChannel(rightChat, TRADE)
+	leftChat:AddChannel(GENERAL)
+	leftChat:RemoveChannel(TRADE)
+	rightChat:AddChannel(TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
-	chatGroup = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
-	for i = 1, MAX_WOW_CHAT_CHANNELS do
-		tinsert(chatGroup, 'CHANNEL'..i)
-	end
-	for _, v in next, chatGroup do
+	for _, v in next, GROUPS_CHANNEL do
 		ToggleChatColorNamesByClassGroup(true, v)
 	end
 

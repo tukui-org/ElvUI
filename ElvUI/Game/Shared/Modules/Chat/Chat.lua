@@ -815,12 +815,19 @@ do
 			end
 		end
 
-		-- recalculate the character count correctly with hyperlinks in it
-		charCount = 0 -- using gsub so it matches multiple without gmatch
-		gsub(text, '(|c%x-|H.-|h).-|h|r', CH.CountLinkCharacters)
-		if charCount ~= 0 then len = len - charCount end
+		if CH.db.countCharacters then
+			charCount = 0 -- using gsub so it matches multiple without gmatch
 
-		self.characterCount:SetText(len > 0 and (255 - len) or '')
+			gsub(text, '(|c%x-|H.-|h).-|h|r', CH.CountLinkCharacters) -- recalculate the character count correctly with hyperlinks in it
+
+			if charCount ~= 0 then
+				len = len - charCount
+			end
+
+			self.characterCount:SetText(len > 0 and (255 - len) or '')
+		else
+			self.characterCount:SetText('')
+		end
 
 		if repeatedText then
 			repeatedText = nil
@@ -1021,7 +1028,7 @@ function CH:StyleChat(frame)
 	charCount:Point('TOPRIGHT', editbox, 'TOPRIGHT', -5, 0)
 	charCount:Point('BOTTOMRIGHT', editbox, 'BOTTOMRIGHT', -5, 0)
 	charCount:SetJustifyH('CENTER')
-	charCount:Width(40)
+	charCount:Width(50)
 	editbox.characterCount = charCount
 
 	hooksecurefunc(tab, 'SetAlpha', CH.ChatFrameTab_SetAlpha)
@@ -2436,12 +2443,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 			if E:IsSecretValue(arg1) then
 				return -- we cant get the globalstring because arg1 is secret
 			elseif E.Modern and arg1 == 'YOU_CHANGED' and (GetChannelRuleset(arg8) == CHATCHANNELRULESET_MENTOR) then
-				if frame.UpdateDefaultChatTarget then
-					frame:UpdateDefaultChatTarget()
-				else
-					_G.ChatFrame_UpdateDefaultChatTarget(frame)
-				end
-
+				frame:UpdateDefaultChatTarget()
 				frame.editBox:UpdateNewcomerEditBoxHint()
 			else
 				if E.Modern and arg1 == 'YOU_LEFT' then
@@ -2572,13 +2574,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 end
 
 function CH:ChatFrame_ConfigEventHandler(...)
-	local ConfigEventHandler = _G.ChatFrameMixin and _G.ChatFrameMixin.ConfigEventHandler or _G.ChatFrame_ConfigEventHandler
-	return ConfigEventHandler(...)
+	return _G.ChatFrameMixin.ConfigEventHandler(...)
 end
 
 function CH:ChatFrame_SystemEventHandler(...)
-	local SystemEventHandler = _G.ChatFrameMixin and _G.ChatFrameMixin.SystemEventHandler or _G.ChatFrame_SystemEventHandler
-	return SystemEventHandler(...)
+	return _G.ChatFrameMixin.SystemEventHandler(...)
 end
 
 function CH:ChatFrame_OnEvent(frame, ...)
@@ -3983,16 +3983,10 @@ function CH:FCF_Close(fallback)
 		self.inUse = false
 	end
 
-	--Reset what this window receives.
-	if self.RemoveAllMessageGroups then
-		self:RemoveAllMessageGroups()
-		self:RemoveAllChannels()
-		self:ReceiveAllPrivateMessages()
-	else
-		_G.ChatFrame_RemoveAllMessageGroups(self)
-		_G.ChatFrame_RemoveAllChannels(self)
-		_G.ChatFrame_ReceiveAllPrivateMessages(self)
-	end
+	-- Reset what this window receives
+	self:RemoveAllMessageGroups()
+	self:RemoveAllChannels()
+	self:ReceiveAllPrivateMessages()
 
 	CH:PostChatClose(self) -- also call this since it won't call from blizzard in this case
 end

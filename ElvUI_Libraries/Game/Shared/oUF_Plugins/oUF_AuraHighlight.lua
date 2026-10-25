@@ -107,7 +107,7 @@ local function Update(self, event, unit, updateInfo)
 		end
 
 		if self.AuraHighlightUseTexture then
-			self.AuraHighlight:SetTexture(nil)
+			self.AuraHighlight:SetTexture()
 		else
 			self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
 		end

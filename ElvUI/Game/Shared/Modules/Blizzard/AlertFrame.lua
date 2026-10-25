@@ -96,7 +96,7 @@ end
 
 function BL:HandleGroupLootContainer()
 	_G.GroupLootContainer:EnableMouse(false) -- Prevent this weird non-clickable area stuff since 8.1; Monitor this, as it may cause addon compatibility.
-	_G.GroupLootContainer.ignoreInLayout = true
+	_G.GroupLootContainer.ignoreFramePositionManager = true -- So it does not clear the anchors on every UIParent show (Cinematics)
 
 	hooksecurefunc('GroupLootContainer_Update', M.PositionGroupLootContainer)
 end

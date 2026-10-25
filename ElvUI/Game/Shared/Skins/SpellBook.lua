@@ -391,8 +391,8 @@ local function SkinClassicSpellBook()
 	for i = 1, 3 do -- frame tabs, only spell and pet are ever shown
 		local tab = _G['SpellBookFrameTabButton'..i]
 
-		tab:GetNormalTexture():SetTexture(nil)
-		tab:GetDisabledTexture():SetTexture(nil)
+		tab:GetNormalTexture():SetTexture()
+		tab:GetDisabledTexture():SetTexture()
 
 		S:HandleTab(tab)
 
@@ -415,7 +415,7 @@ local function SkinClassicSpellBook()
 
 		for _, region in next, { button:GetRegions() } do
 			if region:IsObjectType('Texture') and region ~= button.Arrow then
-				region:SetTexture(nil)
+				region:SetTexture()
 			end
 		end
 

@@ -995,7 +995,7 @@ end
 if oUF.isModern then -- ElvUI
 	hooksecurefunc(C_TradeSkillUI, 'CraftRecipe', function(_, num)
 		tradeskillCurrent = 0
-		tradeskillTotal = num or 1
+		tradeskillTotal = (num and num > 0 and num) or 1 -- Runeforging passes 0
 		mergeTradeskill = true
 	end)
 end

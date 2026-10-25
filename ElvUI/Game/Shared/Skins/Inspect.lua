@@ -313,7 +313,7 @@ function S:Blizzard_InspectUI()
 				glyph:StyleButton(nil, true)
 				glyph:OffsetFrameLevel(5)
 
-				glyph.highlight:SetTexture(nil)
+				glyph.highlight:SetTexture()
 				glyph.glyph:Kill()
 				glyph.ring:Kill()
 

@@ -220,7 +220,7 @@ function AB:ExtraButtons_SetupBoss()
 
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
-	ExtraActionBarFrame.ignoreInLayout = true
+	ExtraActionBarFrame.ignoreInLayout = true -- Won't taint SetPoint because we reparent them, no Blizzard layout iterates them
 end
 
 function AB:ExtraButtons_SetupZone()
@@ -241,7 +241,7 @@ function AB:ExtraButtons_SetupZone()
 
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:SetAllPoints()
-	ZoneAbilityFrame.ignoreInLayout = true
+	ZoneAbilityFrame.ignoreInLayout = true -- Won't taint SetPoint because we reparent them, no Blizzard layout iterates them
 
 	ZoneAbilityHolder:Size(52 * E.db.actionbar.zoneActionButton.scale)
 end

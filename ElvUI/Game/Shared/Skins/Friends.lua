@@ -741,7 +741,7 @@ function S:FriendsFrame()
 		BattlenetFrame:SetScript('OnEnter', BattleNetFrame_OnEnter)
 		BattlenetFrame:SetScript('OnLeave', BattleNetFrame_OnLeave)
 
-		FriendsFrameBattlenetFrame.UnavailableInfoFrame.Bg:SetTexture(nil)
+		FriendsFrameBattlenetFrame.UnavailableInfoFrame.Bg:SetTexture()
 		FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetTemplate('Transparent')
 		FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
 		FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point('TOPLEFT', FriendsFrame, 'TOPRIGHT', 1, -18)
