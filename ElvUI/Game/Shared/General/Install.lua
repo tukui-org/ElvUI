@@ -47,6 +47,10 @@ local GROUPS_LEFT = { E.Modern and 'PING' or nil, 'SYSTEM', 'CHANNEL', 'SAY', 'E
 local GROUPS_RIGHT = { 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
 local GROUPS_CHANNEL = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
 
+for i = 1, MAX_WOW_CHAT_CHANNELS do
+	tinsert(GROUPS_CHANNEL, 'CHANNEL'..i)
+end
+
 local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
 local ELV_TOONS = {
 	['Elv-Spirestone']			= true,
@@ -130,10 +134,6 @@ function E:SetupChat(noDisplayMsg)
 	rightChat:AddChannel(TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
-	for i = 1, MAX_WOW_CHAT_CHANNELS do
-		tinsert(GROUPS_CHANNEL, 'CHANNEL'..i)
-	end
-
 	for _, v in next, GROUPS_CHANNEL do
 		ToggleChatColorNamesByClassGroup(true, v)
 	end
