@@ -2574,13 +2574,11 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 end
 
 function CH:ChatFrame_ConfigEventHandler(...)
-	local ConfigEventHandler = _G.ChatFrameMixin and _G.ChatFrameMixin.ConfigEventHandler or _G.ChatFrame_ConfigEventHandler
-	return ConfigEventHandler(...)
+	return _G.ChatFrameMixin.ConfigEventHandler(...)
 end
 
 function CH:ChatFrame_SystemEventHandler(...)
-	local SystemEventHandler = _G.ChatFrameMixin and _G.ChatFrameMixin.SystemEventHandler or _G.ChatFrame_SystemEventHandler
-	return SystemEventHandler(...)
+	return _G.ChatFrameMixin.SystemEventHandler(...)
 end
 
 function CH:ChatFrame_OnEvent(frame, ...)
