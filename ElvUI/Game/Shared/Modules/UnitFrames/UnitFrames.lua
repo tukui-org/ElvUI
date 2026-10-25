@@ -1658,8 +1658,12 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 
 	self.elapsedThrottle = self.eventlessThrottle
 
+	-- time actually passed since the throttle last fired (waitThrottle is <= 0 here),
+	-- not just this frame's elapsed; otherwise the timers below run ~0.1/frametime slower
+	local passed = self.eventlessThrottle - waitThrottle
+
 	if E:IsSecretUnit(unit) then
-		local waitSecret = (self.elapsedSecret or 0) + elapsed
+		local waitSecret = (self.elapsedSecret or 0) + passed
 		if waitSecret >= self.eventlessSecret then
 			UF:Eventless_UpdateAll(self)
 
@@ -1673,7 +1677,7 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 		return -- bail out
 	end
 
-	local waitResource = (self.elapsedResource or 0) + elapsed
+	local waitResource = (self.elapsedResource or 0) + passed
 	if waitResource >= self.eventlessResource then
 		local guid = UnitGUID(unit)
 		if self.lastGUID ~= guid then
@@ -1692,7 +1696,7 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 		self.elapsedResource = waitResource
 	end
 
-	local waitPrediction = (self.elapsedPrediction or 0) + elapsed
+	local waitPrediction = (self.elapsedPrediction or 0) + passed
 	if waitPrediction >= self.eventlessPrediction then
 		if self:IsElementEnabled('HealthPrediction') then self.HealthPrediction:ForceUpdate() end
 		if self:IsElementEnabled('PowerPrediction') then self.PowerPrediction:ForceUpdate() end
@@ -1704,7 +1708,7 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 	end
 
 	if self.eventlessAura then -- not on Modern
-		local waitAura = (self.elapsedAura or 0) + elapsed
+		local waitAura = (self.elapsedAura or 0) + passed
 		if waitAura >= self.eventlessAura then
 			local element = self:IsElementEnabled('Auras') and (self.Auras or self.Buffs or self.Debuffs)
 			if element then -- one ForceUpdate updates all three containers
