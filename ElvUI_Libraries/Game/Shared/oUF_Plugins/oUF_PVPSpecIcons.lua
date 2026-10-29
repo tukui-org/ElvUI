@@ -38,7 +38,7 @@ local Update = function(frame, event, unit)
 			specDisplay.specPortrait = element.Icon
 
 			local hasSpec = UnitFrameUtil.UpdateArenaOpponentSpecDisplay(specDisplay, unitID)
-			if not hasSpec then -- we can still use the unknown
+			if oUF:NotSecretValue(hasSpec) and not hasSpec then -- we can still use the unknown
 				element.Icon:SetTexture(factions.Unknown)
 			end
 		else
