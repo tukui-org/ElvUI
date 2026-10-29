@@ -66,6 +66,7 @@ local function HandleReward(frame) -- reward frames are a mix of Large/Small ite
 	if frame.Icon then
 		frame.Icon:SetDrawLayer('ARTWORK')
 		S:HandleIcon(frame.Icon, true)
+		S:HandleItemButtonCrop(frame)
 
 		if E.Modern and frame.IconBorder then -- the classic SetItemButtonQuality always hides it
 			S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
@@ -821,6 +822,7 @@ function S:BlizzardQuestFrames()
 		icon:SetTexCoords()
 		icon:Point('TOPLEFT', 2, -2)
 		icon:Size(icon:GetWidth() -3, icon:GetHeight() -3)
+		S:HandleItemButtonCrop(button)
 
 		button:Width(button:GetWidth() - 4)
 		button:StripTextures()

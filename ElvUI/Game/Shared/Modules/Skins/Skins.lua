@@ -9,6 +9,7 @@ local unpack, type, gsub, rad = unpack, type, gsub, rad
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local GetItemButtonIconTexture = GetItemButtonIconTexture
 
 S.allowBypass = {}
 S.addonStorage = {}
@@ -435,6 +436,7 @@ function S:HandleStaticPopup(popup)
 
 		local item = itemFrame.Item or itemFrame
 		S:HandleItemButton(item, true)
+		S:HandleItemButtonCrop(item)
 		S:HandleIconBorder(item.IconBorder, item.backdrop)
 
 		local normalTexture = item:GetNormalTexture()
@@ -1750,6 +1752,30 @@ function S:HandleItemButton(b, setInside, ignoreParent)
 	end
 
 	b.IsSkinned = true
+end
+
+do
+	local function KeepTexCoords(icon, left)
+		if left ~= E:GetTexCoords() then
+			icon:SetTexCoords()
+		end
+	end
+
+	function S:HandleItemButtonCrop(button)
+		if not E.Forever or button.keepsCrop then return end
+
+		local icon = GetItemButtonIconTexture(button)
+		hooksecurefunc(icon, 'SetTexCoord', KeepTexCoords)
+
+		local mask = button.Mask
+		if mask then
+			for _, texture in next, { icon, button:GetNormalTexture(), button:GetPushedTexture() } do
+				texture:RemoveMaskTexture(mask)
+			end
+		end
+
+		button.keepsCrop = true
+	end
 end
 
 do

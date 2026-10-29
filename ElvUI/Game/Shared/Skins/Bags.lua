@@ -65,6 +65,19 @@ local function BackpackToken_Update(container)
 	end
 end
 
+-- Resets on every item and cooldown update
+local function SyncAppearance(button)
+	local pushed = button.pushed
+	pushed:SetColorTexture(0.9, 0.8, 0.1, 0.3)
+	pushed:SetVertexColor(1, 1, 1)
+	pushed:SetDesaturation(0)
+	pushed:SetInside()
+
+	if not button:HasItem() then
+		button.icon:SetTexture(E.Media.Textures.Invisible)
+	end
+end
+
 local function SkinButton(button)
 	if button.template then return end
 
@@ -76,6 +89,13 @@ local function SkinButton(button)
 
 	button.icon:SetInside()
 	button.icon:SetTexCoords()
+	S:HandleItemButtonCrop(button)
+
+	if E.Forever then
+		button:GetNormalTexture():SetAlpha(0)
+		hooksecurefunc(button, 'SyncAppearanceWithHasItem', SyncAppearance)
+	end
+
 	button.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
 	button.IconQuestTexture:SetTexCoords()
 	button.IconQuestTexture:SetInside(button)
@@ -226,6 +246,7 @@ local function HandleItem(button)
 
 	button.icon:SetInside()
 	button.icon:SetTexCoords()
+	S:HandleItemButtonCrop(button)
 	button.Background:Hide()
 
 	-- CamelotBankPanelItemButtonMixin:Refresh sets the slot frame atlas again on every refresh
@@ -262,6 +283,7 @@ local function HandleBagSlot(button)
 
 	button.icon:SetInside()
 	button.icon:SetTexCoords()
+	S:HandleItemButtonCrop(button)
 
 	S:HandleIconBorder(button.IconBorder)
 end

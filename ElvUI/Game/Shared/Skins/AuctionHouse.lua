@@ -80,6 +80,7 @@ local function SkinItemDisplay(frame)
 	end
 
 	S:HandleIcon(ItemButton.Icon, true)
+	S:HandleItemButtonCrop(ItemButton)
 	S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
 	ItemButton:GetHighlightTexture():Hide()
 end
@@ -134,6 +135,7 @@ local function HandleSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
+	S:HandleItemButtonCrop(ItemButton)
 	S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
 	S:HandleEditBox(frame.QuantityInput.InputBox)
 	S:HandleButton(frame.QuantityInput.MaxButton)
@@ -174,6 +176,7 @@ local function HandleTokenSellFrame(frame)
 	ItemButton.Highlight:SetAllPoints(ItemButton.Icon)
 
 	S:HandleIcon(ItemButton.Icon, true)
+	S:HandleItemButtonCrop(ItemButton)
 	S:HandleIconBorder(ItemButton.IconBorder, ItemButton.Icon.backdrop)
 
 	S:HandleButton(frame.PostButton)
@@ -384,6 +387,7 @@ local function SkinAuctionHouseFrame()
 
 	local ItemButton = Token.ItemButton
 	S:HandleIcon(ItemButton.Icon, true)
+	S:HandleItemButtonCrop(ItemButton)
 	ItemButton.Icon.backdrop:SetBackdropBorderColor(0, .8, 1)
 	ItemButton:GetHighlightTexture():Hide()
 

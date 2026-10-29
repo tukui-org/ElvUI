@@ -92,6 +92,7 @@ local function HandleMerchantItem(index)
 	icon:ClearAllPoints()
 	icon:Point('TOPLEFT', 1, -1)
 	icon:Point('BOTTOMRIGHT', -1, 1)
+	S:HandleItemButtonCrop(button)
 
 	if E.Modern then
 		local questIcon = button.IconQuestTexture
@@ -212,6 +213,7 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('TOPLEFT', 1, -1)
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)
+	S:HandleItemButtonCrop(_G.MerchantBuyBackItemItemButton)
 
 	HandleIconButton(_G.MerchantRepairItemButton, 0.04, 0.24, 0.06, 0.5)
 	HandleIconButton(_G.MerchantGuildBankRepairButton, 0.61, 0.82, 0.1, 0.52)

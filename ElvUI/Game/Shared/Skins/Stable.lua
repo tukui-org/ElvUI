@@ -71,6 +71,7 @@ local function SkinForeverPetStableFrame()
 		[_G.PetStableStabledPet2] = _G.PetStableStabledPet2IconTexture
 	} do
 		S:HandleItemButton(slot, true)
+		S:HandleItemButtonCrop(slot)
 
 		texture:SetDrawLayer('ARTWORK')
 	end
