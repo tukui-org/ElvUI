@@ -4,13 +4,14 @@ local LibStub = _G.LibStub
 
 local _G = _G
 local hooksecurefunc = hooksecurefunc
-local tinsert, next, strfind = tinsert, next, strfind
+local tinsert, next, ipairs, strfind = tinsert, next, ipairs, strfind
 local unpack, type, gsub, rad = unpack, type, gsub, rad
 
 local CreateFrame = CreateFrame
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
 
 S.allowBypass = {}
+S.addonStorage = {}
 S.addonsToLoad = {}
 S.nonAddonsToLoad = {}
 
@@ -170,8 +171,8 @@ do
 end
 
 function S:ClearSetTexture(texture)
-	if texture ~= E.ClearTexture then
-		self:SetTexture(E.ClearTexture)
+	if texture then
+		self:SetTexture()
 	end
 end
 
@@ -346,10 +347,10 @@ function S:SetDisabledBackdrop()
 end
 
 do
-	local hookedFrames = {}
+	local hooked = {}
 	function S:StaticPopup_OnShow() -- UpdateRecapButton is created OnShow
-		if self.UpdateRecapButton and not hookedFrames[self] then
-			hookedFrames[self] = true
+		if self.UpdateRecapButton and not hooked[self] then
+			hooked[self] = true
 
 			hooksecurefunc(self, 'UpdateRecapButton', S.StaticPopup_UpdateRecapButton)
 		end
@@ -442,80 +443,6 @@ function S:HandleStaticPopup(popup)
 
 			hooksecurefunc(normalTexture, 'SetTexture', S.ClearSetTexture)
 		end
-	end
-end
-
-do -- We need to test this for the BGScore frame
-	S.PVPHonorXPBarFrames = {}
-	S.PVPHonorXPBarSkinned = false
-
-	local function SetNextAvailable(frame)
-		local parent = frame:GetParent()
-		local parentName = parent and parent:GetName()
-		if not parentName or not S.PVPHonorXPBarFrames[parentName] then return end
-
-		frame:StripTextures()
-
-		local bar = frame.Bar
-		if bar and not bar.backdrop then
-			bar:CreateBackdrop()
-
-			if bar.Background then
-				bar.Background:SetInside(bar.backdrop)
-			end
-
-			if bar.Spark then
-				bar.Spark:SetAlpha(0)
-			end
-
-			if bar.OverlayFrame and bar.OverlayFrame.Text then
-				bar.OverlayFrame.Text:ClearAllPoints()
-				bar.OverlayFrame.Text:Point('CENTER', bar)
-			end
-		end
-
-		local prestigeReward = frame.PrestigeReward
-		if prestigeReward and prestigeReward.Accept then
-			prestigeReward.Accept:ClearAllPoints()
-			prestigeReward.Accept:Point('TOP', prestigeReward, 'BOTTOM', 0, 0)
-
-			if not prestigeReward.Accept.template then
-				S:HandleButton(prestigeReward.Accept)
-			end
-		end
-
-		local nextAvailable = frame.NextAvailable
-		if nextAvailable then
-			if bar then
-				nextAvailable:ClearAllPoints()
-				nextAvailable:Point('LEFT', bar, 'RIGHT', 0, -2)
-			end
-
-			if not nextAvailable.backdrop then
-				nextAvailable:StripTextures()
-				nextAvailable:CreateBackdrop()
-
-				if nextAvailable.Icon then
-					local x = E.PixelMode and 1 or 2
-					nextAvailable.backdrop:Point('TOPLEFT', nextAvailable.Icon, -x, x)
-					nextAvailable.backdrop:Point('BOTTOMRIGHT', nextAvailable.Icon, x, -x)
-				end
-			end
-
-			if nextAvailable.Icon then
-				nextAvailable.Icon:SetDrawLayer('ARTWORK')
-				nextAvailable.Icon:SetTexCoords()
-			end
-		end
-	end
-
-	function S:SkinPVPHonorXPBar(frame)
-		S.PVPHonorXPBarFrames[frame] = true
-
-		if S.PVPHonorXPBarSkinned then return end
-		S.PVPHonorXPBarSkinned = true
-
-		hooksecurefunc('PVPHonorXPBar_SetNextAvailable', SetNextAvailable)
 	end
 end
 
@@ -702,25 +629,6 @@ do -- WIM replaces Blizzard globals we need to rehook
 		hooksecurefunc('UIDropDownMenu_CreateFrames', function(level, index) S:DropDownMenu_CreateFrames(prefix, level, index) end)
 		hooksecurefunc('UIDropDownMenu_SetIconImage', function(icon, texture) S:DropDownMenu_SetIconImage(prefix, icon, texture) end)
 		hooksecurefunc('ToggleDropDownMenu', function(level) S:DropDownMenu_Toggle(prefix, level, textX, textY) end)
-	end
-end
-
-function S:SkinTalentListButtons(frame)
-	local name = frame and frame:GetName()
-	if name then
-		local bcl = _G[name..'BtnCornerLeft']
-		local bcr = _G[name..'BtnCornerRight']
-		local bbb = _G[name..'ButtonBottomBorder']
-		if bcl then bcl:SetTexture() end
-		if bcr then bcr:SetTexture() end
-		if bbb then bbb:SetTexture() end
-	end
-
-	if frame.Inset then
-		S:HandleInsetFrame(frame.Inset)
-
-		frame.Inset:Point('TOPLEFT', 4, -60)
-		frame.Inset:Point('BOTTOMRIGHT', -6, 26)
 	end
 end
 
@@ -1213,7 +1121,7 @@ do
 		end
 	end
 
-	function S:HandleTrimScrollBar(frame, ignoreUpdates)
+	function S:HandleTrimScrollBar(frame, ignoreUpdates, trackBackdrop)
 		frame:StripTextures()
 
 		ReskinScrollBarArrow(frame.Back, 'up')
@@ -1227,6 +1135,10 @@ do
 		local track = frame.Track
 		if track then
 			track:DisableDrawLayer('ARTWORK')
+
+			if trackBackdrop and not track.backdrop then
+				track:CreateBackdrop('Transparent', nil, ignoreUpdates)
+			end
 		end
 
 		local thumb = frame.GetThumb and frame:GetThumb()
@@ -1250,7 +1162,7 @@ do
 	end
 end
 
-do --Tab Regions
+do -- Tab Regions
 	local tabs = {
 		'LeftDisabled',
 		'MiddleDisabled',
@@ -1302,9 +1214,79 @@ do --Tab Regions
 		if not noBackdrop then
 			tab:CreateBackdrop(template)
 
-			local spacing = E.Retail and 3 or 10
+			local spacing = E.Modern and 3 or 10
 			tab.backdrop:Point('TOPLEFT', spacing, E.PixelMode and -1 or -3)
 			tab.backdrop:Point('BOTTOMRIGHT', -spacing, 3)
+		end
+	end
+end
+
+do -- Large Side Tabs
+	local function UpdateIconInterior(tab)
+		tab.Icon:SetTexCoords()
+		tab.Icon:Size(30) -- Resets on SetChecked
+	end
+
+	-- Size will now match other side tabs (Like Communitiesframe)
+	function S:HandleLargeSideTab(tab)
+		if not tab or tab.backdrop then return end
+
+		local icon = tab.Icon
+		icon:SetTexCoords()
+		icon:Size(30)
+
+		tab:CreateBackdrop(nil, true)
+		tab.backdrop:SetOutside(icon, 1, 1)
+		tab:Size(36, 30)
+
+		if tab.UpdateIconInterior then
+			hooksecurefunc(tab, 'UpdateIconInterior', UpdateIconInterior)
+		end
+
+		if tab.Mask then
+			icon:RemoveMaskTexture(tab.Mask)
+		end
+
+		local background = tab.Background
+		if background then
+			background:SetTexture()
+		end
+
+		local highlight = tab.HighlightTexture
+		if highlight then
+			highlight:SetColorTexture(1, 1, 1, .3)
+			highlight:SetAllPoints(icon)
+		end
+
+		local glow = tab.TabGlow
+		if glow then
+			glow:SetColorTexture(1, .8, .1, .5)
+			glow:SetAllPoints(icon)
+		end
+
+		local selected = tab.SelectedTexture
+		if selected then
+			selected:SetColorTexture(1, 1, 1, .3)
+			selected:SetBlendMode('ADD')
+			selected:SetAllPoints(icon)
+		end
+	end
+
+	-- Pixel spacing fix, Blizzard is stacking them unscaled -> tab:SetPoint('TOPLEFT', last, 'BOTTOMLEFT', 0, -2)
+	function S:LayoutLargeSideTabs(frame, tabs)
+		local last
+		for _, tab in ipairs(tabs) do
+			if tab:IsShown() then
+				tab:ClearAllPoints()
+
+				if last then
+					tab:Point('TOPLEFT', last, 'BOTTOMLEFT', 0, -3)
+				else
+					tab:Point('TOPLEFT', frame, 'TOPRIGHT', 3, -1)
+				end
+
+				last = tab
+			end
 		end
 	end
 end
@@ -1441,7 +1423,7 @@ function S:HandleEditBox(frame, template)
 		local name = frame:GetDebugName()
 		local gold, silver, copper = strfind(name, 'Gold'), strfind(name, 'Silver'), strfind(name, 'Copper')
 		if gold or silver or copper then
-			if E.Retail then
+			if E.Modern then
 				frame.backdrop:Point('TOPLEFT', -4, 0)
 				frame.backdrop:Point('BOTTOMRIGHT')
 			elseif frame.label then -- send mail, popups, and others
@@ -1527,6 +1509,62 @@ do
 		frame:SetStatusBarColor(r, g, b)
 
 		E:RegisterStatusBar(frame)
+	end
+end
+
+do
+	local fillColors = {
+		['common-stat-bar-blue'] = { r = 0.03, g = 0.43, b = 0.92 },
+		['common-stat-bar-green'] = { r = 0.23, g = 1, b = 0 },
+	}
+
+	local function UpdateFill(bar)
+		local fill = bar.Fill
+		local atlas = fill:GetAtlas()
+		local color = fillColors[atlas]
+		if color then
+			fill:SetVertexColor(color.r, color.g, color.b)
+		end
+
+		fill:SetTexture(E.media.normTex)
+		fill:SetTexCoord(0, 1, 0, 1)
+	end
+
+	local function SetFillPercent(bar, percent)
+		UpdateFill(bar)
+
+		bar.Fill:SetShown(percent > 0)
+	end
+
+	-- ColoredProgressBarTemplate: unnamed background, a masked Fill sized from FillArea, and Text
+	function S:HandleColoredProgressBar(bar)
+		if bar.IsSkinned then return end
+
+		bar:GetRegions():SetTexture()
+
+		bar:CreateBackdrop('Transparent')
+		bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
+		bar.backdrop:Point('BOTTOMRIGHT', bar, 'RIGHT', 1, -8)
+
+		local fillArea = bar.FillArea
+		fillArea:ClearAllPoints()
+		fillArea:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
+		fillArea:Point('BOTTOMRIGHT', bar.backdrop, 'BOTTOMRIGHT', -E.Border, E.Border)
+
+		bar.Text:FontTemplate()
+
+		bar.Fill:ClearAllPoints()
+		bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
+		bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
+		bar.Fill:RemoveMaskTexture(bar.Mask)
+
+		E:RegisterStatusBar(bar.Fill)
+
+		UpdateFill(bar)
+
+		hooksecurefunc(bar, 'SetFillPercent', SetFillPercent)
+
+		bar.IsSkinned = true
 	end
 end
 
@@ -1881,8 +1919,11 @@ function S:HandleStepSlider(frame, minimal)
 		thumb:SetSize(20, 30)
 	end
 
+	if not slider.backdrop then
+		slider:CreateBackdrop()
+	end
+
 	local offset = minimal and 10 or 13
-	slider:CreateBackdrop()
 	slider.backdrop:SetPoint('TOPLEFT', 10, -offset)
 	slider.backdrop:SetPoint('BOTTOMRIGHT', -10, offset)
 
@@ -1890,273 +1931,11 @@ function S:HandleStepSlider(frame, minimal)
 		local step = CreateFrame('StatusBar', nil, slider.backdrop)
 		step:SetStatusBarTexture(E.Media.Textures.Melli)
 		step:SetStatusBarColor(1, .8, 0, .5)
-		step:SetPoint('TOPLEFT', slider.backdrop, E.mult, -E.mult)
-		step:SetPoint('BOTTOMLEFT', slider.backdrop, E.mult, E.mult)
-		step:SetPoint('RIGHT', thumb, 'CENTER')
+		step:Point('TOPLEFT', slider.backdrop, 1, -1)
+		step:Point('BOTTOMLEFT', slider.backdrop, 1, 1)
+		step:Point('RIGHT', thumb, 'CENTER')
 
 		slider.barStep = step
-	end
-end
-
-function S:HandleFollowerAbilities(followerList)
-	local followerTab = followerList and followerList.followerTab
-	local abilityFrame = followerTab.AbilitiesFrame
-	if not abilityFrame then return end
-
-	local abilities = abilityFrame.Abilities
-	if abilities then
-		for i = 1, #abilities do
-			local iconButton = abilities[i].IconButton
-			local icon = iconButton and iconButton.Icon
-			if icon then
-				iconButton.Border:SetAlpha(0)
-				S:HandleIcon(icon, true)
-			end
-		end
-	end
-
-	local equipment = abilityFrame.Equipment
-	if equipment then
-		for i = 1, #equipment do
-			local equip = equipment[i]
-			if equip then
-				equip.Border:SetAlpha(0)
-				equip.BG:SetAlpha(0)
-
-				S:HandleIcon(equip.Icon, true)
-				equip.Icon.backdrop:SetBackdropColor(1, 1, 1, .15)
-			end
-		end
-	end
-
-	local combatAllySpell = abilityFrame.CombatAllySpell
-	if combatAllySpell then
-		for i = 1, #combatAllySpell do
-			local icon = combatAllySpell[i].iconTexture
-			if icon then
-				S:HandleIcon(icon, true)
-			end
-		end
-	end
-
-	local xpbar = followerTab.XPBar
-	if xpbar and not xpbar.backdrop then
-		xpbar:StripTextures()
-		xpbar:SetStatusBarTexture(E.media.normTex)
-		xpbar:CreateBackdrop('Transparent')
-	end
-end
-
-function S:HandleShipFollowerPage(followerTab)
-	local traits = followerTab.Traits
-	for i = 1, #traits do
-		local icon = traits[i].Portrait
-		local border = traits[i].Border
-		border:SetTexture() -- I think the default border looks nice, not sure if we want to replace that
-		-- The landing page icons display inner borders
-		if followerTab.isLandingPage then
-			icon:SetTexCoords()
-		end
-	end
-
-	local equipment = followerTab.EquipmentFrame.Equipment
-	for i = 1, #equipment do
-		local icon = equipment[i].Icon
-		local border = equipment[i].Border
-		border:SetAtlas('ShipMission_ShipFollower-TypeFrame') -- This border is ugly though, use the traits border instead
-		-- The landing page icons display inner borders
-		if followerTab.isLandingPage then
-			icon:SetTexCoords()
-		end
-	end
-end
-
-local function UpdateFollowerQuality(self, followerInfo)
-	local r, g, b = E:GetItemQualityColor(followerInfo.quality)
-	self.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
-end
-
-do
-	S.FollowerListUpdateDataFrames = {}
-
-	local function UpdateFollower(button)
-		if not E.Retail then
-			button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
-		end
-
-		local category = button.Category
-		if category then
-			category:ClearAllPoints()
-			category:Point('TOP', button, 'TOP', 0, -4)
-		end
-
-		local follower = button.Follower
-		if follower then
-			if not follower.template then
-				follower:SetTemplate('Transparent')
-				follower.Name:SetWordWrap(false)
-				follower.Selection:SetTexture()
-				follower.AbilitiesBG:SetTexture()
-				follower.BusyFrame:SetAllPoints()
-				follower.BG:Hide()
-
-				local hl = follower:GetHighlightTexture()
-				hl:SetColorTexture(0.9, 0.9, 0.9, 0.25)
-				hl:SetInside()
-			end
-
-			local counters = follower.Counters
-			if counters then
-				for _, counter in next, counters do
-					if not counter.template then
-						counter:SetTemplate()
-
-						if counter.Border then
-							counter.Border:SetTexture()
-						end
-
-						if counter.Icon then
-							counter.Icon:SetTexCoords()
-							counter.Icon:SetInside()
-						end
-					end
-				end
-			end
-
-			local portrait = follower.PortraitFrame
-			if portrait then
-				S:HandleGarrisonPortrait(portrait, true)
-
-				portrait:ClearAllPoints()
-				portrait:Point('TOPLEFT', 3, -3)
-
-				if not follower.PortraitFrameStyled then
-					hooksecurefunc(portrait, 'SetupPortrait', UpdateFollowerQuality)
-					follower.PortraitFrameStyled = true
-				end
-
-				if portrait.backdrop then
-					local r, g, b = E:GetItemQualityColor(portrait.quality or (follower.info and follower.info.quality))
-					portrait.backdrop:SetBackdropBorderColor(r, g, b)
-				end
-			end
-
-			if follower.Selection then
-				if follower.Selection:IsShown() then
-					follower:SetBackdropColor(0.9, 0.8, 0.1, 0.25)
-				else
-					follower:SetBackdropColor(0, 0, 0, 0.5)
-				end
-			end
-		end
-	end
-
-	function S:HandleFollowerListOnUpdateDataFunc(buttons, numButtons, offset, numFollowers)
-		if not buttons or (not numButtons or numButtons == 0) or not offset or not numFollowers then return end
-
-		for i = 1, numButtons do
-			local button = buttons[i]
-			if button then
-				local index = offset + i -- adjust index
-				if index <= numFollowers then
-					UpdateFollower(button)
-				end
-			end
-		end
-	end
-
-	local function UpdateListScroll(dataFrame)
-		if not (dataFrame and dataFrame.listScroll) or not S.FollowerListUpdateDataFrames[dataFrame:GetName()] then return end
-
-		local buttons = dataFrame.listScroll.buttons
-		local offset = _G.HybridScrollFrame_GetOffset(dataFrame.listScroll)
-		S:HandleFollowerListOnUpdateDataFunc(buttons, buttons and #buttons, offset, dataFrame.listScroll and #dataFrame.listScroll)
-	end
-
-	function S:HandleFollowerListOnUpdateData(frame)
-		if frame == 'GarrisonLandingPageFollowerList' and (not S.db.blizzard.orderhall or not S.db.blizzard.garrison) then
-			return -- Only hook this frame if both Garrison and Orderhall skins are enabled because it's shared.
-		end
-
-		if S.FollowerListUpdateDataFrames[frame] then return end -- make sure we don't double hook `GarrisonLandingPageFollowerList`
-		S.FollowerListUpdateDataFrames[frame] = true
-
-		if _G.GarrisonFollowerList_InitButton then
-			hooksecurefunc(_G, 'GarrisonFollowerList_InitButton', UpdateFollower)
-		else
-			hooksecurefunc(_G[frame], 'UpdateData', UpdateListScroll) -- pre DF
-		end
-	end
-end
-
--- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
-local ReplacedRoleTex = {
-	['Adventures-Tank'] = 'Soulbinds_Tree_Conduit_Icon_Protect',
-	['Adventures-Healer'] = 'ui_adv_health',
-	['Adventures-DPS'] = 'ui_adv_atk',
-	['Adventures-DPS-Ranged'] = 'Soulbinds_Tree_Conduit_Icon_Utility',
-}
-
-local function HandleFollowerRole(roleIcon, atlas)
-	local newAtlas = ReplacedRoleTex[atlas]
-	if newAtlas then
-		roleIcon:SetAtlas(newAtlas)
-	end
-end
-
-function S:HandleGarrisonPortrait(portrait, updateAtlas)
-	local main = portrait.Portrait
-	if not main then return end
-
-	if not main.backdrop then
-		main:CreateBackdrop('Transparent')
-	end
-
-	local level = portrait.Level or portrait.LevelText
-	if level then
-		level:ClearAllPoints()
-		level:Point('BOTTOM', portrait, 0, 15)
-		level:FontTemplate(nil, 14, 'OUTLINE')
-
-		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
-		if portrait.LevelBorder then portrait.LevelBorder:SetScale(.0001) end
-	end
-
-	if portrait.PortraitRing then
-		portrait.PortraitRing:Hide()
-		portrait.PortraitRingQuality:SetTexture(E.ClearTexture)
-		portrait.PortraitRingCover:SetColorTexture(0, 0, 0)
-		portrait.PortraitRingCover:SetAllPoints(main.backdrop)
-	end
-
-	if portrait.Empty then
-		portrait.Empty:SetColorTexture(0, 0, 0)
-		portrait.Empty:SetAllPoints(main)
-	end
-
-	if portrait.Highlight then portrait.Highlight:Hide() end
-	if portrait.PuckBorder then portrait.PuckBorder:SetAlpha(0) end
-	if portrait.TroopStackBorder1 then portrait.TroopStackBorder1:SetAlpha(0) end
-	if portrait.TroopStackBorder2 then portrait.TroopStackBorder2:SetAlpha(0) end
-
-	if portrait.HealthBar then
-		portrait.HealthBar.Border:Hide()
-
-		local roleIcon = portrait.HealthBar.RoleIcon
-		roleIcon:ClearAllPoints()
-		roleIcon:Point('CENTER', main.backdrop, 'TOPRIGHT')
-
-		if updateAtlas then
-			HandleFollowerRole(roleIcon, roleIcon:GetAtlas())
-		else
-			hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
-		end
-
-		local background = portrait.HealthBar.Background
-		background:SetAlpha(0)
-		background:SetInside(main.backdrop, 2, 1) -- unsnap it
-		background:Point('TOPLEFT', main.backdrop, 'BOTTOMLEFT', 2, 7)
-		portrait.HealthBar.Health:SetTexture(E.media.normTex)
 	end
 end
 
@@ -2298,11 +2077,6 @@ do -- Handle collapse
 	end
 end
 
--- World Map related Skinning functions used for WoW 8.0
-function S:WorldMapMixin_AddOverlayFrame(frame, templateName)
-	S[templateName](frame.overlayFrames[#frame.overlayFrames])
-end
-
 -- UIWidgets
 function S:SkinIconAndTextWidget()
 end
@@ -2420,7 +2194,7 @@ do
 		[W.ScenarioHeaderCurrenciesAndBackground] = 'SkinScenarioHeaderCurrenciesAndBackgroundWidget',
 	}
 
-	if E.Retail then
+	if E.Modern then
 		S.WidgetSkinningFuncs[W.SpellDisplay] = 'SkinSpellDisplay'
 		S.WidgetSkinningFuncs[W.TextureAndText] = 'SkinTextureAndTextWidget'
 		S.WidgetSkinningFuncs[W.DoubleStateIconRow] = 'SkinDoubleStateIconRow'
@@ -2455,33 +2229,71 @@ end
 ---- arg3: load function (preferably not-local)
 -- this is used for loading skins that should be executed when the addon loads (including blizzard addons that load later).
 -- please add a given name, non-given-name is specific for elvui core addon.
-function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position) -- arg2: name is 'given name'; see example above.
-	local load = (type(name) == 'function' and name) or (not func and (S[name] or S[addonName]))
-	S:RegisterSkin(addonName, load or func, forceLoad, bypass, position)
+-- without a load function the given name is looked up when the skin loads.
+function S:AddCallbackForAddon(addonName, name, func, forceLoad, bypass, position, toggle)
+	if type(name) == 'function' then -- arg2: name is 'given name'; see example above.
+		return S:RegisterSkin(addonName, name, forceLoad, bypass, position, nil, toggle)
+	else
+		return S:RegisterSkin(addonName, func, forceLoad, bypass, position, name, toggle)
+	end
 end
 
 -- nonAddonsToLoad:
 --- this is used for loading skins when our skin init function executes.
 --- please add a given name, non-given-name is specific for elvui core addon.
-function S:AddCallback(name, func, position) -- arg1: name is 'given name'
-	local load = (type(name) == 'function' and name) or (not func and S[name])
-	S:RegisterSkin('ElvUI', load or func, nil, nil, position)
+function S:AddCallback(name, func, position, toggle)
+	if type(name) == 'function' then -- arg1: name is 'given name'
+		return S:RegisterSkin('ElvUI', name, nil, nil, position, nil, toggle)
+	else
+		return S:RegisterSkin('ElvUI', func, nil, nil, position, name, toggle)
+	end
 end
 
-function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
+function S:LoadSkin(info)
+	local func = info.func or S[info.name] or S[info.addonName]
+	if not func then return end -- we need this
+
+	if info.check then -- custom override to specifically allow
+		local ok, allow = E:CallLoadFunc(info.check)
+		if not (ok and allow) then return end
+	elseif info.toggle then -- regular check which is used for almost all blizzard skins
+		local blizzard = E.private.skins.blizzard
+		if not (blizzard.enable and blizzard[info.toggle]) then return end
+	end
+
+	E:CallLoadFunc(func, S, info.data) -- only allowed when checks above pass
+end
+
+function S:RegisterSkin(addonName, func, forceLoad, bypass, position, name, toggle)
+	local key, info = name or addonName, {}
+	if key and not S.addonStorage[key] then
+		S.addonStorage[key] = info -- for plugins
+	end
+
+	local data = {} -- for specific skin function exports
+	info.addonName = addonName
+	info.forceLoad = forceLoad
+	info.position = position
+	info.bypass = bypass
+	info.func = func
+	info.name = name -- can be the load func
+	info.check = type(toggle) == 'function' and toggle or nil
+	info.toggle = not info.check and toggle or nil
+	info.data = data
+
 	if bypass then
 		S.allowBypass[addonName] = true
 	end
 
 	if forceLoad then
-		E:CallLoadFunc(func)
+		S:LoadSkin(info)
 
 		S.addonsToLoad[addonName] = nil
 	elseif addonName == 'ElvUI' then
 		if position then
-			tinsert(S.nonAddonsToLoad, position, func)
+			tinsert(S.nonAddonsToLoad, position, info)
 		else
-			tinsert(S.nonAddonsToLoad, func)
+			tinsert(S.nonAddonsToLoad, info)
 		end
 	else
 		local addon = S.addonsToLoad[addonName]
@@ -2491,22 +2303,24 @@ function S:RegisterSkin(addonName, func, forceLoad, bypass, position)
 		end
 
 		if position then
-			tinsert(addon, position, func)
+			tinsert(addon, position, info)
 		else
-			tinsert(addon, func)
+			tinsert(addon, info)
 		end
 	end
+
+	return data
 end
 
-function S:CallLoadedNonAddon(index, func)
-	E:CallLoadFunc(func)
+function S:CallLoadedNonAddon(index, info)
+	S:LoadSkin(info)
 
 	S.nonAddonsToLoad[index] = nil
 end
 
 function S:CallLoadedAddon(addonName, object)
-	for _, func in next, object do
-		E:CallLoadFunc(func)
+	for _, info in next, object do
+		S:LoadSkin(info)
 	end
 
 	S.addonsToLoad[addonName] = nil
@@ -2521,8 +2335,8 @@ end
 function S:Initialize()
 	S.Initialized = true
 
-	for index, func in next, S.nonAddonsToLoad do
-		S:CallLoadedNonAddon(index, func)
+	for index, info in next, S.nonAddonsToLoad do
+		S:CallLoadedNonAddon(index, info)
 	end
 
 	for addonName, object in next, S.addonsToLoad do
@@ -2556,7 +2370,7 @@ function S:Initialize()
 		end
 	end
 
-	if E.Retail and S.db.blizzard.enable and S.db.blizzard.misc then
+	if E.Modern and S.db.blizzard.enable and S.db.blizzard.misc then
 		S:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdateAllWidgets')
 		S:RegisterEvent('UPDATE_ALL_UI_WIDGETS', 'UpdateAllWidgets')
 	end

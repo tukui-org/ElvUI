@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 local ElvUF = E.oUF
 
-local wipe, ipairs, ceil, floor, tonumber = wipe, ipairs, ceil, floor, tonumber
+local wipe, ipairs, ceil, floor, tonumber, tinsert = wipe, ipairs, ceil, floor, tonumber, tinsert
 local strsub, strmatch, strlower, strfind, next = strsub, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
@@ -154,25 +154,27 @@ local function GetQuests(unitID)
 			if E:NotSecretValue(text) then -- are only some lines secret?
 				if not text or text == '' then return end
 
-				if line.type == 18 or (not E.Retail and UnitIsPlayer(text)) then -- 18 is QuestPlayer
+				if line.type == 18 or (not E.Modern and UnitIsPlayer(text)) then -- 18 is QuestPlayer
 					notMyQuest = text ~= E.myname
 				elseif text and not notMyQuest then
-					if line.type == 17 or (not E.Retail and not lastTitle) then
+					if line.type == 17 or (not E.Modern and not lastTitle) then
 						lastTitle = activeQuests[text]
 					end -- this line comes from one line up in the tooltip
 
-					local objectives = (line.type == 8 or not E.Retail) and lastTitle and lastTitle.objectives
+					local objectives = (line.type == 8 or not E.Modern) and lastTitle and lastTitle.objectives
 					if objectives then
-						local quest = objectives[text] or (not E.Retail and objectives[strsub(text, 4)])
+						local quest = objectives[text] or (not E.Modern and objectives[strsub(text, 4)])
 						if quest then
-							if not QuestList then QuestList = {} end
+							if not QuestList then
+								QuestList = {}
+							end
 
-							QuestList[#QuestList + 1] = {
+							tinsert(QuestList, {
 								itemTexture = lastTitle.texture,
 								isPercent = quest.isPercent,
 								objectiveCount = quest.value,
 								questType = quest.type or 'DEFAULT',
-							}
+							})
 						end
 					end
 				end
@@ -207,7 +209,7 @@ local function Update(self, event)
 	if not unit then return end
 
 	-- this only runs on npc units anyways
-	if IsInInstance() then return end
+	if IsInInstance() or UnitIsPlayer(unit) then return end
 
 	local list -- quests
 	local guid = UnitGUID(unit)
@@ -296,7 +298,7 @@ local function Enable(self)
 		end
 
 		self:RegisterEvent('QUEST_LOG_UPDATE', Path, true)
-		self:RegisterEvent('UNIT_NAME_UPDATE', Path, true)
+		self:RegisterEvent('UNIT_NAME_UPDATE', Path)
 
 		return true
 	end
@@ -324,7 +326,7 @@ local function UpdateQuest(id, index)
 	if not title then return end
 
 	if not index then -- get the index now
-		if E.Retail then
+		if E.Modern then
 			index = C_QuestLog_GetLogIndexForQuestID(id)
 		else
 			for i = 1, GetNumQuestLogEntries() do
@@ -339,7 +341,7 @@ local function UpdateQuest(id, index)
 
 	if not index then return end
 	local _, texture = GetQuestLogSpecialItemInfo(index)
-	local level = E.Retail and C_QuestLog_GetQuestDifficultyLevel(id) or nil
+	local level = E.Modern and C_QuestLog_GetQuestDifficultyLevel(id) or nil
 
 	activeTitles[id] = title
 	activeQuests[title] = {
@@ -379,7 +381,7 @@ frame:SetScript('OnEvent', function(self, event, questID)
 		wipe(activeTitles)
 
 		for index = 1, GetNumQuestLogEntries() do
-			if E.Retail then
+			if E.Modern then
 				local id = C_QuestLog_GetQuestIDForLogIndex(index)
 				if id and id > 0 then
 					UpdateQuest(id, index)

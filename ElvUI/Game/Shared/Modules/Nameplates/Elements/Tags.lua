@@ -1,11 +1,18 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
-function NP:Construct_TagText(nameplate)
-	local Text = nameplate.RaisedElement:CreateFontString(nil, 'OVERLAY')
-	Text:FontTemplate(NP.db.font, NP.db.fontSize, NP.db.fontOutline)
+local CreateFrame = CreateFrame
 
-	return Text
+function NP:Construct_TagText(nameplate, name)
+	local element = CreateFrame('Frame', name and (nameplate.frameName..name) or nil, nameplate.RaisedElement)
+	element:SetFrameLevel(nameplate.RaisedElement.TagTextLevel)
+
+	local text = element:CreateFontString(nil, 'OVERLAY')
+	text:FontTemplate(NP.db.font, NP.db.fontSize, NP.db.fontOutline)
+
+	element.text = text
+
+	return text
 end
 
 function NP:Update_TagText(nameplate, element, db, hide)
@@ -13,6 +20,7 @@ function NP:Update_TagText(nameplate, element, db, hide)
 
 	if db.enable and not hide then
 		nameplate:Tag(element, db.format or '')
+
 		element:FontTemplate(db.font, db.fontSize, db.fontOutline)
 		element:UpdateTag()
 
@@ -21,6 +29,7 @@ function NP:Update_TagText(nameplate, element, db, hide)
 		element:Show()
 	else
 		nameplate:Untag(element)
+
 		element:Hide()
 	end
 end

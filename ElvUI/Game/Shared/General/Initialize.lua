@@ -37,8 +37,9 @@ local SetCVar = C_CVar.SetCVar
 local oUF = _G.ElvUF
 assert(oUF, 'ElvUI was unable to locate oUF.')
 
-local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
-local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
+local LibStub = _G.LibStub
+local AceAddon, AceAddonMinor = LibStub('AceAddon-3.0')
+local CallbackHandler = LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
 local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
@@ -106,8 +107,11 @@ do -- Expansions
 	E.Cata = WOW_PROJECT_ID == WOW_PROJECT_CATACLYSM_CLASSIC
 	E.Wrath = WOW_PROJECT_ID == WOW_PROJECT_WRATH_CLASSIC
 	E.Mists = WOW_PROJECT_ID == WOW_PROJECT_MISTS_CLASSIC
-	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
 	E.Classic = WOW_PROJECT_ID == WOW_PROJECT_CLASSIC
+	E.Forever = WOW_PROJECT_ID == WOW_PROJECT_CAMELOT
+	E.Retail = WOW_PROJECT_ID == WOW_PROJECT_MAINLINE
+
+	E.Modern = E.Retail or E.Forever
 
 	local season = C_Seasons and C_Seasons.GetActiveSeason()
 	E.ClassicHC = season == 3 -- Hardcore
@@ -115,11 +119,20 @@ do -- Expansions
 	E.ClassicAnniv = season == 11 -- Anniversary
 	E.ClassicAnnivHC = season == 12 -- Anniversary Hardcore
 
+	local rules = Enum.GameRule
+	E.IsGameRuleHardcore = rules.HardcoreRuleset and C_GameRules.IsGameRuleActive(rules.HardcoreRuleset)
+	E.IsGameRulePVP = rules.PvPRuleset and C_GameRules.IsGameRuleActive(rules.PvPRuleset)
+	E.IsGameRuleRP = rules.RPRuleset and C_GameRules.IsGameRuleActive(rules.RPRuleset)
+
 	local IsHardcoreActive = C_GameRules.IsHardcoreActive
 	E.IsHardcoreActive = IsHardcoreActive and IsHardcoreActive()
 
 	local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 	E.IsEngravingEnabled = IsEngravingEnabled and IsEngravingEnabled()
+
+	local inputTypes = Enum.InputDeviceInterfaceType
+	local inputCurrent = C_InputInterfaceStyle and C_InputInterfaceStyle.GetCurrentStyle()
+	E.IsGamepadActive = inputTypes and inputTypes.Gamepad == inputCurrent
 end
 
 -- DONT USE: Deprecated
@@ -148,7 +161,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.26, '15.26-git', nil, true
+		return 16.00, '16.00-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -166,12 +179,12 @@ do
 		if type(major) == 'table' and type(minor) == 'number' then
 			E.Libs[name], E.LibsMinor[name] = major, minor
 		else -- in this case: `major` is the lib name and `minor` is the silent switch
-			E.Libs[name], E.LibsMinor[name] = _G.LibStub(major, minor)
+			E.Libs[name], E.LibsMinor[name] = LibStub(major, minor)
 		end
 	end
 
 	function E:DispelListUpdated()
-		if not E.Retail then return end
+		if not E.Modern then return end
 
 		E:UpdateDispelCurves()
 		E:Auras_DispelUpdated()
@@ -198,7 +211,7 @@ do
 	E:AddLib('AceConfigRegistry', 'AceConfigRegistry-3.0-ElvUI')
 	E:AddLib('AceDBOptions', 'AceDBOptions-3.0')
 
-	if E.Retail or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+	if E.Modern or E.Wrath or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
 		E:AddLib('DualSpec', 'LibDualSpec-1.0')
 	end
 
@@ -314,6 +327,7 @@ do
 		Questie = true,
 		SimplePowerBar = true,
 		Tukui = true,
+		ElvUI_CPU = true,
 		DBM = 'DBM-Core',
 		ConsolePort = 'ConsolePort_Menu',
 		KalielsTracker = '!KalielsTracker',
@@ -495,16 +509,11 @@ function E:RemoveDefaults(db, defaults)
 	return db
 end
 
-do -- backwards compatibility for GetMouseFocus
-	local GetMouseFocus = GetMouseFocus
+do
 	local GetMouseFoci = GetMouseFoci
 	function E:GetMouseFocus()
-		if GetMouseFoci then
-			local frames = GetMouseFoci()
-			return frames and frames[1]
-		else
-			return GetMouseFocus()
-		end
+		local frames = GetMouseFoci()
+		return frames and frames[1]
 	end
 end
 
@@ -513,8 +522,9 @@ do	-- this is so we can join nil values too
 	function E:StringJoin(sep, ...)
 		wipe(text)
 
-		for _, value in next, { ... } do
-			text[#text+1] = tostring(value)
+		for _, txts in next, { ... } do
+			local value = tostring(txts)
+			tinsert(text, value)
 		end
 
 		return tconcat(text, sep)

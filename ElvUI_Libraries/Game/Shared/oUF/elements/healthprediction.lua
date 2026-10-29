@@ -69,24 +69,25 @@ local UnitHealAbsorbClampMode = Enum.UnitHealAbsorbClampMode
 local function UpdateSize(self, event, unit)
 	local element = self.HealthPrediction
 
+	local func = element.isHoriz and 'SetWidth' or 'SetHeight'
 	if(element.healingAll) then
-		element.healingAll[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healingAll, element.size)
+		element.healingAll[func](element.healingAll, element.size)
 	end
 
 	if(element.healingPlayer) then
-		element.healingPlayer[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healingPlayer, element.size)
+		element.healingPlayer[func](element.healingPlayer, element.size)
 	end
 
 	if(element.healingOther) then
-		element.healingOther[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healingOther, element.size)
+		element.healingOther[func](element.healingOther, element.size)
 	end
 
 	if(element.damageAbsorb) then
-		element.damageAbsorb[element.isHoriz and 'SetWidth' or 'SetHeight'](element.damageAbsorb, element.size)
+		element.damageAbsorb[func](element.damageAbsorb, element.size)
 	end
 
 	if(element.healAbsorb) then
-		element.healAbsorb[element.isHoriz and 'SetWidth' or 'SetHeight'](element.healAbsorb, element.size)
+		element.healAbsorb[func](element.healAbsorb, element.size)
 	end
 end
 
@@ -106,10 +107,9 @@ local function Update(self, event, unit)
 	end
 
 	local maxHealth = UnitHealthMax(unit)
-	local health = UnitHealth(unit)
 
 	-- Retail API
-	if(oUF.isRetail and element.values) then
+	if(oUF.isModern and element.values) then
 		UnitGetDetailedHealPrediction(unit, 'player', element.values)
 
 		local allHeal, playerHeal, otherHeal, healClamped = element.values:GetIncomingHeals()
@@ -164,17 +164,18 @@ local function Update(self, event, unit)
 	else
 		-- Classic API & LibHealComm implementation
 		local GUID = UnitGUID(unit)
+		local health = UnitHealth(unit)
 		local myIncomingHeal = UnitGetIncomingHeals(unit, 'player') or 0
 		local allIncomingHeal = UnitGetIncomingHeals(unit) or 0
-		local overTimeHeals = not oUF.isRetail and HealComm and ((HealComm:GetHealAmount(GUID, HealComm.OVERTIME_AND_BOMB_HEALS) or 0) * (HealComm:GetHealModifier(GUID) or 1)) or 0
-		local absorb = (oUF.isRetail or oUF.isMists) and UnitGetTotalAbsorbs(unit) or 0
-		local healAbsorb = (oUF.isRetail or oUF.isMists) and UnitGetTotalHealAbsorbs(unit) or 0
+		local overTimeHeals = not oUF.isModern and HealComm and ((HealComm:GetHealAmount(GUID, HealComm.OVERTIME_AND_BOMB_HEALS) or 0) * (HealComm:GetHealModifier(GUID) or 1)) or 0
+		local absorb = (oUF.isModern or oUF.isMists) and UnitGetTotalAbsorbs(unit) or 0
+		local healAbsorb = (oUF.isModern or oUF.isMists) and UnitGetTotalHealAbsorbs(unit) or 0
 		local otherIncomingHeal = 0
 		local hasOverHealAbsorb = false
 
 		-- Kludge to override value for heals not reported by WoW client (ref: https://github.com/Stanzilla/WoWUIBugs/issues/163)
 		-- There may be other bugs that this workaround does not catch, but this does fix Priest PoH
-		if(HealComm and not oUF.isRetail) then
+		if(HealComm and not oUF.isModern) then
 			local healAmount = HealComm:GetHealAmount(GUID, HealComm.CASTED_HEALS) or 0
 			if(healAmount > 0) then
 				if(myIncomingHeal == 0 and unit == 'player') then
@@ -232,16 +233,25 @@ local function Update(self, event, unit)
 			element.healingOther:Show()
 		end
 
-		if(element.damageAbsorb) then
-			element.damageAbsorb:SetMinMaxValues(0, maxHealth)
-			element.damageAbsorb:SetValue(absorb)
-			element.damageAbsorb:Show()
+		-- dont refresh and show an empty bar on every health event, absorbs are always 0 below Mists
+		if element.damageAbsorb then
+			if (absorb > 0 or element.damageAbsorb:GetValue() > 0) then
+				element.damageAbsorb:SetMinMaxValues(0, maxHealth)
+				element.damageAbsorb:SetValue(absorb)
+				element.damageAbsorb:Show()
+			else
+				element.damageAbsorb:Hide()
+			end
 		end
 
-		if(element.healAbsorb) then
-			element.healAbsorb:SetMinMaxValues(0, maxHealth)
-			element.healAbsorb:SetValue(healAbsorb)
-			element.healAbsorb:Show()
+		if element.healAbsorb then
+			if (healAbsorb > 0 or element.healAbsorb:GetValue() > 0) then
+				element.healAbsorb:SetMinMaxValues(0, maxHealth)
+				element.healAbsorb:SetValue(healAbsorb)
+				element.healAbsorb:Show()
+			else
+				element.healAbsorb:Hide()
+			end
 		end
 
 		if(element.overAbsorb) then
@@ -323,8 +333,9 @@ end
 
 local function HealComm_Check(self, element, ...)
 	if element and self:IsVisible() then
+		local guid = self.__unit and UnitGUID(self.__unit)
 		for i = 1, select('#', ...) do
-			if self.__unit and UnitGUID(self.__unit) == select(i, ...) then
+			if guid and guid == select(i, ...) then
 				Path(self, nil, self.__unit)
 			end
 		end
@@ -417,7 +428,7 @@ local function Enable(self)
 			element.maxOverflow = 1.05
 		end
 
-		if(oUF.isRetail) then
+		if(oUF.isModern) then
 			SetupPredictionValues(element)
 		end
 
@@ -429,7 +440,7 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		if oUF.isRetail or oUF.isMists then
+		if oUF.isModern or oUF.isMists then
 			self:RegisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:RegisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 			self:RegisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)
@@ -559,7 +570,7 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		if oUF.isRetail or oUF.isMists then
+		if oUF.isModern or oUF.isMists then
 			self:UnregisterEvent('UNIT_ABSORB_AMOUNT_CHANGED', Path)
 			self:UnregisterEvent('UNIT_HEAL_ABSORB_AMOUNT_CHANGED', Path)
 			self:UnregisterEvent('UNIT_MAX_HEALTH_MODIFIERS_CHANGED', Path)

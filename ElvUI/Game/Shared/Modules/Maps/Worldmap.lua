@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local M = E:GetModule('WorldMap')
 
 local _G = _G
+local abs = abs
 local next = next
 local strfind = strfind
 
@@ -13,6 +14,7 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 
 local GetCVar = C_CVar.GetCVar
 
+local NOT_APPLICABLE = NOT_APPLICABLE
 local MOUSE_LABEL = _G.MOUSE_LABEL:gsub('|[TA].-|[ta]','')
 
 local CoordsHolder
@@ -27,7 +29,7 @@ local INVERTED_POINTS = {
 
 -- this will be updated later
 local smallerMapScale = 0.8
-local worldMapStrata = E.Retail and 'MEDIUM' or 'HIGH'
+local worldMapStrata = E.Modern and 'MEDIUM' or 'HIGH'
 function M:SetLargeWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
@@ -46,7 +48,7 @@ function M:SetSmallWorldMap()
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:SetFrameStrata(worldMapStrata)
 
-	if not E.Retail then
+	if not E.Modern then
 		WorldMapFrame:EnableMouse(false)
 		WorldMapFrame:EnableKeyboard(false)
 		WorldMapFrame:SetScale(smallerMapScale)
@@ -79,7 +81,7 @@ function M:UpdateRestrictedArea()
 		inRestrictedArea = false
 	else
 		inRestrictedArea = true
-		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], 'N/A')
+		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], NOT_APPLICABLE)
 	end
 end
 
@@ -102,7 +104,7 @@ function M:UpdateCoords(OnShow)
 		if E.MapInfo.x and E.MapInfo.y then
 			CoordsHolder.playerCoords:SetFormattedText('%s:   %.2f, %.2f', L["Player"], (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
-			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], 'N/A')
+			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], NOT_APPLICABLE)
 		end
 	end
 end
@@ -152,6 +154,8 @@ function M:MapFadeOnUpdate(elapsed)
 		local fadeOut = IsPlayerMoving() and (not settings.fadePredicate or settings.fadePredicate())
 		local endAlpha = (fadeOut and (settings.minAlpha or 0.5)) or settings.maxAlpha or 1
 		local startAlpha = _G.WorldMapFrame:GetAlpha()
+
+		if abs(endAlpha - startAlpha) < 0.001 then return end -- dont restart the fade ten times a second while the map is open
 
 		object.timeToFade = settings.durationSec or 0.5
 		object.startAlpha = startAlpha
@@ -222,7 +226,7 @@ end
 
 function M:WorldMap_FirstShow()
 	local frame = _G.WorldMapFrame
-	local maxed = E.Retail and frame:IsMaximized()
+	local maxed = E.Modern and frame:IsMaximized()
 	if maxed then -- this needs to be called outside of smallerWorldMap
 		frame:UpdateMaximizedSize()
 	end
@@ -239,7 +243,7 @@ function M:WorldMap_FirstShow()
 end
 
 function M:WorldMap_OnShow()
-	if not E.Retail and E.global.general.fadeMapWhenMoving then
+	if not E.Modern and E.global.general.fadeMapWhenMoving then
 		M:EnableMapFading(_G.WorldMapFrame)
 	end
 
@@ -259,7 +263,7 @@ end
 function M:CreateCoordsHolder()
 	if not CoordsHolder then
 		CoordsHolder = CreateFrame('Frame', 'ElvUI_CoordsHolder', _G.WorldMapFrame)
-		CoordsHolder:SetFrameStrata(not E.Retail and not E.global.general.smallerWorldMap and 'FULLSCREEN' or 'MEDIUM')
+		CoordsHolder:SetFrameStrata(not E.Modern and not E.global.general.smallerWorldMap and 'FULLSCREEN' or 'MEDIUM')
 		CoordsHolder:SetFrameLevel(10)
 	end
 
@@ -289,7 +293,7 @@ function M:Initialize()
 
 		-- Blizzard WorldMapCoordsPanel: CursorCoords / PlayerCoords
 		-- Remove them as long as our coords are enabled to avoid double coords
-		local overlayFrames = E.Retail and WorldMapFrame.overlayFrames
+		local overlayFrames = E.Modern and WorldMapFrame.overlayFrames
 		if overlayFrames then
 			for _, frame in next, overlayFrames do
 				if frame.PlayerCoords and frame.CursorCoords then
@@ -311,7 +315,7 @@ function M:Initialize()
 		WorldMapFrame.BlackoutFrame.Blackout:SetTexture()
 		WorldMapFrame.BlackoutFrame:EnableMouse(false)
 
-		if E.Retail then
+		if E.Modern then
 			self:SecureHook(WorldMapFrame, 'Maximize', 'SetLargeWorldMap')
 			self:SecureHook(WorldMapFrame, 'Minimize', 'SetSmallWorldMap')
 			self:SecureHook(WorldMapFrame, 'SynchronizeDisplayState')
@@ -329,7 +333,7 @@ function M:Initialize()
 	WorldMapFrame:HookScript('OnHide', M.WorldMap_OnHide)
 	self:SecureHookScript(WorldMapFrame, 'OnShow', M.WorldMap_FirstShow)
 
-	if E.Retail then -- This lets us control the maps fading function
+	if E.Modern then -- This lets us control the maps fading function
 		hooksecurefunc(PlayerMovementFrameFader, 'AddDeferredFrame', M.UpdateMapFade)
 	else -- This is to keep cursor correct on non-retail smaller world map
 		self:RawHook(WorldMapFrame.ScrollContainer, 'GetCursorPosition', 'GetCursorPosition', true)

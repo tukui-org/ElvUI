@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local NP = E:GetModule('NamePlates')
 
+local CreateFrame = CreateFrame
 local GetRaidTargetIndex = GetRaidTargetIndex
 local SetRaidTargetIconTexture = SetRaidTargetIconTexture
 
@@ -10,6 +11,7 @@ function NP:RaidTargetIndicator_Override()
 
 	if index then
 		SetRaidTargetIconTexture(element, index)
+
 		element:Show()
 	else
 		element:Hide()
@@ -17,7 +19,10 @@ function NP:RaidTargetIndicator_Override()
 end
 
 function NP:Construct_RaidTargetIndicator(nameplate)
-	local RaidTargetIndicator = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY', nil, 7)
+	local element = CreateFrame('Frame', '$parent_RaidTargetIndicator', nameplate)
+	element:SetFrameLevel(nameplate.RaisedElement.RaidTargetIndicatorLevel)
+
+	local RaidTargetIndicator = element:CreateTexture(nil, 'OVERLAY')
 	RaidTargetIndicator.Override = NP.RaidTargetIndicator_Override
 	RaidTargetIndicator:Hide()
 

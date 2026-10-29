@@ -40,7 +40,7 @@ end
 local function OnEnter(panel)
 	DT.tooltip:ClearLines()
 
-	if E.Retail then
+	if E.Modern then
 		DT.tooltip:SetCurrencyByID(panel.name)
 	else
 		DT.tooltip:SetCurrencyTokenByID(panel.name)

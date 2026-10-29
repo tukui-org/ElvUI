@@ -3,10 +3,9 @@ local AFK = E:GetModule('AFK')
 local CH = E:GetModule('Chat')
 
 local _G = _G
-local floor = floor
-local tostring, pcall = tostring, pcall
-local unpack, strupper = unpack, strupper
+local tostring, pcall, floor = tostring, pcall, floor
 local format, strsub, gsub = format, strsub, gsub
+local unpack, strupper = unpack, strupper
 
 local CloseAllWindows = CloseAllWindows
 local CreateFrame = CreateFrame
@@ -27,7 +26,7 @@ local UnitCastingInfo = UnitCastingInfo
 local GetChatCategory = ChatFrameUtil.GetChatCategory
 local FormatDiscordMessage = ChatFrameUtil.FormatDiscordMessage
 local GetMobileEmbeddedTexture = ChatFrameUtil.GetMobileEmbeddedTexture
-local C_PetBattles_IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
+local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 
 local CAMERA_SPEED = 0.035
 local DEFAULT_ANIMATION = 'dance'
@@ -75,7 +74,7 @@ end
 
 function AFK:GetAnimation(key)
 	if not key then key = E.db.general.afkAnimation end -- check selected animation
-	if key == 'lean' and not E.Retail then key = nil end -- lean dont exist outside of retail
+	if key == 'lean' and not E.Modern then key = nil end -- lean dont exist outside of retail
 
 	local animation = key or DEFAULT_ANIMATION
 	return animations[animation], animation
@@ -303,6 +302,14 @@ function AFK:Model_OnUpdate()
 	end
 end
 
+function AFK:Chat_OnDragStart()
+	self:StartMoving()
+end
+
+function AFK:Chat_OnDragStop()
+	self:StopMovingOrSizing()
+end
+
 function AFK:Initialize()
 	AFK.Initialized = true
 
@@ -321,8 +328,8 @@ function AFK:Initialize()
 	chat:SetFading(false)
 	chat:EnableMouse(true)
 	chat:RegisterForDrag('LeftButton')
-	chat:SetScript('OnDragStart', chat.StartMoving)
-	chat:SetScript('OnDragStop', chat.StopMovingOrSizing)
+	chat:SetScript('OnDragStart', AFK.Chat_OnDragStart)
+	chat:SetScript('OnDragStop', AFK.Chat_OnDragStop)
 	chat:SetScript('OnMouseWheel', AFK.Chat_OnMouseWheel)
 	AFK:ResetChatPosition()
 

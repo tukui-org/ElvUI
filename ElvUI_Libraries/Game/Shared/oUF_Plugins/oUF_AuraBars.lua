@@ -50,7 +50,9 @@ local function UpdateValue(bar, start)
 			bar:SetValue(remain, bar.smoothing)
 		end
 	else
-		bar:SetMinMaxValues(0, bar.duration)
+		if start then -- only update when changed by AuraUpdate
+			bar:SetMinMaxValues(0, bar.duration)
+		end
 
 		local remain = (bar.expiration - GetTime()) / (bar.modRate or 1)
 		if start and bar.SetValue_ then
@@ -63,12 +65,10 @@ end
 
 local function OnUpdate(bar, elapsed)
 	bar.elapsed = (bar.elapsed or 0) + elapsed
+	if bar.elapsed < 0.1 then return end
+	bar.elapsed = 0
 
-	if bar.elapsed > 0.01 then
-		UpdateValue(bar)
-
-		bar.elapsed = 0
-	end
+	UpdateValue(bar)
 end
 
 local function CreateAuraBar(element, index)
@@ -212,6 +212,10 @@ local function AuraUpdate(frame, element, unit, aura, index, offset, filter, isD
 		count, debuffType, duration, expiration, source, isStealable, nameplateShowPersonal, spellID,
 		canApplyAura, isBossDebuff, castByPlayer, nameplateShowAll, modRate, effect1, effect2, effect3)
 
+	if not show then
+		return HIDDEN
+	end
+
 	UpdateBar(element, bar)
 
 	if bar.noTime then
@@ -222,7 +226,7 @@ local function AuraUpdate(frame, element, unit, aura, index, offset, filter, isD
 		bar:SetScript('OnUpdate', OnUpdate)
 	end
 
-	return show and VISIBLE or HIDDEN
+	return VISIBLE
 end
 
 local function SetPosition(element, from, to)
@@ -368,6 +372,6 @@ local function Disable(self)
 	end
 end
 
-if not oUF.isRetail then
+if not oUF.isModern then
 	oUF:AddElement('AuraBars', Update, Enable, Disable)
 end

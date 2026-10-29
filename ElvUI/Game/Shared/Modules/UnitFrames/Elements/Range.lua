@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local ElvUF = E.oUF
 
 local next = next
 local tonumber = tonumber
@@ -17,7 +18,7 @@ local IsInInstance = IsInInstance
 local UnitInParty = UnitInParty
 local UnitInRaid = UnitInRaid
 
-local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook
 local IsSpellInRange = C_Spell.IsSpellInRange
 local PhaseReason = Enum.PhaseReason
 
@@ -88,7 +89,7 @@ end
 
 function UF:FriendlyInRange(unit)
 	if UnitIsPlayer(unit) then
-		if E.Retail then
+		if E.Modern then
 			local phaseReason = UnitPhaseReason(unit)
 			if not E:IsSecretValue(phaseReason) then
 				if phaseReason == PhaseReason.TimerunningHwt then
@@ -125,7 +126,7 @@ function UF:UpdateRange(unit)
 	-- clear these if we arent checking them (these are secret values on retail)
 	element.isInRange, element.checkedRange = nil, nil
 
-	local exists = E:UnitExists(unit)
+	local exists = ElvUF:UnitExists(unit)
 	if self.forceInRange or (exists and unit == 'player') then
 		element.RangeAlpha = element.MaxAlpha
 	elseif self.forceNotInRange then

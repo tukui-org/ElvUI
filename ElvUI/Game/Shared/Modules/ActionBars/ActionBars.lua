@@ -48,8 +48,9 @@ local GetSpellBookItemInfo = C_SpellBook.GetSpellBookItemInfo or GetSpellBookIte
 local ClearPetActionHighlightMarks = ClearPetActionHighlightMarks or PetActionBar.ClearPetActionHighlightMarks
 local GetActionCooldownDuration = C_ActionBar.GetActionCooldownDuration
 
+local GetCVarBool = C_CVar.GetCVarBool
+local IsInBattle = C_PetBattles.IsInBattle
 local GetProfessionQualityInfo = C_ActionBar.GetProfessionQualityInfo
-local IsInBattle = C_PetBattles and C_PetBattles.IsInBattle
 local C_PlayerInfo_GetGlidingInfo = C_PlayerInfo.GetGlidingInfo
 local FindSpellBookSlotForSpell = C_SpellBook.FindSpellBookSlotForSpell or SpellBook_GetSpellBookSlot
 local ActionBarController_UpdateAllSpellHighlights = ActionBarController_UpdateAllSpellHighlights
@@ -61,7 +62,6 @@ local GetTempShapeshiftBarIndex = C_ActionBar.GetTempShapeshiftBarIndex or GetTe
 local GetOverrideBarIndex = C_ActionBar.GetOverrideBarIndex or GetOverrideBarIndex
 local GetVehicleBarIndex = C_ActionBar.GetVehicleBarIndex or GetVehicleBarIndex
 
-local GetCVarBool = C_CVar.GetCVarBool
 local COOLDOWN_GLOBAL = 61304
 local COOLDOWN_WAND = 5009
 
@@ -102,7 +102,7 @@ AB.barDefaults = {
 
 do
 	-- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Retail or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	local fullConditions = (E.Modern or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
 	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
 end
 
@@ -151,7 +151,7 @@ function AB:HandleButtonAutoCast(bar, button)
 	local autoCast = button.AutoCastOverlay or button.AutoCastable
 	if not autoCast then return end
 
-	local offset = E.Retail and 3 or -3
+	local offset = E.Modern and 3 or -3
 	autoCast:SetOutside(button, offset, offset)
 
 	local corners = autoCast.Corners
@@ -161,8 +161,8 @@ function AB:HandleButtonAutoCast(bar, button)
 	local size = db and db.buttonSize or 32
 	local height = (db and db.keepSizeRatio and size) or (db and db.buttonHeight or 32)
 
-	local cornerWidth = E.Retail and 0 or ((size * 0.5) - (size / 7.5))
-	local cornerHeight = E.Retail and 0 or ((height * 0.5) - (height / 7.5))
+	local cornerWidth = E.Modern and 0 or ((size * 0.5) - (size / 7.5))
+	local cornerHeight = E.Modern and 0 or ((height * 0.5) - (height / 7.5))
 	corners:SetOutside(button, cornerWidth, cornerHeight)
 end
 
@@ -322,7 +322,7 @@ function AB:PositionAndSizeBar(barName)
 
 	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
-	local vehicleIndex = (E.Retail or E.Mists or E.Wrath) and GetVehicleBarIndex()
+	local vehicleIndex = (E.Modern or E.Mists or E.Wrath) and GetVehicleBarIndex()
 
 	-- paging needs to be updated even if the bar is disabled
 	local defaults = AB.barDefaults[barName]
@@ -412,7 +412,7 @@ end
 function AB:CreateBar(id)
 	local barName = 'ElvUI_Bar'..id
 	local bar = CreateFrame('Frame', barName, E.UIParent, 'SecureHandlerStateTemplate')
-	if not E.Retail then
+	if not E.Modern then
 		SecureHandlerSetFrameRef(bar, 'MainMenuBarArtFrame', _G.MainMenuBarArtFrame)
 	end
 
@@ -436,7 +436,7 @@ function AB:CreateBar(id)
 	for i = 1, 12 do
 		local button = LAB:CreateButton(i, format('%sButton%d', barName, i), bar)
 
-		if E.Retail then
+		if E.Modern then
 			button.ProfessionQualityOverlayFrame = CreateFrame('Frame', nil, button, 'ActionButtonTextureOverlayTemplate')
 		end
 
@@ -564,6 +564,22 @@ function AB:PLAYER_REGEN_ENABLED()
 	AB:UnregisterEvent('PLAYER_REGEN_ENABLED')
 end
 
+function AB:VehicleButton_SetHighlightTexture(texture)
+	local hover = self.hover
+	if not hover or texture == hover then return end
+
+	self:SetHighlightTexture(hover)
+end
+
+function AB:VehicleButton_SetPoint(_, parent)
+	local holder = self.holder
+	if not holder or parent == holder then return end
+
+	self:ClearAllPoints()
+	self:SetParent(UIParent)
+	self:Point('CENTER', holder)
+end
+
 function AB:CreateVehicleLeave()
 	local db = E.db.actionbar.vehicleExitButton
 	if not db.enable then return end
@@ -572,6 +588,8 @@ function AB:CreateVehicleLeave()
 	local holder = CreateFrame('Frame', 'VehicleLeaveButtonHolder', E.UIParent)
 	holder:Point('BOTTOM', E.UIParent, 0, 300)
 	holder:Size(button:GetSize())
+	button.holder = holder
+
 	E:CreateMover(holder, 'VehicleLeaveButton', L["VehicleLeaveButton"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,vehicleExitButton')
 
 	button:ClearAllPoints()
@@ -591,20 +609,10 @@ function AB:CreateVehicleLeave()
 		button:GetPushedTexture():SetTexCoord(0.140625, 0.859375, 0.140625, 0.859375)
 		button:StyleButton(nil, true, true)
 
-		hooksecurefunc(button, 'SetHighlightTexture', function(btn, tex)
-			if tex ~= btn.hover then
-				button:SetHighlightTexture(btn.hover)
-			end
-		end)
+		hooksecurefunc(button, 'SetHighlightTexture', AB.VehicleButton_SetHighlightTexture)
 	end
 
-	hooksecurefunc(button, 'SetPoint', function(_, _, parent)
-		if parent ~= holder then
-			button:ClearAllPoints()
-			button:SetParent(UIParent)
-			button:Point('CENTER', holder)
-		end
-	end)
+	hooksecurefunc(button, 'SetPoint', AB.VehicleButton_SetPoint)
 
 	AB:UpdateVehicleLeave()
 end
@@ -653,9 +661,11 @@ function AB:UpdateAllBinds(event)
 	AB:UpdatePetBindings()
 	AB:UpdateStanceBindings()
 
-	if E.Retail then
+	if E.Retail or E.Mists then
 		AB:UpdateExtraBindings()
-	elseif E.Wrath and E.myclass == 'SHAMAN' then
+	end
+
+	if E.allowTotemBar then
 		AB:UpdateTotemBindings()
 	end
 
@@ -727,24 +737,30 @@ function AB:UpdateButtonSettings(specific)
 			LAB.eventFrame:UnregisterEvent('SPELL_ACTIVATION_OVERLAY_GLOW_HIDE')
 		end
 
-		AB:AdjustMaxStanceButtons()
+		AB:AdjustMaxStanceButtons() -- this calls PositionAndSizeBarShapeShift
 		AB:PositionAndSizeBarPet()
-		AB:PositionAndSizeBarShapeShift()
 
 		AB:UpdatePetBindings()
 		AB:UpdateStanceBindings() -- call after AdjustMaxStanceButtons
 
 		if E.Retail or E.Mists then
 			AB:UpdateExtraBindings()
+		end
+
+		if E.Modern or E.Mists then
 			AB:UpdateFlyoutButtons()
 
 			-- handle LAB custom flyout button sizes again
 			if LAB.FlyoutButtons then
 				AB:LAB_FlyoutSpells()
 			end
-		elseif (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+		elseif E.allowTotemBar and AB.db.totemBar.enable then
 			AB:PositionAndSizeTotemBar()
 		end
+	end
+
+	if AB.fadeParent then -- allow new update
+		AB.fadeParent.mouseLock = nil
 	end
 end
 
@@ -967,18 +983,6 @@ function AB:Button_OnLeave(button)
 	end
 end
 
-function AB:BlizzardOptionsPanel_OnEvent()
-	_G.InterfaceOptionsActionBarsPanelBottomRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 2)
-	_G.InterfaceOptionsActionBarsPanelBottomLeft.Text:SetFormattedText(L["Remove Bar %d Action Page"], 3)
-	_G.InterfaceOptionsActionBarsPanelRightTwo.Text:SetFormattedText(L["Remove Bar %d Action Page"], 4)
-	_G.InterfaceOptionsActionBarsPanelRight.Text:SetFormattedText(L["Remove Bar %d Action Page"], 5)
-
-	_G.InterfaceOptionsActionBarsPanelBottomRight:SetScript('OnEnter', nil)
-	_G.InterfaceOptionsActionBarsPanelBottomLeft:SetScript('OnEnter', nil)
-	_G.InterfaceOptionsActionBarsPanelRightTwo:SetScript('OnEnter', nil)
-	_G.InterfaceOptionsActionBarsPanelRight:SetScript('OnEnter', nil)
-end
-
 do
 	local function CanGlide() -- required when reloading because the event wont fire yet
 		local isGliding, canGlide = C_PlayerInfo_GetGlidingInfo()
@@ -991,13 +995,15 @@ do
 			canGlide = arg
 		end
 
-		if (E.Retail and (canGlide or CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
+		if (E.Modern and (canGlide or CanGlide() or IsPossessBarVisible() or HasOverrideActionBar()))
 		or UnitCastingInfo('player') or UnitChannelInfo('player') or UnitExists('target') or UnitExists('focus')
-		or UnitExists('vehicle') or UnitAffectingCombat('player') or (not E.Retail and (UnitHealth('player') ~= UnitHealthMax('player'))) then
-			self.mouseLock = true
-			E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
-			AB:FadeBlings(1)
-		else
+		or UnitExists('vehicle') or UnitAffectingCombat('player') or (not E.Modern and (UnitHealth('player') ~= UnitHealthMax('player'))) then
+			if not self.mouseLock then
+				self.mouseLock = true
+				E:UIFrameFadeIn(self, 0.2, self:GetAlpha(), 1)
+				AB:FadeBlings(1)
+			end
+		elseif self.mouseLock ~= false then -- nil is settings change
 			self.mouseLock = false
 			local a = 1 - (AB.db.globalFadeAlpha or 0)
 			E:UIFrameFadeOut(self, 0.2, self:GetAlpha(), a)
@@ -1012,7 +1018,7 @@ do
 	end
 
 	local function FixButton(button)
-		if E.Retail then
+		if E.Modern then
 			if button.OnIconEnter == AB.SpellButtonOnEnter then
 				return -- don't do this twice, ever
 			end
@@ -1056,7 +1062,7 @@ do
 	end
 
 	function AB:FixSpellBookTaint() -- let spell book buttons work without tainting by replacing this function
-		if E.Retail then -- same deal with profession buttons, this will fix the tainting
+		if E.Modern then -- same deal with profession buttons, this will fix the tainting
 			hooksecurefunc(_G.PlayerSpellsFrame.SpellBookFrame, 'SetTab', SetTab)
 		else
 			for i = 1, SPELLS_PER_PAGE do
@@ -1085,7 +1091,7 @@ function AB:SpellButtonOnEnter(_, tt)
 	if tt:IsForbidden() then return end
 	tt:SetOwner(self, self.Button and 'ANCHOR_CURSOR' or 'ANCHOR_RIGHT') -- 11.0 fix this more
 
-	if E.Retail and InClickBindingMode() and not self.canClickBind then
+	if E.Modern and InClickBindingMode() and not self.canClickBind then
 		tt:AddLine(CLICK_BINDING_NOT_AVAILABLE, 1, .3, .3)
 		tt:Show()
 		return
@@ -1107,7 +1113,7 @@ function AB:SpellButtonOnEnter(_, tt)
 		tt:SetScript('OnUpdate', (needsUpdate and AB.SpellBookTooltipOnUpdate) or nil)
 	end
 
-	if E.Retail then
+	if E.Modern then
 		ClearOnBarHighlightMarks()
 		ClearPetActionHighlightMarks()
 
@@ -1158,7 +1164,8 @@ function AB:ButtonEventsRegisterFrame(added)
 		local frame = frames[index]
 		local wasAdded = frame == added
 		if not added or wasAdded then
-			if not strmatch(frame:GetName(), 'ExtraActionButton%d') then
+			local name = frame:GetName()
+			if not name or (not strmatch(name, 'ExtraActionButton%d') and name ~= 'GamepadMainActionBarFramePageUnitLeftClassAction') then
 				frames[index] = nil
 			end
 
@@ -1207,6 +1214,13 @@ function AB:UnloadController()
 	_G.ActionBarButtonEventsFrame:UnregisterAllEvents()
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_SLOT_CHANGED') -- needed to let the ExtraActionButton show
 	_G.ActionBarButtonEventsFrame:RegisterEvent('ACTIONBAR_UPDATE_COOLDOWN') -- needed for cooldowns of them both
+
+	if E.Forever then
+		-- this is needed for the gamepad pet action button to set its flyout popup on init
+		-- without it, everytime ToggleFlash on it is called, it reads self.popup.AttackButton and errors
+		-- even if the gamepad feature is entirely disabled in the game settings
+		_G.ActionBarButtonEventsFrame:RegisterEvent('PLAYER_ENTERING_WORLD')
+	end
 end
 
 do
@@ -1305,7 +1319,7 @@ do
 			end
 		end
 
-		if not E.Retail then
+		if not E.Modern then
 			AB:FixSpellBookTaint()
 		end
 
@@ -1320,7 +1334,7 @@ do
 		-- dont reopen game menu and fix settings panel not being able to close during combat
 		_G.SettingsPanel.TransitionBackOpeningPanel = AB.SettingsPanel_TransitionBackOpeningPanel
 
-		-- lets only keep ExtraActionButtons in here
+		-- lets only keep ExtraActionButtons (and the Forever gamepad LeftClassAction) in here
 		hooksecurefunc(_G.ActionBarButtonEventsFrame, 'RegisterFrame', AB.ButtonEventsRegisterFrame)
 		AB.ButtonEventsRegisterFrame()
 
@@ -1363,7 +1377,7 @@ end
 
 do
 	local fixBars = {}
-	if not E.Retail then -- retail has these bars as a fallback
+	if not E.Modern then -- retail has these bars as a fallback
 		fixBars.MULTIACTIONBAR5BUTTON = 'ELVUIBAR13BUTTON'
 		fixBars.MULTIACTIONBAR6BUTTON = 'ELVUIBAR14BUTTON'
 		fixBars.MULTIACTIONBAR7BUTTON = 'ELVUIBAR15BUTTON'
@@ -1619,7 +1633,7 @@ function AB:UpdateFlyoutButtons()
 
 	-- spellbook flyouts
 	local isShown, i = _G.SpellFlyout:IsShown(), 1
-	local flyoutName = E.Retail and 'SpellFlyoutPopupButton' or 'SpellFlyoutButton'
+	local flyoutName = E.Modern and 'SpellFlyoutPopupButton' or 'SpellFlyoutButton'
 	local btn = _G[flyoutName..i]
 	while btn do
 		if isShown then
@@ -1745,17 +1759,18 @@ function AB:SetButtonDesaturation(button, start, duration)
 	end
 
 	local allow
-	if E:IsSecretValue(duration) then
-		local action = button._state_type == 'action' and button._state_action
-		local info = action and button:GetCooldownInfo()
-		local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
-		allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
-	else
-		local GCD = AB:GetGlobalCooldown()
-		allow = (duration and duration > GCD) and 1 or 0
+	if AB.db.desaturateOnCooldown then
+		if E:IsSecretValue(duration) then
+			local action = button._state_type == 'action' and button._state_action
+			local info = action and button:GetCooldownInfo()
+			local cooldown = (info and not info.isOnGCD) and GetActionCooldownDuration(action)
+			allow = cooldown and cooldown:EvaluateRemainingDuration(E.Curves.Float.Desaturate)
+		else
+			allow = (duration and duration > 0 and duration > AB:GetGlobalCooldown()) and 1 or 0
+		end
 	end
 
-	if AB.db.desaturateOnCooldown and allow then
+	if allow then
 		button.icon:SetDesaturation(allow)
 		button.saturationLocked = true
 	else
@@ -1822,8 +1837,8 @@ end
 
 function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	if button._state_type == 'action' then
-		if info then
-			AB:SetButtonDesaturation(button, info.startTime, info.duration)
+		if info then -- isActive and isEnabled are never secret - idle buttons skip the cooldown lookups
+			AB:SetButtonDesaturation(button, info.startTime, (info.isActive or not info.isEnabled) and info.duration)
 		else
 			AB:SetButtonDesaturation(button, start, duration)
 		end
@@ -1832,7 +1847,7 @@ function AB:LAB_CooldownUpdate(button, start, duration, _, info)
 	if button.cooldown then
 		E:CooldownBling(button.cooldown, button.cooldown:GetEffectiveAlpha())
 
-		if not E.Retail then -- Loss of Control Swipe
+		if not E.Modern then -- Loss of Control Swipe
 			E:CooldownSwipe(button.cooldown)
 		end
 	end
@@ -1844,8 +1859,9 @@ end
 
 function AB:PLAYER_ENTERING_WORLD(event, initLogin, isReload)
 	AB:AdjustMaxStanceButtons(event)
+	AB:UpdatePet(event)
 
-	if (initLogin or isReload) and (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if (initLogin or isReload) and E.allowTotemBar and AB.db.totemBar.enable then
 		AB:SecureHook('ShowMultiCastActionBar', 'PositionAndSizeTotemBar')
 		AB:PositionAndSizeTotemBar()
 	end
@@ -1971,7 +1987,8 @@ function AB:Initialize()
 		end
 	end
 
-	if not E.private.actionbar.enable then return end
+	-- Gamepad UI uses Blizzard's crossbar and hides the other action bars
+	if not E.private.actionbar.enable or E.IsGamepadActive then return end
 	AB.Initialized = true
 
 	LAB.RegisterCallback(AB, 'OnButtonUpdate', AB.LAB_ButtonUpdate)
@@ -2005,6 +2022,9 @@ function AB:Initialize()
 	if E.Retail then
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_START', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_EMPOWER_STOP', 'player')
+	end
+
+	if E.Modern then
 		AB.fadeParent:RegisterUnitEvent('UNIT_SPELLCAST_SUCCEEDED', 'player')
 		AB.fadeParent:RegisterEvent('PLAYER_MOUNT_DISPLAY_CHANGED')
 		AB.fadeParent:RegisterEvent('PLAYER_CAN_GLIDE_CHANGED')
@@ -2014,7 +2034,9 @@ function AB:Initialize()
 		AB.fadeParent:RegisterEvent('VEHICLE_UPDATE')
 		AB.fadeParent:RegisterUnitEvent('UNIT_ENTERED_VEHICLE', 'player')
 		AB.fadeParent:RegisterUnitEvent('UNIT_EXITED_VEHICLE', 'player')
+	end
 
+	if E.Retail or E.Mists then
 		AB:RegisterEvent('PET_BATTLE_CLOSE', 'HandleBinds') -- set override binds
 		AB:RegisterEvent('PET_BATTLE_OPENING_DONE', 'UpdateBinds') -- no function passed, clears bindings
 	end
@@ -2034,7 +2056,6 @@ function AB:Initialize()
 	AB:CreateBarShapeShift()
 	AB:CreateVehicleLeave()
 	AB:UpdateButtonSettings()
-	AB:ToggleCooldownOptions()
 	AB:LoadKeyBinder()
 	AB:UnloadController()
 
@@ -2053,7 +2074,7 @@ function AB:Initialize()
 		AB:SetupExtraButtons()
 	end
 
-	if (E.Wrath and E.myclass == 'SHAMAN') and AB.db.totemBar.enable then
+	if E.allowTotemBar and AB.db.totemBar.enable then
 		AB:CreateTotemBar()
 	end
 
@@ -2068,12 +2089,11 @@ function AB:Initialize()
 	E:SetCVar('lockActionBars', AB.db.lockActionBars and 1 or 0)
 	_G.LOCK_ACTIONBAR = (AB.db.lockActionBars and '1' or '0') -- Keep an eye on this, in case it taints
 
-	if E.Retail then
+	if E.Modern then
 		AB:RegisterEvent('HOUSE_EDITOR_MODE_CHANGED', 'HandleBinds')
 
-		hooksecurefunc(_G.SpellFlyout, 'Show', AB.UpdateFlyoutButtons)
-		hooksecurefunc(_G.SpellFlyout, 'Hide', AB.UpdateFlyoutButtons)
-
+		_G.SpellFlyout:HookScript('OnShow', AB.UpdateFlyoutButtons)
+		_G.SpellFlyout:HookScript('OnHide', AB.UpdateFlyoutButtons)
 		_G.SpellFlyout:HookScript('OnEnter', AB.SpellFlyout_OnEnter)
 		_G.SpellFlyout:HookScript('OnLeave', AB.SpellFlyout_OnLeave)
 

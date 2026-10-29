@@ -67,7 +67,7 @@ local function Update(self, event, unit)
 	if(UnitIsPVPFreeForAll(unit)) then
 		status = 'FFA'
 	elseif(factionGroup ~= 'Neutral' and oUF:NotSecretValue(unitIsPVP) and unitIsPVP) then
-		if oUF.isRetail and (unit == 'player' and UnitIsMercenary(unit)) then
+		if oUF.isModern and (unit == 'player' and UnitIsMercenary(unit)) then
 			if(factionGroup == 'Horde') then
 				factionGroup = 'Alliance'
 			elseif(factionGroup == 'Alliance') then
@@ -138,7 +138,7 @@ local function Enable(self)
 
 		self:RegisterEvent('UNIT_FACTION', Path)
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:RegisterEvent('HONOR_LEVEL_UPDATE', Path, true)
 		end
 
@@ -157,7 +157,7 @@ local function Disable(self)
 
 		self:UnregisterEvent('UNIT_FACTION', Path)
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:UnregisterEvent('HONOR_LEVEL_UPDATE', Path)
 		end
 	end

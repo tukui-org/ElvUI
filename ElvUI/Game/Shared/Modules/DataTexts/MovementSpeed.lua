@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
+
 local IsFalling = IsFalling
 local IsFlying = IsFlying
 local IsSwimming = IsSwimming
@@ -29,7 +30,7 @@ local function DelayUpdate(panel)
 	local _, runSpeed, flightSpeed, swimSpeed = GetUnitSpeed('player')
 	local speed, isGliding, forwardSpeed
 
-	if E.Retail then
+	if E.Modern then
 		isGliding, _, forwardSpeed = GetGlidingInfo()
 	end
 
@@ -53,7 +54,7 @@ local function DelayUpdate(panel)
 		beforeFalling = speed
 	end
 
-	local percent = E.Retail and AbbreviateNumbers(speed, breakpoint) or (speed / BASE_MOVEMENT_SPEED * 100)
+	local percent = E.Modern and AbbreviateNumbers(speed, breakpoint) or (speed / BASE_MOVEMENT_SPEED * 100)
 	if db.NoLabel then
 		panel.text:SetFormattedText(displayString, percent)
 	else
@@ -74,7 +75,7 @@ local function ApplySettings(panel, hex)
 		db = E.global.datatexts.settings[panel.name]
 	end
 
-	if E.Retail then
+	if E.Modern then
 		data.fractionDivisor = 10 ^ (db.decimalLength or 0)
 		data.significandDivisor = (BASE_MOVEMENT_SPEED * 0.01) / data.fractionDivisor
 

@@ -22,7 +22,6 @@ local UNKNOWN = UNKNOWN
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
-local BadDispels = E.Libs.Dispel:GetBadList()
 
 UF.SideAnchor = { TOP = true, BOTTOM = true, LEFT = true, RIGHT = true }
 UF.GrowthPoints = { UP = 'BOTTOM', DOWN = 'TOP', RIGHT = 'LEFT', LEFT = 'RIGHT' }
@@ -74,7 +73,7 @@ UF.SmartPosition.FLUID_BUFFS_ON_DEBUFFS = E:CopyTable({fluid = true}, UF.SmartPo
 UF.SmartPosition.FLUID_DEBUFFS_ON_BUFFS = E:CopyTable({fluid = true}, UF.SmartPosition.DEBUFFS_ON_BUFFS)
 
 function UF:Construct_Auras(frame)
-	if E.Retail then
+	if E.Modern then
 		local auras = E:Auras_Create(frame, 'Auras')
 		auras:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 
@@ -99,7 +98,7 @@ function UF:Construct_Auras(frame)
 end
 
 function UF:Construct_Buffs(frame)
-	if E.Retail then
+	if E.Modern then
 		local buffs = E:Auras_Create(frame, 'Buffs')
 		buffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 
@@ -124,7 +123,7 @@ function UF:Construct_Buffs(frame)
 end
 
 function UF:Construct_Debuffs(frame)
-	if E.Retail then
+	if E.Modern then
 		local debuffs = E:Auras_Create(frame, 'Debuffs')
 		debuffs:SetFrameLevel(frame.RaisedElementParent.AuraLevel)
 
@@ -327,7 +326,7 @@ end
 function UF:FilterEnabled(db, which)
 	if not db then return end
 
-	if E.Retail then
+	if E.Modern then
 		return db[which]
 	else -- return it back to a boolean
 		return not not db[which]
@@ -430,7 +429,7 @@ function UF:Configure_Auras(frame, which)
 	local settings = db[auraType]
 
 	auras.db = settings
-	auras.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or settings.sortMethod]
+	auras.auraSort = UF.SortAuraFuncs[E.Modern and 'PLAYER' or settings.sortMethod]
 	auras.smartPosition, auras.smartFluid = UF:SetSmartPosition(frame, db)
 	auras.attachTo = UF:GetAuraAnchorFrame(frame, settings.attachTo) -- keep below SetSmartPosition
 	auras.tooltipAnchor = settings.tooltipAnchorType
@@ -459,21 +458,20 @@ function UF:Configure_Auras(frame, which)
 	auras.growthX = UF.MatchGrowthX[settings.anchorPoint] or settings.growthX
 	auras.growthY = UF.MatchGrowthY[settings.anchorPoint] or settings.growthY
 
-	local smartInfo = E.Retail and auras.smartFluid and UF.SmartPosition[auras.smartPosition]
+	local smartInfo = E.Modern and auras.smartFluid and UF.SmartPosition[auras.smartPosition]
 	local smartFluid = smartInfo and (smartInfo.to == which or smartInfo.other == which)
 	local growDown, growOffset = auras.growthX == 'DOWN', smartInfo and 1.5 or 1
 
 	if which == 'Auras' then -- only use this for custom
 		auras.filter = settings.filter or 'HARMFUL'
-	elseif E.Retail then
+	elseif E.Modern then
 		auras.filter = (which == 'Buffs' and 'HELPFUL') or 'HARMFUL'
 	end
 
 	local initialAnchor = (UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint]) or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
-	if E.Retail then
-		auras.allowEnable = settings.enable
-
+	if E.Modern then
 		auras.isUnitframe = true
+		auras.useWidth = true -- this helps keeps row count proper when using keepSizeRatio
 		auras.auraType = auraType
 		auras.maxFrameCount = auras.num
 		auras.initialAnchor = E.CenterPoint[settings.anchorPoint] or initialAnchor
@@ -488,16 +486,22 @@ function UF:Configure_Auras(frame, which)
 		auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and growOffset or 0, growDown and 0 or growOffset
 		auras.noMouse = settings.clickThrough
 		auras.forceShowAuras = frame.forceShowAuras
+		auras.allowEnable = settings.enable -- keep over Auras_GroupUnit
 
 		if settings.enable then
 			auras.filterLists = settings.filterLists
 
 			UF:GroupFilters(auras, settings.filterLists) -- build the groups
 
+			local known = next(auras.known) -- new groups update their buttons in initializeFrame
+
 			E:Auras_GroupUnit(auras, frame.__unit)
 			E:Auras_SetContainer(auras)
 			E:Auras_SetLineSize(auras)
-			E:Auras_UpdateButtons(auras)
+
+			if known then
+				E:Auras_UpdateButtons(auras)
+			end
 		end
 	else
 		auras.initialAnchor = initialAnchor
@@ -542,7 +546,9 @@ function UF:Configure_Auras(frame, which)
 	auras:SetFrameLevel((settings.strataAndLevel and settings.strataAndLevel.useCustomLevel and settings.strataAndLevel.frameLevel) or frame.RaisedElementParent.AuraLevel)
 
 	if settings.enable then
-		auras:Show()
+		if not E.Modern then
+			auras:Show()
+		end
 	else
 		auras:Hide()
 	end
@@ -552,7 +558,7 @@ function UF.SortAuraFunc(a, b)
 	if not a or not b or not a:IsShown() then return end
 	if not b:IsShown() then return true end
 
-	local frame = a:GetParent()
+	local frame = a.__owner
 	if frame and frame.db then
 		return frame.auraSort(a, b, frame.db.sortDirection)
 	end
@@ -582,16 +588,13 @@ function UF:PostUpdateAura(unit, button)
 	local db, r, g, b = (self.isNameplate and NP.db.colors) or UF.db.colors
 	local steal = DebuffColors.Stealable
 
-	if E.Retail then
+	if E.Modern then
 		local color = not self.forceShow and UF:GetAuraCurve(unit, button, db.auraByType)
 		if color then
 			r, g, b = color:GetRGB()
 		end
 	elseif button.isDebuff then
-		local bad = DebuffColors.BadDispel
-		if bad and db.auraByDispels and (BadDispels[button.spellID] and DispelTypes[button.debuffType]) then
-			r, g, b = bad.r, bad.g, bad.b
-		elseif db.auraByType then
+		if db.auraByType then
 			local debuffColor = DebuffColors[button.debuffType or 'None']
 			r, g, b = debuffColor.r * 0.6, debuffColor.g * 0.6, debuffColor.b * 0.6
 		end

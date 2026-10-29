@@ -66,7 +66,7 @@ function D:ModifyErrorFrame()
 
 	-- Also add a Last button for errors
 	local lastButton = CreateFrame('Button', nil, frame, 'UIPanelButtonTemplate')
-	lastButton:Point('BOTTOMRIGHT', frame.Close, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
+	lastButton:Point('BOTTOMRIGHT', frame.Close or frame.CloseButton, 'BOTTOMLEFT', -BUTTON_SPACING, 0)
 	lastButton:Size(BUTTON_WIDTH, BUTTON_HEIGHT)
 	lastButton:SetText('Last')
 	lastButton:SetScript('OnClick', D.OnClick_LastButton)

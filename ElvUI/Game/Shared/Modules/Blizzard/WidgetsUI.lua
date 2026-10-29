@@ -77,9 +77,8 @@ function BL:BelowMinimap_CaptureBar()
 	if not self.backdrop then
 		self:CreateBackdrop()
 
-		local x = E.PixelMode and 1 or 2
-		self.backdrop:Point('TOPLEFT', self.LeftBar, -x, x)
-		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, x, -x)
+		self.backdrop:Point('TOPLEFT', self.LeftBar, -E.Border, E.Border)
+		self.backdrop:Point('BOTTOMRIGHT', self.RightBar, E.Border, -E.Border)
 	else
 		self.backdrop:OffsetFrameLevel(-1, self)
 	end
@@ -154,7 +153,7 @@ function BL:HandleWidgets()
 	BL:BuildWidgetHolder('BelowMinimapContainerHolder', 'BelowMinimapContainerMover', 'CENTER', L["BelowMinimapWidget"], BelowMinimapContainer, 'TOPRIGHT', _G.Minimap, 'BOTTOMRIGHT', 0, -16, 150, 30, 'ALL,WIDGETS')
 	BL:BuildWidgetHolder(nil, 'GMMover', 'TOP', L["GM Ticket Frame"], _G.TicketStatusFrame, 'TOPLEFT', E.UIParent, 'TOPLEFT', 250, -5, nil, nil, 'ALL,GENERAL')
 
-	if E.Retail then
+	if E.Modern then
 		BL:BuildWidgetHolder('PowerBarContainerHolder', 'PowerBarContainerMover', 'CENTER', L["PowerBarWidget"], _G.UIWidgetPowerBarContainerFrame, 'TOP', E.UIParent, 'TOP', 0, -75, 100, 20, 'ALL,WIDGETS')
 		BL:BuildWidgetHolder('EventToastHolder', 'EventToastMover', 'TOP', L["EventToastWidget"], _G.EventToastManagerFrame, 'TOP', E.UIParent, 'TOP', 0, -150, 200, 20, 'ALL,WIDGETS')
 		BL:BuildWidgetHolder('BossBannerHolder', 'BossBannerMover', 'TOP', L["BossBannerWidget"], _G.BossBanner, 'TOP', E.UIParent, 'TOP', 0, -125, 200, 20, 'ALL,WIDGETS')

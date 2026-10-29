@@ -117,23 +117,27 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local StatusBarTimerDirection = Enum.StatusBarTimerDirection
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
-local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+local tradeskillCurrent, tradeskillTotal, tradeskillStart, mergeTradeskill = 0, 0, nil, false
+local tradeskillDuration = oUF.isModern and C_DurationUtil.CreateDuration()
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
-if oUF.isClassic or oUF.isTBC then
+if oUF.isClassic or oUF.isTBC or oUF.isForever then
 	specialCast[2643] = 500 -- Multishot R1
 	specialCast[14288] = 500 -- Multishot R2
 	specialCast[14289] = 500 -- Multishot R3
 	specialCast[14290] = 500 -- Multishot R4
 	specialCast[25294] = 500 -- Multishot R5
 	specialCast[27021] = 500 -- Multishot R6
-	specialCast[19434] = 3000 -- Aimed Shot R1
-	specialCast[20900] = 3000 -- Aimed Shot R2
-	specialCast[20901] = 3000 -- Aimed Shot R3
-	specialCast[20902] = 3000 -- Aimed Shot R4
-	specialCast[20903] = 3000 -- Aimed Shot R5
-	specialCast[20904] = 3000 -- Aimed Shot R6
-	specialCast[27065] = 3000 -- Aimed Shot R7
+
+	if not oUF.isForever then
+		specialCast[19434] = 3000 -- Aimed Shot R1
+		specialCast[20900] = 3000 -- Aimed Shot R2
+		specialCast[20901] = 3000 -- Aimed Shot R3
+		specialCast[20902] = 3000 -- Aimed Shot R4
+		specialCast[20903] = 3000 -- Aimed Shot R5
+		specialCast[20904] = 3000 -- Aimed Shot R6
+		specialCast[27065] = 3000 -- Aimed Shot R7
+	end
 
 	specialAuras[3045] = 0.4 -- Rapid Fire: 40%
 	specialAuras[6150] = 0.3 -- Quick Shots [Improved Hawk]: 30%
@@ -189,11 +193,12 @@ local function resetAttributes(self)
 end
 
 local function UpdateCurrentTarget(element, unit, target)
-	if UnitSpellTargetName then
+	if target then
+		element.targetCurrent = target
+		element.targetClass = nil
+	else
 		element.targetCurrent = UnitSpellTargetName(unit)
 		element.targetClass = UnitSpellTargetClass(unit)
-	else
-		element.targetCurrent = target
 	end
 end
 
@@ -273,10 +278,6 @@ local function UpdatePips(element, stages)
 	end
 end
 
-local function CastMatch(element, castID)
-	return element.castID == castID
-end
-
 --[[ Override: Castbar:ShouldShow(unit)
 Handles check for which unit the castbar should show for.
 Defaults to the object unit.
@@ -293,7 +294,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		return
 	end
 
-	local real, casting, channeling = event, true, false
+	local real, casting, channeling, castsent = event, true, false, false
 	local name, text, texture, startTime, endTime, isTradeSkill, empowering, castID, barID, notInterruptible, castDuration, _
 	if spellID and event == 'UNIT_SPELLCAST_SENT' then
 		name, _, texture, castDuration = oUF:GetSpellInfo(spellID)
@@ -308,12 +309,13 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 				castTime = castTime * speedMod
 			end
 
+			castsent = true
 			castID = castGUID
 			startTime = GetTime() * 1000
 			endTime = startTime + castTime
 		end
 	else
-		if oUF.isRetail then
+		if oUF.isModern then
 			name, text, texture, startTime, endTime, isTradeSkill, _, notInterruptible, spellID, barID = UnitCastingInfo(unit)
 
 			castID = barID -- because of secrets
@@ -339,10 +341,11 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.casting = casting
 	element.channeling = channeling
 	element.empowering = empowering
+	element.castsent = castsent
 
-	local isPlayer = oUF:UnitIsUnit(unit, 'player')
-	if not isPlayer or (oUF.isRetail or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START')) then
-		UpdateCurrentTarget(element, unit) -- we want to ignore the start events on player unit because sent adds the target info
+	-- Fake castbars (Multi-Shot, Aimed Shot) take the target from sent
+	if real ~= 'UNIT_SPELLCAST_SENT' then
+		UpdateCurrentTarget(element, unit)
 	end
 
 	element.delay = 0
@@ -354,21 +357,23 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 	-- ElvUI block
 	local stages = empowering and UnitEmpoweredStagePercentages(unit) or nil
+	local mergePlayer = mergeTradeskill and oUF:UnitIsUnit(unit, 'player')
 
 	element.isTradeSkill = isTradeSkill
 	element.tradeSkillCastID = (isTradeSkill and castID) or nil
+	element.tradeSkillMerge = mergePlayer and casting and isTradeSkill and oUF:NotSecretValue(startTime)
 	element.stages = stages
 	-- end block
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	if oUF.isRetail then
+	if oUF.isModern and not castsent then
 		if oUF:NotSecretValue(startTime) then
-			element.startTime = startTime / 1000
+			element.startTime = startTime * 0.001
 
 			if(element.empowering) then
-				element.endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
+				element.endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) * 0.001
 			else
-				element.endTime = endTime / 1000
+				element.endTime = endTime * 0.001
 			end
 
 			-- Calculate max for CustomTimeText compatibility
@@ -380,6 +385,21 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 
 		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
+
+		-- ElvUI block
+		if element.tradeSkillMerge then
+			if tradeskillStart ~= startTime then
+				tradeskillStart = startTime
+				tradeskillCurrent = tradeskillCurrent + 1
+			end
+
+			tradeskillDuration:SetTimeFromStart(element.startTime - (element.max * (tradeskillCurrent - 1)), element.max * tradeskillTotal)
+			duration = tradeskillDuration
+			element.max = element.max * tradeskillTotal
+			element.holdTime = 1
+		end
+		-- end block
+
 		if duration then
 			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
 			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
@@ -401,16 +421,6 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 			element.duration = GetTime() - startTime
 		end
 
-		-- ElvUI block
-		if mergeTradeskill and isPlayer and isTradeSkill then
-			element.duration = element.duration + (element.max * tradeskillCurrent)
-			element.max = element.max * tradeskillTotal
-			element.holdTime = 1
-
-			tradeskillCurrent = tradeskillCurrent + 1
-		end
-		-- end block
-
 		element:SetMinMaxValues(0, element.max)
 
 		if element.SetValue_ then
@@ -420,9 +430,13 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 	end
 
-	if(element.Shield and oUF.isRetail) then
+	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
-			element.Shield:SetAlphaFromBoolean(notInterruptible, element.Shield.alphaValue or 1, 0)
+			if oUF:IsSecretValue(notInterruptible) then
+				element.Shield:SetAlphaFromBoolean(notInterruptible, element.Shield.alphaValue or 1, 0)
+			else
+				element.Shield:SetAlphaFromBoolean(notInterruptible or false, element.Shield.alphaValue or 1, 0)
+			end
 		else
 			element.Shield:SetShown(notInterruptible)
 		end
@@ -500,15 +514,15 @@ local function CastUpdate(self, event, unit)
 	if(not name) then return end
 
 	-- Use new timer API when available (Retail), fall back to manual tracking for Classic
-	if oUF.isRetail then
+	if oUF.isModern then
 		if oUF:NotSecretValue(startTime) then
 			if(element.empowering) then
-				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) / 1000
+				endTime = (endTime + GetUnitEmpowerHoldAtMaxTime(unit)) * 0.001
 			else
-				endTime = endTime / 1000
+				endTime = endTime * 0.001
 			end
 
-			startTime = startTime / 1000
+			startTime = startTime * 0.001
 
 			-- Update max for CustomTimeText compatibility
 			element.max = endTime - startTime
@@ -578,12 +592,17 @@ local function CastStop(self, event, unit, ...)
 		return
 	end
 
-	local spellID, interruptedBy, empowerComplete, _
-	if oUF.isRetail then
-		if(event == 'UNIT_SPELLCAST_EMPOWER_STOP') then
+	local spellID, interruptedBy, empowerComplete, castID, _
+	if oUF.isModern then
+		if event == 'UNIT_SPELLCAST_EMPOWER_STOP' then
 			_, _, empowerComplete, interruptedBy = ...
-		elseif(event == 'UNIT_SPELLCAST_CHANNEL_STOP') then
+		elseif event == 'UNIT_SPELLCAST_CHANNEL_STOP' then
 			_, _, interruptedBy = ...
+		elseif event == 'UNIT_SPELLCAST_SUCCEEDED' then
+			castID, spellID = ... -- castID is really castGUID
+
+			-- only for the fake castbars, channels fire this right after they start
+			if not element.castsent or (element.castID ~= castID) then return end
 		end
 	else
 		_, spellID = ...
@@ -591,8 +610,8 @@ local function CastStop(self, event, unit, ...)
 
 	if not element:IsShown() then return end
 
-	local isPlayer = oUF:UnitIsUnit(unit, 'player')
-	if mergeTradeskill and isPlayer and (tradeskillCurrent == tradeskillTotal) then
+	local mergePlayer = mergeTradeskill and oUF:UnitIsUnit(unit, 'player')
+	if mergePlayer and (tradeskillCurrent == tradeskillTotal) then
 		mergeTradeskill = false
 	end
 
@@ -640,7 +659,7 @@ local function CastFail(self, event, unit, ...)
 	end
 
 	local castID, interruptedBy, _
-	if oUF.isRetail then
+	if oUF.isModern then
 		if(event == 'UNIT_SPELLCAST_INTERRUPTED') then
 			_, _, interruptedBy, castID = ...
 		elseif(event == 'UNIT_SPELLCAST_FAILED') then
@@ -650,7 +669,7 @@ local function CastFail(self, event, unit, ...)
 		castID = ...
 	end
 
-	if not element:IsShown() or not CastMatch(element, castID) then return end
+	if not element:IsShown() or (element.castID ~= castID) then return end
 
 	if(element.Text) then
 		element.Text:SetText(event == 'UNIT_SPELLCAST_FAILED' and FAILED or INTERRUPTED)
@@ -660,8 +679,11 @@ local function CastFail(self, event, unit, ...)
 
 	element.holdTime = element.timeToHold or 0
 
-	local isPlayer = oUF:UnitIsUnit(unit, 'player')
-	if mergeTradeskill and isPlayer then
+	-- Failed crafts: when you start moving, etc
+	element.tradeSkillMerge = false
+
+	local mergePlayer = mergeTradeskill and oUF:UnitIsUnit(unit, 'player')
+	if mergePlayer then
 		mergeTradeskill = false
 	end
 
@@ -700,7 +722,7 @@ local function CastInterruptible(self, event, unit)
 
 	element.notInterruptible = event == 'UNIT_SPELLCAST_NOT_INTERRUPTIBLE'
 
-	if(element.Shield and oUF.isRetail) then
+	if(element.Shield and oUF.isModern) then
 		if(element.Shield.SetAlphaFromBoolean) then
 			element.Shield:SetAlphaFromBoolean(element.notInterruptible, element.Shield.alphaValue or 1, 0)
 		else
@@ -720,15 +742,13 @@ local function CastInterruptible(self, event, unit)
 end
 
 -- ElvUI block
-local UNIT_SPELLCAST_SENT = function (self, event, unit, target, castID, spellID)
-	if not oUF.isRetail then
-		UpdateCurrentTarget(self.Castbar, unit, target)
-	end
-
+local UNIT_SPELLCAST_SENT = function(self, event, unit, target, castID, spellID)
 	local castTime = specialCast[spellID]
-	if castTime then
-		CastStart(self, event, unit, castID, spellID, castTime)
-	end
+	if not castTime then return end
+
+	UpdateCurrentTarget(self.Castbar, unit, target)
+
+	CastStart(self, event, unit, castID, spellID, castTime)
 end
 -- ElvUI block
 
@@ -757,7 +777,7 @@ local function onUpdate(self, elapsed)
 	if(self.casting or self.channeling or self.empowering) then
 		local duration, durationObject
 
-		if oUF.isRetail then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
+		if oUF.isModern and not self.castsent then -- Use new timer API when available (Retail), fall back to manual tracking for Classic
 			durationObject = self:GetTimerDuration() -- can be nil
 
 			if durationObject then
@@ -841,7 +861,7 @@ local function onUpdate(self, elapsed)
 		end
 		]]
 
-		if not oUF.isRetail then
+		if not oUF.isModern or self.castsent then
 			if self.SetValue_ then
 				self:SetValue_(duration)
 			else
@@ -851,14 +871,19 @@ local function onUpdate(self, elapsed)
 	elseif(self.holdTime > 0) then
 		self.holdTime = self.holdTime - elapsed
 
-		-- force filled castbar
-		self:SetMinMaxValues(0, 1)
-		self:SetValue(1)
+		if not self.tradeSkillMerge then -- force filled castbar
+			self:SetMinMaxValues(0, 1)
+			self:SetValue(1)
 
-		if(self.Time) then
-			self.Time:SetText('')
+			if(self.Time) then
+				self.Time:SetText('')
+			end
 		end
 	else
+		if self.tradeSkillMerge and tradeskillCurrent > 0 then
+			mergeTradeskill = false
+		end
+
 		resetAttributes(self)
 		self:Hide()
 	end
@@ -893,6 +918,8 @@ local function Enable(self, unit)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:RegisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+		elseif oUF.isForever then
+			self:RegisterEvent('UNIT_SPELLCAST_SUCCEEDED', CastStop)
 		end
 
 		-- ElvUI block
@@ -953,6 +980,8 @@ local function Disable(self)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_START', CastStart)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_STOP', CastStop)
 			self:UnregisterEvent('UNIT_SPELLCAST_EMPOWER_UPDATE', CastUpdate)
+		elseif oUF.isForever then
+			self:UnregisterEvent('UNIT_SPELLCAST_SUCCEEDED', CastStop)
 		end
 
 		-- ElvUI block
@@ -963,10 +992,10 @@ local function Disable(self)
 	end
 end
 
-if oUF.isRetail then -- ElvUI
+if oUF.isModern then -- ElvUI
 	hooksecurefunc(C_TradeSkillUI, 'CraftRecipe', function(_, num)
 		tradeskillCurrent = 0
-		tradeskillTotal = num or 1
+		tradeskillTotal = (num and num > 0 and num) or 1 -- Runeforging passes 0
 		mergeTradeskill = true
 	end)
 end

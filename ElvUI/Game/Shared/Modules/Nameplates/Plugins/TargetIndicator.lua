@@ -63,7 +63,7 @@ local function Update(self)
 
 	if element.style ~= 'none' then
 		local isTarget = E:UnitIsUnit(self.__unit, 'target')
-		local lowHealth = not E.Retail and (element.lowHealthThreshold > 0)
+		local lowHealth = not E.Modern and (element.lowHealthThreshold > 0)
 		if isTarget and (element.preferGlowColor or not lowHealth) then
 			ShowIndicators(element, isTarget, NP.db.colors.glowColor)
 		elseif lowHealth then
@@ -131,8 +131,11 @@ local function Enable(self)
 			self:RegisterEvent('UNIT_HEALTH_FREQUENT', Path)
 		end
 
-		self:RegisterEvent('UNIT_HEALTH', Path)
-		self:RegisterEvent('UNIT_MAXHEALTH', Path)
+		if not E.Modern then -- the low health glow is classic only, on modern the indicator only depends on the target
+			self:RegisterEvent('UNIT_HEALTH', Path)
+			self:RegisterEvent('UNIT_MAXHEALTH', Path)
+		end
+
 		self:RegisterEvent('PLAYER_TARGET_CHANGED', Path, true)
 
 		return true

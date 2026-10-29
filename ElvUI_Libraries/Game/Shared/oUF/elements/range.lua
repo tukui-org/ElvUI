@@ -55,7 +55,7 @@ local function Update(self, event)
 	if unitConnected then
 		inRange, wasChecked = UnitInRange(unit)
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:SetAlphaFromBoolean(inRange, element.insideAlpha, element.outsideAlpha)
 		elseif(wasChecked and not inRange) then
 			self:SetAlpha(element.outsideAlpha)
@@ -112,7 +112,7 @@ local function Enable(self)
 		element.insideAlpha = element.insideAlpha or 1
 		element.outsideAlpha = element.outsideAlpha or 0.55
 
-		if oUF.isRetail or oUF.isTBC then
+		if oUF.isModern or oUF.isTBC then
 			self:RegisterEvent('UNIT_IN_RANGE_UPDATE', Path)
 		else
 			if not OnRangeFrame then
@@ -133,7 +133,7 @@ local function Disable(self)
 	if(element) then
 		self:SetAlpha(element.insideAlpha)
 
-		if oUF.isRetail or oUF.isTBC then
+		if oUF.isModern or oUF.isTBC then
 			self:UnregisterEvent('UNIT_IN_RANGE_UPDATE', Path)
 		else
 			for index, frame in next, _FRAMES do

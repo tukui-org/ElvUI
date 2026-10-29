@@ -42,14 +42,14 @@ local function Update(self)
 		local players = C_SocialQueue_GetGroupMembers(guid)
 		if players then
 			local firstMember, numMembers, extraCount = players[1], #players, ''
-			local playerName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
+			local unitName, nameColor = SocialQueueUtil_GetRelationshipInfo(firstMember.guid, nil, firstMember.clubId)
 			if numMembers > 1 then extraCount = format(' +%s', numMembers - 1) end
 
 			local queues = C_SocialQueue_GetGroupQueues(guid)
 			local firstQueue, numQueues = queues and queues[1], queues and #queues or 0
 			local firstData = firstQueue and firstQueue.queueData
 			local isLFGList = firstData and firstData.queueType == 'lfglist'
-			local coloredName = (playerName and playerName ~= '' and format('%s%s|r%s', nameColor, playerName, extraCount)) or format('{%s%s}', UNKNOWN, extraCount)
+			local coloredName = (unitName and unitName ~= '' and format('%s%s|r%s', nameColor, unitName, extraCount)) or format('{%s%s}', UNKNOWN, extraCount)
 
 			local activity
 			if isLFGList and firstQueue and firstQueue.eligible then
@@ -57,7 +57,7 @@ local function Update(self)
 				local searchInfo = listID and C_LFGList_GetSearchResultInfo(listID)
 				if searchInfo then
 					name, leaderName = searchInfo.name, searchInfo.leaderName
-					isLeader = CH:SocialQueueIsLeader(playerName, leaderName)
+					isLeader = CH:SocialQueueIsLeader(unitName, leaderName)
 				end
 
 				if isLeader then

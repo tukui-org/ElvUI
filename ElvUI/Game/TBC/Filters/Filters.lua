@@ -860,7 +860,7 @@ G.unitframe.aurawatch = {
 		[20043]	= Aura(20043, {20190, 27045}, true, 'TOP', {0.33, 0.93, 0.79}), -- Aspect of the Wild
 	},
 	WARLOCK = {
-		[5597]	= Aura(5597, nil, true, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
+		[5697]	= Aura(5697, nil, true, 'TOPLEFT', {0.89, 0.09, 0.05}, true), -- Unending Breath
 		[6512]	= Aura(6512, nil, true, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Detect Lesser Invisibility
 		[2970]	= Aura(2970, nil, true, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Detect Invisibility
 		[11743]	= Aura(11743, nil, true, 'TOPRIGHT', {0.2, 0.8, 0.2}, true), -- Detect Greater Invisibility

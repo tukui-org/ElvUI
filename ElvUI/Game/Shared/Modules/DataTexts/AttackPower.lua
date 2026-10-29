@@ -51,7 +51,7 @@ local function OnEnter()
 	DT.tooltip:ClearLines()
 
 	local power = totalAP or baseAP -- total is secret half the time
-	local bonus = E.Retail and AbbreviateNumbers(power, breakpoint) or (power / ATTACK_POWER_MAGIC_NUMBER)
+	local bonus = E.Modern and AbbreviateNumbers(power, breakpoint) or (power / ATTACK_POWER_MAGIC_NUMBER)
 	DT.tooltip:AddDoubleLine(isHunter and RANGED_ATTACK_POWER or MELEE_ATTACK_POWER , power, 1, 1, 1)
 	DT.tooltip:AddLine(format(isHunter and RANGED_ATTACK_POWER_TOOLTIP or MELEE_ATTACK_POWER_TOOLTIP, bonus), nil, nil, nil, true)
 

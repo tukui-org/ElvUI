@@ -43,33 +43,35 @@ function UF:Update_AssistHeader(header, db)
 		RegisterAttributeDriver(header, 'state-visibility', '[@raid1,exists] show;hide')
 	end
 
-	header:SetAttribute('point', 'BOTTOM')
-	header:SetAttribute('columnAnchorPoint', 'LEFT')
-	header:SetAttribute('yOffset', db.verticalSpacing)
+	local up = db.growthY == 'UP'
+	local spacing = db.verticalSpacing
+	header:SetAttribute('_ignore', true) -- hold the header update
+	header:SetAttribute('yOffset', up and spacing or -spacing)
 
 	if not header.positioned then
-		header:ClearAllPoints()
-		header:ClearChildPoints()
-		header:Point('TOPLEFT', E.UIParent, 'TOPLEFT', 4, -248)
-
 		local width, height = header:GetSize()
-		local minHeight = max(height, 2 * db.height + db.verticalSpacing)
+		local minHeight = max(height, 2 * db.height + spacing)
+		header:SetAttribute('columnAnchorPoint', 'LEFT')
 		header:SetAttribute('minHeight', minHeight)
 		header:SetAttribute('minWidth', width)
+		header:ClearAllPoints()
+		header:Point('TOPLEFT', E.UIParent, 4, -250)
 
 		E:CreateMover(header, header:GetName()..'Mover', L["MA Frames"], nil, nil, nil, 'ALL,RAID', nil, 'unitframe,groupUnits,assist,generalGroup')
 		header.mover:SetSize(width, minHeight)
 
 		header.positioned = true
 	end
+
+	header:SetAttribute('_ignore', nil) -- allow updates
+	header:SetAttribute('point', up and 'BOTTOM' or 'TOP')
 end
 
 function UF:Update_AssistFrames(frame, db)
-	frame.db = db
 	frame.colors = ElvUF.colors
 
 	do
-		frame.ORIENTATION = db.orientation --allow this value to change when unitframes position changes on screen?
+		frame.ORIENTATION = db.orientation -- allow this value to change when unitframes position changes on screen?
 		frame.SHADOW_SPACING = 3
 		frame.UNIT_WIDTH = db.width
 		frame.UNIT_HEIGHT = db.height
@@ -88,13 +90,17 @@ function UF:Update_AssistFrames(frame, db)
 		frame.BOTTOM_OFFSET = 0
 	end
 
+	local opt = db.strataAndLevel
+	frame:SetFrameStrata(opt and opt.useCustomStrata and opt.frameStrata or 'LOW')
+	frame:SetFrameLevel(opt and opt.useCustomLevel and opt.frameLevel or 1)
+
+	local noCombat = not InCombatLockdown()
 	if frame.isChild then
 		local childDB = db.targetsGroup
 		frame.db = db.targetsGroup
-
 		frame:Size(childDB.width, childDB.height)
 
-		if not InCombatLockdown() then
+		if noCombat then
 			local enabled = childDB.enable
 			frame:SetEnabled(enabled)
 
@@ -104,13 +110,15 @@ function UF:Update_AssistFrames(frame, db)
 			end
 		end
 	else
+		frame.db = db
 		frame:Size(frame.UNIT_WIDTH, frame.UNIT_HEIGHT)
-	end
 
-	frame:SetFrameStrata(db.strataAndLevel and db.strataAndLevel.useCustomStrata and db.strataAndLevel.frameStrata or 'LOW')
-	frame:SetFrameLevel(db.strataAndLevel and db.strataAndLevel.useCustomLevel and db.strataAndLevel.frameLevel or 1)
+		if noCombat then
+			frame:ClearAllPoints()
+		end
+	end
 
 	UF:ConfigureFrame(frame, frame.isChild and 'assisttarget' or 'assist')
 end
 
-UF.headerstoload.assist = {'MAINASSIST', E.Retail and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}
+UF.headerstoload.assist = {'MAINASSIST', E.Modern and 'ELVUI_UNITTARGET_PINGABLE' or 'ELVUI_UNITTARGET'}

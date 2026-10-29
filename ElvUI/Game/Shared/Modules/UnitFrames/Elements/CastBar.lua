@@ -10,13 +10,12 @@ local GetTime = GetTime
 local UnitCanAttack = UnitCanAttack
 local UnitClass = UnitClass
 local UnitIsPlayer = UnitIsPlayer
-local UnitName = UnitName
 local UnitReaction = UnitReaction
 local UnitSpellHaste = UnitSpellHaste
 
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
-local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
-local IsSpellKnown = C_SpellBook.IsSpellKnown or IsPlayerSpell
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook
+local IsSpellKnown = C_SpellBook.IsSpellKnown
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
 do
@@ -203,7 +202,7 @@ function UF:Configure_Castbar(frame)
 	local SPACING1 = UF.BORDER + UF.SPACING
 	local SPACING2 = SPACING1 * 2
 
-	if E.Retail then
+	if E.Modern then
 		castbar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 	else
 		E:SetSmoothing(castbar, db.smoothbars)
@@ -364,7 +363,7 @@ function UF:Configure_Castbar(frame)
 		E:UpdateClassColor(customColor.colorNoInterrupt)
 		E:UpdateClassColor(customColor.colorInterrupted)
 
-		if E.Retail then
+		if E.Modern then
 			castbar.Shield:SetVertexColor(customColor.colorNoInterrupt.r, customColor.colorNoInterrupt.g, customColor.colorNoInterrupt.b, customColor.colorNoInterrupt.a)
 			castbar.Shield.alphaValue = customColor.colorNoInterrupt.a
 		end
@@ -375,7 +374,7 @@ function UF:Configure_Castbar(frame)
 		castbar.custom_backdrop = UF.db.colors.customcastbarbackdrop and E:UpdateClassColor(UF.db.colors.castbar_backdrop)
 		UF:ToggleTransparentStatusBar(UF.db.colors.transparentCastbar, castbar, castbar.bg, nil, UF.db.colors.invertCastbar, db.reverse)
 
-		if E.Retail then
+		if E.Modern then
 			castbar.Shield:SetVertexColor(UF.db.colors.castNoInterrupt.r, UF.db.colors.castNoInterrupt.g, UF.db.colors.castNoInterrupt.b, UF.db.colors.castNoInterrupt.a)
 			castbar.Shield.alphaValue = UF.db.colors.castNoInterrupt.a
 		end
@@ -465,7 +464,7 @@ function UF:CustomCastDelayText(duration, durationObject)
 	local remain, maximum = UF:GetCastDurations(self, duration, durationObject)
 	if not remain then return end
 
-	local db = self:GetParent().db
+	local db = self.__owner.db
 	if not (db and db.castbar) then return end
 
 	UF:SetCastDisplayDelay(self, db.castbar.format, duration, maximum, remain, self.delay)
@@ -475,7 +474,7 @@ function UF:CustomTimeText(duration, durationObject)
 	local remain, maximum = UF:GetCastDurations(self, duration, durationObject)
 	if not remain then return end
 
-	local db = self:GetParent().db
+	local db = self.__owner.db
 	if not (db and db.castbar) then return end
 
 	UF:SetCastDisplayCustom(self, db.castbar.format, duration, maximum, remain)
@@ -583,19 +582,7 @@ function UF:PostCastStart(unit)
 		local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
 		local changed = name ~= spellName
 
-		if db.castbar.displayTarget then -- player or NPCs; if used on other players: the cast target doesn't match their target, can be misleading if they mouseover cast
-			if self.targetCurrent then
-				UF:SetCastText(self, db.castbar, changed, name, self.targetCurrent, self.targetClass)
-			elseif not E.Retail and (parent.unitframeType == 'pet' or parent.unitframeType == 'boss') then
-				local unitName = UnitName(unit)
-				local targetName = UnitName(unit..'target')
-				local _, targetClass = UnitClass(unit..'target')
-				local allowText = E:NotSecretValue(targetName) and (targetName and targetName ~= '') and (E:NotSecretValue(unitName) and (targetName ~= unitName))
-				UF:SetCastText(self, db.castbar, changed, name, allowText and targetName, targetClass)
-			end
-		elseif changed then
-			self.Text:SetText(name)
-		end
+		UF:SetCastText(self, db.castbar, changed, name, db.castbar.displayTarget and self.targetCurrent, self.targetClass)
 
 		if self.channeling and db.castbar.ticks and parent.unitframeType == 'player' then
 			local spellID = E:NotSecretValue(self.spellID) and self.spellID or nil
@@ -615,7 +602,7 @@ function UF:PostCastStart(unit)
 			end
 
 			-- Base ticks upgraded by another aura
-			local auraTicks = baseTicks and not E.Retail and global.AuraChannelTicks[spellID]
+			local auraTicks = baseTicks and not E.Modern and global.AuraChannelTicks[spellID]
 			if auraTicks then
 				for auraID, tickCount in next, auraTicks.spells do
 					if E:GetAuraByID(unit, auraID, auraTicks.filter) then
@@ -685,6 +672,7 @@ end
 function UF:PostCastStop(unit)
 	if self.hadTicks and unit == 'player' then
 		UF:HideTicks(self)
+
 		self.hadTicks = false
 		self.chainTick = nil -- reset the chain
 		self.chainTime = nil -- spell cast vars
@@ -692,7 +680,7 @@ function UF:PostCastStop(unit)
 end
 
 function UF:PostCastFail()
-	local db = self:GetParent().db
+	local db = self.__owner.db
 	local customColor = db and db.castbar and db.castbar.customColor
 	local color = (customColor and customColor.enable and customColor.colorInterrupted) or UF.db.colors.castInterruptedColor
 
@@ -710,7 +698,7 @@ end
 function UF:PostCastInterruptible(unit)
 	if unit == 'vehicle' or unit == 'player' then return end
 
-	local db = self:GetParent().db
+	local db = self.__owner.db
 	if not db or not db.castbar then return end
 
 	local r, g, b = UF.GetInterruptColor(self, db, unit)

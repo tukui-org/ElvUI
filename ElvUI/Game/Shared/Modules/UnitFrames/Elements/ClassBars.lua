@@ -16,22 +16,8 @@ local SPEC_SHAMAN_ELEMENTAL = SPEC_SHAMAN_ELEMENTAL or 1
 local SPEC_MONK_MISTWEAVER = SPEC_MONK_MISTWEAVER or 2
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
+
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
-
-local AltManaTypes = {
-	Rage = 1,
-	Energy = 3,
-	LunarPower = (E.Retail or E.Mists) and 8 or nil,
-	Maelstrom = E.Retail and 11 or nil,
-	Insanity = E.Retail and 13 or nil
-}
-
-local ManaType = { powerName = 'MANA', powerType = 0 }
-UF.ALT_POWER_INFO = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO and E:CopyTable({}, _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO) or {
-	DRUID = { [8] = E:CopyTable({}, ManaType) },		-- LunarPower
-	SHAMAN = { [11] = E:CopyTable({}, ManaType) },	-- Maelstrom
-	PRIEST = { [13] = E:CopyTable({}, ManaType) }		-- Insanity
-}
 
 UF.ClassPowerTypes = { 'ClassPower', 'AdditionalPower', 'Runes', 'Stagger', 'Totems', 'AlternativePower', 'EclipseBar' }
 UF.ClassPowerColors = { COMBO_POINTS = 'comboPoints', CHI = 'MONK' }
@@ -46,7 +32,7 @@ function UF:GetClassPower_Construct(frame)
 		if E.Mists then
 			frame.EclipseBar = UF:Construct_DruidEclipseBar(frame)
 		end
-	elseif E.Retail and E.myclass == 'EVOKER' then
+	elseif E.Modern and E.myclass == 'EVOKER' then
 		frame.ThirdPower = UF:Construct_ThirdPower(frame)
 	elseif E.myclass == 'MONK' then
 		frame.Stagger = UF:Construct_Stagger(frame) -- Retail: Classbar, Mists: AdditionalPower
@@ -61,7 +47,7 @@ function UF:GetClassPower_Construct(frame)
 		frame.Totems = UF:Construct_Totems(frame)
 	end
 
-	if (E.Classic or E.TBC or E.Wrath) and E.myclass ~= 'WARRIOR' then
+	if (E.Classic or E.TBC or E.Wrath or E.Forever) and E.myclass ~= 'WARRIOR' then
 		frame.EnergyManaRegen = UF:Construct_EnergyManaRegen(frame)
 	end
 end
@@ -122,9 +108,9 @@ function UF:ClassPower_ShouldShowAdditionalPower(element)
 
 	local hasAny = false
 	for name, value in pairs(altPower) do
-		local powerIndex = AltManaTypes[name]
+		local powerIndex = E.AltManaTypes[name]
 		if powerIndex then
-			displayTypes[powerIndex] = value and ManaType or nil
+			displayTypes[powerIndex] = (value and E.ManaType) or nil
 
 			if value then
 				hasAny = true
@@ -139,7 +125,8 @@ function UF:Configure_ClassBar(frame)
 	local db = frame.db
 	if not db then return end
 
-	local bars = frame[frame.ClassBar]
+	local classBar = frame.ClassBar
+	local bars = frame[classBar]
 	if not bars then return end
 
 	bars.Holder = frame.ClassBarHolder
@@ -163,13 +150,21 @@ function UF:Configure_ClassBar(frame)
 		bars.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
 	end
 
+	local isRunes = classBar == 'Runes'
+	local isTotem = classBar == 'Totems'
+	local isStagger = classBar == 'Stagger'
+	local isClass = classBar == 'ClassPower'
+	local isEclipse = classBar == 'EclipseBar'
+	local isAlternative = classBar == 'AlternativePower'
+
 	--We don't want to modify the original frame.CLASSBAR_WIDTH value, as it bugs out when the classbar gains more buttons
 	local CLASSBAR_WIDTH = frame.CLASSBAR_WIDTH
 	local MAX_CLASS_BAR = frame.MAX_CLASS_BAR
 	local ONE_LESS_BAR = MAX_CLASS_BAR - 1
+	local SINGLE_BAR = MAX_CLASS_BAR == 1
 
 	if frame.USE_MINI_CLASSBAR and not frame.CLASSBAR_DETACHED then
-		if MAX_CLASS_BAR == 1 or frame.ClassBar == 'EclipseBar' or frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
+		if SINGLE_BAR or (isEclipse or isStagger or isAlternative) then
 			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * 2) / 3
 		else
 			CLASSBAR_WIDTH = (CLASSBAR_WIDTH * ONE_LESS_BAR) / MAX_CLASS_BAR
@@ -187,27 +182,24 @@ function UF:Configure_ClassBar(frame)
 	bars:Size(barsWidth, barsHeight)
 
 	local isVertical = frame.CLASSBAR_DETACHED and db.classbar.verticalOrientation
-	if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Runes' or frame.ClassBar == 'Totems' then
-		if frame.ClassBar == 'Runes' then
+	if isRunes or isTotem or isClass then
+		if isRunes then
 			bars.sortOrder = (db.classbar.sortDirection ~= 'NONE') and db.classbar.sortDirection
-			bars.colorSpec = E.Retail and UF.db.colors.runeBySpec
+			bars.colorSpec = E.Modern and UF.db.colors.runeBySpec
 		end
 
-		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, frame.ClassBar == 'Totems' and 4 or MAX_COMBO_POINTS)
+		local maxClassBarButtons = max(UF.classMaxResourceBar[E.myclass] or 0, isTotem and 4 or MAX_COMBO_POINTS)
 		for i = 1, maxClassBarButtons do
 			local button = bars[i]
-			if button.backdrop then
-				button.backdrop:Hide()
+			local backdrop = button.backdrop
+			if backdrop then
+				backdrop:Hide()
 			end
 
 			if i <= MAX_CLASS_BAR then
-				if button.backdrop and not button.backdrop.forcedBorderColors then
-					button.backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
-				end
-
 				button:Height(barsHeight)
 
-				if MAX_CLASS_BAR == 1 then
+				if SINGLE_BAR then
 					button:Width(barsWidth)
 				elseif frame.USE_MINI_CLASSBAR then
 					if frame.CLASSBAR_DETACHED and db.classbar.orientation == 'VERTICAL' then
@@ -240,13 +232,21 @@ function UF:Configure_ClassBar(frame)
 					end
 				end
 
-				if button.backdrop then
-					button.backdrop:SetShown(frame.USE_MINI_CLASSBAR)
+				if backdrop then
+					if not backdrop.forcedBorderColors then
+						backdrop:SetBackdropBorderColor(color.r, color.g, color.b)
+					end
+
+					backdrop:SetShown(frame.USE_MINI_CLASSBAR)
 				end
 
 				button:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 
-				if frame.ClassBar == 'ClassPower' or frame.ClassBar == 'Totems' then
+				if isTotem then
+					button.smoothing = (db.classbar.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
+				end
+
+				if isClass or isTotem then
 					button.bg:SetParent(frame.USE_MINI_CLASSBAR and bars[i].backdrop or bars)
 				end
 			end
@@ -255,7 +255,7 @@ function UF:Configure_ClassBar(frame)
 		if bars.backdrop then
 			bars.backdrop:SetShown(not frame.USE_MINI_CLASSBAR and frame.USE_CLASSBAR)
 		end
-	elseif frame.ClassBar == 'EclipseBar' then
+	elseif isEclipse then
 		local lunarTex = bars.LunarBar:GetStatusBarTexture()
 
 		local lr, lg, lb = unpack(ElvUF.colors.ClassBars.DRUID[1])
@@ -276,7 +276,7 @@ function UF:Configure_ClassBar(frame)
 
 		bars.Arrow:ClearAllPoints()
 		bars.Arrow:Point('CENTER', lunarTex, isVertical and 'TOP' or 'RIGHT', 0, isVertical and -4 or 0)
-	elseif frame.ClassBar == 'Stagger' or frame.ClassBar == 'AlternativePower' then
+	elseif isStagger or isAlternative then
 		bars:SetOrientation(isVertical and 'VERTICAL' or 'HORIZONTAL')
 	end
 
@@ -364,8 +364,8 @@ function UF:Configure_ClassBar(frame)
 	end
 
 	local activeBar = frame.USE_CLASSBAR
-	local checkPriest = E.Retail and E.myclass == 'PRIEST'
-	local checkShaman = E.Retail and E.myclass == 'SHAMAN'
+	local checkPriest = E.Modern and E.myclass == 'PRIEST'
+	local checkShaman = E.Modern and E.myclass == 'SHAMAN'
 	local allowPriest = checkPriest and E.myspec == SPEC_PRIEST_SHADOW
 	local allowShaman = checkShaman and E.myspec == SPEC_SHAMAN_ELEMENTAL
 	for _, powerType in pairs(UF.ClassPowerTypes) do
@@ -429,7 +429,7 @@ function UF:Construct_ClassBar(frame)
 	bars:CreateBackdrop(nil, nil, nil, nil, true)
 	bars:Hide()
 
-	bars.displayPairs = UF.ALT_POWER_INFO
+	bars.displayPairs = E.AltPowerInfo
 	bars.RaisedElementParent = UF:CreateRaisedElement(bars)
 
 	local frameName = frame:GetName()
@@ -581,7 +581,9 @@ function UF:Construct_DeathKnightResourceBar(frame)
 		rune:GetStatusBarTexture():SetHorizTile(false)
 
 		rune.__owner = runes
-		rune.PostUpdateColor = UF.Runes_UpdateChargedColor
+
+		-- only Wrath and Mists fade the charging color - Runes_PostUpdate sets it everywhere else
+		rune.PostUpdateColor = (E.Wrath or E.Mists) and UF.Runes_UpdateChargedColor or nil
 
 		rune:CreateBackdrop(nil, nil, nil, nil, true)
 		rune.backdrop:SetParent(runes)
@@ -622,7 +624,7 @@ function UF:Construct_AdditionalPowerBar(frame)
 	additionalPower.backdrop.callbackBackdropColor = UF.StatusBarBlackBackdrop
 	additionalPower.backdrop:SetBackdropColor(0, 0, 0, 1)
 
-	additionalPower.displayPairs = UF.ALT_POWER_INFO
+	additionalPower.displayPairs = E.AltPowerInfo
 	additionalPower.RaisedElementParent = UF:CreateRaisedElement(additionalPower)
 	additionalPower.text = UF:CreateRaisedText(additionalPower.RaisedElementParent)
 
@@ -817,7 +819,7 @@ function UF:PostUpdateStagger(stagger)
 	local frame = self.origParent or self:GetParent()
 	local db = frame.db
 
-	if E.Retail then
+	if E.Modern then
 		local autohide = stagger == 0 and db.classbar.autoHide
 		self:SetShown(frame.USE_CLASSBAR and not autohide)
 	else
@@ -828,7 +830,7 @@ function UF:PostUpdateStagger(stagger)
 end
 
 function UF:PostVisibilityStagger(_, _, isShown, stateChanged)
-	if not E.Retail then return end
+	if not E.Modern then return end
 
 	self.ClassBar = (isShown and 'Stagger') or 'ClassPower'
 

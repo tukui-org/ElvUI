@@ -16,7 +16,7 @@ local CreateFrame = CreateFrame
 local GameTooltip = GameTooltip
 local GetInstanceInfo = GetInstanceInfo
 local GetInventoryItemLink = GetInventoryItemLink
-local GetInventorySlotInfo = (C_PaperDollInfo and C_PaperDollInfo.GetInventorySlotInfo) or GetInventorySlotInfo
+local GetInventorySlotInfo = C_PaperDollInfo.GetInventorySlotInfo or GetInventorySlotInfo
 local IsInInstance = IsInInstance
 local PlaySound = PlaySound
 local RegisterStateDriver = RegisterStateDriver
@@ -30,7 +30,7 @@ local UnregisterStateDriver = UnregisterStateDriver
 local CompactRaidFrameManager_SetSetting = CompactRaidFrameManager_SetSetting
 
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local IsReplacingUnit = IsReplacingUnit or C_PlayerInteractionManager.IsReplacingUnit
+local IsReplacingUnit = C_PlayerInteractionManager.IsReplacingUnit
 local GetNamePlateForUnit = C_NamePlate.GetNamePlateForUnit
 
 local SELECT_AGGRO = SOUNDKIT.IG_CREATURE_AGGRO_SELECT
@@ -39,6 +39,7 @@ local SELECT_NEUTRAL = SOUNDKIT.IG_CREATURE_NEUTRAL_SELECT
 local SELECT_LOST = SOUNDKIT.INTERFACE_SOUND_LOST_TARGET_UNIT
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate or 10
+
 local CURVE_RED = CreateColor(1, 0, 0)
 local CURVE_YELLOW = CreateColor(1, 1, 0)
 local CURVE_HEALTH = {}
@@ -131,44 +132,49 @@ UF.SortAuraFuncs = {
 
 UF.headerGroupBy = {
 	CLASS = function(header)
-		local groupingOrder = header.db and strjoin(',', header.db.CLASS1, header.db.CLASS2, header.db.CLASS3, header.db.CLASS4, header.db.CLASS5, header.db.CLASS6, header.db.CLASS7, header.db.CLASS8, header.db.CLASS9)
-		if E.Retail and groupingOrder then
-			groupingOrder = groupingOrder..strjoin(',', header.db.CLASS10, header.db.CLASS11, header.db.CLASS12, header.db.CLASS13)
+		local db = header.db
+		local groupingOrder = db and db.CLASS1
+		if groupingOrder then -- one slot per class the client has
+			for i = 2, E.numClasses do
+				groupingOrder = groupingOrder..','..db['CLASS'..i]
+			end
 		end
 
-		local sortMethod = header.db and header.db.sortMethod
+		local sortMethod = db and db.sortMethod
+		header:SetAttribute('groupBy', 'CLASS')
 		header:SetAttribute('groupingOrder', groupingOrder or 'DEATHKNIGHT,DEMONHUNTER,DRUID,EVOKER,HUNTER,MAGE,PALADIN,PRIEST,ROGUE,SHAMAN,WARLOCK,WARRIOR,MONK')
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
-		header:SetAttribute('groupBy', 'CLASS')
 	end,
 	ROLE = function(header)
-		local groupingOrder = header.db and strjoin(',', header.db.ROLE1, header.db.ROLE2, header.db.ROLE3, 'NONE')
-		local sortMethod = header.db and header.db.sortMethod
+		local db = header.db
+		local groupingOrder = db and strjoin(',', db.ROLE1, db.ROLE2, db.ROLE3, 'NONE')
+		local sortMethod = db and db.sortMethod
+		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
 		header:SetAttribute('groupingOrder', groupingOrder or 'TANK,HEALER,DAMAGER,NONE')
 		header:SetAttribute('sortMethod', sortMethod or 'NAME')
-		header:SetAttribute('groupBy', 'ASSIGNEDROLE')
 	end,
 	NAME = function(header)
+		header:SetAttribute('groupBy', nil)
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
 		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute('groupBy', nil)
 	end,
 	GROUP = function(header)
-		local sortMethod = header.db and header.db.sortMethod
+		local db = header.db
+		local sortMethod = db and db.sortMethod
+		header:SetAttribute('groupBy', 'GROUP')
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
 		header:SetAttribute('sortMethod', sortMethod or 'INDEX')
-		header:SetAttribute('groupBy', 'GROUP')
 	end,
 	PETNAME = function(header)
+		header:SetAttribute('filterOnPet', true) --This is the line that matters. Without this, it sorts based on the owners name
+		header:SetAttribute('groupBy', nil)
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
 		header:SetAttribute('sortMethod', 'NAME')
-		header:SetAttribute('groupBy', nil)
-		header:SetAttribute('filterOnPet', true) --This is the line that matters. Without this, it sorts based on the owners name
 	end,
 	INDEX = function(header)
+		header:SetAttribute('groupBy', nil)
 		header:SetAttribute('groupingOrder', '1,2,3,4,5,6,7,8')
 		header:SetAttribute('sortMethod', 'INDEX')
-		header:SetAttribute('groupBy', nil)
 	end,
 }
 
@@ -404,7 +410,8 @@ function UF:CreateRaisedElement(frame)
 	RaisedElement.AuraWatchLevel = RaisedLevel + 30
 	RaisedElement.RestingIconLevel = RaisedLevel + 35
 	RaisedElement.RaidRoleLevel = RaisedLevel + 40
-	RaisedElement.CastBarLevel = RaisedLevel + 45
+	RaisedElement.RaidIconLevel = RaisedLevel + 45
+	RaisedElement.CastBarLevel = RaisedLevel + 50
 
 	return RaisedElement
 end
@@ -817,15 +824,18 @@ end
 
 function UF:Configure_FontString(obj)
 	UF.fontstrings[obj] = true
-	obj:FontTemplate() --This is temporary.
+
+	obj:FontTemplate(UF.db.font, UF.db.fontSize, UF.db.fontOutline)
 end
 
 function UF:Update_UnitFrame(frame)
-	local enabled = UF.db.units[self].enable
+	local db = UF.db.units[self]
+	local enabled = db.enable
 	frame:SetEnabled(enabled)
 
 	if enabled then
 		frame:Update()
+
 		E:EnableMover(frame.mover.name)
 	else
 		E:DisableMover(frame.mover.name)
@@ -835,7 +845,8 @@ end
 function UF:Update_GroupFrame(group)
 	local frame = UF[self]
 
-	local enabled = UF.db.units[group].enable
+	local db = UF.db.units[group]
+	local enabled = db.enable
 	if group == 'arena' then
 		frame:SetAttribute('oUF-enableArenaPrep', enabled)
 	end
@@ -891,7 +902,7 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 			UF.groupunits[unit] = group -- keep above spawn, it's required
 
 			local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
-			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, E.Retail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
+			frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, E.Modern and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
 			frame:SetID(i)
 			frame.index = i
 
@@ -900,12 +911,13 @@ function UF:CreateAndUpdateUFGroup(group, numGroup)
 
 		if not frame.Update then
 			local groupName = gsub(E:StringTitle(group), 't(arget)', 'T%1')
-			frame.Update = function()
+			frame.Update = function() -- fetch the db on every call, a profile change replaces the table
 				UF['Update_'..E:StringTitle(groupName)..'Frames'](UF, frame, UF.db.units[group])
 			end
 		end
 
-		local enabled = UF.db.units[group].enable
+		local db = UF.db.units[group]
+		local enabled = db.enable
 		if group == 'arena' then
 			frame:SetAttribute('oUF-enableArenaPrep', enabled)
 		end
@@ -964,14 +976,17 @@ function UF.groupPrototype:Configure_Groups(Header)
 	local numGroups = Header.numGroups
 	for i = 1, numGroups do
 		local group = Header.groups[i]
-		local lastIndex = i - 1
-		local lastGroup = lastIndex % groupsPerRowCol
-
 		if group then
 			UF:ConvertGroupDB(group)
+
+			group.db = db
+
 			group:ClearAllPoints()
 			group:ClearChildPoints()
-			group.db = db
+
+			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
+			group:SetAttribute('_ignore', true) -- hold the header update
+			group:SetAttribute('groupFilter', groupWide or tostring(i))
 
 			local point = DIRECTION_TO_POINT[direction]
 			group:SetAttribute('point', point)
@@ -986,31 +1001,33 @@ function UF.groupPrototype:Configure_Groups(Header)
 				group:SetAttribute('columnSpacing', horizontalSpacing)
 			end
 
-			if not group.isForced then
-				if not group.initialized then
-					group:SetAttribute('startingIndex', raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
-					group:Show()
-					group.initialized = true
-				end
-				group:SetAttribute('startingIndex', 1)
-			end
-
 			if raidWideSorting and invertGroupingOrder then
 				group:SetAttribute('columnAnchorPoint', INVERTED_DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			else
 				group:SetAttribute('columnAnchorPoint', DIRECTION_TO_COLUMN_ANCHOR_POINT[direction])
 			end
 
-			if not group.isForced then
+			if group.isForced then
+				group:SetAttribute('_ignore', nil) -- reallow updates
+			else
 				group:SetAttribute('maxColumns', raidWideSorting and numGroups or 1)
 				group:SetAttribute('unitsPerColumn', raidWideSorting and (groupsPerRowCol * 5) or 5)
-				group:SetAttribute('sortDir', sortDir)
 				group:SetAttribute('showPlayer', showPlayer)
+				group:SetAttribute('sortDir', sortDir)
+
 				UF:SetHeaderSortGroup(group, groupBy)
+
+				group:SetAttribute('_ignore', nil) -- reallow updates
+
+				if not group.initialized then -- keep below maxColumns and unitsPerColumn
+					group.initialized = true  -- otherwise it spawns more buttons than it can show
+
+					group:SetAttribute('startingIndex', raidWideSorting and (-min(numGroups * (groupsPerRowCol * 5), _G.MAX_RAID_MEMBERS) + 1) or -4)
+					group:Show() -- this will initialize the group and reupdate when startingIndex is set back to 1
+				end
 			end
 
-			local groupWide = i == 1 and raidWideSorting and strsub('1,2,3,4,5,6,7,8', 1, numGroups + numGroups-1)
-			group:SetAttribute('groupFilter', groupWide or tostring(i))
+			group:SetAttribute('startingIndex', 1) -- this triggers the update after ignore
 		end
 
 		--MATH!! WOOT
@@ -1019,13 +1036,16 @@ function UF.groupPrototype:Configure_Groups(Header)
 			point = DIRECTION_TO_GROUP_ANCHOR_POINT['OUT_'..direction]
 		end
 
+		local lastGroup = (i - 1) % groupsPerRowCol
 		if lastGroup == 0 then
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if group then group:SetPoint(point, Header, point, 0, height * y) end
+
 				height = height + HEIGHT + groupSpacing
 				newRows = newRows + 1
 			else
 				if group then group:SetPoint(point, Header, point, width * x, 0) end
+
 				width = width + WIDTH + groupSpacing
 				newCols = newCols + 1
 			end
@@ -1033,6 +1053,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			if DIRECTION_TO_POINT[direction] == 'LEFT' or DIRECTION_TO_POINT[direction] == 'RIGHT' then
 				if newRows == 1 then
 					if group then group:SetPoint(point, Header, point, width * x, 0) end
+
 					width = width + WIDTH_FIVE + groupSpacing
 					newCols = newCols + 1
 				elseif group then
@@ -1041,6 +1062,7 @@ function UF.groupPrototype:Configure_Groups(Header)
 			else
 				if newCols == 1 then
 					if group then group:SetPoint(point, Header, point, 0, height * y) end
+
 					height = height + HEIGHT_FIVE + groupSpacing
 					newRows = newRows + 1
 				elseif group then
@@ -1097,7 +1119,7 @@ function UF.groupPrototype:AdjustVisibility(Header)
 				group:Show()
 			elseif group.forceShow then
 				group:Hide()
-				group:SetAttribute('startingIndex', 1)
+
 				UF:UnshowChildUnits(group)
 			else
 				group:Reset()
@@ -1131,6 +1153,7 @@ function UF.headerPrototype:Update(isForced)
 end
 
 function UF.headerPrototype:Reset()
+	self:SetAttribute('_ignore', true) -- hold the header update
 	self:SetAttribute('showPlayer', true)
 	self:SetAttribute('showSolo', true)
 	self:SetAttribute('showParty', true)
@@ -1149,14 +1172,16 @@ function UF.headerPrototype:Reset()
 	self:SetAttribute('strictFiltering', nil)
 	self:SetAttribute('unitsPerColumn', nil)
 	self:SetAttribute('xOffset', nil)
+	self:SetAttribute('_ignore', nil) -- reallow updates
 	self:SetAttribute('yOffset', nil)
+
 	self:Hide()
 end
 
 function UF:ZONE_CHANGED_NEW_AREA(event)
 	local previous = UF.maxAllowedGroups
 
-	if E.Retail and UF.db.maxAllowedGroups then
+	if E.Retail and UF.db.maxAllowedGroups then -- forever has 40 player raids
 		local _, instanceType, difficultyID = GetInstanceInfo()
 		UF.maxAllowedGroups = (difficultyID == 16 and 4) or (instanceType == 'raid' and 6) or 8
 	else
@@ -1164,7 +1189,7 @@ function UF:ZONE_CHANGED_NEW_AREA(event)
 	end
 
 	if previous ~= UF.maxAllowedGroups then
-		UF:Update_AllFrames()
+		UF:UpdateAllHeaders(true) -- only the group count depends on it
 	end
 
 	if event then
@@ -1195,7 +1220,7 @@ end
 function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	UF:UpdateRangeSpells()
 
-	if not E.Retail then
+	if not E.Modern then
 		UF:RegisterRaidDebuffIndicator()
 	end
 
@@ -1209,7 +1234,7 @@ function UF:PLAYER_ENTERING_WORLD(_, initLogin, isReload)
 	elseif UF.maxAllowedGroups ~= 8 then
 		UF.maxAllowedGroups = 8
 
-		UF:Update_AllFrames()
+		UF:UpdateAllHeaders(true)
 	end
 end
 
@@ -1224,6 +1249,7 @@ do
 		attributes['oUF-initialConfigFunction'] = format('self:SetWidth(%d); self:SetHeight(%d);', db.width, db.height)
 		attributes.template = template or nil
 		attributes.groupFilter = groupFilter
+		attributes.showPlayer = db.showPlayer
 		attributes.showRaid = group ~= 'party'
 		attributes.showParty = true
 		attributes.showSolo = true
@@ -1259,7 +1285,10 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	if not Header then
 		ElvUF:RegisterStyle('ElvUF_'..name, UF[format('Construct_%sFrames', isRaidFrames and 'Raid' or name)])
 		ElvUF:SetActiveStyle('ElvUF_'..name)
-		if not UF.headerFunctions[group] then UF.headerFunctions[group] = {} end
+
+		if not UF.headerFunctions[group] then
+			UF.headerFunctions[group] = {}
+		end
 
 		if numGroups then
 			Header = CreateFrame('Frame', 'ElvUF_'..name, E.UFParent, 'SecureHandlerStateTemplate')
@@ -1286,6 +1315,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 	local groupFunctions = UF.headerFunctions[group]
 	local groupsChanged = (Header.numGroups ~= numGroups)
 	local stateChanged = (Header.enableState ~= enable)
+	local stateCreated -- new groups need their children configured, even when skipping
 	Header.enableState = enable
 	Header.numGroups = numGroups
 	Header.db = db
@@ -1294,11 +1324,13 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if db.raidWideSorting then
 			if not Header.groups[1] then
 				Header.groups[1] = UF:CreateHeader(Header, nil, 'ElvUF_'..name..'Group1', template or Header.template, nil, headerTemplate or Header.headerTemplate)
+				stateCreated = true
 			end
 		else
 			while numGroups > #Header.groups do
 				local index = tostring(#Header.groups + 1)
 				tinsert(Header.groups, UF:CreateHeader(Header, index, 'ElvUF_'..name..'Group'..index, template or Header.template, nil, headerTemplate or Header.headerTemplate))
+				stateCreated = true
 			end
 		end
 
@@ -1314,7 +1346,7 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		end
 	end
 
-	if stateChanged or not skip then
+	if (stateCreated or stateChanged) or not skip then
 		groupFunctions:Update(Header)
 	end
 
@@ -1322,12 +1354,15 @@ function UF:CreateAndUpdateHeaderGroup(group, groupFilter, template, headerTempl
 		if not Header.isForced then
 			RegisterStateDriver(Header, 'visibility', visibility)
 		end
+
 		if Header.mover then
 			E:EnableMover(Header.mover.name)
 		end
 	else
 		UnregisterStateDriver(Header, 'visibility')
+
 		Header:Hide()
+
 		if Header.mover then
 			E:DisableMover(Header.mover.name)
 		end
@@ -1340,19 +1375,20 @@ function UF:CreateAndUpdateUF(unit)
 	local frameName = gsub(E:StringTitle(unit), 't(arget)', 'T%1')
 	local frame = UF[unit]
 	if not frame then
-		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, E.Retail and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
+		frame = ElvUF:Spawn(unit, 'ElvUF_'..frameName, E.Modern and 'SecureUnitButtonTemplate, PingableUnitFrameTemplate' or 'SecureUnitButtonTemplate')
 
 		UF.units[unit] = frame
 		UF[unit] = frame
 	end
 
 	if not frame.Update then
-		frame.Update = function()
+		frame.Update = function() -- fetch the db on every call, a profile change replaces the table
 			UF['Update_'..frameName..'Frame'](UF, frame, UF.db.units[unit])
 		end
 	end
 
-	local enabled = UF.db.units[unit].enable
+	local db = UF.db.units[unit]
+	local enabled = db.enable
 	frame:SetEnabled(enabled)
 
 	if enabled then
@@ -1534,7 +1570,7 @@ do
 			UF:Configure_PartyIndicator(frame)
 			UF:Configure_RestingIndicator(frame)
 
-			if (E.Classic or E.TBC or E.Wrath) and E.myclass ~= 'WARRIOR' then
+			if (E.Classic or E.TBC or E.Wrath or E.Forever) and E.myclass ~= 'WARRIOR' then
 				UF:Configure_EnergyManaRegen(frame)
 			end
 
@@ -1600,70 +1636,97 @@ function UF:RegisterRaidDebuffIndicator()
 	end
 end
 
-do
-	local function EventlessUpdate(frame, elapsed)
-		local unit = frame.__eventless and frame.__unit
-		local guid = UnitGUID(unit)
-		if not guid then return end
+function UF:Eventless_UpdateAll(frame)
+	frame.elapsedThrottle = frame.eventlessThrottle
+	frame.elapsedSecret = 0
+	frame.elapsedResource = 0
+	frame.elapsedPrediction = 0
+	frame.elapsedAura = 0
 
-		if E:IsSecretValue(guid) then
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateSecrets then
-				frame:UpdateAllElements('OnUpdate')
+	frame:UpdateAllElements('OnUpdate')
+end
 
-				frame.elapsed = 0
-			else
-				frame.elapsed = frequency + elapsed
-			end
+function UF:Eventless_OnUpdate(elapsed) -- self = frame
+	local unit = self.__eventless and self.__unit
+	if not unit then return end
+
+	local waitThrottle = (self.elapsedThrottle or self.eventlessThrottle) - elapsed
+	if waitThrottle > 0 then
+		self.elapsedThrottle = waitThrottle
+		return
+	end
+
+	self.elapsedThrottle = self.eventlessThrottle
+
+	if E:IsSecretUnit(unit) then
+		local waitSecret = (self.elapsedSecret or 0) + elapsed
+		if waitSecret >= self.eventlessSecret then
+			UF:Eventless_UpdateAll(self)
+
+			self.elapsedSecret = 0
 		else
-			local frequency = frame.elapsed or 0
-			if frequency > frame.onUpdateElements then
-				if frame.lastGUID ~= guid then
-					frame:UpdateAllElements('OnUpdate')
-					frame.lastGUID = guid
-				else
-					if frame:IsElementEnabled('Health') then frame.Health:ForceUpdate() end
-					if frame:IsElementEnabled('Power') then frame.Power:ForceUpdate() end
-				end
+			self.elapsedSecret = waitSecret
+		end
 
-				frame.elapsed = 0
-			else
-				frame.elapsed = frequency + elapsed
+		return
+	elseif not UnitExists(unit) then
+		return -- bail out
+	end
+
+	local waitResource = (self.elapsedResource or 0) + elapsed
+	if waitResource >= self.eventlessResource then
+		local guid = UnitGUID(unit)
+		if self.lastGUID ~= guid then
+			self.lastGUID = guid
+
+			UF:Eventless_UpdateAll(self)
+
+			return -- UAE happened, no need to continue
+		end
+
+		if self:IsElementEnabled('Health') then self.Health:ForceUpdate() end
+		if self:IsElementEnabled('Power') then self.Power:ForceUpdate() end
+
+		self.elapsedResource = 0
+	else
+		self.elapsedResource = waitResource
+	end
+
+	local waitPrediction = (self.elapsedPrediction or 0) + elapsed
+	if waitPrediction >= self.eventlessPrediction then
+		if self:IsElementEnabled('HealthPrediction') then self.HealthPrediction:ForceUpdate() end
+		if self:IsElementEnabled('PowerPrediction') then self.PowerPrediction:ForceUpdate() end
+		if self:IsElementEnabled('RaidTargetIndicator') then self.RaidTargetIndicator:ForceUpdate() end
+
+		self.elapsedPrediction = 0
+	else
+		self.elapsedPrediction = waitPrediction
+	end
+
+	if self.eventlessAura then -- not on Modern
+		local waitAura = (self.elapsedAura or 0) + elapsed
+		if waitAura >= self.eventlessAura then
+			local element = self:IsElementEnabled('Auras') and (self.Auras or self.Buffs or self.Debuffs)
+			if element then -- one ForceUpdate updates all three containers
+				element:ForceUpdate()
 			end
 
-			local prediction = frame.elapsedPrediction or 0
-			if prediction > frame.onUpdatePrediction then
-				if frame:IsElementEnabled('HealthPrediction') then frame.HealthPrediction:ForceUpdate() end
-				if frame:IsElementEnabled('PowerPrediction') then frame.PowerPrediction:ForceUpdate() end
-				if frame:IsElementEnabled('RaidTargetIndicator') then frame.RaidTargetIndicator:ForceUpdate() end
-
-				frame.elapsedPrediction = 0
-			else
-				frame.elapsedPrediction = prediction + elapsed
-			end
-
-			local auras = frame.elapsedAuras or 0
-			if auras > frame.onUpdateAuras and frame:IsElementEnabled('Auras') then
-				if frame.Auras then frame.Auras:ForceUpdate() end
-				if frame.Buffs then frame.Buffs:ForceUpdate() end
-				if frame.Debuffs then frame.Debuffs:ForceUpdate() end
-
-				frame.elapsedAuras = 0
-			else
-				frame.elapsedAuras = auras + elapsed
-			end
+			self.elapsedAura = 0
+		else
+			self.elapsedAura = waitAura
 		end
 	end
+end
 
-	function ElvUF:HandleEventlessUnit(frame)
-		if not frame.onUpdateSecrets then frame.onUpdateSecrets = 0.5 end -- same as oUF
-		if not frame.onUpdateElements then frame.onUpdateElements = 0.2 end
-		if not frame.onUpdatePrediction then frame.onUpdatePrediction = 0.4 end
-		if not frame.onUpdateAuras then frame.onUpdateAuras = 0.6 end
+function ElvUF:HandleEventlessUnit(frame)
+	if not frame.eventlessThrottle then frame.eventlessThrottle = 0.1 end
+	if not frame.eventlessResource then frame.eventlessResource = 0.2 end
+	if not frame.eventlessPrediction then frame.eventlessPrediction = 0.4 end
+	if not frame.eventlessSecret then frame.eventlessSecret = 0.5 end
+	if not E.Modern and not frame.eventlessAura then frame.eventlessAura = 0.6 end
 
-		frame.__eventless = true
-		frame:SetScript('OnUpdate', EventlessUpdate)
-	end
+	frame.__eventless = true
+	frame:SetScript('OnUpdate', UF.Eventless_OnUpdate)
 end
 
 do
@@ -1674,6 +1737,10 @@ do
 	local AllowedFuncs = {
 		[_G.DefaultCompactUnitFrameSetup] = true
 	}
+
+	local function FrameShow(frame)
+		frame:Hide()
+	end
 
 	local function FrameShown(frame, shown)
 		if shown then
@@ -1749,7 +1816,7 @@ do
 		if not SetFrameHidden[frame] then
 			SetFrameHidden[frame] = true
 
-			hooksecurefunc(frame, 'Show', frame.Hide)
+			hooksecurefunc(frame, 'Show', FrameShow)
 			hooksecurefunc(frame, 'SetShown', FrameShown)
 		end
 	end
@@ -1793,7 +1860,7 @@ do
 				UF:SecureHook('UnitFrameThreatIndicator_Initialize')
 			end
 
-			if E.Retail then
+			if E.Modern then
 				ElvUF:DisableBlizzard('arena')
 			else
 				Arena_LoadUI = E.noop
@@ -1869,7 +1936,7 @@ do
 					local frame = _G.PlayerFrame
 					HideFrame(frame)
 
-					if not E.Retail then
+					if not E.Modern then
 						-- For the damn vehicle support:
 						frame:RegisterEvent('PLAYER_ENTERING_WORLD')
 						frame:RegisterUnitEvent('UNIT_ENTERING_VEHICLE', unit)
@@ -1895,9 +1962,6 @@ do
 				HideFrame(_G.ComboFrame)
 			elseif disable.focus and unit == 'focus' then
 				HideFrame(_G.FocusFrame)
-				HideFrame(_G.TargetofFocusFrame)
-			elseif disable.target and unit == 'targettarget' then
-				HideFrame(_G.TargetFrameToT)
 			elseif not disabledBoss and disable.boss and strmatch(unit, 'boss%d*$') then
 				disabledBoss = true
 
@@ -1916,8 +1980,6 @@ do
 					for child in frame.PartyMemberFramePool:EnumerateActive() do
 						HideFrame(child, true)
 					end
-				else
-					HideFrame(_G.PartyMemberBackground)
 				end
 
 				for i = 1, MAX_PARTY do
@@ -2265,8 +2327,16 @@ function UF:Auras_ToggleContainer(frame, unit, shown)
 	E:Auras_ToggleActive(frame.Auras, unit, shown)
 	E:Auras_ToggleActive(frame.Buffs, unit, shown)
 	E:Auras_ToggleActive(frame.Debuffs, unit, shown)
-	E:Auras_ToggleActive(frame.AuraBars, unit, shown)
 	E:Auras_ToggleActive(frame.AuraWatch, unit, shown)
+
+	local bars = frame.AuraBars
+	if bars then
+		E:Auras_ToggleActive(bars, unit, shown)
+
+		if shown and (unit == 'target' or unit == 'focus') then
+			E:Auras_AurabarUpdate(bars, unit)
+		end
+	end
 
 	local highlight = frame.AuraHighlight
 	if highlight then
@@ -2299,16 +2369,18 @@ function UF:AfterStyleCallback()
 
 	local frameType = self.unitframeType
 	if frameType == 'tank' or frameType == 'tanktarget' then
-		UF:Update_TankFrames(self, UF.db.units.tank)
-		UF:Update_FontStrings()
+		if UF.tank then -- the header configures its first buttons itself
+			UF:Update_TankFrames(self, UF.db.units.tank)
+		end
 	elseif frameType == 'assist' or frameType == 'assisttarget' then
-		UF:Update_AssistFrames(self, UF.db.units.assist)
-		UF:Update_FontStrings()
+		if UF.assist then
+			UF:Update_AssistFrames(self, UF.db.units.assist)
+		end
 	end
 
 	-- these hooks below are used for aura container setup
 	-- only needed on retail and we dont need on nameplates
-	if not E.Retail or self.isNameplate then return end
+	if not E.Modern or self.isNameplate then return end
 
 	if self.Show then
 		hooksecurefunc(self, 'Show', UF.Show)
@@ -2333,7 +2405,6 @@ function UF:Setup()
 	ElvUF:SetActiveStyle('ElvUF')
 
 	UF:LoadUnits()
-	UF:Update_FontStrings()
 end
 
 function UF:Initialize()
@@ -2362,7 +2433,7 @@ function UF:Initialize()
 	UF:RegisterEvent('CHARACTER_POINTS_CHANGED', 'UpdateRangeSpells')
 	UF:RegisterEvent('LEARNED_SPELL_IN_SKILL_LINE', 'UpdateRangeSpells')
 
-	if E.Retail or E.Wrath or E.Mists then
+	if E.Modern or E.Wrath or E.Mists then
 		UF:RegisterEvent('PLAYER_TALENT_UPDATE', 'UpdateRangeSpells')
 	elseif E.ClassicSOD and E.myclass == 'MAGE' then
 		UF:RegisterEvent('UNIT_INVENTORY_CHANGED')

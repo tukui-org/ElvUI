@@ -6,8 +6,8 @@ local AB = E:GetModule('ActionBars')
 local NP = E:GetModule('NamePlates')
 
 local _G = _G
+local type, ipairs, unpack = type, ipairs, unpack
 local tinsert, tremove, wipe = tinsert, tremove, wipe
-local type, ipairs, unpack, select = type, ipairs, unpack, select
 local next, max, floor, format, strsub, strfind = next, max, floor, format, strsub, strfind
 
 local BreakUpLargeNumbers = BreakUpLargeNumbers
@@ -29,7 +29,6 @@ local PlaySound = PlaySound
 local PutItemInBackpack = PutItemInBackpack
 local PutItemInBag = PutItemInBag
 local PutKeyInKeyRing = PutKeyInKeyRing
-local SetBankAutosortDisabled = SetBankAutosortDisabled
 local SetItemButtonCount = SetItemButtonCount
 local SetItemButtonDesaturated = SetItemButtonDesaturated
 local SetItemButtonQuality = SetItemButtonQuality
@@ -53,6 +52,7 @@ local FetchNumPurchasedBankTabs = C_Bank and C_Bank.FetchNumPurchasedBankTabs
 local FetchDepositedMoney = C_Bank and C_Bank.FetchDepositedMoney
 local CanPurchaseBankTab = C_Bank and C_Bank.CanPurchaseBankTab
 local CanViewBank = C_Bank and C_Bank.CanViewBank
+local ShouldShowKeyring = C_ActionBar.ShouldShowKeyring
 local FlagsUtil_IsSet = FlagsUtil and FlagsUtil.IsSet
 
 local EditBox_HighlightText = EditBox_HighlightText
@@ -64,6 +64,7 @@ local C_TransmogCollection_PlayerHasTransmogItemModifiedAppearance = C_TransmogC
 local C_TransmogCollection_GetItemInfo = C_TransmogCollection.GetItemInfo
 local C_Item_CanScrapItem = C_Item.CanScrapItem
 local C_Item_DoesItemExist = C_Item.DoesItemExist
+local C_Item_GetItemIcon = C_Item.GetItemIcon
 local C_Item_GetCurrentItemLevel = C_Item.GetCurrentItemLevel
 local C_Item_IsBoundToAccountUntilEquip = C_Item.IsBoundToAccountUntilEquip
 local C_NewItems_IsNewItem = C_NewItems.IsNewItem
@@ -86,7 +87,9 @@ local GetBankAutosortDisabled = C_Container.GetBankAutosortDisabled
 local GetContainerItemCooldown = C_Container.GetContainerItemCooldown
 local GetContainerNumFreeSlots = C_Container.GetContainerNumFreeSlots
 local GetContainerNumSlots = C_Container.GetContainerNumSlots
+local PickupContainerItem = C_Container.PickupContainerItem
 local SetBackpackAutosortDisabled = C_Container.SetBackpackAutosortDisabled
+local SetBankAutosortDisabled = C_Container.SetBankAutosortDisabled
 local SetInsertItemsLeftToRight = C_Container.SetInsertItemsLeftToRight
 local UseContainerItem = C_Container.UseContainerItem
 local GetContainerItemInfo = C_Container.GetContainerItemInfo
@@ -112,9 +115,10 @@ local BANK_TAB_EXPANSION_FILTER_CURRENT = BANK_TAB_EXPANSION_FILTER_CURRENT
 
 local BagIndex = Enum.BagIndex
 local BANK_CONTAINER = BagIndex.Bank
+local CHARACTERBANKTAB_CONTAINER = BagIndex.Characterbanktab
 local BACKPACK_CONTAINER = BagIndex.Backpack
 local KEYRING_CONTAINER = BagIndex.Keyring
-local REAGENT_CONTAINER = E.Retail and BagIndex.ReagentBag or math.huge
+local REAGENT_CONTAINER = E.Modern and BagIndex.ReagentBag or math.huge
 local CHARACTERBANK_TYPE = (Enum.BankType and Enum.BankType.Character) or 0
 local WARBANDBANK_TYPE = (Enum.BankType and Enum.BankType.Account) or 2
 local WARBAND_UNTIL_EQUIPPED = (Enum.ItemBind and Enum.ItemBind.ToBnetAccountUntilEquipped) or 9
@@ -176,7 +180,7 @@ B.WarbandIndexs = {
 	BagIndex.AccountBankTab_5 or 16
 }
 
-if E.Retail then
+if E.Modern then
 	B.CharacterBanks[BagIndex.CharacterBankTab_1 or 6] = 1
 	B.CharacterBanks[BagIndex.CharacterBankTab_2 or 7] = 2
 	B.CharacterBanks[BagIndex.CharacterBankTab_3 or 8] = 3
@@ -191,6 +195,17 @@ if E.Retail then
 	tinsert(B.CharacterBankIndexs, BagIndex.CharacterBankTab_5 or 10)
 	tinsert(B.CharacterBankIndexs, BagIndex.CharacterBankTab_6 or 11)
 
+	-- Forever has a base bank plus eight bank bags
+	if E.Forever then
+		B.CharacterBanks[BagIndex.CharacterBankTab_7] = 7
+		B.CharacterBanks[BagIndex.CharacterBankTab_8] = 8
+		B.CharacterBanks[BagIndex.CharacterBankTab_9] = 9
+
+		tinsert(B.CharacterBankIndexs, BagIndex.CharacterBankTab_7)
+		tinsert(B.CharacterBankIndexs, BagIndex.CharacterBankTab_8)
+		tinsert(B.CharacterBankIndexs, BagIndex.CharacterBankTab_9)
+	end
+
 	tinsert(B.GearFilters, FILTER_FLAG_REAGENTS)
 end
 
@@ -201,6 +216,7 @@ end
 
 -- GLOBALS: ElvUIBags, ElvUIBagMover, ElvUIBankMover
 
+-- room for the bank and warband toggle row, Forever has one bank type
 local BANK_SPACE_OFFSET = E.Retail and 30 or 0
 local CONTAINER_SPACING = 0
 local CONTAINER_SCALE = 0.75
@@ -279,7 +295,8 @@ if E.Wrath or E.Mists then
 end
 
 local bagIDs, bankIDs = {0, 1, 2, 3, 4}, {}
-local bankOffset, maxBankSlots = E.Retail and 5 or 4, E.Classic and 10 or 11
+local bankOffset, maxBankSlots = E.Modern and 5 or 4, E.Forever and 14 or E.Classic and 10 or 11
+local hasKeyring = E.Classic or E.TBC or E.Wrath or (ShouldShowKeyring and ShouldShowKeyring())
 local bankEvents = {'BAG_CONTAINER_UPDATE', 'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'BANK_BAG_SLOT_FLAGS_UPDATED'}
 local bagEvents = {'BAG_CONTAINER_UPDATE', 'BAG_UPDATE_DELAYED', 'BAG_UPDATE', 'BAG_CLOSED', 'ITEM_LOCK_CHANGED', 'BAG_SLOT_FLAGS_UPDATED', 'QUEST_ACCEPTED', 'QUEST_REMOVED'}
 local presistentEvents = {
@@ -291,7 +308,7 @@ local presistentEvents = {
 	BAG_CLOSED = true
 }
 
-if E.Retail then
+if E.Modern then
 	tinsert(bagIDs, REAGENT_CONTAINER)
 else
 	tinsert(bankIDs, -1)
@@ -301,7 +318,7 @@ else
 	presistentEvents.PLAYERBANKSLOTS_CHANGED = true
 end
 
-if E.Classic or E.TBC or E.Wrath then
+if hasKeyring then
 	tinsert(bagIDs, KEYRING_CONTAINER)
 end
 
@@ -322,8 +339,9 @@ do
 		end
 	end
 
+	local empty = {} -- callers should only read from this
 	function B:GetContainerItemInfo(containerIndex, slotIndex)
-		return GetContainerItemInfo(containerIndex, slotIndex) or {}
+		return GetContainerItemInfo(containerIndex, slotIndex) or empty
 	end
 
 	function B:GetContainerItemQuestInfo(containerIndex, slotIndex)
@@ -552,18 +570,23 @@ function B:UpdateItemScrapIcon(slot)
 end
 
 function B:NewItemGlowSlotSwitch(slot, show)
-	if slot and slot.newItemGlow then
-		if show then
-			slot.newItemGlow:Show()
+	local glow = slot and slot.newItemGlow
+	if not glow then return end
 
-			local bank = slot.bagFrame.isBank and B.BankFrame
-			B:ShowItemGlow(bank or B.BagFrame, slot.newItemGlow)
-		else
-			slot.newItemGlow:Hide()
-
-			-- also clear them on blizzard's side
-			C_NewItems_RemoveNewItem(slot.BagID, slot.SlotID)
+	if show then
+		local bag = slot.bagFrame
+		if not glow:IsShown() then
+			bag.NewItemGlow.Fade:AddChild(glow)
 		end
+
+		glow:Show()
+
+		B:ShowItemGlow(bag.isBank and B.BankFrame or B.BagFrame)
+	else
+		glow:Hide()
+
+		-- also clear them on blizzard's side
+		C_NewItems_RemoveNewItem(slot.BagID, slot.SlotID)
 	end
 end
 
@@ -583,6 +606,8 @@ function B:HideSlotItemGlow()
 end
 
 function B:CheckSlotNewItem(slot, bagID, slotID)
+	slot.newItemPending = nil
+
 	B:NewItemGlowSlotSwitch(slot, C_NewItems_IsNewItem(bagID, slotID))
 end
 
@@ -720,12 +745,12 @@ function B:UpdateSlot(frame, bagID, slotID)
 		local bindTo = (not slot.isBound and bindType ~= 1) and db.showBindType and B.BindText[WuE or bindType]
 		if bindTo then slot.bindType:SetText(bindTo) end
 
-		local mult = E.Retail and db.itemInfo and itemSpellID[spellID]
+		local mult = E.Modern and db.itemInfo and itemSpellID[spellID]
 		if mult then
 			slot.centerText:SetText(mult * info.stackCount)
 		end
 
-		if E.Retail then
+		if E.Modern then
 			slot:RegisterEvent('COLOR_OVERRIDES_RESET')
 			slot:RegisterEvent('COLOR_OVERRIDE_UPDATED')
 		end
@@ -733,7 +758,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		slot:RegisterEvent('INVENTORY_SEARCH_UPDATE')
 		slot.searchOverlay:SetShown(info.isFiltered)
 	else
-		if E.Retail then
+		if E.Modern then
 			slot:UnregisterEvent('COLOR_OVERRIDES_RESET')
 			slot:UnregisterEvent('COLOR_OVERRIDE_UPDATED')
 		end
@@ -753,7 +778,7 @@ function B:UpdateSlot(frame, bagID, slotID)
 		end
 	end
 
-	if E.Retail then
+	if E.Modern then
 		if slot.ScrapIcon then
 			B:UpdateItemScrapIcon(slot)
 		end
@@ -769,7 +794,9 @@ function B:UpdateSlot(frame, bagID, slotID)
 	if slot.JunkIcon then slot.JunkIcon:SetShown(slot.isJunk and db.junkIcon) end
 	if slot.UpgradeIcon then B:UpdateItemUpgradeIcon(slot) end -- Check if item is an upgrade and show/hide upgrade icon accordingly
 
-	if db.newItemGlow then
+	if db.newItemGlow and not slot.newItemPending then
+		slot.newItemPending = true
+
 		E:Delay(0.1, B.CheckSlotNewItem, B, slot, bagID, slotID)
 	end
 
@@ -826,7 +853,9 @@ end
 
 function B:Slot_OnEvent(event, arg1)
 	if event == 'SPELL_UPDATE_COOLDOWN' then
-		B:UpdateCooldown(self)
+		if self:IsVisible() then -- closed bags catch up in Slot_OnShow
+			B:UpdateCooldown(self)
+		end
 	elseif event == 'INVENTORY_SEARCH_UPDATE' then
 		B:InventorySearchUpdate(self)
 	elseif event == 'COLOR_OVERRIDES_RESET' then -- no clue why a delay is needed here
@@ -848,6 +877,12 @@ function B:Slot_OnEnter()
 end
 
 function B:Slot_OnLeave() end
+
+function B:Slot_OnShow()
+	if self.Cooldown and self.spellID then
+		B:UpdateCooldown(self)
+	end
+end
 
 function B:Holder_OnReceiveDrag()
 	PutItemInBag(self.isBank and self:GetInventorySlot() or self:GetID())
@@ -874,33 +909,33 @@ function B:Holder_OnEnter()
 
 	B:SetSlotAlphaForBag(self.bagFrame, self.BagID)
 
-	if not GameTooltip:IsForbidden() then
-		GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+	if GameTooltip:IsForbidden() then return end
 
-		if self.BagID == BACKPACK_CONTAINER then
-			local kb = GetBindingKey('TOGGLEBACKPACK')
-			GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
-		elseif self.BagID == BANK_CONTAINER then
-			GameTooltip:AddLine(_G.BANK, 1, 1, 1)
-		elseif self.BagID == KEYRING_CONTAINER then
-			GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
-		elseif self.bag.numSlots == 0 then
-			GameTooltip:AddLine(self.BagID == REAGENT_CONTAINER and _G.EQUIP_CONTAINER_REAGENT or _G.EQUIP_CONTAINER, 1, 1, 1)
-		elseif self.isBank then
-			GameTooltip:SetInventoryItem('player', self:GetInventorySlot())
-		else
-			GameTooltip:SetInventoryItem('player', self:GetID())
-		end
+	GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
 
-		GameTooltip:AddLine(' ')
-		GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
-
-		if E.Retail then
-			GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
-		end
-
-		GameTooltip:Show()
+	if self.BagID == BACKPACK_CONTAINER then
+		local kb = GetBindingKey('TOGGLEBACKPACK')
+		GameTooltip:AddLine(kb and format('%s |cffffd200(%s)|r', _G.BACKPACK_TOOLTIP, kb) or _G.BACKPACK_TOOLTIP, 1, 1, 1)
+	elseif self.BagID == BANK_CONTAINER then
+		GameTooltip:AddLine(_G.BANK, 1, 1, 1)
+	elseif self.BagID == KEYRING_CONTAINER then
+		GameTooltip:AddLine(_G.KEYRING, 1, 1, 1)
+	elseif self.bag.numSlots == 0 then
+		GameTooltip:AddLine(self.BagID == REAGENT_CONTAINER and _G.EQUIP_CONTAINER_REAGENT or _G.EQUIP_CONTAINER, 1, 1, 1)
+	elseif self.isBank then
+		GameTooltip:SetInventoryItem('player', self:GetInventorySlot())
+	else
+		GameTooltip:SetInventoryItem('player', self:GetID())
 	end
+
+	GameTooltip:AddLine(' ')
+	GameTooltip:AddLine(L["Left Click to Toggle Bag"], .8, .8, .8)
+
+	if E.Modern then
+		GameTooltip:AddLine(L["Right Click to Open Menu"], .8, .8, .8)
+	end
+
+	GameTooltip:Show()
 end
 
 function B:Holder_OnLeave()
@@ -910,6 +945,56 @@ function B:Holder_OnLeave()
 
 	if not GameTooltip:IsForbidden() then
 		GameTooltip:Hide()
+	end
+end
+
+-- Forever bank bags sit in the Characterbanktab container, slot 1 is the base bank
+function B:BankBag_OnEnter()
+	B:SetSlotAlphaForBag(self.bagFrame, self.BagID)
+
+	if GameTooltip:IsForbidden() then return end
+
+	GameTooltip:SetOwner(self, 'ANCHOR_LEFT')
+
+	local slotID = self:GetID()
+	if slotID == 1 then
+		GameTooltip:AddLine(_G.BANK, 1, 1, 1)
+	elseif self.hasBag then
+		GameTooltip:SetBagItem(CHARACTERBANKTAB_CONTAINER, slotID)
+	else
+		GameTooltip:AddLine(self.purchased and _G.BANK_BAG or _G.BANK_BAG_PURCHASE, 1, 1, 1)
+	end
+
+	GameTooltip:AddLine(' ')
+	GameTooltip:AddLine(L["Left Click to Toggle Bag"], 0.8, 0.8, 0.8)
+	GameTooltip:Show()
+end
+
+function B:BankBag_OnClick(button)
+	if button ~= 'LeftButton' then return end
+
+	local slotID = self:GetID()
+	if (slotID > 1) and CursorHasItem() then
+		PickupContainerItem(CHARACTERBANKTAB_CONTAINER, slotID)
+	else
+		B:ToggleContainer(self)
+	end
+end
+
+function B:BankBag_Pickup()
+	PickupContainerItem(CHARACTERBANKTAB_CONTAINER, self:GetID())
+end
+
+function B:UpdateBankBags()
+	local purchased = FetchNumPurchasedBankTabs(CHARACTERBANK_TYPE)
+	for _, holder in next, B.BankFrame.ContainerHolderByBagID do
+		local slotID = holder:GetID()
+		if slotID > 1 then
+			holder.purchased = slotID <= purchased
+			holder.hasBag = C_Item_DoesItemExist(holder.bagLocation)
+			holder.icon:SetTexture(holder.hasBag and C_Item_GetItemIcon(holder.bagLocation) or DEFAULT_ICON)
+			SetItemButtonTextureVertexColor(holder, 1, holder.purchased and 1 or 0.1, holder.purchased and 1 or 0.1)
+		end
 	end
 end
 
@@ -934,6 +1019,8 @@ function B:UpdateCooldown(slot)
 		end
 	else
 		cd:Hide()
+
+		cd.start, cd.duration = nil, nil -- the same cooldown can come back, like an item moved out and back in
 	end
 end
 
@@ -1107,6 +1194,7 @@ function B:CreateFilterIcon(parent)
 	parent.filterIcon.FilterBackdrop = FilterBackdrop
 
 	hooksecurefunc(parent.filterIcon, 'SetShown', B.FilterIconShown)
+
 	parent.filterIcon:SetShown(false)
 end
 
@@ -1115,27 +1203,35 @@ function B:LayoutCustomSlots(f, bankID, buttonSize, buttonSpacing, bagSpacing, n
 	if not numRows then numRows = 1 end
 
 	local bag = f.Bags[bankID]
+
+	-- Forever bank tabs are bags of any size, Retail tabs are always full
+	local numSlots = E.Forever and B:GetContainerNumSlots(bankID) or #bag
 	for slotID, slot in ipairs(bag) do
-		totalSlots = totalSlots + 1
+		local shown = slotID <= numSlots
+		slot:SetShown(shown)
 
-		slot:ClearAllPoints()
-		slot:SetSize(buttonSize, buttonSize)
+		if shown then
+			totalSlots = totalSlots + 1
 
-		local prevSlot = (slotID ~= 1 and bag[slotID - 1]) or (slotID == 1 and lastSlot)
-		if prevSlot then
-			if (totalSlots - 1) % numColumns == 0 then
-				slot:Point('TOP', lastRow, 'BOTTOM', 0, -(buttonSpacing + (totalSlots == 1 and bagSpacing or 0)))
-				lastRow = slot
-				numRows = numRows + 1
+			slot:ClearAllPoints()
+			slot:SetSize(buttonSize, buttonSize)
+
+			local prevSlot = (slotID ~= 1 and bag[slotID - 1]) or (slotID == 1 and lastSlot)
+			if prevSlot then
+				if (totalSlots - 1) % numColumns == 0 then
+					slot:Point('TOP', lastRow, 'BOTTOM', 0, -(buttonSpacing + (totalSlots == 1 and bagSpacing or 0)))
+					lastRow = slot
+					numRows = numRows + 1
+				else
+					slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
+				end
 			else
-				slot:Point('LEFT', prevSlot, 'RIGHT', buttonSpacing, 0)
+				slot:Point('TOPLEFT', f.holderFrame, 0, -BANK_SPACE_OFFSET)
+				lastRow = slot
 			end
-		else
-			slot:Point('TOPLEFT', f.holderFrame, 0, -BANK_SPACE_OFFSET)
-			lastRow = slot
-		end
 
-		lastSlot = slot
+			lastSlot = slot
+		end
 	end
 
 	return numRows, lastSlot, lastRow, totalSlots
@@ -1156,16 +1252,18 @@ function B:LayoutCustomBank(f, bankID, buttonSize, buttonSpacing, numColumns, ba
 	end
 
 	local data = B:BankTab_PurchasedData(bankType)
-	local combined = db[isWarband and 'warbandCombined' or 'bankCombined']
+
+	-- Forever bank bags show together like the classic bank, toggled per bag from the bag bar
+	local combined = E.Forever or db[isWarband and 'warbandCombined' or 'bankCombined']
 	local isSplit, bagSpacing, numSpaced, numRows, lastSlot, lastRow, totalSlots = db.split[keySplit], db.split[isWarband and 'warbandSpacing' or 'bankSpacing'], 0, 0
 	for index, tabID in next, (isWarband and B.WarbandIndexs) or B.CharacterBankIndexs do
 		B:BankTabs_UpdateIcon(f, tabID, data)
 
-		local showTab = combined and data[tabID]
+		local showTab = (combined and data[tabID]) and (not E.Forever or B:IsBagShown(tabID))
 		f[key..index]:SetShown(showTab)
 
 		if showTab then
-			local tabSplit = isSplit and db.split[keySplit..tabID]
+			local tabSplit = (isSplit and db.split[keySplit..tabID]) and (B:GetContainerNumSlots(tabID) > 0)
 			if tabSplit then numSpaced = numSpaced + 1 end
 			if numRows == 0 then numRows = 1 end
 
@@ -1201,7 +1299,7 @@ function B:Layout(isBank)
 	local numContainerColumns = floor(containerWidth / (buttonSize + buttonSpacing))
 	local holderWidth = ((buttonSize + buttonSpacing) * numContainerColumns) - buttonSpacing
 	local bagSpacing = isBank and db.split.bankSpacing or db.split.bagSpacing
-	local professionSplit = (not E.Retail and isBank and db.split.alwaysProfessionBank) or db.split.alwaysProfessionBags
+	local professionSplit = (not E.Modern and isBank and db.split.alwaysProfessionBank) or db.split.alwaysProfessionBags
 	local isSplit = db.split[isBank and 'bank' or 'player']
 	local reverseSlots = db.reverseSlots
 
@@ -1217,7 +1315,7 @@ function B:Layout(isBank)
 		else
 			local currentRow = 1
 
-			if E.Retail then
+			if E.Modern then
 				local rowWidth = 0
 				for i = 1, B.numTrackedTokens do
 					local token = currencies[i]
@@ -1334,7 +1432,7 @@ function B:Layout(isBank)
 	end
 
 	local bankSplitOffset
-	if E.Retail and isBank then
+	if E.Modern and isBank then
 		if warbandIndex then
 			numContainerRows, bankSplitOffset = B:LayoutCustomBank(f, B.BankTab, buttonSize, buttonSpacing, numContainerColumns, warbandIndex, WARBANDBANK_TYPE)
 		elseif characterIndex then
@@ -1390,12 +1488,13 @@ function B:SetBagAssignments(holder, skip)
 	local frame, bag = holder.frame, holder.bag
 	holder:Size(frame.isBank and B.db.bankSize or B.db.bagSize)
 
+	local _, bagType = GetContainerNumFreeSlots(holder.BagID)
 	if holder.BagID == KEYRING_CONTAINER then
 		bag.type = B.BagIndice.keyring
 	elseif holder.BagID == REAGENT_CONTAINER then
-		bag.type = B.BagIndice.reagent
+		bag.type = (bagType ~= 0 and bagType) or B.BagIndice.reagent
 	else
-		bag.type = select(2, GetContainerNumFreeSlots(holder.BagID))
+		bag.type = bagType
 		bag.assigned = B:GetBagAssignedInfo(holder, frame.isBank)
 	end
 
@@ -1403,7 +1502,7 @@ function B:SetBagAssignments(holder, skip)
 		B:Layout(frame.isBank)
 	end
 
-	if not E.Retail and frame.isBank and frame:IsShown() then
+	if not E.Modern and frame.isBank and frame:IsShown() then
 		if holder.BagID ~= BANK_CONTAINER then
 			B:UpdateBankBagIcon(holder)
 		end
@@ -1424,6 +1523,8 @@ function B:SetBagAssignments(holder, skip)
 end
 
 function B:UpdateDelayedContainer(frame)
+	if not frame:IsShown() then return end -- pending bags are drained by Container_OnShow, no full refresh for a hidden frame
+
 	for bagID, container in next, frame.DelayedContainers do
 		if bagID ~= BACKPACK_CONTAINER then
 			B:SetBagAssignments(container)
@@ -1483,7 +1584,7 @@ function B:Container_OnEvent(event, ...)
 	elseif event == 'BAG_UPDATE' or event == 'BAG_CLOSED' then
 		if not self.isBank or self:IsShown() then
 			local id = ...
-			if B.WarbandBanks[id] then
+			if self.isBank and B.WarbandBanks[id] then -- the bag frame gets these too
 				B:UpdateBagSlots(self, id)
 			else
 				B:DelayedContainer(self, event, id)
@@ -1574,7 +1675,7 @@ function B:UpdateGoldText()
 end
 
 -- These items should not be destroyed/sold automatically
-B.ExcludeGrays = E.Retail and {
+B.ExcludeGrays = E.Modern and {
 	[3300] = "Rabbit's Foot",
 	[3670] = "Large Slimy Bone",
 	[6150] = "A Frayed Knot",
@@ -1709,9 +1810,9 @@ function B:SetButtonTexture(button, texture, left, right, top, bottom)
 end
 
 function B:BagItemAction(button, holder, func, id)
-	local bagID = E.Retail and holder.BagID
+	local bagID = E.Modern and holder.BagID
 	if bagID and button == 'RightButton' then
-		if bagID ~= BANK_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
+		if bagID ~= BANK_CONTAINER and bagID ~= KEYRING_CONTAINER and not IsInventoryItemProfessionBag('player', holder:GetID()) then
 			B:OpenBagFlagsMenu(holder)
 		end
 	elseif CursorHasItem() then
@@ -1761,6 +1862,11 @@ function B:UpdateContainerIcons()
 	-- this only executes for the main bag, the bank bag doesn't use this
 	for bagID, holder in next, B.BagFrame.ContainerHolderByBagID do
 		B:UpdateContainerIcon(holder, bagID)
+	end
+
+	-- Forever bank bags change with the container list too
+	if E.Forever then
+		B:UpdateBankBags()
 	end
 end
 
@@ -1845,7 +1951,7 @@ function B:ConstructContainerBank(f, id, key, keySize)
 end
 
 function B:ConstructContainerName(isBank, bagNum)
-	return format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Retail and '' or 'Slot')
+	return format('ElvUI%sBag%d%s', isBank and 'Bank' or 'Main', bagNum, E.Modern and '' or 'Slot')
 end
 
 function B:BankTabs_SettingsToTooltip(tooltip, depositFlags)
@@ -1973,7 +2079,7 @@ end
 function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 	local bagNum = bagID - bankOffset
 	local holderName = B:ConstructContainerName(true, bagNum)
-	local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, tabs)
+	local holder = CreateFrame((E.Modern and 'ItemButton' or 'CheckButton'), holderName, tabs)
 	tabs[index] = holder
 
 	if not f.TabsByBagID then
@@ -2041,11 +2147,12 @@ function B:ConstructContainerTabs(f, bagID, index, name, tabs, bankType)
 end
 
 function B:ConstructContainerHolder(f, bagID, isBank, name, index)
-	local bagNum = isBank and (bagID == BANK_CONTAINER and 0 or (bagID - bankOffset)) or (bagID - (E.Retail and 0 or 1))
+	local bankBag = bagID == BANK_CONTAINER
+	local bagNum = isBank and (bankBag and 0 or (bagID - bankOffset)) or (bagID - (E.Modern and 0 or 1))
 	local holderName = bagID == BACKPACK_CONTAINER and 'ElvUIMainBagBackpack' or bagID == KEYRING_CONTAINER and 'ElvUIKeyRing' or B:ConstructContainerName(isBank, bagNum)
-	local inherit = (E.Retail and '' or isBank and 'BankItemButtonBagTemplate') or (not E.Retail or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Retail and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
+	local inherit = (E.Modern and '' or isBank and 'BankItemButtonBagTemplate') or (not E.Modern or bagID == BACKPACK_CONTAINER or bagID == KEYRING_CONTAINER) and (not E.Modern and 'ItemButtonTemplate,' or '')..'ItemAnimTemplate' or 'BagSlotButtonTemplate'
 
-	local holder = CreateFrame((E.Retail and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
+	local holder = CreateFrame((E.Modern and 'ItemButton' or 'CheckButton'), holderName, f.ContainerHolder, inherit)
 	f.ContainerHolderByBagID[bagID] = holder
 	f.ContainerHolder[index] = holder
 
@@ -2086,12 +2193,24 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 		holder:SetScript('OnReceiveDrag', PutItemInBackpack)
 	elseif bagID == KEYRING_CONTAINER then
 		holder:SetScript('OnReceiveDrag', PutKeyInKeyRing)
+	elseif isBank and E.Forever then -- Forever bank bags sit in the Characterbanktab container, slot 1 is the base bank
+		holder:SetScript('OnEnter', B.BankBag_OnEnter)
+		holder:SetScript('OnClick', B.BankBag_OnClick)
+		holder:SetID(bagNum)
+
+		if bagNum > 1 then
+			holder.bagLocation = _G.ItemLocation:CreateFromBagAndSlot(CHARACTERBANKTAB_CONTAINER, bagNum)
+
+			holder:RegisterForDrag('LeftButton')
+			holder:SetScript('OnDragStart', B.BankBag_Pickup)
+			holder:SetScript('OnReceiveDrag', B.BankBag_Pickup)
+		end
 	else
 		holder:RegisterForDrag('LeftButton')
 		holder:SetScript('OnDragStart', B.Holder_OnDragStart)
 		holder:SetScript('OnReceiveDrag', B.Holder_OnReceiveDrag)
 
-		if isBank and not E.Retail then
+		if isBank and not E.Modern then
 			holder:SetID(index == 1 and BANK_CONTAINER or (bagID - bankOffset))
 			holder:SetScript('OnEvent', BankFrameItemButton_UpdateLocked)
 			holder:RegisterEvent('PLAYERBANKSLOTS_CHANGED')
@@ -2126,12 +2245,14 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 
 	f.Bags[bagID] = bag
 
-	if bagID == BANK_CONTAINER then
+	if bankBag then
 		bag.staleSlots = {}
 	end
 
-	for slotID = 1, (E.Retail and isBank and B.CHARACTERBANK_SIZE) or B.MAX_CONTAINER_ITEMS do
-		bag[slotID] = B:ConstructContainerButton(f, bagID, slotID)
+	if not (E.Modern and isBank) then -- modern bank slots are built per tab in ConstructContainerBank
+		for slotID = 1, (bankBag and NUM_BANKGENERIC_SLOTS) or B.MAX_CONTAINER_ITEMS do
+			bag[slotID] = B:ConstructContainerButton(f, bagID, slotID)
+		end
 	end
 
 	return holder
@@ -2171,6 +2292,7 @@ function B:BagsButton_ClickBank()
 			ToggleFrame(f.BankTabs)
 		end
 	else
+		-- Forever has bank bags, not tabs
 		ToggleFrame(f.ContainerHolder)
 	end
 end
@@ -2269,7 +2391,7 @@ function B:Container_ClickStackBank()
 end
 
 function B:Container_ClickSortBag()
-	if E.Retail and B.db.useBlizzardCleanup then
+	if E.Modern and B.db.useBlizzardCleanup then
 		SortBags()
 	else
 		local parent = self:GetParent()
@@ -2289,7 +2411,7 @@ end
 function B:Container_ClickSortBank()
 	local parent = self:GetParent()
 	if parent.holderFrame:IsShown() then
-		if E.Retail and B.db.useBlizzardCleanupBank then
+		if E.Modern and B.db.useBlizzardCleanupBank then
 			SortBankBags()
 		else
 			B:UnregisterBagEvents(parent)
@@ -2303,7 +2425,7 @@ function B:Container_ClickSortBank()
 				sorting()
 			end
 		end
-	elseif E.Retail and B.WarbandBanks[B.BankTab] then
+	elseif E.Modern and B.WarbandBanks[B.BankTab] then
 		SortAccountBankBags()
 	end
 end
@@ -2452,14 +2574,14 @@ function B:ConstructContainerFrame(name, isBank)
 		f.notPurchased = {}
 		f.bagsButton:SetScript('OnClick', B.BagsButton_ClickBank)
 
-		if not E.Retail then
+		if not E.Modern then
 			f.purchaseBagButton = B:ConstructPurchaseButton(f, L["Purchase Bags"])
 			f.purchaseBagButton:SetScript('OnClick', B.CoverButton_ClickBank)
 
 			f.stackButton:Point('BOTTOMRIGHT', f.holderFrame, 'TOPRIGHT', 0, 3)
 		else
 			do -- main bank button
-				local tabHolder = B:ConstructContainerTabHolder(f, name, 'BankTabs', 6)
+				local tabHolder = B:ConstructContainerTabHolder(f, name, 'BankTabs', #B.CharacterBankIndexs)
 
 				for bankIndex, bankID in next, B.CharacterBankIndexs do
 					B:ConstructContainerBank(f, bankID, 'BankTabs'..bankIndex, B.CHARACTERBANK_SIZE)
@@ -2512,6 +2634,15 @@ function B:ConstructContainerFrame(name, isBank)
 				S:HandleButton(f.goldDeposit)
 			end
 
+			-- Forever has no warband bank, so the toggle row is pointless
+			if E.Forever then
+				f.bankToggle:Hide()
+				f.warbandToggle:Hide()
+				f.goldWithdraw:Hide()
+				f.goldDeposit:Hide()
+				f.pickupGold:Hide()
+			end
+
 			--Deposite Reagents Button
 			f.depositButton = CreateFrame('Button', name..'DepositButton', f)
 			f.depositButton:Size(20)
@@ -2557,7 +2688,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.sortButton:SetScript('OnClick', B.Container_ClickSortBag)
 
 		--Keyring Button
-		if E.Classic or E.TBC or E.Wrath then
+		if hasKeyring then
 			f.keyButton = CreateFrame('Button', name..'KeyButton', f)
 			f.keyButton:Size(20)
 			f.keyButton:SetTemplate()
@@ -2585,7 +2716,7 @@ function B:ConstructContainerFrame(name, isBank)
 		f.editBox:Point('BOTTOMLEFT', f.holderFrame, 'TOPLEFT', E.Border, 4)
 		f.editBox:Point('RIGHT', f.vendorGraysButton, 'LEFT', -5, 0)
 
-		if E.Retail or E.Wrath or E.Mists then
+		if E.Modern or E.Wrath or E.Mists then
 			--Currency
 			f.currencyButton = CreateFrame('Frame', nil, f)
 			f.currencyButton:Point('BOTTOM', 0, -6)
@@ -2657,6 +2788,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 	slot:SetScript('OnEvent', B.Slot_OnEvent)
 	slot:HookScript('OnEnter', B.Slot_OnEnter)
 	slot:HookScript('OnLeave', B.Slot_OnLeave)
+	slot:HookScript('OnShow', B.Slot_OnShow)
 	slot:SetID(slotID)
 
 	slot:SetNormalTexture(E.ClearTexture)
@@ -2774,7 +2906,6 @@ function B:ConstructContainerButton(f, bagID, slotID)
 		slot.newItemGlow:SetInside()
 		slot.newItemGlow:SetTexture(E.Media.Textures.BagNewItemGlow)
 		slot.newItemGlow:Hide()
-		f.NewItemGlow.Fade:AddChild(slot.newItemGlow)
 	end
 
 	return slot
@@ -2914,6 +3045,7 @@ end
 function B:Container_OnShow()
 	if not self.sortingSlots then
 		B:SetListeners(self)
+		B:UpdateDelayedContainer(self)
 	end
 end
 
@@ -2981,7 +3113,7 @@ function B:OpenBags()
 		B:BagBar_UpdateDesaturated()
 	end
 
-	if E.Retail then
+	if E.Modern then
 		B:UpdateTokensIfVisible()
 	end
 
@@ -3027,7 +3159,7 @@ do
 	function B:SetBankSelectedTab()
 		local index = panelIndex[B.BankTab] or 1
 
-		if E.Retail then
+		if E.Modern then
 			local panel = _G.BankPanel
 			if panel then
 				local lastTab = panel.selectedTabID
@@ -3166,12 +3298,16 @@ end
 
 function B:BANK_TABS_CHANGED(_, bankType)
 	B:BankTabs_UpdateIcons(bankType)
+
+	if E.Forever then
+		B:UpdateBankBags()
+	end
 end
 
 function B:ShowBankTab(f, bankTab)
 	local previousTab = B.BankTab
 
-	B.BankTab = bankTab or (E.Retail and 6) or 1
+	B.BankTab = bankTab or (E.Modern and 6) or 1
 
 	local warbandIndex = B.WarbandBanks[B.BankTab]
 	f.bankType = warbandIndex and WARBANDBANK_TYPE or CHARACTERBANK_TYPE
@@ -3197,7 +3333,7 @@ function B:ShowBankTab(f, bankTab)
 		f.holderFrame:Hide()
 		f.sortButton:Point('RIGHT', f.depositButton, 'LEFT', -5, 0)
 	else
-		if E.Retail then
+		if E.Modern then
 			f.fullBank = not CanPurchaseBankTab(CHARACTERBANK_TYPE)
 
 			B:BankTabs_SwapTabs(f, f.WarbandTabs)
@@ -3213,7 +3349,8 @@ function B:ShowBankTab(f, bankTab)
 				purchaseTab:SetAttribute('overrideBankType', CHARACTERBANK_TYPE)
 			end
 		else
-			f.fullBank = select(2, GetNumBankSlots())
+			local _, isFullBank = GetNumBankSlots()
+			f.fullBank = isFullBank
 			f.purchaseBagButton:SetShown(not f.fullBank)
 		end
 
@@ -3231,42 +3368,33 @@ function B:ShowBankTab(f, bankTab)
 end
 
 function B:ItemGlowOnFinished()
-	if self:GetChange() == 1 then
-		self:SetChange(0)
-	else
-		self:SetChange(1)
-	end
+	self:SetChange(self:GetChange() == 1 and 0 or 1)
 end
 
-function B:ShowItemGlow(bag, newItemGlow)
-	if newItemGlow then
-		newItemGlow:SetAlpha(1)
-	end
+function B:ShowItemGlow(bag)
+	if bag.NewItemGlow:IsPlaying() then return end
 
-	if not bag.NewItemGlow:IsPlaying() then
-		bag.NewItemGlow:Play()
-	end
+	bag.NewItemGlow:Play()
 end
 
 function B:HideItemGlow(bag)
-	if bag.NewItemGlow:IsPlaying() then
-		bag.NewItemGlow:Stop()
+	if not bag.NewItemGlow:IsPlaying() then return end
 
-		for _, itemGlow in next, bag.NewItemGlow.Fade.children do
-			itemGlow:SetAlpha(0)
-		end
-	end
+	bag.NewItemGlow:Stop()
+	bag.NewItemGlow.Fade:RemoveChildren()
 end
 
 function B:SetupItemGlow(frame)
 	frame.NewItemGlow = _G.CreateAnimationGroup(frame)
 	frame.NewItemGlow:SetLooping(true)
 
-	frame.NewItemGlow.Fade = frame.NewItemGlow:CreateAnimation('fade')
-	frame.NewItemGlow.Fade:SetDuration(0.7)
-	frame.NewItemGlow.Fade:SetChange(0)
-	frame.NewItemGlow.Fade:SetEasing('in')
-	frame.NewItemGlow.Fade:SetScript('OnFinished', B.ItemGlowOnFinished)
+	local glow = frame.NewItemGlow:CreateAnimation('fade')
+	glow:SetScript('OnFinished', B.ItemGlowOnFinished)
+	glow:SetEasing('in')
+	glow:SetDuration(0.7)
+	glow:SetChange(0)
+
+	frame.NewItemGlow.Fade = glow
 end
 
 function B:OpenBank()
@@ -3276,19 +3404,23 @@ function B:OpenBank()
 	-- open to Warband when using Warband Bank Distance Inhibitor
 	-- otherwise, allow opening Reagents directly by holding Shift
 	-- keep this over update slots for bank slot assignments
-	local viewCharacter = E.Retail and CanViewBank(CHARACTERBANK_TYPE)
-	local openToWarband = E.Retail and not viewCharacter and CanViewBank(WARBANDBANK_TYPE) and B.WarbandIndexs[1]
+	local viewCharacter = E.Modern and CanViewBank(CHARACTERBANK_TYPE)
+	local openToWarband = E.Modern and not viewCharacter and CanViewBank(WARBANDBANK_TYPE) and B.WarbandIndexs[1]
 
 	B:ShowBankTab(B.BankFrame, openToWarband)
 
-	if E.Retail then
+	if E.Modern then
 		B:SetBankTabs(B.BankFrame)
+	end
+
+	if E.Forever then
+		B:UpdateBankBags()
 	end
 
 	if B.BankFrame.firstOpen then
 		B:UpdateAllSlots(B.BankFrame, true)
 
-		if E.Retail then
+		if E.Modern then
 			for bankID in next, B.WarbandBanks do
 				B:UpdateBagSlots(B.BankFrame, bankID)
 			end
@@ -3425,7 +3557,7 @@ function B:UpdateContainerFrameAnchors()
 		if index == 1 then -- First bag
 			frame:SetPoint('BOTTOMRIGHT', _G.ElvUIBagMover, 'BOTTOMRIGHT', E.Spacing, -E.Border)
 			recentBagColumn = frame
-		elseif (freeScreenHeight < frame:GetHeight()) or (E.Retail and previousBag:IsCombinedBagContainer()) then -- Start a new column
+		elseif (freeScreenHeight < frame:GetHeight()) or (E.Modern and previousBag:IsCombinedBagContainer()) then -- Start a new column
 			freeScreenHeight = screenHeight - yOffset
 			frame:SetPoint('BOTTOMRIGHT', recentBagColumn, 'BOTTOMLEFT', -11, 0)
 			recentBagColumn = frame
@@ -3499,7 +3631,7 @@ function B:VendorGrays_OnUpdate(elapsed)
 	elseif lastItem then
 		B.SellFrame:Hide()
 
-		if not E.Retail and B.SellFrame.Info.goldGained > 0 then
+		if not E.Modern and B.SellFrame.Info.goldGained > 0 then
 			E:Print(format(L["Vendored gray items for: %s"], E:FormatMoney(B.SellFrame.Info.goldGained, B.db.moneyFormat, not B.db.moneyCoins)))
 		end
 	end
@@ -3525,9 +3657,9 @@ function B:CreateSellFrame()
 	B.SellFrame.statusbar:CreateBackdrop('Transparent')
 
 	B.SellFrame.statusbar.anim = _G.CreateAnimationGroup(B.SellFrame.statusbar)
-	B.SellFrame.statusbar.anim.progress = B.SellFrame.statusbar.anim:CreateAnimation('Progress')
-	B.SellFrame.statusbar.anim.progress:SetEasing('Out')
-	B.SellFrame.statusbar.anim.progress:SetDuration(.3)
+	B.SellFrame.statusbar.anim.progress = B.SellFrame.statusbar.anim:CreateAnimation('progress')
+	B.SellFrame.statusbar.anim.progress:SetEasing('out')
+	B.SellFrame.statusbar.anim.progress:SetDuration(0.3)
 
 	B.SellFrame.statusbar.ValueText = B.SellFrame.statusbar:CreateFontString(nil, 'OVERLAY')
 	B.SellFrame.statusbar.ValueText:FontTemplate(nil, 12, 'OUTLINE')
@@ -3596,7 +3728,7 @@ B.AutoToggleClose = {
 	TRADE_CLOSED = true,
 }
 
-if E.Retail then
+if E.Modern then
 	B.AutoToggleEvents.SOULBIND_FORGE_INTERACTION_STARTED = 'soulBind'
 	B.AutoToggleEvents.SOULBIND_FORGE_INTERACTION_ENDED = 'soulBind'
 	B.AutoToggleClose.SOULBIND_FORGE_INTERACTION_ENDED = true
@@ -3623,14 +3755,14 @@ function B:SetupAutoToggle()
 	end
 end
 
-function B:UpdateBagColors(table, indice, r, g, b)
+function B:UpdateBagColors(obj, indice, r, g, b)
 	local colorTable
-	if table == 'items' then
+	if obj == 'items' then
 		colorTable = B.QuestColors[B.QuestKeys[indice]]
 	else
-		if table == 'profession' then table = 'ProfessionColors' end
-		if table == 'assignment' then table = 'AssignmentColors' end
-		colorTable = B[table][B.BagIndice[indice]]
+		if obj == 'profession' then obj = 'ProfessionColors' end
+		if obj == 'assignment' then obj = 'AssignmentColors' end
+		colorTable = B[obj][B.BagIndice[indice]]
 	end
 
 	colorTable.r, colorTable.g, colorTable.b = r, g, b
@@ -3697,7 +3829,7 @@ function B:Initialize()
 		[0x10000]	= E:UpdateColorTable({}, db.colors.profession.cooking),
 	}
 
-	if E.Retail then
+	if E.Modern then
 		B.ProfessionColors[B.BagIndice.reagent] = E:UpdateColorTable({}, db.colors.profession.reagent)
 	end
 
@@ -3770,7 +3902,7 @@ function B:Initialize()
 		end
 	end
 
-	if E.Retail then
+	if E.Modern then
 		B:RegisterEvent('BANK_TABS_CHANGED')
 		B:RegisterEvent('BANK_TAB_SETTINGS_UPDATED')
 		B:RegisterEvent('ACCOUNT_MONEY', 'UpdateGoldText')

@@ -1,7 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
-local _G = _G
 local format, next, wipe = format, next, wipe
 
 local ToggleCharacter = ToggleCharacter
@@ -49,7 +48,7 @@ local function OnEvent(panel)
 				tempDurability = perc
 			end
 
-			if E.Retail then
+			if E.Modern then
 				local data = E.ScanTooltip:GetInventoryInfo('player', index)
 				repairCost = data and data.repairCost
 			else

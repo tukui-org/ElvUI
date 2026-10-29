@@ -5,7 +5,6 @@ local AuraFiltered = oUF.AuraFiltered
 local LibDispel = LibStub('LibDispel-1.0')
 local DebuffColors = LibDispel:GetDebuffTypeColor()
 local DispelFilter = LibDispel:GetMyDispelTypes()
-local BlockList = LibDispel:GetBlockList()
 
 local next = next
 local UnitCanAssist = UnitCanAssist
@@ -19,12 +18,7 @@ local function DebuffLoop(_, check, list, name, icon, _, auraType, _, _, _, _, _
 			return auraType, icon, true, spell.style, spell.color
 		end
 	elseif oUF:NotSecretValue(auraType) and auraType then
-		local allow = not check
-		if not allow then
-			allow = DispelFilter[auraType]
-		end
-
-		if allow and not BlockList[spellID] then
+		if not check or DispelFilter[auraType] then
 			return auraType, icon
 		end
 	end
@@ -73,8 +67,16 @@ local function GetAuraType(unit, check, list)
 	end
 end
 
+-- any debuff can change the highlight - buffs only when they are listed
+local function HighlightAura(frame, _, _, _, aura)
+	if not aura or aura.isHarmful then return true end
+
+	local list = frame.AuraHighlightFilterTable
+	return list and oUF:NotSecretValue(aura.spellId) and oUF:NotSecretValue(aura.name) and (list[aura.spellId] or list[aura.name])
+end
+
 local function Update(self, event, unit, updateInfo)
-	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo) then return end
+	if oUF:ShouldSkipAuraUpdate(self, event, unit, updateInfo, HighlightAura) then return end
 
 	local aura, auraType, texture, wasFiltered, style, color = GetAuraType(unit, self.AuraHighlightFilter, self.AuraHighlightFilterTable)
 
@@ -88,7 +90,7 @@ local function Update(self, event, unit, updateInfo)
 		end
 	elseif auraType then
 		if not color then
-			color = oUF:NotSecretValue(auraType) and DebuffColors[auraType] or DebuffColors.None
+			color = (oUF:NotSecretValue(auraType) and DebuffColors[auraType]) or DebuffColors.None
 		end
 
 		if self.AuraHighlightBackdrop and self.AuraHightlightGlow then
@@ -105,7 +107,7 @@ local function Update(self, event, unit, updateInfo)
 		end
 
 		if self.AuraHighlightUseTexture then
-			self.AuraHighlight:SetTexture(nil)
+			self.AuraHighlight:SetTexture()
 		else
 			self.AuraHighlight:SetVertexColor(0, 0, 0, 0)
 		end
@@ -139,6 +141,6 @@ local function Disable(self)
 	end
 end
 
-if not oUF.isRetail then
+if not oUF.isModern then
 	oUF:AddElement('AuraHighlight', Update, Enable, Disable)
 end

@@ -19,8 +19,7 @@ function UF:Construct_RaidRoleFrames(frame)
 	frame.MasterLooterIndicator:Size(12)
 	frame.RaidRoleIndicator:Size(12)
 
-	frame.LeaderIndicator.PostUpdate = UF.RaidRoleUpdate
-	frame.AssistantIndicator.PostUpdate = UF.RaidRoleUpdate
+	-- only the ones we check the shown state
 	frame.MasterLooterIndicator.PostUpdate = UF.RaidRoleUpdate
 	frame.RaidRoleIndicator.PostUpdate = UF.RaidRoleUpdate
 

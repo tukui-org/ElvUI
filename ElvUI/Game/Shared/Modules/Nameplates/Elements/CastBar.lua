@@ -8,13 +8,11 @@ local next = next
 local strmatch = strmatch
 local utf8sub = string.utf8sub
 
-local UnitName = UnitName
-local UnitClass = UnitClass
 local CreateFrame = CreateFrame
 local UnitCanAttack = UnitCanAttack
 local UnitNameFromGUID = UnitNameFromGUID
 local UnitClassFromGUID = UnitClassFromGUID
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
+local CombatLogGetCurrentEventInfo = C_CombatLog.GetCurrentEventInfo or CombatLogGetCurrentEventInfo
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 local INTERRUPTED = INTERRUPTED
@@ -54,36 +52,22 @@ function NP:Castbar_CustomTimeText(duration, durationObject)
 	UF:SetCastDisplayCustom(self, (self.channeling and self.channelTimeFormat) or self.castTimeFormat, duration, maximum, remain)
 end
 
-function NP:Castbar_SetText(castbar, db, changed, spellName, unit)
+function NP:Castbar_SetText(castbar, db, changed, spellName)
 	local targetChanged
-	if db.displayTarget then
-		local plate = castbar.__owner
-		local target, frameType = castbar.targetCurrent, plate.frameType
+	local target = db.displayTarget and castbar.targetCurrent
+	if target then
+		local color = (db.displayTargetClass and UF:GetCasterColor(castbar.targetClass)) or 'FFdddddd'
+		if db.targetStyle == 'SEPARATE' then
+			castbar.TargetText:SetFormattedText('|c%s%s|r', color, target)
+			targetChanged = true
 
-		local targetClass, _
-		if E.Retail then
-			targetClass = castbar.targetClass
-		elseif not target and (frameType == 'ENEMY_NPC' or frameType == 'FRIENDLY_NPC') then -- player or NPCs; if used on other players:
-			target = UnitName(unit..'target') -- the cast target doesn't match their target, can be misleading if they mouseover cast
-			_, targetClass = UnitClass(unit..'target')
-		end
-
-		if target then
-			local color = (db.displayTargetClass and UF:GetCasterColor(targetClass)) or 'FFdddddd'
-			if db.targetStyle == 'SEPARATE' then
-				castbar.TargetText:SetFormattedText('|c%s%s|r', color, target)
-				targetChanged = true
-
-				if changed then
-					castbar.Text:SetText(spellName)
-				end
-			else
-				castbar.Text:SetFormattedText('%s: |c%s%s|r', spellName, color, target)
+			if changed then
+				castbar.Text:SetText(spellName)
 			end
-		elseif changed then -- always true when secret
-			castbar.Text:SetText(spellName)
+		else
+			castbar.Text:SetFormattedText('%s: |c%s%s|r', spellName, color, target)
 		end
-	elseif changed then
+	elseif changed then -- always true when secret
 		castbar.Text:SetText(spellName)
 	end
 
@@ -99,12 +83,12 @@ function NP:Castbar_PostCastStart(unit)
 	if db.castbar and db.castbar.enable and not db.castbar.hideSpellName then
 		local spellName = self.spellName
 		if E:IsSecretValue(self.spellID) then
-			targetChanged = NP:Castbar_SetText(self, db.castbar, true, spellName, unit)
+			targetChanged = NP:Castbar_SetText(self, db.castbar, true, spellName)
 		else
 			local length = db.castbar.nameLength
 			local name = (length and length > 0 and utf8sub(spellName, 1, length)) or spellName
 
-			targetChanged = NP:Castbar_SetText(self, db.castbar, name ~= spellName, spellName, unit)
+			targetChanged = NP:Castbar_SetText(self, db.castbar, name ~= spellName, name)
 		end
 	else
 		self.Text:SetText('')
@@ -255,12 +239,12 @@ function NP:Update_Castbar(nameplate)
 		castbar.channelTimeFormat = db.channelTimeFormat
 		castbar.pipColor = NP.db.colors.empoweredCast
 
-		castbar:SetFrameLevel(8)
+		castbar:SetFrameLevel(nameplate.RaisedElement.CastBarLevel)
 		castbar:ClearAllPoints()
 		castbar:Point(E.InversePoints[db.anchorPoint], nameplate, db.anchorPoint, db.xOffset, db.yOffset)
 		castbar:Size(db.width, db.height)
 
-		if E.Retail then
+		if E.Modern then
 			castbar.smoothing = (db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(castbar, db.smoothbars)
@@ -310,7 +294,7 @@ function NP:Update_Castbar(nameplate)
 		castbar.Shield:Point('BOTTOM')
 		castbar.Shield:Point('TOP')
 
-		if E.Retail then
+		if E.Modern then
 			castbar.Shield:SetVertexColor(NP.db.colors.castNoInterruptColor.r, NP.db.colors.castNoInterruptColor.g, NP.db.colors.castNoInterruptColor.b, NP.db.colors.castNoInterruptColor.a)
 			castbar.Shield.alphaValue = NP.db.colors.castNoInterruptColor.a
 		end

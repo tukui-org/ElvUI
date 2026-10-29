@@ -117,10 +117,10 @@ function DT:SetupPanelOptions(name, data)
 		options.args.dts.args[idx] = hasPoint and ACH:Select('', nil, i, CopyList, nil, 'double') or nil
 
 		if data and data.battleground ~= nil then
-			options.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail)
+			options.args.battleground = ACH:Toggle(L["Battleground Texts"], nil, 1, nil, nil, nil, nil, nil, nil, E.Modern)
 
 			if not options.args.battledts then
-				options.args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end, nil, function() return E.Retail or not data.battleground end)
+				options.args.battledts = ACH:Group(L["Battlegrounds"], nil, 4, nil, function(info) return E.db.datatexts.battlePanel[name][tonumber(info[#info])] end, function(info, value) E.db.datatexts.battlePanel[name][tonumber(info[#info])] = value DT:UpdatePanelInfo(name) end, nil, function() return E.Modern or not data.battleground end)
 				options.args.battledts.inline = true
 			end
 
@@ -190,7 +190,7 @@ local function CreateDTOptions(name, data)
 		end
 
 		if name == 'Bags' then
-			optionTable.args.includeReagents = ACH:Toggle(L["Include Reagents"], nil, 5)
+			optionTable.args.includeReagents = ACH:Toggle(L["Include Reagents"], nil, 5, nil, nil, nil, nil, nil, nil, not E.Modern)
 			optionTable.args.textFormat.values = { FREE = L["Only Free Slots"], USED = L["Only Used Slots"], FREE_TOTAL = L["Free/Total"], USED_TOTAL = L["Used/Total"] }
 		elseif name == 'Combat' then
 			optionTable.args.TimeFull = ACH:Toggle(L["Full Time"], nil, 5)
@@ -220,6 +220,7 @@ local function CreateDTOptions(name, data)
 				end
 			end
 		elseif name == 'System' then
+			optionTable.args.separator = ACH:Input(L["Separator"], nil, 3, nil, nil, function(info) return EscapeString(settings[info[#info]], true) end, function(info, value) settings[info[#info]] = EscapeString(value) DT:ForceUpdate_DataText(name) end, function() return not settings.NoLabel end)
 			optionTable.args.showTooltip = ACH:Toggle(L["Tooltip"], nil, 20)
 		elseif name == 'Durability' then
 			optionTable.args.percThreshold = ACH:Range(L["Flash Threshold"], L["The durability percent that the datatext will start flashing. Set to -1 to disable"], 5, { min = -1, max = 99, step = 1 }, nil, function(info) return settings[info[#info]] end, function(info, value) settings[info[#info]] = value; DT:ForceUpdate_DataText(name) end)
@@ -240,7 +241,7 @@ local function CreateDTOptions(name, data)
 		elseif name == 'Reputation' or name == 'Experience' then
 			optionTable.args.textFormat.values = { PERCENT = L["Percent"], CUR = L["Current"], REM = L["Remaining"], CURMAX = L["Current - Max"], CURPERC = L["Current - Percent"], CURREM = L["Current - Remaining"], CURPERCREM = L["Current - Percent (Remaining)"] }
 		elseif name == 'Talent/Loot Specialization' then
-			optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] }, nil, nil, nil, nil, nil, not E.Retail)
+			optionTable.args.displayStyle = ACH:Select(L["Display Style"], nil, 1, { SPEC = L["Specializations Only"], LOADOUT = L["Loadout Only"], BOTH = L["Spec/Loadout"] }, nil, nil, nil, nil, nil, not E.Modern)
 			optionTable.args.iconOnly = ACH:Toggle(L["Icons Only"], L["Only show icons instead of specialization names"], 2)
 			optionTable.args.showBoth = ACH:Toggle(L["Show Both"], L["Always show Loot Specialization."], 3)
 			optionTable.args.iconSize = ACH:Range(L["Icon Size"], nil, 4, { min = 10, softMax = 24, step = 1})
@@ -248,7 +249,7 @@ local function CreateDTOptions(name, data)
 			optionTable.args.time24 = ACH:Toggle(L["24-Hour Time"], L["Toggle 24-hour mode for the time datatext."], 5)
 			optionTable.args.seconds = ACH:Toggle(L["Seconds"], L["Show seconds on the time display."], 6)
 			optionTable.args.localTime = ACH:Toggle(L["Local Time"], L["If not set to true then the server time will be displayed instead."], 7)
-			optionTable.args.flashInvite = ACH:Toggle(L["Flash Invites"], L["This will allow you to toggle flashing of the time datatext when there are calendar invites."], 8, nil, nil, nil, nil, nil, nil, E.Classic)
+			optionTable.args.flashInvite = ACH:Toggle(L["Flash Invites"], L["This will allow you to toggle flashing of the time datatext when there are calendar invites."], 8, nil, nil, nil, nil, nil, nil, E.Classic or E.TBC)
 			optionTable.args.savedInstances = ACH:Toggle(L["Saved Instances"], nil, 9)
 		end
 	end
@@ -327,7 +328,7 @@ local function GetCurrencyList()
 	return list
 end
 
-DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, E.Classic)
+DataTexts.args.customCurrency = ACH:Group(L["Custom Currency"], nil, 6, nil, nil, nil, nil, not (E.Modern or E.Mists or E.Wrath))
 DataTexts.args.customCurrency.args.description = ACH:Description(L["This allows you to create a new datatext which will track the currency with the supplied currency ID. The datatext can be added to a panel immediately after creation."], 0)
 DataTexts.args.customCurrency.args.add = ACH:Select(L["Add Currency"], nil, 1, GetCurrencyList, nil, 'double', nil, AddCurrency)
 DataTexts.args.customCurrency.args.addID = ACH:Input(L["Add Currency by ID"], nil, 2, nil, 'double', C.Blank, AddCurrency)

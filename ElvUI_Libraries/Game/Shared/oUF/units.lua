@@ -56,13 +56,13 @@ local function updateArenaPreparationElements(self, event, elementName, specID)
 			local color
 			-- if(element.colorPower and elementName == 'Power') then
 				-- FIXME: no idea if we can get power type here without the unit
-			if(element.colorClass) then
+			if(element.colorClass and oUF:NotSecretValue(specID)) then
 				local _, _, _, _, _, class = GetSpecializationInfoByID(specID)
 				color = self.colors.class[class]
 			elseif(element.colorReaction) then
 				color = self.colors.reaction[2]
 			elseif(element.colorSmooth) then
-				if oUF.isRetail then
+				if oUF.isModern then
 					local curve = self.colors.health:GetCurve()
 					if curve then
 						color = curve:Evaluate(1)

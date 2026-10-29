@@ -32,6 +32,7 @@ local VoiceTranscriptionFrame_UpdateEditBox = VoiceTranscriptionFrame_UpdateEdit
 local VoiceTranscriptionFrame_UpdateVisibility = VoiceTranscriptionFrame_UpdateVisibility
 local VoiceTranscriptionFrame_UpdateVoiceTab = VoiceTranscriptionFrame_UpdateVoiceTab
 
+local MAX_WOW_CHAT_CHANNELS = MAX_WOW_CHAT_CHANNELS or Constants.ChatFrameConstants.MaxChatChannels
 local CLASS, CONTINUE, PREVIOUS = CLASS, CONTINUE, PREVIOUS
 local VOICE, LOOT, GENERAL, TRADE = VOICE, LOOT, GENERAL, TRADE
 local GUILD_EVENT_LOG = GUILD_EVENT_LOG
@@ -40,6 +41,15 @@ local GUILD_EVENT_LOG = GUILD_EVENT_LOG
 
 local CURRENT_PAGE = 0
 local MAX_PAGE = 9
+
+-- keys taken from `ChatTypeGroup` but doesnt add: 'OPENING', 'TRADESKILLS', 'PET_INFO', 'COMBAT_MISC_INFO', 'COMMUNITIES_CHANNEL', 'PET_BATTLE_COMBAT_LOG', 'PET_BATTLE_INFO', 'TARGETICONS'
+local GROUPS_LEFT = { E.Modern and 'PING' or nil, 'SYSTEM', 'CHANNEL', 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD_DISCORD', 'GUILD', 'OFFICER', 'MONSTER_SAY', 'MONSTER_YELL', 'MONSTER_EMOTE', 'MONSTER_WHISPER', 'MONSTER_BOSS_EMOTE', 'MONSTER_BOSS_WHISPER', 'ERRORS', 'AFK', 'DND', 'IGNORED', 'BG_HORDE', 'BG_ALLIANCE', 'BG_NEUTRAL', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'BN_WHISPER', 'BN_INLINE_TOAST_ALERT' }
+local GROUPS_RIGHT = { 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
+local GROUPS_CHANNEL = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
+
+for i = 1, MAX_WOW_CHAT_CHANNELS do
+	tinsert(GROUPS_CHANNEL, 'CHANNEL'..i)
+end
 
 local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
 local ELV_TOONS = {
@@ -105,40 +115,26 @@ function E:SetupChat(noDisplayMsg)
 		FCF_StopDragging(frame)
 	end
 
-	-- keys taken from `ChatTypeGroup` but doesnt add: 'OPENING', 'TRADESKILLS', 'PET_INFO', 'COMBAT_MISC_INFO', 'COMMUNITIES_CHANNEL', 'PET_BATTLE_COMBAT_LOG', 'PET_BATTLE_INFO', 'TARGETICONS'
-	local chatGroup = { 'SYSTEM', 'CHANNEL', 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD_DISCORD', 'GUILD', 'OFFICER', 'MONSTER_SAY', 'MONSTER_YELL', 'MONSTER_EMOTE', 'MONSTER_WHISPER', 'MONSTER_BOSS_EMOTE', 'MONSTER_BOSS_WHISPER', 'ERRORS', 'AFK', 'DND', 'IGNORED', 'BG_HORDE', 'BG_ALLIANCE', 'BG_NEUTRAL', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'BN_WHISPER', 'BN_INLINE_TOAST_ALERT' }
-	local ChatFrame1_RemoveAllMessageGroups = _G.ChatFrame1.RemoveAllMessageGroups or _G.ChatFrame_RemoveAllMessageGroups
-	local ChatFrame1_AddMessageGroup = _G.ChatFrame1.AddMessageGroup or _G.ChatFrame_AddMessageGroup
+	local leftChat = _G.ChatFrame1
+	leftChat:RemoveAllMessageGroups()
 
-	ChatFrame1_RemoveAllMessageGroups(_G.ChatFrame1)
-	for _, v in next, chatGroup do
-		ChatFrame1_AddMessageGroup(_G.ChatFrame1, v)
+	for _, v in next, GROUPS_LEFT do
+		leftChat:AddMessageGroup(v)
 	end
+
+	rightChat:RemoveAllMessageGroups()
 
 	-- keys taken from `ChatTypeGroup` which weren't added above to ChatFrame1 but keeping CHANNEL
-	chatGroup = { E.Retail and 'PING' or nil, 'CHANNEL', 'COMBAT_XP_GAIN', 'COMBAT_HONOR_GAIN', 'COMBAT_FACTION_CHANGE', 'SKILL', 'LOOT', 'CURRENCY', 'MONEY' }
-	local RightChat_RemoveAllMessageGroups = rightChat.RemoveAllMessageGroups or _G.ChatFrame_RemoveAllMessageGroups
-	local RightChat_AddMessageGroup = rightChat.AddMessageGroup or _G.ChatFrame_AddMessageGroup
-
-	RightChat_RemoveAllMessageGroups(rightChat)
-	for _, v in next, chatGroup do
-		RightChat_AddMessageGroup(rightChat, v)
+	for _, v in next, GROUPS_RIGHT do
+		rightChat:AddMessageGroup(v)
 	end
 
-	local ChatFrame1_AddChannel = _G.ChatFrame1.AddChannel or _G.ChatFrame_AddChannel
-	local ChatFrame1_RemoveChannel = _G.ChatFrame1.RemoveChannel or _G.ChatFrame_RemoveChannel
-	local RightChat_AddChannel = rightChat.AddChannel or _G.ChatFrame_AddChannel
-
-	ChatFrame1_AddChannel(_G.ChatFrame1, GENERAL)
-	ChatFrame1_RemoveChannel(_G.ChatFrame1, TRADE)
-	RightChat_AddChannel(rightChat, TRADE)
+	leftChat:AddChannel(GENERAL)
+	leftChat:RemoveChannel(TRADE)
+	rightChat:AddChannel(TRADE)
 
 	-- set the chat groups names in class color to enabled for all chat groups which players names appear
-	chatGroup = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEADER', 'RAID', 'RAID_LEADER', 'RAID_WARNING', 'INSTANCE_CHAT', 'INSTANCE_CHAT_LEADER', 'GUILD', 'OFFICER', 'ACHIEVEMENT', 'GUILD_ACHIEVEMENT', 'COMMUNITIES_CHANNEL' }
-	for i = 1, _G.MAX_WOW_CHAT_CHANNELS do
-		tinsert(chatGroup, 'CHANNEL'..i)
-	end
-	for _, v in next, chatGroup do
+	for _, v in next, GROUPS_CHANNEL do
 		ToggleChatColorNamesByClassGroup(true, v)
 	end
 
@@ -181,7 +177,7 @@ function E:SetupCVars(noDisplayMsg)
 	E:SetCVar('ActionButtonUseKeyDown', 1)
 	E:SetCVar('fstack_preferParentKeys', 0) -- Add back the frame names via fstack!
 
-	if E.Retail then
+	if E.Modern then
 		E:SetCVar('worldMapShowPlayerCoords', 0)
 		E:SetCVar('worldMapShowCursorCoords', 0)
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
@@ -192,12 +188,6 @@ function E:SetupCVars(noDisplayMsg)
 
 	if E.Classic then
 		E:SetCVar('ShowAllSpellRanks', 1) -- Required for LibRangeCheck to function properly with Spell Ranks
-	end
-
-	local ActionButtonPickUp = _G.InterfaceOptionsActionBarsPanelPickupActionKeyDropDown
-	if ActionButtonPickUp then
-		ActionButtonPickUp:SetValue('SHIFT')
-		ActionButtonPickUp:RefreshValue()
 	end
 
 	if E.private.nameplates.enable then
@@ -290,7 +280,7 @@ function E:LayoutAnniversary()
 	E.db.actionbar.bar2.buttonsPerRow = 1
 	E.db.actionbar.bar2.enabled = true
 	E.db.actionbar.bar2.inheritGlobalFade = true
-	E.db.actionbar.bar2.visibility = '[vehicleui][overridebar][petbattle][possessbar] hide; show'
+	E.db.actionbar.bar2.visibility = (E.Retail or E.Mists) and '[vehicleui][overridebar][petbattle][possessbar] hide; show' or '[vehicleui][overridebar][possessbar] hide; show'
 	E.db.actionbar.bar3.alpha = 0.6
 	E.db.actionbar.bar3.backdropSpacing = 1
 	E.db.actionbar.bar3.buttonHeight = 44
@@ -314,7 +304,7 @@ function E:LayoutAnniversary()
 	E.db.actionbar.bar5.buttonsPerRow = 1
 	E.db.actionbar.bar5.heightMult = 2
 	E.db.actionbar.bar5.inheritGlobalFade = true
-	E.db.actionbar.bar5.visibility = '[vehicleui][overridebar][petbattle][possessbar] hide; show'
+	E.db.actionbar.bar5.visibility = (E.Retail or E.Mists) and '[vehicleui][overridebar][petbattle][possessbar] hide; show' or '[vehicleui][overridebar][possessbar] hide; show'
 	E.db.actionbar.bar6.enabled = false
 	E.db.actionbar.bar6.backdrop = true
 	E.db.actionbar.bar6.backdropSpacing = 1
@@ -341,7 +331,7 @@ function E:LayoutAnniversary()
 	E.db.actionbar.stanceBar.inheritGlobalFade = true
 	E.db.actionbar.stanceBar.keepSizeRatio = false
 	E.db.actionbar.stanceBar.style = 'classic'
-	E.db.actionbar.stanceBar.visibility = '[vehicleui][petbattle][pet] hide; show'
+	E.db.actionbar.stanceBar.visibility = (E.Retail or E.Mists) and '[vehicleui][petbattle][pet] hide; show' or '[vehicleui][pet] hide; show'
 	E.db.actionbar.transparent = true
 	E.db.actionbar.zoneActionButton.clean = true
 	E.db.auras.buffs.barColorGradient = true
@@ -512,7 +502,6 @@ function E:LayoutAnniversary()
 	E.db.general.altPowerBar.textFormat = 'NAMECURMAXPERC'
 	E.db.general.autoRepair = 'PLAYER'
 	E.db.general.backdropfadecolor = E:NewColorTable(0.13, 0.13, 0.13, 0.69)
-	E.db.general.bonusObjectivePosition = 'AUTO'
 	E.db.general.bottomPanel = false
 	E.db.general.font = 'Expressway'
 	E.db.general.fontSize = 11
@@ -541,7 +530,6 @@ function E:LayoutAnniversary()
 	E.db.general.talkingHeadFrameScale = 1
 	E.db.general.totems.growthDirection = 'HORIZONTAL'
 	E.db.general.totems.size = 36
-	E.db.general.vehicleSeatIndicatorSize = 76
 	E.db.nameplates.colors.selection[0] = E:NewColorTable(0.78, 0.25, 0.25, 1)
 	E.db.nameplates.colors.selection[2] = E:NewColorTable(0.85, 0.768, 0.36, 1)
 	E.db.nameplates.colors.threat.badColor = E:NewColorTable(0.78, 0.25, 0.25, 1)
@@ -955,17 +943,17 @@ function E:LayoutNormal()
 	E.db.actionbar.bar2.buttonSize = 38
 	E.db.actionbar.bar2.buttonSpacing = 1
 	E.db.actionbar.bar2.enabled = true
-	E.db.actionbar.bar2.visibility = '[petbattle] hide; show'
+	E.db.actionbar.bar2.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 	E.db.actionbar.bar3.buttons = 8
 	E.db.actionbar.bar3.buttonSize = 50
 	E.db.actionbar.bar3.buttonSpacing = 1
 	E.db.actionbar.bar3.buttonsPerRow = 10
-	E.db.actionbar.bar3.visibility = '[petbattle] hide; show'
+	E.db.actionbar.bar3.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 	E.db.actionbar.bar4.enabled = false
-	E.db.actionbar.bar4.visibility = '[petbattle] hide; show'
+	E.db.actionbar.bar4.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 	E.db.actionbar.bar5.enabled = false
-	E.db.actionbar.bar5.visibility = '[petbattle] hide; show'
-	E.db.actionbar.bar6.visibility = '[petbattle] hide; show'
+	E.db.actionbar.bar5.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
+	E.db.actionbar.bar6.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show' or 'show'
 	--Auras
 	E.db.auras.buffs.countFontSize = 10
 	E.db.auras.buffs.size = 40
@@ -997,7 +985,6 @@ function E:LayoutNormal()
 	E.db.databars.azerite.enable = false
 	E.db.databars.reputation.enable = true
 	--General
-	E.db.general.bonusObjectivePosition = 'AUTO'
 	E.db.general.minimap.size = 220
 	E.db.general.objectiveFrameHeight = 400
 	E.db.general.talkingHeadFrameScale = 1
@@ -1531,8 +1518,8 @@ function E:Install()
 		f:SetMovable(true)
 		f:EnableMouse(true)
 		f:RegisterForDrag('LeftButton')
-		f:SetScript('OnDragStart', function(frame) frame:StartMoving() frame:SetUserPlaced(false) end)
-		f:SetScript('OnDragStop', function(frame) frame:StopMovingOrSizing() end)
+		f:SetScript('OnDragStart', function() f:StartMoving() f:SetUserPlaced(false) end)
+		f:SetScript('OnDragStop', function() f:StopMovingOrSizing() end)
 
 		f.Title = f:CreateFontString(nil, 'OVERLAY')
 		f.Title:FontTemplate(nil, 20)
@@ -1567,8 +1554,8 @@ function E:Install()
 
 		-- Setup StatusBar Animation
 		f.Status.anim = _G.CreateAnimationGroup(f.Status)
-		f.Status.anim.progress = f.Status.anim:CreateAnimation('Progress')
-		f.Status.anim.progress:SetEasing('Out')
+		f.Status.anim.progress = f.Status.anim:CreateAnimation('progress')
+		f.Status.anim.progress:SetEasing('out')
 		f.Status.anim.progress:SetDuration(0.3)
 
 		f.Status.text = f.Status:CreateFontString(nil, 'OVERLAY')
@@ -1682,5 +1669,8 @@ function E:Install()
 
 	E.InstallFrame.tutorialImage:SetVertexColor(unpack(E.media.rgbvaluecolor))
 	E.InstallFrame:Show()
-	E:NextPage()
+
+	if CURRENT_PAGE == 0 then
+		E:NextPage()
+	end
 end

@@ -30,14 +30,7 @@ function AB:UpdatePet(event, unit)
 
 	for i, button in next, bar.buttons do
 		local name, texture, isToken, isActive, autoCastAllowed, autoCastEnabled, spellID = GetPetActionInfo(i)
-		local buttonName = 'PetActionButton'..i
 		local autoCast = button.AutoCastOverlay or button.AutoCastable
-
-		-- this one is different
-		local castable = _G[buttonName..'AutoCastable']
-		if castable then
-			castable:SetAlpha(0)
-		end
 
 		button:SetAlpha(1)
 		button.isToken = isToken
@@ -51,7 +44,9 @@ function AB:UpdatePet(event, unit)
 			button.tooltipName = _G[name]
 		end
 
-		if spellID then
+		if spellID and spellID ~= button.spellDataSpellID then
+			button.spellDataSpellID = spellID -- load request allocates a spell object and closures, only do this once
+
 			local spell = _G.Spell:CreateFromSpellID(spellID)
 			button.spellDataLoadedCancelFunc = spell:ContinueWithCancelOnSpellLoad(function()
 				button.tooltipSubtext = spell:GetSpellSubtext()
@@ -222,6 +217,7 @@ function AB:PetBar_OnHide()
 		if button.spellDataLoadedCancelFunc then
 			button.spellDataLoadedCancelFunc()
 			button.spellDataLoadedCancelFunc = nil
+			button.spellDataSpellID = nil
 		end
 	end
 end
@@ -243,7 +239,7 @@ function AB:CreateBarPet()
 
 		bar.buttons[i] = button
 
-		if not E.Retail then
+		if not E.Modern then
 			button.commandName = 'BONUSACTIONBUTTON'..i -- to support KB like retail
 		end
 
@@ -280,7 +276,6 @@ function AB:CreateBarPet()
 	AB:RegisterEvent('PET_UI_UPDATE', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_GAINED', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_CONTROL_LOST', 'UpdatePet')
-	AB:RegisterEvent('PLAYER_ENTERING_WORLD', 'UpdatePet')
 	AB:RegisterEvent('PLAYER_FARSIGHT_FOCUS_CHANGED', 'UpdatePet')
 	AB:RegisterEvent('SPELLS_CHANGED', 'UpdatePet')
 	AB:RegisterEvent('UNIT_FLAGS', 'UpdatePet')

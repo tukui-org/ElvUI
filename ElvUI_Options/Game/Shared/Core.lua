@@ -30,9 +30,6 @@ local UnitIsFriend = UnitIsFriend
 local UnitIsPlayer = UnitIsPlayer
 local IsValidFilterString = AuraUtil and AuraUtil.IsValidFilterString
 
-local CLASS_SORT_ORDER = CLASS_SORT_ORDER
-local NUM_CLASSES = #CLASS_SORT_ORDER
-
 C.Values = {
 	GrowthDirection = {
 		DOWN_RIGHT = format(L["%s and then %s"], L["Down"], L["Right"]),
@@ -45,7 +42,6 @@ C.Values = {
 		LEFT_UP = format(L["%s and then %s"], L["Left"], L["Up"]),
 	},
 	MAX_BOSS_FRAMES = 5,
-	NUM_CLASSES = NUM_CLASSES,
 	FontFlags = ACH.FontValues,
 	FontSize = { softMin = 10, min = 4, softMax = 64, max = 80, step = 1 },
 	Roman = { 'I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII', 'XIII', 'XIV', 'XV', 'XVI', 'XVII', 'XVIII', 'XIX', 'XX' }, -- 1 to 20
@@ -65,14 +61,6 @@ C.Values = {
 		FLUID_DEBUFFS_ON_BUFFS = L["Fluid Debuffs on Buffs"],
 	}
 }
-
-do
-	C.ClassTable = {}
-
-	for _, info in next, E.ClassInfoByID do
-		C.ClassTable[info.classFile] = info.className
-	end
-end
 
 do
 	C.DragGetTitle = function(_, text)
@@ -220,7 +208,7 @@ local DEVELOPERS = {
 	'|cffff2020Nihilistzsche|r',
 	'|TInterface/AddOns/ElvUI/Game/Shared/Media/ChatLogos/Beer:15:15:0:0:64:64:5:59:5:59|t |cfff48cbaRepooc|r',
 	'|TInterface/AddOns/ElvUI/Game/Shared/Media/ChatLogos/Clover:15:15:0:0:64:64:5:59:5:59|t |cff4beb2cLuckyone|r',
-	E:TextGradient('Simpy but my name needs to be longer.', 0.28,0.79,0.96, 0.50,0.77,0.38, 1.00,0.95,0.38, 0.96,0.53,0.37, 0.80,0.51,0.72, 0.34,0.80,0.96)
+	E:TextGradient('Simpy but my name needs to be longer.', 1.00,1.00,0.40, 0.53,1.00,0.40, 0.20,0.60,1.00, 0.60,0.20,1.00, 1.00,0.20,0.60, 1.00,1.00,0.40)
 }
 
 local TESTERS = {
@@ -415,7 +403,7 @@ SetupProfile(E.Options.args.profiles.args.private, L["Private"], 2, L["Are you s
 
 E.Libs.AceConfig:RegisterOptionsTable('ElvProfiles', E.Options.args.profiles.args.profile)
 
-if E.Retail or E.Mists or E.TBC or E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC then
+if not E.Classic or (E.ClassicSOD or E.ClassicAnniv or E.ClassicAnnivHC) then
 	E.Libs.DualSpec:EnhanceOptions(E.Options.args.profiles.args.profile, E.data)
 end
 
@@ -643,9 +631,12 @@ do -- Module Copy
 		config.args.stanceBar.name = L["Stance Bar"]
 		config.args.microbar.name = L["Micro Bar"]
 		config.args.totemBar.name = L["Totem Bar"]
+		config.args.totemBar.hidden = not E.allowTotemBar
 		config.args.extraActionButton.name = L["Boss Button"]
+		config.args.extraActionButton.hidden = not (E.Retail or E.Mists)
 		config.args.vehicleExitButton.name = L["Vehicle Exit"]
 		config.args.zoneActionButton.name = L["Zone Ability"]
+		config.args.zoneActionButton.hidden = not E.Retail
 
 		return config
 	end
@@ -708,9 +699,12 @@ do -- Module Copy
 		config.args.aurabars.name = L["Aura Bars"]
 		config.args.auraindicator.name = L["Aura Indicator"]
 		config.args.cdmanager.name = L["Cooldown Manager"]
+		config.args.cdmanager.hidden = not E.Modern
 		config.args.totemtracker.name = L["Totem Tracker"]
 		config.args.bossbutton.name = L["Boss Button"]
+		config.args.bossbutton.hidden = not (E.Retail or E.Mists)
 		config.args.zonebutton.name = L["Zone Button"]
+		config.args.zonebutton.hidden = not E.Retail
 
 		return config
 	end
@@ -725,9 +719,12 @@ do -- Module Copy
 		config.args.experience.name = L["Experience"]
 		config.args.reputation.name = L["Reputation"]
 		config.args.honor.name = L["Honor"]
+		config.args.honor.hidden = not E.Retail
 		config.args.threat.name = L["Threat"]
 		config.args.azerite.name = L["Azerite"]
+		config.args.azerite.hidden = not E.Retail
 		config.args.petExperience.name = L["Pet Experience"]
+		config.args.petExperience.hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever) or E.myclass ~= 'HUNTER'
 
 		return config
 	end
@@ -740,6 +737,7 @@ do -- Module Copy
 
 		config.args.panels = ACH:Toggle(L["Panels"], nil, 2)
 		config.args.battlePanel.name = L["Battlegrounds"]
+		config.args.battlePanel.hidden = E.Modern
 
 		return config
 	end
@@ -751,21 +749,27 @@ do -- Module Copy
 		MC:AddConfigOptions(P.general, config, 'general')
 
 		config.args.altPowerBar.name = L["Alternative Power"]
+		config.args.altPowerBar.hidden = not (E.Modern or E.Mists)
 		config.args.minimap.name = L["Minimap"]
-		config.args.totems.name = L["Class Totems"]
+		config.args.totems.name = L["Totem Tracker"]
 		config.args.itemLevel.name = L["Item Level"]
 		config.args.addonCompartment.name = L["Addon Compartment"]
+		config.args.addonCompartment.hidden = not E.Modern
 		config.args.bottomPanelSettings.name = L["Bottom Panel"]
 		config.args.classColors.name = L["Custom Class Colors"]
 		config.args.cooldownManager.name = L["Cooldown Manager"]
+		config.args.cooldownManager.hidden = not E.Modern
 		config.args.customGlow.name = L["Custom Glow"]
 		config.args.fonts.name = L["Fonts"]
 		config.args.guildBank.name = L["Guild Bank"]
+		config.args.guildBank.hidden = E.Classic
 		config.args.lootRoll.name = L["Loot Roll"]
 		config.args.privateRaidWarning.name = L["Raid Warning"]
+		config.args.privateRaidWarning.hidden = not E.Retail
 		config.args.queueStatus.name = L["Queue Status"]
 		config.args.raidUtility.name = L["RAID_CONTROL"]
 		config.args.rotationAssist.name = L["Rotation Assist"]
+		config.args.rotationAssist.hidden = not E.Retail
 		config.args.topPanelSettings.name = L["Top Panel"]
 		config.args.debuffColors.name = L["Debuff Colors"]
 
@@ -781,7 +785,9 @@ do -- Module Copy
 		-- Locales
 		config.args.threat.name = L["Threat"]
 		config.args.cutaway.name = L["Cutaway Bars"]
+		config.args.cutaway.hidden = E.Modern
 		config.args.clickThrough.name = L["Click Through"]
+		config.args.clickThrough.hidden = not E.Modern
 		config.args.clickSize.name = L["Clickable Size"]
 		config.args.colors.name = L["Colors"]
 		config.args.visibility.name = L["Visibility"]
@@ -843,9 +849,13 @@ do -- Module Copy
 		config.args.colors.args.debuffHighlight.name = L["Debuff Highlighting"]
 		config.args.colors.args.powerPrediction.name = L["Power Prediction"]
 		config.args.colors.args.empoweredCast.name = L["Empower Stages"]
+		config.args.colors.args.empoweredCast.hidden = not E.Retail
 		config.args.colors.args.happiness.name = L["Pet Happiness"]
+		config.args.colors.args.happiness.hidden = not (E.Classic or E.TBC or E.Wrath or E.Forever)
 		config.args.colors.args.healthBreak.name = L["Health Breakpoint"]
+		config.args.colors.args.healthBreak.hidden = E.Modern
 		config.args.colors.args.selection.name = L["Selection"]
+		config.args.colors.args.selection.hidden = not E.Modern
 		config.args.colors.args.threat.name = L["Threat"]
 
 		config.args.units = ACH:Group(L["UnitFrames"], nil, -10, nil, function(info) return E.global.profileCopy.unitframe[info[#info-1]][info[#info]] end, function(info, value) E.global.profileCopy.unitframe[info[#info-1]][info[#info]] = value; end)
@@ -858,15 +868,19 @@ do -- Module Copy
 		config.args.units.args.targettarget.name = L["TargetTarget"]
 		config.args.units.args.targettargettarget.name = L["TargetTargetTarget"]
 		config.args.units.args.focus.name = L["Focus"]
+		config.args.units.args.focus.hidden = E.Classic
 		config.args.units.args.focustarget.name = L["FocusTarget"]
+		config.args.units.args.focustarget.hidden = E.Classic
 		config.args.units.args.pet.name = L["Pet"]
 		config.args.units.args.pettarget.name = L["PetTarget"]
 		config.args.units.args.boss.name = L["Boss"]
+		config.args.units.args.boss.hidden = E.Classic or E.TBC
 		config.args.units.args.arena.name = L["Arena"]
+		config.args.units.args.arena.hidden = E.Classic
 		config.args.units.args.party.name = L["Party"]
 
 		for i = 1, 3 do
-			config.args.units.args['raid'..i].name = L[format("Raid %s", i)]
+			config.args.units.args['raid'..i].name = L["Raid"].." "..i
 		end
 
 		config.args.units.args.raidpet.name = L["Raid Pet"]
@@ -925,7 +939,7 @@ do -- shared filters
 	end
 
 	function C:GetOptionsTable_AuraGroup(index, enable, mainGet, mainSet, candidateGet, candidateSet)
-		local group = ACH:Group(function() return format('|cFF%s%s|r', enable() and '33ff33' or 'ff3333', C.Values.Roman[index]) end, nil, index, nil, mainGet, mainSet, nil, not E.Retail)
+		local group = ACH:Group(function() return format('|cFF%s%s|r', enable() and '33ff33' or 'ff3333', C.Values.Roman[index]) end, nil, index, nil, mainGet, mainSet, nil, not E.Modern)
 
 		group.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 		group.args.filter = ACH:Input(L["Filter String"], nil, 2, nil, 'full', nil, nil, nil, nil, C.VerifyFilter)
@@ -943,11 +957,11 @@ do -- shared filters
 		group.args.candidates.args.nameplateShowAll = ACH:Toggle(L["NP: All"], L["Nameplate: Show all"], 4, true)
 		group.args.candidates.args.nameplateShowPersonal = ACH:Toggle(L["NP: Personal"], L["Nameplate: Personal"], 5, true)
 		group.args.candidates.args.isFromPlayerOrPlayerPet = ACH:Toggle(L["Player or Pet"], L["From unit: player or pet"], 6, true)
-		group.args.candidates.args.isRoleAura = ACH:Toggle(L["Role"], L["Role aura - tank/heal/dps?"], 7, true)
+		group.args.candidates.args.isRoleAura = ACH:Toggle(L["ROLE"], L["Aura is listed as Tank, Healer or DPS aura by Blizzard."], 7, true)
 		group.args.candidates.args.isPriorityAura = ACH:Toggle(L["Priority"], L["Priority aura"], 8, true)
-		group.args.candidates.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["Can apply aura"], 9, true)
-		group.args.candidates.args.isBossAura = ACH:Toggle(L["Boss"], L["Boss aura - important stuff, was used on last boss this season"], 10, true)
-		group.args.candidates.args.isBossOrRoleAura = ACH:Toggle(L["Boss or Role"], L["the either-or between isRoleAura and isBossAura"], 11, true)
+		group.args.candidates.args.canApplyAura = ACH:Toggle(L["Can Apply"], L["You can apply the same aura."], 9, true)
+		group.args.candidates.args.isBossAura = ACH:Toggle(L["Boss"], L["Aura is listed as Boss aura by Blizzard."], 10, true)
+		group.args.candidates.args.isBossOrRoleAura = ACH:Toggle(L["Boss or Role"], L["Aura is listed as Boss or Role aura by Blizzard."], 11, true)
 		group.args.candidates.inline = true
 
 		return group
@@ -967,9 +981,9 @@ do -- shared filters
 		HELPFUL					= { order = 1,	desc = L["FILTER_STRING_HELPFUL_DESC"],					text = nil },
 		HARMFUL					= { order = 2,	desc = L["FILTER_STRING_HARMFUL_DESC"],					text = nil },
 		PLAYER					= { order = 3,	desc = L["FILTER_STRING_PLAYER_DESC"],					text = nil },
-		RAID					= { order = 4,	desc = L["FILTER_STRING_RAID_DESC"],					text = L["FILTER_STRING_RAID_TEXT"] },
-		RAID_PLAYER_DISPELLABLE = { order = 5,	desc = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_DESC"],	text = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_TEXT"] },
-		RAID_IN_COMBAT			= { order = 6,	desc = L["FILTER_STRING_RAID_IN_COMBAT_DESC"],			text = L["FILTER_STRING_RAID_IN_COMBAT_TEXT"] },
+		RAID					= { order = 4,	desc = L["FILTER_STRING_RAID_DESC"],					text = nil },
+		RAID_PLAYER_DISPELLABLE = { order = 5,	desc = L["FILTER_STRING_RAID_PLAYER_DISPELLABLE_DESC"],	text = nil },
+		RAID_IN_COMBAT			= { order = 6,	desc = L["FILTER_STRING_RAID_IN_COMBAT_DESC"],			text = nil },
 		CANCELABLE				= { order = 7,	desc = L["FILTER_STRING_CANCELABLE_DESC"],				text = nil },
 		INCLUDE_NAME_PLATE_ONLY = { order = 8,	desc = L["FILTER_STRING_INCLUDE_NAME_PLATE_ONLY_DESC"],	text = nil },
 		EXTERNAL_DEFENSIVE		= { order = 9,	desc = L["FILTER_STRING_EXTERNAL_DEFENSIVE_DESC"],		text = L["FILTER_STRING_EXTERNAL_DEFENSIVE_TEXT"],	testCommand = '/dump C_Spell.IsExternalDefensive(ID)' },
@@ -1000,7 +1014,7 @@ do -- shared filters
 	end
 
 	function C:GetOptionsTable_FiltersGuide(order)
-		local config = ACH:Group(L["Filters Guide"], nil, order or 100, 'tab', nil, nil, nil, not E.Retail)
+		local config = ACH:Group(L["Filters Guide"], nil, order or 100, 'tab', nil, nil, nil, not E.Modern)
 		config.args.howToFilter = ACH:Group(L["How to filter"], nil, 1)
 		config.args.howToFilter.args.desc = ACH:Description(L["HOW_TO_FILTER"], 1, 'medium', nil, nil, nil, nil, 'full')
 
@@ -1066,7 +1080,7 @@ do -- shared cooldown
 		position.inline = true
 		text.args.positionGroup = position
 
-		local colors = ACH:Group(L["Color"], nil, 3, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+		local colors = ACH:Group(L["Colors"], nil, 3, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
 		colors.args.text = ACH:Color(L["Text Color"], nil, 1)
 		colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
 		colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')

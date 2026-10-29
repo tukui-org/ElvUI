@@ -123,7 +123,7 @@ local function UpdateGold(updateAll, goldChange)
 					r = color.r, g = color.g, b = color.b,
 				}
 
-				if name == E.myname and realm == E.myrealm then
+				if name == E.mynameFull and realm == E.myrealm then
 					myGold = goldData
 				end
 
@@ -141,7 +141,7 @@ local function UpdateGold(updateAll, goldChange)
 		end
 	else
 		if next(myGold) then
-			myGold.amount = ElvDB.gold[E.myrealm][E.myname]
+			myGold.amount = ElvDB.gold[E.myrealm][E.mynameFull]
 			myGold.amountText = E:FormatMoney(myGold.amount, style, textOnly)
 		end
 
@@ -177,14 +177,14 @@ local function OnEvent(self, event)
 
 	--prevent an error possibly from really old profiles
 	local goldRealm = ElvDB.gold[E.myrealm]
-	local oldMoney = goldRealm[E.myname]
+	local oldMoney = goldRealm[E.mynameFull]
 	if oldMoney and type(oldMoney) ~= 'number' then
-		goldRealm[E.myname] = nil
+		goldRealm[E.mynameFull] = nil
 		oldMoney = nil
 	end
 
 	local NewMoney = GetMoney()
-	goldRealm[E.myname] = NewMoney
+	goldRealm[E.mynameFull] = NewMoney
 
 	local OldMoney = oldMoney or NewMoney
 	local Change = NewMoney - OldMoney -- Positive if we gain money
@@ -251,7 +251,7 @@ local function OnEnter()
 		end
 
 		local toonName = format('%s%s%s', nameLine, g.name, (g.realm and g.realm ~= E.myrealm and ' - '..g.realm) or '')
-		DT.tooltip:AddDoubleLine((g.name == E.myname and toonName..[[ |TInterface\COMMON\Indicator-Green:14|t]]) or toonName, g.amountText, g.r, g.g, g.b, 1, 1, 1)
+		DT.tooltip:AddDoubleLine((g.name == E.mynameFull and toonName..[[ |TInterface\COMMON\Indicator-Green:14|t]]) or toonName, g.amountText, g.r, g.g, g.b, 1, 1, 1)
 	end
 
 	DT.tooltip:AddLine(' ')

@@ -7,8 +7,8 @@ local UnitHasVehicleUI = UnitHasVehicleUI
 local GetShapeshiftForm = GetShapeshiftForm
 local GetEclipseDirection = GetEclipseDirection
 
-local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook or IsSpellKnownOrOverridesKnown
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local IsSpellInSpellBook = C_SpellBook.IsSpellInSpellBook
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 
 local POWERTYPE_BALANCE = Enum.PowerType.Balance
 local SPEC_DRUID_BALANCE = SPEC_DRUID_BALANCE or 1

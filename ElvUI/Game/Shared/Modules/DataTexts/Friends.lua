@@ -26,7 +26,7 @@ local BNet_GetValidatedCharacterName = BNet_GetValidatedCharacterName
 local C_FriendList_GetNumFriends = C_FriendList.GetNumFriends
 local C_FriendList_GetNumOnlineFriends = C_FriendList.GetNumOnlineFriends
 local C_FriendList_GetFriendInfoByIndex = C_FriendList.GetFriendInfoByIndex
-local SendChatMessage = C_ChatInfo.SendChatMessage or SendChatMessage
+local SendChatMessage = C_ChatInfo.SendChatMessage
 local PRIEST_COLOR = RAID_CLASS_COLORS.PRIEST
 
 local TIMERUNNING_ATLAS = '|A:timerunning-glues-icon-small:%s:%s:0:0|a'
@@ -46,7 +46,7 @@ E.PopupDialogs.SET_BN_BROADCAST = {
 	maxLetters = 127,
 	OnAccept = function(popup) BNSetCustomMessage(popup.editBox:GetText()) end,
 	OnShow = function(popup) popup.editBox:SetText(select(4, BNGetInfo()) ) popup.editBox:SetFocus() end,
-	OnHide = _G.ChatEdit_FocusActiveWindow,
+	OnHide = _G.ChatFrameUtil.FocusActiveWindow,
 	EditBoxOnEnterPressed = function(popup) BNSetCustomMessage(popup:GetText()) popup:GetParent():Hide() end,
 	EditBoxOnEscapePressed = function(popup) popup:GetParent():Hide() end,
 	timeout = 0,
@@ -231,11 +231,13 @@ local function AddToBNTable(bnIndex, bnetIDAccount, accountName, battleTag, char
 
 	BNTable[bnIndex] = obj
 
-	if tableList[client] then
-		tableList[client][#tableList[client]+1] = BNTable[bnIndex]
+	local list = tableList[client]
+	if list then
+		tinsert(list, obj)
 	else
-		tableList[client] = {}
-		tableList[client][1] = BNTable[bnIndex]
+		list = { obj }
+
+		tableList[client] = list
 	end
 end
 
@@ -400,7 +402,7 @@ local function Click(panel, btn)
 		E:SetEasyMenuAnchor(E.EasyMenu, panel)
 		E:ComplicatedMenu(menuList, E.EasyMenu, nil, nil, nil, 'MENU')
 	elseif not E:AlertCombat() then
-		ToggleFriendsFrame(not E.Retail and 1 or nil)
+		ToggleFriendsFrame(not E.Modern and 1 or nil)
 	end
 end
 

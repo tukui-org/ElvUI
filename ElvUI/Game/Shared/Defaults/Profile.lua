@@ -55,17 +55,15 @@ P.general = {
 	objectiveFrameHeight = 480,
 	objectiveFrameAutoHide = true,
 	objectiveFrameAutoHideInKeystone = false,
-	bonusObjectivePosition = 'LEFT',
 	talkingHeadFrameScale = 0.9,
 	talkingHeadFrameBackdrop = false,
-	vehicleSeatIndicatorSize = 128,
 	resurrectSound = false,
 	questRewardMostValueIcon = true,
 	questXPPercent = true,
 	durabilityScale = 1,
 	gameMenuScale = 1,
 	lockCameraDistanceMax = true,
-	cameraDistanceMax = E.Retail and 2.6 or 4,
+	cameraDistanceMax = E.Modern and 2.6 or 4,
 	afk = true,
 	afkChat = true,
 	afkSpin = true,
@@ -135,7 +133,6 @@ P.general = {
 
 		-- These dont exist in Blizzards color table
 		Bleed = { r = 1, g = 0.2, b = 0.6, a = 1 },
-		BadDispel = { r = 0.05, g = 0.85, b = 0.94, a = 1 },
 		Stealable = { r = 0.93, g = 0.91, b = 0.55, a = 1 },
 	},
 	bordercolor = { r = 0, g = 0, b = 0, a = 1 }, -- updated in E.Initialize
@@ -149,14 +146,14 @@ P.general = {
 		showItemLevel = true,
 		showEnchants = true,
 		showMissing = true,
-		showOnItem = not E.Retail,
+		showOnItem = not E.Modern,
 		showGems = true,
 		itemLevelRarity = true,
 		itemLevelFont = 'PT Sans Narrow',
 		itemLevelFontSize = 12,
 		itemLevelFontOutline = 'OUTLINE',
 		totalLevelFont = 'PT Sans Narrow',
-		totalLevelFontSize = E.Retail and 20 or 18,
+		totalLevelFontSize = E.Modern and 20 or 18,
 		totalLevelFontOutline = 'OUTLINE',
 		textPosition = 'BOTTOM',
 		textOffsetX = 0,
@@ -230,14 +227,20 @@ P.general = {
 				yOffset = 0,
 				hide = false,
 			},
+			externalEvent = {
+				scale = 0.8,
+				position = 'TOPLEFT',
+				xOffset = 0,
+				yOffset = 0,
+			},
 			tracking = {
-				scale = E.Retail and 1.2 or 0.65,
+				scale = E.Modern and 1.2 or 0.65,
 				position = 'BOTTOMLEFT',
 				xOffset = 3,
 				yOffset = 3,
 			},
 			calendar = {
-				scale = E.Retail and 1.2 or 1,
+				scale = E.Modern and 1.2 or 1,
 				position = 'TOPRIGHT',
 				xOffset = 0,
 				yOffset = 0,
@@ -582,7 +585,7 @@ P.bags = {
 	},
 }
 
-for i = -3, 12 do
+for i = -3, E.Forever and 14 or 12 do
 	local name = 'bag'..i
 	P.bags.shownBags[name] = true
 
@@ -591,7 +594,7 @@ for i = -3, 12 do
 	end
 end
 
-for id = 6, 11 do
+for id = 6, E.Forever and 14 or 11 do
 	P.bags.split['bank'..id] = false
 end
 
@@ -625,7 +628,6 @@ local NP_Auras = {
 	growthY = 'UP',
 	onlyShowPlayer = false,
 	stackAuras = true,
-	filter = 'HELPFUL',
 	sortDirection = 'DESCENDING',
 	sortMethod = 'TIME_REMAINING',
 	spacing = 1,
@@ -640,7 +642,6 @@ local NP_Auras = {
 	countFontSize = 9,
 	countXOffset = 0,
 	countYOffset = 2,
-	durationPosition = 'CENTER',
 	minDuration = 0,
 	maxDuration = 0,
 	priority = '',
@@ -664,7 +665,7 @@ local NP_Health = {
 	smoothbars = false,
 	text = {
 		enable = true,
-		format = E.Retail and '[perhp]' or '[health:percent]',
+		format = E.Modern and '[perhp]' or '[health:percent]',
 		position = 'CENTER',
 		parent = 'Nameplate',
 		xOffset = 0,
@@ -690,7 +691,7 @@ local NP_Power = {
 	useAtlas = false,
 	text = {
 		enable = false,
-		format = E.Retail and '[perpp]' or '[power:percent]',
+		format = E.Modern and '[perpp]' or '[power:percent]',
 		position = 'CENTER',
 		parent = 'Nameplate',
 		xOffset = 0,
@@ -722,7 +723,7 @@ local NP_Portrait = {
 	enable = false,
 	position = 'RIGHT',
 	classicon = true,
-	specicon = E.Retail,
+	specicon = E.Modern,
 	keepSizeRatio = true,
 	height = 28,
 	width = 28,
@@ -842,7 +843,6 @@ local NP_QuestIcon = {
 --NamePlate
 P.nameplates = {
 	clampToScreen = false,
-	fadeIn = true,
 	font = 'PT Sans Narrow',
 	fontOutline = 'OUTLINE',
 	fontSize = 11,
@@ -863,8 +863,6 @@ P.nameplates = {
 		enemy = false,
 	},
 	clickSize = {
-		width = 150,
-		height = 30,
 		personalWidth = 150,
 		personalHeight = 30,
 		friendlyWidth = 150,
@@ -1191,7 +1189,6 @@ for unit, data in next, P.nameplates.units do
 		if useCCDebuffs then
 			data.auras.priority = 'Blacklist,CCDebuffs'
 			data.auras.anchorPoint = 'RIGHT'
-			data.auras.filter = 'HARMFUL'
 			data.auras.numAuras = 2
 			data.auras.xOffset = 2
 			data.auras.yOffset = 0
@@ -1324,7 +1321,7 @@ P.nameplates.units.ENEMY_PLAYER.debuffs.growthX = 'LEFT'
 P.nameplates.units.ENEMY_PLAYER.debuffs.growthY = 'UP'
 P.nameplates.units.ENEMY_PLAYER.debuffs.priority = 'Blacklist,blockNoDuration,Personal'
 P.nameplates.units.ENEMY_PLAYER.debuffs.yOffset = 35
-P.nameplates.units.ENEMY_PLAYER.name.format = E.Retail and '[classcolor][name]' or '[classcolor][name:abbrev:long]'
+P.nameplates.units.ENEMY_PLAYER.name.format = E.Modern and '[classcolor][name]' or '[classcolor][name:abbrev:long]'
 
 P.nameplates.units.FRIENDLY_NPC.buffs.maxDuration = 300
 P.nameplates.units.FRIENDLY_NPC.buffs.priority = 'Blacklist,Whitelist,blockNoDuration,Personal'
@@ -1470,6 +1467,7 @@ P.chat = {
 	hideChatToggles = false,
 	hideCopyButton = false,
 	useAltKey = false,
+	countCharacters = true,
 	classColorMentionsChat = true,
 	enableCombatRepeat = true,
 	numAllowedCombatRepeat = 5,
@@ -1640,7 +1638,6 @@ local UF_Auras = {
 	stackAuras = true,
 	growthX = 'RIGHT',
 	growthY = 'UP',
-	durationPosition = 'CENTER',
 	enable = false,
 	numrows = 1,
 	perrow = 8,
@@ -1718,7 +1715,7 @@ UF_AuraBars.enemyFilter.filterLists.group1.maxDuration = 300
 
 local UF_AuraWatch = {
 	enable = false,
-	petSpecific = E.Retail,
+	petSpecific = E.Modern,
 	profileSpecific = false,
 	countFont = 'PT Sans Narrow',
 	countFontOutline = 'OUTLINE',
@@ -2054,7 +2051,7 @@ local UF_ClassBar = {
 	smoothbars = false,
 	sortDirection = 'asc',
 	altPowerColor = { r = 0.2, g = 0.4, b = 0.8, a = 1 },
-	altPowerTextFormat = E.Retail and '[altpower:current]' or '',
+	altPowerTextFormat = E.Modern and '[altpower:current]' or '',
 	detachFromFrame = false,
 	detachedWidth = 250,
 	parent = 'FRAME',
@@ -2575,6 +2572,7 @@ P.unitframe = {
 			orientation = 'LEFT',
 			threatStyle = 'GLOW',
 			threatPrimary = true,
+			growthY = 'UP',
 			colorOverride = 'USE_DEFAULT',
 			middleClickFocus = false,
 			width = 120,
@@ -2659,11 +2657,11 @@ P.unitframe.units.player.fader.unittarget = false
 P.unitframe.units.player.fader.vehicle = true
 P.unitframe.units.player.healPrediction.enable = true
 P.unitframe.units.player.health.position = 'LEFT'
-P.unitframe.units.player.health.text_format = E.Retail and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current-percent:shortvalue]'
+P.unitframe.units.player.health.text_format = E.Modern and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current-percent:shortvalue]'
 P.unitframe.units.player.health.xOffset = 2
 P.unitframe.units.player.power.EnergyManaRegen = false
 P.unitframe.units.player.power.position = 'RIGHT'
-P.unitframe.units.player.power.text_format = E.Retail and '||cFF007ACC[perpp<%]||r' or '[cpoints][powercolor][  >power:current:shortvalue]'
+P.unitframe.units.player.power.text_format = E.Modern and '||cFF007ACC[perpp<%]||r' or '[cpoints][powercolor][  >power:current:shortvalue]'
 P.unitframe.units.player.power.xOffset = -2
 
 P.unitframe.units.target.aurabar.maxDuration = 120
@@ -2689,9 +2687,9 @@ P.unitframe.units.target.debuffs.growthY = 'UP'
 P.unitframe.units.target.debuffs.maxDuration = 300
 P.unitframe.units.target.debuffs.priority = 'Blacklist,Friendly:Dispellable,Personal'
 P.unitframe.units.target.healPrediction.enable = true
-P.unitframe.units.target.health.text_format = E.Retail and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current-percent:shortvalue]'
-P.unitframe.units.target.name.text_format = E.Retail and '[classcolor][name] [difficultycolor][smartlevel] [shortclassification]' or '[classcolor][name:medium] [difficultycolor][smartlevel] [shortclassification]'
-P.unitframe.units.target.power.text_format = E.Retail and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
+P.unitframe.units.target.health.text_format = E.Modern and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current-percent:shortvalue]'
+P.unitframe.units.target.name.text_format = E.Modern and '[classcolor][name] [difficultycolor][smartlevel] [shortclassification]' or '[classcolor][name:medium] [difficultycolor][smartlevel] [shortclassification]'
+P.unitframe.units.target.power.text_format = E.Modern and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
 
 P.unitframe.units.target.buffs.filterLists.group1.enable = true
 P.unitframe.units.target.buffs.filterLists.group1.filter = 'HELPFUL'
@@ -2738,7 +2736,7 @@ P.unitframe.units.targettarget.debuffs.numrows = 1
 P.unitframe.units.targettarget.debuffs.perrow = 5
 P.unitframe.units.targettarget.debuffs.priority = 'Blacklist,Friendly:Dispellable,Personal,CCDebuffs'
 P.unitframe.units.targettarget.infoPanel.height = 14
-P.unitframe.units.targettarget.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
+P.unitframe.units.targettarget.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.targettarget.power.text_format = ''
 
 P.unitframe.units.targettarget.buffs.filterLists.group1.enable = false
@@ -2785,7 +2783,7 @@ P.unitframe.units.focus.debuffs.perrow = 5
 P.unitframe.units.focus.debuffs.priority = 'Blacklist,Friendly:Dispellable,Personal,CCDebuffs'
 P.unitframe.units.focus.healPrediction.enable = true
 P.unitframe.units.focus.infoPanel.height = 14
-P.unitframe.units.focus.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
+P.unitframe.units.focus.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:medium]'
 
 P.unitframe.units.focus.buffs.filterLists.group1.enable = true
 P.unitframe.units.focus.buffs.filterLists.group1.filter = 'HELPFUL||!BIG_DEFENSIVE||!EXTERNAL_DEFENSIVE'
@@ -2866,7 +2864,7 @@ P.unitframe.units.pet.debuffs.priority = 'Blacklist,Dispellable,CCDebuffs'
 P.unitframe.units.pet.healPrediction.enable = true
 P.unitframe.units.pet.health.colorHappiness = true
 P.unitframe.units.pet.infoPanel.height = 12
-P.unitframe.units.pet.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
+P.unitframe.units.pet.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:medium]'
 
 P.unitframe.units.pet.buffs.filterLists.group1.enable = true
 P.unitframe.units.pet.buffs.filterLists.group1.filter = 'HELPFUL||EXTERNAL_DEFENSIVE'
@@ -2926,12 +2924,12 @@ P.unitframe.units.boss.debuffs.priority = 'Blacklist,Personal,CCDebuffs'
 P.unitframe.units.boss.debuffs.sizeOverride = 22
 P.unitframe.units.boss.debuffs.yOffset = -3
 P.unitframe.units.boss.health.position = 'LEFT'
-P.unitframe.units.boss.health.text_format = E.Retail and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current:shortvalue]'
+P.unitframe.units.boss.health.text_format = E.Modern and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current:shortvalue]'
 P.unitframe.units.boss.health.xOffset = 2
 P.unitframe.units.boss.infoPanel.height = 16
-P.unitframe.units.boss.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
+P.unitframe.units.boss.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.boss.power.position = 'RIGHT'
-P.unitframe.units.boss.power.text_format = E.Retail and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
+P.unitframe.units.boss.power.text_format = E.Modern and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
 P.unitframe.units.boss.power.xOffset = -2
 
 P.unitframe.units.boss.buffs.filterLists.group1.enable = true
@@ -2980,12 +2978,12 @@ P.unitframe.units.arena.debuffs.sizeOverride = 27
 P.unitframe.units.arena.debuffs.yOffset = -16
 P.unitframe.units.arena.healPrediction.enable = true
 P.unitframe.units.arena.health.position = 'LEFT'
-P.unitframe.units.arena.health.text_format = E.Retail and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current:shortvalue]'
+P.unitframe.units.arena.health.text_format = E.Modern and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current:shortvalue]'
 P.unitframe.units.arena.health.xOffset = 2
 P.unitframe.units.arena.infoPanel.height = 17
-P.unitframe.units.arena.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
+P.unitframe.units.arena.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.arena.power.position = 'RIGHT'
-P.unitframe.units.arena.power.text_format = E.Retail and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
+P.unitframe.units.arena.power.text_format = E.Modern and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
 P.unitframe.units.arena.power.xOffset = -2
 
 P.unitframe.units.arena.buffs.filterLists.group1.enable = true
@@ -3017,7 +3015,7 @@ P.unitframe.units.arena.debuffs.filterLists.group3.useBlocklist = true
 
 P.unitframe.units.party.buffIndicator.enable = true
 P.unitframe.units.party.buffs.anchorPoint = 'LEFT'
-P.unitframe.units.party.buffs.enable = not E.Retail
+P.unitframe.units.party.buffs.enable = not E.Modern
 P.unitframe.units.party.buffs.maxDuration = 300
 P.unitframe.units.party.buffs.priority = 'Blacklist,TurtleBuffs'
 P.unitframe.units.party.castbar.enable = false
@@ -3031,20 +3029,20 @@ P.unitframe.units.party.debuffs.priority = 'Blacklist,Dispellable,RaidDebuffs,CC
 P.unitframe.units.party.debuffs.sizeOverride = 52
 P.unitframe.units.party.health.position = 'LEFT'
 P.unitframe.units.party.health.position = 'LEFT'
-P.unitframe.units.party.health.text_format = E.Retail and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current-percent:shortvalue]'
+P.unitframe.units.party.health.text_format = E.Modern and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:current-percent:shortvalue]'
 P.unitframe.units.party.health.xOffset = 2
 P.unitframe.units.party.health.xOffset = 2
 P.unitframe.units.party.infoPanel.height = 15
-P.unitframe.units.party.name.text_format = E.Retail and '[classcolor][name] [difficultycolor][smartlevel]' or '[classcolor][name:medium] [difficultycolor][smartlevel]'
-P.unitframe.units.party.petsGroup.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:short]'
+P.unitframe.units.party.name.text_format = E.Modern and '[classcolor][name] [difficultycolor][smartlevel]' or '[classcolor][name:medium] [difficultycolor][smartlevel]'
+P.unitframe.units.party.petsGroup.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:short]'
 P.unitframe.units.party.power.height = 7
 P.unitframe.units.party.power.position = 'RIGHT'
-P.unitframe.units.party.power.text_format = E.Retail and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
+P.unitframe.units.party.power.text_format = E.Modern and '||cFF007ACC[perpp<%]||r' or '[powercolor][power:current:shortvalue]'
 P.unitframe.units.party.power.xOffset = -2
 P.unitframe.units.party.targetsGroup.buffIndicator = nil
 P.unitframe.units.party.targetsGroup.enable = false
 P.unitframe.units.party.targetsGroup.healPrediction = nil
-P.unitframe.units.party.targetsGroup.name.text_format = E.Retail and '[classcolor][name] [difficultycolor][smartlevel]' or '[classcolor][name:medium] [difficultycolor][smartlevel]'
+P.unitframe.units.party.targetsGroup.name.text_format = E.Modern and '[classcolor][name] [difficultycolor][smartlevel]' or '[classcolor][name:medium] [difficultycolor][smartlevel]'
 
 P.unitframe.units.party.buffs.filterLists.group1.enable = true
 P.unitframe.units.party.buffs.filterLists.group1.filter = 'HELPFUL||BIG_DEFENSIVE||!EXTERNAL_DEFENSIVE'
@@ -3093,12 +3091,12 @@ P.unitframe.units.raid1.groupBy = 'GROUP'
 P.unitframe.units.raid1.groupsPerRowCol = 1
 P.unitframe.units.raid1.growthDirection = 'RIGHT_DOWN'
 P.unitframe.units.raid1.health.position = 'BOTTOM'
-P.unitframe.units.raid1.health.text_format = E.Retail and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:deficit:shortvalue]'
+P.unitframe.units.raid1.health.text_format = E.Modern and '||cFF29CC00[perhp<%]||r' or '[healthcolor][health:deficit:shortvalue]'
 P.unitframe.units.raid1.health.yOffset = 2
 P.unitframe.units.raid1.height = 44
 P.unitframe.units.raid1.horizontalSpacing = 3
 P.unitframe.units.raid1.infoPanel.height = 12
-P.unitframe.units.raid1.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:short]'
+P.unitframe.units.raid1.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:short]'
 P.unitframe.units.raid1.numGroups = 5
 P.unitframe.units.raid1.orientation = 'MIDDLE'
 P.unitframe.units.raid1.petsGroup = nil
@@ -3107,7 +3105,7 @@ P.unitframe.units.raid1.power.text_format = ''
 P.unitframe.units.raid1.power.xOffset = -2
 P.unitframe.units.raid1.power.yOffset = 2
 P.unitframe.units.raid1.targetsGroup = nil
-P.unitframe.units.raid1.visibility = E.Retail and '[@raid6,noexists][@raid21,exists] hide;show' or '[@raid6,noexists][@raid11,exists] hide;show'
+P.unitframe.units.raid1.visibility = E.Modern and '[@raid6,noexists][@raid21,exists] hide;show' or '[@raid6,noexists][@raid11,exists] hide;show'
 P.unitframe.units.raid1.width = 80
 
 P.unitframe.units.raid1.buffs.filterLists.group1.enable = true
@@ -3148,11 +3146,11 @@ P.unitframe.units.raid2.numGroups = 5
 P.unitframe.units.raid2.power.enable = false
 P.unitframe.units.raid2.rdebuffs.enable = false
 P.unitframe.units.raid2.roleIcon.enable = false
-P.unitframe.units.raid2.visibility = E.Retail and '[@raid21,noexists][@raid31,exists] hide;show' or '[@raid11,noexists][@raid26,exists] hide;show'
+P.unitframe.units.raid2.visibility = E.Modern and '[@raid21,noexists][@raid31,exists] hide;show' or '[@raid11,noexists][@raid26,exists] hide;show'
 
 P.unitframe.units.raid3 = E:CopyTable({}, P.unitframe.units.raid2)
 P.unitframe.units.raid3.numGroups = 8
-P.unitframe.units.raid3.visibility = E.Retail and '[@raid31,noexists] hide;show' or '[@raid26,noexists] hide;show'
+P.unitframe.units.raid3.visibility = E.Modern and '[@raid31,noexists] hide;show' or '[@raid26,noexists] hide;show'
 
 P.unitframe.units.raidpet = E:CopyTable({}, P.unitframe.units.raid1)
 P.unitframe.units.raidpet.buffs.numrows = 1
@@ -3186,13 +3184,13 @@ P.unitframe.units.tank.debuffs.numrows = 1
 P.unitframe.units.tank.debuffs.perrow = 6
 P.unitframe.units.tank.debuffs.yOffset = 1
 P.unitframe.units.tank.name.position = 'CENTER'
-P.unitframe.units.tank.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
+P.unitframe.units.tank.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.tank.name.xOffset = 0
 P.unitframe.units.tank.targetsGroup.buffIndicator = nil
 P.unitframe.units.tank.targetsGroup.enable = true
 P.unitframe.units.tank.targetsGroup.healPrediction = nil
 P.unitframe.units.tank.targetsGroup.name.position = 'CENTER'
-P.unitframe.units.tank.targetsGroup.name.text_format = E.Retail and '[classcolor][name]' or '[classcolor][name:medium]'
+P.unitframe.units.tank.targetsGroup.name.text_format = E.Modern and '[classcolor][name]' or '[classcolor][name:medium]'
 P.unitframe.units.tank.targetsGroup.name.xOffset = 0
 
 P.unitframe.units.assist = E:CopyTable({}, P.unitframe.units.tank)
@@ -3337,15 +3335,13 @@ P.actionbar = {
 		fontOutline = 'OUTLINE',
 		fontSize = 12,
 		mouseover = false,
-		visibility = '[vehicleui] hide;show',
-		frameStrata = 'LOW',
-		frameLevel = 5
+		visibility = '[vehicleui] hide;show'
 	},
 	microbar = {
 		enabled = false,
 		mouseover = false,
 		useIcons = true,
-		buttonsPerRow = E.Mists and 13 or 12,
+		buttonsPerRow = (E.Mists or E.Forever) and 13 or 12,
 		buttonSize = 20,
 		keepSizeRatio = false,
 		point = 'TOPLEFT',
@@ -3384,7 +3380,7 @@ P.actionbar = {
 if E.Retail or E.Mists then
 	P.actionbar.barPet.visibility = '[petbattle] hide; [novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui][petbattle] hide; show'
-elseif E.Wrath then
+elseif E.Wrath or E.Forever then
 	P.actionbar.barPet.visibility = '[novehicleui,pet,nooverridebar,nopossessbar] show; hide'
 	P.actionbar.stanceBar.visibility = '[vehicleui] hide; show'
 elseif E.TBC then
@@ -3463,7 +3459,7 @@ for i = 1, 15 do -- if this indexing changes
 
 		if E.Retail or E.Mists then
 			P.actionbar[barN].visibility = '[vehicleui][petbattle][overridebar] hide; show'
-		elseif E.Wrath then
+		elseif E.Wrath or E.Forever then
 			P.actionbar[barN].visibility = '[vehicleui][overridebar] hide; show'
 		else
 			P.actionbar[barN].visibility = '[overridebar] hide; show'
@@ -3507,8 +3503,8 @@ P.actionbar.bar1.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show'
 P.actionbar.bar1.paging.ROGUE = (E.TBC and '[possessbar] 16; ' or '') .. '[bonusbar:1] 7;' .. ((E.Wrath or E.Mists) and ' [bonusbar:2] 8;' or '')
 P.actionbar.bar1.paging.WARLOCK = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Wrath or E.Mists) and '[form:1] 7;' or '')
 P.actionbar.bar1.paging.DRUID = (E.TBC and '[possessbar] 16; ' or '') .. '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
-P.actionbar.bar1.paging.PRIEST = (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Retail and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.WARRIOR = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Classic or E.TBC or E.Wrath) and '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' or '')
+P.actionbar.bar1.paging.PRIEST = (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Retail and '[form:1, spec:3] 7;') or ((E.Classic or E.Forever) and '[form:1] 7;') or '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.WARRIOR = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Classic or E.TBC or E.Wrath or E.Forever) and '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' or '')
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
 
 if E.Mists then
@@ -3698,7 +3694,7 @@ E.LayoutMoverPositions = {
 		ElvAB_3 = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
 		ElvAB_4 = 'RIGHT,ElvUIParent,RIGHT,-4,0',
 		ElvAB_6 = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,264',
-		ElvUF_AssistMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-249',
+		ElvUF_AssistMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-250',
 		ElvUF_FocusCastbarMover = 'TOPLEFT,ElvUF_Focus,BOTTOMLEFT,0,-1',
 		ElvUF_FocusMover = 'BOTTOM,ElvUIParent,BOTTOM,342,60',
 		ElvUF_PartyMover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269',
@@ -3709,7 +3705,7 @@ E.LayoutMoverPositions = {
 		ElvUF_Raid1Mover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269',
 		ElvUF_Raid2Mover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269',
 		ElvUF_Raid3Mover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269',
-		ElvUF_TankMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-187',
+		ElvUF_TankMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-180',
 		ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,-1,243',
 		ElvUF_TargetMover = 'BOTTOM,ElvUIParent,BOTTOM,342,139',
 		ElvUF_TargetTargetMover = 'BOTTOM,ElvUIParent,BOTTOM,342,101',

@@ -142,7 +142,7 @@ end
 function AB:ExtraButtons_UpdateScale()
 	if not E.private.actionbar.enable then return end
 
-	if not E.Retail and InCombatLockdown() then
+	if not E.Modern and InCombatLockdown() then
 		AB.NeedsExtraButtonsRescale = true
 
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
@@ -220,7 +220,7 @@ function AB:ExtraButtons_SetupBoss()
 
 	ExtraActionBarFrame:ClearAllPoints()
 	ExtraActionBarFrame:SetAllPoints()
-	ExtraActionBarFrame.ignoreInLayout = true
+	ExtraActionBarFrame.ignoreInLayout = true -- Won't taint SetPoint because we reparent them, no Blizzard layout iterates them
 end
 
 function AB:ExtraButtons_SetupZone()
@@ -241,7 +241,7 @@ function AB:ExtraButtons_SetupZone()
 
 	ZoneAbilityFrame:ClearAllPoints()
 	ZoneAbilityFrame:SetAllPoints()
-	ZoneAbilityFrame.ignoreInLayout = true
+	ZoneAbilityFrame.ignoreInLayout = true -- Won't taint SetPoint because we reparent them, no Blizzard layout iterates them
 
 	ZoneAbilityHolder:Size(52 * E.db.actionbar.zoneActionButton.scale)
 end
@@ -278,9 +278,9 @@ function AB:CreateExtraMovers()
 		E:CreateMover(ExtraActionBarHolder, 'BossButton', L["Boss Button"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
 	end
 
-	if not ZoneAbilityHolder.mover then
+	if _G.ZoneAbilityFrame and not ZoneAbilityHolder.mover then
 		ZoneAbilityHolder:Point('BOTTOM', E.UIParent, 'BOTTOM', 150, 300)
-		E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,extraActionButton')
+		E:CreateMover(ZoneAbilityHolder, 'ZoneAbility', L["Zone Ability"], nil, nil, nil, 'ALL,ACTIONBARS', nil, 'actionbar,extraButtons,zoneActionButton')
 	end
 end
 

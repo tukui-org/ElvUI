@@ -41,7 +41,7 @@ local sort = sort
 local ipairs = ipairs
 
 local UnitHasVehicleUI = UnitHasVehicleUI
-local GetSpecialization = C_SpecializationInfo.GetSpecialization or GetSpecialization
+local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local GetRuneCooldown = GetRuneCooldown
 local GetRuneType = GetRuneType
 local GetTime = GetTime
@@ -250,7 +250,7 @@ local function Disable(self)
 		end
 		-- end block
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:UnregisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
 		else
 			self:UnregisterEvent('RUNE_TYPE_UPDATE', ColorPath)
@@ -284,7 +284,7 @@ local function Enable(self, unit)
 		end
 		-- end block
 
-		if oUF.isRetail then
+		if oUF.isModern then
 			self:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', ColorPath)
 		else
 			self:RegisterEvent('RUNE_TYPE_UPDATE', ColorPath, true)

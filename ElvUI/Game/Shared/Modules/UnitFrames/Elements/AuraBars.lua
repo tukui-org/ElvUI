@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 local LSM = E.Libs.LSM
 
+local next = next
 local ipairs = ipairs
 local strfind = strfind
 
@@ -10,6 +11,7 @@ local WrapString = C_StringUtil.WrapString
 local GetAuraApplicationDisplayCount = C_UnitAuras.GetAuraApplicationDisplayCount
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
+
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 
 function UF:Construct_AuraBars(bar)
@@ -55,7 +57,7 @@ function UF:AuraBars_UpdateBar(bar)
 	bar.db = bars.db
 
 	if bars.db then
-		if E.Retail then
+		if E.Modern then
 			bar.smoothing = (bar.db.smoothbars and StatusBarInterpolation.ExponentialEaseOut) or StatusBarInterpolation.Immediate or nil
 		else
 			E:SetSmoothing(bar, bars.db.smoothbars)
@@ -72,34 +74,39 @@ function UF:AuraBars_UpdateBar(bar)
 end
 
 function UF:Construct_AuraBarHeader(frame)
-	if E.Retail then
+	if E.Modern then
 		local bars = E:Auras_Create(frame, 'AuraBars')
 		bars:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
 
 		return bars
 	else
-		local auraBar = CreateFrame('Frame', '$parent_AuraBars', frame)
-		auraBar:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
-		auraBar:SetSize(1, 1)
+		local bars = CreateFrame('Frame', '$parent_AuraBars', frame)
+		bars:SetFrameLevel(frame.RaisedElementParent.AuraBarLevel)
+		bars:SetSize(1, 1)
 
-		auraBar.PreSetPosition = UF.SortAuras
-		auraBar.PostCreateBar = UF.Construct_AuraBars
-		auraBar.PostUpdateBar = UF.PostUpdateBar_AuraBars
-		auraBar.CustomFilter = UF.AuraFilter
+		bars.PreSetPosition = UF.SortAuras
+		bars.PostCreateBar = UF.Construct_AuraBars
+		bars.PostUpdateBar = UF.PostUpdateBar_AuraBars
+		bars.CustomFilter = UF.AuraFilter
 
-		auraBar.sparkEnabled = true
-		auraBar.initialAnchor = 'BOTTOMRIGHT'
-		auraBar.type = 'aurabar'
+		bars.sparkEnabled = true
+		bars.initialAnchor = 'BOTTOMRIGHT'
+		bars.type = 'aurabar'
 
-		return auraBar
+		return bars
 	end
 end
 
-function UF:AuraBars_UpdateFilter(bars, unit)
-	local friendly = UF:UnitIsFriendly(unit)
-	bars.filterLists = friendly and bars.friendlyFilter or bars.enemyFilter
+function UF:AuraBars_UpdateFilter(bars, unit, force)
+	local previous = bars.filterLists
+	local current = UF:UnitIsFriendly(unit) and bars.friendlyFilter or bars.enemyFilter
+	if not force and (previous == current) then return end -- only update when needed
 
-	UF:GroupFilters(bars, bars.filterLists) -- build the groups
+	bars.filterLists = current -- save current
+
+	UF:GroupFilters(bars, current) -- build the groups
+
+	return true
 end
 
 function UF:Configure_AuraBars(frame)
@@ -125,7 +132,7 @@ function UF:Configure_AuraBars(frame)
 		bars.reverseFill = bars.db.reverseFill
 		bars.friendlyAuraType = db.friendlyAuraType
 		bars.enemyAuraType = db.enemyAuraType
-		bars.auraSort = UF.SortAuraFuncs[E.Retail and 'PLAYER' or db.sortMethod]
+		bars.auraSort = UF.SortAuraFuncs[E.Modern and 'PLAYER' or db.sortMethod]
 		bars.tooltipAnchor = db.tooltipAnchorType
 		bars.tooltipAnchorX = db.tooltipAnchorX
 		bars.tooltipAnchorY = db.tooltipAnchorY
@@ -191,7 +198,10 @@ function UF:Configure_AuraBars(frame)
 
 		bars.width = E:Scale(BAR_WIDTH - (BORDER * 4) - bars.height - POWER_OFFSET + 1) -- 1 is connecting pixel
 		bars:ClearAllPoints()
-		bars:Show()
+
+		if not E.Modern then
+			bars:Show()
+		end
 
 		local p1 = below and 'BOTTOM' or 'TOP'
 		local p2 = detached and p1 or (buffs or debuffs) and attachTo.anchorPoint or 'TOPLEFT'
@@ -205,15 +215,17 @@ function UF:Configure_AuraBars(frame)
 			bars:Point(p3..p4, attachTo, p1..p4, xOffset or (right and -(BORDER * 2)) or (bars.height + UF.BORDER), yOffset)
 		end
 
-		if E.Retail then
+		if E.Modern then
 			bars.isAuraBar = true
 			bars.size = db.height
 			bars.numAuras = db.maxBars
 			bars.maxFrameCount = db.maxBars
 			bars.lineSpacing = bars.spacing
+			bars.smoothbars = db.smoothbars
 			bars.isTransparent = UF.db.colors.transparentAurabars -- always on for now
 			bars.invertAurabars = UF.db.colors.invertAurabars
 			bars.sortMethod = E.AuraContainerSortMethod[db.sortMethod]
+			bars.sortDirection = E.AuraContainerSortDirection[db.sortDirection]
 			bars.statusbarTexture = LSM:Fetch('statusbar', UF.db.statusbar)
 			bars.countPosition, bars.countXOffset, bars.countYOffset = db.countPosition, db.countXOffset, db.countYOffset
 			bars.countFont, bars.countFontSize, bars.countFontOutline = db.countFont, db.countFontSize, db.countFontOutline
@@ -222,15 +234,19 @@ function UF:Configure_AuraBars(frame)
 			bars.enemyFilter = db.enemyFilter.filterLists
 			bars.noMouse = db.clickThrough
 			bars.forceShowAuras = frame.forceShowAuras
+			bars.allowEnable = true -- keep over Auras_GroupUnit
 
-			UF:AuraBars_UpdateFilter(bars, frame.__unit)
+			UF:AuraBars_UpdateFilter(bars, frame.__unit, true)
+
+			local known = next(bars.known) -- new groups update their buttons in initializeFrame
 
 			E:Auras_GroupUnit(bars, frame.__unit)
 			E:Auras_SetContainer(bars)
 			E:Auras_SetLineSize(bars)
-			E:Auras_UpdateButtons(bars)
 
-			bars.allowEnable = true
+			if known then
+				E:Auras_UpdateButtons(bars)
+			end
 		else
 			bars.disableMouse = db.clickThrough
 
@@ -244,7 +260,7 @@ function UF:Configure_AuraBars(frame)
 			frame:DisableElement('AuraBars')
 		end
 
-		if E.Retail then
+		if E.Modern then
 			bars.allowEnable = false
 		end
 
@@ -257,7 +273,7 @@ local GOTAK = E:GetSpellInfo(GOTAK_ID)
 function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, bar, index, position, duration, expiration, debuffType, isStealable
 	local spellName, color = E:NotSecretValue(bar.spell) and bar.spell or nil
 
-	if not E.Retail then
+	if not E.Modern then
 		local spellID = E:NotSecretValue(bar.spellID) and bar.spellID or nil
 		local auraColor = E.global.unitframe.AuraBarColors[spellID]
 		color = auraColor and auraColor.enable and auraColor.color
@@ -273,7 +289,7 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 
 	local isDebuff, colors = bar.filter == 'HARMFUL', UF.db.colors
 	if not color and colors.auraBarByType and isDebuff then
-		if E.Retail then
+		if E.Modern then
 			color = UF:GetAuraCurve(unit, bar, bar.aura)
 		elseif not debuffType or (debuffType == '' or debuffType == 'None') then
 			color = colors.auraBarDebuff -- debuffType is None here when secret
@@ -308,13 +324,9 @@ function UF:PostUpdateBar_AuraBars(unit, bar, _, _, _, _, debuffType) -- unit, b
 	if bar.bg then
 		if (bar.invertColors ~= colors.invertAurabars) or ((colors.transparentAurabars and not bar.isTransparent) or (bar.isTransparent and not colors.transparentAurabars)) then
 			UF:ToggleTransparentStatusBar(colors.transparentAurabars, bar, bar.bg, true, colors.invertAurabars)
-		else
-			if not bar.bg:GetTexture() then
-				UF:Update_StatusBar(bar.bg, colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
-			end
-
-			local orientation = bar:GetOrientation()
-			UF:SetStatusBarBackdropPoints(bar, bar:GetStatusBarTexture(), bar.bg, orientation)
+		elseif not bar.bg:GetTexture() then -- first bar update, ToggleTransparentStatusBar handles the anchors after that
+			UF:Update_StatusBar(bar.bg, colors.transparentAurabars and E.media.blankTex or LSM:Fetch('statusbar', UF.db.statusbar))
+			UF:SetStatusBarBackdropPoints(bar, bar:GetStatusBarTexture(), bar.bg, bar:GetOrientation())
 		end
 	end
 
