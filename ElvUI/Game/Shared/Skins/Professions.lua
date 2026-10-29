@@ -146,7 +146,7 @@ local function HandleOutputButton(child)
 		item:SetPushedTexture(E.ClearTexture)
 		item:SetHighlightTexture(E.ClearTexture)
 
-		local icon = item:GetRegions()
+		local icon = item.icon
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(item.IconBorder, icon.backdrop)
 

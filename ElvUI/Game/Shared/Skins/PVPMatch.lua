@@ -16,10 +16,16 @@ function S:Blizzard_PVPMatch()
 	local scoreContent = PVPMatchScoreboard.Content
 	local scoreTab = scoreContent.TabContainer
 	scoreContent:StripTextures()
-	scoreTab.InsetBorderTop:Hide()
-	scoreTab.MatchmakingText:FontTemplate()
 
-	S:HandleCloseButton(PVPMatchScoreboard.CloseButton)
+	if E.Forever then
+		scoreContent.ScrollCategories:StripTextures()
+		S:HandleCloseButton(PVPMatchScoreboard.ClosePanelButton)
+	else
+		scoreTab.InsetBorderTop:Hide()
+		scoreTab.MatchmakingText:FontTemplate()
+		S:HandleCloseButton(PVPMatchScoreboard.CloseButton)
+	end
+
 	S:HandleTrimScrollBar(scoreContent.ScrollBar)
 
 	-- Macro to show the PVPMatchResults: /run PVPMatchResults:Show()
@@ -32,12 +38,19 @@ function S:Blizzard_PVPMatch()
 	local matchTab = matchContent.tabContainer
 	matchContent:StripTextures()
 	matchTab:StripTextures()
-	matchTab.matchmakingText:FontTemplate()
 
 	S:HandleTrimScrollBar(matchContent.scrollBar)
 	S:HandleCloseButton(matchResults.CloseButton)
-	S:HandleButton(matchResults.buttonContainer.leaveButton)
-	S:HandleButton(matchResults.buttonContainer.requeueButton)
+
+	local matchButtons = matchResults.buttonContainer
+	if E.Forever then
+		matchContent.scrollCategories:StripTextures()
+		S:HandleButton(matchButtons.leaveButton, nil, nil, nil, true)
+	else
+		matchTab.matchmakingText:FontTemplate()
+		S:HandleButton(matchButtons.leaveButton)
+		S:HandleButton(matchButtons.requeueButton)
+	end
 
 	for _, tab in next, {
 		scoreTab.TabGroup.Tab1,
