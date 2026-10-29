@@ -134,7 +134,6 @@ P.general = {
 		-- These dont exist in Blizzards color table
 		Bleed = { r = 1, g = 0.2, b = 0.6, a = 1 },
 		Stealable = { r = 0.93, g = 0.91, b = 0.55, a = 1 },
-		BadDispel = { r = 0.05, g = 0.85, b = 0.94, a = 1 },
 	},
 	bordercolor = { r = 0, g = 0, b = 0, a = 1 }, -- updated in E.Initialize
 	backdropcolor = { r = 0.1, g = 0.1, b = 0.1, a = 1 },
