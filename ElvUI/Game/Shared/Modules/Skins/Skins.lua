@@ -1754,28 +1754,30 @@ function S:HandleItemButton(b, setInside, ignoreParent)
 	b.IsSkinned = true
 end
 
-do
-	local function KeepTexCoords(icon, left)
-		if left ~= E:GetTexCoords() then
-			icon:SetTexCoords()
+function S:HandleItemButtonCrop(button)
+	if not E.Forever or button.lockedTexCoords then return end
+
+	local icon = GetItemButtonIconTexture(button)
+	if not icon then return end -- wat?
+
+	hooksecurefunc(icon, 'SetTexCoord', E.ResetTexCoords)
+
+	local mask = button.Mask
+	if mask then
+		icon:RemoveMaskTexture(mask)
+
+		local normTex = button:GetNormalTexture()
+		if normTex then
+			normTex:RemoveMaskTexture(mask)
+		end
+
+		local pushTex = button:GetPushedTexture()
+		if pushTex then
+			pushTex:RemoveMaskTexture(mask)
 		end
 	end
 
-	function S:HandleItemButtonCrop(button)
-		if not E.Forever or button.keepsCrop then return end
-
-		local icon = GetItemButtonIconTexture(button)
-		hooksecurefunc(icon, 'SetTexCoord', KeepTexCoords)
-
-		local mask = button.Mask
-		if mask then
-			for _, texture in next, { icon, button:GetNormalTexture(), button:GetPushedTexture() } do
-				texture:RemoveMaskTexture(mask)
-			end
-		end
-
-		button.keepsCrop = true
-	end
+	button.lockedTexCoords = true
 end
 
 do
