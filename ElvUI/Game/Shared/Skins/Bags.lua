@@ -87,6 +87,7 @@ local function SkinButton(button)
 
 	if E.Forever then
 		button.EmptyBagIcon:SetAlpha(0)
+
 		hooksecurefunc(button, 'SyncAppearanceWithHasItem', SyncAppearance)
 	end
 
