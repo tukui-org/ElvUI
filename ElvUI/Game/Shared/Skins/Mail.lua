@@ -43,6 +43,7 @@ local function Skin_OpenMail()
 			btn:StyleButton()
 
 			S:HandleIconBorder(btn.IconBorder)
+			S:HandleItemButtonCrop(btn)
 		end
 
 		btn.icon:SetTexCoords()
@@ -207,12 +208,14 @@ function S:Blizzard_MailFrame()
 	_G.OpenMailLetterButton:StyleButton()
 	_G.OpenMailLetterButtonIconTexture:SetTexCoords()
 	_G.OpenMailLetterButtonIconTexture:SetInside()
+	S:HandleItemButtonCrop(_G.OpenMailLetterButton)
 
 	_G.OpenMailMoneyButton:StripTextures()
 	_G.OpenMailMoneyButton:SetTemplate(nil, true)
 	_G.OpenMailMoneyButton:StyleButton()
 	_G.OpenMailMoneyButtonIconTexture:SetTexCoords()
 	_G.OpenMailMoneyButtonIconTexture:SetInside()
+	S:HandleItemButtonCrop(_G.OpenMailMoneyButton)
 
 	_G.OpenMailReplyButton:Point('RIGHT', _G.OpenMailDeleteButton, 'LEFT', -2, 0)
 	_G.OpenMailDeleteButton:Point('RIGHT', _G.OpenMailCancelButton, 'LEFT', -2, 0)

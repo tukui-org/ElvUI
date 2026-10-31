@@ -24,6 +24,7 @@ local function ReskinQualityContainer(container)
 	button:SetHighlightTexture(E.ClearTexture)
 
 	S:HandleIcon(button.Icon, true)
+	S:HandleItemButtonCrop(button)
 	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
 
 	HandleInputBox(container.EditBox)
@@ -35,6 +36,7 @@ local function HandleSalvageItem(item)
 
 	if not item.IsSkinned then
 		S:HandleIcon(item.icon, true)
+		S:HandleItemButtonCrop(item)
 		S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
 
 		local hl = item:GetHighlightTexture()
@@ -55,6 +57,7 @@ local function RefreshFlyoutButton(button)
 
 	if not button.IsSkinned then
 		S:HandleIcon(button.icon, true)
+		S:HandleItemButtonCrop(button)
 		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
 
 		local hl = button:GetHighlightTexture()
@@ -133,6 +136,7 @@ local function ReskinSlotButton(button)
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)
+		S:HandleItemButtonCrop(button)
 
 		button.IsSkinned = true
 	end
@@ -148,6 +152,7 @@ local function HandleOutputButton(child)
 
 		local icon = item.icon
 		S:HandleIcon(icon, true)
+		S:HandleItemButtonCrop(item)
 		S:HandleIconBorder(item.IconBorder, icon.backdrop)
 
 		itemContainer.CritFrame:SetAlpha(0)
@@ -583,6 +588,7 @@ function S:Blizzard_Professions()
 		button:StripTextures()
 
 		S:HandleIcon(button.icon, true)
+		S:HandleItemButtonCrop(button)
 		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
 
 		button:SetNormalTexture(E.ClearTexture)

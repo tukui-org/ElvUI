@@ -19,10 +19,12 @@ function S:Blizzard_PVPMatch()
 
 	if E.Forever then
 		scoreContent.ScrollCategories:StripTextures()
+
 		S:HandleCloseButton(PVPMatchScoreboard.ClosePanelButton)
 	else
 		scoreTab.InsetBorderTop:Hide()
 		scoreTab.MatchmakingText:FontTemplate()
+
 		S:HandleCloseButton(PVPMatchScoreboard.CloseButton)
 	end
 
@@ -45,9 +47,11 @@ function S:Blizzard_PVPMatch()
 	local matchButtons = matchResults.buttonContainer
 	if E.Forever then
 		matchContent.scrollCategories:StripTextures()
+
 		S:HandleButton(matchButtons.leaveButton, nil, nil, nil, true)
 	else
 		matchTab.matchmakingText:FontTemplate()
+
 		S:HandleButton(matchButtons.leaveButton)
 		S:HandleButton(matchButtons.requeueButton)
 	end

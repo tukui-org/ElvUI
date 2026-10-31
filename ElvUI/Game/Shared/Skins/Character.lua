@@ -240,6 +240,7 @@ local function EquipmentDisplayButton(button, index)
 
 		button.icon:SetInside()
 		button.icon:SetTexCoords()
+		S:HandleItemButtonCrop(button)
 
 		if E.Modern then -- the classic SetItemButtonQuality always hides it
 			S:HandleIconBorder(button.IconBorder)
@@ -863,6 +864,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 			S:HandleIcon(Slot.icon)
 			Slot.icon:SetInside()
+			S:HandleItemButtonCrop(Slot)
 
 			if Slot.ignoreTexture then -- the Forever ammo slot has none
 				Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
