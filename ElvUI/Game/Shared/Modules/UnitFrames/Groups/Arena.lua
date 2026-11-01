@@ -3,7 +3,7 @@ local UF = E:GetModule('UnitFrames')
 local ElvUF = E.oUF
 
 local CreateFrame = CreateFrame
-local UnitFrameUtil = UnitFrameUtil
+local OpponentSpecDisplay = UnitFrameUtil and UnitFrameUtil.UpdateArenaOpponentSpecDisplay
 
 local ArenaHeader = CreateFrame('Frame', 'ArenaHeader', E.UIParent)
 
@@ -34,8 +34,8 @@ function UF:ToggleArenaPreparationInfo(frame, specID)
 			specDisplay.specNameText = frame.ArenaPrepSpec
 			specDisplay.specPortrait = showIcon and frame.PVPSpecIcon.Icon or nil
 
-			local hasSpec = UnitFrameUtil.UpdateArenaOpponentSpecDisplay(specDisplay, frame.index)
-			if showIcon and not hasSpec then -- we can still use the unknown
+			local hasSpec = OpponentSpecDisplay and OpponentSpecDisplay(specDisplay, frame.index)
+			if showIcon and E:NotSecretValue(hasSpec) and not hasSpec then
 				frame.PVPSpecIcon.Icon:SetTexture(specUnknown)
 			end
 		else

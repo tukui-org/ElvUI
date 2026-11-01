@@ -61,6 +61,7 @@ local function HandleQuestIcons(_, block)
 
 	S:HandleIcon(button.icon, true)
 	button.icon:SetInside()
+	S:HandleItemButtonCrop(button)
 
 	button.IsSkinned = true
 end

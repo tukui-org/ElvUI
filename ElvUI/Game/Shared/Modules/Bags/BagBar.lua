@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local B = E:GetModule('Bags')
 local AB = E:GetModule('ActionBars')
+local S = E:GetModule('Skins')
 
 local _G = _G
 local gsub = gsub
@@ -135,6 +136,7 @@ function B:SkinBag(bag)
 		icon:SetInside()
 		icon:SetTexture((not bag.oldTex or bag.oldTex == 1721259) and E.Media.Textures.Backpack or bag.oldTex)
 		icon:SetTexCoords()
+		S:HandleItemButtonCrop(bag)
 	end
 end
 
@@ -390,6 +392,7 @@ function B:LoadBagBar()
 
 		B:SetButtonTexture(KeyRing, [[Interface\ICONS\INV_Misc_Key_03]])
 
+		S:HandleItemButtonCrop(KeyRing)
 		KeyRing.icon = KeyRing:GetNormalTexture()
 
 		if not KeyRing.searchOverlay then

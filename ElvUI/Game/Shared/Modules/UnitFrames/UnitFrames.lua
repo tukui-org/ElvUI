@@ -1637,7 +1637,7 @@ function UF:RegisterRaidDebuffIndicator()
 end
 
 function UF:Eventless_UpdateAll(frame)
-	frame.elapsedThrottle = frame.eventlessThrottle
+	frame.elapsedThrottle = 0
 	frame.elapsedSecret = 0
 	frame.elapsedResource = 0
 	frame.elapsedPrediction = 0
@@ -1650,22 +1650,25 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 	local unit = self.__eventless and self.__unit
 	if not unit then return end
 
-	local waitThrottle = (self.elapsedThrottle or self.eventlessThrottle) - elapsed
-	if waitThrottle > 0 then
-		self.elapsedThrottle = waitThrottle
-		return
+	-- always accumulate time
+	self.elapsedThrottle = (self.elapsedThrottle or 0) + elapsed
+	self.elapsedSecret = (self.elapsedSecret or 0) + elapsed
+	self.elapsedResource = (self.elapsedResource or 0) + elapsed
+	self.elapsedPrediction = (self.elapsedPrediction or 0) + elapsed
+
+	if self.eventlessAura then
+		self.elapsedAura = (self.elapsedAura or 0) + elapsed
 	end
 
-	self.elapsedThrottle = self.eventlessThrottle
+	if self.elapsedThrottle < self.eventlessThrottle then
+		return -- throttle is just a cheap exit
+	end
+
+	self.elapsedThrottle = 0
 
 	if E:IsSecretUnit(unit) then
-		local waitSecret = (self.elapsedSecret or 0) + elapsed
-		if waitSecret >= self.eventlessSecret then
+		if self.elapsedSecret >= self.eventlessSecret then
 			UF:Eventless_UpdateAll(self)
-
-			self.elapsedSecret = 0
-		else
-			self.elapsedSecret = waitSecret
 		end
 
 		return
@@ -1673,8 +1676,7 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 		return -- bail out
 	end
 
-	local waitResource = (self.elapsedResource or 0) + elapsed
-	if waitResource >= self.eventlessResource then
+	if self.elapsedResource >= self.eventlessResource then
 		local guid = UnitGUID(unit)
 		if self.lastGUID ~= guid then
 			self.lastGUID = guid
@@ -1688,33 +1690,23 @@ function UF:Eventless_OnUpdate(elapsed) -- self = frame
 		if self:IsElementEnabled('Power') then self.Power:ForceUpdate() end
 
 		self.elapsedResource = 0
-	else
-		self.elapsedResource = waitResource
 	end
 
-	local waitPrediction = (self.elapsedPrediction or 0) + elapsed
-	if waitPrediction >= self.eventlessPrediction then
+	if self.elapsedPrediction >= self.eventlessPrediction then
 		if self:IsElementEnabled('HealthPrediction') then self.HealthPrediction:ForceUpdate() end
 		if self:IsElementEnabled('PowerPrediction') then self.PowerPrediction:ForceUpdate() end
 		if self:IsElementEnabled('RaidTargetIndicator') then self.RaidTargetIndicator:ForceUpdate() end
 
 		self.elapsedPrediction = 0
-	else
-		self.elapsedPrediction = waitPrediction
 	end
 
-	if self.eventlessAura then -- not on Modern
-		local waitAura = (self.elapsedAura or 0) + elapsed
-		if waitAura >= self.eventlessAura then
-			local element = self:IsElementEnabled('Auras') and (self.Auras or self.Buffs or self.Debuffs)
-			if element then -- one ForceUpdate updates all three containers
-				element:ForceUpdate()
-			end
-
-			self.elapsedAura = 0
-		else
-			self.elapsedAura = waitAura
+	if self.eventlessAura and self.elapsedAura >= self.eventlessAura then
+		local element = self:IsElementEnabled('Auras') and (self.Auras or self.Buffs or self.Debuffs)
+		if element then -- one ForceUpdate updates all three containers
+			element:ForceUpdate()
 		end
+
+		self.elapsedAura = 0
 	end
 end
 

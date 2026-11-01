@@ -20,7 +20,7 @@ do	-- mainly used to prevent the bling from triggering when
 		local db = E:CooldownData(cooldown)
 		if not db then return end
 
-		local texture = (alpha and alpha > 0.5) and (db.altBling and 131011 or 131010) or E.Media.Textures.Invisible
+		local texture = (alpha and alpha > 0.5) and (db.altBling and E.Media.Textures.Star4 or E.Media.Textures.StarBurst) or E.Media.Textures.Invisible
 		if blings[cooldown] ~= texture then		-- dont change the texture unless we need to
 			cooldown:SetBlingTexture(texture)	-- starburst or star4 or invisible
 

@@ -39,6 +39,7 @@ local function LootHistoryElements(button) -- headers and padding rows share the
 
 	item:StripTextures()
 	S:HandleIcon(item.icon, true)
+	S:HandleItemButtonCrop(item)
 	S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
 
 	button.IsSkinned = true
@@ -57,6 +58,7 @@ local function LootFrameUpdateChild(button)
 			icon:SetInside(item)
 
 			S:HandleIcon(icon, true)
+			S:HandleItemButtonCrop(item)
 		end
 
 		item.NormalTexture:SetAlpha(0)

@@ -2179,6 +2179,7 @@ function B:ConstructContainerHolder(f, bagID, isBank, name, index)
 	holder.icon:SetTexCoords()
 	holder.icon:SetTexture(bagID == KEYRING_CONTAINER and 134237 or E.Media.Textures.Backpack) -- Interface\ICONS\INV_Misc_Key_03
 	holder.icon:SetInside()
+	S:HandleItemButtonCrop(holder)
 
 	holder.IconBorder:SetAlpha(0)
 
@@ -2879,6 +2880,7 @@ function B:ConstructContainerButton(f, bagID, slotID)
 
 	slot.icon:SetInside()
 	slot.icon:SetTexCoords()
+	S:HandleItemButtonCrop(slot)
 
 	slot.itemLevel = slot:CreateFontString(nil, 'OVERLAY')
 	slot.itemLevel:Point(db.itemLevelPosition, db.itemLevelxOffset, db.itemLevelyOffset)

@@ -24,6 +24,7 @@ local function HandleTradeItem(item, button, icon, name)
 	item:StripTextures()
 	icon:SetInside(button)
 	icon:SetTexCoords()
+	S:HandleItemButtonCrop(button)
 end
 
 function S:TradeFrame()

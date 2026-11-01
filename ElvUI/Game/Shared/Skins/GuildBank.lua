@@ -139,6 +139,7 @@ function S:Blizzard_GuildBankUI()
 
 			button.icon:SetInside()
 			button.icon:SetTexCoords()
+			S:HandleItemButtonCrop(button)
 
 			S:HandleIconBorder(button.IconBorder)
 		end

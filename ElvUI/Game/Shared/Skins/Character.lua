@@ -240,6 +240,7 @@ local function EquipmentDisplayButton(button, index)
 
 		button.icon:SetInside()
 		button.icon:SetTexCoords()
+		S:HandleItemButtonCrop(button)
 
 		if E.Modern then -- the classic SetItemButtonQuality always hides it
 			S:HandleIconBorder(button.IconBorder)
@@ -863,6 +864,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 			S:HandleIcon(Slot.icon)
 			Slot.icon:SetInside()
+			S:HandleItemButtonCrop(Slot)
 
 			if Slot.ignoreTexture then -- the Forever ammo slot has none
 				Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
@@ -1013,7 +1015,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 	--Re-add the overlay texture which was removed right above via StripTextures
 	local CharacterModelScene = _G.CharacterModelScene
-	if E.Forever then -- Forever overlay is an unnamed atlas without the per race alpha
+	if E.Forever then
 		CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5)
 
 		-- blizzard fills the whole pane behind the slots, box it in between the slot columns like retail

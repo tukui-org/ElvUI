@@ -7,7 +7,7 @@ local IsInInstance = IsInInstance
 local UnitFactionGroup = UnitFactionGroup
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetSpecializationInfoByID = GetSpecializationInfoByID
-local UnitFrameUtil = UnitFrameUtil
+local OpponentSpecDisplay = UnitFrameUtil and UnitFrameUtil.UpdateArenaOpponentSpecDisplay
 
 local specDisplay = {}
 local factions = {
@@ -37,8 +37,8 @@ local Update = function(frame, event, unit)
 		if oUF:IsSecretValue(specID) then -- 12.1.5 spec is secret, Blizzard applies the icon
 			specDisplay.specPortrait = element.Icon
 
-			local hasSpec = UnitFrameUtil.UpdateArenaOpponentSpecDisplay(specDisplay, unitID)
-			if not hasSpec then -- we can still use the unknown
+			local hasSpec = OpponentSpecDisplay and OpponentSpecDisplay(specDisplay, unitID)
+			if oUF:NotSecretValue(hasSpec) and not hasSpec then
 				element.Icon:SetTexture(factions.Unknown)
 			end
 		else

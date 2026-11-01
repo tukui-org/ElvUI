@@ -3854,11 +3854,11 @@ function CH:DeconfigureHead(memberID) -- memberID, channelID
 	frame:Hide()
 end
 
-function CH:VoiceOverlay(event, ...)
-	if event == 'VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED' then
-		local memberID, channelID, isTalking = ...
+function CH:VoiceOverlay(event, memberID, channelID, arg3)
+	if E:IsSecretValue(memberID) then return end
 
-		if E:NotSecretValue(isTalking) and isTalking then
+	if event == 'VOICE_CHAT_CHANNEL_MEMBER_SPEAKING_STATE_CHANGED' then
+		if arg3 then -- isTalking
 			CH.TalkingList[memberID] = channelID
 			CH:ConfigureHead(memberID, channelID)
 		else
@@ -3866,21 +3866,14 @@ function CH:VoiceOverlay(event, ...)
 			CH:DeconfigureHead(memberID, channelID)
 		end
 	elseif event == 'VOICE_CHAT_CHANNEL_MEMBER_ENERGY_CHANGED' then
-		local memberID, channelID, volume = ...
 		local frame = CH:GetHeadByID(memberID)
 		if frame and channelID == frame.channelID then
-			frame.StatusBar.anim.progress:SetChange(volume)
+			frame.StatusBar.anim.progress:SetChange(arg3) -- volume
 			frame.StatusBar.anim.progress:Play()
 
-			frame.StatusBar:SetStatusBarColor(E:ColorGradient(volume, 1, 0, 0, 1, 1, 0, 0, 1, 0))
+			local r, g, b = E:ColorGradient(arg3, 1, 0, 0, 1, 1, 0, 0, 1, 0)
+			frame.StatusBar:SetStatusBarColor(r, g, b)
 		end
-	--[[elseif event == 'VOICE_CHAT_CHANNEL_TRANSMIT_CHANGED' then
-		local channelID, isTransmitting = ...
-		local localPlayerMemberID = C_VoiceChat.GetLocalPlayerMemberID(channelID)
-		if isTransmitting and not CH.TalkingList[localPlayerMemberID] then
-			CH.TalkingList[localPlayerMemberID] = channelID
-			CH:ConfigureHead(localPlayerMemberID, channelID)
-		end]]
 	end
 end
 
