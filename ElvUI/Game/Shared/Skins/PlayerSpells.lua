@@ -154,6 +154,10 @@ local function HandleHeroTalents(frame)
 	end
 end
 
+local function UpdateSpellBookAttic(frame)
+	frame.SettingsDropdown:Point('TOPRIGHT', -30, -23)
+end
+
 function S:Blizzard_PlayerSpells()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
 	S:HandlePortraitFrame(PlayerSpellsFrame)
@@ -278,8 +282,7 @@ function S:Blizzard_PlayerSpells()
 		S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
 
 		SpellBookFrame.SettingsDropdown:SetTemplate()
-		SpellBookFrame.SettingsDropdown:ClearAllPoints()
-		SpellBookFrame.SettingsDropdown:Point('TOPRIGHT', SpellBookFrame, 'TOPRIGHT', -30, -23)
+		hooksecurefunc(SpellBookFrame, 'UpdateAttic', UpdateSpellBookAttic)
 
 		SpellBookFrame.SearchBox:Height(20)
 		SpellBookFrame.SearchBox:ClearAllPoints()
