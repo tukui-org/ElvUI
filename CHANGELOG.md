@@ -1,3 +1,27 @@
+### Version 16.01 [ November 3rd 2026 ]
+*   Tags for missinghp and missingpp will hide at zero again.
+*   Nameplates icons or textures would sometimes have the wrong level after being in name-only mode.
+*   Unitframes have reduced update calls when group size changes.
+*   Module copy error would happen rarely depending in the profile copied from.
+*   Maintank and Mainassist Growth Y-Direction setting was causing the frames to bug when set to up.
+*   Display PvP instead of Player vs. Player in some locales.
+*   Chat rejoining channels when rezoning on classics.
+*   EnemyManaRegen (mp5) added on **Forever** and updated for classics.
+*   Boss frames range wasn't working properly because of secrets.
+*   Skin: Suggested content icon was stuck on parchment off mode. (Thanks Dack)
+*   Gamepad support on **Forever**.
+*   Temp Enchant charges work properly again.
+*   Nameplate castbar Display Target showing previous target soemtimes.
+*   Nameplate castbar Target Text displays in class color.
+*   Castbar craft merge works again.
+*   Breath and Fatigue bars show their timers again on Retail and Forever.
+*   Minimap: External event button added, with option to hide (Titan).
+*   Character count option added for the chat editbox.
+*   Arena preparation frames not showing up because of a secret error.
+*   Unitframe setting Display Player was missing from Raid groups.
+*   Unitframe eventless units (targettarget, focustarget, etc) frame timing was a bit off.
+*   Chat voice overlay was erroring from secrets, this actually wont work properly anymore because of secrets.
+
 ### Version 16.00 [ October 13th 2026 ]
 * **After almost two months of pretty much daily work and testing, we're introducing our 16.00 update for ElvUI:**
     *   A large performance pass and many fixes, this includes a noticable speedup of loading screens.
