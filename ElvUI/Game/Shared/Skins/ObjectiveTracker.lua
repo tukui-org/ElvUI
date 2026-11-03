@@ -59,8 +59,9 @@ local function HandleQuestIcons(_, block)
 	button:SetPushedTexture(E.ClearTexture)
 	button:GetHighlightTexture():SetColorTexture(1, 1, 1, .25)
 
-	S:HandleIcon(button.icon, true)
 	button.icon:SetInside()
+
+	S:HandleIcon(button.icon, true)
 	S:HandleItemButtonCrop(button)
 
 	button.IsSkinned = true

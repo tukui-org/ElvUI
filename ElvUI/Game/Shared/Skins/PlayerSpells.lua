@@ -154,6 +154,11 @@ local function HandleHeroTalents(frame)
 	end
 end
 
+local function UpdateSpellBookAttic(frame)
+	frame.SettingsDropdown:ClearAllPoints()
+	frame.SettingsDropdown:Point('TOPRIGHT', -30, -23)
+end
+
 function S:Blizzard_PlayerSpells()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
 	S:HandlePortraitFrame(PlayerSpellsFrame)
@@ -275,15 +280,15 @@ function S:Blizzard_PlayerSpells()
 	S:HandleEditBox(SpellBookFrame.SearchBox)
 
 	if E.Forever then -- arrow dropdown on Forever, gear icon on Retail
-		S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
+		hooksecurefunc(SpellBookFrame, 'UpdateAttic', UpdateSpellBookAttic)
 
-		SpellBookFrame.SettingsDropdown:SetTemplate()
-		SpellBookFrame.SettingsDropdown:ClearAllPoints()
-		SpellBookFrame.SettingsDropdown:Point('TOPRIGHT', SpellBookFrame, 'TOPRIGHT', -30, -23)
+		local dropdown = SpellBookFrame.SettingsDropdown
+		S:HandleNextPrevButton(dropdown, 'down', nil, true)
+		dropdown:SetTemplate()
 
 		SpellBookFrame.SearchBox:Height(20)
 		SpellBookFrame.SearchBox:ClearAllPoints()
-		SpellBookFrame.SearchBox:Point('RIGHT', SpellBookFrame.SettingsDropdown, 'LEFT', -5, 0)
+		SpellBookFrame.SearchBox:Point('RIGHT', dropdown, 'LEFT', -5, 0)
 	end
 
 	SpellBookFrame.TopBar:Hide()

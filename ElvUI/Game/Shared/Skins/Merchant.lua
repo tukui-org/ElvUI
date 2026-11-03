@@ -92,6 +92,7 @@ local function HandleMerchantItem(index)
 	icon:ClearAllPoints()
 	icon:Point('TOPLEFT', 1, -1)
 	icon:Point('BOTTOMRIGHT', -1, 1)
+
 	S:HandleItemButtonCrop(button)
 
 	if E.Modern then

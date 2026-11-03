@@ -29,12 +29,11 @@ local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 
 local GetSpellBookItemName = C_SpellBook.GetSpellBookItemName or GetSpellBookItemName
 
-local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
-
-local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
-local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
 local QUICK_KEYBIND_MODE = QUICK_KEYBIND_MODE
+local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
+local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
 local MAX_ACCOUNT_MACROS = (Constants.MacroConsts and Constants.MacroConsts.MAX_ACCOUNT_MACROS) or MAX_ACCOUNT_MACROS
+local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
 
 local bind = CreateFrame('Frame', 'ElvUI_KeyBinder', E.UIParent)
 AB.KeyBinder = bind
