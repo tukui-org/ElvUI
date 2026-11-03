@@ -155,6 +155,7 @@ local function HandleHeroTalents(frame)
 end
 
 local function UpdateSpellBookAttic(frame)
+	frame.SettingsDropdown:ClearAllPoints()
 	frame.SettingsDropdown:Point('TOPRIGHT', -30, -23)
 end
 
