@@ -280,14 +280,15 @@ function S:Blizzard_PlayerSpells()
 	S:HandleEditBox(SpellBookFrame.SearchBox)
 
 	if E.Forever then -- arrow dropdown on Forever, gear icon on Retail
-		S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
-
-		SpellBookFrame.SettingsDropdown:SetTemplate()
 		hooksecurefunc(SpellBookFrame, 'UpdateAttic', UpdateSpellBookAttic)
+
+		local dropdown = SpellBookFrame.SettingsDropdown
+		S:HandleNextPrevButton(dropdown, 'down', nil, true)
+		dropdown:SetTemplate()
 
 		SpellBookFrame.SearchBox:Height(20)
 		SpellBookFrame.SearchBox:ClearAllPoints()
-		SpellBookFrame.SearchBox:Point('RIGHT', SpellBookFrame.SettingsDropdown, 'LEFT', -5, 0)
+		SpellBookFrame.SearchBox:Point('RIGHT', dropdown, 'LEFT', -5, 0)
 	end
 
 	SpellBookFrame.TopBar:Hide()
