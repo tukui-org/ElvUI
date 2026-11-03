@@ -185,14 +185,15 @@ function S:Blizzard_InspectUI()
 	if E.Modern then
 		for _, Slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
 			if Slot.icon then -- the item slots, not the talents button
-				S:HandleIcon(Slot.icon, true)
-				Slot.icon.backdrop:OffsetFrameLevel(nil, Slot)
-				Slot.icon:SetInside()
 				Slot:StripTextures()
 				Slot:StyleButton()
-				S:HandleItemButtonCrop(Slot)
 
+				S:HandleItemButtonCrop(Slot)
 				S:HandleIconBorder(Slot.IconBorder, Slot.icon.backdrop)
+				S:HandleIcon(Slot.icon, true)
+
+				Slot.icon.backdrop:OffsetFrameLevel(nil, Slot)
+				Slot.icon:SetInside()
 			end
 		end
 	else

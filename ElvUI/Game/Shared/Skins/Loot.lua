@@ -38,6 +38,7 @@ local function LootHistoryElements(button) -- headers and padding rows share the
 	button.BackgroundArtFrame:CreateBackdrop('Transparent')
 
 	item:StripTextures()
+
 	S:HandleIcon(item.icon, true)
 	S:HandleItemButtonCrop(item)
 	S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
