@@ -468,6 +468,7 @@ local function HandleProfessionButton(button)
 
 	button.highlightTexture:SetInside(icon.backdrop)
 	button.IconTextureOverlay:SetAlpha(0)
+	button.IconBorder:SetAlpha(0)
 
 	E:RegisterCooldown(button.cooldown)
 
