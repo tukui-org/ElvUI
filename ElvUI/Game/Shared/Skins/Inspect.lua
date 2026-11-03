@@ -188,9 +188,9 @@ function S:Blizzard_InspectUI()
 				Slot:StripTextures()
 				Slot:StyleButton()
 
+				S:HandleIcon(Slot.icon, true)
 				S:HandleItemButtonCrop(Slot)
 				S:HandleIconBorder(Slot.IconBorder, Slot.icon.backdrop)
-				S:HandleIcon(Slot.icon, true)
 
 				Slot.icon.backdrop:OffsetFrameLevel(nil, Slot)
 				Slot.icon:SetInside()
