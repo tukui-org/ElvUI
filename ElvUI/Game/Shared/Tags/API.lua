@@ -221,7 +221,7 @@ Tags.Env.GetQuestData = function(unit, which, Hex)
 			if not text or text == '' then return end
 
 			if line.type == 18 or (not E.Modern and UnitIsPlayer(text)) then -- 18 is QuestPlayer
-				notMyQuest = text ~= E.myname
+				notMyQuest = text ~= E.mynameFull
 			elseif text and not notMyQuest then
 				if line.type == 17 or (not E.Modern and not lastTitle) then
 					lastTitle = NP.QuestIcons.activeQuests[text]
