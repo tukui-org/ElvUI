@@ -159,7 +159,6 @@ local function GetQuests(unitID)
 				elseif text and not notMyQuest then
 					if line.type == 17 or (not E.Modern and not lastTitle) then
 						lastTitle = activeQuests[text] -- check if its an active quest
-						notMyQuest = nil -- allow multiple quests to be found while in group
 					end -- this line comes from one line up in the tooltip
 
 					local objectives = (line.type == 8 or not E.Modern) and lastTitle and lastTitle.objectives
