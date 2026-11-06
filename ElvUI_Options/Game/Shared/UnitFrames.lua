@@ -429,6 +429,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.generalGroup.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 10, { min = 0, max = 10, step = 0.1 })
 	config.args.generalGroup.args.overlayOnFrame = ACH:Select(L["Attach To"], L["The object you want to attach to."], 11, { Health = L["Health"], Power = L["Power"], InfoPanel = L["Information Panel"], None = L["None"] })
 	config.args.generalGroup.args.format = ACH:Select(L["Format"], L["Cast Time Format"], 12, { CURRENTMAX = L["Current / Max"], CURRENT = L["Current"], REMAINING = L["Remaining"], REMAININGMAX = L["Remaining / Max"] })
+	config.args.generalGroup.args.mergeCrafts = ACH:Toggle(L["Merge Crafting"], L["Applies only to your casts."], 13)
 
 	config.args.textGroup = ACH:Group(L["Text"], nil, 16, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.textGroup.args.hideName = ACH:Toggle(L["Hide Name"], nil, 1)
