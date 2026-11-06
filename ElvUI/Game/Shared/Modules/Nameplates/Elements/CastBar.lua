@@ -235,6 +235,7 @@ function NP:Update_Castbar(nameplate)
 		end
 
 		castbar.timeToHold = db.timeToHold
+		castbar.mergeCrafts = db.mergeCrafts
 		castbar.castTimeFormat = db.castTimeFormat
 		castbar.channelTimeFormat = db.channelTimeFormat
 		castbar.pipColor = NP.db.colors.empoweredCast
