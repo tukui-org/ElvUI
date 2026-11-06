@@ -35,7 +35,7 @@ local function GetPoint(obj)
 	local point, anchor, secondaryPoint, x, y = obj:GetPoint()
 	if not anchor then anchor = UIParent end
 
-	return format('%s,%s,%s,%d,%d', point, anchor:GetName(), secondaryPoint, x and E:Round(x) or 0, y and E:Round(y) or 0)
+	return format('%s,%s,%s,%.1f,%.1f', point, anchor:GetName(), secondaryPoint, x and E:Round(x, 1) or 0, y and E:Round(y, 1) or 0)
 end
 
 local function GetSettingPoints(text)

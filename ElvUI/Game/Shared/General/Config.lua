@@ -263,8 +263,8 @@ function E:UpdateNudgeFrame(mover, x, y)
 		x, y = E:CalculateMoverPoints(mover)
 	end
 
-	x = E:Round(x)
-	y = E:Round(y)
+	x = E:Round(x, 1)
+	y = E:Round(y, 1)
 
 	E.MoverNudgeFrame.xOffset:SetText(x)
 	E.MoverNudgeFrame.yOffset:SetText(y)
@@ -485,7 +485,7 @@ function E:CreateMoverPopup()
 	nudgeFrame:SetScript('OnKeyDown', function(_, btn)
 		local Mod = IsAltKeyDown() or IsControlKeyDown()
 		if btn == 'NUMPAD4' then
-			E:NudgeMover(-1 * (Mod and 10 or 1))
+			E:NudgeMover(-0.1 * (Mod and 10 or 1))
 		elseif btn == 'NUMPAD6' then
 			E:NudgeMover(1 * (Mod and 10 or 1))
 		elseif btn == 'NUMPAD8' then
@@ -524,7 +524,7 @@ function E:CreateMoverPopup()
 	xOffset:SetAutoFocus(false)
 	xOffset.currentValue = 0
 	xOffset:SetScript('OnEscapePressed', function(eb)
-		eb:SetText(E:Round(xOffset.currentValue))
+		eb:SetText(E:Round(xOffset.currentValue, 1))
 		EditBox_ClearFocus(eb)
 	end)
 
@@ -536,18 +536,18 @@ function E:CreateMoverPopup()
 			E:NudgeMover(diff)
 		end
 
-		eb:SetText(E:Round(xOffset.currentValue))
+		eb:SetText(E:Round(xOffset.currentValue, 1))
 		EditBox_ClearFocus(eb)
 	end)
 
 	xOffset:SetScript('OnEditFocusLost', function(eb)
-		eb:SetText(E:Round(xOffset.currentValue))
+		eb:SetText(E:Round(xOffset.currentValue, 1))
 	end)
 
 	xOffset:SetScript('OnEditFocusGained', EditBox_HighlightText)
 	xOffset:SetScript('OnShow', function(eb)
 		EditBox_ClearFocus(eb)
-		eb:SetText(E:Round(xOffset.currentValue))
+		eb:SetText(E:Round(xOffset.currentValue, 1))
 	end)
 
 	xOffset.text = xOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
@@ -562,7 +562,7 @@ function E:CreateMoverPopup()
 	yOffset:SetAutoFocus(false)
 	yOffset.currentValue = 0
 	yOffset:SetScript('OnEscapePressed', function(eb)
-		eb:SetText(E:Round(yOffset.currentValue))
+		eb:SetText(E:Round(yOffset.currentValue, 1))
 		EditBox_ClearFocus(eb)
 	end)
 
@@ -574,18 +574,18 @@ function E:CreateMoverPopup()
 			E:NudgeMover(nil, diff)
 		end
 
-		eb:SetText(E:Round(yOffset.currentValue))
+		eb:SetText(E:Round(yOffset.currentValue, 1))
 		EditBox_ClearFocus(eb)
 	end)
 
 	yOffset:SetScript('OnEditFocusLost', function(eb)
-		eb:SetText(E:Round(yOffset.currentValue))
+		eb:SetText(E:Round(yOffset.currentValue, 1))
 	end)
 
 	yOffset:SetScript('OnEditFocusGained', EditBox_HighlightText)
 	yOffset:SetScript('OnShow', function(eb)
 		EditBox_ClearFocus(eb)
-		eb:SetText(E:Round(yOffset.currentValue))
+		eb:SetText(E:Round(yOffset.currentValue, 1))
 	end)
 
 	yOffset.text = yOffset:CreateFontString(nil, 'OVERLAY', 'GameFontNormal')
