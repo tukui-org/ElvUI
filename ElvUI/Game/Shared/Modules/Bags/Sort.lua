@@ -613,9 +613,9 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 	local _, bagType = GetContainerNumFreeSlots(targetBag)
 	if bagType == 0 then
 		return targetBag ~= REAGENT_CONTAINER or isReagent
-	elseif bagType and classID ~= 11 then -- prevent quiverception
+	elseif bagType then
 		local itemFamily = GetItemFamily(item)
-		if itemFamily then
+		if itemFamily == 0 or (classID ~= 1 and classID ~= 11) then -- prevent bagception
 			return band(itemFamily, bagType) > 0
 		end
 	end
