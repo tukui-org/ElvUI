@@ -223,10 +223,10 @@ Tags.Env.GetQuestData = function(unit, which, Hex)
 			if line.type == 17 or (not E.Modern and not lastTitle) then
 				lastTitle = NP.QuestIcons.activeQuests[text] -- check if its an active quest
 				notMyQuest = nil -- allow multiple quests to be found while in group
-			elseif line.type == 18 or (not E.Modern and UnitIsPlayer(text)) then -- 18 is QuestPlayer
+			elseif lastTitle and (line.type == 18 or (not E.Modern and UnitIsPlayer(text))) then -- 18 is QuestPlayer
 				notMyQuest = text ~= E.mynameFull
-			elseif text and not notMyQuest then
-				local objectives = (line.type == 8 or not E.Modern) and lastTitle and lastTitle.objectives
+			elseif lastTitle and (text and not notMyQuest) then
+				local objectives = (line.type == 8 or not E.Modern) and lastTitle.objectives
 				local quest = objectives and (objectives[text] or (not E.Modern and objectives[strsub(text, 4)]))
 				if quest then
 					if not which then
