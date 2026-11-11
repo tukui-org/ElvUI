@@ -466,7 +466,7 @@ function M:LOOT_HISTORY_UPDATE_DROP(_, encounterID, lootListID)
 	local drop = C_LootHistory_GetSortedInfoForDrop(encounterID, lootListID)
 	local dropInfo = drop and drop.rollInfos -- require some info
 	local bar = dropInfo and M:LootRoll_GetFrameByLink(drop.itemHyperlink)
-	if not bar then return end -- roll frame not visible yet
+	if not bar then return end -- bar not visible yet
 
 	wipe(bar.rolls) -- keep the bar in sync
 
@@ -483,8 +483,7 @@ function M:LOOT_HISTORY_UPDATE_DROP(_, encounterID, lootListID)
 		local icon = bar[name]
 		if icon and icon.text then
 			local roll = bar.rolls[rollType]
-			local count = roll and #roll
-			icon.text:SetText(count and count > 0 and count or '')
+			icon.text:SetText(roll and #roll or '')
 		end
 	end
 end
