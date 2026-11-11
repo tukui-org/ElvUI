@@ -65,6 +65,7 @@ E.NotSecretValue = oUF.NotSecretValue
 E.GetThreatSituation = oUF.GetThreatSituation
 E.UnitNotUnit = oUF.UnitNotUnit
 E.UnitIsUnit = oUF.UnitIsUnit
+E.UnitExists = oUF.UnitExists
 
 for i, k in next, { E, {}, E.privateVars.profile, E.DF.profile, E.DF.global } do
 	Engine[i] = k -- E, L, V, P, G

@@ -1438,12 +1438,6 @@ function E:GROUP_LEFT()
 	wipe(E.GroupRoles)
 end
 
-function E:UnitExists(unit)
-	if E:IsSecretUnit(unit) then return end
-
-	return unit and (UnitExists(unit) or UnitIsVisible(unit))
-end
-
 function E:UnitEffectiveLevel(unit)
 	if E.Modern or E.TBC or E.Wrath or E.Mists then
 		return _G.UnitEffectiveLevel(unit)

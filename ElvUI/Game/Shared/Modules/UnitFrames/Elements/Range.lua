@@ -126,7 +126,7 @@ function UF:UpdateRange(unit)
 	-- clear these if we arent checking them (these are secret values on retail)
 	element.isInRange, element.checkedRange = nil, nil
 
-	local exists = ElvUF:UnitExists(unit)
+	local exists = E:UnitExists(unit)
 	if self.forceInRange or (exists and unit == 'player') then
 		element.RangeAlpha = element.MaxAlpha
 	elseif self.forceNotInRange then
