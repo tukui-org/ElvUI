@@ -517,7 +517,9 @@ local function ClassPowerEnable(element, owner)
 
 	if oUF.isModern then -- according to Blizz any class may receive this event due to specific spell auras
 		owner:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
-	else
+	end
+
+	if not oUF.isRetail then
 		owner:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 	end
 
@@ -540,7 +542,9 @@ local function ClassPowerDisable(element, owner)
 
 	if oUF.isModern then
 		owner:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
-	else
+	end
+
+	if not oUF.isRetail then
 		owner:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 	end
 
