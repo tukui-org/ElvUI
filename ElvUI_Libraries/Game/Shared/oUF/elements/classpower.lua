@@ -244,7 +244,7 @@ local function Update(self, element, event, unit, powerType)
 
 	local classPowerID = element.classPowerID
 	local currentType = ClassPowerType[classPowerID]
-	if event == 'UNIT_AURA' or event == 'SPELL_UPDATE_CHARGES' then powerType = currentType end
+	if event == 'UNIT_AURA' or event == 'SPELL_UPDATE_CHARGES' or event == 'UNIT_POWER_POINT_CHARGE' then powerType = currentType end
 	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
 
 	local myClass = oUF.myclass
