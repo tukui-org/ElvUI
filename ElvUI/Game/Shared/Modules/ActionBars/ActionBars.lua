@@ -1165,7 +1165,7 @@ function AB:ButtonEventsRegisterFrame(added)
 		local wasAdded = frame == added
 		if not added or wasAdded then
 			local name = frame:GetName()
-			if not name or (not strmatch(name, 'ExtraActionButton%d') and name ~= 'GamepadMainActionBarFramePageUnitLeftClassAction') then
+			if not name or (not strmatch(name, 'ExtraActionButton%d') and not strmatch(name, '^MultiCastActionButton%d') and name ~= 'GamepadMainActionBarFramePageUnitLeftClassAction') then
 				frames[index] = nil
 			end
 
