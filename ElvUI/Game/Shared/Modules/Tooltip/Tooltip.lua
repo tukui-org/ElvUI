@@ -997,7 +997,9 @@ function TT:MODIFIER_STATE_CHANGED()
 		if owner == UIParent then
 			if E:UnitExists('mouseover') then
 				if E.Modern then
-					GameTooltip:RefreshData()
+					if E:NotSecretUnit('mouseover') then
+						GameTooltip:RefreshData()
+					end
 				else
 					GameTooltip:SetUnit('mouseover')
 				end
