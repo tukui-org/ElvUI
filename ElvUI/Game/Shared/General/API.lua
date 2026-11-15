@@ -107,7 +107,6 @@ local DispelIndexes = ElvUF.Enum.DispelType
 E.MountIDs = {}
 E.MountText = {}
 E.GroupRoles = {}
-E.GroupTanks = {}
 E.GroupUnitsByRole = {
 	TANK = {},
 	HEALER = {},
@@ -1068,12 +1067,6 @@ function E:PLAYER_REGEN_ENABLED()
 
 		E.ShowOptions = nil
 	end
-
-	if E.needsUpdatedRoles then
-		E:GROUP_ROSTER_UPDATE()
-
-		E.needsUpdatedRoles = nil
-	end
 end
 
 do
@@ -1405,7 +1398,7 @@ do -- complicated backwards compatible menu
 end
 
 function E:UnitTankedByGroup(unit)
-	for unitToken in next, E.GroupTanks do
+	for unitToken in next, E.GroupUnitsByRole.TANK do
 		if E:GetThreatSituation(unit, unitToken) == 3 then
 			return unitToken
 		end
@@ -1417,12 +1410,6 @@ function E:GROUP_ROSTER_UPDATE()
 	E.IsInGroup = isInRaid or IsInGroup()
 
 	wipe(E.GroupRoles)
-
-	if InCombatLockdown() then
-		E.needsUpdatedRoles = true
-	else -- out of combat should be safe
-		wipe(E.GroupTanks)
-	end
 
 	for _, units in next, E.GroupUnitsByRole do
 		wipe(units)
@@ -1437,10 +1424,6 @@ function E:GROUP_ROSTER_UPDATE()
 		if E:NotSecretValue(role) and role then
 			if E:UnitIsUnit(unit, 'player') then
 				unit = 'player'
-			end
-
-			if role == 'TANK' then
-				E.GroupTanks[unit] = true
 			end
 
 			E.GroupRoles[unit] = role
