@@ -13,16 +13,19 @@ function S:Blizzard_CatalogShop()
 	end
 
 	local CatalogShopFrame = _G.CatalogShopFrame
+	
 	CatalogShopFrame:StripTextures()
 	CatalogShopFrame:SetTemplate('Transparent')
 
+	if not E.Modern then
+		if CatalogShopFrame.BorderTexture then CatalogShopFrame.BorderTexture:Hide() end
+		if CatalogShopFrame.RightBorder then CatalogShopFrame.RightBorder:Hide() end
+		if CatalogShopFrame.BackgroundContainer then CatalogShopFrame.BackgroundContainer:Hide() end
+	end
+
 	local CloseButton = CatalogShopFrame.CloseButton
 	S:HandleCloseButton(CloseButton)
-
-	-- classic UIPanelCloseButton has no frame level, keep it above the title backdrop
-	if not E.Modern then
-		CloseButton:SetFrameLevel(510)
-	end
+	if not E.Modern then CloseButton:SetFrameLevel(510) end
 
 	local TitleContainer = CatalogShopFrame.TitleContainer
 	TitleContainer:CreateBackdrop()
@@ -32,15 +35,42 @@ function S:Blizzard_CatalogShop()
 	TitleContainer.backdrop:Height(TitleContainer:GetHeight() + 3)
 
 	S:HandleEditBox(CatalogShopFrame.HeaderFrame.SearchBox)
-	S:HandleTrimScrollBar(CatalogShopFrame.ProductContainerFrame.ProductsScrollBoxContainer.ScrollBar)
+	
+	local ScrollBar = CatalogShopFrame.ProductContainerFrame.ProductsScrollBoxContainer.ScrollBar
+	S:HandleTrimScrollBar(ScrollBar)
+
+	local ScrollBox = CatalogShopFrame.ProductContainerFrame.ProductsScrollBoxContainer.ScrollBox
+	if ScrollBox then
+		for _, card in next, { ScrollBox:GetChildren() } do
+			if card.Border then card.Border:Hide() end
+			
+			card:SetTemplate('Transparent') 
+			
+			for _, region in next, { card:GetRegions() } do
+				if region:IsObjectType('Texture') then
+					if region:GetName() and region:GetName():find("Highlight") then
+						region:SetAlpha(0.1)
+					else
+						region:SetAlpha(0)
+					end
+				end
+			end
+		end
+	end
 
 	local DetailsFrame = CatalogShopFrame.CatalogShopDetailsFrame
-	DetailsFrame.Border:Hide()
-	DetailsFrame:SetTemplate('Transparent')
+	if DetailsFrame then
+		if DetailsFrame.Border then DetailsFrame.Border:Hide() end
+		DetailsFrame:SetTemplate('Transparent')
+		
+		for _, region in next, { DetailsFrame:GetRegions() } do
+			if region:IsObjectType('Texture') then region:SetAlpha(0) end
+		end
 
-	for _, button in next, { DetailsFrame.ButtonContainer:GetChildren() } do
-		if button:IsObjectType('Button') then
-			S:HandleButton(button, nil, nil, nil, true)
+		for _, button in next, { DetailsFrame.ButtonContainer:GetChildren() } do
+			if button:IsObjectType('Button') then
+				S:HandleButton(button, nil, nil, nil, true)
+			end
 		end
 	end
 
