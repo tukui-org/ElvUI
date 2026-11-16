@@ -249,7 +249,7 @@ local function Update(self, element, event, unit, powerType)
 
 	local myClass = oUF.myclass
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
-	local classic = not oUF.isModern and (powerType == 'COMBO_POINTS' or (myClass == 'ROGUE' and powerType == 'ENERGY'))
+	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (myClass == 'ROGUE' and powerType == 'ENERGY'))
 	if not (vehicle or classic or powerType == currentType) then return end
 
 	--[[ Callback: ClassPower:PreUpdate(event)
