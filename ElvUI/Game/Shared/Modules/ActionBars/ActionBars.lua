@@ -102,8 +102,8 @@ AB.barDefaults = {
 }
 
 do -- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Modern or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
-	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
+	local overrides = (E.Modern or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d; ', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	AB.barDefaults.bar1.conditions = format('%s[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', overrides, GetTempShapeshiftBarIndex())
 end
 
 AB.customExitButton = {
@@ -489,8 +489,9 @@ function AB:CreateBar(id)
 		bar.buttons[i] = button
 	end
 
-	if defaults.conditions and strfind(defaults.conditions, '[form,noform]') then
-		bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
+	local conditions = defaults.conditions
+	if conditions and strfind(conditions, '[form,noform]') then
+		bar:SetAttribute('newCondition', gsub(conditions, ' %[form,noform%] 0; ', ''))
 		bar:SetAttribute('hasTempBar', true)
 	else
 		bar:SetAttribute('hasTempBar', false)
