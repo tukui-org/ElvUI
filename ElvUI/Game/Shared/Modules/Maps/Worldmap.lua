@@ -222,9 +222,8 @@ end
 
 function M:WorldMap_FirstShow()
 	local frame = _G.WorldMapFrame
-	local maxed = E.Modern and frame:IsMaximized()
 	if E.global.general.smallerWorldMap then
-		if maxed then
+		if E.Modern and frame:IsMaximized() then
 			M:SetLargeWorldMap()
 		else
 			M:SetSmallWorldMap()
