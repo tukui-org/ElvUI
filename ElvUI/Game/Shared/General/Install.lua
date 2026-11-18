@@ -181,6 +181,7 @@ function E:SetupCVars(noDisplayMsg)
 		E:SetCVar('worldMapShowPlayerCoords', 0)
 		E:SetCVar('worldMapShowCursorCoords', 0)
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
+		E:SetCVar('showInGameNavigation', 1) -- we do like way points
 	else
 		E:SetCVar('alwaysShowActionBars', 1)
 		E:SetCVar('chatClassColorOverride', 0)
