@@ -474,6 +474,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 							end
 						end
 					end
+
 					if not E:HasFunctionForObject(ev, data.objectEvent, dt.objectEventFunc) then
 						E:RegisterEventForObject(ev, data.objectEvent, dt.objectEventFunc)
 					end
@@ -497,6 +498,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		if not data.objectEvent then
 			dt:SetScript('OnEvent', data.eventFunc)
 		end
+
 		data.eventFunc(dt, ev, ...)
 	end
 
@@ -506,9 +508,9 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 
 	if data.onClick then
-		dt:SetScript('OnClick', function(p, button)
+		dt:SetScript('OnClick', function(panel, button)
 			if E.db.datatexts.noCombatClick and InCombatLockdown() then return end
-			data.onClick(p, button)
+			data.onClick(panel, button)
 			DT.tooltip:Hide()
 		end)
 	end
@@ -516,6 +518,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	if data.onEnter then
 		tinsert(dt.MouseEnters, data.onEnter)
 	end
+
 	if data.onLeave then
 		tinsert(dt.MouseLeaves, data.onLeave)
 	end
