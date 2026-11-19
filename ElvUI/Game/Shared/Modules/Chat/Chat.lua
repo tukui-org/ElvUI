@@ -633,6 +633,8 @@ do --this can save some main file locals
 		elseif E.Forever then
 			-- AcidWeb
 			z['Player-6940-000CC5DB']	= Gem
+			-- Merathilis
+			z['Player-6939-00848373']	= ElvRed
 		end
 	end
 end
