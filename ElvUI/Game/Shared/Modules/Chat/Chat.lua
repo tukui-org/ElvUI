@@ -635,6 +635,9 @@ do --this can save some main file locals
 			z['Player-6940-000CC5DB']	= Gem
 			-- Merathilis
 			z['Player-6939-00848373']	= ElvRed
+			-- Luckyone
+			z['Player-6945-0024F82A']	= ElvGreen -- [Horde] Hunter
+			z['Player-6945-0024F7B0']	= ElvGreen -- [Horde] Druid
 		end
 	end
 end
