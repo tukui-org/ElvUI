@@ -276,7 +276,7 @@ end
 tagFunctions.difficulty = function(u)
 	if(UnitCanAttack('player', u)) then
 		local level = (UnitEffectiveLevel or UnitLevel)(u)
-		local color = oUF:CreatureDifficultyColor((level > 0) and level or 999)
+		local color = oUF:GetCreatureDifficultyColor((level > 0) and level or 999)
 		return Hex(color)
 	end
 end

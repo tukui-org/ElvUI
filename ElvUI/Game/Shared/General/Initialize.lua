@@ -51,7 +51,7 @@ E.locale = GetLocale()
 E.oUF = oUF
 
 -- moved this to oUF but relink it
-E.CreatureDifficultyColor = oUF.CreatureDifficultyColor
+E.GetCreatureDifficultyColor = oUF.GetCreatureDifficultyColor
 E.GetThreatSituation = oUF.GetThreatSituation
 E.ColorGradient = oUF.ColorGradient
 E.CanAccessValue = oUF.CanAccessValue

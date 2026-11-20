@@ -94,7 +94,7 @@ function oUF:UnitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
-function oUF:CreatureDifficultyColor(level)
+function oUF:GetCreatureDifficultyColor(level)
 	if oUF.isForever then
 		local levelDiff = level - UnitEffectiveLevel('player')
 		if levelDiff >= 5 then
