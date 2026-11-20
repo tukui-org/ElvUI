@@ -14,6 +14,7 @@ local pcall, strlen, tonumber, tinsert = pcall, strlen, tonumber, tinsert
 
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
+local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGameTime = GetGameTime
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumSubgroupMembers = GetNumSubgroupMembers
@@ -36,6 +37,7 @@ local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParent = UIParent
 local UnitHasPowerType = UnitHasPowerType
 local UnitClassification = UnitClassification
+local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
 local UnitHasVehicleUI = UnitHasVehicleUI
@@ -80,6 +82,7 @@ local C_MountJournal_GetMountInfoByID = C_MountJournal.GetMountInfoByID
 local C_MountJournal_GetMountInfoExtraByID = C_MountJournal.GetMountInfoExtraByID
 local C_PetBattles_IsInBattle = C_PetBattles.IsInBattle
 local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
+local C_QuestLog_GetTrivialRange = C_QuestLog.GetTrivialRange
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
@@ -93,6 +96,7 @@ local FACTION_ALLIANCE = FACTION_ALLIANCE
 local FACTION_HORDE = FACTION_HORDE
 local PLAYER_FACTION_GROUP = PLAYER_FACTION_GROUP
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
+local QuestDifficultyColors = QuestDifficultyColors
 
 local GameMenuFrame = GameMenuFrame
 
@@ -1443,6 +1447,25 @@ function E:UnitEffectiveLevel(unit)
 	else
 		return _G.UnitLevel(unit)
 	end
+end
+
+function E:GetCreatureDifficultyColor(level)
+	if E.Forever then
+		local levelDiff = level - UnitEffectiveLevel('player')
+		if levelDiff >= 5 then
+			return QuestDifficultyColors.impossible
+		elseif levelDiff >= 3 then
+			return QuestDifficultyColors.verydifficult
+		elseif levelDiff >= -2 then
+			return QuestDifficultyColors.difficult
+		elseif -levelDiff <= C_QuestLog_GetTrivialRange() then
+			return QuestDifficultyColors.standard
+		else
+			return QuestDifficultyColors.trivial
+		end
+	end
+
+	return GetCreatureDifficultyColor(level)
 end
 
 function E:GetClassificationType(unit)

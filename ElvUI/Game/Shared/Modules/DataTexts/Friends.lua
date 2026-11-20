@@ -10,7 +10,6 @@ local BNConnected = BNConnected
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
 local BNSetCustomMessage = C_BattleNet.SetCustomMessage or BNSetCustomMessage
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
 local IsAltKeyDown = IsAltKeyDown
@@ -345,7 +344,7 @@ local function Click(panel, btn)
 						shouldSkip = true
 					end
 					if not shouldSkip then
-						local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
+						local classc, levelc = E:ClassColor(info.class), E:GetCreatureDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
 						menuCountWhispers = menuCountWhispers + 1
@@ -387,7 +386,7 @@ local function Click(panel, btn)
 					end
 
 					if (info.client and info.client == wowString) and InGroup(info.characterName, info.realmName) == '' then
-						local classc, levelc = E:ClassColor(info.className), GetQuestDifficultyColor(info.level)
+						local classc, levelc = E:ClassColor(info.className), E:GetCreatureDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
 						if info.wowProjectID == WOW_PROJECT_ID then
@@ -457,7 +456,7 @@ local function OnEnter()
 				end
 				if not shouldSkip then
 					if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zone) then zonec = activezone else zonec = inactivezone end
-					classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
+					classc, levelc = E:ClassColor(info.class), E:GetCreatureDifficultyColor(info.level)
 					if not classc then classc = levelc end
 
 					TooltipAddXLine(true, characterFriend, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,InGroup(info.name),info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
@@ -495,7 +494,7 @@ local function OnEnter()
 							if info.client and info.client == wowString then
 								classc = E:ClassColor(info.className)
 								if info.level and info.level ~= '' then
-									levelc = GetQuestDifficultyColor(info.level)
+									levelc = E:GetCreatureDifficultyColor(info.level)
 								else
 									classc, levelc = PRIEST_COLOR, PRIEST_COLOR
 								end

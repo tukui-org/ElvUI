@@ -6,7 +6,6 @@ local wipe, ipairs, ceil, floor, tonumber, tinsert = wipe, ipairs, ceil, floor, 
 local strsub, strmatch, strlower, strfind, next = strsub, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetQuestLogTitle = GetQuestLogTitle
 local UnitIsPlayer = UnitIsPlayer
 local IsInInstance = IsInInstance
@@ -347,7 +346,7 @@ local function UpdateQuest(id, index)
 		texture = texture,
 		difficulty = level,
 		title = title,
-		color = level and GetQuestDifficultyColor(level) or nil,
+		color = level and E:GetCreatureDifficultyColor(level) or nil,
 		objectives = GetQuestObjectives(id, texture)
 	}
 end
