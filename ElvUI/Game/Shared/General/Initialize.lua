@@ -51,6 +51,8 @@ E.locale = GetLocale()
 E.oUF = oUF
 
 -- moved this to oUF but relink it
+E.CreatureDifficultyColor = oUF.CreatureDifficultyColor
+E.GetThreatSituation = oUF.GetThreatSituation
 E.ColorGradient = oUF.ColorGradient
 E.CanAccessValue = oUF.CanAccessValue
 E.CanNotAccessValue = oUF.CanNotAccessValue
@@ -62,7 +64,6 @@ E.NoSecretValues = oUF.NoSecretValues
 E.NotSecretTable = oUF.NotSecretTable
 E.NotSecretUnit = oUF.NotSecretUnit
 E.NotSecretValue = oUF.NotSecretValue
-E.GetThreatSituation = oUF.GetThreatSituation
 E.UnitNotUnit = oUF.UnitNotUnit
 E.UnitIsUnit = oUF.UnitIsUnit
 E.UnitExists = oUF.UnitExists

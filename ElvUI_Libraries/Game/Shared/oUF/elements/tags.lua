@@ -97,7 +97,6 @@ local CreateFrame = CreateFrame
 
 local ScaleTo100 = CurveConstants.ScaleTo100
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
-local C_QuestLog_GetTrivialRange = C_QuestLog.GetTrivialRange
 local GenerateTextColorCode = C_ColorUtil.GenerateTextColorCode
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
 local WrapString = C_StringUtil.WrapString
@@ -105,7 +104,6 @@ local WrapString = C_StringUtil.WrapString
 local IsInRaid = IsInRaid
 local IsResting = IsResting
 local GetArenaOpponentSpec = GetArenaOpponentSpec
-local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRuneCooldown = GetRuneCooldown
@@ -133,8 +131,6 @@ local UnitPowerType = UnitPowerType
 local UnitRace = UnitRace
 local UnitSex = UnitSex
 local UnitThreatSituation = UnitThreatSituation
-
-local QuestDifficultyColors = QuestDifficultyColors
 
 -- GLOBALS: Hex, _TAGS, _COLORS
 -- GLOBALS: UnitPower, UnitHealth, UnitName, UnitClass, UnitIsDead, UnitIsGhost, UnitIsDeadOrGhost, UnitIsConnected -- override during testing groups
@@ -277,29 +273,11 @@ tagFunctions.dead = function(u)
 	end
 end
 
-local function CreatureDifficultyColor(level)
-	if oUF.isForever then
-		local levelDiff = level - UnitEffectiveLevel('player')
-		if levelDiff >= 5 then
-			return QuestDifficultyColors.impossible
-		elseif levelDiff >= 3 then
-			return QuestDifficultyColors.verydifficult
-		elseif levelDiff >= -2 then
-			return QuestDifficultyColors.difficult
-		elseif -levelDiff <= C_QuestLog_GetTrivialRange() then
-			return QuestDifficultyColors.standard
-		else
-			return QuestDifficultyColors.trivial
-		end
-	end
-
-	return GetCreatureDifficultyColor(level)
-end
-
 tagFunctions.difficulty = function(u)
 	if(UnitCanAttack('player', u)) then
-		local l = (UnitEffectiveLevel or UnitLevel)(u)
-		return Hex(CreatureDifficultyColor((l > 0) and l or 999))
+		local level = (UnitEffectiveLevel or UnitLevel)(u)
+		local color = oUF:CreatureDifficultyColor((level > 0) and level or 999)
+		return Hex(color)
 	end
 end
 
