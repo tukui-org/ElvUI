@@ -1100,7 +1100,7 @@ do
 	local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
 	local function SendRecieve(_, event, prefix, message, _, senderOne, senderTwo)
 		if event == 'CHAT_MSG_ADDON' then
-			local sender = strfind(senderOne, '-') and senderOne or senderTwo
+			local sender = strfind(senderOne, E.Forever and '%s' or '-') and senderOne or senderTwo
 			if sender == PLAYER_NAME then
 				return
 			elseif prefix == 'ELVUI_VERSIONCHK' then

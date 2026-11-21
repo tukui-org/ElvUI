@@ -207,10 +207,15 @@ end
 
 function lib:VersionCheck(event, prefix, msg, _, senderOne, senderTwo)
 	if event == 'CHAT_MSG_ADDON' and prefix == lib.prefix then
-		local sender = strfind(senderOne, '-') and senderOne or senderTwo
+		local sender = strfind(senderOne, E.Forever and '%s' or '-') and senderOne or senderTwo
 		if sender and msg and not strmatch(msg, '^%s-$') then
-			if not lib.myName then lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm)) end
-			if sender == lib.myName then return end
+			if not lib.myName then
+				lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
+			end
+
+			if sender == lib.myName then
+				return
+			end
 
 			if not E.pluginRecievedOutOfDateMessage then
 				for name, version in gmatch(msg, '([^=]+)=([%d%p]+);') do
