@@ -69,6 +69,7 @@ E.myrealm = GetRealmName()
 E.playerName, E.playerRealm = UnitNameUnmodified('player')
 E.mynameFull = format((E.Forever and E.playerRealm) and '%s %s' or '%s', E.playerName, E.playerRealm) -- forever "First Last" otherwise "First"
 E.mynameRealm = format((E.Forever and (E.playerRealm and '%s %s' or '%s')) or '%s - %s', E.playerName, E.playerRealm or E.myrealm) -- contains spaces/dashes in realm (for profile keys)
+E.myRuleset = (E.IsGameRuleRP and E.IsGameRulePVP and 'RPPvP') or (E.IsGameRulePVP and 'PvP') or (E.IsGameRuleRP and 'RP') or (E.IsGameRuleHardcore and 'HC') or 'PvE'
 E.expansionLevel = GetExpansionLevel()
 E.expansionLevelMax = GetMaxLevelForExpansionLevel(E.expansionLevel)
 E.wowbuild = tonumber(E.wowbuild)
