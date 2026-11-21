@@ -107,7 +107,7 @@ function M:SkinBubble(bubble, holder)
 		name:SetJustifyH('LEFT')
 
 		local font, size, outline = name:GetFont()
-		name:FontTemplate(font, size * 0.85, outline)
+		name:SetFont(font, size * 0.85, outline)
 
 		bubble.Name = name
 	end
