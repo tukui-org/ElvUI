@@ -209,11 +209,7 @@ function lib:VersionCheck(event, prefix, msg, _, senderOne, senderTwo)
 	if event == 'CHAT_MSG_ADDON' and prefix == lib.prefix then
 		local sender = strfind(senderOne, E.Forever and '%s' or '-') and senderOne or senderTwo
 		if sender and msg and not strmatch(msg, '^%s-$') then
-			if not lib.myName then
-				lib.myName = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
-			end
-
-			if sender == lib.myName then
+			if sender == E.mynameString then
 				return
 			end
 

@@ -8,7 +8,6 @@ local S = E:GetModule('Skins')
 local _G = _G
 local next = next
 local unpack = unpack
-local format = format
 local strsub = strsub
 local tinsert = tinsert
 
@@ -50,20 +49,6 @@ local GROUPS_CHANNEL = { 'SAY', 'EMOTE', 'YELL', 'WHISPER', 'PARTY', 'PARTY_LEAD
 for i = 1, MAX_WOW_CHAT_CHANNELS do
 	tinsert(GROUPS_CHANNEL, 'CHANNEL'..i)
 end
-
-local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
-local ELV_TOONS = {
-	['Elv-Spirestone']			= true,
-	['Elvz-Spirestone']			= true,
-	['Fleshlite-Spirestone']	= true,
-	['Elvidan-Spirestone']		= true,
-	['Elvilas-Spirestone']		= true,
-	['Fraku-Spirestone']		= true,
-	['Jarvix-Spirestone']		= true,
-	['Watermelon-Spirestone']	= true,
-	['Zinxbe-Spirestone']		= true,
-	['Whorlock-Spirestone']		= true,
-}
 
 local function ToggleChatColorNamesByClassGroup(checked, group)
 	local info = _G.ChatTypeGroup[group]
@@ -153,10 +138,6 @@ function E:SetupChat(noDisplayMsg)
 
 	if E.db.LeftChatPanelFaded then
 		_G.LeftChatToggleButton:Click()
-	end
-
-	if ELV_TOONS[PLAYER_NAME] then
-		E:SetCVar('scriptErrors', 1)
 	end
 
 	if _G.InstallStepComplete and not noDisplayMsg then

@@ -136,9 +136,6 @@ CH.RoleIcons = {
 local lfgRoles = {}
 local throttle = {}
 
-local PLAYER_REALM = E:ShortenRealm(E.myrealm)
-local PLAYER_NAME = format('%s-%s', E.myname, PLAYER_REALM)
-
 local DEFAULT_STRINGS = {
 	GUILD = L["G"],
 	PARTY = L["P"],
@@ -2538,7 +2535,7 @@ function CH:ChatFrame_MessageEventHandler(frame, event, arg1, arg2, arg3, arg4, 
 
 			-- beep boops
 			local historyType = notChatHistory and not CH.SoundTimer and not strfind(event, '_INFORM') and historyTypes[event]
-			local alertAllow = nameProtected or arg2 ~= PLAYER_NAME
+			local alertAllow = nameProtected or arg2 ~= E.mynameString
 			local alertType = (historyType ~= 'CHANNEL' and CH.db.channelAlerts[historyType]) or (historyType == 'CHANNEL' and CH.db.channelAlerts.CHANNEL[arg9])
 			if alertType and alertType ~= 'None' and alertAllow and (not CH.db.noAlertInCombat or not InCombatLockdown()) then
 				CH.SoundTimer = E:Delay(5, CH.ThrottleSound)
@@ -2761,7 +2758,7 @@ end
 local function PrepareMessage(author, msg)
 	if E:IsSecretValue(msg) then return end
 
-	if author and author ~= '' and author ~= PLAYER_NAME and msg and msg ~= '' then
+	if (author and author ~= '' and author ~= E.mynameString) and (msg and msg ~= '') then
 		return strupper(author) .. msg
 	end
 end
@@ -2827,7 +2824,7 @@ end
 local protectLinks = {}
 function CH:CheckKeyword(msg, author)
 	local letInCombat = not CH.db.noAlertInCombat or not InCombatLockdown()
-	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= PLAYER_NAME) and letInCombat
+	local letSound = not CH.SoundTimer and (CH.db.keywordSound ~= 'None' and author ~= E.mynameString) and letInCombat
 
 	for hyperLink in gmatch(msg, '|c%x-|H.-|h.-|h|r') do
 		protectLinks[hyperLink] = gsub(hyperLink,'%s','|s')
@@ -3123,13 +3120,18 @@ function CH:CheckLFGRoles()
 	wipe(lfgRoles)
 
 	if E.myrole then
-		lfgRoles[PLAYER_NAME] = CH.RoleIcons[E.myrole]
+		lfgRoles[E.mynameString] = CH.RoleIcons[E.myrole]
 	end
 
 	for unit, role in next, E.GroupRoles do
 		local name, realm = UnitName(unit)
 		if role and name then
-			name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..PLAYER_REALM
+			if E.Forever then
+				name = (realm and realm ~= '') and format('%s %s', name, realm) or name
+			else
+				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..E.myrealmShort
+			end
+
 			lfgRoles[name] = CH.RoleIcons[role]
 		end
 	end
@@ -3915,7 +3917,7 @@ function CH:GetPlayerInfoByGUID(guid)
 		if realm == '' then realm = nil end -- dont add realm for people on your realm
 		local shortRealm, nameWithRealm = realm and E:ShortenRealm(realm)
 		if name and name ~= '' then
-			nameWithRealm = (shortRealm and name..'-'..shortRealm) or name..'-'..PLAYER_REALM
+			nameWithRealm = (shortRealm and name..'-'..shortRealm) or name..'-'..E.myrealmShort
 		end
 
 		-- move em into a table

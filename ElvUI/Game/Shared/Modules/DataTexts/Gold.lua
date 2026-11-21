@@ -144,7 +144,7 @@ local function UpdateGold(updateAll, goldChange)
 		end
 	else
 		if next(myGold) then
-			myGold.amount = ElvDB.gold[E.myrealm][E.mynameFull]
+			myGold.amount = ElvDB.gold[E.Forever and E.myRuleset or E.myrealm][E.mynameFull]
 			myGold.amountText = E:FormatMoney(myGold.amount, style, textOnly)
 		end
 

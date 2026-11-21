@@ -283,6 +283,12 @@ do
 		for i = ignoreTextures and 2 or 1, #d do s = gsub(s,d[i],a) end
 		return s
 	end
+
+	-- shorten realm, StripMyRealm is in Core.lua
+	local a1,a2 = '', '[%s%-]'
+	function E:ShortenRealm(realm)
+		return gsub(realm, a2, a1)
+	end
 end
 
 do
