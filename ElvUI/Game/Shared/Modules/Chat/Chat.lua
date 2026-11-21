@@ -3129,7 +3129,7 @@ function CH:CheckLFGRoles()
 			if E.Forever then
 				name = (realm and realm ~= '') and format('%s %s', name, realm) or name
 			else
-				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..E.myrealmShort
+				name = (realm and realm ~= '' and name..'-'..realm) or name..'-'..E.myrealmString
 			end
 
 			lfgRoles[name] = CH.RoleIcons[role]
@@ -3917,7 +3917,7 @@ function CH:GetPlayerInfoByGUID(guid)
 		if realm == '' then realm = nil end -- dont add realm for people on your realm
 		local shortRealm, nameWithRealm = realm and E:ShortenRealm(realm)
 		if name and name ~= '' then
-			nameWithRealm = (shortRealm and name..'-'..shortRealm) or name..'-'..E.myrealmShort
+			nameWithRealm = (shortRealm and name..'-'..shortRealm) or name..'-'..E.myrealmString
 		end
 
 		-- move em into a table

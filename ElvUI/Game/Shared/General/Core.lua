@@ -66,11 +66,11 @@ E.mygender = UnitSex('player')
 E.mylevel = UnitLevel('player')
 E.myname = UnitName('player')
 E.myrealm = GetRealmName()
-E.myrealmShort = E:ShortenRealm(E.myrealm)
 E.playerName, E.playerRealm = UnitNameUnmodified('player')
 E.mynameFull = format((E.Forever and E.playerRealm) and '%s %s' or '%s', E.playerName, E.playerRealm) -- forever "First Last" otherwise "First"
 E.mynameRealm = format((E.Forever and (E.playerRealm and '%s %s' or '%s')) or '%s - %s', E.playerName, E.playerRealm or E.myrealm) -- contains spaces/dashes in realm (for profile keys)
-E.mynameString = format(E.Forever and '%s' or '%s-%s', E.mynameFull, E.Forever and '' or E.myrealmShort) -- used in chat and addon comms
+E.myrealmString = E:ShortenRealm(E.myrealm) -- used in chat and addon comms
+E.mynameString = format(E.Forever and '%s' or '%s-%s', E.mynameFull, E.Forever and '' or E.myrealmString) -- used in chat and addon comms
 E.myRuleset = (E.IsGameRuleRP and E.IsGameRulePVP and 'RPPvP') or (E.IsGameRulePVP and 'PvP') or (E.IsGameRuleRP and 'RP') or (E.IsGameRuleHardcore and 'HC') or 'PvE'
 E.expansionLevel = GetExpansionLevel()
 E.expansionLevelMax = GetMaxLevelForExpansionLevel(E.expansionLevel)
@@ -210,7 +210,7 @@ do
 	end
 
 	-- strip my realm, ShortenRealm is in Initialize.lua
-	local a1, a3 = '', format('%%-%s', E.myrealmShort)
+	local a1, a3 = '', format('%%-%s', E.myrealmString)
 	function E:StripMyRealm(name)
 		return gsub(name, a3, a1)
 	end
