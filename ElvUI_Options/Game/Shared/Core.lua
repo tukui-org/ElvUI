@@ -1062,7 +1062,7 @@ do -- shared cooldown
 		return thresholds
 	end
 
-	function C:GetCooldownConfig(db, profile, private, charges, lossOfControl)
+	function C:GetCooldownConfig(db, profile, private, charges, lossOfControl, config, ignoreEnable)
 		local enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() return profile.enable end, function(_, value) profile.enable = value; E:CooldownSettings(db); end)
 
 		local text = ACH:Group(L["Text"], nil, 10, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end, nil, function() return not profile.enable end)
@@ -1098,6 +1098,16 @@ do -- shared cooldown
 		colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
 		colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
 
-		return enable, text, thresholds, colors
+		if config then
+			if not ignoreEnable then
+				config.enable = enable
+			end
+
+			config.textGroup = text
+			config.thresholdGroup = thresholds
+			config.colorGroup = colors
+		else
+			return enable, text, thresholds, colors
+		end
 	end
 end

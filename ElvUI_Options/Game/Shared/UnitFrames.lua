@@ -132,7 +132,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.textGroup.args.stacks.inline = true
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup, config.args.cooldownGroup.args.colorGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar)
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar, nil, nil, config.args.cooldownGroup.args)
 
 	config.args.friendlyGroup = ACH:Group(L["Filters: Friendly"], nil, 50, 'tab', nil, nil, nil, not E.Modern)
 	config.args.friendlyGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists, P.unitframe.units[groupName].aurabar.friendlyFilter.filterLists) updateFunc(UF, groupName) end)
@@ -261,7 +261,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.strataAndLevel.order = 35
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup, config.args.cooldownGroup.args.colorGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType])
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType], nil, nil, config.args.cooldownGroup.args)
 
 	config.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Modern)
 	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName][auraType].filterLists, P.unitframe.units[groupName][auraType].filterLists) updateFunc(UF, groupName, numUnits) end)
@@ -336,7 +336,8 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.generalGroup.args.countGroup.inline = true
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup, config.args.cooldownGroup.args.colorGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].buffIndicator, P.cooldown.unitframe.override[groupName].buffIndicator)
+
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].buffIndicator, P.cooldown.unitframe.override[groupName].buffIndicator, nil, nil, config.args.cooldownGroup.args)
 
 	if subGroup then
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
