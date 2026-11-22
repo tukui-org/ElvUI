@@ -85,6 +85,7 @@ end
 local function UpdateGold(updateAll, goldChange)
 	local textOnly = not db.goldCoins and true or false
 	local style = db.goldFormat or 'BLIZZARD'
+	local realmKey = E.Forever and E.myRuleset or E.myrealm
 
 	if updateAll then
 		wipe(allGold)
@@ -96,63 +97,67 @@ local function UpdateGold(updateAll, goldChange)
 		tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 
 		local index = 1
-		local info = ElvDB.serverID[E.serverID]
-		for key in next, info do
+		local servers = ElvDB.serverID[E.serverID]
+		for key in next, servers do
+			local goldDB = ElvDB.gold[key]
+			local classDB = ElvDB.class[key]
+			local factionDB = ElvDB.faction[key]
+
 			tinsert(menuList, index, {
 				text = 'Delete All - '..key,
 				notCheckable = true,
 				func = function()
-					wipe(ElvDB.gold[key])
-					wipe(ElvDB.class[key])
-					wipe(ElvDB.faction[key])
+					if goldDB then wipe(goldDB) end
+					if classDB then wipe(classDB) end
+					if factionDB then wipe(factionDB) end
 
-					-- if none exists then just clear the server data too
-					if not next(ElvDB.class[key]) then
-						wipe(info)
-					end
+					servers[key] = nil -- clean this too
 
+					DT:BuildTables() -- rebuild the tables
 					DT:ForceUpdate_DataText('Gold')
 				end
 			})
 
 			index = index + 1
 
-			for name, amount in next, ElvDB.gold[key] do
-				local factionRealm, classRealm = ElvDB.faction[key], ElvDB.class[key]
-				local faction = factionRealm and factionRealm[name]
-				local color = classRealm and E:ClassColor(classRealm[name]) or PRIEST_COLOR
+			if goldDB then
+				for name, amount in next, goldDB do
+					local faction = factionDB and factionDB[name]
+					local color = classDB and E:ClassColor(classDB[name]) or PRIEST_COLOR
 
-				local goldData = {
-					name = name,
-					amount = amount,
-					amountText = E:FormatMoney(amount, style, textOnly),
-					faction = faction or '',
-					r = color.r, g = color.g, b = color.b,
-				}
+					local goldData = {
+						name = name,
+						amount = amount,
+						amountText = E:FormatMoney(amount, style, textOnly),
+						faction = faction or '',
+						r = color.r, g = color.g, b = color.b,
+					}
 
-				if not E.Forever then
-					goldData.realm = key
-				end
-
-				if name == E.mynameFull and (not E.Forever or key == E.myrealm) then
-					myGold = goldData
-				end
-
-				tinsert(allGold, goldData)
-				tinsert(menuList, {
-					notCheckable = true,
-					text = format('%s - %s', name, key),
-					func = function()
-						DeleteCharacter(key, name)
+					if not E.Forever then
+						goldData.realm = key
 					end
-				})
 
-				UpdateTotal(faction, amount)
+					if name == E.mynameFull and (not E.Forever or key == E.myrealm) then
+						myGold = goldData
+					end
+
+					tinsert(allGold, goldData)
+					tinsert(menuList, {
+						notCheckable = true,
+						text = format('%s - %s', name, key),
+						func = function()
+							DeleteCharacter(key, name)
+						end
+					})
+
+					UpdateTotal(faction, amount)
+				end
 			end
 		end
 	else
 		if next(myGold) then
-			myGold.amount = ElvDB.gold[E.Forever and E.myRuleset or E.myrealm][E.mynameFull]
+			local goldDB = ElvDB.gold[realmKey]
+			myGold.amount = goldDB and goldDB[E.mynameFull] or 0
 			myGold.amountText = E:FormatMoney(myGold.amount, style, textOnly)
 		end
 
@@ -187,7 +192,8 @@ local function OnEvent(self, event)
 	end
 
 	--prevent an error possibly from really old profiles
-	local goldDB = ElvDB.gold[E.Forever and E.myRuleset or E.myrealm]
+	local realmKey = E.Forever and E.myRuleset or E.myrealm
+	local goldDB = ElvDB.gold[realmKey]
 	local oldMoney = goldDB[E.mynameFull]
 	if oldMoney and type(oldMoney) ~= 'number' then
 		goldDB[E.mynameFull] = nil
