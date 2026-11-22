@@ -96,12 +96,20 @@ local function UpdateGold(updateAll, goldChange)
 		tinsert(menuList, { text = 'Delete Character', isTitle = true, notCheckable = true })
 
 		local index = 1
-		for key in next, ElvDB.serverID[E.serverID] do
+		local info = ElvDB.serverID[E.serverID]
+		for key in next, info do
 			tinsert(menuList, index, {
 				text = 'Delete All - '..key,
 				notCheckable = true,
 				func = function()
 					wipe(ElvDB.gold[key])
+					wipe(ElvDB.class[key])
+					wipe(ElvDB.faction[key])
+
+					-- if none exists then just clear the server data too
+					if not next(ElvDB.class[key]) then
+						wipe(info)
+					end
 
 					DT:ForceUpdate_DataText('Gold')
 				end
