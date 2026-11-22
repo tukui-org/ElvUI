@@ -51,6 +51,8 @@ E.locale = GetLocale()
 E.oUF = oUF
 
 -- moved this to oUF but relink it
+E.GetCreatureDifficultyColor = oUF.GetCreatureDifficultyColor
+E.GetThreatSituation = oUF.GetThreatSituation
 E.ColorGradient = oUF.ColorGradient
 E.CanAccessValue = oUF.CanAccessValue
 E.CanNotAccessValue = oUF.CanNotAccessValue
@@ -62,9 +64,9 @@ E.NoSecretValues = oUF.NoSecretValues
 E.NotSecretTable = oUF.NotSecretTable
 E.NotSecretUnit = oUF.NotSecretUnit
 E.NotSecretValue = oUF.NotSecretValue
-E.GetThreatSituation = oUF.GetThreatSituation
 E.UnitNotUnit = oUF.UnitNotUnit
 E.UnitIsUnit = oUF.UnitIsUnit
+E.UnitExists = oUF.UnitExists
 
 for i, k in next, { E, {}, E.privateVars.profile, E.DF.profile, E.DF.global } do
 	Engine[i] = k -- E, L, V, P, G
@@ -161,7 +163,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 16.01, '16.01-git', nil, true
+		return 16.02, '16.02-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -280,6 +282,12 @@ do
 	function E:StripString(s, ignoreTextures)
 		for i = ignoreTextures and 2 or 1, #d do s = gsub(s,d[i],a) end
 		return s
+	end
+
+	-- shorten realm, StripMyRealm is in Core.lua
+	local a1,a2 = '', '[%s%-]'
+	function E:ShortenRealm(realm)
+		return gsub(realm, a2, a1)
 	end
 end
 

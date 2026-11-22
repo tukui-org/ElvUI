@@ -22,10 +22,11 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 
 ## Options
 
-.timeToHold      - Indicates for how many seconds the castbar should be visible after a _FAILED or _INTERRUPTED
+.timeToHold     - Indicates for how many seconds the castbar should be visible after a _FAILED or _INTERRUPTED
                    event. Defaults to 0 (number)
-.hideTradeSkills - Makes the element ignore casts related to crafting professions (boolean)
-.smoothing       - Which status bar smoothing method to use, defaults to `Enum.StatusBarInterpolation.Immediate` (number)
+.hideCrafts     - Makes the element ignore casts related to crafting professions (boolean)
+.mergeCrafts    - Merges the casts of tradeskills into a single cast (boolean)
+.smoothing      - Which status bar smoothing method to use, defaults to `Enum.StatusBarInterpolation.Immediate` (number)
 
 ## Attributes
 
@@ -117,8 +118,8 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local StatusBarTimerDirection = Enum.StatusBarTimerDirection
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
-local tradeskillCurrent, tradeskillTotal, tradeskillStart, mergeTradeskill = 0, 0, nil, false
-local tradeskillDuration = oUF.isModern and C_DurationUtil.CreateDuration()
+local craftCurrent, craftTotal, craftStart, mergeCrafts = 0, 0, nil, false
+local craftDuration = oUF.isModern and C_DurationUtil.CreateDuration()
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
 if oUF.isClassic or oUF.isTBC or oUF.isForever then
@@ -329,7 +330,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 	end
 
-	if not name or (isTradeSkill and element.hideTradeSkills) then
+	if not name or (isTradeSkill and element.hideCrafts) then
 		if real ~= 'PLAYER_TARGET_CHANGED' or element.holdTime <= 0 then
 			resetAttributes(element)
 			element:Hide()
@@ -357,7 +358,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 	-- ElvUI block
 	local stages = empowering and UnitEmpoweredStagePercentages(unit) or nil
-	local mergePlayer = mergeTradeskill and oUF:UnitIsUnit(unit, 'player')
+	local mergePlayer = mergeCrafts and element.mergeCrafts and oUF:UnitIsUnit(unit, 'player')
 
 	element.isTradeSkill = isTradeSkill
 	element.tradeSkillCastID = (isTradeSkill and castID) or nil
@@ -388,14 +389,14 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 		-- ElvUI block
 		if element.tradeSkillMerge then
-			if tradeskillStart ~= startTime then
-				tradeskillStart = startTime
-				tradeskillCurrent = tradeskillCurrent + 1
+			if craftStart ~= startTime then
+				craftStart = startTime
+				craftCurrent = craftCurrent + 1
 			end
 
-			tradeskillDuration:SetTimeFromStart(element.startTime - (element.max * (tradeskillCurrent - 1)), element.max * tradeskillTotal)
-			duration = tradeskillDuration
-			element.max = element.max * tradeskillTotal
+			craftDuration:SetTimeFromStart(element.startTime - (element.max * (craftCurrent - 1)), element.max * craftTotal)
+			duration = craftDuration
+			element.max = element.max * craftTotal
 			element.holdTime = 1
 		end
 		-- end block
@@ -610,9 +611,9 @@ local function CastStop(self, event, unit, ...)
 
 	if not element:IsShown() then return end
 
-	local mergePlayer = mergeTradeskill and oUF:UnitIsUnit(unit, 'player')
-	if mergePlayer and (tradeskillCurrent == tradeskillTotal) then
-		mergeTradeskill = false
+	local mergePlayer = mergeCrafts and oUF:UnitIsUnit(unit, 'player')
+	if mergePlayer and (craftCurrent == craftTotal) then
+		mergeCrafts = false
 	end
 
 	if(interruptedBy) then
@@ -682,9 +683,9 @@ local function CastFail(self, event, unit, ...)
 	-- Failed crafts: when you start moving, etc
 	element.tradeSkillMerge = false
 
-	local mergePlayer = mergeTradeskill and oUF:UnitIsUnit(unit, 'player')
+	local mergePlayer = mergeCrafts and oUF:UnitIsUnit(unit, 'player')
 	if mergePlayer then
-		mergeTradeskill = false
+		mergeCrafts = false
 	end
 
 	-- force filled castbar
@@ -880,8 +881,8 @@ local function onUpdate(self, elapsed)
 			end
 		end
 	else
-		if self.tradeSkillMerge and tradeskillCurrent > 0 then
-			mergeTradeskill = false
+		if self.tradeSkillMerge and craftCurrent > 0 then
+			mergeCrafts = false
 		end
 
 		resetAttributes(self)
@@ -994,9 +995,9 @@ end
 
 if oUF.isModern then -- ElvUI
 	hooksecurefunc(C_TradeSkillUI, 'CraftRecipe', function(_, num)
-		tradeskillCurrent = 0
-		tradeskillTotal = (num and num > 0 and num) or 1 -- Runeforging passes 0
-		mergeTradeskill = true
+		craftCurrent = 0
+		craftTotal = (num and num > 0 and num) or 1 -- Runeforging passes 0
+		mergeCrafts = true
 	end)
 end
 

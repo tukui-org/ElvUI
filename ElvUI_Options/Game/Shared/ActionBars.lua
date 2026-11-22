@@ -277,7 +277,7 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.professionQuality = nil
 		options.pagingGroup = nil
 
-		options.cooldownGroup.args.enable, options.cooldownGroup.args.textGroup, options.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('actionbar', E.db.cooldown.actionbar.override.stanceBar, P.cooldown.actionbar.override.stanceBar)
+		C:GetCooldownConfig('actionbar', E.db.cooldown.actionbar.override.stanceBar, P.cooldown.actionbar.override.stanceBar, nil, nil, options.cooldownGroup.args)
 	elseif name == 'barPet' then
 		options.countTextGroup = nil
 		options.hotkeyTextGroup.set = function(info, value) E.db.actionbar[name][info[#info]] = value AB:UpdatePetBindings() end
@@ -286,7 +286,7 @@ for _, name in ipairs({'microbar', 'barPet', 'stanceBar'}) do
 		options.professionQuality = nil
 		options.pagingGroup = nil
 
-		options.cooldownGroup.args.enable, options.cooldownGroup.args.textGroup, options.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('actionbar', E.db.cooldown.actionbar.override.barPet, P.cooldown.actionbar.override.barPet)
+		C:GetCooldownConfig('actionbar', E.db.cooldown.actionbar.override.barPet, P.cooldown.actionbar.override.barPet, nil, nil, options.cooldownGroup.args)
 	end
 end
 
@@ -370,7 +370,7 @@ local function CreateBarOptions(num)
 
 	bar.args.backdropGroup.hidden = function() return not E.db.actionbar[barNumber].backdrop end
 
-	bar.args.cooldownGroup.args.enable, bar.args.cooldownGroup.args.textGroup, bar.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('actionbar', E.db.cooldown.actionbar.override[barNumber], P.cooldown.actionbar.override[barNumber])
+	C:GetCooldownConfig('actionbar', E.db.cooldown.actionbar.override[barNumber], P.cooldown.actionbar.override[barNumber], nil, nil, bar.args.cooldownGroup.args)
 
 	for group, func in pairs({
 		countTextGroup = function() return not E.db.actionbar[barNumber].counttext end,

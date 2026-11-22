@@ -6,7 +6,6 @@ local wipe, ipairs, ceil, floor, tonumber, tinsert = wipe, ipairs, ceil, floor, 
 local strsub, strmatch, strlower, strfind, next = strsub, strmatch, strlower, strfind, next
 
 local GetQuestLogSpecialItemInfo = GetQuestLogSpecialItemInfo
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetQuestLogTitle = GetQuestLogTitle
 local UnitIsPlayer = UnitIsPlayer
 local IsInInstance = IsInInstance
@@ -145,7 +144,7 @@ local function GetQuestObjectives(id, texture)
 end
 
 local function GetQuests(unitID)
-	local QuestList, notMyQuest, lastTitle
+	local list, notMyQuest, lastTitle
 	local info = E.ScanTooltip:GetUnitInfo(unitID)
 
 	if info and info.lines[2] then
@@ -154,28 +153,25 @@ local function GetQuests(unitID)
 			if E:NotSecretValue(text) then -- are only some lines secret?
 				if not text or text == '' then return end
 
-				if line.type == 18 or (not E.Modern and UnitIsPlayer(text)) then -- 18 is QuestPlayer
-					notMyQuest = text ~= E.myname
-				elseif text and not notMyQuest then
-					if line.type == 17 or (not E.Modern and not lastTitle) then
-						lastTitle = activeQuests[text]
-					end -- this line comes from one line up in the tooltip
-
-					local objectives = (line.type == 8 or not E.Modern) and lastTitle and lastTitle.objectives
-					if objectives then
-						local quest = objectives[text] or (not E.Modern and objectives[strsub(text, 4)])
-						if quest then
-							if not QuestList then
-								QuestList = {}
-							end
-
-							tinsert(QuestList, {
-								itemTexture = lastTitle.texture,
-								isPercent = quest.isPercent,
-								objectiveCount = quest.value,
-								questType = quest.type or 'DEFAULT',
-							})
+				if line.type == 17 or (not E.Modern and not lastTitle) then
+					lastTitle = activeQuests[text]
+					notMyQuest = nil -- allow multiple quests to be found while in group
+				elseif lastTitle and (line.type == 18 or (not E.Modern and UnitIsPlayer(text))) then
+					notMyQuest = text ~= E.mynameFull
+				elseif lastTitle and (text and not notMyQuest) then
+					local objectives = (line.type == 8 or not E.Modern) and lastTitle.objectives
+					local quest = objectives and (objectives[text] or (not E.Modern and objectives[strsub(text, 4)]))
+					if quest then
+						if not list then
+							list = {}
 						end
+
+						tinsert(list, {
+							itemTexture = lastTitle.texture,
+							isPercent = quest.isPercent,
+							objectiveCount = quest.value,
+							questType = quest.type or 'DEFAULT',
+						})
 					end
 				end
 			end
@@ -184,7 +180,7 @@ local function GetQuests(unitID)
 
 	E.ScanTooltip:Hide()
 
-	return QuestList
+	return list
 end
 
 local function HideIcon(icon)
@@ -350,7 +346,7 @@ local function UpdateQuest(id, index)
 		texture = texture,
 		difficulty = level,
 		title = title,
-		color = level and GetQuestDifficultyColor(level) or nil,
+		color = level and E:GetCreatureDifficultyColor(level) or nil,
 		objectives = GetQuestObjectives(id, texture)
 	}
 end

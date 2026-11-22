@@ -12,7 +12,6 @@ local utf8sub, utf8len = string.utf8sub, strlenutf8
 local tconcat = table.concat
 
 local AbbreviateNumbers = AbbreviateNumbers
-local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetCurrentTitle = GetCurrentTitle
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
@@ -826,7 +825,7 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 			color = QuestDifficultyColors.difficult
 		end
 	else
-		color = GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
+		color = E:GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
 	end
 
 	return Hex(color)

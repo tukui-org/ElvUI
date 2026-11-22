@@ -55,6 +55,7 @@
 	<Script file='Shared\Modules\Blizzard\AltPower.lua'/>
 	<Script file='Shared\Modules\Blizzard\ColorPickerModern.lua'/>
 	<Script file='Shared\Modules\Blizzard\ObjectiveFrame.lua'/>
+	<Script file='Shared\Modules\DataTexts\Ammo.lua'/>
 	<Script file='Shared\Modules\DataTexts\Currencies.lua'/>
 	<Script file='Shared\Modules\DataTexts\Defense.lua'/>
 	<Script file='Shared\Modules\DataTexts\Difficulty.lua'/>

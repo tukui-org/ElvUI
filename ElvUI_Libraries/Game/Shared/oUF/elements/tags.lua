@@ -104,7 +104,6 @@ local WrapString = C_StringUtil.WrapString
 local IsInRaid = IsInRaid
 local IsResting = IsResting
 local GetArenaOpponentSpec = GetArenaOpponentSpec
-local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRuneCooldown = GetRuneCooldown
@@ -276,8 +275,9 @@ end
 
 tagFunctions.difficulty = function(u)
 	if(UnitCanAttack('player', u)) then
-		local l = (UnitEffectiveLevel or UnitLevel)(u)
-		return Hex(GetCreatureDifficultyColor((l > 0) and l or 999))
+		local level = (UnitEffectiveLevel or UnitLevel)(u)
+		local color = oUF:GetCreatureDifficultyColor((level > 0) and level or 999)
+		return Hex(color)
 	end
 end
 

@@ -19,7 +19,6 @@ local CheckInteractDistance = CheckInteractDistance
 local CreateFrame = CreateFrame
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
-local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
@@ -299,7 +298,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			local levelText
 			local realLevel = UnitLevel(unit)
 			local effectiveLevel = E:UnitEffectiveLevel(unit)
-			local diffColor = GetCreatureDifficultyColor(effectiveLevel)
+			local diffColor = E:GetCreatureDifficultyColor(effectiveLevel)
 			local shownLevel = effectiveLevel > 0 and effectiveLevel or '??'
 			local unitGender = TT.db.gender and (E:NotSecretValue(gender) and genderTable[gender]) or ''
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
@@ -354,11 +353,11 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 				if teamLevel then
 					diffColor = GetRelativeDifficultyColor(teamLevel, level)
 				else
-					diffColor = GetCreatureDifficultyColor(level)
+					diffColor = E:GetCreatureDifficultyColor(level)
 				end
 			else
 				level = E:UnitEffectiveLevel(unit)
-				diffColor = GetCreatureDifficultyColor(level)
+				diffColor = E:GetCreatureDifficultyColor(level)
 			end
 
 			local unitPVP = UnitIsPVP(unit)
@@ -997,7 +996,9 @@ function TT:MODIFIER_STATE_CHANGED()
 		if owner == UIParent then
 			if E:UnitExists('mouseover') then
 				if E.Modern then
-					GameTooltip:RefreshData()
+					if E:NotSecretUnit('mouseover') then
+						GameTooltip:RefreshData()
+					end
 				else
 					GameTooltip:SetUnit('mouseover')
 				end

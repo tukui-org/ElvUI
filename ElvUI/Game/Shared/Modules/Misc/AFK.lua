@@ -110,7 +110,7 @@ function AFK:SetAFK(status)
 
 		if IsInGuild() then
 			local guildName, guildRankName = GetGuildInfo('player')
-			bottom.guild:SetFormattedText('%s-%s', guildName, guildRankName)
+			bottom.guild:SetFormattedText('%s - %s', guildName, guildRankName)
 		else
 			bottom.guild:SetText(L["No Guild"])
 		end
@@ -365,7 +365,7 @@ function AFK:Initialize()
 	local classColor = E.myClassColor
 	local name = bottom:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, 20)
-	name:SetFormattedText('%s-%s', E.myname, E.myrealm)
+	name:SetText(E.mynameRealm)
 	name:Point('TOPLEFT', bottom.faction, 'TOPRIGHT', nameOffsetX, nameOffsetY)
 	name:SetTextColor(classColor.r, classColor.g, classColor.b)
 	bottom.name = name

@@ -597,16 +597,14 @@ function M:UpdateSettings()
 		M.NeedsCanvasUpdate = E.MinimapSize
 	end
 
-	local panel, holder = _G.MinimapPanel, M.MapHolder
-	panel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
-	M:SetScale(panel, 1)
-
-	local mmOffset = E.PixelMode and 1 or 3
+	local holder = M.MapHolder
 	local mmScale = M.db.scale
+	local mmOffset = E.PixelMode and 1 or 3
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', holder, -mmOffset / mmScale, -mmOffset / mmScale)
 	Minimap:Size(E.MinimapSize)
 
+	local panel = _G.MinimapPanel
 	local mWidth, mHeight = Minimap:GetSize()
 	local bWidth, bHeight = E:Scale(E.PixelMode and 2 or 6), E:Scale(E.PixelMode and 2 or 8)
 	local panelSize, joinPanel = (panel:IsShown() and panel:GetHeight()) or E:Scale(E.PixelMode and 1 or -1), E:Scale(1)
@@ -788,7 +786,15 @@ do
 	end
 end
 
+function M:UpdateMinimapPanels()
+	local panel = _G.MinimapPanel
+	panel:SetShown(E.private.general.minimap.enable and E.db.datatexts.panels.MinimapPanel.enable)
+	M:SetScale(panel, 1)
+end
+
 function M:Initialize()
+	M:UpdateMinimapPanels()
+
 	if not E.private.general.minimap.enable then
 		return
 	else

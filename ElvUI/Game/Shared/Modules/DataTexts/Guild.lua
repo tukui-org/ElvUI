@@ -8,7 +8,6 @@ local format, strfind, strjoin, strsplit, strmatch, tinsert = format, strfind, s
 local GetGuildInfo = GetGuildInfo
 local GetGuildRosterInfo = GetGuildRosterInfo
 local GetNumGuildMembers = GetNumGuildMembers
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local InCombatLockdown = InCombatLockdown
 local IsAltKeyDown = IsAltKeyDown
 local IsInGuild = IsInGuild
@@ -220,7 +219,7 @@ local function Click(panel, btn)
 
 		for _, info in ipairs(guildTable) do
 			if (info.online or info.isMobile) and info.name ~= E.myname then
-				local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
+				local classc, levelc = E:ClassColor(info.class), E:GetCreatureDifficultyColor(info.level)
 				if not classc then classc = levelc end
 
 				local name = format(levelNameString, levelc.r*255,levelc.g*255,levelc.b*255, info.level, classc.r*255,classc.g*255,classc.b*255, info.name)
@@ -294,7 +293,7 @@ local function OnEnter(_, _, noUpdate)
 
 		if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zone) then zonec = activezone else zonec = inactivezone end
 
-		local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
+		local classc, levelc = E:ClassColor(info.class), E:GetCreatureDifficultyColor(info.level)
 		if not classc then classc = levelc end
 
 		local faction = info.faction == 1 and FACTION_ALLIANCE or info.faction == 0 and FACTION_HORDE or ''

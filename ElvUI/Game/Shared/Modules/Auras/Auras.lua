@@ -784,6 +784,8 @@ function A:Initialize()
 
 			E:Auras_GroupUnit(buff, 'player')
 
+			E.FrameLocks[buff] = true
+
 			A.BuffFrame = buff
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
@@ -815,6 +817,8 @@ function A:Initialize()
 			end
 
 			E:Auras_GroupUnit(debuff, 'player')
+
+			E.FrameLocks[debuff] = true
 
 			A.DebuffFrame = debuff
 		else

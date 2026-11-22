@@ -1062,7 +1062,7 @@ do -- shared cooldown
 		return thresholds
 	end
 
-	function C:GetCooldownConfig(db, profile, private, charges, lossOfControl)
+	function C:GetCooldownConfig(db, profile, private, charges, lossOfControl, config, ignoreEnable)
 		local enable = ACH:Toggle(L["Enable"], nil, 0, nil, nil, nil, function() return profile.enable end, function(_, value) profile.enable = value; E:CooldownSettings(db); end)
 
 		local text = ACH:Group(L["Text"], nil, 10, nil, function(info) return profile[info[#info]] end, function(info, value) profile[info[#info]] = value; E:CooldownSettings(db); end, nil, function() return not profile.enable end)
@@ -1080,18 +1080,6 @@ do -- shared cooldown
 		position.inline = true
 		text.args.positionGroup = position
 
-		local colors = ACH:Group(L["Colors"], nil, 3, nil, function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
-		colors.args.text = ACH:Color(L["Text Color"], nil, 1)
-		colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
-		colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
-		colors.args.spacer1 = ACH:Spacer(4, 'full')
-		colors.args.swipeCharge = ACH:Color(L["Swipe: Charge"], nil, 10, true, nil, nil, nil, nil, charges)
-		colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, charges)
-		colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
-		colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
-		colors.inline = true
-		text.args.colorGroup = colors
-
 		local thresholds = ACH:Group(L["Thresholds"], nil, 20, 'tab', nil, nil, nil, function() return not profile.enable end)
 		thresholds.args.colorsTime = GetThresholds(L["Threshold: Text"], 10, db, profile, private, 'thresholdText')
 
@@ -1100,6 +1088,26 @@ do -- shared cooldown
 			thresholds.args.colorsLoc = GetThresholds(L["Threshold: Loss of Control"], 30, db, profile, private, 'thresholdLoc')
 		end
 
-		return enable, text, thresholds
+		local colors = ACH:Group(L["Colors"], nil, 30, 'tab', function(info) local t = profile.colors[info[#info]] local d = private.colors[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a; end, function(info, r, g, b, a) local t = profile.colors[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a; E:CooldownSettings(db); end)
+		colors.args.text = ACH:Color(L["Text Color"], nil, 1)
+		colors.args.edge = ACH:Color(L["Edge Color"], nil, 2, true, nil, nil, nil, nil, db == 'aurabars')
+		colors.args.swipe = ACH:Color(L["Swipe Color"], nil, 3, true, nil, nil, nil, nil, db == 'aurabars')
+		colors.args.spacer1 = ACH:Spacer(4, 'full')
+		colors.args.swipeCharge = ACH:Color(L["Swipe: Charge"], nil, 10, true, nil, nil, nil, nil, charges)
+		colors.args.edgeCharge = ACH:Color(L["Edge: Charge"], nil, 11, true, nil, nil, nil, nil, charges)
+		colors.args.edgeLOC = ACH:Color(L["Edge: Loss of Control"], nil, 12, true, nil, nil, nil, nil, lossOfControl)
+		colors.args.swipeLOC = ACH:Color(L["Swipe: Loss of Control"], nil, 13, true, nil, nil, nil, nil, lossOfControl)
+
+		if config then
+			if not ignoreEnable then
+				config.enable = enable
+			end
+
+			config.textGroup = text
+			config.thresholdGroup = thresholds
+			config.colorGroup = colors
+		else
+			return enable, text, thresholds, colors
+		end
 	end
 end

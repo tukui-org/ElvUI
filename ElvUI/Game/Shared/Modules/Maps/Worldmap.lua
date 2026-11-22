@@ -30,17 +30,13 @@ local INVERTED_POINTS = {
 -- this will be updated later
 local smallerMapScale = 0.8
 local worldMapStrata = E.Modern and 'MEDIUM' or 'HIGH'
+
+-- Blizzards maximize rebuilds the canvas after our resize, calling map methods from this hook taints SetPassThroughButtons
 function M:SetLargeWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:SetFrameStrata(worldMapStrata)
 	WorldMapFrame:SetScale(1)
-	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
-
-	WorldMapFrame:OnFrameSizeChanged()
-	if WorldMapFrame:GetMapID() then
-		WorldMapFrame.NavBar:Refresh()
-	end
 end
 
 function M:SetSmallWorldMap()
@@ -226,13 +222,8 @@ end
 
 function M:WorldMap_FirstShow()
 	local frame = _G.WorldMapFrame
-	local maxed = E.Modern and frame:IsMaximized()
-	if maxed then -- this needs to be called outside of smallerWorldMap
-		frame:UpdateMaximizedSize()
-	end
-
 	if E.global.general.smallerWorldMap then
-		if maxed then
+		if E.Modern and frame:IsMaximized() then
 			M:SetLargeWorldMap()
 		else
 			M:SetSmallWorldMap()

@@ -97,7 +97,8 @@ local function GetUnitAuras(unit, auraType)
 	group.args.sourceGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 12)
 
 	group.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	group.args.cooldownGroup.args.enable, group.args.cooldownGroup.args.textGroup, group.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType])
+
+	C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType], nil, nil, group.args.cooldownGroup.args)
 
 	group.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Modern)
 	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() UF:ResetFilters_AuraGroup(E.db.nameplates.units[unit][auraType].filterLists, P.nameplates.units[unit][auraType].filterLists) NP:ConfigureAll() end)
@@ -340,6 +341,8 @@ local function GetUnitSettings(unit, name)
 		group.args.classBarGroup.args.xOffset = ACH:Range(L["X-Offset"], nil, 5, { min = -100, max = 100, step = 1 })
 		group.args.classBarGroup.args.yOffset = ACH:Range(L["Y-Offset"], nil, 6, { min = -100, max = 100, step = 1 })
 		group.args.classBarGroup.args.sortDirection = ACH:Select(L["Sort Direction"], L["Defines the sort order of the selected sort method."], 7, { asc = L["Ascending"], desc = L["Descending"], NONE = L["None"] }, nil, nil, nil, nil, nil, function() return E.myclass ~= 'DEATHKNIGHT' or E.Wrath or E.Mists end)
+
+		group.args.castGroup.args.generalGroup.args.mergeCrafts = ACH:Toggle(L["Merge Crafting"], L["Applies only to your casts."], 11)
 
 		group.args.general.args.useStaticPosition = ACH:Toggle(L["Use Static Position"], L["When enabled the nameplate will stay visible in a locked position."], 105, nil, nil, nil, nil, nil, function() return not E.db.nameplates.units[unit].enable end)
 	elseif unit == 'FRIENDLY_PLAYER' or unit == 'ENEMY_PLAYER' then

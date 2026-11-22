@@ -464,6 +464,7 @@ function LO:CreateMinimapPanels()
 	panel:Point('TOPLEFT', _G.Minimap, 'BOTTOMLEFT', -E.Border, E.PixelMode and 0 or -3)
 	panel:Point('BOTTOMRIGHT', _G.Minimap, 'BOTTOMRIGHT', E.Border, -BAR_HEIGHT)
 	panel:Hide()
+
 	DT:RegisterPanel(panel, E.db.datatexts.panels.MinimapPanel.numPoints, 'ANCHOR_BOTTOM', 0, -4)
 end
 

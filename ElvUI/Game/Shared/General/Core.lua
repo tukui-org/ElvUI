@@ -69,6 +69,9 @@ E.myrealm = GetRealmName()
 E.playerName, E.playerRealm = UnitNameUnmodified('player')
 E.mynameFull = format((E.Forever and E.playerRealm) and '%s %s' or '%s', E.playerName, E.playerRealm) -- forever "First Last" otherwise "First"
 E.mynameRealm = format((E.Forever and (E.playerRealm and '%s %s' or '%s')) or '%s - %s', E.playerName, E.playerRealm or E.myrealm) -- contains spaces/dashes in realm (for profile keys)
+E.myrealmString = E:ShortenRealm(E.myrealm) -- used in chat and addon comms
+E.mynameString = format(E.Forever and '%s' or '%s-%s', E.mynameFull, E.Forever and '' or E.myrealmString) -- used in chat and addon comms
+E.myRuleset = (E.IsGameRuleRP and E.IsGameRulePVP and 'RPPvP') or (E.IsGameRulePVP and 'PvP') or (E.IsGameRuleRP and 'RP') or (E.IsGameRuleHardcore and 'HC') or 'PvE'
 E.expansionLevel = GetExpansionLevel()
 E.expansionLevelMax = GetMaxLevelForExpansionLevel(E.expansionLevel)
 E.wowbuild = tonumber(E.wowbuild)
@@ -98,18 +101,11 @@ E.texts = {}
 E.snapBars = {}
 E.RegisteredModules = {}
 E.RegisteredInitialModules = {}
-E.valueColorUpdateFuncs = setmetatable({}, {
-	__newindex = function(_, key, value)
-		if type(key) == 'function' then return end
-		rawset(E.valueColorUpdateFuncs, key, value)
-	end
-})
-
-E.TexCoords = {0, 1, 0, 1}
 E.FrameLocks = {}
 E.VehicleLocks = {}
 E.CreditsList = {}
 E.ReverseTimer = {} -- Spells that we want to show the duration backwards (oUF_RaidDebuffs, ???)
+E.TexCoords = {0, 1, 0, 1}
 E.CenterPoint = {
 	BOTTOM = 'CENTER',
 	TOP = 'CENTER'
@@ -170,6 +166,7 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 	Float = {
 		Alpha = nil, -- float for hiding at Zero
 		Desaturate = nil, -- float curve for SetDesaturation
+		Percent = nil, -- float to hide at 0 and 100, example: TruncateWhenZero(UnitPowerPercent(unit, nil, true, Float.Percent))
 	},
 	Color = {
 		Default = nil, -- simple red, yellow, green curve for various places
@@ -177,11 +174,21 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 		Auras = { -- color curves created and updated by UpdateAuraCurves
 			auras = false,		-- these all
 			buffs = false,		-- stay false
-			debuffs = false,	-- on classics
-			highlight = false
+			debuffs = false,	-- on classics only
+			highlight = false	-- not on modern
 		}
 	}
 }
+
+do
+	local function newIndex(_, key, value)
+		if type(key) == 'function' then return end
+
+		rawset(E.valueColorUpdateFuncs, key, value)
+	end
+
+	E.valueColorUpdateFuncs = setmetatable({}, { __newindex = newIndex })
+end
 
 -- This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
@@ -200,20 +207,14 @@ E.HiddenFrame:SetPoint('BOTTOM')
 E.HiddenFrame:SetSize(1,1)
 E.HiddenFrame:Hide()
 
-do -- used in options
-	E.DEFAULT_FILTER = {}
+do
+	E.DEFAULT_FILTER = {} -- used in options
 	for filter, tbl in next, G.unitframe.aurafilters do
 		E.DEFAULT_FILTER[filter] = tbl.type
 	end
-end
 
-do
-	local a1,a2 = '','[%s%-]'
-	function E:ShortenRealm(realm)
-		return gsub(realm, a2, a1)
-	end
-
-	local a3 = format('%%-%s', E:ShortenRealm(E.myrealm))
+	-- strip my realm, ShortenRealm is in Initialize.lua
+	local a1, a3 = '', format('%%-%s', E.myrealmString)
 	function E:StripMyRealm(name)
 		return gsub(name, a3, a1)
 	end
@@ -1097,21 +1098,20 @@ do
 	end
 
 	local SendRecieveGroupSize = 0
-	local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
 	local function SendRecieve(_, event, prefix, message, _, senderOne, senderTwo)
 		if event == 'CHAT_MSG_ADDON' then
-			local sender = strfind(senderOne, '-') and senderOne or senderTwo
-			if sender == PLAYER_NAME then
-				return
-			elseif prefix == 'ELVUI_VERSIONCHK' then
-				local ver, msg, inCombat = E.version, tonumber(message), InCombatLockdown()
+			if prefix == 'ELVUI_VERSIONCHK' and not E.recievedOutOfDateMessage then
+				local sender = (E.Forever or strfind(senderOne, '-', 1, true)) and senderOne or senderTwo
+				if not sender or sender == E.mynameString then return end
+
+				local ver, msg = E.version, tonumber(message)
 
 				E.UserList[E:StripMyRealm(sender)] = msg
 
-				if msg and (msg > ver) and not E.recievedOutOfDateMessage then -- you're outdated D:
+				if msg and (msg > ver) then -- you're outdated D:
 					E:Print(L["ElvUI is out of date. You can download the newest version from tukui.org."])
 
-					if msg and ((msg - ver) >= 0.05) and not inCombat then
+					if msg and ((msg - ver) >= 0.05) and not InCombatLockdown() then
 						E.PopupDialogs.ELVUI_UPDATE_AVAILABLE.text = L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."]..format('\n\nSender %s : Version %s', sender, msg)
 
 						E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')

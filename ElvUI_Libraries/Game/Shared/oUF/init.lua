@@ -11,9 +11,14 @@ local canaccessvalue = canaccessvalue
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
+local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitThreatSituation = UnitThreatSituation
+local GetCreatureDifficultyColor = GetCreatureDifficultyColor
+local QuestDifficultyColors = QuestDifficultyColors
+
 local ShouldUnitIdentityBeSecret = C_Secrets.ShouldUnitIdentityBeSecret
 local CanCompareUnitTokens = C_Secrets.CanCompareUnitTokens
+local C_QuestLog_GetTrivialRange = C_QuestLog.GetTrivialRange
 
 local _, _, _, wowtoc = GetBuildInfo()
 oUF.wowtoc = wowtoc
@@ -88,6 +93,25 @@ end
 
 function oUF:UnitExists(unit)
 	return unit and (UnitExists(unit) or UnitIsVisible(unit))
+end
+
+function oUF:GetCreatureDifficultyColor(level)
+	if oUF.isForever then
+		local levelDiff = level - UnitEffectiveLevel('player')
+		if levelDiff >= 5 then
+			return QuestDifficultyColors.impossible
+		elseif levelDiff >= 3 then
+			return QuestDifficultyColors.verydifficult
+		elseif levelDiff >= -2 then
+			return QuestDifficultyColors.difficult
+		elseif -levelDiff <= C_QuestLog_GetTrivialRange() then
+			return QuestDifficultyColors.standard
+		else
+			return QuestDifficultyColors.trivial
+		end
+	end
+
+	return GetCreatureDifficultyColor(level)
 end
 
 -- BUG: Non-existent '*target' or '*pet' units cause UnitThreatSituation() errors

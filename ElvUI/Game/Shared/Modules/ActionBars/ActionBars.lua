@@ -2,7 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local AB = E:GetModule('ActionBars')
 
 local _G = _G
-local strmatch, next, type, unpack, tonumber = strmatch, next, type, unpack, tonumber
+local max, strmatch, next, type, unpack, tonumber = max, strmatch, next, type, unpack, tonumber
 local format, wipe, gsub, strsplit, strfind, strsub, strupper = format, wipe, gsub, strsplit, strfind, strsub, strupper
 
 local ClearOnBarHighlightMarks = ClearOnBarHighlightMarks
@@ -61,6 +61,7 @@ local IsPossessBarVisible = C_ActionBar.IsPossessBarVisible or IsPossessBarVisib
 local GetTempShapeshiftBarIndex = C_ActionBar.GetTempShapeshiftBarIndex or GetTempShapeshiftBarIndex
 local GetOverrideBarIndex = C_ActionBar.GetOverrideBarIndex or GetOverrideBarIndex
 local GetVehicleBarIndex = C_ActionBar.GetVehicleBarIndex or GetVehicleBarIndex
+local GetBonusBarIndex = C_ActionBar.GetBonusBarIndex or GetBonusBarIndex
 
 local COOLDOWN_GLOBAL = 61304
 local COOLDOWN_WAND = 5009
@@ -100,10 +101,9 @@ AB.barDefaults = {
 	bar15 = { page = 15, bindButtons = 'MULTIACTIONBAR7BUTTON', position = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,400' }
 }
 
-do
-	-- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
-	local fullConditions = (E.Modern or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d;', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
-	AB.barDefaults.bar1.conditions = fullConditions..format('[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', GetTempShapeshiftBarIndex())
+do -- https://github.com/Gethe/wow-ui-source/blob/6eca162dbca161e850b735bd5b08039f96caf2df/Interface/FrameXML/OverrideActionBar.lua#L136
+	local overrides = (E.Modern or E.Mists or E.Wrath) and format('[overridebar] %d; [vehicleui][possessbar] %d; ', GetOverrideBarIndex(), GetVehicleBarIndex()) or ''
+	AB.barDefaults.bar1.conditions = format('%s[shapeshift] %d; [bar:2] 2; [bar:3] 3; [bar:4] 4; [bar:5] 5; [bar:6] 6; [bonusbar:5] 11;', overrides, GetTempShapeshiftBarIndex())
 end
 
 AB.customExitButton = {
@@ -275,8 +275,8 @@ function AB:ActivePages(page)
 	return pages
 end
 
-function AB:HandleButtonState(button, index, vehicleIndex, pages)
-	for k = 1, 18 do
+function AB:HandleButtonState(button, index, pages, maxPages, vehicleIndex)
+	for k = 1, maxPages do
 		if pages and pages[k] then
 			button:SetState(k, 'action', (k - 1) * 12 + index)
 		else
@@ -284,7 +284,7 @@ function AB:HandleButtonState(button, index, vehicleIndex, pages)
 		end
 	end
 
-	if pages and vehicleIndex and index == 12 then
+	if pages and (index == 12 and vehicleIndex ~= 0) then
 		button:SetState(vehicleIndex, 'custom', AB.customExitButton)
 	end
 end
@@ -320,9 +320,13 @@ function AB:PositionAndSizeBar(barName)
 
 	AB:MoverMagic(bar)
 
-	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
+	local buttonWidth = db.buttonSize
+	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
+	local maskWidth, maskHeight = buttonWidth * 1.5, buttonHeight * 1.5
+
 	local button, lastButton, lastColumnButton, anchorRowButton, lastShownButton
-	local vehicleIndex = (E.Modern or E.Mists or E.Wrath) and GetVehicleBarIndex()
+	local _, horizontal, anchorUp, anchorLeft = AB:GetGrowth(point)
+	local reticleColor = E:UpdateClassColor(AB.db.targetReticleColor)
 
 	-- paging needs to be updated even if the bar is disabled
 	local defaults = AB.barDefaults[barName]
@@ -330,12 +334,10 @@ function AB:PositionAndSizeBar(barName)
 	RegisterStateDriver(bar, 'page', page)
 	bar:SetAttribute('page', page)
 
-	local buttonWidth = db.buttonSize
-	local buttonHeight = db.keepSizeRatio and db.buttonSize or db.buttonHeight
-	local maskWidth, maskHeight = buttonWidth * 1.5, buttonHeight * 1.5
+	local vehicleIndex = GetVehicleBarIndex()
+	local maxPages = max(18, vehicleIndex, GetOverrideBarIndex(), GetTempShapeshiftBarIndex(), GetBonusBarIndex())
+	local pages = enabled and AB:ActivePages(page) or nil -- page info will be sent to HandleButtonState
 
-	local reticleColor = E:UpdateClassColor(AB.db.targetReticleColor)
-	local pages = enabled and AB:ActivePages(page) or nil
 	for i = 1, NUM_ACTIONBAR_BUTTONS do
 		lastButton = bar.buttons[i-1]
 		lastColumnButton = bar.buttons[i-buttonsPerRow]
@@ -381,7 +383,7 @@ function AB:PositionAndSizeBar(barName)
 		end
 
 		AB:HandleButtonAutoCast(bar, button)
-		AB:HandleButtonState(button, i, vehicleIndex, pages)
+		AB:HandleButtonState(button, i, pages, maxPages, vehicleIndex)
 		AB:HandleButton(bar, button, i, lastButton, lastColumnButton)
 		AB:StyleButton(button, nil, bar.MasqueGroup and E.private.actionbar.masque.actionbars, nil, 'bar'..button.header.id)
 	end
@@ -487,8 +489,9 @@ function AB:CreateBar(id)
 		bar.buttons[i] = button
 	end
 
-	if defaults.conditions and strfind(defaults.conditions, '[form,noform]') then
-		bar:SetAttribute('newCondition', gsub(defaults.conditions, ' %[form,noform%] 0; ', ''))
+	local conditions = defaults.conditions
+	if conditions and strfind(conditions, '[form,noform]') then
+		bar:SetAttribute('newCondition', gsub(conditions, ' %[form,noform%] 0; ', ''))
 		bar:SetAttribute('hasTempBar', true)
 	else
 		bar:SetAttribute('hasTempBar', false)

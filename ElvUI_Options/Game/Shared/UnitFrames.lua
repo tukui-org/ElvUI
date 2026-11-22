@@ -132,7 +132,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.textGroup.args.stacks.inline = true
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar)
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar, nil, nil, config.args.cooldownGroup.args)
 
 	config.args.friendlyGroup = ACH:Group(L["Filters: Friendly"], nil, 50, 'tab', nil, nil, nil, not E.Modern)
 	config.args.friendlyGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists, P.unitframe.units[groupName].aurabar.friendlyFilter.filterLists) updateFunc(UF, groupName) end)
@@ -261,7 +261,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.strataAndLevel.order = 35
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType])
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType], nil, nil, config.args.cooldownGroup.args)
 
 	config.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Modern)
 	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName][auraType].filterLists, P.unitframe.units[groupName][auraType].filterLists) updateFunc(UF, groupName, numUnits) end)
@@ -336,7 +336,8 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.generalGroup.args.countGroup.inline = true
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].buffIndicator, P.cooldown.unitframe.override[groupName].buffIndicator)
+
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].buffIndicator, P.cooldown.unitframe.override[groupName].buffIndicator, nil, nil, config.args.cooldownGroup.args)
 
 	if subGroup then
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
@@ -429,6 +430,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.generalGroup.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 10, { min = 0, max = 10, step = 0.1 })
 	config.args.generalGroup.args.overlayOnFrame = ACH:Select(L["Attach To"], L["The object you want to attach to."], 11, { Health = L["Health"], Power = L["Power"], InfoPanel = L["Information Panel"], None = L["None"] })
 	config.args.generalGroup.args.format = ACH:Select(L["Format"], L["Cast Time Format"], 12, { CURRENTMAX = L["Current / Max"], CURRENT = L["Current"], REMAINING = L["Remaining"], REMAININGMAX = L["Remaining / Max"] })
+	config.args.generalGroup.args.mergeCrafts = ACH:Toggle(L["Merge Crafting"], L["Applies only to your casts."], 13)
 
 	config.args.textGroup = ACH:Group(L["Text"], nil, 16, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.textGroup.args.hideName = ACH:Toggle(L["Hide Name"], nil, 1)

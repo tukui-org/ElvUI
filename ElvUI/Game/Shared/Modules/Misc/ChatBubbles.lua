@@ -71,7 +71,7 @@ function M:UpdateBubbleBorder()
 	end
 end
 
-function M:AddChatBubbleName(chatBubble, guid, name)
+function M:AddChatBubbleName(bubble, guid, name)
 	if not name then return end
 
 	local color = PRIEST_COLOR
@@ -80,12 +80,12 @@ function M:AddChatBubbleName(chatBubble, guid, name)
 		color = data.classColor
 	end
 
-	chatBubble.Name:SetFormattedText('|c%s%s|r', color.colorStr, name)
-	chatBubble.Name:Width(chatBubble:GetWidth()-10)
+	bubble.Name:SetFormattedText('|c%s%s|r', color.colorStr, name)
+	bubble.Name:Width(bubble:GetWidth() - 10)
 end
 
 local yOffset --Value set in M:LoadChatBubbles()
-function M:SkinBubble(frame, holder)
+function M:SkinBubble(bubble, holder)
 	local option = E.private.general.chatBubbles
 	if option == 'nobackdrop' then
 		holder:DisableDrawLayer('BORDER')
@@ -99,28 +99,28 @@ function M:SkinBubble(frame, holder)
 		end
 	end
 
-	if not frame.Name then
+	if not bubble.Name then
 		local name = holder:CreateFontString(nil, 'BORDER')
 		name:Height(10) -- width set in M:AddChatBubbleName()
-		name:Point('BOTTOM', frame, 'TOP', 0, yOffset)
+		name:Point('BOTTOM', bubble, 'TOP', 0, yOffset)
 		name:SetFontObject('ChatBubbleFont')
 		name:SetJustifyH('LEFT')
 
 		local font, size, outline = name:GetFont()
-		name:FontTemplate(font, size * 0.85, outline)
+		name:SetFont(font, size * 0.85, outline)
 
-		frame.Name = name
+		bubble.Name = name
 	end
 
-	if not frame.holder then
-		frame.holder = holder
+	if not bubble.holder then
+		bubble.holder = holder
 		holder.Tail:Hide()
 
-		frame:HookScript('OnShow', M.UpdateBubbleBorder)
-		M.UpdateBubbleBorder(frame)
+		bubble:HookScript('OnShow', M.UpdateBubbleBorder)
+		M.UpdateBubbleBorder(bubble)
 	end
 
-	frame.IsSkinnedElvUI = true
+	bubble.IsSkinnedElvUI = true
 end
 
 local function ChatBubble_OnEvent(_, event, msg, sender, _, _, _, _, _, _, _, _, _, guid)
@@ -133,15 +133,15 @@ local function ChatBubble_OnEvent(_, event, msg, sender, _, _, _, _, _, _, _, _,
 	end
 end
 
-local function ChatBubble_OnUpdate(eventFrame, elapsed)
-	eventFrame.lastupdate = (eventFrame.lastupdate or -2) + elapsed
-	if eventFrame.lastupdate < 0.1 then return end
-	eventFrame.lastupdate = 0
+local function ChatBubble_OnUpdate(frame, elapsed)
+	frame.lastupdate = (frame.lastupdate or -2) + elapsed
+	if frame.lastupdate < 0.1 then return end
+	frame.lastupdate = 0
 
-	for _, frame in pairs(C_ChatBubbles_GetAllChatBubbles()) do
-		local holder = not frame.IsSkinnedElvUI and frame:GetChildren()
+	for _, bubble in pairs(C_ChatBubbles_GetAllChatBubbles()) do
+		local holder = not bubble.IsSkinnedElvUI and bubble:GetChildren()
 		if holder and not holder:IsForbidden() then
-			M:SkinBubble(frame, holder)
+			M:SkinBubble(bubble, holder)
 		end
 	end
 end

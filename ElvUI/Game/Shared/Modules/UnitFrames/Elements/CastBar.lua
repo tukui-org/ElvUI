@@ -209,6 +209,7 @@ function UF:Configure_Castbar(frame)
 	end
 
 	castbar.timeToHold = db.timeToHold
+	castbar.mergeCrafts = db.mergeCrafts
 	castbar:SetReverseFill(db.reverse)
 	castbar:ClearAllPoints()
 

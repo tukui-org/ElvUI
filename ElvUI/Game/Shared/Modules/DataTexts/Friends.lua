@@ -10,7 +10,6 @@ local BNConnected = BNConnected
 local BNGetInfo = BNGetInfo
 local BNGetNumFriends = BNGetNumFriends
 local BNSetCustomMessage = C_BattleNet.SetCustomMessage or BNSetCustomMessage
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local IsChatAFK = IsChatAFK
 local IsChatDND = IsChatDND
 local IsAltKeyDown = IsAltKeyDown
@@ -127,10 +126,10 @@ local function InGroup(name, realmName)
 	local nameRaid = UnitInRaid(name)
 	local nameParty = UnitInParty(name)
 	if E:IsSecretValue(nameRaid) or E:IsSecretValue(nameParty) then
-		return ''
+		return
 	end
 
-	return (nameParty or nameRaid) and '|cffaaaaaa*|r' or ''
+	return (nameParty or nameRaid) and '|cffaaaaaa*|r'
 end
 
 local function SortAlphabeticName(a, b)
@@ -268,6 +267,7 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 				end
 			end
 		end
+
 		if isAdded == 2 then -- swap data
 			if bnInfo.client and tableList[bnInfo.client] then
 				for n, y in ipairs(tableList[bnInfo.client]) do
@@ -279,6 +279,7 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 			end
 			AddToBNTable(i, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, timerunningID, realmName, faction, race, class, zoneName, level, guid, gameText)
 		end
+
 		if isAdded ~= 0 then
 			return bnIndex
 		end
@@ -344,14 +345,15 @@ local function Click(panel, btn)
 					elseif (info.status == statusTable.DND) and db.hideDND then
 						shouldSkip = true
 					end
+
 					if not shouldSkip then
-						local classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
+						local classc, levelc = E:ClassColor(info.class), E:GetCreatureDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
 						menuCountWhispers = menuCountWhispers + 1
 						menuList[3].menuList[menuCountWhispers] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, notCheckable=true, func = DT.SendWhisper}
 
-						if InGroup(info.name) == '' then
+						if not InGroup(info.name) then
 							menuCountInvites = menuCountInvites + 1
 							menuList[2].menuList[menuCountInvites] = {text = format(levelNameString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.name), arg1 = info.name, arg2 = info.guid, notCheckable=true, func = DT.InviteFriend}
 						end
@@ -386,8 +388,8 @@ local function Click(panel, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = DT.SendWhisper}
 					end
 
-					if (info.client and info.client == wowString) and InGroup(info.characterName, info.realmName) == '' then
-						local classc, levelc = E:ClassColor(info.className), GetQuestDifficultyColor(info.level)
+					if (info.client and info.client == wowString) and (not E.Forever or (not info.faction or info.faction == E.myfaction)) and not InGroup(info.characterName, info.realmName) then
+						local classc, levelc = E:ClassColor(info.className), E:GetCreatureDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
 						if info.wowProjectID == WOW_PROJECT_ID then
@@ -457,10 +459,10 @@ local function OnEnter()
 				end
 				if not shouldSkip then
 					if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zone) then zonec = activezone else zonec = inactivezone end
-					classc, levelc = E:ClassColor(info.class), GetQuestDifficultyColor(info.level)
+					classc, levelc = E:ClassColor(info.class), E:GetCreatureDifficultyColor(info.level)
 					if not classc then classc = levelc end
 
-					TooltipAddXLine(true, characterFriend, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,InGroup(info.name),info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
+					TooltipAddXLine(true, characterFriend, format(levelNameClassString,levelc.r*255,levelc.g*255,levelc.b*255,info.level,info.name,InGroup(info.name) or '',info.status),info.zone,classc.r,classc.g,classc.b,zonec.r,zonec.g,zonec.b)
 				end
 			end
 		end
@@ -495,7 +497,7 @@ local function OnEnter()
 							if info.client and info.client == wowString then
 								classc = E:ClassColor(info.className)
 								if info.level and info.level ~= '' then
-									levelc = GetQuestDifficultyColor(info.level)
+									levelc = E:GetCreatureDifficultyColor(info.level)
 								else
 									classc, levelc = PRIEST_COLOR, PRIEST_COLOR
 								end
@@ -503,7 +505,7 @@ local function OnEnter()
 								--Sometimes the friend list is fubar with level 0 unknown friends
 								if not classc then classc = PRIEST_COLOR end
 
-								TooltipAddXLine(true, header, format(levelNameString..'%s%s%s',levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,InGroup(info.characterName, info.realmName),status,info.timerunningID and TIMERUNNING_SMALL or ''),info.accountName,238,238,238,238,238,238)
+								TooltipAddXLine(true, header, format(levelNameString..'%s%s%s',levelc.r*255,levelc.g*255,levelc.b*255,info.level,classc.r*255,classc.g*255,classc.b*255,info.characterName,InGroup(info.characterName, info.realmName) or '',status,info.timerunningID and TIMERUNNING_SMALL or ''),info.accountName,238,238,238,238,238,238)
 								if shiftDown then
 									if E.MapInfo.zoneText and (E.MapInfo.zoneText == info.zoneName) then zonec = activezone else zonec = inactivezone end
 									if E.myrealm == info.realmName then realmc = activezone else realmc = inactivezone end

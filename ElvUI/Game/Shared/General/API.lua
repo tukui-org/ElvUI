@@ -34,8 +34,6 @@ local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParent = UIParent
-local UnitExists = UnitExists
-local UnitIsVisible = UnitIsVisible
 local UnitHasPowerType = UnitHasPowerType
 local UnitClassification = UnitClassification
 local UnitFactionGroup = UnitFactionGroup
@@ -645,6 +643,18 @@ do
 
 		local float = E.Curves.Float
 		if float then
+			if not float.Percent then
+				local percent = E:CreateCurve(LuaCurveTypeStep)
+
+				for i = 0, 99 do
+					percent:AddPoint(i * 0.01, i)
+				end
+
+				percent:AddPoint(1, 0)
+
+				float.Percent = percent
+			end
+
 			if not float.Alpha then
 				local alpha = E:CreateCurve(LuaCurveTypeStep)
 				alpha:AddPoint(0, 0)
@@ -886,11 +896,12 @@ function E:AddNonPetBattleFrames()
 		if type(data) == 'table' then
 			parent, strata = data.parent, data.strata
 		elseif data == true then
-			parent = UIParent
+			parent = E.UIParent
 		end
 
 		local obj = _G[object] or object
 		obj:SetParent(parent)
+
 		if strata then
 			obj:SetFrameStrata(strata)
 		end
@@ -1436,12 +1447,6 @@ function E:GROUP_LEFT()
 	E.IsInGroup = IsInRaid() or IsInGroup()
 
 	wipe(E.GroupRoles)
-end
-
-function E:UnitExists(unit)
-	if E:IsSecretUnit(unit) then return end
-
-	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
 function E:UnitEffectiveLevel(unit)
