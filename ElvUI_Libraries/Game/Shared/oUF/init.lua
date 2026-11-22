@@ -11,6 +11,7 @@ local canaccessvalue = canaccessvalue
 local UnitExists = UnitExists
 local UnitIsUnit = UnitIsUnit
 local UnitIsVisible = UnitIsVisible
+local UnitEffectiveLevel = UnitEffectiveLevel
 local UnitThreatSituation = UnitThreatSituation
 local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local QuestDifficultyColors = QuestDifficultyColors
