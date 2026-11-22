@@ -231,7 +231,9 @@ function D:Distribute(target, otherServer, dataKey)
 end
 
 function D:CHAT_MSG_ADDON(_, prefix, msg, _, senderOne, senderTwo)
-	local download = prefix == TRANSFER_PREFIX and Downloads[(E.Forever and senderOne) or (strfind(senderOne, '-', 1, true) and E:StripMyRealm(senderOne)) or senderTwo]
+	if prefix ~= TRANSFER_PREFIX then return end
+
+	local download = Downloads[(E.Forever and senderOne) or (strfind(senderOne, '-', 1, true) and E:StripMyRealm(senderOne)) or senderTwo]
 	if not download then return end
 
 	local amount, total = strlen(msg), download.length

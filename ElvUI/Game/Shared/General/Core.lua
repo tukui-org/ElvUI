@@ -1102,7 +1102,7 @@ do
 		if event == 'CHAT_MSG_ADDON' then
 			if prefix == 'ELVUI_VERSIONCHK' and not E.recievedOutOfDateMessage then
 				local sender = (E.Forever or strfind(senderOne, '-', 1, true)) and senderOne or senderTwo
-				if sender == E.mynameString then return end
+				if not sender or sender == E.mynameString then return end
 
 				local ver, msg = E.version, tonumber(message)
 
