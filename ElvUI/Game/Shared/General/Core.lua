@@ -101,18 +101,11 @@ E.texts = {}
 E.snapBars = {}
 E.RegisteredModules = {}
 E.RegisteredInitialModules = {}
-E.valueColorUpdateFuncs = setmetatable({}, {
-	__newindex = function(_, key, value)
-		if type(key) == 'function' then return end
-		rawset(E.valueColorUpdateFuncs, key, value)
-	end
-})
-
-E.TexCoords = {0, 1, 0, 1}
 E.FrameLocks = {}
 E.VehicleLocks = {}
 E.CreditsList = {}
 E.ReverseTimer = {} -- Spells that we want to show the duration backwards (oUF_RaidDebuffs, ???)
+E.TexCoords = {0, 1, 0, 1}
 E.CenterPoint = {
 	BOTTOM = 'CENTER',
 	TOP = 'CENTER'
@@ -186,6 +179,16 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 		}
 	}
 }
+
+do
+	local function newIndex(_, key, value)
+		if type(key) == 'function' then return end
+
+		rawset(E.valueColorUpdateFuncs, key, value)
+	end
+
+	E.valueColorUpdateFuncs = setmetatable({}, { __newindex = newIndex })
+end
 
 -- This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
