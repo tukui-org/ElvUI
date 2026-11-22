@@ -267,6 +267,7 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 				end
 			end
 		end
+
 		if isAdded == 2 then -- swap data
 			if bnInfo.client and tableList[bnInfo.client] then
 				for n, y in ipairs(tableList[bnInfo.client]) do
@@ -278,6 +279,7 @@ local function PopulateBNTable(bnIndex, bnetIDAccount, accountName, battleTag, c
 			end
 			AddToBNTable(i, bnetIDAccount, accountName, battleTag, characterName, bnetIDGameAccount, client, isOnline, isBnetAFK, isBnetDND, noteText, wowProjectID, timerunningID, realmName, faction, race, class, zoneName, level, guid, gameText)
 		end
+
 		if isAdded ~= 0 then
 			return bnIndex
 		end
@@ -343,6 +345,7 @@ local function Click(panel, btn)
 					elseif (info.status == statusTable.DND) and db.hideDND then
 						shouldSkip = true
 					end
+
 					if not shouldSkip then
 						local classc, levelc = E:ClassColor(info.class), E:GetCreatureDifficultyColor(info.level)
 						if not classc then classc = levelc end
@@ -385,7 +388,7 @@ local function Click(panel, btn)
 						menuList[3].menuList[menuCountWhispers] = {text = realID, arg1 = realID, arg2 = true, notCheckable=true, func = DT.SendWhisper}
 					end
 
-					if (info.client and info.client == wowString) and not InGroup(info.characterName, info.realmName) then
+					if (info.client and info.client == wowString) and (not E.Forever or (not info.faction or info.faction == E.myfaction)) and not InGroup(info.characterName, info.realmName) then
 						local classc, levelc = E:ClassColor(info.className), E:GetCreatureDifficultyColor(info.level)
 						if not classc then classc = levelc end
 
