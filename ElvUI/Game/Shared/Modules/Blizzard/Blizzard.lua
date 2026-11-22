@@ -15,7 +15,6 @@ local GetQuestLogRewardXP = GetQuestLogRewardXP
 local C_QuestLog_ShouldShowQuestRewards = C_QuestLog.ShouldShowQuestRewards
 local C_QuestLog_GetSelectedQuest = C_QuestLog.GetSelectedQuest
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
-local UIParent = UIParent
 
 --------------------------------------------------------------------
 -- Guild Finder Helper
@@ -89,27 +88,33 @@ end
 
 function BL:HandleAddonCompartment()
 	local compartment = _G.AddonCompartmentFrame
-	if compartment then
-		if not compartment.mover then
-			compartment:SetParent(UIParent)
-			compartment:SetFrameLevel(10) -- over minimap mover
-			compartment:ClearAllPoints()
-			compartment:Point('RIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, -5, 10)
-			E:CreateMover(compartment, 'AddonCompartmentMover', L["Addon Compartment"], nil, nil, nil, nil, nil, 'general,blizzardImprovements,addonCompartment')
-		end
+	if not compartment then return end
 
-		local db = E.db.general.addonCompartment
-		if db.hide then
-			E:DisableMover(compartment.mover.name)
-			compartment:SetParent(E.HiddenFrame)
-		else
-			E:EnableMover(compartment.mover.name)
-			compartment.Text:FontTemplate(db.font, db.fontSize, db.fontOutline)
-			compartment:SetFrameLevel(db.frameLevel or 20)
-			compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
-			compartment:SetParent(UIParent)
-			compartment:Size(db.size or 18)
-		end
+	if not compartment.mover then
+		compartment:SetParent(E.UIParent)
+		compartment:SetFrameLevel(10) -- over minimap mover
+		compartment:ClearAllPoints()
+		compartment:Point('RIGHT', _G.ElvUI_MinimapHolder or _G.Minimap, -5, 10)
+		E:CreateMover(compartment, 'AddonCompartmentMover', L["Addon Compartment"], nil, nil, nil, nil, nil, 'general,blizzardImprovements,addonCompartment')
+	end
+
+	local db = E.db.general.addonCompartment
+	if db.hide then
+		E:DisableMover(compartment.mover.name)
+
+		compartment:SetParent(E.HiddenFrame)
+
+		E.FrameLocks[compartment] = nil
+	else
+		E:EnableMover(compartment.mover.name)
+
+		compartment.Text:FontTemplate(db.font, db.fontSize, db.fontOutline)
+		compartment:SetFrameLevel(db.frameLevel or 20)
+		compartment:SetFrameStrata(db.frameStrata or 'MEDIUM')
+		compartment:SetParent(E.UIParent)
+		compartment:Size(db.size or 18)
+
+		E.FrameLocks[compartment] = true
 	end
 end
 
