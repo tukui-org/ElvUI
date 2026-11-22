@@ -85,7 +85,7 @@ end
 local function UpdateGold(updateAll, goldChange)
 	local textOnly = not db.goldCoins and true or false
 	local style = db.goldFormat or 'BLIZZARD'
-	local realmKey = E.Forever and E.myRuleset or E.myrealm
+	local realmKey = (E.Forever and E.myRuleset) or E.myrealm
 
 	if updateAll then
 		wipe(allGold)
