@@ -97,7 +97,7 @@ local function GetUnitAuras(unit, auraType)
 	group.args.sourceGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], L["Set the font outline."], 12)
 
 	group.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	group.args.cooldownGroup.args.enable, group.args.cooldownGroup.args.textGroup, group.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType])
+	group.args.cooldownGroup.args.enable, group.args.cooldownGroup.args.textGroup, group.args.cooldownGroup.args.thresholdGroup, group.args.cooldownGroup.args.colorGroup = C:GetCooldownConfig('nameplates', E.db.cooldown.nameplates.override[unit][auraType], P.cooldown.nameplates.override[unit][auraType])
 
 	group.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Modern)
 	group.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filter"], nil, 4, function() UF:ResetFilters_AuraGroup(E.db.nameplates.units[unit][auraType].filterLists, P.nameplates.units[unit][auraType].filterLists) NP:ConfigureAll() end)
