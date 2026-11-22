@@ -1,3 +1,26 @@
+### Version 16.02 [ November 22nd 2026 ]
+*   Datatext for Ammo added to Forever.
+*   Quest icons for Nameplates and Quest Tags should work again on Forever.
+*   Castbar option added to toggle Merge Crafting.
+*   Quest icons during grouped content with multiple quests works again.
+*   Bag sorting erroring out with some specific containers.
+*   Camera distance max increase for Forever.
+*   Loot rolls show count again on the icons (Retail and Forever).
+*   Rogue Shadow Dance not showing the charged points properly.
+*   Rogue combo points not updating when switching targets on Forever.
+*   Tooltip mouseover error caused by unit secrets.
+*   Vehicle and Possession actionbar paging on Forever (notable on priests). 
+*   Display Navigation added to Blizzard Improvement section (this is a blizzard cvar `showInGameNavigation`).
+*   Minimap datatext not properly hidden when Minimap was disabled.
+*   Worldmap attempt to prevent the taint error with SetPassThroughButtons.
+*   Top Auras weren't being hidden during a Pet Battle.
+*   Gold Datatext updated on Forever to use the game ruleset.
+*   AFK mode will show full name on Forever.
+*   Chat bubble names will use the correct font again.
+*   Friend Datatext will only display same faction on Forever.
+*   Friend frame to have the correct font.
+*   Tooltip option to display an Aura's caster (this is a blizzard cvar `tooltipShowAuraCasterNames`).
+
 ### Version 16.01 [ November 3rd 2026 ]
 *   Tags for missinghp and missingpp will hide at zero again.
 *   Nameplates icons or textures would sometimes have the wrong level after being in name-only mode.
