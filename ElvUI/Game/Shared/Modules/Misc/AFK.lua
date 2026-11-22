@@ -365,7 +365,7 @@ function AFK:Initialize()
 	local classColor = E.myClassColor
 	local name = bottom:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, 20)
-	name:SetFormattedText(E.mynameRealm)
+	name:SetText(E.mynameRealm)
 	name:Point('TOPLEFT', bottom.faction, 'TOPRIGHT', nameOffsetX, nameOffsetY)
 	name:SetTextColor(classColor.r, classColor.g, classColor.b)
 	bottom.name = name
