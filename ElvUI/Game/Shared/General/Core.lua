@@ -1100,18 +1100,18 @@ do
 	local SendRecieveGroupSize = 0
 	local function SendRecieve(_, event, prefix, message, _, senderOne, senderTwo)
 		if event == 'CHAT_MSG_ADDON' then
-			local sender = strfind(senderOne, E.Forever and '%s' or '-') and senderOne or senderTwo
-			if sender == E.mynameString then
-				return
-			elseif prefix == 'ELVUI_VERSIONCHK' then
-				local ver, msg, inCombat = E.version, tonumber(message), InCombatLockdown()
+			if prefix == 'ELVUI_VERSIONCHK' and not E.recievedOutOfDateMessage then
+				local sender = (E.Forever or strfind(senderOne, '-', 1, true)) and senderOne or senderTwo
+				if sender == E.mynameString then return end
+
+				local ver, msg = E.version, tonumber(message)
 
 				E.UserList[E:StripMyRealm(sender)] = msg
 
-				if msg and (msg > ver) and not E.recievedOutOfDateMessage then -- you're outdated D:
+				if msg and (msg > ver) then -- you're outdated D:
 					E:Print(L["ElvUI is out of date. You can download the newest version from tukui.org."])
 
-					if msg and ((msg - ver) >= 0.05) and not inCombat then
+					if msg and ((msg - ver) >= 0.05) and not InCombatLockdown() then
 						E.PopupDialogs.ELVUI_UPDATE_AVAILABLE.text = L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."]..format('\n\nSender %s : Version %s', sender, msg)
 
 						E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')

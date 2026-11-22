@@ -206,17 +206,19 @@ do	-- this will handle `8.1.5.0015` into `8.150015` etc
 end
 
 function lib:VersionCheck(event, prefix, msg, _, senderOne, senderTwo)
-	if (event == 'CHAT_MSG_ADDON' and prefix == lib.prefix) and not E.pluginRecievedOutOfDateMessage then
-		local sender = strfind(senderOne, E.Forever and '%s' or '-') and senderOne or senderTwo
-		if (sender and sender ~= E.mynameString) and (msg and not strmatch(msg, '^%s-$')) then
-			for name, version in gmatch(msg, '([^=]+)=([%d%p]+);') do
-				local plugin = (version and name) and lib.plugins[name]
-				if plugin and plugin.version then
-					local pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
-					if (ver and pver) and (ver > pver) then
-						plugin.old, plugin.newversion = true, version
-						E:Print(format(MSG_OUTDATED, plugin.title or plugin.name, plugin.version, plugin.newversion))
-						E.pluginRecievedOutOfDateMessage = true
+	if event == 'CHAT_MSG_ADDON' then
+		if prefix == lib.prefix and not E.pluginRecievedOutOfDateMessage then
+			local sender = (E.Forever or strfind(senderOne, '-', 1, true)) and senderOne or senderTwo
+			if (sender and sender ~= E.mynameString) and (msg and not strmatch(msg, '^%s-$')) then
+				for name, version in gmatch(msg, '([^=]+)=([%d%p]+);') do
+					local plugin = (version and name) and lib.plugins[name]
+					if plugin and plugin.version then
+						local pver, ver = lib:StripVersion(plugin.version), lib:StripVersion(version)
+						if (ver and pver) and (ver > pver) then
+							plugin.old, plugin.newversion = true, version
+							E:Print(format(MSG_OUTDATED, plugin.title or plugin.name, plugin.version, plugin.newversion))
+							E.pluginRecievedOutOfDateMessage = true
+						end
 					end
 				end
 			end
