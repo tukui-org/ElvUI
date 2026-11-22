@@ -181,8 +181,8 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 		Auras = { -- color curves created and updated by UpdateAuraCurves
 			auras = false,		-- these all
 			buffs = false,		-- stay false
-			debuffs = false,	-- on classics
-			highlight = false
+			debuffs = false,	-- on classics only
+			highlight = false	-- not on modern
 		}
 	}
 }
