@@ -163,6 +163,7 @@ function E:SetupCVars(noDisplayMsg)
 		E:SetCVar('worldMapShowCursorCoords', 0)
 		E:SetCVar('cameraDistanceMaxZoomFactor', 2.6) -- This has a setting on classic/tbc
 		E:SetCVar('showInGameNavigation', 1) -- we do like way points
+		E:SetCVar('tooltipShowAuraCasterNames', 1) -- show who casted that
 	else
 		E:SetCVar('alwaysShowActionBars', 1)
 		E:SetCVar('chatClassColorOverride', 0)

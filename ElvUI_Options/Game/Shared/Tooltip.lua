@@ -6,6 +6,7 @@ local ACH = E.Libs.ACH
 
 local tonumber = tonumber
 local GameTooltipStatusBar = GameTooltipStatusBar
+local GetCVarBool = C_CVar.GetCVarBool
 
 local modifierValues = { SHOW = L["Show"], HIDE = L["Hide"], SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
 
@@ -33,6 +34,7 @@ General.moneyHide = ACH:Toggle(L["Money Hide"], L["Hides Blizzard's price lines.
 General.fadeOut = ACH:Toggle(L["Fade Out"], L["Fade out the tooltip when it disappears, instant otherwise. Cursor anchored tooltips are unaffected."], 13, nil, nil, nil, nil, nil, nil, not E.Modern)
 General.allowTagPVP = ACH:Toggle(L["Allow Tag: PVP"], nil, 14)
 General.allowTagFaction = ACH:Toggle(L["Allow Tag: Faction"], nil, 15)
+General.displayCaster = ACH:Toggle(L["Show Aura Caster"], nil, 16, nil, nil, nil, function() return GetCVarBool('tooltipShowAuraCasterNames') end, function(_, value) E:SetCVar('tooltipShowAuraCasterNames', value and 1 or 0) end, nil, not E.Modern)
 General.spacer1 = ACH:Spacer(20)
 General.colorAlpha = ACH:Range(L["OPACITY"], nil, 21, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; S:StyleTooltips() end)
 General.xOffset = ACH:Range(L["X-Offset"], nil, 22, { min = -200, max = 200, step = 1 })
