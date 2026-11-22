@@ -173,6 +173,7 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 	Float = {
 		Alpha = nil, -- float for hiding at Zero
 		Desaturate = nil, -- float curve for SetDesaturation
+		Percent = nil, -- float to hide at 0 and 100, example: TruncateWhenZero(UnitPowerPercent(unit, nil, true, Float.Percent))
 	},
 	Color = {
 		Default = nil, -- simple red, yellow, green curve for various places

@@ -643,6 +643,18 @@ do
 
 		local float = E.Curves.Float
 		if float then
+			if not float.Percent then
+				local percent = E:CreateCurve(LuaCurveTypeStep)
+
+				for i = 0, 99 do
+					percent:AddPoint(i * 0.01, i)
+				end
+
+				percent:AddPoint(1, 0)
+
+				float.Percent = percent
+			end
+
 			if not float.Alpha then
 				local alpha = E:CreateCurve(LuaCurveTypeStep)
 				alpha:AddPoint(0, 0)
