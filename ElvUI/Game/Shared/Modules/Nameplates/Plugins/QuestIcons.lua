@@ -95,10 +95,10 @@ local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 local function GetObjectiveType(text, texture, questType, objectiveType)
 	if texture then
 		return 'QUEST_ITEM'
+	elseif questType == 'item' then
+		return -- use DEFAULT
 	elseif questType == 'monster' and objectiveType == 0 then
 		return 'KILL'
-	elseif questType == 'item' and objectiveType == 1 then
-		return -- use DEFAULT
 	end
 
 	local lowerText = strlower(text)
