@@ -92,13 +92,11 @@ local typesLocalized = {
 
 local questTypes = typesLocalized[E.locale] or typesLocalized.enUS
 
-local function GetObjectiveType(text, texture, questType, objectiveType)
+local function GetObjectiveType(text, texture, objectiveType)
 	if texture then
 		return 'QUEST_ITEM'
-	elseif questType == 'item' then
+	elseif objectiveType == 'item' then
 		return -- use DEFAULT
-	elseif questType == 'monster' and objectiveType == 0 then
-		return 'KILL'
 	end
 
 	local lowerText = strlower(text)
@@ -129,7 +127,7 @@ local function GetQuestObjectives(id, texture)
 			if obj.type == 'progressbar' then
 				local progress = tonumber(strmatch(text, '([%d%.]+)%%'))
 				if progress and progress <= 100 then
-					list[text] = { value = ceil(100 - progress), type = GetObjectiveType(text, texture, obj.type, obj.objectiveType), isPercent = true }
+					list[text] = { value = ceil(100 - progress), type = GetObjectiveType(text, texture, obj.type), isPercent = true }
 				end
 			else
 				local need = obj.numRequired
@@ -137,7 +135,7 @@ local function GetQuestObjectives(id, texture)
 				if need and have then
 					local diff = floor(need - have)
 					if diff > 0 then
-						list[text] = { value = diff, type = GetObjectiveType(text, texture, obj.type, obj.objectiveType), isPercent = false }
+						list[text] = { value = diff, type = GetObjectiveType(text, texture, obj.type), isPercent = false }
 					end
 				end
 			end
