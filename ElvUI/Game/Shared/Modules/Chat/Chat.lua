@@ -938,6 +938,8 @@ function CH:UpdateEditboxFont(chatFrame)
 	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 
 	local editbox = ChooseBoxForSend(chatFrame)
+	if not editbox then return end
+
 	editbox:FontTemplate(font, fontSize, outline)
 
 	if editbox.header then
@@ -949,7 +951,7 @@ function CH:UpdateEditboxFont(chatFrame)
 	end
 
 	-- the header and text will not update the placement without focus
-	if editbox and editbox:IsShown() then
+	if editbox:IsShown() then
 		editbox:SetFocus()
 	end
 end
