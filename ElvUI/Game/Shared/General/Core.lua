@@ -206,6 +206,7 @@ E.HiddenFrame = CreateFrame('Frame', nil, UIParent)
 E.HiddenFrame:SetPoint('BOTTOM')
 E.HiddenFrame:SetSize(1,1)
 E.HiddenFrame:Hide()
+E.HiddenFrame.Layout = E.noop -- MiniMapMailFrameMixin > UPDATE_PENDING_MAIL will lead to a GetParent and trigger Layout
 
 do
 	E.DEFAULT_FILTER = {} -- used in options
