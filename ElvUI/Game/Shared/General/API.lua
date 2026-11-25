@@ -1414,17 +1414,18 @@ function E:UnitHasTankAura(unit)
 
 	local tankAura = UnitHasEffectivelyTankAura(unit)
 
-	return E:NotSecretValue(tankAura) and tankAura or nil
+	if E:NotSecretValue(tankAura) then
+		return tankAura
+	end
 end
 
 function E:UnitTankedByGroup(unit)
 	local tanks = E.GroupUnitsByRole.TANK
 	for unitToken in next, E.Forever and E.GroupRoles or tanks do
 		if unitToken ~= 'player' and (tanks[unitToken] or E:UnitHasTankAura(unitToken)) then
-			-- Status 2 is still tanking, another unit just has more threat
 			local status = E:GetThreatSituation(unit, unitToken)
-			if status and E:NotSecretValue(status) and status >= 2 then
-				return unitToken
+			if E:NotSecretValue(status) and (status and status >= 2) then
+				return unitToken -- satus 2 is still tanking, another unit just has more threat
 			end
 		end
 	end
