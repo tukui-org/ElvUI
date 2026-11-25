@@ -5,9 +5,9 @@ local CreateFrame = CreateFrame
 local UnitIsTapDenied = UnitIsTapDenied
 
 function NP:ThreatIndicator_PreUpdate(unit)
-	local targetUnit, db = unit..'target', NP.db.threat
-	local isTank = E.myrole == 'TANK' or E.GroupRoles.player == 'TANK'
-	local offTank = isTank and (E:UnitExists(targetUnit) and E:UnitNotUnit(targetUnit, 'player')) and ((db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(targetUnit)]) or (db.beingTankedByTank and E:UnitTankedByGroup(unit)))
+	local db = NP.db.threat
+	local isTank = E.myrole == 'TANK' or E.GroupRoles.player == 'TANK' or E:UnitHasTankAura('player')
+	local offTank = isTank and ((db.beingTankedByPet and E.ThreatPets[NP:UnitNPCID(unit..'target')]) or (db.beingTankedByTank and E:UnitTankedByGroup(unit)))
 	local useSolo = not E.IsInGroup and db.useSoloColor
 
 	self.useSolo = useSolo
