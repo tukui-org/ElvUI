@@ -934,24 +934,26 @@ function CH:UpdateEditboxFont(chatFrame)
 		chatFrame = _G.GeneralDockManager.selected
 	end
 
-	local id = chatFrame:GetID()
-	local font, outline = CH.db.font, CH.db.fontOutline
-	local _, fontSize = _G.FCF_GetChatWindowInfo(id)
-
 	local editbox = ChooseBoxForSend(chatFrame)
-	editbox:FontTemplate(font, fontSize, outline)
+	if editbox then
+		local id = chatFrame:GetID()
+		local font, outline = CH.db.font, CH.db.fontOutline
+		local _, fontSize = _G.FCF_GetChatWindowInfo(id)
 
-	if editbox.header then
-		editbox.header:FontTemplate(font, fontSize, outline)
-	end
+		editbox:FontTemplate(font, fontSize, outline)
 
-	if editbox.characterCount then
-		editbox.characterCount:FontTemplate(font, fontSize, outline)
-	end
+		if editbox.header then
+			editbox.header:FontTemplate(font, fontSize, outline)
+		end
 
-	-- the header and text will not update the placement without focus
-	if editbox and editbox:IsShown() then
-		editbox:SetFocus()
+		if editbox.characterCount then
+			editbox.characterCount:FontTemplate(font, fontSize, outline)
+		end
+
+		-- the header and text will not update the placement without focus
+		if editbox:IsShown() then
+			editbox:SetFocus()
+		end
 	end
 end
 
