@@ -631,6 +631,7 @@ do --this can save some main file locals
 			-- Luckyone
 			z['Player-6945-0024F82A']	= ElvGreen -- [Horde] Hunter
 			z['Player-6945-0024F7B0']	= ElvGreen -- [Horde] Druid
+			z['Player-6945-0553CAB4']	= ElvGreen -- [Horde] Warlock
 		end
 	end
 end
