@@ -18,6 +18,11 @@ local ATLAS = {
 	['common-dropdown-icon-checkmark-yellow-classic-2'] = true,
 	['common-dropdown-icon-radialtick-yellow-classic'] = true,
 }
+local TEMPLATES = {
+	UnitPopupVoiceMicrophoneVolumeTemplate = true,
+	UnitPopupVoiceSpeakerVolumeTemplate = true,
+	UnitPopupVoiceUserVolumeTemplate = true,
+}
 
 function data:HandleMenu()
 	self:StripTextures()
@@ -48,6 +53,19 @@ function data:HandleAttachments() -- self is compositor
 			widget:SetVertexColor(r, g, b)
 			widget:Size(12)
 		end
+	end
+end
+
+-- Voice chat volume sliders
+function data:HandleTemplate(_, template) -- self is compositor
+	local objects = self.attachments
+	if not objects then return end
+
+	local widget = TEMPLATES[template] and objects[#objects]
+	if widget and not widget.IsSkinned then
+		S:HandleSliderFrame(widget.Slider)
+
+		widget.IsSkinned = true
 	end
 end
 
@@ -84,10 +102,10 @@ function data:HandleCheckbox(button)
 	box.mark:SetShown(ATLAS[atlas])
 
 	-- Pooled textures
-	tex1:SetTexture(E.ClearTexture)
+	tex1:SetTexture()
 
 	if tex2 then
-		tex2:SetTexture(E.ClearTexture)
+		tex2:SetTexture()
 	end
 
 	box:ClearAllPoints()
@@ -103,7 +121,7 @@ function data:HierarchyCheckbox()
 	end
 end
 
-function data:SkinMenu(manager, ownerRegion, menuDescription, anchor)
+function data:SkinMenu(manager, _, menuDescription) -- manager, ownerRegion, menuDescription, anchor
 	local menu = manager:GetOpenMenu()
 	if not menu then return end
 
@@ -126,6 +144,7 @@ function S:Blizzard_Menu()
 	hooksecurefunc(manager, 'OpenContextMenu', data.OpenContext)
 
 	hooksecurefunc(_G.CompositorMixin, 'AttachTexture', data.HandleAttachments)
+	hooksecurefunc(_G.CompositorMixin, 'AttachTemplate', data.HandleTemplate)
 	hooksecurefunc(_G.CompositorMixin, 'Detach', data.HideCheckbox)
 
 	hooksecurefunc(_G.MenuVariants, 'CreateCheckbox', data.HandleCheckbox)

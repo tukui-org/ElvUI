@@ -23,6 +23,7 @@ local function HandleTalentFrameDialog(dialog)
 
 	local editbox = dialog.NameControl.EditBox
 	S:HandleEditBox(editbox)
+
 	editbox.backdrop:Point('TOPLEFT', -5, -10)
 	editbox.backdrop:Point('BOTTOMRIGHT', 5, 10)
 end
@@ -67,10 +68,9 @@ local function HandleTreeHeaders(frame)
 end
 
 local function TalentButtonStateBorder(button, visualState)
-	button.BorderSheen:Hide() -- Blizzard reshows it on every state update
-
 	local color = _G.TalentButtonUtil.GetColorForBaseVisualState(visualState)
 	button.Icon.backdrop:SetBackdropBorderColor(color:GetRGB())
+	button.BorderSheen:Hide() -- Blizzard reshows it on every state update
 end
 
 local function HandleTalentButton(button)
@@ -154,6 +154,11 @@ local function HandleHeroTalents(frame)
 	end
 end
 
+local function UpdateSpellBookAttic(frame)
+	frame.SettingsDropdown:ClearAllPoints()
+	frame.SettingsDropdown:Point('TOPRIGHT', -30, -23)
+end
+
 function S:Blizzard_PlayerSpells()
 	local PlayerSpellsFrame = _G.PlayerSpellsFrame
 	S:HandlePortraitFrame(PlayerSpellsFrame)
@@ -179,7 +184,6 @@ function S:Blizzard_PlayerSpells()
 
 	S:HandleButton(TalentsFrame.ApplyButton)
 	S:HandleDropDownBox(TalentsFrame.LoadSystem.Dropdown)
-
 	S:HandleButton(TalentsFrame.InspectCopyButton)
 
 	if E.Forever then -- Forever talent frame
@@ -209,15 +213,18 @@ function S:Blizzard_PlayerSpells()
 	end
 
 	S:HandleEditBox(TalentsFrame.SearchBox)
+
 	TalentsFrame.SearchBox.backdrop:Point('TOPLEFT', -4, -5)
 	TalentsFrame.SearchBox.backdrop:Point('BOTTOMRIGHT', 0, 5)
 
 	if E.Forever then -- Forever talent frame
 		local SearchOptions = TalentsFrame.SearchOptionsDropdown
 		S:HandleNextPrevButton(SearchOptions, 'down', nil, true)
+
 		SearchOptions:SetTemplate()
 		SearchOptions:ClearAllPoints()
 		SearchOptions:Point('LEFT', TalentsFrame.SearchBox, 'RIGHT', 3, 0)
+
 		SearchOptions.Arrow:SetAlpha(0)
 	end
 
@@ -246,13 +253,13 @@ function S:Blizzard_PlayerSpells()
 	ImportDialog.ImportControl.InputContainer:StripTextures()
 	ImportDialog.ImportControl.InputContainer:CreateBackdrop('Transparent')
 
-	HandleTalentFrameDialog(_G.ClassTalentLoadoutCreateDialog)
-
 	local EditDialog = _G.ClassTalentLoadoutEditDialog
 	HandleTalentFrameDialog(EditDialog)
+	HandleTalentFrameDialog(_G.ClassTalentLoadoutCreateDialog)
 
 	local check = EditDialog.UsesSharedActionBars.CheckButton
 	S:HandleCheckBox(check)
+
 	check:Size(20)
 	check.backdrop:SetInside()
 
@@ -262,7 +269,9 @@ function S:Blizzard_PlayerSpells()
 	local TalentsSelect = _G.HeroTalentsSelectionDialog
 	TalentsSelect:StripTextures()
 	TalentsSelect:SetTemplate()
+
 	S:HandleCloseButton(TalentsSelect.CloseButton)
+
 	hooksecurefunc(TalentsSelect, 'ShowDialog', HandleHeroTalents)
 
 	-- SpellBook
@@ -271,13 +280,15 @@ function S:Blizzard_PlayerSpells()
 	S:HandleEditBox(SpellBookFrame.SearchBox)
 
 	if E.Forever then -- arrow dropdown on Forever, gear icon on Retail
+		hooksecurefunc(SpellBookFrame, 'UpdateAttic', UpdateSpellBookAttic)
+
+		local dropdown = SpellBookFrame.SettingsDropdown
+		S:HandleNextPrevButton(dropdown, 'down', nil, true)
+		dropdown:SetTemplate()
+
 		SpellBookFrame.SearchBox:Height(20)
-		S:HandleNextPrevButton(SpellBookFrame.SettingsDropdown, 'down', nil, true)
-		SpellBookFrame.SettingsDropdown:SetTemplate()
-		SpellBookFrame.SettingsDropdown:ClearAllPoints()
-		SpellBookFrame.SettingsDropdown:Point('TOPRIGHT', SpellBookFrame, 'TOPRIGHT', -30, -23)
 		SpellBookFrame.SearchBox:ClearAllPoints()
-		SpellBookFrame.SearchBox:Point('RIGHT', SpellBookFrame.SettingsDropdown, 'LEFT', -5, 0)
+		SpellBookFrame.SearchBox:Point('RIGHT', dropdown, 'LEFT', -5, 0)
 	end
 
 	SpellBookFrame.TopBar:Hide()
@@ -291,6 +302,7 @@ function S:Blizzard_PlayerSpells()
 
 	if E.Forever then -- icon tab per skill line on Forever
 		HandleCategoryTabs(SpellBookFrame.CategoryTabSystem)
+
 		hooksecurefunc(SpellBookFrame.CategoryTabSystem, 'AddTab', HandleCategoryTabs)
 	else
 		for _, tab in next, { SpellBookFrame.CategoryTabSystem:GetChildren() } do
@@ -308,7 +320,9 @@ function S:Blizzard_PlayerSpells()
 
 	local RotationButton = SpellBookFrame.AssistedCombatRotationSpellFrame.Button
 	S:HandleIcon(RotationButton.Icon, true)
+
 	RotationButton.Border:Hide()
+
 	RotationButton:SetHighlightTexture(E.media.blankTex)
 	RotationButton:GetHighlightTexture():SetVertexColor(1, 1, 1, 0.25)
 	RotationButton:SetPushedTexture(E.media.blankTex)

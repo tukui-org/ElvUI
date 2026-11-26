@@ -27,7 +27,9 @@ local RightClickMenu, DiffLabel = {
 	{ text = _G.RESET_INSTANCES, notCheckable = true, func = function() ResetInstances() end},
 }, {}
 
-if E.Modern then
+if E.Forever then -- Blizzard's player menu only shows "Reset Instances"
+	RightClickMenu = { { text = _G.RESET_INSTANCES, notCheckable = true, func = function() ResetInstances() end } }
+elseif E.Modern then
 	tinsert(RightClickMenu, 4, { text = _G.PLAYER_DIFFICULTY6, checked = function() return GetDungeonDifficultyID() == 23 end, func = function() SetDungeonDifficultyID(23) end })
 	tinsert(RightClickMenu, 9, { text = _G.PLAYER_DIFFICULTY6, checked = function() return GetRaidDifficultyID() == 16 end, func = function() SetRaidDifficultyID(16) end })
 	tinsert(RightClickMenu, 10, { text = '', isTitle = true, notCheckable = true })
@@ -110,11 +112,17 @@ local function OnClick(panel)
 end
 
 local function OnEvent(panel)
-	local name, instanceType, difficultyID, _, _, _, _, instanceID = GetInstanceInfo()
+	local name, instanceType, difficultyID, _, maxPlayers, _, _, instanceID = GetInstanceInfo()
 	local keyStoneLevel = E.Modern and C_MythicPlus_IsMythicPlusActive() and C_ChallengeMode_GetActiveChallengeMapID() and C_ChallengeMode_IsChallengeModeActive() and C_ChallengeMode_GetActiveKeystoneInfo()
 
 	if keyStoneLevel then
 		panel.text:SetFormattedText('%s %s +%s', GetLabelTexture(difficultyID), name, keyStoneLevel)
+	elseif E.Forever then
+		if instanceType == 'none' then
+			panel.text:SetText(_G.RESET_INSTANCES)
+		else -- Blizzard's minimap indicator shows the player count instead of difficulty
+			panel.text:SetFormattedText('%s %s %s', instanceType == 'raid' and RaidTexture or DungeonTexture, name, maxPlayers)
+		end
 	elseif instanceType ~= 'none' and difficultyID and not Garrison[instanceID] then
 		panel.text:SetFormattedText('%s %s %s', GetLabelTexture(difficultyID), name, GetDiffIDLabel(difficultyID))
 	else
@@ -125,7 +133,7 @@ local function OnEvent(panel)
 end
 
 local function OnEnter()
-	if not (DungeonDifficultyID or RaidDifficultyID or LegacyRaidDifficultyID) then return end
+	if E.Forever or not (DungeonDifficultyID or RaidDifficultyID or LegacyRaidDifficultyID) then return end
 
 	DT.tooltip:ClearLines()
 	DT.tooltip:SetText(L["Current Difficulties:"])

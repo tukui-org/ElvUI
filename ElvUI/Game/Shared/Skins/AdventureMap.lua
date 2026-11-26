@@ -18,29 +18,26 @@ local function SkinRewards(frame)
 end
 
 function S:Blizzard_AdventureMap()
-	-- Quest Choice
-	local AdventureMapQuestChoiceDialog = _G.AdventureMapQuestChoiceDialog
-	AdventureMapQuestChoiceDialog:StripTextures()
-	AdventureMapQuestChoiceDialog:CreateBackdrop('Transparent')
-	AdventureMapQuestChoiceDialog.backdrop:ClearAllPoints()
-	AdventureMapQuestChoiceDialog.backdrop:Point('TOPLEFT', 0, -13)
-	AdventureMapQuestChoiceDialog.backdrop:Point('BOTTOMRIGHT', 0, -3)
+	local choiceDialog = _G.AdventureMapQuestChoiceDialog
+	choiceDialog:StripTextures()
+	choiceDialog:CreateBackdrop('Transparent')
+	choiceDialog.backdrop:ClearAllPoints()
+	choiceDialog.backdrop:Point('TOPLEFT', 0, -13)
+	choiceDialog.backdrop:Point('BOTTOMRIGHT', 0, -3)
 
-	AdventureMapQuestChoiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
-	AdventureMapQuestChoiceDialog.Background:SetAlpha(0)
+	choiceDialog.Portrait:SetDrawLayer('OVERLAY', 3)
+	choiceDialog.Background:SetAlpha(0)
 
-	-- Rewards
-	hooksecurefunc(AdventureMapQuestChoiceDialog, 'RefreshRewards', SkinRewards)
+	hooksecurefunc(choiceDialog, 'RefreshRewards', SkinRewards)
 
-	-- Quick Fix for the Font Color
-	AdventureMapQuestChoiceDialog.Details.Child.TitleHeader:SetTextColor(1, 1, 0)
-	AdventureMapQuestChoiceDialog.Details.Child.DescriptionText:SetTextColor(1, 1, 1)
-	AdventureMapQuestChoiceDialog.Details.Child.ObjectivesHeader:SetTextColor(1, 1, 0)
-	AdventureMapQuestChoiceDialog.Details.Child.ObjectivesText:SetTextColor(1, 1, 1)
+	local choiceDetails = choiceDialog.Details.Child
+	choiceDetails.TitleHeader:SetTextColor(1, 1, 0)
+	choiceDetails.DescriptionText:SetTextColor(1, 1, 1)
+	choiceDetails.ObjectivesHeader:SetTextColor(1, 1, 0)
+	choiceDetails.ObjectivesText:SetTextColor(1, 1, 1)
 
-	--Buttons
-	S:HandleCloseButton(AdventureMapQuestChoiceDialog.CloseButton)
-	S:HandleTrimScrollBar(AdventureMapQuestChoiceDialog.Details.ScrollBar)
-	S:HandleButton(AdventureMapQuestChoiceDialog.AcceptButton)
-	S:HandleButton(AdventureMapQuestChoiceDialog.DeclineButton)
+	S:HandleCloseButton(choiceDialog.CloseButton)
+	S:HandleTrimScrollBar(choiceDialog.Details.ScrollBar)
+	S:HandleButton(choiceDialog.AcceptButton)
+	S:HandleButton(choiceDialog.DeclineButton)
 end

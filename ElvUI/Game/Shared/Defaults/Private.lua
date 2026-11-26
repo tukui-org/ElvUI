@@ -35,6 +35,7 @@ V.general = {
 	queueStatus = true,
 	minimap = {
 		enable = true,
+		hideExternalEvent = false,
 		hideClassHallReport = false,
 		hideCalendar = true,
 		hideTracking = false,

@@ -44,6 +44,7 @@ function S:TabardFrame()
 		_G.TabardFrameEmblemBottomLeft,
 	} do
 		frame:SetParent(TabardModel)
+
 		frame.Show = nil
 		frame:Show()
 	end

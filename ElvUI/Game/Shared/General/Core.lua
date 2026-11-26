@@ -44,7 +44,6 @@ local ActionBars = E:GetModule('ActionBars')
 local AFK = E:GetModule('AFK')
 local Auras = E:GetModule('Auras')
 local Bags = E:GetModule('Bags')
-local Blizzard = E:GetModule('Blizzard')
 local Chat = E:GetModule('Chat')
 local DataBars = E:GetModule('DataBars')
 local DataTexts = E:GetModule('DataTexts')
@@ -70,6 +69,9 @@ E.myrealm = GetRealmName()
 E.playerName, E.playerRealm = UnitNameUnmodified('player')
 E.mynameFull = format((E.Forever and E.playerRealm) and '%s %s' or '%s', E.playerName, E.playerRealm) -- forever "First Last" otherwise "First"
 E.mynameRealm = format((E.Forever and (E.playerRealm and '%s %s' or '%s')) or '%s - %s', E.playerName, E.playerRealm or E.myrealm) -- contains spaces/dashes in realm (for profile keys)
+E.myrealmString = E:ShortenRealm(E.myrealm) -- used in chat and addon comms
+E.mynameString = format(E.Forever and '%s' or '%s-%s', E.mynameFull, E.Forever and '' or E.myrealmString) -- used in chat and addon comms
+E.myRuleset = (E.IsGameRuleRP and E.IsGameRulePVP and 'RPPvP') or (E.IsGameRulePVP and 'PvP') or (E.IsGameRuleRP and 'RP') or (E.IsGameRuleHardcore and 'HC') or 'PvE'
 E.expansionLevel = GetExpansionLevel()
 E.expansionLevelMax = GetMaxLevelForExpansionLevel(E.expansionLevel)
 E.wowbuild = tonumber(E.wowbuild)
@@ -99,18 +101,11 @@ E.texts = {}
 E.snapBars = {}
 E.RegisteredModules = {}
 E.RegisteredInitialModules = {}
-E.valueColorUpdateFuncs = setmetatable({}, {
-	__newindex = function(_, key, value)
-		if type(key) == 'function' then return end
-		rawset(E.valueColorUpdateFuncs, key, value)
-	end
-})
-
-E.TexCoords = {0, 1, 0, 1}
 E.FrameLocks = {}
 E.VehicleLocks = {}
 E.CreditsList = {}
 E.ReverseTimer = {} -- Spells that we want to show the duration backwards (oUF_RaidDebuffs, ???)
+E.TexCoords = {0, 1, 0, 1}
 E.CenterPoint = {
 	BOTTOM = 'CENTER',
 	TOP = 'CENTER'
@@ -171,6 +166,7 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 	Float = {
 		Alpha = nil, -- float for hiding at Zero
 		Desaturate = nil, -- float curve for SetDesaturation
+		Percent = nil, -- float to hide at 0 and 100, example: TruncateWhenZero(UnitPowerPercent(unit, nil, true, Float.Percent))
 	},
 	Color = {
 		Default = nil, -- simple red, yellow, green curve for various places
@@ -178,11 +174,21 @@ E.Curves = { -- Midnight Color Curves (nil values created later)
 		Auras = { -- color curves created and updated by UpdateAuraCurves
 			auras = false,		-- these all
 			buffs = false,		-- stay false
-			debuffs = false,	-- on classics
-			highlight = false
+			debuffs = false,	-- on classics only
+			highlight = false	-- not on modern
 		}
 	}
 }
+
+do
+	local function newIndex(_, key, value)
+		if type(key) == 'function' then return end
+
+		rawset(E.valueColorUpdateFuncs, key, value)
+	end
+
+	E.valueColorUpdateFuncs = setmetatable({}, { __newindex = newIndex })
+end
 
 -- This frame everything in ElvUI should be anchored to for Eyefinity support.
 E.UIParent = CreateFrame('Frame', 'ElvUIParent', UIParent)
@@ -200,21 +206,16 @@ E.HiddenFrame = CreateFrame('Frame', nil, UIParent)
 E.HiddenFrame:SetPoint('BOTTOM')
 E.HiddenFrame:SetSize(1,1)
 E.HiddenFrame:Hide()
+E.HiddenFrame.Layout = E.noop -- MiniMapMailFrameMixin > UPDATE_PENDING_MAIL will lead to a GetParent and trigger Layout
 
-do -- used in options
-	E.DEFAULT_FILTER = {}
+do
+	E.DEFAULT_FILTER = {} -- used in options
 	for filter, tbl in next, G.unitframe.aurafilters do
 		E.DEFAULT_FILTER[filter] = tbl.type
 	end
-end
 
-do
-	local a1,a2 = '','[%s%-]'
-	function E:ShortenRealm(realm)
-		return gsub(realm, a2, a1)
-	end
-
-	local a3 = format('%%-%s', E:ShortenRealm(E.myrealm))
+	-- strip my realm, ShortenRealm is in Initialize.lua
+	local a1, a3 = '', format('%%-%s', E.myrealmString)
 	function E:StripMyRealm(name)
 		return gsub(name, a3, a1)
 	end
@@ -491,6 +492,10 @@ do	-- i guess we finally need it ~Simpy
 
 				funcs[info.func] = nil
 				tickers[info.func] = nil
+
+				if info.finish then
+					info.finish(info)
+				end
 			elseif not InCombatLockdown() then -- resume is a protected function, wait until after combat
 				E:Coroutine_Continue(info)
 			end
@@ -500,7 +505,7 @@ do	-- i guess we finally need it ~Simpy
 	end
 
 	-- these two functions are meant to be called
-	function E:CoroutineUpdate(func, obj, data, limit, delay)
+	function E:CoroutineUpdate(func, obj, data, finish, limit, delay)
 		local exists = funcs[func] -- exists is the info
 		if exists then
 			exists.cancel = true
@@ -511,7 +516,7 @@ do	-- i guess we finally need it ~Simpy
 			end
 		end
 
-		local info = { count = 0, limit = (limit or 100) - 1, data = data, obj = obj, func = func }
+		local info = { count = 0, limit = (limit or 100) - 1, data = data, obj = obj, func = func, finish = finish }
 		local loop, process = E:Coroutine_Generate(info)
 		info.routine = co_create(loop)
 		funcs[func] = info
@@ -730,7 +735,7 @@ do
 	local ADDONS = {
 		ActionBar = {
 			info = {
-				enabled = function() return E.private.actionbar.enable end,
+				enabled = function() return E.private.actionbar.enable and not E.IsGamepadActive end,
 				accept = function() E.private.actionbar.enable = false; ReloadUI() end,
 				name = 'ElvUI ActionBars'
 			},
@@ -1094,21 +1099,20 @@ do
 	end
 
 	local SendRecieveGroupSize = 0
-	local PLAYER_NAME = format('%s-%s', E.myname, E:ShortenRealm(E.myrealm))
 	local function SendRecieve(_, event, prefix, message, _, senderOne, senderTwo)
 		if event == 'CHAT_MSG_ADDON' then
-			local sender = strfind(senderOne, '-') and senderOne or senderTwo
-			if sender == PLAYER_NAME then
-				return
-			elseif prefix == 'ELVUI_VERSIONCHK' then
-				local ver, msg, inCombat = E.version, tonumber(message), InCombatLockdown()
+			if prefix == 'ELVUI_VERSIONCHK' and not E.recievedOutOfDateMessage then
+				local sender = (E.Forever or strfind(senderOne, '-', 1, true)) and senderOne or senderTwo
+				if not sender or sender == E.mynameString then return end
+
+				local ver, msg = E.version, tonumber(message)
 
 				E.UserList[E:StripMyRealm(sender)] = msg
 
-				if msg and (msg > ver) and not E.recievedOutOfDateMessage then -- you're outdated D:
+				if msg and (msg > ver) then -- you're outdated D:
 					E:Print(L["ElvUI is out of date. You can download the newest version from tukui.org."])
 
-					if msg and ((msg - ver) >= 0.05) and not inCombat then
+					if msg and ((msg - ver) >= 0.05) and not InCombatLockdown() then
 						E.PopupDialogs.ELVUI_UPDATE_AVAILABLE.text = L["ElvUI is five or more revisions out of date. You can download the newest version from tukui.org."]..format('\n\nSender %s : Version %s', sender, msg)
 
 						E:StaticPopup_Show('ELVUI_UPDATE_AVAILABLE')
@@ -1681,7 +1685,7 @@ function E:UpdateActionBars()
 	ActionBars:UpdateButtonSettings()
 	ActionBars:UpdateMicroButtons()
 
-	if E.Modern or E.Mists then
+	if E.Retail or E.Mists then
 		ActionBars:UpdateExtraButtons()
 	end
 end
@@ -2079,7 +2083,7 @@ function E:Initialize()
 
 		if GetCVarBool('taintLog') then
 			E:StaticPopup_Show('TAINT_LOG')
-		elseif GetCVarBool('scriptProfile') then
+		elseif GetCVarBool('scriptProfile') and not E.OtherAddons.ElvUI_CPU then
 			E:StaticPopup_Show('SCRIPT_PROFILE')
 		end
 

@@ -8,7 +8,7 @@ local CreateFrame = CreateFrame
 local targetIndicators = { 'Spark', 'TopIndicator', 'LeftIndicator', 'RightIndicator' }
 
 function NP:Construct_QuestIcons(nameplate)
-	local element = CreateFrame('Frame', nameplate.frameName..'QuestIcons', nameplate.RaisedElement)
+	local element = CreateFrame('Frame', '$parent_QuestIcons', nameplate)
 	element:SetFrameLevel(nameplate.RaisedElement.QuestIconLevel)
 	element:Size(20)
 	element:Hide()
@@ -69,10 +69,11 @@ function NP:Update_QuestIcons(nameplate, updateBase)
 end
 
 function NP:Construct_ClassificationIndicator(nameplate)
-	local element = CreateFrame('Frame', nameplate.frameName..'ClassificationIndicator', nameplate.RaisedElement)
+	local element = CreateFrame('Frame', '$parent_ClassificationIndicator', nameplate)
 	element:SetFrameLevel(nameplate.RaisedElement.ClassificationLevel)
 
 	local texture = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
+	texture.element = element -- used by LevelElements
 	element.texture = texture
 
 	return texture
@@ -213,7 +214,7 @@ function NP:Update_Highlight(nameplate)
 end
 
 function NP:Construct_PVPRole(nameplate)
-	local element = CreateFrame('Frame', nameplate.frameName..'PVPRole', nameplate.RaisedElement)
+	local element = CreateFrame('Frame', '$parent_PVPRole', nameplate)
 	element:SetFrameLevel(nameplate.RaisedElement.PVPRoleLevel)
 
 	local texture = nameplate.RaisedElement:CreateTexture(nil, 'OVERLAY')
@@ -223,6 +224,7 @@ function NP:Construct_PVPRole(nameplate)
 
 	texture.HealerTexture = E.Media.Textures.Healer
 	texture.TankTexture = E.Media.Textures.Tank
+	texture.element = element -- used by LevelNameonly
 
 	element.texture = texture
 

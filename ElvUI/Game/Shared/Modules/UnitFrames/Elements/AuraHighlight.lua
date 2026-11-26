@@ -1,8 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
 
-local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 local CreateFrame = CreateFrame
+
+local GetAuraDispelTypeColor = C_UnitAuras.GetAuraDispelTypeColor
 
 local FALLBACK = Mixin({ r = 0, g = 0, b = 0, a = 0 }, ColorMixin)
 
@@ -104,12 +105,14 @@ function UF:Configure_AuraHighlight(frame)
 
 			if mode == 'GLOW' then
 				frame.AuraHighlightBackdrop = true
+				highlight:SetVertexColor(0, 0, 0, 0)
 
 				if highlight.glowAnchor then
 					frame.AuraHightlightGlow:SetAllPoints(highlight.glowAnchor)
 				end
 			else
 				frame.AuraHighlightBackdrop = false
+				frame.AuraHightlightGlow:Hide()
 			end
 		end
 	elseif E.Modern then

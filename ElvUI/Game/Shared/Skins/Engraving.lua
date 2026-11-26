@@ -23,6 +23,7 @@ function S:Blizzard_EngravingUI()
 		header.middle:SetTexture() -- keep the plus / minus and category icons
 		header.leftEdge:SetTexture()
 		header.rightEdge:SetTexture()
+
 		header:SetTemplate()
 	end
 

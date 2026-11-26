@@ -19,7 +19,6 @@ local CheckInteractDistance = CheckInteractDistance
 local CreateFrame = CreateFrame
 local GetCraftReagentItemLink = GetCraftReagentItemLink
 local GetCraftSelectionIndex = GetCraftSelectionIndex
-local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRelativeDifficultyColor = GetRelativeDifficultyColor
@@ -129,8 +128,8 @@ function TT:SetCompareItems(tt, value)
 	tt.supportsItemComparison = value
 end
 
-function TT:GameTooltip_SetDefaultAnchor(tt, parent)
-	if not E.private.tooltip.enable or not TT.db.visibility or (tt:IsForbidden() or tt:GetAnchorType() ~= 'ANCHOR_NONE') then
+function TT:GameTooltip_SetDefaultAnchor(tt, parent) -- Gamepad radial passes a plain frame without GetAnchorType
+	if not E.private.tooltip.enable or not TT.db.visibility or (tt:IsForbidden() or not tt.GetAnchorType or tt:GetAnchorType() ~= 'ANCHOR_NONE') then
 		return
 	elseif (InCombatLockdown() and not TT:IsModKeyDown(TT.db.visibility.combatOverride)) or (not AB.KeyBinder.active and not TT:IsModKeyDown(TT.db.visibility.actionbars) and AB.handledbuttons[tt:GetOwner()]) then
 		TT:SetCompareItems(tt, nil)
@@ -253,27 +252,23 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 		local relationship = UnitRealmRelationship(unit)
 		local isShiftKeyDown = IsShiftKeyDown()
 
-		local useTitle = TT.db.playerTitles and (pvpName and pvpName ~= '')
-		if useTitle then
-			name = pvpName
-		end
-
+		local displayName = TT.db.playerTitles and (pvpName and pvpName ~= '') and pvpName or nil
 		if E.Forever then
-			if realm and not useTitle then -- title adds LastName
-				name = format('%s %s', name, realm)
+			if realm and not displayName then -- title adds LastName
+				displayName = format('%s %s', name, realm)
 			end
 		elseif realm and realm ~= '' then
 			if isShiftKeyDown or TT.db.alwaysShowRealm then
-				name = format('%s-%s', name, realm)
+				displayName = format('%s-%s', name, realm)
 			elseif relationship == _G.LE_REALM_RELATION_COALESCED then
-				name = format('%s%s', name, _G.FOREIGN_SERVER_LABEL)
+				displayName = format('%s%s', name, _G.FOREIGN_SERVER_LABEL)
 			elseif relationship == _G.LE_REALM_RELATION_VIRTUAL then
-				name = format('%s%s', name, _G.INTERACTIVE_SERVER_LABEL)
+				displayName = format('%s%s', name, _G.INTERACTIVE_SERVER_LABEL)
 			end
 		end
 
 		local awayText = E:UnitIsAFK(unit) and AFK_LABEL or E:UnitIsDND(unit) and DND_LABEL or ''
-		_G.GameTooltipTextLeft1:SetFormattedText('%s%s', nameColor:WrapTextInColorCode(name or UNKNOWN), awayText)
+		_G.GameTooltipTextLeft1:SetFormattedText('%s%s', nameColor:WrapTextInColorCode(displayName or name or UNKNOWN), awayText)
 
 		local levelLine, specLine = TT:GetLevelLine(tt, (guildName and not E.Classic and 2) or 1)
 		if guildName then
@@ -303,7 +298,7 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 			local levelText
 			local realLevel = UnitLevel(unit)
 			local effectiveLevel = E:UnitEffectiveLevel(unit)
-			local diffColor = GetCreatureDifficultyColor(effectiveLevel)
+			local diffColor = E:GetCreatureDifficultyColor(effectiveLevel)
 			local shownLevel = effectiveLevel > 0 and effectiveLevel or '??'
 			local unitGender = TT.db.gender and (E:NotSecretValue(gender) and genderTable[gender]) or ''
 			local hexColor = E:RGBToHex(diffColor.r, diffColor.g, diffColor.b)
@@ -358,16 +353,16 @@ function TT:SetUnitText(tt, unit, isPlayerUnit)
 				if teamLevel then
 					diffColor = GetRelativeDifficultyColor(teamLevel, level)
 				else
-					diffColor = GetCreatureDifficultyColor(level)
+					diffColor = E:GetCreatureDifficultyColor(level)
 				end
 			else
 				level = E:UnitEffectiveLevel(unit)
-				diffColor = GetCreatureDifficultyColor(level)
+				diffColor = E:GetCreatureDifficultyColor(level)
 			end
 
 			local unitPVP = UnitIsPVP(unit)
 			if E:NotSecretValue(unitPVP) and unitPVP then
-				pvpFlag = format(' (%s)', _G.PVP)
+				pvpFlag = format(' (%s)', _G.PVP_ENABLED)
 			end
 
 			if creatureClassification == 'rare' or creatureClassification == 'elite' or creatureClassification == 'rareelite' or creatureClassification == 'worldboss' then
@@ -486,8 +481,8 @@ function TT:CheckMountInfo(tt, aura)
 
 	tt:AddDoubleLine(format('%s:', _G.MOUNT), aura.name, nil, nil, nil, 1, 1, 1)
 
-	local sourceText = E.MountText[mountID]
-	local mountText = sourceText and IsControlKeyDown() and gsub(sourceText, blanchyFix, '|n')
+	local sourceText = IsControlKeyDown() and E.MountText[mountID]
+	local mountText = sourceText and gsub(sourceText, blanchyFix, '|n')
 	if mountText then
 		local sourceModified = gsub(mountText, '|n', '\10')
 		for x in gmatch(sourceModified, '[^\10]+\10?') do
@@ -1001,7 +996,9 @@ function TT:MODIFIER_STATE_CHANGED()
 		if owner == UIParent then
 			if E:UnitExists('mouseover') then
 				if E.Modern then
-					GameTooltip:RefreshData()
+					if E:NotSecretUnit('mouseover') then
+						GameTooltip:RefreshData()
+					end
 				else
 					GameTooltip:SetUnit('mouseover')
 				end

@@ -18,7 +18,6 @@ local FriendsFrame_GetInviteRestriction = FriendsFrame_GetInviteRestriction
 local BNConnected = BNConnected
 local BNFeaturesEnabled = BNFeaturesEnabled
 local GetGuildRosterInfo = GetGuildRosterInfo
-local GetQuestDifficultyColor = GetQuestDifficultyColor
 local GetCVarBool = C_CVar.GetCVarBool
 
 local BNET_BACKGROUND_COLOR = FRIENDS_BNET_BACKGROUND_COLOR
@@ -329,7 +328,7 @@ local function UpdateGuildStatus()
 				if classFilename then
 					if online then
 						local classTextColor = E:ClassColor(classFilename)
-						local levelTextColor = GetQuestDifficultyColor(level)
+						local levelTextColor = E:GetCreatureDifficultyColor(level)
 						_G['GuildFrameButton'..i..'Name']:SetTextColor(classTextColor.r, classTextColor.g, classTextColor.b)
 						_G['GuildFrameButton'..i..'Level']:SetTextColor(levelTextColor.r, levelTextColor.g, levelTextColor.b)
 
@@ -741,7 +740,7 @@ function S:FriendsFrame()
 		BattlenetFrame:SetScript('OnEnter', BattleNetFrame_OnEnter)
 		BattlenetFrame:SetScript('OnLeave', BattleNetFrame_OnLeave)
 
-		FriendsFrameBattlenetFrame.UnavailableInfoFrame.Bg:SetTexture(nil)
+		FriendsFrameBattlenetFrame.UnavailableInfoFrame.Bg:SetTexture()
 		FriendsFrameBattlenetFrame.UnavailableInfoFrame:SetTemplate('Transparent')
 		FriendsFrameBattlenetFrame.UnavailableInfoFrame:ClearAllPoints()
 		FriendsFrameBattlenetFrame.UnavailableInfoFrame:Point('TOPLEFT', FriendsFrame, 'TOPRIGHT', 1, -18)

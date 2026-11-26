@@ -21,7 +21,6 @@ local RegisterStateDriver = RegisterStateDriver
 local MAX_RAID_MEMBERS = MAX_RAID_MEMBERS
 local MAX_PARTY_MEMBERS = MAX_PARTY_MEMBERS
 local CLASS_SORT_ORDER = CLASS_SORT_ORDER
-local NUM_CLASS_ORDER = #CLASS_SORT_ORDER
 
 local configEnv
 local originalEnvs = {}
@@ -162,7 +161,7 @@ local function CreateConfigEnv()
 				return UnitClass(unit)
 			end
 
-			local classToken = CLASS_SORT_ORDER[random(1, NUM_CLASS_ORDER)]
+			local classToken = CLASS_SORT_ORDER[random(1, E.numClasses)]
 			local localized = E:LocalizedClassName(classToken, unit)
 			return localized, classToken
 		end

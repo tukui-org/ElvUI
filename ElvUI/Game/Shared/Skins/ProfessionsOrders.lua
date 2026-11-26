@@ -9,9 +9,7 @@ local CreateFrame = CreateFrame
 S:AddCallbackForAddon('Blizzard_ProfessionsCustomerOrders', nil, nil, nil, nil, nil, 'tradeskill')
 
 -- Custom Orders (Credits: siweia - NDUI)
-
 local function HideCategoryButton(button)
-	--button:SetTemplate('Transparnt')
 	button.NormalTexture:Hide()
 	button.SelectedTexture:SetColorTexture(0, .6, 1, .3)
 	button.HighlightTexture:SetColorTexture(1, 1, 1, .1)
@@ -34,9 +32,11 @@ local function HandleListIcon(frame)
 	end
 end
 
-local function HandleListHeader(headerContainer)
-	local maxHeaders = headerContainer:GetNumChildren()
-	for i, header in next, { headerContainer:GetChildren() } do
+local function HandleListHeader(builder)
+	local columns = builder:GetColumns()
+	local numColumns = #columns
+	for i, column in next, columns do
+		local header = column:GetHeaderFrame()
 		if not header.IsSkinned then
 			header:DisableDrawLayer('BACKGROUND')
 			header:CreateBackdrop('Transparent')
@@ -48,7 +48,7 @@ local function HandleListHeader(headerContainer)
 			header.IsSkinned = true
 		end
 
-		header.backdrop:SetPoint('BOTTOMRIGHT', i < maxHeaders and -5 or 0, -2)
+		header.backdrop:SetPoint('BOTTOMRIGHT', i < numColumns and -5 or 0, -2)
 	end
 end
 
@@ -60,7 +60,7 @@ local function HandleMoneyInput(box)
 end
 
 local function HandleBrowseOrders(frame)
-	HandleListHeader(frame.RecipeList.HeaderContainer)
+	HandleListHeader(frame.tableBuilder)
 end
 
 local function FormInit(form)
@@ -87,6 +87,7 @@ local function FormInit(form)
 			local icon = button.Icon
 			S:HandleIcon(icon, true)
 			S:HandleIconBorder(button.IconBorder, icon.backdrop)
+
 			icon:SetOutside(button)
 
 			S:HandleCheckBox(slot.Checkbox)
@@ -112,6 +113,7 @@ end
 
 local function HandleInputBox(box)
 	box:DisableDrawLayer('BACKGROUND')
+
 	S:HandleEditBox(box)
 	S:HandleNextPrevButton(box.DecrementButton, 'left')
 	S:HandleNextPrevButton(box.IncrementButton, 'right')
@@ -123,8 +125,10 @@ local function ReskinQualityContainer(container)
 	button:SetNormalTexture(E.ClearTexture)
 	button:SetPushedTexture(E.ClearTexture)
 	button:SetHighlightTexture(E.ClearTexture)
+
 	S:HandleIcon(button.Icon, true)
 	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
+
 	HandleInputBox(container.EditBox)
 end
 
@@ -154,36 +158,41 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	frame.MoneyFrameInset:StripTextures()
 
 	local browseOrders = frame.BrowseOrders
-	frame.BrowseOrders.CategoryList:StripTextures()
-	frame.BrowseOrders.CategoryList:CreateBackdrop('Transparent')
-	S:HandleTrimScrollBar(browseOrders.CategoryList.ScrollBar)
-	browseOrders.CategoryList.ScrollBar:ClearAllPoints()
-	browseOrders.CategoryList.ScrollBar:Point('TOPRIGHT', -5, -2)
-	browseOrders.CategoryList.ScrollBar:Point('BOTTOMRIGHT', 0, -2)
+	local categoryList = browseOrders.CategoryList
+	categoryList:StripTextures()
+	categoryList:CreateBackdrop('Transparent')
 
-	local search = browseOrders.SearchBar
-	search.FavoritesSearchButton:Size(22)
-	S:HandleButton(search.FavoritesSearchButton)
-	S:HandleEditBox(search.SearchBox)
-	S:HandleButton(search.SearchButton)
+	S:HandleTrimScrollBar(categoryList.ScrollBar)
+	categoryList.ScrollBar:ClearAllPoints()
+	categoryList.ScrollBar:Point('TOPRIGHT', -5, -2)
+	categoryList.ScrollBar:Point('BOTTOMRIGHT', 0, -2)
 
-	local filter = search.FilterDropdown
-	S:HandleCloseButton(filter.ResetButton)
-	S:HandleButton(filter)
+	local searchBar = browseOrders.SearchBar
+	searchBar.FavoritesSearchButton:Size(22)
 
-	hooksecurefunc(browseOrders.CategoryList.ScrollBox, 'Update', BrowseOrdersUpdate)
+	S:HandleButton(searchBar.FavoritesSearchButton)
+	S:HandleEditBox(searchBar.SearchBox)
+	S:HandleButton(searchBar.SearchButton)
+
+	local filterDropdown = searchBar.FilterDropdown
+	S:HandleCloseButton(filterDropdown.ResetButton)
+	S:HandleButton(filterDropdown)
+
+	hooksecurefunc(categoryList.ScrollBox, 'Update', BrowseOrdersUpdate)
 
 	local recipeList = frame.BrowseOrders.RecipeList
 	recipeList:StripTextures()
+
 	S:HandleTrimScrollBar(recipeList.ScrollBar)
 	recipeList.ScrollBar:ClearAllPoints()
 	recipeList.ScrollBar:Point('TOPRIGHT', -8, -26)
 	recipeList.ScrollBar:Point('BOTTOMRIGHT', 0, -2)
+
+	recipeList.ScrollBox:SetFrameLevel(3)
 	recipeList.ScrollBox:CreateBackdrop('Transparent')
 	recipeList.ScrollBox.backdrop:ClearAllPoints()
 	recipeList.ScrollBox.backdrop:Point('TOPLEFT', 4, -4)
 	recipeList.ScrollBox.backdrop:Point('BOTTOMRIGHT', -4, 0)
-	recipeList.ScrollBox:SetFrameLevel(3)
 
 	hooksecurefunc(frame.BrowseOrders, 'SetupTable', HandleBrowseOrders)
 	hooksecurefunc(frame.BrowseOrders, 'StartSearch', HandleListIcon)
@@ -227,10 +236,11 @@ function S:Blizzard_ProfessionsCustomerOrders()
 
 	S:HandleDropDownBox(form.MinimumQuality.Dropdown)
 	S:HandleDropDownBox(form.OrderRecipientDropdown)
-	HandleMoneyInput(payment.TipMoneyInputFrame.GoldBox)
-	HandleMoneyInput(payment.TipMoneyInputFrame.SilverBox)
 	S:HandleDropDownBox(payment.DurationDropdown)
 	S:HandleButton(payment.ListOrderButton)
+
+	HandleMoneyInput(payment.TipMoneyInputFrame.GoldBox)
+	HandleMoneyInput(payment.TipMoneyInputFrame.SilverBox)
 
 	local viewListingButton = payment.ViewListingsButton
 	viewListingButton:SetAlpha(0)
@@ -245,7 +255,9 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	currentListings:SetTemplate('Transparent')
 	S:HandleButton(currentListings.CloseButton)
 	S:HandleTrimScrollBar(currentListings.OrderList.ScrollBar)
-	HandleListHeader(currentListings.OrderList.HeaderContainer)
+
+	HandleListHeader(currentListings.tableBuilder)
+
 	currentListings.OrderList:StripTextures()
 	currentListings:ClearAllPoints()
 	currentListings:SetPoint('LEFT', frame, 'RIGHT', 10, 0)
@@ -266,14 +278,17 @@ function S:Blizzard_ProfessionsCustomerOrders()
 	hooksecurefunc(form, 'Init', FormInit)
 
 	-- Orders
-	S:HandleButton(frame.MyOrdersPage.RefreshButton)
-	frame.MyOrdersPage.RefreshButton:Size(26)
-	HandleListHeader(frame.MyOrdersPage.OrderList.HeaderContainer)
-	S:HandleTrimScrollBar(frame.MyOrdersPage.OrderList.ScrollBar)
+	local myOrders = frame.MyOrdersPage
+	S:HandleTrimScrollBar(myOrders.OrderList.ScrollBar)
+	S:HandleButton(myOrders.RefreshButton)
+	myOrders.RefreshButton:Size(26)
 
-	frame.MyOrdersPage.OrderList:StripTextures()
-	frame.MyOrdersPage.OrderList:CreateBackdrop('Transparent')
-	frame.MyOrdersPage.OrderList.backdrop:ClearAllPoints()
-	frame.MyOrdersPage.OrderList.backdrop:Point('TOPLEFT', frame.MyOrdersPage.OrderList.ScrollBox, 4, -4)
-	frame.MyOrdersPage.OrderList.backdrop:Point('BOTTOMRIGHT', frame.MyOrdersPage.OrderList.ScrollBox, -4, 0)
+	HandleListHeader(myOrders.tableBuilder)
+
+	local myOrdersList = myOrders.OrderList
+	myOrdersList:StripTextures()
+	myOrdersList:CreateBackdrop('Transparent')
+	myOrdersList.backdrop:ClearAllPoints()
+	myOrdersList.backdrop:Point('TOPLEFT', myOrdersList.ScrollBox, 4, -4)
+	myOrdersList.backdrop:Point('BOTTOMRIGHT', myOrdersList.ScrollBox, -4, 0)
 end

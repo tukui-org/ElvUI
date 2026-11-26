@@ -37,8 +37,9 @@ local SetCVar = C_CVar.SetCVar
 local oUF = _G.ElvUF
 assert(oUF, 'ElvUI was unable to locate oUF.')
 
-local AceAddon, AceAddonMinor = _G.LibStub('AceAddon-3.0')
-local CallbackHandler = _G.LibStub('CallbackHandler-1.0')
+local LibStub = _G.LibStub
+local AceAddon, AceAddonMinor = LibStub('AceAddon-3.0')
+local CallbackHandler = LibStub('CallbackHandler-1.0')
 
 local AddOnName, Engine = ...
 local E = AceAddon:NewAddon(AddOnName, 'AceConsole-3.0', 'AceEvent-3.0', 'AceTimer-3.0', 'AceHook-3.0')
@@ -50,6 +51,8 @@ E.locale = GetLocale()
 E.oUF = oUF
 
 -- moved this to oUF but relink it
+E.GetCreatureDifficultyColor = oUF.GetCreatureDifficultyColor
+E.GetThreatSituation = oUF.GetThreatSituation
 E.ColorGradient = oUF.ColorGradient
 E.CanAccessValue = oUF.CanAccessValue
 E.CanNotAccessValue = oUF.CanNotAccessValue
@@ -61,9 +64,9 @@ E.NoSecretValues = oUF.NoSecretValues
 E.NotSecretTable = oUF.NotSecretTable
 E.NotSecretUnit = oUF.NotSecretUnit
 E.NotSecretValue = oUF.NotSecretValue
-E.GetThreatSituation = oUF.GetThreatSituation
 E.UnitNotUnit = oUF.UnitNotUnit
 E.UnitIsUnit = oUF.UnitIsUnit
+E.UnitExists = oUF.UnitExists
 
 for i, k in next, { E, {}, E.privateVars.profile, E.DF.profile, E.DF.global } do
 	Engine[i] = k -- E, L, V, P, G
@@ -128,6 +131,10 @@ do -- Expansions
 
 	local IsEngravingEnabled = C_Engraving and C_Engraving.IsEngravingEnabled
 	E.IsEngravingEnabled = IsEngravingEnabled and IsEngravingEnabled()
+
+	local inputTypes = Enum.InputDeviceInterfaceType
+	local inputCurrent = C_InputInterfaceStyle and C_InputInterfaceStyle.GetCurrentStyle()
+	E.IsGamepadActive = inputTypes and inputTypes.Gamepad == inputCurrent
 end
 
 -- DONT USE: Deprecated
@@ -156,7 +163,7 @@ end
 function E:ParseVersionString(addon)
 	local version = GetAddOnMetadata(addon, 'Version')
 	if strfind(version, 'project%-version') then
-		return 15.26, '15.26-git', nil, true
+		return 16.02, '16.02-git', nil, true
 	else
 		local release, extra = strmatch(version, '^v?([%d.]+)(.*)')
 		return tonumber(release), release..extra, extra ~= ''
@@ -174,7 +181,7 @@ do
 		if type(major) == 'table' and type(minor) == 'number' then
 			E.Libs[name], E.LibsMinor[name] = major, minor
 		else -- in this case: `major` is the lib name and `minor` is the silent switch
-			E.Libs[name], E.LibsMinor[name] = _G.LibStub(major, minor)
+			E.Libs[name], E.LibsMinor[name] = LibStub(major, minor)
 		end
 	end
 
@@ -276,6 +283,12 @@ do
 		for i = ignoreTextures and 2 or 1, #d do s = gsub(s,d[i],a) end
 		return s
 	end
+
+	-- shorten realm, StripMyRealm is in Core.lua
+	local a1,a2 = '', '[%s%-]'
+	function E:ShortenRealm(realm)
+		return gsub(realm, a2, a1)
+	end
 end
 
 do
@@ -322,6 +335,7 @@ do
 		Questie = true,
 		SimplePowerBar = true,
 		Tukui = true,
+		ElvUI_CPU = true,
 		DBM = 'DBM-Core',
 		ConsolePort = 'ConsolePort_Menu',
 		KalielsTracker = '!KalielsTracker',

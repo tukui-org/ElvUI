@@ -55,6 +55,36 @@ NP.AuraContainerFilterKeys = {
 	FRIENDLY_NPC = 'FriendlyNPC'
 }
 
+NP.LevelNameonly = {
+	Highlight = 'HighlightLevel',
+	QuestIcons = 'QuestIconLevel',
+	Portrait = 'PortraitLevel', -- has an element
+	PVPRole = 'PVPRoleLevel', -- has an element
+}
+
+NP.LevelElements = {
+	PvPClassificationIndicator = 'PvPClassificationLevel', -- has an element
+	ClassificationIndicator = 'ClassificationLevel', -- has an element
+	ThreatIndicator = 'ThreatIndicatorLevel', -- has an element
+	PvPIndicator = 'PvPIndicatorLevel', -- has an element
+
+	Health = false,
+	HealthPrediction = false,
+	Power = false,
+	Castbar = false,
+	TargetIndicator = false,
+	ClassPower = false,
+	Auras_ = false,
+	Buffs_ = false,
+	Debuffs_ = false
+}
+
+if E.myclass == 'DEATHKNIGHT' then
+	NP.LevelElements.Runes = false
+elseif E.myclass == 'MONK' then
+	NP.LevelElements.Stagger = false
+end
+
 for key in next, Blacklist do
 	NP.AuraContainerFilterTypes[key] = {}
 end
@@ -273,16 +303,26 @@ function NP:Construct_RaisedElement(nameplate)
 	element.TargetIndicatorLevel = 0
 	element.HealthLevel = RaisedLevel + 5 -- prediction goes up to 3 over this
 	element.PowerLevel = RaisedLevel + 10
-	element.HighlightLevel = RaisedLevel + 15
-	element.TagTextLevel = RaisedLevel + 20
-	element.RaidTargetIndicatorLevel = RaisedLevel + 25
-	element.AuraLevel = RaisedLevel + 30
-	element.ClassBarLevel = RaisedLevel + 35
-	element.ClassButtonLevel = RaisedLevel + 36 -- one over classbar
-	element.PVPRoleLevel = RaisedLevel + 40
-	element.ClassificationLevel = RaisedLevel + 41 -- one over pvprole
-	element.QuestIconLevel = RaisedLevel + 42 -- one over classification
+
+	-- used by LevelNameonly
+	element.HighlightLevel = RaisedLevel + 20
+	element.PortraitLevel = RaisedLevel + 21
+	element.PVPRoleLevel = RaisedLevel + 22
+
+	-- used by LevelElements
+	element.PvPClassificationLevel = RaisedLevel + 30
+	element.ThreatIndicatorLevel = RaisedLevel + 31
+	element.QuestIconLevel = RaisedLevel + 32
+	element.PvPIndicatorLevel = RaisedLevel + 33
+	element.ClassificationLevel = RaisedLevel + 34
+
+	element.AuraLevel = RaisedLevel + 40
+	element.ClassBarLevel = RaisedLevel + 45
+	element.ClassButtonLevel = RaisedLevel + 56
+	element.RaidTargetIndicatorLevel = RaisedLevel + 47
+
 	element.CastBarLevel = RaisedLevel + 50 -- most important
+	element.TagTextLevel = RaisedLevel + 55
 
 	element.frameName = element:GetName()
 
@@ -310,7 +350,6 @@ function NP:Update_ClassPowerTwo(nameplate)
 end
 
 function NP:StyleTargetPlate(nameplate)
-	nameplate:SetScale(1)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 	nameplate:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
@@ -329,22 +368,7 @@ function NP:UpdateTargetPlate(nameplate)
 	nameplate:UpdateAllElements('OnShow')
 end
 
-function NP:ScalePlate(nameplate, scale, targetPlate)
-	if targetPlate and NP.targetPlate then
-		NP.targetPlate:SetScale(1)
-		NP.targetPlate = nil
-	end
-
-	if not nameplate then return end
-	nameplate:SetScale(scale)
-
-	if targetPlate then
-		NP.targetPlate = nameplate
-	end
-end
-
 function NP:StylePlate(nameplate)
-	nameplate:SetScale(1)
 	nameplate:ClearAllPoints()
 	nameplate:Point('CENTER')
 
@@ -379,56 +403,17 @@ function NP:StylePlate(nameplate)
 	NP.Plates[nameplate] = nameplate.frameName
 end
 
-do
-	local elements = {
-		-- on the raised element
-		QuestIcons = true,
-		Portrait = true,
-		PVPRole = true,
-		-- on the nameplate itself
-		Highlight = false
-	}
+function NP:ReparentElements(elements, nameplate, parent)
+	for name, key in next, elements do
+		local element = nameplate[name]
+		if element then
+			local owner = element.element
+			element:SetParent(parent or owner or nameplate)
 
-	function NP:ReparentNotNameonly(nameplate, parent)
-		for name, raised in next, elements do
-			local element = nameplate[name]
-			if element then
-				element:SetParent(parent or (raised and nameplate.RaisedElement) or nameplate)
-			end
-		end
-	end
-end
-
-do
-	local elements = {
-		-- on the raised element
-		ClassificationIndicator = true,
-		PvPIndicator = true,
-		PvPClassificationIndicator = true,
-		ThreatIndicator = true,
-		-- on the nameplate itself
-		Health = false,
-		HealthPrediction = false,
-		Power = false,
-		Castbar = false,
-		TargetIndicator = false,
-		ClassPower = false,
-		Auras_ = false,
-		Buffs_ = false,
-		Debuffs_ = false
-	}
-
-	if E.myclass == 'DEATHKNIGHT' then
-		elements.Runes = false
-	elseif E.myclass == 'MONK' then
-		elements.Stagger = false
-	end
-
-	function NP:ReparentElements(nameplate, parent)
-		for name, raised in next, elements do
-			local element = nameplate[name]
-			if element then
-				element:SetParent(parent or (raised and nameplate.RaisedElement) or nameplate)
+			local level = not parent and nameplate.RaisedElement[key]
+			if level then
+				local frame = owner or element -- prefer the owner
+				frame:SetFrameLevel(level)
 			end
 		end
 	end
@@ -449,8 +434,8 @@ function NP:UpdatePlate(nameplate, updateBase)
 			nameplate.ClassPower:SetAlpha(0)
 		end
 	elseif updateBase and db.enable then
-		NP:ReparentElements(nameplate)
-		NP:ReparentNotNameonly(nameplate)
+		NP:ReparentElements(NP.LevelElements, nameplate)
+		NP:ReparentElements(NP.LevelNameonly, nameplate)
 
 		NP:Update_Tags(nameplate)
 		NP:Update_Health(nameplate)
@@ -479,7 +464,7 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised, updateBase)
 		nameplate.RaisedElement:Hide() -- reshown by NAME_PLATE_UNIT_ADDED
 	end
 
-	NP:ReparentElements(nameplate, E.HiddenFrame)
+	NP:ReparentElements(NP.LevelElements, nameplate, E.HiddenFrame)
 
 	if nameOnly then
 		if updateBase then
@@ -511,7 +496,7 @@ function NP:DisablePlate(nameplate, nameOnly, hideRaised, updateBase)
 			NP:SetupTarget(nameplate, true)
 		end
 	else
-		NP:ReparentNotNameonly(nameplate, E.HiddenFrame)
+		NP:ReparentElements(NP.LevelNameonly, nameplate, E.HiddenFrame)
 	end
 end
 
@@ -521,10 +506,14 @@ function NP:GetClassAnchor()
 end
 
 function NP:SetupTarget(nameplate, removed)
-	local classpower = NP.db.units and NP.db.units.TARGET and NP.db.units.TARGET.classpower
-	if not classpower then return end
-
 	local TCP = NP.TargetClassPower
+	if nameplate and removed and TCP.realPlate ~= nameplate then
+		return -- this plate doesn't hold the class bar, dont pull it from the actual target
+	end
+
+	local classpower = NP.db.units and NP.db.units.TARGET and NP.db.units.TARGET.classpower
+	if not classpower then return end -- this should exist
+
 	if removed or not nameplate or not classpower.enable then
 		TCP.realPlate = nil
 	else
@@ -629,6 +618,10 @@ function NP:AuraContainer_Preloader()
 	self:Hide() -- now rehide it
 end
 
+function NP:AuraContainer_PreloadDone()
+	NP.AurasPreloading = nil
+end
+
 function NP:ConfigurePlates(init)
 	NP.SkipFading = true
 
@@ -667,7 +660,8 @@ function NP:ConfigurePlates(init)
 
 			-- /dump (40 * 5 * 3) / 3 / (60 / 0.9) = (3 x 0.9) = 3 mins
 			-- (plates * frametypes * auratypes) / containers per tick / (seconds / tickdelay)
-			E:CoroutineUpdate(NP.AuraContainer_Preloader, NP.AuraContainersCreated, nil, 1, 0.3)
+			NP.AurasPreloading = true -- just a var to check if preloading is currently active
+			E:CoroutineUpdate(NP.AuraContainer_Preloader, NP.AuraContainersCreated, nil, NP.AuraContainer_PreloadDone, 1, 0.3)
 		end
 
 		if staticEvent == 'NAME_PLATE_UNIT_ADDED' then
@@ -848,6 +842,11 @@ function NP:NAME_PLATE_UNIT_ADDED(_, unit)
 		end
 
 		NP:UpdatePlateBase(self)
+
+		if self.isTarget then -- the target can be selected before its plate exists
+			NP.TargetPlate = self
+			NP:SetupTarget(self)
+		end
 	end
 end
 
@@ -858,7 +857,6 @@ function NP:NAME_PLATE_UNIT_REMOVED(event, unit)
 		end
 
 		if self.isTarget then
-			NP:ScalePlate(self, 1, true)
 			NP:SetupTarget(self, true)
 		end
 	end
@@ -902,6 +900,22 @@ function NP:PLAYER_TARGET_CHANGED(_, unit)
 	self.isTarget = E:UnitIsUnit(unit, 'target')
 
 	NP:SetupTarget(self)
+end
+
+function NP:TargetChanged()
+	local plate = C_NamePlate_GetNamePlateForUnit('target')
+	local current = plate and plate.unitFrame
+
+	local previous = NP.TargetPlate
+	if previous and previous ~= current then
+		previous.isTarget = false
+	end
+
+	NP.TargetPlate = current
+
+	if not current then -- no target plate, release the class bar
+		NP:SetupTarget(nil, true)
+	end
 end
 
 function NP:UNIT_FACTION(_, unit)
@@ -1120,8 +1134,8 @@ function NP:Initialize()
 	testFrame:Size(NP.db.clickSize.personalWidth, NP.db.clickSize.personalHeight)
 	testFrame:SetMovable(true)
 	testFrame:RegisterForDrag('LeftButton', 'RightButton')
-	testFrame:SetScript('OnDragStart', function() NP.TestFrame:StartMoving() end)
-	testFrame:SetScript('OnDragStop', function() NP.TestFrame:StopMovingOrSizing() end)
+	testFrame:SetScript('OnDragStart', function() testFrame:StartMoving() end)
+	testFrame:SetScript('OnDragStop', function() testFrame:StopMovingOrSizing() end)
 	testFrame.frameType = 'PLAYER'
 	testFrame:Disable()
 
@@ -1132,7 +1146,7 @@ function NP:Initialize()
 	targetClassPower.frameType = 'TARGET'
 	targetClassPower:SetAttribute('toggleForVehicle', true)
 	targetClassPower:ClearAllPoints()
-	targetClassPower:Point('TOP', E.UIParent, 'BOTTOM', 0, -500)
+	targetClassPower:Point('TOP', UIParent, 'BOTTOM', 0, -5000)
 	NP.TargetClassPower = targetClassPower
 
 	NP.PlayerNamePlateAnchor = CreateFrame('Frame', 'ElvUIPlayerNamePlateAnchor', E.UIParent)
@@ -1151,6 +1165,7 @@ function NP:Initialize()
 	NP:RegisterEvent('PLAYER_REGEN_ENABLED')
 	NP:RegisterEvent('PLAYER_REGEN_DISABLED')
 	NP:RegisterEvent('PLAYER_ENTERING_WORLD')
+	NP:RegisterEvent('PLAYER_TARGET_CHANGED', 'TargetChanged') -- the driver only calls PLAYER_TARGET_CHANGED on the new target plate
 	NP:RegisterEvent('PLAYER_UPDATE_RESTING', 'EnviromentConditionals')
 	NP:RegisterEvent('ZONE_CHANGED_NEW_AREA', 'EnviromentConditionals')
 	NP:RegisterEvent('UNIT_FACTION', 'NamePlateCallBack')

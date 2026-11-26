@@ -8,9 +8,9 @@ local ElvUF = E.oUF
 local _G = _G
 local setmetatable = setmetatable
 local hooksecurefunc = hooksecurefunc
-local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
 local wipe, max, next, date, time = wipe, max, next, date, time
-local pcall, strlen, tonumber = pcall, strlen, tonumber
+local type, pairs, unpack, strmatch = type, pairs, unpack, strmatch
+local pcall, strlen, tonumber, tinsert = pcall, strlen, tonumber, tinsert
 
 local CreateFrame = CreateFrame
 local GetBattlefieldArenaFaction = GetBattlefieldArenaFaction
@@ -34,12 +34,11 @@ local IsWargame = IsWargame
 local IsXPUserDisabled = IsXPUserDisabled
 local RequestBattlefieldScoreData = RequestBattlefieldScoreData
 local UIParent = UIParent
-local UnitExists = UnitExists
-local UnitIsVisible = UnitIsVisible
 local UnitHasPowerType = UnitHasPowerType
 local UnitClassification = UnitClassification
 local UnitFactionGroup = UnitFactionGroup
 local UnitGroupRolesAssigned = UnitGroupRolesAssigned
+local UnitHasEffectivelyTankAura = UnitHasEffectivelyTankAura
 local UnitHasVehicleUI = UnitHasVehicleUI
 local UnitIsAFK = UnitIsAFK
 local UnitIsDND = UnitIsDND
@@ -85,6 +84,7 @@ local C_PvP_IsRatedBattleground = C_PvP.IsRatedBattleground
 local C_Spell_GetSpellCharges = C_Spell.GetSpellCharges
 local C_Spell_GetSpellInfo = C_Spell.GetSpellInfo
 
+local INPUT_TYPES = Enum.InputDeviceInterfaceType
 local POWERTYPE_MANA = Enum.PowerType.Mana or 0
 local AddOnRestrictionType = Enum.AddOnRestrictionType or {}
 local LuaCurveTypeLinear = Enum.LuaCurveType and Enum.LuaCurveType.Linear
@@ -211,6 +211,21 @@ E.SpecName = { -- english locale
 	[73]	= 'Protection',
 }
 
+E.ManaType = { powerName = 'MANA', powerType = 0 }
+E.AltPowerInfo = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO and E:CopyTable({}, _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO) or {
+	DRUID = { [8] = E:CopyTable({}, E.ManaType) },		-- LunarPower
+	SHAMAN = { [11] = E:CopyTable({}, E.ManaType) },	-- Maelstrom
+	PRIEST = { [13] = E:CopyTable({}, E.ManaType) }		-- Insanity
+}
+
+E.AltManaTypes = {
+	Rage = 1,
+	Energy = 3,
+	LunarPower = (E.Retail or E.Mists) and 8 or nil,
+	Maelstrom = E.Retail and 11 or nil,
+	Insanity = E.Retail and 13 or nil
+}
+
 do	-- credit: oUF/private.lua
 	local selectionTypes = {[0]=0,[1]=1,[2]=2,[3]=3,[4]=4,[5]=5,[6]=6,[7]=7,[8]=8,[9]=9,[13]=13}
 	-- 10 and 11 are unavailable to players, 12 is inconsistent due to bugs and its reliance on cvars
@@ -312,28 +327,32 @@ function E:InverseClassColor(class, usePriestColor, forceCap)
 end
 
 do
-	local classByID = {}
-	local classByFile = {}
-	local classExists = {}
+	local classByID, namesByID = {}, {}
+	local classByFile, namesByFile = {}, {}
+	local classExists = {} -- use this to verify the class is on the client
 
-	-- use this to verify the class is on the client
-	local classMax = #CLASS_SORT_ORDER
 	for index, name in next, CLASS_SORT_ORDER do
 		classExists[name] = index
 	end
 
-	E.ClassInfoByID = classByID
-	E.ClassInfoByFile = classByFile
-
-	for index = 1, classMax do -- really blizzard, whats up with this?
-		-- 1) _G.GetClassInfo gives SHAMAN for 6 and 7 on anniversary
-		-- 2) 14 is Adventurer on Retail ?
-		local info = GetClassInfo(index)
-		if info and classExists[info.classFile] then
-			classByID[info.classID] = info
-			classByFile[info.classFile] = info
+	for index = 1, 13 do -- really blizzard, whats up with this?
+		local info = GetClassInfo(index) -- SHAMAN is 6 but 7 on anniversary; 14 is Adventurer on Retail
+		local classFile = info and info.classFile
+		if classExists[classFile] then
+			local classID, className = info.classID, info.className
+			classByID[classID] = info
+			namesByID[classID] = className
+			classByFile[classFile] = info
+			namesByFile[classFile] = className
 		end
 	end
+
+	E.ClassInfoByID = classByID
+	E.ClassNamesByID = namesByID
+	E.ClassInfoByFile = classByFile
+	E.ClassNamesByFile = namesByFile
+
+	E.numClasses = #CLASS_SORT_ORDER
 
 	function E:GetClassInfo(value) -- classFile or classID
 		return classByFile[value] or classByID[value]
@@ -576,11 +595,7 @@ function E:CheckRole()
 	E.myspec = GetSpecialization()
 
 	if E.myspec then
-		if E.Modern then
-			E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecRole = GetSpecializationInfo(E.myspec)
-		else -- they add background
-			E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecBackground, E.myspecRole = GetSpecializationInfo(E.myspec)
-		end
+		E.myspecID, E.myspecName, E.myspecDesc, E.myspecIcon, E.myspecRole = GetSpecializationInfo(E.myspec)
 	end
 
 	E.myrole = E:GetPlayerRole()
@@ -629,6 +644,18 @@ do
 
 		local float = E.Curves.Float
 		if float then
+			if not float.Percent then
+				local percent = E:CreateCurve(LuaCurveTypeStep)
+
+				for i = 0, 99 do
+					percent:AddPoint(i * 0.01, i)
+				end
+
+				percent:AddPoint(1, 0)
+
+				float.Percent = percent
+			end
+
 			if not float.Alpha then
 				local alpha = E:CreateCurve(LuaCurveTypeStep)
 				alpha:AddPoint(0, 0)
@@ -870,11 +897,12 @@ function E:AddNonPetBattleFrames()
 		if type(data) == 'table' then
 			parent, strata = data.parent, data.strata
 		elseif data == true then
-			parent = UIParent
+			parent = E.UIParent
 		end
 
 		local obj = _G[object] or object
 		obj:SetParent(parent)
+
 		if strata then
 			obj:SetFrameStrata(strata)
 		end
@@ -1137,6 +1165,12 @@ function E:PLAYER_LEVEL_UP(_, level)
 	E.mylevel = level
 end
 
+function E:INPUT_DEVICE_INTERFACE_TRANSITION(_, newMode)
+	if (newMode == INPUT_TYPES.Gamepad) ~= E.IsGamepadActive then
+		E:StaticPopup_Show('CONFIG_RL')
+	end
+end
+
 function E:PositionGameMenuButton()
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.misc then
 		GameMenuFrame.Header.Text:SetTextColor(unpack(E.media.rgbvaluecolor))
@@ -1375,10 +1409,24 @@ do -- complicated backwards compatible menu
 	end
 end
 
+function E:UnitHasTankAura(unit)
+	if not E.Forever then return end
+
+	local tankAura = UnitHasEffectivelyTankAura(unit)
+
+	if E:NotSecretValue(tankAura) then
+		return tankAura
+	end
+end
+
 function E:UnitTankedByGroup(unit)
-	for unitToken in next, E.GroupUnitsByRole.TANK do
-		if E:GetThreatSituation(unit, unitToken) == 3 then
-			return unitToken
+	local tanks = E.GroupUnitsByRole.TANK
+	for unitToken in next, E.Forever and E.GroupRoles or tanks do
+		if unitToken ~= 'player' and (tanks[unitToken] or E:UnitHasTankAura(unitToken)) then
+			local status = E:GetThreatSituation(unit, unitToken)
+			if E:NotSecretValue(status) and (status and status >= 2) then
+				return unitToken -- satus 2 is still tanking, another unit just has more threat
+			end
 		end
 	end
 end
@@ -1386,6 +1434,8 @@ end
 function E:GROUP_ROSTER_UPDATE()
 	local isInRaid = IsInRaid()
 	E.IsInGroup = isInRaid or IsInGroup()
+
+	E:CheckRole()
 
 	wipe(E.GroupRoles)
 
@@ -1414,12 +1464,6 @@ function E:GROUP_LEFT()
 	E.IsInGroup = IsInRaid() or IsInGroup()
 
 	wipe(E.GroupRoles)
-end
-
-function E:UnitExists(unit)
-	if E:IsSecretUnit(unit) then return end
-
-	return unit and (UnitExists(unit) or UnitIsVisible(unit))
 end
 
 function E:UnitEffectiveLevel(unit)
@@ -1527,6 +1571,7 @@ function E:LoadAPI()
 	E:RegisterEvent('PLAYER_ENTERING_WORLD')
 	E:RegisterEvent('PLAYER_REGEN_ENABLED')
 	E:RegisterEvent('PLAYER_REGEN_DISABLED')
+	E:RegisterEvent('PLAYER_ROLES_ASSIGNED', 'CheckRole')
 	E:RegisterEvent('UI_SCALE_CHANGED', 'PixelScaleChanged')
 
 	E:GROUP_ROSTER_UPDATE()
@@ -1565,9 +1610,16 @@ function E:LoadAPI()
 	if E.Modern or E.Mists then
 		E:RegisterEvent('NEUTRAL_FACTION_SELECT_RESULT')
 		E:RegisterEvent('PLAYER_SPECIALIZATION_CHANGED', 'CheckRole')
-		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
-		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
 	else
 		E:RegisterEvent('CHARACTER_POINTS_CHANGED', 'CheckRole')
+	end
+
+	if E.Retail or E.Mists then
+		E:RegisterEvent('PET_BATTLE_CLOSE', 'AddNonPetBattleFrames')
+		E:RegisterEvent('PET_BATTLE_OPENING_START', 'RemoveNonPetBattleFrames')
+	end
+
+	if E.Forever then
+		E:RegisterEvent('INPUT_DEVICE_INTERFACE_TRANSITION')
 	end
 end

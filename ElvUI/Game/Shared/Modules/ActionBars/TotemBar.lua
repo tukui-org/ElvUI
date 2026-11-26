@@ -61,7 +61,7 @@ function AB:MultiCastSummonSpellButton_Update(summonButton)
 		AB.NeedsMultiCastButtonUpdate = summonButton
 		AB:RegisterEvent('PLAYER_REGEN_ENABLED')
 	else -- reposition the first slot to the summon button
-		local buttonSpacing = AB.db.totemBar.spacing
+		local buttonSpacing = AB.db.totemBar.spacing or 0
 		local slot1 = _G.MultiCastSlotButton1
 		slot1:ClearAllPoints()
 		slot1:Point('LEFT', summonButton, 'RIGHT', buttonSpacing, 0)
@@ -90,9 +90,9 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 	button.useMasque = useMasque
 	button.db = AB.db.totemBar
 
-	if normal then normal:SetTexture(nil) end
+	if normal then normal:SetTexture() end
 	if button.overlayTex then button.overlayTex:Hide() end
-	if highlight then highlight:SetTexture(nil) end
+	if highlight then highlight:SetTexture() end
 
 	if not button.noBackdrop and not button.useMasque then
 		button:SetTemplate()
@@ -120,8 +120,8 @@ function AB:SkinMultiCastButton(button, noBackdrop, useMasque)
 end
 
 function AB:MultiCastFlyoutFrame_ToggleFlyout(frame, which, parent)
-	frame.top:SetTexture(nil)
-	frame.middle:SetTexture(nil)
+	frame.top:SetTexture()
+	frame.middle:SetTexture()
 
 	local color = which == 'page' and SLOT_BORDER_COLORS.summon or SLOT_BORDER_COLORS[parent:GetID()]
 	local useMasque = MasqueGroup and E.private.actionbar.masque.actionbars
@@ -344,6 +344,19 @@ function AB:MultiCastRecallSpellButton_Update(button)
 	end
 end
 
+-- This prevents a taint trying to force a texcoord or color lock by setting it to E.noop
+local function ArrowTexCoord(texture, left, right, top, bottom)
+	if left ~= 0 or right ~= 1 or top ~= 0 or bottom ~= 1 then
+		texture:SetTexCoord(0, 1, 0, 1)
+	end
+end
+
+local function HotKeyVertexColor(hotkey, r, g, b)
+	if r ~= 1 or g ~= 1 or b ~= 1 then
+		hotkey:SetVertexColor(1, 1, 1)
+	end
+end
+
 function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	button:SetTemplate()
 	button:StyleButton()
@@ -353,7 +366,8 @@ function AB:MultiCastFlyoutFrameStyle(button, rotate)
 	button.normalTexture:SetSize(16, 16)
 	button.normalTexture:SetTexture(E.Media.Textures.ArrowUp)
 	button.normalTexture:SetTexCoord(0, 1, 0, 1)
-	button.normalTexture.SetTexCoord = E.noop
+
+	hooksecurefunc(button.normalTexture, 'SetTexCoord', ArrowTexCoord)
 
 	button:HookScript('OnEnter', AB.TotemBar_OnEnter)
 	button:HookScript('OnLeave', AB.TotemBar_OnLeave)
@@ -394,21 +408,22 @@ function AB:CreateTotemBar()
 	AB:MultiCastFlyoutFrameStyle(_G.MultiCastFlyoutFrameCloseButton, true)
 	AB:MultiCastFlyoutFrameStyle(_G.MultiCastFlyoutFrameOpenButton)
 
-	for i = 1, 4 do
-		local button = _G['MultiCastSlotButton'..i]
-		button.icon = button.background
-
-		AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
-	end
-
 	for i = 1, 12 do
+		if i < 5 then
+			local button = _G['MultiCastSlotButton'..i]
+			button.icon = button.background
+
+			AB:SkinMultiCastButton(button, nil, MasqueGroup and E.private.actionbar.masque.actionbars)
+		end
+
 		local button = _G['MultiCastActionButton'..i]
 		button:SetAttribute('type2', 'destroytotem')
 		button:SetAttribute('*totem-slot*', _G.SHAMAN_TOTEM_PRIORITIES[i])
 
 		AB:SkinMultiCastButton(button, true, MasqueGroup and E.private.actionbar.masque.actionbars)
 
-		button.HotKey.SetVertexColor = E.noop
+		hooksecurefunc(button.HotKey, 'SetVertexColor', HotKeyVertexColor)
+
 		button.commandName = button.buttonType .. button.buttonIndex -- hotkey support
 	end
 

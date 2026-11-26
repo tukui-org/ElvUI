@@ -474,6 +474,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 							end
 						end
 					end
+
 					if not E:HasFunctionForObject(ev, data.objectEvent, dt.objectEventFunc) then
 						E:RegisterEventForObject(ev, data.objectEvent, dt.objectEventFunc)
 					end
@@ -497,6 +498,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 		if not data.objectEvent then
 			dt:SetScript('OnEvent', data.eventFunc)
 		end
+
 		data.eventFunc(dt, ev, ...)
 	end
 
@@ -506,9 +508,9 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	end
 
 	if data.onClick then
-		dt:SetScript('OnClick', function(p, button)
+		dt:SetScript('OnClick', function(panel, button)
 			if E.db.datatexts.noCombatClick and InCombatLockdown() then return end
-			data.onClick(p, button)
+			data.onClick(panel, button)
 			DT.tooltip:Hide()
 		end)
 	end
@@ -516,6 +518,7 @@ function DT:AssignPanelToDataText(dt, data, event, ...)
 	if data.onEnter then
 		tinsert(dt.MouseEnters, data.onEnter)
 	end
+
 	if data.onLeave then
 		tinsert(dt.MouseLeaves, data.onLeave)
 	end
@@ -647,7 +650,7 @@ function DT:UpdatePanelInfo(panelName, panel, ...)
 		dt.text:SetText('')
 
 		dt.icon:Size(iconSize)
-		dt.icon:SetTexture(E.ClearTexture)
+		dt.icon:SetTexture()
 
 		if assigned and assigned.isLDB and assigned.eventFunc then
 			assigned.eventFunc(dt, 'ELVUI_REMOVE')
@@ -949,23 +952,23 @@ function DT:BuildTables()
 	local db = ElvDB
 	if not db then db = {} ElvDB = db end
 
-	local realm = E.myrealm
+	local key = (E.Forever and E.myRuleset) or E.myrealm
 	if not db.gold then db.gold = {} end
-	db.gold[realm] = db.gold[realm] or {}
+	db.gold[key] = db.gold[key] or {}
 
 	local name = E.mynameFull
 	if not db.class then db.class = {} end
-	db.class[realm] = db.class[realm] or {}
-	db.class[realm][name] = E.myclass
+	db.class[key] = db.class[key] or {}
+	db.class[key][name] = E.myclass
 
 	if not db.faction then db.faction = {} end
-	db.faction[realm] = db.faction[realm] or {}
-	db.faction[realm][name] = E.myfaction
+	db.faction[key] = db.faction[key] or {}
+	db.faction[key][name] = E.myfaction
 
 	local server = E.serverID
 	if not db.serverID then db.serverID = {} end
 	db.serverID[server] = db.serverID[server] or {}
-	db.serverID[server][realm] = true
+	db.serverID[server][key] = true
 end
 
 function DT:CloseMenus()

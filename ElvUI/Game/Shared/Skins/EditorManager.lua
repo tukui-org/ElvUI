@@ -17,7 +17,7 @@ local function HandleCheckBoxMini(checkbox, region)
 			checkedTexture:SetInside(checkbox.backdrop)
 		end
 	else
-		region:SetTexture(E.ClearTexture)
+		region:SetTexture()
 	end
 end
 
@@ -57,7 +57,6 @@ local function HandleDialogs()
 end
 
 function S:Blizzard_EditMode()
-	-- Main Window
 	local editMode = _G.EditModeManagerFrame
 	editMode:StripTextures()
 	editMode:CreateBackdrop('Transparent')

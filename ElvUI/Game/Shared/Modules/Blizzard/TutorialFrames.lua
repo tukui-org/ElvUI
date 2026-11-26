@@ -23,7 +23,7 @@ end
 
 -- Blizzard_NewPlayerExperience: ActionBars heavily conflicts with this
 local function ShutdownNPE()
-	if not E.Retail then	-- this doesnt exist so we can say its shutdown
+	if not E.Modern then	-- this doesnt exist so we can say its shutdown
 		return true			-- which will allow TryDisableTutorials to eventually be cleared
 	end
 

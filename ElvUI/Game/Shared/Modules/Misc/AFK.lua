@@ -110,7 +110,7 @@ function AFK:SetAFK(status)
 
 		if IsInGuild() then
 			local guildName, guildRankName = GetGuildInfo('player')
-			bottom.guild:SetFormattedText('%s-%s', guildName, guildRankName)
+			bottom.guild:SetFormattedText('%s - %s', guildName, guildRankName)
 		else
 			bottom.guild:SetText(L["No Guild"])
 		end
@@ -302,6 +302,14 @@ function AFK:Model_OnUpdate()
 	end
 end
 
+function AFK:Chat_OnDragStart()
+	self:StartMoving()
+end
+
+function AFK:Chat_OnDragStop()
+	self:StopMovingOrSizing()
+end
+
 function AFK:Initialize()
 	AFK.Initialized = true
 
@@ -320,8 +328,8 @@ function AFK:Initialize()
 	chat:SetFading(false)
 	chat:EnableMouse(true)
 	chat:RegisterForDrag('LeftButton')
-	chat:SetScript('OnDragStart', chat.StartMoving)
-	chat:SetScript('OnDragStop', chat.StopMovingOrSizing)
+	chat:SetScript('OnDragStart', AFK.Chat_OnDragStart)
+	chat:SetScript('OnDragStop', AFK.Chat_OnDragStop)
 	chat:SetScript('OnMouseWheel', AFK.Chat_OnMouseWheel)
 	AFK:ResetChatPosition()
 
@@ -357,7 +365,7 @@ function AFK:Initialize()
 	local classColor = E.myClassColor
 	local name = bottom:CreateFontString(nil, 'OVERLAY')
 	name:FontTemplate(nil, 20)
-	name:SetFormattedText('%s-%s', E.myname, E.myrealm)
+	name:SetText(E.mynameRealm)
 	name:Point('TOPLEFT', bottom.faction, 'TOPRIGHT', nameOffsetX, nameOffsetY)
 	name:SetTextColor(classColor.r, classColor.g, classColor.b)
 	bottom.name = name

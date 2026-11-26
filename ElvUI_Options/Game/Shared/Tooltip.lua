@@ -6,6 +6,7 @@ local ACH = E.Libs.ACH
 
 local tonumber = tonumber
 local GameTooltipStatusBar = GameTooltipStatusBar
+local GetCVarBool = C_CVar.GetCVarBool
 
 local modifierValues = { SHOW = L["Show"], HIDE = L["Hide"], SHIFT = L["SHIFT_KEY_TEXT"], CTRL = L["CTRL_KEY_TEXT"], ALT = L["ALT_KEY_TEXT"] }
 
@@ -28,11 +29,12 @@ General.gender = ACH:Toggle(L["Gender"], L["Displays the gender of players."], 7
 General.showElvUIUsers = ACH:Toggle(L["Show ElvUI Users"], L["Show ElvUI users and their version of ElvUI."], 8)
 General.itemQuality = ACH:Toggle(L["Item Quality"], L["Color tooltip border based on Item Quality."], 9)
 General.inspectDataEnable = ACH:Toggle(L["Inspect Data"], L["Display the item level and current specialization of the unit on modifier press."], 10, nil, nil, nil, nil, nil, nil, not (E.Modern or E.Wrath or E.Mists))
-General.moneyLines = ACH:Toggle(L["Money Lines"], L["Replaces Blizzards price lines with custom ones.\n\n|cffff3333Note:|r Required to prevent issues with MoneyFrame."], 11, nil, nil, nil, nil, nil, nil, not E.Modern)
-General.moneyHide = ACH:Toggle(L["Money Hide"], L["Hides Blizzards price lines."], 12, nil, nil, nil, nil, nil, function() return not E.db.tooltip.moneyLines end, not E.Modern)
+General.moneyLines = ACH:Toggle(L["Money Lines"], L["Replaces Blizzard's price lines with custom ones.\n\n|cffff3333Note:|r Required to prevent issues with MoneyFrame."], 11, nil, nil, nil, nil, nil, nil, not E.Modern)
+General.moneyHide = ACH:Toggle(L["Money Hide"], L["Hides Blizzard's price lines."], 12, nil, nil, nil, nil, nil, function() return not E.db.tooltip.moneyLines end, not E.Modern)
 General.fadeOut = ACH:Toggle(L["Fade Out"], L["Fade out the tooltip when it disappears, instant otherwise. Cursor anchored tooltips are unaffected."], 13, nil, nil, nil, nil, nil, nil, not E.Modern)
 General.allowTagPVP = ACH:Toggle(L["Allow Tag: PVP"], nil, 14)
 General.allowTagFaction = ACH:Toggle(L["Allow Tag: Faction"], nil, 15)
+General.displayCaster = ACH:Toggle(L["Show Aura Caster"], nil, 16, nil, nil, nil, function() return GetCVarBool('tooltipShowAuraCasterNames') end, function(_, value) E:SetCVar('tooltipShowAuraCasterNames', value and 1 or 0) end, nil, not E.Modern)
 General.spacer1 = ACH:Spacer(20)
 General.colorAlpha = ACH:Range(L["OPACITY"], nil, 21, { isPercent = true, min = 0, max = 1, step = 0.01 }, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value; S:StyleTooltips() end)
 General.xOffset = ACH:Range(L["X-Offset"], nil, 22, { min = -200, max = 200, step = 1 })
@@ -43,7 +45,7 @@ General.modifierGroup = ACH:Group(L["Spell/Item IDs"], nil, -3)
 General.modifierGroup.args.modifierID = ACH:Select(L["Modifier for IDs"], nil, 1, modifierValues, nil, nil, nil, function(info, value) E.db.tooltip[info[#info]] = value TT:UpdateAuraSpellIDCVar() end)
 General.modifierGroup.args.modifierCount = ACH:Toggle(L["Modifier Count"], L["Use Modifier for Item Count"], 3, nil, nil, nil, nil, nil, function() local count = E.db.tooltip.itemCount return not (count.bags or count.bank or count.stack) end)
 General.modifierGroup.args.includeReagents = ACH:Toggle(L["Include Reagents"], nil, 6, nil, nil, nil, nil, nil, nil, not E.Modern)
-General.modifierGroup.args.includeWarband = ACH:Toggle(L["Include Warband"], nil, 7, nil, nil, nil, nil, nil, nil, not E.Modern)
+General.modifierGroup.args.includeWarband = ACH:Toggle(L["Include Warband"], nil, 7, nil, nil, nil, nil, nil, nil, not E.Retail)
 General.modifierGroup.inline = true
 
 General.itemCount = ACH:MultiSelect(L["Item Count"], L["Display how many of a certain item you have in your possession."], -2, { bags = L["Bags"], bank = L["Bank"], stack = L["Stack Size"] }, nil, nil, function(_, key) return E.db.tooltip.itemCount[key] end, function(_, key, value) E.db.tooltip.itemCount[key] = value end)

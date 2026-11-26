@@ -54,7 +54,7 @@ if not E.Modern then
 	tinsert(bankBags, BANK_CONTAINER)
 end
 
-local bankOffset, maxBankSlots = (E.Classic or E.TBC or E.Wrath or E.Mists) and 4 or 5, E.Classic and 10 or 11
+local bankOffset, maxBankSlots = (E.Classic or E.TBC or E.Wrath or E.Mists) and 4 or 5, E.Forever and 14 or E.Classic and 10 or 11
 for i = bankOffset + 1, maxBankSlots do
 	tinsert(bankBags, i)
 end
@@ -613,9 +613,9 @@ function B:CanItemGoInBag(bag, slot, targetBag)
 	local _, bagType = GetContainerNumFreeSlots(targetBag)
 	if bagType == 0 then
 		return targetBag ~= REAGENT_CONTAINER or isReagent
-	elseif bagType and classID ~= 11 then -- prevent quiverception
+	elseif bagType then
 		local itemFamily = GetItemFamily(item)
-		if itemFamily then
+		if itemFamily == 0 or (classID ~= 1 and classID ~= 11) then -- prevent bagception
 			return band(itemFamily, bagType) > 0
 		end
 	end

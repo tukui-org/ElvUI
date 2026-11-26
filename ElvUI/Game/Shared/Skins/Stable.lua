@@ -71,6 +71,7 @@ local function SkinForeverPetStableFrame()
 		[_G.PetStableStabledPet2] = _G.PetStableStabledPet2IconTexture
 	} do
 		S:HandleItemButton(slot, true)
+		S:HandleItemButtonCrop(slot)
 
 		texture:SetDrawLayer('ARTWORK')
 	end
@@ -81,19 +82,16 @@ local function SkinForeverPetStableFrame()
 	modelScene.PetModelSceneShadow:SetInside()
 	modelScene.Inset.NineSlice:SetTemplate()
 	modelScene.Inset.Bg:Hide()
+	modelScene.Background:Hide()
+
+	stableFrame.TopDividerFrame:StripTextures()
+	stableFrame.BottomDividerFrame:StripTextures()
 
 	local diet = stableFrame.diet
 	diet:CreateBackdrop()
 	diet:Size(24)
 
-	local expBar = stableFrame.expBar
-	S:HandleStatusBar(expBar.StatusBar)
-	expBar.overlay:StripTextures()
-
-	local loyaltyLevel = stableFrame.loyaltyLevel
-	loyaltyLevel:StripTextures()
-	loyaltyLevel:CreateBackdrop()
-	loyaltyLevel:Size(24)
+	S:HandleColoredProgressBar(stableFrame.expBar)
 
 	_G.PetStableMoneyFrame.Border:StripTextures()
 end

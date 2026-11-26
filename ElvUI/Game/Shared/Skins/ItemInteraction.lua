@@ -31,6 +31,5 @@ function S:Blizzard_ItemInteractionUI()
 	buttonFrame.BlackBorder:SetAlpha(0)
 
 	S:HandleIcon(buttonFrame.Currency.Icon)
-
 	S:HandleButton(buttonFrame.ActionButton)
 end

@@ -105,7 +105,7 @@ DataBars.args.reputation.args.rewardPosition.set = function(info, value) DB.db.r
 DataBars.args.reputation.args.conditionGroup.get = function(_, key) return DB.db.reputation[key] end
 DataBars.args.reputation.args.conditionGroup.set = function(_, key, value) DB.db.reputation[key] = value DB:ReputationBar_Update() DB:UpdateAll() end
 DataBars.args.reputation.args.conditionGroup.values = {
-	hideInVehicle = L["Hide In Vehicle"],
+	hideInVehicle = (E.Retail or E.Wrath or E.Mists) and L["Hide In Vehicle"] or nil,
 	hideInCombat = L["Hide In Combat"],
 }
 

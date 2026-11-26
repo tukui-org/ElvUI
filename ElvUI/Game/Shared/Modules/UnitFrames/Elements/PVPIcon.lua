@@ -6,7 +6,7 @@ function UF:Construct_PvPIcon(frame)
 	PvPIndicator:Size(30)
 	PvPIndicator:Point('CENTER', frame, 'CENTER')
 
-	local Badge = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK')
+	local Badge = frame.RaisedElementParent.TextureParent:CreateTexture(nil, 'ARTWORK', nil, 2)
 	Badge:Size(50, 52)
 	Badge:Point('CENTER', PvPIndicator, 'CENTER')
 

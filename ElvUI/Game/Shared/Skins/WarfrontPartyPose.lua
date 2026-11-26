@@ -6,16 +6,17 @@ local _G = _G
 S:AddCallbackForAddon('Blizzard_WarfrontsPartyPoseUI', nil, nil, nil, nil, nil, 'islandsPartyPose')
 
 function S:Blizzard_WarfrontsPartyPoseUI()
-	local WarfrontsPartyPoseFrame = _G.WarfrontsPartyPoseFrame
-	WarfrontsPartyPoseFrame:StripTextures()
-	WarfrontsPartyPoseFrame:SetTemplate('Transparent')
+	local poseFrame = _G.WarfrontsPartyPoseFrame
+	poseFrame:StripTextures()
+	poseFrame:SetTemplate('Transparent')
 
-	S:HandleButton(WarfrontsPartyPoseFrame.LeaveButton)
+	S:HandleButton(poseFrame.LeaveButton)
 
-	WarfrontsPartyPoseFrame.ModelScene:StripTextures()
-	WarfrontsPartyPoseFrame.ModelScene:SetTemplate('Transparent')
+	local modelScene = poseFrame.ModelScene
+	modelScene:StripTextures()
+	modelScene:SetTemplate('Transparent')
 
-	local RewardFrame = WarfrontsPartyPoseFrame.RewardAnimations.RewardFrame
+	local RewardFrame = poseFrame.RewardAnimations.RewardFrame
 	RewardFrame:CreateBackdrop('Transparent')
 	RewardFrame.backdrop:Point('TOPLEFT', -5, 5)
 	RewardFrame.backdrop:Point('BOTTOMRIGHT', RewardFrame.NameFrame, 0, -5)

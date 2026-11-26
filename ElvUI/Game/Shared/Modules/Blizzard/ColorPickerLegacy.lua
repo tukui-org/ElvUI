@@ -21,12 +21,15 @@ local CALENDAR_COPY_EVENT, CALENDAR_PASTE_EVENT = CALENDAR_COPY_EVENT, CALENDAR_
 local CLASS, DEFAULT = CLASS, DEFAULT
 
 local colorBuffer = {}
+
 local function AlphaValue(num)
 	return num and floor(((1 - num) * 100) + .05) or 0
 end
 
 local function UpdateAlphaText(alpha)
-	if not alpha then alpha = AlphaValue(_G.OpacitySliderFrame:GetValue()) end
+	if not alpha then
+		alpha = AlphaValue(_G.OpacitySliderFrame:GetValue())
+	end
 
 	_G.ColorPPBoxA:SetText(alpha)
 end
@@ -142,7 +145,7 @@ local function UpdateAlpha(tbox)
 	-- OnAlphaValueChanged(nil, value)
 end
 
-local function OnColorSelect(frame, r, g, b)
+local function ColorPicker_OnColorSelect(frame, r, g, b)
 	if frame.noColorCallback then
 		return -- prevent error from E:GrabColorPickerValues, better note in that function
 	elseif r ~= last.r or g ~= last.g or b ~= last.b then
@@ -162,6 +165,118 @@ local function OnColorSelect(frame, r, g, b)
 		E:Delay(delayWait, DelayCall)
 	end
 end
+
+local function ColorPicker_OnShow(frame)
+	-- get color that will be replaced
+	local r, g, b = frame:GetColorRGB()
+	_G.ColorPPOldColorSwatch:SetColorTexture(r,g,b)
+
+	-- show/hide the alpha box
+	if frame.hasOpacity then
+		_G.ColorPPBoxA:Show()
+		_G.ColorPPBoxLabelA:Show()
+		_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxA_SetFocus)
+
+		UpdateAlphaText()
+		frame:Width(405)
+	else
+		_G.ColorPPBoxA:Hide()
+		_G.ColorPPBoxLabelA:Hide()
+		_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxR_SetFocus)
+
+		frame:Width(345)
+	end
+
+	-- update the color boxes
+	UpdateColorTexts(nil, nil, nil, _G.ColorPPBoxH)
+end
+
+local function CopyButton_OnClick() -- copy current dialog colors into buffer
+	colorBuffer.r, colorBuffer.g, colorBuffer.b = ColorPickerFrame:GetColorRGB()
+
+	-- enable Paste button and display copied color into swatch
+	_G.ColorPPPaste:Enable()
+	_G.ColorPPCopyColorSwatch:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
+	_G.ColorPPCopyColorSwatch:Show()
+
+	colorBuffer.a = (ColorPickerFrame.hasOpacity and _G.OpacitySliderFrame:GetValue()) or nil
+end
+
+local function ClassButton_OnClick()
+	local color = E.myClassColor
+	ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
+	_G.ColorSwatch:SetColorTexture(color.r, color.g, color.b)
+
+	if ColorPickerFrame.hasOpacity then
+		_G.OpacitySliderFrame:SetValue(0)
+	end
+end
+
+local function PasteButton_OnClick()
+	ColorPickerFrame:SetColorRGB(colorBuffer.r, colorBuffer.g, colorBuffer.b)
+	_G.ColorSwatch:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
+
+	if ColorPickerFrame.hasOpacity then
+		if colorBuffer.a then --color copied had an alpha value
+			_G.OpacitySliderFrame:SetValue(colorBuffer.a)
+		end
+	end
+end
+
+local function DefaultButton_OnClick(button)
+	local colors = button.colors
+	ColorPickerFrame:SetColorRGB(colors.r, colors.g, colors.b)
+	_G.ColorSwatch:SetColorTexture(colors.r, colors.g, colors.b)
+
+	if ColorPickerFrame.hasOpacity then
+		if colors.a then
+			_G.OpacitySliderFrame:SetValue(colors.a)
+		end
+	end
+end
+
+local function AlphaBox_OnKeyUp(eb, key)
+	local copyPaste = IsControlKeyDown() and key == 'V'
+	if key == 'BACKSPACE' or copyPaste or (strlen(key) == 1 and not IsModifierKeyDown()) then
+		UpdateAlpha(eb)
+	elseif key == 'ENTER' or key == 'ESCAPE' then
+		eb:ClearFocus()
+
+		UpdateAlpha(eb)
+	end
+end
+
+local function Box_OnKeyUp(eb, key)
+	local copyPaste = IsControlKeyDown() and key == 'V'
+	if key == 'BACKSPACE' or copyPaste or (strlen(key) == 1 and not IsModifierKeyDown()) then
+		if eb:GetID() ~= 4 then
+			UpdateColorTexts(nil, nil, nil, eb)
+		elseif eb:GetNumLetters() ~= 6 then
+			return
+		end
+
+		UpdateColor()
+	elseif key == 'ENTER' or key == 'ESCAPE' then
+		eb:ClearFocus()
+
+		UpdateColorTexts(nil, nil, nil, eb)
+		UpdateColor()
+	end
+end
+
+local function Box_OnEditFocusGained(eb)
+	eb:SetCursorPosition(0)
+	eb:HighlightText()
+end
+
+local function Box_OnEditFocusLost(eb)
+	eb:HighlightText(0,0)
+end
+
+local function OnTabPressed_A() _G.ColorPPBoxR:SetFocus() end
+local function OnTabPressed_R() _G.ColorPPBoxG:SetFocus() end
+local function OnTabPressed_G() _G.ColorPPBoxB:SetFocus() end
+local function OnTabPressed_B() _G.ColorPPBoxH:SetFocus() end
 
 function BL:EnhanceColorPicker()
 	if E.OtherAddons.ColorPickerPlus then return end
@@ -188,30 +303,8 @@ function BL:EnhanceColorPicker()
 	_G.OpacitySliderFrame:SetScript('OnValueChanged', OnAlphaValueChanged)
 
 	-- Keep the colors updated
-	ColorPickerFrame:SetScript('OnColorSelect', OnColorSelect)
-
-	ColorPickerFrame:HookScript('OnShow', function(frame)
-		-- get color that will be replaced
-		local r, g, b = frame:GetColorRGB()
-		_G.ColorPPOldColorSwatch:SetColorTexture(r,g,b)
-
-		-- show/hide the alpha box
-		if frame.hasOpacity then
-			_G.ColorPPBoxA:Show()
-			_G.ColorPPBoxLabelA:Show()
-			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxA_SetFocus)
-			UpdateAlphaText()
-			frame:Width(405)
-		else
-			_G.ColorPPBoxA:Hide()
-			_G.ColorPPBoxLabelA:Hide()
-			_G.ColorPPBoxH:SetScript('OnTabPressed', ColorPPBoxR_SetFocus)
-			frame:Width(345)
-		end
-
-		-- update the color boxes
-		UpdateColorTexts(nil, nil, nil, _G.ColorPPBoxH)
-	end)
+	ColorPickerFrame:SetScript('OnColorSelect', ColorPicker_OnColorSelect)
+	ColorPickerFrame:HookScript('OnShow', ColorPicker_OnShow)
 
 	-- move the Color Swatch
 	_G.ColorSwatch:ClearAllPoints()
@@ -240,17 +333,7 @@ function BL:EnhanceColorPicker()
 	S:HandleButton(copyButton)
 
 	-- copy color into buffer on button click
-	copyButton:SetScript('OnClick', function()
-		-- copy current dialog colors into buffer
-		colorBuffer.r, colorBuffer.g, colorBuffer.b = ColorPickerFrame:GetColorRGB()
-
-		-- enable Paste button and display copied color into swatch
-		_G.ColorPPPaste:Enable()
-		_G.ColorPPCopyColorSwatch:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
-		_G.ColorPPCopyColorSwatch:Show()
-
-		colorBuffer.a = (ColorPickerFrame.hasOpacity and _G.OpacitySliderFrame:GetValue()) or nil
-	end)
+	copyButton:SetScript('OnClick', CopyButton_OnClick)
 
 	-- class color button
 	local classButton = CreateFrame('Button', 'ColorPPClass', ColorPickerFrame, 'UIPanelButtonTemplate')
@@ -259,14 +342,7 @@ function BL:EnhanceColorPicker()
 	classButton:Point('TOP', 'ColorPPCopy', 'BOTTOMRIGHT', 0, -7)
 	S:HandleButton(classButton)
 
-	classButton:SetScript('OnClick', function()
-		local color = E.myClassColor
-		ColorPickerFrame:SetColorRGB(color.r, color.g, color.b)
-		_G.ColorSwatch:SetColorTexture(color.r, color.g, color.b)
-		if ColorPickerFrame.hasOpacity then
-			_G.OpacitySliderFrame:SetValue(0)
-		end
-	end)
+	classButton:SetScript('OnClick', ClassButton_OnClick)
 
 	-- add paste button to the ColorPickerFrame
 	local pasteButton = CreateFrame('Button', 'ColorPPPaste', ColorPickerFrame, 'UIPanelButtonTemplate')
@@ -277,15 +353,7 @@ function BL:EnhanceColorPicker()
 	S:HandleButton(pasteButton)
 
 	-- paste color on button click, updating frame components
-	pasteButton:SetScript('OnClick', function()
-		ColorPickerFrame:SetColorRGB(colorBuffer.r, colorBuffer.g, colorBuffer.b)
-		_G.ColorSwatch:SetColorTexture(colorBuffer.r, colorBuffer.g, colorBuffer.b)
-		if ColorPickerFrame.hasOpacity then
-			if colorBuffer.a then --color copied had an alpha value
-				_G.OpacitySliderFrame:SetValue(colorBuffer.a)
-			end
-		end
-	end)
+	pasteButton:SetScript('OnClick', PasteButton_OnClick)
 
 	-- add defaults button to the ColorPickerFrame
 	local defaultButton = CreateFrame('Button', 'ColorPPDefault', ColorPickerFrame, 'UIPanelButtonTemplate')
@@ -298,16 +366,7 @@ function BL:EnhanceColorPicker()
 	S:HandleButton(defaultButton)
 
 	-- paste color on button click, updating frame components
-	defaultButton:SetScript('OnClick', function(btn)
-		local colors = btn.colors
-		ColorPickerFrame:SetColorRGB(colors.r, colors.g, colors.b)
-		_G.ColorSwatch:SetColorTexture(colors.r, colors.g, colors.b)
-		if ColorPickerFrame.hasOpacity then
-			if colors.a then
-				_G.OpacitySliderFrame:SetValue(colors.a)
-			end
-		end
-	end)
+	defaultButton:SetScript('OnClick', DefaultButton_OnClick)
 
 	-- position Color Swatch for copy color
 	_G.ColorPPCopyColorSwatch:Point('BOTTOM', 'ColorPPPaste', 'TOP', 0, 10)
@@ -350,32 +409,13 @@ function BL:EnhanceColorPicker()
 
 		-- set up scripts to handle event appropriately
 		if i == 5 then
-			box:SetScript('OnKeyUp', function(eb, key)
-				local copyPaste = IsControlKeyDown() and key == 'V'
-				if key == 'BACKSPACE' or copyPaste or (strlen(key) == 1 and not IsModifierKeyDown()) then
-					UpdateAlpha(eb)
-				elseif key == 'ENTER' or key == 'ESCAPE' then
-					eb:ClearFocus()
-					UpdateAlpha(eb)
-				end
-			end)
+			box:SetScript('OnKeyUp', AlphaBox_OnKeyUp)
 		else
-			box:SetScript('OnKeyUp', function(eb, key)
-				local copyPaste = IsControlKeyDown() and key == 'V'
-				if key == 'BACKSPACE' or copyPaste or (strlen(key) == 1 and not IsModifierKeyDown()) then
-					if i ~= 4 then UpdateColorTexts(nil, nil, nil, eb) end
-					if i == 4 and eb:GetNumLetters() ~= 6 then return end
-					UpdateColor()
-				elseif key == 'ENTER' or key == 'ESCAPE' then
-					eb:ClearFocus()
-					UpdateColorTexts(nil, nil, nil, eb)
-					UpdateColor()
-				end
-			end)
+			box:SetScript('OnKeyUp', Box_OnKeyUp)
 		end
 
-		box:SetScript('OnEditFocusGained', function(eb) eb:SetCursorPosition(0) eb:HighlightText() end)
-		box:SetScript('OnEditFocusLost', function(eb) eb:HighlightText(0,0) end)
+		box:SetScript('OnEditFocusGained', Box_OnEditFocusGained)
+		box:SetScript('OnEditFocusLost', Box_OnEditFocusLost)
 		box:Show()
 	end
 
@@ -386,11 +426,11 @@ function BL:EnhanceColorPicker()
 	_G.ColorPPBoxG:Point('RIGHT', 'ColorPPBoxB', 'LEFT', -25, 0)
 	_G.ColorPPBoxR:Point('RIGHT', 'ColorPPBoxG', 'LEFT', -25, 0)
 
-	-- define the order of tab cursor movement
-	_G.ColorPPBoxR:SetScript('OnTabPressed', function() _G.ColorPPBoxG:SetFocus() end)
-	_G.ColorPPBoxG:SetScript('OnTabPressed', function() _G.ColorPPBoxB:SetFocus() end)
-	_G.ColorPPBoxB:SetScript('OnTabPressed', function() _G.ColorPPBoxH:SetFocus() end)
-	_G.ColorPPBoxA:SetScript('OnTabPressed', function() _G.ColorPPBoxR:SetFocus() end)
+	-- define the order of tab cursor movement, cycle via tab
+	_G.ColorPPBoxR:SetScript('OnTabPressed', OnTabPressed_R)
+	_G.ColorPPBoxG:SetScript('OnTabPressed', OnTabPressed_G)
+	_G.ColorPPBoxB:SetScript('OnTabPressed', OnTabPressed_B)
+	_G.ColorPPBoxA:SetScript('OnTabPressed', OnTabPressed_A)
 
 	-- make the color ColorPickerFrame movable.
 	local mover = CreateFrame('Frame', nil, ColorPickerFrame)

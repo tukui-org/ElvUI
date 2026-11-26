@@ -131,7 +131,7 @@ function M:SetScale(frame, scale)
 end
 
 function M:HandleExpansionButton()
-	local garrison = _G.ExpansionLandingPageMinimapButton or _G.GarrisonLandingPageMinimapButton
+	local garrison = _G.ExpansionLandingPageMinimapButton
 	if not garrison then return end
 
 	M:SaveIconParent(garrison)
@@ -143,14 +143,9 @@ function M:HandleExpansionButton()
 		local scale, position, xOffset, yOffset = M:GetIconSettings('classHall')
 		garrison:ClearAllPoints()
 		garrison:Point(position, Minimap, xOffset, yOffset)
+
 		M:SetIconParent(garrison)
 		M:SetScale(garrison, scale)
-
-		local box = _G.GarrisonLandingPageTutorialBox
-		if box then
-			box:SetScale(1 / scale)
-			box:SetClampedToScreen(true)
-		end
 	end
 end
 
@@ -164,7 +159,7 @@ function M:HandleTrackingButton()
 
 	local hidden = not Minimap:IsShown()
 	if hidden or E.private.general.minimap.hideTracking then
-		tracking:Point('TOP', UIParent, 'BOTTOM') -- retail cant hide the parent otherwise the menu will error
+		tracking:Point('BOTTOM', UIParent, 'TOP', 0, 5000) -- retail cant hide the parent otherwise the menu will error
 	else
 		local scale, position, xOffset, yOffset = M:GetIconSettings('tracking')
 
@@ -399,6 +394,7 @@ function M:HandleDifficulty(difficulty, cluster, hidden)
 	if cluster then
 		difficulty:ClearAllPoints()
 		difficulty:SetPoint('TOPRIGHT', MinimapCluster, 0, -25)
+
 		M:SetIconParent(difficulty)
 		M:SetScale(difficulty, 1)
 	elseif hidden then
@@ -407,6 +403,7 @@ function M:HandleDifficulty(difficulty, cluster, hidden)
 		local scale, position, xOffset, yOffset = M:GetIconSettings('difficulty')
 		difficulty:ClearAllPoints()
 		difficulty:Point(position, Minimap, xOffset, yOffset)
+
 		M:SetIconParent(difficulty)
 		M:SetScale(difficulty, scale)
 	end
@@ -414,6 +411,8 @@ end
 
 function M:UpdateIcons()
 	local gameTime = _G.GameTimeFrame
+	local mmBackdrop = _G.MinimapBackdrop
+	local externalEvent = mmBackdrop and mmBackdrop.ExternalEventURLButton
 	local indicator = MinimapCluster.IndicatorFrame
 	local craftingFrame = indicator and indicator.CraftingOrderFrame
 	local mailFrame = (indicator and indicator.MailFrame) or _G.MiniMapMailFrame
@@ -423,6 +422,7 @@ function M:UpdateIcons()
 
 	if not next(IconParents) then
 		if gameTime then M:SaveIconParent(gameTime) end
+		if externalEvent then M:SaveIconParent(externalEvent) end
 		if indicator then M:SaveIconParent(indicator) end
 		if craftingFrame then M:SaveIconParent(craftingFrame) end
 		if mailFrame then M:SaveIconParent(mailFrame) end
@@ -440,6 +440,7 @@ function M:UpdateIcons()
 				if frame.Border then
 					frame.Border:SetVertexColor(r, g, b)
 				end
+
 				if frame.Background then
 					frame.Background:SetVertexColor(r2, g2, b2, a2)
 				end
@@ -456,6 +457,7 @@ function M:UpdateIcons()
 		if difficultyGuild then M:HandleDifficulty(difficultyGuild, true) end
 
 		if gameTime then M:SetIconParent(gameTime) end
+		if externalEvent then M:SetIconParent(externalEvent) end
 		if craftingFrame then M:SetIconParent(craftingFrame) end
 		if mailFrame then M:SetIconParent(mailFrame) end
 		if battlefieldFrame then M:SetIconParent(battlefieldFrame) end
@@ -476,9 +478,23 @@ function M:UpdateIcons()
 				gameTime:ClearAllPoints()
 				gameTime:Point(position, Minimap, xOffset, yOffset)
 				gameTime:SetParent(Minimap)
-				gameTime:OffsetFrameLevel(2, _G.MinimapBackdrop)
+				gameTime:OffsetFrameLevel(2, mmBackdrop)
+
 				M:SetIconParent(gameTime)
 				M:SetScale(gameTime, scale)
+			end
+		end
+
+		if externalEvent then
+			if hidden or E.private.general.minimap.hideExternalEvent then
+				externalEvent:SetParent(E.HiddenFrame)
+			else
+				local scale, position, xOffset, yOffset = M:GetIconSettings('externalEvent')
+				externalEvent:ClearAllPoints()
+				externalEvent:Point(position, Minimap, xOffset, yOffset)
+
+				M:SetIconParent(externalEvent)
+				M:SetScale(externalEvent, scale)
 			end
 		end
 
@@ -489,6 +505,7 @@ function M:UpdateIcons()
 				local scale, position, xOffset, yOffset = M:GetIconSettings('crafting')
 				craftingFrame:ClearAllPoints()
 				craftingFrame:Point(position, Minimap, xOffset, yOffset)
+
 				M:SetIconParent(craftingFrame)
 				M:SetScale(craftingFrame, scale)
 			end
@@ -501,6 +518,7 @@ function M:UpdateIcons()
 				local scale, position, xOffset, yOffset = M:GetIconSettings('mail')
 				mailFrame:ClearAllPoints()
 				mailFrame:Point(position, Minimap, xOffset, yOffset)
+
 				M:SetIconParent(mailFrame)
 				M:SetScale(mailFrame, scale)
 			end
@@ -513,6 +531,7 @@ function M:UpdateIcons()
 				local scale, position, xOffset, yOffset = M:GetIconSettings('battlefield')
 				battlefieldFrame:ClearAllPoints()
 				battlefieldFrame:Point(position, Minimap, xOffset, yOffset)
+
 				M:SetIconParent(battlefieldFrame)
 				M:SetScale(battlefieldFrame, scale)
 			end
@@ -578,16 +597,14 @@ function M:UpdateSettings()
 		M.NeedsCanvasUpdate = E.MinimapSize
 	end
 
-	local panel, holder = _G.MinimapPanel, M.MapHolder
-	panel:SetShown(E.db.datatexts.panels.MinimapPanel.enable)
-	M:SetScale(panel, 1)
-
-	local mmOffset = E.PixelMode and 1 or 3
+	local holder = M.MapHolder
 	local mmScale = M.db.scale
+	local mmOffset = E.PixelMode and 1 or 3
 	Minimap:ClearAllPoints()
 	Minimap:Point('TOPRIGHT', holder, -mmOffset / mmScale, -mmOffset / mmScale)
 	Minimap:Size(E.MinimapSize)
 
+	local panel = _G.MinimapPanel
 	local mWidth, mHeight = Minimap:GetSize()
 	local bWidth, bHeight = E:Scale(E.PixelMode and 2 or 6), E:Scale(E.PixelMode and 2 or 8)
 	local panelSize, joinPanel = (panel:IsShown() and panel:GetHeight()) or E:Scale(E.PixelMode and 1 or -1), E:Scale(1)
@@ -745,7 +762,6 @@ end
 
 do
 	local killFrames = {
-		_G.MinimapBorderTop,
 		_G.MiniMapMailBorder,
 		_G.MinimapNorthTag,
 		_G.MiniMapWorldMapButton,
@@ -754,7 +770,9 @@ do
 
 	tinsert(killFrames, E.Modern and Minimap.ZoomIn or _G.MinimapZoomIn)
 	tinsert(killFrames, E.Modern and Minimap.ZoomOut or _G.MinimapZoomOut)
-	tinsert(killFrames, E.Modern and _G.MiniMapTracking or _G.MinimapToggleButton)
+	if not E.Modern then
+		tinsert(killFrames, _G.MinimapToggleButton)
+	end
 
 	if E.Forever then
 		tinsert(killFrames, MinimapCluster.DielFrame)
@@ -768,7 +786,15 @@ do
 	end
 end
 
+function M:UpdateMinimapPanels()
+	local panel = _G.MinimapPanel
+	panel:SetShown(E.private.general.minimap.enable and E.db.datatexts.panels.MinimapPanel.enable)
+	M:SetScale(panel, 1)
+end
+
 function M:Initialize()
+	M:UpdateMinimapPanels()
+
 	if not E.private.general.minimap.enable then
 		return
 	else
@@ -886,7 +912,16 @@ function M:Initialize()
 	M:RegisterEvent('ZONE_CHANGED_INDOORS', 'Update_ZoneText')
 	M:RegisterEvent('ZONE_CHANGED', 'Update_ZoneText')
 
-	MinimapCluster.BorderTop:StripTextures()
+	local zoneButton = MinimapCluster.ZoneTextButton
+	local borderTop = MinimapCluster.BorderTop or (zoneButton and zoneButton.BorderTop)
+	if borderTop then
+		borderTop:StripTextures()
+	end
+
+	if zoneButton and zoneButton.StateTexture then
+		zoneButton:StripTextures()
+		zoneButton.StateTexture:SetAlpha(0)
+	end
 
 	if E.Modern then
 		-- hide the BlopRing on Minimap
@@ -897,11 +932,7 @@ function M:Initialize()
 
 		MinimapCluster.Tracking.Background:StripTextures()
 
-		if _G.GarrisonLandingPageMinimapButton_UpdateIcon then
-			hooksecurefunc('GarrisonLandingPageMinimapButton_UpdateIcon', M.HandleExpansionButton)
-		else
-			hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
-		end
+		hooksecurefunc(_G.ExpansionLandingPageMinimapButton, 'UpdateIcon', M.HandleExpansionButton)
 	elseif E.Classic then
 		hooksecurefunc('SetLookingForGroupUIAvailable', M.HandleTrackingButton)
 	end

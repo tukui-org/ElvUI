@@ -45,7 +45,10 @@ local activeElements = {}
 
 local UFParentHider = CreateFrame('Frame', (global or parent) .. '_UFParentFrameHider', UIParent, 'SecureHandlerStateTemplate')
 UFParentHider:SetFrameStrata('LOW')
-RegisterStateDriver(UFParentHider, 'visibility', '[petbattle] hide; show')
+
+if oUF.isRetail or oUF.isMists then
+	RegisterStateDriver(UFParentHider, 'visibility', '[petbattle] hide; show')
+end
 
 local function updateActiveUnit(self, event)
 	-- Calculate units to work with

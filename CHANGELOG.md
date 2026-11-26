@@ -1,3 +1,91 @@
+### Version 16.02 [ November 22nd 2026 ]
+*   Datatext for Ammo added to Forever.
+*   Quest icons for Nameplates and Quest Tags should work again on Forever.
+*   Castbar option added to toggle Merge Crafting.
+*   Quest icons during grouped content with multiple quests works again.
+*   Bag sorting erroring out with some specific containers.
+*   Camera distance max increase for Forever.
+*   Loot rolls show count again on the icons (Retail and Forever).
+*   Rogue Shadow Dance not showing the charged points properly.
+*   Rogue combo points not updating when switching targets on Forever.
+*   Tooltip mouseover error caused by unit secrets.
+*   Vehicle and Possession actionbar paging on Forever (notable on priests). 
+*   Display Navigation added to Blizzard Improvement section (this is a blizzard cvar `showInGameNavigation`).
+*   Minimap datatext not properly hidden when Minimap was disabled.
+*   Worldmap attempt to prevent the taint error with SetPassThroughButtons.
+*   Top Auras weren't being hidden during a Pet Battle.
+*   Gold Datatext updated on Forever to use the game ruleset.
+*   AFK mode will show full name on Forever.
+*   Chat bubble names will use the correct font again.
+*   Friend Datatext will only display same faction on Forever.
+*   Friend frame to have the correct font.
+*   Tooltip option to display an Aura's caster (this is a blizzard cvar `tooltipShowAuraCasterNames`).
+
+### Version 16.01 [ November 3rd 2026 ]
+*   Tags for missinghp and missingpp will hide at zero again.
+*   Nameplates icons or textures would sometimes have the wrong level after being in name-only mode.
+*   Unitframes have reduced update calls when group size changes.
+*   Module copy error would happen rarely depending in the profile copied from.
+*   Maintank and Mainassist Growth Y-Direction setting was causing the frames to bug when set to up.
+*   Display PvP instead of Player vs. Player in some locales.
+*   Chat rejoining channels when rezoning on classics.
+*   EnemyManaRegen (mp5) added on **Forever** and updated for classics.
+*   Boss frames range wasn't working properly because of secrets.
+*   Skin: Suggested content icon was stuck on parchment off mode. (Thanks Dack)
+*   Gamepad support on **Forever**.
+*   Temp Enchant charges work properly again.
+*   Nameplate castbar Display Target showing previous target soemtimes.
+*   Nameplate castbar Target Text displays in class color.
+*   Castbar craft merge works again.
+*   Breath and Fatigue bars show their timers again on Retail and Forever.
+*   Minimap: External event button added, with option to hide (Titan).
+*   Character count option added for the chat editbox.
+*   Arena preparation frames not showing up because of a secret error.
+*   Unitframe setting Display Player was missing from Raid groups.
+*   Unitframe eventless units (targettarget, focustarget, etc) frame timing was a bit off.
+*   Chat voice overlay was erroring from secrets, this actually wont work properly anymore because of secrets.
+
+### Version 16.00 [ October 13th 2026 ]
+* **After almost two months of pretty much daily work and testing, we're introducing our 16.00 update for ElvUI:**
+    *   A large performance pass and many fixes, this includes a noticable speedup of loading screens.
+    *   Every game version now gets the same set of skins, this includes consistency of bottom and side tabs on frames.
+    *   This release also adds initial support for the upcoming WoW: Forever game version.
+    *   Note: Gamepads are not yet supported but we will work on it.
+* **Patch 12.1.5**
+    *   **Chat:** The tab overflow button lights up again when a hidden tab gets a message.
+    *   **Nameplates:** Clamp Nameplates works again.
+* **New and returning features**
+    *   **General:** Enchantable gear without an enchant is now colored in red. See Blizzard Improvements > Item Level (Retail).
+    *   **Tooltip:** Current Mount option is back on Retail and now also works on Wrath TBC and Vanilla.
+    *   **UnitFrames:** Additional growth directions for Main Assist and Main Tank frames as requested.
+    *   **UnitFrames:** Aura Highlight Glow is back. with Highlight Color Style set to Glow, dispellable debuffs glow around the frame again (Retail).
+* **Skins**
+    *   **Contrast:** Better contrast on a lot of frames with less transparent-on-transparent color overlaps.
+    *   **Menus:** Small checkboxes (and sliders) in right-click menus are now nicely skinned when using Skins > Blizzard > Misc Frames.
+    *   **Parchment:** Better consistency across most frames with parchment remover on/off.
+* **There is a lot more fixed than listed below; we only list some of the ones worth noting to avoid a even bigger wall of text.**
+    *   **ActionBars:** Blizzard's bag bar stays visible when both ElvUI Action Bars and the Bag Bar are disabled.
+    *   **ActionBars:** Keybind Mode works on character-specific macros again (Retail).
+    *   **Auras:** Smooth Bars option works on Buffs and Debuffs duration bars and on unit frame Aura Bars (Retail).
+    *   **Chat:** Channel messages without a sender (Local Defense) no longer show an empty name.
+    *   **DataTexts:** System: grouped addons such as DBM and Details no longer vanish from the memory list.
+    *   **Misc:** Auto Track Reputation works again (Retail).
+    *   **Nameplates:** Show Only Names and Class Color Names apply without a reload.
+    *   **Nameplates:** Sort Direction and Desaturate Icon work for nameplate auras (Retail).
+    *   **Nameplates:** The target's class bar follows your target and no longer sticks to an old plate.
+    *   **Profiles:** Profile import accepts Table-format strings again.
+    *   **UnitFrames:** Raid Role Indicator shows the raid assistant icon again.
+    *   **UnitFrames:** The dispel highlight follows your dispels after a spec or talent change, without a reload (Retail).
+* **Other changes**
+    *   **Auras:** Party and raid Buffs and Debuffs hide while a member can't be assisted, for example while mind-controlled (Retail).
+    *   **General:** The AddOn is now displayed as "ElvUI Midnight" on Retail.
+    *   **Nameplates:** Alpha Fading was removed. Plates now appear right away instead of fading in.
+    *   **Profiles:** Profile names are limited to 50 characters (Ace3 library update).
+    *   **Tags:** Classcolor now works with secret values instead of falling back to white/gray text.
+    *   **Translations:** German got a full review and Eltreum updated Brazilian Portuguese.
+* **Shoutouts**
+    *   Thanks to Dack, Eltreum, Flamanis, Nevcairiel, p3lim, Plusmouse, and Tsxy for their contributions.
+
 ### Version 15.26 [ August 29th 2026 ]
 *   Item level display for enchants will appear cleaner (regardless of abbreviate setting).
 *   Chat tabs had an unneeded workaround that was causing trouble, removed it.

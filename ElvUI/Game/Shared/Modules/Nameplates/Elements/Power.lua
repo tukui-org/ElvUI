@@ -5,13 +5,13 @@ local LSM = E.Libs.LSM
 
 local unpack = unpack
 
-local UnitPlayerControlled = UnitPlayerControlled
-local UnitIsTapDenied = UnitIsTapDenied
 local UnitClass = UnitClass
 local UnitReaction = UnitReaction
-local UnitIsConnected = UnitIsConnected
-local CreateFrame = CreateFrame
 local UnitPowerType = UnitPowerType
+local UnitIsConnected = UnitIsConnected
+local UnitIsTapDenied = UnitIsTapDenied
+local UnitPlayerControlled = UnitPlayerControlled
+local CreateFrame = CreateFrame
 
 local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local StatusBarInterpolation = Enum.StatusBarInterpolation
@@ -107,7 +107,7 @@ function NP:Power_PostUpdate(_, cur) --unit, cur, min, max
 end
 
 function NP:Construct_Power(nameplate)
-	local Power = CreateFrame('StatusBar', nameplate.frameName..'Power', nameplate)
+	local Power = CreateFrame('StatusBar', '$parent_Power', nameplate)
 	Power:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 
 	NP.StatusBars[Power] = 'power'

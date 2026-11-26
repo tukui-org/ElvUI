@@ -22,7 +22,6 @@ local UNKNOWN = UNKNOWN
 
 local DebuffColors = E.Libs.Dispel:GetDebuffTypeColor()
 local DispelTypes = E.Libs.Dispel:GetMyDispelTypes()
-local BadDispels = E.Libs.Dispel:GetBadList()
 
 UF.SideAnchor = { TOP = true, BOTTOM = true, LEFT = true, RIGHT = true }
 UF.GrowthPoints = { UP = 'BOTTOM', DOWN = 'TOP', RIGHT = 'LEFT', LEFT = 'RIGHT' }
@@ -471,8 +470,6 @@ function UF:Configure_Auras(frame, which)
 
 	local initialAnchor = (UF.SideAnchor[settings.anchorPoint] and E.InversePoints[settings.anchorPoint]) or (UF.GrowthPoints[settings.growthY]..UF.GrowthPoints[settings.growthX])
 	if E.Modern then
-		auras.allowEnable = settings.enable
-
 		auras.isUnitframe = true
 		auras.useWidth = true -- this helps keeps row count proper when using keepSizeRatio
 		auras.auraType = auraType
@@ -489,6 +486,7 @@ function UF:Configure_Auras(frame, which)
 		auras.paddingLeft, auras.paddingRight, auras.paddingTop, auras.paddingBottom = 0, 0, growDown and growOffset or 0, growDown and 0 or growOffset
 		auras.noMouse = settings.clickThrough
 		auras.forceShowAuras = frame.forceShowAuras
+		auras.allowEnable = settings.enable -- keep over Auras_GroupUnit
 
 		if settings.enable then
 			auras.filterLists = settings.filterLists
@@ -596,10 +594,7 @@ function UF:PostUpdateAura(unit, button)
 			r, g, b = color:GetRGB()
 		end
 	elseif button.isDebuff then
-		local bad = DebuffColors.BadDispel
-		if bad and db.auraByDispels and (BadDispels[button.spellID] and DispelTypes[button.debuffType]) then
-			r, g, b = bad.r, bad.g, bad.b
-		elseif db.auraByType then
+		if db.auraByType then
 			local debuffColor = DebuffColors[button.debuffType or 'None']
 			r, g, b = debuffColor.r * 0.6, debuffColor.g * 0.6, debuffColor.b * 0.6
 		end

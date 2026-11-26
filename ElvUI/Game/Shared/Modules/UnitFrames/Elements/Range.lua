@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local UF = E:GetModule('UnitFrames')
+local ElvUF = E.oUF
 
 local next = next
 local tonumber = tonumber

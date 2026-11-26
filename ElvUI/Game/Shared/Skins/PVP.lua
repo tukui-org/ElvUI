@@ -189,11 +189,13 @@ function S:Blizzard_PVPUI()
 			local bu = BonusFrame[bonusButton]
 			local reward = bu.Reward
 			S:HandleButton(bu)
+
 			bu.SelectedTexture:SetInside()
 			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 			reward.Border:Hide()
 			reward.CircleMask:Hide()
+
 			S:HandleIcon(reward.Icon, true)
 
 			reward.EnlistmentBonus:StripTextures()
@@ -229,11 +231,13 @@ function S:Blizzard_PVPUI()
 		for _, bu in next, {ConquestFrame.RatedSoloShuffle, ConquestFrame.RatedBGBlitz, ConquestFrame.Arena2v2, ConquestFrame.Arena3v3, ConquestFrame.RatedBG} do
 			local reward = bu.Reward
 			S:HandleButton(bu)
+
 			bu.SelectedTexture:SetInside()
 			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 			reward.Border:Hide()
 			reward.CircleMask:Hide()
+
 			S:HandleIcon(reward.Icon, true)
 		end
 
@@ -284,11 +288,13 @@ function S:Blizzard_PVPUI()
 		for _, bu in next, BonusTrainingGroundList.BonusTrainingGroundButtons do
 			local reward = bu.Reward
 			S:HandleButton(bu)
+
 			bu.SelectedTexture:SetInside()
 			bu.SelectedTexture:SetColorTexture(1, 1, 0, 0.1)
 
 			reward.Border:Hide()
 			reward.CircleMask:Hide()
+
 			S:HandleIcon(reward.Icon, true)
 
 			reward.EnlistmentBonus:StripTextures()
@@ -322,6 +328,7 @@ function S:Blizzard_PVPUI()
 
 			Frame.ConquestBar.Reward:ClearAllPoints()
 			Frame.ConquestBar.Reward:Point('LEFT', Frame.ConquestBar, 'RIGHT', 0, 0)
+
 			S:HandleIcon(Frame.ConquestBar.Reward.Icon, true)
 		end
 	else
@@ -381,10 +388,12 @@ function S:Blizzard_PVPUI()
 		-- War Games Tab
 		local WarGamesQueueFrame = _G.WarGamesQueueFrame
 		WarGamesQueueFrame:StripTextures()
+		WarGamesQueueFrame.HorizontalBar:Kill()
+
+		_G.WarGamesQueueFrameDescription:SetTextColor(1, 1, 1)
+
 		S:HandleScrollBar(_G.WarGamesQueueFrameScrollFrameScrollBar)
 		S:HandleScrollBar(_G.WarGamesQueueFrameInfoScrollFrameScrollBar)
-		_G.WarGamesQueueFrameDescription:SetTextColor(1, 1, 1)
-		WarGamesQueueFrame.HorizontalBar:Kill()
 		S:HandleButton(_G.WarGameStartButton)
 	end
 end
@@ -415,6 +424,7 @@ function S:PVPReadyDialog()
 	else
 		_G.PVPReadyDialog:StripTextures()
 		_G.PVPReadyDialog:SetTemplate('Transparent')
+
 		S:HandleButton(_G.PVPReadyDialogEnterBattleButton)
 		S:HandleButton(_G.PVPReadyDialogHideButton)
 	end

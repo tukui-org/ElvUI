@@ -177,7 +177,7 @@ function MC:CopyTable(CopyFrom, CopyTo, CopyDefault, module)
 			if module == true then --Copy over entire section of profile subgroup
 				E:CopyTable(CopyTo, CopyDefault)
 				E:CopyTable(CopyTo, CopyFrom)
-			elseif type(module) == 'table' and module[key] ~= nil then
+			elseif type(module) == 'table' and module[key] ~= nil and CopyDefault[key] ~= nil then
 				--Making sure tables actually exist in profiles (e.g absent values in ElvDB.profiles are for default values)
 				CopyFrom[key], CopyTo[key] = MC:TablesExist(CopyFrom[key], CopyTo[key], CopyDefault[key])
 				--If key exists, then copy. If not, then clear obsolite key from the profile.

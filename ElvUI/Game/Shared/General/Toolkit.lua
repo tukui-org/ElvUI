@@ -56,6 +56,16 @@ do
 		return left, right, top, bottom
 	end
 
+	function E:SameTexCoords(l, r, t, b)
+		return l == left and r == right and t == top and b == bottom
+	end
+
+	function E:ResetTexCoords(l, r, t, b) -- self is icon; used by the hook in HandleItemButtonCrop
+		if E:SameTexCoords(l, r, t, b) then return end -- we only want to set them when we need to
+
+		self:SetTexCoord(left, right, top, bottom)
+	end
+
 	function E:UpdateTexCoords()
 		local m = 0.04 * (E.db.general.cropIcon or 2)
 		for i, v in next, E.TexCoords do
@@ -444,7 +454,7 @@ local function StripRegion(which, object, kill, zero)
 	elseif zero then
 		object:SetAlpha(0)
 	elseif which == STRIP_TEX then
-		object:SetTexture(E.ClearTexture)
+		object:SetTexture()
 		object:SetAtlas('')
 	elseif which == STRIP_FONT then
 		object:SetText('')

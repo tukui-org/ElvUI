@@ -11,9 +11,10 @@ function S:Blizzard_Soulbinds()
 	frame:StripTextures()
 	frame:SetTemplate('Transparent')
 
+	frame.CommitConduitsButton:SetFrameLevel(10)
+	frame.ActivateSoulbindButton:SetFrameLevel(10)
+
 	S:HandleCloseButton(frame.CloseButton)
 	S:HandleButton(frame.CommitConduitsButton)
-	frame.CommitConduitsButton:SetFrameLevel(10)
 	S:HandleButton(frame.ActivateSoulbindButton)
-	frame.ActivateSoulbindButton:SetFrameLevel(10)
 end

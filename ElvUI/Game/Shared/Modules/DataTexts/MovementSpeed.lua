@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local DT = E:GetModule('DataTexts')
 
 local strjoin = strjoin
+
 local IsFalling = IsFalling
 local IsFlying = IsFlying
 local IsSwimming = IsSwimming

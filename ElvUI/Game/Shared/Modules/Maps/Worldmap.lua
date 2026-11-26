@@ -14,6 +14,7 @@ local PlayerMovementFrameFader = PlayerMovementFrameFader
 
 local GetCVar = C_CVar.GetCVar
 
+local NOT_APPLICABLE = NOT_APPLICABLE
 local MOUSE_LABEL = _G.MOUSE_LABEL:gsub('|[TA].-|[ta]','')
 
 local CoordsHolder
@@ -29,17 +30,13 @@ local INVERTED_POINTS = {
 -- this will be updated later
 local smallerMapScale = 0.8
 local worldMapStrata = E.Modern and 'MEDIUM' or 'HIGH'
+
+-- Blizzards maximize rebuilds the canvas after our resize, calling map methods from this hook taints SetPassThroughButtons
 function M:SetLargeWorldMap()
 	local WorldMapFrame = _G.WorldMapFrame
 	WorldMapFrame:SetParent(E.UIParent)
 	WorldMapFrame:SetFrameStrata(worldMapStrata)
 	WorldMapFrame:SetScale(1)
-	WorldMapFrame.ScrollContainer.Child:SetScale(smallerMapScale)
-
-	WorldMapFrame:OnFrameSizeChanged()
-	if WorldMapFrame:GetMapID() then
-		WorldMapFrame.NavBar:Refresh()
-	end
 end
 
 function M:SetSmallWorldMap()
@@ -80,7 +77,7 @@ function M:UpdateRestrictedArea()
 		inRestrictedArea = false
 	else
 		inRestrictedArea = true
-		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], 'N/A')
+		CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], NOT_APPLICABLE)
 	end
 end
 
@@ -103,7 +100,7 @@ function M:UpdateCoords(OnShow)
 		if E.MapInfo.x and E.MapInfo.y then
 			CoordsHolder.playerCoords:SetFormattedText('%s:   %.2f, %.2f', L["Player"], (E.MapInfo.xText or 0), (E.MapInfo.yText or 0))
 		else
-			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], 'N/A')
+			CoordsHolder.playerCoords:SetFormattedText('%s:   %s', L["Player"], NOT_APPLICABLE)
 		end
 	end
 end
@@ -225,13 +222,8 @@ end
 
 function M:WorldMap_FirstShow()
 	local frame = _G.WorldMapFrame
-	local maxed = E.Modern and frame:IsMaximized()
-	if maxed then -- this needs to be called outside of smallerWorldMap
-		frame:UpdateMaximizedSize()
-	end
-
 	if E.global.general.smallerWorldMap then
-		if maxed then
+		if E.Modern and frame:IsMaximized() then
 			M:SetLargeWorldMap()
 		else
 			M:SetSmallWorldMap()

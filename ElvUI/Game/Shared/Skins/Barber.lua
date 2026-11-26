@@ -44,11 +44,23 @@ end
 function S:Blizzard_CharacterCustomize()
 	-- backdrop is ugly, so dont use a style
 	local frame = _G.CharCustomizeFrame
-	S:HandleButton(frame.SmallButtons.ResetCameraButton, nil, nil, true)
-	S:HandleButton(frame.SmallButtons.ZoomOutButton, nil, nil, true)
-	S:HandleButton(frame.SmallButtons.ZoomInButton, nil, nil, true)
-	S:HandleButton(frame.SmallButtons.RotateLeftButton, nil, nil, true)
-	S:HandleButton(frame.SmallButtons.RotateRightButton, nil, nil, true)
+	local smallButtons = frame.SmallButtons
+	S:HandleButton(smallButtons.ResetCameraButton, nil, nil, true)
+	S:HandleButton(smallButtons.ZoomOutButton, nil, nil, true)
+	S:HandleButton(smallButtons.ZoomInButton, nil, nil, true)
+	S:HandleButton(smallButtons.RotateLeftButton, nil, nil, true)
+	S:HandleButton(smallButtons.RotateRightButton, nil, nil, true)
+
+	if E.Forever then
+		smallButtons:StripTextures()
+		smallButtons:CreateBackdrop('Transparent')
+		smallButtons.backdrop:SetInside(nil, 8, 8)
+
+		local container = frame.CustomizeOptionsContainerFrame
+		container:StripTextures()
+		container:CreateBackdrop('Transparent')
+		container.backdrop:SetInside(nil, 10, 10)
+	end
 
 	hooksecurefunc(frame, 'AddMissingOptions', SetSelectedCategory)
 end

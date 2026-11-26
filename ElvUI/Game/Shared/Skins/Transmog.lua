@@ -53,6 +53,7 @@ function S:Blizzard_Transmog()
 
 	S:HandleTrimScrollBar(OutfitCollection.OutfitList.ScrollBar)
 	S:HandleButton(OutfitCollection.SaveOutfitButton, nil, nil, nil, true, nil, nil, nil, true)
+
 	OutfitCollection.MoneyFrame:StripTextures()
 	OutfitCollection.MoneyFrame:SetTemplate()
 

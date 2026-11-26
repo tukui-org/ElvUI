@@ -9,8 +9,8 @@ S:AddCallbackForAddon('Blizzard_MacroUI', nil, nil, nil, nil, nil, 'macro')
 
 local function MacroSelectorScrollUpdateChild(button)
 	if not button.IsSkinned then
-		-- Raise the button so its backdrop sits above the Transparent ScrollBox backdrop
-		button:OffsetFrameLevel(1)
+		button:OffsetFrameLevel(1) -- Raise the button so its backdrop sits above the Transparent ScrollBox backdrop
+
 		S:HandleItemButton(button, true, true)
 	end
 end

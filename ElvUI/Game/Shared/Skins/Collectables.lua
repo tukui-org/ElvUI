@@ -227,7 +227,7 @@ end
 local function SetsFrame_ScrollBoxUpdateChild(child)
 	if not child.IsSkinned then
 		child.Background:Hide()
-		child.HighlightTexture:SetTexture(E.ClearTexture)
+		child.HighlightTexture:SetTexture()
 		child.IconFrame.Icon:SetSize(42, 42)
 		S:HandleIcon(child.IconFrame.Icon)
 
@@ -467,6 +467,10 @@ local function SkinPetFrame()
 		E:RegisterStatusBar(Card.xpBar)
 	else
 		Card.ShadowOverlay:Hide()
+
+		local modelScene = Card.modelScene
+		S:HandleRotateButton(modelScene.RotateLeftButton)
+		S:HandleRotateButton(modelScene.RotateRightButton)
 	end
 end
 

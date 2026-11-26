@@ -3,10 +3,16 @@ local S = E:GetModule('Skins')
 local BL = E:GetModule('Blizzard')
 
 local _G = _G
-local pairs = pairs
+local next = next
 local hooksecurefunc = hooksecurefunc
 
 local data = S:AddCallbackForAddon('Blizzard_PlayerChoice', nil, nil, nil, nil, nil, 'playerChoice')
+
+data.TextureKits = {
+	jailerstower = true,
+	cypherchoice = true,
+	genericplayerchoice = true,
+}
 
 function data:SetupButtons(buttons)
 	if not buttons then return end -- the grid layout template has no button container
@@ -49,12 +55,6 @@ local function ReskinSpellWidget(spell)
 		spell.Text:SetTextColor(1, 0.8, 0)
 	end
 end
-
-data.TextureKits = {
-	jailerstower = true,
-	cypherchoice = true,
-	genericplayerchoice = true,
-}
 
 function data:SetupOptions()
 	if not self.IsSkinned then
@@ -104,7 +104,7 @@ function data:SetupOptions()
 
 		local container = option.WidgetContainer
 		if container and container.widgetFrames then -- only set once a widget set is registered
-			for _, frame in pairs(container.widgetFrames) do
+			for _, frame in next, container.widgetFrames do
 				if frame.Text then
 					frame.Text:SetTextColor(1, 1, 1)
 				end
@@ -142,6 +142,7 @@ end
 
 function S:Blizzard_PlayerChoice()
 	SetupTorghastMover()
+
 	S:HandleButton(_G.GenericPlayerChoiceToggleButton)
 
 	hooksecurefunc(_G.PlayerChoiceFrame, 'SetupOptions', data.SetupOptions)

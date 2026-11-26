@@ -29,12 +29,11 @@ local SpellBook_GetSpellBookSlot = SpellBook_GetSpellBookSlot
 
 local GetSpellBookItemName = C_SpellBook.GetSpellBookItemName or GetSpellBookItemName
 
-local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
-
-local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
-local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
 local QUICK_KEYBIND_MODE = QUICK_KEYBIND_MODE
+local CHARACTER_SPECIFIC_KEYBINDINGS = CHARACTER_SPECIFIC_KEYBINDINGS
+local CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP = CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP
 local MAX_ACCOUNT_MACROS = (Constants.MacroConsts and Constants.MacroConsts.MAX_ACCOUNT_MACROS) or MAX_ACCOUNT_MACROS
+local BOOKTYPE_SPELL = (Enum.SpellBookSpellBank and Enum.SpellBookSpellBank.Player) or BOOKTYPE_SPELL or 'spell'
 
 local bind = CreateFrame('Frame', 'ElvUI_KeyBinder', E.UIParent)
 AB.KeyBinder = bind
@@ -335,18 +334,18 @@ function AB:LoadKeyBinder()
 		end
 	end
 
-	--Special Popup
+	-- Special Popup
 	local Popup = CreateFrame('Frame', 'ElvUIBindPopupWindow', UIParent)
 	Popup:SetFrameStrata('DIALOG')
 	Popup:EnableMouse(true)
 	Popup:SetMovable(true)
 	Popup:SetFrameLevel(99)
 	Popup:SetClampedToScreen(true)
-	Popup:Size(360, 130)
+	Popup:Size(420, 200)
 	Popup:SetTemplate('Transparent')
 	Popup:RegisterForDrag('AnyUp', 'AnyDown')
-	Popup:SetScript('OnMouseDown', Popup.StartMoving)
-	Popup:SetScript('OnMouseUp', Popup.StopMovingOrSizing)
+	Popup:SetScript('OnMouseDown', function() Popup:StartMoving() end)
+	Popup:SetScript('OnMouseUp', function() Popup:StopMovingOrSizing() end)
 	Popup:Hide()
 
 	bind.Popup = Popup
@@ -394,8 +393,8 @@ function AB:LoadKeyBinder()
 		_G.GameTooltip:SetText(CHARACTER_SPECIFIC_KEYBINDING_TOOLTIP, nil, nil, nil, nil, 1)
 	end)
 
-	--position buttons
-	Popup.perCharCheck:Point('BOTTOMLEFT', Popup.discard, 'TOPLEFT', 0, 2)
+	-- Position buttons
+	Popup.perCharCheck:Point('BOTTOMLEFT', Popup.discard, 'TOPLEFT', -4, 2)
 	Popup.save:Point('BOTTOMRIGHT', -14, 10)
 	Popup.discard:Point('BOTTOMLEFT', 14, 10)
 

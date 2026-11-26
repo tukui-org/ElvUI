@@ -13,12 +13,13 @@ S:AddCallbackForAddon('Blizzard_WeeklyRewards', nil, nil, nil, nil, nil, 'weekly
 
 local function SkinRewardIcon(itemFrame)
 	if not itemFrame.IsSkinned then
-		local r, g, b = E:GetItemQualityColor(ITEMQUALITY_EPIC)
-
 		itemFrame:CreateBackdrop('Transparent')
 		itemFrame:DisableDrawLayer('BORDER')
 		itemFrame.Icon:Point('LEFT', 6, 0)
+
 		S:HandleIcon(itemFrame.Icon, true)
+
+		local r, g, b = E:GetItemQualityColor(ITEMQUALITY_EPIC)
 		itemFrame.backdrop:SetBackdropBorderColor(r, g, b)
 		itemFrame.IsSkinned = true
 	end
@@ -101,8 +102,8 @@ local function HandleWarning(frame)
 	frame.ExtraBG:Hide()
 end
 
+-- /run UIParent_OnEvent({}, 'WEEKLY_REWARDS_SHOW')
 function S:Blizzard_WeeklyRewards()
-	-- /run UIParent_OnEvent({}, 'WEEKLY_REWARDS_SHOW')
 	local frame = _G.WeeklyRewardsFrame
 
 	if E.private.skins.parchmentRemoverEnable then

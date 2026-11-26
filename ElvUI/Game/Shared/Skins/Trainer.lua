@@ -56,6 +56,7 @@ local function ClassTrainerScrollUpdateChild(button)
 			button:SetHighlightTexture(E.Media.Textures.Invisible)
 			button.disabledBG:SetTexture()
 			button.selectedTex:SetInside(button.backdrop)
+
 			local r, g, b = unpack(E.media.rgbvaluecolor)
 			button.selectedTex:SetColorTexture(r, g, b, .25)
 		end
@@ -158,7 +159,7 @@ local function SkinClassic()
 		normal:Point('LEFT', 5, 0)
 
 		local highlight = button:GetHighlightTexture()
-		highlight:SetTexture(E.ClearTexture)
+		highlight:SetTexture()
 		highlight.SetTexture = E.noop
 	end
 

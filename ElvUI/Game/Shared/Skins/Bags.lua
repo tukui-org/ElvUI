@@ -65,6 +65,13 @@ local function BackpackToken_Update(container)
 	end
 end
 
+-- Resets on every item and cooldown update
+local function SyncAppearance(button)
+	if not button:HasItem() then
+		button.icon:SetTexture(E.Media.Textures.Invisible)
+	end
+end
+
 local function SkinButton(button)
 	if button.template then return end
 
@@ -76,6 +83,14 @@ local function SkinButton(button)
 
 	button.icon:SetInside()
 	button.icon:SetTexCoords()
+	S:HandleItemButtonCrop(button)
+
+	if E.Forever then
+		button.EmptyBagIcon:SetAlpha(0)
+
+		hooksecurefunc(button, 'SyncAppearanceWithHasItem', SyncAppearance)
+	end
+
 	button.searchOverlay:SetColorTexture(0, 0, 0, 0.8)
 	button.IconQuestTexture:SetTexCoords()
 	button.IconQuestTexture:SetInside(button)
@@ -226,6 +241,7 @@ local function HandleItem(button)
 
 	button.icon:SetInside()
 	button.icon:SetTexCoords()
+	S:HandleItemButtonCrop(button)
 	button.Background:Hide()
 
 	-- CamelotBankPanelItemButtonMixin:Refresh sets the slot frame atlas again on every refresh
@@ -262,6 +278,7 @@ local function HandleBagSlot(button)
 
 	button.icon:SetInside()
 	button.icon:SetTexCoords()
+	S:HandleItemButtonCrop(button)
 
 	S:HandleIconBorder(button.IconBorder)
 end
@@ -341,6 +358,13 @@ local function SetBagIcon(frame, texture)
 	end
 
 	frame.BagIcon:SetTexture(texture)
+end
+
+-- This prevents a taint trying to force a texture lock by setting it to E.noop
+local function QuestIconTexture(icon, texture)
+	if texture ~= E.Media.Textures.BagQuestIcon then
+		icon:SetTexture(E.Media.Textures.BagQuestIcon)
+	end
 end
 
 local function BankFrameItemUpdate(button)
@@ -552,9 +576,10 @@ function S:ContainerFrame()
 
 				local questIcon = _G['ContainerFrame'..i..'Item'..j..'IconQuestTexture']
 				questIcon:SetTexture(E.Media.Textures.BagQuestIcon)
-				questIcon.SetTexture = E.noop
 				questIcon:SetTexCoord(0, 1, 0, 1)
 				questIcon:SetInside()
+
+				hooksecurefunc(questIcon, 'SetTexture', QuestIconTexture)
 
 				E:RegisterCooldown(_G['ContainerFrame'..i..'Item'..j..'Cooldown'], 'bags')
 			end
@@ -599,9 +624,10 @@ function S:ContainerFrame()
 			icon:SetTexCoords()
 
 			button.IconQuestTexture:SetTexture(E.Media.Textures.BagQuestIcon)
-			button.IconQuestTexture.SetTexture = E.noop
 			button.IconQuestTexture:SetTexCoord(0, 1, 0, 1)
 			button.IconQuestTexture:SetInside()
+
+			hooksecurefunc(button.IconQuestTexture, 'SetTexture', QuestIconTexture)
 
 			E:RegisterCooldown(cooldown, 'bags')
 		end

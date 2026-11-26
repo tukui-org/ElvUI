@@ -8,7 +8,7 @@ local tinsert, strfind, strmatch = tinsert, strfind, strmatch
 local next, max, wipe, gsub = next, max, wipe, gsub
 
 local GetAverageItemLevel = GetAverageItemLevel
-local GetInspectSpecialization = GetInspectSpecialization
+local GetInspectSpecialization = C_SpecializationInfo.GetInspectSpecialization or GetInspectSpecialization
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetInventoryItemLink = GetInventoryItemLink
 local WorldFrame = WorldFrame

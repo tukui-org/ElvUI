@@ -13,6 +13,9 @@ local function HandleSwingTimer(frame)
 	local bar = frame.StatusBar
 	S:HandleStatusBar(bar)
 
+	local classColor = E.myClassColor
+	bar:SetStatusBarColor(classColor.r, classColor.g, classColor.b)
+
 	bar.TypeLabel:FontTemplate()
 	bar.TimeLabel:FontTemplate()
 end

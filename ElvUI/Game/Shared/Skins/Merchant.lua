@@ -2,6 +2,7 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
+local max = max
 local unpack = unpack
 local hooksecurefunc = hooksecurefunc
 
@@ -66,11 +67,80 @@ local function UpdateBuybackInfo()
 	end
 end
 
+local function HandleMerchantItem(index)
+	local item = _G['MerchantItem'..index]
+	if item.IsSkinned then return end
+
+	item:Size(155, 45)
+	item:StripTextures(true)
+	item:CreateBackdrop('Transparent')
+	item.backdrop:Point('TOPLEFT', -3, 2)
+	item.backdrop:Point('BOTTOMRIGHT', 2, -3)
+
+	local slot = _G['MerchantItem'..index..'SlotTexture']
+	item.Name:Point('LEFT', slot, 'RIGHT', -5, 5)
+	item.Name:Size(110, 30)
+
+	local button = _G['MerchantItem'..index..'ItemButton']
+	button:StripTextures()
+	button:StyleButton()
+	button:SetTemplate(nil, true)
+	button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
+
+	local icon = button.icon
+	icon:SetTexCoords()
+	icon:ClearAllPoints()
+	icon:Point('TOPLEFT', 1, -1)
+	icon:Point('BOTTOMRIGHT', -1, 1)
+
+	S:HandleItemButtonCrop(button)
+
+	if E.Modern then
+		local questIcon = button.IconQuestTexture
+		questIcon:SetTexCoord(0, 1, 0, 1)
+		questIcon:SetInside()
+
+		hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
+	end
+
+	button.IconOverlay:SetInside(button, 1, 1) -- Decor items
+
+	S:HandleIconBorder(button.IconBorder)
+
+	for j = 1, _G.MAX_ITEM_COST do
+		local currencyIcon = _G['MerchantItem'..index..'AltCurrencyFrameItem'..j..'Texture']
+		currencyIcon:SetTexCoords()
+	end
+
+	item.IsSkinned = true
+end
+
 local function UpdateMerchantInfo()
 	if not _G.MerchantFrame:IsShown() then return end
 
-	for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
+	local numMerchantItems, pageIndex
+	if not E.Modern then -- classic merchant has no quality borders
+		pageIndex = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
+		numMerchantItems = GetMerchantNumItems()
+
+		local numBuybackItems = GetNumBuybackItems()
+		local link = GetBuybackItemInfo(numBuybackItems)
+		SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
+	end
+
+	local numItems = max(_G.MERCHANT_ITEMS_PER_PAGE, _G.BUYBACK_ITEMS_PER_PAGE)
+	for i = 1, numItems do -- In case plugins/addons increase MERCHANT_ITEMS_PER_PAGE
+		HandleMerchantItem(i)
+
 		local button = _G['MerchantItem'..i..'ItemButton']
+		if pageIndex then -- not E.Modern
+			pageIndex = pageIndex + 1
+
+			if pageIndex <= numMerchantItems then
+				local name = _G['MerchantItem'..i..'Name']
+				SetQualityColor(button, name, button.link)
+			end
+		end
 
 		local money = _G['MerchantItem'..i..'MoneyFrame']
 		money:ClearAllPoints()
@@ -84,25 +154,6 @@ local function UpdateMerchantInfo()
 		else
 			currency:Point('BOTTOMLEFT', button, 'BOTTOMRIGHT', 5, -3)
 		end
-	end
-
-	-- classic merchant has no quality borders
-	if not E.Modern then
-		local numBuybackItems = GetNumBuybackItems()
-		local numMerchantItems = GetMerchantNumItems()
-		local index = (_G.MerchantFrame.page - 1) * _G.MERCHANT_ITEMS_PER_PAGE
-
-		for i = 1, _G.MERCHANT_ITEMS_PER_PAGE do
-			index = index + 1
-
-			if index <= numMerchantItems then
-				local button = _G['MerchantItem'..i..'ItemButton']
-				SetQualityColor(button, _G['MerchantItem'..i..'Name'], button.link)
-			end
-		end
-
-		local link = GetBuybackItemInfo(numBuybackItems)
-		SetQualityColor(_G.MerchantBuyBackItemItemButton, _G.MerchantBuyBackItemName, link)
 	end
 end
 
@@ -147,49 +198,6 @@ function S:MerchantFrame()
 	_G.MerchantFrameTab1:Point('TOPLEFT', _G.MerchantFrame, 'BOTTOMLEFT', E.Modern and -3 or -10, 0)
 	_G.MerchantFrameTab2:Point('TOPLEFT', _G.MerchantFrameTab1, 'TOPRIGHT', E.Modern and -5 or -19, 0)
 
-	-- Skin icons / merchant slots
-	for i = 1, _G.BUYBACK_ITEMS_PER_PAGE do
-		local item = _G['MerchantItem'..i]
-		item:Size(155, 45)
-		item:StripTextures(true)
-		item:CreateBackdrop('Transparent')
-		item.backdrop:Point('TOPLEFT', -3, 2)
-		item.backdrop:Point('BOTTOMRIGHT', 2, -3)
-
-		local slot = _G['MerchantItem'..i..'SlotTexture']
-		item.Name:Point('LEFT', slot, 'RIGHT', -5, 5)
-		item.Name:Size(110, 30)
-
-		local button = _G['MerchantItem'..i..'ItemButton']
-		button:StripTextures()
-		button:StyleButton()
-		button:SetTemplate(nil, true)
-		button:Point('TOPLEFT', item, 'TOPLEFT', 4, -4)
-
-		local icon = button.icon
-		icon:SetTexCoords()
-		icon:ClearAllPoints()
-		icon:Point('TOPLEFT', 1, -1)
-		icon:Point('BOTTOMRIGHT', -1, 1)
-
-		if E.Modern then
-			local questIcon = button.IconQuestTexture
-			questIcon:SetTexCoord(0, 1, 0, 1)
-			questIcon:SetInside()
-
-			hooksecurefunc(questIcon, 'SetTexture', QuestIcon_SetTexture)
-		end
-
-		button.IconOverlay:SetInside(button, 1, 1) -- Decor items
-
-		S:HandleIconBorder(button.IconBorder)
-
-		for j = 1, _G.MAX_ITEM_COST do
-			local currencyIcon = _G['MerchantItem'..i..'AltCurrencyFrameItem'..j..'Texture']
-			currencyIcon:SetTexCoords()
-		end
-	end
-
 	-- Skin buyback item frame + icon
 	_G.MerchantBuyBackItem:Point('TOPLEFT', _G.MerchantItem10, 'BOTTOMLEFT', 0, -50)
 	_G.MerchantBuyBackItem:StripTextures(true)
@@ -206,6 +214,7 @@ function S:MerchantFrame()
 	_G.MerchantBuyBackItemItemButtonIconTexture:ClearAllPoints()
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('TOPLEFT', 1, -1)
 	_G.MerchantBuyBackItemItemButtonIconTexture:Point('BOTTOMRIGHT', -1, 1)
+	S:HandleItemButtonCrop(_G.MerchantBuyBackItemItemButton)
 
 	HandleIconButton(_G.MerchantRepairItemButton, 0.04, 0.24, 0.06, 0.5)
 	HandleIconButton(_G.MerchantGuildBankRepairButton, 0.61, 0.82, 0.1, 0.52)
@@ -224,11 +233,9 @@ function S:MerchantFrame()
 	_G.MerchantNextPageButton:ClearAllPoints() -- Monitor this
 	_G.MerchantNextPageButton:Point('LEFT', _G.MerchantPageText, 'RIGHT', 100, 4)
 
-	-- setup some hooks to fix placement
-	if E.Modern then
+	if E.Modern then -- setup some hooks to fix placement
 		hooksecurefunc('MerchantFrame_UpdateRepairButtons', UpdateRepairButtons)
-	else
-		-- classic merchant has no quality borders
+	else -- classic merchant has no quality borders
 		hooksecurefunc('MerchantFrame_UpdateBuybackInfo', UpdateBuybackInfo)
 	end
 

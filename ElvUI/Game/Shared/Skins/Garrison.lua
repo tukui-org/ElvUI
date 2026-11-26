@@ -2,15 +2,176 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule('Skins')
 
 local _G = _G
-local unpack, pairs, ipairs, select = unpack, pairs, ipairs, select
+local unpack, select, ipairs, next = unpack, select, ipairs, next
 
 local CreateFrame = CreateFrame
 local hooksecurefunc = hooksecurefunc
+local C_Garrison_GetFollowerInfo = C_Garrison.GetFollowerInfo
 
 S:AddCallbackForAddon('Blizzard_GarrisonUI', nil, nil, nil, nil, nil, 'garrison')
 
-local function ShowFollower(frame)
-	S:HandleFollowerAbilities(frame)
+S:AddCallbackForAddon('Blizzard_GarrisonTemplates', nil, nil, nil, nil, nil, function()
+	return E.private.skins.blizzard.enable and E.private.skins.blizzard.orderhall and E.private.skins.blizzard.garrison
+end)
+
+-- Shared Template on LandingPage/Orderhall-/Garrison-FollowerList
+local ReplacedRoleTexture = {
+	['Adventures-Tank'] = 'Soulbinds_Tree_Conduit_Icon_Protect',
+	['Adventures-Healer'] = 'ui_adv_health',
+	['Adventures-DPS'] = 'ui_adv_atk',
+	['Adventures-DPS-Ranged'] = 'Soulbinds_Tree_Conduit_Icon_Utility',
+}
+
+local function HandleFollowerRole(roleIcon, atlas)
+	local newAtlas = ReplacedRoleTexture[atlas]
+	if newAtlas then
+		roleIcon:SetAtlas(newAtlas)
+	end
+end
+
+local function HandleGarrisonPortrait(portrait, updateAtlas)
+	local main = portrait.Portrait
+	if not main then return end
+
+	if not main.backdrop then
+		main:CreateBackdrop('Transparent')
+	end
+
+	local level = portrait.Level or portrait.LevelText
+	if level then
+		level:ClearAllPoints()
+		level:Point('BOTTOM', portrait, 0, 15)
+		level:FontTemplate(nil, 14, 'OUTLINE')
+
+		if portrait.LevelCircle then portrait.LevelCircle:Hide() end
+		if portrait.LevelBorder then portrait.LevelBorder:SetScale(0.0001) end
+	end
+
+	if portrait.PortraitRing then
+		portrait.PortraitRing:Hide()
+		portrait.PortraitRingQuality:SetTexture()
+		portrait.PortraitRingCover:SetColorTexture(0, 0, 0)
+		portrait.PortraitRingCover:SetAllPoints(main.backdrop)
+	end
+
+	if portrait.Empty then
+		portrait.Empty:SetColorTexture(0, 0, 0)
+		portrait.Empty:SetAllPoints(main)
+	end
+
+	if portrait.Highlight then portrait.Highlight:Hide() end
+	if portrait.PuckBorder then portrait.PuckBorder:SetAlpha(0) end
+	if portrait.TroopStackBorder1 then portrait.TroopStackBorder1:SetAlpha(0) end
+	if portrait.TroopStackBorder2 then portrait.TroopStackBorder2:SetAlpha(0) end
+
+	if portrait.HealthBar then
+		portrait.HealthBar.Border:Hide()
+
+		local roleIcon = portrait.HealthBar.RoleIcon
+		roleIcon:ClearAllPoints()
+		roleIcon:Point('CENTER', main.backdrop, 'TOPRIGHT')
+
+		if updateAtlas then
+			HandleFollowerRole(roleIcon, roleIcon:GetAtlas())
+		else
+			hooksecurefunc(roleIcon, 'SetAtlas', HandleFollowerRole)
+		end
+
+		local background = portrait.HealthBar.Background
+		background:SetAlpha(0)
+		background:SetInside(main.backdrop, 2, 1) -- unsnap it
+		background:Point('TOPLEFT', main.backdrop, 'BOTTOMLEFT', 2, 7)
+		portrait.HealthBar.Health:SetTexture(E.media.normTex)
+	end
+end
+
+local function HandleCounter(counter)
+	if not counter.template then
+		counter:SetTemplate()
+	end
+
+	if counter.Border then
+		counter.Border:SetTexture()
+	end
+
+	if counter.Icon then
+		counter.Icon:SetTexCoords()
+		counter.Icon:SetInside()
+	end
+end
+
+local function HandleFollowerAbilities(followerList)
+	local followerTab = followerList.followerTab
+
+	local xpbar = followerTab.XPBar
+	if xpbar and not xpbar.backdrop then
+		xpbar:StripTextures()
+		xpbar:SetStatusBarTexture(E.media.normTex)
+		xpbar:CreateBackdrop('Transparent')
+	end
+
+	local traits = followerTab.Traits
+	if traits then
+		for _, trait in next, traits do
+			trait.Border:SetAlpha(0)
+			trait.Border:CreateBackdrop()
+			trait.Border.backdrop:SetOutside(trait.Portrait)
+			trait.Border.backdrop:OffsetFrameLevel(1)
+
+			HandleCounter(trait.Counter)
+
+			trait.Portrait:SetTexCoords()
+		end
+	end
+
+	local equipFrame = followerTab.EquipmentFrame
+	local equipment = equipFrame and equipFrame.Equipment
+	if equipment then
+		for _, equip in next, equipment do
+			equip.Border:SetAlpha(0)
+
+			HandleCounter(equip.Counter)
+
+			S:HandleIcon(equip.Icon, true)
+		end
+	end
+
+	local abilityFrame = followerTab.AbilitiesFrame
+	if abilityFrame then
+		local abilities = abilityFrame.Abilities
+		if abilities then
+			for _, ability in next, abilities do
+				local iconButton = ability.IconButton
+				local icon = iconButton and iconButton.Icon
+				if icon then
+					iconButton.Border:SetAlpha(0)
+
+					S:HandleIcon(icon, true)
+				end
+			end
+		end
+
+		local abilityEquip = abilityFrame.Equipment
+		if abilityEquip then
+			for _, equip in next, abilityEquip do
+				equip.Border:SetAlpha(0)
+				equip.BG:SetAlpha(0)
+
+				S:HandleIcon(equip.Icon, true)
+				equip.Icon.backdrop:SetBackdropColor(1, 1, 1, .15)
+			end
+		end
+
+		local combatAllySpell = abilityFrame.CombatAllySpell
+		if combatAllySpell then
+			for i = 1, #combatAllySpell do
+				local icon = combatAllySpell[i].iconTexture
+				if icon then
+					S:HandleIcon(icon, true)
+				end
+			end
+		end
+	end
 end
 
 local function UpdateFollowerColorOnBoard(self, _, info)
@@ -29,13 +190,14 @@ local function SkinFollowerBoard(self, group)
 
 	for frame in self[group..'FramePool']:EnumerateActive() do
 		if not frame.IsSkinned then
-			S:HandleGarrisonPortrait(frame)
+			HandleGarrisonPortrait(frame)
+
 			frame.PuckShadow:SetAlpha(0)
 
-			-- enemy pucks have neither, mission page follower pucks have both
 			if frame.SetFollowerGUID then
 				hooksecurefunc(frame, 'SetFollowerGUID', UpdateFollowerColorOnBoard)
 			end
+
 			if frame.SetEmpty then
 				hooksecurefunc(frame, 'SetEmpty', ResetFollowerColorOnBoard)
 			end
@@ -68,25 +230,31 @@ local function ReskinMissionButton(button)
 		local rareText = button.RareText
 
 		button.LocBG:SetDrawLayer('BACKGROUND')
-		if button.ButtonBG then button.ButtonBG:Hide() end
 		button:StripTextures()
 		button:CreateBackdrop('Transparent')
 		button.Highlight:SetColorTexture(.6, .8, 1, .15)
 		button.Highlight:SetAllPoints()
 
+		if button.ButtonBG then
+			button.ButtonBG:Hide()
+		end
+
 		if button.CompleteCheck then
 			button.CompleteCheck:SetAtlas('Adventures-Checkmark')
 		end
+
 		if rareText then
 			rareText:ClearAllPoints()
 			rareText:SetPoint('BOTTOMLEFT', button, 20, 10)
 		end
+
 		if rareOverlay then
 			rareOverlay:SetDrawLayer('BACKGROUND')
 			rareOverlay:SetTexture([[Interface\ChatFrame\ChatFrameBackground]])
 			rareOverlay:SetAllPoints()
 			rareOverlay:SetVertexColor(.098, .537, .969, .2)
 		end
+
 		button.Overlay.Overlay:SetAllPoints()
 
 		button.IsSkinned = true
@@ -102,53 +270,70 @@ local function ReskinMissionComplete(frame)
 	local bonusRewards = missionComplete.BonusRewards
 
 	if bonusRewards then
-		select(11, bonusRewards:GetRegions()):SetTextColor(1, .8, 0)
-		bonusRewards.Saturated:StripTextures()
-		for i = 1, 9 do
-			select(i, bonusRewards:GetRegions()):SetAlpha(0)
+		for index, region in ipairs({ bonusRewards:GetRegions() }) do
+			if index < 10 then -- skip 10
+				region:SetAlpha(0)
+			elseif index == 11 then -- handle 11 then stop
+				region:SetTextColor(1, .8, 0)
+
+				break
+			end
 		end
+
 		bonusRewards:SetTemplate()
+		bonusRewards.Saturated:StripTextures()
 	end
 
-	if missionComplete.NextMissionButton then
-		S:HandleButton(missionComplete.NextMissionButton)
+	local nextMission = missionComplete.NextMissionButton
+	if nextMission then
+		S:HandleButton(nextMission)
 	end
 
-	if missionComplete.CompleteFrame then
+	local rewardsScreen = missionComplete.RewardsScreen
+	if rewardsScreen then
+		S:HandleButton(rewardsScreen.FinalRewardsPanel.ContinueButton)
+	end
+
+	if E.private.skins.parchmentRemoverEnable then
+		missionComplete:StripTextures()
+	end
+
+	missionComplete:CreateBackdrop('Transparent')
+	missionComplete.backdrop:Point('TOPLEFT', 3, 2)
+	missionComplete.backdrop:Point('BOTTOMRIGHT', -3, -10)
+
+	local completeFrame = missionComplete.CompleteFrame
+	if completeFrame then
 		if E.private.skins.parchmentRemoverEnable then
-			missionComplete:StripTextures()
+			completeFrame:StripTextures()
 		end
 
-		missionComplete:CreateBackdrop('Transparent')
-		missionComplete.backdrop:Point('TOPLEFT', 3, 2)
-		missionComplete.backdrop:Point('BOTTOMRIGHT', -3, -10)
-
-		if E.private.skins.parchmentRemoverEnable then
-			missionComplete.CompleteFrame:StripTextures()
-		end
-		S:HandleButton(missionComplete.CompleteFrame.ContinueButton)
-		S:HandleButton(missionComplete.CompleteFrame.SpeedButton)
-		S:HandleButton(missionComplete.RewardsScreen.FinalRewardsPanel.ContinueButton)
+		S:HandleButton(completeFrame.ContinueButton)
+		S:HandleButton(completeFrame.SpeedButton)
 	end
 
 	if missionComplete.MissionInfo then
 		missionComplete.MissionInfo:StripTextures()
 	end
-	if missionComplete.EnemyBackground then missionComplete.EnemyBackground:Hide() end
-	if missionComplete.FollowerBackground then missionComplete.FollowerBackground:Hide() end
-end
 
-local function SkinMissionItems(followerTab)
-	for _, item in pairs({followerTab.ItemWeapon, followerTab.ItemArmor}) do
-		if item then
-			local icon = item.Icon
-			item.Border:Hide()
-			S:HandleIcon(icon)
-		end
+	if missionComplete.EnemyBackground then
+		missionComplete.EnemyBackground:Hide()
+	end
+
+	if missionComplete.FollowerBackground then
+		missionComplete.FollowerBackground:Hide()
 	end
 end
 
--- TO DO: Extend this function
+local function SkinMissionItems(followerTab)
+	for _, item in next, { followerTab.ItemWeapon, followerTab.ItemArmor } do
+		local icon = item.Icon
+		item.Border:Hide()
+
+		S:HandleIcon(icon)
+	end
+end
+
 local function SkinMissionFrame(frame, strip)
 	if strip then
 		frame:StripTextures()
@@ -196,7 +381,7 @@ local function ReportListScrollUpdateChild(button)
 		button.backdrop:Point('TOPLEFT')
 		button.backdrop:Point('BOTTOMRIGHT', 0, 1)
 
-		for _, reward in pairs(button.Rewards) do
+		for _, reward in next, button.Rewards do
 			reward:GetRegions():Hide()
 			S:HandleIcon(reward.Icon, true)
 			S:HandleIconBorder(reward.IconBorder, reward.Icon.backdrop)
@@ -216,7 +401,7 @@ end
 
 local function GarrisonSetRewards(frame)
 	local index, r, g, b = 0 -- Set border color according to rarity of item
-	for _, reward in pairs(frame.Rewards) do
+	for _, reward in next, frame.Rewards do
 		reward:GetRegions():Hide()
 
 		reward.IconBorder:SetTexture()
@@ -251,7 +436,8 @@ end
 
 local function SetFollowerPortrait(portraitFrame, followerInfo)
 	if not portraitFrame.IsSkinned then
-		S:HandleGarrisonPortrait(portraitFrame)
+		HandleGarrisonPortrait(portraitFrame)
+
 		portraitFrame.IsSkinned = true
 	end
 
@@ -310,11 +496,96 @@ local function GarrisonAddAbility(frame, index)
 	end
 end
 
+local function UpdatePortraitQuality(frame, followerInfo)
+	local r, g, b = E:GetItemQualityColor(followerInfo.quality)
+	frame.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
+end
+
+local function UpdateFollowerButtons(button)
+	if not E.Modern then
+		button:SetTemplate(button.mode == 'CATEGORY' and 'NoBackdrop' or 'Transparent')
+	end
+
+	local category = button.Category
+	if category then
+		category:ClearAllPoints()
+		category:Point('TOP', button, 'TOP', 0, -4)
+	end
+
+	local follower = button.Follower
+	if follower then
+		if not follower.template then
+			follower:SetTemplate('Transparent')
+			follower.Name:SetWordWrap(false)
+			follower.Selection:SetTexture()
+			follower.AbilitiesBG:SetTexture()
+			follower.BusyFrame:SetAllPoints()
+			follower.BG:Hide()
+
+			local hl = follower:GetHighlightTexture()
+			hl:SetColorTexture(0.9, 0.9, 0.9, 0.25)
+			hl:SetInside()
+		end
+
+		local counters = follower.Counters
+		if counters then
+			for _, counter in next, counters do
+				HandleCounter(counter)
+			end
+		end
+
+		local portrait = follower.PortraitFrame
+		if portrait then
+			HandleGarrisonPortrait(portrait, true)
+
+			portrait:ClearAllPoints()
+			portrait:Point('TOPLEFT', 3, -3)
+
+			if not follower.PortraitFrameStyled then
+				hooksecurefunc(portrait, 'SetupPortrait', UpdatePortraitQuality)
+				follower.PortraitFrameStyled = true
+			end
+
+			if portrait.backdrop then
+				local r, g, b = E:GetItemQualityColor(portrait.quality or (follower.info and follower.info.quality))
+				portrait.backdrop:SetBackdropBorderColor(r, g, b)
+			end
+		end
+
+		if follower.Selection then
+			if follower.Selection:IsShown() then
+				follower:SetBackdropColor(0.9, 0.8, 0.1, 0.25)
+			else
+				follower:SetBackdropColor(0, 0, 0, 0.5)
+			end
+		end
+	end
+end
+
+local function UpdateShipyardButtons(button)
+	button:SetTemplate('Transparent')
+
+	button.BG:SetTexture()
+	button.AbilitiesBG:SetTexture()
+	button.Selection:SetTexture()
+
+	button.Quality:ClearAllPoints()
+	button.Quality:Point('BOTTOMLEFT', 1, 1)
+
+	button:SetHighlightTexture(E.media.blankTex)
+	local highlight = button:GetHighlightTexture()
+	highlight:SetColorTexture(1, 1, 1, .3)
+
+	button:SetBackdropBorderColor(unpack(button.Selection:IsShown() and E.media.rgbvaluecolor or E.media.bordercolor))
+end
+
 function S:Blizzard_GarrisonUI()
 	-- These hooks affect both Garrison and OrderHall
 	hooksecurefunc('GarrisonMissionButton_SetRewards', GarrisonSetRewards)
 	hooksecurefunc('GarrisonMissionPage_SetReward', GarrisonSetReward)
 	hooksecurefunc('GarrisonMissionPortrait_SetFollowerPortrait', SetFollowerPortrait)
+	hooksecurefunc('GarrisonShipyardFollowerList_InitButton', UpdateShipyardButtons)
+	hooksecurefunc('GarrisonFollowerList_InitButton', UpdateFollowerButtons)
 
 	-- Building frame
 	local GarrisonBuildingFrame = _G.GarrisonBuildingFrame
@@ -380,7 +651,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleTrimScrollBar(_G.GarrisonMissionFrameFollowers.ScrollBar)
-	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', HandleFollowerAbilities)
 
 	local FollowerTab = GarrisonMissionFrame.FollowerTab
 	FollowerTab:StripTextures()
@@ -411,7 +682,7 @@ function S:Blizzard_GarrisonUI()
 		_G.GarrisonLandingPageTab2,
 		_G.GarrisonLandingPageTab3,
 	}
-	for _, tab in pairs(pageTabs) do
+	for _, tab in next, pageTabs do
 		S:HandleTab(tab)
 		tab:SetHeight(tab:GetHeight() * .75)
 	end
@@ -422,7 +693,7 @@ function S:Blizzard_GarrisonUI()
 	if E.private.skins.parchmentRemoverEnable then
 		GarrisonLandingPage:StripTextures()
 
-		for _, tab in pairs({Report.InProgress, Report.Available}) do
+		for _, tab in next, { Report.InProgress, Report.Available } do
 			tab:SetHighlightTexture(E.ClearTexture)
 			tab.Text:ClearAllPoints()
 			tab.Text:Point('CENTER')
@@ -470,12 +741,10 @@ function S:Blizzard_GarrisonUI()
 	S:HandleEditBox(FollowerList.SearchBox)
 	S:HandleTrimScrollBar(_G.GarrisonLandingPageFollowerList.ScrollBar)
 
-	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', HandleFollowerAbilities)
 	hooksecurefunc('GarrisonFollowerButton_AddAbility', GarrisonAddAbility)
 
 	-- Garrison Portraits
-	S:HandleFollowerListOnUpdateData('GarrisonMissionFrameFollowers')
-	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to orderhall landing page
 	hooksecurefunc(GarrisonLandingPage.FollowerTab, 'UpdateAutoSpellAbilities', UpdateSpellAbilities)
 
 	-- Landing page: Fleet
@@ -516,8 +785,10 @@ function S:Blizzard_GarrisonUI()
 	FollowerList:StripTextures()
 	FollowerList:CreateBackdrop('Transparent')
 	FollowerList.MaterialFrame.BG:StripTextures()
-	S:HandleTrimScrollBar(_G.GarrisonShipyardFrameFollowers.ScrollBar)
 	S:HandleEditBox(FollowerList.SearchBox)
+
+	S:HandleTrimScrollBar(_G.GarrisonShipyardFrameFollowers.ScrollBar)
+	hooksecurefunc(_G.GarrisonShipyardFrameFollowers, 'ShowFollower', HandleFollowerAbilities)
 
 	-- MissionFrame
 	local OrderHallMissionFrame = _G.OrderHallMissionFrame
@@ -546,7 +817,7 @@ function S:Blizzard_GarrisonUI()
 	FollowerList.MaterialFrame.BG:StripTextures()
 
 	S:HandleEditBox(FollowerList.SearchBox)
-	hooksecurefunc(FollowerList, 'ShowFollower', ShowFollower)
+	hooksecurefunc(FollowerList, 'ShowFollower', HandleFollowerAbilities)
 
 	FollowerTab.Class:Size(50, 43)
 	FollowerTab.XPBar:StripTextures()
@@ -555,10 +826,6 @@ function S:Blizzard_GarrisonUI()
 	FollowerTab:StripTextures()
 	FollowerTab:SetTemplate('Transparent')
 	SkinMissionItems(FollowerTab)
-
-	-- Orderhall Portraits
-	S:HandleFollowerListOnUpdateData('OrderHallMissionFrameFollowers')
-	S:HandleFollowerListOnUpdateData('GarrisonLandingPageFollowerList') -- this also applies to garrison landing page
 
 	-- Missions
 	MissionTab = OrderHallMissionFrame.MissionTab -- swap
@@ -623,8 +890,7 @@ function S:Blizzard_GarrisonUI()
 	Follower:StripTextures()
 	Follower.MaterialFrame.BG:StripTextures()
 	S:HandleEditBox(Follower.SearchBox)
-	hooksecurefunc(Follower, 'ShowFollower', ShowFollower)
-	S:HandleFollowerListOnUpdateData('BFAMissionFrameFollowers') -- The function needs to be updated for BFA
+	hooksecurefunc(Follower, 'ShowFollower', HandleFollowerAbilities)
 
 	local XPBar = FollowerTab.XPBar
 	XPBar:StripTextures()
@@ -650,18 +916,17 @@ function S:Blizzard_GarrisonUI()
 	Follower = _G.CovenantMissionFrameFollowers -- swap
 	FollowerTab = CovenantMissionFrame.FollowerTab
 
-	hooksecurefunc(Follower, 'ShowFollower', ShowFollower)
+	hooksecurefunc(Follower, 'ShowFollower', HandleFollowerAbilities)
 	Follower:StripTextures()
+	S:HandleButton(Follower.HealAllButton)
 
 	FollowerTab:StripTextures()
 	FollowerTab:SetTemplate('Transparent')
 	FollowerTab.RaisedFrameEdges:SetAlpha(0)
+
 	local HealFollowerFrame = FollowerTab.HealFollowerFrame
 	S:HandleIcon(HealFollowerFrame.CostFrame.CostIcon)
 	S:HandleButton(HealFollowerFrame.HealFollowerButton)
-
-	S:HandleFollowerListOnUpdateData('CovenantMissionFrameFollowers')
-	S:HandleButton(Follower.HealAllButton)
 
 	-- Mission Tab
 	S:HandleCloseButton(CovenantMissionFrame.MissionTab.MissionPage.CloseButton)
@@ -671,4 +936,27 @@ function S:Blizzard_GarrisonUI()
 
 	CovenantMissionFrame.MissionTab.MissionPage.Board:HookScript('OnShow', SkinMissionBoards)
 	CovenantMissionFrame.MissionComplete.Board:HookScript('OnShow', SkinMissionBoards)
+end
+
+local function ShowGarrisonFollower(frame, followerID)
+	local followerInfo = followerID and C_Garrison_GetFollowerInfo(followerID)
+	if not followerInfo then return end
+
+	if not frame.PortraitFrameStyled then
+		HandleGarrisonPortrait(frame.PortraitFrame)
+
+		frame.PortraitFrameStyled = true
+	end
+
+	local r, g, b = E:GetItemQualityColor(followerInfo.quality or 1)
+
+	frame.Name:SetVertexColor(r, g, b)
+	frame.PortraitFrame.Portrait.backdrop:SetBackdropBorderColor(r, g, b)
+
+	frame.XPBar:ClearAllPoints()
+	frame.XPBar:Point('BOTTOMLEFT', frame.PortraitFrame, 'BOTTOMRIGHT', 7, -15)
+end
+
+function S:Blizzard_GarrisonTemplates()
+	hooksecurefunc(_G.GarrisonFollowerTabMixin, 'ShowFollower', ShowGarrisonFollower)
 end

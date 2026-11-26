@@ -25,7 +25,9 @@ local CHARACTERFRAME_SUBFRAMES = CHARACTERFRAME_SUBFRAMES
 local NUM_FACTIONS_DISPLAYED = NUM_FACTIONS_DISPLAYED
 local MAX_ARENA_TEAMS = MAX_ARENA_TEAMS
 
-local spellSchoolIcon = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
+local SPELL_SCHOOL_ICON = [[Interface\PaperDollInfoFrame\SpellSchoolIcon]]
+local GRADIENT_FROM = CreateColor(0.8, 0.8, 0.8, 0.25)
+local GRADIENT_TO = CreateColor(0.8, 0.8, 0.8, 0)
 
 local FLYOUT_LOCATIONS = {
 	[0xFFFFFFFF] = 'PLACEINBAGS',
@@ -38,18 +40,13 @@ local OLD_ATLAS = {
 	Options_ListExpand_Right_Expanded = 1
 }
 
-local FILL_COLORS = {
-	['common-stat-bar-blue'] = { r = 0.03, g = 0.43, b = 0.92 },
-	['common-stat-bar-green'] = { r = 0.23, g = 1, b = 0 },
-}
-
 local RESISTANCE_ICONS = { -- atlas suffix to the plain SpellSchoolIcon index
-	['UI-Character-Info-Resistance-Holy'] = spellSchoolIcon..2,
-	['UI-Character-Info-Resistance-Fire'] = spellSchoolIcon..3,
-	['UI-Character-Info-Resistance-Nature'] = spellSchoolIcon..4,
-	['UI-Character-Info-Resistance-Frost'] = spellSchoolIcon..5,
-	['UI-Character-Info-Resistance-Shadow'] = spellSchoolIcon..6,
-	['UI-Character-Info-Resistance-Arcane'] = spellSchoolIcon..7,
+	['UI-Character-Info-Resistance-Holy'] = SPELL_SCHOOL_ICON..2,
+	['UI-Character-Info-Resistance-Fire'] = SPELL_SCHOOL_ICON..3,
+	['UI-Character-Info-Resistance-Nature'] = SPELL_SCHOOL_ICON..4,
+	['UI-Character-Info-Resistance-Frost'] = SPELL_SCHOOL_ICON..5,
+	['UI-Character-Info-Resistance-Shadow'] = SPELL_SCHOOL_ICON..6,
+	['UI-Character-Info-Resistance-Arcane'] = SPELL_SCHOOL_ICON..7,
 }
 
 local RESISTANCE_COORDS = {
@@ -136,7 +133,7 @@ local function EquipmentManagerPane_UpdateChild(child)
 			for _, region in next, { child:GetRegions() } do -- the card background and the icon frame are unnamed
 				local atlas = region:IsObjectType('Texture') and region:GetAtlas()
 				if atlas == 'UI-Character-Info-OutfitCard' or atlas == 'UI-Character-Info-OutfitIcon-Frame' then
-					region:SetTexture(E.ClearTexture)
+					region:SetTexture()
 				end
 			end
 
@@ -152,9 +149,9 @@ local function EquipmentManagerPane_UpdateChild(child)
 				bar:Point('BOTTOMRIGHT', child.backdrop, 'BOTTOMRIGHT', -E.Border, E.Border)
 			end
 		else
-			child.BgTop:SetTexture(E.ClearTexture)
-			child.BgMiddle:SetTexture(E.ClearTexture)
-			child.BgBottom:SetTexture(E.ClearTexture)
+			child.BgTop:SetTexture()
+			child.BgMiddle:SetTexture()
+			child.BgBottom:SetTexture()
 			S:HandleIcon(child.icon)
 		end
 
@@ -209,29 +206,29 @@ end
 local function ColorizeStatPane(frame)
 	frame.Background:SetAlpha(0)
 
-	local r, g, b = 0.8, 0.8, 0.8
-	local gradientFrom, gradientTo = CreateColor(r, g, b, 0.25), CreateColor(r, g, b, 0)
+	local height = frame:GetHeight()
+	local leftGradient = frame:CreateTexture(nil, 'BORDER')
+	leftGradient:Size(80, height)
+	leftGradient:Point('LEFT', frame, 'CENTER')
+	leftGradient:SetTexture(E.Media.Textures.White8x8)
+	leftGradient:SetGradient('Horizontal', GRADIENT_FROM, GRADIENT_TO)
+	frame.leftGradient = leftGradient
 
-	frame.leftGrad = frame:CreateTexture(nil, 'BORDER')
-	frame.leftGrad:Size(80, frame:GetHeight())
-	frame.leftGrad:Point('LEFT', frame, 'CENTER')
-	frame.leftGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.leftGrad:SetGradient('Horizontal', gradientFrom, gradientTo)
-
-	frame.rightGrad = frame:CreateTexture(nil, 'BORDER')
-	frame.rightGrad:Size(80, frame:GetHeight())
-	frame.rightGrad:Point('RIGHT', frame, 'CENTER')
-	frame.rightGrad:SetTexture(E.Media.Textures.White8x8)
-	frame.rightGrad:SetGradient('Horizontal', gradientTo, gradientFrom)
+	local rightGradient = frame:CreateTexture(nil, 'BORDER')
+	rightGradient:Size(80, height)
+	rightGradient:Point('RIGHT', frame, 'CENTER')
+	rightGradient:SetTexture(E.Media.Textures.White8x8)
+	rightGradient:SetGradient('Horizontal', GRADIENT_TO, GRADIENT_FROM)
+	frame.rightGradient = rightGradient
 end
 
 local function StatsPane(which)
-	local CharacterStatsPane = _G.CharacterStatsPane
-	CharacterStatsPane[which]:StripTextures()
-	CharacterStatsPane[which]:CreateBackdrop('Transparent')
-	CharacterStatsPane[which].backdrop:ClearAllPoints()
-	CharacterStatsPane[which].backdrop:Point('CENTER')
-	CharacterStatsPane[which].backdrop:Size(150, 18)
+	local pane = _G.CharacterStatsPane[which]
+	pane:StripTextures()
+	pane:CreateBackdrop('Transparent')
+	pane.backdrop:ClearAllPoints()
+	pane.backdrop:Point('CENTER')
+	pane.backdrop:Size(150, 18)
 end
 
 local function EquipmentDisplayButton(button, index)
@@ -243,6 +240,7 @@ local function EquipmentDisplayButton(button, index)
 
 		button.icon:SetInside()
 		button.icon:SetTexCoords()
+		S:HandleItemButtonCrop(button)
 
 		if E.Modern then -- the classic SetItemButtonQuality always hides it
 			S:HandleIconBorder(button.IconBorder)
@@ -399,13 +397,13 @@ end
 
 local function PaperDollUpdateStats()
 	for frame in _G.CharacterStatsPane.statsFramePool:EnumerateActive() do
-		if not frame.leftGrad then
+		if not frame.leftGradient then
 			ColorizeStatPane(frame)
 		end
 
 		local shown = frame.Background:IsShown()
-		frame.leftGrad:SetShown(shown)
-		frame.rightGrad:SetShown(shown)
+		frame.leftGradient:SetShown(shown)
+		frame.rightGradient:SetShown(shown)
 	end
 end
 
@@ -450,47 +448,6 @@ local function HandleCategory(frame)
 	frame.backdrop:Size(150, 18)
 end
 
--- Blizzard sets the atlas, a white tint and a vertically flipped TexCoord again on every skill init
-local function ColoredProgressBar_UpdateFill(bar)
-	local fill = bar.Fill
-	local atlas = fill:GetAtlas()
-	local color = FILL_COLORS[atlas]
-	if color then
-		fill:SetVertexColor(color.r, color.g, color.b)
-	end
-
-	fill:SetTexture(E.media.normTex)
-	fill:SetTexCoord(0, 1, 0, 1)
-end
-
-local function ColoredProgressBar_SetFillPercent(bar, percent)
-	ColoredProgressBar_UpdateFill(bar)
-
-	bar.Fill:SetShown(percent > 0)
-end
-
--- ColoredProgressBarTemplate: unnamed background, a masked Fill and Text
-local function HandleColoredProgressBar(bar)
-	bar:GetRegions():SetTexture(E.ClearTexture)
-
-	bar:CreateBackdrop('Transparent')
-	bar.backdrop:Point('TOPLEFT', bar, 'LEFT', -1, 8)
-	bar.backdrop:Point('BOTTOMRIGHT', bar, 'RIGHT', 1, -8)
-
-	bar.Text:FontTemplate()
-
-	bar.Fill:ClearAllPoints()
-	bar.Fill:Point('TOPLEFT', bar.backdrop, 'TOPLEFT', E.Border, -E.Border)
-	bar.Fill:Point('BOTTOMLEFT', bar.backdrop, 'BOTTOMLEFT', E.Border, E.Border)
-	bar.Fill:RemoveMaskTexture(bar.Mask)
-
-	E:RegisterStatusBar(bar.Fill)
-
-	ColoredProgressBar_UpdateFill(bar)
-
-	hooksecurefunc(bar, 'SetFillPercent', ColoredProgressBar_SetFillPercent)
-end
-
 local function HappinessInfo_UpdateHappiness(info)
 	if not _G.CharacterStatsPanePetScrollBox:IsShown() then
 		info:Hide() -- blizzard shows it on every tab
@@ -511,10 +468,6 @@ local function UpdateTabLayout(frame)
 			break
 		end
 	end
-end
-
-local function SetLevel() -- blizzard grows PaperDollLevelInfo to 40 for the pet loyalty line but never shrinks it back for the player
-	_G.PaperDollLevelInfo:SetHeight(20)
 end
 
 local function UpdateRightPaneToggleButton(frame)
@@ -563,7 +516,7 @@ end
 local function HandleSidebarTab(tab)
 	for _, region in next, { tab:GetRegions() } do
 		if region ~= tab.Icon and region:IsObjectType('Texture') then
-			region:SetTexture(E.ClearTexture)
+			region:SetTexture()
 		end
 	end
 
@@ -642,7 +595,7 @@ end
 local function HandleListHeader(header)
 	for _, region in next, { header:GetRegions() } do
 		if region ~= header.StateIcon and region:IsObjectType('Texture') then -- keep the Blizzard plus / minus
-			region:SetTexture(E.ClearTexture)
+			region:SetTexture()
 		end
 	end
 
@@ -662,7 +615,7 @@ local function HandleListEntry(child)
 
 		local bar = content.ReputationBar or content.SkillsBar
 		if bar then
-			HandleColoredProgressBar(bar)
+			S:HandleColoredProgressBar(bar)
 		end
 
 		local icon = content.CurrencyIcon
@@ -762,7 +715,7 @@ end
 
 local function PaperDollFrameSetResistance(frame, unit, index)
 	local _, resistance = UnitResistance(unit, index)
-	local icon = format('|T%s%d:12:12:0:0:64:64:4:55:4:55|t', spellSchoolIcon, index + 1)
+	local icon = format('|T%s%d:12:12:0:0:64:64:4:55:4:55|t', SPELL_SCHOOL_ICON, index + 1)
 	local name = frame:GetName()
 
 	_G[name..'Label']:SetFormattedText('%s '..STAT_FORMAT, icon, _G['SPELL_SCHOOL'..index..'_CAP'])
@@ -911,6 +864,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 			S:HandleIcon(Slot.icon)
 			Slot.icon:SetInside()
+			S:HandleItemButtonCrop(Slot)
 
 			if Slot.ignoreTexture then -- the Forever ammo slot has none
 				Slot.ignoreTexture:SetTexture([[Interface\PaperDollInfoFrame\UI-GearManager-LeaveItem-Transparent]])
@@ -960,11 +914,11 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 	_G.CharacterLevelText:FontTemplate()
 
-	if E.Forever then -- Forever level info
-		local LevelTextBackground = _G.CharacterLevelTextBackground
-		LevelTextBackground:SetAlpha(0)
-		LevelTextBackground:CreateBackdrop()
-		hooksecurefunc('PaperDollFrame_SetLevel', SetLevel)
+	local PaperDollFrame = _G.PaperDollFrame
+	if E.Forever then -- level info
+		PaperDollFrame.TopBackgroundStripHost:SetAlpha(0)
+
+		_G.PetCharacterLevelText:FontTemplate()
 	end
 
 	if E.Modern then
@@ -1048,8 +1002,8 @@ local function SkinPaperDollFrame(CharacterFrame)
 	-- Icon in upper right corner of character frame
 	_G.CharacterFramePortrait:Kill()
 
-	local TitleManagerPane = _G.PaperDollFrame.TitleManagerPane
-	local EquipmentManagerPane = _G.PaperDollFrame.EquipmentManagerPane
+	local TitleManagerPane = PaperDollFrame.TitleManagerPane
+	local EquipmentManagerPane = PaperDollFrame.EquipmentManagerPane
 	for _, scrollbar in next, { EquipmentManagerPane.ScrollBar, TitleManagerPane.ScrollBar } do
 		S:HandleTrimScrollBar(scrollbar)
 	end
@@ -1061,7 +1015,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 
 	--Re-add the overlay texture which was removed right above via StripTextures
 	local CharacterModelScene = _G.CharacterModelScene
-	if E.Forever then -- Forever overlay is an unnamed atlas without the per race alpha
+	if E.Forever then
 		CharacterModelScene.BackgroundOverlay:SetColorTexture(0, 0, 0, 0.5)
 
 		-- blizzard fills the whole pane behind the slots, box it in between the slot columns like retail
@@ -1094,7 +1048,7 @@ local function SkinPaperDollFrame(CharacterFrame)
 	S:HandleModelSceneControlButtons(CharacterModelScene.ControlFrame)
 
 	if E.Forever then
-		HandleColoredProgressBar(_G.PetPaperDollFrameExpBar) -- lives in the model scene
+		S:HandleColoredProgressBar(_G.PetPaperDollFrameExpBar) -- lives in the model scene
 	end
 
 	--Titles
@@ -1253,7 +1207,7 @@ local function SkinReputationFrame()
 		local DetailFrame = ReputationFrame.ReputationDetailFrame
 		if E.Forever then -- Forever side pane with a standing bar
 			HandleSidePane(DetailFrame)
-			HandleColoredProgressBar(DetailFrame.StandingBar)
+			S:HandleColoredProgressBar(DetailFrame.StandingBar)
 		else
 			DetailFrame:StripTextures()
 			DetailFrame:SetTemplate('Transparent')
@@ -1424,7 +1378,7 @@ local function SkinSkillFrame()
 		local SkillsFrame = _G.SkillsFrame
 		HandleListFrame(SkillsFrame)
 		HandleSidePane(SkillsFrame.SkillDetailFrame)
-		HandleColoredProgressBar(SkillsFrame.SkillDetailFrame.RankBar)
+		S:HandleColoredProgressBar(SkillsFrame.SkillDetailFrame.RankBar)
 	elseif not (E.Modern or E.Mists) then -- mists has no skill tab
 		_G.SkillFrame:StripTextures()
 
@@ -1447,7 +1401,7 @@ local function SkinSkillFrame()
 			E:RegisterStatusBar(bar)
 
 			border:StripTextures()
-			background:SetTexture(nil)
+			background:SetTexture()
 
 			label:GetNormalTexture():Size(14)
 			label:SetHighlightTexture(E.ClearTexture)
@@ -1566,7 +1520,7 @@ function S:Blizzard_UIPanels_Game()
 		RightPaneHost:StripTextures()
 		RightPaneHost:CreateBackdrop('Transparent')
 		RightPaneHost.backdrop:SetInside(RightPaneHost, 6, 6)
-		RightPaneHost.StoneBg:SetAlpha(0) -- set again through SetAtlas and SetShown on tab changes
+		RightPaneHost.StoneBg:SetAlpha(0) -- shown again through SetShown on tab changes
 
 		local divider = RightPaneHost:GetChildren() -- unnamed frame on the left edge (The ugly divider strip)
 		divider:StripTextures()

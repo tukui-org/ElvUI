@@ -96,6 +96,7 @@ local GetSpecialization = C_SpecializationInfo.GetSpecialization
 local CreateFrame = CreateFrame
 
 local ScaleTo100 = CurveConstants.ScaleTo100
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local GenerateTextColorCode = C_ColorUtil.GenerateTextColorCode
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
 local WrapString = C_StringUtil.WrapString
@@ -103,7 +104,6 @@ local WrapString = C_StringUtil.WrapString
 local IsInRaid = IsInRaid
 local IsResting = IsResting
 local GetArenaOpponentSpec = GetArenaOpponentSpec
-local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetNumGroupMembers = GetNumGroupMembers
 local GetRaidRosterInfo = GetRaidRosterInfo
 local GetRuneCooldown = GetRuneCooldown
@@ -275,8 +275,9 @@ end
 
 tagFunctions.difficulty = function(u)
 	if(UnitCanAttack('player', u)) then
-		local l = (UnitEffectiveLevel or UnitLevel)(u)
-		return Hex(GetCreatureDifficultyColor((l > 0) and l or 999))
+		local level = (UnitEffectiveLevel or UnitLevel)(u)
+		local color = oUF:GetCreatureDifficultyColor((level > 0) and level or 999)
+		return Hex(color)
 	end
 end
 
@@ -435,15 +436,19 @@ end
 
 tagFunctions.raidcolor = function(u)
 	local _, classToken = UnitClass(u)
-	if oUF:NotSecretValue(classToken) and classToken then
-		return Hex(_COLORS.class[classToken])
+	if classToken then
+		local color = (oUF:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or _COLORS.class[classToken]
+		if color then
+			return Hex(color)
+		end
 	else
 		local id = strmatch(u, 'arena(%d)$')
 		local specID = id and GetArenaOpponentSpec(tonumber(id))
 		if specID and oUF:NotSecretValue(specID) and specID > 0 then
 			local _, _, _, _, _, classSpec = GetSpecializationInfoByID(specID)
-			if oUF:NotSecretValue(classSpec) and classSpec then
-				return Hex(_COLORS.class[classSpec])
+			local color = oUF:NotSecretValue(classSpec) and _COLORS.class[classSpec]
+			if color then
+				return Hex(color)
 			end
 		end
 	end

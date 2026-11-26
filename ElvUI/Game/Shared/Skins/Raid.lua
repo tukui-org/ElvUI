@@ -60,7 +60,7 @@ local function RaidPulloutUpdate(pullOutFrame)
 end
 
 local function HandleClassButtons()
-	local numClasses = _G.MAX_CLASSES
+	local numClasses = E.numClasses
 	local plusOne = numClasses + 1
 	local plusTwo = numClasses + 2
 	local plusThree = numClasses + 3

@@ -10,19 +10,24 @@ local function Covenant_TryShow(frame, covenantInfo)
 	if covenantInfo and not frame.IsSkinned then -- Blizzard bails on nil too
 		frame:SetTemplate('Transparent')
 
+		local InfoPanel = frame.InfoPanel
 		frame.ModelSceneContainer.ModelSceneBorder:SetAlpha(0)
-		frame.InfoPanel:SetTemplate('Transparent')
+		InfoPanel:SetTemplate('Transparent')
 
 		if E.private.skins.parchmentRemoverEnable then
-			frame.Title:DisableDrawLayer('BACKGROUND')
-			frame.Title.Text:SetTextColor(1, .8, 0)
-			frame.Title:SetTemplate('Transparent')
+			local Title = frame.Title
+			Title:DisableDrawLayer('BACKGROUND')
+			Title:SetTemplate('Transparent')
+			Title.Text:SetTextColor(1, .8, 0)
+
 			frame.Background:SetAlpha(0)
 			frame.BorderFrame:SetAlpha(0)
-			frame.InfoPanel.Parchment:SetAlpha(0)
+
+			InfoPanel.Parchment:SetAlpha(0)
 		end
 
 		frame.CloseButton.Border:Kill()
+
 		S:HandleCloseButton(frame.CloseButton)
 		S:HandleButton(frame.SelectButton)
 
@@ -33,12 +38,13 @@ end
 function S:Blizzard_CovenantPreviewUI()
 	local frame = _G.CovenantPreviewFrame
 	if E.private.skins.parchmentRemoverEnable then
-		frame.InfoPanel.Name:SetTextColor(1, 1, 1)
-		frame.InfoPanel.Location:SetTextColor(1, 1, 1)
-		frame.InfoPanel.Description:SetTextColor(1, 1, 1)
-		frame.InfoPanel.AbilitiesFrame.AbilitiesLabel:SetTextColor(1, .8, 0)
-		frame.InfoPanel.SoulbindsFrame.SoulbindsLabel:SetTextColor(1, .8, 0)
-		frame.InfoPanel.CovenantFeatureFrame.Label:SetTextColor(1, .8, 0)
+		local InfoPanel = frame.InfoPanel
+		InfoPanel.Name:SetTextColor(1, 1, 1)
+		InfoPanel.Location:SetTextColor(1, 1, 1)
+		InfoPanel.Description:SetTextColor(1, 1, 1)
+		InfoPanel.AbilitiesFrame.AbilitiesLabel:SetTextColor(1, .8, 0)
+		InfoPanel.SoulbindsFrame.SoulbindsLabel:SetTextColor(1, .8, 0)
+		InfoPanel.CovenantFeatureFrame.Label:SetTextColor(1, .8, 0)
 	end
 
 	hooksecurefunc(frame, 'TryShow', Covenant_TryShow)

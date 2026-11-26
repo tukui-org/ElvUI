@@ -24,6 +24,7 @@ local function ReskinQualityContainer(container)
 	button:SetHighlightTexture(E.ClearTexture)
 
 	S:HandleIcon(button.Icon, true)
+	S:HandleItemButtonCrop(button)
 	S:HandleIconBorder(button.IconBorder, button.Icon.backdrop)
 
 	HandleInputBox(container.EditBox)
@@ -35,6 +36,7 @@ local function HandleSalvageItem(item)
 
 	if not item.IsSkinned then
 		S:HandleIcon(item.icon, true)
+		S:HandleItemButtonCrop(item)
 		S:HandleIconBorder(item.IconBorder, item.icon.backdrop)
 
 		local hl = item:GetHighlightTexture()
@@ -55,6 +57,7 @@ local function RefreshFlyoutButton(button)
 
 	if not button.IsSkinned then
 		S:HandleIcon(button.icon, true)
+		S:HandleItemButtonCrop(button)
 		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
 
 		local hl = button:GetHighlightTexture()
@@ -77,6 +80,7 @@ local function ItemFlyout_CustomerOrders(_, owner)
 			child.NineSlice:SetTemplate('Transparent')
 			S:HandleTrimScrollBar(child.ScrollBar)
 			S:HandleCheckBox(child.HideUnownedCheckbox)
+
 			child.HideUnownedCheckbox:Size(24)
 
 			RefreshFlyoutButtons(child.ScrollBox)
@@ -94,6 +98,7 @@ local function ItemFlyout_Professions(_, owner)
 			child.NineSlice:SetTemplate('Transparent')
 			S:HandleTrimScrollBar(child.ScrollBar)
 			S:HandleCheckBox(child.HideUnownedCheckbox)
+
 			child.HideUnownedCheckbox:Size(24)
 
 			HandleFlyoutItems(child.ScrollBox)
@@ -131,6 +136,7 @@ local function ReskinSlotButton(button)
 		S:HandleIcon(icon, true)
 		S:HandleIconBorder(button.IconBorder, icon.backdrop)
 		icon:SetOutside(button)
+		S:HandleItemButtonCrop(button)
 
 		button.IsSkinned = true
 	end
@@ -144,8 +150,9 @@ local function HandleOutputButton(child)
 		item:SetPushedTexture(E.ClearTexture)
 		item:SetHighlightTexture(E.ClearTexture)
 
-		local icon = item:GetRegions()
+		local icon = item.icon
 		S:HandleIcon(icon, true)
+		S:HandleItemButtonCrop(item)
 		S:HandleIconBorder(item.IconBorder, icon.backdrop)
 
 		itemContainer.CritFrame:SetAlpha(0)
@@ -231,6 +238,7 @@ local function HandleSchematicForm(form, noParchment)
 
 	S:HandleCheckBox(form.TrackRecipeCheckbox)
 	form.TrackRecipeCheckbox:Size(24)
+
 	S:HandleCheckBox(form.AllocateBestQualityCheckbox)
 	form.AllocateBestQualityCheckbox:Size(24)
 
@@ -283,6 +291,12 @@ local function HandleRankBar(bar)
 	S:HandleButton(bar.ExpansionDropdownButton)
 end
 
+local function SetModifiedBackdrop(button, method)
+	if method == 'OnEnter' then
+		button:HookScript('OnEnter', S.SetModifiedBackdrop)
+	end
+end
+
 local function HandleOrderView(frame)
 	local DeclineOrderDialog = frame.DeclineOrderDialog
 	DeclineOrderDialog:StripTextures()
@@ -307,12 +321,18 @@ local function HandleOrderView(frame)
 	local OrderInfo = frame.OrderInfo
 	OrderInfo:StripTextures()
 	OrderInfo:CreateBackdrop('Transparent')
+
 	S:HandleButton(OrderInfo.BackButton)
 	S:HandleButton(OrderInfo.StartOrderButton)
 	S:HandleButton(OrderInfo.DeclineOrderButton)
 	S:HandleButton(OrderInfo.ReleaseOrderButton)
 	S:HandleButton(OrderInfo.SocialDropdown)
 	S:HandleEditBox(OrderInfo.NoteBox, 'Transparent')
+
+	-- blizzard rescripts these later, see comment function
+	hooksecurefunc(frame.CreateButton, 'SetScript', SetModifiedBackdrop) -- UpdateCreateButton
+	hooksecurefunc(frame.CompleteOrderButton, 'SetScript', SetModifiedBackdrop) -- UpdateFulfillButton
+	hooksecurefunc(OrderInfo.StartOrderButton, 'SetScript', SetModifiedBackdrop) -- UpdateStartOrderButton
 
 	local RewardsFrame = OrderInfo.NPCRewardsFrame
 	RewardsFrame.Background:SetAlpha(0)
@@ -336,13 +356,61 @@ local function HandleOrderView(frame)
 	local OrderItemIcon = OrderDetails.FulfillmentForm.ItemIcon
 	S:HandleIcon(OrderItemIcon.Icon, true)
 	S:HandleIconBorder(OrderItemIcon.IconBorder, OrderItemIcon.Icon.backdrop)
+
 	OrderItemIcon:GetHighlightTexture():Hide()
 	OrderItemIcon.CircleMask:Hide()
 end
 
+-- SetupTable refills headers per browse type
+local function HandleOrderListHeaders(page)
+	local columns = page.tableBuilder:GetColumns()
+	local numColumns = #columns
+	for i, column in next, columns do
+		local header = column:GetHeaderFrame()
+		if not header.IsSkinned then
+			header:DisableDrawLayer('BACKGROUND')
+			header:CreateBackdrop('Transparent')
+
+			local highlight = header:GetHighlightTexture()
+			highlight:SetColorTexture(1, 1, 1, 0.1)
+			highlight:SetAllPoints(header.backdrop)
+
+			header.IsSkinned = true
+		end
+
+		header.backdrop:Point('BOTTOMRIGHT', i < numColumns and -5 or 0, -2)
+	end
+end
+
+local COLLAPSE_ATLAS = {
+	['Professions-recipe-header-expand'] = 'common-button-list-plus',
+	['Professions-recipe-header-collapse'] = 'common-button-list-minus'
+}
+
+-- Use Blizzard's plus / minus for headers
+local function UpdateCollapseIcon(texture, atlas)
+	local icon = COLLAPSE_ATLAS[atlas]
+	if icon then
+		texture:SetAtlas(icon, true)
+	end
+end
+
 -- RecipeList category rows (ProfessionsRecipeListCategoryTemplate)
 local function HandleRecipeCategory(button)
-	button:StripTextures()
+	if button.CollapseButton then -- Forever ListHeaderVisualTemplate
+		button:StripTextures()
+	else
+		button.LeftPiece:SetAlpha(0)
+		button.CenterPiece:SetAlpha(0)
+		button.RightPiece:SetAlpha(0)
+
+		for _, icon in next, { button.CollapseIcon, button.CollapseIconAlphaAdd } do
+			UpdateCollapseIcon(icon, icon:GetAtlas())
+
+			hooksecurefunc(icon, 'SetAtlas', UpdateCollapseIcon)
+		end
+	end
+
 	button:CreateBackdrop()
 	button.backdrop:SetInside(button, 0, 1)
 
@@ -350,9 +418,10 @@ local function HandleRecipeCategory(button)
 	rankBar.BorderLeft:SetAlpha(0)
 	rankBar.BorderMid:SetAlpha(0)
 	rankBar.BorderRight:SetAlpha(0)
+	rankBar.Rank:FontTemplate()
+
 	rankBar:SetStatusBarTexture(E.media.normTex)
 	rankBar:CreateBackdrop('Transparent')
-	rankBar.Rank:FontTemplate()
 
 	E:RegisterStatusBar(rankBar)
 end
@@ -370,7 +439,7 @@ end
 local function HandleRecipeListChild(child)
 	if child.IsSkinned then return end
 
-	if E.Forever and child.CollapseButton then
+	if child.CollapseIcon or (E.Forever and child.CollapseButton) then
 		HandleRecipeCategory(child)
 	elseif child.SkillUps then
 		HandleRecipe(child)
@@ -390,12 +459,16 @@ end
 
 -- BookPage profession spell buttons (ProfessionButtonTemplate)
 local function HandleProfessionButton(button)
-	button:OffsetFrameLevel(1) -- backdrops sit a level below, the card art would cover them
-	button.IconTexture:RemoveMaskTexture(button.OutlineMask)
+	local icon = button.IconTexture
+	icon:RemoveMaskTexture(button.OutlineMask)
+	icon:SetInside()
+
+	S:HandleIcon(icon, true)
+	icon.backdrop.Center:SetDrawLayer('BACKGROUND', 1)
+
+	button.highlightTexture:SetInside(icon.backdrop)
 	button.IconTextureOverlay:SetAlpha(0)
-	button.IconTexture:SetInside()
-	S:HandleIcon(button.IconTexture, true)
-	button.highlightTexture:SetInside(button.IconTexture.backdrop)
+	button.IconBorder:SetAlpha(0)
 
 	E:RegisterCooldown(button.cooldown)
 
@@ -408,6 +481,7 @@ local function HandleBookProfession(frame)
 	local unlearn = frame.UnlearnButton
 	if unlearn then
 		S:HandleCloseButton(unlearn)
+
 		unlearn:OffsetFrameLevel(1)
 		unlearn:CreateBackdrop()
 		unlearn:SetHitRectInsets(0, 0, 0, 0)
@@ -515,6 +589,7 @@ function S:Blizzard_Professions()
 		button:StripTextures()
 
 		S:HandleIcon(button.icon, true)
+		S:HandleItemButtonCrop(button)
 		S:HandleIconBorder(button.IconBorder, button.icon.backdrop)
 
 		button:SetNormalTexture(E.ClearTexture)
@@ -604,8 +679,13 @@ function S:Blizzard_Professions()
 		S:HandleEditBox(BrowseList.SearchBox)
 		S:HandleButton(BrowseList.FilterDropdown)
 
+		hooksecurefunc(BrowseList.ScrollBox, 'Update', HandleRecipeList)
+
 		BrowseFrame.OrderList:StripTextures()
 		S:HandleTrimScrollBar(BrowseFrame.OrderList.ScrollBar)
+
+		HandleOrderListHeaders(OrdersPage) -- First one exists OnLoad already
+		hooksecurefunc(OrdersPage, 'SetupTable', HandleOrderListHeaders)
 	end
 
 	if E.Forever then -- Forever BookPage (ProfessionsBookFrameTemplate)

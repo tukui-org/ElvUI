@@ -239,17 +239,17 @@ local function ThirdVisibility(element, enabled)
 	end
 end
 
-local function Update(self, element, event, unit, powerType)
+local function Update(_, element, event, unit, powerType)
 	if not unit or oUF:UnitNotUnit(unit, 'player') then return end
 
 	local classPowerID = element.classPowerID
 	local currentType = ClassPowerType[classPowerID]
-	if event == 'UNIT_AURA' or event == 'SPELL_UPDATE_CHARGES' then powerType = currentType end
+	if event == 'UNIT_AURA' or event == 'SPELL_UPDATE_CHARGES' or event == 'UNIT_POWER_POINT_CHARGE' then powerType = currentType end
 	if event ~= 'ClassPowerDisable' and event ~= 'ClassPowerEnable' and not powerType then return end
 
 	local myClass = oUF.myclass
 	local vehicle = unit == 'vehicle' and powerType == 'COMBO_POINTS'
-	local classic = not oUF.isModern and (powerType == 'COMBO_POINTS' or (myClass == 'ROGUE' and powerType == 'ENERGY'))
+	local classic = not oUF.isRetail and (powerType == 'COMBO_POINTS' or (myClass == 'ROGUE' and powerType == 'ENERGY'))
 	if not (vehicle or classic or powerType == currentType) then return end
 
 	--[[ Callback: ClassPower:PreUpdate(event)
@@ -517,7 +517,9 @@ local function ClassPowerEnable(element, owner)
 
 	if oUF.isModern then -- according to Blizz any class may receive this event due to specific spell auras
 		owner:RegisterEvent('UNIT_POWER_POINT_CHARGE', Path)
-	else
+	end
+
+	if not oUF.isRetail then
 		owner:RegisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath, true)
 	end
 
@@ -540,7 +542,9 @@ local function ClassPowerDisable(element, owner)
 
 	if oUF.isModern then
 		owner:UnregisterEvent('UNIT_POWER_POINT_CHARGE', Path)
-	else
+	end
+
+	if not oUF.isRetail then
 		owner:UnregisterEvent('PLAYER_TARGET_CHANGED', VisibilityPath)
 	end
 

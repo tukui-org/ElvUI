@@ -12,7 +12,6 @@ local utf8sub, utf8len = string.utf8sub, strlenutf8
 local tconcat = table.concat
 
 local AbbreviateNumbers = AbbreviateNumbers
-local GetCreatureDifficultyColor = GetCreatureDifficultyColor
 local GetCurrentTitle = GetCurrentTitle
 local GetGuildInfo = GetGuildInfo
 local GetNumGroupMembers = GetNumGroupMembers
@@ -57,11 +56,12 @@ local UnitReaction = UnitReaction
 local UnitThreatPercentageOfLead = UnitThreatPercentageOfLead
 
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
+local C_ClassColor_GetClassColor = C_ClassColor.GetClassColor
 local C_PetJournal_GetPetTeamAverageLevel = C_PetJournal.GetPetTeamAverageLevel
 
 local POWERTYPE_ALTERNATE = Enum.PowerType.Alternate
 local POWERTYPE_MANA = Enum.PowerType.Mana
-local PVP = PVP
+local PVP_ENABLED = PVP_ENABLED
 
 local SPELL_FROST_ICICLES = 205473
 local SPELL_ARCANE_CHARGE = 36032
@@ -795,7 +795,7 @@ end)
 E:AddTag('classcolor', 'UNIT_NAME_UPDATE UNIT_FACTION INSTANCE_ENCOUNTER_ENGAGE_UNIT', function(unit)
 	if UnitIsPlayer(unit) or (E.Modern and UnitInPartyIsAI(unit)) then
 		local _, classToken = UnitClass(unit)
-		local cs = E:NotSecretValue(classToken) and ElvUF.colors.class[classToken]
+		local cs = (E:IsSecretValue(classToken) and C_ClassColor_GetClassColor(classToken)) or ElvUF.colors.class[classToken]
 		return cs and Hex(cs) or HEX_FALLBACK
 	else
 		local cr = ElvUF.colors.reaction[UnitReaction(unit, 'player')]
@@ -825,7 +825,7 @@ E:AddTag('difficultycolor', 'UNIT_LEVEL PLAYER_LEVEL_UP', function(unit)
 			color = QuestDifficultyColors.difficult
 		end
 	else
-		color = GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
+		color = E:GetCreatureDifficultyColor(UnitEffectiveLevel(unit))
 	end
 
 	return Hex(color)
@@ -928,9 +928,9 @@ E:AddTag('pvptimer', 1, function(unit)
 		if timer ~= 301000 and timer ~= -1 then
 			local mins = floor((timer * 0.001) / 60)
 			local secs = floor((timer * 0.001) - (mins * 60))
-			return format('%s (%01.f:%02.f)', PVP, mins, secs)
+			return format('%s (%01.f:%02.f)', PVP_ENABLED, mins, secs)
 		else
-			return PVP
+			return PVP_ENABLED
 		end
 	end
 end)

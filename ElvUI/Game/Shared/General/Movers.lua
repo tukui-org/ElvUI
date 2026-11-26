@@ -475,7 +475,7 @@ function E:ResetMovers(arg)
 	if all then E.db.movers = nil end
 
 	for name, holder in pairs(E.CreatedMovers) do
-		if all or (holder.mover and holder.mover.textString == arg) then
+		if all or (name == arg) or (holder.mover and holder.mover.textString == arg) then
 			if E.db.movers then
 				E.db.movers[name] = nil
 			end

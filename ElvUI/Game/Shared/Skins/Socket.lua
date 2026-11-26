@@ -27,10 +27,10 @@ function S:Blizzard_ItemSocketingUI()
 	S:HandlePortraitFrame(ItemSocketingFrame)
 
 	_G.ItemSocketingFramePortrait:Kill()
-	_G.ItemSocketingDescription:DisableDrawLayer('BORDER')
-	_G.ItemSocketingDescription:DisableDrawLayer('BACKGROUND')
 	_G.ItemSocketingScrollFrame:StripTextures()
 	_G.ItemSocketingScrollFrame:SetTemplate('Transparent')
+	_G.ItemSocketingDescription:DisableDrawLayer('BORDER')
+	_G.ItemSocketingDescription:DisableDrawLayer('BACKGROUND')
 
 	S:HandleTrimScrollBar(_G.ItemSocketingScrollFrame.ScrollBar)
 

@@ -12,11 +12,24 @@ local GetBattlefieldScore = GetBattlefieldScore
 local GetArenaOpponentSpec = GetArenaOpponentSpec
 local GetNumArenaOpponentSpecs = GetNumArenaOpponentSpecs
 local GetNumBattlefieldScores = GetNumBattlefieldScores
+local GetScoreInfo = C_PvP.GetScoreInfo
 
 local UNKNOWN = UNKNOWN
 
 local Healers, HealerSpecs = {}, {}
 local Tanks, TankSpecs = {}, {}
+
+local function GetScoreNameSpec(index)
+	if GetScoreInfo then
+		local info = GetScoreInfo(index)
+		if info then
+			return info.name, info.talentSpec
+		end
+	else
+		local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, specName = GetBattlefieldScore(index)
+		return name, specName
+	end
+end
 
 NP.PVPRole = {
 	Tanks = Tanks,
@@ -73,7 +86,7 @@ local function Event(_, event, initLogin, isReload)
 			end
 		else
 			for i = 1, GetNumBattlefieldScores() do
-				local name, _, _, _, _, _, _, _, _, _, _, _, _, _, _, specName = GetBattlefieldScore(i)
+				local name, specName = GetScoreNameSpec(i)
 				if E:IsSecretValue(name) or E:IsSecretValue(specName) then
 					break -- bail out
 				elseif name and name ~= UNKNOWN then

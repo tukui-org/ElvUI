@@ -10,11 +10,11 @@ local format = format
 local hooksecurefunc = hooksecurefunc
 
 local AcceptGroup = AcceptGroup
+local CreateFrame = CreateFrame
 local CanGuildBankRepair = CanGuildBankRepair
 local CanMerchantRepair = CanMerchantRepair
-local CombatLogGetCurrentEventInfo = CombatLogGetCurrentEventInfo
-local CreateFrame = CreateFrame
-local GetCurrentCombatTextEventInfo = GetCurrentCombatTextEventInfo
+local CombatLogGetCurrentEventInfo = C_CombatLog.GetCurrentEventInfo or CombatLogGetCurrentEventInfo
+local GetCurrentCombatTextEventInfo = C_CombatText.GetCurrentEventInfo or GetCurrentCombatTextEventInfo
 local GetGuildBankWithdrawMoney = GetGuildBankWithdrawMoney
 local GetNumGroupMembers = GetNumGroupMembers
 local GetNumQuestChoices = GetNumQuestChoices
@@ -330,7 +330,9 @@ function M:ADDON_LOADED(_, addon)
 	elseif addon == 'Blizzard_PTRFeedback' then
 		KillFeedback(_G.PTR_IssueReporter)
 	elseif addon == 'Blizzard_GroupFinder_VanillaStyle' then
-		M:LoadQueueStatus()
+		if E.Classic or E.TBC then -- vanillaStyle
+			M:LoadQueueStatus()
+		end
 	elseif addon == 'Blizzard_HousingControls' then
 		E:CreateMover(_G.HousingControlsFrame, 'HousingControlsFrameMover', L["Housing Controls Frame"], nil, nil, nil, 'ALL,SOLO')
 	end

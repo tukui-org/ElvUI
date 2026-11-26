@@ -1,6 +1,5 @@
 local E, L, V, P, G = unpack(ElvUI)
 
-local _G = _G
 local gsub = gsub
 local format = format
 local strlower = strlower
@@ -17,6 +16,7 @@ local UnitHealthMissing = UnitHealthMissing
 local UnitPowerMissing = UnitPowerMissing
 
 local TruncateWhenZero = C_StringUtil.TruncateWhenZero
+local WrapString = C_StringUtil.WrapString
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
 
@@ -44,12 +44,14 @@ for tagFormat, which in next, { shortvalue = 'short', longvalue = 'long' } do
 
 	E:AddTag(format('missinghp:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
 		local healthMissing = UnitHealthMissing(unit)
-		return E:AbbreviateNumbers(healthMissing, E.Abbreviate[which])
+		local text = E:AbbreviateNumbers(healthMissing, E.Abbreviate[which])
+		return WrapString(TruncateWhenZero(healthMissing), '|Htag:', '|h' .. text .. '|h')
 	end)
 
 	E:AddTag(format('missingpp:%s', tagFormat), 'UNIT_DISPLAYPOWER UNIT_POWER_FREQUENT UNIT_MAXPOWER', function(unit)
 		local powerMissing = UnitPowerMissing(unit)
-		return E:AbbreviateNumbers(powerMissing, E.Abbreviate[which])
+		local text = E:AbbreviateNumbers(powerMissing, E.Abbreviate[which])
+		return WrapString(TruncateWhenZero(powerMissing), '|Htag:', '|h' .. text .. '|h')
 	end)
 
 	E:AddTag(format('health:current:%s', tagFormat), 'UNIT_HEALTH UNIT_MAXHEALTH', function(unit)
@@ -85,7 +87,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 	local tagFormat = strlower(gsub(textFormat, '_', '-'))
 
 	E:AddTag(format('additionalmana:%s', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
-		local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
+		local altIndex = E.AltPowerInfo[E.myclass]
 		local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
 		if E:NotSecretValue(min) and (min and min ~= 0) then
 			return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA))
@@ -94,7 +96,7 @@ for textFormat in pairs(E.GetFormattedTextStyles) do
 
 	if tagFormat ~= 'percent' then
 		E:AddTag(format('additionalmana:%s:shortvalue', tagFormat), 'UNIT_POWER_FREQUENT UNIT_MAXPOWER UNIT_DISPLAYPOWER', function(unit)
-			local altIndex = _G.ALT_POWER_BAR_PAIR_DISPLAY_INFO[E.myclass]
+			local altIndex = E.AltPowerInfo[E.myclass]
 			local min = altIndex and altIndex[UnitPowerType(unit)] and UnitPower(unit, POWERTYPE_MANA)
 			if E:NotSecretValue(min) and (min and min ~= 0) then
 				return E:GetFormattedText(textFormat, min, UnitPowerMax(unit, POWERTYPE_MANA), nil, true)

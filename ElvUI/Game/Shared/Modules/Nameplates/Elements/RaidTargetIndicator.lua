@@ -11,6 +11,7 @@ function NP:RaidTargetIndicator_Override()
 
 	if index then
 		SetRaidTargetIconTexture(element, index)
+
 		element:Show()
 	else
 		element:Hide()

@@ -36,21 +36,19 @@ local function HandleRewardButton(child)
 	local container = child.ContentsContainer -- the divider rows have none
 	if not container then return end
 
+	S:HandleIcon(container.PriceIcon)
 	S:HandleIcon(container.Icon)
 	container.IconMask:Hide()
-	S:HandleIcon(container.PriceIcon)
 
 	local cartButton = container.CartToggleButton
 	if not cartButton.text then
 		S:HandleButton(cartButton, nil, nil, nil, true, nil, nil, nil, true)
 
-		cartButton.text = cartButton:CreateFontString(nil, 'ARTWORK')
-		cartButton.text:FontTemplate(nil, 30, 'OUTLINE')
-		cartButton.text:Point('CENTER')
-		cartButton.text:SetTextColor(0.3, 1, 0.3)
-
-		--cartButton.texture = cartButton:CreateTexture(nil, 'ARTWORK')
-		--cartButton.texture:SetVertexColor(1, 1, 1, 0.8)
+		local cartText = cartButton:CreateFontString(nil, 'ARTWORK')
+		cartText:FontTemplate(nil, 30, 'OUTLINE')
+		cartText:Point('CENTER')
+		cartText:SetTextColor(0.3, 1, 0.3)
+		cartButton.text = cartText
 
 		HandleCartToggleButton(cartButton)
 
@@ -161,12 +159,12 @@ end
 
 function S:Blizzard_PerksProgram() -- Trading Post
 	local frame = _G.PerksProgramFrame
-	local products = frame.ProductsFrame
 
 	if E.private.skins.parchmentRemoverEnable then
 		frame.ThemeContainer:SetAlpha(0)
 	end
 
+	local products = frame.ProductsFrame
 	S:HandleButton(products.PerksProgramFilter)
 	S:HandleCloseButton(products.PerksProgramFilter.ResetButton)
 
@@ -181,6 +179,7 @@ function S:Blizzard_PerksProgram() -- Trading Post
 	details.backdrop:OffsetFrameLevel(-10, details.Border)
 
 	S:HandleTrimScrollBar(details.SetDetailsScrollBoxContainer.ScrollBar)
+
 	hooksecurefunc(details.SetDetailsScrollBoxContainer.ScrollBox, 'Update', DetailsScrollBoxUpdate)
 
 	local container = products.ProductsScrollBoxContainer

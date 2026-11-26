@@ -25,6 +25,7 @@ function S:TaxiFrame()
 		S:HandleCloseButton(TaxiFrame.CloseButton)
 	else
 		S:HandleFrame(TaxiFrame, true, nil, 11, -12, -32, 76)
+
 		_G.TaxiPortrait:Kill() -- Blizz didnt name this TaxiFramePortrait
 		_G.TaxiMap:PointXY(-11, -71)
 		_G.TaxiRouteMap:PointXY(-11, -71)

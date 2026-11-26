@@ -150,12 +150,13 @@ function S:Blizzard_Calendar()
 	local lastClassButton
 	for i, class in next, CLASS_SORT_ORDER do
 		local button = _G['CalendarClassButton'..i]
-		local count = _G['CalendarClassButton'..i..'Count']
 		StripClassTextures(button:GetNormalTexture(), class)
+
 		button:GetRegions():Hide()
 		button:SetTemplate()
 		button:Size(28)
 
+		local count = _G['CalendarClassButton'..i..'Count']
 		count:FontTemplate()
 		count:ClearAllPoints()
 		count:Point('BOTTOMRIGHT', 0, 1)

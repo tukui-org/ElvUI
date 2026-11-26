@@ -132,7 +132,7 @@ local function GetOptionsTable_AuraBars(updateFunc, groupName)
 	config.args.textGroup.args.stacks.inline = true
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar)
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].aurabar, P.cooldown.unitframe.override[groupName].aurabar, nil, nil, config.args.cooldownGroup.args)
 
 	config.args.friendlyGroup = ACH:Group(L["Filters: Friendly"], nil, 50, 'tab', nil, nil, nil, not E.Modern)
 	config.args.friendlyGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName].aurabar.friendlyFilter.filterLists, P.unitframe.units[groupName].aurabar.friendlyFilter.filterLists) updateFunc(UF, groupName) end)
@@ -196,7 +196,7 @@ end
 local auraKeys = {
 	buffs = { name = L["Buffs"], order = 1 },
 	debuffs = { name = L["Debuffs"], order = 2 },
-	auras = { name = L["Custom"], order = 3 },
+	auras = { name = L["CUSTOM"], order = 3 },
 }
 
 local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
@@ -206,7 +206,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.enable = ACH:Toggle(L["Enable"], nil, 1)
 	config.args.stackAuras = ACH:Toggle(L["Stack Auras"], L["This will join auras together which are normally separated. Example: Bolstering and Force of Nature."], 2, nil, nil, nil, nil, nil, nil, E.Modern)
 	config.args.keepSizeRatio = ACH:Toggle(L["Keep Size Ratio"], nil, 3)
-	config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], E.Modern and L["Requres the filter string to contain !PLAYER (requires a reload)."] or L["Set auras that are not from you to desaturated."], 4)
+	config.args.desaturate = ACH:Toggle(L["Desaturate Icon"], E.Modern and L["Requires the filter string to contain !PLAYER (requires a reload)."] or L["Set auras that are not from you to desaturated."], 4)
 
 	config.args.generalGroup = ACH:Group(L["General"], nil, 10)
 	config.args.generalGroup.args.sizeOverride = ACH:Range(function() return E.db.unitframe.units[groupName][auraType].keepSizeRatio and L["Size Override"] or L["Icon Width"] end, L["If not set to 0 then override the size of the aura icon to this."], 4, { min = 0, max = 80, step = 1 })
@@ -261,7 +261,7 @@ local function GetOptionsTable_Auras(auraType, updateFunc, groupName, numUnits)
 	config.args.strataAndLevel.order = 35
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType])
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName][auraType], P.cooldown.unitframe.override[groupName][auraType], nil, nil, config.args.cooldownGroup.args)
 
 	config.args.midnightGroup = ACH:Group(L["Filters"], nil, 50, 'tab', nil, nil, nil, not E.Modern)
 	config.args.midnightGroup.args.resetFilter = ACH:Execute(L["Reset Filters"], nil, 2, function() UF:ResetFilters_AuraGroup(E.db.unitframe.units[groupName][auraType].filterLists, P.unitframe.units[groupName][auraType].filterLists) updateFunc(UF, groupName, numUnits) end)
@@ -336,7 +336,8 @@ local function GetOptionsTable_AuraWatch(updateFunc, groupName, numGroup, subGro
 	config.args.generalGroup.args.countGroup.inline = true
 
 	config.args.cooldownGroup = ACH:Group(L["Cooldown Override"], nil, 40, 'tab')
-	config.args.cooldownGroup.args.enable, config.args.cooldownGroup.args.textGroup, config.args.cooldownGroup.args.thresholdGroup = C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].buffIndicator, P.cooldown.unitframe.override[groupName].buffIndicator)
+
+	C:GetCooldownConfig('unitframe', E.db.cooldown.unitframe.override[groupName].buffIndicator, P.cooldown.unitframe.override[groupName].buffIndicator, nil, nil, config.args.cooldownGroup.args)
 
 	if subGroup then
 		config.get = function(info) return E.db.unitframe.units[groupName][subGroup].buffIndicator[info[#info]] end
@@ -429,6 +430,7 @@ local function GetOptionsTable_Castbar(updateFunc, groupName, numUnits)
 	config.args.generalGroup.args.timeToHold = ACH:Range(L["Time To Hold"], L["How many seconds the castbar should stay visible after the cast failed or was interrupted."], 10, { min = 0, max = 10, step = 0.1 })
 	config.args.generalGroup.args.overlayOnFrame = ACH:Select(L["Attach To"], L["The object you want to attach to."], 11, { Health = L["Health"], Power = L["Power"], InfoPanel = L["Information Panel"], None = L["None"] })
 	config.args.generalGroup.args.format = ACH:Select(L["Format"], L["Cast Time Format"], 12, { CURRENTMAX = L["Current / Max"], CURRENT = L["Current"], REMAINING = L["Remaining"], REMAININGMAX = L["Remaining / Max"] })
+	config.args.generalGroup.args.mergeCrafts = ACH:Toggle(L["Merge Crafting"], L["Applies only to your casts."], 13)
 
 	config.args.textGroup = ACH:Group(L["Text"], nil, 16, nil, function(info) return E.db.unitframe.units[groupName].castbar[info[#info]] end, function(info, value) E.db.unitframe.units[groupName].castbar[info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 	config.args.textGroup.args.hideName = ACH:Toggle(L["Hide Name"], nil, 1)
@@ -908,8 +910,8 @@ local function GetOptionsTable_Power(hasDetatchOption, updateFunc, groupName, nu
 		config.args.generalGroup.args.displayAltPower = ACH:Toggle(L["Swap to Alt Power"], nil, 20, nil, nil, nil, nil, nil, nil, not E.Modern)
 	end
 
-	if (E.Classic or E.TBC or E.Wrath) and groupName == 'player' then
-		config.args.generalGroup.args.EnergyManaRegen = ACH:Toggle(L["Energy/Mana Regen Tick"], L["Enables the five-second-rule ticks for Mana classes and Energy ticks for Rogues and Druids."], 21, nil, nil, nil, nil, nil, nil, E.Modern)
+	if (E.Classic or E.TBC or E.Wrath or E.Forever) and E.myclass ~= 'WARRIOR' and groupName == 'player' then
+		config.args.generalGroup.args.EnergyManaRegen = ACH:Toggle(L["Energy/Mana Regen Tick"], L["Enables the five-second-rule ticks for Mana classes and Energy ticks for Rogues and Druids."], 21)
 	end
 
 	return config
@@ -1091,15 +1093,15 @@ local function GetOptionsTable_ClassBar(updateFunc, groupName, numUnits)
 
 		if E.myclass == 'DRUID' then
 			config.args.additionalGroup.args.altManaGroup.args.Rage = ACH:Toggle(L["RAGE"], nil, 1)
-			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
+			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["ENERGY"], nil, 2)
 			config.args.additionalGroup.args.altManaGroup.args.LunarPower = ACH:Toggle(L["LUNAR_POWER"], nil, 3, nil, nil, nil, nil, nil, nil, not (E.Retail or E.Mists))
 		elseif E.myclass == 'MONK' then
 			config.args.additionalGroup.args.altManaGroup.args.Stagger = ACH:Toggle(L["Stagger"], nil, 1, nil, nil, nil, nil, nil, nil, E.Retail)
-			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["Energy"], nil, 2)
+			config.args.additionalGroup.args.altManaGroup.args.Energy = ACH:Toggle(L["ENERGY"], nil, 2)
 		elseif E.myclass == 'PRIEST' then
-			config.args.additionalGroup.args.altManaGroup.args.Insanity = ACH:Toggle(L["Insanity"], nil, 1)
+			config.args.additionalGroup.args.altManaGroup.args.Insanity = ACH:Toggle(L["INSANITY"], nil, 1)
 		elseif E.myclass == 'SHAMAN' then
-			config.args.additionalGroup.args.altManaGroup.args.Maelstrom = ACH:Toggle(L["Maelstrom"], nil, 1)
+			config.args.additionalGroup.args.altManaGroup.args.Maelstrom = ACH:Toggle(L["MAELSTROM"], nil, 1)
 		elseif E.myclass == 'EVOKER' then
 			config.args.additionalGroup.args.altManaGroup.args.EbonMight = ACH:Toggle(L["EBON_MIGHT"], nil, 1)
 		end
@@ -1155,7 +1157,7 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 
 		config.args.visibilityGroup = ACH:Group(L["Visibility"], nil, 100, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
 		config.args.visibilityGroup.args.defaults = ACH:Execute(L["Restore Defaults"], function() return P.unitframe.units[groupName].visibility end, 1, function() E.db.unitframe.units[groupName].visibility = P.unitframe.units[groupName].visibility updateFunc(UF, groupName, numUnits) end, nil, true)
-		config.args.visibilityGroup.args.showPlayer = ACH:Toggle(L["Display Player"], L["When true, the header includes the player when not in a raid."], 2, nil, nil, nil, nil, nil, nil, groupName ~= 'party')
+		config.args.visibilityGroup.args.showPlayer = ACH:Toggle(L["Display Player"], L["When true, the header includes the player when not in a raid."], 2)
 		config.args.visibilityGroup.args.visibility = ACH:Input(L["Visibility"], L["VISIBILITY_DESC"], 3, nil, 'full')
 
 		config.args.sortingGroup = ACH:Group(L["Grouping & Sorting"], nil, 300, nil, nil, function(info, value) E.db.unitframe.units[groupName][info[#info]] = value updateFunc(UF, groupName, numUnits) end)
@@ -1175,8 +1177,8 @@ local function GetOptionsTable_GeneralGroup(updateFunc, groupName, numUnits)
 		config.args.sortingGroup.args.classSetup = ACH:Group(L["Class Order"], nil, 500, nil, nil, nil, nil, function() return E.db.unitframe.units[groupName].groupBy ~= 'CLASS' end)
 		config.args.sortingGroup.args.classSetup.inline = true
 
-		for i = 1, C.Values.NUM_CLASSES do
-			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, C.ClassTable)
+		for i = 1, E.numClasses do
+			config.args.sortingGroup.args.classSetup.args['CLASS'..i] = ACH:Select(' ', nil, i, E.ClassNamesByFile)
 		end
 	else
 		config.args.positionsGroup.inline = true -- inline for others
@@ -1406,7 +1408,7 @@ Colors.selectionGroup.args['9'] = ACH:Color(L["Dead"], nil, 9)
 Colors.selectionGroup.args['13'] = ACH:Color(L["Battleground Friendly"], nil, 13)
 
 Colors.debuffHighlight = ACH:Group(L["Aura Highlight"], nil, nil, nil, function(info) if info.type == 'color' then local t, d = E.db.unitframe.colors.debuffHighlight[info[#info]], P.unitframe.colors.debuffHighlight[info[#info]] return t.r, t.g, t.b, t.a, d.r, d.g, d.b, d.a else return E.db.unitframe.colors.debuffHighlight[info[#info]] end end, function(info, ...) if info.type == 'color' then local r, g, b, a = ... local t = E.db.unitframe.colors.debuffHighlight[info[#info]] t.r, t.g, t.b, t.a = r, g, b, a else local value = ... E.db.unitframe.colors.debuffHighlight[info[#info]] = value end UF:Update_AllFrames() E:UpdateAuraCurves() end)
-Colors.debuffHighlight.args.debuffHighlighting = ACH:Select(L["Highlight Color Style"], L["Color the unit healthbar if there is a debuff that can be dispelled by you."], 1, { NONE = L["None"], GLOW = L["Glow"], FILL = L["Fill"] }, nil, nil, function(info) return E.db.unitframe[info[#info]] end, function(info, value) E.db.unitframe[info[#info]] = value end)
+Colors.debuffHighlight.args.debuffHighlighting = ACH:Select(L["Highlight Color Style"], L["Color the unit healthbar if there is a debuff that can be dispelled by you."], 1, { NONE = L["None"], GLOW = L["Glow"], FILL = L["Fill"] }, nil, nil, function(info) return E.db.unitframe[info[#info]] end, function(info, value) E.db.unitframe[info[#info]] = value UF:Update_AllFrames() end)
 Colors.debuffHighlight.args.blendMode = ACH:Select(L["Blend Mode"], nil, 2, blendModeValues)
 Colors.debuffHighlight.args.spacer1 = ACH:Spacer(3, 'full')
 Colors.debuffHighlight.args.Magic = ACH:Color(L["Magic Effect"], nil, 4, true)
@@ -1598,7 +1600,7 @@ end
 
 local HeaderCopyFrom = { party = L["Party Frames"], raidpet = L["Raid Pet"] }
 for i = 1, 3 do
-	HeaderCopyFrom['raid'..i] = L[format("Raid %s Frames", i)]
+	HeaderCopyFrom['raid'..i] = format(L["Raid %d Frames"], i)
 end
 
 local function CopyFromFunc(info)
@@ -1713,7 +1715,7 @@ IndividualUnits.player.args = GetUnitSettings('player', UF.CreateAndUpdateUF)
 local Player = IndividualUnits.player.args
 
 Player.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.player.forceShowAuras = not UF.player.forceShowAuras UF:CreateAndUpdateUF('player') end)
-Player.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Player"], nil, { unit = 'player', mover = 'Player Frame' }) end)
+Player.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Player"], nil, { unit = 'player', mover = 'ElvUF_PlayerMover' }) end)
 Player.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'player') E:RefreshGUI() end)
 Player.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'player')
 
@@ -1750,7 +1752,7 @@ IndividualUnits.pet.args = GetUnitSettings('pet', UF.CreateAndUpdateUF)
 local Pet = IndividualUnits.pet.args
 
 Pet.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.pet.forceShowAuras = not UF.pet.forceShowAuras UF:CreateAndUpdateUF('pet') end)
-Pet.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, { unit = 'pet', mover = 'Pet Frame' }) end)
+Pet.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Pet Frame"], nil, { unit = 'pet', mover = 'ElvUF_PetMover' }) end)
 Pet.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'pet') E:RefreshGUI() end)
 Pet.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pet')
 
@@ -1759,7 +1761,7 @@ IndividualUnits.target.args = GetUnitSettings('target', UF.CreateAndUpdateUF)
 local Target = IndividualUnits.target.args
 
 Target.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.target.forceShowAuras = not UF.target.forceShowAuras UF:CreateAndUpdateUF('target') end)
-Target.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Target Frame"], nil, { unit = 'target', mover = 'Target Frame' }) end)
+Target.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Target Frame"], nil, { unit = 'target', mover = 'ElvUF_TargetMover' }) end)
 Target.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'target') E:RefreshGUI() end)
 Target.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'target')
 
@@ -1768,7 +1770,7 @@ IndividualUnits.targettarget.args = GetUnitSettings('targettarget', UF.CreateAnd
 local TargetTarget = IndividualUnits.targettarget.args
 
 TargetTarget.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.targettarget.forceShowAuras = not UF.targettarget.forceShowAuras UF:CreateAndUpdateUF('targettarget') end)
-TargetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTarget Frame"], nil, { unit = 'targettarget', mover = 'TargetTarget Frame' }) end)
+TargetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTarget Frame"], nil, { unit = 'targettarget', mover = 'ElvUF_TargetTargetMover' }) end)
 TargetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'targettarget') E:RefreshGUI() end)
 TargetTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettarget')
 
@@ -1777,7 +1779,7 @@ IndividualUnits.targettargettarget.args = GetUnitSettings('targettargettarget', 
 local TargetTargetTarget = IndividualUnits.targettargettarget.args
 
 TargetTargetTarget.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.targettargettarget.forceShowAuras = not UF.targettargettarget.forceShowAuras UF:CreateAndUpdateUF('targettargettarget') end)
-TargetTargetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTargetTarget Frame"], nil, { unit = 'targettargettarget', mover = 'TargetTargetTarget Frame' }) end)
+TargetTargetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["TargetTargetTarget Frame"], nil, { unit = 'targettargettarget', mover = 'ElvUF_TargetTargetTargetMover' }) end)
 TargetTargetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'targettargettarget') E:RefreshGUI() end)
 TargetTargetTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'targettargettarget')
 
@@ -1786,7 +1788,7 @@ IndividualUnits.focus.args = GetUnitSettings('focus', UF.CreateAndUpdateUF)
 local Focus = IndividualUnits.focus.args
 
 Focus.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.focus.forceShowAuras = not UF.focus.forceShowAuras UF:CreateAndUpdateUF('focus') end)
-Focus.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Focus Frame"], nil, { unit = 'focus', mover = 'Focus Frame' }) end)
+Focus.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Focus Frame"], nil, { unit = 'focus', mover = 'ElvUF_FocusMover' }) end)
 Focus.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'focus') E:RefreshGUI() end)
 Focus.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focus')
 
@@ -1795,7 +1797,7 @@ IndividualUnits.focustarget.args = GetUnitSettings('focustarget', UF.CreateAndUp
 local FocusTarget = IndividualUnits.focustarget.args
 
 FocusTarget.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.focustarget.forceShowAuras = not UF.focustarget.forceShowAuras UF:CreateAndUpdateUF('focustarget') end)
-FocusTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["FocusTarget Frame"], nil, { unit = 'focustarget', mover = 'FocusTarget Frame' }) end)
+FocusTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["FocusTarget Frame"], nil, { unit = 'focustarget', mover = 'ElvUF_FocusTargetMover' }) end)
 FocusTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'focustarget') E:RefreshGUI() end)
 FocusTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'focustarget')
 
@@ -1804,7 +1806,7 @@ IndividualUnits.pettarget.args = GetUnitSettings('pettarget', UF.CreateAndUpdate
 local PetTarget = IndividualUnits.pettarget.args
 
 PetTarget.showAuras = ACH:Execute(L["Show Auras"], nil, 2, function() UF.pettarget.forceShowAuras = not UF.pettarget.forceShowAuras UF:CreateAndUpdateUF('pettarget') end)
-PetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["PetTarget Frame"], nil, { unit = 'pettarget', mover = 'PetTarget Frame' }) end)
+PetTarget.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["PetTarget Frame"], nil, { unit = 'pettarget', mover = 'ElvUF_PetTargetMover' }) end)
 PetTarget.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'pettarget') E:RefreshGUI() end)
 PetTarget.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUF, 'pettarget')
 
@@ -1817,7 +1819,7 @@ GroupUnits.boss.args = GetUnitSettings('boss', UF.CreateAndUpdateUFGroup, C.Valu
 local Boss = GroupUnits.boss.args
 
 Boss.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to show, they will act as if they are the player frame."], 2, function() UF:ToggleForceShowGroupFrames('boss', C.Values.MAX_BOSS_FRAMES) end)
-Boss.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Boss Frames"], nil, {unit='boss', mover='Boss Frames'}) end)
+Boss.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Boss Frames"], nil, {unit='boss', mover='BossHeaderMover'}) end)
 Boss.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { arena = L["Arena"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'boss') E:RefreshGUI() end)
 Boss.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'boss', C.Values.MAX_BOSS_FRAMES)
 
@@ -1826,7 +1828,7 @@ GroupUnits.arena.args = GetUnitSettings('arena', UF.CreateAndUpdateUFGroup, 5)
 local Arena = GroupUnits.arena.args
 
 Arena.displayFrames = ACH:Execute(L["Display Frames"], L["Force the frames to show, they will act as if they are the player frame."], 2, function() UF:ToggleForceShowGroupFrames('arena', 5) end)
-Arena.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, { unit = 'arena', mover = 'Arena Frames' }) end)
+Arena.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Arena Frames"], nil, { unit = 'arena', mover = 'ArenaHeaderMover' }) end)
 Arena.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, { boss = L["Boss"] }, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'arena') E:RefreshGUI() end, nil, E.Classic or E.TBC)
 Arena.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateUFGroup, 'arena', 5)
 
@@ -1843,7 +1845,7 @@ GroupUnits.party.args = GetUnitSettings('party', UF.CreateAndUpdateHeaderGroup)
 local Party = GroupUnits.party.args
 
 Party.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.party, UF.party.forceShow ~= true or nil) end)
-Party.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Party Frames"], nil, { unit = 'party', mover = 'Party Frames' }) end)
+Party.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Party Frames"], nil, { unit = 'party', mover = 'ElvUF_PartyMover' }) end)
 Party.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'party') E:RefreshGUI() end)
 Party.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'party')
 
@@ -1853,7 +1855,7 @@ for i = 1, 3 do
 	local Raid = GroupUnits['raid'..i].args
 
 	Raid.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF['raid'..i], UF['raid'..i].forceShow ~= true or nil) end)
-	Raid.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L[format("Raid %s Frames", i)], nil, {unit = format('raid%s', i), mover=format('Raid %s Frames', i)}) end)
+	Raid.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', format(L["Raid %d Frames"], i), nil, {unit = format('raid%s', i), mover=format('ElvUF_Raid%sMover', i)}) end)
 	Raid.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raid'..i) E:RefreshGUI() end)
 
 	Raid.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'raid'..i)
@@ -1865,7 +1867,7 @@ GroupUnits.raidpet.args = GetUnitSettings('raidpet', UF.CreateAndUpdateHeaderGro
 local RaidPet = GroupUnits.raidpet.args
 
 RaidPet.configureToggle = ACH:Execute(L["Display Frames"], nil, 2, function() UF:HeaderConfig(UF.raidpet, UF.raidpet.forceShow ~= true or nil) end)
-RaidPet.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Pet Frames"], nil, {unit = 'raidpet', mover='Raid Pet Frames'}) end)
+RaidPet.resetSettings = ACH:Execute(L["Restore Defaults"], nil, 3, function() E:StaticPopup_Show('RESET_UF_UNIT', L["Raid Pet Frames"], nil, {unit = 'raidpet', mover='ElvUF_RaidpetMover'}) end)
 RaidPet.copyFrom = ACH:Select(L["Copy From"], L["Select a unit to copy settings from."], 4, CopyFromFunc, true, nil, nil, function(_, value) UF:MergeUnitSettings(value, 'raidpet') E:RefreshGUI() end)
 RaidPet.generalGroup = GetOptionsTable_GeneralGroup(UF.CreateAndUpdateHeaderGroup, 'raidpet')
 

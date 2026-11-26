@@ -7,7 +7,7 @@ local THRESHOLD = { min = 0, softMax = 3600, max = 86400, step = 1 }
 local MIN_DURATION = { min = 0, softMax = 60, max = 3600, step = 0.001, bigStep = 1 }
 
 local function Group(order, db, label)
-	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return ((db == 'cdmanager' or db == 'zonebutton') and not E.Modern) or (db == 'bossbutton' and not (E.Modern or E.Mists)) end)
+	local main = ACH:Group(label, nil, order, nil, function(info) return E.db.cooldown[db][info[#info]] end, function(info, value) E.db.cooldown[db][info[#info]] = value; E:CooldownSettings(db); end, function() return db == 'cdmanager' and not (E.private.skins.blizzard.enable and E.private.skins.blizzard.cooldownManager) end, function() return (db == 'cdmanager' and not E.Modern) or (db == 'zonebutton' and not E.Retail) or (db == 'bossbutton' and not (E.Retail or E.Mists)) end)
 	E.Options.args.cooldown.args[db] = main
 
 	local charges = db ~= 'actionbar' and db ~= 'bossbutton' and db ~= 'zonebutton'
@@ -36,9 +36,7 @@ local function Group(order, db, label)
 	general.inline = true
 	mainArgs.generalGroup = general
 
-	local _, textGroup, thresholdGroup = C:GetCooldownConfig(db, E.db.cooldown[db], P.cooldown[db], charges, lossOfControl)
-	mainArgs.textGroup = textGroup
-	mainArgs.thresholdGroup = thresholdGroup
+	C:GetCooldownConfig(db, E.db.cooldown[db], P.cooldown[db], charges, lossOfControl, mainArgs, true)
 end
 
 E.Options.args.cooldown = ACH:Group(L["Cooldown & Duration"], nil, 2, 'tab', function(info) return E.db.cooldown[info[#info]] end, function(info, value) E.db.cooldown[info[#info]] = value; E:CooldownSettings('global'); end)

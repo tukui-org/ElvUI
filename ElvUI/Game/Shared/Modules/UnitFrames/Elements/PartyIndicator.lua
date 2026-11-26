@@ -6,11 +6,11 @@ local CreateFrame = CreateFrame
 function UF:Construct_PartyIndicator(frame)
 	local PartyIndicator = CreateFrame('Frame', nil, frame.RaisedElementParent)
 
-	local HomeIcon = PartyIndicator:CreateTexture(nil, 'OVERLAY', nil, 0)
+	local HomeIcon = PartyIndicator:CreateTexture(nil, 'OVERLAY', nil, 1)
 	HomeIcon:Point('CENTER', 4, 4)
 	HomeIcon:Size(26)
 
-	local InstanceIcon = PartyIndicator:CreateTexture(nil, 'OVERLAY', nil, 1)
+	local InstanceIcon = PartyIndicator:CreateTexture(nil, 'OVERLAY', nil, 2)
 	InstanceIcon:Point('CENTER', 0, 0)
 	InstanceIcon:Size(26)
 

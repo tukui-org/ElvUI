@@ -52,6 +52,17 @@ local function UpdateWidth(frame)
 	for tab in frame.tabPool:EnumerateActive() do
 		if not tab.IsSkinned then
 			tab:StripTextures()
+			tab:SetAlpha(1)
+
+			-- 1px above the category box, text centered inside
+			tab:CreateBackdrop('Transparent')
+			tab.backdrop:Point('TOPLEFT', 3, -11)
+			tab.backdrop:Point('BOTTOMRIGHT', -3, 1)
+
+			if not E.Modern then -- classic anchors the text between the side textures
+				tab.Text:ClearAllPoints()
+				tab.Text:Point('CENTER', 0, -5)
+			end
 
 			tab.IsSkinned = true
 		end
@@ -211,6 +222,8 @@ function S:Blizzard_ChatFrame()
 	S:HandleButton(_G.ChatConfigFrameOkayButton)
 	S:HandleButton(_G.ChatConfigFrameDefaultButton)
 	S:HandleButton(_G.ChatConfigFrameRedockButton)
+
+	_G.ChatConfigFrameRedockButton:Point('BOTTOMLEFT', _G.ChatConfigFrameDefaultButton, 'BOTTOMRIGHT', 1, 0)
 
 	if not E.Modern then
 		S:HandleButton(ChatConfigFrame.ToggleChatButton)

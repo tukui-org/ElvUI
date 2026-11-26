@@ -22,10 +22,11 @@ A default texture will be applied to the StatusBar and Texture widgets if they d
 
 ## Options
 
-.timeToHold      - Indicates for how many seconds the castbar should be visible after a _FAILED or _INTERRUPTED
+.timeToHold     - Indicates for how many seconds the castbar should be visible after a _FAILED or _INTERRUPTED
                    event. Defaults to 0 (number)
-.hideTradeSkills - Makes the element ignore casts related to crafting professions (boolean)
-.smoothing       - Which status bar smoothing method to use, defaults to `Enum.StatusBarInterpolation.Immediate` (number)
+.hideCrafts     - Makes the element ignore casts related to crafting professions (boolean)
+.mergeCrafts    - Merges the casts of tradeskills into a single cast (boolean)
+.smoothing      - Which status bar smoothing method to use, defaults to `Enum.StatusBarInterpolation.Immediate` (number)
 
 ## Attributes
 
@@ -117,7 +118,8 @@ local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local StatusBarTimerDirection = Enum.StatusBarTimerDirection
 local StatusBarInterpolation = Enum.StatusBarInterpolation
 
-local tradeskillCurrent, tradeskillTotal, mergeTradeskill = 0, 0, false
+local craftCurrent, craftTotal, craftStart, mergeCrafts = 0, 0, nil, false
+local craftDuration = oUF.isModern and C_DurationUtil.CreateDuration()
 local specialAuras = {} -- ms modifier
 local specialCast = {} -- ms duration
 if oUF.isClassic or oUF.isTBC or oUF.isForever then
@@ -192,11 +194,12 @@ local function resetAttributes(self)
 end
 
 local function UpdateCurrentTarget(element, unit, target)
-	if UnitSpellTargetName then
+	if target then
+		element.targetCurrent = target
+		element.targetClass = nil
+	else
 		element.targetCurrent = UnitSpellTargetName(unit)
 		element.targetClass = UnitSpellTargetClass(unit)
-	else
-		element.targetCurrent = target
 	end
 end
 
@@ -327,7 +330,7 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 	end
 
-	if not name or (isTradeSkill and element.hideTradeSkills) then
+	if not name or (isTradeSkill and element.hideCrafts) then
 		if real ~= 'PLAYER_TARGET_CHANGED' or element.holdTime <= 0 then
 			resetAttributes(element)
 			element:Hide()
@@ -341,9 +344,9 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 	element.empowering = empowering
 	element.castsent = castsent
 
-	local isPlayer = oUF:UnitIsUnit(unit, 'player')
-	if not isPlayer or (oUF.isModern or (real ~= 'UNIT_SPELLCAST_SENT' and real ~= 'UNIT_SPELLCAST_START' and real ~= 'UNIT_SPELLCAST_CHANNEL_START')) then
-		UpdateCurrentTarget(element, unit) -- we want to ignore the start events on player unit because sent adds the target info
+	-- Fake castbars (Multi-Shot, Aimed Shot) take the target from sent
+	if real ~= 'UNIT_SPELLCAST_SENT' then
+		UpdateCurrentTarget(element, unit)
 	end
 
 	element.delay = 0
@@ -355,9 +358,11 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 
 	-- ElvUI block
 	local stages = empowering and UnitEmpoweredStagePercentages(unit) or nil
+	local mergePlayer = mergeCrafts and element.mergeCrafts and oUF:UnitIsUnit(unit, 'player')
 
 	element.isTradeSkill = isTradeSkill
 	element.tradeSkillCastID = (isTradeSkill and castID) or nil
+	element.tradeSkillMerge = mergePlayer and casting and isTradeSkill and oUF:NotSecretValue(startTime)
 	element.stages = stages
 	-- end block
 
@@ -381,6 +386,21 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		end
 
 		local duration = element.empowering and UnitEmpoweredChannelDuration(unit) or (element.channeling and UnitChannelDuration(unit) or UnitCastingDuration(unit))
+
+		-- ElvUI block
+		if element.tradeSkillMerge then
+			if craftStart ~= startTime then
+				craftStart = startTime
+				craftCurrent = craftCurrent + 1
+			end
+
+			craftDuration:SetTimeFromStart(element.startTime - (element.max * (craftCurrent - 1)), element.max * craftTotal)
+			duration = craftDuration
+			element.max = element.max * craftTotal
+			element.holdTime = 1
+		end
+		-- end block
+
 		if duration then
 			local direction = element.channeling and StatusBarTimerDirection.RemainingTime or StatusBarTimerDirection.ElapsedTime
 			element:SetTimerDuration(duration, element.smoothing or StatusBarInterpolation.Immediate, direction)
@@ -401,16 +421,6 @@ local function CastStart(self, event, unit, castGUID, spellID, castTime)
 		else
 			element.duration = GetTime() - startTime
 		end
-
-		-- ElvUI block
-		if mergeTradeskill and isPlayer and isTradeSkill then
-			element.duration = element.duration + (element.max * tradeskillCurrent)
-			element.max = element.max * tradeskillTotal
-			element.holdTime = 1
-
-			tradeskillCurrent = tradeskillCurrent + 1
-		end
-		-- end block
 
 		element:SetMinMaxValues(0, element.max)
 
@@ -601,9 +611,9 @@ local function CastStop(self, event, unit, ...)
 
 	if not element:IsShown() then return end
 
-	local isPlayer = oUF:UnitIsUnit(unit, 'player')
-	if mergeTradeskill and isPlayer and (tradeskillCurrent == tradeskillTotal) then
-		mergeTradeskill = false
+	local mergePlayer = mergeCrafts and oUF:UnitIsUnit(unit, 'player')
+	if mergePlayer and (craftCurrent == craftTotal) then
+		mergeCrafts = false
 	end
 
 	if(interruptedBy) then
@@ -670,9 +680,12 @@ local function CastFail(self, event, unit, ...)
 
 	element.holdTime = element.timeToHold or 0
 
-	local isPlayer = oUF:UnitIsUnit(unit, 'player')
-	if mergeTradeskill and isPlayer then
-		mergeTradeskill = false
+	-- Failed crafts: when you start moving, etc
+	element.tradeSkillMerge = false
+
+	local mergePlayer = mergeCrafts and oUF:UnitIsUnit(unit, 'player')
+	if mergePlayer then
+		mergeCrafts = false
 	end
 
 	-- force filled castbar
@@ -731,14 +744,12 @@ end
 
 -- ElvUI block
 local UNIT_SPELLCAST_SENT = function(self, event, unit, target, castID, spellID)
-	if not oUF.isModern then
-		UpdateCurrentTarget(self.Castbar, unit, target)
-	end
-
 	local castTime = specialCast[spellID]
-	if castTime then
-		CastStart(self, event, unit, castID, spellID, castTime)
-	end
+	if not castTime then return end
+
+	UpdateCurrentTarget(self.Castbar, unit, target)
+
+	CastStart(self, event, unit, castID, spellID, castTime)
 end
 -- ElvUI block
 
@@ -861,14 +872,19 @@ local function onUpdate(self, elapsed)
 	elseif(self.holdTime > 0) then
 		self.holdTime = self.holdTime - elapsed
 
-		-- force filled castbar
-		self:SetMinMaxValues(0, 1)
-		self:SetValue(1)
+		if not self.tradeSkillMerge then -- force filled castbar
+			self:SetMinMaxValues(0, 1)
+			self:SetValue(1)
 
-		if(self.Time) then
-			self.Time:SetText('')
+			if(self.Time) then
+				self.Time:SetText('')
+			end
 		end
 	else
+		if self.tradeSkillMerge and craftCurrent > 0 then
+			mergeCrafts = false
+		end
+
 		resetAttributes(self)
 		self:Hide()
 	end
@@ -979,9 +995,9 @@ end
 
 if oUF.isModern then -- ElvUI
 	hooksecurefunc(C_TradeSkillUI, 'CraftRecipe', function(_, num)
-		tradeskillCurrent = 0
-		tradeskillTotal = num or 1
-		mergeTradeskill = true
+		craftCurrent = 0
+		craftTotal = (num and num > 0 and num) or 1 -- Runeforging passes 0
+		mergeCrafts = true
 	end)
 end
 

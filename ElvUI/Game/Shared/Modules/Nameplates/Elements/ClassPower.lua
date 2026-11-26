@@ -276,7 +276,7 @@ function NP:Update_Runes(nameplate)
 end
 
 function NP:Construct_Stagger(nameplate)
-	local Stagger = CreateFrame('StatusBar', nameplate.frameName..'Stagger', nameplate)
+	local Stagger = CreateFrame('StatusBar', '$parent_Stagger', nameplate)
 	Stagger:SetStatusBarTexture(LSM:Fetch('statusbar', NP.db.statusbar))
 	Stagger:CreateBackdrop('Transparent', nil, nil, nil, nil, true)
 	Stagger:Hide()

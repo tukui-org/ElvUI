@@ -8,19 +8,11 @@ local CreateFrame = CreateFrame
 
 S:AddCallback('BlizzardMiscFrames', nil, nil, 'misc')
 
-local function FixReadyCheckFrame(listener)
-	local readyCheck = _G.ReadyCheckFrame
-	if readyCheck.initiator and not listener:IsShown() then
-		readyCheck:Hide() -- bug fix, dont show it if player is initiator; blizzard checks UnitIsUnit('player', initiator)
-	end
-end
-
 local function FixAutoCompleteLevel(frame)
 	local parent = frame:GetParent()
 	if not parent then return end
 
-	local frameLevel = parent:GetFrameLevel()
-	frame:SetFrameLevel(frameLevel + 4)
+	frame:OffsetFrameLevel(4, parent)
 end
 
 local function ClearedHooks(button, script)
@@ -79,46 +71,28 @@ function S:BlizzardMiscFrames()
 	for _, frame in next, { _G.AddonCompartmentFrame, _G.AutoCompleteBox, _G.QueueStatusFrame } do
 		frame:StripTextures()
 		frame:SetTemplate('Transparent')
-	end
 
-	-- ReadyCheck thing
-	S:HandleButton(_G.ReadyCheckFrameYesButton)
-	S:HandleButton(_G.ReadyCheckFrameNoButton)
+		if frame.StateTexture then
+			frame.StateTexture:SetAlpha(0)
+		end
+	end
 
 	local ReadyCheckFrame = _G.ReadyCheckFrame
-	_G.ReadyCheckFrameYesButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameNoButton:SetParent(ReadyCheckFrame)
-	_G.ReadyCheckFrameYesButton:ClearAllPoints()
-	_G.ReadyCheckFrameNoButton:ClearAllPoints()
-	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
-	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
-
-	-- the classic listener frame is faded out below, so the text moves to the ready check frame
-	if not E.Modern then
-		_G.ReadyCheckFrameText:SetParent(ReadyCheckFrame)
-	end
-
 	_G.ReadyCheckFrameText:ClearAllPoints()
 	_G.ReadyCheckFrameText:Point('TOP', 0, E.Modern and -30 or -15)
 	_G.ReadyCheckFrameText:Width(300)
 
-	-- the Mainline listener frame has a title bar, the classic one is a single texture
+	S:HandleButton(_G.ReadyCheckFrameYesButton)
+	_G.ReadyCheckFrameYesButton:ClearAllPoints()
+	_G.ReadyCheckFrameYesButton:Point('TOPRIGHT', ReadyCheckFrame, 'CENTER', -3, -5)
+
+	S:HandleButton(_G.ReadyCheckFrameNoButton)
+	_G.ReadyCheckFrameNoButton:ClearAllPoints()
+	_G.ReadyCheckFrameNoButton:Point('TOPLEFT', ReadyCheckFrame, 'CENTER', 3, -5)
+
 	local ListenerFrame = _G.ReadyCheckListenerFrame
-	if E.Modern then
-		_G.ReadyCheckPortrait:Kill()
-		S:HandleFrame(ListenerFrame)
-
-		local TitleContainer = ListenerFrame.TitleContainer
-		TitleContainer:ClearAllPoints()
-		TitleContainer:Point('TOPLEFT', 1, -1)
-		TitleContainer:Point('TOPRIGHT', -1, 0)
-	else
-		ReadyCheckFrame:StripTextures()
-		ReadyCheckFrame:SetTemplate('Transparent')
-		ListenerFrame:SetAlpha(0)
-	end
-
-	ListenerFrame:HookScript('OnShow', FixReadyCheckFrame)
+	_G.ReadyCheckPortrait:Kill()
+	S:HandleFrame(ListenerFrame)
 
 	-- Retail, Forever and Mists skin it in PVP.lua
 	if not (E.Modern or E.Mists) then
@@ -128,8 +102,12 @@ function S:BlizzardMiscFrames()
 		S:HandleButton(_G.PVPReadyDialogHideButton)
 	end
 
-	-- Mainline moves the box to the TOOLTIP strata itself
-	if not E.Modern then
+	if E.Modern then
+		local TitleContainer = ListenerFrame.TitleContainer
+		TitleContainer:ClearAllPoints()
+		TitleContainer:Point('TOPLEFT', 1, -1)
+		TitleContainer:Point('TOPRIGHT', -1, 0)
+	else -- modern moves the box to the TOOLTIP strata itself
 		_G.AutoCompleteBox:HookScript('OnShow', FixAutoCompleteLevel)
 	end
 
@@ -165,6 +143,7 @@ function S:BlizzardMiscFrames()
 	if LFDRoleCheckPopup then
 		LFDRoleCheckPopup:StripTextures()
 		LFDRoleCheckPopup:SetTemplate('Transparent')
+
 		S:HandleButton(_G.LFDRoleCheckPopupAcceptButton)
 		S:HandleButton(_G.LFDRoleCheckPopupDeclineButton)
 
@@ -174,6 +153,7 @@ function S:BlizzardMiscFrames()
 			_G.LFDRoleCheckPopupRoleButtonHealer
 		} do
 			S:HandleCheckBox(roleButton.checkButton, nil, nil, true)
+
 			roleButton:DisableDrawLayer('OVERLAY')
 		end
 	end
@@ -189,9 +169,11 @@ function S:BlizzardMiscFrames()
 		_G.GhostFrameMiddle:SetAlpha(0)
 		_G.GhostFrameRight:SetAlpha(0)
 		_G.GhostFrameLeft:SetAlpha(0)
+
 		GhostFrame:StripTextures()
 		GhostFrame:ClearAllPoints()
 		GhostFrame:Point('TOP', E.UIParent, 'TOP', 0, -200)
+
 		_G.GhostFrameContentsFrame:SetTemplate('Transparent')
 		_G.GhostFrameContentsFrameText:Point('TOPLEFT', 53, 0)
 		_G.GhostFrameContentsFrameIcon:SetTexCoords()
@@ -200,9 +182,10 @@ function S:BlizzardMiscFrames()
 		local button = CreateFrame('Frame', nil, _G.GhostFrameContentsFrameIcon:GetParent())
 		button:Point('TOPLEFT', _G.GhostFrameContentsFrameIcon, -E.Border, E.Border)
 		button:Point('BOTTOMRIGHT', _G.GhostFrameContentsFrameIcon, E.Border, -E.Border)
+		button:SetTemplate()
+
 		_G.GhostFrameContentsFrameIcon:Size(37, 38)
 		_G.GhostFrameContentsFrameIcon:SetParent(button)
-		button:SetTemplate()
 	end
 
 	_G.OpacityFrame:StripTextures()
@@ -214,8 +197,10 @@ function S:BlizzardMiscFrames()
 	local SideDressUpFrame = _G.SideDressUpFrame
 	S:HandleCloseButton(E.Modern and _G.SideDressUpFrameCloseButton or _G.SideDressUpModelCloseButton)
 	S:HandleButton(SideDressUpFrame.ResetButton)
+
 	SideDressUpFrame:StripTextures()
 	SideDressUpFrame:SetTemplate('Transparent')
+
 	SideDressUpFrame.BGTopLeft:Hide()
 	SideDressUpFrame.BGBottomLeft:Hide()
 	SideDressUpFrame.ResetButton:OffsetFrameLevel(1)
@@ -228,11 +213,12 @@ function S:BlizzardMiscFrames()
 	StackSplitFrame:StripTextures()
 	StackSplitFrame:SetTemplate('Transparent')
 
-	StackSplitFrame.bg1 = CreateFrame('Frame', nil, StackSplitFrame)
-	StackSplitFrame.bg1:SetTemplate('Transparent')
-	StackSplitFrame.bg1:Point('TOPLEFT', 10, -15)
-	StackSplitFrame.bg1:Point('BOTTOMRIGHT', -10, 55)
-	StackSplitFrame.bg1:OffsetFrameLevel(-1)
+	local splitBG = CreateFrame('Frame', nil, StackSplitFrame)
+	splitBG:OffsetFrameLevel(-1)
+	splitBG:Point('TOPLEFT', 10, -15)
+	splitBG:Point('BOTTOMRIGHT', -10, 55)
+	splitBG:SetTemplate('Transparent')
+	StackSplitFrame.BG = splitBG
 
 	S:HandleButton(E.Modern and StackSplitFrame.OkayButton or _G.StackSplitOkayButton)
 	S:HandleButton(E.Modern and StackSplitFrame.CancelButton or _G.StackSplitCancelButton)
@@ -243,9 +229,9 @@ function S:BlizzardMiscFrames()
 		button:ClearAllPoints()
 
 		if button == leftButton then
-			button:Point('LEFT', StackSplitFrame.bg1, 'LEFT', 4, 0)
+			button:Point('LEFT', splitBG, 'LEFT', 4, 0)
 		else
-			button:Point('RIGHT', StackSplitFrame.bg1, 'RIGHT', -4, 0)
+			button:Point('RIGHT', splitBG, 'RIGHT', -4, 0)
 		end
 
 		S:HandleNextPrevButton(button, nil, nil, true)

@@ -18,6 +18,7 @@ function S:Blizzard_HelpFrame()
 
 	local browser = _G.HelpBrowser
 	browser.BrowserInset:StripTextures()
+
 	browser:CreateBackdrop()
 	browser.backdrop:ClearAllPoints()
 	browser.backdrop:Point('TOPLEFT', browser, 'TOPLEFT', -1, 1)

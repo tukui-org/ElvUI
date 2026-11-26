@@ -61,6 +61,10 @@ local function SkinDiscordFrame() -- the link frame is only created once the gui
 	linkFrame.IsSkinned = true
 end
 
+local function RankOrderNew_OnClick()
+	E:Delay(1, SkinGuildRanks)
+end
+
 function S:Blizzard_GuildControlUI()
 	_G.GuildControlUI:StripTextures()
 	_G.GuildControlUI:SetTemplate('Transparent')
@@ -78,13 +82,11 @@ function S:Blizzard_GuildControlUI()
 	S:HandleDropDownBox(_G.GuildControlUINavigationDropdown)
 	S:HandleDropDownBox(_G.GuildControlUIRankSettingsFrameRankDropdown, 180)
 
+	_G.GuildControlUIHbar:StripTextures()
 	_G.GuildControlUIRankBankFrame:StripTextures()
 	_G.GuildControlUIRankBankFrameInset:StripTextures()
 	_G.GuildControlUIRankBankFrameInsetScrollFrame:StripTextures()
-	_G.GuildControlUIHbar:StripTextures()
-	_G.GuildControlUIRankOrderFrameNewButton:HookScript('OnClick', function()
-		E:Delay(1, SkinGuildRanks)
-	end)
+	_G.GuildControlUIRankOrderFrameNewButton:HookScript('OnClick', RankOrderNew_OnClick)
 
 	S:HandleCheckBox(_G.GuildControlUIRankSettingsFrameOfficerCheckbox)
 
@@ -93,12 +95,15 @@ function S:Blizzard_GuildControlUI()
 		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameServerDropdown, 180)
 		S:HandleDropDownBox(_G.GuildControlUIRankDiscordFrameChannelDropdown, 180)
 		S:HandleButton(_G.GuildControlUIRankDiscordFrameChannelButton)
+
 		hooksecurefunc('GuildControlUI_Discord_Update', SkinDiscordFrame)
 	end
 
 	for i = 1, _G.NUM_RANK_FLAGS do
 		local checkbox = _G['GuildControlUIRankSettingsFrameCheckbox'..i] -- not every flag has one
-		if checkbox then S:HandleCheckBox(checkbox) end
+		if checkbox then
+			S:HandleCheckBox(checkbox)
+		end
 	end
 
 	hooksecurefunc('GuildControlUI_BankTabPermissions_Update', SkinBankTabs)

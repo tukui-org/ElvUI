@@ -60,9 +60,11 @@ function S:Blizzard_BlackMarketUI()
 	SkinTab(BlackMarketFrame.ColumnCurrentBid)
 
 	BlackMarketFrame.MoneyFrameBorder:StripTextures()
-	S:HandleEditBox(_G.BlackMarketBidPriceGold)
-	_G.BlackMarketBidPriceGold.backdrop:Point('TOPLEFT', -2, 0)
-	_G.BlackMarketBidPriceGold.backdrop:Point('BOTTOMRIGHT', -2, 0)
+
+	local BidPriceGold = _G.BlackMarketBidPriceGold
+	S:HandleEditBox(BidPriceGold)
+	BidPriceGold.backdrop:Point('TOPLEFT', -2, 0)
+	BidPriceGold.backdrop:Point('BOTTOMRIGHT', -2, 0)
 
 	S:HandleButton(BlackMarketFrame.BidButton)
 

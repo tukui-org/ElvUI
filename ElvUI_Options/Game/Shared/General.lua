@@ -19,6 +19,7 @@ local wipe, next, ceil = wipe, next, ceil
 local IsMouseButtonDown = IsMouseButtonDown
 local FCF_GetNumActiveChatFrames = FCF_GetNumActiveChatFrames
 local IsAddOnLoaded = C_AddOns.IsAddOnLoaded
+local GetCVarBool = C_CVar.GetCVarBool
 
 local ChatTabInfo = {}
 local function GetChatWindowInfo()
@@ -205,8 +206,8 @@ Cosmetic.customGlowGroup.args.startAnimation = ACH:Toggle(L["Start Animation"], 
 Cosmetic.customGlowGroup.args.spacer1 = ACH:Spacer(10, 'full', function() return E.db.general.customGlow.style == 'Action Button Glow' end)
 Cosmetic.customGlowGroup.args.useColor = ACH:Toggle(L["Custom Color"], nil, 11)
 Cosmetic.customGlowGroup.args.color = ACH:Color(L["COLOR"], nil, 12, true, nil, function(info) local c, d = E.db.general.customGlow[info[#info]], P.general.customGlow[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.customGlow[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a E:UpdateMedia() AB:AssistedGlowUpdate() end, function() return not E.db.general.customGlow.useColor end)
-Cosmetic.customGlowGroup.args.nextcast = ACH:Color(L["Next Cast"], nil, 13, true, nil, function(info) local c, d = E.db.general.rotationAssist[info[#info]], P.general.rotationAssist[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.rotationAssist[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a AB:AssistedGlowUpdate() end, nil, not E.Modern)
-Cosmetic.customGlowGroup.args.alternative = ACH:Color(L["Alternative"], nil, 14, true, nil, function(info) local c, d = E.db.general.rotationAssist[info[#info]], P.general.rotationAssist[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.rotationAssist[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a AB:AssistedGlowUpdate() end, nil, not E.Modern)
+Cosmetic.customGlowGroup.args.nextcast = ACH:Color(L["Next Cast"], nil, 13, true, nil, function(info) local c, d = E.db.general.rotationAssist[info[#info]], P.general.rotationAssist[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.rotationAssist[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a AB:AssistedGlowUpdate() end, nil, not E.Retail)
+Cosmetic.customGlowGroup.args.alternative = ACH:Color(L["Alternative"], nil, 14, true, nil, function(info) local c, d = E.db.general.rotationAssist[info[#info]], P.general.rotationAssist[info[#info]] return c.r, c.g, c.b, c.a, d.r, d.g, d.b, d.a end, function(info, r, g, b, a) local c = E.db.general.rotationAssist[info[#info]] c.r, c.g, c.b, c.a = r, g, b, a AB:AssistedGlowUpdate() end, nil, not E.Retail)
 
 Cosmetic.cosmeticBottomPanel = ACH:Group(L["Bottom Panel"], nil, 20)
 Cosmetic.cosmeticBottomPanel.inline = true
@@ -252,8 +253,8 @@ blizz.general.args.voiceOverlay = ACH:Toggle(L["Voice Overlay"], L["Replace Bliz
 blizz.general.args.resurrectSound = ACH:Toggle(L["Resurrect Sound"], L["Enable to hear sound if you receive a resurrect."], 6)
 blizz.general.args.loot = ACH:Toggle(L["Loot Frame"], L["Enable/Disable the loot frame."], 7, nil, nil, nil, function(info) return E.private.general[info[#info]] end, function(info, value) E.private.general[info[#info]] = value E.ShowPopup = true end)
 blizz.general.args.hideZoneText = ACH:Toggle(L["Hide Zone Text"], L["Enable/Disable the on-screen zone text when you change zones."], 8, nil, nil, nil, function(info) return E.db.general[info[#info]] end, function(info, value) E.db.general[info[#info]] = value; M:ZoneTextToggle() end)
-blizz.general.args.spacer1 = ACH:Spacer(14, 'full')
-blizz.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 17, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateDurabilityScale() end, nil, E.Modern)
+blizz.general.args.displayNavigation = ACH:Toggle(L["Display Navigation"], nil, 9, nil, nil, nil, function() return GetCVarBool('showInGameNavigation') end, function(_, value) E:SetCVar('showInGameNavigation', value and 1 or 0) end, nil, not E.Modern)
+blizz.general.args.durabilityScale = ACH:Range(L["Durability Scale"], nil, 10, { min = .5, max = 8, step = .5 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:UpdateDurabilityScale() end, nil, E.Modern)
 blizz.general.inline = true
 
 blizz.quest = ACH:Group(L["Quests"], nil, 10)
@@ -262,9 +263,9 @@ blizz.quest.args.questXPPercent = ACH:Toggle(L["XP Quest Percent"], nil, 2, nil,
 blizz.quest.args.objectiveTracker = ACH:Toggle(L["Objective Frame"], L["Enable"], 3, nil, function() E.ShowPopup = true end, nil, nil, nil, nil, not (E.Classic or E.TBC))
 blizz.quest.inline = true
 
-blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 20, nil, function(info) return E.db.general[info[#info]] end, nil, function() return BL:ObjectiveTracker_HasQuestTracker() end, E.Classic or E.TBC)
+blizz.objectiveFrameGroup = ACH:Group(L["Objective Frame"], nil, 20, nil, function(info) return E.db.general[info[#info]] end, nil, function() return BL:ObjectiveTracker_HasQuestTracker() end, E.Classic or E.TBC or (E.Modern and (IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core'))))
 blizz.objectiveFrameGroup.args.objectiveFrameAutoHide = ACH:Toggle(L["Auto Hide"], L["Automatically hide the objective frame during boss or arena fights."], 1, nil, nil, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_AutoHide() end, nil, E.Classic or IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core'))
-blizz.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], L["Automatically hide the objective frame during boss fights while you are running a key."], 2, nil, nil, nil, nil, nil, nil, function() return not E.Modern or IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core') or not E.db.general.objectiveFrameAutoHide end)
+blizz.objectiveFrameGroup.args.objectiveFrameAutoHideInKeystone = ACH:Toggle(L["Hide In Keystone"], L["Automatically hide the objective frame during boss fights while you are running a key."], 2, nil, nil, nil, nil, nil, nil, function() return not E.Retail or IsAddOnLoaded('BigWigs') or IsAddOnLoaded('DBM-Core') or not E.db.general.objectiveFrameAutoHide end)
 blizz.objectiveFrameGroup.args.objectiveFrameHeight = ACH:Range(L["Objective Frame Height"], L["Height of the objective tracker. Increase size to be able to see more objectives."], 3, { min = 400, max = ceil(E.screenHeight), step = 1 }, nil, nil, function(info, value) E.db.general[info[#info]] = value BL:ObjectiveTracker_SetHeight() end, nil, not (E.Wrath or E.Mists))
 blizz.objectiveFrameGroup.inline = true
 
@@ -337,7 +338,7 @@ blizz.addonCompartment.args.fontGroup.args.fontSize = ACH:Range(L["Font Size"], 
 blizz.addonCompartment.args.fontGroup.args.fontOutline = ACH:FontFlags(L["Font Outline"], nil, 3)
 blizz.addonCompartment.args.fontGroup.inline = true
 
-blizz.rotationAssist = ACH:Group(L["Assisted Highlight"], nil, 70, nil, function(info) return E.db.general.rotationAssist[info[#info]] end, function(info, value) E.db.general.rotationAssist[info[#info]] = value end, nil, not E.Modern)
+blizz.rotationAssist = ACH:Group(L["Assisted Highlight"], nil, 70, nil, function(info) return E.db.general.rotationAssist[info[#info]] end, function(info, value) E.db.general.rotationAssist[info[#info]] = value end, nil, not E.Retail)
 blizz.rotationAssist.args.spellsDesc = ACH:Description(L["List of spells that will show when using Blizzard's assisted highlighting."], 1, 'medium')
 blizz.rotationAssist.args.resetSpells = ACH:Execute(L["Reset"], nil, 2, function() AB:RotationSpellsClear() end)
 blizz.rotationAssist.args.colorButton = ACH:Execute(L["Colors"], nil, 3, function() E.Libs.AceConfigDialog:SelectGroup('ElvUI', 'general', 'cosmetic') end)
@@ -425,7 +426,7 @@ blizz.classColors = ACH:Group(L["Custom Class Colors"], nil, 100, nil, function(
 blizz.classColors.args.enable = ACH:Toggle(L["Enable"], nil, 1, nil, nil, nil, function() return E.private.general.classColors end, function(_, value) E.private.general.classColors = value; E.ShowPopup = true end)
 blizz.classColors.args.spacer1 = ACH:Spacer(10, 'full')
 
-for tag, name in next, C.ClassTable do
+for tag, name in next, E.ClassNamesByFile do
 	blizz.classColors.args[tag] = ACH:Color(name, nil, nil, nil, 120)
 end
 

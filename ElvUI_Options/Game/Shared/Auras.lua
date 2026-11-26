@@ -69,10 +69,10 @@ do
 	Auras.args.debuffColors.args.spacer1 = ACH:Spacer(10, 'full')
 	Auras.args.debuffColors.inline = true
 
-	local order = { None = 0, Magic = 1, Curse = 2, Disease = 3, Poison = 4, BadDispel = 12, Bleed = 13, Stealable = 14 }
-	local names = { None = L["None"], Magic = L["Magic"], Curse = L["Curse"], Disease = L["Disease"], Poison = L["Poison"], BadDispel = L["Bad Dispel"], Bleed = L["Bleed"], Stealable = L["Stealable"], Enrage = L["Enrage"] }
+	local order = { None = 0, Magic = 1, Curse = 2, Disease = 3, Poison = 4, Bleed = 13, Stealable = 14 }
+	local names = { None = L["None"], Magic = L["Magic"], Curse = L["Curse"], Disease = L["Disease"], Poison = L["Poison"], Bleed = L["Bleed"], Stealable = L["Stealable"], Enrage = L["Enrage"] }
 	for key in next, DebuffColors do
-		if (key ~= '' and key ~= 'none') and (not E.Modern or (key ~= 'BadDispel' and key ~= 'Stealable')) then -- this is a reference to none
+		if (key ~= '' and key ~= 'none') and (not E.Modern or key ~= 'Stealable') then -- this is a reference to none
 			Auras.args.debuffColors.args[key] = ACH:Color(names[key] or key, nil, order[key] or -1, nil, 120)
 		end
 	end
@@ -110,7 +110,7 @@ for index = 1, E.filterMax do
 	Auras.args.debuffs.args.midnightGroup.args[name] = C:GetOptionsTable_AuraGroup(index, function() return E.db.auras.debuffs.filterLists[name].enable end, function(info) return E.db.auras.debuffs.filterLists[name][info[#info]] end, function(info, value) E.db.auras.debuffs.filterLists[name][info[#info]] = value; A:UpdateHeader(A.DebuffFrame) end, function(info) local value = E.db.auras.debuffs.filterLists[name].candidates[info[#info]] if value == 1 then return nil else return value end end, function(info, value) E.db.auras.debuffs.filterLists[name].candidates[info[#info]] = (value == nil and 1 or value); A:UpdateHeader(A.DebuffFrame) end)
 end
 
-Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateRaidWarning[info[#info]] end, function(info, value) E.db.general.privateRaidWarning[info[#info]] = value; PA:RaidWarning_Update() end, nil, not E.Modern)
+Auras.args.privateAuras = ACH:Group(L["Private Auras"], nil, 12, nil, function(info) return E.db.general.privateRaidWarning[info[#info]] end, function(info, value) E.db.general.privateRaidWarning[info[#info]] = value; PA:RaidWarning_Update() end, nil, not E.Retail)
 Auras.args.privateAuras.args.raidWarning = ACH:Group(L["Raid Warning"], nil, 30)
 Auras.args.privateAuras.args.raidWarning.args.scale = ACH:Range(L["Scale"], nil, 1, { min = 0.5, max = 4, step = 0.01, bigStep = 0.1 })
 Auras.args.privateAuras.args.raidWarning.inline = true

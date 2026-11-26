@@ -42,7 +42,7 @@ local function BackgroundDesaturation(bckgnd, value)
 	end
 end
 
--- Retail and Forever
+-- Retail
 local function SkinPvpTalents(slot)
 	local icon = slot.Texture
 	slot:StripTextures()
@@ -50,11 +50,6 @@ local function SkinPvpTalents(slot)
 
 	S:HandleIcon(icon, true)
 	icon.backdrop:SetFrameLevel(2)
-end
-
--- Forever
-local function UpdateTabLayout(frame)
-	S:LayoutLargeSideTabs(frame, frame.ModeTabs.Tabs)
 end
 
 -- Mists, Wrath, TBC and Vanilla
@@ -105,30 +100,34 @@ function S:Blizzard_InspectUI()
 
 	if E.Modern then
 		S:HandleButton(_G.InspectPaperDollFrame.ViewButton)
-		S:HandleButton(E.Forever and _G.InspectPaperDollFrame.InspectTalents or _G.InspectPaperDollItemsFrame.InspectTalents) -- Forever has it on the paper doll frame
 
-		-- Create portrait element for the PvP Frame so we can see prestige
 		local InspectPVPFrame = _G.InspectPVPFrame
-		local portrait = InspectPVPFrame:CreateTexture(nil, 'OVERLAY')
-		portrait:Size(55)
-		InspectPVPFrame.SmallWreath:ClearAllPoints()
-		InspectPVPFrame.SmallWreath:Point('TOPLEFT', -2, -25)
-
-		-- PvP Talents
-		for i = 1, 3 do
-			SkinPvpTalents(InspectPVPFrame['TalentSlot'..i])
-		end
-
-		if E.Forever then -- Forever side tabs, the bottom tabs stay hidden
+		if E.Forever then -- Forever side tabs and pvp rank frame, the bottom tabs stay hidden
 			for _, tab in next, InspectFrame.ModeTabs.Tabs do
 				S:HandleLargeSideTab(tab)
 			end
 
-			hooksecurefunc(InspectFrame, 'UpdateTabLayout', UpdateTabLayout)
-			UpdateTabLayout(InspectFrame)
+			-- blizzard lays the side tabs out once in OnLoad
+			S:LayoutLargeSideTabs(InspectFrame, InspectFrame.ModeTabs.Tabs)
+
+			InspectPVPFrame.MainInfoFrame.Line:SetAlpha(0)
 		else
-			_G.InspectPaperDollItemsFrame.InspectTalents:ClearAllPoints()
-			_G.InspectPaperDollItemsFrame.InspectTalents:Point('TOPRIGHT', _G.InspectFrame, 'BOTTOMRIGHT', 0, -1)
+			local InspectTalents = _G.InspectPaperDollItemsFrame.InspectTalents
+			S:HandleButton(InspectTalents)
+			InspectTalents:ClearAllPoints()
+			InspectTalents:Point('TOPRIGHT', _G.InspectFrame, 'BOTTOMRIGHT', 0, -1)
+
+			-- Create portrait element for the PvP Frame so we can see prestige
+			local portrait = InspectPVPFrame:CreateTexture(nil, 'OVERLAY')
+			portrait:Size(55)
+
+			InspectPVPFrame.SmallWreath:ClearAllPoints()
+			InspectPVPFrame.SmallWreath:Point('TOPLEFT', -2, -25)
+
+			-- PvP Talents
+			for i = 1, 3 do
+				SkinPvpTalents(InspectPVPFrame['TalentSlot'..i])
+			end
 		end
 
 		local InspectModelFrame = _G.InspectModelFrame
@@ -138,7 +137,7 @@ function S:Blizzard_InspectUI()
 		InspectModelFrame.backdrop:Point('BOTTOMRIGHT', E.Border, -(E.Border+1))
 
 		-- Re-add the overlay texture which was removed via StripTextures
-		InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0)
+		InspectModelFrame.BackgroundOverlay:SetColorTexture(0, 0, 0, E.Forever and 0.5 or 1)
 	else
 		_G.InspectPaperDollFrame:StripTextures()
 
@@ -155,7 +154,10 @@ function S:Blizzard_InspectUI()
 	-- Background Artwork
 	if (E.Modern or E.Mists) and E.private.skins.parchmentRemoverEnable then -- the guild tab and the pvp BG start with cata
 		_G.InspectGuildFrameBG:Kill()
-		_G.InspectPVPFrame.BG:Kill()
+
+		if not E.Forever then -- the Forever pvp rank frame has no BG
+			_G.InspectPVPFrame.BG:Kill()
+		end
 	end
 
 	_G.InspectModelFrameBorderTopLeft:Kill()
@@ -183,13 +185,15 @@ function S:Blizzard_InspectUI()
 	if E.Modern then
 		for _, Slot in next, { _G.InspectPaperDollItemsFrame:GetChildren() } do
 			if Slot.icon then -- the item slots, not the talents button
-				S:HandleIcon(Slot.icon, true)
-				Slot.icon.backdrop:OffsetFrameLevel(nil, Slot)
-				Slot.icon:SetInside()
 				Slot:StripTextures()
 				Slot:StyleButton()
 
+				S:HandleIcon(Slot.icon, true)
+				S:HandleItemButtonCrop(Slot)
 				S:HandleIconBorder(Slot.IconBorder, Slot.icon.backdrop)
+
+				Slot.icon.backdrop:OffsetFrameLevel(nil, Slot)
+				Slot.icon:SetInside()
 			end
 		end
 	else
@@ -311,7 +315,7 @@ function S:Blizzard_InspectUI()
 				glyph:StyleButton(nil, true)
 				glyph:OffsetFrameLevel(5)
 
-				glyph.highlight:SetTexture(nil)
+				glyph.highlight:SetTexture()
 				glyph.glyph:Kill()
 				glyph.ring:Kill()
 

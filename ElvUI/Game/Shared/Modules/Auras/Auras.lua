@@ -15,6 +15,7 @@ local GetAuraDuration = C_UnitAuras.GetAuraDuration
 local GetInventoryItemQuality = GetInventoryItemQuality
 local GetInventoryItemTexture = GetInventoryItemTexture
 local GetWeaponEnchantInfo = GetWeaponEnchantInfo
+local GetTemporaryEnchantmentInfo = C_PaperDollInfo.GetTemporaryEnchantmentInfo
 local RegisterAttributeDriver = RegisterAttributeDriver
 local SecureHandlerSetFrameRef = SecureHandlerSetFrameRef
 local RegisterStateDriver = RegisterStateDriver
@@ -25,6 +26,7 @@ local UIParent = UIParent
 local GetTime = GetTime
 
 local StatusBarInterpolation = Enum.StatusBarInterpolation
+local INVSLOT_MAINHAND, INVSLOT_OFFHAND, INVSLOT_RANGED = INVSLOT_MAINHAND, INVSLOT_OFFHAND, INVSLOT_RANGED
 
 local Masque = E.Masque
 local MasqueGroupBuffs = Masque and Masque:Group('ElvUI', 'Buffs')
@@ -326,7 +328,19 @@ function A:UpdateAura(button, index)
 	end
 end
 
-function A:UpdateTempEnchant(button, index, expiration)
+function A:GetEnchantExpirations()
+	if GetTemporaryEnchantmentInfo then
+		local main, offhand, ranged = GetTemporaryEnchantmentInfo(INVSLOT_MAINHAND), GetTemporaryEnchantmentInfo(INVSLOT_OFFHAND), GetTemporaryEnchantmentInfo(INVSLOT_RANGED)
+		return main and main.remainingTimeMs, offhand and offhand.remainingTimeMs, ranged and ranged.remainingTimeMs, main and main.chargesRemaining, offhand and offhand.chargesRemaining, ranged and ranged.chargesRemaining
+	else
+		local _, main, mainCharges, _, _, offhand, offhandCharges, _, _, ranged, rangedCharges = GetWeaponEnchantInfo()
+		return main, offhand, ranged, mainCharges, offhandCharges, rangedCharges
+	end
+end
+
+function A:UpdateTempEnchant(button, index, expiration, charges)
+	button.count:SetText((charges and charges > 1 and charges) or '')
+
 	if expiration then
 		local quality = A.db.colorEnchants and GetInventoryItemQuality('player', index)
 		local r, g, b = E:GetItemQualityColor(quality and quality > 1 and quality)
@@ -528,9 +542,11 @@ function A:Visibility_OnUpdate(elapsed)
 	if header.elapsedEnchants and header.elapsedEnchants > 0.5 then
 		local index, enchant = next(header.enchants)
 		if index then
-			local _, main, _, _, _, offhand, _, _, _, ranged = GetWeaponEnchantInfo()
+			local main, offhand, ranged, mainCharges, offhandCharges, rangedCharges = A:GetEnchantExpirations()
 			while enchant do
-				A:UpdateTempEnchant(enchant, enchant:GetID(), (index == 1 and main) or (index == 2 and offhand) or (index == 3 and ranged))
+				local expiration = (index == 1 and main) or (index == 2 and offhand) or (index == 3 and ranged)
+				local charges = (index == 1 and mainCharges) or (index == 2 and offhandCharges) or (index == 3 and rangedCharges)
+				A:UpdateTempEnchant(enchant, enchant:GetID(), expiration, charges)
 
 				header.enchants[index] = nil
 				index, enchant = next(header.enchants)
@@ -627,7 +643,7 @@ function A:UpdateHeader(header)
 			wrapYOffset = 0
 		end
 
-		header:SetAttribute('_ignore', true) -- hold the header update, the last attribute below runs it once
+		header:SetAttribute('_ignore', true) -- hold the header update
 		header:SetAttribute('config-width', width)
 		header:SetAttribute('config-height', height)
 		header:SetAttribute('template', 'ElvUIAuraTemplate')
@@ -644,7 +660,7 @@ function A:UpdateHeader(header)
 		header:SetAttribute('xOffset', xOffset)
 		header:SetAttribute('yOffset', yOffset)
 		header:SetAttribute('wrapXOffset', wrapXOffset)
-		header:SetAttribute('_ignore', nil)
+		header:SetAttribute('_ignore', nil) -- reallow updates
 		header:SetAttribute('wrapYOffset', wrapYOffset)
 
 		header:ForEachChild(A.UpdateChild, db)
@@ -709,18 +725,18 @@ function A:CreateAuraHeader(filter)
 	header.visibility:SetScript('OnEvent', A.Visibility_OnEvent) -- dont put this on the main frame
 	header.visibility.frame = header
 
-	if E.Modern then
-		header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
-	end
-
 	RegisterAttributeDriver(header, 'unit', '[vehicleui] vehicle; player')
-	SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
-	RegisterStateDriver(header.visibility, 'customVisibility', '[petbattle] 0;1')
-	header.visibility:SetAttribute('_onstate-customVisibility', A.AttributeCustomVisibility)
+
+	if E.Mists then -- only client with this header that has pet battles
+		SecureHandlerSetFrameRef(header.visibility, 'AuraHeader', header)
+		RegisterStateDriver(header.visibility, 'customVisibility', '[petbattle] 0;1')
+		header.visibility:SetAttribute('_onstate-customVisibility', A.AttributeCustomVisibility)
+	end
 
 	if filter == 'HELPFUL' then
 		header:SetAttribute('consolidateDuration', -1)
 		header:SetAttribute('includeWeapons', 1)
+		header.visibility:RegisterEvent('WEAPON_ENCHANT_CHANGED')
 
 		if MasqueGroupBuffs and E.private.auras.masque.buffs then
 			header.MasqueGroup = MasqueGroupBuffs
@@ -768,6 +784,8 @@ function A:Initialize()
 
 			E:Auras_GroupUnit(buff, 'player')
 
+			E.FrameLocks[buff] = true
+
 			A.BuffFrame = buff
 		else
 			A.BuffFrame = A:CreateAuraHeader('HELPFUL')
@@ -799,6 +817,8 @@ function A:Initialize()
 			end
 
 			E:Auras_GroupUnit(debuff, 'player')
+
+			E.FrameLocks[debuff] = true
 
 			A.DebuffFrame = debuff
 		else

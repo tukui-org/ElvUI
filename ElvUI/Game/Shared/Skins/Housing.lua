@@ -137,7 +137,7 @@ function S:Blizzard_HousingHouseFinder()
 
 	local neighborList = finderFrame.NeighborhoodListFrame
 	neighborList:StripTextures()
-	neighborList.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND') -- Pimp me a bit
+	neighborList.BNetFriendSearchBox:DisableDrawLayer('BACKGROUND')
 
 	S:HandleEditBox(neighborList.BNetFriendSearchBox)
 	S:HandleButton(neighborList.RefreshButton)
@@ -165,9 +165,8 @@ function S:Blizzard_HousingDashboard()
 	local initiativesFrame = contentFrame.InitiativesFrame
 	initiativesFrame.InitiativesArt:Hide() -- Main Top Art BG
 
-	local initiativeSet = initiativesFrame.InitiativeSetFrame
-
 	-- Progress bar in Blizzard's fill color
+	local initiativeSet = initiativesFrame.InitiativeSetFrame
 	local progressBar = initiativeSet.ProgressBar
 	S:HandleStatusBar(progressBar, PROGESS_COLOR)
 	progressBar.BarEnd.Overlay:SetAlpha(0)
@@ -282,8 +281,8 @@ function S:Blizzard_HousingBulletinBoard()
 	changeNameDialog:CreateBackdrop('Transparent')
 
 	S:HandleEditBox(changeNameDialog.NameEditBox)
-	S:HandleButton(changeNameDialog.ConfirmButton) -- Fix Backdrop
-	S:HandleButton(changeNameDialog.CancelButton)  -- Fix Backdrop
+	S:HandleButton(changeNameDialog.ConfirmButton)
+	S:HandleButton(changeNameDialog.CancelButton)
 end
 
 function S:Blizzard_HousingCharter()
@@ -307,15 +306,15 @@ function S:Blizzard_HouseList()
 end
 
 function S:Blizzard_HousingCreateNeighborhood()
-	local createGuildNeighborhood = _G.HousingCreateGuildNeighborhoodFrame
-	createGuildNeighborhood:StripTextures()
-	createGuildNeighborhood:CreateBackdrop('Transparent')
+	local guildNeighborhood = _G.HousingCreateGuildNeighborhoodFrame
+	guildNeighborhood:StripTextures()
+	guildNeighborhood:CreateBackdrop('Transparent')
 
-	S:HandleEditBox(createGuildNeighborhood.NeighborhoodNameEditBox)
-	S:HandleButton(createGuildNeighborhood.ConfirmButton)
-	S:HandleButton(createGuildNeighborhood.CancelButton)
+	S:HandleEditBox(guildNeighborhood.NeighborhoodNameEditBox)
+	S:HandleButton(guildNeighborhood.ConfirmButton)
+	S:HandleButton(guildNeighborhood.CancelButton)
 
-	local confirmationFrame = createGuildNeighborhood.ConfirmationFrame
+	local confirmationFrame = guildNeighborhood.ConfirmationFrame
 	confirmationFrame:StripTextures()
 	confirmationFrame:SetTemplate()
 

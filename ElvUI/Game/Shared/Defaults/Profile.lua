@@ -63,7 +63,7 @@ P.general = {
 	durabilityScale = 1,
 	gameMenuScale = 1,
 	lockCameraDistanceMax = true,
-	cameraDistanceMax = E.Modern and 2.6 or 4,
+	cameraDistanceMax = E.Retail and 2.6 or 4,
 	afk = true,
 	afkChat = true,
 	afkSpin = true,
@@ -133,7 +133,6 @@ P.general = {
 
 		-- These dont exist in Blizzards color table
 		Bleed = { r = 1, g = 0.2, b = 0.6, a = 1 },
-		BadDispel = { r = 0.05, g = 0.85, b = 0.94, a = 1 },
 		Stealable = { r = 0.93, g = 0.91, b = 0.55, a = 1 },
 	},
 	bordercolor = { r = 0, g = 0, b = 0, a = 1 }, -- updated in E.Initialize
@@ -227,6 +226,12 @@ P.general = {
 				xOffset = 0,
 				yOffset = 0,
 				hide = false,
+			},
+			externalEvent = {
+				scale = 0.8,
+				position = 'TOPLEFT',
+				xOffset = 0,
+				yOffset = 0,
 			},
 			tracking = {
 				scale = E.Modern and 1.2 or 0.65,
@@ -580,7 +585,7 @@ P.bags = {
 	},
 }
 
-for i = -3, 12 do
+for i = -3, E.Forever and 14 or 12 do
 	local name = 'bag'..i
 	P.bags.shownBags[name] = true
 
@@ -589,7 +594,7 @@ for i = -3, 12 do
 	end
 end
 
-for id = 6, 11 do
+for id = 6, E.Forever and 14 or 11 do
 	P.bags.split['bank'..id] = false
 end
 
@@ -781,6 +786,7 @@ local NP_Castbar = {
 	castTimeFormat = 'CURRENT',
 	channelTimeFormat = 'CURRENT',
 	timeToHold = 0,
+	mergeCrafts = true,
 	anchorPoint = 'CENTER',
 	textPosition = 'BELOW',
 	iconPosition = 'RIGHT',
@@ -1462,6 +1468,7 @@ P.chat = {
 	hideChatToggles = false,
 	hideCopyButton = false,
 	useAltKey = false,
+	countCharacters = true,
 	classColorMentionsChat = true,
 	enableCombatRepeat = true,
 	numAllowedCombatRepeat = 5,
@@ -1496,9 +1503,9 @@ P.datatexts = {
 			backdrop = true,
 			border = true,
 			panelTransparency = false,
-			E.Modern and 'Talent/Loot Specialization' or 'ElvUI',
+			E.Retail and 'Talent/Loot Specialization' or 'ElvUI',
 			'Durability',
-			E.Modern and 'Missions' or 'Mail'
+			E.Retail and 'Missions' or 'Mail'
 		},
 		RightChatDataPanel = {
 			enable = true,
@@ -1767,6 +1774,7 @@ local UF_Castbar = {
 	ticks = true,
 	tickWidth = 1,
 	timeToHold = 0,
+	mergeCrafts = true,
 	width = 270,
 	xOffsetText = 4,
 	xOffsetTime = -4,
@@ -3345,9 +3353,7 @@ P.actionbar = {
 		fontOutline = 'OUTLINE',
 		fontSize = 12,
 		mouseover = false,
-		visibility = '[vehicleui] hide;show',
-		frameStrata = 'LOW',
-		frameLevel = 5
+		visibility = '[vehicleui] hide;show'
 	},
 	microbar = {
 		enabled = false,
@@ -3515,8 +3521,8 @@ P.actionbar.bar1.visibility = (E.Retail or E.Mists) and '[petbattle] hide; show'
 P.actionbar.bar1.paging.ROGUE = (E.TBC and '[possessbar] 16; ' or '') .. '[bonusbar:1] 7;' .. ((E.Wrath or E.Mists) and ' [bonusbar:2] 8;' or '')
 P.actionbar.bar1.paging.WARLOCK = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Wrath or E.Mists) and '[form:1] 7;' or '')
 P.actionbar.bar1.paging.DRUID = (E.TBC and '[possessbar] 16; ' or '') .. '[bonusbar:1,nostealth] 7; [bonusbar:1,stealth] 8; [bonusbar:2] 10; [bonusbar:3] 9; [bonusbar:4] 10;'
-P.actionbar.bar1.paging.PRIEST = (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Modern and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
-P.actionbar.bar1.paging.WARRIOR = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Classic or E.TBC or E.Wrath) and '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' or '')
+P.actionbar.bar1.paging.PRIEST = (E.Forever and '[overridebar] 33; [vehicleui] 31; [possessbar] 31; [form:1] 7;') or (E.TBC and '[possessbar] 16; [bonusbar:1] 7;') or (E.Retail and '[form:1, spec:3] 7;') or (E.Classic and '[form:1] 7;') or '[bonusbar:1] 7;'
+P.actionbar.bar1.paging.WARRIOR = (E.TBC and '[possessbar] 16; ' or '') .. ((E.Classic or E.TBC or E.Wrath or E.Forever) and '[bonusbar:1] 7; [bonusbar:2] 8; [bonusbar:3] 9;' or '')
 P.actionbar.bar1.paging.EVOKER = '[bonusbar:1] 7;'
 
 if E.Mists then
@@ -3706,7 +3712,7 @@ E.LayoutMoverPositions = {
 		ElvAB_3 = 'BOTTOM,ElvUIParent,BOTTOM,-1,139',
 		ElvAB_4 = 'RIGHT,ElvUIParent,RIGHT,-4,0',
 		ElvAB_6 = 'BOTTOMRIGHT,ElvUIParent,BOTTOMRIGHT,-4,264',
-		ElvUF_AssistMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-249',
+		ElvUF_AssistMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-250',
 		ElvUF_FocusCastbarMover = 'TOPLEFT,ElvUF_Focus,BOTTOMLEFT,0,-1',
 		ElvUF_FocusMover = 'BOTTOM,ElvUIParent,BOTTOM,342,60',
 		ElvUF_PartyMover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269',
@@ -3717,7 +3723,7 @@ E.LayoutMoverPositions = {
 		ElvUF_Raid1Mover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269',
 		ElvUF_Raid2Mover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269',
 		ElvUF_Raid3Mover = 'BOTTOMLEFT,ElvUIParent,BOTTOMLEFT,4,269',
-		ElvUF_TankMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-187',
+		ElvUF_TankMover = 'TOPLEFT,ElvUIParent,TOPLEFT,4,-180',
 		ElvUF_TargetCastbarMover = 'BOTTOM,ElvUIParent,BOTTOM,-1,243',
 		ElvUF_TargetMover = 'BOTTOM,ElvUIParent,BOTTOM,342,139',
 		ElvUF_TargetTargetMover = 'BOTTOM,ElvUIParent,BOTTOM,342,101',

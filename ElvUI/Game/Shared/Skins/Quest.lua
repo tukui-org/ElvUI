@@ -65,7 +65,9 @@ end
 local function HandleReward(frame) -- reward frames are a mix of Large/Small item buttons and plain frames
 	if frame.Icon then
 		frame.Icon:SetDrawLayer('ARTWORK')
+
 		S:HandleIcon(frame.Icon, true)
+		S:HandleItemButtonCrop(frame)
 
 		if E.Modern and frame.IconBorder then -- the classic SetItemButtonQuality always hides it
 			S:HandleIconBorder(frame.IconBorder, frame.Icon.backdrop)
@@ -223,7 +225,7 @@ function data:QuestInfo_Display() -- self is template, not data
 
 			if spellBorders then
 				local _, _, spellBorder = spellIcon:GetRegions() -- Icon, NameFrame, SpellBorder
-				spellBorder:SetTexture(E.ClearTexture)
+				spellBorder:SetTexture()
 			end
 		end
 
@@ -389,8 +391,7 @@ local function QuestPanelParchment(panel, scrollFrame)
 		panel.MaterialTopRight:SetAlpha(1)
 		panel.MaterialBotLeft:SetAlpha(1)
 		panel.MaterialBotRight:SetAlpha(1)
-	else
-		-- classic panels show the page inside a larger file (vanilla inside its frame art), crop QuestBG like the gossip skin
+	else -- classic panels show the page inside a larger file (vanilla inside its frame art), crop QuestBG like the gossip skin
 		local parchment = panel:CreateTexture(nil, 'BACKGROUND', nil, 1)
 		parchment:SetTexture([[Interface\QuestFrame\QuestBG]])
 		parchment:SetTexCoord(0, 0.586, 0.02, 0.655)
@@ -400,6 +401,7 @@ local function QuestPanelParchment(panel, scrollFrame)
 		local materialTopLeft = _G[name..'MaterialTopLeft']
 		materialTopLeft:Point('TOPLEFT', parchment)
 		materialTopLeft:SetAlpha(1)
+
 		_G[name..'MaterialTopRight']:SetAlpha(1)
 		_G[name..'MaterialBotLeft']:SetAlpha(1)
 		_G[name..'MaterialBotRight']:SetAlpha(1)
@@ -686,6 +688,7 @@ function S:BlizzardQuestFrames()
 		HandleReward(_G.MapQuestInfoRewardsFrame[frame])
 		HandleReward(_G.QuestInfoRewardsFrame[frame])
 	end
+
 	HandleReward(_G.MapQuestInfoRewardsFrame.MoneyFrame)
 
 	--Reward: Title
@@ -695,6 +698,7 @@ function S:BlizzardQuestFrames()
 		frameLeft:SetTexture()
 		frameCenter:SetTexture()
 		frameRight:SetTexture()
+
 		S:HandleIcon(icon, true)
 	else
 		QuestInfoPlayerTitleFrame.FrameLeft:SetTexture()
@@ -787,6 +791,7 @@ function S:BlizzardQuestFrames()
 		end
 
 		modelTextFrame:StripTextures()
+
 		_G.QuestNPCModelText:SetTextColor(1, 1, 1)
 	else
 		_G.QuestDetailScrollFrame:SetTemplate('Transparent')
@@ -801,6 +806,7 @@ function S:BlizzardQuestFrames()
 
 		if E.Modern then
 			_G.QuestLogPopupDetailFrameScrollFrame:SetTemplate('Transparent')
+
 			QuestPanelParchment(_G.QuestLogPopupDetailFrame, _G.QuestLogPopupDetailFrameScrollFrame)
 		end
 
@@ -817,7 +823,10 @@ function S:BlizzardQuestFrames()
 		icon:SetTexCoords()
 		icon:Point('TOPLEFT', 2, -2)
 		icon:Size(icon:GetWidth() -3, icon:GetHeight() -3)
-		button:Width(button:GetWidth() -4)
+
+		S:HandleItemButtonCrop(button)
+
+		button:Width(button:GetWidth() - 4)
 		button:StripTextures()
 		button:OffsetFrameLevel(1)
 
@@ -875,6 +884,7 @@ function S:BlizzardQuestFrames()
 		local width, height = showMapButton:GetSize()
 		showMapButton:StripTextures()
 		showMapButton:Size(width - 30, height)
+
 		showMapButton.Text:ClearAllPoints()
 		showMapButton.Text:Point('CENTER')
 	else
