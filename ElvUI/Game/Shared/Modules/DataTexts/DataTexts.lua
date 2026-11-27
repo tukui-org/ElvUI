@@ -969,6 +969,24 @@ function DT:BuildTables()
 	if not db.serverID then db.serverID = {} end
 	db.serverID[server] = db.serverID[server] or {}
 	db.serverID[server][key] = true
+
+	-- Forever data used to be stored under the realm name (and at times an empty realm),
+	-- now it is stored under the ruleset; clear this character's stale copies so it isn't listed multiple times
+	if E.Forever then
+		local servers = db.serverID[server]
+		for oldKey in next, servers do
+			if oldKey ~= key then
+				local goldDB, classDB, factionDB = db.gold[oldKey], db.class[oldKey], db.faction[oldKey]
+				if goldDB then goldDB[name] = nil end
+				if classDB then classDB[name] = nil end
+				if factionDB then factionDB[name] = nil end
+
+				if not (goldDB and next(goldDB)) then
+					servers[oldKey] = nil
+				end
+			end
+		end
+	end
 end
 
 function DT:CloseMenus()
