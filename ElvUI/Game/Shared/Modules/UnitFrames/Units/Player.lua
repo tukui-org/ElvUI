@@ -40,6 +40,9 @@ function UF:Construct_PlayerFrame(frame)
 	frame.RaidRoleFramesAnchor = UF:Construct_RaidRoleFrames(frame)
 	frame.RestingIndicator = UF:Construct_RestingIndicator(frame)
 	frame.ResurrectIndicator = UF:Construct_ResurrectionIcon(frame)
+	if E.Retail then
+		frame.PingIndicator = UF:Construct_PingIndicator(frame)
+	end
 	frame.CombatIndicator = UF:Construct_CombatIndicator(frame)
 	frame.PartyIndicator = UF:Construct_PartyIndicator(frame)
 	frame.PvPText = UF:Construct_PvPText(frame)

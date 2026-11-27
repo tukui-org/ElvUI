@@ -16,6 +16,9 @@ function UF:Construct_TargetTargetFrame(frame)
 	frame.Portrait2D = UF:Construct_Portrait(frame, 'texture')
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	if E.Retail then
+		frame.PingIndicator = UF:Construct_PingIndicator(frame)
+	end
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.InfoPanel = UF:Construct_InfoPanel(frame)
 	frame.MouseGlow = UF:Construct_MouseGlow(frame)

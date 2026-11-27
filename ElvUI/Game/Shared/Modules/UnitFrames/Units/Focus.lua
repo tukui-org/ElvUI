@@ -19,6 +19,9 @@ function UF:Construct_FocusFrame(frame)
 	frame.Castbar.LatencyTexture:Hide()
 	frame.RaidTargetIndicator = UF:Construct_RaidIcon(frame)
 	frame.HealthPrediction = UF:Construct_HealComm(frame)
+	if E.Retail then
+		frame.PingIndicator = UF:Construct_PingIndicator(frame)
+	end
 	frame.AuraBars = UF:Construct_AuraBarHeader(frame)
 	frame.ThreatIndicator = UF:Construct_Threat(frame)
 	frame.MouseGlow = UF:Construct_MouseGlow(frame)

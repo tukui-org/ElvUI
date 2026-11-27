@@ -38,6 +38,9 @@ function UF:Construct_PartyFrames()
 		self.RaidTargetIndicator = UF:Construct_RaidIcon(self)
 		self.ReadyCheckIndicator = UF:Construct_ReadyCheckIcon(self)
 		self.HealthPrediction = UF:Construct_HealComm(self)
+		if E.Retail then
+			self.PingIndicator = UF:Construct_PingIndicator(self)
+		end
 		self.Auras = UF:Construct_Auras(self)
 		self.Buffs = UF:Construct_Buffs(self)
 		self.Debuffs = UF:Construct_Debuffs(self)
