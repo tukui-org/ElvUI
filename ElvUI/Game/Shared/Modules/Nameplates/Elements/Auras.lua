@@ -151,23 +151,27 @@ do
 	end
 
 	function NP:AuraContainer_SetActive(nameplate)
-		local current
 		local plateDB = NP:PlateDB(nameplate)
-		local container = NP:GetAuraContainer(nameplate.frameName, nameplate.frameType)
-		for which in next, elements do
-			local auraType = AURA_TYPES[which]
-			local db = plateDB[auraType]
-			local auras = container and container[which]
-			local active = auras and (not db or db.enable)
-			if active then
-				current = container
+		if not plateDB.enable or plateDB.nameOnly then return end
 
-				nameplate.ActiveContainers[auras] = true
+		local current
+		local isStatic = nameplate == NP.PlayerFrame
+		local container = not isStatic and NP:GetAuraContainer(nameplate.frameName, nameplate.frameType)
+		for which, real in next, elements do
+			local auras = (container and container[which]) or (isStatic and nameplate[real])
+			if auras then
+				local auraType = AURA_TYPES[which]
+				local db = plateDB[auraType]
+				if not db or db.enable then
+					current = container
 
-				E:Auras_SetUnit(auras, nameplate.__unit)
+					nameplate.ActiveContainers[auras] = true
 
-				auras:SetEnabled(true)
-				auras:Show()
+					E:Auras_SetUnit(auras, nameplate.__unit)
+
+					auras:SetEnabled(true)
+					auras:Show()
+				end
 			end
 		end
 
