@@ -22,8 +22,6 @@ local UnitStagger = UnitStagger
 local GetPlayerAuraBySpellID = C_UnitAuras.GetPlayerAuraBySpellID
 local GetCVarBool = C_CVar.GetCVarBool
 
-local LEVEL = strlower(LEVEL)
-
 -- GLOBALS: UnitName, UnitPower -- override during testing groups
 
 local POWERTYPE_MANA = Enum.PowerType.Mana
@@ -57,6 +55,8 @@ local POWERTYPE_MAELSTROM = -2
 local SPELL_FROST_ICICLES = 205473
 local SPELL_ARCANE_CHARGE = 36032
 local SPELL_MAELSTROM = 344179
+
+local LEVEL = strlower(LEVEL_GAINED:gsub('%%d', ''))
 
 ------------------------------------------------------------------------
 --	Tag API
@@ -203,7 +203,7 @@ Tags.Env.GetTitleNPC = function(unit, custom)
 	local text = line and line.leftText
 
 	local lower = E:NotSecretValue(text) and text and strlower(text)
-	if lower and not strfind(lower, LEVEL) then
+	if lower and not strfind(lower, LEVEL, 1, true) then
 		return custom and format(custom, text) or text
 	end
 end
